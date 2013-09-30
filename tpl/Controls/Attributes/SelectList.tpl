@@ -24,7 +24,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 <span class="attributeValue {$class}">{$attribute->Value()|escape}</span>
 {else}
 <select id="{$attributeName}" name="{$attributeName}" class="customAttribute textbox {$class}">
-	{if !$attribute->Required()}
+	{if !$attribute->Required() || $searchmode}
 	<option value="">--</option>
 	{/if}
 	{foreach from=$attribute->PossibleValueList() item=value}

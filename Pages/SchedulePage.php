@@ -150,6 +150,36 @@ interface ISchedulePage extends IActionPage
 	 * @param Attribute[] $attributes
 	 */
 	public function SetResourceTypeCustomAttributes($attributes);
+
+	/**
+	 * @return bool
+	 */
+	public function FilterSubmitted();
+
+	/**
+	 * @return int
+	 */
+	public function GetResourceTypeId();
+
+	/**
+	 * @return int
+	 */
+	public function GetMaxParticipants();
+
+	/**
+	 * @return AttributeFormElement[]|array
+	 */
+	public function GetResourceAttributes();
+
+	/**
+	 * @return AttributeFormElement[]|array
+	 */
+	public function GetResourceTypeAttributes();
+
+	/**
+	 * @param ScheduleResourceFilter $resourceFilter
+	 */
+	public function SetFilter($resourceFilter);
 }
 
 class ScheduleStyle
@@ -181,7 +211,7 @@ class SchedulePage extends ActionPage implements ISchedulePage
 
 		$permissionServiceFactory = new PermissionServiceFactory();
 		$scheduleRepository = new ScheduleRepository();
-		$resourceService = new ResourceService(new ResourceRepository(), $permissionServiceFactory->GetPermissionService());
+		$resourceService = new ResourceService(new ResourceRepository(), $permissionServiceFactory->GetPermissionService(), new AttributeService(new AttributeRepository()));
 		$pageBuilder = new SchedulePageBuilder();
 		$reservationService = new ReservationService(new ReservationViewRepository(), new ReservationListingFactory());
 		$dailyLayoutFactory = new DailyLayoutFactory();
@@ -192,7 +222,8 @@ class SchedulePage extends ActionPage implements ISchedulePage
 	{
 		$start = microtime(true);
 
-		$user = ServiceLocator::GetServer()->GetUserSession();
+		$user = ServiceLocator::GetServer()
+				->GetUserSession();
 
 		$this->_presenter->PageLoad($user);
 
@@ -219,7 +250,8 @@ class SchedulePage extends ActionPage implements ISchedulePage
 
 	public function ProcessDataRequest($dataRequest)
 	{
-		$this->_presenter->GetLayout(ServiceLocator::GetServer()->GetUserSession());
+		$this->_presenter->GetLayout(ServiceLocator::GetServer()
+									 ->GetUserSession());
 	}
 
 	public function GetScheduleId()
@@ -277,9 +309,10 @@ class SchedulePage extends ActionPage implements ISchedulePage
 
 	public function ShowInaccessibleResources()
 	{
-		return Configuration::Instance()->GetSectionKey(ConfigSection::SCHEDULE,
-														ConfigKeys::SCHEDULE_SHOW_INACCESSIBLE_RESOURCES,
-														new BooleanConverter());
+		return Configuration::Instance()
+			   ->GetSectionKey(ConfigSection::SCHEDULE,
+							   ConfigKeys::SCHEDULE_SHOW_INACCESSIBLE_RESOURCES,
+							   new BooleanConverter());
 	}
 
 	public function ShowFullWeekToggle($showShowFullWeekToggle)
@@ -368,6 +401,53 @@ class SchedulePage extends ActionPage implements ISchedulePage
 	{
 		$this->Set('ResourceTypeAttributes', $attributes);
 	}
+
+	public function FilterSubmitted()
+	{
+		$k = $this->GetForm(FormKeys::SUBMIT);
+
+		return !empty($k);
+	}
+
+	/**
+	 * @return int
+	 */
+	public function GetResourceTypeId()
+	{
+		return $this->GetForm(FormKeys::RESOURCE_TYPE_ID);
+	}
+
+	/**
+	 * @return int
+	 */
+	public function GetMaxParticipants()
+	{
+		$max = $this->GetForm(FormKeys::MAX_PARTICIPANTS);
+		return intval($max);
+	}
+
+	/**
+	 * @return AttributeFormElement[]|array
+	 */
+	public function GetResourceAttributes()
+	{
+		return AttributeFormParser::GetAttributes($this->GetForm(FormKeys::ATTRIBUTE_PREFIX));
+	}
+
+	/**
+	 * @return AttributeFormElement[]|array
+	 */
+	public function GetResourceTypeAttributes()
+	{
+		return AttributeFormParser::GetAttributes($this->GetForm(FormKeys::ATTRIBUTE_PREFIX));
+	}
+
+	public function SetFilter($resourceFilter)
+	{
+		$this->Set('ResourceIdFilter', $this->GetResourceId());
+		$this->Set('ResourceTypeIdFilter', $resourceFilter->ResourceTypeId);
+		$this->Set('MaxParticipantsFilter', $resourceFilter->MaxParticipants);
+	}
 }
 
 class DisplaySlotFactory
@@ -421,18 +501,21 @@ class DisplaySlotFactory
 
 	private function UserHasAdminRights()
 	{
-		return ServiceLocator::GetServer()->GetUserSession()->IsAdmin;
+		return ServiceLocator::GetServer()
+			   ->GetUserSession()->IsAdmin;
 	}
 
 	private function IsMyReservation(IReservationSlot $slot)
 	{
-		$mySession = ServiceLocator::GetServer()->GetUserSession();
+		$mySession = ServiceLocator::GetServer()
+					 ->GetUserSession();
 		return $slot->IsOwnedBy($mySession);
 	}
 
 	private function AmIParticipating(IReservationSlot $slot)
 	{
-		$mySession = ServiceLocator::GetServer()->GetUserSession();
+		$mySession = ServiceLocator::GetServer()
+					 ->GetUserSession();
 		return $slot->IsParticipating($mySession);
 	}
 }

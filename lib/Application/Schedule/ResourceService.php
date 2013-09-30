@@ -16,7 +16,7 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 
 require_once(ROOT_DIR . 'lib/Application/Attributes/namespace.php');
 
@@ -31,7 +31,8 @@ interface IResourceService
 	 * @param int $resourceId
 	 * @return array|ResourceDto[]
 	 */
-	public function GetScheduleResources($scheduleId, $includeInaccessibleResources, UserSession $user, $groupId = null, $resourceId = null);
+	public function GetScheduleResources($scheduleId, $includeInaccessibleResources, UserSession $user, $groupId = null,
+										 $resourceId = null);
 
 	/**
 	 * Gets resource list
@@ -72,22 +73,30 @@ interface IResourceService
 class ResourceService implements IResourceService
 {
 	/**
-	 * @var \IResourceRepository
+	 * @var IResourceRepository
 	 */
 	private $_resourceRepository;
 
 	/**
-	 * @var \IPermissionService
+	 * @var IPermissionService
 	 */
 	private $_permissionService;
 
-	public function __construct(IResourceRepository $resourceRepository, IPermissionService $permissionService)
+	/**
+	 * @var IAttributeService
+	 */
+	private $_attributeService;
+
+	public function __construct(IResourceRepository $resourceRepository, IPermissionService $permissionService,
+								IAttributeService $attributeService)
 	{
 		$this->_resourceRepository = $resourceRepository;
 		$this->_permissionService = $permissionService;
+		$this->_attributeService = $attributeService;
 	}
 
-	public function GetScheduleResources($scheduleId, $includeInaccessibleResources, UserSession $user, $groupId = null, $resourceId = null)
+	public function GetScheduleResources($scheduleId, $includeInaccessibleResources, UserSession $user, $groupId = null,
+										 $resourceId = null)
 	{
 		$resources = $this->_resourceRepository->GetScheduleResources($scheduleId);
 
@@ -96,10 +105,13 @@ class ResourceService implements IResourceService
 		{
 			$resourceIds = array($resourceId);
 		}
-		else if (!empty($groupId))
+		else
 		{
-			$groups = $this->_resourceRepository->GetResourceGroups($scheduleId);
-			$resourceIds = $groups->GetResourceIds($groupId);
+			if (!empty($groupId))
+			{
+				$groups = $this->_resourceRepository->GetResourceGroups($scheduleId);
+				$resourceIds = $groups->GetResourceIds($groupId);
+			}
 		}
 
 		return $this->Filter($resources, $user, $includeInaccessibleResources, $resourceIds);
@@ -161,7 +173,14 @@ class ResourceService implements IResourceService
 	 */
 	public function GetResourceAttributes()
 	{
-		return array(new Attribute(new CustomAttribute(1, 'something1', CustomAttributeTypes::CHECKBOX, CustomAttributeCategory::RESOURCE, null, true, null, 0)));
+		$attributes = array();
+		$customAttributes = $this->_attributeService->GetByCategory(CustomAttributeCategory::RESOURCE);
+		foreach ($customAttributes as $ca)
+		{
+			$attributes[] = new Attribute($ca);
+		}
+
+		return $attributes;
 	}
 
 	/**
@@ -169,7 +188,14 @@ class ResourceService implements IResourceService
 	 */
 	public function GetResourceTypeAttributes()
 	{
-		return array(new Attribute(new CustomAttribute(2, 'something2', CustomAttributeTypes::SELECT_LIST, CustomAttributeCategory::RESOURCE_TYPE, null, true, 'val1,val2,val3', 0)));
+		$attributes = array();
+		$customAttributes = $this->_attributeService->GetByCategory(CustomAttributeCategory::RESOURCE_TYPE);
+		foreach ($customAttributes as $ca)
+		{
+			$attributes[] = new Attribute($ca);
+		}
+
+		return $attributes;
 	}
 }
 
@@ -191,17 +217,17 @@ class ResourceDto
 		$this->ScheduleId = $scheduleId;
 		$this->MinimumLength = $minLength;
 	}
-	
+
 	/**
 	 * @var int
 	 */
 	public $Id;
-	
+
 	/**
 	 * @var string
 	 */
 	public $Name;
-	
+
 	/**
 	 * @var bool
 	 */
@@ -258,4 +284,5 @@ class ResourceDto
 		return $this->MinimumLength;
 	}
 }
+
 ?>

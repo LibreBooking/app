@@ -42,4 +42,5 @@ require_once(ROOT_DIR . 'lib/Application/Schedule/CalendarSubscriptionValidator.
 require_once(ROOT_DIR . 'lib/Application/Schedule/CalendarFactory.php');
 require_once(ROOT_DIR . 'lib/Application/Schedule/ScheduleLayoutSerializable.php');
 require_once(ROOT_DIR . 'lib/Application/Schedule/DailyReservationSummary.php');
+require_once(ROOT_DIR . 'lib/Application/Schedule/ScheduleResourceFilter.php');
 ?>

@@ -2,13 +2,14 @@ function Schedule(opts, resourceGroups)
 {
 	var options = opts;
 	var groupDiv = $('#resourceGroups');
+	var scheduleId = $('#scheduleId');
 
 	this.init = function ()
 	{
 		this.initUserDefaultSchedule();
 		this.initRotateSchedule();
 		this.initReservations();
-		this.initResourceGroups();
+		this.initResourceFilter();
 
 		var reservations = $('#reservations');
 		reservations.delegate('.clickres:not(.reserved)', 'hover', function ()
@@ -55,8 +56,8 @@ function Schedule(opts, resourceGroups)
 		if (today && today.length > 0)
 		{
 			$('html, body').animate({
-			         scrollTop: today.offset().top-50
-			     }, 500);
+				scrollTop: today.offset().top - 50
+			}, 500);
 		}
 	};
 
@@ -242,7 +243,7 @@ function Schedule(opts, resourceGroups)
 		});
 	};
 
-	this.initResourceGroups = function ()
+	this.initResourceFilter = function ()
 	{
 		$('#show_all_resources').click(function (e)
 		{
@@ -250,7 +251,35 @@ function Schedule(opts, resourceGroups)
 
 			groupDiv.tree('selectNode', null);
 
+			eraseCookie('resource_filter' + scheduleId.val());
 			ShowAllResources();
+		});
+
+//		$('#reservations-left').find('[id^="psiattribute"]').change(function(e){
+//			var id = $(this).attr('id');
+//			RedirectToSelf(e.attr('id'), id+'=.^&');
+//		});
+
+		$('#resourceIdFilter').change(function (e)
+		{
+			var resourceId = $(this).val();
+			if (resourceId == '')
+			{
+				RedirectToSelf('', '', '', function (url)
+				{
+					groupDiv.tree('selectNode', null);
+					return RemoveResourceId(url);
+				});
+			}
+			else
+			{
+				ChangeResource(resourceId);
+			}
+		});
+
+		$('#advancedFilter').find('input, select, textarea').change(function (e)
+		{
+			$('#advancedFilter').submit();
 		});
 
 		groupDiv.tree({
@@ -284,38 +313,41 @@ function Schedule(opts, resourceGroups)
 					}
 				});
 	};
-
-	function ShowAllResources()
-	{
-		RedirectToSelf("", "", "", function (url)
-		{
-			var x = RemoveGroupId(url);
-			x = RemoveResourceId(x)
-			return x.replace(/&{2,}/i,"");
-		})
-	}
-
-	function RemoveResourceId(url)
-	{
-		return url.replace(/&*rid=\d+/i, "");
-	}
-
-	function RemoveGroupId(url)
-	{
-		return url.replace(/&*gid=\d+/i, "");
-	}
-
-	function ChangeGroup(groupId)
-	{
-		RedirectToSelf('gid', /gid=\d+/i, "gid=" + groupId, RemoveResourceId);
-	}
-
-	function ChangeResource(resourceId)
-	{
-		RedirectToSelf('rid', /rid=\d+/i, "rid=" + resourceId, RemoveGroupId);
-	}
 }
 
+function ShowAllResources()
+{
+	RedirectToSelf("", "", "", function (url)
+	{
+		var x = RemoveGroupId(url);
+		x = RemoveResourceId(x);
+		return x;
+	});
+}
+
+function RemoveResourceId(url)
+{
+	if (!url)
+	{
+		url = window.location.href;
+	}
+	return url.replace(/&*rid=\d+/i, "");
+}
+
+function RemoveGroupId(url)
+{
+	return url.replace(/&*gid=\d+/i, "");
+}
+
+function ChangeGroup(groupId)
+{
+	RedirectToSelf('gid', /gid=\d+/i, "gid=" + groupId, RemoveResourceId);
+}
+
+function ChangeResource(resourceId)
+{
+	RedirectToSelf('rid', /rid=\d+/i, "rid=" + resourceId, RemoveGroupId);
+}
 function dpDateChanged(dateText, inst)
 {
 	ChangeDate(inst.selectedYear, inst.selectedMonth + 1, inst.selectedDay);
@@ -328,7 +360,12 @@ function ChangeDate(year, month, day)
 
 function ChangeSchedule(scheduleId)
 {
-	RedirectToSelf("sid", /sid=\d+/i, "sid=" + scheduleId);
+	RedirectToSelf("sid", /sid=\d+/i, "sid=" + scheduleId, function (url)
+	{
+		var x = RemoveGroupId(url);
+		x = RemoveResourceId(x);
+		return x;
+	});
 }
 
 function RedirectToSelf(queryStringParam, regexMatch, substitution, preProcess)
@@ -339,6 +376,7 @@ function RedirectToSelf(queryStringParam, regexMatch, substitution, preProcess)
 	if (preProcess)
 	{
 		newUrl = preProcess(url);
+		newUrl = newUrl.replace(/&{2,}/i, "");
 	}
 
 	if (newUrl.indexOf(queryStringParam + "=") != -1)

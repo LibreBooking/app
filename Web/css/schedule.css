@@ -256,7 +256,7 @@ div.legend {
 .reservations-left-header {
 	border-bottom: solid 1px #C7C9BE;
 	font-weight: bold;
-	font-size: 9pt;
+	font-size: 10pt;
 	text-align: center;
 	padding: 3px 0;
 }
@@ -284,4 +284,25 @@ ul.jqtree-tree .jqtree-toggler { top: 10%; }
     position: relative;
     height: 100%;
     width: 100%;
+}
+
+#reservations-left select, #reservations-left .textbox, #reservations-left textarea, #reservations-left .button {
+	width:130px;
+}
+
+#reservations-left .customAttribute, #reservations-left{
+	font-size: 9pt;
+}
+
+.advancedFilterTitle {
+	margin-top: 10px;
+}
+
+#reservations-left hr {
+	border: 0;
+	height: 1px;
+	background-image: -webkit-linear-gradient(left, rgba(0,0,0,0), rgba(76, 76, 76, 0.74), rgba(0,0,0,0));
+	background-image: -moz-linear-gradient(left, rgba(0,0,0,0), rgba(76, 76, 76, 0.74), rgba(0,0,0,0));
+	background-image: -ms-linear-gradient(left, rgba(0,0,0,0), rgba(76, 76, 76, 0.74), rgba(0,0,0,0));
+	background-image: -o-linear-gradient(left, rgba(0,0,0,0), rgba(76, 76, 76, 0.74), rgba(0,0,0,0));
 }

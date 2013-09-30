@@ -452,14 +452,17 @@ class SmartyPage extends Smarty
 		$label = $params['label'];
 		$options = $params['options'];
 		$type = isset($params['type']) ? $params['type'] : 'array';
+		$usemethod = isset($params['usemethod']) ? $params['usemethod'] : true;
 		$selected = isset($params['selected']) ? $params['selected'] : '';
 
 		$builder = new StringBuilder();
 		foreach ($options as $option)
 		{
-			$isselected = ($option->$key() == $selected) ? 'selected="selected"' : '';
-			$builder->Append(sprintf('<option label="%s" value="%s"%s>%s</option>', $option->$label(), $option->$key(),
-									 $isselected, $option->$label()));
+			$_key = ($usemethod) ? $option->$key() : $option->$key;
+			$_label = ($usemethod) ? $option->$label() : $option->$label;
+			$isselected = ($_key == $selected) ? 'selected="selected"' : '';
+			$builder->Append(sprintf('<option label="%s" value="%s"%s>%s</option>', $_label,$_key,
+									 $isselected, $_label));
 		}
 
 		return $builder->ToString();

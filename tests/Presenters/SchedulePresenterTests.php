@@ -107,13 +107,26 @@ class SchedulePresenterTests extends TestBase
 		$pageBuilder
 		->expects($this->once())
 		->method('GetCurrentSchedule')
-		->with($this->equalTo($page), $this->equalTo($this->schedules))
+		->with($this->equalTo($this->schedules), $this->equalTo($page))
 		->will($this->returnValue($this->currentSchedule));
 
 		$pageBuilder
 		->expects($this->once())
 		->method('BindSchedules')
 		->with($this->equalTo($page), $this->equalTo($this->schedules), $this->equalTo($this->currentSchedule));
+
+		$resourceFilter = new ScheduleResourceFilter();
+
+		$pageBuilder
+		->expects($this->once())
+		->method('GetResourceFilter')
+		->with($this->equalTo($page), $this->equalTo($this->currentSchedule))
+		->will($this->returnValue($resourceFilter));
+
+		$pageBuilder
+		->expects($this->once())
+		->method('BindResourceFilter')
+		->with($this->equalTo($page), $this->equalTo($resourceFilter));
 
 		$resourceService
 		->expects($this->once())
@@ -122,7 +135,8 @@ class SchedulePresenterTests extends TestBase
 			   $this->equalTo($this->showInaccessibleResources),
 			   $this->equalTo($user),
 			   $this->equalTo($groupId),
-			   $this->equalTo($resourceId))
+			   $this->equalTo($resourceId),
+			   $this->equalTo($resourceFilter))
 		->will($this->returnValue($resources));
 
 		$resourceService
@@ -189,6 +203,7 @@ class SchedulePresenterTests extends TestBase
 		->expects($this->once())
 		->method('BindCustomAttributes')
 		->with($this->equalTo($page), $this->equalTo($resourceAttributes), $this->equalTo($resourceTypeAttributes));
+
 
 		$presenter->PageLoad($this->fakeUser);
 	}

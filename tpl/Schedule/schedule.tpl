@@ -151,35 +151,52 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 	<div class="reservations-left-content">
 		<div class="center"><a id="show_all_resources" href="#">{translate key=ClearFilter}</a></div>
 
-		{translate key=Resource}
-		<select {formname key=RESOURCE_ID}>
+		<div>
+		<select {formname key=RESOURCE_ID} class="textbox" id="resourceIdFilter">
 			<option value="">- {translate key=All} -</option>
-			{foreach from=$Resources item=resource}
-			<option value="{$resource->Id}">{$resource->Name}</option>
-			{/foreach}
+			{object_html_options options=$Resources label='Name' key='Id' usemethod=false selected=$ResourceIdFilter}
 		</select>
+		</div>
 
-		{translate key=Group}
+		<div>
 		<div id="resourceGroups"></div>
+		</div>
 
-		{translate key=MinimumCapacity}
-		<input type='text' id='maxCapactiy' size='5' maxlength='5' {formname key=MAX_PARTICIPANTS} />
+		<form method="POST">
 
-		{translate key=ResourceType}
-		<select {formname key=RESOURCE_TYPE_ID}>
-			<option value="">- {translate key=All} -</option>
-			{foreach from=$ResourceTypes item=rt}
-			<option value="{$rt->Id()}">{$rt->Name()}</option>
-			{/foreach}
-		</select>
+			<div class="advancedFilterTitle">Advanced Filter</div>
+			<hr/>
 
-		{foreach from=$ResourceAttributes item=attribute}
-			{control type="AttributeControl" attribute=$attribute}
-		{/foreach}
+			<div id="advancedFilter">
+				<div>
+				{translate key=MinimumCapacity}
+				<input type='text' id='maxCapactiy' class="textbox" size='5' maxlength='5' {formname key=MAX_PARTICIPANTS} value="{$MaxParticipantsFilter}" />
+				</div>
 
-		{foreach from=$ResourceTypeAttributes item=attribute}
-			{control type="AttributeControl" attribute=$attribute}
-		{/foreach}
+				<div>
+				{translate key=ResourceType}
+				<select {formname key=RESOURCE_TYPE_ID} class="textbox" {formname key=RESOURCE_TYPE_ID}>
+					<option value="">- {translate key=All} -</option>
+					{object_html_options options=$ResourceTypes label='Name' key='Id' selected=$ResourceTypeIdFilter}
+				</select>
+				</div>
+
+				{foreach from=$ResourceAttributes item=attribute}
+					<div>
+					{control type="AttributeControl" attribute=$attribute align='vertical' searchmode=true}
+					</div>
+				{/foreach}
+
+				{foreach from=$ResourceTypeAttributes item=attribute}
+					<div>{control type="AttributeControl" attribute=$attribute align='vertical' searchmode=true}</div>
+				{/foreach}
+
+				<div>
+					<br/>
+					<input type="submit" value="{translate key=Filter}" class="button" {formname key=SUBMIT}/>
+				</div>
+			</div>
+		</form>
 	</div>
 </div>
 

@@ -51,7 +51,8 @@ interface ISchedulePageBuilder
 	 * @param UserSession $userSession
 	 * @param ISchedule $schedule
 	 */
-	public function BindDisplayDates(ISchedulePage $page, DateRange $dateRange, UserSession $userSession, ISchedule $schedule);
+	public function BindDisplayDates(ISchedulePage $page, DateRange $dateRange, UserSession $userSession,
+									 ISchedule $schedule);
 
 	/**
 	 * @param ISchedulePage $page
@@ -70,7 +71,7 @@ interface ISchedulePageBuilder
 	 * @param ISchedulePage $page
 	 * @param ResourceType[] $resourceTypes
 	 */
-	public function BindResourceTypes(ISchedulePage $page,  $resourceTypes);
+	public function BindResourceTypes(ISchedulePage $page, $resourceTypes);
 
 	/**
 	 * @param ISchedulePage $page
@@ -79,9 +80,32 @@ interface ISchedulePageBuilder
 	 */
 	public function BindCustomAttributes(ISchedulePage $page, $resourceCustomAttributes, $resourceTypeCustomAttributes);
 
+	/**
+	 * @param int $scheduleId
+	 * @param ISchedulePage $page
+	 * @return int
+	 */
 	public function GetGroupId($scheduleId, ISchedulePage $page);
 
+	/**
+	 * @param int $scheduleId
+	 * @param ISchedulePage $page
+	 * @return int
+	 */
 	public function GetResourceId($scheduleId, ISchedulePage $page);
+
+	/**
+	 * @param int $scheduleId
+	 * @param ISchedulePage $page
+	 * @return ScheduleResourceFilter
+	 */
+	public function GetResourceFilter($scheduleId, ISchedulePage $page);
+
+	/**
+	 * @param ISchedulePage $page
+	 * @param ScheduleResourceFilter $filter
+	 */
+	public function BindResourceFilter(ISchedulePage $page, ScheduleResourceFilter $filter);
 }
 
 class SchedulePageBuilder implements ISchedulePageBuilder
@@ -345,6 +369,47 @@ class SchedulePageBuilder implements ISchedulePageBuilder
 	{
 		$page->SetResourceCustomAttributes($resourceCustomAttributes);
 		$page->SetResourceTypeCustomAttributes($resourceTypeCustomAttributes);
+	}
+
+	/**
+	 * @param int $scheduleId
+	 * @param ISchedulePage $page
+	 * @return ScheduleResourceFilter
+	 */
+	public function GetResourceFilter($scheduleId, ISchedulePage $page)
+	{
+		if ($page->FilterSubmitted())
+		{
+			return new ScheduleResourceFilter($scheduleId,
+											  $page->GetResourceId(),
+											  $page->GetResourceTypeId(),
+											  $page->GetMaxParticipants(),
+											  $page->GetResourceAttributes(),
+											  $page->GetResourceTypeAttributes());
+		}
+		else
+		{
+			$cookie = ServiceLocator::GetServer()
+					  ->GetCookie('resource_filter' . $scheduleId);
+			if (!empty($cookie))
+			{
+				$val = json_decode($cookie);
+				return ScheduleResourceFilter::FromCookie($val);
+			}
+
+			return new ScheduleResourceFilter();
+		}
+	}
+
+	/**
+	 * @param ISchedulePage $page
+	 * @param ScheduleResourceFilter $filter
+	 */
+	public function BindResourceFilter(ISchedulePage $page, ScheduleResourceFilter $filter)
+	{
+		ServiceLocator::GetServer()
+		->SetCookie(new Cookie('resource_filter' . $filter->ScheduleId, json_encode($filter)));
+		$page->SetFilter($filter);
 	}
 }
 

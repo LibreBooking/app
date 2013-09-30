@@ -161,6 +161,7 @@ class FormKeys
 	const START_REMINDER_INTERVAL = 'START_REMINDER_INTERVAL';
 	const SLOTS_BLOCKED = 'blockedSlots';
 	const SLOTS_RESERVABLE = 'reservableSlots';
+	const SUBMIT = 'SUBMIT';
 	const SUMMARY = 'summary';
 	const SCHEDULE_ADMIN_GROUP_ID = 'adminGroupId';
 
@@ -177,8 +178,6 @@ class FormKeys
 		$key = strtoupper($formKey);
 		return eval("return FormKeys::$key;");
 	}
-
-
 }
 
 ?>
