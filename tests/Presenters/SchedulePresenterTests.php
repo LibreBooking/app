@@ -60,9 +60,6 @@ class SchedulePresenterTests extends TestBase
 		$resourceAttributes = array(new FakeCustomAttribute());
 		$resourceTypeAttributes = array(new FakeCustomAttribute());
 
-		$groupId = 10101;
-		$resourceId = 92928;
-
 		$page = $this->getMock('ISchedulePage');
 		$scheduleRepository = $this->getMock('IScheduleRepository');
 		$resourceService = $this->getMock('IResourceService');
@@ -72,21 +69,6 @@ class SchedulePresenterTests extends TestBase
 		$dailyLayout = $this->getMock('IDailyLayout');
 
 		$presenter = new SchedulePresenter($page, $scheduleRepository, $resourceService, $pageBuilder, $reservationService, $dailyLayoutFactory);
-
-		$page
-		->expects($this->once())
-		->method('ShowInaccessibleResources')
-		->will($this->returnValue($this->showInaccessibleResources));
-
-		$pageBuilder
-		->expects($this->any())
-		->method('GetGroupId')
-		->will($this->returnValue($groupId));
-
-		$pageBuilder
-		->expects($this->any())
-		->method('GetResourceId')
-		->will($this->returnValue($resourceId));
 
 		$page
 		->expects($this->once())
@@ -107,7 +89,7 @@ class SchedulePresenterTests extends TestBase
 		$pageBuilder
 		->expects($this->once())
 		->method('GetCurrentSchedule')
-		->with($this->equalTo($this->schedules), $this->equalTo($page))
+		->with($this->equalTo($page), $this->equalTo($this->schedules), $this->equalTo($user))
 		->will($this->returnValue($this->currentSchedule));
 
 		$pageBuilder
@@ -120,7 +102,7 @@ class SchedulePresenterTests extends TestBase
 		$pageBuilder
 		->expects($this->once())
 		->method('GetResourceFilter')
-		->with($this->equalTo($page), $this->equalTo($this->currentSchedule))
+		->with( $this->equalTo($this->scheduleId), $this->equalTo($page))
 		->will($this->returnValue($resourceFilter));
 
 		$pageBuilder
@@ -134,8 +116,6 @@ class SchedulePresenterTests extends TestBase
 		->with($this->equalTo($this->scheduleId),
 			   $this->equalTo($this->showInaccessibleResources),
 			   $this->equalTo($user),
-			   $this->equalTo($groupId),
-			   $this->equalTo($resourceId),
 			   $this->equalTo($resourceFilter))
 		->will($this->returnValue($resources));
 

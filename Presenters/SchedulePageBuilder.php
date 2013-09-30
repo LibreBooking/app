@@ -378,10 +378,10 @@ class SchedulePageBuilder implements ISchedulePageBuilder
 	 */
 	public function GetResourceFilter($scheduleId, ISchedulePage $page)
 	{
+		$filter = new ScheduleResourceFilter();
 		if ($page->FilterSubmitted())
 		{
-			return new ScheduleResourceFilter($scheduleId,
-											  $page->GetResourceId(),
+			$filter = new ScheduleResourceFilter($scheduleId,
 											  $page->GetResourceTypeId(),
 											  $page->GetMaxParticipants(),
 											  $page->GetResourceAttributes(),
@@ -394,11 +394,14 @@ class SchedulePageBuilder implements ISchedulePageBuilder
 			if (!empty($cookie))
 			{
 				$val = json_decode($cookie);
-				return ScheduleResourceFilter::FromCookie($val);
+				$filter = ScheduleResourceFilter::FromCookie($val);
 			}
-
-			return new ScheduleResourceFilter();
 		}
+
+		$filter->ResourceId = $this->GetResourceId($scheduleId, $page);
+		$filter->GroupId = $this->GetGroupId($scheduleId, $page);
+
+		return $filter;
 	}
 
 	/**

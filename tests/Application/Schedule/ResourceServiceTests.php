@@ -186,7 +186,7 @@ class ResourceServiceTests extends TestBase
 		$this->assertEquals($accessoryDtos, $actualAccessories);
 	}
 
-	public function testFiltersByResourceId()
+	public function testFiltersResources()
 	{
 		$scheduleId = 122;
 		$resourceId = 4;
@@ -209,8 +209,14 @@ class ResourceServiceTests extends TestBase
 		->with($this->anything(), $this->anything())
 		->will($this->returnValue(true));
 
-		$resources = $this->resourceService->GetScheduleResources($scheduleId, true, $this->fakeUser, null,
-																  $resourceId);
+		$filter = $this->getMock('IScheduleResourceFilter');
+
+		$filter->expects($this->once())
+					->method('FilterResources')
+					->with($this->equalTo($resources), $this->equalTo($this->resourceRepository))
+					->will($this->returnValue(array($resourceId)));
+
+		$resources = $this->resourceService->GetScheduleResources($scheduleId, true, $this->fakeUser, $filter);
 
 		$this->assertEquals(1, count($resources));
 		$this->assertEquals(4, $resources[0]->GetId());
@@ -218,9 +224,15 @@ class ResourceServiceTests extends TestBase
 
 	public function testFiltersByGroupId()
 	{
+		$this->fail('move this filter into the ScheduleResourceFilter');
+
 		$scheduleId = 122;
 		$groupId = 10;
 		$resourceId = 4;
+
+		$filter = new ScheduleResourceFilter();
+		$filter->ResourceId = $resourceId;
+		$filter->GroupId = $groupId;
 
 		$groups = $this->getMock('ResourceGroupTree');
 
@@ -254,7 +266,7 @@ class ResourceServiceTests extends TestBase
 		->with($this->equalTo($groupId))
 		->will($this->returnValue(array($resourceId)));
 
-		$resources = $this->resourceService->GetScheduleResources($scheduleId, true, $this->fakeUser, $groupId, null);
+		$resources = $this->resourceService->GetScheduleResources($scheduleId, true, $this->fakeUser, $filter);
 
 		$this->assertEquals(1, count($resources));
 		$this->assertEquals(4, $resources[0]->GetId());

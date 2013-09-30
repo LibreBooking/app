@@ -18,22 +18,30 @@ You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-class ScheduleResourceFilter
+interface IScheduleResourceFilter
+{
+	/**
+	 * @param BookableResource[] $resources
+	 * @return int[] filtered resource ids
+	 */
+	public function FilterResources($resources);
+}
+
+class ScheduleResourceFilter implements IScheduleResourceFilter
 {
 	public $ScheduleId;
 	public $ResourceId;
+	public $GroupId;
 	public $ResourceTypeId;
 	public $MaxParticipants;
 
 	public function __construct($scheduleId = null,
-								$resourceId = null,
 								$resourceTypeId = null,
 								$maxParticipants = null,
 								$resourceAttributes = null,
 								$resourceTypeAttributes = null)
 	{
 		$this->ScheduleId = $scheduleId;
-		$this->ResourceId = $resourceId;
 		$this->ResourceTypeId = $resourceTypeId;
 		$this->MaxParticipants = empty($maxParticipants) ? null : $maxParticipants;
 	}
@@ -41,6 +49,21 @@ class ScheduleResourceFilter
 	public static function FromCookie($val)
 	{
 		return new ScheduleResourceFilter($val->ScheduleId, $val->ResourceId, $val->ResourceTypeId, $val->MaxParticipants);
+	}
+
+	/**
+	 * @param BookableResource[] $resources
+	 * @return int[] filtered resource ids
+	 */
+	public function FilterResources($resources)
+	{
+		$ids = array();
+		foreach($resources as $resource)
+		{
+			$ids[] = $resource->GetId();
+		}
+
+		return $ids;
 	}
 }
 

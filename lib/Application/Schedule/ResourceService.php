@@ -27,12 +27,10 @@ interface IResourceService
 	 * @param int $scheduleId
 	 * @param bool $includeInaccessibleResources
 	 * @param UserSession $user
-	 * @param int $groupId
-	 * @param int $resourceId
+	 * @param ScheduleResourceFilter|null $filter
 	 * @return array|ResourceDto[]
 	 */
-	public function GetScheduleResources($scheduleId, $includeInaccessibleResources, UserSession $user, $groupId = null,
-										 $resourceId = null);
+	public function GetScheduleResources($scheduleId, $includeInaccessibleResources, UserSession $user, $filter = null);
 
 	/**
 	 * Gets resource list
@@ -95,24 +93,29 @@ class ResourceService implements IResourceService
 		$this->_attributeService = $attributeService;
 	}
 
-	public function GetScheduleResources($scheduleId, $includeInaccessibleResources, UserSession $user, $groupId = null,
-										 $resourceId = null)
+	public function GetScheduleResources($scheduleId, $includeInaccessibleResources, UserSession $user, $filter = null)
 	{
-		$resources = $this->_resourceRepository->GetScheduleResources($scheduleId);
+		if ($filter == null)
+		{
+			$filter = new ScheduleResourceFilter();
+		}
 
-		$resourceIds = null;
-		if (empty($groupId) && !empty($resourceId))
-		{
-			$resourceIds = array($resourceId);
-		}
-		else
-		{
-			if (!empty($groupId))
-			{
-				$groups = $this->_resourceRepository->GetResourceGroups($scheduleId);
-				$resourceIds = $groups->GetResourceIds($groupId);
-			}
-		}
+		$resources = $this->_resourceRepository->GetScheduleResources($scheduleId);
+		$resourceIds = $filter->FilterResources($resources, $this->_resourceRepository);
+//
+//		$resourceIds = null;
+//		if (empty($groupId) && !empty($resourceId))
+//		{
+//			$resourceIds = array($resourceId);
+//		}
+//		else
+//		{
+//			if (!empty($groupId))
+//			{
+//				$groups = $this->_resourceRepository->GetResourceGroups($scheduleId);
+//				$resourceIds = $groups->GetResourceIds($groupId);
+//			}
+//		}
 
 		return $this->Filter($resources, $user, $includeInaccessibleResources, $resourceIds);
 	}
