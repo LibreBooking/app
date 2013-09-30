@@ -18,7 +18,7 @@ You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-require_once(ROOT_DIR . 'lib\Application\Attributes\namespace.php');
+require_once(ROOT_DIR . 'lib/Application/Attributes/namespace.php');
 
 interface IResourceService
 {
