@@ -446,7 +446,7 @@ class SchedulePage extends ActionPage implements ISchedulePage
 	{
 		$this->Set('ResourceIdFilter', $this->GetResourceId());
 		$this->Set('ResourceTypeIdFilter', $resourceFilter->ResourceTypeId);
-		$this->Set('MaxParticipantsFilter', $resourceFilter->MaxParticipants);
+		$this->Set('MaxParticipantsFilter', $resourceFilter->MinCapacity);
 	}
 }
 

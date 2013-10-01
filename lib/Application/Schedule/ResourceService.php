@@ -102,20 +102,6 @@ class ResourceService implements IResourceService
 
 		$resources = $this->_resourceRepository->GetScheduleResources($scheduleId);
 		$resourceIds = $filter->FilterResources($resources, $this->_resourceRepository);
-//
-//		$resourceIds = null;
-//		if (empty($groupId) && !empty($resourceId))
-//		{
-//			$resourceIds = array($resourceId);
-//		}
-//		else
-//		{
-//			if (!empty($groupId))
-//			{
-//				$groups = $this->_resourceRepository->GetResourceGroups($scheduleId);
-//				$resourceIds = $groups->GetResourceIds($groupId);
-//			}
-//		}
 
 		return $this->Filter($resources, $user, $includeInaccessibleResources, $resourceIds);
 	}

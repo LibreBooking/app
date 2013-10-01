@@ -1,0 +1,154 @@
+<?php
+/**
+Copyright 2013 Nick Korbel
+
+This file is part of phpScheduleIt.
+
+phpScheduleIt is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+phpScheduleIt is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+require_once(ROOT_DIR . 'lib/Application/Schedule/namespace.php');
+
+class ScheduleResourceFilterTests extends TestBase
+{
+	/**
+	 * @var IResourceRepository|PHPUnit_Framework_MockObject_MockObject
+	 */
+	private $resourceRepository;
+
+	public function setup()
+	{
+		$this->resourceRepository = $this->getMock('IResourceRepository');
+		parent::setup();
+	}
+
+	public function testReturnsAllWhenNoFilter()
+	{
+		$resource1 = new FakeBookableResource(1, 'resource1');
+		$resource2 = new FakeBookableResource(2, 'resource2');
+		$resource3 = new FakeBookableResource(3, 'resource3');
+		$resource4 = new FakeBookableResource(4, 'resource4');
+		$resources = array($resource1, $resource2, $resource3, $resource4);
+
+		$filter = new ScheduleResourceFilter();
+		$resourceIds = $filter->FilterResources($resources, $this->resourceRepository);
+
+		$this->assertEquals(count($resources), count($resourceIds));
+	}
+
+	public function testFiltersByResourceId()
+	{
+		$resourceId = 10;
+
+		$resource1 = new FakeBookableResource(1, 'resource1');
+		$resource2 = new FakeBookableResource(2, 'resource2');
+		$resource3 = new FakeBookableResource(3, 'resource3');
+		$resource4 = new FakeBookableResource($resourceId, 'resource4');
+		$resources = array($resource1, $resource2, $resource3, $resource4);
+
+		$filter = new ScheduleResourceFilter();
+		$filter->ResourceId = $resourceId;
+
+		$resourceIds = $filter->FilterResources($resources, $this->resourceRepository);
+
+		$this->assertEquals(1, count($resourceIds));
+		$this->assertEquals($resourceId, $resourceIds[0]);
+	}
+
+	public function testFiltersByGroupId()
+	{
+		$scheduleId = 122;
+		$groupId = 10;
+		$resourceId = 4;
+
+		$groups = $this->getMock('ResourceGroupTree');
+
+		$resource1 = new FakeBookableResource(1, 'resource1');
+		$resource2 = new FakeBookableResource(2, 'resource2');
+		$resource3 = new FakeBookableResource(3, 'resource3');
+		$resource4 = new FakeBookableResource($resourceId, 'resource4');
+		$resources = array($resource1, $resource2, $resource3, $resource4);
+
+		$this->resourceRepository
+				->expects($this->once())
+		->method('GetResourceGroups')
+		->with($this->equalTo($scheduleId))
+		->will($this->returnValue($groups));
+
+		$groups
+		->expects($this->once())
+		->method('GetResourceIds')
+		->with($this->equalTo($groupId))
+		->will($this->returnValue(array($resourceId)));
+
+		$filter = new ScheduleResourceFilter($scheduleId);
+		$filter->GroupId = $groupId;
+
+		$resourceIds = $filter->FilterResources($resources, $this->resourceRepository);
+
+		$this->assertEquals(1, count($resourceIds));
+		$this->assertEquals($resourceId, $resourceIds[0]);
+	}
+
+	public function testFiltersByMinCapacity()
+	{
+		$minCapacity  = 10;
+
+		$resource1 = new FakeBookableResource(1, 'resource1');
+		$resource1->SetMaxParticipants($minCapacity);
+
+		$resource2 = new FakeBookableResource(2, 'resource2');
+		$resource2->SetMaxParticipants($minCapacity-1);
+
+		$resource3 = new FakeBookableResource(3, 'resource3');
+		$resource3->SetMaxParticipants($minCapacity+1);
+
+		$resources = array($resource1, $resource2, $resource3);
+
+		$filter = new ScheduleResourceFilter();
+		$filter->MinCapacity = $minCapacity;
+
+		$resourceIds = $filter->FilterResources($resources, $this->resourceRepository);
+
+		$this->assertEquals(2, count($resourceIds));
+		$this->assertEquals(1, $resourceIds[0]);
+		$this->assertEquals(3, $resourceIds[1]);
+	}
+
+	public function testFiltersByResourceType()
+	{
+		$resourceTypeId = 4;
+
+		$resource1 = new FakeBookableResource(1, 'resource1');
+		$resource1->SetResourceTypeId($resourceTypeId);
+
+		$resource2 = new FakeBookableResource(2, 'resource2');
+		$resource2->SetResourceTypeId(null);
+
+		$resource3 = new FakeBookableResource(3, 'resource3');
+		$resource3->SetResourceTypeId(10);
+
+		$resources = array($resource1, $resource2, $resource3);
+
+		$filter = new ScheduleResourceFilter();
+		$filter->ResourceTypeId = $resourceTypeId;
+
+		$resourceIds = $filter->FilterResources($resources, $this->resourceRepository);
+
+		$this->assertEquals(1, count($resourceIds));
+		$this->assertEquals(1, $resourceIds[0]);
+	}
+}
+
+?>

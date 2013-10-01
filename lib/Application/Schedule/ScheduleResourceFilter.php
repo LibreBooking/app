@@ -22,9 +22,10 @@ interface IScheduleResourceFilter
 {
 	/**
 	 * @param BookableResource[] $resources
+	 * @param IResourceRepository $resourceRepository
 	 * @return int[] filtered resource ids
 	 */
-	public function FilterResources($resources);
+	public function FilterResources($resources, IResourceRepository $resourceRepository);
 }
 
 class ScheduleResourceFilter implements IScheduleResourceFilter
@@ -33,37 +34,82 @@ class ScheduleResourceFilter implements IScheduleResourceFilter
 	public $ResourceId;
 	public $GroupId;
 	public $ResourceTypeId;
-	public $MaxParticipants;
+	public $MinCapacity;
 
 	public function __construct($scheduleId = null,
 								$resourceTypeId = null,
-								$maxParticipants = null,
+								$minCapacity = null,
 								$resourceAttributes = null,
 								$resourceTypeAttributes = null)
 	{
 		$this->ScheduleId = $scheduleId;
 		$this->ResourceTypeId = $resourceTypeId;
-		$this->MaxParticipants = empty($maxParticipants) ? null : $maxParticipants;
+		$this->MinCapacity = empty($minCapacity) ? null : $minCapacity;
 	}
 
 	public static function FromCookie($val)
 	{
-		return new ScheduleResourceFilter($val->ScheduleId, $val->ResourceId, $val->ResourceTypeId, $val->MaxParticipants);
+		return new ScheduleResourceFilter($val->ScheduleId, $val->ResourceTypeId, $val->MinCapacity);
 	}
 
-	/**
-	 * @param BookableResource[] $resources
-	 * @return int[] filtered resource ids
-	 */
-	public function FilterResources($resources)
+	private function HasFilter()
 	{
-		$ids = array();
-		foreach($resources as $resource)
+		return !empty($this->ResourceId) | !empty($this->GroupId) || !empty($this->ResourceTypeId) || !empty($this->MinCapacity);
+	}
+
+	public function FilterResources($resources, IResourceRepository $resourceRepository)
+	{
+		$resourceIds = array();
+
+		if (!$this->HasFilter())
 		{
-			$ids[] = $resource->GetId();
+			foreach ($resources as $resource)
+			{
+				$resourceIds[] = $resource->GetId();
+			}
+
+			return $resourceIds;
 		}
 
-		return $ids;
+		$groupResourceIds = array();
+		if (!empty($this->GroupId) && empty($this->ResourceId))
+		{
+			$groups = $resourceRepository->GetResourceGroups($this->ScheduleId);
+			$groupResourceIds = $groups->GetResourceIds($this->GroupId);
+		}
+
+		$resourceIds = array();
+
+		foreach ($resources as $resource)
+		{
+			$resourceIds[] = $resource->GetId();
+
+			if (!empty($this->ResourceId) && $resource->GetId() != $this->ResourceId)
+			{
+				array_pop($resourceIds);
+				continue;
+			}
+
+			if (!empty($this->GroupId) && !in_array($resource->GetId(), $groupResourceIds))
+			{
+				array_pop($resourceIds);
+				continue;
+			}
+
+			if (!empty($this->MinCapacity) && $resource->GetMaxParticipants() < $this->MinCapacity)
+			{
+				array_pop($resourceIds);
+				continue;
+			}
+
+			if (!empty($this->ResourceTypeId) && $resource->GetResourceTypeId() != $this->ResourceTypeId)
+			{
+				array_pop($resourceIds);
+				continue;
+			}
+		}
+
+		return $resourceIds;
 	}
 }
 
