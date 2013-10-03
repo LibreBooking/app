@@ -27,9 +27,16 @@ class ScheduleResourceFilterTests extends TestBase
 	 */
 	private $resourceRepository;
 
+	/**
+	 * @var IAttributeService|PHPUnit_Framework_MockObject_MockObject
+	 */
+	private $attributeService;
+
 	public function setup()
 	{
 		$this->resourceRepository = $this->getMock('IResourceRepository');
+		$this->attributeService = $this->getMock('IAttributeService');
+
 		parent::setup();
 	}
 
@@ -42,7 +49,7 @@ class ScheduleResourceFilterTests extends TestBase
 		$resources = array($resource1, $resource2, $resource3, $resource4);
 
 		$filter = new ScheduleResourceFilter();
-		$resourceIds = $filter->FilterResources($resources, $this->resourceRepository);
+		$resourceIds = $filter->FilterResources($resources, $this->resourceRepository, $this->attributeService);
 
 		$this->assertEquals(count($resources), count($resourceIds));
 	}
@@ -60,7 +67,7 @@ class ScheduleResourceFilterTests extends TestBase
 		$filter = new ScheduleResourceFilter();
 		$filter->ResourceId = $resourceId;
 
-		$resourceIds = $filter->FilterResources($resources, $this->resourceRepository);
+		$resourceIds = $filter->FilterResources($resources, $this->resourceRepository, $this->attributeService);
 
 		$this->assertEquals(1, count($resourceIds));
 		$this->assertEquals($resourceId, $resourceIds[0]);
@@ -95,7 +102,7 @@ class ScheduleResourceFilterTests extends TestBase
 		$filter = new ScheduleResourceFilter($scheduleId);
 		$filter->GroupId = $groupId;
 
-		$resourceIds = $filter->FilterResources($resources, $this->resourceRepository);
+		$resourceIds = $filter->FilterResources($resources, $this->resourceRepository, $this->attributeService);
 
 		$this->assertEquals(1, count($resourceIds));
 		$this->assertEquals($resourceId, $resourceIds[0]);
@@ -103,23 +110,23 @@ class ScheduleResourceFilterTests extends TestBase
 
 	public function testFiltersByMinCapacity()
 	{
-		$minCapacity  = 10;
+		$minCapacity = 10;
 
 		$resource1 = new FakeBookableResource(1, 'resource1');
 		$resource1->SetMaxParticipants($minCapacity);
 
 		$resource2 = new FakeBookableResource(2, 'resource2');
-		$resource2->SetMaxParticipants($minCapacity-1);
+		$resource2->SetMaxParticipants($minCapacity - 1);
 
 		$resource3 = new FakeBookableResource(3, 'resource3');
-		$resource3->SetMaxParticipants($minCapacity+1);
+		$resource3->SetMaxParticipants($minCapacity + 1);
 
 		$resources = array($resource1, $resource2, $resource3);
 
 		$filter = new ScheduleResourceFilter();
 		$filter->MinCapacity = $minCapacity;
 
-		$resourceIds = $filter->FilterResources($resources, $this->resourceRepository);
+		$resourceIds = $filter->FilterResources($resources, $this->resourceRepository, $this->attributeService);
 
 		$this->assertEquals(2, count($resourceIds));
 		$this->assertEquals(1, $resourceIds[0]);
@@ -144,11 +151,51 @@ class ScheduleResourceFilterTests extends TestBase
 		$filter = new ScheduleResourceFilter();
 		$filter->ResourceTypeId = $resourceTypeId;
 
-		$resourceIds = $filter->FilterResources($resources, $this->resourceRepository);
+		$resourceIds = $filter->FilterResources($resources, $this->resourceRepository, $this->attributeService);
 
 		$this->assertEquals(1, count($resourceIds));
 		$this->assertEquals(1, $resourceIds[0]);
 	}
+
+	public function testFiltersResourceCustomAttributes()
+	{
+		$attributeId1 = 1;
+		$attributeValue1 = 1;
+
+		$attributeId2 = 2;
+		$attributeValue2 = 'something';
+
+		$resourceId = 4;
+
+		$attributeList = new FakeAttributeList();
+		$attributeList->Add($resourceId, new Attribute(new CustomAttribute($attributeId1, '', CustomAttributeTypes::CHECKBOX, CustomAttributeCategory::RESOURCE, '', false, '', 0, $resourceId), $attributeValue1));
+		$attributeList->Add($resourceId, new Attribute(new CustomAttribute($attributeId2, '', CustomAttributeTypes::MULTI_LINE_TEXTBOX, CustomAttributeCategory::RESOURCE, '', false, '', 0, $resourceId), $attributeValue2));
+		$attributeList->Add(1, new Attribute(new CustomAttribute($attributeId2, '', CustomAttributeTypes::MULTI_LINE_TEXTBOX, CustomAttributeCategory::RESOURCE, '', false, '', 0, 1), $attributeValue2));
+		$attributeList->Add(3, new Attribute(new CustomAttribute($attributeId2, '', CustomAttributeTypes::MULTI_LINE_TEXTBOX, CustomAttributeCategory::RESOURCE, '', false, '', 0, 3), $attributeValue2));
+
+		$this->attributeService->expects($this->once())
+		->method('GetAttributes')
+		->with($this->equalTo(CustomAttributeCategory::RESOURCE), $this->isNull())
+		->will($this->returnValue($attributeList));
+
+		$filter = new ScheduleResourceFilter();
+		$filter->ResourceAttributes = array(
+			new AttributeValue($attributeId1, $attributeValue1),
+			new AttributeValue($attributeId2, $attributeValue2),
+		);
+
+		$resource1 = new FakeBookableResource(1, 'resource1');
+		$resource2 = new FakeBookableResource(2, 'resource2');
+		$resource3 = new FakeBookableResource(3, 'resource3');
+		$resource4 = new FakeBookableResource($resourceId, 'resource4');
+		$resources = array($resource1, $resource2, $resource3, $resource4);
+
+		$resourceIds = $filter->FilterResources($resources, $this->resourceRepository, $this->attributeService);
+
+		$this->assertEquals(1, count($resourceIds));
+		$this->assertEquals($resourceId, $resourceIds[0]);
+	}
+
 }
 
 ?>

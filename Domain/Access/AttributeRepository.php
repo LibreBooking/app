@@ -59,10 +59,10 @@ interface IAttributeRepository
 	/**
 	 * @abstract
 	 * @param int|CustomAttributeCategory $category
-	 * @param array|int[] $entityIds
+	 * @param array|int[] $entityIds if null is passed, get all entity values
 	 * @return array|AttributeEntityValue[]
 	 */
-	public function GetEntityValues($category, $entityIds);
+	public function GetEntityValues($category, $entityIds = null);
 
 }
 
@@ -129,7 +129,7 @@ class AttributeRepository implements IAttributeRepository
 	 * @param array|int[] $entityIds
 	 * @return array|AttributeEntityValue[]
 	 */
-	public function GetEntityValues($category, $entityIds)
+	public function GetEntityValues($category, $entityIds = null)
 	{
 		$values = array();
 
@@ -138,9 +138,15 @@ class AttributeRepository implements IAttributeRepository
 			$entityIds = array($entityIds);
 		}
 
+		if ($entityIds == null)
+		{
+			$reader = ServiceLocator::GetDatabase()
+							  ->Query(new GetAttributeAllValuesCommand($category));
+		}
+		else{
 		$reader = ServiceLocator::GetDatabase()
 				  ->Query(new GetAttributeMultipleValuesCommand($category, $entityIds));
-
+		}
 		$attribute = null;
 		while ($row = $reader->GetRow())
 		{

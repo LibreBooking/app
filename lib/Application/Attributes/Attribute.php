@@ -91,6 +91,14 @@ class Attribute
 	{
 		return $this->attributeDefinition->SortOrder();
 	}
+
+	/**
+	 * @param $value mixed
+	 */
+	public function SetValue($value)
+	{
+		$this->value = $value;
+	}
 }
 
 ?>

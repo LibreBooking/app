@@ -21,6 +21,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 class FakeAttributeList implements IEntityAttributeList
 {
 	private $_attributes;
+	private $_entityAttributes;
 
 	/**
 	 * @param array|Attribute[] $attributes
@@ -53,7 +54,16 @@ class FakeAttributeList implements IEntityAttributeList
 	 */
 	public function GetAttributes($entityId = null)
 	{
+		if (array_key_exists($entityId, $this->_entityAttributes))
+		{
+			return $this->_entityAttributes[$entityId];
+		}
 		return $this->_attributes;
+	}
+
+	public function Add($entityId, $attribute)
+	{
+		$this->_entityAttributes[$entityId][] = $attribute;
 	}
 }
 

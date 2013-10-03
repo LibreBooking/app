@@ -23,9 +23,10 @@ interface IScheduleResourceFilter
 	/**
 	 * @param BookableResource[] $resources
 	 * @param IResourceRepository $resourceRepository
+	 * @param IAttributeService $attributeService
 	 * @return int[] filtered resource ids
 	 */
-	public function FilterResources($resources, IResourceRepository $resourceRepository);
+	public function FilterResources($resources, IResourceRepository $resourceRepository, IAttributeService $attributeService);
 }
 
 class ScheduleResourceFilter implements IScheduleResourceFilter
@@ -35,7 +36,16 @@ class ScheduleResourceFilter implements IScheduleResourceFilter
 	public $GroupId;
 	public $ResourceTypeId;
 	public $MinCapacity;
+	public $ResourceAttributes;
+	public $ResourceTypeAttributes;
 
+	/**
+	 * @param int|null $scheduleId
+	 * @param int|null $resourceTypeId
+	 * @param int|null $minCapacity
+	 * @param AttributeValue[]|null $resourceAttributes
+	 * @param AttributeValue[]|null $resourceTypeAttributes
+	 */
 	public function __construct($scheduleId = null,
 								$resourceTypeId = null,
 								$minCapacity = null,
@@ -45,6 +55,8 @@ class ScheduleResourceFilter implements IScheduleResourceFilter
 		$this->ScheduleId = $scheduleId;
 		$this->ResourceTypeId = $resourceTypeId;
 		$this->MinCapacity = empty($minCapacity) ? null : $minCapacity;
+		$this->ResourceAttributes = empty($resourceAttributes) ? array() : $resourceAttributes;
+		$this->ResourceTypeAttributes = empty($resourceTypeAttributes) ? array() : $resourceTypeAttributes;
 	}
 
 	public static function FromCookie($val)
@@ -54,10 +66,10 @@ class ScheduleResourceFilter implements IScheduleResourceFilter
 
 	private function HasFilter()
 	{
-		return !empty($this->ResourceId) | !empty($this->GroupId) || !empty($this->ResourceTypeId) || !empty($this->MinCapacity);
+		return !empty($this->ResourceId) || !empty($this->GroupId) || !empty($this->ResourceTypeId) || !empty($this->MinCapacity) || !empty($this->ResourceAttributes) || !empty($this->ResourceTypeAttributes);
 	}
 
-	public function FilterResources($resources, IResourceRepository $resourceRepository)
+	public function FilterResources($resources, IResourceRepository $resourceRepository, IAttributeService $attributeService)
 	{
 		$resourceIds = array();
 
@@ -76,6 +88,12 @@ class ScheduleResourceFilter implements IScheduleResourceFilter
 		{
 			$groups = $resourceRepository->GetResourceGroups($this->ScheduleId);
 			$groupResourceIds = $groups->GetResourceIds($this->GroupId);
+		}
+
+		$resourceAttributeValues = null;
+		if(!empty($this->ResourceAttributes))
+		{
+			$resourceAttributeValues = $attributeService->GetAttributes(CustomAttributeCategory::RESOURCE, null);
 		}
 
 		$resourceIds = array();
@@ -107,9 +125,44 @@ class ScheduleResourceFilter implements IScheduleResourceFilter
 				array_pop($resourceIds);
 				continue;
 			}
+
+			if (!empty($this->ResourceAttributes))
+			{
+				$values = $resourceAttributeValues->GetAttributes($resource->GetId());
+
+				/** var @attribute AttributeValue */
+				foreach($this->ResourceAttributes as $attribute)
+				{
+					$value = $this->GetAttribute($values, $attribute->AttributeId);
+					if ($value == null || $value->Value() != $attribute->Value)
+					{
+						array_pop($resourceIds);
+						break;
+//						continue;
+					}
+				}
+			}
+
 		}
 
 		return $resourceIds;
+	}
+
+	/**
+	 * @param Attribute[] $attributes
+	 * @param int $attributeId
+	 * @return null|Attribute
+	 */
+	private function GetAttribute($attributes, $attributeId)
+	{
+		foreach ($attributes as $attribute)
+		{
+			if ($attribute->Id() == $attributeId)
+			{
+				return $attribute;
+			}
+		}
+		return null;
 	}
 }
 

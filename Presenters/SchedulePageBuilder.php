@@ -74,13 +74,6 @@ interface ISchedulePageBuilder
 	public function BindResourceTypes(ISchedulePage $page, $resourceTypes);
 
 	/**
-	 * @param ISchedulePage $page
-	 * @param Attribute[] $resourceCustomAttributes
-	 * @param Attribute[] $resourceTypeCustomAttributes
-	 */
-	public function BindCustomAttributes(ISchedulePage $page, $resourceCustomAttributes, $resourceTypeCustomAttributes);
-
-	/**
 	 * @param int $scheduleId
 	 * @param ISchedulePage $page
 	 * @return int
@@ -104,8 +97,11 @@ interface ISchedulePageBuilder
 	/**
 	 * @param ISchedulePage $page
 	 * @param ScheduleResourceFilter $filter
+	 * @param Attribute[] $resourceCustomAttributes
+	 * @param Attribute[] $resourceTypeCustomAttributes
 	 */
-	public function BindResourceFilter(ISchedulePage $page, ScheduleResourceFilter $filter);
+	public function BindResourceFilter(ISchedulePage $page, ScheduleResourceFilter $filter, $resourceCustomAttributes,
+									   $resourceTypeCustomAttributes);
 }
 
 class SchedulePageBuilder implements ISchedulePageBuilder
@@ -365,12 +361,6 @@ class SchedulePageBuilder implements ISchedulePageBuilder
 		$page->SetResourceTypes($resourceTypes);
 	}
 
-	public function BindCustomAttributes(ISchedulePage $page, $resourceCustomAttributes, $resourceTypeCustomAttributes)
-	{
-		$page->SetResourceCustomAttributes($resourceCustomAttributes);
-		$page->SetResourceTypeCustomAttributes($resourceTypeCustomAttributes);
-	}
-
 	/**
 	 * @param int $scheduleId
 	 * @param ISchedulePage $page
@@ -382,10 +372,10 @@ class SchedulePageBuilder implements ISchedulePageBuilder
 		if ($page->FilterSubmitted())
 		{
 			$filter = new ScheduleResourceFilter($scheduleId,
-											  $page->GetResourceTypeId(),
-											  $page->GetMaxParticipants(),
-											  $page->GetResourceAttributes(),
-											  $page->GetResourceTypeAttributes());
+												 $page->GetResourceTypeId(),
+												 $page->GetMaxParticipants(),
+												 $this->AsAttributeValues($page->GetResourceAttributes()),
+												 $this->AsAttributeValues($page->GetResourceTypeAttributes()));
 		}
 		else
 		{
@@ -404,15 +394,64 @@ class SchedulePageBuilder implements ISchedulePageBuilder
 		return $filter;
 	}
 
-	/**
-	 * @param ISchedulePage $page
-	 * @param ScheduleResourceFilter $filter
-	 */
-	public function BindResourceFilter(ISchedulePage $page, ScheduleResourceFilter $filter)
+	public function BindResourceFilter(ISchedulePage $page, ScheduleResourceFilter $filter, $resourceCustomAttributes,
+									   $resourceTypeCustomAttributes)
 	{
+		if ($filter->ResourceAttributes != null)
+		{
+			foreach ($filter->ResourceAttributes as $attributeFilter)
+			{
+				$this->SetAttributeValue($attributeFilter, $resourceCustomAttributes);
+			}
+		}
+
+		if ($filter->ResourceTypeAttributes != null)
+		{
+			foreach ($filter->ResourceTypeAttributes as $attributeFilter)
+			{
+				$this->SetAttributeValue($attributeFilter, $resourceTypeCustomAttributes);
+			}
+		}
+
+		$page->SetResourceCustomAttributes($resourceCustomAttributes);
+		$page->SetResourceTypeCustomAttributes($resourceTypeCustomAttributes);
+
 		ServiceLocator::GetServer()
 		->SetCookie(new Cookie('resource_filter' . $filter->ScheduleId, json_encode($filter)));
 		$page->SetFilter($filter);
+	}
+
+	/**
+	 * @param $attributeFormElements AttributeFormElement[]
+	 * @return AttributeValue[]
+	 */
+	private function AsAttributeValues($attributeFormElements)
+	{
+		$vals = array();
+		foreach ($attributeFormElements as $e)
+		{
+			if (!empty($e->Value))
+			{
+				$vals[] = new AttributeValue($e->Id, $e->Value);
+			}
+		}
+		return $vals;
+	}
+
+	/**
+	 * @param AttributeValue $attributeFilter
+	 * @param Attribute[] $attributes
+	 */
+	private function SetAttributeValue($attributeFilter, $attributes) {
+
+		foreach ($attributes as $attribute)
+		{
+			if ($attributeFilter->AttributeId == $attribute->Id())
+			{
+				$attribute->SetValue($attributeFilter->Value);
+				break;
+			}
+		}
 	}
 }
 

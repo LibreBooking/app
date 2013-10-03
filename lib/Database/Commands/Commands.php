@@ -749,6 +749,15 @@ class GetAttributeByIdCommand extends SqlCommand
 	}
 }
 
+class GetAttributeAllValuesCommand extends SqlCommand
+{
+	public function __construct($attributeCategoryId)
+	{
+		parent::__construct(Queries::GET_ATTRIBUTE_ALL_VALUES);
+		$this->AddParameter(new Parameter(ParameterNames::ATTRIBUTE_CATEGORY, $attributeCategoryId));
+	}
+}
+
 class GetAttributeMultipleValuesCommand extends SqlCommand
 {
 	public function __construct($attributeCategoryId, $entityIds)

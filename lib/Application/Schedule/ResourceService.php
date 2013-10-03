@@ -101,7 +101,7 @@ class ResourceService implements IResourceService
 		}
 
 		$resources = $this->_resourceRepository->GetScheduleResources($scheduleId);
-		$resourceIds = $filter->FilterResources($resources, $this->_resourceRepository);
+		$resourceIds = $filter->FilterResources($resources, $this->_resourceRepository, $this->_attributeService);
 
 		return $this->Filter($resources, $user, $includeInaccessibleResources, $resourceIds);
 	}

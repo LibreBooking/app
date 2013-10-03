@@ -108,7 +108,7 @@ class SchedulePresenterTests extends TestBase
 		$pageBuilder
 		->expects($this->once())
 		->method('BindResourceFilter')
-		->with($this->equalTo($page), $this->equalTo($resourceFilter));
+		->with($this->equalTo($page), $this->equalTo($resourceFilter), $this->equalTo($resourceAttributes), $this->equalTo($resourceTypeAttributes));
 
 		$resourceService
 		->expects($this->once())
@@ -178,12 +178,6 @@ class SchedulePresenterTests extends TestBase
 		->expects($this->once())
 		->method('GetResourceTypeAttributes')
 		->will($this->returnValue($resourceTypeAttributes));
-
-		$pageBuilder
-		->expects($this->once())
-		->method('BindCustomAttributes')
-		->with($this->equalTo($page), $this->equalTo($resourceAttributes), $this->equalTo($resourceTypeAttributes));
-
 
 		$presenter->PageLoad($this->fakeUser);
 	}
