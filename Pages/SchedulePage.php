@@ -431,7 +431,7 @@ class SchedulePage extends ActionPage implements ISchedulePage
 	 */
 	public function GetResourceAttributes()
 	{
-		return AttributeFormParser::GetAttributes($this->GetForm(FormKeys::ATTRIBUTE_PREFIX));
+		return AttributeFormParser::GetAttributes($this->GetForm('r' . FormKeys::ATTRIBUTE_PREFIX));
 	}
 
 	/**
@@ -439,7 +439,7 @@ class SchedulePage extends ActionPage implements ISchedulePage
 	 */
 	public function GetResourceTypeAttributes()
 	{
-		return AttributeFormParser::GetAttributes($this->GetForm(FormKeys::ATTRIBUTE_PREFIX));
+		return AttributeFormParser::GetAttributes($this->GetForm('rt' . FormKeys::ATTRIBUTE_PREFIX));
 	}
 
 	public function SetFilter($resourceFilter)

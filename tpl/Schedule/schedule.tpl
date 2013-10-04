@@ -183,12 +183,12 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 
 				{foreach from=$ResourceAttributes item=attribute}
 					<div>
-					{control type="AttributeControl" attribute=$attribute align='vertical' searchmode=true}
+					{control type="AttributeControl" attribute=$attribute align='vertical' searchmode=true namePrefix='r'}
 					</div>
 				{/foreach}
 
 				{foreach from=$ResourceTypeAttributes item=attribute}
-					<div>{control type="AttributeControl" attribute=$attribute align='vertical' searchmode=true}</div>
+					<div>{control type="AttributeControl" attribute=$attribute align='vertical' searchmode=true namePrefix='rt'}</div>
 				{/foreach}
 
 				<div>

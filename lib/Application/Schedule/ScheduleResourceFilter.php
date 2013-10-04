@@ -26,7 +26,8 @@ interface IScheduleResourceFilter
 	 * @param IAttributeService $attributeService
 	 * @return int[] filtered resource ids
 	 */
-	public function FilterResources($resources, IResourceRepository $resourceRepository, IAttributeService $attributeService);
+	public function FilterResources($resources, IResourceRepository $resourceRepository,
+									IAttributeService $attributeService);
 }
 
 class ScheduleResourceFilter implements IScheduleResourceFilter
@@ -69,7 +70,8 @@ class ScheduleResourceFilter implements IScheduleResourceFilter
 		return !empty($this->ResourceId) || !empty($this->GroupId) || !empty($this->ResourceTypeId) || !empty($this->MinCapacity) || !empty($this->ResourceAttributes) || !empty($this->ResourceTypeAttributes);
 	}
 
-	public function FilterResources($resources, IResourceRepository $resourceRepository, IAttributeService $attributeService)
+	public function FilterResources($resources, IResourceRepository $resourceRepository,
+									IAttributeService $attributeService)
 	{
 		$resourceIds = array();
 
@@ -91,9 +93,16 @@ class ScheduleResourceFilter implements IScheduleResourceFilter
 		}
 
 		$resourceAttributeValues = null;
-		if(!empty($this->ResourceAttributes))
+		if (!empty($this->ResourceAttributes))
 		{
 			$resourceAttributeValues = $attributeService->GetAttributes(CustomAttributeCategory::RESOURCE, null);
+		}
+
+		$resourceTypeAttributeValues = null;
+		if (!empty($this->ResourceTypeAttributes))
+		{
+			$resourceTypeAttributeValues = $attributeService->GetAttributes(CustomAttributeCategory::RESOURCE_TYPE,
+																			null);
 		}
 
 		$resourceIds = array();
@@ -126,21 +135,57 @@ class ScheduleResourceFilter implements IScheduleResourceFilter
 				continue;
 			}
 
+			$resourceAttributesPass = true;
 			if (!empty($this->ResourceAttributes))
 			{
 				$values = $resourceAttributeValues->GetAttributes($resource->GetId());
 
 				/** var @attribute AttributeValue */
-				foreach($this->ResourceAttributes as $attribute)
+				foreach ($this->ResourceAttributes as $attribute)
 				{
 					$value = $this->GetAttribute($values, $attribute->AttributeId);
 					if ($value == null || $value->Value() != $attribute->Value)
 					{
-						array_pop($resourceIds);
+						$resourceAttributesPass = false;
 						break;
-//						continue;
 					}
 				}
+			}
+
+			if (!$resourceAttributesPass)
+			{
+				array_pop($resourceIds);
+				continue;
+			}
+
+			$resourceTypeAttributesPass = true;
+
+			if (!empty($this->ResourceTypeAttributes))
+			{
+				if (!$resource->HasResourceType())
+				{
+					array_pop($resourceIds);
+					// there's a filter but this resource doesn't have a resource type
+					continue;
+				}
+				$values = $resourceTypeAttributeValues->GetAttributes($resource->GetResourceTypeId());
+
+				/** var @attribute AttributeValue */
+				foreach ($this->ResourceTypeAttributes as $attribute)
+				{
+					$value = $this->GetAttribute($values, $attribute->AttributeId);
+					if ($value == null || $value->Value() != $attribute->Value)
+					{
+						$resourceTypeAttributesPass = false;
+						break;
+					}
+				}
+			}
+
+			if (!$resourceTypeAttributesPass)
+			{
+				array_pop($resourceIds);
+				continue;
 			}
 
 		}
