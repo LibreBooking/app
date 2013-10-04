@@ -255,11 +255,6 @@ function Schedule(opts, resourceGroups)
 			ShowAllResources();
 		});
 
-//		$('#reservations-left').find('[id^="psiattribute"]').change(function(e){
-//			var id = $(this).attr('id');
-//			RedirectToSelf(e.attr('id'), id+'=.^&');
-//		});
-
 		$('#resourceIdFilter').change(function (e)
 		{
 			var resourceId = $(this).val();

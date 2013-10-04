@@ -67,7 +67,7 @@ class AttributeService implements IAttributeService
 
 	public function GetAttributes($category, $entityIds = array())
 	{
-		if (!is_array($entityIds))
+		if (!is_array($entityIds)&& !empty($entityIds))
 		{
 			$entityIds = array($entityIds);
 		}

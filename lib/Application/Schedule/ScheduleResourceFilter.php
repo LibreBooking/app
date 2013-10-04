@@ -62,7 +62,7 @@ class ScheduleResourceFilter implements IScheduleResourceFilter
 
 	public static function FromCookie($val)
 	{
-		return new ScheduleResourceFilter($val->ScheduleId, $val->ResourceTypeId, $val->MinCapacity);
+		return new ScheduleResourceFilter($val->ScheduleId, $val->ResourceTypeId, $val->MinCapacity, $val->ResourceAttributes, $val->ResourceTypeAttributes);
 	}
 
 	private function HasFilter()
@@ -144,7 +144,7 @@ class ScheduleResourceFilter implements IScheduleResourceFilter
 				foreach ($this->ResourceAttributes as $attribute)
 				{
 					$value = $this->GetAttribute($values, $attribute->AttributeId);
-					if ($value == null || $value->Value() != $attribute->Value)
+					if (!$this->AttributeValueMatches($attribute, $value))
 					{
 						$resourceAttributesPass = false;
 						break;
@@ -174,7 +174,7 @@ class ScheduleResourceFilter implements IScheduleResourceFilter
 				foreach ($this->ResourceTypeAttributes as $attribute)
 				{
 					$value = $this->GetAttribute($values, $attribute->AttributeId);
-					if ($value == null || $value->Value() != $attribute->Value)
+					if (!$this->AttributeValueMatches($attribute, $value))
 					{
 						$resourceTypeAttributesPass = false;
 						break;
@@ -208,6 +208,28 @@ class ScheduleResourceFilter implements IScheduleResourceFilter
 			}
 		}
 		return null;
+	}
+
+	/**
+	 * @param AttributeValue $attribute
+	 * @param Attribute $value
+	 * @return bool
+	 */
+	private function AttributeValueMatches($attribute, $value)
+	{
+		if ($value == null)
+		{
+			return false;
+		}
+
+		if ($value->Type() == CustomAttributeTypes::SINGLE_LINE_TEXTBOX || $value->Type() == CustomAttributeTypes::MULTI_LINE_TEXTBOX)
+		{
+			return strripos($value->Value(), $attribute->Value) !== false;
+		}
+		else
+		{
+			return $value->Value() == $attribute->Value;
+		}
 	}
 }
 

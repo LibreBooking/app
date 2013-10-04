@@ -204,6 +204,7 @@ class ScheduleResourceFilterTests extends TestBase
 		$attributeId2 = 2;
 		$attributeValue2 = 'something';
 
+		$resourceId = 3;
 		$resourceTypeId = 4;
 
 		$attributeList = new FakeAttributeList();
@@ -227,7 +228,7 @@ class ScheduleResourceFilterTests extends TestBase
 		$resource1->SetResourceTypeId(100);
 		$resource2 = new FakeBookableResource(2, 'resource2');
 		$resource2->SetResourceTypeId(200);
-		$resource3 = new FakeBookableResource(3, 'resource3');
+		$resource3 = new FakeBookableResource($resourceId, 'resource3');
 		$resource3->SetResourceTypeId($resourceTypeId);
 		$resource4 = new FakeBookableResource(4, 'resource4');
 		$resources = array($resource1, $resource2, $resource3, $resource4);
@@ -235,7 +236,7 @@ class ScheduleResourceFilterTests extends TestBase
 		$resourceIds = $filter->FilterResources($resources, $this->resourceRepository, $this->attributeService);
 
 		$this->assertEquals(1, count($resourceIds));
-		$this->assertEquals(3, $resourceIds[0]);
+		$this->assertEquals($resourceId, $resourceIds[0]);
 	}
 
 }
