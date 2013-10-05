@@ -29,7 +29,7 @@ CREATE TABLE `resource_types` (
 
 ALTER TABLE `resources` ADD FOREIGN KEY (`resource_type_id`) REFERENCES resource_types(`resource_type_id`) ON DELETE CASCADE;
 
-
+DROP TABLE IF EXISTS `resource_group_assignment`;
 CREATE TABLE `resource_group_assignment` (
  `resource_group_id` mediumint(8) unsigned NOT NULL,
  `resource_id` smallint(5) unsigned NOT NULL,
