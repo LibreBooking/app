@@ -169,6 +169,7 @@ class SmartyPage extends Smarty
 		$this->registerPlugin('function', 'add_querystring', array($this, 'AddQueryString'));
 		$this->registerPlugin('function', 'resource_image', array($this, 'GetResourceImage'));
 		$this->registerPlugin('modifier', 'escapequotes', array($this, 'EscapeQuotes'));
+		$this->registerPlugin('function', 'flush', array($this, 'Flush'));
 
 		/**
 		 * PageValidators
@@ -630,6 +631,11 @@ class SmartyPage extends Smarty
 	{
 		$str = str_replace('\'', '&#39;', $var);
 		return str_replace('"', '&quot;', $str);
+	}
+
+	public function Flush($params, &$smarty)
+	{
+//		echo str_repeat(' ', 16*1024), "\n"; flush();
 	}
 }
 

@@ -500,6 +500,7 @@ function Reservation(opts) {
 
 		$('<ul/>', {'class': 'no-style', html: items.join('')}).appendTo(dialogElement);
 
+		dialogElement.dialog({minHeight: 400, minWidth: 700, width: 700});
 		dialogElement.dialog('open');
 	};
 	

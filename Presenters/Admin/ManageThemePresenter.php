@@ -42,6 +42,17 @@ class ManageThemePresenter extends ActionPresenter
 		if ($logoFile != null)
 		{
 			Log::Debug('Replacing logo with ' . $logoFile->OriginalName());
+
+			$targets = glob(ROOT_DIR . 'Web/img/custom-logo.*');
+			foreach ($targets as $target) {
+				$removed = unlink($target);
+				if (!$removed)
+				{
+					Log::Error('Could not remove existing logo. Ensure %s is writable.',
+						$target);
+				}
+			}
+
 			$target =  ROOT_DIR . 'Web/img/custom-logo.' . $logoFile->Extension();
 			$copied = copy($logoFile->TemporaryName(), $target);
 			if (!$copied)

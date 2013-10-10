@@ -156,6 +156,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 <script type="text/javascript" src="{$Path}scripts/js/jquery.colorbox-min.js"></script>
 <script type="text/javascript" src="{$Path}scripts/js/jquery.form-3.09.min.js"></script>
 <script type="text/javascript" src="{$Path}scripts/js/jquery.timePicker.min.js"></script>
+<script type="text/javascript" src="{$Path}scripts/js/moment.min.js"></script>
 
 <script type="text/javascript" src="{$Path}scripts/reservationPopup.js"></script>
 

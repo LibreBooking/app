@@ -80,7 +80,8 @@ abstract class Page implements IPage
         $this->smarty->assign('CssExtensionFile', Configuration::Instance()->GetKey(ConfigKeys::CSS_EXTENSION_FILE));
         $this->smarty->assign('UseLocalJquery', Configuration::Instance()->GetKey(ConfigKeys::USE_LOCAL_JQUERY, new BooleanConverter()));
         $this->smarty->assign('EnableConfigurationPage', Configuration::Instance()->GetSectionKey(ConfigSection::PAGES, ConfigKeys::PAGES_ENABLE_CONFIGURATION, new BooleanConverter()));
-
+		$this->smarty->assign('ShowParticipation', !Configuration::Instance()->GetSectionKey(ConfigSection::RESERVATION, ConfigKeys::RESERVATION_PREVENT_PARTICIPATION, new BooleanConverter()));
+		
 		$this->smarty->assign('LogoUrl', 'logo4.1.png');
 		if (file_exists($this->path . 'img/custom-logo.png'))
 		{
@@ -306,9 +307,6 @@ abstract class Page implements IPage
 		header("Content-Transfer-Encoding: binary");
 		echo chr(239) . chr(187) . chr(191);
 
-//		header("Content-Type: text/csv");
-//		header("Content-Disposition: inline; filename=$fileName");
-//		echo chr(239) . chr(187) . chr(191);
 		$this->Display($templateName);
 	}
 
