@@ -19,6 +19,12 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 {include file='globalheader.tpl' cssFiles='css/participation.css,css/jquery.qtip.min.css'}
 <h1>{translate key=OpenInvitations} ({$Reservations|count})</h1>
 
+{if !empty($result)}
+	<div>{$result}</div>
+{/if}
+
+<div id="jsonResult" class="error hidden"></div>
+
 <ul class="no-style participation">
 {foreach from=$Reservations item=reservation name=invitations}
 	{assign var=referenceNumber value=$reservation->ReferenceNumber}
@@ -38,6 +44,8 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 <div class="dialog" style="display:none;">
 	
 </div>
+
+{html_image src="admin-ajax-indicator.gif" id="indicator" style="display:none;"}
 
 <script type="text/javascript" src="scripts/js/jquery.qtip.min.js"></script>
 <script type="text/javascript" src="scripts/reservationPopup.js"></script>

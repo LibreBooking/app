@@ -23,17 +23,17 @@ require_once(ROOT_DIR . 'Presenters/ParticipationPresenter.php');
 class ParticipationPresenterTests extends TestBase
 {
 	/**
-	 * @var IParticipationPage
+	 * @var IParticipationPage|PHPUnit_Framework_MockObject_MockObject
 	 */
 	private $page;
 
 	/**
-	 * @var IReservationRepository
+	 * @var IReservationRepository|PHPUnit_Framework_MockObject_MockObject
 	 */
 	private $reservationRepo;
 
 	/**
-	 * @var IReservationViewRepository
+	 * @var IReservationViewRepository|PHPUnit_Framework_MockObject_MockObject
 	 */
 	private $reservationViewRepo;
 
@@ -58,12 +58,59 @@ class ParticipationPresenterTests extends TestBase
 		parent::teardown();
 	}
 
-	public function testWhenUserAcceptsInvite()
+	public function testWhenUserAcceptsInviteAndThereIsSpace()
 	{
 		$invitationAction = InvitationAction::Accept;
 		$seriesMethod = 'AcceptInvitation';
 
 		$this->assertUpdatesSeriesParticipation($invitationAction, $seriesMethod);
+	}
+
+	public function testWhenUserAcceptsInviteAndThereIsNotSpace()
+	{
+		$invitationAction = InvitationAction::Accept;
+
+		$currentUserId = 1029;
+		$referenceNumber = 'abc123';
+		$builder = new ExistingReservationSeriesBuilder();
+		$instance = new TestReservation();
+		$instance->WithParticipants(array(1));
+		$instance->WithInvitee($currentUserId);
+
+		$resource = new FakeBookableResource(1);
+		$resource->SetMaxParticipants(1);
+
+		$builder->WithCurrentInstance($instance)
+		->WithPrimaryResource($resource);
+
+		$series = $builder->Build();
+
+		$this->page->expects($this->once())
+			->method('GetResponseType')
+			->will($this->returnValue('json'));
+
+		$this->page->expects($this->once())
+			->method('GetInvitationAction')
+			->will($this->returnValue($invitationAction));
+
+		$this->page->expects($this->once())
+			->method('GetInvitationReferenceNumber')
+			->will($this->returnValue($referenceNumber));
+
+		$this->page->expects($this->once())
+			->method('GetUserId')
+			->will($this->returnValue($currentUserId));
+
+		$this->reservationRepo->expects($this->once())
+			->method('LoadByReferenceNumber')
+			->with($this->equalTo($referenceNumber))
+			->will($this->returnValue($series));
+
+		$this->page->expects($this->once())
+			->method('DisplayResult')
+			->with($this->stringContains('MaxParticipants'));
+
+		$this->presenter->PageLoad();
 	}
 
 	public function testWhenUserDeclinesInvite()
@@ -118,6 +165,7 @@ class ParticipationPresenterTests extends TestBase
 		$currentUserId = 1029;
 		$referenceNumber = 'abc123';
 		$series = $this->getMock('ExistingReservationSeries');
+		$series->expects($this->any())->method('AllResources')->will($this->returnValue(array()));
 
 		$this->page->expects($this->once())
 			->method('GetResponseType')

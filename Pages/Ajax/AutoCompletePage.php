@@ -79,7 +79,7 @@ class AutoCompletePage extends SecurePage
 		$users = array();
 
 		$r = new UserRepository();
-		$results = $r->GetList(1, null, null, null, $filter)->Results();
+		$results = $r->GetList(1, PageInfo::All, null, null, $filter)->Results();
 
 		/** @var $result UserItemView */
 		foreach($results as $result)

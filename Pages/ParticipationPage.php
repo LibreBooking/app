@@ -55,18 +55,21 @@ interface IParticipationPage
 	function GetResponseType();
 
 	/**
-	 * @abstract
-	 * @param array|ReservationViewItem[] $reservations
+	 * @param array|ReservationItemView[] $reservations
 	 * @return void
 	 */
 	function BindReservations($reservations);
 
 	/**
-	 * @abstract
 	 * @param $timezone
 	 * @return void
 	 */
 	public function SetTimezone($timezone);
+
+	/**
+	 * @param $result string
+	 */
+	public function SetResult($result);
 }
 
 class ParticipationPage extends SecurePage implements IParticipationPage
@@ -125,6 +128,14 @@ class ParticipationPage extends SecurePage implements IParticipationPage
 	public function SetTimezone($timezone)
 	{
 		$this->Set('Timezone', $timezone);
+	}
+
+	/**
+	 * @param $result string
+	 */
+	public function SetResult($result)
+	{
+		$this->Set('ActionResult', $result);
 	}
 }
 ?>

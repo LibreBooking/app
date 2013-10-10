@@ -49,12 +49,14 @@ class ParticipationPresenter {
         $invitationAction = $this->page->GetInvitationAction();
 
         if (!empty($invitationAction)) {
-            $this->HandleInvitationAction($invitationAction);
+            $resultString = $this->HandleInvitationAction($invitationAction);
 
             if ($this->page->GetResponseType() == 'json') {
-                $this->page->DisplayResult(null);
+                $this->page->DisplayResult($resultString);
                 return;
             }
+
+			$this->page->SetResult($resultString);
         }
 
         $startDate = Date::Now();
@@ -69,7 +71,11 @@ class ParticipationPresenter {
         $this->page->DisplayParticipation();
     }
 
-    private function HandleInvitationAction($invitationAction) {
+	/**
+	 * @param $invitationAction
+	 * @return string|null
+	 */
+	private function HandleInvitationAction($invitationAction) {
         $referenceNumber = $this->page->GetInvitationReferenceNumber();
         $userId = $this->page->GetUserId();
 
@@ -78,7 +84,27 @@ class ParticipationPresenter {
         $series = $this->reservationRepository->LoadByReferenceNumber($referenceNumber);
 
         if ($invitationAction == InvitationAction::Accept) {
-            $series->AcceptInvitation($userId);
+
+			$series->AcceptInvitation($userId);
+
+			foreach ($series->AllResources() as $resource)
+			{
+				if (!$resource->HasMaxParticipants())
+				{
+					continue;
+				}
+
+				/** @var $instance Reservation */
+				foreach ($series->Instances() as $instance)
+				{
+					$numberOfParticipants = count($instance->Participants());
+
+					if ($numberOfParticipants > $resource->GetMaxParticipants())
+					{
+						return Resources::GetInstance()->GetString('MaxParticipantsError', array($resource->GetName(), $resource->GetMaxParticipants()));
+					}
+				}
+			}
         }
         if ($invitationAction == InvitationAction::Decline) {
             $series->DeclineInvitation($userId);
@@ -91,6 +117,8 @@ class ParticipationPresenter {
         }
 
         $this->reservationRepository->Update($series);
+
+		return null;
     }
 
 }

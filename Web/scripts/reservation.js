@@ -49,7 +49,8 @@ function Reservation(opts) {
 		$('.dialog').dialog({
 			bgiframe: true,
 			autoOpen: false,
-			modal: true
+			modal: true,
+			width:'auto'
 		});
 
 		$('#dialogAddResources').dialog({

@@ -305,6 +305,7 @@ class Reservation
 		if (in_array($inviteeId, $this->_inviteeIds))
 		{
 			$this->addedParticipants[] = $inviteeId;
+			$this->_participantIds[] = $inviteeId;
 			$this->removedInvitees[] = $inviteeId;
 
 			return true;
