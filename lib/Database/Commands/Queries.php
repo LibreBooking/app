@@ -680,6 +680,8 @@ class Queries
 
 	const DELETE_REMINDER_BY_REFNUMBER = 'DELETE FROM reminders WHERE refnumber = @refnumber';
 
+	const REMOVE_LEGACY_PASSWORD = 'UPDATE users SET legacypassword = null WHERE user_id = @user_id';
+
 	const REMOVE_RESERVATION_ACCESSORY =
 			'DELETE FROM reservation_accessories WHERE accessory_id = @accessoryid AND series_id = @seriesid';
 

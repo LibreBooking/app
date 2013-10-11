@@ -1459,6 +1459,15 @@ class RemoveAttributeValueCommand extends SqlCommand
 		$this->AddParameter(new Parameter(ParameterNames::ATTRIBUTE_ENTITY_ID, $entityId));
 	}
 }
+class RemoveLegacyPasswordCommand extends SqlCommand
+{
+	public function __construct($userId)
+	{
+		parent::__construct(Queries::REMOVE_LEGACY_PASSWORD);
+
+		$this->AddParameter(new Parameter(ParameterNames::USER_ID, $userId));
+	}
+}
 
 class RemoveReservationAccessoryCommand extends SqlCommand
 {

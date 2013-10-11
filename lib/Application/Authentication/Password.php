@@ -151,6 +151,7 @@ class OldPassword extends Password
 		$salt = $this->Encryption->Salt();
 		$encrypted = $this->Encryption->Encrypt($this->plaintext, $salt);
 		ServiceLocator::GetDatabase()->Execute(new MigratePasswordCommand($userid, $encrypted, $salt));
-	}	
+		ServiceLocator::GetDatabase()->Execute(new RemoveLegacyPasswordCommand($userid));
+	}
 }
 ?>
