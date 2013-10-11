@@ -64,14 +64,15 @@ class Ldap2Wrapper
 	/**
 	 * @param $username string
 	 * @param $password string
+	 * @param $filter string
 	 * @return bool
 	 */
-	public function Authenticate($username, $password)
-	{
-		$this->PopulateUser($username);
+     public function Authenticate($username, $password, $filter)
+    {
+          $this->PopulateUser($username, $filter);
 
-		if ($this->user == null)
-		{
+         if ($this->user == null)
+         {
 			return false;
 		}
 
@@ -95,15 +96,27 @@ class Ldap2Wrapper
 
 	/**
 	 * @param $username string
+	 * @param $configFilter string
 	 * @return void
 	 */
-	private function PopulateUser($username)
+	private function PopulateUser($username, $configFilter)
 	{
 		$uidAttribute = $this->options->GetUserIdAttribute();
 		Log::Debug('LDAP - uid attribute: %s', $uidAttribute);
 		$RequiredGroup = $this->options->GetRequiredGroup();
 
 		$filter = Net_LDAP2_Filter::create($uidAttribute, 'equals', $username);
+
+		if ($configFilter)
+		{
+			$configFilter = Net_LDAP2_Filter::parse($configFilter);
+			if (Net_LDAP2::isError($configFilter))
+			{
+				$message = 'Could not parse search filter %s: ' . $configFilter->getMessage();
+				Log::Error($message, $username);
+			}
+			$filter = Net_LDAP2_Filter::combine('and', array($filter, $configFilter));
+		}
 
 		$attributes = $this->options->Attributes();
 		Log::Debug('LDAP - Loading user attributes: %s', implode(', ', $attributes));
@@ -161,7 +174,7 @@ class Ldap2Wrapper
 	public function GetLdapUser($username)
 	{
 		return $this->user;
-	}
+    }
 }
 
 ?>

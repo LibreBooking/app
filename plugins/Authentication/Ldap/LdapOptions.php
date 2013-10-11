@@ -140,7 +140,12 @@ class LdapOptions
 	public function GetRequiredGroup()
 	{
 		return $this->GetConfig(LdapConfig::REQUIRED_GROUP);
-	}
+    }
+
+     public function Filter()
+     {
+          return $this->_options[LdapConfig::FILTER];
+     }
 
 }
 
