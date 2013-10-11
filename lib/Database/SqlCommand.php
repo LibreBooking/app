@@ -106,7 +106,8 @@ class CountCommand extends SqlCommand
 
 	public function GetQuery()
 	{
-		return preg_replace('/SELECT.+FROM/imsU', 'SELECT COUNT(*) as total FROM', $this->baseCommand->GetQuery(), 1);
+		return 'SELECT COUNT(*) as total FROM (' . $this->baseCommand->GetQuery() . ') results';
+//		return preg_replace('/SELECT.+FROM/imsU', 'SELECT COUNT(*) as total FROM', $this->baseCommand->GetQuery(), 1);
 	}
 }
 

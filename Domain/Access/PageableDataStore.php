@@ -34,16 +34,10 @@ class PageableDataStore
 	 */
 	public static function GetList($command, $listBuilder, $pageNumber = null, $pageSize = null, $sortField = null, $sortDirection = null)
 	{
-		$total = 0;
+		$total = null;
+		$totalCounter = 0;
 		$results = array();
 		$db = ServiceLocator::GetDatabase();
-
-		// TODO this can be moved into else clause, dont need to run 2 queries
-		$totalReader = $db->Query(new CountCommand($command));
-		if ($row = $totalReader->GetRow())
-		{
-			$total = $row[ColumnNames::TOTAL];
-		}
 
 		if ((is_null($pageNumber) && is_null($pageSize)) || $pageSize == PageInfo::All)
 		{
@@ -51,6 +45,12 @@ class PageableDataStore
 		}
 		else
 		{
+			$totalReader = $db->Query(new CountCommand($command));
+			if ($row = $totalReader->GetRow())
+			{
+				$total = $row[ColumnNames::TOTAL];
+			}
+
 			$pageNumber = is_null($pageNumber) ? 1 : $pageNumber;
 			$pageSize = is_null($pageSize) ? 1 : $pageSize;
 			
@@ -60,10 +60,11 @@ class PageableDataStore
 		while ($row = $resultReader->GetRow())
 		{
 			$results[] = call_user_func($listBuilder, $row);
+			$totalCounter++;
 		}
 		$resultReader->Free();
 
-		return new PageableData($results, $total, $pageNumber, $pageSize);
+		return new PageableData($results, is_null($total) ? $totalCounter : $total, $pageNumber, $pageSize);
 	}
 }
 

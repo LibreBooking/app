@@ -229,11 +229,12 @@ class DatabaseCommandTests extends PHPUnit_Framework_TestCase
 
 	public function testCountCommandReplacesSelectBlahFromWithSelectCountFrom()
 	{
-		$baseCommand = new AdHocCommand("SeLEcT F.*,    lbl,
-											abc.* fROM table WHERE blah = blah");
+		$baseSql = "SeLEcT F.*,    lbl,
+													abc.* fROM table WHERE blah = blah";
+		$baseCommand = new AdHocCommand($baseSql);
 		$countCommand = new CountCommand($baseCommand);
 
-		$this->assertEquals("SELECT COUNT(*) as total FROM table WHERE blah = blah", $countCommand->GetQuery());
+		$this->assertEquals("SELECT COUNT(*) as total FROM ($baseSql) results", $countCommand->GetQuery());
 	}
 
 	public function testFilterCommandWrapsAppendsToWhere()
