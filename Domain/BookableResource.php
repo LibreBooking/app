@@ -50,7 +50,6 @@ interface IResource extends IPermissibleResource
 interface IPermissibleResource
 {
 	/**
-	 * @abstract
 	 * @return int
 	 */
 	public function GetResourceId();

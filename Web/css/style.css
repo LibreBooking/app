@@ -4,7 +4,7 @@
 }
 
 body {
-	font: 11px Helvetica, "Helvetica Neue", "Lucida Grande", Verdana, Arial, sans-serif;
+	font: 12px Helvetica, "Helvetica Neue", "Lucida Grande", Verdana, Arial, sans-serif;
 	background-color: #fefefe;
 	margin: 0px;
 	color: #333333;
@@ -87,6 +87,11 @@ h1 {
 
 .button:hover {
 	background-color: #e0e0e0;
+}
+
+.button.disabled
+{
+	color:#949494;
 }
 
 /*********************************************************/

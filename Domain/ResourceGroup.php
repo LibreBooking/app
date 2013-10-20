@@ -23,17 +23,17 @@ class ResourceGroupTree
 	/**
 	 * @var $references ResourceGroup[]
 	 */
-	private $references = array();
+	protected $references = array();
 
 	/**
 	 * @var array|ResourceGroup[]
 	 */
-	private $groups = array();
+	protected $groups = array();
 
 	/**
 	 * @var array|ResourceDto[]
 	 */
-	private $resources = array();
+	protected $resources = array();
 
 	public function AddGroup(ResourceGroup $group)
 	{
@@ -203,4 +203,18 @@ class ResourceGroupAssignment
 	}
 }
 
+class EmptyResourceGroupTree extends ResourceGroupTree
+{
+	/**
+	 * @param $resources ResourceDto[]
+	 */
+	public function __construct($resources)
+	{
+		$this->AddGroup(new ResourceGroup(0, Resources::GetInstance()->GetString('All')));
+		foreach($resources as $resource)
+		{
+			$this->AddAssignment(new ResourceGroupAssignment(0, $resource->GetName(), $resource->GetId()));
+		}
+	}
+}
 ?>

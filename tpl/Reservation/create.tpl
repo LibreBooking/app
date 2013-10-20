@@ -17,7 +17,7 @@ You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 *}
 {block name="header"}
-{include file='globalheader.tpl' cssFiles='css/reservation.css,css/jquery.qtip.min.css'}
+{include file='globalheader.tpl' cssFiles='css/reservation.css,css/jquery.qtip.min.css,scripts/css/jqtree.css'}
 {/block}
 
 <div id="reservationbox">
@@ -59,10 +59,15 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
                         <input type="hidden" id="scheduleId" {formname key=SCHEDULE_ID} value="{$ScheduleId}"/>
                     </div>
 				{if $ShowAdditionalResources}
-                    <a href="#"
-                       onclick="$('#dialogAddResources').dialog('open'); return false;" class="small-action">{translate key=MoreResources}{html_image src="plus-small-white.png"}</a>
+                    <a id="btnAddResources" href="#" class="small-action">{translate key=MoreResources}{html_image src="plus-small-white.png"}</a>
 				{/if}
-                    <div id="additionalResources"></div>
+                    <div id="additionalResources">
+						{foreach from=$AvailableResources item=resource}
+							{if is_array($AdditionalResourceIds) && in_array($resource->Id, $AdditionalResourceIds)}
+								<p><a href="#" class="resourceDetails">{$resource->Name}</a><input class="resourceId" type="hidden" name="{FormKeys::ADDITIONAL_RESOURCES}[]" value="{$resource->Id}"/></p>
+							{/if}
+						{/foreach}
+                    </div>
                 </div>
                 <div style="float:right;">
 				{if $AvailableAccessories|count > 0}
@@ -227,6 +232,14 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 {/if}
 </form>
 
+<div id="dialogResourceGroups" class="dialog" title="{translate key=AddResources}">
+
+	<div id="resourceGroups"></div>
+
+	<button id="btnConfirmAddResources" class="button">{html_image src="tick-circle.png"} {translate key='Done'}</button>
+	<button id="btnClearAddResources" class="button">{html_image src="slash.png"} {translate key='Cancel'}</button>
+</div>
+
 <div id="dialogAddResources" class="dialog" title="{translate key=AddResources}" style="display:none;">
 
 {foreach from=$AvailableResources item=resource}
@@ -306,6 +319,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 <script type="text/javascript" src="scripts/autocomplete.js"></script>
 <script type="text/javascript" src="scripts/force-numeric.js"></script>
 <script type="text/javascript" src="scripts/reservation-reminder.js"></script>
+<script type="text/javascript" src="scripts/js/tree.jquery.js"></script>
 
 <script type="text/javascript">
 
@@ -326,6 +340,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
             updateUrl:'ajax/reservation_update.php',
             deleteUrl:'ajax/reservation_delete.php',
             userAutocompleteUrl:"ajax/autocomplete.php?type={AutoCompleteType::User}",
+            groupAutocompleteUrl:"ajax/autocomplete.php?type={AutoCompleteType::Group}",
             changeUserAutocompleteUrl:"ajax/autocomplete.php?type={AutoCompleteType::MyUsers}"
         };
 
@@ -364,21 +379,21 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
         reservation.addAccessory('{$accessory->AccessoryId}', '{$accessory->QuantityReserved}', "{$accessory->Name|escape:'javascript'}");
 	{/foreach}
 
+	reservation.addResourceGroups({$ResourceGroupsAsJson});
+
         var ajaxOptions = {
             target:'#result', // target element(s) to be updated with server response
             beforeSubmit:reservation.preSubmit, // pre-submit callback
             success:reservation.showResponse  // post-submit callback
         };
 
-        $('#reservationForm').submit(function ()
-        {
-            $(this).ajaxSubmit(ajaxOptions);
-            return false;
-        });
-        $('#description').TextAreaExpander();
-
-
-    });
+	$('#reservationForm').submit(function ()
+	{
+		$(this).ajaxSubmit(ajaxOptions);
+		return false;
+	});
+	$('#description').TextAreaExpander();
+});
 </script>
 
 {include file='globalfooter.tpl'}

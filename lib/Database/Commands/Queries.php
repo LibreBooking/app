@@ -387,12 +387,12 @@ class Queries
 		ORDER BY bi.start_date ASC';
 
 	const GET_BLACKOUT_LIST_FULL =
-			'SELECT bi.*, resources.*, u.*, bs.*, schedules.schedule_id
-		FROM blackout_instances bi
-		INNER JOIN blackout_series bs ON bi.blackout_series_id = bs.blackout_series_id
-		INNER JOIN resources on bs.resource_id = resources.resource_id
-		INNER JOIN schedules on resources.schedule_id = schedules.schedule_id
-		INNER JOIN users u ON u.user_id = bs.owner_id
+		'SELECT bi.*, r.resource_id, r.name, u.*, bs.description, bs.title, schedules.schedule_id
+					FROM blackout_instances bi
+					INNER JOIN blackout_series bs ON bi.blackout_series_id = bs.blackout_series_id
+					INNER JOIN resources r on bs.resource_id = r.resource_id
+					INNER JOIN schedules on r.schedule_id = schedules.schedule_id
+					INNER JOIN users u ON u.user_id = bs.owner_id
 		ORDER BY bi.start_date ASC';
 
 	const GET_DASHBOARD_ANNOUNCEMENTS =

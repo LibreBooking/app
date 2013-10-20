@@ -138,7 +138,7 @@ class Reservation
 
 		if (empty($referenceNumber))
 		{
-			$this->SetReferenceNumber(uniqid('', true));
+			$this->SetReferenceNumber(str_replace('.', '', uniqid('', true)));
 		}
 	}
 

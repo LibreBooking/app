@@ -72,6 +72,10 @@ class AutoCompletePage extends SecurePage
 	 */
 	private function GetUsers($term)
 	{
+		if ($term == 'group')
+		{
+			return $this->GetGroupUsers($this->GetQuerystring(QueryStringKeys::GROUP_ID));
+		}
 		$filter = new SqlFilterLike(ColumnNames::FIRST_NAME, $term);
 		$filter->_Or(new SqlFilterLike(ColumnNames::LAST_NAME, $term));
 		$filter->_Or(new SqlFilterLike(ColumnNames::EMAIL, $term));
@@ -94,7 +98,7 @@ class AutoCompletePage extends SecurePage
 	{
 		$filter = new SqlFilterLike(new SqlFilterColumn(TableNames::GROUPS_ALIAS,ColumnNames::GROUP_NAME), $term);
 		$r = new GroupRepository();
-		return $r->GetList(1, 100, null, null, $filter)->Results();
+		return $r->GetList(1, PageInfo::All, null, null, $filter)->Results();
 	}
 
 	/**
@@ -134,6 +138,21 @@ class AutoCompletePage extends SecurePage
 				// consolidates results by user id if the user is in multiple groups
 				$users[$result->Id] = new AutocompleteUser($result->Id, $result->First, $result->Last, $result->Email, $result->Username);
 			}
+		}
+
+		return array_values($users);
+	}
+
+	private function GetGroupUsers($groupId)
+	{
+		$groupRepo = new GroupRepository();
+		$results = $groupRepo->GetUsersInGroup($groupId)->Results();
+
+		/** @var $result UserItemView */
+		foreach ($results as $result)
+		{
+			// consolidates results by user id if the user is in multiple groups
+			$users[$result->Id] = new AutocompleteUser($result->Id, $result->First, $result->Last, $result->Email, $result->Username);
 		}
 
 		return array_values($users);

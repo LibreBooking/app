@@ -19,6 +19,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 require_once(ROOT_DIR . 'lib/Application/Attributes/namespace.php');
+require_once(ROOT_DIR . 'lib/Application/Reservation/namespace.php');
 
 interface IResourceService
 {
@@ -47,10 +48,11 @@ interface IResourceService
 	public function GetAccessories();
 
 	/**
-	 * @param $scheduleId
+	 * @param int $scheduleId
+	 * @param UserSession $user
 	 * @return ResourceGroupTree
 	 */
-	public function GetResourceGroups($scheduleId);
+	public function GetResourceGroups($scheduleId, UserSession $user);
 
 	/**
 	 * @return ResourceType[]
@@ -147,9 +149,17 @@ class ResourceService implements IResourceService
 		return $this->_resourceRepository->GetAccessoryList();
 	}
 
-	public function GetResourceGroups($scheduleId)
+	public function GetResourceGroups($scheduleId, UserSession $user)
 	{
-		return $this->_resourceRepository->GetResourceGroups($scheduleId);
+		$filter = new ResourcePermissionFilter($this->_permissionService, $user);
+		$groups = $this->_resourceRepository->GetResourceGroups($scheduleId, $filter);
+
+		if (count($groups->GetGroups()) <= 0)
+		{
+			$groups = new EmptyResourceGroupTree($this->GetScheduleResources($scheduleId, false, $user));
+		}
+
+		return $groups;
 	}
 
 	public function GetResourceTypes()
@@ -187,7 +197,6 @@ class ResourceService implements IResourceService
 		return $attributes;
 	}
 }
-
 
 class ResourceDto
 {

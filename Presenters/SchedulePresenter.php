@@ -100,7 +100,7 @@ class SchedulePresenter extends ActionPresenter implements ISchedulePresenter {
         $scheduleDates = $this->_builder->GetScheduleDates($user, $currentSchedule, $this->_page);
         $this->_builder->BindDisplayDates($this->_page, $scheduleDates, $user, $currentSchedule);
 
-		$resourceGroups = $this->_resourceService->GetResourceGroups($activeScheduleId);
+		$resourceGroups = $this->_resourceService->GetResourceGroups($activeScheduleId, $user);
 		$this->_builder->BindResourceGroups($this->_page, $resourceGroups);
 
 		$resourceTypes = $this->_resourceService->GetResourceTypes();

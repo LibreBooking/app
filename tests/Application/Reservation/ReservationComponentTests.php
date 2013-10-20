@@ -138,10 +138,13 @@ class ReservationComponentTests extends TestBase
 		$otherResource2 = new ResourceDto(100, 'something', false);
 		$resourceList = array($otherResource, $bookedResource, $otherResource2);
 
+		$groups = new FakeResourceGroupTree();
+		$groups->WithAllResources($resourceList);
+
 		$this->resourceService->expects($this->once())
 		->method('GetResourceGroups')
-		->with($this->equalTo($requestedScheduleId), $this->equalTo(true), $this->equalTo($this->fakeUser))
-		->will($this->returnValue($resourceList));
+		->with($this->equalTo($requestedScheduleId), $this->equalTo($this->fakeUser))
+		->will($this->returnValue($groups));
 
 		// accessories
 		$accessoryList = array(new AccessoryDto(1, 'a1', 30), new AccessoryDto(2, 'a2', 20));
@@ -150,8 +153,8 @@ class ReservationComponentTests extends TestBase
 		->will($this->returnValue($accessoryList));
 
 		$this->initializer->expects($this->once())
-		->method('BindAvailableResources')
-		->with($this->equalTo($resourceList));
+		->method('BindResourceGroups')
+		->with($this->equalTo($groups));
 
 		$this->initializer->expects($this->once())
 		->method('ShowAdditionalResources')

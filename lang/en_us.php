@@ -470,6 +470,7 @@ class en_us extends Language
 		$strings['ResourceGroupHelp1'] = 'Drag and drop resource groups to reorganize.';
 		$strings['ResourceGroupHelp2'] = 'Right click a resource group name for additional actions.';
 		$strings['ResourceGroupHelp3'] = 'Drag and drop resources to add them to groups.';
+		$strings['ResourceGroupWarning'] = 'If using resource groups, each resource must be assigned to at least one group. Unassinged resources will not be able to be reserved.';
 		$strings['ResourceType'] = 'Resource Type';
 		$strings['AppliesTo'] = 'Applies To';
 		$strings['UniquePerInstance'] = 'Unique Per Instance';

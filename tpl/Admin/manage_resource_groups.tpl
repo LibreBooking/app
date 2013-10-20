@@ -49,6 +49,10 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 	</div>
 </div>
 
+<div class="warning" id="resourceGroupWarning">
+	{translate key=ResourceGroupWarning}
+</div>
+
 <input type="hidden" id="activeId" value=""/>
 
 <div id="renameDialog" class="dialog" title="{translate key=Rename}">
@@ -117,7 +121,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 			renameText: '{translate key=Rename}',
 			addChildText: '{translate key=AddGroup}',
 			deleteText: '{translate key=Delete}',
-			exitText: '{translate key=Quit}'
+			exitText: '{translate key=Close}'
 		};
 
 		var groupManagement = new ResourceGroupManagement(groupOptions);

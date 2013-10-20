@@ -134,3 +134,20 @@
 	font-size: 9pt;
 	color: #3d5b74;
 }
+
+
+/*.jqtree-tree li {*/
+	/*list-style: none;*/
+/*}*/
+
+ul.jqtree-tree li.jqtree-selected > .jqtree-element, ul.jqtree-tree .jqtree-toggler {
+	top: 10%;
+}
+
+ul.jqtree-tree .group-resource .jqtree-title {
+	color:#111111;
+}
+
+/*ul.jqtree-tree li.jqtree-selected {*/
+	/*font-weight:normal;*/
+/*}*/

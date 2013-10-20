@@ -119,6 +119,11 @@ interface IReservationComponentInitializer
 	public function BindAvailableAccessories($accessories);
 
 	/**
+	 * @param $groups ResourceGroupTree
+	 */
+	public function BindResourceGroups($groups);
+
+	/**
 	 * @param $shouldShow bool
 	 */
 	public function ShowAdditionalResources($shouldShow);
@@ -386,6 +391,11 @@ abstract class ReservationInitializerBase implements IReservationInitializer, IR
 	public function BindAvailableAccessories($accessories)
 	{
 		$this->basePage->BindAvailableAccessories($accessories);
+	}
+
+	public function BindResourceGroups($groups)
+	{
+		$this->basePage->BindResourceGroups($groups);
 	}
 
 	/**

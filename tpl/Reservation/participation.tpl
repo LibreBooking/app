@@ -26,12 +26,17 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 					<img src="img/user-plus.png"/>
 				{translate key='SelectUser'}
 				</button>
+				<button id="promptForGroupParticipants" type="button" class="button" style="display:inline">
+					<img src="img/users.png"/>
+				{translate key='Groups'}
+				</button>
 			</label>
 
 			<div id="participantList">
 				<ul/>
 			</div>
 			<div id="participantDialog" title="{translate key=AddParticipants}" class="dialog"></div>
+			<div id="participantGroupDialog" title="{translate key=AddParticipants}" class="dialog"></div>
 		</li>
 		<li>
 			<label>{translate key="InvitationList"}<br/>
@@ -41,12 +46,17 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 					{html_image src="user-plus.png"}
 				{translate key='SelectUser'}
 				</button>
+				<button id="promptForGroupInvitees" type="button" class="button" style="display:inline">
+					<img src="img/users.png"/>
+				{translate key='Groups'}
+				</button>
 			</label>
 
 			<div id="inviteeList">
 				<ul/>
 			</div>
 			<div id="inviteeDialog" title="{translate key=InviteOthers}" class="dialog"></div>
+			<div id="inviteeGroupDialog" title="{translate key=InviteOthers}" class="dialog"></div>
 		</li>
 	</ul>
 </div>

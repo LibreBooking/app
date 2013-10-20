@@ -37,11 +37,15 @@ interface IReservationPage extends IPage
 	function BindAvailableResources($resources);
 
 	/**
-	 * @abstract
 	 * @param $accessories array|AccessoryDto[]
 	 * @return void
 	 */
 	function BindAvailableAccessories($accessories);
+
+	/**
+	 * @param $groups ResourceGroupTree
+	 */
+	function BindResourceGroups($groups);
 
 	/**
 	 * @param SchedulePeriod $selectedStart
@@ -251,6 +255,11 @@ abstract class ReservationPage extends Page implements IReservationPage
 	public function BindAvailableAccessories($accessories)
 	{
 		$this->Set('AvailableAccessories', $accessories);
+	}
+
+	public function BindResourceGroups($groups)
+	{
+		$this->Set('ResourceGroupsAsJson', json_encode($groups->GetGroups()));
 	}
 
 	public function SetSelectedStart(SchedulePeriod $selectedStart, Date $startDate)

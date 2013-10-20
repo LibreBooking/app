@@ -251,6 +251,21 @@ class ResourceServiceTests extends TestBase
 		$this->assertEquals(1, count($attributes));
 		$this->assertEquals($customAttributes[0]->Id(), $attributes[0]->Id());
 	}
+
+	public function testFiltersResourcesWhenGettingResourceGroups()
+	{
+		$scheduleId = 18;
+		$expectedGroups = new FakeResourceGroupTree();
+
+		$this->resourceRepository->expects($this->once())
+							->method('GetResourceGroups')
+							->with($this->equalTo($scheduleId), $this->anything())
+							->will($this->returnValue($expectedGroups));
+
+		$groups = $this->resourceService->GetResourceGroups($scheduleId, $this->fakeUser);
+
+		$this->assertEquals($expectedGroups, $groups);
+	}
 }
 
 ?>
