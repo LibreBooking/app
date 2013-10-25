@@ -23,6 +23,9 @@ require_once(ROOT_DIR . 'lib/Common/namespace.php');
 
 class PasswordMigrationTests extends PHPUnit_Framework_TestCase
 {
+	/**
+	 * @var FakeDatabase
+	 */
 	private $_db;
 	private $plaintext = 'password';
 	private $newEncryption;
@@ -79,7 +82,7 @@ class PasswordMigrationTests extends PHPUnit_Framework_TestCase
 		
 		$password->Migrate($userid);
 		$encrypted = $fakeEncryption->Encrypt($this->plaintext, $salt);
-		$this->assertEquals(new MigratePasswordCommand($userid, $encrypted, $salt), $this->_db->_LastCommand, "did not migrate the password");
+		$this->assertTrue($this->_db->ContainsCommand(new MigratePasswordCommand($userid, $encrypted, $salt)), "did not migrate the password");
 	}
 }
 ?>

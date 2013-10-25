@@ -23,14 +23,12 @@ require_once(ROOT_DIR . 'Domain/Blackout.php');
 interface IBlackoutRepository
 {
 	/**
-	 * @abstract
-	 * @param Blackout $blackout
+	 * @param BlackoutSeries $blackoutSeries
 	 * @return int
 	 */
-	public function Add(Blackout $blackout);
+	public function Add(BlackoutSeries $blackoutSeries);
 
     /**
-     * @abstract
      * @param int $blackoutId
      */
     public function Delete($blackoutId);
@@ -39,14 +37,20 @@ interface IBlackoutRepository
 class BlackoutRepository implements IBlackoutRepository
 {
 	/**
-	 * @param Blackout $blackout
+	 * @param BlackoutSeries $blackoutSeries
 	 * @return int
 	 */
-	public function Add(Blackout $blackout)
+	public function Add(BlackoutSeries $blackoutSeries)
 	{
 		$db = ServiceLocator::GetDatabase();
-		$seriesId = $db->ExecuteInsert(new AddBlackoutCommand($blackout->OwnerId(), $blackout->ResourceId(), $blackout->Title()));
-		return $db->ExecuteInsert(new AddBlackoutInstanceCommand($seriesId, $blackout->StartDate(), $blackout->EndDate()));
+		$seriesId = $db->ExecuteInsert(new AddBlackoutCommand($blackoutSeries->OwnerId(), $blackoutSeries->ResourceId(), $blackoutSeries->Title()));
+		// foreach resourceids, add resourceids
+		foreach ($blackoutSeries->AllBlackouts() as $blackout)
+		{
+			$db->ExecuteInsert(new AddBlackoutInstanceCommand($seriesId, $blackout->StartDate(), $blackout->EndDate()));
+		}
+
+		return $seriesId;
 	}
 
     /**

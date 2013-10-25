@@ -92,21 +92,15 @@ class BlackoutsServiceTests extends TestBase
 				->with($this->equalTo($start), $this->equalTo($end), $this->isNull(), $this->isNull(), $this->isNull(), $this->equalTo(3))
 				->will($this->returnValue(array($reservationAfter)));
 
-		$blackout1 = Blackout::Create($userId, $resourceIds[0], $title, $date);
-		$blackout2 = Blackout::Create($userId, $resourceIds[1], $title, $date);
-		$blackout3 = Blackout::Create($userId, $resourceIds[2], $title, $date);
+		$series = new BlackoutSeries($userId, $title);
+		$series->AddBlackout(new Blackout($date));
+		$series->AddResource($resourceIds[0]);
+		$series->AddResource($resourceIds[1]);
+		$series->AddResource($resourceIds[2]);
 
-		$this->blackoutRepository->expects($this->at(0))
+		$this->blackoutRepository->expects($this->once())
 				->method('Add')
-				->with($this->equalTo($blackout1));
-
-		$this->blackoutRepository->expects($this->at(1))
-				->method('Add')
-				->with($this->equalTo($blackout2));
-
-		$this->blackoutRepository->expects($this->at(2))
-				->method('Add')
-				->with($this->equalTo($blackout3));
+				->with($this->equalTo($series));
 
 		$result = $this->service->Add($date, $resourceIds, $title, $this->conflictHandler, new RepeatNone());
 
@@ -145,6 +139,10 @@ class BlackoutsServiceTests extends TestBase
 		$resourceIds = array($resourceId);
 		$title = 'title';
 
+		$series = new BlackoutSeries($userId, $title);
+				$series->AddBlackout(new Blackout($date));
+				$series->AddResource(2);
+
 		$this->reservationViewRepository->expects($this->once())
 				->method('GetBlackoutsWithin')
 				->with($this->equalTo($date))
@@ -169,7 +167,7 @@ class BlackoutsServiceTests extends TestBase
 
 		$this->blackoutRepository->expects($this->once())
 				->method('Add')
-				->with($this->equalTo(Blackout::Create($userId, 2, $title, $date)));
+				->with($this->equalTo($series));
 
 		$result = $this->service->Add($date, $resourceIds, $title, $this->conflictHandler, new RepeatNone());
 
@@ -232,6 +230,8 @@ class BlackoutsServiceTests extends TestBase
 		/** @var $allDates DateRange[] */
 		$allDates = array_merge(array($range), $repeatDates);
 
+		$series = new BlackoutSeries($userId, $title);
+		$series->AddResource($resourceId);
 		for ($i = 0; $i < count($allDates); $i++)
 		{
 			$date = $allDates[$i];
@@ -245,10 +245,12 @@ class BlackoutsServiceTests extends TestBase
 					->with($this->equalTo($date->GetBegin()), $this->equalTo($date->GetEnd()), $this->isNull(), $this->isNull(), $this->isNull(), $this->equalTo($resourceId))
 					->will($this->returnValue(array()));
 
-			$this->blackoutRepository->expects($this->at($i))
-					->method('Add')
-					->with($this->equalTo(Blackout::Create($userId, $resourceId, $title, $date)));
+			$series->AddBlackout(new Blackout($date));
 		}
+
+		$this->blackoutRepository->expects($this->at($i))
+							->method('Add')
+							->with($this->equalTo($series));
 
 		$this->assertEquals(4, $i, 'should create 4 blackouts');
 

@@ -98,6 +98,7 @@ class ExistingReservationTests extends TestBase
 		$repeatDaily = new RepeatDaily(1, $currentSeriesDate->AddDays(10)->GetBegin());
 
 		$builder = new ExistingReservationSeriesBuilder();
+		$builder->WithBookedBy($this->fakeUser);
 		$builder->WithRepeatOptions($currentRepeatOptions);
 		$builder->WithInstance($oldReservation);
 		$builder->WithInstance($currentInstance);

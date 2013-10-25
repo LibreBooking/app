@@ -78,7 +78,7 @@ class ExistingReservationDeleteTests extends TestBase
 		
 		$events = $series->GetEvents();
 		
-		$this->assertTrue(in_array(new InstanceRemovedEvent($current, $series), $events));
+		$this->assertTrue(in_array(new SeriesDeletedEvent($series), $events));
 	}
 	
 	public function testDeleteAllInstancesDeletesInstancesAfterTodaysDate()

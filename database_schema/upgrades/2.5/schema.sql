@@ -1,10 +1,8 @@
-
 ALTER TABLE `custom_attributes` ADD COLUMN `entity_id` mediumint(8) unsigned;
 
 ALTER TABLE `resources` ADD COLUMN `resource_type_id` mediumint(8) unsigned;
 
 DROP TABLE IF EXISTS `resource_group_assignment`;
-
 
 DROP TABLE IF EXISTS `resource_groups`;
 CREATE TABLE `resource_groups` (
@@ -26,7 +24,6 @@ CREATE TABLE `resource_types` (
   PRIMARY KEY (`resource_type_id`)
 ) ENGINE=InnoDB DEFAULT CHARACTER SET utf8;
 
-
 ALTER TABLE `resources` ADD FOREIGN KEY (`resource_type_id`) REFERENCES resource_types(`resource_type_id`) ON DELETE CASCADE;
 
 DROP TABLE IF EXISTS `resource_group_assignment`;
@@ -44,3 +41,10 @@ CREATE TABLE `resource_group_assignment` (
 	ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARACTER SET utf8;
 
+DELETE blackout_series
+FROM blackout_series
+LEFT JOIN resources ON blackout_series.resource_id = resources.resource_id
+WHERE resources.resource_id IS NULL;
+
+ALTER TABLE `blackout_series` MODIFY COLUMN `resource_id` SMALLINT(5) UNSIGNED NOT NULL;
+ALTER TABLE `blackout_series` ADD FOREIGN KEY (`resource_id`) REFERENCES `resources` (`resource_id`) ON DELETE CASCADE;

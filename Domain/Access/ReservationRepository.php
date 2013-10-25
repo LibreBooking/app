@@ -549,7 +549,7 @@ class EventCommand
 	/**
 	 * @var ExistingReservationSeries
 	 */
-	private $series;
+	protected $series;
 
 	public function __construct(ISqlCommand $command, ExistingReservationSeries $series)
 	{
@@ -586,11 +586,6 @@ class InstanceRemovedEventCommand extends EventCommand
 	 */
 	private $instance;
 
-	/**
-	 * @var ReservationSeries
-	 */
-	private $series;
-
 	public function __construct(Reservation $instance, ReservationSeries $series)
 	{
 		$this->instance = $instance;
@@ -609,11 +604,6 @@ class InstanceAddedEventCommand extends EventCommand
 	 * @var Reservation
 	 */
 	private $instance;
-
-	/**
-	 * @var ReservationSeries
-	 */
-	private $series;
 
 	public function __construct(Reservation $instance, ReservationSeries $series)
 	{
@@ -653,11 +643,6 @@ class InstanceUpdatedEventCommand extends EventCommand
 	 * @var Reservation
 	 */
 	private $instance;
-
-	/**
-	 * @var ExistingReservationSeries
-	 */
-	private $series;
 
 	public function __construct(Reservation $instance, ExistingReservationSeries $series)
 	{

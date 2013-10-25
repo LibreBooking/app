@@ -16,10 +16,9 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 
-
-class Blackout
+class BlackoutSeries
 {
 	/**
 	 * @var int
@@ -27,9 +26,14 @@ class Blackout
 	protected $ownerId;
 
 	/**
-	 * @var int
+	 * @var int[]
 	 */
-	protected $resourceId;
+	protected $resourceIds;
+
+	/**
+	 * @var Blackout[]
+	 */
+	protected $blackouts;
 
 	/**
 	 * @var string
@@ -37,35 +41,92 @@ class Blackout
 	protected $title;
 
 	/**
+	 * @param int $userId
+	 * @param string $title
+	 */
+	public function __construct($userId, $title)
+	{
+		$this->ownerId = $userId;
+		$this->title = $title;
+	}
+
+	/**
+	 * @return int
+	 */
+	public function ResourceIds()
+	{
+		return $this->resourceIds;
+	}
+
+	/**
+	 * @return int
+	 */
+	public function OwnerId()
+	{
+		return $this->ownerId;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function Title()
+	{
+		return $this->title;
+	}
+
+	/**
+	 * @param $resourceId int
+	 */
+	public function AddResource($resourceId)
+	{
+		$this->resourceIds[] = $resourceId;
+	}
+
+	public function AddBlackout(Blackout $blackout)
+	{
+		$this->blackouts[] = $blackout;
+	}
+
+	/**
+	 * @return Blackout[]
+	 */
+	public function AllBlackouts()
+	{
+		return $this->blackouts;
+	}
+
+	/**
+	 * @return int
+	 */
+	public function ResourceId()
+	{
+		return $this->resourceIds[0];
+	}
+
+	/**
+	 * @param int $resourceId
+	 * @return bool
+	 */
+	public function ContainsResource($resourceId)
+	{
+		return in_array($resourceId, $this->resourceIds);
+	}
+}
+
+class Blackout
+{
+
+	/**
 	 * @var DateRange
 	 */
 	protected $date;
 
 	/**
-	 * @param int $userId
-	 * @param int $resourceId
-	 * @param string $title
 	 * @param DateRange $blackoutDate
 	 */
-	protected function __construct($userId, $resourceId, $title, $blackoutDate)
+	public function __construct($blackoutDate)
 	{
-		$this->ownerId = $userId;
-		$this->resourceId = $resourceId;
-		$this->title = $title;
 		$this->date = $blackoutDate;
-	}
-
-	/**
-	 * @static
-	 * @param int $userId
-	 * @param int $resourceId
-	 * @param string $title
-	 * @param DateRange $blackoutDate
-	 * @return Blackout
-	 */
-	public static function Create($userId, $resourceId, $title, $blackoutDate)
-	{
-		return new Blackout($userId, $resourceId, $title, $blackoutDate);
 	}
 
 	/**
@@ -92,28 +153,7 @@ class Blackout
 		return $this->date->GetEnd();
 	}
 
-	/**
-	 * @return int
-	 */
-	public function ResourceId()
-	{
-		return $this->resourceId;
-	}
 
-	/**
-	 * @return int
-	 */
-	public function OwnerId()
-	{
-		return $this->ownerId;
-	}
-
-	/**
-	 * @return string
-	 */
-	public function Title()
-	{
-		return $this->title;
-	}
 }
+
 ?>

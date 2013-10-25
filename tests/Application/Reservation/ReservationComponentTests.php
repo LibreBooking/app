@@ -190,11 +190,13 @@ class ReservationComponentTests extends TestBase
 		->will($this->returnValue($this->fakeUser));
 
 		$resourceList = array();
+		$groups = new FakeResourceGroupTree();
+		$groups->WithAllResources($resourceList);
 
 		$this->resourceService->expects($this->once())
-		->method('GetScheduleResources')
-		->with($this->equalTo($requestedScheduleId), $this->equalTo(true), $this->equalTo($this->fakeUser))
-		->will($this->returnValue($resourceList));
+				->method('GetResourceGroups')
+				->with($this->equalTo($requestedScheduleId), $this->equalTo($this->fakeUser))
+				->will($this->returnValue($groups));
 
 		$this->initializer->expects($this->once())
 		->method('RedirectToError')

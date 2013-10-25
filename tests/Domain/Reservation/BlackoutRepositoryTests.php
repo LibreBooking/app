@@ -34,7 +34,7 @@ class BlackoutRepositoryTests extends TestBase
 		$this->repository = new BlackoutRepository();
 	}
 
-	public function testCanAddNewBlackout()
+	public function testCanAddNewBlackoutSeries()
 	{
 		$seriesId = 9909870;
 		$userId = 123;
@@ -44,11 +44,13 @@ class BlackoutRepositoryTests extends TestBase
 		$end = Date::Parse('2000-02-01 13:22:33');
 		$date = new DateRange($start, $end);
 
-		$blackout = Blackout::Create($userId, $resourceId, $title, $date);
+		$series = new BlackoutSeries($userId, $title);
+		$series->AddResource($resourceId);
+		$series->AddBlackout(new Blackout($date));
 
 		$this->db->_ExpectedInsertId = $seriesId;
 
-		$this->repository->Add($blackout);
+		$this->repository->Add($series);
 
 		$addBlackoutCommand = new AddBlackoutCommand($userId, $resourceId, $title);
 		$addBlackoutInstanceCommand = new AddBlackoutInstanceCommand($seriesId, $start, $end);

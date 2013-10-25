@@ -256,6 +256,7 @@ class ResourceServiceTests extends TestBase
 	{
 		$scheduleId = 18;
 		$expectedGroups = new FakeResourceGroupTree();
+		$expectedGroups->AddGroup(new ResourceGroup(1, 'g'));
 
 		$this->resourceRepository->expects($this->once())
 							->method('GetResourceGroups')

@@ -21,7 +21,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 class ExistingReservationSeriesBuilder
 {
 	/**
-	 * @var TestHelperExistingReservationSeries
+	 * @var ExistingReservationSeries
 	 */
 	public $series;
 	
@@ -43,7 +43,9 @@ class ExistingReservationSeriesBuilder
 	private $instances;
 	private $events;
     private $id = 1;
-	
+
+	private $bookedBy;
+
 	private $requiresNewSeries = false;
 	
 	public function __construct()
@@ -61,7 +63,7 @@ class ExistingReservationSeriesBuilder
 		$series->WithResource(new FakeBookableResource(3));
 		$series->WithTitle('title');
 		$series->WithStatus(ReservationStatus::Created);
-		
+
 		$this->series = $series;
 	}
 
@@ -85,6 +87,11 @@ class ExistingReservationSeriesBuilder
 		$this->currentInstance = $reservation;
 		
 		return $this;
+	}
+
+	public function WithBookedBy(UserSession $user)
+	{
+		$this->bookedBy = $user;
 	}
 
 	/**
@@ -158,6 +165,7 @@ class ExistingReservationSeriesBuilder
 		}
 
 		$this->series->WithPrimaryResource($this->resource);
+		$this->series->Update(1, $this->resource, 'title', 'description', $this->bookedBy);
 
 		return $this->series;
 	}
@@ -209,7 +217,7 @@ class TestHelperExistingReservationSeries extends ExistingReservationSeries
 		return $this->instances;
 	}
 
-	private function WithBookedBy($bookedBy)
+	public function WithBookedBy($bookedBy)
 	{
 		$this->_bookedBy = $bookedBy;
 	}
