@@ -439,7 +439,7 @@ class ExistingReservationSeries extends ReservationSeries
 		return $this->instances;
 	}
 
-	protected function AddEvent(SeriesEvent $event)
+	public function AddEvent(SeriesEvent $event)
 	{
 		$this->events[] = $event;
 	}

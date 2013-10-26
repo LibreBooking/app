@@ -64,6 +64,7 @@ class ExistingReservationSeriesBuilder
 		$series->WithTitle('title');
 		$series->WithStatus(ReservationStatus::Created);
 
+		$this->bookedBy = new FakeUserSession();
 		$this->series = $series;
 	}
 

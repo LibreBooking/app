@@ -20,8 +20,8 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 
 class FakeAttributeList implements IEntityAttributeList
 {
-	private $_attributes;
-	private $_entityAttributes;
+	private $_attributes = array();
+	private $_entityAttributes = array();
 
 	/**
 	 * @param array|Attribute[] $attributes

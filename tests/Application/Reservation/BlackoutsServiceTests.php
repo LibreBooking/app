@@ -71,7 +71,7 @@ class BlackoutsServiceTests extends TestBase
 		$blackoutBefore = new TestBlackoutItemView(1, Date::Parse('2010-01-01'), $start, 3);
 		$blackoutAfter = new TestBlackoutItemView(2, $end, Date::Parse('2012-01-01'), 1);
 		$blackoutDuring = new TestBlackoutItemView(3, $start, $end, 4);
-		$this->reservationViewRepository->expects($this->exactly(3))
+		$this->reservationViewRepository->expects($this->once())
 				->method('GetBlackoutsWithin')
 				->with($this->equalTo($date))
 				->will($this->returnValue(array($blackoutBefore, $blackoutAfter, $blackoutDuring)));
@@ -79,18 +79,10 @@ class BlackoutsServiceTests extends TestBase
 		$reservationBefore = new TestReservationItemView(1, Date::Parse('2010-01-01'), $start, 1);
 		$reservationAfter = new TestReservationItemView(2, $end, Date::Parse('2012-01-01'), 2);
 
-		$this->reservationViewRepository->expects($this->at(3))
+		$this->reservationViewRepository->expects($this->once())
 				->method('GetReservationList')
-				->with($this->equalTo($start), $this->equalTo($end), $this->isNull(), $this->isNull(), $this->isNull(), $this->equalTo(1))
-				->will($this->returnValue(array($reservationBefore)));
-		$this->reservationViewRepository->expects($this->at(4))
-				->method('GetReservationList')
-				->with($this->equalTo($start), $this->equalTo($end), $this->isNull(), $this->isNull(), $this->isNull(), $this->equalTo(2))
-				->will($this->returnValue(array()));
-		$this->reservationViewRepository->expects($this->at(5))
-				->method('GetReservationList')
-				->with($this->equalTo($start), $this->equalTo($end), $this->isNull(), $this->isNull(), $this->isNull(), $this->equalTo(3))
-				->will($this->returnValue(array($reservationAfter)));
+				->with($this->equalTo($start), $this->equalTo($end))
+				->will($this->returnValue(array($reservationBefore, $reservationAfter)));
 
 		$series = new BlackoutSeries($userId, $title);
 		$series->AddBlackout(new Blackout($date));
@@ -152,7 +144,7 @@ class BlackoutsServiceTests extends TestBase
 		$reservation2 = new TestReservationItemView(2, $start, $end, 2);
 		$this->reservationViewRepository->expects($this->once())
 				->method('GetReservationList')
-				->with($this->equalTo($start), $this->equalTo($end), $this->isNull(), $this->isNull(), $this->isNull(), $this->equalTo($resourceId))
+				->with($this->equalTo($start), $this->equalTo($end))
 				->will($this->returnValue(array($reservation1, $reservation2)));
 
 		$this->conflictHandler->expects($this->at(0))
@@ -192,7 +184,7 @@ class BlackoutsServiceTests extends TestBase
 		$reservation2 = new TestReservationItemView(2, $start, $end, 2);
 		$this->reservationViewRepository->expects($this->once())
 				->method('GetReservationList')
-				->with($this->equalTo($start), $this->equalTo($end), $this->isNull(), $this->isNull(), $this->isNull(), $this->equalTo($resourceId))
+				->with($this->equalTo($start), $this->equalTo($end))
 				->will($this->returnValue(array($reservation1, $reservation2)));
 
 		$this->conflictHandler->expects($this->at(0))
@@ -232,6 +224,7 @@ class BlackoutsServiceTests extends TestBase
 
 		$series = new BlackoutSeries($userId, $title);
 		$series->AddResource($resourceId);
+
 		for ($i = 0; $i < count($allDates); $i++)
 		{
 			$date = $allDates[$i];
@@ -240,15 +233,15 @@ class BlackoutsServiceTests extends TestBase
 					->with($this->equalTo($date))
 					->will($this->returnValue(array()));
 
-			$this->reservationViewRepository->expects($this->at($i + 4)) // index is per mock, not per method
+			$this->reservationViewRepository->expects($this->at($i + count($allDates))) // index is per mock, not per method
 					->method('GetReservationList')
-					->with($this->equalTo($date->GetBegin()), $this->equalTo($date->GetEnd()), $this->isNull(), $this->isNull(), $this->isNull(), $this->equalTo($resourceId))
+					->with($this->equalTo($date->GetBegin()), $this->equalTo($date->GetEnd()))
 					->will($this->returnValue(array()));
 
 			$series->AddBlackout(new Blackout($date));
 		}
 
-		$this->blackoutRepository->expects($this->at($i))
+		$this->blackoutRepository->expects($this->at(0))
 							->method('Add')
 							->with($this->equalTo($series));
 

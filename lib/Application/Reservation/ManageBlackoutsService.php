@@ -117,10 +117,11 @@ class ManageBlackoutsService implements IManageBlackoutsService
 		foreach ($resourceIds as $resourceId)
 		{
 			$blackoutSeries->AddResource($resourceId);
-			foreach ($dates as $date)
-			{
-				$blackoutSeries->AddBlackout(new Blackout($date));
-			}
+		}
+
+		foreach ($dates as $date)
+		{
+			$blackoutSeries->AddBlackout(new Blackout($date));
 		}
 
 		$conflictingBlackouts = $this->GetConflictingBlackouts($blackoutSeries);

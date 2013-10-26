@@ -77,7 +77,7 @@ class GroupRepositoryTests extends TestBase
 		$this->db->SetRow(1, $rows);
 
 		$groupId = 50;
-		$users = $this->repository->GetUsersInGroup($groupId);
+		$users = $this->repository->GetUsersInGroup($groupId, 1, 20);
 
 		$actualCommand = $this->db->_LastCommand;
 
