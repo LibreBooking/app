@@ -84,13 +84,11 @@ class AddAttributeValueCommand extends SqlCommand
 
 class AddBlackoutCommand extends SqlCommand
 {
-	public function __construct($userId, $resourceId, $title)
+	public function __construct($userId, $title)
 	{
 		parent::__construct(Queries::ADD_BLACKOUT_SERIES);
-		$this->AddParameter(new Parameter(ParameterNames::DATE_CREATED, Date::Now()
-																		->ToDatabase()));
+		$this->AddParameter(new Parameter(ParameterNames::DATE_CREATED, Date::Now()->ToDatabase()));
 		$this->AddParameter(new Parameter(ParameterNames::USER_ID, $userId));
-		$this->AddParameter(new Parameter(ParameterNames::RESOURCE_ID, $resourceId));
 		$this->AddParameter(new Parameter(ParameterNames::TITLE, $title));
 	}
 }
@@ -103,6 +101,16 @@ class AddBlackoutInstanceCommand extends SqlCommand
 		$this->AddParameter(new Parameter(ParameterNames::SERIES_ID, $blackoutSeriesId));
 		$this->AddParameter(new Parameter(ParameterNames::START_DATE, $startDate->ToDatabase()));
 		$this->AddParameter(new Parameter(ParameterNames::END_DATE, $endDate->ToDatabase()));
+	}
+}
+
+class AddBlackoutResourceCommand extends SqlCommand
+{
+	public function __construct($blackoutSeriesId, $resourceId)
+	{
+		parent::__construct(Queries::ADD_BLACKOUT_RESOURCE);
+		$this->AddParameter(new Parameter(ParameterNames::SERIES_ID, $blackoutSeriesId));
+		$this->AddParameter(new Parameter(ParameterNames::RESOURCE_ID, $resourceId));
 	}
 }
 

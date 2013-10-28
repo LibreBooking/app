@@ -41,10 +41,24 @@ CREATE TABLE `resource_group_assignment` (
 	ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARACTER SET utf8;
 
+DROP TABLE IF EXISTS `blackout_series_resources`;
+CREATE TABLE `blackout_series_resources` (
+ `blackout_series_id` int unsigned NOT NULL,
+ `resource_id` smallint(5) unsigned NOT NULL,
+  PRIMARY KEY (`blackout_series_id`, `resource_id`),
+	FOREIGN KEY (`blackout_series_id`)
+		REFERENCES blackout_series(`blackout_series_id`)
+		ON DELETE CASCADE,
+	FOREIGN KEY (`resource_id`)
+		REFERENCES resources(`resource_id`)
+	ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARACTER SET utf8;
+
 DELETE blackout_series
 FROM blackout_series
 LEFT JOIN resources ON blackout_series.resource_id = resources.resource_id
 WHERE resources.resource_id IS NULL;
 
-ALTER TABLE `blackout_series` MODIFY COLUMN `resource_id` SMALLINT(5) UNSIGNED NOT NULL;
-ALTER TABLE `blackout_series` ADD FOREIGN KEY (`resource_id`) REFERENCES `resources` (`resource_id`) ON DELETE CASCADE;
+INSERT INTO blackout_series_resources SELECT blackout_series_id, resource_id FROM blackout_series;
+
+ALTER TABLE blackout_series DROP COLUMN resource_id;

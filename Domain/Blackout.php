@@ -51,7 +51,7 @@ class BlackoutSeries
 	}
 
 	/**
-	 * @return int
+	 * @return int[]
 	 */
 	public function ResourceIds()
 	{

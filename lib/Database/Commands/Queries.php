@@ -49,11 +49,13 @@ class Queries
 			'INSERT INTO blackout_instances (start_date, end_date, blackout_series_id)
 		VALUES (@startDate, @endDate, @seriesid)';
 
+	const ADD_BLACKOUT_RESOURCE = 'INSERT INTO blackout_series_resources (blackout_series_id, resource_id) VALUES (@seriesid, @resourceid)';
+
 	const ADD_EMAIL_PREFERENCE =
 			'INSERT INTO user_email_preferences (user_id, event_category, event_type) VALUES (@userid, @event_category, @event_type)';
 
 	const ADD_BLACKOUT_SERIES =
-			'INSERT INTO blackout_series (date_created, title, owner_id, resource_id) VALUES (@dateCreated, @title, @userid, @resourceid)';
+			'INSERT INTO blackout_series (date_created, title, owner_id) VALUES (@dateCreated, @title, @userid)';
 
 	const ADD_GROUP =
 			'INSERT INTO groups (name) VALUES (@groupname)';
@@ -390,7 +392,8 @@ class Queries
 		'SELECT bi.*, r.resource_id, r.name, u.*, bs.description, bs.title, schedules.schedule_id
 					FROM blackout_instances bi
 					INNER JOIN blackout_series bs ON bi.blackout_series_id = bs.blackout_series_id
-					INNER JOIN resources r on bs.resource_id = r.resource_id
+					INNER JOIN blackout_series_resources bsr ON  bi.blackout_series_id = bsr.blackout_series_id
+					INNER JOIN resources r on bsr.resource_id = r.resource_id
 					INNER JOIN schedules on r.schedule_id = schedules.schedule_id
 					INNER JOIN users u ON u.user_id = bs.owner_id
 		ORDER BY bi.start_date ASC';

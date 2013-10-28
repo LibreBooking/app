@@ -43,8 +43,12 @@ class BlackoutRepository implements IBlackoutRepository
 	public function Add(BlackoutSeries $blackoutSeries)
 	{
 		$db = ServiceLocator::GetDatabase();
-		$seriesId = $db->ExecuteInsert(new AddBlackoutCommand($blackoutSeries->OwnerId(), $blackoutSeries->ResourceId(), $blackoutSeries->Title()));
-		// foreach resourceids, add resourceids
+		$seriesId = $db->ExecuteInsert(new AddBlackoutCommand($blackoutSeries->OwnerId(), $blackoutSeries->Title()));
+
+		foreach ($blackoutSeries->ResourceIds() as $resourceId)
+		{
+			$db->ExecuteInsert(new AddBlackoutResourceCommand($seriesId, $resourceId));
+		}
 		foreach ($blackoutSeries->AllBlackouts() as $blackout)
 		{
 			$db->ExecuteInsert(new AddBlackoutInstanceCommand($seriesId, $blackout->StartDate(), $blackout->EndDate()));

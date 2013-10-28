@@ -39,6 +39,7 @@ class BlackoutRepositoryTests extends TestBase
 		$seriesId = 9909870;
 		$userId = 123;
 		$resourceId = 555;
+		$resourceId2 = 5552;
 		$title = 'title';
 		$start = Date::Parse('2000-01-01 4:44:44');
 		$end = Date::Parse('2000-02-01 13:22:33');
@@ -46,17 +47,22 @@ class BlackoutRepositoryTests extends TestBase
 
 		$series = new BlackoutSeries($userId, $title);
 		$series->AddResource($resourceId);
+		$series->AddResource($resourceId2);
 		$series->AddBlackout(new Blackout($date));
 
 		$this->db->_ExpectedInsertId = $seriesId;
 
 		$this->repository->Add($series);
 
-		$addBlackoutCommand = new AddBlackoutCommand($userId, $resourceId, $title);
+		$addBlackoutCommand = new AddBlackoutCommand($userId, $title);
+		$addBlackoutResourceCommand1 = new AddBlackoutResourceCommand($seriesId, $resourceId);
+		$addBlackoutResourceCommand2 = new AddBlackoutResourceCommand($seriesId, $resourceId2);
 		$addBlackoutInstanceCommand = new AddBlackoutInstanceCommand($seriesId, $start, $end);
 
 		$this->assertEquals($addBlackoutCommand, $this->db->_Commands[0]);
-		$this->assertEquals($addBlackoutInstanceCommand, $this->db->_Commands[1]);
+		$this->assertEquals($addBlackoutResourceCommand1, $this->db->_Commands[1]);
+		$this->assertEquals($addBlackoutResourceCommand2, $this->db->_Commands[2]);
+		$this->assertEquals($addBlackoutInstanceCommand, $this->db->_Commands[3]);
 	}
 
     public function testDeletesBlackout()
