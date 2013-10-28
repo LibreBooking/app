@@ -218,10 +218,6 @@ class ExistingReservationSeries extends ReservationSeries
 	 */
 	public function Update($userId, BookableResource $resource, $title, $description, UserSession $updatedBy)
 	{
-		$this->_userId = $userId;
-		$this->_resource = $resource;
-		$this->_title = $title;
-		$this->_description = $description;
 		$this->_bookedBy = $updatedBy;
 
 		if ($this->seriesUpdateStrategy->RequiresNewSeries())
@@ -240,6 +236,11 @@ class ExistingReservationSeries extends ReservationSeries
 		{
 			$this->AddEvent(new OwnerChangedEvent($this, $this->UserId(), $userId));
 		}
+
+		$this->_userId = $userId;
+		$this->_resource = $resource;
+		$this->_title = $title;
+		$this->_description = $description;
 	}
 
 	/**

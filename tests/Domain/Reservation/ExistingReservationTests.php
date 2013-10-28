@@ -98,7 +98,7 @@ class ExistingReservationTests extends TestBase
 		$repeatDaily = new RepeatDaily(1, $currentSeriesDate->AddDays(10)->GetBegin());
 
 		$builder = new ExistingReservationSeriesBuilder();
-		$builder->WithBookedBy($this->fakeUser);
+//		$builder->WithBookedBy($this->fakeUser);
 		$builder->WithRepeatOptions($currentRepeatOptions);
 		$builder->WithInstance($oldReservation);
 		$builder->WithInstance($currentInstance);
@@ -109,6 +109,7 @@ class ExistingReservationTests extends TestBase
 		// updates
 		$series->ApplyChangesTo(SeriesUpdateScope::FutureInstances);
 		$series->Repeats($repeatDaily);
+		$series->Update($series->UserId(), $series->Resource(), $series->Title(), $series->Description(), $this->fakeUser);
 
 		$instances = $series->Instances();
 
@@ -169,6 +170,7 @@ class ExistingReservationTests extends TestBase
 		// updates
 		$series->ApplyChangesTo(SeriesUpdateScope::FutureInstances);
 		$series->Repeats($currentRepeatOptions);
+		$series->Update($series->UserId(), $series->Resource(), $series->Title(), $series->Description(), $this->fakeUser);
 
 		$instances = $series->Instances();
 
@@ -313,9 +315,8 @@ class ExistingReservationTests extends TestBase
 
 		$series = $builder->Build();
 		$series->ApplyChangesTo(SeriesUpdateScope::FullSeries);
-
-		$series->Update($series->UserId(), $newResource, 'new', 'new', new FakeUserSession());
 		$series->Repeats($repeatOptions);
+		$series->Update($series->UserId(), $newResource, 'new', 'new', new FakeUserSession());
 
 		$events = $series->GetEvents();
 

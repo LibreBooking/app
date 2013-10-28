@@ -38,14 +38,17 @@ class ReservationTests extends TestBase
 		$resourceId = 10;
 		$title = 'Title';
 		$description = 'some long decription';
-		
+		$tz = 'America/Chicago';
+
+		$userSession = new FakeUserSession();
+
 		$startDateCst = '2010-02-02 12:15';
 		$endDateCst = '2010-02-04 17:15';
 		
-		$startDateUtc = Date::Parse($startDateCst, 'CST')->ToUtc();
-		$endDateUtc = Date::Parse($endDateCst, 'CST')->ToUtc();
+		$startDateUtc = Date::Parse($startDateCst, $tz)->ToUtc();
+		$endDateUtc = Date::Parse($endDateCst, $tz)->ToUtc();
 		
-		$dateRange = DateRange::Create($startDateCst, $endDateCst, 'CST');
+		$dateRange = DateRange::Create($startDateCst, $endDateCst, $tz);
 		$repeatedDate = DateRange::Create('2010-01-01', '2010-01-02', 'UTC');
 		
 		$repeatOptions = $this->getMock('IRepeatOptions');
@@ -53,10 +56,8 @@ class ReservationTests extends TestBase
 		
 		$repeatOptions->expects($this->once())
 			->method('GetDates')
-			->with($this->equalTo($dateRange))
+			->with($this->equalTo($dateRange->ToTimezone($userSession->Timezone)))
 			->will($this->returnValue($repeatDates));
-
-		$userSession = new FakeUserSession();
 
 		$resource = new FakeBookableResource($resourceId);
 		$series = ReservationSeries::Create(
