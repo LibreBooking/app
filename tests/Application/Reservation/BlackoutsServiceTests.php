@@ -84,8 +84,7 @@ class BlackoutsServiceTests extends TestBase
 				->with($this->equalTo($start), $this->equalTo($end))
 				->will($this->returnValue(array($reservationBefore, $reservationAfter)));
 
-		$series = new BlackoutSeries($userId, $title);
-		$series->AddBlackout(new Blackout($date));
+		$series = new BlackoutSeries($userId, $title, $date);
 		$series->AddResource($resourceIds[0]);
 		$series->AddResource($resourceIds[1]);
 		$series->AddResource($resourceIds[2]);
@@ -131,9 +130,8 @@ class BlackoutsServiceTests extends TestBase
 		$resourceIds = array($resourceId);
 		$title = 'title';
 
-		$series = new BlackoutSeries($userId, $title);
-				$series->AddBlackout(new Blackout($date));
-				$series->AddResource(2);
+		$series = new BlackoutSeries($userId, $title, $date);
+		$series->AddResource(2);
 
 		$this->reservationViewRepository->expects($this->once())
 				->method('GetBlackoutsWithin')
@@ -222,8 +220,13 @@ class BlackoutsServiceTests extends TestBase
 		/** @var $allDates DateRange[] */
 		$allDates = array_merge(array($range), $repeatDates);
 
-		$series = new BlackoutSeries($userId, $title);
+		$series = new BlackoutSeries($userId, $title, $range);
 		$series->AddResource($resourceId);
+
+		foreach ($repeatDates as $date)
+		{
+			$series->AddBlackout(new Blackout($date));
+		}
 
 		for ($i = 0; $i < count($allDates); $i++)
 		{
@@ -238,7 +241,6 @@ class BlackoutsServiceTests extends TestBase
 					->with($this->equalTo($date->GetBegin()), $this->equalTo($date->GetEnd()))
 					->will($this->returnValue(array()));
 
-			$series->AddBlackout(new Blackout($date));
 		}
 
 		$this->blackoutRepository->expects($this->at(0))

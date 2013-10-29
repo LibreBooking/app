@@ -55,7 +55,7 @@ class Queries
 			'INSERT INTO user_email_preferences (user_id, event_category, event_type) VALUES (@userid, @event_category, @event_type)';
 
 	const ADD_BLACKOUT_SERIES =
-			'INSERT INTO blackout_series (date_created, title, owner_id) VALUES (@dateCreated, @title, @userid)';
+			'INSERT INTO blackout_series (date_created, title, owner_id, repeat_type, repeat_options) VALUES (@dateCreated, @title, @userid, @repeatType, @repeatOptions)';
 
 	const ADD_GROUP =
 			'INSERT INTO groups (name) VALUES (@groupname)';

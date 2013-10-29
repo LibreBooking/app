@@ -84,12 +84,14 @@ class AddAttributeValueCommand extends SqlCommand
 
 class AddBlackoutCommand extends SqlCommand
 {
-	public function __construct($userId, $title)
+	public function __construct($userId, $title, $repeatTypeId, $repeatTypeConfiguration)
 	{
 		parent::__construct(Queries::ADD_BLACKOUT_SERIES);
 		$this->AddParameter(new Parameter(ParameterNames::DATE_CREATED, Date::Now()->ToDatabase()));
 		$this->AddParameter(new Parameter(ParameterNames::USER_ID, $userId));
 		$this->AddParameter(new Parameter(ParameterNames::TITLE, $title));
+		$this->AddParameter(new Parameter(ParameterNames::REPEAT_TYPE, $repeatTypeId));
+		$this->AddParameter(new Parameter(ParameterNames::REPEAT_OPTIONS, $repeatTypeConfiguration));
 	}
 }
 

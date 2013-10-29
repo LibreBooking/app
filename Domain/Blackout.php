@@ -1,21 +1,21 @@
 <?php
 /**
-Copyright 2011-2013 Nick Korbel
-
-This file is part of phpScheduleIt.
-
-phpScheduleIt is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-phpScheduleIt is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
+ * Copyright 2011-2013 Nick Korbel
+ *
+ * This file is part of phpScheduleIt.
+ *
+ * phpScheduleIt is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * phpScheduleIt is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 class BlackoutSeries
@@ -41,13 +41,27 @@ class BlackoutSeries
 	protected $title;
 
 	/**
+	 * @var DateRange
+	 */
+	protected $blackoutDate;
+
+	/**
+	 * @var IRepeatOptions
+	 */
+	protected $repeatOptions;
+
+	/**
 	 * @param int $userId
 	 * @param string $title
+	 * @param DateRange $blackoutDate
 	 */
-	public function __construct($userId, $title)
+	public function __construct($userId, $title, DateRange $blackoutDate)
 	{
+		$this->repeatOptions = new RepeatNone();
 		$this->ownerId = $userId;
 		$this->title = $title;
+		$this->blackoutDate = $blackoutDate;
+		$this->AddBlackout(new Blackout($blackoutDate));
 	}
 
 	/**
@@ -110,6 +124,28 @@ class BlackoutSeries
 	public function ContainsResource($resourceId)
 	{
 		return in_array($resourceId, $this->resourceIds);
+	}
+
+	/**
+	 * @param IRepeatOptions $repeatOptions
+	 */
+	public function Repeats(IRepeatOptions $repeatOptions)
+	{
+		$this->repeatOptions = $repeatOptions;
+		foreach ($repeatOptions->GetDates($this->blackoutDate) as $date)
+		{
+			$this->AddBlackout(new Blackout($date));
+		}
+	}
+
+	public function RepeatType()
+	{
+		return $this->repeatOptions->RepeatType();
+	}
+
+	public function RepeatConfiguration()
+	{
+		return $this->repeatOptions->ConfigurationString();
 	}
 }
 

@@ -110,18 +110,14 @@ class ManageBlackoutsService implements IManageBlackoutsService
 
 		$userId = ServiceLocator::GetServer()->GetUserSession()->UserId;
 
-		$dates = array_merge(array($blackoutDate), $repeatOptions->GetDates($blackoutDate));
+//		$dates = array_merge(array($blackoutDate), $repeatOptions->GetDates($blackoutDate));
 
-		$blackoutSeries = new BlackoutSeries($userId, $title);
+		$blackoutSeries = new BlackoutSeries($userId, $title, $blackoutDate);
+		$blackoutSeries->Repeats($repeatOptions);
 
 		foreach ($resourceIds as $resourceId)
 		{
 			$blackoutSeries->AddResource($resourceId);
-		}
-
-		foreach ($dates as $date)
-		{
-			$blackoutSeries->AddBlackout(new Blackout($date));
 		}
 
 		$conflictingBlackouts = $this->GetConflictingBlackouts($blackoutSeries);

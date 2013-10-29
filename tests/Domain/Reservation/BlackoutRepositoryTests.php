@@ -45,24 +45,26 @@ class BlackoutRepositoryTests extends TestBase
 		$end = Date::Parse('2000-02-01 13:22:33');
 		$date = new DateRange($start, $end);
 
-		$series = new BlackoutSeries($userId, $title);
+		$series = new BlackoutSeries($userId, $title, $date);
 		$series->AddResource($resourceId);
 		$series->AddResource($resourceId2);
-		$series->AddBlackout(new Blackout($date));
+		$repeatOptions = new RepeatDaily(1, $start->AddDays(2));
+		$series->Repeats($repeatOptions);
 
 		$this->db->_ExpectedInsertId = $seriesId;
 
 		$this->repository->Add($series);
 
-		$addBlackoutCommand = new AddBlackoutCommand($userId, $title);
+		$addBlackoutCommand = new AddBlackoutCommand($userId, $title, $repeatOptions->RepeatType(), $repeatOptions->ConfigurationString());
 		$addBlackoutResourceCommand1 = new AddBlackoutResourceCommand($seriesId, $resourceId);
 		$addBlackoutResourceCommand2 = new AddBlackoutResourceCommand($seriesId, $resourceId2);
 		$addBlackoutInstanceCommand = new AddBlackoutInstanceCommand($seriesId, $start, $end);
 
 		$this->assertEquals($addBlackoutCommand, $this->db->_Commands[0]);
-		$this->assertEquals($addBlackoutResourceCommand1, $this->db->_Commands[1]);
-		$this->assertEquals($addBlackoutResourceCommand2, $this->db->_Commands[2]);
-		$this->assertEquals($addBlackoutInstanceCommand, $this->db->_Commands[3]);
+		$this->assertTrue($this->db->ContainsCommand($addBlackoutResourceCommand1));
+		$this->assertTrue($this->db->ContainsCommand($addBlackoutResourceCommand2));
+		$this->assertTrue($this->db->ContainsCommand($addBlackoutInstanceCommand));
+		$this->assertTrue($this->db->ContainsCommand(new AddBlackoutInstanceCommand($seriesId, $start->AddDays(1), $end->AddDays(1))));
 	}
 
     public function testDeletesBlackout()

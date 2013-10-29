@@ -62,3 +62,6 @@ WHERE resources.resource_id IS NULL;
 INSERT INTO blackout_series_resources SELECT blackout_series_id, resource_id FROM blackout_series;
 
 ALTER TABLE blackout_series DROP COLUMN resource_id;
+
+ALTER TABLE blackout_series ADD COLUMN `repeat_type` varchar(10) default NULL;
+ALTER TABLE blackout_series ADD COLUMN `repeat_options` varchar(255) default NULL;
