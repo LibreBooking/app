@@ -658,7 +658,7 @@ class RepeatConfiguration
 		}
 
 		$config = new RepeatConfiguration();
-		$config->Type = $repeatType;
+		$config->Type = empty($repeatType) ? RepeatType::None : $repeatType;
 
 		$config->Interval = self::Get($configParts, 'interval');
 		$config->SetTerminationDate(self::Get($configParts, 'termination'));

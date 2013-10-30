@@ -339,9 +339,12 @@ class ReservationViewRepositoryTests extends TestBase
 		$lastName = 'l';
 		$title = 'title';
 		$description = 'description';
+		$repeatType = RepeatType::Daily;
+		$repeat = new RepeatDaily(1, $end->AddDays(2));
+		$repeatOptions = $repeat->ConfigurationString();
 
 		$rows[] = $this->GetBlackoutRow($instanceId, $start, $end, $resourceId, $userid, $scheduleId, $title,
-										$description, $firstName, $lastName, $resourceName, $seriesId);
+										$description, $firstName, $lastName, $resourceName, $seriesId, $repeatType, $repeatOptions);
 		$rows[] = $this->GetBlackoutRow("1", Date::Now(), Date::Now());
 
 		$this->db->SetRows($rows);
@@ -350,7 +353,7 @@ class ReservationViewRepositoryTests extends TestBase
 
 		$blackouts = $this->repository->GetBlackoutsWithin($dateRange);
 
-		$b = new BlackoutItemView($instanceId, $start->ToUtc(), $end->ToUtc(), $resourceId, $userid, $scheduleId, $title, $description, $firstName, $lastName, $resourceName, $seriesId);
+		$b = new BlackoutItemView($instanceId, $start->ToUtc(), $end->ToUtc(), $resourceId, $userid, $scheduleId, $title, $description, $firstName, $lastName, $resourceName, $seriesId, $repeatOptions, $repeatType);
 
 		$this->assertEquals($getBlackoutsCommand, $this->db->_LastCommand);
 		$this->assertEquals(2, count($blackouts));
@@ -456,7 +459,9 @@ class ReservationViewRepositoryTests extends TestBase
 		$firstName = 'fname',
 		$lastName = 'lname',
 		$resourceName = 'resource name',
-		$seriesId = 999)
+		$seriesId = 999,
+		$repeatType = RepeatType::None,
+		$repeatOptions = '')
 	{
 		return array(
 			ColumnNames::BLACKOUT_INSTANCE_ID => $instanceId,
@@ -470,7 +475,9 @@ class ReservationViewRepositoryTests extends TestBase
 			ColumnNames::FIRST_NAME => $firstName,
 			ColumnNames::LAST_NAME => $lastName,
 			ColumnNames::RESOURCE_NAME => $resourceName,
-			ColumnNames::BLACKOUT_SERIES_ID => $seriesId
+			ColumnNames::BLACKOUT_SERIES_ID => $seriesId,
+			ColumnNames::REPEAT_TYPE => $repeatType,
+			ColumnNames::REPEAT_OPTIONS => $repeatOptions,
 		);
 	}
 }

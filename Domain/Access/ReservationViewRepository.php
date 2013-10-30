@@ -1235,6 +1235,11 @@ class BlackoutItemView implements IReservedItemView
 	public $OwnerId;
 
 	/**
+	 * @var RepeatConfiguration
+	 */
+	public $RepeatConfiguration;
+
+	/**
 	 * @param int $instanceId
 	 * @param Date $startDate
 	 * @param Date $endDate
@@ -1247,6 +1252,8 @@ class BlackoutItemView implements IReservedItemView
 	 * @param string $lastName
 	 * @param string $resourceName
 	 * @param int $seriesId
+	 * @param string $repeatOptions
+	 * @param string $repeatType
 	 */
 	public function __construct(
 		$instanceId,
@@ -1260,7 +1267,9 @@ class BlackoutItemView implements IReservedItemView
 		$firstName,
 		$lastName,
 		$resourceName,
-		$seriesId)
+		$seriesId,
+		$repeatOptions,
+		$repeatType)
 	{
 		$this->InstanceId = $instanceId;
 		$this->StartDate = $startDate;
@@ -1275,6 +1284,8 @@ class BlackoutItemView implements IReservedItemView
 		$this->ResourceName = $resourceName;
 		$this->SeriesId = $seriesId;
 		$this->Date = new DateRange($startDate, $endDate);
+		$this->RepeatConfiguration = RepeatConfiguration::Create($repeatType, $repeatOptions);
+		$this->IsRecurring = !empty($repeatType) && $repeatType != RepeatType::None;
 	}
 
 	/**
@@ -1295,7 +1306,9 @@ class BlackoutItemView implements IReservedItemView
 									$row[ColumnNames::FIRST_NAME],
 									$row[ColumnNames::LAST_NAME],
 									$row[ColumnNames::RESOURCE_NAME],
-									$row[ColumnNames::BLACKOUT_SERIES_ID]);
+									$row[ColumnNames::BLACKOUT_SERIES_ID],
+									$row[ColumnNames::REPEAT_OPTIONS],
+									$row[ColumnNames::REPEAT_TYPE]);
 	}
 
 	/**
