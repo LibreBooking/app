@@ -34,6 +34,7 @@ class UserSession
 	public $PublicId = '';
 	public $LoginTime = '';
 	public $ScheduleId = '';
+	public $Groups = array();
 
 	public function __construct($id)
 	{

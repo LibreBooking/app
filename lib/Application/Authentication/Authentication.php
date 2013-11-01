@@ -68,7 +68,7 @@ class Authentication implements IAuthentication
 
     public function Validate($username, $password)
     {
-		if (empty($username) || empty($password))
+		if (($this->ShowUsernamePrompt() && empty($username)) || ($this->ShowPasswordPrompt() && empty($password)))
 		{
 			return false;
 		}
