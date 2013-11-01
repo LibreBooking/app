@@ -214,14 +214,19 @@ class ManageBlackoutsPresenterTests extends TestBase
     public function testDeletesBlackoutById()
     {
         $id = 123;
+		$scope = SeriesUpdateScope::ThisInstance;
 
         $this->page->expects($this->once())
         			->method('GetBlackoutId')
         			->will($this->returnValue($id));
 
+		$this->page->expects($this->once())
+		        			->method('GetSeriesUpdateScope')
+		        			->will($this->returnValue(SeriesUpdateScope::ThisInstance));
+
         $this->blackoutsService->expects($this->once())
         			->method('Delete')
-        			->with($this->equalTo($id));
+        			->with($this->equalTo($id), $this->equalTo($scope));
 
         $this->presenter->DeleteBlackout();
     }

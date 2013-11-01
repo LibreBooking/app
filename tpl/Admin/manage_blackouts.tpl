@@ -133,7 +133,11 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 		<td style="width:150px;">{formatdate date=$blackout->EndDate timezone=$Timezone key=res_popup}</td>
 		<td>{$blackout->Title}</td>
 		<td>{fullname first=$blackout->FirstName last=$blackout->LastName}</td>
-		<td align="center" style="width: 65px;"><a href="#" class="update delete">{html_image src='cross-button.png'}</a></td>
+		{if $blackout->IsRecurring}
+			<td align="center" style="width: 65px;"><a href="#" class="update delete-recurring">{html_image src='cross-button.png'}</a></td>
+		{else}
+			<td align="center" style="width: 65px;"><a href="#" class="update delete">{html_image src='cross-button.png'}</a></td>
+		{/if}
 	</tr>
 	{/foreach}
 </table>
@@ -147,6 +151,18 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 		</div>
 		<button type="button" class="button save">{html_image src="cross-button.png"} {translate key='Delete'}</button>
 		<button type="button" class="button cancel">{html_image src="slash.png"} {translate key='Cancel'}</button>
+	</form>
+</div>
+
+<div id="deleteRecurringDialog" class="dialog" style="display:none;" title="{translate key=Delete}">
+	<form id="deleteRecurringForm" method="post">
+		<div class="error" style="margin-bottom: 25px;">
+			<h3>{translate key=DeleteWarning}</h3>
+		</div>
+		<button type="button" id="btnUpdateThisInstance" class="button save">{html_image src="cross-button.png"} {translate key='ThisInstance'}</button>
+		<button type="button" id="btnUpdateAllInstances" class="button save">{html_image src="cross-button.png"} {translate key='AllInstances'}</button>
+		<button type="button" class="button cancel">{html_image src="slash.png"} {translate key='Cancel'}</button>
+		<input type="hidden" {formname key=SERIES_UPDATE_SCOPE} id="hdnSeriesUpdateScope" value="{SeriesUpdateScope::FullSeries}"/>
 	</form>
 </div>
 
@@ -171,14 +187,14 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 $(document).ready(function() {
 
 	var updateScope = {};
-	updateScope['btnUpdateThisInstance'] = '{SeriesUpdateScope::ThisInstance}';
-	updateScope['btnUpdateAllInstances'] = '{SeriesUpdateScope::FullSeries}';
-	updateScope['btnUpdateFutureInstances'] = '{SeriesUpdateScope::FutureInstances}';
+	updateScope.instance = '{SeriesUpdateScope::ThisInstance}';
+	updateScope.full = '{SeriesUpdateScope::FullSeries}';
+	updateScope.future = '{SeriesUpdateScope::FutureInstances}';
 
 	var actions = {};
 		
 	var blackoutOpts = {
-		updateScope: updateScope,
+		scopeOpts: updateScope,
 		actions: actions,
 		deleteUrl: '{$smarty.server.SCRIPT_NAME}?action={ManageBlackoutsActions::DELETE}&{QueryStringKeys::BLACKOUT_ID}=',
 		addUrl: '{$smarty.server.SCRIPT_NAME}?action={ManageBlackoutsActions::ADD}',

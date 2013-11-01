@@ -47,8 +47,9 @@ interface IManageBlackoutsService
 
 	/**
 	 * @param int $blackoutId
+	 * @param string $updateScope
 	 */
-	public function Delete($blackoutId);
+	public function Delete($blackoutId, $updateScope);
 }
 
 class ManageBlackoutsService implements IManageBlackoutsService
@@ -109,8 +110,6 @@ class ManageBlackoutsService implements IManageBlackoutsService
 		}
 
 		$userId = ServiceLocator::GetServer()->GetUserSession()->UserId;
-
-//		$dates = array_merge(array($blackoutDate), $repeatOptions->GetDates($blackoutDate));
 
 		$blackoutSeries = new BlackoutSeries($userId, $title, $blackoutDate);
 		$blackoutSeries->Repeats($repeatOptions);
@@ -192,12 +191,16 @@ class ManageBlackoutsService implements IManageBlackoutsService
 		return $conflictingBlackouts;
 	}
 
-	/**
-	 * @param int $blackoutId
-	 */
-	public function Delete($blackoutId)
+	public function Delete($blackoutId, $updateScope)
 	{
-		$this->blackoutRepository->Delete($blackoutId);
+		if ($updateScope == SeriesUpdateScope::FullSeries)
+		{
+			$this->blackoutRepository->DeleteSeries($blackoutId);
+		}
+		else
+		{
+			$this->blackoutRepository->Delete($blackoutId);
+		}
 	}
 }
 

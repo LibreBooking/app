@@ -70,12 +70,21 @@ class BlackoutRepositoryTests extends TestBase
     public function testDeletesBlackout()
     {
         $id = 98123;
-        $deleteBlackoutCommand = new DeleteBlackoutCommand($id);
+        $deleteBlackoutCommand = new DeleteBlackoutInstanceCommand($id);
 
         $this->repository->Delete($id);
 
         $this->assertEquals($deleteBlackoutCommand, $this->db->_Commands[0]);
     }
+
+	public function testDeletesBlackoutSeriesByBlackoutId()
+	{
+		$id = 98123;
+	    $deleteBlackoutCommand = new DeleteBlackoutSeriesCommand($id);
+		$this->repository->DeleteSeries($id);
+
+		$this->assertEquals($deleteBlackoutCommand, $this->db->_Commands[0]);
+	}
 }
 
 ?>

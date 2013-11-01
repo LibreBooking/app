@@ -178,7 +178,11 @@ class Queries
 
 	const DELETE_ANNOUNCEMENT = 'DELETE FROM announcements WHERE announcementid = @announcementid';
 
-	const DELETE_BLACKOUT_SERIES = 'DELETE FROM blackout_series WHERE blackout_series_id = @seriesid';
+	const DELETE_BLACKOUT_SERIES = 'DELETE blackout_series FROM blackout_series
+		INNER JOIN blackout_instances ON blackout_series.blackout_series_id = blackout_instances.blackout_series_id
+		WHERE blackout_instance_id = @blackout_instance_id';
+
+	const DELETE_BLACKOUT_INSTANCE = 'DELETE FROM blackout_instances WHERE blackout_instance_id = @blackout_instance_id';
 
 	const DELETE_EMAIL_PREFERENCE =
 			'DELETE FROM user_email_preferences WHERE user_id = @userid AND event_category = @event_category AND event_type = @event_type';
@@ -390,7 +394,7 @@ class Queries
 		ORDER BY bi.start_date ASC';
 
 	const GET_BLACKOUT_LIST_FULL =
-		'SELECT bi.*, r.resource_id, r.name, u.*, bs.description, bs.title, schedules.schedule_id
+		'SELECT bi.*, r.resource_id, r.name, u.*, bs.description, bs.title, bs.repeat_type, bs.repeat_options, schedules.schedule_id
 					FROM blackout_instances bi
 					INNER JOIN blackout_series bs ON bi.blackout_series_id = bs.blackout_series_id
 					INNER JOIN blackout_series_resources bsr ON  bi.blackout_series_id = bsr.blackout_series_id

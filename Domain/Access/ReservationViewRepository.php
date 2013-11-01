@@ -1240,6 +1240,11 @@ class BlackoutItemView implements IReservedItemView
 	public $RepeatConfiguration;
 
 	/**
+	 * @var bool
+	 */
+	public $IsRecurring;
+
+	/**
 	 * @param int $instanceId
 	 * @param Date $startDate
 	 * @param Date $endDate

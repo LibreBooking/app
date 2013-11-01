@@ -265,11 +265,25 @@ class BlackoutsServiceTests extends TestBase
 	public function testDeletesBlackoutById()
 	{
 		$blackoutId = 123;
+		$scope = SeriesUpdateScope::ThisInstance;
+
 		$this->blackoutRepository->expects($this->once())
 				->method('Delete')
 				->with($this->equalTo($blackoutId));
 
-		$this->service->Delete($blackoutId);
+		$this->service->Delete($blackoutId, $scope);
+	}
+
+	public function testDeletesBlackoutSeriesByInstanceId()
+	{
+		$blackoutId = 123;
+		$scope = SeriesUpdateScope::FullSeries;
+
+		$this->blackoutRepository->expects($this->once())
+				->method('DeleteSeries')
+				->with($this->equalTo($blackoutId));
+
+		$this->service->Delete($blackoutId, $scope);
 	}
 
 	public function testGetsBlackoutsThatUserCanManageIfNotAdmin()

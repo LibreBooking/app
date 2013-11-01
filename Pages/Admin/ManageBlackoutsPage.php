@@ -26,158 +26,138 @@ require_once(ROOT_DIR . 'Presenters/Admin/ManageReservationsPresenter.php');
 interface IManageBlackoutsPage extends IPageable, IActionPage, IRepeatOptionsComposite
 {
 	/**
-	 * @abstract
 	 * @param array|BlackoutItemView[] $blackouts
 	 * @return void
 	 */
 	public function BindBlackouts($blackouts);
 
 	/**
-	 * @abstract
 	 * @return string
 	 */
 	public function GetStartDate();
 
 	/**
-	 * @abstract
 	 * @return string
 	 */
 	public function GetEndDate();
 
 	/**
-	 * @abstract
 	 * @return int
 	 */
 	public function GetScheduleId();
 
 	/**
-	 * @abstract
 	 * @return int
 	 */
 	public function GetResourceId();
 
 	/**
-	 * @abstract
 	 * @param Date $date|null
 	 * @return void
 	 */
 	public function SetStartDate($date);
 
 	/**
-	 * @abstract
 	 * @param Date $date|null
 	 * @return void
 	 */
 	public function SetEndDate($date);
 
 	/**
-	 * @abstract
 	 * @param int $scheduleId
 	 * @return void
 	 */
 	public function SetScheduleId($scheduleId);
 
 	/**
-	 * @abstract
 	 * @param int $resourceId
 	 * @return void
 	 */
 	public function SetResourceId($resourceId);
 
 	/**
-	 * @abstract
 	 * @param array|Schedule[] $schedules
 	 * @return void
 	 */
 	public function BindSchedules($schedules);
 
 	/**
-	 * @abstract
 	 * @param array|BookableResource[] $resources
 	 * @return void
 	 */
 	public function BindResources($resources);
 
 	/**
-	 * @abstract
 	 * @return int
 	 */
 	public function GetDeleteBlackoutId();
 
 	/**
-	 * @abstract
 	 * @return string
 	 */
 	public function GetDeleteScope();
 
 	/**
-	 * @abstract
 	 * @return void
 	 */
 	public function ShowPage();
 
 	/**
-	 * @abstract
 	 * @return bool
 	 */
 	public function GetApplyBlackoutToAllResources();
 
 	/**
-	 * @abstract
 	 * @return int
 	 */
 	public function GetBlackoutScheduleId();
 
 	/**
-	 * @abstract
 	 * @return int
 	 */
 	public function GetBlackoutResourceId();
 
 	/**
-	 * @abstract
 	 * @return string
 	 */
 	public function GetBlackoutStartDate();
 
 	/**
-	 * @abstract
 	 * @return string
 	 */
 	public function GetBlackoutStartTime();
 
 	/**
-	 * @abstract
 	 * @return string
 	 */
 	public function GetBlackoutEndDate();
 
 	/**
-	 * @abstract
 	 * @return string
 	 */
 	public function GetBlackoutEndTime();
 
 	/**
-	 * @abstract
 	 * @return string
 	 */
 	public function GetBlackoutTitle();
 
 	/**
-	 * @abstract
 	 * @return string|ReservationConflictResolution
 	 */
 	public function GetBlackoutConflictAction();
 
     /**
-     * @abstract
      * @return int
      */
     public function GetBlackoutId();
 
 	/**
-	 * @abstract
+	 * @return string
+	 */
+	public function GetSeriesUpdateScope();
+
+	/**
 	 * @param bool $wasAddedSuccessfully
 	 * @param string $displayMessage
 	 * @param array|ReservationItemView[] $conflictingReservations
@@ -191,12 +171,12 @@ interface IManageBlackoutsPage extends IPageable, IActionPage, IRepeatOptionsCom
 class ManageBlackoutsPage extends ActionPage implements IManageBlackoutsPage
 {
 	/**
-	 * @var \ManageBlackoutsPresenter
+	 * @var ManageBlackoutsPresenter
 	 */
 	private $presenter;
 
 	/**
-	 * @var \PageablePage
+	 * @var PageablePage
 	 */
 	private $pageablePage;
 
@@ -516,6 +496,18 @@ class ManageBlackoutsPage extends ActionPage implements IManageBlackoutsPage
 	public function GetRepeatTerminationDate()
 	{
 		return $this->GetForm(FormKeys::END_REPEAT_DATE);
+	}
+
+	public function GetSeriesUpdateScope()
+	{
+		$scope = $this->GetForm(FormKeys::SERIES_UPDATE_SCOPE);
+
+		if (empty($scope))
+		{
+			$scope = SeriesUpdateScope::FullSeries;
+		}
+
+		return $scope;
 	}
 }
 ?>

@@ -156,10 +156,11 @@ class ManageBlackoutsPresenter extends ActionPresenter
     public function DeleteBlackout()
     {
         $id = $this->page->GetBlackoutId();
+		$scope = $this->page->GetSeriesUpdateScope();
 
-        Log::Debug('Deleting blackout with id %s', $id);
+        Log::Debug('Deleting blackout. BlackoutId=%s, DeleteScope=%s', $id, $scope);
 
-        $this->manageBlackoutsService->Delete($id);
+        $this->manageBlackoutsService->Delete($id, $scope);
     }
 
 }

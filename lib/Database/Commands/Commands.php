@@ -526,12 +526,21 @@ class DeleteAnnouncementCommand extends SqlCommand
 	}
 }
 
-class DeleteBlackoutCommand extends SqlCommand
+class DeleteBlackoutInstanceCommand extends SqlCommand
 {
-	public function __construct($blackoutId)
+	public function __construct($instanceId)
+	{
+		parent::__construct(Queries::DELETE_BLACKOUT_INSTANCE);
+		$this->AddParameter(new Parameter(ParameterNames::BLACKOUT_INSTANCE_ID, $instanceId));
+	}
+}
+
+class DeleteBlackoutSeriesCommand extends SqlCommand
+{
+	public function __construct($instanceId)
 	{
 		parent::__construct(Queries::DELETE_BLACKOUT_SERIES);
-		$this->AddParameter(new Parameter(ParameterNames::SERIES_ID, $blackoutId));
+		$this->AddParameter(new Parameter(ParameterNames::BLACKOUT_INSTANCE_ID, $instanceId));
 	}
 }
 

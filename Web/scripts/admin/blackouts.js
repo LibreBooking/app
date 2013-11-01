@@ -15,8 +15,10 @@ function BlackoutManagement(opts)
 		addScheduleId: $('#addScheduleId'),
 
 		deleteDialog: $('#deleteDialog'),
+		deleteRecurringDialog: $('#deleteRecurringDialog'),
 
         deleteForm: $('#deleteForm'),
+		deleteRecurringForm: $('#deleteRecurringForm'),
 		addBlackoutForm: $('#addBlackoutForm'),
 
 		referenceNumberList: $(':hidden.reservationId')
@@ -27,7 +29,18 @@ function BlackoutManagement(opts)
 
 	BlackoutManagement.prototype.init = function()
 	{
-        ConfigureAdminDialog(elements.deleteDialog, 425, 200);
+        ConfigureAdminDialog(elements.deleteDialog, 'auto', 'auto');
+        ConfigureAdminDialog(elements.deleteRecurringDialog, 'auto', 'auto');
+
+		$('#btnUpdateThisInstance').click(function ()
+		{
+			ChangeUpdateScope(options.scopeOpts.instance);
+		});
+
+		$('#btnUpdateAllInstances').click(function ()
+		{
+			ChangeUpdateScope(options.scopeOpts.full);
+		});
 
 		$(".save").click(function() {
 			$(this).closest('form').submit();
@@ -60,15 +73,24 @@ function BlackoutManagement(opts)
         elements.blackoutTable.delegate('.delete', 'click', function() {
             showDeleteBlackout();
 		});
+
+		elements.blackoutTable.delegate('.delete-recurring', 'click', function() {
+            showDeleteRecurringBlackout();
+		});
 		
 		$('#filter').click(filterReservations);
 
 		ConfigureAdminForm(elements.addBlackoutForm, getAddUrl, onAddSuccess, null, {onBeforeSubmit: onBeforeAddSubmit, target: '#result'});
 		ConfigureAdminForm(elements.deleteForm, getDeleteUrl, onDeleteSuccess, null, {onBeforeSubmit: onBeforeDeleteSubmit, target: '#result'});
+		ConfigureAdminForm(elements.deleteRecurringForm, getDeleteUrl, onDeleteSuccess, null, {onBeforeSubmit: onBeforeDeleteSubmit, target: '#result'});
 	};
 
     function showDeleteBlackout() {
         elements.deleteDialog.dialog('open');
+    }
+
+	function showDeleteRecurringBlackout() {
+        elements.deleteRecurringDialog.dialog('open');
     }
 
     function setActiveBlackoutId(id) {
@@ -203,5 +225,10 @@ function BlackoutManagement(opts)
 		$('#addEndTime').timePicker({
 			show24Hours: false
 		});
+	}
+
+	function ChangeUpdateScope(updateScopeValue)
+	{
+		$('#hdnSeriesUpdateScope').val(updateScopeValue);
 	}
 }
