@@ -26,7 +26,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 
 <div id="loginbox">
 	<!--This "$smarty.server.SCRIPT_NAME" sets up the form to post back to the same page that it is on.-->
-	<form class="login" method="post" action="{$smarty.server.SCRIPT_NAME}">
+	<form name="login" id="login" class="login" method="post" action="{$smarty.server.SCRIPT_NAME}">
 		<div>
 			{if $ShowUsernamePrompt}
 			<p>
