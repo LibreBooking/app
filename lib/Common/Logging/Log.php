@@ -43,9 +43,9 @@ class Log
 		$this->logger = new NullLog4php();
 		$this->sqlLogger = new NullLog4php();
 
-		if (file_exists(ROOT_DIR . 'config/log4php.config.xml'))
+		if (file_exists($f = ROOT_DIR . 'config/log4php.config.xml'))
 		{
-			Logger::configure(ROOT_DIR . 'config/log4php.config.xml');
+			Logger::configure($f);
 			$this->logger = Logger::getLogger('default');
 			$this->sqlLogger = Logger::getLogger('sql');
 		}
