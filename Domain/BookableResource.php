@@ -41,7 +41,6 @@ interface IResource extends IPermissibleResource
 	public function GetScheduleId();
 
 	/**
-	 * @abstract
 	 * @return int
 	 */
 	public function GetScheduleAdminGroupId();

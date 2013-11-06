@@ -403,6 +403,20 @@ class Queries
 					INNER JOIN users u ON u.user_id = bs.owner_id
 		ORDER BY bi.start_date ASC';
 
+	const GET_BLACKOUT_INSTANCES = 'SELECT * FROM blackout_instances WHERE blackout_series_id = @blackout_series_id';
+
+	const GET_BLACKOUT_SERIES_BY_BLACKOUT_ID = 'SELECT *
+		FROM blackout_series bs
+		INNER JOIN blackout_instances bi ON bi.blackout_series_id = bs.blackout_series_id
+		WHERE blackout_instance_id = @blackout_instance_id';
+
+	const GET_BLACKOUT_RESOURCES = 'SELECT r.*, s.admin_group_id as s_admin_group_id
+		FROM blackout_series_resources rr
+		INNER JOIN resources r ON rr.resource_id = r.resource_id
+		INNER JOIN schedules s ON r.schedule_id = s.schedule_id
+		WHERE rr.blackout_series_id = @blackout_series_id
+		ORDER BY r.name';
+
 	const GET_DASHBOARD_ANNOUNCEMENTS =
 			'SELECT announcement_text
 		FROM announcements

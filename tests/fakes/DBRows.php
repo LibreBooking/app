@@ -441,4 +441,76 @@ class ResourceTypeRow
 	}
 }
 
+class BlackoutSeriesRow
+{
+	private $rows = array();
+
+	public function Rows()
+	{
+		return $this->rows;
+	}
+
+	public function With($seriesId, $owner_id, $title = null, $repeatType = null, $repeatConfiguration = null, $currentStart = null, $currentEnd = null)
+	{
+		$start = !empty($currentStart) ? $currentStart->ToDatabase() : null;
+		$end = !empty($currentEnd) ? $currentEnd->ToDatabase() : null;
+		$this->rows[] = array(
+			ColumnNames::BLACKOUT_SERIES_ID => $seriesId,
+			ColumnNames::OWNER_USER_ID => $owner_id,
+			ColumnNames::BLACKOUT_TITLE => $title,
+			ColumnNames::REPEAT_TYPE => $repeatType,
+			ColumnNames::REPEAT_OPTIONS => $repeatConfiguration,
+			ColumnNames::BLACKOUT_START => $start,
+			ColumnNames::BLACKOUT_END => $end,
+		);
+
+		return $this;
+	}
+}
+
+class BlackoutInstanceRow
+{
+	private $rows = array();
+
+	public function Rows()
+	{
+		return $this->rows;
+	}
+
+	public function With($seriesId, $instance_id, $start_date, $end_date)
+	{
+		$this->rows[] = array(
+			ColumnNames::BLACKOUT_SERIES_ID => $seriesId,
+			ColumnNames::BLACKOUT_INSTANCE_ID => $instance_id,
+			ColumnNames::BLACKOUT_START => $start_date,
+			ColumnNames::BLACKOUT_END => $end_date,
+		);
+
+		return $this;
+	}
+}
+
+class BlackoutResourceRow
+{
+	private $rows = array();
+
+		public function Rows()
+		{
+			return $this->rows;
+		}
+
+		public function With($resourceId, $name, $scheduleId, $adminGroupId = null, $scheduleAdminGroupId = null)
+		{
+			$this->rows[] = array(
+				$row[ColumnNames::RESOURCE_ID] = $resourceId,
+				$row[ColumnNames::RESOURCE_NAME] = $name,
+				$row[ColumnNames::RESOURCE_ADMIN_GROUP_ID] = $adminGroupId,
+				$row[ColumnNames::SCHEDULE_ID] = $scheduleId,
+				$row[ColumnNames::SCHEDULE_ADMIN_GROUP_ID_ALIAS] = $scheduleAdminGroupId
+			);
+
+			return $this;
+		}
+}
+
 ?>

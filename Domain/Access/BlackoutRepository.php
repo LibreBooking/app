@@ -37,6 +37,12 @@ interface IBlackoutRepository
      * @param int $blackoutId
      */
     public function DeleteSeries($blackoutId);
+
+	/**
+	 * @param int $blackoutId
+	 * @return BlackoutSeries
+	 */
+	public function LoadByBlackoutId($blackoutId);
 }
 
 class BlackoutRepository implements IBlackoutRepository
@@ -77,4 +83,44 @@ class BlackoutRepository implements IBlackoutRepository
     {
         ServiceLocator::GetDatabase()->Execute(new DeleteBlackoutSeriesCommand($blackoutId));
     }
+
+	/**
+	 * @param int $blackoutId
+	 * @return BlackoutSeries
+	 */
+	public function LoadByBlackoutId($blackoutId)
+	{
+		$db = ServiceLocator::GetDatabase();
+		$result = $db->Query(new GetBlackoutSeriesByBlackoutIdCommand($blackoutId));
+
+		if ($row = $result->GetRow())
+		{
+			$series = BlackoutSeries::FromRow($row);
+
+			$result = $db->Query(new GetBlackoutInstancesCommand($series->Id()));
+
+			while ($row = $result->GetRow())
+			{
+				$series->AddBlackout(new Blackout(new DateRange(Date::FromDatabase($row[ColumnNames::BLACKOUT_START]), Date::FromDatabase($row[ColumnNames::BLACKOUT_END]))));
+			}
+
+			$result = $db->Query(new GetBlackoutResourcesCommand($series->Id()));
+
+			while ($row = $result->GetRow())
+			{
+				$series->AddResource(new BlackoutResource(
+										 $row[ColumnNames::RESOURCE_ID],
+										 $row[ColumnNames::RESOURCE_NAME],
+										 $row[ColumnNames::SCHEDULE_ID],
+										 $row[ColumnNames::RESOURCE_ADMIN_GROUP_ID],
+										 $row[ColumnNames::SCHEDULE_ADMIN_GROUP_ID_ALIAS]));
+			}
+
+			return $series;
+		}
+		else
+		{
+			return null;
+		}
+	}
 }

@@ -84,10 +84,10 @@ class BlackoutsServiceTests extends TestBase
 				->with($this->equalTo($start), $this->equalTo($end))
 				->will($this->returnValue(array($reservationBefore, $reservationAfter)));
 
-		$series = new BlackoutSeries($userId, $title, $date);
-		$series->AddResource($resourceIds[0]);
-		$series->AddResource($resourceIds[1]);
-		$series->AddResource($resourceIds[2]);
+		$series = BlackoutSeries::Create($userId, $title, $date);
+		$series->AddResourceId($resourceIds[0]);
+		$series->AddResourceId($resourceIds[1]);
+		$series->AddResourceId($resourceIds[2]);
 
 		$this->blackoutRepository->expects($this->once())
 				->method('Add')
@@ -130,8 +130,8 @@ class BlackoutsServiceTests extends TestBase
 		$resourceIds = array($resourceId);
 		$title = 'title';
 
-		$series = new BlackoutSeries($userId, $title, $date);
-		$series->AddResource(2);
+		$series = BlackoutSeries::Create($userId, $title, $date);
+		$series->AddResourceId(2);
 
 		$this->reservationViewRepository->expects($this->once())
 				->method('GetBlackoutsWithin')
@@ -220,8 +220,8 @@ class BlackoutsServiceTests extends TestBase
 		/** @var $allDates DateRange[] */
 		$allDates = array_merge(array($range), $repeatDates);
 
-		$series = new BlackoutSeries($userId, $title, $range);
-		$series->AddResource($resourceId);
+		$series = BlackoutSeries::Create($userId, $title, $range);
+		$series->AddResourceId($resourceId);
 
 		foreach ($repeatDates as $date)
 		{
@@ -322,6 +322,36 @@ class BlackoutsServiceTests extends TestBase
 				->will($this->returnValue(new PageableData($blackouts)));
 
 		$this->service->LoadFiltered($pageNumber, $pageSize, $filter, $this->fakeUser);
+	}
+	
+	public function testLoadsBlackoutByInstanceId()
+	{
+		$id = 123231;
+		$userId = 89191;
+		$user = $this->getMock('User');
+		$resource = new BlackoutResource(1, 'name', 3);
+
+		$series = BlackoutSeries::Create(1, 'title', new TestDateRange());
+		$series->AddResource($resource);
+
+		$this->userRepository->expects($this->once())
+					->method('LoadById')
+					->with($this->equalTo($userId))
+					->will($this->returnValue($user));
+
+		$this->blackoutRepository->expects($this->once())
+					->method('LoadByBlackoutId')
+					->with($this->equalTo($id))
+					->will($this->returnValue($series));
+
+		$user->expects($this->once())
+					->method('IsResourceAdminFor')
+					->with($this->equalTo($resource))
+					->will($this->returnValue(true));
+		
+		$actualSeries = $this->service->LoadBlackout($id, $userId);
+
+		$this->assertEquals($series, $actualSeries);
 	}
 }
 

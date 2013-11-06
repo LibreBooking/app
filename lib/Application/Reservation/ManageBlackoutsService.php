@@ -50,6 +50,13 @@ interface IManageBlackoutsService
 	 * @param string $updateScope
 	 */
 	public function Delete($blackoutId, $updateScope);
+
+	/**
+	 * @param int $blackoutId
+	 * @param int $userId
+	 * @return BlackoutSeries|null
+	 */
+	public function LoadBlackout($blackoutId, $userId);
 }
 
 class ManageBlackoutsService implements IManageBlackoutsService
@@ -111,12 +118,12 @@ class ManageBlackoutsService implements IManageBlackoutsService
 
 		$userId = ServiceLocator::GetServer()->GetUserSession()->UserId;
 
-		$blackoutSeries = new BlackoutSeries($userId, $title, $blackoutDate);
+		$blackoutSeries = BlackoutSeries::Create($userId, $title, $blackoutDate);
 		$blackoutSeries->Repeats($repeatOptions);
 
 		foreach ($resourceIds as $resourceId)
 		{
-			$blackoutSeries->AddResource($resourceId);
+			$blackoutSeries->AddResourceId($resourceId);
 		}
 
 		$conflictingBlackouts = $this->GetConflictingBlackouts($blackoutSeries);
@@ -201,6 +208,22 @@ class ManageBlackoutsService implements IManageBlackoutsService
 		{
 			$this->blackoutRepository->Delete($blackoutId);
 		}
+	}
+
+	public function LoadBlackout($blackoutId, $userId)
+	{
+		$series = $this->blackoutRepository->LoadByBlackoutId($blackoutId);
+		$user = $this->userRepository->LoadById($userId);
+
+		foreach ($series->Resources() as $resource)
+		{
+			if (!$user->IsResourceAdminFor($resource))
+			{
+				return null;
+			}
+		}
+
+		return $series;
 	}
 }
 

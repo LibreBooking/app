@@ -23,17 +23,27 @@ class BlackoutSeries
 	/**
 	 * @var int
 	 */
+	protected $seriesId;
+
+	/**
+	 * @var int
+	 */
 	protected $ownerId;
 
 	/**
 	 * @var int[]
 	 */
-	protected $resourceIds;
+	protected $resourceIds = array();
+
+	/**
+	 * @var BlackoutResource[]
+	 */
+	protected $resources = array();
 
 	/**
 	 * @var Blackout[]
 	 */
-	protected $blackouts;
+	protected $blackouts= array();
 
 	/**
 	 * @var string
@@ -53,15 +63,26 @@ class BlackoutSeries
 	/**
 	 * @param int $userId
 	 * @param string $title
-	 * @param DateRange $blackoutDate
 	 */
-	public function __construct($userId, $title, DateRange $blackoutDate)
+	protected function __construct($userId, $title)
 	{
 		$this->repeatOptions = new RepeatNone();
 		$this->ownerId = $userId;
 		$this->title = $title;
-		$this->blackoutDate = $blackoutDate;
-		$this->AddBlackout(new Blackout($blackoutDate));
+	}
+
+	/**
+	 * @param $userId
+	 * @param $title
+	 * @param DateRange $blackoutDate
+	 * @return BlackoutSeries
+	 */
+	public static function Create($userId, $title, DateRange $blackoutDate)
+	{
+		$series = new BlackoutSeries($userId, $title);
+		$series->AddBlackout(new Blackout($blackoutDate));
+		$series->SetCurrentBlackout($blackoutDate);
+		return $series;
 	}
 
 	/**
@@ -91,14 +112,20 @@ class BlackoutSeries
 	/**
 	 * @param $resourceId int
 	 */
-	public function AddResource($resourceId)
+	public function AddResourceId($resourceId)
 	{
 		$this->resourceIds[] = $resourceId;
 	}
 
+	public function AddResource(BlackoutResource $resource)
+	{
+		$this->AddResourceId($resource->GetId());
+		$this->resources[] = $resource;
+	}
+
 	public function AddBlackout(Blackout $blackout)
 	{
-		$this->blackouts[] = $blackout;
+		$this->blackouts[$this->ToKey($blackout->Date())] = $blackout;
 	}
 
 	/**
@@ -106,7 +133,8 @@ class BlackoutSeries
 	 */
 	public function AllBlackouts()
 	{
-		return $this->blackouts;
+		asort($this->blackouts);
+		return array_values($this->blackouts);
 	}
 
 	/**
@@ -138,14 +166,83 @@ class BlackoutSeries
 		}
 	}
 
+	/**
+	 * @return string
+	 */
 	public function RepeatType()
 	{
 		return $this->repeatOptions->RepeatType();
 	}
 
+	/**
+	 * @return string
+	 */
 	public function RepeatConfiguration()
 	{
 		return $this->repeatOptions->ConfigurationString();
+	}
+
+	/**
+	 * @return int
+	 */
+	public function Id()
+	{
+		return $this->seriesId;
+	}
+
+	protected function WithId($id)
+	{
+		$this->seriesId = $id;
+	}
+
+	public function SetCurrentBlackout(DateRange $date)
+	{
+		$this->blackoutDate = $date;
+	}
+
+	/**
+	 * @param string[] $row
+	 * @return BlackoutSeries
+	 */
+	public static function FromRow($row)
+	{
+		$series = new BlackoutSeries($row[ColumnNames::OWNER_USER_ID], $row[ColumnNames::BLACKOUT_TITLE]);
+		$series->WithId($row[ColumnNames::BLACKOUT_SERIES_ID]);
+		$series->SetCurrentBlackout(new DateRange(Date::FromDatabase($row[ColumnNames::BLACKOUT_START]), Date::FromDatabase($row[ColumnNames::BLACKOUT_END])));
+
+		$configuration = RepeatConfiguration::Create($row[ColumnNames::REPEAT_TYPE], $row[ColumnNames::REPEAT_OPTIONS]);
+		$factory = new RepeatOptionsFactory();
+		$options = $factory->Create($row[ColumnNames::REPEAT_TYPE], $configuration->Interval, $configuration->TerminationDate,
+										$configuration->Weekdays, $configuration->MonthlyType);
+
+		$series->Repeats($options);
+
+		return $series;
+	}
+
+	/**
+	 * @return Blackout
+	 */
+	public function CurrentBlackout()
+	{
+		return $this->blackouts[$this->ToKey($this->blackoutDate)];
+	}
+
+	/**
+	 * @param DateRange $date
+	 * @return string
+	 */
+	private function ToKey(DateRange $date)
+	{
+		return $date->GetBegin()->Timestamp();
+	}
+
+	/**
+	 * @return BlackoutResource[]
+	 */
+	public function Resources()
+	{
+		return $this->resources;
 	}
 }
 
@@ -188,8 +285,72 @@ class Blackout
 	{
 		return $this->date->GetEnd();
 	}
+}
 
+class BlackoutResource implements IResource
+{
+	private $id;
+	private $name;
+	private $scheduleId;
+	private $adminGroupId;
+	private $scheduleAdminGroupId;
 
+	public function __construct($id, $name, $scheduleId, $adminGroupId = null, $scheduleAdminGroupId = null)
+	{
+		$this->id = $id;
+		$this->name = $name;
+		$this->scheduleId = $scheduleId;
+		$this->adminGroupId = $adminGroupId;
+		$this->scheduleAdminGroupId = $scheduleAdminGroupId;
+	}
+
+	/**
+	 * @return int
+	 */
+	public function GetId()
+	{
+		return $this->id;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function GetName()
+	{
+		return $this->name;
+	}
+
+	/**
+	 * @return int
+	 */
+	public function GetAdminGroupId()
+	{
+		return $this->adminGroupId;
+	}
+
+	/**
+	 * @return int
+	 */
+	public function GetScheduleId()
+	{
+		return $this->scheduleId;
+	}
+
+	/**
+	 * @return int
+	 */
+	public function GetScheduleAdminGroupId()
+	{
+		return $this->scheduleAdminGroupId;
+	}
+
+	/**
+	 * @return int
+	 */
+	public function GetResourceId()
+	{
+		return $this->id;
+	}
 }
 
 ?>

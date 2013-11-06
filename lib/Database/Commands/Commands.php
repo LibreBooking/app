@@ -1000,6 +1000,33 @@ class GetBlackoutListFullCommand extends SqlCommand
 	}
 }
 
+class GetBlackoutInstancesCommand extends SqlCommand
+{
+	public function __construct($seriesId)
+	{
+		parent::__construct(Queries::GET_BLACKOUT_INSTANCES);
+		$this->AddParameter(new Parameter(ParameterNames::BLACKOUT_SERIES_ID, $seriesId));
+	}
+}
+
+class GetBlackoutSeriesByBlackoutIdCommand extends SqlCommand
+{
+	public function __construct($blackoutId)
+	{
+		parent::__construct(Queries::GET_BLACKOUT_SERIES_BY_BLACKOUT_ID);
+		$this->AddParameter(new Parameter(ParameterNames::BLACKOUT_INSTANCE_ID, $blackoutId));
+	}
+}
+
+class GetBlackoutResourcesCommand extends SqlCommand
+{
+	public function __construct($seriesId)
+	{
+		parent::__construct(Queries::GET_BLACKOUT_RESOURCES);
+		$this->AddParameter(new Parameter(ParameterNames::BLACKOUT_SERIES_ID, $seriesId));
+	}
+}
+
 class GetDashboardAnnouncementsCommand extends SqlCommand
 {
 	public function __construct(Date $currentDate)
