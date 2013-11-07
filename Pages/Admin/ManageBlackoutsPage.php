@@ -1,22 +1,22 @@
 <?php
 /**
-Copyright 2011-2013 Nick Korbel
-
-This file is part of phpScheduleIt.
-
-phpScheduleIt is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-phpScheduleIt is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ * Copyright 2011-2013 Nick Korbel
+ *
+ * This file is part of phpScheduleIt.
+ *
+ * phpScheduleIt is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * phpScheduleIt is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 require_once(ROOT_DIR . 'Pages/IPageable.php');
 require_once(ROOT_DIR . 'Pages/Admin/AdminPage.php');
@@ -52,13 +52,13 @@ interface IManageBlackoutsPage extends IPageable, IActionPage, IRepeatOptionsCom
 	public function GetResourceId();
 
 	/**
-	 * @param Date $date|null
+	 * @param Date $date |null
 	 * @return void
 	 */
 	public function SetStartDate($date);
 
 	/**
-	 * @param Date $date|null
+	 * @param Date $date |null
 	 * @return void
 	 */
 	public function SetEndDate($date);
@@ -101,6 +101,8 @@ interface IManageBlackoutsPage extends IPageable, IActionPage, IRepeatOptionsCom
 	 * @return void
 	 */
 	public function ShowPage();
+
+	public function ShowBlackout();
 
 	/**
 	 * @return bool
@@ -147,10 +149,10 @@ interface IManageBlackoutsPage extends IPageable, IActionPage, IRepeatOptionsCom
 	 */
 	public function GetBlackoutConflictAction();
 
-    /**
-     * @return int
-     */
-    public function GetBlackoutId();
+	/**
+	 * @return int
+	 */
+	public function GetBlackoutId();
 
 	/**
 	 * @return string
@@ -165,7 +167,62 @@ interface IManageBlackoutsPage extends IPageable, IActionPage, IRepeatOptionsCom
 	 * @param string $timezone
 	 * @return void
 	 */
-	public function ShowAddResult($wasAddedSuccessfully, $displayMessage, $conflictingReservations, $conflictingBlackouts, $timezone);
+	public function ShowAddResult($wasAddedSuccessfully, $displayMessage, $conflictingReservations,
+								  $conflictingBlackouts, $timezone);
+
+	/**
+	 * @param int[] $additionalResourceIds
+	 */
+	public function SetAdditionalResources($additionalResourceIds);
+
+	/**
+	 * @param string $title
+	 */
+	public function SetTitle($title);
+
+	/**
+	 * @param string $repeatType
+	 */
+	public function SetRepeatType($repeatType);
+
+	/**
+	 * @param int $repeatInterval
+	 */
+	public function SetRepeatInterval($repeatInterval);
+
+	/**
+	 * @param string $repeatMonthlyType
+	 */
+	public function SetRepeatMonthlyType($repeatMonthlyType);
+
+	/**
+	 * @param int[] $repeatWeekdays
+	 */
+	public function SetRepeatWeekdays($repeatWeekdays);
+
+	/**
+	 * @param Date $repeatTerminationDate
+	 */
+	public function SetRepeatTerminationDate($repeatTerminationDate);
+
+	/**
+	 * @param int $blackoutId
+	 */
+	public function SetBlackoutId($blackoutId);
+
+	/**
+	 * @param bool $isRecurring
+	 */
+	public function SetIsRecurring($isRecurring);
+
+	public function SetBlackoutStartDate(Date $startDate);
+
+	public function SetBlackoutEndDate(Date $endDate);
+
+	/**
+	 * @param bool $wasFound
+	 */
+	public function SetWasBlackoutFound($wasFound);
 }
 
 class ManageBlackoutsPage extends ActionPage implements IManageBlackoutsPage
@@ -182,19 +239,19 @@ class ManageBlackoutsPage extends ActionPage implements IManageBlackoutsPage
 
 	public function __construct()
 	{
-	    parent::__construct('ManageBlackouts', 1);
+		parent::__construct('ManageBlackouts', 1);
 
 		$userRepo = new UserRepository();
-		$userSession =  ServiceLocator::GetServer()->GetUserSession();
+		$userSession = ServiceLocator::GetServer()->GetUserSession();
 
 		$this->presenter = new ManageBlackoutsPresenter($this,
-			new ManageBlackoutsService(new ReservationViewRepository(), new BlackoutRepository(), $userRepo),
-			new ScheduleAdminScheduleRepository($userRepo, $userSession),
-			new ResourceAdminResourceRepository($userRepo, $userSession));
+														new ManageBlackoutsService(new ReservationViewRepository(), new BlackoutRepository(), $userRepo),
+														new ScheduleAdminScheduleRepository($userRepo, $userSession),
+														new ResourceAdminResourceRepository($userRepo, $userSession));
 
 		$this->pageablePage = new PageablePage($this);
 	}
-	
+
 	public function ProcessAction()
 	{
 		$this->presenter->ProcessAction();
@@ -215,7 +272,13 @@ class ManageBlackoutsPage extends ActionPage implements IManageBlackoutsPage
 		$this->Display('Admin/manage_blackouts.tpl');
 	}
 
-	public function ShowAddResult($wasAddedSuccessfully, $displayMessage, $conflictingReservations, $conflictingBlackouts, $timezone)
+	public function ShowBlackout()
+	{
+		$this->Display('Admin/edit_blackout.tpl');
+	}
+
+	public function ShowAddResult($wasAddedSuccessfully, $displayMessage, $conflictingReservations,
+								  $conflictingBlackouts, $timezone)
 	{
 		$this->Set('Successful', $wasAddedSuccessfully);
 		$this->Set('Message', $displayMessage);
@@ -224,7 +287,7 @@ class ManageBlackoutsPage extends ActionPage implements IManageBlackoutsPage
 		$this->Set('Timezone', $timezone);
 		$this->Display('Admin/manage_blackouts_response.tpl');
 	}
-	
+
 	public function BindBlackouts($blackouts)
 	{
 		$this->Set('blackouts', $blackouts);
@@ -423,13 +486,13 @@ class ManageBlackoutsPage extends ActionPage implements IManageBlackoutsPage
 	}
 
 
-    /**
-     * @return int
-     */
-    public function GetBlackoutId()
-    {
-        return $this->GetQuerystring(QueryStringKeys::BLACKOUT_ID);
-    }
+	/**
+	 * @return int
+	 */
+	public function GetBlackoutId()
+	{
+		return $this->GetQuerystring(QueryStringKeys::BLACKOUT_ID);
+	}
 
 	public function ProcessDataRequest($dataRequest)
 	{
@@ -451,37 +514,44 @@ class ManageBlackoutsPage extends ActionPage implements IManageBlackoutsPage
 		$days = array();
 
 		$sun = $this->GetForm(FormKeys::REPEAT_SUNDAY);
-		if (!empty($sun)) {
+		if (!empty($sun))
+		{
 			$days[] = 0;
 		}
 
 		$mon = $this->GetForm(FormKeys::REPEAT_MONDAY);
-		if (!empty($mon)) {
+		if (!empty($mon))
+		{
 			$days[] = 1;
 		}
 
 		$tue = $this->GetForm(FormKeys::REPEAT_TUESDAY);
-		if (!empty($tue)) {
+		if (!empty($tue))
+		{
 			$days[] = 2;
 		}
 
 		$wed = $this->GetForm(FormKeys::REPEAT_WEDNESDAY);
-		if (!empty($wed)) {
+		if (!empty($wed))
+		{
 			$days[] = 3;
 		}
 
 		$thu = $this->GetForm(FormKeys::REPEAT_THURSDAY);
-		if (!empty($thu)) {
+		if (!empty($thu))
+		{
 			$days[] = 4;
 		}
 
 		$fri = $this->GetForm(FormKeys::REPEAT_FRIDAY);
-		if (!empty($fri)) {
+		if (!empty($fri))
+		{
 			$days[] = 5;
 		}
 
 		$sat = $this->GetForm(FormKeys::REPEAT_SATURDAY);
-		if (!empty($sat)) {
+		if (!empty($sat))
+		{
 			$days[] = 6;
 		}
 
@@ -509,5 +579,67 @@ class ManageBlackoutsPage extends ActionPage implements IManageBlackoutsPage
 
 		return $scope;
 	}
+
+	public function SetAdditionalResources($additionalResourceIds)
+	{
+		$this->Set('AdditionalResourceIds', $additionalResourceIds);
+	}
+
+	public function SetTitle($title)
+	{
+		$this->Set('ReservationTitle', $title);
+	}
+
+	public function SetRepeatType($repeatType)
+	{
+		$this->Set('RepeatType', $repeatType);
+	}
+
+	public function SetRepeatInterval($repeatInterval)
+	{
+		$this->Set('RepeatInterval', $repeatInterval);
+	}
+
+	public function SetRepeatMonthlyType($repeatMonthlyType)
+	{
+		$this->Set('RepeatMonthlyType', $repeatMonthlyType);
+	}
+
+	public function SetRepeatWeekdays($repeatWeekdays)
+	{
+		$this->Set('RepeatWeekdays', $repeatWeekdays);
+	}
+
+	public function SetRepeatTerminationDate($repeatTerminationDate)
+	{
+		$this->Set('RepeatTerminationDate', $repeatTerminationDate);
+	}
+
+	public function SetBlackoutId($blackoutId)
+	{
+		$this->Set('SetBlackoutId', $blackoutId);
+	}
+
+	public function SetIsRecurring($isRecurring)
+	{
+		$this->Set('IsRecurring', $isRecurring);
+	}
+
+	public function SetBlackoutStartDate(Date $startDate)
+	{
+		$this->Set('BlackoutStartDate', $startDate);
+	}
+
+	public function SetBlackoutEndDate(Date $endDate)
+	{
+		$this->Set('BlackoutEndDate', $endDate);
+	}
+
+	public function SetWasBlackoutFound($wasFound)
+	{
+		$this->Set('WasBlackoutFound', $wasFound);
+	}
+
 }
+
 ?>

@@ -231,6 +231,82 @@ class ManageBlackoutsPresenterTests extends TestBase
         $this->presenter->DeleteBlackout();
     }
 
+	public function testLoadsBlackoutSeriesByBlackoutId()
+	{
+		$series = BlackoutSeries::Create(1, 'title', new TestDateRange());
+		$repeatOptions = new RepeatDaily(1, Date::Now());
+		$series->WithRepeatOptions($repeatOptions);
+		$series->AddResource(new BlackoutResource(1, 'r1', 1));
+		$series->AddResource(new BlackoutResource(2, 'r2', 1));
+		$config = $series->RepeatConfiguration();
+
+		$userTz = $this->fakeUser->Timezone;
+
+		$id = 123;
+
+		$this->page->expects($this->once())
+				   ->method('GetBlackoutId')
+				   ->will($this->returnValue($id));
+		
+		$this->page->expects($this->once())
+					->method('SetAdditionalResources')
+					->with($this->equalTo(array(1, 2)));
+
+		$this->page->expects($this->once())
+					->method('SetTitle')
+					->with($this->equalTo('title'));
+
+		$this->page->expects($this->once())
+					->method('SetRepeatType')
+					->with($this->equalTo($config->Type));
+
+		$this->page->expects($this->once())
+					->method('SetRepeatInterval')
+					->with($this->equalTo($config->Interval));
+
+		$this->page->expects($this->once())
+					->method('SetRepeatMonthlyType')
+					->with($this->equalTo($config->MonthlyType));
+
+		$this->page->expects($this->once())
+					->method('SetRepeatWeekdays')
+					->with($this->equalTo($config->Weekdays));
+
+		$this->page->expects($this->once())
+					->method('SetRepeatTerminationDate')
+					->with($this->equalTo($config->TerminationDate->ToTimezone($userTz)));
+
+		$this->page->expects($this->once())
+					->method('SetBlackoutId')
+					->with($this->equalTo($id));
+
+		$this->page->expects($this->once())
+					->method('SetIsRecurring')
+					->with($this->equalTo(true));
+
+		$this->page->expects($this->once())
+					->method('SetBlackoutStartDate')
+					->with($this->equalTo($series->CurrentBlackout()->StartDate()->ToTimezone($userTz)));
+
+		$this->page->expects($this->once())
+					->method('SetBlackoutEndDate')
+					->with($this->equalTo($series->CurrentBlackout()->EndDate()->ToTimezone($userTz)));
+
+		$this->page->expects($this->once())
+							->method('SetWasBlackoutFound')
+							->with($this->equalTo(true));
+
+		$this->page->expects($this->once())
+							->method('ShowBlackout');
+
+		$this->blackoutsService->expects($this->once())
+							   ->method('LoadBlackout')
+							   ->with($this->equalTo($id), $this->equalTo($this->fakeUser->UserId))
+							   ->will($this->returnValue($series));
+
+		$this->presenter->LoadBlackout();
+	}
+
 	/**
 	 * @param Date $startDate
 	 * @param Date $endDate

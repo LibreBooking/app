@@ -61,12 +61,17 @@ class BlackoutSeries
 	protected $repeatOptions;
 
 	/**
+	 * @var RepeatConfiguration
+	 */
+	protected $repeatConfiguration;
+
+	/**
 	 * @param int $userId
 	 * @param string $title
 	 */
 	protected function __construct($userId, $title)
 	{
-		$this->repeatOptions = new RepeatNone();
+		$this->WithRepeatOptions(new RepeatNone());
 		$this->ownerId = $userId;
 		$this->title = $title;
 	}
@@ -159,7 +164,7 @@ class BlackoutSeries
 	 */
 	public function Repeats(IRepeatOptions $repeatOptions)
 	{
-		$this->repeatOptions = $repeatOptions;
+		$this->WithRepeatOptions($repeatOptions);
 		foreach ($repeatOptions->GetDates($this->blackoutDate) as $date)
 		{
 			$this->AddBlackout(new Blackout($date));
@@ -177,9 +182,14 @@ class BlackoutSeries
 	/**
 	 * @return string
 	 */
-	public function RepeatConfiguration()
+	public function RepeatConfigurationString()
 	{
 		return $this->repeatOptions->ConfigurationString();
+	}
+
+	public function RepeatConfiguration()
+	{
+		return $this->repeatConfiguration;
 	}
 
 	/**
@@ -193,6 +203,12 @@ class BlackoutSeries
 	protected function WithId($id)
 	{
 		$this->seriesId = $id;
+	}
+
+	public function WithRepeatOptions(IRepeatOptions $repeatOptions)
+	{
+		$this->repeatOptions = $repeatOptions;
+		$this->repeatConfiguration = RepeatConfiguration::Create($repeatOptions->RepeatType(), $repeatOptions->ConfigurationString());
 	}
 
 	public function SetCurrentBlackout(DateRange $date)
@@ -215,7 +231,7 @@ class BlackoutSeries
 		$options = $factory->Create($row[ColumnNames::REPEAT_TYPE], $configuration->Interval, $configuration->TerminationDate,
 										$configuration->Weekdays, $configuration->MonthlyType);
 
-		$series->Repeats($options);
+		$series->WithRepeatOptions($options);
 
 		return $series;
 	}

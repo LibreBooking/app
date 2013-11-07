@@ -129,7 +129,7 @@ class BlackoutRepositoryTests extends TestBase
 		$this->assertEquals($ownerId, $series->OwnerId());
 		$this->assertEquals($title, $series->Title());
 		$this->assertEquals($repeatType, $series->RepeatType());
-		$this->assertEquals($repeatDaily->ConfigurationString(), $series->RepeatConfiguration());
+		$this->assertEquals($repeatDaily->ConfigurationString(), $series->RepeatConfigurationString());
 
 		$this->assertEquals(2, count($series->AllBlackouts()));
 		$instances = $series->AllBlackouts();

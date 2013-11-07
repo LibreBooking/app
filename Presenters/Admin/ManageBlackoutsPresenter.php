@@ -27,6 +27,7 @@ class ManageBlackoutsActions
 {
 	const ADD = 'add';
 	const DELETE = 'delete';
+	const LOAD = 'load';
 }
 
 class ManageBlackoutsPresenter extends ActionPresenter
@@ -66,6 +67,7 @@ class ManageBlackoutsPresenter extends ActionPresenter
 
 		$this->AddAction(ManageBlackoutsActions::ADD, 'AddBlackout');
 		$this->AddAction(ManageBlackoutsActions::DELETE, 'DeleteBlackout');
+		$this->AddAction(ManageBlackoutsActions::LOAD, 'LoadBlackout');
 	}
 
 	public function PageLoad($userTimezone)
@@ -162,6 +164,37 @@ class ManageBlackoutsPresenter extends ActionPresenter
 
         $this->manageBlackoutsService->Delete($id, $scope);
     }
+
+	public function LoadBlackout()
+	{
+		$id = $this->page->GetBlackoutId();
+		$session = ServiceLocator::GetServer()->GetUserSession();
+
+		$series = $this->manageBlackoutsService->LoadBlackout($id, $session->UserId);
+
+		if ($series != null)
+		{
+			$this->page->SetAdditionalResources($series->ResourceIds());
+			$this->page->SetBlackoutId($id);
+			$this->page->SetBlackoutStartDate($series->CurrentBlackout()->StartDate()->ToTimezone($session->Timezone));
+			$this->page->SetBlackoutEndDate($series->CurrentBlackout()->StartDate()->ToTimezone($session->Timezone));
+			$this->page->SetTitle($series->Title());
+			$this->page->SetIsRecurring($series->RepeatType() != RepeatType::None);
+			$repeatConfiguration = $series->RepeatConfiguration();
+			$this->page->SetRepeatInterval($repeatConfiguration->Interval);
+			$this->page->SetRepeatMonthlyType($repeatConfiguration->MonthlyType);
+			$this->page->SetRepeatTerminationDate($repeatConfiguration->TerminationDate->ToTimezone($session->Timezone));
+			$this->page->SetRepeatType($repeatConfiguration->Type);
+			$this->page->SetRepeatWeekdays($repeatConfiguration->Weekdays);
+			$this->page->SetWasBlackoutFound(true);
+		}
+		else
+		{
+			$this->page->SetWasBlackoutFound(false);
+		}
+
+		$this->page->ShowBlackout();
+	}
 
 }
 
