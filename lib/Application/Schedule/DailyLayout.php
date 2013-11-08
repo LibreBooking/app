@@ -180,7 +180,7 @@ class DailyLayout implements IDailyLayout
 
 		/** @var $periodsToReturn SpanablePeriod[] */
 		$periodsToReturn = array();
-
+		$tempPeriod = $periods[0];
 		for ($i = 0; $i < count($periods); $i++)
 		{
 			$span = 1;
@@ -192,6 +192,12 @@ class DailyLayout implements IDailyLayout
 			{
 				$span = 0;
 				$nextPeriodTime = $periodStart->AddMinutes(60);
+
+//				if ($nextPeriodTime->Equals($tempPeriod->BeginDate()))
+//				{
+//					die($nextPeriodTime);
+//					$nextPeriodTime = $nextPeriodTime->AddMinutes(60);
+//				}
 				$tempPeriod = $currentPeriod;
 				while ($tempPeriod != null && $tempPeriod->BeginDate()->LessThan($nextPeriodTime))
 				{

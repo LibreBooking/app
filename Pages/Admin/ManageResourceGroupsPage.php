@@ -119,7 +119,7 @@ class ManageResourceGroupsPage extends ActionPage implements IManageResourceGrou
 
 	public function BindResourceGroups(ResourceGroupTree $resourceGroups)
 	{
-		$this->Set('ResourceGroups', json_encode($resourceGroups->GetGroups()));
+		$this->Set('ResourceGroups', json_encode($resourceGroups->GetGroups(false)));
 	}
 
 	/**

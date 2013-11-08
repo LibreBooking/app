@@ -141,6 +141,7 @@ class ResourceService implements IResourceService
 
 			$resourceDtos[] = new ResourceDto($resource->GetResourceId(), $resource->GetName(), $canAccess, $resource->GetScheduleId(), $resource->GetMinLength());
 		}
+
 		return $resourceDtos;
 	}
 
@@ -153,11 +154,6 @@ class ResourceService implements IResourceService
 	{
 		$filter = new ResourcePermissionFilter($this->_permissionService, $user);
 		$groups = $this->_resourceRepository->GetResourceGroups($scheduleId, $filter);
-
-		if (count($groups->GetGroups()) <= 0)
-		{
-			$groups = new EmptyResourceGroupTree($this->GetScheduleResources($scheduleId, false, $user));
-		}
 
 		return $groups;
 	}

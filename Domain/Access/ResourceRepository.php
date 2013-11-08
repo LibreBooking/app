@@ -238,6 +238,12 @@ class ResourceRepository implements IResourceRepository
 		$_groups = array();
 		$_assignments = array();
 
+		$_groups[] = new ResourceGroup(0, Resources::GetInstance()->GetString('All'));
+		foreach ($this->GetScheduleResources($scheduleId) as $r)
+		{
+			$_assignments[] = new ResourceGroupAssignment(0, $r->GetName(), $r->GetId());
+		}
+
 		while ($row = $groups->GetRow())
 		{
 			$_groups[] = new ResourceGroup($row[ColumnNames::RESOURCE_GROUP_ID], $row[ColumnNames::RESOURCE_GROUP_NAME], $row[ColumnNames::RESOURCE_GROUP_PARENT_ID]);

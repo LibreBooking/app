@@ -316,19 +316,20 @@ class ResourceRepositoryTests extends TestBase
 		$getResourceGroupsCommand = new GetAllResourceGroupsCommand();
 		$getResourceGroupAssignments = new GetAllResourceGroupAssignmentsCommand($scheduleId);
 
-		$this->assertEquals(3, count($groups));
+		$this->assertEquals(4, count($groups));
 
-		$this->assertEquals('group1', $groups[0]->label);
-		$this->assertEquals(1, $groups[0]->id);
-		$this->assertEquals(null, $groups[0]->parent_id);
-		$this->assertEquals(2, count($groups[0]->children));
+		$this->assertEquals(0, $groups[0]->id, 'should have added an "all" group');
+		$this->assertEquals('group1', $groups[1]->label);
+		$this->assertEquals(1, $groups[1]->id);
+		$this->assertEquals(null, $groups[1]->parent_id);
+		$this->assertEquals(2, count($groups[1]->children));
 
-		$this->assertEquals(1, count($groups[0]->children[0]));
-		$this->assertEquals('group1a', $groups[0]->children[0]->label);
-		$this->assertEquals('group1a1', $groups[0]->children[0]->children[0]->label);
-		$this->assertEquals('resource1', $groups[0]->children[0]->children[0]->children[0]->label);
-		$this->assertEquals('resource2', $groups[0]->children[0]->children[0]->children[1]->label);
-		$this->assertEquals('resource3', $groups[1]->children[1]->label);
+		$this->assertEquals(1, count($groups[1]->children[0]));
+		$this->assertEquals('group1a', $groups[1]->children[0]->label);
+		$this->assertEquals('group1a1', $groups[1]->children[0]->children[0]->label);
+		$this->assertEquals('resource1', $groups[1]->children[0]->children[0]->children[0]->label);
+		$this->assertEquals('resource2', $groups[1]->children[0]->children[0]->children[1]->label);
+		$this->assertEquals('resource3', $groups[2]->children[1]->label);
 
 		$this->assertEquals($getResourceGroupsCommand, $this->db->_Commands[0]);
 		$this->assertEquals($getResourceGroupAssignments, $this->db->_Commands[1]);

@@ -221,6 +221,7 @@ class BlackoutsServiceTests extends TestBase
 		$allDates = array_merge(array($range), $repeatDates);
 
 		$series = BlackoutSeries::Create($userId, $title, $range);
+		$series->Repeats($repeatDaily);
 		$series->AddResourceId($resourceId);
 
 		foreach ($repeatDates as $date)

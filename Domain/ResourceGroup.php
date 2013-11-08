@@ -62,11 +62,19 @@ class ResourceGroupTree
 	}
 
 	/**
+	 * @param bool $includeDefaultGroup
 	 * @return array|ResourceGroup[]
 	 */
-	public function GetGroups()
+	public function GetGroups($includeDefaultGroup = true)
 	{
-		return $this->groups;
+		if ($includeDefaultGroup)
+		{
+			return $this->groups;
+		}
+		else
+		{
+			return array_slice($this->groups, 1);
+		}
 	}
 
 	/**

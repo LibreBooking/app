@@ -526,7 +526,7 @@ class DateTests extends TestBase
 
 	public function testCanParseExactWithTimezone()
 	{
-		$d = Date::Parse('2012-04-06 01:02:03', 'America/New_York');
+		$d = Date::Parse('2012-04-06 12:02:03', 'America/New_York');
 		$iso = $d->ToIso();
 
 		$d2 = Date::ParseExact($iso);

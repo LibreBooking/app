@@ -37,7 +37,7 @@ function ScheduleManagement(opts)
 	ScheduleManagement.prototype.init = function ()
 	{
 		ConfigureAdminDialog(elements.renameDialog, 300, 125);
-		ConfigureAdminDialog(elements.changeSettingsDialog, 300, 140);
+		ConfigureAdminDialog(elements.changeSettingsDialog, 'auto', 'auto');
 		ConfigureAdminDialog(elements.layoutDialog, 725, 'auto');
 		ConfigureAdminDialog(elements.deleteDialog, 430, 200);
 		ConfigureAdminDialog(elements.groupAdminDialog, 300, 125);

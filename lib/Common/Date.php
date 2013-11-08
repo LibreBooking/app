@@ -411,7 +411,10 @@ class Date
 	 */
 	public function AddMinutes($minutes)
 	{
-		return new Date($this->Format(self::SHORT_FORMAT) . " +" . $minutes . " minutes", $this->timezone);
+		$ts = $this->ToUtc()->Timestamp() + $minutes * 60;
+		$utcDate = new Date(gmdate(self::SHORT_FORMAT, $ts), 'UTC');
+		return $utcDate->ToTimezone($this->timezone);
+		//return new Date($this->Format(self::SHORT_FORMAT) . " +" . $minutes . " minutes", $this->timezone);
 	}
 
 	/**
