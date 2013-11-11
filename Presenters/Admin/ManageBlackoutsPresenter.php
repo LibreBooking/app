@@ -170,10 +170,12 @@ class ManageBlackoutsPresenter extends ActionPresenter
 		$id = $this->page->GetBlackoutId();
 		$session = ServiceLocator::GetServer()->GetUserSession();
 
+		Log::Debug('Loading blackout for editing. Id=%s', $id);
 		$series = $this->manageBlackoutsService->LoadBlackout($id, $session->UserId);
 
 		if ($series != null)
 		{
+			$this->page->BindResources($this->resourceRepository->GetResourceList());
 			$this->page->SetAdditionalResources($series->ResourceIds());
 			$this->page->SetBlackoutId($id);
 			$this->page->SetBlackoutStartDate($series->CurrentBlackout()->StartDate()->ToTimezone($session->Timezone));
@@ -183,7 +185,10 @@ class ManageBlackoutsPresenter extends ActionPresenter
 			$repeatConfiguration = $series->RepeatConfiguration();
 			$this->page->SetRepeatInterval($repeatConfiguration->Interval);
 			$this->page->SetRepeatMonthlyType($repeatConfiguration->MonthlyType);
-			$this->page->SetRepeatTerminationDate($repeatConfiguration->TerminationDate->ToTimezone($session->Timezone));
+			if ($repeatConfiguration->TerminationDate != null)
+			{
+				$this->page->SetRepeatTerminationDate($repeatConfiguration->TerminationDate->ToTimezone($session->Timezone));
+			}
 			$this->page->SetRepeatType($repeatConfiguration->Type);
 			$this->page->SetRepeatWeekdays($repeatConfiguration->Weekdays);
 			$this->page->SetWasBlackoutFound(true);

@@ -107,6 +107,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 			</td>
 			<td rowspan="2">
 				<button id="filter" class="button">{html_image src="search.png"} {translate key=Filter}</button>
+				<a href="#" id="showAll">{translate key=ViewAll}</a>
 			</td>
 		</tr>
 	</table>
@@ -198,6 +199,7 @@ $(document).ready(function() {
 		actions: actions,
 		deleteUrl: '{$smarty.server.SCRIPT_NAME}?action={ManageBlackoutsActions::DELETE}&{QueryStringKeys::BLACKOUT_ID}=',
 		addUrl: '{$smarty.server.SCRIPT_NAME}?action={ManageBlackoutsActions::ADD}',
+		editUrl: '{$smarty.server.SCRIPT_NAME}?action={ManageBlackoutsActions::LOAD}&{QueryStringKeys::BLACKOUT_ID}=',
         reservationUrlTemplate: "{$Path}reservation.php?{QueryStringKeys::REFERENCE_NUMBER}=[refnum]",
 		popupUrl: "{$Path}ajax/respopup.php"
 	};

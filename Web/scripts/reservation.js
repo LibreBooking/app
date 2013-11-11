@@ -163,7 +163,6 @@ function Reservation(opts)
 	// pre-submit callback 
 	Reservation.prototype.preSubmit = function (formData, jqForm, options)
 	{
-
 		$('#dialogSave').dialog('open');
 		$('#result').hide();
 		$('#creatingNotification').show();

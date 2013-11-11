@@ -58,7 +58,29 @@ function BlackoutManagement(opts)
 			$('#createDiv').hide();
 			$.colorbox.close();
 		});
-		
+
+		elements.blackoutTable.find('.editable').click(function (e)
+		{
+			var tr = $(this);
+			var id = tr.find('.id').text();
+
+			$.colorbox(
+					{   inline: false,
+						href: opts.editUrl + id,
+						transition: "none",
+						width: "75%",
+						height: "75%",
+						overlayClose: false,
+						onComplete: function ()
+						{
+							$('#cancelUpdate').click(function (e)
+							{
+								$.colorbox.close();
+							});
+						}});
+		});
+
+
 		handleBlackoutApplicabilityChange();
 		wireUpTimePickers();
 
@@ -77,7 +99,17 @@ function BlackoutManagement(opts)
 		elements.blackoutTable.delegate('.delete-recurring', 'click', function() {
             showDeleteRecurringBlackout();
 		});
-		
+
+		$('#showAll').click(function(e)
+		{
+			e.preventDefault();
+			elements.startDate.val('');
+			elements.endDate.val('');
+			elements.scheduleId.val('');
+			elements.resourceId.val('');
+
+			filterReservations();
+		});
 		$('#filter').click(filterReservations);
 
 		ConfigureAdminForm(elements.addBlackoutForm, getAddUrl, onAddSuccess, null, {onBeforeSubmit: onBeforeAddSubmit, target: '#result'});
@@ -152,7 +184,7 @@ function BlackoutManagement(opts)
 	{
 		return opts.addUrl;
 	}
-	
+
 	function setActiveReferenceNumber(referenceNumber)
 	{
 		this.referenceNumber = referenceNumber;
@@ -172,7 +204,7 @@ function BlackoutManagement(opts)
 	{
 		return this.reservationId;
 	}
-	
+
 	function showDeleteReservation(referenceNumber)
 	{
 		if (reservations[referenceNumber].isRecurring == '1')
