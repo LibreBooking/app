@@ -63,10 +63,21 @@ class DailyLayout implements IDailyLayout
 	 * @var IReservationListing
 	 */
 	private $_reservationListing;
+
 	/**
 	 * @var IScheduleLayout
 	 */
 	private $_scheduleLayout;
+
+	/**
+	 * @var array any transitions (especially the time of the transition) if today is a transition day
+	 */
+	private $_tzTransitions;
+
+	/**
+	 * @var int if today is a transition between DST <-> ST, the change in minutes, else 0
+	 */
+	private $_dstDelta;
 
 	/**
 	 * @param IReservationListing $listing
@@ -91,6 +102,10 @@ class DailyLayout implements IDailyLayout
 
 			$list = new ScheduleReservationList($items, $this->_scheduleLayout, $date, $hideBlocked);
 			$slots = $list->BuildSlots();
+			$this->_tzTransitions = $list->GetTzTransitions();
+			$this->_dstDelta      = $list->GetDstDelta();
+			//Log::Debug('$this->_tzTransitions = ' . print_r($this->_tzTransitions,true));
+			//Log::Debug('$this->_dstDelta = ' . $this->_dstDelta);
 
 		Log::Debug('DailyLayout::GetLayout - For resourceId %s on date %s, took %s seconds to get reservation listing, %s to build the slots, %s total seconds for %s reservations. Memory consumed=%sMB',
 			$resourceId,
@@ -188,7 +203,7 @@ class DailyLayout implements IDailyLayout
 			$periodStart = $currentPeriod->BeginDate();
 			$periodLength = $periodStart->GetDifference($currentPeriod->EndDate())->Hours();
 
-			if (!$periods[$i]->IsLabelled() && ($periodStart->Minute() == 0 && $periodLength < 1))
+			if (!$currentPeriod->IsLabelled() && ($periodStart->Minute() == 0 && $periodLength < 1))
 			{
 				$span = 0;
 				$nextPeriodTime = $periodStart->AddMinutes(60);
@@ -202,11 +217,10 @@ class DailyLayout implements IDailyLayout
 				while ($tempPeriod != null && $tempPeriod->BeginDate()->LessThan($nextPeriodTime))
 				{
 					$span++;
-					$i++;
-					$tempPeriod = $periods[$i];
+					$tempPeriod = $periods[++$i];
 				}
-				$i--;
-
+				if($span>0)
+					$i--;
 			}
 			$periodsToReturn[] = new SpanablePeriod($currentPeriod, $span);
 
