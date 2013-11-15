@@ -39,6 +39,8 @@ class ConfigKeys
     const REGISTRATION_ENABLE_CAPTCHA = 'registration.captcha.enabled';
     const REGISTRATION_REQUIRE_ACTIVATION = 'registration.require.email.activation';
     const REGISTRATION_AUTO_SUBSCRIBE_EMAIL = 'registration.auto.subscribe.email';
+	const REGISTRATION_NOTIFY = 'registration.notify.admin';
+
     const VERSION = 'version';
 
     const SCHEDULE_SHOW_INACCESSIBLE_RESOURCES = 'show.inaccessible.resources';
@@ -105,6 +107,8 @@ class ConfigKeys
 	const DEFAULT_FROM_ADDRESS = 'default.from.address';
 
 	const REPORTS_ALLOW_ALL = 'allow.all.users';
+
+	const APP_TITLE = 'app.title';
 }
 
 class ConfigSection

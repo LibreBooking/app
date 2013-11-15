@@ -22,6 +22,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 require_once(ROOT_DIR . 'Domain/User.php');
 require_once(ROOT_DIR . 'Domain/Values/AccountStatus.php');
 require_once(ROOT_DIR . 'Domain/Values/FullName.php');
+require_once(ROOT_DIR . 'lib/Email/Messages/AccountCreationEmail.php');
 
 interface IUserRepository extends IUserViewRepository
 {
@@ -294,6 +295,9 @@ class UserRepository implements IUserRepository, IAccountActivationRepository
 														 $user->GetAttribute(UserAttribute::Position), $user->StatusId(), $user->GetPublicId(), $user->GetDefaultScheduleId()));
 
 		$user->WithId($id);
+
+		if(Configuration::Instance()->GetKey(ConfigKeys::REGISTRATION_NOTIFY ,new BooleanConverter()))
+			ServiceLocator::GetEmailService()->Send(new AccountCreationEmail($user));
 
 		foreach ($user->GetAddedAttributes() as $added)
 		{

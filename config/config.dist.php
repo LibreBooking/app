@@ -24,6 +24,7 @@ error_reporting(E_ALL & ~E_NOTICE & ~E_STRICT);
 /**
  * Application configuration
  */
+$conf['settings']['app.title'] = 'phpScheduleIt';				// application title
 $conf['settings']['server.timezone'] = 'America/Chicago';       // look up here http://php.net/manual/en/timezones.php
 $conf['settings']['allow.self.registration'] = 'true';         // if users can register themselves
 $conf['settings']['admin.email'] = 'admin@example.com';         // email address of admin user
@@ -43,6 +44,7 @@ $conf['settings']['use.local.jquery'] = 'false';                // false recomme
 $conf['settings']['registration.captcha.enabled'] = 'true';     // recommended, requires php_gd2 enabled in php.ini
 $conf['settings']['registration.require.email.activation'] = 'false';		// requires enable.email = true
 $conf['settings']['registration.auto.subscribe.email'] = 'false';			// requires enable.email = true
+$conf['settings']['registration.notify.admin'] = 'false';		// whether the registration of a new user sends an email to the admin (ala phpScheduleIt 1.2)
 $conf['settings']['inactivity.timeout'] = '30';     			// minutes before the user is automatically logged out
 $conf['settings']['name.format'] = '{first} {last}';     		// display format when showing user names
 $conf['settings']['css.extension.file'] = ''; 			      	// full or relative url to an additional css file to include. this can be used to override the default style

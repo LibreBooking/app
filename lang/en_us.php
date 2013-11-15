@@ -639,6 +639,7 @@ class en_us extends Language
 		$strings['ReportSubject'] = 'Your Requested Report (%s)';
 		$strings['ReservationStartingSoonSubject'] = 'Reservation for %s is starting soon';
 		$strings['ReservationEndingSoonSubject'] = 'Reservation for %s is ending soon';
+		$strings['UserAdded'] = 'A new user has been added';
 		// End Email Subjects
 
 		$this->Strings = $strings;
