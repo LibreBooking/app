@@ -80,22 +80,22 @@ function BlackoutManagement(opts)
 
 							$('.blackoutResources').click(function (e)
 							{
-								if($(".blackoutResources input:checked").length == 0)
+								if ($(".blackoutResources input:checked").length == 0)
 								{
 									e.preventDefault();
 								}
 							});
 
-							$('#updateStartTime').timePicker({
+							$('#updateStartTime').timepicker({
 								show24Hours: false
 							});
 
-							$('#updateEndTime').timePicker({
+							$('#updateEndTime').timepicker({
 								show24Hours: false
 							});
+
 						}});
 		});
-
 
 		handleBlackoutApplicabilityChange();
 		wireUpTimePickers();
@@ -267,10 +267,10 @@ function BlackoutManagement(opts)
 
 	function wireUpTimePickers()
 	{
-		$('#addStartTime').timePicker({
+		$('#addStartTime').timepicker({
 			show24Hours: false
 		});
-		$('#addEndTime').timePicker({
+		$('#addEndTime').timepicker({
 			show24Hours: false
 		});
 	}
