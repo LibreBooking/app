@@ -59,9 +59,9 @@ function BlackoutManagement(opts)
 			$.colorbox.close();
 		});
 
-		elements.blackoutTable.find('.editable').click(function (e)
+		elements.blackoutTable.find('.editable td:not(.update)').click(function (e)
 		{
-			var tr = $(this);
+			var tr = $(this).parents('tr');
 			var id = tr.find('.id').text();
 
 			$.colorbox(
@@ -76,6 +76,22 @@ function BlackoutManagement(opts)
 							$('#cancelUpdate').click(function (e)
 							{
 								$.colorbox.close();
+							});
+
+							$('.blackoutResources').click(function (e)
+							{
+								if($(".blackoutResources input:checked").length == 0)
+								{
+									e.preventDefault();
+								}
+							});
+
+							$('#updateStartTime').timePicker({
+								show24Hours: false
+							});
+
+							$('#updateEndTime').timePicker({
+								show24Hours: false
 							});
 						}});
 		});

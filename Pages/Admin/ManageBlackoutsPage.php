@@ -171,9 +171,9 @@ interface IManageBlackoutsPage extends IPageable, IActionPage, IRepeatOptionsCom
 								  $conflictingBlackouts, $timezone);
 
 	/**
-	 * @param int[] $additionalResourceIds
+	 * @param int[] $blackoutResourceIds
 	 */
-	public function SetAdditionalResources($additionalResourceIds);
+	public function SetBlackoutResources($blackoutResourceIds);
 
 	/**
 	 * @param string $title
@@ -580,9 +580,9 @@ class ManageBlackoutsPage extends ActionPage implements IManageBlackoutsPage
 		return $scope;
 	}
 
-	public function SetAdditionalResources($additionalResourceIds)
+	public function SetBlackoutResources($blackoutResourceIds)
 	{
-		$this->Set('AdditionalResourceIds', $additionalResourceIds);
+		$this->Set('BlackoutResourceIds', $blackoutResourceIds);
 	}
 
 	public function SetTitle($title)

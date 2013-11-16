@@ -176,10 +176,10 @@ class ManageBlackoutsPresenter extends ActionPresenter
 		if ($series != null)
 		{
 			$this->page->BindResources($this->resourceRepository->GetResourceList());
-			$this->page->SetAdditionalResources($series->ResourceIds());
+			$this->page->SetBlackoutResources($series->ResourceIds());
 			$this->page->SetBlackoutId($id);
 			$this->page->SetBlackoutStartDate($series->CurrentBlackout()->StartDate()->ToTimezone($session->Timezone));
-			$this->page->SetBlackoutEndDate($series->CurrentBlackout()->StartDate()->ToTimezone($session->Timezone));
+			$this->page->SetBlackoutEndDate($series->CurrentBlackout()->EndDate()->ToTimezone($session->Timezone));
 			$this->page->SetTitle($series->Title());
 			$this->page->SetIsRecurring($series->RepeatType() != RepeatType::None);
 			$repeatConfiguration = $series->RepeatConfiguration();

@@ -346,3 +346,30 @@ ul.jqtree-tree .group-resource .jqtree-title {
 .resourceValue {
 	font-weight: bold;
 }
+
+#repeatDiv, #repeatDiv div {
+	padding:0;
+}
+
+#repeatDiv label {
+	display: inline-block;
+	min-width: 100px;
+}
+
+#repeatOnWeeklyDiv label {min-width:30px;}
+
+#updateBlackout {
+	margin:20px;
+}
+
+#updateBlackout ul{
+	margin-bottom:15px;
+	list-style: none;
+}
+
+.blackoutResources {
+	margin: 10px 0;
+}
+.resourceItem {
+	display:block;
+}

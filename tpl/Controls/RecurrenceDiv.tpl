@@ -67,7 +67,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 		<label for="repeatMonthWeek">{translate key="repeatDayOfWeek"}</label>
 	</div>
 	<div id="repeatUntilDiv" style="display:none;">
-	{translate key="RepeatUntilPrompt"}
+		<label for="formattedEndRepeat">{translate key="RepeatUntilPrompt"}</label>
 		<input type="text" id="EndRepeat" class="dateinput" value="{formatdate date=$RepeatTerminationDate}"/>
 		<input type="hidden" id="formattedEndRepeat" {formname key=end_repeat_date}
 			   value="{formatdate date=$RepeatTerminationDate key=system}"/>

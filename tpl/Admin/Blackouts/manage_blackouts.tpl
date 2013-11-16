@@ -70,7 +70,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 					<button type="button" class="button save create">
 						{html_image src="tick-circle.png"} {translate key='Create'}
 					</button>
-					<input type="reset" value="Cancel" class="button" style="border: 0;background: transparent;color: blue;cursor:pointer; font-size: 60%" />
+					<input type="reset" value="Cancel" style="border: 0;background: transparent;color: blue;cursor:pointer;" />
 				</li>
 			</ul>
 		</form>
@@ -135,9 +135,9 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 		<td>{$blackout->Title}</td>
 		<td>{fullname first=$blackout->FirstName last=$blackout->LastName}</td>
 		{if $blackout->IsRecurring}
-			<td align="center" style="width: 65px;"><a href="#" class="update delete-recurring">{html_image src='cross-button.png'}</a></td>
+			<td align="center" style="width: 65px;" class="update"><a href="#" class="update delete-recurring">{html_image src='cross-button.png'}</a></td>
 		{else}
-			<td align="center" style="width: 65px;"><a href="#" class="update delete">{html_image src='cross-button.png'}</a></td>
+			<td align="center" style="width: 65px;" class="update"><a href="#" class="update delete">{html_image src='cross-button.png'}</a></td>
 		{/if}
 	</tr>
 	{/foreach}
