@@ -104,13 +104,13 @@ class UpgradeDbTask extends Task
 
     private function ExecuteFile($fullUpgradeDir, $fileName)
     {
-        $dblink = mysql_connect($this->host, $this->username, $this->mysqlPassword);
+        $dblink = mysqli_connect($this->host, $this->username, $this->mysqlPassword, $this->database);
 		if (!$dblink)
 		{
-		    die('Could not connect: ' . mysql_error());
+		    die('Could not connect: ' . mysqli_error($dblink));
 		}
 
-		mysql_select_db($this->database, $dblink);
+		mysqli_select_db($this->database, $dblink);
 
         $path = "$fullUpgradeDir/$fileName";
         print("Executing $path\n");
@@ -120,11 +120,11 @@ class UpgradeDbTask extends Task
         {
             if (strlen($stmt) > 3 && substr(ltrim($stmt), 0, 2) != '/*')
             {
-                $queryResult = mysql_query($stmt);
+                $queryResult = mysqli_query($dblink, $stmt);
                 if (!$queryResult)
                 {
-                    $sqlErrorCode = mysql_errno();
-                    $sqlErrorText = mysql_error();
+                    $sqlErrorCode = mysqli_errno($dblink);
+                    $sqlErrorText = mysqli_error($dblink);
                     $sqlStmt = $stmt;
 
                     print("Failed on statement \"$sqlStmt\". ErrorCode: $sqlErrorCode, ErrorText: $sqlErrorText\n");
