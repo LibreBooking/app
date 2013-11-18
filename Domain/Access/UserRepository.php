@@ -584,7 +584,7 @@ class UserRepository implements IUserRepository, IAccountActivationRepository
 
 	public function UserExists($emailAddress, $userName)
 	{
-		$reader = ServiceLocator::GetDatabase()->Query(new CheckUserExistanceCommand($userName, $emailAddress));
+		$reader = ServiceLocator::GetDatabase()->Query(new CheckUserExistenceCommand($userName, $emailAddress));
 
 		if ($row = $reader->GetRow())
 		{

@@ -90,14 +90,14 @@ class DatabaseCommandTests extends PHPUnit_Framework_TestCase
 		$this->assertEquals(new Parameter(ParameterNames::USER_ID, $userid), $par1);
 	}
 
-	function testCheckUserExistanceCommand()
+	function testCheckUserExistenceCommand()
 	{
 		$username = 'username';
 		$email = 'email';
 
-		$command = new CheckUserExistanceCommand($username, $email);
+		$command = new CheckUserExistenceCommand($username, $email);
 
-		$this->assertEquals(Queries::CHECK_USER_EXISTANCE, $command->GetQuery());
+		$this->assertEquals(Queries::CHECK_USER_EXISTENCE, $command->GetQuery());
 		$this->assertEquals(2, $command->Parameters->Count());
 
 		$this->assertEquals(new Parameter(ParameterNames::USERNAME, $username), $command->Parameters->Items(0));

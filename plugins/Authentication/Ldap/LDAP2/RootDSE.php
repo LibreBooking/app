@@ -216,7 +216,7 @@ class Net_LDAP2_RootDSE extends PEAR
     }
 
     /**
-    * Checks for existance of value in attribute
+    * Checks for existence of value in attribute
     *
     * @param array  $values values to check
     * @param string $attr   attribute name

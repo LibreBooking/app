@@ -158,7 +158,7 @@ class Queries
 		FROM users
 		WHERE username = @username';
 
-	const CHECK_USER_EXISTANCE =
+	const CHECK_USER_EXISTENCE =
 			'SELECT *
 		FROM users
 		WHERE ( (username IS NOT NULL AND username = @username) OR (email IS NOT NULL AND email = @email) )';

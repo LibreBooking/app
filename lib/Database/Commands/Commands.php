@@ -453,11 +453,11 @@ class CheckEmailCommand extends SqlCommand
 	}
 }
 
-class CheckUserExistanceCommand extends SqlCommand
+class CheckUserExistenceCommand extends SqlCommand
 {
 	public function __construct($username, $emailAddress)
 	{
-		parent::__construct(Queries::CHECK_USER_EXISTANCE);
+		parent::__construct(Queries::CHECK_USER_EXISTENCE);
 		$this->AddParameter(new Parameter(ParameterNames::USERNAME, $username));
 		$this->AddParameter(new Parameter(ParameterNames::EMAIL_ADDRESS, $emailAddress));
 	}
