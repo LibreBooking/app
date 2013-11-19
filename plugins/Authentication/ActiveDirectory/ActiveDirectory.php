@@ -79,6 +79,8 @@ class ActiveDirectory extends Authentication implements IAuthentication
 	 */
 	public function __construct(IAuthentication $authentication, $ldapImplementation = null, $ldapOptions = null)
 	{
+		// TODO: Check for ldap support (in ldap plugin, too)
+
 		$this->authToDecorate = $authentication;
 
 		$this->options = $ldapOptions;

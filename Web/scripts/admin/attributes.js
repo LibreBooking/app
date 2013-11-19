@@ -156,6 +156,7 @@ function AttributeManagement(opts)
 		{
 			$('div', ".textBoxOptions").hide();
 			$('.attributeLabel').show();
+			$('.attributeSortOrder').show();
 		}
 	};
 

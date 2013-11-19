@@ -19,7 +19,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 */
 // See http://adldap.sourceforge.net/wiki/doku.php?id=documentation_configuration for a full list
 
-$conf['settings']['domain.controllers'] = 'DC=mydomain,DC=local'; // comma separated list of ldap servers such as domaincontroller1,controller2
+$conf['settings']['domain.controllers'] = 'mydomain,local'; // comma separated list of ldap servers such as domaincontroller1,controller2
 $conf['settings']['port'] = '389';      // default ldap port 389 or 636 for ssl.
 $conf['settings']['username'] = '';     // admin user - bind to ldap service with an authorized account user/password
 $conf['settings']['password'] = '';     // admin password - corresponding password

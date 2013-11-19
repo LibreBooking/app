@@ -175,7 +175,7 @@ function RegisterAttributes(SlimServer $server, SlimWebServiceRegistry $registry
 {
 	$webService = new AttributesWebService($server, new AttributeService(new AttributeRepository()));
 	$category = new SlimWebServiceRegistryCategory('Attributes');
-	$category->AddSecureGet('/:categoryId', array($webService, 'GetAttributes'), WebServices::AllCustomAttributes);
+	$category->AddSecureGet('Category/:categoryId', array($webService, 'GetAttributes'), WebServices::AllCustomAttributes);
 	$category->AddSecureGet('/:attributeId', array($webService, 'GetAttribute'), WebServices::GetCustomAttribute);
 	$registry->AddCategory($category);
 }
