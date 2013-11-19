@@ -35,7 +35,6 @@ interface IManageBlackoutsService
 	public function LoadFiltered($pageNumber, $pageSize, $filter, $user);
 
 	/**
-	 * @abstract
 	 * @param DateRange $blackoutDate
 	 * @param array|int[] $resourceIds
 	 * @param string $title
@@ -44,6 +43,18 @@ interface IManageBlackoutsService
 	 * @return IBlackoutValidationResult
 	 */
 	public function Add(DateRange $blackoutDate, $resourceIds, $title, IReservationConflictResolution $reservationConflictResolution, IRepeatOptions $repeatOptions);
+
+	/**
+	 * @param int $blackoutInstanceId
+	 * @param DateRange $blackoutDate
+	 * @param array|int[] $resourceIds
+	 * @param string $title
+	 * @param IReservationConflictResolution $reservationConflictResolution
+	 * @param IRepeatOptions $repeatOptions
+	 * @param SeriesUpdateScope|string $scope
+	 * @return IBlackoutValidationResult
+	 */
+	public function Update($blackoutInstanceId, DateRange $blackoutDate, $resourceIds, $title, IReservationConflictResolution $reservationConflictResolution, IRepeatOptions $repeatOptions, $scope);
 
 	/**
 	 * @param int $blackoutId
@@ -188,6 +199,11 @@ class ManageBlackoutsService implements IManageBlackoutsService
 
 			foreach ($existingBlackouts as $existingBlackout)
 			{
+				if (!$blackoutSeries->IsNew() && $existingBlackout->SeriesId == $blackoutSeries->Id())
+				{
+					continue;
+				}
+
 				if ($blackoutSeries->ContainsResource($existingBlackout->ResourceId) && $blackout->Date()->Overlaps($existingBlackout->Date))
 				{
 					$conflictingBlackouts[] = $existingBlackout;
@@ -224,6 +240,42 @@ class ManageBlackoutsService implements IManageBlackoutsService
 		}
 
 		return $series;
+	}
+
+	public function Update($blackoutInstanceId, DateRange $blackoutDate, $resourceIds, $title, IReservationConflictResolution $reservationConflictResolution, IRepeatOptions $repeatOptions, $scope)
+	{
+		if (!$blackoutDate->GetEnd()->GreaterThan($blackoutDate->GetBegin()))
+		{
+			return new BlackoutDateTimeValidationResult();
+		}
+
+		$userId = ServiceLocator::GetServer()->GetUserSession()->UserId;
+
+		$blackoutSeries = $this->LoadBlackout($blackoutInstanceId, $userId);
+
+		if ($blackoutSeries == null)
+		{
+			return new BlackoutSecurityValidationResult();
+		}
+
+		$blackoutSeries->Update($userId, $scope, $title, $blackoutDate, $repeatOptions, $resourceIds);
+
+		$conflictingBlackouts = $this->GetConflictingBlackouts($blackoutSeries);
+
+		$conflictingReservations = array();
+		if (empty($conflictingBlackouts))
+		{
+			$conflictingReservations = $this->GetConflictingReservations($blackoutSeries, $reservationConflictResolution);
+		}
+
+		$blackoutValidationResult = new BlackoutValidationResult($conflictingBlackouts, $conflictingReservations);
+
+		if ($blackoutValidationResult->CanBeSaved())
+		{
+			$this->blackoutRepository->Update($blackoutSeries);
+		}
+
+		return $blackoutValidationResult;
 	}
 }
 

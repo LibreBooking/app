@@ -763,6 +763,8 @@ class Queries
 				validation_regex = @validation_regex, is_required = @is_required, possible_values = @possible_values, sort_order = @sort_order, entity_id = @entity_id
 			WHERE custom_attribute_id = @custom_attribute_id';
 
+	const UPDATE_BLACKOUT_INSTANCE = 'UPDATE blackout_instances SET blackout_series_id = @blackout_series_id WHERE blackout_instance_id = @blackout_instance_id';
+
 	const UPDATE_GROUP =
 			'UPDATE groups
 		SET name = @groupname, admin_group_id = @admin_group_id

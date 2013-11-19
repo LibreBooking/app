@@ -28,6 +28,11 @@ interface IBlackoutRepository
 	 */
 	public function Add(BlackoutSeries $blackoutSeries);
 
+	/**
+	 * @param BlackoutSeries $blackoutSeries
+	 */
+	public function Update(BlackoutSeries $blackoutSeries);
+
     /**
      * @param int $blackoutId
      */
@@ -101,7 +106,9 @@ class BlackoutRepository implements IBlackoutRepository
 
 			while ($row = $result->GetRow())
 			{
-				$series->AddBlackout(new Blackout(new DateRange(Date::FromDatabase($row[ColumnNames::BLACKOUT_START]), Date::FromDatabase($row[ColumnNames::BLACKOUT_END]))));
+				$instance = new Blackout(new DateRange(Date::FromDatabase($row[ColumnNames::BLACKOUT_START]), Date::FromDatabase($row[ColumnNames::BLACKOUT_END])));
+				$instance->WithId($row[ColumnNames::BLACKOUT_INSTANCE_ID]);
+				$series->AddBlackout($instance);
 			}
 
 			$result = $db->Query(new GetBlackoutResourcesCommand($series->Id()));
@@ -121,6 +128,24 @@ class BlackoutRepository implements IBlackoutRepository
 		else
 		{
 			return null;
+		}
+	}
+
+	/**
+	 * @param BlackoutSeries $blackoutSeries
+	 */
+	public function Update(BlackoutSeries $blackoutSeries)
+	{
+		if ($blackoutSeries->IsNew())
+		{
+			$db = ServiceLocator::GetDatabase();
+			$seriesId = $db->ExecuteInsert(new AddBlackoutCommand($blackoutSeries->OwnerId(), $blackoutSeries->Title(), $blackoutSeries->RepeatType(), $blackoutSeries->RepeatConfigurationString()));
+			$db->Execute(new UpdateBlackoutInstanceCommand($blackoutSeries->CurrentBlackoutInstanceId(), $seriesId));
+		}
+		else
+		{
+			$this->DeleteSeries($blackoutSeries->CurrentBlackoutInstanceId());
+			$this->Add($blackoutSeries);
 		}
 	}
 }

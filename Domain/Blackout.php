@@ -66,10 +66,17 @@ class BlackoutSeries
 	protected $repeatConfiguration;
 
 	/**
+	 * @var bool
+	 */
+	protected $isNew = true;
+
+	protected $currentBlackoutInstanceId;
+
+	/**
 	 * @param int $userId
 	 * @param string $title
 	 */
-	protected function __construct($userId, $title)
+	public function __construct($userId, $title)
 	{
 		$this->WithRepeatOptions(new RepeatNone());
 		$this->ownerId = $userId;
@@ -88,6 +95,39 @@ class BlackoutSeries
 		$series->AddBlackout(new Blackout($blackoutDate));
 		$series->SetCurrentBlackout($blackoutDate);
 		return $series;
+	}
+
+	/**
+	 * @param int $ownerId
+	 * @param SeriesUpdateScope|string $scope
+	 * @param string $title
+	 * @param DateRange $blackoutDate
+	 * @param IRepeatOptions $repeatOptions
+	 * @param int[] $resourceIds
+	 */
+	public function Update($ownerId, $scope, $title, $blackoutDate, $repeatOptions, $resourceIds)
+	{
+		$this->ownerId = $ownerId;
+		$this->title = $title;
+		$this->resourceIds = array();
+		foreach($resourceIds as $rid)
+		{
+			$this->AddResourceId($rid);
+		}
+		$this->blackouts = array();
+		$this->AddBlackout(new Blackout($blackoutDate));
+		$this->SetCurrentBlackout($blackoutDate);
+		$this->Repeats($repeatOptions);
+
+		$this->isNew = $scope == SeriesUpdateScope::ThisInstance;
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function IsNew()
+	{
+		return $this->isNew;
 	}
 
 	/**
@@ -200,7 +240,7 @@ class BlackoutSeries
 		return $this->seriesId;
 	}
 
-	protected function WithId($id)
+	public function WithId($id)
 	{
 		$this->seriesId = $id;
 	}
@@ -216,6 +256,12 @@ class BlackoutSeries
 		$this->blackoutDate = $date;
 	}
 
+	protected function WithCurrentBlackoutId($blackoutInstanceId)
+	{
+		$this->currentBlackoutInstanceId = $blackoutInstanceId;
+	}
+
+
 	/**
 	 * @param string[] $row
 	 * @return BlackoutSeries
@@ -225,7 +271,7 @@ class BlackoutSeries
 		$series = new BlackoutSeries($row[ColumnNames::OWNER_USER_ID], $row[ColumnNames::BLACKOUT_TITLE]);
 		$series->WithId($row[ColumnNames::BLACKOUT_SERIES_ID]);
 		$series->SetCurrentBlackout(new DateRange(Date::FromDatabase($row[ColumnNames::BLACKOUT_START]), Date::FromDatabase($row[ColumnNames::BLACKOUT_END])));
-
+		$series->WithCurrentBlackoutId($row[ColumnNames::BLACKOUT_INSTANCE_ID]);
 		$configuration = RepeatConfiguration::Create($row[ColumnNames::REPEAT_TYPE], $row[ColumnNames::REPEAT_OPTIONS]);
 		$factory = new RepeatOptionsFactory();
 		$options = $factory->Create($row[ColumnNames::REPEAT_TYPE], $configuration->Interval, $configuration->TerminationDate,
@@ -260,15 +306,27 @@ class BlackoutSeries
 	{
 		return $this->resources;
 	}
+
+	/**
+	 * @return int
+	 */
+	public function CurrentBlackoutInstanceId()
+	{
+		return $this->currentBlackoutInstanceId;
+	}
 }
 
 class Blackout
 {
-
 	/**
 	 * @var DateRange
 	 */
 	protected $date;
+
+	/**
+	 * @var
+	 */
+	protected $id;
 
 	/**
 	 * @param DateRange $blackoutDate
@@ -300,6 +358,22 @@ class Blackout
 	public function EndDate()
 	{
 		return $this->date->GetEnd();
+	}
+
+	/**
+	 * @param int $id
+	 */
+	public function WithId($id)
+	{
+		$this->id = $id;
+	}
+
+	/**
+	 * @return int
+	 */
+	public function Id()
+	{
+		return $this->id;
 	}
 }
 
