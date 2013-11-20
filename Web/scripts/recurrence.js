@@ -16,17 +16,18 @@
  You should have received a copy of the GNU General Public License
  along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
  */
-function Recurrence(recurOptions, recurElements) {
+function Recurrence(recurOptions, recurElements, prefix) {
+	prefix = prefix || '';
 	var e = {
-		repeatOptions:$('#repeatOptions'),
-		repeatDiv:$('#repeatDiv'),
-		repeatInterval:$('#repeatInterval'),
-		repeatTermination:$('#formattedEndRepeat'),
-		repeatTerminationTextbox:$('#EndRepeat'),
-		beginDate: $('#formattedBeginDate'),
-		endDate: $('#formattedEndDate'),
-		beginTime: $('#BeginPeriod'),
-		endTime: $('#EndPeriod')
+		repeatOptions:$('#' + prefix + 'repeatOptions'),
+		repeatDiv:$('#' + prefix + 'repeatDiv'),
+		repeatInterval:$('#' + prefix + 'repeatInterval'),
+		repeatTermination:$('#' + prefix + 'formattedEndRepeat'),
+		repeatTerminationTextbox:$('#' + prefix + 'EndRepeat'),
+		beginDate: $('#' + prefix + 'formattedBeginDate'),
+		endDate: $('#' + prefix + 'formattedEndDate'),
+		beginTime: $('#' + prefix + 'BeginPeriod'),
+		endTime: $('#' + prefix + 'EndPeriod')
 	};
 
 	var options = recurOptions;
@@ -45,10 +46,10 @@ function Recurrence(recurOptions, recurElements) {
 	var ChangeRepeatOptions = function () {
 		var repeatDropDown = elements.repeatOptions;
 		if (repeatDropDown.val() != 'none') {
-			$('#repeatUntilDiv').show();
+			$('#' + prefix + 'repeatUntilDiv').show();
 		}
 		else {
-			$('div[id!=repeatOptions]', elements.repeatDiv).hide();
+			$('div[id!=' + prefix + 'repeatOptions]', elements.repeatDiv).hide();
 		}
 
 		if (repeatDropDown.val() == 'daily') {
@@ -126,11 +127,11 @@ function Recurrence(recurOptions, recurElements) {
 			elements.repeatOptions.val(options.repeatType);
 			elements.repeatInterval.val(options.repeatInterval);
 			for (var i = 0; i < options.repeatWeekdays.length; i++) {
-				var id = "#repeatDay" + options.repeatWeekdays[i];
+				var id = "#' + prefix + 'repeatDay" + options.repeatWeekdays[i];
 				$(id).attr('checked', true);
 			}
 
-			$("#repeatOnMonthlyDiv :radio[value='" + options.repeatMonthlyType + "']").attr('checked', true);
+			$("#" + prefix + "repeatOnMonthlyDiv :radio[value='" + options.repeatMonthlyType + "']").attr('checked', true);
 
 			ChangeRepeatOptions();
 		}

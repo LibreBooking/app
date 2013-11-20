@@ -54,7 +54,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 											  maxlength="85" value="{$BlackoutTitle}"/>
 			</li>
 			<li>
-				{control type="RecurrenceControl" RepeatTerminationDate=$RepeatTerminationDate }
+				{control type="RecurrenceControl" RepeatTerminationDate=$RepeatTerminationDate prefix='edit'}
 			</li>
 			<li>
 				<input {formname key=CONFLICT_ACTION} type="radio" id="notifyExisting" name="existingReservations"
@@ -103,10 +103,10 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 		repeatWeekdays: [{foreach from=$RepeatWeekdays item=day}{$day}, {/foreach}]
 	};
 
-	var recurrence = new Recurrence(recurOpts);
+	var recurrence = new Recurrence(recurOpts, {}, 'edit');
 	recurrence.init();
 </script>
 
-{control type="DatePickerSetupControl" ControlId="updateStartDate" AltId="formattedUpdatetDate"}
-{control type="DatePickerSetupControl" ControlId="updateEndDate" AltId="formattedUpdateDate"}
-{control type="DatePickerSetupControl" ControlId="EndRepeat" AltId="formattedEndRepeat"}
+{control type="DatePickerSetupControl" ControlId="updateStartDate" AltId="formattedUpdateStartDate"}
+{control type="DatePickerSetupControl" ControlId="updateEndDate" AltId="formattedUpdateEndDate"}
+{control type="DatePickerSetupControl" ControlId="editEndRepeat" AltId="editformattedEndRepeat"}
