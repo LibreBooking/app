@@ -28,6 +28,7 @@ class ManageBlackoutsActions
 	const ADD = 'add';
 	const DELETE = 'delete';
 	const LOAD = 'load';
+	const UPDATE = 'update';
 }
 
 class ManageBlackoutsPresenter extends ActionPresenter
@@ -68,6 +69,7 @@ class ManageBlackoutsPresenter extends ActionPresenter
 		$this->AddAction(ManageBlackoutsActions::ADD, 'AddBlackout');
 		$this->AddAction(ManageBlackoutsActions::DELETE, 'DeleteBlackout');
 		$this->AddAction(ManageBlackoutsActions::LOAD, 'LoadBlackout');
+		$this->AddAction(ManageBlackoutsActions::UPDATE, 'UpdateBlackout');
 	}
 
 	public function PageLoad($userTimezone)
@@ -201,6 +203,32 @@ class ManageBlackoutsPresenter extends ActionPresenter
 		$this->page->ShowBlackout();
 	}
 
+	public function UpdateBlackout()
+	{
+		$session = ServiceLocator::GetServer()->GetUserSession();
+
+		$id = $this->page->GetUpdateBlackoutId();
+		$scope = $this->page->GetSeriesUpdateScope();
+
+		Log::Debug('Updating blackout. BlackoutId=%s, UpdateScope=%s', $id, $scope);
+
+		$resourceIds = $this->page->GetBlackoutResourceIds();
+		$startDate = $this->page->GetBlackoutStartDate();
+		$startTime = $this->page->GetBlackoutStartTime();
+		$endDate = $this->page->GetBlackoutEndDate();
+		$endTime = $this->page->GetBlackoutEndTime();
+		$blackoutDate = DateRange::Create($startDate . ' ' . $startTime, $endDate . ' ' . $endTime, $session->Timezone);
+
+		$title = $this->page->GetBlackoutTitle();
+		$conflictAction = $this->page->GetBlackoutConflictAction();
+
+		$repeatOptionsFactory = new RepeatOptionsFactory();
+		$repeatOptions = $repeatOptionsFactory->CreateFromComposite($this->page, $session->Timezone);
+
+		$result = $this->manageBlackoutsService->Update($id, $blackoutDate, $resourceIds, $title, ReservationConflictResolution::Create($conflictAction), $repeatOptions, $scope);
+
+		$this->page->ShowAddResult($result->WasSuccessful(), $result->Message(), $result->ConflictingReservations(), $result->ConflictingBlackouts(), $session->Timezone);
+	}
 }
 
 ?>

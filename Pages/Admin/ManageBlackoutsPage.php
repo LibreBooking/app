@@ -120,6 +120,11 @@ interface IManageBlackoutsPage extends IPageable, IActionPage, IRepeatOptionsCom
 	public function GetBlackoutResourceId();
 
 	/**
+	 * @return int[]
+	 */
+	public function GetBlackoutResourceIds();
+
+	/**
 	 * @return string
 	 */
 	public function GetBlackoutStartDate();
@@ -158,6 +163,11 @@ interface IManageBlackoutsPage extends IPageable, IActionPage, IRepeatOptionsCom
 	 * @return string
 	 */
 	public function GetSeriesUpdateScope();
+
+	/**
+	 * @return int
+	 */
+	public function GetUpdateBlackoutId();
 
 	/**
 	 * @param bool $wasAddedSuccessfully
@@ -617,7 +627,7 @@ class ManageBlackoutsPage extends ActionPage implements IManageBlackoutsPage
 
 	public function SetBlackoutId($blackoutId)
 	{
-		$this->Set('SetBlackoutId', $blackoutId);
+		$this->Set('BlackoutId', $blackoutId);
 	}
 
 	public function SetIsRecurring($isRecurring)
@@ -640,6 +650,28 @@ class ManageBlackoutsPage extends ActionPage implements IManageBlackoutsPage
 		$this->Set('WasBlackoutFound', $wasFound);
 	}
 
+	public function GetBlackoutResourceIds()
+	{
+		$resources = $this->GetForm(FormKeys::RESOURCE_ID);
+
+		if (is_null($resources))
+		{
+			return array();
+		}
+
+		if (!is_array($resources))
+		{
+			return array($resources);
+		}
+
+
+		return $resources;
+	}
+
+	public function GetUpdateBlackoutId()
+	{
+		return $this->GetForm(FormKeys::BLACKOUT_INSTANCE_ID);
+	}
 }
 
 ?>

@@ -173,7 +173,7 @@ class ManageConfigurationPage extends ActionPage implements IManageConfiguration
 			if (!empty($setting))
 			{
 //				Log::Debug("%s=%s", $setting, $this->GetForm($setting));
-				$submittedSettings[] = ConfigSetting::ParseForm($setting, $this->GetForm($setting));
+				$submittedSettings[] = ConfigSetting::ParseForm($setting, stripslashes($this->GetRawForm($setting)));
 			}
 		}
 

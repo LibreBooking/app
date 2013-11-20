@@ -17,7 +17,7 @@ You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 *}
 
-<form>
+<form id="editBlackoutForm" method="post">
 	<div id="updateBlackout">
 		<ul>
 			<li>
@@ -70,16 +70,16 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 
 		{if $IsRecurring}
 			<div>{translate key=ApplyUpdatesTo}</div>
-			<button type="button" id="btnUpdateThisInstance" class="button save">
+			<button type="button" class="button save btnUpdateThisInstance">
 				{html_image src="disk-black.png"}
 				{translate key='ThisInstance'}
 			</button>
-			<button type="button" id="btnUpdateAllInstances" class="button save">
+			<button type="button" class="button save btnUpdateAllInstances">
 				{html_image src="disks-black.png"}
 				{translate key='AllInstances'}
 			</button>
 		{else}
-			<button type="button" id="btnCreate" class="button save update">
+			<button type="button" class="button save update btnUpdateAllInstances">
 				{html_image src="disk-black.png"}
 				{translate key='Update'}
 			</button>
@@ -89,6 +89,9 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 			{html_image src="slash.png"}
 			{translate key='Cancel'}
 		</button>
+
+		<input type="hidden" {formname key=BLACKOUT_INSTANCE_ID} value="{$BlackoutId}" />
+		<input type="hidden" {formname key=SERIES_UPDATE_SCOPE} class="hdnSeriesUpdateScope" value="{SeriesUpdateScope::FullSeries}"/>
 	</div>
 </form>
 

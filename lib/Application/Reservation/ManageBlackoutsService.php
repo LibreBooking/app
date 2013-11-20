@@ -199,13 +199,14 @@ class ManageBlackoutsService implements IManageBlackoutsService
 
 			foreach ($existingBlackouts as $existingBlackout)
 			{
-				if (!$blackoutSeries->IsNew() && $existingBlackout->SeriesId == $blackoutSeries->Id())
+				if ($existingBlackout->SeriesId == $blackoutSeries->Id())
 				{
 					continue;
 				}
 
 				if ($blackoutSeries->ContainsResource($existingBlackout->ResourceId) && $blackout->Date()->Overlaps($existingBlackout->Date))
 				{
+
 					$conflictingBlackouts[] = $existingBlackout;
 				}
 			}

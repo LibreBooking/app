@@ -51,6 +51,7 @@ class FormKeys
 	const BEGIN_PERIOD = 'beginPeriod';
 	const BEGIN_TIME = 'beginTime';
 	const BLACKOUT_APPLY_TO_SCHEDULE = 'applyToSchedule';
+	const BLACKOUT_INSTANCE_ID = 'BLACKOUT_INSTANCE_ID';
 
 	const CAPTCHA = 'captcha';
 	const CONFLICT_ACTION = 'conflictAction';

@@ -307,6 +307,61 @@ class ManageBlackoutsPresenterTests extends TestBase
 		$this->presenter->LoadBlackout();
 	}
 
+	public function testUpdatesBlackout()
+	{
+		$startDate = '1/1/2011';
+		$endDate = '1/2/2011';
+		$startTime = '01:30 PM';
+		$endTime = '12:15 AM';
+		$timezone = $this->fakeUser->Timezone;
+		$dr = DateRange::Create($startDate . ' ' . $startTime, $endDate . ' ' . $endTime, $timezone);
+		$title = 'out of service';
+		$conflictAction = ReservationConflictResolution::Delete;
+		$conflictResolution = ReservationConflictResolution::Create($conflictAction);
+		$endDateString = '2012-01-01';
+		$repeatType = RepeatType::Daily;
+		$repeatInterval = 1;
+		$repeatDays = array(1, 2);
+		$repeatMonthlyType = RepeatMonthlyType::DayOfMonth;
+		$blackoutInstanceId = 1111;
+		$scope = SeriesUpdateScope::ThisInstance;
+
+		$roFactory = new RepeatOptionsFactory();
+		$repeatEndDate = Date::Parse($endDateString, $timezone);
+		$repeatOptions = $roFactory->Create($repeatType, $repeatInterval, $repeatEndDate, $repeatDays, $repeatMonthlyType);
+
+		$this->ExpectPageToReturnCommonBlackoutInfo($startDate, $startTime, $endDate, $endTime, $title, $conflictAction);
+		$this->ExpectPageToReturnRepeatInfo($repeatType, $repeatInterval, $endDateString, $repeatDays, $repeatMonthlyType);
+
+		$resourceIds = array(123, 456);
+		$this->page->expects($this->once())
+			->method('GetBlackoutResourceIds')
+			->will($this->returnValue($resourceIds));
+
+		$this->page->expects($this->once())
+			->method('GetUpdateBlackoutId')
+			->will($this->returnValue($blackoutInstanceId));
+
+		$this->page->expects($this->once())
+			->method('GetSeriesUpdateScope')
+			->will($this->returnValue($scope));
+
+		$result = $this->getMock('IBlackoutValidationResult');
+
+		$this->blackoutsService->expects($this->once())
+			->method('Update')
+			->with($this->equalTo($blackoutInstanceId),
+				   $this->equalTo($dr),
+				   $this->equalTo($resourceIds),
+				   $this->equalTo($title),
+				   $this->equalTo($conflictResolution),
+				   $this->equalTo( $repeatOptions),
+				   $this->equalTo($scope))
+			->will($this->returnValue($result));
+
+		$this->presenter->UpdateBlackout();
+	}
+
 	/**
 	 * @param Date $startDate
 	 * @param Date $endDate

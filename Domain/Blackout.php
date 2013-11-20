@@ -117,7 +117,15 @@ class BlackoutSeries
 		$this->blackouts = array();
 		$this->AddBlackout(new Blackout($blackoutDate));
 		$this->SetCurrentBlackout($blackoutDate);
-		$this->Repeats($repeatOptions);
+
+		if ($scope == SeriesUpdateScope::ThisInstance)
+		{
+			$this->Repeats(new RepeatNone());
+		}
+		else
+		{
+			$this->Repeats($repeatOptions);
+		}
 
 		$this->isNew = $scope == SeriesUpdateScope::ThisInstance;
 	}

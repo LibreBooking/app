@@ -22,45 +22,7 @@ require_once(ROOT_DIR . 'Presenters/CalendarSubscriptionPresenter.php');
 require_once(ROOT_DIR . 'lib/Application/Schedule/namespace.php');
 require_once(ROOT_DIR . 'lib/Application/Reservation/namespace.php');
 require_once(ROOT_DIR . 'Domain/Access/namespace.php');
-
-interface ICalendarSubscriptionPage
-{
-	/**
-	 * @abstract
-	 * @return string
-	 */
-	function GetSubscriptionKey();
-
-	/**
-	 * @abstract
-	 * @return string
-	 */
-	function GetUserId();
-
-	/**
-	 * @abstract
-	 * @param array|iCalendarReservationView[] $reservations
-	 */
-	function SetReservations($reservations);
-
-	/**
-	 * @abstract
-	 * @return int
-	 */
-	function GetScheduleId();
-
-	/**
-	 * @abstract
-	 * @return int
-	 */
-	function GetResourceId();
-
-	/**
-	 * @abstract
-	 * @return int
-	 */
-	function GetAccessoryIds();
-}
+require_once(ROOT_DIR . 'Pages/Export/ICalendarSubscriptionPage.php');
 
 class CalendarSubscriptionPage extends Page implements ICalendarSubscriptionPage
 {

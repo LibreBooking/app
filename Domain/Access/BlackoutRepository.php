@@ -58,16 +58,23 @@ class BlackoutRepository implements IBlackoutRepository
 	 */
 	public function Add(BlackoutSeries $blackoutSeries)
 	{
+		$seriesId = $this->AddSeries($blackoutSeries);
+		foreach ($blackoutSeries->AllBlackouts() as $blackout)
+		{
+			ServiceLocator::GetDatabase()->ExecuteInsert(new AddBlackoutInstanceCommand($seriesId, $blackout->StartDate(), $blackout->EndDate()));
+		}
+
+		return $seriesId;
+	}
+
+	private function AddSeries (BlackoutSeries $blackoutSeries)
+	{
 		$db = ServiceLocator::GetDatabase();
 		$seriesId = $db->ExecuteInsert(new AddBlackoutCommand($blackoutSeries->OwnerId(), $blackoutSeries->Title(), $blackoutSeries->RepeatType(), $blackoutSeries->RepeatConfigurationString()));
 
 		foreach ($blackoutSeries->ResourceIds() as $resourceId)
 		{
 			$db->ExecuteInsert(new AddBlackoutResourceCommand($seriesId, $resourceId));
-		}
-		foreach ($blackoutSeries->AllBlackouts() as $blackout)
-		{
-			$db->ExecuteInsert(new AddBlackoutInstanceCommand($seriesId, $blackout->StartDate(), $blackout->EndDate()));
 		}
 
 		return $seriesId;
@@ -138,8 +145,8 @@ class BlackoutRepository implements IBlackoutRepository
 	{
 		if ($blackoutSeries->IsNew())
 		{
+			$seriesId = $this->AddSeries($blackoutSeries);
 			$db = ServiceLocator::GetDatabase();
-			$seriesId = $db->ExecuteInsert(new AddBlackoutCommand($blackoutSeries->OwnerId(), $blackoutSeries->Title(), $blackoutSeries->RepeatType(), $blackoutSeries->RepeatConfigurationString()));
 			$db->Execute(new UpdateBlackoutInstanceCommand($blackoutSeries->CurrentBlackoutInstanceId(), $seriesId));
 		}
 		else

@@ -32,15 +32,7 @@ function BlackoutManagement(opts)
         ConfigureAdminDialog(elements.deleteDialog, 'auto', 'auto');
         ConfigureAdminDialog(elements.deleteRecurringDialog, 'auto', 'auto');
 
-		$('#btnUpdateThisInstance').click(function ()
-		{
-			ChangeUpdateScope(options.scopeOpts.instance);
-		});
-
-		$('#btnUpdateAllInstances').click(function ()
-		{
-			ChangeUpdateScope(options.scopeOpts.full);
-		});
+		wireUpUpdateButtons();
 
 		$(".save").click(function() {
 			$(this).closest('form').submit();
@@ -73,6 +65,14 @@ function BlackoutManagement(opts)
 						overlayClose: false,
 						onComplete: function ()
 						{
+							ConfigureAdminForm($('#editBlackoutForm'), getUpdateUrl, onAddSuccess, null, {onBeforeSubmit: onBeforeAddSubmit, target: '#result'});
+
+							wireUpUpdateButtons();
+
+							$(".save").click(function() {
+								$(this).closest('form').submit();
+							});
+
 							$('#cancelUpdate').click(function (e)
 							{
 								$.colorbox.close();
@@ -201,6 +201,11 @@ function BlackoutManagement(opts)
 		return opts.addUrl;
 	}
 
+	function getUpdateUrl()
+	{
+		return opts.updateUrl;
+	}
+
 	function setActiveReferenceNumber(referenceNumber)
 	{
 		this.referenceNumber = referenceNumber;
@@ -277,6 +282,19 @@ function BlackoutManagement(opts)
 
 	function ChangeUpdateScope(updateScopeValue)
 	{
-		$('#hdnSeriesUpdateScope').val(updateScopeValue);
+		$('.hdnSeriesUpdateScope').val(updateScopeValue);
+	}
+
+	function wireUpUpdateButtons()
+	{
+		$('.btnUpdateThisInstance').click(function ()
+		{
+			ChangeUpdateScope(options.scopeOpts.instance);
+		});
+
+		$('.btnUpdateAllInstances').click(function ()
+		{
+			ChangeUpdateScope(options.scopeOpts.full);
+		});
 	}
 }
