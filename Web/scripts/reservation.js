@@ -40,7 +40,8 @@ function Reservation(opts)
 		groupDiv: $('#resourceGroups'),
 		addResourcesButton: $('#btnAddResources'),
 		resourceGroupsDialog: $('#dialogResourceGroups'),
-		addResourcesConfirm:$('#btnConfirmAddResources')
+		addResourcesConfirm:$('#btnConfirmAddResources'),
+		reservationAttachments:$('#reservationAttachments')
 	};
 
 	var participation = {};
@@ -158,6 +159,7 @@ function Reservation(opts)
 		WireUpButtonPrompt();
 		WireUpSaveDialog();
 		DisplayDuration();
+		WireUpAttachments();
 	};
 
 	// pre-submit callback 
@@ -612,6 +614,45 @@ function Reservation(opts)
 		elements.inviteeAutocomplete.userAutoComplete(options.userAutocompleteUrl, function (ui)
 		{
 			participation.addInvitee(ui.item.label, ui.item.value);
+		});
+	}
+
+	function WireUpAttachments()
+	{
+		var enableCorrectButtons = function()
+		{
+			var notLast = elements.reservationAttachments.find('.attachment-item:not(:last-child)');
+			if (elements.reservationAttachments.find('.attachment-item').length > 1)
+			{
+				notLast.find('.add-attachment').hide();
+				elements.reservationAttachments.find('.remove-attachment').show();
+			}
+			else
+			{
+				elements.reservationAttachments.find('.add-attachment').show();
+				elements.reservationAttachments.find('.remove-attachment').hide();
+			}
+		};
+
+		enableCorrectButtons();
+
+		elements.reservationAttachments.delegate('.add-attachment', 'click', function (e)
+		{
+			e.preventDefault();
+			var li = $(this).closest('li');
+			var cloned = li.clone();
+			cloned.appendTo(li.parent());
+			cloned.wrap('<form>').closest('form').get(0).reset();
+			cloned.unwrap();
+			enableCorrectButtons();
+
+		});
+
+		elements.reservationAttachments.delegate('.remove-attachment', 'click', function (e)
+		{
+			e.preventDefault();
+			$(this).closest('li').remove();
+			enableCorrectButtons();
 		});
 	}
 

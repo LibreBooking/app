@@ -200,6 +200,7 @@ abstract class ReservationPage extends Page implements IReservationPage
 		$this->Set('ReturnUrl', $this->GetLastPage(Pages::SCHEDULE));
 		$this->Set('ReservationAction', $this->GetReservationAction());
 		$this->Set('MaxUploadSize', UploadedFile::GetMaxSize());
+		$this->Set('MaxUploadCount', UploadedFile::GetMaxUploadCount());
 		$this->Set('UploadsEnabled', Configuration::Instance()->GetSectionKey(ConfigSection::UPLOADS,
 																			  ConfigKeys::UPLOAD_ENABLE_RESERVATION_ATTACHMENTS,
 																			  new BooleanConverter()));

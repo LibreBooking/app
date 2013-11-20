@@ -112,5 +112,14 @@ class UploadedFile
 		$memory_limit = (int)(ini_get('memory_limit'));
 		return min($max_upload, $max_post, $memory_limit);
 	}
+
+	/**
+	 * @static
+	 * @return int
+	 */
+	public static function GetMaxUploadCount()
+	{
+		return (int)(ini_get('max_file_uploads'));
+	}
 }
 ?>

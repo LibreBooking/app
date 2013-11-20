@@ -145,10 +145,15 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
         </li>
 	{if $UploadsEnabled}
         <li>
-            <label>{translate key=AttachFile}<br/>
-                <input type="file" {formname key=RESERVATION_FILE} /> <span class="note">({$MaxUploadSize}
-                    MB {translate key=Maximum})</span>
-            </label>
+            <label>{translate key=AttachFile} <span class="note">({$MaxUploadSize}
+                                MB {translate key=Maximum})</span><br/> </label>
+			<ul style="list-style:none;" id="reservationAttachments">
+				<li class="attachment-item">
+					<input type="file" {formname key=RESERVATION_FILE multi=true} />
+					<a class="add-attachment" href="#">{html_image src="plus-button.png"}</a>
+					<a class="remove-attachment" href="#">{html_image src="minus-gray.png"}</a>
+				</li>
+			</ul>
         </li>
 	{/if}
 	{if $RemindersEnabled}
@@ -341,7 +346,8 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
             deleteUrl:'ajax/reservation_delete.php',
             userAutocompleteUrl:"ajax/autocomplete.php?type={AutoCompleteType::User}",
             groupAutocompleteUrl:"ajax/autocomplete.php?type={AutoCompleteType::Group}",
-            changeUserAutocompleteUrl:"ajax/autocomplete.php?type={AutoCompleteType::MyUsers}"
+            changeUserAutocompleteUrl:"ajax/autocomplete.php?type={AutoCompleteType::MyUsers}",
+			maxConcurrentUploads:'{$MaxUploadCount}'
         };
 
         var recurOpts = {
