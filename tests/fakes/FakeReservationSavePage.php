@@ -168,9 +168,9 @@ class FakeReservationSavePage implements IReservationSavePage
 		return $this->invitees;
 	}
 
-	public function GetAttachment()
+	public function GetAttachments()
 	{
-		return $this->attachment;
+		return array($this->attachment);
 	}
 
 	/**

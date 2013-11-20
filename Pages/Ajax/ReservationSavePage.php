@@ -70,13 +70,11 @@ interface IReservationSavePage extends IReservationSaveResultsPage, IRepeatOptio
 	public function GetResources();
 
 	/**
-	 * @abstract
 	 * @return int[]
 	 */
 	public function GetParticipants();
 
 	/**
-	 * @abstract
 	 * @return int[]
 	 */
 	public function GetInvitees();
@@ -87,22 +85,19 @@ interface IReservationSavePage extends IReservationSaveResultsPage, IRepeatOptio
 	public function SetReferenceNumber($referenceNumber);
 
 	/**
-	 * @abstract
 	 * @return AccessoryFormElement[]|array
 	 */
 	public function GetAccessories();
 
 	/**
-	 * @abstract
 	 * @return AttributeFormElement[]|array
 	 */
 	public function GetAttributes();
 
 	/**
-	 * @abstract
-	 * @return UploadedFile
+	 * @return UploadedFile[]
 	 */
-	public function GetAttachment();
+	public function GetAttachments();
 
 	/**
 	 * @return bool
@@ -399,15 +394,15 @@ class ReservationSavePage extends SecurePage implements IReservationSavePage
 	}
 
 	/**
-	 * @return UploadedFile
+	 * @return UploadedFile[]
 	 */
-	public function GetAttachment()
+	public function GetAttachments()
 	{
 		if ($this->AttachmentsEnabled())
 		{
-			return $this->server->GetFile(FormKeys::RESERVATION_FILE);
+			return $this->server->GetFiles(FormKeys::RESERVATION_FILE);
 		}
-		return null;
+		return array();
 	}
 
 	private function AttachmentsEnabled()

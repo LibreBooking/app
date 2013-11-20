@@ -26,11 +26,11 @@ class ReservationAttachmentRule implements IReservationValidationRule
 	 */
 	public function Validate($reservationSeries)
 	{
-		$attachment = $reservationSeries->AddedAttachment();
+		$attachments = $reservationSeries->AddedAttachments();
 
 		$allowedExtensionsConfig = Configuration::Instance()->GetSectionKey(ConfigSection::UPLOADS, ConfigKeys::UPLOAD_RESERVATION_EXTENSIONS);
 
-		if (empty($allowedExtensionsConfig) || ($attachment == null))
+		if (empty($allowedExtensionsConfig) || empty($attachments))
 		{
 			return new ReservationRuleResult();
 		}
@@ -39,7 +39,16 @@ class ReservationAttachmentRule implements IReservationValidationRule
 		$allowedExtensions = str_replace(' ', '', $allowedExtensions);
 		$allowedExtensionList = explode(',', $allowedExtensions);
 
-		return new ReservationRuleResult(in_array($attachment->FileExtension(), $allowedExtensionList), Resources::GetInstance()->GetString('InvalidAttachmentExtension', $allowedExtensionsConfig));
+		foreach ($attachments as $attachment)
+		{
+			$isValid = in_array($attachment->FileExtension(), $allowedExtensionList);
+			if (!$isValid)
+			{
+				return new ReservationRuleResult($isValid, Resources::GetInstance()->GetString('InvalidAttachmentExtension', $allowedExtensionsConfig));
+			}
+		}
+
+		return new ReservationRuleResult();
 	}
 }
 ?>

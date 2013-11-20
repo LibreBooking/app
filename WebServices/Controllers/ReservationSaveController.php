@@ -517,9 +517,9 @@ class ReservationRequestResponseFacade implements IReservationSavePage
 		return $attributes;
 	}
 
-	public function GetAttachment()
+	public function GetAttachments()
 	{
-		return null;
+		return array();
 	}
 
 	private function getIntArray($values)

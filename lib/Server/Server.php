@@ -133,6 +133,43 @@ class Server
         return null;
     }
 
+	/**
+	 * @param string$name
+	 * @return array|UploadedFile[]
+	 */
+	public function GetFiles($name)
+    {
+		$uploadedFiles = array();
+
+        if (isset($_FILES[$name]))
+        {
+			$files = $_FILES[$name];
+			if (is_array($files['name']))
+			{
+				// convert the files from the weird PHP multi-file array to a normal array of objects
+				// taken from PHP.net
+				$file_ary = array();
+			    $file_count = count($files['name']);
+			    $file_keys = array_keys($files);
+
+			    for ($i=0; $i< $file_count; $i++)
+				{
+			        foreach ($file_keys as $key)
+					{
+			            $file_ary[$i][$key] = $files[$key][$i];
+			        }
+
+					$uploadedFiles[] = new UploadedFile($file_ary[$i]);
+			    }
+			}
+            else
+			{
+				$uploadedFiles[] = new UploadedFile($_FILES[$name]);
+			}
+        }
+        return $uploadedFiles;
+    }
+
     public function GetUrl()
     {
         $url = $_SERVER['PHP_SELF'];

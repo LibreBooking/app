@@ -156,9 +156,9 @@ class ReservationSeries
 	}
 
 	/**
-	 * @var ReservationAttachment|null
+	 * @var ReservationAttachment[]|array
 	 */
-	protected $addedAttachment;
+	protected $addedAttachments = array();
 
 	/**
 	 * @return int[]
@@ -521,11 +521,11 @@ class ReservationSeries
 	}
 
 	/**
-	 * @return ReservationAttachment|null
+	 * @return ReservationAttachment[]|array
 	 */
-	public function AddedAttachment()
+	public function AddedAttachments()
 	{
-		return $this->addedAttachment;
+		return $this->addedAttachments;
 	}
 
 	/**
@@ -533,15 +533,18 @@ class ReservationSeries
 	 */
 	public function AddAttachment(ReservationAttachment $attachment)
 	{
-		$this->addedAttachment = $attachment;
+		$this->addedAttachments[] = $attachment;
 	}
 
 	public function WithSeriesId($seriesId)
 	{
 		$this->seriesId = $seriesId;
-		if ($this->addedAttachment != null)
+		foreach ($this->addedAttachments as $addedAttachment)
 		{
-			$this->addedAttachment->WithSeriesId($seriesId);
+			if ($addedAttachment != null)
+			{
+				$addedAttachment->WithSeriesId($seriesId);
+			}
 		}
 	}
 

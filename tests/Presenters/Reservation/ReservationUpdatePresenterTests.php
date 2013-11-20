@@ -161,7 +161,7 @@ class ReservationUpdatePresenterTests extends TestBase
 		$this->assertEquals($expectedAccessories, $existingSeries->Accessories());
 		$this->assertEquals($expectedAttributes, $existingSeries->AttributeValues());
 		$expectedAttachment = ReservationAttachment::Create($attachment->OriginalName(), $attachment->MimeType(), $attachment->Size(), $attachment->Contents(), $attachment->Extension(), $seriesId);
-		$this->assertEquals($expectedAttachment, $expectedSeries->AddedAttachment());
+		$this->assertEquals(array($expectedAttachment), $expectedSeries->AddedAttachments());
 		$this->assertEquals($this->page->removedFileIds, $existingSeries->RemovedAttachmentIds());
 		$this->assertEquals(new ReservationReminder($this->page->GetStartReminderValue(), $this->page->GetStartReminderInterval()), $existingSeries->GetStartReminder());
 		$this->assertEquals(ReservationReminder::None(), $existingSeries->GetEndReminder());

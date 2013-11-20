@@ -198,7 +198,7 @@ class ReservationSaveControllerTests extends TestBase
 		$attributes = array(new AttributeFormElement($attributeId, $attributeValue));
 
 		$this->assertEquals($accessories, $facade->GetAccessories());
-		$this->assertEquals(null, $facade->GetAttachment());
+		$this->assertEquals(array(), $facade->GetAttachments());
 		$this->assertEquals($attributes, $facade->GetAttributes());
 		$this->assertEquals($description, $facade->GetDescription());
 		$this->assertEquals($endDateUserTz->Format('Y-m-d'), $facade->GetEndDate());

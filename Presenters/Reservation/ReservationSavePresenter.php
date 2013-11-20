@@ -109,17 +109,21 @@ class ReservationSavePresenter implements IReservationSavePresenter
 		$inviteeIds = $this->_page->GetInvitees();
 		$reservationSeries->ChangeInvitees($inviteeIds);
 
-		$attachment = $this->_page->GetAttachment();
-		if ($attachment != null)
+		$attachments = $this->_page->GetAttachments();
+
+		foreach($attachments as $attachment)
 		{
-			if ($attachment->IsError())
+			if ($attachment != null)
 			{
-				Log::Error('Error attaching file %s. %s', $attachment->OriginalName(), $attachment->Error());
-			}
-			else
-			{
-				$att = ReservationAttachment::Create($attachment->OriginalName(), $attachment->MimeType(), $attachment->Size(), $attachment->Contents(), $attachment->Extension(), 0);
-				$reservationSeries->AddAttachment($att);
+				if ($attachment->IsError())
+				{
+					Log::Error('Error attaching file %s. %s', $attachment->OriginalName(), $attachment->Error());
+				}
+				else
+				{
+					$att = ReservationAttachment::Create($attachment->OriginalName(), $attachment->MimeType(), $attachment->Size(), $attachment->Contents(), $attachment->Extension(), 0);
+					$reservationSeries->AddAttachment($att);
+				}
 			}
 		}
 

@@ -115,20 +115,23 @@ class ReservationUpdatePresenter implements IReservationUpdatePresenter
 		$existingSeries->ChangeAccessories($this->GetAccessories());
 		$existingSeries->ChangeAttributes($this->GetAttributes());
 
-		$attachment = $this->page->GetAttachment();
-		if ($attachment != null)
+		$attachments = $this->page->GetAttachments();
+		foreach ($attachments as $attachment)
 		{
-			if ($attachment->IsError())
+			if ($attachment != null)
 			{
-				Log::Error('Error attaching file %s. %s', $attachment->OriginalName(), $attachment->Error());
-			}
-			else
-			{
-				Log::Debug('Attaching file %s to series %s', $attachment->OriginalName(), $existingSeries->SeriesId());
-				$att = ReservationAttachment::Create($attachment->OriginalName(), $attachment->MimeType(),
-													 $attachment->Size(), $attachment->Contents(),
-													 $attachment->Extension(), $existingSeries->SeriesId());
-				$existingSeries->AddAttachment($att);
+				if ($attachment->IsError())
+				{
+					Log::Error('Error attaching file %s. %s', $attachment->OriginalName(), $attachment->Error());
+				}
+				else
+				{
+					Log::Debug('Attaching file %s to series %s', $attachment->OriginalName(), $existingSeries->SeriesId());
+					$att = ReservationAttachment::Create($attachment->OriginalName(), $attachment->MimeType(),
+														 $attachment->Size(), $attachment->Contents(),
+														 $attachment->Extension(), $existingSeries->SeriesId());
+					$existingSeries->AddAttachment($att);
+				}
 			}
 		}
 

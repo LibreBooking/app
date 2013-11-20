@@ -103,9 +103,9 @@ class ReservationRepository implements IReservationRepository
 
 			$database->Execute($updateSeries);
 
-			if ($reservationSeries->AddedAttachment() != null)
+			foreach ($reservationSeries->AddedAttachments() as $attachment)
 			{
-				$this->AddReservationAttachment($reservationSeries->AddedAttachment());
+				$this->AddReservationAttachment($attachment);
 			}
 		}
 
@@ -149,9 +149,9 @@ class ReservationRepository implements IReservationRepository
 			$database->Execute($insertAttributeValue);
 		}
 
-		if ($reservationSeries->AddedAttachment() != null)
+		foreach ($reservationSeries->AddedAttachments() as $attachment)
 		{
-			$this->AddReservationAttachment($reservationSeries->AddedAttachment());
+			$this->AddReservationAttachment($attachment);
 		}
 
 		if ($reservationSeries->GetStartReminder()->Enabled())

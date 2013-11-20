@@ -143,45 +143,6 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
                           tabindex="110">{$Description}</textarea>
             </label>
         </li>
-	{if $UploadsEnabled}
-        <li>
-            <label>{translate key=AttachFile} <span class="note">({$MaxUploadSize}
-                                MB {translate key=Maximum})</span><br/> </label>
-			<ul style="list-style:none;" id="reservationAttachments">
-				<li class="attachment-item">
-					<input type="file" {formname key=RESERVATION_FILE multi=true} />
-					<a class="add-attachment" href="#">{html_image src="plus-button.png"}</a>
-					<a class="remove-attachment" href="#">{html_image src="minus-gray.png"}</a>
-				</li>
-			</ul>
-        </li>
-	{/if}
-	{if $RemindersEnabled}
-        <li>
-            <label>{translate key=SendReminder}</label> <br/>
-
-            <div id="reminderOptionsStart">
-                <input type="checkbox" class="reminderEnabled" {formname key=START_REMINDER_ENABLED}/>
-                <input type="text" size="3" maxlength="3" value="15" class="reminderTime textbox" {formname key=START_REMINDER_TIME}/>
-                <select class="reminderInterval textbox" {formname key=START_REMINDER_INTERVAL}>
-                    <option value="{ReservationReminderInterval::Minutes}">{translate key=minutes}</option>
-                    <option value="{ReservationReminderInterval::Hours}">{translate key=hours}</option>
-                    <option value="{ReservationReminderInterval::Days}">{translate key=days}</option>
-                </select>
-                <span class="reminderLabel">{translate key=ReminderBeforeStart}</span>
-            </div>
-            <div id="reminderOptionsEnd">
-                <input type="checkbox" class="reminderEnabled" {formname key=END_REMINDER_ENABLED}/>
-                <input type="text" size="3" maxlength="3" value="15" class="reminderTime textbox" {formname key=END_REMINDER_TIME}/>
-                <select class="reminderInterval textbox" {formname key=END_REMINDER_INTERVAL}>
-					<option value="{ReservationReminderInterval::Minutes}">{translate key=minutes}</option>
-					<option value="{ReservationReminderInterval::Hours}">{translate key=hours}</option>
-					<option value="{ReservationReminderInterval::Days}">{translate key=days}</option>
-                </select>
-                <span class="reminderLabel">{translate key=ReminderBeforeEnd}</span>
-            </div>
-        </li>
-	{/if}
     </ul>
 </div>
 
@@ -192,6 +153,58 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 {/if}
 
 <div style="clear:both;">&nbsp;</div>
+
+{if $UploadsEnabled}
+	<div>
+		<ul>
+			<li>
+				<label>{translate key=AttachFile} <span class="note">({$MaxUploadSize}
+						MB {translate key=Maximum})</span><br/> </label>
+				<ul style="list-style:none;" id="reservationAttachments">
+					<li class="attachment-item">
+						<input type="file" {formname key=RESERVATION_FILE multi=true} />
+						<a class="add-attachment" href="#">{html_image src="plus-button.png"}</a>
+						<a class="remove-attachment" href="#">{html_image src="minus-gray.png"}</a>
+					</li>
+				</ul>
+			</li>
+		</ul>
+	</div>
+{/if}
+
+{if $RemindersEnabled}
+	<div>
+		<ul>
+			<li>
+				<h3>{translate key=SendReminder}</h3>
+
+
+				<div id="reminderOptionsStart">
+					<input type="checkbox" class="reminderEnabled" {formname key=START_REMINDER_ENABLED}/>
+					<input type="text" size="3" maxlength="3" value="15"
+						   class="reminderTime textbox" {formname key=START_REMINDER_TIME}/>
+					<select class="reminderInterval textbox" {formname key=START_REMINDER_INTERVAL}>
+						<option value="{ReservationReminderInterval::Minutes}">{translate key=minutes}</option>
+						<option value="{ReservationReminderInterval::Hours}">{translate key=hours}</option>
+						<option value="{ReservationReminderInterval::Days}">{translate key=days}</option>
+					</select>
+					<span class="reminderLabel">{translate key=ReminderBeforeStart}</span>
+				</div>
+				<div id="reminderOptionsEnd">
+					<input type="checkbox" class="reminderEnabled" {formname key=END_REMINDER_ENABLED}/>
+					<input type="text" size="3" maxlength="3" value="15"
+						   class="reminderTime textbox" {formname key=END_REMINDER_TIME}/>
+					<select class="reminderInterval textbox" {formname key=END_REMINDER_INTERVAL}>
+						<option value="{ReservationReminderInterval::Minutes}">{translate key=minutes}</option>
+						<option value="{ReservationReminderInterval::Hours}">{translate key=hours}</option>
+						<option value="{ReservationReminderInterval::Days}">{translate key=days}</option>
+					</select>
+					<span class="reminderLabel">{translate key=ReminderBeforeEnd}</span>
+				</div>
+			</li>
+		</ul>
+	</div>
+{/if}
 
 {if $Attributes|count > 0}
 <div class="customAttributes">

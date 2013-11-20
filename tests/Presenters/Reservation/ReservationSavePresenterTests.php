@@ -161,7 +161,7 @@ class ReservationSavePresenterTests extends TestBase
 		$expectedAttachment = ReservationAttachment::Create($attachment->OriginalName(), $attachment->MimeType(),
 															$attachment->Size(), $attachment->Contents(),
 															$attachment->Extension(), 0);
-		$this->assertEquals($expectedAttachment, $actualReservation->AddedAttachment());
+		$this->assertEquals(array($expectedAttachment), $actualReservation->AddedAttachments());
 		$this->assertEquals($startReminder, $actualReservation->GetStartReminder());
 		$this->assertEquals($endReminder, $actualReservation->GetEndReminder());
 	}
