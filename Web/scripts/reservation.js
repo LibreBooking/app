@@ -621,13 +621,23 @@ function Reservation(opts)
 	{
 		var enableCorrectButtons = function()
 		{
-			var notLast = elements.reservationAttachments.find('.attachment-item:not(:last-child)');
 			var allAttachments = elements.reservationAttachments.find('.attachment-item');
 			if (allAttachments.length > 1)
 			{
-				allAttachments.find(':not(:last) > .add-attachment').hide();
-				allAttachments.find(':last > .add-attachment').show();
-				elements.reservationAttachments.find('.remove-attachment').show();
+				$.each(allAttachments, function(i, v)
+				{
+					var addbutton = $(v).find('.add-attachment');
+					if (i == allAttachments.length -1)
+					{
+						addbutton.show();
+					}
+					else
+					{
+						addbutton.hide();
+					}
+
+					$(v).find('.remove-attachment').show();
+				});
 			}
 			else
 			{
