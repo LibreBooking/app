@@ -622,15 +622,22 @@ function Reservation(opts)
 		var enableCorrectButtons = function()
 		{
 			var notLast = elements.reservationAttachments.find('.attachment-item:not(:last-child)');
-			if (elements.reservationAttachments.find('.attachment-item').length > 1)
+			var allAttachments = elements.reservationAttachments.find('.attachment-item');
+			if (allAttachments.length > 1)
 			{
-				notLast.find('.add-attachment').hide();
+				allAttachments.find(':not(:last) > .add-attachment').hide();
+				allAttachments.find(':last > .add-attachment').show();
 				elements.reservationAttachments.find('.remove-attachment').show();
 			}
 			else
 			{
 				elements.reservationAttachments.find('.add-attachment').show();
 				elements.reservationAttachments.find('.remove-attachment').hide();
+			}
+
+			if (allAttachments.length == opts.maxConcurrentUploads)
+			{
+				allAttachments.find('.add-attachment').hide();
 			}
 		};
 

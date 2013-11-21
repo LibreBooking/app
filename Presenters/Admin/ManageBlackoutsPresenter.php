@@ -227,7 +227,7 @@ class ManageBlackoutsPresenter extends ActionPresenter
 
 		$result = $this->manageBlackoutsService->Update($id, $blackoutDate, $resourceIds, $title, ReservationConflictResolution::Create($conflictAction), $repeatOptions, $scope);
 
-		$this->page->ShowAddResult($result->WasSuccessful(), $result->Message(), $result->ConflictingReservations(), $result->ConflictingBlackouts(), $session->Timezone);
+		$this->page->ShowUpdateResult($result->WasSuccessful(), $result->Message(), $result->ConflictingReservations(), $result->ConflictingBlackouts(), $session->Timezone);
 	}
 }
 

@@ -1675,11 +1675,13 @@ class UpdateAttributeCommand extends SqlCommand
 
 class UpdateBlackoutInstanceCommand extends SqlCommand
 {
-	public function __construct($instanceId, $seriesId)
+	public function __construct($instanceId, $seriesId, Date $start, Date $end)
 	{
 		parent::__construct(Queries::UPDATE_BLACKOUT_INSTANCE);
 		$this->AddParameter(new Parameter(ParameterNames::BLACKOUT_INSTANCE_ID, $instanceId));
 		$this->AddParameter(new Parameter(ParameterNames::BLACKOUT_SERIES_ID, $seriesId));
+		$this->AddParameter(new Parameter(ParameterNames::START_DATE, $start->ToDatabase()));
+		$this->AddParameter(new Parameter(ParameterNames::END_DATE, $end->ToDatabase()));
 	}
 }
 

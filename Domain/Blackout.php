@@ -114,20 +114,54 @@ class BlackoutSeries
 		{
 			$this->AddResourceId($rid);
 		}
-		$this->blackouts = array();
-		$this->AddBlackout(new Blackout($blackoutDate));
-		$this->SetCurrentBlackout($blackoutDate);
 
 		if ($scope == SeriesUpdateScope::ThisInstance)
 		{
+			$this->blackouts = array();
+			$this->AddBlackout(new Blackout($blackoutDate));
+			$this->SetCurrentBlackout($blackoutDate);
+
 			$this->Repeats(new RepeatNone());
 		}
 		else
 		{
+			$currentDate = $this->CurrentBlackout()->Date();
+			$newDate = $blackoutDate;
+
+			$startDiff = DateDiff::BetweenDates($currentDate->GetBegin(), $newDate->GetBegin());
+			$endDiff = DateDiff::BetweenDates($currentDate->GetEnd(), $newDate->GetEnd());
+
+			$earliestDate = $this->GetEarliestDate($blackoutDate);
+
+			if (!$earliestDate->Equals($blackoutDate))
+			{
+				$earliestDate = new DateRange($earliestDate->GetBegin()->ApplyDifference($startDiff), $earliestDate->GetEnd()->ApplyDifference($endDiff));
+			}
+
+			$this->blackouts = array();
+
+			$this->AddBlackout(new Blackout($earliestDate));
+			$this->SetCurrentBlackout($earliestDate);
 			$this->Repeats($repeatOptions);
 		}
 
 		$this->isNew = $scope == SeriesUpdateScope::ThisInstance;
+	}
+
+	private function GetEarliestDate(DateRange $blackoutDate)
+	{
+		$earliestDate = $blackoutDate;
+
+		foreach($this->blackouts as $blackout)
+		{
+			if ($blackout->StartDate()->LessThan($earliestDate->GetBegin()))
+			{
+				$earliestDate = $blackout->Date();
+			}
+
+		}
+
+		return $earliestDate;
 	}
 
 	/**

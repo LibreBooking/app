@@ -181,6 +181,17 @@ interface IManageBlackoutsPage extends IPageable, IActionPage, IRepeatOptionsCom
 								  $conflictingBlackouts, $timezone);
 
 	/**
+	 * @param bool $wasAddedSuccessfully
+	 * @param string $displayMessage
+	 * @param array|ReservationItemView[] $conflictingReservations
+	 * @param array|BlackoutItemView[] $conflictingBlackouts
+	 * @param string $timezone
+	 * @return void
+	 */
+	public function ShowUpdateResult($wasAddedSuccessfully, $displayMessage, $conflictingReservations,
+								  $conflictingBlackouts, $timezone);
+
+	/**
 	 * @param int[] $blackoutResourceIds
 	 */
 	public function SetBlackoutResources($blackoutResourceIds);
@@ -291,6 +302,21 @@ class ManageBlackoutsPage extends ActionPage implements IManageBlackoutsPage
 								  $conflictingBlackouts, $timezone)
 	{
 		$this->Set('Successful', $wasAddedSuccessfully);
+		$this->Set('SuccessKey', 'BlackoutCreated');
+		$this->Set('FailKey', 'BlackoutNotCreated');
+		$this->Set('Message', $displayMessage);
+		$this->Set('Reservations', $conflictingReservations);
+		$this->Set('Blackouts', $conflictingBlackouts);
+		$this->Set('Timezone', $timezone);
+		$this->Display('Admin/Blackouts/manage_blackouts_response.tpl');
+	}
+
+	public function ShowUpdateResult($wasAddedSuccessfully, $displayMessage, $conflictingReservations,
+								  $conflictingBlackouts, $timezone)
+	{
+		$this->Set('Successful', $wasAddedSuccessfully);
+		$this->Set('SuccessKey', 'BlackoutUpdated');
+		$this->Set('FailKey', 'BlackoutNotUpdated');
 		$this->Set('Message', $displayMessage);
 		$this->Set('Reservations', $conflictingReservations);
 		$this->Set('Blackouts', $conflictingBlackouts);

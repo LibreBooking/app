@@ -18,10 +18,10 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 *}
 <div>
 	{if $Successful}
-		<h3>{translate key=BlackoutCreated}</h3>
+		<h2>{translate key=$SuccessKey}</h2>
 		<button class="reload button">{translate key="OK"}</button>
 	{else}
-		<h3>{translate key=BlackoutNotCreated}</h3>
+		<h2>{translate key=$FailKey}</h2>
 		<button class="close button">{translate key="OK"}</button>
 	{/if}
 

@@ -301,8 +301,10 @@ class en_us extends Language
 		$strings['Filter'] = 'Filter';
 		$strings['Between'] = 'Between';
 		$strings['CreatedBy'] = 'Created By';
-		$strings['BlackoutCreated'] = 'Blackout Created!';
-		$strings['BlackoutNotCreated'] = 'Blackout could not be created!';
+		$strings['BlackoutCreated'] = 'Blackout Created';
+		$strings['BlackoutNotCreated'] = 'Blackout could not be created';
+		$strings['BlackoutUpdated'] = 'Blackout Updated';
+		$strings['BlackoutNotUpdated'] = 'Blackout could not be created';
 		$strings['BlackoutConflicts'] = 'There are conflicting blackout times';
 		$strings['ReservationConflicts'] = 'There are conflicting reservations times';
 		$strings['UsersInGroup'] = 'Users in this group';

@@ -147,7 +147,9 @@ class BlackoutRepository implements IBlackoutRepository
 		{
 			$seriesId = $this->AddSeries($blackoutSeries);
 			$db = ServiceLocator::GetDatabase();
-			$db->Execute(new UpdateBlackoutInstanceCommand($blackoutSeries->CurrentBlackoutInstanceId(), $seriesId));
+			$start = $blackoutSeries->CurrentBlackout()->StartDate();
+			$end = $blackoutSeries->CurrentBlackout()->EndDate();
+			$db->Execute(new UpdateBlackoutInstanceCommand($blackoutSeries->CurrentBlackoutInstanceId(), $seriesId, $start, $end));
 		}
 		else
 		{
