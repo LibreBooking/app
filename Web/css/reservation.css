@@ -19,6 +19,14 @@
 	margin: 3em auto 1em;
 }
 
+#reservationbox ul {
+	list-style: none;
+}
+
+#reservationbox input[type="file"] {
+	font-size:10pt;
+}
+
 #reservationbox .input {
 	font-size: 18px;
 	width: 98%;
@@ -56,11 +64,25 @@
 	padding-right: 25px;
 }
 
+.reservationButtons {
+	margin-top:20px;
+}
+
+.reservationReminders, .reservationAttachments {
+	margin-top:10px;
+}
+
+.reservationDeleteButtons {
+	float:left;
+}
+
+.reservationSubmitButtons {
+	float:right;
+}
+
 #reservationParticipation {
 	float: right;
 	width: 45%;
-
-
 	height: 100%;
 }
 
@@ -135,11 +157,6 @@
 	color: #3d5b74;
 }
 
-
-/*.jqtree-tree li {*/
-	/*list-style: none;*/
-/*}*/
-
 ul.jqtree-tree li.jqtree-selected > .jqtree-element, ul.jqtree-tree .jqtree-toggler {
 	top: 10%;
 }
@@ -147,7 +164,3 @@ ul.jqtree-tree li.jqtree-selected > .jqtree-element, ul.jqtree-tree .jqtree-togg
 ul.jqtree-tree .group-resource .jqtree-title {
 	color:#111111;
 }
-
-/*ul.jqtree-tree li.jqtree-selected {*/
-	/*font-weight:normal;*/
-/*}*/

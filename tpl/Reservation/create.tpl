@@ -26,6 +26,9 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 <div class="reservationHeader">
     <h3>{block name=reservationHeader}{translate key="CreateReservationHeading"}{/block}</h3>
 </div>
+
+{$smarty.capture.submitButtons}
+
 <div id="reservationDetails">
     <ul class="no-style">
         <li>
@@ -85,7 +88,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
             <input type="text" id="BeginDate" class="dateinput" value="{formatdate date=$StartDate}"/>
             <input type="hidden" id="formattedBeginDate" {formname key=BEGIN_DATE}
                    value="{formatdate date=$StartDate key=system}"/>
-            <select id="BeginPeriod" {formname key=BEGIN_PERIOD} class="pulldown" style="width:150px">
+            <select id="BeginPeriod" {formname key=BEGIN_PERIOD} class="pulldown input" style="width:150px">
 			{foreach from=$StartPeriods item=period}
 				{if $period->IsReservable()}
 					{assign var='selected' value=''}
@@ -102,7 +105,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
             <input type="text" id="EndDate" class="dateinput" value="{formatdate date=$EndDate}"/>
             <input type="hidden" id="formattedEndDate" {formname key=END_DATE}
                    value="{formatdate date=$EndDate key=system}"/>
-            <select id="EndPeriod" {formname key=END_PERIOD} class="pulldown" style="width:150px">
+            <select id="EndPeriod" {formname key=END_PERIOD} class="pulldown input" style="width:150px">
 			{foreach from=$EndPeriods item=period name=endPeriods}
 				{if $period->BeginDate()->IsMidnight()}
                     <option value="{$period->Begin()}"{$selected}>{$period->Label()}</option>
@@ -154,31 +157,11 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 
 <div style="clear:both;">&nbsp;</div>
 
-{if $UploadsEnabled}
-	<div>
-		<ul>
-			<li>
-				<label>{translate key=AttachFile} <span class="note">({$MaxUploadSize}
-						MB {translate key=Maximum})</span><br/> </label>
-				<ul style="list-style:none;" id="reservationAttachments">
-					<li class="attachment-item">
-						<input type="file" {formname key=RESERVATION_FILE multi=true} />
-						<a class="add-attachment" href="#">{html_image src="plus-button.png"}</a>
-						<a class="remove-attachment" href="#">{html_image src="minus-gray.png"}</a>
-					</li>
-				</ul>
-			</li>
-		</ul>
-	</div>
-{/if}
-
 {if $RemindersEnabled}
-	<div>
+	<div class="reservationReminders">
 		<ul>
+			<li><label>{translate key=SendReminder}</label></li>
 			<li>
-				<h3>{translate key=SendReminder}</h3>
-
-
 				<div id="reminderOptionsStart">
 					<input type="checkbox" class="reminderEnabled" {formname key=START_REMINDER_ENABLED}/>
 					<input type="text" size="3" maxlength="3" value="15"
@@ -206,6 +189,24 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 	</div>
 {/if}
 
+{if $UploadsEnabled}
+	<div class="reservationAttachments">
+		<ul>
+			<li>
+				<label>{translate key=AttachFile} <span class="note">({$MaxUploadSize}
+						MB {translate key=Maximum})</span><br/> </label>
+				<ul style="list-style:none;" id="reservationAttachments">
+					<li class="attachment-item">
+						<input type="file" {formname key=RESERVATION_FILE multi=true} />
+						<a class="add-attachment" href="#">{html_image src="plus-button.png"}</a>
+						<a class="remove-attachment" href="#">{html_image src="minus-gray.png"}</a>
+					</li>
+				</ul>
+			</li>
+		</ul>
+	</div>
+{/if}
+
 {if $Attributes|count > 0}
 <div class="customAttributes">
     <h3>{translate key=AdditionalAttributes}</h3>
@@ -226,22 +227,24 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 <input type="hidden" {formname key=SERIES_UPDATE_SCOPE} id="hdnSeriesUpdateScope"
        value="{SeriesUpdateScope::FullSeries}"/>
 
-<div style="float:left;">
-{block name="deleteButtons"}
-    &nbsp;
-{/block}
-</div>
-<div style="float:right;">
-{block name="submitButtons"}
-    <button type="button" class="button save create">
-		{html_image src="tick-circle.png"}
-			{translate key='Create'}
-    </button>
-{/block}
-    <button type="button" class="button" onclick="window.location='{$ReturnUrl}'">
-	{html_image src="slash.png"}
-		{translate key='Cancel'}
-    </button>
+<div class="reservationButtons">
+	<div class="reservationDeleteButtons">
+	{block name="deleteButtons"}
+		&nbsp;
+	{/block}
+	</div>
+	<div class="reservationSubmitButtons">
+		{block name="submitButtons"}
+			<button type="button" class="button save create">
+				{html_image src="tick-circle.png"}
+					{translate key='Create'}
+			</button>
+		{/block}
+		<button type="button" class="button" onclick="window.location='{$ReturnUrl}'">
+		{html_image src="slash.png"}
+			{translate key='Cancel'}
+		</button>
+	</div>
 </div>
 
 {if $UploadsEnabled}

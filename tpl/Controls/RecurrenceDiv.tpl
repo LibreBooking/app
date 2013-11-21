@@ -18,7 +18,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 *}
 <div id="{$prefix}repeatDiv">
 	<label>{translate key="RepeatPrompt"}</label>
-	<select id="{$prefix}repeatOptions" {formname key=repeat_options} class="pulldown" style="width:250px">
+	<select id="{$prefix}repeatOptions" {formname key=repeat_options} class="pulldown input" style="width:250px">
 	{foreach from=$RepeatOptions key=k item=v}
 		<option value="{$k}">{translate key=$v['key']}</option>
 	{/foreach}
@@ -26,7 +26,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 
 	<div id="{$prefix}repeatEveryDiv" style="display:none;" class="days weeks months years">
 		<label>{translate key="RepeatEveryPrompt"}</label>
-		<select id="{$prefix}repeatInterval" {formname key=repeat_every} class="pulldown" style="width:55px">
+		<select id="{$prefix}repeatInterval" {formname key=repeat_every} class="pulldown input" style="width:55px">
 		{html_options values=$RepeatEveryOptions output=$RepeatEveryOptions}
 		</select>
 		<span class="days">{translate key=$RepeatOptions['daily']['everyKey']}</span>
