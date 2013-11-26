@@ -76,6 +76,11 @@ abstract class ReservationEmailMessage extends EmailMessage
         return $this->FetchTemplate($this->GetTemplateName());
     }
 
+	public function From()
+	{
+		return new EmailAddress($this->reservationOwner->EmailAddress(), $this->reservationOwner->FullName());
+	}
+
     protected function PopulateTemplate()
     {
         $currentInstance = $this->reservationSeries->CurrentInstance();

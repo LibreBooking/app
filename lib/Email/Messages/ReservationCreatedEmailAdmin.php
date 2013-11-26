@@ -70,6 +70,11 @@ class ReservationCreatedEmailAdmin extends EmailMessage
 		
 		return array(new EmailAddress($address, $name));
 	}
+
+	public function From()
+	{
+		return new EmailAddress($this->reservationOwner->EmailAddress(), $this->reservationOwner->FullName());
+	}
 	
 	/**
 	 * @see IEmailMessage::Subject()
