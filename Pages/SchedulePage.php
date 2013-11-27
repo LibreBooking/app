@@ -180,6 +180,11 @@ interface ISchedulePage extends IActionPage
 	 * @param ScheduleResourceFilter $resourceFilter
 	 */
 	public function SetFilter($resourceFilter);
+
+	/**
+	 * @param CalendarSubscriptionUrl $subscriptionUrl
+	 */
+	public function SetSubscriptionUrl(CalendarSubscriptionUrl $subscriptionUrl);
 }
 
 class ScheduleStyle
@@ -447,6 +452,14 @@ class SchedulePage extends ActionPage implements ISchedulePage
 		$this->Set('ResourceIdFilter', $this->GetResourceId());
 		$this->Set('ResourceTypeIdFilter', $resourceFilter->ResourceTypeId);
 		$this->Set('MaxParticipantsFilter', $resourceFilter->MinCapacity);
+	}
+
+	/**
+	 * @param CalendarSubscriptionUrl $subscriptionUrl
+	 */
+	public function SetSubscriptionUrl(CalendarSubscriptionUrl $subscriptionUrl)
+	{
+		$this->Set('SubscriptionUrl', $subscriptionUrl);
 	}
 }
 

@@ -81,7 +81,12 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 		<a href="#" class="schedule-style" id="schedule_tall" schedule-display="{ScheduleStyle::Tall}">{html_image src="table-tall.png" altKey="TallScheduleDisplay"}</a>
 		<a href="#" class="schedule-style" id="schedule_wide" schedule-display="{ScheduleStyle::Wide}">{html_image src="table-wide.png" altKey="WideScheduleDisplay"}</a>
 		<a href="#" class="schedule-style" id="schedule_week" schedule-display="{ScheduleStyle::CondensedWeek}">{html_image src="table-week.png" altKey="CondensedWeekScheduleDisplay"}</a>
+
+
 	</div>
+	<div>{if $SubscriptionUrl != null}
+				{html_image src="feed.png"} <a target="_blank" href="{$SubscriptionUrl->GetAtomUrl()}">Atom</a> | <a target="_blank" href="{$SubscriptionUrl->GetWebcalUrl()}">iCalendar</a>
+			{/if}</div>
 {/block}
 
 <div id="defaultSetMessage" class="success hidden">
