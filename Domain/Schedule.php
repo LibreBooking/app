@@ -18,6 +18,8 @@ You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+require_once(ROOT_DIR . 'lib/Application/Schedule/CalendarSubscriptionUrl.php');
+
 interface ISchedule
 {
 	public function GetId();
@@ -236,5 +238,10 @@ class Schedule implements ISchedule
     {
         $this->SetPublicId($publicId);
     }
+
+	public function GetSubscriptionUrl()
+	{
+		return new CalendarSubscriptionUrl(null, $this->GetPublicId(), null);
+	}
 }
 ?>

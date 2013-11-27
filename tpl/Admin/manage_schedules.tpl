@@ -99,7 +99,8 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 			{/if}
         </div>
         <div class="actions">
-			{if $schedule->GetIsDefault()}
+			<div style="float:left;">
+				{if $schedule->GetIsDefault()}
                 <span class="note">{translate key=ThisIsTheDefaultSchedule}</span> |
                 <span class="note">{translate key=DefaultScheduleCannotBeDeleted}</span> |
 				{else}
@@ -113,6 +114,13 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 				{else}
                 <a class="update enableSubscription" href="javascript: void(0);">{translate key=TurnOnSubscription}</a>
 			{/if}
+			</div>
+			<div style="float:right;text-align:center;">
+				{if $schedule->GetIsCalendarSubscriptionAllowed()}
+					{html_image src="feed.png"} <a target="_blank" href="{$schedule->GetSubscriptionUrl()->GetAtomUrl()}">Atom</a> | <a target="_blank" href="{$schedule->GetSubscriptionUrl()->GetWebcalUrl()}">iCalendar</a>
+				{/if}
+			</div>
+			<div class="clear"></div>
         </div>
     </div>
 {/foreach}

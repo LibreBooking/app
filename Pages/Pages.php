@@ -26,6 +26,7 @@ class Pages
 	const CALENDAR = 'calendar.php';
 	const CALENDAR_EXPORT = 'ical.php';
 	const CALENDAR_SUBSCRIBE = 'ical-subscribe.php';
+	const CALENDAR_SUBSCRIBE_ATOM = 'atom-subscribe.php';
 	const DASHBOARD = 'dashboard.php';
 	const DEFAULT_LOGIN = 'dashboard.php';
 	const INVITATION_RESPONSES = 'participation.php';

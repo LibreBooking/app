@@ -498,11 +498,6 @@ a.page:hover, a.page.current {
 	font-weight: normal;
 }
 
-div.clear {
-	clear: both;
-	height: 0px;
-}
-
 .dialog {
 	display: none;
 	max-height: 600px;
@@ -629,6 +624,9 @@ ul.indented li {
 
 .clear {
 	clear: both;
+	height:0 !important;
+	padding: 0 !important;
+	margin: 0 !important;
 }
 
 .bold {

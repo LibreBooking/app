@@ -1,6 +1,6 @@
 <?php
 /**
-Copyright 2012 Nick Korbel
+Copyright 2013 Nick Korbel
 
 This file is part of phpScheduleIt.
 
@@ -25,25 +25,47 @@ class CalendarSubscriptionUrl
      */
     private $url;
 
+	const PAGE_TOKEN = '{page}';
+
     public function __construct($userPublicId, $schedulePublicId, $resourcePublicId)
     {
         $config = Configuration::Instance();
+		$subscriptionKey = $config->GetSectionKey(ConfigSection::ICS, ConfigKeys::ICS_SUBSCRIPTION_KEY);
+
+		if (empty($subscriptionKey))
+		{
+			$this->url = new Url('#');
+			return;
+		}
+
         $scriptUrl = $config->GetScriptUrl();
-        $scriptUrl = str_replace('https', 'webcal', $scriptUrl);
-        $scriptUrl = str_replace('http', 'webcal', $scriptUrl);
-        $scriptUrl .= '/export/' . Pages::CALENDAR_SUBSCRIBE;
-        $url = new Url($scriptUrl);
+        $scriptUrl .= '/export/' . self::PAGE_TOKEN;
+		$url = new Url($scriptUrl);
 
         $url->AddQueryString(QueryStringKeys::USER_ID, $userPublicId);
         $url->AddQueryString(QueryStringKeys::SCHEDULE_ID, $schedulePublicId);
         $url->AddQueryString(QueryStringKeys::RESOURCE_ID, $resourcePublicId);
-        $url->AddQueryString(QueryStringKeys::SUBSCRIPTION_KEY, $config->GetSectionKey(ConfigSection::ICS, ConfigKeys::ICS_SUBSCRIPTION_KEY));
+		$url->AddQueryString(QueryStringKeys::SUBSCRIPTION_KEY, $subscriptionKey);
         $this->url = $url;
     }
 
+	public function GetWebcalUrl()
+	{
+		$scriptUrl = $this->url->ToString();
+		$scriptUrl = str_replace('https', 'webcal', $scriptUrl);
+	    $scriptUrl = str_replace('http', 'webcal', $scriptUrl);
+		return str_replace(self::PAGE_TOKEN,  Pages::CALENDAR_SUBSCRIBE, $scriptUrl);
+	}
+
+	public function GetAtomUrl()
+	{
+		$scriptUrl = $this->url->ToString();
+		return str_replace(self::PAGE_TOKEN, Pages::CALENDAR_SUBSCRIBE_ATOM, $scriptUrl);
+	}
+
     public function __toString()
     {
-        return $this->url->ToString();
+        return $this->GetWebcalUrl();
     }
 }
 
