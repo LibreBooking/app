@@ -29,20 +29,46 @@ class AdminExcludedRule implements IReservationValidationRule
 	 * @var UserSession
 	 */
 	private $userSession;
-	
-	public function __construct(IReservationValidationRule $baseRule, UserSession $userSession)
+
+	/**
+	 * @var IUserRepository
+	 */
+	private $userRepository;
+
+	public function __construct(IReservationValidationRule $baseRule, UserSession $userSession, IUserRepository $userRepository)
 	{
 		$this->rule = $baseRule;
 		$this->userSession = $userSession;
+		$this->userRepository = $userRepository;
 	}
 	
 	public function Validate($reservationSeries)
 	{
 		if ($this->userSession->IsAdmin)
 		{
+			Log::Debug('User is application admin. Skipping check. UserId=%s', $this->userSession->UserId);
+
 			return new ReservationRuleResult(true);
 		}
-		
+
+		$user = $this->userRepository->LoadById($this->userSession->UserId);
+		$isResourceAdmin = true;
+
+		foreach($reservationSeries->AllResources() as $resource)
+		{
+			if (!$user->IsResourceAdminFor($resource))
+			{
+				$isResourceAdmin = false;
+				break;
+			}
+		}
+
+		if ($isResourceAdmin)
+		{
+			Log::Debug('User is admin for all resources. Skipping check. UserId=%s', $this->userSession->UserId);
+			return new ReservationRuleResult(true);
+		}
+
 		return $this->rule->Validate($reservationSeries);
 	}
 }

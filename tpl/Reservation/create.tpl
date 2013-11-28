@@ -218,7 +218,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 		{/foreach}
     </ul>
 </div>
-<div style="clear:both;">&nbsp;</div>
+<div class="clear">&nbsp;</div>
 {/if}
 
 <input type="hidden" {formname key=reservation_id} value="{$ReservationId}"/>

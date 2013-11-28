@@ -97,7 +97,7 @@ class PreReservationFactory implements IPreReservationFactory
 
 	private function CreateAddService(ReservationValidationRuleProcessor $ruleProcessor, UserSession $userSession)
 	{
-		$ruleProcessor->AddRule(new AdminExcludedRule(new RequiresApprovalRule(PluginManager::Instance()->LoadAuthorization()), $userSession));
+		$ruleProcessor->AddRule(new AdminExcludedRule(new RequiresApprovalRule(PluginManager::Instance()->LoadAuthorization()), $userSession, $this->userRepository));
 		return new AddReservationValidationService($ruleProcessor);
 	}
 
@@ -105,7 +105,7 @@ class PreReservationFactory implements IPreReservationFactory
 	{
 		if (Configuration::Instance()->GetSectionKey(ConfigSection::RESERVATION, ConfigKeys::RESERVATION_UPDATES_REQUIRE_APPROVAL, new BooleanConverter()))
 		{
-			$ruleProcessor->AddRule(new AdminExcludedRule(new RequiresApprovalRule(PluginManager::Instance()->LoadAuthorization()), $userSession));
+			$ruleProcessor->AddRule(new AdminExcludedRule(new RequiresApprovalRule(PluginManager::Instance()->LoadAuthorization()), $userSession, $this->userRepository));
 		}
 		return new UpdateReservationValidationService($ruleProcessor);
 	}
@@ -120,11 +120,11 @@ class PreReservationFactory implements IPreReservationFactory
 		// Common rules
 		$rules = array();
 		$rules[] = new ReservationDateTimeRule();
-		$rules[] = new AdminExcludedRule(new ReservationStartTimeRule($this->scheduleRepository), $userSession);
-		$rules[] = new AdminExcludedRule(new PermissionValidationRule(new PermissionServiceFactory()), $userSession);
-		$rules[] = new AdminExcludedRule(new ResourceMinimumNoticeRule(), $userSession);
-		$rules[] = new AdminExcludedRule(new ResourceMaximumNoticeRule(), $userSession);
-		$rules[] = new AdminExcludedRule(new ResourceParticipationRule(), $userSession);
+		$rules[] = new AdminExcludedRule(new ReservationStartTimeRule($this->scheduleRepository), $userSession, $this->userRepository);
+		$rules[] = new AdminExcludedRule(new PermissionValidationRule(new PermissionServiceFactory()), $userSession, $this->userRepository);
+		$rules[] = new AdminExcludedRule(new ResourceMinimumNoticeRule(), $userSession, $this->userRepository);
+		$rules[] = new AdminExcludedRule(new ResourceMaximumNoticeRule(), $userSession, $this->userRepository);
+		$rules[] = new AdminExcludedRule(new ResourceParticipationRule(), $userSession, $this->userRepository);
 		$rules[] = new ReservationAttachmentRule();
 
 		return new ReservationValidationRuleProcessor($rules);
@@ -137,11 +137,11 @@ class PreReservationFactory implements IPreReservationFactory
 		$ruleProcessor->AddRule(new ExistingResourceAvailabilityRule(new ResourceReservationAvailability($this->reservationRepository), $userSession->Timezone));
 		$ruleProcessor->AddRule(new AccessoryAvailabilityRule($this->reservationRepository, new AccessoryRepository(), $userSession->Timezone));
 		$ruleProcessor->AddRule(new ResourceAvailabilityRule(new ResourceBlackoutAvailability($this->reservationRepository), $userSession->Timezone));
-		$ruleProcessor->AddRule(new AdminExcludedRule(new ResourceMinimumDurationRule($this->resourceRepository), $userSession));
-		$ruleProcessor->AddRule(new AdminExcludedRule(new ResourceMaximumDurationRule($this->resourceRepository), $userSession));
+		$ruleProcessor->AddRule(new AdminExcludedRule(new ResourceMinimumDurationRule($this->resourceRepository), $userSession, $this->userRepository));
+		$ruleProcessor->AddRule(new AdminExcludedRule(new ResourceMaximumDurationRule($this->resourceRepository), $userSession, $this->userRepository));
 //		$ruleProcessor->AddRule(new AdminExcludedRule(new ResourceCrossDayRule($this->scheduleRepository), $userSession));
 		$ruleProcessor->AddRule(new ResourceCrossDayRule($this->scheduleRepository));
-		$ruleProcessor->AddRule(new AdminExcludedRule(new QuotaRule(new QuotaRepository(), $this->reservationRepository, $this->userRepository, $this->scheduleRepository), $userSession));
+		$ruleProcessor->AddRule(new AdminExcludedRule(new QuotaRule(new QuotaRepository(), $this->reservationRepository, $this->userRepository, $this->scheduleRepository), $userSession, $this->userRepository));
 		$ruleProcessor->AddRule(new SchedulePeriodRule($this->scheduleRepository, $userSession));
 		$ruleProcessor->AddRule(new CustomAttributeValidationRule(new AttributeRepository()));
 		return $ruleProcessor;

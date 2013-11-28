@@ -157,10 +157,18 @@
 	color: #3d5b74;
 }
 
+.customAttributes {
+	margin-top:10px;
+}
+
 ul.jqtree-tree li.jqtree-selected > .jqtree-element, ul.jqtree-tree .jqtree-toggler {
 	top: 10%;
 }
 
 ul.jqtree-tree .group-resource .jqtree-title {
 	color:#111111;
+}
+
+#resourceGroups ul{
+	list-style: none;
 }
