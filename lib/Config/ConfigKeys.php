@@ -109,6 +109,8 @@ class ConfigKeys
 	const REPORTS_ALLOW_ALL = 'allow.all.users';
 
 	const APP_TITLE = 'app.title';
+
+	const PER_USER_COLORS = 'use.per.user.colors'
 }
 
 class ConfigSection
@@ -126,6 +128,7 @@ class ConfigSection
     const SCHEDULE = 'schedule';
 	const UPLOADS = 'uploads';
 	const RECAPTCHA = 'recaptcha';
+	const USERS = 'users';
 }
 
 ?>

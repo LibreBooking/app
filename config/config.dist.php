@@ -142,9 +142,13 @@ $conf['settings']['recaptcha']['private.key'] = '';
 /**
  * Email
  */
-$config['settings']['email']['default.from.address'] = '';
+$conf['settings']['email']['default.from.address'] = '';
 /**
  * Reports
  */
-$config['settings']['reports']['allow.all.users'] = 'false';
+$conf['settings']['reports']['allow.all.users'] = 'false';
+/**
+ * User control
+ */
+$conf['settings']['users']['use.per.user-colors'] = 'false'; // color reservations by user
 ?>
