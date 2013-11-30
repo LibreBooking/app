@@ -39,6 +39,7 @@ class UserSession
 	private $FilterStartDateDelta;
 	private $FilterEndDateDelta;
 	private $FilterUserId;
+	private $FilterUserName;
 	private $FilterScheduleId;
 	private $FilterResourceId;
 	private $FilterReservationStatusId;
@@ -68,6 +69,11 @@ class UserSession
 	public function GetFilterUserId()
 	{
 		return $this->FilterUserId;
+	}
+
+	public function GetFilterUserName()
+	{
+		return $this->FilterUserName;
 	}
 
 	public function GetFilterScheduleId()
@@ -108,11 +114,16 @@ class UserSession
 
 	public function SetFilterUserId($FilterUserId)
 	{
-		if($FilterUserId)
-			$FilterUserId = '0';
-
 		if($this->FilterUserId!=$FilterUserId)
 			$this->StoreFilterValue('FilterUserId', $FilterUserId);
+
+		$this->FilterUserId = $FilterUserId;
+	}
+
+	public function SetFilterUserName($FilterUserName)
+	{
+		if($this->FilterUserName!=$FilterUserName)
+			$this->StoreFilterValue('FilterUserName', $FilterUserName);
 
 		$this->FilterUserId = $FilterUserId;
 	}
@@ -152,9 +163,6 @@ class UserSession
 
 	public function SetFilterReferenceNumber($FilterReferenceNumber)
 	{
-		if(!$FilterReferenceNumber)
-			$FilterReferenceNumber = '0';
-
 		if($this->FilterReferenceNumber!=$FilterReferenceNumber)
 			$this->StoreFilterValue('FilterReferenceNumber', $FilterReferenceNumber);
 
@@ -163,35 +171,28 @@ class UserSession
 
 	private function RetrieveFilterValues()
 	{
-		static $FilterKeys = array(array('name'=>'FilterStartDateDelta'		,'default'=>-7),
-								   array('name'=>'FilterEndDateDelta'		,'default'=>+7),
-								   array('name'=>'FilterUserId'				,'default'=>''),
-								   array('name'=>'FilterScheduelId'			,'default'=>''),
-								   array('name'=>'FilterResourceId'			,'default'=>''),
-								   array('name'=>'FilterReservationStatusId','default'=> 0),
-								   array('name'=>'FilterReferenceNumber'	,'default'=>''),
+		static $filterKeys = array('FilterStartDateDelta'		=>-7,
+								   'FilterEndDateDelta'			=>+7,
+								   'FilterUserId'				=>'',
+								   'FilterUserName'				=>'',
+								   'FilterScheduelId'			=>'',
+								   'FilterResourceId'			=>'',
+								   'FilterReservationStatusId'	=> 0,
+								   'FilterReferenceNumber'		=>'',
 								  );
 
-		foreach($FilterKeys as $filter)
-			$this->$filter['name'] = $filter['default'];
+		foreach ($filterKeys as $filterName=>$defaultValue)
+			$this->$filterName = $defaultValue;
 
-        // TBD: Abstract out db access to Domain/Access/UserRepository.php
-		$reader = ServiceLocator::GetDatabase()->Query(new GetUserPreferencesCommand($this->UserId));
-		while($row = $reader->GetRow())
-			$this->$row[ColumnNames::PrefName] = $row[ColumnNames::PrefValue];
+		$prefs = UserPreferenceRepository::GetAllUserPreferences($this->UserId);
+		foreach ($prefs as $key=>$val)
+			if (array_key_exists($key,$filterKeys))
+				$this->$key = $val;
 	}
 
 	private function StoreFilterValue($name, $value)
 	{
-		Log::Debug('Storing new reservations filter value: "%s" = "%s"', $name, $value);
-
-        // TBD: Abstract out db access to Domain/Access/UserRepository.php
-		$db = ServiceLocator::GetDatabase();
-		$reader = $db->Query(new GetUserPreferenceCommand($this->UserId, $name));
-		if($reader->GetRow())
-			$db->Execute(new UpdateUserPreferenceCommand($this->UserId, $name, $value));
-		else
-			$db->ExecuteInsert(new SaveUserPreferenceCommand($this->UserId, $name, $value));
+		UserPreferenceRepository::SetUserPreference($this->UserId, $name, $value);
 	}
 }
 
@@ -200,7 +201,6 @@ class NullUserSession extends UserSession
 	public function __construct()
 	{
 		parent::__construct(0);
-		$this->SessionToken = '';
 		$this->Timezone = Configuration::Instance()->GetKey(ConfigKeys::SERVER_TIMEZONE);
 	}
 	

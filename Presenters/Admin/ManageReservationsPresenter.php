@@ -82,11 +82,12 @@ class ManageReservationsPresenter extends ActionPresenter
 		if(!$this->page->FilterButtonPressed())
 		{
 			// Get filter settings from db
-			$reservationStatusId = $session->GetFilterReservationStatusId();
 			$referenceNumber = $session->GetFilterReferenceNumber();
 			$scheduleId = $session->GetFilterScheduleId();
-			$userId = $session->GetFilterUserId();
 			$resourceId = $session->GetFilterResourceId();
+			$userId = $session->GetFilterUserId();
+			$userName = $session->GetFilterUserName();
+			$reservationStatusId = $session->GetFilterReservationStatusId();
 		}
 		else
 		{
@@ -97,9 +98,9 @@ class ManageReservationsPresenter extends ActionPresenter
 			$session->SetFilterScheduleId($scheduleId = $this->page->GetScheduleId());
 			$session->SetFilterResourceId($resourceId = $this->page->GetResourceId());
 			$session->SetFilterUserId($userId = $this->page->GetUserId());
+			$session->SetFilterUserName($userName = $this->page->GetUserName());
 			$session->SetFilterReservationStatusId($reservationStatusId = $this->page->GetReservationStatusId());
 		}
-		$userName = $this->page->GetUserName();
 
 		$this->page->SetStartDate($startDate);
 		$this->page->SetEndDate($endDate);
