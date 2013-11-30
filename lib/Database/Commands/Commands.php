@@ -1610,7 +1610,41 @@ class GetUserPermissionsCommand extends SqlCommand
 	public function __construct($userId)
 	{
 		parent::__construct(Queries::GET_USER_RESOURCE_PERMISSIONS);
+
 		$this->AddParameter(new Parameter(ParameterNames::USER_ID, $userId));
+	}
+}
+
+class GetUserPreferenceCommand extends SqlCommand
+{
+	public function __construct($userId, $name)
+	{
+		parent::__construct(Queries::GET_USER_PREFERENCE);
+
+		$this->AddParameter(new Parameter(ParameterNames::USER_ID, $userId));
+		$this->AddParameter(new Parameter(ParameterNames::NAME, $name));
+	}
+}
+
+class GetUserPreferencesCommand extends SqlCommand
+{
+	public function __construct($userId)
+	{
+		parent::__construct(Queries::GET_USER_PREFERENCES);
+
+		$this->AddParameter(new Parameter(ParameterNames::USER_ID, $userId));
+	}
+}
+
+class SaveUserPreferenceCommand extends SqlCommand
+{
+	public function __construct($userId, $name, $value)
+	{
+		parent::__construct(Queries::SAVE_USER_PREFERENCE);
+
+		$this->AddParameter(new Parameter(ParameterNames::USER_ID, $userId));
+		$this->AddParameter(new Parameter(ParameterNames::NAME, $name));
+		$this->AddParameter(new Parameter(ParameterNames::VALUE, $value));
 	}
 }
 
@@ -1941,6 +1975,18 @@ class UpdateUserFromLdapCommand extends SqlCommand
 		$this->AddParameter(new Parameter(ParameterNames::PHONE, $phone));
 		$this->AddParameter(new Parameter(ParameterNames::ORGANIZATION, $organization));
 		$this->AddParameter(new Parameter(ParameterNames::POSITION, $position));
+	}
+}
+
+class UpdateUserPreferenceCommand extends SqlCommand
+{
+	public function __construct($userId, $name, $value)
+	{
+		parent::__construct(Queries::UPDATE_USER_PREFERENCE);
+
+		$this->AddParameter(new Parameter(ParameterNames::USER_ID, $userId));
+		$this->AddParameter(new Parameter(ParameterNames::NAME, $name));
+		$this->AddParameter(new Parameter(ParameterNames::VALUE, $value));
 	}
 }
 

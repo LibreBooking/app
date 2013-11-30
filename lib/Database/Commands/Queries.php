@@ -650,6 +650,10 @@ class Queries
 		WHERE
 			ug.user_id = @userid AND ug.group_id = grp.group_id AND grp.resource_id = r.resource_id';
 
+	const GET_USER_PREFERENCE = 'SELECT value FROM user_preferences WHERE user_id = @userid AND name = @name';
+
+	const GET_USER_PREFERENCES = 'SELECT name, value FROM user_preferences WHERE user_id = @userid';
+
 	const GET_USER_ROLES =
 			'SELECT
 			user_id, user_level 
@@ -741,6 +745,8 @@ class Queries
 			VALUES (@resourcegroupid, @resourceid)';
 
 	const ADD_RESOURCE_TYPE = 'INSERT INTO resource_types (resource_type_name, resource_type_description) VALUES (@resource_type_name, @resource_type_description)';
+
+	const SAVE_USER_PREFERENCE = 'INSERT INTO user_preferences (user_id, name, value) VALUES (@userid, @name, @value)';
 
 	const SET_DEFAULT_SCHEDULE =
 			'UPDATE schedules
@@ -902,6 +908,8 @@ class Queries
 			position = COALESCE(@position, position)
 		WHERE 
 			username = @username';
+
+	const UPDATE_USER_PREFERENCE = 'UPDATE user_preferences SET value = @value WHERE user_id = @userid AND name = @name';
 
 	const UPDATE_USER_SESSION =
 			'UPDATE user_session

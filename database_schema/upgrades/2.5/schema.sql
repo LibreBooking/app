@@ -65,3 +65,16 @@ ALTER TABLE blackout_series DROP COLUMN resource_id;
 
 ALTER TABLE blackout_series ADD COLUMN `repeat_type` varchar(10) default NULL;
 ALTER TABLE blackout_series ADD COLUMN `repeat_options` varchar(255) default NULL;
+
+DROP TABLE IF EXISTS `user_preferences`;
+CREATE TABLE `user_preferences` (
+ `user_preferences_id` int unsigned NOT NULL auto_increment,
+ `user_id` mediumint(8) unsigned NOT NULL,
+ `name` varchar(100) NOT NULL,
+ `value` varchar(100),
+ PRIMARY KEY (`user_preferences_id`),
+ INDEX (`user_id`),
+ FOREIGN KEY (`user_id`)
+    REFERENCES users(`user_id`)
+    ON UPDATE CASCADE ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARACTER SET utf8;

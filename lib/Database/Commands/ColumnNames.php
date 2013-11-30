@@ -48,6 +48,10 @@ class ColumnNames
 	// USER_ADDRESSES //
 	const ADDRESS_ID = 'address_id';
 
+	// USER_PREFERENCES //
+	const PrefName = 'name';
+	const PrefValue = 'value';
+
 	// ROLES //
 	const ROLE_LEVEL = 'role_level';
 	const ROLE_ID = 'role_id';

@@ -84,6 +84,8 @@ class ParameterNames
 	const LAST_NAME = '@lname';
 	const LAYOUT_ID = '@layoutid';
 
+	const NAME = '@name';
+
 	const ORGANIZATION = '@organization';
 
 	const PASSWORD = '@password';
@@ -172,6 +174,8 @@ class ParameterNames
 	const USER_STATUS_ID = '@user_statusid';
 	const USER_SESSION = '@user_session_value';
 	const USERNAME = '@username';
+
+	const VALUE = '@value';
 
 
 	// used?

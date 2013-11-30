@@ -32,6 +32,11 @@ interface IManageReservationsPage extends IPageable, IActionPage
 	public function BindReservations($reservations);
 
 	/**
+	 * @return boolean
+	 */
+	public function FilterButtonPressed();
+
+	/**
 	 * @return string
 	 */
 	public function GetStartDate();
@@ -220,6 +225,12 @@ class ManageReservationsPage extends ActionPage implements IManageReservationsPa
 	public function BindReservations($reservations)
 	{
 		$this->Set('reservations', $reservations);
+	}
+
+
+	public function FilterButtonPressed()
+	{
+		return count($_GET)>0;
 	}
 
 	/**

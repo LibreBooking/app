@@ -77,13 +77,28 @@ class ManageReservationsPresenter extends ActionPresenter
 		$startDateString = $this->page->GetStartDate();
 		$endDateString = $this->page->GetEndDate();
 
-		$startDate = $this->GetDate($startDateString, $userTimezone, -7);
-		$endDate = $this->GetDate($endDateString, $userTimezone, 7);
-		$referenceNumber = $this->page->GetReferenceNumber();
-		$scheduleId = $this->page->GetScheduleId();
-		$resourceId = $this->page->GetResourceId();
-		$reservationStatusId = $this->page->GetReservationStatusId();
-		$userId = $this->page->GetUserId();
+		$startDate = $this->GetDate($startDateString, $userTimezone, $session->GetFilterStartDateDelta());
+		$endDate   = $this->GetDate($endDateString  , $userTimezone, $session->GetFilterEndDateDelta());
+		if(!$this->page->FilterButtonPressed())
+		{
+			// Get filter settings from db
+			$reservationStatusId = $session->GetFilterReservationStatusId();
+			$referenceNumber = $session->GetFilterReferenceNumber();
+			$scheduleId = $session->GetFilterScheduleId();
+			$userId = $session->GetFilterUserId();
+			$resourceId = $session->GetFilterResourceId();
+		}
+		else
+		{
+			// Get filter settings from page and save them in db
+			$session->SetFilterStartDateDelta($this->GetDateOffsetFromToday($startDate, $userTimezone));
+			$session->SetFilterEndDateDelta($this->GetDateOffsetFromToday($endDate, $userTimezone));
+			$session->SetFilterReferenceNumber($referenceNumber = $this->page->GetReferenceNumber());
+			$session->SetFilterScheduleId($scheduleId = $this->page->GetScheduleId());
+			$session->SetFilterResourceId($resourceId = $this->page->GetResourceId());
+			$session->SetFilterUserId($userId = $this->page->GetUserId());
+			$session->SetFilterReservationStatusId($reservationStatusId = $this->page->GetReservationStatusId());
+		}
 		$userName = $this->page->GetUserName();
 
 		$this->page->SetStartDate($startDate);
@@ -139,6 +154,14 @@ class ManageReservationsPresenter extends ActionPresenter
 		}
 
 		return $date;
+	}
+
+	private function GetDateOffsetFromToday($date, $timezone)
+	{
+		//$diff = DateDiff::BetweenDates(Date::Now(), $date);
+		$today = Date::Create(Date('Y'), Date('m'), Date('d'), 0, 0, 0, $timezone);
+		$diff = DateDiff::BetweenDates($today, $date);
+		return $diff->Days();
 	}
 }
 
