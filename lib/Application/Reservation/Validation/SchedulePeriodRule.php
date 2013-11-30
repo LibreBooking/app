@@ -32,7 +32,7 @@ class SchedulePeriodRule implements IReservationValidationRule
 
 	public function __construct(IScheduleRepository $repository, UserSession $session)
 	{
-		$this->repostiory = $repository;
+		$this->repository = $repository;
 		$this->session = $session;
 	}
 
@@ -42,7 +42,7 @@ class SchedulePeriodRule implements IReservationValidationRule
 	 */
 	public function Validate($reservationSeries)
 	{
-		$layout = $this->repostiory->GetLayout($reservationSeries->Resource()->GetScheduleId(), new ScheduleLayoutFactory($this->session->Timezone));
+		$layout = $this->repository->GetLayout($reservationSeries->Resource()->GetScheduleId(), new ScheduleLayoutFactory($this->session->Timezone));
 
 		$startDate = $reservationSeries->CurrentInstance()->StartDate();
 		$startPeriod = $layout->GetPeriod($startDate);
