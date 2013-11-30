@@ -110,7 +110,7 @@ class ConfigKeys
 
 	const APP_TITLE = 'app.title';
 
-	const PER_USER_COLORS = 'use.per.user.colors'
+	const PER_USER_COLORS = 'use.per.user.colors';
 }
 
 class ConfigSection
