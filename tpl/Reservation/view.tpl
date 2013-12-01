@@ -166,7 +166,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 		{if $ShowReservationDetails}
 			{if $Attributes|count > 0}
 			<div class="customAttributes">
-				<h3>{translate key=AdditionalAttributes}</h3>
+				<span>{translate key=AdditionalAttributes}</span>
 				<ul>
 				{foreach from=$Attributes item=attribute}
 					<li class="customAttribute">

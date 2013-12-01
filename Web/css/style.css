@@ -123,7 +123,7 @@ div.success {
 div.warning {
 	border: solid 1px #c77600;
 	text-align: center;
-	background: #f6c500; /* url("../img/tick-.png") no-repeat scroll 5px 5px;*/
+	background: #f6c500;
 }
 
 div.error table {
@@ -228,13 +228,12 @@ div.registrationHeader, div.forgot_pwdHeader, .reservationHeader, div.box-form d
 	box-shadow: rgba(200, 200, 200, 1) 3px 3px 8px;
 	text-decoration: none;
 	margin: 0 0 20px 0;
-	height: 2em;
 	background-color: rgba(18, 52, 86, 0.72);
 	color: #fff;
 }
 
 .registrationHeader h3, .forgot_pwdHeader h3, .reservationHeader h3, div.box-form h3.header {
-	font: bold 18px/24px Helvetica, "Lucida Grande", Verdana, Arial, sans-serif;
+	font: bold 18px Helvetica, "Lucida Grande", Verdana, Arial, sans-serif;
 	vertical-align: middle;
 }
 
@@ -255,8 +254,8 @@ form.box-form li {
 	list-style: none;
 }
 
-#registrationbox .input, #reservationbox .input {
-	font-size: 18px;
+#registrationbox .input {
+	font-size: 16px;
 	width: 97%;
 	padding: 3px;
 	margin: 2px 0 5px 0;
@@ -332,35 +331,21 @@ p.regsubmit {
 	float: left;
 }
 
-#reservationForm li {
-	font: 18px/24px Helvetica, "Lucida Grande", Verdana, Arial, sans-serif;
-	color: #666;
+#reservationForm, label.res, label.reg {
+	font: 16px Helvetica, "Lucida Grande", Verdana, Arial, sans-serif;
+	color: #5C5C5C;
 }
 
 p.forgot {
-	font: 14px/18px Helvetica, "Lucida Grande", Verdana, Arial, sans-serif;
+	font: 14px Helvetica, "Lucida Grande", Verdana, Arial, sans-serif;
 }
 
 ul.no-style {
 	list-style-type: none;
 }
 
-li.res-req, li.reg-req, .rsv-req {
-	color: #a00;
-}
-
-label.res-req, label.reg-req, .rsv-req {
-	font-size: 18px;
-	color: #a00;
-}
-
-label.res, label.reg {
-	font-size: 18px;
-	color: #666;
-}
-
 textarea.input-area {
-	font: 18px/24px Helvetica, "Lucida Grande", Verdana, Arial, sans-serif;
+	font: 16px Helvetica, "Lucida Grande", Verdana, Arial, sans-serif;
 	width: 98%;
 	padding: 3px;
 	margin: 2px 0 5px 0;
@@ -372,70 +357,6 @@ textarea.input-area {
 
 td.center {
 	text-align: center;
-}
-
-table.reg-admin {
-	border-collapse: collapse;
-}
-
-table.reg-admin td {
-	padding: 3px;
-}
-
-th.admin-radio {
-	vertical-align: middle;
-	color: #777;
-	border-bottom: 2px solid #aaa;
-	padding: 0 0 3px 0;
-}
-
-th.admin-fieldHeading {
-	font: bold 18px/24px Helvetica, "Lucida Grande", Verdana, Arial, sans-serif;
-	width: 400px;
-	text-align: left;
-}
-
-th.admin-radio {
-	font: bold 15px/18px Helvetica, "Lucida Grande", Verdana, Arial, sans-serif;
-	width: 100px;
-}
-
-th.reporting {
-	font: bold 15px/18px Helvetica, "Lucida Grande", Verdana, Arial, sans-serif;
-	width: 150px;
-	text-align: center;
-}
-
-td.admin-fieldName {
-	font: bold 15px/18px Helvetica, "Lucida Grande", Verdana, Arial, sans-serif;
-	color: #777;
-}
-
-tr.admin-lastline {
-	border-bottom: 2px solid #aaa;
-}
-
-.rsv-checkbox h4 {
-	display: inline;
-	padding: 0 20px 0 5px;
-}
-
-.rsv-checkbox input {
-	margin: 0 0 0 3px;
-}
-
-.rsv-checkbox {
-	padding: 0 0 10px 0;
-}
-
-textarea.input-areashow {
-	font: 18px/24px Helvetica, "Lucida Grande", Verdana, Arial, sans-serif;
-	width: 98%;
-	padding: 3px;
-	margin: 2px 0 5px 0;
-	border: 1px solid #e0e0e0;
-	background: #fbfbfb;
-	color: #777;
 }
 
 .inline {
@@ -453,7 +374,6 @@ textarea.input-areashow {
 }
 
 .repeatDiv select {
-	/*font: 18px/24px Helvetica, "Lucida Grande", Verdana, Arial, sans-serif;*/
 	width: 100px;
 	padding: 3px;
 	margin: 2px 0 5px 0;
@@ -473,7 +393,7 @@ fieldset {
 
 legend {
 	font-size: 11px;
-	padding: 0px 5px;
+	padding: 0 5px;
 }
 
 a, a:visited {

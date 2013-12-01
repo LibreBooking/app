@@ -23,11 +23,25 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 <div id="reservationbox">
 
 <form id="reservationForm" method="post" enctype="multipart/form-data">
+
+<div class="reservationSubmitButtons buttonsTop">
+	{block name="submitButtons"}
+		<button type="button" class="button save create">
+			{html_image src="tick-circle.png"}
+				{translate key='Create'}
+		</button>
+	{/block}
+	<button type="button" class="button" onclick="window.location='{$ReturnUrl}'">
+	{html_image src="slash.png"}
+		{translate key='Cancel'}
+	</button>
+</div>
+<div class="clear"></div>
+
 <div class="reservationHeader">
     <h3>{block name=reservationHeader}{translate key="CreateReservationHeading"}{/block}</h3>
 </div>
 
-{$smarty.capture.submitButtons}
 
 <div id="reservationDetails">
     <ul class="no-style">
@@ -45,7 +59,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
             <input type="text" id="changeUserAutocomplete" class="input" style="width:250px;"/>
             |
             <button id="promptForChangeUsers" type="button" class="button" style="display:inline">
-                <img src="img/users.png"/>
+                {html_image src="users.png"}
 			{translate key='AllUsers'}
             </button>
         </li>
@@ -84,7 +98,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
             <div style="clear:both;height:0;">&nbsp;</div>
         </li>
         <li>
-            <label for="BeginDate" style="width:50px;display:inline-block;">{translate key='BeginDate'}</label>
+            <label for="BeginDate" class="reservationDate">{translate key='BeginDate'}</label>
             <input type="text" id="BeginDate" class="dateinput" value="{formatdate date=$StartDate}"/>
             <input type="hidden" id="formattedBeginDate" {formname key=BEGIN_DATE}
                    value="{formatdate date=$StartDate key=system}"/>
@@ -101,7 +115,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
             </select>
         </li>
         <li>
-            <label for="EndDate" style="width:50px;display:inline-block;">{translate key='EndDate'}</label>
+            <label for="EndDate" class="reservationDate">{translate key='EndDate'}</label>
             <input type="text" id="EndDate" class="dateinput" value="{formatdate date=$EndDate}"/>
             <input type="hidden" id="formattedEndDate" {formname key=END_DATE}
                    value="{formatdate date=$EndDate key=system}"/>
@@ -142,7 +156,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
         </li>
         <li class="rsv-box-l">
             <label>{translate key="ReservationDescription"}<br/>
-                <textarea id="description" name="{FormKeys::DESCRIPTION}" class="input-area" rows="2" cols="52"
+                <textarea id="description" name="{FormKeys::DESCRIPTION}" class="input" rows="2" cols="52"
                           tabindex="110">{$Description}</textarea>
             </label>
         </li>
@@ -159,34 +173,46 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 
 {if $RemindersEnabled}
 	<div class="reservationReminders">
-		<ul>
-			<li><label>{translate key=SendReminder}</label></li>
-			<li>
-				<div id="reminderOptionsStart">
-					<input type="checkbox" class="reminderEnabled" {formname key=START_REMINDER_ENABLED}/>
-					<input type="text" size="3" maxlength="3" value="15"
-						   class="reminderTime textbox" {formname key=START_REMINDER_TIME}/>
-					<select class="reminderInterval textbox" {formname key=START_REMINDER_INTERVAL}>
-						<option value="{ReservationReminderInterval::Minutes}">{translate key=minutes}</option>
-						<option value="{ReservationReminderInterval::Hours}">{translate key=hours}</option>
-						<option value="{ReservationReminderInterval::Days}">{translate key=days}</option>
-					</select>
-					<span class="reminderLabel">{translate key=ReminderBeforeStart}</span>
-				</div>
-				<div id="reminderOptionsEnd">
-					<input type="checkbox" class="reminderEnabled" {formname key=END_REMINDER_ENABLED}/>
-					<input type="text" size="3" maxlength="3" value="15"
-						   class="reminderTime textbox" {formname key=END_REMINDER_TIME}/>
-					<select class="reminderInterval textbox" {formname key=END_REMINDER_INTERVAL}>
-						<option value="{ReservationReminderInterval::Minutes}">{translate key=minutes}</option>
-						<option value="{ReservationReminderInterval::Hours}">{translate key=hours}</option>
-						<option value="{ReservationReminderInterval::Days}">{translate key=days}</option>
-					</select>
-					<span class="reminderLabel">{translate key=ReminderBeforeEnd}</span>
-				</div>
-			</li>
-		</ul>
+		<div id="reminderOptionsStart">
+			<label>{translate key=SendReminder}</label>
+			<input type="checkbox" class="reminderEnabled" {formname key=START_REMINDER_ENABLED}/>
+			<input type="text" size="3" maxlength="3" value="15"
+				   class="reminderTime textbox" {formname key=START_REMINDER_TIME}/>
+			<select class="reminderInterval textbox" {formname key=START_REMINDER_INTERVAL}>
+				<option value="{ReservationReminderInterval::Minutes}">{translate key=minutes}</option>
+				<option value="{ReservationReminderInterval::Hours}">{translate key=hours}</option>
+				<option value="{ReservationReminderInterval::Days}">{translate key=days}</option>
+			</select>
+			<span class="reminderLabel">{translate key=ReminderBeforeStart}</span>
+		</div>
+		<div id="reminderOptionsEnd">
+			<input type="checkbox" class="reminderEnabled" {formname key=END_REMINDER_ENABLED}/>
+			<input type="text" size="3" maxlength="3" value="15"
+				   class="reminderTime textbox" {formname key=END_REMINDER_TIME}/>
+			<select class="reminderInterval textbox" {formname key=END_REMINDER_INTERVAL}>
+				<option value="{ReservationReminderInterval::Minutes}">{translate key=minutes}</option>
+				<option value="{ReservationReminderInterval::Hours}">{translate key=hours}</option>
+				<option value="{ReservationReminderInterval::Days}">{translate key=days}</option>
+			</select>
+			<span class="reminderLabel">{translate key=ReminderBeforeEnd}</span>
+		</div>
+		<div class="clear">&nbsp;</div>
 	</div>
+{/if}
+
+{if $Attributes|count > 0}
+<div class="customAttributes">
+    <span>{translate key=AdditionalAttributes}</span>
+    <ul>
+		{foreach from=$Attributes item=attribute}
+            <li class="customAttribute">
+				{control type="AttributeControl" attribute=$attribute}
+            </li>
+		{/foreach}
+    </ul>
+</div>
+
+	<div class="clear">&nbsp;</div>
 {/if}
 
 {if $UploadsEnabled}
@@ -207,19 +233,6 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 	</div>
 {/if}
 
-{if $Attributes|count > 0}
-<div class="customAttributes">
-    <h3>{translate key=AdditionalAttributes}</h3>
-    <ul>
-		{foreach from=$Attributes item=attribute}
-            <li class="customAttribute">
-				{control type="AttributeControl" attribute=$attribute}
-            </li>
-		{/foreach}
-    </ul>
-</div>
-<div class="clear">&nbsp;</div>
-{/if}
 
 <input type="hidden" {formname key=reservation_id} value="{$ReservationId}"/>
 <input type="hidden" {formname key=reference_number} value="{$ReferenceNumber}"/>
