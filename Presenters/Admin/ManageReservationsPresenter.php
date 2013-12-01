@@ -51,6 +51,11 @@ class ManageReservationsPresenter extends ActionPresenter
 	 */
 	private $attributeService;
 
+	/**
+	 * @var IUserPreferenceRepository
+	 */
+	private $userPreferenceRepository;
+
 	public function __construct(
 		IManageReservationsPage $page,
 		IManageReservationsService $manageReservationsService,
@@ -65,6 +70,8 @@ class ManageReservationsPresenter extends ActionPresenter
 		$this->scheduleRepository = $scheduleRepository;
 		$this->resourceRepository = $resourceRepository;
 		$this->attributeService = $attributeService;
+
+		$this->userPreferenceRepository = new UserPreferenceRepository();
 	}
 
 	public function PageLoad($userTimezone)
@@ -77,29 +84,36 @@ class ManageReservationsPresenter extends ActionPresenter
 		$startDateString = $this->page->GetStartDate();
 		$endDateString = $this->page->GetEndDate();
 
-		$startDate = $this->GetDate($startDateString, $userTimezone, $session->GetFilterStartDateDelta());
-		$endDate   = $this->GetDate($endDateString  , $userTimezone, $session->GetFilterEndDateDelta());
+		$filterPreferences = new ReservationFilterPreferences();
+
+		$startDate = $this->GetDate($startDateString, $userTimezone, $filterPreferences->GetFilterStartDateDelta());
+		$endDate   = $this->GetDate($endDateString  , $userTimezone, $filterPreferences->GetFilterEndDateDelta());
+
 		if(!$this->page->FilterButtonPressed())
 		{
+			$filterPreferences->Load($this->userPreferenceRepository, $session->UserId);
 			// Get filter settings from db
-			$referenceNumber = $session->GetFilterReferenceNumber();
-			$scheduleId = $session->GetFilterScheduleId();
-			$resourceId = $session->GetFilterResourceId();
-			$userId = $session->GetFilterUserId();
-			$userName = $session->GetFilterUserName();
-			$reservationStatusId = $session->GetFilterReservationStatusId();
+			$referenceNumber = $filterPreferences->GetFilterReferenceNumber();
+			$scheduleId = $filterPreferences->GetFilterScheduleId();
+			$resourceId = $filterPreferences->GetFilterResourceId();
+			$userId = $filterPreferences->GetFilterUserId();
+			$userName = $filterPreferences->GetFilterUserName();
+			$reservationStatusId = $filterPreferences->GetFilterReservationStatusId();
 		}
 		else
 		{
 			// Get filter settings from page and save them in db
-			$session->SetFilterStartDateDelta($this->GetDateOffsetFromToday($startDate, $userTimezone));
-			$session->SetFilterEndDateDelta($this->GetDateOffsetFromToday($endDate, $userTimezone));
-			$session->SetFilterReferenceNumber($referenceNumber = $this->page->GetReferenceNumber());
-			$session->SetFilterScheduleId($scheduleId = $this->page->GetScheduleId());
-			$session->SetFilterResourceId($resourceId = $this->page->GetResourceId());
-			$session->SetFilterUserId($userId = $this->page->GetUserId());
-			$session->SetFilterUserName($userName = $this->page->GetUserName());
-			$session->SetFilterReservationStatusId($reservationStatusId = $this->page->GetReservationStatusId());
+			$filterPreferences->SetFilterStartDateDelta($this->GetDateOffsetFromToday($startDate, $userTimezone));
+			$filterPreferences->SetFilterEndDateDelta($this->GetDateOffsetFromToday($endDate, $userTimezone));
+			$filterPreferences->SetFilterReferenceNumber($referenceNumber = $this->page->GetReferenceNumber());
+			$filterPreferences->SetFilterScheduleId($scheduleId = $this->page->GetScheduleId());
+			$filterPreferences->SetFilterResourceId($resourceId = $this->page->GetResourceId());
+			$filterPreferences->SetFilterUserId($userId = $this->page->GetUserId());
+			$filterPreferences->SetFilterUserName($userName = $this->page->GetUserName());
+			$filterPreferences->SetFilterReservationStatusId($reservationStatusId = $this->page->GetReservationStatusId());
+
+			$filterPreferences->Update($this->userPreferenceRepository, $session->UserId);
+
 		}
 
 		$this->page->SetStartDate($startDate);
@@ -145,9 +159,9 @@ class ManageReservationsPresenter extends ActionPresenter
 	private function GetDate($dateString, $timezone, $defaultDays)
 	{
 		$date = null;
-		if (is_null($dateString)) {
+		if (is_null($dateString))
+		{
 			$date = Date::Now()->AddDays($defaultDays)->ToTimezone($timezone)->GetDate();
-
 		}
 		elseif (!empty($dateString))
 		{
@@ -163,6 +177,156 @@ class ManageReservationsPresenter extends ActionPresenter
 		$today = Date::Create(Date('Y'), Date('m'), Date('d'), 0, 0, 0, $timezone);
 		$diff = DateDiff::BetweenDates($today, $date);
 		return $diff->Days();
+	}
+}
+
+class ReservationFilterPreferences
+{
+	private $FilterStartDateDelta = 0;
+	private $FilterEndDateDelta = 0;
+	private $FilterUserId = 0;
+	private $FilterUserName = '';
+	private $FilterScheduleId = 0;
+	private $FilterResourceId = 0;
+	private $FilterReservationStatusId = 0;
+	private $FilterReferenceNumber = '';
+
+	public function GetFilterStartDateDelta()
+	{
+		return $this->FilterStartDateDelta;
+	}
+
+	public function GetFilterEndDateDelta()
+	{
+		return $this->FilterEndDateDelta;
+	}
+
+	public function GetFilterUserId()
+	{
+		return $this->FilterUserId;
+	}
+
+	public function GetFilterUserName()
+	{
+		return $this->FilterUserName;
+	}
+
+	public function GetFilterScheduleId()
+	{
+		return $this->FilterScheduleId;
+	}
+
+	public function GetFilterResourceId()
+	{
+		return $this->FilterResourceId;
+	}
+
+	public function GetFilterReservationStatusId()
+	{
+		return $this->FilterReservationStatusId;
+	}
+
+	public function GetFilterReferenceNumber()
+	{
+		return $this->FilterReferenceNumber;
+	}
+
+	public function SetFilterStartDateDelta($FilterStartDateDelta)
+	{
+		$this->FilterStartDateDelta = $FilterStartDateDelta;
+	}
+
+	public function SetFilterEndDateDelta($FilterEndDateDelta)
+	{
+		$this->FilterEndDateDelta = $FilterEndDateDelta;
+	}
+
+	public function SetFilterUserId($FilterUserId)
+	{
+		$this->FilterUserId = $FilterUserId;
+	}
+
+	public function SetFilterUserName($FilterUserName)
+	{
+		$this->FilterUserName = $FilterUserName;
+	}
+
+	public function SetFilterScheduleId($FilterScheduleId)
+	{
+		if (!$FilterScheduleId)
+		{
+			$FilterScheduleId = '0';
+		}
+
+		$this->FilterScheduleId = $FilterScheduleId;
+	}
+
+	public function SetFilterResourceId($FilterResourceId)
+	{
+		if (!$FilterResourceId)
+		{
+			$FilterResourceId = '0';
+		}
+
+		$this->FilterResourceId = $FilterResourceId;
+	}
+
+	public function SetFilterReservationStatusId($FilterReservationStatusId)
+	{
+		if (!$FilterReservationStatusId)
+		{
+			$FilterReservationStatusId = '0';
+		}
+
+		$this->FilterReservationStatusId = $FilterReservationStatusId;
+	}
+
+	public function SetFilterReferenceNumber($FilterReferenceNumber)
+	{
+		$this->FilterReferenceNumber = $FilterReferenceNumber;
+	}
+
+	static $filterKeys = array('FilterStartDateDelta' => -7,
+		'FilterEndDateDelta' => +7,
+		'FilterUserId' => '',
+		'FilterUserName' => '',
+		'FilterScheduleId' => '',
+		'FilterResourceId' => '',
+		'FilterReservationStatusId' => 0,
+		'FilterReferenceNumber' => '',
+	);
+
+	/**
+	 * @param IUserPreferenceRepository $userPreferenceRepository
+	 * @param int $userId
+	 */
+	public function Load(IUserPreferenceRepository $userPreferenceRepository, $userId)
+	{
+		foreach (self::$filterKeys as $filterName => $defaultValue)
+		{
+			$this->$filterName = $defaultValue;
+		}
+
+		$prefs = $userPreferenceRepository->GetAllUserPreferences($userId);
+		foreach ($prefs as $key => $val)
+		{
+			if (array_key_exists($key, self::$filterKeys))
+			{
+				$this->$key = $val;
+			}
+		}
+	}
+
+	/**
+	 * @param IUserPreferenceRepository $userPreferenceRepository
+	 * @param int $userId
+	 */
+	public function Update(IUserPreferenceRepository $userPreferenceRepository, $userId)
+	{
+		foreach (self::$filterKeys as $filterName => $defaultValue)
+		{
+			$userPreferenceRepository->SetUserPreference($userId, $filterName, $this->$filterName);
+		}
 	}
 }
 
