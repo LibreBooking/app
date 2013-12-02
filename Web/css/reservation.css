@@ -57,14 +57,6 @@
 	font-size: 15px;
 }
 
-#reservationbox input[type=checkbox]{
-	width: 40px;
-	height: 10px;
-	background: #555;
-	margin: 20px 80px;
-	border-radius: 3px;
-}
-
 #reservationDetails {
 	float: left;
 	width: 50%;
