@@ -78,3 +78,6 @@ CREATE TABLE `user_preferences` (
     REFERENCES users(`user_id`)
     ON UPDATE CASCADE ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARACTER SET utf8;
+
+ALTER TABLE accessories MODIFY COLUMN accessory_quantity smallint(5) unsigned;
+ALTER TABLE reservation_accessories MODIFY COLUMN quantity smallint(5) unsigned;
