@@ -55,8 +55,11 @@ class ReservationApprovalPresenter
 		Log::Debug('User: %s, Approving reservation with reference number %s', $userSession->UserId, $referenceNumber);
 
 		$series = $this->persistenceService->LoadByReferenceNumber($referenceNumber);
-		$series->Approve($userSession);
-		$this->handler->Handle($series, $this->page);
+		if(PluginManager::Instance()->LoadAuthorization()->CanApproveFor($userSession, $series->UserId()))
+		{
+			$series->Approve($userSession);
+			$this->handler->Handle($series, $this->page);
+		}
 	}
 }
 

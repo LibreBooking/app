@@ -85,13 +85,13 @@ class ManageReservationsPresenter extends ActionPresenter
 		$endDateString = $this->page->GetEndDate();
 
 		$filterPreferences = new ReservationFilterPreferences();
+		$filterPreferences->Load($this->userPreferenceRepository, $session->UserId);
 
 		$startDate = $this->GetDate($startDateString, $userTimezone, $filterPreferences->GetFilterStartDateDelta());
 		$endDate   = $this->GetDate($endDateString  , $userTimezone, $filterPreferences->GetFilterEndDateDelta());
 
 		if(!$this->page->FilterButtonPressed())
 		{
-			$filterPreferences->Load($this->userPreferenceRepository, $session->UserId);
 			// Get filter settings from db
 			$referenceNumber = $filterPreferences->GetFilterReferenceNumber();
 			$scheduleId = $filterPreferences->GetFilterScheduleId();
@@ -103,8 +103,11 @@ class ManageReservationsPresenter extends ActionPresenter
 		else
 		{
 			// Get filter settings from page and save them in db
-			$filterPreferences->SetFilterStartDateDelta($this->GetDateOffsetFromToday($startDate, $userTimezone));
-			$filterPreferences->SetFilterEndDateDelta($this->GetDateOffsetFromToday($endDate, $userTimezone));
+			$startOffset = $this->GetDateOffsetFromToday($startDate, $userTimezone);
+			$endOffset = $this->GetDateOffsetFromToday($endDate, $userTimezone);
+
+			$filterPreferences->SetFilterStartDateDelta($startOffset == null ? -14 : $startOffset);
+			$filterPreferences->SetFilterEndDateDelta($endOffset == null ? 14 : $endOffset);
 			$filterPreferences->SetFilterReferenceNumber($referenceNumber = $this->page->GetReferenceNumber());
 			$filterPreferences->SetFilterScheduleId($scheduleId = $this->page->GetScheduleId());
 			$filterPreferences->SetFilterResourceId($resourceId = $this->page->GetResourceId());
@@ -159,6 +162,12 @@ class ManageReservationsPresenter extends ActionPresenter
 	private function GetDate($dateString, $timezone, $defaultDays)
 	{
 		$date = null;
+
+		if (empty($defaultDays))
+		{
+			return null;
+		}
+
 		if (is_null($dateString))
 		{
 			$date = Date::Now()->AddDays($defaultDays)->ToTimezone($timezone)->GetDate();
@@ -173,7 +182,11 @@ class ManageReservationsPresenter extends ActionPresenter
 
 	private function GetDateOffsetFromToday($date, $timezone)
 	{
-		//$diff = DateDiff::BetweenDates(Date::Now(), $date);
+		if (empty($date))
+		{
+			return null;
+		}
+
 		$today = Date::Create(Date('Y'), Date('m'), Date('d'), 0, 0, 0, $timezone);
 		$diff = DateDiff::BetweenDates($today, $date);
 		return $diff->Days();
