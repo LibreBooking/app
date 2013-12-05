@@ -21,7 +21,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 interface IScheduleReservationList
 {
 	/**
-	 * @return IReservationSlot[]|array
+	 * @return array|IReservationSlot[]
 	 */
 	function BuildSlots();
 
@@ -176,6 +176,7 @@ class ScheduleReservationList implements IScheduleReservationList
 
 				$slots[] = $item->BuildSlot($layoutItem, $this->_layoutItems[$endingPeriodIndex],
 											$this->_layoutDateStart, $span);
+
 				$currentIndex = $endingPeriodIndex;
 			}
 			else
@@ -201,24 +202,29 @@ class ScheduleReservationList implements IScheduleReservationList
 	{
 		foreach ($this->_items as $item)
 		{
-			if ( ($item->StartDate()->AddMinutes(-$item->SetupTime())->Compare($this->_lastLayoutTime) >= 0)
-					|| ($item->EndDate()->AddMinutes($item->TeardownTime())->Compare($this->_firstLayoutTime) <= 0))
+			if ( ($item->StartDate()->Compare($this->_lastLayoutTime) >= 0) || ($item->EndDate()->Compare($this->_firstLayoutTime) <= 0))
 			{
 				// skip the item if it starts after this layout or ends before it
 				continue;
 			}
 
-			if ($item->SetupTime() > 0)
+			$start = $item->StartDate()->ToTimezone($this->_destinationTimezone);
+
+			$startsInPast = $this->ItemStartsOnPastDate($item);
+			if ($startsInPast)
 			{
-				$this->AddItem(new SetUpItem($item));
+				$start = $this->_firstLayoutTime;
+			}
+			elseif ($this->ItemIsNotOnLayoutBoundary($item))
+			{
+				$layoutItem = $this->FindClosestLayoutIndexBeforeStartingTime($item);
+				if (!empty($layoutItem))
+				{
+					$start = $layoutItem->BeginDate()->ToTimezone($this->_destinationTimezone);
+				}
 			}
 
-			$this->AddItem($item);
-
-			if ($item->TeardownTime() > 0)
-			{
-				$this->AddItem(new TearDownItem($item));
-			}
+			$this->_itemsByStartTime[$start->Timestamp()] = $item;
 		}
 	}
 
@@ -326,32 +332,6 @@ class ScheduleReservationList implements IScheduleReservationList
 	{
 		$timeKey = $item->StartDate()->Timestamp();
 		return !(array_key_exists($timeKey, $this->_layoutByStartTime));
-	}
-
-	/**
-	 * @param $item
-	 */
-	private function AddItem(ReservationListItem $item)
-	{
-		$start = $item->StartDate()->ToTimezone($this->_destinationTimezone);
-
-		$startsInPast = $this->ItemStartsOnPastDate($item);
-		if ($startsInPast)
-		{
-			$start = $this->_firstLayoutTime;
-		}
-		elseif ($this->ItemIsNotOnLayoutBoundary($item))
-		{
-			$this->_itemsByStartTime[$start->Timestamp()] = $item;
-			$this->_layoutItems[] = new SchedulePeriod($item->StartDate(), $item->EndDate());
-//			$layoutItem = $this->FindClosestLayoutIndexBeforeStartingTime($item);
-//			if (!empty($layoutItem))
-//			{
-//				$start = $layoutItem->BeginDate()->ToTimezone($this->_destinationTimezone);
-//			}
-		}
-
-		$this->_itemsByStartTime[$start->Timestamp()] = $item;
 	}
 }
 
