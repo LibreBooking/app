@@ -35,12 +35,14 @@ class ReservationItemResponse extends RestResponse
 	public $scheduleId;
 	public $userId;
 	public $resourceId;
+	public $duration;
 
 	public function __construct(ReservationItemView $reservationItemView, IRestServer $server, $showUser, $showDetails)
 	{
 		$this->referenceNumber = $reservationItemView->ReferenceNumber;
 		$this->startDate = $reservationItemView->StartDate->ToIso();
 		$this->endDate = $reservationItemView->EndDate->ToIso();
+		$this->duration = $reservationItemView->GetDuration()->__toString();
 		$this->resourceName = $reservationItemView->ResourceName;
 
 		if ($showUser)
