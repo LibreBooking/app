@@ -339,6 +339,8 @@ class Queries
             WHERE r.resource_id = @resourceid
           )';
 
+	const GET_ALL_RESOURCE_STATUS_REASONS = 'SELECT * FROM resource_status_reasons';
+
 	const GET_ALL_RESOURCE_TYPES = 'SELECT * FROM resource_types';
 
 	const GET_ALL_SAVED_REPORTS = 'SELECT * FROM saved_reports WHERE user_id = @userid ORDER BY report_name, date_created';
@@ -609,7 +611,7 @@ class Queries
 		INNER JOIN schedules s ON r.schedule_id = s.schedule_id
 		WHERE 
 			r.schedule_id = @scheduleid AND
-			r.isactive = 1
+			r.status_id <> 0
 		ORDER BY r.sort_order, r.name';
 
 	const GET_USERID_BY_ACTIVATION_CODE =
@@ -730,11 +732,11 @@ class Queries
 
 	const ADD_RESOURCE =
 			'INSERT INTO
-			resources (name, location, contact_info, description, notes, isactive, min_duration, min_increment, 
+			resources (name, location, contact_info, description, notes, status_id, min_duration, min_increment,
 					   max_duration, unit_cost, autoassign, requires_approval, allow_multiday_reservations, 
 					   max_participants, min_notice_time, max_notice_time, schedule_id, admin_group_id)
 		VALUES
-			(@resource_name, @location, @contact_info, @description, @resource_notes, @isactive, @min_duration, @min_increment, 
+			(@resource_name, @location, @contact_info, @description, @resource_notes, @status_id, @min_duration, @min_increment,
 			 @max_duration, @unit_cost, @autoassign, @requires_approval, @allow_multiday_reservations,
 		     @max_participants, @min_notice_time, @max_notice_time, @scheduleid, @admin_group_id)';
 
@@ -831,13 +833,14 @@ class Queries
 			min_notice_time = @min_notice_time,
 			max_notice_time = @max_notice_time,
 			image_name = @imageName,
-			isactive = @isActive,
 			schedule_id = @scheduleid,
 			admin_group_id = @admin_group_id,
 			allow_calendar_subscription = @allow_calendar_subscription,
 			public_id = @publicid,
 			sort_order = @sort_order,
-			resource_type_id = @resource_type_id
+			resource_type_id = @resource_type_id,
+			status_id = @status_id,
+			resource_status_reason_id = @resource_status_reason_id
 		WHERE
 			resource_id = @resourceid';
 

@@ -72,6 +72,8 @@ class FakeResourceAccess extends ResourceRepository
 			ColumnNames::SCHEDULE_ADMIN_GROUP_ID_ALIAS => 1154,
 			ColumnNames::RESOURCE_SORT_ORDER => 1,
 			ColumnNames::RESOURCE_TYPE_ID => 10,
+			ColumnNames::RESOURCE_STATUS_ID => ResourceStatus::AVAILABLE,
+			ColumnNames::RESOURCE_STATUS_REASON_ID => null,
 		);
 
 		$row2 = array(ColumnNames::RESOURCE_ID => 2,
@@ -96,6 +98,8 @@ class FakeResourceAccess extends ResourceRepository
 			ColumnNames::SCHEDULE_ADMIN_GROUP_ID_ALIAS => 9292,
 			ColumnNames::RESOURCE_SORT_ORDER => null,
 			ColumnNames::RESOURCE_TYPE_ID => null,
+			ColumnNames::RESOURCE_STATUS_ID => ResourceStatus::UNAVAILABLE,
+			ColumnNames::RESOURCE_STATUS_REASON_ID => 98,
 		);
 
 		return array($row1, $row2);

@@ -52,20 +52,27 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 				</li>
 				<li>
 					{translate key='Status'}
-					{if $resource->IsOnline()}
+					{if $resource->IsAvailable()}
 						{html_image src="status.png"}
-						<a class="update takeOfflineButton"
-						   href="javascript: void(0);">{translate key='TakeOffline'}</a>
+						<a class="update changeStatus"
+						   href="javascript: void(0);">{translate key='Available'}</a>
+					{elseif $resource->IsUnavailable()}
+						{html_image src="status-away.png"}
+						<a class="update changeStatus"
+						   href="javascript: void(0);">{translate key='Unavailable'}</a>
 					{else}
 						{html_image src="status-busy.png"}
-						<a class="update bringOnlineButton"
-						   href="javascript: void(0);">{translate key='BringOnline'}</a>
+						<a class="update changeStatus"
+						   href="javascript: void(0);">{translate key='Hidden'}</a>
 					{/if}
-
+					{if array_key_exists($resource->GetStatusReasonId(),$StatusReasons)}
+						<span class="resourceValue">{$StatusReasons[$resource->GetStatusReasonId()]->Description()}</span>
+					{/if}
 				</li>
 
 				<li>
-					{translate key='Schedule'} <span class="resourceValue">{$Schedules[$resource->GetScheduleId()]}</span>
+					{translate key='Schedule'} <span
+					} class="resourceValue">{$Schedules[$resource->GetScheduleId()]}</span>
 					<a class="update changeScheduleButton" href="javascript: void(0);">{translate key='Move'}</a>
 				</li>
 				<li>
@@ -214,7 +221,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 	{assign var=attributes value=$AttributeList->GetAttributes($id)}
 	{if $attributes|count > 0}
 		<div class="customAttributes">
-			<form method="post" class="attributesForm">
+			<form method="post" class="attributesForm" ajaxAction="{ManageResourcesActions::ActionChangeAttributes}">
 				<h3>{translate key=AdditionalAttributes} <a href="#"
 															class="update changeAttributes">{translate key=Edit}</a>
 				</h3>
@@ -247,14 +254,13 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 {/foreach}
 </div>
 
-
 <div class="admin" style="margin-top:30px">
 	<div class="title">
 		{translate key='AddNewResource'}
 	</div>
 	<div>
 		<div id="addResourceResults" class="error" style="display:none;"></div>
-		<form id="addResourceForm" method="post">
+		<form id="addResourceForm" method="post" ajaxAction="{ManageResourcesActions::ActionAdd}">
 			<table>
 				<tr>
 					<th>{translate key='Name'}</th>
@@ -300,8 +306,8 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 
 <input type="hidden" id="activeId" value=""/>
 
-<div id="imageDialog" class="dialog" style="display:none;" title="{translate key=AddImage}">
-	<form id="imageForm" method="post" enctype="multipart/form-data">
+<div id="imageDialog" class="dialog" title="{translate key=AddImage}">
+	<form id="imageForm" method="post" enctype="multipart/form-data" ajaxAction="{ManageResourcesActions::ActionChangeImage}">
 		<input id="resourceImage" type="file" class="text" size="60" {formname key=RESOURCE_IMAGE} />
 		<br/>
 		<span class="note">.gif, .jpg, or .png</span>
@@ -312,8 +318,8 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 	</form>
 </div>
 
-<div id="renameDialog" class="dialog" style="display:none;" title="{translate key=Rename}">
-	<form id="renameForm" method="post">
+<div id="renameDialog" class="dialog" title="{translate key=Rename}">
+	<form id="renameForm" method="post" ajaxAction="{ManageResourcesActions::ActionRename}">
 		{translate key='Name'}: <input id="editName" type="text" class="textbox required" maxlength="85"
 									   style="width:250px" {formname key=RESOURCE_NAME} />
 		<br/><br/>
@@ -322,8 +328,8 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 	</form>
 </div>
 
-<div id="scheduleDialog" class="dialog" style="display:none;" title="{translate key=MoveToSchedule}">
-	<form id="scheduleForm" method="post">
+<div id="scheduleDialog" class="dialog" title="{translate key=MoveToSchedule}">
+	<form id="scheduleForm" method="post" ajaxAction="{ManageResourcesActions::ActionChangeSchedule}">
 		{translate key=MoveToSchedule}:
 		<select id="editSchedule" class="textbox" {formname key=SCHEDULE_ID}>
 			{foreach from=$Schedules item=scheduleName key=scheduleId}
@@ -336,8 +342,8 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 	</form>
 </div>
 
-<div id="resourceTypeDialog" class="dialog" style="display:none;" title="{translate key=ResourceType}">
-	<form id="resourceTypeForm" method="post">
+<div id="resourceTypeDialog" class="dialog" title="{translate key=ResourceType}">
+	<form id="resourceTypeForm" method="post" ajaxAction="{ManageResourcesActions::ActionChangeResourceType}">
 		{translate key=ResourceType}:
 		<select id="editResourceType" class="textbox" {formname key=RESOURCE_TYPE_ID}>
 			<option value="">-- {translate key=None} --</option>
@@ -351,8 +357,8 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 	</form>
 </div>
 
-<div id="locationDialog" class="dialog" style="display:none;" title="{translate key=Location}">
-	<form id="locationForm" method="post">
+<div id="locationDialog" class="dialog" title="{translate key=Location}">
+	<form id="locationForm" method="post" ajaxAction="{ManageResourcesActions::ActionChangeLocation}">
 		{translate key=Location}:<br/>
 		<input id="editLocation" type="text" class="textbox" maxlength="85"
 			   style="width:250px" {formname key=RESOURCE_LOCATION} /><br/>
@@ -365,8 +371,8 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 	</form>
 </div>
 
-<div id="descriptionDialog" class="dialog" style="display:none;" title="{translate key=Description}">
-	<form id="descriptionForm" method="post">
+<div id="descriptionDialog" class="dialog" title="{translate key=Description}">
+	<form id="descriptionForm" method="post" ajaxAction="{ManageResourcesActions::ActionChangeDescription}">
 		{translate key=Description}:<br/>
 		<textarea id="editDescription" class="textbox"
 				  style="width:460px;height:150px;" {formname key=RESOURCE_DESCRIPTION}></textarea>
@@ -376,8 +382,8 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 	</form>
 </div>
 
-<div id="notesDialog" class="dialog" style="display:none;" title="{translate key=Notes}">
-	<form id="notesForm" method="post">
+<div id="notesDialog" class="dialog" title="{translate key=Notes}">
+	<form id="notesForm" method="post" ajaxAction="{ManageResourcesActions::ActionChangeNotes}">
 		{translate key=Notes}:<br/>
 		<textarea id="editNotes" class="textbox"
 				  style="width:460px;height:150px;" {formname key=RESOURCE_NOTES}></textarea>
@@ -387,8 +393,8 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 	</form>
 </div>
 
-<div id="configurationDialog" class="dialog" style="display:none;" title="{translate key=UsageConfiguration}">
-	<form id="configurationForm" method="post">
+<div id="configurationDialog" class="dialog" title="{translate key=UsageConfiguration}">
+	<form id="configurationForm" method="post" ajaxAction="{ManageResourcesActions::ActionChangeConfiguration}">
 		<div style="margin-bottom: 10px;">
 			<fieldset>
 				<legend>{translate key=Duration}</legend>
@@ -510,7 +516,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 </div>
 
 <div id="groupAdminDialog" class="dialog" title="{translate key=WhoCanManageThisResource}">
-	<form method="post" id="groupAdminForm">
+	<form method="post" id="groupAdminForm" ajaxAction="{ManageResourcesActions::ActionChangeAdmin}">
 		<select id="adminGroupId" {formname key=RESOURCE_ADMIN_GROUP_ID} class="textbox">
 			<option value="">-- {translate key=None} --</option>
 			{foreach from=$AdminGroups item=adminGroup}
@@ -523,8 +529,8 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 	</form>
 </div>
 
-<div id="deleteDialog" class="dialog" style="display:none;" title="{translate key=Delete}">
-	<form id="deleteForm" method="post">
+<div id="deleteDialog" class="dialog" title="{translate key=Delete}">
+	<form id="deleteForm" method="post" ajaxAction="{ManageResourcesActions::ActionDelete}">
 		<div class="error" style="margin-bottom: 25px;">
 			<h3>{translate key=DeleteWarning}</h3>
 			<br/>{translate key=DeleteResourceWarning}:
@@ -541,11 +547,30 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 	</form>
 </div>
 
-<div id="sortOrderDialog" class="dialog" style="display:none;" title="{translate key=SortOrder}">
-	<form id="sortOrderForm" method="post">
+<div id="sortOrderDialog" class="dialog" title="{translate key=SortOrder}">
+	<form id="sortOrderForm" method="post" ajaxAction="{ManageResourcesActions::ActionChangeSort}">
 		{translate key=SortOrder}:
 		<input type="text" id="editSortOrder" class="textbox" {formname key=RESOURCE_SORT_ORDER} maxlength="3"
 			   style="width:40px"/>
+		<br/><br/>
+		<button type="button" class="button save">{html_image src="disk-black.png"} {translate key='Update'}</button>
+		<button type="button" class="button cancel">{html_image src="slash.png"} {translate key='Cancel'}</button>
+	</form>
+</div>
+
+<div id="statusDialog" class="dialog" title="{translate key=Status}">
+	<form id="statusForm" method="post" ajaxAction="{ManageResourcesActions::ActionChangeStatus}">
+
+		<select id="statusId" {formname key=RESOURCE_STATUS_ID} class="textbox">
+			<option value="{ResourceStatus::AVAILABLE}">{translate key=Available}</option>
+			<option value="{ResourceStatus::UNAVAILABLE}">{translate key=Unavailable}</option>
+			<option value="{ResourceStatus::HIDDEN}">{translate key=Hidden}</option>
+		</select>
+		<br/>
+		<br/>
+		<label for="reasonId">{translate key=Reason}</label><br/>
+		<select id="reasonId" {formname key=RESOURCE_STATUS_REASON_ID} class="textbox">
+		</select>
 		<br/><br/>
 		<button type="button" class="button save">{html_image src="disk-black.png"} {translate key='Update'}</button>
 		<button type="button" class="button cancel">{html_image src="slash.png"} {translate key='Cancel'}</button>
@@ -563,26 +588,9 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 
 	$(document).ready(function ()
 	{
-
 		var actions = {
-			rename: '{ManageResourcesActions::ActionRename}',
-			changeImage: '{ManageResourcesActions::ActionChangeImage}',
-			removeImage: '{ManageResourcesActions::ActionRemoveImage}',
-			changeSchedule: '{ManageResourcesActions::ActionChangeSchedule}',
-			changeLocation: '{ManageResourcesActions::ActionChangeLocation}',
-			changeDescription: '{ManageResourcesActions::ActionChangeDescription}',
-			changeNotes: '{ManageResourcesActions::ActionChangeNotes}',
-			add: '{ManageResourcesActions::ActionAdd}',
-			deleteResource: '{ManageResourcesActions::ActionDelete}',
-			takeOffline: '{ManageResourcesActions::ActionTakeOffline}',
-			bringOnline: '{ManageResourcesActions::ActionBringOnline}',
-			changeConfiguration: '{ManageResourcesActions::ActionChangeConfiguration}',
-			changeAdmin: '{ManageResourcesActions::ActionChangeAdmin}',
 			enableSubscription: '{ManageResourcesActions::ActionEnableSubscription}',
-			disableSubscription: '{ManageResourcesActions::ActionDisableSubscription}',
-			changeAttributes: '{ManageResourcesActions::ActionChangeAttributes}',
-			changeSortOrder: '{ManageResourcesActions::ActionChangeSort}',
-			changeResourceType: '{ManageResourcesActions::ActionChangeResourceType}'
+			disableSubscription: '{ManageResourcesActions::ActionDisableSubscription}'
 		};
 
 		var opts = {
@@ -613,7 +621,9 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 			endNotice: {},
 			adminGroupId: '{$resource->GetAdminGroupId()}',
 			sortOrder: '{$resource->GetSortOrder()}',
-			resourceTypeId : '{$resource->GetResourceTypeId()}'
+			resourceTypeId : '{$resource->GetResourceTypeId()}',
+			statusId: '{$resource->GetStatusId()}',
+			reasonId: '{$resource->GetStatusReasonId()}'
 		};
 
 		{if $resource->HasMinLength()}
@@ -654,8 +664,11 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 
 		resourceManagement.add(resource);
 		{/foreach}
-	})
-	;
+
+		{foreach from=$StatusReasons item=reason}
+			resourceManagement.addStatusReason('{$reason->Id()}', '{$reason->StatusId()}', '{$reason->Description()|escape:javascript}');
+		{/foreach}
+	});
 
 </script>
 

@@ -86,6 +86,7 @@ class ResourceRepositoryTests extends TestBase
 		$allowSubscription = true;
 		$sortOrder = 3;
 		$resourceTypeId = 111;
+		$reasonId = 19;
 
 		$resource = new BookableResource($id,
 										 $name,
@@ -103,7 +104,7 @@ class ResourceRepositoryTests extends TestBase
 										 $description,
 										 $scheduleId);
 		$resource->SetImage($imageName);
-		$resource->BringOnline();
+		$resource->ChangeStatus(ResourceStatus::AVAILABLE, $reasonId);
 		$resource->SetAdminGroupId($adminGroupId);
 		$resource->EnableSubscription();
 		$resource->SetSortOrder($sortOrder);
@@ -129,13 +130,14 @@ class ResourceRepositoryTests extends TestBase
 			new TimeInterval($maxNotice),
 			$description,
 			$imageName,
-			$resource->IsOnline(),
 			$scheduleId,
 			$adminGroupId,
 			$allowSubscription,
 			$publicId,
 			$sortOrder,
-			$resourceTypeId);
+			$resourceTypeId,
+			ResourceStatus::AVAILABLE,
+			$reasonId);
 
 		$actualUpdateResourceCommand = $this->db->_Commands[0];
 

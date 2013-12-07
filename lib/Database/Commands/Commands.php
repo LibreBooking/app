@@ -299,7 +299,7 @@ class AddResourceCommand extends SqlCommand
 {
 	public function __construct($name, $schedule_id, $autoassign = 1, $admin_group_id = null,
 								$location = null, $contact_info = null, $description = null, $notes = null,
-								$isactive = 1, $min_duration = null, $min_increment = null, $max_duration = null,
+								$status_id = 1, $min_duration = null, $min_increment = null, $max_duration = null,
 								$unit_cost = null, $requires_approval = 0, $allow_multiday = 1,
 								$max_participants = null, $min_notice_time = null, $max_notice_time = null)
 	{
@@ -311,7 +311,7 @@ class AddResourceCommand extends SqlCommand
 		$this->AddParameter(new Parameter(ParameterNames::RESOURCE_CONTACT, $contact_info));
 		$this->AddParameter(new Parameter(ParameterNames::RESOURCE_DESCRIPTION, $description));
 		$this->AddParameter(new Parameter(ParameterNames::RESOURCE_NOTES, $notes));
-		$this->AddParameter(new Parameter(ParameterNames::IS_ACTIVE, $isactive));
+		$this->AddParameter(new Parameter(ParameterNames::RESOURCE_STATUS, $status_id));
 		$this->AddParameter(new Parameter(ParameterNames::RESOURCE_MINDURATION, $min_duration));
 		$this->AddParameter(new Parameter(ParameterNames::RESOURCE_MININCREMENT, $min_increment));
 		$this->AddParameter(new Parameter(ParameterNames::RESOURCE_MAXDURATION, $max_duration));
@@ -941,6 +941,14 @@ class GetAllResourceAdminsCommand extends SqlCommand
 		$this->AddParameter(new Parameter(ParameterNames::USER_STATUS_ID, AccountStatus::ACTIVE));
 		$this->AddParameter(new Parameter(ParameterNames::RESOURCE_ID, $resourceId));
 		$this->AddParameter(new Parameter(ParameterNames::ROLE_LEVEL, RoleLevel::RESOURCE_ADMIN));
+	}
+}
+
+class GetAllResourceStatusReasonsCommand extends SqlCommand
+{
+	public function __construct()
+	{
+		parent::__construct(Queries::GET_ALL_RESOURCE_STATUS_REASONS);
 	}
 }
 
@@ -1811,13 +1819,14 @@ class UpdateResourceCommand extends SqlCommand
 								TimeInterval $maxNoticeTime,
 								$description,
 								$imageName,
-								$isActive,
 								$scheduleId,
 								$adminGroupId,
 								$allowCalendarSubscription,
 								$publicId,
 								$sortOrder,
-								$resourceTypeId)
+								$resourceTypeId,
+								$statusId,
+								$reasonId)
 	{
 		parent::__construct(Queries::UPDATE_RESOURCE);
 
@@ -1836,13 +1845,15 @@ class UpdateResourceCommand extends SqlCommand
 		$this->AddParameter(new Parameter(ParameterNames::RESOURCE_MINNOTICE, $minNoticeTime->ToDatabase()));
 		$this->AddParameter(new Parameter(ParameterNames::RESOURCE_MAXNOTICE, $maxNoticeTime->ToDatabase()));
 		$this->AddParameter(new Parameter(ParameterNames::RESOURCE_IMAGE_NAME, $imageName));
-		$this->AddParameter(new Parameter(ParameterNames::RESOURCE_ISACTIVE, (int)$isActive));
 		$this->AddParameter(new Parameter(ParameterNames::SCHEDULE_ID, $scheduleId));
 		$this->AddParameter(new Parameter(ParameterNames::GROUP_ADMIN_ID, $adminGroupId));
 		$this->AddParameter(new Parameter(ParameterNames::ALLOW_CALENDAR_SUBSCRIPTION, (int)$allowCalendarSubscription));
 		$this->AddParameter(new Parameter(ParameterNames::PUBLIC_ID, $publicId));
 		$this->AddParameter(new Parameter(ParameterNames::RESOURCE_SORT_ORDER, $sortOrder));
 		$this->AddParameter(new Parameter(ParameterNames::RESOURCE_TYPE_ID, $resourceTypeId));
+		$this->AddParameter(new Parameter(ParameterNames::RESOURCE_STATUS, $statusId));
+		$this->AddParameter(new Parameter(ParameterNames::RESOURCE_STATUS_REASON, $reasonId));
+
 	}
 }
 

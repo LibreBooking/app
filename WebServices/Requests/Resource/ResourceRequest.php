@@ -90,6 +90,7 @@ class ResourceRequest extends JsonRequest
 	/**
 	 * @var bool
 	 */
+	// TODO: UPDATE TO WORK WITH STATUSES
 	public $isOnline;
 
 	/**
@@ -133,6 +134,8 @@ class ExampleResourceRequest extends ResourceRequest
 		$this->autoAssignPermissions = true;
 		$this->customAttributes = array(AttributeValueRequest::Example());
 		$this->sortOrder = 1;
+
+		// TODO: UPDATE TO WORK WITH STATUSES
 		$this->isOnline = true;
 	}
 }

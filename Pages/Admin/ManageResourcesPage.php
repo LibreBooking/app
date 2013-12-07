@@ -161,6 +161,21 @@ interface IManageResourcesPage extends IUpdateResourcePage, IActionPage
 	 * @param $resourceTypes ResourceType[]
 	 */
 	public function BindResourceTypes($resourceTypes);
+
+	/**
+	 * @param $reasons ResourceStatusReason[]
+	 */
+	public function BindResourceStatusReasons($reasons);
+
+	/**
+	 * @return int
+	 */
+	public function GetStatusId();
+
+	/**
+	 * @return int
+	 */
+	public function GetStatusReasonId();
 }
 
 class ManageResourcesPage extends ActionPage implements IManageResourcesPage
@@ -383,6 +398,24 @@ class ManageResourcesPage extends ActionPage implements IManageResourcesPage
 	public function GetResourceTypeId()
 	{
 		return $this->GetForm(FormKeys::RESOURCE_TYPE_ID);
+	}
+
+	/**
+	 * @param $reasons ResourceStatusReason[]
+	 */
+	public function BindResourceStatusReasons($reasons)
+	{
+		$this->Set('StatusReasons', $reasons);
+	}
+
+	public function GetStatusId()
+	{
+		return $this->GetForm(FormKeys::RESOURCE_STATUS_ID);
+	}
+
+	public function GetStatusReasonId()
+	{
+		return $this->GetForm(FormKeys::RESOURCE_STATUS_REASON_ID);
 	}
 }
 

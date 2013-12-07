@@ -84,7 +84,8 @@ class BookableResource implements IResource
 	protected $_maxNotice;
 	protected $_scheduleId;
 	protected $_imageName;
-	protected $_isActive;
+	protected $_statusId = ResourceStatus::AVAILABLE;
+	protected $_statusReasonId;
 	protected $_adminGroupId;
 	protected $_isCalendarSubscriptionAllowed = false;
 	protected $_publicId;
@@ -184,12 +185,7 @@ class BookableResource implements IResource
 		$resource->SetImage($row[ColumnNames::RESOURCE_IMAGE_NAME]);
 		$resource->SetAdminGroupId($row[ColumnNames::RESOURCE_ADMIN_GROUP_ID]);
 		$resource->SetSortOrder($row[ColumnNames::RESOURCE_SORT_ORDER]);
-
-		$resource->_isActive = true;
-		if (isset($row[ColumnNames::RESOURCE_ISACTIVE]))
-		{
-			$resource->_isActive = (bool)$row[ColumnNames::RESOURCE_ISACTIVE];
-		}
+		$resource->ChangeStatus($row[ColumnNames::RESOURCE_STATUS_ID], $row[ColumnNames::RESOURCE_STATUS_REASON_ID]);
 
 		$resource->WithPublicId($row[ColumnNames::PUBLIC_ID]);
 		$resource->WithSubscription($row[ColumnNames::ALLOW_CALENDAR_SUBSCRIPTION]);
@@ -529,25 +525,67 @@ class BookableResource implements IResource
 		return !empty($this->_imageName);
 	}
 
+//	/**
+//	 * @return bool
+//	 */
+//	public function IsOnline()
+//	{
+//		return $this->_isActive;
+//	}
+
+	/**
+	 * @param int|ResourceStatus $statusId
+	 * @param int|null $statusReasonId
+	 * @return void
+	 */
+	public function ChangeStatus($statusId, $statusReasonId = null)
+	{
+		$this->_statusId = $statusId;
+		if (empty($statusReasonId))
+		{
+			$statusReasonId = null;
+		}
+		$this->_statusReasonId = $statusReasonId;
+	}
+
 	/**
 	 * @return bool
 	 */
-	public function IsOnline()
+	public function IsAvailable()
 	{
-		return $this->_isActive;
+		return $this->_statusId == ResourceStatus::AVAILABLE;
 	}
 
 	/**
-	 * @return void
+	 * @return bool
 	 */
-	public function TakeOffline()
+	public function IsUnavailable()
 	{
-		$this->_isActive = false;
+		return $this->_statusId == ResourceStatus::UNAVAILABLE;
 	}
 
-	public function BringOnline()
+	/**
+	 * @return bool
+	 */
+	public function IsHidden()
 	{
-		$this->_isActive = true;
+		return $this->_statusId == ResourceStatus::HIDDEN;
+	}
+
+	/**
+	 * @return int|ResourceStatus
+	 */
+	public function GetStatusId()
+	{
+		return $this->_statusId;
+	}
+
+	/**
+	 * @return int|null
+	 */
+	public function GetStatusReasonId()
+	{
+		return $this->_statusReasonId;
 	}
 
 	/**

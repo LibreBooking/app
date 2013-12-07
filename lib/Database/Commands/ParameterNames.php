@@ -78,8 +78,6 @@ class ParameterNames
 
 	const HOMEPAGE_ID = '@homepageid';
 
-	const IS_ACTIVE = '@isactive';
-
 	const LAST_LOGIN = '@lastlogin';
 	const LAST_NAME = '@lname';
 	const LAYOUT_ID = '@layoutid';
@@ -140,8 +138,9 @@ class ParameterNames
 	const RESOURCE_REQUIRES_APPROVAL = '@requires_approval';
 	const RESOURCE_LEVEL_ID = '@resourceLevelId';
 	const RESOURCE_IMAGE_NAME = '@imageName';
-	const RESOURCE_ISACTIVE = '@isActive';
 	const RESOURCE_SORT_ORDER = '@sort_order';
+	const RESOURCE_STATUS = '@status_id';
+	const RESOURCE_STATUS_REASON = '@resource_status_reason_id';
 
 	const RESOURCE_GROUP_ID = '@resourcegroupid';
 	const RESOURCE_GROUP_NAME = '@resourcegroupname';

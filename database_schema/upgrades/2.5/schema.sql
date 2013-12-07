@@ -24,7 +24,7 @@ CREATE TABLE `resource_types` (
   PRIMARY KEY (`resource_type_id`)
 ) ENGINE=InnoDB DEFAULT CHARACTER SET utf8;
 
-ALTER TABLE `resources` ADD FOREIGN KEY (`resource_type_id`) REFERENCES resource_types(`resource_type_id`) ON DELETE CASCADE;
+ALTER TABLE `resources` ADD FOREIGN KEY (`resource_type_id`) REFERENCES resource_types(`resource_type_id`) ON DELETE SET NULL;
 
 DROP TABLE IF EXISTS `resource_group_assignment`;
 CREATE TABLE `resource_group_assignment` (
@@ -61,10 +61,9 @@ WHERE resources.resource_id IS NULL;
 
 INSERT INTO blackout_series_resources SELECT blackout_series_id, resource_id FROM blackout_series;
 
-ALTER TABLE blackout_series DROP COLUMN resource_id;
-
-ALTER TABLE blackout_series ADD COLUMN `repeat_type` varchar(10) default NULL;
-ALTER TABLE blackout_series ADD COLUMN `repeat_options` varchar(255) default NULL;
+ALTER TABLE `blackout_series` DROP COLUMN `resource_id`;
+ALTER TABLE `blackout_series` ADD COLUMN `repeat_type` varchar(10) default NULL;
+ALTER TABLE `blackout_series` ADD COLUMN `repeat_options` varchar(255) default NULL;
 
 DROP TABLE IF EXISTS `user_preferences`;
 CREATE TABLE `user_preferences` (
@@ -79,5 +78,20 @@ CREATE TABLE `user_preferences` (
     ON UPDATE CASCADE ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARACTER SET utf8;
 
-ALTER TABLE accessories MODIFY COLUMN accessory_quantity smallint(5) unsigned;
-ALTER TABLE reservation_accessories MODIFY COLUMN quantity smallint(5) unsigned;
+ALTER TABLE `accessories` MODIFY COLUMN accessory_quantity smallint(5) unsigned;
+ALTER TABLE `reservation_accessories` MODIFY COLUMN quantity smallint(5) unsigned;
+
+DROP TABLE IF EXISTS `resource_status_reasons`;
+CREATE TABLE `resource_status_reasons` (
+ `resource_status_reason_id` smallint(5) unsigned NOT NULL auto_increment,
+ `status_id` tinyint unsigned NOT NULL,
+ `description` varchar(100),
+ PRIMARY KEY (`resource_status_reason_id`),
+ INDEX (`status_id`)
+) ENGINE=InnoDB DEFAULT CHARACTER SET utf8;
+
+ALTER TABLE `resources` ADD COLUMN `status_id` tinyint unsigned NOT NULL DEFAULT 1;
+ALTER TABLE `resources` ADD COLUMN `resource_status_reason_id` smallint(5) unsigned;
+ALTER TABLE `resources` ADD FOREIGN KEY (`resource_status_reason_id`) REFERENCES resource_status_reasons(`resource_status_reason_id`) ON DELETE SET NULL;
+UPDATE resources SET status_id = isactive;
+ALTER TABLE `resources` DROP COLUMN `isactive`;

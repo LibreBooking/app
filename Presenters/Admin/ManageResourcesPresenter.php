@@ -36,8 +36,7 @@ class ManageResourcesActions
 	const ActionRemoveImage = 'removeImage';
 	const ActionRename = 'rename';
 	const ActionDelete = 'delete';
-	const ActionBringOnline = 'bringOnline';
-	const ActionTakeOffline = 'takeOffline';
+	const ActionChangeStatus = 'changeStatus';
 	const ActionEnableSubscription = 'enableSubscription';
 	const ActionDisableSubscription = 'disableSubscription';
 	const ActionChangeAttributes = 'changeAttributes';
@@ -105,8 +104,7 @@ class ManageResourcesPresenter extends ActionPresenter
 		$this->AddAction(ManageResourcesActions::ActionRemoveImage, 'RemoveImage');
 		$this->AddAction(ManageResourcesActions::ActionRename, 'Rename');
 		$this->AddAction(ManageResourcesActions::ActionDelete, 'Delete');
-		$this->AddAction(ManageResourcesActions::ActionTakeOffline, 'TakeOffline');
-		$this->AddAction(ManageResourcesActions::ActionBringOnline, 'BringOnline');
+		$this->AddAction(ManageResourcesActions::ActionChangeStatus, 'ChangeStatus');
 		$this->AddAction(ManageResourcesActions::ActionEnableSubscription, 'EnableSubscription');
 		$this->AddAction(ManageResourcesActions::ActionDisableSubscription, 'DisableSubscription');
 		$this->AddAction(ManageResourcesActions::ActionChangeAttributes, 'ChangeAttributes');
@@ -138,6 +136,15 @@ class ManageResourcesPresenter extends ActionPresenter
 			$resourceTypeList[$resourceType->Id()] = $resourceType;
 		}
 		$this->page->BindResourceTypes($resourceTypeList);
+
+		$statusReasons = $this->resourceRepository->GetStatusReasons();
+		$statusReasonList = array();
+
+		foreach ($statusReasons as $reason)
+		{
+			$statusReasonList[$reason->Id()] = $reason;
+		}
+		$this->page->BindResourceStatusReasons($statusReasonList);
 
 		$groups = $this->groupRepository->GetGroupsByRole(RoleLevel::RESOURCE_ADMIN);
 		$this->page->BindAdminGroups($groups);
@@ -307,25 +314,14 @@ class ManageResourcesPresenter extends ActionPresenter
 		$this->SaveResourceImage(null);
 	}
 
-	public function TakeOffline()
+	public function ChangeStatus()
 	{
 		$resourceId = $this->page->GetResourceId();
+		Log::Debug('Changing resource status. ResourceId: %s', $resourceId);
+
 		$resource = $this->resourceRepository->LoadById($resourceId);
 
-		Log::Debug('Taking resource offline. ResourceId: %s', $resourceId);
-
-		$resource->TakeOffline();
-		$this->resourceRepository->Update($resource);
-	}
-
-	public function BringOnline()
-	{
-		$resourceId = $this->page->GetResourceId();
-		$resource = $this->resourceRepository->LoadById($resourceId);
-
-		Log::Debug('Bringing resource online. ResourceId: %s', $resourceId);
-
-		$resource->BringOnline();
+		$resource->ChangeStatus($this->page->GetStatusId(), $this->page->GetStatusReasonId());
 		$this->resourceRepository->Update($resource);
 	}
 

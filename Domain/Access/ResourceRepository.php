@@ -22,6 +22,7 @@ require_once(ROOT_DIR . 'Domain/BookableResource.php');
 require_once(ROOT_DIR . 'Domain/ResourceGroup.php');
 require_once(ROOT_DIR . 'Domain/ResourceType.php');
 require_once(ROOT_DIR . 'Domain/Access/IResourceRepository.php');
+require_once(ROOT_DIR . 'Domain/Values/ResourceStatus.php');
 
 class ResourceRepository implements IResourceRepository
 {
@@ -176,13 +177,14 @@ class ResourceRepository implements IResourceRepository
 			$resource->GetMaxNotice(),
 			$resource->GetDescription(),
 			$resource->GetImage(),
-			$resource->IsOnline(),
 			$resource->GetScheduleId(),
 			$resource->GetAdminGroupId(),
 			$resource->GetIsCalendarSubscriptionAllowed(),
 			$resource->GetPublicId(),
 			$resource->GetSortOrder(),
-			$resource->GetResourceTypeId()
+			$resource->GetResourceTypeId(),
+			$resource->GetStatusId(),
+			$resource->GetStatusReasonId()
 		);
 
 		$db->Execute($updateResourceCommand);
@@ -398,6 +400,25 @@ class ResourceRepository implements IResourceRepository
 	{
 		ServiceLocator::GetDatabase()
 		->Execute(new DeleteResourceTypeCommand($id));
+	}
+
+	/**
+	 * @return ResourceStatusReason[]
+	 */
+	public function GetStatusReasons()
+	{
+		$reasons = array();
+
+		$reader = ServiceLocator::GetDatabase()->Query(new GetAllResourceStatusReasonsCommand());
+
+		while ($row = $reader->GetRow())
+		{
+			$reasons[] = new ResourceStatusReason($row[ColumnNames::RESOURCE_STATUS_REASON_ID], $row[ColumnNames::RESOURCE_STATUS_ID], $row[ColumnNames::RESOURCE_STATUS_DESCRIPTION]);
+		}
+
+		$reader->Free();
+
+		return $reasons;
 	}
 }
 

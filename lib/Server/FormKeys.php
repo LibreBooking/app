@@ -151,6 +151,8 @@ class FormKeys
 	const RESUME = 'resume';
 	const RETURN_URL = 'returnUrl';
 	const ROLE_ID = 'roleId';
+	const RESOURCE_STATUS_ID = 'RESOURCE_STATUS_ID';
+	const RESOURCE_STATUS_REASON_ID = 'RESOURCE_STATUS_REASON_ID';
 
 	const SCHEDULE_ID = 'scheduleId';
 	const SCHEDULE_NAME = 'scheduleName';
@@ -162,6 +164,7 @@ class FormKeys
 	const START_REMINDER_INTERVAL = 'START_REMINDER_INTERVAL';
 	const SLOTS_BLOCKED = 'blockedSlots';
 	const SLOTS_RESERVABLE = 'reservableSlots';
+	const STATUS_ID = 'STATUS_ID';
 	const SUBMIT = 'SUBMIT';
 	const SUMMARY = 'summary';
 	const SCHEDULE_ADMIN_GROUP_ID = 'adminGroupId';

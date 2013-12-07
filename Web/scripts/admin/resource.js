@@ -15,6 +15,7 @@ function ResourceManagement(opts) {
 		groupAdminDialog:$('#groupAdminDialog'),
 		sortOrderDialog:$('#sortOrderDialog'),
 		resourceTypeDialog:$('#resourceTypeDialog'),
+		statusDialog:$('#statusDialog'),
 
 		renameForm:$('#renameForm'),
 		imageForm:$('#imageForm'),
@@ -27,29 +28,35 @@ function ResourceManagement(opts) {
 		groupAdminForm:$('#groupAdminForm'),
 		attributeForm:$('.attributesForm'),
 		sortOrderForm:$('#sortOrderForm'),
+		statusForm:$('#statusForm'),
 		resourceTypeForm:$('#resourceTypeForm'),
+
+		statusReasons:$('#reasonId'),
+		statusOptions:$('#statusId'),
 
 		addForm:$('#addResourceForm')
 	};
 
 	var resources = {};
+	var reasons = [];
 
 	ResourceManagement.prototype.init = function () {
 		$(".days").watermark('days');
 		$(".hours").watermark('hrs');
 		$(".minutes").watermark('mins');
 
-		ConfigureAdminDialog(elements.renameDialog, 300, 135);
-		ConfigureAdminDialog(elements.imageDialog, 500, 150);
-		ConfigureAdminDialog(elements.scheduleDialog, 300, 125);
-		ConfigureAdminDialog(elements.locationDialog, 300, 170);
-		ConfigureAdminDialog(elements.descriptionDialog, 500, 270);
-		ConfigureAdminDialog(elements.notesDialog, 500, 270);
-		ConfigureAdminDialog(elements.deleteDialog, 500, 300);
-		ConfigureAdminDialog(elements.configurationDialog, 500, 500);
-		ConfigureAdminDialog(elements.groupAdminDialog, 300, 125);
-		ConfigureAdminDialog(elements.sortOrderDialog, 300, 125);
-		ConfigureAdminDialog(elements.resourceTypeDialog, 300, 125);
+		ConfigureAdminDialog(elements.renameDialog);
+		ConfigureAdminDialog(elements.imageDialog);
+		ConfigureAdminDialog(elements.scheduleDialog);
+		ConfigureAdminDialog(elements.locationDialog);
+		ConfigureAdminDialog(elements.descriptionDialog);
+		ConfigureAdminDialog(elements.notesDialog);
+		ConfigureAdminDialog(elements.deleteDialog);
+		ConfigureAdminDialog(elements.configurationDialog);
+		ConfigureAdminDialog(elements.groupAdminDialog);
+		ConfigureAdminDialog(elements.sortOrderDialog);
+		ConfigureAdminDialog(elements.resourceTypeDialog);
+		ConfigureAdminDialog(elements.statusDialog);
 
 		$('.resourceDetails').each(function () {
 			var id = $(this).find(':hidden.id').val();
@@ -133,6 +140,10 @@ function ResourceManagement(opts) {
 			$(this).find('.changeSortOrder').click(function (e) {
 				showSortPrompt(e);
 			});
+
+			$(this).find('.changeStatus').click(function (e) {
+				showStatusPrompt(e);
+			});
 		});
 
 		$(".save").click(function () {
@@ -141,6 +152,10 @@ function ResourceManagement(opts) {
 
 		$(".cancel").click(function () {
 			$(this).closest('.dialog').dialog("close");
+		});
+
+		elements.statusOptions.change(function(e){
+			populateReasonOptions(elements.statusOptions.val());
 		});
 
 		var imageSaveErrorHandler = function (result) {
@@ -175,31 +190,48 @@ function ResourceManagement(opts) {
 		var errorHandler = function (result) {
 			$("#globalError").html(result).show();
 		};
-		ConfigureUploadForm(elements.imageForm.find('.uploadImage'), getSubmitCallback(options.actions.changeImage), imageSavePreSubmit, null, imageSaveErrorHandler);
-		ConfigureAdminForm(elements.renameForm, getSubmitCallback(options.actions.rename), null, errorHandler);
-		ConfigureAdminForm(elements.scheduleForm, getSubmitCallback(options.actions.changeSchedule));
-		ConfigureAdminForm(elements.locationForm, getSubmitCallback(options.actions.changeLocation));
-		ConfigureAdminForm(elements.descriptionForm, getSubmitCallback(options.actions.changeDescription));
-		ConfigureAdminForm(elements.notesForm, getSubmitCallback(options.actions.changeNotes));
-		ConfigureAdminForm(elements.addForm, getSubmitCallback(options.actions.add), null, handleAddError);
-		ConfigureAdminForm(elements.deleteForm, getSubmitCallback(options.actions.deleteResource));
-		ConfigureAdminForm(elements.configurationForm, getSubmitCallback(options.actions.changeConfiguration), null, errorHandler, {onBeforeSerialize:combineIntervals});
-		ConfigureAdminForm(elements.groupAdminForm, getSubmitCallback(options.actions.changeAdmin));
-		ConfigureAdminForm(elements.resourceTypeForm, getSubmitCallback(options.actions.changeResourceType));
+
+		ConfigureUploadForm(elements.imageForm.find('.uploadImage'), defaultSubmitCallback(elements.imageForm), imageSavePreSubmit, null, imageSaveErrorHandler);
+		ConfigureAdminForm(elements.renameForm, defaultSubmitCallback(elements.renameForm), null, errorHandler);
+		ConfigureAdminForm(elements.scheduleForm, defaultSubmitCallback(elements.scheduleForm));
+		ConfigureAdminForm(elements.locationForm, defaultSubmitCallback(elements.locationForm));
+		ConfigureAdminForm(elements.descriptionForm, defaultSubmitCallback(elements.descriptionForm));
+		ConfigureAdminForm(elements.notesForm, defaultSubmitCallback(elements.notesForm));
+		ConfigureAdminForm(elements.addForm, defaultSubmitCallback(elements.addForm), null, handleAddError);
+		ConfigureAdminForm(elements.deleteForm, defaultSubmitCallback(elements.deleteForm));
+		ConfigureAdminForm(elements.configurationForm, defaultSubmitCallback(elements.groupAdminForm), null, errorHandler, {onBeforeSerialize:combineIntervals});
+		ConfigureAdminForm(elements.groupAdminForm, defaultSubmitCallback(elements.groupAdminForm));
+		ConfigureAdminForm(elements.resourceTypeForm, defaultSubmitCallback(elements.resourceTypeForm));
 		$.each(elements.attributeForm, function(i,form){
-			ConfigureAdminForm($(form), getSubmitCallback(options.actions.changeAttributes), null, attributesHandler, {validationSummary:null});
+			ConfigureAdminForm($(form), defaultSubmitCallback($(form)), null, attributesHandler, {validationSummary:null});
 		});
 
-		ConfigureAdminForm(elements.sortOrderForm, getSubmitCallback(options.actions.changeSortOrder));
+		ConfigureAdminForm(elements.sortOrderForm, defaultSubmitCallback(elements.sortOrderForm));
+		ConfigureAdminForm(elements.statusForm, defaultSubmitCallback(elements.statusForm));
 	};
 
 	ResourceManagement.prototype.add = function (resource) {
 		resources[resource.id] = resource;
 	};
 
+	ResourceManagement.prototype.addStatusReason = function (id, statusId, description) {
+		if (!(statusId in reasons))
+		{
+			reasons[statusId] = [];
+		}
+
+		reasons[statusId].push({id:id,description:description});
+	};
+
 	var getSubmitCallback = function (action) {
 		return function () {
 			return options.submitUrl + "?rid=" + getActiveResourceId() + "&action=" + action;
+		};
+	};
+
+	var defaultSubmitCallback = function (form) {
+		return function () {
+			return options.submitUrl + "?action=" + form.attr('ajaxAction') + '&rid=' + getActiveResourceId();
 		};
 	};
 
@@ -323,6 +355,30 @@ function ResourceManagement(opts) {
 		elements.sortOrderDialog.dialog("open");
 	};
 
+	var showStatusPrompt = function (e) {
+		var resource = getActiveResource();
+		elements.statusOptions.val(resource.statusId);
+
+		populateReasonOptions(resource.statusId);
+
+		elements.statusReasons.val(resource.reasonId);
+
+		elements.statusDialog.dialog("open");
+	};
+
+	function populateReasonOptions(statusId){
+		elements.statusReasons.empty().append($('<option>', {value:'', text:'-'}));
+
+		if (statusId in reasons)
+		{
+			$.each(reasons[statusId], function(i, v){
+				elements.statusReasons.append($('<option>', {
+						value: v.id,
+						text : v.description
+					}));
+			});
+		}
+	}
 
 	function setDaysHoursMinutes(elementPrefix, interval, attributeCheckbox) {
 		$(elementPrefix + 'Days').val(interval.days);

@@ -156,6 +156,16 @@ function BeforeFormSubmit(formData, jqForm, opts)
 
 function ConfigureAdminDialog(dialogElement, dialogWidth, dialogHeight)
 {
+	if (!dialogWidth)
+	{
+		dialogWidth = 'auto';
+	}
+
+	if (!dialogHeight)
+	{
+		dialogHeight = 'auto';
+	}
+
 	var dialogOpts = {
 		modal: true,
 		autoOpen: false,

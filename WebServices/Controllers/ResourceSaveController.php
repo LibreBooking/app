@@ -146,6 +146,7 @@ class ResourceSaveController implements IResourceSaveController
 		}
 		$resource->ChangeAttributes($attributes);
 
+		// TODO: UPDATE TO WORK WITH STATUSES
 		if ($request->isOnline)
 		{
 			$resource->BringOnline();

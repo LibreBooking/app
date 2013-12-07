@@ -134,6 +134,11 @@ interface IResourceRepository
 	 * @param int $id
 	 */
 	public function RemoveResourceType($id);
+
+	/**
+	 * @return ResourceStatusReason[]
+	 */
+	public function GetStatusReasons();
 }
 
 ?>
