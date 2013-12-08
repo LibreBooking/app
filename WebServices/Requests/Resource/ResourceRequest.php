@@ -88,10 +88,13 @@ class ResourceRequest extends JsonRequest
 	 */
 	public $sortOrder;
 	/**
-	 * @var bool
+	 * @var int
 	 */
-	// TODO: UPDATE TO WORK WITH STATUSES
-	public $isOnline;
+	public $statusId;
+	/**
+	 * @var int|null
+	 */
+	public $statusReasonId;
 
 	/**
 	 * @return ExampleResourceRequest
@@ -134,9 +137,8 @@ class ExampleResourceRequest extends ResourceRequest
 		$this->autoAssignPermissions = true;
 		$this->customAttributes = array(AttributeValueRequest::Example());
 		$this->sortOrder = 1;
-
-		// TODO: UPDATE TO WORK WITH STATUSES
-		$this->isOnline = true;
+		$this->statusId = ResourceStatus::AVAILABLE;
+		$this->statusReasonId = 2;
 	}
 }
 

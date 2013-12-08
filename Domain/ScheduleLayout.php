@@ -681,18 +681,11 @@ class PeriodList
 
 	public function Add(SchedulePeriod $period)
 	{
-		if (!$period->IsReservable())
-		{
-			//TODO: Config option to hide non-reservable periods
-		}
-
 		if ($this->AlreadyAdded($period->BeginDate(), $period->EndDate()))
 		{
-			//echo "already added $period\n";
 			return;
 		}
 
-		//echo "\nadding {$period->BeginDate()} - {$period->EndDate()}";
 		$this->items[] = $period;
 	}
 

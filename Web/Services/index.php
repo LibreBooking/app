@@ -132,6 +132,8 @@ function RegisterResources(SlimServer $server, SlimWebServiceRegistry $registry)
 	$category = new SlimWebServiceRegistryCategory('Resources');
 	$category->AddSecureGet('/', array($webService, 'GetAll'), WebServices::AllResources);
 	$category->AddSecureGet('/:resourceId', array($webService, 'GetResource'), WebServices::GetResource);
+	$category->AddGet('/Status', array($webService, 'GetStatuses'), WebServices::GetStatuses);
+	$category->AddSecureGet('/Status/Reasons', array($webService, 'GetStatusReasons'), WebServices::GetStatusReasons);
 	$category->AddAdminPost('/', array($writeWebService, 'Create'), WebServices::CreateResource);
 	$category->AddAdminPost('/:resourceId', array($writeWebService, 'Update'), WebServices::UpdateResource);
 	$category->AddAdminDelete('/:resourceId', array($writeWebService, 'Delete'), WebServices::DeleteResource);

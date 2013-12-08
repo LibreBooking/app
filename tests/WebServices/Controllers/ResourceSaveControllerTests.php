@@ -78,7 +78,7 @@ class ResourceSaveControllerTests extends TestBase
 													   $request->scheduleId);
 
 		$expectedUpdateResource->SetSortOrder($request->sortOrder);
-		$expectedUpdateResource->BringOnline();
+		$expectedUpdateResource->ChangeStatus($request->statusId, $request->statusReasonId);
 		$attributes = array(new AttributeValue($request->customAttributes[0]->attributeId, $request->customAttributes[0]->attributeValue));
 		$expectedUpdateResource->ChangeAttributes($attributes);
 
@@ -141,7 +141,7 @@ class ResourceSaveControllerTests extends TestBase
 													   $request->scheduleId);
 
 		$expectedUpdateResource->SetSortOrder($request->sortOrder);
-		$expectedUpdateResource->BringOnline();
+		$expectedUpdateResource->ChangeStatus($request->statusId, $request->statusReasonId);
 		$attributes = array(new AttributeValue($request->customAttributes[0]->attributeId, $request->customAttributes[0]->attributeValue));
 		$expectedUpdateResource->ChangeAttributes($attributes);
 

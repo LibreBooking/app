@@ -24,6 +24,8 @@ require_once(ROOT_DIR . 'lib/Application/Attributes/namespace.php');
 require_once(ROOT_DIR . 'WebServices/Responses/ResourceResponse.php');
 require_once(ROOT_DIR . 'WebServices/Responses/ResourcesResponse.php');
 require_once(ROOT_DIR . 'WebServices/Responses/CustomAttributeResponse.php');
+require_once(ROOT_DIR . 'WebServices/Responses/Resource/ResourceStatusResponse.php');
+require_once(ROOT_DIR . 'WebServices/Responses/Resource/ResourceStatusReasonsResponse.php');
 
 class ResourcesWebService
 {
@@ -90,6 +92,30 @@ class ResourcesWebService
 			$this->server->WriteResponse(new ResourceResponse($this->server, $resource, $attributes));
 		}
 
+	}
+
+	/**
+	 * @name GetStatuses
+	 * @description Returns all available resource statuses
+	 * @response ResourceStatusResponse
+	 * @return void
+	 */
+	public function GetStatuses()
+	{
+		$this->server->WriteResponse(new ResourceStatusResponse());
+	}
+
+	/**
+	 * @name GetStatusReasons
+	 * @description Returns all available resource status reasons
+	 * @response ResourceStatusReasonsResponse
+	 * @return void
+	 */
+	public function GetStatusReasons()
+	{
+		$reasons = $this->resourceRepository->GetStatusReasons();
+
+		$this->server->WriteResponse(new ResourceStatusReasonsResponse($this->server, $reasons));
 	}
 }
 

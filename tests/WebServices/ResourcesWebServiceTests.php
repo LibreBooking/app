@@ -106,6 +106,26 @@ class ResourcesWebServiceTests extends TestBase
 
 		$this->assertEquals(new ResourcesResponse($this->server, $resources, $attributes), $this->server->_LastResponse);
 	}
+	
+	public function testGetsStatuses()
+	{
+		$this->service->GetStatuses();
+
+		$this->assertEquals(new ResourceStatusResponse(), $this->server->_LastResponse);
+	}
+
+	public function testGetsStatusReasons()
+	{
+		$reasons = array(new ResourceStatusReason(1, ResourceStatus::AVAILABLE));
+
+		$this->repository->expects($this->once())
+						->method('GetStatusReasons')
+						->will($this->returnValue($reasons));
+
+		$this->service->GetStatusReasons();
+
+		$this->assertEquals(new ResourceStatusReasonsResponse($this->server, $reasons), $this->server->_LastResponse);
+	}
 }
 
 ?>

@@ -525,14 +525,6 @@ class BookableResource implements IResource
 		return !empty($this->_imageName);
 	}
 
-//	/**
-//	 * @return bool
-//	 */
-//	public function IsOnline()
-//	{
-//		return $this->_isActive;
-//	}
-
 	/**
 	 * @param int|ResourceStatus $statusId
 	 * @param int|null $statusReasonId

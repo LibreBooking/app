@@ -31,79 +31,12 @@ require_once(ROOT_DIR . 'tests/TestBase.php');
 require_once(ROOT_DIR . 'tests/Fakes/namespace.php');
 require_once(ROOT_DIR . 'lib/Common/Helpers/namespace.php');
 
-//require_once(ROOT_DIR . 'tests/Plugins/Authentication/ActiveDirectory/Plugins_Auth_ActiveDirectory_Suite.php');
-//require_once(ROOT_DIR . 'tests/Plugins/Authentication/Ldap/Plugins_Auth_Ldap_Suite.php');
-//
-//require_once(ROOT_DIR . 'tests/Application/Admin/Application_Admin_Suite.php');
-//require_once(ROOT_DIR . 'tests/Application/Attributes/Application_Attributes_Suite.php');
-//require_once(ROOT_DIR . 'tests/Application/Authorization/Application_Authorization_Suite.php');
-//require_once(ROOT_DIR . 'tests/Application/Authentication/Application_Authentication_Suite.php');
-//require_once(ROOT_DIR . 'tests/Application/Reservation/Application_Reservation_Suite.php');
-//require_once(ROOT_DIR . 'tests/Application/Schedule/Application_Schedule_Suite.php');
-//require_once(ROOT_DIR . 'tests/Application/Resource/Application_Resource_Suite.php');
-//require_once(ROOT_DIR . 'tests/Application/Reporting/Application_Reporting_Suite.php');
-//
-//require_once(ROOT_DIR . 'tests/Domain/Announcement/Domain_Announcement_Suite.php');
-//require_once(ROOT_DIR . 'tests/Domain/Attribute/Domain_Attribute_Suite.php');
-//require_once(ROOT_DIR . 'tests/Domain/Reservation/Domain_Reservation_Suite.php');
-//require_once(ROOT_DIR . 'tests/Domain/Resource/Domain_Resource_Suite.php');
-//require_once(ROOT_DIR . 'tests/Domain/Schedule/Domain_Schedule_Suite.php');
-//require_once(ROOT_DIR . 'tests/Domain/User/Domain_User_Suite.php');
-//require_once(ROOT_DIR . 'tests/Domain/Reporting/Domain_Reporting_Suite.php');
-//
-//require_once(ROOT_DIR . 'tests/Infrastructure/Common/Infrastructure_Common_Suite.php');
-//require_once(ROOT_DIR . 'tests/Infrastructure/Config/Infrastructure_Config_Suite.php');
-//require_once(ROOT_DIR . 'tests/Infrastructure/Database/Infrastructure_Database_Suite.php');
-//
-//require_once(ROOT_DIR . 'tests/Presenters/Presenters_Suite.php');
-//require_once(ROOT_DIR . 'tests/Presenters/Dashboard/DashboardPresenters_Suite.php');
-//require_once(ROOT_DIR . 'tests/Presenters/Admin/AdminPresenters_Suite.php');
-//require_once(ROOT_DIR . 'tests/Presenters/Reservation/ReservationPresenters_Suite.php');
-//require_once(ROOT_DIR . 'tests/Presenters/Reports/Presenters_Reports_Suite.php');
-//
-//require_once(ROOT_DIR . 'tests/WebService/WebService_Suite.php');
-//require_once(ROOT_DIR . 'tests/WebServices/WebServices_Suite.php');
-
 class AllTests
 {
 	public static function suite()
 	{
 		$suite = new PHPUnit_Framework_TestSuite();
 		self::AddSuites($suite);
-//		//TODO: Dynamically add all suites under the test directory and subdirectories
-//		$suite->addTest(Application_Admin_Suite::suite());
-//		$suite->addTest(Application_Attributes_Suite::suite());
-//		$suite->addTest(Application_Authentication_Suite::suite());
-//		$suite->addTest(Application_Authorization_Suite::suite());
-//		$suite->addTest(Application_Schedule_Suite::suite());
-//		$suite->addTest(Application_Reservation_Suite::suite());
-//		$suite->addTest(Application_Resource_Suite::suite());
-//		$suite->addTest(Application_Reporting_Suite::suite());
-//
-//		$suite->addTest(Domain_Announcement_Suite::suite());
-//		$suite->addTest(Domain_Attribute_Suite::suite());
-//		$suite->addTest(Domain_Reservation_Suite::suite());
-//		$suite->addTest(Domain_Resource_Suite::suite());
-//		$suite->addTest(Domain_Schedule_Suite::suite());
-//		$suite->addTest(Domain_User_Suite::suite());
-//		$suite->addTest(Domain_Reporting_Suite::suite());
-//
-//		$suite->addTest(Infrastructure_Common_Suite::suite());
-//		$suite->addTest(Infrastructure_Config_Suite::suite());
-//		$suite->addTest(Infrastructure_Database_Suite::suite());
-//
-//		$suite->addTest(Plugins_Auth_ActiveDirectory_Suite::suite());
-//		$suite->addTest(Plugins_Auth_Ldap_Suite::suite());
-//
-//		$suite->addTest(Presenters_Suite::suite());
-//		$suite->addTest(DashboardPresenters_Suite::suite());
-//		$suite->addTest(AdminPresenters_Suite::suite());
-//		$suite->addTest(ReservationPresenters_Suite::suite());
-//		$suite->addTest(Presenters_Reports_Suite::suite());
-//
-//		$suite->addTest(WebService_Suite::suite());
-//		$suite->addTest(WebServices_Suite::suite());
-
 		return $suite;
 	}
 

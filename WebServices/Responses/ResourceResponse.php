@@ -37,6 +37,8 @@ class ResourceResponse extends RestResponse
 	public $description;
 	public $scheduleId;
 	public $icsUrl;
+	public $statusId;
+	public $statusReasonId;
 	public $customAttributes = array();
 
 	/**
@@ -61,6 +63,8 @@ class ResourceResponse extends RestResponse
 		$this->maxParticipants = $resource->GetMaxParticipants();
 		$this->description = $resource->GetDescription();
 		$this->scheduleId = $resource->GetScheduleId();
+		$this->statusId = $resource->GetStatusId();
+		$this->statusReasonId = $resource->GetStatusReasonId();
 
 		$attributeValues = $attributes->GetAttributes($resourceId);
 
@@ -106,9 +110,10 @@ class ExampleResourceResponse extends ResourceResponse
 		$this->maxParticipants = 10;
 		$this->description = 'resource description';
 		$this->scheduleId = 123;
+		$this->statusId = ResourceStatus::AVAILABLE;
+		$this->statusReasonId = 3;
 
 		$this->customAttributes = array(CustomAttributeResponse::Example());
-
 	}
 }
 

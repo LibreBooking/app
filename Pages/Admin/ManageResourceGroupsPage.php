@@ -114,7 +114,6 @@ class ManageResourceGroupsPage extends ActionPage implements IManageResourceGrou
 	 */
 	public function ProcessDataRequest($dataRequest)
 	{
-		// TODO: Implement ProcessDataRequest() method.
 	}
 
 	public function BindResourceGroups(ResourceGroupTree $resourceGroups)
