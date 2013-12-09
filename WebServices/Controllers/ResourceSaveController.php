@@ -146,7 +146,7 @@ class ResourceSaveController implements IResourceSaveController
 		}
 		$resource->ChangeAttributes($attributes);
 
-		if (!isset($request->statusId))
+		if (isset($request->statusId))
 		{
 			$resource->ChangeStatus($request->statusId, $request->statusReasonId);
 		}

@@ -308,11 +308,19 @@ class ResourceRepositoryTests extends TestBase
 		->With(4, 'resource4', 5)
 		->With(5, 'resource5', 5);
 
+		$resourceRows = new FakeResourceAccess();
+		$resourceRows->With(1, 'resource1')
+				->With(2, 'resource2')
+				->With(3, 'resource3')
+				->With(4, 'resource4')
+				->With(5, 'resource5');
+
 		$this->db->SetRow(0, $groupRows->Rows());
 		$this->db->SetRow(1, $assignmentRows->Rows());
+		$this->db->SetRow(2, $resourceRows->Rows());
 
 		$groups = $this->repository
-						  ->GetResourceGroups($scheduleId, new SkipResource5Filter())
+				  ->GetResourceGroups($scheduleId, new SkipResource5Filter())
 				  ->GetGroups();
 
 		$getResourceGroupsCommand = new GetAllResourceGroupsCommand();

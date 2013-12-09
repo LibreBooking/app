@@ -28,7 +28,8 @@ class ViewSchedulePage extends SchedulePage
 	{
 		parent::__construct();
 		$scheduleRepository = new ScheduleRepository();
-		$resourceService = new ResourceService(new ResourceRepository(), new ViewSchedulePermissionService());
+		$userRepository = new UserRepository();
+		$resourceService = new ResourceService(new ResourceRepository(), new ViewSchedulePermissionService(), new AttributeService(new AttributeRepository()), $userRepository);
 		$pageBuilder = new SchedulePageBuilder();
 		$reservationService = new ReservationService(new ReservationViewRepository(), new ReservationListingFactory());
 		$dailyLayoutFactory = new DailyLayoutFactory();

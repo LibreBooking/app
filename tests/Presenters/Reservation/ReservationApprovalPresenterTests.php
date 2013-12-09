@@ -39,6 +39,11 @@ class ReservationApprovalPresenterTests extends TestBase
 	private $handler;
 
 	/**
+	 * @var IAuthorizationService|PHPUnit_Framework_MockObject_MockObject
+	 */
+	private $auth;
+
+	/**
 	 * @var ReservationApprovalPresenter
 	 */
 	private $presenter;
@@ -50,8 +55,9 @@ class ReservationApprovalPresenterTests extends TestBase
 		$this->page = $this->getMock('IReservationApprovalPage');
 		$this->persistence = $this->getMock('IUpdateReservationPersistenceService');
 		$this->handler = $this->getMock('IReservationHandler');
+		$this->auth = $this->getMock('IAuthorizationService');
 
-		$this->presenter = new ReservationApprovalPresenter($this->page, $this->persistence, $this->handler);
+		$this->presenter = new ReservationApprovalPresenter($this->page, $this->persistence, $this->handler, $this->auth);
 	}
 	
 	public function testLoadAndApprovesReservationSendingNotifications()
@@ -78,6 +84,11 @@ class ReservationApprovalPresenterTests extends TestBase
 			->with($this->equalTo($reservation), $this->equalTo($this->page))
 			->will($this->returnValue(true));
 		
+		$this->auth->expects($this->once())
+					->method('CanApproveFor')
+					->with($this->equalTo($this->fakeUser), $this->equalTo($reservation->UserId()))
+					->will($this->returnValue(true));
+
 		$this->presenter->PageLoad();
 	}
 }

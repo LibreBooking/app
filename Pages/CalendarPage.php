@@ -92,7 +92,7 @@ class CalendarPage extends SecurePage implements ICalendarPage
 		$resourceRepository = new ResourceRepository();
 		$scheduleRepository = new ScheduleRepository();
 		$userRepository = new UserRepository();
-		$resourceService = new ResourceService($resourceRepository, PluginManager::Instance()->LoadPermission(), new AttributeService(new AttributeRepository()));
+		$resourceService = new ResourceService($resourceRepository, PluginManager::Instance()->LoadPermission(), new AttributeService(new AttributeRepository()), $userRepository);
 		$subscriptionService = new CalendarSubscriptionService($userRepository, $resourceRepository, $scheduleRepository);
 		$privacyFilter = new PrivacyFilter(new ReservationAuthorization(PluginManager::Instance()->LoadAuthorization()));
 		$this->_presenter = new CalendarPresenter($this,

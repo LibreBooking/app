@@ -36,15 +36,21 @@ class ReservationApprovalPresenter
 	 * @var \IReservationHandler
 	 */
 	private $handler;
+	/**
+	 * @var IAuthorizationService
+	 */
+	private $authorizationService;
 
 	public function __construct(
 		IReservationApprovalPage $page,
 		IUpdateReservationPersistenceService $persistenceService,
-		IReservationHandler $handler)
+		IReservationHandler $handler,
+		IAuthorizationService $authorizationService)
 	{
 		$this->page = $page;
 		$this->persistenceService = $persistenceService;
 		$this->handler = $handler;
+		$this->authorizationService = $authorizationService;
 	}
 
 	public function PageLoad()
@@ -55,7 +61,7 @@ class ReservationApprovalPresenter
 		Log::Debug('User: %s, Approving reservation with reference number %s', $userSession->UserId, $referenceNumber);
 
 		$series = $this->persistenceService->LoadByReferenceNumber($referenceNumber);
-		if(PluginManager::Instance()->LoadAuthorization()->CanApproveFor($userSession, $series->UserId()))
+		if($this->authorizationService->CanApproveFor($userSession, $series->UserId()))
 		{
 			$series->Approve($userSession);
 			$this->handler->Handle($series, $this->page);

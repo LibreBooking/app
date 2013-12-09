@@ -20,9 +20,20 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 
 class ResourceStatusFilter implements IResourceFilter
 {
-	public function __construct(UserSession $user)
+	/**
+	 * @var IUserRepository
+	 */
+	private $userRepository;
+
+	/**
+	 * @var UserSession
+	 */
+	private $user;
+
+	public function __construct(IUserRepository $userRepository, UserSession $user)
 	{
 		$this->user = $user;
+		$this->userRepository = $userRepository;
 	}
 
 	/**
@@ -33,11 +44,8 @@ class ResourceStatusFilter implements IResourceFilter
 	{
 		if ($resource->GetStatusId() != ResourceStatus::AVAILABLE)
 		{
-			if ($resource->GetAdminGroupId() > 0)
-			{
-				return in_array($resource->GetAdminGroupId(), $this->user->Groups);
-			}
-			return false;
+			$user = $this->userRepository->LoadById($this->user->UserId);
+			return $user->IsResourceAdminFor($resource);
 		}
 
 		return true;

@@ -391,7 +391,7 @@ class ReservationResourceView implements IResource
 	private $_scheduleAdminGroupId;
 	private $_statusId;
 
-	public function __construct($resourceId, $resourceName, $adminGroupId, $scheduleId, $scheduleAdminGroupId, $statusId)
+	public function __construct($resourceId, $resourceName, $adminGroupId, $scheduleId, $scheduleAdminGroupId, $statusId = ResourceStatus::AVAILABLE)
 	{
 		$this->_id = $resourceId;
 		$this->_resourceName = $resourceName;

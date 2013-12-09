@@ -87,13 +87,20 @@ class ResourceService implements IResourceService
 	 */
 	private $_attributeService;
 
+	/**
+	 * @var IUserRepository
+	 */
+	private $_userRepository;
+
 	public function __construct(IResourceRepository $resourceRepository,
 								IPermissionService $permissionService,
-								IAttributeService $attributeService)
+								IAttributeService $attributeService,
+								IUserRepository $userRepository)
 	{
 		$this->_resourceRepository = $resourceRepository;
 		$this->_permissionService = $permissionService;
 		$this->_attributeService = $attributeService;
+		$this->_userRepository = $userRepository;
 	}
 
 	public function GetScheduleResources($scheduleId, $includeInaccessibleResources, UserSession $user, $filter = null)
@@ -126,7 +133,7 @@ class ResourceService implements IResourceService
 	private function Filter($resources, $user, $includeInaccessibleResources, $resourceIds = null)
 	{
 		$filter = new ResourcePermissionFilter($this->_permissionService, $user);
-		$statusFilter = new ResourceStatusFilter($user);
+		$statusFilter = new ResourceStatusFilter($this->_userRepository, $user);
 
 		$resourceDtos = array();
 		foreach ($resources as $resource)
@@ -136,18 +143,16 @@ class ResourceService implements IResourceService
 				continue;
 			}
 
-			$isAvailable = $statusFilter->ShouldInclude($resource);
-
-			if (!$isAvailable)
-			{
-				continue;
-			}
-
 			$canAccess = $filter->ShouldInclude($resource);
 
 			if (!$includeInaccessibleResources && !$canAccess)
 			{
 				continue;
+			}
+
+			if ($canAccess)
+			{
+				$canAccess = $statusFilter->ShouldInclude($resource);
 			}
 
 			$resourceDtos[] = new ResourceDto($resource->GetResourceId(), $resource->GetName(), $canAccess, $resource->GetScheduleId(), $resource->GetMinLength());
@@ -165,7 +170,7 @@ class ResourceService implements IResourceService
 	{
 		$filter = new CompositeResourceFilter();
 		$filter->Add(new ResourcePermissionFilter($this->_permissionService, $user));
-		$filter->Add(new ResourceStatusFilter($user));
+		$filter->Add(new ResourceStatusFilter($this->_userRepository, $user));
 
 		$groups = $this->_resourceRepository->GetResourceGroups($scheduleId, $filter);
 

@@ -45,9 +45,9 @@ class ResourceStatusReason
 	/**
 	 * @param int|null $id
 	 * @param int|ResourceStatus $statusId
-	 * @param string $description
+	 * @param string|null $description
 	 */
-	public function __construct($id = null, $statusId, $description)
+	public function __construct($id, $statusId, $description = null)
 	{
 		$this->description = $description;
 		$this->id = $id;

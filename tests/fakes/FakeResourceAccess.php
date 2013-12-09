@@ -1,21 +1,21 @@
 <?php
 /**
-Copyright 2011-2013 Nick Korbel
-
-This file is part of phpScheduleIt.
-
-phpScheduleIt is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-phpScheduleIt is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
+ * Copyright 2011-2013 Nick Korbel
+ *
+ * This file is part of phpScheduleIt.
+ *
+ * phpScheduleIt is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * phpScheduleIt is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 require_once(ROOT_DIR . 'Domain/Access/namespace.php');
@@ -25,6 +25,7 @@ class FakeResourceAccess extends ResourceRepository
 	public $_GetForScheduleCalled = false;
 	public $_LastScheduleId;
 	public $_Resources = array();
+	private $rows = array();
 
 	public function __construct()
 	{
@@ -48,61 +49,97 @@ class FakeResourceAccess extends ResourceRepository
 		}
 	}
 
+	public function Rows()
+	{
+		return $this->rows;
+	}
+
+	public function With($id,
+						 $name,
+						 $location = null,
+						 $contact = null,
+						 $notes = null,
+						 $minDuration = null,
+						 $maxDuration = null,
+						 $autoAssign = 0,
+						 $approval = 0,
+						 $multiDay = 0,
+						 $participants = null,
+						 $minNotice = null,
+						 $maxNotice = null,
+						 $description = null,
+						 $scheduleId = 1,
+						 $image = null,
+						 $adminGroup = null,
+						 $allowSubscription = 0,
+						 $publicId = null,
+						 $scheduleAdminId = null,
+						 $sortOrder = 1,
+						 $typeId = null,
+						 $statusId = ResourceStatus::AVAILABLE,
+						 $reasonId = null)
+	{
+
+		$this->rows[] = array(ColumnNames::RESOURCE_ID => $id,
+			ColumnNames::RESOURCE_NAME => $name,
+			ColumnNames::RESOURCE_LOCATION => $location,
+			ColumnNames::RESOURCE_CONTACT => $contact,
+			ColumnNames::RESOURCE_NOTES => $notes,
+			ColumnNames::RESOURCE_MINDURATION => $minDuration,
+			ColumnNames::RESOURCE_MAXDURATION => $maxDuration,
+			ColumnNames::RESOURCE_AUTOASSIGN => $autoAssign,
+			ColumnNames::RESOURCE_REQUIRES_APPROVAL => $approval,
+			ColumnNames::RESOURCE_ALLOW_MULTIDAY => $multiDay,
+			ColumnNames::RESOURCE_MAX_PARTICIPANTS => $participants,
+			ColumnNames::RESOURCE_MINNOTICE => $minNotice,
+			ColumnNames::RESOURCE_MAXNOTICE => $maxNotice,
+			ColumnNames::RESOURCE_DESCRIPTION => $description,
+			ColumnNames::SCHEDULE_ID => $scheduleId,
+			ColumnNames::RESOURCE_IMAGE_NAME => $image,
+			ColumnNames::RESOURCE_ADMIN_GROUP_ID => $adminGroup,
+			ColumnNames::ALLOW_CALENDAR_SUBSCRIPTION => $allowSubscription,
+			ColumnNames::PUBLIC_ID => $publicId,
+			ColumnNames::SCHEDULE_ADMIN_GROUP_ID_ALIAS => $scheduleAdminId,
+			ColumnNames::RESOURCE_SORT_ORDER => $sortOrder,
+			ColumnNames::RESOURCE_TYPE_ID => $typeId,
+			ColumnNames::RESOURCE_STATUS_ID => $statusId,
+			ColumnNames::RESOURCE_STATUS_REASON_ID => $reasonId,
+		);
+
+		return $this;
+	}
+
 	public function GetRows()
 	{
-		$row1 = array(ColumnNames::RESOURCE_ID => 1,
-			ColumnNames::RESOURCE_NAME => 'resource 1',
-			ColumnNames::RESOURCE_LOCATION => null,
-			ColumnNames::RESOURCE_CONTACT => null,
-			ColumnNames::RESOURCE_NOTES => 'notes 1',
-			ColumnNames::RESOURCE_MINDURATION => null,
-			ColumnNames::RESOURCE_MAXDURATION => null,
-			ColumnNames::RESOURCE_AUTOASSIGN => 0,
-			ColumnNames::RESOURCE_REQUIRES_APPROVAL => 0,
-			ColumnNames::RESOURCE_ALLOW_MULTIDAY => 0,
-			ColumnNames::RESOURCE_MAX_PARTICIPANTS => null,
-			ColumnNames::RESOURCE_MINNOTICE => null,
-			ColumnNames::RESOURCE_MAXNOTICE => null,
-			ColumnNames::RESOURCE_DESCRIPTION => null,
-			ColumnNames::SCHEDULE_ID => 10,
-			ColumnNames::RESOURCE_IMAGE_NAME => null,
-			ColumnNames::RESOURCE_ADMIN_GROUP_ID => null,
-			ColumnNames::ALLOW_CALENDAR_SUBSCRIPTION => 1,
-			ColumnNames::PUBLIC_ID => '1232',
-			ColumnNames::SCHEDULE_ADMIN_GROUP_ID_ALIAS => 1154,
-			ColumnNames::RESOURCE_SORT_ORDER => 1,
-			ColumnNames::RESOURCE_TYPE_ID => 10,
-			ColumnNames::RESOURCE_STATUS_ID => ResourceStatus::AVAILABLE,
-			ColumnNames::RESOURCE_STATUS_REASON_ID => null,
+		$this->With(1, 'resource 1', null, null, 'notes 1', null, null, 0, 0, 0, null, null, null, null, 10, null, null,
+					1, '1232', 1154, 1, 10, ResourceStatus::AVAILABLE, null);
+
+		$this->With(2, 'resource 2',
+					'here 2',
+					'2',
+					'notes 1',
+					10,
+					100,
+					1,
+					1,
+					1,
+					10,
+					30,
+					400,
+					null,
+					11,
+					'something.gif',
+					1,
+					0,
+					null,
+					9292,
+					null,
+					null,
+					ResourceStatus::UNAVAILABLE,
+					98
 		);
 
-		$row2 = array(ColumnNames::RESOURCE_ID => 2,
-			ColumnNames::RESOURCE_NAME => 'resource 2',
-			ColumnNames::RESOURCE_LOCATION => 'here 2',
-			ColumnNames::RESOURCE_CONTACT => '2',
-			ColumnNames::RESOURCE_NOTES => 'notes 1',
-			ColumnNames::RESOURCE_MINDURATION => 10,
-			ColumnNames::RESOURCE_MAXDURATION => 100,
-			ColumnNames::RESOURCE_AUTOASSIGN => 1,
-			ColumnNames::RESOURCE_REQUIRES_APPROVAL => 1,
-			ColumnNames::RESOURCE_ALLOW_MULTIDAY => 1,
-			ColumnNames::RESOURCE_MAX_PARTICIPANTS => 10,
-			ColumnNames::RESOURCE_MINNOTICE => 30,
-			ColumnNames::RESOURCE_MAXNOTICE => 400,
-			ColumnNames::RESOURCE_DESCRIPTION => null,
-			ColumnNames::SCHEDULE_ID => 11,
-			ColumnNames::RESOURCE_IMAGE_NAME => 'something.gif',
-			ColumnNames::RESOURCE_ADMIN_GROUP_ID => 1,
-			ColumnNames::ALLOW_CALENDAR_SUBSCRIPTION => 0,
-			ColumnNames::PUBLIC_ID => null,
-			ColumnNames::SCHEDULE_ADMIN_GROUP_ID_ALIAS => 9292,
-			ColumnNames::RESOURCE_SORT_ORDER => null,
-			ColumnNames::RESOURCE_TYPE_ID => null,
-			ColumnNames::RESOURCE_STATUS_ID => ResourceStatus::UNAVAILABLE,
-			ColumnNames::RESOURCE_STATUS_REASON_ID => 98,
-		);
-
-		return array($row1, $row2);
+		return $this->rows;
 	}
 }
 
