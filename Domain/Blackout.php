@@ -426,14 +426,16 @@ class BlackoutResource implements IResource
 	private $scheduleId;
 	private $adminGroupId;
 	private $scheduleAdminGroupId;
+	private $statusId;
 
-	public function __construct($id, $name, $scheduleId, $adminGroupId = null, $scheduleAdminGroupId = null)
+	public function __construct($id, $name, $scheduleId, $adminGroupId = null, $scheduleAdminGroupId = null, $statusId = null)
 	{
 		$this->id = $id;
 		$this->name = $name;
 		$this->scheduleId = $scheduleId;
 		$this->adminGroupId = $adminGroupId;
 		$this->scheduleAdminGroupId = $scheduleAdminGroupId;
+		$this->statusId = $statusId;
 	}
 
 	/**
@@ -482,6 +484,15 @@ class BlackoutResource implements IResource
 	public function GetResourceId()
 	{
 		return $this->id;
+	}
+
+
+	/**
+	 * @return int
+	 */
+	public function GetStatusId()
+	{
+		return $this->statusId;
 	}
 }
 

@@ -240,20 +240,33 @@ class ResourceRepository implements IResourceRepository
 		$_groups = array();
 		$_assignments = array();
 
+		/** @var BookableResource[] $resourceList */
+		$resourceList = array();
+
 		$_groups[] = new ResourceGroup(0, Resources::GetInstance()->GetString('All'));
 		foreach ($this->GetScheduleResources($scheduleId) as $r)
 		{
-			$_assignments[] = new ResourceGroupAssignment(0, $r->GetName(), $r->GetId());
+			$resourceList[$r->GetId()] = $r;
+			$_assignments[] = new ResourceGroupAssignment(0, $r->GetName(), $r->GetId(), $r->GetAdminGroupId(), $r->GetScheduleId(), $r->GetStatusId(), $r->GetScheduleAdminGroupId());
 		}
 
 		while ($row = $groups->GetRow())
 		{
-			$_groups[] = new ResourceGroup($row[ColumnNames::RESOURCE_GROUP_ID], $row[ColumnNames::RESOURCE_GROUP_NAME], $row[ColumnNames::RESOURCE_GROUP_PARENT_ID]);
+			$_groups[] = new ResourceGroup($row[ColumnNames::RESOURCE_GROUP_ID],
+										   $row[ColumnNames::RESOURCE_GROUP_NAME],
+										   $row[ColumnNames::RESOURCE_GROUP_PARENT_ID]);
 		}
 
 		while ($row = $resources->GetRow())
 		{
-			$_assignments[] = new ResourceGroupAssignment($row[ColumnNames::RESOURCE_GROUP_ID], $row[ColumnNames::RESOURCE_NAME], $row[ColumnNames::RESOURCE_ID]);
+			$r = $resourceList[ $row[ColumnNames::RESOURCE_ID]];
+			$_assignments[] = new ResourceGroupAssignment($row[ColumnNames::RESOURCE_GROUP_ID],
+														  $row[ColumnNames::RESOURCE_NAME],
+														  $row[ColumnNames::RESOURCE_ID],
+														  $r->GetAdminGroupId(),
+														  $r->GetScheduleId(),
+														  $r->GetStatusId(),
+														  $r->GetScheduleAdminGroupId());
 		}
 
 		return $this->BuildResourceGroupTree($_groups, $_assignments, $resourceFilter);
@@ -276,7 +289,7 @@ class ResourceRepository implements IResourceRepository
 
 		foreach ($assignments as $assignment)
 		{
-			if ($resourceFilter == null || $resourceFilter->ShouldInclude($assignment->resource_id))
+			if ($resourceFilter == null || $resourceFilter->ShouldInclude($assignment))
 			{
 				$tree->AddAssignment($assignment);
 			}
@@ -456,10 +469,10 @@ class AccessoryDto
 interface IResourceFilter
 {
 	/**
-	 * @param int $resourceId
+	 * @param IResource $resource
 	 * @return bool
 	 */
-	function ShouldInclude($resourceId);
+	function ShouldInclude($resource);
 }
 
 ?>

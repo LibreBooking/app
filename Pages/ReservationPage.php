@@ -167,9 +167,11 @@ abstract class ReservationPage extends Page implements IReservationPage
 			$this->permissionServiceFactory = new PermissionServiceFactory();
 		}
 
+		$userRepository = new UserRepository();
+
 		$this->initializationFactory = new ReservationInitializerFactory(
 			new ScheduleRepository(),
-			new UserRepository(),
+			$userRepository,
 			new ResourceService(new ResourceRepository(), $this->permissionServiceFactory->GetPermissionService(), new AttributeService(new AttributeRepository())),
 			new ReservationAuthorization(AuthorizationServiceFactory::GetAuthorizationService()),
 			new AttributeRepository(),

@@ -551,6 +551,7 @@ class en_us extends Language
 		$strings['InvalidEndReminderTime'] = 'The end reminder time is not valid.';
 		$strings['QuotaExceeded'] = 'Quota limit exceeded.';
 		$strings['MultiDayRule'] = '%s does not allow reservations across days.';
+		$strings['InvalidReservationData'] = 'There were problems with your reservation request.';
 		// End Errors
 
 		// Page Titles

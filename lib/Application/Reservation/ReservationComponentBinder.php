@@ -142,7 +142,7 @@ class ReservationResourceBinder implements IReservationComponentBinder
 		$requestedResourceId = $initializer->GetResourceId();
 		$groups = $this->resourceService->GetResourceGroups($requestedScheduleId, $initializer->CurrentUser());
 
-		$resources = $groups->GetAllResources(); //$this->resourceService->GetScheduleResources($requestedScheduleId, false, $initializer->CurrentUser());
+		$resources = $groups->GetAllResources();
 		if (empty($requestedResourceId) && count($resources) > 0)
 		{
 			$requestedResourceId = $resources[0]->GetResourceId();
@@ -157,7 +157,7 @@ class ReservationResourceBinder implements IReservationComponentBinder
 		}
 
 		$initializer->BindResourceGroups($groups);
-		$initializer->BindAvailableResources($groups->GetAllResources());
+		$initializer->BindAvailableResources($resources);
 		$accessories = $this->resourceService->GetAccessories();
 		$initializer->BindAvailableAccessories($accessories);
 		$initializer->ShowAdditionalResources($bindableResourceData->NumberAccessible > 0);

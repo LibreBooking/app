@@ -147,6 +147,16 @@ class ResourceServiceTests extends TestBase
 		$this->assertEquals($expected, $actual);
 	}
 
+	public function testChecksStatusOfEachResourceWhenGettingAll()
+	{
+		$this->fail('to implement');
+	}
+
+	public function testChecksStatusOfEachResourceWhenGettingSchedule()
+	{
+		$this->fail('to implement');
+	}
+
 	public function testResourcesAreNotReturnedIfNotIncludingInaccessibleResources()
 	{
 		$scheduleId = 100;

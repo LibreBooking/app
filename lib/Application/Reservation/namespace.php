@@ -38,5 +38,7 @@ require_once(ROOT_DIR . 'lib/Application/Reservation/ReservationConflictResoluti
 
 require_once(ROOT_DIR . 'lib/Application/Reservation/PrivacyFilter.php');
 require_once(ROOT_DIR . 'lib/Application/Reservation/ResourcePermissionFilter.php');
+require_once(ROOT_DIR . 'lib/Application/Reservation/ResourceStatusFilter.php');
+require_once(ROOT_DIR . 'lib/Application/Reservation/CompositeResourceFilter.php');
 
 ?>

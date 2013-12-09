@@ -127,7 +127,8 @@ class BlackoutRepository implements IBlackoutRepository
 										 $row[ColumnNames::RESOURCE_NAME],
 										 $row[ColumnNames::SCHEDULE_ID],
 										 $row[ColumnNames::RESOURCE_ADMIN_GROUP_ID],
-										 $row[ColumnNames::SCHEDULE_ADMIN_GROUP_ID_ALIAS]));
+										 $row[ColumnNames::SCHEDULE_ADMIN_GROUP_ID_ALIAS],
+									 	 $row[ColumnNames::RESOURCE_STATUS_ID]));
 			}
 
 			return $series;

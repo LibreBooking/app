@@ -22,7 +22,8 @@ $.fn.userAutoComplete = function(url, selectionCallback)
 							}
 							return {
 								label: l,
-								value: item.Id
+								value: item.Id,
+								data: item
 							}
 						}));
 					}

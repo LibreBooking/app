@@ -87,7 +87,8 @@ class ResourceService implements IResourceService
 	 */
 	private $_attributeService;
 
-	public function __construct(IResourceRepository $resourceRepository, IPermissionService $permissionService,
+	public function __construct(IResourceRepository $resourceRepository,
+								IPermissionService $permissionService,
 								IAttributeService $attributeService)
 	{
 		$this->_resourceRepository = $resourceRepository;
@@ -124,6 +125,9 @@ class ResourceService implements IResourceService
 	 */
 	private function Filter($resources, $user, $includeInaccessibleResources, $resourceIds = null)
 	{
+		$filter = new ResourcePermissionFilter($this->_permissionService, $user);
+		$statusFilter = new ResourceStatusFilter($user);
+
 		$resourceDtos = array();
 		foreach ($resources as $resource)
 		{
@@ -132,7 +136,14 @@ class ResourceService implements IResourceService
 				continue;
 			}
 
-			$canAccess = $this->_permissionService->CanAccessResource($resource, $user);
+			$isAvailable = $statusFilter->ShouldInclude($resource);
+
+			if (!$isAvailable)
+			{
+				continue;
+			}
+
+			$canAccess = $filter->ShouldInclude($resource);
 
 			if (!$includeInaccessibleResources && !$canAccess)
 			{
@@ -152,7 +163,10 @@ class ResourceService implements IResourceService
 
 	public function GetResourceGroups($scheduleId, UserSession $user)
 	{
-		$filter = new ResourcePermissionFilter($this->_permissionService, $user);
+		$filter = new CompositeResourceFilter();
+		$filter->Add(new ResourcePermissionFilter($this->_permissionService, $user));
+		$filter->Add(new ResourceStatusFilter($user));
+
 		$groups = $this->_resourceRepository->GetResourceGroups($scheduleId, $filter);
 
 		return $groups;

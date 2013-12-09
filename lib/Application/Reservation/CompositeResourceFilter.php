@@ -16,30 +16,35 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
- */
+*/
 
-class ResourcePermissionFilter implements IResourceFilter
+class CompositeResourceFilter implements IResourceFilter
 {
 	/**
-	 * @var IPermissionService $permissionService
+	 * @var array|IResourceFilter[]
 	 */
-	private $permissionService;
+	private $filters = array();
+
+	public function Add(IResourceFilter $filter)
+	{
+		$this->filters[] = $filter;
+	}
 
 	/**
-	 * @var UserSession $user
+	 * @param IResource $resource
+	 * @return bool
 	 */
-	private $user;
-
-	public function __construct(IPermissionService $permissionService, UserSession $user)
+	function ShouldInclude($resource)
 	{
-		$this->permissionService = $permissionService;
-		$this->user = $user;
-	}
+		foreach ($this->filters as $filter)
+		{
+			if (!$filter->ShouldInclude($resource))
+			{
+				return false;
+			}
+		}
 
-	public function ShouldInclude($resource)
-	{
-		return $this->permissionService->CanAccessResource($resource, $this->user);
+		return true;
 	}
 }
-
-?>
+?> 

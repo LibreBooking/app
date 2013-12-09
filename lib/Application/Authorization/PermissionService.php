@@ -52,12 +52,17 @@ class PermissionService implements IPermissionService
 	 */
 	public function CanAccessResource(IPermissibleResource $resource, UserSession $user)
 	{
+		if ($user->IsAdmin)
+		{
+			return true;
+		}
+
 		if ($this->_allowedResourceIds == null)
 		{
 			$this->_allowedResourceIds = $this->_store->GetPermittedResources($user->UserId);
 		}
 		
-		return $user->IsAdmin || in_array($resource->GetResourceId(), $this->_allowedResourceIds);
+		return in_array($resource->GetResourceId(), $this->_allowedResourceIds);
 	}
 }
 

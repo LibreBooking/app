@@ -192,7 +192,7 @@ class ResourceGroup
 	}
 }
 
-class ResourceGroupAssignment
+class ResourceGroupAssignment implements IResource
 {
 	public $type = ResourceGroup::RESOURCE_TYPE;
 	public $group_id;
@@ -201,28 +201,60 @@ class ResourceGroupAssignment
 	public $label;
 	public $resource_id;
 
-	public function __construct($group_id, $resource_name, $resource_id)
+	private $resourceAdminGroupId;
+	private $scheduleId;
+	private $statusId;
+	/**
+	 * @var
+	 */
+	private $scheduleAdminGroupId;
+
+	public function __construct($group_id, $resource_name, $resource_id, $resourceAdminGroupId, $scheduleId, $statusId, $scheduleAdminGroupId)
 	{
 		$this->group_id = $group_id;
 		$this->resource_name = $resource_name;
 		$this->id = "{$this->type}-{$group_id}-{$resource_id}";
 		$this->label = $resource_name;
 		$this->resource_id = $resource_id;
+		$this->resourceAdminGroupId = $resourceAdminGroupId;
+		$this->scheduleId = $scheduleId;
+		$this->statusId = $statusId;
+		$this->scheduleAdminGroupId = $scheduleAdminGroupId;
 	}
-}
 
-class EmptyResourceGroupTree extends ResourceGroupTree
-{
-	/**
-	 * @param $resources ResourceDto[]
-	 */
-	public function __construct($resources)
+	public function GetId()
 	{
-		$this->AddGroup(new ResourceGroup(0, Resources::GetInstance()->GetString('All')));
-		foreach($resources as $resource)
-		{
-			$this->AddAssignment(new ResourceGroupAssignment(0, $resource->GetName(), $resource->GetId()));
-		}
+		return $this->resource_id;
+	}
+
+	public function GetName()
+	{
+		return $this->resource_name;
+	}
+
+	public function GetAdminGroupId()
+	{
+		return $this->resourceAdminGroupId;
+	}
+
+	public function GetScheduleId()
+	{
+		return $this->scheduleId;
+	}
+
+	public function GetScheduleAdminGroupId()
+	{
+		return $this->scheduleAdminGroupId;
+	}
+
+	public function GetStatusId()
+	{
+		return $this->statusId;
+	}
+
+	public function GetResourceId()
+	{
+		return $this->resource_id;
 	}
 }
 ?>

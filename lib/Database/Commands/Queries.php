@@ -320,7 +320,7 @@ class Queries
 
 	const GET_ALL_RESOURCE_GROUPS = 'SELECT * FROM resource_groups ORDER BY parent_id, resource_group_name';
 
-	const GET_ALL_RESOURCE_GROUP_ASSIGNMENTS = 'SELECT r.name, r.resource_id, a.resource_group_id
+	const GET_ALL_RESOURCE_GROUP_ASSIGNMENTS = 'SELECT r.*, a.resource_group_id
 		FROM resource_group_assignment a
 		INNER JOIN resources r ON r.resource_id = a.resource_id
 		WHERE (-1 = @scheduleid OR r.schedule_id = @scheduleid)';

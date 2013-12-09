@@ -235,5 +235,10 @@ class NullScheduleResource extends ScheduleResource
 	{
 		parent::__construct(0, null);
 	}
+
+	public function GetMinimumLength()
+	{
+		return null;
+	}
 }
 ?>
