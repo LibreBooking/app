@@ -35,4 +35,4 @@ class ResourceStatusResponse extends RestResponse
 
 }
 
-?> 
+?>

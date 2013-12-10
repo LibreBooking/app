@@ -35,4 +35,4 @@ class ReservationBasicInfoRule implements IReservationValidationRule
 	}
 }
 
-?> 
+?>

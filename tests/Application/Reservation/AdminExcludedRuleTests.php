@@ -130,4 +130,4 @@ class AdminExcludedRuleTests extends TestBase
 	}
 }
 
-?> 
+?>

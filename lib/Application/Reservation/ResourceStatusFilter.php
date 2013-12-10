@@ -51,4 +51,4 @@ class ResourceStatusFilter implements IResourceFilter
 		return true;
 	}
 }
-?> 
+?>

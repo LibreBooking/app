@@ -78,4 +78,4 @@ class ResourceStatusReason
 		return $this->description;
 	}
 }
-?> 
+?>

@@ -55,4 +55,4 @@ class ExampleResourceStatusReasonsResponse extends ResourceStatusReasonsResponse
 	}
 }
 
-?> 
+?>
