@@ -296,7 +296,7 @@ class UserRepository implements IUserRepository, IAccountActivationRepository
 
 		$user->WithId($id);
 
-		if(Configuration::Instance()->GetKey(ConfigKeys::REGISTRATION_NOTIFY ,new BooleanConverter()))
+		if(Configuration::Instance()->GetKey(ConfigKeys::REGISTRATION_NOTIFY, new BooleanConverter()))
 			ServiceLocator::GetEmailService()->Send(new AccountCreationEmail($user));
 
 		foreach ($user->GetAddedAttributes() as $added)
@@ -688,6 +688,7 @@ class UserItemView
 	public $Organization;
 	public $Position;
 	public $Language;
+	public $ReservationColor;
 
 	public function IsActive()
 	{

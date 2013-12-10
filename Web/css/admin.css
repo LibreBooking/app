@@ -374,3 +374,19 @@ ul.jqtree-tree .group-resource .jqtree-title {
 .resourceItem {
 	display:block;
 }
+
+.admin-update-buttons{
+	margin-top:5px;
+}
+
+#reservationColor {
+	width:75px;
+}
+
+.user-color {
+	border:solid 1px #000;
+	display:inline-block;
+	margin-left:4px;
+	width:16px;
+	height:16px;
+}

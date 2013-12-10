@@ -480,6 +480,7 @@ class en_us extends Language
 		$strings['NoResourceTypeLabel'] = '(no resource type set)';
 		$strings['ClearFilter'] = 'Clear Filter';
 		$strings['MinimumCapacity'] = 'Minimum Capacity';
+		$strings['Color'] = 'Color';
 		$strings['Available'] = 'Available';
 		$strings['Unavailable'] = 'Unavailable';
 		$strings['Hidden'] = 'Hidden';

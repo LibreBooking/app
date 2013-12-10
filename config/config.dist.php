@@ -26,14 +26,15 @@ error_reporting(E_ALL & ~E_NOTICE & ~E_STRICT);
  */
 $conf['settings']['app.title'] = 'phpScheduleIt';				// application title
 $conf['settings']['server.timezone'] = 'America/Chicago';       // look up here http://php.net/manual/en/timezones.php
-$conf['settings']['allow.self.registration'] = 'true';         // if users can register themselves
+$conf['settings']['allow.self.registration'] = 'true';         	// if users can register themselves
 $conf['settings']['admin.email'] = 'admin@example.com';         // email address of admin user
 $conf['settings']['admin.email.name'] = 'phpScheduleIt Administrator';	// name to be used in From: field when sending automatic emails
 $conf['settings']['default.page.size'] = '50';                  // number of records per page
 $conf['settings']['enable.email'] = 'true';                     // global configuration to enable if any emails will be sent
 $conf['settings']['default.language'] = 'en_us';                // find your language in phpScheduleIt/lang directory
 $conf['settings']['script.url'] = 'http://localhost/Web';   	// public URL to the Web directory of this phpScheduleIt instance. this is the URL that appears when you are logging in
-$conf['settings']['password.pattern'] = '/^[^\s]{6,}$/i';           	// regular expression to enforce password complexity
+$conf['settings']['password.pattern'] = '/^[^\s]{6,}$/i';       // regular expression to enforce password complexity
+$conf['settings']['use.per.user.colors'] = 'false'; 			// color reservations by user
 $conf['settings']['schedule']['show.inaccessible.resources'] = 'true';  // whether or not resources that are inaccessible to the user are visible
 $conf['settings']['schedule']['reservation.label'] = '{name}';    		// format for what to display on the reservation slot label. Available properties are: {name}, {title}, {description}, {email}, {phone}, {organization}, {position}
 $conf['settings']['schedule']['hide.blocked.periods'] = 'false';    	// if blocked periods should be hidden or shown
@@ -147,8 +148,4 @@ $conf['settings']['email']['default.from.address'] = '';
  * Reports
  */
 $conf['settings']['reports']['allow.all.users'] = 'false';
-/**
- * User control
- */
-$conf['settings']['users']['use.per.user-colors'] = 'false'; // color reservations by user
 ?>

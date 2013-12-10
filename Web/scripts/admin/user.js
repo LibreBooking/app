@@ -25,6 +25,10 @@ function UserManagement(opts)
 		removedGroups : $('#removedGroups'),
 		groupList : $('#groupList'),
 
+		colorDialog:$('#colorDialog'),
+		colorValue:$('#reservationColor'),
+		colorForm:$('#colorForm'),
+
 		addUserForm:$('#addUserForm'),
 
 		deleteDialog:$('#deleteDialog'),
@@ -35,13 +39,14 @@ function UserManagement(opts)
 
 	UserManagement.prototype.init = function ()
 	{
-		ConfigureAdminDialog(elements.permissionsDialog, 430, 500);
-		ConfigureAdminDialog(elements.passwordDialog, 400, 150);
-		ConfigureAdminDialog(elements.userDialog, 350, 560);
-		ConfigureAdminDialog(elements.deleteDialog, 600, 200);
-		ConfigureAdminDialog(elements.groupsDialog, 300, 300);
+		ConfigureAdminDialog(elements.permissionsDialog);
+		ConfigureAdminDialog(elements.passwordDialog);
+		ConfigureAdminDialog(elements.userDialog);
+		ConfigureAdminDialog(elements.deleteDialog);
+		ConfigureAdminDialog(elements.groupsDialog);
+		ConfigureAdminDialog(elements.colorDialog);
 
-		elements.userList.delegate('a.update', 'click', function (e)
+		elements.userList.delegate('.update', 'click', function (e)
 		{
 			setActiveUserElement($(this));
 			e.preventDefault();
@@ -67,6 +72,13 @@ function UserManagement(opts)
 		{
 			elements.passwordDialog.find(':password').val('');
 			elements.passwordDialog.dialog('open');
+		});
+
+		elements.userList.delegate('.changeColor', 'click', function (e)
+		{
+			var user = getActiveUser();
+			elements.colorValue.val(user.reservationColor);
+			elements.colorDialog.dialog('open');
 		});
 
 		elements.userList.delegate('.editable', 'click', function ()
@@ -134,7 +146,7 @@ function UserManagement(opts)
 			$(this).closest('.dialog').dialog("close");
 		});
 
-		$('.clear').click(function ()
+		$('.clearform').click(function ()
 		{
 			$(this).closest('form')[0].reset();
 		});
@@ -171,14 +183,15 @@ function UserManagement(opts)
 			}
 		};
 
-		ConfigureAdminForm(elements.permissionsForm, getSubmitCallback(options.actions.permissions), hidePermissionsDialog, error);
-		ConfigureAdminForm(elements.passwordForm, getSubmitCallback(options.actions.password), hidePasswordDialog, error);
-		ConfigureAdminForm(elements.userForm, getSubmitCallback(options.actions.updateUser), hideDialog(elements.userDialog));
-		ConfigureAdminForm(elements.deleteUserForm, getSubmitCallback(options.actions.deleteUser), hideDialog(elements.deleteDialog), error);
-		ConfigureAdminForm(elements.addUserForm, getSubmitCallback(options.actions.addUser));
+		ConfigureAdminForm(elements.permissionsForm, defaultSubmitCallback(elements.permissionsForm), hidePermissionsDialog, error);
+		ConfigureAdminForm(elements.passwordForm, defaultSubmitCallback(elements.passwordForm), hidePasswordDialog, error);
+		ConfigureAdminForm(elements.userForm, defaultSubmitCallback(elements.userForm), hideDialog(elements.userDialog));
+		ConfigureAdminForm(elements.deleteUserForm, defaultSubmitCallback(elements.deleteUserForm), hideDialog(elements.deleteDialog), error);
+		ConfigureAdminForm(elements.addUserForm, defaultSubmitCallback(elements.addUserForm));
 		$.each(elements.attributeForm, function(i,form){
-			ConfigureAdminForm($(form), getSubmitCallback(options.actions.changeAttributes), null, attributesHandler, {validationSummary:null});
+			ConfigureAdminForm($(form), defaultSubmitCallback($(form)), null, attributesHandler, {validationSummary:null});
 		});
+		ConfigureAdminForm(elements.colorForm, defaultSubmitCallback(elements.colorForm));
 	};
 
 	UserManagement.prototype.addUser = function (user)
@@ -191,6 +204,12 @@ function UserManagement(opts)
 		return function ()
 		{
 			return options.submitUrl + "?uid=" + getActiveUserId() + "&action=" + action;
+		};
+	};
+
+	var defaultSubmitCallback = function (form) {
+		return function () {
+			return options.submitUrl + "?action=" + form.attr('ajaxAction') + '&uid=' + getActiveUserId();
 		};
 	};
 
@@ -273,6 +292,16 @@ function UserManagement(opts)
 			elements.permissionsDialog.dialog('open');
 		});
 	};
+
+	var changeColor = function ()
+	{
+		var user = getActiveUser();
+		var data = {dr:'color', uid:user.id};
+		$.get(opts.colorUrl, data, function (colorIds)
+		{
+
+		});
+	}
 
 	var changeUserInfo = function ()
 	{

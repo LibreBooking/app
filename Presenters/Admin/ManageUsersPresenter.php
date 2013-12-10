@@ -33,6 +33,7 @@ class ManageUsersActions
 	const Password = 'password';
 	const Permissions = 'permissions';
 	const UpdateUser = 'updateUser';
+	const ChangeColor = 'changeColor';
 }
 
 interface IManageUsersPresenter
@@ -170,6 +171,7 @@ class ManageUsersPresenter extends ActionPresenter implements IManageUsersPresen
 		$this->AddAction(ManageUsersActions::Permissions, 'ChangePermissions');
 		$this->AddAction(ManageUsersActions::UpdateUser, 'UpdateUser');
 		$this->AddAction(ManageUsersActions::ChangeAttributes, 'ChangeAttributes');
+		$this->AddAction(ManageUsersActions::ChangeColor, 'ChangeColor');
 	}
 
 	public function PageLoad()
@@ -316,6 +318,10 @@ class ManageUsersPresenter extends ActionPresenter implements IManageUsersPresen
 		{
 			$this->page->SetJsonResponse($this->GetUserGroups());
 		}
+		elseif ($dataRequest == 'color')
+		{
+			$foo = 'bar';
+		}
 		elseif ($dataRequest == 'all')
 		{
 			$users = $this->userRepository->GetAll();
@@ -396,6 +402,14 @@ class ManageUsersPresenter extends ActionPresenter implements IManageUsersPresen
 		}
 
 		return $groups;
+	}
+
+	public function ChangeColor()
+	{
+		$userId = $this->page->GetUserId();
+		$color = $this->page->GetReservationColor();
+
+		Log::Debug('Changing reservation color for userId: %s', $userId);
 	}
 }
 

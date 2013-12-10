@@ -132,6 +132,7 @@ class FormKeys
 	const REPORT_NAME = 'REPORT_NAME';
 	const REQUIRES_APPROVAL = 'requiresApproval';
 	const RESERVATION_ACTION = 'reservationAction';
+	const RESERVATION_COLOR = 'RESERVATION_COLOR';
 	const RESERVATION_FILE = 'reservationFile';
 	const RESERVATION_ID = 'reservationId';
 	const RESERVATION_TITLE = 'reservationTitle';

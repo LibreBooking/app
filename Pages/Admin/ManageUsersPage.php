@@ -145,6 +145,11 @@ interface IManageUsersPage extends IPageable, IActionPage
 	 * @param GroupItemView[] $groups
 	 */
 	public function BindGroups($groups);
+
+	/**
+	 * @return string
+	 */
+	public function GetReservationColor();
 }
 
 
@@ -183,16 +188,18 @@ class ManageUsersPage extends ActionPage implements IManageUsersPage
 	{
 		$this->_presenter->PageLoad();
 
+		$config = Configuration::Instance();
 		$resources = Resources::GetInstance();
 		$this->Set('statusDescriptions',
 				   array(AccountStatus::ALL => $resources->GetString('All'), AccountStatus::ACTIVE => $resources->GetString('Active'), AccountStatus::AWAITING_ACTIVATION => $resources->GetString('Pending'), AccountStatus::INACTIVE => $resources->GetString('Inactive')));
 
-		$this->Set('Timezone', Configuration::Instance()->GetKey(ConfigKeys::SERVER_TIMEZONE));
+		$this->Set('Timezone', $config->GetKey(ConfigKeys::SERVER_TIMEZONE));
 		$this->Set('Timezones', $GLOBALS['APP_TIMEZONES']);
 		$this->Set('Languages', $GLOBALS['APP_TIMEZONES']);
 		$this->Set('ManageGroupsUrl', Pages::MANAGE_GROUPS);
 		$this->Set('ManageReservationsUrl', Pages::MANAGE_RESERVATIONS);
 		$this->Set('FilterStatusId', $this->GetFilterStatusId());
+		$this->Set('PerUserColors', $config->GetKey(ConfigKeys::PER_USER_COLORS, new BooleanConverter()));
 
 		$this->RenderTemplate();
 	}
@@ -349,7 +356,7 @@ class ManageUsersPage extends ActionPage implements IManageUsersPage
 	 */
 	public function GetUserGroup()
 	{
-		return $this->server->GetForm(FormKeys::GROUP_ID);
+		return $this->GetForm(FormKeys::GROUP_ID);
 	}
 
 	/**
@@ -358,6 +365,14 @@ class ManageUsersPage extends ActionPage implements IManageUsersPage
 	public function BindGroups($groups)
 	{
 		$this->Set('Groups', $groups);
+	}
+
+	/**
+	 * @return string
+	 */
+	public function GetReservationColor()
+	{
+		return $this->GetForm(FormKeys::RESERVATION_COLOR);
 	}
 }
 

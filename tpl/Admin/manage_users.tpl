@@ -16,7 +16,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 *}
-{include file='globalheader.tpl' cssFiles='css/admin.css'}
+{include file='globalheader.tpl' cssFiles='css/admin.css,scripts/css/colorpicker.css'}
 
 <h1>{translate key=ManageUsers}</h1>
 
@@ -55,6 +55,9 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 		<th>{translate key='Groups'}</th>
 		<th>{translate key='Reservations'}</th>
 		<th>{translate key='Password'}</th>
+		{if $PerUserColors}
+			<th>{translate key='Color'}</th>
+		{/if}
 		<th>{translate key='Delete'}</th>
 	</tr>
 	{foreach from=$users item=user}
@@ -77,6 +80,14 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 			<td align="center"><a href="#" class="update changeGroups">{translate key='Edit'}</a></td>
 			<td align="center"><a href="#" class="update viewReservations">{translate key='Search'}</a></td>
 			<td align="center"><a href="#" class="update resetPassword">{translate key='Reset'}</a></td>
+			{if $PerUserColors}
+				<td align="center">
+					<a href="#" class="update changeColor">{translate key='Edit'}</a>
+					{if !empty($user->ReservationColor)}
+						<div class="user-color update changeColor" style="background-color:#{$user->ReservationColor}">&nbsp;</div>
+					{/if}
+				</td>
+			{/if}
 			<td align="center"><a href="#" class="update delete">{html_image src="cross-button.png"}</a></td>
 		</tr>
 		{assign var=attributes value=$AttributeList->GetAttributes($id)}
@@ -84,7 +95,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 			<tr>
 				<td class="id"><input type="hidden" class="id" value="{$id}"/></td>
 				<td colspan="16" class="{$rowCss} customAttributes" userId="{$id}">
-						<form method="post" class="attributesForm">
+						<form method="post" class="attributesForm" ajaxAction="{ManageUsersActions::ChangeAttributes}">
 							<h3>{translate key=AdditionalAttributes} <a href="#"
 																		class="update changeAttributes">{translate key=Edit}</a>
 							</h3>
@@ -132,7 +143,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 			{async_validator id="addUserUsername" key="UniqueUsernameRequired"}
 			{async_validator id="addAttributeValidator" key=""}
 		</ul>
-		<form id="addUserForm" method="post">
+		<form id="addUserForm" method="post" ajaxAction="{ManageUsersActions::AddUser}">
 			<div style="display: table-row">
 				<div style="display: table-cell;">
 					<ul>
@@ -203,7 +214,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 
 			<button type="button"
 					class="button save">{html_image src="disk-black.png"} {translate key='AddUser'}</button>
-			<button type="button" class="button clear">{html_image src="slash.png"} {translate key='Cancel'}</button>
+			<button type="button" class="button clearform">{html_image src="slash.png"} {translate key='Cancel'}</button>
 		</form>
 	</div>
 </div>
@@ -211,7 +222,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 <input type="hidden" id="activeId"/>
 
 <div id="permissionsDialog" class="dialog" style="display:none;" title="{translate key=Permissions}">
-	<form id="permissionsForm" method="post">
+	<form id="permissionsForm" method="post" ajaxAction="{ManageUsersActions::Permissions}">
 		<div class="warning">{translate key=UserPermissionInfo}</div>
 		{foreach from=$resources item=resource}
 			<label><input {formname key=RESOURCE_ID  multi=true} class="resourceId" type="checkbox"
@@ -225,7 +236,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 </div>
 
 <div id="passwordDialog" class="dialog" style="display:none;" title="{translate key=Password}">
-	<form id="passwordForm" method="post">
+	<form id="passwordForm" method="post" ajaxAction="{ManageUsersActions::Password}">
 		{translate key=Password}<br/>
 		{textbox type="password" name="PASSWORD" class="required textbox" value=""}
 		<button type="button" class="button save">{html_image src="disk-black.png"} {translate key='Update'}</button>
@@ -234,7 +245,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 </div>
 
 <div id="userDialog" class="dialog" title="{translate key=Update}">
-	<form id="userForm" method="post">
+	<form id="userForm" method="post" ajaxAction="{ManageUsersActions::UpdateUser}">
 		<ul>
 			{async_validator id="emailformat" key="ValidEmailRequired"}
 			{async_validator id="uniqueemail" key="UniqueEmailRequired"}
@@ -273,7 +284,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 </div>
 
 <div id="deleteDialog" class="dialog" title="{translate key=Delete}">
-	<form id="deleteUserForm" method="post">
+	<form id="deleteUserForm" method="post" ajaxAction="{ManageUsersActions::DeleteUser}">
 		<div class="error" style="margin-bottom: 25px;">
 			<h3>{translate key=DeleteWarning}</h3>
 
@@ -300,25 +311,30 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 	</div>
 </div>
 
+<div id="colorDialog" class="dialog" title="{translate key=Color}">
+	<form id="colorForm" method="post" ajaxAction="{ManageUsersActions::ChangeColor}">
+		#{textbox name="RESERVATION_COLOR" class="textbox" id="reservationColor" maxlength=6}
+		<div class="admin-update-buttons">
+			<button type="button" class="button save">{html_image src="disk-black.png"} {translate key='Update'}</button>
+			<button type="button" class="button cancel">{html_image src="slash.png"} {translate key='Cancel'}</button>
+		</div>
+	</form>
+</div>
+
 {html_image src="admin-ajax-indicator.gif" class="indicator" style="display:none;"}
 
 <script type="text/javascript" src="{$Path}scripts/admin/edit.js"></script>
 <script type="text/javascript" src="{$Path}scripts/autocomplete.js"></script>
 <script type="text/javascript" src="{$Path}scripts/admin/user.js"></script>
 <script type="text/javascript" src="{$Path}scripts/js/jquery.form-3.09.min.js"></script>
+<script type="text/javascript" src="{$Path}scripts/js/colorpicker.js"></script>
 
 <script type="text/javascript">
 	$(document).ready(function ()
 	{
 		var actions = {
 			activate: '{ManageUsersActions::Activate}',
-			deactivate: '{ManageUsersActions::Deactivate}',
-			permissions: '{ManageUsersActions::Permissions}',
-			password: '{ManageUsersActions::Password}',
-			deleteUser: '{ManageUsersActions::DeleteUser}',
-			updateUser: '{ManageUsersActions::UpdateUser}',
-			addUser: '{ManageUsersActions::AddUser}',
-			changeAttributes: '{ManageUsersActions::ChangeAttributes}'
+			deactivate: '{ManageUsersActions::Deactivate}'
 		};
 
 		var userOptions = {
@@ -348,10 +364,21 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 			timezone: '{$user->Timezone}',
 			phone: '{$user->Phone|escape:"quotes"}',
 			organization: '{$user->Organization|escape:"quotes"}',
-			position: '{$user->Position|escape:"quotes"}'
+			position: '{$user->Position|escape:"quotes"}',
+			reservationColor: '{$user->ReservationColor|escape:"quotes"}'
 		};
 		userManagement.addUser(user);
 		{/foreach}
+
+		$('#reservationColor').ColorPicker({
+			onSubmit: function(hsb, hex, rgb, el) {
+				$(el).val(hex);
+					$(el).ColorPickerHide();
+				},
+				onBeforeShow: function () {
+					$(this).ColorPickerSetColor(this.value);
+				}
+		});
 
 	});
 </script>
