@@ -39,7 +39,7 @@ class ReservationApprovalPresenterTests extends TestBase
 	private $handler;
 
 	/**
-	 * @var IAuthorizationService|PHPUnit_Framework_MockObject_MockObject
+	 * @var IReservationAuthorization|PHPUnit_Framework_MockObject_MockObject
 	 */
 	private $auth;
 
@@ -55,7 +55,7 @@ class ReservationApprovalPresenterTests extends TestBase
 		$this->page = $this->getMock('IReservationApprovalPage');
 		$this->persistence = $this->getMock('IUpdateReservationPersistenceService');
 		$this->handler = $this->getMock('IReservationHandler');
-		$this->auth = $this->getMock('IAuthorizationService');
+		$this->auth = $this->getMock('IReservationAuthorization');
 
 		$this->presenter = new ReservationApprovalPresenter($this->page, $this->persistence, $this->handler, $this->auth);
 	}
@@ -85,8 +85,8 @@ class ReservationApprovalPresenterTests extends TestBase
 			->will($this->returnValue(true));
 		
 		$this->auth->expects($this->once())
-					->method('CanApproveFor')
-					->with($this->equalTo($this->fakeUser), $this->equalTo($reservation->UserId()))
+					->method('CanApprove')
+					->with($this->equalTo(new ReservationViewAdapter($reservation)), $this->equalTo($this->fakeUser))
 					->will($this->returnValue(true));
 
 		$this->presenter->PageLoad();

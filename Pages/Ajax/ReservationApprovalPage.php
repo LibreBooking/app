@@ -42,9 +42,9 @@ class ReservationApprovalPage extends SecurePage implements IReservationApproval
 			$persistenceService = $factory->Create($reservationAction);
 			$handler = ReservationHandler::Create($reservationAction, $persistenceService,
 												  ServiceLocator::GetServer()->GetUserSession());
-			$authService = PluginManager::Instance()->LoadAuthorization();
+			$auth = new ReservationAuthorization(PluginManager::Instance()->LoadAuthorization());
 
-			$presenter = new ReservationApprovalPresenter($this, $persistenceService, $handler, $authService);
+			$presenter = new ReservationApprovalPresenter($this, $persistenceService, $handler, $auth);
 			$presenter->PageLoad();
 		} catch (Exception $ex)
 		{
