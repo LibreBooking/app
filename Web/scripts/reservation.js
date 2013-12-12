@@ -138,17 +138,17 @@ function Reservation(opts)
 			AddResources();
 		});
 
-		$('#btnUpdateThisInstance').click(function ()
+		$('.btnUpdateThisInstance').click(function ()
 		{
 			ChangeUpdateScope(options.scopeOpts.instance);
 		});
 
-		$('#btnUpdateAllInstances').click(function ()
+		$('.btnUpdateAllInstances').click(function ()
 		{
 			ChangeUpdateScope(options.scopeOpts.full);
 		});
 
-		$('#btnUpdateFutureInstances').click(function ()
+		$('.btnUpdateFutureInstances').click(function ()
 		{
 			ChangeUpdateScope(options.scopeOpts.future);
 		});
@@ -404,7 +404,7 @@ function Reservation(opts)
 
 	var WireUpButtonPrompt = function ()
 	{
-		var updateButtons = $('#updateButtons');
+		var updateButtons = $('.updateButtons');
 		updateButtons.dialog({
 			autoOpen: false, modal: true, draggable: false, resizable: false, closeOnEscape: false,
 			minWidth: 700, width: 700, height: 100
@@ -412,12 +412,12 @@ function Reservation(opts)
 
 		updateButtons.find('.button').click(function ()
 		{
-			$('#updateButtons').dialog('close');
+			$('.updateButtons').dialog('close');
 		});
 
 		$('.prompt').click(function ()
 		{
-			$('#updateButtons').dialog('open');
+			$('.updateButtons').dialog('open');
 		});
 	};
 

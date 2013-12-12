@@ -148,15 +148,15 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 		<div class="error" style="margin-bottom: 25px;">
 			<h3>{translate key=DeleteWarning}</h3>
 		</div>
-		<button type="button" id="btnUpdateThisInstance" class="button saveSeries">
+		<button type="button" class="button saveSeries btnUpdateThisInstance">
 			{html_image src="disk-black.png"}
 			{translate key='ThisInstance'}
 		</button>
-		<button type="button" id="btnUpdateAllInstances" class="button saveSeries">
+		<button type="button" class="button saveSeries btnUpdateAllInstances">
 			{html_image src="disks-black.png"}
 			{translate key='AllInstances'}
 		</button>
-		<button type="button" id="btnUpdateFutureInstances" class="button saveSeries">
+		<button type="button" class="button saveSeries btnUpdateFutureInstances">
 			{html_image src="disk-arrow.png"}
 			{translate key='FutureInstances'}
 		</button>

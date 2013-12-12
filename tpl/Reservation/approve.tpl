@@ -32,17 +32,17 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 			{html_image src="cross-button.png"}
 			{translate key='Delete'}
 		</a>
-		<div id="updateButtons" style="display:none;" title="{translate key=ApplyUpdatesTo}">
+		<div class="updateButtons" style="display:none;" title="{translate key=ApplyUpdatesTo}">
 			<div style="text-align: center;line-height:50px;">
-				<button type="button" id="btnUpdateThisInstance" class="button save">
+				<button type="button" class="button save btnUpdateThisInstance">
 					{html_image src="disk-black.png"}
 					{translate key='ThisInstance'}
 				</button>
-				<button type="button" id="btnUpdateAllInstances" class="button save">
+				<button type="button" class="button save btnUpdateAllInstances">
 					{html_image src="disks-black.png"}
 					{translate key='AllInstances'}
 				</button>
-				<button type="button" id="btnUpdateFutureInstances" class="button save">
+				<button type="button" class="button save btnUpdateFutureInstances">
 					{html_image src="disk-arrow.png"}
 					{translate key='FutureInstances'}
 				</button>
