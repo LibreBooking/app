@@ -184,8 +184,6 @@ class RegisterPresenterTests extends TestBase
 	
 	public function testPresenterRegistersIfAllFieldsAreValid()
 	{
-		$pattern = '/^[^\s]{6,}$/i';
-		$this->fakeConfig->SetKey(ConfigKeys::PASSWORD_PATTERN, '/^[^\s]{6,}$/i');
 		$this->LoadPageValues();
 		
 		$additionalFields = array(
@@ -218,7 +216,7 @@ class RegisterPresenterTests extends TestBase
 		$this->assertEquals($v['lname'], new RequiredValidator($this->lname));
 		$this->assertEquals($v['username'], new RequiredValidator($this->login));
 		$this->assertEquals($v['passwordmatch'], new EqualValidator($this->password, $this->confirm));
-		$this->assertEquals($v['passwordcomplexity'], new RegexValidator($this->password, $pattern));
+		$this->assertEquals($v['passwordcomplexity'], new PasswordComplexityValidator($this->password));
 		$this->assertEquals($v['emailformat'], new EmailValidator($this->email));
 		$this->assertEquals($v['uniqueemail'], new UniqueEmailValidator(new UserRepository(), $this->email));
 		$this->assertEquals($v['uniqueusername'], new UniqueUserNameValidator(new UserRepository(), $this->login));

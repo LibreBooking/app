@@ -72,7 +72,7 @@ class PasswordPresenter
 	{
 		$this->page->RegisterValidator('currentpassword', new PasswordValidator($this->page->GetCurrentPassword(), $this->GetUser()));
 		$this->page->RegisterValidator('passwordmatch', new EqualValidator($this->page->GetPassword(), $this->page->GetPasswordConfirmation()));
-		$this->page->RegisterValidator('passwordcomplexity', new RegexValidator($this->page->GetPassword(), Configuration::Instance()->GetKey(ConfigKeys::PASSWORD_PATTERN)));
+		$this->page->RegisterValidator('passwordcomplexity', new PasswordComplexityValidator($this->page->GetPassword()));
 	}
 
 	/**

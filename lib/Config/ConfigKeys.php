@@ -33,7 +33,6 @@ class ConfigKeys
     const LANGUAGE = 'default.language';
 	const LOGOUT_URL = 'logout.url';
     const NAME_FORMAT = 'name.format';
-    const PASSWORD_PATTERN = 'password.pattern';
     const SCRIPT_URL = 'script.url';
     const SERVER_TIMEZONE = 'server.timezone';
     const REGISTRATION_ENABLE_CAPTCHA = 'registration.captcha.enabled';
@@ -111,6 +110,10 @@ class ConfigKeys
 	const APP_TITLE = 'app.title';
 
 	const PER_USER_COLORS = 'use.per.user.colors';
+
+	const PASSWORD_UPPER_AND_LOWER = 'upper.and.lower';
+	const PASSWORD_LETTERS = 'minimum.letters';
+	const PASSWORD_NUMBERS = 'minimum.numbers';
 }
 
 class ConfigSection
@@ -120,6 +123,7 @@ class ConfigSection
 	const EMAIL = 'email';
     const ICS = 'ics';
 	const PAGES = 'pages';
+	const PASSWORD = 'password';
     const PLUGINS = 'plugins';
     const PRIVACY = 'privacy';
 	const REPORTS = 'reports';

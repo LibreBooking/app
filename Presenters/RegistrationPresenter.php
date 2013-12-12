@@ -231,7 +231,7 @@ class RegistrationPresenter extends ActionPresenter
 		$this->page->RegisterValidator('lname', new RequiredValidator($this->page->GetLastName()));
 		$this->page->RegisterValidator('username', new RequiredValidator($this->page->GetLoginName()));
 		$this->page->RegisterValidator('passwordmatch', new EqualValidator($this->page->GetPassword(), $this->page->GetPasswordConfirm()));
-		$this->page->RegisterValidator('passwordcomplexity', new RegexValidator($this->page->GetPassword(), Configuration::Instance()->GetKey(ConfigKeys::PASSWORD_PATTERN)));
+		$this->page->RegisterValidator('passwordcomplexity', new PasswordComplexityValidator($this->page->GetPassword()));
 		$this->page->RegisterValidator('emailformat', new EmailValidator($this->page->GetEmail()));
 		$this->page->RegisterValidator('uniqueemail', new UniqueEmailValidator(new UserRepository(), $this->page->GetEmail()));
 		$this->page->RegisterValidator('uniqueusername', new UniqueUserNameValidator(new UserRepository(), $this->page->GetLoginName()));

@@ -43,6 +43,9 @@ class ManageConfigurationPresenter extends ActionPresenter
 	 */
 	private $configFilePath;
 
+	private $deletedSettings = array('password.pattern');
+
+
 	public function __construct(IManageConfigurationPage $page, IConfigurationSettings $settings)
 	{
 		parent::__construct($page);
@@ -135,15 +138,28 @@ class ManageConfigurationPresenter extends ActionPresenter
 		$existingSettings = $this->configSettings->GetSettings($this->configFilePath);
 		$mergedSettings = array_merge($existingSettings, $newSettings);
 
+		foreach ($this->deletedSettings as $deletedSetting)
+		{
+			if (array_key_exists($deletedSetting, $mergedSettings))
+			{
+				unset($mergedSettings[$deletedSetting]);
+			}
+		}
+
 		Log::Debug("Saving %s settings", count($configSettings));
-//		Log::Debug(var_export($mergedSettings, true));
+
 		$this->configSettings->WriteSettings($this->configFilePath, $mergedSettings);
+
 		Log::Debug('Config file saved by %s', ServiceLocator::GetServer()->GetUserSession()->Email);
 	}
 
 	private function ShouldBeSkipped($key, $section = null)
 	{
 		if ($section == ConfigSection::DATABASE || $section == ConfigSection::API)
+		{
+			return true;
+		}
+		if (in_array($key, $this->deletedSettings))
 		{
 			return true;
 		}

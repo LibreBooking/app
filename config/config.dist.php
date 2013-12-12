@@ -33,7 +33,6 @@ $conf['settings']['default.page.size'] = '50';                  // number of rec
 $conf['settings']['enable.email'] = 'true';                     // global configuration to enable if any emails will be sent
 $conf['settings']['default.language'] = 'en_us';                // find your language in phpScheduleIt/lang directory
 $conf['settings']['script.url'] = 'http://localhost/Web';   	// public URL to the Web directory of this phpScheduleIt instance. this is the URL that appears when you are logging in
-$conf['settings']['password.pattern'] = '/^[^\s]{6,}$/i';       // regular expression to enforce password complexity
 $conf['settings']['use.per.user.colors'] = 'false'; 			// color reservations by user
 $conf['settings']['schedule']['show.inaccessible.resources'] = 'true';  // whether or not resources that are inaccessible to the user are visible
 $conf['settings']['schedule']['reservation.label'] = '{name}';    		// format for what to display on the reservation slot label. Available properties are: {name}, {title}, {description}, {email}, {phone}, {organization}, {position}
@@ -148,4 +147,10 @@ $conf['settings']['email']['default.from.address'] = '';
  * Reports
  */
 $conf['settings']['reports']['allow.all.users'] = 'false';
+/**
+ * Account Password Rules
+ */
+$conf['settings']['password']['minimum.letters'] = '6';
+$conf['settings']['password']['minimum.numbers'] = '0';
+$conf['settings']['password']['upper.and.lower'] = 'false';
 ?>

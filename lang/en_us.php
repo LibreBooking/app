@@ -74,7 +74,6 @@ class en_us extends Language
 		$strings['FirstNameRequired'] = 'First name is required.';
 		$strings['LastNameRequired'] = 'Last name is required.';
 		$strings['PwMustMatch'] = 'Password confirmation must match password.';
-		$strings['PwComplexity'] = 'Password must be at least 6 characters with a combination of letters, numbers and symbols.';
 		$strings['ValidEmailRequired'] = 'A valid email address is required.';
 		$strings['UniqueEmailRequired'] = 'That email address is already registered.';
 		$strings['UniqueUsernameRequired'] = 'That user name is already registered.';
@@ -553,6 +552,8 @@ class en_us extends Language
 		$strings['QuotaExceeded'] = 'Quota limit exceeded.';
 		$strings['MultiDayRule'] = '%s does not allow reservations across days.';
 		$strings['InvalidReservationData'] = 'There were problems with your reservation request.';
+		$strings['PasswordError'] = 'Password must contain at least %s letters and at least %s numbers.';
+		$strings['PasswordErrorRequirements'] = 'Password must contain a combination of at least %s upper and lower case letters and %s numbers.';
 		// End Errors
 
 		// Page Titles
