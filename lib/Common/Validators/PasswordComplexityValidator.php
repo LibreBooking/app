@@ -65,4 +65,4 @@ class PasswordComplexityValidator extends ValidatorBase implements IValidator
 
 }
 
-?> 
+?>
