@@ -36,11 +36,11 @@ function Reservation(opts)
 		accessoriesConfirm: $('#btnConfirmAddAccessories'),
 		accessoriesCancel: $('#btnCancelAddAccessories'),
 
-		printButton: $('#btnPrint'),
+		printButton: $('.btnPrint'),
 		groupDiv: $('#resourceGroups'),
 		addResourcesButton: $('#btnAddResources'),
 		resourceGroupsDialog: $('#dialogResourceGroups'),
-		addResourcesConfirm:$('#btnConfirmAddResources'),
+		addResourcesConfirm:$('.btnConfirmAddResources'),
 		reservationAttachments:$('#reservationAttachments')
 	};
 
@@ -128,7 +128,7 @@ function Reservation(opts)
 			handleAdditionalResourceChecked($(this), e);
 		});
 
-		$('#btnClearAddResources').click(function ()
+		$('.btnClearAddResources').click(function ()
 		{
 			elements.resourceGroupsDialog.dialog('close');
 		});

@@ -61,7 +61,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 					{html_image src="disks-black.png"}
 					{translate key='AllInstances'}
 				</button>
-				<button type="button"class="button save btnUpdateFutureInstances">
+				<button type="button" class="button save btnUpdateFutureInstances">
 					{html_image src="disk-arrow.png"}
 					{translate key='FutureInstances'}
 				</button>
@@ -72,12 +72,12 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 			</div>
 		</div>
 	{else}
-		<button type="button" id="btnCreate" class="button save update">
+		<button type="button" class="button save update btnCreate">
 			<img src="img/disk-black.png" />
 			{translate key='Update'}
 		</button>
 	{/if}
-	<button type="button" id="btnPrint" class="button">
+	<button type="button" class="button btnPrint">
 		<img src="img/printer.png" />
 		{translate key='Print'}
 	</button>
@@ -97,6 +97,6 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 		{foreach from=$Attachments item=attachment}
 			<a href="attachments/{Pages::RESERVATION_FILE}?{QueryStringKeys::ATTACHMENT_FILE_ID}={$attachment->FileId()}&{QueryStringKeys::REFERENCE_NUMBER}={$ReferenceNumber}" target="_blank">{$attachment->FileName()}</a>&nbsp;<input style='display: none;' type="checkbox" name="{FormKeys::REMOVED_FILE_IDS}[{$attachment->FileId()}]" />&nbsp;
 		{/foreach}
-	</div>
 	{/if}
+	</div>
 {/block}

@@ -33,7 +33,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 			</label>
 
 			<div id="participantList">
-				<ul/>
+				<ul></ul>
 			</div>
 			<div id="participantDialog" title="{translate key=AddParticipants}" class="dialog"></div>
 			<div id="participantGroupDialog" title="{translate key=AddParticipants}" class="dialog"></div>
@@ -53,7 +53,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 			</label>
 
 			<div id="inviteeList">
-				<ul/>
+				<ul></ul>
 			</div>
 			<div id="inviteeDialog" title="{translate key=InviteOthers}" class="dialog"></div>
 			<div id="inviteeGroupDialog" title="{translate key=InviteOthers}" class="dialog"></div>

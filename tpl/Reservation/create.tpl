@@ -270,8 +270,8 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 
 	<div id="resourceGroups"></div>
 
-	<button id="btnConfirmAddResources" class="button">{html_image src="tick-circle.png"} {translate key='Done'}</button>
-	<button id="btnClearAddResources" class="button">{html_image src="slash.png"} {translate key='Cancel'}</button>
+	<button class="button btnConfirmAddResources">{html_image src="tick-circle.png"} {translate key='Done'}</button>
+	<button class="button btnClearAddResources">{html_image src="slash.png"} {translate key='Cancel'}</button>
 </div>
 
 <div id="dialogAddResources" class="dialog" title="{translate key=AddResources}" style="display:none;">
@@ -294,12 +294,12 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 	{/if}
 {/foreach}
     <br/>
-    <button id="btnConfirmAddResources" class="button">{html_image src="tick-circle.png"} {translate key='Done'}</button>
-    <button id="btnClearAddResources" class="button">{html_image src="slash.png"} {translate key='Cancel'}</button>
+    <button class="button btnConfirmAddResources">{html_image src="tick-circle.png"} {translate key='Done'}</button>
+    <button class="button btnClearAddResources">{html_image src="slash.png"} {translate key='Cancel'}</button>
 </div>
 
 <div id="dialogAddAccessories" class="dialog" title="{translate key=AddAccessories}" style="display:none;">
-    <table width="100%">
+    <table style="width:100%">
         <tr>
             <td>{translate key=Accessory}</td>
             <td>{translate key=QuantityRequested}</td>
