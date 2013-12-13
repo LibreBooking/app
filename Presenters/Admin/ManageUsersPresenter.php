@@ -319,10 +319,6 @@ class ManageUsersPresenter extends ActionPresenter implements IManageUsersPresen
 		{
 			$this->page->SetJsonResponse($this->GetUserGroups());
 		}
-		elseif ($dataRequest == 'color')
-		{
-			$foo = 'bar';
-		}
 		elseif ($dataRequest == 'all')
 		{
 			$users = $this->userRepository->GetAll();

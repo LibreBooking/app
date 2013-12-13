@@ -34,11 +34,12 @@ class UserRepositoryTests extends TestBase
 	{
 		$timezone = 'UTC';
 		$language = 'en_us';
+		$preferences = 'n1:v1';
 
 		$userRows = array
 		(
 			array(ColumnNames::USER_ID => 1, ColumnNames::FIRST_NAME => "f1", ColumnNames::LAST_NAME => 'l1', ColumnNames::EMAIL => 'e1', ColumnNames::TIMEZONE_NAME => $timezone, ColumnNames::LANGUAGE_CODE => $language),
-			array(ColumnNames::USER_ID => 2, ColumnNames::FIRST_NAME => "f2", ColumnNames::LAST_NAME => 'l2', ColumnNames::EMAIL => 'e2', ColumnNames::TIMEZONE_NAME => $timezone, ColumnNames::LANGUAGE_CODE => $language),
+			array(ColumnNames::USER_ID => 2, ColumnNames::FIRST_NAME => "f2", ColumnNames::LAST_NAME => 'l2', ColumnNames::EMAIL => 'e2', ColumnNames::TIMEZONE_NAME => $timezone, ColumnNames::LANGUAGE_CODE => $language, ColumnNames::USER_PREFERENCES => $preferences),
 			array(ColumnNames::USER_ID => 3, ColumnNames::FIRST_NAME => "f3", ColumnNames::LAST_NAME => 'l3', ColumnNames::EMAIL => 'e3', ColumnNames::TIMEZONE_NAME => $timezone, ColumnNames::LANGUAGE_CODE => $language),
 		);
 
@@ -48,7 +49,7 @@ class UserRepositoryTests extends TestBase
 		$users = $userRepository->GetAll();
 
 		$user1 = new UserDto(1, "f1", "l1", "e1", $timezone, $language);
-		$user2 = new UserDto(2, "f2", "l2", "e2", $timezone, $language);
+		$user2 = new UserDto(2, "f2", "l2", "e2", $timezone, $language, $preferences);
 		$user3 = new UserDto(3, "f3", "l3", "e3", $timezone, $language);
 
 		$getAllUsersCommand = new GetAllUsersByStatusCommand(AccountStatus::ACTIVE);
@@ -70,6 +71,7 @@ class UserRepositoryTests extends TestBase
 		$loadGroupsCommand = new GetUserGroupsCommand($userId, null);
 		$attributesCommand = new GetAttributeValuesCommand($userId, CustomAttributeCategory::USER);
 		$loadOwnedGroups = new GetGroupsIManageCommand($userId);
+		$loadPreferences = new GetUserPreferencesCommand($userId);
 
 		$userRow = $this->GetUserRow($userId);
 		$emailPrefRows = $this->GetEmailPrefRows();
@@ -77,6 +79,7 @@ class UserRepositoryTests extends TestBase
 		$groupsRows = $this->GetGroupsRows();
 		$attributeRows = $this->GetAttributeRows();
 		$ownedGroupRows = $this->GetOwnedGroupRows();
+		$preferencesRows = $this->GetPreferenceRows();
 
 		$this->db->SetRow(0, array($userRow));
 		$this->db->SetRow(1, $emailPrefRows);
@@ -84,19 +87,21 @@ class UserRepositoryTests extends TestBase
 		$this->db->SetRow(3, $groupsRows);
 		$this->db->SetRow(4, $attributeRows);
 		$this->db->SetRow(5, $ownedGroupRows);
+		$this->db->SetRow(6, $preferencesRows);
 
 		$row = $userRow;
 
 		$userRepository = new UserRepository();
 		$user = $userRepository->LoadById($userId);
 
-		$this->assertEquals(6, count($this->db->_Commands));
+		$this->assertEquals(7, count($this->db->_Commands));
 		$this->assertEquals($loadByIdCommand, $this->db->_Commands[0]);
 		$this->assertTrue($this->db->ContainsCommand($loadEmailPreferencesCommand));
 		$this->assertTrue($this->db->ContainsCommand($loadPermissionsCommand));
 		$this->assertTrue($this->db->ContainsCommand($loadGroupsCommand));
 		$this->assertTrue($this->db->ContainsCommand($attributesCommand));
 		$this->assertTrue($this->db->ContainsCommand($loadOwnedGroups));
+		$this->assertTrue($this->db->ContainsCommand($loadPreferences));
 
 		$this->assertEquals($row[ColumnNames::FIRST_NAME], $user->FirstName());
 		$this->assertTrue($user->WantsEventEmail(new ReservationCreatedEvent()));
@@ -117,6 +122,7 @@ class UserRepositoryTests extends TestBase
 		$this->assertTrue(in_array($group2, $groups));
 		$this->assertEquals('value', $user->GetAttributeValue(1));
 		$this->assertEquals('value2', $user->GetAttributeValue(2));
+		$this->assertEquals('v1', $user->GetPreference('n1'));
 	}
 
 	public function testLoadsUserByPublicId()
@@ -127,7 +133,7 @@ class UserRepositoryTests extends TestBase
 		$groupsRows = $this->GetGroupsRows();
 		$attributeRows = $this->GetAttributeRows();
 		$ownedGroupRows = $this->GetOwnedGroupRows();
-		$preferenceRows = $this->GetPreferences();
+		$preferenceRows = $this->GetPreferenceRows();
 
 		$this->db->SetRow(0, array($userRow));
 		$this->db->SetRow(1, $emailPrefRows);
@@ -160,7 +166,7 @@ class UserRepositoryTests extends TestBase
 		$this->db->SetRow(3, $this->GetGroupsRows());
 		$this->db->SetRow(4, $this->GetAttributeRows());
 		$this->db->SetRow(5, $this->GetOwnedGroupRows());
-		$this->db->SetRow(6, $this->GetPreferences());
+		$this->db->SetRow(6, $this->GetPreferenceRows());
 
 		$userRepository = new UserRepository();
 		$user = $userRepository->LoadById($userId);
@@ -186,7 +192,7 @@ class UserRepositoryTests extends TestBase
 		$groupsRows = $this->GetGroupsRows();
 		$attributeRows = $this->GetAttributeRows();
 		$ownedGroupRows = $this->GetOwnedGroupRows();
-		$preferenceRows = $this->GetPreferences();
+		$preferenceRows = $this->GetPreferenceRows();
 
 		$this->db->SetRow(0, array($userRow));
 		$this->db->SetRow(1, $emailPrefRows);
@@ -268,6 +274,7 @@ class UserRepositoryTests extends TestBase
 		$user->EnableSubscription();
 		$user->Login($loginTime, $language);
 		$user->ChangeDefaultSchedule($scheduleId);
+
 		$publicId = $user->GetPublicId();
 
 		$command = new UpdateUserCommand($userId, $user->StatusId(), $password, $salt, $fname, $lname, $email, $username, $homepageId, $timezone, $loginTime, true, $publicId, $language, $scheduleId);
@@ -278,6 +285,28 @@ class UserRepositoryTests extends TestBase
 		$this->assertTrue($this->db->ContainsCommand($command));
 	}
 
+	public function testAddsAndUpdatesUserPreferences()
+	{
+		$userId = 987;
+		$user = new User();
+		$user->WithId($userId);
+
+		$preferences = new UserPreferences();
+		$preferences->Add('pref1', 'val1');
+		$preferences->Add('pref2', 'val2');
+
+		$user->WithPreferences($preferences);
+
+		$user->ChangePreference('pref2', 'val3');
+		$user->ChangePreference('pref3', 'val4');
+
+		$repo = new UserRepository();
+		$repo->Update($user);
+
+		$this->assertTrue($this->db->ContainsCommand(new UpdateUserPreferenceCommand($userId, 'pref2', 'val3')));
+		$this->assertTrue($this->db->ContainsCommand(new AddUserPreferenceCommand($userId, 'pref3', 'val4')));
+
+	}
 	public function testOnlyUpdatesPermissionsIfTheyHaveChanged()
 	{
 		$userId = 987;
@@ -648,7 +677,7 @@ class UserRepositoryTests extends TestBase
 				);
 	}
 
-	private function GetPreferences()
+	private function GetPreferenceRows()
 	{
 		return array(
 					array(ColumnNames::USER_ID => 1, ColumnNames::PREFERENCE_NAME => 'n1', ColumnNames::PREFERENCE_VALUE => 'v1'),

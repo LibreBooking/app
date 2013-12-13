@@ -133,11 +133,11 @@ class Queries
 	const AUTO_ASSIGN_PERMISSIONS =
 			'INSERT INTO
           user_resource_permissions (user_id, resource_id)
-		SELECT 
-			@userid as user_id, resource_id 
-		FROM 
+		SELECT
+			@userid as user_id, resource_id
+		FROM
 			resources
-		WHERE 
+		WHERE
 			autoassign=1';
 
 	const AUTO_ASSIGN_RESOURCE_PERMISSIONS =
@@ -165,7 +165,7 @@ class Queries
 
 	const COOKIE_LOGIN =
 			'SELECT user_id, lastlogin, email
-		FROM users 
+		FROM users
 		WHERE user_id = @userid';
 
 	const DELETE_ACCESSORY = 'DELETE FROM accessories WHERE accessory_id = @accessoryid';
@@ -205,8 +205,8 @@ class Queries
 
 	const DELETE_RESOURCE_RESERVATIONS_COMMAND =
 			'DELETE s.*
-		FROM reservation_series s 
-		INNER JOIN reservation_resources rs ON s.series_id = rs.series_id 
+		FROM reservation_series s
+		INNER JOIN reservation_resources rs ON s.series_id = rs.series_id
 		WHERE rs.resource_id = @resourceid';
 
 	const DELETE_RESOURCE_TYPE_COMMAND = 'DELETE FROM resource_types WHERE resource_type_id = @resource_type_id';
@@ -215,10 +215,10 @@ class Queries
 
 	const DELETE_SCHEDULE = 'DELETE FROM schedules WHERE schedule_id = @scheduleid';
 
-	const DELETE_SERIES = 
-		'UPDATE reservation_series 
-		    SET status_id = @statusid, 
-			last_modified = @dateModified 
+	const DELETE_SERIES =
+		'UPDATE reservation_series
+		    SET status_id = @statusid,
+			last_modified = @dateModified
 		  WHERE series_id = @seriesid';
 
 	const DELETE_USER = 'DELETE FROM users	WHERE user_id = @userid';
@@ -513,7 +513,7 @@ class Queries
 		INNER JOIN users u ON u.user_id = rs.owner_id
 		INNER JOIN reservation_resources rr ON rs.series_id = rr.series_id AND rr.resource_level_id = @resourceLevelId
 		INNER JOIN resources r ON r.resource_id = rr.resource_id
-		WHERE 
+		WHERE
 			reference_number = @referenceNumber AND
 			rs.status_id <> 2';
 
@@ -549,7 +549,7 @@ class Queries
 
 	const GET_RESERVATION_PARTICIPANTS =
 			'SELECT
-			u.user_id, 
+			u.user_id,
 			u.fname,
 			u.lname,
 			u.email,
@@ -581,21 +581,21 @@ class Queries
 
 	const GET_SCHEDULE_TIME_BLOCK_GROUPS =
 			'SELECT
-			tb.label, 
-			tb.end_label, 
-			tb.start_time, 
-			tb.end_time, 
+			tb.label,
+			tb.end_label,
+			tb.start_time,
+			tb.end_time,
 			tb.availability_code,
 			tb.day_of_week,
 			l.timezone
-		FROM 
-			time_blocks tb, 
+		FROM
+			time_blocks tb,
 			layouts l,
 			schedules s
-		WHERE 
-			l.layout_id = s.layout_id  AND 
+		WHERE
+			l.layout_id = s.layout_id  AND
 			tb.layout_id = l.layout_id AND
-			s.schedule_id = @scheduleid 
+			s.schedule_id = @scheduleid
 		ORDER BY tb.start_time';
 
 	const GET_SAVED_REPORT = 'SELECT * FROM saved_reports WHERE saved_report_id = @report_id AND user_id = @userid';
@@ -613,7 +613,7 @@ class Queries
 	const GET_SCHEDULE_RESOURCES =
 			'SELECT r.*, s.admin_group_id as s_admin_group_id FROM  resources r
 		INNER JOIN schedules s ON r.schedule_id = s.schedule_id
-		WHERE 
+		WHERE
 			r.schedule_id = @scheduleid AND
 			r.status_id <> 0
 		ORDER BY r.sort_order, r.name';
@@ -662,12 +662,12 @@ class Queries
 
 	const GET_USER_ROLES =
 			'SELECT
-			user_id, user_level 
-		FROM 
+			user_id, user_level
+		FROM
 			roles r
 		INNER JOIN
 			user_roles ur on r.role_id = ur.role_id
-		WHERE 
+		WHERE
 			ur.user_id = @userid';
 
 	const GET_USER_SESSION_BY_SESSION_TOKEN = 'SELECT * FROM user_session WHERE session_token = @session_token';
@@ -676,18 +676,18 @@ class Queries
 
 	const MIGRATE_PASSWORD =
 			'UPDATE
-			users 
-		SET 
-			password = @password, legacypassword = null, salt = @salt 
-		WHERE 
+			users
+		SET
+			password = @password, legacypassword = null, salt = @salt
+		WHERE
 			user_id = @userid';
 
 	const REGISTER_FORM_SETTINGS =
 			'INSERT INTO
-			registration_form_settings (fname_setting, lname_setting, username_setting, email_setting, password_setting, 
-			organization_setting, group_setting, position_setting, address_setting, phone_setting, homepage_setting, timezone_setting)	
+			registration_form_settings (fname_setting, lname_setting, username_setting, email_setting, password_setting,
+			organization_setting, group_setting, position_setting, address_setting, phone_setting, homepage_setting, timezone_setting)
 		VALUES
-			(@fname_setting, @lname_setting, @username_setting, @email_setting, @password_setting, @organization_setting, 
+			(@fname_setting, @lname_setting, @username_setting, @email_setting, @password_setting, @organization_setting,
 			 @group_setting, @position_setting, @address_setting, @phone_setting, @homepage_setting, @timezone_setting)
 		';
 
@@ -737,7 +737,7 @@ class Queries
 	const ADD_RESOURCE =
 			'INSERT INTO
 			resources (name, location, contact_info, description, notes, status_id, min_duration, min_increment,
-					   max_duration, unit_cost, autoassign, requires_approval, allow_multiday_reservations, 
+					   max_duration, unit_cost, autoassign, requires_approval, allow_multiday_reservations,
 					   max_participants, min_notice_time, max_notice_time, schedule_id, admin_group_id)
 		VALUES
 			(@resource_name, @location, @contact_info, @description, @resource_notes, @status_id, @min_duration, @min_increment,
@@ -752,7 +752,7 @@ class Queries
 
 	const ADD_RESOURCE_TYPE = 'INSERT INTO resource_types (resource_type_name, resource_type_description) VALUES (@resource_type_name, @resource_type_description)';
 
-	const SAVE_USER_PREFERENCE = 'INSERT INTO user_preferences (user_id, name, value) VALUES (@userid, @name, @value)';
+	const ADD_USER_PREFERENCE = 'INSERT INTO user_preferences (user_id, name, value) VALUES (@userid, @name, @value)';
 
 	const SET_DEFAULT_SCHEDULE =
 			'UPDATE schedules
@@ -810,10 +810,10 @@ class Queries
 			'UPDATE
 			reservation_series
 		SET
-			last_modified = @dateModified, 
-			title = @title, 
-			description = @description, 
-			repeat_type = @repeatType, 
+			last_modified = @dateModified,
+			title = @title,
+			description = @description,
+			repeat_type = @repeatType,
 			repeat_options = @repeatOptions,
 			status_id = @statusid,
 			owner_id = @userid
@@ -904,7 +904,7 @@ class Queries
 
 	const UPDATE_USER_BY_USERNAME =
 			'UPDATE users
-		SET 
+		SET
 			email = COALESCE(@email, email),
 			password = @password,
 			salt = @salt,
@@ -913,7 +913,7 @@ class Queries
 			phone = COALESCE(@phone, phone),
 			organization = COALESCE(@organization, organization),
 			position = COALESCE(@position, position)
-		WHERE 
+		WHERE
 			username = @username';
 
 	const UPDATE_USER_PREFERENCE = 'UPDATE user_preferences SET value = @value WHERE user_id = @userid AND name = @name';
@@ -928,7 +928,7 @@ class Queries
 
 	const VALIDATE_USER =
 			'SELECT user_id, password, salt, legacypassword
-		FROM users 
+		FROM users
 		WHERE (username = @username OR email = @username) AND status_id = 1';
 }
 

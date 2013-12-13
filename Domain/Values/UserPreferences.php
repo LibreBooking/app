@@ -101,8 +101,24 @@ class UserPreferences
 	/**
 	 * @return array|string[]
 	 */
+	public function All()
+	{
+		return $this->preferences;
+	}
+
+	/**
+	 * @return array|string[]
+	 */
 	public function ChangedPreferences()
 	{
 		return $this->changed;
+	}
+
+	/**
+	 * @return array|string[]
+	 */
+	public function AddedPreferences()
+	{
+		return $this->added;
 	}
 }

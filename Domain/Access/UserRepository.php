@@ -170,7 +170,7 @@ class UserRepository implements IUserRepository, IAccountActivationRepository
 
 		while ($row = $reader->GetRow())
 		{
-			$users[] = new UserDto($row[ColumnNames::USER_ID], $row[ColumnNames::FIRST_NAME], $row[ColumnNames::LAST_NAME], $row[ColumnNames::EMAIL], $row[ColumnNames::TIMEZONE_NAME], $row[ColumnNames::LANGUAGE_CODE]);
+			$users[] = new UserDto($row[ColumnNames::USER_ID], $row[ColumnNames::FIRST_NAME], $row[ColumnNames::LAST_NAME], $row[ColumnNames::EMAIL], $row[ColumnNames::TIMEZONE_NAME], $row[ColumnNames::LANGUAGE_CODE], $row[ColumnNames::USER_PREFERENCES]);
 		}
 
 		return $users;
@@ -222,20 +222,22 @@ class UserRepository implements IUserRepository, IAccountActivationRepository
 			$emailPreferences = $this->LoadEmailPreferences($userId);
 			$permissions = $this->LoadPermissions($userId);
 			$groups = $this->LoadGroups($userId);
-			$preferences = $this->LoadPreferences($userId);
 
 			$user = User::FromRow($row);
 			$user->WithEmailPreferences($emailPreferences);
 			$user->WithPermissions($permissions);
 			$user->WithGroups($groups);
 			$this->LoadAttributes($userId, $user);
-			$user->WithPreferences($preferences);
 
 			if ($user->IsGroupAdmin())
 			{
 				$ownedGroups = $this->LoadOwnedGroups($userId);
 				$user->WithOwnedGroups($ownedGroups);
 			}
+
+			$preferences = $this->LoadPreferences($userId);
+			$user->WithPreferences($preferences);
+
 			$user->WithDefaultSchedule($row[ColumnNames::DEFAULT_SCHEDULE_ID]);
 
 			$this->_cache->Add($userId, $user);
@@ -380,6 +382,16 @@ class UserRepository implements IUserRepository, IAccountActivationRepository
 		foreach ($user->GetAddedAttributes() as $added)
 		{
 			$db->Execute(new AddAttributeValueCommand($added->AttributeId, $added->Value, $user->Id(), CustomAttributeCategory::USER));
+		}
+
+		foreach($user->GetPreferences()->AddedPreferences() as $added)
+		{
+			$db->Execute(new AddUserPreferenceCommand($user->Id(), $added, $user->GetPreference($added)));
+		}
+
+		foreach($user->GetPreferences()->ChangedPreferences() as $updated)
+		{
+			$db->Execute(new UpdateUserPreferenceCommand($user->Id(), $updated, $user->GetPreference($updated)));
 		}
 	}
 
@@ -623,8 +635,9 @@ class UserDto
 	public $EmailAddress;
 	public $Timezone;
 	public $LanguageCode;
+	public $Preferences;
 
-	public function __construct($userId, $firstName, $lastName, $emailAddress, $timezone = null, $languageCode = null)
+	public function __construct($userId, $firstName, $lastName, $emailAddress, $timezone = null, $languageCode = null, $preferences = null)
 	{
 		$this->UserId = $userId;
 		$this->FirstName = $firstName;
@@ -634,6 +647,7 @@ class UserDto
 		$this->LanguageCode = $languageCode;
 		$name = new FullName($this->FirstName(), $this->LastName());
 		$this->FullName =  $name->__toString() . " ({$this->EmailAddress})";
+		$this->Preferences = UserPreferences::Parse($preferences)->All();
 	}
 
 	public function Id()

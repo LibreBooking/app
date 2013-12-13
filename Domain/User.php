@@ -834,6 +834,15 @@ class User
 		return false;
 	}
 
+	/**
+	 * @param $preferenceName string
+	 * @return null|string
+	 */
+	public function GetPreference($preferenceName)
+	{
+		return $this->preferences->Get($preferenceName);
+	}
+
 }
 
 class NullUser extends User

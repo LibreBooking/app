@@ -1644,11 +1644,11 @@ class GetUserPreferencesCommand extends SqlCommand
 	}
 }
 
-class SaveUserPreferenceCommand extends SqlCommand
+class AddUserPreferenceCommand extends SqlCommand
 {
 	public function __construct($userId, $name, $value)
 	{
-		parent::__construct(Queries::SAVE_USER_PREFERENCE);
+		parent::__construct(Queries::ADD_USER_PREFERENCE);
 
 		$this->AddParameter(new Parameter(ParameterNames::USER_ID, $userId));
 		$this->AddParameter(new Parameter(ParameterNames::NAME, $name));

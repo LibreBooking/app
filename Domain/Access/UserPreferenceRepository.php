@@ -91,7 +91,7 @@ class UserPreferenceRepository implements IUserPreferenceRepository
 		$db = ServiceLocator::GetDatabase();
 
 		if (is_null(self::GetUserPreference($userId, $preferenceName)))
-			$db->ExecuteInsert(new SaveUserPreferenceCommand($userId, $preferenceName, $preferenceValue));
+			$db->ExecuteInsert(new AddUserPreferenceCommand($userId, $preferenceName, $preferenceValue));
 		else
 			$db->Execute(new UpdateUserPreferenceCommand($userId, $preferenceName, $preferenceValue));
 	}
