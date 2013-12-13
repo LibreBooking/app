@@ -44,13 +44,14 @@ class ColumnNames
 	const ORGANIZATION = 'organization';
 	const POSITION = 'position';
 	const DEFAULT_SCHEDULE_ID = 'default_schedule_id';
+	const USER_PREFERENCES = 'preferences';
 
 	// USER_ADDRESSES //
 	const ADDRESS_ID = 'address_id';
 
 	// USER_PREFERENCES //
-	const PrefName = 'name';
-	const PrefValue = 'value';
+	const PREFERENCE_NAME = 'name';
+	const PREFERENCE_VALUE = 'value';
 
 	// ROLES //
 	const ROLE_LEVEL = 'role_level';

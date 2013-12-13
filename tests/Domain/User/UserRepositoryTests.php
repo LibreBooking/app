@@ -127,6 +127,7 @@ class UserRepositoryTests extends TestBase
 		$groupsRows = $this->GetGroupsRows();
 		$attributeRows = $this->GetAttributeRows();
 		$ownedGroupRows = $this->GetOwnedGroupRows();
+		$preferenceRows = $this->GetPreferences();
 
 		$this->db->SetRow(0, array($userRow));
 		$this->db->SetRow(1, $emailPrefRows);
@@ -134,6 +135,7 @@ class UserRepositoryTests extends TestBase
 		$this->db->SetRow(3, $groupsRows);
 		$this->db->SetRow(4, $attributeRows);
 		$this->db->SetRow(5, $ownedGroupRows);
+		$this->db->SetRow(6, $preferenceRows);
 
 		$publicId = uniqid();
 		$userRepository = new UserRepository();
@@ -141,7 +143,7 @@ class UserRepositoryTests extends TestBase
 		$user = $userRepository->LoadByPublicId($publicId);
 
 		$loadByIdCommand = new GetUserByPublicIdCommand($publicId);
-		$this->assertEquals(6, count($this->db->_Commands));
+		$this->assertEquals(7, count($this->db->_Commands));
 		$this->assertTrue($this->db->ContainsCommand($loadByIdCommand));
 
 		$this->assertNotNull($user);
@@ -158,12 +160,13 @@ class UserRepositoryTests extends TestBase
 		$this->db->SetRow(3, $this->GetGroupsRows());
 		$this->db->SetRow(4, $this->GetAttributeRows());
 		$this->db->SetRow(5, $this->GetOwnedGroupRows());
+		$this->db->SetRow(6, $this->GetPreferences());
 
 		$userRepository = new UserRepository();
 		$user = $userRepository->LoadById($userId);
 		$user = $userRepository->LoadById($userId); // 2nd call should load from cache
 
-		$this->assertEquals(6, count($this->db->_Commands));
+		$this->assertEquals(7, count($this->db->_Commands));
 	}
 
 	public function testCanLoadUserByUserName()
@@ -175,6 +178,7 @@ class UserRepositoryTests extends TestBase
 		$loadPermissionsCommand = new GetUserPermissionsCommand($userId);
 		$loadGroupsCommand = new GetUserGroupsCommand($userId, null);
 		$loadOwnedGroups = new GetGroupsIManageCommand($userId);
+		$loadPreferences = new GetUserPreferencesCommand($userId);
 
 		$userRow = $this->GetUserRow($userId);
 		$emailPrefRows = $this->GetEmailPrefRows();
@@ -182,6 +186,7 @@ class UserRepositoryTests extends TestBase
 		$groupsRows = $this->GetGroupsRows();
 		$attributeRows = $this->GetAttributeRows();
 		$ownedGroupRows = $this->GetOwnedGroupRows();
+		$preferenceRows = $this->GetPreferences();
 
 		$this->db->SetRow(0, array($userRow));
 		$this->db->SetRow(1, $emailPrefRows);
@@ -189,16 +194,18 @@ class UserRepositoryTests extends TestBase
 		$this->db->SetRow(3, $groupsRows);
 		$this->db->SetRow(4, $attributeRows);
 		$this->db->SetRow(5, $ownedGroupRows);
+		$this->db->SetRow(6, $preferenceRows);
 
 		$userRepository = new UserRepository();
 		$user = $userRepository->LoadByUsername($userName);
 
-		$this->assertEquals(6, count($this->db->_Commands));
+		$this->assertEquals(7, count($this->db->_Commands));
 		$this->assertTrue($this->db->ContainsCommand($loginCommand));
 		$this->assertTrue($this->db->ContainsCommand($loadEmailPreferencesCommand));
 		$this->assertTrue($this->db->ContainsCommand($loadPermissionsCommand));
 		$this->assertTrue($this->db->ContainsCommand($loadGroupsCommand));
 		$this->assertTrue($this->db->ContainsCommand($loadOwnedGroups));
+		$this->assertTrue($this->db->ContainsCommand($loadPreferences));
 
 		$this->assertEquals($userId, $user->Id());
 	}
@@ -211,7 +218,7 @@ class UserRepositoryTests extends TestBase
 		$totalPages = 11;
 		$offset = 10;
 		$countRow = array('total' => $count);
-		$row1 = $this->GetUserRow(1, 'first', 'last', 'email', 'un1', '2011-01-01');
+		$row1 = $this->GetUserRow(1, 'first', 'last', 'email', 'un1', '2011-01-01', 'utc', AccountStatus::ACTIVE, null, 'pref1:val1,pref2:val2');
 		$row2 = $this->GetUserRow(2, 'first', 'last', 'email', null, '2010-01-01');
 		$userRows = array($row1, $row2);
 
@@ -572,7 +579,8 @@ class UserRepositoryTests extends TestBase
 								$lastLogin = null,
 								$timezone = 'UTC',
 								$statusId = AccountStatus::ACTIVE,
-								$scheduleId = 123)
+								$scheduleId = 123,
+								$preferences = null)
 	{
 		$row =
 				array(
@@ -595,6 +603,7 @@ class UserRepositoryTests extends TestBase
 					ColumnNames::ALLOW_CALENDAR_SUBSCRIPTION => 1,
 					ColumnNames::PUBLIC_ID => uniqid(),
 					ColumnNames::DEFAULT_SCHEDULE_ID => $scheduleId,
+					ColumnNames::USER_PREFERENCES => $preferences,
 				);
 
 		return $row;
@@ -636,6 +645,14 @@ class UserRepositoryTests extends TestBase
 		return array(
 					array(ColumnNames::GROUP_ID => 10000, ColumnNames::GROUP_NAME => 'G1'),
 					array(ColumnNames::GROUP_ID => 20000, ColumnNames::GROUP_NAME => 'G2'),
+				);
+	}
+
+	private function GetPreferences()
+	{
+		return array(
+					array(ColumnNames::USER_ID => 1, ColumnNames::PREFERENCE_NAME => 'n1', ColumnNames::PREFERENCE_VALUE => 'v1'),
+					array(ColumnNames::USER_ID => 1, ColumnNames::PREFERENCE_NAME => 'n2', ColumnNames::PREFERENCE_VALUE => 'v2'),
 				);
 	}
 

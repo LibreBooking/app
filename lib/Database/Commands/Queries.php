@@ -348,7 +348,11 @@ class Queries
 	const GET_ALL_SCHEDULES = 'SELECT * FROM schedules s INNER JOIN layouts l ON s.layout_id = l.layout_id ORDER BY s.name';
 
 	const GET_ALL_USERS_BY_STATUS =
-			'SELECT * FROM users WHERE (0 = @user_statusid OR status_id = @user_statusid) ORDER BY lname, fname';
+			'SELECT u.*,
+			GROUP_CONCAT(CONCAT(p.name, ":", p.value) SEPARATOR ",") AS preferences
+			FROM users u
+			LEFT JOIN user_preferences p ON u.user_id = p.user_id
+			WHERE (0 = @user_statusid OR status_id = @user_statusid) ORDER BY lname, fname';
 
 	const GET_ANNOUNCEMENT_BY_ID = 'SELECT * FROM announcements WHERE announcementid = @announcementid';
 

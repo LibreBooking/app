@@ -26,6 +26,7 @@ class User
 	public function __construct()
 	{
 		$this->emailPreferences = new EmailPreferences();
+		$this->preferences = new UserPreferences();
 	}
 
 	/**
@@ -217,6 +218,18 @@ class User
 		$this->statusId = AccountStatus::INACTIVE;
 	}
 
+	protected $preferences;
+
+	public function GetPreferences()
+	{
+		return $this->preferences;
+	}
+
+	public function ChangePreference($name, $value)
+	{
+		$this->preferences->Update($name, $value);
+	}
+
 	/**
 	 * @var bool
 	 */
@@ -257,6 +270,11 @@ class User
 	{
 		$this->permissionsChanged = false;
 		$this->allowedResourceIds = $allowedResourceIds;
+	}
+
+	public function WithPreferences(UserPreferences $preferences)
+	{
+		$this->preferences = $preferences;
 	}
 
 	/**
@@ -403,6 +421,8 @@ class User
 		$user->attributes[UserAttribute::Phone] = $row[ColumnNames::PHONE_NUMBER];
 		$user->attributes[UserAttribute::Position] = $row[ColumnNames::POSITION];
 		$user->attributes[UserAttribute::Organization] = $row[ColumnNames::ORGANIZATION];
+
+		$user->isApplicationAdmin = Configuration::Instance()->GetKey(ConfigKeys::ADMIN_EMAIL) == $row[ColumnNames::EMAIL];
 
 		return $user;
 	}

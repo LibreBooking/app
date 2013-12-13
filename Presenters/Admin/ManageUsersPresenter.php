@@ -196,6 +196,7 @@ class ManageUsersPresenter extends ActionPresenter implements IManageUsersPresen
 		$resources = array();
 
 		$user = $this->userRepository->LoadById(ServiceLocator::GetServer()->GetUserSession()->UserId);
+
 		$allResources = $this->resourceRepository->GetResourceList();
 		foreach ($allResources as $resource)
 		{
@@ -407,9 +408,15 @@ class ManageUsersPresenter extends ActionPresenter implements IManageUsersPresen
 	public function ChangeColor()
 	{
 		$userId = $this->page->GetUserId();
+		Log::Debug('Changing reservation color for userId: %s', $userId);
+
 		$color = $this->page->GetReservationColor();
 
-		Log::Debug('Changing reservation color for userId: %s', $userId);
+		$user = $this->userRepository->LoadById($userId);
+		$user->ChangePreference(UserPreferences::RESERVATION_COLOR, $color);
+
+		$this->userRepository->Update($user);
+
 	}
 }
 

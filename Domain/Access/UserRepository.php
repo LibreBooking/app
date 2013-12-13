@@ -22,6 +22,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 require_once(ROOT_DIR . 'Domain/User.php');
 require_once(ROOT_DIR . 'Domain/Values/AccountStatus.php');
 require_once(ROOT_DIR . 'Domain/Values/FullName.php');
+require_once(ROOT_DIR . 'Domain/Values/UserPreferences.php');
 require_once(ROOT_DIR . 'lib/Email/Messages/AccountCreationEmail.php');
 
 interface IUserRepository extends IUserViewRepository
@@ -221,12 +222,14 @@ class UserRepository implements IUserRepository, IAccountActivationRepository
 			$emailPreferences = $this->LoadEmailPreferences($userId);
 			$permissions = $this->LoadPermissions($userId);
 			$groups = $this->LoadGroups($userId);
+			$preferences = $this->LoadPreferences($userId);
 
 			$user = User::FromRow($row);
 			$user->WithEmailPreferences($emailPreferences);
 			$user->WithPermissions($permissions);
 			$user->WithGroups($groups);
 			$this->LoadAttributes($userId, $user);
+			$user->WithPreferences($preferences);
 
 			if ($user->IsGroupAdmin())
 			{
@@ -467,6 +470,7 @@ class UserRepository implements IUserRepository, IAccountActivationRepository
 			$allowedResourceIds[] = $row[ColumnNames::RESOURCE_ID];
 		}
 
+		$reader->Free();
 		return $allowedResourceIds;
 	}
 
@@ -503,6 +507,21 @@ class UserRepository implements IUserRepository, IAccountActivationRepository
 		return array_values($groups);
 	}
 
+	public function LoadPreferences($userId)
+	{
+		$command = new GetUserPreferencesCommand($userId);
+		$reader = ServiceLocator::GetDatabase()->Query($command);
+
+		$preferences = new UserPreferences();
+		while($row = $reader->GetRow())
+		{
+			$preferences->Add($row[ColumnNames::PREFERENCE_NAME], $row[ColumnNames::PREFERENCE_VALUE]);
+		}
+
+		$reader->Free();
+
+		return $preferences;
+	}
 	/**
 	 * @param $emailAddress string
 	 * @return User
@@ -689,6 +708,10 @@ class UserItemView
 	public $Position;
 	public $Language;
 	public $ReservationColor;
+	/**
+	 * @var UserPreferences
+	 */
+	public $Preferences;
 
 	public function IsActive()
 	{
@@ -712,6 +735,13 @@ class UserItemView
 		$user->Organization = $row[ColumnNames::ORGANIZATION];
 		$user->Position = $row[ColumnNames::POSITION];
 		$user->Language = $row[ColumnNames::LANGUAGE_CODE];
+
+		$preferences = UserPreferences::Parse($row[ColumnNames::USER_PREFERENCES]);
+		if (!empty($preferences))
+		{
+			$user->ReservationColor = $preferences->Get(UserPreferences::RESERVATION_COLOR);
+		}
+		$user->Preferences = $preferences;
 
 		return $user;
 	}
