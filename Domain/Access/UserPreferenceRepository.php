@@ -18,7 +18,6 @@ You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-
 require_once(ROOT_DIR . 'Domain/User.php');
 
 interface IUserPreferenceRepository
@@ -60,7 +59,9 @@ class UserPreferenceRepository implements IUserPreferenceRepository
 
 		$rv = array();
 		while ($row = $reader->GetRow())
-			$rv[$row[ColumnNames::PrefName]] = $row[ColumnNames::PrefValue];
+		{
+			$rv[$row[ColumnNames::PREFERENCE_NAME]] = $row[ColumnNames::PREFERENCE_VALUE];
+		}
 
 		return $rv;
 	}
@@ -75,7 +76,7 @@ class UserPreferenceRepository implements IUserPreferenceRepository
 		$reader = ServiceLocator::GetDatabase()->Query(new GetUserPreferenceCommand($userId, $preferenceName));
 
 		if ($row = $reader->GetRow())
-			return $row[ColumnNames::PrefValue];
+			return $row[ColumnNames::PREFERENCE_VALUE];
 
 		return null;
 	}
@@ -91,9 +92,13 @@ class UserPreferenceRepository implements IUserPreferenceRepository
 		$db = ServiceLocator::GetDatabase();
 
 		if (is_null(self::GetUserPreference($userId, $preferenceName)))
+		{
 			$db->ExecuteInsert(new AddUserPreferenceCommand($userId, $preferenceName, $preferenceValue));
+		}
 		else
+		{
 			$db->Execute(new UpdateUserPreferenceCommand($userId, $preferenceName, $preferenceValue));
+		}
 	}
 }
 ?>

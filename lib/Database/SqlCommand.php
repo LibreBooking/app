@@ -140,15 +140,21 @@ class FilterCommand extends SqlCommand
 	public function GetQuery()
 	{
 		$baseQuery = $this->baseCommand->GetQuery();
-		$hasWhere = (stripos($baseQuery, 'WHERE') !== false);
+		$baseQueryUpper = strtoupper($baseQuery);
+		$numberOfWheres = substr_count($baseQueryUpper, 'WHERE');
+		$numberOfSelects = substr_count($baseQueryUpper, 'SELECT');
+		$hasWhere = $numberOfWheres !== false && $numberOfWheres > 0 && $numberOfWheres == $numberOfSelects;
+
 		$hasOrderBy = (stripos($baseQuery, 'ORDER BY') !== false);
 		$hasGroupBy = (stripos($baseQuery, 'GROUP BY') !== false);
+
 		$newWhere = $this->filter->Where();
 
 		if ($hasWhere)
 		{
 			// get between where and order by, replace with match plus new stuff
-			$baseQuery = preg_replace('/WHERE/ims', 'WHERE (', $baseQuery, 1);
+			$pos = strripos($baseQuery, 'WHERE');
+			$baseQuery = substr_replace($baseQuery, 'WHERE (', $pos, strlen('WHERE'));
 
 			$groupBySplit = preg_split("/GROUP BY/ims", $baseQuery);
 			$orderBySplit = preg_split("/ORDER BY/ims", $baseQuery);

@@ -21,6 +21,8 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 
 require_once(ROOT_DIR . 'Domain/Values/ReservationUserLevel.php');
 require_once(ROOT_DIR . 'Domain/Values/ReservationStatus.php');
+require_once(ROOT_DIR . 'Domain/Values/CustomAttributes.php');
+require_once(ROOT_DIR . 'Domain/Values/UserPreferences.php');
 require_once(ROOT_DIR . 'Domain/RepeatOptions.php');
 
 interface IReservationViewRepository
@@ -904,6 +906,11 @@ class ReservationItemView implements IReservedItemView
 	public $InviteeIds = array();
 
 	/**
+	 * @var UserPreferences
+	 */
+	public $UserPreferences;
+
+	/**
 	 * @param $referenceNumber string
 	 * @param $startDate Date
 	 * @param $endDate Date
@@ -922,6 +929,8 @@ class ReservationItemView implements IReservedItemView
 	 * @param $userOrganization string
 	 * @param $participant_list string
 	 * @param $invitee_list string
+	 * @param $attribute_list string
+	 * @param $preferences string
 	 */
 	public function __construct(
 		$referenceNumber = null,
@@ -941,10 +950,11 @@ class ReservationItemView implements IReservedItemView
 		$userOrganization = null,
 		$userPosition = null,
 		$participant_list = null,
-		$invitee_list = null
+		$invitee_list = null,
+		$attribute_list = null,
+		$preferences = null
 	)
 	{
-
 		$this->ReferenceNumber = $referenceNumber;
 		$this->StartDate = $startDate;
 		$this->EndDate = $endDate;
@@ -978,6 +988,9 @@ class ReservationItemView implements IReservedItemView
 		{
 			$this->InviteeIds = explode(',', $invitee_list);
 		}
+
+		$this->Attributes = CustomAttributes::Parse($attribute_list);
+		$this->UserPreferences = UserPreferences::Parse($preferences);
 	}
 
 	/**
@@ -1005,7 +1018,9 @@ class ReservationItemView implements IReservedItemView
 			$row[ColumnNames::OWNER_ORGANIZATION],
 			$row[ColumnNames::OWNER_POSITION],
 			$row[ColumnNames::PARTICIPANT_LIST],
-			$row[ColumnNames::INVITEE_LIST]
+			$row[ColumnNames::INVITEE_LIST],
+			$row[ColumnNames::ATTRIBUTE_LIST],
+			$row[ColumnNames::USER_PREFERENCES]
 		);
 
 		if (isset($row[ColumnNames::RESERVATION_CREATED]))

@@ -24,43 +24,43 @@ interface IReservationSlot
 	 * @return Time
 	 */
 	public function Begin();
-	
+
 	/**
 	 * @return Time
 	 */
 	public function End();
-	
+
 	/**
 	 * @return Date
 	 */
 	public function BeginDate();
-	
+
 	/**
 	 * @return Date
 	 */
 	public function EndDate();
-	
+
 	/**
 	 * @return Date
 	 */
 	public function Date();
-	
+
 	/**
 	 * @return int
 	 *
 	 */
-	public function PeriodSpan();	
-	
+	public function PeriodSpan();
+
 	/**
 	 * @return string
 	 */
 	public function Label();
-	
+
 	/**
 	 * @return bool
 	 */
 	public function IsReservable();
-	
+
 	/**
 	 * @return bool
 	 */
@@ -70,13 +70,13 @@ interface IReservationSlot
 	 * @return bool
 	 */
 	public function IsPending();
-	
+
 	/**
 	 * @param $date Date
 	 * @return bool
 	 */
 	public function IsPastDate(Date $date);
-	
+
 	/**
 	 * @param string $timezone
 	 * @return IReservationSlot
@@ -104,6 +104,11 @@ interface IReservationSlot
 	 * @return string
 	 */
 	public function EndSlotId();
+
+	/**
+	 * @return string
+	 */
+	public function Color();
 }
 
 ?>

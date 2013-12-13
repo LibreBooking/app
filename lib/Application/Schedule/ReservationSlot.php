@@ -179,20 +179,25 @@ class ReservationSlot implements IReservationSlot
 		return sprintf("Start: %s, End: %s, Span: %s", $this->Begin(), $this->End(), $this->PeriodSpan());
 	}
 
-	/**
-	 * @return string
-	 */
 	public function BeginSlotId()
 	{
 		return $this->_beginSlotId;
 	}
 
-	/**
-	 * @return string
-	 */
 	public function EndSlotId()
 	{
 		return $this->_beginSlotId;
+	}
+
+	public function Color()
+	{
+		$color = $this->_reservation->UserPreferences->Get(UserPreferences::RESERVATION_COLOR);
+		if (!empty($color))
+		{
+			return "#$color";
+		}
+
+		return null;
 	}
 }
 

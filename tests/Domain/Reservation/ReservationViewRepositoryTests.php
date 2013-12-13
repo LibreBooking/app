@@ -263,12 +263,14 @@ class ReservationViewRepositoryTests extends TestBase
 		$position = 'position';
 		$participant_list = '100,200,500';
 		$invitee_list = '700,800';
+		$attributes = 'a1=av1,a2=av2';
+		$preferences = 'p1=pv1,p2=pv2';
 
 		$rows[] = $this->GetReservationListRow($referenceNumber1, $resource1, $start1, $end1, $resourceId, $instanceId,
 											   $userLevelId, $title, $description, $scheduleId, $fname, $lname,
-											   $userId, $phone, $organization, $position, $participant_list, $invitee_list);
+											   $userId, $phone, $organization, $position, $participant_list, $invitee_list, $attributes, $preferences);
 		$rows[] = $this->GetReservationListRow("2", "resource", Date::Now(), Date::Now(), 1, 1, 1, null, null, 1, null,
-											   null, null, null);
+											   null, null, null, null, null);
 
 		$this->db->SetRows($rows);
 
@@ -284,7 +286,7 @@ class ReservationViewRepositoryTests extends TestBase
 		$this->assertEquals(count($rows), count($reservations));
 		$expectedItem1 = new ReservationItemView($referenceNumber1, $start1, $end1, $resource1, $resourceId, $instanceId,
 												 $userLevelId, $title, $description, $scheduleId, $fname, $lname, $userId,
-												 $phone, $organization, $position, $participant_list, $invitee_list);
+												 $phone, $organization, $position, $participant_list, $invitee_list, $attributes, $preferences);
 		$this->assertEquals($expectedItem1, $reservations[0]);
 	}
 
@@ -407,7 +409,8 @@ class ReservationViewRepositoryTests extends TestBase
 										   $instanceId, $userLevelId, $title, $description, $scheduleId, $fname, $lname,
 										   $userId, $phone = 'phone', $organization = 'organization',
 										   $position = 'position',
-										   $participant_list = '', $invitee_list = null)
+										   $participant_list = '', $invitee_list = null,
+										   $attributes = null, $preferences=null)
 	{
 		return array(
 			ColumnNames::REFERENCE_NUMBER => $referenceNumber,
@@ -430,7 +433,9 @@ class ReservationViewRepositoryTests extends TestBase
 			ColumnNames::OWNER_ORGANIZATION => $organization,
 			ColumnNames::OWNER_POSITION => $position,
 			ColumnNames::PARTICIPANT_LIST => $participant_list,
-			ColumnNames::INVITEE_LIST => $invitee_list
+			ColumnNames::INVITEE_LIST => $invitee_list,
+			ColumnNames::ATTRIBUTE_LIST => $attributes,
+			ColumnNames::USER_PREFERENCES => $preferences,
 		);
 	}
 

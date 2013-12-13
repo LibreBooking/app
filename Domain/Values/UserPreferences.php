@@ -44,7 +44,7 @@ class UserPreferences
 
 		foreach ($pairs as $pair)
 		{
-			$nv = explode(':', $pair);
+			$nv = explode('=', $pair);
 			$preferences->Add($nv[0], $nv[1]);
 		}
 

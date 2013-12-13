@@ -72,7 +72,7 @@ class BlackoutSlot implements IReservationSlot
 		$this->beginSlotId = $begin->Id();
 		$this->endSlotId = $end->Id();
 	}
-	
+
 	/**
 	 * @return Time
 	 */
@@ -172,6 +172,11 @@ class BlackoutSlot implements IReservationSlot
 	public function EndSlotId()
 	{
 		return $this->endSlotId;
+	}
+
+	public function Color()
+	{
+		return null;
 	}
 }
 ?>

@@ -349,9 +349,9 @@ class Queries
 
 	const GET_ALL_USERS_BY_STATUS =
 			'SELECT u.*,
-			GROUP_CONCAT(CONCAT(p.name, ":", p.value) SEPARATOR ",") AS preferences
+			(SELECT GROUP_CONCAT(CONCAT(p.name, "=", p.value) SEPARATOR ",")
+						FROM user_preferences p WHERE u.user_id = p.user_id) as preferences
 			FROM users u
-			LEFT JOIN user_preferences p ON u.user_id = p.user_id
 			WHERE (0 = @user_statusid OR status_id = @user_statusid) ORDER BY lname, fname';
 
 	const GET_ANNOUNCEMENT_BY_ID = 'SELECT * FROM announcements WHERE announcementid = @announcementid';
@@ -517,7 +517,27 @@ class Queries
 			reference_number = @referenceNumber AND
 			rs.status_id <> 2';
 
-	const GET_RESERVATION_LIST_TEMPLATE =
+//	const GET_RESERVATION_LIST_TEMPLATE =
+//			'SELECT
+//				[SELECT_TOKEN]
+//			FROM reservation_instances ri
+//			INNER JOIN reservation_series rs ON rs.series_id = ri.series_id
+//			INNER JOIN reservation_users ru ON ru.reservation_instance_id = ri.reservation_instance_id
+//			INNER JOIN users ON users.user_id = rs.owner_id
+//			INNER JOIN users owner ON owner.user_id = rs.owner_id
+//			INNER JOIN reservation_resources rr ON rs.series_id = rr.series_id
+//			INNER JOIN resources ON rr.resource_id = resources.resource_id
+//			INNER JOIN schedules ON resources.schedule_id = schedules.schedule_id
+//			LEFT JOIN reservation_users participants ON participants.reservation_instance_id = ri.reservation_instance_id AND participants.reservation_user_level = 2
+//			LEFT JOIN reservation_users invitees ON invitees.reservation_instance_id = ri.reservation_instance_id AND invitees.reservation_user_level = 3
+//			LEFT JOIN custom_attribute_values cav ON cav.entity_id = ri.series_id AND cav.attribute_category = 1
+//			[JOIN_TOKEN]
+//			WHERE rs.status_id <> 2
+//			[AND_TOKEN]
+//			GROUP BY ri.reservation_instance_id, rr.resource_id, ri.series_id
+//			ORDER BY ri.start_date ASC';
+
+const GET_RESERVATION_LIST_TEMPLATE =
 			'SELECT
 				[SELECT_TOKEN]
 			FROM reservation_instances ri
@@ -528,9 +548,6 @@ class Queries
 			INNER JOIN reservation_resources rr ON rs.series_id = rr.series_id
 			INNER JOIN resources ON rr.resource_id = resources.resource_id
 			INNER JOIN schedules ON resources.schedule_id = schedules.schedule_id
-			LEFT JOIN reservation_users participants ON participants.reservation_instance_id = ri.reservation_instance_id AND participants.reservation_user_level = 2
-			LEFT JOIN reservation_users invitees ON invitees.reservation_instance_id = ri.reservation_instance_id AND invitees.reservation_user_level = 3
-			LEFT JOIN custom_attribute_values cav ON cav.entity_id = ri.series_id AND cav.attribute_category = 1
 			[JOIN_TOKEN]
 			WHERE rs.status_id <> 2
 			[AND_TOKEN]
@@ -937,11 +954,30 @@ class QueryBuilder
 	public static $DATE_FRAGMENT = '((ri.start_date >= @startDate AND ri.start_date <= @endDate) OR
 					(ri.end_date >= @startDate AND ri.end_date <= @endDate) OR
 					(ri.start_date <= @startDate AND ri.end_date >= @endDate))';
+//
+//	public static $SELECT_LIST_FRAGMENT = 'ri.*, rs.date_created as date_created, rs.last_modified as last_modified, rs.description as description, rs.status_id as status_id, rs.title,
+//					owner.fname as owner_fname, owner.lname as owner_lname, owner.user_id as owner_id, owner.phone as owner_phone, owner.position as owner_position, owner.organization as owner_organization,
+//					resources.name, resources.resource_id, resources.schedule_id, ru.reservation_user_level,
+//					GROUP_CONCAT(DISTINCT participants.user_id) as participant_list,
+//					GROUP_CONCAT(DISTINCT invitees.user_id) as invitee_list,
+//					GROUP_CONCAT(DISTINCT CONCAT(cav.custom_attribute_id,\'=\', cav.attribute_value)) as attribute_list,
+//					(SELECT GROUP_CONCAT(CONCAT(p.name, "=", p.value) SEPARATOR ",")
+//						FROM user_preferences p WHERE owner.user_id = p.user_id) as preferences';
 
-	public static $SELECT_LIST_FRAGMENT = 'ri.*, rs.date_created as date_created, rs.last_modified as last_modified, rs.description as description,
-					rs.status_id as status_id, owner.fname as owner_fname, owner.lname as owner_lname, owner.user_id as owner_id, owner.phone as owner_phone, owner.position as owner_position, owner.organization as owner_organization,
-					resources.name, resources.resource_id, resources.schedule_id, rs.title, ru.reservation_user_level,
-					GROUP_CONCAT(DISTINCT participants.user_id) as participant_list, GROUP_CONCAT(DISTINCT invitees.user_id) as invitee_list, GROUP_CONCAT(DISTINCT CONCAT(cav.custom_attribute_id,\'=\', cav.attribute_value)) as attributes';
+	public static $SELECT_LIST_FRAGMENT = 'ri.*, rs.date_created as date_created, rs.last_modified as last_modified, rs.description as description, rs.status_id as status_id, rs.title,
+					owner.fname as owner_fname, owner.lname as owner_lname, owner.user_id as owner_id, owner.phone as owner_phone, owner.position as owner_position, owner.organization as owner_organization,
+					resources.name, resources.resource_id, resources.schedule_id, ru.reservation_user_level,
+					(SELECT GROUP_CONCAT(participants.user_id)
+						FROM reservation_users participants WHERE participants.reservation_instance_id = ri.reservation_instance_id AND participants.reservation_user_level = 2) as participant_list,
+
+					(SELECT GROUP_CONCAT(invitees.user_id)
+						FROM reservation_users invitees WHERE invitees.reservation_instance_id = ri.reservation_instance_id AND invitees.reservation_user_level = 3) as invitee_list,
+
+					(SELECT GROUP_CONCAT(CONCAT(cav.custom_attribute_id,\'=\', cav.attribute_value))
+						FROM custom_attribute_values cav WHERE cav.entity_id = ri.series_id AND cav.attribute_category = 1) as attribute_list,
+
+					(SELECT GROUP_CONCAT(CONCAT(p.name, "=", p.value) SEPARATOR ",")
+						FROM user_preferences p WHERE owner.user_id = p.user_id) as preferences';
 
 	private static function Build($selectValue, $joinValue, $andValue)
 	{

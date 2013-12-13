@@ -191,6 +191,11 @@ class EmptyReservationSlot implements IReservationSlot
 	{
 		return $this->_endSlotId;
 	}
+
+	public function Color()
+	{
+		return null;
+	}
 }
 
 ?>
