@@ -2,11 +2,11 @@
 	float:left;
 	color:#fff;
 	font-size:16pt;
+	height:63px;
 }
 
 #logo img {
 	max-width: 100%;
-	max-height: 60px;
 	padding-left:12px;
 }
 

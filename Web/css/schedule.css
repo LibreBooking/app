@@ -286,8 +286,12 @@ ul.jqtree-tree .jqtree-toggler { top: 10%; }
     width: 100%;
 }
 
-#reservations-left select, #reservations-left .textbox, #reservations-left textarea, #reservations-left .button {
-	width:130px;
+#reservations-left .textbox{
+	width:120px;
+}
+
+#reservations-left select.textbox, #reservations-left textarea, #reservations-left .button {
+	width:128px;
 }
 
 #reservations-left .customAttribute, #reservations-left{
@@ -296,6 +300,7 @@ ul.jqtree-tree .jqtree-toggler { top: 10%; }
 
 .advancedFilterTitle {
 	margin-top: 10px;
+	text-align: center;
 }
 
 #reservations-left hr {
