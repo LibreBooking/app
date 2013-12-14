@@ -2,18 +2,17 @@
 	float:left;
 	color:#fff;
 	font-size:16pt;
-	width:200px;
-    display: inline;
-    padding-left: 20px;
 }
 
 #logo img {
 	max-width: 100%;
-	max-height: 150px;
+	max-height: 60px;
+	padding-left:12px;
 }
 
 #nav {
 	list-style: none none;
+	padding-left:25px;
 }
 
 #nav ul {
@@ -29,23 +28,18 @@
 #nav li {
 	float: left;
 	position: relative;
-	border-right: solid 1px #436981;
+	border-right: solid 1px #5e5d69;
 }
 
 #nav a {
 	display: block;
 	padding: 0 5px;
-	color: #dfdfdf;
+	color: #fefefe;
 	text-decoration: none;
 }
 
 #nav a:hover {
 	color: #fff;
-}
-
-#nav li.first
-{
-	/*border-left: solid 1px #436981;*/
 }
 
 #nav li ul ul {
@@ -65,7 +59,8 @@
 #header {
     min-width: 900px;
     margin-right: 10px;
-    background: #3E5E79;
+    background: #3f3e49;
+	border-right: solid 1px #3f3e49;
     height: 111px;
     -moz-border-radius-bottomleft: 3px;
     -moz-border-radius-bottomright: 3px;
@@ -81,8 +76,8 @@
 
 #header-top {
     height:65px;
-    background: url(../img/header-top.png) repeat;
-    border-bottom: solid 1px #436981;
+	background-color: #fff;
+    border-bottom: solid 1px #272632;
 }
 
 #nav .menubaritem {
@@ -102,9 +97,8 @@ li.menubaritem a {
 	font-weight: bold;
 }
 
-.menubaritem a:hover {
-	background: #31526f; /* url(../img/header-menu-bg.png) top right no-repeat; */
-	background: #3d5b74; /* url(../img/header-menu-bg.png) top right no-repeat; */
+.menubaritem a:hover, li.menubaritem:hover, li.menubaritem ul li {
+	background: #4a4a56;
 	color: #fff;
 }
 
@@ -120,15 +114,33 @@ li.menubaritem ul {
 	margin-top: 15px;
 }
 
-li.menubaritem:hover, li.menubaritem ul li {
-	background-color: #3d5b74;
-}
-
 li.menubaritem ul li {
-	border: solid 1px #436981;
+	border: solid 1px #5e5d69;
 	border-top-width: 0;
 }
 
 li.menubaritem ul li a:hover{
-	background: #31526f;
+	background: #5a5965;
+}
+
+#signout {
+	float: right;
+	padding-right: 10px;
+	color: #0f1723;
+	font-size: 11pt;
+	text-align: right;
+	vertical-align: middle;
+}
+
+#signout a {
+	color: #0f1723;
+}
+
+#nav li.help {
+	float:right;
+	width:60px;
+}
+
+#nav li.help ul {
+	left: -106px;
 }

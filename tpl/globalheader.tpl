@@ -87,7 +87,8 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 				{/if}
 				</div>
 			</div>
-			<ul id="nav" class="menubar">
+			<div>
+				<ul id="nav" class="menubar">
 			{if $LoggedIn}
 				<li class="menubaritem first"><a href="{$Path}{Pages::DASHBOARD}">{translate key="Dashboard"}</a></li>
 				<li class="menubaritem"><a href="{$Path}{Pages::PROFILE}">{translate key="MyAccount"}</a>
@@ -183,11 +184,14 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 			</li>
 			{/if}
 			{/if}
-				<li class="menubaritem"><a href="{$Path}help.php">{translate key=Help}</a><ul>
-					<li><a href="{$Path}help.php?ht=admin">{translate key=Administration}</a></li>
-					<li><a href="{$Path}help.php?ht=about">{translate key=About}</a></li>
-				</ul></li>
+				<li class="menubaritem help"><a href="{$Path}help.php">{translate key=Help}</a>
+					<ul>
+						<li><a href="{$Path}help.php?ht=admin">{translate key=Administration}</a></li>
+						<li><a href="{$Path}help.php?ht=about">{translate key=About}</a></li>
+					</ul>
+				</li>
 			</ul>
+			</div>
 			<!-- end #nav -->
 		</div>
 		<!-- end #header -->

@@ -14,39 +14,6 @@ html, body {
 	height: 100%;
 }
 
-#page-header {
-	background-color: #bbb;
-	border-bottom: #4c5c67 solid 1px;
-	margin-bottom: 0px;
-	width: 100%;
-	border: none;
-	padding: 0;
-	background-image: url(../img/scheduleit-header-gradient.png);
-}
-
-#page-header span.tab {
-	padding: 0px 10px 3px 10px;
-	margin: 2px 3px 1px 3px;
-	vertical-align: middle;
-	border-left: 2px solid #000000;
-	border-right: 2px solid #000000;
-	border-top: 2px solid #000000;
-	border-bottom: 3px solid #000000;
-}
-
-#signout {
-	float: right;
-	padding-right: 10px;
-	color: #fff;
-	font-size: 11pt;
-	text-align: right;
-	vertical-align: middle;
-}
-
-#signout a {
-	color: #fff;
-}
-
 img {
 	border: none;
 }
@@ -172,7 +139,7 @@ div.page-footer {
 	text-align: center;
 	height: 38px;
 	background-color: #e3f2ff;
-	background: url(../img/header-top.png) repeat;
+	background: url(../img/footer-gradient.png) repeat;
 	padding-top: 1px;
 	border-top: solid 1px #333333;
 	font-size: 8pt;
@@ -229,6 +196,7 @@ div.registrationHeader, div.forgot_pwdHeader, .reservationHeader, div.box-form d
 	text-decoration: none;
 	margin: 0 0 20px 0;
 	background-color: rgba(18, 52, 86, 0.72);
+	background-color: rgba(74, 74, 86, 0.80);
 	color: #fff;
 }
 

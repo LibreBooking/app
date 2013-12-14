@@ -82,7 +82,7 @@ abstract class Page implements IPage
         $this->smarty->assign('EnableConfigurationPage', Configuration::Instance()->GetSectionKey(ConfigSection::PAGES, ConfigKeys::PAGES_ENABLE_CONFIGURATION, new BooleanConverter()));
 		$this->smarty->assign('ShowParticipation', !Configuration::Instance()->GetSectionKey(ConfigSection::RESERVATION, ConfigKeys::RESERVATION_PREVENT_PARTICIPATION, new BooleanConverter()));
 		
-		$this->smarty->assign('LogoUrl', 'logo4.1.png');
+		$this->smarty->assign('LogoUrl', 'booked.png');
 		if (file_exists($this->path . 'img/custom-logo.png'))
 		{
 			$this->smarty->assign('LogoUrl','custom-logo.png');
