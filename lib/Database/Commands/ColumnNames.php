@@ -131,6 +131,7 @@ class ColumnNames
 	const RESOURCE_MAXNOTICE = 'max_notice_time';
 	const RESOURCE_IMAGE_NAME = 'image_name';
 	const RESOURCE_STATUS_ID = 'status_id';
+	const RESOURCE_STATUS_ID_ALIAS = 'resource_status_id';
 	const RESOURCE_STATUS_REASON_ID = 'resource_status_reason_id';
 	const RESOURCE_STATUS_DESCRIPTION = 'description';
 	const RESOURCE_ADMIN_GROUP_ID = 'admin_group_id';

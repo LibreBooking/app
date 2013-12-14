@@ -21,7 +21,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 <h1>{translate key=ManageReservations}</h1>
 
 <fieldset>
-	<legend><h3>{translate key=Filter}</h3></legend>
+	<legend style="font-weight:bold;font-size:12pt;">{translate key=Filter}</legend>
 	<table style="display:inline;">
 		<tr>
 			<td>{translate key=Between}</td>
@@ -33,14 +33,14 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 		</tr>
 		<tr>
 			<td>
-				<input id="startDate" type="text" class="textbox" value="{formatdate date=$StartDate}"/>
+				<input id="startDate" type="text" class="textbox" value="{formatdate date=$StartDate}" size="10"/>
 				<input id="formattedStartDate" type="hidden" value="{formatdate date=$StartDate key=system}"/>
 				-
-				<input id="endDate" type="text" class="textbox" value="{formatdate date=$EndDate}"/>
+				<input id="endDate" type="text" class="textbox" value="{formatdate date=$EndDate}" size="10"/>
 				<input id="formattedEndDate" type="hidden" value="{formatdate date=$EndDate key=system}"/>
 			</td>
 			<td>
-				<input id="userFilter" type="text" class="textbox" value="{$UserNameFilter}" />
+				<input id="userFilter" type="text" class="textbox" value="{$UserNameFilter}" size="30" />
 				<input id="userId" type="hidden" value="{$UserIdFilter}" />
 			</td>
 			<td>
@@ -92,6 +92,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 		{foreach from=$AttributeList->GetLabels() item=label}
 		<th>{$label}</th>
 		{/foreach}
+		<th>{translate key=ResourceStatus}</th>
 		<th>{translate key='Delete'}</th>
 		<th>{translate key='Approve'}</th>
 	</tr>
@@ -115,6 +116,24 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 		{foreach from=$AttributeList->GetAttributes($reservation->SeriesId) item=attribute}
 		<td>{$attribute->Value()}</td>
 		{/foreach}
+		<td>
+			{if $reservation->ResourceStatusId == ResourceStatus::AVAILABLE}
+				{html_image src="status.png"}
+				<a class="update changeStatus"
+				   href="javascript: void(0);">{translate key='Available'}</a>
+			{elseif $reservation->ResourceStatusId == ResourceStatus::UNAVAILABLE}
+				{html_image src="status-away.png"}
+				<a class="update changeStatus"
+				   href="javascript: void(0);">{translate key='Unavailable'}</a>
+			{else}
+				{html_image src="status-busy.png"}
+				<a class="update changeStatus"
+				   href="javascript: void(0);">{translate key='Hidden'}</a>
+			{/if}
+			{if array_key_exists($reservation->ResourceStatusReasonId,$StatusReasons)}
+				<span class="reservationResourceStatusReason">{$StatusReasons[$reservation->ResourceStatusReasonId]->Description()}</span>
+			{/if}
+		</td>
 		<td align="center"><a href="#" class="update delete">{html_image src='cross-button.png'}</a></td>
 		<td align="center">
 			{if $reservation->RequiresApproval}
@@ -191,7 +210,7 @@ $(document).ready(function() {
 	updateScope['btnUpdateFutureInstances'] = '{SeriesUpdateScope::FutureInstances}';
 
 	var actions = {};
-		
+
 	var resOpts = {
 		autocompleteUrl: "{$Path}ajax/autocomplete.php?type={AutoCompleteType::User}",
 		reservationUrlTemplate: "{$Path}reservation.php?{QueryStringKeys::REFERENCE_NUMBER}=[refnum]",
@@ -204,9 +223,9 @@ $(document).ready(function() {
 	var approvalOpts = {
 		url: '{$Path}ajax/reservation_approve.php'
 	};
-	
+
 	var approval = new Approval(approvalOpts);
-		
+
 	var reservationManagement = new ReservationManagement(resOpts, approval);
 	reservationManagement.init();
 

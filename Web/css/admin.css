@@ -47,7 +47,7 @@
 }
 
 .admin h5 {
-	font-size: 10px;	
+	font-size: 10px;
 }
 
 span.error {
@@ -79,9 +79,9 @@ span.error {
 }
 
 .noImage {
-	width: 98px; 
-	height: 60px; 
-	background-color: #f0f0f0; 
+	width: 98px;
+	height: 60px;
+	background-color: #f0f0f0;
 	line-height: 16px;
 	text-align:center;
 	color: #666;
@@ -389,4 +389,9 @@ ul.jqtree-tree .group-resource .jqtree-title {
 	margin-left:4px;
 	width:16px;
 	height:16px;
+}
+
+.reservationResourceStatusReason {
+	display:block;
+	font-weight: bold;
 }

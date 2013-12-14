@@ -483,6 +483,7 @@ class en_us extends Language
 		$strings['Available'] = 'Available';
 		$strings['Unavailable'] = 'Unavailable';
 		$strings['Hidden'] = 'Hidden';
+		$strings['ResourceStatus'] = 'Resource Status';
 		// End Strings
 
 		// Install

@@ -52,6 +52,11 @@ class ManageReservationsPresenterTests extends TestBase
 	 */
 	private $attributeService;
 
+	/**
+	 * @var IUserPreferenceRepository|PHPUnit_Framework_MockObject_MockObject
+	 */
+	private $userPreferenceRepository;
+
 	public function setup()
 	{
 		parent::setup();
@@ -61,12 +66,19 @@ class ManageReservationsPresenterTests extends TestBase
 		$this->scheduleRepository = $this->getMock('IScheduleRepository');
 		$this->resourceRepository = $this->getMock('IResourceRepository');
 		$this->attributeService = $this->getMock('IAttributeService');
+		$this->userPreferenceRepository = $this->getMock('IUserPreferenceRepository');
 
 		$this->presenter = new ManageReservationsPresenter($this->page,
 			$this->reservationsService,
 			$this->scheduleRepository,
 			$this->resourceRepository,
-			$this->attributeService);
+			$this->attributeService,
+			$this->userPreferenceRepository);
+
+		$this->userPreferenceRepository->expects($this->any())
+					->method('GetAllUserPreferences')
+					->with($this->anything())
+					->will($this->returnValue(array()));
 	}
 
 	public function testUsesTwoWeekSpanWhenNoDateFilterProvided()
@@ -80,6 +92,10 @@ class ManageReservationsPresenterTests extends TestBase
 		$searchedUserId = 111;
 		$searchedReferenceNumber = 'abc123';
 		$searchedUserName = 'some user';
+
+		$this->page->expects($this->any())
+				->method('FilterButtonPressed')
+				->will($this->returnValue(true));
 
 		$this->page->expects($this->atLeastOnce())
 				->method('GetStartDate')

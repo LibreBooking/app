@@ -911,6 +911,16 @@ class ReservationItemView implements IReservedItemView
 	public $UserPreferences;
 
 	/**
+	 * @var int
+	 */
+	public $ResourceStatusId;
+
+	/**
+	 * @var int|null
+	 */
+	public $ResourceStatusReasonId;
+
+	/**
 	 * @param $referenceNumber string
 	 * @param $startDate Date
 	 * @param $endDate Date
@@ -1061,6 +1071,16 @@ class ReservationItemView implements IReservedItemView
 		if (isset($row[ColumnNames::SERIES_ID]))
 		{
 			$view->SeriesId = $row[ColumnNames::SERIES_ID];
+		}
+
+		if (isset($row[ColumnNames::RESOURCE_STATUS_REASON_ID]))
+		{
+			$view->ResourceStatusReasonId = $row[ColumnNames::RESOURCE_STATUS_REASON_ID];
+		}
+
+		if (isset($row[ColumnNames::RESOURCE_STATUS_ID]))
+		{
+			$view->ResourceStatusId = $row[ColumnNames::RESOURCE_STATUS_ID_ALIAS];
 		}
 
 		return $view;

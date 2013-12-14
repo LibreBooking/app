@@ -32,7 +32,7 @@ interface IManageReservationsPage extends IPageable, IActionPage
 	public function BindReservations($reservations);
 
 	/**
-	 * @return boolean
+	 * @return bool
 	 */
 	public function FilterButtonPressed();
 
@@ -171,6 +171,11 @@ interface IManageReservationsPage extends IPageable, IActionPage
 	 * @param $attributeList IEntityAttributeList
 	 */
 	public function SetAttributes($attributeList);
+
+	/**
+	 * @param $statusReasons ResourceStatusReason[]
+	 */
+	public function BindResourceStatuses($statusReasons);
 }
 
 class ManageReservationsPage extends ActionPage implements IManageReservationsPage
@@ -193,11 +198,12 @@ class ManageReservationsPage extends ActionPage implements IManageReservationsPa
 			new ManageReservationsService(new ReservationViewRepository()),
 			new ScheduleRepository(),
 			new ResourceRepository(),
-			new AttributeService(new AttributeRepository()));
+			new AttributeService(new AttributeRepository()),
+			new UserPreferenceRepository());
 
 		$this->pageablePage = new PageablePage($this);
 	}
-	
+
 	public function ProcessAction()
 	{
 		$this->presenter->ProcessAction();
@@ -447,6 +453,14 @@ class ManageReservationsPage extends ActionPage implements IManageReservationsPa
 	public function SetAttributes($attributeList)
 	{
 		$this->Set('AttributeList', $attributeList);
+	}
+
+	/**
+	 * @param $statusReasons ResourceStatusReason[]
+	 */
+	public function BindResourceStatuses($statusReasons)
+	{
+		$this->Set('StatusReasons', $statusReasons);
 	}
 }
 ?>
