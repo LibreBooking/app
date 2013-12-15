@@ -36,10 +36,10 @@ class ResourceGroupTests extends TestBase
 		$resourceGroupTree->AddGroup($group1a);
 		$resourceGroupTree->AddGroup($group1a1);
 
-		$resourceGroupTree->AddAssignment(new ResourceGroupAssignment($group1a1->id, 'resource1', 1));
-		$resourceGroupTree->AddAssignment(new ResourceGroupAssignment($group1a1->id, 'resource2', 2));
-		$resourceGroupTree->AddAssignment(new ResourceGroupAssignment($group1a->id, 'resource3', 3));
-		$resourceGroupTree->AddAssignment(new ResourceGroupAssignment($group1->id, 'resource4', 4));
+		$resourceGroupTree->AddAssignment(new ResourceGroupAssignment($group1a1->id, 'resource1', 1, null, 1, ResourceStatus::AVAILABLE, null));
+		$resourceGroupTree->AddAssignment(new ResourceGroupAssignment($group1a1->id, 'resource2', 2, null, 1, ResourceStatus::AVAILABLE, null));
+		$resourceGroupTree->AddAssignment(new ResourceGroupAssignment($group1a->id, 'resource3', 3, null, 1, ResourceStatus::AVAILABLE, null));
+		$resourceGroupTree->AddAssignment(new ResourceGroupAssignment($group1->id, 'resource4', 4, null, 1, ResourceStatus::AVAILABLE, null));
 
 		$group1a1ResourceIds = $resourceGroupTree->GetResourceIds($group1a1->id);
 		$group1aResourceIds = $resourceGroupTree->GetResourceIds($group1a->id);

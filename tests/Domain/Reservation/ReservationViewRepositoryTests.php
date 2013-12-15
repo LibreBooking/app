@@ -219,8 +219,8 @@ class ReservationViewRepositoryTests extends TestBase
 		);
 
 		$expectedView->Resources = array(
-			new ReservationResourceView($resourceId1, $resourceName1, $adminGroupId1, $scheduleId, $scheduleAdminGroupId),
-			new ReservationResourceView($resourceId2, $resourceName2, null, $scheduleId, $scheduleAdminGroupId),
+			new ReservationResourceView($resourceId1, $resourceName1, $adminGroupId1, $scheduleId, $scheduleAdminGroupId, ResourceStatus::AVAILABLE),
+			new ReservationResourceView($resourceId2, $resourceName2, null, $scheduleId, $scheduleAdminGroupId, ResourceStatus::AVAILABLE),
 		);
 
 		$expectedView->Accessories = array(
@@ -391,7 +391,7 @@ class ReservationViewRepositoryTests extends TestBase
 	}
 
 	private function GetResourceRow($reservationId, $resourceId, $resourceName, $adminGroupId, $scheduleId,
-									$scheduleAdminGroupId)
+									$scheduleAdminGroupId, $statusId = ResourceStatus::AVAILABLE)
 	{
 		return array(
 			ColumnNames::RESERVATION_INSTANCE_ID => $reservationId,
@@ -400,7 +400,8 @@ class ReservationViewRepositoryTests extends TestBase
 			ColumnNames::RESOURCE_LEVEL_ID => ResourceLevel::Additional,
 			ColumnNames::RESOURCE_ADMIN_GROUP_ID => $adminGroupId,
 			ColumnNames::SCHEDULE_ID => $scheduleId,
-			ColumnNames::SCHEDULE_ADMIN_GROUP_ID_ALIAS => $scheduleAdminGroupId
+			ColumnNames::SCHEDULE_ADMIN_GROUP_ID_ALIAS => $scheduleAdminGroupId,
+			ColumnNames::RESOURCE_STATUS_ID => $statusId,
 		);
 
 	}

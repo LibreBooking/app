@@ -249,8 +249,8 @@ class ManageBlackoutsPresenterTests extends TestBase
 				   ->will($this->returnValue($id));
 		
 		$this->page->expects($this->once())
-					->method('SetAdditionalResources')
-					->with($this->equalTo(array(1, 2)));
+					->method('SetBlackoutResources')
+					->with($this->equalTo($series->ResourceIds()));
 
 		$this->page->expects($this->once())
 					->method('SetTitle')

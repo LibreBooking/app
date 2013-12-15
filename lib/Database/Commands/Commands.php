@@ -1132,9 +1132,12 @@ class GetFullGroupReservationListCommand extends GetFullReservationListCommand
 	{
 		$query = parent::GetQuery();
 
-		$newQuery = preg_replace('/WHERE/',
-								 'WHERE owner_id IN (SELECT user_id FROM user_groups WHERE group_id IN (@groupid)) AND ',
-								 $query, 1);
+		$pos = strripos($query, 'WHERE');
+		$newQuery = substr_replace($query, 'INNER JOIN (SELECT user_id FROM user_groups WHERE group_id IN (@groupid)) ss on ss.user_id = owner_id WHERE', $pos, strlen('WHERE'));
+
+//		$newQuery = preg_replace('/WHERE/',
+//								 'WHERE owner_id IN (SELECT user_id FROM user_groups WHERE group_id IN (@groupid)) AND ',
+//								 $query, 1);
 
 		return $newQuery;
 	}

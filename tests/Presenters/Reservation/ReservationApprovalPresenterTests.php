@@ -64,7 +64,8 @@ class ReservationApprovalPresenterTests extends TestBase
 	{
 		$referenceNumber = 'rn';
 
-		$reservation = $this->getMock('ExistingReservationSeries');
+		$builder = new ExistingReservationSeriesBuilder();
+		$reservation = $builder->Build();
 		
 		$this->page->expects($this->once())
 			->method('GetReferenceNumber')
@@ -75,10 +76,6 @@ class ReservationApprovalPresenterTests extends TestBase
 			->with($this->equalTo($referenceNumber))
 			->will($this->returnValue($reservation));
 
-		$reservation->expects($this->once())
-				->method('Approve')
-				->with($this->equalTo($this->fakeUser));
-					
 		$this->handler->expects($this->once())
 			->method('Handle')
 			->with($this->equalTo($reservation), $this->equalTo($this->page))
@@ -90,6 +87,8 @@ class ReservationApprovalPresenterTests extends TestBase
 					->will($this->returnValue(true));
 
 		$this->presenter->PageLoad();
+
+		$this->assertTrue(in_array(new SeriesApprovedEvent($reservation), $reservation->GetEvents()));
 	}
 }
 

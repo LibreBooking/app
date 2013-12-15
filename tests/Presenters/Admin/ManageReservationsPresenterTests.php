@@ -93,6 +93,10 @@ class ManageReservationsPresenterTests extends TestBase
 		$searchedReferenceNumber = 'abc123';
 		$searchedUserName = 'some user';
 
+		$this->resourceRepository->expects($this->once())
+					->method('GetStatusReasons')
+					->will($this->returnValue(array()));
+
 		$this->page->expects($this->any())
 				->method('FilterButtonPressed')
 				->will($this->returnValue(true));

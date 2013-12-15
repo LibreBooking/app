@@ -307,7 +307,7 @@ class DatabaseCommandTests extends PHPUnit_Framework_TestCase
         $filterCommand = new FilterCommand($command, new SqlFilterEquals(ColumnNames::ACCESSORY_NAME, 'something just to make sure filter does not break subquery'));
         $countCommand = new CountCommand($filterCommand);
 
-        $containsSubQuery = $this->stringContains("WHERE ( owner_id IN (SELECT user_id FROM user_groups WHERE group_id IN (@groupid)) AND ", false);
+        $containsSubQuery = $this->stringContains("INNER JOIN (SELECT user_id FROM user_groups WHERE group_id IN (@groupid)) ss on ss.user_id = owner_id WHERE ", false);
         $containsFilter = $this->stringContains("AND (accessory_name = @accessory_name)", false);
 
         $query = $filterCommand->GetQuery();

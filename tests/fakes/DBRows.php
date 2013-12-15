@@ -174,7 +174,8 @@ class ReservationResourceRow
 								$maxParticipants = null,
 								$minNotice = null,
 								$maxNotice = null,
-								$scheduleId = null)
+								$scheduleId = null,
+								$statusId = ResourceStatus::AVAILABLE)
 	{
 		$this->seriesId = $seriesId;
 		$this->resourceName = $resourceName;
@@ -191,6 +192,7 @@ class ReservationResourceRow
 		$this->maxNotice = $maxNotice;
 		$this->scheduleId = $scheduleId;
 		$this->description = null;
+		$this->statusId = $statusId;
 	}
 
 	public function WithPrimary($resourceId)
@@ -225,6 +227,7 @@ class ReservationResourceRow
 			ColumnNames::RESOURCE_MINNOTICE => $this->minNotice,
 			ColumnNames::RESOURCE_MAXNOTICE => $this->maxNotice,
 			ColumnNames::SCHEDULE_ID => $this->scheduleId,
+			ColumnNames::RESOURCE_STATUS_ID => $this->statusId,
 		);
 	}
 }

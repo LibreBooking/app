@@ -372,7 +372,7 @@ class BlackoutsServiceTests extends TestBase
 		$blackoutDuringDiffResource = new TestBlackoutItemView(3, $start, $end, 4);
 		$blackoutDuringSameSeries = new TestBlackoutItemView(3, $start, $end, 1, $seriesId);
 
-		$series = new BlackoutSeries(1, 'old title');
+		$series = BlackoutSeries::Create(1, 'old title', new TestDateRange());
 		$series->WithId($seriesId);
 		$user = $this->getMock('User');
 
@@ -427,7 +427,7 @@ class BlackoutsServiceTests extends TestBase
 		$blackoutInstanceId = 199;
 
 		$user = $this->getMock('User');
-		$series = new BlackoutSeries(1, 'old title');
+		$series = BlackoutSeries::Create(1, 'old title', new TestDateRange());
 		$series->WithId(1);
 
 		$blackoutDuring = new TestBlackoutItemView(1, $start, $end, 3, 10);
@@ -473,7 +473,7 @@ class BlackoutsServiceTests extends TestBase
 		$seriesId = 111;
 		$blackoutInstanceId = 10;
 
-		$series = new BlackoutSeries(1, 'old title');
+		$series = BlackoutSeries::Create(1, 'old title', new TestDateRange());
 		$series->WithId($seriesId);
 		$user = $this->getMock('User');
 
@@ -537,7 +537,7 @@ class BlackoutsServiceTests extends TestBase
 		$seriesId = 111;
 		$blackoutInstanceId = 10;
 
-		$series = new BlackoutSeries(1, 'old title');
+		$series = BlackoutSeries::Create(1, 'old title', new TestDateRange());
 		$series->WithId($seriesId);
 		$user = $this->getMock('User');
 

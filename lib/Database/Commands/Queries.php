@@ -323,7 +323,8 @@ class Queries
 	const GET_ALL_RESOURCE_GROUP_ASSIGNMENTS = 'SELECT r.*, a.resource_group_id
 		FROM resource_group_assignment a
 		INNER JOIN resources r ON r.resource_id = a.resource_id
-		WHERE (-1 = @scheduleid OR r.schedule_id = @scheduleid)';
+		WHERE (-1 = @scheduleid OR r.schedule_id = @scheduleid)
+		ORDER BY COALESCE(r.sort_order,0), r.name';
 
 	const GET_ALL_RESOURCE_ADMINS =
 			'SELECT *
@@ -633,7 +634,7 @@ const GET_RESERVATION_LIST_TEMPLATE =
 		WHERE
 			r.schedule_id = @scheduleid AND
 			r.status_id <> 0
-		ORDER BY r.sort_order, r.name';
+		ORDER BY COALESCE(r.sort_order,0), r.name';
 
 	const GET_USERID_BY_ACTIVATION_CODE =
 			'SELECT a.user_id FROM account_activation a
