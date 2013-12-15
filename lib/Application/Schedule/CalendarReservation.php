@@ -141,6 +141,8 @@ class CalendarReservation
 			$res->Color = "#$color";
 		}
 
+		$res->Class = self::GetClass($reservation);
+
 		return $res;
 	}
 
@@ -198,10 +200,35 @@ class CalendarReservation
 				$cr->Color = "#$color";
 			}
 
+			$cr->Class = self::GetClass($reservation);
+
 			$res[] = $cr;
 		}
 
 		return $res;
+	}
+
+	private static function GetClass(ReservationItemView $reservation)
+	{
+		if ($reservation->RequiresApproval)
+		{
+			return 'pending';
+		}
+
+		$user = ServiceLocator::GetServer()->GetUserSession();
+
+		if ($reservation->IsUserOwner($user->UserId))
+		{
+			return 'reserved mine';
+		}
+
+		if ($reservation->IsUserParticipating($user->UserId))
+		{
+			return 'reserved participating';
+		}
+
+		return 'reserved';
+
 	}
 }
 

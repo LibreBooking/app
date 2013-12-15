@@ -16,7 +16,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 *}
-{include file='globalheader.tpl' cssFiles='css/calendar.css,css/jquery.qtip.min.css,scripts/css/fullcalendar.css' printCssFiles='scripts/css/fullcalendar.print.css'}
+{include file='globalheader.tpl' cssFiles='css/calendar.css,css/jquery.qtip.min.css,scripts/css/fullcalendar.css,css/schedule.css' printCssFiles='scripts/css/fullcalendar.print.css'}
 
 {include file='Calendar/calendar.filter.tpl'}
 

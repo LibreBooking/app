@@ -49,7 +49,8 @@ $(document).ready(function() {
 			end: '{format_date date=$reservation->EndDate key=fullcalendar}',
 			url: 'reservation.php?rn={$reservation->ReferenceNumber}',
 			allDay: false,
-			color: '{$reservation->Color}'
+			color: '{$reservation->Color}',
+			className: '{$reservation->Class}'
 		});
 	{/foreach}
 

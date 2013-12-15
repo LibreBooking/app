@@ -61,7 +61,7 @@ tr.today td.reslabel {
 	color: #000000;
 }
 
-td.unreservable, div.unreservable {
+.unreservable {
 	background-color: #CF9D9B;
 	color: #fff;
 }
@@ -71,7 +71,7 @@ td.reservable, div.reservable {
 	color: #333;
 }
 
-td.reserved, div.reserved {
+.reserved {
 	background-color: #408AD2;
 	color: #E0E0E0;
 }
@@ -80,37 +80,37 @@ td.reserved {
     padding-left: 1px;
 }
 
-td.reserved.hilite {
+.reserved.hilite {
 	background-color: #59A8EF;
 }
 
-td.reserved.mine, div.reserved.mine {
+.reserved.mine {
 	background-color: #6F9BAE;
 }
 
-td.reserved.mine.hilite {
+.reserved.mine.hilite {
 	background-color: #63AFD0;
 	color: #ffffff;
 }
 
-td.reserved.participating, div.reserved.participating {
+.reserved.participating {
 	background-color: #875cae;
 }
 
-td.reserved.participating.hilite {
+.reserved.participating.hilite {
 	background-color: #a979d1;
 }
 
-td.reserved.pending, div.reserved.pending {
+.reserved.pending {
 	background-color: #ffb540;
 	color: #ffffff;
 }
 
-td.reserved.pending.hilite {
+.reserved.pending.hilite {
 	background-color: #ffc973;
 }
 
-td.reservable.hilite, #reservations .ui-selecting {
+.reservable.hilite, #reservations .ui-selecting {
 	background-color: #23BF35;
 }
 
@@ -118,19 +118,19 @@ td.hilite {
 	cursor: pointer;
 }
 
-td.reservable.clicked, #reservations .ui-selected {
+.reservable.clicked, #reservations .ui-selected {
 	background-color: #259433;
 }
 
-td.reserved.clicked {
+.reserved.clicked {
 	background-color: #1979CF;
 }
 
-td.pasttime, div.pasttime {
+.pasttime {
 	background-color: #BDBDBD;
 }
 
-td.restricted, div.restricted {
+.restricted {
 	background: url("../img/stripe.bg.red.png");
     color: black;
 }

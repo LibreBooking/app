@@ -468,7 +468,6 @@ class DisplaySlotFactory
 {
 	public function GetFunction(IReservationSlot $slot, $accessAllowed = false)
 	{
-		$slot->IsPending();
 		if ($slot->IsReserved())
 		{
 			if ($this->IsMyReservation($slot))
