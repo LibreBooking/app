@@ -85,6 +85,11 @@ class CalendarReservation
 	 */
 	public $DisplayTitle;
 
+	/**
+	 * @var string
+	 */
+	public $Color;
+
 	private function __construct(Date $startDate, Date $endDate, $resourceName, $referenceNumber)
 	{
 		$this->StartDate = $startDate;
@@ -129,6 +134,13 @@ class CalendarReservation
 		$res->Invited = $reservation->UserLevelId == ReservationUserLevel::INVITEE;
 		$res->Participant = $reservation->UserLevelId == ReservationUserLevel::PARTICIPANT;
 		$res->Owner = $reservation->UserLevelId == ReservationUserLevel::OWNER;
+
+		$color = $reservation->UserPreferences->Get(UserPreferences::RESERVATION_COLOR);
+		if (!empty($color))
+		{
+			$res->Color = "#$color";
+		}
+
 		return $res;
 	}
 
@@ -179,6 +191,13 @@ class CalendarReservation
 			{
 				$cr->DisplayTitle .= ' ' . $reservation->Title;
 			}
+
+			$color = $reservation->UserPreferences->Get(UserPreferences::RESERVATION_COLOR);
+			if (!empty($color))
+			{
+				$cr->Color = "#$color";
+			}
+
 			$res[] = $cr;
 		}
 
