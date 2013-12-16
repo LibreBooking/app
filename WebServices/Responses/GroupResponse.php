@@ -24,7 +24,7 @@ class GroupResponse extends RestResponse
 	public $name;
 	public $adminGroup;
 	public $permissions = array();
-	public $user = array();
+	public $users = array();
 	public $roles = array();
 
 	public function __construct(IRestServer $server, Group $group)
@@ -63,7 +63,7 @@ class ExampleGroupResponse extends GroupResponse
 		$this->name = 'group name';
 		$this->adminGroup = 'http://url/to/group';
 		$this->permissions = array('http://url/to/resource');
-		$this->user = array('http://url/to/user');
+		$this->users = array('http://url/to/user');
 		$this->roles = array(1,2);
 	}
 }

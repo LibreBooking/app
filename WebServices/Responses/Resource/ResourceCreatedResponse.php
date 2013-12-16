@@ -27,8 +27,8 @@ class ResourceCreatedResponse extends RestResponse
 	public function __construct(IRestServer $server, $resourceId)
 	{
 		$this->resourceId = $resourceId;
-		$this->AddService($server, WebServices::GetResource, array(WebServiceParams::ResourceId, $resourceId));
-		$this->AddService($server, WebServices::UpdateResource, array(WebServiceParams::ResourceId, $resourceId));
+		$this->AddService($server, WebServices::GetResource, array(WebServiceParams::ResourceId => $resourceId));
+		$this->AddService($server, WebServices::UpdateResource, array(WebServiceParams::ResourceId => $resourceId));
 	}
 
 	public static function Example()

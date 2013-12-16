@@ -364,7 +364,14 @@ class BookableResource implements IResource
 	 */
 	public function SetRequiresApproval($value)
 	{
-		$this->_requiresApproval = $value;
+		if (!empty($value))
+		{
+			$this->_requiresApproval = intval($value);
+		}
+		else
+		{
+			$this->_requiresApproval = 0;
+		}
 	}
 
 	/**

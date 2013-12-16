@@ -25,6 +25,7 @@ class RestResponse
 	const BAD_REQUEST_CODE = 400;
 	const UNAUTHORIZED_CODE = 401;
 	const NOT_FOUND_CODE = 404;
+	const SERVER_ERROR = 500;
 
 	/**
 	 * @var array|RestServiceLink[]

@@ -78,6 +78,9 @@ $app->error(function (\Exception $e) use ($app)
 {
 	require_once(ROOT_DIR . 'lib/Common/Logging/Log.php');
 	Log::Error('Slim Exception. %s', $e);
+	$app->response()->header('Content-Type', 'application/json');
+	$app->response()->status(RestResponse::SERVER_ERROR);
+	$app->response()->write('Exception was logged.');
 });
 
 $app->run();
