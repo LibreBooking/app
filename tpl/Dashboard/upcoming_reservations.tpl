@@ -20,7 +20,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 {function name=displayReservation}
 <tr class="reservation" id="{$reservation->ReferenceNumber}">
 	<td style="min-width: 250px;">{$reservation->Title|default:$DefaultTitle}</td>
-	<td style="min-width:150px;">{fullname first=$reservation->FirstName last=$reservation->LastName} {if !$reservation->IsUserOwner($UserId)}{html_image src="users.png" altKey=Participant}{/if}</td>
+	<td style="min-width:150px;">{fullname first=$reservation->FirstName last=$reservation->LastName ignorePrivacy=$reservation->IsUserOwner($UserId)} {if !$reservation->IsUserOwner($UserId)}{html_image src="users.png" altKey=Participant}{/if}</td>
 	<td width="200px">{formatdate date=$reservation->StartDate->ToTimezone($Timezone) key=dashboard}</td>
 	<td width="200px">{formatdate date=$reservation->EndDate->ToTimezone($Timezone) key=dashboard}</td>
 	<td style="min-width: 150px; max-width: 250px;">{$reservation->ResourceName}</td>
@@ -42,21 +42,21 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 			{foreach from=$TodaysReservations item=reservation}
                 {displayReservation reservation=$reservation}
 			{/foreach}
-			
+
 			<tr class="timespan">
 				<td colspan="{$colspan}">{translate key="Tomorrow"} ({$TomorrowsReservations|count})</td>
 			</tr>
 			{foreach from=$TomorrowsReservations item=reservation}
                 {displayReservation reservation=$reservation}
 			{/foreach}
-			
+
 			<tr class="timespan">
 				<td colspan="{$colspan}">{translate key="LaterThisWeek"} ({$ThisWeeksReservations|count})</td>
 			</tr>
 			{foreach from=$ThisWeeksReservations item=reservation}
                 {displayReservation reservation=$reservation}
 			{/foreach}
-			
+
 			<tr class="timespan">
 				<td colspan="{$colspan}">{translate key="NextWeek"} ({$NextWeeksReservations|count})</td>
 			</tr>

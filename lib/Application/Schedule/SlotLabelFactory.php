@@ -21,6 +21,16 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 class SlotLabelFactory
 {
 	/**
+	 * @var null|UserSession
+	 */
+	private $user = null;
+
+	public function __construct($user = null)
+	{
+		$this->user = $user;
+	}
+
+	/**
 	 * @static
 	 * @param ReservationItemView $reservation
 	 * @return string
@@ -83,7 +93,7 @@ class SlotLabelFactory
 		$shouldHide = Configuration::Instance()->GetSectionKey(ConfigSection::PRIVACY,
 															   ConfigKeys::PRIVACY_HIDE_USER_DETAILS,
 															   new BooleanConverter());
-		if ($shouldHide)
+		if ($shouldHide && (is_null($this->user) || $this->user->UserId != $reservation->UserId))
 		{
 			return Resources::GetInstance()->GetString('Private');
 		}

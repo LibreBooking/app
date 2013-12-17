@@ -33,7 +33,7 @@ class ViewSchedulePage extends SchedulePage
 		$pageBuilder = new SchedulePageBuilder();
 		$reservationService = new ReservationService(new ReservationViewRepository(), new ReservationListingFactory());
 		$dailyLayoutFactory = new DailyLayoutFactory();
-		
+
 		$this->_presenter = new SchedulePresenter(
 			$this,
 			$scheduleRepository,
@@ -42,13 +42,14 @@ class ViewSchedulePage extends SchedulePage
 			$reservationService,
 			$dailyLayoutFactory);
 	}
-	
+
 	public function ProcessPageLoad()
 	{
-		$this->_presenter->PageLoad(new NullUserSession());
+		$user = new NullUserSession();
+		$this->_presenter->PageLoad($user);
 		$viewReservations = Configuration::Instance()->GetSectionKey(ConfigSection::PRIVACY, ConfigKeys::PRIVACY_VIEW_RESERVATIONS, new BooleanConverter());
 		$this->Set('DisplaySlotFactory', new DisplaySlotFactory());
-		$this->Set('SlotLabelFactory', $viewReservations ? new SlotLabelFactory() : new NullSlotLabelFactory());
+		$this->Set('SlotLabelFactory', $viewReservations ? new SlotLabelFactory($user) : new NullSlotLabelFactory());
 		$this->Display('Schedule/view-schedule.tpl');
 	}
 
