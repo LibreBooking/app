@@ -21,8 +21,9 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 
 {function name="list_settings"}
 	{foreach from=$settings item=setting}
+		{cycle values=',row1' assign=rowCss}
 		{assign var="name" value=$setting->Name}
-    <li><span class="label">{$setting->Key}</span>
+    <li class="{$rowCss}"><span class="label">{$setting->Key}</span>
 		{if $setting->Key == ConfigKeys::SERVER_TIMEZONE}
             <select name="{$name}">
 				{html_options values=$TimezoneValues output=$TimezoneOutput selected=$setting->Value}
@@ -73,7 +74,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
     <form method="post" ajaxAction="{ConfigActions::Update}" action="{$smarty.server.SCRIPT_NAME}">
 		<h3>{translate key=GeneralConfigSettings}</h3>
 		<fieldset>
-		<ul class="no-style">
+		<ul class="no-style config-settings">
 			{list_settings settings=$Settings}
         </ul>
 		</fieldset>
@@ -81,7 +82,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 		{foreach from=$SectionSettings key=section item=settings}
             <h3>{$section}</h3>
             <fieldset>
-                <ul class="no-style">
+                <ul class="no-style config-settings">
 					{list_settings settings=$settings}
                 </ul>
             </fieldset>

@@ -129,11 +129,12 @@ table.list, .list td, .list th {
 .list td, .list th {
     padding: 4px;
 }
-.list .row0 {
+
+.row0 {
     background-color: #eeeeee;
 }
 
-.list .row1 {
+.row1 {
     background-color: #fafafa;
 }
 
@@ -394,4 +395,8 @@ ul.jqtree-tree .group-resource .jqtree-title {
 .reservationResourceStatusReason {
 	display:block;
 	font-weight: bold;
+}
+
+.config-settings li {
+	padding:3px 0;
 }
