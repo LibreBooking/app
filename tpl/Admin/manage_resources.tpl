@@ -476,7 +476,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 					<li>
 						<label>
 							<input type="checkbox" id="noEndNotice"/> {translate key='ResourceMaxNoticeNone'}
-						</label>					
+						</label>
 						<span class="noEndNotice">
 							<br/>
 							{capture name="txtEndNotice" assign="txtEndNotice"}
@@ -497,7 +497,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 					<li>
 						<label>
 							<input type="checkbox" id="unlimitedCapactiy"/> {translate key='ResourceCapacityNone'}
-						</label>					
+						</label>
 						<span class="unlimitedCapactiy">
 							<br/>
 							{capture name="txtMaxCapacity" assign="txtMaxCapacity"}

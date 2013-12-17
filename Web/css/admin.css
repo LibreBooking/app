@@ -400,3 +400,7 @@ ul.jqtree-tree .group-resource .jqtree-title {
 .config-settings li {
 	padding:3px 0;
 }
+
+#reservationTable {
+	width:100%;
+}

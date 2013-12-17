@@ -120,15 +120,15 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 			{if $reservation->ResourceStatusId == ResourceStatus::AVAILABLE}
 				{html_image src="status.png"}
 				<a class="update changeStatus"
-				   href="javascript: void(0);">{translate key='Available'}</a>
+				   href="#" resourceId="{$reservation->ResourceId}">{translate key='Available'}</a>
 			{elseif $reservation->ResourceStatusId == ResourceStatus::UNAVAILABLE}
 				{html_image src="status-away.png"}
 				<a class="update changeStatus"
-				   href="javascript: void(0);">{translate key='Unavailable'}</a>
+				   href="#" resourceId="{$reservation->ResourceId}">{translate key='Unavailable'}</a>
 			{else}
 				{html_image src="status-busy.png"}
 				<a class="update changeStatus"
-				   href="javascript: void(0);">{translate key='Hidden'}</a>
+				   href="#" resourceId="{$reservation->ResourceId}">{translate key='Hidden'}</a>
 			{/if}
 			{if array_key_exists($reservation->ResourceStatusReasonId,$StatusReasons)}
 				<span class="reservationResourceStatusReason">{$StatusReasons[$reservation->ResourceStatusReasonId]->Description()}</span>
@@ -161,7 +161,6 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 	</form>
 </div>
 
-
 <div id="deleteSeriesDialog" class="dialog" style="display:none;" title="{translate key='Delete'}">
 	<form id="deleteSeriesForm" method="post">
 		<div class="error" style="margin-bottom: 25px;">
@@ -185,6 +184,26 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 		</button>
 		<input type="hidden" id="hdnSeriesUpdateScope" {formname key=SERIES_UPDATE_SCOPE} />
 		<input type="hidden" {formname key=REFERENCE_NUMBER} value="" class="referenceNumber" />
+	</form>
+</div>
+
+<div id="statusDialog" class="dialog" title="{translate key=Status}">
+	<form id="statusForm" method="post">
+		<div>
+			<select id="resourceStatusId" {formname key=RESOURCE_STATUS_ID} class="textbox">
+				<option value="{ResourceStatus::AVAILABLE}">{translate key=Available}</option>
+				<option value="{ResourceStatus::UNAVAILABLE}">{translate key=Unavailable}</option>
+				<option value="{ResourceStatus::HIDDEN}">{translate key=Hidden}</option>
+			</select>
+		</div>
+		<div>
+			<label for="resourceReasonId">{translate key=Reason}</label><br/>
+			<select id="resourceReasonId" {formname key=RESOURCE_STATUS_REASON_ID} class="textbox">
+			</select>
+		</div>
+		<button type="button" class="button save">{html_image src="disk-black.png"} {translate key='Update'}</button>
+		<button type="button" class="button saveAll">{html_image src="disks-black.png"} {translate key='UpdateAll'}</button>
+		<button type="button" class="button cancel">{html_image src="slash.png"} {translate key='Cancel'}</button>
 	</form>
 </div>
 
@@ -233,10 +252,18 @@ $(document).ready(function() {
 
 		reservationManagement.addReservation(
 			{
+				id: '{$reservation->ReservationId}',
 				referenceNumber: '{$reservation->ReferenceNumber}',
-				isRecurring: '{$reservation->IsRecurring}'
+				isRecurring: '{$reservation->IsRecurring}',
+				resourceStatusId: '{$reservation->ResourceStatusId}',
+				resourceStatusReasonId: '{$reservation->ResourceStatusReasonId}',
+				resourceId: '{$reservation->ResourceId}'
 			}
 		);
+	{/foreach}
+
+	{foreach from=$StatusReasons item=reason}
+		reservationManagement.addStatusReason('{$reason->Id()}', '{$reason->StatusId()}', '{$reason->Description()|escape:javascript}');
 	{/foreach}
 });
 </script>
