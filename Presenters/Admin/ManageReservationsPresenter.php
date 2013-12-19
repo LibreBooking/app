@@ -102,6 +102,7 @@ class ManageReservationsPresenter extends ActionPresenter
 		$userId = $this->page->GetUserId();
 		$userName = $this->page->GetUserName();
 		$reservationStatusId = $this->page->GetReservationStatusId();
+		$referenceNumber = $this->page->GetReferenceNumber();
 
 		if(!$this->page->FilterButtonPressed())
 		{
@@ -121,7 +122,7 @@ class ManageReservationsPresenter extends ActionPresenter
 
 			$filterPreferences->SetFilterStartDateDelta($startOffset == null ? -14 : $startOffset);
 			$filterPreferences->SetFilterEndDateDelta($endOffset == null ? 14 : $endOffset);
-			$filterPreferences->SetFilterReferenceNumber($referenceNumber = $this->page->GetReferenceNumber());
+			$filterPreferences->SetFilterReferenceNumber($referenceNumber);
 			$filterPreferences->SetFilterScheduleId($scheduleId);
 			$filterPreferences->SetFilterResourceId($resourceId);
 			$filterPreferences->SetFilterUserId($userId);

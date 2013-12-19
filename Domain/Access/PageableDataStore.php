@@ -38,8 +38,10 @@ class PageableDataStore
 		$totalCounter = 0;
 		$results = array();
 		$db = ServiceLocator::GetDatabase();
+		$pageNumber = intval($pageNumber);
+		$pageSize = intval($pageSize);
 
-		if ((is_null($pageNumber) && is_null($pageSize)) || $pageSize == PageInfo::All)
+		if ((empty($pageNumber) && empty($pageSize)) || $pageSize == PageInfo::All)
 		{
 			$resultReader = $db->Query($command);
 		}
@@ -51,9 +53,9 @@ class PageableDataStore
 				$total = $row[ColumnNames::TOTAL];
 			}
 
-			$pageNumber = is_null($pageNumber) ? 1 : $pageNumber;
-			$pageSize = is_null($pageSize) ? 1 : $pageSize;
-			
+			$pageNumber = empty($pageNumber) ? 1 : $pageNumber;
+			$pageSize = empty($pageSize) ? 1 : $pageSize;
+
 			$resultReader = $db->LimitQuery($command, $pageSize, ($pageNumber - 1) * $pageSize);
 		}
 
@@ -76,8 +78,8 @@ class PageableData
 	{
 		$this->results = $results;
 
-		$pageNumber = is_null($pageNumber) ? 1 : $pageNumber;
-		$pageSize = is_null($pageSize) ? 1 : $pageSize;
+		$pageNumber = empty($pageNumber) ? 1 : intval($pageNumber);
+		$pageSize = empty($pageSize) ? 1 : intval($pageSize);
 
 		$this->pageInfo = PageInfo::Create($total, $pageNumber, $pageSize);
 	}

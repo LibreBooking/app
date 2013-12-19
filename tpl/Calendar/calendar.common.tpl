@@ -50,6 +50,7 @@ $(document).ready(function() {
 			url: '{Pages::RESERVATION}?rn={$reservation->ReferenceNumber}',
 			allDay: false,
 			color: '{$reservation->Color}',
+			textColor: '{$reservation->TextColor}',
 			className: '{$reservation->Class}'
 		});
 	{/foreach}
@@ -70,7 +71,7 @@ $(document).ready(function() {
 					reservationUrl: '{Pages::RESERVATION}?sid={$ScheduleId}&rid={$ResourceId}',
 					reservable: true
 				};
-		
+
 	var calendar = new Calendar(options, reservations);
 	calendar.init();
 });

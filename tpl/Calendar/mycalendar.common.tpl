@@ -50,6 +50,7 @@ $(document).ready(function() {
 			url: 'reservation.php?rn={$reservation->ReferenceNumber}',
 			allDay: false,
 			color: '{$reservation->Color}',
+			textColor: '{$reservation->TextColor}',
 			className: '{$reservation->Class}'
 		});
 	{/foreach}
@@ -70,7 +71,7 @@ $(document).ready(function() {
 					subscriptionEnableUrl: '{Pages::MY_CALENDAR}?{QueryStringKeys::ACTION}={PersonalCalendarActions::ActionEnableSubscription}',
 					subscriptionDisableUrl: '{Pages::MY_CALENDAR}?{QueryStringKeys::ACTION}={PersonalCalendarActions::ActionDisableSubscription}'
 				};
-		
+
 	var calendar = new Calendar(options, reservations);
 	calendar.init();
 });

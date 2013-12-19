@@ -23,8 +23,8 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 	{if $Slot->IsPending()}
 		{assign var=class value='pending'}
 	{/if}
-	{if $Slot->Color() != null}
-		{assign var=color value='style="background-color:'|cat:$Slot->Color()|cat:'"'}
+	{if $Slot->HasCustomColor()}
+		{assign var=color value='style="background-color:'|cat:$Slot->Color()|cat:';color:'|cat:$Slot->TextColor()|cat:';"'}
 	{/if}
 	<td {$spantype|default:'col'}span="{$Slot->PeriodSpan()}" class="reserved {$class} {$OwnershipClass} clickres slot"
 		resid="{$Slot->Id()}" {$color}

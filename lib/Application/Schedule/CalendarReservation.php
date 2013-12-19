@@ -90,6 +90,11 @@ class CalendarReservation
 	 */
 	public $Color;
 
+	/**
+	 * @var string
+	 */
+	public $TextColor;
+
 	private function __construct(Date $startDate, Date $endDate, $resourceName, $referenceNumber)
 	{
 		$this->StartDate = $startDate;
@@ -139,6 +144,7 @@ class CalendarReservation
 		if (!empty($color))
 		{
 			$res->Color = "#$color";
+			$res->TextColor = new ContrastingColor($color);
 		}
 
 		$res->Class = self::GetClass($reservation);
@@ -198,6 +204,7 @@ class CalendarReservation
 			if (!empty($color))
 			{
 				$cr->Color = "#$color";
+				$cr->TextColor = new ContrastingColor($color);
 			}
 
 			$cr->Class = self::GetClass($reservation);

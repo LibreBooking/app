@@ -29,7 +29,7 @@ function ReservationManagement(opts, approval)
 	};
 
 	var reservations = {};
-	var reasons = [];
+	var reasons = {};
 
 	ReservationManagement.prototype.init = function()
 	{
@@ -99,6 +99,11 @@ function ReservationManagement(opts, approval)
 			elements.deleteSeriesForm.submit();
 		});
 
+		elements.statusDialog.find('.saveAll').click(function(){
+			$('#statusUpdateScope').val('all');
+			$(this).closest('form').submit();
+		});
+
 		$('#filter').click(filterReservations);
 
 		var deleteReservationResponseHandler = function(response, form)
@@ -116,14 +121,14 @@ function ReservationManagement(opts, approval)
 
 		ConfigureAdminForm(elements.deleteInstanceForm, getDeleteUrl, null, deleteReservationResponseHandler, {dataType: 'json'});
 		ConfigureAdminForm(elements.deleteSeriesForm, getDeleteUrl, null, deleteReservationResponseHandler, {dataType: 'json'});
+		ConfigureAdminForm(elements.statusForm, getUpdateStatusUrl, function(){elements.statusDialog.dialog('close');window.location.reload();});
 	};
 
 	ReservationManagement.prototype.addReservation = function(reservation)
 	{
 		if (!(reservation.referenceNumber in reservations))
 		{
-//			reservation.resources = new Array({id: reservation.resourceId, statusId: reservation.resourceStatusId, descriptionId: reservation.resourceStatusReasonId});
-			reservation.resources = [];
+			reservation.resources = {};
 			reservations[reservation.referenceNumber] = reservation;
 		}
 
@@ -143,6 +148,11 @@ function ReservationManagement(opts, approval)
 	function getDeleteUrl()
 	{
 		return opts.deleteUrl;
+	}
+
+	function getUpdateStatusUrl()
+	{
+		return opts.resourceStatusUrl.replace('[refnum]', getActiveReferenceNumber());
 	}
 
 	function setActiveReferenceNumber(referenceNumber)
@@ -179,7 +189,7 @@ function ReservationManagement(opts, approval)
 
 	function showChangeResourceStatus(referenceNumber, resourceId)
 	{
-		if (reservations[referenceNumber].resources.length > 1)
+		if (Object.keys(reservations[referenceNumber].resources).length > 1)
 		{
 			elements.statusDialog.find('.saveAll').show();
 		}

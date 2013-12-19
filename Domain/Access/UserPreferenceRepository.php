@@ -76,7 +76,9 @@ class UserPreferenceRepository implements IUserPreferenceRepository
 		$reader = ServiceLocator::GetDatabase()->Query(new GetUserPreferenceCommand($userId, $preferenceName));
 
 		if ($row = $reader->GetRow())
+		{
 			return $row[ColumnNames::PREFERENCE_VALUE];
+		}
 
 		return null;
 	}
@@ -91,11 +93,12 @@ class UserPreferenceRepository implements IUserPreferenceRepository
 	{
 		$db = ServiceLocator::GetDatabase();
 
-		if (is_null(self::GetUserPreference($userId, $preferenceName)))
+		$existingValue = self::GetUserPreference($userId, $preferenceName);
+		if (is_null($existingValue))
 		{
 			$db->ExecuteInsert(new AddUserPreferenceCommand($userId, $preferenceName, $preferenceValue));
 		}
-		else
+		else if ($existingValue != $preferenceValue)
 		{
 			$db->Execute(new UpdateUserPreferenceCommand($userId, $preferenceName, $preferenceValue));
 		}

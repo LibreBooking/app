@@ -92,7 +92,6 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 		{foreach from=$AttributeList->GetLabels() item=label}
 		<th>{$label}</th>
 		{/foreach}
-		<th>{translate key=ResourceStatus}</th>
 		<th>{translate key='Delete'}</th>
 		<th>{translate key='Approve'}</th>
 	</tr>
@@ -104,20 +103,8 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 	<tr class="{$rowCss} editable">
 		<td class="id">{$reservation->ReservationId}</td>
 		<td>{fullname first=$reservation->FirstName last=$reservation->LastName ignorePrivacy=true}</td>
-		<td>{$reservation->ResourceName}</td>
-		<td>{$reservation->Title}</td>
-		<td>{$reservation->Description}</td>
-		<td>{formatdate date=$reservation->StartDate timezone=$Timezone key=res_popup}</td>
-		<td>{formatdate date=$reservation->EndDate timezone=$Timezone key=res_popup}</td>
-		<td>{$reservation->GetDuration()->__toString()}</td>
-		<td>{formatdate date=$reservation->CreatedDate timezone=$Timezone key=general_datetime}</td>
-		<td>{formatdate date=$reservation->ModifiedDate timezone=$Timezone key=general_datetime}</td>
-		<td class="referenceNumber">{$reservation->ReferenceNumber}</td>
-		{foreach from=$AttributeList->GetAttributes($reservation->SeriesId) item=attribute}
-		<td>{$attribute->Value()}</td>
-		{/foreach}
-		<td>
-			{if $reservation->ResourceStatusId == ResourceStatus::AVAILABLE}
+		<td>{$reservation->ResourceName}
+			<div>{if $reservation->ResourceStatusId == ResourceStatus::AVAILABLE}
 				{html_image src="status.png"}
 				<a class="update changeStatus"
 				   href="#" resourceId="{$reservation->ResourceId}">{translate key='Available'}</a>
@@ -133,7 +120,19 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 			{if array_key_exists($reservation->ResourceStatusReasonId,$StatusReasons)}
 				<span class="reservationResourceStatusReason">{$StatusReasons[$reservation->ResourceStatusReasonId]->Description()}</span>
 			{/if}
+			</div>
 		</td>
+		<td>{$reservation->Title}</td>
+		<td>{$reservation->Description}</td>
+		<td>{formatdate date=$reservation->StartDate timezone=$Timezone key=res_popup}</td>
+		<td>{formatdate date=$reservation->EndDate timezone=$Timezone key=res_popup}</td>
+		<td>{$reservation->GetDuration()->__toString()}</td>
+		<td>{formatdate date=$reservation->CreatedDate timezone=$Timezone key=general_datetime}</td>
+		<td>{formatdate date=$reservation->ModifiedDate timezone=$Timezone key=general_datetime}</td>
+		<td class="referenceNumber">{$reservation->ReferenceNumber}</td>
+		{foreach from=$AttributeList->GetAttributes($reservation->SeriesId) item=attribute}
+		<td>{$attribute->Value()}</td>
+		{/foreach}
 		<td align="center"><a href="#" class="update delete">{html_image src='cross-button.png'}</a></td>
 		<td align="center">
 			{if $reservation->RequiresApproval}
@@ -187,7 +186,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 	</form>
 </div>
 
-<div id="statusDialog" class="dialog" title="{translate key=Status}">
+<div id="statusDialog" class="dialog" title="{translate key=CurrentStatus}">
 	<form id="statusForm" method="post">
 		<div>
 			<select id="resourceStatusId" {formname key=RESOURCE_STATUS_ID} class="textbox">
@@ -201,9 +200,12 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 			<select id="resourceReasonId" {formname key=RESOURCE_STATUS_REASON_ID} class="textbox">
 			</select>
 		</div>
-		<button type="button" class="button save">{html_image src="disk-black.png"} {translate key='Update'}</button>
-		<button type="button" class="button saveAll">{html_image src="disks-black.png"} {translate key='UpdateAll'}</button>
-		<button type="button" class="button cancel">{html_image src="slash.png"} {translate key='Cancel'}</button>
+		<div class="admin-update-buttons">
+			<button type="button" class="button save">{html_image src="disk-black.png"} {translate key='Update'}</button>
+			<button type="button" class="button saveAll">{html_image src="disks-black.png"} {translate key='AllReservationResources'}</button>
+			<button type="button" class="button cancel">{html_image src="slash.png"} {translate key='Cancel'}</button>
+			<input type="hidden" {formname key=RESOURCE_STATUS_UPDATE_SCOPE} id="statusUpdateScope" value="" />
+		</div>
 	</form>
 </div>
 
@@ -236,7 +238,8 @@ $(document).ready(function() {
 		popupUrl: "{$Path}ajax/respopup.php",
 		updateScope: updateScope,
 		actions: actions,
-		deleteUrl: '{$Path}ajax/reservation_delete.php?{QueryStringKeys::RESPONSE_TYPE}=json'
+		deleteUrl: '{$Path}ajax/reservation_delete.php?{QueryStringKeys::RESPONSE_TYPE}=json',
+		resourceStatusUrl: '{$smarty.server.SCRIPT_NAME}?{QueryStringKeys::REFERENCE_NUMBER}=[refnum]'
 	};
 
 	var approvalOpts = {
