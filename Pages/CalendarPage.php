@@ -178,6 +178,7 @@ class CalendarPage extends SecurePage implements ICalendarPage
 	public function BindFilters($filters)
 	{
 		$this->Set('filters', $filters);
+		$this->Set('IsAccessible', !$filters->IsEmpty());
 	}
 
 	public function GetScheduleId()

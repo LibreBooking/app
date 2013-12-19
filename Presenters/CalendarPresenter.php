@@ -188,6 +188,11 @@ class CalendarFilters
 	{
 		foreach ($schedules as $schedule)
 		{
+			if ($this->ScheduleContainsNoResources($schedule, $resources))
+			{
+				continue;
+			}
+
 			$filter = new CalendarFilter(self::FilterSchedule, $schedule->GetId(), $schedule->GetName(), (empty($selectedResourceId) && $selectedScheduleId == $schedule->GetId()));
 
 			foreach ($resources as $resource)
@@ -203,11 +208,37 @@ class CalendarFilters
 	}
 
 	/**
+	 * @return bool
+	 */
+	public function IsEmpty()
+	{
+		return empty($this->filters);
+	}
+
+	/**
 	 * @return array|CalendarFilter[]
 	 */
 	public function GetFilters()
 	{
 		return $this->filters;
+	}
+
+	/**
+	 * @param Schedule $schedule
+	 * @param ResourceDto[] $resources
+	 * @return bool
+	 */
+	private function ScheduleContainsNoResources(Schedule $schedule, $resources)
+	{
+		foreach ($resources as $resource)
+		{
+			if ($resource->GetScheduleId() == $schedule->GetId())
+			{
+				return false;
+			}
+		}
+
+		return true;
 	}
 }
 
