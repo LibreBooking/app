@@ -1,21 +1,21 @@
 <?php
 /**
-Copyright 2011-2013 Nick Korbel
-
-This file is part of phpScheduleIt.
-
-phpScheduleIt is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-phpScheduleIt is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
+ * Copyright 2011-2013 Nick Korbel
+ *
+ * This file is part of phpScheduleIt.
+ *
+ * phpScheduleIt is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * phpScheduleIt is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 require_once(ROOT_DIR . 'Presenters/Admin/ManageReservationsPresenter.php');
@@ -69,16 +69,16 @@ class ManageReservationsPresenterTests extends TestBase
 		$this->userPreferenceRepository = $this->getMock('IUserPreferenceRepository');
 
 		$this->presenter = new ManageReservationsPresenter($this->page,
-			$this->reservationsService,
-			$this->scheduleRepository,
-			$this->resourceRepository,
-			$this->attributeService,
-			$this->userPreferenceRepository);
+														   $this->reservationsService,
+														   $this->scheduleRepository,
+														   $this->resourceRepository,
+														   $this->attributeService,
+														   $this->userPreferenceRepository);
 
 		$this->userPreferenceRepository->expects($this->any())
-					->method('GetAllUserPreferences')
-					->with($this->anything())
-					->will($this->returnValue(array()));
+									   ->method('GetAllUserPreferences')
+									   ->with($this->anything())
+									   ->will($this->returnValue(array()));
 	}
 
 	public function testUsesTwoWeekSpanWhenNoDateFilterProvided()
@@ -94,95 +94,203 @@ class ManageReservationsPresenterTests extends TestBase
 		$searchedUserName = 'some user';
 
 		$this->resourceRepository->expects($this->once())
-					->method('GetStatusReasons')
-					->will($this->returnValue(array()));
+								 ->method('GetStatusReasons')
+								 ->will($this->returnValue(array()));
 
 		$this->page->expects($this->any())
-				->method('FilterButtonPressed')
-				->will($this->returnValue(true));
+				   ->method('FilterButtonPressed')
+				   ->will($this->returnValue(true));
 
 		$this->page->expects($this->atLeastOnce())
-				->method('GetStartDate')
-				->will($this->returnValue(null));
+				   ->method('GetStartDate')
+				   ->will($this->returnValue(null));
 
 		$this->page->expects($this->atLeastOnce())
-				->method('GetEndDate')
-				->will($this->returnValue(null));
+				   ->method('GetEndDate')
+				   ->will($this->returnValue(null));
 
 		$this->page->expects($this->once())
-				->method('GetScheduleId')
-				->will($this->returnValue($searchedScheduleId));
+				   ->method('GetScheduleId')
+				   ->will($this->returnValue($searchedScheduleId));
 
 		$this->page->expects($this->once())
-				->method('GetResourceId')
-				->will($this->returnValue($searchedResourceId));
+				   ->method('GetResourceId')
+				   ->will($this->returnValue($searchedResourceId));
 
 		$this->page->expects($this->once())
-				->method('GetReservationStatusId')
-				->will($this->returnValue($searchedStatusId));
+				   ->method('GetReservationStatusId')
+				   ->will($this->returnValue($searchedStatusId));
 
 		$this->page->expects($this->once())
-				->method('GetUserId')
-				->will($this->returnValue($searchedUserId));
+				   ->method('GetUserId')
+				   ->will($this->returnValue($searchedUserId));
 
 		$this->page->expects($this->once())
-				->method('GetUserName')
-				->will($this->returnValue($searchedUserName));
+				   ->method('GetUserName')
+				   ->will($this->returnValue($searchedUserName));
 
 		$this->page->expects($this->once())
-				->method('GetReferenceNumber')
-				->will($this->returnValue($searchedReferenceNumber));
+				   ->method('GetReferenceNumber')
+				   ->will($this->returnValue($searchedReferenceNumber));
 
-		$filter = $this->GetExpectedFilter($defaultStart, $defaultEnd, $searchedReferenceNumber, $searchedScheduleId, $searchedResourceId, $searchedUserId, $searchedStatusId);
+		$filter = $this->GetExpectedFilter($defaultStart, $defaultEnd, $searchedReferenceNumber, $searchedScheduleId,
+										   $searchedResourceId, $searchedUserId, $searchedStatusId);
 		$data = new PageableData($this->getReservations());
 		$this->reservationsService->expects($this->once())
-				->method('LoadFiltered')
-				->with($this->anything(), $this->anything(), $this->equalTo($filter), $this->equalTo($this->fakeUser))
-				->will($this->returnValue($data));
+								  ->method('LoadFiltered')
+								  ->with($this->anything(), $this->anything(), $this->equalTo($filter),
+										 $this->equalTo($this->fakeUser))
+								  ->will($this->returnValue($data));
 
 		$attributeList = new AttributeList();
 		$this->attributeService->expects($this->once())
-						->method('GetAttributes')
-						->with($this->equalTo(CustomAttributeCategory::RESERVATION), $this->equalTo(range(1,10)))
-						->will($this->returnValue($attributeList));
+							   ->method('GetAttributes')
+							   ->with($this->equalTo(CustomAttributeCategory::RESERVATION),
+									  $this->equalTo(range(1, 10)))
+							   ->will($this->returnValue($attributeList));
 
 		$this->page->expects($this->once())
-				->method('SetStartDate')
-				->with($this->equalTo($defaultStart));
+				   ->method('SetStartDate')
+				   ->with($this->equalTo($defaultStart));
 
 		$this->page->expects($this->once())
-				->method('SetEndDate')
-				->with($this->equalTo($defaultEnd));
+				   ->method('SetEndDate')
+				   ->with($this->equalTo($defaultEnd));
 
 		$this->page->expects($this->once())
-				->method('SetReferenceNumber')
-				->with($this->equalTo($searchedReferenceNumber));
+				   ->method('SetReferenceNumber')
+				   ->with($this->equalTo($searchedReferenceNumber));
 
 		$this->page->expects($this->once())
-				->method('SetScheduleId')
-				->with($this->equalTo($searchedScheduleId));
+				   ->method('SetScheduleId')
+				   ->with($this->equalTo($searchedScheduleId));
 
 		$this->page->expects($this->once())
-				->method('SetResourceId')
-				->with($this->equalTo($searchedResourceId));
+				   ->method('SetResourceId')
+				   ->with($this->equalTo($searchedResourceId));
 
 		$this->page->expects($this->once())
-				->method('SetReservationStatusId')
-				->with($this->equalTo($searchedStatusId));
+				   ->method('SetReservationStatusId')
+				   ->with($this->equalTo($searchedStatusId));
 
 		$this->page->expects($this->once())
-				->method('SetUserId')
-				->with($this->equalTo($searchedUserId));
+				   ->method('SetUserId')
+				   ->with($this->equalTo($searchedUserId));
 
 		$this->page->expects($this->once())
-				->method('SetUserName')
-				->with($this->equalTo($searchedUserName));
+				   ->method('SetUserName')
+				   ->with($this->equalTo($searchedUserName));
 
 		$this->page->expects($this->once())
-			->method('SetAttributes')
-			->with($this->equalTo($attributeList));
+				   ->method('SetAttributes')
+				   ->with($this->equalTo($attributeList));
 
 		$this->presenter->PageLoad($userTimezone);
+	}
+
+	public function testUpdatesSingleResourceStatus()
+	{
+		$resourceId = 19191;
+		$resourceStatusId = ResourceStatus::HIDDEN;
+		$resourceStatusReasonId = 111;
+		$referenceNumber = 'abc123';
+
+		$resource = new FakeBookableResource($resourceId);
+		$resource->ChangeStatus(ResourceStatus::AVAILABLE, null);
+
+		$this->page->expects($this->once())
+				   ->method('GetResourceStatus')
+				   ->will($this->returnValue($resourceStatusId));
+
+		$this->page->expects($this->once())
+						   ->method('GetUpdateScope')
+						   ->will($this->returnValue(''));
+
+		$this->page->expects($this->once())
+				   ->method('GetResourceStatusReason')
+				   ->will($this->returnValue($resourceStatusReasonId));
+
+		$this->page->expects($this->once())
+				   ->method('GetUpdateResourceId')
+				   ->will($this->returnValue($resourceId));
+
+		$this->page->expects($this->once())
+				   ->method('GetResourceStatusReferenceNumber')
+				   ->will($this->returnValue($referenceNumber));
+
+		$this->resourceRepository->expects($this->once())
+								 ->method('LoadById')
+								 ->with($resourceId)
+								 ->will($this->returnValue($resource));
+
+		$this->resourceRepository->expects($this->once())
+								 ->method('Update')
+								 ->with($this->anything());
+
+		$this->presenter->UpdateResourceStatus();
+
+		$this->assertEquals($resourceStatusId, $resource->GetStatusId());
+		$this->assertEquals($resourceStatusReasonId, $resource->GetStatusReasonId());
+	}
+
+	public function testUpdatesReservationResourceStatuses()
+	{
+		$resourceStatusId = ResourceStatus::HIDDEN;
+		$resourceStatusReasonId = 111;
+		$referenceNumber = 'abc123';
+
+		$reservations = array(new TestReservationItemView(1, Date::Now(), Date::Now(), 1),new TestReservationItemView(1, Date::Now(), Date::Now(), 2));
+		$pageableReservations = new PageableData($reservations);
+
+		$resource1 = new FakeBookableResource(1);
+		$resource1->ChangeStatus(ResourceStatus::AVAILABLE, null);
+
+		$resource2 = new FakeBookableResource(2);
+		$resource2->ChangeStatus(ResourceStatus::AVAILABLE, null);
+
+		$this->page->expects($this->once())
+				   ->method('GetResourceStatus')
+				   ->will($this->returnValue($resourceStatusId));
+
+		$this->page->expects($this->once())
+				   ->method('GetUpdateScope')
+				   ->will($this->returnValue('all'));
+
+		$this->page->expects($this->once())
+				   ->method('GetResourceStatusReason')
+				   ->will($this->returnValue($resourceStatusReasonId));
+
+		$this->page->expects($this->once())
+				   ->method('GetResourceStatusReferenceNumber')
+				   ->will($this->returnValue($referenceNumber));
+
+		$this->reservationsService->expects($this->once())
+								 ->method('LoadFiltered')
+								 ->with($this->isNull(), $this->isNull(), $this->equalTo(new ReservationFilter(null, null, $referenceNumber, null, null, null, null, null)), $this->equalTo($this->fakeUser))
+								 ->will($this->returnValue($pageableReservations));
+
+		$this->resourceRepository->expects($this->at(0))
+								 ->method('LoadById')
+								 ->with(1)
+								 ->will($this->returnValue($resource1));
+
+		$this->resourceRepository->expects($this->at(2))
+								 ->method('LoadById')
+								 ->with(2)
+								 ->will($this->returnValue($resource2));
+
+		$this->resourceRepository->expects($this->at(1))
+								 ->method('Update')
+								 ->with($this->anything());
+
+		$this->resourceRepository->expects($this->at(3))
+								 ->method('Update')
+								 ->with($this->anything());
+
+		$this->presenter->UpdateResourceStatus();
+
+		$this->assertEquals($resourceStatusId, $resource1->GetStatusId());
+		$this->assertEquals($resourceStatusReasonId, $resource1->GetStatusReasonId());
 	}
 
 	/**
@@ -195,7 +303,8 @@ class ManageReservationsPresenterTests extends TestBase
 	 * @param int $statusId
 	 * @return ReservationFilter
 	 */
-	private function GetExpectedFilter($startDate = null, $endDate = null, $referenceNumber = null, $scheduleId = null, $resourceId = null, $userId = null, $statusId = null)
+	private function GetExpectedFilter($startDate = null, $endDate = null, $referenceNumber = null, $scheduleId = null,
+									   $resourceId = null, $userId = null, $statusId = null)
 	{
 		return new ReservationFilter($startDate, $endDate, $referenceNumber, $scheduleId, $resourceId, $userId, $statusId);
 	}

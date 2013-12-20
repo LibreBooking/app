@@ -16,13 +16,13 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 *}
-	</div><!-- close content-->	
-	</div><!-- close doc-->	
+	</div><!-- close content-->
+	</div><!-- close doc-->
 	<div class="push">&nbsp;</div>
 	</div><!-- close wrapper-->
 
     	<div class="page-footer">
-			&copy; 2013 phpScheduleIt <br/><a href="http://phpscheduleit.sourceforge.net">phpScheduleIt v{$Version}</a>
+			&copy; 2013 <a href="http://www.twinkletoessoftware.com">Twinkle Toes Software</a> <br/><a href="http://www.bookedscheduler.com">Booked Scheduler v{$Version}</a>
     	</div>
 	</body>
 </html>

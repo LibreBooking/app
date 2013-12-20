@@ -176,6 +176,31 @@ interface IManageReservationsPage extends IPageable, IActionPage
 	 * @param $statusReasons ResourceStatusReason[]
 	 */
 	public function BindResourceStatuses($statusReasons);
+
+	/**
+	 * @return int
+	 */
+	public function GetResourceStatus();
+
+	/**
+	 * @return int
+	 */
+	public function GetResourceStatusReason();
+
+	/**
+	 * @return string
+	 */
+	public function GetResourceStatusReferenceNumber();
+
+	/**
+	 * @return string
+	 */
+	public function GetUpdateScope();
+
+	/**
+	 * @return int
+	 */
+	public function GetUpdateResourceId();
 }
 
 class ManageReservationsPage extends ActionPage implements IManageReservationsPage
@@ -461,6 +486,46 @@ class ManageReservationsPage extends ActionPage implements IManageReservationsPa
 	public function BindResourceStatuses($statusReasons)
 	{
 		$this->Set('StatusReasons', $statusReasons);
+	}
+
+	/**
+	 * @return int
+	 */
+	public function GetResourceStatus()
+	{
+		return $this->GetForm(FormKeys::RESOURCE_STATUS_ID);
+	}
+
+	/**
+	 * @return int
+	 */
+	public function GetResourceStatusReason()
+	{
+		return $this->GetForm(FormKeys::RESOURCE_STATUS_REASON_ID);
+	}
+
+	/**
+	 * @return string
+	 */
+	public function GetResourceStatusReferenceNumber()
+	{
+		return $this->GetForm(FormKeys::REFERENCE_NUMBER);
+	}
+
+	/**
+	 * @return string
+	 */
+	public function GetUpdateScope()
+	{
+		return $this->GetForm(FormKeys::RESOURCE_STATUS_UPDATE_SCOPE);
+	}
+
+	/**
+	 * @return int
+	 */
+	public function GetUpdateResourceId()
+	{
+		return $this->GetForm(FormKeys::RESOURCE_ID);
 	}
 }
 ?>

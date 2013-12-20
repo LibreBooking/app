@@ -205,6 +205,8 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 			<button type="button" class="button saveAll">{html_image src="disks-black.png"} {translate key='AllReservationResources'}</button>
 			<button type="button" class="button cancel">{html_image src="slash.png"} {translate key='Cancel'}</button>
 			<input type="hidden" {formname key=RESOURCE_STATUS_UPDATE_SCOPE} id="statusUpdateScope" value="" />
+			<input type="hidden" {formname key=REFERENCE_NUMBER} id="statusUpdateReferenceNumber" value="" />
+			<input type="hidden" {formname key=RESOURCE_ID} id="statusResourceId" value="" />
 		</div>
 	</form>
 </div>
@@ -239,7 +241,7 @@ $(document).ready(function() {
 		updateScope: updateScope,
 		actions: actions,
 		deleteUrl: '{$Path}ajax/reservation_delete.php?{QueryStringKeys::RESPONSE_TYPE}=json',
-		resourceStatusUrl: '{$smarty.server.SCRIPT_NAME}?{QueryStringKeys::REFERENCE_NUMBER}=[refnum]'
+		resourceStatusUrl: '{$smarty.server.SCRIPT_NAME}?{QueryStringKeys::ACTION}=changeStatus'
 	};
 
 	var approvalOpts = {

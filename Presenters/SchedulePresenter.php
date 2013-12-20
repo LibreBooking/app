@@ -93,7 +93,8 @@ class SchedulePresenter extends ActionPresenter implements ISchedulePresenter {
         $showInaccessibleResources = $this->_page->ShowInaccessibleResources();
 
         $schedules = $this->_scheduleRepository->GetAll();
-        $currentSchedule = $this->_builder->GetCurrentSchedule($this->_page, $schedules, $user);
+
+		$currentSchedule = $this->_builder->GetCurrentSchedule($this->_page, $schedules, $user);
         $activeScheduleId = $currentSchedule->GetId();
         $this->_builder->BindSchedules($this->_page, $schedules, $currentSchedule);
 

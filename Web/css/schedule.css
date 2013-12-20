@@ -73,7 +73,7 @@ td.reservable, div.reservable {
 
 .reserved {
 	background-color: #408AD2;
-	color: #E0E0E0;
+	color: #fff;
 }
 
 td.reserved {
@@ -103,7 +103,7 @@ td.reserved {
 
 .reserved.pending {
 	background-color: #ffb540;
-	color: #ffffff;
+	color: black;
 }
 
 .reserved.pending.hilite {

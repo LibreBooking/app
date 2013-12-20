@@ -72,6 +72,8 @@ class ManageReservationsPresenter extends ActionPresenter
 		$this->resourceRepository = $resourceRepository;
 		$this->attributeService = $attributeService;
 		$this->userPreferenceRepository = $userPreferenceRepository;
+
+		$this->AddAction('changeStatus', 'UpdateResourceStatus');
 	}
 
 	public function PageLoad($userTimezone)
@@ -204,6 +206,41 @@ class ManageReservationsPresenter extends ActionPresenter
 		$today = Date::Create(Date('Y'), Date('m'), Date('d'), 0, 0, 0, $timezone);
 		$diff = DateDiff::BetweenDates($today, $date);
 		return $diff->Days();
+	}
+
+	public function UpdateResourceStatus()
+	{
+		$session = ServiceLocator::GetServer()->GetUserSession();
+		$statusId = $this->page->GetResourceStatus();
+		$reasonId = $this->page->GetResourceStatusReason();
+		$referenceNumber = $this->page->GetResourceStatusReferenceNumber();
+		$resourceId = $this->page->GetUpdateResourceId();
+		$updateScope = $this->page->GetUpdateScope();
+
+		Log::Debug('Updating resource status');
+
+		$resourceIds = array();
+
+		if (empty($updateScope))
+		{
+			$resourceIds[] = $resourceId;
+		}
+		else
+		{
+			$reservations = $this->manageReservationsService->LoadFiltered(null, null, new ReservationFilter(null, null, $referenceNumber,null, null, null, null), $session);
+			/** @var $reservation ReservationItemView */
+			foreach ($reservations->Results() as $reservation)
+			{
+				$resourceIds[] = $reservation->ResourceId;
+			}
+		}
+
+		foreach($resourceIds as $id)
+		{
+			$resource = $this->resourceRepository->LoadById($id);
+			$resource->ChangeStatus($statusId, $reasonId);
+			$this->resourceRepository->Update($resource);
+		}
 	}
 }
 

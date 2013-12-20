@@ -24,6 +24,8 @@ function ReservationManagement(opts, approval)
 		statusDialog: $('#statusDialog'),
 		statusReasons:$('#resourceReasonId'),
 		statusOptions:$('#resourceStatusId'),
+		statusResourceId:$('#statusResourceId'),
+		statusReferenceNumber:$('#statusUpdateReferenceNumber'),
 
 		referenceNumberList: $(':hidden.referenceNumber')
 	};
@@ -200,6 +202,8 @@ function ReservationManagement(opts, approval)
 
 		var statusId = reservations[referenceNumber].resources[resourceId].statusId;
 		elements.statusOptions.val(statusId);
+		elements.statusResourceId.val(resourceId);
+		elements.statusReferenceNumber.val(referenceNumber);
 		populateReasonOptions(statusId);
 		elements.statusReasons.val(reservations[referenceNumber].resources[resourceId].descriptionId);
 

@@ -54,7 +54,7 @@ abstract class Page implements IPage
 		$this->smarty->assign('CurrentLanguage', $resources->CurrentLanguage);
 		$this->smarty->assign('HtmlLang', $resources->HtmlLang);
 		$this->smarty->assign('HtmlTextDirection', $resources->TextDirection);
-		$this->smarty->assign('Title', 'phpScheduleIt - ' . $resources->GetString($titleKey));
+		$this->smarty->assign('Title', 'Booked - ' . $resources->GetString($titleKey));
 		$this->smarty->assign('CalendarJSFile', $resources->CalendarLanguageFile);
 
 		$this->smarty->assign('LoggedIn', $userSession->IsLoggedIn());
@@ -81,7 +81,7 @@ abstract class Page implements IPage
         $this->smarty->assign('UseLocalJquery', Configuration::Instance()->GetKey(ConfigKeys::USE_LOCAL_JQUERY, new BooleanConverter()));
         $this->smarty->assign('EnableConfigurationPage', Configuration::Instance()->GetSectionKey(ConfigSection::PAGES, ConfigKeys::PAGES_ENABLE_CONFIGURATION, new BooleanConverter()));
 		$this->smarty->assign('ShowParticipation', !Configuration::Instance()->GetSectionKey(ConfigSection::RESERVATION, ConfigKeys::RESERVATION_PREVENT_PARTICIPATION, new BooleanConverter()));
-		
+
 		$this->smarty->assign('LogoUrl', 'booked.png');
 		if (file_exists($this->path . 'img/custom-logo.png'))
 		{

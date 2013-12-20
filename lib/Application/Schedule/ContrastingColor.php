@@ -27,7 +27,7 @@ class ContrastingColor
 
 	public function __construct($sourceColor)
 	{
-		$this->sourceColor = $sourceColor;
+		$this->sourceColor = str_replace('#', '', $sourceColor);
 	}
 
 	public function GetHex(){
@@ -36,7 +36,7 @@ class ContrastingColor
 		$g = hexdec(substr($this->sourceColor,2,2));
 		$b = hexdec(substr($this->sourceColor,4,2));
 		$yiq = (($r*299)+($g*587)+($b*114))/1000;
-		return ($yiq >= 128) ? '#333333' : '#E0E0E0';
+		return ($yiq >= 128) ? '#000' : '#fff';
 	}
 
 	public function __toString()
