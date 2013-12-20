@@ -185,6 +185,11 @@ interface ISchedulePage extends IActionPage
 	 * @param CalendarSubscriptionUrl $subscriptionUrl
 	 */
 	public function SetSubscriptionUrl(CalendarSubscriptionUrl $subscriptionUrl);
+
+	/**
+	 * @param bool $shouldShow
+	 */
+	public function ShowPermissionError($shouldShow);
 }
 
 class ScheduleStyle
@@ -221,7 +226,8 @@ class SchedulePage extends ActionPage implements ISchedulePage
 		$pageBuilder = new SchedulePageBuilder();
 		$reservationService = new ReservationService(new ReservationViewRepository(), new ReservationListingFactory());
 		$dailyLayoutFactory = new DailyLayoutFactory();
-		$this->_presenter = new SchedulePresenter($this, $scheduleRepository, $resourceService, $pageBuilder, $reservationService, $dailyLayoutFactory);
+		$scheduleService = new ScheduleService($scheduleRepository, $resourceService);
+		$this->_presenter = new SchedulePresenter($this, $scheduleService, $resourceService, $pageBuilder, $reservationService, $dailyLayoutFactory);
 	}
 
 	public function ProcessPageLoad()
@@ -392,17 +398,11 @@ class SchedulePage extends ActionPage implements ISchedulePage
 		$this->Set('ResourceTypes', $resourceTypes);
 	}
 
-	/**
-	 * @param Attribute[] $attributes
-	 */
 	public function SetResourceCustomAttributes($attributes)
 	{
 		$this->Set('ResourceAttributes', $attributes);
 	}
 
-	/**
-	 * @param Attribute[] $attributes
-	 */
 	public function SetResourceTypeCustomAttributes($attributes)
 	{
 		$this->Set('ResourceTypeAttributes', $attributes);
@@ -415,34 +415,22 @@ class SchedulePage extends ActionPage implements ISchedulePage
 		return !empty($k);
 	}
 
-	/**
-	 * @return int
-	 */
 	public function GetResourceTypeId()
 	{
 		return $this->GetForm(FormKeys::RESOURCE_TYPE_ID);
 	}
 
-	/**
-	 * @return int
-	 */
 	public function GetMaxParticipants()
 	{
 		$max = $this->GetForm(FormKeys::MAX_PARTICIPANTS);
 		return intval($max);
 	}
 
-	/**
-	 * @return AttributeFormElement[]|array
-	 */
 	public function GetResourceAttributes()
 	{
 		return AttributeFormParser::GetAttributes($this->GetForm('r' . FormKeys::ATTRIBUTE_PREFIX));
 	}
 
-	/**
-	 * @return AttributeFormElement[]|array
-	 */
 	public function GetResourceTypeAttributes()
 	{
 		return AttributeFormParser::GetAttributes($this->GetForm('rt' . FormKeys::ATTRIBUTE_PREFIX));
@@ -455,12 +443,14 @@ class SchedulePage extends ActionPage implements ISchedulePage
 		$this->Set('MaxParticipantsFilter', $resourceFilter->MinCapacity);
 	}
 
-	/**
-	 * @param CalendarSubscriptionUrl $subscriptionUrl
-	 */
 	public function SetSubscriptionUrl(CalendarSubscriptionUrl $subscriptionUrl)
 	{
 		$this->Set('SubscriptionUrl', $subscriptionUrl);
+	}
+
+	public function ShowPermissionError($shouldShow)
+	{
+		$this->Set('IsAccessible', !$shouldShow);
 	}
 }
 

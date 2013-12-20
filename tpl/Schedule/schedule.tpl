@@ -77,6 +77,8 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 	{include file='globalheader.tpl' cssFiles='css/jquery.qtip.min.css,scripts/css/jqtree.css,css/schedule.css'}
 {/block}
 
+{if $IsAccessible}
+
 {block name="actions"}
 	<div id="schedule-actions">
 		<a href="#" id="make_default" style="display:none;">{html_image src="star_boxed_full.png" altKey="MakeDefaultSchedule"}</a>
@@ -250,6 +252,9 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 		{/foreach}
 	</div>
 {/block}
+{else}
+	<div class="error">{translate key=NoResourcePermission}</div>
+{/if}
 
 <div class="clear">&nbsp;</div>
 <input type="hidden" value="{$ScheduleId}" id="scheduleId"/>

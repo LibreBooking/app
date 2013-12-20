@@ -41,9 +41,9 @@ class SchedulePresenter extends ActionPresenter implements ISchedulePresenter {
     private $_page;
 
     /**
-     * @var IScheduleRepository
+     * @var IScheduleService
      */
-    private $_scheduleRepository;
+    private $_scheduleService;
 
     /**
      * @var IResourceService
@@ -62,7 +62,7 @@ class SchedulePresenter extends ActionPresenter implements ISchedulePresenter {
 
     /**
      * @param ISchedulePage $page
-     * @param IScheduleRepository $scheduleRepository
+     * @param IScheduleService $scheduleService
      * @param IResourceService $resourceService
      * @param ISchedulePageBuilder $schedulePageBuilder
      * @param IReservationService $reservationService
@@ -70,7 +70,7 @@ class SchedulePresenter extends ActionPresenter implements ISchedulePresenter {
      */
     public function __construct(
         ISchedulePage $page,
-        IScheduleRepository $scheduleRepository,
+        IScheduleService $scheduleService,
         IResourceService $resourceService,
         ISchedulePageBuilder $schedulePageBuilder,
         IReservationService $reservationService,
@@ -79,7 +79,7 @@ class SchedulePresenter extends ActionPresenter implements ISchedulePresenter {
     {
 		parent::__construct($page);
         $this->_page = $page;
-        $this->_scheduleRepository = $scheduleRepository;
+        $this->_scheduleService = $scheduleService;
         $this->_resourceService = $resourceService;
         $this->_builder = $schedulePageBuilder;
         $this->_reservationService = $reservationService;
@@ -92,7 +92,15 @@ class SchedulePresenter extends ActionPresenter implements ISchedulePresenter {
 
         $showInaccessibleResources = $this->_page->ShowInaccessibleResources();
 
-        $schedules = $this->_scheduleRepository->GetAll();
+        $schedules = $this->_scheduleService->GetAll($showInaccessibleResources, $user);
+
+		if (count($schedules) == 0)
+		{
+			$this->_page->ShowPermissionError(true);
+			return;
+		}
+
+		$this->_page->ShowPermissionError(false);
 
 		$currentSchedule = $this->_builder->GetCurrentSchedule($this->_page, $schedules, $user);
         $activeScheduleId = $currentSchedule->GetId();
@@ -110,7 +118,7 @@ class SchedulePresenter extends ActionPresenter implements ISchedulePresenter {
 		$resourceAttributes = $this->_resourceService->GetResourceAttributes();
 		$resourceTypeAttributes = $this->_resourceService->GetResourceTypeAttributes();
 
-        $layout = $this->_scheduleRepository->GetLayout($activeScheduleId, new ScheduleLayoutFactory($targetTimezone));
+        $layout = $this->_scheduleService->GetLayout($activeScheduleId, new ScheduleLayoutFactory($targetTimezone));
 
         $reservationListing = $this->_reservationService->GetReservations($scheduleDates, $activeScheduleId, $targetTimezone);
         $dailyLayout = $this->_dailyLayoutFactory->Create($reservationListing, $layout);
@@ -130,7 +138,7 @@ class SchedulePresenter extends ActionPresenter implements ISchedulePresenter {
 
 		$requestedDate = Date::Parse($layoutDate, $user->Timezone);
 
-		$layout = $this->_scheduleRepository->GetLayout($scheduleId, new ScheduleLayoutFactory($user->Timezone));
+		$layout = $this->_scheduleService->GetLayout($scheduleId, new ScheduleLayoutFactory($user->Timezone));
 		$periods = $layout->GetLayout($requestedDate);
 
 		Log::Debug('Getting layout for scheduleId=%s, layoutDate=%s, periods=%s', $scheduleId, $layoutDate,var_export($periods, true));
