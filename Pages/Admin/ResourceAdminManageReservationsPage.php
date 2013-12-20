@@ -32,7 +32,8 @@ class ResourceAdminManageReservationsPage extends ManageReservationsPage
 					new ResourceAdminManageReservationsService(new ReservationViewRepository(), $userRepository),
 					new ScheduleRepository(),
 					new ResourceAdminResourceRepository($userRepository, ServiceLocator::GetServer()->GetUserSession()),
-					new AttributeService(new AttributeRepository()));
+					new AttributeService(new AttributeRepository()),
+					new UserPreferenceRepository());
 	}
 }
 
