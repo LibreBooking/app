@@ -36,6 +36,7 @@ class QueryStringKeys
 	const AUTOCOMPLETE_TYPE = 'type';
 	const BLACKOUT_ID = 'bid';
 	const CALENDAR_TYPE = 'ct';
+	const CONFIG_FILE = 'cf';
 	const DATA_REQUEST = 'dr';
 	const DAY = 'd';
 	const END_DATE = 'ed';

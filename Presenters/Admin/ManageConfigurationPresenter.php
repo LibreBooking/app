@@ -1,6 +1,6 @@
 <?php
 /**
-Copyright 2012 Nick Korbel
+Copyright 2012-2013 Nick Korbel
 
 This file is part of phpScheduleIt.
 
@@ -69,6 +69,11 @@ class ManageConfigurationPresenter extends ActionPresenter
 			return;
 		}
 
+		$configFiles = $this->GetConfigFiles();
+		$this->page->SetConfigFileOptions($configFiles);
+
+		$this->HandleSelectedConfigFile($configFiles);
+
 		$isFileWritable = $this->configSettings->CanOverwriteFile($this->configFilePath);
 		$this->page->SetIsConfigFileWritable($isFileWritable);
 
@@ -121,6 +126,9 @@ class ManageConfigurationPresenter extends ActionPresenter
 
 		$configSettings = $this->page->GetSubmittedSettings();
 
+		$configFiles = $this->GetConfigFiles();
+		$this->HandleSelectedConfigFile($configFiles);
+
 		$newSettings = array();
 
 		foreach ($configSettings as $setting)
@@ -171,6 +179,76 @@ class ManageConfigurationPresenter extends ActionPresenter
 			default:
 				return false;
 		}
+	}
+
+	private function GetConfigFiles()
+	{
+		$files = [new ConfigFileOption('config.php', '')];
+
+		$pluginBaseDir = ROOT_DIR . 'plugins/';
+		if ($h = opendir($pluginBaseDir))
+		{
+			while (false !== ($entry = readdir($h)))
+			{
+				$pluginDir = $pluginBaseDir . $entry;
+				if (is_dir($pluginDir) && $entry != "." && $entry != "..")
+				{
+					$plugins = scandir($pluginDir);
+					foreach ($plugins as $plugin)
+					{
+						if (is_dir("$pluginDir/$plugin") && $plugin != "." && $plugin != ".." && strpos($plugin,'Example') === false)
+						{
+							$configFiles = array_merge(glob("$pluginDir/$plugin/*.config.php"), glob("$pluginDir/$plugin/*.config.dist.php"));
+							if (count($configFiles) > 0)
+							{
+								$files[] = new ConfigFileOption("$entry-$plugin", "$entry/$plugin");
+							}
+						}
+					}
+				}
+			}
+
+			closedir($h);
+		}
+
+		return $files;
+	}
+
+	private function HandleSelectedConfigFile($configFiles)
+	{
+		$requestedConfigFile = $this->page->GetConfigFileToEdit();
+		if (!empty($requestedConfigFile))
+		{
+			/** @var $file ConfigFileOption */
+			foreach ($configFiles as $file)
+			{
+				if ($file->Location == $requestedConfigFile)
+				{
+					$this->page->SetSelectedConfigFile($requestedConfigFile);
+
+					$rootDir = ROOT_DIR . 'plugins/' . $requestedConfigFile;
+
+					$distFile = glob("$rootDir/*config.dist.php");
+					$configFile = glob("$rootDir/*config.php");
+					if (count($distFile) == 1 && count($configFile) == 0)
+					{
+						copy($distFile[0], str_replace('.dist', '', $distFile[0]));
+					}
+					$configFile = glob("$rootDir/*config.php");
+					$this->configFilePath = $configFile[0];
+
+				}
+			}
+		}
+	}
+}
+
+class ConfigFileOption
+{
+	public function __construct($name, $location)
+	{
+		$this->Name = $name;
+		$this->Location = $location;
 	}
 }
 
@@ -226,5 +304,3 @@ class ConfigSettingType
 	const String = 'string';
 	const Boolean = 'boolean';
 }
-
-?>

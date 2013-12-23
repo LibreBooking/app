@@ -145,6 +145,11 @@ class Configurator implements IConfigurationSettings
 
 	private function AddErrorReporting($file)
 	{
+		$pathinfo = pathinfo($file);
+		if ($pathinfo['dirname'] != ROOT_DIR . 'config')
+		{
+			return;
+		}
 		$contents = file_get_contents($file);
 		$new = str_replace("<?php", "<?php\r\nerror_reporting(E_ALL & ~E_NOTICE & ~E_STRICT);\r\n", $contents);
 

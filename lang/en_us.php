@@ -486,6 +486,7 @@ class en_us extends Language
 		$strings['ResourceStatus'] = 'Resource Status';
 		$strings['CurrentStatus'] = 'Current Status';
 		$strings['AllReservationResources'] = 'All Reservation Resources';
+		$strings['File'] = 'File';
 		// End Strings
 
 		// Install

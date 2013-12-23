@@ -49,6 +49,21 @@ interface IManageConfigurationPage extends IActionPage
 	 * @return array|ConfigSetting[]
 	 */
 	public function GetSubmittedSettings();
+
+	/**
+	 * @param ConfigFileOption[] $configFiles
+	 */
+	public function SetConfigFileOptions($configFiles);
+
+	/**
+	 * @return string
+	 */
+	public function GetConfigFileToEdit();
+
+	/**
+	 * @param string $configFileName
+	 */
+	public function SetSelectedConfigFile($configFileName);
 }
 
 class ManageConfigurationPage extends ActionPage implements IManageConfigurationPage
@@ -178,6 +193,30 @@ class ManageConfigurationPage extends ActionPage implements IManageConfiguration
 		}
 
 		return $submittedSettings;
+	}
+
+	/**
+	 * @param ConfigFileOption[] $configFiles
+	 */
+	public function SetConfigFileOptions($configFiles)
+	{
+		$this->Set('ConfigFiles', $configFiles);
+	}
+
+	/**
+	 * @return string
+	 */
+	public function GetConfigFileToEdit()
+	{
+		return $this->GetQuerystring(QueryStringKeys::CONFIG_FILE);
+	}
+
+	/**
+	 * @param string $configFileName
+	 */
+	public function SetSelectedConfigFile($configFileName)
+	{
+		$this->Set('SelectedFile', $configFileName);
 	}
 }
 

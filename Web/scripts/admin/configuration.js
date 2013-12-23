@@ -1,6 +1,8 @@
 function Configuration() {
 	var elements = {
-		form: $('form')
+		form: $('#frmConfigSettings'),
+		configFileSelection: $('#cf'),
+		configFileForm: $('#frmConfigFile')
 	};
 
 	Configuration.prototype.init = function () {
@@ -10,13 +12,18 @@ function Configuration() {
 			elements.form.submit();
 		});
 
+
+		elements.configFileSelection.change(function(e){
+			elements.configFileForm.submit();
+		});
+
 		elements.form.bind('onValidationFailed', onValidationFailed);
 
 		ConfigureAdminForm(elements.form, defaultSubmitCallback, successHandler, null, {onBeforeSubmit: onBeforeAddSubmit});
 	};
 
 	var defaultSubmitCallback = function (form) {
-		return form.attr('action') + "?action=" + form.attr('ajaxAction');
+		return form.attr('action') + "?action=" + form.attr('ajaxAction') + "&cf=" + elements.configFileSelection.val();
 	};
 
 	function onValidationFailed(event, data)

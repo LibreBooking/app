@@ -1,5 +1,5 @@
 {*
-Copyright 2012 Nick Korbel
+Copyright 2013 Nick Korbel
 
 This file is part of phpScheduleIt.
 
@@ -19,21 +19,32 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 
 {include file='globalheader.tpl' cssFiles='css/admin.css,scripts/css/colorbox.css'}
 
+<form id="frmConfigFile" method="GET" action="{$SCRIPT_NAME}">
+	{translate key=File}:
+	<select name="cf" id="cf" class="textbox">
+	{foreach from=$ConfigFiles item=file}
+		{assign var=selected value=""}
+		{if $file->Location eq $SelectedFile}{assign var=selected value="selected='selected'"}{/if}
+		<option value="{$file->Location}" {$selected}>{$file->Name}</option>
+	{/foreach}
+	</select>
+</form>
+
 {function name="list_settings"}
 	{foreach from=$settings item=setting}
 		{cycle values=',row1' assign=rowCss}
 		{assign var="name" value=$setting->Name}
     <li class="{$rowCss}"><span class="label">{$setting->Key}</span>
 		{if $setting->Key == ConfigKeys::SERVER_TIMEZONE}
-            <select name="{$name}">
+            <select name="{$name}" class="textbox">
 				{html_options values=$TimezoneValues output=$TimezoneOutput selected=$setting->Value}
             </select>
 			{elseif $setting->Key == ConfigKeys::LANGUAGE}
-            <select name={$name}>
+            <select name="{$name}" class="textbox">
 				{object_html_options options=$Languages key='GetLanguageCode' label='GetDisplayName' selected=$setting->Value|strtolower}
             </select>
 			{elseif $setting->Type == ConfigSettingType::String}
-            <input type="text" size="50" name="{$name}" value="{$setting->Value|escape}"/>
+            <input type="text" size="50" name="{$name}" value="{$setting->Value|escape}" class="textbox"/>
 			{else}
             <label>{translate key="True"}<input type="radio" value="true" name="{$name}"{if $setting->Value == 'true'}
                                                 checked="checked"{/if} /></label>
@@ -71,7 +82,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 
     <input type="button" value="{translate key=Update}" class='button save'/>
 
-    <form method="post" ajaxAction="{ConfigActions::Update}" action="{$smarty.server.SCRIPT_NAME}">
+    <form id="frmConfigSettings" method="post" ajaxAction="{ConfigActions::Update}" action="{$smarty.server.SCRIPT_NAME}">
 		<h3>{translate key=GeneralConfigSettings}</h3>
 		<fieldset>
 		<ul class="no-style config-settings">

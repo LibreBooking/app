@@ -236,6 +236,30 @@ class FakeManageConfigurationPage extends FakeActionPageBase implements IManageC
 	{
 		return $this->_SubmittedSettings;
 	}
+
+	/**
+	 * @param ConfigFileOption[] $configFiles
+	 */
+	public function SetConfigFileOptions($configFiles)
+	{
+		// TODO: Implement SetConfigFileOptions() method.
+	}
+
+	/**
+	 * @return string
+	 */
+	public function GetConfigFileToEdit()
+	{
+		// TODO: Implement GetConfigFileToEdit() method.
+	}
+
+	/**
+	 * @param string $configFileName
+	 */
+	public function SetSelectedConfigFile($configFileName)
+	{
+		// TODO: Implement SetSelectedConfigFile() method.
+	}
 }
 
 ?>
