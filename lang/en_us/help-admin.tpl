@@ -220,25 +220,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 	phpScheduleIt lang directory</p>
 
 <p class="setting"><span>$conf['settings']['script.url']</span>The full public URL to the root of this instance of
-	phpScheduleIt. This should
-	be the Web directory which contains files like bookings.php and calendar.php</p>
-
-<p class="setting"><span>$conf['settings']['password.pattern']</span>A regular expression to enforce password complexity
-	during user account
-	registration</p>
-
-<p class="setting"><span>$conf['settings']['schedule']['show.inaccessible.resources']</span>Whether or not resources
-	that are not
-	accessible to the user
-	are displayed in the schedule</p>
-
-<p class="setting"><span>$conf['settings']['schedule']['reservation.label']</span>The format of what to display for the
-	reservation slot on the Bookings page. Available tokens are {literal}{name}, {title}, {description}, {email},
-	{phone}
-	, {organization}, {position}{/literal}. Leave it blank for no label. Any combination of tokens can be used.</p>
-
-<p class="setting"><span>$conf['settings']['schedule']['hide.blocked.periods']</span>If blocked periods should be
-	hidden on the bookings page. Default is false.</p>
+	phpScheduleIt. This should be the Web directory which contains files like bookings.php and calendar.php</p>
 
 <p class="setting"><span>$conf['settings']['image.upload.directory']</span>The physical directory to store images.
 	This directory will need to be writable (755 suggested). This can be the full directory or relative to the
@@ -284,25 +266,37 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 <p class="setting"><span>$conf['settings']['logout.url']</span>Where the user will be redirected after being logged out.
 	Default is the login page.</p>
 
+
+<p class="setting"><span>$conf['settings']['schedule']['use.per.user.colors']</span>Use user-specific,
+	administrator-defined colors for reservations. Default is false.</p>
+
+<p class="setting"><span>$conf['settings']['schedule']['show.inaccessible.resources']</span>Whether or not resources
+	that are not accessible to the user	are displayed in the schedule</p>
+
+<p class="setting"><span>$conf['settings']['schedule']['reservation.label']</span>The format of what to display for the
+	reservation slot on the Bookings page. Available tokens are {literal}{name}, {title}, {description}, {email},
+	{phone}
+	, {organization}, {position}{/literal}. Leave it blank for no label. Any combination of tokens can be used.</p>
+
+<p class="setting"><span>$conf['settings']['schedule']['hide.blocked.periods']</span>If blocked periods should be
+	hidden on the bookings page. Default is false.</p>
+
 <p class="setting"><span>$conf['settings']['ics']['require.login']</span>If users should be required to log in to add a
 	reservation to
 	Outlook.</p>
 
-<p class="setting"><span>$conf['settings']['ics']['subscription.key']</span>If you want to allow webcal subscriptions,
-	set this to a
-	difficult to guess value. If nothing is set then webcal subscriptions will be disabled.</p>
+<p class="setting"><span>$conf['settings']['ics']['subscription.key']</span>If you want to allow calendar subscriptions,
+	set this to a difficult to guess value. If nothing is set then calendar subscriptions will be disabled.</p>
 
 <p class="setting"><span>$conf['settings']['privacy']['view.schedules']</span>If non-authenticated users can view the
-	booking schedules.
-	Default is false.</p>
+	booking schedules.	Default is false.</p>
 
 <p class="setting"><span>$conf['settings']['privacy']['view.reservations']</span>If non-authenticated users can view
 	reservation details.
 	Default is false.</p>
 
 <p class="setting"><span>$conf['settings']['privacy']['hide.user.details']</span>If non-adminstrators can view personal
-	information about
-	other users. Default is false.</p>
+	information about other users. Default is false.</p>
 
 <p class="setting"><span>$conf['settings']['reservation']['start.time.constraint']</span>When reservations can be
 	created or edited.
@@ -429,6 +423,18 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 	'from' address when sending emails. If emails are bouncing or being marked as spam, set this to an email address
 	with your domain name. For example, noreply@yourdomain.com. This will not change the 'from' name or the reply-to
 	address.</p>
+
+<p class="setting"><span>$conf['settings']['reports']['allow.all.users']</span>If non-administrators can access usage
+	reports. Default is false.</p>
+
+<p class="setting"><span>$conf['settings']['password']['minimum.letters']</span>Minimum number of letters required for
+	user passwords. Default is 6.</p>
+
+<p class="setting"><span>$conf['settings']['password']['minimum.numbers']</span>Minimum number of numbers required for
+	user passwords. Default is 0.</p>
+
+<p class="setting"><span>$conf['settings']['password']['upper.and.lower']</span>Whether user passwords require a
+	combination of upper and lower case letters. Default is false.</p>
 
 <h2>Plugins</h2>
 

@@ -33,10 +33,6 @@ $conf['settings']['default.page.size'] = '50';                  // number of rec
 $conf['settings']['enable.email'] = 'true';                     // global configuration to enable if any emails will be sent
 $conf['settings']['default.language'] = 'en_us';                // find your language in phpScheduleIt/lang directory
 $conf['settings']['script.url'] = 'http://localhost/Web';   	// public URL to the Web directory of this phpScheduleIt instance. this is the URL that appears when you are logging in
-$conf['settings']['use.per.user.colors'] = 'false'; 			// color reservations by user
-$conf['settings']['schedule']['show.inaccessible.resources'] = 'true';  // whether or not resources that are inaccessible to the user are visible
-$conf['settings']['schedule']['reservation.label'] = '{name}';    		// format for what to display on the reservation slot label. Available properties are: {name}, {title}, {description}, {email}, {phone}, {organization}, {position}
-$conf['settings']['schedule']['hide.blocked.periods'] = 'false';    	// if blocked periods should be hidden or shown
 $conf['settings']['image.upload.directory'] = 'Web/uploads/images'; // full or relative path to where images will be stored
 $conf['settings']['image.upload.url'] = 'uploads/images';       // full or relative path to show uploaded images from
 $conf['settings']['cache.templates'] = 'true';                  // true recommended, caching template files helps web pages render faster
@@ -51,6 +47,11 @@ $conf['settings']['css.extension.file'] = ''; 			      	// full or relative url 
 $conf['settings']['disable.password.reset'] = 'false'; 	      	// if the password reset functionality should be disabled
 $conf['settings']['home.url'] = ''; 	      					// the url to open when the logo is clicked
 $conf['settings']['logout.url'] = ''; 	      					// the url to be directed to after logging out
+
+$conf['settings']['schedule']['use.per.user.colors'] = 'false'; 		// color reservations by user
+$conf['settings']['schedule']['show.inaccessible.resources'] = 'true';  // whether or not resources that are inaccessible to the user are visible
+$conf['settings']['schedule']['reservation.label'] = '{name}';    		// format for what to display on the reservation slot label. Available properties are: {name}, {title}, {description}, {email}, {phone}, {organization}, {position}
+$conf['settings']['schedule']['hide.blocked.periods'] = 'false';    	// if blocked periods should be hidden or shown
 
 /**
  * ical integration configuration

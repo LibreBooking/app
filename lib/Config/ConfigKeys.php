@@ -109,7 +109,7 @@ class ConfigKeys
 
 	const APP_TITLE = 'app.title';
 
-	const PER_USER_COLORS = 'use.per.user.colors';
+	const SCHEDULE_PER_USER_COLORS = 'use.per.user.colors';
 
 	const PASSWORD_UPPER_AND_LOWER = 'upper.and.lower';
 	const PASSWORD_LETTERS = 'minimum.letters';
