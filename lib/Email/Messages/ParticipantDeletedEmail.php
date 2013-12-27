@@ -27,10 +27,10 @@ class ParticipantDeletedEmail extends ReservationEmailMessage
 	 */
 	private $participant;
 
-	public function __construct(User $reservationOwner, User $participant, ReservationSeries $reservationSeries)
+	public function __construct(User $reservationOwner, User $participant, ReservationSeries $reservationSeries, IAttributeRepository $attributeRepository)
 	{
-		parent::__construct($reservationOwner, $reservationSeries, $participant->Language());
-		
+		parent::__construct($reservationOwner, $reservationSeries, $participant->Language(), $attributeRepository);
+
 		$this->reservationOwner = $reservationOwner;
 		$this->reservationSeries = $reservationSeries;
 		$this->timezone = $participant->Timezone();
@@ -41,7 +41,7 @@ class ParticipantDeletedEmail extends ReservationEmailMessage
 	{
 		$address = $this->participant->EmailAddress();
 		$name = $this->participant->FullName();
-		
+
 		return array(new EmailAddress($address, $name));
 	}
 
@@ -60,4 +60,3 @@ class ParticipantDeletedEmail extends ReservationEmailMessage
         return 'ReservationDeleted.tpl';
     }
 }
-?>

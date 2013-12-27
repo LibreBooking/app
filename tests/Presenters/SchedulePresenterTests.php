@@ -776,7 +776,7 @@ class SchedulePresenterTests extends TestBase
 	{
 		$user = $this->fakeUser;
 		$page = $this->getMock('ISchedulePage');
-		$scheduleRepository = $this->getMock('IScheduleRepository');
+		$scheduleService = $this->getMock('IScheduleService');
 		$resourceService = $this->getMock('IResourceService');
 		$pageBuilder = $this->getMock('ISchedulePageBuilder');
 		$reservationService = $this->getMock('IReservationService');
@@ -802,7 +802,7 @@ class SchedulePresenterTests extends TestBase
 				->method('GetLayoutDate')
 				->will($this->returnValue($dateString));
 
-		$scheduleRepository
+		$scheduleService
 				->expects($this->once())
 				->method('GetLayout')
 				->with($this->equalTo($scheduleId), $this->equalTo(new ScheduleLayoutFactory($user->Timezone)))
@@ -819,7 +819,7 @@ class SchedulePresenterTests extends TestBase
 				->method('SetLayoutResponse')
 				->with($this->equalTo($expectedLayoutResponse));
 
-		$presenter = new SchedulePresenter($page, $scheduleRepository, $resourceService, $pageBuilder, $reservationService, $dailyLayoutFactory);
+		$presenter = new SchedulePresenter($page, $scheduleService, $resourceService, $pageBuilder, $reservationService, $dailyLayoutFactory);
 
 		$presenter->GetLayout($user);
 	}

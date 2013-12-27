@@ -510,13 +510,9 @@ class ResourceRepositoryTests extends TestBase
 
 class SkipResource5Filter implements IResourceFilter
 {
-	/**
-	 * @param int $resourceId
-	 * @return bool
-	 */
-	function ShouldInclude($resourceId)
+	function ShouldInclude($resource)
 	{
-		return $resourceId != 5;
+		return $resource->GetId() != 5;
 	}
 }
 

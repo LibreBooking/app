@@ -41,7 +41,6 @@ class UserPreferences
 
 		$pairs = explode(',', $allPreferences);
 
-
 		foreach ($pairs as $pair)
 		{
 			$nv = explode('=', $pair);

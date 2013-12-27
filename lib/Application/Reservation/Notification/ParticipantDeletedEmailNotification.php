@@ -23,13 +23,19 @@ require_once(ROOT_DIR . 'lib/Email/Messages/ParticipantDeletedEmail.php');
 class ParticipantDeletedEmailNotification implements IReservationNotification
 {
     /**
-     * @var \IUserRepository
+     * @var IUserRepository
      */
     private $userRepository;
 
-    public function __construct(IUserRepository $userRepository)
+	/**
+	 * @var IAttributeRepository
+	 */
+	private $attributeRepository;
+
+    public function __construct(IUserRepository $userRepository, IAttributeRepository $attributeRepository)
     {
         $this->userRepository = $userRepository;
+        $this->attributeRepository = $attributeRepository;
     }
 
     /**
@@ -44,10 +50,8 @@ class ParticipantDeletedEmailNotification implements IReservationNotification
         {
             $participant = $this->userRepository->LoadById($userId);
 
-            $message = new ParticipantDeletedEmail($owner, $participant, $reservationSeries);
+            $message = new ParticipantDeletedEmail($owner, $participant, $reservationSeries, $this->attributeRepository);
             ServiceLocator::GetEmailService()->Send($message);
         }
     }
 }
-
-?>

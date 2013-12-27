@@ -127,7 +127,7 @@ function Recurrence(recurOptions, recurElements, prefix) {
 			elements.repeatOptions.val(options.repeatType);
 			elements.repeatInterval.val(options.repeatInterval);
 			for (var i = 0; i < options.repeatWeekdays.length; i++) {
-				var id = "#' + prefix + 'repeatDay" + options.repeatWeekdays[i];
+				var id = '#' + prefix + 'repeatDay' + options.repeatWeekdays[i];
 				$(id).attr('checked', true);
 			}
 

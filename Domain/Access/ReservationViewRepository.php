@@ -1078,7 +1078,7 @@ class ReservationItemView implements IReservedItemView
 			$view->ResourceStatusReasonId = $row[ColumnNames::RESOURCE_STATUS_REASON_ID];
 		}
 
-		if (isset($row[ColumnNames::RESOURCE_STATUS_ID]))
+		if (isset($row[ColumnNames::RESOURCE_STATUS_ID_ALIAS]))
 		{
 			$view->ResourceStatusId = $row[ColumnNames::RESOURCE_STATUS_ID_ALIAS];
 		}

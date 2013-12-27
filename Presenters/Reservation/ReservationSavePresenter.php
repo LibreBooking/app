@@ -17,7 +17,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 */
- 
+
 require_once(ROOT_DIR . 'Presenters/Reservation/ReservationHandler.php');
 
 interface IReservationSavePresenter
@@ -39,12 +39,12 @@ class ReservationSavePresenter implements IReservationSavePresenter
 	 * @var IReservationSavePage
 	 */
 	private $_page;
-	
+
 	/**
 	 * @var IReservationPersistenceService
 	 */
 	private $_persistenceService;
-	
+
 	/**
 	 * @var IReservationHandler
 	 */
@@ -54,9 +54,9 @@ class ReservationSavePresenter implements IReservationSavePresenter
 	 * @var IResourceRepository
 	 */
 	private $_resourceRepository;
-	
+
 	public function __construct(
-		IReservationSavePage $page, 
+		IReservationSavePage $page,
 		IReservationPersistenceService $persistenceService,
 		IReservationHandler $handler,
 		IResourceRepository $resourceRepository,
@@ -68,7 +68,7 @@ class ReservationSavePresenter implements IReservationSavePresenter
 		$this->_resourceRepository = $resourceRepository;
 		$this->userSession = $userSession;
 	}
-	
+
 	public function BuildReservation()
 	{
 		$userId = $this->_page->GetUserId();
@@ -79,9 +79,9 @@ class ReservationSavePresenter implements IReservationSavePresenter
 		$roFactory = new RepeatOptionsFactory();
 		$repeatOptions = $roFactory->CreateFromComposite($this->_page, $this->userSession->Timezone);
 		$duration = $this->GetReservationDuration();
-		
+
 		$reservationSeries = ReservationSeries::Create($userId, $resource, $title, $description, $duration, $repeatOptions, $this->userSession);
-		
+
 		$resourceIds = $this->_page->GetResources();
 		foreach ($resourceIds as $resourceId)
 		{
@@ -139,22 +139,22 @@ class ReservationSavePresenter implements IReservationSavePresenter
 
 		return $reservationSeries;
 	}
-	
+
 	/**
 	 * @param ReservationSeries $reservationSeries
 	 */
 	public function HandleReservation($reservationSeries)
-	{		
+	{
 		$successfullySaved = $this->_handler->Handle(
 					$reservationSeries,
 					$this->_page);
-			
+
 		if ($successfullySaved)
 		{
 			$this->_page->SetReferenceNumber($reservationSeries->CurrentInstance()->ReferenceNumber());
 		}
 	}
-	
+
 	/**
 	 * @return DateRange
 	 */
@@ -164,9 +164,8 @@ class ReservationSavePresenter implements IReservationSavePresenter
 		$startTime = $this->_page->GetStartTime();
 		$endDate = $this->_page->GetEndDate();
 		$endTime = $this->_page->GetEndTime();
-		
+
 		$timezone = $this->userSession->Timezone;
 		return DateRange::Create($startDate . ' ' . $startTime, $endDate . ' ' . $endTime, $timezone);
 	}
 }
-?>

@@ -228,6 +228,14 @@ class ReservationResourceRow
 			ColumnNames::RESOURCE_MAXNOTICE => $this->maxNotice,
 			ColumnNames::SCHEDULE_ID => $this->scheduleId,
 			ColumnNames::RESOURCE_STATUS_ID => $this->statusId,
+			ColumnNames::RESOURCE_IMAGE_NAME => null,
+			ColumnNames::RESOURCE_ADMIN_GROUP_ID => null,
+			ColumnNames::RESOURCE_STATUS_REASON_ID => null,
+			ColumnNames::PUBLIC_ID => null,
+			ColumnNames::ALLOW_CALENDAR_SUBSCRIPTION => false,
+			ColumnNames::SCHEDULE_ADMIN_GROUP_ID_ALIAS => null,
+			ColumnNames::RESOURCE_TYPE_ID => null,
+			ColumnNames::RESOURCE_SORT_ORDER => null,
 		);
 	}
 }
@@ -465,6 +473,7 @@ class BlackoutSeriesRow
 			ColumnNames::REPEAT_OPTIONS => $repeatConfiguration,
 			ColumnNames::BLACKOUT_START => $start,
 			ColumnNames::BLACKOUT_END => $end,
+			ColumnNames::BLACKOUT_INSTANCE_ID => 1
 		);
 
 		return $this;
@@ -505,11 +514,12 @@ class BlackoutResourceRow
 		public function With($resourceId, $name, $scheduleId, $adminGroupId = null, $scheduleAdminGroupId = null)
 		{
 			$this->rows[] = array(
-				$row[ColumnNames::RESOURCE_ID] = $resourceId,
-				$row[ColumnNames::RESOURCE_NAME] = $name,
-				$row[ColumnNames::RESOURCE_ADMIN_GROUP_ID] = $adminGroupId,
-				$row[ColumnNames::SCHEDULE_ID] = $scheduleId,
-				$row[ColumnNames::SCHEDULE_ADMIN_GROUP_ID_ALIAS] = $scheduleAdminGroupId
+				ColumnNames::RESOURCE_ID => $resourceId,
+				ColumnNames::RESOURCE_NAME => $name,
+				ColumnNames::RESOURCE_ADMIN_GROUP_ID => $adminGroupId,
+				ColumnNames::SCHEDULE_ID => $scheduleId,
+				ColumnNames::SCHEDULE_ADMIN_GROUP_ID_ALIAS => $scheduleAdminGroupId,
+				ColumnNames::RESOURCE_STATUS_ID => ResourceStatus::AVAILABLE,
 			);
 
 			return $this;

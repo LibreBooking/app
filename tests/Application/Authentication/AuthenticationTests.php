@@ -93,7 +93,7 @@ class AuthenticationTests extends TestBase
 		$this->languageCode = 'en_us';
 		$this->publicId = 'public_id';
 		$this->scheduleId = 111;
-		$this->groups = array(new FakeGroup(999), new FakeGroup(888));
+		$this->groups = array(new UserGroup(999, '1'), new UserGroup(888, '2'));
 
 		$this->user = new FakeUser();
 		$this->user->WithId($this->id);

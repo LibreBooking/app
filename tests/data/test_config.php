@@ -18,7 +18,7 @@ You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-$conf['settings']['server.timezone'] = 'US/Central';
+$conf['settings']['default.timezone'] = 'US/Central';
 $conf['settings']['allow.self.registration'] = 'true';
 $conf['settings']['database']['type'] = 'mysql';
 $conf['settings']['plugins']['Authentication'] = 'ActiveDirectory';

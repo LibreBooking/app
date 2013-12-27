@@ -54,7 +54,7 @@ class PostReservationFactory implements IPostReservationFactory
      */
     public function CreatePostAddService(UserSession $userSession)
     {
-        return new AddReservationNotificationService(new UserRepository(), new ResourceRepository());
+        return new AddReservationNotificationService(new UserRepository(), new ResourceRepository(), new AttributeRepository());
     }
 
     /**
@@ -63,7 +63,7 @@ class PostReservationFactory implements IPostReservationFactory
      */
     public function CreatePostUpdateService(UserSession $userSession)
     {
-        return new UpdateReservationNotificationService(new UserRepository(), new ResourceRepository());
+        return new UpdateReservationNotificationService(new UserRepository(), new ResourceRepository(), new AttributeRepository());
     }
 
     /**
@@ -72,7 +72,7 @@ class PostReservationFactory implements IPostReservationFactory
      */
     public function CreatePostDeleteService(UserSession $userSession)
     {
-        return new DeleteReservationNotificationService(new UserRepository(), new ResourceRepository());
+        return new DeleteReservationNotificationService(new UserRepository(), new ResourceRepository(), new AttributeRepository());
     }
 
     /**
@@ -81,7 +81,7 @@ class PostReservationFactory implements IPostReservationFactory
      */
     public function CreatePostApproveService(UserSession $userSession)
     {
-        return new ApproveReservationNotificationService(new UserRepository(), new ResourceRepository());
+        return new ApproveReservationNotificationService(new UserRepository(), new ResourceRepository(), new AttributeRepository());
     }
 }
 ?>

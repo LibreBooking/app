@@ -23,15 +23,15 @@ require_once(ROOT_DIR . 'Domain/Access/namespace.php');
 class FakeReservationRepository
 {
 	public $_Reservations = array();
-	
+
 	public function __construct()
 	{
-		$this->FillRows(); 
+		$this->FillRows();
 	}
-	
+
 	public static function GetReservationRows()
 	{
-		$row1 =  array(ColumnNames::RESERVATION_INSTANCE_ID => 1, 
+		$row1 =  array(ColumnNames::RESERVATION_INSTANCE_ID => 1,
 					ColumnNames::RESERVATION_START => '2008-05-20 09:00:00',
 					ColumnNames::RESERVATION_END => '2008-05-20 15:30:00',
 					ColumnNames::RESERVATION_TYPE => 1,
@@ -51,9 +51,16 @@ class FakeReservationRepository
                     ColumnNames::OWNER_FIRST_NAME => 'first',
                     ColumnNames::OWNER_LAST_NAME => 'last',
                     ColumnNames::OWNER_USER_ID => 1,
+                    ColumnNames::OWNER_PHONE => null,
+					ColumnNames::OWNER_ORGANIZATION => null,
+					ColumnNames::OWNER_POSITION => null,
+					ColumnNames::PARTICIPANT_LIST => null,
+					ColumnNames::INVITEE_LIST => null,
+					ColumnNames::ATTRIBUTE_LIST => null,
+					ColumnNames::USER_PREFERENCES => null,
 					);
-					
-		$row2 =  array(ColumnNames::RESERVATION_INSTANCE_ID => 1, 
+
+		$row2 =  array(ColumnNames::RESERVATION_INSTANCE_ID => 1,
 					ColumnNames::RESERVATION_START => '2008-05-20 09:00:00',
 					ColumnNames::RESERVATION_END => '2008-05-20 15:30:00',
 					ColumnNames::RESERVATION_TYPE => 1,
@@ -74,9 +81,16 @@ class FakeReservationRepository
                     ColumnNames::OWNER_FIRST_NAME => 'first',
                     ColumnNames::OWNER_LAST_NAME => 'last',
                     ColumnNames::OWNER_USER_ID => 1,
+					ColumnNames::OWNER_PHONE => null,
+					ColumnNames::OWNER_ORGANIZATION => null,
+					ColumnNames::OWNER_POSITION => null,
+					ColumnNames::PARTICIPANT_LIST => null,
+					ColumnNames::INVITEE_LIST => null,
+					ColumnNames::ATTRIBUTE_LIST => null,
+					ColumnNames::USER_PREFERENCES => null,
 					);
-					
-		$row3 =  array(ColumnNames::RESERVATION_INSTANCE_ID => 2, 
+
+		$row3 =  array(ColumnNames::RESERVATION_INSTANCE_ID => 2,
 					ColumnNames::RESERVATION_START => '2008-05-22 06:00:00',
 					ColumnNames::RESERVATION_END => '2008-05-24 09:30:00',
 					ColumnNames::RESERVATION_TYPE => 1,
@@ -97,19 +111,26 @@ class FakeReservationRepository
                     ColumnNames::OWNER_FIRST_NAME => 'first',
                     ColumnNames::OWNER_LAST_NAME => 'last',
                     ColumnNames::OWNER_USER_ID => 1,
+					ColumnNames::OWNER_PHONE => null,
+					ColumnNames::OWNER_ORGANIZATION => null,
+					ColumnNames::OWNER_POSITION => null,
+					ColumnNames::PARTICIPANT_LIST => null,
+					ColumnNames::INVITEE_LIST => null,
+					ColumnNames::ATTRIBUTE_LIST => null,
+					ColumnNames::USER_PREFERENCES => null,
 					);
-		
+
 		return array(
-			$row1, 
-			$row2, 
+			$row1,
+			$row2,
 			$row3
-			);								
+			);
 	}
-	
+
 	private function FillRows()
 	{
 		$rows = self::GetReservationRows();
-		
+
 		foreach($rows as $row)
 		{
 			$this->_Reservations[] = ReservationFactory::CreateForSchedule($row);

@@ -574,5 +574,3 @@ class ReservationSeries
 		$this->endReminder = $reminder;
 	}
 }
-
-?>

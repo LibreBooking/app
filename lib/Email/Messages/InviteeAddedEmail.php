@@ -27,11 +27,11 @@ class InviteeAddedEmail extends ReservationEmailMessage
 	 * @var User
 	 */
 	private $invitee;
-	
-	public function __construct(User $reservationOwner, User $invitee, ReservationSeries $reservationSeries)
+
+	public function __construct(User $reservationOwner, User $invitee, ReservationSeries $reservationSeries, IAttributeRepository $attributeRepository)
 	{
-		parent::__construct($reservationOwner, $reservationSeries, $invitee->Language());
-		
+		parent::__construct($reservationOwner, $reservationSeries, $invitee->Language(), $attributeRepository);
+
 		$this->reservationOwner = $reservationOwner;
 		$this->reservationSeries = $reservationSeries;
 		$this->timezone = $invitee->Timezone();
@@ -42,7 +42,7 @@ class InviteeAddedEmail extends ReservationEmailMessage
 	{
 		$address = $this->invitee->EmailAddress();
 		$name = $this->invitee->FullName();
-		
+
 		return array(new EmailAddress($address, $name));
 	}
 
@@ -60,7 +60,7 @@ class InviteeAddedEmail extends ReservationEmailMessage
     {
         return 'ReservationInvitation.tpl';
     }
-	
+
 	protected function PopulateTemplate()
 	{
         $currentInstance = $this->reservationSeries->CurrentInstance();

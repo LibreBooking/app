@@ -50,6 +50,7 @@ class InvitationEmailNotificationTests extends TestBase
 		$series->WithOwnerId($ownerId);
 
 		$userRepo = $this->getMock('IUserRepository');
+		$attributeRepo = $this->getMock('IAttributeRepository');
 
 		$userRepo->expects($this->at(0))
 			->method('LoadById')
@@ -66,11 +67,11 @@ class InvitationEmailNotificationTests extends TestBase
 			->with($this->equalTo($inviteeId2))
 			->will($this->returnValue($invitee2));
 
-		$notification = new InviteeAddedEmailNotification($userRepo);
+		$notification = new InviteeAddedEmailNotification($userRepo, $attributeRepo);
 		$notification->Notify($series);
 
 		$this->assertEquals(2, count($this->fakeEmailService->_Messages));
-		$lastExpectedMessage = new InviteeAddedEmail($owner, $invitee2, $series);
+		$lastExpectedMessage = new InviteeAddedEmail($owner, $invitee2, $series, $attributeRepo);
         $this->assertInstanceOf('InviteeAddedEmail', $this->fakeEmailService->_LastMessage);
 //		$this->assertEquals($lastExpectedMessage, $this->fakeEmailService->_LastMessage);
 

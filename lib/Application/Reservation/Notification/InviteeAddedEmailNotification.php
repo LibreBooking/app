@@ -23,13 +23,19 @@ require_once(ROOT_DIR . 'lib/Email/Messages/InviteeAddedEmail.php');
 class InviteeAddedEmailNotification implements IReservationNotification
 {
 	/**
-	 * @var \IUserRepository
+	 * @var IUserRepository
 	 */
 	private $userRepository;
 
-	public function __construct(IUserRepository $userRepository)
+	/**
+	 * @var IAttributeRepository
+	 */
+	private $attributeRepository;
+
+	public function __construct(IUserRepository $userRepository, IAttributeRepository $attributeRepository)
 	{
 		$this->userRepository = $userRepository;
+		$this->attributeRepository = $attributeRepository;
 	}
 
 	/**
@@ -49,7 +55,7 @@ class InviteeAddedEmailNotification implements IReservationNotification
 
 			$invitee = $this->userRepository->LoadById($userId);
 
-			$message = new InviteeAddedEmail($owner, $invitee, $reservationSeries);
+			$message = new InviteeAddedEmail($owner, $invitee, $reservationSeries, $this->attributeRepository);
 			ServiceLocator::GetEmailService()->Send($message);
 		}
 	}

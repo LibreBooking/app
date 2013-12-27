@@ -170,7 +170,8 @@ class UserRepository implements IUserRepository, IAccountActivationRepository
 
 		while ($row = $reader->GetRow())
 		{
-			$users[] = new UserDto($row[ColumnNames::USER_ID], $row[ColumnNames::FIRST_NAME], $row[ColumnNames::LAST_NAME], $row[ColumnNames::EMAIL], $row[ColumnNames::TIMEZONE_NAME], $row[ColumnNames::LANGUAGE_CODE], $row[ColumnNames::USER_PREFERENCES]);
+			$preferences = isset($row[ColumnNames::USER_PREFERENCES]) ? $row[ColumnNames::USER_PREFERENCES] : '';
+			$users[] = new UserDto($row[ColumnNames::USER_ID], $row[ColumnNames::FIRST_NAME], $row[ColumnNames::LAST_NAME], $row[ColumnNames::EMAIL], $row[ColumnNames::TIMEZONE_NAME], $row[ColumnNames::LANGUAGE_CODE], $preferences);
 		}
 
 		return $users;
@@ -750,12 +751,19 @@ class UserItemView
 		$user->Position = $row[ColumnNames::POSITION];
 		$user->Language = $row[ColumnNames::LANGUAGE_CODE];
 
-		$preferences = UserPreferences::Parse($row[ColumnNames::USER_PREFERENCES]);
-		if (!empty($preferences))
+		if (isset($row[ColumnNames::USER_PREFERENCES]))
 		{
-			$user->ReservationColor = $preferences->Get(UserPreferences::RESERVATION_COLOR);
+			$preferences = UserPreferences::Parse($row[ColumnNames::USER_PREFERENCES]);
+			if (!empty($preferences))
+			{
+				$user->ReservationColor = $preferences->Get(UserPreferences::RESERVATION_COLOR);
+			}
+			$user->Preferences = $preferences;
 		}
-		$user->Preferences = $preferences;
+		else
+		{
+			$user->Preferences = new UserPreferences();
+		}
 
 		return $user;
 	}

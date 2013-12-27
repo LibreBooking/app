@@ -43,7 +43,12 @@ abstract class ReservationEmailMessage extends EmailMessage
      */
     protected $timezone;
 
-    public function __construct(User $reservationOwner, ReservationSeries $reservationSeries, $language = null)
+	/**
+	 * @var IAttributeRepository
+	 */
+	protected $attributeRepository;
+
+    public function __construct(User $reservationOwner, ReservationSeries $reservationSeries, $language = null, IAttributeRepository $attributeRepository)
     {
         if (empty($language))
         {
@@ -54,6 +59,7 @@ abstract class ReservationEmailMessage extends EmailMessage
         $this->reservationOwner = $reservationOwner;
         $this->reservationSeries = $reservationSeries;
         $this->timezone = $reservationOwner->Timezone();
+		$this->attributeRepository = $attributeRepository;
     }
 
     /**
@@ -111,6 +117,15 @@ abstract class ReservationEmailMessage extends EmailMessage
 		}
 		$this->Set('ResourceNames', $resourceNames);
 		$this->Set('Accessories', $this->reservationSeries->Accessories());
+
+		$attributes = $this->attributeRepository->GetByCategory(CustomAttributeCategory::RESERVATION);
+		$attributeValues = array();
+		foreach ($attributes as $attribute)
+		{
+			$attributeValues[] = new Attribute($attribute, $this->reservationSeries->GetAttributeValue($attribute->Id()));
+		}
+
+		$this->Set('Attributes', $attributeValues);
     }
 }
 ?>

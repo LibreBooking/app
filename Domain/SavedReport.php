@@ -294,7 +294,10 @@ class ReportSerializer
 		{
 			$keyValue = explode('=', $pair);
 
-			$values[$keyValue[0]] = $keyValue[1];
+			if (count($keyValue) == 2)
+			{
+				$values[$keyValue[0]] = $keyValue[1];
+			}
 		}
 
 		return new SavedReport($reportName, $userId, self::GetUsage($values), self::GetSelection($values), self::GetGroupBy($values), self::GetRange($values), self::GetFilter($values));
@@ -378,11 +381,11 @@ class ReportSerializer
 	 */
 	private static function GetFilter($values)
 	{
-		$resourceId = $values['resourceid'];
-		$scheduleId = $values['scheduleid'];
-		$userId = $values['userid'];
-		$groupId = $values['groupid'];
-		$accessoryId = $values['accessoryid'];
+		$resourceId = isset($values['resourceid']) ? $values['resourceid'] : '';
+		$scheduleId = isset($values['scheduleid']) ? $values['scheduleid'] : '';
+		$userId = isset($values['userid']) ? $values['userid'] : '';
+		$groupId = isset($values['groupid']) ? $values['groupid'] : '';
+		$accessoryId = isset($values['accessoryid']) ? $values['accessoryid'] : '';
 
 		return new Report_Filter($resourceId, $scheduleId, $userId, $groupId, $accessoryId);
 	}

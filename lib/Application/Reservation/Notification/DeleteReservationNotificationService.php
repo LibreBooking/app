@@ -22,11 +22,11 @@ require_once(ROOT_DIR . 'lib/Application/Reservation/Notification/IReservationNo
 
 class DeleteReservationNotificationService extends ReservationNotificationService
 {
-	public function __construct(IUserRepository $userRepo, IResourceRepository $resourceRepo)
+	public function __construct(IUserRepository $userRepo, IResourceRepository $resourceRepo, IAttributeRepository $attributeRepo)
 	{
 		$notifications = array();
 
-        $notifications[] = new OwnerEmailDeletedNotification($userRepo);
+        $notifications[] = new OwnerEmailDeletedNotification($userRepo, $attributeRepo);
         $notifications[] = new ParticipantDeletedEmailNotification($userRepo);
         $notifications[] = new AdminEmailDeletedNotification($userRepo, $userRepo);
 

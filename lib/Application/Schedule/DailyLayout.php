@@ -102,6 +102,7 @@ class DailyLayout implements IDailyLayout
 
 			$list = new ScheduleReservationList($items, $this->_scheduleLayout, $date, $hideBlocked);
 			$slots = $list->BuildSlots();
+			$sw->Record('slots');
 			$this->_tzTransitions = $list->GetTzTransitions();
 			$this->_dstDelta      = $list->GetDstDelta();
 			//Log::Debug('$this->_tzTransitions = ' . print_r($this->_tzTransitions,true));

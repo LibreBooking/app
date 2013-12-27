@@ -220,6 +220,10 @@ class ReservationComponentTests extends TestBase
 		$resourceDto = new ResourceDto(1, 'resource', true, $scheduleId, null);
 
 		$this->initializer->expects($this->any())
+		->method('CurrentUser')
+		->will($this->returnValue($this->fakeUser));
+
+		$this->initializer->expects($this->any())
 		->method('GetTimezone')
 		->will($this->returnValue($timezone));
 
@@ -291,6 +295,10 @@ class ReservationComponentTests extends TestBase
 		$resourceDto = new ResourceDto(1, 'resource', true, $scheduleId, TimeInterval::FromHours(2));
 
 		$this->initializer->expects($this->any())
+				->method('CurrentUser')
+				->will($this->returnValue($this->fakeUser));
+
+		$this->initializer->expects($this->any())
 		->method('GetTimezone')
 		->will($this->returnValue($timezone));
 
@@ -358,6 +366,10 @@ class ReservationComponentTests extends TestBase
 		$dateInUserTimezone = Date::Parse($dateString, $timezone);
 
 		$requestedDate = Date::Parse($dateString, $timezone);
+
+		$this->initializer->expects($this->any())
+				->method('CurrentUser')
+				->will($this->returnValue($this->fakeUser));
 
 		$this->initializer->expects($this->any())
 		->method('GetTimezone')

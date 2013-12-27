@@ -95,6 +95,11 @@ class CalendarReservation
 	 */
 	public $TextColor;
 
+	/**
+	 * @var string
+	 */
+	public $Class;
+
 	private function __construct(Date $startDate, Date $endDate, $resourceName, $referenceNumber)
 	{
 		$this->StartDate = $startDate;

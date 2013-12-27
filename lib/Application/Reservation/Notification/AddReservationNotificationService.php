@@ -22,10 +22,10 @@ require_once(ROOT_DIR . 'lib/Application/Reservation/Notification/IReservationNo
 
 class AddReservationNotificationService extends ReservationNotificationService
 {
-	public function __construct(IUserRepository $userRepo, IResourceRepository $resourceRepo)
+	public function __construct(IUserRepository $userRepo, IResourceRepository $resourceRepo, IAttributeRepository $attributeRepo)
 	{
 		$notifications = array();
-		$notifications[] = new OwnerEmailCreatedNotification($userRepo);
+		$notifications[] = new OwnerEmailCreatedNotification($userRepo, $attributeRepo);
 		$notifications[] = new AdminEmailCreatedNotification($userRepo, $userRepo);
 		$notifications[] = new ParticipantAddedEmailNotification($userRepo);
 		$notifications[] = new InviteeAddedEmailNotification($userRepo);

@@ -34,7 +34,7 @@ class UserRepositoryTests extends TestBase
 	{
 		$timezone = 'UTC';
 		$language = 'en_us';
-		$preferences = 'n1:v1';
+		$preferences = 'n1=v1';
 
 		$userRows = array
 		(
@@ -224,7 +224,7 @@ class UserRepositoryTests extends TestBase
 		$totalPages = 11;
 		$offset = 10;
 		$countRow = array('total' => $count);
-		$row1 = $this->GetUserRow(1, 'first', 'last', 'email', 'un1', '2011-01-01', 'utc', AccountStatus::ACTIVE, null, 'pref1:val1,pref2:val2');
+		$row1 = $this->GetUserRow(1, 'first', 'last', 'email', 'un1', '2011-01-01', 'utc', AccountStatus::ACTIVE, null, 'pref1=val1,pref2=val2');
 		$row2 = $this->GetUserRow(2, 'first', 'last', 'email', null, '2010-01-01');
 		$userRows = array($row1, $row2);
 
