@@ -508,7 +508,7 @@ class RepeatWeekDayOfMonth extends RepeatOptionsAbstract
 			$weekNumber--;
 		}
 
-		return $weekNumber;
+		return max($weekNumber,1);
 	}
 }
 

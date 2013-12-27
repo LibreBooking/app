@@ -68,7 +68,8 @@ class ReportingRepository implements IReportingRepository
 	 */
 	public function GetCustomReport(ReportCommandBuilder $commandBuilder)
 	{
-		$reader = ServiceLocator::GetDatabase()->Query($commandBuilder->Build());
+		$query = $commandBuilder->Build();
+		$reader = ServiceLocator::GetDatabase()->Query($query);
 		$rows = array();
 		while ($row = $reader->GetRow())
 		{
