@@ -54,7 +54,7 @@ class RegisterPresenterTests extends TestBase
 	 * @var IAttributeService
 	 */
 	private $attributeService;
-	
+
 	private $login = 'testlogin';
 	private $email = 'test@test.com';
 	private $fname = 'First';
@@ -64,11 +64,11 @@ class RegisterPresenterTests extends TestBase
 	private $confirm = 'password';
 	private $timezone = 'US/Eastern';
 	private $homepageId = '1';
-	
+
 	public function setup()
 	{
 		parent::setup();
-		
+
 		$this->page = new FakeRegistrationPage();
 		$this->fakeReg = new FakeRegistration();
         $this->fakeAuth = new FakeAuth();
@@ -77,30 +77,30 @@ class RegisterPresenterTests extends TestBase
 
 		$this->presenter = new RegistrationPresenter($this->page, $this->fakeReg, $this->fakeAuth, $this->captcha, $this->attributeService);
 	}
-	
+
 	public function teardown()
 	{
 		parent::teardown();
-		
+
 		$this->page = null;
         $this->fakeReg = null;
         $this->fakeAuth = null;
 	}
-	
+
 	public function testSetsSelectedTimezoneToServerDefault()
 	{
 		$expectedTimezone = "America/Chicago";
-		
-		$this->fakeConfig->SetKey(ConfigKeys::SERVER_TIMEZONE, $expectedTimezone);
+
+		$this->fakeConfig->SetKey(ConfigKeys::DEFAULT_TIMEZONE, $expectedTimezone);
 		$this->page->_IsPostBack = false;
 
 		$this->ExpectAttributeServiceCalled();
 
 		$this->presenter->PageLoad();
-		
+
 		$this->assertEquals($this->page->_Timezone, $expectedTimezone);
 	}
-	
+
 	public function testSetsSelectedTimezoneToServerSubmitted()
 	{
 		$expectedTimezone = "America/New_York";
@@ -110,10 +110,10 @@ class RegisterPresenterTests extends TestBase
 		$this->ExpectAttributeServiceCalled();
 
 		$this->presenter->PageLoad();
-		
+
 		$this->assertEquals($this->page->_Timezone, $expectedTimezone);
 	}
-	
+
 	public function testLoadsAllTimezones()
 	{
 		$numberOfTimezones = count($GLOBALS[GlobalKeys::TIMEZONES]);
@@ -121,11 +121,11 @@ class RegisterPresenterTests extends TestBase
 		$this->ExpectAttributeServiceCalled();
 
 		$this->presenter->PageLoad();
-		
+
 		$this->assertEquals($numberOfTimezones, count($this->page->_TimezoneValues));
 		$this->assertEquals($numberOfTimezones, count($this->page->_TimezoneOutput));
 	}
-	
+
 	public function testLoadsAllHomepages()
 	{
 		$pages = Pages::GetAvailablePages();
@@ -134,26 +134,26 @@ class RegisterPresenterTests extends TestBase
 		$this->ExpectAttributeServiceCalled();
 
 		$this->presenter->PageLoad();
-		
+
 		$this->assertEquals($numberOfPages, count($this->page->_HomepageValues));
 		$this->assertEquals(1, $this->page->_HomepageValues[0]);
 		$this->assertEquals($numberOfPages, count($this->page->_HomepageOutput));
 		$this->assertEquals($pages[1]['name'], $this->page->_HomepageOutput[0]);
 	}
-	
+
 	public function testSetsSelectedHomepageToDefault()
 	{
 		$expectedHomepage = 1;
-		
+
 		$this->page->_IsPostBack = false;
 
 		$this->ExpectAttributeServiceCalled();
 
 		$this->presenter->PageLoad();
-		
+
 		$this->assertEquals($this->page->_Homepage, $expectedHomepage);
 	}
-	
+
 	public function testSetsSelectedHomepageToServerSubmitted()
 	{
 		$expectedHomepage = 2;
@@ -163,10 +163,10 @@ class RegisterPresenterTests extends TestBase
 		$this->ExpectAttributeServiceCalled();
 
 		$this->presenter->PageLoad();
-		
+
 		$this->assertEquals($this->page->_Homepage, $expectedHomepage);
 	}
-    
+
     public function testSetsCaptchaUrl()
     {
         $url = "http://blah/blah/blah";
@@ -181,19 +181,19 @@ class RegisterPresenterTests extends TestBase
 
         $this->assertEquals($url, $this->page->_CaptchaUrl);
     }
-	
+
 	public function testPresenterRegistersIfAllFieldsAreValid()
 	{
 		$this->LoadPageValues();
-		
+
 		$additionalFields = array(
 					'phone' => $this->phone,
 					'instituntion' => '',
 					'position' => ''
 					);
-		
+
 		$this->page->_Action = RegisterActions::Register;
-		
+
 		$this->presenter->ProcessAction();
 
 		$expectedAttributeValues = array(new AttributeValue(1,2));
@@ -222,41 +222,41 @@ class RegisterPresenterTests extends TestBase
 		$this->assertEquals($v['uniqueusername'], new UniqueUserNameValidator(new UserRepository(), $this->login));
 		$this->assertEquals($v['additionalattributes'], new AttributeValidator($this->attributeService, CustomAttributeCategory::USER, $expectedAttributeValues));
 	}
-    
+
     public function testDoesNotRegisterIfPageIsNotValid()
-    {   
+    {
         $this->page->_IsValid = false;
 		$this->page->_Action = RegisterActions::Register;
 
         $this->presenter->ProcessAction();
-        
+
         $this->assertFalse($this->fakeReg->_RegisterCalled);
-        $this->assertFalse($this->fakeAuth->_LoginCalled);      
+        $this->assertFalse($this->fakeAuth->_LoginCalled);
     }
-	
+
 	public function testAuthorizesUserAfterRegister()
 	{
-	    $this->LoadPageValues();		
+	    $this->LoadPageValues();
 		$this->page->_IsValid = true;
 		$this->page->_Email = $this->email;
 		$this->page->_Homepage = 2;
-		
+
 		$this->presenter->Register();
-		
+
 		$this->assertTrue($this->fakeReg->_RegisterCalled);
 
 		$this->assertTrue($this->fakePluginManager->_LoadedRegistration);
 		$this->assertEquals($this->fakeReg->_RegisteredUser, $this->fakePluginManager->_RegistrationUser);
 		$this->assertEquals($this->page, $this->fakePluginManager->_RegistrationPage);
 	}
-	
+
 	public function testRedirectsToLoginIfAllowSelfRegistrationIsOff()
 	{
 		$this->fakeConfig->SetKey(ConfigKeys::ALLOW_REGISTRATION, 'false');
-		
+
 		$this->presenter = new RegistrationPresenter($this->page, $this->fakeReg, $this->fakeAuth);
 		$this->presenter->PageLoad();
-		
+
 		$this->assertEquals(Pages::LOGIN, $this->page->_RedirectDestination);
 	}
 

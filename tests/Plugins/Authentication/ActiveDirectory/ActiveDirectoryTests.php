@@ -161,7 +161,7 @@ class ActiveDirectoryTests extends TestBase
 	public function testLoginSynchronizesInfoAndCallsAuthLogin()
 	{
 		$timezone = 'UTC';
-		$this->fakeConfig->SetKey(ConfigKeys::SERVER_TIMEZONE, $timezone);
+		$this->fakeConfig->SetKey(ConfigKeys::DEFAULT_TIMEZONE, $timezone);
 		$languageCode = 'en_US';
 		$this->fakeConfig->SetKey(ConfigKeys::LANGUAGE, $languageCode);
 
@@ -251,7 +251,7 @@ class ActiveDirectoryTests extends TestBase
 
 		$this->assertEquals(array('localhost', 'localhost.2'), $options->Controllers(), "comma separated values should become array");
 	}
-	
+
 	public function testConvertsEmailToUserName()
 	{
 		$email = 'user@email.com';
@@ -262,7 +262,7 @@ class ActiveDirectoryTests extends TestBase
 
 		$this->assertEquals($expectedUsername, $this->fakeLdap->_LastUsername);
 	}
-	
+
 	public function testConvertsUserNameWithDomainToUserName()
 	{
 		$username = 'domain\user';
@@ -273,7 +273,7 @@ class ActiveDirectoryTests extends TestBase
 
 		$this->assertEquals($expectedUsername, $this->fakeLdap->_LastUsername);
 	}
-	
+
 	public function testCanGetAttributeMapping()
 	{
 		$attributeMapping = "sn= sn,givenname =givenname,mail=email ,telephonenumber=phone, physicaldeliveryofficename=physicaldeliveryofficename";

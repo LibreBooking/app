@@ -40,7 +40,7 @@ class UserSession
 	{
 		$this->UserId = $id;
 	}
-	
+
 	public function IsLoggedIn()
 	{
 		return true;
@@ -52,9 +52,9 @@ class NullUserSession extends UserSession
 	public function __construct()
 	{
 		parent::__construct(0);
-		$this->Timezone = Configuration::Instance()->GetKey(ConfigKeys::SERVER_TIMEZONE);
+		$this->Timezone = Configuration::Instance()->GetKey(ConfigKeys::DEFAULT_TIMEZONE);
 	}
-	
+
 	public function IsLoggedIn()
 	{
 		return false;

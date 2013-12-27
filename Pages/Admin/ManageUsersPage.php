@@ -193,7 +193,7 @@ class ManageUsersPage extends ActionPage implements IManageUsersPage
 		$this->Set('statusDescriptions',
 				   array(AccountStatus::ALL => $resources->GetString('All'), AccountStatus::ACTIVE => $resources->GetString('Active'), AccountStatus::AWAITING_ACTIVATION => $resources->GetString('Pending'), AccountStatus::INACTIVE => $resources->GetString('Inactive')));
 
-		$this->Set('Timezone', $config->GetKey(ConfigKeys::SERVER_TIMEZONE));
+		$this->Set('Timezone', $config->GetKey(ConfigKeys::DEFAULT_TIMEZONE));
 		$this->Set('Timezones', $GLOBALS['APP_TIMEZONES']);
 		$this->Set('Languages', $GLOBALS['APP_TIMEZONES']);
 		$this->Set('ManageGroupsUrl', Pages::MANAGE_GROUPS);

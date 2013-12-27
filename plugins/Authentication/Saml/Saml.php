@@ -1,6 +1,6 @@
 <?php
 /**
-File in Authentication plugin package for ver 2.1.4 phpScheduleIt 
+File in Authentication plugin package for ver 2.1.4 phpScheduleIt
 to implement Single Sign On Capability.  Based on code from the
 phpScheduleIt Authentication Ldap plugin as well as a SAML
 Authentication plugin for Moodle 1.9+.
@@ -189,7 +189,7 @@ class Saml extends Authentication implements IAuthentication
 				$this->user->GetLastName(),
 				$this->password,
 				Configuration::Instance()->GetKey(ConfigKeys::LANGUAGE),
-				Configuration::Instance()->GetKey(ConfigKeys::SERVER_TIMEZONE),
+				Configuration::Instance()->GetKey(ConfigKeys::DEFAULT_TIMEZONE),
 				$this->user->GetPhone(), $this->user->GetInstitution(),
 				$this->user->GetTitle())
 		);

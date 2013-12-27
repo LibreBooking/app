@@ -152,7 +152,7 @@ class CAS implements IAuthentication
 				$username,
 				uniqid(),
 				Configuration::Instance()->GetKey(ConfigKeys::LANGUAGE),
-				Configuration::Instance()->GetKey(ConfigKeys::SERVER_TIMEZONE),
+				Configuration::Instance()->GetKey(ConfigKeys::DEFAULT_TIMEZONE),
 				null,
 				null,
 				null), true

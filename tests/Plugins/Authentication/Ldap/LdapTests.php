@@ -154,7 +154,7 @@ class LdapTests extends TestBase
 	public function testLoginSynchronizesInfoAndCallsAuthLogin()
 	{
 		$timezone = 'UTC';
-		$this->fakeConfig->SetKey(ConfigKeys::SERVER_TIMEZONE, $timezone);
+		$this->fakeConfig->SetKey(ConfigKeys::DEFAULT_TIMEZONE, $timezone);
 		$languageCode = 'en_US';
 		$this->fakeConfig->SetKey(ConfigKeys::LANGUAGE, $languageCode);
 
@@ -298,7 +298,7 @@ class LdapTests extends TestBase
 		$expectedAttributes = array( 'sn', 'givenname', 'mail', 'telephonenumber', 'physicaldeliveryofficename', 'title');
 		$this->assertEquals($expectedAttributes, $options->Attributes());
 	}
-	
+
 	public function testGetsUserIdAttribute()
 	{
 		$configFile = new FakeConfigFile();

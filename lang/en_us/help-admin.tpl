@@ -195,15 +195,14 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 
 <h2>Configuration</h2>
 
-<p>Some of phpScheduleIt's functionality can only be controlled by editing the config file.</p>
+<p>Some functionality can only be controlled by editing the config file.</p>
 
-<p class="setting"><span>$conf['settings']['server.timezone']</span>This must reflect the timezone of the server that
-	phpScheduleIt is hosted on. This server is currently set to <em>{$ServerTimezone}</em>. Possible values are located
-	here:
+<p class="setting"><span>$conf['settings']['default.timezone']</span>The default timezone to use. If not set, the server
+	timezone will be used. Possible values are located here:
 	<a href="http://php.net/manual/en/timezones.php" target="_blank">http://php.net/manual/en/timezones.php</a></p>
 
 <p class="setting"><span>$conf['settings']['allow.self.registration']</span>If users are allowed to register new
-	accounts.</p>
+	accounts. Default is false.</p>
 
 <p class="setting"><span>$conf['settings']['admin.email']</span>The email address of the main application administrator
 </p>
@@ -271,7 +270,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 	administrator-defined colors for reservations. Default is false.</p>
 
 <p class="setting"><span>$conf['settings']['schedule']['show.inaccessible.resources']</span>Whether or not resources
-	that are not accessible to the user	are displayed in the schedule</p>
+	that are not accessible to the user are displayed in the schedule</p>
 
 <p class="setting"><span>$conf['settings']['schedule']['reservation.label']</span>The format of what to display for the
 	reservation slot on the Bookings page. Available tokens are {literal}{name}, {title}, {description}, {email},
@@ -289,7 +288,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 	set this to a difficult to guess value. If nothing is set then calendar subscriptions will be disabled.</p>
 
 <p class="setting"><span>$conf['settings']['privacy']['view.schedules']</span>If non-authenticated users can view the
-	booking schedules.	Default is false.</p>
+	booking schedules. Default is false.</p>
 
 <p class="setting"><span>$conf['settings']['privacy']['view.reservations']</span>If non-authenticated users can view
 	reservation details.

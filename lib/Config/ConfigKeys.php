@@ -34,7 +34,7 @@ class ConfigKeys
 	const LOGOUT_URL = 'logout.url';
     const NAME_FORMAT = 'name.format';
     const SCRIPT_URL = 'script.url';
-    const SERVER_TIMEZONE = 'server.timezone';
+    const DEFAULT_TIMEZONE = 'default.timezone';
     const REGISTRATION_ENABLE_CAPTCHA = 'registration.captcha.enabled';
     const REGISTRATION_REQUIRE_ACTIVATION = 'registration.require.email.activation';
     const REGISTRATION_AUTO_SUBSCRIBE_EMAIL = 'registration.auto.subscribe.email';

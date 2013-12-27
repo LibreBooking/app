@@ -118,7 +118,7 @@ class ScheduleLayout implements IScheduleLayout, ILayoutCreation
 		$this->targetTimezone = $targetTimezone;
 		if ($targetTimezone == null)
 		{
-			$this->targetTimezone = Configuration::Instance()->GetKey(ConfigKeys::SERVER_TIMEZONE);
+			$this->targetTimezone = Configuration::Instance()->GetKey(ConfigKeys::DEFAULT_TIMEZONE);
 		}
 	}
 

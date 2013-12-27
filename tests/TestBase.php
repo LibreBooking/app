@@ -25,27 +25,27 @@ class TestBase extends PHPUnit_Framework_TestCase
 	 * @var FakeDatabase
 	 */
 	public $db;
-	
+
 	/**
 	 * @var FakeServer
 	 */
 	public $fakeServer;
-	
+
 	/**
 	 * @var FakeConfig
 	 */
 	public $fakeConfig;
-	
+
 	/**
 	 * @var FakeResources
 	 */
 	public $fakeResources;
-	
+
 	/**
 	 * @var FakeEmailService
 	 */
 	public $fakeEmailService;
-	
+
 	/**
 	 * @var UserSession
 	 */
@@ -60,17 +60,17 @@ class TestBase extends PHPUnit_Framework_TestCase
 	 * @var FakeFileSystem
 	 */
 	public $fileSystem;
-	
+
 	public function setup()
 	{
 		Date::_SetNow(Date::Now());
-		
+
 		$this->db = new FakeDatabase();
 		$this->fakeServer = new FakeServer();
 		$this->fakeEmailService = new FakeEmailService();
 		$this->fakeConfig = new FakeConfig();
-        $this->fakeConfig->SetKey(ConfigKeys::SERVER_TIMEZONE, 'America/Chicago');
-                
+        $this->fakeConfig->SetKey(ConfigKeys::DEFAULT_TIMEZONE, 'America/Chicago');
+
 		$this->fakeResources = new FakeResources();
 		$this->fakeUser = $this->fakeServer->UserSession;
 		$this->fakePluginManager = new FakePluginManager();
@@ -84,7 +84,7 @@ class TestBase extends PHPUnit_Framework_TestCase
 		Resources::SetInstance($this->fakeResources);
 		PluginManager::SetInstance($this->fakePluginManager);
 	}
-	
+
 	public function teardown()
 	{
 		$this->db = null;

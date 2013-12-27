@@ -21,6 +21,12 @@ You should {have
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+$serverTimezone = ini_get('date.timezone');
+if (empty($serverTimezone))
+{
+	die('The server timezone is not set properly in your php.ini file. It is required that this value is set.');
+}
+
 class Date
 {
 	/**
@@ -60,7 +66,7 @@ class Date
 		$this->timezone = $timezone;
 		if (empty($timezone))
 		{
-			$this->timezone = Configuration::Instance()->GetKey(ConfigKeys::SERVER_TIMEZONE);
+			$this->timezone = date_default_timezone_get();
 		}
 	}
 

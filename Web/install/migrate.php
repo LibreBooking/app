@@ -433,7 +433,7 @@ class MigrationPresenter
 										1);
 
 			$currentDatabase->Execute(new AdHocCommand("update schedules set legacyid = \"{$row['scheduleid']}\" where schedule_id = $newId"));
-			$timezone = Configuration::Instance()->GetKey(ConfigKeys::SERVER_TIMEZONE);
+			$timezone = Configuration::Instance()->GetKey(ConfigKeys::DEFAULT_TIMEZONE);
 
 			$available = $this->CreateAvailableTimeSlots($row['daystart'], $row['dayend'], $row['timespan']);
 			$unavailable = $this->CreateUnavailableTimeSlots($row['daystart'], $row['dayend'], $row['timespan']);
@@ -682,7 +682,7 @@ class MigrationPresenter
 				$row['lname'],
 				'',
 				'',
-				Configuration::Instance()->GetKey(ConfigKeys::SERVER_TIMEZONE),
+				Configuration::Instance()->GetKey(ConfigKeys::DEFAULT_TIMEZONE),
 				empty($row['lang']) ? Configuration::Instance()->GetKey(ConfigKeys::LANGUAGE) : $row['lang'],
 				Pages::DEFAULT_HOMEPAGE_ID,
 				$row['phone'],
@@ -964,7 +964,7 @@ class MigrationPresenter
 		$s = date('Y-m-d', $startDate) . ' ' . $this->MinutesToTime($startTime);
 		$e = date('Y-m-d', $endDate) . ' ' . $this->MinutesToTime($endTime);
 
-		return DateRange::Create($s, $e, Configuration::Instance()->GetKey(ConfigKeys::SERVER_TIMEZONE));
+		return DateRange::Create($s, $e, Configuration::Instance()->GetKey(ConfigKeys::DEFAULT_TIMEZONE));
 	}
 
 	private function GetProgressCounts($legacyCountCommand, $migratedCountCommand)

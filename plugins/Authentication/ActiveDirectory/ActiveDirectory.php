@@ -177,7 +177,7 @@ class ActiveDirectory extends Authentication implements IAuthentication
                 $this->user->GetLastName(),
                 $this->password,
                 Configuration::Instance()->GetKey(ConfigKeys::LANGUAGE),
-				Configuration::Instance()->GetKey(ConfigKeys::SERVER_TIMEZONE),
+				Configuration::Instance()->GetKey(ConfigKeys::DEFAULT_TIMEZONE),
 				$this->user->GetPhone(), $this->user->GetInstitution(),
                 $this->user->GetTitle())
 		);
