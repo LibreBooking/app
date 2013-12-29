@@ -58,6 +58,16 @@ class ReservationSlot implements IReservationSlot
 	protected $_endSlotId;
 
 	/**
+	 * @var SchedulePeriod
+	 */
+	protected $_beginPeriod;
+
+	/**
+	 * @var SchedulePeriod
+	 */
+	protected $_endPeriod;
+
+	/**
 	 * @param SchedulePeriod $begin
 	 * @param SchedulePeriod $end
 	 * @param Date $displayDate
@@ -75,6 +85,9 @@ class ReservationSlot implements IReservationSlot
 
 		$this->_beginSlotId = $begin->Id();
 		$this->_endSlotId = $end->Id();
+
+		$this->_beginPeriod = $begin;
+		$this->_endPeriod = $end;
 	}
 
 	/**
@@ -156,7 +169,7 @@ class ReservationSlot implements IReservationSlot
 
 	public function ToTimezone($timezone)
 	{
-		return new ReservationSlot($this->BeginDate()->ToTimezone($timezone), $this->EndDate()->ToTimezone($timezone), $this->Date(), $this->PeriodSpan(), $this->_reservation);
+		return new ReservationSlot($this->_beginPeriod->ToTimezone($timezone), $this->_endPeriod->ToTimezone($timezone), $this->Date(), $this->PeriodSpan(), $this->_reservation);
 	}
 
 	public function Id()
@@ -218,5 +231,3 @@ class ReservationSlot implements IReservationSlot
 		return null;
 	}
 }
-
-?>

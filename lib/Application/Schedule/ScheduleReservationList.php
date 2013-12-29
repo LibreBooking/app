@@ -137,13 +137,15 @@ class ScheduleReservationList implements IScheduleReservationList
 
 		$tsStart = $this->_layoutDateStart->Timestamp();
 		$tsEnd   = $this->_layoutDateEnd  ->Timestamp();
-		$transitions =  array();
+		$transitions = array();
 		$i = 0;
 		foreach ($allTransitions as $n=>$t)
 			if(($tsStart <= $t['ts']) && ($t['ts'] <= $tsEnd))
 			{
 				if($n>0)
+				{
 					$transitions[$i++] = $allTransitions[$n-1];	// Need the offset at the start of the period (code will fail if you go back far enough in time)
+				}
 				$transitions[$i++] = $t;						// This is the offset at the end of the period
 			}
 
@@ -171,7 +173,6 @@ class ScheduleReservationList implements IScheduleReservationList
 				}
 
 				$endingPeriodIndex = max($this->GetLayoutIndexEndingAt($endTime), $currentIndex);
-
 				$span = ($endingPeriodIndex - $currentIndex) + 1;
 
 				$slots[] = $item->BuildSlot($layoutItem, $this->_layoutItems[$endingPeriodIndex],
@@ -200,32 +201,56 @@ class ScheduleReservationList implements IScheduleReservationList
 
 	private function IndexItems()
 	{
-		foreach ($this->_items as $item)
+		foreach ($this->_items as $index => $item)
 		{
-			if ( ($item->StartDate()->Compare($this->_lastLayoutTime) >= 0) || ($item->EndDate()->Compare($this->_firstLayoutTime) <= 0))
+			if ($item->HasBufferTime())
 			{
-				// skip the item if it starts after this layout or ends before it
-				continue;
-			}
-
-			$start = $item->StartDate()->ToTimezone($this->_destinationTimezone);
-
-			$startsInPast = $this->ItemStartsOnPastDate($item);
-			if ($startsInPast)
-			{
-				$start = $this->_firstLayoutTime;
-			}
-			elseif ($this->ItemIsNotOnLayoutBoundary($item))
-			{
-				$layoutItem = $this->FindClosestLayoutIndexBeforeStartingTime($item);
-				if (!empty($layoutItem))
+				$bufferItem = new BufferItem($item, BufferItem::LOCATION_BEFORE);
+				if (!$this->Collides($bufferItem, $index))
 				{
-					$start = $layoutItem->BeginDate()->ToTimezone($this->_destinationTimezone);
+					$this->IndexItem($bufferItem);
 				}
 			}
 
-			$this->_itemsByStartTime[$start->Timestamp()] = $item;
+			$this->IndexItem($item);
+
+			if ($item->HasBufferTime())
+			{
+				$bufferItem = new BufferItem($item, BufferItem::LOCATION_AFTER);
+				if (!$this->Collides($bufferItem, $index))
+				{
+					$this->IndexItem($bufferItem);
+				}
+			}
 		}
+	}
+
+	private function IndexItem(ReservationListItem $item)
+	{
+		if (($item->StartDate()->Compare($this->_lastLayoutTime) >= 0) ||
+				($item->EndDate()->Compare($this->_firstLayoutTime) <= 0))
+		{
+			// skip the item if it starts after this layout or ends before it
+			return;
+		}
+
+		$start = $item->StartDate()->ToTimezone($this->_destinationTimezone);
+
+		$startsInPast = $this->ItemStartsOnPastDate($item);
+		if ($startsInPast)
+		{
+			$start = $this->_firstLayoutTime;
+		}
+		elseif ($this->ItemIsNotOnLayoutBoundary($item))
+		{
+			$layoutItem = $this->FindClosestLayoutIndexBeforeStartingTime($item);
+			if (!empty($layoutItem))
+			{
+				$start = $layoutItem->BeginDate()->ToTimezone($this->_destinationTimezone);
+			}
+		}
+
+		$this->_itemsByStartTime[$start->Timestamp()] = $item;
 	}
 
 	private function ItemStartsOnPastDate(ReservationListItem $item)
@@ -332,6 +357,31 @@ class ScheduleReservationList implements IScheduleReservationList
 	{
 		$timeKey = $item->StartDate()->Timestamp();
 		return !(array_key_exists($timeKey, $this->_layoutByStartTime));
+	}
+
+	private function Collides(ReservationListItem $item, $itemIndex)
+	{
+		$previousItem = $itemIndex > 1 ? $this->_items[--$itemIndex] : null;
+		$nextItem = $itemIndex < count($this->_items)-1 ? $this->_items[++$itemIndex] : null;
+
+		$itemDateRange = new DateRange($item->StartDate(), $item->EndDate());
+		if ($previousItem != null)
+		{
+			if ($itemDateRange->Overlaps(new DateRange($previousItem->StartDate(), $previousItem->EndDate())))
+			{
+				return true;
+			}
+		}
+
+		if ($nextItem != null)
+		{
+			if ($itemDateRange->Overlaps(new DateRange($nextItem->StartDate(), $nextItem->EndDate())))
+			{
+				return true;
+			}
+		}
+
+		return false;
 	}
 }
 

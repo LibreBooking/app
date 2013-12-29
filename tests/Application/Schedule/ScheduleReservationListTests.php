@@ -640,15 +640,15 @@ class ScheduleReservationListTests extends TestBase
 
 	public function testAddsSetupAndTearDownItemsIfTheReservationHasThem()
 	{
-		$this->markTestSkipped('not implemented');
-
 		$tz = 'America/Chicago';
 		$listDate = Date::Parse('2011-02-08', $tz);
 
 		$layout = new ScheduleLayout($tz);
-		$layout->AppendBlockedPeriod(Time::Parse('0:00', $tz), Time::Parse('2:00', $tz));
+		$layout->AppendPeriod(Time::Parse('0:00', $tz), Time::Parse('0:30', $tz));
+		$layout->AppendPeriod(Time::Parse('0:30', $tz), Time::Parse('1:30', $tz));
+		$layout->AppendPeriod(Time::Parse('1:30', $tz), Time::Parse('2:00', $tz));
 		$layout->AppendPeriod(Time::Parse('2:00', $tz), Time::Parse('6:00', $tz));
-		$layout->AppendBlockedPeriod(Time::Parse('6:00', $tz), Time::Parse('0:00', $tz));
+		$layout->AppendPeriod(Time::Parse('6:00', $tz), Time::Parse('0:00', $tz));
 
 		$item = new TestReservationItemView(
 			1,
@@ -658,6 +658,7 @@ class ScheduleReservationListTests extends TestBase
 			30,
 			60
 		);
+		$item->WithBufferTime(60);
 		$r1 = new ReservationListItem($item);
 
 		$list = new ScheduleReservationList(array($r1), $layout, $listDate, false);
@@ -665,20 +666,76 @@ class ScheduleReservationListTests extends TestBase
 		/** @var IReservationSlot[] $slots */
 		$slots = $list->BuildSlots();
 
-		$periods = $layout->GetLayout($listDate, false);
-		$this->assertEquals(5, count($periods));
-		$this->assertEquals(new Time('2:00', $tz), $slots[1]->Begin());
-		$this->assertEquals(new Time('2:30', $tz), $slots[1]->EndDate());
-		$this->assertInstanceOf('SetUpSlot', $slots[1]);
+		$this->assertEquals(4, count($slots));
 
-		$this->assertEquals(new Time('2:30', $tz), $slots[2]->Begin());
-		$this->assertEquals(new Time('5:00', $tz), $slots[2]->EndDate());
+		$this->assertTrue($slots[1]->Begin()->Equals(Time::Parse('0:30', $tz)));
+		$this->assertTrue($slots[1]->End()->Equals(Time::Parse('2:00', $tz)));
+		$this->assertInstanceOf('BufferSlot', $slots[1]);
 
-		$this->assertEquals(new Time('5:00', $tz), $slots[3]->Begin());
-		$this->assertEquals(new Time('6:00', $tz), $slots[3]->EndDate());
-		$this->assertInstanceOf('TearDownSlot', $slots[3]);
+		$this->assertTrue($slots[2]->Begin()->Equals(Time::Parse('2:00', $tz)));
+		$this->assertTrue($slots[2]->End()->Equals(Time::Parse('6:00', $tz)));
+		$this->assertInstanceOf('ReservationSlot', $slots[2]);
+
+		$this->assertTrue($slots[3]->Begin()->Equals(Time::Parse('6:00', $tz)));
+		$this->assertTrue($slots[3]->End()->Equals(Time::Parse('0:00', $tz)));
+		$this->assertInstanceOf('BufferSlot', $slots[3]);
 	}
 
+	public function testSkipsAddingBufferSlotsIfThereIsAnotherItemAtThatTime()
+	{
+		$tz = 'America/Chicago';
+		$listDate = Date::Parse('2011-02-08', $tz);
+
+		$layout = new ScheduleLayout($tz);
+		$layout->AppendPeriod(Time::Parse('0:00', $tz), Time::Parse('0:30', $tz));
+		$layout->AppendPeriod(Time::Parse('0:30', $tz), Time::Parse('1:00', $tz));
+		$layout->AppendPeriod(Time::Parse('1:00', $tz), Time::Parse('1:30', $tz));
+		$layout->AppendPeriod(Time::Parse('1:30', $tz), Time::Parse('2:00', $tz));
+		$layout->AppendPeriod(Time::Parse('2:00', $tz), Time::Parse('6:00', $tz));
+		$layout->AppendPeriod(Time::Parse('6:00', $tz), Time::Parse('0:00', $tz));
+
+		$item1 = new TestReservationItemView(
+			1,
+			Date::Parse('2011-02-08 0:30', $tz)->ToUtc(),
+			Date::Parse('2011-02-08 1:00', $tz)->ToUtc(),
+			1
+		);
+		$item2 = new TestReservationItemView(
+			2,
+			Date::Parse('2011-02-08 1:30', $tz)->ToUtc(),
+			Date::Parse('2011-02-08 2:00', $tz)->ToUtc(),
+			1
+		);
+		$item1->WithBufferTime(60);
+		$item2->WithBufferTime(60);
+		$r1 = new ReservationListItem($item1);
+		$r2 = new ReservationListItem($item2);
+
+		$list = new ScheduleReservationList(array($r1, $r2), $layout, $listDate, false);
+
+		/** @var IReservationSlot[] $slots */
+		$slots = $list->BuildSlots();
+
+		$this->assertTrue($slots[0]->Begin()->Equals(Time::Parse('0:00', $tz)));
+		$this->assertTrue($slots[0]->End()->Equals(Time::Parse('0:30', $tz)));
+		$this->assertInstanceOf('BufferSlot', $slots[0]);
+
+		$this->assertTrue($slots[1]->Begin()->Equals(Time::Parse('0:30', $tz)));
+		$this->assertTrue($slots[1]->End()->Equals(Time::Parse('1:00', $tz)));
+		$this->assertInstanceOf('ReservationSlot', $slots[1]);
+
+		$this->assertTrue($slots[2]->Begin()->Equals(Time::Parse('1:00', $tz)));
+		$this->assertTrue($slots[2]->End()->Equals(Time::Parse('1:30', $tz)));
+		$this->assertInstanceOf('EmptyReservationSlot', $slots[2]);
+
+		$this->assertTrue($slots[3]->Begin()->Equals(Time::Parse('1:30', $tz)));
+		$this->assertTrue($slots[3]->End()->Equals(Time::Parse('2:00', $tz)));
+		$this->assertInstanceOf('ReservationSlot', $slots[3]);
+
+		$this->assertTrue($slots[4]->Begin()->Equals(Time::Parse('2:00', $tz)));
+		$this->assertTrue($slots[4]->End()->Equals(Time::Parse('6:00', $tz)));
+		$this->assertInstanceOf('BufferSlot', $slots[0]);
+	}
 }
 
 class ReservationItemViewBuilder

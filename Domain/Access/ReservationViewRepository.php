@@ -751,7 +751,15 @@ interface IReservedItemView
 	 */
 	public function OccursOn(Date $date);
 
+	/**
+	 * @return string
+	 */
 	public function GetReferenceNumber();
+
+	/**
+	 * @return int|null
+	 */
+	public function GetBufferTime();
 }
 
 class ReservationItemView implements IReservedItemView
@@ -921,6 +929,11 @@ class ReservationItemView implements IReservedItemView
 	public $ResourceStatusReasonId;
 
 	/**
+	 * @var int|null
+	 */
+	public $BufferTime;
+
+	/**
 	 * @param $referenceNumber string
 	 * @param $startDate Date
 	 * @param $endDate Date
@@ -1083,6 +1096,7 @@ class ReservationItemView implements IReservedItemView
 			$view->ResourceStatusId = $row[ColumnNames::RESOURCE_STATUS_ID_ALIAS];
 		}
 
+//		$view->BufferTime = 20;
 		return $view;
 	}
 
@@ -1174,6 +1188,21 @@ class ReservationItemView implements IReservedItemView
 	public function GetResourceName()
 	{
 		return $this->ResourceName;
+	}
+
+	public function WithBufferTime($minutes)
+	{
+		$this->BufferTime = $minutes;
+	}
+
+	public function HasBufferTime()
+	{
+		return !empty($this->BufferTime);
+	}
+
+	public function GetBufferTime()
+	{
+		return $this->BufferTime;
 	}
 }
 
@@ -1375,6 +1404,14 @@ class BlackoutItemView implements IReservedItemView
 	public function GetReferenceNumber()
 	{
 		return '';
+	}
+
+	/**
+	 * @return int|null
+	 */
+	public function GetBufferTime()
+	{
+		return null;
 	}
 }
 

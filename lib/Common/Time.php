@@ -95,7 +95,7 @@ class Time
 	 * 0 if the times are equal
 	 * 1 if this time is greater than the passed in time
 	 * @param Time $time
-	 * @param Date $comparisonDate date to be used for time comparison
+	 * @param Date|null $comparisonDate date to be used for time comparison
 	 * @return int comparison result
 	 */
 	public function Compare(Time $time, $comparisonDate = null)
@@ -109,6 +109,16 @@ class Time
 		}
 
 		return $this->GetDate()->Compare($time->GetDate());
+	}
+
+	/**
+	 * @param Time $time
+	 * @param Date|null $comparisonDate date to be used for time comparison
+	 * @return bool
+	 */
+	public function Equals(Time $time, $comparisonDate = null)
+	{
+		return $this->Compare($time, $comparisonDate) == 0;
 	}
 
 	public function ToString()

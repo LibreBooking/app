@@ -106,9 +106,17 @@ interface IReservationSlot
 	public function EndSlotId();
 
 	/**
+	 * @return bool
+	 */
+	public function HasCustomColor();
+
+	/**
 	 * @return string
 	 */
 	public function Color();
-}
 
-?>
+	/**
+	 * @return string
+	 */
+	public function TextColor();
+}

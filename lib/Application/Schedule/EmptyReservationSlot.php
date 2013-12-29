@@ -53,6 +53,9 @@ class EmptyReservationSlot implements IReservationSlot
 	protected $_beginSlotId;
 	protected $_endSlotId;
 
+	protected $_beginPeriod;
+	protected $_endPeriod;
+
 	public function __construct(SchedulePeriod $begin, SchedulePeriod $end, Date $displayDate, $isReservable)
 	{
 		$this->_begin = $begin->BeginDate();
@@ -74,6 +77,9 @@ class EmptyReservationSlot implements IReservationSlot
 
 		$this->_beginSlotId = $begin->Id();
 		$this->_endSlotId = $end->Id();
+
+		$this->_beginPeriod = $begin;
+		$this->_endPeriod = $end;
 	}
 
 	/**
@@ -169,7 +175,7 @@ class EmptyReservationSlot implements IReservationSlot
 
 	public function ToTimezone($timezone)
 	{
-		return new EmptyReservationSlot($this->BeginDate()->ToTimezone($timezone), $this->End()->ToTimezone($timezone), $this->Date(), $this->_isReservable);
+		return new EmptyReservationSlot($this->_beginPeriod->ToTimezone($timezone), $this->_endPeriod->ToTimezone($timezone), $this->Date(), $this->_isReservable);
 	}
 
 	public function IsOwnedBy(UserSession $session)
@@ -196,6 +202,20 @@ class EmptyReservationSlot implements IReservationSlot
 	{
 		return null;
 	}
-}
 
-?>
+	/**
+	 * @return bool
+	 */
+	public function HasCustomColor()
+	{
+		return false;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function TextColor()
+	{
+		return null;
+	}
+}

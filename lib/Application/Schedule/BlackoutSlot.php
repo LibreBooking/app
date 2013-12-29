@@ -56,6 +56,16 @@ class BlackoutSlot implements IReservationSlot
 	protected $endSlotId;
 
 	/**
+	 * @var SchedulePeriod
+	 */
+	protected $_beginPeriod;
+
+	/**
+	 * @var SchedulePeriod
+	 */
+	protected $_endPeriod;
+
+	/**
 	 * @param SchedulePeriod $begin
 	 * @param SchedulePeriod $end
 	 * @param Date $displayDate
@@ -71,6 +81,9 @@ class BlackoutSlot implements IReservationSlot
 		$this->periodSpan = $periodSpan;
 		$this->beginSlotId = $begin->Id();
 		$this->endSlotId = $end->Id();
+
+		$this->_beginPeriod = $begin;
+		$this->_endPeriod = $end;
 	}
 
 	/**
@@ -151,7 +164,7 @@ class BlackoutSlot implements IReservationSlot
 
 	public function ToTimezone($timezone)
 	{
-		return new BlackoutSlot($this->BeginDate()->ToTimezone($timezone), $this->EndDate()->ToTimezone($timezone), $this->Date(), $this->PeriodSpan(), $this->blackout);
+		return new BlackoutSlot($this->_beginPeriod->ToTimezone($timezone), $this->_endPeriod->ToTimezone($timezone), $this->Date(), $this->PeriodSpan(), $this->blackout);
 	}
 
 	public function IsOwnedBy(UserSession $session)
@@ -178,5 +191,20 @@ class BlackoutSlot implements IReservationSlot
 	{
 		return null;
 	}
+
+	/**
+	 * @return bool
+	 */
+	public function HasCustomColor()
+	{
+		return false;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function TextColor()
+	{
+		return null;
+	}
 }
-?>
