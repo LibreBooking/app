@@ -34,20 +34,27 @@ abstract class AdminEmailNotification implements IReservationNotification
      */
     private $userViewRepo;
 
-    /**
-     * @param IUserRepository $userRepo
-     * @param IUserViewRepository $userViewRepo
-     */
-    public function __construct(IUserRepository $userRepo, IUserViewRepository $userViewRepo)
+	/**
+	 * @var IAttributeRepository
+	 */
+	protected $attributeRepository;
+
+	/**
+	 * @param IUserRepository $userRepo
+	 * @param IUserViewRepository $userViewRepo
+	 * @param IAttributeRepository $attributeRepository
+	 */
+    public function __construct(IUserRepository $userRepo, IUserViewRepository $userViewRepo, IAttributeRepository $attributeRepository)
     {
         $this->userRepo = $userRepo;
         $this->userViewRepo = $userViewRepo;
+		$this->attributeRepository = $attributeRepository;
     }
 
-    /**
-     * @param ReservationSeries $reservationSeries
-     * @return
-     */
+	/**
+	 * @param ReservationSeries $reservationSeries
+	 * @return void
+	 */
     public function Notify($reservationSeries)
     {
         $resourceAdmins = array();
@@ -120,7 +127,7 @@ class AdminEmailCreatedNotification extends AdminEmailNotification
 {
     protected function GetMessage($admin, $owner, $reservationSeries, $resource)
     {
-        return new ReservationCreatedEmailAdmin($admin, $owner, $reservationSeries, $resource);
+        return new ReservationCreatedEmailAdmin($admin, $owner, $reservationSeries, $resource, $this->attributeRepository);
     }
 
     protected function SendForResourceAdmins()
@@ -149,7 +156,7 @@ class AdminEmailUpdatedNotification extends AdminEmailNotification
 {
     protected function GetMessage($admin, $owner, $reservationSeries, $resource)
     {
-        return new ReservationUpdatedEmailAdmin($admin, $owner, $reservationSeries, $resource);
+        return new ReservationUpdatedEmailAdmin($admin, $owner, $reservationSeries, $resource, $this->attributeRepository);
     }
 
     protected function SendForResourceAdmins()
@@ -179,7 +186,7 @@ class AdminEmailDeletedNotification extends AdminEmailNotification
 {
     protected function GetMessage($admin, $owner, $reservationSeries, $resource)
     {
-        return new ReservationDeletedEmailAdmin($admin, $owner, $reservationSeries, $resource);
+        return new ReservationDeletedEmailAdmin($admin, $owner, $reservationSeries, $resource, $this->attributeRepository);
     }
 
     protected function SendForResourceAdmins()

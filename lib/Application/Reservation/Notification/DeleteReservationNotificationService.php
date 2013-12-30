@@ -28,7 +28,7 @@ class DeleteReservationNotificationService extends ReservationNotificationServic
 
         $notifications[] = new OwnerEmailDeletedNotification($userRepo, $attributeRepo);
         $notifications[] = new ParticipantDeletedEmailNotification($userRepo, $attributeRepo);
-        $notifications[] = new AdminEmailDeletedNotification($userRepo, $userRepo);
+        $notifications[] = new AdminEmailDeletedNotification($userRepo, $userRepo, $attributeRepo);
 
 		parent::__construct($notifications);
 	}

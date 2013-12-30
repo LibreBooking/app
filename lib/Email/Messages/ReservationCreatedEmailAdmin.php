@@ -27,39 +27,46 @@ class ReservationCreatedEmailAdmin extends EmailMessage
 	 * @var UserDto
 	 */
 	private $adminDto;
-	
+
 	/**
 	 * @var User
 	 */
 	private $reservationOwner;
-	
+
 	/**
 	 * @var ReservationSeries
 	 */
 	private $reservationSeries;
-	
+
 	/**
 	 * @var IResource
 	 */
 	private $resource;
-	
+
+	/**
+	 * @var IAttributeRepository
+	 */
+	private $attributeRepository;
+
 	/**
 	 * @param UserDto $adminDto
 	 * @param User $reservationOwner
 	 * @param ReservationSeries $reservationSeries
 	 * @param IResource $primaryResource
+	 * @param IAttributeRepository $attributeRepository
 	 */
-	public function __construct(UserDto $adminDto, User $reservationOwner, ReservationSeries $reservationSeries, IResource $primaryResource)
+	public function __construct(UserDto $adminDto, User $reservationOwner, ReservationSeries $reservationSeries, IResource $primaryResource, IAttributeRepository $attributeRepository)
 	{
 		parent::__construct($adminDto->Language());
-		
+
 		$this->adminDto = $adminDto;
 		$this->reservationOwner = $reservationOwner;
 		$this->reservationSeries = $reservationSeries;
 		$this->resource = $primaryResource;
+		$this->attributeRepository = $attributeRepository;
 		$this->timezone = $adminDto->Timezone();
 	}
-	
+
 	/**
 	 * @see IEmailMessage::To()
 	 */
@@ -67,7 +74,7 @@ class ReservationCreatedEmailAdmin extends EmailMessage
 	{
 		$address = $this->adminDto->EmailAddress();
 		$name = $this->adminDto->FullName();
-		
+
 		return array(new EmailAddress($address, $name));
 	}
 
@@ -75,7 +82,7 @@ class ReservationCreatedEmailAdmin extends EmailMessage
 	{
 		return new EmailAddress($this->reservationOwner->EmailAddress(), $this->reservationOwner->FullName());
 	}
-	
+
 	/**
 	 * @see IEmailMessage::Subject()
 	 */
@@ -83,7 +90,7 @@ class ReservationCreatedEmailAdmin extends EmailMessage
 	{
 		return $this->Translate('ReservationCreatedAdminSubject');
 	}
-	
+
 	/**
 	 * @see IEmailMessage::Body()
 	 */
@@ -99,17 +106,17 @@ class ReservationCreatedEmailAdmin extends EmailMessage
     }
 
 	private function PopulateTemplate()
-	{	
+	{
 		$this->Set('UserName', $this->reservationOwner->FullName());
-		
+
 		$currentInstance = $this->reservationSeries->CurrentInstance();
-		
+
 		$this->Set('StartDate', $currentInstance->StartDate()->ToTimezone($this->timezone));
 		$this->Set('EndDate', $currentInstance->EndDate()->ToTimezone($this->timezone));
 		$this->Set('ResourceName', $this->resource->GetName());
 		$this->Set('Title', $this->reservationSeries->Title());
 		$this->Set('Description', $this->reservationSeries->Description());
-		
+
 		$repeatDates = array();
 		foreach ($this->reservationSeries->Instances() as $repeated)
 		{
@@ -126,6 +133,15 @@ class ReservationCreatedEmailAdmin extends EmailMessage
 		}
 		$this->Set('ResourceNames', $resourceNames);
 		$this->Set('Accessories', $this->reservationSeries->Accessories());
+
+		$attributes = $this->attributeRepository->GetByCategory(CustomAttributeCategory::RESERVATION);
+		$attributeValues = array();
+		foreach ($attributes as $attribute)
+		{
+			$attributeValues[] = new Attribute($attribute, $this->reservationSeries->GetAttributeValue($attribute->Id()));
+		}
+
+		$this->Set('Attributes', $attributeValues);
 	}
 }
 ?>

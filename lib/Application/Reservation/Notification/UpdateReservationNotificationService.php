@@ -26,7 +26,7 @@ class UpdateReservationNotificationService extends ReservationNotificationServic
 	{
 		$notifications = array();
 		$notifications[] = new OwnerEmailUpdatedNotification($userRepo, $attributeRepo);
-		$notifications[] = new AdminEmailUpdatedNotification($userRepo, $userRepo);
+		$notifications[] = new AdminEmailUpdatedNotification($userRepo, $userRepo, $attributeRepo);
 		$notifications[] = new ParticipantAddedEmailNotification($userRepo, $attributeRepo);
 		$notifications[] = new InviteeAddedEmailNotification($userRepo, $attributeRepo);
 

@@ -98,7 +98,7 @@ class ScheduleReservationList implements IScheduleReservationList
 	/**
 	 * @var array if the offset from GMT changes between the start time and end time of the layout in the destination time zone, contains the transition info for the start and end times, else no elements
 	 */
-	private $_tzTransitions;
+	private $_tzTransitions = array();
 
 	/**
 	 * @var int represents the direction and magnitude of the DST change if there's a DST change between the start and end times of the layout, otherwise 0
@@ -128,7 +128,7 @@ class ScheduleReservationList implements IScheduleReservationList
 	}
 
 	/**
-	 * @return DST-related transitions for the tz of this schedule
+	 * @return array DST-related transitions for the tz of this schedule
 	 */
 	private function MakeTzTransitions()
 	{

@@ -17,11 +17,11 @@ You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 *}
 {include file='..\..\tpl\Email\emailheader.tpl'}
-	
-	Reservation Details: 
+
+	Reservation Details:
 	<br/>
 	<br/>
-	
+
 	User: {$UserName}<br/>
 	Starting: {formatdate date=$StartDate key=reservation_email}<br/>
 	Ending: {formatdate date=$EndDate key=reservation_email}<br/>
@@ -35,13 +35,13 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 	{/if}
 	Title: {$Title}<br/>
 	Description: {$Description}<br/>
-	
+
 	{if count($RepeatDates) gt 0}
 		<br/>
 		The reservation occurs on the following dates:
 		<br/>
 	{/if}
-	
+
 	{foreach from=$RepeatDates item=date name=dates}
 		{formatdate date=$date}<br/>
 	{/foreach}
@@ -53,13 +53,20 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 		{/foreach}
 	{/if}
 
+	{if $Attributes|count > 0}
+		<br/>
+		{foreach from=$Attributes item=attribute}
+			<div>{control type="AttributeControl" attribute=$attribute readonly=true}</div>
+		{/foreach}
+	{/if}
+
 	{if $RequiresApproval}
 		<br/>
 		One or more of the resources reserved require approval before usage.  Please ensure that this reservation request is approved or rejected.
 	{/if}
-	
+
 	<br/>
 	<br/>
 	<a href="{$ScriptUrl}/{$ReservationUrl}">View this reservation</a> | <a href="{$ScriptUrl}">Log in to phpScheduleIt</a>
-	
+
 {include file='..\..\tpl\Email\emailfooter.tpl'}
