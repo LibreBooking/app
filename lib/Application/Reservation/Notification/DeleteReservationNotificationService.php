@@ -33,4 +33,3 @@ class DeleteReservationNotificationService extends ReservationNotificationServic
 		parent::__construct($notifications);
 	}
 }
-?>

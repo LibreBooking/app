@@ -429,4 +429,3 @@ function AddTimezone($timezoneName)
 {
 	$GLOBALS['APP_TIMEZONES'][] = $timezoneName;
 }
-?>

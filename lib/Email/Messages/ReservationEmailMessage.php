@@ -128,4 +128,3 @@ abstract class ReservationEmailMessage extends EmailMessage
 		$this->Set('Attributes', $attributeValues);
     }
 }
-?>

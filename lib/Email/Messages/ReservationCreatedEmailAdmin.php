@@ -144,4 +144,3 @@ class ReservationCreatedEmailAdmin extends EmailMessage
 		$this->Set('Attributes', $attributeValues);
 	}
 }
-?>

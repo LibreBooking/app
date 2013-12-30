@@ -211,4 +211,3 @@ class AdminEmailDeletedNotification extends AdminEmailNotification
                                                         new BooleanConverter());
     }
 }
-?>

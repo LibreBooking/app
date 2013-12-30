@@ -154,4 +154,3 @@ $conf['settings']['reports']['allow.all.users'] = 'false';
 $conf['settings']['password']['minimum.letters'] = '6';
 $conf['settings']['password']['minimum.numbers'] = '0';
 $conf['settings']['password']['upper.and.lower'] = 'false';
-?>
