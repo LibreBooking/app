@@ -2,7 +2,7 @@
         "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-    <title>phpScheduleIt Installation</title>
+    <title>Booked Installation</title>
     <style type="text/css">
 
         h1.section {
@@ -43,7 +43,7 @@
 </head>
 
 <body>
-<h1>phpScheduleIt Installation</h1>
+<h1>Booked Installation</h1>
 
 <h2><span STYLE="color:#727E0A">Prerequisites</span></h2>
 
@@ -72,14 +72,14 @@
         </li>
         <li>Copy /config/config.dist.php to /config/config.php and adjust the settings for your environment.</li>
         <li><span class="important">Important!</span> The web server must have write access (0755) to
-            /your-phpScheduleIt/tpl_c and /your-phpScheduleIt/tpl
+            /your-booked/tpl_c and /your-booked/tpl
             <a href="http://www.smarty.net/docs/en/variable.compile.dir.tpl">(want to know why?)</a>
             <ul>
                 <li>If using an FTP client, check read/write/execute for Owner and Group on /tpl, /tpl_c, and /uploads
                 </li>
             </ul>
         </li>
-        <li><span class="important">Important!</span> phpScheduleIt will not work if PHP <a
+        <li><span class="important">Important!</span> Booked will not work if PHP <a
                 href="http://www.php.net/manual/en/session.configuration.php#ini.session.auto-start">session.autostart</a>
             is enabled. Ensure this setting is disabled.
         </li>
@@ -89,12 +89,12 @@
 <h2>Application Configuration</h2>
 
 <div>
-    You can configure phpScheduleIt to fit your environments and needs, or use the minimal default settings which should
+    You can configure Booked to fit your environments and needs, or use the minimal default settings which should
     be enough for the application to work. We recommend you to change according to your specifics. Additional
     information on all configuration settings can be found in the application help page.
     <ul>
         <li>To configure the application, you can open /config/config.php and alter any settings accordingly.
-            The admin email address can be set in the phpScheduleIt/config/config.php file of setting
+            The admin email address can be set in the booked/config/config.php file of setting
             <span class="setting">$conf['settings']['admin.email']</span>.<br/>
             When later register an account with admin email address the user will be given admin privilege.
         </li>
@@ -102,12 +102,12 @@
             access to your configurable uploads directory of <span class="setting">$conf['settings']['image.upload.directory']</span>
             in the config.php.
         </li>
-        <li>By default, phpScheduleIt uses standard username/password for user authentication. Alternatively, you can
+        <li>By default, Booked uses standard username/password for user authentication. Alternatively, you can
             use LDAP authentication.
             <br/>See the plugins section of the application help page for more details.
         </li>
     </ul>
-    Note: If you try to load the application at this time (eg. http://yourhostname/phpScheduleIt/Web/), you will
+    Note: If you try to load the application at this time (eg. http://yourhostname/booked/Web/), you will
     probably get a white page. This is because there is no backend database configured yet. So continue on ...
 </div>
 
@@ -125,7 +125,7 @@ You have 2 ways to set up your database for the application to work.
             /Web/install directory in a web browser and follow the on-screen instructions.
         </li>
         <li>Note: Some may see directory permission issues displayed on the page. The web server must have write access
-            to /your-phpScheduleIt/tpl_c and /your-phpScheduleIt/tpl.
+            to /your-booked/tpl_c and /your-booked/tpl.
             If you cannot provide the required permission. Contact your web server administrator or hosting service to
             resolve or run the manual install.
         </li>
@@ -139,7 +139,7 @@ OR<br/>
 <div>
     The packaged database scripts make assumptions about your desired database configuration and set default values.
     Please edit them to suit your environment before running. The files are located in
-    phpScheduleIt/database_schema/. <br/> <br/>
+    booked/database_schema/. <br/> <br/>
     Import the following sql files in the listed order (we recommend <a
         href="http://www.phpmyadmin.net/documentation/">phpMyAdmin</a> for this):
 </div>
@@ -147,7 +147,7 @@ OR<br/>
 <div>
     <h4>On a remote host with no database creation privileges</h4>
 
-    <p>If you are installing phpScheduleIt on a remote host, please follow these steps. These steps assume you are using
+    <p>If you are installing Booked on a remote host, please follow these steps. These steps assume you are using
         cPanel and have the ability to create databases via the cPanel tool and phpMyAdmin.</p>
 
     <p>Adding the database and user</p>
@@ -156,10 +156,10 @@ OR<br/>
         <li>Select the MySQL Databases tool</li>
         <li>Add a new user with username and password of your choice. This will be the database user and database
             password set in
-            your phpScheduleIt config file. <b>Please be aware that some hosts will prefix your database user name.</b>
+            your Booked config file. <b>Please be aware that some hosts will prefix your database user name.</b>
         </li>
         <li>Create a new database with whatever name you choose. This will be the name of the database in your
-            phpScheduleIt config file. 'phpScheduleIt2' is the recommended database name. <b>Please be aware that some
+            Booked config file. 'bookedscheduler' is the recommended database name. <b>Please be aware that some
                 hosts will prefix your database name.</b>
         </li>
         <li>Associate the new user with the new database, giving the user permission to SELECT, CREATE, UPDATE, INSERT
@@ -172,10 +172,10 @@ OR<br/>
         <li>Open phpMyAdmin.</li>
         <li>Click on the database name that you just created in the left panel.</li>
         <li>Click the SQL tab at the top of the page.</li>
-        <li>Import "/database_schema/create-schema.sql" to phpscheduleit2 (or whatever database name was used in the
+        <li>Import "/database_schema/create-schema.sql" to bookedscheduler (or whatever database name was used in the
             creation process)
         </li>
-        <li>Import "/database_schema/create-data.sql" to phpscheduleit2 (or whatever database name was used in the
+        <li>Import "/database_schema/create-data.sql" to bookedscheduler (or whatever database name was used in the
             creation process)
         </li>
     </ul>
@@ -188,14 +188,14 @@ OR<br/>
             config.php database values
         </li>
         <li>Run or import "/database_schema/full-install.sql"</li>
-        <li>Optionally - run/import "/database_schema/testdata-utf8.sql" to phpscheduleit2 (sample application data will
+        <li>Optionally - run/import "/database_schema/testdata-utf8.sql" to bookedscheduler (sample application data will
             be created with 2 users: admin/password and user/password). These users are available for testing your
             installation.
         </li>
     </ul>
 
     <span STYLE="color:green;">You are done. Congratulations!</span>
-    Try to load the application at (eg. http://yourhostname/phpScheduleIt/Web/).
+    Try to load the application at (eg. http://yourhostname/booked/Web/).
 </div>
 
 <h2>Registering the Administrator Account</h2>
@@ -205,15 +205,15 @@ register.php register an account with email address set in $conf['settings']['ad
 <h1 class="section">Upgrading</h1>
 <a name="upgrading"></a>
 
-<h2>Upgrading from a previous version of phpScheduleIt 2</h2>
+<h2>Upgrading from a previous version of Booked 2.x (or phpScheduleIt 2.x)</h2>
 
 <div>
-    The steps for upgrading from a previous version of phpScheduleIt 2 are very similar to the steps described above in
+    The steps for upgrading from a previous version of Boooked 2 are very similar to the steps described above in
     Application Deployment to Server.
 
     <h3>Recommended</h3>
 
-    <p>The recommended approach is to backup your current phpScheduleIt files, then upload the new files to the
+    <p>The recommended approach is to backup your current Booked files, then upload the new files to the
         that same location. This prevents any old files from interfering with new ones.</p>
 
     <p>After the new files are uploaded, copy your old config/config.php file to the config directory in the new
@@ -224,7 +224,7 @@ register.php register an account with email address set in $conf['settings']['ad
 
     <h3>Alternative</h3>
 
-    <p>An alternative upgrade approach is to overwrite the current phpScheduleIt files with the new ones. If doing this,
+    <p>An alternative upgrade approach is to overwrite the current Booked files with the new ones. If doing this,
         you must delete the contents of /tpl_c. This approach will not allow you to roll back and will not clear out any
         obsolete files.</p>
 
@@ -244,12 +244,12 @@ register.php register an account with email address set in $conf['settings']['ad
     <div>
         The packaged database scripts make assumptions about your desired database configuration and set default values.
         Please edit them to suit your environment before running. The files are located in
-        phpScheduleIt/database_schema/upgrades. <br/> <br/>
+        booked/database_schema/upgrades. <br/> <br/>
         Depending on your current version, import the upgrade.sql file within each subdirectory to get to the current
         version (we recommend <a
             href="http://www.phpmyadmin.net/documentation/">phpMyAdmin</a> for this).<br/><br/>
         For example, if you are running version 2.0 and the current version is 2.2 then you should run
-        phpScheduleIt/database_schema/upgrade/2.1/upgrade.sql then phpScheduleIt/database_schema/upgrade/2.2/upgrade.sql
+        booked/database_schema/upgrade/2.1/upgrade.sql then booked/database_schema/upgrade/2.2/upgrade.sql
     </div>
 </div>
 
@@ -271,7 +271,7 @@ register.php register an account with email address set in $conf['settings']['ad
     </li>
     <li>If not, <b>you will need to register an account with your configured admin email address</b>. The admin email
         address
-        can be set in the phpScheduleIt/config/config.php file of setting <span class="setting">$conf['settings']['admin.email']</span>.
+        can be set in the booked/config/config.php file of setting <span class="setting">$conf['settings']['admin.email']</span>.
         Other self registration accounts are defaulted to normal users.<br/>
         After registration you will be logged in automatically. <span STYLE="color:red">Important!</span> At this time,
         it is recommended to change your password.
@@ -280,7 +280,7 @@ register.php register an account with email address set in $conf['settings']['ad
 </ul>
 
 <h2>Log Files</h2>
-phpScheduleIt logs multiple levels of information categorized into either application or database logs. To do this, the
+Booked logs multiple levels of information categorized into either application or database logs. To do this, the
 log4php library is used. By default, logging is turned OFF.
 <ul>
     <li>First, rename /config/log4php.config.dist.xml to /config/log4php.config.xml</li>
@@ -290,12 +290,12 @@ log4php library is used. By default, logging is turned OFF.
         <ul>
             <li>For Windows, set the path to something similar to &lt;param name=&quot;file&quot; value=&quot;c:/temp/log_%s.log&quot;
                 /&gt;</li>
-            <li>For Unix, set the path to something similar to &lt;param name=&quot;file&quot; value=&quot;/tmp/phpscheduleit/log_%s.log&quot;
+            <li>For Unix, set the path to something similar to &lt;param name=&quot;file&quot; value=&quot;/tmp/bookedscheduler/log_%s.log&quot;
                 /&gt;</li>
         </ul>
     </li>
     <li>Logging is controlled by changing the &lt;level&gt; of each &lt;logger&gt;</li>
-    <li>Levels used by phpScheduleIt are OFF, DEBUG, ERROR. For normal operation, ERROR is appropriate. If trace logs
+    <li>Levels used by Booked are OFF, DEBUG, ERROR. For normal operation, ERROR is appropriate. If trace logs
         are needed, DEBUG is appropriate.
     </li>
     <li>To turn on application logging, change the &lt;level value=&quot;OFF&quot; /&gt; to an appropriate level for
@@ -305,8 +305,8 @@ log4php library is used. By default, logging is turned OFF.
     </li>
 </ul>
 
-<h1 class="section">Enabling phpScheduleIt API</h1>
-phpScheduleIt has the option to expose a RESTful JSON API. This API can be leveraged for third party integration,
+<h1 class="section">Enabling Booked API</h1>
+Booked has the option to expose a RESTful JSON API. This API can be leveraged for third party integration,
 automation or to develop client applications.
 
 <h2>Prerequisites</h2>
@@ -329,22 +329,22 @@ automation or to develop client applications.
 </ul>
 
 <h2>API Documentation</h2>
-Auto-generated documentation for API usage can be found by browsing http://your_phpscheduleit_url/Web/Services. This
+Auto-generated documentation for API usage can be found by browsing http://your_booked_url/Web/Services. This
 documentation describes each available service, indicates whether or not the service is available to unauthenticated
 users/administrators, and provides example requests/responses.
 
 <h2>Consuming the API</h2>
 
-If URL rewriting is being used, all services will be available from http://your_phpscheduleit_url/Web/Services<br/>
+If URL rewriting is being used, all services will be available from http://your_booked_url/Web/Services<br/>
 If not using URL rewriting, all services will be available from
-http://your_phpscheduleit_url/Web/Services/index.php<br/><br/>
+http://your_booked_url/Web/Services/index.php<br/><br/>
 Certain services are only available to authenticated users or administrators. Secure services will require a session
 token and userid, which can be obtained from the Authentication service.
 
 <h1 class="section">Support</h1>
 
 <div>
-    Please post any questions or issues under the phpScheduleIt 2 section of the forums on
+    Please post any questions or issues under the Booked 2 section of the forums on
     <a href="http://php.brickhost.com/forums">http://php.brickhost.com/forums</a>. Here you may also find some answers
     to your questions previously asked by other people.
 </div>

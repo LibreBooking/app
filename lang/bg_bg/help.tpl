@@ -1,30 +1,30 @@
 {*
 Copyright 2011-2012 Nick Korbel
 
-This file is part of phpScheduleIt.
+This file is part of Booked Scheduler.
 
-phpScheduleIt is free software: you can redistribute it and/or modify
+Booked Scheduler is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation, either version 3 of the License, or
 (at your option) any later version.
 
-phpScheduleIt is distributed in the hope that it will be useful,
+Booked Scheduler is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
-along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
+along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 *}
 {include file='globalheader.tpl'}
-<h1>phpScheduleIt Помощ</h1>
+<h1>Booked Scheduler Помощ</h1>
 
 <div id="help">
 <h2>Регистрация</h2>
 
 <p>
-	За да използвате phpScheduleIt се изисква регистрация, ако вашия администратор е разрешил това. След регистриране на 
-	вашия профил, 
+	За да използвате Booked Scheduler се изисква регистрация, ако вашия администратор е разрешил това. След регистриране на
+	вашия профил,
 	ще можете да влезете и да достъпвате всички ресурси, за които имате права.
 </p>
 
@@ -52,7 +52,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 <h3>Множество ресурси</h3>
 
 <p>Вие можете да  резервирате всички ресурси, до които имате достъп, като част от една резервация. За да добавите допълнителни ресурси
-	към вашата резервация, кликнете върху линк Повече ресурси, до името на основния ресурс, който резервирате. 
+	към вашата резервация, кликнете върху линк Повече ресурси, до името на основния ресурс, който резервирате.
 	Вие можете да добавяте още ресурси, като ги изберете и кликнете върху бутон Готово.</p>
 
 <p>За да премахнете допълнителни ресурси от вашата резервация, кликнете върху линк Още ресурси, размаркирате ресурсите,
@@ -69,7 +69,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 <p>Резервацията може да бъде конфигурирана да се повтори няколко различни начини. Крайната дата се включва за всички опции за повторение.</p>
 
 <p>Опциите за повторение дават възможност за гъвкави възможности за повторение. Например: Дневно повторение, на всеки 2 дни ще
-	създаде резервация през един ден за целия указан период. Седмично повторение, всяка 1 седмица Понеделник, Сряда и 
+	създаде резервация през един ден за целия указан период. Седмично повторение, всяка 1 седмица Понеделник, Сряда и
 	Петък ще създаде резервация на всеки от тези дни, всяка седмица  за указания период. Ако сте създали резервация
 	на 2011-01-15, с месецно повторение, през 3 месеца на същата дата от месеца ще се създаде резервация
 	всеки трети месец на 15-ти. Тъй като 2011-01-15 е третата Събота на Януари, същият пример с избран ден от седмицата,
@@ -123,7 +123,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 <h2>Изтриване на резервация</h2>
 
 <p>Изтриването на резервация напълно я премахва от разписанието. Тя повече никога няма да бъде видима никъде в
-	phpScheduleIt</p>
+	Booked Scheduler</p>
 
 <h3>Изтриване на конкретен екземпляр от серия</h3>
 
@@ -157,12 +157,12 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 <p>В повечето случаи, кликайки върху линк Абониране за този календар, явтоматично ще създаде абонамент във вашия
 	календарен клиент. За Outlook, ако не се добави автоматично, отворите изгледа на календара, след това клик с десен бутон
 	Моите календари и изберете Добавяне на календар -> От интернет. Поставете URL-а изписан под линк Абониране за този календар в
-	phpScheduleIt.</p>
+	Booked Scheduler.</p>
 
 <h3>Google&reg; календар</h3>
 
 <p>Отваряне настройките на Google календар. Кликнете върху таб календари. Щракнете върху разглеждане на интересни календари. Кликнете добавяне чрез URL.
-	Поставете URL-а изписан под линк Абониране за този календар в phpScheduleIt.</p>
+	Поставете URL-а изписан под линк Абониране за този календар в Booked Scheduler.</p>
 
 <h2>Квоти</h2>
 

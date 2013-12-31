@@ -2,20 +2,20 @@
 /**
 Copyright 2011-2013 Nick Korbel
 
-This file is part of phpScheduleIt.
+This file is part of Booked Scheduler.
 
-phpScheduleIt is free software: you can redistribute it and/or modify
+Booked Scheduler is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation, either version 3 of the License, or
 (at your option) any later version.
 
-phpScheduleIt is distributed in the hope that it will be useful,
+Booked Scheduler is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
-along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
+along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 require_once(ROOT_DIR . 'Pages/SecurePage.php');
@@ -64,7 +64,7 @@ class PersonalCalendarPage extends ActionPage implements IPersonalCalendarPage
 		$this->Set('Today', Date::Now()->ToTimezone($user->Timezone));
 		$this->Set('TimeFormat', Resources::GetInstance()->GetDateFormat('calendar_time'));
 		$this->Set('DateFormat', Resources::GetInstance()->GetDateFormat('calendar_dates'));
-		
+
 		$this->Display('Calendar/' . $this->template);
 	}
 
@@ -72,7 +72,7 @@ class PersonalCalendarPage extends ActionPage implements IPersonalCalendarPage
 	{
 		return $this->GetQuerystring(QueryStringKeys::DAY);
 	}
-	
+
 	public function GetMonth()
 	{
 		return $this->GetQuerystring(QueryStringKeys::MONTH);
@@ -87,7 +87,7 @@ class PersonalCalendarPage extends ActionPage implements IPersonalCalendarPage
 	{
 		return $this->GetQuerystring(QueryStringKeys::CALENDAR_TYPE);
 	}
-	
+
 	public function BindCalendar(ICalendarSegment $calendar)
 	{
 		$this->Set('Calendar', $calendar);

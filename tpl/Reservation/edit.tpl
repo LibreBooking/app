@@ -1,20 +1,20 @@
 {*
 Copyright 2011-2013 Nick Korbel
 
-This file is part of phpScheduleIt.
+This file is part of Booked Scheduler.
 
-phpScheduleIt is free software: you can redistribute it and/or modify
+Booked Scheduler is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation, either version 3 of the License, or
 (at your option) any later version.
 
-phpScheduleIt is distributed in the hope that it will be useful,
+Booked Scheduler is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
-along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
+along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 *}
 {extends file="Reservation/create.tpl"}
 
@@ -26,7 +26,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 	{translate key="EditReservationHeading" args=''}
 {/block}
 
-{block name=deleteButtons}	
+{block name=deleteButtons}
 	{if $IsRecurring}
 		<a href="#" class="delete prompt">
 			{html_image src="cross-button.png"}
@@ -42,7 +42,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 	<a style='margin-left:10px;' href="{$Path}export/{Pages::CALENDAR_EXPORT}?{QueryStringKeys::REFERENCE_NUMBER}={$ReferenceNumber}">
 		{html_image src="calendar-plus.png"}
 		{translate key=AddToOutlook}</a>
-	
+
 {/block}
 
 {block name=submitButtons}

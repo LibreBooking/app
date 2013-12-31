@@ -1,6 +1,6 @@
 <?php
 /**
-Part of phpScheduleIt
+Part of Booked Scheduler
 written by Stephen Oliver
 add this file to /Domain
 add the 'GoogleVoice' folder to /Domain
@@ -95,7 +95,7 @@ class Reminder
     }
     public static function SendItOut(Reminder $reminder){
         $message = $reminder->Message();
-        $subject = "Automatic Reminder from phpScheduleIt";
+        $subject = "Automatic Reminder from Booked Scheduler";
 	/* replace 'username' and 'password' with your GoogleVoice sign-in */
         $gv = new GoogleVoice("username", "password");
         $addresses = explode(',',str_replace(' ', '', $reminder->Address()));

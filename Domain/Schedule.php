@@ -2,20 +2,20 @@
 /**
 Copyright 2011-2013 Nick Korbel
 
-This file is part of phpScheduleIt.
+This file is part of Booked Scheduler.
 
-phpScheduleIt is free software: you can redistribute it and/or modify
+Booked Scheduler is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation, either version 3 of the License, or
 (at your option) any later version.
 
-phpScheduleIt is distributed in the hope that it will be useful,
+Booked Scheduler is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
-along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
+along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 require_once(ROOT_DIR . 'lib/Application/Schedule/CalendarSubscriptionUrl.php');
@@ -35,7 +35,7 @@ interface ISchedule
 }
 
 class Schedule implements ISchedule
-{	
+{
 	protected $_id;
 	protected $_name;
 	protected $_isDefault;
@@ -50,10 +50,10 @@ class Schedule implements ISchedule
 	const Today = 100;
 
 	public function __construct(
-		$id, 
-		$name, 
-		$isDefault, 
-		$weekdayStart, 
+		$id,
+		$name,
+		$isDefault,
+		$weekdayStart,
 		$daysVisible,
 		$timezone = null,
 		$layoutId = null)
@@ -66,62 +66,62 @@ class Schedule implements ISchedule
 		$this->_timezone = $timezone;
 		$this->_layoutId = $layoutId;
 	}
-	
+
 	public function GetId()
 	{
 		return $this->_id;
 	}
-	
+
 	public function SetId($value)
 	{
 		$this->_id = $value;
 	}
-	
+
 	public function GetName()
 	{
 		return $this->_name;
 	}
-	
+
 	public function SetName($value)
 	{
 		$this->_name = $value;
 	}
-	
+
 	public function GetIsDefault()
 	{
 		return $this->_isDefault;
 	}
-	
+
 	public function SetIsDefault($value)
 	{
 		$this->_isDefault = $value;
 	}
-	
+
 	public function GetWeekdayStart()
 	{
 		return $this->_weekdayStart;
 	}
-	
+
 	public function SetWeekdayStart($value)
 	{
 		$this->_weekdayStart = $value;
 	}
-	
+
 	public function GetDaysVisible()
 	{
 		return $this->_daysVisible;
 	}
-	
+
 	public function SetDaysVisible($value)
 	{
 		$this->_daysVisible = $value;
 	}
-		
+
 	public function GetTimezone()
 	{
 		return $this->_timezone;
 	}
-	
+
 	public function GetLayoutId()
 	{
 		return $this->_layoutId;

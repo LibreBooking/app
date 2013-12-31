@@ -1,29 +1,29 @@
 {*
 Copyright 2011-2013 Nick Korbel
 
-This file is part of phpScheduleIt.
+This file is part of Booked Scheduler.
 
-phpScheduleIt is free software: you can redistribute it and/or modify
+Booked Scheduler is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation, either version 3 of the License, or
 (at your option) any later version.
 
-phpScheduleIt is distributed in the hope that it will be useful,
+Booked Scheduler is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
-along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
+along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 *}
 {include file='globalheader.tpl'}
-<h1>phpScheduleIt Help</h1>
+<h1>Booked Scheduler Help</h1>
 
 <div id="help">
 <h2>Registration</h2>
 
 <p>
-	Registration is required in order to use phpScheduleIt if you administrator has enabled it. After your account
+	Registration is required in order to use Booked Scheduler if you administrator has enabled it. After your account
 	has been registered
 	you will be able to log in and access any resources that you have permission to.
 </p>
@@ -127,7 +127,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 <h2>Deleting a Reservation</h2>
 
 <p>Deleting a reservation completely removes it from the schedule. It will no longer be visible anywhere in
-	phpScheduleIt</p>
+	Booked Scheduler</p>
 
 <h3>Deleting Specific Instances From a Series</h3>
 
@@ -162,12 +162,12 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 	your calendar Client. For Outlook, if it does not automatically add, open the Calendar view, then right click My
 	Calendars and choose
 	Add Calendar -> From Internet. Paste in the URL printed under the Subscribe to this Calendar link in
-	phpScheduleIt.</p>
+	Booked Scheduler.</p>
 
 <h3>Google&reg; Calendar</h3>
 
 <p>Open Google Calendar settings. Click the Calendars tab. Click Browse interesting calendars. Click add by URL. Paste
-	in the URL printed under the Subscribe to this Calendar link in phpScheduleIt.</p>
+	in the URL printed under the Subscribe to this Calendar link in Booked Scheduler.</p>
 
 <h2>Quotas</h2>
 
@@ -182,7 +182,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 <h3>Setting up Schedules</h3>
 
 <p>
-	When installing phpScheduleIt a default schedule will be created with out of the box settings. From the
+	When installing Booked Scheduler a default schedule will be created with out of the box settings. From the
 	Schedules menu option you can view and edit attributes of the current schedules.
 </p>
 
@@ -206,7 +206,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 	configuration of a resource.
 </p>
 
-<p>Resources in phpScheduleIt can be anything you want to make bookable, such as rooms or equipment. Every resource
+<p>Resources in Booked Scheduler can be anything you want to make bookable, such as rooms or equipment. Every resource
 	must be assigned to a schedule in order for it to be bookable. The resource will inherit whatever layout the
 	schedule uses.</p>
 
@@ -253,7 +253,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 
 <h3>Setting up Quotas</h3>
 
-<p>Quotas prevent reservations from being booked based on a configurable limit. The quota system in phpScheduleIt is
+<p>Quotas prevent reservations from being booked based on a configurable limit. The quota system in Booked Scheduler is
 	very flexible, allowing you to build limits based on reservation length and number reservations. Also, quota limits
 	"stack". For example, if a quota exists limiting a resource to 5 hours per day and another quota exists limiting to
 	4 reservations per day a user would be able to make 4 hour-long reservations but would be restricting from making 3
@@ -263,7 +263,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 
 <h3>Setting up Announcements</h3>
 
-<p>Announcements are a very simple way to display notifications to phpScheduleIt users. From the Announcements menu item
+<p>Announcements are a very simple way to display notifications to Booked Scheduler users. From the Announcements menu item
 	you can view and manage the announcements that are displayed on users dashboards. An announcement can be configured
 	with an optional start and end date. An optional priority level is also available, which sorts announcements from 1
 	to 10.</p>
@@ -272,7 +272,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 
 <h3>Setting up Groups</h3>
 
-<p>Groups in phpScheduleIt organize users, control resource access permissions and define roles within the
+<p>Groups in Booked Scheduler organize users, control resource access permissions and define roles within the
 	application.</p>
 
 <h3>Roles</h3>
@@ -302,14 +302,14 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 
 <p>You can add, view, and manage all registered users from the Users menu item. This tool allows you to change resource
 	access permissions of individual users, deactivate or delete accounts, reset user passwords, and edit user details.
-	You can also add new users to phpScheduleIt. This is especially useful if self-registration is turned off.</p>
+	You can also add new users to Booked Scheduler. This is especially useful if self-registration is turned off.</p>
 
 <h2>Configuration</h2>
 
-<p>Some of phpScheduleIt's functionality can only be controlled by editing the config file.</p>
+<p>Some of Booked Scheduler's functionality can only be controlled by editing the config file.</p>
 
 <p class="setting"><span>$conf['settings']['server.timezone']</span>This must reflect the timezone of the server that
-	phpScheduleIt is hosted
+	Booked Scheduler is hosted
 	on. You can view the current timezone from the Server Settings menu item. Possible values are located here:
 	http://php.net/manual/en/timezones.php</p>
 
@@ -323,15 +323,15 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 	displays a list of data
 </p>
 
-<p class="setting"><span>$conf['settings']['enable.email']</span>Whether or not any emails are sent out of phpScheduleIt
+<p class="setting"><span>$conf['settings']['enable.email']</span>Whether or not any emails are sent out of Booked Scheduler
 </p>
 
 <p class="setting"><span>$conf['settings']['default.language']</span>Default language for all users. This can be any
 	language in the
-	phpScheduleIt lang directory</p>
+	Booked Scheduler lang directory</p>
 
 <p class="setting"><span>$conf['settings']['script.url']</span>The full public URL to the root of this instance of
-	phpScheduleIt. This should
+	Booked Scheduler. This should
 	be the Web directory which contains files like bookings.php and calendar.php</p>
 
 <p class="setting"><span>$conf['settings']['password.pattern']</span>A regular expression to enforce password complexity
@@ -350,7 +350,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 
 <p class="setting"><span>$conf['settings']['image.upload.directory']</span>The physical directory to store images.
 	This directory will need to be writable. This can be the full directory or relative to the
-	phpScheduleIt root directory.</p>
+	Booked Scheduler root directory.</p>
 
 <p class="setting"><span>$conf['settings']['image.upload.url']</span>The URL where uploaded
 	images can be viewed from. This can be the full URL or relative to $conf['settings']['script.url'].
@@ -431,13 +431,13 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 
 <p class="setting"><span>$conf['settings']['css.extension.file']</span>Full or relative URL to an additional CSS file to
 	include. This can be used to override the default style with adjustments or a full theme. Leave this blank if you
-	are not extending the style of phpScheduleIt.</p>
+	are not extending the style of Booked Scheduler.</p>
 
 <p class="setting"><span>$conf['settings']['uploads']['enable.reservation.attachments']</span>If users are allowed to
 	attach files to reservations. Default is false.</p>
 
 <p class="setting"><span>$conf['settings']['uploads']['reservation.attachment.path']</span>The full or relative
-	filesystem path (relative to the root of your phpScheduleIt directory) to store reservation attachments. This
+	filesystem path (relative to the root of your Booked Scheduler directory) to store reservation attachments. This
 	directory must be writable by PHP. Default is uploads/reservation</p>
 
 <p class="setting"><span>$conf['settings']['uploads']['reservation.attachment.extensions']</span>Comma separated list of
@@ -452,7 +452,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 
 <p class="setting"><span>$conf['settings']['database']['hostspec']</span>Database host URL or named pipe</p>
 
-<p class="setting"><span>$conf['settings']['database']['name']</span>Name of phpScheduleIt database</p>
+<p class="setting"><span>$conf['settings']['database']['name']</span>Name of Booked Scheduler database</p>
 
 <p class="setting"><span>$conf['settings']['phpmailer']['mailer']</span>PHP email library. Options are mail, smtp,
 	sendmail, qmail</p>

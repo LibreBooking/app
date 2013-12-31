@@ -1,22 +1,22 @@
 <?php
 /**
 Copyright 2011-2013 Nick Korbel
-Copyright 2012 Alois Schloegl 
+Copyright 2012 Alois Schloegl
 
-This file is part of phpScheduleIt.
+This file is part of Booked Scheduler.
 
-phpScheduleIt is free software: you can redistribute it and/or modify
+Booked Scheduler is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation, either version 3 of the License, or
 (at your option) any later version.
 
-phpScheduleIt is distributed in the hope that it will be useful,
+Booked Scheduler is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
-along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
+along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 require_once(ROOT_DIR . 'lib/Application/Authentication/namespace.php');
@@ -46,7 +46,7 @@ class Apache extends Authentication implements IAuthentication
 		## Get username for apache configuration and if Kerberus is used, the REALM is removed
 		$ru = explode('@', $_SERVER['REMOTE_USER']);
 		$user = $ru[0];
-		return true; 
+		return true;
 	}
 
 	public function Login($username, $loginContext)

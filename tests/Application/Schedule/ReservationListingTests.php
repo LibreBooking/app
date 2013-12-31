@@ -2,20 +2,20 @@
 /**
 Copyright 2011-2013 Nick Korbel
 
-This file is part of phpScheduleIt.
+This file is part of Booked Scheduler.
 
-phpScheduleIt is free software: you can redistribute it and/or modify
+Booked Scheduler is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation, either version 3 of the License, or
 (at your option) any later version.
 
-phpScheduleIt is distributed in the hope that it will be useful,
+Booked Scheduler is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
-along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
+along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 require_once(ROOT_DIR . 'Domain/namespace.php');
@@ -32,7 +32,7 @@ class ReservationListingTests extends TestBase
 	{
 		parent::teardown();
 	}
-	
+
 	public function testReservationSpanningMultipleDaysIsReturnedOnAllOfThem()
 	{
 		$res1 = $this->GetReservation('2009-10-09 22:00:00', '2009-10-09 23:00:00', 1);
@@ -45,9 +45,9 @@ class ReservationListingTests extends TestBase
 		// 2009-10-13 20:00:00 - 2009-10-15 20:00:00 CST
 		$res5 = $this->GetReservation('2009-10-13 10:00:00', '2009-10-13 15:00:00', 1);
 		// 2009-10-13 05:00:00 - 2009-10-13 10:00:00 CST
-		
+
 		$reservationListing = new ReservationListing("America/Chicago");
-		
+
 		$reservationListing->Add($res4);
 		$reservationListing->Add($res1);
 		$reservationListing->Add($res3);
@@ -67,7 +67,7 @@ class ReservationListingTests extends TestBase
 		$onDate6 = $reservationListing->OnDate(Date::Parse('2009-10-14', 'CST'));
 		$onDate7 = $reservationListing->OnDate(Date::Parse('2009-10-15', 'CST'));
 		$onDate8 = $reservationListing->OnDate(Date::Parse('2009-10-16', 'CST'));
-		
+
 		$this->assertEquals(4, $onDate1->Count(), "2 reservations 2 blackouts");
 		$this->assertEquals(3, $onDate2->Count(), "2 reservations 1 blackout");
 		$this->assertEquals(1, $onDate3->Count());
@@ -111,7 +111,7 @@ class ReservationListingTests extends TestBase
 		$period = new SchedulePeriod($start, $end);
 		$display = Date::Parse('2011-12-03');
 		$span = 3;
-		
+
 		$expectedSlot = new ReservationSlot($period, $period, $display, $span, $view);
 		$actualSlot = $item->BuildSlot($period, $period, $display, $span);
 		$this->assertEquals($expectedSlot, $actualSlot);

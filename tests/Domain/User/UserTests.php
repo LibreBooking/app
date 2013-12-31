@@ -2,20 +2,20 @@
 /**
 Copyright 2011-2013 Nick Korbel
 
-This file is part of phpScheduleIt.
+This file is part of Booked Scheduler.
 
-phpScheduleIt is free software: you can redistribute it and/or modify
+Booked Scheduler is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation, either version 3 of the License, or
 (at your option) any later version.
 
-phpScheduleIt is distributed in the hope that it will be useful,
+Booked Scheduler is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
-along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
+along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 require_once(ROOT_DIR . 'Domain/namespace.php');
@@ -73,13 +73,13 @@ class UserTests extends TestBase
 
 		$this->assertTrue($user->IsInRole(RoleLevel::SCHEDULE_ADMIN));
 	}
-	
+
 	public function testWhenUserIsInAGroupThatCanAdminAnotherGroup()
 	{
 		$adminGroupId = 99;
 		$groupId1 = 1;
 		$groupId2 = 2;
-		
+
 		$adminUser = new User();
 		$user = new User();
 
@@ -87,10 +87,10 @@ class UserTests extends TestBase
 		$adminGroup->AddRole(RoleLevel::GROUP_ADMIN);
 		$group1 = new UserGroup($groupId1, 'random group');
 		$group2 = new UserGroup($groupId2, 'group with admin', $adminGroupId, RoleLevel::NONE);
-		
+
 		$adminUserGroups = array($group1, $adminGroup);
 		$userGroups = array($group2);
-		
+
 		$adminUser->WithGroups($adminUserGroups);
 		$user->WithGroups($userGroups);
 
@@ -205,7 +205,7 @@ class UserTests extends TestBase
         $this->assertEquals(2, count($adminGroups));
         $this->assertContains($adminGroup2, $adminGroups);
     }
-	
+
 	public function testIsGroupAdminForGroup()
 	{
 		$user = new User();

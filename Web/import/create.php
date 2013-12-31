@@ -4,20 +4,20 @@ Copyright 2012 Alois Schloegl, IST Austria
 Copyright 2012 Moritz Schepp, IST Austria
 Copyright 2013 Patrick Meidl, IST Austria
 
-This file is part of phpScheduleIt.
+This file is part of Booked Scheduler.
 
-phpScheduleIt is free software: you can redistribute it and/or modify
+Booked Scheduler is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation, either version 3 of the License, or
 (at your option) any later version.
 
-phpScheduleIt is distributed in the hope that it will be useful,
+Booked Scheduler is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
-along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
+along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 error_reporting(E_ERROR | E_WARNING | E_PARSE);
@@ -46,11 +46,11 @@ $enabled  = $conf['settings']['ics']['import'];
 
 /*
 CREATE
-1 Organizer (username or email address)  
+1 Organizer (username or email address)
 2 email address of resource (matches with resource.contact_info)
 3 start_time
 4 end_time
-5 [optional] recurrence rule 
+5 [optional] recurrence rule
 6 [optional] Attendees
 7 Summary/Title
 8 [optional] Description
@@ -78,7 +78,7 @@ foreach ($params AS $key => $val) {
 	}
 }
 
-if ( $ikey != NULL 
+if ( $ikey != NULL
   && $ikey != $_REQUEST['ikey'] )
 {
         header('HTTP/1.1 401 Unauthorized', true, 401);
@@ -102,10 +102,10 @@ if (preg_match($regexp_email, $contact_info)) {
 }
 
 /*************************************************
- 	user information 
+ 	user information
  *************************************************/
 $userRepository = new UserRepository();
-$user = $userRepository->LoadByUsername($username); 
+$user = $userRepository->LoadByUsername($username);
 if ($user instanceof NullUser) {
 	header('HTTP/1.1 403 Forbidden', true, 403);
 	print json_encode(array('message' => "invalid userId"));
@@ -145,12 +145,12 @@ $timing = DateRange::Create($starts_at, $ends_at, $tz);
  	Action
  *************************************************/
 $series = ReservationSeries::Create(
-	$user->Id(), 
+	$user->Id(),
 	$resource,
-	$title, 
-	$description, 
-	$timing, 
-	new RepeatNone(), 
+	$title,
+	$description,
+	$timing,
+	new RepeatNone(),
 	$user_session
 );
 

@@ -2,20 +2,20 @@
 /**
 Copyright 2011-2013 Nick Korbel
 
-This file is part of phpScheduleIt.
+This file is part of Booked Scheduler.
 
-phpScheduleIt is free software: you can redistribute it and/or modify
+Booked Scheduler is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation, either version 3 of the License, or
 (at your option) any later version.
 
-phpScheduleIt is distributed in the hope that it will be useful,
+Booked Scheduler is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
-along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
+along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 error_reporting(E_ALL & ~E_NOTICE & ~E_STRICT);
@@ -24,15 +24,15 @@ error_reporting(E_ALL & ~E_NOTICE & ~E_STRICT);
 /**
  * Application configuration
  */
-$conf['settings']['app.title'] = 'phpScheduleIt';				// application title
-$conf['settings']['default.timezone'] = 'America/Chicago';       // look up here http://php.net/manual/en/timezones.php
+$conf['settings']['app.title'] = 'Booked Scheduler';			// application title
+$conf['settings']['default.timezone'] = 'America/Chicago';      // look up here http://php.net/manual/en/timezones.php
 $conf['settings']['allow.self.registration'] = 'true';         	// if users can register themselves
 $conf['settings']['admin.email'] = 'admin@example.com';         // email address of admin user
 $conf['settings']['admin.email.name'] = 'Booked Administrator';	// name to be used in From: field when sending automatic emails
 $conf['settings']['default.page.size'] = '50';                  // number of records per page
 $conf['settings']['enable.email'] = 'true';                     // global configuration to enable if any emails will be sent
-$conf['settings']['default.language'] = 'en_us';                // find your language in phpScheduleIt/lang directory
-$conf['settings']['script.url'] = 'http://localhost/Web';   	// public URL to the Web directory of this phpScheduleIt instance. this is the URL that appears when you are logging in
+$conf['settings']['default.language'] = 'en_us';                // find your language in the lang directory
+$conf['settings']['script.url'] = 'http://localhost/Web';   	// public URL to the Web directory of this instance. this is the URL that appears when you are logging in
 $conf['settings']['image.upload.directory'] = 'Web/uploads/images'; // full or relative path to where images will be stored
 $conf['settings']['image.upload.url'] = 'uploads/images';       // full or relative path to show uploaded images from
 $conf['settings']['cache.templates'] = 'true';                  // true recommended, caching template files helps web pages render faster
@@ -91,16 +91,16 @@ $conf['settings']['reservation.notify']['group.admin.delete'] = 'false';
  * File upload configuration
  */
 $conf['settings']['uploads']['enable.reservation.attachments'] = 'false'; 	// if reservation attachments can be uploaded
-$conf['settings']['uploads']['reservation.attachment.path'] = 'uploads/reservation'; 	// full or relative (to the root of your phpScheduleIt directory) filesystem path to store reservation attachments
+$conf['settings']['uploads']['reservation.attachment.path'] = 'uploads/reservation'; 	// full or relative (to the root of your installation) filesystem path to store reservation attachments
 $conf['settings']['uploads']['reservation.attachment.extensions'] = 'txt,jpg,gif,png,doc,docx,pdf,xls,xlsx,ppt,pptx,csv'; 	// comma separated list of file extensions that users are allowed to attach. leave empty to allow all extensions
 /**
  * Database configuration
  */
 $conf['settings']['database']['type'] = 'mysql';
-$conf['settings']['database']['user'] = 'schedule_user';        // database user with permission to the phpScheduleIt database
+$conf['settings']['database']['user'] = 'booked_user';        // database user with permission to the booked database
 $conf['settings']['database']['password'] = 'password';
 $conf['settings']['database']['hostspec'] = '127.0.0.1';        // ip, dns or named pipe
-$conf['settings']['database']['name'] = 'phpscheduleit2';
+$conf['settings']['database']['name'] = 'bookedscheduler';
 /**
  * Mail server configuration
  */

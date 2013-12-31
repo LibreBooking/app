@@ -2,20 +2,20 @@
 /**
 Copyright 2011-2013 Nick Korbel
 
-This file is part of phpScheduleIt.
+This file is part of Booked Scheduler.
 
-phpScheduleIt is free software: you can redistribute it and/or modify
+Booked Scheduler is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation, either version 3 of the License, or
 (at your option) any later version.
 
-phpScheduleIt is distributed in the hope that it will be useful,
+Booked Scheduler is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
-along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
+along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 require_once(ROOT_DIR . 'Domain/Access/namespace.php');
@@ -26,7 +26,7 @@ class GroupRepositoryTests extends TestBase
 	 * @var GroupRepository
 	 */
 	private $repository;
-	
+
 	public function setup()
 	{
 		parent::setup();
@@ -58,7 +58,7 @@ class GroupRepositoryTests extends TestBase
 		$expected = new FilterCommand($baseCommand, $filter);
 
 		$list = $this->repository->GetList($pageNum, $pageSize, null, null, $filter);
-		
+
 		$results = $list->Results();
 		$this->assertEquals(GroupItemView::Create($rows[0]), $results[0]);
 		$this->assertEquals(GroupItemView::Create($rows[1]), $results[1]);
@@ -181,12 +181,12 @@ class GroupRepositoryTests extends TestBase
 		$this->assertTrue($this->db->ContainsCommand($command1));
 		$this->assertTrue($this->db->ContainsCommand($command2));
 	}
-	
+
 	public function testUpdateAddsAllNewAndRemovesAllDeletedPermissions()
 	{
 		$resource1 = 100;
 		$resource2 = 200;
-		
+
 		$groupId = 9298;
 
 		$group = new Group($groupId, '');
@@ -208,7 +208,7 @@ class GroupRepositoryTests extends TestBase
 		$id = 2828;
 		$newName = 'new name';
 		$groupAdminId = 123;
-		
+
 		$group = new Group($id, 'old name');
 		$group->Rename($newName);
 		$group->ChangeAdmin($groupAdminId);
@@ -238,7 +238,7 @@ class GroupRepositoryTests extends TestBase
 		$this->db->_ExpectedInsertId = $newId;
 
 		$this->repository->Add($group);
-		
+
 		$addGroupCommand = new AddGroupCommand($name);
 		$this->assertTrue($this->db->ContainsCommand($addGroupCommand));
 

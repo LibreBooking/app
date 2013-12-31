@@ -2,22 +2,18 @@
 /**
 Copyright 2011-2013 Nick Korbel
 
-This file is part of phpScheduleIt.
-
-phpScheduleIt is free software: you can redistribute it and/or modify
+This file is part of Booked SchedulerBooked SchedulereIt is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-phpScheduleIt is distributed in the hope that it will be useful,
+(at your option) any later versBooked SchedulerduleIt is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
-along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
+alBooked SchedulercheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 */
- 
+
 class ErrorMessages
 {
 	const UNKNOWN_ERROR = 0;
@@ -25,10 +21,10 @@ class ErrorMessages
 	const MISSING_RESOURCE = 2;
 	const MISSING_SCHEDULE = 3;
 	const RESERVATION_NOT_FOUND = 4;
-	
+
 	private $_resourceKeys = array();
 	private static $_instance;
-		
+
 	private function __construct()
 	{
 		$this->SetKey(ErrorMessages::INSUFFICIENT_PERMISSIONS, 'InsufficientPermissionsError');
@@ -47,22 +43,22 @@ class ErrorMessages
 		{
 			self::$_instance = new ErrorMessages();
 		}
-		
+
 		return self::$_instance;
 	}
-	
+
 	private function SetKey($errorMessageId, $resourceKey)
 	{
 		$this->_resourceKeys[$errorMessageId] = $resourceKey;
 	}
-	
+
 	public function GetResourceKey($errorMessageId)
 	{
 		if (!isset($this->_resourceKeys[$errorMessageId]))
 		{
 			return 'UnknownError';
 		}
-		
+
 		return $this->_resourceKeys[$errorMessageId];
 	}
 }

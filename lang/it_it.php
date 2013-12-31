@@ -2,20 +2,20 @@
 /**
 Copyright 2011-2013 Nick Korbel
 
-This file is part of phpScheduleIt.
+This file is part of Booked Scheduler.
 
-phpScheduleIt is free software: you can redistribute it and/or modify
+Booked Scheduler is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation, either version 3 of the License, or
 (at your option) any later version.
 
-phpScheduleIt is distributed in the hope that it will be useful,
+Booked Scheduler is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
-along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
+along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 require_once('Language.php');
@@ -68,7 +68,7 @@ class it_it extends en_us
         $strings['LastNameRequired'] = 'Cognome è obbligatorio.';
         $strings['PwMustMatch'] = 'La password di conferma non corrisponde con la password inserita.';
         $strings['PwComplexity'] = 'La password deve contenere minimo 6 caratteri con una combinazione di lettere, numeri e simboli.';
-        $strings['ValidEmailRequired'] = 'È richiesto un indirizzo email valido.';                                       
+        $strings['ValidEmailRequired'] = 'È richiesto un indirizzo email valido.';
         $strings['UniqueEmailRequired'] = 'Questo indirizzo email è già registrato.';
         $strings['UniqueUsernameRequired'] = 'Questo nome utente è già registrato.';
         $strings['UserNameRequired'] = 'Nome utente è obbligatorio.';

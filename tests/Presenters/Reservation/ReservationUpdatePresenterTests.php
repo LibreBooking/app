@@ -2,20 +2,20 @@
 /**
 Copyright 2011-2013 Nick Korbel
 
-This file is part of phpScheduleIt.
+This file is part of Booked Scheduler.
 
-phpScheduleIt is free software: you can redistribute it and/or modify
+Booked Scheduler is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation, either version 3 of the License, or
 (at your option) any later version.
 
-phpScheduleIt is distributed in the hope that it will be useful,
+Booked Scheduler is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
-along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
+along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 require_once(ROOT_DIR . 'Presenters/Reservation/ReservationUpdatePresenter.php');
@@ -23,24 +23,24 @@ require_once(ROOT_DIR . 'Pages/Ajax/ReservationUpdatePage.php');
 require_once(ROOT_DIR . 'lib/Application/Reservation/namespace.php');
 
 class ReservationUpdatePresenterTests extends TestBase
-{	
+{
 	private $userId;
-	
+
 	/**
 	 * @var UserSession
 	 */
 	private $user;
-	
+
 	/**
 	 * @var FakeReservationUpdatePage
 	 */
 	private $page;
-	
+
 	/**
 	 * @var IUpdateReservationPersistenceService
 	 */
 	private $persistenceService;
-	
+
 	/**
 	 * @var IReservationHandler
 	 */
@@ -56,37 +56,37 @@ class ReservationUpdatePresenterTests extends TestBase
 	 * @var ReservationUpdatePresenter
 	 */
 	private $presenter;
-	
+
 	public function setup()
 	{
 		parent::setup();
-		
+
 		$this->user = $this->fakeServer->UserSession;
 		$this->userId = $this->user->UserId;
-		
+
 		$this->persistenceService = $this->getMock('IUpdateReservationPersistenceService');
 		$this->handler = $this->getMock('IReservationHandler');
 		$this->resourceRepository = $this->getMock('IResourceRepository');
 
 		$this->page = new FakeReservationUpdatePage();
-		
+
 		$this->presenter = new ReservationUpdatePresenter(
-								$this->page, 
-								$this->persistenceService, 
+								$this->page,
+								$this->persistenceService,
 								$this->handler,
 								$this->resourceRepository,
 								$this->fakeUser);
 	}
-	
+
 	public function teardown()
 	{
 		parent::teardown();
 	}
-	
+
 	public function testLoadsExistingReservationAndUpdatesData()
 	{
 		$seriesId = 109809;
-		$expectedSeries = new ExistingReservationSeries();	
+		$expectedSeries = new ExistingReservationSeries();
 		$currentDuration = new DateRange(Date::Now()->AddDays(1), Date::Now()->AddDays(2), 'UTC');
 		$removedResourceId = 190;
 
@@ -96,7 +96,7 @@ class ReservationUpdatePresenterTests extends TestBase
 		$additional1 = new FakeBookableResource($additionalId1);
 		$additional2 = new FakeBookableResource($additionalId2);
 
-		$reservation = new Reservation($expectedSeries, $currentDuration);		
+		$reservation = new Reservation($expectedSeries, $currentDuration);
 		$expectedSeries->WithId($seriesId);
 		$expectedSeries->WithCurrentInstance($reservation);
 		$expectedSeries->WithPrimaryResource($resource);
@@ -104,9 +104,9 @@ class ReservationUpdatePresenterTests extends TestBase
 		$expectedSeries->WithAttribute(new AttributeValue(100, 'to be removed'));
 
 		$referenceNumber = $this->page->existingReferenceNumber;
-		
+
 		$timezone = $this->user->Timezone;
-		
+
 		$this->persistenceService->expects($this->once())
 			->method('LoadByReferenceNumber')
 			->with($this->equalTo($referenceNumber))
@@ -184,7 +184,7 @@ class ReservationUpdatePresenterTests extends TestBase
 			->method('LoadByReferenceNumber')
 			->with($this->equalTo($referenceNumber))
 			->will($this->returnValue($expectedSeries));
-		
+
 		$this->resourceRepository->expects($this->once())
 			->method('LoadById')
 			->with($this->equalTo($additionalId))
@@ -194,21 +194,21 @@ class ReservationUpdatePresenterTests extends TestBase
 
 		$this->assertEquals($resource, $existingSeries->Resource());
 	}
-	
+
 	public function testHandlingReservationCreationDelegatesToServicesForValidationAndPersistenceAndNotification()
 	{
 		$builder = new ExistingReservationSeriesBuilder();
 		$series = $builder->Build();
 		$instance = new Reservation($series, NullDateRange::Instance());
 		$series->WithCurrentInstance($instance);
-		
+
 		$this->handler->expects($this->once())
 				->method('Handle')
 				->with($this->equalTo($series), $this->isInstanceOf('FakeReservationUpdatePage'))
 				->will($this->returnValue(true));
 
 		$this->presenter->HandleReservation($series);
-		
+
 		$this->assertEquals($instance->ReferenceNumber(), $this->page->referenceNumber);
 	}
 }
@@ -223,12 +223,12 @@ class FakeReservationUpdatePage extends FakeReservationSavePage implements IRese
 	{
 	    parent::__construct();
 	}
-	
+
 	public function GetReferenceNumber()
 	{
 		return $this->existingReferenceNumber;
 	}
-	
+
 	public function GetSeriesUpdateScope()
 	{
 		return $this->seriesUpdateScope;

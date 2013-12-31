@@ -1,20 +1,20 @@
 <?php
 
 /**
-* 
-* 
+*
+*
 * Translated by lujisheng in CSDN (Simplified Chinese)
 *
 * http://blog.csdn.net/lujisheng/article/details/7821538
-* 
+*
 * Converted and edited by mingminghome (Traditional Chinese & Simplified Chinese))
 * E-mail: mingminghomework@gmail.com
 *
-* 
-* Tested on phpScheduleIt 2.3
-* 
-* 
-* 
+*
+* Tested on Booked Scheduler 2.3
+*
+*
+*
 */
 require_once('Language.php');
 require_once('en_us.php');

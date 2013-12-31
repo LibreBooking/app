@@ -1,33 +1,33 @@
 {*
 Copyright 2012 Nick Korbel
 
-This file is part of phpScheduleIt.
+This file is part of Booked Scheduler.
 
-phpScheduleIt is free software: you can redistribute it and/or modify
+Booked Scheduler is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation, either version 3 of the License, or
 (at your option) any later version.
 
-phpScheduleIt is distributed in the hope that it will be useful,
+Booked Scheduler is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
-along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
+along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 *}
 {include file='globalheader.tpl'}
-<h1>About phpScheduleIt</h1>
+<h1>About Booked Scheduler</h1>
 
 <div id="help">
 
 <h2>Support</h2>
 
-<p><a href="http://php.brickhost.com/">phpScheduleIt Official Project Home</a></p>
+<p><a href="http://php.brickhost.com/">Booked Scheduler Official Project Home</a></p>
 
 <p><a href="http://php.brickhost.com/forums/">Support Forum</a></p>
 
-<p><a href="https://sourceforge.net/projects/phpscheduleit/">phpScheduleIt SourceForge Project Home</a></p>
+<p><a href="https://sourceforge.net/projects/Booked Scheduler/">Booked Scheduler SourceForge Project Home</a></p>
 
 <h2>Credits</h2>
 
@@ -89,7 +89,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 
 <h2>License</h2>
 
-<p>phpScheduleIt free and open source, licenced under the GNU GENERAL PUBLIC LICENSE. Please see the included
+<p>Booked Scheduler free and open source, licenced under the GNU GENERAL PUBLIC LICENSE. Please see the included
 	License file for more details.</p>
 
 {include file='globalfooter.tpl'}

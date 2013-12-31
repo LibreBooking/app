@@ -2,22 +2,22 @@
 /**
 Copyright 2011-2013 Nick Korbel
 
-This file is part of phpScheduleIt.
+This file is part of Booked Scheduler.
 
-phpScheduleIt is free software: you can redistribute it and/or modify
+Booked Scheduler is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation, either version 3 of the License, or
 (at your option) any later version.
 
-phpScheduleIt is distributed in the hope that it will be useful,
+Booked Scheduler is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
-along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
+along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 */
- 
+
 require_once(ROOT_DIR . 'lib/Config/namespace.php');
 require_once(ROOT_DIR . 'lib/Server/namespace.php');
 require_once(ROOT_DIR . 'lib/Common/namespace.php');
@@ -31,12 +31,12 @@ abstract class ReservationPresenterBase implements IReservationPresenter
 	 * @var IReservationPage
 	 */
 	protected $basePage;
-	
+
 	protected function __construct(IReservationPage $page)
 	{
 		$this->basePage = $page;
 	}
-	
+
 	public abstract function PageLoad();
 }
 
@@ -46,29 +46,29 @@ class ReservationPresenter extends ReservationPresenterBase
 	 * @var INewReservationPage
 	 */
 	private $_page;
-	
+
 	/**
 	 * @var IReservationInitializerFactory
 	 */
 	private $initializationFactory;
-	
+
 	/**
 	 * @var IReservationPreconditionService
 	 */
 	private $preconditionService;
 
 	public function __construct(
-		INewReservationPage $page, 
+		INewReservationPage $page,
 		IReservationInitializerFactory $initializationFactory,
 		INewReservationPreconditionService $preconditionService)
 	{
 		parent::__construct($page);
-		
+
 		$this->_page = $page;
 		$this->initializationFactory = $initializationFactory;
 		$this->preconditionService = $preconditionService;
 	}
-	
+
 	public function PageLoad()
 	{
 		$user = ServiceLocator::GetServer()->GetUserSession();
@@ -85,43 +85,43 @@ class EditReservationPresenter extends ReservationPresenterBase
 	 * @var IExistingReservationPage
 	 */
 	private $page;
-	
+
 	/**
 	 * @var IReservationInitializerFactory
 	 */
 	private $initializationFactory;
-	
+
 	/**
 	 * @var EditReservationPreconditionService
 	 */
 	private $preconditionService;
-	
+
 	/**
 	 * @var IReservationViewRepository
 	 */
 	private $reservationViewRepository;
 
 	public function __construct(
-		IExistingReservationPage $page, 
+		IExistingReservationPage $page,
 		IReservationInitializerFactory $initializationFactory,
 		EditReservationPreconditionService $preconditionService,
 		IReservationViewRepository $reservationViewRepository)
 	{
 		parent::__construct($page);
-		
+
 		$this->page = $page;
 		$this->initializationFactory = $initializationFactory;
 		$this->preconditionService = $preconditionService;
 		$this->reservationViewRepository = $reservationViewRepository;
 	}
-	
+
 	public function PageLoad()
 	{
 		$user = ServiceLocator::GetServer()->GetUserSession();
 
 		$referenceNumber = $this->page->GetReferenceNumber();
 		$reservationView = $this->reservationViewRepository->GetReservationForEditing($referenceNumber);
-		
+
 		$this->preconditionService->CheckAll($this->page, $user, $reservationView);
 		$initializer = $this->initializationFactory->GetExisitingInitializer($this->page, $reservationView);
 		$initializer->Initialize();

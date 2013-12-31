@@ -2,20 +2,20 @@
 /**
 Copyright 2011-2013 Nick Korbel
 
-This file is part of phpScheduleIt.
+This file is part of Booked Scheduler.
 
-phpScheduleIt is free software: you can redistribute it and/or modify
+Booked Scheduler is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation, either version 3 of the License, or
 (at your option) any later version.
 
-phpScheduleIt is distributed in the hope that it will be useful,
+Booked Scheduler is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
-along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
+along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 require_once('Language.php');
@@ -459,11 +459,11 @@ class lt extends Language
 		// End Strings
 
 		// Install
-		$strings['InstallApplication'] = 'Diegti phpScheduleIt (tik su MySQL)';
+		$strings['InstallApplication'] = 'Diegti Booked Scheduler (tik su MySQL)';
 		$strings['IncorrectInstallPassword'] = 'Atsipra�ome, slapta�odis neteisingas.';
 		$strings['SetInstallPassword'] = 'Nurodykite diegimo slapta�od� prie� prad�dami diegim�.';
 		$strings['InstallPasswordInstructions'] = 'Byloje %s pakeiskite eilut� %s � slapta�od�, kuris b�t� sunkiai atsp�jamas, poto gr��kite � �� puslap�.<br/>Galima panaudoti %s';
-		$strings['NoUpgradeNeeded'] = 'Atnaujinimas neb�tinas. Leid�iant diegim� bus i�trinta visi esami duomenys ir �diegta nauja phpScheduleIt kopija!';
+		$strings['NoUpgradeNeeded'] = 'Atnaujinimas neb�tinas. Leid�iant diegim� bus i�trinta visi esami duomenys ir �diegta nauja Booked Scheduler kopija!';
 		$strings['ProvideInstallPassword'] = 'Pateikite �diegimo slapta�od�.';
 		$strings['InstallPasswordLocation'] = 'Tai galima rasti %s , %s.';
 		$strings['VerifyInstallSettings'] = 'Prie� t�sdami sutikrinkite numatytas reik�me. Arba jas galima keisti byloje %s.';
@@ -488,10 +488,10 @@ class lt extends Language
 		$strings['InstallationSuccess'] = 'Diegimas baigtas s�kmingai!';
 		$strings['RegisterAdminUser'] = 'Registruokite savo administratoriaus vartotoj�. To reikia, jei nepasirinkote �kelti pavyzdini� duomen�. �sitikinkite, kad eilut� $conf[\'settings\'][\'allow.self.registration\'] = \'true\' yra byloje %s .';
 		$strings['LoginWithSampleAccounts'] = 'Jei �k�l�te pavyzdinius duomenis, galite jungtis admin/password duomenimis administratoriaus vardu, arba user/password �prasto vartotojo vardu.';
-		$strings['InstalledVersion'] = 'Naudojat�s phpScheduleIt, versija %s ';
+		$strings['InstalledVersion'] = 'Naudojat�s Booked Scheduler, versija %s ';
 		$strings['InstallUpgradeConfig'] = 'B�tina atnaujinti nustatym� byl� (config)';
 		$strings['InstallationFailure'] = 'Diegiant nutiko b�d�. Pataisykite nesklandumus ir bandykite pakartoti diegim�.';
-		$strings['ConfigureApplication'] = 'Nustatyti phpScheduleIt';
+		$strings['ConfigureApplication'] = 'Nustatyti Booked Scheduler';
 		$strings['ConfigUpdateSuccess'] = 'J�s� nustatym� (config) byla dabar atnajinta!';
 		$strings['ConfigUpdateFailure'] = 'Nepavyko automati�kai atnaujinti nustatym� bylos (config). Pakeiskite bylos config.php turin� �iuo tekstu:';
 		// End Install

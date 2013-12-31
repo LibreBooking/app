@@ -1,29 +1,29 @@
 {*
 Copyright 2011-2013 Nick Korbel
 
-This file is part of phpScheduleIt.
+This file is part of Booked Scheduler.
 
-phpScheduleIt is free software: you can redistribute it and/or modify
+Booked Scheduler is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation, either version 3 of the License, or
 (at your option) any later version.
 
-phpScheduleIt is distributed in the hope that it will be useful,
+Booked Scheduler is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
-along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
+along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 *}
 {include file='globalheader.tpl'}
-<h1>Guida phpScheduleIt</h1>
+<h1>Guida Booked Scheduler</h1>
 
 <div id="help">
 <h2>Registration</h2>
 
 <p>
-	Registration is required in order to use phpScheduleIt if you administrator has enabled it. After your account
+	Registration is required in order to use Booked Scheduler if you administrator has enabled it. After your account
 	has been registered
 	you will be able to log in and access any resources that you have permission to.
 </p>
@@ -127,7 +127,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 <h2>Deleting a Reservation</h2>
 
 <p>Deleting a reservation completely removes it from the schedule. It will no longer be visible anywhere in
-	phpScheduleIt</p>
+	Booked Scheduler</p>
 
 <h3>Deleting Specific Instances From a Series</h3>
 
@@ -162,12 +162,12 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 	your calendar Client. For Outlook, if it does not automatically add, open the Calendar view, then right click My
 	Calendars and choose
 	Add Calendar -> From Internet. Paste in the URL printed under the Subscribe to this Calendar link in
-	phpScheduleIt.</p>
+	Booked Scheduler.</p>
 
 <h3>Google&reg; Calendar</h3>
 
 <p>Open Google Calendar settings. Click the Calendars tab. Click Browse interesting calendars. Click add by URL. Paste
-	in the URL printed under the Subscribe to this Calendar link in phpScheduleIt.</p>
+	in the URL printed under the Subscribe to this Calendar link in Booked Scheduler.</p>
 
 <h2>Quotas</h2>
 

@@ -1,23 +1,23 @@
 {*
 Copyright 2011-2012 Nick Korbel
 
-This file is part of phpScheduleIt.
+This file is part of Booked Scheduler.
 
-phpScheduleIt is free software: you can redistribute it and/or modify
+Booked Scheduler is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation, either version 3 of the License, or
 (at your option) any later version.
 
-phpScheduleIt is distributed in the hope that it will be useful,
+Booked Scheduler is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
-along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
+along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 *}
 {include file='globalheader.tpl'}
-<h1>Администриране на phpScheduleIt</h1>
+<h1>Администриране на Booked Scheduler</h1>
 
 <div id="help">
 <h2>Администриране</h2>
@@ -28,7 +28,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 <h3>Създаване на разписания</h3>
 
 <p>
-	При инсталиране на phpScheduleIt ще бъде създадено разписание по подразбиране. От меню
+	При инсталиране на Booked Scheduler ще бъде създадено разписание по подразбиране. От меню
 	разписания можете да разгледате и редактирате атрибутите на текущите разписания.
 </p>
 
@@ -52,13 +52,13 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 	да се конфигурира използването на ресурс.
 </p>
 
-<p>Ресурс в phpScheduleIt може да бъде всичко, което искате да се резервира, като стаи или оборудване. Всеки ресурс
+<p>Ресурс в Booked Scheduler може да бъде всичко, което искате да се резервира, като стаи или оборудване. Всеки ресурс
 	трябва да бъде присвоен на разписание, за да може да се резервира. Ресурсът ще наследи оформлението на разписанието.</p>
 
-<p>Определянето на минимална продължителност на резервацията ще предотврати резервация с по-голяма продължителност от определения размер. 
+<p>Определянето на минимална продължителност на резервацията ще предотврати резервация с по-голяма продължителност от определения размер.
 	По подразбиране няма минимум.</p>
 
-<p>Задаването на максимална продължителност на резервацията ще предотврати резервация с по-кратка продължителност от определения размер. 
+<p>Задаването на максимална продължителност на резервацията ще предотврати резервация с по-кратка продължителност от определения размер.
 	По подразбиране няма максимум.</p>
 
 <p>Настройката един ресурс да изисква одобрение ще постави всички резервации за този ресурс в състояние на изчакване, докато заявката не бъде.
@@ -98,7 +98,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 
 <h3>Създаване на квоти</h3>
 
-<p>Квотите въвеждат ограничения за правене на резервации. Квотите в phpScheduleIt са
+<p>Квотите въвеждат ограничения за правене на резервации. Квотите в Booked Scheduler са
 	много гъвкави, като могат да се задават ограничения за продължителност на резервация и брой резервации. Квотите ограничават
 	"стека". Например, ако съществува квота, ограничаваща използването на ресурса до 5 часа на ден и друга квота ограничаваща до
 	4 резервации на ден, един потребител би могъл да направи резервация с продължителност 4 часа, но няма да може да направи 3
@@ -108,7 +108,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 
 <h3>Създаване на обяви</h3>
 
-<p>Обявите са лесен начин за уведомяване на потребителите на phpScheduleIt. От меню обяви може да се
+<p>Обявите са лесен начин за уведомяване на потребителите на Booked Scheduler. От меню обяви може да се
 	преглеждат и управляват обявите, които се показват на потребителските табла. Одна обява може да бъде конфигурирана
 	с начална и крайна дата. Възможно е да бъде зададено и ниво на приоритет, който позволява сортиране на обявите от 1
 	до 10.</p>
@@ -117,7 +117,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 
 <h3>Създаване на групи</h3>
 
-<p>Групите в phpScheduleIt организират потребителите, контролират достъпа до ресурсите и дефинират роли в приложението.</p>
+<p>Групите в Booked Scheduler организират потребителите, контролират достъпа до ресурсите и дефинират роли в приложението.</p>
 
 <h3>Роли</h3>
 
@@ -127,7 +127,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 	администраторски пеава. Тази роля няма ограничения за резервиране на ресурси. Тя може да управлява всички аспекти на
 	приложението.</p>
 
-<p>Потребителите, принадлежащи към група, на която е присвоена роля на администратор на група могат да извършват резервации от името на и да 
+<p>Потребителите, принадлежащи към група, на която е присвоена роля на администратор на група могат да извършват резервации от името на и да
 	управляват потребителите в тази група.</p>
 
 <h3>Преглеждане и управление на резервации</h3>
@@ -146,12 +146,12 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 
 <p>YМожете да добавяте, преглеждате и управлявате всички регистрирани потребители от меню потребители. Оттук могат да се
 	достъпите до ресурси на индивидуални потребители, деактивиране или изтриване на профили, смяна на пароли и редактиране на потребители.
-	Можете да добавяте нови потребители в phpScheduleIt. Това е особено полезно, ако е изклщчена самостоятелната регистрация.</p>
+	Можете да добавяте нови потребители в Booked Scheduler. Това е особено полезно, ако е изклщчена самостоятелната регистрация.</p>
 
 <h3>Отчетност</h3>
 
-<p>Отчетите са достъпни за всички администратори на приложения, групи, ресурси и разписания. След идентифициране на 
-	потребител с достъп до отчети, ще се покаже навигация за отчети. phpScheduleIt разполага с множество от
+<p>Отчетите са достъпни за всички администратори на приложения, групи, ресурси и разписания. След идентифициране на
+	потребител с достъп до отчети, ще се покаже навигация за отчети. Booked Scheduler разполага с множество от
 	общи отчети, които могат да бъдат получени като списъл от резултати, диаграма, експорт в CSV и отпечатани. В допълнение могат да
 	бъдат създадени нови отчети от меню създаване на нов отчет. те също могат да бъдат като списъл от резултати, диаграма, експорт в CSV
 	и отпечатани. Един персонализиран отчет може да бъде съхранен и използван повторно по-късно от меню моите запазени отчети.
@@ -159,10 +159,10 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 
 <h2>Конфигуриране</h2>
 
-<p>Част от функционалността на phpScheduleIt може да бъде контролирана само с редактиране на config файла.</p>
+<p>Част от функционалността на Booked Scheduler може да бъде контролирана само с редактиране на config файла.</p>
 
 <p class="setting"><span>$conf['settings']['server.timezone']</span>Това е часовата зона на сървъра, където се
-	хоства phpScheduleIt.
+	хоства Booked Scheduler.
 	Текущата часова зона можете да видите в меню настройки на сървъра. Възможните стойности  са тук:
 	http://php.net/manual/en/timezones.php</p>
 
@@ -174,27 +174,27 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 <p class="setting"><span>$conf['settings']['default.page.size']</span>Брой редове на страница с данни
 </p>
 
-<p class="setting"><span>$conf['settings']['enable.email']</span>Дали да бъдат изпращани имейли от phpScheduleIt
+<p class="setting"><span>$conf['settings']['enable.email']</span>Дали да бъдат изпращани имейли от Booked Scheduler
 </p>
 
 <p class="setting"><span>$conf['settings']['default.language']</span>Език по подразбиране за всички потребители. Това може да бъде
-	всеки екик, който се поддържа от phpScheduleIt, взема се от папка lang</p>
+	всеки екик, който се поддържа от Booked Scheduler, взема се от папка lang</p>
 
-<p class="setting"><span>$conf['settings']['script.url']</span>Пълния публичен URL адрес на този екземпляр на phpScheduleIt.
+<p class="setting"><span>$conf['settings']['script.url']</span>Пълния публичен URL адрес на този екземпляр на Booked Scheduler.
 	Това трябва да бъде Web директорията, която съдържа файлове като bookings.php и calendar.php</p>
 
 <p class="setting"><span>$conf['settings']['password.pattern']</span>Регулярен израз за създаване на по-сложна парола
 	при регистрация на потребител</p>
 
-<p class="setting"><span>$conf['settings']['schedule']['show.inaccessible.resources']</span>Дали ресурсите, 
+<p class="setting"><span>$conf['settings']['schedule']['show.inaccessible.resources']</span>Дали ресурсите,
 	които не са достъпни на потребителя се показват в разписанието</p>
 
-<p class="setting"><span>$conf['settings']['schedule']['reservation.label']</span>Стойността, описваща ресурса на 
+<p class="setting"><span>$conf['settings']['schedule']['reservation.label']</span>Стойността, описваща ресурса на
 	страницата за резервации. Възможностите са 'име', 'заглавие' или 'нищо'. По подразбиране е 'име'.</p>
 
 <p class="setting"><span>$conf['settings']['image.upload.directory']</span>Физическата директория за съхраняване на изображения.
 	В тази папка тябва да може да се пише (755 се препоръчва). Това може да бъде пълна или относителна директория спрямо
-	корневата директория на phpScheduleIt.</p>
+	корневата директория на Booked Scheduler.</p>
 
 <p class="setting"><span>$conf['settings']['image.upload.url']</span>URL-ът, от където качените
 	изображения могат да бъдат разглеждани. Това може да пъде пълен URL или относителен спрямо $conf['settings']['script.url'].
@@ -282,13 +282,13 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 
 <p class="setting"><span>$conf['settings']['css.extension.file']</span>Пълен или относителен URL към допълнителен CSS файл
 	за включване. Това може да се използва за промяна на стила по подразбиране с корекции или пълна тема. Оставете празно, ако
-	нама да разширявате стила на phpScheduleIt.</p>
+	нама да разширявате стила на Booked Scheduler.</p>
 
 <p class="setting"><span>$conf['settings']['uploads']['enable.reservation.attachments']</span>Дали потребителите могат да
 	прикачват файлове към резервации. По подразбиране е false.</p>
 
 <p class="setting"><span>$conf['settings']['uploads']['reservation.attachment.path']</span>Пълен или относителен
-	път във файловата система (спрямо корневата директория на phpScheduleIt) за съхраняване на прикачени файлове. В
+	път във файловата система (спрямо корневата директория на Booked Scheduler) за съхраняване на прикачени файлове. В
 	тази директория трябва да може да пише PHP (755 се препоръчва). По подразбиране е uploads/reservation</p>
 
 <p class="setting"><span>$conf['settings']['uploads']['reservation.attachment.extensions']</span>Разделен със запетая списък
@@ -303,7 +303,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 
 <p class="setting"><span>$conf['settings']['database']['hostspec']</span>URL на хоста на базата данни или named pipe</p>
 
-<p class="setting"><span>$conf['settings']['database']['name']</span>Име на базата данни на phpScheduleIt</p>
+<p class="setting"><span>$conf['settings']['database']['name']</span>Име на базата данни на Booked Scheduler</p>
 
 <p class="setting"><span>$conf['settings']['phpmailer']['mailer']</span>PHP имейл библиотека. Опциите са mail, smtp,
 	sendmail, qmail</p>
@@ -327,19 +327,19 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 <p class="setting"><span>$conf['settings']['plugins']['Authentication']</span>Име на плъгин за идентификация.
 	За повече информация за плъгини, вижте Плъгини по долу</p>
 
-<p class="setting"><span>$conf['settings']['plugins']['Authorization']</span>Име на използван плъгин за идентификация. 
+<p class="setting"><span>$conf['settings']['plugins']['Authorization']</span>Име на използван плъгин за идентификация.
 	За повече информация за плъгини, вижте Плъгини по долу</p>
 
-<p class="setting"><span>$conf['settings']['plugins']['Permission']</span>Име на използван плъгин за достъпи. 
+<p class="setting"><span>$conf['settings']['plugins']['Permission']</span>Име на използван плъгин за достъпи.
 	За повече информация за плъгини, вижте Плъгини по долу</p>
 
-<p class="setting"><span>$conf['settings']['plugins']['PreReservation']</span>Име на използван плъгин зпреди резервация. 
+<p class="setting"><span>$conf['settings']['plugins']['PreReservation']</span>Име на използван плъгин зпреди резервация.
 	За повече информация за плъгини, вижте Плъгини по долу</p>
 
 <p class="setting"><span>$conf['settings']['plugins']['PostReservation']</span>Име на използван плъгин за след резерация.
 	За повече информация за плъгини, вижте Плъгини по долу</p>
 
-<p class="setting"><span>$conf['settings']['install.password']</span>ко правите инсталация или обновление, 
+<p class="setting"><span>$conf['settings']['install.password']</span>ко правите инсталация или обновление,
 	ще трябва да въведете стойност тук</p>
 
 <h2>Плъгини</h2>

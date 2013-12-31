@@ -3,20 +3,20 @@
 Copyright 2011-2013 Nick Korbel
 Translated to Polish by Dariusz Kliszewski
 
-This file is part of phpScheduleIt.
+This file is part of Booked Scheduler.
 
-phpScheduleIt is free software: you can redistribute it and/or modify
+Booked Scheduler is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation, either version 3 of the License, or
 (at your option) any later version.
 
-phpScheduleIt is distributed in the hope that it will be useful,
+Booked Scheduler is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
-along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
+along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
  */
 require_once('Language.php');
 require_once('en_us.php');
@@ -26,10 +26,10 @@ class pl extends en_us
     {
         parent::__construct();
     }
-	
+
 	/**
      * @return array
-     */	
+     */
     protected function _LoadDates()
     {
         $dates = parent::_LoadDates();
@@ -44,9 +44,9 @@ class pl extends en_us
 		$dates['general_date_js'] = "dd.mm.yy";
 		$dates['calendar_time'] = 'h:mmt';
 		$dates['calendar_dates'] = 'M/d';
-        
+
 		$this->Dates = $dates;
-		
+
 		return $this->Dates;
     }
 
@@ -310,7 +310,7 @@ class pl extends en_us
         $strings['DeleteGroupWarning'] = 'Usunięcie tej grupy spowoduje wykasowanie wszystkich uprawnień do zasobów. Użytkownicy z tej grupy, mogą utracić uprawnienia do zasobów.';
         $strings['WhatRolesApplyToThisGroup'] = 'Jakie dodać role dla tej grupy?';
         $strings['WhoCanManageThisGroup'] = 'Kto może zarządzać tą grupą?';
-        $strings['WhoCanManageThisSchedule'] = 'Kto może zarządzać tym harmonogramem?';		
+        $strings['WhoCanManageThisSchedule'] = 'Kto może zarządzać tym harmonogramem?';
         $strings['AddGroup'] = 'Dodaj grupę';
         $strings['AllQuotas'] = 'Wszystkie limity';
         $strings['QuotaReminder'] = 'Pamiętaj: Limity są egzekwowane na podstawie strefy czasowej harmonogramu';
@@ -424,7 +424,7 @@ class pl extends en_us
 		$strings['Top20UsersTimeBooked'] = 'Top 20 użytkowników - zarezerwowany czas';
 		$strings['Top20UsersReservationCount'] = 'Top 20 użytkowników - liczba rezerwacji';
 		// End Strings
-		
+
         // Errors
         $strings['LoginError'] = 'Nie możemy odnaleźć twojej nazwy użytkownika lub hasła';
         $strings['ReservationFailed'] = 'Twoja rezerwacja nie mogła zostać utworzona';
@@ -445,7 +445,7 @@ class pl extends en_us
         $strings['AttachmentLoadingError'] = 'Przepraszamy, ale wystąpił problem podczas ładownia żądanego plik.';
         $strings['InvalidAttachmentExtension'] = 'Możesz dodawać pliki tylko typu: %s';
         // End Errors
-		
+
         // Page Titles
         $strings['CreateReservation'] = 'Tworzenie rezerwacji';
         $strings['EditReservation'] = 'Edycja rezerwacji';
@@ -516,7 +516,7 @@ class pl extends en_us
         $strings['DayFridayAbbr'] = 'Pią';
         $strings['DaySaturdayAbbr'] = 'Sob';
 		// End Day representations
-		
+
         // Email Subjects
         $strings['ReservationApprovedSubject'] = 'Twoja rezerwacja została zatwierdzona';
         $strings['ReservationCreatedSubject'] = 'Twoja rezerwacja została utworzona';
@@ -534,7 +534,7 @@ class pl extends en_us
         // End Email Subjects
 
         $this->Strings = $strings;
-		
+
 		return $this->Strings;
     }
 
@@ -560,7 +560,7 @@ class pl extends en_us
         $days['letter'] = array('N', 'Pn', 'W', 'Ś', 'Cz', 'Pt', 'S');
 
         $this->Days = $days;
-		
+
 		return $this->Days;
     }
 
@@ -582,7 +582,7 @@ class pl extends en_us
         $months['abbr'] = array('Sty', 'Lut', 'Mar', 'Kwi', 'Maj', 'Cze', 'Lip', 'Sie', 'Wrz', 'Paź', 'Lis', 'Gru');
 
         $this->Months = $months;
-		
+
 		return $this->Months;
     }
 
@@ -592,7 +592,7 @@ class pl extends en_us
     protected function _LoadLetters()
     {
         $this->Letters = array('A', 'Ą', 'B', 'C', 'Ć', 'D', 'E', 'Ę', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'Ł', 'M', 'N', 'Ń', 'O', 'Ó', 'P', 'Q', 'R', 'S', 'Ś', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'Ż', 'Ź');
-		
+
 		return $this->Letters;
     }
 

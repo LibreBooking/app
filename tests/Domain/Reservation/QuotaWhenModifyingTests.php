@@ -2,20 +2,20 @@
 /**
 Copyright 2011-2013 Nick Korbel
 
-This file is part of phpScheduleIt.
+This file is part of Booked Scheduler.
 
-phpScheduleIt is free software: you can redistribute it and/or modify
+Booked Scheduler is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation, either version 3 of the License, or
 (at your option) any later version.
 
-phpScheduleIt is distributed in the hope that it will be useful,
+Booked Scheduler is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
-along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
+along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 require_once(ROOT_DIR . 'Domain/namespace.php');
@@ -50,7 +50,7 @@ class QuotaWhenModifyingTests extends TestBase
 		$this->schedule = new Schedule(1, null, null, null, null, $this->tz);
 
 		$this->user = new FakeUser();
-		
+
 		parent::setup();
 	}
 
@@ -115,7 +115,7 @@ class QuotaWhenModifyingTests extends TestBase
 		$builder->WithCurrentInstance($existing1)
 				->WithInstance($existing2);
 		$series = $builder->BuildTestVersion();
-		
+
 		$series->UpdateDuration(new DateRange($r1start, $r1End->SetTimeString("3:00")));
 
 		$this->SearchReturns(array());
@@ -124,7 +124,7 @@ class QuotaWhenModifyingTests extends TestBase
 
 		$this->assertTrue($exceeds);
 	}
-	
+
 	public function testWhenAddingNewReservations()
 	{
 		$ref1 = 'ref1';
@@ -146,7 +146,7 @@ class QuotaWhenModifyingTests extends TestBase
 		$builder = new ExistingReservationSeriesBuilder();
 		$builder->WithCurrentInstance($existing1)
 				->WithInstance($new);
-		
+
 		$series = $builder->BuildTestVersion();
 
 		$res1 = new ReservationItemView($ref1, $r1start, $r1End, '',  $series->ResourceId());
@@ -159,7 +159,7 @@ class QuotaWhenModifyingTests extends TestBase
 
 		$this->assertTrue($exceeds);
 	}
-	
+
 	public function testWhenDeletingAnInstanceItDoesNotCount()
 	{
 		$ref1 = 'ref1';
@@ -169,7 +169,7 @@ class QuotaWhenModifyingTests extends TestBase
 		$limit = new QuotaLimitCount(1);
 
 		$quota = new Quota(1, $duration, $limit);
-		
+
 		$r1start = Date::Parse('2011-04-03 1:30', $this->tz);
 		$r1End = Date::Parse('2011-04-03 2:30',$this->tz);
 
@@ -199,7 +199,7 @@ class QuotaWhenModifyingTests extends TestBase
 
 		$this->assertFalse($exceeds);
 	}
-	
+
 	private function SearchReturns($reservations)
 	{
 		$this->reservationViewRepository->expects($this->once())

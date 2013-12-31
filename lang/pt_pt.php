@@ -2,20 +2,20 @@
 /**
 Copyright 2011-2013 Nick Korbel
 
-This file is part of phpScheduleIt.
+This file is part of Booked Scheduler.
 
-phpScheduleIt is free software: you can redistribute it and/or modify
+Booked Scheduler is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation, either version 3 of the License, or
 (at your option) any later version.
 
-phpScheduleIt is distributed in the hope that it will be useful,
+Booked Scheduler is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
-along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
+along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 require_once('Language.php');
@@ -26,7 +26,7 @@ class pt_pt extends Language
     {
         parent::__construct();
     }
-    
+
     /**
      * @return array
      */
@@ -46,7 +46,7 @@ class pt_pt extends Language
 	$dates['calendar_dates'] = 'd/M';
 
         $this->Dates = $dates;
-        
+
         return $this->Dates;
     }
     /**
@@ -389,7 +389,7 @@ class pt_pt extends Language
 	$strings['AttachFile'] = 'Anexar arquivo';
 	$strings['Maximum'] = 'máximo';
         // End Strings
-				
+
         // Errors
         $strings['LoginError'] = 'Não foi possível encontrar seu utilizador ou senha';
         $strings['ReservationFailed'] = 'A sua reserva não pôde ser feita';
@@ -410,7 +410,7 @@ class pt_pt extends Language
         $strings['AttachmentLoadingError'] = 'Desculpe, houve um problema ao carregar o arquivo solicitado.';
         $strings['InvalidAttachmentExtension'] = 'Só pode fazer upload de arquivos do tipo: %s';
         // End Errors
-        
+
         // Page Titles
         $strings['CreateReservation'] = 'Criar Reservas';
         $strings['EditReservation'] = 'Editar Reservas';
@@ -452,7 +452,7 @@ class pt_pt extends Language
         $strings['ResourceReservations'] = 'Reservas de Recurso';
         $strings['Customization'] = 'Personalização';
         $strings['Attributes'] = 'Atributos';
-	$strings['AccountActivation'] = 'Ativação da Conta';	
+	$strings['AccountActivation'] = 'Ativação da Conta';
         // End Page Titles
 
         // Day representations
@@ -488,10 +488,10 @@ class pt_pt extends Language
         //
 
         $this->Strings = $strings;
-        
+
         return $this->Strings;
     }
-    
+
     /**
      * @return array
      */
@@ -514,7 +514,7 @@ class pt_pt extends Language
         $days['letter'] = array('D', 'S', 'T', 'Q', 'Q', 'S', 'S');
 
         $this->Days = $days;
-        
+
         return $this->Days;
     }
 
@@ -536,7 +536,7 @@ class pt_pt extends Language
         $months['abbr'] = array('Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez');
 
         $this->Months = $months;
-        
+
         return $this->Months;
     }
 
@@ -546,7 +546,7 @@ class pt_pt extends Language
     protected function _LoadLetters()
     {
         $this->Letters = array('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z');
-        
+
         return $this->Letters;
     }
 

@@ -2,50 +2,50 @@
 /**
 Copyright 2011-2013 Nick Korbel
 
-This file is part of phpScheduleIt.
+This file is part of Booked Scheduler.
 
-phpScheduleIt is free software: you can redistribute it and/or modify
+Booked Scheduler is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation, either version 3 of the License, or
 (at your option) any later version.
 
-phpScheduleIt is distributed in the hope that it will be useful,
+Booked Scheduler is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
-along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
+along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 require_once(ROOT_DIR . 'Domain/namespace.php');
 require_once(ROOT_DIR . 'lib/Application/Schedule/namespace.php');
 
 class ReservationServiceTests extends TestBase
-{	
+{
 	public function setup()
 	{
 		parent::setup();
 	}
-	
+
 	public function teardown()
 	{
 		parent::teardown();
 	}
-		
+
 	public function testGetReservationsPullsReservationFromTheRepositoryAndAddsThemToTheCoordinator()
 	{
 		$timezone = 'UTC';
 		$startDate = Date::Now();
 		$endDate = Date::Now();
 		$scheduleId = 100;
-		
+
 		$range = new DateRange($startDate, $endDate);
-		
+
 		$repository = $this->getMock('IReservationViewRepository');
 		$reservationListing = new TestReservationListing();
 		$listingFactory = $this->getMock('IReservationListingFactory');
-		
+
 		$rows = FakeReservationRepository::GetReservationRows();
 		$res1 = ReservationItemView::Populate($rows[0]);
 		$res2 = ReservationItemView::Populate($rows[1]);
@@ -75,9 +75,9 @@ class ReservationServiceTests extends TestBase
 			->will($this->returnValue($reservationListing));
 
 		$service = new ReservationService($repository, $listingFactory);
-		
+
 		$listing = $service->GetReservations($range, $scheduleId, $timezone);
-		
+
 		$this->assertEquals($reservationListing, $listing);
 		$this->assertTrue(in_array($res1, $reservationListing->reservations));
 		$this->assertTrue(in_array($res2, $reservationListing->reservations));

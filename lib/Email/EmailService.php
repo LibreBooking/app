@@ -2,20 +2,16 @@
 /**
 Copyright 2011-2013 Nick Korbel
 
-This file is part of phpScheduleIt.
-
-phpScheduleIt is free software: you can redistribute it and/or modify
+This file is part of Booked SchedulerBooked SchedulereIt is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-phpScheduleIt is distributed in the hope that it will be useful,
+(at your option) any later versBooked SchedulerduleIt is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
-along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
+alBooked SchedulercheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 require_once(ROOT_DIR . 'lib/Email/namespace.php');
@@ -27,11 +23,11 @@ class EmailService implements IEmailService
 	 * @var PHPMailer
 	 */
 	private $phpMailer;
-	
+
 	public function __construct($phpMailer = null)
 	{
 		$this->phpMailer = $phpMailer;
-		
+
 		if (is_null($phpMailer))
 		{
 			$this->phpMailer = new PHPMailer();
@@ -47,7 +43,7 @@ class EmailService implements IEmailService
 			$this->phpMailer->SMTPDebug = $this->Config('smtp.debug', new BooleanConverter());
 		}
 	}
-	
+
 	public function Send(IEmailMessage $emailMessage)
 	{
 		$this->phpMailer->ClearAllRecipients();
@@ -55,14 +51,14 @@ class EmailService implements IEmailService
 		$this->phpMailer->CharSet = $emailMessage->Charset();
 		$this->phpMailer->Subject = $emailMessage->Subject();
 		$this->phpMailer->Body = $emailMessage->Body();
-		
+
 		$from = $emailMessage->From();
 		$defaultFrom = Configuration::Instance()->GetSectionKey(ConfigSection::EMAIL, ConfigKeys::DEFAULT_FROM_ADDRESS);
 		$this->phpMailer->SetFrom(empty($defaultFrom) ? $from->Address() : $defaultFrom, $from->Name());
-		
+
 		$replyTo = $emailMessage->ReplyTo();
 		$this->phpMailer->AddReplyTo($replyTo->Address(), $replyTo->Name());
-		
+
 		$to = $this->ensureArray($emailMessage->To());
 		$toAddresses = new StringBuilder();
 		foreach ($to as $address)
@@ -76,7 +72,7 @@ class EmailService implements IEmailService
 		{
 			$this->phpMailer->AddCC($address->Address(), $address->Name());
 		}
-		
+
 		$bcc = $this->ensureArray($emailMessage->BCC());
 		foreach ($bcc as $address)
 		{
@@ -88,7 +84,7 @@ class EmailService implements IEmailService
 			Log::Debug('Adding email attachment %s', $emailMessage->AttachmentFileName());
 			$this->phpMailer->AddStringAttachment($emailMessage->AttachmentContents(), $emailMessage->AttachmentFileName());
 		}
-		
+
 		Log::Debug('Sending %s email to: %s from: %s', get_class($emailMessage), $toAddresses->ToString(), $from->Address());
 
 		$success = false;
@@ -100,7 +96,7 @@ class EmailService implements IEmailService
 		{
 			Log::Error('Failed sending email. Exception: %s', $ex);
 		}
-		
+
 		Log::Debug('Email send success: %d. %s', $success, $this->phpMailer->ErrorInfo);
 	}
 

@@ -1,23 +1,23 @@
 {*
 Copyright 2011-2013 Nick Korbel
 
-Ce fichier fait parti de phpScheduleIt.
+Ce fichier fait parti de Booked Scheduler.
 
-phpScheduleIt est un logiciel libre : vous pouvez le redistribuer et/ou le
+Booked Scheduler est un logiciel libre : vous pouvez le redistribuer et/ou le
 modifier dans le respect des termes de la license GNU (General Public License)
-telle que publiée par la Free Software Foundation, que ce soit en version 3 
+telle que publiée par la Free Software Foundation, que ce soit en version 3
 de cette license ou plus récente (à votre guise).
 
-phpScheduleIt est distribué dans l'espoir d'être utile mais
-il est fourni SANS AUCUNE GARANTIE; sans même une garantie implicite 
+Booked Scheduler est distribué dans l'espoir d'être utile mais
+il est fourni SANS AUCUNE GARANTIE; sans même une garantie implicite
 de COMMERCIABILITE ou DE CONFORMITE A UNE UTILISATION PARTICULIERE.
 Voir la Licence Publique Générale GNU pour plus de détails.
 
 Vous devez avoir reçu une copie de la GNU General Public License
-avec phpScheduleIt. si ce n'est pas le cas consultez <http://www.gnu.org/licenses/>.
+avec Booked Scheduler. si ce n'est pas le cas consultez <http://www.gnu.org/licenses/>.
 *}
 {include file='globalheader.tpl'}
-<h1>Administration de phpScheduleIt </h1>
+<h1>Administration de Booked Scheduler </h1>
 
 <div id="help">
 <h2>Administration</h2>
@@ -46,7 +46,7 @@ Il est aussi possible d'y ajouter un texte explicatif .</p>
 <p>Vous pouvez gérer les ressources via le sous-menu "Resources".
 </p>
 
-<p>Les Ressources dans phpScheduleIt peuvent être tout ce que vous voulez (Salles, equipements, ...).Chaque ressource doit être liée à un planning pour être réservable. La ressource heritera donc des créneaux horaires de reservabilité définis pour le planning.
+<p>Les Ressources dans Booked Scheduler peuvent être tout ce que vous voulez (Salles, equipements, ...).Chaque ressource doit être liée à un planning pour être réservable. La ressource heritera donc des créneaux horaires de reservabilité définis pour le planning.
 </p>
 
 <p>Une durée minimum de réservation empêchera la saisie d'une réservation plus courte que le temps que vous aurez défini (par défaut pas de minimum).
@@ -57,7 +57,7 @@ Il est aussi possible d'y ajouter un texte explicatif .</p>
 
 <p>Autoriser la permission automatique donne le droit de réserver la ressource à tout nouvel utilisateur (par défaut la permission automatique est autorisée)</p>
 
-<p>Vous pouvez obliger à un délai précédent la reservation en fixant un nombre de jours/heures/minutes. 
+<p>Vous pouvez obliger à un délai précédent la reservation en fixant un nombre de jours/heures/minutes.
 
 Par exemple, si nous voulons ajouter une réservation un  lundi à 10h30 et que la ressources necessite 1 jour de délai avant l'heure de reservation, celle-ci ne pourra etre reservée qu'à partir du dimanche précédent à 10h30 (par défaut pas de délai avant le début de reservation).</p>
 
@@ -83,9 +83,9 @@ cela nécéssite l'installation de php_gd2 et son activation dans le fichier php
 
 <h3>Gérer les Quotas</h3>
 
-<p>Les quotas permettent de limiter l'utilisation d'une ressource. Ce système dans phpScheduleIt est très flexible, en autorisant de limiter les réservations en durée et en nombre.
+<p>Les quotas permettent de limiter l'utilisation d'une ressource. Ce système dans Booked Scheduler est très flexible, en autorisant de limiter les réservations en durée et en nombre.
 Ces quotas s'additionnent.
-Par exemple: 
+Par exemple:
 - un quota limite une ressource à une durée de réservation de 5 heures par jour
 - un autre existe limitant les utilisateurs à 4 réservations par jour
 
@@ -137,7 +137,7 @@ Ces rapports peuvent être affichés (sous forme de listes ou de graphiques impr
 
 <p>Certaines des fonctionnalités du logiciel ne sont configurables que dans le fichier de configuration ("/config/config.php").</p>
 
-<p class="setting"><span>$conf['settings']['server.timezone']</span>C'est le Fuseau horaire du serveur qui héberge phpScheduleIt. 
+<p class="setting"><span>$conf['settings']['server.timezone']</span>C'est le Fuseau horaire du serveur qui héberge Booked Scheduler.
  Le fuseau en cours est visible via le menu "Gestion de l'application/Préférences du serveur". Les valeurs possibles sont disponibles ici :
     http://php.net/manual/en/timezones.php</p>
 
@@ -149,12 +149,12 @@ Ces rapports peuvent être affichés (sous forme de listes ou de graphiques impr
 <p class="setting"><span>$conf['settings']['default.page.size']</span>Le nombre de lignes initial pour toute page affichant une liste de données
 </p>
 
-<p class="setting"><span>$conf['settings']['enable.email']</span>Autorise l'envoi d'emails (ou non) depuis phpScheduleIt
+<p class="setting"><span>$conf['settings']['enable.email']</span>Autorise l'envoi d'emails (ou non) depuis Booked Scheduler
 </p>
 
-<p class="setting"><span>$conf['settings']['default.language']</span>Langue par défaut pour tous. Ce peut être toute langue disponible dans le répertoire "lang" de phpScheduleIt</p>
+<p class="setting"><span>$conf['settings']['default.language']</span>Langue par défaut pour tous. Ce peut être toute langue disponible dans le répertoire "lang" de Booked Scheduler</p>
 
-<p class="setting"><span>$conf['settings']['script.url']</span>L'URL publique complète (racine de l'instance de phpScheduleIt). Devrait être le repertoire Web qui contient les fichiers bookings.php, calendar.php ...</p>
+<p class="setting"><span>$conf['settings']['script.url']</span>L'URL publique complète (racine de l'instance de Booked Scheduler). Devrait être le repertoire Web qui contient les fichiers bookings.php, calendar.php ...</p>
 
 <p class="setting"><span>$conf['settings']['password.pattern']</span>Une expression régulière pour renforcer la complexité du mot de passe lors de la création de compte</p>
 
@@ -218,11 +218,11 @@ Ces rapports peuvent être affichés (sous forme de listes ou de graphiques impr
 
 <p class="setting"><span>$conf['settings']['reservation.notify']['group.admin.delete']</span>Envoie un mail à tout le groupe Administrateurs quand une réservation est effacée.Par défaut "false".</p>
 
-<p class="setting"><span>$conf['settings']['css.extension.file']</span>URL relative ou absolue pointant sur un fichier CSS supplémentaire à inclure. On peut ainsi "Surcharger" le CSS en place pour crééer son propre style voire son propre thème. A laisser vide si vous voulez utiliser phpScheduleIt tel quel.</p>
+<p class="setting"><span>$conf['settings']['css.extension.file']</span>URL relative ou absolue pointant sur un fichier CSS supplémentaire à inclure. On peut ainsi "Surcharger" le CSS en place pour crééer son propre style voire son propre thème. A laisser vide si vous voulez utiliser Booked Scheduler tel quel.</p>
 
 <p class="setting"><span>$conf['settings']['uploads']['enable.reservation.attachments']</span>Autorise les utilisateurs à joindre des fichiers aux réservations. Par défaut "false".</p>
 
-<p class="setting"><span>$conf['settings']['uploads']['reservation.attachment.path']</span>Le chemin d'accès absolu ou relatif du répertoire où sont stockés les fichiers joints aux reservations (lié au répertoire "racine" de phpScheduleIt). Ce répertoire doit avoir des droits en écriture (755 recommandé). Par défaut "uploads/reservation".</p>
+<p class="setting"><span>$conf['settings']['uploads']['reservation.attachment.path']</span>Le chemin d'accès absolu ou relatif du répertoire où sont stockés les fichiers joints aux reservations (lié au répertoire "racine" de Booked Scheduler). Ce répertoire doit avoir des droits en écriture (755 recommandé). Par défaut "uploads/reservation".</p>
 
 <p class="setting"><span>$conf['settings']['uploads']['reservation.attachment.extensions']</span>Liste des extensions de fichiers autorisés séparées par des virgules (ex: "png,pdf,csv") . Laisser vide autorisera tout type de fichier (non recommandé à cause des virus).</p>
 
@@ -288,7 +288,7 @@ Ces rapports peuvent être affichés (sous forme de listes ou de graphiques impr
 
 <h3>Installer des Plugins</h3>
 
-<p>Pour installer un nouveau plugin<br> 
+<p>Pour installer un nouveau plugin<br>
 - copiez le répertoire du plugin dans le répertoire concerné :
 "plugins/Authentication" ou  "plugins/Authorization" ou "plugins/Permission".<br>
 - Saisissez le nom du répertoire du plugin dans la valeur du fichier "config.php" concernée :

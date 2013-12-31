@@ -2,20 +2,20 @@
 /**
 Copyright 2011-2013 Nick Korbel
 
-This file is part of phpScheduleIt.
+This file is part of Booked Scheduler.
 
-phpScheduleIt is free software: you can redistribute it and/or modify
+Booked Scheduler is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation, either version 3 of the License, or
 (at your option) any later version.
 
-phpScheduleIt is distributed in the hope that it will be useful,
+Booked Scheduler is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
-along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
+along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 require_once(ROOT_DIR . 'lib/Common/namespace.php');
@@ -23,16 +23,16 @@ require_once(ROOT_DIR . 'lib/Common/namespace.php');
 class DateTests extends TestBase
 {
 	private $tz;
-	private $datestring;                                  
-	
+	private $datestring;
+
 	public function setup()
 	{
-        parent::setup();  
-        
+        parent::setup();
+
         $this->datestring = date(DATE_W3C, time());
 		$this->tz = new DateTimeZone('UTC');
 	}
-	
+
 	public function testCanGetNow()
 	{
 		$format = 'd m y H:i:s';
@@ -40,113 +40,113 @@ class DateTests extends TestBase
 		Date::_ResetNow();
 		$now = Date::Now();
 		$datenow = new DateTime(date(Date::SHORT_FORMAT, time()));
-		
+
 		$this->assertEquals($datenow->format($format), $now->Format($format));
 	}
-	
+
 	public function testCanAddDays()
 	{
 		$format = 'd m y H:i:s';
-		
+
 		$hour = 11;
 		$minute = 40;
 		$second = 22;
 		$month = 3;
 		$day = 21;
 		$year = 2007;
-		
+
 		$string = "$year-$month-$day $hour:$minute:$second";
 		$now = new Date($string);
-		
+
 		$expectedTS = mktime($hour, $minute, $second, $month, $day + 20, $year);
-		
+
 		$twentyDaysDate = $now->AddDays(20);
-		
-		$this->assertEquals($expectedTS, $twentyDaysDate->Timestamp());		
+
+		$this->assertEquals($expectedTS, $twentyDaysDate->Timestamp());
 	}
-	
+
 	public function testCanSubtractDays()
 	{
 		$format = 'd m y H:i:s';
-		
+
 		$hour = 11;
 		$minute = 40;
 		$second = 22;
 		$month = 3;
 		$day = 21;
 		$year = 2007;
-		
+
 		$now = new Date("$year-$month-$day $hour:$minute:$second");
-		
+
 		$expectedTS = mktime($hour, $minute, $second, $month, $day -20, $year);
 		$twentyDaysDate = $now->AddDays(-20);
-		
-		$this->assertEquals($expectedTS, $twentyDaysDate->Timestamp());	
+
+		$this->assertEquals($expectedTS, $twentyDaysDate->Timestamp());
 	}
-	
+
 	public function testCanGetAsDateTime()
 	{
-		$now = new Date($this->datestring);		
+		$now = new Date($this->datestring);
 		$datenow = new DateTime($this->datestring);
-		
+
 		$parts = date_parse($datenow->format(DATE_W3C));
-		
+
 		$exptected = mktime(
-					$parts['hour'], 
-					$parts['minute'], 
-					$parts['second'], 
-					$parts['month'], 
-					$parts['day'], 
+					$parts['hour'],
+					$parts['minute'],
+					$parts['second'],
+					$parts['month'],
+					$parts['day'],
 					$parts['year']
 					);
-		
+
 		$this->assertEquals($exptected, $now->Timestamp());
 	}
-	
+
 	public function testCanConvertToTimezone()
 	{
 		$format = 'd m y H:i:s';
-		
+
 		$now = new Date($this->datestring);
-		
+
 		$datetime = new DateTime($this->datestring);
 		$datetime->setTimezone(new DateTimeZone('US/Eastern'));
-		
-		$expected = $datetime->format($format);		
+
+		$expected = $datetime->format($format);
 		$adjusted = $now->ToTimezone("US/Eastern");
-		
+
 		$this->assertEquals($expected, $adjusted->Format($format));
 	}
-	
+
 	public function testDateGetsAdjustedIntoProvidedTimezone()
 	{
 		$format = 'd m y H:i:s';
         $tzName = 'US/Eastern';
         $baseTz = new DateTimeZone($tzName);
-		
+
         $actual = new Date($this->datestring, $tzName);
-		
+
         $datetime = new DateTime($this->datestring, $baseTz);
-        
-        $expected = $datetime->format($format);      
-        
-        $this->assertEquals($expected, $actual->Format($format));    
+
+        $expected = $datetime->format($format);
+
+        $this->assertEquals($expected, $actual->Format($format));
 	}
-    
+
     public function testGmtConvertsDateToGMT()
     {
     	$format = 'd m y H:i:s';
-        
+
         $date = new Date($this->datestring);
-        
+
         $datetime = new DateTime($this->datestring);
         $datetime->setTimezone(new DateTimeZone('UTC'));
-        
-        $expected = $datetime->format($format);      
-        
-        $this->assertEquals($expected, $date->ToUtc()->Format($format));    
+
+        $expected = $datetime->format($format);
+
+        $this->assertEquals($expected, $date->ToUtc()->Format($format));
     }
-    
+
     public function testDatePartsAreParsedCorrectly()
     {
         $hour = 11;
@@ -155,9 +155,9 @@ class DateTests extends TestBase
         $month = 3;
         $day = 21;
         $year = 2007;
-        
+
         $date = new Date("$year-$month-$day $hour:$minute:$second", 'US/Central');
-        
+
         $this->assertEquals($hour, $date->Hour());
         $this->assertEquals($minute, $date->Minute());
         $this->assertEquals($second, $date->Second());
@@ -165,9 +165,9 @@ class DateTests extends TestBase
         $this->assertEquals($day, $date->Day());
         $this->assertEquals($year, $date->Year());
 
-        
+
         $adjusted = $date->ToTimezone('US/Eastern');
-        
+
         $this->assertEquals($hour + 1, $adjusted->Hour());
         $this->assertEquals($minute, $adjusted->Minute());
         $this->assertEquals($second, $adjusted->Second());
@@ -175,41 +175,41 @@ class DateTests extends TestBase
         $this->assertEquals($day, $adjusted->Day());
         $this->assertEquals($year, $adjusted->Year());
     }
-    
+
     public function testToDatabaseConvertsToGmtThenFormats()
     {
     	$databaseformat = 'Y-m-d H:i:s';
         $date = new Date($this->datestring);
-        
+
         $datetime = new DateTime($this->datestring);
         $datetime->setTimezone(new DateTimeZone('UTC'));
-        
-        $expected = $datetime->format($databaseformat);      
-        
-        $this->assertEquals($expected, $date->ToDatabase());    
+
+        $expected = $datetime->format($databaseformat);
+
+        $this->assertEquals($expected, $date->ToDatabase());
     }
-    
+
     public function testCanCreateTimeInServerTimezone()
     {
     	$hour = 10;
     	$min = 22;
     	$sec = 21;
-    	
+
     	$time = new Time($hour, $min, $sec);
-    	
+
     	$this->assertEquals("$hour:$min:$sec", $time->ToString());
     	$this->assertEquals($hour, $time->Hour());
     	$this->assertEquals($min, $time->Minute());
     	$this->assertEquals($sec, $time->Second());
-    	
+
     	$time = new Time($hour, $min);
-    	
+
     	$this->assertEquals("$hour:$min:00", $time->ToString());
     	$this->assertEquals($hour, $time->Hour());
     	$this->assertEquals($min, $time->Minute());
     	$this->assertEquals(0, $time->Second());
     }
-    
+
     public function testTimeCreatedInEasternCanBeConvertedToCentral()
     {
     	$east = 'America/New_York';
@@ -217,93 +217,93 @@ class DateTests extends TestBase
     	$hour = 10;
     	$min = 10;
     	$sec = 10;
-    	
+
     	$time = Date::Create(2001, 1, 1, $hour, $min, $sec, $east);
     	$converted = $time->ToTimezone($central);
-    	
+
     	$this->assertEquals($hour - 1, $converted->Hour());
     	$this->assertEquals($min, $converted->Minute());
     	$this->assertEquals($sec, $converted->Second());
-    	
+
     	$time = Date::Create(2001, 1, 1, 0, $min, $sec, $east);
     	$converted = $time->ToTimezone($central);
     	$this->assertEquals(23, $converted->Hour());
-    	
+
     	$time = Date::Create(2001, 1, 1, 1, $min, $sec, $east);
     	$converted = $time->ToTimezone($central);
     	$this->assertEquals(0, $converted->Hour());
     }
-    
+
     public function testCanParseTimeFromString()
     {
     	$time = Time::Parse('10:11:12', 'UTC');
-    	
+
     	$this->assertEquals(10, $time->Hour());
     	$this->assertEquals(11, $time->Minute());
     	$this->assertEquals(12, $time->Second());
     	$this->assertEquals('UTC', $time->Timezone());
-    	
+
     	$time = Time::Parse('13:11:12', 'UTC');
-    	
+
     	$this->assertEquals(13, $time->Hour());
     	$this->assertEquals(11, $time->Minute());
     	$this->assertEquals(12, $time->Second());
     	$this->assertEquals('UTC', $time->Timezone());
-    	
+
     	$time = Time::Parse('10:11:12 PM', 'UTC');
-    	
+
     	$this->assertEquals(22, $time->Hour());
     	$this->assertEquals(11, $time->Minute());
     	$this->assertEquals(12, $time->Second());
     	$this->assertEquals('UTC', $time->Timezone());
-    	
+
     	$time = Time::Parse('10:11:12 AM', 'UTC');
-    	
+
     	$this->assertEquals(10, $time->Hour());
     	$this->assertEquals(11, $time->Minute());
     	$this->assertEquals(12, $time->Second());
     	$this->assertEquals('UTC', $time->Timezone());
-    	
+
     	$time = Time::Parse('10:11 AM', 'UTC');
-    	
+
     	$this->assertEquals(10, $time->Hour());
     	$this->assertEquals(11, $time->Minute());
     	$this->assertEquals(00, $time->Second());
     	$this->assertEquals('UTC', $time->Timezone());
     }
-    
+
     public function testTimesCanBeCompared()
     {
     	$date = Date::Parse('2010-01-01');
     	$early = Time::Parse('10:11');
     	$late = Time::Parse('12:11');
-    	
+
     	$this->assertEquals(-1, $early->Compare($late, $date));
     	$this->assertEquals(1, $late->Compare($early, $date));
-    	
+
     	$early2 = Time::Parse('10:11', 'US/Central');
     	$late2 = Time::Parse('10:11', 'US/Pacific');
 
     	$this->assertEquals(-1, $early2->Compare($late2, $date));
     }
-    
+
     public function testCanCompareDateOnlyEquality()
     {
     	$date1 = Date::Parse('2008-01-01 11:00:00', 'US/Central');
     	$date2 = Date::Parse('2008-01-01 11:00:00', 'US/Eastern');
-    	
+
     	$this->assertTrue($date1->DateEquals($date2));
-    	
+
     	$date1 = Date::Parse('2008-01-01 00:00:00', 'US/Central');
     	$date2 = Date::Parse('2008-01-01 00:00:00', 'US/Eastern');
-    	
+
     	$this->assertFalse($date1->DateEquals($date2));
     }
-    
+
     public function testCreateBuildsDateObjectCorectly()
     {
     	$date = Date::Create(2008, 10, 9, 8, 7, 6, 'US/Central');
-    	
+
     	$this->assertEquals(2008, $date->Year());
     	$this->assertEquals(10, $date->Month());
     	$this->assertEquals(9, $date->Day());
@@ -312,98 +312,98 @@ class DateTests extends TestBase
     	$this->assertEquals(6, $date->Second());
     	$this->assertEquals('US/Central', $date->Timezone());
     }
-    
-    public function testCanCompareDateRelativity() 
+
+    public function testCanCompareDateRelativity()
     {
     	$date1 = Date::Parse('2008-01-01 11:00:00', 'US/Central');
     	$date2 = Date::Parse('2008-01-01 11:00:00', 'US/Eastern');
-    	
+
     	$this->assertEquals(0, $date1->DateCompare($date2));
-    	
+
     	$date1 = Date::Parse('2008-01-01 00:00:00', 'US/Central');
     	$date2 = Date::Parse('2008-01-01 00:00:00', 'US/Eastern');
-    	
+
     	$this->assertEquals(1, $date1->DateCompare($date2), 'midnight eastern is 11pm central');
-    	
+
     	$date1 = Date::Parse('2008-01-01 00:00:00', 'US/Central');
     	$date2 = Date::Parse('2008-01-01 22:00:00', 'US/Pacific');
-    	
+
     	$this->assertEquals(-1, $date1->DateCompare($date2), 'midnight pacific is 2 am central');
     }
-    
+
     public function GetDateReturnsDateAsOfMidnight()
     {
     	$date = new Date('2009-10-10 10:10:10');
     	$onlyDate = $date->GetDate();
-    	
+
     	$this->assertEquals(0, $onlyDate->Hour());
     	$this->assertEquals(0, $onlyDate->Minute());
     	$this->assertEquals(0, $onlyDate->Second());
     }
-    
+
 	public function testDateIsWithinRange()
 	{
 		$begin = Date::Create(2008, 9, 9, 10, 11, 12, 'UTC');
 		$end = Date::Create(2008, 10, 9, 10, 11, 12, 'UTC');
-		
+
 		$range = new DateRange($begin, $end);
-		
+
 		$within = $begin->AddDays(10);
 		$notWithin = $begin->AddDays(-10);
 		$exactStart = $begin;
 		$exactEnd = $end;
-		
+
 		$this->assertTrue($range->Contains($within));
 		$this->assertTrue($range->Contains($exactStart));
 		$this->assertTrue($range->Contains($exactEnd));
 		$this->assertFalse($range->Contains($notWithin));
 	}
-	
+
 	public function testDateRangeIsWithinRange()
 	{
 		$begin = Date::Create(2008, 9, 9, 10, 11, 12, 'UTC');
 		$end = Date::Create(2008, 10, 9, 10, 11, 12, 'UTC');
-		
+
 		$range = new DateRange($begin, $end);
-		
+
 		$within = new DateRange($begin->AddDays(10), $end->AddDays(-10));
 		$notWithin = new DateRange($begin->AddDays(-10), $end->AddDays(-1));
-		
+
 		$exact = new DateRange($begin, $end);
-		
+
 		$this->assertTrue($range->ContainsRange($within));
 		$this->assertTrue($range->ContainsRange($exact));
 		$this->assertFalse($range->ContainsRange($notWithin));
 	}
-	
+
 	public function testDateRangeReturnsAllDatesForRangeWithoutTime()
 	{
 		$begin = Date::Create(2008, 9, 9, 10, 11, 12, 'UTC');
 		$end = Date::Create(2008, 9, 12, 10, 11, 12, 'UTC');
-		
+
 		$range = new DateRange($begin, $end);
-		
+
 		$expected[] = $begin->GetDate();
 		$expected[] = $begin->AddDays(1)->GetDate();
 		$expected[] = $begin->AddDays(2)->GetDate();
 		$expected[] = $begin->AddDays(3)->GetDate();
-		
+
 		$actual = $range->Dates();
-		
+
 //		foreach ($expected as $d)
 //		{
 //			echo $d->ToString();
 //			echo "\n";
 //		}
-//		
+//
 //		echo "\n";
-//		
+//
 //		foreach ($actual as $d)
 //		{
 //			echo $d->ToString();
 //			echo "\n";
 //		}
-		
+
 //		$this->assertEquals($expected, $actual);
 		$this->assertEquals(count($expected), count($actual));
 		$this->assertTrue($expected[0]->Equals($actual[0]), "Dates[0] are not equal");

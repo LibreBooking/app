@@ -1,23 +1,23 @@
 {*
 Copyright 2011-2013 Nick Korbel
 
-This file is part of phpScheduleIt.
+This file is part of Booked Scheduler.
 
-phpScheduleIt is free software: you can redistribute it and/or modify
+Booked Scheduler is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation, either version 3 of the License, or
 (at your option) any later version.
 
-phpScheduleIt is distributed in the hope that it will be useful,
+Booked Scheduler is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
-along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
+along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 *}
 {include file='..\..\tpl\Email\emailheader.tpl'}
-	
+
 	Dettagli prenotazione:
 	<br/>
 	<br/>
@@ -35,13 +35,13 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 	{/if}
 	Note: {$Title}<br/>
 	Descrizione: {$Description|nl2br}<br/>
-	
+
 	{if count($RepeatDates) gt 0}
 		<br/>
 		Le seguenti date sono state rimosse:
 		<br/>
 	{/if}
-	
+
 	{foreach from=$RepeatDates item=date name=dates}
 		{formatdate date=$date}<br/>
 	{/foreach}
@@ -55,6 +55,6 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 
 	<br/>
 	<br/>
-	<a href="{$ScriptUrl}">Accedi a phpScheduleIt</a>
-	
+	<a href="{$ScriptUrl}">Accedi a Booked Scheduler</a>
+
 {include file='..\..\tpl\Email\emailfooter.tpl'}

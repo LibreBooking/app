@@ -2,20 +2,20 @@
 /**
 Copyright 2011-2013 Nick Korbel
 
-This file is part of phpScheduleIt.
+This file is part of Booked Scheduler.
 
-phpScheduleIt is free software: you can redistribute it and/or modify
+Booked Scheduler is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation, either version 3 of the License, or
 (at your option) any later version.
 
-phpScheduleIt is distributed in the hope that it will be useful,
+Booked Scheduler is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
-along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
+along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 require_once(ROOT_DIR . 'lib/Database/namespace.php');
@@ -37,7 +37,7 @@ class FakeDatabase extends Database
 	{
 		$this->readcount = 0;
 		$this->executeInsertCount = 0;
-		
+
 		$this->reader[0] = new FakeReader(array());
 	}
 
@@ -46,20 +46,20 @@ class FakeDatabase extends Database
 		$this->reader[$readerCount] = $reader;
 	}
 
-	public function &Query(ISqlCommand &$command) 
+	public function &Query(ISqlCommand &$command)
 	{
 		$this->_LastCommand = $command;
 		$this->_AddCommand($command);
-		
+
 		if (!isset($this->reader[$this->readcount]))
 		{
 			$reader = new FakeReader(array());
 		}
-		else 
+		else
 		{
 			$reader = $this->reader[$this->readcount];
 		}
-		
+
 		$this->readcount++;
 		return $reader;
 	}
@@ -68,7 +68,7 @@ class FakeDatabase extends Database
 	{
 		$this->_Limit = $limit;
 		$this->_Offset = $offset;
-		
+
 		return $this->Query($command);
 	}
 
@@ -77,18 +77,18 @@ class FakeDatabase extends Database
 		$this->_LastCommand = $command;
 		$this->_AddCommand($command);
 	}
-	
+
 	public function ExecuteInsert(ISqlCommand &$command)
 	{
 		$this->_LastCommand = $command;
 		$this->_AddCommand($command);
-		
+
 		$expectedId =  $this->_ExpectedInsertId;
 		if (isset($this->_ExpectedInsertIds[$this->executeInsertCount]))
 		{
 			$expectedId = $this->_ExpectedInsertIds[$this->executeInsertCount];
 		}
-		
+
 		$this->executeInsertCount++;
 		return $expectedId;
 	}
@@ -106,22 +106,22 @@ class FakeDatabase extends Database
 	{
 		$this->SetRow(0, $rows);
 	}
-	
+
 	public function SetRow($readerCount, $rows)
 	{
 		$reader = new FakeReader($rows);
 		$this->SetReader($readerCount, $reader);
 	}
-	
+
 	public function GetReader($readerCount)
 	{
 		return $this->reader[$readerCount];
 	}
-	
+
 	public function GetCommandsOfType($type)
 	{
 		$commands = array();
-		
+
 		foreach($this->_Commands as $command)
 		{
 			if (get_class($command) == $type)
@@ -129,7 +129,7 @@ class FakeDatabase extends Database
 				$commands[] = $command;
 			}
 		}
-		
+
 		return $commands;
 	}
 
@@ -143,13 +143,13 @@ class FakeDatabase extends Database
 	}
 }
 
-class FakeReader implements IReader 
+class FakeReader implements IReader
 {
 	public $rows = array();
 	public $idx = 0;
 	public $_FreeCalled = false;
 
-	public function __construct($rows) 
+	public function __construct($rows)
 	{
 		$this->rows = $rows;
 	}
@@ -163,12 +163,12 @@ class FakeReader implements IReader
 		return false;
 	}
 
-	public function NumRows() 
+	public function NumRows()
 	{
 		return sizeof($this->rows);
 	}
 
-	public function Free() 
+	public function Free()
 	{
 		$this->_FreeCalled = true;
 	}
@@ -188,12 +188,12 @@ class FakeDBConnection implements IDBConnection
 	{
 	}
 
-	public function Connect() 
+	public function Connect()
 	{
 		$this->_ConnectWasCalled = true;
 	}
 
-	public function Disconnect() 
+	public function Disconnect()
 	{
 		$this->_DisconnectWasCalled = true;
 	}
@@ -204,11 +204,11 @@ class FakeDBConnection implements IDBConnection
 		return null;
 	}
 
-	public function Execute(ISqlCommand $command) 
+	public function Execute(ISqlCommand $command)
 	{
 		$this->_LastExecuteCommand = $command;
 	}
-	
+
 	public function GetLastInsertId()
 	{
 		$this->_GetLastInsertIdCalled = true;
@@ -240,7 +240,7 @@ class FakePearDB extends MDB2
 	public $_LastPreparedQuery = '';
 	public $_PrepareAutoDetect = false;
 	public $_PrepareType = -1;
-	
+
 	public $_LastInsertId = 10;
 	public $_LastInsertIDCalled = false;
 
@@ -260,7 +260,7 @@ class FakePearDB extends MDB2
 		$this->_PrepareType = $prepareType;
 		return $this->PrepareHandle;
 	}
-	
+
 	public function lastInsertID()
 	{
 		$this->_LastInsertIDCalled = true;
@@ -274,12 +274,12 @@ class FakeDBResult extends MDB2_Result_Common
 	public $idx = 0;
 	public $_FreeWasCalled = false;
 
-	public function __construct(&$rows) 
+	public function __construct(&$rows)
 	{
 		$this->rows = $rows;
 	}
 
-	public function fetchRow() 
+	public function fetchRow()
 	{
 		if (sizeof($this->rows) > $this->idx)
 		{

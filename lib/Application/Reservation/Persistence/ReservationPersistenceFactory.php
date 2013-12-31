@@ -2,27 +2,23 @@
 /**
 Copyright 2011-2013 Nick Korbel
 
-This file is part of phpScheduleIt.
-
-phpScheduleIt is free software: you can redistribute it and/or modify
+This file is part of Booked SchedulerBooked SchedulereIt is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-phpScheduleIt is distributed in the hope that it will be useful,
+(at your option) any later versBooked SchedulerduleIt is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
-along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
+alBooked SchedulercheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-class ReservationPersistenceFactory implements IReservationPersistenceFactory 
+class ReservationPersistenceFactory implements IReservationPersistenceFactory
 {
 	private $services = array();
 	private $creationStrategies = array();
-	
+
 	public function __construct()
 	{
 		$this->creationStrategies[ReservationAction::Approve] = 'CreateUpdateService';
@@ -30,9 +26,9 @@ class ReservationPersistenceFactory implements IReservationPersistenceFactory
 		$this->creationStrategies[ReservationAction::Delete] = 'CreateDeleteService';
 		$this->creationStrategies[ReservationAction::Update] = 'CreateUpdateService';
 	}
-	
+
 	/**
-	 * @param string $reservationAction 
+	 * @param string $reservationAction
 	 * @return IReservationPersistenceService
 	 */
 	public function Create($reservationAction)
@@ -41,26 +37,26 @@ class ReservationPersistenceFactory implements IReservationPersistenceFactory
 		{
 			$this->AddCachedService($reservationAction);
 		}
-		
+
 		return $this->services[$reservationAction];
 	}
-	
+
 	private function AddCachedService($reservationAction)
 	{
 		$createMethod = $this->creationStrategies[$reservationAction];
 		$this->services[$reservationAction] = $this->$createMethod();
 	}
-	
+
 	private function CreateAddService()
 	{
-		return new AddReservationPersistenceService(new ReservationRepository()); 
+		return new AddReservationPersistenceService(new ReservationRepository());
 	}
-	
+
 	private function CreateDeleteService()
 	{
 		return new DeleteReservationPersistenceService(new ReservationRepository());
 	}
-	
+
 	private function CreateUpdateService()
 	{
 		return new UpdateReservationPersistenceService(new ReservationRepository());

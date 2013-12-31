@@ -2,20 +2,20 @@
 /**
 Copyright 2011-2013 Nick Korbel
 
-This file is part of phpScheduleIt.
+This file is part of Booked Scheduler.
 
-phpScheduleIt is free software: you can redistribute it and/or modify
+Booked Scheduler is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation, either version 3 of the License, or
 (at your option) any later version.
 
-phpScheduleIt is distributed in the hope that it will be useful,
+Booked Scheduler is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
-along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
+along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 require_once('Language.php');
@@ -45,7 +45,7 @@ class de_de extends en_us
         $dates['general_date_js'] = 'dd.mm.yy';
         $dates['calendar_time'] = 'H:mm';
         $dates['calendar_dates'] = 'd.M';
-                                                                                
+
         $this->Dates = $dates;
 
         return $this->Dates;
@@ -462,11 +462,11 @@ class de_de extends en_us
         // End Strings
 
 	// Install
-	$strings['InstallApplication'] = 'Installiere phpScheduleIt (Nur mit MySQL)';
+	$strings['InstallApplication'] = 'Installiere Booked Scheduler (Nur mit MySQL)';
 	$strings['IncorrectInstallPassword'] = 'Sorry, das Installationspasswort war falsch.';
 	$strings['SetInstallPassword'] = 'Sie müssen ein Installationspasswort setzen, bevor die Installation ausgeführt werden kann.';
 	$strings['InstallPasswordInstructions'] = 'In %s bitte ein %s Passwort setzen, das zufällig und schwer zu erraten ist, dann auf diese Seite zurück. <br/> Sie können %s verwenden.';
-	$strings['NoUpgradeNeeded'] = 'Es ist kein Upgrade erforderlich. Ausführen der Installation löscht alle vorhandenen Daten und installiert eine neue Kopie von phpScheduleIt!';
+	$strings['NoUpgradeNeeded'] = 'Es ist kein Upgrade erforderlich. Ausführen der Installation löscht alle vorhandenen Daten und installiert eine neue Kopie von Booked Scheduler!';
 	$strings['ProvideInstallPassword'] = 'Bitte geben Sie Ihr Installationspasswort ein.';
 	$strings['InstallPasswordLocation'] = 'Dies finden Sie in %s in %s.';
 	$strings['VerifyInstallSettings'] = 'Überprüfen Sie die folgenden Standardeinstellungen, bevor Sie fortfahren. Oder Sie können sie in %s ändern.';
@@ -491,10 +491,10 @@ class de_de extends en_us
 	$strings['InstallationSuccess'] = 'Installation erfolgreich abgeschlossen!';
 	$strings['RegisterAdminUser'] = 'Registrieren Sie Ihren Admin-Benutzer. Dies ist erforderlich, wenn Sie die Beispiel-Daten nicht importiert haben. Stellen Sie sicher, dass $conf[\'settings\'][\'allow.self.registration\'] = \'true\' in Ihrer %s-Datei ist.';
 	$strings['LoginWithSampleAccounts'] = 'Wenn Sie die Beispiel-Daten importiert haben, können Sie sich mit admin/password als Admin Benutzer oder mit user/password als Benutzer anmelden.';
-	$strings['InstalledVersion'] = 'Sie haben jetzt die Version %s von phpScheduleIt.';
+	$strings['InstalledVersion'] = 'Sie haben jetzt die Version %s von Booked Scheduler.';
 	$strings['InstallUpgradeConfig'] = 'Es wird empfohlen, dass Sie Ihre Konfigurationsdatei aktualisieren.';
 	$strings['InstallationFailure'] = 'Es gab Probleme mit der Installation. Bitte korrigieren Sie sie und wiederholen Sie die Installation.';
-	$strings['ConfigureApplication'] = 'phpScheduleIt konfigurieren';
+	$strings['ConfigureApplication'] = 'Booked Scheduler konfigurieren';
 	$strings['ConfigUpdateSuccess'] = 'Ihre Konfigurationsdatei ist nun auf dem neuesten Stand!';
 	$strings['ConfigUpdateFailure'] = 'Wir konnten die Konfigurationsdatei nicht automatisch aktualisieren. Bitte überschreiben Sie den Inhalt der config.php mit den folgenden Werten:';
 	// End Install

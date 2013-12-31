@@ -1,23 +1,23 @@
 {* -*-coding:utf-8-*-
 Copyright 2011-2013 Nick Korbel
 
-This file is part of phpScheduleIt.
+This file is part of Booked Scheduler.
 
-phpScheduleIt is free software: you can redistribute it and/or modify
+Booked Scheduler is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation, either version 3 of the License, or
 (at your option) any later version.
 
-phpScheduleIt is distributed in the hope that it will be useful,
+Booked Scheduler is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
-along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
+along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 *}
 {include file='globalheader.tpl'}
-<h1>phpScheduleIt 管理</h1>
+<h1>Booked Scheduler 管理</h1>
 
 <div id="help">
 <h2>管理</h2>
@@ -190,7 +190,7 @@ phpSchedulet では予め汎用のレポートを用意しており、リスト�
 
 <p>phpScheduleItの機能の一部は設定ファイルを編集して設定するしかありません。</p>
 
-<p class="setting"><span>$conf['settings']['server.timezone']</span>phpScheduleIt が動作しているサーバーのタイムゾーンに合わせること。メニューの「サーバー設定」で現在の設定を確認することができる。可能な値は次に示すサイトにある。
+<p class="setting"><span>$conf['settings']['server.timezone']</span>Booked Scheduler が動作しているサーバーのタイムゾーンに合わせること。メニューの「サーバー設定」で現在の設定を確認することができる。可能な値は次に示すサイトにある。
 http://php.net/manual/en/timezones.php</p>
 
 <p class="setting"><span>$conf['settings']['allow.self.registration']</span>ユーザー自身でアカウントを作成できるか否か</p>

@@ -2,20 +2,16 @@
 /**
 Copyright 2011-2013 Nick Korbel
 
-This file is part of phpScheduleIt.
-
-phpScheduleIt is free software: you can redistribute it and/or modify
+This file is part of Booked SchedulerBooked SchedulereIt is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-phpScheduleIt is distributed in the hope that it will be useful,
+(at your option) any later versBooked SchedulerduleIt is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
-along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
+alBooked SchedulercheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 require_once(ROOT_DIR . 'Domain/Access/AccessoryRepository.php');
@@ -37,14 +33,14 @@ class AccessoryAvailabilityRule implements IReservationValidationRule
 	 * @var string
 	 */
 	protected $timezone;
-	
+
 	public function __construct(IReservationViewRepository $reservationRepository, IAccessoryRepository $accessoryRepository, $timezone)
 	{
 		$this->reservationRepository = $reservationRepository;
 		$this->accessoryRepository = $accessoryRepository;
 		$this->timezone = $timezone;
 	}
-	
+
 	/**
 	 * @param ReservationSeries $reservationSeries
 	 * @return ReservationRuleResult
@@ -82,7 +78,7 @@ class AccessoryAvailabilityRule implements IReservationValidationRule
 		foreach ($reservations as $reservation)
 		{
 			Log::Debug("Checking for accessory conflicts, reference number %s", $reservation->ReferenceNumber());
-			
+
 			$accessoryReservations = $this->reservationRepository->GetAccessoriesWithin($reservation->Duration());
 
 			$aggregation = new AccessoryAggregation($accessories, $reservation->Duration());
@@ -112,14 +108,14 @@ class AccessoryAvailabilityRule implements IReservationValidationRule
 				}
 			}
 		}
-		
-		$thereAreConflicts = count($conflicts) > 0;		
-		
+
+		$thereAreConflicts = count($conflicts) > 0;
+
 		if ($thereAreConflicts)
 		{
 			return new ReservationRuleResult(false, $this->GetErrorString($conflicts));
 		}
-		
+
 		return new ReservationRuleResult();
 	}
 
@@ -134,13 +130,13 @@ class AccessoryAvailabilityRule implements IReservationValidationRule
 		$errorString->Append(Resources::GetInstance()->GetString('ConflictingAccessoryDates'));
 		$errorString->AppendLine();
 		$format = Resources::GetInstance()->GetDateFormat(ResourceKeys::DATE_GENERAL);
-		
+
 		foreach($conflicts as $conflict)
 		{
 			$errorString->Append(sprintf('(%s) %s', $conflict['date']->ToTimezone($this->timezone)->Format($format), $conflict['name']));
 			$errorString->AppendLine();
 		}
-		
+
 		return $errorString->ToString();
 	}
 }
@@ -212,7 +208,7 @@ class AccessoryToCheck
 	 * @var int
 	 */
 	private $quantityReserved;
-	
+
 	public function __construct(Accessory $accessory, ReservationAccessory $reservationAccessory)
 	{
 		$this->accessory = $accessory;

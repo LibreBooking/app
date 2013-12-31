@@ -3,24 +3,24 @@
 Copyright 2012 Alois Schloegl, IST Austria
 Copyright 2012 Moritz Schepp, IST Austria
 
-This file is part of phpScheduleIt.
+This file is part of Booked Scheduler.
 
-phpScheduleIt is free software: you can redistribute it and/or modify
+Booked Scheduler is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation, either version 3 of the License, or
 (at your option) any later version.
 
-phpScheduleIt is distributed in the hope that it will be useful,
+Booked Scheduler is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
-along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
+along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 error_reporting(E_ERROR | E_WARNING | E_PARSE);
-header("Content-Type: application/json", true);   
+header("Content-Type: application/json", true);
 
 define('ROOT_DIR', '../../');
 require_once(ROOT_DIR . 'config/config.php');
@@ -44,7 +44,7 @@ $icskey   = $conf['settings']['ics']['subscription.key'];
 $ikey     = $conf['settings']['ics']['import.key'];
 $enabled  = $conf['settings']['ics']['import'];
 
-//header("delete ical event into phpScheduleIt");
+//header("delete ical event into Booked Scheduler");
 if (!$enabled) {
         header('HTTP/1.1 406 Not Acceptable', true, 406);
         print json_encode(array('message' => "iCal import is not enabled"));
@@ -52,10 +52,10 @@ if (!$enabled) {
 }
 
 /*
-    Input 
+    Input
  */
 $params = array(
-        'username' => null,  
+        'username' => null,
         'rn' => null,
 );
 $params = array_merge($params, $_REQUEST);
@@ -72,20 +72,20 @@ foreach ($params AS $key => $val) {
         }
 }
 
-if ( $ikey != NULL 
+if ( $ikey != NULL
   && $ikey != $params['ikey'] )
 {
         header('HTTP/1.1 401 Unauthorized', true, 401);
         print json_encode(array('message' => "your iKey is invalid"));
         return;
 }
-                       
+
 
 /*************************************************
- 	user information 
+ 	user information
  *************************************************/
 $userRepository = new UserRepository();
-$user = $userRepository->LoadByUsername($username); 
+$user = $userRepository->LoadByUsername($username);
 if ($user instanceof NullUser) {
 	header('HTTP/1.1 403 Forbidden', true, 403);
 	print json_encode(array('message' => "invalid userId"));
@@ -131,7 +131,7 @@ $notificationService = $nfactory->Create($updateAction, $user_session);
 
 $result = $series->Delete($user_session);
 if (1) {
-        try 
+        try
         {
 
                 $persistenceService->Persist($series);
@@ -143,18 +143,18 @@ if (1) {
                         'reference_number' => $rn
                 );
                 //print json_encode($response,JSON_UNESCAPED_SLASHES);  ## only in Php 5.4
-                print json_encode($response);                       
+                print json_encode($response);
                 return;
-        } 
-        catch (Exception $ex) 
+        }
+        catch (Exception $ex)
         {
                 Log::Error('Error deleting reservation: %s', $ex);
                 throw($ex);
         }
 
         $this->notificationService->Notify($reservationSeries);
-} 
-else 
+}
+else
 {
         header('HTTP/1.1 406 Not Acceptable', true, 406);
         $response = array(

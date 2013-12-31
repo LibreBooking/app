@@ -3,26 +3,26 @@ Copyright 2011-2013 Nick Korbel
 
 File ini adalah bagian dari phpShceduleIt.
 
-phpScheduleIt adalah perangkat lunak gratis: Anda bisa 
-mendistribusikannya dan/atau memodifikasikannya di bawah ketentuan 
+Booked Scheduler adalah perangkat lunak gratis: Anda bisa
+mendistribusikannya dan/atau memodifikasikannya di bawah ketentuan
 GNU General Public License seperti yang diterbitkan oleh
 Free Software Foundation, baik versi 3 dari Lisensi, atau
 (dengan pilihan) versi apapun setelahnya.
 
-phpScheduleIt didistribusikan dengan harapan akan berguna,
+Booked Scheduler didistribusikan dengan harapan akan berguna,
 tapi TANPA JAMINAN; tanpa
-phpScheduleIt is distributed in the hope that it will be useful,
+Booked Scheduler is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; bahkan tanpa jaminan dari
 PERDAGANGAN atau PENYESUAIAN UNTUK TUJUAN TERTENTU.
 Lihat GNU General Public License untuk rincian lebih lanjut.
 
 Anda seharusnya mendapatkan salinan dari GNU General Public License
-bersamaan dengan phpScheduleIt. Jika tidak, lihat 
+bersamaan dengan Booked Scheduler. Jika tidak, lihat
 <http://www.gnu.org/licenses/>.
 
 *}
 {include file='globalheader.tpl'}
-<h1 xmlns="http://www.w3.org/1999/html">phpScheduleIt Administration</h1>
+<h1 xmlns="http://www.w3.org/1999/html">Booked Scheduler Administration</h1>
 
 <div id="help">
 <h2>Administration</h2>
@@ -31,7 +31,7 @@ bersamaan dengan phpScheduleIt. Jika tidak, lihat
 
 <h3>Menyiapkan Jadwal</h3>
 
-<p>Saat memasang phpScheduleIt, jadwal standar akan dibuat. Dari pilihan menu Jadwal Anda bisa melihat dan mengatur atribut dari jadwal yang ada.</p>
+<p>Saat memasang Booked Scheduler, jadwal standar akan dibuat. Dari pilihan menu Jadwal Anda bisa melihat dan mengatur atribut dari jadwal yang ada.</p>
 
 <p>Setiap jadwal harus diatur tampilannya. Kontrol ini mengatur ketersediaan resource pada jadwal. Mengklik tautan Ubah Tampilan akan membawa pada pengaturan tampilan. Di sini Anda bisa membuat dan merubah slot waktu yang tersedia pada reservasi dan memblokirnya dari reservasi. Tidak ada batasan pada slot waktu, tapi Anda harus memberikan waktu untuk semua 24 jam sehari, satu persatu. Juga, format waktu harus dalam 24 jam. Jika Anda inginkan, Anda juga dapat memberikan label tampilan untuk setiap slot atau semuanya.</p>
 
@@ -45,7 +45,7 @@ bersamaan dengan phpScheduleIt. Jika tidak, lihat
 
 <p>Anda bisa melihat dan mengatur resource dari pilihan menu Resource. Di sini Anda bisa mengubah atribut dan pengaturan penggunaan resource.</p>
 
-<p>Resource dalam phpScheduleIt bisa apa saja untuk mengatur yang dapat dipesan, seperti ruangan atau peralatan. Setiap Resource harus ditetapkan ke jadwal agar dapat dipesan. Resource akan mengikuti tampilan dari jadwal yang digunakan.</p>
+<p>Resource dalam Booked Scheduler bisa apa saja untuk mengatur yang dapat dipesan, seperti ruangan atau peralatan. Setiap Resource harus ditetapkan ke jadwal agar dapat dipesan. Resource akan mengikuti tampilan dari jadwal yang digunakan.</p>
 
 <p>Mengatur lama minimal reservasi akan membatasi booking yang lebih lama dari jumlah yang sudah diatur. Standarnya tanpa minimal.</p>
 
@@ -75,19 +75,19 @@ bersamaan dengan phpScheduleIt. Jika tidak, lihat
 
 <h3>Menyiapkan Kuota</h3>
 
-<p>Kuota membatasi reservasi yang dapat dipesan berdasarkan pengaturan batas. Sistem kuota di phpScheduleIt sangat fleksibel, memungkinkan Anda membuat batasan berdasarkan lamanya reservasi dan jumlah reservasi. Juga, membatasi kuota "yang menumpuk". Sebagai contoh jika kuota membatasi untuk 5 jam per hari dan kuota yang lain membatasi untuk 4 reservasi per hari, pengguna tidak akan dapat mereservasi selama 4 jam tapi diak bisa reservasi selama 3x2 jam. Hal ini memungkinkan kombinasi kuota yang kuat yang bisa dibuat.</p>
+<p>Kuota membatasi reservasi yang dapat dipesan berdasarkan pengaturan batas. Sistem kuota di Booked Scheduler sangat fleksibel, memungkinkan Anda membuat batasan berdasarkan lamanya reservasi dan jumlah reservasi. Juga, membatasi kuota "yang menumpuk". Sebagai contoh jika kuota membatasi untuk 5 jam per hari dan kuota yang lain membatasi untuk 4 reservasi per hari, pengguna tidak akan dapat mereservasi selama 4 jam tapi diak bisa reservasi selama 3x2 jam. Hal ini memungkinkan kombinasi kuota yang kuat yang bisa dibuat.</p>
 
 <p>Administrator Aplikasi dikecualikan dari keterbatasan penggunaan.</p>
 
 <h3>Menyiapkan Pengumuman</h3>
 
-<p>Pengumuman adalah cara mudah untuk menampilkan notifikasi kepada pengguna phpScheduleIt. Dari menu Pengumuman Anda bisa melihat dan mengatur pengumuman yang ditampilkan dalam dashboard pengguna. Sebuah pengumuman dapat dokinfigurasi dengan pilihan mulai dan akhir tanggal. Tambahan tingakat juga tersedia, yang akan mensortir pernumuman dari 1 sampai 10.</p>
+<p>Pengumuman adalah cara mudah untuk menampilkan notifikasi kepada pengguna Booked Scheduler. Dari menu Pengumuman Anda bisa melihat dan mengatur pengumuman yang ditampilkan dalam dashboard pengguna. Sebuah pengumuman dapat dokinfigurasi dengan pilihan mulai dan akhir tanggal. Tambahan tingakat juga tersedia, yang akan mensortir pernumuman dari 1 sampai 10.</p>
 
 <p>HTML bisa digunakan pada teks pengumuman. Akan memungkinkan untuk melekatkan tautan atau gambar dari mana saja di laman.</p>
 
 <h3>Menyiapkan Grup</h3>
 
-<p>Grup di phpScheduleIt mengatur pengguna, mengontrol izin akses resource dan menentukan peran yang berlaku pada aplikasi.</p>
+<p>Grup di Booked Scheduler mengatur pengguna, mengontrol izin akses resource dan menentukan peran yang berlaku pada aplikasi.</p>
 
 <h3>Peran</h3>
 
@@ -111,29 +111,29 @@ bersamaan dengan phpScheduleIt. Jika tidak, lihat
 
 <h3>Melihat dan Mengatur Pengguna</h3>
 
-<p>Anda dapat menambah, melihat, dan mengatur semua pengguna yang terdaftar dalam menu Pengguna. Utilitas ini memungkinkan Anda untuk mengganti akses izin resouce per pengguna, menonaktifkan atau menghapus akun, mengatur ulang kata sandi pengguna, dan menyunting rincian pengguna. Anda juga dapat menambah pengguna baru ke phpScheduleIt. Hal ini sangat berguna jika pendaftaran sendiri (self-registration) dimatikan.</p>
+<p>Anda dapat menambah, melihat, dan mengatur semua pengguna yang terdaftar dalam menu Pengguna. Utilitas ini memungkinkan Anda untuk mengganti akses izin resouce per pengguna, menonaktifkan atau menghapus akun, mengatur ulang kata sandi pengguna, dan menyunting rincian pengguna. Anda juga dapat menambah pengguna baru ke Booked Scheduler. Hal ini sangat berguna jika pendaftaran sendiri (self-registration) dimatikan.</p>
 
 <h3>Laporan</h3>
 
-<p>Laporan dapat diakses ke semua administrator aplikasi, grup, resource dan jadwal. Saat pengguna yang memiliki akses fitur laporan masuk (log in), mereka akan melihat menu navigasi Laporan. phpScheduleIt dilengkapi dengan satu set dari Laporan Umum yang dapat dilihat sebagai daftar dari hasil, bagan, ekspor ke CSV dan cetak. Selain itu, laporan ad-hoc dapat dibuat dari menu Buat Laporan Baru. Hal ini juga memungkinkan dilihat dalam bentuk daftar, bagan, ekspor dan cetak. Selain itu, laporan khusus bisa diimpan dan diakses kembali pada waktu yang mendatang dari menu Laporan Tersimpan Saya. Menyimpan laporan juga bisa untuk dikirim melalui e-mail.</p>
+<p>Laporan dapat diakses ke semua administrator aplikasi, grup, resource dan jadwal. Saat pengguna yang memiliki akses fitur laporan masuk (log in), mereka akan melihat menu navigasi Laporan. Booked Scheduler dilengkapi dengan satu set dari Laporan Umum yang dapat dilihat sebagai daftar dari hasil, bagan, ekspor ke CSV dan cetak. Selain itu, laporan ad-hoc dapat dibuat dari menu Buat Laporan Baru. Hal ini juga memungkinkan dilihat dalam bentuk daftar, bagan, ekspor dan cetak. Selain itu, laporan khusus bisa diimpan dan diakses kembali pada waktu yang mendatang dari menu Laporan Tersimpan Saya. Menyimpan laporan juga bisa untuk dikirim melalui e-mail.</p>
 
 <h3>Pengingat Reservasi</h3>
 
-<p>Pengguna bisa meminta email pengingat dikirimkan berdasarkan awal atau akhir dari reservasi. Users can request that reminder emails are send prior to the beginning or end of a reservation. Agar fitur ini berfungsi, $conf['settings']['enable.email'] dan $conf['settings']['reservation']['enable.reminders'] keduanya harus diatur 'true'. Juga, tugas jadwal harus dikonfigurasi pada server Anda untuk menjalankan /phpScheduleIt/Jobs/sendreminders.php</p>
+<p>Pengguna bisa meminta email pengingat dikirimkan berdasarkan awal atau akhir dari reservasi. Users can request that reminder emails are send prior to the beginning or end of a reservation. Agar fitur ini berfungsi, $conf['settings']['enable.email'] dan $conf['settings']['reservation']['enable.reminders'] keduanya harus diatur 'true'. Juga, tugas jadwal harus dikonfigurasi pada server Anda untuk menjalankan /Booked Scheduler/Jobs/sendreminders.php</p>
 
-<p>Pada Linux, 'cron job' bisa digunakan. Perintah untuk menjalankan adalah <span class="note">php</span> diikuti dengan alamat lengkap untuk file phpScheduleIt/Jobs/sendreminders.php. Alamat lengkap untuk file sendreminders.php pada server ini <span class="note">{$RemindersPath}</span></p>
+<p>Pada Linux, 'cron job' bisa digunakan. Perintah untuk menjalankan adalah <span class="note">php</span> diikuti dengan alamat lengkap untuk file Booked Scheduler/Jobs/sendreminders.php. Alamat lengkap untuk file sendreminders.php pada server ini <span class="note">{$RemindersPath}</span></p>
 
 <p>Contoh konfigurasi cron akan terlihat seperti ini: <span class="note">* * * * * php {$RemindersPath}</span></p>
 
 <p>Jika Anda memiliki akses ke cPanel melalui hosting provider, <a href="http://docs.cpanel.net/twiki/bin/view/AllDocumentation/CpanelDocs/CronJobs" target="_blank">mengatur cron job dalam cPanel</a> sangatlah mudah. Pilih setiap pilihan Setiap Menit (Every Minute)  opsi dari menu Pengaturan Umum (Common Seting), atau masukkan * untuk menit (minute), jam (hour), hari (day), bulan (month) dan hari kerja (weekday).</p>
 
-<p>Dalam Windows, <a href="http://windows.microsoft.com/en-au/windows7/schedule-a-task" target="_blank">sebuah tugas jadwal bisa digunakan</a>. Tugas harus dikonfigurasi agar berjalan setiap menit. Tugas untuk menjalankan adalah php diikuti dengan alamat lengkap untuk file phpScheduleIt/Jobs/sendreminders.php</p>
+<p>Dalam Windows, <a href="http://windows.microsoft.com/en-au/windows7/schedule-a-task" target="_blank">sebuah tugas jadwal bisa digunakan</a>. Tugas harus dikonfigurasi agar berjalan setiap menit. Tugas untuk menjalankan adalah php diikuti dengan alamat lengkap untuk file Booked Scheduler/Jobs/sendreminders.php</p>
 
 <h2>Konfigurasi</h2>
 
-<p>Beberapa fungsi phpScheduleIt hanya bisa dikontrol dengan menyunting file config.</p>
+<p>Beberapa fungsi Booked Scheduler hanya bisa dikontrol dengan menyunting file config.</p>
 
-<p class="setting"><span>$conf['settings']['server.timezone']</span>Konfigurasi ini harus merefleksikan zona waktu dari server yang terdapat phpScheduleIt. Server ini sekarang diatur pada <em>{$ServerTimezone}</em>. Lihat daftarnya di sini: <a href="http://php.net/manual/en/timezones.php" target="_blank">http://php.net/manual/en/timezones.php</a></p>
+<p class="setting"><span>$conf['settings']['server.timezone']</span>Konfigurasi ini harus merefleksikan zona waktu dari server yang terdapat Booked Scheduler. Server ini sekarang diatur pada <em>{$ServerTimezone}</em>. Lihat daftarnya di sini: <a href="http://php.net/manual/en/timezones.php" target="_blank">http://php.net/manual/en/timezones.php</a></p>
 
 <p class="setting"><span>$conf['settings']['allow.self.registration']</span>Jika pengguna memungkinkan untuk mendaftar akun baru.</p>
 
@@ -141,11 +141,11 @@ bersamaan dengan phpScheduleIt. Jika tidak, lihat
 
 <p class="setting"><span>$conf['settings']['default.page.size']</span>Jumlah baris pada setiap halaman yang menampilkan daftar dari data</p>
 
-<p class="setting"><span>$conf['settings']['enable.email']</span>Mengirim atau tidak setiap email dari phpScheduleIt</p>
+<p class="setting"><span>$conf['settings']['enable.email']</span>Mengirim atau tidak setiap email dari Booked Scheduler</p>
 
-<p class="setting"><span>$conf['settings']['default.language']</span>Bahasa standar untuk semua pengguna. Bisa menggunakan bahasa yang terdapat pada direktori bahasa phpScheduleIt.</p>
+<p class="setting"><span>$conf['settings']['default.language']</span>Bahasa standar untuk semua pengguna. Bisa menggunakan bahasa yang terdapat pada direktori bahasa Booked Scheduler.</p>
 
-<p class="setting"><span>$conf['settings']['script.url']</span>URL publik lengkap untuk sumber dari phpScheduleIt. Harus berisikan direktori Web yang terdapat file seperti booking.php dan calendar.php</p>
+<p class="setting"><span>$conf['settings']['script.url']</span>URL publik lengkap untuk sumber dari Booked Scheduler. Harus berisikan direktori Web yang terdapat file seperti booking.php dan calendar.php</p>
 
 <p class="setting"><span>$conf['settings']['password.pattern']</span>Sebuah ekspresi standar untuk memberlakukan kerumitan kata sabdi saat pendaftaran akun.</p>
 
@@ -155,7 +155,7 @@ bersamaan dengan phpScheduleIt. Jika tidak, lihat
 
 <p class="setting"><span>$conf['settings']['schedule']['hide.blocked.periods']</span>Jika periode blokir harus disembunyikan pada halaman booking. Biasanya adalah 'false'.</p>
 
-<p class="setting"><span>$conf['settings']['image.upload.directory']</span>Direktori untuk menyimpan gambar. Direktori ini harus bisa ditulis (writeable/755 sugeted). Bisa berupa direktori lengkap atau bergantung pada phpScheduleIt direktori utama.</p>
+<p class="setting"><span>$conf['settings']['image.upload.directory']</span>Direktori untuk menyimpan gambar. Direktori ini harus bisa ditulis (writeable/755 sugeted). Bisa berupa direktori lengkap atau bergantung pada Booked Scheduler direktori utama.</p>
 
 <p class="setting"><span>$conf['settings']['image.upload.url']</span>URL dimana hasil unggah gambar bisa dilihat. Bisa berupa URL lengkap atau tergantung pada  $conf['settings']['script.url'].</p>
 
@@ -173,7 +173,7 @@ bersamaan dengan phpScheduleIt. Jika tidak, lihat
 
 <p class="setting"><span>$conf['settings']['name.format']</span>Pengaturan format tampilan untuk nama awal dan nama akhir. Biasanya {literal}'{first} {last}'{/literal}.</p>
 
-<p class="setting"><span>$conf['settings']['css.extension.file']</span>URL lengkap atau relatif untuk file CSS tambahan agar termasuk. Pengaturan ini bisa digunakan untuk mengganti tema yang biasanya dengan tambahan pengaturan atau secara keseluruhan. Biarkan kosong jika Anda tidak ingin menambah style untuk phpScheduleIt.</p>
+<p class="setting"><span>$conf['settings']['css.extension.file']</span>URL lengkap atau relatif untuk file CSS tambahan agar termasuk. Pengaturan ini bisa digunakan untuk mengganti tema yang biasanya dengan tambahan pengaturan atau secara keseluruhan. Biarkan kosong jika Anda tidak ingin menambah style untuk Booked Scheduler.</p>
 
 <p class="setting"><span>$conf['settings']['disable.password.reset']</span>Jika pengaturan ulang kata sandi harus dinonaktifkan. Biasanya 'false'.</p>
 
@@ -219,7 +219,7 @@ bersamaan dengan phpScheduleIt. Jika tidak, lihat
 
 <p class="setting"><span>$conf['settings']['uploads']['enable.reservation.attachments']</span>Jika pengguna diizinkan untuk melampirkan file saat reservasi. Biasanya 'false'.</p>
 
-<p class="setting"><span>$conf['settings']['uploads']['reservation.attachment.path']</span>Alamat lengkap atau relatif dari sistem file (tergantung atau relatif dari direktori utama phpScheduleIt) untuk menyimpan lampiran reservasi. Direktori ini harus dapat ditulis (writeable) oleh PHP (755 disarankan). Standarnya 'uploads/reservation'.</p>
+<p class="setting"><span>$conf['settings']['uploads']['reservation.attachment.path']</span>Alamat lengkap atau relatif dari sistem file (tergantung atau relatif dari direktori utama Booked Scheduler) untuk menyimpan lampiran reservasi. Direktori ini harus dapat ditulis (writeable) oleh PHP (755 disarankan). Standarnya 'uploads/reservation'.</p>
 
 <p class="setting"><span>$conf['settings']['uploads']['reservation.attachment.extensions']</span>Pisahkan dengan koma daftar dari file ekstensi. Biarkan kosong untuk memungkinkan semua tipe file (tidak direkomendasi).</p>
 
@@ -231,7 +231,7 @@ bersamaan dengan phpScheduleIt. Jika tidak, lihat
 
 <p class="setting"><span>$conf['settings']['database']['hostspec']</span>URL host database atau IP.</p>
 
-<p class="setting"><span>$conf['settings']['database']['name']</span>Nama database dari phpScheduleIt.</p>
+<p class="setting"><span>$conf['settings']['database']['name']</span>Nama database dari Booked Scheduler.</p>
 
 <p class="setting"><span>$conf['settings']['phpmailer']['mailer']</span>Jenis email PHP. Pilihannya 'mail', 'smtp', 'sendmail', 'qmail'.</p>
 
@@ -263,7 +263,7 @@ bersamaan dengan phpScheduleIt. Jika tidak, lihat
 
 <p class="setting"><span>$conf['settings']['pages']['enable.configuration']</span>Jika halaman pengaturan konfigurasi harus tersedia untuk administrator aplikasi. Pilihannya 'true' atau 'false'.</p>
 
-<p class="setting"><span>$conf['settings']['api']['enabled']</span>Jika RESTful API phpScheduleit harus diaktifkan. Lihat lebih lanjut syarat-syarat untuk menggunakan API pada file readme_installation.html. Pilihannya 'true' atau 'false'.</p>
+<p class="setting"><span>$conf['settings']['api']['enabled']</span>Jika RESTful API Booked Scheduler harus diaktifkan. Lihat lebih lanjut syarat-syarat untuk menggunakan API pada file readme_installation.html. Pilihannya 'true' atau 'false'.</p>
 
 <p class="setting"><span>$conf['settings']['recaptcha']['enabled']</span>Jika ingin menggunakan reCAPTCHA daripada captcha yang ada. Pilihannya 'true' atau 'false'.</p>
 

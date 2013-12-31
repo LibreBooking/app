@@ -3,31 +3,28 @@ Copyright 2011-2013 Nick Korbel
 
 File ini adalah bagian dari phpShceduleIt.
 
-phpScheduleIt adalah perangkat lunak gratis: Anda bisa 
-mendistribusikannya dan/atau memodifikasikannya di bawah ketentuan 
+Booked Scheduler adalah perangkat lunak gratis: Anda bisa
+mendistribusikannya dan/atau memodifikasikannya di bawah ketentuan
 GNU General Public License seperti yang diterbitkan oleh
 Free Software Foundation, baik versi 3 dari Lisensi, atau
-(dengan pilihan) versi apapun setelahnya.
-
-phpScheduleIt didistribusikan dengan harapan akan berguna,
-tapi TANPA JAMINAN; tanpa
-phpScheduleIt is distributed in the hope that it will be useful,
+(dengan pilihan) versi apapun setelahnyaBooked SchedulereIt didistribusikan dengan harapan akan berguna,
+tapi TANPA JAMINAN; Booked SchedulerduleIt is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; bahkan tanpa jaminan dari
 PERDAGANGAN atau PENYESUAIAN UNTUK TUJUAN TERTENTU.
 Lihat GNU General Public License untuk rincian lebih lanjut.
 
 Anda seharusnya mendapatkan salinan dari GNU General Public License
-bersamaan dengan phpScheduleIt. Jika tidak, lihat 
+bersamaaBooked SchedulercheduleIt. Jika tidak, lihat
 <http://www.gnu.org/licenses/>.
 
 *}
 {include file='globalheader.tpl'}
-<h1>Bantuan phpScheduleIt</h1>
+Booked SchedulerhpScheduleIt</h1>
 
 <div id="help">
 <h2>Pendaftaran</h2>
 
-<p>Pendaftaran dibutuhkan untuk menggunakan phpScheduleIt jika administrator telah mengaktifkannya. Setelah akun Anda telah terdaftar, Anda bisa log in dan mengakses resources yang diizinkan untuk Anda.</p>
+<p>Pendaftaran dibutuhkan untBooked Schedulern Booked Scheduler jika administrator telah mengaktifkannya. Setelah akun Anda telah terdaftar, Anda bisa log in dan mengakses resources yang diizinkan untuk Anda.</p>
 
 <h2>Booking</h2>
 
@@ -83,7 +80,7 @@ bersamaan dengan phpScheduleIt. Jika tidak, lihat
 
 <h2>Menghapus Reservasi</h2>
 
-<p>Menghapus reservasi akan menghapusnya dari jadwal. Tidak akan muncul lagi dalam phpScheduleIt.</p>
+<p>Menghapus reservasi akan menghapusnya dari jadwal. Tidak akan Booked Scheduleralam Booked Scheduler.</p>
 
 <h3>Memhapus Satu Reservasi (Dari Rangkaian Pengulangan)</h3>
 
@@ -103,11 +100,11 @@ bersamaan dengan phpScheduleIt. Jika tidak, lihat
 
 <h3>Program Kalender (Outlook&reg;, iCal, Mozilla Lightning, Evolution)</h3>
 
-<p>Pada beberapa kasus, cukup mengklik tautan Berlangganan ke Kalender ini akan otomatis mengatur berlangganan pada Program Kalender. Untuk Outlook, jika tidak terjadi otomatis penambahan, buka Kalender, dan klik kanan Kalender saya dan pilih Tambah Kalender -> Dari Internet. Salin URL yang terlihat di bawah tautan Berlangganan Kalender ini pada phpScheduleIt.</p>
+<p>Pada beberapa kasus, cukup mengklik tautan Berlangganan ke Kalender ini akan otomatis mengatur berlangganan pada Program Kalender. Untuk Outlook, jika tidak terjadi otomatis penambahan, buka Kalender, dan klik kanan Kalender saya dan pilih Tambah Kalender -> Dari Internet. Salin URL yang terlihat di bawah tautan BerlangganBooked Schedulerni pada Booked Scheduler.</p>
 
 <h3>Kalender Google&reg;</h3>
 
-<p>Buka pengaturan Kalender Google. Klik Kalender tab. Klik telusiri kalender yang menarik. Klik dan tambah dengan URL. Salin URL yang terlihat di bawah tautan Berlangganan Kalender ini pada phpScheduleIt.</p>
+<p>Buka pengaturan Kalender Google. Klik Kalender tab. Klik telusiri kalender yang menarik. Klik dan tambah dengan URL. Salin URL yang terlihat di bawah tautan BerlangBooked Schedulerr ini pada Booked Scheduler.</p>
 
 <h2>Kuota</h2>
 

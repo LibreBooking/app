@@ -2,20 +2,20 @@
 /**
 Copyright 2011-2013 Nick Korbel
 
-This file is part of phpScheduleIt.
+This file is part of Booked Scheduler.
 
-phpScheduleIt is free software: you can redistribute it and/or modify
+Booked Scheduler is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation, either version 3 of the License, or
 (at your option) any later version.
 
-phpScheduleIt is distributed in the hope that it will be useful,
+Booked Scheduler is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
-along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
+along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 require_once(ROOT_DIR . 'Pages/ReservationPage.php');
@@ -25,19 +25,19 @@ require_once(ROOT_DIR . 'Presenters/Reservation/ReservationPresenter.php');
 interface INewReservationPage extends IReservationPage
 {
 	public function GetRequestedResourceId();
-	
+
 	public function GetRequestedScheduleId();
-	
+
 	/**
 	 * @return Date
 	 */
 	public function GetReservationDate();
-	
+
 	/**
 	 * @return Date
 	 */
 	public function GetStartDate();
-	
+
 	/**
 	 * @return Date
 	 */
@@ -53,11 +53,11 @@ class NewReservationPage extends ReservationPage implements INewReservationPage
 		$this->SetParticipants(array());
 		$this->SetInvitees(array());
 	}
-	
+
 	protected function GetPresenter()
 	{
 		return new ReservationPresenter(
-			$this, 
+			$this,
 			$this->initializationFactory,
 			new NewReservationPreconditionService());
 	}
@@ -66,22 +66,22 @@ class NewReservationPage extends ReservationPage implements INewReservationPage
 	{
 		return 'Reservation/create.tpl';
 	}
-	
+
 	protected function GetReservationAction()
 	{
 		return ReservationAction::Create;
 	}
-	
+
 	public function GetRequestedResourceId()
 	{
 		return $this->server->GetQuerystring(QueryStringKeys::RESOURCE_ID);
 	}
-	
+
 	public function GetRequestedScheduleId()
 	{
 		return $this->server->GetQuerystring(QueryStringKeys::SCHEDULE_ID);
 	}
-	
+
 	public function GetReservationDate()
 	{
 		$timezone = ServiceLocator::GetServer()->GetUserSession()->Timezone;
@@ -93,7 +93,7 @@ class NewReservationPage extends ReservationPage implements INewReservationPage
 		}
 		return new Date($dateTimeString, $timezone);
 	}
-	
+
 	public function GetStartDate()
 	{
 		$timezone = ServiceLocator::GetServer()->GetUserSession()->Timezone;
@@ -105,7 +105,7 @@ class NewReservationPage extends ReservationPage implements INewReservationPage
 		}
 		return new Date($dateTimeString, $timezone);
 	}
-	
+
 	public function GetEndDate()
 	{
 		$timezone = ServiceLocator::GetServer()->GetUserSession()->Timezone;

@@ -2,20 +2,16 @@
 /**
 Copyright 2012-13 Nick Korbel, Paul Menchini
 
-This file is part of phpScheduleIt.
-
-phpScheduleIt is free software: you can redistribute it and/or modify
+This file is part of Booked SchedulerBooked SchedulereIt is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-phpScheduleIt is distributed in the hope that it will be useful,
+(at your option) any later versBooked SchedulerduleIt is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
-along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
+alBooked SchedulercheduleIt.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 require_once(ROOT_DIR . 'lib/Email/namespace.php');
@@ -39,7 +35,7 @@ class AccountCreationEmail extends EmailMessage
 	function To()
 	{
 		return new EmailAddress(Configuration::Instance()->GetKey(ConfigKeys::ADMIN_EMAIL),
-								Configuration::Instance()->GetKey(ConfigKeys::APP_TITLE) ? Configuration::Instance()->GetKey(ConfigKeys::APP_TITLE) : 'phpScheduleIt'
+								Configuration::Instance()->GetKey(ConfigKeys::APP_TITLE) ? Configuration::Instance()->GetKey(ConfigKeys::APBooked SchedulerhpScheduleIt'
 							   );
 	}
 

@@ -4,21 +4,21 @@ Copyright 2011-2013 Nick Korbel
 
 File ini adalah bagian dari phpShceduleIt.
 
-phpScheduleIt adalah perangkat lunak gratis: Anda bisa 
-mendistribusikannya dan/atau memodifikasikannya di bawah ketentuan 
+Booked Scheduler adalah perangkat lunak gratis: Anda bisa
+mendistribusikannya dan/atau memodifikasikannya di bawah ketentuan
 GNU General Public License seperti yang diterbitkan oleh
 Free Software Foundation, baik versi 3 dari Lisensi, atau
 (dengan pilihan) versi apapun setelahnya.
 
-phpScheduleIt didistribusikan dengan harapan akan berguna,
+Booked Scheduler didistribusikan dengan harapan akan berguna,
 tapi TANPA JAMINAN; tanpa
-phpScheduleIt is distributed in the hope that it will be useful,
+Booked Scheduler is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; bahkan tanpa jaminan dari
 PERDAGANGAN atau PENYESUAIAN UNTUK TUJUAN TERTENTU.
 Lihat GNU General Public License untuk rincian lebih lanjut.
 
 Anda seharusnya mendapatkan salinan dari GNU General Public License
-bersamaan dengan phpScheduleIt. Jika tidak, lihat 
+bersamaan dengan Booked Scheduler. Jika tidak, lihat
 <http://www.gnu.org/licenses/>.
  */
 
@@ -453,13 +453,13 @@ class id_id extends en_us
 		$strings['Success'] = 'Berhasil';
 		$strings['Participant'] = 'Partisipan';
 		// End Strings
-		
+
 		// Install
-		$strings['InstallApplication'] = 'Pasang phpScheduleIt (hanya MySQL)';
+		$strings['InstallApplication'] = 'Pasang Booked Scheduler (hanya MySQL)';
 		$strings['IncorrectInstallPassword'] = 'Maaf, kata sandi salah.';
 		$strings['SetInstallPassword'] = 'Anda harus mengatur kata sandi pemasangan sebelum pemasangan bisa dijalankan.';
 		$strings['InstallPasswordInstructions'] = 'Dalam %s mohon atur %s manjadi kata sandi yang acak dan susah untuk ditebak, kemudian kembali ke halaman ini.<br/>Anda bisa menggunakan %s';
-		$strings['NoUpgradeNeeded'] = 'Tidak perlu pembaruan. Jalankan proses pemasangan akan menghapus semua dara yang ada dan memasang salinan baru phpScheduleIt!';
+		$strings['NoUpgradeNeeded'] = 'Tidak perlu pembaruan. Jalankan proses pemasangan akan menghapus semua dara yang ada dan memasang salinan baru Booked Scheduler!';
 		$strings['ProvideInstallPassword'] = 'Mohon masukkan kata sandi pemasangan.';
 		$strings['InstallPasswordLocation'] = 'Bisa ditemukan di %s dalam %s.';
 		$strings['VerifyInstallSettings'] = 'Periksa pengaturan standar berikut sebelum melanjutkan. Atau Anda bisa mengubahnya dalam %s.';
@@ -484,10 +484,10 @@ class id_id extends en_us
 		$strings['InstallationSuccess'] = 'Pemasangan berhasil!';
 		$strings['RegisterAdminUser'] = 'Daftar pengguna admin Anda. Dibutuhkan jika Anda tidak ingin impor contoh data. Pastikan $conf[\'settings\'][\'allow.self.registration\'] = \'true\' dalam file %s .';
 		$strings['LoginWithSampleAccounts'] = 'Jika Anda impor contoh data, Anda bisa masuk dengan admin/password untuk pengguna admin atau user/password untuk pengguna dasar.';
-		$strings['InstalledVersion'] = 'Anda sekarang menjalankan versi %s dari phpScheduleIt';
+		$strings['InstalledVersion'] = 'Anda sekarang menjalankan versi %s dari Booked Scheduler';
 		$strings['InstallUpgradeConfig'] = 'Direkomendasikan untuk mengupgrade file config Anda';
 		$strings['InstallationFailure'] = 'Ada masalah dengan instalasi. Mohon perbaik dan ulangi pemasangan.';
-		$strings['ConfigureApplication'] = 'Pengaturan phpScheduleIt';
+		$strings['ConfigureApplication'] = 'Pengaturan Booked Scheduler';
 		$strings['ConfigUpdateSuccess'] = 'File config Anda sekarang yang terbaru!';
 		$strings['ConfigUpdateFailure'] = 'Kami tidak bisa memperbarui otomatis file config Anda. Mohon tulis ulang isi config.php berikut:';
 		// End Install

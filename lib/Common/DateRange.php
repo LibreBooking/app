@@ -2,20 +2,16 @@
 /**
 Copyright 2011-2013 Nick Korbel
 
-This file is part of phpScheduleIt.
-
-phpScheduleIt is free software: you can redistribute it and/or modify
+This file is part of Booked SchedulerBooked SchedulereIt is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-phpScheduleIt is distributed in the hope that it will be useful,
+(at your option) any later versBooked SchedulerduleIt is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
-along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
+alBooked SchedulercheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 class DateRange
@@ -24,7 +20,7 @@ class DateRange
 	 * @var Date
 	 */
 	private $_begin;
-	
+
 	/**
 	 * @var Date
 	 */
@@ -133,7 +129,7 @@ class DateRange
 	 */
 	public function GetBegin()
 	{
-		return $this->_begin;	
+		return $this->_begin;
 	}
 
 	/**
@@ -143,7 +139,7 @@ class DateRange
 	{
 		return $this->_end;
 	}
-	
+
 	/**
 	 * @return array[int]Date
 	 */
@@ -151,18 +147,18 @@ class DateRange
 	{
 		$current = $this->_begin->GetDate();
 		$end = $this->_end->GetDate();
-		
+
 		$dates = array($current);
-		
+
 		for($day = 0; $current->Compare($end) < 0; $day++)
 		{
 			$current = $current->AddDays(1);
 			$dates[] = $current;
 		}
-		
+
 		return $dates;
 	}
-	
+
 	/**
 	 * @param DateRange $otherRange
 	 * @return bool
@@ -171,7 +167,7 @@ class DateRange
 	{
 		return $this->_begin->Equals($otherRange->GetBegin()) && $this->_end->Equals($otherRange->GetEnd());
 	}
-	
+
 	/**
 	 * @param string $timezone
 	 * @return DateRange
@@ -180,7 +176,7 @@ class DateRange
 	{
 		return new DateRange($this->_begin->ToTimezone($timezone), $this->_end->ToTimezone($timezone));
 	}
-	
+
 	/**
 	 * @return DateRange
 	 */
@@ -188,7 +184,7 @@ class DateRange
 	{
 		return new DateRange($this->_begin->ToUtc(), $this->_end->ToUtc());
 	}
-	
+
 	/**
 	 * @param int $days
 	 * @return DateRange
@@ -197,7 +193,7 @@ class DateRange
 	{
 		return new DateRange($this->_begin->AddDays($days), $this->_end->AddDays($days));
 	}
-	
+
 	/**
 	 * @return string
 	 */
@@ -205,7 +201,7 @@ class DateRange
 	{
 		return "\nBegin: " . $this->_begin->ToString() . " End: " . $this->_end->ToString() . "\n";
 	}
-	
+
 	public function __toString()
 	{
 		return $this->ToString();
@@ -215,12 +211,12 @@ class DateRange
 class NullDateRange extends DateRange
 {
 	protected static $instance;
-	
+
 	public function __construct()
 	{
 		parent::__construct(Date::Now(), Date::Now());
 	}
-	
+
 	/**
 	 * @return NullDateRange
 	 */
@@ -230,7 +226,7 @@ class NullDateRange extends DateRange
 		{
 			self::$instance = new NullDateRange();
 		}
-		
+
 		return self::$instance;
 	}
 }

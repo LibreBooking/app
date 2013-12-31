@@ -2,20 +2,20 @@
 /**
 Copyright 2011-2013 Nick Korbel
 
-This file is part of phpScheduleIt.
+This file is part of Booked Scheduler.
 
-phpScheduleIt is free software: you can redistribute it and/or modify
+Booked Scheduler is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation, either version 3 of the License, or
 (at your option) any later version.
 
-phpScheduleIt is distributed in the hope that it will be useful,
+Booked Scheduler is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
-along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
+along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 require_once(ROOT_DIR . 'Presenters/Dashboard/AnnouncementPresenter.php');
@@ -26,45 +26,45 @@ class AnnouncementPresenterTests extends TestBase
 	private $presenter;
 	private $page;
 	private $announcements;
-	
+
 	public function setup()
 	{
 		parent::setup();
-		
+
 		Date::_SetNow(new Date());
-		
+
 		$this->page = new FakeAnnouncementsControl();
-		
+
 		$this->announcements = new FakeAnnouncementRepository();
 		$this->presenter = new AnnouncementPresenter($this->page, $this->announcements);
 	}
-	
+
 	public function teardown()
 	{
 		parent::teardown();
-		
+
 		Date::_ResetNow();
 	}
-	
+
 	public function testShowsAllAnnouncements()
 	{
 		$now = Date::Now();
-		
+
 		$announcements = $this->GetAnnouncementRows();
 		$this->db->SetRow(0, $announcements);
-		
+
 		$expectedAnnouncements = array();
 		foreach($announcements as $item)
 		{
 			$expectedAnnouncements[] = $item[ColumnNames::ANNOUNCEMENT_TEXT];
 		}
-		
+
 		$this->presenter->PageLoad();
-		
+
 		$this->assertEquals($this->announcements->_ExpectedAnnouncements, $this->page->_LastAnnouncements);
 		$this->assertTrue($this->announcements->_GetFutureCalled);
 	}
-	
+
 	private function GetAnnouncementRows()
 	{
 		return array(
@@ -76,10 +76,10 @@ class AnnouncementPresenterTests extends TestBase
 
 }
 
-class FakeAnnouncementsControl implements IAnnouncementsControl 
+class FakeAnnouncementsControl implements IAnnouncementsControl
 {
 	public $_LastAnnouncements = array();
-	
+
 	public function SetAnnouncements($announcements)
 	{
 		$this->_LastAnnouncements = $announcements;

@@ -2,20 +2,20 @@
 /**
 Copyright 2011-2013 Nick Korbel
 
-This file is part of phpScheduleIt.
+This file is part of Booked Scheduler.
 
-phpScheduleIt is free software: you can redistribute it and/or modify
+Booked Scheduler is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation, either version 3 of the License, or
 (at your option) any later version.
 
-phpScheduleIt is distributed in the hope that it will be useful,
+Booked Scheduler is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
-along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
+along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 
@@ -40,7 +40,7 @@ class ReservationAuthorizationTests extends TestBase
 	 * @var ReservationAuthorization
 	 */
 	private $reservationAuthorization;
-	
+
 	public function setup()
 	{
 		parent::setup();
@@ -136,7 +136,7 @@ class ReservationAuthorizationTests extends TestBase
 			->method('CanReserveFor')
 			->with($this->equalTo($this->currentUser), $this->equalTo($ownerId))
 			->will($this->returnValue(false));
-					
+
 		$isEditable = $this->reservationAuthorization->CanEdit($reservationView, $this->currentUser);
 
 		$this->assertFalse($isEditable);
@@ -168,7 +168,7 @@ class ReservationAuthorizationTests extends TestBase
 			->method('CanReserveFor')
 			->with($this->equalTo($this->currentUser), $this->equalTo($ownerId))
 			->will($this->returnValue(true));
-		
+
 		$isEditable = $this->reservationAuthorization->CanEdit($reservationView, $this->currentUser);
 
 		$this->assertTrue($isEditable);
@@ -240,7 +240,7 @@ class ReservationAuthorizationTests extends TestBase
 				->method('CanReserveForOthers')
 				->with($this->equalTo($authorizedUser))
 				->will($this->returnValue(true));
-		
+
 		$asAdmin = $this->reservationAuthorization->CanChangeUsers($this->adminUser);
 		$asUser = $this->reservationAuthorization->CanChangeUsers($this->currentUser);
 		$asAuthorized = $this->reservationAuthorization->CanChangeUsers($authorizedUser);
@@ -254,7 +254,7 @@ class ReservationAuthorizationTests extends TestBase
 	{
 		$authorizedUser = new FakeUserSession();
 		$reservationOwnerId = 123;
-		
+
 		$this->authorizationService->expects($this->at(0))
 				->method('CanApproveFor')
 				->with($this->equalTo($this->currentUser), $this->equalTo($reservationOwnerId))
@@ -268,7 +268,7 @@ class ReservationAuthorizationTests extends TestBase
 		$pendingReservation = new ReservationView();
 		$pendingReservation->StatusId = ReservationStatus::Pending;
 		$pendingReservation->OwnerId = $reservationOwnerId;
-		
+
 		$asAdmin = $this->reservationAuthorization->CanApprove($pendingReservation, $this->adminUser);
 		$asUser = $this->reservationAuthorization->CanApprove($pendingReservation, $this->currentUser);
 		$asAuthorized = $this->reservationAuthorization->CanApprove($pendingReservation, $authorizedUser);
@@ -282,7 +282,7 @@ class ReservationAuthorizationTests extends TestBase
 	{
 		$approvedReservation = new ReservationView();
 		$approvedReservation->StatusId = ReservationStatus::Created;
-		
+
 		$canApprove = $this->reservationAuthorization->CanApprove($approvedReservation, $this->adminUser);
 
 		$this->assertFalse($canApprove);

@@ -2,20 +2,20 @@
 /**
 Copyright 2011-2013 Nick Korbel
 
-This file is part of phpScheduleIt.
+This file is part of Booked Scheduler.
 
-phpScheduleIt is free software: you can redistribute it and/or modify
+Booked Scheduler is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation, either version 3 of the License, or
 (at your option) any later version.
 
-phpScheduleIt is distributed in the hope that it will be useful,
+Booked Scheduler is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
-along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
+along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 require_once('Language.php');
@@ -193,7 +193,7 @@ $strings['Groups'] = 'Skupiny';
 $strings['ResetPassword'] = 'Resetovat heslo';
 $strings['AllUsers'] = 'Všichni uživatelé';
 $strings['AllGroups'] = 'Všechny skupiny';
-$strings['AllSchedules'] = 'Všechna naplánování'; 
+$strings['AllSchedules'] = 'Všechna naplánování';
 $strings['UsernameOrEmail'] = 'Uživatelské jméno nebo email';
 $strings['Members'] = 'Členové';
 $strings['QuickSlotCreation'] = 'Vytvořit místo každých %s minut mezi %s a %s';
@@ -251,7 +251,7 @@ $strings['Done'] = 'Hotovo';
 $strings['RememberMe'] = 'Přihlásit se trvale';
 $strings['FirstTimeUser?'] = 'Nemáte zde založený účet?';
 $strings['CreateAnAccount'] = 'Registrovat se';
-$strings['ViewSchedule'] = 'Zobrazit naplánování'; 
+$strings['ViewSchedule'] = 'Zobrazit naplánování';
 $strings['ForgotMyPassword'] = 'Zapomenuté heslo';
 $strings['YouWillBeEmailedANewPassword'] = 'Na zadaný email Vám bude zasláno nově vygenerované heslo.';
 $strings['Close'] = 'Zavřít';
@@ -329,7 +329,7 @@ $strings['DefaultScheduleCannotBeDeleted'] = 'původní naplánování nemůže 
 $strings['MakeDefault'] = 'Vytvořit jako původní';
 $strings['BringDown'] = 'Snížit';
 $strings['ChangeLayout'] = 'Změnit rozvržení';
-$strings['AddSchedule'] = 'Přidat naplánování'; 
+$strings['AddSchedule'] = 'Přidat naplánování';
 $strings['StartsOn'] = 'Začíná od';
 $strings['NumberOfDaysVisible'] = 'Viditelné dnů';
 $strings['UseSameLayoutAs'] = 'Použít rozvržení jako';
@@ -460,11 +460,11 @@ $strings['Participant'] = 'Participant';
 // End Strings
 
 // Install
-$strings['InstallApplication'] = 'Install phpScheduleIt (MySQL only)';
+$strings['InstallApplication'] = 'Install Booked Scheduler (MySQL only)';
 $strings['IncorrectInstallPassword'] = 'Sorry, that password was incorrect.';
 $strings['SetInstallPassword'] = 'You must set an install password before the installation can be run.';
 $strings['InstallPasswordInstructions'] = 'In %s please set %s to a password which is random and difficult to guess, then return to this page.<br/>You can use %s';
-$strings['NoUpgradeNeeded'] = 'There is no upgrade needed. Running the installation process will delete all existing data and install a new copy of phpScheduleIt!';
+$strings['NoUpgradeNeeded'] = 'There is no upgrade needed. Running the installation process will delete all existing data and install a new copy of Booked Scheduler!';
 $strings['ProvideInstallPassword'] = 'Please provide your installation password.';
 $strings['InstallPasswordLocation'] = 'This can be found at %s in %s.';
 $strings['VerifyInstallSettings'] = 'Verify the following default settings before continuing. Or you can change them in %s.';
@@ -489,10 +489,10 @@ $strings['ErrorText'] = 'Error Text:';
 $strings['InstallationSuccess'] = 'Installation completed successfully!';
 $strings['RegisterAdminUser'] = 'Register your admin user. This is required if you did not import the sample data. Ensure that $conf[\'settings\'][\'allow.self.registration\'] = \'true\' in your %s file.';
 $strings['LoginWithSampleAccounts'] = 'If you imported the sample data, you can log in with admin/password for admin user or user/password for basic user.';
-$strings['InstalledVersion'] = 'You are now running version %s of phpScheduleIt';
+$strings['InstalledVersion'] = 'You are now running version %s of Booked Scheduler';
 $strings['InstallUpgradeConfig'] = 'It is recommended to upgrade your config file';
 $strings['InstallationFailure'] = 'There were problems with the installation.  Please correct them and retry the installation.';
-$strings['ConfigureApplication'] = 'Configure phpScheduleIt';
+$strings['ConfigureApplication'] = 'Configure Booked Scheduler';
 $strings['ConfigUpdateSuccess'] = 'Your config file is now up to date!';
 $strings['ConfigUpdateFailure'] = 'We could not automatically update your config file. Please overwrite the contents of config.php with the following:';
 // End Install
@@ -560,8 +560,8 @@ $strings['MyAccount'] = 'Můj účet';
 $strings['Profile'] = 'Nastavení profilu';
 $strings['ApplicationManagement'] = 'Správa systému';
 $strings['ForgotPassword'] = 'zapomenuté heslo';
-$strings['NotificationPreferences'] = 'Nastavení oznámení emailem'; 
-$strings['ManageAnnouncements'] = 'Úplné uzavření provozu'; 
+$strings['NotificationPreferences'] = 'Nastavení oznámení emailem';
+$strings['ManageAnnouncements'] = 'Úplné uzavření provozu';
 $strings['Responsibilities'] = 'Odpovědnost';
 $strings['GroupReservations'] = 'Skupinové rezervace';
 $strings['ResourceReservations'] = 'Přístroje rezervací';

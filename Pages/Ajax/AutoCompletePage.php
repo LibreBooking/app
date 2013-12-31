@@ -2,20 +2,20 @@
 /**
 Copyright 2011-2013 Nick Korbel
 
-This file is part of phpScheduleIt.
+This file is part of Booked Scheduler.
 
-phpScheduleIt is free software: you can redistribute it and/or modify
+Booked Scheduler is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation, either version 3 of the License, or
 (at your option) any later version.
 
-phpScheduleIt is distributed in the hope that it will be useful,
+Booked Scheduler is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
-along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
+along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 require_once(ROOT_DIR . 'Domain/Access/namespace.php' );
@@ -28,7 +28,7 @@ class AutoCompletePage extends SecurePage
 	public function __construct()
 	{
 		parent::__construct();
-		
+
 	    $this->listMethods[AutoCompleteType::User] = 'GetUsers';
 	    $this->listMethods[AutoCompleteType::MyUsers] = 'GetMyUsers';
 	    $this->listMethods[AutoCompleteType::Group] = 'GetGroups';
@@ -52,7 +52,7 @@ class AutoCompletePage extends SecurePage
 		}
 
 		Log::Debug("AutoComplete for type: $type not defined");
-		
+
 		return '';
 	}
 
@@ -128,7 +128,7 @@ class AutoCompletePage extends SecurePage
 		{
 			$userFilter = new SqlFilterLike(ColumnNames::FIRST_NAME, $term);
 			$userFilter->_Or(new SqlFilterLike(ColumnNames::LAST_NAME, $term));
-					
+
 			$groupRepo = new GroupRepository();
 			$results = $groupRepo->GetUsersInGroup($groupIds, null, null, $userFilter)->Results();
 

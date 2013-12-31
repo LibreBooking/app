@@ -1,29 +1,29 @@
 {*
 Copyright 2011-2013 Nick Korbel
 
-Ce fichier fait parti de phpScheduleIt.
+Ce fichier fait parti de Booked Scheduler.
 
-phpScheduleIt est un logiciel libre : vous pouvez le redistribuer et/ou le
+Booked Scheduler est un logiciel libre : vous pouvez le redistribuer et/ou le
 modifier dans le respect des termes de la license GNU (General Public License)
-telle que publiée par la Free Software Foundation, que ce soit en version 3 
+telle que publiée par la Free Software Foundation, que ce soit en version 3
 de cette license ou plus récente (à votre guise).
 
-phpScheduleIt est distribué dans l'espoir d'être utile mais
-il est fourni SANS AUCUNE GARANTIE; sans même une garantie implicite 
+Booked Scheduler est distribué dans l'espoir d'être utile mais
+il est fourni SANS AUCUNE GARANTIE; sans même une garantie implicite
 de COMMERCIABILITE ou DE CONFORMITE A UNE UTILISATION PARTICULIERE.
 Voir la Licence Publique Générale GNU pour plus de détails.
 
 Vous devez avoir reçu une copie de la GNU General Public License
-avec phpScheduleIt. si ce n'est pas le cas consultez <http://www.gnu.org/licenses/>.
+avec Booked Scheduler. si ce n'est pas le cas consultez <http://www.gnu.org/licenses/>.
 *}
 {include file='globalheader.tpl'}
-<h1>Aide phpScheduleIt</h1>
+<h1>Aide Booked Scheduler</h1>
 
 <div id="help">
 <h2>Enregistrement</h2>
 
-<p>L'enregistrement est obligatoire pour utiliser phpScheduleIt.
-    Si l'administrateur a activé l'automatisme chaque utilisateur peut le faire lui même. Sinon, c'est l'administrateur qui crée les comptes. 
+<p>L'enregistrement est obligatoire pour utiliser Booked Scheduler.
+    Si l'administrateur a activé l'automatisme chaque utilisateur peut le faire lui même. Sinon, c'est l'administrateur qui crée les comptes.
     Après enregistrement, vous pourrez vous connecter et avoir accès à toutes les ressources qui vous sont autorisées.
 </p>
 
@@ -37,12 +37,12 @@ avec phpScheduleIt. si ce n'est pas le cas consultez <http://www.gnu.org/license
     <br>- La ressource
     <br>- Le jour et l'heure de début
     <br>- Le jour et l'heure de fin
-    
+
     <br>Ajoutez :
     <br>- Un libellé
     <br>- Des participants (en option)
     <br>- Des invités (en option)
-    
+
     <br><br>Validez en cliquant sur "Créer"
 </p>
 
@@ -85,11 +85,11 @@ avec phpScheduleIt. si ce n'est pas le cas consultez <http://www.gnu.org/license
 
 <p>Cette option offre de nombreux possibilités.
    <br>Par exemple :
-   
+
    <br>- Une "Répétition">"Journalière">Tous les "2 jours" --> créera des réservations régulières espacées de deux jours.
    <br>- Une "Répétition">"Hebdomadaire">Tous les "2 semaines" fixée au Jeudi --> créera une réservation le jeudi toute les 2 semaines.
    <br>- Une "Répétition" > "Mensuelle">Tous le "2 mois"Jour du mois --> répetera votre résa tous les 2 mois,  les 3 du mois, si on est le 3.
-   <br>- Une "Répétition" > "Mensuelle">Tous le "2 mois">Jour de la semaine --> répetera votre résa tous les 2 mois les premiers samedi du mois, si on est le premier samedi du mois.  
+   <br>- Une "Répétition" > "Mensuelle">Tous le "2 mois">Jour de la semaine --> répetera votre résa tous les 2 mois les premiers samedi du mois, si on est le premier samedi du mois.
 </p>
 
 <h3>Participants et invités</h3>
@@ -101,7 +101,7 @@ S'ils confirment leur accord, ils deviennent des participants, s'il refusent, il
 
 </p>
 
-<p> 
+<p>
     Le nombre total de participants est limité par la capacité de la ressource.
 </p>
 
@@ -127,7 +127,7 @@ La quantité dont vous pourrez disposer sera fonction de ce qui est diponible (l
 
 <p>
     Si une réservation est réglée pour se répéter, une série est crée.
-    <br>Chaque réservation de cette série est une instance. 
+    <br>Chaque réservation de cette série est une instance.
     <br>Si vous modifiez votre réservation, il
     vous sera demandé quelles instances de la série sont concernées par cette modification. Vous pouvez soit
     choisir :
@@ -151,8 +151,8 @@ La quantité dont vous pourrez disposer sera fonction de ce qui est diponible (l
 <h2>Ajouter une Réservation à Outlook &reg;, Ical, ...</h2>
 
 <p>A la consultation ou à la mise à jour d'une réservation, vous verrez un bouton "Ajouter à Outlook".
-    Si Outlook est installé sur votre ordi, il vous sera demandé si vous voulez l'ajouter, sinon vous pourrez 
-    télécharger le fichier ".ics".C'est un format standard de calendrier, utilisable dans toutes les 
+    Si Outlook est installé sur votre ordi, il vous sera demandé si vous voulez l'ajouter, sinon vous pourrez
+    télécharger le fichier ".ics".C'est un format standard de calendrier, utilisable dans toutes les
     applications qui supportent le format "iCalendar".</p>
 
 -------------------------------------------------------------
@@ -160,7 +160,7 @@ La quantité dont vous pourrez disposer sera fonction de ce qui est diponible (l
 <h2>Inscription aux Calendriers</h2>
 
 <p>Des calendriers peuvent être publiés pour les plannings, les ressources et les utilisateurs.
-Il faut, pour cela, que l'administrateur ai déterminé une clé d'inscription dans le fichier de configuration. 
+Il faut, pour cela, que l'administrateur ai déterminé une clé d'inscription dans le fichier de configuration.
 Pour activer les inscriptions aux calendriers, aux plannings, et Ressources,
 il suffit de cliquer sur le lien concerné lors de la gestion du planning ou de la ressource.
 Pour un calendrier personnel allez dans "Planning/Mon Calendrier" et cliquez sur "Permettre les inscriptions au Calendrier".
@@ -174,11 +174,11 @@ Pour vous inscrire à votre propre calendrier allez sur "Planning/Mon Calendrier
 <h3>Logiciels Clients (Outlook&reg;, iCal, Mozilla Lightning, Evolution)</h3>
 
 <p>Dans la plupart des cas le lien d'inscription ouvrira votre logiciel client et mettra tout automatiquement en place.
-Pour Outlook, si cela ne fonctionne pas, ajouter manuellement un calendrier dans le logiciel en copiant l'URL fournie lors de l'inscription au calendrier de phpScheduleIt.</p>
+Pour Outlook, si cela ne fonctionne pas, ajouter manuellement un calendrier dans le logiciel en copiant l'URL fournie lors de l'inscription au calendrier de Booked Scheduler.</p>
 
 <h3>Agenda Google&reg;</h3>
 
-<p>Cliquez sur la flèche d' "Autres agendas" puis sur  "Ajouter par URL". Copiez l'URL fournie lors de l'inscription dans phpScheduleIt.</p>
+<p>Cliquez sur la flèche d' "Autres agendas" puis sur  "Ajouter par URL". Copiez l'URL fournie lors de l'inscription dans Booked Scheduler.</p>
 
 
 -------------------------------------------------------------
@@ -186,7 +186,7 @@ Pour Outlook, si cela ne fonctionne pas, ajouter manuellement un calendrier dans
 
 <h2>Quotas</h2>
 
-<p>Les Administrateurs peuvent configurer des rêgles de quotas basées sur différents critères. si votre 
+<p>Les Administrateurs peuvent configurer des rêgles de quotas basées sur différents critères. si votre
    réservation va à l'encontre de ces rêgles, vous serez prévenu, et celle-ci sera refusée.</p>
 
 </div>

@@ -2,20 +2,20 @@
 /**
 Copyright 2011-2013 Nick Korbel
 
-This file is part of phpScheduleIt.
+This file is part of Booked Scheduler.
 
-phpScheduleIt is free software: you can redistribute it and/or modify
+Booked Scheduler is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation, either version 3 of the License, or
 (at your option) any later version.
 
-phpScheduleIt is distributed in the hope that it will be useful,
+Booked Scheduler is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
-along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
+along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 require_once(ROOT_DIR . 'Pages/Page.php');
@@ -26,10 +26,10 @@ require_once(ROOT_DIR . 'lib/Application/Authentication/namespace.php');
 interface IRegistrationAdminPage extends IPage
 {
 	public function SaveClicked();
-		
+
 	public function SetFirstName($firstName);
 	public function SetLastName($lastName);
-	public function SetUsername($username);	
+	public function SetUsername($username);
 	public function SetEmail($email);
 	public function SetPassword($password);
 	public function SetPasswordConfirm($passwordConfirm);
@@ -40,10 +40,10 @@ interface IRegistrationAdminPage extends IPage
 	public function SetPhone($phone);
     public function SetHomepage($homepage);
 	public function SetTimezone($timezone);
-	
+
 	public function GetFirstName();
 	public function GetLastName();
-	public function GetUsername();	
+	public function GetUsername();
 	public function GetEmail();
 	public function GetPassword();
 	public function GetPasswordConfirm();
@@ -61,17 +61,17 @@ class RegistrationAdminPage extends Page implements IRegistrationAdminPage
 	public function __construct()
 	{
 		parent::__construct('RegistrationAdmin');
-		
-		$this->_presenter = new RegistrationAdminPresenter($this);			
+
+		$this->_presenter = new RegistrationAdminPresenter($this);
 	}
-	
+
 	public function PageLoad()
 	{
 		$this->_presenter->PageLoad();
-		
-		$this->smarty->display('register-admin.tpl');				
+
+		$this->smarty->display('register-admin.tpl');
 	}
-	
+
 	public function SaveClicked()
 	{
 		return $this->GetForm(Actions::SAVE);
@@ -79,32 +79,32 @@ class RegistrationAdminPage extends Page implements IRegistrationAdminPage
 
 	public function SetFirstName($firstName)
 	{
-		$this->Set('FirstName', $firstName);	
+		$this->Set('FirstName', $firstName);
 	}
-	
+
 	public function SetLastName($lastName)
 	{
-		$this->Set('LastName', $lastName);	
-	}	
-		
+		$this->Set('LastName', $lastName);
+	}
+
 	public function SetUsername($username)
 	{
-		$this->Set('Username', $username);	
-	}	
-	
+		$this->Set('Username', $username);
+	}
+
 	public function SetEmail($email)
 	{
-		$this->Set('Email', $email);	
-	}	
-		
+		$this->Set('Email', $email);
+	}
+
 	public function SetPassword($password)
 	{
-		$this->Set('Password', $password);	
-	}	
-	
+		$this->Set('Password', $password);
+	}
+
 	public function SetPasswordConfirm($passwordConfirm)
 	{
-		$this->Set('PasswordConfirm', $passwordConfirm);	
+		$this->Set('PasswordConfirm', $passwordConfirm);
 	}
 
 	public function SetOrganization($organization)
@@ -141,12 +141,12 @@ class RegistrationAdminPage extends Page implements IRegistrationAdminPage
     {
     	$this->Set('Timezone', $timezone);
     }
-		
+
 	public function GetFirstName()
 	{
 		return $this->GetForm(FormKeys::FIRST_NAME);
 	}
-	
+
 	public function GetLastName()
 	{
 		return $this->GetForm(FormKeys::LAST_NAME);
@@ -156,17 +156,17 @@ class RegistrationAdminPage extends Page implements IRegistrationAdminPage
 	{
 		return $this->GetForm(FormKeys::USERNAME);
 	}
-	
+
 	public function GetEmail()
 	{
 		return $this->GetForm(FormKeys::EMAIL);
 	}
-	
+
 	public function GetPassword()
 	{
 		return $this->GetForm(FormKeys::PASSWORD);
 	}
-	
+
 	public function GetPasswordConfirm()
 	{
 		return $this->GetForm(FormKeys::PASSWORD_CONFIRM);
