@@ -41,7 +41,7 @@ interface IWebAuthentication extends IAuthenticationPromptOptions
 	public function Logout(UserSession $user);
 
 	/**
-	 * @param string $Booked SchedulerhpScheduleIt authentication cookie value
+	 * @param string $cookieValue authentication cookie value
 	 * @param ILoginContext $loginContext
 	 * @return bool If the login was successful
 	 */

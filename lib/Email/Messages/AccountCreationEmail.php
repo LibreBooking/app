@@ -35,8 +35,7 @@ class AccountCreationEmail extends EmailMessage
 	function To()
 	{
 		return new EmailAddress(Configuration::Instance()->GetKey(ConfigKeys::ADMIN_EMAIL),
-								Configuration::Instance()->GetKey(ConfigKeys::APP_TITLE) ? Configuration::Instance()->GetKey(ConfigKeys::APBooked SchedulerhpScheduleIt'
-							   );
+								Configuration::Instance()->GetKey(ConfigKeys::APP_TITLE));
 	}
 
 	/**

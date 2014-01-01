@@ -1,30 +1,30 @@
 {*
 Copyright 2011-2013 Nick Korbel
 
-File ini adalah bagian dari phpShceduleIt.
+File ini adalah bagian dari Booked Scheduler.
 
 Booked Scheduler adalah perangkat lunak gratis: Anda bisa
 mendistribusikannya dan/atau memodifikasikannya di bawah ketentuan
 GNU General Public License seperti yang diterbitkan oleh
 Free Software Foundation, baik versi 3 dari Lisensi, atau
-(dengan pilihan) versi apapun setelahnyaBooked SchedulereIt didistribusikan dengan harapan akan berguna,
+(dengan pilihan) versi apapun setelahnya Booked Scheduler didistribusikan dengan harapan akan berguna,
 tapi TANPA JAMINAN; Booked SchedulerduleIt is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; bahkan tanpa jaminan dari
 PERDAGANGAN atau PENYESUAIAN UNTUK TUJUAN TERTENTU.
 Lihat GNU General Public License untuk rincian lebih lanjut.
 
 Anda seharusnya mendapatkan salinan dari GNU General Public License
-bersamaaBooked SchedulercheduleIt. Jika tidak, lihat
+bersamaa Booked Scheduler. Jika tidak, lihat
 <http://www.gnu.org/licenses/>.
 
 *}
 {include file='globalheader.tpl'}
-Booked SchedulerhpScheduleIt</h1>
+Booked Scheduler</h1>
 
 <div id="help">
 <h2>Pendaftaran</h2>
 
-<p>Pendaftaran dibutuhkan untBooked Schedulern Booked Scheduler jika administrator telah mengaktifkannya. Setelah akun Anda telah terdaftar, Anda bisa log in dan mengakses resources yang diizinkan untuk Anda.</p>
+<p>Pendaftaran dibutuhkan unt Booked Scheduler jika administrator telah mengaktifkannya. Setelah akun Anda telah terdaftar, Anda bisa log in dan mengakses resources yang diizinkan untuk Anda.</p>
 
 <h2>Booking</h2>
 
