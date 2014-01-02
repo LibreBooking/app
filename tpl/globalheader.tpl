@@ -35,7 +35,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
 		<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jqueryui/1.9.0/jquery-ui.min.js"></script>
 	{/if}
-	<script type="text/javascript" src="{$Path}scripts/Booked Scheduler.js"></script>
+	<script type="text/javascript" src="{$Path}scripts/phpscheduleit.js"></script>
 	{*<script type="text/javascript" src="{$Path}scripts/menubar.js"></script>*}
 	<style type="text/css">
 		@import url({$Path}css/normalize.css);

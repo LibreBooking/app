@@ -77,7 +77,8 @@ class FakeResourceAccess extends ResourceRepository
 						 $sortOrder = 1,
 						 $typeId = null,
 						 $statusId = ResourceStatus::AVAILABLE,
-						 $reasonId = null)
+						 $reasonId = null,
+					     $bufferTime = null)
 	{
 
 		$this->rows[] = array(ColumnNames::RESOURCE_ID => $id,
@@ -104,6 +105,7 @@ class FakeResourceAccess extends ResourceRepository
 			ColumnNames::RESOURCE_TYPE_ID => $typeId,
 			ColumnNames::RESOURCE_STATUS_ID => $statusId,
 			ColumnNames::RESOURCE_STATUS_REASON_ID => $reasonId,
+			ColumnNames::RESOURCE_BUFFER_TIME => $bufferTime,
 		);
 
 		return $this;
@@ -112,7 +114,7 @@ class FakeResourceAccess extends ResourceRepository
 	public function GetRows()
 	{
 		$this->With(1, 'resource 1', null, null, 'notes 1', null, null, 0, 0, 0, null, null, null, null, 10, null, null,
-					1, '1232', 1154, 1, 10, ResourceStatus::AVAILABLE, null);
+					1, '1232', 1154, 1, 10, ResourceStatus::AVAILABLE, null, 60*30);
 
 		$this->With(2, 'resource 2',
 					'here 2',
@@ -136,7 +138,8 @@ class FakeResourceAccess extends ResourceRepository
 					null,
 					null,
 					ResourceStatus::UNAVAILABLE,
-					98
+					98,
+					null
 		);
 
 		return $this->rows;

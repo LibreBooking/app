@@ -87,6 +87,10 @@ class BookableResource implements IResource
 	 * @var string|int
 	 */
 	protected $_maxNotice;
+	/**
+	 * @var string|int
+	 */
+	protected $_bufferTime;
 	protected $_scheduleId;
 	protected $_imageName;
 	protected $_statusId = ResourceStatus::AVAILABLE;
@@ -196,6 +200,7 @@ class BookableResource implements IResource
 		$resource->WithSubscription($row[ColumnNames::ALLOW_CALENDAR_SUBSCRIPTION]);
 		$resource->WithScheduleAdminGroupId($row[ColumnNames::SCHEDULE_ADMIN_GROUP_ID_ALIAS]);
 		$resource->SetResourceTypeId($row[ColumnNames::RESOURCE_TYPE_ID]);
+		$resource->SetBufferTime($row[ColumnNames::RESOURCE_BUFFER_TIME]);
 
 		return $resource;
 	}
@@ -800,6 +805,22 @@ class BookableResource implements IResource
 	public function HasResourceType()
 	{
 		return !empty($this->_resourceTypeId);
+	}
+
+	/**
+	 * @param int|string|null $bufferTime
+	 */
+	public function SetBufferTime($bufferTime)
+	{
+		$this->_bufferTime = $bufferTime;
+	}
+
+	/**
+	 * @return TimeInterval
+	 */
+	public function GetBufferTime()
+	{
+		return TimeInterval::Parse($this->_bufferTime);
 	}
 
 }
