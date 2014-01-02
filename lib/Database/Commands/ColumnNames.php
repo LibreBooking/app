@@ -136,6 +136,7 @@ class ColumnNames
 	const RESOURCE_STATUS_DESCRIPTION = 'description';
 	const RESOURCE_ADMIN_GROUP_ID = 'admin_group_id';
 	const RESOURCE_SORT_ORDER = 'sort_order';
+	const RESOURCE_BUFFER_TIME = 'buffer_time';
 
 	// RESERVATION RESOURCES
 	const RESOURCE_LEVEL_ID = 'resource_level_id';

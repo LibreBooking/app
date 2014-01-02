@@ -642,6 +642,24 @@ class Date
 		$time = $this->GetTime();
 		return $this->SetTime(new Time($time->Hour(), $time->Minute(), 0, $this->Timezone()));
 	}
+
+	/**
+	 * @param TimeInterval $interval
+	 * @return Date
+	 */
+	public function SubtractInterval(TimeInterval $interval)
+	{
+		return $this->ApplyDifference($interval->Diff()->Invert());
+	}
+
+	/**
+	 * @param TimeInterval $interval
+	 * @return Date
+	 */
+	public function AddInterval(TimeInterval $interval)
+	{
+		return $this->ApplyDifference($interval->Diff());
+	}
 }
 
 class NullDate extends Date
@@ -847,6 +865,14 @@ class DateDiff
 	public function GreaterThan(DateDiff $diff)
 	{
 		return $this->seconds > $diff->seconds;
+	}
+
+	/**
+	 * @return DateDiff
+	 */
+	public function Invert()
+	{
+		return new DateDiff($this->seconds*-1);
 	}
 
 	/**

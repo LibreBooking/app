@@ -85,7 +85,10 @@ class ReservationListItem
 		return $this->item->GetReferenceNumber();
 	}
 
-	public function BufferMinutes()
+	/**
+	 * @return null|TimeInterval
+	 */
+	public function BufferTime()
 	{
 		return $this->item->GetBufferTime();
 	}
@@ -95,7 +98,7 @@ class ReservationListItem
 	 */
 	public function HasBufferTime()
 	{
-		return $this->BufferMinutes() > 0;
+		return $this->item->GetBufferTime()->TotalSeconds() > 0;
 	}
 }
 
@@ -109,11 +112,32 @@ class BufferItem extends ReservationListItem
 	 */
 	private $location;
 
+	/**
+	 * @var Date
+	 */
+	private $startDate;
+
+	/**
+	 * @var Date
+	 */
+	private $endDate;
+
 	public function __construct(ReservationListItem $item, $location)
 	{
 		parent::__construct($item->item);
 		$this->item = $item;
 		$this->location = $location;
+
+		if ($this->IsBefore())
+		{
+			$this->startDate = $this->item->StartDate()->SubtractInterval($this->item->BufferTime());
+			$this->endDate = $this->item->StartDate();
+		}
+		else
+		{
+			$this->startDate = $this->item->EndDate();
+			$this->endDate = $this->item->EndDate()->AddInterval($this->item->BufferTime());
+		}
 	}
 
 	public function BuildSlot(SchedulePeriod $start, SchedulePeriod $end, Date $displayDate, $span)
@@ -126,16 +150,7 @@ class BufferItem extends ReservationListItem
 	 */
 	public function StartDate()
 	{
-		if ($this->IsBefore())
-		{
-			return $this->item->StartDate()->SubtractMinutes($this->item->BufferMinutes());
-		}
-		return $this->item->EndDate();
-	}
-
-	private function IsBefore()
-	{
-		return $this->location == self::LOCATION_BEFORE;
+		return $this->startDate;
 	}
 
 	/**
@@ -143,11 +158,12 @@ class BufferItem extends ReservationListItem
 	 */
 	public function EndDate()
 	{
-		if ($this->IsBefore())
-		{
-			return $this->item->StartDate();
-		}
-		return $this->item->EndDate()->AddMinutes($this->item->BufferMinutes());
+		return $this->endDate;
+	}
+
+	private function IsBefore()
+	{
+		return $this->location == self::LOCATION_BEFORE;
 	}
 
 	public function OccursOn(Date $date)
@@ -169,12 +185,12 @@ class BufferItem extends ReservationListItem
 		return false;
 	}
 
-	public function BufferMinutes()
+	public function BufferTime()
 	{
 		return 0;
 	}
-
 }
+
 class BlackoutListItem extends ReservationListItem
 {
 	/**

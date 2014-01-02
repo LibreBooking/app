@@ -18,7 +18,6 @@ You should have received a copy of the GNU General Public License
 along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-
 require_once(ROOT_DIR . 'Domain/namespace.php');
 require_once(ROOT_DIR . 'lib/Application/Schedule/namespace.php');
 
@@ -658,7 +657,7 @@ class ScheduleReservationListTests extends TestBase
 			30,
 			60
 		);
-		$item->WithBufferTime(60);
+		$item->WithBufferTime(60*60);
 		$r1 = new ReservationListItem($item);
 
 		$list = new ScheduleReservationList(array($r1), $layout, $listDate, false);
@@ -706,8 +705,8 @@ class ScheduleReservationListTests extends TestBase
 			Date::Parse('2011-02-08 2:00', $tz)->ToUtc(),
 			1
 		);
-		$item1->WithBufferTime(60);
-		$item2->WithBufferTime(60);
+		$item1->WithBufferTime(60*60);
+		$item2->WithBufferTime(60*60);
 		$r1 = new ReservationListItem($item1);
 		$r2 = new ReservationListItem($item2);
 

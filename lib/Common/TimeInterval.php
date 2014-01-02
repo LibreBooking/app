@@ -114,6 +114,14 @@ class TimeInterval
 	 */
 	public function Interval()
 	{
+		return $this->Diff();
+	}
+
+	/**
+	 * @return DateDiff
+	 */
+	public function Diff()
+	{
 		if ($this->interval != null)
 		{
 			return $this->interval;
@@ -140,7 +148,11 @@ class TimeInterval
 	 */
 	public function TotalSeconds()
 	{
-		return $this->interval->TotalSeconds();
+		if ($this->interval != null)
+		{
+			return $this->interval->TotalSeconds();
+		}
+		return 0;
 	}
 
 	/**

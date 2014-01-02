@@ -757,7 +757,7 @@ interface IReservedItemView
 	public function GetReferenceNumber();
 
 	/**
-	 * @return int|null
+	 * @return TimeInterval|null
 	 */
 	public function GetBufferTime();
 }
@@ -931,7 +931,7 @@ class ReservationItemView implements IReservedItemView
 	/**
 	 * @var int|null
 	 */
-	public $BufferTime;
+	private $bufferSeconds = 0;
 
 	/**
 	 * @param $referenceNumber string
@@ -1096,7 +1096,11 @@ class ReservationItemView implements IReservedItemView
 			$view->ResourceStatusId = $row[ColumnNames::RESOURCE_STATUS_ID_ALIAS];
 		}
 
-//		$view->BufferTime = 20;
+		if (isset($row[ColumnNames::RESOURCE_BUFFER_TIME]))
+		{
+			$view->WithBufferTime($row[ColumnNames::RESOURCE_BUFFER_TIME]);
+		}
+
 		return $view;
 	}
 
@@ -1190,19 +1194,28 @@ class ReservationItemView implements IReservedItemView
 		return $this->ResourceName;
 	}
 
-	public function WithBufferTime($minutes)
+	/**
+	 * @param int $seconds
+	 */
+	public function WithBufferTime($seconds)
 	{
-		$this->BufferTime = $minutes;
+		$this->bufferSeconds = $seconds;
 	}
 
+	/**
+	 * @return bool
+	 */
 	public function HasBufferTime()
 	{
-		return !empty($this->BufferTime);
+		return !empty($this->bufferSeconds);
 	}
 
+	/**
+	 * @return TimeInterval
+	 */
 	public function GetBufferTime()
 	{
-		return $this->BufferTime;
+		return TimeInterval::Parse($this->bufferSeconds);
 	}
 }
 

@@ -357,7 +357,7 @@ class ScheduleReservationList implements IScheduleReservationList
 
 	private function Collides(ReservationListItem $item, $itemIndex)
 	{
-		$previousItem = $itemIndex > 1 ? $this->_items[--$itemIndex] : null;
+		$previousItem = $itemIndex > 0 ? $this->_items[--$itemIndex] : null;
 		$nextItem = $itemIndex < count($this->_items)-1 ? $this->_items[++$itemIndex] : null;
 
 		$itemDateRange = new DateRange($item->StartDate(), $item->EndDate());
