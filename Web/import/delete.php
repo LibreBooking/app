@@ -1,7 +1,7 @@
 <?php
 /*
-Copyright 2012 Alois Schloegl, IST Austria
-Copyright 2012 Moritz Schepp, IST Austria
+Copyright 2012-2014 Alois Schloegl, IST Austria
+Copyright 2012-2014 Moritz Schepp, IST Austria
 
 This file is part of Booked Scheduler.
 

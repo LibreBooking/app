@@ -1,6 +1,6 @@
 <?php
 /**
-Copyright 2011-2013 Nick Korbel
+Copyright 2011-2014 Nick Korbel
 
 This file is part of phpScheduleIt.
 
@@ -17,7 +17,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 */
- 
+
 print_r($_POST);
 
 ?>

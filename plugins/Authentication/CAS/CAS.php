@@ -1,8 +1,8 @@
 <?php
 /**
-Copyright 2011-2013 Nick Korbel
-Copyright 2013 Bart Verheyde
-Copyright 2013 Bryan Green
+Copyright 2011-2014 Nick Korbel
+Copyright 2013-2014 Bart Verheyde
+Copyright 2013-2014 Bryan Green
 
 This file is part of Booked Scheduler.
 

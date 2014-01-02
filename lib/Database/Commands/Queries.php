@@ -1,8 +1,8 @@
 <?php
 /**
-Copyright 2011-2013 Nick Korbel
-Copyright 2012, Moritz Schepp, IST Austria
-Copyright 2012, Alois Schloegl, IST Austria
+Copyright 2011-2014 Nick Korbel
+Copyright 2012-2014, Moritz Schepp, IST Austria
+Copyright 2012-2014, Alois Schloegl, IST Austria
 
 This file is part of Booked Scheduler.
 

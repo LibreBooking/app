@@ -1,6 +1,6 @@
 <?php
 /**
-Copyright 2011-2013 Nick Korbel
+Copyright 2011-2014 Nick Korbel
 
 This file is part of Booked Scheduler.
 
@@ -104,7 +104,7 @@ class CalendarSubscriptionPage extends Page implements ICalendarSubscriptionPage
 		return $this->GetQuerystring(QueryStringKeys::RESOURCE_ID);
 	}
 
-	// Copyright 2012, Alois Schloegl, IST Austria
+	// Copyright 2012-2014, Alois Schloegl, IST Austria
 	/**
 	 * @return int
 	 */

@@ -1,6 +1,6 @@
 <?php
 /**
-Copyright 2013 Bart Verheyde, Nick Korbel
+Copyright 2013-2014 Bart Verheyde, Nick Korbel
 bart.verheyde@ugent.be
 
 This file is not part of Booked Scheduler.

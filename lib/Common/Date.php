@@ -1,7 +1,7 @@
 <?php
 /**
-Copyright 2011-2013 Nick Korbel
-Copyright 2012 Trustees of Columbia University in the City of New York
+Copyright 2011-2014 Nick Korbel
+Copyright 2012-2014 Trustees of Columbia University in the City of New York
 
 This file is part of Booked SchedulerBooked SchedulereIt is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by

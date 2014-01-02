@@ -1,6 +1,6 @@
 <?php
 /**
-Copyright 2012 Bart Verheyde
+Copyright 2012-2014 Bart Verheyde
 bart.verheyde@ugent.be
 
 This file is part of Booked Scheduler.
