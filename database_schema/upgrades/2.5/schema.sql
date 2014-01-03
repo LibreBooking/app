@@ -96,3 +96,4 @@ ALTER TABLE `resources` ADD COLUMN `resource_status_reason_id` smallint(5) unsig
 ALTER TABLE `resources` ADD FOREIGN KEY (`resource_status_reason_id`) REFERENCES resource_status_reasons(`resource_status_reason_id`) ON DELETE SET NULL;
 UPDATE resources SET status_id = isactive;
 ALTER TABLE `resources` DROP COLUMN `isactive`;
+ALTER TABLE `resources` ADD COLUMN `buffer_time` int unsigned;
