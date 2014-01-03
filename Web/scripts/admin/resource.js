@@ -199,7 +199,7 @@ function ResourceManagement(opts) {
 		ConfigureAdminForm(elements.notesForm, defaultSubmitCallback(elements.notesForm));
 		ConfigureAdminForm(elements.addForm, defaultSubmitCallback(elements.addForm), null, handleAddError);
 		ConfigureAdminForm(elements.deleteForm, defaultSubmitCallback(elements.deleteForm));
-		ConfigureAdminForm(elements.configurationForm, defaultSubmitCallback(elements.groupAdminForm), null, errorHandler, {onBeforeSerialize:combineIntervals});
+		ConfigureAdminForm(elements.configurationForm, defaultSubmitCallback(elements.configurationForm), null, errorHandler, {onBeforeSerialize:combineIntervals});
 		ConfigureAdminForm(elements.groupAdminForm, defaultSubmitCallback(elements.groupAdminForm));
 		ConfigureAdminForm(elements.resourceTypeForm, defaultSubmitCallback(elements.resourceTypeForm));
 		$.each(elements.attributeForm, function(i,form){
@@ -311,6 +311,7 @@ function ResourceManagement(opts) {
 		setDaysHoursMinutes('#maxDuration', resource.maxLength, $('#noMaximumDuration'));
 		setDaysHoursMinutes('#startNotice', resource.startNotice, $('#noStartNotice'));
 		setDaysHoursMinutes('#endNotice', resource.endNotice, $('#noEndNotice'));
+		setDaysHoursMinutes('#bufferTime', resource.bufferTime, $('#noBufferTime'));
 		showHideConfiguration(resource.maxParticipants, $('#maxCapactiy'), $('#unlimitedCapactiy'));
 
 		$('#allowMultiday').val(resource.allowMultiday);

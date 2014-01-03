@@ -760,6 +760,16 @@ interface IReservedItemView
 	 * @return TimeInterval|null
 	 */
 	public function GetBufferTime();
+
+	/**
+	 * @return bool
+	 */
+	public function HasBufferTime();
+
+	/**
+	 * @return DateRange
+	 */
+	public function BufferedTimes();
 }
 
 class ReservationItemView implements IReservedItemView
@@ -1217,6 +1227,21 @@ class ReservationItemView implements IReservedItemView
 	{
 		return TimeInterval::Parse($this->bufferSeconds);
 	}
+
+	/**
+	 * @return DateRange
+	 */
+	public function BufferedTimes()
+	{
+		if (!$this->HasBufferTime())
+		{
+			return new DateRange($this->GetStartDate(), $this->GetEndDate());
+
+		}
+
+		$buffer = $this->GetBufferTime();
+		return new DateRange($this->GetStartDate()->SubtractInterval($buffer), $this->GetEndDate()->AddInterval($buffer));
+	}
 }
 
 class BlackoutItemView implements IReservedItemView
@@ -1425,6 +1450,22 @@ class BlackoutItemView implements IReservedItemView
 	public function GetBufferTime()
 	{
 		return null;
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function HasBufferTime()
+	{
+		return false;
+	}
+
+	/**
+	 * @return DateRange
+	 */
+	public function BufferedTimes()
+	{
+		return new DateRange($this->GetStartDate(), $this->GetEndDate());
 	}
 }
 

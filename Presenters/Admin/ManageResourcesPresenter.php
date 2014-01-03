@@ -189,6 +189,7 @@ class ManageResourcesPresenter extends ActionPresenter
 		$minNotice = $this->page->GetStartNoticeMinutes();
 		$maxNotice = $this->page->GetEndNoticeMinutes();
 		$maxParticipants = $this->page->GetMaxParticipants();
+		$bufferTime = $this->page->GetBufferTime();
 
 		Log::Debug('Updating resource id %s', $resourceId);
 
@@ -202,6 +203,7 @@ class ManageResourcesPresenter extends ActionPresenter
 		$resource->SetMinNotice($minNotice);
 		$resource->SetMaxNotice($maxNotice);
 		$resource->SetMaxParticipants($maxParticipants);
+		$resource->SetBufferTime($bufferTime);
 
 		$this->resourceRepository->Update($resource);
 	}

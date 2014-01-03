@@ -168,5 +168,3 @@ class TimeInterval
 		return '';
 	}
 }
-
-?>

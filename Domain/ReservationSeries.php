@@ -308,6 +308,28 @@ class ReservationSeries
 	}
 
 	/**
+	 * @return TimeInterval|null
+	 */
+	public function MaxBufferTime() {
+
+		$max = new TimeInterval(0);
+
+		foreach ($this->AllResources() as $resource)
+		{
+			if ($resource->HasBufferTime())
+			{
+				$buffer = $resource->GetBufferTime();
+				if ($buffer->TotalSeconds() > $max->TotalSeconds())
+				{
+					$max = $buffer;
+				}
+			}
+		}
+
+		return $max->TotalSeconds() > 0 ? $max : null;
+	}
+
+	/**
 	 * @param DateRange $reservationDate
 	 * @return bool
 	 */

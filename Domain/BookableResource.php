@@ -808,6 +808,14 @@ class BookableResource implements IResource
 	}
 
 	/**
+	 * @return bool
+	 */
+	public function HasBufferTime()
+	{
+		return !empty($this->_bufferTime);
+	}
+
+	/**
 	 * @param int|string|null $bufferTime
 	 */
 	public function SetBufferTime($bufferTime)
@@ -822,7 +830,4 @@ class BookableResource implements IResource
 	{
 		return TimeInterval::Parse($this->_bufferTime);
 	}
-
 }
-
-?>

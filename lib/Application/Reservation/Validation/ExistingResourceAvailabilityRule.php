@@ -27,11 +27,12 @@ class ExistingResourceAvailabilityRule extends ResourceAvailabilityRule implemen
 
 	/**
 	 * @param Reservation $instance
-	 * @param ReservationSeries|ExistingReservationSeries $series
+	 * @param ReservationSeries $series
 	 * @param IReservedItemView $existingItem
+	 * @param BookableResource[] $keyedResources
 	 * @return bool
 	 */
-	protected function IsInConflict(Reservation $instance, ReservationSeries $series, IReservedItemView $existingItem)
+	protected function IsInConflict(Reservation $instance, ReservationSeries $series, IReservedItemView $existingItem, $keyedResources)
 	{
 		if ($existingItem->GetId() == $instance->ReservationId() ||
 			$series->IsMarkedForDelete($existingItem->GetId()) ||
@@ -41,8 +42,6 @@ class ExistingResourceAvailabilityRule extends ResourceAvailabilityRule implemen
 			return false;
 		}
 
-		return ($existingItem->GetResourceId() == $series->ResourceId()) ||
-			(false !== array_search($existingItem->GetResourceId(), $series->AllResourceIds()));
+		return parent::IsInConflict($instance, $series, $existingItem, $keyedResources);
 	}
 }
-?>

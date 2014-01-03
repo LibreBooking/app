@@ -141,6 +141,7 @@ class ParameterNames
 	const RESOURCE_SORT_ORDER = '@sort_order';
 	const RESOURCE_STATUS = '@status_id';
 	const RESOURCE_STATUS_REASON = '@resource_status_reason_id';
+	const RESOURCE_BUFFER_TIME = '@buffer_time';
 
 	const RESOURCE_GROUP_ID = '@resourcegroupid';
 	const RESOURCE_GROUP_NAME = '@resourcegroupname';

@@ -147,12 +147,12 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			</ul>
 		</div>
 	</div>
-	<div style="float:right">
+	<div style="float:right;">
 		<div>
 			<h5>{translate key='UsageConfiguration'}</h5> <a class="update changeConfigurationButton"
 															 href="javascript: void(0);">{translate key='ChangeConfiguration'}</a>
 		</div>
-		<div style="float:left;width:300px;">
+		<div style="float:left;width:400px;">
 			<ul>
 				<li>
 					{if $resource->HasMinLength()}
@@ -185,7 +185,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			</ul>
 		</div>
 
-		<div style="float:right;width:300px;">
+		<div style="float:right;width:400px;">
 			<ul>
 				<li>
 					{if $resource->HasMinNotice()}
@@ -199,6 +199,13 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 						{translate key='ResourceMaxNotice' args=$resource->GetMaxNotice()}
 					{else}
 						{translate key='ResourceMaxNoticeNone'}
+					{/if}
+				</li>
+				<li>
+					{if $resource->HasBufferTime()}
+						{translate key='ResourceBufferTime' args=$resource->GetBufferTime()}
+					{else}
+						{translate key='ResourceBufferTimeNone'}
 					{/if}
 				</li>
 				<li>
@@ -432,6 +439,22 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 						</span>
 					</li>
 					<li>
+						<label>
+							<input type="checkbox" id="noBufferTime"/> {translate key=ResourceBufferTimeNone}
+						</label>
+						<span class="noBufferTime">
+							<br/>
+							{capture name="txtBufferTime" assign="txtBufferTime"}
+								<input type='text' id='bufferTimeDays' size='3' class='days textbox' maxlength='3'/>
+								<input type='text' id='bufferTimeHours' size='2' class='hours textbox' maxlength='2'/>
+								<input type='text' id='bufferTimeMinutes' size='2' class='minutes textbox'
+									   maxlength='2'/>
+								<input type='hidden' id='bufferTime' class='interval' {formname key=BUFFER_TIME} />
+							{/capture}
+							{translate key=ResourceBufferTime args=$txtBufferTime}
+						</span>
+					</li>
+					<li>
 						{translate key=ResourceAllowMultiDay}
 						<select id="allowMultiday" class="textbox" {formname key=ALLOW_MULTIDAY}>
 							<option value="1">{translate key='Yes'}</option>
@@ -619,6 +642,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			maxLength: {},
 			startNotice: {},
 			endNotice: {},
+			bufferTime: {},
 			adminGroupId: '{$resource->GetAdminGroupId()}',
 			sortOrder: '{$resource->GetSortOrder()}',
 			resourceTypeId : '{$resource->GetResourceTypeId()}',
@@ -659,6 +683,15 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			days: '{$resource->GetMaxNotice()->Days()}',
 			hours: '{$resource->GetMaxNotice()->Hours()}',
 			minutes: '{$resource->GetMaxNotice()->Minutes()}'
+		};
+		{/if}
+
+		{if $resource->HasBufferTime()}
+		resource.bufferTime = {
+			value: '{$resource->GetBufferTime()}',
+			days: '{$resource->GetBufferTime()->Days()}',
+			hours: '{$resource->GetBufferTime()->Hours()}',
+			minutes: '{$resource->GetBufferTime()->Minutes()}'
 		};
 		{/if}
 

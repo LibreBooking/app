@@ -1,7 +1,6 @@
 ALTER TABLE `custom_attributes` ADD COLUMN `entity_id` mediumint(8) unsigned;
 
 ALTER TABLE `resources` ADD COLUMN `resource_type_id` mediumint(8) unsigned;
-ALTER TABLE `resources` ADD COLUMN `buffer_time` int unsigned;
 
 DROP TABLE IF EXISTS `resource_group_assignment`;
 

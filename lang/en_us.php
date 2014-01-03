@@ -169,6 +169,8 @@ class en_us extends Language
 		$strings['ResourceMinNoticeNone'] = 'Reservations can be made up until the current time';
 		$strings['ResourceMaxNotice'] = 'Reservations must not end more than %s from the current time';
 		$strings['ResourceMaxNoticeNone'] = 'Reservations can end at any point in the future';
+		$strings['ResourceBufferTime'] = 'There must be %s between reservations';
+		$strings['ResourceBufferTimeNone'] = 'There is no buffer between reservations';
 		$strings['ResourceAllowMultiDay'] = 'Reservations can be made across days';
 		$strings['ResourceNotAllowMultiDay'] = 'Reservations cannot be made across days';
 		$strings['ResourceCapacity'] = 'This resource has a capacity of %s people';

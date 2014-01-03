@@ -87,6 +87,7 @@ class ResourceRepositoryTests extends TestBase
 		$sortOrder = 3;
 		$resourceTypeId = 111;
 		$reasonId = 19;
+		$bufferTime = 88881;
 
 		$resource = new BookableResource($id,
 										 $name,
@@ -109,6 +110,7 @@ class ResourceRepositoryTests extends TestBase
 		$resource->EnableSubscription();
 		$resource->SetSortOrder($sortOrder);
 		$resource->SetResourceTypeId($resourceTypeId);
+		$resource->SetBufferTime($bufferTime);
 
 		$publicId = $resource->GetPublicId();
 
@@ -137,7 +139,8 @@ class ResourceRepositoryTests extends TestBase
 			$sortOrder,
 			$resourceTypeId,
 			ResourceStatus::AVAILABLE,
-			$reasonId);
+			$reasonId,
+			new TimeInterval($bufferTime));
 
 		$actualUpdateResourceCommand = $this->db->_Commands[0];
 

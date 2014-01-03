@@ -78,6 +78,11 @@ interface IUpdateResourcePage
 	/**
 	 * @return string
 	 */
+	public function GetBufferTime();
+
+	/**
+	 * @return string
+	 */
 	public function GetAllowMultiday();
 
 	/**
@@ -274,6 +279,14 @@ class ManageResourcesPage extends ActionPage implements IManageResourcesPage
 	public function GetMaximumDuration()
 	{
 		return $this->GetForm(FormKeys::MAX_DURATION);
+	}
+
+	/**
+	 * @return string
+	 */
+	public function GetBufferTime()
+	{
+		return $this->GetForm(FormKeys::BUFFER_TIME);
 	}
 
 	/**

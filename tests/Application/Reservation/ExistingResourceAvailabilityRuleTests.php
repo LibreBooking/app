@@ -166,5 +166,114 @@ class ExistingResourceAvailabilityRuleTests extends TestBase
 
 		$this->assertTrue($ruleResult->IsValid());
 	}
+
+	public function testRuleIsValidIfNoConflictsForTheReservationResourcesWithBufferTimes()
+	{
+		$startDate = Date::Parse('2010-04-04 06:00', 'UTC');
+		$endDate = Date::Parse('2010-04-04 07:00', 'UTC');
+
+		$r1Buffer = 60*60;
+		$r2Buffer = 30*60;
+
+		$reservation = new TestReservationSeries();
+		$resource1 = new FakeBookableResource(100, null);
+		$resource1->SetBufferTime($r1Buffer);
+
+		$resource2 = new FakeBookableResource(101, null);
+		$resource2->SetBufferTime($r2Buffer);
+
+		$reservation->WithDuration(new DateRange($startDate, $endDate));
+		$reservation->WithResource($resource1);
+		$reservation->AddResource($resource2);
+		$reservation->AddResource(new FakeBookableResource(102, null));
+
+		$scheduleReservation1 = new TestReservationItemView(2, Date::Parse('2010-04-04 04:00',
+																		   'UTC'), Date::Parse('2010-04-04 05:00',
+																							   'UTC'), $resource1->GetId());
+		$scheduleReservation1->WithBufferTime($r1Buffer);
+
+		$scheduleReservation2 = new TestReservationItemView(3, Date::Parse('2010-04-04 07:00',
+																		   'UTC'), Date::Parse('2010-04-04 08:00',
+																							   'UTC'), $resource1->GetId());
+		$scheduleReservation2->WithBufferTime($r1Buffer);
+
+		$scheduleReservation3 = new TestReservationItemView(4, Date::Parse('2010-04-04 05:00',
+																		   'UTC'), Date::Parse('2010-04-04 05:30',
+																							   'UTC'), $resource2->GetId());
+
+		$scheduleReservation3->WithBufferTime($r2Buffer);
+
+		$scheduleReservation4 = new TestReservationItemView(5, Date::Parse('2010-04-04 07:30',
+																		   'UTC'), Date::Parse('2010-04-04 08:00',
+																							   'UTC'), $resource2->GetId());
+
+		$scheduleReservation4->WithBufferTime($r2Buffer);
+
+		$scheduleReservation5 = new TestReservationItemView(6, $startDate, $endDate, 999);
+		$strategy = $this->getMock('IResourceAvailabilityStrategy');
+
+		$strategy->expects($this->once())
+				 ->method('GetItemsBetween')
+				 ->with($this->equalTo($startDate->AddMinutes(-60)), $this->equalTo($endDate->AddMinutes(60)))
+				 ->will($this->returnValue(array($scheduleReservation1, $scheduleReservation2, $scheduleReservation3, $scheduleReservation4, $scheduleReservation5)));
+
+		$rule = new ExistingResourceAvailabilityRule($strategy, 'UTC');
+		$result = $rule->Validate($reservation);
+
+		$this->assertTrue($result->IsValid());
+	}
+
+	public function testGetsConflictingReservationTimesForSingleDateSingleResourceWithBufferTimes()
+	{
+		$startDate = Date::Parse('2010-04-04 06:00', 'UTC');
+		$endDate = Date::Parse('2010-04-04 07:00', 'UTC');
+
+		$bufferTime = 60*60;
+
+		$reservation = new TestReservationSeries();
+		$resource1 = new FakeBookableResource(100, null);
+		$resource1->SetBufferTime($bufferTime);
+
+		$reservation->WithDuration(new DateRange($startDate, $endDate));
+		$reservation->WithResource($resource1);
+
+		$conflict1 = new TestReservationItemView(2, Date::Parse('2010-04-04 04:00',
+																		   'UTC'), Date::Parse('2010-04-04 05:30',
+																							   'UTC'), $resource1->GetId());
+		$conflict1->WithBufferTime($bufferTime);
+
+		$conflict2 = new TestReservationItemView(3, Date::Parse('2010-04-04 07:30',
+																		   'UTC'), Date::Parse('2010-04-04 08:00',
+																							   'UTC'), $resource1->GetId());
+		$conflict2->WithBufferTime($bufferTime);
+
+		$nonConflict1 = new TestReservationItemView(4, Date::Parse('2010-04-04 06:00',
+																		   'UTC'), Date::Parse('2010-04-04 07:30',
+																							   'UTC'),  2);
+
+		$nonConflict1->WithBufferTime($bufferTime);
+
+		$nonConflict2 = new TestReservationItemView(5, Date::Parse('2010-04-04 02:30',
+																		   'UTC'), Date::Parse('2010-04-04 05:00',
+																							   'UTC'),  $resource1->GetId());
+		$nonConflict2->WithBufferTime($bufferTime);
+
+		$nonConflict3 = new TestReservationItemView(6, Date::Parse('2010-04-04 08:00',
+																		   'UTC'), Date::Parse('2010-04-04 09:00',
+																							   'UTC'),  $resource1->GetId());
+		$nonConflict3->WithBufferTime($bufferTime);
+
+		$strategy = $this->getMock('IResourceAvailabilityStrategy');
+
+		$strategy->expects($this->once())
+				 ->method('GetItemsBetween')
+				 ->with($this->equalTo($startDate->AddMinutes(-60)), $this->equalTo($endDate->AddMinutes(60)))
+				 ->will($this->returnValue(array($conflict1, $conflict2, $nonConflict1, $nonConflict2, $nonConflict3)));
+
+
+		$rule = new ExistingResourceAvailabilityRule($strategy, 'UTC');
+		$result = $rule->Validate($reservation);
+
+		$this->assertFalse($result->IsValid());
+	}
 }
-?>

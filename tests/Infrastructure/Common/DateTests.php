@@ -541,5 +541,12 @@ class DateTests extends TestBase
 		$this->assertEquals(1, $d->Month());
 		$this->assertEquals(2013, $d->Year());
 	}
+
+	public function testTimeIntervalParsesEmptyValue()
+	{
+		$interval = TimeInterval::Parse('dhm');
+
+		$this->assertEquals(0, $interval->TotalSeconds());
+	}
 }
 ?>

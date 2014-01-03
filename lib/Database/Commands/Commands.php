@@ -1829,7 +1829,8 @@ class UpdateResourceCommand extends SqlCommand
 								$sortOrder,
 								$resourceTypeId,
 								$statusId,
-								$reasonId)
+								$reasonId,
+								TimeInterval $bufferTime)
 	{
 		parent::__construct(Queries::UPDATE_RESOURCE);
 
@@ -1856,6 +1857,7 @@ class UpdateResourceCommand extends SqlCommand
 		$this->AddParameter(new Parameter(ParameterNames::RESOURCE_TYPE_ID, $resourceTypeId));
 		$this->AddParameter(new Parameter(ParameterNames::RESOURCE_STATUS, $statusId));
 		$this->AddParameter(new Parameter(ParameterNames::RESOURCE_STATUS_REASON, $reasonId));
+		$this->AddParameter(new Parameter(ParameterNames::RESOURCE_BUFFER_TIME, $bufferTime->ToDatabase()));
 
 	}
 }

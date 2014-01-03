@@ -184,7 +184,8 @@ class ResourceRepository implements IResourceRepository
 			$resource->GetSortOrder(),
 			$resource->GetResourceTypeId(),
 			$resource->GetStatusId(),
-			$resource->GetStatusReasonId()
+			$resource->GetStatusReasonId(),
+			$resource->GetBufferTime()
 		);
 
 		$db->Execute($updateResourceCommand);

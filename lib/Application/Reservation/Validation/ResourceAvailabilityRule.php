@@ -88,25 +88,43 @@ class ResourceAvailabilityRule implements IReservationValidationRule
 
 		$reservations = $reservationSeries->Instances();
 
+		$bufferTime = $reservationSeries->MaxBufferTime();
+
+		$keyedResources = array();
+		foreach ($reservationSeries->AllResources() as $resource)
+		{
+			$keyedResources[$resource->GetId()] = $resource;
+		}
+
 		/** @var Reservation $reservation */
 		foreach ($reservations as $reservation)
 		{
 			Log::Debug("Checking for reservation conflicts, reference number %s", $reservation->ReferenceNumber());
 
-			$existingItems = $this->strategy->GetItemsBetween($reservation->StartDate(), $reservation->EndDate());
+			$startDate = $reservation->StartDate();
+			$endDate = $reservation->EndDate();
+
+			if ($bufferTime != null)
+			{
+				$startDate = $startDate->SubtractInterval($bufferTime);
+				$endDate = $endDate->AddInterval($bufferTime);
+			}
+
+			$existingItems = $this->strategy->GetItemsBetween($startDate, $endDate);
 
 			/** @var IReservedItemView $existingItem */
 			foreach ($existingItems as $existingItem)
 			{
 				if (
-					$existingItem->GetStartDate()->Equals($reservation->EndDate()) ||
-					$existingItem->GetEndDate()->Equals($reservation->StartDate())
+					$bufferTime == null &&
+					($existingItem->GetStartDate()->Equals($reservation->EndDate()) ||
+					$existingItem->GetEndDate()->Equals($reservation->StartDate()))
 				)
 				{
 					continue;
 				}
 
-				if ($this->IsInConflict($reservation, $reservationSeries, $existingItem))
+				if ($this->IsInConflict($reservation, $reservationSeries, $existingItem, $keyedResources))
 				{
 					Log::Debug("Reference number %s conflicts with existing %s with id %s", $reservation->ReferenceNumber(), get_class($existingItem), $existingItem->GetId());
 					array_push($conflicts, $existingItem);
@@ -124,10 +142,31 @@ class ResourceAvailabilityRule implements IReservationValidationRule
 		return new ReservationRuleResult();
 	}
 
-	protected function IsInConflict(Reservation $instance, ReservationSeries $series, IReservedItemView $existingItem)
+	/**
+	 * @param Reservation $instance
+	 * @param ReservationSeries $series
+	 * @param IReservedItemView $existingItem
+	 * @param BookableResource[] $keyedResources
+	 * @return bool
+	 */
+	protected function IsInConflict(Reservation $instance, ReservationSeries $series, IReservedItemView $existingItem, $keyedResources)
 	{
-		return ($existingItem->GetResourceId() == $series->ResourceId()) ||
-			(false !== array_search($existingItem->GetResourceId(), $series->AllResourceIds()));
+		if (array_key_exists($existingItem->GetResourceId(), $keyedResources))
+		{
+//			$resource = $keyedResources[$existingItem->GetResourceId()];
+//			if (!$resource->HasBufferTime() || !$existingItem->HasBufferTime())
+//			{
+//				return true;
+//			}
+
+			return $existingItem->BufferedTimes()->Overlaps($instance->Duration());
+
+		}
+
+		return false;
+
+//		return ($existingItem->GetResourceId() == $series->ResourceId()) ||
+//			(false !== array_search($existingItem->GetResourceId(), $series->AllResourceIds()));
 	}
 
 	/**
@@ -161,4 +200,3 @@ class ResourceAvailabilityRule implements IReservationValidationRule
 		return $errorString->ToString();
 	}
 }
-?>
