@@ -65,6 +65,7 @@ class ResourceResponse extends RestResponse
 		$this->scheduleId = $resource->GetScheduleId();
 		$this->statusId = $resource->GetStatusId();
 		$this->statusReasonId = $resource->GetStatusReasonId();
+		$this->bufferTime = $resource->GetBufferTime()->__toString();
 
 		$attributeValues = $attributes->GetAttributes($resourceId);
 

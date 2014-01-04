@@ -57,6 +57,8 @@ class ResourcesWebServiceTests extends TestBase
 	{
 		$resourceId = 8282;
 		$resource = new FakeBookableResource($resourceId);
+		$resource->SetBufferTime(3600);
+
 		$attributes = new AttributeList();
 
 		$this->repository->expects($this->once())
