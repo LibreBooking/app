@@ -895,9 +895,6 @@ class DateDiff
 			$str .= $this->Minutes() . ' minutes';
 		}
 
-		return $str;
-		//return sprintf('%dd%dh%dm', $this->Days(), $this->Hours(), $this->Minutes());
+		return trim($str);
 	}
 }
-
-?>

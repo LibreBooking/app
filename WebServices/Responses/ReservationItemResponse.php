@@ -36,6 +36,9 @@ class ReservationItemResponse extends RestResponse
 	public $userId;
 	public $resourceId;
 	public $duration;
+	public $bufferTime;
+	public $bufferedStartDate;
+	public $bufferedEndDate;
 
 	public function __construct(ReservationItemView $reservationItemView, IRestServer $server, $showUser, $showDetails)
 	{
@@ -63,6 +66,10 @@ class ReservationItemResponse extends RestResponse
 		$this->scheduleId = $reservationItemView->ScheduleId;
 		$this->userId = $reservationItemView->UserId;
 		$this->resourceId = $reservationItemView->ResourceId;
+		$this->bufferTime = $reservationItemView->GetBufferTime()->__toString();
+		$bufferedDuration = $reservationItemView->BufferedTimes();
+		$this->bufferedStartDate = $bufferedDuration->GetBegin()->ToIso();
+		$this->bufferedEndDate = $bufferedDuration->GetEnd()->ToIso();
 
 		$this->AddService($server, WebServices::GetResource,
 						  array(WebServiceParams::ResourceId => $reservationItemView->ResourceId));
