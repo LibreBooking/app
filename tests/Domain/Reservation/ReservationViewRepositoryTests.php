@@ -265,10 +265,11 @@ class ReservationViewRepositoryTests extends TestBase
 		$invitee_list = '700,800';
 		$attributes = 'a1=av1,a2=av2';
 		$preferences = 'p1=pv1,p2=pv2';
+		$bufferTime = 3600;
 
 		$rows[] = $this->GetReservationListRow($referenceNumber1, $resource1, $start1, $end1, $resourceId, $instanceId,
 											   $userLevelId, $title, $description, $scheduleId, $fname, $lname,
-											   $userId, $phone, $organization, $position, $participant_list, $invitee_list, $attributes, $preferences);
+											   $userId, $phone, $organization, $position, $participant_list, $invitee_list, $attributes, $preferences, $bufferTime);
 		$rows[] = $this->GetReservationListRow("2", "resource", Date::Now(), Date::Now(), 1, 1, 1, null, null, 1, null,
 											   null, null, null, null, null);
 
@@ -284,9 +285,9 @@ class ReservationViewRepositoryTests extends TestBase
 		$this->assertEquals($expectedCommand, $actualCommand);
 
 		$this->assertEquals(count($rows), count($reservations));
-		$expectedItem1 = new ReservationItemView($referenceNumber1, $start1, $end1, $resource1, $resourceId, $instanceId,
-												 $userLevelId, $title, $description, $scheduleId, $fname, $lname, $userId,
-												 $phone, $organization, $position, $participant_list, $invitee_list, $attributes, $preferences);
+
+		$expectedItem1 = ReservationItemView::Populate($rows[0]);
+
 		$this->assertEquals($expectedItem1, $reservations[0]);
 	}
 
@@ -411,7 +412,7 @@ class ReservationViewRepositoryTests extends TestBase
 										   $userId, $phone = 'phone', $organization = 'organization',
 										   $position = 'position',
 										   $participant_list = '', $invitee_list = null,
-										   $attributes = null, $preferences=null)
+										   $attributes = null, $preferences=null, $bufferTime = 0)
 	{
 		return array(
 			ColumnNames::REFERENCE_NUMBER => $referenceNumber,
@@ -437,6 +438,7 @@ class ReservationViewRepositoryTests extends TestBase
 			ColumnNames::INVITEE_LIST => $invitee_list,
 			ColumnNames::ATTRIBUTE_LIST => $attributes,
 			ColumnNames::USER_PREFERENCES => $preferences,
+			ColumnNames::RESOURCE_BUFFER_TIME => $bufferTime,
 		);
 	}
 

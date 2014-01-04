@@ -68,4 +68,3 @@ class AdminExcludedRule implements IReservationValidationRule
 		return $this->rule->Validate($reservationSeries);
 	}
 }
-?>

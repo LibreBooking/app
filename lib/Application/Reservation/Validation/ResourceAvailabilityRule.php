@@ -104,7 +104,7 @@ class ResourceAvailabilityRule implements IReservationValidationRule
 			$startDate = $reservation->StartDate();
 			$endDate = $reservation->EndDate();
 
-			if ($bufferTime != null)
+			if ($bufferTime != null && !$reservationSeries->BookedBy()->IsAdmin)
 			{
 				$startDate = $startDate->SubtractInterval($bufferTime);
 				$endDate = $endDate->AddInterval($bufferTime);
@@ -116,7 +116,7 @@ class ResourceAvailabilityRule implements IReservationValidationRule
 			foreach ($existingItems as $existingItem)
 			{
 				if (
-					$bufferTime == null &&
+					($bufferTime == null || $reservationSeries->BookedBy()->IsAdmin) &&
 					($existingItem->GetStartDate()->Equals($reservation->EndDate()) ||
 					$existingItem->GetEndDate()->Equals($reservation->StartDate()))
 				)
@@ -153,20 +153,10 @@ class ResourceAvailabilityRule implements IReservationValidationRule
 	{
 		if (array_key_exists($existingItem->GetResourceId(), $keyedResources))
 		{
-//			$resource = $keyedResources[$existingItem->GetResourceId()];
-//			if (!$resource->HasBufferTime() || !$existingItem->HasBufferTime())
-//			{
-//				return true;
-//			}
-
 			return $existingItem->BufferedTimes()->Overlaps($instance->Duration());
-
 		}
 
 		return false;
-
-//		return ($existingItem->GetResourceId() == $series->ResourceId()) ||
-//			(false !== array_search($existingItem->GetResourceId(), $series->AllResourceIds()));
 	}
 
 	/**

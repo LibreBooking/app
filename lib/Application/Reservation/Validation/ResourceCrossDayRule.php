@@ -43,5 +43,3 @@ class ResourceCrossDayRule implements IReservationValidationRule
 		return new ReservationRuleResult();
 	}
 }
-
-?>

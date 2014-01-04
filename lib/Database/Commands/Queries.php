@@ -956,19 +956,10 @@ class QueryBuilder
 	public static $DATE_FRAGMENT = '((ri.start_date >= @startDate AND ri.start_date <= @endDate) OR
 					(ri.end_date >= @startDate AND ri.end_date <= @endDate) OR
 					(ri.start_date <= @startDate AND ri.end_date >= @endDate))';
-//
-//	public static $SELECT_LIST_FRAGMENT = 'ri.*, rs.date_created as date_created, rs.last_modified as last_modified, rs.description as description, rs.status_id as status_id, rs.title,
-//					owner.fname as owner_fname, owner.lname as owner_lname, owner.user_id as owner_id, owner.phone as owner_phone, owner.position as owner_position, owner.organization as owner_organization,
-//					resources.name, resources.resource_id, resources.schedule_id, ru.reservation_user_level,
-//					GROUP_CONCAT(DISTINCT participants.user_id) as participant_list,
-//					GROUP_CONCAT(DISTINCT invitees.user_id) as invitee_list,
-//					GROUP_CONCAT(DISTINCT CONCAT(cav.custom_attribute_id,\'=\', cav.attribute_value)) as attribute_list,
-//					(SELECT GROUP_CONCAT(CONCAT(p.name, "=", p.value) SEPARATOR ",")
-//						FROM user_preferences p WHERE owner.user_id = p.user_id) as preferences';
 
 	public static $SELECT_LIST_FRAGMENT = 'ri.*, rs.date_created as date_created, rs.last_modified as last_modified, rs.description as description, rs.status_id as status_id, rs.title,
 					owner.fname as owner_fname, owner.lname as owner_lname, owner.user_id as owner_id, owner.phone as owner_phone, owner.position as owner_position, owner.organization as owner_organization,
-					resources.name, resources.resource_id, resources.schedule_id, resources.status_id as resource_status_id, resources.resource_status_reason_id, ru.reservation_user_level,
+					resources.name, resources.resource_id, resources.schedule_id, resources.status_id as resource_status_id, resources.resource_status_reason_id, resources.buffer_time, ru.reservation_user_level,
 					(SELECT GROUP_CONCAT(participants.user_id)
 						FROM reservation_users participants WHERE participants.reservation_instance_id = ri.reservation_instance_id AND participants.reservation_user_level = 2) as participant_list,
 

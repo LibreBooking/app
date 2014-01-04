@@ -1,22 +1,22 @@
 <?php
 /**
-Copyright 2011-2014 Nick Korbel
-
-This file is part of Booked Scheduler.
-
-Booked Scheduler is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-Booked Scheduler is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ * Copyright 2011-2014 Nick Korbel
+ *
+ * This file is part of Booked Scheduler.
+ *
+ * Booked Scheduler is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Booked Scheduler is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 require_once(ROOT_DIR . 'Domain/namespace.php');
 require_once(ROOT_DIR . 'lib/Application/Reservation/namespace.php');
@@ -49,9 +49,9 @@ class ResourceAvailabilityRuleTests extends TestBase
 		$strategy = $this->getMock('IResourceAvailabilityStrategy');
 
 		$strategy->expects($this->once())
-			->method('GetItemsBetween')
-			->with($this->equalTo($startDate), $this->equalTo($endDate))
-			->will($this->returnValue(array($scheduleReservation)));
+				 ->method('GetItemsBetween')
+				 ->with($this->equalTo($startDate), $this->equalTo($endDate))
+				 ->will($this->returnValue(array($scheduleReservation)));
 
 		$rule = new ResourceAvailabilityRule($strategy, 'UTC');
 		$result = $rule->Validate($reservation);
@@ -91,9 +91,9 @@ class ResourceAvailabilityRuleTests extends TestBase
 		$strategy = $this->getMock('IResourceAvailabilityStrategy');
 
 		$strategy->expects($this->once())
-			->method('GetItemsBetween')
-			->with($this->equalTo($startDate), $this->equalTo($endDate))
-			->will($this->returnValue($reservations));
+				 ->method('GetItemsBetween')
+				 ->with($this->equalTo($startDate), $this->equalTo($endDate))
+				 ->will($this->returnValue($reservations));
 
 		$rule = new ResourceAvailabilityRule($strategy, 'UTC');
 		$result = $rule->Validate($reservation);
@@ -126,9 +126,9 @@ class ResourceAvailabilityRuleTests extends TestBase
 		$strategy = $this->getMock('IResourceAvailabilityStrategy');
 
 		$strategy->expects($this->once())
-			->method('GetItemsBetween')
-			->with($this->equalTo($startDate), $this->equalTo($endDate))
-			->will($this->returnValue($reservations));
+				 ->method('GetItemsBetween')
+				 ->with($this->equalTo($startDate), $this->equalTo($endDate))
+				 ->will($this->returnValue($reservations));
 
 		$rule = new ResourceAvailabilityRule($strategy, 'UTC');
 		$result = $rule->Validate($reservation);
@@ -142,8 +142,8 @@ class ResourceAvailabilityRuleTests extends TestBase
 		$startDate = Date::Parse('2010-04-04 06:00', 'UTC');
 		$endDate = Date::Parse('2010-04-04 07:00', 'UTC');
 
-		$r1Buffer = 60*60;
-		$r2Buffer = 30*60;
+		$r1Buffer = 60 * 60;
+		$r2Buffer = 30 * 60;
 
 		$reservation = new TestReservationSeries();
 		$resource1 = new FakeBookableResource(100, null);
@@ -157,25 +157,29 @@ class ResourceAvailabilityRuleTests extends TestBase
 		$reservation->AddResource($resource2);
 		$reservation->AddResource(new FakeBookableResource(102, null));
 
-		$scheduleReservation1 = new TestReservationItemView(2, Date::Parse('2010-04-04 04:00',
-																		   'UTC'), Date::Parse('2010-04-04 05:00',
-																							   'UTC'), $resource1->GetId());
+		$scheduleReservation1 = new TestReservationItemView(2,
+															Date::Parse('2010-04-04 04:00', 'UTC'),
+															Date::Parse('2010-04-04 05:00', 'UTC'),
+															$resource1->GetId());
 		$scheduleReservation1->WithBufferTime($r1Buffer);
 
-		$scheduleReservation2 = new TestReservationItemView(3, Date::Parse('2010-04-04 07:00',
-																		   'UTC'), Date::Parse('2010-04-04 08:00',
-																							   'UTC'), $resource1->GetId());
+		$scheduleReservation2 = new TestReservationItemView(3,
+															Date::Parse('2010-04-04 07:00', 'UTC'),
+															Date::Parse('2010-04-04 08:00', 'UTC'),
+															$resource1->GetId());
 		$scheduleReservation2->WithBufferTime($r1Buffer);
 
-		$scheduleReservation3 = new TestReservationItemView(4, Date::Parse('2010-04-04 05:00',
-																		   'UTC'), Date::Parse('2010-04-04 05:30',
-																							   'UTC'), $resource2->GetId());
+		$scheduleReservation3 = new TestReservationItemView(4,
+															Date::Parse('2010-04-04 05:00', 'UTC'),
+															Date::Parse('2010-04-04 05:30', 'UTC'),
+															$resource2->GetId());
 
 		$scheduleReservation3->WithBufferTime($r2Buffer);
 
-		$scheduleReservation4 = new TestReservationItemView(5, Date::Parse('2010-04-04 07:30',
-																		   'UTC'), Date::Parse('2010-04-04 08:00',
-																							   'UTC'), $resource2->GetId());
+		$scheduleReservation4 = new TestReservationItemView(5,
+															Date::Parse('2010-04-04 07:30', 'UTC'),
+															Date::Parse('2010-04-04 08:00', 'UTC'),
+															$resource2->GetId());
 
 		$scheduleReservation4->WithBufferTime($r2Buffer);
 
@@ -198,7 +202,7 @@ class ResourceAvailabilityRuleTests extends TestBase
 		$startDate = Date::Parse('2010-04-04 06:00', 'UTC');
 		$endDate = Date::Parse('2010-04-04 07:00', 'UTC');
 
-		$bufferTime = 60*60;
+		$bufferTime = 60 * 60;
 
 		$reservation = new TestReservationSeries();
 		$resource1 = new FakeBookableResource(100, null);
@@ -207,30 +211,35 @@ class ResourceAvailabilityRuleTests extends TestBase
 		$reservation->WithDuration(new DateRange($startDate, $endDate));
 		$reservation->WithResource($resource1);
 
-		$conflict1 = new TestReservationItemView(2, Date::Parse('2010-04-04 04:00',
-																		   'UTC'), Date::Parse('2010-04-04 06:00',
-																							   'UTC'), $resource1->GetId());
+		$conflict1 = new TestReservationItemView(2,
+												 Date::Parse('2010-04-04 04:00', 'UTC'),
+												 Date::Parse('2010-04-04 06:00', 'UTC'),
+												 $resource1->GetId());
 		$conflict1->WithBufferTime($bufferTime);
 
-		$conflict2 = new TestReservationItemView(3, Date::Parse('2010-04-04 07:00',
-																		   'UTC'), Date::Parse('2010-04-04 08:00',
-																							   'UTC'), $resource1->GetId());
+		$conflict2 = new TestReservationItemView(3,
+												 Date::Parse('2010-04-04 07:00', 'UTC'),
+												 Date::Parse('2010-04-04 08:00', 'UTC'),
+												 $resource1->GetId());
 		$conflict2->WithBufferTime($bufferTime);
 
-		$nonConflict1 = new TestReservationItemView(4, Date::Parse('2010-04-04 06:00',
-																		   'UTC'), Date::Parse('2010-04-04 07:30',
-																							   'UTC'),  2);
+		$nonConflict1 = new TestReservationItemView(4,
+													Date::Parse('2010-04-04 06:00', 'UTC'),
+													Date::Parse('2010-04-04 07:30', 'UTC'),
+													2);
 
 		$nonConflict1->WithBufferTime($bufferTime);
 
-		$nonConflict2 = new TestReservationItemView(5, Date::Parse('2010-04-04 02:30',
-																		   'UTC'), Date::Parse('2010-04-04 05:00',
-																							   'UTC'),  $resource1->GetId());
+		$nonConflict2 = new TestReservationItemView(5,
+													Date::Parse('2010-04-04 02:30', 'UTC'),
+													Date::Parse('2010-04-04 05:00', 'UTC'),
+													$resource1->GetId());
 		$nonConflict2->WithBufferTime($bufferTime);
 
-		$nonConflict3 = new TestReservationItemView(6, Date::Parse('2010-04-04 08:00',
-																		   'UTC'), Date::Parse('2010-04-04 09:00',
-																							   'UTC'),  $resource1->GetId());
+		$nonConflict3 = new TestReservationItemView(6,
+													Date::Parse('2010-04-04 08:00', 'UTC'),
+													Date::Parse('2010-04-04 09:00', 'UTC'),
+													$resource1->GetId());
 		$nonConflict3->WithBufferTime($bufferTime);
 
 		$strategy = $this->getMock('IResourceAvailabilityStrategy');
@@ -247,14 +256,50 @@ class ResourceAvailabilityRuleTests extends TestBase
 		$this->assertFalse($result->IsValid());
 	}
 
+	public function testApplicationAdminsAreExcludedFromBufferConstraints()
+	{
+		$startDate = Date::Parse('2010-04-04 06:00', 'UTC');
+		$endDate = Date::Parse('2010-04-04 07:00', 'UTC');
+
+		$bufferTime = 60 * 60;
+
+		$reservation = new TestReservationSeries();
+		$resource1 = new FakeBookableResource(100, null);
+		$resource1->SetBufferTime($bufferTime);
+
+
+		$reservation->WithDuration(new DateRange($startDate, $endDate));
+		$reservation->WithResource($resource1);
+		$reservation->WithBookedBy(new FakeUserSession(true));
+
+		$conflict1 = new TestReservationItemView(2,
+												 Date::Parse('2010-04-04 04:00', 'UTC'),
+												 Date::Parse('2010-04-04 06:00', 'UTC'),
+												 $resource1->GetId());
+		$conflict1->WithBufferTime($bufferTime);
+
+		$strategy = $this->getMock('IResourceAvailabilityStrategy');
+
+		$strategy->expects($this->once())
+				 ->method('GetItemsBetween')
+				 ->with($this->equalTo($startDate), $this->equalTo($endDate))
+				 ->will($this->returnValue(array($conflict1)));
+
+
+		$rule = new ResourceAvailabilityRule($strategy, 'UTC');
+		$result = $rule->Validate($reservation);
+
+		$this->assertTrue($result->IsValid());
+	}
+
 	public function testValidatesEachDateThatAReservationRepeatsOn()
 	{
 		$start = Date::Parse('2010-01-01');
 		$end = Date::Parse('2010-01-02');
 		$reservationDates = new DateRange($start, $end);
 		$twoRepetitions = new RepeatWeekly(1,
-						$start->AddDays(14),
-						array($start->Weekday()));
+										   $start->AddDays(14),
+										   array($start->Weekday()));
 
 		$repeatDates = $twoRepetitions->GetDates($reservationDates);
 
@@ -265,9 +310,9 @@ class ResourceAvailabilityRuleTests extends TestBase
 		$strategy = $this->getMock('IResourceAvailabilityStrategy');
 
 		$strategy->expects($this->exactly(1 + count($repeatDates)))
-			->method('GetItemsBetween')
-			->with($this->anything(), $this->anything())
-			->will($this->returnValue(array()));
+				 ->method('GetItemsBetween')
+				 ->with($this->anything(), $this->anything())
+				 ->will($this->returnValue(array()));
 
 		$rule = new ResourceAvailabilityRule($strategy, 'UTC');
 		$result = $rule->Validate($reservation);
@@ -284,9 +329,9 @@ class ResourceAvailabilityRuleTests extends TestBase
 
 		$reservations = array();
 		$repository->expects($this->once())
-			->method('GetReservationList')
-			->with($this->equalTo($startDate), $this->equalTo($endDate))
-			->will($this->returnValue($reservations));
+				   ->method('GetReservationList')
+				   ->with($this->equalTo($startDate), $this->equalTo($endDate))
+				   ->will($this->returnValue($reservations));
 
 		$items = $strategy->GetItemsBetween($startDate, $endDate);
 
@@ -304,9 +349,9 @@ class ResourceAvailabilityRuleTests extends TestBase
 
 		$blackouts = array();
 		$repository->expects($this->once())
-			->method('GetBlackoutsWithin')
-			->with($this->equalTo(new DateRange($startDate, $endDate)))
-			->will($this->returnValue($blackouts));
+				   ->method('GetBlackoutsWithin')
+				   ->with($this->equalTo(new DateRange($startDate, $endDate)))
+				   ->will($this->returnValue($blackouts));
 
 		$items = $strategy->GetItemsBetween($startDate, $endDate);
 
