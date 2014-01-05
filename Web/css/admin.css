@@ -123,7 +123,7 @@ table.list {
 }
 
 table.list, .list td, .list th {
-     border: solid 1px #000000;
+     border: solid 1px #716e71;
 }
 
 .list td, .list th {
@@ -403,4 +403,16 @@ ul.jqtree-tree .group-resource .jqtree-title {
 
 #reservationTable {
 	width:100%;
+}
+
+th.date {
+	width:120px;
+}
+
+th.action {
+	max-width:50px;
+}
+
+#reservationFilterButtons {
+	margin-top:5px;
 }

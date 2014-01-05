@@ -27,7 +27,6 @@ interface IManageReservationsPage extends IPageable, IActionPage
 {
 	/**
 	 * @param array|ReservationItemView[] $reservations
-	 * @return void
 	 */
 	public function BindReservations($reservations);
 
@@ -73,7 +72,6 @@ interface IManageReservationsPage extends IPageable, IActionPage
 
 	/**
 	 * @param Date $date|null
-	 * @return void
 	 */
 	public function SetStartDate($date);
 
@@ -85,44 +83,46 @@ interface IManageReservationsPage extends IPageable, IActionPage
 
 	/**
 	 * @param int $userId
-	 * @return void
 	 */
 	public function SetUserId($userId);
 
 	/**
 	 * @param string $userName
-	 * @return void
 	 */
 	public function SetUserName($userName);
 
 	/**
 	 * @param int $scheduleId
-	 * @return void
 	 */
 	public function SetScheduleId($scheduleId);
 
 	/**
 	 * @param int $resourceId
-	 * @return void
 	 */
 	public function SetResourceId($resourceId);
 
-
 	/**
 	 * @param string $referenceNumber
-	 * @return void
 	 */
 	public function SetReferenceNumber($referenceNumber);
 
 	/**
+	 * @param int $statusId
+	 */
+	public function SetResourceStatusFilterId($statusId);
+
+	/**
+	 * @param int $reasonId
+	 */
+	public function SetResourceStatusReasonFilterId($reasonId);
+
+	/**
 	 * @param array|Schedule[] $schedules
-	 * @return void
 	 */
 	public function BindSchedules($schedules);
 
 	/**
 	 * @param array|BookableResource[] $resources
-	 * @return void
 	 */
 	public function BindResources($resources);
 
@@ -142,8 +142,17 @@ interface IManageReservationsPage extends IPageable, IActionPage
 	public function GetReservationStatusId();
 
 	/**
+	 * @return int
+	 */
+	public function GetResourceStatusFilterId();
+
+	/**
+	 * @return int
+	 */
+	public function GetResourceStatusReasonFilterId();
+
+	/**
 	 * @param $reservationStatusId int
-	 * @return void
 	 */
 	public function SetReservationStatusId($reservationStatusId);
 
@@ -152,14 +161,8 @@ interface IManageReservationsPage extends IPageable, IActionPage
 	 */
 	public function GetApproveReferenceNumber();
 
-	/**
-	 * @return void
-	 */
 	public function ShowPage();
 
-	/**
-	 * @return void
-	 */
 	public function ShowCsv();
 
 	/**
@@ -201,6 +204,11 @@ interface IManageReservationsPage extends IPageable, IActionPage
 	 * @return int
 	 */
 	public function GetUpdateResourceId();
+
+	/**
+	 * @return bool
+	 */
+	public function CanUpdateResourceStatuses();
 }
 
 class ManageReservationsPage extends ActionPage implements IManageReservationsPage
@@ -227,6 +235,8 @@ class ManageReservationsPage extends ActionPage implements IManageReservationsPa
 			new UserPreferenceRepository());
 
 		$this->pageablePage = new PageablePage($this);
+
+		$this->SetCanUpdateResourceStatus(true);
 	}
 
 	public function ProcessAction()
@@ -527,5 +537,49 @@ class ManageReservationsPage extends ActionPage implements IManageReservationsPa
 	{
 		return $this->GetForm(FormKeys::RESOURCE_ID);
 	}
+
+	/**
+	 * @param int $statusId
+	 */
+	public function SetResourceStatusFilterId($statusId)
+	{
+		$this->Set('ResourceStatusFilterId', $statusId);
+	}
+
+	/**
+	 * @param int $reasonId
+	 */
+	public function SetResourceStatusReasonFilterId($reasonId)
+	{
+		$this->Set('ResourceStatusReasonFilterId', $reasonId);
+	}
+
+	/**
+	 * @return int
+	 */
+	public function GetResourceStatusFilterId()
+	{
+		return $this->GetQuerystring(QueryStringKeys::RESERVATION_RESOURCE_STATUS_ID);
+	}
+
+	/**
+	 * @return int
+	 */
+	public function GetResourceStatusReasonFilterId()
+	{
+		return $this->GetQuerystring(QueryStringKeys::RESERVATION_RESOURCE_REASON_ID);
+	}
+
+	public function SetCanUpdateResourceStatus($canUpdate)
+	{
+		$this->Set('CanUpdateResourceStatus', $canUpdate);
+
+	}
+	/**
+	 * @return bool
+	 */
+	public function CanUpdateResourceStatuses()
+	{
+		return $this->GetVar('CanUpdateResourceStatus');
+	}
 }
-?>

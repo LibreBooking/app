@@ -25,4 +25,3 @@ require_once(ROOT_DIR . 'Presenters/Admin/ManageResourcesPresenter.php');
 
 $page = new AdminPageDecorator(new ManageResourcesPage());
 $page->PageLoad();
-?>

@@ -58,5 +58,3 @@ class GroupAdminManageReservationsService implements IManageReservationsService
         return PageableDataStore::GetList($command, $builder, $pageNumber, $pageSize);
     }
 }
-
-?>

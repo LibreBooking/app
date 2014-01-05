@@ -35,8 +35,18 @@ class ReservationFilter
 	 * @param int $resourceId
 	 * @param int $userId
 	 * @param int $statusId
+	 * @param null $resourceStatusId
+	 * @param null $resourceStatusReasonId
 	 */
-	public function __construct($startDate = null, $endDate = null, $referenceNumber = null, $scheduleId = null, $resourceId = null, $userId = null, $statusId = null)
+	public function __construct($startDate = null,
+								$endDate = null,
+								$referenceNumber = null,
+								$scheduleId = null,
+								$resourceId = null,
+								$userId = null,
+								$statusId = null,
+								$resourceStatusId = null,
+								$resourceStatusReasonId = null)
 	{
 		$this->startDate = $startDate;
 		$this->endDate = $endDate;
@@ -45,6 +55,8 @@ class ReservationFilter
 		$this->resourceId = $resourceId;
 		$this->userId = $userId;
 		$this->statusId = $statusId;
+		$this->resourceStatusId = $resourceStatusId;
+		$this->resourceStatusReasonId = $resourceStatusReasonId;
 	}
 
 	/**
@@ -82,6 +94,12 @@ class ReservationFilter
 		if (!empty($this->statusId)) {
 			$filter->_And(new SqlFilterEquals(new SqlFilterColumn(TableNames::RESERVATION_SERIES_ALIAS, ColumnNames::RESERVATION_STATUS), $this->statusId));
 		}
+		if (!empty($this->resourceStatusId)) {
+			$filter->_And(new SqlFilterEquals(new SqlFilterColumn(TableNames::RESOURCES, ColumnNames::RESOURCE_STATUS_ID), $this->resourceStatusId));
+		}
+		if (!empty($this->resourceStatusReasonId)) {
+			$filter->_And(new SqlFilterEquals(new SqlFilterColumn(TableNames::RESOURCES, ColumnNames::RESOURCE_STATUS_REASON_ID), $this->resourceStatusReasonId));
+		}
 		foreach ($this->_and as $and)
 		{
 			$filter->_And($and);
@@ -90,5 +108,3 @@ class ReservationFilter
 		return $filter;
 	}
 }
-
-?>

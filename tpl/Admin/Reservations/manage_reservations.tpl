@@ -22,7 +22,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 <fieldset>
 	<legend style="font-weight:bold;font-size:12pt;">{translate key=Filter}</legend>
-	<table style="display:inline;">
+	<table id="filterTable">
 		<tr>
 			<td>{translate key=Between}</td>
 			<td>{translate key=User}</td>
@@ -30,6 +30,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			<td>{translate key=Resource}</td>
 			<td>{translate key=Status}</td>
 			<td>{translate key=ReferenceNumber}</td>
+			<td>{translate key=ResourceStatus}</td>
+			<td>{translate key=Reason}</td>
 		</tr>
 		<tr>
 			<td>
@@ -64,11 +66,24 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			<td>
 				<input id="referenceNumber" type="text" class="textbox" value="{$ReferenceNumber}" />
 			</td>
-			<td rowspan="2">
-				<button id="filter" class="button">{html_image src="search.png"} {translate key=Filter}</button>
+			<td>
+				<select id="resourceStatusIdFilter" class="textbox">
+					<option value="">{translate key=All}</option>
+					<option value="{ResourceStatus::AVAILABLE}">{translate key=Available}</option>
+					<option value="{ResourceStatus::UNAVAILABLE}">{translate key=Unavailable}</option>
+					<option value="{ResourceStatus::HIDDEN}">{translate key=Hidden}</option>
+				</select>
+			</td>
+			<td>
+				<select id="resourceReasonIdFilter" class="textbox">
+				</select>
 			</td>
 		</tr>
 	</table>
+	<div id="reservationFilterButtons">
+		<button id="filter" class="button">{html_image src="search.png"} {translate key=Filter}</button>
+		<a href="#" id="clearFilter">{translate key=Reset}</a>
+	</div>
 </fieldset>
 
 <div>&nbsp;</div>
@@ -83,17 +98,17 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		<th style="max-width: 120px;">{translate key='Resource'}</th>
 		<th style="max-width: 120px;">{translate key='Title'}</th>
 		<th style="max-width: 120px;">{translate key='Description'}</th>
-		<th>{translate key='BeginDate'}</th>
-		<th>{translate key='EndDate'}</th>
+		<th class="date">{translate key='BeginDate'}</th>
+		<th class="date">{translate key='EndDate'}</th>
 		<th>{translate key='Duration'}</th>
-		<th>{translate key='Created'}</th>
-		<th>{translate key='LastModified'}</th>
+		<th class="date">{translate key='Created'}</th>
+		<th class="date">{translate key='LastModified'}</th>
 		<th>{translate key='ReferenceNumber'}</th>
 		{foreach from=$AttributeList->GetLabels() item=label}
 		<th>{$label}</th>
 		{/foreach}
-		<th>{translate key='Delete'}</th>
-		<th>{translate key='Approve'}</th>
+		<th class="action">{translate key='Delete'}</th>
+		<th class="action">{translate key='Approve'}</th>
 	</tr>
 	{foreach from=$reservations item=reservation}
 	{cycle values='row0,row1' assign=rowCss}
@@ -106,16 +121,25 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		<td>{$reservation->ResourceName}
 			<div>{if $reservation->ResourceStatusId == ResourceStatus::AVAILABLE}
 				{html_image src="status.png"}
-				<a class="update changeStatus"
-				   href="#" resourceId="{$reservation->ResourceId}">{translate key='Available'}</a>
+				{if $CanUpdateResourceStatus}
+					<a class="update changeStatus" href="#" resourceId="{$reservation->ResourceId}">{translate key='Available'}</a>
+				{else}
+					{translate key='Available'}
+				{/if}
 			{elseif $reservation->ResourceStatusId == ResourceStatus::UNAVAILABLE}
 				{html_image src="status-away.png"}
-				<a class="update changeStatus"
-				   href="#" resourceId="{$reservation->ResourceId}">{translate key='Unavailable'}</a>
+				{if $CanUpdateResourceStatus}
+					<a class="update changeStatus" href="#" resourceId="{$reservation->ResourceId}">{translate key='Unavailable'}</a>
+				{else}
+					{translate key='Unavailable'}
+				{/if}
 			{else}
 				{html_image src="status-busy.png"}
-				<a class="update changeStatus"
-				   href="#" resourceId="{$reservation->ResourceId}">{translate key='Hidden'}</a>
+				{if $CanUpdateResourceStatus}
+					<a class="update changeStatus"  href="#" resourceId="{$reservation->ResourceId}">{translate key='Hidden'}</a>
+				{else}
+					{translate key='Hidden'}
+				{/if}
 			{/if}
 			{if array_key_exists($reservation->ResourceStatusReasonId,$StatusReasons)}
 				<span class="reservationResourceStatusReason">{$StatusReasons[$reservation->ResourceStatusReasonId]->Description()}</span>
@@ -270,6 +294,8 @@ $(document).ready(function() {
 	{foreach from=$StatusReasons item=reason}
 		reservationManagement.addStatusReason('{$reason->Id()}', '{$reason->StatusId()}', '{$reason->Description()|escape:javascript}');
 	{/foreach}
+
+	reservationManagement.initializeStatusFilter('{$ResourceStatusFilterId}','{$ResourceStatusReasonFilterId}');
 });
 </script>
 

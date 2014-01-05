@@ -13,6 +13,8 @@ function ReservationManagement(opts, approval)
 		referenceNumber: $("#referenceNumber"),
 		reservationTable: $("#reservationTable"),
 		updateScope: $('#hdnSeriesUpdateScope'),
+		resourceStatusIdFilter: $('#resourceStatusIdFilter'),
+		resourceReasonIdFilter: $('#resourceReasonIdFilter'),
 
 		deleteInstanceDialog: $('#deleteInstanceDialog'),
 		deleteSeriesDialog: $('#deleteSeriesDialog'),
@@ -26,6 +28,10 @@ function ReservationManagement(opts, approval)
 		statusOptions:$('#resourceStatusId'),
 		statusResourceId:$('#statusResourceId'),
 		statusReferenceNumber:$('#statusUpdateReferenceNumber'),
+
+		filterButton:$('#filter'),
+		clearFilterButton:$('#clearFilter'),
+		filterTable:$('#filterTable'),
 
 		referenceNumberList: $(':hidden.referenceNumber')
 	};
@@ -92,7 +98,15 @@ function ReservationManagement(opts, approval)
 		});
 
 		elements.statusOptions.change(function(e){
-			populateReasonOptions(elements.statusOptions.val());
+			populateReasonOptions(elements.statusOptions.val(), elements.statusReasons);
+		});
+
+		elements.resourceStatusIdFilter.change(function(e){
+			populateReasonOptions(elements.resourceStatusIdFilter.val(), elements.resourceReasonIdFilter);
+			if (opts.resourceReasonFilter)
+			{
+				elements.resourceReasonIdFilter.val(opts.resourceReasonFilter)
+			}
 		});
 
 		elements.deleteSeriesForm.find('.saveSeries').click(function() {
@@ -106,7 +120,11 @@ function ReservationManagement(opts, approval)
 			$(this).closest('form').submit();
 		});
 
-		$('#filter').click(filterReservations);
+		elements.filterButton.click(filterReservations);
+		elements.clearFilterButton.click(function(e){
+			e.preventDefault();
+			elements.filterTable.find('input,select').val('')
+		});
 
 		var deleteReservationResponseHandler = function(response, form)
 		{
@@ -145,6 +163,13 @@ function ReservationManagement(opts, approval)
 		}
 
 		reasons[statusId].push({id:id,description:description});
+	};
+
+	ReservationManagement.prototype.initializeStatusFilter = function(statusId, reasonId)
+	{
+		elements.resourceStatusIdFilter.val(statusId);
+		elements.resourceStatusIdFilter.trigger('change');
+		elements.resourceReasonIdFilter.val(reasonId);
 	};
 
 	function getDeleteUrl()
@@ -204,20 +229,20 @@ function ReservationManagement(opts, approval)
 		elements.statusOptions.val(statusId);
 		elements.statusResourceId.val(resourceId);
 		elements.statusReferenceNumber.val(referenceNumber);
-		populateReasonOptions(statusId);
+		populateReasonOptions(statusId, elements.statusReasons);
 		elements.statusReasons.val(reservations[referenceNumber].resources[resourceId].descriptionId);
 
 		elements.statusDialog.dialog('open');
 	}
 
-	function populateReasonOptions(statusId)
+	function populateReasonOptions(statusId, reasonsElement)
 	{
-		elements.statusReasons.empty().append($('<option>', {value:'', text:'-'}));
+		reasonsElement.empty().append($('<option>', {value:'', text:'-'}));
 
 		if (statusId in reasons)
 		{
 			$.each(reasons[statusId], function(i, v){
-				elements.statusReasons.append($('<option>', {
+				reasonsElement.append($('<option>', {
 						value: v.id,
 						text : v.description
 					}));
@@ -232,6 +257,11 @@ function ReservationManagement(opts, approval)
 
 	function filterReservations()
 	{
+		var reasonId = '';
+		if (elements.resourceReasonIdFilter.val())
+		{
+			reasonId = elements.resourceReasonIdFilter.val();
+		}
 		var filterQuery =
 				'sd=' + elements.startDate.val() +
 				'&ed=' + elements.endDate.val() +
@@ -240,7 +270,9 @@ function ReservationManagement(opts, approval)
 				'&uid=' + elements.userId.val() +
 				'&un=' + elements.userFilter.val() +
 				'&rn=' + elements.referenceNumber.val() +
-				'&rsid=' + elements.statusId.val();
+				'&rsid=' + elements.statusId.val() +
+				'&rrsid=' + elements.resourceStatusIdFilter.val() +
+				'&rrsrid=' + reasonId;
 
 		window.location = document.location.pathname + '?' + encodeURI(filterQuery);
 	}
