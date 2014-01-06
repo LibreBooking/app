@@ -1,6 +1,5 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
-		"http://www.w3.org/TR/html4/loose.dtd">
-<html>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 	<title>Booked Readme</title>
 </head>
@@ -9,7 +8,7 @@
 
 <h2>Prerequisites</h2>
 <ul>
-	<li>PHP 5.2 or greater (5.3 + recommended)</li>
+	<li>PHP 5.2 or greater (5.3+ recommended)</li>
 	<li>MySQL 5.0 or greater</li>
 	<li>Web server (Apache, IIS)</li>
 	<li>OS - Windows, Mac, Unix</li>
@@ -23,6 +22,42 @@
 Booked application help is available from the Help menu item.
 
 <h2>Release Notes</h2>
+
+<h4>2.5</h4>
+<ul>
+    <li>Application renamed from phpScheduleIt to Booked Scheduler <a href="http://www.bookedscheduler.com/phpscheduleit" target="_blank">(why?)</a></li>
+    <li>Added ability to reserve resource groups</li>
+    <li>Added ability to filter schedule resources</li>
+    <li>Added ability to specify resource type</li>
+    <li>Added enhanced resource status management</li>
+    <li>Added ability to specify buffer time between reservations (per resource)</li>
+    <li>Custom attributes now appear on all reservation emails and balloons</li>
+    <li>Added ability set custom attributes for an individual resource, user or resource type</li>
+    <li>Added ability manage config files for all plugins through the UI</li>
+    <li>Added ability to set reservation colors per user</li>
+    <li>Added ability to subscribe to reservation Atom feeds</li>
+    <li>Added ability update blackouts</li>
+    <li>Added ability attach multiple items to a reservation</li>
+    <li>Added Shibboleth authentication plugin (thank you to the folks at UCSF)</li>
+    <li>Added ability to email admin for all new account creations</li>
+    <li>Updates and cleanup on the API</li>
+    <li>Removed password regex setting in favor of password complexity settings</li>
+    <li>Changed schedule drop downs to exclude schedules if the user does not have permission to any of the resources belonging to it</li>
+    <li>Added wide and condensed booking page views</li>
+    <li>Added option to allow all users access to reports</li>
+    <li>Added setting for default 'from' email address</li>
+    <li>Changed the reservation page to default to the minimum resource reservation time</li>
+    <li>Fixed showing 'Private' when the current user is the reservation owner</li>
+    <li>Fixed bug where recurring reservations across daylight savings time boundaries were not being updated to the correct time</li>
+    <li>Fixed bug where schedule would freeze on certain daylight savings boundaries</li>
+    <li>Fixed pagination bug on manage reservations page</li>
+    <li>Fixed bug allowing invitees to join a reservation that was already at capacity</li>
+    <li>Fixed bug not enforcing resource cross day reservation constraint</li>
+    <li>Fixed bug where quota rules were being enforced cumulatively for resources on a schedule</li>
+    <li>Fixed bug where reminders were being sent for deleted reservations</li>
+    <li>Updated all mysql_* calls to mysqli_*</li>
+    <li>Numerous other minor fixes and updates</li>
+</ul>
 
 <h4>2.4.2</h4>
 <ul>
@@ -154,24 +189,6 @@ Booked application help is available from the Help menu item.
 	<li>Roles</li>
 	<li>Better Microsoft Outlook integration</li>
 	<li>Easier installation process</li>
-</ul>
-
-<h2>Road Map - 2.3</h2>
-<ul>
-	<li><h4>Planned Features</h4>
-		<ul>
-			<li>Reporting and statistics</li>
-			<li>Recurring blackout times</li>
-			<li>More features depending on timing and community needs</li>
-		</ul>
-	<li><h4>Planned Enhancements</h4>
-		<ul>
-			<li>Enhanced privacy controls</li>
-			<li>More plugin points</li>
-			<li>Minor bugfixes</li>
-			<li>More enhancements depending on timing and community needs</li>
-		</ul>
-	</li>
 </ul>
 
 </body>

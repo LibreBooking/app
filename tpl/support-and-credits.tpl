@@ -23,9 +23,9 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 <h2>Support</h2>
 
-<p><a href="http://php.brickhost.com/">Booked Scheduler Official Project Home</a></p>
+<p><a href="http://www.bookedscheduler.com/">Booked Scheduler Official Project Home</a></p>
 
-<p><a href="http://php.brickhost.com/forums/">Support Forum</a></p>
+<p><a href="http://php.brickhost.com/forums/">Community Support</a></p>
 
 <p><a href="https://sourceforge.net/projects/Booked Scheduler/">Booked Scheduler SourceForge Project Home</a></p>
 
@@ -39,9 +39,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 <p>Jan Mattila</p>
 
-<h3>Logo/UI</h3>
+<p>Paul Menchini</p>
 
-<p>Hannah Milan</p>
 
 <h3>Translators</h3>
 
@@ -86,6 +85,10 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 <p>jsTimezoneDetect</p>
 
 <p>jqplot</p>
+
+<p>FeedWriter</p>
+
+<p>Slim</p>
 
 <h2>License</h2>
 

@@ -47,9 +47,9 @@ function AttributeManagement(opts)
 
 	AttributeManagement.prototype.init = function ()
 	{
-		ConfigureAdminDialog(elements.addDialog, 480, 200);
-		ConfigureAdminDialog(elements.editDialog, 500, 200);
-		ConfigureAdminDialog(elements.deleteDialog, 430, 200);
+		ConfigureAdminDialog(elements.addDialog);
+		ConfigureAdminDialog(elements.editDialog);
+		ConfigureAdminDialog(elements.deleteDialog);
 
 		$(".save").click(function ()
 		{
