@@ -578,3 +578,7 @@ ul.indented li {
 .image-button {
 	cursor: pointer;
 }
+
+.block {
+	display:block;
+}

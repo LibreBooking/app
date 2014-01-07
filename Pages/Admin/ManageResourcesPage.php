@@ -181,6 +181,11 @@ interface IManageResourcesPage extends IUpdateResourcePage, IActionPage
 	 * @return int
 	 */
 	public function GetStatusReasonId();
+
+	/**
+	 * @return string
+	 */
+	public function GetNewStatusReason();
 }
 
 class ManageResourcesPage extends ActionPage implements IManageResourcesPage
@@ -430,6 +435,12 @@ class ManageResourcesPage extends ActionPage implements IManageResourcesPage
 	{
 		return $this->GetForm(FormKeys::RESOURCE_STATUS_REASON_ID);
 	}
-}
 
-?>
+	/**
+	 * @return string
+	 */
+	public function GetNewStatusReason()
+	{
+		return $this->GetForm(FormKeys::RESOURCE_STATUS_REASON);
+	}
+}

@@ -416,9 +416,6 @@ class ResourceRepository implements IResourceRepository
 		->Execute(new DeleteResourceTypeCommand($id));
 	}
 
-	/**
-	 * @return ResourceStatusReason[]
-	 */
 	public function GetStatusReasons()
 	{
 		$reasons = array();
@@ -433,6 +430,12 @@ class ResourceRepository implements IResourceRepository
 		$reader->Free();
 
 		return $reasons;
+	}
+
+	public function AddStatusReason($statusId, $reasonDescription)
+	{
+		return ServiceLocator::GetDatabase()
+					   ->ExecuteInsert(new AddResourceStatusReasonCommand($statusId, $reasonDescription));
 	}
 }
 
@@ -475,5 +478,3 @@ interface IResourceFilter
 	 */
 	function ShouldInclude($resource);
 }
-
-?>

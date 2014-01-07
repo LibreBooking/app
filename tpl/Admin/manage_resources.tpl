@@ -591,9 +591,12 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		</select>
 		<br/>
 		<br/>
-		<label for="reasonId">{translate key=Reason}</label><br/>
+		<label for="reasonId">{translate key=Reason}</label> <a href="#" id="addStatusReason">{translate key=Add}</a><br/>
 		<select id="reasonId" {formname key=RESOURCE_STATUS_REASON_ID} class="textbox">
 		</select>
+		<div id="newStatusReason" class="hidden">
+			<input type="text" class="textbox" {formname key=RESOURCE_STATUS_REASON}  />
+		</div>
 		<br/><br/>
 		<button type="button" class="button save">{html_image src="disk-black.png"} {translate key='Update'}</button>
 		<button type="button" class="button cancel">{html_image src="slash.png"} {translate key='Cancel'}</button>

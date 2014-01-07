@@ -337,6 +337,17 @@ class AddResourceGroupCommand extends SqlCommand
 	}
 }
 
+class AddResourceStatusReasonCommand extends SqlCommand
+{
+	public function __construct($statusId, $reasonDescription)
+		{
+			parent::__construct(Queries::ADD_RESOURCE_STATUS_REASON);
+
+			$this->AddParameter(new Parameter(ParameterNames::RESOURCE_STATUS, $statusId));
+			$this->AddParameter(new Parameter(ParameterNames::RESOURCE_STATUS_REASON_DESCRIPTION, $reasonDescription));
+		}
+}
+
 class AddResourceToGroupCommand extends SqlCommand
 {
 	public function __construct($resourceId, $groupId)

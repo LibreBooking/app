@@ -319,11 +319,20 @@ class ManageResourcesPresenter extends ActionPresenter
 	public function ChangeStatus()
 	{
 		$resourceId = $this->page->GetResourceId();
+		$statusId = $this->page->GetStatusId();
+		$statusReasonId = $this->page->GetStatusReasonId();
+		$statusReason = $this->page->GetNewStatusReason();
+
 		Log::Debug('Changing resource status. ResourceId: %s', $resourceId);
 
 		$resource = $this->resourceRepository->LoadById($resourceId);
 
-		$resource->ChangeStatus($this->page->GetStatusId(), $this->page->GetStatusReasonId());
+		if (empty($statusReasonId) && !empty($statusReason))
+		{
+			$statusReasonId = $this->resourceRepository->AddStatusReason($statusId, $statusReason);
+		}
+
+		$resource->ChangeStatus($statusId, $statusReasonId);
 		$this->resourceRepository->Update($resource);
 	}
 

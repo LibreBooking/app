@@ -33,6 +33,8 @@ function ResourceManagement(opts) {
 
 		statusReasons:$('#reasonId'),
 		statusOptions:$('#statusId'),
+		addStatusReason:$('#addStatusReason'),
+		newStatusReason:$('#newStatusReason'),
 
 		addForm:$('#addResourceForm')
 	};
@@ -156,6 +158,19 @@ function ResourceManagement(opts) {
 
 		elements.statusOptions.change(function(e){
 			populateReasonOptions(elements.statusOptions.val());
+		});
+
+		elements.addStatusReason.click(function(e){
+			e.preventDefault();
+			elements.newStatusReason.toggle();
+
+			if (elements.newStatusReason.is(':visible')){
+				elements.statusReasons.data('prev', elements.statusReasons.val());
+				elements.statusReasons.val('');
+			}
+			else{
+				elements.statusReasons.val(elements.statusReasons.data('prev'));
+			}
 		});
 
 		var imageSaveErrorHandler = function (result) {

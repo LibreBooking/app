@@ -764,6 +764,8 @@ const GET_RESERVATION_LIST_TEMPLATE =
 
 	const ADD_RESOURCE_GROUP = 'INSERT INTO resource_groups (resource_group_name, parent_id) VALUES (@groupname, @resourcegroupid)';
 
+	const ADD_RESOURCE_STATUS_REASON = 'INSERT INTO resource_status_reasons (status_id, description) VALUES (@status_id, @description)';
+
 	const ADD_RESOURCE_TO_GROUP = 'INSERT INTO
 			resource_group_assignment (resource_group_id, resource_id)
 			VALUES (@resourcegroupid, @resourceid)';

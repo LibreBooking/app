@@ -139,6 +139,11 @@ interface IResourceRepository
 	 * @return ResourceStatusReason[]
 	 */
 	public function GetStatusReasons();
-}
 
-?>
+	/**
+	 * @param $statusId
+	 * @param $reasonDescription
+	 * @return int
+	 */
+	public function AddStatusReason($statusId, $reasonDescription);
+}
