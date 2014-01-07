@@ -318,10 +318,11 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		<input id="resourceImage" type="file" class="text" size="60" {formname key=RESOURCE_IMAGE} />
 		<br/>
 		<span class="note">.gif, .jpg, or .png</span>
-		<br/><br/>
-		<button type="button"
-				class="button uploadImage">{html_image src="disk-black.png"} {translate key='Update'}</button>
-		<button type="button" class="button cancel">{html_image src="slash.png"} {translate key='Cancel'}</button>
+		<div class="admin-update-buttons">
+			<button type="button"
+					class="button uploadImage">{html_image src="disk-black.png"} {translate key='Update'}</button>
+			<button type="button" class="button cancel">{html_image src="slash.png"} {translate key='Cancel'}</button>
+		</div>
 	</form>
 </div>
 
@@ -329,9 +330,10 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 	<form id="renameForm" method="post" ajaxAction="{ManageResourcesActions::ActionRename}">
 		{translate key='Name'}: <input id="editName" type="text" class="textbox required" maxlength="85"
 									   style="width:250px" {formname key=RESOURCE_NAME} />
-		<br/><br/>
-		<button type="button" class="button save">{html_image src="disk-black.png"} {translate key='Rename'}</button>
-		<button type="button" class="button cancel">{html_image src="slash.png"} {translate key='Cancel'}</button>
+		<div class="admin-update-buttons">
+			<button type="button" class="button save">{html_image src="disk-black.png"} {translate key='Rename'}</button>
+			<button type="button" class="button cancel">{html_image src="slash.png"} {translate key='Cancel'}</button>
+		</div>
 	</form>
 </div>
 
@@ -343,9 +345,10 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 				<option value="{$scheduleId}">{$scheduleName}</option>
 			{/foreach}
 		</select>
-		<br/><br/>
-		<button type="button" class="button save">{html_image src="disk-black.png"} {translate key='Update'}</button>
-		<button type="button" class="button cancel">{html_image src="slash.png"} {translate key='Cancel'}</button>
+		<div class="admin-update-buttons">
+			<button type="button" class="button save">{html_image src="disk-black.png"} {translate key='Update'}</button>
+			<button type="button" class="button cancel">{html_image src="slash.png"} {translate key='Cancel'}</button>
+		</div>
 	</form>
 </div>
 
@@ -358,9 +361,10 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 				<option value="{$id}">{$resourceType->Name()}</option>
 			{/foreach}
 		</select>
-		<br/><br/>
-		<button type="button" class="button save">{html_image src="disk-black.png"} {translate key='Update'}</button>
-		<button type="button" class="button cancel">{html_image src="slash.png"} {translate key='Cancel'}</button>
+		<div class="admin-update-buttons">
+			<button type="button" class="button save">{html_image src="disk-black.png"} {translate key='Update'}</button>
+			<button type="button" class="button cancel">{html_image src="slash.png"} {translate key='Cancel'}</button>
+		</div>
 	</form>
 </div>
 
@@ -372,9 +376,10 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		{translate key=Contact}:<br/>
 		<input id="editContact" type="text" class="textbox" maxlength="85"
 			   style="width:250px" {formname key=RESOURCE_CONTACT} />
-		<br/><br/>
-		<button type="button" class="button save">{html_image src="disk-black.png"} {translate key='Update'}</button>
-		<button type="button" class="button cancel">{html_image src="slash.png"} {translate key='Cancel'}</button>
+		<div class="admin-update-buttons">
+			<button type="button" class="button save">{html_image src="disk-black.png"} {translate key='Update'}</button>
+			<button type="button" class="button cancel">{html_image src="slash.png"} {translate key='Cancel'}</button>
+		</div>
 	</form>
 </div>
 
@@ -383,9 +388,10 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		{translate key=Description}:<br/>
 		<textarea id="editDescription" class="textbox"
 				  style="width:460px;height:150px;" {formname key=RESOURCE_DESCRIPTION}></textarea>
-		<br/><br/>
-		<button type="button" class="button save">{html_image src="disk-black.png"} {translate key='Update'}</button>
-		<button type="button" class="button cancel">{html_image src="slash.png"} {translate key='Cancel'}</button>
+		<div class="admin-update-buttons">
+			<button type="button" class="button save">{html_image src="disk-black.png"} {translate key='Update'}</button>
+			<button type="button" class="button cancel">{html_image src="slash.png"} {translate key='Cancel'}</button>
+		</div>
 	</form>
 </div>
 
@@ -394,9 +400,10 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		{translate key=Notes}:<br/>
 		<textarea id="editNotes" class="textbox"
 				  style="width:460px;height:150px;" {formname key=RESOURCE_NOTES}></textarea>
-		<br/><br/>
-		<button type="button" class="button save">{html_image src="disk-black.png"} {translate key='Update'}</button>
-		<button type="button" class="button cancel">{html_image src="slash.png"} {translate key='Cancel'}</button>
+		<div class="admin-update-buttons">
+			<button type="button" class="button save">{html_image src="disk-black.png"} {translate key='Update'}</button>
+			<button type="button" class="button cancel">{html_image src="slash.png"} {translate key='Cancel'}</button>
+		</div>
 	</form>
 </div>
 
@@ -533,8 +540,10 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 				</ul>
 			</fieldset>
 		</div>
-		<button type="button" class="button save">{html_image src="disk-black.png"} {translate key='Update'}</button>
-		<button type="button" class="button cancel">{html_image src="slash.png"} {translate key='Cancel'}</button>
+		<div class="admin-update-buttons">
+			<button type="button" class="button save">{html_image src="disk-black.png"} {translate key='Update'}</button>
+			<button type="button" class="button cancel">{html_image src="slash.png"} {translate key='Cancel'}</button>
+		</div>
 	</form>
 </div>
 
@@ -546,9 +555,10 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 				<option value="{$adminGroup->Id}">{$adminGroup->Name}</option>
 			{/foreach}
 		</select>
-		<br/><br/>
-		<button type="button" class="button save">{html_image src="tick-circle.png"} {translate key='Update'}</button>
-		<button type="button" class="button cancel">{html_image src="slash.png"} {translate key='Cancel'}</button>
+		<div class="admin-update-buttons">
+			<button type="button" class="button save">{html_image src="tick-circle.png"} {translate key='Update'}</button>
+			<button type="button" class="button cancel">{html_image src="slash.png"} {translate key='Cancel'}</button>
+		</div>
 	</form>
 </div>
 
@@ -565,8 +575,10 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			{translate key=DeleteResourceWarningReassign}
 		</div>
 
-		<button type="button" class="button save">{html_image src="cross-button.png"} {translate key='Delete'}</button>
-		<button type="button" class="button cancel">{html_image src="slash.png"} {translate key='Cancel'}</button>
+		<div class="admin-update-buttons">
+			<button type="button" class="button save">{html_image src="cross-button.png"} {translate key='Delete'}</button>
+			<button type="button" class="button cancel">{html_image src="slash.png"} {translate key='Cancel'}</button>
+		</div>
 	</form>
 </div>
 
@@ -575,9 +587,10 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		{translate key=SortOrder}:
 		<input type="text" id="editSortOrder" class="textbox" {formname key=RESOURCE_SORT_ORDER} maxlength="3"
 			   style="width:40px"/>
-		<br/><br/>
-		<button type="button" class="button save">{html_image src="disk-black.png"} {translate key='Update'}</button>
-		<button type="button" class="button cancel">{html_image src="slash.png"} {translate key='Cancel'}</button>
+		<div class="admin-update-buttons">
+			<button type="button" class="button save">{html_image src="disk-black.png"} {translate key='Update'}</button>
+			<button type="button" class="button cancel">{html_image src="slash.png"} {translate key='Cancel'}</button>
+		</div>
 	</form>
 </div>
 
@@ -597,9 +610,10 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		<div id="newStatusReason" class="hidden">
 			<input type="text" class="textbox" {formname key=RESOURCE_STATUS_REASON}  />
 		</div>
-		<br/><br/>
-		<button type="button" class="button save">{html_image src="disk-black.png"} {translate key='Update'}</button>
-		<button type="button" class="button cancel">{html_image src="slash.png"} {translate key='Cancel'}</button>
+		<div class="admin-update-buttons">
+			<button type="button" class="button save">{html_image src="disk-black.png"} {translate key='Update'}</button>
+			<button type="button" class="button cancel">{html_image src="slash.png"} {translate key='Cancel'}</button>
+		</div>
 	</form>
 </div>
 
