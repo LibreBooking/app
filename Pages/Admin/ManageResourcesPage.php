@@ -212,7 +212,7 @@ class ManageResourcesPage extends ActionPage implements IManageResourcesPage
 	{
 		$this->presenter->PageLoad();
 
-		$this->Display('Admin/manage_resources.tpl');
+		$this->Display('Admin/Resources/manage_resources.tpl');
 	}
 
 	public function BindResources($resources)

@@ -97,7 +97,7 @@ class ManageResourceGroupsPage extends ActionPage implements IManageResourceGrou
 	{
 		$this->_presenter->PageLoad();
 
-		$this->Display('Admin/manage_resource_groups.tpl');
+		$this->Display('Admin/Resources/manage_resource_groups.tpl');
 	}
 
 	/**
