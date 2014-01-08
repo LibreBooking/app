@@ -56,5 +56,3 @@ class ResourcePermissionStore implements IResourcePermissionStore
 		return $permittedResourceIds;
 	}
 }
-
-?>

@@ -61,5 +61,3 @@ class PermissionService implements IPermissionService
 		return in_array($resource->GetResourceId(), $this->_allowedResourceIds);
 	}
 }
-
-?>
