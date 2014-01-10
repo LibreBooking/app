@@ -94,12 +94,12 @@ class ScheduleReservationList implements IScheduleReservationList
 	/**
 	 * @var array if the offset from GMT changes between the start time and end time of the layout in the destination time zone, contains the transition info for the start and end times, else no elements
 	 */
-	private $_tzTransitions = array();
+//	private $_tzTransitions = array();
 
 	/**
 	 * @var int represents the direction and magnitude of the DST change if there's a DST change between the start and end times of the layout, otherwise 0
 	 */
-	private $_dstDelta;
+//	private $_dstDelta;
 
 	/**
 	 * @param array|ReservationListItem[] $items
@@ -116,8 +116,8 @@ class ScheduleReservationList implements IScheduleReservationList
 		$this->_layoutDateEnd = $this->_layoutDateStart->AddDays(1);
 		$this->_layoutItems = $this->_layout->GetLayout($layoutDate, $hideBlockedPeriods);
 		$this->_midnight = new Time(0, 0, 0, $this->_destinationTimezone);
-		$this->_tzTransitions = $this->MakeTzTransitions();
-		$this->_dstDelta = count($this->_tzTransitions)>0 ? $this->_tzTransitions[1]['offset'] - $this->_tzTransitions[0]['offset'] : 0;
+//		$this->_tzTransitions = $this->MakeTzTransitions();
+//		$this->_dstDelta = count($this->_tzTransitions)>0 ? $this->_tzTransitions[1]['offset'] - $this->_tzTransitions[0]['offset'] : 0;
 
 		$this->IndexLayout();
 		$this->IndexItems();
@@ -185,15 +185,15 @@ class ScheduleReservationList implements IScheduleReservationList
 		return $slots;
 	}
 
-	public function GetTzTransitions()
-	{
-		return $this->_tzTransitions;
-	}
-
-	public function GetDstDelta()
-	{
-		return $this->_dstDelta;
-	}
+//	public function GetTzTransitions()
+//	{
+//		return $this->_tzTransitions;
+//	}
+//
+//	public function GetDstDelta()
+//	{
+//		return $this->_dstDelta;
+//	}
 
 	private function IndexItems()
 	{

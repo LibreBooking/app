@@ -89,10 +89,6 @@ class DailyLayout implements IDailyLayout
 			$list = new ScheduleReservationList($items, $this->_scheduleLayout, $date, $hideBlocked);
 			$slots = $list->BuildSlots();
 			$sw->Record('slots');
-			$this->_tzTransitions = $list->GetTzTransitions();
-			$this->_dstDelta      = $list->GetDstDelta();
-			//Log::Debug('$this->_tzTransitions = ' . print_r($this->_tzTransitions,true));
-			//Log::Debug('$this->_dstDelta = ' . $this->_dstDelta);
 
 			Log::Debug('DailyLayout::GetLayout - For resourceId %s on date %s, took %s seconds to get reservation listing, %s to build the slots, %s total seconds for %s reservations. Memory consumed=%sMB',
 				$resourceId,
@@ -187,11 +183,6 @@ class DailyLayout implements IDailyLayout
 				$span = 0;
 				$nextPeriodTime = $periodStart->AddMinutes(60);
 
-//				if ($nextPeriodTime->Equals($tempPeriod->BeginDate()))
-//				{
-//					die($nextPeriodTime);
-//					$nextPeriodTime = $nextPeriodTime->AddMinutes(60);
-//				}
 				$tempPeriod = $currentPeriod;
 				while ($tempPeriod != null && $tempPeriod->BeginDate()->LessThan($nextPeriodTime))
 				{

@@ -125,6 +125,7 @@ class ManageConfigurationPage extends ActionPage implements IManageConfiguration
 		$this->PopulateTimezones();
 		$this->Set('Languages', Resources::GetInstance()->AvailableLanguages);
 		$this->Set('SettingNames', $this->settingNames->ToString());
+
 		$this->Display('Admin/Configuration/manage_configuration.tpl');
 	}
 

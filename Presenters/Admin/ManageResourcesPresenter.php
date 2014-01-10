@@ -467,5 +467,3 @@ class AdminResourceJson
 		return new AdminResourceJson($resource->GetId(), $resource->GetName());
 	}
 }
-
-?>

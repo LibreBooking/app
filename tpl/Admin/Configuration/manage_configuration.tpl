@@ -35,7 +35,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		{cycle values=',row1' assign=rowCss}
 		{assign var="name" value=$setting->Name}
     <li class="{$rowCss}"><span class="label">{$setting->Key}</span>
-		{if $setting->Key == ConfigKeys::SERVER_TIMEZONE}
+		{if $setting->Key == ConfigKeys::DEFAULT_TIMEZONE}
             <select name="{$name}" class="textbox">
 				{html_options values=$TimezoneValues output=$TimezoneOutput selected=$setting->Value}
             </select>

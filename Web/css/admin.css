@@ -416,3 +416,16 @@ th.action {
 #reservationFilterButtons {
 	margin-top:5px;
 }
+
+#filterTable td {
+	padding: 1px 3px;
+}
+
+ul.resource-status-reasons li {
+	padding: 5px 5px;
+}
+
+ul.resource-status-reasons {
+	padding-bottom: 20px;
+	padding-top: 5px;
+}

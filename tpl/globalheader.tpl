@@ -129,6 +129,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 										href="{$Path}admin/manage_accessories.php">{translate key="ManageAccessories"}</a></li>
 								<li class="menuitem"><a
 										href="{$Path}admin/manage_resource_types.php">{translate key="ManageResourceTypes"}</a></li>
+								<li class="menuitem"><a
+										href="{$Path}admin/manage_resource_status.php">{translate key="ManageResourceStatus"}</a></li>
 							</ul>
 						</li>
 						<li class="menuitem"><a href="{$Path}admin/manage_users.php">{translate key="ManageUsers"}</a></li>

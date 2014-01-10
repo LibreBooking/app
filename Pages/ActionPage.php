@@ -40,20 +40,28 @@ abstract class ActionPage extends Page implements IActionPage
 
 	public function PageLoad()
 	{
-		if ($this->TakingAction())
+		try
 		{
-			$this->ProcessAction();
-		}
-		else
-		{
-			if ($this->RequestingData())
+			if ($this->TakingAction())
 			{
-				$this->ProcessDataRequest($this->GetDataRequest());
+				$this->ProcessAction();
 			}
 			else
 			{
-				$this->ProcessPageLoad();
+				if ($this->RequestingData())
+				{
+					$this->ProcessDataRequest($this->GetDataRequest());
+				}
+				else
+				{
+					$this->ProcessPageLoad();
+				}
 			}
+		}
+		catch (Exception $ex)
+		{
+			Log::Error('Error loading page. %s', $ex);
+			throw $ex;
 		}
 	}
 	/**
