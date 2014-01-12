@@ -293,5 +293,3 @@ class ResourceDto
 		return $this->MinimumLength;
 	}
 }
-
-?>

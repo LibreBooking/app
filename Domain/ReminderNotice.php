@@ -168,5 +168,3 @@ class ReminderNotice
 								  $lastName, $timezone, $reminder_minutes, $language);
 	}
 }
-
-?>

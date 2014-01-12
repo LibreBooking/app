@@ -59,6 +59,7 @@ class AdminEmailNotificationTests extends TestBase
         $appAdmins = array($admin3, $admin4, $admin1);
         $groupAdmins = array($admin5, $admin6, $admin2);
 
+		$attributeRepo = $this->getMock('IAttributeRepository');
         $userRepo = $this->getMock('IUserRepository');
         $userRepo->expects($this->once())
                 ->method('LoadById')
@@ -83,11 +84,11 @@ class AdminEmailNotificationTests extends TestBase
         $this->EnableNotifyFor(ConfigKeys::NOTIFY_CREATE_APPLICATION_ADMINS);
         $this->EnableNotifyFor(ConfigKeys::NOTIFY_CREATE_GROUP_ADMINS);
 
-        $notification = new AdminEmailCreatedNotification($userRepo, $userRepo);
+        $notification = new AdminEmailCreatedNotification($userRepo, $userRepo, $attributeRepo);
         $notification->Notify($reservation);
 
-        $expectedMessage1 = new ReservationCreatedEmailAdmin($admin1, $owner, $reservation, $resource);
-        $expectedMessage2 = new ReservationCreatedEmailAdmin($admin2, $owner, $reservation, $resource);
+        $expectedMessage1 = new ReservationCreatedEmailAdmin($admin1, $owner, $reservation, $resource, $attributeRepo);
+        $expectedMessage2 = new ReservationCreatedEmailAdmin($admin2, $owner, $reservation, $resource, $attributeRepo);
 
         $this->assertEquals(6, count($this->fakeEmailService->_Messages));
 
@@ -118,6 +119,7 @@ class AdminEmailNotificationTests extends TestBase
         $appAdmins = array($admin3, $admin4, $admin1);
         $groupAdmins = array($admin5, $admin6, $admin2);
 
+		$attributeRepo = $this->getMock('IAttributeRepository');
         $userRepo = $this->getMock('IUserRepository');
         $userRepo->expects($this->once())
                 ->method('LoadById')
@@ -142,11 +144,11 @@ class AdminEmailNotificationTests extends TestBase
         $this->EnableNotifyFor(ConfigKeys::NOTIFY_UPDATE_APPLICATION_ADMINS);
         $this->EnableNotifyFor(ConfigKeys::NOTIFY_UPDATE_GROUP_ADMINS);
 
-        $notification = new AdminEmailUpdatedNotification($userRepo, $userRepo);
+        $notification = new AdminEmailUpdatedNotification($userRepo, $userRepo, $attributeRepo);
         $notification->Notify($reservation);
 
-        $expectedMessage1 = new ReservationUpdatedEmailAdmin($admin1, $owner, $reservation, $resource);
-        $expectedMessage2 = new ReservationUpdatedEmailAdmin($admin2, $owner, $reservation, $resource);
+        $expectedMessage1 = new ReservationUpdatedEmailAdmin($admin1, $owner, $reservation, $resource, $attributeRepo);
+        $expectedMessage2 = new ReservationUpdatedEmailAdmin($admin2, $owner, $reservation, $resource, $attributeRepo);
 
         $this->assertEquals(6, count($this->fakeEmailService->_Messages), "send one per person, no duplicates");
 
@@ -177,6 +179,7 @@ class AdminEmailNotificationTests extends TestBase
             $appAdmins = array($admin3, $admin4, $admin1);
             $groupAdmins = array($admin5, $admin6, $admin2);
 
+			$attributeRepo = $this->getMock('IAttributeRepository');
             $userRepo = $this->getMock('IUserRepository');
             $userRepo->expects($this->once())
                     ->method('LoadById')
@@ -201,10 +204,10 @@ class AdminEmailNotificationTests extends TestBase
             $this->EnableNotifyFor(ConfigKeys::NOTIFY_DELETE_APPLICATION_ADMINS);
             $this->EnableNotifyFor(ConfigKeys::NOTIFY_DELETE_GROUP_ADMINS);
 
-            $notification = new AdminEmailDeletedNotification($userRepo, $userRepo);
+            $notification = new AdminEmailDeletedNotification($userRepo, $userRepo, $attributeRepo);
             $notification->Notify($reservation);
 
-            $expectedMessage1 = new ReservationDeletedEmailAdmin($admin1, $owner, $reservation, $resource);
+            $expectedMessage1 = new ReservationDeletedEmailAdmin($admin1, $owner, $reservation, $resource, $attributeRepo);
 
             $this->assertEquals(6, count($this->fakeEmailService->_Messages), "send one per person, no duplicates");
 
@@ -218,7 +221,7 @@ class AdminEmailNotificationTests extends TestBase
         $this->EnableNotifyFor(ConfigKeys::NOTIFY_CREATE_APPLICATION_ADMINS, false);
         $this->EnableNotifyFor(ConfigKeys::NOTIFY_CREATE_GROUP_ADMINS, false);
 
-        $notification = new AdminEmailCreatedNotification($this->getMock('IUserRepository'), $this->getMock('IUserViewRepository'));
+        $notification = new AdminEmailCreatedNotification($this->getMock('IUserRepository'), $this->getMock('IUserViewRepository'), $this->getMock('IAttributeRepository'));
         $notification->Notify(new TestReservationSeries());
 
         $this->assertEquals(0, count($this->fakeEmailService->_Messages));
@@ -229,5 +232,3 @@ class AdminEmailNotificationTests extends TestBase
         $this->fakeConfig->SetSectionKey(ConfigSection::RESERVATION_NOTIFY, $configKey, $enabled);
     }
 }
-
-?>

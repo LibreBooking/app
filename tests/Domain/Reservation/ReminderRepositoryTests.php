@@ -53,10 +53,11 @@ class ReminderRepositoryTests extends TestBase
 
 		$row1 = new ReminderNoticeRow($seriesId, $instanceId, $referenceNumber, $startDate, $endDate, $title, $description, $resourceName, $emailAddress, $fname, $lname, $timezone, $reminder_minutes, $language);
 		$row2 = new ReminderNoticeRow();
-		$this->db->SetRows(array(
-							   $row1->Rows(),
-							   $row2->Rows(),
-						   ));
+		$rows = array_merge(
+									   $row1->Rows(),
+									   $row2->Rows()
+								   );
+		$this->db->SetRows($rows);
 
 		$reminderNotices = $this->repository->GetReminderNotices($now, ReservationReminderType::Start);
 
@@ -65,10 +66,8 @@ class ReminderRepositoryTests extends TestBase
 		$this->assertEquals(2, count($reminderNotices));
 		$this->assertEquals($expectedCommand, $this->db->_LastCommand);
 
-		$expectedReminderNotice = ReminderNotice::FromRow($row1->Rows());
+		$expectedReminderNotice = ReminderNotice::FromRow($rows[0]);
 
 		$this->assertEquals($expectedReminderNotice, $reminderNotices[0]);
 	}
 }
-
-?>

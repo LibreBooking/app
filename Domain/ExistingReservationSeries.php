@@ -670,5 +670,3 @@ class ExistingReservationSeries extends ReservationSeries
 		$this->endReminder = $reminder;
 	}
 }
-
-?>

@@ -60,6 +60,11 @@ class LoginPresenter
 
 	public function PageLoad()
 	{
+		if ($this->authentication->IsLoggedIn())
+		{
+			$this->_Redirect();
+		}
+
 		$this->SetSelectedLanguage();
 
 		if ($this->authentication->AreCredentialsKnown())
@@ -185,5 +190,3 @@ class LoginPresenter
 		$resources->SetLanguage($languageCode);
 	}
 }
-
-?>

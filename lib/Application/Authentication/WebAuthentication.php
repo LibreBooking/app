@@ -57,6 +57,11 @@ interface IWebAuthentication extends IAuthenticationPromptOptions
 	 * @return bool
 	 */
 	public function AreCredentialsKnown();
+
+	/**
+	 * @return mixed
+	 */
+	public function IsLoggedIn();
 }
 
 class WebAuthentication implements IWebAuthentication
@@ -192,6 +197,14 @@ class WebAuthentication implements IWebAuthentication
 	public function ShowForgotPasswordPrompt()
 	{
 		return $this->authentication->ShowForgotPasswordPrompt();
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function IsLoggedIn()
+	{
+		return $this->server->GetUserSession()->IsLoggedIn();
 	}
 }
 

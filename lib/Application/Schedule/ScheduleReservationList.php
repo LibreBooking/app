@@ -21,15 +21,15 @@ interface IScheduleReservationList
 	 */
 	function BuildSlots();
 
-	/**
-	 * @return array
-	 */
-	function GetTzTransitions();
-
-	/*
-	 * @return int
-	 */
-	function GetDstDelta();
+//	/**
+//	 * @return array
+//	 */
+//	function GetTzTransitions();
+//
+//	/*
+//	 * @return int
+//	 */
+//	function GetDstDelta();
 }
 
 class ScheduleReservationList implements IScheduleReservationList
@@ -467,5 +467,3 @@ class CachedLayoutIndex
 
 	public function LayoutIndexByEndTime() { return $this->_layoutIndexByEndTime; }
 }
-
-?>

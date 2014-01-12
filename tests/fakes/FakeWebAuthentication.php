@@ -17,6 +17,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 class FakeWebAuthentication implements IWebAuthentication
 {
 	/**
@@ -42,6 +43,7 @@ class FakeWebAuthentication implements IWebAuthentication
 	public $_ShowPersistLoginPrompt = false;
 	public $_ShowForgotPasswordPrompt = false;
 	public $_LogoutCalled = false;
+	public $_IsLoggedIn = false;
 
 	public function Validate($username, $password)
 	{
@@ -113,5 +115,12 @@ class FakeWebAuthentication implements IWebAuthentication
 	{
 		return $this->_ShowForgotPasswordPrompt;
 	}
+
+	/**
+	 * @return mixed
+	 */
+	public function IsLoggedIn()
+	{
+		return $this->_IsLoggedIn;
+	}
 }
-?>

@@ -58,7 +58,7 @@ class ExistingResourceAvailabilityRuleTests extends TestBase
 		$current->SetReservationId($currentId);
 
 		$series = new ExistingReservationSeries();
-		$series->WithResource(new FakeBookableResource($resourceId));
+		$series->WithPrimaryResource(new FakeBookableResource($resourceId));
 		$series->WithCurrentInstance($current);
 		$series->WithInstance($deleted);
 		$series->WithInstance($updated);
@@ -91,7 +91,7 @@ class ExistingResourceAvailabilityRuleTests extends TestBase
 		$current->SetReservationId($currentId);
 
 		$series = new ExistingReservationSeries();
-		$series->WithResource(new FakeBookableResource($resourceId));
+		$series->WithPrimaryResource(new FakeBookableResource($resourceId));
 		$series->WithCurrentInstance($current);
 
 		$reservations = array(
@@ -123,7 +123,7 @@ class ExistingResourceAvailabilityRuleTests extends TestBase
 		$series->WithCurrentInstance($current);
 
 		$reservations = array(
-			new TestReservationItemView($currentId+1, Date::Now(), Date::Now(), $resourceId),
+			new TestReservationItemView($currentId+1, $currentDate->GetBegin(), $currentDate->GetEnd(), $resourceId),
 		);
 
 		$this->strategy->expects($this->once())
@@ -187,25 +187,28 @@ class ExistingResourceAvailabilityRuleTests extends TestBase
 		$reservation->AddResource($resource2);
 		$reservation->AddResource(new FakeBookableResource(102, null));
 
-		$scheduleReservation1 = new TestReservationItemView(2, Date::Parse('2010-04-04 04:00',
-																		   'UTC'), Date::Parse('2010-04-04 05:00',
-																							   'UTC'), $resource1->GetId());
+		$scheduleReservation1 = new TestReservationItemView(2,
+															Date::Parse('2010-04-04 04:00','UTC'),
+															Date::Parse('2010-04-04 05:00', 'UTC'),
+															$resource1->GetId());
 		$scheduleReservation1->WithBufferTime($r1Buffer);
 
-		$scheduleReservation2 = new TestReservationItemView(3, Date::Parse('2010-04-04 07:00',
-																		   'UTC'), Date::Parse('2010-04-04 08:00',
-																							   'UTC'), $resource1->GetId());
+		$scheduleReservation2 = new TestReservationItemView(3,
+															Date::Parse('2010-04-04 08:00', 'UTC'),
+															Date::Parse('2010-04-04 09:00', 'UTC'),
+															$resource1->GetId());
 		$scheduleReservation2->WithBufferTime($r1Buffer);
 
-		$scheduleReservation3 = new TestReservationItemView(4, Date::Parse('2010-04-04 05:00',
-																		   'UTC'), Date::Parse('2010-04-04 05:30',
-																							   'UTC'), $resource2->GetId());
+		$scheduleReservation3 = new TestReservationItemView(4, Date::Parse('2010-04-04 05:00', 'UTC'),
+															Date::Parse('2010-04-04 05:30', 'UTC'),
+															$resource2->GetId());
 
 		$scheduleReservation3->WithBufferTime($r2Buffer);
 
-		$scheduleReservation4 = new TestReservationItemView(5, Date::Parse('2010-04-04 07:30',
-																		   'UTC'), Date::Parse('2010-04-04 08:00',
-																							   'UTC'), $resource2->GetId());
+		$scheduleReservation4 = new TestReservationItemView(5,
+															Date::Parse('2010-04-04 07:30', 'UTC'),
+															Date::Parse('2010-04-04 08:00', 'UTC'),
+															$resource2->GetId());
 
 		$scheduleReservation4->WithBufferTime($r2Buffer);
 

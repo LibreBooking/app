@@ -94,4 +94,3 @@ class TestReservationSeries extends ReservationSeries
 		$this->AddAttributeValue($attributeValue);
 	}
 }
-?>

@@ -48,7 +48,7 @@ class ReminderNoticeRow
 	public function __construct($seriesId = 1, $reservationId = 1, $referenceNumber = 'referencenumber',
 								$startDate = null, $endDate = null, $title = 'title', $description = 'description',
 								$resourceName = 'resourcename', $emailAddress = 'email@address.com', $fname = 'fname',
-								$lname = 'lname', $timezone = 'UTC', $reminder_minutes = 100)
+								$lname = 'lname', $timezone = 'UTC', $reminder_minutes = 100, $language = 'en_us')
 	{
 		if (empty($startDate))
 		{
@@ -72,6 +72,7 @@ class ReminderNoticeRow
 			ColumnNames::LAST_NAME => $lname,
 			ColumnNames::TIMEZONE_NAME => $timezone,
 			ColumnNames::REMINDER_MINUTES_PRIOR => $reminder_minutes,
+			ColumnNames::LANGUAGE_CODE => $language,
 		);
 	}
 }
@@ -236,6 +237,7 @@ class ReservationResourceRow
 			ColumnNames::SCHEDULE_ADMIN_GROUP_ID_ALIAS => null,
 			ColumnNames::RESOURCE_TYPE_ID => null,
 			ColumnNames::RESOURCE_SORT_ORDER => null,
+			ColumnNames::RESOURCE_BUFFER_TIME => null,
 		);
 	}
 }

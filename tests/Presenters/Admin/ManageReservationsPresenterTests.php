@@ -272,6 +272,10 @@ class ManageReservationsPresenterTests extends TestBase
 		$resource2->ChangeStatus(ResourceStatus::AVAILABLE, null);
 
 		$this->page->expects($this->once())
+					->method('CanUpdateResourceStatuses')
+					->will($this->returnValue(true));
+
+		$this->page->expects($this->once())
 				   ->method('GetResourceStatus')
 				   ->will($this->returnValue($resourceStatusId));
 

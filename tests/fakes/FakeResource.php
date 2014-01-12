@@ -36,4 +36,3 @@ class FakeBookableResource extends BookableResource
 		$this->_scheduleAdminGroupId = $scheduleAdminGroupId;
 	}
 }
-?>

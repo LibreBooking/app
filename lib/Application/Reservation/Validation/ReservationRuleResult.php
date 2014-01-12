@@ -45,4 +45,3 @@ class ReservationRuleResult
 		return $this->_errorMessage;
 	}
 }
-?>

@@ -183,7 +183,7 @@ class ManageConfigurationPresenter extends ActionPresenter
 
 	private function GetConfigFiles()
 	{
-		$files = [new ConfigFileOption('config.php', '')];
+		$files = array(new ConfigFileOption('config.php', ''));
 
 		$pluginBaseDir = ROOT_DIR . 'plugins/';
 		if ($h = opendir($pluginBaseDir))

@@ -164,8 +164,8 @@ class ResourceAvailabilityRuleTests extends TestBase
 		$scheduleReservation1->WithBufferTime($r1Buffer);
 
 		$scheduleReservation2 = new TestReservationItemView(3,
-															Date::Parse('2010-04-04 07:00', 'UTC'),
 															Date::Parse('2010-04-04 08:00', 'UTC'),
+															Date::Parse('2010-04-04 09:00', 'UTC'),
 															$resource1->GetId());
 		$scheduleReservation2->WithBufferTime($r1Buffer);
 
@@ -304,6 +304,7 @@ class ResourceAvailabilityRuleTests extends TestBase
 		$repeatDates = $twoRepetitions->GetDates($reservationDates);
 
 		$reservation = new TestReservationSeries();
+		$reservation->WithResource(new FakeBookableResource(1));
 		$reservation->WithDuration($reservationDates);
 		$reservation->WithRepeatOptions($twoRepetitions);
 

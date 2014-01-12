@@ -173,5 +173,3 @@ interface IReminderRepository
      */
     public function DeleteReminderByRefNumber($refnumber);
 }
-
-?>

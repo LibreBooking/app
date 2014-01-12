@@ -98,7 +98,8 @@ class ReservationListItem
 	 */
 	public function HasBufferTime()
 	{
-		return $this->item->GetBufferTime()->TotalSeconds() > 0;
+		$bufferTime = $this->BufferTime();
+		return !empty($bufferTime) && $bufferTime->TotalSeconds() > 0;
 	}
 }
 
