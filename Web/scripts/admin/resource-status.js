@@ -2,6 +2,7 @@ function ResourceStatusManagement(opts) {
 	var options = opts;
 
 	var elements = {
+		addDialog:$('#addDialog'),
 		editDialog:$('#editDialog'),
 		deleteDialog:$('#deleteDialog'),
 
@@ -13,13 +14,14 @@ function ResourceStatusManagement(opts) {
 		attributeForm:$('.attributesForm')
 	};
 
-	var types = {};
-
 	ResourceStatusManagement.prototype.init = function () {
+		ConfigureAdminDialog(elements.addDialog, 'auto', 'auto');
 		ConfigureAdminDialog(elements.editDialog, 'auto', 'auto');
 		ConfigureAdminDialog(elements.deleteDialog, 'auto', 'auto');
 
-		$('ul').delegate('a.update', 'click', function (e)
+		var statusList = $('ul');
+
+		statusList.delegate('a.update', 'click', function (e)
 		{
 			var id = $(this).closest('li').attr('reasonId');
 			setActiveId(id);
@@ -28,13 +30,13 @@ function ResourceStatusManagement(opts) {
 			e.stopPropagation();
 		});
 
-		$('ul').delegate('a.edit', 'click', function (e)
+		statusList.delegate('a.edit', 'click', function (e)
 		{
-			$('#reason-description').val($(this).closest('li').find('.reason-description').val());
-			showEdit(e);
+			$('#edit-reason-description').val($(this).closest('li').find('.reason-description').text());
+			showEditPrompt(e);
 		});
 
-		$('ul').delegate('a.delete', 'click', function (e)
+		statusList.delegate('a.delete', 'click', function (e)
 		{
 			showDeletePrompt(e);
 		});
@@ -47,6 +49,12 @@ function ResourceStatusManagement(opts) {
 			$(this).closest('.dialog').dialog("close");
 		});
 
+		$('.add').click(function(e)
+		{
+			e.preventDefault();
+			$('#add-reason-status').val($(this).attr('add-to'));
+			showAddPrompt(e);
+		});
 
 		var errorHandler = function (result) {
 			$("#globalError").html(result).show();
@@ -59,7 +67,7 @@ function ResourceStatusManagement(opts) {
 
 
 	var getSubmitCallback = function (form) {
-		return options.submitUrl + "?rtid=" + getActiveId() + "&action=" + form.attr('ajaxAction');
+		return options.submitUrl + "?rsrid=" + getActiveId() + "&action=" + form.attr('ajaxAction');
 	};
 
 	var setActiveId = function (id) {
@@ -70,7 +78,11 @@ function ResourceStatusManagement(opts) {
 		return elements.activeId.val();
 	};
 
-	var showEdit = function (e) {
+	var showAddPrompt = function (e) {
+		elements.addDialog.dialog("open");
+	};
+
+	var showEditPrompt = function (e) {
 
 		elements.editDialog.dialog("open");
 	};

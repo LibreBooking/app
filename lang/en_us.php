@@ -617,6 +617,7 @@ class en_us extends Language
 		$strings['LookAndFeel'] = 'Look and Feel';
 		$strings['ManageResourceGroups'] = 'Resource Groups';
 		$strings['ManageResourceTypes'] = 'Resource Types';
+		$strings['ManageResourceStatus'] = 'Resource Statuses';
 		// End Page Titles
 
 		// Day representations

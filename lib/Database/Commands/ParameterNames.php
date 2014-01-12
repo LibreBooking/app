@@ -140,7 +140,7 @@ class ParameterNames
 	const RESOURCE_IMAGE_NAME = '@imageName';
 	const RESOURCE_SORT_ORDER = '@sort_order';
 	const RESOURCE_STATUS = '@status_id';
-	const RESOURCE_STATUS_REASON = '@resource_status_reason_id';
+	const RESOURCE_STATUS_REASON_ID = '@resource_status_reason_id';
 	const RESOURCE_STATUS_REASON_DESCRIPTION = '@description';
 	const RESOURCE_BUFFER_TIME = '@buffer_time';
 

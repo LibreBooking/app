@@ -42,11 +42,6 @@ class ManageResourceStatusPresenter extends ActionPresenter
 	 */
 	private $resourceRepository;
 
-	/**
-	 * @var IAttributeService
-	 */
-	private $attributeService;
-
 	public function __construct(
 		IManageResourceStatusPage $page,
 		UserSession $user,
@@ -76,17 +71,23 @@ class ManageResourceStatusPresenter extends ActionPresenter
 
 	public function Add()
 	{
+		$statusId = $this->page->GetStatusId();
+		$description = $this->page->GetDescription();
 
+		$this->resourceRepository->AddStatusReason($statusId, $description);
 	}
 
 	public function Update()
 	{
+		$reasonId = $this->page->GetReasonId();
+		$description = $this->page->GetDescription();
 
+		$this->resourceRepository->UpdateStatusReason($reasonId, $description);
 	}
 
 	public function Delete()
 	{
-
+		$reasonId = $this->page->GetReasonId();
+		$this->resourceRepository->RemoveStatusReason($reasonId);
 	}
-
 }

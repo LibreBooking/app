@@ -666,6 +666,15 @@ class DeleteResourceReservationsCommand extends SqlCommand
 	}
 }
 
+class DeleteResourceStatusReasonCommand extends SqlCommand
+{
+	public function __construct($reasonId)
+		{
+			parent::__construct(Queries::DELETE_RESOURCE_STATUS_REASON_COMMAND);
+			$this->AddParameter(new Parameter(ParameterNames::RESOURCE_STATUS_REASON_ID, $reasonId));
+		}
+}
+
 class DeleteResourceTypeCommand extends SqlCommand
 {
 	public function __construct($resourceTypeId)
@@ -1867,7 +1876,7 @@ class UpdateResourceCommand extends SqlCommand
 		$this->AddParameter(new Parameter(ParameterNames::RESOURCE_SORT_ORDER, $sortOrder));
 		$this->AddParameter(new Parameter(ParameterNames::RESOURCE_TYPE_ID, $resourceTypeId));
 		$this->AddParameter(new Parameter(ParameterNames::RESOURCE_STATUS, $statusId));
-		$this->AddParameter(new Parameter(ParameterNames::RESOURCE_STATUS_REASON, $reasonId));
+		$this->AddParameter(new Parameter(ParameterNames::RESOURCE_STATUS_REASON_ID, $reasonId));
 		$this->AddParameter(new Parameter(ParameterNames::RESOURCE_BUFFER_TIME, $bufferTime->ToDatabase()));
 
 	}
@@ -1884,15 +1893,25 @@ class UpdateResourceGroupCommand extends SqlCommand
 	}
 }
 
+class UpdateResourceStatusReasonCommand extends SqlCommand
+{
+	public function __construct($id, $description)
+	{
+		parent::__construct(Queries::UPDATE_RESOURCE_STATUS_REASON);
+		$this->AddParameter(new Parameter(ParameterNames::RESOURCE_STATUS_REASON_ID, $id));
+		$this->AddParameter(new Parameter(ParameterNames::RESOURCE_STATUS_REASON_DESCRIPTION, $description));
+	}
+}
+
 class UpdateResourceTypeCommand extends SqlCommand
 {
 	public function __construct($id, $name, $description)
-		{
-			parent::__construct(Queries::UPDATE_RESOURCE_TYPE);
-			$this->AddParameter(new Parameter(ParameterNames::RESOURCE_TYPE_ID, $id));
-			$this->AddParameter(new Parameter(ParameterNames::RESOURCE_TYPE_NAME, $name));
-			$this->AddParameter(new Parameter(ParameterNames::RESOURCE_TYPE_DESCRIPTION, $description));
-		}
+	{
+		parent::__construct(Queries::UPDATE_RESOURCE_TYPE);
+		$this->AddParameter(new Parameter(ParameterNames::RESOURCE_TYPE_ID, $id));
+		$this->AddParameter(new Parameter(ParameterNames::RESOURCE_TYPE_NAME, $name));
+		$this->AddParameter(new Parameter(ParameterNames::RESOURCE_TYPE_DESCRIPTION, $description));
+	}
 }
 
 class UpdateScheduleCommand extends SqlCommand

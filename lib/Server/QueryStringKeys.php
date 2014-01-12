@@ -55,6 +55,7 @@ class QueryStringKeys
 	const REPORT_ID = 'rid';
 	const RESERVATION_DATE = 'rd';
 	const RESERVATION_STATUS_ID = 'rsid';
+	const RESERVATION_STATUS_REASON_ID = 'rsrid';
 	const RESPONSE_TYPE = 'rs';
 	const RESOURCE_ID = 'rid';
 	const RESOURCE_TYPE_ID = 'rtid';

@@ -32,21 +32,21 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 <div id="globalError" class="error" style="display:none"></div>
 
-<h2 class="resource-status">{translate key=Available} <a href="#" add-to="{ResourceStatus::AVAILABLE}">{html_image src="plus-circle.png"}</a></h2>
+<h2 class="resource-status">{translate key=Available} <a href="#" class="add" add-to="{ResourceStatus::AVAILABLE}">{html_image src="plus-circle.png"}</a></h2>
 <ul class="no-style resource-status-reasons">
 	{foreach from=$StatusReasons[{ResourceStatus::AVAILABLE}] item=reason}
 		{displayReason reason=$reason}
 	{/foreach}
 </ul>
 
-<h2 class="resource-status">{translate key=Unavailable} <a href="#" add-to="{ResourceStatus::UNAVAILABLE}">{html_image src="plus-circle.png"}</a></h2>
+<h2 class="resource-status">{translate key=Unavailable} <a href="#" class="add" add-to="{ResourceStatus::UNAVAILABLE}">{html_image src="plus-circle.png"}</a></h2>
 <ul class="no-style resource-status-reasons">
 	{foreach from=$StatusReasons[{ResourceStatus::UNAVAILABLE}] item=reason}
 		{displayReason reason=$reason}
 	{/foreach}
 </ul>
 
-<h2 class="resource-status">{translate key=Hidden} <a href="#" add-to="{ResourceStatus::HIDDEN}">{html_image src="plus-circle.png"}</a></h2>
+<h2 class="resource-status">{translate key=Hidden} <a href="#" class="add" add-to="{ResourceStatus::HIDDEN}">{html_image src="plus-circle.png"}</a></h2>
 <ul class="no-style resource-status-reasons">
 	{foreach from=$StatusReasons[{ResourceStatus::HIDDEN}] item=reason}
 		{displayReason reason=$reason}
@@ -55,10 +55,22 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 <input type="hidden" id="activeId" value=""/>
 
-<div id="editDialog" class="dialog" style="display:none;" title="{translate key=Update}">
+<div id="addDialog" class="dialog" style="display:none;" title="{translate key=Reason}">
+	<form id="addForm" method="post" ajaxAction="{ManageResourceStatusActions::Add}">
+
+		<input type="text" class="textbox" id="add-reason-description" {formname key=RESOURCE_STATUS_REASON} />
+		<input type="hidden" id="add-reason-status" {formname key=RESOURCE_STATUS_ID} />
+		<div class="admin-update-buttons">
+			<button type="button" class="button save">{html_image src="disk-black.png"} {translate key='Add'}</button>
+			<button type="button" class="button cancel">{html_image src="slash.png"} {translate key='Cancel'}</button>
+		</div>
+	</form>
+</div>
+
+<div id="editDialog" class="dialog" style="display:none;" title="{translate key=Reason}">
 	<form id="editForm" method="post" ajaxAction="{ManageResourceStatusActions::Update}">
 
-		<input type="text" class="textbox" id="reason-description" {formname key=RESOURCE_STATUS_REASON} />
+		<input type="text" class="textbox" id="edit-reason-description" {formname key=RESOURCE_STATUS_REASON} />
 				<div class="admin-update-buttons">
 			<button type="button" class="button save">{html_image src="disk-black.png"} {translate key='Update'}</button>
 			<button type="button" class="button cancel">{html_image src="slash.png"} {translate key='Cancel'}</button>
@@ -66,7 +78,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 	</form>
 </div>
 
-<div id="deleteDialog" class="dialog" style="display:none;" title="{translate key=Delete}">
+<div id="deleteDialog" class="dialog" style="display:none;" title="{translate key=Reason}">
 	<form id="deleteForm" method="post" ajaxAction="{ManageResourceStatusActions::Delete}">
 		<div class="error" style="margin-bottom: 25px;">
 			<h3>{translate key=DeleteWarning}</h3>

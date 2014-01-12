@@ -434,8 +434,18 @@ class ResourceRepository implements IResourceRepository
 
 	public function AddStatusReason($statusId, $reasonDescription)
 	{
-		return ServiceLocator::GetDatabase()
-					   ->ExecuteInsert(new AddResourceStatusReasonCommand($statusId, $reasonDescription));
+		return ServiceLocator::GetDatabase()->ExecuteInsert(new AddResourceStatusReasonCommand($statusId, $reasonDescription));
+	}
+
+
+	public function UpdateStatusReason($reasonId, $reasonDescription)
+	{
+		ServiceLocator::GetDatabase()->Execute(new UpdateResourceStatusReasonCommand($reasonId, $reasonDescription));
+	}
+
+	public function RemoveStatusReason($reasonId)
+	{
+		ServiceLocator::GetDatabase()->Execute(new DeleteResourceStatusReasonCommand($reasonId));
 	}
 }
 
