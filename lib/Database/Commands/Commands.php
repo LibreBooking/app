@@ -2047,5 +2047,3 @@ class UpdateUserSessionCommand extends SqlCommand
 		$this->AddParameter(new Parameter(ParameterNames::USER_SESSION, $serializedSession));
 	}
 }
-
-?>
