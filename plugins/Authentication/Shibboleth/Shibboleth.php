@@ -74,7 +74,7 @@ class Shibboleth extends Authentication {
                 $user->GetLastName(),
                 null,
                 Configuration::Instance()->GetKey(ConfigKeys::LANGUAGE),
-                Configuration::Instance()->GetKey(ConfigKeys::DEFAULT_TIMEZONE),
+                Configuration::Instance()->GetDefaultTimezone(),
                 $user->GetPhone(), null, null
             )
         );

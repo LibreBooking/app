@@ -132,5 +132,3 @@ class AdminRegistration extends Registration
 		return false;
 	}
 }
-
-?>

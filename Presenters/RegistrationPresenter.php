@@ -193,7 +193,7 @@ class RegistrationPresenter extends ActionPresenter
 
 		$this->page->SetTimezones($timezoneValues, $timezoneOutput);
 
-		$timezone = Configuration::Instance()->GetKey(ConfigKeys::DEFAULT_TIMEZONE);
+		$timezone = Configuration::Instance()->GetDefaultTimezone();
 		if ($this->page->IsPostBack())
 		{
 			$timezone = $this->page->GetTimezone();

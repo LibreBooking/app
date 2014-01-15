@@ -39,7 +39,6 @@ interface IConfiguration extends IConfigurationFile
 interface IConfigurationFile
 {
 	/**
-	 * @abstract
 	 * @param string $section
 	 * @param string $name
 	 * @param null|IConvert $converter
@@ -48,7 +47,6 @@ interface IConfigurationFile
 	public function GetSectionKey($section, $name, $converter = null);
 
 	/**
-	 * @abstract
 	 * @param string $name
 	 * @param null|IConvert $converter
 	 * @return mixed|string
@@ -56,10 +54,14 @@ interface IConfigurationFile
 	public function GetKey($name, $converter = null);
 
     /**
-     * @abstract
      * @return string the full url to the root of this Booked Scheduler instance WITHOUT the trailing /
      */
 	public function GetScriptUrl();
+
+	/**
+	 * @return string
+	 */
+	public function GetDefaultTimezone();
 }
 
 class Configuration implements IConfiguration
@@ -156,6 +158,17 @@ class Configuration implements IConfiguration
 
 		$this->_configs[$configId] = new ConfigurationFile($container->getItem("section", self::SETTINGS)->toArray());
 	}
+
+	public function GetDefaultTimezone()
+	{
+		$tz = $this->GetKey(ConfigKeys::DEFAULT_TIMEZONE);
+		if (empty($tz))
+		{
+			$tz = date_default_timezone_get();
+		}
+
+		return $tz;
+	}
 }
 
 class ConfigurationFile implements IConfigurationFile
@@ -201,6 +214,16 @@ class ConfigurationFile implements IConfigurationFile
 
 		return $value;
 	}
-}
 
-?>
+
+	public function GetDefaultTimezone()
+	{
+		$tz = $this->GetKey(ConfigKeys::DEFAULT_TIMEZONE);
+		if (empty($tz))
+		{
+			$tz = date_default_timezone_get();
+		}
+
+		return $tz;
+	}
+}
