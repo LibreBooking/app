@@ -289,8 +289,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 					</td>
 					<td>
 						<select class="textbox" {formname key=AUTO_ASSIGN} style="width:170px">
-							<option value="0">{translate key="None"}</option>
-							<option value="1">{translate key="AllUsers"}</option>
+							<option value="0">{translate key="ResourcePermissionNotAutoGranted"}</option>
+							<option value="1">{translate key="ResourcePermissionAutoGranted"}</option>
 						</select>
 					</td>
 					<td>
