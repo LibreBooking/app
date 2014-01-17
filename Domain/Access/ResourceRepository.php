@@ -113,8 +113,7 @@ class ResourceRepository implements IResourceRepository
 	 */
 	private function LoadResource($command)
 	{
-		$reader = ServiceLocator::GetDatabase()
-				  ->Query($command);
+		$reader = ServiceLocator::GetDatabase()->Query($command);
 
 		$resource = BookableResource::Null();
 		if ($row = $reader->GetRow())
@@ -199,6 +198,11 @@ class ResourceRepository implements IResourceRepository
 		foreach ($resource->GetAddedAttributes() as $added)
 		{
 			$db->Execute(new AddAttributeValueCommand($added->AttributeId, $added->Value, $resource->GetId(), CustomAttributeCategory::RESOURCE));
+		}
+
+		if ($resource->WasAutoAssignToggledOn())
+		{
+			$db->Execute(new AutoAssignResourcePermissionsCommand($resource->GetId()));
 		}
 	}
 

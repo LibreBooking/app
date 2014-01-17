@@ -101,4 +101,3 @@ class Database
 		return $insertedId;
 	}
 }
-?>

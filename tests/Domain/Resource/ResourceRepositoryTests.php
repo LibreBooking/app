@@ -147,6 +147,19 @@ class ResourceRepositoryTests extends TestBase
 		$this->assertEquals($expectedUpdateResourceCommand, $actualUpdateResourceCommand);
 	}
 
+	public function testUpdatingAutoAssignToTrueAssignsPermissionsOnUpdate()
+	{
+		$resourceId = 123;
+
+		$resource = new FakeBookableResource($resourceId);
+		$resource->SetAutoAssign('0');
+		$resource->SetAutoAssign('1');
+
+		$this->repository->Update($resource);
+
+		$this->assertTrue($this->db->ContainsCommand(new AutoAssignResourcePermissionsCommand($resourceId)));
+	}
+
 	public function testCanAddResourceWithMinimumAttributes()
 	{
 		$name = "name";

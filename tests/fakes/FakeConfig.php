@@ -110,6 +110,12 @@ class FakeConfigFile implements IConfigurationFile
 	{
 		return $this->_ScriptUrl;
 	}
-}
 
-?>
+	/**
+	 * @return string
+	 */
+	public function GetDefaultTimezone()
+	{
+		return 'UTC';
+	}
+}

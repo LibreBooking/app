@@ -72,7 +72,7 @@ class FakeUser extends User
 		return $this->_IsAdminForUser;
 	}
 
-	public function IsResourceAdminFor($resource)
+	public function IsResourceAdminFor(IResource $resource)
 	{
 		return $this->_IsResourceAdmin;
 	}

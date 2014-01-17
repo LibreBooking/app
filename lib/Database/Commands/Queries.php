@@ -142,11 +142,16 @@ class Queries
 
 	const AUTO_ASSIGN_RESOURCE_PERMISSIONS =
 			'INSERT INTO
-            user_resource_permissions (user_id, resource_id)
-        SELECT
-            user_id, @resourceid as resource_id
-        FROM
-            users';
+				user_resource_permissions (user_id, resource_id)
+			(
+			SELECT
+				user_id, @resourceid as resource_id
+			FROM
+				users u
+				WHERE
+				   NOT EXISTS (SELECT * FROM user_resource_permissions p
+                          WHERE u.user_id = p.user_id AND p.resource_id = @resourceid)
+            )';
 
 	const CHECK_EMAIL =
 			'SELECT user_id

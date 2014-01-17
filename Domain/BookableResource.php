@@ -76,6 +76,7 @@ class BookableResource implements IResource
 	 */
 	protected $_maxLength;
 	protected $_autoAssign;
+	protected $_autoAssignToggledOn = false;
 	protected $_requiresApproval;
 	protected $_allowMultiday;
 	protected $_maxParticipants;
@@ -352,6 +353,16 @@ class BookableResource implements IResource
 	 */
 	public function SetAutoAssign($value)
 	{
+		$value = intval($value);
+		if ($this->_autoAssign == false && $value == true)
+		{
+			$this->_autoAssignToggledOn = true;
+		}
+		else
+		{
+			$this->_autoAssignToggledOn = false;
+		}
+
 		$this->_autoAssign = $value;
 	}
 
@@ -829,5 +840,13 @@ class BookableResource implements IResource
 	public function GetBufferTime()
 	{
 		return TimeInterval::Parse($this->_bufferTime);
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function WasAutoAssignToggledOn()
+	{
+		return $this->_autoAssignToggledOn;
 	}
 }

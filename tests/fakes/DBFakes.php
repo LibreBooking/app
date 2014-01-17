@@ -78,7 +78,7 @@ class FakeDatabase extends Database
 		$this->_AddCommand($command);
 	}
 
-	public function ExecuteInsert(ISqlCommand &$command)
+	public function ExecuteInsert(ISqlCommand $command)
 	{
 		$this->_LastCommand = $command;
 		$this->_AddCommand($command);
