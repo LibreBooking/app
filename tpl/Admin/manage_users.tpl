@@ -212,9 +212,11 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 				<div style="clear:both;"></div>
 			</div>
 
-			<button type="button"
-					class="button save">{html_image src="disk-black.png"} {translate key='AddUser'}</button>
-			<button type="button" class="button clearform">{html_image src="slash.png"} {translate key='Cancel'}</button>
+			<div class="admin-update-buttons">
+				<button type="button"
+						class="button save">{html_image src="disk-black.png"} {translate key='AddUser'}</button>
+				<button type="button" class="button clearform">{html_image src="slash.png"} {translate key='Cancel'}</button>
+			</div>
 		</form>
 	</div>
 </div>
@@ -230,8 +232,10 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			</label>
 			<br/>
 		{/foreach}
-		<button type="button" class="button save">{html_image src="tick-circle.png"} {translate key='Update'}</button>
-		<button type="button" class="button cancel">{html_image src="slash.png"} {translate key='Cancel'}</button>
+		<div class="admin-update-buttons">
+			<button type="button" class="button save">{html_image src="tick-circle.png"} {translate key='Update'}</button>
+			<button type="button" class="button cancel">{html_image src="slash.png"} {translate key='Cancel'}</button>
+		</div>
 	</form>
 </div>
 
@@ -239,8 +243,10 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 	<form id="passwordForm" method="post" ajaxAction="{ManageUsersActions::Password}">
 		{translate key=Password}<br/>
 		{textbox type="password" name="PASSWORD" class="required textbox" value=""}
-		<button type="button" class="button save">{html_image src="disk-black.png"} {translate key='Update'}</button>
-		<button type="button" class="button cancel">{html_image src="slash.png"} {translate key='Cancel'}</button>
+		<div class="admin-update-buttons">
+			<button type="button" class="button save">{html_image src="disk-black.png"} {translate key='Update'}</button>
+			<button type="button" class="button cancel">{html_image src="slash.png"} {translate key='Cancel'}</button>
+		</div>
 	</form>
 </div>
 
@@ -277,9 +283,10 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			<li>{translate key="Position"}</li>
 			<li>{textbox name="POSITION" class="textbox" size="40" id="position"}</li>
 		</ul>
-
-		<button type="button" class="button save">{html_image src="disk-black.png"} {translate key='Update'}</button>
-		<button type="button" class="button cancel">{html_image src="slash.png"} {translate key='Cancel'}</button>
+		<div class="admin-update-buttons">
+			<button type="button" class="button save">{html_image src="disk-black.png"} {translate key='Update'}</button>
+			<button type="button" class="button cancel">{html_image src="slash.png"} {translate key='Cancel'}</button>
+		</div>
 	</form>
 </div>
 
@@ -290,8 +297,10 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 			<div>{translate key=DeleteUserWarning}</div>
 		</div>
-		<button type="button" class="button save">{html_image src="cross-button.png"} {translate key='Delete'}</button>
-		<button type="button" class="button cancel">{html_image src="slash.png"} {translate key='Cancel'}</button>
+		<div class="admin-update-buttons">
+			<button type="button" class="button save">{html_image src="cross-button.png"} {translate key='Delete'}</button>
+			<button type="button" class="button cancel">{html_image src="slash.png"} {translate key='Cancel'}</button>
+		</div>
 	</form>
 </div>
 
