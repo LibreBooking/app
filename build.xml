@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <project name="booked" default="package">
-	<property name="version" value="2.5.0beta"/>
+	<property name="version" value="2.5.0"/>
 	<property name="is.pre.release" value="false"/>
 	<property name="packagename" value="booked-${version}"/>
 	<property name="root.dir" value="../.."/>
@@ -97,7 +97,7 @@
 	</target>
 
 	<target name="package" description="packages all required files" depends="stage.files">
-	
+
 		<delete dir="${zipdirectory}" failonerror="false"/>
 		<mkdir dir="${zipdirectory}"/>
 
