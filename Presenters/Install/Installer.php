@@ -239,15 +239,8 @@ class Installer
             return false;
         }
 
-		$hasTables= mysql_query('SELECT * FROM `reservations` order by version_number desc limit 0,1');
-
-		if (!$hasTables)
-		{
-			return false;
-		}
-
         $getVersion = 'SELECT * FROM `dbversion` order by version_number desc limit 0,1';
-        $result = mysql_query($getVersion);
+        $result = mysql_query($getVersion, $link);
 
         if (!$result)
         {
@@ -263,11 +256,11 @@ class Installer
 				// bug in 2.2 upgrade did not insert version number, check for table instead
 
 				$getCustomAttributes = 'SELECT * FROM custom_attributes';
-				$customAttributesResults = mysql_query($getCustomAttributes);
+				$customAttributesResults = mysql_query($getCustomAttributes, $link);
 
 				if ($customAttributesResults)
 				{
-					mysql_query("insert into dbversion values('2.2', now())");
+					mysql_query("insert into dbversion values('2.2', now())", $link);
 					return 2.2;
 				}
 			}
