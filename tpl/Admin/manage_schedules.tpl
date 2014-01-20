@@ -223,7 +223,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
             </ul>
         </div>
 
-        <div class="clear" style="height:20px;">
+        <div class="clear;display:block;" style="height:20px;">
             <label>{translate key=UseSameLayoutForAllDays} <input type="checkbox" id="usesSingleLayout" {formname key=USING_SINGLE_LAYOUT}></label>
         </div>
 
