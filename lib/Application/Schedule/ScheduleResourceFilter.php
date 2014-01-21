@@ -58,6 +58,10 @@ class ScheduleResourceFilter implements IScheduleResourceFilter
 
 	public static function FromCookie($val)
 	{
+		if (empty($val))
+		{
+			return new ScheduleResourceFilter();
+		}
 		return new ScheduleResourceFilter($val->ScheduleId, $val->ResourceTypeId, $val->MinCapacity, $val->ResourceAttributes, $val->ResourceTypeAttributes);
 	}
 
