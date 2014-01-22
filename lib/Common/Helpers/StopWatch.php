@@ -36,6 +36,16 @@ class StopWatch
 		$this->startTime = microtime(true);
 	}
 
+	/**
+	 * @return StopWatch
+	 */
+	public static function StartNew()
+	{
+		$sw = new StopWatch();
+		$sw->Start();
+		return $sw;
+	}
+
 	public function Stop()
 	{
 		$this->stopTime = microtime(true);

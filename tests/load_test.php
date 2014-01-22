@@ -29,8 +29,8 @@ $stopWatch = new StopWatch();
 $stopWatch->Start();
 
 $numberOfResources = 10;
-$numberOfUsers = 1300;
-$numberOfReservations = 300;
+$numberOfUsers = 1000;
+$numberOfReservations = 5000;
 $numberOfAccessories = 20;
 
 $users = array();
@@ -79,6 +79,7 @@ $scheduleRepo = new ScheduleRepository();
 $layout = $scheduleRepo->GetLayout(1, new ScheduleLayoutFactory('America/Chicago'));
 $reservationRepo = new ReservationRepository();
 $bookedBy = new UserSession(1);
+$bookedBy->Timezone = 'America/Chicago';
 $currentDate = Date::Now();
 
 $i = 0;
@@ -90,15 +91,15 @@ while ($i < $numberOfReservations)
 	{
 		$howManyResources = rand(1, count($resources));
 		$startResource = rand(0, $howManyResources);
-
-		for ($resourceNum = $startResource; $resourceNum <$howManyResources; $resourceNum++)
+		if ($period->IsReservable())
 		{
-			if ($period->IsReservable())
+			for ($resourceNum = $startResource; $resourceNum < $howManyResources; $resourceNum++)
 			{
 				$userId = getRandomUserId($users)->Id();
 				$resource = $resources[$resourceNum];
 				$date = new DateRange($period->BeginDate(), $period->EndDate(), 'America/Chicago');
-				$reservation = ReservationSeries::Create($userId, $resource, "load$i", null, $date, new RepeatNone(), $bookedBy);
+				$reservation = ReservationSeries::Create($userId, $resource, "load$i", null, $date, new RepeatNone(),
+														 $bookedBy);
 				$reservationRepo->Add($reservation);
 				$i++;
 			}
@@ -124,8 +125,8 @@ function getRandomUserId($users)
 }
 
 /**
- * @param array|BookableResoure[] $resources
- * @return BookableResoure
+ * @param array|BookableResource[] $resources
+ * @return BookableResource
  */
 function getRandomResource($resources)
 {

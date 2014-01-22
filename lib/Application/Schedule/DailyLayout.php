@@ -89,6 +89,7 @@ class DailyLayout implements IDailyLayout
 			$list = new ScheduleReservationList($items, $this->_scheduleLayout, $date, $hideBlocked);
 			$slots = $list->BuildSlots();
 			$sw->Record('slots');
+			$sw->Stop();
 
 			Log::Debug('DailyLayout::GetLayout - For resourceId %s on date %s, took %s seconds to get reservation listing, %s to build the slots, %s total seconds for %s reservations. Memory consumed=%sMB',
 				$resourceId,

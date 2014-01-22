@@ -20,16 +20,6 @@ interface IScheduleReservationList
 	 * @return array|IReservationSlot[]
 	 */
 	function BuildSlots();
-
-//	/**
-//	 * @return array
-//	 */
-//	function GetTzTransitions();
-//
-//	/*
-//	 * @return int
-//	 */
-//	function GetDstDelta();
 }
 
 class ScheduleReservationList implements IScheduleReservationList
@@ -92,16 +82,6 @@ class ScheduleReservationList implements IScheduleReservationList
 	private $_lastLayoutTime;
 
 	/**
-	 * @var array if the offset from GMT changes between the start time and end time of the layout in the destination time zone, contains the transition info for the start and end times, else no elements
-	 */
-//	private $_tzTransitions = array();
-
-	/**
-	 * @var int represents the direction and magnitude of the DST change if there's a DST change between the start and end times of the layout, otherwise 0
-	 */
-//	private $_dstDelta;
-
-	/**
 	 * @param array|ReservationListItem[] $items
 	 * @param IScheduleLayout $layout
 	 * @param Date $layoutDate
@@ -116,40 +96,15 @@ class ScheduleReservationList implements IScheduleReservationList
 		$this->_layoutDateEnd = $this->_layoutDateStart->AddDays(1);
 		$this->_layoutItems = $this->_layout->GetLayout($layoutDate, $hideBlockedPeriods);
 		$this->_midnight = new Time(0, 0, 0, $this->_destinationTimezone);
-//		$this->_tzTransitions = $this->MakeTzTransitions();
-//		$this->_dstDelta = count($this->_tzTransitions)>0 ? $this->_tzTransitions[1]['offset'] - $this->_tzTransitions[0]['offset'] : 0;
 
 		$this->IndexLayout();
 		$this->IndexItems();
 	}
 
-	/**
-	 * @return array DST-related transitions for the tz of this schedule
-	 */
-	private function MakeTzTransitions()
-	{
-		$tz = new DateTimeZone($this->_destinationTimezone);
-		$allTransitions =  $tz->getTransitions();
-
-		$tsStart = $this->_layoutDateStart->Timestamp();
-		$tsEnd   = $this->_layoutDateEnd  ->Timestamp();
-		$transitions = array();
-		$i = 0;
-		foreach ($allTransitions as $n=>$t)
-			if(($tsStart <= $t['ts']) && ($t['ts'] <= $tsEnd))
-			{
-				if($n>0)
-				{
-					$transitions[$i++] = $allTransitions[$n-1];	// Need the offset at the start of the period (code will fail if you go back far enough in time)
-				}
-				$transitions[$i++] = $t;						// This is the offset at the end of the period
-			}
-
-		return $transitions;
-	}
-
 	public function BuildSlots()
 	{
+		$sw = StopWatch::StartNew();
+
 		$slots = array();
 
 		for ($currentIndex = 0; $currentIndex < count($this->_layoutItems); $currentIndex++)
@@ -182,21 +137,16 @@ class ScheduleReservationList implements IScheduleReservationList
 			}
 		}
 
+		$sw->Stop();
+//		Log::Debug('BuildSlots() took %s seconds', $sw->GetTotalSeconds());
+
 		return $slots;
 	}
 
-//	public function GetTzTransitions()
-//	{
-//		return $this->_tzTransitions;
-//	}
-//
-//	public function GetDstDelta()
-//	{
-//		return $this->_dstDelta;
-//	}
-
 	private function IndexItems()
 	{
+		$sw = StopWatch::StartNew();
+
 		foreach ($this->_items as $index => $item)
 		{
 			if ($item->HasBufferTime())
@@ -219,6 +169,9 @@ class ScheduleReservationList implements IScheduleReservationList
 				}
 			}
 		}
+
+		$sw->Stop();
+//		Log::Debug('IndexItems() took %s seconds', $sw->GetTotalSeconds());
 	}
 
 	private function IndexItem(ReservationListItem $item)
@@ -263,6 +216,8 @@ class ScheduleReservationList implements IScheduleReservationList
 
 	private function IndexLayout()
 	{
+		$sw = StopWatch::StartNew();
+
 		if (!LayoutIndexCache::Contains($this->_layoutDateStart))
 		{
 			LayoutIndexCache::Add($this->_layoutDateStart, $this->_layoutItems, $this->_layoutDateStart,
@@ -273,6 +228,9 @@ class ScheduleReservationList implements IScheduleReservationList
 		$this->_lastLayoutTime = $cachedIndex->GetLastLayoutTime();
 		$this->_layoutByStartTime = $cachedIndex->LayoutByStartTime();
 		$this->_layoutIndexByEndTime = $cachedIndex->LayoutIndexByEndTime();
+
+		$sw->Stop();
+//		Log::Debug('IndexLayout() took %s seconds', $sw->GetTotalSeconds());
 	}
 
 	/**

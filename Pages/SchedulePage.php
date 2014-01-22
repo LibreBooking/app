@@ -257,7 +257,8 @@ class SchedulePage extends ActionPage implements ISchedulePage
 
 		$load = $endLoad - $start;
 		$display = $endDisplay - $endLoad;
-		Log::Debug('Schedule took %s sec to load, %s sec to render', $load, $display);
+		$total = $endDisplay - $start;
+		Log::Debug('Schedule took %s sec to load, %s sec to render. Total %s sec', $load, $display, $total);
 	}
 
 	public function ProcessDataRequest($dataRequest)
