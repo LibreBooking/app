@@ -281,62 +281,6 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 			var schedule = new Schedule(scheduleOpts, {$ResourceGroupsAsJson});
 			schedule.init();
-
-			var divs = [];
-
-//			$.each($('#reservations').find('tr.slots'), function(i, v)
-//			{
-//				var div = $('<div style="position:absolute;z-index:3;background-color:black;">&nbsp;</div>').css($(v).offset());
-//				div.width($(v).width());
-//				$('body').append(div);
-//			});
-				function addReservations()
-				{
-					var start = $('#reservations').find('td[ref="201308260800002"] div');
-					var end = $('#reservations').find('td[ref="201308260930002"] div');
-
-					var td = start.parent('td');
-					var table = start.closest('table');
-					var border = td.css('border-top-width');
-//					var startRect = start[0].getBoundingClientRect();
-//					var endRect = end[0].getBoundingClientRect();
-
-
-					// ie 9/10 .5 border
-					// ie 8 1 border
-					// ff 1/0 border
-					// ch 1 border
-					console.log('offsettop: ' + start[0].offsetTop + ' positiontop: ' + start.position().top);
-					console.log('td border' + td.css('border-width') + ' top:' + td.css('border-top-width') + ' right:'+ td.css('border-right-width') +
-							' bottom:' + td.css('border-bottom-width') + ' left:' + td.css('border-left-width'));
-					console.log('table border - :' + table.css('border-width') + ' top:' + table.css('border-top-width') + ' right:'+ table.css('border-right-width') +
-							' bottom:' + table.css('border-bottom-width') + ' left:' + table.css('border-left-width'));
-
-					var tdLeftPosition = start[0].offsetLeft;
-					var tdTopPosition = start.position().top -1 + parseInt(table.css('border-top-width'));//[0].offsetTop -1;
-					var width = end[0].offsetLeft - tdLeftPosition -1;
-					var height = td.outerHeight()-1;
-
-//					var tdLeftPosition = startRect.left;
-//					var tdTopPosition = startRect.top;
-//					var width = endRect.left - tdLeftPosition;
-//					var height = start.height()+1;
-
-					var div = $('<div class="dyn-res" style="z-index:10;background-color:#ccc;position:absolute;top:' + tdTopPosition + 'px;left:' + tdLeftPosition + 'px;width:' + width + 'px;height:' + height + 'px;">'
-					+ 'top' + tdTopPosition + ' height' + height + 'border' + border + '</div>');
-// divs.push(new resDiv(div, start, end));
-					start.closest('div.foo').append(div);
-				}
-
-				//addReservations();
-
-//				$(window).resize(function() {
-//					$.each(divs, function(idx, val){
-//						val.resize();
-//					});
-//				});
-		});
-	</script>
 {/block}
 
 {block name="scripts"}
