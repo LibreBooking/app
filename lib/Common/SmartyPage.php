@@ -167,6 +167,7 @@ class SmartyPage extends Smarty
 		$this->registerPlugin('modifier', 'escapequotes', array($this, 'EscapeQuotes'));
 		$this->registerPlugin('function', 'flush', array($this, 'Flush'));
 		$this->registerPlugin('function', 'jsfile', array($this, 'IncludeJavascriptFile'));
+		$this->registerPlugin('function', 'cssfile', array($this, 'IncludeCssFile'));
 
 		/**
 		 * PageValidators
@@ -639,5 +640,15 @@ class SmartyPage extends Smarty
 	{
 		$versionNumber = Configuration::VERSION;
 		echo "<script type=\"text/javascript\" src=\"{$this->RootPath}scripts/{$params['src']}?v=$versionNumber\"></script>";
+	}
+	public function IncludeCssFile($params, &$smarty)
+	{
+		$versionNumber = Configuration::VERSION;
+		$src = $params['src'];
+		if (!StringHelper::Contains($src, '/'))
+		{
+			$src = "css/{$src}";
+		}
+		echo "<link rel='stylesheet' type='text/css' href='{$this->RootPath}{$src}?v=$versionNumber'></link>";
 	}
 }
