@@ -166,6 +166,7 @@ class SmartyPage extends Smarty
 		$this->registerPlugin('function', 'resource_image', array($this, 'GetResourceImage'));
 		$this->registerPlugin('modifier', 'escapequotes', array($this, 'EscapeQuotes'));
 		$this->registerPlugin('function', 'flush', array($this, 'Flush'));
+		$this->registerPlugin('function', 'jsfile', array($this, 'IncludeJavascriptFile'));
 
 		/**
 		 * PageValidators
@@ -633,6 +634,10 @@ class SmartyPage extends Smarty
 	{
 //		echo str_repeat(' ', 16*1024), "\n"; flush();
 	}
-}
 
-?>
+	public function IncludeJavascriptFile($params, &$smarty)
+	{
+		$versionNumber = Configuration::VERSION;
+		echo "<script type=\"text/javascript\" src=\"{$this->RootPath}scripts/{$params['src']}?v=$versionNumber\"></script>";
+	}
+}

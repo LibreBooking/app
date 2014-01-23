@@ -332,11 +332,11 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 {html_image src="admin-ajax-indicator.gif" class="indicator" style="display:none;"}
 
-<script type="text/javascript" src="{$Path}scripts/admin/edit.js"></script>
-<script type="text/javascript" src="{$Path}scripts/autocomplete.js"></script>
-<script type="text/javascript" src="{$Path}scripts/admin/user.js"></script>
-<script type="text/javascript" src="{$Path}scripts/js/jquery.form-3.09.min.js"></script>
-<script type="text/javascript" src="{$Path}scripts/js/colorpicker.js"></script>
+{jsfile src="admin/edit.js"}
+{jsfile src="autocomplete.js"}
+{jsfile src="admin/user.js"}
+{jsfile src="js/jquery.form-3.09.min.js"}
+{jsfile src="js/colorpicker.js"}
 
 <script type="text/javascript">
 	$(document).ready(function ()

@@ -150,12 +150,12 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 </div>
 {setfocus key='LOGIN'}
 
-<script src="scripts/js/jstz.min.js"></script>
-<script type="text/javascript" src="{$Path}scripts/admin/edit.js"></script>
-<script type="text/javascript" src="{$Path}scripts/js/jquery.form-3.09.min.js"></script>
-<script type="text/javascript" src="{$Path}scripts/js/jquery.colorbox-min.js"></script>
-<script type="text/javascript" src="{$Path}scripts/profile.js"></script>
-<script type="text/javascript" src="{$Path}scripts/registration.js"></script>
+{jsfile src="js/jstz.min.js"}
+{jsfile src="admin/edit.js"}
+{jsfile src="js/jquery.form-3.09.min.js"}
+{jsfile src="js/jquery.colorbox-min.js"}
+{jsfile src="profile.js"}
+{jsfile src="registration.js"}
 
 
 <script type="text/javascript">

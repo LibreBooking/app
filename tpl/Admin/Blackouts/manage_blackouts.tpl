@@ -169,19 +169,19 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 {html_image src="admin-ajax-indicator.gif" class="indicator" style="display:none;"}
 
-<script type="text/javascript" src="{$Path}scripts/js/jquery.qtip.min.js"></script>
-<script type="text/javascript" src="{$Path}scripts/js/jquery.colorbox-min.js"></script>
-<script type="text/javascript" src="{$Path}scripts/js/jquery.form-3.09.min.js"></script>
-<script type="text/javascript" src="{$Path}scripts/js/jquery.timePicker.min.js"></script>
-<script type="text/javascript" src="{$Path}scripts/js/moment.min.js"></script>
+{jsfile src="js/jquery.qtip.min.js"}
+{jsfile src="js/jquery.colorbox-min.js"}
+{jsfile src="js/jquery.form-3.09.min.js"}
+{jsfile src="js/jquery.timePicker.min.js"}
+{jsfile src="js/moment.min.js"}
 
-<script type="text/javascript" src="{$Path}scripts/reservationPopup.js"></script>
+{jsfile src="reservationPopup.js"}
 
-<script type="text/javascript" src="{$Path}scripts/admin/edit.js"></script>
-<script type="text/javascript" src="{$Path}scripts/admin/blackouts.js"></script>
+{jsfile src="admin/edit.js"}
+{jsfile src="admin/blackouts.js"}
 
-<script type="text/javascript" src="{$Path}scripts/date-helper.js"></script>
-<script type="text/javascript" src="{$Path}scripts/recurrence.js"></script>
+{jsfile src="date-helper.js"}
+{jsfile src="/recurrence.js"}
 
 <script type="text/javascript">
 

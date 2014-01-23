@@ -49,11 +49,11 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 {html_image src="reservation_submitting.gif"}
 </div>
 
-<script type="text/javascript" src="{$Path}scripts/admin/edit.js"></script>
-<script type="text/javascript" src="{$Path}scripts/js/jquery.form-3.09.min.js"></script>
-<script type="text/javascript" src="{$Path}scripts/js/ajaxfileupload.js"></script>
-<script type="text/javascript" src="{$Path}scripts/js/jquery.colorbox-min.js"></script>
-<script type="text/javascript" src="{$Path}scripts/ajax-form-submit.js"></script>
+{jsfile src="admin/edit.js"}
+{jsfile src="js/jquery.form-3.09.min.js"}
+{jsfile src="js/ajaxfileupload.js"}
+{jsfile src="js/jquery.colorbox-min.js"}
+{jsfile src="ajax-form-submit.js"}
 
 <script type="text/javascript">
 	$('document').ready(function(){

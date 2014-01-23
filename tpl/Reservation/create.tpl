@@ -342,18 +342,18 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 {control type="DatePickerSetupControl" ControlId="EndDate" AltId="formattedEndDate" DefaultDate=$EndDate}
 {control type="DatePickerSetupControl" ControlId="EndRepeat" AltId="formattedEndRepeat" DefaultDate=$RepeatTerminationDate}
 
-<script type="text/javascript" src="scripts/js/jquery.textarea-expander.js"></script>
-<script type="text/javascript" src="scripts/js/jquery.qtip.min.js"></script>
-<script type="text/javascript" src="scripts/js/jquery.form-3.09.min.js"></script>
-<script type="text/javascript" src="scripts/js/moment.min.js"></script>
-<script type="text/javascript" src="scripts/resourcePopup.js"></script>
-<script type="text/javascript" src="scripts/date-helper.js"></script>
-<script type="text/javascript" src="scripts/recurrence.js"></script>
-<script type="text/javascript" src="scripts/reservation.js"></script>
-<script type="text/javascript" src="scripts/autocomplete.js"></script>
-<script type="text/javascript" src="scripts/force-numeric.js"></script>
-<script type="text/javascript" src="scripts/reservation-reminder.js"></script>
-<script type="text/javascript" src="scripts/js/tree.jquery.js"></script>
+{jsfile src="js/jquery.textarea-expander.js"}
+{jsfile src="js/jquery.qtip.min.js"}
+{jsfile src="js/jquery.form-3.09.min.js"}
+{jsfile src="js/moment.min.js"}
+{jsfile src="resourcePopup.js"}
+{jsfile src="date-helper.js"}
+{jsfile src="recurrence.js"}
+{jsfile src="reservation.js"}
+{jsfile src="autocomplete.js"}
+{jsfile src="force-numeric.js"}
+{jsfile src="reservation-reminder.js"}
+{jsfile src="js/tree.jquery.js"}
 
 <script type="text/javascript">
 

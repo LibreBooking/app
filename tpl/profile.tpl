@@ -106,10 +106,10 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 </div>
 {setfocus key='FIRST_NAME'}
 
-<script type="text/javascript" src="{$Path}scripts/admin/edit.js"></script>
-<script type="text/javascript" src="{$Path}scripts/js/jquery.form-3.09.min.js"></script>
-<script type="text/javascript" src="{$Path}scripts/js/jquery.colorbox-min.js"></script>
-<script type="text/javascript" src="{$Path}scripts/profile.js"></script>
+{jsfile src="admin/edit.js"}
+{jsfile src="js/jquery.form-3.09.min.js"}
+{jsfile src="js/jquery.colorbox-min.js"}
+{jsfile src="profile.js"}
 
 <script type="text/javascript">
 

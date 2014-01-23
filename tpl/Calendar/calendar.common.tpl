@@ -39,10 +39,11 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 <div class="error">{translate key=NoResourcePermission}</div>
 {/if}
 
-<script type="text/javascript" src="scripts/js/jquery.qtip.min.js"></script>
-<script type="text/javascript" src="scripts/reservationPopup.js"></script>
-<script type="text/javascript" src="scripts/calendar.js"></script>
-<script type="text/javascript" src="scripts/js/fullcalendar.min.js"></script>
+{jsfile src="js/jquery.qtip.min.js"}
+{jsfile src="reservationPopup.js"}
+{jsfile src="calendar.js"}
+{jsfile src="js/fullcalendar.min.js"}
+
 <script type="text/javascript">
 $(document).ready(function() {
 

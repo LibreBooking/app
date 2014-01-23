@@ -24,14 +24,14 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 <div id="chartdiv" style="margin:auto;height:400px;width:80%"></div>
 
-<!--[if lt IE 9]><script language="javascript" type="text/javascript" src="{$Path}scripts/js/jqplot/excanvas.min.js"></script><![endif]-->
-<script type="text/javascript" src="{$Path}scripts/js/jqplot/jquery.jqplot.min.js"></script>
-<script type="text/javascript" src="{$Path}scripts/js/jqplot/plugins/jqplot.barRenderer.min.js"></script>
-<script type="text/javascript" src="{$Path}scripts/js/jqplot/plugins/jqplot.categoryAxisRenderer.min.js"></script>
-<script type="text/javascript" src="{$Path}scripts/js/jqplot/plugins/jqplot.canvasAxisTickRenderer.min.js"></script>
-<script type="text/javascript" src="{$Path}scripts/js/jqplot/plugins/jqplot.canvasTextRenderer.min.js"></script>
-<script type="text/javascript" src="{$Path}scripts/js/jqplot/plugins/jqplot.pointLabels.min.js"></script>
-<script type="text/javascript" src="{$Path}scripts/js/jqplot/plugins/jqplot.dateAxisRenderer.min.js"></script>
+<!--[if lt IE 9]>{jsfile src="js/jqplot/excanvas.min.js"}<![endif]-->
+{jsfile src="js/jqplot/jquery.jqplot.min.js"}
+{jsfile src="js/jqplot/plugins/jqplot.barRenderer.min.js"}
+{jsfile src="js/jqplot/plugins/jqplot.categoryAxisRenderer.min.js"}
+{jsfile src="js/jqplot/plugins/jqplot.canvasAxisTickRenderer.min.js"}
+{jsfile src="js/jqplot/plugins/jqplot.canvasTextRenderer.min.js"}
+{jsfile src="js/jqplot/plugins/jqplot.pointLabels.min.js"}
+{jsfile src="js/jqplot/plugins/jqplot.dateAxisRenderer.min.js"}
 
 <script type="text/javascript">
 	$(document).ready(function () {

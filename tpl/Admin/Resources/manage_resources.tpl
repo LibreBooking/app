@@ -618,11 +618,11 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 </div>
 
 {html_image src="admin-ajax-indicator.gif" class="indicator" style="display:none;"}
-<script type="text/javascript" src="{$Path}scripts/js/jquery.watermark.min.js"></script>
-<script type="text/javascript" src="{$Path}scripts/admin/edit.js"></script>
-<script type="text/javascript" src="{$Path}scripts/admin/resource.js"></script>
-<script type="text/javascript" src="{$Path}scripts/js/jquery.form-3.09.min.js"></script>
-<script type="text/javascript" src="{$Path}scripts/js/ajaxfileupload.js"></script>
+{jsfile src="js/jquery.watermark.min.js"}
+{jsfile src="admin/edit.js"}
+{jsfile src="admin/resource.js"}
+{jsfile src="js/jquery.form-3.09.min.js"}
+{jsfile src="js/ajaxfileupload.js"}
 
 <script type="text/javascript">
 

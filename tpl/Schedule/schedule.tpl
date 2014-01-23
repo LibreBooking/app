@@ -261,12 +261,14 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 {$smarty.capture.date_navigation}
 
 {block name="scripts-common"}
-	<script type="text/javascript" src="{$Path}scripts/js/jquery.qtip.min.js"></script>
-	<script type="text/javascript" src="{$Path}scripts/js/moment.min.js"></script>
-	<script type="text/javascript" src="{$Path}scripts/schedule.js"></script>
-	<script type="text/javascript" src="{$Path}scripts/resourcePopup.js"></script>
-	<script type="text/javascript" src="{$Path}scripts/js/tree.jquery.js"></script>
-	<script type="text/javascript" src="{$Path}scripts/js/jquery.cookie.js"></script>
+	{jsfile src="js/jquery.qtip.min.js"}
+	{jsfile src="js/jquery.qtip.min.js"}
+	{jsfile src="js/moment.min.js"}
+	{jsfile src="schedule.js"}
+	{jsfile src="resourcePopup.js"}
+	{jsfile src="js/tree.jquery.js"}
+	{jsfile src="js/jquery.cookie.js"}
+
 	<script type="text/javascript">
 
 		$(document).ready(function ()
@@ -281,6 +283,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 			var schedule = new Schedule(scheduleOpts, {$ResourceGroupsAsJson});
 			schedule.init();
+		});
+	</script>
 {/block}
 
 {block name="scripts"}

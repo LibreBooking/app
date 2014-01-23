@@ -96,13 +96,13 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 </div>
 
 {html_image src="admin-ajax-indicator.gif" class="indicator" style="display:none;"}
-<script type="text/javascript" src="{$Path}scripts/js/jquery.watermark.min.js"></script>
-<script type="text/javascript" src="{$Path}scripts/admin/edit.js"></script>
-<script type="text/javascript" src="{$Path}scripts/admin/resource-groups.js"></script>
-<script type="text/javascript" src="{$Path}scripts/js/jquery.form-3.09.min.js"></script>
-<script type="text/javascript" src="{$Path}scripts/js/tree.jquery.js"></script>
-<script type="text/javascript" src="{$Path}scripts/js/jquery.cookie.js"></script>
-<script type="text/javascript" src="{$Path}scripts/js/jquery.contextMenu.js"></script>
+{jsfile src="js/jquery.watermark.min.js"}
+{jsfile src="admin/edit.js"}
+{jsfile src="admin/resource-groups.js"}
+{jsfile src="js/jquery.form-3.09.min.js"}
+{jsfile src="js/tree.jquery.js"}
+{jsfile src="js/jquery.cookie.js"}
+{jsfile src="js/jquery.contextMenu.js"}
 
 <script type="text/javascript">
 

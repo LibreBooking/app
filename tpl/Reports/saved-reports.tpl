@@ -143,9 +143,9 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 </div>
 *}
 
-<script type="text/javascript" src="{$Path}scripts/ajax-helpers.js"></script>
-<script type="text/javascript" src="{$Path}scripts/reports/saved-reports.js"></script>
-<script type="text/javascript" src="{$Path}scripts/reports/chart.js"></script>
+{jsfile src="ajax-helpers.js"}
+{jsfile src="reports/saved-reports.js"}
+{jsfile src="reports/chart.js"}
 
 <script type="text/javascript">
 	$(document).ready(function () {

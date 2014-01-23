@@ -101,9 +101,9 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 {include file="Reports/chart.tpl"}
 
-<script type="text/javascript" src="{$Path}scripts/ajax-helpers.js"></script>
-<script type="text/javascript" src="{$Path}scripts/reports/canned-reports.js"></script>
-<script type="text/javascript" src="{$Path}scripts/reports/chart.js"></script>
+{jsfile src="ajax-helpers.js"}
+{jsfile src="reports/canned-reports.js"}
+{jsfile src="reports/chart.js"}
 
 <script type="text/javascript">
 	$(document).ready(function () {

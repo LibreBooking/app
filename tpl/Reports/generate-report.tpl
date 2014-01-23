@@ -157,10 +157,10 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 	</form>
 </div>
 
-<script type="text/javascript" src="{$Path}scripts/autocomplete.js"></script>
-<script type="text/javascript" src="{$Path}scripts/ajax-helpers.js"></script>
-<script type="text/javascript" src="{$Path}scripts/reports/generate-reports.js"></script>
-<script type="text/javascript" src="{$Path}scripts/reports/chart.js"></script>
+{jsfile src="autocomplete.js"}
+{jsfile src="ajax-helpers.js"}
+{jsfile src="reports/generate-reports.js"}
+{jsfile src="reports/chart.js"}
 
 <script type="text/javascript">
 	$(document).ready(function () {

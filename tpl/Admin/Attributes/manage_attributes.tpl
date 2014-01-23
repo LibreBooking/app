@@ -149,9 +149,9 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 <input type="hidden" id="activeId" value=""/>
 
-<script type="text/javascript" src="{$Path}scripts/admin/edit.js"></script>
-<script type="text/javascript" src="{$Path}scripts/admin/attributes.js"></script>
-<script type="text/javascript" src="{$Path}scripts/js/jquery.form-3.09.min.js"></script>
+{jsfile src="admin/edit.js"}
+{jsfile src="admin/attributes.js"}
+{jsfile src="js/jquery.form-3.09.min.js"}
 
 <script type="text/javascript">
 

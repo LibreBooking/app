@@ -29,13 +29,13 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 	<link rel="shortcut icon" href="{$Path}favicon.ico"/>
 	<link rel="icon" href="{$Path}favicon.ico"/>
 	{if $UseLocalJquery}
-		<script type="text/javascript" src="{$Path}scripts/js/jquery-1.8.2.min.js"></script>
-		<script type="text/javascript" src="{$Path}scripts/js/jquery-ui-1.9.0.custom.min.js"></script>
+		{jsfile src="js/jquery-1.8.2.min.js"}
+		{jsfile src="js/jquery-ui-1.9.0.custom.min.js"}
 	{else}
 		<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
 		<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jqueryui/1.9.0/jquery-ui.min.js"></script>
 	{/if}
-	<script type="text/javascript" src="{$Path}scripts/phpscheduleit.js"></script>
+	{jsfile src="phpscheduleit.js"}
 	{*<script type="text/javascript" src="{$Path}scripts/menubar.js"></script>*}
 	<style type="text/css">
 		@import url({$Path}css/normalize.css);

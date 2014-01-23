@@ -235,13 +235,14 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		<input type="hidden" {formname key=SERIES_UPDATE_SCOPE} id="hdnSeriesUpdateScope" value="{SeriesUpdateScope::FullSeries}"/>
 	</form>
 </div>
-	<script type="text/javascript" src="scripts/participation.js"></script>
-	<script type="text/javascript" src="scripts/approval.js"></script>
-	<script type="text/javascript" src="scripts/js/jquery.form-3.09.min.js"></script>
-	<script type="text/javascript" src="scripts/js/moment.min.js"></script>
-	<script type="text/javascript" src="scripts/date-helper.js"></script>
-	<script type="text/javascript" src="scripts/reservation.js"></script>
-	<script type="text/javascript" src="scripts/autocomplete.js"></script>
+{jsfile src="participation.js"}
+{jsfile src="approval.js"}
+{jsfile src="js/jquery.form-3.09.min.js"}
+{jsfile src="js/moment.min.js"}
+{jsfile src="date-helper.js"}
+{jsfile src="reservation.js"}
+{jsfile src="autocomplete.js"}
+
 	<script type="text/javascript">
 
 	$(document).ready(function() {

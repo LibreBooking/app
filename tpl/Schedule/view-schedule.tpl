@@ -25,9 +25,9 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 {block name="actions"}{/block}
 
 {block name="scripts-common"}
-<script type="text/javascript" src="scripts/js/jquery.qtip.min.js"></script>
-<script type="text/javascript" src="scripts/schedule.js"></script>
-<script type="text/javascript" src="scripts/resourcePopup.js"></script>
+	{jsfile src="js/jquery.qtip.min.js"}
+	{jsfile src="schedule.js"}
+	{jsfile src="resourcePopup.js"}
 
 <script type="text/javascript">
 
