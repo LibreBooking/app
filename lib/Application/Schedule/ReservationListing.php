@@ -75,7 +75,10 @@ class ReservationListing implements IMutableReservationListing
 				$this->AddOnDate($item, $currentDate);
 				$currentDate = $currentDate->AddDays(1);
 			}
-			$this->AddOnDate($item, $lastDate);
+			if (!$lastDate->IsMidnight())
+			{
+				$this->AddOnDate($item, $lastDate);
+			}
 		}
 
 		$this->_reservations[] = $item;

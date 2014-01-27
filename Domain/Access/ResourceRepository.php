@@ -264,14 +264,18 @@ class ResourceRepository implements IResourceRepository
 
 		while ($row = $resources->GetRow())
 		{
-			$r = $resourceList[ $row[ColumnNames::RESOURCE_ID]];
-			$_assignments[] = new ResourceGroupAssignment($row[ColumnNames::RESOURCE_GROUP_ID],
-														  $row[ColumnNames::RESOURCE_NAME],
-														  $row[ColumnNames::RESOURCE_ID],
-														  $r->GetAdminGroupId(),
-														  $r->GetScheduleId(),
-														  $r->GetStatusId(),
-														  $r->GetScheduleAdminGroupId());
+			$resourceId = $row[ColumnNames::RESOURCE_ID];
+			if (array_key_exists($resourceId, $resourceList))
+			{
+				$r = $resourceList[$resourceId];
+				$_assignments[] = new ResourceGroupAssignment($row[ColumnNames::RESOURCE_GROUP_ID],
+																		  $row[ColumnNames::RESOURCE_NAME],
+																		  $row[ColumnNames::RESOURCE_ID],
+																		  $r->GetAdminGroupId(),
+																		  $r->GetScheduleId(),
+																		  $r->GetStatusId(),
+																		  $r->GetScheduleAdminGroupId());
+			}
 		}
 
 		return $this->BuildResourceGroupTree($_groups, $_assignments, $resourceFilter);

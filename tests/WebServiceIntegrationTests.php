@@ -51,7 +51,7 @@ class WebServiceIntegrationTests extends PHPUnit_Framework_TestCase
 
 	private function authHeaders($token, $userId)
 	{
-		return array("X-Booked Scheduler-SessionToken:$token", "X-Booked Scheduler-UserId:$userId");
+		return array("X-Booked-SessionToken:$token", "X-Booked-UserId:$userId");
 	}
 
 	private function LogIn($username = 'admin', $password = 'password')

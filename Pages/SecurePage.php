@@ -145,7 +145,7 @@ class RoleRestrictedPageDecorator extends SecureActionPageDecorator
 		parent::__construct($page);
 
 		$user = ServiceLocator::GetServer()->GetUserSession();
-		$isAllowed = false;
+		$isAllowed = empty($allowedRoles);
 
 		foreach ($allowedRoles as $roleId)
 		{
