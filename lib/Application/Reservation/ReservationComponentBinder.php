@@ -141,7 +141,8 @@ class ReservationResourceBinder implements IReservationComponentBinder
 		$resources = $groups->GetAllResources();
 		if (empty($requestedResourceId) && count($resources) > 0)
 		{
-			$requestedResourceId = $resources[0]->GetResourceId();
+			$first = reset($resources);
+			$requestedResourceId = $first->Id;
 		}
 
 		$bindableResourceData = $this->GetBindableResourceData($resources, $requestedResourceId);
