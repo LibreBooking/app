@@ -41,17 +41,17 @@ interface IReservationHandler
 class ReservationHandler implements IReservationHandler
 {
 	/**
-	 * @var \IReservationPersistenceService
+	 * @var IReservationPersistenceService
 	 */
 	private $persistenceService;
 
 	/**
-	 * @var \IReservationValidationService
+	 * @var IReservationValidationService
 	 */
 	private $validationService;
 
 	/**
-	 * @var \IReservationNotificationService
+	 * @var IReservationNotificationService
 	 */
 	private $notificationService;
 
@@ -73,15 +73,15 @@ class ReservationHandler implements IReservationHandler
 	{
 		if (!isset($persistenceService))
 		{
-			$pfactory = new ReservationPersistenceFactory();
-			$persistenceService = $pfactory->Create($reservationAction);
+			$persistenceFactory = new ReservationPersistenceFactory();
+			$persistenceService = $persistenceFactory->Create($reservationAction);
 		}
 
-		$vfactory = new ReservationValidationFactory();
-		$validationService = $vfactory->Create($reservationAction, $session);
+		$validationFactory = new ReservationValidationFactory();
+		$validationService = $validationFactory->Create($reservationAction, $session);
 
-		$nfactory = new ReservationNotificationFactory();
-		$notificationService = $nfactory->Create($reservationAction, $session);
+		$notificationFactory = new ReservationNotificationFactory();
+		$notificationService = $notificationFactory->Create($reservationAction, $session);
 
 		return new ReservationHandler($persistenceService, $validationService, $notificationService);
 	}
@@ -123,5 +123,3 @@ class ReservationHandler implements IReservationHandler
 		return $result;
 	}
 }
-
-?>

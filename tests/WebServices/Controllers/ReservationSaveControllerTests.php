@@ -1,21 +1,21 @@
 <?php
 /**
-Copyright 2012-2014 Nick Korbel
-
-This file is part of Booked Scheduler.
-
-Booked Scheduler is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-Booked Scheduler is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
+ * Copyright 2012-2014 Nick Korbel
+ *
+ * This file is part of Booked Scheduler.
+ *
+ * Booked Scheduler is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Booked Scheduler is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 require_once(ROOT_DIR . 'WebServices/Controllers/ReservationSaveController.php');
@@ -53,17 +53,17 @@ class ReservationSaveControllerTests extends TestBase
 		$facade = new ReservationRequestResponseFacade($request, $session);
 
 		$this->presenterFactory->expects($this->once())
-				->method('Create')
-				->with($this->equalTo($facade), $this->equalTo($session))
-				->will($this->returnValue($presenter));
+							   ->method('Create')
+							   ->with($this->equalTo($facade), $this->equalTo($session))
+							   ->will($this->returnValue($presenter));
 
 		$presenter->expects($this->once())
-				->method('BuildReservation')
-				->will($this->returnValue($reservation));
+				  ->method('BuildReservation')
+				  ->will($this->returnValue($reservation));
 
 		$presenter->expects($this->once())
-				->method('HandleReservation')
-				->with($this->equalTo($reservation));
+				  ->method('HandleReservation')
+				  ->with($this->equalTo($reservation));
 
 		$result = $this->controller->Create($request, $session);
 
@@ -86,21 +86,43 @@ class ReservationSaveControllerTests extends TestBase
 		$facade = new ReservationUpdateRequestResponseFacade($request, $session, $referenceNumber, $updateScope);
 
 		$this->presenterFactory->expects($this->once())
-				->method('Update')
-				->with($this->equalTo($facade), $this->equalTo($session))
-				->will($this->returnValue($presenter));
+							   ->method('Update')
+							   ->with($this->equalTo($facade), $this->equalTo($session))
+							   ->will($this->returnValue($presenter));
+		$presenter->expects($this->once())
+				  ->method('BuildReservation')
+				  ->will($this->returnValue($reservation));
 
 		$presenter->expects($this->once())
-				->method('BuildReservation')
-				->will($this->returnValue($reservation));
+				  ->method('HandleReservation')
+				  ->with($this->equalTo($reservation));
 
-		$presenter->expects($this->once())
-				->method('HandleReservation')
-				->with($this->equalTo($reservation));
 
 		$result = $this->controller->Update($request, $session, $referenceNumber, $updateScope);
 
 		$expectedResult = new ReservationControllerResult($facade->ReferenceNumber(), $facade->Errors());
+		$this->assertEquals($expectedResult, $result);
+	}
+
+	public function testApprovesExistingReservation()
+	{
+		$presenter = $this->getMock('IReservationApprovalPresenter');
+		$referenceNumber = '123';
+		$session = new FakeWebServiceUserSession(123);
+
+		$facade = new ReservationApprovalRequestResponseFacade($referenceNumber);
+
+		$this->presenterFactory->expects($this->once())
+							   ->method('Approve')
+							   ->with($this->equalTo($facade), $this->equalTo($session))
+							   ->will($this->returnValue($presenter));
+
+		$presenter->expects($this->once())
+				  ->method('PageLoad');
+
+		$result = $this->controller->Approve($session, $referenceNumber);
+
+		$expectedResult = new ReservationControllerResult($facade->GetReferenceNumber(), $facade->Errors());
 		$this->assertEquals($expectedResult, $result);
 	}
 
@@ -117,17 +139,17 @@ class ReservationSaveControllerTests extends TestBase
 		$reservation = new TestReservation();
 
 		$this->presenterFactory->expects($this->once())
-				->method('Delete')
-				->with($this->equalTo($facade), $this->equalTo($session))
-				->will($this->returnValue($presenter));
+							   ->method('Delete')
+							   ->with($this->equalTo($facade), $this->equalTo($session))
+							   ->will($this->returnValue($presenter));
 
 		$presenter->expects($this->once())
-				->method('BuildReservation')
-				->will($this->returnValue($reservation));
+				  ->method('BuildReservation')
+				  ->will($this->returnValue($reservation));
 
 		$presenter->expects($this->once())
-				->method('HandleReservation')
-				->with($this->equalTo($reservation));
+				  ->method('HandleReservation')
+				  ->with($this->equalTo($reservation));
 
 		$result = $this->controller->Delete($session, $referenceNumber, $updateScope);
 
@@ -228,5 +250,3 @@ class ReservationSaveControllerTests extends TestBase
 
 	}
 }
-
-?>

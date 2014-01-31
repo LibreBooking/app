@@ -52,6 +52,3 @@ class ResourceAdminManageReservationsService implements IManageReservationsServi
 		return $this->reservationViewRepository->GetList($pageNumber, $pageSize, null, null, $filter->GetFilter());
 	}
 }
-
-
-?>

@@ -49,5 +49,3 @@ class ExampleCustomAttributeResponse extends CustomAttributeResponse
 		$this->value = 'value';
 	}
 }
-
-?>

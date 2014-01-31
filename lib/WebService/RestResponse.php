@@ -59,7 +59,7 @@ class RestResponse
 		$this->AddServiceLink(new RestServiceLink($href, $title));
 	}
 
-	private function AddServiceLink(RestServiceLink $link)
+	protected function AddServiceLink(RestServiceLink $link)
 	{
 		$this->links[] = $link;
 	}
@@ -78,6 +78,3 @@ class RestResponse
 		return $response;
 	}
 }
-
-
-?>

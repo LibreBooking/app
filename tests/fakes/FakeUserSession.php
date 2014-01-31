@@ -60,4 +60,3 @@ class FakeWebServiceUserSession extends WebServiceUserSession
 		return $this->_IsExpired;
 	}
 }
-?>

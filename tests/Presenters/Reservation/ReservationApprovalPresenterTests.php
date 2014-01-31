@@ -57,7 +57,7 @@ class ReservationApprovalPresenterTests extends TestBase
 		$this->handler = $this->getMock('IReservationHandler');
 		$this->auth = $this->getMock('IReservationAuthorization');
 
-		$this->presenter = new ReservationApprovalPresenter($this->page, $this->persistence, $this->handler, $this->auth);
+		$this->presenter = new ReservationApprovalPresenter($this->page, $this->persistence, $this->handler, $this->auth, $this->fakeUser);
 	}
 
 	public function testLoadAndApprovesReservationSendingNotifications()

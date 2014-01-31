@@ -85,19 +85,17 @@ class ReservationsWebServiceTests extends TestBase
 			$this->attributeService);
 	}
 
-	public function testDefaultsToNextTwoWeeksAndCurrentUser()
+	public function testDefaultsToNextTwoWeeks()
 	{
 		$this->server->SetQueryString(WebServiceQueryStringKeys::USER_ID, null);
 		$this->server->SetQueryString(WebServiceQueryStringKeys::START_DATE_TIME, null);
 		$this->server->SetQueryString(WebServiceQueryStringKeys::END_DATE_TIME, null);
 
-		$userId = $this->userSession->UserId;
 		$reservations = array();
 
 		$this->reservationViewRepository->expects($this->once())
 				->method('GetReservationList')
-				->with($this->equalTo($this->defaultStartDate), $this->equalTo($this->defaultEndDate),
-					   $this->equalTo($userId))
+				->with($this->equalTo($this->defaultStartDate), $this->equalTo($this->defaultEndDate))
 				->will($this->returnValue($reservations));
 
 		$this->service->GetReservations();
@@ -197,5 +195,3 @@ class ReservationsWebServiceTests extends TestBase
 		$this->assertEquals($expectedResponse, $this->server->_LastResponse);
 	}
 }
-
-?>

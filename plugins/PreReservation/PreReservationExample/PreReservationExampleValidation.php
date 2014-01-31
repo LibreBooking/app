@@ -71,5 +71,3 @@ class PreReservationExampleValidation implements IReservationValidationService
 		return new ReservationValidationResult(false, "Value of custom attribute cannot be greater than $maxValue");
 	}
 }
-
-?>

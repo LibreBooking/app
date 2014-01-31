@@ -1,5 +1,5 @@
 {*
-Copyright 2012-2014 Nick Korbel
+Copyright 2011-2014 Nick Korbel, Paul Menchini
 
 This file is part of Booked Scheduler.
 
@@ -17,9 +17,14 @@ You should have received a copy of the GNU General Public License
 along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 *}
 {include file='..\..\tpl\Email\emailheader.tpl'}
-	
-Ihren Reservierungsbericht finden Sie im Anhang.<br/>
 
-<a href="{$ScriptUrl}">Anmelden bei Booked Schedule</a>
+<p>{$To},</p>
+
+<p>Ein neuer Benutzer hat sich mit folgenden Daten registriert:<br/>
+Email: {$EmailAddress}<br/>
+Name: {$FullName}<br/>
+Telefon: {$Phone}<br/>
+Organisation: {$Organization}<br/>
+Position: {$Position}</p>
 
 {include file='..\..\tpl\Email\emailfooter.tpl'}

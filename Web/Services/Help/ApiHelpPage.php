@@ -66,6 +66,10 @@ class ApiHelpPage
 						font-weight:bold;
 					}
 
+					a, a:visited {
+						color:blue;
+					}
+
 	            </style>
 	        </head>
 	        <body>
@@ -78,9 +82,18 @@ EOT;
 
 		echo $security;
 
+		echo '<ul>';
+
 		foreach ($registry->Categories() as $category)
 		{
-			echo '<h2>' . $category->Name() . '</h2>';
+			echo "<li><a href='#{$category->Name()}'>{$category->Name()}</a></li>";
+		}
+
+		echo '</ul>';
+		foreach ($registry->Categories() as $category)
+		{
+			echo "<a name='{$category->Name()}'></a><h2>{$category->Name()}</h2>";
+			echo "<a href=''>Return To Top</a>";
 			echo '<h3>POST Services</h3>';
 
 			foreach ($category->Posts() as $service)

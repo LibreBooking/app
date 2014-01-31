@@ -21,7 +21,12 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 require_once(ROOT_DIR . 'Presenters/Reservation/ReservationHandler.php');
 require_once(ROOT_DIR . 'lib/Application/Reservation/namespace.php');
 
-class ReservationApprovalPresenter
+interface IReservationApprovalPresenter
+{
+	public function PageLoad();
+}
+
+class ReservationApprovalPresenter implements IReservationApprovalPresenter
 {
 	/**
 	 * @var IReservationApprovalPage
@@ -29,42 +34,49 @@ class ReservationApprovalPresenter
 	private $page;
 
 	/**
-	 * @var \IUpdateReservationPersistenceService
+	 * @var IUpdateReservationPersistenceService
 	 */
 	private $persistenceService;
 
 	/**
-	 * @var \IReservationHandler
+	 * @var IReservationHandler
 	 */
 	private $handler;
+
 	/**
 	 * @var IReservationAuthorization
 	 */
 	private $authorization;
 
+	/**
+	 * @var UserSession
+	 */
+	private $userSession;
+
 	public function __construct(
 		IReservationApprovalPage $page,
 		IUpdateReservationPersistenceService $persistenceService,
 		IReservationHandler $handler,
-		IReservationAuthorization $authorizationService)
+		IReservationAuthorization $authorizationService,
+		UserSession $userSession)
 	{
 		$this->page = $page;
 		$this->persistenceService = $persistenceService;
 		$this->handler = $handler;
 		$this->authorization = $authorizationService;
+		$this->userSession = $userSession;
 	}
 
 	public function PageLoad()
 	{
 		$referenceNumber = $this->page->GetReferenceNumber();
-		$userSession = ServiceLocator::GetServer()->GetUserSession();
 
-		Log::Debug('User: %s, Approving reservation with reference number %s', $userSession->UserId, $referenceNumber);
+		Log::Debug('User: %s, Approving reservation with reference number %s', $this->userSession->UserId, $referenceNumber);
 
 		$series = $this->persistenceService->LoadByReferenceNumber($referenceNumber);
-		if($this->authorization->CanApprove(new ReservationViewAdapter($series), $userSession))
+		if($this->authorization->CanApprove(new ReservationViewAdapter($series), $this->userSession))
 		{
-			$series->Approve($userSession);
+			$series->Approve($this->userSession);
 			$this->handler->Handle($series, $this->page);
 		}
 	}
@@ -112,5 +124,3 @@ class ReservationViewAdapter extends ReservationView
 		$this->StatusId = $series->StatusId();
 	}
 }
-
-?>

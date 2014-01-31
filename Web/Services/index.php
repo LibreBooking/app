@@ -121,6 +121,7 @@ function RegisterReservations(SlimServer $server, SlimWebServiceRegistry $regist
 	$category->AddSecureGet('/', array($readService, 'GetReservations'), WebServices::AllReservations);
 	$category->AddSecureGet('/:referenceNumber', array($readService, 'GetReservation'), WebServices::GetReservation);
 	$category->AddSecurePost('/:referenceNumber', array($writeService, 'Update'), WebServices::UpdateReservation);
+	$category->AddSecurePost('/:referenceNumber/Approval', array($writeService, 'Approve'), WebServices::ApproveReservation);
 	$category->AddSecureDelete('/:referenceNumber', array($writeService, 'Delete'), WebServices::DeleteReservation);
 
 	$registry->AddCategory($category);
@@ -130,13 +131,16 @@ function RegisterResources(SlimServer $server, SlimWebServiceRegistry $registry)
 {
 	$resourceRepository = new ResourceRepository();
 	$attributeService = new AttributeService(new AttributeRepository());
-	$webService = new ResourcesWebService($server, $resourceRepository, $attributeService);
+	$webService = new ResourcesWebService($server, $resourceRepository, $attributeService, new ReservationViewRepository());
 	$writeWebService = new ResourcesWriteWebService($server, new ResourceSaveController($resourceRepository, new ResourceRequestValidator($attributeService)));
 	$category = new SlimWebServiceRegistryCategory('Resources');
 	$category->AddSecureGet('/', array($webService, 'GetAll'), WebServices::AllResources);
-	$category->AddSecureGet('/:resourceId', array($webService, 'GetResource'), WebServices::GetResource);
 	$category->AddGet('/Status', array($webService, 'GetStatuses'), WebServices::GetStatuses);
 	$category->AddSecureGet('/Status/Reasons', array($webService, 'GetStatusReasons'), WebServices::GetStatusReasons);
+	$category->AddSecureGet('/Availability', array($webService, 'GetAvailability'), WebServices::AllAvailability);
+	$category->AddSecureGet('/:resourceId', array($webService, 'GetResource'), WebServices::GetResource);
+	$category->AddSecureGet('/:resourceId/Availability', array($webService, 'GetAvailability'), WebServices::GetResourceAvailability);
+
 	$category->AddAdminPost('/', array($writeWebService, 'Create'), WebServices::CreateResource);
 	$category->AddAdminPost('/:resourceId', array($writeWebService, 'Update'), WebServices::UpdateResource);
 	$category->AddAdminDelete('/:resourceId', array($writeWebService, 'Delete'), WebServices::DeleteResource);
@@ -194,5 +198,3 @@ function RegisterGroups(SlimServer $server, SlimWebServiceRegistry $registry)
 	$category->AddSecureGet('/:groupId', array($webService, 'GetGroup'), WebServices::GetGroup);
 	$registry->AddCategory($category);
 }
-
-?>

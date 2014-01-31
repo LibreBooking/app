@@ -77,14 +77,6 @@ function ResourceManagement(opts) {
 				PerformAsyncAction($(this), getSubmitCallback(options.actions.removeImage), indicator);
 			});
 
-			$(this).find('.takeOfflineButton').click(function (e) {
-				PerformAsyncAction($(this), getSubmitCallback(options.actions.takeOffline), indicator);
-			});
-
-			$(this).find('.bringOnlineButton').click(function (e) {
-				PerformAsyncAction($(this), getSubmitCallback(options.actions.bringOnline), indicator);
-			});
-
 			$(this).find('.enableSubscription').click(function (e) {
 				PerformAsyncAction($(this), getSubmitCallback(options.actions.enableSubscription), indicator);
 			});
@@ -176,10 +168,7 @@ function ResourceManagement(opts) {
 		var imageSaveErrorHandler = function (result) {
 			alert(result);
 		};
-		var imageSavePreSubmit = function () {
-			showIndicator(elements.imageForm);
-			return true;
-		};
+
 		var combineIntervals = function (form, options) {
 			$('.interval', form).each(function () {
 				var id = $(this).attr('id');
@@ -206,7 +195,7 @@ function ResourceManagement(opts) {
 			$("#globalError").html(result).show();
 		};
 
-		ConfigureUploadForm(elements.imageForm.find('.uploadImage'), defaultSubmitCallback(elements.imageForm), imageSavePreSubmit, null, imageSaveErrorHandler);
+		ConfigureAdminForm(elements.imageForm, defaultSubmitCallback(elements.imageForm), null, imageSaveErrorHandler);
 		ConfigureAdminForm(elements.renameForm, defaultSubmitCallback(elements.renameForm), null, errorHandler);
 		ConfigureAdminForm(elements.scheduleForm, defaultSubmitCallback(elements.scheduleForm));
 		ConfigureAdminForm(elements.locationForm, defaultSubmitCallback(elements.locationForm));

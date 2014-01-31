@@ -56,5 +56,3 @@ class PreReservationExample implements IPreReservationFactory
     }
 
 }
-
-?>

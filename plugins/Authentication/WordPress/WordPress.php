@@ -149,6 +149,13 @@ class WordPress extends Authentication implements IAuthentication
 	private function Synchronize()
 	{
 		$registration = $this->GetRegistration();
+
+		Log::Debug('WordPress - Syncing username = %s, email = %s, firstname = %s, lastname = %s',
+				   $this->user->user_login,
+				   $this->user->user_email,
+					$this->user->user_firstname,
+					$this->user->user_lastname);
+
 		$registration->Synchronize(
 			new AuthenticatedUser(
                 $this->user->user_login,
@@ -162,5 +169,3 @@ class WordPress extends Authentication implements IAuthentication
 		);
 	}
 }
-
-?>

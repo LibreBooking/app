@@ -75,7 +75,7 @@ class SlimWebServiceRegistry
 	}
 
 	/**
-	 * @return array|SlimWebServiceRegistryCategory[]
+	 * @return SlimWebServiceRegistryCategory[]
 	 */
 	public function Categories()
 	{

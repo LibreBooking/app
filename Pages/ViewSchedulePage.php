@@ -36,7 +36,7 @@ class ViewSchedulePage extends SchedulePage
 
 		$this->_presenter = new SchedulePresenter(
 			$this,
-			$scheduleRepository,
+			new ScheduleService($scheduleRepository, $resourceService),
 			$resourceService,
 			$pageBuilder,
 			$reservationService,
@@ -63,4 +63,3 @@ class ViewSchedulePage extends SchedulePage
 		return false;
 	}
 }
-?>

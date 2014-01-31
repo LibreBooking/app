@@ -70,5 +70,3 @@ class NullReservationValidationService implements IReservationValidationService
         return new ReservationValidationResult();
     }
 }
-
-?>

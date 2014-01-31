@@ -108,7 +108,7 @@ class ManageBlackoutsService implements IManageBlackoutsService
 			{
 				$groupIds[] = $group->GroupId;
 			}
-			$adminFilter = new SqlFilterIn(new SqlFilterColumn(TableNames::RESOURCES, ColumnNames::RESOURCE_ADMIN_GROUP_ID), $groupIds);
+			$adminFilter = new SqlFilterIn(new SqlFilterColumn('r', ColumnNames::RESOURCE_ADMIN_GROUP_ID), $groupIds);
 			$adminFilter->_Or(new SqlFilterIn(new SqlFilterColumn(TableNames::SCHEDULES, ColumnNames::SCHEDULE_ADMIN_GROUP_ID), $groupIds));
 			$blackoutFilter->_And($adminFilter);
 		}
@@ -275,5 +275,3 @@ class ManageBlackoutsService implements IManageBlackoutsService
 		return $blackoutValidationResult;
 	}
 }
-
-?>

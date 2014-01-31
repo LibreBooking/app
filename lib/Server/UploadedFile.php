@@ -122,4 +122,3 @@ class UploadedFile
 		return (int)(ini_get('max_file_uploads'));
 	}
 }
-?>

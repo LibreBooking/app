@@ -61,9 +61,9 @@ class GroupAdminUserRepository extends UserRepository
 	public function LoadById($userId)
 	{
 		$user = parent::LoadById($userId);
-
 		$me = parent::LoadById($this->userSession->UserId);
-		if ($me->IsAdminFor($user))
+
+		if ($userId == $this->userSession->UserId || $me->IsAdminFor($user))
 		{
 			return $user;
 		}
@@ -71,5 +71,3 @@ class GroupAdminUserRepository extends UserRepository
 		return User::Null();
 	}
 }
-
-?>

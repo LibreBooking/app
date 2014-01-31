@@ -35,5 +35,3 @@ class WebServiceDate
 		return Date::Parse($dateString, $session->Timezone);
 	}
 }
-
-?>

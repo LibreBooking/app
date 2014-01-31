@@ -320,7 +320,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		<span class="note">.gif, .jpg, or .png</span>
 		<div class="admin-update-buttons">
 			<button type="button"
-					class="button uploadImage">{html_image src="disk-black.png"} {translate key='Update'}</button>
+					class="button save">{html_image src="disk-black.png"} {translate key='Update'}</button>
 			<button type="button" class="button cancel">{html_image src="slash.png"} {translate key='Cancel'}</button>
 		</div>
 	</form>
@@ -622,7 +622,6 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 {jsfile src="admin/edit.js"}
 {jsfile src="admin/resource.js"}
 {jsfile src="js/jquery.form-3.09.min.js"}
-{jsfile src="js/ajaxfileupload.js"}
 
 <script type="text/javascript">
 
@@ -630,7 +629,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 	{
 		var actions = {
 			enableSubscription: '{ManageResourcesActions::ActionEnableSubscription}',
-			disableSubscription: '{ManageResourcesActions::ActionDisableSubscription}'
+			disableSubscription: '{ManageResourcesActions::ActionDisableSubscription}',
+			removeImage: '{ManageResourcesActions::ActionRemoveImage}'
 		};
 
 		var opts = {

@@ -53,6 +53,23 @@ class ReservationUpdatedResponse extends RestResponse
 	}
 }
 
+class ReservationApprovedResponse extends RestResponse
+{
+	public $referenceNumber;
+
+	public function __construct(IRestServer $server, $referenceNumber)
+	{
+		$this->message = 'The reservation was approved';
+		$this->referenceNumber = $referenceNumber;
+		$this->AddService($server, WebServices::GetReservation, array(WebServiceParams::ReferenceNumber => $referenceNumber));
+	}
+
+	public static function Example()
+	{
+		return new ExampleReservationCreatedResponse();
+	}
+}
+
 class ExampleReservationCreatedResponse extends ReservationCreatedResponse
 {
 	public function __construct()
@@ -62,4 +79,3 @@ class ExampleReservationCreatedResponse extends ReservationCreatedResponse
 		$this->AddLink('http://url/to/update/reservation', WebServices::UpdateReservation);
 	}
 }
-?>

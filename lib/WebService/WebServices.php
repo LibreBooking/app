@@ -21,12 +21,14 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 class WebServices
 {
 	const AllAccessories = 'all_accessories';
+	const AllAvailability = 'all_availability';
 	const AllCustomAttributes = 'all_custom_attributes';
 	const AllGroups = 'all_groups';
 	const AllResources = 'all_resources';
 	const AllReservations = 'all_reservations';
 	const AllSchedules = 'all_schedules';
 	const AllUsers = 'all_users';
+	const ApproveReservation = 'approve_reservation';
 	const CreateReservation = 'create_reservation';
 	const CreateResource = 'create_resource';
 	const CreateUser = 'create_user';
@@ -40,6 +42,7 @@ class WebServices
 	const GetGroup = 'get_group';
 	const GetReservation = 'get_reservation';
 	const GetResource = 'get_resource';
+	const GetResourceAvailability = 'get_resource_availability';
 	const GetSchedule = 'get_schedule';
 	const GetUser = 'get_user';
 	const UpdateReservation = 'update_reservation';
@@ -48,4 +51,3 @@ class WebServices
 	const GetStatuses = 'get_resource_statuses';
 	const GetStatusReasons = 'get_resource_status_reasons';
 }
-?>

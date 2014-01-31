@@ -64,5 +64,3 @@ class ExampleReservationsResponse extends ReservationsResponse
 		$this->reservations = array(ReservationItemResponse::Example());
 	}
 }
-
-?>

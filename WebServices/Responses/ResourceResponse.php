@@ -117,5 +117,3 @@ class ExampleResourceResponse extends ResourceResponse
 		$this->customAttributes = array(CustomAttributeResponse::Example());
 	}
 }
-
-?>

@@ -1,29 +1,28 @@
 {*
-Copyright 2011-2012 Nick Korbel
+Copyright 2011-2014 Nick Korbel
 
-This file is part of phpScheduleIt.
+This file is part of Booked Scheduler.
 
-phpScheduleIt is free software: you can redistribute it and/or modify
+Booked Scheduler is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation, either version 3 of the License, or
 (at your option) any later version.
 
-phpScheduleIt is distributed in the hope that it will be useful,
+Booked Scheduler is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
-along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
+along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 *}
-
 {include file='globalheader.tpl'}
-<h1>phpScheduleIt Hilfe</h1>
+<h1>Booked Schedule Hilfe</h1>
 
 <div id="help">
 <h2>Registrierung / Konto hinzufügen</h2>
 
-<p>Um phpScheduleIt verwenden zu können, ist eine Registrierung erforderlich. (Wenn der Administrator die Registrierung aktiviert hat).
+<p>Um Booked Schedule verwenden zu können, ist eine Registrierung erforderlich. (Wenn der Administrator die Registrierung aktiviert hat).
 Nachdem Ihr Konto registriert wurde, können Sie sich anmelden und haben Zugriff auf alle Ressourcen, die für Sie freigegeben wurden.
 </p>
 
@@ -160,7 +159,7 @@ Nur Anwendungsadministratoren können Reservierungen in der Vergangenheit verän
 <h2>Löschen einer Reservierung</h2>
 
 <p>
-Das löschen einer Reservierung entfernt sie komplett aus dem Zeitplan. Sie wird in phpScheduleIt nirgends mehr sichtbar sein.
+Das löschen einer Reservierung entfernt sie komplett aus dem Zeitplan. Sie wird in Booked Schedule nirgends mehr sichtbar sein.
 </p>
 
 <h3>Löschen von Wiederholungsbuchungen</h3>
@@ -209,7 +208,7 @@ Auf der rechten Seite oberhalb des Kalenders finden Sie den Link "Kalender abonn
 <p>
 In den meisten Fällen genügt ein Klick auf "Kalender abonnieren", um automatisch ein Abonnement in Ihrem Kalender-Programm einzurichten. 
 Falls Outlook es nicht automatisch hinzufügt, öffnen Sie die Kalenderansicht, dann rechts auf Meine Kalender und wählen Sie Hinzufügen Kalender -> Aus dem Internet. 
-Fügen Sie die URL ein, die Sie unter "Kalender Abonnieren" in phpScheduleIt gedruckt finden.
+Fügen Sie die URL ein, die Sie unter "Kalender Abonnieren" in Booked Schedule gedruckt finden.
 </p>
 
 <h3>Google&reg; Kalender</h3>
@@ -219,7 +218,7 @@ Fügen Sie die URL ein, die Sie unter "Kalender Abonnieren" in phpScheduleIt ged
 Klicken Sie auf die Registerkarte "Kalender". 
 Klicken Sie auf "In interessanten Kalendern suchen".
 Klicken Sie auf "Über URL hinzufügen".
-Fügen Sie die URL ein, die Sie unter "Kalender Abonnieren" in phpScheduleIt gedruckt finden.
+Fügen Sie die URL ein, die Sie unter "Kalender Abonnieren" in Booked Schedule gedruckt finden.
 </p>
 
 <h2>Quotenregelungen</h2>

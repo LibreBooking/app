@@ -1,21 +1,21 @@
 <?php
 /**
-Copyright 2012-2014 Nick Korbel
-
-This file is part of Booked Scheduler.
-
-Booked Scheduler is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-Booked Scheduler is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
+ * Copyright 2012-2014 Nick Korbel
+ *
+ * This file is part of Booked Scheduler.
+ *
+ * Booked Scheduler is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Booked Scheduler is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 require_once(ROOT_DIR . 'lib/WebService/namespace.php');
@@ -91,7 +91,8 @@ class ReservationWriteWebService
 		/** @var $request ReservationRequest */
 		$request = $this->server->GetRequest();
 
-		Log::Debug('ReservationWriteWebService.Update() User=%s, ReferenceNumber=%s, Request=%s', $referenceNumber, $this->server->GetSession()->UserId,
+		Log::Debug('ReservationWriteWebService.Update() User=%s, ReferenceNumber=%s, Request=%s', $referenceNumber,
+				   $this->server->GetSession()->UserId,
 				   json_encode($request));
 
 		$updateScope = $this->server->GetQueryString(WebServiceQueryStringKeys::UPDATE_SCOPE);
@@ -102,12 +103,43 @@ class ReservationWriteWebService
 			Log::Debug('ReservationWriteWebService.Update() - Reservation Updated. ReferenceNumber=%s',
 					   $result->CreatedReferenceNumber());
 
-			$this->server->WriteResponse(new ReservationUpdatedResponse($this->server, $result->CreatedReferenceNumber()),
+			$this->server->WriteResponse(new ReservationApprovedResponse($this->server, $result->CreatedReferenceNumber()),
 										 RestResponse::OK_CODE);
 		}
 		else
 		{
 			Log::Debug('ReservationWriteWebService.Update() - Reservation Failed.');
+
+			$this->server->WriteResponse(new FailedResponse($this->server, $result->Errors()),
+										 RestResponse::BAD_REQUEST_CODE);
+		}
+	}
+
+	/**
+	 * @name ApproveReservation
+	 * @description Approves a pending reservation.
+	 * @response ReservationApprovedResponse
+	 * @param string $referenceNumber
+	 * @return void
+	 */
+	public function Approve($referenceNumber)
+	{
+		Log::Debug('ReservationWriteWebService.Approve() User=%s, ReferenceNumber=%s', $referenceNumber,
+				   $this->server->GetSession()->UserId);
+
+		$result = $this->controller->Approve($this->server->GetSession(), $referenceNumber);
+
+		if ($result->WasSuccessful())
+		{
+			Log::Debug('ReservationWriteWebService.Approve() - Reservation Approved. ReferenceNumber=%s',
+					   $referenceNumber);
+
+			$this->server->WriteResponse(new ReservationApprovedResponse($this->server, $referenceNumber),
+										 RestResponse::OK_CODE);
+		}
+		else
+		{
+			Log::Debug('ReservationWriteWebService.Approve() - Reservation Failed.');
 
 			$this->server->WriteResponse(new FailedResponse($this->server, $result->Errors()),
 										 RestResponse::BAD_REQUEST_CODE);
@@ -124,7 +156,8 @@ class ReservationWriteWebService
 	 */
 	public function Delete($referenceNumber)
 	{
-		Log::Debug('ReservationWriteWebService.Delete() User=%s, ReferenceNumber=%s', $this->server->GetSession()->UserId, $referenceNumber);
+		Log::Debug('ReservationWriteWebService.Delete() User=%s, ReferenceNumber=%s',
+				   $this->server->GetSession()->UserId, $referenceNumber);
 
 		$updateScope = $this->server->GetQueryString(WebServiceQueryStringKeys::UPDATE_SCOPE);
 		$result = $this->controller->Delete($this->server->GetSession(), $referenceNumber, $updateScope);
@@ -145,5 +178,3 @@ class ReservationWriteWebService
 		}
 	}
 }
-
-?>

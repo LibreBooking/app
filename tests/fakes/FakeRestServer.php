@@ -49,6 +49,8 @@ class FakeRestServer implements IRestServer
 	 */
 	public $session;
 
+	private $queryStringKeys = array();
+
 	public function __construct()
 	{
 		$this->SetSession(new FakeWebServiceUserSession(123));
@@ -114,7 +116,11 @@ class FakeRestServer implements IRestServer
 
 	public function GetQueryString($queryStringKey)
 	{
-		return $this->queryStringKeys[$queryStringKey];
+		if (array_key_exists($queryStringKey, $this->queryStringKeys))
+		{
+			return $this->queryStringKeys[$queryStringKey];
+		}
+		return null;
 	}
 }
 ?>

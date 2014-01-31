@@ -60,7 +60,6 @@ class ReservationsWebService
 	 * @name GetReservations
 	 * @description Gets a list of reservations for the specified parameters.
 	 * Optional query string parameters: userId, resourceId, scheduleId, startDateTime, endDateTime.
-	 * If no query string parameters are provided, the current user will be used.
 	 * If no dates are provided, reservations for the next two weeks will be returned.
 	 * If dates do not include the timezone offset, the timezone of the authenticated user will be assumed.
 	 * @response ReservationsResponse
@@ -73,11 +72,6 @@ class ReservationsWebService
 		$userId = $this->GetUserId();
 		$resourceId = $this->GetResourceId();
 		$scheduleId = $this->GetScheduleId();
-
-		if (!$this->FilterProvided($userId, $resourceId, $scheduleId))
-		{
-			$userId = $this->server->GetSession()->UserId;
-		}
 
 		Log::Debug('GetReservations called. userId=%s, startDate=%s, endDate=%s', $userId, $startDate, $endDate);
 
@@ -185,5 +179,3 @@ class ReservationsWebService
 		return $this->server->GetQueryString(WebServiceQueryStringKeys::SCHEDULE_ID);
 	}
 }
-
-?>

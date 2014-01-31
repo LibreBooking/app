@@ -1,5 +1,7 @@
 <?php
 /**
+Copyright 2014 Nick Korbel
+
 This file is part of Booked Scheduler.
 
 Booked Scheduler is free software: you can redistribute it and/or modify
@@ -14,76 +16,107 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
-
-   This is an example how to write a post-reservation plugin.
-   It's currently under construction.
-
-   Originally posted on http://php.brickhost.com/forums/index.php?topic=11208.0
-   Copyright (C) 2012 Matthew Dilley
-   Copyright (C) 2013 Alois Schloegl
-
  */
 
-class PostReservationExample extends PostReservationFactory
+class PostReservationExample implements IPostReservationFactory
 {
     /**
-     * @var PosteReservationFactory
+     * @var PostReservationFactory
      */
     private $factoryToDecorate;
 
     public function __construct(PostReservationFactory $factoryToDecorate)
     {
         $this->factoryToDecorate = $factoryToDecorate;
-//        echo "constructed PostReservactionExample";
     }
 
-    public function CreatePostAddService(UserSession $userSession)
-    {
-//        echo "called CreatePostAddService";
+	/**
+	 * @param UserSession $userSession
+	 * @return IReservationNotificationService
+	 */
+	public function CreatePostAddService(UserSession $userSession)
+	{
+		// custom logic to be executed
+		$base = $this->factoryToDecorate->CreatePostAddService($userSession);
+		return new PostReservationCreatedExample($base);
+	}
 
-        // FIXME: show how to access the reservation
+	/**
+	 * @param UserSession $userSession
+	 * @return IReservationNotificationService
+	 */
+	public function CreatePostUpdateService(UserSession $userSession)
+	{
+		$base = $this->factoryToDecorate->CreatePostUpdateService($userSession);
+		return new PostReservationUpdateExample($base);
+	}
 
-        return $this->factoryToDecorate->CreatePostAddService($userSession);
-    }
+	/**
+	 * @param UserSession $userSession
+	 * @return IReservationNotificationService
+	 */
+	public function CreatePostDeleteService(UserSession $userSession)
+	{
+		// showing how to not add custom behavior during the post deletion stage
+		return $this->factoryToDecorate->CreatePostAddService($userSession);
+	}
 
-    /**
-     * @param UserSession $userSession
-     * @return IReservationNotificationService
-     */
-    public function CreatePostUpdateService(UserSession $userSession)
-    {
-//        echo "called CreatePostUpdateService";
-        $value = $this->factoryToDecorate->CreatePostUpdateService($userSession);
-
-        // FIXME: show how to access the reservation
-
-        return $value;
-    }
-
-    /**
-     * @param UserSession $userSession
-     * @return IReservationNotificationService
-     */
-    public function CreatePostDeleteService(UserSession $userSession)
-    {
-//        echo "called CreatePostDeleteService";
-        $value = $this->factoryToDecorate->CreatePostDeleteService($userSession);
-
-        // FIXME: show how to access the reservation
-
-        return $value;
-    }
-
-    /**
-     * @param UserSession $userSession
-     * @return IReservationNotificationService
-     */
-    public function CreatePostApproveService(UserSession $userSession)
-    {
-//        echo "called CreatePostApproveService";
-        return $this->factoryToDecorate->CreatePostApproveService($userSession);
-    }
-
+	/**
+	 * @param UserSession $userSession
+	 * @return IReservationNotificationService
+	 */
+	public function CreatePostApproveService(UserSession $userSession)
+	{
+		// showing how to not add custom behavior during the post approval stage
+		return $this->factoryToDecorate->CreatePostAddService($userSession);
+	}
 }
 
-?>
+class PostReservationCreatedExample implements IReservationNotificationService
+{
+	/**
+	 * @var IReservationNotificationService
+	 */
+	private $base;
+
+	public function __construct(IReservationNotificationService $base)
+	{
+		$this->base = $base;
+	}
+
+	/**
+	 * @param $reservationSeries ReservationSeries|ExistingReservationSeries
+	 * @return void
+	 */
+	public function Notify($reservationSeries)
+	{
+		// implement any custom post reservation created logic here
+
+		// then let the main application continue
+		$this->base->Notify($reservationSeries);
+	}
+}
+
+class PostReservationUpdateExample implements IReservationNotificationService
+{
+	/**
+	 * @var IReservationNotificationService
+	 */
+	private $base;
+
+	public function __construct(IReservationNotificationService $base)
+	{
+		$this->base = $base;
+	}
+
+	/**
+	 * @param $reservationSeries ReservationSeries|ExistingReservationSeries
+	 * @return void
+	 */
+	public function Notify($reservationSeries)
+	{
+		// implement any custom post reservation updated logic here
+
+		// do not call the base Notify method if you want to completely override the base behavior
+	}
+}

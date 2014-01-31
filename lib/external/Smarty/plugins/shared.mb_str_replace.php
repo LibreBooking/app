@@ -44,9 +44,11 @@ if (!function_exists('smarty_mb_str_replace')) {
                 }
             }
         } else {
-            $parts = mb_split(preg_quote($search), $subject);
-            $count = count($parts) - 1;
-            $subject = implode($replace, $parts);
+			$subject = str_replace($search, $replace, $subject, $c);
+			$count += $c;
+//            $parts = mb_split(preg_quote($search), $subject);
+//            $count = count($parts) - 1;
+//            $subject = implode($replace, $parts);
         }
 
         return $subject;
