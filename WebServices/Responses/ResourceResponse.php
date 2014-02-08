@@ -40,7 +40,8 @@ class ResourceResponse extends RestResponse
 	public $statusId;
 	public $statusReasonId;
 	public $customAttributes = array();
-
+	public $typeId;
+	
 	/**
 	 * @param IRestServer $server
 	 * @param BookableResource $resource
@@ -66,6 +67,7 @@ class ResourceResponse extends RestResponse
 		$this->statusId = $resource->GetStatusId();
 		$this->statusReasonId = $resource->GetStatusReasonId();
 		$this->bufferTime = $resource->GetBufferTime()->__toString();
+		$this->typeId = $resource->GetResourceTypeId();
 
 		$attributeValues = $attributes->GetAttributes($resourceId);
 
@@ -113,6 +115,7 @@ class ExampleResourceResponse extends ResourceResponse
 		$this->scheduleId = 123;
 		$this->statusId = ResourceStatus::AVAILABLE;
 		$this->statusReasonId = 3;
+		$this->typeId = 2;
 
 		$this->customAttributes = array(CustomAttributeResponse::Example());
 	}

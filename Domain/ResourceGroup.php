@@ -200,6 +200,7 @@ class ResourceGroupAssignment implements IResource
 	public $id;
 	public $label;
 	public $resource_id;
+	public $resourceTypeId;
 
 	private $resourceAdminGroupId;
 	private $scheduleId;
@@ -209,7 +210,7 @@ class ResourceGroupAssignment implements IResource
 	 */
 	private $scheduleAdminGroupId;
 
-	public function __construct($group_id, $resource_name, $resource_id, $resourceAdminGroupId, $scheduleId, $statusId, $scheduleAdminGroupId)
+	public function __construct($group_id, $resource_name, $resource_id, $resourceAdminGroupId, $scheduleId, $statusId, $scheduleAdminGroupId, $resourceTypeId)
 	{
 		$this->group_id = $group_id;
 		$this->resource_name = $resource_name;
@@ -220,11 +221,17 @@ class ResourceGroupAssignment implements IResource
 		$this->scheduleId = $scheduleId;
 		$this->statusId = $statusId;
 		$this->scheduleAdminGroupId = $scheduleAdminGroupId;
+		$this->resourceTypeId = $resourceTypeId;
 	}
 
 	public function GetId()
 	{
 		return $this->resource_id;
+	}
+
+	public function GetResourceTypeId()
+	{
+		return $this->resourceTypeId;
 	}
 
 	public function GetName()

@@ -21,11 +21,15 @@
 require_once(ROOT_DIR . 'lib/WebService/namespace.php');
 require_once(ROOT_DIR . 'Domain/Access/namespace.php');
 require_once(ROOT_DIR . 'lib/Application/Attributes/namespace.php');
+require_once(ROOT_DIR . 'lib/Application/Schedule/namespace.php');
 require_once(ROOT_DIR . 'WebServices/Responses/ResourceResponse.php');
 require_once(ROOT_DIR . 'WebServices/Responses/ResourcesResponse.php');
 require_once(ROOT_DIR . 'WebServices/Responses/CustomAttributeResponse.php');
 require_once(ROOT_DIR . 'WebServices/Responses/Resource/ResourceStatusResponse.php');
 require_once(ROOT_DIR . 'WebServices/Responses/Resource/ResourceStatusReasonsResponse.php');
+require_once(ROOT_DIR . 'WebServices/Responses/Resource/ResourceGroupTreeResponse.php');
+require_once(ROOT_DIR . 'WebServices/Responses/Resource/ResourceGroupsResponse.php');
+require_once(ROOT_DIR . 'WebServices/Responses/Resource/ResourceGroupResponse.php');
 require_once(ROOT_DIR . 'WebServices/Responses/Resource/ResourceAvailabilityResponse.php');
 require_once(ROOT_DIR . 'WebServices/Responses/Resource/ResourceReference.php');
 
@@ -60,6 +64,55 @@ class ResourcesWebService
 		$this->resourceRepository = $resourceRepository;
 		$this->attributeService = $attributeService;
 		$this->reservationRepository = $reservationRepository;
+	}
+
+	/**
+	 * @name GetResourceGroups
+	 * @description Loads all resource groups
+	 * @response ResourceGroupsResponse
+	 * @return void
+	 */
+	public function GetResourceGroups()
+	{
+		$resourcegroups = $this->resourceRepository->GetResourceGroupsList();
+		$this->server->WriteResponse(new ResourceGroupsResponse($this->server, $resourcegroups));
+	}
+
+	/**
+	 * @name GetResourceGroupTree
+	 * @param int $resourceTypeId
+	 * @description Loads all resource groups and its resources
+	 * @response ResourceGroupTreeResponse
+	 * @return void
+	 */
+	public function GetResourceGroupTree()
+	{
+		// Todo: add filtering
+		$scheduleId = ResourceRepository::ALL_SCHEDULES;
+		$resourceFilter = null;
+
+		$resourcegrouptree = $this->resourceRepository->GetResourceGroups($scheduleId, $resourceFilter);
+		$this->server->WriteResponse(new ResourceGroupTreeResponse($this->server, $resourcegrouptree));
+	}
+
+	/**
+	 * @name GetResourceGroupTree
+	 * @param string $resourceTypeName
+	 * @description Loads all resource groups and its resources of a specific type
+	 * @response ResourceGroupTreeResponse
+	 * @return void
+	 */
+	public function GetResourceGroupTreeByType($resourceTypeName)
+	{
+		// Todo: add filtering
+		$scheduleId = ResourceRepository::ALL_SCHEDULES;
+		if( $resourceTypeName=='All' )
+			$resourceFilter = null;
+		else
+			$resourceFilter = new ResourceTypeFilter( $resourceTypeName );
+
+		$resourcegrouptree = $this->resourceRepository->GetResourceGroups($scheduleId, $resourceFilter);
+		$this->server->WriteResponse(new ResourceGroupTreeResponse($this->server, $resourcegrouptree));
 	}
 
 	/**

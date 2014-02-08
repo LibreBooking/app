@@ -1324,6 +1324,15 @@ class GetResourceTypeCommand extends SqlCommand
 		}
 }
 
+class GetResourceTypeByNameCommand extends SqlCommand
+{
+	public function __construct($resourceTypeName)
+		{
+			parent::__construct(Queries::GET_RESOURCE_TYPE_BY_NAME);
+			$this->AddParameter(new Parameter(ParameterNames::RESOURCE_TYPE_NAME, $resourceTypeName));
+		}
+}
+
 class GetSavedReportForUserCommand extends SqlCommand
 {
 	public function __construct($reportId, $userId)
@@ -1434,6 +1443,14 @@ class GetUserSessionByUserIdCommand extends SqlCommand
 	{
 		parent::__construct(Queries::GET_USER_SESSION_BY_USERID);
 		$this->AddParameter(new Parameter(ParameterNames::USER_ID, $userId));
+	}
+}
+
+class GetVersionCommand extends SqlCommand
+{
+	public function __construct()
+	{
+		parent::__construct(Queries::GET_VERSION);
 	}
 }
 

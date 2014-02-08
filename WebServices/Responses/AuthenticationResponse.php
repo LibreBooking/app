@@ -26,21 +26,23 @@ class AuthenticationResponse extends RestResponse
 	public $sessionExpires;
 	public $userId;
 	public $isAuthenticated = false;
-
+	public $version;
+	
 	/**
 	 * @static
 	 * @param $server IRestServer
 	 * @param $userSession WebServiceUserSession
 	 * @return AuthenticationResponse
 	 */
-	public static function Success(IRestServer $server, $userSession)
+	public static function Success(IRestServer $server, $userSession, $version)
 	{
 		$response = new AuthenticationResponse($server);
 		$response->sessionToken = $userSession->SessionToken;
 		$response->sessionExpires = $userSession->SessionExpiration;
 		$response->isAuthenticated = true;
 		$response->userId = $userSession->UserId;
-
+		$response->version = $version;
+		
 		$response->AddService($server, WebServices::Logout);
 		//$response->AddService($server, WebServices::MyBookings, array($userSession->PublicId));
 		//$response->AddService($server, WebServices::AllBookings);
@@ -75,6 +77,7 @@ class ExampleAuthenticationResponse extends AuthenticationResponse
 		$this->sessionExpires = Date::Now()->ToIso();
 		$this->isAuthenticated = true;
 		$this->userId = 123;
+		$this->version = '1.0';
 	}
 }
 ?>

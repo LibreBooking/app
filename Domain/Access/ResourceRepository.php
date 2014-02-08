@@ -77,6 +77,24 @@ class ResourceRepository implements IResourceRepository
 		return $resources;
 	}
 
+	public function GetResourceGroupsList()
+	{
+		$reader = ServiceLocator::GetDatabase()
+				  ->Query(new GetAllResourceGroupsCommand());
+
+		$groups = array();
+		while ($row = $reader->GetRow())
+		{
+			$groups[] = new ResourceGroup($row[ColumnNames::RESOURCE_GROUP_ID],
+										  $row[ColumnNames::RESOURCE_GROUP_NAME],
+										  $row[ColumnNames::RESOURCE_GROUP_PARENT_ID]);
+		}
+
+		$reader->Free();
+
+		return $groups;
+	}
+
 	/**
 	 * @param int $resourceId
 	 * @return BookableResource
@@ -251,10 +269,10 @@ class ResourceRepository implements IResourceRepository
 		$_groups[] = new ResourceGroup(0, Resources::GetInstance()->GetString('All'));
 		foreach ($this->GetScheduleResources($scheduleId) as $r)
 		{
-			$resourceList[$r->GetId()] = $r;
-			$_assignments[] = new ResourceGroupAssignment(0, $r->GetName(), $r->GetId(), $r->GetAdminGroupId(), $r->GetScheduleId(), $r->GetStatusId(), $r->GetScheduleAdminGroupId());
+				$resourceList[$r->GetId()] = $r;
+				$_assignments[] = new ResourceGroupAssignment(0, $r->GetName(), $r->GetId(), $r->GetAdminGroupId(), $r->GetScheduleId(), $r->GetStatusId(), $r->GetScheduleAdminGroupId(),$r->GetResourceTypeId());
 		}
-
+		
 		while ($row = $groups->GetRow())
 		{
 			$_groups[] = new ResourceGroup($row[ColumnNames::RESOURCE_GROUP_ID],
@@ -268,13 +286,15 @@ class ResourceRepository implements IResourceRepository
 			if (array_key_exists($resourceId, $resourceList))
 			{
 				$r = $resourceList[$resourceId];
-				$_assignments[] = new ResourceGroupAssignment($row[ColumnNames::RESOURCE_GROUP_ID],
-																		  $row[ColumnNames::RESOURCE_NAME],
-																		  $row[ColumnNames::RESOURCE_ID],
-																		  $r->GetAdminGroupId(),
-																		  $r->GetScheduleId(),
-																		  $r->GetStatusId(),
-																		  $r->GetScheduleAdminGroupId());
+				$_assignments[] = new ResourceGroupAssignment(	$row[ColumnNames::RESOURCE_GROUP_ID],
+																$row[ColumnNames::RESOURCE_NAME],
+																$row[ColumnNames::RESOURCE_ID],
+																$r->GetAdminGroupId(),
+																$r->GetScheduleId(),
+																$r->GetStatusId(),
+																$r->GetScheduleAdminGroupId(),
+																$r->GetResourceTypeId()
+															 );
 			}
 		}
 
@@ -486,7 +506,6 @@ class AccessoryDto
 		return new AccessoryDto($row[ColumnNames::ACCESSORY_ID], $row[ColumnNames::ACCESSORY_NAME], $row[ColumnNames::ACCESSORY_QUANTITY]);
 	}
 }
-
 
 interface IResourceFilter
 {

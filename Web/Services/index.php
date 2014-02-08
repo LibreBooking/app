@@ -135,6 +135,9 @@ function RegisterResources(SlimServer $server, SlimWebServiceRegistry $registry)
 	$writeWebService = new ResourcesWriteWebService($server, new ResourceSaveController($resourceRepository, new ResourceRequestValidator($attributeService)));
 	$category = new SlimWebServiceRegistryCategory('Resources');
 	$category->AddSecureGet('/', array($webService, 'GetAll'), WebServices::AllResources);
+	$category->AddSecureGet('/Tree', array($webService, 'GetResourceGroupTree'), WebServices::GetResourceGroupTree);
+	$category->AddSecureGet('/Type/:resourceTypeName', array($webService, 'GetResourceGroupTreeByType'), WebServices::GetResourceGroupTreeByType);
+	$category->AddSecureGet('/Groups', array($webService, 'GetResourceGroups'), WebServices::GetResourceGroups);
 	$category->AddGet('/Status', array($webService, 'GetStatuses'), WebServices::GetStatuses);
 	$category->AddSecureGet('/Status/Reasons', array($webService, 'GetStatusReasons'), WebServices::GetStatusReasons);
 	$category->AddSecureGet('/Availability', array($webService, 'GetAvailability'), WebServices::AllAvailability);
@@ -165,6 +168,7 @@ function RegisterUsers(SlimServer $server, SlimWebServiceRegistry $registry)
 	$category = new SlimWebServiceRegistryCategory('Users');
 	$category->AddSecureGet('/', array($webService, 'GetUsers'), WebServices::AllUsers);
 	$category->AddSecureGet('/:userId', array($webService, 'GetUser'), WebServices::GetUser);
+	$category->AddSecureGet('/ByEmail/:emailAddress', array($webService, 'GetUserByEmail'), WebServices::GetUserByEmail);   
 	$category->AddAdminPost('/', array($writeWebService, 'Create'), WebServices::CreateUser);
 	$category->AddAdminPost('/:userId', array($writeWebService, 'Update'), WebServices::UpdateUser);
 	$category->AddAdminDelete('/:userId', array($writeWebService, 'Delete'), WebServices::DeleteUser);

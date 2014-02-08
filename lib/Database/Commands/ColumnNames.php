@@ -226,6 +226,10 @@ class ColumnNames
 	const RESOURCE_TYPE_NAME = 'resource_type_name';
 	const RESOURCE_TYPE_DESCRIPTION = 'resource_type_description';
 
+	// DBVERSION //
+	const VERSION_NUMBER = 'version_number';
+	const VERSION_DATE = 'version_date';
+	
 	// dynamic
 	const TOTAL = 'total';
 	const TOTAL_TIME = 'totalTime';

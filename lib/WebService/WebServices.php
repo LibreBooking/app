@@ -45,9 +45,14 @@ class WebServices
 	const GetResourceAvailability = 'get_resource_availability';
 	const GetSchedule = 'get_schedule';
 	const GetUser = 'get_user';
+	const GetUserByEmail = 'get_user_by_email';
 	const UpdateReservation = 'update_reservation';
 	const UpdateResource = 'update_resource';
 	const UpdateUser = 'update_user';
 	const GetStatuses = 'get_resource_statuses';
 	const GetStatusReasons = 'get_resource_status_reasons';
+	const GetResourceGroups = 'get_resource_groups';
+	const GetResourceGroupTree = 'get_resource_grouptree';
+	const GetResourceGroupTreeByType = 'get_resource_grouptree_by_type';
 }
+?>

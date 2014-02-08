@@ -498,6 +498,8 @@ class Queries
 
 	const GET_RESOURCE_TYPE_BY_ID = 'SELECT * FROM resource_types WHERE resource_type_id = @resource_type_id';
 
+	const GET_RESOURCE_TYPE_BY_NAME = 'SELECT * FROM resource_types WHERE resource_type_name = @resource_type_name';
+
 	const GET_RESERVATION_BY_ID =
 			'SELECT *
 		FROM reservation_instances r
@@ -638,8 +640,7 @@ const GET_RESERVATION_LIST_TEMPLATE =
 	const GET_SCHEDULE_RESOURCES =
 			'SELECT r.*, s.admin_group_id as s_admin_group_id FROM  resources r
 		INNER JOIN schedules s ON r.schedule_id = s.schedule_id
-		WHERE
-			r.schedule_id = @scheduleid AND
+		WHERE (-1 = @scheduleid OR r.schedule_id = @scheduleid) AND
 			r.status_id <> 0
 		ORDER BY COALESCE(r.sort_order,0), r.name';
 
@@ -699,6 +700,8 @@ const GET_RESERVATION_LIST_TEMPLATE =
 
 	const GET_USER_SESSION_BY_USERID = 'SELECT * FROM user_session WHERE user_id = @userid';
 
+	const GET_VERSION = 'SELECT * FROM dbversion order by version_number desc limit 0,1';
+	
 	const MIGRATE_PASSWORD =
 			'UPDATE
 			users
