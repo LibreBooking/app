@@ -1,3 +1,7 @@
+<Limit GET POST PUT DELETE>
+  Allow from all
+</Limit>
+
 RewriteEngine On
 # Set RewriteBase if your physical path is different from the URL. For example, if using an alias
 #RewriteBase /dev/Services
