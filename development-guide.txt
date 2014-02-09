@@ -1,7 +1,7 @@
 A) Project:
     - SVN Repository viewed @ https://svn.code.sf.net/p/phpscheduleit/code/development
     - To contribute and submit your code please contact "Nick Korbel" <nkorbel@gmail.com>
-    - Programming paradigm: toward 100% object oriented php 5, Smarty template engine, LDAP and other plugins
+    - Programming paradigm: toward 100% object oriented php 5
     - Please include the GPL header on every new source file with your name and date. If you are altering an existing file, just add your name and year.
 
 B) Requirements:
@@ -23,27 +23,52 @@ C) Getting the development branch running:
 D) Development branch technical information:
 
     1) Application structure
-	/			All user facing pages
-	/css			All css style sheets
+	/config			Application configuration
 	/Controls		All reusable page control objects
+	/database_schema	Base and upgrade sql scripts
+	/Domain			Domain specific entities, repositories, services, etc
+		/Access		Domain repository objects (db abstraction layer)
+		/Events		Domain events
+		/Values		Value objects
+	/Jobs			All tasks that run on a schedule (cron tasks, for example)
+	/lang			Translations
 	/lib			All application supporting objects
-        /Authorization		Login/registration/authorization
+		/Application			Most of the subdirectories are self-explanatory
+			/Admin				Application administration logic
+			/Attributes			Custom attributes
+			/Authentication		Authentication (login)
+			/Authorization		Authorization (access)
+			/Reporting			Logic for generating and running reports
+			/Reservation		
+				/Notification	Post-reservation logic
+				/Persistence	Creating, updating, deleting reservation information
+				/Validation		Pre-reservation logic
+			/Schedule			Schedule population
+			/User				
         /Common			Non-specific shared objects (localization, dates, smarty, etc)
         /Config			Configuration read/write
         /Database		Database access and abstractions
-        /Domain			Domain specific entities, repositories, services, etc
-        /Schedule		Non-domain schedule related objects
+        /Email			Email abstractions and services
+		/external		Third party libraries
+		/FileSystem		Filesystem, I/O object
+		/Graphics		Creating and manipulating images
         /Server			Web server abstractions (sessions, cookies, etc)
+		/WebService		Objects for creating and invoking web services (the API)
 	/Pages			Page binding and work flow logic
+	/phing-tasks	Custom build tasks that hook into phing
 	/plugins		Contains subdirectories for each type of plugin
 	/Presenters		Application logic, page population
-	/scripts		All application related javascript files
 	/tests			All unit tests
 	/tpl			All Smarty page and control templates
-
-	* Any code outside of these locations should be considered legacy and obsolete
+	/tpl_c			Default Smarty template cache directory
+	/uploads		Default file upload directory
+	/Web			All user facing pages
+		/scripts		All application related javascript files
+	/WebServices	The Booked API
 
     2) Design philosophy
+	The Model-View-Presenter (MVP) pattern is used to keep a clear separation between application logic and presentation logic. Page objects act as thin abstraction to the template engine and typically have no other logic. Presenter objects orchestrate interactions between underlying application logic objects and the page. This typically includes fetching and transforming data and minimal application logic.
+	
 	[page].php should
 		- define ROOT_DIR
 		- include /Pages/[page]Page.php
@@ -53,6 +78,9 @@ D) Development branch technical information:
 	Each page should have a corresponding class in /Pages
 	Each Page class should have a corresponding presenter class in /Presenters
 
-	Logically related code should be grouped in a directory with a "namespace.php" file, which requires all files in that directory
+	Logically related code should be grouped in a directory with a "namespace.php" file, which requires all files in that directory. This simply makes it easier to include necessary file dependencies.
 
-	All classes should have good unit test coverage (level of coverage is up to the developer)
+	All classes should have good unit test coverage. The level of coverage is up to the developer, but I'd encourage TDD and .
+	
+	3) User interface
+	Smarty template engine (www.smarty.net) is used for all UI presentation. Page templates are located in /tpl and, by default, are cached to /tpl_c
