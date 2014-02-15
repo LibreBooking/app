@@ -32,10 +32,10 @@ interface IReservationHandler
 {
 	/**
 	 * @param ReservationSeries $reservationSeries
-	 * @param IReservationSaveResultsPage $page
+	 * @param IReservationSaveResultsView $view
 	 * @return bool if the reservation was handled or not
 	 */
-	public function Handle(ReservationSeries $reservationSeries, IReservationSaveResultsPage $page);
+	public function Handle(ReservationSeries $reservationSeries, IReservationSaveResultsView $view);
 }
 
 class ReservationHandler implements IReservationHandler
@@ -88,10 +88,10 @@ class ReservationHandler implements IReservationHandler
 
 	/**
 	 * @param ReservationSeries $reservationSeries
-	 * @param IReservationSaveResultsPage $page
+	 * @param IReservationSaveResultsView $view
 	 * @return bool if the reservation was handled or not
 	 */
-	public function Handle(ReservationSeries $reservationSeries, IReservationSaveResultsPage $page)
+	public function Handle(ReservationSeries $reservationSeries, IReservationSaveResultsView $view)
 	{
 		$validationResult = $this->validationService->Validate($reservationSeries);
 		$result = $validationResult->CanBeSaved();
@@ -110,16 +110,17 @@ class ReservationHandler implements IReservationHandler
 
 			$this->notificationService->Notify($reservationSeries);
 
-			$page->SetSaveSuccessfulMessage($result);
+			$view->SetSaveSuccessfulMessage($result);
 		}
 		else
 		{
-			$page->SetSaveSuccessfulMessage($result);
-			$page->ShowErrors($validationResult->GetErrors());
+			$view->SetSaveSuccessfulMessage($result);
+			$view->SetErrors($validationResult->GetErrors());
 		}
 
-		$page->ShowWarnings($validationResult->GetWarnings());
+		$view->SetWarnings($validationResult->GetWarnings());
 
 		return $result;
 	}
+
 }

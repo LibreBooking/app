@@ -47,22 +47,39 @@ class AdminExcludedRule implements IReservationValidationRule
 			return new ReservationRuleResult(true);
 		}
 
-		$user = $this->userRepository->LoadById($this->userSession->UserId);
-		$isResourceAdmin = true;
-
-		foreach($reservationSeries->AllResources() as $resource)
+		if ($this->userSession->IsGroupAdmin || $this->userSession->IsResourceAdmin || $this->userSession->IsScheduleAdmin)
 		{
-			if (!$user->IsResourceAdminFor($resource))
+			if ($this->userSession->IsGroupAdmin)
 			{
-				$isResourceAdmin = false;
-				break;
-			}
-		}
+				$user = $this->userRepository->LoadById($this->userSession->UserId);
+				$reservationUser = $this->userRepository->LoadById($reservationSeries->UserId());
 
-		if ($isResourceAdmin)
-		{
-			Log::Debug('User is admin for all resources. Skipping check. UserId=%s', $this->userSession->UserId);
-			return new ReservationRuleResult(true);
+				if ($user->IsAdminFor($reservationUser)){
+					Log::Debug('User is admin for reservation user. Skipping check. UserId=%s', $this->userSession->UserId);
+					return new ReservationRuleResult(true);
+				}
+			}
+
+			if ($this->userSession->IsResourceAdmin || $this->userSession->IsScheduleAdmin)
+			{
+				$user = $this->userRepository->LoadById($this->userSession->UserId);
+				$isResourceAdmin = true;
+
+				foreach($reservationSeries->AllResources() as $resource)
+				{
+					if (!$user->IsResourceAdminFor($resource))
+					{
+						$isResourceAdmin = false;
+						break;
+					}
+				}
+
+				if ($isResourceAdmin)
+				{
+					Log::Debug('User is admin for all resources. Skipping check. UserId=%s', $this->userSession->UserId);
+					return new ReservationRuleResult(true);
+				}
+			}
 		}
 
 		return $this->rule->Validate($reservationSeries);

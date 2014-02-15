@@ -87,6 +87,9 @@ class ColumnNames
 	const BLOCK_START = 'start_time';
 	const BLOCK_END = 'end_time';
 
+	const CUSTOM_ATTRIBUTE_ID = 'custom_attribute_id';
+	const CUSTOM_ATTRIBUTE_VALUE = 'attribute_value';
+
 	// RESERVATION SERIES //
 	const RESERVATION_USER = 'user_id';
 	const RESERVATION_GROUP = 'group_id';
@@ -251,5 +254,3 @@ class ColumnNames
 	const ALLOW_CALENDAR_SUBSCRIPTION = 'allow_calendar_subscription';
 	const PUBLIC_ID = 'public_id';
 }
-
-?>

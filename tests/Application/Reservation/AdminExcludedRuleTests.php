@@ -78,6 +78,7 @@ class AdminExcludedRuleTests extends TestBase
 	public function testIfUserIsAdminForAllResources_ReturnTrue()
 	{
 		$this->fakeUser->IsAdmin = false;
+		$this->fakeUser->IsScheduleAdmin = true;
 
 		$this->userRepository->expects($this->once())
 					->method('LoadById')
@@ -128,6 +129,32 @@ class AdminExcludedRuleTests extends TestBase
 
 		$this->assertEquals($expectedResult, $result);
 	}
-}
 
-?>
+	public function testIfUserIsAdminForReservationUserReturnTrue()
+	{
+		$this->fakeUser->IsAdmin = false;
+		$this->fakeUser->IsGroupAdmin = true;
+
+		$adminUser =  $this->getMock('User');
+		$reservationUser =  $this->getMock('User');
+
+		$this->userRepository->expects($this->at(0))
+							->method('LoadById')
+							->with($this->equalTo($this->fakeUser->UserId))
+							->will($this->returnValue($adminUser));
+
+		$this->userRepository->expects($this->at(1))
+							->method('LoadById')
+							->with($this->equalTo($this->reservationSeries->UserId()))
+							->will($this->returnValue($reservationUser));
+
+		$adminUser->expects($this->once())
+					->method('IsAdminFor')
+					->with($this->equalTo($reservationUser))
+					->will($this->returnValue(true));
+
+		$result = $this->rule->Validate($this->reservationSeries);
+
+		$this->assertTrue($result->IsValid());
+	}
+}

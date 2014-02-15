@@ -175,5 +175,3 @@ class AttributeServiceValidationResult
 		return $this->errors;
 	}
 }
-
-?>

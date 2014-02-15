@@ -19,10 +19,10 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 require_once(ROOT_DIR . 'Pages/SecurePage.php');
-require_once(ROOT_DIR . 'Pages/Ajax/IReservationSaveResultsPage.php');
+require_once(ROOT_DIR . 'Pages/Ajax/IReservationSaveResultsView.php');
 require_once(ROOT_DIR . 'Presenters/Reservation/ReservationApprovalPresenter.php');
 
-interface IReservationApprovalPage extends IReservationSaveResultsPage
+interface IReservationApprovalPage extends IReservationSaveResultsView
 {
 	/**
 	 * @abstract
@@ -72,7 +72,7 @@ class ReservationApprovalPage extends SecurePage implements IReservationApproval
 		}
 	}
 
-	public function ShowErrors($errors)
+	public function SetErrors($errors)
 	{
 		if (!empty($errors))
 		{
@@ -80,10 +80,8 @@ class ReservationApprovalPage extends SecurePage implements IReservationApproval
 		}
 	}
 
-	public function ShowWarnings($warnings)
+	public function SetWarnings($warnings)
 	{
 		// nothing to do
 	}
 }
-
-?>

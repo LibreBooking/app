@@ -19,10 +19,10 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 require_once(ROOT_DIR . 'Pages/SecurePage.php');
-require_once(ROOT_DIR . 'Pages/Ajax/IReservationSaveResultsPage.php');
+require_once(ROOT_DIR . 'Pages/Ajax/IReservationSaveResultsView.php');
 require_once(ROOT_DIR . 'Presenters/Reservation/ReservationPresenterFactory.php');
 
-interface IReservationSavePage extends IReservationSaveResultsPage, IRepeatOptionsComposite
+interface IReservationSavePage extends IReservationSaveResultsView, IRepeatOptionsComposite
 {
 	/**
 	 * @return int
@@ -182,12 +182,12 @@ class ReservationSavePage extends SecurePage implements IReservationSavePage
 		$this->Set('ReferenceNumber', $referenceNumber);
 	}
 
-	public function ShowErrors($errors)
+	public function SetErrors($errors)
 	{
 		$this->Set('Errors', $errors);
 	}
 
-	public function ShowWarnings($warnings)
+	public function SetWarnings($warnings)
 	{
 		// set warnings variable
 	}
@@ -488,5 +488,3 @@ class AccessoryFormElement
 		return $element;
 	}
 }
-
-?>

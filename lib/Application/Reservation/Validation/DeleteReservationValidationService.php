@@ -36,4 +36,3 @@ class DeleteReservationValidationService implements IReservationValidationServic
 		return $this->ruleProcessor->Validate($reservationSeries);
 	}
 }
-?>

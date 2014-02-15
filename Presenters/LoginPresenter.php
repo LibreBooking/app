@@ -119,6 +119,7 @@ class LoginPresenter
 		$resources = Resources::GetInstance();
 
 		$languageCode = $this->_page->GetRequestedLanguage();
+
 		if ($resources->SetLanguage($languageCode))
 		{
 			ServiceLocator::GetServer()->SetCookie(new Cookie(CookieKeys::LANGUAGE, $languageCode));

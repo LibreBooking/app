@@ -16,12 +16,56 @@ alBooked SchedulercheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 
 class ReservationFilter
 {
+	/**
+	 * @var Date|null
+	 */
 	private $startDate = null;
+
+	/**
+	 * @var Date|null
+	 */
 	private $endDate = null;
+
+	/**
+	 * @var null|string
+	 */
 	private $referenceNumber = null;
+
+	/**
+	 * @var int|null
+	 */
 	private $scheduleId = null;
+
+	/**
+	 * @var int|null
+	 */
 	private $resourceId = null;
+
+	/**
+	 * @var int|null
+	 */
 	private $userId = null;
+
+	/**
+	 * @var int|null
+	 */
+	private $statusId = null;
+
+	/**
+	 * @var int|null
+	 */
+	private $resourceStatusId = null;
+
+	/**
+	 * @var int|null
+	 */
+	private $resourceStatusReasonId = null;
+
+	/**
+	 * @var Attribute[]|null
+	 */
+	private $attributes = null;
+
 	/**
 	 * @var array|ISqlFilter[]
 	 */
@@ -35,8 +79,9 @@ class ReservationFilter
 	 * @param int $resourceId
 	 * @param int $userId
 	 * @param int $statusId
-	 * @param null $resourceStatusId
-	 * @param null $resourceStatusReasonId
+	 * @param int $resourceStatusId
+	 * @param int $resourceStatusReasonId
+	 * @param Attribute[] $attributes
 	 */
 	public function __construct($startDate = null,
 								$endDate = null,
@@ -46,7 +91,8 @@ class ReservationFilter
 								$userId = null,
 								$statusId = null,
 								$resourceStatusId = null,
-								$resourceStatusReasonId = null)
+								$resourceStatusReasonId = null,
+								$attributes = null)
 	{
 		$this->startDate = $startDate;
 		$this->endDate = $endDate;
@@ -57,6 +103,7 @@ class ReservationFilter
 		$this->statusId = $statusId;
 		$this->resourceStatusId = $resourceStatusId;
 		$this->resourceStatusReasonId = $resourceStatusReasonId;
+		$this->attributes = $attributes;
 	}
 
 	/**
@@ -99,6 +146,39 @@ class ReservationFilter
 		}
 		if (!empty($this->resourceStatusReasonId)) {
 			$filter->_And(new SqlFilterEquals(new SqlFilterColumn(TableNames::RESOURCES, ColumnNames::RESOURCE_STATUS_REASON_ID), $this->resourceStatusReasonId));
+		}
+		if (!empty($this->attributes))
+		{
+			$f  = new SqlFilterFreeForm(TableNames::RESERVATION_SERIES_ALIAS . '.' . ColumnNames::SERIES_ID . ' IN (SELECT ' . ColumnNames::ATTRIBUTE_ENTITY_ID . ' FROM ' . TableNames::CUSTOM_ATTRIBUTE_VALUES . ' WHERE [attribute_list_token] )');
+
+			$attributeFragment = new SqlFilterNull();
+
+			/** @var $attribute Attribute */
+			foreach ($this->attributes as $i => $attribute)
+			{
+				if ($attribute->Value() == null || $attribute->Value() == '')
+				{
+					continue;
+				}
+				$attributeId = new SqlRepeatingFilterColumn(null, ColumnNames::CUSTOM_ATTRIBUTE_ID, $i);
+				$attributeValue = new SqlRepeatingFilterColumn(null, ColumnNames::CUSTOM_ATTRIBUTE_VALUE, $i);
+
+				$id = new SqlFilterEquals($attributeId, $attribute->Id());
+
+				if ($attribute->Type() == CustomAttributeTypes::MULTI_LINE_TEXTBOX || $attribute->Type() == CustomAttributeTypes::SINGLE_LINE_TEXTBOX)
+				{
+					$attributeFragment->_And($id->_And(new SqlFilterLike($attributeValue, $attribute->Value())));
+				}
+				else
+				{
+					$attributeFragment->_And($id->_And(new SqlFilterEquals($attributeValue, $attribute->Value())));
+				}
+			}
+
+			$f->Substitute('attribute_list_token', $attributeFragment);
+
+
+			$filter->_And($f);
 		}
 		foreach ($this->_and as $and)
 		{

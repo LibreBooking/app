@@ -34,4 +34,3 @@ class UpdateReservationValidationService implements IReservationValidationServic
 		return $this->ruleProcessor->Validate($reservationSeries);
 	}
 }
-?>

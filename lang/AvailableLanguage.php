@@ -69,5 +69,3 @@ class AvailableLanguage
         $this->LanguageClass = str_replace('.php', '', $languageFile);
     }
 }
-
-?>

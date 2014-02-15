@@ -119,4 +119,3 @@ class ExistingReservationInitializer extends ReservationInitializerBase implemen
 		return ServiceLocator::GetServer()->GetUserSession()->Timezone;
 	}
 }
-?>

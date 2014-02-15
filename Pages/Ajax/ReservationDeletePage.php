@@ -19,10 +19,10 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 require_once(ROOT_DIR . 'Pages/SecurePage.php');
-require_once(ROOT_DIR . 'Pages/Ajax/IReservationSaveResultsPage.php');
+require_once(ROOT_DIR . 'Pages/Ajax/IReservationSaveResultsView.php');
 require_once(ROOT_DIR . 'Presenters/Reservation/ReservationPresenterFactory.php');
 
-interface IReservationDeletePage extends IReservationSaveResultsPage
+interface IReservationDeletePage extends IReservationSaveResultsView
 {
 	/**
 	 * @return string
@@ -82,12 +82,12 @@ class ReservationDeletePage extends SecurePage implements IReservationDeletePage
 		$this->reservationSavedSuccessfully = $succeeded;
 	}
 
-	public function ShowErrors($errors)
+	public function SetErrors($errors)
 	{
 		$this->Set('Errors', $errors);
 	}
 
-	public function ShowWarnings($warnings)
+	public function SetWarnings($warnings)
 	{
 		// set warnings variable
 	}
@@ -127,7 +127,7 @@ class ReservationDeleteJsonPage extends ReservationDeletePage implements IReserv
 		}
 	}
 
-	public function ShowErrors($errors)
+	public function SetErrors($errors)
 	{
 		if (!empty($errors))
 		{
@@ -135,10 +135,8 @@ class ReservationDeleteJsonPage extends ReservationDeletePage implements IReserv
 		}
 	}
 
-	public function ShowWarnings($warnings)
+	public function SetWarnings($warnings)
 	{
 		// nothing to do
 	}
 }
-
-?>

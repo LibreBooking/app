@@ -52,4 +52,3 @@ class PermissionValidationRule implements IReservationValidationRule
 		return new ReservationRuleResult(true);
 	}
 }
-?>

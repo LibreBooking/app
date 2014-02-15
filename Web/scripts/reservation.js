@@ -478,6 +478,7 @@ function Reservation(opts)
 
 		elements.beginDate.data['beginPreviousVal'] = elements.beginDate.val();
 		elements.endDate.data['endPreviousVal'] = elements.endDate.val();
+		elements.beginTime.data['beginTimePreviousVal'] = elements.beginTime.val();
 
 		elements.beginDate.change(function ()
 		{
@@ -498,6 +499,14 @@ function Reservation(opts)
 
 		elements.beginTime.change(function ()
 		{
+			var diff = dateHelper.GetTimeDifference(elements.beginTime.data['beginTimePreviousVal'], elements.beginTime.val());
+
+			var newTime = dateHelper.AddTimeDiff(diff,elements.endTime.val());
+
+			console.log(newTime);
+			elements.endTime.val(newTime);
+			elements.beginTime.data['beginTimePreviousVal'] = elements.beginTime.val();
+
 			DisplayDuration();
 		});
 
@@ -522,7 +531,7 @@ function Reservation(opts)
 			if (periodsCache[weekday] != null)
 			{
 				periodElement.empty();
-				periodElement.html(periodsCache[weekday])
+				periodElement.html(periodsCache[weekday]);
 				periodElement.val(selectedPeriod);
 				return;
 			}

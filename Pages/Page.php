@@ -342,5 +342,3 @@ abstract class Page implements IPage
 		return !empty($timeout);
     }
 }
-
-?>

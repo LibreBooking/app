@@ -980,10 +980,10 @@ class QueryBuilder
 					(SELECT GROUP_CONCAT(invitees.user_id)
 						FROM reservation_users invitees WHERE invitees.reservation_instance_id = ri.reservation_instance_id AND invitees.reservation_user_level = 3) as invitee_list,
 
-					(SELECT GROUP_CONCAT(CONCAT(cav.custom_attribute_id,\'=\', cav.attribute_value))
+					(SELECT GROUP_CONCAT(CONCAT(cav.custom_attribute_id,\'=\', cav.attribute_value) SEPARATOR "!sep!")
 						FROM custom_attribute_values cav WHERE cav.entity_id = ri.series_id AND cav.attribute_category = 1) as attribute_list,
 
-					(SELECT GROUP_CONCAT(CONCAT(p.name, "=", p.value) SEPARATOR ",")
+					(SELECT GROUP_CONCAT(CONCAT(p.name, "=", p.value) SEPARATOR "!sep!")
 						FROM user_preferences p WHERE owner.user_id = p.user_id) as preferences';
 
 	private static function Build($selectValue, $joinValue, $andValue)

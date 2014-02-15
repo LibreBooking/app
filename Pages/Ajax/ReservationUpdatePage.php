@@ -91,12 +91,12 @@ class ReservationUpdatePage extends ReservationSavePage implements IReservationU
 		$this->Set('ReferenceNumber', $referenceNumber);
 	}
 
-	public function ShowErrors($errors)
+	public function SetErrors($errors)
 	{
 		$this->Set('Errors', $errors);
 	}
 
-	public function ShowWarnings($warnings)
+	public function SetWarnings($warnings)
 	{
 		// set warnings variable
 	}

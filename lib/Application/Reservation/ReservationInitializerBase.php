@@ -435,5 +435,3 @@ abstract class ReservationInitializerBase implements IReservationInitializer, IR
 		return true;
 	}
 }
-
-?>

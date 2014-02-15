@@ -29,7 +29,7 @@ class GroupAdminManageReservationsPage extends ManageReservationsPage
         parent::__construct();
 
 		$this->presenter = new ManageReservationsPresenter($this,
-                    new GroupAdminManageReservationsService(new UserRepository()),
+                    new GroupAdminManageReservationsService(new ReservationViewRepository(), new UserRepository(), new ReservationAuthorization(PluginManager::Instance()->LoadAuthorization())),
                     new ScheduleRepository(),
                     new ResourceRepository(),
 					new AttributeService(new AttributeRepository()),

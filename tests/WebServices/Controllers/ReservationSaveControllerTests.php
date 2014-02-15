@@ -214,7 +214,7 @@ class ReservationSaveControllerTests extends TestBase
 		$errors = array('error', 'error2');
 
 		$facade->SetReferenceNumber($referenceNumber);
-		$facade->ShowErrors($errors);
+		$facade->SetErrors($errors);
 
 		$accessories = array(AccessoryFormElement::Create($accessoryId, $quantity));
 		$attributes = array(new AttributeFormElement($attributeId, $attributeValue));

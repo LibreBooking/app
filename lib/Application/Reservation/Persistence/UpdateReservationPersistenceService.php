@@ -58,5 +58,3 @@ class UpdateReservationPersistenceService implements IUpdateReservationPersisten
 		return $this->_repository->LoadByReferenceNumber($referenceNumber);
 	}
 }
-
-?>

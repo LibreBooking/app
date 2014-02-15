@@ -29,13 +29,15 @@ class GroupAdminManageReservationsServiceTests extends TestBase
         $adminGroup3 = new UserGroup(3, null, 1, RoleLevel::GROUP_ADMIN);
         $user->WithOwnedGroups(array($adminGroup2, $adminGroup3));
 
+		$reservationRepo = $this->getMock('IReservationViewRepository');
+		$reservationAuth = $this->getMock('IReservationAuthorization');
         $userRepo = $this->getMock('IUserRepository');
         $userRepo->expects($this->once())
                 ->method('LoadById')
                 ->with($this->equalTo($this->fakeUser->UserId))
                 ->will($this->returnValue($user));
 
-        $service = new GroupAdminManageReservationsService($userRepo);
+        $service = new GroupAdminManageReservationsService($reservationRepo, $userRepo, $reservationAuth);
 
         $reservationRows = FakeReservationRepository::GetReservationRows();
         $this->db->SetRow(0, array( array(ColumnNames::TOTAL => 4) ));
@@ -57,6 +59,3 @@ class GroupAdminManageReservationsServiceTests extends TestBase
         $this->assertInstanceOf('ReservationItemView', $resultList[0]);
     }
 }
-
-
-?>

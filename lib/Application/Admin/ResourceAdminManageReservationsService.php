@@ -14,7 +14,7 @@ You should have received a copy of the GNU General Public License
 alBooked SchedulercheduleIt.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-class ResourceAdminManageReservationsService implements IManageReservationsService
+class ResourceAdminManageReservationsService extends ManageReservationsService implements IManageReservationsService
 {
 	/**
 	 * @var IReservationViewRepository
@@ -26,8 +26,10 @@ class ResourceAdminManageReservationsService implements IManageReservationsServi
 	 */
 	private $userRepository;
 
-	public function __construct(IReservationViewRepository $reservationViewRepository, IUserRepository $userRepository)
+	public function __construct(IReservationViewRepository $reservationViewRepository, IUserRepository $userRepository, IReservationAuthorization $authorization)
 	{
+		parent::__construct($reservationViewRepository, $authorization);
+
 		$this->reservationViewRepository = $reservationViewRepository;
 		$this->userRepository = $userRepository;
 	}

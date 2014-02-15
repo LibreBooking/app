@@ -209,17 +209,47 @@ interface IManageReservationsPage extends IPageable, IActionPage
 	 * @return bool
 	 */
 	public function CanUpdateResourceStatuses();
+
+	/**
+	 * @return AttributeFormElement[]
+	 */
+	public function GetAttributeFilters();
+
+	/**
+	 * @param Attribute[] $filters
+	 */
+	public function SetAttributeFilters($filters);
+
+	/**
+	 * @param CustomAttribute[] $reservationAttributes
+	 */
+	public function SetReservationAttributes($reservationAttributes);
+
+	/**
+	 * @param ReservationView $reservation
+	 */
+	public function SetReservationJson($reservation);
+
+	/**
+	 * @return int
+	 */
+	public function GetAttributeId();
+
+	/**
+	 * @return string
+	 */
+	public function GetAttributeValue();
 }
 
 class ManageReservationsPage extends ActionPage implements IManageReservationsPage
 {
 	/**
-	 * @var \ManageReservationsPresenter
+	 * @var ManageReservationsPresenter
 	 */
 	protected $presenter;
 
 	/**
-	 * @var \PageablePage
+	 * @var PageablePage
 	 */
 	protected $pageablePage;
 
@@ -251,6 +281,11 @@ class ManageReservationsPage extends ActionPage implements IManageReservationsPa
 		$this->Set('Timezone', $userTimezone);
 		$this->Set('CsvExportUrl', ServiceLocator::GetServer()->GetUrl() . '&' . QueryStringKeys::FORMAT . '=csv');
 		$this->presenter->PageLoad($userTimezone);
+	}
+
+	public function ProcessDataRequest($dataRequest)
+	{
+		$this->presenter->ProcessDataRequest($dataRequest);
 	}
 
 	public function ShowPage()
@@ -477,11 +512,6 @@ class ManageReservationsPage extends ActionPage implements IManageReservationsPa
 		return $this->GetQuerystring(QueryStringKeys::FORMAT);
 	}
 
-	public function ProcessDataRequest($dataRequest)
-	{
-		// no-op
-	}
-
 	/**
 	 * @param $attributeList IEntityAttributeList
 	 */
@@ -575,11 +605,39 @@ class ManageReservationsPage extends ActionPage implements IManageReservationsPa
 		$this->Set('CanUpdateResourceStatus', $canUpdate);
 
 	}
-	/**
-	 * @return bool
-	 */
+
 	public function CanUpdateResourceStatuses()
 	{
 		return $this->GetVar('CanUpdateResourceStatus');
+	}
+
+	public function GetAttributeFilters()
+	{
+		return AttributeFormParser::GetAttributes($this->GetQuerystring(FormKeys::ATTRIBUTE_PREFIX));
+	}
+
+	public function SetAttributeFilters($filters)
+	{
+		$this->Set('AttributeFilters', $filters);
+	}
+
+	public function SetReservationAttributes($reservationAttributes)
+	{
+		$this->Set('ReservationAttributes', $reservationAttributes);
+	}
+
+	public function SetReservationJson($reservation)
+	{
+		$this->SetJson($reservation);
+	}
+
+	public function GetAttributeId()
+	{
+		return $this->GetForm(FormKeys::ATTRIBUTE_ID);
+	}
+
+	public function GetAttributeValue()
+	{
+		return $this->GetForm(FormKeys::ATTRIBUTE_VALUE);
 	}
 }

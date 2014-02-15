@@ -39,7 +39,7 @@ class UserPreferences
 			return $preferences;
 		}
 
-		$pairs = explode(',', $allPreferences);
+		$pairs = explode('!sep!', $allPreferences);
 
 		foreach ($pairs as $pair)
 		{

@@ -148,12 +148,13 @@ table.list, .list td, .list th {
 
 .list tr.editable:hover {
 	cursor: pointer;
-	background-color: #FFFF99;
+	/*background-color: #FFFF99;*/
+	background-color: #c5e4f1;
 }
 
-.list tr.clicked:hover, .list tr.clicked  {
-	background-color: #FFFF33;
-}
+/*.list tr.clicked:hover, .list tr.clicked  {*/
+	/*background-color: #FFFF33;*/
+/*}*/
 
 .userList .customAttributes {
 
@@ -414,11 +415,38 @@ th.action {
 }
 
 #reservationFilterButtons {
-	margin-top:5px;
+	padding-top:5px;
+	margin-top:15px;
+	clear:both;
+	border-top: solid 1px #cfcfcf;
 }
 
-#filterTable td {
-	padding: 1px 3px;
+.filterTable input, .filterTable textarea, .filterTable select
+{
+	width:150px;
+}
+
+.filterTable ul {
+	display:block;
+	width:100%;
+	clear:both;
+	margin:auto;
+	list-style-type: none;
+}
+
+.filterTable li {
+	clear:both;
+	display: inline-block;
+	list-style-type: none;
+	min-width:165px;
+	margin-right:20px;
+}
+
+.filterTable label {
+	display: block;
+	/*float:left;*/
+	clear:left;
+	font-size:.9em;
 }
 
 ul.resource-status-reasons li {
@@ -428,4 +456,9 @@ ul.resource-status-reasons li {
 ul.resource-status-reasons {
 	padding-bottom: 20px;
 	padding-top: 5px;
+}
+
+.inlineUpdate:hover {
+	/*background-color:#FFFF99;*/
+	background-color: #fff;
 }

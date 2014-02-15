@@ -1,6 +1,5 @@
-<?php
-/**
-Copyright 2011-2014 Nick Korbel
+{*
+Copyright 2011-2014 Nick Korbel, Paul Menchini
 
 This file is part of Booked Scheduler.
 
@@ -16,23 +15,16 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
-*/
+*}
+{include file='..\..\tpl\Email\emailheader.tpl'}
 
-interface IReservationSaveResultsPage
-{
-	/**
-	 * @param bool $succeeded
-	 */
-	public function SetSaveSuccessfulMessage($succeeded);
+<p>{$To},</p>
 
-	/**
-	 * @param array|string[] $errors
-	 */
-	public function ShowErrors($errors);
+<p>Novi korisnik se registrirao sa sljedecim informacijama:<br/>
+Email: {$EmailAddress}<br/>
+Ime: {$FullName}<br/>
+Telefon: {$Phone}<br/>
+Organizacija: {$Organization}<br/>
+Pozicija: {$Position}</p>
 
-	/**
-	 * @param array|string[] $warnings
-	 */
-	public function ShowWarnings($warnings);
-}
-?>
+{include file='..\..\tpl\Email\emailfooter.tpl'}

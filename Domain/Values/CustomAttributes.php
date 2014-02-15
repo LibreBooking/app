@@ -35,7 +35,7 @@ class CustomAttributes
 			return $ca;
 		}
 
-		$pairs = explode(',', $attributes);
+		$pairs = explode('!sep!', $attributes);
 
 		foreach ($pairs as $pair)
 		{

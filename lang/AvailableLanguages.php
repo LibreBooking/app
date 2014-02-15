@@ -39,6 +39,7 @@ class AvailableLanguages
         			'es' => new AvailableLanguage('es', 'es.php', 'Espa&ntilde;ol'),
         			'fi_fi' => new AvailableLanguage('fi_fi', 'fi_fi.php', 'Suomi'),
         			'fr_fr' => new AvailableLanguage('fr_fr', 'fr_fr.php', 'Fran&ccedil;ais'),
+        			'hr_hr' => new AvailableLanguage('hr_hr', 'hr_hr.php', 'Hrvatski'),
         			'he' => new AvailableLanguage('he', 'he.php', 'עברית'),
         			'id_id' => new AvailableLanguage('id_id', 'id_id.php', 'Bahasa Indonesia'),
         			'it_it' => new AvailableLanguage('it_it', 'it_it.php', 'Italiano'),
@@ -52,5 +53,3 @@ class AvailableLanguages
         		);
     }
 }
-
-?>

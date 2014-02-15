@@ -156,4 +156,3 @@ class ReservationAuthorization implements IReservationAuthorization
 		return false;
 	}
 }
-?>

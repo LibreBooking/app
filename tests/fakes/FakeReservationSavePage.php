@@ -148,12 +148,12 @@ class FakeReservationSavePage implements IReservationSavePage
 		$this->referenceNumber = $referenceNumber;
 	}
 
-	public function ShowErrors($errors)
+	public function SetErrors($errors)
 	{
 		$this->errors = $errors;
 	}
 
-	public function ShowWarnings($warnings)
+	public function SetWarnings($warnings)
 	{
 		$this->warnings = $warnings;
 	}

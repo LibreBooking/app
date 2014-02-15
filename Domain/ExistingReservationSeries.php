@@ -382,6 +382,11 @@ class ExistingReservationSeries extends ReservationSeries
 		return count($this->instances) == count($this->Instances());
 	}
 
+	public function UpdateBookedBy(UserSession $bookedBy)
+	{
+		$this->_bookedBy = $bookedBy;
+	}
+
 	protected function AddNewInstance(DateRange $reservationDate)
 	{
 		if (!$this->InstanceStartsOnDate($reservationDate))
@@ -576,6 +581,16 @@ class ExistingReservationSeries extends ReservationSeries
 		}
 
 		$this->_accessories = $accessories;
+	}
+
+	/**
+	 * @param $attribute AttributeValue
+	 */
+	public function ChangeAttribute($attribute)
+	{
+		$this->AddEvent(new AttributeAddedEvent($attribute, $this));
+		$this->AddEvent(new AttributeRemovedEvent($attribute, $this));
+		$this->AddAttributeValue($attribute);
 	}
 
 	/**

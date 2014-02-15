@@ -51,6 +51,7 @@ class MySqlConnection implements IDbConnection
 
 		$this->_db = mysqli_connect($this->_hostSpec, $this->_dbUser, $this->_dbPassword,$this->_dbName);
 		$selected = mysqli_select_db($this->_db, $this->_dbName);
+		mysqli_set_charset($this->_db, 'utf8');
 
 		if (!$this->_db || !$selected)
 		{

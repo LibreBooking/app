@@ -15,7 +15,7 @@ alBooked SchedulercheduleIt.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 
-class ScheduleAdminManageReservationsService implements IManageReservationsService
+class ScheduleAdminManageReservationsService extends ManageReservationsService implements IManageReservationsService
 {
 	/**
 	 * @var IReservationViewRepository
@@ -27,8 +27,10 @@ class ScheduleAdminManageReservationsService implements IManageReservationsServi
 	 */
 	private $userRepository;
 
-	public function __construct(IReservationViewRepository $reservationViewRepository, IUserRepository $userRepository)
+	public function __construct(IReservationViewRepository $reservationViewRepository, IUserRepository $userRepository, IReservationAuthorization $authorization)
 	{
+		parent::__construct($reservationViewRepository, $authorization);
+
 		$this->reservationViewRepository = $reservationViewRepository;
 		$this->userRepository = $userRepository;
 	}
@@ -53,5 +55,3 @@ class ScheduleAdminManageReservationsService implements IManageReservationsServi
 		return $this->reservationViewRepository->GetList($pageNumber, $pageSize, null, null, $filter->GetFilter());
 	}
 }
-
-?>

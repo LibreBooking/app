@@ -82,10 +82,25 @@ class Server
     {
         if (isset($_GET[$name]))
         {
-            return htmlspecialchars($_GET[$name]);
+			$value = $_GET[$name];
+
+			if (!empty($value) && !is_array($value))
+			{
+            	return htmlspecialchars($value);
+			}
+			else if(is_array($value))
+			{
+				array_walk($value, array($this, 'specialchars'));
+				return $value;
+			}
         }
         return null;
     }
+
+	private static function specialchars($val)
+	{
+		return htmlspecialchars($val);
+	}
 
     /**
      * @param string $name

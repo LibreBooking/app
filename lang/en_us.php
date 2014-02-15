@@ -560,6 +560,7 @@ class en_us extends Language
 		$strings['InvalidReservationData'] = 'There were problems with your reservation request.';
 		$strings['PasswordError'] = 'Password must contain at least %s letters and at least %s numbers.';
 		$strings['PasswordErrorRequirements'] = 'Password must contain a combination of at least %s upper and lower case letters and %s numbers.';
+		$strings['NoReservationAccess'] = 'You are not allowed to change this reservation.';
 		// End Errors
 
 		// Page Titles

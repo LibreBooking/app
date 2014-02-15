@@ -31,6 +31,8 @@ class FormKeys
 	const ANNOUNCEMENT_START = 'announcementStart';
 	const ANNOUNCEMENT_END = 'announcementEnd';
 	const ANNOUNCEMENT_PRIORITY = 'announcementPriority';
+	const ATTRIBUTE_ID = 'ATTRIBUTE_ID';
+	const ATTRIBUTE_VALUE = 'ATTRIBUTE_VALUE';
 	const ATTRIBUTE_LABEL = 'ATTRIBUTE_LABEL';
 	const ATTRIBUTE_TYPE = 'ATTRIBUTE_TYPE';
 	const ATTRIBUTE_CATEGORY = 'ATTRIBUTE_CATEGORY';

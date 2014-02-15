@@ -288,5 +288,3 @@ class Resources implements IResourceLocalization
 		$this->AvailableLanguages = AvailableLanguages::GetAvailableLanguages();
 	}
 }
-
-?>

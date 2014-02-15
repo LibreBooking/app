@@ -20,6 +20,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 error_reporting(E_ALL & ~E_NOTICE & ~E_STRICT);
 //ini_set('display_errors', 1);
+//ini_set('display_startup_errors', 1);
 
 /**
  * Application configuration

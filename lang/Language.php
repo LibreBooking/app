@@ -52,4 +52,3 @@ abstract class Language
 
     abstract protected function _GetHtmlLangCode();
 }
-?>

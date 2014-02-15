@@ -72,4 +72,3 @@ class MySqlCommandAdapter
 		$this->_query = $query . ';';
 	}
 }
-?>

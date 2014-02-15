@@ -195,5 +195,3 @@ class FilterCommand extends SqlCommand
 		return $query;
 	}
 }
-
-?>

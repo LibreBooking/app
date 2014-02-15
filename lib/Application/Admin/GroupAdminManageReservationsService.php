@@ -17,15 +17,17 @@ alBooked SchedulercheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 require_once(ROOT_DIR . 'Domain/Access/namespace.php');
 require_once(ROOT_DIR . 'Domain/Access/namespace.php');
 
-class GroupAdminManageReservationsService implements IManageReservationsService
+class GroupAdminManageReservationsService extends ManageReservationsService implements IManageReservationsService
 {
     /**
      * @var IUserRepository
      */
     private $userRepository;
 
-    public function __construct(IUserRepository $userRepository)
+    public function __construct(IReservationViewRepository $reservationViewRepository, IUserRepository $userRepository, IReservationAuthorization $authorization)
     {
+		parent::__construct($reservationViewRepository, $authorization);
+
         $this->userRepository = $userRepository;
     }
 

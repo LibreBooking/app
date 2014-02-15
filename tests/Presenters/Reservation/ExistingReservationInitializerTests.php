@@ -147,5 +147,3 @@ class ExistingReservationInitializerTests extends TestBase
 		$initializer->SetDates($anything, $anything, $periods, $periods);
 	}
 }
-
-?>

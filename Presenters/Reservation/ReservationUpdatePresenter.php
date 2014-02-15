@@ -18,7 +18,7 @@ You should have received a copy of the GNU General Public License
 along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-require_once(ROOT_DIR . 'Presenters/Reservation/ReservationHandler.php');
+require_once(ROOT_DIR . 'lib/Application/Reservation/namespace.php');
 
 interface IReservationUpdatePresenter
 {
@@ -213,5 +213,3 @@ class ReservationUpdatePresenter implements IReservationUpdatePresenter
 		return $attributes;
 	}
 }
-
-?>

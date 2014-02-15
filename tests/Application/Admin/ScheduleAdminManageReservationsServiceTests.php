@@ -26,10 +26,16 @@ class ScheduleAdminManageReservationsServiceTests extends TestBase
 	 * @var IReservationViewRepository|PHPUnit_Framework_MockObject_MockObject
 	 */
 	private $reservationViewRepository;
+
 	/**
 	 * @var IUserRepository|PHPUnit_Framework_MockObject_MockObject
 	 */
 	private $userRepository;
+
+	/**
+	 * @var IReservationAuthorization
+	 */
+	private $reservationAuthorization;
 
 	/**
 	 * @var ManageReservationsService
@@ -42,8 +48,9 @@ class ScheduleAdminManageReservationsServiceTests extends TestBase
 
 		$this->reservationViewRepository = $this->getMock('IReservationViewRepository');
 		$this->userRepository = $this->getMock('IUserRepository');
+		$this->reservationAuthorization = $this->getMock('IReservationAuthorization');
 
-		$this->service = new ScheduleAdminManageReservationsService($this->reservationViewRepository, $this->userRepository);
+		$this->service = new ScheduleAdminManageReservationsService($this->reservationViewRepository, $this->userRepository, $this->reservationAuthorization);
 	}
 
 	public function testLoadsFilteredResultsAndChecksAuthorizationAgainstPendingReservations()

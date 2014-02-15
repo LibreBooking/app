@@ -352,5 +352,3 @@ abstract class ReservationPage extends Page implements IReservationPage
 		$this->Set('HideRecurrence', $isHidden);
 	}
 }
-
-?>

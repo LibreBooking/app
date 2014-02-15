@@ -52,5 +52,3 @@ class RequiresApprovalRule implements IReservationValidationRule
 		return new ReservationRuleResult();
 	}
 }
-
-?>

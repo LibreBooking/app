@@ -23,7 +23,7 @@ require_once(ROOT_DIR . 'Pages/Ajax/ReservationUpdatePage.php');
 require_once(ROOT_DIR . 'Pages/Ajax/ReservationDeletePage.php');
 require_once(ROOT_DIR . 'Pages/Ajax/ReservationApprovalPage.php');
 require_once(ROOT_DIR . 'Presenters/Reservation/ReservationPresenterFactory.php');
-require_once(ROOT_DIR . 'Presenters/Reservation/ReservationHandler.php');
+require_once(ROOT_DIR . 'lib/Application/Reservation/namespace.php');
 
 require_once(ROOT_DIR . 'WebServices/Requests/ReservationRequest.php');
 
@@ -366,12 +366,12 @@ class ReservationRequestResponseFacade implements IReservationSavePage
 		// no-op
 	}
 
-	public function ShowErrors($errors)
+	public function SetErrors($errors)
 	{
 		$this->_createdErrors = $errors;
 	}
 
-	public function ShowWarnings($warnings)
+	public function SetWarnings($warnings)
 	{
 		// no-op
 	}
@@ -680,7 +680,7 @@ class ReservationDeleteRequestResponseFacade implements IReservationDeletePage
 	/**
 	 * @param array|string[] $errors
 	 */
-	public function ShowErrors($errors)
+	public function SetErrors($errors)
 	{
 		$this->errors = $errors;
 	}
@@ -688,7 +688,7 @@ class ReservationDeleteRequestResponseFacade implements IReservationDeletePage
 	/**
 	 * @param array|string[] $warnings
 	 */
-	public function ShowWarnings($warnings)
+	public function SetWarnings($warnings)
 	{
 		// no-op
 	}
@@ -751,7 +751,7 @@ class ReservationApprovalRequestResponseFacade implements IReservationApprovalPa
 	/**
 	 * @param array|string[] $errors
 	 */
-	public function ShowErrors($errors)
+	public function SetErrors($errors)
 	{
 		$this->errors = $errors;
 	}
@@ -767,7 +767,7 @@ class ReservationApprovalRequestResponseFacade implements IReservationApprovalPa
 	/**
 	 * @param array|string[] $warnings
 	 */
-	public function ShowWarnings($warnings)
+	public function SetWarnings($warnings)
 	{
 		// no-op
 	}

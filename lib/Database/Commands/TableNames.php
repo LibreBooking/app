@@ -20,6 +20,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 class TableNames
 {
+    const CUSTOM_ATTRIBUTE_VALUES = 'custom_attribute_values';
     const RESERVATION_SERIES_ALIAS = 'rs';
     const ACCESSORIES = 'accessories';
 	const GROUPS_ALIAS = 'g';
@@ -28,5 +29,3 @@ class TableNames
     const SCHEDULES = 'schedules';
     const USERS = 'users';
 }
-
-?>

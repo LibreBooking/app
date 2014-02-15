@@ -26,10 +26,16 @@ class ResourceAdminManageReservationsServiceTests extends TestBase
 	 * @var IReservationViewRepository|PHPUnit_Framework_MockObject_MockObject
 	 */
 	private $reservationViewRepository;
+
 	/**
 	 * @var IUserRepository|PHPUnit_Framework_MockObject_MockObject
 	 */
 	private $userRepository;
+
+	/**
+	 * @var IReservationAuthorization|PHPUnit_Framework_MockObject_MockObject
+	 */
+	private $reservationAuthorization;
 
 	/**
 	 * @var ManageReservationsService
@@ -42,8 +48,9 @@ class ResourceAdminManageReservationsServiceTests extends TestBase
 
 		$this->reservationViewRepository = $this->getMock('IReservationViewRepository');
 		$this->userRepository = $this->getMock('IUserRepository');
+		$this->reservationAuthorization = $this->getMock('IReservationAuthorization');
 
-		$this->service = new ResourceAdminManageReservationsService($this->reservationViewRepository, $this->userRepository);
+		$this->service = new ResourceAdminManageReservationsService($this->reservationViewRepository, $this->userRepository, $this->reservationAuthorization);
 	}
 
 	public function testLoadsFilteredResultsAndChecksAuthorizationAgainstPendingReservations()
@@ -79,4 +86,3 @@ class ResourceAdminManageReservationsServiceTests extends TestBase
 		$this->assertEquals($data, $actualData);
 	}
 }
-?>

@@ -41,7 +41,6 @@ header("Content-Type: application/json", true);
 define('ROOT_DIR', '../../');
 
 require_once(ROOT_DIR . 'config/config.php');
-require_once(ROOT_DIR . 'Presenters/Reservation/ReservationHandler.php');
 require_once(ROOT_DIR . 'Pages/Ajax/ReservationSavePage.php');
 #require_once(ROOT_DIR . 'lib/Application/Reservation/Validation/namespace.php');
 require_once(ROOT_DIR . 'lib/Config/namespace.php');
