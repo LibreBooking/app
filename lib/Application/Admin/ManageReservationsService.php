@@ -44,7 +44,7 @@ interface IManageReservationsService
 	 * @param int $attributeId
 	 * @param string $attributeValue
 	 * @param UserSession $userSession
-	 * @return mixed
+	 * @return string[] Any errors that were returned during reservation update
 	 */
 	public function UpdateAttribute($referenceNumber, $attributeId, $attributeValue, $userSession);
 }

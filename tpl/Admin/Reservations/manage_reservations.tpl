@@ -218,6 +218,12 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 	</form>
 </div>
 
+<div id="inlineUpdateErrorDialog" class="dialog" title="{translate key=Error}">
+	<div id="inlineUpdateErrors" class="hidden error">&nbsp;</div>
+	<div id="reservationAccessError" class="hidden error"/>You do not have access to this reservation</div>
+	<button type="button" class="button cancel">{translate key='OK'}</button>
+</div>
+
 <div id="statusDialog" class="dialog" title="{translate key=CurrentStatus}">
 	<form id="statusForm" method="post">
 		<div>
@@ -258,7 +264,6 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		<input type="hidden" id="attributeUpdateValue" {formname key=ATTRIBUTE_VALUE} />
 	</form>
 </div>
-
 
 <div id="inlineUpdateCancelButtons" class="hidden">
 	<div>

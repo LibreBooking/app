@@ -239,6 +239,11 @@ interface IManageReservationsPage extends IPageable, IActionPage
 	 * @return string
 	 */
 	public function GetAttributeValue();
+
+	/**
+	 * @param string[] $errors
+	 */
+	public function BindAttributeUpdateErrors($errors);
 }
 
 class ManageReservationsPage extends ActionPage implements IManageReservationsPage
@@ -639,5 +644,13 @@ class ManageReservationsPage extends ActionPage implements IManageReservationsPa
 	public function GetAttributeValue()
 	{
 		return $this->GetForm(FormKeys::ATTRIBUTE_VALUE);
+	}
+
+	/**
+	 * @param string[] $errors
+	 */
+	public function BindAttributeUpdateErrors($errors)
+	{
+		$this->SetJson(null, $errors);
 	}
 }

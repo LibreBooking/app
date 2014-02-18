@@ -314,7 +314,11 @@ class ManageReservationsPresenter extends ActionPresenter
 
 		Log::Debug('Updating reservation attribute. UserId=%s, AttributeId=%s, AttributeValue=%s, ReferenceNumber=%s', $userSession->UserId, $attributeId, $attributeValue, $referenceNumber);
 
-		$this->manageReservationsService->UpdateAttribute($referenceNumber, $attributeId, $attributeValue, $userSession);
+		$errors = $this->manageReservationsService->UpdateAttribute($referenceNumber, $attributeId, $attributeValue, $userSession);
+		if (!empty($errors))
+		{
+			$this->page->BindAttributeUpdateErrors($errors);
+		}
 	}
 }
 

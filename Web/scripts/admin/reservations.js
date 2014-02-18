@@ -35,7 +35,9 @@ function ReservationManagement(opts, approval)
 
 		attributeUpdateForm: $('#attributeUpdateForm'),
 
-		referenceNumberList: $(':hidden.referenceNumber')
+		referenceNumberList: $(':hidden.referenceNumber'),
+		inlineUpdateErrors:$('#inlineUpdateErrors'),
+		inlineUpdateErrorDialog:$('#inlineUpdateErrorDialog')
 	};
 
 	var reservations = {};
@@ -43,9 +45,13 @@ function ReservationManagement(opts, approval)
 
 	ReservationManagement.prototype.init = function ()
 	{
+
 		ConfigureAdminDialog(elements.deleteInstanceDialog);
 		ConfigureAdminDialog(elements.deleteSeriesDialog);
 		ConfigureAdminDialog(elements.statusDialog);
+		ConfigureAdminDialog(elements.inlineUpdateErrorDialog);
+
+		elements.inlineUpdateErrorDialog.dialog('open');
 
 		$(".save").click(function ()
 		{
@@ -366,6 +372,7 @@ function ReservationManagement(opts, approval)
 
 	function confirmCellUpdate(value, attributeId, seriesId)
 	{
+		elements.inlineUpdateErrors.hide();
 		function onReservationUpdate()
 		{
 			cancelCurrentCellUpdate();
@@ -381,7 +388,16 @@ function ReservationManagement(opts, approval)
 			type:'POST'
 		}).done(function (data)
 		{
-			onReservationUpdate();
+			if(data && data.errors)
+			{
+				elements.inlineUpdateErrors.empty();
+				$('<ul/>', {'class': 'no-style', html: data.errors.join('')}).appendTo(elements.inlineUpdateErrors);
+				elements.inlineUpdateErrors.show();
+			}
+			else
+			{
+				onReservationUpdate();
+			}
 		}).fail(function (jqXHR, textStatus, errorThrown)
 		{
 			alert('handle errors');
@@ -401,20 +417,16 @@ function ReservationManagement(opts, approval)
 		{
 			if (currentReservation == null)
 			{
-				alert('implement some error handling');
+				showError();
 			}
 
 			var template = $('.attributeTemplate[attributeId="' + attributeId + '"]').clone();
-			var attributeElement = template.find('.customAttribute');
+			var attributeElement = template.find("[id^=psiattribute]");
 
 			var attribute = currentReservation.Attributes[attributeId];
 			var attributeValue = attribute ? attribute.Value : '';
 
-			if (template.find(":checkbox")){
-				template.find(':checkbox').attr('z-index', '1000');
-//				template.find(':checkbox').attr('disabled', true)
-//				template.find(':checkbox').attr('disabled', false)
-
+			if (attributeElement.is(':checkbox')){
 				if (attributeValue){
 					template.find(':checkbox').attr('checked', true)
 				}
