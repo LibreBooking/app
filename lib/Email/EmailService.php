@@ -54,7 +54,10 @@ class EmailService implements IEmailService
 
 		$from = $emailMessage->From();
 		$defaultFrom = Configuration::Instance()->GetSectionKey(ConfigSection::EMAIL, ConfigKeys::DEFAULT_FROM_ADDRESS);
-		$this->phpMailer->SetFrom(empty($defaultFrom) ? $from->Address() : $defaultFrom, $from->Name());
+		$defaultName = Configuration::Instance()->GetSectionKey(ConfigSection::EMAIL, ConfigKeys::DEFAULT_FROM_NAME);
+		$address = empty($defaultFrom) ? $from->Address() : $defaultFrom;
+		$name = empty($defaultName) ? $from->Name() : $defaultName;
+		$this->phpMailer->SetFrom($address, $name);
 
 		$replyTo = $emailMessage->ReplyTo();
 		$this->phpMailer->AddReplyTo($replyTo->Address(), $replyTo->Name());

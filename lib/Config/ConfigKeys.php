@@ -99,7 +99,9 @@ class ConfigKeys
 	const RECAPTCHA_ENABLED = 'enabled';
 	const RECAPTCHA_PUBLIC_KEY = 'public.key';
 	const RECAPTCHA_PRIVATE_KEY = 'private.key';
+
 	const DEFAULT_FROM_ADDRESS = 'default.from.address';
+	const DEFAULT_FROM_NAME = 'default.from.name';
 
 	const REPORTS_ALLOW_ALL = 'allow.all.users';
 

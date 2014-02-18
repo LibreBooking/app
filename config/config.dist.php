@@ -145,6 +145,7 @@ $conf['settings']['recaptcha']['private.key'] = '';
  * Email
  */
 $conf['settings']['email']['default.from.address'] = '';
+$conf['settings']['email']['default.from.name'] = '';
 /**
  * Reports
  */
