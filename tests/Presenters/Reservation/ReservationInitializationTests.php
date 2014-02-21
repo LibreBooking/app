@@ -46,6 +46,9 @@ class ReservationInitializationTests extends TestBase
 		$attributeBinder = $this->getMock('IReservationComponentBinder');
 		$page = $this->getMock('INewReservationPage');
 
+		$u1 = new User();
+		$u2 = new User();
+
 		$scheduleId = 1;
 
 		$initializer = new NewReservationInitializer($page, $userBinder, $dateBinder, $resourceBinder, $attributeBinder, $this->fakeUser);
@@ -78,7 +81,7 @@ class ReservationInitializationTests extends TestBase
 				->method('Bind')
 				->with($this->equalTo($initializer));
 
-		$initializer->Initialize();
+		$initializer->Initialize($u1, $u2);
 	}
 
 	public function testBindsToClosestPeriod()
@@ -123,5 +126,3 @@ class ReservationInitializationTests extends TestBase
 		$initializer->SetDates($startDate, $endDate, $periods, $periods);
 	}
 }
-
-?>

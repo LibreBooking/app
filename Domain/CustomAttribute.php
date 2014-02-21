@@ -73,6 +73,11 @@ class CustomAttribute
 	protected $entityId;
 
 	/**
+	 * @var bool
+	 */
+	protected $adminOnly = false;
+
+	/**
 	 * @var string|null
 	 */
 	protected $entityDescription;
@@ -184,6 +189,14 @@ class CustomAttribute
 	}
 
 	/**
+	 * @return bool
+	 */
+	public function AdminOnly()
+	{
+		return $this->adminOnly;
+	}
+
+	/**
 	 * @param int $id
 	 * @param string $label
 	 * @param CustomAttributeTypes|int $type
@@ -193,9 +206,10 @@ class CustomAttribute
 	 * @param string $possibleValues
 	 * @param int $sortOrder
 	 * @param int|null $entityId
+	 * @param bool $adminOnly
 	 * @return CustomAttribute
 	 */
-	public function __construct($id, $label, $type, $category, $regex, $required, $possibleValues, $sortOrder,$entityId = null)
+	public function __construct($id, $label, $type, $category, $regex, $required, $possibleValues, $sortOrder, $entityId = null, $adminOnly = false)
 	{
 		$this->id = $id;
 		$this->label = $label;
@@ -204,6 +218,7 @@ class CustomAttribute
 		$this->regex = $regex;
 		$this->required = $required;
 		$this->entityId = $entityId;
+		$this->adminOnly = $adminOnly;
 		$this->SetSortOrder($sortOrder);
 		$this->SetPossibleValues($possibleValues);
 	}

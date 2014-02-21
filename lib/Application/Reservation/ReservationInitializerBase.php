@@ -152,6 +152,11 @@ interface IReservationComponentInitializer
 	 * @return bool
 	 */
 	public function IsNew();
+
+	/**
+	 * @param bool $isAdminForUser
+	 */
+	public function SetIsAdminForUser($isAdminForUser);
 }
 
 abstract class ReservationInitializerBase implements IReservationInitializer, IReservationComponentInitializer

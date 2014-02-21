@@ -18,6 +18,7 @@ You should have received a copy of the GNU General Public License
 along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 class FakePluginManager extends PluginManager implements IPostRegistration
 {
     public function __construct()
@@ -54,6 +55,14 @@ class FakePluginManager extends PluginManager implements IPostRegistration
 		$this->_RegistrationPage = $page;
 	}
 
-}
 
-?>
+	public function CreatePreUpdateService()
+	{
+		return null;
+	}
+
+	public function CreatePostUpdateService()
+	{
+		return null;
+	}
+}

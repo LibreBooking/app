@@ -93,7 +93,7 @@ class EditReservationPresenterTests extends TestBase
 			->with($this->page, $this->user, $reservationView);
 
 		$this->initializerFactory->expects($this->once())
-			->method('GetExisitingInitializer')
+			->method('GetExistingInitializer')
 			->with($this->equalTo($this->page), $this->equalTo($reservationView))
 			->will($this->returnValue($this->initializer));
 

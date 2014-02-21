@@ -41,7 +41,7 @@ class GroupRepositoryTests extends TestBase
 
 	public function testCanGetPageableListOfGroups()
 	{
-		$filter = new SqlFilterEquals(null, null);
+		$filter = new SqlFilterEquals("cn","cv");
 		$pageNum = 10;
 		$pageSize = 100;
 		$count = 1000;

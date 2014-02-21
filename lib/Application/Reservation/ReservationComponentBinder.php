@@ -117,6 +117,11 @@ class ReservationUserBinder implements IReservationComponentBinder
 															 new BooleanConverter());
 
 		$initializer->ShowUserDetails(!$hideUser || $initializer->CurrentUser()->IsAdmin);
+
+		$currentUser = $this->userRepository->LoadById($initializer->CurrentUser()->UserId);
+		$owner = $this->userRepository->LoadById($userId);
+
+		$initializer->IsAdminForUser($currentUser->IsAdminFor($owner));
 	}
 }
 
@@ -127,9 +132,15 @@ class ReservationResourceBinder implements IReservationComponentBinder
 	 */
 	private $resourceService;
 
-	public function __construct(IResourceService $resourceService)
+	/**
+	 * @var IUserRepository
+	 */
+	private $userRepository;
+
+	public function __construct(IResourceService $resourceService, IUserRepository $userRepository)
 	{
 		$this->resourceService = $resourceService;
+		$this->userRepository = $userRepository;
 	}
 
 	public function Bind(IReservationComponentInitializer $initializer)

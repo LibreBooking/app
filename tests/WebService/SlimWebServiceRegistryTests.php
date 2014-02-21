@@ -257,5 +257,3 @@ class SlimWebServiceRegistryTests extends TestBase
 		// callback function for tests
 	}
 }
-
-?>

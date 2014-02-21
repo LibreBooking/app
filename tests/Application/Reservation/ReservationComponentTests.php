@@ -1,21 +1,21 @@
 <?php
 /**
-Copyright 2012-2014 Nick Korbel
-
-This file is part of Booked Scheduler.
-
-Booked Scheduler is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-Booked Scheduler is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
+ * Copyright 2012-2014 Nick Korbel
+ *
+ * This file is part of Booked Scheduler.
+ *
+ * Booked Scheduler is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Booked Scheduler is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 require_once(ROOT_DIR . 'Domain/Access/namespace.php');
@@ -86,31 +86,50 @@ class ReservationComponentTests extends TestBase
 	{
 		$userDto = new UserDto($this->userId, 'f', 'l', 'email');
 
-		$this->initializer->expects($this->once())
-		->method('GetOwnerId')
-		->will($this->returnValue($this->userId));
+		$current = new FakeUser();
+		$current->_IsAdminForUser = true;
+
+		$owner = new FakeUser();
+
+		$this->userRepository->expects($this->at(0))
+							 ->method('LoadById')
+							 ->with($this->equalTo($this->fakeUser->UserId))
+							 ->will($this->returnValue($current));
+
+		$this->userRepository->expects($this->at(1))
+							 ->method('LoadById')
+							 ->with($this->equalTo($this->userId))
+							 ->will($this->returnValue($owner));
 
 		$this->initializer->expects($this->once())
-		->method('CurrentUser')
-		->will($this->returnValue($this->fakeUser));
+						  ->method('GetOwnerId')
+						  ->will($this->returnValue($this->userId));
+
+		$this->initializer->expects($this->once())
+						  ->method('CurrentUser')
+						  ->will($this->returnValue($this->fakeUser));
 
 		$this->userRepository->expects($this->once())
-		->method('GetById')
-		->with($this->equalTo($this->userId))
-		->will($this->returnValue($userDto));
+							 ->method('GetById')
+							 ->with($this->equalTo($this->userId))
+							 ->will($this->returnValue($userDto));
 
 		$this->reservationAuthorization->expects($this->once())
-		->method('CanChangeUsers')
-		->with($this->fakeUser)
-		->will($this->returnValue(true));
+									   ->method('CanChangeUsers')
+									   ->with($this->fakeUser)
+									   ->will($this->returnValue(true));
 
 		$this->initializer->expects($this->once())
-		->method('SetCanChangeUser')
-		->with($this->equalTo(true));
+						  ->method('SetCanChangeUser')
+						  ->with($this->equalTo(true));
 
 		$this->initializer->expects($this->once())
-		->method('SetReservationUser')
-		->with($this->equalTo($userDto));
+						  ->method('SetReservationUser')
+						  ->with($this->equalTo($userDto));
+
+		$this->initializer->expects($this->once())
+						  ->method('IsAdminForUser')
+						  ->with($this->equalTo(true));
 
 		$binder = new ReservationUserBinder($this->userRepository, $this->reservationAuthorization);
 		$binder->Bind($this->initializer);
@@ -121,17 +140,25 @@ class ReservationComponentTests extends TestBase
 		$requestedScheduleId = 10;
 		$requestedResourceId = 90;
 
-		$this->initializer->expects($this->once())
-		->method('GetScheduleId')
-		->will($this->returnValue($requestedScheduleId));
+		$user = new FakeUser();
+		$user->_IsResourceAdmin = true;
+
+		$this->userRepository->expects($this->once())
+							 ->method('LoadById')
+							 ->with($this->equalTo($this->fakeUser->UserId))
+							 ->will($this->returnValue($user));
 
 		$this->initializer->expects($this->once())
-		->method('GetResourceId')
-		->will($this->returnValue($requestedResourceId));
+						  ->method('GetScheduleId')
+						  ->will($this->returnValue($requestedScheduleId));
 
 		$this->initializer->expects($this->once())
-		->method('CurrentUser')
-		->will($this->returnValue($this->fakeUser));
+						  ->method('GetResourceId')
+						  ->will($this->returnValue($requestedResourceId));
+
+		$this->initializer->expects($this->once())
+						  ->method('CurrentUser')
+						  ->will($this->returnValue($this->fakeUser));
 
 		$bookedResource = new ResourceDto($requestedResourceId, 'resource 1');
 		$otherResource = new ResourceDto(2, 'resource 2');
@@ -142,33 +169,37 @@ class ReservationComponentTests extends TestBase
 		$groups->WithAllResources($resourceList);
 
 		$this->resourceService->expects($this->once())
-		->method('GetResourceGroups')
-		->with($this->equalTo($requestedScheduleId), $this->equalTo($this->fakeUser))
-		->will($this->returnValue($groups));
+							  ->method('GetResourceGroups')
+							  ->with($this->equalTo($requestedScheduleId), $this->equalTo($this->fakeUser))
+							  ->will($this->returnValue($groups));
 
 		// accessories
 		$accessoryList = array(new AccessoryDto(1, 'a1', 30), new AccessoryDto(2, 'a2', 20));
 		$this->resourceService->expects($this->once())
-		->method('GetAccessories')
-		->will($this->returnValue($accessoryList));
+							  ->method('GetAccessories')
+							  ->will($this->returnValue($accessoryList));
 
 		$this->initializer->expects($this->once())
-		->method('BindResourceGroups')
-		->with($this->equalTo($groups));
+						  ->method('BindResourceGroups')
+						  ->with($this->equalTo($groups));
 
 		$this->initializer->expects($this->once())
-		->method('ShowAdditionalResources')
-		->with($this->equalTo(true));
+						  ->method('ShowAdditionalResources')
+						  ->with($this->equalTo(true));
 
 		$this->initializer->expects($this->once())
-		->method('BindAvailableAccessories')
-		->with($this->equalTo($accessoryList));
+						  ->method('BindAvailableAccessories')
+						  ->with($this->equalTo($accessoryList));
 
 		$this->initializer->expects($this->once())
-		->method('SetReservationResource')
-		->with($this->equalTo($bookedResource));
+						  ->method('SetReservationResource')
+						  ->with($this->equalTo($bookedResource));
 
-		$binder = new ReservationResourceBinder($this->resourceService);
+		$this->initializer->expects($this->once())
+					->method('IsAdminForResource')
+					->with($this->equalTo(true));
+
+		$binder = new ReservationResourceBinder($this->resourceService, $this->userRepository);
 		$binder->Bind($this->initializer);
 	}
 
@@ -178,29 +209,29 @@ class ReservationComponentTests extends TestBase
 		$requestedResourceId = null;
 
 		$this->initializer->expects($this->once())
-		->method('GetScheduleId')
-		->will($this->returnValue($requestedScheduleId));
+						  ->method('GetScheduleId')
+						  ->will($this->returnValue($requestedScheduleId));
 
 		$this->initializer->expects($this->once())
-		->method('GetResourceId')
-		->will($this->returnValue($requestedResourceId));
+						  ->method('GetResourceId')
+						  ->will($this->returnValue($requestedResourceId));
 
 		$this->initializer->expects($this->once())
-		->method('CurrentUser')
-		->will($this->returnValue($this->fakeUser));
+						  ->method('CurrentUser')
+						  ->will($this->returnValue($this->fakeUser));
 
 		$resourceList = array();
 		$groups = new FakeResourceGroupTree();
 		$groups->WithAllResources($resourceList);
 
 		$this->resourceService->expects($this->once())
-				->method('GetResourceGroups')
-				->with($this->equalTo($requestedScheduleId), $this->equalTo($this->fakeUser))
-				->will($this->returnValue($groups));
+							  ->method('GetResourceGroups')
+							  ->with($this->equalTo($requestedScheduleId), $this->equalTo($this->fakeUser))
+							  ->will($this->returnValue($groups));
 
 		$this->initializer->expects($this->once())
-		->method('RedirectToError')
-		->with($this->equalTo(ErrorMessages::INSUFFICIENT_PERMISSIONS));
+						  ->method('RedirectToError')
+						  ->with($this->equalTo(ErrorMessages::INSUFFICIENT_PERMISSIONS));
 
 		$binder = new ReservationResourceBinder($this->resourceService);
 		$binder->Bind($this->initializer);
@@ -220,60 +251,61 @@ class ReservationComponentTests extends TestBase
 		$resourceDto = new ResourceDto(1, 'resource', true, $scheduleId, null);
 
 		$this->initializer->expects($this->any())
-		->method('CurrentUser')
-		->will($this->returnValue($this->fakeUser));
+						  ->method('CurrentUser')
+						  ->will($this->returnValue($this->fakeUser));
 
 		$this->initializer->expects($this->any())
-		->method('GetTimezone')
-		->will($this->returnValue($timezone));
+						  ->method('GetTimezone')
+						  ->will($this->returnValue($timezone));
 
 		$this->initializer->expects($this->any())
-		->method('GetReservationDate')
-		->will($this->returnValue($dateInUserTimezone));
+						  ->method('GetReservationDate')
+						  ->will($this->returnValue($dateInUserTimezone));
 
 		$this->initializer->expects($this->any())
-		->method('GetStartDate')
-		->will($this->returnValue($startDate));
+						  ->method('GetStartDate')
+						  ->will($this->returnValue($startDate));
 
 		$this->initializer->expects($this->any())
-		->method('GetEndDate')
-		->will($this->returnValue($endDate));
+						  ->method('GetEndDate')
+						  ->will($this->returnValue($endDate));
 
 		$this->initializer->expects($this->any())
-		->method('GetScheduleId')
-		->will($this->returnValue($scheduleId));
+						  ->method('GetScheduleId')
+						  ->will($this->returnValue($scheduleId));
 
 		$this->initializer->expects($this->any())
-		->method('PrimaryResource')
-		->will($this->returnValue($resourceDto));
+						  ->method('PrimaryResource')
+						  ->will($this->returnValue($resourceDto));
 
 		$startPeriods = array(new SchedulePeriod(Date::Now(), Date::Now()));
 		$endPeriods = array(new SchedulePeriod(Date::Now()->AddDays(1), Date::Now()->AddDays(1)));
 		$layout = $this->getMock('IScheduleLayout');
 
 		$this->scheduleRepository->expects($this->once())
-		->method('GetLayout')
-		->with($this->equalTo($scheduleId), $this->equalTo(new ReservationLayoutFactory($timezone)))
-		->will($this->returnValue($layout));
+								 ->method('GetLayout')
+								 ->with($this->equalTo($scheduleId),
+										$this->equalTo(new ReservationLayoutFactory($timezone)))
+								 ->will($this->returnValue($layout));
 
 		$layout->expects($this->at(0))
-		->method('GetLayout')
-		->with($this->equalTo($startDate))
-		->will($this->returnValue($startPeriods));
+			   ->method('GetLayout')
+			   ->with($this->equalTo($startDate))
+			   ->will($this->returnValue($startPeriods));
 
 		$layout->expects($this->at(1))
-		->method('GetLayout')
-		->with($this->equalTo($endDate))
-		->will($this->returnValue($endPeriods));
+			   ->method('GetLayout')
+			   ->with($this->equalTo($endDate))
+			   ->will($this->returnValue($endPeriods));
 
 		$this->initializer->expects($this->once())
-		->method('SetDates')
-		->with($this->equalTo($startDate), $this->equalTo($endDate), $this->equalTo($startPeriods),
-			   $this->equalTo($endPeriods));
+						  ->method('SetDates')
+						  ->with($this->equalTo($startDate), $this->equalTo($endDate), $this->equalTo($startPeriods),
+								 $this->equalTo($endPeriods));
 
 		$this->initializer->expects($this->once())
-		->method('HideRecurrence')
-		->with($this->equalTo(false));
+						  ->method('HideRecurrence')
+						  ->with($this->equalTo(false));
 
 		$binder = new ReservationDateBinder($this->scheduleRepository);
 		$binder->Bind($this->initializer);
@@ -295,64 +327,66 @@ class ReservationComponentTests extends TestBase
 		$resourceDto = new ResourceDto(1, 'resource', true, $scheduleId, TimeInterval::FromHours(2));
 
 		$this->initializer->expects($this->any())
-				->method('CurrentUser')
-				->will($this->returnValue($this->fakeUser));
+						  ->method('CurrentUser')
+						  ->will($this->returnValue($this->fakeUser));
 
 		$this->initializer->expects($this->any())
-		->method('GetTimezone')
-		->will($this->returnValue($timezone));
+						  ->method('GetTimezone')
+						  ->will($this->returnValue($timezone));
 
 		$this->initializer->expects($this->any())
-		->method('GetReservationDate')
-		->will($this->returnValue($dateInUserTimezone));
+						  ->method('GetReservationDate')
+						  ->will($this->returnValue($dateInUserTimezone));
 
 		$this->initializer->expects($this->any())
-		->method('GetStartDate')
-		->will($this->returnValue($startDate));
+						  ->method('GetStartDate')
+						  ->will($this->returnValue($startDate));
 
 		$this->initializer->expects($this->any())
-		->method('GetEndDate')
-		->will($this->returnValue($endDate));
+						  ->method('GetEndDate')
+						  ->will($this->returnValue($endDate));
 
 		$this->initializer->expects($this->any())
-		->method('GetScheduleId')
-		->will($this->returnValue($scheduleId));
+						  ->method('GetScheduleId')
+						  ->will($this->returnValue($scheduleId));
 
 		$this->initializer->expects($this->any())
-		->method('PrimaryResource')
-		->will($this->returnValue($resourceDto));
+						  ->method('PrimaryResource')
+						  ->will($this->returnValue($resourceDto));
 
 		$startPeriods = array(new SchedulePeriod(Date::Now(), Date::Now()));
 		$endPeriods = array(new SchedulePeriod(Date::Now()->AddDays(1), Date::Now()->AddDays(1)));
 		$layout = $this->getMock('IScheduleLayout');
 
 		$this->scheduleRepository->expects($this->once())
-		->method('GetLayout')
-		->with($this->equalTo($scheduleId), $this->equalTo(new ReservationLayoutFactory($timezone)))
-		->will($this->returnValue($layout));
+								 ->method('GetLayout')
+								 ->with($this->equalTo($scheduleId),
+										$this->equalTo(new ReservationLayoutFactory($timezone)))
+								 ->will($this->returnValue($layout));
 
 		$layout->expects($this->at(0))
-		->method('GetLayout')
-		->with($this->equalTo($startDate))
-		->will($this->returnValue($startPeriods));
+			   ->method('GetLayout')
+			   ->with($this->equalTo($startDate))
+			   ->will($this->returnValue($startPeriods));
 
 		$layout->expects($this->at(1))
-		->method('GetLayout')
-		->with($this->equalTo($endDate))
-		->will($this->returnValue($endPeriods));
+			   ->method('GetLayout')
+			   ->with($this->equalTo($endDate))
+			   ->will($this->returnValue($endPeriods));
 
 		$this->initializer->expects($this->once())
-		->method('SetDates')
-		->with($this->equalTo($startDate), $this->equalTo($expectedEndDate), $this->equalTo($startPeriods),
-			   $this->equalTo($endPeriods));
+						  ->method('SetDates')
+						  ->with($this->equalTo($startDate), $this->equalTo($expectedEndDate),
+								 $this->equalTo($startPeriods),
+								 $this->equalTo($endPeriods));
 
 		$this->initializer->expects($this->once())
-		->method('HideRecurrence')
-		->with($this->equalTo(false));
+						  ->method('HideRecurrence')
+						  ->with($this->equalTo(false));
 
 		$this->initializer->expects($this->once())
-		->method('IsNew')
-		->will($this->returnValue(true));
+						  ->method('IsNew')
+						  ->will($this->returnValue(true));
 
 		$binder = new ReservationDateBinder($this->scheduleRepository);
 		$binder->Bind($this->initializer);
@@ -368,50 +402,54 @@ class ReservationComponentTests extends TestBase
 		$requestedDate = Date::Parse($dateString, $timezone);
 
 		$this->initializer->expects($this->any())
-				->method('CurrentUser')
-				->will($this->returnValue($this->fakeUser));
+						  ->method('CurrentUser')
+						  ->will($this->returnValue($this->fakeUser));
 
 		$this->initializer->expects($this->any())
-		->method('GetTimezone')
-		->will($this->returnValue($timezone));
+						  ->method('GetTimezone')
+						  ->will($this->returnValue($timezone));
 
 		$this->initializer->expects($this->any())
-		->method('GetReservationDate')
-		->will($this->returnValue($dateInUserTimezone));
+						  ->method('GetReservationDate')
+						  ->will($this->returnValue($dateInUserTimezone));
 
 		$this->initializer->expects($this->any())
-		->method('GetStartDate')
-		->will($this->returnValue($requestedDate));
+						  ->method('GetStartDate')
+						  ->will($this->returnValue($requestedDate));
 
 		$this->initializer->expects($this->any())
-		->method('GetEndDate')
-		->will($this->returnValue($requestedDate));
+						  ->method('GetEndDate')
+						  ->will($this->returnValue($requestedDate));
 
 		$this->initializer->expects($this->any())
-		->method('GetScheduleId')
-		->will($this->returnValue($scheduleId));
+						  ->method('GetScheduleId')
+						  ->will($this->returnValue($scheduleId));
 
 		$periods = array(
-			new SchedulePeriod(Date::Parse('2012-01-22 22:00', $timezone), Date::Parse('2012-01-22 10:00', $timezone)),
-			new SchedulePeriod(Date::Parse('2012-01-22 10:00', $timezone), Date::Parse('2012-01-23 22:00', $timezone)),
+				new SchedulePeriod(Date::Parse('2012-01-22 22:00', $timezone), Date::Parse('2012-01-22 10:00',
+																						   $timezone)),
+				new SchedulePeriod(Date::Parse('2012-01-22 10:00', $timezone), Date::Parse('2012-01-23 22:00',
+																						   $timezone)),
 		);
 		$startPeriods = array($periods[1], $periods[0]);
 		$layout = $this->getMock('IScheduleLayout');
 
 		$this->scheduleRepository->expects($this->once())
-		->method('GetLayout')
-		->with($this->equalTo($scheduleId), $this->equalTo(new ReservationLayoutFactory($timezone)))
-		->will($this->returnValue($layout));
+								 ->method('GetLayout')
+								 ->with($this->equalTo($scheduleId),
+										$this->equalTo(new ReservationLayoutFactory($timezone)))
+								 ->will($this->returnValue($layout));
 
 		$layout->expects($this->any())
-		->method('GetLayout')
-		->with($this->equalTo($requestedDate))
-		->will($this->returnValue($periods));
+			   ->method('GetLayout')
+			   ->with($this->equalTo($requestedDate))
+			   ->will($this->returnValue($periods));
 
 		$this->initializer->expects($this->once())
-		->method('SetDates')
-		->with($this->equalTo($requestedDate), $this->equalTo($requestedDate), $this->equalTo($startPeriods),
-			   $this->equalTo($periods));
+						  ->method('SetDates')
+						  ->with($this->equalTo($requestedDate), $this->equalTo($requestedDate),
+								 $this->equalTo($startPeriods),
+								 $this->equalTo($periods));
 
 		$binder = new ReservationDateBinder($this->scheduleRepository);
 		$binder->Bind($this->initializer);
@@ -447,19 +485,19 @@ class ReservationComponentTests extends TestBase
 		$ownerId = 987;
 		$additionalResourceIds = array(10, 20, 30);
 		$participants = array(
-			new ReservationUserView(10, 'p1', 'l', null, ReservationUserLevel::PARTICIPANT),
-			new ReservationUserView(11, 'p2', 'l', null, ReservationUserLevel::PARTICIPANT)
+				new ReservationUserView(10, 'p1', 'l', null, ReservationUserLevel::PARTICIPANT),
+				new ReservationUserView(11, 'p2', 'l', null, ReservationUserLevel::PARTICIPANT)
 		);
 		$invitees = array(
-			new ReservationUserView($this->fakeUser->UserId, 'i1', 'l', null, ReservationUserLevel::INVITEE),
-			new ReservationUserView(110, 'i2', 'l', null, ReservationUserLevel::INVITEE)
+				new ReservationUserView($this->fakeUser->UserId, 'i1', 'l', null, ReservationUserLevel::INVITEE),
+				new ReservationUserView(110, 'i2', 'l', null, ReservationUserLevel::INVITEE)
 		);
 		$accessories = array(
-			new ReservationAccessory(1, 2)
+				new ReservationAccessory(1, 2)
 		);
 
 		$attachments = array(
-			new ReservationAttachmentView(1, 2, 'filename')
+				new ReservationAttachmentView(1, 2, 'filename')
 		);
 
 		$expectedStartDate = Date::Parse($startDateUtc, 'UTC');
@@ -495,118 +533,118 @@ class ReservationComponentTests extends TestBase
 		$reservationView->EndReminder = null;
 
 		$page->expects($this->once())
-		->method('SetAdditionalResources')
-		->with($this->equalTo($additionalResourceIds));
+			 ->method('SetAdditionalResources')
+			 ->with($this->equalTo($additionalResourceIds));
 
 		$page->expects($this->once())
-		->method('SetParticipants')
-		->with($this->equalTo($participants));
+			 ->method('SetParticipants')
+			 ->with($this->equalTo($participants));
 
 		$page->expects($this->once())
-		->method('SetInvitees')
-		->with($this->equalTo($invitees));
+			 ->method('SetInvitees')
+			 ->with($this->equalTo($invitees));
 
 		$page->expects($this->once())
-		->method('SetTitle')
-		->with($this->equalTo($title));
+			 ->method('SetTitle')
+			 ->with($this->equalTo($title));
 
 		$page->expects($this->once())
-		->method('SetDescription')
-		->with($this->equalTo($description));
+			 ->method('SetDescription')
+			 ->with($this->equalTo($description));
 
 		$page->expects($this->once())
-		->method('SetRepeatType')
-		->with($this->equalTo($repeatType));
+			 ->method('SetRepeatType')
+			 ->with($this->equalTo($repeatType));
 
 		$page->expects($this->once())
-		->method('SetRepeatInterval')
-		->with($this->equalTo($repeatInterval));
+			 ->method('SetRepeatInterval')
+			 ->with($this->equalTo($repeatInterval));
 
 		$page->expects($this->once())
-		->method('SetRepeatMonthlyType')
-		->with($this->equalTo($repeatMonthlyType));
+			 ->method('SetRepeatMonthlyType')
+			 ->with($this->equalTo($repeatMonthlyType));
 
 		$page->expects($this->any())
-		->method('SetRepeatTerminationDate')
-		->with($repeatTerminationDate->ToTimezone($timezone));
+			 ->method('SetRepeatTerminationDate')
+			 ->with($repeatTerminationDate->ToTimezone($timezone));
 
 		$page->expects($this->once())
-		->method('SetRepeatWeekdays')
-		->with($this->equalTo($repeatWeekdays));
+			 ->method('SetRepeatWeekdays')
+			 ->with($this->equalTo($repeatWeekdays));
 
 		$page->expects($this->once())
-		->method('SetAccessories')
-		->with($this->equalTo($accessories));
+			 ->method('SetAccessories')
+			 ->with($this->equalTo($accessories));
 
 		$page->expects($this->once())
-		->method('SetAttachments')
-		->with($this->equalTo($attachments));
+			 ->method('SetAttachments')
+			 ->with($this->equalTo($attachments));
 
 		$isEditable = false;
 
 		$reservationAuthorization->expects($this->once())
-		->method('CanEdit')
-		->with($this->equalTo($reservationView), $this->equalTo($this->fakeUser))
-		->will($this->returnValue($isEditable));
+								 ->method('CanEdit')
+								 ->with($this->equalTo($reservationView), $this->equalTo($this->fakeUser))
+								 ->will($this->returnValue($isEditable));
 
 		$page->expects($this->once())
-		->method('SetIsEditable')
-		->with($this->equalTo($isEditable));
+			 ->method('SetIsEditable')
+			 ->with($this->equalTo($isEditable));
 
 		$isApprovable = true;
 		$reservationAuthorization->expects($this->once())
-		->method('CanApprove')
-		->with($this->equalTo($reservationView), $this->equalTo($this->fakeUser))
-		->will($this->returnValue($isApprovable));
+								 ->method('CanApprove')
+								 ->with($this->equalTo($reservationView), $this->equalTo($this->fakeUser))
+								 ->will($this->returnValue($isApprovable));
 
 		$page->expects($this->once())
-		->method('SetIsApprovable')
-		->with($this->equalTo($isApprovable));
+			 ->method('SetIsApprovable')
+			 ->with($this->equalTo($isApprovable));
 
 		$isParticipating = false;
 		$page->expects($this->once())
-		->method('SetCurrentUserParticipating')
-		->with($this->equalTo($isParticipating));
+			 ->method('SetCurrentUserParticipating')
+			 ->with($this->equalTo($isParticipating));
 
 		$page->expects($this->once())
-		->method('SetStartReminder')
-		->with($this->equalTo($startReminderValue), $this->equalTo($startReminderInterval));
+			 ->method('SetStartReminder')
+			 ->with($this->equalTo($startReminderValue), $this->equalTo($startReminderInterval));
 
 		$page->expects($this->never())
-		->method('SetEndReminder');
+			 ->method('SetEndReminder');
 
 		$isInvited = true;
 		$page->expects($this->once())
-		->method('SetCurrentUserInvited')
-		->with($this->equalTo($isInvited));
+			 ->method('SetCurrentUserInvited')
+			 ->with($this->equalTo($isInvited));
 
 		$initializer->expects($this->atLeastOnce())
-		->method('GetTimezone')
-		->will($this->returnValue($timezone));
+					->method('GetTimezone')
+					->will($this->returnValue($timezone));
 
 		$initializer->expects($this->atLeastOnce())
-		->method('CurrentUser')
-		->will($this->returnValue($this->fakeUser));
+					->method('CurrentUser')
+					->will($this->returnValue($this->fakeUser));
 
 		$canViewDetails = true;
 		$canViewUser = true;
 		$privacyFilter->expects($this->once())
-		->method('CanViewDetails')
-		->with($this->equalTo($this->fakeUser), $this->equalTo($reservationView))
-		->will($this->returnValue($canViewDetails));
+					  ->method('CanViewDetails')
+					  ->with($this->equalTo($this->fakeUser), $this->equalTo($reservationView))
+					  ->will($this->returnValue($canViewDetails));
 
 		$privacyFilter->expects($this->once())
-		->method('CanViewUser')
-		->with($this->equalTo($this->fakeUser), $this->equalTo($reservationView))
-		->will($this->returnValue($canViewUser));
+					  ->method('CanViewUser')
+					  ->with($this->equalTo($this->fakeUser), $this->equalTo($reservationView))
+					  ->will($this->returnValue($canViewUser));
 
 		$initializer->expects($this->once())
-		->method('ShowUserDetails')
-		->with($this->equalTo($canViewDetails));
+					->method('ShowUserDetails')
+					->with($this->equalTo($canViewDetails));
 
 		$initializer->expects($this->once())
-		->method('ShowReservationDetails')
-		->with($this->equalTo($canViewDetails));
+					->method('ShowReservationDetails')
+					->with($this->equalTo($canViewDetails));
 
 		$binder = new ReservationDetailsBinder($reservationAuthorization, $page, $reservationView, $privacyFilter);
 		$binder->Bind($initializer);
@@ -617,24 +655,24 @@ class ReservationComponentTests extends TestBase
 		$binder = new ReservationCustomAttributeBinder($this->attributeRepository);
 
 		$attributes = array(
-			CustomAttribute::Create('1', CustomAttributeTypes::SINGLE_LINE_TEXTBOX,
-									CustomAttributeCategory::RESERVATION, '', false, '', 1),
-			CustomAttribute::Create('2', CustomAttributeTypes::SINGLE_LINE_TEXTBOX,
-									CustomAttributeCategory::RESERVATION, '', false, '', 2),
+				CustomAttribute::Create('1', CustomAttributeTypes::SINGLE_LINE_TEXTBOX,
+										CustomAttributeCategory::RESERVATION, '', false, '', 1),
+				CustomAttribute::Create('2', CustomAttributeTypes::SINGLE_LINE_TEXTBOX,
+										CustomAttributeCategory::RESERVATION, '', false, '', 2),
 		);
 
 		$this->attributeRepository->expects($this->once())
-		->method('GetByCategory')
-		->with($this->equalTo(CustomAttributeCategory::RESERVATION))
-		->will($this->returnValue($attributes));
+								  ->method('GetByCategory')
+								  ->with($this->equalTo(CustomAttributeCategory::RESERVATION))
+								  ->will($this->returnValue($attributes));
 
 		$this->initializer->expects($this->at(0))
-		->method('AddAttribute')
-		->with($this->equalTo($attributes[0]), $this->equalTo(null));
+						  ->method('AddAttribute')
+						  ->with($this->equalTo($attributes[0]), $this->equalTo(null));
 
 		$this->initializer->expects($this->at(1))
-		->method('AddAttribute')
-		->with($this->equalTo($attributes[1]), $this->equalTo(null));
+						  ->method('AddAttribute')
+						  ->with($this->equalTo($attributes[1]), $this->equalTo(null));
 
 		$binder->Bind($this->initializer);
 	}
@@ -651,22 +689,22 @@ class ReservationComponentTests extends TestBase
 		$binder = new ReservationCustomAttributeValueBinder($this->attributeRepository, $reservationView);
 
 		$attributes = array(
-			new CustomAttribute(10, '1', CustomAttributeTypes::SINGLE_LINE_TEXTBOX, CustomAttributeCategory::RESERVATION, '', false, '', 1),
-			new CustomAttribute(20, '2', CustomAttributeTypes::SINGLE_LINE_TEXTBOX, CustomAttributeCategory::RESERVATION, '', false, '', 2),
+				new CustomAttribute(10, '1', CustomAttributeTypes::SINGLE_LINE_TEXTBOX, CustomAttributeCategory::RESERVATION, '', false, '', 1),
+				new CustomAttribute(20, '2', CustomAttributeTypes::SINGLE_LINE_TEXTBOX, CustomAttributeCategory::RESERVATION, '', false, '', 2),
 		);
 
 		$this->attributeRepository->expects($this->once())
-		->method('GetByCategory')
-		->with($this->equalTo(CustomAttributeCategory::RESERVATION))
-		->will($this->returnValue($attributes));
+								  ->method('GetByCategory')
+								  ->with($this->equalTo(CustomAttributeCategory::RESERVATION))
+								  ->will($this->returnValue($attributes));
 
 		$this->initializer->expects($this->at(0))
-		->method('AddAttribute')
-		->with($this->equalTo($attributes[0]), $this->equalTo($val1));
+						  ->method('AddAttribute')
+						  ->with($this->equalTo($attributes[0]), $this->equalTo($val1));
 
 		$this->initializer->expects($this->at(1))
-		->method('AddAttribute')
-		->with($this->equalTo($attributes[1]), $this->equalTo($val2));
+						  ->method('AddAttribute')
+						  ->with($this->equalTo($attributes[1]), $this->equalTo($val2));
 
 		$binder->Bind($this->initializer);
 	}

@@ -141,5 +141,3 @@ class BindableResourceData
 		$this->AvailableResources[] = $resource;
 	}
 }
-
-?>

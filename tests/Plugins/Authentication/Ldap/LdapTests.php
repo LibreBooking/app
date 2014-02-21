@@ -382,7 +382,7 @@ class FakeLdapWrapper extends Ldap2Wrapper
 		return $this->_ExpectedConnect;
 	}
 
-	public function Authenticate($username, $password)
+	public function Authenticate($username, $password, $filter)
 	{
 		$this->_AuthenticateCalled = true;
 		$this->_LastUsername = $username;
@@ -408,7 +408,7 @@ class TestLdapEntry extends Net_LDAP2_Entry
 
 	}
 
-	public function getValue($attr)
+	public function getValue($attr, $option = NULL)
 	{
 		return $this->_values[$attr];
 	}
@@ -418,5 +418,3 @@ class TestLdapEntry extends Net_LDAP2_Entry
 		$this->_values[$attr] = $value;
 	}
 }
-
-?>

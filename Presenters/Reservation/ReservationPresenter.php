@@ -123,7 +123,7 @@ class EditReservationPresenter extends ReservationPresenterBase
 		$reservationView = $this->reservationViewRepository->GetReservationForEditing($referenceNumber);
 
 		$this->preconditionService->CheckAll($this->page, $user, $reservationView);
-		$initializer = $this->initializationFactory->GetExisitingInitializer($this->page, $reservationView);
+		$initializer = $this->initializationFactory->GetExistingInitializer($this->page, $reservationView);
 		$initializer->Initialize();
 	}
 }

@@ -14,7 +14,6 @@ You should have received a copy of the GNU General Public License
 alBooked SchedulercheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-
 interface IReservationInitializerFactory
 {
 	/**
@@ -28,7 +27,5 @@ interface IReservationInitializerFactory
 	 * @param ReservationView $reservationView
 	 * @return IReservationInitializer
 	 */
-	public function GetExisitingInitializer(IExistingReservationPage $page, ReservationView $reservationView);
+	public function GetExistingInitializer(IExistingReservationPage $page, ReservationView $reservationView);
 }
-
-?>
