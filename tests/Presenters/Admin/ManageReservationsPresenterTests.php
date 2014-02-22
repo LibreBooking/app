@@ -162,13 +162,6 @@ class ManageReservationsPresenterTests extends TestBase
 										 $this->equalTo($this->fakeUser))
 								  ->will($this->returnValue($data));
 
-		$attributeList = new AttributeList();
-		$this->attributeService->expects($this->once())
-							   ->method('GetAttributes')
-							   ->with($this->equalTo(CustomAttributeCategory::RESERVATION),
-									  $this->equalTo(range(1, 10)))
-							   ->will($this->returnValue($attributeList));
-
 		$this->attributeService->expects($this->once())
 							   ->method('GetByCategory')
 							   ->with($this->equalTo(CustomAttributeCategory::RESERVATION))

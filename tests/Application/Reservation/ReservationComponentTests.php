@@ -148,21 +148,22 @@ class ReservationComponentTests extends TestBase
 							 ->with($this->equalTo($this->fakeUser->UserId))
 							 ->will($this->returnValue($user));
 
-		$this->initializer->expects($this->once())
+		$this->initializer->expects($this->atLeastOnce())
 						  ->method('GetScheduleId')
 						  ->will($this->returnValue($requestedScheduleId));
 
-		$this->initializer->expects($this->once())
+		$this->initializer->expects($this->atLeastOnce())
 						  ->method('GetResourceId')
 						  ->will($this->returnValue($requestedResourceId));
 
-		$this->initializer->expects($this->once())
+		$this->initializer->expects($this->atLeastOnce())
 						  ->method('CurrentUser')
 						  ->will($this->returnValue($this->fakeUser));
 
-		$bookedResource = new ResourceDto($requestedResourceId, 'resource 1');
-		$otherResource = new ResourceDto(2, 'resource 2');
-		$otherResource2 = new ResourceDto(100, 'something', false);
+
+		$bookedResource = new ResourceGroupAssignment(null, new FakeBookableResource($requestedResourceId, 'resource 1'));
+		$otherResource = new ResourceGroupAssignment(null, new FakeBookableResource(2, 'resource 2'));
+		$otherResource2 = new ResourceGroupAssignment(null, new FakeBookableResource(100, 'something'));
 		$resourceList = array($otherResource, $bookedResource, $otherResource2);
 
 		$groups = new FakeResourceGroupTree();
@@ -193,10 +194,10 @@ class ReservationComponentTests extends TestBase
 
 		$this->initializer->expects($this->once())
 						  ->method('SetReservationResource')
-						  ->with($this->equalTo($bookedResource));
+						  ->with($this->equalTo($bookedResource->GetResource()));
 
 		$this->initializer->expects($this->once())
-					->method('IsAdminForResource')
+					->method('SetIsAdminForResource')
 					->with($this->equalTo(true));
 
 		$binder = new ReservationResourceBinder($this->resourceService, $this->userRepository);
@@ -207,14 +208,6 @@ class ReservationComponentTests extends TestBase
 	{
 		$requestedScheduleId = 10;
 		$requestedResourceId = null;
-
-		$user = new FakeUser();
-		$user->_IsResourceAdmin = true;
-
-		$this->userRepository->expects($this->once())
-							 ->method('LoadById')
-							 ->with($this->equalTo($this->fakeUser->UserId))
-							 ->will($this->returnValue($user));
 
 		$this->initializer->expects($this->once())
 						  ->method('GetScheduleId')
@@ -256,7 +249,7 @@ class ReservationComponentTests extends TestBase
 		$startDate = Date::Parse($dateString, $timezone);
 		$endDate = Date::Parse($endDateString, $timezone);
 
-		$resourceDto = new ResourceDto(1, 'resource', true, $scheduleId, null);
+		$resource = new ResourceGroupAssignment(1, new FakeBookableResource(123, 'rn'));
 
 		$this->initializer->expects($this->any())
 						  ->method('CurrentUser')
@@ -284,7 +277,7 @@ class ReservationComponentTests extends TestBase
 
 		$this->initializer->expects($this->any())
 						  ->method('PrimaryResource')
-						  ->will($this->returnValue($resourceDto));
+						  ->will($this->returnValue($resource));
 
 		$startPeriods = array(new SchedulePeriod(Date::Now(), Date::Now()));
 		$endPeriods = array(new SchedulePeriod(Date::Now()->AddDays(1), Date::Now()->AddDays(1)));

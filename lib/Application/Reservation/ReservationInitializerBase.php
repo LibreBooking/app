@@ -79,7 +79,7 @@ interface IReservationComponentInitializer
 	public function CurrentUser();
 
 	/**
-	 * @return ResourceDto
+	 * @return BookableResource
 	 */
 	public function PrimaryResource();
 
@@ -105,7 +105,7 @@ interface IReservationComponentInitializer
 	public function ShowReservationDetails($showReservationDetails);
 
 	/**
-	 * @param $resources array|ResourceDto[]
+	 * @param $resources array|IResource[]
 	 */
 	public function BindAvailableResources($resources);
 
@@ -125,7 +125,7 @@ interface IReservationComponentInitializer
 	public function ShowAdditionalResources($shouldShow);
 
 	/**
-	 * @param $resource ResourceDto
+	 * @param $resource BookableResource
 	 */
 	public function SetReservationResource($resource);
 
@@ -157,6 +157,11 @@ interface IReservationComponentInitializer
 	 * @param bool $isAdminForUser
 	 */
 	public function SetIsAdminForUser($isAdminForUser);
+
+	/**
+	 * @param bool $isAdminForResource
+	 */
+	public function SetIsAdminForResource($isAdminForResource);
 }
 
 abstract class ReservationInitializerBase implements IReservationInitializer, IReservationComponentInitializer
@@ -379,7 +384,7 @@ abstract class ReservationInitializerBase implements IReservationInitializer, IR
 	}
 
 	/**
-	 * @param $resources array|ResourceDto[]
+	 * @param $resources array|IResource[]
 	 */
 	public function BindAvailableResources($resources)
 	{
@@ -408,7 +413,7 @@ abstract class ReservationInitializerBase implements IReservationInitializer, IR
 	}
 
 	/**
-	 * @param $resource ResourceDto
+	 * @param IResource $resource
 	 */
 	public function SetReservationResource($resource)
 	{
@@ -445,4 +450,8 @@ abstract class ReservationInitializerBase implements IReservationInitializer, IR
 		$this->basePage->SetIsAdminForUser($isAdminForUser);
 	}
 
+	public function SetIsAdminForResource($isAdminForResource)
+	{
+		$this->basePage->SetIsAdminForResource($isAdminForResource);
+	}
 }

@@ -248,7 +248,7 @@ class DatabaseCommandTests extends PHPUnit_Framework_TestCase
 		$filterCommand = new FilterCommand($baseCommand, $filter);
 
 		$this->assertEquals(2, $filterCommand->Parameters->Count());
-		$this->assertEquals('firstname%', $filterCommand->Parameters->Items(0)->Value);
+		$this->assertEquals('%firstname%', $filterCommand->Parameters->Items(0)->Value);
 		$this->assertEquals('last', $filterCommand->Parameters->Items(1)->Value);
 
 		$constraint = $this->stringContains("table WHERE ( blah = @blah and blah2 = @blah2 ) AND (fname LIKE @fname AND ( lname = @lname )) GROUP BY 1, 2 ORDER BY blah1");

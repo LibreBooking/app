@@ -70,7 +70,7 @@ interface IReservationPage extends IPage
 	public function SetReservationUser(UserDto $user);
 
 	/**
-	 * @param ResourceDto $resource
+	 * @param IResource $resource
 	 */
 	public function SetReservationResource($resource);
 
@@ -134,11 +134,15 @@ interface IReservationPage extends IPage
 	 */
 	public function HideRecurrence($isHidden);
 
-
 	/**
 	 * @param bool $isAdminForUser
 	 */
 	public function SetIsAdminForUser($isAdminForUser);
+
+	/**
+	 * @param bool $isAdminForResource
+	 */
+	public function SetIsAdminForResource($isAdminForResource);
 }
 
 abstract class ReservationPage extends Page implements IReservationPage
@@ -284,13 +288,13 @@ abstract class ReservationPage extends Page implements IReservationPage
 	}
 
 	/**
-	 * @param $resource ResourceDto
+	 * @param $resource IResource
 	 * @return void
 	 */
 	public function SetReservationResource($resource)
 	{
-		$this->Set('ResourceName', $resource->Name);
-		$this->Set('ResourceId', $resource->Id);
+		$this->Set('ResourceName', $resource->GetName());
+		$this->Set('ResourceId', $resource->GetId());
 	}
 
 	public function SetScheduleId($scheduleId)
@@ -351,5 +355,10 @@ abstract class ReservationPage extends Page implements IReservationPage
 	public function SetIsAdminForUser($isAdminForUser)
 	{
 		$this->Set('IsAdminForUser', $isAdminForUser);
+	}
+
+	public function SetIsAdminForResource($isAdminForResource)
+	{
+		$this->Set('IsAdminForResource', $isAdminForResource);
 	}
 }

@@ -270,7 +270,7 @@ class ResourceRepository implements IResourceRepository
 		foreach ($this->GetScheduleResources($scheduleId) as $r)
 		{
 				$resourceList[$r->GetId()] = $r;
-				$_assignments[] = new ResourceGroupAssignment(0, $r->GetName(), $r->GetId(), $r->GetAdminGroupId(), $r->GetScheduleId(), $r->GetStatusId(), $r->GetScheduleAdminGroupId(),$r->GetResourceTypeId());
+				$_assignments[] = new ResourceGroupAssignment(0, $r);
 		}
 		
 		while ($row = $groups->GetRow())
@@ -286,15 +286,7 @@ class ResourceRepository implements IResourceRepository
 			if (array_key_exists($resourceId, $resourceList))
 			{
 				$r = $resourceList[$resourceId];
-				$_assignments[] = new ResourceGroupAssignment(	$row[ColumnNames::RESOURCE_GROUP_ID],
-																$row[ColumnNames::RESOURCE_NAME],
-																$row[ColumnNames::RESOURCE_ID],
-																$r->GetAdminGroupId(),
-																$r->GetScheduleId(),
-																$r->GetStatusId(),
-																$r->GetScheduleAdminGroupId(),
-																$r->GetResourceTypeId()
-															 );
+				$_assignments[] = new ResourceGroupAssignment($row[ColumnNames::RESOURCE_GROUP_ID], $r);
 			}
 		}
 

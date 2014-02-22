@@ -48,9 +48,9 @@ class ReservationDateBinder implements IReservationComponentBinder
 		{
 			$resource = $initializer->PrimaryResource();
 
-			if ($resource->GetMinimumLength() != null && !$resource->GetMinimumLength()->Interval()->IsNull())
+			if ($resource->GetMinLength() != null && !$resource->GetMinLength()->Interval()->IsNull())
 			{
-				$endDate = $startDate->ApplyDifference($resource->GetMinimumLength()->Interval());
+				$endDate = $startDate->ApplyDifference($resource->GetMinLength()->Interval());
 			}
 		}
 
@@ -152,8 +152,9 @@ class ReservationResourceBinder implements IReservationComponentBinder
 		$resources = $groups->GetAllResources();
 		if (empty($requestedResourceId) && count($resources) > 0)
 		{
+			/** @var ResourceGroupAssignment $first */
 			$first = reset($resources);
-			$requestedResourceId = $first->Id;
+			$requestedResourceId = $first->GetId();
 		}
 
 		$bindableResourceData = $this->GetBindableResourceData($resources, $requestedResourceId);
@@ -162,6 +163,17 @@ class ReservationResourceBinder implements IReservationComponentBinder
 		{
 			$initializer->RedirectToError(ErrorMessages::INSUFFICIENT_PERMISSIONS);
 			return;
+		}
+
+		$user = $this->userRepository->LoadById($initializer->CurrentUser()->UserId);
+
+		foreach ($resources as $resource)
+		{
+			if ($user->IsResourceAdminFor($resource))
+			{
+				$initializer->SetIsAdminForResource(true);
+				break;
+			}
 		}
 
 		$initializer->BindResourceGroups($groups);
@@ -173,7 +185,7 @@ class ReservationResourceBinder implements IReservationComponentBinder
 	}
 
 	/**
-	 * @param $resources array|ResourceDto[]
+	 * @param $resources array|ResourceGroupAssignment[]
 	 * @param $requestedResourceId int
 	 * @return BindableResourceData
 	 */
@@ -181,13 +193,13 @@ class ReservationResourceBinder implements IReservationComponentBinder
 	{
 		$bindableResourceData = new BindableResourceData();
 
-		/** @var $resource ResourceDto */
+		/** @var $resource ResourceGroupAssignment */
 		foreach ($resources as $resource)
 		{
-			$bindableResourceData->AddAvailableResource($resource);
-			if ($resource->Id == $requestedResourceId)
+			$bindableResourceData->AddAvailableResource($resource->GetResource());
+			if ($resource->GetId() == $requestedResourceId)
 			{
-				$bindableResourceData->SetReservationResource($resource);
+				$bindableResourceData->SetReservationResource($resource->GetResource());
 			}
 		}
 
