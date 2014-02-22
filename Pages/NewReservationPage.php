@@ -118,4 +118,3 @@ class NewReservationPage extends ReservationPage implements INewReservationPage
 		return new Date($dateTimeString, $timezone);
 	}
 }
-?>

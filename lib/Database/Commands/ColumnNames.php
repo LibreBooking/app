@@ -185,6 +185,7 @@ class ColumnNames
 
 	// ATTRIBUTES //
 	const ATTRIBUTE_ID = 'custom_attribute_id';
+	const ATTRIBUTE_ADMIN_ONLY = 'admin_only';
 	const ATTRIBUTE_LABEL = 'display_label';
 	const ATTRIBUTE_TYPE = 'display_type';
 	const ATTRIBUTE_CATEGORY = 'attribute_category';

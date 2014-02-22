@@ -257,7 +257,7 @@ class CustomAttribute
 			$row[ColumnNames::ATTRIBUTE_POSSIBLE_VALUES],
 			$row[ColumnNames::ATTRIBUTE_SORT_ORDER],
 			$row[ColumnNames::ATTRIBUTE_ENTITY_ID],
-			$row[ColumnNames::ATTRIBUTE_ENTITY_ID]
+			$row[ColumnNames::ATTRIBUTE_ADMIN_ONLY]
 		);
 
 		$attribute->WithEntityDescription($row[ColumnNames::ATTRIBUTE_ENTITY_DESCRIPTION]);

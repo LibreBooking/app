@@ -71,10 +71,16 @@ class ManageReservationsService implements IManageReservationsService
 	 */
 	private $persistenceService;
 
+	/**
+	 * @param IReservationViewRepository $reservationViewRepository
+	 * @param IReservationAuthorization|null $authorization
+	 * @param IReservationHandler|null $reservationHandler
+	 * @param IUpdateReservationPersistenceService|null $persistenceService
+	 */
 	public function __construct(IReservationViewRepository $reservationViewRepository,
-								IReservationAuthorization $authorization = null,
-								IReservationHandler $reservationHandler= null,
-								IUpdateReservationPersistenceService $persistenceService= null)
+								$authorization = null,
+								$reservationHandler= null,
+								$persistenceService= null)
 	{
 		$this->reservationViewRepository = $reservationViewRepository;
 		$this->reservationAuthorization = $authorization == null ?  new ReservationAuthorization(PluginManager::Instance()->LoadAuthorization()) : $authorization;

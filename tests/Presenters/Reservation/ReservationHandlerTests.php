@@ -26,7 +26,7 @@ class ReservationHandlerTests extends TestBase
 		$persistenceService = $this->getMock('IReservationPersistenceService');
 		$validationService = $this->getMock('IReservationValidationService');
 		$notificationService = $this->getMock('IReservationNotificationService');
-		$page = $this->getMock('IReservationSaveResultsPage');
+		$page = $this->getMock('IReservationSaveResultsView');
 
 		$builder = new ExistingReservationSeriesBuilder();
 		$series = $builder->Build();
@@ -53,7 +53,7 @@ class ReservationHandlerTests extends TestBase
 			->with($this->equalTo(true));
 
 		$page->expects($this->once())
-			->method('ShowWarnings')
+			->method('SetWarnings')
 			->with($this->equalTo($validationResult->GetWarnings()));
 
 
@@ -67,7 +67,7 @@ class ReservationHandlerTests extends TestBase
 		$persistenceService = $this->getMock('IReservationPersistenceService');
 		$validationService = $this->getMock('IReservationValidationService');
 		$notificationService = $this->getMock('IReservationNotificationService');
-		$page = $this->getMock('IReservationSaveResultsPage');
+		$page = $this->getMock('IReservationSaveResultsView');
 
 		$errorMessage1 = 'e1';
 		$errorMessage2 = 'e2';
@@ -94,11 +94,10 @@ class ReservationHandlerTests extends TestBase
 			->with($this->equalTo(false));
 
 		$page->expects($this->once())
-			->method('ShowErrors')
+			->method('SetErrors')
 			->with($this->equalTo($errors));
 
 		$handler = new ReservationHandler($persistenceService, $validationService, $notificationService);
 		$handler->Handle($series, $page);
 	}
 }
-?>

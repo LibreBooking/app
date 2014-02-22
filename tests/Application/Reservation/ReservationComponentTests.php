@@ -65,7 +65,7 @@ class ReservationComponentTests extends TestBase
 	{
 		parent::setup();
 
-		$this->userId = $this->fakeUser->UserId;
+		$this->userId = 9999;
 
 		$this->scheduleRepository = $this->getMock('IScheduleRepository');
 		$this->attributeRepository = $this->getMock('IAttributeRepository');
@@ -91,12 +91,12 @@ class ReservationComponentTests extends TestBase
 
 		$owner = new FakeUser();
 
-		$this->userRepository->expects($this->at(0))
+		$this->userRepository->expects($this->at(1))
 							 ->method('LoadById')
 							 ->with($this->equalTo($this->fakeUser->UserId))
 							 ->will($this->returnValue($current));
 
-		$this->userRepository->expects($this->at(1))
+		$this->userRepository->expects($this->at(2))
 							 ->method('LoadById')
 							 ->with($this->equalTo($this->userId))
 							 ->will($this->returnValue($owner));
@@ -105,7 +105,7 @@ class ReservationComponentTests extends TestBase
 						  ->method('GetOwnerId')
 						  ->will($this->returnValue($this->userId));
 
-		$this->initializer->expects($this->once())
+		$this->initializer->expects($this->atLeastOnce())
 						  ->method('CurrentUser')
 						  ->will($this->returnValue($this->fakeUser));
 
@@ -128,7 +128,7 @@ class ReservationComponentTests extends TestBase
 						  ->with($this->equalTo($userDto));
 
 		$this->initializer->expects($this->once())
-						  ->method('IsAdminForUser')
+						  ->method('SetIsAdminForUser')
 						  ->with($this->equalTo(true));
 
 		$binder = new ReservationUserBinder($this->userRepository, $this->reservationAuthorization);
@@ -208,6 +208,14 @@ class ReservationComponentTests extends TestBase
 		$requestedScheduleId = 10;
 		$requestedResourceId = null;
 
+		$user = new FakeUser();
+		$user->_IsResourceAdmin = true;
+
+		$this->userRepository->expects($this->once())
+							 ->method('LoadById')
+							 ->with($this->equalTo($this->fakeUser->UserId))
+							 ->will($this->returnValue($user));
+
 		$this->initializer->expects($this->once())
 						  ->method('GetScheduleId')
 						  ->will($this->returnValue($requestedScheduleId));
@@ -233,7 +241,7 @@ class ReservationComponentTests extends TestBase
 						  ->method('RedirectToError')
 						  ->with($this->equalTo(ErrorMessages::INSUFFICIENT_PERMISSIONS));
 
-		$binder = new ReservationResourceBinder($this->resourceService);
+		$binder = new ReservationResourceBinder($this->resourceService, $this->userRepository);
 		$binder->Bind($this->initializer);
 	}
 

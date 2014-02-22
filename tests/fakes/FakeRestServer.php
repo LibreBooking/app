@@ -123,4 +123,3 @@ class FakeRestServer implements IRestServer
 		return null;
 	}
 }
-?>

@@ -121,7 +121,7 @@ class ReservationUserBinder implements IReservationComponentBinder
 		$currentUser = $this->userRepository->LoadById($initializer->CurrentUser()->UserId);
 		$owner = $this->userRepository->LoadById($userId);
 
-		$initializer->IsAdminForUser($currentUser->IsAdminFor($owner));
+		$initializer->SetIsAdminForUser($currentUser->IsAdminFor($owner));
 	}
 }
 

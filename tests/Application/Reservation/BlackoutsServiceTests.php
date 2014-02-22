@@ -299,7 +299,7 @@ class BlackoutsServiceTests extends TestBase
 		$groups = array(new UserGroup(1, null), new UserGroup(2, null), new UserGroup(3, null));
 
 		$expectedFilter = $filter->GetFilter();
-		$adminFilter = new SqlFilterIn(new SqlFilterColumn(TableNames::RESOURCES, ColumnNames::RESOURCE_ADMIN_GROUP_ID), $groupIds);
+		$adminFilter = new SqlFilterIn(new SqlFilterColumn('r', ColumnNames::RESOURCE_ADMIN_GROUP_ID), $groupIds);
 		$adminFilter->_Or(new SqlFilterIn(new SqlFilterColumn(TableNames::SCHEDULES, ColumnNames::SCHEDULE_ADMIN_GROUP_ID), $groupIds));
 		$expectedFilter->_And($adminFilter);
 

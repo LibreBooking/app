@@ -22,7 +22,7 @@ class NewReservationInitializer extends ReservationInitializerBase
 	/**
 	 * @var INewReservationPage
 	 */
-	private $_page;
+	private $page;
 
 	public function __construct(
 		INewReservationPage $page,
@@ -33,7 +33,7 @@ class NewReservationInitializer extends ReservationInitializerBase
 		UserSession $userSession
 		)
 	{
-		$this->_page = $page;
+		$this->page = $page;
 
 		parent::__construct(
 						$page,
@@ -62,27 +62,27 @@ class NewReservationInitializer extends ReservationInitializerBase
 
 	public function GetResourceId()
 	{
-		return $this->_page->GetRequestedResourceId();
+		return $this->page->GetRequestedResourceId();
 	}
 
 	public function GetScheduleId()
 	{
-		return $this->_page->GetRequestedScheduleId();
+		return $this->page->GetRequestedScheduleId();
 	}
 
 	public function GetReservationDate()
 	{
-		return $this->_page->GetReservationDate();
+		return $this->page->GetReservationDate();
 	}
 
 	public function GetStartDate()
 	{
-		return $this->_page->GetStartDate();
+		return $this->page->GetStartDate();
 	}
 
 	public function GetEndDate()
 	{
-		return $this->_page->GetEndDate();
+		return $this->page->GetEndDate();
 	}
 
 	public function GetTimezone()

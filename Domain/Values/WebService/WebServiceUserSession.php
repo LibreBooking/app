@@ -71,5 +71,3 @@ class WebServiceUserSession extends UserSession
 		return WebServiceExpiration::IsExpired($this->SessionExpiration);
 	}
 }
-
-?>

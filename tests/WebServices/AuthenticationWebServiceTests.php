@@ -68,7 +68,7 @@ class AuthenticationWebServiceTests extends TestBase
 
 		$this->service->Authenticate($this->server);
 
-		$expectedResponse = AuthenticationResponse::Success($this->server, $session);
+		$expectedResponse = AuthenticationResponse::Success($this->server, $session, 0);
 		$this->assertEquals($expectedResponse, $this->server->_LastResponse);
 	}
 
@@ -106,5 +106,3 @@ class AuthenticationWebServiceTests extends TestBase
 		$this->service->SignOut($this->server);
 	}
 }
-
-?>

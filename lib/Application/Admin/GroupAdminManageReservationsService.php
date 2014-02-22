@@ -24,9 +24,20 @@ class GroupAdminManageReservationsService extends ManageReservationsService impl
      */
     private $userRepository;
 
-    public function __construct(IReservationViewRepository $reservationViewRepository, IUserRepository $userRepository, IReservationAuthorization $authorization)
+	/**
+	 * @param IReservationViewRepository $reservationViewRepository
+	 * @param IUserRepository $userRepository
+	 * @param IReservationAuthorization $authorization
+	 * @param IReservationHandler|null $reservationHandler
+	 * @param IUpdateReservationPersistenceService|null $persistenceService
+	 */
+	public function __construct(IReservationViewRepository $reservationViewRepository,
+								IUserRepository $userRepository,
+								IReservationAuthorization $authorization,
+								$reservationHandler = null,
+								$persistenceService = null)
     {
-		parent::__construct($reservationViewRepository, $authorization);
+		parent::__construct($reservationViewRepository, $authorization, $reservationHandler, $persistenceService);
 
         $this->userRepository = $userRepository;
     }

@@ -177,7 +177,8 @@ class AttributeRepositoryTests extends TestBase
 									 $possibleValues = null,
 									 $sortOrder = null,
 									 $entityId = null,
-									 $entityDescription = null
+									 $entityDescription = null,
+									 $adminOnly = false
 	)
 	{
 		return array(
@@ -190,7 +191,9 @@ class AttributeRepositoryTests extends TestBase
 			ColumnNames::ATTRIBUTE_POSSIBLE_VALUES => $possibleValues,
 			ColumnNames::ATTRIBUTE_SORT_ORDER => $sortOrder,
 			ColumnNames::ATTRIBUTE_ENTITY_ID => $entityId,
-			ColumnNames::ATTRIBUTE_ENTITY_DESCRIPTION => $entityDescription);
+			ColumnNames::ATTRIBUTE_ENTITY_DESCRIPTION => $entityDescription,
+			ColumnNames::ATTRIBUTE_ADMIN_ONLY => $adminOnly,
+		);
 	}
 
 	private function GetAttributeValueRow($attributeid, $entityId, $value)

@@ -67,6 +67,7 @@ class ReservationsWebServiceTests extends TestBase
 		parent::setup();
 
 		$this->userSession = new WebServiceUserSession(123);
+		$this->userSession->Timezone = 'America/Chicago';
 
 		$this->defaultStartDate = Date::Now();
 		$this->defaultEndDate = Date::Now()->AddDays(14);

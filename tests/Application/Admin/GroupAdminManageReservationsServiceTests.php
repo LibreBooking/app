@@ -31,13 +31,15 @@ class GroupAdminManageReservationsServiceTests extends TestBase
 
 		$reservationRepo = $this->getMock('IReservationViewRepository');
 		$reservationAuth = $this->getMock('IReservationAuthorization');
+		$handler = $this->getMock('IReservationHandler');
+		$persistenceService = $this->getMock('IUpdateReservationPersistenceService');
         $userRepo = $this->getMock('IUserRepository');
         $userRepo->expects($this->once())
                 ->method('LoadById')
                 ->with($this->equalTo($this->fakeUser->UserId))
                 ->will($this->returnValue($user));
 
-        $service = new GroupAdminManageReservationsService($reservationRepo, $userRepo, $reservationAuth);
+        $service = new GroupAdminManageReservationsService($reservationRepo, $userRepo, $reservationAuth, $handler, $persistenceService);
 
         $reservationRows = FakeReservationRepository::GetReservationRows();
         $this->db->SetRow(0, array( array(ColumnNames::TOTAL => 4) ));

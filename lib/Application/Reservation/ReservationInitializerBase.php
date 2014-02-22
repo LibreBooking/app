@@ -439,4 +439,10 @@ abstract class ReservationInitializerBase implements IReservationInitializer, IR
 	{
 		return true;
 	}
+
+	public function SetIsAdminForUser($isAdminForUser)
+	{
+		$this->basePage->SetIsAdminForUser($isAdminForUser);
+	}
+
 }

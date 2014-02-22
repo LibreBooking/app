@@ -28,121 +28,117 @@ interface IReservationPage extends IPage
 	 * @param $startPeriods array|SchedulePeriod[]
 	 * @param $endPeriods array|SchedulePeriod[]
 	 */
-	function BindPeriods($startPeriods, $endPeriods);
+	public function BindPeriods($startPeriods, $endPeriods);
 
 	/**
 	 * Set the resources that can be reserved by this user
 	 * @param $resources array|ResourceDto[]
 	 */
-	function BindAvailableResources($resources);
+	public function BindAvailableResources($resources);
 
 	/**
 	 * @param $accessories array|AccessoryDto[]
 	 * @return void
 	 */
-	function BindAvailableAccessories($accessories);
+	public function BindAvailableAccessories($accessories);
 
 	/**
 	 * @param $groups ResourceGroupTree
 	 */
-	function BindResourceGroups($groups);
+	public function BindResourceGroups($groups);
 
 	/**
 	 * @param SchedulePeriod $selectedStart
 	 * @param Date $startDate
 	 */
-	function SetSelectedStart(SchedulePeriod $selectedStart, Date $startDate);
+	public function SetSelectedStart(SchedulePeriod $selectedStart, Date $startDate);
 
 	/**
 	 * @param SchedulePeriod $selectedEnd
 	 * @param Date $endDate
 	 */
-	function SetSelectedEnd(SchedulePeriod $selectedEnd, Date $endDate);
+	public function SetSelectedEnd(SchedulePeriod $selectedEnd, Date $endDate);
 
 	/**
 	 * @param $repeatTerminationDate Date
 	 */
-	function SetRepeatTerminationDate($repeatTerminationDate);
+	public function SetRepeatTerminationDate($repeatTerminationDate);
 
 	/**
 	 * @param UserDto $user
 	 */
-	function SetReservationUser(UserDto $user);
+	public function SetReservationUser(UserDto $user);
 
 	/**
 	 * @param ResourceDto $resource
 	 */
-	function SetReservationResource($resource);
+	public function SetReservationResource($resource);
 
 	/**
 	 * @param int $scheduleId
 	 */
-	function SetScheduleId($scheduleId);
+	public function SetScheduleId($scheduleId);
 
 	/**
-	 * @abstract
 	 * @param ReservationUserView[] $participants
 	 * @return void
 	 */
-	function SetParticipants($participants);
+	public function SetParticipants($participants);
 
 	/**
-	 * @abstract
 	 * @param ReservationUserView[] $invitees
 	 * @return void
 	 */
-	function SetInvitees($invitees);
+	public function SetInvitees($invitees);
 
 	/**
-	 * @abstract
 	 * @param $accessories ReservationAccessory[]|array
 	 * @return void
 	 */
-	function SetAccessories($accessories);
+	public function SetAccessories($accessories);
 
 	/**
-	 * @abstract
 	 * @param $attachments ReservationAttachmentView[]|array
 	 * @return void
 	 */
-	function SetAttachments($attachments);
+	public function SetAttachments($attachments);
 
 	/**
-	 * @abstract
 	 * @param $canChangeUser
 	 * @return void
 	 */
-	function SetCanChangeUser($canChangeUser);
+	public function SetCanChangeUser($canChangeUser);
 
 	/**
-	 * @abstract
 	 * @param bool $canShowAdditionalResources
 	 */
-	function ShowAdditionalResources($canShowAdditionalResources);
+	public function ShowAdditionalResources($canShowAdditionalResources);
 
 	/**
-	 * @abstract
 	 * @param bool $canShowUserDetails
 	 */
-	function ShowUserDetails($canShowUserDetails);
+	public function ShowUserDetails($canShowUserDetails);
 
 	/**
-	 * @abstract
 	 * @param bool $showReservationDetails
 	 */
-	function ShowReservationDetails($showReservationDetails);
+	public function ShowReservationDetails($showReservationDetails);
 
 	/**
-	 * @abstract
 	 * @param $attributes array|Attribute[]
 	 */
-	function SetCustomAttributes($attributes);
+	public function SetCustomAttributes($attributes);
 
 	/**
-	 * @abstract
 	 * @param bool $isHidden
 	 */
-	function HideRecurrence($isHidden);
+	public function HideRecurrence($isHidden);
+
+
+	/**
+	 * @param bool $isAdminForUser
+	 */
+	public function SetIsAdminForUser($isAdminForUser);
 }
 
 abstract class ReservationPage extends Page implements IReservationPage
@@ -350,5 +346,10 @@ abstract class ReservationPage extends Page implements IReservationPage
 	public function HideRecurrence($isHidden)
 	{
 		$this->Set('HideRecurrence', $isHidden);
+	}
+
+	public function SetIsAdminForUser($isAdminForUser)
+	{
+		$this->Set('IsAdminForUser', $isAdminForUser);
 	}
 }

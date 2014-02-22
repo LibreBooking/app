@@ -115,39 +115,39 @@ class ManageReservationsPresenterTests extends TestBase
 				   ->method('GetEndDate')
 				   ->will($this->returnValue(null));
 
-		$this->page->expects($this->once())
+		$this->page->expects($this->atLeastOnce())
 				   ->method('GetScheduleId')
 				   ->will($this->returnValue($searchedScheduleId));
 
-		$this->page->expects($this->once())
+		$this->page->expects($this->atLeastOnce())
 				   ->method('GetResourceId')
 				   ->will($this->returnValue($searchedResourceId));
 
-		$this->page->expects($this->once())
+		$this->page->expects($this->atLeastOnce())
 				   ->method('GetReservationStatusId')
 				   ->will($this->returnValue($searchedStatusId));
 
-		$this->page->expects($this->once())
+		$this->page->expects($this->atLeastOnce())
 				   ->method('GetUserId')
 				   ->will($this->returnValue($searchedUserId));
 
-		$this->page->expects($this->once())
+		$this->page->expects($this->atLeastOnce())
 				   ->method('GetUserName')
 				   ->will($this->returnValue($searchedUserName));
 
-		$this->page->expects($this->once())
+		$this->page->expects($this->atLeastOnce())
 				   ->method('GetReferenceNumber')
 				   ->will($this->returnValue($searchedReferenceNumber));
 
-		$this->page->expects($this->once())
+		$this->page->expects($this->atLeastOnce())
 				   ->method('GetResourceStatusFilterId')
 				   ->will($this->returnValue($searchedResourceStatusId));
 
-		$this->page->expects($this->once())
+		$this->page->expects($this->atLeastOnce())
 				   ->method('GetResourceStatusReasonFilterId')
 				   ->will($this->returnValue($searchedResourceStatusReasonId));
 
-		$this->page->expects($this->once())
+		$this->page->expects($this->atLeastOnce())
 				   ->method('GetAttributeFilters')
 				   ->will($this->returnValue(array(new AttributeFormElement($customAttributes[0]->Id(), 'value'))));
 
@@ -384,6 +384,8 @@ class ManageReservationsPresenterTests extends TestBase
 							  ->method('UpdateAttribute')
 							  ->with($this->equalTo($referenceNumber), $this->equalTo($attrId), $this->equalTo($attrValue), $this->equalTo($this->fakeUser))
 							  ->will($this->returnValue(array()));
+
+		$this->presenter->UpdateAttribute();
 	}
 
 	/**

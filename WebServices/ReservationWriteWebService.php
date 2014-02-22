@@ -103,7 +103,7 @@ class ReservationWriteWebService
 			Log::Debug('ReservationWriteWebService.Update() - Reservation Updated. ReferenceNumber=%s',
 					   $result->CreatedReferenceNumber());
 
-			$this->server->WriteResponse(new ReservationApprovedResponse($this->server, $result->CreatedReferenceNumber()),
+			$this->server->WriteResponse(new ReservationUpdatedResponse($this->server, $result->CreatedReferenceNumber()),
 										 RestResponse::OK_CODE);
 		}
 		else
