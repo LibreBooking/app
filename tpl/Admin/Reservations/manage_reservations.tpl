@@ -108,8 +108,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		<th class="date">{translate key='Created'}</th>
 		<th class="date">{translate key='LastModified'}</th>
 		<th>{translate key='ReferenceNumber'}</th>
-		{foreach from=$AttributeList->GetLabels() item=label}
-			<th>{$label}</th>
+		{foreach from=$ReservationAttributes item=attr}
+			<th>{$attr->Label()}</th>
 		{/foreach}
 		<th class="action">{translate key='Delete'}</th>
 		<th class="action">{translate key='Approve'}</th>
@@ -161,9 +161,20 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			<td>{formatdate date=$reservation->CreatedDate timezone=$Timezone key=general_datetime}</td>
 			<td>{formatdate date=$reservation->ModifiedDate timezone=$Timezone key=general_datetime}</td>
 			<td class="referenceNumber">{$reservation->ReferenceNumber}</td>
-			{foreach from=$AttributeList->GetAttributes($reservation->SeriesId) item=attribute}
+			{foreach from=$ReservationAttributes item=attribute}
 				<td class="update inlineUpdate updateCustomAttribute" attributeId="{$attribute->Id()}"
-					attributeType="{$attribute->Type()}">{$attribute->Value()}</td>
+					attributeType="{$attribute->Type()}">
+					{assign var=attrVal value=$reservation->Attributes->Get($attribute->Id())}
+					{if $attribute->Type() == CustomAttributeTypes::CHECKBOX}
+						{if $attrVal == 1}
+							{translate key=Yes}
+						{else}
+							{translate key=No}
+						{/if}
+					{else}
+						{$attrVal}
+					{/if}
+				</td>
 			{/foreach}
 			<td class="center"><a href="#" class="update delete">{html_image src='cross-button.png'}</a></td>
 			<td class="center">

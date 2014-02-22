@@ -180,6 +180,7 @@ class ManageReservationsPresenter extends ActionPresenter
 		$this->page->SetResourceStatusFilterId($resourceStatusId);
 		$this->page->SetResourceStatusReasonFilterId($resourceReasonId);
 		$this->page->SetAttributeFilters($attributeFilters);
+		$this->page->SetReservationAttributes($reservationAttributes);
 
 		$filter = new ReservationFilter($startDate, $endDate, $referenceNumber, $scheduleId, $resourceId, $userId,
 										$reservationStatusId, $resourceStatusId, $resourceReasonId, $attributeFilters);
@@ -189,6 +190,7 @@ class ManageReservationsPresenter extends ActionPresenter
 																	   $filter,
 																	   $session);
 
+		/** @var ReservationItemView[] $reservationList */
 		$reservationList = $reservations->Results();
 		$this->page->BindReservations($reservationList);
 		$this->page->BindPageInfo($reservations->PageInfo());
@@ -199,10 +201,6 @@ class ManageReservationsPresenter extends ActionPresenter
 		{
 			$seriesIds[] = $reservationItemView->SeriesId;
 		}
-
-		// dont need to do this any more, use the attributes on the row
-		$attributeList = $this->attributeService->GetAttributes(CustomAttributeCategory::RESERVATION, $seriesIds);
-		$this->page->SetAttributes($attributeList);
 
 		if ($this->page->GetFormat() == 'csv')
 		{

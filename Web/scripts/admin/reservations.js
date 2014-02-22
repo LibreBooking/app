@@ -51,8 +51,6 @@ function ReservationManagement(opts, approval)
 		ConfigureAdminDialog(elements.statusDialog);
 		ConfigureAdminDialog(elements.inlineUpdateErrorDialog);
 
-		elements.inlineUpdateErrorDialog.dialog('open');
-
 		$(".save").click(function ()
 		{
 			$(this).closest('form').submit();

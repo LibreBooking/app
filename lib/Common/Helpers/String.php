@@ -56,4 +56,3 @@ class StringHelper
 		return strpos($haystack, $needle) !== false;
 	}
 }
-?>

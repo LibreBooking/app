@@ -24,7 +24,7 @@ class CustomAttributes
 
 	/**
 	 * @param string $attributes
-	 * @return UserPreferences
+	 * @return CustomAttributes
 	 */
 	public static function Parse($attributes)
 	{

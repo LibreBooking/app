@@ -233,6 +233,11 @@ class SqlFilterLike extends BaseSqlFilter
 	 */
 	public function __construct($columnName, $columnValue)
 	{
+		if (!StringHelper::Contains($columnValue, '%'))
+		{
+
+			$columnValue = '%' . $columnValue . '%';
+		}
 		parent::__construct($columnName, $columnValue);
 	}
 
@@ -243,10 +248,6 @@ class SqlFilterLike extends BaseSqlFilter
 
 	protected function GetCriteria($columnName, $columnValue)
 	{
-		if (!StringHelper::Contains($columnValue, '%'))
-		{
-			$columnValue = $columnValue . '%';
-		}
 		return new Criteria($columnName, $columnValue);
 	}
 }

@@ -350,5 +350,3 @@ class CustomAttribute
 		$this->entityDescription = $entityDescription;
 	}
 }
-
-?>

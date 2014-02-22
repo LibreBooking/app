@@ -924,6 +924,11 @@ class ReservationItemView implements IReservedItemView
 	public $InviteeIds = array();
 
 	/**
+	 * @var CustomAttributes
+	 */
+	public $Attributes;
+
+	/**
 	 * @var UserPreferences
 	 */
 	public $UserPreferences;
