@@ -71,6 +71,11 @@ interface IManageAttributesPage extends IActionPage
 	public function GetSortOrder();
 
 	/**
+	 * return bool
+	 */
+	public function GetIsAdminOnly();
+
+	/**
 	 * @param $attributes CustomAttribute[]|array
 	 */
 	public function BindAttributes($attributes);
@@ -157,9 +162,6 @@ class ManageAttributesPage extends ActionPage implements IManageAttributesPage
 		return $this->GetForm(FormKeys::ATTRIBUTE_POSSIBLE_VALUES);
 	}
 
-	/**
-	 * @return int
-	 */
 	public function GetSortOrder()
 	{
 		return $this->GetForm(FormKeys::ATTRIBUTE_SORT_ORDER);
@@ -168,6 +170,12 @@ class ManageAttributesPage extends ActionPage implements IManageAttributesPage
 	public function GetRequestedCategory()
 	{
 		return $this->GetQuerystring(QueryStringKeys::ATTRIBUTE_CATEGORY);
+	}
+
+	public function GetIsAdminOnly()
+	{
+		$adminOnly = $this->GetForm(FormKeys::ATTRIBUTE_IS_ADMIN_ONLY);
+		return !empty($adminOnly);
 	}
 
 	public function BindAttributes($attributes)
@@ -191,5 +199,3 @@ class ManageAttributesPage extends ActionPage implements IManageAttributesPage
 		$this->presenter->HandleDataRequest($dataRequest);
 	}
 }
-
-?>

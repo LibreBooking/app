@@ -25,4 +25,3 @@ require_once(ROOT_DIR . 'Pages/Ajax/AutoCompletePage.php');
 
 $page =  new RoleRestrictedPageDecorator(new GroupAdminManageGroupsPage(), array(RoleLevel::GROUP_ADMIN));
 $page->PageLoad();
-?>

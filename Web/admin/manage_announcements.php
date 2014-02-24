@@ -24,4 +24,3 @@ require_once(ROOT_DIR . 'Pages/Admin/ManageAnnouncementsPage.php');
 
 $page = new AdminPageDecorator(new ManageAnnouncementsPage());
 $page->PageLoad();
-?>

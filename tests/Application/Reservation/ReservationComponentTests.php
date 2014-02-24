@@ -660,28 +660,46 @@ class ReservationComponentTests extends TestBase
 										CustomAttributeCategory::RESERVATION, '', false, '', 1),
 				CustomAttribute::Create('2', CustomAttributeTypes::SINGLE_LINE_TEXTBOX,
 										CustomAttributeCategory::RESERVATION, '', false, '', 2),
+				CustomAttribute::Create('3', CustomAttributeTypes::SINGLE_LINE_TEXTBOX,
+										CustomAttributeCategory::RESERVATION, '', false, '', 3, null, false),
 		);
+
+		$this->initializer->expects($this->once())
+						  ->method('GetIsAdminForResource')
+						  ->will($this->returnValue(false));
+
+		$this->initializer->expects($this->once())
+						  ->method('GetIsAdminForUser')
+						  ->will($this->returnValue(false));
 
 		$this->attributeRepository->expects($this->once())
 								  ->method('GetByCategory')
 								  ->with($this->equalTo(CustomAttributeCategory::RESERVATION))
 								  ->will($this->returnValue($attributes));
 
-		$this->initializer->expects($this->at(0))
+		$this->initializer->expects($this->at(2))
 						  ->method('AddAttribute')
 						  ->with($this->equalTo($attributes[0]), $this->equalTo(null));
 
-		$this->initializer->expects($this->at(1))
+		$this->initializer->expects($this->at(3))
 						  ->method('AddAttribute')
 						  ->with($this->equalTo($attributes[1]), $this->equalTo(null));
 
 		$binder->Bind($this->initializer);
 	}
 
-	public function testBindsCustomAttributesWithValues()
+	public function testBindsCustomAttributesWithValuesAndSkipsAdminOnlyAttributesIfTheUserIsNotAnAdmin()
 	{
 		$val1 = 'v1';
 		$val2 = 'v2';
+
+		$this->initializer->expects($this->once())
+					->method('GetIsAdminForResource')
+					->will($this->returnValue(false));
+
+		$this->initializer->expects($this->once())
+					->method('GetIsAdminForUser')
+					->will($this->returnValue(false));
 
 		$reservationView = new ReservationView();
 		$reservationView->AddAttribute(new AttributeValue(10, $val1));
@@ -692,6 +710,7 @@ class ReservationComponentTests extends TestBase
 		$attributes = array(
 				new CustomAttribute(10, '1', CustomAttributeTypes::SINGLE_LINE_TEXTBOX, CustomAttributeCategory::RESERVATION, '', false, '', 1),
 				new CustomAttribute(20, '2', CustomAttributeTypes::SINGLE_LINE_TEXTBOX, CustomAttributeCategory::RESERVATION, '', false, '', 2),
+				new CustomAttribute(30, '3', CustomAttributeTypes::SINGLE_LINE_TEXTBOX, CustomAttributeCategory::RESERVATION, '', false, '', 3, null, true),
 		);
 
 		$this->attributeRepository->expects($this->once())
@@ -699,16 +718,14 @@ class ReservationComponentTests extends TestBase
 								  ->with($this->equalTo(CustomAttributeCategory::RESERVATION))
 								  ->will($this->returnValue($attributes));
 
-		$this->initializer->expects($this->at(0))
+		$this->initializer->expects($this->at(2))
 						  ->method('AddAttribute')
 						  ->with($this->equalTo($attributes[0]), $this->equalTo($val1));
 
-		$this->initializer->expects($this->at(1))
+		$this->initializer->expects($this->at(3))
 						  ->method('AddAttribute')
 						  ->with($this->equalTo($attributes[1]), $this->equalTo($val2));
 
 		$binder->Bind($this->initializer);
 	}
 }
-
-?>

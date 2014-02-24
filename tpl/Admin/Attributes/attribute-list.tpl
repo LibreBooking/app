@@ -29,6 +29,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		<th>{translate key=AppliesTo}</th>
 		<th>{translate key=ValidationExpression}</th>
 		<th>{translate key=PossibleValues}</th>
+		<th>{translate key=AdminOnly}</th>
 		<th>{translate key=Delete}</th>
 	</tr>
 	{foreach from=$Attributes item=attribute}
@@ -50,6 +51,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			{/if}</td>
 			<td>{$attribute->Regex()}</td>
 			<td>{$attribute->PossibleValues()}</td>
+			<td>{if $attribute->AdminOnly()}{translate key=Yes}{else}{translate key=No}{/if}</td>
 			<td align="center"><a href="#" class="update delete" attributeId="{$attribute->Id()}">{html_image src='cross-button.png'}</a></td>
 		</tr>
 	{/foreach}
@@ -69,7 +71,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 						type: "{$attribute->Type()}",
 						sortOrder: "{$attribute->SortOrder()}",
 						entityId: "{$attribute->EntityId()}",
-						entityDescription: "{$attribute->EntityDescription()|escape:'javascript'}"
+						entityDescription: "{$attribute->EntityDescription()|escape:'javascript'}",
+						adminOnly: {$attribute->AdminOnly()}
 					};
 	{/foreach}
 

@@ -143,6 +143,16 @@ interface IReservationPage extends IPage
 	 * @param bool $isAdminForResource
 	 */
 	public function SetIsAdminForResource($isAdminForResource);
+
+	/**
+	 * @return bool
+	 */
+	public function GetIsAdminForUser();
+
+	/**
+	 * @return bool
+	 */
+	public function GetIsAdminForResource();
 }
 
 abstract class ReservationPage extends Page implements IReservationPage
@@ -360,5 +370,15 @@ abstract class ReservationPage extends Page implements IReservationPage
 	public function SetIsAdminForResource($isAdminForResource)
 	{
 		$this->Set('IsAdminForResource', $isAdminForResource);
+	}
+
+	public function GetIsAdminForUser()
+	{
+		return $this->GetVar('IsAdminForUser');
+	}
+
+	public function GetIsAdminForResource()
+	{
+		return $this->GetVar('IsAdminForResource');
 	}
 }

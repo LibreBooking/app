@@ -49,12 +49,13 @@ class AttributeRepositoryTests extends TestBase
 		$possibleValues = '';
 		$sortOrder = '4';
 		$entityId = 12;
+		$adminOnly = true;
 
 		$attribute = CustomAttribute::Create($label, $type, $category, $regex, $required, $possibleValues, $sortOrder,
-											 $entityId);
+											 $entityId, $adminOnly);
 
 		$this->repository->Add($attribute);
-		$this->assertEquals(new AddAttributeCommand($label, $type, $category, $regex, $required, $possibleValues, $sortOrder, $entityId),
+		$this->assertEquals(new AddAttributeCommand($label, $type, $category, $regex, $required, $possibleValues, $sortOrder, $entityId, $adminOnly),
 							$this->db->_LastCommand);
 	}
 
@@ -69,15 +70,15 @@ class AttributeRepositoryTests extends TestBase
 		$possibleValues = 'val1,val2,val3';
 		$sortOrder = '4';
 		$entityId = 12;
+		$adminOnly = true;
 
-		$row1 = $this->GetAttributeRow($id, $label, $type, $category, $regex, $required, $possibleValues, $sortOrder,
-									   $entityId, null);
+		$row1 = $this->GetAttributeRow($id, $label, $type, $category, $regex, $required, $possibleValues, $sortOrder, $entityId, null, $adminOnly);
 
 		$this->db->SetRows(array($row1));
 
 		$attribute = $this->repository->LoadById($id);
 
-		$expectedFirstAttribute = new CustomAttribute($id, $label, $type, $category, $regex, $required, $possibleValues, $sortOrder, $entityId);
+		$expectedFirstAttribute = new CustomAttribute($id, $label, $type, $category, $regex, $required, $possibleValues, $sortOrder, $entityId, $adminOnly);
 
 		$this->assertEquals($expectedFirstAttribute, $attribute);
 		$this->assertEquals(new GetAttributeByIdCommand($id), $this->db->_LastCommand);
@@ -94,12 +95,13 @@ class AttributeRepositoryTests extends TestBase
 		$possibleValues = 'val1,val2,val3';
 		$sortOrder = '4';
 		$entityId = 10;
+		$adminOnly = true;
 
-		$attribute = new CustomAttribute($id, $label, $type, $category, $regex, $required, $possibleValues, $sortOrder, $entityId);
+		$attribute = new CustomAttribute($id, $label, $type, $category, $regex, $required, $possibleValues, $sortOrder, $entityId, $adminOnly);
 
 		$this->repository->Update($attribute);
 
-		$this->assertEquals(new UpdateAttributeCommand($id, $label, $type, $category, $regex, $required, $possibleValues, $sortOrder, 10),
+		$this->assertEquals(new UpdateAttributeCommand($id, $label, $type, $category, $regex, $required, $possibleValues, $sortOrder, $entityId, $adminOnly),
 							$this->db->_LastCommand);
 	}
 
@@ -204,5 +206,3 @@ class AttributeRepositoryTests extends TestBase
 			ColumnNames::ATTRIBUTE_VALUE => $value);
 	}
 }
-
-?>

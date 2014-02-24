@@ -193,7 +193,7 @@ class CustomAttribute
 	 */
 	public function AdminOnly()
 	{
-		return $this->adminOnly;
+		return (int)$this->adminOnly;
 	}
 
 	/**
@@ -233,11 +233,12 @@ class CustomAttribute
 	 * @param string $possibleValues
 	 * @param int $sortOrder
 	 * @param int|null $entityId
+	 * @param bool $adminOnly
 	 * @return CustomAttribute
 	 */
-	public static function Create($label, $type, $category, $regex, $required, $possibleValues, $sortOrder, $entityId = null)
+	public static function Create($label, $type, $category, $regex, $required, $possibleValues, $sortOrder, $entityId = null, $adminOnly = false)
 	{
-		return new CustomAttribute(null, $label, $type, $category, $regex, $required, $possibleValues, $sortOrder, $entityId);
+		return new CustomAttribute(null, $label, $type, $category, $regex, $required, $possibleValues, $sortOrder, $entityId, $adminOnly);
 	}
 
 	/**
@@ -311,14 +312,16 @@ class CustomAttribute
 	 * @param bool $required
 	 * @param string $possibleValues
 	 * @param int $sortOrder
-	 * @param int|null $entityId
+	 * @param int $entityId
+	 * @param bool $adminOnly
 	 */
-	public function Update($label, $regex, $required, $possibleValues, $sortOrder, $entityId)
+	public function Update($label, $regex, $required, $possibleValues, $sortOrder, $entityId, $adminOnly)
 	{
 		$this->label = $label;
 		$this->regex = $regex;
 		$this->required = $required;
 		$this->entityId = $entityId;
+		$this->adminOnly = $adminOnly;
 		$this->SetPossibleValues($possibleValues);
 		$this->SetSortOrder($sortOrder);
 	}

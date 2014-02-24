@@ -223,9 +223,14 @@ class ReservationCustomAttributeBinder implements IReservationComponentBinder
 	{
 		$attributes = $this->repository->GetByCategory(CustomAttributeCategory::RESERVATION);
 
+		$showAdminAttributes = $initializer->GetIsAdminForUser() || $initializer->GetIsAdminForResource();
+
 		foreach ($attributes as $attribute)
 		{
-			$initializer->AddAttribute($attribute, null);
+			if (!$attribute->AdminOnly() || ($attribute->AdminOnly() && $showAdminAttributes))
+			{
+				$initializer->AddAttribute($attribute, null);
+			}
 		}
 	}
 }
@@ -252,9 +257,14 @@ class ReservationCustomAttributeValueBinder implements IReservationComponentBind
 	{
 		$attributes = $this->repository->GetByCategory(CustomAttributeCategory::RESERVATION);
 
+		$showAdminAttributes = $initializer->GetIsAdminForUser() || $initializer->GetIsAdminForResource();
+
 		foreach ($attributes as $attribute)
 		{
-			$initializer->AddAttribute($attribute, $this->reservationView->GetAttributeValue($attribute->Id()));
+			if (!$attribute->AdminOnly() || ($attribute->AdminOnly() && $showAdminAttributes))
+			{
+				$initializer->AddAttribute($attribute, $this->reservationView->GetAttributeValue($attribute->Id()));
+			}
 		}
 	}
 }
@@ -372,5 +382,3 @@ class ReservationDetailsBinder implements IReservationComponentBinder
 		return false;
 	}
 }
-
-?>

@@ -66,10 +66,11 @@ class ManageAttributesPresenter extends ActionPresenter
 		$possibleValues = $this->page->GetPossibleValues();
 		$sortOrder = $this->page->GetSortOrder();
 		$entityId = $this->page->GetEntityId();
+		$adminOnly = $this->page->GetIsAdminOnly();
 
         Log::Debug('Adding new attribute named: %s', $attributeName);
 
-        $attribute = CustomAttribute::Create($attributeName, $type, $scope, $regex, $required, $possibleValues, $sortOrder, $entityId);
+        $attribute = CustomAttribute::Create($attributeName, $type, $scope, $regex, $required, $possibleValues, $sortOrder, $entityId, $adminOnly);
 		$this->attributeRepository->Add($attribute);
     }
 
@@ -89,11 +90,12 @@ class ManageAttributesPresenter extends ActionPresenter
 		$possibleValues = $this->page->GetPossibleValues();
 		$sortOrder = $this->page->GetSortOrder();
 		$entityId = $this->page->GetEntityId();
+		$adminOnly = $this->page->GetIsAdminOnly();
 
 		Log::Debug('Updating attribute with id: %s', $attributeId);
 
 		$attribute = $this->attributeRepository->LoadById($attributeId);
-		$attribute->Update($attributeName, $regex, $required, $possibleValues, $sortOrder, $entityId);
+		$attribute->Update($attributeName, $regex, $required, $possibleValues, $sortOrder, $entityId, $adminOnly);
 
 		$this->attributeRepository->Update($attribute);
 	}

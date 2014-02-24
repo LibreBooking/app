@@ -162,6 +162,16 @@ interface IReservationComponentInitializer
 	 * @param bool $isAdminForResource
 	 */
 	public function SetIsAdminForResource($isAdminForResource);
+
+	/**
+	 * @return bool
+	 */
+	public function GetIsAdminForUser();
+
+	/**
+	 * @return bool
+	 */
+	public function GetIsAdminForResource();
 }
 
 abstract class ReservationInitializerBase implements IReservationInitializer, IReservationComponentInitializer
@@ -453,5 +463,15 @@ abstract class ReservationInitializerBase implements IReservationInitializer, IR
 	public function SetIsAdminForResource($isAdminForResource)
 	{
 		$this->basePage->SetIsAdminForResource($isAdminForResource);
+	}
+
+	public function GetIsAdminForUser()
+	{
+		return $this->basePage->GetIsAdminForUser();
+	}
+
+	public function GetIsAdminForResource()
+	{
+		return $this->basePage->GetIsAdminForResource();
 	}
 }

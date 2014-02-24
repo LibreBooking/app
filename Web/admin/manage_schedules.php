@@ -25,4 +25,3 @@ require_once(ROOT_DIR . 'Presenters/Admin/ManageSchedulesPresenter.php');
 
 $page = new AdminPageDecorator(new ManageSchedulesPage());
 $page->PageLoad();
-?>

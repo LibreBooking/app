@@ -75,6 +75,7 @@ class ManageAttributesPresenterTests extends TestBase
 		$possibleValues = '1,2,3';
 		$sortOrder = "5";
 		$entityId = 10;
+		$adminOnly = true;
 
 		$this->page->_label = $label;
 		$this->page->_type = $type;
@@ -84,8 +85,9 @@ class ManageAttributesPresenterTests extends TestBase
 		$this->page->_possibleValues = $possibleValues;
 		$this->page->_sortOrder = $sortOrder;
 		$this->page->_entityId = $entityId;
+		$this->page->_adminOnly = $adminOnly;
 
-		$expectedAttribute = CustomAttribute::Create($label, $type, $scope, $regex, $required, $possibleValues, $sortOrder, $entityId);
+		$expectedAttribute = CustomAttribute::Create($label, $type, $scope, $regex, $required, $possibleValues, $sortOrder, $entityId, $adminOnly);
 
 		$this->attributeRepository->expects($this->once())
 				->method('Add')
@@ -104,6 +106,7 @@ class ManageAttributesPresenterTests extends TestBase
 		$possibleValues = '1,2,3';
 		$sortOrder = "5";
 		$entityId = true;
+		$adminOnly = true;
 
 		$this->page->_label = $label;
 		$this->page->_required = $required;
@@ -112,8 +115,9 @@ class ManageAttributesPresenterTests extends TestBase
 		$this->page->_attributeId = $attributeId;
 		$this->page->_sortOrder = $sortOrder;
 		$this->page->_entityId = $entityId;
+		$this->page->_adminOnly = $adminOnly;
 
-		$expectedAttribute = CustomAttribute::Create('', CustomAttributeTypes::CHECKBOX, CustomAttributeCategory::USER, null, false, null, $sortOrder, $entityId);
+		$expectedAttribute = CustomAttribute::Create('', CustomAttributeTypes::CHECKBOX, CustomAttributeCategory::USER, null, false, null, $sortOrder, $entityId, $adminOnly);
 
 		$this->attributeRepository->expects($this->once())
 				->method('LoadById')
@@ -132,6 +136,7 @@ class ManageAttributesPresenterTests extends TestBase
 		$this->assertEquals($possibleValues, $expectedAttribute->PossibleValues());
 		$this->assertEquals($sortOrder, $expectedAttribute->SortOrder());
 		$this->assertEquals($entityId, $expectedAttribute->EntityId());
+		$this->assertEquals($adminOnly, $expectedAttribute->AdminOnly());
 	}
 
 	public function testDeletesAttributeById()
@@ -161,6 +166,7 @@ class FakeAttributePage extends FakeActionPageBase implements IManageAttributesP
 	public $_attributeId;
 	public $_sortOrder;
 	public $_entityId;
+	public $_adminOnly;
 
 	public function GetLabel()
 	{
@@ -212,9 +218,6 @@ class FakeAttributePage extends FakeActionPageBase implements IManageAttributesP
 		$this->_boundAttributes = $attributes;
 	}
 
-	/**
-	 * @param $categoryId int|CustomAttributeCategory
-	 */
 	public function SetCategory($categoryId)
 	{
 		// TODO: Implement SetCategory() method.
@@ -224,6 +227,9 @@ class FakeAttributePage extends FakeActionPageBase implements IManageAttributesP
 	{
 		return $this->_attributeId;
 	}
-}
 
-?>
+	public function GetIsAdminOnly()
+	{
+		return $this->_adminOnly;
+	}
+}

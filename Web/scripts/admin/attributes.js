@@ -215,6 +215,12 @@ function AttributeManagement(opts)
 			elements.appliesToId.val(selectedAttribute.entityId);
 		}
 
+		$('#editAttributeAdminOnly').removeAttr('checked');
+		if (selectedAttribute.adminOnly)
+		{
+			$('#editAttributeAdminOnly').attr('checked', 'checked');
+		}
+
 		setActiveId(selectedAttribute.id);
 
 		elements.editDialog.dialog('open');
@@ -246,10 +252,12 @@ function AttributeManagement(opts)
 		if (elements.attributeCategory.val() == options.categories.reservation)
 		{
 			$('.attributeUnique').hide();
+			$('.attributeAdminOnly').show();
 		}
 		else
 		{
 			$('.attributeUnique').show();
+			$('.attributeAdminOnly').hide();
 		}
 	};
 

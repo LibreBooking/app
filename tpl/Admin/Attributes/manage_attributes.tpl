@@ -38,14 +38,15 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 <div id="addAttributeDialog" class="dialog attributeDialog" title="{translate key=AddAttribute}">
 
 	<form id="addAttributeForm" ajaxAction="{ManageAttributesActions::AddAttribute}" method="post">
-		<span class="wideLabel">{translate key=Type}:</span>
-		<select {formname key=ATTRIBUTE_TYPE} id="attributeType">
-			<option value="{CustomAttributeTypes::SINGLE_LINE_TEXTBOX}">{translate key=$Types[CustomAttributeTypes::SINGLE_LINE_TEXTBOX]}</option>
-			<option value="{CustomAttributeTypes::MULTI_LINE_TEXTBOX}">{translate key=$Types[CustomAttributeTypes::MULTI_LINE_TEXTBOX]}</option>
-			<option value="{CustomAttributeTypes::SELECT_LIST}">{translate key=$Types[CustomAttributeTypes::SELECT_LIST]}</option>
-			<option value="{CustomAttributeTypes::CHECKBOX}">{translate key=$Types[CustomAttributeTypes::CHECKBOX]}</option>
-		</select>
-
+		<div>
+			<span class="wideLabel">{translate key=Type}:</span>
+			<select {formname key=ATTRIBUTE_TYPE} id="attributeType">
+				<option value="{CustomAttributeTypes::SINGLE_LINE_TEXTBOX}">{translate key=$Types[CustomAttributeTypes::SINGLE_LINE_TEXTBOX]}</option>
+				<option value="{CustomAttributeTypes::MULTI_LINE_TEXTBOX}">{translate key=$Types[CustomAttributeTypes::MULTI_LINE_TEXTBOX]}</option>
+				<option value="{CustomAttributeTypes::SELECT_LIST}">{translate key=$Types[CustomAttributeTypes::SELECT_LIST]}</option>
+				<option value="{CustomAttributeTypes::CHECKBOX}">{translate key=$Types[CustomAttributeTypes::CHECKBOX]}</option>
+			</select>
+		</div>
 		<div class="textBoxOptions">
 			<div class="attributeLabel">
 				<span class="wideLabel">{translate key=DisplayLabel}:</span>
@@ -62,7 +63,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			</div>
 			<div class="attributeValidationExpression">
 				<span class="wideLabel">{translate key=ValidationExpression}:</span>
-			{textbox name=ATTRIBUTE_VALIDATION_EXPRESSION}
+				{textbox name=ATTRIBUTE_VALIDATION_EXPRESSION}
 			</div>
 			<div class="attributePossibleValues" style="display:none">
 				<span class="wideLabel">{translate key=PossibleValues}:</span>
@@ -71,6 +72,10 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			<div class="attributeSortOrder">
 				<span class="wideLabel">{translate key=SortOrder}:</span>
 				{textbox name=ATTRIBUTE_SORT_ORDER  maxlength=3 width="40px"}
+			</div>
+			<div class="attributeAdminOnly">
+				<span class="wideLabel">{translate key=AdminOnly}:</span>
+				<input type="checkbox" {formname key=ATTRIBUTE_IS_ADMIN_ONLY} />
 			</div>
 		</div>
 
@@ -130,6 +135,10 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			<div class="attributeSortOrder">
 				<span class="wideLabel">{translate key=SortOrder}:</span>
 				{textbox name=ATTRIBUTE_SORT_ORDER  maxlength=3 width="40px" id="editAttributeSortOrder"}
+			</div>
+			<div class="attributeAdminOnly">
+				<span class="wideLabel">{translate key=AdminOnly}:</span>
+				<input type="checkbox" {formname key=ATTRIBUTE_IS_ADMIN_ONLY} id="editAttributeAdminOnly"/>
 			</div>
 		</div>
 

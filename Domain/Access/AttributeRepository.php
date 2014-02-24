@@ -83,7 +83,7 @@ class AttributeRepository implements IAttributeRepository
 		return ServiceLocator::GetDatabase()
 			   ->ExecuteInsert(
 			new AddAttributeCommand($attribute->Label(), $attribute->Type(), $attribute->Category(), $attribute->Regex(),
-									$attribute->Required(), $attribute->PossibleValues(), $attribute->SortOrder(), $attribute->EntityId()));
+									$attribute->Required(), $attribute->PossibleValues(), $attribute->SortOrder(), $attribute->EntityId(), $attribute->AdminOnly()));
 	}
 
 	/**
@@ -137,7 +137,7 @@ class AttributeRepository implements IAttributeRepository
 		->Execute(
 			new UpdateAttributeCommand($attribute->Id(), $attribute->Label(), $attribute->Type(), $attribute->Category(),
 									   $attribute->Regex(), $attribute->Required(), $attribute->PossibleValues(), $attribute->SortOrder(),
-									   $attribute->EntityId()));
+									   $attribute->EntityId(), $attribute->AdminOnly()));
 	}
 
 	/**

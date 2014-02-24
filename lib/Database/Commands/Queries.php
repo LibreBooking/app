@@ -38,8 +38,8 @@ class Queries
 		VALUES (@text, @priority, @startDate, @endDate)';
 
 	const ADD_ATTRIBUTE =
-			'INSERT INTO custom_attributes (display_label, display_type, attribute_category, validation_regex, is_required, possible_values, sort_order, entity_id)
-		VALUES (@display_label, @display_type, @attribute_category, @validation_regex, @is_required, @possible_values, @sort_order, @entity_id)';
+			'INSERT INTO custom_attributes (display_label, display_type, attribute_category, validation_regex, is_required, possible_values, sort_order, entity_id, admin_only)
+		VALUES (@display_label, @display_type, @attribute_category, @validation_regex, @is_required, @possible_values, @sort_order, @entity_id, @admin_only)';
 
 	const ADD_ATTRIBUTE_VALUE =
 			'INSERT INTO custom_attribute_values (custom_attribute_id, attribute_category, attribute_value, entity_id)
@@ -701,7 +701,7 @@ const GET_RESERVATION_LIST_TEMPLATE =
 	const GET_USER_SESSION_BY_USERID = 'SELECT * FROM user_session WHERE user_id = @userid';
 
 	const GET_VERSION = 'SELECT * FROM dbversion order by version_number desc limit 0,1';
-	
+
 	const MIGRATE_PASSWORD =
 			'UPDATE
 			users
@@ -802,7 +802,7 @@ const GET_RESERVATION_LIST_TEMPLATE =
 	const UPDATE_ATTRIBUTE =
 			'UPDATE custom_attributes
 				SET display_label = @display_label, display_type = @display_type, attribute_category = @attribute_category,
-				validation_regex = @validation_regex, is_required = @is_required, possible_values = @possible_values, sort_order = @sort_order, entity_id = @entity_id
+				validation_regex = @validation_regex, is_required = @is_required, possible_values = @possible_values, sort_order = @sort_order, entity_id = @entity_id, admin_only = @admin_only
 			WHERE custom_attribute_id = @custom_attribute_id';
 
 	const UPDATE_BLACKOUT_INSTANCE = 'UPDATE blackout_instances

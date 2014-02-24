@@ -56,7 +56,7 @@ class AddAnnouncementCommand extends SqlCommand
 
 class AddAttributeCommand extends SqlCommand
 {
-	public function __construct($label, $type, $category, $regex, $required, $possibleValues, $sortOrder, $entityId)
+	public function __construct($label, $type, $category, $regex, $required, $possibleValues, $sortOrder, $entityId, $adminOnly)
 	{
 		parent::__construct(Queries::ADD_ATTRIBUTE);
 		$this->AddParameter(new Parameter(ParameterNames::ATTRIBUTE_LABEL, $label));
@@ -67,6 +67,7 @@ class AddAttributeCommand extends SqlCommand
 		$this->AddParameter(new Parameter(ParameterNames::ATTRIBUTE_POSSIBLE_VALUES, $possibleValues));
 		$this->AddParameter(new Parameter(ParameterNames::ATTRIBUTE_SORT_ORDER, $sortOrder));
 		$this->AddParameter(new Parameter(ParameterNames::ATTRIBUTE_ENTITY_ID, $entityId));
+		$this->AddParameter(new Parameter(ParameterNames::ATTRIBUTE_ADMIN_ONLY, (int)$adminOnly));
 	}
 }
 
@@ -1740,7 +1741,7 @@ class UpdateAnnouncementCommand extends SqlCommand
 
 class UpdateAttributeCommand extends SqlCommand
 {
-	public function __construct($attributeId, $label, $type, $category, $regex, $required, $possibleValues, $sortOrder, $entityId)
+	public function __construct($attributeId, $label, $type, $category, $regex, $required, $possibleValues, $sortOrder, $entityId, $adminOnly)
 	{
 		parent::__construct(Queries::UPDATE_ATTRIBUTE);
 		$this->AddParameter(new Parameter(ParameterNames::ATTRIBUTE_ID, $attributeId));
@@ -1752,6 +1753,7 @@ class UpdateAttributeCommand extends SqlCommand
 		$this->AddParameter(new Parameter(ParameterNames::ATTRIBUTE_POSSIBLE_VALUES, $possibleValues));
 		$this->AddParameter(new Parameter(ParameterNames::ATTRIBUTE_SORT_ORDER, $sortOrder));
 		$this->AddParameter(new Parameter(ParameterNames::ATTRIBUTE_ENTITY_ID, $entityId));
+		$this->AddParameter(new Parameter(ParameterNames::ATTRIBUTE_ADMIN_ONLY, (int)$adminOnly));
 	}
 }
 

@@ -37,6 +37,7 @@ class ParameterNames
 	const ANNOUNCEMENT_PRIORITY = '@priority';
 
 	const ATTRIBUTE_ID = '@custom_attribute_id';
+	const ATTRIBUTE_ADMIN_ONLY = '@admin_only';
 	const ATTRIBUTE_CATEGORY = '@attribute_category';
 	const ATTRIBUTE_LABEL = '@display_label';
 	const ATTRIBUTE_POSSIBLE_VALUES = '@possible_values';

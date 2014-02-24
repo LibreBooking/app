@@ -58,5 +58,3 @@ class CustomAttributeValidationRule implements IReservationValidationRule
 		return new ReservationRuleResult($isValid, $errorMessage->ToString());
 	}
 }
-
-?>

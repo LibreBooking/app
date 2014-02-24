@@ -489,6 +489,7 @@ class en_us extends Language
 		$strings['CurrentStatus'] = 'Current Status';
 		$strings['AllReservationResources'] = 'All Reservation Resources';
 		$strings['File'] = 'File';
+		$strings['AdminOnly'] = 'Admin Use Only';
 		// End Strings
 
 		// Install
