@@ -151,14 +151,8 @@ interface IAccountActivationRepository
 
 class UserRepository implements IUserRepository, IAccountActivationRepository
 {
-	/**
-	 * @var DomainCache
-	 */
-	private $_cache;
-
 	public function __construct()
 	{
-		$this->_cache = new DomainCache();
 	}
 
 	public function GetAll()
@@ -241,7 +235,7 @@ class UserRepository implements IUserRepository, IAccountActivationRepository
 
 			$user->WithDefaultSchedule($row[ColumnNames::DEFAULT_SCHEDULE_ID]);
 
-			$this->_cache->Add($userId, $user);
+			DomainCache::AddUser($userId, $user);
 
 			return $user;
 		}
@@ -257,14 +251,14 @@ class UserRepository implements IUserRepository, IAccountActivationRepository
 	 */
 	public function LoadById($userId)
 	{
-		if (!$this->_cache->Exists($userId))
+		if (!DomainCache::UserExists($userId))
 		{
 			$command = new GetUserByIdCommand($userId);
 			return $this->Load($command);
 		}
 		else
 		{
-			return $this->_cache->Get($userId);
+			return DomainCache::GetUser($userId);
 		}
 	}
 
@@ -394,12 +388,16 @@ class UserRepository implements IUserRepository, IAccountActivationRepository
 		{
 			$db->Execute(new UpdateUserPreferenceCommand($user->Id(), $updated, $user->GetPreference($updated)));
 		}
+
+		DomainCache::AddUser($user->Id(), $user);
 	}
 
 	public function DeleteById($userId)
 	{
 		$deleteUserCommand = new DeleteUserCommand($userId);
 		ServiceLocator::GetDatabase()->Execute($deleteUserCommand);
+
+		DomainCache::RemoveUser($userId);
 	}
 
 	public function LoadEmailPreferences($userId)
@@ -768,5 +766,3 @@ class UserItemView
 		return $user;
 	}
 }
-
-?>

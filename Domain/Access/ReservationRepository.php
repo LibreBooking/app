@@ -812,5 +812,3 @@ interface IReservationRepository
 	 */
 	public function AddReservationAttachment(ReservationAttachment $attachmentFile);
 }
-
-?>

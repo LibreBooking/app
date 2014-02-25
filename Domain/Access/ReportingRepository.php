@@ -139,5 +139,3 @@ class ReportingRepository implements IReportingRepository
 		ServiceLocator::GetDatabase()->Execute(new DeleteSavedReportCommand($reportId, $userId));
 	}
 }
-
-?>

@@ -127,14 +127,9 @@ class ReservationLayoutFactory implements ILayoutFactory
 
 class ScheduleRepository implements IScheduleRepository
 {
-    /**
-     * @var DomainCache
-     */
-    private $_cache;
 
     public function __construct()
     {
-        $this->_cache = new DomainCache();
     }
 
     public function GetAll()
@@ -155,7 +150,7 @@ class ScheduleRepository implements IScheduleRepository
 
     public function LoadById($scheduleId)
     {
-        if (!$this->_cache->Exists($scheduleId))
+        if (!DomainCache::Exists($scheduleId, 'schedule'))
         {
             $schedule = null;
 
@@ -166,12 +161,12 @@ class ScheduleRepository implements IScheduleRepository
                 $schedule = Schedule::FromRow($row);
             }
 
+			DomainCache::Add($scheduleId, $schedule, 'schedule');
             $reader->Free();
 
-            return $schedule;
         }
 
-        return $this->_cache->Get($scheduleId);
+        return DomainCache::Get($scheduleId, 'schedule');
     }
 
     public function LoadByPublicId($publicId)
@@ -206,6 +201,8 @@ class ScheduleRepository implements IScheduleRepository
         {
             ServiceLocator::GetDatabase()->Execute(new SetDefaultScheduleCommand($schedule->GetId()));
         }
+
+		DomainCache::Add($schedule->GetId(), $schedule, 'schedule');
     }
 
     public function Add(Schedule $schedule, $copyLayoutFromScheduleId)
@@ -227,39 +224,45 @@ class ScheduleRepository implements IScheduleRepository
     public function Delete(Schedule $schedule)
     {
         ServiceLocator::GetDatabase()->Execute(new DeleteScheduleCommand($schedule->GetId()));
+		DomainCache::Remove($schedule->GetId(), 'schedule');
     }
 
     public function GetLayout($scheduleId, ILayoutFactory $layoutFactory)
     {
-		/**
-		 * @var $layout ScheduleLayout
-		 */
-		$layout = $layoutFactory->CreateLayout();
+		if (!DomainCache::Exists($scheduleId, 'schedule'))
+		{
+			/**
+			 * @var $layout ScheduleLayout
+			 */
+			$layout = $layoutFactory->CreateLayout();
 
-        $reader = ServiceLocator::GetDatabase()->Query(new GetLayoutCommand($scheduleId));
+			$reader = ServiceLocator::GetDatabase()->Query(new GetLayoutCommand($scheduleId));
 
-        while ($row = $reader->GetRow())
-        {
-            $timezone = $row[ColumnNames::BLOCK_TIMEZONE];
-            $start = Time::Parse($row[ColumnNames::BLOCK_START], $timezone);
-            $end = Time::Parse($row[ColumnNames::BLOCK_END], $timezone);
-            $label = $row[ColumnNames::BLOCK_LABEL];
-            $periodType = $row[ColumnNames::BLOCK_CODE];
-			$dayOfWeek = $row[ColumnNames::BLOCK_DAY_OF_WEEK];
+			while ($row = $reader->GetRow())
+			{
+				$timezone = $row[ColumnNames::BLOCK_TIMEZONE];
+				$start = Time::Parse($row[ColumnNames::BLOCK_START], $timezone);
+				$end = Time::Parse($row[ColumnNames::BLOCK_END], $timezone);
+				$label = $row[ColumnNames::BLOCK_LABEL];
+				$periodType = $row[ColumnNames::BLOCK_CODE];
+				$dayOfWeek = $row[ColumnNames::BLOCK_DAY_OF_WEEK];
 
-            if ($periodType == PeriodTypes::RESERVABLE)
-            {
-                $layout->AppendPeriod($start, $end, $label, $dayOfWeek);
-            }
-            else
-            {
-                $layout->AppendBlockedPeriod($start, $end, $label, $dayOfWeek);
-            }
-        }
+				if ($periodType == PeriodTypes::RESERVABLE)
+				{
+					$layout->AppendPeriod($start, $end, $label, $dayOfWeek);
+				}
+				else
+				{
+					$layout->AppendBlockedPeriod($start, $end, $label, $dayOfWeek);
+				}
+			}
 
-        $reader->Free();
+			DomainCache::Add($scheduleId, $layout, 'layout');
 
-        return $layout;
+			$reader->Free();
+		}
+
+		return DomainCache::Get($scheduleId, 'layout');
     }
 
     public function AddScheduleLayout($scheduleId, ILayoutCreation $layout)
@@ -291,5 +294,3 @@ class ScheduleRepository implements IScheduleRepository
         $db->Execute(new DeleteOrphanLayoutsCommand());
     }
 }
-
-?>

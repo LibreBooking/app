@@ -144,6 +144,3 @@ class PageInfoAll extends PageInfo
 		$this->ResultsEnd = $totalResults;
 	}
 }
-
-
-?>

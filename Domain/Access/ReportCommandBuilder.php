@@ -596,5 +596,3 @@ class ReportQueryFragment
 		return $this->sql;
 	}
 }
-
-?>

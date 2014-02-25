@@ -68,14 +68,8 @@ interface IAttributeRepository
 
 class AttributeRepository implements IAttributeRepository
 {
-	/**
-	 * @var DomainCache
-	 */
-	private $cache;
-
 	public function __construct()
 	{
-		$this->cache = new DomainCache();
 	}
 
 	public function Add(CustomAttribute $attribute)
@@ -92,7 +86,7 @@ class AttributeRepository implements IAttributeRepository
 	 */
 	public function GetByCategory($category)
 	{
-		if (!$this->cache->Exists($category))
+		if (!DomainCache::Exists($category, 'attr-category'))
 		{
 			$reader = ServiceLocator::GetDatabase()
 							  ->Query(new GetAttributesByCategoryCommand($category));
@@ -103,11 +97,11 @@ class AttributeRepository implements IAttributeRepository
 				$attributes[] = CustomAttribute::FromRow($row);
 			}
 
-			$this->cache->Add($category, $attributes);
+			DomainCache::Add($category, $attributes, 'attr-category');
 
 		}
 
-		return $this->cache->Get($category);
+		return DomainCache::Get($category, 'attr-category');
 	}
 
 	/**

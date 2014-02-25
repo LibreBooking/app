@@ -132,5 +132,3 @@ interface IAnnouncementRepository
      */
     public function LoadById($announcementId);
 }
-
-?>

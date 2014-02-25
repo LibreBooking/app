@@ -20,39 +20,149 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 class DomainCache
 {
-	private $_cache;
+	private static $_cache = array();
 
-	public function __construct()
+	/**
+	 * @param mixed $key
+	 * @param string $prefix
+	 * @return bool
+	 */
+	public static function Exists($key, $prefix)
 	{
-		$this->_cache = array();
+		return array_key_exists($prefix . '_' . $key, self::$_cache);
+	}
+
+	/**
+	 * @param mixed $key
+	 * @param string $prefix
+	 * @return mixed
+	 */
+	public static function Get($key, $prefix)
+	{
+		return self::$_cache[$prefix . '_' . $key];
+	}
+
+	/**
+	 * @param mixed $key
+	 * @param mixed $object
+	 * @param string $prefix
+	 */
+	public static function Add($key, $object, $prefix)
+	{
+		self::$_cache[$prefix . '_' . $key] = $object;
+	}
+
+	/**
+	 * @param mixed $key
+	 * @param $prefix
+	 */
+	public static function Remove($key, $prefix)
+	{
+		unset(self::$_cache[$prefix . '_' . $key]);
 	}
 
 	/**
 	 * @param mixed $key
 	 * @return bool
 	 */
-	public function Exists($key)
+	public static function UserExists($key)
 	{
-		return array_key_exists($key, $this->_cache);
+		return self::Exists($key, 'user');
 	}
 
 	/**
 	 * @param mixed $key
 	 * @return mixed
 	 */
-	public function Get($key)
+	public static function GetUser($key)
 	{
-		return $this->_cache[$key];
+		return self::Get($key, 'user');
 	}
 
 	/**
 	 * @param mixed $key
 	 * @param mixed $object
-	 * @return void
 	 */
-	public function Add($key, $object)
+	public static function AddUser($key, $object)
 	{
-		$this->_cache[$key] = $object;
+		self::Add($key, $object, 'user');
+	}
+
+	/**
+	 * @param mixed $key
+	 */
+	public static function RemoveUser($key)
+	{
+		self::Remove($key, 'user');
+	}
+
+	/**
+	 * @param mixed $key
+	 * @return bool
+	 */
+	public static function GroupExists($key)
+	{
+		return self::Exists($key, 'group');
+	}
+
+	/**
+	 * @param mixed $key
+	 * @return mixed
+	 */
+	public static function GetGroup($key)
+	{
+		return self::Get($key, 'group');
+	}
+
+	/**
+	 * @param mixed $key
+	 * @param mixed $object
+	 */
+	public static function AddGroup($key, $object)
+	{
+		self::Add($key, $object, 'group');
+	}
+
+	/**
+	 * @param mixed $key
+	 */
+	public static function RemoveGroup($key)
+	{
+		self::Remove($key, 'group');
+	}
+
+	/**
+	 * @param mixed $key
+	 * @return bool
+	 */
+	public static function ResourceExists($key)
+	{
+		return self::Exists($key, 'resource');
+	}
+
+	/**
+	 * @param mixed $key
+	 * @return mixed
+	 */
+	public static function GetResource($key)
+	{
+		return self::Get($key, 'resource');
+	}
+
+	/**
+	 * @param mixed $key
+	 * @param mixed $object
+	 */
+	public static function AddResource($key, $object)
+	{
+		self::Add($key, $object, 'resource');
+	}
+
+	/**
+	 * @param mixed $key
+	 */
+	public static function RemoveResource($key)
+	{
+		self::Remove($key, 'resource');
 	}
 }
-?>

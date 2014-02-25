@@ -104,4 +104,3 @@ class UserPreferenceRepository implements IUserPreferenceRepository
 		}
 	}
 }
-?>

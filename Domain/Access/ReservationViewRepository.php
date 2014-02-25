@@ -1652,5 +1652,3 @@ class ReservationReminderView
 		return $this->minutes;
 	}
 }
-
-?>

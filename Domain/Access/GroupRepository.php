@@ -84,14 +84,8 @@ interface IGroupViewRepository
 
 class GroupRepository implements IGroupRepository, IGroupViewRepository
 {
-	/**
-	 * @var DomainCache
-	 */
-	private $_cache;
-
 	public function __construct()
 	{
-		$this->_cache = new DomainCache();
 	}
 
 	/**
@@ -140,9 +134,9 @@ class GroupRepository implements IGroupRepository, IGroupViewRepository
 
 	public function LoadById($groupId)
 	{
-		if ($this->_cache->Exists($groupId))
+		if (DomainCache::GroupExists($groupId))
 		{
-			return $this->_cache->Get($groupId);
+			return DomainCache::GetGroup($groupId);
 		}
 
 		$group = null;
@@ -177,7 +171,7 @@ class GroupRepository implements IGroupRepository, IGroupViewRepository
 		}
 		$reader->Free();
 
-		$this->_cache->Add($groupId, $group);
+		DomainCache::AddGroup($groupId, $group);
 		return $group;
 	}
 
@@ -220,11 +214,14 @@ class GroupRepository implements IGroupRepository, IGroupViewRepository
 		}
 
 		$db->Execute(new UpdateGroupCommand($group->Id(), $group->Name(), $group->AdminGroupId()));
+
+		DomainCache::AddGroup($group->Id(), $group);
 	}
 
 	public function Remove(Group $group)
 	{
 		ServiceLocator::GetDatabase()->Execute(new DeleteGroupCommand($group->Id()));
+		DomainCache::RemoveGroup($group->Id());
 	}
 
 	public function Add(Group $group)
