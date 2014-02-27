@@ -325,7 +325,9 @@ class ReservationComponentTests extends TestBase
 
 		$expectedEndDate = $startDate->AddHours(2);
 
-		$resourceDto = new ResourceDto(1, 'resource', true, $scheduleId, TimeInterval::FromHours(2));
+		$resource = new FakeBookableResource(1, 'resource');
+		$resource->SetMinLength(TimeInterval::FromHours(2));
+		$resource->SetScheduleId($scheduleId);
 
 		$this->initializer->expects($this->any())
 						  ->method('CurrentUser')
@@ -353,7 +355,7 @@ class ReservationComponentTests extends TestBase
 
 		$this->initializer->expects($this->any())
 						  ->method('PrimaryResource')
-						  ->will($this->returnValue($resourceDto));
+						  ->will($this->returnValue($resource));
 
 		$startPeriods = array(new SchedulePeriod(Date::Now(), Date::Now()));
 		$endPeriods = array(new SchedulePeriod(Date::Now()->AddDays(1), Date::Now()->AddDays(1)));

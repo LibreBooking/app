@@ -65,6 +65,8 @@ class TestBase extends PHPUnit_Framework_TestCase
 	{
 		Date::_SetNow(Date::Now());
 
+		DomainCache::Clear();
+
 		$this->db = new FakeDatabase();
 		$this->fakeServer = new FakeServer();
 		$this->fakeEmailService = new FakeEmailService();

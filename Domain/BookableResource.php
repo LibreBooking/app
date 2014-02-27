@@ -300,11 +300,21 @@ class BookableResource implements IResource
 	}
 
 	/**
-	 * @param string|int $value
+	 * @param string|int|TimeInterval $value
 	 */
 	public function SetMinLength($value)
 	{
-		$this->_minLength = $value;
+		$this->_minLength = $this->GetIntervalValue($value);
+	}
+
+	private function GetIntervalValue($value)
+	{
+		if (is_a($value, 'TimeInterval'))
+		{
+			return $value->TotalSeconds();
+		}
+
+		return $value;
 	}
 
 	/**
@@ -324,11 +334,11 @@ class BookableResource implements IResource
 	}
 
 	/**
-	 * @param string|int $value
+	 * @param string|int|TimeInterval $value
 	 */
 	public function SetMaxLength($value)
 	{
-		$this->_maxLength = $value;
+		$this->_maxLength = $this->GetIntervalValue($value);
 	}
 
 	/**
@@ -444,11 +454,11 @@ class BookableResource implements IResource
 	}
 
 	/**
-	 * @param string|int $value
+	 * @param string|int|TimeInterval $value
 	 */
 	public function SetMinNotice($value)
 	{
-		$this->_minNotice = $value;
+		$this->_minNotice = $this->GetIntervalValue($value);
 	}
 
 	/**
@@ -468,11 +478,11 @@ class BookableResource implements IResource
 	}
 
 	/**
-	 * @param string|int $value
+	 * @param string|int|TimeInterval $value
 	 */
 	public function SetMaxNotice($value)
 	{
-		$this->_maxNotice = $value;
+		$this->_maxNotice = $this->GetIntervalValue($value);
 	}
 
 	/**

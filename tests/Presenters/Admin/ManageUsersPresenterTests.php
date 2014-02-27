@@ -134,6 +134,7 @@ class ManageUsersPresenterTests extends TestBase
 				->will($this->returnValue($userList));
 
 		$user = new FakeUser();
+		$user->_IsResourceAdmin = true;
 
 		$this->userRepo
 				->expects($this->once())

@@ -22,6 +22,11 @@ class DomainCache
 {
 	private static $_cache = array();
 
+	public static function Clear()
+	{
+		self::$_cache = array();
+	}
+
 	/**
 	 * @param mixed $key
 	 * @param string $prefix
