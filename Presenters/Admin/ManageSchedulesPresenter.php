@@ -393,5 +393,3 @@ class ManageSchedulesPresenter extends ActionPresenter
 		}
 	}
 }
-
-?>

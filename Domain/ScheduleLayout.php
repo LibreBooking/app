@@ -226,6 +226,11 @@ class ScheduleLayout implements IScheduleLayout, ILayoutCreation
 
 		$periods = $this->getPeriods($layoutDate);
 
+		if (count($periods) <= 0)
+		{
+			throw new Exception(sprintf('No periods defined for date %s', $layoutDate));
+		}
+
 		$layoutTimezone = $periods[0]->Timezone();
 		$workingDate = Date::Create($layoutDate->Year(), $layoutDate->Month(), $layoutDate->Day(), 0, 0, 0,
 									$layoutTimezone);
