@@ -229,7 +229,7 @@ class ScheduleRepository implements IScheduleRepository
 
     public function GetLayout($scheduleId, ILayoutFactory $layoutFactory)
     {
-		if (!DomainCache::Exists($scheduleId, 'schedule'))
+		if (!DomainCache::Exists($scheduleId, 'layout'))
 		{
 			/**
 			 * @var $layout ScheduleLayout

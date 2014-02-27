@@ -634,6 +634,23 @@ class User
 	}
 
 	/**
+	 * @param IResource[] $resources
+	 * @return bool
+	 */
+	public function IsResourceAdminForOneOf($resources)
+	{
+		foreach ($resources as $resource)
+		{
+			if ($this->IsResourceAdminFor($resource))
+			{
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	/**
 	 * @param ISchedule $schedule
 	 * @return bool
 	 */

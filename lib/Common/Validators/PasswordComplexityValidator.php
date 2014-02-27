@@ -32,7 +32,7 @@ class PasswordComplexityValidator extends ValidatorBase implements IValidator
 		$passwordNumbers = preg_match_all( "/[^a-zA-Z]/", $this->password);
 		$passwordUpper = preg_match_all( "/[A-Z]/", $this->password);
 		$passwordLower = preg_match_all( "/[a-z]/", $this->password);
-		$passwordLetters = $passwordUpper + $passwordLower;
+		$passwordLetters = strlen($this->password);
 
 		if (empty($letters))
 		{
@@ -60,5 +60,3 @@ class PasswordComplexityValidator extends ValidatorBase implements IValidator
 	}
 
 }
-
-?>

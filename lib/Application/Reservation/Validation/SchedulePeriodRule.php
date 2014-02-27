@@ -61,5 +61,3 @@ class SchedulePeriodRule implements IReservationValidationRule
 		return new ReservationRuleResult(strlen($errorMessage) == 0, $errorMessage);
 	}
 }
-
-?>

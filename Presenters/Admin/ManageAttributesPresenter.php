@@ -112,4 +112,3 @@ class ManageAttributesPresenter extends ActionPresenter
 		$this->page->BindAttributes($this->attributeRepository->GetByCategory($categoryId));
 	}
 }
-?>

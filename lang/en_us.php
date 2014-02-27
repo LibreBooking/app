@@ -548,6 +548,7 @@ class en_us extends Language
 		$strings['CustomAttributeErrors'] = 'There are problems with the additional attributes you provided:';
 		$strings['CustomAttributeRequired'] = '%s is a required field.';
 		$strings['CustomAttributeInvalid'] = 'The value provided for %s is invalid.';
+		$strings['InvalidAttributeError'] = 'Invalid or unknown attribute.';
 		$strings['AttachmentLoadingError'] = 'Sorry, there was a problem loading the requested file.';
 		$strings['InvalidAttachmentExtension'] = 'You can only upload files of type: %s';
 		$strings['InvalidStartSlot'] = 'The start date and time requested is not valid.';

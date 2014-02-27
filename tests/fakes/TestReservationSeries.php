@@ -28,6 +28,7 @@ class TestReservationSeries extends ReservationSeries
 	{
 		parent::__construct();
 		$this->_bookedBy = new FakeUserSession();
+		$this->WithResource(new FakeBookableResource(1));
 	}
 
 	public function WithOwnerId($ownerId)
