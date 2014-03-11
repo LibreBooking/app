@@ -388,9 +388,11 @@ function ReservationManagement(opts, approval)
 		{
 			if(data && data.errors)
 			{
-				elements.inlineUpdateErrors.empty();
-				$('<ul/>', {'class': 'no-style', html: data.errors.join('')}).appendTo(elements.inlineUpdateErrors);
-				elements.inlineUpdateErrors.show();
+				var errors = $.map(data.errors, function(e){
+					return '<li>' + e + '</li>'
+				});
+
+				showInlineUpdateError(errors.join(''));
 			}
 			else
 			{
@@ -398,8 +400,16 @@ function ReservationManagement(opts, approval)
 			}
 		}).fail(function (jqXHR, textStatus, errorThrown)
 		{
-			alert('handle errors');
+			showInlineUpdateError('<li>' + textStatus + '</li>');
 		});
+	}
+
+	function showInlineUpdateError(lis)
+	{
+		elements.inlineUpdateErrors.empty();
+		$('<ul/>', {'class': 'no-style', html: lis}).appendTo(elements.inlineUpdateErrors);
+		elements.inlineUpdateErrors.show();
+		elements.inlineUpdateErrorDialog.dialog('open');
 	}
 
 	function showCustomAttributeValue(attributeId, cell)

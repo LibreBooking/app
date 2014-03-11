@@ -70,4 +70,3 @@ class ForgotPwdPage extends Page implements IForgotPwdPage
 		$this->Set('Enabled', $enabled);
 	}
 }
-?>

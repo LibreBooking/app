@@ -41,11 +41,11 @@ class WordPressOptions
 	{
 		$path = $this->GetConfig('wp_includes.directory');
 
-		if (!StringHelper::StartsWith($path, '/'))
+		if (!BookedStringHelper::StartsWith($path, '/'))
 		{
 			$path = ROOT_DIR . "/$path";
 		}
-		if (StringHelper::EndsWith($path, '/'))
+		if (BookedStringHelper::EndsWith($path, '/'))
 		{
 			return $path;
 		}

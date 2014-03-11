@@ -25,9 +25,9 @@ require_once(ROOT_DIR . 'lib/Application/Reservation/Validation/namespace.php');
 class CustomAttributeValidationRuleTests extends TestBase
 {
 	/**
-	 * @var IAttributeRepository|PHPUnit_Framework_MockObject_MockObject
+	 * @var IAttributeService|PHPUnit_Framework_MockObject_MockObject
 	 */
-	private $attributeRepository;
+	private $attributeService;
 
 	/**
 	 * @var IUserRepository|PHPUnit_Framework_MockObject_MockObject
@@ -39,14 +39,43 @@ class CustomAttributeValidationRuleTests extends TestBase
 	 */
 	private $rule;
 
+	/**
+	 * @var TestReservationSeries
+	 */
+	private $reservation;
+
+	/**
+	 * @var FakeUser
+	 */
+	private $user;
+
+	/**
+	 * @var FakeUser
+	 */
+	private $bookedBy;
+
 	public function setup()
 	{
 		parent::setup();
 
-		$this->attributeRepository = $this->getMock('IAttributeRepository');
+		$this->attributeService = $this->getMock('IAttributeService');
 		$this->userRepository = $this->getMock('IUserRepository');
 
-		$this->rule = $rule = new CustomAttributeValidationRule($this->attributeRepository, $this->userRepository);
+		$this->reservation = new TestReservationSeries();
+		$this->user = new FakeUser(1);
+		$this->bookedBy = new FakeUser(2);
+
+		$this->userRepository->expects($this->at(0))
+							 ->method('LoadById')
+							 ->with($this->equalTo($this->reservation->UserId()))
+							 ->will($this->returnValue($this->user));
+
+		$this->userRepository->expects($this->at(1))
+							 ->method('LoadById')
+							 ->with($this->equalTo($this->reservation->BookedBy()->UserId))
+							 ->will($this->returnValue($this->bookedBy));
+
+		$this->rule = $rule = new CustomAttributeValidationRule($this->attributeService, $this->userRepository);
 	}
 
 	public function teardown()
@@ -56,158 +85,47 @@ class CustomAttributeValidationRuleTests extends TestBase
 
 	public function testChecksEachAttributeInCategory()
 	{
-		$val1 = 'val1';
-		$val2 = 'val2';
-		$val3 = 'val2';
+		$errors = array('error1', 'error2');
 
-		$reservation = new TestReservationSeries();
-		$reservation->WithAttributeValue(new AttributeValue(1, $val1));
-		$reservation->WithAttributeValue(new AttributeValue(2, $val2));
-		$reservation->WithAttributeValue(new AttributeValue(3, $val3));
+		$validationResult = new AttributeServiceValidationResult(false, $errors);
+		$this->attributeService->expects($this->once())
+				->method('Validate')
+				->with($this->equalTo(CustomAttributeCategory::RESERVATION), $this->equalTo($this->reservation->AttributeValues()), $this->isNull(), $this->isFalse(), $this->isFalse())
+				->will($this->returnValue($validationResult));
 
-		$fakeAttr1 = new FakeCustomAttribute(1, false, true);
-		$fakeAttr2 = new FakeCustomAttribute(2, true, false);
-		$fakeAttr3 = new FakeCustomAttribute(3, true, true);
-
-		$customAttributes = array($fakeAttr1, $fakeAttr2, $fakeAttr3);
-
-		$this->attributeRepository->expects($this->once())
-								  ->method('GetByCategory')
-								  ->with($this->equalTo(CustomAttributeCategory::RESERVATION))
-								  ->will($this->returnValue($customAttributes));
-
-
-		$result = $this->rule->Validate($reservation);
+		$result = $this->rule->Validate($this->reservation);
 
 		$this->assertEquals(false, $result->IsValid());
-
-		$this->assertContains($fakeAttr1->Label(), $result->ErrorMessage());
-		$this->assertContains($fakeAttr2->Label(), $result->ErrorMessage());
-		$this->assertNotContains($fakeAttr3->Label(), $result->ErrorMessage());
-
-		$this->assertEquals($val1, $fakeAttr1->_RequiredValueChecked);
-		$this->assertEquals($val2, $fakeAttr2->_RequiredValueChecked);
-		$this->assertEquals($val3, $fakeAttr3->_RequiredValueChecked);
-
-		$this->assertEquals($val1, $fakeAttr1->_ConstraintValueChecked);
-		$this->assertEquals($val2, $fakeAttr2->_ConstraintValueChecked);
-		$this->assertEquals($val3, $fakeAttr3->_ConstraintValueChecked);
+		$this->assertContains($errors[0], $result->ErrorMessage());
+		$this->assertContains($errors[1], $result->ErrorMessage());
 	}
 
 	public function testWhenAllAttributesAreValid()
 	{
-		$reservation = new TestReservationSeries();
-		$reservation->WithAttributeValue(new AttributeValue(1, null));
-		$reservation->WithAttributeValue(new AttributeValue(2, null));
-		$reservation->WithAttributeValue(new AttributeValue(3, null));
+		$validationResult = new AttributeServiceValidationResult(true, array());
 
-		$fakeAttr1 = new FakeCustomAttribute(1, true, true);
-		$fakeAttr2 = new FakeCustomAttribute(2, true, true);
-		$fakeAttr3 = new FakeCustomAttribute(3, true, true);
+		$this->attributeService->expects($this->once())
+				->method('Validate')
+				->with($this->equalTo(CustomAttributeCategory::RESERVATION), $this->equalTo($this->reservation->AttributeValues()), $this->isNull(), $this->isFalse(), $this->isFalse())
+				->will($this->returnValue($validationResult));
 
-		$customAttributes = array($fakeAttr1, $fakeAttr2, $fakeAttr3);
-
-		$this->attributeRepository->expects($this->once())
-								  ->method('GetByCategory')
-								  ->with($this->equalTo(CustomAttributeCategory::RESERVATION))
-								  ->will($this->returnValue($customAttributes));
-
-
-		$result = $this->rule->Validate($reservation);
+		$result = $this->rule->Validate($this->reservation);
 
 		$this->assertEquals(true, $result->IsValid());
 	}
 
-	public function testWhenAttributeIsAdminOnlyAndAValueIsSuppliedAndUserIsNotAnAdmin_ThenAttributeIsNotValid()
+	public function testWhenUserIsAnAdmin_ThenEvaluateAdminOnlyAttributes()
 	{
-		$reservation = new TestReservationSeries();
-		$reservation->WithAttributeValue(new AttributeValue(1, null));
-		$reservation->WithAttributeValue(new AttributeValue(2, null));
-		$reservation->WithAttributeValue(new AttributeValue(3, null));
+		$this->bookedBy->_IsAdminForUser = true;
+		$validationResult = new AttributeServiceValidationResult(true, array());
 
-		$fakeAttr1 = new FakeCustomAttribute(1, true, true);
-		$fakeAttr1->IsAdminOnly(true);
-		$fakeAttr2 = new FakeCustomAttribute(2, true, true);
-		$fakeAttr3 = new FakeCustomAttribute(3, true, true);
+		$this->attributeService->expects($this->once())
+				->method('Validate')
+				->with($this->equalTo(CustomAttributeCategory::RESERVATION), $this->equalTo($this->reservation->AttributeValues()), $this->isNull(), $this->isFalse(), $this->isTrue())
+				->will($this->returnValue($validationResult));
 
-		$customAttributes = array($fakeAttr1, $fakeAttr2, $fakeAttr3);
+		$result = $this->rule->Validate($this->reservation);
 
-		$user = new FakeUser(1);
-		$bookedBy = new FakeUser(2);
-
-		$this->attributeRepository->expects($this->once())
-								  ->method('GetByCategory')
-								  ->with($this->equalTo(CustomAttributeCategory::RESERVATION))
-								  ->will($this->returnValue($customAttributes));
-
-		$this->userRepository->expects($this->at(0))
-							 ->method('LoadById')
-							 ->with($this->equalTo($reservation->UserId()))
-							 ->will($this->returnValue($user));
-
-		$this->userRepository->expects($this->at(1))
-							 ->method('LoadById')
-							 ->with($this->equalTo($reservation->BookedBy()->UserId))
-							 ->will($this->returnValue($bookedBy));
-
-		$result = $this->rule->Validate($reservation);
-
-		$this->assertEquals(false, $result->IsValid());
-	}
-
-	public function testWhenAttributeIsAdminOnlyAndUserIsAnAdmin_ThenEvaluateAttribute()
-	{
-		$val1 = 'val1';
-		$val2 = 'val2';
-		$val3 = 'val2';
-
-		$reservation = new TestReservationSeries();
-		$reservation->WithAttributeValue(new AttributeValue(1, $val1));
-		$reservation->WithAttributeValue(new AttributeValue(2, $val2));
-		$reservation->WithAttributeValue(new AttributeValue(3, $val3));
-
-		$fakeAttr1 = new FakeCustomAttribute(1, false, true);
-		$fakeAttr1->IsAdminOnly(true);
-		$fakeAttr2 = new FakeCustomAttribute(2, true, false);
-		$fakeAttr2->IsAdminOnly(true);
-		$fakeAttr3 = new FakeCustomAttribute(3, true, true);
-		$fakeAttr3->IsAdminOnly(true);
-
-		$customAttributes = array($fakeAttr1, $fakeAttr2, $fakeAttr3);
-
-		$user = new FakeUser(1);
-		$bookedBy = new FakeUser(2);
-		$bookedBy->_IsAdminForUser = true;
-
-		$this->attributeRepository->expects($this->once())
-								  ->method('GetByCategory')
-								  ->with($this->equalTo(CustomAttributeCategory::RESERVATION))
-								  ->will($this->returnValue($customAttributes));
-
-		$this->userRepository->expects($this->at(0))
-							 ->method('LoadById')
-							 ->with($this->equalTo($reservation->UserId()))
-							 ->will($this->returnValue($user));
-
-		$this->userRepository->expects($this->at(1))
-							 ->method('LoadById')
-							 ->with($this->equalTo($reservation->BookedBy()->UserId))
-							 ->will($this->returnValue($bookedBy));
-
-		$result = $this->rule->Validate($reservation);
-
-		$this->assertEquals(false, $result->IsValid());
-
-		$this->assertContains($fakeAttr1->Label(), $result->ErrorMessage());
-		$this->assertContains($fakeAttr2->Label(), $result->ErrorMessage());
-		$this->assertNotContains($fakeAttr3->Label(), $result->ErrorMessage());
-
-		$this->assertEquals($val1, $fakeAttr1->_RequiredValueChecked);
-		$this->assertEquals($val2, $fakeAttr2->_RequiredValueChecked);
-		$this->assertEquals($val3, $fakeAttr3->_RequiredValueChecked);
-
-		$this->assertEquals($val1, $fakeAttr1->_ConstraintValueChecked);
-		$this->assertEquals($val2, $fakeAttr2->_ConstraintValueChecked);
-		$this->assertEquals($val3, $fakeAttr3->_ConstraintValueChecked);
+		$this->assertEquals(true, $result->IsValid());
 	}
 }

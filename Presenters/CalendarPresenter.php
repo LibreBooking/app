@@ -86,8 +86,7 @@ class CalendarPresenter
 		$month = $this->page->GetMonth();
 		$day = $this->page->GetDay();
 
-		$defaultDate = Date::Now()
-					   ->ToTimezone($timezone);
+		$defaultDate = Date::Now()->ToTimezone($timezone);
 
 		if (empty($year))
 		{
@@ -103,11 +102,11 @@ class CalendarPresenter
 		}
 
 		$schedules = $this->scheduleRepository->GetAll();
-		$showInaccessible = Configuration::Instance()
-							->GetSectionKey(ConfigSection::SCHEDULE, ConfigKeys::SCHEDULE_SHOW_INACCESSIBLE_RESOURCES, new BooleanConverter());
+		$showInaccessible = Configuration::Instance()->GetSectionKey(ConfigSection::SCHEDULE, ConfigKeys::SCHEDULE_SHOW_INACCESSIBLE_RESOURCES, new BooleanConverter());
 		$resources = $this->resourceService->GetAllResources($showInaccessible, $userSession);
 
-		$selectedSchedule = $this->GetSchedule($schedules);
+		$selectedScheduleId = $this->page->GetScheduleId();
+		$selectedSchedule = $this->GetDefaultSchedule($schedules);
 		$selectedResourceId = $this->page->GetResourceId();
 
 		if (!empty($selectedResourceId))
@@ -121,7 +120,7 @@ class CalendarPresenter
 
 		$calendar = $this->calendarFactory->Create($type, $year, $month, $day, $timezone);
 		$reservations = $this->reservationRepository->GetReservationList($calendar->FirstDay(), $calendar->LastDay(),
-																		 null, null, $selectedSchedule->GetId(),
+																		 null, null, $selectedScheduleId,
 																		 $selectedResourceId);
 		$calendar->AddReservations(CalendarReservation::FromScheduleReservationList(
 									   $reservations,
@@ -130,10 +129,10 @@ class CalendarPresenter
 									   $this->privacyFilter));
 		$this->page->BindCalendar($calendar);
 
-		$this->page->BindFilters(new CalendarFilters($schedules, $resources, $selectedSchedule->GetId(), $selectedResourceId));
+		$this->page->BindFilters(new CalendarFilters($schedules, $resources, $selectedScheduleId, $selectedResourceId));
 
 		$this->page->SetDisplayDate($calendar->FirstDay());
-		$this->page->SetScheduleId($selectedSchedule->GetId());
+		$this->page->SetScheduleId($selectedScheduleId);
 		$this->page->SetResourceId($selectedResourceId);
 
 		$this->page->SetFirstDay($selectedSchedule->GetWeekdayStart());
@@ -145,7 +144,7 @@ class CalendarPresenter
 	 * @param array|Schedule[] $schedules
 	 * @return Schedule
 	 */
-	private function GetSchedule($schedules)
+	private function GetDefaultSchedule($schedules)
 	{
 		$default = null;
 		$scheduleId = $this->page->GetScheduleId();
@@ -186,6 +185,10 @@ class CalendarFilters
 	 */
 	public function __construct($schedules, $resources, $selectedScheduleId, $selectedResourceId)
 	{
+		if (!empty($resources))
+		{
+			$this->filters[] = new CalendarFilter(self::FilterSchedule, null, Resources::GetInstance()->GetString("AllReservations"), (empty($selectedResourceId) && empty($selectedScheduleId)));
+		}
 		foreach ($schedules as $schedule)
 		{
 			if ($this->ScheduleContainsNoResources($schedule, $resources))
@@ -323,5 +326,3 @@ class CalendarFilter
 	}
 
 }
-
-?>

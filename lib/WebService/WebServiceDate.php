@@ -27,7 +27,7 @@ class WebServiceDate
 	 */
 	public static function GetDate($dateString, UserSession $session)
 	{
-		if (StringHelper::Contains($dateString, 'T'))
+		if (BookedStringHelper::Contains($dateString, 'T'))
 		{
 			return Date::ParseExact($dateString);
 		}

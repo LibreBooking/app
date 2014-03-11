@@ -1,34 +1,38 @@
 <?php
-
 /**
- * Copyright 2012-2014 Nick Korbel
- *
- * This file is part of Booked SchedulerBooked SchedulereIt is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later versBooked SchedulerduleIt is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * alBooked SchedulercheduleIt.  If not, see <http://www.gnu.org/licenses/>.
- */
+Copyright 2011-2014 Nick Korbel
+
+This file is part of Booked Scheduler.
+
+Booked Scheduler is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+Booked Scheduler is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
+*/
+
 class CustomAttributeValidationRule implements IReservationValidationRule
 {
 	/**
-	 * @var IAttributeRepository
+	 * @var IAttributeService
 	 */
-	private $attributeRepository;
+	private $attributeService;
 
 	/**
 	 * @var IUserRepository
 	 */
 	private $userRepository;
 
-	public function __construct(IAttributeRepository $attributeRepository, IUserRepository $userRepository)
+	public function __construct(IAttributeService $attributeService, IUserRepository $userRepository)
 	{
-		$this->attributeRepository = $attributeRepository;
+		$this->attributeService = $attributeService;
 		$this->userRepository = $userRepository;
 	}
 
@@ -40,50 +44,19 @@ class CustomAttributeValidationRule implements IReservationValidationRule
 	{
 		$resources = Resources::GetInstance();
 		$errorMessage = new StringBuilder();
-		$isValid = true;
 
-		$isResourceAdmin = null;
-		$user = null;
-		$bookedBy = null;
+		$user = $this->userRepository->LoadById($reservationSeries->UserId());
+		$bookedBy = $this->userRepository->LoadById($reservationSeries->BookedBy()->UserId);
+		$isResourceAdmin = $bookedBy->IsResourceAdminForOneOf($reservationSeries->AllResources());
+		$isAdminUser = $bookedBy->IsAdminFor($user) || $isResourceAdmin;
 
-		$attributes = $this->attributeRepository->GetByCategory(CustomAttributeCategory::RESERVATION);
-		foreach ($attributes as $attribute)
+//		$attributeService = new AttributeService($this->attributeRepository);
+		$result = $this->attributeService->Validate(CustomAttributeCategory::RESERVATION, $reservationSeries->AttributeValues(), null, false, $isAdminUser);
+
+		$isValid  = $result->IsValid();
+		foreach ($result->Errors() as $error)
 		{
-			if ($attribute->AdminOnly())
-			{
-				if (is_null($user))
-				{
-					$user = $this->userRepository->LoadById($reservationSeries->UserId());
-				}
-				if (is_null($bookedBy))
-				{
-					$bookedBy = $this->userRepository->LoadById($reservationSeries->BookedBy()->UserId);
-				}
-
-				if (is_null($isResourceAdmin))
-				{
-					$isResourceAdmin = $bookedBy->IsResourceAdminForOneOf($reservationSeries->AllResources());
-				}
-
-				if ($bookedBy->IsAdminFor($user) || $isResourceAdmin)
-				{
-					$isValid = $this->IsValid($reservationSeries, $attribute, $errorMessage, $resources) && $isValid;
-				}
-				else
-				{
-					$value = $reservationSeries->GetAttributeValue($attribute->Id());
-
-					if (!is_null($value))
-					{
-						$isValid = $isValid && false;
-						$errorMessage->AppendLine($resources->GetString('InvalidAttributeError'));
-					}
-				}
-			}
-			else
-			{
-				$isValid = $this->IsValid($reservationSeries, $attribute, $errorMessage, $resources) && $isValid;
-			}
+			$errorMessage->AppendLine($error);
 		}
 
 		if (!$isValid)
@@ -92,33 +65,5 @@ class CustomAttributeValidationRule implements IReservationValidationRule
 		}
 
 		return new ReservationRuleResult($isValid, $errorMessage->ToString());
-	}
-
-	/**
-	 * @param ReservationSeries $reservationSeries
-	 * @param CustomAttribute $attribute
-	 * @param StringBuilder $errorMessage
-	 * @param Resources $resources
-	 * @return bool
-	 */
-	private function IsValid($reservationSeries, $attribute, $errorMessage, $resources)
-	{
-		$isValid = true;
-		$value = $reservationSeries->GetAttributeValue($attribute->Id());
-		$label = $attribute->Label();
-
-		if (!$attribute->SatisfiesRequired($value))
-		{
-			$isValid = false;
-			$errorMessage->AppendLine($resources->GetString('CustomAttributeRequired', $label));
-		}
-
-		if (!$attribute->SatisfiesConstraint($value))
-		{
-			$isValid = false;
-			$errorMessage->AppendLine($resources->GetString('CustomAttributeInvalid', $label));
-		}
-
-		return $isValid;
 	}
 }

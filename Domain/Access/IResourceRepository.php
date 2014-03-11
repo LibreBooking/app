@@ -62,6 +62,16 @@ interface IResourceRepository
 	public function GetResourceList();
 
 	/**
+	 * @param int $pageNumber
+	 * @param int $pageSize
+	 * @param string|null $sortField
+	 * @param string|null $sortDirection
+	 * @param ISqlFilter $filter
+	 * @return PageableData|BookableResource[]
+	 */
+	public function GetList($pageNumber, $pageSize, $sortField = null, $sortDirection = null, $filter = null);
+
+	/**
 	 * @abstract
 	 * @return array|AccessoryDto[] all accessories
 	 */

@@ -1,18 +1,22 @@
 <?php
 /**
-Copyright 2012-2014 Nick Korbel
+Copyright 2011-2014 Nick Korbel
 
-This file is part of Booked SchedulerBooked SchedulereIt is free software: you can redistribute it and/or modify
+This file is part of Booked Scheduler.
+
+Booked Scheduler is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation, either version 3 of the License, or
-(at your option) any later versBooked SchedulerduleIt is distributed in the hope that it will be useful,
+(at your option) any later version.
+
+Booked Scheduler is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
-alBooked SchedulercheduleIt.  If not, see <http://www.gnu.org/licenses/>.
- */
+along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
+*/
 
 require_once(ROOT_DIR . 'lib/Common/Helpers/StopWatch.php');
 
@@ -30,9 +34,11 @@ interface IAttributeService
 	 * @param $category int|CustomAttributeCategory
 	 * @param $attributeValues AttributeValue[]|array
 	 * @param $entityId int|null
+	 * @param bool $ignoreEmpty
+	 * @param bool $isAdmin
 	 * @return AttributeServiceValidationResult
 	 */
-	public function Validate($category, $attributeValues, $entityId=null);
+	public function Validate($category, $attributeValues, $entityId = null, $ignoreEmpty = false, $isAdmin = false);
 
 	/**
 	 * @abstract
@@ -91,7 +97,7 @@ class AttributeService implements IAttributeService
 		return $attributeList;
 	}
 
-	public function Validate($category, $attributeValues, $entityId=null)
+	public function Validate($category, $attributeValues, $entityId = null, $ignoreEmpty = false, $isAdmin = false)
 	{
 		$isValid = true;
 		$errors = array();
@@ -112,8 +118,18 @@ class AttributeService implements IAttributeService
 				continue;
 			}
 
-			$value = $values[$attribute->Id()];
+			if ($attribute->AdminOnly() && !$isAdmin)
+			{
+				continue;
+			}
+
+			$value = trim($values[$attribute->Id()]);
 			$label = $attribute->Label();
+
+			if (empty($value) && ($ignoreEmpty || $isAdmin))
+			{
+				continue;
+			}
 
 			if (!$attribute->SatisfiesRequired($value))
 			{

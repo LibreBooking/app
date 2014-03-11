@@ -85,5 +85,3 @@ class PasswordPresenter
 		return $this->userRepository->LoadById($userId);
 	}
 }
-
-?>

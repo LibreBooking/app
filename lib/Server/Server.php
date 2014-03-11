@@ -258,6 +258,13 @@ class Server
     {
         return $this->GetHeader('REMOTE_ADDR');
     }
-}
 
-?>
+	/**
+	 * @return bool
+	 */
+	public function GetIsHttps()
+	{
+		$isHttps = $this->GetHeader('HTTPS');
+		return $isHttps == 'on';
+	}
+}

@@ -490,6 +490,9 @@ class en_us extends Language
 		$strings['AllReservationResources'] = 'All Reservation Resources';
 		$strings['File'] = 'File';
 		$strings['AdminOnly'] = 'Admin Use Only';
+		$strings['BulkResourceUpdate'] = 'Bulk Resource Update';
+		$strings['Unchanged'] = 'Unchanged';
+		$strings['Common'] = 'Common';
 		// End Strings
 
 		// Install

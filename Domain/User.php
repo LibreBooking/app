@@ -971,5 +971,3 @@ class UserGroup
 		}
 	}
 }
-
-?>

@@ -34,8 +34,8 @@ class ResourceAdminManageResourcesPage extends ManageResourcesPage
 										new ScheduleRepository(),
 										new ImageFactory(),
 										new GroupRepository(),
-										new AttributeService(new AttributeRepository())
+										new AttributeService(new AttributeRepository()),
+										new UserPreferenceRepository()
 										);
 	}
 }
-?>

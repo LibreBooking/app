@@ -52,7 +52,7 @@ class AllTests
 			if (!$path->isDir())
 			{
 				$file = $path->getFilename();
-				if (StringHelper::EndsWith($file, 'Suite.php'))
+				if (BookedStringHelper::EndsWith($file, 'Suite.php'))
 				{
 					$testName = str_replace('.php', '', $file);
 					$fullPath = "{$path->getPath()}/$file";

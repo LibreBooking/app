@@ -119,7 +119,7 @@ class FilterCommand extends SqlCommand
 	private $baseCommand;
 
 	/**
-	 * @var \ISqlFilter
+	 * @var ISqlFilter
 	 */
 	private $filter;
 

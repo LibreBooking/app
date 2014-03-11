@@ -95,6 +95,12 @@ class Attribute
 	{
 		$this->value = $value;
 	}
-}
 
-?>
+	/**
+	 * @return bool
+	 */
+	public function UniquePerEntity()
+	{
+		return $this->attributeDefinition->UniquePerEntity();
+	}
+}

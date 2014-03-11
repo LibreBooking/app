@@ -17,4 +17,4 @@ alBooked SchedulercheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 require_once(ROOT_DIR . 'lib/Common/Helpers/ArrayDiff.php');
 require_once(ROOT_DIR . 'lib/Common/Helpers/String.php');
 require_once(ROOT_DIR . 'lib/Common/Helpers/StringBuilder.php');
-?>
+require_once(ROOT_DIR . 'lib/Common/Helpers/StopWatch.php');

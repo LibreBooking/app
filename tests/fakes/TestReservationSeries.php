@@ -72,9 +72,9 @@ class TestReservationSeries extends ReservationSeries
 		$this->AddNewInstance($dateRange);
 	}
 
-    public function WithScheduleId($scheudleId)
+    public function WithScheduleId($scheduleId)
     {
-        $this->_scheduleId = $scheudleId;
+        $this->_scheduleId = $scheduleId;
     }
 
     public function ScheduleId()

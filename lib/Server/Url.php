@@ -36,7 +36,7 @@ class Url
     public function __construct($url)
     {
         $this->url = $url;
-        $this->hasQuestionMark = StringHelper::Contains($url, '?');
+        $this->hasQuestionMark = BookedStringHelper::Contains($url, '?');
     }
 
 	/**
@@ -45,7 +45,7 @@ class Url
 	 */
 	public function Add($urlFragment)
 	{
-		if (!StringHelper::EndsWith($this->url, '/'))
+		if (!BookedStringHelper::EndsWith($this->url, '/'))
 		{
 			$this->url .= '/';
 		}

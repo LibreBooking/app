@@ -414,7 +414,7 @@ th.action {
 	max-width:50px;
 }
 
-#reservationFilterButtons {
+#adminFilterButtons {
 	padding-top:5px;
 	margin-top:15px;
 	clear:both;
@@ -426,7 +426,9 @@ th.action {
 	width:150px;
 }
 
-.filterTable ul {
+.horizontal-list {clear:both;}
+
+.horizontal-list ul {
 	display:block;
 	width:100%;
 	clear:both;
@@ -434,7 +436,7 @@ th.action {
 	list-style-type: none;
 }
 
-.filterTable li {
+.horizontal-list li {
 	clear:both;
 	display: inline-block;
 	list-style-type: none;
@@ -442,9 +444,8 @@ th.action {
 	margin-right:20px;
 }
 
-.filterTable label {
+label.label-top, .label-top label {
 	display: block;
-	/*float:left;*/
 	clear:left;
 	font-size:.9em;
 }
@@ -459,6 +460,22 @@ ul.resource-status-reasons {
 }
 
 .inlineUpdate:hover {
-	/*background-color:#FFFF99;*/
 	background-color: #fff;
+}
+
+#bulkUpdatePromptButton {
+	margin-top:4px;
+	font-size:1.1em;
+	font-weight:bold;
+	display:block;
+}
+
+#bulkUpdateDialog .title {
+	font-size:1.1em;
+	font-weight:bold;
+	border-top:solid 1px #ccc;
+	border-bottom:solid 1px #ccc;
+	background-color:#eee;
+	padding:3px 3px;
+	margin:7px 0;
 }

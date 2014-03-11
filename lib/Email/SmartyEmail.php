@@ -38,7 +38,7 @@ class SmartyEmail extends Smarty
 		}
 
 		$this->assign('Charset', $this->Resources->Charset);
-		$this->assign('ScriptUrl', Configuration::Instance()->GetKey(ConfigKeys::SCRIPT_URL));
+		$this->assign('ScriptUrl', Configuration::Instance()->GetScriptUrl());
 
 		$this->template_dir = ROOT_DIR . 'lang';
 		$this->compile_dir = ROOT_DIR . 'tpl_c';

@@ -19,6 +19,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 require_once(ROOT_DIR . 'lib/external/pear/Config.php');
+require_once(ROOT_DIR . 'lib/Common/Helpers/namespace.php');
 
 interface IConfiguration extends IConfigurationFile
 {
@@ -201,6 +202,20 @@ class ConfigurationFile implements IConfigurationFile
 	public function GetScriptUrl()
 	{
 		$url = $this->GetKey(ConfigKeys::SCRIPT_URL);
+
+		if (BookedStringHelper::StartsWith($url, '//'))
+		{
+			$isHttps = ServiceLocator::GetServer()->GetIsHttps();
+
+			if ($isHttps)
+			{
+				$url = "https:$url";
+			}
+			else
+			{
+				$url = "http:$url";
+			}
+		}
 
 		return rtrim($url, '/');
 	}

@@ -233,7 +233,7 @@ class SqlFilterLike extends BaseSqlFilter
 	 */
 	public function __construct($columnName, $columnValue)
 	{
-		if (!StringHelper::Contains($columnValue, '%'))
+		if (!BookedStringHelper::Contains($columnValue, '%'))
 		{
 
 			$columnValue = '%' . $columnValue . '%';

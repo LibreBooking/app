@@ -60,7 +60,7 @@ abstract class Page implements IPage
 		$this->smarty->assign('LoggedIn', $userSession->IsLoggedIn());
 		$this->smarty->assign('Version', Configuration::VERSION);
 		$this->smarty->assign('Path', $this->path);
-		$this->smarty->assign('ScriptUrl', Configuration::Instance()->GetKey(ConfigKeys::SCRIPT_URL));
+		$this->smarty->assign('ScriptUrl', Configuration::Instance()->GetScriptUrl());
 		$this->smarty->assign('UserName', !is_null($userSession) ? $userSession->FirstName : '');
 		$this->smarty->assign('DisplayWelcome', $this->DisplayWelcome());
 		$this->smarty->assign('UserId', $userSession->UserId);
@@ -117,7 +117,7 @@ abstract class Page implements IPage
 
 	public function Redirect($url)
 	{
-		if (!StringHelper::StartsWith($url, $this->path))
+		if (!BookedStringHelper::StartsWith($url, $this->path))
 		{
 			$url = $this->path . $url;
 		}
@@ -129,7 +129,7 @@ abstract class Page implements IPage
 
 	public function RedirectResume($url)
 	{
-		if (!StringHelper::StartsWith($url, $this->path))
+		if (!BookedStringHelper::StartsWith($url, $this->path))
 		{
 			$url = $this->path . $url;
 		}

@@ -36,7 +36,19 @@ function ResourceManagement(opts) {
 		addStatusReason:$('#addStatusReason'),
 		newStatusReason:$('#newStatusReason'),
 
-		addForm:$('#addResourceForm')
+		addForm:$('#addResourceForm'),
+		statusOptionsFilter:$('#resourceStatusIdFilter'),
+		statusReasonsFilter:$('#resourceReasonIdFilter'),
+		filterTable:$('#filterTable'),
+		filterButton:$('#filter'),
+		clearFilterButton:$('#clearFilter'),
+
+		bulkUpdatePromptButton:$('#bulkUpdatePromptButton'),
+		bulkUpdateDialog:$('#bulkUpdateDialog'),
+		bulkUpdateList:$('#bulkUpdateList'),
+		bulkUpdateForm:$('#bulkUpdateForm'),
+		bulkEditStatusOptions:$('#bulkEditStatusId'),
+		bulkEditStatusReasons:$('#bulkEditStatusReasonId')
 	};
 
 	var resources = {};
@@ -148,8 +160,16 @@ function ResourceManagement(opts) {
 			$(this).closest('.dialog').dialog("close");
 		});
 
+		$(".cancelColorbox").click(function () {
+			$.colorbox.close();
+		});
+
 		elements.statusOptions.change(function(e){
-			populateReasonOptions(elements.statusOptions.val());
+			populateReasonOptions(elements.statusOptions.val(), elements.statusReasons);
+		});
+
+		elements.bulkEditStatusOptions.change(function(e){
+			populateReasonOptions(elements.bulkEditStatusOptions.val(), elements.bulkEditStatusReasons);
 		});
 
 		elements.addStatusReason.click(function(e){
@@ -163,6 +183,43 @@ function ResourceManagement(opts) {
 			else{
 				elements.statusReasons.val(elements.statusReasons.data('prev'));
 			}
+		});
+
+		elements.statusOptionsFilter.change(function(e){
+			populateReasonOptions(elements.statusOptionsFilter.val(), elements.statusReasonsFilter);
+		});
+
+		elements.filterButton.click(filterResources);
+
+		elements.clearFilterButton.click(function (e)
+		{
+			e.preventDefault();
+			elements.filterTable.find('input,select,textarea').val('')
+
+			filterResources();
+		});
+
+		elements.bulkUpdatePromptButton.click(function(e){
+			e.preventDefault();
+
+			var items = [];
+			elements.bulkUpdateList.empty();
+			$.each(resources, function (i, r) {
+				items.push('<li><label><input type="checkbox" name="resourceId[]" checked="checked" value="' + r.id + '" /> ' + r.name + '</li>');
+			});
+			$('<ul/>', {'class': 'no-style', html: items.join('')}).appendTo(elements.bulkUpdateList);
+
+//			elements.bulkUpdateDialog.find('input, textarea').val('');
+//			elements.bulkUpdateDialog.find('select').val('-1');
+
+			wireUpIntervalToggle(elements.bulkUpdateDialog);
+
+			$.colorbox({inline:true,
+				href:"#bulkUpdateDialog",
+				transition: "none",
+				width: "100%",
+				height: "100%"});
+			elements.bulkUpdateDialog.show();
 		});
 
 		var imageSaveErrorHandler = function (result) {
@@ -195,6 +252,15 @@ function ResourceManagement(opts) {
 			$("#globalError").html(result).show();
 		};
 
+		var bulkUpdateErrorHandler = function (result) {
+			$("#bulkUpdateErrors").html(result).show();
+		};
+
+		var beforeSubmitWithIntervals = function(form, options){
+			combineIntervals(form, options);
+			BeforeFormSubmit(form, options);
+		};
+
 		ConfigureAdminForm(elements.imageForm, defaultSubmitCallback(elements.imageForm), null, imageSaveErrorHandler);
 		ConfigureAdminForm(elements.renameForm, defaultSubmitCallback(elements.renameForm), null, errorHandler);
 		ConfigureAdminForm(elements.scheduleForm, defaultSubmitCallback(elements.scheduleForm));
@@ -203,9 +269,11 @@ function ResourceManagement(opts) {
 		ConfigureAdminForm(elements.notesForm, defaultSubmitCallback(elements.notesForm));
 		ConfigureAdminForm(elements.addForm, defaultSubmitCallback(elements.addForm), null, handleAddError);
 		ConfigureAdminForm(elements.deleteForm, defaultSubmitCallback(elements.deleteForm));
-		ConfigureAdminForm(elements.configurationForm, defaultSubmitCallback(elements.configurationForm), null, errorHandler, {onBeforeSerialize:combineIntervals});
+		ConfigureAdminForm(elements.configurationForm, defaultSubmitCallback(elements.configurationForm), null, errorHandler, {onBeforeSerialize:beforeSubmitWithIntervals});
 		ConfigureAdminForm(elements.groupAdminForm, defaultSubmitCallback(elements.groupAdminForm));
 		ConfigureAdminForm(elements.resourceTypeForm, defaultSubmitCallback(elements.resourceTypeForm));
+		ConfigureAdminForm(elements.bulkUpdateForm, defaultSubmitCallback(elements.bulkUpdateForm), null, bulkUpdateErrorHandler, {onBeforeSubmit:beforeSubmitWithIntervals});
+
 		$.each(elements.attributeForm, function(i,form){
 			ConfigureAdminForm($(form), defaultSubmitCallback($(form)), null, attributesHandler, {validationSummary:null});
 		});
@@ -225,6 +293,12 @@ function ResourceManagement(opts) {
 		}
 
 		reasons[statusId].push({id:id,description:description});
+	};
+
+	ResourceManagement.prototype.initializeStatusFilter = function (statusId, reasonId)	{
+		elements.statusOptionsFilter.val(statusId);
+		elements.statusOptionsFilter.trigger('change');
+		elements.statusReasonsFilter.val(reasonId);
 	};
 
 	var getSubmitCallback = function (action) {
@@ -296,18 +370,8 @@ function ResourceManagement(opts) {
 	};
 
 	var showConfigurationPrompt = function (e) {
-		elements.configurationDialog.find(':checkbox').change(function () {
-			var id = $(this).attr('id');
-			var span = elements.configurationDialog.find('.' + id);
 
-			if ($(this).is(":checked")) {
-				span.find(":text").val('');
-				span.hide();
-			}
-			else {
-				span.show();
-			}
-		});
+		wireUpIntervalToggle(elements.configurationDialog);
 
 		var resource = getActiveResource();
 
@@ -325,36 +389,6 @@ function ResourceManagement(opts) {
 		elements.configurationDialog.dialog("open");
 	};
 
-	var showAttributesPrompt = function (e) {
-		var resource = getActiveResource();
-
-		var attributeDiv = $('[resourceId="' + resource.id + '"]').find('.customAttributes');
-
-		$.each(attributeDiv.find('li[attributeId]'), function(index, value){
-			var id = $(value).attr('attributeId');
-			var attrVal = $(value).find('.attributeValue').text();
-
-			var attribute = $('#psiattribute\\[' + id + '\\]');
-
-			if (attribute.is(':checkbox'))
-			{
-				if (attrVal.toLowerCase() == 'true')
-				{
-					attribute.attr('checked', 'checked');
-				}
-				else
-				{
-					attribute.removeAttr('checked');
-				}
-			}
-			else
-			{
-				attribute.val(attrVal);
-			}
-		});
-		elements.attributeDialog.dialog('open');
-	};
-
 	var showSortPrompt = function (e) {
 		$('#editSortOrder').val(getActiveResource().sortOrder);
 		elements.sortOrderDialog.dialog("open");
@@ -364,20 +398,20 @@ function ResourceManagement(opts) {
 		var resource = getActiveResource();
 		elements.statusOptions.val(resource.statusId);
 
-		populateReasonOptions(resource.statusId);
+		populateReasonOptions(elements.statusOptions, elements.statusReasons);
 
 		elements.statusReasons.val(resource.reasonId);
 
 		elements.statusDialog.dialog("open");
 	};
 
-	function populateReasonOptions(statusId){
-		elements.statusReasons.empty().append($('<option>', {value:'', text:'-'}));
+	function populateReasonOptions(statusId, reasonsElement){
+		reasonsElement.empty().append($('<option>', {value:'', text:'-'}));
 
 		if (statusId in reasons)
 		{
 			$.each(reasons[statusId], function(i, v){
-				elements.statusReasons.append($('<option>', {
+				reasonsElement.append($('<option>', {
 						value: v.id,
 						text : v.description
 					}));
@@ -407,11 +441,27 @@ function ResourceManagement(opts) {
 		}
 	}
 
-	var showIndicator = function (formElement) {
-		formElement.find('button').hide();
-		formElement.append($('.indicator'));
-		formElement.find('.indicator').show();
-	};
+	function wireUpIntervalToggle(container) {
+		container.find(':checkbox').change(function ()
+		{
+			var id = $(this).attr('id');
+			var span = container.find('.' + id);
+
+			if ($(this).is(":checked"))
+			{
+				span.find(":text").val('');
+				span.hide();
+			}
+			else
+			{
+				span.show();
+			}
+		});
+	}
+
+	function filterResources() {
+		window.location = document.location.pathname + '?' + $('#filterForm').serialize();
+	}
 
 	var handleAddError = function (result) {
 		$('#addResourceResults').text(result).show();

@@ -36,7 +36,7 @@ class Paths
 			$uploadDir =  ROOT_DIR . $uploadDir;
 		}
 
-		if (!StringHelper::EndsWith($uploadDir, '/'))
+		if (!BookedStringHelper::EndsWith($uploadDir, '/'))
 		{
 			$uploadDir = $uploadDir . '/';
 		}

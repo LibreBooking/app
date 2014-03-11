@@ -123,76 +123,76 @@ class CalendarPresenterTests extends TestBase
 		$schedules = array(new Schedule(1, null, false, 2, null), new Schedule($defaultScheduleId, null, true, 3, null),);
 
 		$this->scheduleRepository
-				->expects($this->once())
+				->expects($this->atLeastOnce())
 				->method('GetAll')
 				->will($this->returnValue($schedules));
 
 		$this->resourceService
-				->expects($this->once())
+				->expects($this->atLeastOnce())
 				->method('GetAllResources')
 				->with($this->equalTo($showInaccessible), $this->equalTo($this->fakeUser))
 				->will($this->returnValue($resources));
 
 		$this->page
-				->expects($this->once())
+				->expects($this->atLeastOnce())
 				->method('GetScheduleId')
 				->will($this->returnValue(null));
 
 		$this->page
-				->expects($this->once())
+				->expects($this->atLeastOnce())
 				->method('GetResourceId')
 				->will($this->returnValue(null));
 
 		$this->repository
-				->expects($this->once())
+				->expects($this->atLeastOnce())
 				->method('GetReservationList')
 				->with($this->equalTo($month->FirstDay()),
 					   $this->equalTo($month->LastDay()), $this->equalTo(null), $this->equalTo(null),
-					   $this->equalTo($defaultScheduleId), $this->equalTo(null))
+					   $this->equalTo(null), $this->equalTo(null))
 				->will($this->returnValue($reservations));
 
 		$this->page
-				->expects($this->once())
+				->expects($this->atLeastOnce())
 				->method('GetCalendarType')
 				->will($this->returnValue($calendarType));
 
 		$this->page
-				->expects($this->once())
+				->expects($this->atLeastOnce())
 				->method('GetDay')
 				->will($this->returnValue($requestedDay));
 
 		$this->page
-				->expects($this->once())
+				->expects($this->atLeastOnce())
 				->method('GetMonth')
 				->will($this->returnValue($requestedMonth));
 
 		$this->page
-				->expects($this->once())
+				->expects($this->atLeastOnce())
 				->method('GetYear')
 				->will($this->returnValue($requestedYear));
 
 		$this->page
-				->expects($this->once())
+				->expects($this->atLeastOnce())
 				->method('SetFirstDay')
 				->with($this->equalTo($schedules[1]->GetWeekdayStart()));
 
 		$this->calendarFactory
-				->expects($this->once())
+				->expects($this->atLeastOnce())
 				->method('Create')
 				->with($this->equalTo($calendarType),
 					   $this->equalTo($requestedYear), $this->equalTo($requestedMonth), $this->equalTo($requestedDay),
 					   $this->equalTo($userTimezone))
 				->will($this->returnValue($month));
 
-		$this->page->expects($this->once())->method('BindCalendar')->with($this->equalTo($month));
+		$this->page->expects($this->atLeastOnce())->method('BindCalendar')->with($this->equalTo($month));
 
 		$details = new CalendarSubscriptionDetails(true);
 		$this->subscriptionService->expects($this->once())->method('ForSchedule')->with($this->equalTo($defaultScheduleId))->will($this->returnValue($details));
 
-		$this->page->expects($this->once())->method('BindSubscription')->with($this->equalTo($details));
+		$this->page->expects($this->atLeastOnce())->method('BindSubscription')->with($this->equalTo($details));
 
-		$calendarFilters = new CalendarFilters($schedules, $resources, $defaultScheduleId, null);
-		$this->page->expects($this->once())->method('BindFilters')->with($this->equalTo($calendarFilters));
+		$calendarFilters = new CalendarFilters($schedules, $resources, null, null);
+		$this->page->expects($this->atLeastOnce())->method('BindFilters')->with($this->equalTo($calendarFilters));
 
 		$this->presenter->PageLoad($this->fakeUser, $userTimezone);
 

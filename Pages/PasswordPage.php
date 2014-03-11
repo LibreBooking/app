@@ -78,5 +78,3 @@ class PasswordPage extends SecurePage implements IPasswordPage
 		$this->Set('ResetPasswordSuccess', $resetPasswordSuccess);
 	}
 }
-
-?>

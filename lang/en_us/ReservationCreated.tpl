@@ -65,6 +65,11 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		One or more of the resources reserved require approval before usage.  This reservation will be pending until it is approved.
 	{/if}
 
+	{if !empty($ApprovedBy)}
+		<br/>
+		Approved by: {$ApprovedBy}
+	{/if}
+
 	<br/>
 	<br/>
 	<a href="{$ScriptUrl}/{$ReservationUrl}">View this reservation</a> |

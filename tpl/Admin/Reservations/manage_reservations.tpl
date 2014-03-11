@@ -21,71 +21,74 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 <h1>{translate key=ManageReservations}</h1>
 
-<div class="filterTable main-div-shadow" id="filterTable">
-	<div class="main-div-header">{translate key=Filter}</div>
-	<ul>
-		<li>
-			<label for="startDate">{translate key=Between}</label>
-			<input id="startDate" type="text" class="textbox" value="{formatdate date=$StartDate}" size="10" style="width:65px;"/>
-			<input id="formattedStartDate" type="hidden" value="{formatdate date=$StartDate key=system}"/>
-			-
-			<input id="endDate" type="text" class="textbox" value="{formatdate date=$EndDate}" size="10" style="width:65px;"/>
-			<input id="formattedEndDate" type="hidden" value="{formatdate date=$EndDate key=system}"/>
-		</li>
-		<li>
-			<label for="userFilter">{translate key=User}</label>
-			<input id="userFilter" type="text" class="textbox" value="{$UserNameFilter}"/>
-			<input id="userId" type="hidden" value="{$UserIdFilter}"/>
-		</li>
-		<li>
-			<label for="scheduleId">{translate key=Schedule}</label>
-			<select id="scheduleId" class="textbox">
-				<option value="">{translate key=AllSchedules}</option>
-				{object_html_options options=$Schedules key='GetId' label="GetName" selected=$ScheduleId}
-			</select>
-		</li>
-		<li>
-			<label for="resourceId">{translate key=Resource}</label>
-			<select id="resourceId" class="textbox">
-				<option value="">{translate key=AllResources}</option>
-				{object_html_options options=$Resources key='GetId' label="GetName" selected=$ResourceId}
-			</select>
-		</li>
-		<li>
-			<label for="statusId">{translate key=Status}</label>
-			<select id="statusId" class="textbox">
-				<option value="">{translate key=AllReservations}</option>
-				<option value="{ReservationStatus::Pending}"
-						{if $ReservationStatusId eq ReservationStatus::Pending}selected="selected"{/if}>{translate key=PendingReservations}</option>
-			</select>
-		</li>
-		<li>
-			<label for="referenceNumber">{translate key=ReferenceNumber}</label>
-			<input id="referenceNumber" type="text" class="textbox" value="{$ReferenceNumber}"/>
-		</li>
-		<li>
-			<label for="resourceStatusIdFilter">{translate key=ResourceStatus}</label>
-			<select id="resourceStatusIdFilter" class="textbox">
-				<option value="">{translate key=All}</option>
-				<option value="{ResourceStatus::AVAILABLE}">{translate key=Available}</option>
-				<option value="{ResourceStatus::UNAVAILABLE}">{translate key=Unavailable}</option>
-				<option value="{ResourceStatus::HIDDEN}">{translate key=Hidden}</option>
-			</select>
-		</li>
-		<li>
-			<label for="resourceReasonIdFilter">{translate key=Reason}</label>
-			<select id="resourceReasonIdFilter" class="textbox"></select>
-		</li>
-		{foreach from=$AttributeFilters item=attribute}
-			<li class="customAttribute">
-				{control type="AttributeControl" attribute=$attribute searchmode=true}
+<div class="filterTable horizontal-list label-top main-div-shadow" id="filterTable">
+	<form id="filterForm">
+		<div class="main-div-header">{translate key=Filter}</div>
+		<ul>
+			<li>
+				<label for="startDate">{translate key=Between}</label>
+				<input id="startDate" type="text" class="textbox" value="{formatdate date=$StartDate}" size="10"
+					   style="width:65px;"/>
+				<input id="formattedStartDate" type="hidden" value="{formatdate date=$StartDate key=system}"/>
+				-
+				<input id="endDate" type="text" class="textbox" value="{formatdate date=$EndDate}" size="10"
+					   style="width:65px;"/>
+				<input id="formattedEndDate" type="hidden" value="{formatdate date=$EndDate key=system}"/>
 			</li>
-		{/foreach}
-	</ul>
+			<li>
+				<label for="userFilter">{translate key=User}</label>
+				<input id="userFilter" type="text" class="textbox" value="{$UserNameFilter}"/>
+				<input id="userId" type="hidden" value="{$UserIdFilter}"/>
+			</li>
+			<li>
+				<label for="scheduleId">{translate key=Schedule}</label>
+				<select id="scheduleId" class="textbox">
+					<option value="">{translate key=AllSchedules}</option>
+					{object_html_options options=$Schedules key='GetId' label="GetName" selected=$ScheduleId}
+				</select>
+			</li>
+			<li>
+				<label for="resourceId">{translate key=Resource}</label>
+				<select id="resourceId" class="textbox">
+					<option value="">{translate key=AllResources}</option>
+					{object_html_options options=$Resources key='GetId' label="GetName" selected=$ResourceId}
+				</select>
+			</li>
+			<li>
+				<label for="statusId">{translate key=Status}</label>
+				<select id="statusId" class="textbox">
+					<option value="">{translate key=AllReservations}</option>
+					<option value="{ReservationStatus::Pending}"
+							{if $ReservationStatusId eq ReservationStatus::Pending}selected="selected"{/if}>{translate key=PendingReservations}</option>
+				</select>
+			</li>
+			<li>
+				<label for="referenceNumber">{translate key=ReferenceNumber}</label>
+				<input id="referenceNumber" type="text" class="textbox" value="{$ReferenceNumber}"/>
+			</li>
+			<li>
+				<label for="resourceStatusIdFilter">{translate key=ResourceStatus}</label>
+				<select id="resourceStatusIdFilter" class="textbox">
+					<option value="">{translate key=All}</option>
+					<option value="{ResourceStatus::AVAILABLE}">{translate key=Available}</option>
+					<option value="{ResourceStatus::UNAVAILABLE}">{translate key=Unavailable}</option>
+					<option value="{ResourceStatus::HIDDEN}">{translate key=Hidden}</option>
+				</select>
+			</li>
+			<li>
+				<label for="resourceReasonIdFilter">{translate key=Reason}</label>
+				<select id="resourceReasonIdFilter" class="textbox"></select>
+			</li>
+			{foreach from=$AttributeFilters item=attribute}
+				<li class="customAttribute">
+					{control type="AttributeControl" attribute=$attribute searchmode=true}
+				</li>
+			{/foreach}
+		</ul>
+	</form>
 	<div class="clear">&nbsp;</div>
-	<div id="reservationFilterButtons">
+	<div id="adminFilterButtons">
 		<button id="filter" class="button">{html_image src="search.png"} {translate key=Filter}</button>
-		{*<input type="submit" />*}
 		<a href="#" id="clearFilter">{translate key=Reset}</a>
 	</div>
 </div>
@@ -125,28 +128,28 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			<td>{$reservation->ResourceName}
 				<div>{if $reservation->ResourceStatusId == ResourceStatus::AVAILABLE}
 						{html_image src="status.png"}
-						{if $CanUpdateResourceStatus}
-							<a class="update changeStatus" href="#"
-							   resourceId="{$reservation->ResourceId}">{translate key='Available'}</a>
-						{else}
-							{translate key='Available'}
-						{/if}
+						{*{if $CanUpdateResourceStatus}*}
+						{*<a class="changeStatus" href="#"*}
+						{*resourceId="{$reservation->ResourceId}">{translate key='Available'}</a>*}
+						{*{else}*}
+						{translate key='Available'}
+						{*{/if}*}
 					{elseif $reservation->ResourceStatusId == ResourceStatus::UNAVAILABLE}
 						{html_image src="status-away.png"}
-						{if $CanUpdateResourceStatus}
-							<a class="update changeStatus" href="#"
-							   resourceId="{$reservation->ResourceId}">{translate key='Unavailable'}</a>
-						{else}
-							{translate key='Unavailable'}
-						{/if}
+						{*{if $CanUpdateResourceStatus}*}
+						{*<a class="changeStatus" href="#"*}
+						{*resourceId="{$reservation->ResourceId}">{translate key='Unavailable'}</a>*}
+						{*{else}*}
+						{translate key='Unavailable'}
+						{*{/if}*}
 					{else}
 						{html_image src="status-busy.png"}
-						{if $CanUpdateResourceStatus}
-							<a class="update changeStatus" href="#"
-							   resourceId="{$reservation->ResourceId}">{translate key='Hidden'}</a>
-						{else}
-							{translate key='Hidden'}
-						{/if}
+						{*{if $CanUpdateResourceStatus}*}
+						{*<a class="changeStatus" href="#"*}
+						{*resourceId="{$reservation->ResourceId}">{translate key='Hidden'}</a>*}
+						{*{else}*}
+						{translate key='Hidden'}
+						{*{/if}*}
 					{/if}
 					{if array_key_exists($reservation->ResourceStatusReasonId,$StatusReasons)}
 						<span class="reservationResourceStatusReason">{$StatusReasons[$reservation->ResourceStatusReasonId]->Description()}</span>
@@ -231,8 +234,9 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 <div id="inlineUpdateErrorDialog" class="dialog" title="{translate key=Error}">
 	<div id="inlineUpdateErrors" class="hidden error">&nbsp;</div>
-	<div id="reservationAccessError" class="hidden error"/>You do not have access to this reservation</div>
-	<button type="button" class="button cancel">{translate key='OK'}</button>
+	<div id="reservationAccessError" class="hidden error"/>
+</div>
+<button type="button" class="button cancel">{translate key='OK'}</button>
 </div>
 
 <div id="statusDialog" class="dialog" title="{translate key=CurrentStatus}">

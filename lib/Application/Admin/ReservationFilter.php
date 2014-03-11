@@ -180,6 +180,7 @@ class ReservationFilter
 
 			$filter->_And($f);
 		}
+
 		foreach ($this->_and as $and)
 		{
 			$filter->_And($and);

@@ -24,6 +24,12 @@ class ReservationApprovedEmail extends ReservationEmailMessage
 		return $this->Translate('ReservationApprovedSubject');
 	}
 
+	protected function PopulateTemplate()
+	{
+		parent::PopulateTemplate();
+		$this->Set('ApprovedBy', new FullName($this->reservationSeries->BookedBy()->FirstName, $this->reservationSeries->BookedBy()->LastName));
+	}
+
     /**
      * @return string
      */
@@ -32,4 +38,3 @@ class ReservationApprovedEmail extends ReservationEmailMessage
         return 'ReservationCreated.tpl';
     }
 }
-?>

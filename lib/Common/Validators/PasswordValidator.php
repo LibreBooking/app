@@ -37,5 +37,3 @@ class PasswordValidator extends ValidatorBase implements IValidator
 		$this->isValid = $pw->Validate($this->user->passwordSalt);
 	}
 }
-
-?>

@@ -61,6 +61,34 @@ class ResourceAdminResourceRepositoryTests extends TestBase
 		$this->assertEquals(1, count($resources));
 		$this->assertEquals(2, $resources[0]->GetId());
 	}
+	
+	public function testOnlyGetsPageableResourcesWhereUserIsAdmin()
+	{
+		$pageNum = 10;
+		$pageSize = 100;
+		$existingFilter = new SqlFilterEquals('a', 'b');
+
+		$groups = array(new UserGroup(1, 'g1', null, RoleLevel::SCHEDULE_ADMIN), new UserGroup(2,'g2', null, RoleLevel::RESOURCE_ADMIN));
+
+		$scheduleAdminGroupIds = array(1);
+		$resourceAdminGroupIds = array(2);
+
+		$this->userRepository->expects($this->once())
+					->method('LoadGroups')
+					->with($this->equalTo($this->fakeUser->UserId), $this->equalTo(array(RoleLevel::SCHEDULE_ADMIN, RoleLevel::RESOURCE_ADMIN)))
+					->will($this->returnValue($groups));
+		
+		$repo = new ResourceAdminResourceRepository($this->userRepository, $this->fakeUser);
+		$repo->GetList($pageNum, $pageSize, null, null, $existingFilter);
+
+		$additionalFilter = new SqlFilterIn(new SqlFilterColumn(TableNames::SCHEDULES_ALIAS, ColumnNames::SCHEDULE_ADMIN_GROUP_ID), $scheduleAdminGroupIds);
+		$expectedFilter = $existingFilter->_And($additionalFilter->_Or(new SqlFilterIn(ColumnNames::RESOURCE_ADMIN_GROUP_ID, $resourceAdminGroupIds)));
+
+		$expectedCommand = new FilterCommand(new GetAllResourcesCommand(), $expectedFilter);
+		$lastCommand = $this->db->_LastCommand;
+
+		$this->assertEquals($expectedCommand->GetQuery(), $lastCommand->GetQuery());
+	}
 
     public function testDoesNotUpdateResourceIfUserDoesNotHaveAccess()
     {
@@ -122,5 +150,3 @@ class ResourceAdminResourceRepositoryTests extends TestBase
 		$this->assertEquals(2, $resources[0]->GetId());
 	}
 }
-
-?>

@@ -112,6 +112,42 @@ class AttributeServiceTests extends TestBase
 		$this->assertEquals(3, count($result->Errors()));
 	}
 
+	public function testWhenUserIsNotAdminButAttributeIsAdminOnly_ThenDoNotValidate()
+	{
+		$category = CustomAttributeCategory::RESERVATION;
+		$isAdmin = false;
+
+		$attributes = array(new FakeCustomAttribute(1, true, false, null, true));
+		$values = array(new AttributeValue(1, 'value1'));
+
+		$this->attributeRepository->expects($this->once())
+								  ->method('GetByCategory')
+								  ->with($this->equalTo($category))
+								  ->will($this->returnValue($attributes));
+
+		$result = $this->attributeService->Validate($category, $values, null, false, $isAdmin);
+
+		$this->assertTrue($result->IsValid());
+	}
+
+	public function testWhenUserIsAdminAndAttributeIsAdminOnly_ThenValidate()
+	{
+		$category = CustomAttributeCategory::RESERVATION;
+		$isAdmin = true;
+
+		$attributes = array(new FakeCustomAttribute(1, true, false, null, true));
+		$values = array(new AttributeValue(1, 'value1'));
+
+		$this->attributeRepository->expects($this->once())
+								  ->method('GetByCategory')
+								  ->with($this->equalTo($category))
+								  ->will($this->returnValue($attributes));
+
+		$result = $this->attributeService->Validate($category, $values, null, false, $isAdmin);
+
+		$this->assertFalse($result->IsValid());
+	}
+
 	public function testPassThroughForCategory()
 	{
 		$categoryId = 123;
@@ -136,5 +172,3 @@ class AttributeServiceTests extends TestBase
 		$this->attributeService->GetById($attributeId);
 	}
 }
-
-?>

@@ -89,5 +89,3 @@ class PageablePage extends Page implements IPageable
 		$this->page->PageLoad();
 	}
 }
-
-?>

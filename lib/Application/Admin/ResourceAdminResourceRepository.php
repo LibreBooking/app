@@ -43,12 +43,41 @@ class ResourceAdminResourceRepository extends ResourceRepository
 		$resources = parent::GetResourceList();
 
 		return $this->GetFilteredResources($resources);
-
     }
 
-    /**
-     * @param BookableResource $resource
-     */
+	public function GetList($pageNumber, $pageSize, $sortField = null, $sortDirection = null, $filter = null)
+	{
+		if (!$this->user->IsAdmin)
+		{
+			$scheduleAdminGroupIds = array();
+			$resourceAdminGroupIds = array();
+
+			$groups = $this->repo->LoadGroups($this->user->UserId, array(RoleLevel::SCHEDULE_ADMIN, RoleLevel::RESOURCE_ADMIN));
+			foreach ($groups as $group)
+			{
+				if ($group->IsResourceAdmin)
+				{
+					$resourceAdminGroupIds[] = $group->GroupId;
+				}
+
+				if ($group->IsScheduleAdmin)
+				{
+					$scheduleAdminGroupIds[] = $group->GroupId;
+				}
+			}
+
+			if ($filter == null)
+			{
+				$filter = new SqlFilterNull();
+			}
+
+			$additionalFilter = new SqlFilterIn(new SqlFilterColumn(TableNames::SCHEDULES_ALIAS, ColumnNames::SCHEDULE_ADMIN_GROUP_ID), $scheduleAdminGroupIds);
+			$filter->_And($additionalFilter->_Or(new SqlFilterIn(ColumnNames::RESOURCE_ADMIN_GROUP_ID, $resourceAdminGroupIds)));
+		}
+
+		return parent::GetList($pageNumber, $pageSize, $sortField, $sortDirection, $filter);
+	}
+
     public function Update(BookableResource $resource)
     {
 		if (!$this->user->IsAdmin)
@@ -64,10 +93,6 @@ class ResourceAdminResourceRepository extends ResourceRepository
         parent::Update($resource);
     }
 
-	/**
-	 * @param int $scheduleId
-	 * @return array|BookableResource[]
-	 */
 	public function GetScheduleResources($scheduleId)
 	{
 		$resources =  parent::GetScheduleResources($scheduleId);
@@ -99,6 +124,4 @@ class ResourceAdminResourceRepository extends ResourceRepository
 
 		return $filteredResources;
 	}
-
-
 }
