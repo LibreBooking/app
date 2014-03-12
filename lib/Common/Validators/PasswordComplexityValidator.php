@@ -29,9 +29,9 @@ class PasswordComplexityValidator extends ValidatorBase implements IValidator
 		$letters = Configuration::Instance()->GetSectionKey(ConfigSection::PASSWORD, ConfigKeys::PASSWORD_LETTERS, new IntConverter());
 		$numbers = Configuration::Instance()->GetSectionKey(ConfigSection::PASSWORD, ConfigKeys::PASSWORD_NUMBERS, new IntConverter());
 
-		$passwordNumbers = preg_match_all( "/[^a-zA-Z]/", $this->password);
-		$passwordUpper = preg_match_all( "/[A-Z]/", $this->password);
-		$passwordLower = preg_match_all( "/[a-z]/", $this->password);
+		$passwordNumbers = preg_match_all( "/[^a-zA-Z]/", $this->password, $m1);
+		$passwordUpper = preg_match_all( "/[A-Z]/", $this->password, $m2);
+		$passwordLower = preg_match_all( "/[a-z]/", $this->password, $m3);
 		$passwordLetters = strlen($this->password);
 
 		if (empty($letters))
