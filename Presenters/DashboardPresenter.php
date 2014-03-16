@@ -42,6 +42,11 @@ class DashboardPresenter
 
 		$this->_page->AddItem($announcement);
 		$this->_page->AddItem($upcomingReservations);
+
+		if (ServiceLocator::GetServer()->GetUserSession()->IsAdmin)
+		{
+			$allUpcomingReservations = new AllUpcomingReservations(new SmartyPage());
+			$this->_page->AddItem($allUpcomingReservations);
+		}
 	}
 }
-?>

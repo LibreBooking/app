@@ -27,7 +27,7 @@ class UpcomingReservations extends DashboardItem implements IUpcomingReservation
 	/**
 	 * @var UpcomingReservationsPresenter
 	 */
-	private $presenter;
+	protected $presenter;
 
 	public function __construct(SmartyPage $smarty)
 	{
@@ -38,6 +38,7 @@ class UpcomingReservations extends DashboardItem implements IUpcomingReservation
 	public function PageLoad()
 	{
         $this->Set('DefaultTitle', Resources::GetInstance()->GetString('NoTitleLabel'));
+		$this->presenter->SetSearchCriteria(ServiceLocator::GetServer()->GetUserSession()->UserId, ReservationUserLevel::ALL);
 		$this->presenter->PageLoad();
 		$this->Display('upcoming_reservations.tpl');
 	}
@@ -90,4 +91,13 @@ interface IUpcomingReservationsControl
 	function BindNextWeek($reservations);
 }
 
-?>
+class AllUpcomingReservations extends  UpcomingReservations
+{
+	public function PageLoad()
+	{
+		$this->Set('DefaultTitle', Resources::GetInstance()->GetString('NoTitleLabel'));
+		$this->presenter->SetSearchCriteria(ReservationViewRepository::ALL_USERS, ReservationUserLevel::ALL);
+		$this->presenter->PageLoad();
+		$this->Display('admin_upcoming_reservations.tpl');
+	}
+}

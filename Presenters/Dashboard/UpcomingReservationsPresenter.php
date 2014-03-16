@@ -32,16 +32,31 @@ class UpcomingReservationsPresenter
 	 */
 	private $repository;
 
+	/**
+	 * @var int
+	 */
+	private $searchUserId;
+
+	/**
+	 * @var int
+	 */
+	private $searchUserLevel;
+
 	public function __construct(IUpcomingReservationsControl $control, IReservationViewRepository $repository)
 	{
 		$this->control = $control;
 		$this->repository = $repository;
 	}
 
+	public function SetSearchCriteria($userId, $userLevel)
+	{
+		$this->searchUserId = $userId;
+		$this->searchUserLevel = $userLevel;
+	}
+
 	public function PageLoad()
 	{
 		$user = ServiceLocator::GetServer()->GetUserSession();
-		$currentUserId = $user->UserId;
 		$timezone = $user->Timezone;
 
 		$now = Date::Now();
@@ -49,7 +64,7 @@ class UpcomingReservationsPresenter
 		$dayOfWeek = $today->Weekday();
 
 		$lastDate = $now->AddDays(13-$dayOfWeek-1);
-		$reservations = $this->repository->GetReservationList($now, $lastDate, $currentUserId, ReservationUserLevel::ALL);
+		$reservations = $this->repository->GetReservationList($now, $lastDate, $this->searchUserId, $this->searchUserLevel);
 		$tomorrow = $today->AddDays(1);
 
 		$startOfNextWeek = $today->AddDays(7-$dayOfWeek);
@@ -92,4 +107,3 @@ class UpcomingReservationsPresenter
 		$this->control->BindNextWeek($nextWeeks);
 	}
 }
-?>

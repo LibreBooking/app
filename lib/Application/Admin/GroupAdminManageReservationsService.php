@@ -47,7 +47,7 @@ class GroupAdminManageReservationsService extends ManageReservationsService impl
      * @param $pageSize int
      * @param $filter ReservationFilter
      * @param $userSession UserSession
-     * @return PageableData
+     * @return PageableData|ReservationItemView[]
      */
     public function LoadFiltered($pageNumber, $pageSize, $filter, $userSession)
     {

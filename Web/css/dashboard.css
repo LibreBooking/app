@@ -54,19 +54,19 @@
 	margin-left: 30px;
 }
 
-#upcomingReservationsDashboard .timespan td {
+.upcomingReservationsDashboard .timespan td {
 	background-color: #ececec;
 	font-style: italic;
 	color: #000;
 }
 	
-#upcomingReservationsDashboard tr.reservation.hover td {
+.upcomingReservationsDashboard tr.reservation.hover td {
 	cursor: pointer;
 	background-color: #FEFEFE;
 	color: #222;
 }
 
-#upcomingReservationsDashboard tr.reservation.clicked td {
+.upcomingReservationsDashboard tr.reservation.clicked td {
 	cursor: pointer;
 	background-color: #F0F0F0;
 }

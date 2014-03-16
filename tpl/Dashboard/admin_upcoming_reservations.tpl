@@ -28,9 +28,9 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 {/function}
 
 
-<div class="dashboard upcomingReservationsDashboard" id="upcomingReservationsDashboard">
+<div class="dashboard upcomingReservationsDashboard" id="adminUpcomingReservationsDashboard">
 	<div class="dashboardHeader">
-		<a href="javascript:void(0);" title="{translate key='ShowHide'}">{translate key="UpcomingReservations"}</a> ({$Total})
+		<a href="javascript:void(0);" title="{translate key='ShowHide'}">{translate key="AllUpcomingReservations"}</a> ({$Total})
 	</div>
 	<div class="dashboardContents">
 		{assign var=colspan value="5"}
@@ -65,7 +65,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			{/foreach}
 		</table>
 		{else}
-			<div class="noresults">{translate key="NoUpcomingReservations"}</div>
+			<div class="noresults">{translate key="AllNoUpcomingReservations"}</div>
 		{/if}
 	</div>
 </div>
