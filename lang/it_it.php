@@ -465,7 +465,7 @@ class it_it extends en_us
 	$strings['AddGroup'] = 'Aggiungi gruppo';
 	$strings['StandardScheduleDisplay'] = 'Visualizzazione standard';
 	$strings['TallScheduleDisplay'] = 'Visualizzazione allungata';
-	$strings['WideScheduleDisplay'] = 'Visualizzazione allargata del calendario';
+	$strings['WideScheduleDisplay'] = 'Visualizzazione allargata';
 	$strings['CondensedWeekScheduleDisplay'] = 'Visualizzazione settimana condensata';
 	$strings['ResourceGroupHelp1'] = 'Trascina i gruppi di risorse per riorganizzare.';
 	$strings['ResourceGroupHelp2'] = 'Fai clic con il pulsante destro sul nome del gruppo di risorse per ulteriori azioni.';
@@ -489,6 +489,7 @@ class it_it extends en_us
 	$strings['BulkResourceUpdate'] = 'Aggiornamento combinato risorsa';
 	$strings['Unchanged'] = 'Non modificato';
 	$strings['Common'] = 'Comune';
+        $strings['SelectUser'] = 'Seleziona utente';
 	// End Strings
 
         // Errors

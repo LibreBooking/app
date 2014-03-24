@@ -118,7 +118,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 <p>HTML is allows within the announcement text. This allows you to embed links or images from anywhere on the web.</p>
 
-<h3>Configuraizone gruppi</h3>
+<h3>Configurazione gruppi</h3>
 
 <p>Groups in Booked Scheduler organize users, control resource access permissions and define roles within the
 	application.</p>
