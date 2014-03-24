@@ -119,6 +119,11 @@ class ReservationComponentTests extends TestBase
 									   ->with($this->fakeUser)
 									   ->will($this->returnValue(true));
 
+		$this->fakeConfig->SetSectionKey(ConfigSection::PRIVACY, ConfigKeys::PRIVACY_HIDE_USER_DETAILS, 'true');
+		$this->initializer->expects($this->once())
+			->method('SetShowParticipation')
+			->with($this->equalTo(false));
+
 		$this->initializer->expects($this->once())
 						  ->method('SetCanChangeUser')
 						  ->with($this->equalTo(true));

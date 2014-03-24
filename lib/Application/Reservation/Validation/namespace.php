@@ -55,4 +55,4 @@ require_once(ROOT_DIR . 'lib/Application/Reservation/Validation/DeleteReservatio
 require_once(ROOT_DIR . 'lib/Application/Reservation/Validation/IBlackoutValidationResult.php');
 require_once(ROOT_DIR . 'lib/Application/Reservation/Validation/BlackoutValidationResult.php');
 require_once(ROOT_DIR . 'lib/Application/Reservation/Validation/BlackoutDateTimeValidationResult.php');
-?>
+require_once(ROOT_DIR . 'lib/Application/Reservation/Validation/CurrentUserIsReservationUserRule.php');

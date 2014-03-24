@@ -211,11 +211,10 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 </div>
 
 {block name="reservations"}
-
 	{assign var=TodaysDate value=Date::Now()}
 	<div id="reservations">
 		{foreach from=$BoundDates item=date}
-			<div class="foo" style="position:relative;">
+			<div style="position:relative;">
 			<table class="reservations" border="1" cellpadding="0" width="100%">
 				{if $TodaysDate->DateEquals($date) eq true}
 				<tr class="today">
@@ -248,6 +247,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 				{/foreach}
 			</table>
 			</div>
+			{flush}
 		{/foreach}
 	</div>
 {/block}

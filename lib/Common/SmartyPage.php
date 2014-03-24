@@ -636,7 +636,8 @@ class SmartyPage extends Smarty
 
 	public function Flush($params, &$smarty)
 	{
-//		echo str_repeat(' ', 16*1024), "\n"; flush();
+		echo '<!-- flushing -->';
+		flush();
 	}
 
 	public function IncludeJavascriptFile($params, &$smarty)

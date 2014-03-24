@@ -99,6 +99,11 @@ interface IReservationComponentInitializer
 	public function ShowUserDetails($showUserDetails);
 
 	/**
+	 * @param $shouldShow bool
+	 */
+	public function SetShowParticipation($shouldShow);
+
+	/**
 	 * @abstract
 	 * @param $showReservationDetails bool
 	 */
@@ -383,6 +388,11 @@ abstract class ReservationInitializerBase implements IReservationInitializer, IR
 	public function ShowUserDetails($showUserDetails)
 	{
 		$this->basePage->ShowUserDetails($showUserDetails);
+	}
+
+	public function SetShowParticipation($shouldShow)
+	{
+		$this->basePage->SetShowParticipation($shouldShow);
 	}
 
 	/**

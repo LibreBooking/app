@@ -62,9 +62,10 @@ class UpcomingReservationsPresenterTests extends TestBase
 
 		$reservations = array();
 
+
 		$this->repository->expects($this->once())
 			->method('GetReservationList')
-			->with($this->equalTo($startDate), $this->equalTo($endDate), $this->equalTo($userId))
+			->with($this->equalTo($startDate), $this->equalTo($endDate), $this->equalTo($userId), $this->equalTo(ReservationUserLevel::ALL))
 			->will($this->returnValue($reservations));
 
 		$this->control->expects($this->once())
@@ -88,6 +89,8 @@ class UpcomingReservationsPresenterTests extends TestBase
 			->with($this->anything());
 
 		$presenter = new UpcomingReservationsPresenter($this->control, $this->repository);
+		$presenter->SetSearchCriteria($userId, ReservationUserLevel::ALL);
+
 		$presenter->PageLoad();
 	}
 

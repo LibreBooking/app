@@ -80,4 +80,3 @@ class PostReservationFactory implements IPostReservationFactory
         return new ApproveReservationNotificationService(new UserRepository(), new ResourceRepository(), new AttributeRepository());
     }
 }
-?>

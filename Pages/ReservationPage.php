@@ -81,31 +81,26 @@ interface IReservationPage extends IPage
 
 	/**
 	 * @param ReservationUserView[] $participants
-	 * @return void
 	 */
 	public function SetParticipants($participants);
 
 	/**
 	 * @param ReservationUserView[] $invitees
-	 * @return void
 	 */
 	public function SetInvitees($invitees);
 
 	/**
 	 * @param $accessories ReservationAccessory[]|array
-	 * @return void
 	 */
 	public function SetAccessories($accessories);
 
 	/**
 	 * @param $attachments ReservationAttachmentView[]|array
-	 * @return void
 	 */
 	public function SetAttachments($attachments);
 
 	/**
 	 * @param $canChangeUser
-	 * @return void
 	 */
 	public function SetCanChangeUser($canChangeUser);
 
@@ -118,6 +113,11 @@ interface IReservationPage extends IPage
 	 * @param bool $canShowUserDetails
 	 */
 	public function ShowUserDetails($canShowUserDetails);
+
+	/**
+	 * @param bool $shouldShow
+	 */
+	public function SetShowParticipation($shouldShow);
 
 	/**
 	 * @param bool $showReservationDetails
@@ -216,7 +216,7 @@ abstract class ReservationPage extends Page implements IReservationPage
 		$this->Set('UploadsEnabled', Configuration::Instance()->GetSectionKey(ConfigSection::UPLOADS,
 																			  ConfigKeys::UPLOAD_ENABLE_RESERVATION_ATTACHMENTS,
 																			  new BooleanConverter()));
-		$this->Set('ShowParticipation', !Configuration::Instance()->GetSectionKey(ConfigSection::RESERVATION,
+		$this->Set('AllowParticipation', !Configuration::Instance()->GetSectionKey(ConfigSection::RESERVATION,
 																				  ConfigKeys::RESERVATION_PREVENT_PARTICIPATION,
 																				  new BooleanConverter()));
 		$remindersEnabled = Configuration::Instance()->GetSectionKey(ConfigSection::RESERVATION,
@@ -345,6 +345,11 @@ abstract class ReservationPage extends Page implements IReservationPage
 	public function ShowUserDetails($canShowUserDetails)
 	{
 		$this->Set('ShowUserDetails', $canShowUserDetails);
+	}
+
+	public function SetShowParticipation($shouldShow)
+	{
+		$this->Set('ShowParticipation', $shouldShow);
 	}
 
 	public function ShowReservationDetails($showReservationDetails)

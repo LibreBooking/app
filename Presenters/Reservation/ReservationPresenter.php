@@ -130,6 +130,3 @@ class EditReservationPresenter extends ReservationPresenterBase
 
 interface IReservationPresenter
 {}
-
-
-?>

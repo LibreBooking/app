@@ -35,12 +35,12 @@ class UpcomingReservationsPresenter
 	/**
 	 * @var int
 	 */
-	private $searchUserId;
+	private $searchUserId = ReservationViewRepository::ALL_USERS;
 
 	/**
 	 * @var int
 	 */
-	private $searchUserLevel;
+	private $searchUserLevel = ReservationUserLevel::ALL;
 
 	public function __construct(IUpcomingReservationsControl $control, IReservationViewRepository $repository)
 	{

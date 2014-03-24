@@ -163,10 +163,10 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
     </ul>
 </div>
 
-{if $ShowUserDetails && $ShowParticipation}
-{include file="Reservation/participation.tpl"}
-	{else}
-{include file="Reservation/private-participation.tpl"}
+{if $ShowParticipation && $AllowParticipation}
+	{include file="Reservation/participation.tpl"}
+{else}
+	{include file="Reservation/private-participation.tpl"}
 {/if}
 
 <div style="clear:both;">&nbsp;</div>

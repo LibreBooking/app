@@ -105,7 +105,8 @@ class ReservationUserBinder implements IReservationComponentBinder
 	public function Bind(IReservationComponentInitializer $initializer)
 	{
 		$userId = $initializer->GetOwnerId();
-		$canChangeUser = $this->reservationAuthorization->CanChangeUsers($initializer->CurrentUser());
+		$currentUser = $initializer->CurrentUser();
+		$canChangeUser = $this->reservationAuthorization->CanChangeUsers($currentUser);
 
 		$initializer->SetCanChangeUser($canChangeUser);
 
@@ -116,7 +117,8 @@ class ReservationUserBinder implements IReservationComponentBinder
 															 ConfigKeys::PRIVACY_HIDE_USER_DETAILS,
 															 new BooleanConverter());
 
-		$initializer->ShowUserDetails(!$hideUser || $initializer->CurrentUser()->IsAdmin);
+		$initializer->ShowUserDetails(!$hideUser || $currentUser->IsAdmin);
+		$initializer->SetShowParticipation(!$hideUser || $currentUser->IsAdmin || $currentUser->IsGroupAdmin);
 
 		$currentUser = $this->userRepository->LoadById($initializer->CurrentUser()->UserId);
 		$owner = $this->userRepository->LoadById($userId);
@@ -340,6 +342,7 @@ class ReservationDetailsBinder implements IReservationComponentBinder
 
 		$showUser = $this->privacyFilter->CanViewUser($initializer->CurrentUser(), $this->reservationView);
 		$showDetails = $this->privacyFilter->CanViewDetails($initializer->CurrentUser(), $this->reservationView);
+
 
 		$initializer->ShowUserDetails($showUser);
 		$initializer->ShowReservationDetails($showDetails);
