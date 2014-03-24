@@ -1,6 +1,8 @@
 {*
 Copyright 2013-2014 Nick Korbel
 
+Translation: 2014 Nicola Ruggero <nicola@nxnt.org>
+
 This file is part of Booked Scheduler.
 
 Booked Scheduler is free software: you can redistribute it and/or modify
@@ -26,6 +28,7 @@ Dettagli prenotazione:
 	Risorsa: {$ResourceName}<br/>
 	Note: {$Title}<br/>
 	Descrizione: {$Description|nl2br}<br/>
+<br/>
 <br/>
 <a href="{$ScriptUrl}/{$ReservationUrl}">Vedi questa prenotazione</a> |
 <a href="{$ScriptUrl}/{$ICalUrl}">Aggiungi al calendario</a> |

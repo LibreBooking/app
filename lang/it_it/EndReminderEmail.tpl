@@ -1,6 +1,8 @@
 {*
 Copyright 2013-2014 Nick Korbel
 
+Translation: 2014 Nicola Ruggero <nicola@nxnt.org>
+
 This file is part of Booked Scheduler.
 
 Booked Scheduler is free software: you can redistribute it and/or modify

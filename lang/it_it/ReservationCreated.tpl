@@ -1,6 +1,8 @@
 {*
 Copyright 2011-2014 Nick Korbel
 
+Translation: 2014 Nicola Ruggero <nicola@nxnt.org>
+
 This file is part of Booked Scheduler.
 
 Booked Scheduler is free software: you can redistribute it and/or modify
@@ -53,9 +55,21 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		{/foreach}
 	{/if}
 
+        {if $Attributes|count > 0}
+		<br/>
+		{foreach from=$Attributes item=attribute}
+			<div>{control type="AttributeControl" attribute=$attribute readonly=true}</div>
+		{/foreach}
+	{/if}
+        
 	{if $RequiresApproval}
 		<br/>
 		Una o più risorse in cui è stata inserita la prenotazione richiedono un'approvazione prima dell'utilizzo. Questa prenotazione rimarrà in sospeso fino all'approvazione.
+	{/if}
+
+        {if !empty($ApprovedBy)}
+		<br/>
+		Approvato da: {$ApprovedBy}
 	{/if}
 
 	<br/>

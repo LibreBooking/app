@@ -1,6 +1,8 @@
 {*
 Copyright 2011-2014 Nick Korbel
 
+Translation: 2014 Nicola Ruggero <nicola@nxnt.org>
+
 This file is part of Booked Scheduler.
 
 Booked Scheduler is free software: you can redistribute it and/or modify
@@ -50,6 +52,13 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		<br/>Accessori:<br/>
 		{foreach from=$Accessories item=accessory}
 			({$accessory->QuantityReserved}) {$accessory->Name}<br/>
+		{/foreach}
+	{/if}
+
+	{if $Attributes|count > 0}
+		<br/>
+		{foreach from=$Attributes item=attribute}
+			<div>{control type="AttributeControl" attribute=$attribute readonly=true}</div>
 		{/foreach}
 	{/if}
 

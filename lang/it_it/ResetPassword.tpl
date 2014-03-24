@@ -1,6 +1,8 @@
 {*
 Copyright 2011-2014 Nick Korbel
 
+Translation: 2014 Nicola Ruggero <nicola@nxnt.org>
+
 This file is part of Booked Scheduler.
 
 Booked Scheduler is free software: you can redistribute it and/or modify
@@ -18,14 +20,14 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 *}
 {include file='..\..\tpl\Email\emailheader.tpl'}
 
-Here is your temporary Booked Scheduler password: {$TemporaryPassword}
+Questa è la nuova password temporanea per Booked Scheduler: {$TemporaryPassword}
 
 <br/>
 
-Your old password will no longer work.
+La vecchia password è stata disattivata.
 <br/>
 <br />
 
-Please <a href="{$ScriptUrl}">Log in to Booked Scheduler</a> and change your password as soon as possible.
+Please <a href="{$ScriptUrl}">Accedi a Booked Scheduler</a> e cambia la password il prima possibile.
 
 {include file='..\..\tpl\Email\emailfooter.tpl'}

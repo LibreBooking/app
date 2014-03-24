@@ -1,5 +1,5 @@
 {*
-Copyright 2011-2014 Nick Korbel
+Copyright 2011-2014 Nick Korbel, Paul Menchini
 
 Translation: 2014 Nicola Ruggero <nicola@nxnt.org>
 
@@ -20,7 +20,13 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 *}
 {include file='..\..\tpl\Email\emailheader.tpl'}
 
-{$FirstName},<br/>
-grazie per esserti registrato in Booked Scheduler. Attiva il tuo account facendo clic <a href="{$ActivationUrl}">qui</a>.
+<p>{$To},</p>
+
+<p>Si è registrato un nuovo utente con le seguenti informaizoni:<br/>
+Email: {$EmailAddress}<br/>
+Nome: {$FullName}<br/>
+Telefono: {$Phone}<br/>
+Area: {$Organization}<br/>
+Posizione: {$Position}</p>
 
 {include file='..\..\tpl\Email\emailfooter.tpl'}

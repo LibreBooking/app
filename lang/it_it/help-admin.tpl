@@ -1,6 +1,8 @@
 {*
 Copyright 2011-2014 Nick Korbel
 
+Translation: 2014 Nicola Ruggero <nicola@nxnt.org>
+
 This file is part of Booked Scheduler.
 
 Booked Scheduler is free software: you can redistribute it and/or modify
@@ -17,15 +19,15 @@ You should have received a copy of the GNU General Public License
 along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 *}
 {include file='globalheader.tpl'}
-<h1 xmlns="http://www.w3.org/1999/html">Amministrazione Booked Scheduler</h1>
+<h1 xmlns="http://www.w3.org/1999/html">Amministrazione di Booked Scheduler</h1>
 
 <div id="help">
-<h2>Administration</h2>
+<h2>Amminstrazione</h2>
 
 <p>If you are in an Application Administrator role then you will see the Application Management menu item. All
 	administrative tasks can be found here.</p>
 
-<h3>Setting up Schedules</h3>
+<h3>Configurazione calendari</h3>
 
 <p>
 	When installing Booked Scheduler a default schedule will be created with out of the box settings. From the
@@ -46,7 +48,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 <p>Below the slot configuration windows is a slot creation wizard. This will set up available slots at the given
 	interval between the start and end times.</p>
 
-<h3>Setting up Resources</h3>
+<h3>Configurazione risorse</h3>
 
 <p>You can view and manage resources from the Resources menu option. Here you can change the attributes and usage
 	configuration of a resource.
@@ -83,13 +85,13 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 <p>Application Administrators are exempt from usage constraints.</p>
 
-<h3>Resource Images</h3>
+<h3>Immagini delle risorse</h3>
 
 <p>You can set a resource image which will be displayed when viewing resource details from the reservation page. This
 	requires php_gd2 to be installed and enabled in your php.ini file. <a
 			href="http://www.php.net/manual/en/book.image.php">More Details</a></p>
 
-<h3>Setting up Accessories</h3>
+<h3>Configurazione accessori</h3>
 
 <p>Accessories can be thought of as objects used during a reservation. Examples may be projectors or chairs in a
 	conference room.</p>
@@ -97,7 +99,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 <p>Accessories can be viewed and managed from the Accessories menu item, under the Resources menu item. Setting a
 	accessory quantity will prevent more than that number of accessories from being booked at a time.</p>
 
-<h3>Setting up Quotas</h3>
+<h3>Configurazione quote</h3>
 
 <p>Quotas prevent reservations from being booked based on a configurable limit. The quota system in Booked Scheduler is
 	very flexible, allowing you to build limits based on reservation length and number reservations. Also, quota limits
@@ -107,7 +109,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 <p>Application Administrators are exempt from quota limits.</p>
 
-<h3>Setting up Announcements</h3>
+<h3>Configurazione avvisi</h3>
 
 <p>Announcements are a very simple way to display notifications to Booked Scheduler users. From the Announcements menu item
 	you can view and manage the announcements that are displayed on users dashboards. An announcement can be configured
@@ -116,12 +118,12 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 <p>HTML is allows within the announcement text. This allows you to embed links or images from anywhere on the web.</p>
 
-<h3>Setting up Groups</h3>
+<h3>Configuraizone gruppi</h3>
 
 <p>Groups in Booked Scheduler organize users, control resource access permissions and define roles within the
 	application.</p>
 
-<h3>Roles</h3>
+<h3>Ruoli</h3>
 
 <p>Roles give a group of users the authorization to perform certain actions.</p>
 
@@ -138,27 +140,27 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 <p>Schedule Administrator: Users that belong to a group that is given the Schedule Administrator role are able to manage
 	their schedules and resources belonging to their schedules and approve reservations on their schedules.</p>
 
-<h3>Viewing and Managing Reservations</h3>
+<h3>Visualizzazione e gestione delle prenotazioni</h3>
 
 <p>You can view and manage reservations from the Reservations menu item. By default you will see the last 7 days and the
 	next 7 days worth of reservations. This can be filtered more or less granular depending on what you are looking for.
 	This tool allows you to quickly find an act on a reservation. You can also export the list of filtered reservations
 	to CSV format for further reporting.</p>
 
-<h3>Reservation Approval</h3>
+<h3>Approvazione prenotazioni</h3>
 
 <p>Setting $conf['settings']['reservation']['updates.require.approval'] to true will put all reservation requests into a
 	pending state. The reservation becomes active only after an administrator approves it. From the Reservations admin
 	tool an administrator will be able to view and approve pending reservations. Pending reservations will be
 	highlighted.</p>
 
-<h3>Viewing and Managing Users</h3>
+<h3>Visualizzazione e gestione degli utenti</h3>
 
 <p>You can add, view, and manage all registered users from the Users menu item. This tool allows you to change resource
 	access permissions of individual users, deactivate or delete accounts, reset user passwords, and edit user details.
 	You can also add new users to Booked Scheduler. This is especially useful if self-registration is turned off.</p>
 
-<h3>Reporting</h3>
+<h3>Reportistica</h3>
 
 <p>Reports are accessible to all application, group, resource and schedule administrators. When the currently logged in
 	user has access to reporting features, they will see a Reports navigation item. Booked Scheduler comes with a set of
@@ -167,7 +169,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 	printing. In addition, custom reports can be saved and accessed again at a later time from the My Saved Reports menu
 	item. Saved reports also have the ability to be emailed.</p>
 
-<h3>Reservation Reminders</h3>
+<h3>Promemoria prenotazioni</h3>
 
 <p>Users can request that reminder emails are send prior to the beginning or end of a reservation. In order for this
 	feature to function, $conf['settings']['enable.email'] and $conf['settings']['reservation']['enable.reminders'] must
@@ -193,17 +195,16 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 	full
 	path to Booked Scheduler/Jobs/sendreminders.php</p>
 
-<h2>Configuration</h2>
+<h2>Configurazione</h2>
 
-<p>Some of Booked Scheduler's functionality can only be controlled by editing the config file.</p>
+<p>Some functionality can only be controlled by editing the config file.</p>
 
-<p class="setting"><span>$conf['settings']['server.timezone']</span>This must reflect the timezone of the server that
-	Booked Scheduler is hosted on. This server is currently set to <em>{$ServerTimezone}</em>. Possible values are located
-	here:
+<p class="setting"><span>$conf['settings']['default.timezone']</span>The default timezone to use. If not set, the server
+	timezone will be used. Possible values are located here:
 	<a href="http://php.net/manual/en/timezones.php" target="_blank">http://php.net/manual/en/timezones.php</a></p>
 
 <p class="setting"><span>$conf['settings']['allow.self.registration']</span>If users are allowed to register new
-	accounts.</p>
+	accounts. Default is false.</p>
 
 <p class="setting"><span>$conf['settings']['admin.email']</span>The email address of the main application administrator
 </p>
@@ -220,25 +221,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 	Booked Scheduler lang directory</p>
 
 <p class="setting"><span>$conf['settings']['script.url']</span>The full public URL to the root of this instance of
-	Booked Scheduler. This should
-	be the Web directory which contains files like bookings.php and calendar.php</p>
-
-<p class="setting"><span>$conf['settings']['password.pattern']</span>A regular expression to enforce password complexity
-	during user account
-	registration</p>
-
-<p class="setting"><span>$conf['settings']['schedule']['show.inaccessible.resources']</span>Whether or not resources
-	that are not
-	accessible to the user
-	are displayed in the schedule</p>
-
-<p class="setting"><span>$conf['settings']['schedule']['reservation.label']</span>The format of what to display for the
-	reservation slot on the Bookings page. Available tokens are {literal}{name}, {title}, {description}, {email},
-	{phone}
-	, {organization}, {position}{/literal}. Leave it blank for no label. Any combination of tokens can be used.</p>
-
-<p class="setting"><span>$conf['settings']['schedule']['hide.blocked.periods']</span>If blocked periods should be
-	hidden on the bookings page. Default is false.</p>
+	Booked Scheduler. This should be the Web directory which contains files like bookings.php and calendar.php. If this
+	value starts with //, then the protocol (http vs https) will be automatically detected.</p>
 
 <p class="setting"><span>$conf['settings']['image.upload.directory']</span>The physical directory to store images.
 	This directory will need to be writable (755 suggested). This can be the full directory or relative to the
@@ -284,25 +268,37 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 <p class="setting"><span>$conf['settings']['logout.url']</span>Where the user will be redirected after being logged out.
 	Default is the login page.</p>
 
+
+<p class="setting"><span>$conf['settings']['schedule']['use.per.user.colors']</span>Use user-specific,
+	administrator-defined colors for reservations. Default is false.</p>
+
+<p class="setting"><span>$conf['settings']['schedule']['show.inaccessible.resources']</span>Whether or not resources
+	that are not accessible to the user are displayed in the schedule</p>
+
+<p class="setting"><span>$conf['settings']['schedule']['reservation.label']</span>The format of what to display for the
+	reservation slot on the Bookings page. Available tokens are {literal}{name}, {title}, {description}, {email},
+	{phone}
+	, {organization}, {position}{/literal}. Leave it blank for no label. Any combination of tokens can be used.</p>
+
+<p class="setting"><span>$conf['settings']['schedule']['hide.blocked.periods']</span>If blocked periods should be
+	hidden on the bookings page. Default is false.</p>
+
 <p class="setting"><span>$conf['settings']['ics']['require.login']</span>If users should be required to log in to add a
 	reservation to
 	Outlook.</p>
 
-<p class="setting"><span>$conf['settings']['ics']['subscription.key']</span>If you want to allow webcal subscriptions,
-	set this to a
-	difficult to guess value. If nothing is set then webcal subscriptions will be disabled.</p>
+<p class="setting"><span>$conf['settings']['ics']['subscription.key']</span>If you want to allow calendar subscriptions,
+	set this to a difficult to guess value. If nothing is set then calendar subscriptions will be disabled.</p>
 
 <p class="setting"><span>$conf['settings']['privacy']['view.schedules']</span>If non-authenticated users can view the
-	booking schedules.
-	Default is false.</p>
+	booking schedules. Default is false.</p>
 
 <p class="setting"><span>$conf['settings']['privacy']['view.reservations']</span>If non-authenticated users can view
 	reservation details.
 	Default is false.</p>
 
 <p class="setting"><span>$conf['settings']['privacy']['hide.user.details']</span>If non-adminstrators can view personal
-	information about
-	other users. Default is false.</p>
+	information about other users. Default is false.</p>
 
 <p class="setting"><span>$conf['settings']['reservation']['start.time.constraint']</span>When reservations can be
 	created or edited.
@@ -425,7 +421,24 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 <p class="setting"><span>$conf['settings']['recaptcha']['private.key']</span>Your reCAPTCHA private key. Visit
 	www.google.com/recaptcha to sign up.</p>
 
-<h2>Plugins</h2>
+<p class="setting"><span>$config['settings']['email']['default.from.address']</span>The email address to use as the
+	'from' address when sending emails. If emails are bouncing or being marked as spam, set this to an email address
+	with your domain name. For example, noreply@yourdomain.com. This will not change the 'from' name or the reply-to
+	address.</p>
+
+<p class="setting"><span>$conf['settings']['reports']['allow.all.users']</span>If non-administrators can access usage
+	reports. Default is false.</p>
+
+<p class="setting"><span>$conf['settings']['password']['minimum.letters']</span>Minimum number of letters required for
+	user passwords. Default is 6.</p>
+
+<p class="setting"><span>$conf['settings']['password']['minimum.numbers']</span>Minimum number of numbers required for
+	user passwords. Default is 0.</p>
+
+<p class="setting"><span>$conf['settings']['password']['upper.and.lower']</span>Whether user passwords require a
+	combination of upper and lower case letters. Default is false.</p>
+
+<h2>Estensioni</h2>
 
 <p>The following components are currently pluggable:</p>
 
@@ -447,7 +460,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 	/plugins/Authentication/Ldap/Ldap.config.dist to /plugins/Authentication/Ldap/Ldap.config and edit all values that
 	are applicable to your environment.</p>
 
-<h3>Installing Plugins</h3>
+<h3>Installazione estensioni</h3>
 
 <p>To install a new plugin copy the folder to either the Authentication, Authorization and Permission directory. Then
 	change either $conf['settings']['plugins']['Authentication'], $conf['settings']['plugins']['Authorization'] or
