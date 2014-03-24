@@ -494,6 +494,7 @@ class en_us extends Language
 		$strings['BulkResourceUpdate'] = 'Bulk Resource Update';
 		$strings['Unchanged'] = 'Unchanged';
 		$strings['Common'] = 'Common';
+		$strings['AdminOnly'] = 'Is Admin Only';
 		// End Strings
 
 		// Install

@@ -104,7 +104,8 @@ class ReservationPopupPage extends Page implements IReservationPopupPage
 		$this->_presenter = new ReservationPopupPresenter($this,
 														  new ReservationViewRepository(),
 														  new ReservationAuthorization(PluginManager::Instance()->LoadAuthorization()),
-														  new AttributeRepository());
+														  new AttributeRepository(),
+														  new UserRepository());
 	}
 
 	public function IsAuthenticated()
@@ -229,15 +230,22 @@ class ReservationPopupPresenter
 	 */
 	private $_attributeRepository;
 
+	/**
+	 * @var IUserRepository
+	 */
+	private $_userRepository;
+
 	public function __construct(IReservationPopupPage $page,
 								IReservationViewRepository $reservationRepository,
 								IReservationAuthorization $reservationAuthorization,
-								IAttributeRepository $attributeRepository)
+								IAttributeRepository $attributeRepository,
+								IUserRepository $userRepository)
 	{
 		$this->_page = $page;
 		$this->_reservationRepository = $reservationRepository;
 		$this->_reservationAuthorization = $reservationAuthorization;
 		$this->_attributeRepository = $attributeRepository;
+		$this->_userRepository = $userRepository;
 	}
 
 	public function PageLoad()
@@ -245,6 +253,7 @@ class ReservationPopupPresenter
 		$hideUserInfo = Configuration::Instance()->GetSectionKey(ConfigSection::PRIVACY,
 																 ConfigKeys::PRIVACY_HIDE_USER_DETAILS,
 																 new BooleanConverter());
+
 		$hideReservationDetails = Configuration::Instance()->GetSectionKey(ConfigSection::PRIVACY,
 																		   ConfigKeys::PRIVACY_HIDE_RESERVATION_DETAILS,
 																		   new BooleanConverter());
@@ -281,15 +290,33 @@ class ReservationPopupPresenter
 
 		$this->_page->SetDates($startDate, $endDate);
 
+		$user = $this->_userRepository->LoadById(ServiceLocator::GetServer()->GetUserSession()->UserId);
+		$owner = $this->_userRepository->LoadById($reservation->OwnerId);
+
+		$canViewAdminAttributes = $user->IsAdminFor($owner);
+
+		if (!$canViewAdminAttributes)
+		{
+			foreach ($reservation->Resources as $resource)
+			{
+				if ($user->IsResourceAdminFor($resource)){
+					$canViewAdminAttributes = true;
+					break;
+				}
+			}
+		}
+
+
 		$attributes = $this->_attributeRepository->GetByCategory(CustomAttributeCategory::RESERVATION);
 		$attributeValues = array();
 		foreach ($attributes as $attribute)
 		{
-			$attributeValues[] = new Attribute($attribute, $reservation->GetAttributeValue($attribute->Id()));
+			if (!$attribute->AdminOnly() || $canViewAdminAttributes)
+			{
+				$attributeValues[] = new Attribute($attribute, $reservation->GetAttributeValue($attribute->Id()));
+			}
 		}
 
 		$this->_page->BindAttributes($attributeValues);
 	}
 }
-
-?>
