@@ -31,7 +31,9 @@ class ResourceGroupResponse extends RestResponse
 		$this->id = $resourcegroup->id;
 		$this->name = $resourcegroup->name;
 		$this->parent_id = $resourcegroup->parent_id;
-		$this->AddService($server, WebServices::GetResourceGroup, array(WebServiceParams::ResourceGroupId => $this->id));
+		
+		// commented this out for now since it is not implemented yet
+//		$this->AddService($server, WebServices::GetResourceGroup, array(WebServiceParams::ResourceGroupId => $this->id));
 	}
 
 	public static function Example()
