@@ -307,7 +307,7 @@ class en_us extends Language
 		$strings['BlackoutCreated'] = 'Blackout Created';
 		$strings['BlackoutNotCreated'] = 'Blackout could not be created';
 		$strings['BlackoutUpdated'] = 'Blackout Updated';
-		$strings['BlackoutNotUpdated'] = 'Blackout could not be created';
+		$strings['BlackoutNotUpdated'] = 'Blackout could not be updated';
 		$strings['BlackoutConflicts'] = 'There are conflicting blackout times';
 		$strings['ReservationConflicts'] = 'There are conflicting reservations times';
 		$strings['UsersInGroup'] = 'Users in this group';
@@ -491,7 +491,6 @@ class en_us extends Language
 		$strings['CurrentStatus'] = 'Current Status';
 		$strings['AllReservationResources'] = 'All Reservation Resources';
 		$strings['File'] = 'File';
-		$strings['AdminOnly'] = 'Admin Use Only';
 		$strings['BulkResourceUpdate'] = 'Bulk Resource Update';
 		$strings['Unchanged'] = 'Unchanged';
 		$strings['Common'] = 'Common';
@@ -553,7 +552,6 @@ class en_us extends Language
 		$strings['CustomAttributeErrors'] = 'There are problems with the additional attributes you provided:';
 		$strings['CustomAttributeRequired'] = '%s is a required field.';
 		$strings['CustomAttributeInvalid'] = 'The value provided for %s is invalid.';
-		$strings['InvalidAttributeError'] = 'Invalid or unknown attribute.';
 		$strings['AttachmentLoadingError'] = 'Sorry, there was a problem loading the requested file.';
 		$strings['InvalidAttachmentExtension'] = 'You can only upload files of type: %s';
 		$strings['InvalidStartSlot'] = 'The start date and time requested is not valid.';

@@ -52,7 +52,9 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			({$accessory->QuantityReserved}) {$accessory->Name}<br/>
 		{/foreach}
 	{/if}
+
 	<br/>
+        <br/>
 	<a href="{$ScriptUrl}">Log in to Booked Scheduler</a>
 
 {include file='..\..\tpl\Email\emailfooter.tpl'}
