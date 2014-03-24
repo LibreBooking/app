@@ -35,7 +35,9 @@ class ResourceGroupsResponse extends RestResponse
 	{
 		foreach ($resourcegroups as $resourcegroup)
 		{
-			$this->resourcegroups[] = new ResourceGroupResponse($server, $resourcegroup);
+			// is there a reason why we would not use the id's as array keys/object fields?
+			// it certainly makes things much easier client side
+			$this->resourcegroups[$resourcegroup->id] = new ResourceGroupResponse($server, $resourcegroup);
 		}
 	}
 
