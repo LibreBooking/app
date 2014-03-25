@@ -23,5 +23,5 @@ require_once(ROOT_DIR . 'lib/Application/Admin/ScheduleAdminScheduleRepository.p
 require_once(ROOT_DIR . 'lib/Application/Admin/GroupAdminUserRepository.php');
 require_once(ROOT_DIR . 'lib/Application/Admin/GroupAdminManageReservationsService.php');
 require_once(ROOT_DIR . 'lib/Application/Admin/GroupAdminGroupRepository.php');
-
-?>
+require_once(ROOT_DIR . 'lib/Application/Admin/ImageUploadDirectory.php');
+require_once(ROOT_DIR . 'lib/Application/Admin/TemplateCacheDirectory.php');

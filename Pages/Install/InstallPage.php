@@ -20,6 +20,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 require_once(ROOT_DIR . 'Pages/Page.php');
 require_once(ROOT_DIR . 'Presenters/Install/InstallPresenter.php');
+require_once(ROOT_DIR . 'lib/Application/Admin/namespace.php');
 
 interface IInstallPage
 {
@@ -172,6 +173,9 @@ class InstallPage extends Page implements IInstallPage
 	 */
 	public function PageLoad()
 	{
+		$cacheDirectory = new TemplateCacheDirectory();
+		$cacheDirectory->Flush();
+
 		$this->Set('SuggestedInstallPassword', uniqid());
 		$this->Set('ConfigSetting', '$conf[\'settings\'][\'install.password\']');
 		$this->Set('ConfigPath', '/config/config.php');

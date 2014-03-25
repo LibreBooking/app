@@ -19,6 +19,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 require_once(ROOT_DIR . 'Pages/Admin/AdminPage.php');
+require_once(ROOT_DIR . 'lib/Application/Admin/namespace.php');
 
 class ServerSettingsPage extends AdminPage
 {
@@ -87,53 +88,3 @@ class ServerSettingsPage extends AdminPage
 		return $plugins;
 	}
 }
-
-class ImageUploadDirectory
-{
-	public function GetDirectory()
-	{
-		$uploadDir = Configuration::Instance()->GetKey(ConfigKeys::IMAGE_UPLOAD_DIRECTORY);
-		if (is_dir($uploadDir))
-		{
-			return $uploadDir;
-		}
-
-		return ROOT_DIR .$uploadDir;
-	}
-
-	public function MakeWriteable()
-	{
-		$chmodResult = chmod($this->GetDirectory(), 0770);
-	}
-
-}
-
-class TemplateCacheDirectory
-{
-	public function Flush()
-	{
-		try
-		{
-			$dirName = $this->GetDirectory();
-			$cacheDir = opendir($dirName);
-		    while (false !== ($file = readdir($cacheDir)))
-			{
-		        if($file != "." && $file != "..")
-				{
-		            unlink($dirName . $file);
-		        }
-		    }
-		    closedir($cacheDir);
-		}
-		catch(Exception $ex)
-		{
-			Log::Error('Could not flush template cache directory: %s', $ex);
-		}
-	}
-
-	public function GetDirectory()
-	{
-		return ROOT_DIR . 'tpl_c/';
-	}
-}
-?>

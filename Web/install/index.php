@@ -26,7 +26,7 @@ $smartyTemplateCacheDir = ROOT_DIR . 'tpl_c';
  */
 if (SmartyPermissionsAreOk($smartyTemplateCacheDir))
 {
-	require_once(ROOT_DIR . 'Pages/InstallPage.php');
+	require_once(ROOT_DIR . 'Pages/Install/InstallPage.php');
 	$page = new InstallPage();
 	$page->PageLoad();
 }
@@ -53,5 +53,3 @@ function SmartyPermissionsAreOk($smartyTemplateCacheDir)
 
 	return true;
 }
-
-?>
