@@ -41,6 +41,7 @@ class FakeReservationSavePage implements IReservationSavePage
 	public $errors = array();
 	public $warnings = array();
 	public $referenceNumber;
+	public $requiresApproval;
 	public $participants = array(10, 20, 40);
 	public $invitees = array(11, 21, 41);
 	public $accessories = array();
@@ -218,6 +219,14 @@ class FakeReservationSavePage implements IReservationSavePage
 	{
 		return $this->hasEndReminder;
 	}
+
+	/**
+	 * @param bool $requiresApproval
+	 */
+	public function SetRequiresApproval($requiresApproval)
+	{
+		$this->requiresApproval = $requiresApproval;
+	}
 }
 
 class FakeAccessoryFormElement extends AccessoryFormElement
@@ -229,4 +238,3 @@ class FakeAccessoryFormElement extends AccessoryFormElement
 		$this->Name = $name;
 	}
 }
-?>

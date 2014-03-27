@@ -199,6 +199,7 @@ class ReservationUpdatePresenterTests extends TestBase
 	{
 		$builder = new ExistingReservationSeriesBuilder();
 		$series = $builder->Build();
+		$series->SetStatusId(ReservationStatus::Pending);
 		$instance = new Reservation($series, NullDateRange::Instance());
 		$series->WithCurrentInstance($instance);
 
@@ -210,6 +211,7 @@ class ReservationUpdatePresenterTests extends TestBase
 		$this->presenter->HandleReservation($series);
 
 		$this->assertEquals($instance->ReferenceNumber(), $this->page->referenceNumber);
+		$this->assertEquals($series->RequiresApproval(), $this->page->requiresApproval);
 	}
 }
 
@@ -239,4 +241,3 @@ class FakeReservationUpdatePage extends FakeReservationSavePage implements IRese
 		return $this->removedFileIds;
 	}
 }
-?>

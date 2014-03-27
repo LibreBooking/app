@@ -86,7 +86,12 @@ function ReservationManagement(opts, approval)
 			e.preventDefault();
 			e.stopPropagation();
 
-			setCurrentReservationInformation.call($(this));
+			var td = $(this);
+			if (this.tagName != 'TD')
+			{
+				td = $(this).closest('td');
+			}
+			setCurrentReservationInformation(td);
 		});
 
 		elements.reservationTable.delegate('.editable', 'click', function ()

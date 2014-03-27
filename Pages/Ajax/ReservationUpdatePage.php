@@ -122,5 +122,3 @@ class ReservationUpdatePage extends ReservationSavePage implements IReservationU
 		return array();
 	}
 }
-
-?>

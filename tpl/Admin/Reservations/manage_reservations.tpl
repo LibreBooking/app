@@ -25,7 +25,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 	<form id="filterForm">
 		<div class="main-div-header">{translate key=Filter}</div>
 		<ul>
-			<li>
+			<li class="filter-dates">
 				<label for="startDate">{translate key=Between}</label>
 				<input id="startDate" type="text" class="textbox" value="{formatdate date=$StartDate}" size="10"
 					   style="width:65px;"/>
@@ -35,26 +35,26 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 					   style="width:65px;"/>
 				<input id="formattedEndDate" type="hidden" value="{formatdate date=$EndDate key=system}"/>
 			</li>
-			<li>
+			<li class="filter-user">
 				<label for="userFilter">{translate key=User}</label>
 				<input id="userFilter" type="text" class="textbox" value="{$UserNameFilter}"/>
 				<input id="userId" type="hidden" value="{$UserIdFilter}"/>
 			</li>
-			<li>
+			<li class="filter-schedule">
 				<label for="scheduleId">{translate key=Schedule}</label>
 				<select id="scheduleId" class="textbox">
 					<option value="">{translate key=AllSchedules}</option>
 					{object_html_options options=$Schedules key='GetId' label="GetName" selected=$ScheduleId}
 				</select>
 			</li>
-			<li>
+			<li class="filter-resource">
 				<label for="resourceId">{translate key=Resource}</label>
 				<select id="resourceId" class="textbox">
 					<option value="">{translate key=AllResources}</option>
 					{object_html_options options=$Resources key='GetId' label="GetName" selected=$ResourceId}
 				</select>
 			</li>
-			<li>
+			<li class="filter-status">
 				<label for="statusId">{translate key=Status}</label>
 				<select id="statusId" class="textbox">
 					<option value="">{translate key=AllReservations}</option>
@@ -62,11 +62,11 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 							{if $ReservationStatusId eq ReservationStatus::Pending}selected="selected"{/if}>{translate key=PendingReservations}</option>
 				</select>
 			</li>
-			<li>
+			<li class="filter-referenceNumber">
 				<label for="referenceNumber">{translate key=ReferenceNumber}</label>
 				<input id="referenceNumber" type="text" class="textbox" value="{$ReferenceNumber}"/>
 			</li>
-			<li>
+			<li class="filter-resourceStatus">
 				<label for="resourceStatusIdFilter">{translate key=ResourceStatus}</label>
 				<select id="resourceStatusIdFilter" class="textbox">
 					<option value="">{translate key=All}</option>
@@ -75,12 +75,12 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 					<option value="{ResourceStatus::HIDDEN}">{translate key=Hidden}</option>
 				</select>
 			</li>
-			<li>
+			<li class="filter-resourceStatusReason">
 				<label for="resourceReasonIdFilter">{translate key=Reason}</label>
 				<select id="resourceReasonIdFilter" class="textbox"></select>
 			</li>
 			{foreach from=$AttributeFilters item=attribute}
-				<li class="customAttribute">
+				<li class="customAttribute filter-customAttribute{$attribute->Id()}">
 					{control type="AttributeControl" attribute=$attribute searchmode=true}
 				</li>
 			{/foreach}

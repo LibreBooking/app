@@ -16,10 +16,19 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 *}
-<div>
-	{html_image src="dialog-success.png"}<br/>
-	<div>{translate key=ReservationCreated}</div>
-	<div>{translate key=YourReferenceNumber args=$ReferenceNumber}</div>
+<div id="reservationCreated" class="reservationResponseMessage">
+	{if $RequiresApproval}
+		{html_image src="dialog-warning.png" id="imgApprovalWarning"}
+	{else}
+		{html_image src="dialog-success.png" id="imgReservationSuccess"}
+	{/if}
+	<br/>
+	<div class="createdMessage">{translate key=ReservationCreated}</div>
+	<div class="referenceNumber">{translate key=YourReferenceNumber args=$ReferenceNumber}</div>
+
+	{if $RequiresApproval}
+		<div class="approvalMessage">{translate key=ReservationRequiresApproval}</div>
+	{/if}
 
 	<input type="button" id="btnSaveSuccessful" value="{translate key='Close'}" class="button" />
 

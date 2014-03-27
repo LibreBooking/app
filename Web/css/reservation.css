@@ -179,3 +179,9 @@ label.reservationDate {
 	width: 50px;
 	display: inline-block;
 }
+
+#reservationCreated .approvalMessage, #reservationUpdated .approvalMessage
+{
+	margin: 15px 0;
+	font-size:smaller;
+}

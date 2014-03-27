@@ -170,6 +170,7 @@ class ReservationUpdatePresenter implements IReservationUpdatePresenter
 
 		if ($successfullySaved)
 		{
+			$this->page->SetRequiresApproval($reservationSeries->RequiresApproval());
 			$this->page->SetReferenceNumber($reservationSeries->CurrentInstance()->ReferenceNumber());
 		}
 	}

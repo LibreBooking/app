@@ -180,7 +180,6 @@ class ReservationSavePresenterTests extends TestBase
 		$this->presenter->HandleReservation($series);
 
 		$this->assertEquals($instance->ReferenceNumber(), $this->page->referenceNumber);
+		$this->assertEquals($series->RequiresApproval(), $this->page->requiresApproval);
 	}
 }
-
-?>

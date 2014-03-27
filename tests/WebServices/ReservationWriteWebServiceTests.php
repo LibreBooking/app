@@ -49,11 +49,12 @@ class ReservationWriteWebServiceTests extends TestBase
 
 	public function testCreatesNewReservation()
 	{
+		$pendingApproval = true;
 		$reservationRequest = $this->GetReservationRequest();
 		$this->server->SetRequest($reservationRequest);
 
 		$referenceNumber = '12323';
-		$controllerResult = new ReservationControllerResult($referenceNumber);
+		$controllerResult = new ReservationControllerResult($referenceNumber, array(), $pendingApproval);
 
 		$this->controller->expects($this->once())
 				->method('Create')
@@ -62,20 +63,21 @@ class ReservationWriteWebServiceTests extends TestBase
 
 		$this->service->Create();
 
-		$expectedResponse = new ReservationCreatedResponse($this->server, $referenceNumber);
+		$expectedResponse = new ReservationCreatedResponse($this->server, $referenceNumber, $pendingApproval);
 		$this->assertEquals($expectedResponse, $this->server->_LastResponse);
 		$this->assertEquals(RestResponse::CREATED_CODE, $this->server->_LastResponseCode);
 	}
 
 	public function testUpdatesExistingReservation()
 	{
+		$pendingApproval = true;
 		$reservationRequest = $this->GetReservationRequest();
 		$this->server->SetRequest($reservationRequest);
 		$referenceNumber = '12323';
 		$updateScope = SeriesUpdateScope::FullSeries;
 		$this->server->SetQueryString(WebServiceQueryStringKeys::UPDATE_SCOPE, $updateScope);
 
-		$controllerResult = new ReservationControllerResult($referenceNumber);
+		$controllerResult = new ReservationControllerResult($referenceNumber, array(), $pendingApproval);
 
 		$this->controller->expects($this->once())
 				->method('Update')
@@ -85,7 +87,7 @@ class ReservationWriteWebServiceTests extends TestBase
 
 		$this->service->Update($referenceNumber);
 
-		$expectedResponse = new ReservationUpdatedResponse($this->server, $referenceNumber);
+		$expectedResponse = new ReservationUpdatedResponse($this->server, $referenceNumber, $pendingApproval);
 		$this->assertEquals($expectedResponse, $this->server->_LastResponse);
 		$this->assertEquals(RestResponse::OK_CODE, $this->server->_LastResponseCode);
 	}

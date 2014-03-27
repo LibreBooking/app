@@ -23,7 +23,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 	<div class="dashboardContents">
 		<ul>
 			{foreach from=$Announcements item=each}
-			    <li>{$each|html_entity_decode|nl2br}</li>
+			    <li>{$each|html_entity_decode|url2link|nl2br}</li>
 			{foreachelse}
 				<div class="noresults">{translate key="NoAnnouncements"}</div>
 			{/foreach}

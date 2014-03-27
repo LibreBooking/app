@@ -149,8 +149,10 @@ class ReservationSavePresenter implements IReservationSavePresenter
 					$reservationSeries,
 					$this->_page);
 
+
 		if ($successfullySaved)
 		{
+			$this->_page->SetRequiresApproval($reservationSeries->RequiresApproval());
 			$this->_page->SetReferenceNumber($reservationSeries->CurrentInstance()->ReferenceNumber());
 		}
 	}

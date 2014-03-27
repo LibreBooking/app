@@ -93,6 +93,8 @@ class Server
 				array_walk($value, array($this, 'specialchars'));
 				return $value;
 			}
+
+			return '';
         }
         return null;
     }

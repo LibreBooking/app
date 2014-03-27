@@ -21,11 +21,13 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 class ReservationCreatedResponse extends RestResponse
 {
 	public $referenceNumber;
+	public $isPendingApproval;
 
-	public function __construct(IRestServer $server, $referenceNumber)
+	public function __construct(IRestServer $server, $referenceNumber, $isPendingApproval)
 	{
 		$this->message = 'The reservation was created';
 		$this->referenceNumber = $referenceNumber;
+		$this->isPendingApproval = $isPendingApproval;
 		$this->AddService($server, WebServices::GetReservation, array(WebServiceParams::ReferenceNumber => $referenceNumber));
 		$this->AddService($server, WebServices::UpdateReservation, array(WebServiceParams::ReferenceNumber => $referenceNumber));
 	}
@@ -40,10 +42,11 @@ class ReservationUpdatedResponse extends RestResponse
 {
 	public $referenceNumber;
 
-	public function __construct(IRestServer $server, $referenceNumber)
+	public function __construct(IRestServer $server, $referenceNumber, $isPendingApproval)
 	{
 		$this->message = 'The reservation was updated';
 		$this->referenceNumber = $referenceNumber;
+		$this->isPendingApproval = $isPendingApproval;
 		$this->AddService($server, WebServices::GetReservation, array(WebServiceParams::ReferenceNumber => $referenceNumber));
 	}
 
@@ -75,6 +78,7 @@ class ExampleReservationCreatedResponse extends ReservationCreatedResponse
 	public function __construct()
 	{
 		$this->referenceNumber = 'referenceNumber';
+		$this->isPendingApproval = true;
 		$this->AddLink('http://url/to/reservation', WebServices::GetReservation);
 		$this->AddLink('http://url/to/update/reservation', WebServices::UpdateReservation);
 	}

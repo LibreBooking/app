@@ -89,7 +89,7 @@ class ReservationSaveController implements IReservationSaveController
 		$reservation = $presenter->BuildReservation();
 		$presenter->HandleReservation($reservation);
 
-		return new ReservationControllerResult($facade->ReferenceNumber(), $facade->Errors());
+		return new ReservationControllerResult($facade->ReferenceNumber(), $facade->Errors(), $facade->RequiresApproval());
 	}
 
 	public function Update($request, $session, $referenceNumber, $updateScope)
@@ -107,7 +107,7 @@ class ReservationSaveController implements IReservationSaveController
 		$reservation = $presenter->BuildReservation();
 		$presenter->HandleReservation($reservation);
 
-		return new ReservationControllerResult($facade->ReferenceNumber(), $facade->Errors());
+		return new ReservationControllerResult($facade->ReferenceNumber(), $facade->Errors(), $facade->RequiresApproval());
 	}
 
 	/**
@@ -275,10 +275,11 @@ class ReservationControllerResult
 	 */
 	private $errors = array();
 
-	public function __construct($referenceNumber = null, $errors = array())
+	public function __construct($referenceNumber = null, $errors = array(), $requiresApproval = false)
 	{
 		$this->createdReferenceNumber = $referenceNumber;
 		$this->errors = $errors;
+		$this->requiresApproval = $requiresApproval;
 	}
 
 	/**
@@ -320,21 +321,40 @@ class ReservationControllerResult
 	{
 		$this->errors = $errors;
 	}
+
+	/**
+	 * @return bool
+	 */
+	public function RequiresApproval()
+	{
+		return $this->requiresApproval;
+	}
+
+	/**
+	 * @param bool $requiresApproval
+	 */
+	public function SetRequiresApproval($requiresApproval)
+	{
+		$this->requiresApproval = $requiresApproval;
+	}
 }
 
 class ReservationRequestResponseFacade implements IReservationSavePage
 {
 	private $_createdReferenceNumber;
+	private $_createdRequiresApproval;
 	private $_createdErrors = array();
 
 	/**
 	 * @var ReservationRequest
 	 */
 	private $request;
+
 	/**
 	 * @var WebServiceUserSession
 	 */
 	private $session;
+
 	/**
 	 * @var RecurrenceRequestResponse
 	 */
@@ -359,6 +379,11 @@ class ReservationRequestResponseFacade implements IReservationSavePage
 	public function Errors()
 	{
 		return $this->_createdErrors;
+	}
+
+	public function RequiresApproval()
+	{
+		return $this->_createdRequiresApproval;
 	}
 
 	public function SetSaveSuccessfulMessage($succeeded)
@@ -514,6 +539,12 @@ class ReservationRequestResponseFacade implements IReservationSavePage
 	{
 		$this->_createdReferenceNumber = $referenceNumber;
 	}
+
+	public function SetRequiresApproval($requiresApproval)
+	{
+		$this->_createdRequiresApproval = $requiresApproval;
+	}
+
 
 	public function GetAccessories()
 	{

@@ -42,7 +42,7 @@ class ReservationSaveControllerTests extends TestBase
 
 	public function testUsesPresenterToCreateReservation()
 	{
-		$reservation = new TestReservation();
+		$series = new TestReservationSeries();
 		$presenter = $this->getMock('IReservationSavePresenter');
 
 		$request = new ReservationRequest();
@@ -59,21 +59,21 @@ class ReservationSaveControllerTests extends TestBase
 
 		$presenter->expects($this->once())
 				  ->method('BuildReservation')
-				  ->will($this->returnValue($reservation));
+				  ->will($this->returnValue($series));
 
 		$presenter->expects($this->once())
 				  ->method('HandleReservation')
-				  ->with($this->equalTo($reservation));
+				  ->with($this->equalTo($series));
 
 		$result = $this->controller->Create($request, $session);
 
-		$expectedResult = new ReservationControllerResult($facade->ReferenceNumber(), $facade->Errors());
+		$expectedResult = new ReservationControllerResult($facade->ReferenceNumber(), $facade->Errors(), $facade->RequiresApproval());
 		$this->assertEquals($expectedResult, $result);
 	}
 
 	public function testUpdatesExistingReservation()
 	{
-		$reservation = new TestReservation();
+		$series = new TestReservationSeries();
 		$presenter = $this->getMock('IReservationSavePresenter');
 		$referenceNumber = '123';
 		$updateScope = SeriesUpdateScope::FullSeries;
@@ -91,16 +91,16 @@ class ReservationSaveControllerTests extends TestBase
 							   ->will($this->returnValue($presenter));
 		$presenter->expects($this->once())
 				  ->method('BuildReservation')
-				  ->will($this->returnValue($reservation));
+				  ->will($this->returnValue($series));
 
 		$presenter->expects($this->once())
 				  ->method('HandleReservation')
-				  ->with($this->equalTo($reservation));
+				  ->with($this->equalTo($series));
 
 
 		$result = $this->controller->Update($request, $session, $referenceNumber, $updateScope);
 
-		$expectedResult = new ReservationControllerResult($facade->ReferenceNumber(), $facade->Errors());
+		$expectedResult = new ReservationControllerResult($facade->ReferenceNumber(), $facade->Errors(), $facade->RequiresApproval());
 		$this->assertEquals($expectedResult, $result);
 	}
 
@@ -215,6 +215,7 @@ class ReservationSaveControllerTests extends TestBase
 
 		$facade->SetReferenceNumber($referenceNumber);
 		$facade->SetErrors($errors);
+		$facade->SetRequiresApproval(true);
 
 		$accessories = array(AccessoryFormElement::Create($accessoryId, $quantity));
 		$attributes = array(new AttributeFormElement($attributeId, $attributeValue));
@@ -247,6 +248,7 @@ class ReservationSaveControllerTests extends TestBase
 
 		$this->assertEquals($referenceNumber, $facade->ReferenceNumber());
 		$this->assertEquals($errors, $facade->Errors());
+		$this->assertEquals(true, $facade->RequiresApproval());
 
 	}
 }

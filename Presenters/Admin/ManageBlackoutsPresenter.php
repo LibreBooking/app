@@ -108,7 +108,8 @@ class ManageBlackoutsPresenter extends ActionPresenter
 	private function GetDate($dateString, $timezone, $defaultDays)
 	{
 		$date = null;
-		if (is_null($dateString)) {
+		if (is_null($dateString))
+		{
 			$date = Date::Now()->AddDays($defaultDays)->ToTimezone($timezone)->GetDate();
 
 		}
@@ -230,5 +231,3 @@ class ManageBlackoutsPresenter extends ActionPresenter
 		$this->page->ShowUpdateResult($result->WasSuccessful(), $result->Message(), $result->ConflictingReservations(), $result->ConflictingBlackouts(), $session->Timezone);
 	}
 }
-
-?>

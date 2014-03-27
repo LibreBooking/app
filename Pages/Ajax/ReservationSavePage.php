@@ -85,6 +85,11 @@ interface IReservationSavePage extends IReservationSaveResultsView, IRepeatOptio
 	public function SetReferenceNumber($referenceNumber);
 
 	/**
+	 * @param bool $requiresApproval
+	 */
+	public function SetRequiresApproval($requiresApproval);
+
+	/**
 	 * @return AccessoryFormElement[]|array
 	 */
 	public function GetAccessories();
@@ -180,6 +185,11 @@ class ReservationSavePage extends SecurePage implements IReservationSavePage
 	public function SetReferenceNumber($referenceNumber)
 	{
 		$this->Set('ReferenceNumber', $referenceNumber);
+	}
+
+	public function SetRequiresApproval($requiresApproval)
+	{
+		$this->Set('RequiresApproval', $requiresApproval);
 	}
 
 	public function SetErrors($errors)

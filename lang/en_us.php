@@ -279,6 +279,7 @@ class en_us extends Language
 		$strings['ReservationCreated'] = 'Your reservation was successfully created!';
 		$strings['ReservationUpdated'] = 'Your reservation was successfully updated!';
 		$strings['ReservationRemoved'] = 'Your reservation was removed';
+		$strings['ReservationRequiresApproval'] = 'One or more of the resources reserved require approval before usage.  This reservation will be pending until it is approved.';
 		$strings['YourReferenceNumber'] = 'Your reference number is %s';
 		$strings['UpdatingReservation'] = 'Updating reservation';
 		$strings['ChangeUser'] = 'Change User';

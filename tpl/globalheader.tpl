@@ -184,7 +184,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			{/if}
 				<li class="menubaritem help"><a href="{$Path}help.php">{translate key=Help}</a>
 					<ul>
-						<li><a href="{$Path}help.php?ht=admin">{translate key=Administration}</a></li>
+						<li><a href="{$Path}help.php">{translate key=Help}</a></li>
+						{if $CanViewAdmin}<li><a href="{$Path}help.php?ht=admin">{translate key=Administration}</a></li>{/if}
 						<li><a href="{$Path}help.php?ht=about">{translate key=About}</a></li>
 					</ul>
 				</li>
