@@ -149,7 +149,7 @@ class ReservationFilter
 		}
 		if (!empty($this->attributes))
 		{
-			$f  = new SqlFilterFreeForm(TableNames::RESERVATION_SERIES_ALIAS . '.' . ColumnNames::SERIES_ID . ' IN (SELECT ' . ColumnNames::ATTRIBUTE_ENTITY_ID . ' FROM ' . TableNames::CUSTOM_ATTRIBUTE_VALUES . ' WHERE [attribute_list_token] )');
+			$atLeastOneAttributeFilter = false;
 
 			$attributeFragment = new SqlFilterNull();
 
@@ -160,6 +160,7 @@ class ReservationFilter
 				{
 					continue;
 				}
+				$atLeastOneAttributeFilter = true;
 				$attributeId = new SqlRepeatingFilterColumn(null, ColumnNames::CUSTOM_ATTRIBUTE_ID, $i);
 				$attributeValue = new SqlRepeatingFilterColumn(null, ColumnNames::CUSTOM_ATTRIBUTE_VALUE, $i);
 
@@ -175,10 +176,13 @@ class ReservationFilter
 				}
 			}
 
-			$f->Substitute('attribute_list_token', $attributeFragment);
+			if ($atLeastOneAttributeFilter)
+			{
+				$f  = new SqlFilterFreeForm(TableNames::RESERVATION_SERIES_ALIAS . '.' . ColumnNames::SERIES_ID . ' IN (SELECT ' . ColumnNames::ATTRIBUTE_ENTITY_ID . ' FROM ' . TableNames::CUSTOM_ATTRIBUTE_VALUES . ' WHERE [attribute_list_token] )');
+				$f->Substitute('attribute_list_token', $attributeFragment);
 
-
-			$filter->_And($f);
+				$filter->_And($f);
+			}
 		}
 
 		foreach ($this->_and as $and)
