@@ -190,6 +190,13 @@ interface ISchedulePage extends IActionPage
 	 * @param bool $shouldShow
 	 */
 	public function ShowPermissionError($shouldShow);
+
+	/**
+	 * @param UserSession $user
+	 * @param Schedule $schedule
+	 * @return string
+	 */
+	public function GetDisplayTimezone(UserSession $user, Schedule $schedule);
 }
 
 class ScheduleStyle
@@ -453,6 +460,11 @@ class SchedulePage extends ActionPage implements ISchedulePage
 	{
 		$this->Set('IsAccessible', !$shouldShow);
 	}
+
+	public function GetDisplayTimezone(UserSession $user, Schedule $schedule)
+	{
+		return $user->Timezone;
+	}
 }
 
 class DisplaySlotFactory
@@ -523,5 +535,3 @@ class DisplaySlotFactory
 		return $slot->IsParticipating($mySession);
 	}
 }
-
-?>

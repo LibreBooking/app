@@ -88,7 +88,6 @@ class SchedulePresenter extends ActionPresenter implements ISchedulePresenter {
 
     public function PageLoad(UserSession $user)
     {
-        $targetTimezone = $user->Timezone;
 
         $showInaccessibleResources = $this->_page->ShowInaccessibleResources();
 
@@ -103,6 +102,8 @@ class SchedulePresenter extends ActionPresenter implements ISchedulePresenter {
 		$this->_page->ShowPermissionError(false);
 
 		$currentSchedule = $this->_builder->GetCurrentSchedule($this->_page, $schedules, $user);
+		$targetTimezone = $this->_page->GetDisplayTimezone($user, $currentSchedule);
+
         $activeScheduleId = $currentSchedule->GetId();
         $this->_builder->BindSchedules($this->_page, $schedules, $currentSchedule);
 
