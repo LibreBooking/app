@@ -71,7 +71,7 @@ function Registration()
 			captchaImg.attr('src', src);
 			$('#captchaValue').val('');
 		}
-		else
+		else if(typeof Recaptcha != "undefined")
 		{
 			Recaptcha.reload();
 		}
