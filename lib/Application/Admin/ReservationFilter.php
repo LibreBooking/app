@@ -149,7 +149,9 @@ class ReservationFilter
 		}
 		if (!empty($this->attributes))
 		{
-			$atLeastOneAttributeFilter = false;
+			$filteringAttributes = false;
+
+			$f  = new SqlFilterFreeForm(TableNames::RESERVATION_SERIES_ALIAS . '.' . ColumnNames::SERIES_ID . ' IN (SELECT a0.' . ColumnNames::ATTRIBUTE_ENTITY_ID . ' FROM ' . TableNames::CUSTOM_ATTRIBUTE_VALUES . ' a0 ');
 
 			$attributeFragment = new SqlFilterNull();
 
@@ -160,27 +162,28 @@ class ReservationFilter
 				{
 					continue;
 				}
-				$atLeastOneAttributeFilter = true;
-				$attributeId = new SqlRepeatingFilterColumn(null, ColumnNames::CUSTOM_ATTRIBUTE_ID, $i);
-				$attributeValue = new SqlRepeatingFilterColumn(null, ColumnNames::CUSTOM_ATTRIBUTE_VALUE, $i);
+				$id = $attribute->Id();
+				$filteringAttributes = true;
+				$attributeId = new SqlRepeatingFilterColumn("a$id", ColumnNames::CUSTOM_ATTRIBUTE_ID, $id);
+				$attributeValue = new SqlRepeatingFilterColumn("a$id", ColumnNames::CUSTOM_ATTRIBUTE_VALUE, $id);
 
-				$id = new SqlFilterEquals($attributeId, $attribute->Id());
-
+				$idEquals = new SqlFilterEquals($attributeId, $attribute->Id());
+				$f->AppendSql('LEFT JOIN ' . TableNames::CUSTOM_ATTRIBUTE_VALUES . ' a' . $id . ' ON a0.entity_id = a' . $id . '.entity_id ');
 				if ($attribute->Type() == CustomAttributeTypes::MULTI_LINE_TEXTBOX || $attribute->Type() == CustomAttributeTypes::SINGLE_LINE_TEXTBOX)
 				{
-					$attributeFragment->_And($id->_And(new SqlFilterLike($attributeValue, $attribute->Value())));
+					$attributeFragment->_And($idEquals->_And(new SqlFilterLike($attributeValue, $attribute->Value())));
 				}
 				else
 				{
-					$attributeFragment->_And($id->_And(new SqlFilterEquals($attributeValue, $attribute->Value())));
+					$attributeFragment->_And($idEquals->_And(new SqlFilterEquals($attributeValue, $attribute->Value())));
 				}
 			}
 
-			if ($atLeastOneAttributeFilter)
-			{
-				$f  = new SqlFilterFreeForm(TableNames::RESERVATION_SERIES_ALIAS . '.' . ColumnNames::SERIES_ID . ' IN (SELECT ' . ColumnNames::ATTRIBUTE_ENTITY_ID . ' FROM ' . TableNames::CUSTOM_ATTRIBUTE_VALUES . ' WHERE [attribute_list_token] )');
-				$f->Substitute('attribute_list_token', $attributeFragment);
+			$f->AppendSql("WHERE [attribute_list_token] )");
+			$f->Substitute('attribute_list_token', $attributeFragment);
 
+			if ($filteringAttributes)
+			{
 				$filter->_And($f);
 			}
 		}

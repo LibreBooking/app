@@ -219,6 +219,11 @@ class SqlFilterFreeForm extends BaseSqlFilter
 		$this->_criteria = $filter->Criteria();
 	}
 
+	public function AppendSql($sql)
+	{
+		$this->sql .= $sql;
+	}
+
 	public function Criteria()
 	{
 		return $this->_criteria;

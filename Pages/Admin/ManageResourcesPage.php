@@ -722,7 +722,7 @@ class ResourceFilterValues
 				$attributeDefinitions[$a->Id()] = $a;
 			}
 
-			$f = new SqlFilterFreeForm(ColumnNames::RESOURCE_ID . ' IN (SELECT ' . ColumnNames::ATTRIBUTE_ENTITY_ID . ' FROM ' . TableNames::CUSTOM_ATTRIBUTE_VALUES . ' WHERE [attribute_list_token] )');
+			$f = new SqlFilterFreeForm(ColumnNames::RESOURCE_ID . ' IN (SELECT a0.' . ColumnNames::ATTRIBUTE_ENTITY_ID . ' FROM ' . TableNames::CUSTOM_ATTRIBUTE_VALUES . ' a0 ');
 
 			$attributeFragment = new SqlFilterNull();
 
@@ -735,11 +735,11 @@ class ResourceFilterValues
 				}
 				$filteringAttributes = true;
 				$attribute = $attributeDefinitions[$id];
-				$attributeId = new SqlRepeatingFilterColumn(null, ColumnNames::CUSTOM_ATTRIBUTE_ID, $id);
-				$attributeValue = new SqlRepeatingFilterColumn(null, ColumnNames::CUSTOM_ATTRIBUTE_VALUE, $id);
+				$attributeId = new SqlRepeatingFilterColumn("a$id", ColumnNames::CUSTOM_ATTRIBUTE_ID, $id);
+				$attributeValue = new SqlRepeatingFilterColumn("a$id", ColumnNames::CUSTOM_ATTRIBUTE_VALUE, $id);
 
 				$idEquals = new SqlFilterEquals($attributeId, $id);
-
+				$f->AppendSql('LEFT JOIN ' . TableNames::CUSTOM_ATTRIBUTE_VALUES . ' a' . $id . ' ON a0.entity_id = a' . $id . '.entity_id ');
 				if ($attribute->Type() == CustomAttributeTypes::MULTI_LINE_TEXTBOX || $attribute->Type() == CustomAttributeTypes::SINGLE_LINE_TEXTBOX)
 				{
 					$attributeFragment->_And($idEquals->_And(new SqlFilterLike($attributeValue, $value)));
@@ -750,6 +750,7 @@ class ResourceFilterValues
 				}
 			}
 
+			$f->AppendSql("WHERE [attribute_list_token] )");
 			$f->Substitute('attribute_list_token', $attributeFragment);
 
 			if ($filteringAttributes)
