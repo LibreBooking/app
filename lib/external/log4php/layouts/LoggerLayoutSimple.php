@@ -34,28 +34,23 @@
  * 
  * <samp>INFO - Hello World!</samp>
  *
- * @version $Revision: 883108 $
+ * @version $Revision: 1213283 $
  * @package log4php
  * @subpackage layouts
  */  
 class LoggerLayoutSimple extends LoggerLayout {
-    /**
-     * Constructor
-     */
-    public function __construct() {
-    }
-
-    /**
-     * Returns the log statement in a format consisting of the
-     * <b>level</b>, followed by " - " and then the
-     * <b>message</b>. For example, 
-     * <samp> INFO - "A message" </samp>
-     *
-     * @param LoggerLoggingEvent $event
-     * @return string
-     */
-    public function format(LoggerLoggingEvent $event) {
-        $level = $event->getLevel();
-        return $level->toString() . ' - ' . $event->getRenderedMessage(). PHP_EOL;
-    }
+	/**
+	 * Returns the log statement in a format consisting of the
+	 * <b>level</b>, followed by " - " and then the
+	 * <b>message</b>. For example, 
+	 * <samp> INFO - "A message" </samp>
+	 *
+	 * @param LoggerLoggingEvent $event
+	 * @return string
+	 */
+	public function format(LoggerLoggingEvent $event) {
+		$level = $event->getLevel();
+		$message = $event->getRenderedMessage();
+		return "$level - $message" . PHP_EOL;
+	}
 }

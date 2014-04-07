@@ -21,7 +21,7 @@
 /**
  * The root logger.
  *
- * @version $Revision: 822448 $
+ * @version $Revision: 1343190 $
  * @package log4php
  * @see Logger
  */
@@ -31,7 +31,7 @@ class LoggerRoot extends Logger {
 	 *
 	 * @param integer $level initial log level
 	 */
-	public function __construct($level = null) {
+	public function __construct(LoggerLevel $level = null) {
 		parent::__construct('root');
 
 		if($level == null) {
@@ -43,28 +43,29 @@ class LoggerRoot extends Logger {
 	/**
 	 * @return LoggerLevel the level
 	 */
-	public function getChainedLevel() {
-		return parent::getLevel();
-	} 
+	public function getEffectiveLevel() {
+		return $this->getLevel();
+	}
 	
 	/**
-	 * Setting a null value to the level of the root category may have catastrophic results.
+	 * Override level setter to prevent setting the root logger's level to 
+	 * null. Root logger must always have a level.
+	 * 
 	 * @param LoggerLevel $level
 	 */
-	public function setLevel($level) {
-		if($level != null) {
+	public function setLevel(LoggerLevel $level = null) {
+		if (isset($level)) {
 			parent::setLevel($level);
-		}	 
+		} else {
+			trigger_error("log4php: Cannot set LoggerRoot level to null.", E_USER_WARNING);
+		}
 	}
 	
 	/**
-	 * Always returns false.
-	 * Because LoggerRoot has no parents, it returns false.
+	 * Override parent setter. Root logger cannot have a parent.
 	 * @param Logger $parent
-	 * @return boolean
 	 */
 	public function setParent(Logger $parent) {
-		return false;
+		trigger_error("log4php: LoggerRoot cannot have a parent.", E_USER_WARNING);
 	}
-
 }

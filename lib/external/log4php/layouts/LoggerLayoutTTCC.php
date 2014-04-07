@@ -44,172 +44,158 @@
  * The above would print:<br>
  * <samp>02:28 [13714] INFO root - Hello World!</samp>
  *
- * @version $Revision: 883108 $
+ * @version $Revision: 1302503 $
  * @package log4php
  * @subpackage layouts
+ * 
+ * @deprecated LoggerLayout TTCC is deprecated and will be removed in a future release. Please use 
+ *   LoggerLayoutPattern instead. 
  */
 class LoggerLayoutTTCC extends LoggerLayout {
 
-	/**
-	 * String constant designating no time information. Current value of
-	 * this constant is <b>NULL</b>.
-	 */
-	 // TODO: not used?
-	const LOG4PHP_LOGGER_LAYOUT_NULL_DATE_FORMAT = 'NULL';
+	// Internal representation of options
+	protected $threadPrinting    = true;
+	protected $categoryPrefixing = true;
+	protected $contextPrinting   = true;
+	protected $microSecondsPrinting = true;
 	
 	/**
-	 * String constant designating relative time. Current value of
-	 * this constant is <b>RELATIVE</b>.
+	 * @var string date format. See {@link PHP_MANUAL#strftime} for details
 	 */
-	 // TODO: not used?
-	const LOG4PHP_LOGGER_LAYOUT_RELATIVE_TIME_DATE_FORMAT = 'RELATIVE';
+	protected $dateFormat = '%c';
+
+	/**
+	 * Constructor
+	 *
+	 * @param string date format
+	 * @see dateFormat
+	 */
+	public function __construct($dateFormat = '') {
+		$this->warn("LoggerLayout TTCC is deprecated and will be removed in a future release. Please use LoggerLayoutPattern instead.");
+		if (!empty($dateFormat)) {
+			$this->dateFormat = $dateFormat;
+		}
+		return;
+	}
+
+	/**
+	 * The <b>ThreadPrinting</b> option specifies whether the name of the
+	 * current thread is part of log output or not. This is true by default.
+	 */
+	public function setThreadPrinting($threadPrinting) {
+		$this->setBoolean('threadPrinting', $threadPrinting);
+	}
+
+	/**
+	 * @return boolean Returns value of the <b>ThreadPrinting</b> option.
+	 */
+	public function getThreadPrinting() {
+		return $this->threadPrinting;
+	}
+
+	/**
+	 * The <b>CategoryPrefixing</b> option specifies whether {@link Category}
+	 * name is part of log output or not. This is true by default.
+	 */
+	public function setCategoryPrefixing($categoryPrefixing) {
+		$this->setBoolean('categoryPrefixing', $categoryPrefixing);
+	}
+
+	/**
+	 * @return boolean Returns value of the <b>CategoryPrefixing</b> option.
+	 */
+	public function getCategoryPrefixing() {
+		return $this->categoryPrefixing;
+	}
+
+	/**
+	 * The <b>ContextPrinting</b> option specifies log output will include
+	 * the nested context information belonging to the current thread.
+	 * This is true by default.
+	 */
+	public function setContextPrinting($contextPrinting) {
+		$this->setBoolean('contextPrinting', $contextPrinting);
+	}
+
+	/**
+	 * @return boolean Returns value of the <b>ContextPrinting</b> option.
+	 */
+	public function getContextPrinting() {
+		return $this->contextPrinting;
+	}
 	
-    // Internal representation of options
-    protected $threadPrinting    = true;
-    protected $categoryPrefixing = true;
-    protected $contextPrinting   = true;
-    protected $microSecondsPrinting = true;
-    
-    /**
-     * @var string date format. See {@link PHP_MANUAL#strftime} for details
-     */
-    protected $dateFormat = '%c';
+	/**
+	 * The <b>MicroSecondsPrinting</b> option specifies if microseconds infos
+	 * should be printed at the end of timestamp.
+	 * This is true by default.
+	 */
+	public function setMicroSecondsPrinting($microSecondsPrinting) {
+		$this->setBoolean('microSecondsPrinting', $microSecondsPrinting);
+	}
 
-    /**
-     * Constructor
-     *
-     * @param string date format
-     * @see dateFormat
-     */
-    public function __construct($dateFormat = '') {
-        if (!empty($dateFormat)) {
-            $this->dateFormat = $dateFormat;
-        }
-        return;
-    }
+	/**
+	 * @return boolean Returns value of the <b>MicroSecondsPrinting</b> option.
+	 */
+	public function getMicroSecondsPrinting() {
+		return $this->microSecondsPrinting;
+	}
+	
+	
+	public function setDateFormat($dateFormat) {
+		$this->setString('dateFormat', $dateFormat);
+	}
+	
+	/**
+	 * @return string
+	 */
+	public function getDateFormat() {
+		return $this->dateFormat;
+	}
 
-    /**
-     * The <b>ThreadPrinting</b> option specifies whether the name of the
-     * current thread is part of log output or not. This is true by default.
-     */
-    public function setThreadPrinting($threadPrinting) {
-        $this->threadPrinting = is_bool($threadPrinting) ? 
-            $threadPrinting : 
-            (bool)(strtolower($threadPrinting) == 'true'); 
-    }
+	/**
+	 * In addition to the level of the statement and message, the
+	 * returned string includes time, thread, category.
+	 * <p>Time, thread, category are printed depending on options.
+	 *
+	 * @param LoggerLoggingEvent $event
+	 * @return string
+	 */
+	public function format(LoggerLoggingEvent $event) {
+		$timeStamp = (float)$event->getTimeStamp();
+		$format = strftime($this->dateFormat, (int)$timeStamp);
+		
+		if ($this->microSecondsPrinting) {
+			$usecs = floor(($timeStamp - (int)$timeStamp) * 1000);
+			$format .= sprintf(',%03d', $usecs);
+		}
+			
+		$format .= ' ';
+		
+		if ($this->threadPrinting) {
+			$format .= '['.getmypid().'] ';
+		}
+		
+		$level = $event->getLevel();
+		$format .= $level.' ';
+		
+		if($this->categoryPrefixing) {
+			$format .= $event->getLoggerName().' ';
+		}
+	   
+		if($this->contextPrinting) {
+			$ndc = $event->getNDC();
+			if($ndc != null) {
+				$format .= $ndc.' ';
+			}
+		}
+		
+		$format .= '- '.$event->getRenderedMessage();
+		$format .= PHP_EOL;
+		
+		return $format;
+	}
 
-    /**
-     * @return boolean Returns value of the <b>ThreadPrinting</b> option.
-     */
-    public function getThreadPrinting() {
-        return $this->threadPrinting;
-    }
-
-    /**
-     * The <b>CategoryPrefixing</b> option specifies whether {@link Category}
-     * name is part of log output or not. This is true by default.
-     */
-    public function setCategoryPrefixing($categoryPrefixing) {
-        $this->categoryPrefixing = LoggerOptionConverter::toBoolean($categoryPrefixing);
-    }
-
-    /**
-     * @return boolean Returns value of the <b>CategoryPrefixing</b> option.
-     */
-    public function getCategoryPrefixing() {
-        return $this->categoryPrefixing;
-    }
-
-    /**
-     * The <b>ContextPrinting</b> option specifies log output will include
-     * the nested context information belonging to the current thread.
-     * This is true by default.
-     */
-    public function setContextPrinting($contextPrinting) {
-        $this->contextPrinting = LoggerOptionConverter::toBoolean($contextPrinting); 
-    }
-
-    /**
-     * @return boolean Returns value of the <b>ContextPrinting</b> option.
-     */
-    public function getContextPrinting() {
-        return $this->contextPrinting;
-    }
-    
-    /**
-     * The <b>MicroSecondsPrinting</b> option specifies if microseconds infos
-     * should be printed at the end of timestamp.
-     * This is true by default.
-     */
-    public function setMicroSecondsPrinting($microSecondsPrinting) {
-        $this->microSecondsPrinting = is_bool($microSecondsPrinting) ? 
-            $microSecondsPrinting : 
-            (bool)(strtolower($microSecondsPrinting) == 'true'); 
-    }
-
-    /**
-     * @return boolean Returns value of the <b>MicroSecondsPrinting</b> option.
-     */
-    public function getMicroSecondsPrinting() {
-        return $this->microSecondsPrinting;
-    }
-    
-    
-    public function setDateFormat($dateFormat) {
-        $this->dateFormat = $dateFormat;
-    }
-    
-    /**
-     * @return string
-     */
-    public function getDateFormat() {
-        return $this->dateFormat;
-    }
-
-    /**
-     * In addition to the level of the statement and message, the
-     * returned string includes time, thread, category.
-     * <p>Time, thread, category are printed depending on options.
-     *
-     * @param LoggerLoggingEvent $event
-     * @return string
-     */
-    public function format(LoggerLoggingEvent $event) {
-        $timeStamp = (float)$event->getTimeStamp();
-        $format = strftime($this->dateFormat, (int)$timeStamp);
-        
-        if ($this->microSecondsPrinting) {
-            $usecs = floor(($timeStamp - (int)$timeStamp) * 1000);
-            $format .= sprintf(',%03d', $usecs);
-        }
-            
-        $format .= ' ';
-        
-        if ($this->threadPrinting) {
-            $format .= '['.getmypid().'] ';
-        }
-        
-        $level = $event->getLevel();
-        $format .= $level->toString().' ';
-        
-        if($this->categoryPrefixing) {
-            $format .= $event->getLoggerName().' ';
-        }
-       
-        if($this->contextPrinting) {
-            $ndc = $event->getNDC();
-            if($ndc != null) {
-                $format .= $ndc.' ';
-            }
-        }
-        
-        $format .= '- '.$event->getRenderedMessage();
-        $format .= PHP_EOL;
-        
-        return $format;
-    }
-
-    public function ignoresThrowable() {
-        return true;
-    }
+	public function ignoresThrowable() {
+		return true;
+	}
 }

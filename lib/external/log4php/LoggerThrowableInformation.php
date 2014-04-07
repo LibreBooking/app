@@ -19,39 +19,50 @@
  */
 
 /**
+ * The internal representation of throwables.
+ *
  * @package log4php
- * @subpackage helpers
+ * @since 2.1
  */
-class LoggerLiteralPatternConverter extends LoggerPatternConverter {
+class LoggerThrowableInformation {
+	
+	/** @var Exception Throwable to log */
+	private $throwable;
+	
+	/** @var array Array of throwable messages */
+	private $throwableArray;
 	
 	/**
-	 * @var string
+	 * Create a new instance
+	 * 
+	 * @param $throwable - a throwable as a exception
+	 * @param $logger - Logger reference
 	 */
-	private $literal;
-
-	/**
-	 * Constructor
-	 *
-	 * @param string $value
-	 */
-	public function __construct($value) {
-		$this->literal = $value;
+	public function __construct(Exception $throwable) {
+		$this->throwable = $throwable;
 	}
-
+	
 	/**
-	 * @param string &$sbuf
-	 * @param LoggerLoggingEvent $event
-	 */
-	public function format(&$sbuf, $event) {
-		$sbuf .= $this->literal;
+	* Return source exception
+	* 
+	* @return Exception
+	*/
+	public function getThrowable() {
+		return $this->throwable;
 	}
-
+	
 	/**
-	 * @param LoggerLoggingEvent $event
-	 * @return string
+	 * @desc Returns string representation of throwable
+	 * 
+	 * @return array 
 	 */
-	public function convert($event) {
-		return $this->literal;
+	public function getStringRepresentation() {
+		if (!is_array($this->throwableArray)) {
+			$renderer = new LoggerRendererException();
+			
+			$this->throwableArray = explode("\n", $renderer->render($this->throwable));
+		}
+		
+		return $this->throwableArray;
 	}
 }
-

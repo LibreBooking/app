@@ -19,17 +19,10 @@
  */
 
 /**
- * Log objects using customized renderers that implement {@link LoggerRendererObject}.
+ * Manages defined renderers and determines which renderer to use for a given 
+ * input. 
  *
- * Example:
- * {@example ../../examples/php/renderer_map.php 19}<br>
- * {@example ../../examples/resources/renderer_map.properties 18}<br>
- * <pre>
- * DEBUG - Now comes the current MyClass object:
- * DEBUG - Doe, John
- * </pre>
- * 
- * @version $Revision: 883108 $
+ * @version $Revision: 1394956 $
  * @package log4php
  * @subpackage renderers
  * @since 0.3
@@ -37,113 +30,157 @@
 class LoggerRendererMap {
 
 	/**
+	 * Maps class names to appropriate renderers.
 	 * @var array
 	 */
-	private $map;
+	private $map = array();
 
 	/**
-	 * @var LoggerDefaultRenderer
+	 * The default renderer to use if no specific renderer is found. 
+	 * @var LoggerRenderer
 	 */
 	private $defaultRenderer;
-
-	/**
-	 * Constructor
-	 */
+	
 	public function __construct() {
-		$this->map = array();
-		$this->defaultRenderer = new LoggerRendererDefault();
+		
+		// Set default config
+		$this->reset();
 	}
 
 	/**
-	 * Add a renderer to a hierarchy passed as parameter.
-	 * Note that hierarchy must implement getRendererMap() and setRenderer() methods.
-	 *
-	 * @param LoggerHierarchy $repository a logger repository.
-	 * @param string $renderedClassName
-	 * @param string $renderingClassName
-	 * @static
-	 */
-	public function addRenderer($renderedClassName, $renderingClassName) {
-		$renderer = LoggerReflectionUtils::createObject($renderingClassName);
-		if($renderer == null) {
-			return;
-		} else {
-			$this->put($renderedClassName, $renderer);
-		}
-	}
-
-
-	/**
-	 * Find the appropriate renderer for the class type of the
-	 * <var>o</var> parameter. 
-	 *
-	 * This is accomplished by calling the {@link getByObject()} 
-	 * method if <var>o</var> is object or using {@link LoggerRendererDefault}. 
-	 * Once a renderer is found, it is applied on the object <var>o</var> and 
-	 * the result is returned as a string.
-	 *
-	 * @param mixed $o
-	 * @return string 
-	 */
-	public function findAndRender($o) {
-		if($o == null) {
-			return null;
-		} else {
-			if(is_object($o)) {
-				$renderer = $this->getByObject($o);
-				if($renderer !== null) {
-					return $renderer->render($o);
-				} else {
-					return null;
-				}
-			} else {
-				$renderer = $this->defaultRenderer;
-				return $renderer->render($o);
-			}
-		}
-	}
-
-	/**
-	 * Syntactic sugar method that calls {@link PHP_MANUAL#get_class} with the
-	 * class of the object parameter.
+	 * Adds a renderer to the map.
 	 * 
-	 * @param mixed $o
-	 * @return string
-	 */
-	public function getByObject($o) {
-		return ($o == null) ? null : $this->getByClassName(get_class($o));
-	}
-
-
-	/**
-	 * Search the parents of <var>clazz</var> for a renderer. 
+	 * If a renderer already exists for the given <var>$renderedClass</var> it 
+	 * will be overwritten without warning.
 	 *
-	 * The renderer closest in the hierarchy will be returned. If no
-	 * renderers could be found, then the default renderer is returned.
-	 *
-	 * @param string $class
-	 * @return LoggerRendererObject
+	 * @param string $renderedClass The name of the class which will be 
+	 * 		rendered by the renderer.
+	 * @param string $renderingClass The name of the class which will 
+	 * 		perform the rendering.
 	 */
-	public function getByClassName($class) {
-		$r = null;
-		for($c = strtolower($class); !empty($c); $c = get_parent_class($c)) {
-			if(isset($this->map[$c])) {
-				return $this->map[$c];
-			}
+	public function addRenderer($renderedClass, $renderingClass) {
+		// Check the rendering class exists
+		if (!class_exists($renderingClass)) {
+			trigger_error("log4php: Failed adding renderer. Rendering class [$renderingClass] not found.");
+			return;
 		}
+		
+		// Create the instance
+		$renderer = new $renderingClass();
+		
+		// Check the class implements the right interface
+		if (!($renderer instanceof LoggerRenderer)) {
+			trigger_error("log4php: Failed adding renderer. Rendering class [$renderingClass] does not implement the LoggerRenderer interface.");
+			return;
+		}
+		
+		// Convert to lowercase since class names in PHP are not case sensitive
+		$renderedClass = strtolower($renderedClass);
+		
+		$this->map[$renderedClass] = $renderer;
+	}
+	
+	/**
+	 * Sets a custom default renderer class.
+	 * 
+	 * TODO: there's code duplication here. This method is almost identical to 
+	 * addRenderer(). However, it has custom error messages so let it sit for 
+	 * now.
+	 *
+	 * @param string $renderingClass The name of the class which will 
+	 * 		perform the rendering.
+	 */
+	public function setDefaultRenderer($renderingClass) {
+		// Check the class exists
+		if (!class_exists($renderingClass)) {
+			trigger_error("log4php: Failed setting default renderer. Rendering class [$renderingClass] not found.");
+			return;
+		}
+		
+		// Create the instance
+		$renderer = new $renderingClass();
+		
+		// Check the class implements the right interface
+		if (!($renderer instanceof LoggerRenderer)) {
+			trigger_error("log4php: Failed setting default renderer. Rendering class [$renderingClass] does not implement the LoggerRenderer interface.");
+			return;
+		}
+		
+		$this->defaultRenderer = $renderer;
+	}
+	
+	/**
+	 * Returns the default renderer.
+	 * @var LoggerRenderer
+	 */
+	public function getDefaultRenderer() {
 		return $this->defaultRenderer;
 	}
+	
+	/**
+	 * Finds the appropriate renderer for the given <var>input</var>, and 
+	 * renders it (i.e. converts it to a string). 
+	 *
+	 * @param mixed $input Input to render.
+	 * @return string The rendered contents.
+	 */
+	public function findAndRender($input) {
+		if ($input === null) {
+			return null;
+		}
+		
+		// For objects, try to find a renderer in the map
+		if(is_object($input)) {
+			$renderer = $this->getByClassName(get_class($input));
+			if (isset($renderer)) {
+				return $renderer->render($input);
+			}
+		}
+		
+		// Fall back to the default renderer
+		return $this->defaultRenderer->render($input);
+	}
 
+	/**
+	 * Returns the appropriate renderer for a given object.
+	 * 
+	 * @param mixed $object
+	 * @return LoggerRenderer Or null if none found.
+	 */
+	public function getByObject($object) {
+		if (!is_object($object)) {
+			return null;
+		}
+		return $this->getByClassName(get_class($object));
+	}
+	
+	/**
+	 * Returns the appropriate renderer for a given class name.
+	 * 
+	 * If no renderer could be found, returns NULL.
+	 *
+	 * @param string $class
+	 * @return LoggerRendererObject Or null if not found.
+	 */
+	public function getByClassName($class) {
+		for(; !empty($class); $class = get_parent_class($class)) {
+			$class = strtolower($class);
+			if(isset($this->map[$class])) {
+				return $this->map[$class];
+			}
+		}
+		return null;
+	}
+
+	/** Empties the renderer map. */
 	public function clear() {
 		$this->map = array();
 	}
-
-	/**
-	 * Register a {@link LoggerRendererObject} for <var>clazz</var>.
-	 * @param string $class
-	 * @param LoggerRendererObject $or
-	 */
-	private function put($class, $or) {
-		$this->map[strtolower($class)] = $or;
+	
+	/** Resets the renderer map to it's default configuration. */
+	public function reset() {
+		$this->defaultRenderer = new LoggerRendererDefault();
+		$this->clear();
+		$this->addRenderer('Exception', 'LoggerRendererException');
 	}
 }

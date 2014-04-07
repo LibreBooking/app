@@ -53,11 +53,9 @@ class BlackoutFilter
 		}
 		if (!empty($this->resourceId))
 		{
-			$filter->_And(new SqlFilterEquals(new SqlFilterColumn(TableNames::RESOURCES, ColumnNames::RESOURCE_ID), $this->resourceId));
+			$filter->_And(new SqlFilterEquals(new SqlFilterColumn(TableNames::RESOURCES_ALIAS, ColumnNames::RESOURCE_ID), $this->resourceId));
 		}
 
 		return $filter;
 	}
 }
-
-?>

@@ -40,7 +40,7 @@
  * 
  * {@example ../../examples/resources/filter_levelmatch.xml 18}
  * 
- * @version $Revision: 883108 $
+ * @version $Revision: 1213283 $
  * @package log4php
  * @subpackage filters
  * @since 0.6
@@ -51,30 +51,26 @@ class LoggerFilterLevelMatch extends LoggerFilter {
 	 * Indicates if this event should be accepted or denied on match
 	 * @var boolean
 	 */
-	private $acceptOnMatch = true;
+	protected $acceptOnMatch = true;
 
 	/**
 	 * The level, when to match
 	 * @var LoggerLevel
 	 */
-	private $levelToMatch;
+	protected $levelToMatch;
   
 	/**
 	 * @param boolean $acceptOnMatch
 	 */
 	public function setAcceptOnMatch($acceptOnMatch) {
-		$this->acceptOnMatch = LoggerOptionConverter::toBoolean($acceptOnMatch, true); 
+		$this->setBoolean('acceptOnMatch', $acceptOnMatch);
 	}
 	
 	/**
 	 * @param string $l the level to match
 	 */
-	public function setLevelToMatch($l) {
-		if($l instanceof LoggerLevel) {
-		    $this->levelToMatch = $l;
-		} else {
-			$this->levelToMatch = LoggerOptionConverter::toLevel($l, null);
-		}
+	public function setLevelToMatch($level) {
+		$this->setLevel('levelToMatch', $level);
 	}
 
 	/**

@@ -19,163 +19,140 @@
  */
 
 /**
- * A flexible layout configurable with pattern string.
- *
- * <p>Example:</p>
+ * A flexible layout configurable with a pattern string.
  * 
- * {@example ../../examples/php/layout_pattern.php 19}<br>
+ * Configurable parameters:
  * 
- * <p>with the following properties file:</p>
+ * * converionPattern - A string which controls the formatting of logging 
+ *   events. See docs for full specification.
  * 
- * {@example ../../examples/resources/layout_pattern.properties 18}<br>
- * 
- * <p>would print the following:</p>
- * 
- * <pre>
- * 2009-09-09 00:27:35,787 [INFO] root: Hello World! (at src/examples/php/layout_pattern.php line 6)
- * 2009-09-09 00:27:35,787 [DEBUG] root: Second line (at src/examples/php/layout_pattern.php line 7)
- * </pre>
- *
- * <p>The conversion pattern is closely related to the conversion pattern of the printf function in C.
- * A conversion pattern is composed of literal text and format control expressions called conversion specifiers.
- * You are free to insert any literal text within the conversion pattern.</p> 
- *
- * <p>Each conversion specifier starts with a percent sign (%) and is followed by optional 
- * format modifiers and a conversion character.</p>
- * 
- * <p>The conversion character specifies the type of data, e.g. category, priority, date, thread name. 
- * The format modifiers control such things as field width, padding, left and right justification.</p>
- * 
- * <p>Note that there is no explicit separator between text and conversion specifiers.</p>
- * 
- * <p>The pattern parser knows when it has reached the end of a conversion specifier when it reads a conversion character. 
- * In the example above the conversion specifier %-5p means the priority of the logging event should be 
- * left justified to a width of five characters.</p> 
- *
- * Not all log4j conversion characters are implemented. The recognized conversion characters are:
- * - <b>c</b> Used to output the category of the logging event. The category conversion specifier can be optionally followed by precision specifier, that is a decimal constant in brackets. 
- *         If a precision specifier is given, then only the corresponding number of right most components of the category name will be printed. 
- *         By default the category name is printed in full. 
- *         For example, for the category name "a.b.c" the pattern %c{2} will output "b.c". 
- * - <b>C</b> Used to output the fully qualified class name of the caller issuing the logging request. 
- *         This conversion specifier can be optionally followed by precision specifier, that is a decimal constant in brackets. 
- *         If a precision specifier is given, then only the corresponding number of right most components of the class name will be printed. 
- *         By default the class name is output in fully qualified form. 
- *         For example, for the class name "org.apache.xyz.SomeClass", the pattern %C{1} will output "SomeClass". 
- * - <b>d</b> Used to output the date of the logging event. 
- *         The date conversion specifier may be followed by a date format specifier enclosed between braces.
- *         The format specifier follows the {@link PHP_MANUAL#date} function.
- *         Note that the special character <b>u</b> is used to as microseconds replacement (to avoid replacement,
- *         use <b>\u</b>).  
- *         For example, %d{H:i:s,u} or %d{d M Y H:i:s,u}. If no date format specifier is given then ISO8601 format is assumed. 
- *         The date format specifier admits the same syntax as the time pattern string of the SimpleDateFormat. 
- *         It is recommended to use the predefined log4php date formatters. 
- *         These can be specified using one of the strings "ABSOLUTE", "DATE" and "ISO8601" for specifying 
- *         AbsoluteTimeDateFormat, DateTimeDateFormat and respectively ISO8601DateFormat. 
- *         For example, %d{ISO8601} or %d{ABSOLUTE}. 
- * - <b>F</b> Used to output the file name where the logging request was issued. 
- * - <b>l</b> Used to output location information of the caller which generated the logging event. 
- * - <b>L</b> Used to output the line number from where the logging request was issued.
- * - <b>m</b> Used to output the application supplied message associated with the logging event.
- * - <b>M</b> Used to output the method name where the logging request was issued.  
- * - <b>p</b> Used to output the priority of the logging event.
- * - <b>r</b> Used to output the number of milliseconds elapsed since the start of 
- *            the application until the creation of the logging event. 
- * - <b>t</b> Used to output the name of the thread that generated the logging event.
- * - <b>x</b> Used to output the NDC (nested diagnostic context) associated with 
- *            the thread that generated the logging event.  
- * - <b>X</b> Used to output the MDC (mapped diagnostic context) associated with 
- *            the thread that generated the logging event. 
- *            The X conversion character must be followed by the key for the map placed between braces, 
- *            as in <i>%X{clientNumber}</i> where clientNumber is the key.
- *            The value in the MDC corresponding to the key will be output.
- *            See {@link LoggerMDC} class for more details. 
- * - <b>%</b> The sequence %% outputs a single percent sign.  
- *
- * <p>By default the relevant information is output as is. 
- *  However, with the aid of format modifiers it is possible to change the minimum field width, 
- *  the maximum field width and justification.</p> 
- *
- * <p>The optional format modifier is placed between the percent sign and the conversion character.</p>
- * <p>The first optional format modifier is the left justification flag which is just the minus (-) character. 
- *  Then comes the optional minimum field width modifier. 
- *  This is a decimal constant that represents the minimum number of characters to output. 
- *  If the data item requires fewer characters, it is padded on either the left or the right until the minimum width is reached. The default is to pad on the left (right justify) but you can specify right padding with the left justification flag. The padding character is space. If the data item is larger than the minimum field width, the field is expanded to accommodate the data. 
- *  The value is never truncated.</p>
- * 
- * <p>This behavior can be changed using the maximum field width modifier which is designated by a period 
- *  followed by a decimal constant. 
- *  If the data item is longer than the maximum field, 
- *  then the extra characters are removed from the beginning of the data item and not from the end. 
- *  For example, it the maximum field width is eight and the data item is ten characters long, 
- *  then the first two characters of the data item are dropped. 
- *  This behavior deviates from the printf function in C where truncation is done from the end.</p> 
- *
- * <p>Below are various format modifier examples for the category conversion specifier.</p> 
- * <pre>
- *   Format modifier  left justify  minimum width  maximum width  comment
- *   %20c             false         20             none           Left pad with spaces if the category name 
- *                                                                is less than 20 characters long.
- *   %-20c            true          20             none           Right pad with spaces if the category name 
- *                                                                is less than 20 characters long.  
- *   %.30c            NA            none           30             Truncate from the beginning if the category name 
- *                                                                is longer than 30 characters.  
- *   %20.30c          false         20             30             Left pad with spaces if the category name 
- *                                                                is shorter than 20 characters. 
- *                                                                However, if category name is longer than 30 chars, 
- *                                                                then truncate from the beginning.  
- *   %-20.30c         true          20             30             Right pad with spaces if the category name is 
- *                                                                shorter than 20 chars. 
- *                                                                However, if category name is longer than 30 chars, 
- *                                                                then truncate from the beginning.  
- * </pre>
- * 
- * @version $Revision: 883108 $
  * @package log4php
  * @subpackage layouts
- * @since 0.3 
+ * @version $Revision: 1395470 $
  */
 class LoggerLayoutPattern extends LoggerLayout {
-	/** Default conversion Pattern */
-	const DEFAULT_CONVERSION_PATTERN = '%m%n';
+	
+	/** Default conversion pattern */
+	const DEFAULT_CONVERSION_PATTERN = '%date %-5level %logger %message%newline';
 
 	/** Default conversion TTCC Pattern */
-	const TTCC_CONVERSION_PATTERN = '%r [%t] %p %c %x - %m%n';
+	const TTCC_CONVERSION_PATTERN = '%d [%t] %p %c %x - %m%n';
 
-	/** The pattern. 
-	 * @var string */
-	private $pattern;
+	/** The conversion pattern. */ 
+	protected $pattern = self::DEFAULT_CONVERSION_PATTERN;
+	
+	/** Maps conversion keywords to the relevant converter (default implementation). */
+	protected static $defaultConverterMap = array(
+		'c' => 'LoggerPatternConverterLogger',
+		'lo' => 'LoggerPatternConverterLogger',
+		'logger' => 'LoggerPatternConverterLogger',
+		
+		'C' => 'LoggerPatternConverterClass',
+		'class' => 'LoggerPatternConverterClass',
+		
+		'cookie' => 'LoggerPatternConverterCookie',
+		
+		'd' => 'LoggerPatternConverterDate',
+		'date' => 'LoggerPatternConverterDate',
+		
+		'e' => 'LoggerPatternConverterEnvironment',
+		'env' => 'LoggerPatternConverterEnvironment',
+		
+		'ex' => 'LoggerPatternConverterThrowable',
+		'exception' => 'LoggerPatternConverterThrowable',
+		'throwable' => 'LoggerPatternConverterThrowable',
+		
+		'F' => 'LoggerPatternConverterFile',
+		'file' => 'LoggerPatternConverterFile',
+			
+		'l' => 'LoggerPatternConverterLocation',
+		'location' => 'LoggerPatternConverterLocation',
+		
+		'L' => 'LoggerPatternConverterLine',
+		'line' => 'LoggerPatternConverterLine',
+		
+		'm' => 'LoggerPatternConverterMessage',
+		'msg' => 'LoggerPatternConverterMessage',
+		'message' => 'LoggerPatternConverterMessage',
+		
+		'M' => 'LoggerPatternConverterMethod',
+		'method' => 'LoggerPatternConverterMethod',
+		
+		'n' => 'LoggerPatternConverterNewLine',
+		'newline' => 'LoggerPatternConverterNewLine',
+		
+		'p' => 'LoggerPatternConverterLevel',
+		'le' => 'LoggerPatternConverterLevel',
+		'level' => 'LoggerPatternConverterLevel',
+	
+		'r' => 'LoggerPatternConverterRelative',
+		'relative' => 'LoggerPatternConverterRelative',
+		
+		'req' => 'LoggerPatternConverterRequest',
+		'request' => 'LoggerPatternConverterRequest',
+		
+		's' => 'LoggerPatternConverterServer',
+		'server' => 'LoggerPatternConverterServer',
+		
+		'ses' => 'LoggerPatternConverterSession',
+		'session' => 'LoggerPatternConverterSession',
+		
+		'sid' => 'LoggerPatternConverterSessionID',
+		'sessionid' => 'LoggerPatternConverterSessionID',
+	
+		't' => 'LoggerPatternConverterProcess',
+		'pid' => 'LoggerPatternConverterProcess',
+		'process' => 'LoggerPatternConverterProcess',
+		
+		'x' => 'LoggerPatternConverterNDC',
+		'ndc' => 'LoggerPatternConverterNDC',
+			
+		'X' => 'LoggerPatternConverterMDC',
+		'mdc' => 'LoggerPatternConverterMDC',
+	);
 
-	/** Head of a chain of Converters.
-	 * @var LoggerPatternConverter */
+	/** Maps conversion keywords to the relevant converter. */
+	protected $converterMap = array();
+	
+	/** 
+	 * Head of a chain of Converters.
+	 * @var LoggerPatternConverter 
+	 */
 	private $head;
 
-	private $timezone;
-
-	/**
-	 * Constructs a PatternLayout using the 
-	 * {@link DEFAULT_LAYOUT_PATTERN}.
-	 * The default pattern just produces the application supplied message.
-	 */
-	public function __construct($pattern = null) {
-		if ($pattern === null) {
-			$this->pattern = self :: DEFAULT_CONVERSION_PATTERN;
-		} else {
-			$this->pattern = $pattern;
-		}
+	/** Returns the default converter map. */
+	public static function getDefaultConverterMap() {
+		return self::$defaultConverterMap;
 	}
-
+	
+	/** Constructor. Initializes the converter map. */
+	public function __construct() {
+		$this->converterMap = self::$defaultConverterMap;
+	}
+	
 	/**
-	 * Set the <b>ConversionPattern</b> option. This is the string which
+	 * Sets the conversionPattern option. This is the string which
 	 * controls formatting and consists of a mix of literal content and
 	 * conversion specifiers.
+	 * @param array $conversionPattern
 	 */
 	public function setConversionPattern($conversionPattern) {
 		$this->pattern = $conversionPattern;
-		$patternParser = new LoggerPatternParser($this->pattern);
-		$this->head = $patternParser->parse();
 	}
-
+	
+	/**
+	 * Processes the conversion pattern and creates a corresponding chain of 
+	 * pattern converters which will be used to format logging events. 
+	 */
+	public function activateOptions() {
+		if (!isset($this->pattern)) {
+			throw new LoggerException("Mandatory parameter 'conversionPattern' is not set.");
+		}
+		
+		$parser = new LoggerPatternParser($this->pattern, $this->converterMap);
+		$this->head = $parser->parse();
+	}
+	
 	/**
 	 * Produces a formatted string as specified by the conversion pattern.
 	 *
@@ -184,36 +161,11 @@ class LoggerLayoutPattern extends LoggerLayout {
 	 */
 	public function format(LoggerLoggingEvent $event) {
 		$sbuf = '';
-		$c = $this->head;
-		while ($c !== null) {
-			$c->format($sbuf, $event);
-			$c = $c->next;
+		$converter = $this->head;
+		while ($converter !== null) {
+			$converter->format($sbuf, $event);
+			$converter = $converter->next;
 		}
 		return $sbuf;
 	}
-	
-    /**
-     * Returns an array with the formatted elements.
-     * 
-     * This method is mainly used for the prepared statements of {@see LoggerAppenderPDO}.
-     * 
-     * It requires {@link $this->pattern} to be a comma separated string of patterns like
-     * e.g. <code>%d,%c,%p,%m,%t,%F,%L</code>.
-     * 
-     * @return array(string)   An array of the converted elements i.e. timestamp, message, filename etc.
-     */
-    public function formatToArray(LoggerLoggingEvent $event) {
-        $results = array();
-        $c = $this->head;
-        while ($c !== null) {
-            if ( ! $c instanceOf LoggerLiteralPatternConverter) {
-                $sbuf = null;
-                $c->format($sbuf, $event);
-                $results[] = $sbuf;
-            }
-            $c = $c->next;
-        }
-        return $results;
-    }      
-	
 }

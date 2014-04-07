@@ -14,77 +14,69 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *
- * @package log4php
  */
 
 /**
- * Appends log events to mail using php function {@link PHP_MANUAL#mail}.
+ * LoggerAppenderMail appends log events via email.
  *
- * The appender sends all log events at once after the request has been
- * finsished and the appender is beeing closed.
- *
- * Configurable parameters for this appender:
+ * This appender does not send individual emails for each logging requests but 
+ * will collect them in a buffer and send them all in a single email once the 
+ * appender is closed (i.e. when the script exists). Because of this, it may 
+ * not appropriate for long running scripts, in which case 
+ * LoggerAppenderMailEvent might be a better choice.
  * 
- * - layout             - Sets the layout class for this appender (required)
- * - to                 - Sets the recipient of the mail (required)
- * - from               - Sets the sender of the mail (optional)
- * - subject            - Sets the subject of the mail (optional)
+ * This appender uses a layout.
  * 
- * An example:
+ * ## Configurable parameters: ##
  * 
- * {@example ../../examples/php/appender_mail.php 19}
+ * - **to** - Email address(es) to which the log will be sent. Multiple email 
+ *     addresses may be specified by separating them with a comma.
+ * - **from** - Email address which will be used in the From field.
+ * - **subject** - Subject of the email message.
  * 
- * {@example ../../examples/resources/appender_mail.properties 18}
- * 
- * The above will output something like:
- * <pre>
- *      Date: Tue,  8 Sep 2009 21:51:04 +0200 (CEST)
- *      From: someone@example.com
- *      To: root@localhost
- *      Subject: Log4php test
- *      
- *      Tue Sep  8 21:51:04 2009,120 [5485] FATAL root - Some critical message!
- *      Tue Sep  8 21:51:06 2009,120 [5485] FATAL root - Some more critical message!
- * </pre>
-
- * @version $Revision: 883108 $
+ * @version $Revision: 1337820 $
  * @package log4php
  * @subpackage appenders
+ * @license http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
+ * @link http://logging.apache.org/log4php/docs/appenders/mail.html Appender documentation
  */
 class LoggerAppenderMail extends LoggerAppender {
 
-	/** @var string 'from' field */
-	private $from = null;
+	/** 
+	 * Email address to put in From field of the email.
+	 * @var string
+	 */
+	protected $from = null;
 
-	/** @var string 'subject' field */
-	private $subject = 'Log4php Report';
-	
-	/** @var string 'to' field */
-	private $to = null;
-
-	/** @var indiciates if this appender should run in dry mode */
-	private $dry = false;
-
-	/** @var string used to create mail body */
-	private $body = '';
+	/** 
+	 * The subject of the email.
+	 * @var string
+	 */
+	protected $subject = 'Log4php Report';
 	
 	/**
-	 * Constructor.
-	 *
-	 * @param string $name appender name
+	 * One or more comma separated email addresses to which to send the email. 
+	 * @var string
 	 */
-	public function __construct($name = '') {
-		parent::__construct($name);
-		$this->requiresLayout = true;
-	}
+	protected $to = null;
 
-	public function __destruct() {
-       $this->close();
-   	}
+	/** 
+	 * Indiciates whether this appender should run in dry mode.
+	 * @deprecated
+	 * @var boolean 
+	 */
+	protected $dry = false;
 
-	public function activateOptions() {
-		$this->closed = false;
+	/** 
+	 * Buffer which holds the email contents before it is sent. 
+	 * @var string  
+	 */
+	protected $body = '';
+	
+	public function append(LoggerLoggingEvent $event) {
+		if($this->layout !== null) {
+			$this->body .= $this->layout->format($event);
+		}
 	}
 	
 	public function close() {
@@ -107,25 +99,38 @@ class LoggerAppenderMail extends LoggerAppender {
 		}
 	}
 	
+	/** Sets the 'subject' parameter. */
 	public function setSubject($subject) {
-		$this->subject = $subject;
+		$this->setString('subject', $subject);
 	}
 	
+	/** Returns the 'subject' parameter. */
+	public function getSubject() {
+		return $this->subject;
+	}
+	
+	/** Sets the 'to' parameter. */
 	public function setTo($to) {
-		$this->to = $to;
-	}
-
-	public function setFrom($from) {
-		$this->from = $from;
-	}  
-
-	public function setDry($dry) {
-		$this->dry = $dry;
+		$this->setString('to', $to);
 	}
 	
-	public function append(LoggerLoggingEvent $event) {
-		if($this->layout !== null) {
-			$this->body .= $this->layout->format($event);
-		}
+	/** Returns the 'to' parameter. */
+	public function getTo() {
+		return $this->to;
+	}
+
+	/** Sets the 'from' parameter. */
+	public function setFrom($from) {
+		$this->setString('from', $from);
+	}
+	
+	/** Returns the 'from' parameter. */
+	public function getFrom() {
+		return $this->from;
+	}
+
+	/** Enables or disables dry mode. */
+	public function setDry($dry) {
+		$this->setBoolean('dry', $dry);
 	}
 }

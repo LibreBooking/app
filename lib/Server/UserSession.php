@@ -45,6 +45,11 @@ class UserSession
 	{
 		return true;
 	}
+
+	public function __toString()
+	{
+		return "{$this->FirstName} {$this->LastName} ({$this->Email})";
+	}
 }
 
 class NullUserSession extends UserSession
@@ -60,4 +65,3 @@ class NullUserSession extends UserSession
 		return false;
 	}
 }
-?>

@@ -19,35 +19,24 @@
  */
 
 /**
- * Implemented by classes capable of configuring log4php using a URL.
- *	
- * @version $Revision: 822448 $
+ * Interface for logger configurators.
+ * 
  * @package log4php
+ * @license http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
+ * @version $Revision: 1213710 $
+ * @since 2.2
  */
-interface LoggerConfigurator {
-	
+interface LoggerConfigurator
+{
 	/**
-	 * Special level value signifying inherited behaviour. The current
-	 * value of this string constant is <b>inherited</b>. 
-	 * {@link CONFIGURATOR_NULL} is a synonym.  
+	 * Configures log4php based on the given configuration. 
+	 * 
+	 * All configurators implementations must implement this interface.
+	 * 
+	 * @param LoggerHierarchy $hierarchy The hierarchy on which to perform 
+	 * 		the configuration. 
+	 * @param mixed $input Either path to the config file or the 
+	 * 		configuration as an array.
 	 */
-	const CONFIGURATOR_INHERITED = 'inherited';
-	
-	/**
-	 * Special level signifying inherited behaviour, same as 
-	 * {@link CONFIGURATOR_INHERITED}. 
-	 * The current value of this string constant is <b>null</b>. 
-	 */
-	const CONFIGURATOR_NULL = 'null';
-		
-	/**
-	 * Interpret a resource pointed by a <var>url</var> and configure accordingly.
-	 *
-	 * The configuration is done relative to the <var>repository</var>
-	 * parameter.
-	 *
-	 * @param string $url The URL to parse
-	 */
-	public function configure(LoggerHierarchy $hierarchy, $url = null);
-	
+	public function configure(LoggerHierarchy $hierarchy, $input = null);
 }

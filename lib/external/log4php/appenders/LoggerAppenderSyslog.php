@@ -14,156 +14,218 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *
- * @package log4php
  */
 
 /**
- * Log events using php {@link PHP_MANUAL#syslog} function.
+ * Log events to a system log using the PHP syslog() function.
  *
- * This appender can be configured by changing the following attributes:
+ * This appenders requires a layout.
+ *
+ * ## Configurable parameters: ##
  * 
- * - layout           - Sets the layout class for this appender
- * - ident            - Set the ident of the syslog message.
- * - priority         - Set the priority value for the syslog message.
- * - facility         - Set the facility value for the syslog message
- * - overridePriority - If the priority of the message to be sent can be 
- *                      defined by a value in the properties-file, set 
- *                      parameter value to "true"
- * - option           - Set the option value for the syslog message. 
- *                      This value is used as a parameter for php openlog()
- *                      and passed on to the syslog daemon.
+ * - **ident** - The ident of the syslog message.
+ * - **priority** - The priority for the syslog message (used when overriding 
+ *     priority).
+ * - **facility** - The facility for the syslog message
+ * - **overridePriority** - If set to true, the message priority will always 
+ *     use the value defined in {@link $priority}, otherwise the priority will
+ *     be determined by the message's log level.  
+ * - **option** - The option value for the syslog message. 
+ *
+ * Recognised syslog options are:
+ * 
+ * - CONS 	 - if there is an error while sending data to the system logger, write directly to the system console
+ * - NDELAY - open the connection to the logger immediately
+ * - ODELAY - delay opening the connection until the first message is logged (default)
+ * - PERROR - print log message also to standard error
+ * - PID    - include PID with each message
+ * 
+ * Multiple options can be set by delimiting them with a pipe character, 
+ * e.g.: "CONS|PID|PERROR".
+ * 
+ * Recognised syslog priorities are:
+ * 
+ * - EMERG
+ * - ALERT
+ * - CRIT
+ * - ERR
+ * - WARNING
+ * - NOTICE
+ * - INFO
+ * - DEBUG
  *
  * Levels are mapped as follows:
- * - <b>level >= FATAL</b> to LOG_ALERT
- * - <b>FATAL > level >= ERROR</b> to LOG_ERR 
- * - <b>ERROR > level >= WARN</b> to LOG_WARNING
- * - <b>WARN  > level >= INFO</b> to LOG_INFO
- * - <b>INFO  > level >= DEBUG</b> to LOG_DEBUG
+ * 
+ * - <b>FATAL</b> to LOG_ALERT
+ * - <b>ERROR</b> to LOG_ERR 
+ * - <b>WARN</b> to LOG_WARNING
+ * - <b>INFO</b> to LOG_INFO
+ * - <b>DEBUG</b> to LOG_DEBUG
+ * - <b>TRACE</b> to LOG_DEBUG
  *
- * An example:
- *
- * {@example ../../examples/php/appender_syslog.php 19}
- *
- * {@example ../../examples/resources/appender_syslog.properties 18}
- *
- * @version $Revision: 883108 $
+ * @version $Revision: 1337820 $
  * @package log4php
  * @subpackage appenders
+ * @license http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
+ * @link http://logging.apache.org/log4php/docs/appenders/syslog.html Appender documentation
  */ 
 class LoggerAppenderSyslog extends LoggerAppender {
 	
 	/**
 	 * The ident string is added to each message. Typically the name of your application.
-	 *
-	 * @var string Ident for your application
+	 * 
+	 * @var string 
 	 */
-	private $_ident = "Log4PHP Syslog-Event";
+	protected $ident = "Apache log4php";
 
 	/**
-	 * The priority parameter value indicates the level of importance of the message.
-	 * It is passed on to the Syslog daemon.
+	 * The syslog priority to use when overriding priority. This setting is 
+	 * required if {@link overridePriority} is set to true. 
 	 * 
-	 * @var int Syslog priority
+	 * @var string 
 	 */
-	private $_priority;
+	protected $priority;
 	
 	/**
-	 * The option used when generating a log message.
-	 * It is passed on to the Syslog daemon.
+	 * The option used when opening the syslog connection.
 	 * 
-	 * @var int Syslog priority
+	 * @var string
 	 */
-	private $_option;
+	protected $option = 'PID|CONS';
 	
 	/**
 	 * The facility value indicates the source of the message.
-	 * It is passed on to the Syslog daemon.
 	 *
-	 * @var const int Syslog facility
+	 * @var string
 	 */
-	private $_facility;
+	protected $facility = 'USER';
 	
 	/**
-	 * If it is necessary to define logging priority in the .properties-file,
-	 * set this variable to "true".
+	 * If set to true, the message priority will always use the value defined 
+	 * in {@link $priority}, otherwise the priority will be determined by the 
+	 * message's log level.
 	 *
-	 * @var const int  value indicating whether the priority of the message is defined in the .properties-file
-	 *				   (or properties-array)
+	 * @var string
 	 */
-	private $_overridePriority;
+	protected $overridePriority = false;
 
-	/** @var indiciates if this appender should run in dry mode */
-	private $dry = false;
-
-	public function __construct($name = '') {
-		parent::__construct($name);
-		$this->requiresLayout = true;
-	}
-
-	public function __destruct() {
-       $this->close();
-   	}
-   	
-   	public function setDry($dry) {
-		$this->dry = $dry;
-	}
+	/**
+	 * Holds the int value of the {@link $priority}.
+	 * @var int
+	 */
+	private $intPriority;
 	
 	/**
-	 * Set the ident of the syslog message.
+	 * Holds the int value of the {@link $facility}.
+	 * @var int
+	 */
+	private $intFacility;
+	
+	/**
+	 * Holds the int value of the {@link $option}.
+	 * @var int
+	 */
+	private $intOption;
+
+	/**
+	 * Sets the {@link $ident}.
 	 *
-	 * @param string Ident
+	 * @param string $ident
 	 */
 	public function setIdent($ident) {
-		$this->_ident = $ident; 
+		$this->ident = $ident; 
 	}
-
+	
 	/**
-	 * Set the priority value for the syslog message.
+	 * Sets the {@link $priority}.
 	 *
-	 * @param const int Priority
+	 * @param string $priority
 	 */
 	public function setPriority($priority) {
-		$this->_priority = $priority;
+		$this->priority = $priority;
 	}
 	
-	
 	/**
-	 * Set the facility value for the syslog message.
+	 * Sets the {@link $facility}.
 	 *
-	 * @param const int Facility
+	 * @param string $facility
 	 */
 	public function setFacility($facility) {
-		$this->_facility = $facility;
+		$this->facility = $facility;
 	} 
 	
 	/**
-	 * If the priority of the message to be sent can be defined by a value in the properties-file, 
-	 * set parameter value to "true".
+	 * Sets the {@link $overridePriority}.
 	 *
-	 * @param bool Override priority
+	 * @param string $overridePriority
 	 */
 	public function setOverridePriority($overridePriority) {
-		$this->_overridePriority = $overridePriority;							
+		$this->overridePriority = $overridePriority;
 	} 
 	
 	/**
-	 * Set the option value for the syslog message.
-	 * This value is used as a parameter for php openlog()	
-	 * and passed on to the syslog daemon.
-	 *
-	 * @param string	$option
-	 */
-	public function setOption($option) {	  
-		$this->_option = $option;		
+	* Sets the 'option' parameter.
+	*
+	* @param string $option
+	*/
+	public function setOption($option) {
+		$this->option = $option;
 	}
 	
+	/**
+	* Returns the 'ident' parameter.
+	*
+	* @return string $ident
+	*/
+	public function getIdent() {
+		return $this->ident;
+	}
+	
+	/**
+	 * Returns the 'priority' parameter.
+	 *
+	 * @return string
+	 */
+	public function getPriority() {
+		return $this->priority;
+	}
+	
+	/**
+	 * Returns the 'facility' parameter.
+	 *
+	 * @return string
+	 */
+	public function getFacility() {
+		return $this->facility;
+	}
+	
+	/**
+	 * Returns the 'overridePriority' parameter.
+	 *
+	 * @return string
+	 */
+	public function getOverridePriority() {
+		return $this->overridePriority;
+	}
+	
+	/**
+	 * Returns the 'option' parameter.
+	 *
+	 * @return string
+	 */
+	public function getOption() {
+		return $this->option;
+	}
+	
+	
 	public function activateOptions() {
-		// Deprecated as of 5.3 and removed in 6.0
-		// define_syslog_variables();
+		$this->intPriority = $this->parsePriority();
+		$this->intOption   = $this->parseOption();
+		$this->intFacility = $this->parseFacility();
+		
 		$this->closed = false;
 	}
-
+	
 	public function close() {
 		if($this->closed != true) {
 			closelog();
@@ -171,42 +233,71 @@ class LoggerAppenderSyslog extends LoggerAppender {
 		}
 	}
 
+	/** 
+	 * Appends the event to syslog.
+	 * 
+	 * Log is opened and closed each time because if it is not closed, it
+	 * can cause the Apache httpd server to log to whatever ident/facility 
+	 * was used in openlog().
+	 *
+	 * @see http://www.php.net/manual/en/function.syslog.php#97843
+	 */
 	public function append(LoggerLoggingEvent $event) {
-		if($this->_option == NULL){
-			$this->_option = LOG_PID | LOG_CONS;
+		$priority = $this->getSyslogPriority($event->getLevel());
+		$message = $this->layout->format($event);
+	
+		openlog($this->ident, $this->intOption, $this->intFacility);
+		syslog($priority, $message);
+		closelog();
+	}
+	
+	/** Determines which syslog priority to use based on the given level. */
+	private function getSyslogPriority(LoggerLevel $level) {
+		if($this->overridePriority) {
+			return $this->intPriority;
 		}
-		
-		$level	 = $event->getLevel();
-		if($this->layout === null) {
-			$message = $event->getRenderedMessage();
-		} else {
-			$message = $this->layout->format($event); 
-		}
-
-		// If the priority of a syslog message can be overridden by a value defined in the properties-file,
-		// use that value, else use the one that is defined in the code.
-		if(!$this->dry) {
-			// Attach the process ID to the message, use the facility defined in the .properties-file
-			openlog($this->_ident, $this->_option, $this->_facility);
-		
-			if($this->_overridePriority) {
-				syslog($this->_priority, $message);			   
-			} else {
-				if($level->isGreaterOrEqual(LoggerLevel::getLevelFatal())) {
-					syslog(LOG_ALERT, $message);
-				} else if ($level->isGreaterOrEqual(LoggerLevel::getLevelError())) {
-					syslog(LOG_ERR, $message);		  
-				} else if ($level->isGreaterOrEqual(LoggerLevel::getLevelWarn())) {
-					syslog(LOG_WARNING, $message);
-				} else if ($level->isGreaterOrEqual(LoggerLevel::getLevelInfo())) {
-					syslog(LOG_INFO, $message);
-				} else if ($level->isGreaterOrEqual(LoggerLevel::getLevelDebug())) {
-					syslog(LOG_DEBUG, $message);
+		return $level->getSyslogEquivalent();
+	}
+	
+	/** Parses a syslog option string and returns the correspodning int value. */
+	private function parseOption() {
+		$value = 0;
+		$options = explode('|', $this->option);
+	
+		foreach($options as $option) {
+			if (!empty($option)) {
+				$constant = "LOG_" . trim($option);
+				if (defined($constant)) {
+					$value |= constant($constant);
+				} else {
+					trigger_error("log4php: Invalid syslog option provided: $option. Whole option string: {$this->option}.", E_USER_WARNING);
 				}
 			}
-			closelog();
-		} else {
-		      echo "DRY MODE OF SYSLOG APPENDER: ".$message;
 		}
+		return $value;
+	}
+	
+	/** Parses the facility string and returns the corresponding int value. */
+	private function parseFacility() {
+		if (!empty($this->facility)) {   
+			$constant = "LOG_" . trim($this->facility);
+			if (defined($constant)) {
+				return constant($constant);
+			} else {
+				trigger_error("log4php: Invalid syslog facility provided: {$this->facility}.", E_USER_WARNING);
+			}
+		}
+	}
+
+	/** Parses the priority string and returns the corresponding int value. */
+	private function parsePriority() {
+		if (!empty($this->priority)) {
+			$constant = "LOG_" . trim($this->priority);
+			if (defined($constant)) {
+				return constant($constant);
+			} else {
+				trigger_error("log4php: Invalid syslog priority provided: {$this->priority}.", E_USER_WARNING);
+			}
+		}	
 	}
 }

@@ -14,247 +14,109 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *
- * @package log4php
  */
 
 /**
- * Serialize events and send them to a network socket.
+ * LoggerAppenderSocket appends to a network socket.
  *
- * This appender can be configured by changing the following attributes:
+ * ## Configurable parameters: ##
  * 
- * - locationInfo       - Sets the location info for the xml layout (true or false)
- * - log4jNamespace     - Sets the namespace for log4j (true or false)
- * - port               - Sets the port of the socket.
- * - remoteHost         - Sets the remote host
- * - timeout            - Sets the timeout in ms
- * - useXml             - true, if xml should be transmitted.
- *                        false, if a serialized php object should be transmitted
- *
- * Parameters are {@link $remoteHost}, {@link $port}, {@link $timeout}, 
- * {@link $locationInfo}, {@link $useXml} and {@link $log4jNamespace}.
- *
- * An example:
+ * - **remoteHost** - Target remote host.
+ * - **port** - Target port (optional, defaults to 4446).
+ * - **timeout** - Connection timeout in seconds (optional, defaults to 
+ *     'default_socket_timeout' from php.ini)
  * 
- * {@example ../../examples/php/appender_socket.php 19}
+ * The socket will by default be opened in blocking mode.
  * 
- * {@example ../../examples/resources/appender_socket.properties 18}
- * 
- * @version $Revision: 883108 $
+ * @version $Revision: 1337820 $
  * @package log4php
  * @subpackage appenders
+ * @license http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
+ * @link http://logging.apache.org/log4php/docs/appenders/socket.html Appender documentation
  */ 
 class LoggerAppenderSocket extends LoggerAppender {
-
-	/**
-	 * @var mixed socket connection resource
-	 * @access private
-	 */
-	private $sp = false;
 	
-	/**
-	 * Target host. On how to define remote hostaname see 
-	 * {@link PHP_MANUAL#fsockopen}
-	 * @var string 
+	/** 
+	 * Target host.
+	 * @see http://php.net/manual/en/function.fsockopen.php 
 	 */
-	private $remoteHost = '';
+	protected $remoteHost;
 	
-	/**
-	 * @var integer the network port.
-	 */
-	private $port = 4446;
+	/** Target port */
+	protected $port = 4446;
 	
-	/**
-	 * @var boolean get event's location info.
-	 */
-	private $locationInfo = false;
+	/** Connection timeout in ms. */
+	protected $timeout;
 	
-	/**
-	 * @var integer connection timeout
-	 */
-	private $timeout = 30;
+	// ******************************************
+	// *** Appender methods                   ***
+	// ******************************************
 	
-	/**
-	 * @var boolean output events via {@link LoggerXmlLayout}
-	 */
-	private $useXml = false;
-	
-	/**
-	 * @var boolean forward this option to {@link LoggerXmlLayout}. 
-	 *				Ignored if {@link $useXml} is <i>false</i>.
-	 */
-	private $log4jNamespace = false;
-
-	/**
-	 * @var LoggerXmlLayout
-	 * @access private
-	 */
-	private $xmlLayout = null;
-	
-	/** @var indiciates if this appender should run in dry mode */
-	private $dry = false;
-	
-	public function __destruct() {
-       $this->close();
-   	}
-   	
-	/**
-	 * Create a socket connection using defined parameters
-	 */
-	public function activateOptions() {
-		if(!$this->dry) {
-			$this->sp = @fsockopen($this->getRemoteHost(), $this->getPort(), $errno, $errstr, $this->getTimeout());
-			if ($this->sp === false) {
-			    throw new LoggerException("Could not open socket to ".$this->getRemoteHost().":".$this->getPort().": $errstr ($errno)");
-			}
-		}
-		if($this->getUseXml()) {
-			$this->xmlLayout = LoggerReflectionUtils::createObject('LoggerLayoutXml');
-			if($this->xmlLayout === null) {
-				$this->setUseXml(false);
-			} else {
-				$this->xmlLayout->setLocationInfo($this->getLocationInfo());
-				$this->xmlLayout->setLog4jNamespace($this->getLog4jNamespace());
-				$this->xmlLayout->activateOptions();
-			}			 
-		}
-        $this->closed = false;
+	/** Override the default layout to use serialized. */
+	public function getDefaultLayout() {
+		return new LoggerLayoutSerialized();
 	}
 	
-	public function close() {
-		if($this->closed != true) {
-			if(!$this->dry and $this->sp !== false) {
-				fclose($this->sp);
-			}
+	public function activateOptions() {
+		if (empty($this->remoteHost)) {
+			$this->warn("Required parameter [remoteHost] not set. Closing appender.");
+			$this->closed = true;
+			return;
+		}
+	
+		if (empty($this->timeout)) {
+			$this->timeout = ini_get("default_socket_timeout");
+		}
+	
+		$this->closed = false;
+	}
+	
+	public function append(LoggerLoggingEvent $event) {
+		$socket = fsockopen($this->remoteHost, $this->port, $errno, $errstr, $this->timeout);
+		if ($socket === false) {
+			$this->warn("Could not open socket to {$this->remoteHost}:{$this->port}. Closing appender.");
+			$this->closed = true;
+			return;
+		}
+	
+		if (false === fwrite($socket, $this->layout->format($event))) {
+			$this->warn("Error writing to socket. Closing appender.");
 			$this->closed = true;
 		}
-	}
-
-	public function setDry($dry) {
-		$this->dry = $dry;
+		fclose($socket);
 	}
 	
-	/**
-	 * @return string
-	 */
-	public function getHostname() {
+	// ******************************************
+	// *** Accessor methods                   ***
+	// ******************************************
+	
+	/** Sets the target host. */
+	public function setRemoteHost($hostname) {
+		$this->setString('remoteHost', $hostname);
+	}
+	
+	/** Sets the target port */
+	public function setPort($port) {
+		$this->setPositiveInteger('port', $port);
+	}
+	 
+	/** Sets the timeout. */
+	public function setTimeout($timeout) {
+		$this->setPositiveInteger('timeout', $timeout);
+	}
+	
+	/** Returns the target host. */
+	public function getRemoteHost() {
 		return $this->getRemoteHost();
 	}
 	
-	/**
-	 * @return boolean
-	 */
-	public function getLocationInfo() {
-		return $this->locationInfo;
-	} 
-	 
-	/**
-	 * @return boolean
-	 */
-	public function getLog4jNamespace() {
-		return $this->log4jNamespace;
-	}
-
-	/**
-	 * @return integer
-	 */
+	/** Returns the target port. */
 	public function getPort() {
 		return $this->port;
 	}
 	
-	public function getRemoteHost() {
-		return $this->remoteHost;
-	}
-	
-	/**
-	 * @return integer
-	 */
+	/** Returns the timeout */
 	public function getTimeout() {
 		return $this->timeout;
-	}
-	
-	/**
-	 * @var boolean
-	 */
-	public function getUseXml() {
-		return $this->useXml;
-	} 
-	 
-	public function reset() {
-		$this->close();
-		parent::reset();
-	}
-
-	/**
-	 * @param mixed
-	 */
-	public function setLocationInfo($flag) {
-		$this->locationInfo = LoggerOptionConverter::toBoolean($flag, $this->getLocationInfo());
-	} 
-
-	/**
-	 * @param mixed
-	 */
-	public function setLog4jNamespace($flag) {
-		$this->log4jNamespace = LoggerOptionConverter::toBoolean($flag, $this->getLog4jNamespace());
-	} 
-			
-	/**
-	 * @param integer
-	 */
-	public function setPort($port) {
-		$port = LoggerOptionConverter::toInt($port, 0);
-		if($port > 0 and $port < 65535) {
-			$this->port = $port;	
-		}
-	}
-	
-	/**
-	 * @param string
-	 */
-	public function setRemoteHost($hostname) {
-		$this->remoteHost = $hostname;
-	}
-	
-	/**
-	 * @param integer
-	 */
-	public function setTimeout($timeout) {
-		$this->timeout = LoggerOptionConverter::toInt($timeout, $this->getTimeout());
-	}
-	
-	/**
-	 * @param mixed
-	 */
-	public function setUseXml($flag) {
-		$this->useXml = LoggerOptionConverter::toBoolean($flag, $this->getUseXml());
-	} 
- 
-	public function append(LoggerLoggingEvent $event) {
-		if($this->sp || $this->dry) {
-			if($this->getLocationInfo()) {
-				$event->getLocationInformation();
-			}
-		
-			if(!$this->getUseXml()) {
-				$sEvent = serialize($event);
-				if(!$this->dry) {
-					fwrite($this->sp, $sEvent, strlen($sEvent));
-				} else {
-				    echo "DRY MODE OF SOCKET APPENDER: ".$sEvent;
-				}
-			} else {
-				if(!$this->dry) {
-					fwrite($this->sp, $this->xmlLayout->format($event));
-				} else {
-				    echo "DRY MODE OF SOCKET APPENDER: ".$this->xmlLayout->format($event);
-				}
-			}			 
-
-			// not sure about it...
-			if(!$this->dry) {
-				fflush($this->sp);
-			}
-		} 
 	}
 }

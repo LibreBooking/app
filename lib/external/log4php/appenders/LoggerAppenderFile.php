@@ -14,157 +14,212 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *
- * @package log4php
  */
 
 /**
- * FileAppender appends log events to a file.
+ * LoggerAppenderFile appends log events to a file.
  *
- * Configurable parameters for this appender are:
+ * This appender uses a layout.
  * 
- * - layout             - Sets the layout class for this appender
- * - file               - The target file to write to
- * - filename           - The target file to write to
- * - append             - Sets if the appender should append to the end of the file or overwrite content ("true" or "false")
+ * ## Configurable parameters: ##
+ * 
+ * - **file** - Path to the target file. Relative paths are resolved based on 
+ *     the working directory.
+ * - **append** - If set to true, the appender will append to the file, 
+ *     otherwise the file contents will be overwritten.
  *
- * An example php file:
- * 
- * {@example ../../examples/php/appender_file.php 19}
- *
- * An example configuration file:
- * 
- * {@example ../../examples/resources/appender_file.properties 18}
- * 
- * @version $Revision: 883108 $
+ * @version $Revision: 1382274 $
  * @package log4php
  * @subpackage appenders
+ * @license http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
+ * @link http://logging.apache.org/log4php/docs/appenders/file.html Appender documentation
  */
 class LoggerAppenderFile extends LoggerAppender {
 
 	/**
-	 * @var boolean if {@link $file} exists, appends events.
+	 * If set to true, the file is locked before appending. This allows 
+	 * concurrent access. However, appending without locking is faster so
+	 * it should be used where appropriate.
+	 * 
+	 * TODO: make this a configurable parameter
+	 * 
+	 * @var boolean
 	 */
-	private $append = true;
-	/**
-	 * @var string the file name used to append events
-	 */
-	protected $fileName;
-	/**
-	 * @var mixed file resource
-	 */
-	protected $fp = false;
+	protected $locking = true;
 	
-	public function __construct($name = '') {
-		parent::__construct($name);
-		$this->requiresLayout = true;
+	/**
+	 * If set to true, appends to file. Otherwise overwrites it.
+	 * @var boolean
+	 */
+	protected $append = true;
+	
+	/**
+	 * Path to the target file.
+	 * @var string 
+	 */
+	protected $file;
+
+	/**
+	 * The file resource.
+	 * @var resource
+	 */
+	protected $fp;
+	
+	/** 
+	 * Helper function which can be easily overriden by daily file appender. 
+	 */
+	protected function getTargetFile() {
+		return $this->file;
 	}
+	
+	/**
+	 * Acquires the target file resource, creates the destination folder if 
+	 * necessary. Writes layout header to file.
+	 * 
+	 * @return boolean FALSE if opening failed
+	 */
+	protected function openFile() {
+		$file = $this->getTargetFile();
 
-	public function __destruct() {
-       $this->close();
-   	}
-   	
-	public function activateOptions() {
-		$fileName = $this->getFile();
+		// Create the target folder if needed
+		if(!is_file($file)) {
+			$dir = dirname($file);
 
-		if(!is_file($fileName)) {
-			$dir = dirname($fileName);
 			if(!is_dir($dir)) {
-				mkdir($dir, 0777, true);
+				$success = mkdir($dir, 0777, true);
+				if ($success === false) {
+					$this->warn("Failed creating target directory [$dir]. Closing appender.");
+					$this->closed = true;
+					return false;
+				}
 			}
 		}
-
-		$this->fp = fopen($fileName, ($this->getAppend()? 'a':'w'));
-		if($this->fp) {
-			if(flock($this->fp, LOCK_EX)) {
-				if($this->getAppend()) {
-					fseek($this->fp, 0, SEEK_END);
-				}
-				fwrite($this->fp, $this->layout->getHeader());
-				flock($this->fp, LOCK_UN);
-				$this->closed = false;
-			} else {
-				// TODO: should we take some action in this case?
-				$this->closed = true;
-			}		 
-		} else {
+		
+		$mode = $this->append ? 'a' : 'w';
+		$this->fp = fopen($file, $mode);
+		if ($this->fp === false) {
+			$this->warn("Failed opening target file. Closing appender.");
+			$this->fp = null;
 			$this->closed = true;
+			return false;
+		}
+		
+		// Required when appending with concurrent access
+		if($this->append) {
+			fseek($this->fp, 0, SEEK_END);
+		}
+		
+		// Write the header
+		$this->write($this->layout->getHeader());
+	}
+	
+	/**
+	 * Writes a string to the target file. Opens file if not already open.
+	 * @param string $string Data to write.
+	 */
+	protected function write($string) {
+		// Lazy file open
+		if(!isset($this->fp)) {
+			if ($this->openFile() === false) {
+				return; // Do not write if file open failed.
+			}
+		}
+		
+		if ($this->locking) {
+			$this->writeWithLocking($string);
+		} else {
+			$this->writeWithoutLocking($string);
+		}
+	}
+	
+	protected function writeWithLocking($string) {
+		if(flock($this->fp, LOCK_EX)) {
+			if(fwrite($this->fp, $string) === false) {
+				$this->warn("Failed writing to file. Closing appender.");
+				$this->closed = true;				
+			}
+			flock($this->fp, LOCK_UN);
+		} else {
+			$this->warn("Failed locking file for writing. Closing appender.");
+			$this->closed = true;
+		}
+	}
+	
+	protected function writeWithoutLocking($string) {
+		if(fwrite($this->fp, $string) === false) {
+			$this->warn("Failed writing to file. Closing appender.");
+			$this->closed = true;				
+		}
+	}
+	
+	public function activateOptions() {
+		if (empty($this->file)) {
+			$this->warn("Required parameter 'file' not set. Closing appender.");
+			$this->closed = true;
+			return;
 		}
 	}
 	
 	public function close() {
-		if($this->closed != true) {
-			if($this->fp and $this->layout !== null) {
-				if(flock($this->fp, LOCK_EX)) {
-					fwrite($this->fp, $this->layout->getFooter());
-					flock($this->fp, LOCK_UN);
-				}
-				fclose($this->fp);
-			}
-			$this->closed = true;
+		if (is_resource($this->fp)) {
+			$this->write($this->layout->getFooter());
+			fclose($this->fp);
 		}
+		$this->fp = null;
+		$this->closed = true;
 	}
 
 	public function append(LoggerLoggingEvent $event) {
-		if($this->fp and $this->layout !== null) {
-			if(flock($this->fp, LOCK_EX)) {
-				fwrite($this->fp, $this->layout->format($event));
-				flock($this->fp, LOCK_UN);
-			} else {
-				$this->closed = true;
-			}
-		} 
+		$this->write($this->layout->format($event));
 	}
 	
 	/**
-	 * Sets and opens the file where the log output will go.
-	 *
-	 * This is an overloaded method. It can be called with:
-	 * - setFile(string $fileName) to set filename.
-	 * - setFile(string $fileName, boolean $append) to set filename and append.
-	 * 
-	 * TODO: remove overloading. Use only file as alias to filename
+	 * Sets the 'file' parameter.
+	 * @param string $file
 	 */
-	public function setFile() {
-		$numargs = func_num_args();
-		$args	 = func_get_args();
-
-		if($numargs == 1 and is_string($args[0])) {
-			$this->setFileName($args[0]);
-		} else if ($numargs >=2 and is_string($args[0]) and is_bool($args[1])) {
-			$this->setFile($args[0]);
-			$this->setAppend($args[1]);
-		}
+	public function setFile($file) {
+		$this->setString('file', $file);
 	}
 	
 	/**
+	 * Returns the 'file' parameter.
 	 * @return string
 	 */
 	public function getFile() {
-		return $this->getFileName();
+		return $this->file;
 	}
 	
 	/**
+	 * Returns the 'append' parameter.
 	 * @return boolean
 	 */
 	public function getAppend() {
 		return $this->append;
 	}
 
-	public function setAppend($flag) {
-		$this->append = LoggerOptionConverter::toBoolean($flag, true);		  
+	/**
+	 * Sets the 'append' parameter.
+	 * @param boolean $append
+	 */
+	public function setAppend($append) {
+		$this->setBoolean('append', $append);
 	}
 
+	/**
+	 * Sets the 'file' parmeter. Left for legacy reasons.
+	 * @param string $fileName
+	 * @deprecated Use setFile() instead.
+	 */
 	public function setFileName($fileName) {
-		$this->fileName = $fileName;
+		$this->setFile($fileName);
 	}
 	
 	/**
+	 * Returns the 'file' parmeter. Left for legacy reasons.
 	 * @return string
+	 * @deprecated Use getFile() instead.
 	 */
 	public function getFileName() {
-		return $this->fileName;
+		return $this->getFile();
 	}
-	
-	 
 }

@@ -1,20 +1,24 @@
 <log4php:configuration xmlns:log4php="http://logging.apache.org/log4php/">
 	<appender name="defaultAppender" class="LoggerAppenderDailyFile">
-		<layout class="LoggerLayoutTTCC" />
+		<layout class="LoggerLayoutPattern">
+			<param name="conversionPattern" value="%d [%t] %p %logger{0} - %m%n" />
+		</layout>
 		<param name="file" value="c:\temp\log_%s.log" />
 		<param name="append" value="true" />
 	</appender>
 	<appender name="sqlAppender" class="LoggerAppenderDailyFile">
-		<layout class="LoggerLayoutTTCC" />
+		<layout class="LoggerLayoutPattern">
+			<param name="conversionPattern" value="%d [%t] %p %logger{0} - %m%n" />
+		</layout>
 		<param name="file" value="c:\temp\sql_log_%s.log" />
 		<param name="append" value="true" />
 	</appender>
     <logger name="default" additivity="false">
-        <level value="OFF" />
+        <level value="DEBUG" />
         <appender_ref ref="defaultAppender" />
     </logger>
 	<logger name="sql" additivity="false">
-        <level value="OFF" />
+        <level value="DEBUG" />
         <appender_ref ref="sqlAppender" />
     </logger>
 </log4php:configuration>

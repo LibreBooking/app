@@ -40,7 +40,7 @@
  * 
  * {@example ../../examples/resources/filter_stringmatch.xml 18}
  *
- * @version $Revision: 883108 $
+ * @version $Revision: 1213283 $
  * @package log4php
  * @subpackage filters
  * @since 0.3
@@ -50,25 +50,25 @@ class LoggerFilterStringMatch extends LoggerFilter {
 	/**
 	 * @var boolean
 	 */
-	private $acceptOnMatch = true;
+	protected $acceptOnMatch = true;
 
 	/**
 	 * @var string
 	 */
-	private $stringToMatch = null;
+	protected $stringToMatch;
 
 	/**
 	 * @param mixed $acceptOnMatch a boolean or a string ('true' or 'false')
 	 */
 	public function setAcceptOnMatch($acceptOnMatch) {
-		$this->acceptOnMatch = is_bool($acceptOnMatch) ? $acceptOnMatch : (bool)(strtolower($acceptOnMatch) == 'true');
+		$this->setBoolean('acceptOnMatch', $acceptOnMatch);
 	}
 	
 	/**
 	 * @param string $s the string to match
 	 */
-	public function setStringToMatch($s) {
-		$this->stringToMatch = $s;
+	public function setStringToMatch($string) {
+		$this->setString('stringToMatch', $string);
 	}
 
 	/**

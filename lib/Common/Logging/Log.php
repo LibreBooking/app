@@ -86,6 +86,9 @@ class Log
 			$args = func_get_args();
 			$log = vsprintf(array_shift($args), array_values($args));
 			$log .= sprintf(' [File=%s,Line=%s]', $debugInfo['file'], $debugInfo['line']);
+
+			$log = '[User='.ServiceLocator::GetServer()->GetUserSession() . '] ' . $log;
+
 			self::GetInstance()->logger->debug($log);
 		} catch (Exception $ex)
 		{
@@ -119,6 +122,9 @@ class Log
 			$args = func_get_args();
 			$log = vsprintf(array_shift($args), array_values($args));
 			$log .= sprintf(' [File=%s,Line=%s]', $debugInfo['file'], $debugInfo['line']);
+
+			$log = '[User='.ServiceLocator::GetServer()->GetUserSession() . '] ' . $log;
+
 			self::GetInstance()->logger->error($log);
 		} catch (Exception $ex)
 		{

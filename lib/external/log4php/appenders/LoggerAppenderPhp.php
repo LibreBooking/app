@@ -14,59 +14,36 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *
- * @package log4php
  */
 
 /**
- * Log events using php {@link PHP_MANUAL#trigger_error} function and a {@link LoggerLayoutTTCC} default layout.
+ * LoggerAppenderPhp logs events by creating a PHP user-level message using 
+ * the PHP's trigger_error()function.
  *
  * This appender has no configurable parameters.
  *
- * <p>Levels are mapped as follows:</p>
- * - <b>level &lt; WARN</b> mapped to E_USER_NOTICE
- * - <b>WARN &lt;= level &lt; ERROR</b> mapped to E_USER_WARNING
- * - <b>level &gt;= ERROR</b> mapped to E_USER_ERROR  
- *
- * An example:
+ * Levels are mapped as follows:
  * 
- * {@example ../../examples/php/appender_php.php 19}
- * 
- * {@example ../../examples/resources/appender_php.properties 18}
+ * - <b>level < WARN</b> mapped to E_USER_NOTICE
+ * - <b>WARN <= level < ERROR</b> mapped to E_USER_WARNING
+ * - <b>level >= ERROR</b> mapped to E_USER_ERROR  
  *
- * @version $Revision: 883108 $
+ * @version $Revision: 1337820 $
  * @package log4php
  * @subpackage appenders
+ * @license http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
+ * @link http://logging.apache.org/log4php/docs/appenders/php.html Appender documentation
  */ 
 class LoggerAppenderPhp extends LoggerAppender {
 
-	public function __construct($name = '') {
-		parent::__construct($name);
-		$this->requiresLayout = true;
-	}
-	
-	public function __destruct() {
-       $this->close();
-   	}
-	
-	public function activateOptions() {
-		$this->closed = false;
-	}
-
-	public function close() {
-		$this->closed = true;
-	}
-
 	public function append(LoggerLoggingEvent $event) {
-		if($this->layout !== null) {
-			$level = $event->getLevel();
-			if($level->isGreaterOrEqual(LoggerLevel::getLevelError())) {
-				trigger_error($this->layout->format($event), E_USER_ERROR);
-			} else if ($level->isGreaterOrEqual(LoggerLevel::getLevelWarn())) {
-				trigger_error($this->layout->format($event), E_USER_WARNING);
-			} else {
-				trigger_error($this->layout->format($event), E_USER_NOTICE);
-			}
+		$level = $event->getLevel();
+		if($level->isGreaterOrEqual(LoggerLevel::getLevelError())) {
+			trigger_error($this->layout->format($event), E_USER_ERROR);
+		} else if ($level->isGreaterOrEqual(LoggerLevel::getLevelWarn())) {
+			trigger_error($this->layout->format($event), E_USER_WARNING);
+		} else {
+			trigger_error($this->layout->format($event), E_USER_NOTICE);
 		}
 	}
 }

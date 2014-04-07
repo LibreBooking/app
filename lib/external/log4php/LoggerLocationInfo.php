@@ -21,42 +21,44 @@
 /**
  * The internal representation of caller location information.
  *
- * @version $Revision: 822448 $
+ * @version $Revision: 1379738 $
  * @package log4php
  * @since 0.3
  */
 class LoggerLocationInfo {
-	/**
-	 * When location information is not available the constant
-	 * <i>NA</i> is returned. Current value of this string
-	 * constant is <b>?</b>.  
-	 */
+	
+	/** The value to return when the location information is not available. */
 	const LOCATION_INFO_NA = 'NA';
 	
 	/**
-	* @var string Caller's line number.
-	*/
-	protected $lineNumber = null;
+	 * Caller line number.
+	 * @var integer 
+	 */
+	protected $lineNumber;
 	
 	/**
-	* @var string Caller's file name.
-	*/
-	protected $fileName = null;
+	 * Caller file name.
+	 * @var string 
+	 */
+	protected $fileName;
 	
 	/**
-	* @var string Caller's fully qualified class name.
-	*/
-	protected $className = null;
+	 * Caller class name.
+	 * @var string 
+	 */
+	protected $className;
 	
 	/**
-	* @var string Caller's method name.
-	*/
-	protected $methodName = null;
+	 * Caller method name.
+	 * @var string 
+	 */
+	protected $methodName;
 	
 	/**
-	* @var string 
-	*/
-	protected $fullInfo = null;
+	 * All the information combined.
+	 * @var string 
+	 */
+	protected $fullInfo;
 
 	/**
 	 * Instantiate location information based on a {@link PHP_MANUAL#debug_backtrace}.
@@ -73,36 +75,27 @@ class LoggerLocationInfo {
 			'(' . $this->getFileName() . ':' . $this->getLineNumber() . ')';
 	}
 
+	/** Returns the caller class name. */
 	public function getClassName() {
 		return ($this->className === null) ? self::LOCATION_INFO_NA : $this->className; 
 	}
 
-	/**
-	 *	Return the file name of the caller.
-	 *	<p>This information is not always available.
-	 */
+	/** Returns the caller file name. */
 	public function getFileName() {
 		return ($this->fileName === null) ? self::LOCATION_INFO_NA : $this->fileName; 
 	}
 
-	/**
-	 *	Returns the line number of the caller.
-	 *	<p>This information is not always available.
-	 */
+	/** Returns the caller line number. */
 	public function getLineNumber() {
 		return ($this->lineNumber === null) ? self::LOCATION_INFO_NA : $this->lineNumber; 
 	}
 
-	/**
-	 *	Returns the method name of the caller.
-	 */
+	/** Returns the caller method name. */
 	public function getMethodName() {
 		return ($this->methodName === null) ? self::LOCATION_INFO_NA : $this->methodName; 
 	}
 
-	/**
-	 *	Returns the full information of the caller.
-	 */
+	/** Returns the full information of the caller. */
 	public function getFullInfo() {
 		return ($this->fullInfo === null) ? self::LOCATION_INFO_NA : $this->fullInfo;
 	}

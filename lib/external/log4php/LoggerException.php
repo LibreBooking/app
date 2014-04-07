@@ -21,7 +21,7 @@
 /**
  * LoggerException class
  *
- * @version $Revision: 771547 $
+ * @version $Revision: 1334369 $
  * @package log4php
  */
 class LoggerException extends Exception {
