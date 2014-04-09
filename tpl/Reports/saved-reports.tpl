@@ -69,7 +69,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		<button type="button" id="btnSendEmail"
 				class="button">{html_image src="mail-send.png"} {translate key=EmailReport}</button>
 		<button type="button" class="button cancel">{html_image src="slash.png"} {translate key=Cancel}</button>
-		<span id="sendEmailIndicator" style="display:none">{translate key=Working}...</span>
+		<span id="sendEmailIndicator" style="display:none">{translate key=Working}</span>
 	</form>
 </div>
 
@@ -83,7 +83,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 </div>
 
 <div id="indicator" style="display:none; text-align: center;">
-	<h3>{translate key=Working}...</h3>
+	<h3>{translate key=Working}</h3>
 {html_image src="admin-ajax-indicator.gif"}
 </div>
 

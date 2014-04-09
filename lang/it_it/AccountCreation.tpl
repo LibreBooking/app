@@ -22,7 +22,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 <p>{$To},</p>
 
-<p>Si è registrato un nuovo utente con le seguenti informaizoni:<br/>
+<p>Si è registrato un nuovo utente con le seguenti informazioni:<br/>
 Email: {$EmailAddress}<br/>
 Nome: {$FullName}<br/>
 Telefono: {$Phone}<br/>

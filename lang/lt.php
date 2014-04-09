@@ -257,7 +257,7 @@ class lt extends Language
 		$strings['Close'] = 'U�daryti';
 		$strings['ExportToCSV'] = 'Eksportuoti CSV formatu';
 		$strings['OK'] = 'OK';
-		$strings['Working'] = 'Vykdoma';
+		$strings['Working'] = 'Vykdoma...';
 		$strings['Login'] = 'Prisijungti';
 		$strings['AdditionalInformation'] = 'Papildoma informacija';
 		$strings['AllFieldsAreRequired'] = 'visi laukeliai yra b�tini';

@@ -258,7 +258,7 @@ class bg_bg extends Language
         $strings['Close'] = 'Затваряне';
         $strings['ExportToCSV'] = 'Експорт в CSV';
         $strings['OK'] = 'О.К.';
-        $strings['Working'] = 'Работещ';
+        $strings['Working'] = 'Работещ...';
         $strings['Login'] = 'Влизане';
         $strings['AdditionalInformation'] = 'Допълнителна информация';
         $strings['AllFieldsAreRequired'] = 'всички полета са задължителни';

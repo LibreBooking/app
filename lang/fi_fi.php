@@ -262,7 +262,7 @@ class fi_fi extends en_us
 		$strings['Close'] = 'Sulje';
 		$strings['ExportToCSV'] = 'Vie CSV-muotoon';
 		$strings['OK'] = 'OK';
-		$strings['Working'] = 'Työskennellään';
+		$strings['Working'] = 'Työskennellään...';
 		$strings['Login'] = 'Kirjaudu';
 		$strings['AdditionalInformation'] = 'Lisätieto';
 		$strings['AllFieldsAreRequired'] = 'kaikki kentät vaaditaan';

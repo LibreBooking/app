@@ -249,7 +249,7 @@ class ca extends en_us
         $strings['Close'] = 'Tancar';
         $strings['ExportToCSV'] = 'Exportar a CSV';
         $strings['OK'] = 'OK';
-        $strings['Working'] = 'Funcionant';
+        $strings['Working'] = 'Funcionant...';
         $strings['Login'] = 'Iniciar Sessi&oacute;';
         $strings['AdditionalInformation'] = 'Informaci&oacute; Addicional';
         $strings['AllFieldsAreRequired'] = 'es necessiten tots els camps';

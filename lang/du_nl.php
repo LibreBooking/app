@@ -249,7 +249,7 @@ class du_nl extends en_us
         $strings['Close'] = 'Sluit';
         $strings['ExportToCSV'] = 'Export to CSV';
         $strings['OK'] = 'OK';
-        $strings['Working'] = 'Bezig';
+        $strings['Working'] = 'Bezig...';
         $strings['Login'] = 'Login';
         $strings['AdditionalInformation'] = 'Bijkomende informatie';
         $strings['AllFieldsAreRequired'] = 'alle velden zijn verplicht';

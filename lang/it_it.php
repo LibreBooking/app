@@ -191,7 +191,7 @@ class it_it extends en_us
         $strings['ResetPassword'] = 'Reimposta password';
         $strings['AllUsers'] = 'Tutti gli utenti';
         $strings['AllGroups'] = 'Tutti i gruppi';
-        $strings['AllSchedules'] = 'Tutte i calendari';
+        $strings['AllSchedules'] = 'Tutti i calendari';
         $strings['UsernameOrEmail'] = 'Nome utente oppure email';
         $strings['Members'] = 'Componenti';
         $strings['QuickSlotCreation'] = 'Crea fasce orarie ogni %s minuti tra %s e %s';
@@ -256,7 +256,7 @@ class it_it extends en_us
         $strings['Close'] = 'Chiudi';
         $strings['ExportToCSV'] = 'Esporta in CSV';
         $strings['OK'] = 'OK';
-        $strings['Working'] = 'Elaborazione in corso';
+        $strings['Working'] = 'Elaborazione in corso...';
         $strings['Login'] = 'Accesso';
         $strings['AdditionalInformation'] = 'Informazioni aggiuntive';
         $strings['AllFieldsAreRequired'] = 'tutti i campi sono obbligatori';
@@ -291,7 +291,7 @@ class it_it extends en_us
         $strings['DeleteWarning'] = 'Questa azione è permanente e non recuperabile!';
         $strings['DeleteAccessoryWarning'] = 'Eliminando questo accessorio, verrà rimosso da tutte le prenotazioni.';
         $strings['AddAccessory'] = 'Aggiungi accessorio';
-        $strings['AddBlackout'] = 'Aggiungi Blackout';
+        $strings['AddBlackout'] = 'Aggiungi Fuori-servizio';
         $strings['AllResourcesOn'] = 'Tutte le risorse attive';
         $strings['Reason'] = 'Motivo';
         $strings['BlackoutShowMe'] = 'Mostra prenotazioni in conflitto';
@@ -299,11 +299,11 @@ class it_it extends en_us
         $strings['Filter'] = 'Filtra';
         $strings['Between'] = 'Tra';
         $strings['CreatedBy'] = 'Creato da';
-        $strings['BlackoutCreated'] = 'Blackout creato';
-        $strings['BlackoutNotCreated'] = 'Impossibile creare il blackout';
-        $strings['BlackoutUpdated'] = 'Blackout aggiornato';
-	$strings['BlackoutNotUpdated'] = 'Impossibile aggiornare il blackout';
-        $strings['BlackoutConflicts'] = 'Ci sono blackout in conflitto';
+        $strings['BlackoutCreated'] = 'Fuori-servizio creato';
+        $strings['BlackoutNotCreated'] = 'Impossibile creare il fuori-servizio';
+        $strings['BlackoutUpdated'] = 'Fuori-servizio aggiornato';
+	$strings['BlackoutNotUpdated'] = 'Impossibile aggiornare il fuori-servizio';
+        $strings['BlackoutConflicts'] = 'Ci sono fuori-servizio in conflitto';
         $strings['ReservationConflicts'] = 'Ci sono prenotazioni in conflitto';
         $strings['UsersInGroup'] = 'Utenti in questo gruppo';
         $strings['Browse'] = 'Sfoglia';
@@ -481,7 +481,7 @@ class it_it extends en_us
 	$strings['Color'] = 'Colore';
 	$strings['Available'] = 'Disponibile';
 	$strings['Unavailable'] = 'Non disponibile';
-	$strings['Hidden'] = 'Nascosto';
+	$strings['Hidden'] = 'Nascosta';
 	$strings['ResourceStatus'] = 'Stato risorsa';
 	$strings['CurrentStatus'] = 'Stato attuale';
 	$strings['AllReservationResources'] = 'Tutte le risorse delle prenotazioni';
@@ -490,6 +490,7 @@ class it_it extends en_us
 	$strings['Unchanged'] = 'Non modificato';
 	$strings['Common'] = 'Comune';
         $strings['SelectUser'] = 'Seleziona utente';
+        $strings['AdvancedFilter'] = 'Filtro avanzato';
 	// End Strings
 
         // Errors
@@ -538,7 +539,7 @@ class it_it extends en_us
         $strings['ManageUsers'] = 'Utenti';
         $strings['ManageGroups'] = 'Gruppi';
         $strings['ManageQuotas'] = 'Quote';
-        $strings['ManageBlackouts'] = 'Blackout';
+        $strings['ManageBlackouts'] = 'Fuori-servizio';
         $strings['MyDashboard'] = 'Cruscotto personale';
         $strings['ServerSettings'] = 'Impostazioni server';
         $strings['Dashboard'] = 'Cruscotto';

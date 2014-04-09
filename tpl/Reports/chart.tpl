@@ -18,7 +18,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 *}
 <div class="clear"></div>
 <div id="chart-indicator" style="display:none; text-align: center;">
-	<h3>{translate key=Working}...</h3>
+	<h3>{translate key=Working}</h3>
 {html_image src="admin-ajax-indicator.gif"}
 </div>
 

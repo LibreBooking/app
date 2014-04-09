@@ -260,7 +260,7 @@ class de_de extends en_us
         $strings['Close'] = 'Schließen';
         $strings['ExportToCSV'] = 'Export als CSV';
         $strings['OK'] = 'OK';
-        $strings['Working'] = 'Arbeite';
+        $strings['Working'] = 'Arbeite...';
         $strings['Login'] = 'Benutzerkonto';
         $strings['AdditionalInformation'] = 'Zusätzliche Informationen';
         $strings['AllFieldsAreRequired'] = 'Alle Felder werden benötigt';

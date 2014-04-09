@@ -250,7 +250,7 @@ class pt_br extends Language
         $strings['Close'] = 'Fechar';
         $strings['ExportToCSV'] = 'Exportar para CSV';
         $strings['OK'] = 'OK';
-        $strings['Working'] = 'Trabalhando';
+        $strings['Working'] = 'Trabalhando...';
         $strings['Login'] = 'Login';
         $strings['AdditionalInformation'] = 'Informações Adicionais';
         $strings['AllFieldsAreRequired'] = 'todos os campos são obrigatórios';

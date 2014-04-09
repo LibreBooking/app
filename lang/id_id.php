@@ -252,7 +252,7 @@ class id_id extends en_us
 		$strings['Close'] = 'Tutup';
 		$strings['ExportToCSV'] = 'Ekspor ke CSV';
 		$strings['OK'] = 'OK';
-		$strings['Working'] = 'Bekerja';
+		$strings['Working'] = 'Bekerja...';
 		$strings['Login'] = 'Masuk';
 		$strings['AdditionalInformation'] = 'Informasi Tambahan';
 		$strings['AllFieldsAreRequired'] = 'semua kolom harus diisi';

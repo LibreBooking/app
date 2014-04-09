@@ -260,7 +260,7 @@ class hr_hr extends Language
 		$strings['Close'] = 'Zatvori';
 		$strings['ExportToCSV'] = 'Izvezi u CSV';
 		$strings['OK'] = 'OK';
-		$strings['Working'] = 'Radim';
+		$strings['Working'] = 'Radim...';
 		$strings['Login'] = 'Logiranje';
 		$strings['AdditionalInformation'] = 'Dodatne informacije';
 		$strings['AllFieldsAreRequired'] = 'sva polja su obavezna';

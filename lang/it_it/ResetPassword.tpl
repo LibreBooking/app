@@ -28,6 +28,6 @@ La vecchia password è stata disattivata.
 <br/>
 <br />
 
-Please <a href="{$ScriptUrl}">Accedi a Booked Scheduler</a> e cambia la password il prima possibile.
+Per favore <a href="{$ScriptUrl}">Accedi a Booked Scheduler</a> e cambia la password il prima possibile.
 
 {include file='..\..\tpl\Email\emailfooter.tpl'}

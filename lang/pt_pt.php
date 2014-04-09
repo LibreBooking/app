@@ -257,7 +257,7 @@ class pt_pt extends Language
         $strings['Close'] = 'Fechar';
         $strings['ExportToCSV'] = 'Exportar para CSV';
         $strings['OK'] = 'OK';
-        $strings['Working'] = '...';
+        $strings['Working'] = 'Trabalhando...';
         $strings['Login'] = 'Entrar';
         $strings['AdditionalInformation'] = 'Informações adicionais';
         $strings['AllFieldsAreRequired'] = 'Todos os campos são obrigatórios';

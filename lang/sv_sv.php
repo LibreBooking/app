@@ -267,7 +267,7 @@ class sv_sv extends en_us
         $strings['Close'] = 'Stäng';
         $strings['ExportToCSV'] = 'Exportera till CSV';
         $strings['OK'] = 'OK';
-        $strings['Working'] = 'fungerar';
+        $strings['Working'] = 'fungerar...';
         $strings['Login'] = 'Login';
         $strings['AdditionalInformation'] = 'Ytterligare information';
         $strings['AllFieldsAreRequired'] = 'alla fält är obligatoriska';
@@ -404,7 +404,7 @@ class sv_sv extends en_us
 		// End Strings
 
 		// Reports
-		$strings['Working'] = 'Arbetar';
+		$strings['Working'] = 'Arbetar...';
 		$strings['Created'] = 'Skapad';
 		$strings['ViewAsChart'] = 'Visa som Stapeldiagram';
 		$strings['SaveThisReport'] = 'Spara denna Rapport';

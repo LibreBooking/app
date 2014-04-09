@@ -174,7 +174,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 		<form method="POST">
 
-			<div class="advancedFilterTitle">Advanced Filter</div>
+			<div class="advancedFilterTitle">{translate key=AdvancedFilter}</div>
 			<hr/>
 
 			<div id="advancedFilter">

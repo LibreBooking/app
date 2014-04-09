@@ -258,7 +258,7 @@ class cz extends en_us
         $strings['Close'] = 'Zavřít';
         $strings['ExportToCSV'] = 'Exportovat do souboru CSV';
         $strings['OK'] = 'Odeslat';
-        $strings['Working'] = 'Pracovní';
+        $strings['Working'] = 'Pracovní...';
         $strings['Login'] = 'Přihlášení';
         $strings['AdditionalInformation'] = 'Další informace';
         $strings['AllFieldsAreRequired'] = 'Všechna pole jsou povinná';

@@ -250,7 +250,7 @@ class es extends en_us
         $strings['Close'] = 'Cerrar';
         $strings['ExportToCSV'] = 'Exportar a CSV';
         $strings['OK'] = 'OK';
-        $strings['Working'] = 'Funcionando';
+        $strings['Working'] = 'Funcionando...';
         $strings['Login'] = 'Iniciar Sesi&oacute;n';
         $strings['AdditionalInformation'] = 'Informaci&oacute;n Adicional';
         $strings['AllFieldsAreRequired'] = 'se requieren todos los campos';
