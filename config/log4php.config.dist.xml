@@ -14,11 +14,11 @@
 		<param name="append" value="true" />
 	</appender>
     <logger name="default" additivity="false">
-        <level value="DEBUG" />
+        <level value="OFF" />
         <appender_ref ref="defaultAppender" />
     </logger>
 	<logger name="sql" additivity="false">
-        <level value="DEBUG" />
+        <level value="OFF" />
         <appender_ref ref="sqlAppender" />
     </logger>
 </log4php:configuration>
