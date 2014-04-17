@@ -410,4 +410,17 @@ class RepeatOptionsTests extends TestBase
 			$this->assertEquals(3, $date->GetBegin()->Weekday());
 		}
 	}
+
+	public function testRepeatFirstFridayWhenTheFirstDayOfTheMonthIsAFriday()
+	{
+		$firstFriday = DateRange::Create('2014-04-04 08:00', '2014-04-04 08:00', 'UTC');
+		$repeat = new RepeatWeekDayOfMonth(1, Date::Parse('2015-01-01', 'UTC'));
+
+		/** @var $dates DateRange[] */
+		$dates = $repeat->GetDates($firstFriday);
+		$this->assertEquals(1, $dates[3]->GetBegin()->Day());
+
+
+	}
 }
+?>

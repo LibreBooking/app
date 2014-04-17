@@ -45,7 +45,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 </form>
 
 <div id="modalDiv" style="display:none;text-align:center; top:15%;position:relative;">
-    <h3>{translate key=Working}...</h3>
+    <h3>{translate key=Working}</h3>
 {html_image src="reservation_submitting.gif"}
 </div>
 

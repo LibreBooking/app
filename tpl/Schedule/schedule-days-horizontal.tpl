@@ -49,6 +49,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 			{foreach from=$Resources item=resource name=resource_loop}
 				{assign var=resourceId value=$resource->Id}
+				{assign var=href value="{Pages::RESERVATION}?rid={$resource->Id}&sid={$ScheduleId}"}
 				<tr class="slots">
 					<td class="resourcename">
 						{if $resource->CanAccess}

@@ -179,14 +179,14 @@ class Installer
         $sqlErrorText = null;
         $sqlStmt = null;
 
-        $link = @mysql_connect($hostname, $db_user, $db_password);
+        $link = @mysqli_connect($hostname, $db_user, $db_password);
         if (!$link)
         {
             $result->SetConnectionError();
             return $result;
         }
 
-        $select_db_result = @mysql_select_db($database_name, $link);
+        $select_db_result = @mysqli_select_db($link, $database_name);
         if (!$select_db_result)
         {
             $result->SetAuthenticationError();
@@ -198,11 +198,11 @@ class Installer
         {
             if (strlen($stmt) > 3 && substr(ltrim($stmt), 0, 2) != '/*')
             {
-                $queryResult = @mysql_query($stmt);
+                $queryResult = @mysqli_query($link, $stmt);
                 if (!$queryResult)
                 {
-                    $sqlErrorCode = mysql_errno();
-                    $sqlErrorText = mysql_error();
+                    $sqlErrorCode = mysqli_errno($link);
+                    $sqlErrorText = mysqli_error($link);
                     $sqlStmt = $stmt;
                     break;
                 }
@@ -227,27 +227,27 @@ class Installer
         $database_user = $config->GetSectionKey(ConfigSection::DATABASE, ConfigKeys::DATABASE_USER);
         $database_password = $config->GetSectionKey(ConfigSection::DATABASE, ConfigKeys::DATABASE_PASSWORD);
 
-        $link = mysql_connect($hostname, $database_user, $database_password);
+        $link = mysqli_connect($hostname, $database_user, $database_password);
         if (!$link)
         {
             return false;
         }
 
-        $select_db_result = mysql_select_db($database_name, $link);
+        $select_db_result = mysqli_select_db($link, $database_name);
         if (!$select_db_result)
         {
             return false;
         }
 
         $getVersion = 'SELECT * FROM `dbversion` order by version_number desc limit 0,1';
-        $result = mysql_query($getVersion, $link);
+        $result = mysqli_query($link, $getVersion);
 
         if (!$result)
         {
             return 2.0;
         }
 
-        if ($row = mysql_fetch_assoc($result))
+        if ($row = mysqli_fetch_assoc($link, $result))
         {
             $versionNumber = $row['version_number'];
 
@@ -256,11 +256,11 @@ class Installer
 				// bug in 2.2 upgrade did not insert version number, check for table instead
 
 				$getCustomAttributes = 'SELECT * FROM custom_attributes';
-				$customAttributesResults = mysql_query($getCustomAttributes, $link);
+				$customAttributesResults = mysqli_query($link, $getCustomAttributes);
 
 				if ($customAttributesResults)
 				{
-					mysql_query("insert into dbversion values('2.2', now())", $link);
+					mysqli_query($link, "insert into dbversion values('2.2', now())");
 					return 2.2;
 				}
 			}
@@ -292,5 +292,3 @@ class Installer
         }
     }
 }
-
-?>

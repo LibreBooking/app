@@ -450,9 +450,7 @@ class RepeatWeekDayOfMonth extends RepeatOptionsAbstract
 			$month = ($computedMonth - 1) % 12 + 1;
 			$year = $startYear + (int)(($computedMonth - 1) / 12);
 
-			$correctedWeekNumber = $this->GetWeekNumberOfMonth($weekNumber, $month, $year, $dayOfWeek);
-
-			$dayOfMonth = strtotime("{$this->_typeList[$correctedWeekNumber ]} {$this->_dayList[$dayOfWeek]} $year-$month-01");
+			$dayOfMonth = strtotime("{$this->_typeList[$weekNumber]} {$this->_dayList[$dayOfWeek]} $year-$month-00");
 			$calculatedDate = date('Y-m-d', $dayOfMonth);
 			$calculatedMonth = explode('-', $calculatedDate);
 
@@ -491,19 +489,6 @@ class RepeatWeekDayOfMonth extends RepeatOptionsAbstract
 	{
 		$week = ceil($firstDate->Day() / 7);
 		return $week;
-	}
-
-	private function GetWeekNumberOfMonth($week, $month, $year, $desiredDayOfWeek)
-	{
-		$firstWeekdayOfMonth = date('w', mktime(0, 0, 0, $month, 1, $year));
-
-		$weekNumber = $week;
-		if ($firstWeekdayOfMonth == $desiredDayOfWeek)
-		{
-			$weekNumber--;
-		}
-
-		return max($weekNumber,1);
 	}
 }
 
