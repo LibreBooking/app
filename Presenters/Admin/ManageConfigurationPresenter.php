@@ -52,6 +52,7 @@ class ManageConfigurationPresenter extends ActionPresenter
 		$this->page = $page;
 		$this->configSettings = $settings;
 		$this->configFilePath = ROOT_DIR . 'config/config.php';
+		$this->configFilePathDist = ROOT_DIR . 'config/config.dist.php';
 
 		$this->AddAction(ConfigActions::Update, 'Update');
 	}
@@ -85,6 +86,8 @@ class ManageConfigurationPresenter extends ActionPresenter
 
 		Log::Debug('Loading and displaying config file for editing by %s',
 				   ServiceLocator::GetServer()->GetUserSession()->Email);
+
+		$this->BringConfigFileUpToDate();
 
 		$settings = $this->configSettings->GetSettings($this->configFilePath);
 
@@ -240,6 +243,17 @@ class ManageConfigurationPresenter extends ActionPresenter
 				}
 			}
 		}
+	}
+
+	private function BringConfigFileUpToDate()
+	{
+		if (!file_exists($this->configFilePathDist))
+		{
+			return;
+		}
+
+		$configurator = new Configurator();
+		$configurator->Merge($this->configFilePath, $this->configFilePathDist);
 	}
 }
 

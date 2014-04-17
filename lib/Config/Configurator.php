@@ -57,9 +57,12 @@ class Configurator implements IConfigurationSettings
 	 */
 	public function Merge($configPhp, $distPhp)
 	{
-		$mergedSettings = $this->GetMerged($configPhp, $distPhp);
+		if ($this->IsConfigOutOfDate($configPhp, $distPhp))
+		{
+			$mergedSettings = $this->GetMerged($configPhp, $distPhp);
 
-		$this->WriteSettings($configPhp, $mergedSettings);
+			$this->WriteSettings($configPhp, $mergedSettings);
+		}
 	}
 
 	public function WriteSettings($configFilePath, $mergedSettings)
@@ -171,6 +174,34 @@ class Configurator implements IConfigurationSettings
 		$backupPath = str_replace('.php', time() . '.php', $configFilePath);
 		copy($configFilePath, $backupPath);
 	}
-}
 
-?>
+	private function IsConfigOutOfDate($configPhp, $distPhp)
+	{
+		$currentSettings = $this->GetSettings($configPhp);
+		$newSettings = $this->GetSettings($distPhp);
+
+		if ($this->AreKeysTheSame($currentSettings, $newSettings))
+		{
+			Log::Debug('Config file is already up to date. Skipping config merge.');
+			return false;
+		}
+
+		Log::Debug('Config file is out of date. Merging new config options in.');
+		return true;
+	}
+
+	private function AreKeysTheSame($current, $new)
+	{
+		foreach ($new as $key => $val)
+		{
+
+			if (!array_key_exists($key, $current) || (is_array($new[$key]) && !$this->AreKeysTheSame($current[$key], $new[$key])))
+			{
+				Log::Debug('Could not find key in config file: %s', $key);
+				return false;
+			}
+		}
+
+		return true;
+	}
+}
