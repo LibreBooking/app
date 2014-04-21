@@ -161,6 +161,7 @@ function ResourceManagement(opts) {
 		});
 
 		$(".cancelColorbox").click(function () {
+			$('#bulkUpdateDialog').hide();
 			$.colorbox.close();
 		});
 
@@ -209,9 +210,6 @@ function ResourceManagement(opts) {
 			});
 			$('<ul/>', {'class': 'no-style', html: items.join('')}).appendTo(elements.bulkUpdateList);
 
-//			elements.bulkUpdateDialog.find('input, textarea').val('');
-//			elements.bulkUpdateDialog.find('select').val('-1');
-
 			wireUpIntervalToggle(elements.bulkUpdateDialog);
 
 			$.colorbox({inline:true,
@@ -227,12 +225,12 @@ function ResourceManagement(opts) {
 		};
 
 		var combineIntervals = function (form, options) {
-			$('.interval', form).each(function () {
-				var id = $(this).attr('id');
+			$('.interval', form).each(function (i, v) {
+				var id = $(v).attr('id');
 				var d = $('#' + id + 'Days').val();
 				var h = $('#' + id + 'Hours').val();
 				var m = $('#' + id + 'Minutes').val();
-				$(this).val(d + 'd' + h + 'h' + m + 'm');
+				$(v).val(d + 'd' + h + 'h' + m + 'm');
 			});
 		};
 
@@ -269,7 +267,7 @@ function ResourceManagement(opts) {
 		ConfigureAdminForm(elements.notesForm, defaultSubmitCallback(elements.notesForm));
 		ConfigureAdminForm(elements.addForm, defaultSubmitCallback(elements.addForm), null, handleAddError);
 		ConfigureAdminForm(elements.deleteForm, defaultSubmitCallback(elements.deleteForm));
-		ConfigureAdminForm(elements.configurationForm, defaultSubmitCallback(elements.configurationForm), null, errorHandler, {onBeforeSerialize:beforeSubmitWithIntervals});
+		ConfigureAdminForm(elements.configurationForm, defaultSubmitCallback(elements.configurationForm), null, errorHandler, {onBeforeSubmit:beforeSubmitWithIntervals});
 		ConfigureAdminForm(elements.groupAdminForm, defaultSubmitCallback(elements.groupAdminForm));
 		ConfigureAdminForm(elements.resourceTypeForm, defaultSubmitCallback(elements.resourceTypeForm));
 		ConfigureAdminForm(elements.bulkUpdateForm, defaultSubmitCallback(elements.bulkUpdateForm), null, bulkUpdateErrorHandler, {onBeforeSubmit:beforeSubmitWithIntervals});
@@ -380,7 +378,7 @@ function ResourceManagement(opts) {
 		setDaysHoursMinutes('#startNotice', resource.startNotice, $('#noStartNotice'));
 		setDaysHoursMinutes('#endNotice', resource.endNotice, $('#noEndNotice'));
 		setDaysHoursMinutes('#bufferTime', resource.bufferTime, $('#noBufferTime'));
-		showHideConfiguration(resource.maxParticipants, $('#maxCapactiy'), $('#unlimitedCapactiy'));
+		showHideConfiguration(resource.maxParticipants, $('#maxCapacity'), $('#unlimitedCapacity'));
 
 		$('#allowMultiday').val(resource.allowMultiday);
 		$('#requiresApproval').val(resource.requiresApproval);
@@ -432,11 +430,11 @@ function ResourceManagement(opts) {
 		var span = elements.configurationDialog.find('.' + id);
 
 		if (attributeValue == '' || attributeValue == undefined) {
-			attributeCheckbox.attr('checked', true);
+			attributeCheckbox.prop('checked', true);
 			span.hide();
 		}
 		else {
-			attributeCheckbox.attr('checked', false);
+			attributeCheckbox.prop('checked', false);
 			span.show();
 		}
 	}
