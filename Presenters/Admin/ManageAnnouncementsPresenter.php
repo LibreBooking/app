@@ -103,4 +103,3 @@ class ManageAnnouncementsPresenter extends ActionPresenter
 		$this->announcementRepository->Delete($id);
 	}
 }
-?>

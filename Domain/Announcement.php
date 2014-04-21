@@ -64,7 +64,7 @@ class Announcement
      */
     public function Priority()
     {
-        return $this->Priority;
+        return empty($this->Priority) ? null : (int)$this->Priority;
     }
 
 
