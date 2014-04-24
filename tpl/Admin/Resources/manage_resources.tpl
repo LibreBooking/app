@@ -21,6 +21,9 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 <h1>{translate key='ManageResources'}</h1>
 
+<a href="{$Path}admin/manage_resource_types.php">{translate key="ManageResourceTypes"}</a>
+<a href="{$Path}admin/manage_resource_status.php">{translate key="ManageResourceStatus"}</a>
+
 <div class="horizontal-list label-top filterTable main-div-shadow" id="filterTable">
 	<form id="filterForm">
 		<div class="main-div-header">{translate key=Filter}</div>

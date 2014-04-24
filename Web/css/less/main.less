@@ -1,0 +1,26 @@
+@import "elements.less";
+
+@footer-color: lighten(#333333, 10%);
+
+html, body {
+  height: 100%;
+}
+
+body {
+  padding-bottom: 70px; /* this needs to be bigger than footer height*/
+}
+
+
+.footer {
+  text-align: center;
+  border-top: solid 1px #333333;
+  padding-top: 2px;
+  color:#fff;
+  font-size:.8em;
+  .gradient(@footer-color, lighten(@footer-color, 10%), @footer-color);
+  height:50px;
+}
+
+.footer a {
+  color:#fff;
+}

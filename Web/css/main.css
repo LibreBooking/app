@@ -1,0 +1,31 @@
+/*---------------------------------------------------
+    LESS Elements 0.9
+  ---------------------------------------------------
+    A set of useful LESS mixins
+    More info at: http://lesselements.com
+  ---------------------------------------------------*/
+html,
+body {
+  height: 100%;
+}
+body {
+  padding-bottom: 70px;
+  /* this needs to be bigger than footer height*/
+}
+.footer {
+  text-align: center;
+  border-top: solid 1px #333333;
+  padding-top: 2px;
+  color: #fff;
+  font-size: .8em;
+  background: #4d4d4d;
+  background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #666666), color-stop(1, #4d4d4d));
+  background: -ms-linear-gradient(bottom, #666666, #4d4d4d);
+  background: -moz-linear-gradient(center bottom, #666666 0%, #4d4d4d 100%);
+  background: -o-linear-gradient(#4d4d4d, #666666);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#4d4d4d', endColorstr='#666666', GradientType=0);
+  height: 50px;
+}
+.footer a {
+  color: #fff;
+}

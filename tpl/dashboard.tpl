@@ -18,7 +18,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 *}
 {include file='globalheader.tpl' cssFiles='css/dashboard.css,css/jquery.qtip.min.css'}
 
-<ul id="dashboardList">
+<div id="page-dashboard">
+<ul id="dashboardList" class="list-unstyled">
 {foreach from=$items item=dashboardItem}
     <li>{$dashboardItem->PageLoad()}</li>
 {/foreach}
@@ -39,5 +40,6 @@ $(document).ready(function() {
 	dashboard.init();
 });
 </script>
+</div>
 
 {include file='globalfooter.tpl'}
