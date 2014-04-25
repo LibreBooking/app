@@ -16,17 +16,15 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 *}
-<div class="dashboard" id="announcementsDashboard">
-	<div id="announcementsHeader" class="dashboardHeader">
-		<a href="javascript:void(0);" title="{translate key='ShowHide'}">{translate key="Announcements"}</a>
-	</div>
-	<div class="dashboardContents">
-		<ul>
-			{foreach from=$Announcements item=each}
-			    <li>{$each|html_entity_decode|url2link|nl2br}</li>
-			{foreachelse}
-				<div class="noresults">{translate key="NoAnnouncements"}</div>
-			{/foreach}
-		</ul>
-	</div>
+<div class="panel panel-default dashboard" id="announcementsDashboard">
+  <div class="panel-heading dashboardHeader">{translate key="Announcements"}</div>
+  <div class="panel-body dashboardContents">
+	  <ul>
+		{foreach from=$Announcements item=each}
+			<li>{$each|html_entity_decode|url2link|nl2br}</li>
+		{foreachelse}
+			<div class="noresults">{translate key="NoAnnouncements"}</div>
+		{/foreach}
+	</ul>
+  </div>
 </div>

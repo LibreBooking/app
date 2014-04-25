@@ -37,6 +37,9 @@ $(function(){
 	  		altField: "#{$AltId}",
 	  	 	altFormat: '{$AltFormat}'
 		  {/if}
+	  	{if $MaxDate neq ''}
+	  	,maxDate: "{$MaxDate}"
+	  	{/if}
   {rdelim});
 
   {if $AltId neq ''}

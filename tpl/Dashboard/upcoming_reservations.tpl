@@ -28,14 +28,14 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 {/function}
 
 
-<div class="dashboard upcomingReservationsDashboard" id="upcomingReservationsDashboard">
-	<div class="dashboardHeader">
-		<a href="javascript:void(0);" title="{translate key='ShowHide'}">{translate key="UpcomingReservations"}</a> ({$Total})
+<div class="panel panel-default dashboard upcomingReservationsDashboard" id="upcomingReservationsDashboard">
+	<div class="panel-heading dashboardHeader">
+		{translate key="UpcomingReservations"} ({$Total})
 	</div>
-	<div class="dashboardContents">
+	<div class="panel-body dashboardContents">
 		{assign var=colspan value="5"}
 		{if $Total > 0}
-		<table>
+		<table class="table">
 			<tr class="timespan">
 				<td colspan="{$colspan}">{translate key="Today"} ({$TodaysReservations|count})</td>
 			</tr>

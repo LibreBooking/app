@@ -12,18 +12,21 @@ body {
   padding-bottom: 70px;
   /* this needs to be bigger than footer height*/
 }
+a {
+  color: #2b4e72;
+}
 .footer {
   text-align: center;
-  border-top: solid 1px #333333;
+  border-top: solid 1px #343331;
   padding-top: 2px;
   color: #fff;
   font-size: .8em;
-  background: #4d4d4d;
-  background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #666666), color-stop(1, #4d4d4d));
-  background: -ms-linear-gradient(bottom, #666666, #4d4d4d);
-  background: -moz-linear-gradient(center bottom, #666666 0%, #4d4d4d 100%);
-  background: -o-linear-gradient(#4d4d4d, #666666);
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#4d4d4d', endColorstr='#666666', GradientType=0);
+  background: #4e4d4a;
+  background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #5b5a56), color-stop(1, #4e4d4a));
+  background: -ms-linear-gradient(bottom, #5b5a56, #4e4d4a);
+  background: -moz-linear-gradient(center bottom, #5b5a56 0%, #4e4d4a 100%);
+  background: -o-linear-gradient(#4e4d4a, #5b5a56);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#4e4d4a', endColorstr='#5b5a56', GradientType=0);
   height: 50px;
 }
 .footer a {

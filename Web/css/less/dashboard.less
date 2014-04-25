@@ -1,0 +1,66 @@
+@import "colors.less";
+
+@dashboard-color: @muted-blue;
+@dashboard-border-color: darken(@dashboard-color, 5%);
+
+#page-dashboard .panel-heading
+{
+  background-color: @dashboard-color;
+  color:#fff;
+}
+
+#page-dashboard .panel-heading, #page-dashboard .panel
+{
+  border-color:@dashboard-border-color;
+}
+
+.dashboard {
+  margin-top: 15px;
+}
+
+.dashboardContents {
+	padding: 0;
+}
+
+.dashboardHeader {
+//    background-color: #CCCC99;
+//    border-bottom: solid 1px #666633;
+//    font-size: 12px;
+//    font-weight: bold;
+//    padding: 2px 0px 2px 10px;
+    letter-spacing: 1px;
+//    -moz-border-radius-topleft: 5px;
+//    -moz-border-radius-topright: 5px;
+//    border-top-left-radius: 5px;
+//    border-top-right-radius: 5px;
+}
+
+.dashboard .noresults {
+	text-align: center;
+	font-style: italic;
+}
+
+.dashboardContents a {
+	color: #3D72A4;
+}
+
+.dashboardContents .table {
+  margin-bottom: 1px;
+}
+
+.upcomingReservationsDashboard .timespan td {
+	font-style: italic;
+	color: #000;
+    background-color: @off-white;
+}
+
+.upcomingReservationsDashboard tr.reservation.hover td {
+	cursor: pointer;
+	background-color: lighten(@muted-blue, 25%);
+	color: #222;
+}
+
+.upcomingReservationsDashboard tr.reservation.clicked td {
+	cursor: pointer;
+	background-color: #F0F0F0;
+}
