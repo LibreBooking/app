@@ -1,0 +1,75 @@
+/*---------------------------------------------------
+    LESS Elements 0.9
+  ---------------------------------------------------
+    A set of useful LESS mixins
+    More info at: http://lesselements.com
+  ---------------------------------------------------*/
+html,
+body {
+  height: 100%;
+}
+body {
+  padding-bottom: 70px;
+  /* this needs to be bigger than footer height*/
+}
+a {
+  color: #2b4e72;
+}
+.footer {
+  text-align: center;
+  border-top: solid 1px #343331;
+  padding-top: 2px;
+  color: #fff;
+  font-size: .8em;
+  background: #4e4d4a;
+  background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #5b5a56), color-stop(1, #4e4d4a));
+  background: -ms-linear-gradient(bottom, #5b5a56, #4e4d4a);
+  background: -moz-linear-gradient(center bottom, #5b5a56 0%, #4e4d4a 100%);
+  background: -o-linear-gradient(#4e4d4a, #5b5a56);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#4e4d4a', endColorstr='#5b5a56', GradientType=0);
+  height: 50px;
+}
+.footer a {
+  color: #fff;
+}
+#page-dashboard .panel-heading {
+  background-color: #99b2b7;
+  color: #fff;
+}
+#page-dashboard .panel-heading,
+#page-dashboard .panel {
+  border-color: #8aa7ac;
+}
+.dashboard {
+  margin-top: 15px;
+}
+.dashboardContents {
+  padding: 0;
+}
+.dashboardHeader {
+  letter-spacing: 1px;
+}
+.dashboard .noresults {
+  text-align: center;
+  font-style: italic;
+}
+.dashboardContents a {
+  color: #3D72A4;
+}
+.dashboardContents .table {
+  margin-bottom: 1px;
+}
+.upcomingReservationsDashboard .timespan td {
+  font-style: italic;
+  color: #000;
+  background-color: #f9f2e7;
+}
+.upcomingReservationsDashboard tr.reservation.hover td {
+  cursor: pointer;
+  background-color: #e4eaec;
+  color: #222;
+}
+.upcomingReservationsDashboard tr.reservation.clicked td {
+  cursor: pointer;
+  background-color: #F0F0F0;
+}

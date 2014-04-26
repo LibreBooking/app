@@ -17,7 +17,7 @@ You should have received a copy of the GNU General Public License
 along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 *}
 <div class="panel panel-default dashboard" id="announcementsDashboard">
-  <div class="panel-heading dashboardHeader">{translate key="Announcements"}</div>
+  <div class="panel-heading dashboardHeader">{translate key="Announcements"} <a href="#" title="{translate key=ShowHide}"><span class="glyphicon"></span></a></div>
   <div class="panel-body dashboardContents">
 	  <ul>
 		{foreach from=$Announcements item=each}
