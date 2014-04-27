@@ -15,6 +15,9 @@
 .dashboardHeader {
   letter-spacing: 1px;
 }
+.dashboardHeader a {
+  color: #f7f7f7;
+}
 .dashboard .noresults {
   text-align: center;
   font-style: italic;
