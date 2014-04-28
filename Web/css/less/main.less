@@ -5,25 +5,53 @@ html, body {
   height: 100%;
 }
 
+@footer-height: 50px;
+
 body {
-  padding-bottom: 70px; /* this needs to be bigger than footer height*/
+  padding-bottom: @footer-height; /* this needs to be bigger than footer height*/
 }
 
-a{
-  color:@link-color;
+a {
+  color: @link-color;
 }
 
 .footer {
   text-align: center;
   border-top: solid 1px darken(@dark-gray, 10%);
   padding-top: 2px;
-  color:#fff;
-  font-size:.8em;
+  color: #fff;
+  font-size: .8em;
   .gradient(@dark-gray, lighten(@dark-gray, 5%), @dark-gray);
-  height:50px;
+  height: 50px;
 }
 
 .footer a {
-  color:#fff;
+  color: #fff;
 }
 
+#main {
+  height: 100%;
+  padding-bottom: @footer-height;
+}
+
+.default-box {
+  padding: 35px;
+  .rounded(5px);
+  border: solid 1px @light-gray;
+}
+
+#page-login {
+  height: 100%;
+  margin-top: -20px;
+  padding-top: 40px;
+}
+
+#page-login .default-box {
+  background-color: lighten(@light-gray, 5%);
+  border: solid 1px @light-gray;
+  .box-shadow(0 0 2px @light-gray);
+}
+
+#login-links {
+  text-align: center;
+}

@@ -430,7 +430,12 @@ class SmartyPage extends Smarty
 			$id = $params['id'];
 		}
 
-		$knownAttributes = array('value', 'type', 'name');
+		if (isset($params['placeholderkey']))
+		{
+			$params['placeholder'] = $this->Resources->GetString($params['placeholderkey']);
+		}
+
+		$knownAttributes = array('value', 'type', 'name', 'placeholderkey');
 		$attributes = $this->AppendAttributes($params, $knownAttributes);
 
 		if ($type == 'password')

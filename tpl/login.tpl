@@ -18,86 +18,104 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 *}
 {include file='globalheader.tpl'}
 
+<div id="page-login">
 {if $ShowLoginError}
-<div id="loginError">
-	{translate key='LoginError'}
-</div>
+	<div id="loginError">
+		{translate key='LoginError'}
+	</div>
 {/if}
 
-<div id="loginbox">
-	<!--This "$smarty.server.SCRIPT_NAME" sets up the form to post back to the same page that it is on.-->
-	<form name="login" id="login" class="login" method="post" action="{$smarty.server.SCRIPT_NAME}">
-		<div>
-			{if $ShowUsernamePrompt}
-			<p>
-				<label class="login">{translate key='UsernameOrEmail'}<br/>
-				{textbox name="EMAIL" class="input" size="20" tabindex="10"}</label>
-			</p>
-			{/if}
+<div class="row">
+	<div id="loginbox" class="col-md-offset-4 col-md-4 default-box">
+		<form role="form" name="login" id="login" class="login form-horizontal" method="post"
+			  action="{$smarty.server.SCRIPT_NAME}">
+			<div>
+				{if $ShowUsernamePrompt}
+					<div class="form-group">
+						<label class="col-sm-2 control-label" for="email">{translate key='Email'}</label>
 
-			{if $ShowPasswordPrompt}
-			<p>
-				<label class="login">{translate key='Password'}<br/>
-				{textbox type="password" name="PASSWORD" class="input" value="" size="20" tabindex="20"}</label>
-			</p>
-			{/if}
+						<div class="col-sm-10"><input type="text" required="" class="form-control"
+													  id="email" {formname key=EMAIL}
+													  placeholder="{translate key=UsernameOrEmail}"/>
+						</div>
+					</div>
+				{/if}
 
-			<p>
-				<label class="login">{translate key='Language'}<br/>
-					<select {formname key='LANGUAGE'} class="input-small" id="languageDropDown">
-					{object_html_options options=$Languages key='GetLanguageCode' label='GetDisplayName' selected=$SelectedLanguage}
-					</select>
-			</p>
+				{if $ShowPasswordPrompt}
+					<div class="form-group">
+						<label class="col-sm-2 control-label" for="password">{translate key='Password'}</label>
 
-			{if $ShowPersistLoginPrompt}
-			<p class="stayloggedin">
-				<label class="login"><input type="checkbox" name="{FormKeys::PERSIST_LOGIN}" value="true"
-											tabindex="30"/> {translate key='RememberMe'}</label>
+						<div class="col-sm-10">
+							<input type="password" required="" id="password" {formname key=PASSWORD}
+								   class="form-control"
+								   value="" placeholder="{translate key=Password}"/>
+						</div>
+					</div>
+				{/if}
 
-			</p>
-			{/if}
+				<div class="form-group">
+					<label class="col-sm-2 control-label" for="languageDropDown">{translate key='Language'}</label>
 
-			<p class="loginsubmit">
-				<button type="submit" name="{Actions::LOGIN}" class="button" tabindex="100" value="submit"><img
-						src="img/door-open-in.png"/> {translate key='LogIn'} </button>
-				<input type="hidden" name="{FormKeys::RESUME}" value="{$ResumeUrl}"/>
-			</p>
-		</div>
-		<div style="clear:both;">&nbsp;</div>
-	{if $ShowRegisterLink}
-		<h4 class="register">
-			{translate key='FirstTimeUser?'}
-				{html_link href="register.php" key="CreateAnAccount"}
-		</h4>
-	{/if}
-	</form>
+					<div class="col-sm-10">
+						<select {formname key=LANGUAGE} class="form-control input-sm" id="languageDropDown">
+							{object_html_options options=$Languages key='GetLanguageCode' label='GetDisplayName' selected=$SelectedLanguage}
+						</select>
+					</div>
+				</div>
+
+				{if $ShowPersistLoginPrompt}
+					<div class="form-group">
+						<div class="col-sm-offset-2 col-sm-10">
+							<div class="checkbox">
+								<label>
+									<input id="rememberMe" type="checkbox"
+										   name="{FormKeys::PERSIST_LOGIN}"
+										   value="true"/> {translate key='RememberMe'}
+								</label>
+							</div>
+						</div>
+					</div>
+				{/if}
+
+				<div class="form-group">
+					<div class="col-sm-offset-2 col-sm-10">
+						<button type="submit" class="btn btn-primary" name="{Actions::LOGIN}"
+								value="submit">{translate key='LogIn'}</button>
+
+						<input type="hidden" {formname key=RESUME} value="{$ResumeUrl}"/>
+					</div>
+
+				</div>
+				<div id="login-links" class="col-sm-12 center-block">
+					{if $ShowForgotPasswordPrompt}
+						<a href="forgot.php">{translate key='ForgotMyPassword'}</a>
+					{/if}
+					{if $ShowForgotPasswordPrompt && $ShowRegisterLink}|{/if}
+					{if $ShowRegisterLink}
+						<a href="register.php">{translate key='CreateAnAccount'}</a>
+					{/if}
+				</div>
+			</div>
+		</form>
+	</div>
 </div>
 
-<div id="login-links">
-	<p>
-		{if $ShowScheduleLink}
-		<a href="view-schedule.php">{translate key='ViewSchedule'}</a>
-		{/if}
-		{if $ShowScheduleLink && $ShowForgotPasswordPrompt}|{/if}
-		{if $ShowForgotPasswordPrompt}
-		<a href="forgot.php">{translate key='ForgotMyPassword'}</a>
-		{/if}
-	</p>
 </div>
-
 {setfocus key='EMAIL'}
 
 <script type="text/javascript">
 	var url = 'index.php?{QueryStringKeys::LANGUAGE}=';
-	$(document).ready(function () {
-		$('#languageDropDown').change(function()
+	$(document).ready(function ()
+	{
+		$('#languageDropDown').change(function ()
 		{
 			window.location.href = url + $(this).val();
 		});
 
 		var langCode = readCookie('{CookieKeys::LANGUAGE}');
 
-		if (!langCode) {
+		if (!langCode)
+		{
 		}
 	});
 </script>

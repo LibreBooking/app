@@ -9,7 +9,7 @@ body {
   height: 100%;
 }
 body {
-  padding-bottom: 70px;
+  padding-bottom: 50px;
   /* this needs to be bigger than footer height*/
 }
 a {
@@ -31,6 +31,32 @@ a {
 }
 .footer a {
   color: #fff;
+}
+#main {
+  height: 100%;
+  padding-bottom: 50px;
+}
+.default-box {
+  padding: 35px;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+  border: solid 1px #e9e9e9;
+}
+#page-login {
+  height: 100%;
+  margin-top: -20px;
+  padding-top: 40px;
+}
+#page-login .default-box {
+  background-color: #f6f6f6;
+  border: solid 1px #e9e9e9;
+  -webkit-box-shadow: 0 0 2px #e9e9e9;
+  -moz-box-shadow: 0 0 2px #e9e9e9;
+  box-shadow: 0 0 2px #e9e9e9;
+}
+#login-links {
+  text-align: center;
 }
 #page-dashboard .panel-heading {
   background-color: #99b2b7;
