@@ -30,7 +30,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 <div class="panel panel-default dashboard upcomingReservationsDashboard" id="adminUpcomingReservationsDashboard">
 	<div class="panel-heading dashboardHeader">
-		{translate key="AllUpcomingReservations"} ({$Total}) <a href="#" title="{translate key=ShowHide}"><span class="glyphicon"></span></a>
+		{translate key="AllUpcomingReservations"} <span class="badge">{$Total}</span> <a href="#" title="{translate key=ShowHide}"><span class="glyphicon"></span></a>
 	</div>
 	<div class="panel-body dashboardContents">
 		{assign var=colspan value="5"}

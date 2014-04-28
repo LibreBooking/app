@@ -20,7 +20,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 <div id="page-login">
 {if $ShowLoginError}
-	<div id="loginError">
+	<div id="loginError" class="alert alert-danger">
 		{translate key='LoginError'}
 	</div>
 {/if}

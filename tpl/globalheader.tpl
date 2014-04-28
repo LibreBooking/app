@@ -85,9 +85,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 				{if $LoggedIn}
 				<li><a href="{$Path}{Pages::DASHBOARD}">{translate key="Dashboard"}</a></li>
 				<li class="dropdown">
-					<a href="#" class="dropdown-toggle" data-toggle="dropdown">{$UserName} <b class="caret"></b></a>
+					<a href="#" class="dropdown-toggle" data-toggle="dropdown">{translate key="MyAccount"} <b class="caret"></b></a>
 					<ul class="dropdown-menu">
-						<li><a href="{$Path}{Pages::PROFILE}">{translate key="MyAccount"}</a></li>
 						<li><a href="{$Path}{Pages::PROFILE}">{translate key="Profile"}</a></li>
 						<li><a href="{$Path}{Pages::PASSWORD}">{translate key="ChangePassword"}</a></li>
 						<li>
