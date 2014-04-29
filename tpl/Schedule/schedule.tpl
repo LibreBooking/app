@@ -100,37 +100,32 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 {block name="schedule_control"}
 	<div>
-		<div class="schedule_title">
+		<div id="schedule-title" class="schedule_title">
 			<span>{$ScheduleName}</span>
-			{if $Schedules|@count gt 0}
-				<ul class="schedule_drop">
-					<li id="show_schedule">{html_image src="down_sm_blue.png" alt="Change Schedule"}</li>
-					<ul style="display:none;" id="schedule_list">
-						{foreach from=$Schedules item=schedule}
-							<li><a href="#"
-								   onclick="ChangeSchedule({$schedule->GetId()}); return false;">{$schedule->GetName()}</a>
-							</li>
-						{/foreach}
-					</ul>
-				</ul>
-			{/if}
-			<a href="#" id="calendar_toggle">{html_image src="calendar.png" altKey="ShowHideNavigation"}</a>
+			{if $Schedules|@count gt 1}
+			<div class="dropdown btn-group">
+				<a class="btn dropdown-toggle" data-toggle="dropdown" href="#"><span class="caret dropdown-toggle"></span></a>
+				  <ul class="dropdown-menu" role="menu">
+					  {foreach from=$Schedules item=schedule}
+						<li><a href="#" class="schedule-id" data-scheduleid="{$schedule->GetId()}">{$schedule->GetName()}</a></li>
+					{/foreach}
+				  </ul>
+			</div>
+		  	{/if}
+			<a href="#" id="calendar_toggle" title="{translate key=ShowHideNavigation}"><span class="glyphicon glyphicon-calendar"></span></a>
 		</div>
 
 		{capture name="date_navigation"}
-			<div class="schedule_dates">
+			<div id="schedule-dates" class="schedule_dates">
 				{assign var=FirstDate value=$DisplayDates->GetBegin()}
 				{assign var=LastDate value=$DisplayDates->GetEnd()}
-				<a href="#" onclick="ChangeDate({formatdate date=$PreviousDate format="Y, m, d"}); return false;"><img
-							src="img/arrow_large_left.png" alt="Back"/></a>
+				<a href="#" class="change-date" data-year="{$PreviousDate->Year()}" data-month="{$PreviousDate->Month()}" data-day="{$PreviousDate->Day()}">{html_image src="arrow_large_left.png" alt="Back"}</a>
 				{formatdate date=$FirstDate} - {formatdate date=$LastDate}
-				<a href="#" onclick="ChangeDate({formatdate date=$NextDate format="Y, m, d"}); return false;"><img
-							src="img/arrow_large_right.png" alt="Forward"/></a>
+				<a href="#"class="change-date" data-year="{$NextDate->Year()}" data-month="{$NextDate->Month()}" data-day="{$NextDate->Day()}">{html_image src="arrow_large_right.png" alt="Forward"}</a>
 
 				{if $ShowFullWeekLink}
 					<a href="{add_querystring key=SHOW_FULL_WEEK value=1}"
-					   id="showFullWeek">({translate key=ShowFullWeek}
-						)</a>
+					   id="showFullWeek">({translate key=ShowFullWeek})</a>
 				{/if}
 			</div>
 		{/capture}

@@ -12,12 +12,6 @@ function Schedule(opts, resourceGroups)
 		this.initResourceFilter();
 
 		var reservations = $('#reservations');
-//		reservations.delegate('.clickres:not(.reserved)', 'hover', function ()
-//		{
-//			$(this).siblings('.resourcename').toggleClass('hilite');
-//			var ref = $(this).attr('ref');
-//			reservations.find('td[ref="' + ref + '"]').toggleClass('hilite');
-//		});
 
 		reservations.delegate('.clickres:not(.reserved)', 'mouseenter', function ()
 		{
@@ -86,17 +80,6 @@ function Schedule(opts, resourceGroups)
 
 	this.initNavigation = function ()
 	{
-		$('.schedule_drop').hover(
-				function ()
-				{
-					$("#schedule_list").show()
-				},
-				function ()
-				{
-					$("#schedule_list").hide()
-				}
-		);
-
 		$("#calendar_toggle").click(function (event)
 		{
 			event.preventDefault();
@@ -112,6 +95,28 @@ function Schedule(opts, resourceGroups)
 			{
 				$(this).find("img").first().attr("src", "img/calendar-minus.png");
 			}
+		});
+
+		$('#schedule-title').find('.schedule-id').on('click', function (e)
+		{
+			e.preventDefault();
+			var scheduleId = $(this).attr('data-scheduleid');
+
+			RedirectToSelf("sid", /sid=\d+/i, "sid=" + scheduleId, function (url)
+			{
+				var x = RemoveGroupId(url);
+				x = RemoveResourceId(x);
+				return x;
+			});
+		});
+
+		$('#schedule-dates').find('.change-date').on('click', function (e)
+		{
+			e.preventDefault();
+			var year = $(this).attr('data-year');
+			var month = $(this).attr('data-month');
+			var day = $(this).attr('data-day');
+			ChangeDate(year, month, day)
 		});
 	};
 
@@ -358,9 +363,18 @@ function ChangeResource(resourceId)
 {
 	RedirectToSelf('rid', /rid=\d+/i, "rid=" + resourceId, RemoveGroupId);
 }
+
 function dpDateChanged(dateText, inst)
 {
-	ChangeDate(inst.selectedYear, inst.selectedMonth + 1, inst.selectedDay);
+	if (inst)
+	{
+		ChangeDate(inst.selectedYear, inst.selectedMonth + 1, inst.selectedDay);
+	}
+	else
+	{
+		var date = new Date();
+		ChangeDate(date.getFullYear(), date.getMonth() + 1, date.getDate());
+	}
 }
 
 function ChangeDate(year, month, day)
@@ -368,15 +382,6 @@ function ChangeDate(year, month, day)
 	RedirectToSelf("sd", /sd=\d{4}-\d{1,2}-\d{1,2}/i, "sd=" + year + "-" + month + "-" + day);
 }
 
-function ChangeSchedule(scheduleId)
-{
-	RedirectToSelf("sid", /sid=\d+/i, "sid=" + scheduleId, function (url)
-	{
-		var x = RemoveGroupId(url);
-		x = RemoveResourceId(x);
-		return x;
-	});
-}
 
 function RedirectToSelf(queryStringParam, regexMatch, substitution, preProcess)
 {

@@ -55,5 +55,8 @@ $(function(){
   	});
   {/if}
 
+	$("#{$ControlId}").find('.ui-datepicker-current').click(function(){
+		{$OnSelect}();
+	});
 });
 </script>
