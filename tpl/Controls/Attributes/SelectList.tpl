@@ -23,7 +23,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 {if $readonly}
 <span class="attributeValue {$class}">{$attribute->Value()|escape}</span>
 {else}
-<select id="{$attributeName}" name="{$attributeName}" class="customAttribute textbox {$class}">
+<select id="{$attributeName}" name="{$attributeName}" class="customAttribute form-control {$class}">
 	{if !$attribute->Required() || $searchmode}
 	<option value="">--</option>
 	{/if}

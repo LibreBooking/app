@@ -161,24 +161,16 @@ div.legend {
 #reservations-left {
   float: left;
   width: 150px;
-  background-color: #F4F5ED;
-  border: solid 1px #C7C9BE;
-  min-height: 400px;
-  -moz-border-radius: 8px;
-  -webkit-border-radius: 8px;
-  -khtml-border-radius: 8px;
-  border-radius: 8px;
+  padding: 0;
   margin-right: 2px;
-  -moz-box-shadow: 0px 0px 3px 0px #ccc;
-  -webkit-box-shadow: 0px 0px 3px 0px #ccc;
-  box-shadow: 0px 0px 3px 0px #ccc;
 }
 .reservations-left-header {
-  border-bottom: solid 1px #C7C9BE;
+  border-bottom: solid 1px #e9e9e9;
   font-weight: bold;
-  font-size: 10pt;
+  font-size: 12pt;
   text-align: center;
   padding: 3px 0;
+  color: #4e4d4a;
 }
 .reservations-left-content {
   padding: 10px;
@@ -224,10 +216,7 @@ ul.jqtree-tree .jqtree-toggler {
 #reservations-left hr {
   border: 0;
   height: 1px;
-  background-image: -webkit-linear-gradient(left, rgba(0, 0, 0, 0), rgba(76, 76, 76, 0.74), rgba(0, 0, 0, 0));
-  background-image: -moz-linear-gradient(left, rgba(0, 0, 0, 0), rgba(76, 76, 76, 0.74), rgba(0, 0, 0, 0));
-  background-image: -ms-linear-gradient(left, rgba(0, 0, 0, 0), rgba(76, 76, 76, 0.74), rgba(0, 0, 0, 0));
-  background-image: -o-linear-gradient(left, rgba(0, 0, 0, 0), rgba(76, 76, 76, 0.74), rgba(0, 0, 0, 0));
+  background-color: #bcbcbc;
 }
 #calendar_toggle {
   color: #4e4d4a;
@@ -237,4 +226,16 @@ ul.jqtree-tree .jqtree-toggler {
 }
 #calendar_toggle span {
   font-size: 16pt;
+}
+#page-schedule a {
+  text-decoration: none;
+}
+#reservations-left .btn {
+  width: 100%;
+}
+#reservations-left .form-group {
+  margin-bottom: 3px;
+}
+#reservations-left .btn-clear {
+  margin-top: 3px;
 }

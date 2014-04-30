@@ -23,7 +23,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 {if $readonly}
 	<span class="attributeValue {$class}">{if $attribute->Value() == "1"}{translate key='True'}{else}{translate key='False'}{/if}</span>
 {elseif $searchmode}
-	<select id="{$attributeName}" name="{$attributeName}" class="customAttribute textbox {$class}">
+	<select id="{$attributeName}" name="{$attributeName}" class="customAttribute form-control {$class}">
 		<option value="">--</option>
 		<option value="0" {if $attribute->Value() == "0"}selected="selected"{/if}>{translate key=No}</option>
 		<option value="1" {if $attribute->Value() == "1"}selected="selected"{/if}>{translate key=Yes}</option>

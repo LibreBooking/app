@@ -23,5 +23,5 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 {if $readonly}
 <span class="attributeValue {$class}">{$attribute->Value()|escape|nl2br}</span>
 {else}
-<textarea id="{$attributeName}" name="{$attributeName}" class="customAttribute textbox {$class}">{$attribute->Value()|escape}</textarea>
+<textarea id="{$attributeName}" name="{$attributeName}" class="customAttribute form-control {$class}">{$attribute->Value()|escape}</textarea>
 {/if}

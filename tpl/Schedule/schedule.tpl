@@ -77,6 +77,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 	{include file='globalheader.tpl' cssFiles='css/jquery.qtip.min.css,scripts/css/jqtree.css,css/schedule.css'}
 {/block}
 
+<div id="page-schedule">
+
 {if $IsAccessible}
 
 {block name="actions"}
@@ -150,14 +152,12 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 <div style="height:10px">&nbsp;</div>
 {/block}
 
-<div id="reservations-left">
+<div id="reservations-left" class="default-box">
 	<div class="reservations-left-header">{translate key=ResourceFilter}</div>
 
 	<div class="reservations-left-content">
-		<div class="center"><a id="show_all_resources" href="#">{translate key=ClearFilter}</a></div>
-
-		<div>
-		<select {formname key=RESOURCE_ID} class="textbox" id="resourceIdFilter">
+		<div class="form-group">
+		<select {formname key=RESOURCE_ID} id="resourceIdFilter" class="form-control input-sm">
 			<option value="">- {translate key=All} -</option>
 			{object_html_options options=$Resources label='Name' key='Id' usemethod=false selected=$ResourceIdFilter}
 		</select>
@@ -167,38 +167,38 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		<div id="resourceGroups"></div>
 		</div>
 
-		<form method="POST">
-
-			<div class="advancedFilterTitle">{translate key=AdvancedFilter}</div>
+		<form method="POST" role="form" id="advancedFilter">
 			<hr/>
 
-			<div id="advancedFilter">
-				<div>
-				{translate key=MinimumCapacity}
-				<input type='text' id='maxCapactiy' class="textbox" size='5' maxlength='5' {formname key=MAX_PARTICIPANTS} value="{$MaxParticipantsFilter}" />
+			<div>
+				<div class="form-group">
+					<label for="maxCapactiy">{translate key=MinimumCapacity}</label>
+					<input type='text' id='maxCapactiy' size='5' maxlength='5' class="form-control input-sm" {formname key=MAX_PARTICIPANTS} value="{$MaxParticipantsFilter}" />
 				</div>
 
-				<div>
-				{translate key=ResourceType}
-				<select {formname key=RESOURCE_TYPE_ID} class="textbox" {formname key=RESOURCE_TYPE_ID}>
-					<option value="">- {translate key=All} -</option>
-					{object_html_options options=$ResourceTypes label='Name' key='Id' selected=$ResourceTypeIdFilter}
-				</select>
+				<div class="form-group">
+					<label for="resourceType">{translate key=ResourceType}</label>
+					<select id="resourceType" {formname key=RESOURCE_TYPE_ID} {formname key=RESOURCE_TYPE_ID} class="form-control input-sm">
+						<option value="">- {translate key=All} -</option>
+						{object_html_options options=$ResourceTypes label='Name' key='Id' selected=$ResourceTypeIdFilter}
+					</select>
 				</div>
 
 				{foreach from=$ResourceAttributes item=attribute}
-					<div>
-					{control type="AttributeControl" attribute=$attribute align='vertical' searchmode=true namePrefix='r'}
+					<div class="form-group">
+					{control type="AttributeControl" attribute=$attribute align='vertical' searchmode=true namePrefix='r' class="input-sm"}
 					</div>
 				{/foreach}
 
 				{foreach from=$ResourceTypeAttributes item=attribute}
-					<div>{control type="AttributeControl" attribute=$attribute align='vertical' searchmode=true namePrefix='rt'}</div>
+					<div class="form-group">{control type="AttributeControl" attribute=$attribute align='vertical' searchmode=true namePrefix='rt' class="input-sm"}</div>
 				{/foreach}
 
-				<div>
-					<br/>
-					<input type="submit" value="{translate key=Filter}" class="button" {formname key=SUBMIT}/>
+				<div class="btn-submit">
+					<button type="submit" class="btn btn-success" value="submit" {formname key=SUBMIT}>{translate key=Filter}</button>
+				</div>
+				<div class="btn-clear">
+					<button id="show_all_resources" type="button" class="btn btn-default btn-xs">{translate key=ClearFilter}</button>
 				</div>
 			</div>
 		</form>
@@ -254,6 +254,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 <input type="hidden" value="{$ScheduleId}" id="scheduleId"/>
 
 {$smarty.capture.date_navigation}
+
+</div>
 
 {block name="scripts"}
 

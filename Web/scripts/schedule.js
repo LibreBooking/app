@@ -292,10 +292,10 @@ function Schedule(opts, resourceGroups)
 			}
 		});
 
-		$('#advancedFilter').find('input, select, textarea').change(function (e)
-		{
-			$('#advancedFilter').submit();
-		});
+//		$('#advancedFilter').find('input, select, textarea').change(function (e)
+//		{
+//			$('#advancedFilter').submit();
+//		});
 
 		groupDiv.tree({
 			data: resourceGroups,
