@@ -109,7 +109,8 @@ class Date
 			return NullDate::Instance();
 		}
 
-		$date = new DateTime($dateString);
+		$date = DateTime::createFromFormat('Y-m-d\TH:i:s+', $dateString);
+
 		$timeOffsetString = $date->getTimezone()->getName();
 		$offsetParts = explode(':', $timeOffsetString);
 
