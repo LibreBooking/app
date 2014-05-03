@@ -9,7 +9,7 @@ body {
   height: 100%;
 }
 body {
-  padding-bottom: 50px;
+  padding-bottom: 80px;
   /* this needs to be bigger than footer height*/
 }
 a {
@@ -33,8 +33,7 @@ a {
   color: #fff;
 }
 #main {
-  height: 100%;
-  padding-bottom: 50px;
+  padding-bottom: 80px;
 }
 .default-box {
   padding: 35px;
