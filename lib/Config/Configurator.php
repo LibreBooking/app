@@ -194,8 +194,7 @@ class Configurator implements IConfigurationSettings
 	{
 		foreach ($new as $key => $val)
 		{
-
-			if (!array_key_exists($key, $current) || (is_array($new[$key]) && !$this->AreKeysTheSame($current[$key], $new[$key])))
+			if (!array_key_exists($key, $current) || (is_array($new[$key]) && is_array($current[$key]) && !$this->AreKeysTheSame($current[$key], $new[$key])))
 			{
 				Log::Debug('Could not find key in config file: %s', $key);
 				return false;

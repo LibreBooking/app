@@ -112,7 +112,6 @@ class ManageConfigurationPresenter extends ActionPresenter
 				}
 			}
 		}
-
 	}
 
 	public function Update()
@@ -239,7 +238,7 @@ class ManageConfigurationPresenter extends ActionPresenter
 					}
 					$configFile = glob("$rootDir/*config.php");
 					$this->configFilePath = $configFile[0];
-
+					$this->configFilePathDist = str_replace('.php', '.dist.php', $configFile[0]);
 				}
 			}
 		}

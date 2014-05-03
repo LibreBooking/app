@@ -220,5 +220,3 @@ class ManageConfigurationPage extends ActionPage implements IManageConfiguration
 		$this->Set('SelectedFile', $configFileName);
 	}
 }
-
-?>
