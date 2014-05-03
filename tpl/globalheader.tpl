@@ -113,44 +113,41 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown">{translate key="ApplicationManagement"}
 						<b class="caret"></b></a>
 					<ul class="dropdown-menu">
-						{*<li class="title">{translate key="ManageReservations"}</li>*}
-						<li><a href="{$Path}admin/manage_reservations.php" class="dropdown-toggle"
-							   data-toggle="dropdown">{translate key="ManageReservations"}</a></li>
+						<li><a href="{$Path}admin/manage_reservations.php">{translate key="ManageReservations"}</a></li>
 						<li><a href="{$Path}admin/manage_blackouts.php">{translate key="ManageBlackouts"}</a></li>
 
-				</li>
-				<li class="divider"></li>
-				<li><a href="{$Path}admin/manage_resources.php" class="dropdown-toggle"
-					   data-toggle="dropdown">{translate key="ManageResources"}</a></li>
-				{*<ul class="dropdown-menu">*}
-				<li><a href="{$Path}admin/manage_resource_groups.php">{translate key="ManageGroups"}</a></li>
-				<li><a href="{$Path}admin/manage_accessories.php">{translate key="ManageAccessories"}</a></li>
-				{*</ul>*}
-				<li class="divider"></li>
-				<li><a href="{$Path}admin/manage_schedules.php">{translate key="ManageSchedules"}</a>
-				<li class="divider"></li>
-				<li><a href="{$Path}admin/manage_users.php">{translate key="ManageUsers"}</a>
-				</li>
-				<li><a href="{$Path}admin/manage_groups.php">{translate key="ManageGroups"}</a>
-				</li>
-				<li><a href="{$Path}admin/manage_quotas.php">{translate key="ManageQuotas"}</a>
-				</li>
-				<li><a href="{$Path}admin/manage_announcements.php">{translate key="ManageAnnouncements"}</a>
-				</li>
-				<li class="dropdown-submenu">
-					<a href="#" class="dropdown-toggle" data-toggle="dropdown">{translate key="Customization"}</a>
-					<ul class="dropdown-menu">
-						<li><a href="{$Path}admin/manage_attributes.php">{translate key="Attributes"}</a></li>
-						{if $EnableConfigurationPage}
-							<li>
-								<a href="{$Path}admin/manage_configuration.php">{translate key="ManageConfiguration"}</a>
-							</li>
-						{/if}
-						<li><a href="{$Path}admin/manage_theme.php">{translate key="LookAndFeel"}</a></li>
-					</ul>
-				</li>
-				<li><a href="{$Path}admin/server_settings.php">{translate key="ServerSettings"}</a></li>
-			</ul>
+					</li>
+					<li class="divider"></li>
+					<li><a href="{$Path}admin/manage_resources.php">{translate key="ManageResources"}</a></li>
+					{*<ul class="dropdown-menu">*}
+					<li><a href="{$Path}admin/manage_resource_groups.php">{translate key="ManageGroups"}</a></li>
+					<li><a href="{$Path}admin/manage_accessories.php">{translate key="ManageAccessories"}</a></li>
+					{*</ul>*}
+					<li class="divider"></li>
+					<li><a href="{$Path}admin/manage_schedules.php">{translate key="ManageSchedules"}</a>
+					<li class="divider"></li>
+					<li><a href="{$Path}admin/manage_users.php">{translate key="ManageUsers"}</a>
+					</li>
+					<li><a href="{$Path}admin/manage_groups.php">{translate key="ManageGroups"}</a>
+					</li>
+					<li><a href="{$Path}admin/manage_quotas.php">{translate key="ManageQuotas"}</a>
+					</li>
+					<li><a href="{$Path}admin/manage_announcements.php">{translate key="ManageAnnouncements"}</a>
+					</li>
+					<li class="dropdown-submenu">
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown">{translate key="Customization"}</a>
+						<ul class="dropdown-menu">
+							<li><a href="{$Path}admin/manage_attributes.php">{translate key="Attributes"}</a></li>
+							{if $EnableConfigurationPage}
+								<li>
+									<a href="{$Path}admin/manage_configuration.php">{translate key="ManageConfiguration"}</a>
+								</li>
+							{/if}
+							<li><a href="{$Path}admin/manage_theme.php">{translate key="LookAndFeel"}</a></li>
+						</ul>
+					</li>
+					<li><a href="{$Path}admin/server_settings.php">{translate key="ServerSettings"}</a></li>
+				</ul>
 			</li>
 			{/if}
 			{if $CanViewResponsibilities}
