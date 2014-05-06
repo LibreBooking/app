@@ -860,6 +860,7 @@ class MigrationPresenter
 				}
 
 				$currentUser = new UserSession($row['memberid']);
+				$currentUser->Timezone = Configuration::Instance()->GetDefaultTimezone();
 				$mappedResource = new MigrateBookableResource($mappedResourceId);
 
 				$reservation = ReservationSeries::Create($mappedUserId, $mappedResource, '', $row['summary'], $date,
