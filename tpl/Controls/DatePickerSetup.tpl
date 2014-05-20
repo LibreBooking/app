@@ -55,8 +55,6 @@ $(function(){
   	});
   {/if}
 
-	$("#{$ControlId}").find('.ui-datepicker-current').click(function(){
-		{$OnSelect}();
-	});
+	$("#{$ControlId}").find('.ui-datepicker-current').click({$OnSelect});
 });
 </script>
