@@ -375,7 +375,7 @@ class du_nl extends en_us
         $strings['ManageQuotas'] = 'Quotas';
         $strings['ManageBlackouts'] = 'Geblokkeerde periodes';
         $strings['MyDashboard'] = 'Mijn Dashboard';
-        $strings['ServerSettings'] = 'Server settings';
+        $strings['ServerSettings'] = 'Server instellingen';
         $strings['Dashboard'] = 'Dashboard';
         $strings['Help'] = 'Help';
         $strings['Bookings'] = 'Boekingen';
@@ -392,10 +392,11 @@ class du_nl extends en_us
         $strings['ChangePassword'] = 'Wijzig wachtwoord';
         $strings['MyAccount'] = 'Mijn account';
         $strings['Profile'] = 'Profiel';
-        $strings['ApplicationManagement'] = 'Applicatiebeheer';
+        $strings['ApplicationManagement'] = 'Beheer';
         $strings['ForgotPassword'] = 'Wachtwoord vergeten';
         $strings['NotificationPreferences'] = 'Notificatie instellingen';
         $strings['ManageAnnouncements'] = 'Berichten';
+		$strings['Customization'] = 'Aanpassen';
 		$strings['Reports'] = 'Rapporten';
         //
 
