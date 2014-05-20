@@ -261,7 +261,8 @@ class du_nl extends en_us
         $strings['Register'] = 'Registreer';
         $strings['SecurityCode'] = 'Veiligheidscode';
         $strings['ReservationCreatedPreference'] = 'Wanneer ik of iemand in mijn naam een reservering maakt';
-        $strings['ReservationUpdatedPreference'] = 'WWanneer ik of iemand anders een reservering van me wijzigt';
+        $strings['ReservationUpdatedPreference'] = 'Wanneer ik of iemand anders een reservering van me wijzigt';
+		$strings['ReservationDeletedPreference'] = 'Wanneer ik of iemand anders een reservering van me verwijdert';
         $strings['ReservationApprovalPreference'] = 'Wanneer mijn reserveringen uit de wachtrij zijn goedgekeurd';
         $strings['PreferenceSendEmail'] = 'Stuur me een email';
         $strings['PreferenceNoEmail'] = 'Geen melding sturen';
@@ -303,8 +304,8 @@ class du_nl extends en_us
         $strings['WhatRolesApplyToThisGroup'] = 'Welke rollen behoren tot deze groep?';
         $strings['WhoCanManageThisGroup'] = 'Wie beheert deze groep?';
         $strings['AddGroup'] = 'Voeg groep toe';
-        $strings['AllQuotas'] = 'Alle Kwotas';
-        $strings['QuotaReminder'] = 'Opgelet: Kwotas worden toegepast op basis van de tijdzone van de planning.';
+        $strings['AllQuotas'] = 'Alle Quotas';
+        $strings['QuotaReminder'] = 'Opgelet: Quotas worden toegepast op basis van de tijdzone van de planning.';
         $strings['AllReservations'] = 'Alle reserveringen';
         $strings['PendingReservations'] = 'Openstaande reserveringen';
         $strings['Approving'] = 'Te bevestigen';
@@ -371,7 +372,7 @@ class du_nl extends en_us
         $strings['ManageAccessories'] = 'Hulpmiddelen';
         $strings['ManageUsers'] = 'Gebruikers';
         $strings['ManageGroups'] = 'Groepen';
-        $strings['ManageQuotas'] = 'Kwotas';
+        $strings['ManageQuotas'] = 'Quotas';
         $strings['ManageBlackouts'] = 'Geblokkeerde periodes';
         $strings['MyDashboard'] = 'Mijn Dashboard';
         $strings['ServerSettings'] = 'Server settings';
@@ -393,7 +394,7 @@ class du_nl extends en_us
         $strings['Profile'] = 'Profiel';
         $strings['ApplicationManagement'] = 'Applicatiebeheer';
         $strings['ForgotPassword'] = 'Wachtwoord vergeten';
-        $strings['NotificationPreferences'] = 'Melding voorkeuren';
+        $strings['NotificationPreferences'] = 'Notificatie instellingen';
         $strings['ManageAnnouncements'] = 'Berichten';
 		$strings['Reports'] = 'Rapporten';
         //
