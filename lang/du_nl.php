@@ -51,11 +51,11 @@ class du_nl extends en_us
         $strings['FirstName'] = 'Voornaam';
         $strings['LastName'] = 'Familienaam';
         $strings['Timezone'] = 'Tijdzonezone';
-        $strings['Edit'] = 'Editeer';
+        $strings['Edit'] = 'Wijzigen';
         $strings['Change'] = 'Wijzig';
         $strings['Rename'] = 'Hernoem';
         $strings['Remove'] = 'Verwijder';
-        $strings['Delete'] = 'Delete';
+        $strings['Delete'] = 'Verwijder';
         $strings['Update'] = 'Pas aan';
         $strings['Cancel'] = 'Annuleer';
         $strings['Add'] = 'Voeg toe';
@@ -64,12 +64,12 @@ class du_nl extends en_us
         $strings['No'] = 'Nee';
         $strings['FirstNameRequired'] = 'Voornaam is vereist.';
         $strings['LastNameRequired'] = 'Familienaam is vereist.';
-        $strings['PwMustMatch'] = 'Paswoord bevestiging moet overeenstemmen met het paswoord.';
-        $strings['PwComplexity'] = 'Paswoord moet minstens 6 karakters lang zijn en bestaan uit een combinatie van alfanumerische tekens en symbolen';
+        $strings['PwMustMatch'] = 'Wachtwoord bevestiging moet overeenstemmen met het wachtwoord.';
+        $strings['PwComplexity'] = 'Wachtwoord moet minstens 6 karakters lang zijn en bestaan uit een combinatie van alfanumerieke tekens en symbolen';
         $strings['ValidEmailRequired'] = 'Een geldig email adres moet opgegeven worden.';
-        $strings['UniqueEmailRequired'] = 'Dit email adres werd al geregistreerd.';
-        $strings['UniqueUsernameRequired'] = 'Deze gebruikerslogin werd al geregistreerd.';
-        $strings['UserNameRequired'] = 'Een gebruikerslogin is vereist.';
+        $strings['UniqueEmailRequired'] = 'Dit email adres is al geregistreerd.';
+        $strings['UniqueUsernameRequired'] = 'Deze gebruikerslogin is al geregistreerd.';
+        $strings['UserNameRequired'] = 'Een gebruikersnaam is vereist.';
         $strings['CaptchaMustMatch'] = 'Voer exact de letters in zoals afgebeeld op de figuur.';
         $strings['Today'] = 'Vandaag';
         $strings['Week'] = 'Week';
@@ -78,16 +78,18 @@ class du_nl extends en_us
         $strings['BeginDate'] = 'Begin';
         $strings['EndDate'] = 'Einde';
         $strings['Username'] = 'Login';
-        $strings['Password'] = 'Paswoord';
-        $strings['PasswordConfirmation'] = 'Bevestig paswoord';
+        $strings['Password'] = 'Wachtwoord';
+        $strings['PasswordConfirmation'] = 'Bevestig wachtwoord';
         $strings['DefaultPage'] = 'Standaard hoofdpagina';
         $strings['MyCalendar'] = 'Mijn kalendar';
         $strings['ScheduleCalendar'] = 'Planning kalender';
         $strings['Registration'] = 'Registratie';
-        $strings['NoAnnouncements'] = 'Er zijn geen aankondigingen';
-        $strings['Announcements'] = 'Aankondigingen';
-        $strings['NoUpcomingReservations'] = 'U hebt geen aankomende reserveringen';
-        $strings['UpcomingReservations'] = 'Aankomende reserveringen';
+        $strings['NoAnnouncements'] = 'Er zijn geen berichten';
+        $strings['Announcements'] = 'Berichten';
+        $strings['NoUpcomingReservations'] = 'Er zijn geen reserveringen op korte termijn';
+        $strings['UpcomingReservations'] = 'Reserveringen binnenkort';
+		$strings['AllNoUpcomingReservations'] = 'Er zijn geen toekomstige reserveringen';
+		$strings['AllUpcomingReservations'] = 'Alle toekomstige reserveringen';
         $strings['ShowHide'] = 'Toon/Verberg';
         $strings['Error'] = 'Fout';
         $strings['ReturnToPreviousPage'] = 'Keer terug naar de pagina die u laatst bezocht';
@@ -116,8 +118,8 @@ class du_nl extends en_us
         $strings['RepeatEveryPrompt'] = 'Elke';
         $strings['RepeatDaysPrompt'] = 'Op';
         $strings['CreateReservationHeading'] = 'Maak een nieuwe reservering';
-        $strings['EditReservationHeading'] = 'Editeer reservering %s';
-        $strings['ViewReservationHeading'] = 'Raadpleeg reservering %s';
+        $strings['EditReservationHeading'] = 'Wijzig reservering %s';
+        $strings['ViewReservationHeading'] = 'Bekijk reservering %s';
         $strings['ReservationErrors'] = 'Wijzig reservering';
         $strings['Create'] = 'Maak aan';
         $strings['ThisInstance'] = 'Enkel deze instantie';
@@ -149,7 +151,7 @@ class du_nl extends en_us
         $strings['NoTitleLabel'] = '(geen titel)';
         $strings['UsageConfiguration'] = 'Gebruik configuratie';
         $strings['ChangeConfiguration'] = 'Wijzig configuratie';
-        $strings['ResourceMinLength'] = 'Een reservering moet minimum %s duren';
+        $strings['ResourceMinLength'] = 'Een reservering moet minimaal %s duren';
         $strings['ResourceMinLengthNone'] = 'Er is geen minimale reserveringsduur';
         $strings['ResourceMaxLength'] = 'Reserveringen kunnen niet langer duren dan %s';
         $strings['ResourceMaxLengthNone'] = 'Er is geen maximale reserveringsduur';
@@ -175,13 +177,13 @@ class du_nl extends en_us
         $strings['Duration'] = 'Duur';
         $strings['Active'] = 'Actief';
         $strings['Inactive'] = 'Inactief';
-        $strings['ResetPassword'] = 'Reset paswoord';
+        $strings['ResetPassword'] = 'Reset wachtwoord';
         $strings['LastLogin'] = 'Laatste login';
         $strings['Search'] = 'Zoek';
         $strings['ResourcePermissions'] = 'Toegangsrechten bron';
         $strings['Reservations'] = 'Reserveringen';
         $strings['Groups'] = 'Groepen';
-        $strings['ResetPassword'] = 'Reset paswoord';
+        $strings['ResetPassword'] = 'Reset wachtwoord';
         $strings['AllUsers'] = 'Alle gebruikers';
         $strings['AllGroups'] = 'Alle groepen';
         $strings['AllSchedules'] = 'Alle planningen';
@@ -194,7 +196,7 @@ class du_nl extends en_us
         $strings['QuotaConfiguration'] = 'Op %s voor %s gebruikers in %s zijn beperkt tot %s %s per %s';
         $strings['reservations'] = 'reserveringen';
         $strings['ChangeCalendar'] = 'Wijzig kalender';
-        $strings['AddQuota'] = 'Voeg kwota toe';
+        $strings['AddQuota'] = 'Voeg quota toe';
         $strings['FindUser'] = 'Zoek gebruiker';
         $strings['Created'] = 'Aangemaakt';
         $strings['LastModified'] = 'Laatste wijziging';
@@ -203,13 +205,13 @@ class du_nl extends en_us
         $strings['GroupRoles'] = 'Groep rollen';
         $strings['GroupAdmin'] = 'Groep beheerder';
         $strings['Actions'] = 'Acties';
-        $strings['CurrentPassword'] = 'Huidig paswoord';
-        $strings['NewPassword'] = 'Nieuw paswoord';
-        $strings['InvalidPassword'] = 'Huidig paswoord is foutief';
-        $strings['PasswordChangedSuccessfully'] = 'Uw paswoord werd succesvol aangepast';
+        $strings['CurrentPassword'] = 'Huidig wachtwoord';
+        $strings['NewPassword'] = 'Nieuw wachtwoord';
+        $strings['InvalidPassword'] = 'Huidig wachtwoord is incorrect';
+        $strings['PasswordChangedSuccessfully'] = 'Uw wachtwoord werd succesvol aangepast';
         $strings['SignedInAs'] = 'Aangelogd als';
         $strings['NotSignedIn'] = 'U bent niet aangelogd';
-        $strings['ReservationTitle'] = 'Reservering titel';
+        $strings['ReservationTitle'] = 'Titel reservering';
         $strings['ReservationDescription'] = 'Beschrijving van de reservering';
         $strings['ResourceList'] = 'Te reserveren bronnen';
         $strings['Accessories'] = 'Hulpmiddelen';
@@ -238,14 +240,14 @@ class du_nl extends en_us
         $strings['FindGroup'] = 'Groep zoeken';
         $strings['Manage'] = 'Beheer';
         $strings['None'] = 'Geen';
-        $strings['AddToOutlook'] = 'Voeg toe in Outlook';
+        $strings['AddToOutlook'] = 'Voeg toe aan Outlook';
         $strings['Done'] = 'Klaar';
         $strings['RememberMe'] = 'Herinner me';
         $strings['FirstTimeUser?'] = 'Eerste maal gebruiker?';
         $strings['CreateAnAccount'] = 'Een login aanmaken';
         $strings['ViewSchedule'] = 'Raadpleeg planning';
-        $strings['ForgotMyPassword'] = 'Paswoord vergeten';
-        $strings['YouWillBeEmailedANewPassword'] = 'U zult via email een random gegenereerd paswoord toegestuurd krijgen';
+        $strings['ForgotMyPassword'] = 'Wachtwoord vergeten';
+        $strings['YouWillBeEmailedANewPassword'] = 'U zult via email een random gegenereerd wachtwoord toegestuurd krijgen';
         $strings['Close'] = 'Sluit';
         $strings['ExportToCSV'] = 'Export to CSV';
         $strings['OK'] = 'OK';
@@ -343,7 +345,7 @@ class du_nl extends en_us
 		$strings['MoveResourcesAndReservations'] = 'Move resources and reservations to';
 
         // Errors
-        $strings['LoginError'] = 'Ongeldige usernaam of paswoord opgegeven';
+        $strings['LoginError'] = 'Ongeldige gebruikersnaam of wachtwoord opgegeven';
         $strings['ReservationFailed'] = 'Uw reservering kan niet worden uitgevoerd';
         $strings['MinNoticeError'] = 'Deze reservering moet op voorhand worden aangevraagd. De vroegste reserveringsdatum is %s.';
         $strings['MaxNoticeError'] = 'Deze reservering kan niet zover in de toekomst worden gemaakt. De uiterste reserveringsdatum in de toekomst is %s.';
@@ -359,7 +361,7 @@ class du_nl extends en_us
 
         // Page Titles
         $strings['CreateReservation'] = 'Maak een reservering';
-        $strings['EditReservation'] = 'Editeer reservering';
+        $strings['EditReservation'] = 'Wijzig reservering';
         $strings['LogIn'] = 'Aanloggen';
         $strings['ManageReservations'] = 'Reserveringen';
         $strings['AwaitingActivation'] = 'Wachtend op activatie';
@@ -384,15 +386,16 @@ class du_nl extends en_us
         $strings['OpenInvitations'] = 'Open uitnodigingen';
         $strings['MyCalendar'] = 'Mijn kalender';
         $strings['ResourceCalendar'] = 'Bron kalender';
-        $strings['Reservation'] = 'Nieuwe Reservatie';
+        $strings['Reservation'] = 'Nieuwe Reservering';
         $strings['Install'] = 'Installatie';
-        $strings['ChangePassword'] = 'Wijzig paswoord';
+        $strings['ChangePassword'] = 'Wijzig wachtwoord';
         $strings['MyAccount'] = 'Mijn account';
         $strings['Profile'] = 'Profiel';
-        $strings['ApplicationManagement'] = 'Applicatie beheer';
-        $strings['ForgotPassword'] = 'Paswoord vergeten';
+        $strings['ApplicationManagement'] = 'Applicatiebeheer';
+        $strings['ForgotPassword'] = 'Wachtwoord vergeten';
         $strings['NotificationPreferences'] = 'Melding voorkeuren';
-        $strings['ManageAnnouncements'] = 'Aankondigingen';
+        $strings['ManageAnnouncements'] = 'Berichten';
+		$strings['Reports'] = 'Rapporten';
         //
 
         // Day representations
@@ -413,15 +416,15 @@ class du_nl extends en_us
         $strings['DaySaturdayAbbr'] = 'Zat';
 
         // Email Subjects
-        $strings['ReservationApprovedSubject'] = 'Uw reservatie werd goedgekeurd';
-        $strings['ReservationCreatedSubject'] = 'Uw reservatie is aangemaakt';
-        $strings['ReservationUpdatedSubject'] = 'Uw reservatie is aangepast';
-        $strings['ReservationCreatedAdminSubject'] = 'Melding: Een reservatie werd aangemaakt';
-        $strings['ReservationUpdatedAdminSubject'] = 'Melding: Een reservatie werd aangepast';
+        $strings['ReservationApprovedSubject'] = 'Uw reservering werd goedgekeurd';
+        $strings['ReservationCreatedSubject'] = 'Uw reservering is aangemaakt';
+        $strings['ReservationUpdatedSubject'] = 'Uw reservering is aangepast';
+        $strings['ReservationCreatedAdminSubject'] = 'Melding: Een reservering werd aangemaakt';
+        $strings['ReservationUpdatedAdminSubject'] = 'Melding: Een reservering werd aangepast';
         $strings['ParticipantAddedSubject'] = 'Melding: deelname aan een reservering';
         $strings['InviteeAddedSubject'] = 'Uitnodiging reservering';
-        $strings['ResetPassword'] = 'Verzoek om paswoord te resetten';
-        $strings['ForgotPasswordEmailSent'] = 'Een email werd naar uw account gestuurd met de informatie om uw paswoord te resetten';
+        $strings['ResetPassword'] = 'Verzoek om wachtwoord te resetten';
+        $strings['ForgotPasswordEmailSent'] = 'Een email werd naar uw account gestuurd met de informatie om uw wachtwoord te resetten';
         //
 
         $this->Strings = $strings;
