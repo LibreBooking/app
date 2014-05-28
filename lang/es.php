@@ -65,7 +65,7 @@ class es extends en_us
         $strings['No'] = 'No';
         $strings['FirstNameRequired'] = 'Se requiere un Nombre.';
         $strings['LastNameRequired'] = 'Se requiere un Apellido.';
-        $strings['PwMustMatch'] = 'La contrase&ntilde;a de configmración debe coincidir.';
+        $strings['PwMustMatch'] = 'La contrase&ntilde;a de configuración debe coincidir.';
         $strings['PwComplexity'] = 'El contrase&ntilde;a debe tener por lo menos 6 carácteres con una combinación de letras, números y símbolos.';
         $strings['ValidEmailRequired'] = 'Se requere una dirección válida de email.';
         $strings['UniqueEmailRequired'] = 'Esa dirección de email ya está registrada.';
@@ -344,8 +344,12 @@ class es extends en_us
 		$strings['MoveResourcesAndReservations'] = 'Mover recursos y reservas a';
 		$strings['WeekOf'] = 'Semana de';
 		$strings['Of']='de';
+		$strings['Customization'] = 'Personalización';
+		$strings['Attributes'] = 'Atributos';
+		$strings['ManageConfiguration'] = 'Configuración de la Aplicación';
+		$strings['LookAndFeel'] = 'Ajustes de Estética';
 		$strings['AllUpcomingReservations'] = 'Todas Pr&oacute;ximas Reservas';
-
+		
         // Errors
         $strings['LoginError'] = 'No se encontrado una correspondencia para tu nombre de usuario y password';
         $strings['ReservationFailed'] = 'Tu reserva no se ha podido realizar';
@@ -397,6 +401,9 @@ class es extends en_us
         $strings['ForgotPassword'] = 'Contraseña Olvidada';
         $strings['NotificationPreferences'] = 'Preferencias de Notificación';
         $strings['ManageAnnouncements'] = 'Anuncios';
+		$strings['About'] = 'Acerca de';
+		$strings['ManageResourceTypes'] = 'Tipos de Recursos';
+		$strings['ManageResourceStatus'] = 'Estado de los Recursos';
         //
 
         // Day representations
@@ -428,6 +435,12 @@ class es extends en_us
         $strings['ForgotPasswordEmailSent'] = 'Se ha enviado un email a la dirección proporcionada con instrucciones para reiniciar tu contraseña';
         //
 
+		// Reports
+        $strings['Reports'] = 'Reportes';
+		$strings['GenerateReport'] = 'Generar nuevo Reporte';
+		$strings['MySavedReports'] = 'Reportes Guardados';
+		$strings['CommonReports'] = 'Reportes comúnes';
+		//
         $this->Strings = $strings;
     }
 
