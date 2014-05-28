@@ -3,9 +3,10 @@
 
 html, body {
   height: 100%;
+  //  padding-top:35px;
 }
 
-@footer-height: 50px;
+@footer-height: 45px;
 
 body {
   padding-bottom: @footer-height + 30; /* this needs to be bigger than footer height*/
@@ -23,6 +24,9 @@ a {
   font-size: .8em;
   .gradient(@dark-gray, lighten(@dark-gray, 5%), @dark-gray);
   height: @footer-height;
+  min-height: @footer-height;
+  margin-bottom: 0;
+  .rounded(0);
 }
 
 .footer a {
@@ -30,7 +34,7 @@ a {
 }
 
 #main {
-//  height: 100%;
+  //  height: 100%;
   padding-bottom: @footer-height + 30;
 }
 
@@ -57,6 +61,34 @@ a {
   border: solid 1px @light-gray;
 }
 
-#login-links {
+.login-links {
   text-align: center;
+}
+
+div.center {
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+}
+
+.default-box-header {
+  background-color: @blue-gray;
+  margin: -1px -1px 10px -1px;
+  line-height: 35px;
+  padding-left: 15px;
+  font-size: 1.3em;
+  font-weight: bold;
+  color: @dark-gray;
+  border: solid 1px @light-gray;
+  .border-radius(5px, 0, 0, 5px);
+}
+
+.no-padding {
+  padding: 0;
+}
+
+.default-box-footer {
+  padding: 5px 0 5px 10px;
+  clear: both;
+  border-top: solid 1px @light-gray;
 }

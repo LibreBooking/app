@@ -212,12 +212,7 @@ function ResourceManagement(opts) {
 
 			wireUpIntervalToggle(elements.bulkUpdateDialog);
 
-			$.colorbox({inline:true,
-				href:"#bulkUpdateDialog",
-				transition: "none",
-				width: "100%",
-				height: "100%"});
-			elements.bulkUpdateDialog.show();
+			$('#bulkUpdateDialog').modal('show');
 		});
 
 		var imageSaveErrorHandler = function (result) {

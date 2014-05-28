@@ -497,6 +497,7 @@ class en_us extends Language
 		$strings['Common'] = 'Common';
 		$strings['AdminOnly'] = 'Is Admin Only';
 		$strings['AdvancedFilter'] = 'Advanced Filter';
+		$strings['ChangeLanguage'] = 'Change Language';
 		// End Strings
 
 		// Install

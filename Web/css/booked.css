@@ -9,7 +9,7 @@ body {
   height: 100%;
 }
 body {
-  padding-bottom: 80px;
+  padding-bottom: 75px;
   /* this needs to be bigger than footer height*/
 }
 a {
@@ -27,13 +27,18 @@ a {
   background: -moz-linear-gradient(center bottom, #5b5a56 0%, #4e4d4a 100%);
   background: -o-linear-gradient(#4e4d4a, #5b5a56);
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#4e4d4a', endColorstr='#5b5a56', GradientType=0);
-  height: 50px;
+  height: 45px;
+  min-height: 45px;
+  margin-bottom: 0;
+  -webkit-border-radius: 0;
+  -moz-border-radius: 0;
+  border-radius: 0;
 }
 .footer a {
   color: #fff;
 }
 #main {
-  padding-bottom: 80px;
+  padding-bottom: 75px;
 }
 .default-box {
   padding: 35px;
@@ -63,8 +68,46 @@ a {
   background-color: #f6f6f6;
   border: solid 1px #e9e9e9;
 }
-#login-links {
+.login-links {
   text-align: center;
+}
+div.center {
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+}
+.default-box-header {
+  background-color: #d5ded9;
+  margin: -1px -1px 10px -1px;
+  line-height: 35px;
+  padding-left: 15px;
+  font-size: 1.3em;
+  font-weight: bold;
+  color: #4e4d4a;
+  border: solid 1px #e9e9e9;
+  -webkit-border-top-right-radius: 5px;
+  -webkit-border-bottom-right-radius: 0;
+  -webkit-border-bottom-left-radius: 0;
+  -webkit-border-top-left-radius: 5px;
+  -moz-border-radius-topright: 5px;
+  -moz-border-radius-bottomright: 0;
+  -moz-border-radius-bottomleft: 0;
+  -moz-border-radius-topleft: 5px;
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
+  border-top-left-radius: 5px;
+  -moz-background-clip: padding-box;
+  -webkit-background-clip: padding-box;
+  background-clip: padding-box;
+}
+.no-padding {
+  padding: 0;
+}
+.default-box-footer {
+  padding: 5px 0 5px 10px;
+  clear: both;
+  border-top: solid 1px #e9e9e9;
 }
 #page-dashboard .panel-heading {
   background-color: #99b2b7;

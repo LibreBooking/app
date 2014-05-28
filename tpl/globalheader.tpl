@@ -21,6 +21,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 <head>
 	<title>{if $TitleKey neq ''}{translate key=$TitleKey args=$TitleArgs}{else}{$Title}{/if}</title>
 	<meta http-equiv="Content-Type" content="text/html; charset={$Charset}"/>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta name="robots" content="noindex"/>
 	{if $ShouldLogout}
 		<meta http-equiv="REFRESH"
@@ -79,12 +80,18 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 </head>
 <body>
 
-<nav class="navbar navbar-default" role="navigation">
+<nav class="navbar navbar-default " role="navigation">
 	<div class="container-fluid">
 		<div class="navbar-header">
+			<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#booked-navigation">
+				<span class="sr-only">Toggle navigation</span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+		  	</button>
 			<a class="navbar-brand" href="{$HomeUrl}">{html_image src="$LogoUrl"}</a>
 		</div>
-		<div class="collapse navbar-collapse">
+		<div class="collapse navbar-collapse" id="booked-navigation">
 			<ul class="nav navbar-nav">
 				{if $LoggedIn}
 				<li><a href="{$Path}{Pages::DASHBOARD}">{translate key="Dashboard"}</a></li>
@@ -124,7 +131,6 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 					<li class="divider"></li>
 					<li><a href="{$Path}admin/manage_resources.php">{translate key="ManageResources"}</a></li>
 					{*<ul class="dropdown-menu">*}
-					<li><a href="{$Path}admin/manage_resource_groups.php">{translate key="ManageGroups"}</a></li>
 					<li><a href="{$Path}admin/manage_accessories.php">{translate key="ManageAccessories"}</a></li>
 					{*</ul>*}
 					<li class="divider"></li>

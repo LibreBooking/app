@@ -27,14 +27,13 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 <div class="row">
 	<div id="loginbox" class="col-md-offset-4 col-md-4 default-box">
-		<form role="form" name="login" id="login" class="login form-horizontal" method="post"
-			  action="{$smarty.server.SCRIPT_NAME}">
+		<form role="form" name="login" id="login" class="login form-horizontal" method="post"  action="{$smarty.server.SCRIPT_NAME}">
 			<div>
 				{if $ShowUsernamePrompt}
 					<div class="form-group">
-						<label class="col-sm-2 control-label" for="email">{translate key='Email'}</label>
+						<label class="col-xs-3 control-label" for="email">{translate key='Email'}</label>
 
-						<div class="col-sm-10"><input type="text" required="" class="form-control"
+						<div class="col-xs-9"><input type="text" required="" class="form-control"
 													  id="email" {formname key=EMAIL}
 													  placeholder="{translate key=UsernameOrEmail}"/>
 						</div>
@@ -43,9 +42,9 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 				{if $ShowPasswordPrompt}
 					<div class="form-group">
-						<label class="col-sm-2 control-label" for="password">{translate key='Password'}</label>
+						<label class="col-xs-3 control-label" for="password">{translate key='Password'}</label>
 
-						<div class="col-sm-10">
+						<div class="col-xs-9">
 							<input type="password" required="" id="password" {formname key=PASSWORD}
 								   class="form-control"
 								   value="" placeholder="{translate key=Password}"/>
@@ -53,19 +52,9 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 					</div>
 				{/if}
 
-				<div class="form-group">
-					<label class="col-sm-2 control-label" for="languageDropDown">{translate key='Language'}</label>
-
-					<div class="col-sm-10">
-						<select {formname key=LANGUAGE} class="form-control input-sm" id="languageDropDown">
-							{object_html_options options=$Languages key='GetLanguageCode' label='GetDisplayName' selected=$SelectedLanguage}
-						</select>
-					</div>
-				</div>
-
 				{if $ShowPersistLoginPrompt}
 					<div class="form-group">
-						<div class="col-sm-offset-2 col-sm-10">
+						<div class="col-xs-offset-3 col-xs-9">
 							<div class="checkbox">
 								<label>
 									<input id="rememberMe" type="checkbox"
@@ -78,15 +67,15 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 				{/if}
 
 				<div class="form-group">
-					<div class="col-sm-offset-2 col-sm-10">
-						<button type="submit" class="btn btn-primary" name="{Actions::LOGIN}"
+					<div class="col-xs-12">
+						<button type="submit" class="btn btn-primary col-xs-12" name="{Actions::LOGIN}"
 								value="submit">{translate key='LogIn'}</button>
 
 						<input type="hidden" {formname key=RESUME} value="{$ResumeUrl}"/>
 					</div>
 
 				</div>
-				<div id="login-links" class="col-sm-12 center-block">
+				<div class="login-links center-block">
 					{if $ShowForgotPasswordPrompt}
 						<a href="forgot.php">{translate key='ForgotMyPassword'}</a>
 					{/if}
@@ -94,6 +83,20 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 					{if $ShowRegisterLink}
 						<a href="register.php">{translate key='CreateAnAccount'}</a>
 					{/if}
+				</div>
+
+				<div class="login-links center-block">
+					<button type="button" class="btn btn-link" data-toggle="collapse" data-target="#change-language-options">{translate key=ChangeLanguage}</button>
+				</div>
+
+				<div id="change-language-options" class="form-group collapse">
+					<label class="col-xs-3 control-label" for="languageDropDown">{translate key='Language'}</label>
+
+					<div class="col-xs-9">
+						<select {formname key=LANGUAGE} class="form-control input-sm" id="languageDropDown">
+							{object_html_options options=$Languages key='GetLanguageCode' label='GetDisplayName' selected=$SelectedLanguage}
+						</select>
+					</div>
 				</div>
 			</div>
 		</form>

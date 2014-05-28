@@ -81,31 +81,31 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 {if $IsAccessible}
 
-{block name="actions"}
-	<div id="schedule-actions">
-		<a href="#" id="make_default" style="display:none;">{html_image src="star_boxed_full.png" altKey="MakeDefaultSchedule"}</a>
-		<a href="#" class="schedule-style" id="schedule_standard" schedule-display="{ScheduleStyle::Standard}">{html_image src="table.png" altKey="StandardScheduleDisplay"}</a>
-		<a href="#" class="schedule-style" id="schedule_tall" schedule-display="{ScheduleStyle::Tall}">{html_image src="table-tall.png" altKey="TallScheduleDisplay"}</a>
-		<a href="#" class="schedule-style" id="schedule_wide" schedule-display="{ScheduleStyle::Wide}">{html_image src="table-wide.png" altKey="WideScheduleDisplay"}</a>
-		<a href="#" class="schedule-style" id="schedule_week" schedule-display="{ScheduleStyle::CondensedWeek}">{html_image src="table-week.png" altKey="CondensedWeekScheduleDisplay"}</a>
-	</div>
-	<div>
-		{if $SubscriptionUrl != null}
-			{html_image src="feed.png"} <a target="_blank" href="{$SubscriptionUrl->GetAtomUrl()}">Atom</a> | <a target="_blank" href="{$SubscriptionUrl->GetWebcalUrl()}">iCalendar</a>
-		{/if}
-	</div>
-{/block}
-
-<div id="defaultSetMessage" class="success hidden">
+<div id="defaultSetMessage" class="alert alert-success hidden">
 	{translate key=DefaultScheduleSet}
 </div>
 
 {block name="schedule_control"}
-	<div>
-		<div id="schedule-title" class="schedule_title">
+	<div class="row">
+		{block name="actions"}
+			<div id="schedule-actions" class="col-xs-3">
+				<a href="#" id="make_default" style="display:none;">{html_image src="star_boxed_full.png" altKey="MakeDefaultSchedule"}</a>
+				<a href="#" class="schedule-style" id="schedule_standard" schedule-display="{ScheduleStyle::Standard}">{html_image src="table.png" altKey="StandardScheduleDisplay"}</a>
+				<a href="#" class="schedule-style" id="schedule_tall" schedule-display="{ScheduleStyle::Tall}">{html_image src="table-tall.png" altKey="TallScheduleDisplay"}</a>
+				<a href="#" class="schedule-style" id="schedule_wide" schedule-display="{ScheduleStyle::Wide}">{html_image src="table-wide.png" altKey="WideScheduleDisplay"}</a>
+				<a href="#" class="schedule-style" id="schedule_week" schedule-display="{ScheduleStyle::CondensedWeek}">{html_image src="table-week.png" altKey="CondensedWeekScheduleDisplay"}</a>
+			</div>
+			<div>
+				{if $SubscriptionUrl != null}
+					{html_image src="feed.png"} <a target="_blank" href="{$SubscriptionUrl->GetAtomUrl()}">Atom</a> | <a target="_blank" href="{$SubscriptionUrl->GetWebcalUrl()}">iCalendar</a>
+				{/if}
+			</div>
+		{/block}
+
+		<div id="schedule-title" class="schedule_title col-xs-6">
 			<span>{$ScheduleName}</span>
 			{if $Schedules|@count gt 1}
-			<div class="dropdown btn-group">
+			<div  class="dropdown btn-group">
 				<a class="btn dropdown-toggle" data-toggle="dropdown" href="#"><span class="caret dropdown-toggle"></span></a>
 				  <ul class="dropdown-menu" role="menu">
 					  {foreach from=$Schedules item=schedule}
@@ -118,7 +118,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		</div>
 
 		{capture name="date_navigation"}
-			<div id="schedule-dates" class="schedule_dates">
+			<div id="schedule-dates" class="schedule_dates col-xs-3">
 				{assign var=FirstDate value=$DisplayDates->GetBegin()}
 				{assign var=LastDate value=$DisplayDates->GetEnd()}
 				<a href="#" class="change-date" data-year="{$PreviousDate->Year()}" data-month="{$PreviousDate->Month()}" data-day="{$PreviousDate->Day()}">{html_image src="arrow_large_left.png" alt="Back"}</a>
@@ -138,7 +138,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 {/block}
 
 {block name="legend"}
-<div style="text-align: center; margin: auto;">
+<div class="hidden-xs container-fluid">
+	<div class="center">
 	<div class="legend reservable">{translate key=Reservable}</div>
 	<div class="legend unreservable">{translate key=Unreservable}</div>
 	<div class="legend reserved">{translate key=Reserved}</div>
@@ -147,12 +148,14 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 	<div class="legend reserved pending">{translate key=Pending}</div>
 	<div class="legend pasttime">{translate key=Past}</div>
 	<div class="legend restricted">{translate key=Restricted}</div>
+	</div>
 </div>
 
-<div style="height:10px">&nbsp;</div>
+<div style="height:10px" class="hidden-xs">&nbsp;</div>
 {/block}
 
-<div id="reservations-left" class="default-box">
+<div class="row">
+<div id="reservations-left" class="col-md-2 default-box visible-md visible-lg">
 	<div class="reservations-left-header">{translate key=ResourceFilter}</div>
 
 	<div class="reservations-left-content">
@@ -195,7 +198,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 				{/foreach}
 
 				<div class="btn-submit">
-					<button type="submit" class="btn btn-success" value="submit" {formname key=SUBMIT}>{translate key=Filter}</button>
+					<button type="submit" class="btn btn-success btn-sm" value="submit" {formname key=SUBMIT}>{translate key=Filter}</button>
 				</div>
 				<div class="btn-clear">
 					<button id="show_all_resources" type="button" class="btn btn-default btn-xs">{translate key=ClearFilter}</button>
@@ -207,7 +210,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 {block name="reservations"}
 	{assign var=TodaysDate value=Date::Now()}
-	<div id="reservations">
+	<div id="reservations" class="col-md-10 col-sm-12">
 		{foreach from=$BoundDates item=date}
 			<div style="position:relative;">
 			<table class="reservations" border="1" cellpadding="0" width="100%">
@@ -249,10 +252,12 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 {else}
 	<div class="error">{translate key=NoResourcePermission}</div>
 {/if}
+</div>
 
-<div class="clear">&nbsp;</div>
+	<div class="clear">&nbsp;</div>
 <input type="hidden" value="{$ScheduleId}" id="scheduleId"/>
 
+<div class="col-xs-9">&nbsp;</div>
 {$smarty.capture.date_navigation}
 
 </div>

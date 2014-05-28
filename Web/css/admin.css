@@ -1,481 +1,402 @@
 .admin {
-	width: 100%;
+  width: 100%;
 }
-
 .admin ul {
-	list-style: none;
+  list-style: none;
 }
-
-.admin .title{
-	background-color: #f6f6f6;
-	font-weight: bold;
-	font-size: 14px;
-	color: #596171;
-	padding: 5px;
-	border-bottom: solid 1px #CECFCE;
-	position: relative;
+.admin .title {
+  background-color: #f6f6f6;
+  font-weight: bold;
+  font-size: 14px;
+  color: #596171;
+  padding: 5px;
+  border-bottom: solid 1px #CECFCE;
+  position: relative;
 }
-
 .admin {
-	border: solid 1px #CECFCE;
-	font-size:12px;
+  border: solid 1px #CECFCE;
+  font-size: 12px;
 }
-
 .admin div {
-	padding: 5px;
+  padding: 5px;
 }
 .admin a {
-	color: #005B9A;
+  color: #005B9A;
 }
-
 .admin .label {
-	font-weight: bold;
+  font-weight: bold;
 }
-
 .admin .note {
-	font-style: italic;
-	color: #8D96A8
+  font-style: italic;
+  color: #8d96a8;
 }
-
-.admin h4, .admin h5 {
-	display:inline;
-	color: #666666;
-}
-
-.admin h4 {
-	font-size: 12px;
-}
-
+.admin h4,
 .admin h5 {
-	font-size: 10px;
+  display: inline;
+  color: #666666;
 }
-
+.admin h4 {
+  font-size: 12px;
+}
+.admin h5 {
+  font-size: 10px;
+}
 span.error {
-	font-weight: bold;
-	color: #CE0000;
+  font-weight: bold;
+  color: #CE0000;
 }
-
 #changeLayoutDialog textarea {
-	width: 300px;
-	height: 375px;
+  width: 300px;
+  height: 375px;
 }
-
 #changeLayoutDialog p {
-	margin: 0;
+  margin: 0;
 }
-
 .scheduleDetails .layout {
-	border-left:solid 1px #f0f0f0;
-	float:right;
-	width:550px;
+  border-left: solid 1px #f0f0f0;
+  float: right;
+  width: 550px;
 }
-
 .actions {
-	clear:both;
-	border-top:solid 1px #f0f0f0;
-	border-bottom:solid 1px #f0f0f0;
-	background-color: #fcfcfc;
-	line-height: 20px;
+  clear: both;
+  border-top: solid 1px #f0f0f0;
+  border-bottom: solid 1px #f0f0f0;
+  background-color: #fcfcfc;
+  line-height: 20px;
 }
-
 .noImage {
-	width: 98px;
-	height: 60px;
-	background-color: #f0f0f0;
-	line-height: 16px;
-	text-align:center;
-	color: #666;
-	border: solid 1px #ccc;
+  width: 98px;
+  height: 60px;
+  background-color: #f0f0f0;
+  line-height: 16px;
+  text-align: center;
+  color: #666;
+  border: solid 1px #ccc;
 }
-
 .resourceDetails img.image {
-	width: 100px;
+  width: 100px;
 }
-
 .admin table {
-	border-collapse: collapse;
+  border-collapse: collapse;
 }
-
-.admin th, .admin td {
-	padding: 5px;
+.admin th,
+.admin td {
+  padding: 5px;
 }
-
 .admin th {
-	padding-bottom: 2px;
+  padding-bottom: 2px;
 }
-
 .admin th {
-	text-align:left;
-	font-size:14px;
+  text-align: left;
+  font-size: 14px;
 }
-
-.dialog ul, .dialog li {
-	font-size: 12px;
-	list-style: none;
-}
-
+.dialog ul,
 .dialog li {
-	margin-bottom: 5px;
+  font-size: 12px;
+  list-style: none;
 }
-
+.dialog li {
+  margin-bottom: 5px;
+}
 table.list {
-    border-collapse:collapse;
+  border-collapse: collapse;
 }
-
-table.list, .list td, .list th {
-     border: solid 1px #716e71;
+table.list,
+.list td,
+.list th {
+  border: solid 1px #716e71;
 }
-
-.list td, .list th {
-    padding: 4px;
+.list td,
+.list th {
+  padding: 4px;
 }
-
 .row0 {
-    background-color: #eeeeee;
+  background-color: #eeeeee;
 }
-
 .row1 {
-    background-color: #fafafa;
+  background-color: #fafafa;
 }
-
-.list th.id, .list td.id {
-	display: none;
+.list th.id,
+.list td.id {
+  display: none;
 }
-
 #groupUserList {
-	overflow-y: auto;
+  overflow-y: auto;
 }
-
 .list tr.editable:hover {
-	cursor: pointer;
-	/*background-color: #FFFF99;*/
-	background-color: #c5e4f1;
+  cursor: pointer;
+  /*background-color: #FFFF99;*/
+  background-color: #c5e4f1;
 }
-
 /*.list tr.clicked:hover, .list tr.clicked  {*/
-	/*background-color: #FFFF33;*/
+/*background-color: #FFFF33;*/
 /*}*/
-
 .userList .customAttributes {
-
-    font-size: 9pt;
-    font-weight: normal;
+  font-size: 9pt;
+  font-weight: normal;
 }
-
 tr.pending {
-	background-color: #ffb540;
+  background-color: #ffb540;
 }
-
 #cboxClose {
-	display:none !important;
+  display: none !important;
 }
-
-.wideLabel { display:inline-block; min-width: 100px;}
-
+.wideLabel {
+  display: inline-block;
+  min-width: 100px;
+}
 /*#addAttribute {*/
-    /*width: 300px;*/
+/*width: 300px;*/
 /*}*/
-
 .attributeDialog .wideLabel {
-    min-width: 160px;
-    text-align: right;
-    padding-right: 4px;
+  min-width: 160px;
+  text-align: right;
+  padding-right: 4px;
 }
-
 .attributeDialog .textBoxOptions {
-	padding-bottom: 10px;
+  padding-bottom: 10px;
 }
-
-#blackoutTable
-{
-    width: 100%;
+#blackoutTable {
+  width: 100%;
 }
-
 #configSettings {
-	margin: 10px 0;
-	padding: 10px;
-	border: solid 1px #333333;
+  margin: 10px 0;
+  padding: 10px;
+  border: solid 1px #333333;
 }
-
 #configSettings fieldset {
-	margin-bottom: 10px;
+  margin-bottom: 10px;
 }
-
-#configSettings .label, #configSettings label {
-	font-weight: normal;
-	font-size: 12px;
-	color: black;
+#configSettings .label,
+#configSettings label {
+  font-weight: normal;
+  font-size: 12px;
+  color: black;
 }
-
 #configSettings .label {
-	min-width: 200px;
-	display: inline-block;
+  min-width: 200px;
+  display: inline-block;
 }
-
 #staticSlots {
-	height: 375px;
+  height: 375px;
 }
-
-#dailySlots, #tabs {
-	height: 450px;
-	margin-bottom:4px;
+#dailySlots,
+#tabs {
+  height: 450px;
+  margin-bottom: 4px;
 }
-
 .allDailyLayouts {
-	display:none;
+  display: none;
 }
-
 #removedGroups {
-	margin-top: 5px;
-	padding-top: 5px;
-	border-top: solid 1px #777777;
+  margin-top: 5px;
+  padding-top: 5px;
+  border-top: solid 1px #777777;
 }
-
-#addedGroups a, #removedGroups a {
-	width:30px;
-	display:block;
-	float: left;;
-	text-decoration: none;
-}
-
-#addedGroups a {
-	background: url('../img/minus-gray.png') no-repeat;
-}
-
+#addedGroups a,
 #removedGroups a {
-	background: url('../img/plus-button.png') no-repeat;
+  width: 30px;
+  display: block;
+  float: left;
+  text-decoration: none;
 }
-
+#addedGroups a {
+  background: url('../img/minus-gray.png') no-repeat;
+}
+#removedGroups a {
+  background: url('../img/plus-button.png') no-repeat;
+}
 #group-tree {
-	width:auto;
-	float:left;
+  width: auto;
+  float: left;
 }
-
-#resource-list
-{
-	width:auto;
-	float:right;
+#resource-list {
+  width: auto;
+  float: right;
 }
-
-#resource-list, #group-tree, #new-group {
-	font-size:12pt;
+#resource-list,
+#group-tree,
+#new-group {
+  font-size: 12pt;
 }
-
 .resource-draggable {
-	cursor: move;
-	border: solid 1px transparent;
-	padding:3px;
+  cursor: move;
+  border: solid 1px transparent;
+  padding: 3px;
 }
-
-.resource-draggable:hover
-{
-	border: dotted 1px #666;
+.resource-draggable:hover {
+  border: dotted 1px #666;
 }
-
 .drop-resource {
-	background-color: #fffcd3;
+  background-color: #fffcd3;
 }
-
 ul.jqtree-tree .group-resource .jqtree-title {
-	color:#111111;
+  color: #111111;
 }
-
 .remove-resource {
-	display:inline;
-	width:16px;
-	margin-left:10px;
-	background: url(../img/minus-circle.png) no-repeat 50%;
+  display: inline;
+  width: 16px;
+  margin-left: 10px;
+  background: url(../img/minus-circle.png) no-repeat 50%;
 }
-
-#resource-list h4
-{
-	font-size:13pt;
-	padding-left:4px;
+#resource-list h4 {
+  font-size: 13pt;
+  padding-left: 4px;
 }
-
-#manage-resource-groups-container
-{
-	max-width: 700px;
+#manage-resource-groups-container {
+  max-width: 700px;
 }
-
 .title .help {
-	background: url(../img/question-button.png) no-repeat 50% 50%;
-	width:16px;
-	cursor: pointer;
-	position: absolute;
-	right:0;
-	top:0;
-	margin:0;
+  background: url(../img/question-button.png) no-repeat 50% 50%;
+  width: 16px;
+  cursor: pointer;
+  position: absolute;
+  right: 0;
+  top: 0;
+  margin: 0;
 }
-
 #customAttributeHeader {
-	font-size: 13pt;
-	margin-bottom: 10px;
+  font-size: 13pt;
+  margin-bottom: 10px;
 }
-
 .textBoxOptions div {
-	margin: 1px 0;
+  margin: 1px 0;
 }
-
 #entityChoices {
-	display: none;
-	min-width:150px;
-	border: solid 1px #e2e2e2;
-	padding: 10px;
-	max-height: 400px;
-	overflow-x: auto;
-	overflow-y: visible;
-	position: absolute;
-	z-index: 10000;
-	background-color: #f5f5f5;
-	-moz-box-shadow: 0px 0px 3px 0px #ccc;
-	-webkit-box-shadow: 0px 0px 3px 0px #ccc;
-	box-shadow: 0px 0px 3px 0px #ccc;
+  display: none;
+  min-width: 150px;
+  border: solid 1px #e2e2e2;
+  padding: 10px;
+  max-height: 400px;
+  overflow-x: auto;
+  overflow-y: visible;
+  position: absolute;
+  z-index: 10000;
+  background-color: #f5f5f5;
+  -moz-box-shadow: 0px 0px 3px 0px #ccc;
+  -webkit-box-shadow: 0px 0px 3px 0px #ccc;
+  box-shadow: 0px 0px 3px 0px #ccc;
 }
-
-#entityChoices li
-{
-	list-style: none;
-	font-size:10pt;
+#entityChoices li {
+  list-style: none;
+  font-size: 10pt;
 }
-
 .ajax-indicator {
-	display:none;
-	background-image: url(../img/admin-ajax-indicator.gif);
-	width: 35px;
-	height:35px;
+  display: none;
+  background-image: url(../img/admin-ajax-indicator.gif);
+  width: 35px;
+  height: 35px;
 }
-
 .resourceValue {
-	font-weight: bold;
+  font-weight: bold;
 }
-
-#repeatDiv, #repeatDiv div {
-	padding:0;
+#repeatDiv,
+#repeatDiv div {
+  padding: 0;
 }
-
 #repeatDiv label {
-	display: inline-block;
-	min-width: 100px;
+  display: inline-block;
+  min-width: 100px;
 }
-
-#repeatOnWeeklyDiv label {min-width:30px;}
-
+#repeatOnWeeklyDiv label {
+  min-width: 30px;
+}
 #updateBlackout {
-	margin:20px;
+  margin: 20px;
 }
-
-#updateBlackout ul{
-	margin-bottom:15px;
-	list-style: none;
+#updateBlackout ul {
+  margin-bottom: 15px;
+  list-style: none;
 }
-
 .blackoutResources {
-	margin: 10px 0;
+  margin: 10px 0;
 }
 .resourceItem {
-	display:block;
+  display: block;
 }
-
-.admin-update-buttons{
-	margin-top:5px;
+.admin-update-buttons {
+  margin-top: 5px;
 }
-
 #reservationColor {
-	width:75px;
+  width: 75px;
 }
-
 .user-color {
-	border:solid 1px #000;
-	display:inline-block;
-	margin-left:4px;
-	width:16px;
-	height:16px;
+  border: solid 1px #000;
+  display: inline-block;
+  margin-left: 4px;
+  width: 16px;
+  height: 16px;
 }
-
 .reservationResourceStatusReason {
-	display:block;
-	font-weight: bold;
+  display: block;
+  font-weight: bold;
 }
-
 .config-settings li {
-	padding:3px 0;
+  padding: 3px 0;
 }
-
 #reservationTable {
-	width:100%;
+  width: 100%;
 }
-
 th.date {
-	width:120px;
+  width: 120px;
 }
-
 th.action {
-	max-width:50px;
+  max-width: 50px;
 }
-
 #adminFilterButtons {
-	padding-top:5px;
-	margin-top:15px;
-	clear:both;
-	border-top: solid 1px #cfcfcf;
+  padding-top: 5px;
+  margin-top: 15px;
+  clear: both;
+  border-top: solid 1px #cfcfcf;
 }
-
-.filterTable input, .filterTable textarea, .filterTable select
-{
-	width:150px;
+.filterTable input,
+.filterTable textarea,
+.filterTable select {
+  width: 150px;
 }
-
-.horizontal-list {clear:both;}
-
+.horizontal-list {
+  clear: both;
+}
 .horizontal-list ul {
-	display:block;
-	width:100%;
-	clear:both;
-	margin:auto;
-	list-style-type: none;
+  display: block;
+  width: 100%;
+  clear: both;
+  margin: auto;
+  list-style-type: none;
 }
-
 .horizontal-list li {
-	clear:both;
-	display: inline-block;
-	list-style-type: none;
-	min-width:165px;
-	margin-right:20px;
+  clear: both;
+  display: inline-block;
+  list-style-type: none;
+  min-width: 165px;
+  margin-right: 20px;
 }
-
-label.label-top, .label-top label {
-	display: block;
-	clear:left;
-	font-size:.9em;
+label.label-top,
+.label-top label {
+  display: block;
+  clear: left;
+  font-size: .9em;
 }
-
 ul.resource-status-reasons li {
-	padding: 5px 5px;
+  padding: 5px 5px;
 }
-
 ul.resource-status-reasons {
-	padding-bottom: 20px;
-	padding-top: 5px;
+  padding-bottom: 20px;
+  padding-top: 5px;
 }
-
 .inlineUpdate:hover {
-	background-color: #fff;
+  background-color: #fff;
 }
-
-#bulkUpdatePromptButton {
-	margin-top:4px;
-	font-size:1.1em;
-	font-weight:bold;
-	display:block;
-}
-
 #bulkUpdateDialog .title {
-	font-size:1.1em;
-	font-weight:bold;
-	border-top:solid 1px #ccc;
-	border-bottom:solid 1px #ccc;
-	background-color:#eee;
-	padding:3px 3px;
-	margin:7px 0;
+  font-size: 1.1em;
+  font-weight: bold;
+  border-top: solid 1px #ccc;
+  border-bottom: solid 1px #ccc;
+  background-color: #eee;
+  padding: 3px 3px;
+  margin: 7px 0;
+}
+.admin-header-more {
+  padding-top: 25px;
+  margin-left: 20px;
 }
