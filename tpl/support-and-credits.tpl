@@ -62,6 +62,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 <p>Vladislav Zhivkov (Bulgarian)</p>
 <p>Linas Redeckis (Lithuanian)</p>
 <p>Davor Tomasevic (Croatian)</p>
+<p>Branislav (Slovak)</p>
 
 <h3>Thank you to the following projects and libraries</h3>
 

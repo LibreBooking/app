@@ -344,6 +344,7 @@ class es extends en_us
 		$strings['MoveResourcesAndReservations'] = 'Mover recursos y reservas a';
 		$strings['WeekOf'] = 'Semana de';
 		$strings['Of']='de';
+		$strings['AllUpcomingReservations'] = 'Todas Pr&oacute;ximas Reservas';
 
         // Errors
         $strings['LoginError'] = 'No se encontrado una correspondencia para tu nombre de usuario y password';
