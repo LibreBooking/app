@@ -68,6 +68,9 @@ a {
   background-color: #f6f6f6;
   border: solid 1px #e9e9e9;
 }
+#page-login .register {
+  text-align: right;
+}
 .login-links {
   text-align: center;
 }

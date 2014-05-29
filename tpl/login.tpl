@@ -19,89 +19,84 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 {include file='globalheader.tpl'}
 
 <div id="page-login">
-{if $ShowLoginError}
-	<div id="loginError" class="alert alert-danger">
-		{translate key='LoginError'}
-	</div>
-{/if}
+	{if $ShowLoginError}
+		<div id="loginError" class="alert alert-danger">
+			{translate key='LoginError'}
+		</div>
+	{/if}
 
-<div class="row">
-	<div id="loginbox" class="col-md-offset-4 col-md-4 default-box">
-		<form role="form" name="login" id="login" class="login form-horizontal" method="post"  action="{$smarty.server.SCRIPT_NAME}">
-			<div>
-				{if $ShowUsernamePrompt}
-					<div class="form-group">
-						<label class="col-xs-3 control-label" for="email">{translate key='Email'}</label>
+	<div class="row">
+		<div id="loginbox" class="col-md-offset-4 col-md-4 col-xs-10 col-xs-offset-1 default-box">
+			<form role="form" name="login" id="login" class="login form-horizontal" method="post"
+				  action="{$smarty.server.SCRIPT_NAME}">
+				<div>
+					{if $ShowUsernamePrompt}
+						<div class="form-group">
+							<label class="control-label" for="email">{translate key='Email'}</label>
 
-						<div class="col-xs-9"><input type="text" required="" class="form-control"
-													  id="email" {formname key=EMAIL}
-													  placeholder="{translate key=UsernameOrEmail}"/>
+							<input type="text" required="" class="form-control"
+												 id="email" {formname key=EMAIL}
+												 placeholder="{translate key=UsernameOrEmail}"/>
 						</div>
-					</div>
-				{/if}
+					{/if}
 
-				{if $ShowPasswordPrompt}
-					<div class="form-group">
-						<label class="col-xs-3 control-label" for="password">{translate key='Password'}</label>
+					{if $ShowPasswordPrompt}
+						<div class="form-group">
+							<label class="control-label" for="password">{translate key='Password'}</label>
 
-						<div class="col-xs-9">
-							<input type="password" required="" id="password" {formname key=PASSWORD}
-								   class="form-control"
-								   value="" placeholder="{translate key=Password}"/>
+							<div class="">
+								<input type="password" required="" id="password" {formname key=PASSWORD}
+									   class="form-control"
+									   value="" placeholder="{translate key=Password}"/>
+							</div>
 						</div>
-					</div>
-				{/if}
+					{/if}
 
-				{if $ShowPersistLoginPrompt}
-					<div class="form-group">
-						<div class="col-xs-offset-3 col-xs-9">
-							<div class="checkbox">
+					<div class="row">
+						<div class="form-group col-xs-8">
+							<button type="submit" class="btn btn-primary" name="{Actions::LOGIN}"
+									value="submit">{translate key='LogIn'}</button>
+							{if $ShowPersistLoginPrompt}
+							{*<div class="checkbox">*}
 								<label>
 									<input id="rememberMe" type="checkbox"
 										   name="{FormKeys::PERSIST_LOGIN}"
 										   value="true"/> {translate key='RememberMe'}
 								</label>
-							</div>
+							{*</div>*}
+							{/if}
+							<input type="hidden" {formname key=RESUME} value="{$ResumeUrl}"/>
+						</div>
+
+						<div class="text-right">
+						{if $ShowRegisterLink}
+							<a href="register.php" class="btn btn-default">{translate key='Register'}</a>
+						{/if}
 						</div>
 					</div>
-				{/if}
 
-				<div class="form-group">
-					<div class="col-xs-12">
-						<button type="submit" class="btn btn-primary col-xs-12" name="{Actions::LOGIN}"
-								value="submit">{translate key='LogIn'}</button>
-
-						<input type="hidden" {formname key=RESUME} value="{$ResumeUrl}"/>
+					<div class="login-links center-block">
+						{if $ShowForgotPasswordPrompt}
+							<a href="forgot.php">{translate key='ForgotMyPassword'}</a>
+						{/if}
 					</div>
 
-				</div>
-				<div class="login-links center-block">
-					{if $ShowForgotPasswordPrompt}
-						<a href="forgot.php">{translate key='ForgotMyPassword'}</a>
-					{/if}
-					{if $ShowForgotPasswordPrompt && $ShowRegisterLink}|{/if}
-					{if $ShowRegisterLink}
-						<a href="register.php">{translate key='CreateAnAccount'}</a>
-					{/if}
-				</div>
+					<div class="login-links center-block">
+						<button type="button" class="btn btn-link" data-toggle="collapse"
+								data-target="#change-language-options">{translate key=ChangeLanguage}</button>
+					</div>
 
-				<div class="login-links center-block">
-					<button type="button" class="btn btn-link" data-toggle="collapse" data-target="#change-language-options">{translate key=ChangeLanguage}</button>
-				</div>
-
-				<div id="change-language-options" class="form-group collapse">
-					<label class="col-xs-3 control-label" for="languageDropDown">{translate key='Language'}</label>
-
-					<div class="col-xs-9">
-						<select {formname key=LANGUAGE} class="form-control input-sm" id="languageDropDown">
-							{object_html_options options=$Languages key='GetLanguageCode' label='GetDisplayName' selected=$SelectedLanguage}
-						</select>
+					<div id="change-language-options" class="form-group collapse">
+						<div class="">
+							<select {formname key=LANGUAGE} class="form-control input-sm" id="languageDropDown">
+								{object_html_options options=$Languages key='GetLanguageCode' label='GetDisplayName' selected=$SelectedLanguage}
+							</select>
+						</div>
 					</div>
 				</div>
-			</div>
-		</form>
+			</form>
+		</div>
 	</div>
-</div>
 
 </div>
 {setfocus key='EMAIL'}
