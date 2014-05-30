@@ -3,13 +3,12 @@
 
 html, body {
   height: 100%;
-  //  padding-top:35px;
 }
 
 @footer-height: 45px;
 
 body {
-  padding-bottom: @footer-height + 30; /* this needs to be bigger than footer height*/
+  padding-bottom: @footer-height;// + 30; /* this needs to be bigger than footer height*/
 }
 
 a {
@@ -34,8 +33,8 @@ a {
 }
 
 #main {
-  //  height: 100%;
-  padding-bottom: @footer-height + 30;
+  min-height: 100%;
+  padding-bottom: @footer-height; // + 30;
 }
 
 .default-box {

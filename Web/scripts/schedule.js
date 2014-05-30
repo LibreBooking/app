@@ -292,11 +292,6 @@ function Schedule(opts, resourceGroups)
 			}
 		});
 
-//		$('#advancedFilter').find('input, select, textarea').change(function (e)
-//		{
-//			$('#advancedFilter').submit();
-//		});
-
 		groupDiv.tree({
 			data: resourceGroups,
 			saveState: 'tree' + options.scheduleId,

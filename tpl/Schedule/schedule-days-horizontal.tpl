@@ -26,7 +26,6 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 	</style>
 
 	{assign var=TodaysDate value=Date::Now()}
-	<div id="reservations">
 		<table class="reservations" border="1" cellpadding="0" style="width:auto;">
 			<tr>
 				<td rowspan="2">&nbsp;</td>
@@ -70,7 +69,6 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 				</tr>
 			{/foreach}
 		</table>
-	</div>
 {/block}
 
 {block name="scripts"}

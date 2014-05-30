@@ -74,7 +74,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 {* End slot display formatting *}
 
 {block name="header"}
-	{include file='globalheader.tpl' cssFiles='css/jquery.qtip.min.css,scripts/css/jqtree.css,css/schedule.css'}
+	{include file='globalheader.tpl' cssFiles='scripts/css/jqtree.css'}
 {/block}
 
 <div id="page-schedule">
@@ -94,12 +94,13 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 				<a href="#" class="schedule-style" id="schedule_tall" schedule-display="{ScheduleStyle::Tall}">{html_image src="table-tall.png" altKey="TallScheduleDisplay"}</a>
 				<a href="#" class="schedule-style" id="schedule_wide" schedule-display="{ScheduleStyle::Wide}">{html_image src="table-wide.png" altKey="WideScheduleDisplay"}</a>
 				<a href="#" class="schedule-style" id="schedule_week" schedule-display="{ScheduleStyle::CondensedWeek}">{html_image src="table-week.png" altKey="CondensedWeekScheduleDisplay"}</a>
+				<div>
+					{if $SubscriptionUrl != null}
+						{html_image src="feed.png"} <a target="_blank" href="{$SubscriptionUrl->GetAtomUrl()}">Atom</a> | <a target="_blank" href="{$SubscriptionUrl->GetWebcalUrl()}">iCalendar</a>
+					{/if}
+				</div>
 			</div>
-			<div>
-				{if $SubscriptionUrl != null}
-					{html_image src="feed.png"} <a target="_blank" href="{$SubscriptionUrl->GetAtomUrl()}">Atom</a> | <a target="_blank" href="{$SubscriptionUrl->GetWebcalUrl()}">iCalendar</a>
-				{/if}
-			</div>
+
 		{/block}
 
 		<div id="schedule-title" class="schedule_title col-xs-6">
@@ -208,9 +209,10 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 	</div>
 </div>
 
+<div id="reservations" class="col-md-10 col-sm-12">
+
 {block name="reservations"}
 	{assign var=TodaysDate value=Date::Now()}
-	<div id="reservations" class="col-md-10 col-sm-12">
 		{foreach from=$BoundDates item=date}
 			<div style="position:relative;">
 			<table class="reservations" border="1" cellpadding="0" width="100%">
@@ -247,11 +249,11 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			</div>
 			{flush}
 		{/foreach}
-	</div>
 {/block}
 {else}
 	<div class="error">{translate key=NoResourcePermission}</div>
 {/if}
+</div>
 </div>
 
 	<div class="clear">&nbsp;</div>
@@ -267,7 +269,6 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 {/block}
 
 {block name="scripts-common"}
-	{jsfile src="js/jquery.qtip.min.js"}
 	{jsfile src="js/moment.min.js"}
 	{jsfile src="schedule.js"}
 	{jsfile src="resourcePopup.js"}

@@ -58,7 +58,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		<link rel="stylesheet" href="//cdn.jsdelivr.net/qtip2/2.2.0/jquery.qtip.min.css" type="text/css">
 	{/if}
 	{cssfile src="nav.css"}
-	{cssfile src="main.css"}
+	{cssfile src="booked.css"}
 	{if $cssFiles neq ''}
 		{assign var='CssFileList' value=','|explode:$cssFiles}
 		{foreach from=$CssFileList item=cssFile}
