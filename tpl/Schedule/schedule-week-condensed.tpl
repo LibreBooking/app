@@ -66,7 +66,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		</table>
 {/block}
 
-{block name="scripts"}
+{block name="scripts-before"}
 	<script type="text/javascript">
 		$(document).ready(function ()
 		{

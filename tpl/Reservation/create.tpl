@@ -342,7 +342,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 {control type="DatePickerSetupControl" ControlId="EndDate" AltId="formattedEndDate" DefaultDate=$EndDate}
 {control type="DatePickerSetupControl" ControlId="EndRepeat" AltId="formattedEndRepeat" DefaultDate=$RepeatTerminationDate}
 
-{jsfile src="js/jquery.textarea-expander.js"}
+{jsfile src="js/jquery.autogrow.js"}
 {jsfile src="js/jquery.qtip.min.js"}
 {jsfile src="js/jquery.form-3.09.min.js"}
 {jsfile src="js/moment.min.js"}
@@ -427,7 +427,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		$(this).ajaxSubmit(ajaxOptions);
 		return false;
 	});
-	$('#description').TextAreaExpander();
+	$('#description').autogrow();
 });
 </script>
 

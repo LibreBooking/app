@@ -20,11 +20,6 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 {extends file="Schedule/schedule.tpl"}
 
 {block name="reservations"}
-	<style type="text/css">
-		td.resdate-custom { background-color:#4279A5; }
-		td.today-custom { background-color:#5199d1; }
-	</style>
-
 	{assign var=TodaysDate value=Date::Now()}
 		<table class="reservations" border="1" cellpadding="0" style="width:auto;">
 			<tr>
@@ -71,6 +66,6 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		</table>
 {/block}
 
-{block name="scripts"}
+{block name="scripts-before"}
 
 {/block}

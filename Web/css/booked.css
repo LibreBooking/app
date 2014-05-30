@@ -37,6 +37,7 @@ a {
   color: #fff;
 }
 #main {
+  padding-top: 60px;
   min-height: 100%;
   padding-bottom: 45px;
 }
@@ -190,6 +191,12 @@ tr.today td.resdate,
 td.today {
   font-weight: bold;
   color: #FFFFFF;
+  background-color: #5199d1;
+}
+td.resdate-custom {
+  background-color: #4279A5;
+}
+td.today-custom {
   background-color: #5199d1;
 }
 tr.today td.reslabel {

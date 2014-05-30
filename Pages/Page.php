@@ -18,12 +18,12 @@ You should have received a copy of the GNU General Public License
 along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-
 require_once(ROOT_DIR . 'Pages/IPage.php');
 require_once(ROOT_DIR . 'Pages/Pages.php');
 require_once(ROOT_DIR . 'lib/Common/namespace.php');
 require_once(ROOT_DIR . 'lib/Server/namespace.php');
 require_once(ROOT_DIR . 'lib/Config/namespace.php');
+require_once(ROOT_DIR . 'lib/external/MobileDetect/Mobile_Detect.php');
 
 abstract class Page implements IPage
 {
@@ -37,6 +37,10 @@ abstract class Page implements IPage
 	 */
 	protected $server = null;
 	protected $path;
+
+	protected $IsMobile = false;
+	protected $IsTablet = false;
+	protected $IsDesktop = true;
 
 	protected function __construct($titleKey = '', $pageDepth = 0)
 	{
@@ -108,6 +112,14 @@ abstract class Page implements IPage
 			$logoUrl = $this->path . Pages::UrlFromId($userSession->HomepageId);
 		}
 		$this->smarty->assign('HomeUrl', $logoUrl);
+
+		$detect = new Mobile_Detect();
+		$this->IsMobile = $detect->isMobile();
+		$this->IsTablet = $detect->isTablet();
+		$this->IsDesktop = !$this->IsMobile && !$this->IsTablet;
+		$this->Set('IsMobile', $this->IsMobile);
+		$this->Set('IsTablet', $this->IsTablet);
+		$this->Set('IsDesktop', $this->IsDesktop);
 	}
 
 	protected function SetTitle($title)
@@ -140,13 +152,10 @@ abstract class Page implements IPage
 
 	public function RedirectToError($errorMessageId = ErrorMessages::UNKNOWN_ERROR, $lastPage = '')
 	{
-		if (empty($lastPage))
-		{
-			$lastPage = $this->GetLastPage();
-		}
-
-		$errorPageUrl = sprintf("%serror.php?%s=%s&%s=%s", $this->path, QueryStringKeys::MESSAGE_ID, $errorMessageId, QueryStringKeys::REDIRECT, urlencode($lastPage));
-		$this->Redirect($errorPageUrl);
+		$errorMessageKey = ErrorMessages::Instance()->GetResourceKey($this->server->GetQuerystring(QueryStringKeys::MESSAGE_ID));
+		$this->Set('ErrorMessage', $errorMessageKey);
+		$this->Display('error.tpl');
+		die();
 	}
 
 	public function GetLastPage($defaultPage = '')

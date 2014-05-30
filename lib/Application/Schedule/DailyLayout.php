@@ -247,5 +247,3 @@ class SpanablePeriod extends SchedulePeriod
 		return $this->period->IsReservable();
 	}
 }
-
-?>

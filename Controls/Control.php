@@ -59,4 +59,3 @@ abstract class Control
 
 	public abstract function PageLoad();
 }
-?>

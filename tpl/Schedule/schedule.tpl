@@ -88,7 +88,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 {block name="schedule_control"}
 	<div class="row">
 		{block name="actions"}
-			<div id="schedule-actions" class="col-xs-3">
+			<div id="schedule-actions" class="col-md-3 visible-md visible-lg">
 				<a href="#" id="make_default" style="display:none;">{html_image src="star_boxed_full.png" altKey="MakeDefaultSchedule"}</a>
 				<a href="#" class="schedule-style" id="schedule_standard" schedule-display="{ScheduleStyle::Standard}">{html_image src="table.png" altKey="StandardScheduleDisplay"}</a>
 				<a href="#" class="schedule-style" id="schedule_tall" schedule-display="{ScheduleStyle::Tall}">{html_image src="table-tall.png" altKey="TallScheduleDisplay"}</a>
@@ -103,7 +103,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 		{/block}
 
-		<div id="schedule-title" class="schedule_title col-xs-6">
+		<div id="schedule-title" class="schedule_title col-md-6">
 			<span>{$ScheduleName}</span>
 			{if $Schedules|@count gt 1}
 			<div  class="dropdown btn-group">
@@ -119,7 +119,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		</div>
 
 		{capture name="date_navigation"}
-			<div id="schedule-dates" class="schedule_dates col-xs-3">
+			<div id="schedule-dates" class="schedule_dates col-md-3">
 				{assign var=FirstDate value=$DisplayDates->GetBegin()}
 				{assign var=LastDate value=$DisplayDates->GetEnd()}
 				<a href="#" class="change-date" data-year="{$PreviousDate->Year()}" data-month="{$PreviousDate->Month()}" data-day="{$PreviousDate->Day()}">{html_image src="arrow_large_left.png" alt="Back"}</a>
@@ -156,6 +156,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 {/block}
 
 <div class="row">
+{if $IsDesktop}
 <div id="reservations-left" class="col-md-2 default-box visible-md visible-lg">
 	<div class="reservations-left-header">{translate key=ResourceFilter}</div>
 
@@ -208,6 +209,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		</form>
 	</div>
 </div>
+{/if}
 
 <div id="reservations" class="col-md-10 col-sm-12">
 
@@ -259,12 +261,11 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 	<div class="clear">&nbsp;</div>
 <input type="hidden" value="{$ScheduleId}" id="scheduleId"/>
 
-<div class="col-xs-9">&nbsp;</div>
+<div class="col-xs-9 visible-md visible-lg">&nbsp;</div>
 {$smarty.capture.date_navigation}
-
 </div>
 
-{block name="scripts"}
+{block name="scripts-before"}
 
 {/block}
 
@@ -293,12 +294,15 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 	</script>
 {/block}
 
+{block name="scripts-after"}
+
+{/block}
 
 
 {control type="DatePickerSetupControl"
 ControlId='datepicker'
 DefaultDate=$FirstDate
-NumberOfMonths='3'
+NumberOfMonths=$PopupMonths
 ShowButtonPanel='true'
 OnSelect='dpDateChanged'
 FirstDay=$FirstWeekday}
