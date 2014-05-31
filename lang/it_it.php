@@ -95,7 +95,7 @@ class it_it extends en_us
 	$strings['AllUpcomingReservations'] = 'Tutte le prenotazioni imminenti';
         $strings['ShowHide'] = 'Mostra/Nascondi';
         $strings['Error'] = 'Errore';
-        $strings['ReturnToPreviousPage'] = 'Torna all\'ultima pagine sulla quale ti trovavi';
+        $strings['ReturnToPreviousPage'] = 'Torna all\'ultima pagina sulla quale ti trovavi';
         $strings['UnknownError'] = 'Errore Sconosciuto';
         $strings['InsufficientPermissionsError'] = 'Non hai i permessi per accedere a questa risorsa';
         $strings['MissingReservationResourceError'] = 'Non è stata selezionata una risorsa';
@@ -488,7 +488,7 @@ class it_it extends en_us
 	$strings['File'] = 'File';
 	$strings['BulkResourceUpdate'] = 'Aggiornamento combinato risorsa';
 	$strings['Unchanged'] = 'Non modificato';
-	$strings['Common'] = 'Comune';
+	$strings['Common'] = 'Generale';
         $strings['SelectUser'] = 'Seleziona utente';
         $strings['AdvancedFilter'] = 'Filtro avanzato';
 	// End Strings
