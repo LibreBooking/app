@@ -139,7 +139,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 {/block}
 
 {block name="legend"}
-<div class="hidden-xs container-fluid">
+<div class="hidden-xs row">
 	<div class="center">
 	<div class="legend reservable">{translate key=Reservable}</div>
 	<div class="legend unreservable">{translate key=Unreservable}</div>
@@ -152,7 +152,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 	</div>
 </div>
 
-<div style="height:10px" class="hidden-xs">&nbsp;</div>
+<div style="height:10px" class="hidden-xs row">&nbsp;</div>
 {/block}
 
 <div class="row">
@@ -258,11 +258,13 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 </div>
 </div>
 
-	<div class="clear">&nbsp;</div>
+<div class="clearfix">&nbsp;</div>
 <input type="hidden" value="{$ScheduleId}" id="scheduleId"/>
 
-<div class="col-xs-9 visible-md visible-lg">&nbsp;</div>
-{$smarty.capture.date_navigation}
+<div class="row">
+	<div class="col-xs-9 visible-md visible-lg">&nbsp;</div>
+	{$smarty.capture.date_navigation}
+	</div>
 </div>
 
 {block name="scripts-before"}

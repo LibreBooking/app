@@ -61,7 +61,7 @@ function Schedule(opts, resourceGroups)
 		this.initResources();
 		this.initNavigation();
 
-		var today = $("tr.today");
+		var today = $(".today");
 		if (today && today.length > 0)
 		{
 			$('html, body').animate({
@@ -184,28 +184,40 @@ function Schedule(opts, resourceGroups)
 				position: {
 					my: 'bottom left',
 					at: 'top left',
-					viewport: $(window),
 					effect: false
 				},
+
 				content: {
-					text: 'Loading...',
-					ajax: {
-						url: options.summaryPopupUrl,
-						type: 'GET',
-						data: { id: resid },
-						dataType: 'html'
+					text: function (event, api)
+					{
+						var refNum = $(this).attr('id');
+						$.ajax({ url: options.summaryPopupUrl, data: { id: resid } })
+								.done(function (html)
+								{
+									api.set('content.text', html)
+								})
+								.fail(function (xhr, status, error)
+								{
+									api.set('content.text', status + ': ' + error)
+								});
+
+						return 'Loading...';
 					}
 				},
+
 				show: {
 					delay: 700,
-					event: 'mouseenter'
+					effect: false
 				},
-				style: {
-				},
+
 				hide: {
-					fixed: true
+					fixed: true,
+					delay: 500
 				},
-				overwrite: false
+
+				style: {
+					classes: 'qtip-light qtip-bootstrap'
+				}
 			});
 		});
 	};

@@ -160,7 +160,7 @@ div.center {
 table.reservations {
   border-collapse: collapse;
   width: 100%;
-  font-size: 8pt;
+  font-size: .85em;
   table-layout: fixed;
   border: solid #36648B 1px;
 }
@@ -193,11 +193,18 @@ td.today {
   color: #FFFFFF;
   background-color: #5199d1;
 }
-td.resdate-custom {
-  background-color: #4279A5;
+#reservations .mobile {
+  font-size: .8em;
 }
-td.today-custom {
+#reservations .mobile .resdate {
+  background-color: #4279A5;
+  width: auto;
+}
+#reservations .mobile .today {
   background-color: #5199d1;
+}
+#reservations .mobile .slot {
+  padding: 2px;
 }
 tr.today td.reslabel {
   font-weight: bold;
@@ -281,12 +288,12 @@ td.hilite {
   vertical-align: top;
 }
 .schedule_title span {
-  font-size: 24pt;
+  font-size: 2em;
   font-weight: bold;
 }
 .schedule_dates {
   text-align: center;
-  font-size: 14pt;
+  font-size: 1.5em;
   padding-bottom: 10px;
 }
 .ui-datepicker {
@@ -298,9 +305,6 @@ td.hilite {
 }
 .res_popup_details .user {
   font-weight: bold;
-}
-.res_popup_details .customAttribute {
-  font-size: 8pt;
 }
 td.resourcename.hilite {
   background-color: #fbffc2;
@@ -320,7 +324,7 @@ div.legend {
 .reservations-left-header {
   border-bottom: solid 1px #e9e9e9;
   font-weight: bold;
-  font-size: 12pt;
+  font-size: 1.3em;
   text-align: center;
   padding: 3px 0;
   color: #4e4d4a;
@@ -358,9 +362,8 @@ ul.jqtree-tree .jqtree-toggler {
 #reservations-left .button {
   width: 128px;
 }
-#reservations-left .customAttribute,
 #reservations-left {
-  font-size: 9pt;
+  font-size: .9em;
 }
 .advancedFilterTitle {
   margin-top: 10px;

@@ -23,15 +23,15 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 {block name="reservations"}
 	{assign var=TodaysDate value=Date::Now()}
-	<table class="reservations" border="1" cellpadding="0" style="width:100%;">
+	<table class="reservations mobile" border="1" cellpadding="0" style="width:100%;">
 
 		{foreach from=$BoundDates item=date}
 			<tr>
 				{assign var=class value=""}
 				{if $TodaysDate->DateEquals($date) eq true}
-					{assign var=class value="today today-custom"}
+					{assign var=class value="today"}
 				{/if}
-				<td class="resdate resdate-custom {$class}" colspan="{$Resources|count+1}">{formatdate date=$date key="schedule_daily"}</td>
+				<td class="resdate {$class}" colspan="{$Resources|count+1}">{formatdate date=$date key="schedule_daily"}</td>
 			</tr>
 			{foreach from=$Resources item=resource name=resource_loop}
 				<tr>

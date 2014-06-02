@@ -27,9 +27,9 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 				{foreach from=$BoundDates item=date}
 					{assign var=class value=""}
 					{if $TodaysDate->DateEquals($date) eq true}
-						{assign var=class value="today-custom"}
+						{assign var=class value="today"}
 					{/if}
-					<td class="resdate-custom resdate {$class}"
+					<td class="resdate {$class}"
 						colspan="{$DailyLayout->GetPeriods($date)|count}">{formatdate date=$date key="schedule_daily"}</td>
 				{/foreach}
 			</tr>
