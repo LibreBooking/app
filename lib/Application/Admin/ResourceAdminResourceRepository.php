@@ -72,7 +72,7 @@ class ResourceAdminResourceRepository extends ResourceRepository
 			}
 
 			$additionalFilter = new SqlFilterIn(new SqlFilterColumn(TableNames::SCHEDULES_ALIAS, ColumnNames::SCHEDULE_ADMIN_GROUP_ID), $scheduleAdminGroupIds);
-			$filter->_And($additionalFilter->_Or(new SqlFilterIn(ColumnNames::RESOURCE_ADMIN_GROUP_ID, $resourceAdminGroupIds)));
+			$filter->_And($additionalFilter->_Or(new SqlFilterIn(new SqlFilterColumn(TableNames::RESOURCES_ALIAS, ColumnNames::RESOURCE_ADMIN_GROUP_ID), $resourceAdminGroupIds)));
 		}
 
 		return parent::GetList($pageNumber, $pageSize, $sortField, $sortDirection, $filter);
