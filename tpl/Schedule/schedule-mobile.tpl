@@ -40,8 +40,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 					<td class="resourcename">
 						{if $resource->CanAccess}
+							<span resourceId="{$resourceId}" class="resourceNameSelector glyphicon glyphicon-new-window"></span>
 							<a href="{$href}" resourceId="{$resourceId}">{$resource->Name}</a>
-							<span class="resourceNameSelector glyphicon glyphicon-new-window"></span>
 						{else}
 							{$resource->Name}
 						{/if}

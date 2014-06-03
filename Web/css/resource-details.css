@@ -123,8 +123,9 @@ div.center {
 }
 #resourceDetailsPopup h4 {
   border-bottom: solid 1px #000;
-  font-size: 12pt;
+  font-size: 1.2em;
   margin-bottom: 3px;
+  font-weight: bold;
 }
 #resourceDetailsPopup .customAttribute {
   font-size: inherit;
@@ -142,6 +143,10 @@ div.center {
   width: 200px;
   float: left;
 }
+#resourceDetailsPopup .resourceImage image {
+  max-height: 200px;
+  max-width: 200px;
+}
 #resourceDetailsDiv {
   display: none;
   position: absolute;
@@ -151,4 +156,26 @@ div.center {
   -webkit-box-shadow: 0px 0px 3px 0px #212121;
   -moz-box-shadow: 0px 0px 3px 0px #212121;
   box-shadow: 0px 0px 3px 0px #212121;
+}
+@media only screen and (max-device-width: 480px) {
+  #resourceDetailsPopup {
+    min-width: 250px;
+    max-width: 310px;
+    font-size: .8em;
+  }
+  #resourceDetailsPopup .description,
+  #resourceDetailsPopup .attributes {
+    max-width: auto;
+    float: none;
+  }
+  #resourceDetailsPopup .resourceImage {
+    float: none;
+  }
+  #resourceDetailsPopup ul,
+  #resourceDetailsPopup li {
+    margin-left: -10px;
+  }
+  #resourceDetailsPopup .attributes {
+    border: none;
+  }
 }

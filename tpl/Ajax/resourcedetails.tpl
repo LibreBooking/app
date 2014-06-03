@@ -17,12 +17,12 @@ You should have received a copy of the GNU General Public License
 along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 *}
 <div id="resourceDetailsPopup">
-	<h4>{$resourceName}</h4>
+	<h4>{$resourceName}</h4> <a href="#" class="visible-xs hideResourceDetailsPopup">{translate key=Close}</a>
 
-	<div style="clear"></div>
+	<div style="clearfix">&nbsp;</div>
 	{if $imageUrl neq ''}
 		<div class="resourceImage">
-			<img style="max-height:200px; max-width:200px;" src="{$imageUrl}" alt="{$resourceName|escape}"/>
+			<img src="{$imageUrl}" alt="{$resourceName|escape}"/>
 		</div>
 	{/if}
 	<div class="description">
@@ -129,5 +129,5 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 		</ul>
 	</div>
-	<div style="clear"></div>
+	<div style="clearfix">&nbsp;</div>
 </div>

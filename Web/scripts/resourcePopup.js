@@ -19,31 +19,31 @@
 
 $.fn.bindResourceDetails = function (resourceId, options)
 {
-	var opts = $.extend({preventClick:false}, options);
+	var opts = $.extend({preventClick: false}, options);
 
 	bindResourceDetails($(this));
 
 	function getDiv()
+	{
+		if ($('#resourceDetailsDiv').length <= 0)
 		{
-			if ($('#resourceDetailsDiv').length <= 0)
-			{
-				return $('<div id="resourceDetailsDiv"/>').appendTo('body');
-			}
-			else
-			{
-				return $('#resourceDetailsDiv');
-			}
+			return $('<div id="resourceDetailsDiv"/>').appendTo('body');
 		}
+		else
+		{
+			return $('#resourceDetailsDiv');
+		}
+	}
 
-		function hideDiv()
+	function hideDiv()
+	{
+		var tag = getDiv();
+		var timeoutId = setTimeout(function ()
 		{
-			var tag = getDiv();
-			var timeoutId = setTimeout(function ()
-			{
-				tag.hide();
-			}, 500);
-			tag.data('timeoutId', timeoutId);
-		}
+			tag.hide();
+		}, 500);
+		tag.data('timeoutId', timeoutId);
+	}
 
 	function bindResourceDetails(resourceNameElement)
 	{
@@ -83,16 +83,16 @@ $.fn.bindResourceDetails = function (resourceId, options)
 			else
 			{
 				$.ajax({
-					url:'ajax/resource_details.php?rid=' + resourceId,
-					type:'GET',
-					cache:true,
-					beforeSend:function ()
+					url: 'ajax/resource_details.php?rid=' + resourceId,
+					type: 'GET',
+					cache: true,
+					beforeSend: function ()
 					{
 						tag.html('Loading...').show();
-						tag.position({my:'left bottom', at:'right top', of:resourceNameElement});
+						tag.position({my: 'left bottom', at: 'right top', of: resourceNameElement});
 					},
-					error:tag.html('Error loading resource data!').show(),
-					success:function (data, textStatus, jqXHR)
+					error: tag.html('Error loading resource data!').show(),
+					success: function (data, textStatus, jqXHR)
 					{
 						tag.data('resourcePopup' + resourceId, data);
 						showData(data);
@@ -103,14 +103,18 @@ $.fn.bindResourceDetails = function (resourceId, options)
 			function showData(data)
 			{
 				tag.html(data).show();
-				tag.position({my:'left bottom', at:'right top', of:resourceNameElement});
-			}
-		}).mouseleave(function ()
+				tag.find('.hideResourceDetailsPopup').click(function (e)
 				{
+					e.preventDefault();
 					hideDiv();
 				});
+				tag.position({my: 'left bottom', at: 'right top', of: resourceNameElement});
+			}
+		}).mouseleave(function ()
+		{
+			hideDiv();
+		});
 
 		resourceNameElement.attr('resource-details-bound', '1');
 	}
-
 };
