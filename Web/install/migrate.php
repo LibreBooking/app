@@ -817,7 +817,8 @@ class MigrationPresenter
 			if ($row['is_blackout'] == 1)
 			{
 				// handle blackout
-				$blackout = Blackout::Create($mappedUserId, $mappedResourceId, '', $date);
+				$blackout = BlackoutSeries::Create($mappedUserId, '', $date);
+				$blackout->AddResourceId($mappedResourceId);
 
 				$newId = $blackoutRepository->Add($blackout);
 				$currentDatabase->Execute(new AdHocCommand("update blackout_series set legacyid = \"$legacyId\" where blackout_series_id = $newId"));
@@ -1023,5 +1024,3 @@ class MigrateBookableResource extends BookableResource
 
 $page = new MigrationPage();
 $page->PageLoad();
-
-?>
