@@ -108,11 +108,6 @@ class Configurator implements IConfigurationSettings
 		/** @var $current Config_Container */
 		$current = $config->parseConfig($file, 'PHPArray');
 
-		if (PEAR::isError($current))
-		{
-			throw new Exception($current->getMessage());
-		}
-
 		$currentValues = $current->getItem("section", Configuration::SETTINGS)->toArray();
 
 		return $currentValues[Configuration::SETTINGS];

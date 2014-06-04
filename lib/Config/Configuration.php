@@ -119,11 +119,6 @@ class Configuration implements IConfiguration
 		$config = new Config();
 		$container = $config->parseConfig($configFile, 'PHPArray');
 
-		if (PEAR::isError($container))
-		{
-			throw new Exception($container->getMessage());
-		}
-
 		$this->AddConfig($configId, $container, $overwrite);
 	}
 
