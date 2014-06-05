@@ -251,18 +251,18 @@ class SchedulePage extends ActionPage implements ISchedulePage
 		$this->Set('SlotLabelFactory', $user->IsAdmin ? new AdminSlotLabelFactory() : new SlotLabelFactory($user));
 		$this->Set('DisplaySlotFactory', new DisplaySlotFactory());
 		$this->Set('PopupMonths', $this->IsMobile ? 1 : 3);
-		if ($this->IsMobile)
-		{
+//		if ($this->IsMobile)
+//		{
 			$this->Display('Schedule/schedule-mobile.tpl');
-		}
-		else if (array_key_exists($this->ScheduleStyle, $this->_styles))
-		{
-			$this->Display($this->_styles[$this->ScheduleStyle]);
-		}
-		else
-		{
-			$this->Display('Schedule/schedule.tpl');
-		}
+//		}
+//		else if (array_key_exists($this->ScheduleStyle, $this->_styles))
+//		{
+//			$this->Display($this->_styles[$this->ScheduleStyle]);
+//		}
+//		else
+//		{
+//			$this->Display('Schedule/schedule.tpl');
+//		}
 
 		$endDisplay = microtime(true);
 
@@ -473,44 +473,44 @@ class SchedulePage extends ActionPage implements ISchedulePage
 
 class DisplaySlotFactory
 {
-	public function GetFunction(IReservationSlot $slot, $accessAllowed = false)
+	public function GetFunction(IReservationSlot $slot, $accessAllowed = false, $functionSuffix = '')
 	{
 		if ($slot->IsReserved())
 		{
 			if ($this->IsMyReservation($slot))
 			{
-				return 'displayMyReserved';
+				return "displayMyReserved$functionSuffix";
 			}
 			elseif ($this->AmIParticipating($slot))
 			{
-				return 'displayMyParticipating';
+				return "displayMyParticipating$functionSuffix";
 			}
 			else
 			{
-				return 'displayReserved';
+				return "displayReserved$functionSuffix";
 			}
 		}
 		else
 		{
 			if (!$accessAllowed)
 			{
-				return 'displayRestricted';
+				return "displayRestricted$functionSuffix";
 			}
 			else
 			{
 				if ($slot->IsPastDate(Date::Now()) && !$this->UserHasAdminRights())
 				{
-					return 'displayPastTime';
+					return "displayPastTime$functionSuffix";
 				}
 				else
 				{
 					if ($slot->IsReservable())
 					{
-						return 'displayReservable';
+						return "displayReservable$functionSuffix";
 					}
 					else
 					{
-						return 'displayUnreservable';
+						return "displayUnreservable$functionSuffix";
 					}
 				}
 			}

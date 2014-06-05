@@ -110,7 +110,7 @@ class UpgradeDbTask extends Task
 		    die('Could not connect: ' . mysqli_error($dblink));
 		}
 
-		mysqli_select_db($this->database, $dblink);
+		mysqli_select_db($dblink, $this->database);
 
         $path = "$fullUpgradeDir/$fileName";
         print("Executing $path\n");

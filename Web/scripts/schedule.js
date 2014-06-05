@@ -28,12 +28,12 @@ function Schedule(opts, resourceGroups)
 			$(this).removeClass('hilite');
 		});
 
-		reservations.delegate('td.clickres', 'mousedown', function ()
+		reservations.delegate('.clickres', 'mousedown', function ()
 		{
 			$(this).addClass('clicked');
 		});
 
-		reservations.delegate('td.clickres', 'mouseup', function ()
+		reservations.delegate('.clickres', 'mouseup', function ()
 		{
 			$(this).removeClass('clicked');
 		});
@@ -158,7 +158,7 @@ function Schedule(opts, resourceGroups)
 
 		this.makeSlotsSelectable(reservations);
 
-		$('td.reserved', reservations).each(function ()
+		$('.reserved', reservations).each(function ()
 		{
 			var resid = $(this).attr('resid');
 			var pattern = 'td[resid="' + resid + '"]';

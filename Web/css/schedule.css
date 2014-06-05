@@ -113,7 +113,7 @@ td.reserved {
 #reservations .ui-selecting {
   background-color: #23BF35;
 }
-td.hilite {
+.hilite {
   cursor: pointer;
 }
 .reservable.clicked,
@@ -242,4 +242,10 @@ ul.jqtree-tree .jqtree-toggler {
 }
 #reservations-left .btn-clear {
   margin-top: 3px;
+}
+.reservations.mobile .reserved {
+  -webkit-border-radius: 1px;
+  -moz-border-radius: 1px;
+  border-radius: 1px;
+  padding: 0 2px;
 }
