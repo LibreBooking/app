@@ -33,7 +33,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 	{/if}
 	<div class="reserved {$class} {$OwnershipClass} clickres"
 		resid="{$Slot->Id()}" {$color}
-		id="{$Slot->Id()}|{$Slot->Date()->Format('Ymd')}">
+		id="{$Slot->Id()}|{$Slot->Date()->Format('Ymd')}"><i class="fa fa-info-circle"></i>
 		{formatdate date=$Slot->BeginDate() key=period_time} - {formatdate date=$Slot->EndDate() key=period_time}
 		{$Slot->Label($SlotLabelFactory)|escapequotes}</div>
 {/function}
@@ -52,7 +52,6 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 {function name=displayPastTimeMobile}
 	&nbsp;
-	{*<div class="pasttime slot">{$Slot->Label($SlotLabelFactory)|escapequotes}</div>*}
 {/function}
 
 {function name=displayReservableMobile}
@@ -89,7 +88,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 					<td class="resourcename">
 						{if $resource->CanAccess}
-							<span resourceId="{$resourceId}" class="resourceNameSelector glyphicon glyphicon-new-window"></span>
+							<i resourceId="{$resourceId}" class="resourceNameSelector fa fa-info-circle"></i>
 							<a href="{$href}" resourceId="{$resourceId}">{$resource->Name}</a>
 						{else}
 							{$resource->Name}
@@ -103,21 +102,6 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 							{foreach from=$slots item=slot}
 								{call name=displaySlotMobile Slot=$slot Href="$href" AccessAllowed=$resource->CanAccess SlotRef=$slotRef}
 							{/foreach}
-							{*{foreach from=$summary->Reservations() item=reservation}*}
-								{*<a href="{$Path}reservation.php?rn={$reservation->ReferenceNumber()}">*}
-								{*{if $date->DateEquals($reservation->StartDate())}*}
-									{*{format_date date=$reservation->StartDate() key=period_time}*}
-								{*{else}*}
-									{*{format_date date=$reservation->StartDate() key=mobile_reservation_date}*}
-								{*{/if}*}
-									{*-*}
-								{*{if $date->DateEquals($reservation->EndDate())}*}
-									{*{format_date date=$reservation->EndDate() key=period_time}*}
-								{*{else}*}
-									{*{format_date date=$reservation->EndDate() key=mobile_reservation_date}*}
-								{*{/if}*}
-								{*</a>*}
-							{*{/foreach}*}
 						</td>
 					{else}
 						{assign var=href value="{Pages::RESERVATION}?rid={$resource->Id}&sid={$ScheduleId}&rd={formatdate date=$date key=url}"}

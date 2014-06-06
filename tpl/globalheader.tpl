@@ -48,14 +48,18 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 	{cssfile src="normalize.css"}
 	{if $UseLocalJquery}
 		{cssfile src="scripts/css/smoothness/jquery-ui-1.10.4.custom.min.css"}
+		{cssfile src="css/font-awesome/css/font-awesome.min.css" rel="stylesheet"}
 		{cssfile src="scripts/bootstrap/css/bootstrap.css" rel="stylesheet"}
 		{cssfile src="css/jquery.qtip.min.css" rel="stylesheet"}
 	{else}
 		<link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.9.0/themes/smoothness/jquery-ui.css"
 			  type="text/css">
+		<link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css"
+			  type="text/css">
 		<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css"
 			  type="text/css">
-		<link rel="stylesheet" href="//cdn.jsdelivr.net/qtip2/2.2.0/jquery.qtip.min.css" type="text/css">
+		<link rel="stylesheet" href="//cdn.jsdelivr.net/qtip2/2.2.0/jquery.qtip.min.css"
+			  type="text/css">
 	{/if}
 	{cssfile src="nav.css"}
 	{cssfile src="booked.css"}

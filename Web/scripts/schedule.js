@@ -180,7 +180,16 @@ function Schedule(opts, resourceGroups)
 				window.location = reservationUrl;
 			});
 
-			$(this).qtip({
+			var qTipElement = $(this);
+
+			if ($(this).is('div')) {
+				qTipElement = $(this).find('.fa');
+				qTipElement.click(function(e){
+					e.stopPropagation();
+				});
+			}
+
+			qTipElement.qtip({
 				position: {
 					my: 'bottom left',
 					at: 'top left',

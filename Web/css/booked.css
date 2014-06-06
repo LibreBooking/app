@@ -200,7 +200,7 @@ td.today {
   background-color: #4279A5;
   width: auto;
 }
-#reservations .mobile .today {
+#reservations .mobile td.today {
   background-color: #5199d1;
 }
 #reservations .mobile .slot {
@@ -400,7 +400,7 @@ ul.jqtree-tree .jqtree-toggler {
   -webkit-border-radius: 1px;
   -moz-border-radius: 1px;
   border-radius: 1px;
-  padding: 0 2px;
+  padding: 1px 2px;
 }
 #resourceDetailsPopup {
   min-width: 300px;
