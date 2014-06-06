@@ -17,8 +17,10 @@ You should have received a copy of the GNU General Public License
 along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 *}
 {block name="header"}
-{include file='globalheader.tpl' cssFiles='css/reservation.css,css/jquery.qtip.min.css,scripts/css/jqtree.css'}
+{include file='globalheader.tpl'}
 {/block}
+
+<div id="page-reservation">
 
 <div id="reservationbox">
 
@@ -266,78 +268,114 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 {/if}
 </form>
 
-<div id="dialogResourceGroups" class="dialog" title="{translate key=AddResources}">
-
-	<div id="resourceGroups"></div>
-
-	<button class="button btnConfirmAddResources">{html_image src="tick-circle.png"} {translate key='Done'}</button>
-	<button class="button btnClearAddResources">{html_image src="slash.png"} {translate key='Cancel'}</button>
+<div class="modal fade" id="dialogResourceGroups" tabindex="-1" role="dialog" aria-labelledby="resourcesModalLabel"
+	 aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h4 class="modal-title" id="resourcesModalLabel">{translate key=AddResources}</h4>
+			</div>
+			<div class="modal-body">
+				<div id="resourceGroups"></div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default btnClearAddResources"
+						data-dismiss="modal">{translate key='Cancel'}</button>
+				<button type="button"
+						class="btn btn-primary btnConfirmAddResources">{translate key='Done'}</button>
+			</div>
+		</div>
+	</div>
 </div>
 
-<div id="dialogAddResources" class="dialog" title="{translate key=AddResources}" style="display:none;">
+{*<div id="dialogAddResources" class="dialog" title="{translate key=AddResources}" style="display:none;">*}
 
-{foreach from=$AvailableResources item=resource}
-	{if $resource->CanAccess}
-		{assign var='checked' value=''}
-		{if is_array($AdditionalResourceIds) && in_array($resource->Id, $AdditionalResourceIds)}
-			{assign var='checked' value='checked="checked"'}
-		{/if}
-		{if $resource->Id == $ResourceId}
-			{assign var='checked' value='checked="checked"'}
-		{/if}
+{*{foreach from=$AvailableResources item=resource}*}
+	{*{if $resource->CanAccess}*}
+		{*{assign var='checked' value=''}*}
+		{*{if is_array($AdditionalResourceIds) && in_array($resource->Id, $AdditionalResourceIds)}*}
+			{*{assign var='checked' value='checked="checked"'}*}
+		{*{/if}*}
+		{*{if $resource->Id == $ResourceId}*}
+			{*{assign var='checked' value='checked="checked"'}*}
+		{*{/if}*}
 
-        <p>
-            <input type="checkbox" {formname key=ADDITIONAL_RESOURCES multi=true} id="additionalResource{$resource->Id}"
-                   value="{$resource->Id}" {$checked} />
-            <label for="additionalResource{$resource->Id}">{$resource->Name}</label>
-        </p>
-	{/if}
-{/foreach}
-    <br/>
-    <button class="button btnConfirmAddResources">{html_image src="tick-circle.png"} {translate key='Done'}</button>
-    <button class="button btnClearAddResources">{html_image src="slash.png"} {translate key='Cancel'}</button>
-</div>
+        {*<p>*}
+            {*<input type="checkbox" {formname key=ADDITIONAL_RESOURCES multi=true} id="additionalResource{$resource->Id}"*}
+                   {*value="{$resource->Id}" {$checked} />*}
+            {*<label for="additionalResource{$resource->Id}">{$resource->Name}</label>*}
+        {*</p>*}
+	{*{/if}*}
+{*{/foreach}*}
+    {*<br/>*}
+    {*<button class="button btnConfirmAddResources">{html_image src="tick-circle.png"} {translate key='Done'}</button>*}
+    {*<button class="button btnClearAddResources">{html_image src="slash.png"} {translate key='Cancel'}</button>*}
+{*</div>*}
+			{*<div class="modal-footer">*}
+				{*<button id="btnCancelAddAccessories" type="button" class="btn btn-defaultbtnClearAddResources" data-dismiss="modal">{translate key='Cancel'}</button>*}
+				{*<button id="btnConfirmAddAccessories" type="button" class="btn btn-primary btnConfirmAddResources">{translate key='Done'}</button>*}
+			{*</div>*}
+		{*</div>*}
+	{*</div>*}
+{*</div>*}
 
-<div id="dialogAddAccessories" class="dialog" title="{translate key=AddAccessories}" style="display:none;">
-    <table style="width:100%">
-        <tr>
-            <td>{translate key=Accessory}</td>
-            <td>{translate key=QuantityRequested}</td>
-            <td>{translate key=QuantityAvailable}</td>
-        </tr>
-	{foreach from=$AvailableAccessories item=accessory}
-        <tr>
-            <td>{$accessory->Name}</td>
-            <td>
-                <input type="hidden" class="name" value="{$accessory->Name}"/>
-                <input type="hidden" class="id" value="{$accessory->Id}"/>
-				{if $accessory->QuantityAvailable == 1}
-                    <input type="checkbox" name="accessory{$accessory->Id}" value="1" size="3"/>
-					{else}
-                    <input type="text" name="accessory{$accessory->Id}" value="0" size="3"/>
-				{/if}
-            </td>
-            <td>{$accessory->QuantityAvailable|default:'&infin;'}</td>
-        </tr>
-	{/foreach}
-    </table>
-    <br/>
-    <button id="btnConfirmAddAccessories" class="button">{html_image src="tick-circle.png"} {translate key='Done'}</button>
-    <button id="btnCancelAddAccessories" class="button">{html_image src="slash.png"} {translate key='Cancel'}</button>
+<div class="modal fade" id="dialogAddAccessories" tabindex="-1" role="dialog" aria-labelledby="accessoryModalLabel"
+	 aria-hidden="true">
+
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h4 class="modal-title" id="accessoryModalLabel">{translate key=AddAccessories}</h4>
+			</div>
+			<div class="modal-body">
+				{*<div id="dialogAddAccessories" class="dialog" title="{translate key=AddAccessories}" style="display:none;">*}
+				<table style="width:100%">
+					<tr>
+						<td>{translate key=Accessory}</td>
+						<td>{translate key=QuantityRequested}</td>
+						<td>{translate key=QuantityAvailable}</td>
+					</tr>
+					{foreach from=$AvailableAccessories item=accessory}
+						<tr>
+							<td>{$accessory->Name}</td>
+							<td>
+								<input type="hidden" class="name" value="{$accessory->Name}"/>
+								<input type="hidden" class="id" value="{$accessory->Id}"/>
+								{if $accessory->QuantityAvailable == 1}
+									<input type="checkbox" name="accessory{$accessory->Id}" value="1" size="3"/>
+								{else}
+									<input type="text" name="accessory{$accessory->Id}" value="0" size="3"/>
+								{/if}
+							</td>
+							<td>{$accessory->QuantityAvailable|default:'&infin;'}</td>
+						</tr>
+					{/foreach}
+				</table>
+
+			</div>
+			<div class="modal-footer">
+				<button id="btnCancelAddAccessories" type="button" class="btn btn-default" data-dismiss="modal">{translate key='Cancel'}</button>
+				<button id="btnConfirmAddAccessories" type="button" class="btn btn-primary">{translate key='Done'}</button>
+			</div>
+		</div>
+	</div>
 </div>
 
 <div id="dialogSave" style="display:none;">
-    <div id="creatingNotification" style="position:relative; top:170px;">
-	{block name="ajaxMessage"}
-		{translate key=CreatingReservation}...<br/>
-	{/block}
-	{html_image src="reservation_submitting.gif" alt="Creating reservation"}
-    </div>
-    <div id="result" style="display:none;"></div>
+<div id="creatingNotification" style="position:relative; top:170px;">
+{block name="ajaxMessage"}
+	{translate key=CreatingReservation}...<br/>
+{/block}
+{html_image src="reservation_submitting.gif" alt="Creating reservation"}
 </div>
+
+<div id="result" style="display:none;"></div>
 <!-- reservationbox ends -->
 </div>
 
+</div>
 {control type="DatePickerSetupControl" ControlId="BeginDate" AltId="formattedBeginDate" DefaultDate=$StartDate}
 {control type="DatePickerSetupControl" ControlId="EndDate" AltId="formattedEndDate" DefaultDate=$EndDate}
 {control type="DatePickerSetupControl" ControlId="EndRepeat" AltId="formattedEndRepeat" DefaultDate=$RepeatTerminationDate}

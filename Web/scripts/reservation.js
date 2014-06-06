@@ -67,34 +67,26 @@ function Reservation(opts)
 			width: 'auto'
 		});
 
-		$('#dialogAddResources').dialog({
-			height: 300,
-			open: function (event, ui)
-			{
-				InitializeCheckboxes('#dialogAddResources', '#additionalResources');
-				return true;
-			}
-		});
+		$('.modal').modal({show:false});
+
+//		$('#dialogAddResources').on('show.bs.modal', function(e)
+//			{
+//				InitializeCheckboxes('#dialogAddResources', '#additionalResources');
+//				return true;
+//			});
 
 		scheduleId = $('#scheduleId').val();
 
-		elements.accessoriesDialog.dialog({ width: 450 });
 		elements.accessoriesPrompt.click(function ()
 		{
 			ShowAccessoriesPrompt();
-
-			elements.accessoriesDialog.dialog('open');
 		});
 
-		elements.accessoriesConfirm.click(function ()
+		elements.accessoriesConfirm.click(function (e)
 		{
+			e.preventDefault();
 			AddAccessories();
-			elements.accessoriesDialog.dialog('close');
-		});
-
-		elements.accessoriesCancel.click(function ()
-		{
-			elements.accessoriesDialog.dialog('close');
+			elements.accessoriesDialog.modal('hide');
 		});
 
 		elements.printButton.click(function ()
@@ -120,17 +112,17 @@ function Reservation(opts)
 		{
 			e.preventDefault();
 			InitializeAdditionalResources();
-			elements.resourceGroupsDialog.dialog('open');
+			elements.resourceGroupsDialog.modal('show');
 		});
 
 		elements.groupDiv.delegate('.additionalResourceCheckbox, .additionalResourceGroupCheckbox', 'click', function (e)
 		{
-			handleAdditionalResourceChecked($(this), e);
+			handleAdditionalResourceChecked($(this));
 		});
 
 		$('.btnClearAddResources').click(function ()
 		{
-			elements.resourceGroupsDialog.dialog('close');
+			elements.resourceGroupsDialog.modal('hide');
 		});
 
 		elements.addResourcesConfirm.click(function ()
@@ -256,7 +248,7 @@ function Reservation(opts)
 				quantityElement.attr('checked', 'checked');
 			}
 		});
-		elements.accessoriesDialog.dialog('open');
+		elements.accessoriesDialog.modal('show');
 	};
 
 	var AddAccessory = function (name, id, quantity)
@@ -300,32 +292,39 @@ function Reservation(opts)
 
 		}
 		WireUpResourceDetailPopups();
-		elements.resourceGroupsDialog.dialog('close');
+		elements.resourceGroupsDialog.modal('hide');
 	};
 
 	var InitializeAdditionalResources = function()
 	{
-		elements.groupDiv.find('input[type=checkbox]').attr('checked', false);
+		elements.groupDiv.find('input:checkbox').removeAttr('checked');
 		$.each($('.resourceId'), function(idx, val){
 			var resourceCheckboxes = elements.groupDiv.find('[resource-id="' + $(val).val() + '"]');
 			$.each(resourceCheckboxes, function(ridx, checkbox)
 			{
 				$(checkbox).attr('checked', true);
-				handleAdditionalResourceChecked($(checkbox));
+//				handleAdditionalResourceChecked($(checkbox));
 			});
 		});
 	};
 
-	var handleAdditionalResourceChecked = function (checkbox, event)
+	var handleAdditionalResourceChecked = function (checkbox)
 	{
 		var isChecked = checkbox.is(':checked');
 
 		if (!checkbox[0].hasAttribute('resource-id'))
 		{
 			// if this is a group, check/uncheck all nested subitems
-			$.each(checkbox.closest('li').find('ul').find('input[type=checkbox]'), function (i, v)
+			$.each(checkbox.closest('li').find('ul').find('input:checkbox'), function (i, v)
 			{
-				$(v).attr('checked', isChecked);
+				if (isChecked)
+				{
+					$(v).attr('checked', 'checked');
+				}
+				else
+				{
+					$(v).removeAttr('checked');
+				}
 				handleAdditionalResourceChecked($(v));
 			});
 		}
