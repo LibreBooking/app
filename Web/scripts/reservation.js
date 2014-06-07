@@ -283,11 +283,10 @@ function Reservation(opts)
 		{
 			$.each(checkboxes, function (i, checkbox)
 			{
-				if (i == 0)
+				if (i != 0)
 				{
-					return true;
+					displayDiv.append('<p><a href="#" class="resourceDetails">' + $(checkbox).parent().text() + '</a><input class="resourceId" type="hidden" name="additionalResources[]" value="' + $(checkbox).attr('resource-id') + '"/></p>');
 				}
-				displayDiv.append('<p><a href="#" class="resourceDetails">' + $(checkbox).parent().text() + '</a><input class="resourceId" type="hidden" name="additionalResources[]" value="' + $(checkbox).attr('resource-id') + '"/></p>');
 			});
 
 		}
@@ -297,13 +296,14 @@ function Reservation(opts)
 
 	var InitializeAdditionalResources = function()
 	{
-		elements.groupDiv.find('input:checkbox').removeAttr('checked');
+		elements.groupDiv.find('input:checkbox').prop('checked', false);
 		$.each($('.resourceId'), function(idx, val){
 			var resourceCheckboxes = elements.groupDiv.find('[resource-id="' + $(val).val() + '"]');
 			$.each(resourceCheckboxes, function(ridx, checkbox)
 			{
-				$(checkbox).attr('checked', true);
-//				handleAdditionalResourceChecked($(checkbox));
+				var chk = $(checkbox);
+				chk.prop('checked', true);
+				handleAdditionalResourceChecked(chk);
 			});
 		});
 	};
@@ -312,20 +312,14 @@ function Reservation(opts)
 	{
 		var isChecked = checkbox.is(':checked');
 
-		if (!checkbox[0].hasAttribute('resource-id'))
+		if (!checkbox.attr('resource-id'))
 		{
 			// if this is a group, check/uncheck all nested subitems
 			$.each(checkbox.closest('li').find('ul').find('input:checkbox'), function (i, v)
 			{
-				if (isChecked)
-				{
-					$(v).attr('checked', 'checked');
-				}
-				else
-				{
-					$(v).removeAttr('checked');
-				}
-				handleAdditionalResourceChecked($(v));
+				var chk = $(v);
+				chk.prop('checked', isChecked);
+				handleAdditionalResourceChecked(chk);
 			});
 		}
 		else
@@ -335,19 +329,19 @@ function Reservation(opts)
 			var numberOfResources = elements.groupDiv.find('.additionalResourceCheckbox[group-id="'+ groupId+'"]').length;
 			var numberOfResourcesChecked = elements.groupDiv.find('.additionalResourceCheckbox[group-id="'+ groupId+'"]:checked').length;
 
-			elements.groupDiv.find('.additionalResourceGroupCheckbox[group-id="'+ groupId+'"]').attr('checked', numberOfResources == numberOfResourcesChecked)
+			elements.groupDiv.find('.additionalResourceGroupCheckbox[group-id="'+ groupId+'"]').prop('checked', numberOfResources == numberOfResourcesChecked)
 		}
 
 		if (elements.groupDiv.find('.additionalResourceCheckbox:checked').length == 0)
 		{
 			// if this is the only checked checkbox, don't allow 'done'
 			elements.addResourcesConfirm.addClass('disabled');
-			elements.addResourcesConfirm.attr('disabled', true);
+			elements.addResourcesConfirm.prop('disabled', true);
 		}
 		else
 		{
 			elements.addResourcesConfirm.removeClass('disabled');
-			elements.addResourcesConfirm.removeAttr('disabled');
+			elements.addResourcesConfirm.prop('disabled', false);
 		}
 	};
 
