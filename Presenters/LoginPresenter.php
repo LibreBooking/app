@@ -146,7 +146,7 @@ class LoginPresenter
 
 		if (!empty($redirect))
 		{
-			$this->_page->Redirect($redirect);
+			$this->_page->Redirect(html_entity_decode($redirect));
 		}
 		else
 		{

@@ -112,7 +112,7 @@ class LoginPage extends Page implements ILoginPage
 		parent::__construct('LogIn'); // parent Page class
 
 		$this->presenter = new LoginPresenter($this); // $this pseudo variable of class object is Page object
-		$resumeUrl = urldecode($this->server->GetQuerystring(QueryStringKeys::REDIRECT));
+		$resumeUrl = $this->server->GetQuerystring(QueryStringKeys::REDIRECT);
 		$resumeUrl = str_replace('&amp;&amp;', '&amp;', $resumeUrl);
 		$this->Set('ResumeUrl', $resumeUrl);
 		$this->Set('ShowLoginError', false);
