@@ -1,23 +1,28 @@
 A) Project:
-    - SVN Repository viewed @ https://svn.code.sf.net/p/phpscheduleit/code/development
-    - To contribute and submit your code please contact "Nick Korbel" <nkorbel@gmail.com>
-    - Programming paradigm: toward 100% object oriented php 5
-    - Please include the GPL header on every new source file with your name and date. If you are altering an existing file, just add your name and year.
+    - SVN Repository - https://svn.code.sf.net/p/phpscheduleit/code/development
+    - To contribute and submit your code please contact Nick Korbel <nkorbel@gmail.com>
+    - Programming paradigm: toward 100% object oriented PHP5
+    - Please include the GPL header on every new source file with your name and year. If you are altering an existing file, just add your name and year.
 
 B) Requirements:
-    - Web-server
-    - PHP 5.2 or greater
-    - MySQL x.x or greater
+    - Web server (Apache/IIS)
+    - PHP 5.3 or greater
+    - MySQL 5.5 or greater
 
 C) Getting the development branch running:
 
-    1) Create and populate the database
-	run schema.sql
-	run data.sql
-	run sample-data-utf8.sql (optional)
-
-    2) Set configuration values
-	update config.php with your local settings
+	1) Set configuration values
+	Update config/config.php with your local settings
+	
+	2) If you have phing and are on Windows
+	Run /build.bat setup.db
+	
+    2) If you do not have phing
+	Create the database and user
+		run /database_schema/create-db.sql
+		run /database_schema/create-user.sql
+	
+	Open http://localhost/booked/Web/install
 
 
 D) Development branch technical information:
