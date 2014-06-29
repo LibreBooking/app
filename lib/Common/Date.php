@@ -109,14 +109,10 @@ class Date
 			return NullDate::Instance();
 		}
 
-		$date = DateTime::createFromFormat('Y-m-d\TH:i:s+', $dateString);
-
-		$timeOffsetString = $date->getTimezone()->getName();
-		$offsetParts = explode(':', $timeOffsetString);
-
-		$d = new Date($date->format(Date::SHORT_FORMAT), 'UTC');
-		$offsetMinutes = ($offsetParts[0] * -60) + $offsetParts[1];
-		return $d->AddMinutes($offsetMinutes);
+		$parsed = date_parse($dateString);
+		$name = timezone_name_from_abbr("", -1*$parsed['zone']*60, false);
+		$d = Date::Create($parsed['year'], $parsed['month'], $parsed['day'], $parsed['hour'], $parsed['minute'], $parsed['second'], $name);
+		return $d;
 	}
 
 	/**

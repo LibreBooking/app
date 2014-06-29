@@ -69,12 +69,6 @@ function Reservation(opts)
 
 		$('.modal').modal({show:false});
 
-//		$('#dialogAddResources').on('show.bs.modal', function(e)
-//			{
-//				InitializeCheckboxes('#dialogAddResources', '#additionalResources');
-//				return true;
-//			});
-
 		scheduleId = $('#scheduleId').val();
 
 		elements.accessoriesPrompt.click(function ()

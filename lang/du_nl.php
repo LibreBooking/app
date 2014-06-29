@@ -32,14 +32,14 @@ class du_nl extends en_us
     {
         $dates = parent::_LoadDates();
 
-        $dates['general_date'] = 'm/d/Y';
-        $dates['general_datetime'] = 'm/d/Y H:i:s';
-        $dates['schedule_daily'] = 'l, m/d/Y';
-        $dates['reservation_email'] = 'm/d/Y @ g:i A (e)';
-        $dates['res_popup'] = 'm/d/Y g:i A';
-        $dates['dashboard'] = 'l, m/d/Y g:i A';
-        $dates['period_time'] = "g:i A";
-		$dates['general_date_js'] = "mm/dd/yy";
+        $dates['general_date'] = 'd/m/Y';
+        $dates['general_datetime'] = 'd/m/Y H:i:s';
+        $dates['schedule_daily'] = 'l, d/m/Y';
+        $dates['reservation_email'] = 'd/m/Y @ H:i (e)';
+        $dates['res_popup'] = 'd/m/Y H:i';
+        $dates['dashboard'] = 'l, d/m/Y H:i';
+        $dates['period_time'] = "H:i";
+        $dates['general_date_js'] = "dd/mm/yy";
 
         $this->Dates = $dates;
     }

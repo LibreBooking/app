@@ -153,3 +153,9 @@ label.reservationDate {
   margin: 15px 0;
   font-size: smaller;
 }
+#changeUsers {
+  display: none;
+}
+.reservationHeader h3 {
+  margin: 0;
+}
