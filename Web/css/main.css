@@ -185,3 +185,9 @@ div.center {
 .col-bottom {
   vertical-align: bottom;
 }
+.margin-bottom-25 {
+  margin-bottom: 25px;
+}
+.margin-bottom-0 {
+  margin-bottom: 0;
+}

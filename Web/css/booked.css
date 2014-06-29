@@ -185,6 +185,12 @@ div.center {
 .col-bottom {
   vertical-align: bottom;
 }
+.margin-bottom-25 {
+  margin-bottom: 25px;
+}
+.margin-bottom-0 {
+  margin-bottom: 0;
+}
 #page-dashboard .panel-heading {
   background-color: #99b2b7;
   color: #fff;
@@ -361,7 +367,6 @@ td.reserved {
 }
 .schedule_title span {
   font-size: 2em;
-  font-weight: bold;
 }
 .schedule_dates {
   text-align: center;
@@ -501,10 +506,10 @@ ul.jqtree-tree .jqtree-toggler {
   max-width: 400px;
 }
 #resourceDetailsPopup .resourceImage {
-  width: 200px;
+  max-width: 200px;
   float: left;
 }
-#resourceDetailsPopup .resourceImage image {
+#resourceDetailsPopup .resourceImage img {
   max-height: 200px;
   max-width: 200px;
 }

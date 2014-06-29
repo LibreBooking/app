@@ -19,7 +19,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 <div id="resourceDetailsPopup">
 	<h4>{$resourceName}</h4> <a href="#" class="visible-xs hideResourceDetailsPopup">{translate key=Close}</a>
 
-	<div style="clearfix">&nbsp;</div>
+	{*<div style="clearfix">&nbsp;</div>*}
 	{if $imageUrl neq ''}
 		<div class="resourceImage">
 			<img src="{$imageUrl}" alt="{$resourceName|escape}"/>
