@@ -19,7 +19,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 {extends file="Schedule/schedule.tpl"}
 
 {block name="header"}
-{include file='globalheader.tpl' cssFiles='css/schedule.css,css/view-schedule.css,css/jquery.qtip.min.css'}
+{include file='globalheader.tpl' cssFiles='css/view-schedule.css'}
 {/block}
 
 {block name="actions"}{/block}

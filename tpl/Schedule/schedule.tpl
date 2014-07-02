@@ -87,8 +87,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 {block name="schedule_control"}
 	<div class="row">
+		<div id="schedule-actions" class="col-md-3 visible-md visible-lg">
 		{block name="actions"}
-			<div id="schedule-actions" class="col-md-3 visible-md visible-lg">
 				<a href="#" id="make_default" style="display:none;">{html_image src="star_boxed_full.png" altKey="MakeDefaultSchedule"}</a>
 				<a href="#" class="schedule-style" id="schedule_standard" schedule-display="{ScheduleStyle::Standard}">{html_image src="table.png" altKey="StandardScheduleDisplay"}</a>
 				<a href="#" class="schedule-style" id="schedule_tall" schedule-display="{ScheduleStyle::Tall}">{html_image src="table-tall.png" altKey="TallScheduleDisplay"}</a>
@@ -99,10 +99,9 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 						{html_image src="feed.png"} <a target="_blank" href="{$SubscriptionUrl->GetAtomUrl()}">Atom</a> | <a target="_blank" href="{$SubscriptionUrl->GetWebcalUrl()}">iCalendar</a>
 					{/if}
 				</div>
-			</div>
-
 		{/block}
-
+		</div>
+		
 		<div id="schedule-title" class="schedule_title col-md-6">
 			<span>{$ScheduleName}</span>
 			{if $Schedules|@count gt 1}
