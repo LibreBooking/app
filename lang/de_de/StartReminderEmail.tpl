@@ -30,6 +30,6 @@ Reservierungsdetails:
 <br/>
 <a href="{$ScriptUrl}/{$ReservationUrl}">Reservierung ansehen</a> |
 <a href="{$ScriptUrl}/{$ICalUrl}">Zum Kalender hinzufügen</a> |
-<a href="{$ScriptUrl}">Anmelden bei Booked Schedule</a>
+<a href="{$ScriptUrl}">Anmelden bei Booked Scheduler</a>
 
 {include file='..\..\tpl\Email\emailfooter.tpl'}

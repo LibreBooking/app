@@ -65,11 +65,16 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		Eine oder mehrere Ressourcen benötigen eine Genehmigung.  
 		Diese Reservierung wird zurückgehalten, bis sie genehmigt ist.
 	{/if}
-	
+
+	{if !empty($ApprovedBy)}
+		<br/>
+		Genehmigt von: {$ApprovedBy}
+	{/if}
+
 	<br/>
 	<br/>
 	<a href="{$ScriptUrl}/{$ReservationUrl}">Reservierung ansehen</a> |
 	<a href="{$ScriptUrl}/{$ICalUrl}">Zum Kalender hinzufügen</a> |
-	<a href="{$ScriptUrl}">Anmelden bei Booked Schedule</a>
+	<a href="{$ScriptUrl}">Anmelden bei Booked Scheduler</a>
 	
 {include file='..\..\tpl\Email\emailfooter.tpl'}

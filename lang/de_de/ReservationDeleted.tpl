@@ -53,6 +53,6 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		{/foreach}
 	{/if}
 	<br/>
-	<a href="{$ScriptUrl}">Anmelden bei Booked Schedule</a>
+	<a href="{$ScriptUrl}">Anmelden bei Booked Scheduler</a>
 	
 {include file='..\..\tpl\Email\emailfooter.tpl'}

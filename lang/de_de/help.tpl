@@ -17,7 +17,7 @@ You should have received a copy of the GNU General Public License
 along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 *}
 {include file='globalheader.tpl'}
-<h1>Booked Schedule Hilfe</h1>
+<h1>Booked Scheduler Hilfe</h1>
 
 <div id="help">
 <h2>Registrierung / Konto hinzufügen</h2>

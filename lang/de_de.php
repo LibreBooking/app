@@ -1,21 +1,21 @@
 <?php
 /**
-Copyright 2011-2013 Nick Korbel
+Copyright 2011-2014 Nick Korbel
 
-This file is part of phpScheduleIt.
+This file is part of Booked Scheduler.
 
-phpScheduleIt is free software: you can redistribute it and/or modify
+Booked Scheduler is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation, either version 3 of the License, or
 (at your option) any later version.
 
-phpScheduleIt is distributed in the hope that it will be useful,
+Booked Scheduler is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
-along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
+along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 require_once('Language.php');
@@ -23,10 +23,10 @@ require_once('en_us.php');
 
 class de_de extends en_us
 {
-    public function __construct()
-    {
-        parent::__construct();
-    }
+	public function __construct()
+	{
+		parent::__construct();
+	}
 
     /**
      * @return array
@@ -49,7 +49,7 @@ class de_de extends en_us
 		$this->Dates = $dates;
 
 		return $this->Dates;
-}
+	}
 
     /**
      * @return array
@@ -95,8 +95,10 @@ class de_de extends en_us
         $strings['Registration'] = 'Registrierung';
         $strings['NoAnnouncements'] = 'Keine Ankündigungen';
         $strings['Announcements'] = 'Ankündigungen';
-        $strings['NoUpcomingReservations'] = 'Sie haben keine aktuellen Reservierungen.';
-        $strings['UpcomingReservations'] = 'Meine aktuellen Reservierungen';
+        $strings['NoUpcomingReservations'] = 'Sie haben keine kommenden Reservierungen.';
+        $strings['UpcomingReservations'] = 'Meine kommenden Reservierungen';
+		$strings['AllNoUpcomingReservations'] = 'Es gibt keine kommenden Reservierungen';
+		$strings['AllUpcomingReservations'] = 'Alle kommenden Reservierungen';
         $strings['ShowHide'] = 'Einblenden/Ausblenden';
         $strings['Error'] = 'Fehler';
         $strings['ReturnToPreviousPage'] = 'Zurück zur vorigen Seite';
@@ -278,6 +280,7 @@ class de_de extends en_us
         $strings['ReservationCreated'] = 'Ihre Reservierung wurde erfolgreich angelegt!';
         $strings['ReservationUpdated'] = 'Ihre Reservierung wurde erfolgreich aktualisiert!';
         $strings['ReservationRemoved'] = 'Ihre Reservierung wurde erfolgreich gelöscht';
+        $strings['ReservationRequiresApproval'] = 'Eine oder mehrere der reservierten Ressourcen erfordern eine Zustimmung vor der Verwendung. Diese Reservierung wird zurückbehalten, bis sie zugelassen ist.';
         $strings['YourReferenceNumber'] = 'Ihre Referenznummer ist %s';
         $strings['UpdatingReservation'] = 'Aktualisiere Reservierung';
         $strings['ChangeUser'] = 'Benutzer ändern';
@@ -490,6 +493,10 @@ class de_de extends en_us
 		$strings['CurrentStatus'] = 'Aktueller Status';
 		$strings['AllReservationResources'] = 'Alle Reservierungs-Ressourcen';
 		$strings['File'] = 'Datei';
+		$strings['BulkResourceUpdate'] = 'Massenaktualisierung der Ressourcen';
+		$strings['Unchanged'] = 'Unverändert';
+		$strings['Common'] = 'Allgemein/gemeinsam';
+		$strings['AdvancedFilter'] = 'Erweiterter Filter';
         // End Strings
 
 		// Install
@@ -557,11 +564,12 @@ class de_de extends en_us
 		$strings['InvalidStartReminderTime'] = 'Ungültige Start-Erinnerungszeit.';
 		$strings['InvalidEndReminderTime'] = 'Ungültige End-Erinnerungszeit.';
 		$strings['QuotaExceeded'] = 'Kontingentgrenze überschritten.';
-		$strings['MultiDayRule'] = '%s does not allow reservations across days.';
-		$strings['InvalidReservationData'] = 'There were problems with your reservation request.';
-		$strings['PasswordError'] = 'Password must contain at least %s letters and at least %s numbers.';
-		$strings['PasswordErrorRequirements'] = 'Password must contain a combination of at least %s upper and lower case letters and %s numbers.';
-        // End Errors
+*		$strings['MultiDayRule'] = '%s does not allow reservations across days.';
+*		$strings['InvalidReservationData'] = 'There were problems with your reservation request.';
+*		$strings['PasswordError'] = 'Password must contain at least %s letters and at least %s numbers.';
+*		$strings['PasswordErrorRequirements'] = 'Password must contain a combination of at least %s upper and lower case letters and %s numbers.';
+*		$strings['NoReservationAccess'] = 'You are not allowed to change this reservation.';
+		// End Errors
 
         // Page Titles
         $strings['CreateReservation'] = 'Reservierung anlegen';
@@ -616,9 +624,9 @@ class de_de extends en_us
 		$strings['Group'] = 'Gruppe';
 		$strings['ManageConfiguration'] = 'Programm Konfiguration';
 		$strings['LookAndFeel'] = 'Logo und CSS Änderung';
-		$strings['ManageResourceGroups'] = 'Resource Groups';
-		$strings['ManageResourceTypes'] = 'Resource Types';
-		$strings['ManageResourceStatus'] = 'Resource Statuses';
+		$strings['ManageResourceGroups'] = 'Ressourcen Gruppen';
+		$strings['ManageResourceTypes'] = 'Ressourcen Typen';
+		$strings['ManageResourceStatus'] = 'Ressourcen Status';
         // End Page Titles
 
         // Day representations
@@ -655,7 +663,7 @@ class de_de extends en_us
         $strings['ReportSubject'] = 'Ihr angeforderter Bericht (%s)';
 		$strings['ReservationStartingSoonSubject'] = 'Ihre Reservierung für %s beginnt bald';
 		$strings['ReservationEndingSoonSubject'] = 'Ihre Reservierung für %s endet bald';
-		$strings['UserAdded'] = 'A new user has been added';
+		$strings['UserAdded'] = 'Ein neuer Benutzer wurde hinzugefügt';
         // End Email Subjects
 
         $this->Strings = $strings;
