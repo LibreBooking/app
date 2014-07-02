@@ -36,9 +36,11 @@ class en_us extends Language
 
 		$dates['general_date'] = 'm/d/Y';
 		$dates['general_datetime'] = 'm/d/Y H:i:s';
+		$dates['short_datetime'] = 'n/j/y H:i:s';
 		$dates['schedule_daily'] = 'l, m/d/Y';
 		$dates['reservation_email'] = 'm/d/Y @ g:i A (e)';
 		$dates['res_popup'] = 'm/d/Y g:i A';
+		$dates['short_reservation_date'] = 'n/j/y g:i A';
 		$dates['dashboard'] = 'l, m/d/Y g:i A';
 		$dates['period_time'] = 'g:i A';
 		$dates['mobile_reservation_date'] = 'n/j g:i A';

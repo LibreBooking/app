@@ -8,7 +8,7 @@ html, body {
 @footer-height: 45px;
 
 body {
-  padding-bottom: @footer-height;// + 30; /* this needs to be bigger than footer height*/
+  padding-bottom: @footer-height; // + 30; /* this needs to be bigger than footer height*/
 }
 
 a {
@@ -33,7 +33,7 @@ a {
 }
 
 #main {
-  padding-top:60px;
+  padding-top: 60px;
   min-height: 100%;
   padding-bottom: @footer-height; // + 30;
 }
@@ -62,7 +62,7 @@ a {
 }
 
 #page-login .register {
-  text-align:right;
+  text-align: right;
 }
 
 .login-links {
@@ -97,84 +97,123 @@ div.center {
   border-top: solid 1px @light-gray;
 }
 
-.form-control.dateinput, .form-control.timeinput{
-    width: 100px;
-    padding: 3px;
-    margin: 2px 0 5px 0;
+.form-control.dateinput, .form-control.timeinput {
+  width: 100px;
+  padding: 3px;
+  margin: 2px 0 5px 0;
 }
 
 /** Credit: http://www.minimit.com/articles/solutions-tutorials/bootstrap-3-responsive-columns-of-same-height **/
 /* columns of same height styles */
 .container-xs-height {
-    display:table;
-    padding-left:0px;
-    padding-right:0px;
+  display: table;
+  padding-left: 0px;
+  padding-right: 0px;
 }
+
 .row-xs-height {
-    display:table-row;
+  display: table-row;
 }
+
 .col-xs-height {
-    display:table-cell;
-    float:none;
+  display: table-cell;
+  float: none;
 }
+
 @media (min-width: 768px) {
-    .container-sm-height {
-        display:table;
-        padding-left:0px;
-        padding-right:0px;
-    }
-    .row-sm-height {
-        display:table-row;
-    }
-    .col-sm-height {
-        display:table-cell;
-        float:none;
-    }
+  .container-sm-height {
+    display: table;
+    padding-left: 0px;
+    padding-right: 0px;
+  }
+
+  .row-sm-height {
+    display: table-row;
+  }
+
+  .col-sm-height {
+    display: table-cell;
+    float: none;
+  }
 }
+
 @media (min-width: 992px) {
-    .container-md-height {
-        display:table;
-        padding-left:0px;
-        padding-right:0px;
-    }
-    .row-md-height {
-        display:table-row;
-    }
-    .col-md-height {
-        display:table-cell;
-        float:none;
-    }
+  .container-md-height {
+    display: table;
+    padding-left: 0px;
+    padding-right: 0px;
+  }
+
+  .row-md-height {
+    display: table-row;
+  }
+
+  .col-md-height {
+    display: table-cell;
+    float: none;
+  }
 }
+
 @media (min-width: 1200px) {
-    .container-lg-height {
-        display:table;
-        padding-left:0px;
-        padding-right:0px;
-    }
-    .row-lg-height {
-        display:table-row;
-    }
-    .col-lg-height {
-        display:table-cell;
-        float:none;
-    }
+  .container-lg-height {
+    display: table;
+    padding-left: 0px;
+    padding-right: 0px;
+  }
+
+  .row-lg-height {
+    display: table-row;
+  }
+
+  .col-lg-height {
+    display: table-cell;
+    float: none;
+  }
 }
 
 /* vertical alignment styles */
 .col-top {
-    vertical-align:top;
+  vertical-align: top;
 }
+
 .col-middle {
-    vertical-align:middle;
+  vertical-align: middle;
 }
+
 .col-bottom {
-    vertical-align:bottom;
+  vertical-align: bottom;
 }
 
 .margin-bottom-25 {
-  margin-bottom:25px;
+  margin-bottom: 25px;
 }
 
 .margin-bottom-0 {
   margin-bottom: 0;
+}
+
+.horizontal-list ul {
+  display: block;
+  width: 100%;
+  clear: both;
+  margin: auto;
+  list-style-type: none;
+  padding-left: 0;
+}
+
+.horizontal-list li {
+  clear: both;
+  display: inline-block;
+  list-style-type: none;
+  min-width: 240px;
+  margin-right: 20px;
+  margin-bottom: 5px;
+}
+
+.horizontal-list label {
+  font-size:.9em;
+}
+
+.center {
+	text-align: center;
 }

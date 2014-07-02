@@ -334,12 +334,6 @@ ul.jqtree-tree .group-resource .jqtree-title {
 .config-settings li {
   padding: 3px 0;
 }
-#reservationTable {
-  width: 100%;
-}
-th.date {
-  width: 120px;
-}
 th.action {
   max-width: 50px;
 }
@@ -353,23 +347,6 @@ th.action {
 .filterTable textarea,
 .filterTable select {
   width: 150px;
-}
-.horizontal-list {
-  clear: both;
-}
-.horizontal-list ul {
-  display: block;
-  width: 100%;
-  clear: both;
-  margin: auto;
-  list-style-type: none;
-}
-.horizontal-list li {
-  clear: both;
-  display: inline-block;
-  list-style-type: none;
-  min-width: 165px;
-  margin-right: 20px;
 }
 label.label-top,
 .label-top label {

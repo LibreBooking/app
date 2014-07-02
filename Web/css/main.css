@@ -191,3 +191,25 @@ div.center {
 .margin-bottom-0 {
   margin-bottom: 0;
 }
+.horizontal-list ul {
+  display: block;
+  width: 100%;
+  clear: both;
+  margin: auto;
+  list-style-type: none;
+  padding-left: 0;
+}
+.horizontal-list li {
+  clear: both;
+  display: inline-block;
+  list-style-type: none;
+  min-width: 240px;
+  margin-right: 20px;
+  margin-bottom: 5px;
+}
+.horizontal-list label {
+  font-size: .9em;
+}
+.center {
+  text-align: center;
+}
