@@ -79,7 +79,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 	<div>
 		<form id="addQuotaForm" method="post">
 		{capture name="schedules" assign="schedules"}
-			<select class='textbox' {formname key=SCHEDULE_ID}>
+			<select class='textbox' {formname key=SCHEDULE_ID} title="Select Schedule">
 				<option selected='selected' value=''>{translate key=AllSchedules}</option>
 			{foreach from=$Schedules item=schedule}
 				<option value='{$schedule->GetId()}'>{$schedule->GetName()|replace:',':' '}</option>
@@ -88,7 +88,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		{/capture}
 
 		{capture name="resources" assign="resources"}
-			<select class='textbox' {formname key=RESOURCE_ID}>
+			<select class='textbox' {formname key=RESOURCE_ID} title="Select Resource">
 				<option selected='selected' value=''>{translate key=AllResources}</option>
 			{foreach from=$Resources item=resource}
 				<option value='{$resource->GetResourceId()}'>{$resource->GetName()|replace:',':' '}</option>
@@ -97,7 +97,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		{/capture}
 
 		{capture name="groups" assign="groups"}
-			<select class='textbox' {formname key=GROUP}>
+			<select class='textbox' {formname key=GROUP} title="Select Group">
 				<option selected='selected' value=''>{translate key=AllGroups}</option>
 			{foreach from=$Groups item=group}
 				<option value='{$group->Id}'>{$group->Name|replace:',':' '}</option>
@@ -106,18 +106,18 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		{/capture}
 
 		{capture name="amount" assign="amount"}
-			<input type='text' class='textbox' value='0' size='5' {formname key=LIMIT} />
+			<input type='text' class='textbox' value='0' size='5' {formname key=LIMIT} title="Quota number"/>
 		{/capture}
 
 		{capture name="unit" assign="unit"}
-			<select class='textbox' {formname key=UNIT}>
+			<select class='textbox' {formname key=UNIT} title="Quota unit">
 				<option value='{QuotaUnit::Hours}'>{translate key=hours}</option>
 				<option value='{QuotaUnit::Reservations}'>{translate key=reservations}</option>
 			</select>
 		{/capture}
 
 		{capture name="duration" assign="duration"}
-			<select class='textbox' {formname key=DURATION}>
+			<select class='textbox' {formname key=DURATION} title="Quota frequency">
 				<option value='{QuotaDuration::Day}'>{translate key=day}</option>
 				<option value='{QuotaDuration::Week}'>{translate key=week}</option>
 				<option value='{QuotaDuration::Month}'>{translate key=month}</option>

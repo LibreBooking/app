@@ -24,8 +24,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta name="robots" content="noindex"/>
 	{if $ShouldLogout}
-		<meta http-equiv="REFRESH"
-			  content="{$SessionTimeoutSeconds};URL={$Path}logout.php?{QueryStringKeys::REDIRECT}={$smarty.server.REQUEST_URI|urlencode}">
+		<!--meta http-equiv="REFRESH"
+			  content="{$SessionTimeoutSeconds};URL={$Path}logout.php?{QueryStringKeys::REDIRECT}={$smarty.server.REQUEST_URI|urlencode}"-->
 	{/if}
 	<link rel="shortcut icon" href="{$Path}favicon.ico"/>
 	<link rel="icon" href="{$Path}favicon.ico"/>
@@ -53,13 +53,13 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		{cssfile src="css/jquery.qtip.min.css" rel="stylesheet"}
 	{else}
 		<link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.9.0/themes/smoothness/jquery-ui.css"
-			  type="text/css">
+			  type="text/css"/>
 		<link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css"
-			  type="text/css">
+			  type="text/css"/>
 		<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css"
-			  type="text/css">
+			  type="text/css"/>
 		<link rel="stylesheet" href="//cdn.jsdelivr.net/qtip2/2.2.0/jquery.qtip.min.css"
-			  type="text/css">
+			  type="text/css"/>
 	{/if}
 	{cssfile src="nav.css"}
 	{cssfile src="booked.css"}
@@ -93,7 +93,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 				<span class="icon-bar"></span>
 				<span class="icon-bar"></span>
 		  	</button>
-			<a class="navbar-brand" href="{$HomeUrl}">{html_image src="$LogoUrl"}</a>
+			<a class="navbar-brand" href="{$HomeUrl}">{html_image src="$LogoUrl" alt="Scheduler Logo - Home Link"}</a>
 		</div>
 		<div class="collapse navbar-collapse" id="booked-navigation">
 			<ul class="nav navbar-nav">

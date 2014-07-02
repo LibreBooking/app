@@ -33,7 +33,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 <div id="registrationbox">
 	<form class="register" method="post" action="{$smarty.server.SCRIPT_NAME}">
-		<div class="registrationHeader"><h3>{translate key="ChangePassword"}</h3></div>
+		<div class="registrationHeader"><h1>{translate key="ChangePassword"}</h1></div>
 		<p>
 			<label class="reg">{translate key="CurrentPassword"}<br/>
 			{textbox type="password" name="CURRENT_PASSWORD" class="input" size="20"}

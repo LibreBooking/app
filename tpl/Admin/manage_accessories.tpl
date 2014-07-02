@@ -53,9 +53,9 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 <div id="editDialog" class="dialog" style="display:none;" title="{translate key=Edit}">
 	<form id="editForm" method="post">
-		{translate key=AccessoryName}<br/> <input id="editName" type="text" class="textbox required" maxlength="85" style="width:250px" {formname key=ACCESSORY_NAME} />
+		<label for="editName">{translate key=AccessoryName}</label><br/> <input id="editName" type="text" class="textbox required" maxlength="85" style="width:250px" {formname key=ACCESSORY_NAME} />
 		<br/><br/>
-		{translate key='QuantityAvailable'}<br/><input id="editQuantity" type="text" class="textbox" size="2" disabled="disabled" {formname key=ACCESSORY_QUANTITY_AVAILABLE} />
+		<label for="editQuantity">{translate key='QuantityAvailable'}</label><br/><input id="editQuantity" type="text" class="textbox" size="2" disabled="disabled" {formname key=ACCESSORY_QUANTITY_AVAILABLE} />
 		<input type="checkbox" id="chkUnlimitedEdit" class="unlimited" name="chkUnlimited" checked="checked" />
 		<label for="chkUnlimitedEdit"> {translate key=Unlimited}</label><br/><br/>
 		<button type="button" class="button save">{html_image src="disk-black.png"} {translate key='Update'}</button>
@@ -72,13 +72,13 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		<form id="addForm" method="post">
 			<table>
 				<tr>
-					<th>{translate key='AccessoryName'}</th>
-					<th>{translate key='QuantityAvailable'}</th>
+					<th><label for="addName">{translate key='AccessoryName'}</label></th>
+					<th><label for="addQuantity">{translate key='QuantityAvailable'}</label></th>
 					<th>&nbsp;</th>
 				</tr>
 				<tr>
 					<td>
-						<input type="text" class="textbox required" maxlength="85" style="width:250px" {formname key=ACCESSORY_NAME} />
+						<input type="text" id="addName" class="textbox required" maxlength="85" style="width:250px" {formname key=ACCESSORY_NAME} />
 					</td>
 					<td>
 						<input type="text" id="addQuantity" class="textbox" size="2" disabled="disabled" {formname key=ACCESSORY_QUANTITY_AVAILABLE} />

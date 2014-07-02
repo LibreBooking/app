@@ -32,21 +32,21 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 <div id="globalError" class="error" style="display:none"></div>
 
-<h2 class="resource-status">{translate key=Available} <a href="#" class="add" add-to="{ResourceStatus::AVAILABLE}">{html_image src="plus-circle.png"}</a></h2>
+<h2 class="resource-status">{translate key=Available} <a href="#" class="add" add-to="{ResourceStatus::AVAILABLE}">{html_image src="plus-circle.png" alt="Add"}</a></h2>
 <ul class="no-style resource-status-reasons">
 	{foreach from=$StatusReasons[{ResourceStatus::AVAILABLE}] item=reason}
 		{displayReason reason=$reason}
 	{/foreach}
 </ul>
 
-<h2 class="resource-status">{translate key=Unavailable} <a href="#" class="add" add-to="{ResourceStatus::UNAVAILABLE}">{html_image src="plus-circle.png"}</a></h2>
+<h2 class="resource-status">{translate key=Unavailable} <a href="#" class="add" add-to="{ResourceStatus::UNAVAILABLE}">{html_image src="plus-circle.png" alt="Add"}</a></h2>
 <ul class="no-style resource-status-reasons">
 	{foreach from=$StatusReasons[{ResourceStatus::UNAVAILABLE}] item=reason}
 		{displayReason reason=$reason}
 	{/foreach}
 </ul>
 
-<h2 class="resource-status">{translate key=Hidden} <a href="#" class="add" add-to="{ResourceStatus::HIDDEN}">{html_image src="plus-circle.png"}</a></h2>
+<h2 class="resource-status">{translate key=Hidden} <a href="#" class="add" add-to="{ResourceStatus::HIDDEN}">{html_image src="plus-circle.png" alt="Add"}</a></h2>
 <ul class="no-style resource-status-reasons">
 	{foreach from=$StatusReasons[{ResourceStatus::HIDDEN}] item=reason}
 		{displayReason reason=$reason}

@@ -17,7 +17,7 @@ You should have received a copy of the GNU General Public License
 along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 *}
 <div id="{$prefix}repeatDiv">
-	<label>{translate key="RepeatPrompt"}</label>
+	<label for="{$prefix}repeatOptions">{translate key="RepeatPrompt"}</label>
 	<select id="{$prefix}repeatOptions" {formname key=repeat_options} class="pulldown input" style="width:250px">
 	{foreach from=$RepeatOptions key=k item=v}
 		<option value="{$k}">{translate key=$v['key']}</option>
@@ -25,7 +25,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 	</select>
 
 	<div id="{$prefix}repeatEveryDiv" style="display:none;" class="days weeks months years">
-		<label>{translate key="RepeatEveryPrompt"}</label>
+		<label for="{$prefix}repeatInterval">{translate key="RepeatEveryPrompt"}</label>
 		<select id="{$prefix}repeatInterval" {formname key=repeat_every} class="pulldown input" style="width:55px">
 		{html_options values=$RepeatEveryOptions output=$RepeatEveryOptions}
 		</select>
@@ -35,7 +35,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		<span class="years">{translate key=$RepeatOptions['yearly']['everyKey']}</span>
 	</div>
 	<div id="{$prefix}repeatOnWeeklyDiv" style="display:none;" class="weeks">
-		<label>{translate key="RepeatDaysPrompt"}</label>
+		{translate key="RepeatDaysPrompt"}
 		<input type="checkbox"
 			   id="{$prefix}repeatDay0" {formname key=repeat_sunday} /><label
 			for="repeatDay0">{translate key="DaySundayAbbr"}</label>
@@ -67,7 +67,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		<label for="repeatMonthWeek">{translate key="repeatDayOfWeek"}</label>
 	</div>
 	<div id="{$prefix}repeatUntilDiv" style="display:none;">
-		<label for="formattedEndRepeat">{translate key="RepeatUntilPrompt"}</label>
+		<label for="{$prefix}EndRepeat">{translate key="RepeatUntilPrompt"}</label>
 		<input type="text" id="{$prefix}EndRepeat" class="dateinput" value="{formatdate date=$RepeatTerminationDate}"/>
 		<input type="hidden" id="{$prefix}formattedEndRepeat" {formname key=end_repeat_date}
 			   value="{formatdate date=$RepeatTerminationDate key=system}"/>

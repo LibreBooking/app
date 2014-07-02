@@ -30,7 +30,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 	<div id="manage-resource-groups-container">
 		<div id="new-group">
 			<form method="post" id="addGroupForm" ajaxAction="{ManageResourceGroupsActions::AddGroup}">
-				<input type="text" name="{FormKeys::GROUP_NAME}" class="textbox new-group" size="30"/>
+				<label for="groupName">Group name:</label>
+				<input type="text" name="{FormKeys::GROUP_NAME}" class="textbox new-group" size="30" id="groupName" />
 				<input type="hidden" name="{FormKeys::PARENT_ID}" />
 				{html_image src="plus-circle.png" class="image-button" id="btnAddGroup"}
 			</form>
@@ -57,7 +58,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 <div id="renameDialog" class="dialog" title="{translate key=Rename}">
 	<form id="renameForm" method="post" ajaxAction="{ManageResourceGroupsActions::RenameGroup}">
-		{translate key='Name'}: <input id="editName" type="text" class="textbox required triggerSubmit" maxlength="85"
+		<label for="editName">{translate key='Name'}:</label>
+		<input id="editName" type="text" class="textbox required triggerSubmit" maxlength="85"
 									   style="width:250px" {formname key=GROUP_NAME} />
 		<br/><br/>
 		<button type="button" class="button save">{html_image src="disk-black.png"} {translate key='Rename'}</button>
@@ -78,7 +80,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 <div id="addChildDialog" class="dialog" title="{translate key=AddNewGroup}">
 	<form id="addChildForm" method="post" ajaxAction="{ManageResourceGroupsActions::AddGroup}">
-	{translate key='Name'}: <input id="childName" type="text" class="textbox required new-group" maxlength="85"
+	<label for="childName">{translate key='Name'}:</label>
+	<input id="childName" type="text" class="textbox required new-group" maxlength="85"
 								   style="width:250px" {formname key=GROUP_NAME} />
 		<br/><br/>
 		<button type="button" class="button save">{html_image src="disk-black.png"} {translate key='Add'}</button>

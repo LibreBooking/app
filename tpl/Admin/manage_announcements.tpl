@@ -56,17 +56,17 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 <div id="editDialog" class="dialog" style="display:none;" title="{translate key=Edit}">
 	<form id="editForm" method="post">
-		{translate key=Announcement}<br/>
+		<label for="editText">{translate key=Announcement}</label><br/>
         <textarea id="editText" class="textbox required" style="width:500px" {formname key=ANNOUNCEMENT_TEXT}></textarea><br/>
-        {translate key='BeginDate'}<br/>
+        <label for="editBegin">{translate key='BeginDate'}</label><br/>
         <input type="text" id="editBegin" class="textbox" />
         <input type="hidden" id="formattedEditBegin" {formname key=ANNOUNCEMENT_START} />
 		<br/>
-        {translate key='EndDate'}<br/>
+        <label for="editEnd">{translate key='EndDate'}</label><br/>
         <input type="text" id="editEnd" class="textbox" />
         <input type="hidden" id="formattedEditEnd" {formname key=ANNOUNCEMENT_END} />
 		<br/>
-        {translate key='Priority'} <br/>
+        <label for="editPriority">{translate key='Priority'}</label> <br/>
         <select id="editPriority" class="textbox" {formname key=ANNOUNCEMENT_PRIORITY}>
             <option value="">---</option>
             {html_options values=$priorities output=$priorities}
@@ -85,15 +85,15 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		<form id="addForm" method="post">
 			<table>
 				<tr>
-					<th>{translate key='Announcement'}</th>
-					<th>{translate key='BeginDate'}</th>
-					<th>{translate key='EndDate'}</th>
-					<th>{translate key='Priority'}</th>
+					<th><label for="addAnnouncement">{translate key='Announcement'}</label></th>
+					<th><label for="BeginDate">{translate key='BeginDate'}</label></th>
+					<th><label for="EndDate">{translate key='EndDate'}</label></th>
+					<th><label for="addPriority">{translate key='Priority'}</label></th>
 					<th>&nbsp;</th>
 				</tr>
 				<tr>
 					<td>
-						<textarea class="textbox required" style="width:500px" {formname key=ANNOUNCEMENT_TEXT}></textarea>
+						<textarea class="textbox required" style="width:500px" {formname key=ANNOUNCEMENT_TEXT} id="addAnnouncement"></textarea>
 					</td>
 					<td>
 						<input type="text" id="BeginDate" class="textbox" {formname key=ANNOUNCEMENT_START} />
@@ -104,7 +104,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 						<input type="hidden" id="formattedEndDate" {formname key=ANNOUNCEMENT_END} />
 					</td>
                     <td>
-                        <select class="textbox" {formname key=ANNOUNCEMENT_PRIORITY}>
+                        <select class="textbox" {formname key=ANNOUNCEMENT_PRIORITY} id="addPriority">
                             <option value="">---</option>
                             {html_options values=$priorities output=$priorities}
                         </select>

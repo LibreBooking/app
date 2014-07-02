@@ -658,6 +658,6 @@ class SmartyPage extends Smarty
 		{
 			$src = "css/{$src}";
 		}
-		echo "<link rel='stylesheet' type='text/css' href='{$this->RootPath}{$src}?v=$versionNumber'></link>";
+		echo "<link rel='stylesheet' type='text/css' href='{$this->RootPath}{$src}?v=$versionNumber'/>";
 	}
 }

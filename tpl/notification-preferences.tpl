@@ -95,7 +95,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 		<div style="clear:both;margin-top: 15px;">
 			<button type="submit" class="button update prompt" name="{Actions::SAVE}">
-				<img src="img/tick-circle.png"/>
+				<img src="img/tick-circle.png" alt=""/>
 				{translate key='Update'}
 			</button>
 		</div>

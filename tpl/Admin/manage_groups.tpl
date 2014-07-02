@@ -21,7 +21,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 <h1>{translate key=ManageGroups}</h1>
 
 <div style="padding: 10px 0px;">
-	{translate key='FindGroup'}:<br/>
+	<label for="groupSearch">{translate key='FindGroup'}:</label><br/>
 	<input type="text" id="groupSearch" class="textbox" size="40"/> {html_link href=$smarty.server.SCRIPT_NAME key=AllGroups}
 </div>
 <table class="list">
@@ -57,7 +57,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 <input type="hidden" id="activeId" />
 
 <div id="membersDialog" class="dialog" style="display:none;" title="{translate key=GroupMembers}">
-	{translate key=AddUser}: <input type="text" id="userSearch" class="textbox" size="40" /> <a href="#" id="browseUsers">{translate key=Browse}</a>
+	<label for="userSearch">{translate key=AddUser}:</label> <input type="text" id="userSearch" class="textbox" size="40" /> <a href="#" id="browseUsers">{translate key=Browse}</a>
 	<div id="allUsers" style="display:none;" class="dialog" title="{translate key=AllUsers}"></div>
 	<h4><span id="totalUsers"></span> {translate key=UsersInGroup}</h4>
 	<div id="groupUserList"></div>
@@ -117,7 +117,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 <div id="groupAdminDialog" class="dialog" title="{translate key=WhoCanManageThisGroup}">
 	<form method="post" id="groupAdminForm">
-		<select {formname key=GROUP_ADMIN} class="textbox">
+		<label for="groupAdmin" class="off-screen">{translate key=WhoCanManageThisGroup}</label>
+		<select {formname key=GROUP_ADMIN} class="textbox" id="groupAdmin">
 			<option value="">-- {translate key=None} --</option>
 			{foreach from=$AdminGroups item=adminGroup}
 				<option value="{$adminGroup->Id}">{$adminGroup->Name}</option>
@@ -136,7 +137,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 	<div>
 		<div id="addGroupResults" class="error" style="display:none;"></div>
 		<form id="addGroupForm" method="post">
-			Name<br/> <input type="text" class="textbox required" {formname key=GROUP_NAME} />
+			<label for="addGroupName">Name</label><br/> <input type="text" id="addGroupName" class="textbox required" {formname key=GROUP_NAME} />
 			<button type="button" class="button save">{html_image src="plus-button.png"} {translate key=AddGroup}</button>
 		</form>
 	</div>

@@ -88,16 +88,16 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		<form id="addForm" method="post" ajaxAction="{ManageResourceTypesActions::Add}">
 			<table>
 				<tr>
-					<th>{translate key='Name'}</th>
-					<th>{translate key='Description'}</th>
+					<th><label for="resourceTypeName">{translate key='Name'}</label></th>
+					<th><label for="resourceTypeDesc">{translate key='Description'}</label></th>
 					<th>&nbsp;</th>
 				</tr>
 				<tr>
 					<td style="vertical-align: top;">
-						<input type="text" class="textbox required" maxlength="85" style="width:250px" {formname key=RESOURCE_TYPE_NAME} />
+						<input type="text" class="textbox required" maxlength="85" style="width:250px" {formname key=RESOURCE_TYPE_NAME} id="resourceTypeName"/>
 					</td>
 					<td>
-						<textarea class="textbox" style="width:400px" {formname key=RESOURCE_TYPE_DESCRIPTION}></textarea>
+						<textarea class="textbox" style="width:400px" {formname key=RESOURCE_TYPE_DESCRIPTION} id="resourceTypeDesc"></textarea>
 					</td>
 				</tr>
 			</table>
@@ -112,11 +112,12 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 <div id="editDialog" class="dialog" style="display:none;" title="{translate key=Update}">
 	<form id="editForm" method="post" ajaxAction="{ManageResourceTypesActions::Update}">
-		{translate key='Name'}: <input id="editName" type="text" class="textbox required" maxlength="85"
+		<label for="editName">{translate key='Name'}:</label>
+		<input id="editName" type="text" class="textbox required" maxlength="85"
 									   style="width:250px" {formname key=RESOURCE_TYPE_NAME} />
 		<br/><br/>
 
-		{translate key=Description}:<br/>
+		<label for="editDescription">{translate key=Description}:</label><br/>
 		<textarea id="editDescription" class="textbox" style="width:460px;height:150px;" {formname key=RESOURCE_TYPE_DESCRIPTION}></textarea>
 		<br/><br/>
 

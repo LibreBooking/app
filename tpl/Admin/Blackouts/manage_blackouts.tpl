@@ -31,13 +31,13 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 					<label for="addStartDate" class="wideLabel">{translate key=BeginDate}</label>
 					<input type="text" id="addStartDate" class="textbox" size="10" value="{formatdate date=$AddStartDate}"/>
 					<input {formname key=BEGIN_DATE} id="formattedAddStartDate" type="hidden" value="{formatdate date=$AddStartDate key=system}"/>
-					<input {formname key=BEGIN_TIME} type="text" id="addStartTime" class="textbox" size="7" value="12:00 AM" />
+					<input {formname key=BEGIN_TIME} type="text" id="addStartTime" class="textbox" size="7" value="12:00 AM" title="Start time"/>
 				</li>
 				<li>
 					<label for="addEndDate" class="wideLabel">{translate key=EndDate}</label>
 					<input type="text" id="addEndDate" class="textbox" size="10" value="{formatdate date=$AddEndDate}"/>
 					<input {formname key=END_DATE} type="hidden" id="formattedAddEndDate" value="{formatdate date=$AddEndDate key=system}"/>
-					<input {formname key=END_TIME} type="text" id="addEndTime" class="textbox" size="7"  value="12:00 AM" />
+					<input {formname key=END_TIME} type="text" id="addEndTime" class="textbox" size="7"  value="12:00 AM" title="End time"/>
 				</li>
 				<li>
 					<label for="addResourceId" class="wideLabel">{translate key=Resource}</label>
@@ -47,7 +47,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 					{if $Schedules|count > 0}
 					|
 					<label for="allResources" style="">{translate key=AllResourcesOn} </label> <input {formname key=BLACKOUT_APPLY_TO_SCHEDULE} type="checkbox" id="allResources" />
-					<select {formname key=SCHEDULE_ID} id="addScheduleId" class="textbox" disabled="disabled">
+					<select {formname key=SCHEDULE_ID} id="addScheduleId" class="textbox" disabled="disabled" title="Schedule">
 						{object_html_options options=$Schedules key='GetId' label="GetName" selected=$ScheduleId}
 					</select>
 					{/if}
@@ -82,15 +82,15 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 	<table style="display:inline;">
 		<tr>
 			<td>{translate key=Between}</td>
-			<td>{translate key=Schedule}</td>
-			<td>{translate key=Resource}</td>
+			<td><label for="scheduleId">{translate key=Schedule}</label></td>
+			<td><label for="resourceId">{translate key=Resource}</label></td>
 		</tr>
 		<tr>
 			<td>
-				<input id="startDate" type="text" class="textbox" value="{formatdate date=$StartDate}"/>
+				<input id="startDate" type="text" class="textbox" value="{formatdate date=$StartDate}" title="Between start date"/>
 				<input id="formattedStartDate" type="hidden" value="{formatdate date=$StartDate key=system}"/>
 				-
-				<input id="endDate" type="text" class="textbox" value="{formatdate date=$EndDate}"/>
+				<input id="endDate" type="text" class="textbox" value="{formatdate date=$EndDate}" title="To end date"/>
 				<input id="formattedEndDate" type="hidden" value="{formatdate date=$EndDate key=system}"/>
 			</td>
 			<td>

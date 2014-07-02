@@ -99,7 +99,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 	<p class="regsubmit">
         <button type="button" class="button update" name="{Actions::SAVE}" id="btnUpdate">
-			<img src="img/tick-circle.png" />{translate key='Update'}
+			<img src="img/tick-circle.png" alt=""/>{translate key='Update'}
 	    </button>
 	</p>
 </form>

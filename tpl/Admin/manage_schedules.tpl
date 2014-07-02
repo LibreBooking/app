@@ -134,21 +134,22 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
         <div id="addScheduleResults" class="error" style="display:none;"></div>
         <form id="addScheduleForm" method="post">
             <ul>
-                <li>{translate key=Name}<br/> <input type="text" style="width:300px"
+                <li><label for="addName">{translate key=Name}</label><br/> <input type="text" id="addName" style="width:300px"
                                                      class="textbox required" {formname key=SCHEDULE_NAME} /></li>
-                <li>{translate key=StartsOn}<br/>
-                    <select {formname key=SCHEDULE_WEEKDAY_START} class="textbox">
+                <li><label for="addStartsOn">{translate key=StartsOn}</label><br/>
+                    <select {formname key=SCHEDULE_WEEKDAY_START} class="textbox" id="addStartsOn">
                         <option value="{Schedule::Today}">{$Today}</option>
 					{foreach from=$DayNames item="dayName" key="dayIndex"}
                         <option value="{$dayIndex}">{$dayName}</option>
 					{/foreach}
                     </select>
                 </li>
-                <li>{translate key=NumberOfDaysVisible}<br/><input type="text" class="textbox required" maxlength="3"
+                <li><label for="addNumDaysVisible">{translate key=NumberOfDaysVisible}</label><br/>
+			<input type="text" class="textbox required" maxlength="3" id="addNumDaysVisible" 
                                                                    size="3" {formname key=SCHEDULE_DAYS_VISIBLE} />
                 </li>
-                <li>{translate key=UseSameLayoutAs}<br/>
-                    <select style="width:300px" class="textbox" {formname key=SCHEDULE_ID}>
+                <li><label for="addSameLayoutAs">{translate key=UseSameLayoutAs}</label><br/>
+                    <select style="width:300px" class="textbox" {formname key=SCHEDULE_ID} id="addSameLayoutAs">
 					{foreach from=$SourceSchedules item=schedule}
                         <option value="{$schedule->GetId()}">{$schedule->GetName()}</option>
 					{/foreach}
@@ -171,7 +172,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
             <h3>{translate key=DeleteWarning}</h3>
         </div>
 
-	{translate key=MoveResourcesAndReservations}
+	<label for="targetScheduleId">{translate key=MoveResourcesAndReservations}</label>
         <select id="targetScheduleId" {formname key=SCHEDULE_ID} class="required">
             <option value="">-- {translate key=Schedule} --</option>
 		{foreach from=$Schedules item=schedule}
@@ -190,7 +191,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 <div id="renameDialog" class="dialog" style="display:none;">
     <form id="renameForm" method="post">
-	{translate key=Name}: <input type="text" class="textbox required" {formname key=SCHEDULE_NAME} /><br/><br/>
+	<label for="newName">{translate key=Name}:</label> 
+	<input type="text" class="textbox required" {formname key=SCHEDULE_NAME} id="newName"/><br/><br/>
         <button type="button" class="button save">{html_image src="tick-circle.png"} {translate key=Update}</button>
         <button type="button" class="button cancel">{html_image src="slash.png"} {translate key=Cancel}</button>
 
@@ -199,7 +201,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 <div id="changeSettingsDialog" class="dialog" style="display:none;">
     <form id="settingsForm" method="post">
-	{translate key=StartsOn}:
+	<label for="dayOfWeek">{translate key=StartsOn}:</label>
         <select id="dayOfWeek" {formname key=SCHEDULE_WEEKDAY_START} class="textbox">
             <option value="{Schedule::Today}">{$Today}</option>
 		{foreach from=$DayNames item="dayName" key="dayIndex"}
@@ -207,7 +209,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		{/foreach}
         </select>
         <br/>
-	{translate key=NumberOfDaysVisible}: <input type="text" class="textbox required" id="daysVisible" maxlength="3"
+	<label for="daysVisible">{translate key=NumberOfDaysVisible}:</label> 
+	<input type="text" class="textbox required" id="daysVisible" maxlength="3"
                                                 size="3" {formname key=SCHEDULE_DAYS_VISIBLE} />
         <br/><br/>
         <button type="button" class="button save">{html_image src="tick-circle.png"} {translate key=Update}</button>
@@ -234,12 +237,12 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 				{assign var=suffix value="_$day"}
 			{/if}
             <div style="float:left;">
-                <h5>{translate key=ReservableTimeSlots}</h5>
+                <label for="reservableEdit{$suffix}">{translate key=ReservableTimeSlots}</label>
                 <textarea class="reservableEdit"
                           id="reservableEdit{$suffix}" name="{FormKeys::SLOTS_RESERVABLE}{$suffix}"></textarea>
             </div>
             <div style="float:right;">
-                <h5>{translate key=BlockedTimeSlots}</h5>
+                <label for="blockedEdit{$suffix}">{translate key=BlockedTimeSlots}</label>
                 <textarea class="blockedEdit" id="blockedEdit{$suffix}" name="{FormKeys::SLOTS_BLOCKED}{$suffix}"></textarea>
             </div>
         </div>
@@ -283,23 +286,21 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
         <div style="clear:both;height:0;">&nbsp</div>
         <div style="margin-top:5px;">
-            <h5>
-			{translate key=Timezone}
+            <label for="layoutTimezone">{translate key=Timezone}</label>
                 <select {formname key=TIMEZONE} id="layoutTimezone" class="input">
 				{html_options values=$TimezoneValues output=$TimezoneOutput}
                 </select>
-            </h5>
         </div>
         <div style="margin-top:2px;">
             <h5>
 			{capture name="layoutConfig" assign="layoutConfig"}
-                <input type='text' value='30' id='quickLayoutConfig' size=5' />
+                <input type='text' value='30' id='quickLayoutConfig' size=5' title="Minutes"/>
 			{/capture}
 			{capture name="layoutStart" assign="layoutStart"}
-                <input type='text' value='08:00' id='quickLayoutStart' size='10'/>
+                <input type='text' value='08:00' id='quickLayoutStart' size='10' title="From time"/>
 			{/capture}
 			{capture name="layoutEnd" assign="layoutEnd"}
-                <input type='text' value='18:00' id='quickLayoutEnd' size='10'/>
+                <input type='text' value='18:00' id='quickLayoutEnd' size='10' title="End time"/>
 			{/capture}
 			{translate key=QuickSlotCreation args="$layoutConfig,$layoutStart,$layoutEnd"}
                 <a href="#" id="createQuickLayout">{translate key=Create}</a>
@@ -324,6 +325,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 <div id="groupAdminDialog" class="dialog" title="{translate key=WhoCanManageThisSchedule}">
     <form method="post" id="groupAdminForm">
+	<label for="adminGroupId" class="off-screen">{translate key=WhoCanManageThisSchedule}</label>
         <select id="adminGroupId" {formname key=SCHEDULE_ADMIN_GROUP_ID} class="textbox">
             <option value="">-- {translate key=None} --</option>
 		{foreach from=$AdminGroups item=adminGroup}

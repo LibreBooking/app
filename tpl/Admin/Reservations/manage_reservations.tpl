@@ -32,7 +32,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 				<input id="formattedStartDate" type="hidden" value="{formatdate date=$StartDate key=system}"/>
 				-
 				<input id="endDate" type="text" class="textbox" value="{formatdate date=$EndDate}" size="10"
-					   style="width:65px;"/>
+					   style="width:65px;" title="End date"/>
 				<input id="formattedEndDate" type="hidden" value="{formatdate date=$EndDate key=system}"/>
 			</li>
 			<li class="filter-user">

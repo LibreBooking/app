@@ -77,9 +77,9 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 				<label for="today" style="width:auto;">{translate key=Today}</label>
 				<input type="radio" {formname key=REPORT_RANGE} value="{Report_Range::DATE_RANGE}" id="range_within"/>
 				<label for="range_within" style="width:auto;">{translate key=Between}</label>
-				<input type="input" class="textbox dateinput" id="startDate"/> -
+				<input type="input" class="textbox dateinput" id="startDate" title="Range start date"/> -
 				<input type="hidden" id="formattedBeginDate" {formname key=REPORT_START}/>
-				<input type="input" class="textbox dateinput" id="endDate"/>
+				<input type="input" class="textbox dateinput" id="endDate" title="Range End Date"/>
 				<input type="hidden" id="formattedEndDate" {formname key=REPORT_END} />
 			</div>
 			<div class="input-set">

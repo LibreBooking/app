@@ -162,6 +162,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 	<div class="reservations-left-content">
 		<div class="form-group">
+		<label for="resourceIdFilter">Resource Type</label>
 		<select {formname key=RESOURCE_ID} id="resourceIdFilter" class="form-control input-sm">
 			<option value="">- {translate key=All} -</option>
 			{object_html_options options=$Resources label='Name' key='Id' usemethod=false selected=$ResourceIdFilter}

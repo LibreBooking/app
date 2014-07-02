@@ -378,31 +378,31 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		<form id="addResourceForm" method="post" ajaxAction="{ManageResourcesActions::ActionAdd}">
 			<table>
 				<tr>
-					<th>{translate key='Name'}</th>
-					<th>{translate key='Schedule'}</th>
-					<th>{translate key='ResourcePermissions'}</th>
-					<th>{translate key='ResourceAdministrator'}</th>
+					<th><label for="resourceName">{translate key='Name'}</label></th>
+					<th><label for="scheduleId">{translate key='Schedule'}</label></th>
+					<th><label for="permissions">{translate key='ResourcePermissions'}</label></th>
+					<th><label for="resourceAdminGroupId">{translate key='ResourceAdministrator'}</label></th>
 					<th>&nbsp;</th>
 				</tr>
 				<tr>
-					<td><input type="text" class="textbox required" maxlength="85"
+					<td><input type="text" class="textbox required" maxlength="85" id="resourceName"
 							   style="width:250px" {formname key=RESOURCE_NAME} />
 					</td>
 					<td>
-						<select class="textbox" {formname key=SCHEDULE_ID} style="width:100px">
+						<select class="textbox" {formname key=SCHEDULE_ID} style="width:100px" id="scheduleId">
 							{foreach from=$Schedules item=scheduleName key=scheduleId}
 								<option value="{$scheduleId}">{$scheduleName}</option>
 							{/foreach}
 						</select>
 					</td>
 					<td>
-						<select class="textbox" {formname key=AUTO_ASSIGN} style="width:170px">
+						<select class="textbox" {formname key=AUTO_ASSIGN} style="width:170px" id="permissions">
 							<option value="0">{translate key="ResourcePermissionNotAutoGranted"}</option>
 							<option value="1">{translate key="ResourcePermissionAutoGranted"}</option>
 						</select>
 					</td>
 					<td>
-						<select class="textbox" {formname key=RESOURCE_ADMIN_GROUP_ID} style="width:170px">
+						<select class="textbox" {formname key=RESOURCE_ADMIN_GROUP_ID} style="width:170px" id="resourceAdminGroupId">
 							<option value="">{translate key=None}</option>
 							{foreach from=$AdminGroups item=adminGroup}
 								<option value="{$adminGroup->Id}">{$adminGroup->Name}</option>
@@ -424,6 +424,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 <div id="imageDialog" class="dialog" title="{translate key=AddImage}">
 	<form id="imageForm" method="post" enctype="multipart/form-data"
 		  ajaxAction="{ManageResourcesActions::ActionChangeImage}">
+		<label for="resourceImage" class="off-screen">Image file</label>
 		<input id="resourceImage" type="file" class="text" size="60" {formname key=RESOURCE_IMAGE} />
 		<br/>
 		<span class="note">.gif, .jpg, or .png</span>
@@ -438,7 +439,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 <div id="renameDialog" class="dialog" title="{translate key=Rename}">
 	<form id="renameForm" method="post" ajaxAction="{ManageResourcesActions::ActionRename}">
-		{translate key='Name'}: <input id="editName" type="text" class="textbox required" maxlength="85"
+		<label for="editName">{translate key='Name'}:</label> <input id="editName" type="text" class="textbox required" maxlength="85"
 									   style="width:250px" {formname key=RESOURCE_NAME} />
 
 		<div class="admin-update-buttons">
@@ -451,7 +452,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 <div id="scheduleDialog" class="dialog" title="{translate key=MoveToSchedule}">
 	<form id="scheduleForm" method="post" ajaxAction="{ManageResourcesActions::ActionChangeSchedule}">
-		{translate key=MoveToSchedule}:
+		<label for="editSchedule">{translate key=MoveToSchedule}:</label>
 		<select id="editSchedule" class="textbox" {formname key=SCHEDULE_ID}>
 			{foreach from=$Schedules item=scheduleName key=scheduleId}
 				<option value="{$scheduleId}">{$scheduleName}</option>
@@ -468,7 +469,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 <div id="resourceTypeDialog" class="dialog" title="{translate key=ResourceType}">
 	<form id="resourceTypeForm" method="post" ajaxAction="{ManageResourcesActions::ActionChangeResourceType}">
-		{translate key=ResourceType}:
+		<label for="editResourceType">{translate key=ResourceType}:</label>
 		<select id="editResourceType" class="textbox" {formname key=RESOURCE_TYPE_ID}>
 			<option value="">-- {translate key=None} --</option>
 			{foreach from=$ResourceTypes item=resourceType key=id}
@@ -486,10 +487,10 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 <div id="locationDialog" class="dialog" title="{translate key=Location}">
 	<form id="locationForm" method="post" ajaxAction="{ManageResourcesActions::ActionChangeLocation}">
-		{translate key=Location}:<br/>
+		<label for="editLocation">{translate key=Location}:</label>
 		<input id="editLocation" type="text" class="textbox" maxlength="85"
 			   style="width:250px" {formname key=RESOURCE_LOCATION} /><br/>
-		{translate key=Contact}:<br/>
+		<label for="editContact">{translate key=Contact}:</label>
 		<input id="editContact" type="text" class="textbox" maxlength="85"
 			   style="width:250px" {formname key=RESOURCE_CONTACT} />
 
@@ -503,7 +504,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 <div id="descriptionDialog" class="dialog" title="{translate key=Description}">
 	<form id="descriptionForm" method="post" ajaxAction="{ManageResourcesActions::ActionChangeDescription}">
-		{translate key=Description}:<br/>
+		<label for="editDescription">{translate key=Description}:</label>
 		<textarea id="editDescription" class="textbox"
 				  style="width:460px;height:150px;" {formname key=RESOURCE_DESCRIPTION}></textarea>
 
@@ -517,7 +518,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 <div id="notesDialog" class="dialog" title="{translate key=Notes}">
 	<form id="notesForm" method="post" ajaxAction="{ManageResourcesActions::ActionChangeNotes}">
-		{translate key=Notes}:<br/>
+		<label for="editNotes">{translate key=Notes}:</label>
 		<textarea id="editNotes" class="textbox"
 				  style="width:460px;height:150px;" {formname key=RESOURCE_NOTES}></textarea>
 
@@ -542,10 +543,10 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 						<span class="noMinimumDuration">
 							<br/>
 							{capture name="txtMinDuration" assign="txtMinDuration"}
-								<input type='text' id='minDurationDays' size='3' class='days textbox' maxlength='3'/>
-								<input type='text' id='minDurationHours' size='2' class='hours textbox' maxlength='2'/>
+								<input type='text' id='minDurationDays' size='3' class='days textbox' maxlength='3' title="Days"/>
+								<input type='text' id='minDurationHours' size='2' class='hours textbox' maxlength='2' title="Hours"/>
 								<input type='text' id='minDurationMinutes' size='2' class='minutes textbox'
-									   maxlength='2'/>
+									   maxlength='2' title="Minutes"/>
 								<input type='hidden' id='minDuration' class='interval' {formname key=MIN_DURATION} />
 							{/capture}
 							{translate key='ResourceMinLength' args=$txtMinDuration}
@@ -558,10 +559,10 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 						<span class="noMaximumDuration">
 							<br/>
 							{capture name="txtMaxDuration" assign="txtMaxDuration"}
-								<input type='text' id='maxDurationDays' size='3' class='days textbox' maxlength='3'/>
-								<input type='text' id='maxDurationHours' size='2' class='hours textbox' maxlength='2'/>
+								<input type='text' id='maxDurationDays' size='3' class='days textbox' maxlength='3' title="Days"/>
+								<input type='text' id='maxDurationHours' size='2' class='hours textbox' maxlength='2' title="Hours"/>
 								<input type='text' id='maxDurationMinutes' size='2' class='minutes textbox'
-									   maxlength='2'/>
+									   maxlength='2' title="Minutes"/>
 								<input type='hidden' id='maxDuration' class='interval' {formname key=MAX_DURATION} />
 							{/capture}
 							{translate key=ResourceMaxLength args=$txtMaxDuration}
@@ -574,17 +575,17 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 						<span class="noBufferTime">
 							<br/>
 							{capture name="txtBufferTime" assign="txtBufferTime"}
-								<input type='text' id='bufferTimeDays' size='3' class='days textbox' maxlength='3'/>
-								<input type='text' id='bufferTimeHours' size='2' class='hours textbox' maxlength='2'/>
+								<input type='text' id='bufferTimeDays' size='3' class='days textbox' maxlength='3' title="Days"/>
+								<input type='text' id='bufferTimeHours' size='2' class='hours textbox' maxlength='2' title="Hours"/>
 								<input type='text' id='bufferTimeMinutes' size='2' class='minutes textbox'
-									   maxlength='2'/>
+									   maxlength='2' title="Minutes"/>
 								<input type='hidden' id='bufferTime' class='interval' {formname key=BUFFER_TIME} />
 							{/capture}
 							{translate key=ResourceBufferTime args=$txtBufferTime}
 						</span>
 					</li>
 					<li>
-						{translate key=ResourceAllowMultiDay}
+						<label for="allowMultiday">{translate key=ResourceAllowMultiDay}</label>
 						<select id="allowMultiday" class="textbox" {formname key=ALLOW_MULTIDAY}>
 							<option value="1">{translate key='Yes'}</option>
 							<option value="0">{translate key='No'}</option>
@@ -596,14 +597,14 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 				<legend>{translate key=Access}</legend>
 				<ul>
 					<li>
-						{translate key='ResourceRequiresApproval'}
+						<label for="requiresApproval">{translate key='ResourceRequiresApproval'}</label>
 						<select id="requiresApproval" class="textbox" {formname key=REQUIRES_APPROVAL}>
 							<option value="1">{translate key='Yes'}</option>
 							<option value="0">{translate key='No'}</option>
 						</select>
 					</li>
 					<li>
-						{translate key='ResourcePermissionAutoGranted'}
+						<label for="autoAssign">{translate key='ResourcePermissionAutoGranted'}</label>
 						<select id="autoAssign" class="textbox" {formname key=AUTO_ASSIGN}>
 							<option value="1">{translate key='Yes'}</option>
 							<option value="0">{translate key='No'}</option>
@@ -616,10 +617,10 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 						<span class="noStartNotice">
 							<br/>
 							{capture name="txtStartNotice" assign="txtStartNotice"}
-								<input type='text' id='startNoticeDays' size='3' class='days textbox' maxlength='3'/>
-								<input type='text' id='startNoticeHours' size='2' class='hours textbox' maxlength='2'/>
+								<input type='text' id='startNoticeDays' size='3' class='days textbox' maxlength='3' title="Days"/>
+								<input type='text' id='startNoticeHours' size='2' class='hours textbox' maxlength='2' title="Hours"/>
 								<input type='text' id='startNoticeMinutes' size='2' class='minutes textbox'
-									   maxlength='2'/>
+									   maxlength='2' title="Minutes"/>
 								<input type='hidden' id='startNotice' class='interval' {formname key=MIN_NOTICE} />
 							{/capture}
 							{translate key='ResourceMinNotice' args=$txtStartNotice}
@@ -632,10 +633,10 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 						<span class="noEndNotice">
 							<br/>
 							{capture name="txtEndNotice" assign="txtEndNotice"}
-								<input type='text' id='endNoticeDays' size='3' class='days textbox' maxlength='3'/>
-								<input type='text' id='endNoticeHours' size='2' class='hours textbox' maxlength='2'/>
+								<input type='text' id='endNoticeDays' size='3' class='days textbox' maxlength='3' title="Days"/>
+								<input type='text' id='endNoticeHours' size='2' class='hours textbox' maxlength='2' title="Hours"/>
 								<input type='text' id='endNoticeMinutes' size='2' class='minutes textbox'
-									   maxlength='2'/>
+									   maxlength='2' title="Minutes"/>
 								<input type='hidden' id='endNotice' class='interval' {formname key=MAX_NOTICE} />
 							{/capture}
 							{translate key='ResourceMaxNotice' args=$txtEndNotice}
@@ -652,10 +653,12 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 						</label>
 						<span class="unlimitedCapacity">
 							<br/>
+							<label for="maxCapacity">
 							{capture name="txtMaxCapacity" assign="txtMaxCapacity"}
 								<input type='text' id='maxCapacity' class='textbox' size='5'
 									   maxlength='5' {formname key=MAX_PARTICIPANTS} />
 							{/capture}
+							</label>
 							{translate key='ResourceCapacity' args=$txtMaxCapacity}
 						</span>
 					</li>
@@ -672,6 +675,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 <div id="groupAdminDialog" class="dialog" title="{translate key=WhoCanManageThisResource}">
 	<form method="post" id="groupAdminForm" ajaxAction="{ManageResourcesActions::ActionChangeAdmin}">
+		<label for="adminGroupId" class="off-screen">{translate key=WhoCanManageThisResource}</label>
 		<select id="adminGroupId" {formname key=RESOURCE_ADMIN_GROUP_ID} class="textbox">
 			<option value="">-- {translate key=None} --</option>
 			{foreach from=$AdminGroups item=adminGroup}
@@ -710,7 +714,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 <div id="sortOrderDialog" class="dialog" title="{translate key=SortOrder}">
 	<form id="sortOrderForm" method="post" ajaxAction="{ManageResourcesActions::ActionChangeSort}">
-		{translate key=SortOrder}:
+		<label for="editSortOrder">{translate key=SortOrder}:</label>
 		<input type="text" id="editSortOrder" class="textbox" {formname key=RESOURCE_SORT_ORDER} maxlength="3"
 			   style="width:40px"/>
 
@@ -724,7 +728,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 <div id="statusDialog" class="dialog" title="{translate key=Status}">
 	<form id="statusForm" method="post" ajaxAction="{ManageResourcesActions::ActionChangeStatus}">
-
+		<label for="statusId" class="off-screen">{translate key=Status}</label>		<label for="statusId" class="off-screen">{translate key=Status}</label>
 		<select id="statusId" {formname key=RESOURCE_STATUS_ID} class="textbox">
 			<option value="{ResourceStatus::AVAILABLE}">{translate key=Available}</option>
 			<option value="{ResourceStatus::UNAVAILABLE}">{translate key=Unavailable}</option>
@@ -738,7 +742,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		</select>
 
 		<div id="newStatusReason" class="hidden">
-			<input type="text" class="textbox" {formname key=RESOURCE_STATUS_REASON}  />
+			<label for="resourceStatusReason" class="off-screen">Reason text</label>
+			<input type="text" class="textbox" {formname key=RESOURCE_STATUS_REASON} id="resourceStatusReason"/>
 		</div>
 		<div class="admin-update-buttons">
 			<button type="button"
