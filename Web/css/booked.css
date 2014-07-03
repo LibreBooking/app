@@ -213,6 +213,12 @@ div.center {
 .center {
   text-align: center;
 }
+.pagination-rows {
+  padding-top: 10px;
+  color: #4e4d4a;
+  font-size: .8em;
+  font-weight: bold;
+}
 #page-dashboard .panel-heading {
   background-color: #99b2b7;
   color: #fff;

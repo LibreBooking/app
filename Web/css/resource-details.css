@@ -213,6 +213,12 @@ div.center {
 .center {
   text-align: center;
 }
+.pagination-rows {
+  padding-top: 10px;
+  color: #4e4d4a;
+  font-size: .8em;
+  font-weight: bold;
+}
 #resourceDetailsPopup {
   min-width: 300px;
   max-width: 1000px;

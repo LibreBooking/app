@@ -513,7 +513,7 @@ class SmartyPage extends Smarty
 		$sb = new StringBuilder();
 
 		$viewAllText = $this->Resources->GetString('ViewAll');
-		$sb->Append('<p><br/>');
+		$sb->Append('<div class="pagination-rows">');
 		$sb->Append($this->Resources->GetString('Rows'));
 		$sb->Append(": {$pageInfo->ResultsStart} - {$pageInfo->ResultsEnd} ({$pageInfo->Total})");
 		$sb->Append('<span>&nbsp;</span>');
@@ -521,21 +521,34 @@ class SmartyPage extends Smarty
 		{
 			$sb->Append($this->CreatePageLink(array('page' => 1, 'size' => '-1', 'text' => $viewAllText), $smarty));
 		}
-		$sb->Append('</p><p>');
-		$sb->Append($this->Resources->GetString('Page'));
-		$sb->Append(': ');
+		$sb->Append('</div>');
 		$size = $pageInfo->PageSize;
 		$currentPage = $pageInfo->CurrentPage;
+
+		$sb->Append('<ul class="pagination">');
+		$sb->Append('<li>');
+		$sb->Append($this->CreatePageLink(array('page' => max(1,$currentPage-1), 'size' => $size, 'text' => '&laquo;'), $smarty));
+		$sb->Append('</li>');
 
 		for ($i = 1; $i <= $pageInfo->TotalPages; $i++)
 		{
 			$isCurrent = ($i == $currentPage);
 
-			$sb->Append($this->CreatePageLink(array('page' => $i, 'size' => $size, 'iscurrent' => $isCurrent),
-											  $smarty));
-			$sb->Append(" ");
+			if ($isCurrent)
+			{
+				$sb->Append('<li class="active">');
+			}
+			else
+			{
+				$sb->Append('<li>');
+			}
+			$sb->Append($this->CreatePageLink(array('page' => $i, 'size' => $size), $smarty));
+			$sb->Append('</li>');
 		}
-		$sb->Append('</p>');
+		$sb->Append('<li>');
+		$sb->Append($this->CreatePageLink(array('page' => min($pageInfo->TotalPages,$currentPage+1), 'size' => $size, 'text' => '&raquo;'), $smarty));
+		$sb->Append('</li>');
+		$sb->Append('</ul>');
 
 		return $sb->ToString();
 	}
