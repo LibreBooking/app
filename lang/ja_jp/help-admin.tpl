@@ -1,23 +1,23 @@
 {* -*-coding:utf-8-*-
-Copyright 2011-2013 Nick Korbel
+Copyright 2011-2014 Nick Korbel
 
-This file is part of phpScheduleIt.
+This file is part of Booked Scheduler.
 
-phpScheduleIt is free software: you can redistribute it and/or modify
+Booked Scheduler is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation, either version 3 of the License, or
 (at your option) any later version.
 
-phpScheduleIt is distributed in the hope that it will be useful,
+Booked Scheduler is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
-along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
+along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 *}
 {include file='globalheader.tpl'}
-<h1>phpScheduleIt 管理</h1>
+<h1 xmlns="http://www.w3.org/1999/html">Booked Scheduler 管理</h1>
 
 <div id="help">
 <h2>管理</h2>
@@ -30,7 +30,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 <h3>スケジュールの設定</h3>
 
 <p>
-phsScheduleitをインストールするとき、何もしなくてもデフォルトスケジュールが作成されます。
+Booked Scheduler をインストールするとき、何もしなくてもデフォルトスケジュールが作成されます。
 メニューの「スケジュール」から現在操作対象になっているスケジュールの属性を表示し変更することできます。
 </p>
 
@@ -47,7 +47,7 @@ phsScheduleitをインストールするとき、何もしなくてもデフォ�
 
 <p>ラベルの無い時間区分は次のように書きます。10:25 - 16:50</p>
 
-<p>ラベルを付ける場合は次のように書きます。10:25 - 16:50  Schedule Period 4</p>
+<p>ラベルを付ける場合は次のように書きます。10:25 - 16:50 Schedule Period 4</p>
 
 <p>
 時間区分設定ウィンドウの下は、支援ツールになっています。
@@ -61,7 +61,7 @@ phsScheduleitをインストールするとき、何もしなくてもデフォ�
 リソースの属性や運用規則を変更することができます。
 </p>
 
-<p>phpScheduleItでの「リソース」とは、部屋や設備のような予約制にしたいあらゆるもののことです。
+<p>Booked Scheduler での「リソース」とは、部屋や設備のような予約制にしたいあらゆるもののことです。
 リソースを予約制にするために、適したスケジュールに割り当ててください。
 リソースはスケジュールの時間枠をそのまま使用します。
 </p>
@@ -103,14 +103,11 @@ phsScheduleitをインストールするとき、何もしなくてもデフォ�
 <p>アプリケーション管理者は定員の制限を受けません。</p>
 
 <h3>リソースの画像</h3>
+
 <p>予約ページでリソースの詳細を見るときに表示されるリソースの画像を設定することができます。
 そのためには php_gd2 がインストールされ php.ini で有効になっていなくてなりません。
 <a href="http://www.php.net/manual/en/book.image.php">詳細はこちら</a>
 </p>
-
-
-
-
 
 <h3>備品の設定</h3>
 
@@ -125,16 +122,17 @@ phsScheduleitをインストールするとき、何もしなくてもデフォ�
 <h3>予約量を制限する</h3>
 
 <p>限度を設定し、予約できる量を制限することができます。
-phpScheduleItの量制限システムは柔軟にできていて、予約時間と回数で制限をかけることができます。
+Booked Scheduler の量制限システムは柔軟にできていて、予約時間と回数で制限をかけることができます。
 また、量制限は「重なり」ます。
-1日に5時間までという制限があり、また1日に4回までという制限もあるとします。
+1日に5時間までという制限があり、さらに1日に4回までという制限もあるとします。
 ユーザーは4時間の予約を取ることはできますが、2時間の予約を3つは取れません。
 これらを組み合わせて強力な制限を行うことができます。</p>
 
 <p>アプリケーション管理者は予約量の制限を受けません。</p>
+
 <h3>お知らせの設定</h3>
 
-<p>お知らせはphpScheduleItのユーザーに注意事項を知らせる簡単な方法です。
+<p>お知らせは Booked Scheduler のユーザーに注意事項を知らせる簡単な方法です。
 メニューの「お知らせ」から、ユーザーのダッシュボードに表示されるお知らせを、管理することができます。
 お知らせにはオプションとして開始日と終了日があります。
 また任意で優先度を付けることができ、1から10の順に並べ替えて表示します。</p>
@@ -143,16 +141,21 @@ phpScheduleItの量制限システムは柔軟にできていて、予約時間�
 
 <h3>グループの設定</h3>
 
-<p>phpSechduleItでのグループはユーザーを組織化し、リソース使用の可否を決定し、アプリケーション内での役割を定めます。</p>
-
+<p>Booked Scheduler でのグループはユーザーを組織化し、リソース使用の可否を決定し、アプリケーション内での役割を定めます。</p>
 
 <h3>役割</h3>
+
 <p>役割はユーザーのグループに特定の操作を行う権限を与えます。</p>
 
-<p>アプリケーション管理者の役割を与えられたグループのユーザーは、管理特権を行使することができます。この役割はリソースを予約するのにほとんど制限を受けません。アプリケーションのあらゆる箇所を管理できます。</p>
+<p>アプリケーション管理者(Application Administrator): この役割を与えられたグループのユーザーは、管理特権を行使することができます。この役割はリソースを予約するのにほとんど制限を受けません。アプリケーションのあらゆる箇所を管理できます。</p>
 
-<p>グループ管理者の役割を与えられたグループのユーザーは、グループのユーザーの代理で予約を行うことができ、ユーザーを管理することができます。</p>
+<p>グループ管理者(Group Administrator): この役割を与えられたグループのユーザーは、グループのユーザーの代理で予約を行うことができ、ユーザーを管理することができます。</p>
 
+<p>リソース管理者(Resource Administrator): この役割を与えられたグループのユーザーは、リソースの管理と、そのリソースの予約を承認することができます。</p>
+
+<p>スケジュール管理者(Schedule Administrator): この役割を与えられたグループのユーザーは、スケジュールとそこに割り当てられたリソースの管理および予約の承認を行うことができます。</p>
+
+<!-- Viewing and Managing Reservations -->
 <h3>予約の表示と管理</h3>
 
 <p>メニューの「予約」で予約の表示と管理を行うことができます。
@@ -161,12 +164,15 @@ phpScheduleItの量制限システムは柔軟にできていて、予約時間�
 このツールで予約の様子をすばやく見ることができます。
 また予約のリストをCSV形式で出力することができます。</p>
 
-
-
+<!-- Reservation Approval -->
 <h3>予約の承認</h3>
-<p>予約管理ツールで承認保留中の予約を見ることができます。
+
+<p>$conf['settings']['reservation']['updates.require.approval'] を true に設定すると、すべての予約リクエストは一旦保留された状態になります。
+予約は、管理者が承認して、始めて有効になります。
+管理者は予約管理ツールで承認保留中の予約を表示し承認することができます。
 保留中の予約はハイライト表示されています。</p>
 
+<!-- Viewing and Managing Users -->
 <h3>ユーザーの表示と管理</h3>
 
 <p>メニューの「ユーザー」から、ユーザーを登録したりユーザーを一覧することができます。
@@ -178,45 +184,45 @@ phpScheduleItの量制限システムは柔軟にできていて、予約時間�
 新規ユーザーを追加するのもここです。
 ユーザー自身での登録を無効にしている場合、この機能は無くてはならないものでしょう。</p>
 
-
-
+<!-- Reporting -->
 <h3>レポート作成</h3>
 
 <p>全てのアプリケーション管理者、グループ管理者、リソース管理者、スケジュール管理者はレポートを利用できます。レポート機能を利用できるユーザーとしてログイン中であれば、メニューにレポートが表示されます。
-phpSchedulet では予め汎用のレポートを用意しており、リストや図として表示すること、CSVとして出力すること、印刷することができます。
+Booked Scheduler では予め汎用のレポートを用意しており、リストや図として表示すること、CSVとして出力すること、印刷することができます。
 それらに加えてメニューの「新しいレポートを作る」からその場でレポートを作成することができます。このレポートもリスト表示、図表示、出力、印刷が可能です。
 さらに自作のレポートを保存しておき、メニューの「保存されたレポート」から呼び出すことができます。レポート結果をメールで送信することもできます。
 </p>
 
+<!-- Reservation Reminders -->
 <h3>予約のリマインダー</h3>
 
 <p>予約の開始時刻または終了時刻にに先立ってリマインダーメールを受け取れるように出来ます。
-	この機能を有効にするには $conf['settings']['enable.email'] および $conf['settings']['reservation']['enable.reminders'] 
-	の両方を true にしなくてはなりません。
-	更に、サーバーのスケジュールタスクが /phpScheduleIt/Jobs/sendreminders.php を実行するようにしなくてはなりません。</p>
+この機能を有効にするには $conf['settings']['enable.email'] および $conf['settings']['reservation']['enable.reminders'] の両方を true にしなくてはなりません。
+更に、サーバーのスケジュールタスクが /Booked Scheduler/Jobs/sendreminders.php を実行するようにしなくてはなりません。</p>
 
 <p>Linux の場合は cron ジョブを使えるでしょう。実行するコマンドは <span class="note">php</span> の後ろに
-	phpScheduleIt/Jobs/sendreminders.php のフルパスを付けたものです。このサーバーの sendreminders.php へのフルパスは
+Booked Scheduler/Jobs/sendreminders.php のフルパスを付けたものです。このサーバーの sendreminders.php へのフルパスは
  <span class="note">{$RemindersPath}</span> です。
 </p>
 
-<p>見本としてですが、次のようになるのではないでしょうか。 <span class="note">* * * * * php {$RemindersPath}</span></p>
+<p>見本としてですが、次のようになるでしょう。 <span class="note">* * * * * php {$RemindersPath}</span></p>
 
-<p>ホスティングサービスを使っていて cPanel が使用できるなら <a
-			href="http://docs.cpanel.net/twiki/bin/view/AllDocumentation/CpanelDocs/CronJobs" target="_blank">
-	cPanelで cron ジョブを設定する方法</a> が近道です。「Common Settings」メニューから「Every Minute(毎分)」を選択するか、
-	minute(分)、hour(時)、day(日)、month(月)、weekday(曜日)のすべてを * にしてください。.</p>
+<p>ホスティングサービスを使っていて cPanel が使用できるなら <a href="http://docs.cpanel.net/twiki/bin/view/AllDocumentation/CpanelDocs/CronJobs" target="_blank">
+cPanelで cron ジョブを設定する方法</a> が近道です。「Common Settings」メニューから「Every Minute(毎分)」を選択するか、
+minute(分)、hour(時)、day(日)、month(月)、weekday(曜日)のすべてを * にしてください。.</p>
 
 <p>Windows の場合は <a href="http://windows.microsoft.com/en-au/windows7/schedule-a-task" target="_blank">
-	タスクスケジューラを使う</a>ことが出来るでしょう。 タスクは毎分実行されるようにしなくてはなりません。実行するタスクは php の後ろに
-	phpScheduleIt/Jobs/sendreminders.php のフルパスを指定したものです。</p>
+タスクスケジューラを使う</a>ことが出来るでしょう。 タスクは毎分実行されるようにしなくてはなりません。実行するタスクは php の後ろに
+Booked Scheduler/Jobs/sendreminders.php のフルパスを指定したものです。</p>
 
+<!-- Configuration -->
 <h2>アプリケーション設定</h2>
 
-<p>phpScheduleItの機能の一部は設定ファイルを編集して設定するしかありません。</p>
+<p>一部の機能は設定ファイルを編集して設定するしかありません。</p>
 
-<p class="setting"><span>$conf['settings']['server.timezone']</span>phpScheduleIt が動作しているサーバーのタイムゾーンに合わせること。メニューの「サーバー設定」で現在の設定を確認することができる。可能な値は次に示すサイトにある。
-http://php.net/manual/en/timezones.php</p>
+<p class="setting"><span>$conf['settings']['default.timezone']</span>デフォルトで使用するタイムゾーン。
+設定されなければサーバーのタイムゾーンを使用する。
+設定できる値は次のリンクにある。: <a href="http://php.net/manual/en/timezones.php" target="_blank">http://php.net/manual/en/timezones.php</a></p>
 
 <p class="setting"><span>$conf['settings']['allow.self.registration']</span>ユーザー自身でアカウントを作成できるか否か</p>
 
@@ -224,24 +230,16 @@ http://php.net/manual/en/timezones.php</p>
 
 <p class="setting"><span>$conf['settings']['default.page.size']</span>データのリストを表示する際のページあたりの表示数の初期値</p>
 
-<p class="setting"><span>$conf['settings']['enable.email']</span>phpScheduleItがメールを送信するか否か</p>
+<p class="setting"><span>$conf['settings']['enable.email']</span>Booked Scheduler がメールを送信するか否か</p>
 
-<p class="setting"><span>$conf['settings']['default.language']</span>ユーザーのデフォルトの言語。phpScheduleItのlangディレクトリにある言語ならどれでも可</p>
+<p class="setting"><span>$conf['settings']['default.language']</span>ユーザーのデフォルトの言語。Booked Scheduler のlangディレクトリにある言語ならどれでも可</p>
 
-<p class="setting"><span>$conf['settings']['script.url']</span>phpScheduleItインスタンスのルートへの完全な公開URL。これはbookings.php、calendar.phpのようなファイルを含んでいるWebという名のディレクトリがあるので、それにしておくこと</p>
+<p class="setting"><span>$conf['settings']['script.url']</span>Booked Scheduler インスタンスのルートへの完全な公開URL。
+これはbookings.php、calendar.phpのようなファイルを含んでいるWebという名のディレクトリがあるので、それにしておくこと。
+この値が // で始まる場合、プロトコル(httpかhttpsか)は自動的に検出される。</p>
 
-<p class="setting"><span>$conf['settings']['password.pattern']</span>ユーザーアカウントを登録する際のパスワードに複雑さを強制する正規表現</p>
-
-<p class="setting"><span>$conf['settings']['schedule']['show.inaccessible.resources']</span>ユーザーが予約できないリソースをスケジュール中に表示するか否か</p>
-
-<p class="setting"><span>$conf['settings']['schedule']['reservation.label']</span>予約状況ページで各予約に表示する値。{literal}{name}, {title}, {description}, {email},
-	{phone}
-	, {organization}, {position}{/literal}が使用可能。組み合わせて使用することができる。何も表示したくない場合は空白のままにする。</p>
-<p class="setting"><span>$conf['settings']['schedule']['hide.blocked.periods']</span>If blocked periods should be
-	hidden on the bookings page. Default is false.</p>
-
-
-<p class="setting"><span>$conf['settings']['image.upload.directory']</span>画像を保存する物理的なディレクトリのパス。このディレクトリに書き込みできる必要がある。この指定は完全ディレクトリ名(フルパス)またはphpScheduleItのルートディレクトリからの相対パスのいずれでもよい。</p>
+<p class="setting"><span>$conf['settings']['image.upload.directory']</span>画像を保存する物理的なディレクトリのパス。
+このディレクトリに書き込みできる(755とか)必要がある。この指定は完全ディレクトリ名(フルパス)またはBooked Schedulerのルートディレクトリからの相対パスのいずれでもよい。</p>
 
 <p class="setting"><span>$conf['settings']['image.upload.url']</span>そこにアップロードされた画像を表示することができるディレクトリのURL。完全なURLまたは$conf['settings']['script.url']からの相対URLのいずれでもよい。</p>
 
@@ -250,6 +248,7 @@ http://php.net/manual/en/timezones.php</p>
 <p class="setting"><span>$conf['settings']['use.local.jquery']</span>jQueryファイルをローカルサーバーにあるものを使うようにするかどうか。falseにするとGoogle CDNにあるものを使うようになる。パフォーマンスや転送帯域の観点からfalseにすることを推奨。デフォルトは false。</p>
 
 <p class="setting"><span>$conf['settings']['registration.captcha.enabled']</span>ユーザーアカウントの登録時にキャプッチャを使うか否か</p>
+
 <p class="setting"><span>$conf['settings']['registration.require.email.activation']</span>ユーザーは最初にログインする前にメールでアカウントの有効化をする必要があるかどうか。</p>
 
 <p class="setting"><span>$conf['settings']['registration.auto.subscribe.email']</span>ユーザーを登録する際に、各種通知メールを受け取るように設定するかどうか。</p>
@@ -258,8 +257,8 @@ http://php.net/manual/en/timezones.php</p>
 
 <p class="setting"><span>$conf['settings']['name.format']</span>first name、last nameの表示フォーマット。デフォルトは {literal}'{first} {last}'{/literal}。</p>
 
-
-<p class="setting"><span>$conf['settings']['css.extension.file']</span>追加でインクルードするCSSファイルの完全または相対URL。これはデフォルトのスタイルを変更するために使うことができ、完全なテーマとして使用することもできる。 phpScheduleItのスタイルを拡張しないなら空白のままにしておく。</p>
+<p class="setting"><span>$conf['settings']['css.extension.file']</span>追加でインクルードするCSSファイルの完全または相対URL。
+これはデフォルトのスタイルを上書きするために使うことができ、完全なテーマとして使用することもできる。 Booked Schedulerのスタイルを拡張しないなら空白のままにしておく。</p>
 
 <p class="setting"><span>$conf['settings']['disable.password.reset']</span>パスワードリセット機能を無効化するかどうか。
 	デフォルトは false.</p>
@@ -269,6 +268,16 @@ http://php.net/manual/en/timezones.php</p>
 
 <p class="setting"><span>$conf['settings']['logout.url']</span>ログアウト後にユーザーが移動するページ。
 	デフォルトはログインページ。</p>
+
+<p class="setting"><span>$conf['settings']['schedule']['use.per.user.colors']</span>予約の表示色を管理者がユーザー毎に設定できるか否か。デフォルトは false。</p>
+
+<p class="setting"><span>$conf['settings']['schedule']['show.inaccessible.resources']</span>ユーザーが予約できないリソースをスケジュール中に表示するか否か</p>
+
+<p class="setting"><span>$conf['settings']['schedule']['reservation.label']</span>予約状況ページで各予約に表示する値。
+{literal}{name}, {title}, {description}, {email},{phone}, {organization}, {position}{/literal}が使用可能。
+組み合わせて使用することができる。何も表示したくない場合は空白のままにする。</p>
+
+<p class="setting"><span>$conf['settings']['schedule']['hide.blocked.periods']</span>予約できない時間帯を予約ページに表示しない。デフォルトは false。</p>
 
 <p class="setting"><span>$conf['settings']['ics']['require.login']</span>予約をOutlookへ追加するのにログインする必要があるかどうか。</p>
 
@@ -286,16 +295,12 @@ future にすると、まだ、選択した予約(時間の)枠の開始時刻�
 current にすると、まだ、選択した予約(時間の)枠の終了時刻になっていなければ、作成、変更できる。
 none にすると予約の作成、変更に現在時刻による制限はない。
 デフォルトは future。</p>
-<p class="setting"><span>$conf['settings']['reservation']['updates.require.approval']</span>承認が必要であった予約を変更する場合に再度承認が必要になるかどうか。デフォルトは false</p>
 
 <p class="setting"><span>$conf['settings']['reservation']['updates.require.approval']</span>承認が必要であった予約を変更する際に、再度承認が必要かどうか。デフォルトは false.</p>
 
 <p class="setting"><span>$conf['settings']['reservation']['prevent.participation']</span>ユーザーが別のユーザーを予約の参加者にしたり招待する機能を使えないようにするかどうか。デフォルトは false (なので有効)。</p>
 
 <p class="setting"><span>$conf['settings']['reservation']['prevent.recurrence']</span>繰り返し予約する機能を使えないようにするかどうか。デフォルトは false (なので有効)。</p>
-
-
-
 
 <p class="setting"><span>$conf['settings']['reservation.notify']['resource.admin.add']</span>予約が作成されたとき、全てのリソース管理者にメールを送るかどうか。デフォルトは false。</p>
 
@@ -317,7 +322,7 @@ none にすると予約の作成、変更に現在時刻による制限はない
 
 <p class="setting"><span>$conf['settings']['uploads']['enable.reservation.attachments']</span>ユーザーが予約にファイルを添付できるかどうか。デフォルトはfalse 。</p>
 
-<p class="setting"><span>$conf['settings']['uploads']['reservation.attachment.path']</span>添付ファイルを保存するディレクトリの絶対パスまたは(phpScheduleItディレクトリのルートから)相対パス。ディレクトリにPHPが書き込みできなくてはならない。デフォルトは uploads/reservation</p>
+<p class="setting"><span>$conf['settings']['uploads']['reservation.attachment.path']</span>添付ファイルを保存するディレクトリのファイルシステム上の絶対または(Booked Scheduler ディレクトリのルートからの)相対パス。ディレクトリにPHPが書き込み可能(755とか)でなくてはならない。デフォルトは uploads/reservation</p>
 
 <p class="setting"><span>$conf['settings']['uploads']['reservation.attachment.extensions']</span>安全とみなすファイル拡張子のカンマで区切ったリスト。空白にすれば全てのファイル拡張子がアップロードできる。(推奨しない)</p>
 
@@ -329,7 +334,7 @@ none にすると予約の作成、変更に現在時刻による制限はない
 
 <p class="setting"><span>$conf['settings']['database']['hostspec']</span>データベースホストのURLまたは名前付きパイプ</p>
 
-<p class="setting"><span>$conf['settings']['database']['name']</span>phpScheduleItが使うデータベース名</p>
+<p class="setting"><span>$conf['settings']['database']['name']</span>Booked Scheduler 使うデータベース名</p>
 
 <p class="setting"><span>$conf['settings']['phpmailer']['mailer']</span>PHPのメールライブラリ。mail、smtp、sendmail、qmail から選ぶ</p>
 
@@ -361,16 +366,29 @@ none にすると予約の作成、変更に現在時刻による制限はない
 
 <p class="setting"><span>$conf['settings']['pages']['enable.configuration']</span>アプリケーション管理者に設定を変更するページを表示するかどうか。true または false。</p>
 
-<p class="setting"><span>$conf['settings']['api']['enabled']</span>phpScheduleIt で RESTful API を有効にするかどうか。
-	このAPIの使用環境については readme_installation.html を見ること。true または false。</p>
+<p class="setting"><span>$conf['settings']['api']['enabled']</span>Booked Scheduler で RESTful API を有効にするかどうか。
+このAPIの使用環境については readme_installation.html を見ること。true または false。</p>
 
 <p class="setting"><span>$conf['settings']['recaptcha']['enabled']</span>組み込みのキャプッチャではなく reCAPTCHA を使うかどうか。true または false。</p>
 
 <p class="setting"><span>$conf['settings']['recaptcha']['public.key']</span>reCAPTCHA の公開鍵(public key)。
-	サインアップするには www.google.com/recaptcha へ行く。</p>
+サインアップするには www.google.com/recaptcha へ行く。</p>
 
-<p class="setting"><span>$conf['settings']['recaptcha']['private.key']</span>reCAPTCHA の秘密鍵(private key)。
-	サインアップするには www.google.com/recaptcha へ行く。</p>
+<p class="setting"><span>$conf['settings']['recaptcha']['private.key']</span>reCAPTCHA の秘密鍵(private key)。サインアップするには www.google.com/recaptcha へ行く。</p>
+
+<p class="setting"><span>$config['settings']['email']['default.from.address']</span>
+メールを送信する際の 'from' アドレスとして使われるメールアドレス。
+メールがバウンス(エラーで返される)したりスパムと判定されてしまうときは自身のドメインをメールアドレスに設定しましょう。
+例えば、noreply@yourdomain.com。
+これは 'from' 名、reply-toアドレスは変更しない。</p>
+
+<p class="setting"><span>$conf['settings']['reports']['allow.all.users']</span>管理者以外のユーザーがレポート画面を操作できるかどうか。デフォルトは false。</p>
+
+<p class="setting"><span>$conf['settings']['password']['minimum.letters']</span>ユーザーパスワードの最少の長さ。デフォルトは 6。</p>
+
+<p class="setting"><span>$conf['settings']['password']['minimum.numbers']</span>ユーザーパスワード中に必須の数字の数。デフォルトは 0。</p>
+
+<p class="setting"><span>$conf['settings']['password']['upper.and.lower']</span>ユーザーパスワードに大文字と小文字の両方が必要かどうか。デフォルトは false。</p>
 
 <h2>プラグイン</h2>
 
@@ -384,14 +402,12 @@ none にすると予約の作成、変更に現在時刻による制限はない
 	<li>Post Reservation - 予約を作成した直後に何を実行するか</li>
 </ul>
 
-<p>
-プラグインを有効にするには、プラグインフォルダの名前を設定ファイルに書きます。
+<p>プラグインを有効にするには、プラグインフォルダの名前を設定ファイルに書きます。
 例えば、LDAP認証を有効にするには、次の設定を記述します。
-	$conf['settings']['plugins']['Authentication'] = 'Ldap';
+$conf['settings']['plugins']['Authentication'] = 'Ldap';
 </p>
 
-<p>
-プラグインにはそれぞれの設定ファイルがあります。
+<p>プラグインにはそれぞれの設定ファイルがあります。
 LDAPの場合は、/plugins/Authentication/Ldap/Ldap.config.dist を/plugins/Authentication/Ldap/Ldap.configにリネームするかコピーし、すべての値を実行環境に合わせて編集します。
 </p>
 
@@ -402,3 +418,5 @@ LDAPの場合は、/plugins/Authentication/Ldap/Ldap.config.dist を/plugins/Aut
 </p>
 
 </div>
+
+{include file='globalfooter.tpl'}

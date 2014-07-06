@@ -1,5 +1,5 @@
 {* -*-coding:utf-8-*-
-Copyright 2013-2014 Nick Korbel
+Copyright 2011-2014 Nick Korbel, Paul Menchini
 
 This file is part of Booked Scheduler.
 
@@ -17,19 +17,14 @@ You should have received a copy of the GNU General Public License
 along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 *}
 {include file='..\..\tpl\Email\emailheader.tpl'}
-予約が間もなく始まります。<br/>
-予約の詳細:
-	<br/>
-	<br/>
-	開始: {formatdate date=$StartDate key=reservation_email}<br/>
-	終了: {formatdate date=$EndDate key=reservation_email}<br/>
-	リソース: {$ResourceName}<br/>
-	件名: {$Title}<br/>
-	説明: {$Description|nl2br}<br/>
-<br/>
-<br/>
-<a href="{$ScriptUrl}/{$ReservationUrl}">予約の表示</a> |
-<a href="{$ScriptUrl}/{$ICalUrl}">カレンダーへ追加</a> |
-<a href="{$ScriptUrl}">Booked Scheduler へログイン</a>
+
+<p>{$To},</p>
+
+<p>新しいユーザーが登録されました。詳細は下記:<br/>
+メール: {$EmailAddress}<br/>
+氏名: {$FullName}<br/>
+電話: {$Phone}<br/>
+所属: {$Organization}<br/>
+肩書き: {$Position}</p>
 
 {include file='..\..\tpl\Email\emailfooter.tpl'}

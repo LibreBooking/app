@@ -1,29 +1,29 @@
 {* -*-coding:utf-8-*-
-Copyright 2011-2013 Nick Korbel
+Copyright 2011-2014 Nick Korbel
 
-This file is part of phpScheduleIt.
+This file is part of Booked Scheduler.
 
-phpScheduleIt is free software: you can redistribute it and/or modify
+Booked Scheduler is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation, either version 3 of the License, or
 (at your option) any later version.
 
-phpScheduleIt is distributed in the hope that it will be useful,
+Booked Scheduler is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
-along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
+along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 *}
 {include file='globalheader.tpl'}
-<h1>phpScheduleIt Help</h1>
+<h1>Booked Scheduler Help</h1>
 
 <div id="help">
 <h2>ユーザー登録</h2>
 
 <p>
-管理者(あなた)が設定していれば、phpScheduleItを使うためにユーザー登録が必要です。
+管理者(あなた)が設定していれば、Booked Scheduler を使うためにユーザー登録が必要です。
 アカウント登録後はログインできるようになり、許可されているリソースの予約ができるようになります。
 </p>
 
@@ -130,7 +130,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 
 <h2>予約の削除</h2>
 
-<p>予約を削除すると、スケジュールから完全に取り除かれます。phpScheduleItのどこからも見えなくなります</p>
+<p>予約を削除すると、スケジュールから完全に取り除かれます。Booked Scheduler のどこからも見えなくなります</p>
 
 <h3>一連の予約から特定のものを削除する</h3>
 
@@ -167,7 +167,7 @@ iCalendarファイル形式をサポートしているアプリケーション�
 <p>たいていは「このカレンダーを購読する」をクリックするだけでカレンダークライアントでの購読が、自動的にセットアップされます。
 Outlookでカレンダー購読が自動的に追加されない場合、カレンダービューを開いてください。
 マイカレンダー(My Calendars)を右クリックし「カレンダーを追加」→「インターネットから」を選択します。
-phpScheduleItの「カレンダーを購読する」リンクの下に表示されているURLをペーストします。
+Booked Scheduler の「カレンダーを購読する」リンクの下に表示されているURLをペーストします。
 </p>
 
 <h3>Google&reg; Calendar</h3>
@@ -176,7 +176,7 @@ phpScheduleItの「カレンダーを購読する」リンクの下に表示さ�
 カレンダータブをクリックします。
 「他のカレンダー」をクリックします。
 「URLで追加」をクリックします。
-phpScheduleItの「カレンダーを購読する」リンクの下に表示されているURLをペーストします。
+Booked Scheduler の「カレンダーを購読する」リンクの下に表示されているURLをペーストします。
 </p>
 
 <h2>予約量の制限</h2>
