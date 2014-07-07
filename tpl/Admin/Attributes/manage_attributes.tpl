@@ -39,7 +39,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 	<form id="addAttributeForm" ajaxAction="{ManageAttributesActions::AddAttribute}" method="post">
 		<div>
-			<span class="wideLabel">{translate key=Type}:</span>
+			<label for="attributeType"><span class="wideLabel">{translate key=Type}:</span></label>
 			<select {formname key=ATTRIBUTE_TYPE} id="attributeType">
 				<option value="{CustomAttributeTypes::SINGLE_LINE_TEXTBOX}">{translate key=$Types[CustomAttributeTypes::SINGLE_LINE_TEXTBOX]}</option>
 				<option value="{CustomAttributeTypes::MULTI_LINE_TEXTBOX}">{translate key=$Types[CustomAttributeTypes::MULTI_LINE_TEXTBOX]}</option>
@@ -49,12 +49,12 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		</div>
 		<div class="textBoxOptions">
 			<div class="attributeLabel">
-				<span class="wideLabel">{translate key=DisplayLabel}:</span>
+			<label for="ATTRIBUTE_LABEL"><span class="wideLabel">{translate key=DisplayLabel}:</span></label>
 			{textbox name=ATTRIBUTE_LABEL class="required"}
 			</div>
 			<div class="attributeRequired">
-				<span class="wideLabel">{translate key=Required}:</span>
-				<input type="checkbox" {formname key=ATTRIBUTE_IS_REQUIRED} />
+				<label for="attributeRequired"><span class="wideLabel">{translate key=Required}:</span></label>
+				<input type="checkbox" {formname key=ATTRIBUTE_IS_REQUIRED} id="attributeRequired"/>
 			</div>
 			<div class="attributeUnique">
 				<span class="wideLabel">{translate key=AppliesTo}:</span>
@@ -62,20 +62,20 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 				<input type="hidden" class="appliesToId" {formname key=ATTRIBUTE_ENTITY} id="addAttributeEntityId" />
 			</div>
 			<div class="attributeValidationExpression">
-				<span class="wideLabel">{translate key=ValidationExpression}:</span>
+				<label for="ATTRIBUTE_VALIDATION_EXPRESSION"><span class="wideLabel">{translate key=ValidationExpression}:</span></label>
 				{textbox name=ATTRIBUTE_VALIDATION_EXPRESSION}
 			</div>
 			<div class="attributePossibleValues" style="display:none">
-				<span class="wideLabel">{translate key=PossibleValues}:</span>
+				<label for="ATTRIBUTE_POSSIBLE_VALUES"><span class="wideLabel">{translate key=PossibleValues}:</span></label>
 			{textbox name=ATTRIBUTE_POSSIBLE_VALUES class="required"} <span class="note">({translate key=CommaSeparated})</span>
 			</div>
 			<div class="attributeSortOrder">
-				<span class="wideLabel">{translate key=SortOrder}:</span>
-				{textbox name=ATTRIBUTE_SORT_ORDER  maxlength=3 width="40px"}
+				<label for="ATTRIBUTE_SORT_ORDER"><span class="wideLabel">{translate key=SortOrder}:</span></label>
+				{textbox name=ATTRIBUTE_SORT_ORDER  maxlength=3 width="40px" id="ATTRIBUTE_SORT_ORDER"} 
 			</div>
 			<div class="attributeAdminOnly">
-				<span class="wideLabel">{translate key=AdminOnly}:</span>
-				<input type="checkbox" {formname key=ATTRIBUTE_IS_ADMIN_ONLY} />
+				<label for="ATTRIBUTE_IS_ADMIN_ONLY"><span class="wideLabel">{translate key=AdminOnly}:</span></label>
+				<input type="checkbox" {formname key=ATTRIBUTE_IS_ADMIN_ONLY} id="ATTRIBUTE_IS_ADMIN_ONLY"/>
 			</div>
 		</div>
 
@@ -111,11 +111,11 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 		<div class="textBoxOptions">
 			<div class="attributeLabel">
-				<span class="wideLabel">{translate key=DisplayLabel}:</span>
+				<label for="editAttributeLabel"><span class="wideLabel">{translate key=DisplayLabel}:</span></label>
 			{textbox name=ATTRIBUTE_LABEL class="required" id='editAttributeLabel'}
 			</div>
 			<div class="attributeRequired">
-				<span class="wideLabel">{translate key=Required}:</span>
+				<label for="editAttributeRequired"><span class="wideLabel">{translate key=Required}:</span></label>
 				<input type="checkbox" {formname key=ATTRIBUTE_IS_REQUIRED} id='editAttributeRequired'/>
 			</div>
 			<div class="attributeUnique">
@@ -124,20 +124,20 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 				<input type="hidden" class="appliesToId" {formname key=ATTRIBUTE_ENTITY} id='editAttributeEntityId' />
 			</div>
 			<div class="attributeValidationExpression">
-				<span class="wideLabel">{translate key=ValidationExpression}:</span>
+				<label for="editAttributeRegex"><span class="wideLabel">{translate key=ValidationExpression}:</span></label>
 			{textbox name=ATTRIBUTE_VALIDATION_EXPRESSION id='editAttributeRegex'}
 			</div>
 			<div class="attributePossibleValues" style="display:none">
-				<span class="wideLabel">{translate key=PossibleValues}:</span>
+				<label for="editAttributePossibleValues"><span class="wideLabel">{translate key=PossibleValues}:</span></label>
 			{textbox name=ATTRIBUTE_POSSIBLE_VALUES class="required" id="editAttributePossibleValues"} <span
 					class="note">({translate key=CommaSeparated})</span>
 			</div>
 			<div class="attributeSortOrder">
-				<span class="wideLabel">{translate key=SortOrder}:</span>
+				<label for="editAttributeSortOrder"><span class="wideLabel">{translate key=SortOrder}:</span></label>
 				{textbox name=ATTRIBUTE_SORT_ORDER  maxlength=3 width="40px" id="editAttributeSortOrder"}
 			</div>
 			<div class="attributeAdminOnly">
-				<span class="wideLabel">{translate key=AdminOnly}:</span>
+				<label for="editAttributeAdminOnly"><span class="wideLabel">{translate key=AdminOnly}:</span></label>
 				<input type="checkbox" {formname key=ATTRIBUTE_IS_ADMIN_ONLY} id="editAttributeAdminOnly"/>
 			</div>
 		</div>

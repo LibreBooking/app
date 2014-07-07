@@ -1114,3 +1114,9 @@ ul.resource-status-reasons {
   padding-top: 25px;
   margin-left: 20px;
 }
+
+.off-screen {
+  left: -999 rem;
+  position: absolute;
+  top: -999 rem;
+}

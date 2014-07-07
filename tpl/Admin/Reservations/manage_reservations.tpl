@@ -247,6 +247,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 <div id="statusDialog" class="dialog" title="{translate key=CurrentStatus}">
 	<form id="statusForm" method="post">
 		<div>
+			<label for="resourceStatusId" class="off-screen">{translate key=CurrentStatus}</label>
 			<select id="resourceStatusId" {formname key=RESOURCE_STATUS_ID} class="textbox">
 				<option value="{ResourceStatus::AVAILABLE}">{translate key=Available}</option>
 				<option value="{ResourceStatus::UNAVAILABLE}">{translate key=Unavailable}</option>
