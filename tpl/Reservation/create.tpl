@@ -83,7 +83,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 		<div class="row">
 			<div class="col-xs-12">
-				<div class="pull-left"><label>{translate key="ResourceList"}</label><br/>
+				<div class="pull-left"><span class="like-label">{translate key="ResourceList"}</span><br/>
 
 					<div id="resourceNames" style="display:inline">
 						<a href="#" class="resourceDetails">{$ResourceName}</a>
@@ -113,36 +113,34 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			</div>
 		</div>
 
-		<div class="row">
-			<div class="col-xs-12">
-				<div class="form-group">
-					<label for="BeginDate" class="reservationDate">{translate key='BeginDate'}</label>
-					<input type="text" id="BeginDate" class="form-control dateinput"
-						   value="{formatdate date=$StartDate}"/>
-					<input type="hidden" id="formattedBeginDate" {formname key=BEGIN_DATE}
-						   value="{formatdate date=$StartDate key=system}"/>
-					<select id="BeginPeriod" {formname key=BEGIN_PERIOD} class="form-control timeinput">
-						{foreach from=$StartPeriods item=period}
-							{if $period->IsReservable()}
-								{assign var='selected' value=''}
-								{if $period eq $SelectedStart}
-									{assign var='selected' value=' selected="selected"'}
-								{/if}
-								<option value="{$period->Begin()}"{$selected}>{$period->Label()}</option>
-							{/if}
-						{/foreach}
-					</select>
-				</div>
-			</div>
-		</div>
 		<ul class="no-style">
+			<li>
+				<div class="form-group">
+                                        <label for="BeginDate" class="reservationDate">{translate key='BeginDate'}</label>
+                                        <input type="text" id="BeginDate" class="form-control dateinput"
+                                                   value="{formatdate date=$StartDate}"/>
+                                        <input type="hidden" id="formattedBeginDate" {formname key=BEGIN_DATE}
+                                                   value="{formatdate date=$StartDate key=system}"/>
+                                        <select id="BeginPeriod" {formname key=BEGIN_PERIOD} class="form-control timeinput" title="Begin time">
+                                                {foreach from=$StartPeriods item=period}
+                                                        {if $period->IsReservable()}
+                                                                {assign var='selected' value=''}
+                                                                {if $period eq $SelectedStart}
+                                                                        {assign var='selected' value=' selected="selected"'}
+                                                                {/if}
+                                                                <option value="{$period->Begin()}"{$selected}>{$period->Label()}</option>
+                                                        {/if}
+                                                {/foreach}
+                                        </select>
+                                </div>
+			</li>
 			<li>
 				<div class="form-group">
 					<label for="EndDate" class="reservationDate">{translate key='EndDate'}</label>
 					<input type="text" id="EndDate" class="form-control dateinput" value="{formatdate date=$EndDate}"/>
 					<input type="hidden" id="formattedEndDate" {formname key=END_DATE}
-						   value="{formatdate date=$EndDate key=system}"/>
-					<select id="EndPeriod" {formname key=END_PERIOD} class="form-control timeinput">
+						   value="{formatdate date=$EndDate key=system}" />
+					<select id="EndPeriod" {formname key=END_PERIOD} class="form-control timeinput" title="End time">
 						{foreach from=$EndPeriods item=period name=endPeriods}
 							{if $period->BeginDate()->IsMidnight()}
 								<option value="{$period->Begin()}"{$selected}>{$period->Label()}</option>
@@ -159,11 +157,13 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 				</div>
 			</li>
 			<li>
-				<label>{translate key=ReservationLength}</label>
+				<div class="form-group">
+				<span class="like-label">{translate key=ReservationLength}</span>
 
 				<div class="durationText">
 					<span id="durationDays">0</span> {translate key=days},
 					<span id="durationHours">0</span> {translate key=hours}
+				</div>
 				</div>
 			</li>
 			{if $HideRecurrence}
@@ -171,17 +171,19 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 				{else}
 			<li>
 				{/if}
+				<div class="form-group">
 				{control type="RecurrenceControl" RepeatTerminationDate=$RepeatTerminationDate}
+				</div>
 			</li>
 			<li class="form-horizontal">
 				<div class="form-group ">
-					<label for="reservationTitle control-label">{translate key="ReservationTitle"}</label>
-					{textbox name="RESERVATION_TITLE" class="form-control" value="ReservationTitle"}
+					<label for="reservationTitle">{translate key="ReservationTitle"}</label>
+					{textbox name="RESERVATION_TITLE" class="form-control" value="ReservationTitle" id="reservationTitle"}
 				</div>
 			</li>
 			<li class="form-horizontal">
 				<div class="form-group">
-					<label for="description control-label">{translate key="ReservationDescription"}</label>
+					<label for="description">{translate key="ReservationDescription"}</label>
 					<textarea id="description" name="{FormKeys::DESCRIPTION}"
 							  class="form-control">{$Description}</textarea>
 				</div>

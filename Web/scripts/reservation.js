@@ -821,7 +821,7 @@ function Reservation(opts)
 			$.map(allUserList, function (item)
 			{
 				items.push('<li><a href="#" class="add" title="Add"><input type="hidden" class="id" value="' + item.Id + '" />' +
-						'<img src="img/plus-button.png" /></a> ' +
+						'<img src="img/plus-button.png" alt="Add"/></a> ' +
 						item.DisplayName + '</li>')
 			});
 		}

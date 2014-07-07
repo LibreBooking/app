@@ -23,11 +23,11 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 				{translate key=Add} <input type="text" id="participantAutocomplete" class="input" style="width:250px;"/>
 				or
 				<button id="promptForParticipants" type="button" class="button" style="display:inline">
-					<img src="img/user-plus.png"/>
+					{html_image src="user-plus.png"}
 				{translate key='SelectUser'}
 				</button>
 				<button id="promptForGroupParticipants" type="button" class="button" style="display:inline">
-					<img src="img/users.png"/>
+					<img src="img/users.png" alt=""/>
 				{translate key='Groups'}
 				</button>
 			</label>
@@ -47,7 +47,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 				{translate key='SelectUser'}
 				</button>
 				<button id="promptForGroupInvitees" type="button" class="button" style="display:inline">
-					<img src="img/users.png"/>
+					<img src="img/users.png" alt=""/>
 				{translate key='Groups'}
 				</button>
 			</label>

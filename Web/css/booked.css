@@ -1120,3 +1120,8 @@ ul.resource-status-reasons {
   position: absolute;
   top: -999 rem;
 }
+
+.like-label {
+  font-weight: 700;
+  margin-bottom: 5px;
+}

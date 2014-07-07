@@ -131,7 +131,6 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 						<li><a href="{$Path}admin/manage_reservations.php">{translate key="ManageReservations"}</a></li>
 						<li><a href="{$Path}admin/manage_blackouts.php">{translate key="ManageBlackouts"}</a></li>
 
-					</li>
 					<li class="divider"></li>
 					<li><a href="{$Path}admin/manage_resources.php">{translate key="ManageResources"}</a></li>
 					{*<ul class="dropdown-menu">*}
