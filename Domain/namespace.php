@@ -26,6 +26,7 @@ require_once(ROOT_DIR . 'Domain/Values/ResourceLevel.php');
 require_once(ROOT_DIR . 'Domain/Values/SeriesUpdateScope.php');
 require_once(ROOT_DIR . 'Domain/Values/AttributeValue.php');
 require_once(ROOT_DIR . 'Domain/Values/AttributeEntityValue.php');
+require_once(ROOT_DIR . 'Domain/Values/ReservationColorRule.php');
 
 require_once(ROOT_DIR . 'Domain/Schedule.php');
 require_once(ROOT_DIR . 'Domain/BookableResource.php');

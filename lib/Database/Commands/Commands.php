@@ -245,6 +245,20 @@ class AddReservationAttachmentCommand extends SqlCommand
 	}
 }
 
+class AddReservationColorRuleCommand extends SqlCommand
+{
+	public function __construct($attributeType, $color, $comparisonType, $requiredValue, $attributeId)
+	{
+		parent::__construct(Queries::ADD_RESERVATION_COLOR_RULE);
+
+		$this->AddParameter(new Parameter(ParameterNames::COLOR_ATTRIBUTE_TYPE, $attributeType));
+		$this->AddParameter(new Parameter(ParameterNames::COLOR, $color));
+		$this->AddParameter(new Parameter(ParameterNames::COMPARISON_TYPE, $comparisonType));
+		$this->AddParameter(new Parameter(ParameterNames::COLOR_REQUIRED_VALUE, $requiredValue));
+		$this->AddParameter(new Parameter(ParameterNames::ATTRIBUTE_ID, $attributeId));
+	}
+}
+
 class AddReservationReminderCommand extends SqlCommand
 {
 	public function __construct($seriesId, $minutesPrior, $reminderType)
@@ -637,6 +651,15 @@ class DeleteReminderByRefNumberCommand extends SqlCommand
 	{
 		parent::__construct(Queries::DELETE_REMINDER_BY_REFNUMBER);
 		$this->AddParameter(new Parameter(ParameterNames::REMINDER_REFNUMBER, $refnumber));
+	}
+}
+
+class DeleteReservationColorRuleCommand extends SqlCommand
+{
+	public function __construct($ruleId)
+	{
+		parent::__construct(Queries::DELETE_RESERVATION_COLOR_RULE_COMMAND);
+		$this->AddParameter(new Parameter(ParameterNames::COLOR_RULE_ID, $ruleId));
 	}
 }
 
@@ -1212,6 +1235,23 @@ class GetReservationAttachmentsCommand extends SqlCommand
 	{
 		parent::__construct(Queries::GET_RESERVATION_ATTACHMENTS_FOR_SERIES);
 		$this->AddParameter(new Parameter(ParameterNames::SERIES_ID, $seriesId));
+	}
+}
+
+class GetReservationColorRulesCommand extends SqlCommand
+{
+	public function __construct()
+	{
+		parent::__construct(Queries::GET_RESERVATION_COLOR_RULES);
+	}
+}
+
+class GetReservationColorRuleCommand extends SqlCommand
+{
+	public function __construct($ruleId)
+	{
+		parent::__construct(Queries::GET_RESERVATION_COLOR_RULE);
+		$this->AddParameter(new Parameter(ParameterNames::COLOR_RULE_ID, $ruleId));
 	}
 }
 

@@ -233,7 +233,14 @@ class ColumnNames
 	// DBVERSION //
 	const VERSION_NUMBER = 'version_number';
 	const VERSION_DATE = 'version_date';
-	
+
+	// RESERVATION COLOR RULES //
+	const REQUIRED_VALUE = 'required_value';
+	const RESERVATION_COLOR = 'color';
+	const RESERVATION_COLOR_RULE_ID = 'reservation_color_rule_id';
+	const COLOR_ATTRIBUTE_TYPE = 'attribute_type';
+	const COMPARISON_TYPE = 'comparison_type';
+
 	// dynamic
 	const TOTAL = 'total';
 	const TOTAL_TIME = 'totalTime';
@@ -254,4 +261,5 @@ class ColumnNames
 	// shared
 	const ALLOW_CALENDAR_SUBSCRIPTION = 'allow_calendar_subscription';
 	const PUBLIC_ID = 'public_id';
+
 }

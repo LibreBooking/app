@@ -140,6 +140,7 @@ class FormKeys
 	const REQUIRES_APPROVAL = 'requiresApproval';
 	const RESERVATION_ACTION = 'reservationAction';
 	const RESERVATION_COLOR = 'RESERVATION_COLOR';
+	const RESERVATION_COLOR_RULE_ID = 'RESERVATION_COLOR_RULE_ID';
 	const RESERVATION_FILE = 'reservationFile';
 	const RESERVATION_ID = 'reservationId';
 	const RESERVATION_TITLE = 'reservationTitle';

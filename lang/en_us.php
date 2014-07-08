@@ -501,6 +501,11 @@ class en_us extends Language
 		$strings['AdminOnly'] = 'Is Admin Only';
 		$strings['AdvancedFilter'] = 'Advanced Filter';
 		$strings['ChangeLanguage'] = 'Change Language';
+		$strings['AddRule'] = 'Add Rule';
+		$strings['Attribute'] = 'Attribute';
+		$strings['RequiredValue'] = 'Required Value';
+		$strings['ReservationCustomRuleAdd'] = 'If %s then the reservation color will be';
+		$strings['AddReservationColorRule'] = 'Add Reservation Color Rule';
 		// End Strings
 
 		// Install
@@ -631,6 +636,7 @@ class en_us extends Language
 		$strings['ManageResourceGroups'] = 'Resource Groups';
 		$strings['ManageResourceTypes'] = 'Resource Types';
 		$strings['ManageResourceStatus'] = 'Resource Statuses';
+		$strings['ReservationColors'] = 'Reservation Colors';
 		// End Page Titles
 
 		// Day representations

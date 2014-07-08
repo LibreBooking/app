@@ -186,9 +186,14 @@ class ReservationViewRepository implements IReservationViewRepository
 
 		$reservations = array();
 
+		$reservationRepository = new ReservationRepository();
+		$rules = $reservationRepository->GetReservationColorRules();
+
 		while ($row = $result->GetRow())
 		{
-			$reservations[] = ReservationItemView::Populate($row);
+			$reservation = ReservationItemView::Populate($row);
+			$reservation->WithColorRules($rules);
+			$reservations[] = $reservation;
 		}
 
 		$result->Free();
@@ -1246,6 +1251,68 @@ class ReservationItemView implements IReservedItemView
 
 		$buffer = $this->GetBufferTime();
 		return new DateRange($this->GetStartDate()->SubtractInterval($buffer), $this->GetEndDate()->AddInterval($buffer));
+	}
+
+	/**
+	 * @var null|string
+	 */
+	private $_color = null;
+
+	/**
+	 * @var ReservationColorRule[]
+	 */
+	private $_colorRules = array();
+
+	/**
+	 * @param ReservationColorRule[] $colorRules
+	 */
+	public function WithColorRules($colorRules = array())
+	{
+		$this->_colorRules = $colorRules;
+	}
+
+	/**
+	 * @return null|string
+	 */
+	public function GetColor()
+	{
+		if ($this->_color == null)
+		{
+			// cache the color after the first call to prevent multiple iterations of this logic
+			$this->_color = $this->UserPreferences->Get(UserPreferences::RESERVATION_COLOR);
+			if (!empty($this->_color))
+			{
+				$this->_color = "#{$this->_color}";
+			}
+			else if (count($this->_colorRules) > 0)
+			{
+				foreach ($this->_colorRules as $rule)
+				{
+					if ($rule->IsSatisfiedBy($this))
+					{
+						$this->_color = "#{$rule->Color}";
+						break;
+					}
+				}
+			}
+			else
+			{
+				$this->_color = "";
+			}
+		}
+
+		return $this->_color;
+	}
+
+	public function GetTextColor() {
+
+		$color = $this->GetColor();
+		if (!empty($color))
+		{
+			return new ContrastingColor($color);
+		}
+
+		return null;
 	}
 }
 

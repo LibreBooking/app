@@ -141,11 +141,11 @@ class CalendarReservation
 		$res->Participant = $reservation->UserLevelId == ReservationUserLevel::PARTICIPANT;
 		$res->Owner = $reservation->UserLevelId == ReservationUserLevel::OWNER;
 
-		$color = $reservation->UserPreferences->Get(UserPreferences::RESERVATION_COLOR);
+		$color = $reservation->GetColor();
 		if (!empty($color))
 		{
-			$res->Color = "#$color";
-			$res->TextColor = new ContrastingColor($color);
+			$res->Color = $color;
+			$res->TextColor = $reservation->GetTextColor();
 		}
 
 		$res->Class = self::GetClass($reservation);
@@ -201,11 +201,11 @@ class CalendarReservation
 				$cr->DisplayTitle .= ' ' . $reservation->Title;
 			}
 
-			$color = $reservation->UserPreferences->Get(UserPreferences::RESERVATION_COLOR);
+			$color = $reservation->GetColor();
 			if (!empty($color))
 			{
-				$cr->Color = "#$color";
-				$cr->TextColor = new ContrastingColor($color);
+				$cr->Color = $color;
+				$cr->TextColor = $reservation->GetTextColor();
 			}
 
 			$cr->Class = self::GetClass($reservation);

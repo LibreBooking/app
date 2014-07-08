@@ -70,7 +70,10 @@ class ReservationSlot implements IReservationSlot
 	 * @param int $periodSpan
 	 * @param ReservationItemView $reservation
 	 */
-	public function __construct(SchedulePeriod $begin, SchedulePeriod $end, Date $displayDate, $periodSpan,
+	public function __construct(SchedulePeriod $begin,
+								SchedulePeriod $end,
+								Date $displayDate,
+								$periodSpan,
 								ReservationItemView $reservation)
 	{
 		$this->_reservation = $reservation;
@@ -207,23 +210,12 @@ class ReservationSlot implements IReservationSlot
 
 	public function Color()
 	{
-		$color = $this->_reservation->UserPreferences->Get(UserPreferences::RESERVATION_COLOR);
-		if (!empty($color))
-		{
-			return "#$color";
-		}
-
-		return null;
+		return $this->_reservation->GetColor();
 	}
 
 	public function TextColor()
 	{
-		$color = $this->Color();
-		if (!empty($color))
-		{
-			return new ContrastingColor($color);
-		}
+		return $this->_reservation->GetTextColor();
 
-		return null;
 	}
 }

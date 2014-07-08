@@ -1,21 +1,21 @@
 <?php
 /**
-Copyright 2011-2014 Nick Korbel
-
-This file is part of Booked Scheduler.
-
-Booked Scheduler is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-Booked Scheduler is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
+ * Copyright 2011-2014 Nick Korbel
+ *
+ * This file is part of Booked Scheduler.
+ *
+ * Booked Scheduler is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Booked Scheduler is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 require_once(ROOT_DIR . 'Domain/namespace.php');
@@ -99,7 +99,9 @@ class ReservationRepository implements IReservationRepository
 		{
 			Log::Debug('Updating existing series (seriesId: %s)', $reservationSeries->SeriesId());
 
-			$updateSeries = new UpdateReservationSeriesCommand($reservationSeries->SeriesId(), $reservationSeries->Title(), $reservationSeries->Description(), $reservationSeries->RepeatOptions()->RepeatType(), $reservationSeries->RepeatOptions()->ConfigurationString(), Date::Now(), $reservationSeries->StatusId(), $reservationSeries->UserId());
+			$updateSeries = new UpdateReservationSeriesCommand($reservationSeries->SeriesId(), $reservationSeries->Title(), $reservationSeries->Description(), $reservationSeries->RepeatOptions()
+																																												 ->RepeatType(), $reservationSeries->RepeatOptions()
+																																																				   ->ConfigurationString(), Date::Now(), $reservationSeries->StatusId(), $reservationSeries->UserId());
 
 			$database->Execute($updateSeries);
 
@@ -120,7 +122,9 @@ class ReservationRepository implements IReservationRepository
 	{
 		$database = ServiceLocator::GetDatabase();
 
-		$insertReservationSeries = new AddReservationSeriesCommand(Date::Now(), $reservationSeries->Title(), $reservationSeries->Description(), $reservationSeries->RepeatOptions()->RepeatType(), $reservationSeries->RepeatOptions()->ConfigurationString(), ReservationTypes::Reservation, $reservationSeries->StatusId(), $reservationSeries->UserId());
+		$insertReservationSeries = new AddReservationSeriesCommand(Date::Now(), $reservationSeries->Title(), $reservationSeries->Description(), $reservationSeries->RepeatOptions()
+																																								  ->RepeatType(), $reservationSeries->RepeatOptions()
+																																																	->ConfigurationString(), ReservationTypes::Reservation, $reservationSeries->StatusId(), $reservationSeries->UserId());
 
 		$reservationSeriesId = $database->ExecuteInsert($insertReservationSeries);
 
@@ -373,7 +377,8 @@ class ReservationRepository implements IReservationRepository
 		{
 			$fileId = $row[ColumnNames::FILE_ID];
 			$extension = $row[ColumnNames::FILE_EXTENSION];
-			$contents = ServiceLocator::GetFileSystem()->GetFileContents(Paths::ReservationAttachments() . "$fileId.$extension");
+			$contents = ServiceLocator::GetFileSystem()
+									  ->GetFileContents(Paths::ReservationAttachments() . "$fileId.$extension");
 			$attachment = ReservationAttachment::Create($row[ColumnNames::FILE_NAME],
 														$row[ColumnNames::FILE_TYPE],
 														$row[ColumnNames::FILE_SIZE],
@@ -403,6 +408,52 @@ class ReservationRepository implements IReservationRepository
 											 $attachmentFile->FileContents());
 
 		return $id;
+	}
+
+	/**
+	 * @return ReservationColorRule[]
+	 */
+	public function GetReservationColorRules()
+	{
+		$command = new GetReservationColorRulesCommand();
+		$reader = ServiceLocator::GetDatabase()->Query($command);
+
+		$rules = array();
+		while ($row = $reader->GetRow())
+		{
+			$rules[] = ReservationColorRule::FromRow($row);
+		}
+
+		return $rules;
+	}
+
+	public function GetReservationColorRule($ruleId)
+	{
+		$command = new GetReservationColorRuleCommand($ruleId);
+		$reader = ServiceLocator::GetDatabase()->Query($command);
+
+		$rule = null;
+		if ($row = $reader->GetRow())
+		{
+			$rule = ReservationColorRule::FromRow($row);
+		}
+
+		return $rule;
+	}
+
+	public function AddReservationColorRule(ReservationColorRule $rule)
+	{
+		$command = new AddReservationColorRuleCommand($rule->AttributeType, $rule->Color, $rule->ComparisonType, $rule->RequiredValue, $rule->AttributeId);
+		$id = ServiceLocator::GetDatabase()->ExecuteInsert($command);
+		$rule->Id = $id;
+
+		return $id;
+	}
+
+	public function DeleteReservationColorRule(ReservationColorRule $rule)
+	{
+		$command = new DeleteReservationColorRuleCommand($rule->Id);
+		ServiceLocator::GetDatabase()->Execute($command);
 	}
 }
 
@@ -811,4 +862,26 @@ interface IReservationRepository
 	 * @return int
 	 */
 	public function AddReservationAttachment(ReservationAttachment $attachmentFile);
+
+	/**
+	 * @return ReservationColorRule[]
+	 */
+	public function GetReservationColorRules();
+
+	/**
+	 * @param int $ruleId
+	 * @return ReservationColorRule
+	 */
+	public function GetReservationColorRule($ruleId);
+
+	/**
+	 * @param ReservationColorRule $colorRule
+	 * @return int
+	 */
+	public function AddReservationColorRule(ReservationColorRule $colorRule);
+
+	/**
+	 * @param ReservationColorRule $colorRule
+	 */
+	public function DeleteReservationColorRule(ReservationColorRule $colorRule);
 }

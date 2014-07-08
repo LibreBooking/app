@@ -93,6 +93,10 @@ class Queries
 			'INSERT INTO reservation_files (series_id, file_name, file_type, file_size, file_extension)
 		VALUES (@seriesid, @file_name, @file_type, @file_size, @file_extension)';
 
+	const ADD_RESERVATION_COLOR_RULE =
+			'INSERT INTO reservation_color_rules (custom_attribute_id, attribute_type, required_value, comparison_type, color)
+		VALUES (@custom_attribute_id, @attribute_type, @required_value, @comparison_type, @color)';
+
 	const ADD_RESERVATION_REMINDER =
 			'INSERT INTO reservation_reminders (series_id, minutes_prior, reminder_type)
 			VALUES (@seriesid, @minutes_prior, @reminder_type)';
@@ -203,6 +207,8 @@ class Queries
 	const DELETE_ORPHAN_LAYOUTS = 'DELETE l.* FROM layouts l LEFT JOIN schedules s ON l.layout_id = s.layout_id WHERE s.layout_id IS NULL';
 
 	const DELETE_QUOTA = 'DELETE	FROM quotas	WHERE quota_id = @quotaid';
+
+	const DELETE_RESERVATION_COLOR_RULE_COMMAND = 'DELETE FROM reservation_color_rules WHERE reservation_color_rule_id = @reservation_color_rule_id';
 
 	const DELETE_RESOURCE_COMMAND = 'DELETE FROM resources WHERE resource_id = @resourceid';
 
@@ -573,6 +579,13 @@ const GET_RESERVATION_LIST_TEMPLATE =
 	const GET_RESERVATION_ATTACHMENT = 'SELECT * FROM reservation_files WHERE file_id = @file_id';
 
 	const GET_RESERVATION_ATTACHMENTS_FOR_SERIES = 'SELECT * FROM reservation_files WHERE series_id = @seriesid';
+
+	const GET_RESERVATION_COLOR_RULES = 'SELECT * FROM reservation_color_rules r
+		LEFT JOIN custom_attributes ca ON ca.custom_attribute_id = r.custom_attribute_id';
+
+	const GET_RESERVATION_COLOR_RULE = 'SELECT * FROM reservation_color_rules r
+		LEFT JOIN custom_attributes ca ON ca.custom_attribute_id = r.custom_attribute_id
+		WHERE reservation_color_rule_id=@reservation_color_rule_id';
 
 	const GET_RESERVATION_PARTICIPANTS =
 			'SELECT
@@ -1014,4 +1027,3 @@ class QueryBuilder
 						   'AND ' . self::$DATE_FRAGMENT . ' AND a.accessory_name LIKE @accessoryname');
 	}
 }
-?>

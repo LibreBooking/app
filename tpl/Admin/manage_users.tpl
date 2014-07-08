@@ -385,9 +385,9 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 				$(el).val(hex);
 					$(el).ColorPickerHide();
 				},
-				onBeforeShow: function () {
-					$(this).ColorPickerSetColor(this.value);
-				}
+			onBeforeShow: function () {
+				$(this).ColorPickerSetColor(this.value);
+			}
 		});
 
 	});

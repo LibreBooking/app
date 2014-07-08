@@ -20,6 +20,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 class ParameterNames
 {
+
 	private function __construct()
 	{
 	}
@@ -53,8 +54,14 @@ class ParameterNames
 	const BLACKOUT_SERIES_ID = '@blackout_series_id';
 	const BLACKOUT_INSTANCE_ID = '@blackout_instance_id';
 
+	const COLOR_ATTRIBUTE_TYPE = '@attribute_type';
+	const COLOR = '@color';
+	const COMPARISON_TYPE = '@comparison_type';
+	const COLOR_REQUIRED_VALUE = '@required_value';
+	const COLOR_ATTRIBUTE_ID = '@attribute_id';
 	const CURRENT_DATE = '@current_date';
 	const CURRENT_SERIES_ID = '@currentSeriesId';
+	const COLOR_RULE_ID = '@reservation_color_rule_id';
 
 	const DATE_CREATED = '@dateCreated';
 	const DATE_MODIFIED = '@dateModified';
