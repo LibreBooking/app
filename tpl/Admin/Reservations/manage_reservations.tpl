@@ -178,12 +178,13 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			</td>
 		</tr>
 		{if $ReservationAttributes|count > 0}
-			<tr class="{$rowCss}" data-seriesId="{$reservation->SeriesId}" data-refnum="{$reservation->ReferenceNumber}">
+			<tr class="{$rowCss} customAttributeUpdate" data-seriesId="{$reservation->SeriesId}" data-refnum="{$reservation->ReferenceNumber}">
 				<td colspan="13" class="horizontal-list">
 					<ul>
 						{foreach from=$ReservationAttributes item=attribute}
 							<li class="update inlineUpdate updateCustomAttribute" attributeId="{$attribute->Id()}" attributeType="{$attribute->Type()}">
 								<span class="glyphicon glyphicon-pencil"></span> <label>{$attribute->Label()}:</label>
+								<span class="attributeValue">
 								{assign var=attrVal value=$reservation->Attributes->Get($attribute->Id())}
 								{if $attribute->Type() == CustomAttributeTypes::CHECKBOX}
 									{if $attrVal == 1}
@@ -194,6 +195,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 								{else}
 									{$attrVal}
 								{/if}
+								</span>
 							</li>
 						{/foreach}
 					</ul>
@@ -265,39 +267,10 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 	</div>
 </div>
 
-
 <div id="inlineUpdateErrorDialog" class="dialog" title="{translate key=Error}">
 	<div id="inlineUpdateErrors" class="hidden error">&nbsp;</div>
 	<div id="reservationAccessError" class="hidden error"></div>
 	<button type="button" class="button cancel">{translate key='OK'}</button>
-</div>
-
-<div id="statusDialog" class="dialog" title="{translate key=CurrentStatus}">
-	<form id="statusForm" method="post">
-		<div>
-			<label for="resourceStatusId" class="off-screen">{translate key=CurrentStatus}</label>
-			<select id="resourceStatusId" {formname key=RESOURCE_STATUS_ID} class="textbox">
-				<option value="{ResourceStatus::AVAILABLE}">{translate key=Available}</option>
-				<option value="{ResourceStatus::UNAVAILABLE}">{translate key=Unavailable}</option>
-				<option value="{ResourceStatus::HIDDEN}">{translate key=Hidden}</option>
-			</select>
-		</div>
-		<div>
-			<label for="resourceReasonId">{translate key=Reason}</label><br/>
-			<select id="resourceReasonId" {formname key=RESOURCE_STATUS_REASON_ID} class="textbox">
-			</select>
-		</div>
-		<div class="admin-update-buttons">
-			<button type="button"
-					class="button save">{html_image src="disk-black.png"} {translate key='Update'}</button>
-			<button type="button"
-					class="button saveAll">{html_image src="disks-black.png"} {translate key='AllReservationResources'}</button>
-			<button type="button" class="button cancel">{html_image src="slash.png"} {translate key='Cancel'}</button>
-			<input type="hidden" {formname key=RESOURCE_STATUS_UPDATE_SCOPE} id="statusUpdateScope" value=""/>
-			<input type="hidden" {formname key=REFERENCE_NUMBER} id="statusUpdateReferenceNumber" value=""/>
-			<input type="hidden" {formname key=RESOURCE_ID} id="statusResourceId" value=""/>
-		</div>
-	</form>
 </div>
 
 <div class="hidden">

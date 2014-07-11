@@ -106,9 +106,9 @@ function ReservationManagement(opts, approval)
 			e.preventDefault();
 			e.stopPropagation();
 
-			var value = $(this).closest('td').find('input, select, textarea').val();
+			var value = $(this).closest('.attributeTemplate').find('input, select, textarea').val();
 
-			confirmCellUpdate(value, $(this).closest('td').attr('attributeId'), $(this).closest('tr').attr('data-seriesId'));
+			confirmCellUpdate(value, $(this).closest('.attributeTemplate').attr('attributeId'), $(this).closest('tr').attr('data-seriesId'));
 		});
 
 		elements.reservationTable.delegate('.cancelCellUpdate', 'click', function (e)
@@ -133,11 +133,6 @@ function ReservationManagement(opts, approval)
 		elements.reservationTable.delegate('.approve', 'click', function ()
 		{
 			approveReservation(getActiveReferenceNumber());
-		});
-
-		elements.reservationTable.delegate('.changeStatus', 'click', function ()
-		{
-			showChangeResourceStatus(getActiveReferenceNumber(), $(this).attr('resourceId'));
 		});
 
 		elements.statusOptions.change(function (e)
@@ -272,27 +267,6 @@ function ReservationManagement(opts, approval)
 		}
 	}
 
-	function showChangeResourceStatus(referenceNumber, resourceId)
-	{
-		if (Object.keys(reservations[referenceNumber].resources).length > 1)
-		{
-			elements.statusDialog.find('.saveAll').show();
-		}
-		else
-		{
-			elements.statusDialog.find('.saveAll').hide();
-		}
-
-		var statusId = reservations[referenceNumber].resources[resourceId].statusId;
-		elements.statusOptions.val(statusId);
-		elements.statusResourceId.val(resourceId);
-		elements.statusReferenceNumber.val(referenceNumber);
-		populateReasonOptions(statusId, elements.statusReasons);
-		elements.statusReasons.val(reservations[referenceNumber].resources[resourceId].descriptionId);
-
-		elements.statusDialog.dialog('open');
-	}
-
 	function populateReasonOptions(statusId, reasonsElement)
 	{
 		reasonsElement.empty().append($('<option>', {value: '', text: '-'}));
@@ -347,7 +321,6 @@ function ReservationManagement(opts, approval)
 
 	var previousContents;
 	var previousCell;
-	var updateCancelButtons = $('#inlineUpdateCancelButtons').clone().removeClass('hidden');
 
 	function cancelCurrentCellUpdate()
 	{
@@ -365,7 +338,7 @@ function ReservationManagement(opts, approval)
 		function onReservationUpdate()
 		{
 			cancelCurrentCellUpdate();
-			$('#reservationTable').find('tr[data-seriesId="' + seriesId + '"]>td[attributeId="' + attributeId + '"]').text(value).effect("highlight", {}, 3000);
+			$('#reservationTable').find('tr.customAttributeUpdate[data-seriesId="' + seriesId + '"] li[attributeId="' + attributeId + '"] .attributeValue').text(value).effect("highlight", {}, 3000);
 		}
 
 		$('#attributeUpdateId').val(attributeId);
