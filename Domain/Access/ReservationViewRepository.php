@@ -1088,6 +1088,7 @@ class ReservationItemView implements IReservedItemView
 			$view->RepeatMonthlyType = $repeatConfig->MonthlyType;
 			$view->RepeatTerminationDate = $repeatConfig->TerminationDate;
 
+
 			$view->IsRecurring = $row[ColumnNames::REPEAT_TYPE] != RepeatType::None;
 		}
 

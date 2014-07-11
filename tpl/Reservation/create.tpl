@@ -302,8 +302,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 </form>
 </div>
 
-<div class="modal fade" id="dialogResourceGroups" tabindex="-1" role="dialog" aria-labelledby="resourcesModalLabel"
-	 aria-hidden="true">
+<div class="modal fade" id="dialogResourceGroups" tabindex="-1" role="dialog" aria-labelledby="resourcesModalLabel" aria-hidden="true">
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header">

@@ -230,11 +230,11 @@ function BlackoutManagement(opts)
 	{
 		if (reservations[referenceNumber].isRecurring == '1')
 		{
-			elements.deleteSeriesDialog.dialog('open');
+			elements.deleteSeriesDialog.modal('show');
 		}
 		else
 		{
-			elements.deleteInstanceDialog.dialog('open');
+			elements.deleteInstanceDialog.modal('show');
 		}
 	}
 	

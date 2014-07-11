@@ -1071,8 +1071,35 @@ ul.jqtree-tree .group-resource .jqtree-title {
 .config-settings li {
   padding: 3px 0;
 }
-th.action {
+#reservationTable {
+  width: 100%;
+}
+#reservationTable .user,
+#reservationTable .title {
+  width: 110px;
+}
+#reservationTable .resource {
+  max-width: 120px;
+}
+#reservationTable .referenceNumber {
+  width: 1px;
+}
+#reservationTable .date {
+  width: 130px;
+}
+#reservationTable .duration {
+  max-width: 75px;
+}
+#reservationTable tr.editable td {
+  cursor: pointer;
+}
+.inlineUpdate {
+  cursor: pointer;
+}
+th.action,
+td.action {
   max-width: 50px;
+  text-align: center;
 }
 #adminFilterButtons {
   padding-top: 5px;
@@ -1099,7 +1126,7 @@ ul.resource-status-reasons {
   padding-top: 5px;
 }
 .inlineUpdate:hover {
-  background-color: #fff;
+  background-color: #fffaeb;
 }
 #bulkUpdateDialog .title {
   font-size: 1.1em;
@@ -1113,15 +1140,4 @@ ul.resource-status-reasons {
 .admin-header-more {
   padding-top: 25px;
   margin-left: 20px;
-}
-
-.off-screen {
-  left: -999 rem;
-  position: absolute;
-  top: -999 rem;
-}
-
-.like-label {
-  font-weight: 700;
-  margin-bottom: 5px;
 }

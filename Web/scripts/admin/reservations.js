@@ -45,20 +45,12 @@ function ReservationManagement(opts, approval)
 
 	ReservationManagement.prototype.init = function ()
 	{
-
-		ConfigureAdminDialog(elements.deleteInstanceDialog);
-		ConfigureAdminDialog(elements.deleteSeriesDialog);
 		ConfigureAdminDialog(elements.statusDialog);
 		ConfigureAdminDialog(elements.inlineUpdateErrorDialog);
 
 		$(".save").click(function ()
 		{
 			$(this).closest('form').submit();
-		});
-
-		$(".cancel").click(function ()
-		{
-			$(this).closest('.dialog').dialog("close");
 		});
 
 		elements.userFilter.userAutoComplete(options.autocompleteUrl, selectUser);
@@ -74,7 +66,7 @@ function ReservationManagement(opts, approval)
 		function setCurrentReservationInformation(td)
 		{
 			var tr = td.parents('tr');
-			var referenceNumber = tr.find('.referenceNumber').text();
+			var referenceNumber = tr.attr('data-refnum');
 			var reservationId = tr.find('.id').text();
 			setActiveReferenceNumber(referenceNumber);
 			setActiveReservationId(reservationId);
@@ -97,8 +89,7 @@ function ReservationManagement(opts, approval)
 		elements.reservationTable.delegate('.editable', 'click', function ()
 		{
 			$(this).addClass('clicked');
-			var td = $(this).find('.referenceNumber');
-			viewReservation(td.text());
+			viewReservation($(this).attr('data-refnum'));
 		});
 
 		elements.reservationTable.delegate('.updateCustomAttribute', 'click', function (e)
@@ -117,7 +108,7 @@ function ReservationManagement(opts, approval)
 
 			var value = $(this).closest('td').find('input, select, textarea').val();
 
-			confirmCellUpdate(value, $(this).closest('td').attr('attributeId'), $(this).closest('tr').attr('seriesId'));
+			confirmCellUpdate(value, $(this).closest('td').attr('attributeId'), $(this).closest('tr').attr('data-seriesId'));
 		});
 
 		elements.reservationTable.delegate('.cancelCellUpdate', 'click', function (e)
@@ -130,7 +121,7 @@ function ReservationManagement(opts, approval)
 
 		elements.reservationTable.find('.editable').each(function ()
 		{
-			var refNum = $(this).find('.referenceNumber').text();
+			var refNum = $(this).attr('data-refnum');
 			$(this).attachReservationPopup(refNum, options.popupUrl);
 		});
 
@@ -269,20 +260,15 @@ function ReservationManagement(opts, approval)
 		this.reservationId = reservationId;
 	}
 
-	function getActiveReservationId()
-	{
-		return this.reservationId;
-	}
-
 	function showDeleteReservation(referenceNumber)
 	{
 		if (reservations[referenceNumber].isRecurring == '1')
 		{
-			elements.deleteSeriesDialog.dialog('open');
+			elements.deleteSeriesDialog.modal('show');
 		}
 		else
 		{
-			elements.deleteInstanceDialog.dialog('open');
+			elements.deleteInstanceDialog.modal('show');
 		}
 	}
 
@@ -379,7 +365,7 @@ function ReservationManagement(opts, approval)
 		function onReservationUpdate()
 		{
 			cancelCurrentCellUpdate();
-			$('#reservationTable').find('tr[seriesId="' + seriesId + '"]>td[attributeId="' + attributeId + '"]').text(value).effect("highlight", {}, 3000);
+			$('#reservationTable').find('tr[data-seriesId="' + seriesId + '"]>td[attributeId="' + attributeId + '"]').text(value).effect("highlight", {}, 3000);
 		}
 
 		$('#attributeUpdateId').val(attributeId);
@@ -453,7 +439,8 @@ function ReservationManagement(opts, approval)
 			previousCell = cell;
 
 			cell.empty();
-			cell.append(template.after(updateCancelButtons));
+//			cell.append(template.after(updateCancelButtons));
+			cell.append(template);
 
 			attributeElement.focus();
 		};
