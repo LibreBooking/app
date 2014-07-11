@@ -848,7 +848,7 @@ table.list,
   padding: 4px;
 }
 .row0 {
-  background-color: #eeeeee;
+  background-color: #f0f0f0;
 }
 .row1 {
   background-color: #fafafa;
@@ -1136,8 +1136,4 @@ ul.resource-status-reasons {
   background-color: #eee;
   padding: 3px 3px;
   margin: 7px 0;
-}
-.admin-header-more {
-  padding-top: 25px;
-  margin-left: 20px;
 }

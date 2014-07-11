@@ -22,7 +22,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 <h1>{translate key=ManageReservations}</h1>
 
 <div class="panel panel-default filterTable">
-	<div class="panel-heading">{translate key="Filter"}</div>
+	<div class="panel-heading"><span class="glyphicon glyphicon-filter"></span> {translate key="Filter"}</div>
 	<div class="panel-body">
 		<form id="filterForm" class="horizontal-list form-inline" role="form">
 			<ul>
@@ -106,9 +106,6 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			<button id="clearFilter" class="btn btn-default btn-sm">{translate key=Reset}</button>
 		</div>
 	</div>
-</div>
-<div class="filterTable horizontal-list label-top main-div-shadow" id="filterTable">
-
 </div>
 
 <div>&nbsp;</div>

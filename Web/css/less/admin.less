@@ -1,3 +1,5 @@
+@import "colors.less";
+
 .admin {
   width: 100%;
 }
@@ -132,11 +134,13 @@ table.list, .list td, .list th {
 }
 
 .row0 {
-  background-color: #eeeeee;
+  background-color: #f0f0f0;
+//  background-color: @light-gray;
 }
 
 .row1 {
   background-color: #fafafa;
+//  background-color: @lightest-gray;
 }
 
 .list th.id, .list td.id {
@@ -480,9 +484,4 @@ ul.resource-status-reasons {
   background-color: #eee;
   padding: 3px 3px;
   margin: 7px 0;
-}
-
-.admin-header-more {
-  padding-top: 25px;
-  margin-left: 20px;
 }

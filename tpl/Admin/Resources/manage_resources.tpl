@@ -17,12 +17,12 @@ You should have received a copy of the GNU General Public License
 along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 *}
 
-{include file='globalheader.tpl' cssFiles='css/admin.css,scripts/css/colorbox.css'}
+{include file='globalheader.tpl'}
 
-<div clas="row">
-	<h1 class="pull-left">{translate key='ManageResources'}</h1>
+<div>
 
-	<div class="dropdown pull-left admin-header-more">
+
+	<div class="dropdown admin-header-more pull-right">
 		<button class="btn btn-default" type="button" id="moreResourceActions" data-toggle="dropdown">
 	    <span class="glyphicon glyphicon-align-justify">
 	    <span class="caret"></span>
@@ -44,11 +44,14 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 				{/if}
 		</ul>
 	</div>
+
+	<h1>{translate key='ManageResources'}</h1>
 </div>
 
-<div class="horizontal-list label-top filterTable default-box-shadow no-padding" id="filterTable">
-	<form id="filterForm">
-		<div class="default-box-header">{translate key=Filter}</div>
+<div class="panel panel-default filterTable">
+	<div class="panel-heading"><span class="glyphicon glyphicon-filter"></span> {translate key="Filter"}</div>
+	<div class="panel-body">
+		<form id="filterForm" class="horizontal-list form-inline" role="form">
 		<ul>
 			<li class="form-group">
 				<label class="control-label" for="filterResourceName">{translate key=Name}</label>
@@ -119,10 +122,10 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 	</form>
 
 	<div class="clear">&nbsp;</div>
-	<div class="default-box-footer">
-		<button id="filter" class="btn btn-primary"><span
-					class="glyphicon glyphicon-search"></span> {translate key=Filter}</button>
-		<button id="clearFilter" class="btn btn-default">{translate key=Reset}</a>
+	<div id="adminFilterButtons">
+			<button id="filter" class="btn btn-success btn-sm"><span class="glyphicon glyphicon-search"></span> {translate key=Filter}</button>
+			<button id="clearFilter" class="btn btn-default btn-sm">{translate key=Reset}</button>
+		</div>
 	</div>
 </div>
 
