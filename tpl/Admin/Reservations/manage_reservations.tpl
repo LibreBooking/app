@@ -19,6 +19,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 {include file='globalheader.tpl'}
 
+<div id="page-manage-reservations">
 <h1>{translate key=ManageReservations}</h1>
 
 <div class="panel panel-default filterTable">
@@ -108,11 +109,9 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 	</div>
 </div>
 
-<div>&nbsp;</div>
-
-<p>
+<div>
 	<a href="{$CsvExportUrl}" class="btn btn-default btn-sm">{translate key=ExportToCSV} <span class="glyphicon glyphicon-export"></span></a>
-</p>
+</div>
 
 <table class="table" id="reservationTable">
 	<thead>
@@ -362,4 +361,5 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 	{html_image src="reservation_submitting.gif"}
 </div>
 
+</div>
 {include file='globalfooter.tpl'}

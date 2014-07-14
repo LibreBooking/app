@@ -121,8 +121,17 @@ function ReservationManagement(opts, approval)
 
 		elements.reservationTable.find('.editable').each(function ()
 		{
+			var seriesId = $(this).attr('data-seriesId');
 			var refNum = $(this).attr('data-refnum');
 			$(this).attachReservationPopup(refNum, options.popupUrl);
+
+			$(this).hover(function (e)
+			{
+				$(this).find('td').addClass('highlight');
+			}, function (e)
+			{
+				$(this).find('td').removeClass('highlight');
+			});
 		});
 
 		elements.reservationTable.delegate('.delete', 'click', function ()

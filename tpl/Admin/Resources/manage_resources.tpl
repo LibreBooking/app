@@ -19,9 +19,9 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 {include file='globalheader.tpl'}
 
+<div id="page-resources">
+
 <div>
-
-
 	<div class="dropdown admin-header-more pull-right">
 		<button class="btn btn-default" type="button" id="moreResourceActions" data-toggle="dropdown">
 	    <span class="glyphicon glyphicon-align-justify">
@@ -52,77 +52,77 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 	<div class="panel-heading"><span class="glyphicon glyphicon-filter"></span> {translate key="Filter"}</div>
 	<div class="panel-body">
 		<form id="filterForm" class="horizontal-list form-inline" role="form">
-		<ul>
-			<li class="form-group">
-				<label class="control-label" for="filterResourceName">{translate key=Name}</label>
-				<input type="text" id="filterResourceName" class="form-control" {formname key=RESOURCE_NAME}
-					   value="{$ResourceNameFilter}"/ />
-			</li>
-			<li class="form-group">
-				<label class="control-label" for="filterScheduleId">{translate key=Schedule}</label>
-				<select id="filterScheduleId" {formname key=SCHEDULE_ID} class="form-control">
-					<option value="">{translate key=AllSchedules}</option>
-					{object_html_options options=$AllSchedules key='GetId' label="GetName" selected=$ScheduleIdFilter}
-				</select>
-			</li>
-
-			<li class="form-group">
-				<label class="control-label" for="filterResourceType">{translate key=ResourceType}</label>
-				<select id="filterResourceType" class="form-control" {formname key=RESOURCE_TYPE_ID}>
-					<option value="">{translate key=All}</option>
-					{object_html_options options=$ResourceTypes key='Id' label="Name" selected=$ResourceTypeFilter}
-				</select>
-			</li>
-			<li class="form-group">
-				<label class="control-label" for="resourceStatusIdFilter">{translate key=ResourceStatus}</label>
-				<select id="resourceStatusIdFilter" class="form-control" {formname key=RESOURCE_STATUS_ID}>
-					<option value="">{translate key=All}</option>
-					<option value="{ResourceStatus::AVAILABLE}">{translate key=Available}</option>
-					<option value="{ResourceStatus::UNAVAILABLE}">{translate key=Unavailable}</option>
-					<option value="{ResourceStatus::HIDDEN}">{translate key=Hidden}</option>
-				</select>
-			</li>
-			<li class="form-group">
-				<label class="control-label" for="resourceReasonIdFilter">{translate key=Reason}</label>
-				<select id="resourceReasonIdFilter" class="form-control" {formname key=RESOURCE_STATUS_REASON_ID}>
-					<option value="">-</option>
-				</select>
-			</li>
-			<li class="form-group">
-				<label class="control-label" for="filterCapacity">{translate key=MinimumCapacity}</label>
-				<input type="text" id="filterCapacity" class="form-control" {formname key=MAX_PARTICIPANTS}
-					   value="{$CapacityFilter}"/>
-			</li>
-			<li class="form-group">
-				<label class="control-label"
-					   for="filterRequiresApproval">{translate key='ResourceRequiresApproval'}</label>
-				<select id="filterRequiresApproval" class="form-control" {formname key=REQUIRES_APPROVAL}>
-					{html_options options=$YesNoOptions selected=$RequiresApprovalFilter}
-				</select>
-			</li>
-			<li class="form-group">
-				<label class="control-label"
-					   for="filterAutoAssign">{translate key='ResourcePermissionAutoGranted'}</label>
-				<select id="filterAutoAssign" class="form-control" {formname key=AUTO_ASSIGN}>
-					{html_options options=$YesNoOptions selected=$AutoPermissionFilter}
-				</select>
-			</li>
-			<li class="form-group">
-				<label class="control-label" for="filterAllowMultiDay">{translate key=ResourceAllowMultiDay}</label>
-				<select id="filterAllowMultiDay" class="form-control" {formname key=ALLOW_MULTIDAY}>
-					{html_options options=$YesNoOptions selected=$AllowMultiDayFilter}
-				</select>
-			</li>
-			{foreach from=$AttributeFilters item=attribute}
-				<li class="customAttribute form-group">
-					{control type="AttributeControl" attribute=$attribute searchmode=true}
+			<ul>
+				<li class="form-group">
+					<label class="control-label" for="filterResourceName">{translate key=Name}</label>
+					<input type="text" id="filterResourceName" class="form-control" {formname key=RESOURCE_NAME}
+						   value="{$ResourceNameFilter}"/ />
 				</li>
-			{/foreach}
-		</ul>
-	</form>
+				<li class="form-group">
+					<label class="control-label" for="filterScheduleId">{translate key=Schedule}</label>
+					<select id="filterScheduleId" {formname key=SCHEDULE_ID} class="form-control">
+						<option value="">{translate key=AllSchedules}</option>
+						{object_html_options options=$AllSchedules key='GetId' label="GetName" selected=$ScheduleIdFilter}
+					</select>
+				</li>
 
-	<div class="clear">&nbsp;</div>
-	<div id="adminFilterButtons">
+				<li class="form-group">
+					<label class="control-label" for="filterResourceType">{translate key=ResourceType}</label>
+					<select id="filterResourceType" class="form-control" {formname key=RESOURCE_TYPE_ID}>
+						<option value="">{translate key=All}</option>
+						{object_html_options options=$ResourceTypes key='Id' label="Name" selected=$ResourceTypeFilter}
+					</select>
+				</li>
+				<li class="form-group">
+					<label class="control-label" for="resourceStatusIdFilter">{translate key=ResourceStatus}</label>
+					<select id="resourceStatusIdFilter" class="form-control" {formname key=RESOURCE_STATUS_ID}>
+						<option value="">{translate key=All}</option>
+						<option value="{ResourceStatus::AVAILABLE}">{translate key=Available}</option>
+						<option value="{ResourceStatus::UNAVAILABLE}">{translate key=Unavailable}</option>
+						<option value="{ResourceStatus::HIDDEN}">{translate key=Hidden}</option>
+					</select>
+				</li>
+				<li class="form-group">
+					<label class="control-label" for="resourceReasonIdFilter">{translate key=Reason}</label>
+					<select id="resourceReasonIdFilter" class="form-control" {formname key=RESOURCE_STATUS_REASON_ID}>
+						<option value="">-</option>
+					</select>
+				</li>
+				<li class="form-group">
+					<label class="control-label" for="filterCapacity">{translate key=MinimumCapacity}</label>
+					<input type="text" id="filterCapacity" class="form-control" {formname key=MAX_PARTICIPANTS}
+						   value="{$CapacityFilter}"/>
+				</li>
+				<li class="form-group">
+					<label class="control-label"
+						   for="filterRequiresApproval">{translate key='ResourceRequiresApproval'}</label>
+					<select id="filterRequiresApproval" class="form-control" {formname key=REQUIRES_APPROVAL}>
+						{html_options options=$YesNoOptions selected=$RequiresApprovalFilter}
+					</select>
+				</li>
+				<li class="form-group">
+					<label class="control-label"
+						   for="filterAutoAssign">{translate key='ResourcePermissionAutoGranted'}</label>
+					<select id="filterAutoAssign" class="form-control" {formname key=AUTO_ASSIGN}>
+						{html_options options=$YesNoOptions selected=$AutoPermissionFilter}
+					</select>
+				</li>
+				<li class="form-group">
+					<label class="control-label" for="filterAllowMultiDay">{translate key=ResourceAllowMultiDay}</label>
+					<select id="filterAllowMultiDay" class="form-control" {formname key=ALLOW_MULTIDAY}>
+						{html_options options=$YesNoOptions selected=$AllowMultiDayFilter}
+					</select>
+				</li>
+				{foreach from=$AttributeFilters item=attribute}
+					<li class="customAttribute form-group">
+						{control type="AttributeControl" attribute=$attribute searchmode=true}
+					</li>
+				{/foreach}
+			</ul>
+		</form>
+
+		<div class="clear">&nbsp;</div>
+		<div id="adminFilterButtons">
 			<button id="filter" class="btn btn-success btn-sm"><span class="glyphicon glyphicon-search"></span> {translate key=Filter}</button>
 			<button id="clearFilter" class="btn btn-default btn-sm">{translate key=Reset}</button>
 		</div>
@@ -443,7 +443,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 <div id="renameDialog" class="dialog" title="{translate key=Rename}">
 	<form id="renameForm" method="post" ajaxAction="{ManageResourcesActions::ActionRename}">
 		<label for="editName">{translate key='Name'}:</label> <input id="editName" type="text" class="textbox required" maxlength="85"
-									   style="width:250px" {formname key=RESOURCE_NAME} />
+																	 style="width:250px" {formname key=RESOURCE_NAME} />
 
 		<div class="admin-update-buttons">
 			<button type="button"
@@ -657,10 +657,10 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 						<span class="unlimitedCapacity">
 							<br/>
 							<label for="maxCapacity">
-							{capture name="txtMaxCapacity" assign="txtMaxCapacity"}
-								<input type='text' id='maxCapacity' class='textbox' size='5'
-									   maxlength='5' {formname key=MAX_PARTICIPANTS} />
-							{/capture}
+								{capture name="txtMaxCapacity" assign="txtMaxCapacity"}
+									<input type='text' id='maxCapacity' class='textbox' size='5'
+										   maxlength='5' {formname key=MAX_PARTICIPANTS} />
+								{/capture}
 							</label>
 							{translate key='ResourceCapacity' args=$txtMaxCapacity}
 						</span>
@@ -731,7 +731,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 <div id="statusDialog" class="dialog" title="{translate key=Status}">
 	<form id="statusForm" method="post" ajaxAction="{ManageResourcesActions::ActionChangeStatus}">
-		<label for="statusId" class="off-screen">{translate key=Status}</label>		<label for="statusId" class="off-screen">{translate key=Status}</label>
+		<label for="statusId" class="off-screen">{translate key=Status}</label> <label for="statusId" class="off-screen">{translate key=Status}</label>
 		<select id="statusId" {formname key=RESOURCE_STATUS_ID} class="textbox">
 			<option value="{ResourceStatus::AVAILABLE}">{translate key=Available}</option>
 			<option value="{ResourceStatus::UNAVAILABLE}">{translate key=Unavailable}</option>
@@ -756,15 +756,14 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 	</form>
 </div>
 
-<div class="modal fade" id="bulkUpdateDialog" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
-	 aria-hidden="true">
-<form id="bulkUpdateForm" method="post" ajaxAction="{ManageResourcesActions::ActionBulkUpdate}">
+<div class="modal fade" id="bulkUpdateDialog" tabindex="-1" role="dialog" aria-labelledby="bulkUpdateLabel" aria-hidden="true">
+<form id="bulkUpdateForm" method="post" ajaxAction="{ManageResourcesActions::ActionBulkUpdate}" class="form-inline" role="form">>
 
 <div class="modal-dialog modal-lg horizontal-list">
 <div class="modal-content">
 <div class="modal-header">
 	<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-	<h4 class="modal-title" id="myModalLabel">{translate key=Resources}</h4>
+	<h4 class="modal-title" id="bulkUpdateLabel">{translate key=BulkResourceUpdate}</h4>
 </div>
 <div class="modal-body">
 <div id="bulkUpdateErrors" class="error hidden"></div>
@@ -772,226 +771,233 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 <div id="bulkUpdateList">
 </div>
 <div>
-	<div class="title">{translate key=Common}</div>
-	<ul>
-		<li>
-			<label for="bulkEditSchedule">{translate key=MoveToSchedule}:</label>
-			<select id="bulkEditSchedule" class="textbox" {formname key=SCHEDULE_ID}>
-				<option value="-1">{translate key=Unchanged}</option>
-				{foreach from=$Schedules item=scheduleName key=scheduleId}
-					<option value="{$scheduleId}">{$scheduleName}</option>
-				{/foreach}
-			</select>
-		</li>
-		<li>
-			<label for="bulkEditResourceType">{translate key=ResourceType}:</label>
-			<select id="bulkEditResourceType" class="textbox" {formname key=RESOURCE_TYPE_ID}>
-				<option value="-1">{translate key=Unchanged}</option>
-				<option value="">-- {translate key=None} --</option>
-				{foreach from=$ResourceTypes item=resourceType key=id}
-					<option value="{$id}">{$resourceType->Name()}</option>
-				{/foreach}
-			</select>
-		</li>
-		<li>
-			<label for="bulkEditLocation">{translate key=Location}:</label>
-			<input id="bulkEditLocation" type="text" class="textbox" maxlength="85"
-				   style="width:250px" {formname key=RESOURCE_LOCATION} />
+<div class="title">{translate key=Common}</div>
+<ul>
+	<li>
+		<label for="bulkEditSchedule" class="control-label">{translate key=MoveToSchedule}:</label>
+		<select id="bulkEditSchedule" class="form-control" {formname key=SCHEDULE_ID}>
+			<option value="-1">{translate key=Unchanged}</option>
+			{foreach from=$Schedules item=scheduleName key=scheduleId}
+				<option value="{$scheduleId}">{$scheduleName}</option>
+			{/foreach}
+		</select>
+	</li>
+	<li>
+		<label for="bulkEditResourceType" class="control-label">{translate key=ResourceType}:</label>
+		<select id="bulkEditResourceType" class="form-control" {formname key=RESOURCE_TYPE_ID}>
+			<option value="-1">{translate key=Unchanged}</option>
+			<option value="">-- {translate key=None} --</option>
+			{foreach from=$ResourceTypes item=resourceType key=id}
+				<option value="{$id}">{$resourceType->Name()}</option>
+			{/foreach}
+		</select>
+	</li>
+	<li>
+		<label for="bulkEditLocation" class="control-label">{translate key=Location}:</label>
+		<input id="bulkEditLocation" type="text" class="form-control" maxlength="85"
+			   style="width:250px" {formname key=RESOURCE_LOCATION} />
 
-		</li>
-		<li>
-			<label for="bulkEditContact">{translate key=Contact}:</label>
-			<input id="bulkEditContact" type="text" class="textbox" maxlength="85"
-				   style="width:250px" {formname key=RESOURCE_CONTACT} />
-		</li>
-		<li>
-			<label for="bulkEditAdminGroupId">{translate key=ResourceAdministrator}:</label>
-			<select id="bulkEditAdminGroupId" {formname key=RESOURCE_ADMIN_GROUP_ID} class="textbox">
-				<option value="-1">{translate key=Unchanged}</option>
-				<option value="">-- {translate key=None} --</option>
-				{foreach from=$AdminGroups item=adminGroup}
-					<option value="{$adminGroup->Id}">{$adminGroup->Name}</option>
-				{/foreach}
-			</select>
-		</li>
-		<li>
-			<label for="bulkEditStatusId">{translate key=Status}:</label>
-			<select id="bulkEditStatusId" {formname key=RESOURCE_STATUS_ID} class="textbox">
-				<option value="-1">{translate key=Unchanged}</option>
-				<option value="{ResourceStatus::AVAILABLE}">{translate key=Available}</option>
-				<option value="{ResourceStatus::UNAVAILABLE}">{translate key=Unavailable}</option>
-				<option value="{ResourceStatus::HIDDEN}">{translate key=Hidden}</option>
-			</select>
-		</li>
-		<li>
-			<label for="bulkEditStatusReasonId">{translate key=Reason}:</label>
-			<select id="bulkEditStatusReasonId" {formname key=RESOURCE_STATUS_REASON_ID} class="textbox">
-			</select>
-		</li>
-	</ul>
-	<ul>
-		<li>
-			<label for="bulkEditDescription">{translate key=Description}:</label>
-			<textarea id="bulkEditDescription" class="textbox"
-					  style="width:460px;height:150px;" {formname key=RESOURCE_DESCRIPTION}></textarea>
-		</li>
-		<li>
-			<label for="bulkEditNotes">{translate key=Notes}:</label>
-			<textarea id="bulkEditNotes" class="textbox"
-					  style="width:460px;height:150px;" {formname key=RESOURCE_NOTES}></textarea>
-		</li>
-	</ul>
-</div>
-<div>
-	<div class="title">{translate key=Duration}</div>
-	<ul>
-		<li>
-			<label>
-				<input type="checkbox" id="bulkEditNoMinimumDuration"
-					   value="1" {formname key=MIN_DURATION_NONE}/> {translate key=ResourceMinLengthNone}
-			</label>
-	  						<span class="bulkEditNoMinimumDuration">
-	  							<br/>
-								{capture name="txtMinDuration" assign="txtMinDuration"}
-									<input type='text' id='bulkEditMinDurationDays' size='3' class='days textbox'
+	</li>
+	<li>
+		<label for="bulkEditContact" class="control-label">{translate key=Contact}:</label>
+		<input id="bulkEditContact" type="text" class="form-control" maxlength="85"
+			   style="width:250px" {formname key=RESOURCE_CONTACT} />
+	</li>
+	<li>
+		<label for="bulkEditAdminGroupId" class="control-label">{translate key=ResourceAdministrator}:</label>
+		<select id="bulkEditAdminGroupId" {formname key=RESOURCE_ADMIN_GROUP_ID} class="form-control">
+			<option value="-1">{translate key=Unchanged}</option>
+			<option value="">-- {translate key=None} --</option>
+			{foreach from=$AdminGroups item=adminGroup}
+				<option value="{$adminGroup->Id}">{$adminGroup->Name}</option>
+			{/foreach}
+		</select>
+	</li>
+	<li>
+		<label for="bulkEditStatusId" class="control-label">{translate key=Status}:</label>
+		<select id="bulkEditStatusId" {formname key=RESOURCE_STATUS_ID} class="form-control">
+			<option value="-1">{translate key=Unchanged}</option>
+			<option value="{ResourceStatus::AVAILABLE}">{translate key=Available}</option>
+			<option value="{ResourceStatus::UNAVAILABLE}">{translate key=Unavailable}</option>
+			<option value="{ResourceStatus::HIDDEN}">{translate key=Hidden}</option>
+		</select>
+	</li>
+	<li>
+		<label for="bulkEditStatusReasonId" class="control-label">{translate key=Reason}:</label>
+		<select id="bulkEditStatusReasonId" {formname key=RESOURCE_STATUS_REASON_ID} class="form-control">
+		</select>
+	</li>
+</ul>
+<ul>
+	<li>
+		<label for="bulkEditDescription" class="control-label">{translate key=Description}:</label>
+		<textarea id="bulkEditDescription" class="form-control"
+				  style="width:460px;height:150px;" {formname key=RESOURCE_DESCRIPTION}></textarea>
+	</li>
+	<li>
+		<label for="bulkEditNotes" class="control-label">{translate key=Notes}:</label>
+		<textarea id="bulkEditNotes" class="form-control"
+				  style="width:460px;height:150px;" {formname key=RESOURCE_NOTES}></textarea>
+	</li>
+</ul>
+<div class="title">{translate key=Duration}</div>
+<ul>
+	<li>
+		<label class="control-label">
+			<input type="checkbox" id="bulkEditNoMinimumDuration"
+				   value="1" {formname key=MIN_DURATION_NONE} class="form-control"/> {translate key=ResourceMinLengthNone}
+		</label>
+					<span class="bulkEditNoMinimumDuration">
+						<br/>
+						{capture name="txtMinDuration" assign="txtMinDuration"}
+							<input type='text' id='bulkEditMinDurationDays' size='3' class='days form-control'
+								   maxlength='3'/>
+							<input type='text' id='bulkEditMinDurationHours' size='2' class='hours form-control'
+								   maxlength='2'/>
+							<input type='text' id='bulkEditMinDurationMinutes' size='2' class='minutes form-control'
+								   maxlength='2'/>
+							<input type='hidden' id='bulkEditMinDuration'
+								   class='interval' {formname key=MIN_DURATION} />
+						{/capture}
+						<label class="control-label">{translate key='ResourceMinLength' args=$txtMinDuration}</label>
+					</span>
+	</li>
+	<li>
+		<label for="bulkEditNoMaximumDuration" class="control-label">
+			<input type="checkbox" id="bulkEditNoMaximumDuration"
+				   value="1" {formname key=MAX_DURATION_NONE} class="form-control"/> {translate key=ResourceMaxLengthNone}
+		</label>
+
+								<span class="bulkEditNoMaximumDuration">
+									<br/>
+									{capture name="txtMaxDuration" assign="txtMaxDuration"}
+										<input type='text' id='bulkEditMaxDurationDays' size='3' class='days form-control'
+											   maxlength='3'/>
+										<input type='text' id='bulkEditMaxDurationHours' size='2' class='hours form-control'
+											   maxlength='2'/>
+										<input type='text' id='bulkEditMaxDurationMinutes' size='2' class='minutes form-control'
+											   maxlength='2'/>
+										<input type='hidden' id='bulkEditMaxDuration'
+											   class='interval' {formname key=MAX_DURATION} />
+									{/capture}
+									<label class="control-label">{translate key=ResourceMaxLength args=$txtMaxDuration}</label>
+								</span>
+	</li>
+	<li>
+		<label class="control-label">
+			<input type="checkbox" id="bulkEditNoBufferTime"
+				   value="1" {formname key=BUFFER_TIME_NONE} class="form-control"/> {translate key=ResourceBufferTimeNone}
+		</label>
+							<span class="bulkEditNoBufferTime">
+								<br/>
+								{capture name="txtBufferTime" assign="txtBufferTime"}
+									<input type='text' id='bulkEditBufferTimeDays' size='3' class='days form-control'
 										   maxlength='3'/>
-									<input type='text' id='bulkEditMinDurationHours' size='2' class='hours textbox'
+									<input type='text' id='bulkEditBufferTimeHours' size='2' class='hours form-control'
 										   maxlength='2'/>
-									<input type='text' id='bulkEditMinDurationMinutes' size='2' class='minutes textbox'
+									<input type='text' id='bulkEditBufferTimeMinutes' size='2' class='minutes form-control'
 										   maxlength='2'/>
-									<input type='hidden' id='bulkEditMinDuration'
-										   class='interval' {formname key=MIN_DURATION} />
+									<input type='hidden' id='bulkEditBufferTime'
+										   class='interval' {formname key=BUFFER_TIME} />
 								{/capture}
-								<label>{translate key='ResourceMinLength' args=$txtMinDuration}</label>
-	  						</span>
-		</li>
-		<li>
-			<label for="bulkEditNoMaximumDuration">
-				<input type="checkbox" id="bulkEditNoMaximumDuration"
-					   value="1" {formname key=MAX_DURATION_NONE}/> {translate key=ResourceMaxLengthNone}
-			</label>
+								<label class="control-label">{translate key=ResourceBufferTime args=$txtBufferTime}</label>
+							</span>
+	</li>
+</ul>
+<div class="title">{translate key=Access}</div>
+<ul>
+	<li>
+		<label class="control-label">
+			<input type="checkbox" id="bulkEditNoStartNotice"
+				   value="1" {formname key=MIN_NOTICE_NONE} class="form-control"/> {translate key='ResourceMinNoticeNone'}
+		</label>
+							<span class="bulkEditNoStartNotice">
+								<br/>
+								{capture name="txtStartNotice" assign="txtStartNotice"}
+									<input type='text' id='bulkEditStartNoticeDays' size='3' class='days form-control'
+										   maxlength='3'/>
+									<input type='text' id='bulkEditStartNoticeHours' size='2' class='hours form-control'
+										   maxlength='2'/>
+									<input type='text' id='bulkEditStartNoticeMinutes' size='2' class='minutes form-control'
+										   maxlength='2'/>
+									<input type='hidden' id='bulkEditStartNotice'
+										   class='interval' {formname key=MIN_NOTICE} />
+								{/capture}
+								<label class="control-label">{translate key='ResourceMinNotice' args=$txtStartNotice}</label>
+							</span>
+	</li>
+	<li>
+		<label class="control-label">
+			<input type="checkbox" id="bulkEditNoEndNotice"
+				   value="1" {formname key=MAX_NOTICE_NONE} class="form-control"/> {translate key='ResourceMaxNoticeNone'}
+		</label>
+							<span class="bulkEditNoEndNotice">
+								<br/>
+								{capture name="txtEndNotice" assign="txtEndNotice"}
+									<input type='text' id='bulkEditEndNoticeDays' size='3' class='days form-control'
+										   maxlength='3'/>
+									<input type='text' id='bulkEditEndNoticeHours' size='2' class='hours form-control'
+										   maxlength='2'/>
+									<input type='text' id='bulkEditEndNoticeMinutes' size='2' class='minutes form-control'
+										   maxlength='2'/>
+									<input type='hidden' id='bulkEditEndNotice'
+										   class='interval' {formname key=MAX_NOTICE} />
+								{/capture}
+								<label class="control-label">{translate key='ResourceMaxNotice' args=$txtEndNotice}</label>
+							</span>
+	</li>
+</ul>
+{*<ul >*}
+	{*<li >*}
+		<div class="form-horizontal">
+			<div class="form-group">
+				<label for="bulkEditAllowMultiday" class="control-label">{translate key=ResourceAllowMultiDay}</label>
+				<select id="bulkEditAllowMultiday" class="form-control" {formname key=ALLOW_MULTIDAY}>
+					{html_options options=$YesNoUnchangedOptions}
+				</select>
+			</div>
+		</div>
 
-	  					<span class="bulkEditNoMaximumDuration">
-	  						<br/>
-							{capture name="txtMaxDuration" assign="txtMaxDuration"}
-								<input type='text' id='bulkEditMaxDurationDays' size='3' class='days textbox'
-									   maxlength='3'/>
-								<input type='text' id='bulkEditMaxDurationHours' size='2' class='hours textbox'
-									   maxlength='2'/>
-								<input type='text' id='bulkEditMaxDurationMinutes' size='2' class='minutes textbox'
-									   maxlength='2'/>
-								<input type='hidden' id='bulkEditMaxDuration'
-									   class='interval' {formname key=MAX_DURATION} />
-							{/capture}
-							<label>{translate key=ResourceMaxLength args=$txtMaxDuration}</label>
-	  					</span>
-		</li>
-		<li>
-			<label>
-				<input type="checkbox" id="bulkEditNoBufferTime"
-					   value="1" {formname key=BUFFER_TIME_NONE}/> {translate key=ResourceBufferTimeNone}
-			</label>
-	  				<span class="bulkEditNoBufferTime">
-	  					<br/>
-						{capture name="txtBufferTime" assign="txtBufferTime"}
-							<input type='text' id='bulkEditBufferTimeDays' size='3' class='days textbox'
-								   maxlength='3'/>
-							<input type='text' id='bulkEditBufferTimeHours' size='2' class='hours textbox'
-								   maxlength='2'/>
-							<input type='text' id='bulkEditBufferTimeMinutes' size='2' class='minutes textbox'
-								   maxlength='2'/>
-							<input type='hidden' id='bulkEditBufferTime'
-								   class='interval' {formname key=BUFFER_TIME} />
-						{/capture}
-						<label>{translate key=ResourceBufferTime args=$txtBufferTime}</label>
-	  				</span>
-		</li>
-	</ul>
+	{*</li>*}
+	{*<li>*}
+<div class="form-group form-group-sm">
+		<label for="bulkEditRequiresApproval" class="control-label">{translate key='ResourceRequiresApproval'}</label>
+		<select id="bulkEditRequiresApproval" class="form-control input-sm" {formname key=REQUIRES_APPROVAL}>
+			{html_options options=$YesNoUnchangedOptions}
+		</select>
 </div>
-<div>
-	<div class="title">{translate key=Access}</div>
-	<ul>
-		<li>
-			<label>
-				<input type="checkbox" id="bulkEditNoStartNotice"
-					   value="1" {formname key=MIN_NOTICE_NONE}/> {translate key='ResourceMinNoticeNone'}
-			</label>
-	  				<span class="bulkEditNoStartNotice">
-	  					<br/>
-						{capture name="txtStartNotice" assign="txtStartNotice"}
-							<input type='text' id='bulkEditStartNoticeDays' size='3' class='days textbox'
-								   maxlength='3'/>
-							<input type='text' id='bulkEditStartNoticeHours' size='2' class='hours textbox'
-								   maxlength='2'/>
-							<input type='text' id='bulkEditStartNoticeMinutes' size='2' class='minutes textbox'
-								   maxlength='2'/>
-							<input type='hidden' id='bulkEditStartNotice'
-								   class='interval' {formname key=MIN_NOTICE} />
-						{/capture}
-						<label>{translate key='ResourceMinNotice' args=$txtStartNotice}</label>
-	  				</span>
-		</li>
-		<li>
-			<label>
-				<input type="checkbox" id="bulkEditNoEndNotice"
-					   value="1" {formname key=MAX_NOTICE_NONE}/> {translate key='ResourceMaxNoticeNone'}
-			</label>
-	  				<span class="bulkEditNoEndNotice">
-	  					<br/>
-						{capture name="txtEndNotice" assign="txtEndNotice"}
-							<input type='text' id='bulkEditEndNoticeDays' size='3' class='days textbox'
-								   maxlength='3'/>
-							<input type='text' id='bulkEditEndNoticeHours' size='2' class='hours textbox'
-								   maxlength='2'/>
-							<input type='text' id='bulkEditEndNoticeMinutes' size='2' class='minutes textbox'
-								   maxlength='2'/>
-							<input type='hidden' id='bulkEditEndNotice'
-								   class='interval' {formname key=MAX_NOTICE} />
-						{/capture}
-						<label>{translate key='ResourceMaxNotice' args=$txtEndNotice}</label>
-	  				</span>
-		</li>
-	</ul>
-	<ul>
-		<li>
-			<label for="bulkEditAllowMultiday">{translate key=ResourceAllowMultiDay}</label>
-			<select id="bulkEditAllowMultiday" class="textbox" {formname key=ALLOW_MULTIDAY}>
-				{html_options options=$YesNoUnchangedOptions}
-			</select>
-		</li>
-		<li>
-			<label for="bulkEditRequiresApproval">{translate key='ResourceRequiresApproval'}</label>
-			<select id="bulkEditRequiresApproval" class="textbox" {formname key=REQUIRES_APPROVAL}>
-				{html_options options=$YesNoUnchangedOptions}
-			</select>
-		</li>
-		<li>
-			<label for="bulkEditAutoAssign">{translate key='ResourcePermissionAutoGranted'}</label>
-			<select id="bulkEditAutoAssign" class="textbox" {formname key=AUTO_ASSIGN}>
-				{html_options options=$YesNoUnchangedOptions}
-			</select>
-		</li>
-		<li>
-			<label for="bulkEditAllowSubscriptions">{translate key='TurnOnSubscription'}</label>
-			<select id="bulkEditAllowSubscriptions" class="textbox" {formname key=ALLOW_CALENDAR_SUBSCRIPTIONS}>
-				{html_options options=$YesNoUnchangedOptions}
-			</select>
-		</li>
-	</ul>
-</div>
-<div>
-	<div class="title">{translate key=AdditionalAttributes}</div>
-	<ul>
-		{foreach from=$AttributeFilters item=attribute}
-			{if !$attribute->UniquePerEntity()}
-				<li class="customAttribute">
-					{control type="AttributeControl" attribute=$attribute searchmode=true}
-				</li>
-			{/if}
-		{/foreach}
-	</ul>
+	{*</li>*}
+	{*<li>*}
+<div class="form-group form-group-sm">
+
+		<label for="bulkEditAutoAssign" class="control-label">{translate key='ResourcePermissionAutoGranted'}</label>
+		<select id="bulkEditAutoAssign" class="form-control" {formname key=AUTO_ASSIGN}>
+			{html_options options=$YesNoUnchangedOptions}
+		</select>
 </div>
 
+	{*</li>*}
+	{*<li>*}
+	<div class="form-group form-group-sm">
+
+		<label for="bulkEditAllowSubscriptions" class="control-label">{translate key='TurnOnSubscription'}</label>
+		<select id="bulkEditAllowSubscriptions" class="form-control" {formname key=ALLOW_CALENDAR_SUBSCRIPTIONS}>
+			{html_options options=$YesNoUnchangedOptions}
+		</select>
+	</div>
+
+	{*</li>*}
+{*</ul>*}
+<div class="title">{translate key=AdditionalAttributes}</div>
+<ul>
+	{foreach from=$AttributeFilters item=attribute}
+		{if !$attribute->UniquePerEntity()}
+			<li class="customAttribute">
+				{control type="AttributeControl" attribute=$attribute searchmode=true}
+			</li>
+		{/if}
+	{/foreach}
+</ul>
 </div>
 <div class="modal-footer">
 	<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -999,244 +1005,9 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 </div>
 </div>
 </div>
-</form>
-
 </div>
-
-{*<div id="bulkUpdateDialog" class="hidden horizontal-list label-top" title="{translate key=BulkResourceUpdate}">*}
-{*<div class="title"></div>*}
-{*<form id="bulkUpdateForm" method="post" ajaxAction="{ManageResourcesActions::ActionBulkUpdate}">*}
-{*<div id="bulkUpdateErrors" class="error hidden"></div>*}
-{*{async_validator id="bulkAttributeValidator" key=""}*}
-{*<div id="bulkUpdateList">*}
-{*</div>*}
-{*<div>*}
-{*<div class="title">{translate key=Common}</div>*}
-{*<ul>*}
-{*<li>*}
-{*<label for="bulkEditSchedule">{translate key=MoveToSchedule}:</label>*}
-{*<select id="bulkEditSchedule" class="textbox" {formname key=SCHEDULE_ID}>*}
-{*<option value="-1">{translate key=Unchanged}</option>*}
-{*{foreach from=$Schedules item=scheduleName key=scheduleId}*}
-{*<option value="{$scheduleId}">{$scheduleName}</option>*}
-{*{/foreach}*}
-{*</select>*}
-{*</li>*}
-{*<li>*}
-{*<label for="bulkEditResourceType">{translate key=ResourceType}:</label>*}
-{*<select id="bulkEditResourceType" class="textbox" {formname key=RESOURCE_TYPE_ID}>*}
-{*<option value="-1">{translate key=Unchanged}</option>*}
-{*<option value="">-- {translate key=None} --</option>*}
-{*{foreach from=$ResourceTypes item=resourceType key=id}*}
-{*<option value="{$id}">{$resourceType->Name()}</option>*}
-{*{/foreach}*}
-{*</select>*}
-{*</li>*}
-{*<li>*}
-{*<label for="bulkEditLocation">{translate key=Location}:</label>*}
-{*<input id="bulkEditLocation" type="text" class="textbox" maxlength="85"*}
-{*style="width:250px" {formname key=RESOURCE_LOCATION} />*}
-
-{*</li>*}
-{*<li>*}
-{*<label for="bulkEditContact">{translate key=Contact}:</label>*}
-{*<input id="bulkEditContact" type="text" class="textbox" maxlength="85"*}
-{*style="width:250px" {formname key=RESOURCE_CONTACT} />*}
-{*</li>*}
-{*<li>*}
-{*<label for="bulkEditAdminGroupId">{translate key=ResourceAdministrator}:</label>*}
-{*<select id="bulkEditAdminGroupId" {formname key=RESOURCE_ADMIN_GROUP_ID} class="textbox">*}
-{*<option value="-1">{translate key=Unchanged}</option>*}
-{*<option value="">-- {translate key=None} --</option>*}
-{*{foreach from=$AdminGroups item=adminGroup}*}
-{*<option value="{$adminGroup->Id}">{$adminGroup->Name}</option>*}
-{*{/foreach}*}
-{*</select>*}
-{*</li>*}
-{*<li>*}
-{*<label for="bulkEditStatusId">{translate key=Status}:</label>*}
-{*<select id="bulkEditStatusId" {formname key=RESOURCE_STATUS_ID} class="textbox">*}
-{*<option value="-1">{translate key=Unchanged}</option>*}
-{*<option value="{ResourceStatus::AVAILABLE}">{translate key=Available}</option>*}
-{*<option value="{ResourceStatus::UNAVAILABLE}">{translate key=Unavailable}</option>*}
-{*<option value="{ResourceStatus::HIDDEN}">{translate key=Hidden}</option>*}
-{*</select>*}
-{*</li>*}
-{*<li>*}
-{*<label for="bulkEditStatusReasonId">{translate key=Reason}:</label>*}
-{*<select id="bulkEditStatusReasonId" {formname key=RESOURCE_STATUS_REASON_ID} class="textbox">*}
-{*</select>*}
-{*</li>*}
-{*</ul>*}
-{*<ul>*}
-{*<li>*}
-{*<label for="bulkEditDescription">{translate key=Description}:</label>*}
-{*<textarea id="bulkEditDescription" class="textbox"*}
-{*style="width:460px;height:150px;" {formname key=RESOURCE_DESCRIPTION}></textarea>*}
-{*</li>*}
-{*<li>*}
-{*<label for="bulkEditNotes">{translate key=Notes}:</label>*}
-{*<textarea id="bulkEditNotes" class="textbox"*}
-{*style="width:460px;height:150px;" {formname key=RESOURCE_NOTES}></textarea>*}
-{*</li>*}
-{*</ul>*}
-{*</div>*}
-{*<div>*}
-{*<div class="title">{translate key=Duration}</div>*}
-{*<ul>*}
-{*<li>*}
-{*<label>*}
-{*<input type="checkbox" id="bulkEditNoMinimumDuration"*}
-{*value="1" {formname key=MIN_DURATION_NONE}/> {translate key=ResourceMinLengthNone}*}
-{*</label>*}
-{*<span class="bulkEditNoMinimumDuration">*}
-{*<br/>*}
-{*{capture name="txtMinDuration" assign="txtMinDuration"}*}
-{*<input type='text' id='bulkEditMinDurationDays' size='3' class='days textbox'*}
-{*maxlength='3'/>*}
-{*<input type='text' id='bulkEditMinDurationHours' size='2' class='hours textbox'*}
-{*maxlength='2'/>*}
-{*<input type='text' id='bulkEditMinDurationMinutes' size='2' class='minutes textbox'*}
-{*maxlength='2'/>*}
-{*<input type='hidden' id='bulkEditMinDuration'*}
-{*class='interval' {formname key=MIN_DURATION} />*}
-{*{/capture}*}
-{*<label>{translate key='ResourceMinLength' args=$txtMinDuration}</label>*}
-{*</span>*}
-{*</li>*}
-{*<li>*}
-{*<label for="bulkEditNoMaximumDuration">*}
-{*<input type="checkbox" id="bulkEditNoMaximumDuration"*}
-{*value="1" {formname key=MAX_DURATION_NONE}/> {translate key=ResourceMaxLengthNone}*}
-{*</label>*}
-
-{*<span class="bulkEditNoMaximumDuration">*}
-{*<br/>*}
-{*{capture name="txtMaxDuration" assign="txtMaxDuration"}*}
-{*<input type='text' id='bulkEditMaxDurationDays' size='3' class='days textbox'*}
-{*maxlength='3'/>*}
-{*<input type='text' id='bulkEditMaxDurationHours' size='2' class='hours textbox'*}
-{*maxlength='2'/>*}
-{*<input type='text' id='bulkEditMaxDurationMinutes' size='2' class='minutes textbox'*}
-{*maxlength='2'/>*}
-{*<input type='hidden' id='bulkEditMaxDuration'*}
-{*class='interval' {formname key=MAX_DURATION} />*}
-{*{/capture}*}
-{*<label>{translate key=ResourceMaxLength args=$txtMaxDuration}</label>*}
-{*</span>*}
-{*</li>*}
-{*<li>*}
-{*<label>*}
-{*<input type="checkbox" id="bulkEditNoBufferTime"*}
-{*value="1" {formname key=BUFFER_TIME_NONE}/> {translate key=ResourceBufferTimeNone}*}
-{*</label>*}
-{*<span class="bulkEditNoBufferTime">*}
-{*<br/>*}
-{*{capture name="txtBufferTime" assign="txtBufferTime"}*}
-{*<input type='text' id='bulkEditBufferTimeDays' size='3' class='days textbox'*}
-{*maxlength='3'/>*}
-{*<input type='text' id='bulkEditBufferTimeHours' size='2' class='hours textbox'*}
-{*maxlength='2'/>*}
-{*<input type='text' id='bulkEditBufferTimeMinutes' size='2' class='minutes textbox'*}
-{*maxlength='2'/>*}
-{*<input type='hidden' id='bulkEditBufferTime'*}
-{*class='interval' {formname key=BUFFER_TIME} />*}
-{*{/capture}*}
-{*<label>{translate key=ResourceBufferTime args=$txtBufferTime}</label>*}
-{*</span>*}
-{*</li>*}
-{*</ul>*}
-{*</div>*}
-{*<div>*}
-{*<div class="title">{translate key=Access}</div>*}
-{*<ul>*}
-{*<li>*}
-{*<label>*}
-{*<input type="checkbox" id="bulkEditNoStartNotice"*}
-{*value="1" {formname key=MIN_NOTICE_NONE}/> {translate key='ResourceMinNoticeNone'}*}
-{*</label>*}
-{*<span class="bulkEditNoStartNotice">*}
-{*<br/>*}
-{*{capture name="txtStartNotice" assign="txtStartNotice"}*}
-{*<input type='text' id='bulkEditStartNoticeDays' size='3' class='days textbox'*}
-{*maxlength='3'/>*}
-{*<input type='text' id='bulkEditStartNoticeHours' size='2' class='hours textbox'*}
-{*maxlength='2'/>*}
-{*<input type='text' id='bulkEditStartNoticeMinutes' size='2' class='minutes textbox'*}
-{*maxlength='2'/>*}
-{*<input type='hidden' id='bulkEditStartNotice'*}
-{*class='interval' {formname key=MIN_NOTICE} />*}
-{*{/capture}*}
-{*<label>{translate key='ResourceMinNotice' args=$txtStartNotice}</label>*}
-{*</span>*}
-{*</li>*}
-{*<li>*}
-{*<label>*}
-{*<input type="checkbox" id="bulkEditNoEndNotice"*}
-{*value="1" {formname key=MAX_NOTICE_NONE}/> {translate key='ResourceMaxNoticeNone'}*}
-{*</label>*}
-{*<span class="bulkEditNoEndNotice">*}
-{*<br/>*}
-{*{capture name="txtEndNotice" assign="txtEndNotice"}*}
-{*<input type='text' id='bulkEditEndNoticeDays' size='3' class='days textbox'*}
-{*maxlength='3'/>*}
-{*<input type='text' id='bulkEditEndNoticeHours' size='2' class='hours textbox'*}
-{*maxlength='2'/>*}
-{*<input type='text' id='bulkEditEndNoticeMinutes' size='2' class='minutes textbox'*}
-{*maxlength='2'/>*}
-{*<input type='hidden' id='bulkEditEndNotice'*}
-{*class='interval' {formname key=MAX_NOTICE} />*}
-{*{/capture}*}
-{*<label>{translate key='ResourceMaxNotice' args=$txtEndNotice}</label>*}
-{*</span>*}
-{*</li>*}
-{*</ul>*}
-{*<ul>*}
-{*<li>*}
-{*<label for="bulkEditAllowMultiday">{translate key=ResourceAllowMultiDay}</label>*}
-{*<select id="bulkEditAllowMultiday" class="textbox" {formname key=ALLOW_MULTIDAY}>*}
-{*{html_options options=$YesNoUnchangedOptions}*}
-{*</select>*}
-{*</li>*}
-{*<li>*}
-{*<label for="bulkEditRequiresApproval">{translate key='ResourceRequiresApproval'}</label>*}
-{*<select id="bulkEditRequiresApproval" class="textbox" {formname key=REQUIRES_APPROVAL}>*}
-{*{html_options options=$YesNoUnchangedOptions}*}
-{*</select>*}
-{*</li>*}
-{*<li>*}
-{*<label for="bulkEditAutoAssign">{translate key='ResourcePermissionAutoGranted'}</label>*}
-{*<select id="bulkEditAutoAssign" class="textbox" {formname key=AUTO_ASSIGN}>*}
-{*{html_options options=$YesNoUnchangedOptions}*}
-{*</select>*}
-{*</li>*}
-{*<li>*}
-{*<label for="bulkEditAllowSubscriptions">{translate key='TurnOnSubscription'}</label>*}
-{*<select id="bulkEditAllowSubscriptions" class="textbox" {formname key=ALLOW_CALENDAR_SUBSCRIPTIONS}>*}
-{*{html_options options=$YesNoUnchangedOptions}*}
-{*</select>*}
-{*</li>*}
-{*</ul>*}
-{*</div>*}
-{*<div>*}
-{*<div class="title">{translate key=AdditionalAttributes}</div>*}
-{*<ul>*}
-{*{foreach from=$AttributeFilters item=attribute}*}
-{*{if !$attribute->UniquePerEntity()}*}
-{*<li class="customAttribute">*}
-{*{control type="AttributeControl" attribute=$attribute searchmode=true}*}
-{*</li>*}
-{*{/if}*}
-{*{/foreach}*}
-{*</ul>*}
-{*</div>*}
-{*<div class="admin-update-buttons">*}
-{*<button type="button"*}
-{*class="button save">{html_image src="disk-black.png"} {translate key='Update'}</button>*}
-{*<button type="button" class="button cancelColorbox">{html_image src="slash.png"} {translate key='Cancel'}</button>*}
-{*</div>*}
-{*</form>*}
-{*</div>*}
+</form>
+</div>
 
 {html_image src="admin-ajax-indicator.gif" class="indicator" style="display:none;"}
 {jsfile src="js/jquery.watermark.min.js"}
@@ -1345,5 +1116,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 	});
 
 </script>
+
+<div id="page-resources">
 
 {include file='globalfooter.tpl'}
