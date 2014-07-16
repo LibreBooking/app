@@ -23,7 +23,7 @@ class ReservationValidationFactory implements IReservationValidationFactory
 
     public function __construct()
     {
-        //$this->creationStrategies[ReservationAction::Approve] = 'CreateUpdateService';
+        $this->creationStrategies[ReservationAction::Approve] = 'CreateApprovalService';
         $this->creationStrategies[ReservationAction::Create] = 'CreateAddService';
         $this->creationStrategies[ReservationAction::Delete] = 'CreateDeleteService';
         $this->creationStrategies[ReservationAction::Update] = 'CreateUpdateService';
@@ -56,6 +56,16 @@ class ReservationValidationFactory implements IReservationValidationFactory
     {
         $factory = PluginManager::Instance()->LoadPreReservation();
         return $factory->CreatePreDeleteService($userSession);
+    }
+
+	private function CreateApprovalService(UserSession $userSession)
+    {
+        $factory = PluginManager::Instance()->LoadPreReservation();
+		if (method_exists($factory,'CreatePreApprovalService'))
+		{
+			return $factory->CreatePreApprovalService($userSession);
+		}
+		return new NullReservationValidationService();
     }
 }
 

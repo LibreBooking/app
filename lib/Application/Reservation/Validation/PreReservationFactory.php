@@ -37,6 +37,12 @@ interface IPreReservationFactory
 	 * @return IReservationValidationService
 	 */
 	public function CreatePreDeleteService(UserSession $userSession);
+
+	/**
+	 * @param UserSession $userSession
+	 * @return IReservationValidationService
+	 */
+	public function CreatePreApprovalService(UserSession $userSession);
 }
 
 class PreReservationFactory implements IPreReservationFactory
@@ -94,6 +100,15 @@ class PreReservationFactory implements IPreReservationFactory
 	public function CreatePreDeleteService(UserSession $userSession)
 	{
 		return $this->CreateDeleteService($this->GetRuleProcessor($userSession), $userSession);
+	}
+
+	/**
+	 * @param UserSession $userSession
+	 * @return IReservationValidationService
+	 */
+	public function CreatePreApprovalService(UserSession $userSession)
+	{
+		return new NullReservationValidationService();
 	}
 
 	private function CreateAddService(ReservationValidationRuleProcessor $ruleProcessor, UserSession $userSession)
