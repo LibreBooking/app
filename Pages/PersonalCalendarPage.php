@@ -149,9 +149,19 @@ class PersonalCalendarUrl
 
 	private function __construct($year, $month, $day, $type)
 	{
-		$format = Pages::MY_CALENDAR . '?' . QueryStringKeys::DAY . '=%d&' . QueryStringKeys::MONTH . '=%d&' . QueryStringKeys::YEAR . '=%d&' . QueryStringKeys::CALENDAR_TYPE . '=%s';
+		$resourceId = ServiceLocator::GetServer()->GetQuerystring(QueryStringKeys::RESOURCE_ID);
+		$scheduleId = ServiceLocator::GetServer()->GetQuerystring(QueryStringKeys::SCHEDULE_ID);
 
-		$this->url = sprintf($format, $day, $month, $year, $type);
+		$format = Pages::MY_CALENDAR . '?'
+				. QueryStringKeys::DAY . '=%d&'
+				. QueryStringKeys::MONTH . '=%d&'
+				. QueryStringKeys::YEAR
+				. '=%d&'
+				. QueryStringKeys::CALENDAR_TYPE . '=%s&'
+				. QueryStringKeys::RESOURCE_ID . '=%s&'
+				. QueryStringKeys::SCHEDULE_ID . '=%s';
+
+		$this->url = sprintf($format, $day, $month, $year, $type, $resourceId, $scheduleId);
 	}
 
 	/**

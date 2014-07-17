@@ -41,9 +41,18 @@ class UserPreferences
 
 		$pairs = explode('!sep!', $allPreferences);
 
+		if (empty($pairs))
+		{
+			return $preferences;
+		}
+
 		foreach ($pairs as $pair)
 		{
 			$nv = explode('=', $pair);
+			if (count($nv) != 2)
+			{
+				continue;
+			}
 			$preferences->Add($nv[0], $nv[1]);
 		}
 

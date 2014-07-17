@@ -43,18 +43,18 @@ function Schedule(opts, resourceGroups)
 			var sd = '';
 			var ed = '';
 
-			var start = $('.start', this);
-			if (start.length > 0)
+			var start = $(this).attr('data-start');
+			if (start)
 			{
-				sd = start.val();
+				sd = start;
 			}
-			var end = $('.end', this);
-			if (end.length > 0)
+			var end = $(this).attr('data-end');
+			if (end)
 			{
-				ed = end.val();
+				ed = end;
 			}
 
-			var link = $('.href', this).val();
+			var link = $(this).attr('data-href');
 			window.location = link + "&sd=" + sd + "&ed=" + ed;
 		});
 
@@ -239,13 +239,13 @@ function Schedule(opts, resourceGroups)
 		var href = '';
 		var select = function (element)
 		{
-			href = element.find('.href').val();
+			href = element.attr('data-href');
 			if (startHref == '')
 			{
-				startDate = element.find('.start').val();
+				startDate = element.attr('data-start');
 				startHref = href;
 			}
-			endDate = element.find('.end').val();
+			endDate = element.attr('data-end');
 		};
 
 		reservationsElement.selectable({

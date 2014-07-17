@@ -1,21 +1,28 @@
 <?php
 /**
-Copyright 2011-2014 Nick Korbel
+ * Copyright 2011-2014 Nick Korbel
+ *
+ * This file is part of Booked SchedulerBooked SchedulereIt is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later versBooked SchedulerduleIt is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * alBooked SchedulercheduleIt.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
-This file is part of Booked SchedulerBooked SchedulereIt is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later versBooked SchedulerduleIt is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-alBooked SchedulercheduleIt.  If not, see <http://www.gnu.org/licenses/>.
-*/
+require_once(ROOT_DIR . 'Domain/Schedule.php');
 
 class CalendarWeek implements ICalendarSegment
 {
+	/**
+	 * @var array|CalendarDay[]
+	 */
+	private $indexedDays = array();
+
 	/**
 	 * @var array|CalendarDay[]
 	 */
@@ -37,20 +44,33 @@ class CalendarWeek implements ICalendarSegment
 
 		for ($i = 0; $i < 7; $i++)
 		{
-			$this->days[$i] = CalendarDay::Null();
+			$this->indexedDays[$i] = CalendarDay::Null();
 		}
 	}
 
-	public static function FromDate($year, $month, $day, $timezone)
+	public static function FromDate($year, $month, $day, $timezone, $firstDayOfWeek = 0)
 	{
 		$week = new CalendarWeek($timezone);
 
 		$date = Date::Create($year, $month, $day, 0, 0, 0, $timezone);
 
 		$start = $date->Weekday();
-		$lastDay = 7 - $start;
 
-		for ($i = $start * -1; $i < $lastDay; $i++)
+		if ($firstDayOfWeek == Schedule::Today)
+		{
+			$firstDayOfWeek = 0;
+		}
+
+		$adjustedDays = ($firstDayOfWeek - $start);
+
+		if ($start < $firstDayOfWeek)
+		{
+			$adjustedDays = $adjustedDays - 7;
+		}
+
+		$date = $date->AddDays($adjustedDays);
+
+		for ($i = 0; $i < 7; $i++)
 		{
 			$week->AddDay(new CalendarDay($date->AddDays($i)));
 		}
@@ -60,28 +80,12 @@ class CalendarWeek implements ICalendarSegment
 
 	public function FirstDay()
 	{
-		for ($i = 0; $i < 7; $i++)
-		{
-			if ($this->days[$i] != CalendarDay::Null())
-			{
-				return $this->days[$i]->Date();
-			}
-		}
-
-		return NullDate::Instance();
+		return $this->days[0]->Date();
 	}
 
 	public function LastDay()
 	{
-		for ($i = 6; $i >=0; $i--)
-		{
-			if ($this->days[$i] != CalendarDay::Null())
-			{
-				return $this->days[$i]->Date()->AddDays(1);
-			}
-		}
-
-		return NullDate::Instance();
+		return $this->days[count($this->days) - 1]->Date();
 	}
 
 	public function AddReservations($reservations)
@@ -95,7 +99,8 @@ class CalendarWeek implements ICalendarSegment
 
 	public function AddDay(CalendarDay $day)
 	{
-		$this->days[$day->Weekday()] = $day;
+		$this->days[] = $day;
+		$this->indexedDays[$day->Weekday()] = $day;
 	}
 
 	/**
@@ -103,7 +108,7 @@ class CalendarWeek implements ICalendarSegment
 	 */
 	public function Days()
 	{
-		return $this->days;
+		return $this->indexedDays;
 	}
 
 	/**
@@ -114,7 +119,7 @@ class CalendarWeek implements ICalendarSegment
 	{
 		$this->reservations[] = $reservation;
 		/** @var $day CalendarDay */
-		foreach ($this->days as $day)
+		foreach ($this->indexedDays as $day)
 		{
 			$day->AddReservation($reservation);
 		}
@@ -152,5 +157,3 @@ class CalendarWeek implements ICalendarSegment
 		return $this->reservations;
 	}
 }
-
-?>

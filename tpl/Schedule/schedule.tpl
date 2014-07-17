@@ -49,13 +49,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 {/function}
 
 {function name=displayReservable}
-	<td {$spantype|default:'col'}span="{$Slot->PeriodSpan()}" ref="{$SlotRef}" class="reservable clickres slot"><div style="position:relative;width:100%;height:100%;">
-		&nbsp;
-		<input type="hidden" class="href" value="{$Href}"/>
-		<input type="hidden" class="start" value="{$Slot->BeginDate()->Format('Y-m-d H:i:s')|escape:url}"/>
-		<input type="hidden" class="end" value="{$Slot->EndDate()->Format('Y-m-d H:i:s')|escape:url}"/>
-		</div>
-	</td>
+	<td {$spantype|default:'col'}span="{$Slot->PeriodSpan()}" ref="{$SlotRef}" class="reservable clickres slot" data-href="{$Href}" data-start="{$Slot->BeginDate()->Format('Y-m-d H:i:s')|escape:url}" data-end="{$Slot->EndDate()->Format('Y-m-d H:i:s')|escape:url}">&nbsp;</td>
 {/function}
 
 {function name=displayRestricted}

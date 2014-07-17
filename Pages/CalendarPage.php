@@ -265,5 +265,3 @@ class CalendarUrl
 		return $this->url;
 	}
 }
-
-?>
