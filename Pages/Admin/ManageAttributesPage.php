@@ -1,22 +1,22 @@
 <?php
 /**
-Copyright 2012-2014 Nick Korbel
-
-This file is part of Booked Scheduler.
-
-Booked Scheduler is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-Booked Scheduler is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ * Copyright 2012-2014 Nick Korbel
+ *
+ * This file is part of Booked Scheduler.
+ *
+ * Booked Scheduler is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Booked Scheduler is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 require_once(ROOT_DIR . 'Pages/Admin/AdminPage.php');
 require_once(ROOT_DIR . 'Presenters/Admin/ManageAttributesPresenter.php');
@@ -85,7 +85,30 @@ interface IManageAttributesPage extends IActionPage
 	 */
 	public function SetCategory($categoryId);
 
+	/**
+	 * @return int
+	 */
 	public function GetAttributeId();
+
+	/**
+	 * @return int|null
+	 */
+	public function GetSecondaryEntityId();
+
+	/**
+	 * @return CustomAttributeCategory|int|null
+	 */
+	public function GetSecondaryCategory();
+
+	/**
+	 * @return bool
+	 */
+	public function GetLimitAttributeScope();
+
+	/**
+	 * @return bool
+	 */
+	public function GetIsPrivate();
 }
 
 class ManageAttributesPage extends ActionPage implements IManageAttributesPage
@@ -104,11 +127,11 @@ class ManageAttributesPage extends ActionPage implements IManageAttributesPage
 	public function PageLoad()
 	{
 		$typeLookup = array(
-							CustomAttributeTypes::SINGLE_LINE_TEXTBOX => 'SingleLineTextbox',
-							CustomAttributeTypes::MULTI_LINE_TEXTBOX => 'MultiLineTextbox',
-							CustomAttributeTypes::CHECKBOX => 'Checkbox',
-							CustomAttributeTypes::SELECT_LIST => 'SelectList'
-						);
+				CustomAttributeTypes::SINGLE_LINE_TEXTBOX => 'SingleLineTextbox',
+				CustomAttributeTypes::MULTI_LINE_TEXTBOX => 'MultiLineTextbox',
+				CustomAttributeTypes::CHECKBOX => 'Checkbox',
+				CustomAttributeTypes::SELECT_LIST => 'SelectList'
+		);
 
 		$this->Set('Types', $typeLookup);
 
@@ -192,6 +215,28 @@ class ManageAttributesPage extends ActionPage implements IManageAttributesPage
 	public function GetAttributeId()
 	{
 		return $this->GetQuerystring(QueryStringKeys::ATTRIBUTE_ID);
+	}
+
+	public function GetSecondaryEntityId()
+	{
+		return $this->GetForm(FormKeys::ATTRIBUTE_SECONDARY_ENTITY);
+	}
+
+	public function GetSecondaryCategory()
+	{
+		return $this->GetForm(FormKeys::ATTRIBUTE_SECONDARY_CATEGORY);
+	}
+
+	public function GetLimitAttributeScope()
+	{
+		$limit = $this->GetForm(FormKeys::ATTRIBUTE_LIMIT_SCOPE);
+		return !empty($limit);
+	}
+
+	public function GetIsPrivate()
+	{
+		$isPrivate = $this->GetForm(FormKeys::ATTRIBUTE_IS_PRIVATE);
+		return !empty($isPrivate);
 	}
 
 	public function ProcessDataRequest($dataRequest)

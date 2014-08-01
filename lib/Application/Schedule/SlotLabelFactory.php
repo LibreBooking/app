@@ -39,40 +39,30 @@ class SlotLabelFactory
 
 	/**
 	 * @param ReservationItemView $reservation
+	 * @param string $format
 	 * @return string
 	 */
-	public function Format(ReservationItemView $reservation)
+	public function Format(ReservationItemView $reservation, $format = null)
 	{
-		$property = Configuration::Instance()->GetSectionKey(ConfigSection::SCHEDULE,
-															 ConfigKeys::SCHEDULE_RESERVATION_LABEL);
-
-		$name = $this->GetFullName($reservation);
-
-		if ($property == 'titleORuser')
+		if (empty($format))
 		{
-			if (strlen($reservation->Title))
-			{
-				return $reservation->Title;
-			}
-			else
-			{
-				return $name;
-			}
+			$format = Configuration::Instance()->GetSectionKey(ConfigSection::SCHEDULE, ConfigKeys::SCHEDULE_RESERVATION_LABEL);
 		}
-		if ($property == 'title')
-		{
-			return $reservation->Title;
-		}
-		if ($property == 'none' || empty($property))
+
+		if ($format == 'none' || empty($format))
 		{
 			return '';
 		}
-		if ($property == 'name' || $property == 'user')
-		{
-			return $name;
-		}
 
-		$label = $property;
+		$name = $this->GetFullName($reservation);
+
+		$timezone = 'UTC';
+		$dateFormat = Resources::GetInstance()->GetDateFormat('res_popup');
+		if (!is_null($this->user))
+		{
+			$timezone = $this->user->Timezone;
+		}
+		$label = $format;
 		$label = str_replace('{name}', $name, $label);
 		$label = str_replace('{title}', $reservation->Title, $label);
 		$label = str_replace('{description}', $reservation->Description, $label);
@@ -80,6 +70,24 @@ class SlotLabelFactory
 		$label = str_replace('{organization}', $reservation->OwnerOrganization, $label);
 		$label = str_replace('{phone}', $reservation->OwnerPhone, $label);
 		$label = str_replace('{position}', $reservation->OwnerPosition, $label);
+		$label = str_replace('{startdate}', $reservation->StartDate->ToTimezone($timezone)->Format($dateFormat), $label);
+		$label = str_replace('{enddate}', $reservation->EndDate->ToTimezone($timezone)->Format($dateFormat), $label);
+		$label = str_replace('{resourcename}', $reservation->ResourceName, $label);
+
+		$matches = array();
+		preg_match_all('/\{(att\d+?)\}/', $format, $matches);
+
+		$matches = $matches[0];
+		if (count($matches) > 0)
+		{
+			for ($m = 0; $m < count($matches); $m++)
+			{
+				$id = filter_var($matches[$m], FILTER_SANITIZE_NUMBER_INT);
+				$value = $reservation->GetAttributeValue($id);
+
+				$label = str_replace($matches[$m], $value, $label);
+			}
+		}
 
 		return $label;
 	}
@@ -89,20 +97,20 @@ class SlotLabelFactory
 		$shouldHide = Configuration::Instance()->GetSectionKey(ConfigSection::PRIVACY,
 															   ConfigKeys::PRIVACY_HIDE_USER_DETAILS,
 															   new BooleanConverter());
-		if ($shouldHide && (is_null($this->user) || $this->user->UserId != $reservation->UserId))
+
+		if ($shouldHide && (is_null($this->user) || ($this->user->UserId != $reservation->UserId && !$this->user->IsAdminForGroup($reservation->OwnerGroupIds()))))
 		{
 			return Resources::GetInstance()->GetString('Private');
 		}
 
 		$name = new FullName($reservation->FirstName, $reservation->LastName);
 		return $name->__toString();
-
 	}
 }
 
 class NullSlotLabelFactory extends SlotLabelFactory
 {
-	public function Format(ReservationItemView $reservation)
+	public function Format(ReservationItemView $reservation, $format = null)
 	{
 		return '';
 	}
@@ -116,5 +124,3 @@ class AdminSlotLabelFactory extends SlotLabelFactory
 		return $name->__toString();
 	}
 }
-
-?>

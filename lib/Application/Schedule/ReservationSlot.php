@@ -137,6 +137,10 @@ class ReservationSlot implements IReservationSlot
 		return $this->_periodSpan;
 	}
 
+	/**
+	 * @param SlotLabelFactory|null $factory
+	 * @return string
+	 */
 	public function Label($factory = null)
 	{
 		if (empty($factory))

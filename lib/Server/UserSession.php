@@ -35,6 +35,7 @@ class UserSession
 	public $LoginTime = '';
 	public $ScheduleId = '';
 	public $Groups = array();
+	public $AdminGroups = array();
 
 	public function __construct($id)
 	{
@@ -44,6 +45,34 @@ class UserSession
 	public function IsLoggedIn()
 	{
 		return true;
+	}
+
+	public function IsAdminForGroup($groupIds = array())
+	{
+		if (!is_array($groupIds))
+		{
+			$groupIds = array($groupIds);
+		}
+
+		if ($this->IsAdmin)
+		{
+			return true;
+		}
+
+		if (!$this->IsGroupAdmin)
+		{
+			return false;
+		}
+
+		foreach($groupIds as $groupId)
+		{
+			if (in_array($groupId, $this->AdminGroups))
+			{
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	public function __toString()

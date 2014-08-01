@@ -68,11 +68,10 @@ class CalendarExportPresenter
 		if (!empty($referenceNumber))
 		{
 			$res = $this->reservationViewRepository->GetReservationForEditing($referenceNumber);
-			$reservations = array(new iCalendarReservationView($res, $currentUser, $this->privacyFilter));
+			$item = ReservationItemView::FromReservationView($res);
+			$reservations = array(new iCalendarReservationView($item, $currentUser, $this->privacyFilter));
 		}
 
 		$this->page->SetReservations($reservations);
 	}
 }
-
-?>

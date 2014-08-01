@@ -38,8 +38,8 @@ class Queries
 		VALUES (@text, @priority, @startDate, @endDate)';
 
 	const ADD_ATTRIBUTE =
-			'INSERT INTO custom_attributes (display_label, display_type, attribute_category, validation_regex, is_required, possible_values, sort_order, entity_id, admin_only)
-		VALUES (@display_label, @display_type, @attribute_category, @validation_regex, @is_required, @possible_values, @sort_order, @entity_id, @admin_only)';
+			'INSERT INTO custom_attributes (display_label, display_type, attribute_category, validation_regex, is_required, possible_values, sort_order, entity_id, admin_only, secondary_category, secondary_entity_id, is_private)
+		VALUES (@display_label, @display_type, @attribute_category, @validation_regex, @is_required, @possible_values, @sort_order, @entity_id, @admin_only, @secondary_category, @secondary_entity_id, @is_private)';
 
 	const ADD_ATTRIBUTE_VALUE =
 			'INSERT INTO custom_attribute_values (custom_attribute_id, attribute_category, attribute_value, entity_id)
@@ -376,11 +376,20 @@ class Queries
 			WHEN a.attribute_category = 4 THEN r.name
 			WHEN a.attribute_category = 4 THEN rt.resource_type_name
 			ELSE null
-			END as entity_description
+			END as entity_description,
+			CASE
+			WHEN a.secondary_category = 2 THEN CONCAT(u2.fname, " ", u2.lname)
+			WHEN a.secondary_category = 4 THEN r2.name
+			WHEN a.secondary_category = 4 THEN rt2.resource_type_name
+			ELSE null
+			END as secondary_entity_description
 			FROM custom_attributes a
 			LEFT JOIN users u ON u.user_id = a.entity_id AND a.attribute_category = 2
 			LEFT JOIN resources r ON r.resource_id = a.entity_id AND a.attribute_category = 4
 			LEFT JOIN resource_types rt ON rt.resource_type_id = a.entity_id AND a.attribute_category = 5
+			LEFT JOIN users u2 ON u2.user_id = a.secondary_entity_id AND a.secondary_category = 2
+			LEFT JOIN resources r2 ON r2.resource_id = a.secondary_entity_id AND a.secondary_category = 4
+			LEFT JOIN resource_types rt2 ON rt.resource_type_id = a.secondary_entity_id AND a.secondary_category = 5
 		WHERE a.attribute_category = @attribute_category ORDER BY a.sort_order, a.display_label';
 
 	const GET_ATTRIBUTE_BY_ID = 'SELECT * FROM custom_attributes WHERE custom_attribute_id = @custom_attribute_id';
@@ -502,6 +511,8 @@ class Queries
 
 	const GET_RESOURCE_GROUP_BY_ID = 'SELECT * FROM resource_groups WHERE resource_group_id = @resourcegroupid';
 
+	const GET_RESOURCE_GROUP_BY_PUBLIC_ID = 'SELECT * FROM resource_groups WHERE public_id = @publicid';
+
 	const GET_RESOURCE_TYPE_BY_ID = 'SELECT * FROM resource_types WHERE resource_type_id = @resource_type_id';
 
 	const GET_RESOURCE_TYPE_BY_NAME = 'SELECT * FROM resource_types WHERE resource_type_name = @resource_type_name';
@@ -564,6 +575,8 @@ const GET_RESERVATION_LIST_TEMPLATE =
 			INNER JOIN reservation_resources rr ON rs.series_id = rr.series_id
 			INNER JOIN resources ON rr.resource_id = resources.resource_id
 			INNER JOIN schedules ON resources.schedule_id = schedules.schedule_id
+			LEFT JOIN reservation_reminders start_reminder ON start_reminder.series_id = rs.series_id AND start_reminder.reminder_type = 0
+			LEFT JOIN reservation_reminders end_reminder ON end_reminder.series_id = rs.series_id AND end_reminder.reminder_type = 1
 			[JOIN_TOKEN]
 			WHERE rs.status_id <> 2
 			[AND_TOKEN]
@@ -815,7 +828,8 @@ const GET_RESERVATION_LIST_TEMPLATE =
 	const UPDATE_ATTRIBUTE =
 			'UPDATE custom_attributes
 				SET display_label = @display_label, display_type = @display_type, attribute_category = @attribute_category,
-				validation_regex = @validation_regex, is_required = @is_required, possible_values = @possible_values, sort_order = @sort_order, entity_id = @entity_id, admin_only = @admin_only
+				validation_regex = @validation_regex, is_required = @is_required, possible_values = @possible_values, sort_order = @sort_order, entity_id = @entity_id, admin_only = @admin_only,
+				secondary_category = @secondary_category, secondary_entity_id = @secondary_entity_id, is_private = @is_private
 			WHERE custom_attribute_id = @custom_attribute_id';
 
 	const UPDATE_BLACKOUT_INSTANCE = 'UPDATE blackout_instances
@@ -987,6 +1001,10 @@ class QueryBuilder
 	public static $SELECT_LIST_FRAGMENT = 'ri.*, rs.date_created as date_created, rs.last_modified as last_modified, rs.description as description, rs.status_id as status_id, rs.title, rs.repeat_type,
 					owner.fname as owner_fname, owner.lname as owner_lname, owner.user_id as owner_id, owner.phone as owner_phone, owner.position as owner_position, owner.organization as owner_organization,
 					resources.name, resources.resource_id, resources.schedule_id, resources.status_id as resource_status_id, resources.resource_status_reason_id, resources.buffer_time, ru.reservation_user_level,
+					start_reminder.minutes_prior AS start_reminder_minutes, end_reminder.minutes_prior AS end_reminder_minutes,
+					(SELECT GROUP_CONCAT(groups.group_id)
+						FROM user_groups groups WHERE owner.user_id = groups.user_id) as owner_group_list,
+
 					(SELECT GROUP_CONCAT(participants.user_id)
 						FROM reservation_users participants WHERE participants.reservation_instance_id = ri.reservation_instance_id AND participants.reservation_user_level = 2) as participant_list,
 

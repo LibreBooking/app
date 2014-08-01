@@ -87,14 +87,16 @@ class AtomSubscriptionPage extends Page implements ICalendarSubscriptionPage
 			$item->setTitle($reservation->Summary);
 			$item->setLink($reservation->ReservationUrl);
 			$item->setDate($reservation->DateCreated->Timestamp());
-			$item->setDescription(sprintf('<div><span>Start</span> %s</div>
-										  <div><span>End</span> %s</div>
-										  <div><span>Organizer</span> %s</div>
-										  <div><span>Description</span> %s</div>',
-										  $reservation->DateStart->ToString(),
-										  $reservation->DateEnd->ToString(),
-										  $reservation->Organizer,
-										  $reservation->Description));
+			$item->setDescription($this->FormatReservationDescription($reservation, ServiceLocator::GetServer()->GetUserSession()));
+
+//			sprintf('<div><span>Start</span> %s</div>
+//										  <div><span>End</span> %s</div>
+//										  <div><span>Organizer</span> %s</div>
+//										  <div><span>Description</span> %s</div>',
+//										  $reservation->DateStart->ToString(),
+//										  $reservation->DateEnd->ToString(),
+//										  $reservation->Organizer,
+//										  $reservation->Description));
 			$feed->addItem($item);
 		}
 
@@ -132,6 +134,18 @@ class AtomSubscriptionPage extends Page implements ICalendarSubscriptionPage
 	{
 		// no op
 	}
-}
 
-?>
+	/**
+	 * @return string
+	 */
+	function GetResourceGroupId()
+	{
+		return $this->GetQuerystring(QueryStringKeys::RESOURCE_GROUP_ID);
+	}
+
+	public function FormatReservationDescription(iCalendarReservationView $reservation, UserSession $user)
+	{
+		$factory = new SlotLabelFactory($user);
+		return $factory->Format($reservation->ReservationItemView, Configuration::Instance()->GetSectionKey(ConfigSection::RESERVATION_LABELS, ConfigKeys::RESERVATION_LABELS_RSS_DESCRIPTION));
+	}
+}

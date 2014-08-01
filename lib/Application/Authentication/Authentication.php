@@ -161,6 +161,11 @@ class Authentication implements IAuthentication
 			$userSession->Groups[] = $group->GroupId;
 		}
 
+		foreach ($user->GetAdminGroups() as $group)
+		{
+			$userSession->AdminGroups[] = $group->GroupId;
+		}
+
 		return $userSession;
     }
 

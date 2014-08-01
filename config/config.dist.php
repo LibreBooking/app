@@ -51,7 +51,7 @@ $conf['settings']['logout.url'] = ''; 	      					// the url to be directed to a
 
 $conf['settings']['schedule']['use.per.user.colors'] = 'false'; 		// color reservations by user
 $conf['settings']['schedule']['show.inaccessible.resources'] = 'true';  // whether or not resources that are inaccessible to the user are visible
-$conf['settings']['schedule']['reservation.label'] = '{name}';    		// format for what to display on the reservation slot label. Available properties are: {name}, {title}, {description}, {email}, {phone}, {organization}, {position}
+$conf['settings']['schedule']['reservation.label'] = '{name}';    		// format for what to display on the reservation slot label. Available properties are: {name}, {title}, {description}, {email}, {phone}, {organization}, {position}, {startdate}, {enddate}. Custom attributes can be added using att with the attribute id. For example {att1}
 $conf['settings']['schedule']['hide.blocked.periods'] = 'false';    	// if blocked periods should be hidden or shown
 
 /**
@@ -156,3 +156,11 @@ $conf['settings']['reports']['allow.all.users'] = 'false';
 $conf['settings']['password']['minimum.letters'] = '6';
 $conf['settings']['password']['minimum.numbers'] = '0';
 $conf['settings']['password']['upper.and.lower'] = 'false';
+/**
+ * Label display settings
+ */
+$conf['settings']['reservation.labels']['ics.summary'] = '{title}';
+$conf['settings']['reservation.labels']['rss.description'] = '<div><span>Start</span> {startdate}</div><div><span>End</span> {enddate}</div><div><span>Organizer</span> {name}</div><div><span>Description</span> {description}</div>';
+$conf['settings']['reservation.labels']['my.calendar'] = '{resourcename} {title}';
+$conf['settings']['reservation.labels']['resource.calendar'] = '{name}';
+$conf['settings']['reservation.labels']['reservation.popup'] = ''; // Format for what to display in reservation popups. Possible values: {name} {dates} {title} {resources} {participants} {accessories} {description} {attributes}. Custom attributes can be added using att with the attribute id. For example {att1}

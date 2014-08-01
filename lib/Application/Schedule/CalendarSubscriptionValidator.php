@@ -75,5 +75,3 @@ class CalendarSubscriptionValidator implements ICalendarExportValidator
         return true;
     }
 }
-
-?>

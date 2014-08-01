@@ -47,12 +47,12 @@ class CustomAttributes
 	}
 
 	/**
-	 * @param $name string
+	 * @param $id int
 	 * @param $value string
 	 */
-	public function Add($name, $value)
+	public function Add($id, $value)
 	{
-		$this->attributes[$name] = $value;
+		$this->attributes[$id] = $value;
 	}
 
 	/**

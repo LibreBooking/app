@@ -1,23 +1,23 @@
 <?php
+
 /**
-Copyright 2012-2014 Nick Korbel
-
-This file is part of Booked Scheduler.
-
-Booked Scheduler is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-Booked Scheduler is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
+ * Copyright 2012-2014 Nick Korbel
+ *
+ * This file is part of Booked Scheduler.
+ *
+ * Booked Scheduler is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Booked Scheduler is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 class ColumnNames
 {
 	private function __construct()
@@ -196,6 +196,10 @@ class ColumnNames
 	const ATTRIBUTE_ENTITY_ID = 'entity_id';
 	const ATTRIBUTE_ENTITY_DESCRIPTION = 'entity_description';
 	const ATTRIBUTE_SORT_ORDER = 'sort_order';
+	const ATTRIBUTE_SECONDARY_CATEGORY = 'secondary_category';
+	const ATTRIBUTE_SECONDARY_ENTITY_ID = 'secondary_entity_id';
+	const ATTRIBUTE_SECONDARY_ENTITY_DESCRIPTION = 'secondary_entity_description';
+	const ATTRIBUTE_IS_PRIVATE = 'is_private';
 
 	// RESERVATION FILES //
 	const FILE_ID = 'file_id';
@@ -257,6 +261,9 @@ class ColumnNames
 	const PARTICIPANT_LIST = 'participant_list';
 	const INVITEE_LIST = 'invitee_list';
 	const ATTRIBUTE_LIST = 'attribute_list';
+	const GROUP_LIST = 'owner_group_list';
+	const START_REMINDER_MINUTES_PRIOR = 'start_reminder_minutes';
+	const END_REMINDER_MINUTES_PRIOR = 'end_reminder_minutes';
 
 	// shared
 	const ALLOW_CALENDAR_SUBSCRIPTION = 'allow_calendar_subscription';

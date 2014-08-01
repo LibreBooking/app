@@ -19,46 +19,46 @@ require_once(ROOT_DIR . 'Domain/Access/namespace.php');
 interface ICalendarSubscriptionService
 {
     /**
-     * @abstract
      * @param string $publicResourceId
      * @return BookableResource
      */
-    function GetResource($publicResourceId);
+	public function GetResource($publicResourceId);
 
     /**
-     * @abstract
      * @param string $publicScheduleId
      * @return Schedule
      */
-    function GetSchedule($publicScheduleId);
+	public function GetSchedule($publicScheduleId);
 
     /**
-     * @abstract
      * @param string $publicUserId
      * @return User
      */
-    function GetUser($publicUserId);
+	public function GetUser($publicUserId);
 
     /**
-     * @abstract
      * @param int $userId
      * @return CalendarSubscriptionDetails
      */
-    function ForUser($userId);
+	public function ForUser($userId);
 
     /**
-     * @abstract
      * @param int $resourceId
      * @return CalendarSubscriptionDetails
      */
-    function ForResource($resourceId);
+	public  function ForResource($resourceId);
 
     /**
-     * @abstract
      * @param int $scheduleId
      * @return CalendarSubscriptionDetails
      */
-    function ForSchedule($scheduleId);
+	public function ForSchedule($scheduleId);
+
+	/**
+	 * @param string $publicResourceGroupId
+	 * @return int[]
+	 */
+	public function GetResourcesInGroup($publicResourceGroupId);
 }
 
 class CalendarSubscriptionDetails
@@ -186,6 +186,24 @@ class CalendarSubscriptionService implements ICalendarSubscriptionService
         return $this->cache[$publicUserId];
     }
 
+    public function GetResourcesInGroup($publicResourceGroupId)
+    {
+        if (!array_key_exists($publicResourceGroupId, $this->cache))
+        {
+			$group = $this->resourceRepository->LoadResourceGroupByPublicId($publicResourceGroupId);
+
+			if ($group == null)
+			{
+				return array();
+			}
+
+			$groups = $this->resourceRepository->GetResourceGroups();
+            $this->cache[$publicResourceGroupId] = $groups->GetResourceIds($group->id);
+        }
+
+        return $this->cache[$publicResourceGroupId];
+    }
+
     /**
      * @param int $userId
      * @return CalendarSubscriptionDetails
@@ -225,5 +243,3 @@ class CalendarSubscriptionService implements ICalendarSubscriptionService
             new CalendarSubscriptionUrl(null, $schedule->GetPublicId(), null));
     }
 }
-
-?>

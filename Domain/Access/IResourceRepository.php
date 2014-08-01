@@ -109,6 +109,12 @@ interface IResourceRepository
 	public function LoadResourceGroup($groupId);
 
 	/**
+	 * @param string $publicResourceGroupId
+	 * @return ResourceGroup
+	 */
+	public function LoadResourceGroupByPublicId($publicResourceGroupId);
+
+	/**
 	 * @param ResourceGroup $group
 	 */
 	public function UpdateResourceGroup(ResourceGroup $group);
@@ -167,4 +173,6 @@ interface IResourceRepository
 	 * @param int $reasonId
 	 */
 	public function RemoveStatusReason($reasonId);
+
+
 }

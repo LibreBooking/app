@@ -112,6 +112,12 @@ class ConfigKeys
 	const PASSWORD_UPPER_AND_LOWER = 'upper.and.lower';
 	const PASSWORD_LETTERS = 'minimum.letters';
 	const PASSWORD_NUMBERS = 'minimum.numbers';
+
+	const RESERVATION_LABELS_ICS_SUMMARY = 'ics.summary';
+	const RESERVATION_LABELS_RSS_DESCRIPTION = 'rss.description';
+	const RESERVATION_LABELS_MY_CALENDAR = 'my.calendar';
+	const RESERVATION_LABELS_RESOURCE_CALENDAR = 'resource.calendar';
+	const RESERVATION_LABELS_RESERVATION_POPUP = 'reservation.popup';
 }
 
 class ConfigSection
@@ -126,11 +132,10 @@ class ConfigSection
     const PRIVACY = 'privacy';
 	const REPORTS = 'reports';
     const RESERVATION = 'reservation';
+	const RESERVATION_LABELS = 'reservation.labels';
     const RESERVATION_NOTIFY = 'reservation.notify';
     const SCHEDULE = 'schedule';
 	const UPLOADS = 'uploads';
 	const RECAPTCHA = 'recaptcha';
 	const USERS = 'users';
 }
-
-?>

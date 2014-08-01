@@ -897,6 +897,11 @@ class ReservationItemView implements IReservedItemView
 	public $RepeatTerminationDate;
 
 	/**
+	 * @var int
+	 */
+	public $OwnerId;
+
+	/**
 	 * @var string
 	 */
 	public $OwnerEmailAddress;
@@ -949,9 +954,21 @@ class ReservationItemView implements IReservedItemView
 	public $ResourceStatusReasonId;
 
 	/**
+	 * @var ReservationReminderView|null
+	 */
+	public $StartReminder;
+
+	/**
+	 * @var ReservationReminderView|null
+	 */
+	public $EndReminder;
+
+	/**
 	 * @var int|null
 	 */
 	private $bufferSeconds = 0;
+
+	private $ownerGroupIds = array();
 
 	/**
 	 * @param $referenceNumber string
@@ -1015,6 +1032,7 @@ class ReservationItemView implements IReservedItemView
 		$this->OwnerOrganization = $userOrganization;
 		$this->OwnerPosition = $userPosition;
 		$this->UserId = $userId;
+		$this->OwnerId = $userId;
 		$this->UserLevelId = $userLevelId;
 
 		if (!empty($startDate) && !empty($endDate))
@@ -1122,7 +1140,68 @@ class ReservationItemView implements IReservedItemView
 			$view->WithBufferTime($row[ColumnNames::RESOURCE_BUFFER_TIME]);
 		}
 
+		if (isset($row[ColumnNames::GROUP_LIST]))
+		{
+			$view->WithOwnerGroupIds(explode(',', $row[ColumnNames::GROUP_LIST]));
+		}
+
+		if (isset($row[ColumnNames::START_REMINDER_MINUTES_PRIOR]))
+		{
+			$view->StartReminder = new ReservationReminderView($row[ColumnNames::START_REMINDER_MINUTES_PRIOR]);
+		}
+		if (isset($row[ColumnNames::END_REMINDER_MINUTES_PRIOR]))
+		{
+			$view->EndReminder = new ReservationReminderView($row[ColumnNames::END_REMINDER_MINUTES_PRIOR]);
+		}
+
 		return $view;
+	}
+
+	/**
+	 * @param ReservationView $r
+	 * @return ReservationItemView
+	 */
+	public static function FromReservationView(ReservationView $r) {
+
+		$item = new ReservationItemView($r->ReferenceNumber,
+										$r->StartDate,
+										$r->EndDate,
+										$r->ResourceName,
+										$r->ResourceId,
+										$r->ReservationId,
+										ReservationUserLevel::OWNER,
+										$r->Title,
+										$r->Description,
+										$r->ScheduleId,
+										$r->OwnerFirstName,
+										$r->OwnerLastName,
+										$r->OwnerId,
+										null, null, null, null, null, null);
+
+		foreach ($r->Participants as $u)
+		{
+			$item->ParticipantIds[] = $u->UserId;
+		}
+
+		foreach ($r->Invitees as $u)
+		{
+			$item->InviteeIds[] = $u->UserId;
+		}
+
+		foreach ($r->Attributes as $a)
+		{
+			$item->Attributes->Add($a->AttributeId, $a->Value);
+		}
+
+		$item->RepeatInterval = $r->RepeatInterval;
+		$item->RepeatMonthlyType = $r->RepeatMonthlyType;
+		$item->RepeatTerminationDate = $r->RepeatTerminationDate;
+		$item->RepeatType = $r->RepeatType;
+		$item->RepeatWeekdays = $r->RepeatWeekdays;
+		$item->StartReminder = $r->StartReminder;
+		$item->EndReminder = $r->EndReminder;
+
+		return $item;
 	}
 
 	/**
@@ -1224,11 +1303,36 @@ class ReservationItemView implements IReservedItemView
 	}
 
 	/**
+	 * @param int[] $ownerGroupIds
+	 */
+	public function WithOwnerGroupIds($ownerGroupIds)
+	{
+		$this->ownerGroupIds = $ownerGroupIds;
+	}
+
+	/**
 	 * @return bool
 	 */
 	public function HasBufferTime()
+	}
+
+	/**
+	 * @return int[]
+	 */
+	public function OwnerGroupIds()
 	{
-		return !empty($this->bufferSeconds);
+		return $this->ownerGroupIds;
+	}
+
+	/**
+	 * @param int $attributeId
+	 * @return null|string
+	 */
+	public function GetAttributeValue($attributeId)
+	{
+		return $this->Attributes->Get($attributeId);
+	}
+}
 	}
 
 	/**

@@ -21,40 +21,37 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 interface ICalendarSubscriptionPage
 {
 	/**
-	 * @abstract
 	 * @return string
 	 */
 	function GetSubscriptionKey();
 
 	/**
-	 * @abstract
 	 * @return string
 	 */
 	function GetUserId();
 
 	/**
-	 * @abstract
-	 * @param array|iCalendarReservationView[] $reservations
+	 * @param iCalendarReservationView[] $reservations
 	 */
 	function SetReservations($reservations);
 
 	/**
-	 * @abstract
-	 * @return int
+	 * @return string
 	 */
 	function GetScheduleId();
 
 	/**
-	 * @abstract
-	 * @return int
+	 * @return string
 	 */
 	function GetResourceId();
 
 	/**
-	 * @abstract
+	 * @return string
+	 */
+	function GetResourceGroupId();
+
+	/**
 	 * @return int
 	 */
 	function GetAccessoryIds();
 }
-
-?>

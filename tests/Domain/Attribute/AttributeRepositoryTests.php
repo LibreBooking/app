@@ -1,21 +1,21 @@
 <?php
 /**
-Copyright 2011-2014 Nick Korbel
-
-This file is part of Booked Scheduler.
-
-Booked Scheduler is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-Booked Scheduler is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
+ * Copyright 2011-2014 Nick Korbel
+ *
+ * This file is part of Booked Scheduler.
+ *
+ * Booked Scheduler is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Booked Scheduler is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 require_once(ROOT_DIR . 'Domain/Access/AttributeRepository.php');
@@ -50,12 +50,18 @@ class AttributeRepositoryTests extends TestBase
 		$sortOrder = '4';
 		$entityId = 12;
 		$adminOnly = true;
+		$secondaryCategory = CustomAttributeCategory::USER;
+		$secondaryEntityId = 828;
+		$isPrivate = true;
 
 		$attribute = CustomAttribute::Create($label, $type, $category, $regex, $required, $possibleValues, $sortOrder,
 											 $entityId, $adminOnly);
 
+		$attribute->WithSecondaryEntity($secondaryCategory, $secondaryEntityId);
+		$attribute->WithIsPrivate($isPrivate);
+
 		$this->repository->Add($attribute);
-		$this->assertEquals(new AddAttributeCommand($label, $type, $category, $regex, $required, $possibleValues, $sortOrder, $entityId, $adminOnly),
+		$this->assertEquals(new AddAttributeCommand($label, $type, $category, $regex, $required, $possibleValues, $sortOrder, $entityId, $adminOnly, $secondaryCategory, $secondaryEntityId, $isPrivate),
 							$this->db->_LastCommand);
 	}
 
@@ -96,12 +102,17 @@ class AttributeRepositoryTests extends TestBase
 		$sortOrder = '4';
 		$entityId = 10;
 		$adminOnly = true;
+		$secondaryCategory = CustomAttributeCategory::USER;
+		$secondaryEntityId = 828;
+		$isPrivate = true;
 
 		$attribute = new CustomAttribute($id, $label, $type, $category, $regex, $required, $possibleValues, $sortOrder, $entityId, $adminOnly);
+		$attribute->WithSecondaryEntity($secondaryCategory, $secondaryEntityId);
+		$attribute->WithIsPrivate($isPrivate);
 
 		$this->repository->Update($attribute);
 
-		$this->assertEquals(new UpdateAttributeCommand($id, $label, $type, $category, $regex, $required, $possibleValues, $sortOrder, $entityId, $adminOnly),
+		$this->assertEquals(new UpdateAttributeCommand($id, $label, $type, $category, $regex, $required, $possibleValues, $sortOrder, $entityId, $adminOnly, $secondaryCategory, $secondaryEntityId, $isPrivate),
 							$this->db->_LastCommand);
 	}
 
@@ -184,25 +195,25 @@ class AttributeRepositoryTests extends TestBase
 	)
 	{
 		return array(
-			ColumnNames::ATTRIBUTE_ID => $id,
-			ColumnNames::ATTRIBUTE_LABEL => $label,
-			ColumnNames::ATTRIBUTE_TYPE => $type,
-			ColumnNames::ATTRIBUTE_CATEGORY => $category,
-			ColumnNames::ATTRIBUTE_CONSTRAINT => $regex,
-			ColumnNames::ATTRIBUTE_REQUIRED => $required,
-			ColumnNames::ATTRIBUTE_POSSIBLE_VALUES => $possibleValues,
-			ColumnNames::ATTRIBUTE_SORT_ORDER => $sortOrder,
-			ColumnNames::ATTRIBUTE_ENTITY_ID => $entityId,
-			ColumnNames::ATTRIBUTE_ENTITY_DESCRIPTION => $entityDescription,
-			ColumnNames::ATTRIBUTE_ADMIN_ONLY => $adminOnly,
+				ColumnNames::ATTRIBUTE_ID => $id,
+				ColumnNames::ATTRIBUTE_LABEL => $label,
+				ColumnNames::ATTRIBUTE_TYPE => $type,
+				ColumnNames::ATTRIBUTE_CATEGORY => $category,
+				ColumnNames::ATTRIBUTE_CONSTRAINT => $regex,
+				ColumnNames::ATTRIBUTE_REQUIRED => $required,
+				ColumnNames::ATTRIBUTE_POSSIBLE_VALUES => $possibleValues,
+				ColumnNames::ATTRIBUTE_SORT_ORDER => $sortOrder,
+				ColumnNames::ATTRIBUTE_ENTITY_ID => $entityId,
+				ColumnNames::ATTRIBUTE_ENTITY_DESCRIPTION => $entityDescription,
+				ColumnNames::ATTRIBUTE_ADMIN_ONLY => $adminOnly,
 		);
 	}
 
 	private function GetAttributeValueRow($attributeid, $entityId, $value)
 	{
 		return array(
-			ColumnNames::ATTRIBUTE_ID => $attributeid,
-			ColumnNames::ATTRIBUTE_ENTITY_ID => $entityId,
-			ColumnNames::ATTRIBUTE_VALUE => $value);
+				ColumnNames::ATTRIBUTE_ID => $attributeid,
+				ColumnNames::ATTRIBUTE_ENTITY_ID => $entityId,
+				ColumnNames::ATTRIBUTE_VALUE => $value);
 	}
 }

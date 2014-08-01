@@ -506,6 +506,8 @@ class en_us extends Language
 		$strings['RequiredValue'] = 'Required Value';
 		$strings['ReservationCustomRuleAdd'] = 'If %s then the reservation color will be';
 		$strings['AddReservationColorRule'] = 'Add Reservation Color Rule';
+		$strings['LimitAttributeScope'] = 'Limit Attribute Scope';
+		$strings['LimitTo'] = 'Limit To';
 		// End Strings
 
 		// Install

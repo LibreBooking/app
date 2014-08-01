@@ -23,7 +23,11 @@ function AttributeManagement(opts)
 
 		addForm: $('#addAttributeForm'),
 		form: $('#editAttributeForm'),
-		deleteForm: $('#deleteForm')
+		deleteForm: $('#deleteForm'),
+
+		limitScope: $('.limitScope'),
+		attributeSecondary: $('.attributeSecondary'),
+		secondaryPrompt: $('.secondaryPrompt')
 	};
 
 	function RefreshAttributeList()
@@ -39,10 +43,10 @@ function AttributeManagement(opts)
 				$(elements.attributeList).html('');
 			}
 		}).done(function (data)
-				{
-					$('#indicator').hide();
-					$(elements.attributeList).html(data)
-				});
+		{
+			$('#indicator').hide();
+			$(elements.attributeList).html(data)
+		});
 	}
 
 	AttributeManagement.prototype.init = function ()
@@ -79,8 +83,10 @@ function AttributeManagement(opts)
 			e.preventDefault();
 			$('span.error', elements.addDialog).remove();
 			elements.addCategory.val(elements.attributeCategory.val());
+			elements.limitScope.removeAttr('checked');
 			toggleAppliesTo();
 			elements.appliesTo.text(options.allText);
+			elements.secondaryPrompt.text(options.allText);
 			elements.appliesToId.val('');
 			elements.addDialog.dialog('open');
 		});
@@ -111,7 +117,15 @@ function AttributeManagement(opts)
 		elements.appliesTo.click(function (e)
 		{
 			e.preventDefault();
-			showEntities($(this));
+			showEntities($(this), elements.attributeCategory.val());
+
+			onEntityChoiceClick = function (e)
+			{
+				e.preventDefault();
+				elements.entityChoices.hide();
+				elements.appliesToId.val($(e.target).attr('entity-id'));
+				elements.appliesTo.text($(e.target).text());
+			}
 		});
 
 		$(document).mouseup(function (e)
@@ -124,12 +138,27 @@ function AttributeManagement(opts)
 			}
 		});
 
-		elements.entityChoices.delegate('a', 'click', function (e)
-		{
+		elements.entityChoices.delegate('a', 'click', function (e) {
+			onEntityChoiceClick(e);
+		});
+
+		elements.limitScope.change(function (e) {
+			elements.attributeSecondary.hide();
+			if ($(this).is(':checked'))
+			{
+				elements.attributeSecondary.show();
+			}
+		});
+
+		elements.secondaryPrompt.click(function (e) {
 			e.preventDefault();
-			elements.entityChoices.hide();
-			elements.appliesToId.val($(this).attr('entity-id'));
-			elements.appliesTo.text($(this).text());
+			showEntities($(this), $(this).closest('.textBoxOptions').find('.secondaryAttributeCategory').val());
+			onEntityChoiceClick = function (e) {
+				e.preventDefault();
+				elements.entityChoices.hide();
+				$('.secondaryEntityId').val($(e.target).attr('entity-id'));
+				$('.secondaryPrompt').text($(e.target).text());
+			}
 		});
 
 		ConfigureAdminForm(elements.addForm, defaultSubmitCallback, addAttributeHandler);
@@ -137,6 +166,8 @@ function AttributeManagement(opts)
 		ConfigureAdminForm(elements.deleteForm, defaultSubmitCallback, deleteAttributeHandler);
 
 	};
+
+	var onEntityChoiceClick = function (e){	};
 
 	var showRelevantAttributeOptions = function (selectedType, optionsDiv)
 	{
@@ -182,8 +213,8 @@ function AttributeManagement(opts)
 
 	var showEditDialog = function (selectedAttribute)
 	{
-		toggleAppliesTo();
 		showRelevantAttributeOptions(selectedAttribute.type, elements.editDialog);
+		toggleAppliesTo();
 
 		$('.editAttributeType', elements.editDialog).hide();
 		$('#editType' + selectedAttribute.type).show();
@@ -221,6 +252,23 @@ function AttributeManagement(opts)
 			$('#editAttributeAdminOnly').attr('checked', 'checked');
 		}
 
+		var limitScope = $('#editAttributeLimitScope');
+		limitScope.removeAttr('checked');
+		$('#editAttributeSecondaryCategory').val('');
+		$('#editAttributeSecondaryEntityId').val('');
+		elements.secondaryPrompt.text(options.allText);
+		if (selectedAttribute.secondaryEntityId)
+		{
+			limitScope.attr('checked', 'checked');
+			limitScope.trigger('change');
+			$('#editAttributeSecondaryCategory').val(selectedAttribute.secondaryCategory);
+			$('#editAttributeSecondaryEntityId').val(selectedAttribute.secondaryEntityId);
+			$('.secondaryPrompt').text(selectedAttribute.secondaryEntityDescription);
+
+		}
+
+		$('#editAttributePrivate').prop('checked', selectedAttribute.isPrivate);
+
 		setActiveId(selectedAttribute.id);
 
 		elements.editDialog.dialog('open');
@@ -253,22 +301,26 @@ function AttributeManagement(opts)
 		{
 			$('.attributeUnique').hide();
 			$('.attributeAdminOnly').show();
+			$('.secondaryEntities, .attributeSecondary').hide();
+			$('.secondaryEntities').show();
+			$('.attributeIsPrivate').show();
 		}
 		else
 		{
 			$('.attributeUnique').show();
 			$('.attributeAdminOnly').hide();
+			$('.secondaryEntities, .attributeSecondary').hide();
+			$('.attributeIsPrivate').hide();
 		}
 	};
 
-	var showEntities = function (element)
+	var showEntities = function (element, categoryId)
 	{
 		elements.entityChoices.empty();
 		elements.entityChoices.css({left: element.offset().left, top: element.offset().top + element.height()});
 		elements.entityChoices.show();
 
 		$('<div class="ajax-indicator">&nbsp;</div>"').appendTo(elements.entityChoices).show();
-		var categoryId = elements.attributeCategory.val();
 
 		var data = [];
 
@@ -322,8 +374,9 @@ function AttributeManagement(opts)
 				}
 		).done(function (data)
 				{
-					items = $.map(data, function(item, index) {
-						return {Id : item.UserId, Name : item.FullName};
+					items = $.map(data, function (item, index)
+					{
+						return {Id: item.UserId, Name: item.FullName};
 					});
 				});
 
@@ -339,8 +392,9 @@ function AttributeManagement(opts)
 				}
 		).done(function (data)
 				{
-					items = $.map(data, function(item, index) {
-						return {Id : item.Id, Name : item.Name};
+					items = $.map(data, function (item, index)
+					{
+						return {Id: item.Id, Name: item.Name};
 					});
 				});
 

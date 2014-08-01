@@ -436,6 +436,18 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 <p class="setting"><div>$conf['settings']['password']['upper.and.lower']</div>Whether user passwords require a
 	combination of upper and lower case letters. Default is false.</p>
 
+<p class="setting"><span>$conf['settings']['reservation.labels']['ics.summary']</span>The format of what to display in the
+	summary field for ics feeds. Available tokens are listed in the Available Label Tokens section.</p>
+<p class="setting"><span>$conf['settings']['reservation.labels']['rss.description']</span>The format of what to display in the
+	description field for rss/atom feeds. Available tokens are listed in the Available Label Tokens section.</p>
+<p class="setting"><span>$conf['settings']['reservation.labels']['my.calendar']</span>The format of what to display for the
+	reservation label on the My Calendar page. Available tokens are listed in the Available Label Tokens section.</p>
+<p class="setting"><span>$conf['settings']['reservation.labels']['resource.calendar']</span>The format of what to display for the
+	reservation label on the Resource Calendar page. Available tokens are listed in the Available Label Tokens section.</p>
+<p class="setting"><span>$conf['settings']['reservation.labels']['reservation.popup']</span>The format of what to display in reservation popups.
+	Possible values are {name} {dates} {title} {resources} {participants} {accessories} {description} {attributes}. Custom attributes can be individually added using att with the attribute id. For example {att1}.
+	Default is all information.</p>
+
 <h2>Plugins</h2>
 
 <p>The following components are currently pluggable:</p>
@@ -464,6 +476,11 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 	change either $conf['settings']['plugins']['Authentication'], $conf['settings']['plugins']['Authorization'] or
 	$conf['settings']['plugins']['Permission'] in config.php to the name of that folder.</p>
 
+<h2>Available Label Tokens</h2>
+<p>Available tokens for reservation lables are {literal}{name}, {title}, {description}, {email},
+	{phone}, {organization}, {position}, {startdate}, {enddate}, {resourcename}{/literal}. Custom attributes can be added using att with the attribute id. For example {literal}{att1}{/literal}
+	Leave it blank for no label. Any combination of tokens can be used.</p>
 </div>
+
 
 {include file='globalfooter.tpl'}

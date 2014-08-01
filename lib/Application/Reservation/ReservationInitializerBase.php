@@ -207,11 +207,6 @@ abstract class ReservationInitializerBase implements IReservationInitializer, IR
 	protected $resourceBinder;
 
 	/**
-	 * @var IReservationComponentBinder
-	 */
-	protected $attributeBinder;
-
-	/**
 	 * @var int
 	 */
 	protected $currentUserId;
@@ -231,7 +226,6 @@ abstract class ReservationInitializerBase implements IReservationInitializer, IR
 	 * @param $userBinder IReservationComponentBinder
 	 * @param $dateBinder IReservationComponentBinder
 	 * @param $resourceBinder IReservationComponentBinder
-	 * @param $attributeBinder IReservationComponentBinder
 	 * @param $userSession UserSession
 	 */
 	public function __construct(
@@ -239,7 +233,6 @@ abstract class ReservationInitializerBase implements IReservationInitializer, IR
 		IReservationComponentBinder $userBinder,
 		IReservationComponentBinder $dateBinder,
 		IReservationComponentBinder $resourceBinder,
-		IReservationComponentBinder $attributeBinder,
 		UserSession $userSession
 	)
 	{
@@ -247,7 +240,6 @@ abstract class ReservationInitializerBase implements IReservationInitializer, IR
 		$this->userBinder = $userBinder;
 		$this->dateBinder = $dateBinder;
 		$this->resourceBinder = $resourceBinder;
-		$this->attributeBinder = $attributeBinder;
 		$this->currentUser = $userSession;
 		$this->currentUserId = $this->currentUser->UserId;
 	}
@@ -260,7 +252,6 @@ abstract class ReservationInitializerBase implements IReservationInitializer, IR
 		$this->BindResourceAndAccessories();
 		$this->BindDates();
 		$this->BindUser();
-		$this->BindAttributes();
 	}
 
 	protected function BindUser()
@@ -276,12 +267,6 @@ abstract class ReservationInitializerBase implements IReservationInitializer, IR
 	protected function BindDates()
 	{
 		$this->dateBinder->Bind($this);
-	}
-
-	protected function BindAttributes()
-	{
-		$this->attributeBinder->Bind($this);
-		$this->basePage->SetCustomAttributes($this->customAttributes);
 	}
 
 	protected function SetSelectedDates(Date $startDate, Date $endDate, $startPeriods, $endPeriods)

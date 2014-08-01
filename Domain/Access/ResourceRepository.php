@@ -355,8 +355,17 @@ class ResourceRepository implements IResourceRepository
 
 	public function LoadResourceGroup($groupId)
 	{
-		$rows = ServiceLocator::GetDatabase()
-				->Query(new GetResourceGroupCommand($groupId));
+		return $this->LoadResourceGroupByCommand(new GetResourceGroupCommand($groupId));
+	}
+
+	public function LoadResourceGroupByPublicId($publicResourceGroupId)
+	{
+		return $this->LoadResourceGroupByCommand(new GetResourceGroupByPublicIdCommand($publicResourceGroupId));
+	}
+
+	private function LoadResourceGroupByCommand(SqlCommand $command)
+	{
+		$rows = ServiceLocator::GetDatabase()->Query($command);
 
 		if ($row = $rows->GetRow())
 		{

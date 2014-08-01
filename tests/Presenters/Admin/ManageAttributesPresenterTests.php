@@ -76,6 +76,7 @@ class ManageAttributesPresenterTests extends TestBase
 		$sortOrder = "5";
 		$entityId = 10;
 		$adminOnly = true;
+		$secondaryEntityId = 1029;
 
 		$this->page->_label = $label;
 		$this->page->_type = $type;
@@ -86,8 +87,12 @@ class ManageAttributesPresenterTests extends TestBase
 		$this->page->_sortOrder = $sortOrder;
 		$this->page->_entityId = $entityId;
 		$this->page->_adminOnly = $adminOnly;
+		$this->page->_limitAttributeScope = true;
+		$this->page->_secondaryCategory = CustomAttributeCategory::USER;
+		$this->page->_secondaryEntityId = $secondaryEntityId;
 
 		$expectedAttribute = CustomAttribute::Create($label, $type, $scope, $regex, $required, $possibleValues, $sortOrder, $entityId, $adminOnly);
+		$expectedAttribute->WithSecondaryEntity(CustomAttributeCategory::USER, $secondaryEntityId);
 
 		$this->attributeRepository->expects($this->once())
 				->method('Add')
@@ -105,7 +110,9 @@ class ManageAttributesPresenterTests extends TestBase
 		$regex = '/$\d^/';
 		$possibleValues = '1,2,3';
 		$sortOrder = "5";
-		$entityId = true;
+		$entityId = 123;
+		$secondaryEntityId = 555;
+		$isPrivate = true;
 		$adminOnly = true;
 
 		$this->page->_label = $label;
@@ -116,6 +123,10 @@ class ManageAttributesPresenterTests extends TestBase
 		$this->page->_sortOrder = $sortOrder;
 		$this->page->_entityId = $entityId;
 		$this->page->_adminOnly = $adminOnly;
+		$this->page->_limitAttributeScope = true;
+		$this->page->_secondaryCategory = CustomAttributeCategory::USER;
+		$this->page->_secondaryEntityId = $secondaryEntityId;
+		$this->page->_isPrivate = $isPrivate;
 
 		$expectedAttribute = CustomAttribute::Create('', CustomAttributeTypes::CHECKBOX, CustomAttributeCategory::USER, null, false, null, $sortOrder, $entityId, $adminOnly);
 
@@ -126,7 +137,7 @@ class ManageAttributesPresenterTests extends TestBase
 
 		$this->attributeRepository->expects($this->once())
 				->method('Update')
-				->with($this->equalTo($expectedAttribute));
+				->with($this->anything());
 
 		$this->presenter->UpdateAttribute();
 
@@ -137,6 +148,9 @@ class ManageAttributesPresenterTests extends TestBase
 		$this->assertEquals($sortOrder, $expectedAttribute->SortOrder());
 		$this->assertEquals($entityId, $expectedAttribute->EntityId());
 		$this->assertEquals($adminOnly, $expectedAttribute->AdminOnly());
+		$this->assertEquals($secondaryEntityId, $expectedAttribute->SecondaryEntityId());
+		$this->assertEquals(CustomAttributeCategory::USER, $expectedAttribute->SecondaryCategory());
+		$this->assertEquals($isPrivate, $expectedAttribute->IsPrivate());
 	}
 
 	public function testDeletesAttributeById()
@@ -150,7 +164,6 @@ class ManageAttributesPresenterTests extends TestBase
 
 		$this->presenter->DeleteAttribute();
 	}
-
 }
 
 class FakeAttributePage extends FakeActionPageBase implements IManageAttributesPage
@@ -167,6 +180,11 @@ class FakeAttributePage extends FakeActionPageBase implements IManageAttributesP
 	public $_sortOrder;
 	public $_entityId;
 	public $_adminOnly;
+	public $_limitAttributeScope;
+	public $_secondaryCategory;
+	public $_secondaryEntityId;
+	public $_isPrivate;
+
 
 	public function GetLabel()
 	{
@@ -231,5 +249,25 @@ class FakeAttributePage extends FakeActionPageBase implements IManageAttributesP
 	public function GetIsAdminOnly()
 	{
 		return $this->_adminOnly;
+	}
+
+	public function GetSecondaryEntityId()
+	{
+		return $this->_secondaryEntityId;
+	}
+
+	public function GetSecondaryCategory()
+	{
+		return $this->_secondaryCategory;
+	}
+
+	public function GetLimitAttributeScope()
+	{
+		return $this->_limitAttributeScope;
+	}
+
+	public function GetIsPrivate()
+	{
+		return $this->_isPrivate;
 	}
 }

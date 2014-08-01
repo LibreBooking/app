@@ -87,6 +87,30 @@ class SlotLabelFactoryTests extends TestBase
 
         $this->assertEquals('first last + mytitle - mydescription myemail myphone myorg myposition', $value);
     }
+	
+	public function testFormatsDates()
+	{
+		$this->reservation->StartDate = Date::Parse('2014-04-05 08:14:12', 'UTC');
+		$this->reservation->EndDate = Date::Parse('2014-04-06 17:18:12', 'UTC');
+
+		$this->SetConfig('{startdate} {enddate}');
+		$factory = new SlotLabelFactory($this->fakeUser);
+		$value = $factory->Format($this->reservation);
+
+		$this->assertEquals($this->reservation->StartDate->ToTimezone($this->fakeUser->Timezone)->Format($this->fakeResources->GetDateFormat('res_popup')) . ' ' . $this->reservation->EndDate->ToTimezone($this->fakeUser->Timezone)->Format($this->fakeResources->GetDateFormat('res_popup')), $value);
+	}
+
+	public function testParsesAttributes()
+	{
+		$this->reservation->Attributes = new CustomAttributes();
+		$this->reservation->Attributes->Add(2, 'value2');
+		$this->reservation->Attributes->Add(1, 'value1');
+
+		$this->SetConfig('{att1} {att2}');
+
+		$value = SlotLabelFactory::Create($this->reservation);
+		$this->assertEquals('value1 value2', $value);
+	}
 
     private function SetConfig($value)
     {

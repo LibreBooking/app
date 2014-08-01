@@ -73,9 +73,47 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 				<label for="ATTRIBUTE_SORT_ORDER"><span class="wideLabel">{translate key=SortOrder}:</span></label>
 				{textbox name=ATTRIBUTE_SORT_ORDER  maxlength=3 width="40px" id="ATTRIBUTE_SORT_ORDER"} 
 			</div>
+			<div class="attributeIsPrivate">
+				<span class="wideLabel">{translate key=Private}:</span>
+				<input type="checkbox" {formname key=ATTRIBUTE_IS_PRIVATE} />
+			</div>
+			<div class="secondaryEntities hidden">
+				<span class="wideLabel">Limit Attribute Scope:</span>
+				<input type="checkbox" class="limitScope" {formname key=ATTRIBUTE_LIMIT_SCOPE}  />
+			</div>
+			<div class="attributeSecondary hidden">
+				<span class="wideLabel">{translate key=Category}:</span>
+				<select class="secondaryAttributeCategory" {formname key=ATTRIBUTE_SECONDARY_CATEGORY}>
+					<option value="{CustomAttributeCategory::USER}">{translate key=User}</option>
+				</select>
+			</div>
+			<div class="attributeSecondary hidden">
+				<span class="wideLabel">Limit to:</span>
+				<a href="#" class="secondaryPrompt">{translate key=All}</a>
+				<input type="hidden" class="secondaryEntityId" {formname key=ATTRIBUTE_SECONDARY_ENTITY} />
+			</div>
 			<div class="attributeAdminOnly">
 				<label for="ATTRIBUTE_IS_ADMIN_ONLY"><span class="wideLabel">{translate key=AdminOnly}:</span></label>
 				<input type="checkbox" {formname key=ATTRIBUTE_IS_ADMIN_ONLY} id="ATTRIBUTE_IS_ADMIN_ONLY"/>
+			</div>
+			<div class="attributeIsPrivate">
+				<span class="wideLabel">{translate key=Private}:</span>
+				<input type="checkbox" {formname key=ATTRIBUTE_IS_PRIVATE} id='editAttributePrivate'/>
+			</div>
+			<div class="secondaryEntities hidden">
+				<span class="wideLabel">{translate key=LimitAttributeScope}:</span>
+				<input type="checkbox" class="limitScope" {formname key=ATTRIBUTE_LIMIT_SCOPE} id="editAttributeLimitScope" />
+			</div>
+			<div class="attributeSecondary hidden">
+				<span class="wideLabel">{translate key=Category}:</span>
+				<select class="secondaryAttributeCategory" {formname key=ATTRIBUTE_SECONDARY_CATEGORY} id="editAttributeSecondaryCategory">
+					<option value="{CustomAttributeCategory::USER}">{translate key=User}</option>
+				</select>
+			</div>
+			<div class="attributeSecondary hidden">
+				<span class="wideLabel">{translate key=LimitTo}:</span>
+				<a href="#" class="secondaryPrompt" id="editAttributeSecondaryEntityDescription">{translate key=All}</a>
+				<input type="hidden" class="secondaryEntityId" {formname key=ATTRIBUTE_SECONDARY_ENTITY} id="editAttributeSecondaryEntityId" />
 			</div>
 		</div>
 
@@ -140,13 +178,32 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 				<label for="editAttributeAdminOnly"><span class="wideLabel">{translate key=AdminOnly}:</span></label>
 				<input type="checkbox" {formname key=ATTRIBUTE_IS_ADMIN_ONLY} id="editAttributeAdminOnly"/>
 			</div>
+			<div class="attributeIsPrivate">
+				<span class="wideLabel">{translate key=Private}:</span>
+				<input type="checkbox" {formname key=ATTRIBUTE_IS_PRIVATE} id='editAttributePrivate'/>
+			</div>
+			<div class="secondaryEntities hidden">
+				<span class="wideLabel">{translate key=LimitAttributeScope}:</span>
+				<input type="checkbox" class="limitScope" {formname key=ATTRIBUTE_LIMIT_SCOPE} id="editAttributeLimitScope" />
+			</div>
+			<div class="attributeSecondary hidden">
+				<span class="wideLabel">{translate key=Category}:</span>
+				<select class="secondaryAttributeCategory" {formname key=ATTRIBUTE_SECONDARY_CATEGORY} id="editAttributeSecondaryCategory">
+					<option value="{CustomAttributeCategory::USER}">{translate key=User}</option>
+				</select>
+			</div>
+			<div class="attributeSecondary hidden">
+				<span class="wideLabel">{translate key=LimitTo}:</span>
+				<a href="#" class="secondaryPrompt" id="editAttributeSecondaryEntityDescription">{translate key=All}</a>
+				<input type="hidden" class="secondaryEntityId" {formname key=ATTRIBUTE_SECONDARY_ENTITY} id="editAttributeSecondaryEntityId" />
+			</div>
 		</div>
 
 		<button type="button" class="button save">{html_image src="tick-circle.png"} {translate key=Update}</button>
 		<button type="button" class="button cancel">{html_image src="slash.png"} {translate key=Cancel}</button>
 	</form>
 </div>
-<div style="clear:both"></div>
+<div class="clear"></div>
 
 <div id="attributeList">
 </div>

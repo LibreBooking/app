@@ -231,20 +231,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 	</div>
 {/if}
 
-{if $Attributes|count > 0}
-	<div class="row">
-		<div class="customAttributes">
-			<span>{translate key=AdditionalAttributes}</span>
-			<ul>
-				{foreach from=$Attributes item=attribute}
-					<li class="customAttribute">
-						{control type="AttributeControl" attribute=$attribute}
-					</li>
-				{/foreach}
-			</ul>
-		</div>
-	</div>
-{/if}
+<div id="custom-attributes-placeholder"></div>
 
 {if $UploadsEnabled}
 	<div class="row">
@@ -268,10 +255,11 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 
 <input type="hidden" {formname key=reservation_id} value="{$ReservationId}"/>
-<input type="hidden" {formname key=reference_number} value="{$ReferenceNumber}"/>
+<input type="hidden" {formname key=reference_number} value="{$ReferenceNumber}" id="referenceNumber"/>
 <input type="hidden" {formname key=reservation_action} value="{$ReservationAction}"/>
+
 <input type="hidden" {formname key=SERIES_UPDATE_SCOPE} id="hdnSeriesUpdateScope"
-	   value="{SeriesUpdateScope::FullSeries}"/>
+       value="{SeriesUpdateScope::FullSeries}"/>
 
 <div class="row">
 	<div class="reservationButtons">

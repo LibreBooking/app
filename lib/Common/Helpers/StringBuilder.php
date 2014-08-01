@@ -33,9 +33,13 @@ class StringBuilder
 		array_unshift($this->_string, $string . "\n");
 	}
 
+	public function Count()
+	{
+		return count($this->_string);
+	}
+
 	public function ToString()
 	{
 		return join('', $this->_string);
 	}
 }
-?>

@@ -107,15 +107,16 @@ class CalendarReservation
 	/**
 	 * @param $reservations array|ReservationItemView[]
 	 * @param $timezone string
+	 * @param $user UserSession
 	 * @return array|CalendarReservation[]
 	 */
-	public static function FromViewList($reservations, $timezone)
+	public static function FromViewList($reservations, $timezone, $user)
 	{
 		$results = array();
 
 		foreach ($reservations as $reservation)
 		{
-			$results[] = self::FromView($reservation, $timezone);
+			$results[] = self::FromView($reservation, $timezone, $user);
 		}
 		return $results;
 	}
@@ -123,10 +124,12 @@ class CalendarReservation
 	/**
 	 * @param $reservation ReservationItemView
 	 * @param $timezone string
+	 * @param $user UserSession
 	 * @return CalendarReservation
 	 */
-	public static function FromView($reservation, $timezone)
+	public static function FromView($reservation, $timezone, $user)
 	{
+		$factory = new SlotLabelFactory($user);
 		$start = $reservation->StartDate->ToTimezone($timezone);
 		$end = $reservation->EndDate->ToTimezone($timezone);
 		$resourceName = $reservation->ResourceName;
@@ -136,7 +139,7 @@ class CalendarReservation
 
 		$res->Title = $reservation->Title;
 		$res->Description = $reservation->Description;
-
+		$res->DisplayTitle = $factory->Format($reservation, Configuration::Instance()->GetSectionKey(ConfigSection::RESERVATION_LABELS, ConfigKeys::RESERVATION_LABELS_MY_CALENDAR));
 		$res->Invited = $reservation->UserLevelId == ReservationUserLevel::INVITEE;
 		$res->Participant = $reservation->UserLevelId == ReservationUserLevel::PARTICIPANT;
 		$res->Owner = $reservation->UserLevelId == ReservationUserLevel::OWNER;
@@ -164,6 +167,8 @@ class CalendarReservation
 	public static function FromScheduleReservationList($reservations, $resources, UserSession $userSession,
 													   IPrivacyFilter $privacyFilter)
 	{
+		$factory = new SlotLabelFactory($userSession);
+
 		$resourceMap = array();
 		/** @var $resource ResourceDto */
 		foreach ($resources as $resource)
@@ -189,17 +194,7 @@ class CalendarReservation
 			$cr->OwnerName = new FullName($reservation->FirstName, $reservation->LastName);
 			$cr->OwnerFirst = $reservation->FirstName;
 			$cr->OwnerLast = $reservation->LastName;
-			$cr->DisplayTitle = 'Private';
-
-			if ($privacyFilter->CanViewUser($userSession, null, $reservation->UserId))
-			{
-				$cr->DisplayTitle = $cr->OwnerName;
-			}
-
-			if ($privacyFilter->CanViewDetails($userSession, null, $reservation->UserId))
-			{
-				$cr->DisplayTitle .= ' ' . $reservation->Title;
-			}
+			$cr->DisplayTitle = $factory->Format($reservation, Configuration::Instance()->GetSectionKey(ConfigSection::RESERVATION_LABELS, ConfigKeys::RESERVATION_LABELS_RESOURCE_CALENDAR));
 
 			$color = $reservation->GetColor();
 			if (!empty($color))

@@ -248,7 +248,7 @@ class SchedulePage extends ActionPage implements ISchedulePage
 
 		$endLoad = microtime(true);
 
-		$this->Set('SlotLabelFactory', $user->IsAdmin ? new AdminSlotLabelFactory() : new SlotLabelFactory($user));
+		$this->Set('SlotLabelFactory', new SlotLabelFactory($user));
 		$this->Set('DisplaySlotFactory', new DisplaySlotFactory());
 		$this->Set('PopupMonths', $this->IsMobile ? 1 : 3);
 		if ($this->IsMobile)

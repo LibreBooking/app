@@ -1,21 +1,21 @@
 <?php
 /**
-Copyright 2012-2014 Nick Korbel
-
-This file is part of Booked Scheduler.
-
-Booked Scheduler is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-Booked Scheduler is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
+ * Copyright 2012-2014 Nick Korbel
+ *
+ * This file is part of Booked Scheduler.
+ *
+ * Booked Scheduler is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Booked Scheduler is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 require_once(ROOT_DIR . 'Domain/CustomAttribute.php');
@@ -77,7 +77,8 @@ class AttributeRepository implements IAttributeRepository
 		return ServiceLocator::GetDatabase()
 			   ->ExecuteInsert(
 			new AddAttributeCommand($attribute->Label(), $attribute->Type(), $attribute->Category(), $attribute->Regex(),
-									$attribute->Required(), $attribute->PossibleValues(), $attribute->SortOrder(), $attribute->EntityId(), $attribute->AdminOnly()));
+									$attribute->Required(), $attribute->PossibleValues(), $attribute->SortOrder(), $attribute->EntityId(), $attribute->AdminOnly(),
+									$attribute->SecondaryCategory(), $attribute->SecondaryEntityId(), $attribute->IsPrivate()));
 	}
 
 	/**
@@ -109,8 +110,7 @@ class AttributeRepository implements IAttributeRepository
 	 */
 	public function LoadById($attributeId)
 	{
-		$reader = ServiceLocator::GetDatabase()
-				  ->Query(new GetAttributeByIdCommand($attributeId));
+		$reader = ServiceLocator::GetDatabase()->Query(new GetAttributeByIdCommand($attributeId));
 
 		$attribute = null;
 		if ($row = $reader->GetRow())
@@ -130,7 +130,7 @@ class AttributeRepository implements IAttributeRepository
 		->Execute(
 			new UpdateAttributeCommand($attribute->Id(), $attribute->Label(), $attribute->Type(), $attribute->Category(),
 									   $attribute->Regex(), $attribute->Required(), $attribute->PossibleValues(), $attribute->SortOrder(),
-									   $attribute->EntityId(), $attribute->AdminOnly()));
+									   $attribute->EntityId(), $attribute->AdminOnly(), $attribute->SecondaryCategory(), $attribute->SecondaryEntityId(), $attribute->IsPrivate()));
 	}
 
 	/**
@@ -150,33 +150,30 @@ class AttributeRepository implements IAttributeRepository
 		if (empty($entityIds))
 		{
 			$reader = ServiceLocator::GetDatabase()
-							  ->Query(new GetAttributeAllValuesCommand($category));
+									->Query(new GetAttributeAllValuesCommand($category));
 		}
-		else{
+		else
+		{
 			$reader = ServiceLocator::GetDatabase()
-				  ->Query(new GetAttributeMultipleValuesCommand($category, $entityIds));
+									->Query(new GetAttributeMultipleValuesCommand($category, $entityIds));
 		}
 		$attribute = null;
 		while ($row = $reader->GetRow())
 		{
 			$values[] = new AttributeEntityValue(
-				$row[ColumnNames::ATTRIBUTE_ID],
-				$row[ColumnNames::ATTRIBUTE_ENTITY_ID],
-				$row[ColumnNames::ATTRIBUTE_VALUE]);
+					$row[ColumnNames::ATTRIBUTE_ID],
+					$row[ColumnNames::ATTRIBUTE_ENTITY_ID],
+					$row[ColumnNames::ATTRIBUTE_VALUE]);
 		}
 
 		return $values;
 	}
 
-	/**
-	 * @param $attributeId int
-	 * @return void
-	 */
 	public function DeleteById($attributeId)
 	{
 		ServiceLocator::GetDatabase()
-		->Execute(new DeleteAttributeCommand($attributeId));
+					  ->Execute(new DeleteAttributeCommand($attributeId));
 		ServiceLocator::GetDatabase()
-		->Execute(new DeleteAttributeValuesCommand($attributeId));
+					  ->Execute(new DeleteAttributeValuesCommand($attributeId));
 	}
 }

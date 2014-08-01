@@ -1,23 +1,23 @@
 <?php
+
 /**
-Copyright 2012-2014 Nick Korbel
-
-This file is part of Booked Scheduler.
-
-Booked Scheduler is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-Booked Scheduler is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
+ * Copyright 2012-2014 Nick Korbel
+ *
+ * This file is part of Booked Scheduler.
+ *
+ * Booked Scheduler is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Booked Scheduler is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 class CustomAttributeTypes
 {
 	const SINGLE_LINE_TEXTBOX = 1;
@@ -93,6 +93,26 @@ class CustomAttribute
 	protected $sortOrder;
 
 	/**
+	 * @var CustomAttributeTypes|int
+	 */
+	protected $secondaryCategory;
+
+	/**
+	 * @var int
+	 */
+	protected $secondaryEntityId;
+
+	/**
+	 * @var string
+	 */
+	protected $secondaryEntityDescription;
+
+	/**
+	 * @var bool
+	 */
+	protected $isPrivate = false;
+
+	/**
 	 * @return int
 	 */
 	public function Id()
@@ -165,7 +185,7 @@ class CustomAttribute
 	}
 
 	/**
-	 * @return \CustomAttributeCategory|int
+	 * @return CustomAttributeCategory|int
 	 */
 	public function Category()
 	{
@@ -173,11 +193,40 @@ class CustomAttribute
 	}
 
 	/**
-	 * @return \CustomAttributeTypes|int
+	 * @return CustomAttributeTypes|int
 	 */
 	public function Type()
 	{
 		return $this->type;
+	}
+
+	public function HasSecondaryEntity()
+	{
+		return !empty($this->secondaryCategory) && !empty($this->secondaryEntityId);
+	}
+
+	/**
+	 * @return CustomAttributeCategory|int|null
+	 */
+	public function SecondaryCategory()
+	{
+		return $this->secondaryCategory;
+	}
+
+	/**
+	 * @return int|null
+	 */
+	public function SecondaryEntityId()
+	{
+		return empty($this->secondaryEntityId) ? null : $this->secondaryEntityId;
+	}
+
+	/**
+	 * @return string|null
+	 */
+	public function SecondaryEntityDescription()
+	{
+		return $this->secondaryEntityDescription;
 	}
 
 	/**
@@ -194,6 +243,14 @@ class CustomAttribute
 	public function AdminOnly()
 	{
 		return (int)$this->adminOnly;
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function IsPrivate()
+	{
+		return $this->isPrivate;
 	}
 
 	/**
@@ -262,6 +319,17 @@ class CustomAttribute
 		);
 
 		$attribute->WithEntityDescription($row[ColumnNames::ATTRIBUTE_ENTITY_DESCRIPTION]);
+
+		if (isset($row[ColumnNames::ATTRIBUTE_SECONDARY_CATEGORY]))
+		{
+			$attribute->WithSecondaryEntity($row[ColumnNames::ATTRIBUTE_SECONDARY_CATEGORY], $row[ColumnNames::ATTRIBUTE_SECONDARY_ENTITY_ID],
+											$row[ColumnNames::ATTRIBUTE_SECONDARY_ENTITY_DESCRIPTION]);
+		}
+
+		if (isset($row[ColumnNames::ATTRIBUTE_IS_PRIVATE]))
+		{
+			$attribute->WithIsPrivate($row[ColumnNames::ATTRIBUTE_IS_PRIVATE]);
+		}
 
 		return $attribute;
 	}
@@ -351,5 +419,34 @@ class CustomAttribute
 	public function WithEntityDescription($entityDescription)
 	{
 		$this->entityDescription = $entityDescription;
+	}
+
+	/**
+	 * @param int|CustomAttributeCategory $category
+	 * @param int $entityId
+	 * @param string|null $entityDescription
+	 */
+	public function WithSecondaryEntity($category, $entityId, $entityDescription = null)
+	{
+		if (!empty($category) && !empty($entityId))
+		{
+			$this->secondaryCategory = $category;
+			$this->secondaryEntityId = $entityId;
+			$this->secondaryEntityDescription = $entityDescription;
+		}
+		else
+		{
+			$this->secondaryCategory = null;
+			$this->secondaryEntityId = null;
+			$this->secondaryEntityDescription = null;
+		}
+	}
+
+	/**
+	 * @param int|bool $isPrivate
+	 */
+	public function WithIsPrivate($isPrivate)
+	{
+		$this->isPrivate = BooleanConverter::ConvertValue($isPrivate);
 	}
 }

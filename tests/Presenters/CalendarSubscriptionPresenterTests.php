@@ -29,7 +29,7 @@ class CalendarSubscriptionPresenterTests extends TestBase
 	private $repo;
 
 	/**
-	 * @var ICalendarSubscriptionPage|PHPUnit_Framework_MockObject_MockObject
+	 * @var FakeCalendarSubscriptionPage
 	 */
 	private $page;
 
@@ -58,7 +58,7 @@ class CalendarSubscriptionPresenterTests extends TestBase
 		parent::setup();
 
 		$this->repo = $this->getMock('IReservationViewRepository');
-		$this->page = $this->getMock('ICalendarSubscriptionPage');
+		$this->page = new FakeCalendarSubscriptionPage();//$this->getMock('ICalendarSubscriptionPage');
 		$this->validator = $this->getMock('ICalendarExportValidator');
 		$this->service = $this->getMock('ICalendarSubscriptionService');
 		$this->privacyFilter = new FakePrivacyFilter();
@@ -86,9 +86,7 @@ class CalendarSubscriptionPresenterTests extends TestBase
 		$weekAgo = Date::Now()->AddDays(-7);
 		$nextYear = Date::Now()->AddDays(365);
 
-		$this->page->expects($this->once())
-				->method('GetScheduleId')
-				->will($this->returnValue($publicId));
+		$this->page->ScheduleId = $publicId;
 
 		$this->service->expects($this->once())
 				->method('GetSchedule')
@@ -100,11 +98,9 @@ class CalendarSubscriptionPresenterTests extends TestBase
 				->with($this->equalTo($weekAgo), $this->equalTo($nextYear), $this->isNull(), $this->isNull(), $scheduleId, $this->isNull())
 				->will($this->returnValue($reservationResult));
 
-		$this->page->expects($this->once())
-				->method('SetReservations')
-				->with($this->arrayHasKey(0));
-
 		$this->presenter->PageLoad();
+
+		$this->assertCount(1, $this->page->Reservations);
 	}
 
 	public function testGetsScheduleReservationsForTheNextYearByResourceId()
@@ -118,9 +114,7 @@ class CalendarSubscriptionPresenterTests extends TestBase
 		$weekAgo = Date::Now()->AddDays(-7);
 		$nextYear = Date::Now()->AddDays(365);
 
-		$this->page->expects($this->once())
-				->method('GetResourceId')
-				->will($this->returnValue($publicId));
+		$this->page->ResourceId = $publicId;
 
 		$this->service->expects($this->once())
 				->method('GetResource')
@@ -132,11 +126,9 @@ class CalendarSubscriptionPresenterTests extends TestBase
 				->with($this->equalTo($weekAgo), $this->equalTo($nextYear), $this->isNull(), $this->isNull(), $this->isNull(), $resourceId)
 				->will($this->returnValue($reservationResult));
 
-		$this->page->expects($this->once())
-				->method('SetReservations')
-				->with($this->arrayHasKey(0));
-
 		$this->presenter->PageLoad();
+
+		$this->assertCount(1, $this->page->Reservations);
 	}
 
 	public function testGetsUserReservationsForTheNextYearByResourceId()
@@ -150,9 +142,7 @@ class CalendarSubscriptionPresenterTests extends TestBase
 		$weekAgo = Date::Now()->AddDays(-7);
 		$nextYear = Date::Now()->AddDays(365);
 
-		$this->page->expects($this->once())
-				->method('GetUserId')
-				->will($this->returnValue($publicId));
+		$this->page->UserId = $publicId;
 
 		$this->service->expects($this->once())
 				->method('GetUser')
@@ -164,12 +154,89 @@ class CalendarSubscriptionPresenterTests extends TestBase
 				->with($this->equalTo($weekAgo), $this->equalTo($nextYear), $this->equalTo($userId), $this->isNull(), $this->isNull(), $this->isNull())
 				->will($this->returnValue($reservationResult));
 
-		$this->page->expects($this->once())
-				->method('SetReservations')
-				->with($this->arrayHasKey(0));
+		$this->presenter->PageLoad();
+
+		$this->assertCount(1, $this->page->Reservations);
+	}
+
+	public function testGetsResourceGroupReservationsForTheNextYearByGroupId()
+	{
+		$publicId = '1';
+		$reservationResult = array(
+				new TestReservationItemView(1, Date::Now(), Date::Now(), 1),
+				new TestReservationItemView(2, Date::Now(), Date::Now(), 2),
+		);
+
+		$resourceIds = array(2);
+
+		$weekAgo = Date::Now()->AddDays(-7);
+		$nextYear = Date::Now()->AddDays(365);
+
+		$this->page->ResourceGroupId = $publicId;
+
+		$this->service->expects($this->once())
+				->method('GetResourcesInGroup')
+				->with($this->equalTo($publicId))
+				->will($this->returnValue($resourceIds));
+
+		$this->repo->expects($this->once())
+				->method('GetReservationList')
+				->with($this->equalTo($weekAgo), $this->equalTo($nextYear), $this->isNull(), $this->isNull(), $this->isNull(), $this->isNull())
+				->will($this->returnValue($reservationResult));
 
 		$this->presenter->PageLoad();
+
+		$this->assertCount(1, $this->page->Reservations);
 	}
 }
 
-?>
+class FakeCalendarSubscriptionPage implements ICalendarSubscriptionPage
+{
+	public $ScheduleId;
+	public $ResourceId;
+	public $ResourceGroupId;
+
+	/**
+	 * @vari CalendarReservationView[]
+	 */
+	public $Reservations;
+
+	public $UserId;
+
+	public $SubscriptionKey = "123";
+
+	public function GetSubscriptionKey()
+	{
+		return $this->SubscriptionKey;
+	}
+
+	public function GetUserId()
+	{
+		return $this->UserId;
+	}
+
+	public function SetReservations($reservations)
+	{
+		$this->Reservations = $reservations;
+	}
+
+	public function GetScheduleId()
+	{
+		return $this->ScheduleId;
+	}
+
+	public function GetResourceId()
+	{
+		return $this->ResourceId;
+	}
+
+	public function GetResourceGroupId()
+	{
+		return $this->ResourceGroupId;
+	}
+
+	public function GetAccessoryIds()
+	{
+		// TODO: Implement GetAccessoryIds() method.
+	}
+}

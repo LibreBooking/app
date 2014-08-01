@@ -309,6 +309,7 @@ class ReservationDetailsBinder implements IReservationComponentBinder
 		$this->page->SetDescription($this->reservationView->Description);
 		$this->page->SetReferenceNumber($this->reservationView->ReferenceNumber);
 		$this->page->SetReservationId($this->reservationView->ReservationId);
+		$this->page->SetSeriesId($this->reservationView->SeriesId);
 
 		$this->page->SetIsRecurring($this->reservationView->IsRecurring());
 		$this->page->SetRepeatType($this->reservationView->RepeatType);
@@ -342,7 +343,6 @@ class ReservationDetailsBinder implements IReservationComponentBinder
 
 		$showUser = $this->privacyFilter->CanViewUser($initializer->CurrentUser(), $this->reservationView);
 		$showDetails = $this->privacyFilter->CanViewDetails($initializer->CurrentUser(), $this->reservationView);
-
 
 		$initializer->ShowUserDetails($showUser);
 		$initializer->ShowReservationDetails($showDetails);

@@ -54,6 +54,8 @@ class WebServiceUserSession extends UserSession
 		$webSession->LanguageCode = $session->LanguageCode;
 		$webSession->PublicId = $session->PublicId;
 		$webSession->ScheduleId = $session->ScheduleId;
+		$webSession->Groups = $session->Groups;
+		$webSession->AdminGroups = $session->AdminGroups;
 
 		return $webSession;
 	}

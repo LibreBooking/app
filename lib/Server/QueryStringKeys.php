@@ -49,6 +49,7 @@ class QueryStringKeys
 	const PERIOD_ID = 'pid';
 	const PREVIOUS_ID = 'pid';
 	const QUOTA_ID = 'qid';
+	const READ_ONLY = 'ro';
 	const REDIRECT = 'redirect';
 	const REFERENCE_NUMBER = 'rn';
 	const REMINDER_ID = 'aid';
@@ -58,6 +59,7 @@ class QueryStringKeys
 	const RESERVATION_STATUS_REASON_ID = 'rsrid';
 	const RESPONSE_TYPE = 'rs';
 	const RESOURCE_ID = 'rid';
+	const RESOURCE_GROUP_ID = 'rgid';
 	const RESOURCE_TYPE_ID = 'rtid';
 	const RESERVATION_RESOURCE_STATUS_ID = 'rrsid';
 	const RESERVATION_RESOURCE_REASON_ID = 'rrsrid';
@@ -71,4 +73,3 @@ class QueryStringKeys
     const WEB_SERVICE_ACTION = 'action';
 	const YEAR = 'y';
 }
-?>

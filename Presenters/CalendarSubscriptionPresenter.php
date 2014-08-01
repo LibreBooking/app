@@ -1,22 +1,22 @@
 <?php
 /**
-Copyright 2012-2014 Nick Korbel
-Copyright 2012-2014 Alois Schloegl
-
-This file is part of Booked Scheduler.
-
-Booked Scheduler is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-Booked Scheduler is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
+ * Copyright 2012-2014 Nick Korbel
+ * Copyright 2012-2014 Alois Schloegl
+ *
+ * This file is part of Booked Scheduler.
+ *
+ * Booked Scheduler is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Booked Scheduler is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 require_once(ROOT_DIR . 'Domain/Access/namespace.php');
@@ -74,6 +74,7 @@ class CalendarSubscriptionPresenter
 		$scheduleId = $this->page->GetScheduleId();
 		$resourceId = $this->page->GetResourceId();
 		$accessoryIds = $this->page->GetAccessoryIds();
+		$resourceGroupId = $this->page->GetResourceGroupId();
 
 		$weekAgo = Date::Now()->AddDays(-7);
 		$nextYear = Date::Now()->AddDays(365);
@@ -82,6 +83,7 @@ class CalendarSubscriptionPresenter
 		$rid = null;
 		$uid = null;
 		$aid = null;
+		$resourceIds = array();
 
 		$reservations = array();
 		$res = array();
@@ -106,8 +108,12 @@ class CalendarSubscriptionPresenter
 			$user = $this->subscriptionService->GetUser($userId);
 			$uid = $user->Id();
 		}
+		if (!empty($resourceGroupId))
+		{
+			$resourceIds = $this->subscriptionService->GetResourcesInGroup($resourceGroupId);
+		}
 
-		if (!empty($uid) || !empty($sid) || !empty($rid))
+		if (!empty($uid) || !empty($sid) || !empty($rid) || !empty($resourceIds))
 		{
 			$res = $this->reservationViewRepository->GetReservationList($weekAgo, $nextYear, $uid, null, $sid, $rid);
 		}
@@ -122,13 +128,14 @@ class CalendarSubscriptionPresenter
 
 		foreach ($res as $r)
 		{
-			$reservations[] = new iCalendarReservationView($r,
-														   ServiceLocator::GetServer()->GetUserSession(),
-														   $this->privacyFilter);
+			if (empty($resourceIds) || in_array($r->ResourceId, $resourceIds))
+			{
+				$reservations[] = new iCalendarReservationView($r,
+															   ServiceLocator::GetServer()->GetUserSession(),
+															   $this->privacyFilter);
+			}
 		}
 
 		$this->page->SetReservations($reservations);
 	}
 }
-
-?>

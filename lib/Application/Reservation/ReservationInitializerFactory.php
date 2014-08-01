@@ -56,13 +56,11 @@ class ReservationInitializerFactory implements IReservationInitializerFactory
 		IUserRepository $userRepository,
 		IResourceService $resourceService,
 		IReservationAuthorization $reservationAuthorization,
-		IAttributeRepository $attributeRepository,
 		UserSession $userSession
 	)
 	{
 		$this->user = $userSession;
 		$this->reservationAuthorization = $reservationAuthorization;
-		$this->attributeRepository = $attributeRepository;
 		$this->userRepository = $userRepository;
 
 		$this->userBinder = new ReservationUserBinder($userRepository, $reservationAuthorization);
@@ -76,7 +74,6 @@ class ReservationInitializerFactory implements IReservationInitializerFactory
 			$this->userBinder,
 			$this->dateBinder,
 			$this->resourceBinder,
-			new ReservationCustomAttributeBinder($this->attributeRepository),
 			$this->user);
 	}
 

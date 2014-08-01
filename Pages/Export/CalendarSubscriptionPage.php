@@ -80,38 +80,28 @@ class CalendarSubscriptionPage extends Page implements ICalendarSubscriptionPage
 		$this->Display('Export/ical.tpl');
 	}
 
-	/**
-	 * @param array|iCalendarReservationView[] $reservations
-	 */
 	public function SetReservations($reservations)
 	{
 		$this->Set('Reservations', $reservations);
 	}
 
-	/**
-	 * @return int
-	 */
 	public function GetScheduleId()
 	{
 		return $this->GetQuerystring(QueryStringKeys::SCHEDULE_ID);
 	}
 
-	/**
-	 * @return int
-	 */
 	public function GetResourceId()
 	{
 		return $this->GetQuerystring(QueryStringKeys::RESOURCE_ID);
 	}
 
-	// Copyright 2012-2014, Alois Schloegl, IST Austria
-	/**
-	 * @return int
-	 */
 	public function GetAccessoryIds()
 	{
 		return $this->GetQuerystring(QueryStringKeys::ACCESSORY_ID);
 	}
-}
 
-?>
+	function GetResourceGroupId()
+	{
+		return $this->GetQuerystring(QueryStringKeys::RESOURCE_GROUP_ID);
+	}
+}

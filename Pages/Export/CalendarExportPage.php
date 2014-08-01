@@ -24,31 +24,26 @@ require_once(ROOT_DIR . 'Presenters/CalendarExportPresenter.php');
 interface ICalendarExportPage
 {
 	/**
-	 * @abstract
 	 * @return string
 	 */
 	public function GetReferenceNumber();
 
 	/**
-	 * @abstract
 	 * @param array|iCalendarReservationView[] $reservations
 	 */
 	public function SetReservations($reservations);
 
 	/**
-	 * @abstract
 	 * @return int
 	 */
 	public function GetScheduleId();
 
 	/**
-	 * @abstract
 	 * @return int
 	 */
 	public function GetResourceId();
 
 	/**
-	 * @abstract
 	 * @return int
 	 */
 	public function GetAccessoryName();

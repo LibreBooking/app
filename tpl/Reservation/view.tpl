@@ -28,6 +28,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 					<label>{translate key='User'}</label>
 				{if $ShowUserDetails}
 					{$ReservationUserName}
+					<input id="userId" type="hidden" value="{$UserId}"/>
 				{else}
 					{translate key=Private}
 				{/if}
@@ -163,21 +164,23 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		{/if}
 		<div style="clear:both;">&nbsp;</div>
 
-		{if $ShowReservationDetails}
-			{if $Attributes|count > 0}
-			<div class="customAttributes">
-				<span>{translate key=AdditionalAttributes}</span>
-				<ul>
-				{foreach from=$Attributes item=attribute}
-					<li class="customAttribute">
-						{control type="AttributeControl" attribute=$attribute readonly=true}
-					</li>
-				{/foreach}
-				</ul>
-			</div>
-			<div style="clear:both;">&nbsp;</div>
-			{/if}
-		{/if}
+		<div id="custom-attributes-placeholder"></div>
+
+		{*{if $ShowReservationDetails}*}
+			{*{if $Attributes|count > 0}*}
+			{*<div class="customAttributes">*}
+				{*<span>{translate key=AdditionalAttributes}</span>*}
+				{*<ul>*}
+				{*{foreach from=$Attributes item=attribute}*}
+					{*<li class="customAttribute">*}
+						{*{control type="AttributeControl" attribute=$attribute readonly=true}*}
+					{*</li>*}
+				{*{/foreach}*}
+				{*</ul>*}
+			{*</div>*}
+			{*<div style="clear:both;">&nbsp;</div>*}
+			{*{/if}*}
+		{*{/if}*}
 
 		{if $ShowReservationDetails}
 			<div style="float:left;">

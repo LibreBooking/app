@@ -76,6 +76,8 @@ class PersonalCalendarPresenter extends ActionPresenter
 
 	public function PageLoad($userId, $timezone)
 	{
+		$userSession = ServiceLocator::GetServer()->GetUserSession();
+
 		$type = $this->page->GetCalendarType();
 
 		$year = $this->page->GetYear();
@@ -99,7 +101,7 @@ class PersonalCalendarPresenter extends ActionPresenter
 
 		$calendar = $this->calendarFactory->Create($type, $year, $month, $day, $timezone);
 		$reservations = $this->repository->GetReservationList($calendar->FirstDay(), $calendar->LastDay(), $userId, ReservationUserLevel::ALL);
-		$calendar->AddReservations(CalendarReservation::FromViewList($reservations, $timezone));
+		$calendar->AddReservations(CalendarReservation::FromViewList($reservations, $timezone, $userSession));
 		$this->page->BindCalendar($calendar);
 
 		$this->page->SetDisplayDate($calendar->FirstDay());

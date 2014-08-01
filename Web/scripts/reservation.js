@@ -41,7 +41,9 @@ function Reservation(opts)
 		addResourcesButton: $('#btnAddResources'),
 		resourceGroupsDialog: $('#dialogResourceGroups'),
 		addResourcesConfirm:$('.btnConfirmAddResources'),
-		reservationAttachments:$('#reservationAttachments')
+		reservationAttachments:$('#reservationAttachments'),
+
+		referenceNumber:$('#referenceNumber')
 	};
 
 	var participation = {};
@@ -146,6 +148,19 @@ function Reservation(opts)
 		WireUpSaveDialog();
 		DisplayDuration();
 		WireUpAttachments();
+
+		function LoadCustomAttributes()
+		{
+			var attributesPlaceholder = $('#custom-attributes-placeholder');
+			attributesPlaceholder.html('<img src="img/admin-ajax-indicator.gif"/>');
+			attributesPlaceholder.load('ajax/reservation_attributes.php?uid=' + elements.userId.val() + '&rn=' + elements.referenceNumber.val() + '&ro=' + $('#reservationbox').hasClass('readonly'));
+		}
+
+		elements.userId.change(function(){
+			LoadCustomAttributes();
+		});
+
+		LoadCustomAttributes();
 	};
 
 	// pre-submit callback 
@@ -698,6 +713,7 @@ function Reservation(opts)
 	{
 		elements.userName.text(name);
 		elements.userId.val(id);
+		elements.userId.trigger('change');
 
 		participation.removeParticipant(_ownerId);
 		participation.removeInvitee(_ownerId);

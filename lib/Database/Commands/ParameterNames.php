@@ -50,6 +50,9 @@ class ParameterNames
 	const ATTRIBUTE_ENTITY_ID = '@entity_id';
 	const ATTRIBUTE_ENTITY_IDS = '@entity_ids';
 	const ATTRIBUTE_UNIQUE_PER_ENTITY = '@unique_per_entity';
+	const ATTRIBUTE_SECONDARY_CATEGORY = '@secondary_category';
+	const ATTRIBUTE_SECONDARY_ENTITY_ID = '@secondary_entity_id';
+	const ATTRIBUTE_IS_PRIVATE = '@is_private';
 
 	const BLACKOUT_SERIES_ID = '@blackout_series_id';
 	const BLACKOUT_INSTANCE_ID = '@blackout_instance_id';
