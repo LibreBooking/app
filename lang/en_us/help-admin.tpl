@@ -197,243 +197,243 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 <p>Some functionality can only be controlled by editing the config file.</p>
 
-<p class="setting"><span>$conf['settings']['default.timezone']</span>The default timezone to use. If not set, the server
+<p class="setting"><div>$conf['settings']['default.timezone']</div>The default timezone to use. If not set, the server
 	timezone will be used. Possible values are located here:
 	<a href="http://php.net/manual/en/timezones.php" target="_blank">http://php.net/manual/en/timezones.php</a></p>
 
-<p class="setting"><span>$conf['settings']['allow.self.registration']</span>If users are allowed to register new
+<p class="setting"><div>$conf['settings']['allow.self.registration']</div>If users are allowed to register new
 	accounts. Default is false.</p>
 
-<p class="setting"><span>$conf['settings']['admin.email']</span>The email address of the main application administrator
+<p class="setting"><div>$conf['settings']['admin.email']</div>The email address of the main application administrator
 </p>
 
-<p class="setting"><span>$conf['settings']['default.page.size']</span>The initial number of rows for any page that
+<p class="setting"><div>$conf['settings']['default.page.size']</div>The initial number of rows for any page that
 	displays a list of data
 </p>
 
-<p class="setting"><span>$conf['settings']['enable.email']</span>Whether or not any emails are sent out of Booked Scheduler
+<p class="setting"><div>$conf['settings']['enable.email']</div>Whether or not any emails are sent out of Booked Scheduler
 </p>
 
-<p class="setting"><span>$conf['settings']['default.language']</span>Default language for all users. This can be any
+<p class="setting"><div>$conf['settings']['default.language']</div>Default language for all users. This can be any
 	language in the
 	Booked Scheduler lang directory</p>
 
-<p class="setting"><span>$conf['settings']['script.url']</span>The full public URL to the root of this instance of
+<p class="setting"><div>$conf['settings']['script.url']</div>The full public URL to the root of this instance of
 	Booked Scheduler. This should be the Web directory which contains files like bookings.php and calendar.php. If this
 	value starts with //, then the protocol (http vs https) will be automatically detected.</p>
 
-<p class="setting"><span>$conf['settings']['image.upload.directory']</span>The physical directory to store images.
+<p class="setting"><div>$conf['settings']['image.upload.directory']</div>The physical directory to store images.
 	This directory will need to be writable (755 suggested). This can be the full directory or relative to the
 	Booked Scheduler root directory.</p>
 
-<p class="setting"><span>$conf['settings']['image.upload.url']</span>The URL where uploaded
+<p class="setting"><div>$conf['settings']['image.upload.url']</div>The URL where uploaded
 	images can be viewed from. This can be the full URL or relative to $conf['settings']['script.url'].
 </p>
 
-<p class="setting"><span>$conf['settings']['cache.templates']</span>Whether or not templates are cached. It is
+<p class="setting"><div>$conf['settings']['cache.templates']</div>Whether or not templates are cached. It is
 	recommended to set this to
 	true, as long as tpl_c is writable</p>
 
-<p class="setting"><span>$conf['settings']['use.local.jquery']</span>Whether or not a local version of jQuery files
+<p class="setting"><div>$conf['settings']['use.local.jquery']</div>Whether or not a local version of jQuery files
 	should be used. If set to false, the files will be served from the Google CDN. It is recommended to set this to
 	false to improve performance and bandwidth usage. Default is false.</p>
 
-<p class="setting"><span>$conf['settings']['registration.captcha.enabled']</span>Whether or not captcha image security
+<p class="setting"><div>$conf['settings']['registration.captcha.enabled']</div>Whether or not captcha image security
 	is enabled during user account registration</p>
 
-<p class="setting"><span>$conf['settings']['registration.require.email.activation']</span>Whether or not a user will be
+<p class="setting"><div>$conf['settings']['registration.require.email.activation']</div>Whether or not a user will be
 	required to activate their account by email before logging in.</p>
 
-<p class="setting"><span>$conf['settings']['registration.auto.subscribe.email']</span>Whether or not users will be
+<p class="setting"><div>$conf['settings']['registration.auto.subscribe.email']</div>Whether or not users will be
 	automatically subscribed to all emails upon registration.</p>
 
-<p class="setting"><span>$conf['settings']['inactivity.timeout']</span>Number of minutes before the user is
+<p class="setting"><div>$conf['settings']['inactivity.timeout']</div>Number of minutes before the user is
 	automatically logged out. Leave this blank if you do not want users automatically logged out.</p>
 
-<p class="setting"><span>$conf['settings']['name.format']</span>Display format for first name and last name. Default
+<p class="setting"><div>$conf['settings']['name.format']</div>Display format for first name and last name. Default
 	is {literal}'{first} {last}'{/literal}.</p>
 
-<p class="setting"><span>$conf['settings']['css.extension.file']</span>Full or relative URL to an additional CSS file to
+<p class="setting"><div>$conf['settings']['css.extension.file']</div>Full or relative URL to an additional CSS file to
 	include. This can be used to override the default style with adjustments or a full theme. Leave this blank if you
 	are not extending the style of Booked Scheduler.</p>
 
-<p class="setting"><span>$conf['settings']['disable.password.reset']</span>If the password reset functionality should be
+<p class="setting"><div>$conf['settings']['disable.password.reset']</div>If the password reset functionality should be
 	disabled. Default is false.</p>
 
-<p class="setting"><span>$conf['settings']['home.url']</span>Where the user will be redirected when the logo is clicked.
+<p class="setting"><div>$conf['settings']['home.url']</div>Where the user will be redirected when the logo is clicked.
 	Default is the user's homepage.</p>
 
-<p class="setting"><span>$conf['settings']['logout.url']</span>Where the user will be redirected after being logged out.
+<p class="setting"><div>$conf['settings']['logout.url']</div>Where the user will be redirected after being logged out.
 	Default is the login page.</p>
 
 
-<p class="setting"><span>$conf['settings']['schedule']['use.per.user.colors']</span>Use user-specific,
+<p class="setting"><div>$conf['settings']['schedule']['use.per.user.colors']</div>Use user-specific,
 	administrator-defined colors for reservations. Default is false.</p>
 
-<p class="setting"><span>$conf['settings']['schedule']['show.inaccessible.resources']</span>Whether or not resources
+<p class="setting"><div>$conf['settings']['schedule']['show.inaccessible.resources']</div>Whether or not resources
 	that are not accessible to the user are displayed in the schedule</p>
 
-<p class="setting"><span>$conf['settings']['schedule']['reservation.label']</span>The format of what to display for the
+<p class="setting"><div>$conf['settings']['schedule']['reservation.label']</div>The format of what to display for the
 	reservation slot on the Bookings page. Available tokens are {literal}{name}, {title}, {description}, {email},
 	{phone}
 	, {organization}, {position}{/literal}. Leave it blank for no label. Any combination of tokens can be used.</p>
 
-<p class="setting"><span>$conf['settings']['schedule']['hide.blocked.periods']</span>If blocked periods should be
+<p class="setting"><div>$conf['settings']['schedule']['hide.blocked.periods']</div>If blocked periods should be
 	hidden on the bookings page. Default is false.</p>
 
-<p class="setting"><span>$conf['settings']['ics']['require.login']</span>If users should be required to log in to add a
+<p class="setting"><div>$conf['settings']['ics']['require.login']</div>If users should be required to log in to add a
 	reservation to
 	Outlook.</p>
 
-<p class="setting"><span>$conf['settings']['ics']['subscription.key']</span>If you want to allow calendar subscriptions,
+<p class="setting"><div>$conf['settings']['ics']['subscription.key']</div>If you want to allow calendar subscriptions,
 	set this to a difficult to guess value. If nothing is set then calendar subscriptions will be disabled.</p>
 
-<p class="setting"><span>$conf['settings']['privacy']['view.schedules']</span>If non-authenticated users can view the
+<p class="setting"><div>$conf['settings']['privacy']['view.schedules']</div>If non-authenticated users can view the
 	booking schedules. Default is false.</p>
 
-<p class="setting"><span>$conf['settings']['privacy']['view.reservations']</span>If non-authenticated users can view
+<p class="setting"><div>$conf['settings']['privacy']['view.reservations']</div>If non-authenticated users can view
 	reservation details.
 	Default is false.</p>
 
-<p class="setting"><span>$conf['settings']['privacy']['hide.user.details']</span>If non-adminstrators can view personal
+<p class="setting"><div>$conf['settings']['privacy']['hide.user.details']</div>If non-adminstrators can view personal
 	information about other users. Default is false.</p>
 
-<p class="setting"><span>$conf['settings']['reservation']['start.time.constraint']</span>When reservations can be
+<p class="setting"><div>$conf['settings']['reservation']['start.time.constraint']</div>When reservations can be
 	created or edited.
 	Options are future, current, none. Future means reservations cannot be created or modified if the starting time of
 	the selected slot is in the past. Current means reservations can be created or modified if the ending time of the
 	selected slot is not in the past. None means that there is no restriction on when reservations can be created or
 	modified. Default is future.</p>
 
-<p class="setting"><span>$conf['settings']['reservation']['updates.require.approval']</span>Whether or not updates to
+<p class="setting"><div>$conf['settings']['reservation']['updates.require.approval']</div>Whether or not updates to
 	reservations which have previously been approved require approval again. Default is false.</p>
 
-<p class="setting"><span>$conf['settings']['reservation']['prevent.participation']</span>Whether or not users should be
+<p class="setting"><div>$conf['settings']['reservation']['prevent.participation']</div>Whether or not users should be
 	prevented from adding and inviting others to a reservation. Default is false.</p>
 
-<p class="setting"><span>$conf['settings']['reservation']['prevent.recurrence']</span>Whether or not users should be
+<p class="setting"><div>$conf['settings']['reservation']['prevent.recurrence']</div>Whether or not users should be
 	prevented creating recurring reservations. Default is false.</p>
 
-<p class="setting"><span>$conf['settings']['reservation.notify']['resource.admin.add']</span>Whether or not to send an
+<p class="setting"><div>$conf['settings']['reservation.notify']['resource.admin.add']</div>Whether or not to send an
 	email to all resource administrators when a reservation is created. Default is false.</p>
 
-<p class="setting"><span>$conf['settings']['reservation.notify']['resource.admin.update']</span>Whether or not to send
+<p class="setting"><div>$conf['settings']['reservation.notify']['resource.admin.update']</div>Whether or not to send
 	an
 	email to all resource administrators when a reservation is updated. Default is false.</p>
 
-<p class="setting"><span>$conf['settings']['reservation.notify']['resource.admin.delete']</span>Whether or not to send
+<p class="setting"><div>$conf['settings']['reservation.notify']['resource.admin.delete']</div>Whether or not to send
 	an
 	email to all resource administrators when a reservation is deleted. Default is false.</p>
 
-<p class="setting"><span>$conf['settings']['reservation.notify']['application.admin.add']</span>Whether or not to send
+<p class="setting"><div>$conf['settings']['reservation.notify']['application.admin.add']</div>Whether or not to send
 	an
 	email to all application administrators when a reservation is created. Default is false.</p>
 
-<p class="setting"><span>$conf['settings']['reservation.notify']['application.admin.update']</span>Whether or not to
+<p class="setting"><div>$conf['settings']['reservation.notify']['application.admin.update']</div>Whether or not to
 	send an
 	email to all application administrators when a reservation is updated. Default is false.</p>
 
-<p class="setting"><span>$conf['settings']['reservation.notify']['application.admin.delete']</span>Whether or not to
+<p class="setting"><div>$conf['settings']['reservation.notify']['application.admin.delete']</div>Whether or not to
 	send an
 	email to all application administrators when a reservation is deleted. Default is false.</p>
 
-<p class="setting"><span>$conf['settings']['reservation.notify']['group.admin.add']</span>Whether or not to send an
+<p class="setting"><div>$conf['settings']['reservation.notify']['group.admin.add']</div>Whether or not to send an
 	email to all group administrators when a reservation is created. Default is false.</p>
 
-<p class="setting"><span>$conf['settings']['reservation.notify']['group.admin.update']</span>Whether or not to send an
+<p class="setting"><div>$conf['settings']['reservation.notify']['group.admin.update']</div>Whether or not to send an
 	email to all group administrators when a reservation is updated. Default is false.</p>
 
-<p class="setting"><span>$conf['settings']['reservation.notify']['group.admin.delete']</span>Whether or not to send an
+<p class="setting"><div>$conf['settings']['reservation.notify']['group.admin.delete']</div>Whether or not to send an
 	email to all group administrators when a reservation is deleted. Default is false.</p>
 
-<p class="setting"><span>$conf['settings']['uploads']['enable.reservation.attachments']</span>If users are allowed to
+<p class="setting"><div>$conf['settings']['uploads']['enable.reservation.attachments']</div>If users are allowed to
 	attach files to reservations. Default is false.</p>
 
-<p class="setting"><span>$conf['settings']['uploads']['reservation.attachment.path']</span>The full or relative
+<p class="setting"><div>$conf['settings']['uploads']['reservation.attachment.path']</div>The full or relative
 	filesystem path (relative to the root of your Booked Scheduler directory) to store reservation attachments. This
 	directory must be writable by PHP (755 suggested). Default is uploads/reservation</p>
 
-<p class="setting"><span>$conf['settings']['uploads']['reservation.attachment.extensions']</span>Comma separated list of
+<p class="setting"><div>$conf['settings']['uploads']['reservation.attachment.extensions']</div>Comma separated list of
 	safe file extensions. Leaving this blank will allow all file types (not recommended).</p>
 
-<p class="setting"><span>$conf['settings']['database']['type']</span>Any PEAR::MDB2 supported type</p>
+<p class="setting"><div>$conf['settings']['database']['type']</div>Any PEAR::MDB2 supported type</p>
 
-<p class="setting"><span>$conf['settings']['database']['user']</span>Database user with access to the configured
+<p class="setting"><div>$conf['settings']['database']['user']</div>Database user with access to the configured
 	database</p>
 
-<p class="setting"><span>$conf['settings']['database']['password']</span>Password for the database user</p>
+<p class="setting"><div>$conf['settings']['database']['password']</div>Password for the database user</p>
 
-<p class="setting"><span>$conf['settings']['database']['hostspec']</span>Database host URL or named pipe</p>
+<p class="setting"><div>$conf['settings']['database']['hostspec']</div>Database host URL or named pipe</p>
 
-<p class="setting"><span>$conf['settings']['database']['name']</span>Name of Booked Scheduler database</p>
+<p class="setting"><div>$conf['settings']['database']['name']</div>Name of Booked Scheduler database</p>
 
-<p class="setting"><span>$conf['settings']['phpmailer']['mailer']</span>PHP email library. Options are mail, smtp,
+<p class="setting"><div>$conf['settings']['phpmailer']['mailer']</div>PHP email library. Options are mail, smtp,
 	sendmail, qmail</p>
 
-<p class="setting"><span>$conf['settings']['phpmailer']['smtp.host']</span>SMTP host, if using smtp</p>
+<p class="setting"><div>$conf['settings']['phpmailer']['smtp.host']</div>SMTP host, if using smtp</p>
 
-<p class="setting"><span>$conf['settings']['phpmailer']['smtp.port']</span>SMTP port, if using smtp, usually 25</p>
+<p class="setting"><div>$conf['settings']['phpmailer']['smtp.port']</div>SMTP port, if using smtp, usually 25</p>
 
-<p class="setting"><span>$conf['settings']['phpmailer']['smtp.secure']</span>SMTP security, if using smtp. Options are
+<p class="setting"><div>$conf['settings']['phpmailer']['smtp.secure']</div>SMTP security, if using smtp. Options are
 	'', ssl or tls</p>
 
-<p class="setting"><span>$conf['settings']['phpmailer']['smtp.auth']</span>SMTP requies authentication, if using smtp.
+<p class="setting"><div>$conf['settings']['phpmailer']['smtp.auth']</div>SMTP requies authentication, if using smtp.
 	Options are true or false</p>
 
-<p class="setting"><span>$conf['settings']['phpmailer']['smtp.username']</span>SMTP username, if using smtp</p>
+<p class="setting"><div>$conf['settings']['phpmailer']['smtp.username']</div>SMTP username, if using smtp</p>
 
-<p class="setting"><span>$conf['settings']['phpmailer']['smtp.password']</span>SMTP password, if using smtp</p>
+<p class="setting"><div>$conf['settings']['phpmailer']['smtp.password']</div>SMTP password, if using smtp</p>
 
-<p class="setting"><span>$conf['settings']['phpmailer']['sendmail.path']</span>Path to sendmail, if using sendmail</p>
+<p class="setting"><div>$conf['settings']['phpmailer']['sendmail.path']</div>Path to sendmail, if using sendmail</p>
 
-<p class="setting"><span>$conf['settings']['plugins']['Authentication']</span>Name of authentication plugin to use. For
+<p class="setting"><div>$conf['settings']['plugins']['Authentication']</div>Name of authentication plugin to use. For
 	more on plugins, see Plugins below</p>
 
-<p class="setting"><span>$conf['settings']['plugins']['Authorization']</span>Name of authorization plugin to use. For
+<p class="setting"><div>$conf['settings']['plugins']['Authorization']</div>Name of authorization plugin to use. For
 	more on plugins, see Plugins below</p>
 
-<p class="setting"><span>$conf['settings']['plugins']['Permission']</span>Name of permission plugin to use. For more on
+<p class="setting"><div>$conf['settings']['plugins']['Permission']</div>Name of permission plugin to use. For more on
 	plugins, see Plugins below</p>
 
-<p class="setting"><span>$conf['settings']['plugins']['PreReservation']</span>Name of prereservation plugin to use. For
+<p class="setting"><div>$conf['settings']['plugins']['PreReservation']</div>Name of prereservation plugin to use. For
 	more on plugins, see Plugins below</p>
 
-<p class="setting"><span>$conf['settings']['plugins']['PostReservation']</span>Name of postreservation plugin to use.
+<p class="setting"><div>$conf['settings']['plugins']['PostReservation']</div>Name of postreservation plugin to use.
 	For more on plugins, see Plugins below</p>
 
-<p class="setting"><span>$conf['settings']['install.password']</span>If you are running an installation or upgrade, you
+<p class="setting"><div>$conf['settings']['install.password']</div>If you are running an installation or upgrade, you
 	will be required to provide a value here. Set this to any random value.</p>
 
-<p class="setting"><span>$conf['settings']['pages']['enable.configuration']</span>If the configuration management page
+<p class="setting"><div>$conf['settings']['pages']['enable.configuration']</div>If the configuration management page
 	should be available to application administrators. Options are true or false.</p>
 
-<p class="setting"><span>$conf['settings']['api']['enabled']</span>If the Booked Scheduler's RESTful API should be enabled.
+<p class="setting"><div>$conf['settings']['api']['enabled']</div>If the Booked Scheduler's RESTful API should be enabled.
 	See more about prerequisites for using the API in the readme_installation.html file. Options are true or false.</p>
 
-<p class="setting"><span>$conf['settings']['recaptcha']['enabled']</span>If reCAPTCHA should be used instead of the
+<p class="setting"><div>$conf['settings']['recaptcha']['enabled']</div>If reCAPTCHA should be used instead of the
 	built in captcha. Options are true or false.</p>
 
-<p class="setting"><span>$conf['settings']['recaptcha']['public.key']</span>Your reCAPTCHA public key. Visit
+<p class="setting"><div>$conf['settings']['recaptcha']['public.key']</div>Your reCAPTCHA public key. Visit
 	www.google.com/recaptcha to sign up.</p>
 
-<p class="setting"><span>$conf['settings']['recaptcha']['private.key']</span>Your reCAPTCHA private key. Visit
+<p class="setting"><div>$conf['settings']['recaptcha']['private.key']</div>Your reCAPTCHA private key. Visit
 	www.google.com/recaptcha to sign up.</p>
 
-<p class="setting"><span>$config['settings']['email']['default.from.address']</span>The email address to use as the
+<p class="setting"><div>$config['settings']['email']['default.from.address']</div>The email address to use as the
 	'from' address when sending emails. If emails are bouncing or being marked as spam, set this to an email address
 	with your domain name. For example, noreply@yourdomain.com. This will not change the 'from' name or the reply-to
 	address.</p>
 
-<p class="setting"><span>$conf['settings']['reports']['allow.all.users']</span>If non-administrators can access usage
+<p class="setting"><div>$conf['settings']['reports']['allow.all.users']</div>If non-administrators can access usage
 	reports. Default is false.</p>
 
-<p class="setting"><span>$conf['settings']['password']['minimum.letters']</span>Minimum number of letters required for
+<p class="setting"><div>$conf['settings']['password']['minimum.letters']</div>Minimum number of letters required for
 	user passwords. Default is 6.</p>
 
-<p class="setting"><span>$conf['settings']['password']['minimum.numbers']</span>Minimum number of numbers required for
+<p class="setting"><div>$conf['settings']['password']['minimum.numbers']</div>Minimum number of numbers required for
 	user passwords. Default is 0.</p>
 
-<p class="setting"><span>$conf['settings']['password']['upper.and.lower']</span>Whether user passwords require a
+<p class="setting"><div>$conf['settings']['password']['upper.and.lower']</div>Whether user passwords require a
 	combination of upper and lower case letters. Default is false.</p>
 
 <h2>Plugins</h2>
