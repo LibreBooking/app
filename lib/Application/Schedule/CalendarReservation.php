@@ -107,16 +107,15 @@ class CalendarReservation
 	/**
 	 * @param $reservations array|ReservationItemView[]
 	 * @param $timezone string
-	 * @param $user UserSession
 	 * @return array|CalendarReservation[]
 	 */
-	public static function FromViewList($reservations, $timezone, $user)
+	public static function FromViewList($reservations, $timezone)
 	{
 		$results = array();
 
 		foreach ($reservations as $reservation)
 		{
-			$results[] = self::FromView($reservation, $timezone, $user);
+			$results[] = self::FromView($reservation, $timezone);
 		}
 		return $results;
 	}
@@ -124,12 +123,10 @@ class CalendarReservation
 	/**
 	 * @param $reservation ReservationItemView
 	 * @param $timezone string
-	 * @param $user UserSession
 	 * @return CalendarReservation
 	 */
-	public static function FromView($reservation, $timezone, $user)
+	public static function FromView($reservation, $timezone)
 	{
-		$factory = new SlotLabelFactory($user);
 		$start = $reservation->StartDate->ToTimezone($timezone);
 		$end = $reservation->EndDate->ToTimezone($timezone);
 		$resourceName = $reservation->ResourceName;
@@ -139,16 +136,16 @@ class CalendarReservation
 
 		$res->Title = $reservation->Title;
 		$res->Description = $reservation->Description;
-		$res->DisplayTitle = $factory->Format($reservation, Configuration::Instance()->GetSectionKey(ConfigSection::RESERVATION_LABELS, ConfigKeys::RESERVATION_LABELS_MY_CALENDAR));
+
 		$res->Invited = $reservation->UserLevelId == ReservationUserLevel::INVITEE;
 		$res->Participant = $reservation->UserLevelId == ReservationUserLevel::PARTICIPANT;
 		$res->Owner = $reservation->UserLevelId == ReservationUserLevel::OWNER;
 
-		$color = $reservation->GetColor();
+		$color = $reservation->UserPreferences->Get(UserPreferences::RESERVATION_COLOR);
 		if (!empty($color))
 		{
-			$res->Color = $color;
-			$res->TextColor = $reservation->GetTextColor();
+			$res->Color = "#$color";
+			$res->TextColor = new ContrastingColor($color);
 		}
 
 		$res->Class = self::GetClass($reservation);
@@ -167,8 +164,6 @@ class CalendarReservation
 	public static function FromScheduleReservationList($reservations, $resources, UserSession $userSession,
 													   IPrivacyFilter $privacyFilter)
 	{
-		$factory = new SlotLabelFactory($userSession);
-
 		$resourceMap = array();
 		/** @var $resource ResourceDto */
 		foreach ($resources as $resource)
@@ -194,13 +189,23 @@ class CalendarReservation
 			$cr->OwnerName = new FullName($reservation->FirstName, $reservation->LastName);
 			$cr->OwnerFirst = $reservation->FirstName;
 			$cr->OwnerLast = $reservation->LastName;
-			$cr->DisplayTitle = $factory->Format($reservation, Configuration::Instance()->GetSectionKey(ConfigSection::RESERVATION_LABELS, ConfigKeys::RESERVATION_LABELS_RESOURCE_CALENDAR));
+			$cr->DisplayTitle = 'Private';
 
-			$color = $reservation->GetColor();
+			if ($privacyFilter->CanViewUser($userSession, null, $reservation->UserId))
+			{
+				$cr->DisplayTitle = $cr->OwnerName;
+			}
+
+			if ($privacyFilter->CanViewDetails($userSession, null, $reservation->UserId))
+			{
+				$cr->DisplayTitle .= ' ' . $reservation->Title;
+			}
+
+			$color = $reservation->UserPreferences->Get(UserPreferences::RESERVATION_COLOR);
 			if (!empty($color))
 			{
-				$cr->Color = $color;
-				$cr->TextColor = $reservation->GetTextColor();
+				$cr->Color = "#$color";
+				$cr->TextColor = new ContrastingColor($color);
 			}
 
 			$cr->Class = self::GetClass($reservation);
@@ -215,7 +220,7 @@ class CalendarReservation
 	{
 		if ($reservation->RequiresApproval)
 		{
-			return 'reserved pending';
+			return 'pending';
 		}
 
 		$user = ServiceLocator::GetServer()->GetUserSession();
@@ -234,3 +239,5 @@ class CalendarReservation
 
 	}
 }
+
+?>

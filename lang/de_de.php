@@ -46,9 +46,9 @@ class de_de extends en_us
         $dates['calendar_time'] = 'H:mm';
         $dates['calendar_dates'] = 'd.M';
 
-		$this->Dates = $dates;
+	$this->Dates = $dates;
 
-		return $this->Dates;
+	return $this->Dates;
 	}
 
     /**
@@ -56,9 +56,9 @@ class de_de extends en_us
      */
     protected function _LoadStrings()
     {
-		$strings = parent::_LoadStrings();
+	$strings = parent::_LoadStrings();
 
-		$strings['FirstName'] = 'Vorname';
+	$strings['FirstName'] = 'Vorname';
         $strings['LastName'] = 'Nachname';
         $strings['Timezone'] = 'Zeitzone';
         $strings['Edit'] = 'Bearbeiten';
@@ -97,8 +97,8 @@ class de_de extends en_us
         $strings['Announcements'] = 'Ankündigungen';
         $strings['NoUpcomingReservations'] = 'Sie haben keine kommenden Reservierungen.';
         $strings['UpcomingReservations'] = 'Meine kommenden Reservierungen';
-		$strings['AllNoUpcomingReservations'] = 'Es gibt keine kommenden Reservierungen';
-		$strings['AllUpcomingReservations'] = 'Alle kommenden Reservierungen';
+	$strings['AllNoUpcomingReservations'] = 'Es gibt keine kommenden Reservierungen';
+	$strings['AllUpcomingReservations'] = 'Alle kommenden Reservierungen';
         $strings['ShowHide'] = 'Einblenden/Ausblenden';
         $strings['Error'] = 'Fehler';
         $strings['ReturnToPreviousPage'] = 'Zurück zur vorigen Seite';
@@ -172,9 +172,9 @@ class de_de extends en_us
         $strings['ResourceMinNoticeNone'] = 'Reservierungen können ohne Vorlaufzeit getätigt werden';
         $strings['ResourceMaxNotice'] = 'Reservierungen dürfen nicht %s vor der aktuellen Zeit enden';
         $strings['ResourceMaxNoticeNone'] = 'Reservierungen können zu jeder Zeit enden';
-		$strings['ResourceBufferTime'] = 'Es muss zwischen Reservierungen ein Puffer von %s sein';
-		$strings['ResourceBufferTimeNone'] = 'Es gibt keinen Puffer zwischen den Reservierungen';
-		$strings['ResourceAllowMultiDay'] = 'Reservierungen können sich über mehrere Tage erstrecken';
+	$strings['ResourceBufferTime'] = 'Es muss zwischen Reservierungen ein Puffer von %s sein';
+	$strings['ResourceBufferTimeNone'] = 'Es gibt keinen Puffer zwischen den Reservierungen';
+	$strings['ResourceAllowMultiDay'] = 'Reservierungen können sich über mehrere Tage erstrecken';
         $strings['ResourceNotAllowMultiDay'] = 'Reservierungen dürfen sich nicht über mehrere Tage erstrecken';
         $strings['ResourceCapacity'] = 'Diese Ressource hat eine Kapazität von %s Personen';
         $strings['ResourceCapacityNone'] = 'Diese Ressource hat unlimitierte Kapazität';
@@ -188,7 +188,7 @@ class de_de extends en_us
         $strings['Duration'] = 'Dauer';
         $strings['Active'] = 'Aktiv';
         $strings['Inactive'] = 'Inaktiv';
-	    $strings['ResetPassword'] = 'Passwort Reset';
+        $strings['ResetPassword'] = 'Passwort Reset';
         $strings['LastLogin'] = 'Letzter Login';
         $strings['Search'] = 'Suchen';
         $strings['ResourcePermissions'] = 'Ressourcen Berechtigungen';
@@ -206,7 +206,7 @@ class de_de extends en_us
         $strings['Attending'] = 'Teilnahme';
         $strings['QuotaConfiguration'] = 'Zeitkontingente im Terminplan %s für Ressource %s und Benutzer in %s sind limitiert auf %s %s pro %s';
         $strings['reservations'] = 'Reservierungen';
-		$strings['reservation'] = 'Reservierung';
+	$strings['reservation'] = 'Reservierung';
         $strings['ChangeCalendar'] = 'Kalender ändern';
         $strings['AddQuota'] = 'Zeitkontingent hinzufügen';
         $strings['FindUser'] = 'Benutzer finden';
@@ -308,8 +308,8 @@ class de_de extends en_us
         $strings['CreatedBy'] = 'Erzeugt von';
         $strings['BlackoutCreated'] = 'Sperrzeit angelegt!';
         $strings['BlackoutNotCreated'] = 'Sperrzeit konnte nicht angelegt werden!';
-		$strings['BlackoutUpdated'] = 'Sperrzeit aktulisiert';
-		$strings['BlackoutNotUpdated'] = 'Sperrzeit konnte nicht angelegt werden';
+	$strings['BlackoutUpdated'] = 'Sperrzeit aktualisiert';
+	$strings['BlackoutNotUpdated'] = 'Sperrzeit konnte nicht angelegt werden';
         $strings['BlackoutConflicts'] = 'Sperrzeiten stehen im Konflikt zueinander';
         $strings['ReservationConflicts'] = 'Reservierungszeiten stehen im Konflikt zueinander';
         $strings['UsersInGroup'] = 'Benutzer in dieser Gruppe';
@@ -391,53 +391,53 @@ class de_de extends en_us
         $strings['AdditionalAttributes'] = 'Zusätzliche Attribute';
         $strings['True'] = 'Wahr';
         $strings['False'] = 'Falsch';
-		$strings['ForgotPasswordEmailSent'] = 'Eine EMail zum Zurücksetzen Ihres Passworts ist an Ihre Adresse gesendet worden';
-		$strings['ActivationEmailSent'] = 'Sie werden in Kürze eine Aktivierungsemail erhalten.';
-		$strings['AccountActivationError'] = 'Sorry, wir können Ihr Benutzerkonto nicht aktivieren.';
-		$strings['Attachments'] = 'Anhänge';
-		$strings['AttachFile'] = 'Datei hinzufügen';
-		$strings['Maximum'] = 'max';
-		$strings['NoScheduleAdministratorLabel'] = 'Kein Termin Administrator';
-		$strings['ScheduleAdministrator'] = 'Termin Administrator';
-		$strings['Total'] = 'Total';
-		$strings['QuantityReserved'] = 'Reservierte Menge';
-		$strings['AllAccessories'] = 'Alle Zubehörteile';
-		$strings['GetReport'] = 'Bericht anfordern';
-		$strings['NoResultsFound'] = 'Keine passenden Ergebnisse gefunden';
-		$strings['SaveThisReport'] = 'Diesen Bericht speichern';
-		$strings['ReportSaved'] = 'Bericht gespeichert!';
-		$strings['EmailReport'] = 'Bericht per Email';
-		$strings['ReportSent'] = 'Bericht gesendet!';
-		$strings['RunReport'] = 'Bericht ausführen';
-		$strings['NoSavedReports'] = 'Sie haben keine Berichte gespeichert.';
-		$strings['CurrentWeek'] = 'Diese Woche';
-		$strings['CurrentMonth'] = 'Dieser Monat';
-		$strings['AllTime'] = 'Alle Zeiträume';
-		$strings['FilterBy'] = 'Filtern von';
-		$strings['Select'] = 'Auswahl';
-		$strings['List'] = 'Liste';
-		$strings['TotalTime'] = 'Gesamtzeit';
-		$strings['Count'] = 'Anzahl';
-		$strings['Usage'] = 'Benutzung';
-		$strings['AggregateBy'] = 'Summieren von';
-		$strings['Range'] = 'Bereich';
-		$strings['Choose'] = 'Auswahl';
-		$strings['All'] = 'Alle';
-		$strings['ViewAsChart'] = 'Darstellung als Diagramm';
-		$strings['ReservedResources'] = 'Reservierte Ressourcen';
-		$strings['ReservedAccessories'] = 'Reserviertes Zubehör';
-		$strings['ResourceUsageTimeBooked'] = 'Ressourcen Verwendung - Gebuchte Zeit';
-		$strings['ResourceUsageReservationCount'] = 'Ressourcen Verwendung - Reservierungszähler';
-		$strings['Top20UsersTimeBooked'] = 'Top 20 Benutzer - Gebuchte Zeit';
-		$strings['Top20UsersReservationCount'] = 'Top 20 Benutzer - Reservierungszähler';
+	$strings['ForgotPasswordEmailSent'] = 'Eine EMail zum Zurücksetzen Ihres Passworts ist an Ihre Adresse gesendet worden';
+	$strings['ActivationEmailSent'] = 'Sie werden in Kürze eine Aktivierungsemail erhalten.';
+	$strings['AccountActivationError'] = 'Sorry, wir können Ihr Benutzerkonto nicht aktivieren.';
+	$strings['Attachments'] = 'Anhänge';
+	$strings['AttachFile'] = 'Datei hinzufügen';
+	$strings['Maximum'] = 'max';
+	$strings['NoScheduleAdministratorLabel'] = 'Kein Termin Administrator';
+	$strings['ScheduleAdministrator'] = 'Termin Administrator';
+	$strings['Total'] = 'Total';
+	$strings['QuantityReserved'] = 'Reservierte Menge';
+	$strings['AllAccessories'] = 'Alle Zubehörteile';
+	$strings['GetReport'] = 'Bericht anfordern';
+	$strings['NoResultsFound'] = 'Keine passenden Ergebnisse gefunden';
+	$strings['SaveThisReport'] = 'Diesen Bericht speichern';
+	$strings['ReportSaved'] = 'Bericht gespeichert!';
+	$strings['EmailReport'] = 'Bericht per Email';
+	$strings['ReportSent'] = 'Bericht gesendet!';
+	$strings['RunReport'] = 'Bericht ausführen';
+	$strings['NoSavedReports'] = 'Sie haben keine Berichte gespeichert.';
+	$strings['CurrentWeek'] = 'Diese Woche';
+	$strings['CurrentMonth'] = 'Dieser Monat';
+	$strings['AllTime'] = 'Alle Zeiträume';
+	$strings['FilterBy'] = 'Filtern von';
+	$strings['Select'] = 'Auswahl';
+	$strings['List'] = 'Liste';
+	$strings['TotalTime'] = 'Gesamtzeit';
+	$strings['Count'] = 'Anzahl';
+	$strings['Usage'] = 'Benutzung';
+	$strings['AggregateBy'] = 'Summieren von';
+	$strings['Range'] = 'Bereich';
+	$strings['Choose'] = 'Auswahl';
+	$strings['All'] = 'Alle';
+	$strings['ViewAsChart'] = 'Darstellung als Diagramm';
+	$strings['ReservedResources'] = 'Reservierte Ressourcen';
+	$strings['ReservedAccessories'] = 'Reserviertes Zubehör';
+	$strings['ResourceUsageTimeBooked'] = 'Ressourcen Verwendung - Gebuchte Zeit';
+	$strings['ResourceUsageReservationCount'] = 'Ressourcen Verwendung - Reservierungszähler';
+	$strings['Top20UsersTimeBooked'] = 'Top 20 Benutzer - Gebuchte Zeit';
+	$strings['Top20UsersReservationCount'] = 'Top 20 Benutzer - Reservierungszähler';
         $strings['ConfigurationUpdated'] = 'Konfigurationsdatei wurde upgedated';
         $strings['ConfigurationUiNotEnabled'] = 'Auf diese Seite kann nicht zugegriffen werden, da $conf[\'settings\'][\'pages\'][\'enable.configuration\'] auf false gesetzt wurde oder fehlt.';
         $strings['ConfigurationFileNotWritable'] = 'Die Konfigurationsdatei ist nicht beschreibbar. Bitte überprüfen Sie die Berechtigungen dieser Datei und versuchen Sie es erneut.';
         $strings['ConfigurationUpdateHelp'] = 'Siehe den Abschnitt Konfiguration der <a target=_blank href=%s>Hilfe-Datei</a> für die Dokumentation zu diesen Einstellungen.';
         $strings['GeneralConfigSettings'] = 'Einstellungen';
-		$strings['UseSameLayoutForAllDays'] = 'Verwende gleiches Layout für alle Tage';
-		$strings['LayoutVariesByDay'] = 'Layout variiert jeden Tag';
-		$strings['ManageReminders'] = 'Erinnerungen';
+	$strings['UseSameLayoutForAllDays'] = 'Verwende gleiches Layout für alle Tage';
+	$strings['LayoutVariesByDay'] = 'Layout variiert jeden Tag';
+	$strings['ManageReminders'] = 'Erinnerungen';
         $strings['ReminderUser'] = 'Benutzer ID';
         $strings['ReminderMessage'] = 'Nachricht';
         $strings['ReminderAddress'] = 'Emailadressen';
@@ -463,80 +463,80 @@ class de_de extends en_us
         $strings['DefaultScheduleSet'] = 'Dies ist nun Ihr Standard Terminplan';
         $strings['FlipSchedule'] = 'Terminplan Layout umstellen';
         $strings['Next'] = 'Nächste';
-		$strings['Success'] = 'Erfolgreich';
-		$strings['Participant'] = 'Teilnehmer';
-		$strings['ResourceFilter'] = 'Ressourcen Filter';
-		$strings['ResourceGroups'] = 'Ressource Gruppe';
-		$strings['AddNewGroup'] = 'Neue Gruppe hinzufügen';
-		$strings['Quit'] = 'Beende';
-		$strings['AddGroup'] = 'Gruppe hinzufügen';
-		$strings['StandardScheduleDisplay'] = 'Verwenden der Standardanzeige für den Terminplan';
-		$strings['TallScheduleDisplay'] = 'Terminplan im Hochformat';
-		$strings['WideScheduleDisplay'] = 'Terminplan im Querformat';
-		$strings['CondensedWeekScheduleDisplay'] = 'Verkürzte Wochenplan-Anzeige';
-		$strings['ResourceGroupHelp1'] = 'Mit Drag & Drop Ressourcengruppen reorganisieren.';
-		$strings['ResourceGroupHelp2'] = ' Rechtsklick auf einen Ressourcengruppennamen für weitere Aktionen.';
-		$strings['ResourceGroupHelp3'] = 'Mit Drag & Drop Ressourcen zu Gruppen hinzufügen.';
-		$strings['ResourceGroupWarning'] = 'Bei Verwendung von Ressourcengruppen, muss jede Ressource zumindest einer Gruppe zugeordnet werden. Nicht zugeordnete Ressourcen können nicht reserviert werden.';
-		$strings['ResourceType'] = 'Ressourcentyp';
-		$strings['AppliesTo'] = 'Betrifft';
-		$strings['UniquePerInstance'] = 'Einzigartig pro Instanz';
-		$strings['AddResourceType'] = 'Ressourcentyp hinzufügen';
-		$strings['NoResourceTypeLabel'] = '(kein Ressourcentyp gesetzt)';
-		$strings['ClearFilter'] = 'Filter löschen';
-		$strings['MinimumCapacity'] = 'Minimale Kapazität';
-		$strings['Color'] = 'Farbe';
-		$strings['Available'] = 'Verfügbar';
-		$strings['Unavailable'] = 'Nicht verfügbar';
-		$strings['Hidden'] = 'Versteckt';
-		$strings['ResourceStatus'] = 'Ressourcen Status';
-		$strings['CurrentStatus'] = 'Aktueller Status';
-		$strings['AllReservationResources'] = 'Alle Reservierungs-Ressourcen';
-		$strings['File'] = 'Datei';
-		$strings['BulkResourceUpdate'] = 'Massenaktualisierung der Ressourcen';
-		$strings['Unchanged'] = 'Unverändert';
-		$strings['Common'] = 'Allgemein/gemeinsam';
-		$strings['AdvancedFilter'] = 'Erweiterter Filter';
+	$strings['Success'] = 'Erfolgreich';
+	$strings['Participant'] = 'Teilnehmer';
+	$strings['ResourceFilter'] = 'Ressourcen Filter';
+	$strings['ResourceGroups'] = 'Ressource Gruppe';
+	$strings['AddNewGroup'] = 'Neue Gruppe hinzufügen';
+	$strings['Quit'] = 'Beende';
+	$strings['AddGroup'] = 'Gruppe hinzufügen';
+	$strings['StandardScheduleDisplay'] = 'Verwenden der Standardanzeige für den Terminplan';
+	$strings['TallScheduleDisplay'] = 'Terminplan im Hochformat';
+	$strings['WideScheduleDisplay'] = 'Terminplan im Querformat';
+	$strings['CondensedWeekScheduleDisplay'] = 'Verkürzte Wochenplan-Anzeige';
+	$strings['ResourceGroupHelp1'] = 'Mit Drag & Drop Ressourcengruppen reorganisieren.';
+	$strings['ResourceGroupHelp2'] = ' Rechtsklick auf einen Ressourcengruppennamen für weitere Aktionen.';
+	$strings['ResourceGroupHelp3'] = 'Mit Drag & Drop Ressourcen zu Gruppen hinzufügen.';
+	$strings['ResourceGroupWarning'] = 'Bei Verwendung von Ressourcengruppen, muss jede Ressource zumindest einer Gruppe zugeordnet werden. Nicht zugeordnete Ressourcen können nicht reserviert werden.';
+	$strings['ResourceType'] = 'Ressourcentyp';
+	$strings['AppliesTo'] = 'Betrifft';
+	$strings['UniquePerInstance'] = 'Einzigartig pro Instanz';
+	$strings['AddResourceType'] = 'Ressourcentyp hinzufügen';
+	$strings['NoResourceTypeLabel'] = '(kein Ressourcentyp gesetzt)';
+	$strings['ClearFilter'] = 'Filter löschen';
+	$strings['MinimumCapacity'] = 'Minimale Kapazität';
+	$strings['Color'] = 'Farbe';
+	$strings['Available'] = 'Verfügbar';
+	$strings['Unavailable'] = 'Nicht verfügbar';
+	$strings['Hidden'] = 'Versteckt';
+	$strings['ResourceStatus'] = 'Ressourcen Status';
+	$strings['CurrentStatus'] = 'Aktueller Status';
+	$strings['AllReservationResources'] = 'Alle Reservierungs-Ressourcen';
+	$strings['File'] = 'Datei';
+	$strings['BulkResourceUpdate'] = 'Massenaktualisierung der Ressourcen';
+	$strings['Unchanged'] = 'Unverändert';
+	$strings['Common'] = 'Allgemein/gemeinsam';
+	$strings['AdvancedFilter'] = 'Erweiterter Filter';
         // End Strings
 
-		// Install
-		$strings['InstallApplication'] = 'Installiere phpScheduleIt (Nur mit MySQL)';
-		$strings['IncorrectInstallPassword'] = 'Sorry, das Installationspasswort war falsch.';
-		$strings['SetInstallPassword'] = 'Sie müssen ein Installationspasswort setzen, bevor die Installation ausgeführt werden kann.';
-		$strings['InstallPasswordInstructions'] = 'In %s bitte ein %s Passwort setzen, das zufällig und schwer zu erraten ist, dann auf diese Seite zurück. <br/> Sie können %s verwenden.';
-		$strings['NoUpgradeNeeded'] = 'Es ist kein Upgrade erforderlich. Ausführen der Installation löscht alle vorhandenen Daten und installiert eine neue Kopie von phpScheduleIt!';
-		$strings['ProvideInstallPassword'] = 'Bitte geben Sie Ihr Installationspasswort ein.';
-		$strings['InstallPasswordLocation'] = 'Dies finden Sie in %s in %s.';
-		$strings['VerifyInstallSettings'] = 'Überprüfen Sie die folgenden Standardeinstellungen, bevor Sie fortfahren. Oder Sie können sie in %s ändern.';
-		$strings['DatabaseName'] = 'Datenbank Name';
-		$strings['DatabaseUser'] = 'Datenbank Benutzer';
-		$strings['DatabaseHost'] = 'Datenbank Host';
-		$strings['DatabaseCredentials'] = 'Sie müssen Anmeldeinformationen eines MySQL-Benutzer angeben, der Rechte zur Erstellung von Datenbanken hat. Wenn Sie keinen haben, wenden Sie sich an Ihren Datenbank Admin. In vielen Fällen wird root funktionieren.';
-		$strings['MySQLUser'] = 'MySQL Benutzer';
-		$strings['InstallOptionsWarning'] = 'Die folgenden Optionen werden wahrscheinlich nicht in einer gehosteten Umgebung funktionieren. Wenn Sie in einer gehosteten Umgebung installieren, verwenden Sie MySQL-Assistenz Werkzeuge, um diese Schritte abzuschließen.';
-		$strings['CreateDatabase'] = 'Erstelle eine Datenbank';
-		$strings['CreateDatabaseUser'] = 'Erstelle einen Datenbank Benutzer';
-		$strings['PopulateExampleData'] = 'Importieren Sie Beispiel-Daten. Es wird ein Admin-Benutzerkonto: admin/password und ein normales Benutzerkonto: user/passwort erstellt.';
-		$strings['DataWipeWarning'] = 'Achtung: Es werden alle existierenden Daten gelöscht.';
-		$strings['RunInstallation'] = 'Installation starten';
-		$strings['UpgradeNotice'] = 'Sie machen ein Upgrade von Version <b>%s</b> auf Version <b>%s</b>';
-		$strings['RunUpgrade'] = 'Upgrade starten';
-		$strings['Executing'] = 'Ausführung';
-		$strings['StatementFailed'] = 'Fehler. Details:';
-		$strings['SQLStatement'] = 'SQL Statement:';
-		$strings['ErrorCode'] = 'Error Code:';
-		$strings['ErrorText'] = 'Error Text:';
-		$strings['InstallationSuccess'] = 'Installation erfolgreich abgeschlossen!';
-		$strings['RegisterAdminUser'] = 'Registrieren Sie Ihren Admin-Benutzer. Dies ist erforderlich, wenn Sie die Beispiel-Daten nicht importiert haben. Stellen Sie sicher, dass $conf[\'settings\'][\'allow.self.registration\'] = \'true\' in Ihrer %s-Datei ist.';
-		$strings['LoginWithSampleAccounts'] = 'Wenn Sie die Beispiel-Daten importiert haben, können Sie sich mit admin/password als Admin Benutzer oder mit user/password als Benutzer anmelden.';
-		$strings['InstalledVersion'] = 'Sie haben jetzt die Version %s von phpScheduleIt.';
-		$strings['InstallUpgradeConfig'] = 'Es wird empfohlen, dass Sie Ihre Konfigurationsdatei aktualisieren.';
-		$strings['InstallationFailure'] = 'Es gab Probleme mit der Installation. Bitte korrigieren Sie sie und wiederholen Sie die Installation.';
-		$strings['ConfigureApplication'] = 'phpScheduleIt konfigurieren';
-		$strings['ConfigUpdateSuccess'] = 'Ihre Konfigurationsdatei ist nun auf dem neuesten Stand!';
-		$strings['ConfigUpdateFailure'] = 'Wir konnten die Konfigurationsdatei nicht automatisch aktualisieren. Bitte überschreiben Sie den Inhalt der config.php mit den folgenden Werten:';
-		$strings['SelectUser'] = 'Benutzer auswählen';
-		// End Install
+	// Install
+	$strings['InstallApplication'] = 'Installiere phpScheduleIt (Nur mit MySQL)';
+	$strings['IncorrectInstallPassword'] = 'Sorry, das Installationspasswort war falsch.';
+	$strings['SetInstallPassword'] = 'Sie müssen ein Installationspasswort setzen, bevor die Installation ausgeführt werden kann.';
+	$strings['InstallPasswordInstructions'] = 'In %s bitte ein %s Passwort setzen, das zufällig und schwer zu erraten ist, dann auf diese Seite zurück. <br/> Sie können %s verwenden.';
+	$strings['NoUpgradeNeeded'] = 'Es ist kein Upgrade erforderlich. Ausführen der Installation löscht alle vorhandenen Daten und installiert eine neue Kopie von phpScheduleIt!';
+	$strings['ProvideInstallPassword'] = 'Bitte geben Sie Ihr Installationspasswort ein.';
+	$strings['InstallPasswordLocation'] = 'Dies finden Sie in %s in %s.';
+	$strings['VerifyInstallSettings'] = 'Überprüfen Sie die folgenden Standardeinstellungen, bevor Sie fortfahren. Oder Sie können sie in %s ändern.';
+	$strings['DatabaseName'] = 'Datenbank Name';
+	$strings['DatabaseUser'] = 'Datenbank Benutzer';
+	$strings['DatabaseHost'] = 'Datenbank Host';
+	$strings['DatabaseCredentials'] = 'Sie müssen Anmeldeinformationen eines MySQL-Benutzer angeben, der Rechte zur Erstellung von Datenbanken hat. Wenn Sie keinen haben, wenden Sie sich an Ihren Datenbank Admin. In vielen Fällen wird root funktionieren.';
+	$strings['MySQLUser'] = 'MySQL Benutzer';
+	$strings['InstallOptionsWarning'] = 'Die folgenden Optionen werden wahrscheinlich nicht in einer gehosteten Umgebung funktionieren. Wenn Sie in einer gehosteten Umgebung installieren, verwenden Sie MySQL-Assistenz Werkzeuge, um diese Schritte abzuschließen.';
+	$strings['CreateDatabase'] = 'Erstelle eine Datenbank';
+	$strings['CreateDatabaseUser'] = 'Erstelle einen Datenbank Benutzer';
+	$strings['PopulateExampleData'] = 'Importieren Sie Beispiel-Daten. Es wird ein Admin-Benutzerkonto: admin/password und ein normales Benutzerkonto: user/passwort erstellt.';
+	$strings['DataWipeWarning'] = 'Achtung: Es werden alle existierenden Daten gelöscht.';
+	$strings['RunInstallation'] = 'Installation starten';
+	$strings['UpgradeNotice'] = 'Sie machen ein Upgrade von Version <b>%s</b> auf Version <b>%s</b>';
+	$strings['RunUpgrade'] = 'Upgrade starten';
+	$strings['Executing'] = 'Ausführung';
+	$strings['StatementFailed'] = 'Fehler. Details:';
+	$strings['SQLStatement'] = 'SQL Statement:';
+	$strings['ErrorCode'] = 'Error Code:';
+	$strings['ErrorText'] = 'Error Text:';
+	$strings['InstallationSuccess'] = 'Installation erfolgreich abgeschlossen!';
+	$strings['RegisterAdminUser'] = 'Registrieren Sie Ihren Admin-Benutzer. Dies ist erforderlich, wenn Sie die Beispiel-Daten nicht importiert haben. Stellen Sie sicher, dass $conf[\'settings\'][\'allow.self.registration\'] = \'true\' in Ihrer %s-Datei ist.';
+	$strings['LoginWithSampleAccounts'] = 'Wenn Sie die Beispiel-Daten importiert haben, können Sie sich mit admin/password als Admin Benutzer oder mit user/password als Benutzer anmelden.';
+	$strings['InstalledVersion'] = 'Sie haben jetzt die Version %s von phpScheduleIt.';
+	$strings['InstallUpgradeConfig'] = 'Es wird empfohlen, dass Sie Ihre Konfigurationsdatei aktualisieren.';
+	$strings['InstallationFailure'] = 'Es gab Probleme mit der Installation. Bitte korrigieren Sie sie und wiederholen Sie die Installation.';
+	$strings['ConfigureApplication'] = 'phpScheduleIt konfigurieren';
+	$strings['ConfigUpdateSuccess'] = 'Ihre Konfigurationsdatei ist nun auf dem neuesten Stand!';
+	$strings['ConfigUpdateFailure'] = 'Wir konnten die Konfigurationsdatei nicht automatisch aktualisieren. Bitte überschreiben Sie den Inhalt der config.php mit den folgenden Werten:';
+	$strings['SelectUser'] = 'Benutzer auswählen';
+	// End Install
 
         // Errors
         $strings['LoginError'] = 'Benutzername oder Passwort falsch';
@@ -557,19 +557,19 @@ class de_de extends en_us
         $strings['CustomAttributeInvalid'] = 'Der Wert für %s ist ungültig';
         $strings['AttachmentLoadingError'] = 'Sorry, es gab ein Problem beim Laden der angeforderten Datei.';
         $strings['InvalidAttachmentExtension'] = 'Sie können nur Dateien dieses Typs hochladen: %s';
-		$strings['InvalidStartSlot'] = 'Die angeforderte Startzeit ist nicht gültig.';
-		$strings['InvalidEndSlot'] = 'Die angeforderte Endzeit ist nicht gültig.';
-		$strings['MaxParticipantsError'] = '%s ist für maximal %s Teilnehmer.';
-		$strings['ReservationCriticalError'] = 'Es kam zu einem kritischer Fehler beim Speichern Ihrer Reservierung. Wenn das Problem weiterhin besteht, wenden Sie sich an Ihren Systemadministrator.';
-		$strings['InvalidStartReminderTime'] = 'Ungültige Start-Erinnerungszeit.';
-		$strings['InvalidEndReminderTime'] = 'Ungültige End-Erinnerungszeit.';
-		$strings['QuotaExceeded'] = 'Kontingentgrenze überschritten.';
-*		$strings['MultiDayRule'] = '%s does not allow reservations across days.';
-*		$strings['InvalidReservationData'] = 'There were problems with your reservation request.';
-*		$strings['PasswordError'] = 'Password must contain at least %s letters and at least %s numbers.';
-*		$strings['PasswordErrorRequirements'] = 'Password must contain a combination of at least %s upper and lower case letters and %s numbers.';
-*		$strings['NoReservationAccess'] = 'You are not allowed to change this reservation.';
-		// End Errors
+	$strings['InvalidStartSlot'] = 'Die angeforderte Startzeit ist nicht gültig.';
+	$strings['InvalidEndSlot'] = 'Die angeforderte Endzeit ist nicht gültig.';
+	$strings['MaxParticipantsError'] = '%s ist für maximal %s Teilnehmer.';
+	$strings['ReservationCriticalError'] = 'Es kam zu einem kritischer Fehler beim Speichern Ihrer Reservierung. Wenn das Problem weiterhin besteht, wenden Sie sich an Ihren Systemadministrator.';
+	$strings['InvalidStartReminderTime'] = 'Ungültige Start-Erinnerungszeit.';
+	$strings['InvalidEndReminderTime'] = 'Ungültige End-Erinnerungszeit.';
+	$strings['QuotaExceeded'] = 'Kontingentgrenze überschritten.';
+	$strings['MultiDayRule'] = '%s erlaubt keine Reservierungen über mehrere Tage.';
+	$strings['InvalidReservationData'] = 'Es gab Probleme mit Ihrer Buchungsanfrage.';
+	$strings['PasswordError'] = 'Das Passwort muss mindestens %s Buchstaben und mindestens %s Zahlen enthalten.';
+	$strings['PasswordErrorRequirements'] = 'Das Passwort muss eine Kombination von mindestens %s Groß-und Kleinbuchstaben und %s Zahlen enthalten.';
+	$strings['NoReservationAccess'] = 'Sie sind nicht berechtigt, diese Buchung zu ändern.';
+	// End Errors
 
         // Page Titles
         $strings['CreateReservation'] = 'Reservierung anlegen';
@@ -614,19 +614,19 @@ class de_de extends en_us
         $strings['ResourceReservations'] = 'Ressourcen Reservierungen';
         $strings['Customization'] = 'Anpassungen';
         $strings['Attributes'] = 'Attribute';
-		$strings['AccountActivation'] = 'Benutzerkonto Aktivieren';
-		$strings['ScheduleReservations'] = 'Reservierungsplanung';
-		$strings['Reports'] = 'Berichte';
-		$strings['GenerateReport'] = 'Neuen Bericht erstellen';
-		$strings['MySavedReports'] = 'Meine gespeicherten Berichte';
-		$strings['CommonReports'] = 'Standard Berichte';
-		$strings['ViewDay'] = 'Zeige Tag';
-		$strings['Group'] = 'Gruppe';
-		$strings['ManageConfiguration'] = 'Programm Konfiguration';
-		$strings['LookAndFeel'] = 'Logo und CSS Änderung';
-		$strings['ManageResourceGroups'] = 'Ressourcen Gruppen';
-		$strings['ManageResourceTypes'] = 'Ressourcen Typen';
-		$strings['ManageResourceStatus'] = 'Ressourcen Status';
+	$strings['AccountActivation'] = 'Benutzerkonto Aktivieren';
+	$strings['ScheduleReservations'] = 'Reservierungsplanung';
+	$strings['Reports'] = 'Berichte';
+	$strings['GenerateReport'] = 'Neuen Bericht erstellen';
+	$strings['MySavedReports'] = 'Meine gespeicherten Berichte';
+	$strings['CommonReports'] = 'Standard Berichte';
+	$strings['ViewDay'] = 'Zeige Tag';
+	$strings['Group'] = 'Gruppe';
+	$strings['ManageConfiguration'] = 'Programm Konfiguration';
+	$strings['LookAndFeel'] = 'Logo und CSS Änderung';
+	$strings['ManageResourceGroups'] = 'Ressourcen Gruppen';
+	$strings['ManageResourceTypes'] = 'Ressourcen Typen';
+	$strings['ManageResourceStatus'] = 'Ressourcen Status';
         // End Page Titles
 
         // Day representations
@@ -645,7 +645,7 @@ class de_de extends en_us
         $strings['DayThursdayAbbr'] = 'Do';
         $strings['DayFridayAbbr'] = 'Fr';
         $strings['DaySaturdayAbbr'] = 'Sa';
-		// End Day representations
+	// End Day representations
 
         // Email Subjects
         $strings['ReservationApprovedSubject'] = 'Ihre Reservierung wurde genehmigt';
@@ -661,9 +661,9 @@ class de_de extends en_us
         $strings['ResetPassword'] = 'Passwort zurücksetzen Anfrage';
         $strings['ActivateYourAccount'] = 'Bitte aktivieren Sie Ihr Benutzerkonto';
         $strings['ReportSubject'] = 'Ihr angeforderter Bericht (%s)';
-		$strings['ReservationStartingSoonSubject'] = 'Ihre Reservierung für %s beginnt bald';
-		$strings['ReservationEndingSoonSubject'] = 'Ihre Reservierung für %s endet bald';
-		$strings['UserAdded'] = 'Ein neuer Benutzer wurde hinzugefügt';
+	$strings['ReservationStartingSoonSubject'] = 'Ihre Reservierung für %s beginnt bald';
+	$strings['ReservationEndingSoonSubject'] = 'Ihre Reservierung für %s endet bald';
+	$strings['UserAdded'] = 'Ein neuer Benutzer wurde hinzugefügt';
         // End Email Subjects
 
         $this->Strings = $strings;

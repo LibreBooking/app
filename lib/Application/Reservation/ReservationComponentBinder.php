@@ -208,68 +208,68 @@ class ReservationResourceBinder implements IReservationComponentBinder
 		return $bindableResourceData;
 	}
 }
-
-class ReservationCustomAttributeBinder implements IReservationComponentBinder
-{
-	/**
-	 * @var IAttributeRepository
-	 */
-	private $repository;
-
-	public function __construct(IAttributeRepository $repository)
-	{
-		$this->repository = $repository;
-	}
-
-	public function Bind(IReservationComponentInitializer $initializer)
-	{
-		$attributes = $this->repository->GetByCategory(CustomAttributeCategory::RESERVATION);
-
-		$showAdminAttributes = $initializer->GetIsAdminForUser() || $initializer->GetIsAdminForResource();
-
-		foreach ($attributes as $attribute)
-		{
-			if (!$attribute->AdminOnly() || ($attribute->AdminOnly() && $showAdminAttributes))
-			{
-				$initializer->AddAttribute($attribute, null);
-			}
-		}
-	}
-}
-
-class ReservationCustomAttributeValueBinder implements IReservationComponentBinder
-{
-	/**
-	 * @var IAttributeRepository
-	 */
-	private $repository;
-
-	/**
-	 * @var ReservationView
-	 */
-	private $reservationView;
-
-	public function __construct(IAttributeRepository $repository, ReservationView $reservationView)
-	{
-		$this->repository = $repository;
-		$this->reservationView = $reservationView;
-	}
-
-	public function Bind(IReservationComponentInitializer $initializer)
-	{
-		$attributes = $this->repository->GetByCategory(CustomAttributeCategory::RESERVATION);
-
-		$showAdminAttributes = $initializer->GetIsAdminForUser() || $initializer->GetIsAdminForResource();
-
-		foreach ($attributes as $attribute)
-		{
-			if (!$attribute->AdminOnly() || ($attribute->AdminOnly() && $showAdminAttributes))
-			{
-				$initializer->AddAttribute($attribute, $this->reservationView->GetAttributeValue($attribute->Id()));
-			}
-		}
-	}
-}
+//
+//class ReservationCustomAttributeBinder implements IReservationComponentBinder
+//{
+//	/**
+//	 * @var IAttributeRepository
+//	 */
+//	private $repository;
+//
+//	public function __construct(IAttributeRepository $repository)
+//	{
+//		$this->repository = $repository;
+//	}
+//
+//	public function Bind(IReservationComponentInitializer $initializer)
+//	{
+//		$attributes = $this->repository->GetByCategory(CustomAttributeCategory::RESERVATION);
+//
+//		$showAdminAttributes = $initializer->GetIsAdminForUser() || $initializer->GetIsAdminForResource();
+//
+//		foreach ($attributes as $attribute)
+//		{
+//			if (!$attribute->AdminOnly() || ($attribute->AdminOnly() && $showAdminAttributes))
+//			{
+//				$initializer->AddAttribute($attribute, null);
+//			}
+//		}
+//	}
+//}
+//
+//class ReservationCustomAttributeValueBinder implements IReservationComponentBinder
+//{
+//	/**
+//	 * @var IAttributeRepository
+//	 */
+//	private $repository;
+//
+//	/**
+//	 * @var ReservationView
+//	 */
+//	private $reservationView;
+//
+//	public function __construct(IAttributeRepository $repository, ReservationView $reservationView)
+//	{
+//		$this->repository = $repository;
+//		$this->reservationView = $reservationView;
+//	}
+//
+//	public function Bind(IReservationComponentInitializer $initializer)
+//	{
+//		$attributes = $this->repository->GetByCategory(CustomAttributeCategory::RESERVATION);
+//
+//		$showAdminAttributes = $initializer->GetIsAdminForUser() || $initializer->GetIsAdminForResource();
+//
+//		foreach ($attributes as $attribute)
+//		{
+//			if (!$attribute->AdminOnly() || ($attribute->AdminOnly() && $showAdminAttributes))
+//			{
+//				$initializer->AddAttribute($attribute, $this->reservationView->GetAttributeValue($attribute->Id()));
+//			}
+//		}
+//	}
+//}
 
 class ReservationDetailsBinder implements IReservationComponentBinder
 {

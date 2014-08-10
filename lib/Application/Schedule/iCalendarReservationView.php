@@ -1,19 +1,23 @@
 <?php
-
 /**
  * Copyright 2012-2014 Nick Korbel
  *
- * This file is part of Booked SchedulerBooked SchedulereIt is free software: you can redistribute it and/or modify
+ * This file is part of Booked Scheduler.
+ *
+ * Booked Scheduler is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later versBooked SchedulerduleIt is distributed in the hope that it will be useful,
+ * (at your option) any later version.
+ *
+ * Booked Scheduler is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * alBooked SchedulercheduleIt.  If not, see <http://www.gnu.org/licenses/>.
+ * along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 class iCalendarReservationView
 {
 	public $DateCreated;
@@ -37,9 +41,14 @@ class iCalendarReservationView
 	 * @param ReservationItemView $res
 	 * @param UserSession $currentUser
 	 * @param IPrivacyFilter $privacyFilter
+	 * @param string|null $summaryFormat
 	 */
-	public function __construct($res, UserSession $currentUser, IPrivacyFilter $privacyFilter)
+	public function __construct($res, UserSession $currentUser, IPrivacyFilter $privacyFilter, $summaryFormat = null)
 	{
+		if ($summaryFormat == null)
+		{
+			$summaryFormat = Configuration::Instance()->GetSectionKey(ConfigSection::RESERVATION_LABELS, ConfigKeys::RESERVATION_LABELS_ICS_SUMMARY);
+		}
 		$factory = new SlotLabelFactory($currentUser);
 		$this->ReservationItemView = $res;
 		$canViewUser = $privacyFilter->CanViewUser($currentUser, $res, $res->OwnerId);
@@ -56,7 +65,7 @@ class iCalendarReservationView
 		$this->OrganizerEmail = $canViewUser ? $res->OwnerEmailAddress : $privateNotice;
 		$this->RecurRule = $this->CreateRecurRule($res);
 		$this->ReferenceNumber = $res->ReferenceNumber;
-		$this->Summary = $canViewDetails ? $factory->Format($res, Configuration::Instance()->GetSectionKey(ConfigSection::RESERVATION_LABELS, ConfigKeys::RESERVATION_LABELS_ICS_SUMMARY)) : $privateNotice;
+		$this->Summary = $canViewDetails ? $factory->Format($res, $summaryFormat) : $privateNotice;
 		$this->ReservationUrl = sprintf("%s/%s?%s=%s", Configuration::Instance()->GetScriptUrl(), Pages::RESERVATION, QueryStringKeys::REFERENCE_NUMBER,
 										$res->ReferenceNumber);
 		$this->Location = $res->ResourceName;
@@ -119,5 +128,3 @@ class iCalendarReservationView
 		return $rrule;
 	}
 }
-
-?>

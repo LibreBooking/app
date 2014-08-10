@@ -160,6 +160,7 @@ $conf['settings']['password']['upper.and.lower'] = 'false';
  * Label display settings
  */
 $conf['settings']['reservation.labels']['ics.summary'] = '{title}';
+$conf['settings']['reservation.labels']['ics.my.summary'] = '{title}';
 $conf['settings']['reservation.labels']['rss.description'] = '<div><span>Start</span> {startdate}</div><div><span>End</span> {enddate}</div><div><span>Organizer</span> {name}</div><div><span>Description</span> {description}</div>';
 $conf['settings']['reservation.labels']['my.calendar'] = '{resourcename} {title}';
 $conf['settings']['reservation.labels']['resource.calendar'] = '{name}';

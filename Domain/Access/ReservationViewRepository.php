@@ -1314,6 +1314,8 @@ class ReservationItemView implements IReservedItemView
 	 * @return bool
 	 */
 	public function HasBufferTime()
+	{
+		return !empty($this->bufferSeconds);
 	}
 
 	/**
@@ -1331,8 +1333,6 @@ class ReservationItemView implements IReservedItemView
 	public function GetAttributeValue($attributeId)
 	{
 		return $this->Attributes->Get($attributeId);
-	}
-}
 	}
 
 	/**

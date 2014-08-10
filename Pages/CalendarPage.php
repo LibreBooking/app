@@ -19,7 +19,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 require_once(ROOT_DIR . 'Pages/SecurePage.php');
-require_once(ROOT_DIR . 'Presenters/CalendarPresenter.php');
+require_once(ROOT_DIR . 'Presenters/Calendar/CalendarPresenter.php');
 
 
 interface ICalendarPage extends IPage

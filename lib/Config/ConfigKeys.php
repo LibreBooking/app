@@ -114,6 +114,7 @@ class ConfigKeys
 	const PASSWORD_NUMBERS = 'minimum.numbers';
 
 	const RESERVATION_LABELS_ICS_SUMMARY = 'ics.summary';
+	const RESERVATION_LABELS_MY_ICS_SUMMARY = 'ics.my.summary';
 	const RESERVATION_LABELS_RSS_DESCRIPTION = 'rss.description';
 	const RESERVATION_LABELS_MY_CALENDAR = 'my.calendar';
 	const RESERVATION_LABELS_RESOURCE_CALENDAR = 'resource.calendar';

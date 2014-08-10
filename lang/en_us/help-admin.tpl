@@ -437,7 +437,9 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 	combination of upper and lower case letters. Default is false.</p>
 
 <p class="setting"><span>$conf['settings']['reservation.labels']['ics.summary']</span>The format of what to display in the
-	summary field for ics feeds. Available tokens are listed in the Available Label Tokens section.</p>
+	summary field for ics feeds for schedules and resources. Available tokens are listed in the Available Label Tokens section.</p>
+<p class="setting"><span>$conf['settings']['reservation.labels']['ics.my.summary']</span>The format of what to display in the
+	summary field for ics feeds from My Calendar. Available tokens are listed in the Available Label Tokens section.</p>
 <p class="setting"><span>$conf['settings']['reservation.labels']['rss.description']</span>The format of what to display in the
 	description field for rss/atom feeds. Available tokens are listed in the Available Label Tokens section.</p>
 <p class="setting"><span>$conf['settings']['reservation.labels']['my.calendar']</span>The format of what to display for the

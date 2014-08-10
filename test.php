@@ -18,48 +18,5 @@ You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-if ($_GET['ajax'] == '1')
-{
-	for ($i = 0; $i < 10000000; $i++)
-	{
-
-	}
-}
-else {
-?>
-<html>
-<head>
-	<script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.7.2.min.js"></script>
-</head>
-
-<div id="1">
-
-</div>
-
-<script type="text/javascript">
-	var success1 = function () {
-		$("#1").append('<p>1- '+ new Date() + '</p>');
-	};
-	var success2 = function () {
-		$("#1").append('<p>2- '+ new Date() + '</p>');
-	};
-
-	$(document).ready(function () {
-		$("#1").append('<p>1- '+ new Date() + '</p>');
-		$("#1").append('<p>2- '+ new Date() + '</p>');
-
-		$.ajax({
-			url:'test.php?ajax=1',
-			success:success1
-		});
-		$.ajax({
-			url:'test2.php?ajax=1',
-			success:success2
-		});
-	});
-</script>
-</html>
-
-<?php
-}
-?>
+ session_start();
+var_dump($_SESSION);

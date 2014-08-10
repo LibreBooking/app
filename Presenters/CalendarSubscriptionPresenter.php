@@ -1,141 +1,279 @@
 <?php
 /**
- * Copyright 2012-2014 Nick Korbel
- * Copyright 2012-2014 Alois Schloegl
- *
- * This file is part of Booked Scheduler.
- *
- * Booked Scheduler is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Booked Scheduler is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
+Copyright 2012-2014 Nick Korbel
+
+This file is part of Booked SchedulerBooked SchedulereIt is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later versBooked SchedulerduleIt is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+alBooked SchedulercheduleIt.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 require_once(ROOT_DIR . 'Domain/Access/namespace.php');
-require_once(ROOT_DIR . 'lib/Application/Schedule/namespace.php');
-require_once(ROOT_DIR . 'lib/Application/Reservation/namespace.php');
 
-class CalendarSubscriptionPresenter
+interface ICalendarSubscriptionService
 {
-	/**
-	 * @var ICalendarExportPage
-	 */
-	private $page;
+    /**
+     * @param string $publicResourceId
+     * @return BookableResource
+     */
+	public function GetResource($publicResourceId);
+
+    /**
+     * @param string $publicScheduleId
+     * @return Schedule
+     */
+	public function GetSchedule($publicScheduleId);
+
+    /**
+     * @param string $publicUserId
+     * @return User
+     */
+	public function GetUser($publicUserId);
+
+    /**
+     * @param int $userId
+     * @return CalendarSubscriptionDetails
+     */
+	public function ForUser($userId);
 
 	/**
-	 * @var IReservationViewRepository
+	 * @param int $userId
+	 * @param int $resourceId
+	 * @return CalendarSubscriptionDetails
 	 */
-	private $reservationViewRepository;
+	public function ForUserAndResource($userId, $resourceId);
 
 	/**
-	 * @var ICalendarExportValidator
+	 * @param int $userId
+	 * @param int $scheduleId
+	 * @return CalendarSubscriptionDetails
 	 */
-	private $validator;
+	public function ForUserAndSchedule($userId, $scheduleId);
+
+    /**
+     * @param int $resourceId
+     * @return CalendarSubscriptionDetails
+     */
+	public  function ForResource($resourceId);
+
+    /**
+     * @param int $scheduleId
+     * @return CalendarSubscriptionDetails
+     */
+	public function ForSchedule($scheduleId);
 
 	/**
-	 * @var ICalendarSubscriptionService
+	 * @param string $publicResourceGroupId
+	 * @return int[]
 	 */
-	private $subscriptionService;
+	public function GetResourcesInGroup($publicResourceGroupId);
+}
 
-	/**
-	 * @var IPrivacyFilter
-	 */
-	private $privacyFilter;
+class CalendarSubscriptionDetails
+{
+    /**
+     * @var bool
+     */
+    private $isAllowed;
 
-	public function __construct(ICalendarSubscriptionPage $page,
-								IReservationViewRepository $reservationViewRepository,
-								ICalendarExportValidator $validator,
-								ICalendarSubscriptionService $subscriptionService,
-								IPrivacyFilter $filter)
-	{
-		$this->page = $page;
-		$this->reservationViewRepository = $reservationViewRepository;
-		$this->validator = $validator;
-		$this->subscriptionService = $subscriptionService;
-		$this->privacyFilter = $filter;
-	}
+    /**
+     * @var CalendarSubscriptionUrl
+     */
+    private $url;
 
-	public function PageLoad()
-	{
-		if (!$this->validator->IsValid())
-		{
-			return;
-		}
+    /**
+     * @param bool $isAllowed
+     * @param null|CalendarSubscriptionUrl $url
+     */
+    public function __construct($isAllowed, $url = null)
+    {
+        $this->isAllowed = $isAllowed;
+        $this->url = $url;
+    }
 
-		$userId = $this->page->GetUserId();
-		$scheduleId = $this->page->GetScheduleId();
-		$resourceId = $this->page->GetResourceId();
-		$accessoryIds = $this->page->GetAccessoryIds();
-		$resourceGroupId = $this->page->GetResourceGroupId();
+    /**
+     * @return bool
+     */
+    public function IsAllowed()
+    {
+        return $this->isAllowed;
+    }
 
-		$weekAgo = Date::Now()->AddDays(-7);
-		$nextYear = Date::Now()->AddDays(365);
+    /**
+     * @return bool
+     */
+    public function IsEnabled()
+    {
+        $key = Configuration::Instance()->GetSectionKey(ConfigSection::ICS, ConfigKeys::ICS_SUBSCRIPTION_KEY);
+        return !empty($key);
+    }
 
-		$sid = null;
-		$rid = null;
-		$uid = null;
-		$aid = null;
-		$resourceIds = array();
+    /**
+     * @return string
+     */
+    public function Url()
+    {
+        if (is_null($this->url))
+        {
+            return null;
+        }
+        return $this->url->__toString();
+    }
+}
 
-		$reservations = array();
-		$res = array();
-		if (!empty($scheduleId))
-		{
-			$schedule = $this->subscriptionService->GetSchedule($scheduleId);
-			$sid = $schedule->GetId();
-		}
-		if (!empty($resourceId))
-		{
-			$resource = $this->subscriptionService->GetResource($resourceId);
-			$rid = $resource->GetId();
-		}
-		if (!empty($accessoryIds))
-		{
-			## No transformation is implemented. It is assumed the accessoryIds is provided as AccessoryName
-			## filter is defined by LIKE "PATTERN%"
-			$aid = $accessoryIds;
-		}
-		if (!empty($userId))
-		{
-			$user = $this->subscriptionService->GetUser($userId);
-			$uid = $user->Id();
-		}
-		if (!empty($resourceGroupId))
-		{
-			$resourceIds = $this->subscriptionService->GetResourcesInGroup($resourceGroupId);
-		}
+class CalendarSubscriptionService implements ICalendarSubscriptionService
+{
+    private $cache = array();
 
-		if (!empty($uid) || !empty($sid) || !empty($rid) || !empty($resourceIds))
-		{
-			$res = $this->reservationViewRepository->GetReservationList($weekAgo, $nextYear, $uid, null, $sid, $rid);
-		}
-		elseif (!empty($aid))
-		{
-			throw new Exception('need to give an accessory a public id, allow subscriptions');
-			$res = $this->reservationViewRepository->GetAccessoryReservationList($weekAgo, $nextYear, $accessoryIds);
-		}
+    /**
+     * @var IUserRepository
+     */
+    private $userRepository;
 
-		Log::Debug('Loading calendar subscription for userId %s, scheduleId %s, resourceId %s. Found %s reservations.',
-				   $userId, $scheduleId, $resourceId, count($res));
+    /**
+     * @var IResourceRepository
+     */
+    private $resourceRepository;
 
-		foreach ($res as $r)
-		{
-			if (empty($resourceIds) || in_array($r->ResourceId, $resourceIds))
+    /**
+     * @var IScheduleRepository
+     */
+    private $scheduleRepository;
+
+    public function __construct(IUserRepository $userRepository,
+                                IResourceRepository $resourceRepository,
+                                IScheduleRepository $scheduleRepository)
+    {
+        $this->userRepository = $userRepository;
+        $this->resourceRepository = $resourceRepository;
+        $this->scheduleRepository = $scheduleRepository;
+    }
+
+    /**
+     * @param string $publicResourceId
+     * @return BookableResource
+     */
+    public function GetResource($publicResourceId)
+    {
+        if (!array_key_exists($publicResourceId, $this->cache))
+        {
+            $resource = $this->resourceRepository->LoadByPublicId($publicResourceId);
+            $this->cache[$publicResourceId] = $resource;
+        }
+
+        return $this->cache[$publicResourceId];
+    }
+
+    /**
+     * @param string $publicScheduleId
+     * @return Schedule
+     */
+    public function GetSchedule($publicScheduleId)
+    {
+        if (!array_key_exists($publicScheduleId, $this->cache))
+        {
+            $schedule = $this->scheduleRepository->LoadByPublicId($publicScheduleId);
+            $this->cache[$publicScheduleId] = $schedule;
+        }
+
+        return $this->cache[$publicScheduleId];
+    }
+
+    /**
+     * @param string $publicUserId
+     * @return User
+     */
+    public function GetUser($publicUserId)
+    {
+        if (!array_key_exists($publicUserId, $this->cache))
+        {
+            $user = $this->userRepository->LoadByPublicId($publicUserId);
+            $this->cache[$publicUserId] = $user;
+        }
+
+        return $this->cache[$publicUserId];
+    }
+
+    public function GetResourcesInGroup($publicResourceGroupId)
+    {
+        if (!array_key_exists($publicResourceGroupId, $this->cache))
+        {
+			$group = $this->resourceRepository->LoadResourceGroupByPublicId($publicResourceGroupId);
+
+			if ($group == null)
 			{
-				$reservations[] = new iCalendarReservationView($r,
-															   ServiceLocator::GetServer()->GetUserSession(),
-															   $this->privacyFilter);
+				return array();
 			}
-		}
 
-		$this->page->SetReservations($reservations);
-	}
+			$groups = $this->resourceRepository->GetResourceGroups();
+            $this->cache[$publicResourceGroupId] = $groups->GetResourceIds($group->id);
+        }
+
+        return $this->cache[$publicResourceGroupId];
+    }
+
+    /**
+     * @param int $userId
+     * @return CalendarSubscriptionDetails
+     */
+    public function ForUser($userId)
+    {
+        $user = $this->userRepository->LoadById($userId);
+
+        return new CalendarSubscriptionDetails(
+            $user->GetIsCalendarSubscriptionAllowed(),
+            new CalendarSubscriptionUrl($user->GetPublicId(), null, null));
+    }
+
+	public function ForUserAndResource($userId, $resourceId)
+    {
+        $user = $this->userRepository->LoadById($userId);
+		$resource = $this->resourceRepository->LoadById($resourceId);
+
+        return new CalendarSubscriptionDetails(
+            $user->GetIsCalendarSubscriptionAllowed(),
+            new CalendarSubscriptionUrl($user->GetPublicId(), null, $resource->GetPublicId()));
+    }
+
+	public function ForUserAndSchedule($userId, $scheduleId)
+    {
+        $user = $this->userRepository->LoadById($userId);
+		$schedule = $this->scheduleRepository->LoadById($scheduleId);
+
+        return new CalendarSubscriptionDetails(
+            $user->GetIsCalendarSubscriptionAllowed(),
+            new CalendarSubscriptionUrl($user->GetPublicId(), $schedule->GetPublicId(), null));
+    }
+
+    /**
+     * @param int $resourceId
+     * @return CalendarSubscriptionDetails
+     */
+    public function ForResource($resourceId)
+    {
+        $resource = $this->resourceRepository->LoadById($resourceId);
+
+        return new CalendarSubscriptionDetails(
+            $resource->GetIsCalendarSubscriptionAllowed(),
+            new CalendarSubscriptionUrl(null, null, $resource->GetPublicId()));
+    }
+
+    /**
+     * @param int $scheduleId
+     * @return CalendarSubscriptionDetails
+     */
+    public function ForSchedule($scheduleId)
+    {
+        $schedule = $this->scheduleRepository->LoadById($scheduleId);
+
+        return new CalendarSubscriptionDetails(
+            $schedule->GetIsCalendarSubscriptionAllowed(),
+            new CalendarSubscriptionUrl(null, $schedule->GetPublicId(), null));
+    }
 }

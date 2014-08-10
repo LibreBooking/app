@@ -18,6 +18,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 *}
 {include file='globalheader.tpl' cssFiles='css/calendar.css,css/jquery.qtip.min.css,scripts/css/fullcalendar.css,css/schedule.css' printCssFiles='scripts/css/fullcalendar.print.css'}
 
+{include file='Calendar/calendar.filter.tpl'}
+
 <div class="calendarHeading">
 
 	<div style="float:left;">

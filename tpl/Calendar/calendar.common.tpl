@@ -27,17 +27,6 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 	{/if}
 	</div>
 
-	{block name="legend"}
-	<div style="text-align: center; margin: auto;">
-		<div class="legend reserved">{translate key=Reserved}</div>
-		<div class="legend reserved mine">{translate key=MyReservation}</div>
-		<div class="legend reserved participating">{translate key=Participant}</div>
-		<div class="legend reserved pending">{translate key=Pending}</div>
-	</div>
-
-	<div style="height:10px">&nbsp;</div>
-	{/block}
-
 	<div id="calendar"></div>
 
 	<div id="dayDialog" class="dialog">

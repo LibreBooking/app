@@ -1,37 +1,74 @@
 <?php
 /**
-Copyright 2011-2014 Nick Korbel
-
-This file is part of Booked Scheduler.
-
-Booked Scheduler is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-Booked Scheduler is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ * Copyright 2011-2014 Nick Korbel
+ *
+ * This file is part of Booked Scheduler.
+ *
+ * Booked Scheduler is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Booked Scheduler is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 require_once(ROOT_DIR . 'Pages/SecurePage.php');
-require_once(ROOT_DIR . 'Presenters/PersonalCalendarPresenter.php');
+require_once(ROOT_DIR . 'Presenters/Calendar/PersonalCalendarPresenter.php');
 
 interface IPersonalCalendarPage extends IActionPage
 {
 	public function GetDay();
+
 	public function GetMonth();
+
 	public function GetYear();
+
 	public function GetCalendarType();
 
 	public function BindCalendar(ICalendarSegment $calendar);
-    public function BindSubscription(CalendarSubscriptionDetails $details);
+
+	public function BindSubscription(CalendarSubscriptionDetails $details);
 
 	public function SetDisplayDate($displayDate);
+
+	/**
+	 * @param CalendarFilters $filters
+	 * @return void
+	 */
+	public function BindFilters($filters);
+
+	/**
+	 * @return null|int
+	 */
+	public function GetScheduleId();
+
+	/**
+	 * @return null|int
+	 */
+	public function GetResourceId();
+
+	/**
+	 * @param $scheduleId null|int
+	 * @return void
+	 */
+	public function SetScheduleId($scheduleId);
+
+	/**
+	 * @param $resourceId null|int
+	 * @return void
+	 */
+	public function SetResourceId($resourceId);
+
+	/**
+	 * @param int $firstDay
+	 */
+	public function SetFirstDay($firstDay);
 }
 
 class PersonalCalendarPage extends ActionPage implements IPersonalCalendarPage
@@ -41,24 +78,35 @@ class PersonalCalendarPage extends ActionPage implements IPersonalCalendarPage
 	 */
 	private $template;
 
-    /**
-     * @var PersonalCalendarPresenter
-     */
-    private $presenter;
+	/**
+	 * @var PersonalCalendarPresenter
+	 */
+	private $presenter;
 
 	public function __construct()
 	{
-	    parent::__construct('MyCalendar', 0);
+		parent::__construct('MyCalendar', 0);
 
-        $userRepository = new UserRepository();
-        $subscriptionService = new CalendarSubscriptionService($userRepository, new ResourceRepository(), new ScheduleRepository());
-        $this->presenter = new PersonalCalendarPresenter($this, new ReservationViewRepository(), new CalendarFactory(), $subscriptionService, $userRepository);
+		$userRepository = new UserRepository();
+		$subscriptionService = new CalendarSubscriptionService($userRepository, new ResourceRepository(), new ScheduleRepository());
+		$resourceRepository = new ResourceRepository();
+		$resourceService = new ResourceService($resourceRepository, PluginManager::Instance()
+																				 ->LoadPermission(), new AttributeService(new AttributeRepository()), $userRepository);
+
+		$this->presenter = new PersonalCalendarPresenter(
+				$this,
+				new ReservationViewRepository(),
+				new CalendarFactory(),
+				$subscriptionService,
+				$userRepository,
+				$resourceService,
+				new ScheduleRepository());
 	}
 
 	public function ProcessPageLoad()
 	{
 		$user = ServiceLocator::GetServer()->GetUserSession();
-		$this->presenter->PageLoad($user->UserId, $user->Timezone);
+		$this->presenter->PageLoad($user, $user->Timezone);
 
 		$this->Set('HeaderLabels', Resources::GetInstance()->GetDays('full'));
 		$this->Set('Today', Date::Now()->ToTimezone($user->Timezone));
@@ -112,7 +160,7 @@ class PersonalCalendarPage extends ActionPage implements IPersonalCalendarPage
 		$this->Set('DisplayDate', $displayDate);
 
 		$months = Resources::GetInstance()->GetMonths('full');
-		$this->Set('MonthName', $months[$displayDate->Month()-1]);
+		$this->Set('MonthName', $months[$displayDate->Month() - 1]);
 		$this->Set('MonthNames', $months);
 		$this->Set('MonthNamesShort', Resources::GetInstance()->GetMonths('abbr'));
 
@@ -122,25 +170,56 @@ class PersonalCalendarPage extends ActionPage implements IPersonalCalendarPage
 		$this->Set('DayNamesShort', Resources::GetInstance()->GetDays('abbr'));
 	}
 
-    /**
-     * @return void
-     */
-    public function ProcessAction()
-    {
-       $this->presenter->ProcessAction();
-    }
+	/**
+	 * @return void
+	 */
+	public function ProcessAction()
+	{
+		$this->presenter->ProcessAction();
+	}
 
-    public function ProcessDataRequest($dataRequest)
-    {
-        // no-op
-    }
+	public function ProcessDataRequest($dataRequest)
+	{
+		// no-op
+	}
 
-    public function BindSubscription(CalendarSubscriptionDetails $details)
-    {
-        $this->Set('IsSubscriptionAllowed', $details->IsAllowed());
-        $this->Set('IsSubscriptionEnabled', $details->IsEnabled());
-        $this->Set('SubscriptionUrl', $details->Url());
-    }
+	public function BindSubscription(CalendarSubscriptionDetails $details)
+	{
+		$this->Set('IsSubscriptionAllowed', $details->IsAllowed());
+		$this->Set('IsSubscriptionEnabled', $details->IsEnabled());
+		$this->Set('SubscriptionUrl', $details->Url());
+	}
+
+	public function BindFilters($filters)
+	{
+		$this->Set('filters', $filters);
+		$this->Set('IsAccessible', !$filters->IsEmpty());
+	}
+
+	public function GetScheduleId()
+	{
+		return $this->GetQuerystring(QueryStringKeys::SCHEDULE_ID);
+	}
+
+	public function GetResourceId()
+	{
+		return $this->GetQuerystring(QueryStringKeys::RESOURCE_ID);
+	}
+
+	public function SetScheduleId($scheduleId)
+	{
+		$this->Set('ScheduleId', $scheduleId);
+	}
+
+	public function SetResourceId($resourceId)
+	{
+		$this->Set('ResourceId', $resourceId);
+	}
+
+	public function SetFirstDay($firstDay)
+	{
+		$this->Set('FirstDay', $firstDay == Schedule::Today ? 0 : $firstDay);
+	}
 }
 
 class PersonalCalendarUrl
@@ -180,4 +259,3 @@ class PersonalCalendarUrl
 		return $this->url;
 	}
 }
-?>
