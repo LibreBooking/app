@@ -151,7 +151,8 @@ class LoginPresenter
 		else
 		{
 			$defaultId = ServiceLocator::GetServer()->GetUserSession()->HomepageId;
-			$this->_page->Redirect(Pages::UrlFromId($defaultId));
+			$url = Pages::UrlFromId($defaultId)
+			$this->_page->Redirect(empty($url) ? Pages::UrlFromId(Pages::DEFAULT_HOMEPAGE_ID) : $url);
 		}
 	}
 
