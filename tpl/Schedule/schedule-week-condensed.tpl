@@ -20,6 +20,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 {extends file="Schedule/schedule.tpl"}
 
 {block name="legend"}{/block}
+
 {block name="reservations"}
 
 {function name=displayGeneralReservedCondensed}
@@ -120,7 +121,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 	</div>
 {/block}
 
-{block name="scripts-before"}
+{block name="scripts"}
 	<script type="text/javascript">
 		$(document).ready(function ()
 		{
