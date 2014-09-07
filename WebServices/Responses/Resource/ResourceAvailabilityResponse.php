@@ -78,8 +78,9 @@ class ResourceAvailabilityResponse extends RestResponse
 	 * @param ReservationItemView|null $conflictingReservation
 	 * @param ReservationItemView|null $nextReservation
 	 * @param Date|null $nextAvailableTime
+	 * @param Date $lastDateSearched
 	 */
-	public function __construct(IRestServer $server, $resource, $conflictingReservation, $nextReservation, $nextAvailableTime)
+	public function __construct(IRestServer $server, $resource, $conflictingReservation, $nextReservation, $nextAvailableTime, $lastDateSearched)
 	{
 		$this->resource = new ResourceReference($server, $resource);
 		$this->available = $conflictingReservation == null;
@@ -96,9 +97,13 @@ class ResourceAvailabilityResponse extends RestResponse
 							  array(WebServiceParams::ReferenceNumber => $conflictingReservation->ReferenceNumber));
 		}
 
-		if ($this->available && $nextReservation != null)
+		if ($nextReservation != null)
 		{
 			$this->availableUntil = $nextReservation->BufferedTimes()->GetBegin()->ToTimezone($server->GetSession()->Timezone)->ToIso();
+		}
+		else
+		{
+			$this->availableUntil = $lastDateSearched->ToTimezone($server->GetSession()->Timezone)->ToIso();
 		}
 	}
 

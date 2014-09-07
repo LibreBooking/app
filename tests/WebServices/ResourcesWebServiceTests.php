@@ -164,20 +164,20 @@ class ResourcesWebServiceTests extends TestBase
 		$upcoming5 = new TestReservationItemView(6, $startTime, $endTime->AddHours(2), $resourceId3);
 		$reservations = array($conflicting, $upcoming, $upcoming2, $upcoming3, $upcoming4, $upcoming5);
 
+		$endDate = Date::Now()
+					   ->AddDays(7);
 		$this->reservationRepository->expects($this->once())
 									->method('GetReservationList')
-									->with($this->equalTo(Date::Now()
-															  ->AddDays(-1)),
-										   $this->equalTo(Date::Now()
-															  ->AddDays(1)))
+									->with($this->equalTo(Date::Now()->AddDays(-1)),
+										   $this->equalTo($endDate))
 									->will($this->returnValue($reservations));
 
 		$this->service->GetAvailability();
 
 		$resources = array(
-			new ResourceAvailabilityResponse($this->server, $resources[0], $conflicting, $upcoming, $endTime->AddHours(4)),
-			new ResourceAvailabilityResponse($this->server, $resources[1], null, $upcoming2, null),
-			new ResourceAvailabilityResponse($this->server, $resources[2], $upcoming5, null, $upcoming5->GetEndDate()),
+			new ResourceAvailabilityResponse($this->server, $resources[0], $conflicting, $upcoming, $endTime->AddHours(4), $endDate),
+			new ResourceAvailabilityResponse($this->server, $resources[1], null, $upcoming2, null, $endDate),
+			new ResourceAvailabilityResponse($this->server, $resources[2], $upcoming5, null, $upcoming5->GetEndDate(), $endDate),
 		);
 
 		$this->assertEquals(new ResourcesAvailabilityResponse($this->server, $resources), $this->server->_LastResponse);
@@ -210,20 +210,19 @@ class ResourcesWebServiceTests extends TestBase
 		$upcoming5 = new TestReservationItemView(6, $startTime, $endTime->AddHours(2), $resourceId3);
 		$reservations = array($conflicting, $upcoming, $upcoming2, $upcoming3, $upcoming4, $upcoming5);
 
+		$endDate = $date->AddDays(7);
 		$this->reservationRepository->expects($this->once())
 									->method('GetReservationList')
-									->with($this->equalTo($date->AddDays(-1)
-															   ->ToUtc()),
-										   $this->equalTo($date->AddDays(1)
-															   ->ToUtc()))
+									->with($this->equalTo($date->AddDays(-1)),
+										   $this->equalTo($endDate))
 									->will($this->returnValue($reservations));
 
 		$this->service->GetAvailability();
 
 		$resources = array(
-			new ResourceAvailabilityResponse($this->server, $resources[0], $conflicting, $upcoming, $endTime->AddHours(4)),
-			new ResourceAvailabilityResponse($this->server, $resources[1], null, $upcoming2, null),
-			new ResourceAvailabilityResponse($this->server, $resources[2], $upcoming5, null, $upcoming5->GetEndDate()),
+			new ResourceAvailabilityResponse($this->server, $resources[0], $conflicting, $upcoming, $endTime->AddHours(4), $endDate),
+			new ResourceAvailabilityResponse($this->server, $resources[1], null, $upcoming2, null, $endDate),
+			new ResourceAvailabilityResponse($this->server, $resources[2], $upcoming5, null, $upcoming5->GetEndDate(), $endDate),
 		);
 
 		$this->assertEquals(new ResourcesAvailabilityResponse($this->server, $resources), $this->server->_LastResponse);
@@ -251,12 +250,11 @@ class ResourcesWebServiceTests extends TestBase
 
 		$reservations = array($conflicting, $upcoming, $upcoming2, $upcoming3);
 
+		$endDate = Date::Now()->AddDays(7);
 		$this->reservationRepository->expects($this->once())
 									->method('GetReservationList')
-									->with($this->equalTo(Date::Now()
-															  ->AddDays(-1)),
-										   $this->equalTo(Date::Now()
-															  ->AddDays(1)),
+									->with($this->equalTo(Date::Now()->AddDays(-1)),
+										   $this->equalTo($endDate),
 										   $this->isEmpty(),
 										   $this->isEmpty(),
 										   $this->isEmpty(),
@@ -266,7 +264,7 @@ class ResourcesWebServiceTests extends TestBase
 		$this->service->GetAvailability($resourceId1);
 
 		$resources = array(
-			new ResourceAvailabilityResponse($this->server, $resource, $conflicting, $upcoming, $endTime->AddHours(4))
+			new ResourceAvailabilityResponse($this->server, $resource, $conflicting, $upcoming, $endTime->AddHours(4), $endDate)
 		);
 
 		$this->assertEquals(new ResourcesAvailabilityResponse($this->server, $resources), $this->server->_LastResponse);
@@ -294,10 +292,11 @@ class ResourcesWebServiceTests extends TestBase
 
 		$reservations = array($conflicting, $upcoming, $upcoming2, $upcoming3);
 
+		$endDate = $date->AddDays(7);
 		$this->reservationRepository->expects($this->once())
 									->method('GetReservationList')
-									->with($this->equalTo($date->AddDays(-1)->ToUtc()),
-										   $this->equalTo($date->AddDays(1)->ToUtc()),
+									->with($this->equalTo($date->AddDays(-1)),
+										   $this->equalTo($endDate),
 										   $this->isEmpty(),
 										   $this->isEmpty(),
 										   $this->isEmpty(),
@@ -307,7 +306,7 @@ class ResourcesWebServiceTests extends TestBase
 		$this->service->GetAvailability($resourceId1);
 
 		$resources = array(
-			new ResourceAvailabilityResponse($this->server, $resource, $conflicting, $upcoming, $endTime->AddHours(4))
+			new ResourceAvailabilityResponse($this->server, $resource, $conflicting, $upcoming, $endTime->AddHours(4), $endDate)
 		);
 
 		$this->assertEquals(new ResourcesAvailabilityResponse($this->server, $resources), $this->server->_LastResponse);

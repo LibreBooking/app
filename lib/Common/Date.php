@@ -113,7 +113,7 @@ class Date
 		$parsed = date_parse($dateString);
 		if (isset($parsed['zone']))
 		{
-			$name = timezone_name_from_abbr("", -1*$parsed['zone']*60, false);
+			$name = timezone_name_from_abbr("", -1*$parsed['zone']*60);
 		}
 		else
 		{
@@ -193,6 +193,11 @@ class Date
 	 */
 	public function ToIso()
 	{
+//		$offset = $this->date->getOffset();
+//		$hours = intval(intval($offset) / 3600);
+//		$minutes  = intval(($offset / 60) % 60);
+//		printf("offset = %d%d", $hours, $minutes);
+//		//die(' off '  .$offset . ' tz ' . $this->date->getTimezone()->getOffset());
 		return $this->Format(DateTime::ISO8601);
 	}
 

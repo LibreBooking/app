@@ -183,7 +183,7 @@ class ResourcesWebService
 
 	/**
 	 * @name GetAvailability
-	 * @description Returns resource availability for the requested time. "availableAt" and "availableUntil" will include availability through the next 24 hours
+	 * @description Returns resource availability for the requested time. "availableAt" and "availableUntil" will include availability through the next 7 days
 	 * Optional query string parameter: dateTime. If no dateTime is requested the current datetime will be used.
 	 * @response ResourcesAvailabilityResponse
 	 * @return void
@@ -210,8 +210,10 @@ class ResourcesWebService
 			$resources[] = $this->resourceRepository->LoadById($resourceId);
 		}
 
-		$reservations = $this->reservationRepository->GetReservationList($requestedTime->AddDays(-1),
-																		 $requestedTime->AddDays(1),
+		$startDate = $requestedTime->AddDays(-1);
+		$endDate = $requestedTime->AddDays(7);
+		$reservations = $this->reservationRepository->GetReservationList($startDate,
+																		 $endDate,
 																		 null, null, null,
 																		 $resourceId);
 
@@ -244,8 +246,7 @@ class ResourcesWebService
 				/** @var $reservation ReservationItemView */
 				foreach ($resourceReservations as $i => $reservation)
 				{
-					if ($conflict == null && $reservation->BufferedTimes()
-														 ->Overlaps(new DateRange($requestedTime, $requestedTime))
+					if ($conflict == null && $reservation->BufferedTimes()->Contains($requestedTime, false)
 					)
 					{
 						$conflict = $reservation;
@@ -265,7 +266,7 @@ class ResourcesWebService
 				}
 			}
 
-			$resourceAvailability[] = new ResourceAvailabilityResponse($this->server, $resource, $conflict, $nextReservation, $opening);
+			$resourceAvailability[] = new ResourceAvailabilityResponse($this->server, $resource, $conflict, $nextReservation, $opening, $endDate);
 		}
 
 		$this->server->WriteResponse(new ResourcesAvailabilityResponse($this->server, $resourceAvailability));

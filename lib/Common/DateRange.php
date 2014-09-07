@@ -65,11 +65,19 @@ class DateRange
 	/**
 	 * Whether or not the $date is within the range.  Range boundaries are inclusive
 	 * @param Date $date
+	 * @param bool $inclusive
 	 * @return bool
 	 */
-	public function Contains(Date $date)
+	public function Contains(Date $date, $inclusive = true)
 	{
-		return $this->_begin->Compare($date) <= 0 && $this->_end->Compare($date) >= 0;
+		if ($inclusive)
+		{
+			return $this->_begin->Compare($date) <= 0 && $this->_end->Compare($date) >= 0;
+		}
+		else
+		{
+			return $this->_begin->Compare($date) <= 0 && $this->_end->Compare($date) > 0;
+		}
 	}
 
 	/**
