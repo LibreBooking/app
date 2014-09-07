@@ -100,9 +100,10 @@ class Date
 
 	/**
 	 * @param string $dateString
+	 * @param string $timezone
 	 * @return Date
 	 */
-	public static function ParseExact($dateString)
+	public static function ParseExact($dateString, $timezone)
 	{
 		if (empty($dateString))
 		{
@@ -110,7 +111,14 @@ class Date
 		}
 
 		$parsed = date_parse($dateString);
-		$name = timezone_name_from_abbr("", -1*$parsed['zone']*60, false);
+		if (isset($parsed['zone']))
+		{
+			$name = timezone_name_from_abbr("", -1*$parsed['zone']*60, false);
+		}
+		else
+		{
+			$name = $timezone;
+		}
 		$d = Date::Create($parsed['year'], $parsed['month'], $parsed['day'], $parsed['hour'], $parsed['minute'], $parsed['second'], $name);
 		return $d;
 	}

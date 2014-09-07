@@ -29,7 +29,7 @@ class WebServiceDate
 	{
 		if (BookedStringHelper::Contains($dateString, 'T'))
 		{
-			return Date::ParseExact($dateString);
+			return Date::ParseExact($dateString, $session->Timezone);
 		}
 
 		return Date::Parse($dateString, $session->Timezone);
