@@ -17,18 +17,18 @@ You should have received a copy of the GNU General Public License
 along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 *}
 {include file='..\..\tpl\Email\emailheader.tpl'}
-Your reservation is ending soon.<br/>
-Reservation Details:
+Váš rezervovaný termín zanedlouho končí.<br/>
+Detaily:
 	<br/>
 	<br/>
-	Start: {formatdate date=$StartDate key=reservation_email}<br/>
-	End: {formatdate date=$EndDate key=reservation_email}<br/>
-	Resource: {$ResourceName}<br/>
-	Title: {$Title}<br/>
-	Description: {$Description|nl2br}<br/>
+	Začátek: {formatdate date=$StartDate key=reservation_email}<br/>
+	Konec: {formatdate date=$EndDate key=reservation_email}<br/>
+	Zdroj: {$ResourceName}<br/>
+	Nadpis: {$Title}<br/>
+	Popis: {$Description|nl2br}<br/>
 <br/>
-<a href="{$ScriptUrl}/{$ReservationUrl}">View this reservation</a> |
-<a href="{$ScriptUrl}/{$ICalUrl}">Add to Calendar</a> |
-<a href="{$ScriptUrl}">Log in to Booked Scheduler</a>
+<a href="{$ScriptUrl}/{$ReservationUrl}">Zobrazit tuto rezervaci v systému</a> |
+<a href="{$ScriptUrl}/{$ICalUrl}">Přidat do Outlook</a> |
+<a href="{$ScriptUrl}">Přihlásit se do rezervačního systému</a>
 
 {include file='..\..\tpl\Email\emailfooter.tpl'}

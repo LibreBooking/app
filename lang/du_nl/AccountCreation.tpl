@@ -1,5 +1,5 @@
 {*
-Copyright 2011-2014 Nick Korbel
+Copyright 2011-2014 Nick Korbel, Paul Menchini
 
 This file is part of Booked Scheduler.
 
@@ -18,7 +18,13 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 *}
 {include file='..\..\tpl\Email\emailheader.tpl'}
 
-{$FirstName},<br/>
-Děkujeme že jste se registrovali do našeho rezervačního systému. Nyní stačí jen <a href="{$ActivationUrl}">aktivovat svůj účet</a>.
-	
+<p>{$To},</p>
+
+<p>Een nieuwe gebruiker heeft zich geregistreerd met de volgende informatie:<br/>
+Email: {$EmailAddress}<br/>
+Naam: {$FullName}<br/>
+Telefoon: {$Phone}<br/>
+Organisatie: {$Organization}<br/>
+Functie: {$Position}</p>
+
 {include file='..\..\tpl\Email\emailfooter.tpl'}

@@ -86,7 +86,7 @@ class Server
 
 			if (!empty($value) && !is_array($value))
 			{
-            	return htmlspecialchars($value);
+            	return htmlspecialchars(trim($value));
 			}
 			else if(is_array($value))
 			{
@@ -101,7 +101,7 @@ class Server
 
 	private static function specialchars($val)
 	{
-		return htmlspecialchars($val);
+		return htmlspecialchars(trim($val));
 	}
 
     /**
@@ -113,7 +113,7 @@ class Server
 		$value = $this->GetRawForm($name);
 		if (!empty($value) && !is_array($value))
 		{
-			return htmlspecialchars($value);
+			return htmlspecialchars(trim($value));
 		}
 
         return $value;
@@ -132,7 +132,7 @@ class Server
 				return $_POST[$name];
 			}
 
-			return $_POST[$name];
+			return trim($_POST[$name]);
 		}
 		return null;
 	}

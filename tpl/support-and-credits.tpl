@@ -47,7 +47,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 <p>Boris Vatin (French)</p>
 <p>Dariusz Kliszewski, Grzegorz Bis (Polish)</p>
 <p>Tadafumi Kouzato (Japanese)</p>
-<p>Uncredited (Dutch)</p>
+<p>Jonne Olie (Dutch)</p>
 <p>Julio Guedimin (Spanish)</p>
 <p>Jordi Divins (Catalan)</p>
 <p>Nicola Ruggero, Daniele Cordella, Marco Ponti (Italian)</p>

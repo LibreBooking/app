@@ -222,4 +222,12 @@ class ReservationSlot implements IReservationSlot
 		return $this->_reservation->GetTextColor();
 
 	}
+
+	/**
+	 * @return ReservationItemView
+	 */
+	public function Reservation()
+	{
+		return $this->_reservation;
+	}
 }

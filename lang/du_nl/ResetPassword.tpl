@@ -18,7 +18,14 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 *}
 {include file='..\..\tpl\Email\emailheader.tpl'}
 
-{$FirstName},<br/>
-Děkujeme že jste se registrovali do našeho rezervačního systému. Nyní stačí jen <a href="{$ActivationUrl}">aktivovat svůj účet</a>.
-	
+Hier is je tijdelijke Booked Scheduler wachtwoord: {$TemporaryPassword}
+
+<br/>
+
+Je oude wachtwoord zal niet meer werken.
+<br/>
+<br/>
+
+<a href="{$ScriptUrl}">Login in Booked Scheduler</a> en wijzig je wachtwoord.
+
 {include file='..\..\tpl\Email\emailfooter.tpl'}

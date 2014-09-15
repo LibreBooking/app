@@ -17,16 +17,19 @@ You should have received a copy of the GNU General Public License
 along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 *}
 {include file='..\..\tpl\Email\emailheader.tpl'}
-Nezmeškejte rezervovaný termín.<br/>
+Nezmeškejte svůj rezervovaný termín.<br/>
 Detaily rezervace:
-	<br/>
-	<br/>
-	Začátek: {formatdate date=$StartDate key=reservation_email}<br/>
-	Konec: {formatdate date=$EndDate key=reservation_email}<br/>
-	Zdroj: {$ResourceName}<br/>
-	Název: {$Title}<br/>
-	Popis: {$Description|nl2br}<br/>
 <br/>
-<a href="{$ScriptUrl}/{$ReservationUrl}">Zobrazit tuto rezrvaci v systému</a> |
-	<a href="{$ScriptUrl}/{$ICalUrl}">Přidat do Outlook</a> |
-	<a href="{$ScriptUrl}">Přihlásit se do rezervačního systému</a>{include file='..\..\tpl\Email\emailfooter.tpl'}
+<br/>
+Začátek: {formatdate date=$StartDate key=reservation_email}<br/>
+Konec: {formatdate date=$EndDate key=reservation_email}<br/>
+Zdroj: {$ResourceName}<br/>
+Název: {$Title}<br/>
+Popis: {$Description|nl2br}<br/>
+<br/>
+<br/>
+<a href="{$ScriptUrl}/{$ReservationUrl}">Zobrazit tuto rezervaci v systému</a> |
+<a href="{$ScriptUrl}/{$ICalUrl}">Přidat do Outlook</a> |
+<a href="{$ScriptUrl}">Přihlásit se do rezervačního systému</a>
+
+{include file='..\..\tpl\Email\emailfooter.tpl'}

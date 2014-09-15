@@ -17,45 +17,52 @@ You should have received a copy of the GNU General Public License
 along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 *}
 {include file='..\..\tpl\Email\emailheader.tpl'}
-	
-	Administrátorem byly smazány tyto rezervace:
+	Reserverings Details:
 	<br/>
 	<br/>
-	
-	Uživatel: {$UserName}<br/>
-	Začátek: {formatdate date=$StartDate key=reservation_email}<br/>
-	Konec: {formatdate date=$EndDate key=reservation_email}<br/>
+
+	Start: {formatdate date=$StartDate key=reservation_email}<br/>
+	Eindigd: {formatdate date=$EndDate key=reservation_email}<br/>
 	{if $ResourceNames|count > 1}
-	Zdroje:<br/>
+		Bronnen:<br/>
 		{foreach from=$ResourceNames item=resourceName}
 			{$resourceName}<br/>
 		{/foreach}
 		{else}
-    Zdroj: {$ResourceName}<br/>
+		Bron: {$ResourceName}<br/>
 	{/if}
-	Nadpis: {$Title}<br/>
-	Popis: {$Description|nl2br}<br/>
-	
-	
+	Titel: {$Title}<br/>
+	Beschrijving: {$Description|nl2br}<br/>
+
 	{if count($RepeatDates) gt 0}
 		<br/>
-		Došlo ke smazání všech těchto rezervovaných termínů:
+		De reservering zal zijn op de volgende data:
 		<br/>
 	{/if}
-	
+
 	{foreach from=$RepeatDates item=date name=dates}
 		{formatdate date=$date}<br/>
 	{/foreach}
 
 	{if $Accessories|count > 0}
-		<br/>Příslušenství:<br/>
+		<br/>Benodigdheden:<br/>
 		{foreach from=$Accessories item=accessory}
 			({$accessory->QuantityReserved}) {$accessory->Name}<br/>
 		{/foreach}
 	{/if}
 
+	{if $RequiresApproval}
+		<br/>
+		E�n of meerdere bronnen die gereserveerd zijn hebben goedkeuring nodig voor gebruik. Deze reservering wordt in behandeling genomen totdat hij is goedgekeurd.
+	{/if}
+
 	<br/>
-        <br/>
-	<a href="{$ScriptUrl}">Přihlásit se do rezervačního systému</a>
-	
+	Ben je aanwezig? <a href="{$ScriptUrl}/{$AcceptUrl}">Ja</a> <a href="{$ScriptUrl}/{$DeclineUrl}">Nee</a>
+	<br/>
+	<br/>
+
+	<a href="{$ScriptUrl}/{$ReservationUrl}">Bekijk deze reservering</a> |
+	<a href="{$ScriptUrl}/{$ICalUrl}">Voeg toe aan agenda</a> |
+	<a href="{$ScriptUrl}">Login in Booked Scheduler</a>
+
 {include file='..\..\tpl\Email\emailfooter.tpl'}

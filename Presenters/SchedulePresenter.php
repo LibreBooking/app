@@ -88,7 +88,6 @@ class SchedulePresenter extends ActionPresenter implements ISchedulePresenter {
 
     public function PageLoad(UserSession $user)
     {
-
         $showInaccessibleResources = $this->_page->ShowInaccessibleResources();
 
         $schedules = $this->_scheduleService->GetAll($showInaccessibleResources, $user);

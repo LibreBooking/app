@@ -1,5 +1,5 @@
 {*
-Copyright 2011-2014 Nick Korbel
+Copyright 2013-2014 Nick Korbel
 
 This file is part of Booked Scheduler.
 
@@ -17,8 +17,19 @@ You should have received a copy of the GNU General Public License
 along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 *}
 {include file='..\..\tpl\Email\emailheader.tpl'}
+Je reservering start binnenkort.<br/>
+Reserverings Details:
+	<br/>
+	<br/>
+	Start: {formatdate date=$StartDate key=reservation_email}<br/>
+	Eindigd: {formatdate date=$EndDate key=reservation_email}<br/>
+	Bron: {$ResourceName}<br/>
+	Titel: {$Title}<br/>
+	Beschrijving: {$Description|nl2br}<br/>
+<br/>
+<br/>
+<a href="{$ScriptUrl}/{$ReservationUrl}">Bekijk deze reservering</a> |
+<a href="{$ScriptUrl}/{$ICalUrl}">Voeg toe aan agenda</a> |
+<a href="{$ScriptUrl}">Login in Booked Scheduler</a>
 
-{$FirstName},<br/>
-Děkujeme že jste se registrovali do našeho rezervačního systému. Nyní stačí jen <a href="{$ActivationUrl}">aktivovat svůj účet</a>.
-	
 {include file='..\..\tpl\Email\emailfooter.tpl'}
