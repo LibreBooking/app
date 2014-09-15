@@ -76,7 +76,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 				<td>&nbsp;</td>
 				{foreach from=$BoundDates item=date}
 					{assign var=class value=""}
-					{if $TodaysDate->DateEquals($date) eq true}
+					{if $date->DateEquals($TodaysDate)}
 						{assign var=class value="today"}
 					{/if}
 					<td class="resdate-custom resdate {$class}">{formatdate date=$date key="schedule_daily"}</td>

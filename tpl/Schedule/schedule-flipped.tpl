@@ -43,7 +43,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		{/capture}
 
 		{foreach from=$BoundDates item=date}
-			{if $TodaysDate->DateEquals($date)}
+			{if $date->DateEquals($TodaysDate)}
                 <tr class="today">
 			{else}
             	<tr>

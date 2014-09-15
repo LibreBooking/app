@@ -181,7 +181,7 @@ class ScheduleWebServicePageBuilder extends SchedulePageBuilder
 	{
 		if ($this->startDate != null && $this->endDate != null)
 		{
-			return new DateRange($this->startDate, $this->endDate);
+			return new DateRange($this->startDate, $this->endDate->AddDays(1));
 		}
 		return parent::GetScheduleDates($user, $schedule, $page);
 	}

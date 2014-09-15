@@ -212,7 +212,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		{foreach from=$BoundDates item=date}
 			<div style="position:relative;">
 			<table class="reservations" border="1" cellpadding="0" width="100%">
-				{if $TodaysDate->DateEquals($date) eq true}
+				{if $date->DateEquals($TodaysDate)}
 				<tr class="today">
 					{else}
 				<tr>

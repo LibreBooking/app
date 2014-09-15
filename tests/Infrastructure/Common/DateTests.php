@@ -1,22 +1,22 @@
 <?php
 /**
-Copyright 2011-2014 Nick Korbel
-
-This file is part of Booked Scheduler.
-
-Booked Scheduler is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-Booked Scheduler is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ * Copyright 2011-2014 Nick Korbel
+ *
+ * This file is part of Booked Scheduler.
+ *
+ * Booked Scheduler is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Booked Scheduler is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 require_once(ROOT_DIR . 'lib/Common/namespace.php');
 
@@ -27,9 +27,9 @@ class DateTests extends TestBase
 
 	public function setup()
 	{
-        parent::setup();
+		parent::setup();
 
-        $this->datestring = date(DATE_W3C, time());
+		$this->datestring = date(DATE_W3C, time());
 		$this->tz = new DateTimeZone('UTC');
 	}
 
@@ -78,7 +78,7 @@ class DateTests extends TestBase
 
 		$now = new Date("$year-$month-$day $hour:$minute:$second");
 
-		$expectedTS = mktime($hour, $minute, $second, $month, $day -20, $year);
+		$expectedTS = mktime($hour, $minute, $second, $month, $day - 20, $year);
 		$twentyDaysDate = $now->AddDays(-20);
 
 		$this->assertEquals($expectedTS, $twentyDaysDate->Timestamp());
@@ -92,13 +92,13 @@ class DateTests extends TestBase
 		$parts = date_parse($datenow->format(DATE_W3C));
 
 		$exptected = mktime(
-					$parts['hour'],
-					$parts['minute'],
-					$parts['second'],
-					$parts['month'],
-					$parts['day'],
-					$parts['year']
-					);
+				$parts['hour'],
+				$parts['minute'],
+				$parts['second'],
+				$parts['month'],
+				$parts['day'],
+				$parts['year']
+		);
 
 		$this->assertEquals($exptected, $now->Timestamp());
 	}
@@ -121,225 +121,225 @@ class DateTests extends TestBase
 	public function testDateGetsAdjustedIntoProvidedTimezone()
 	{
 		$format = 'd m y H:i:s';
-        $tzName = 'US/Eastern';
-        $baseTz = new DateTimeZone($tzName);
+		$tzName = 'US/Eastern';
+		$baseTz = new DateTimeZone($tzName);
 
-        $actual = new Date($this->datestring, $tzName);
+		$actual = new Date($this->datestring, $tzName);
 
-        $datetime = new DateTime($this->datestring, $baseTz);
+		$datetime = new DateTime($this->datestring, $baseTz);
 
-        $expected = $datetime->format($format);
+		$expected = $datetime->format($format);
 
-        $this->assertEquals($expected, $actual->Format($format));
+		$this->assertEquals($expected, $actual->Format($format));
 	}
 
-    public function testGmtConvertsDateToGMT()
-    {
-    	$format = 'd m y H:i:s';
+	public function testGmtConvertsDateToGMT()
+	{
+		$format = 'd m y H:i:s';
 
-        $date = new Date($this->datestring);
+		$date = new Date($this->datestring);
 
-        $datetime = new DateTime($this->datestring);
-        $datetime->setTimezone(new DateTimeZone('UTC'));
+		$datetime = new DateTime($this->datestring);
+		$datetime->setTimezone(new DateTimeZone('UTC'));
 
-        $expected = $datetime->format($format);
+		$expected = $datetime->format($format);
 
-        $this->assertEquals($expected, $date->ToUtc()->Format($format));
-    }
+		$this->assertEquals($expected, $date->ToUtc()->Format($format));
+	}
 
-    public function testDatePartsAreParsedCorrectly()
-    {
-        $hour = 11;
-        $minute = 40;
-        $second = 22;
-        $month = 3;
-        $day = 21;
-        $year = 2007;
+	public function testDatePartsAreParsedCorrectly()
+	{
+		$hour = 11;
+		$minute = 40;
+		$second = 22;
+		$month = 3;
+		$day = 21;
+		$year = 2007;
 
-        $date = new Date("$year-$month-$day $hour:$minute:$second", 'US/Central');
+		$date = new Date("$year-$month-$day $hour:$minute:$second", 'US/Central');
 
-        $this->assertEquals($hour, $date->Hour());
-        $this->assertEquals($minute, $date->Minute());
-        $this->assertEquals($second, $date->Second());
-        $this->assertEquals($month, $date->Month());
-        $this->assertEquals($day, $date->Day());
-        $this->assertEquals($year, $date->Year());
+		$this->assertEquals($hour, $date->Hour());
+		$this->assertEquals($minute, $date->Minute());
+		$this->assertEquals($second, $date->Second());
+		$this->assertEquals($month, $date->Month());
+		$this->assertEquals($day, $date->Day());
+		$this->assertEquals($year, $date->Year());
 
 
-        $adjusted = $date->ToTimezone('US/Eastern');
+		$adjusted = $date->ToTimezone('US/Eastern');
 
-        $this->assertEquals($hour + 1, $adjusted->Hour());
-        $this->assertEquals($minute, $adjusted->Minute());
-        $this->assertEquals($second, $adjusted->Second());
-        $this->assertEquals($month, $adjusted->Month());
-        $this->assertEquals($day, $adjusted->Day());
-        $this->assertEquals($year, $adjusted->Year());
-    }
+		$this->assertEquals($hour + 1, $adjusted->Hour());
+		$this->assertEquals($minute, $adjusted->Minute());
+		$this->assertEquals($second, $adjusted->Second());
+		$this->assertEquals($month, $adjusted->Month());
+		$this->assertEquals($day, $adjusted->Day());
+		$this->assertEquals($year, $adjusted->Year());
+	}
 
-    public function testToDatabaseConvertsToGmtThenFormats()
-    {
-    	$databaseformat = 'Y-m-d H:i:s';
-        $date = new Date($this->datestring);
+	public function testToDatabaseConvertsToGmtThenFormats()
+	{
+		$databaseformat = 'Y-m-d H:i:s';
+		$date = new Date($this->datestring);
 
-        $datetime = new DateTime($this->datestring);
-        $datetime->setTimezone(new DateTimeZone('UTC'));
+		$datetime = new DateTime($this->datestring);
+		$datetime->setTimezone(new DateTimeZone('UTC'));
 
-        $expected = $datetime->format($databaseformat);
+		$expected = $datetime->format($databaseformat);
 
-        $this->assertEquals($expected, $date->ToDatabase());
-    }
+		$this->assertEquals($expected, $date->ToDatabase());
+	}
 
-    public function testCanCreateTimeInServerTimezone()
-    {
-    	$hour = 10;
-    	$min = 22;
-    	$sec = 21;
+	public function testCanCreateTimeInServerTimezone()
+	{
+		$hour = 10;
+		$min = 22;
+		$sec = 21;
 
-    	$time = new Time($hour, $min, $sec);
+		$time = new Time($hour, $min, $sec);
 
-    	$this->assertEquals("$hour:$min:$sec", $time->ToString());
-    	$this->assertEquals($hour, $time->Hour());
-    	$this->assertEquals($min, $time->Minute());
-    	$this->assertEquals($sec, $time->Second());
+		$this->assertEquals("$hour:$min:$sec", $time->ToString());
+		$this->assertEquals($hour, $time->Hour());
+		$this->assertEquals($min, $time->Minute());
+		$this->assertEquals($sec, $time->Second());
 
-    	$time = new Time($hour, $min);
+		$time = new Time($hour, $min);
 
-    	$this->assertEquals("$hour:$min:00", $time->ToString());
-    	$this->assertEquals($hour, $time->Hour());
-    	$this->assertEquals($min, $time->Minute());
-    	$this->assertEquals(0, $time->Second());
-    }
+		$this->assertEquals("$hour:$min:00", $time->ToString());
+		$this->assertEquals($hour, $time->Hour());
+		$this->assertEquals($min, $time->Minute());
+		$this->assertEquals(0, $time->Second());
+	}
 
-    public function testTimeCreatedInEasternCanBeConvertedToCentral()
-    {
-    	$east = 'America/New_York';
-    	$central = 'America/Chicago';
-    	$hour = 10;
-    	$min = 10;
-    	$sec = 10;
+	public function testTimeCreatedInEasternCanBeConvertedToCentral()
+	{
+		$east = 'America/New_York';
+		$central = 'America/Chicago';
+		$hour = 10;
+		$min = 10;
+		$sec = 10;
 
-    	$time = Date::Create(2001, 1, 1, $hour, $min, $sec, $east);
-    	$converted = $time->ToTimezone($central);
+		$time = Date::Create(2001, 1, 1, $hour, $min, $sec, $east);
+		$converted = $time->ToTimezone($central);
 
-    	$this->assertEquals($hour - 1, $converted->Hour());
-    	$this->assertEquals($min, $converted->Minute());
-    	$this->assertEquals($sec, $converted->Second());
+		$this->assertEquals($hour - 1, $converted->Hour());
+		$this->assertEquals($min, $converted->Minute());
+		$this->assertEquals($sec, $converted->Second());
 
-    	$time = Date::Create(2001, 1, 1, 0, $min, $sec, $east);
-    	$converted = $time->ToTimezone($central);
-    	$this->assertEquals(23, $converted->Hour());
+		$time = Date::Create(2001, 1, 1, 0, $min, $sec, $east);
+		$converted = $time->ToTimezone($central);
+		$this->assertEquals(23, $converted->Hour());
 
-    	$time = Date::Create(2001, 1, 1, 1, $min, $sec, $east);
-    	$converted = $time->ToTimezone($central);
-    	$this->assertEquals(0, $converted->Hour());
-    }
+		$time = Date::Create(2001, 1, 1, 1, $min, $sec, $east);
+		$converted = $time->ToTimezone($central);
+		$this->assertEquals(0, $converted->Hour());
+	}
 
-    public function testCanParseTimeFromString()
-    {
-    	$time = Time::Parse('10:11:12', 'UTC');
+	public function testCanParseTimeFromString()
+	{
+		$time = Time::Parse('10:11:12', 'UTC');
 
-    	$this->assertEquals(10, $time->Hour());
-    	$this->assertEquals(11, $time->Minute());
-    	$this->assertEquals(12, $time->Second());
-    	$this->assertEquals('UTC', $time->Timezone());
+		$this->assertEquals(10, $time->Hour());
+		$this->assertEquals(11, $time->Minute());
+		$this->assertEquals(12, $time->Second());
+		$this->assertEquals('UTC', $time->Timezone());
 
-    	$time = Time::Parse('13:11:12', 'UTC');
+		$time = Time::Parse('13:11:12', 'UTC');
 
-    	$this->assertEquals(13, $time->Hour());
-    	$this->assertEquals(11, $time->Minute());
-    	$this->assertEquals(12, $time->Second());
-    	$this->assertEquals('UTC', $time->Timezone());
+		$this->assertEquals(13, $time->Hour());
+		$this->assertEquals(11, $time->Minute());
+		$this->assertEquals(12, $time->Second());
+		$this->assertEquals('UTC', $time->Timezone());
 
-    	$time = Time::Parse('10:11:12 PM', 'UTC');
+		$time = Time::Parse('10:11:12 PM', 'UTC');
 
-    	$this->assertEquals(22, $time->Hour());
-    	$this->assertEquals(11, $time->Minute());
-    	$this->assertEquals(12, $time->Second());
-    	$this->assertEquals('UTC', $time->Timezone());
+		$this->assertEquals(22, $time->Hour());
+		$this->assertEquals(11, $time->Minute());
+		$this->assertEquals(12, $time->Second());
+		$this->assertEquals('UTC', $time->Timezone());
 
-    	$time = Time::Parse('10:11:12 AM', 'UTC');
+		$time = Time::Parse('10:11:12 AM', 'UTC');
 
-    	$this->assertEquals(10, $time->Hour());
-    	$this->assertEquals(11, $time->Minute());
-    	$this->assertEquals(12, $time->Second());
-    	$this->assertEquals('UTC', $time->Timezone());
+		$this->assertEquals(10, $time->Hour());
+		$this->assertEquals(11, $time->Minute());
+		$this->assertEquals(12, $time->Second());
+		$this->assertEquals('UTC', $time->Timezone());
 
-    	$time = Time::Parse('10:11 AM', 'UTC');
+		$time = Time::Parse('10:11 AM', 'UTC');
 
-    	$this->assertEquals(10, $time->Hour());
-    	$this->assertEquals(11, $time->Minute());
-    	$this->assertEquals(00, $time->Second());
-    	$this->assertEquals('UTC', $time->Timezone());
-    }
+		$this->assertEquals(10, $time->Hour());
+		$this->assertEquals(11, $time->Minute());
+		$this->assertEquals(00, $time->Second());
+		$this->assertEquals('UTC', $time->Timezone());
+	}
 
-    public function testTimesCanBeCompared()
-    {
-    	$date = Date::Parse('2010-01-01');
-    	$early = Time::Parse('10:11');
-    	$late = Time::Parse('12:11');
+	public function testTimesCanBeCompared()
+	{
+		$date = Date::Parse('2010-01-01');
+		$early = Time::Parse('10:11');
+		$late = Time::Parse('12:11');
 
-    	$this->assertEquals(-1, $early->Compare($late, $date));
-    	$this->assertEquals(1, $late->Compare($early, $date));
+		$this->assertEquals(-1, $early->Compare($late, $date));
+		$this->assertEquals(1, $late->Compare($early, $date));
 
-    	$early2 = Time::Parse('10:11', 'US/Central');
-    	$late2 = Time::Parse('10:11', 'US/Pacific');
+		$early2 = Time::Parse('10:11', 'US/Central');
+		$late2 = Time::Parse('10:11', 'US/Pacific');
 
-    	$this->assertEquals(-1, $early2->Compare($late2, $date));
-    }
+		$this->assertEquals(-1, $early2->Compare($late2, $date));
+	}
 
-    public function testCanCompareDateOnlyEquality()
-    {
-    	$date1 = Date::Parse('2008-01-01 11:00:00', 'US/Central');
-    	$date2 = Date::Parse('2008-01-01 11:00:00', 'US/Eastern');
+	public function testCanCompareDateOnlyEquality()
+	{
+		$date1 = Date::Parse('2008-01-01 11:00:00', 'US/Central');
+		$date2 = Date::Parse('2008-01-01 11:00:00', 'US/Eastern');
 
-    	$this->assertTrue($date1->DateEquals($date2));
+		$this->assertTrue($date1->DateEquals($date2));
 
-    	$date1 = Date::Parse('2008-01-01 00:00:00', 'US/Central');
-    	$date2 = Date::Parse('2008-01-01 00:00:00', 'US/Eastern');
+		$date1 = Date::Parse('2008-01-01 00:00:00', 'US/Central');
+		$date2 = Date::Parse('2008-01-01 00:00:00', 'US/Eastern');
 
-    	$this->assertFalse($date1->DateEquals($date2));
-    }
+		$this->assertFalse($date1->DateEquals($date2));
+	}
 
-    public function testCreateBuildsDateObjectCorectly()
-    {
-    	$date = Date::Create(2008, 10, 9, 8, 7, 6, 'US/Central');
+	public function testCreateBuildsDateObjectCorectly()
+	{
+		$date = Date::Create(2008, 10, 9, 8, 7, 6, 'US/Central');
 
-    	$this->assertEquals(2008, $date->Year());
-    	$this->assertEquals(10, $date->Month());
-    	$this->assertEquals(9, $date->Day());
-    	$this->assertEquals(8, $date->Hour());
-    	$this->assertEquals(7, $date->Minute());
-    	$this->assertEquals(6, $date->Second());
-    	$this->assertEquals('US/Central', $date->Timezone());
-    }
+		$this->assertEquals(2008, $date->Year());
+		$this->assertEquals(10, $date->Month());
+		$this->assertEquals(9, $date->Day());
+		$this->assertEquals(8, $date->Hour());
+		$this->assertEquals(7, $date->Minute());
+		$this->assertEquals(6, $date->Second());
+		$this->assertEquals('US/Central', $date->Timezone());
+	}
 
-    public function testCanCompareDateRelativity()
-    {
-    	$date1 = Date::Parse('2008-01-01 11:00:00', 'US/Central');
-    	$date2 = Date::Parse('2008-01-01 11:00:00', 'US/Eastern');
+	public function testCanCompareDateRelativity()
+	{
+		$date1 = Date::Parse('2008-01-01 11:00:00', 'US/Central');
+		$date2 = Date::Parse('2008-01-01 11:00:00', 'US/Eastern');
 
-    	$this->assertEquals(0, $date1->DateCompare($date2));
+		$this->assertEquals(0, $date1->DateCompare($date2));
 
-    	$date1 = Date::Parse('2008-01-01 00:00:00', 'US/Central');
-    	$date2 = Date::Parse('2008-01-01 00:00:00', 'US/Eastern');
+		$date1 = Date::Parse('2008-01-01 00:00:00', 'US/Central');
+		$date2 = Date::Parse('2008-01-01 00:00:00', 'US/Eastern');
 
-    	$this->assertEquals(1, $date1->DateCompare($date2), 'midnight eastern is 11pm central');
+		$this->assertEquals(1, $date1->DateCompare($date2), 'midnight eastern is 11pm central');
 
-    	$date1 = Date::Parse('2008-01-01 00:00:00', 'US/Central');
-    	$date2 = Date::Parse('2008-01-01 22:00:00', 'US/Pacific');
+		$date1 = Date::Parse('2008-01-01 00:00:00', 'US/Central');
+		$date2 = Date::Parse('2008-01-01 22:00:00', 'US/Pacific');
 
-    	$this->assertEquals(-1, $date1->DateCompare($date2), 'midnight pacific is 2 am central');
-    }
+		$this->assertEquals(-1, $date1->DateCompare($date2), 'midnight pacific is 2 am central');
+	}
 
-    public function GetDateReturnsDateAsOfMidnight()
-    {
-    	$date = new Date('2009-10-10 10:10:10');
-    	$onlyDate = $date->GetDate();
+	public function GetDateReturnsDateAsOfMidnight()
+	{
+		$date = new Date('2009-10-10 10:10:10');
+		$onlyDate = $date->GetDate();
 
-    	$this->assertEquals(0, $onlyDate->Hour());
-    	$this->assertEquals(0, $onlyDate->Minute());
-    	$this->assertEquals(0, $onlyDate->Second());
-    }
+		$this->assertEquals(0, $onlyDate->Hour());
+		$this->assertEquals(0, $onlyDate->Minute());
+		$this->assertEquals(0, $onlyDate->Second());
+	}
 
 	public function testDateIsWithinRange()
 	{
@@ -473,11 +473,11 @@ class DateTests extends TestBase
 		$this->assertEquals("4 days 12 hours 35 minutes", $diff2->__toString());
 
 		$diff3 = DateDiff::FromTimeString("25h0m");
-		$this->assertEquals((25*60*60), $diff3->TotalSeconds());
+		$this->assertEquals((25 * 60 * 60), $diff3->TotalSeconds());
 
-        $this->assertEquals(0, DateDiff::FromTimeString("dhm")->TotalSeconds());
-        $this->assertEquals(0, DateDiff::FromTimeString("hm")->TotalSeconds());
-        $this->assertEquals(0, DateDiff::FromTimeString("dm")->TotalSeconds());
+		$this->assertEquals(0, DateDiff::FromTimeString("dhm")->TotalSeconds());
+		$this->assertEquals(0, DateDiff::FromTimeString("hm")->TotalSeconds());
+		$this->assertEquals(0, DateDiff::FromTimeString("dm")->TotalSeconds());
 	}
 
 	public function testDateRangeOverlapsIfStartsWithinOrEndsWithin()
@@ -529,7 +529,7 @@ class DateTests extends TestBase
 		$d = Date::Parse('2012-04-06 12:02:03', 'America/New_York');
 		$iso = $d->ToIso();
 
-		$d2 = Date::ParseExact($iso);
+		$d2 = Date::ParseExact($iso, 'America/New_York');
 
 		$this->assertTrue($d->Equals($d2), $d->ToUtc()->ToString() . ' ' . $d2->ToString());
 	}
@@ -548,5 +548,27 @@ class DateTests extends TestBase
 
 		$this->assertEquals(0, $interval->TotalSeconds());
 	}
+
+	public function testWhenComparingDatePartOnly_UseTimeOfSourceDate()
+	{
+		$d1 = new Date('2014-09-14 02:00:00', 'America/Chicago');
+		$d2 = new Date('2014-09-14 00:00:00', 'Europe/Berlin');
+
+		$this->assertFalse($d1->DateEquals($d2));
+
+		$d1 = new Date('2014-09-14 00:00:00', 'America/Chicago');
+		$d2 = new Date('2014-09-14 07:00:00', 'Europe/Berlin');
+
+		$this->assertTrue($d1->DateEquals($d2));
+
+		$d1 = new Date('2014-09-14 02:00:00', 'America/Chicago');
+		$d2 = new Date('2014-09-15 00:00:00', 'Europe/Berlin');
+
+		$this->assertTrue($d1->DateEquals($d2));
+
+//		$d1 = new Date('2014-09-14 02:00:00', 'America/Chicago');
+//		$d2 = new Date('2014-09-14 22:00:00', 'Europe/Berlin');
+//
+//		$this->assertFalse($d1->DateEquals($d2));
+	}
 }
-?>
