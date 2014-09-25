@@ -557,19 +557,19 @@ class de_de extends en_us
         $strings['CustomAttributeInvalid'] = 'Der Wert für %s ist ungültig';
         $strings['AttachmentLoadingError'] = 'Sorry, es gab ein Problem beim Laden der angeforderten Datei.';
         $strings['InvalidAttachmentExtension'] = 'Sie können nur Dateien dieses Typs hochladen: %s';
-	$strings['InvalidStartSlot'] = 'Die angeforderte Startzeit ist nicht gültig.';
-	$strings['InvalidEndSlot'] = 'Die angeforderte Endzeit ist nicht gültig.';
-	$strings['MaxParticipantsError'] = '%s ist für maximal %s Teilnehmer.';
-	$strings['ReservationCriticalError'] = 'Es kam zu einem kritischer Fehler beim Speichern Ihrer Reservierung. Wenn das Problem weiterhin besteht, wenden Sie sich an Ihren Systemadministrator.';
-	$strings['InvalidStartReminderTime'] = 'Ungültige Start-Erinnerungszeit.';
-	$strings['InvalidEndReminderTime'] = 'Ungültige End-Erinnerungszeit.';
-	$strings['QuotaExceeded'] = 'Kontingentgrenze überschritten.';
-	$strings['MultiDayRule'] = '%s erlaubt keine Reservierungen über mehrere Tage.';
-	$strings['InvalidReservationData'] = 'Es gab Probleme mit Ihrer Buchungsanfrage.';
-	$strings['PasswordError'] = 'Das Passwort muss mindestens %s Buchstaben und mindestens %s Zahlen enthalten.';
-	$strings['PasswordErrorRequirements'] = 'Das Passwort muss eine Kombination von mindestens %s Groß-und Kleinbuchstaben und %s Zahlen enthalten.';
-	$strings['NoReservationAccess'] = 'Sie sind nicht berechtigt, diese Buchung zu ändern.';
-	// End Errors
+		$strings['InvalidStartSlot'] = 'Die angeforderte Startzeit ist nicht gültig.';
+		$strings['InvalidEndSlot'] = 'Die angeforderte Endzeit ist nicht gültig.';
+		$strings['MaxParticipantsError'] = '%s ist für maximal %s Teilnehmer.';
+		$strings['ReservationCriticalError'] = 'Es kam zu einem kritischer Fehler beim Speichern Ihrer Reservierung. Wenn das Problem weiterhin besteht, wenden Sie sich an Ihren Systemadministrator.';
+		$strings['InvalidStartReminderTime'] = 'Ungültige Start-Erinnerungszeit.';
+		$strings['InvalidEndReminderTime'] = 'Ungültige End-Erinnerungszeit.';
+		$strings['QuotaExceeded'] = 'Kontingentgrenze überschritten.';
+		$strings['MultiDayRule'] = '%s erlaubt keine Reservierung über Tagesgrenzen.';
+		$strings['InvalidReservationData'] = 'Es gab Probleme mit Ihrer Reservierungsanfrage..';
+		$strings['PasswordError'] = 'Das Passwort muss mindestens  %s Buchstaben  und mindestens  %s Ziffern enthalten.';
+		$strings['PasswordErrorRequirements'] = 'Das Passwort muss eine Kombination von mindestens  %s Groß and Kleinbuchstaben und  %s Ziffern enthalten.';
+		$strings['NoReservationAccess'] = 'Sie dürffen diese Reservierung nicht verändern.';
+		// End Errors
 
         // Page Titles
         $strings['CreateReservation'] = 'Reservierung anlegen';

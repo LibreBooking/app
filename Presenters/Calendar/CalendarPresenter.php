@@ -109,6 +109,27 @@ class CalendarPresenter
 		$selectedScheduleId = $this->page->GetScheduleId();
 		$selectedSchedule = $this->GetDefaultSchedule($schedules);
 		$selectedResourceId = $this->page->GetResourceId();
+		$selectedGroupId = $this->page->GetGroupId();
+
+		$resourceGroups = $this->resourceService->GetResourceGroups($selectedScheduleId, $userSession);
+
+		if (!empty($selectedGroupId))
+		{
+			$tempResources = array();
+			$resourceIds = $resourceGroups->GetResourceIds($selectedGroupId);
+			$selectedGroup = $resourceGroups->GetGroup($selectedGroupId);
+			$this->page->BindSelectedGroup($selectedGroup);
+
+			foreach ($resources as $resource)
+			{
+				if (in_array($resource->GetId(), $resourceIds))
+				{
+					$tempResources[] = $resource;
+				}
+			}
+
+			$resources = $tempResources;
+		}
 
 		if (!empty($selectedResourceId))
 		{
@@ -130,7 +151,8 @@ class CalendarPresenter
 									   $this->privacyFilter));
 		$this->page->BindCalendar($calendar);
 
-		$this->page->BindFilters(new CalendarFilters($schedules, $resources, $selectedScheduleId, $selectedResourceId));
+
+		$this->page->BindFilters(new CalendarFilters($schedules, $resources, $selectedScheduleId, $selectedResourceId, $resourceGroups));
 
 		$this->page->SetDisplayDate($calendar->FirstDay());
 		$this->page->SetScheduleId($selectedScheduleId);

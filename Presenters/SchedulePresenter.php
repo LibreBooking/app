@@ -145,5 +145,3 @@ class SchedulePresenter extends ActionPresenter implements ISchedulePresenter {
 		$this->_page->SetLayoutResponse(new ScheduleLayoutSerializable($periods));
 	}
 }
-
-?>

@@ -17,7 +17,10 @@ You should have received a copy of the GNU General Public License
 along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 *}
 <div id="filter">
-{translate key="ChangeCalendar"}
+	{if $GroupName}
+		<span class="groupName">{$GroupName}</span>
+	{else}
+<label for="calendarFilter">{translate key="ChangeCalendar"}</label>
 <select id="calendarFilter" class="textbox">
 {foreach from=$filters->GetFilters() item=filter}
 	<option value="{$filter->Id()}" class="schedule" {if $filter->Selected()}selected="selected"{/if}>{$filter->Name()}</option>
@@ -25,6 +28,11 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		<option value="{$subfilter->Id()}" class="resource" {if $subfilter->Selected()}selected="selected"{/if}>{$subfilter->Name()}</option>
 	{/foreach}
 {/foreach}
-
+	{/if}
 </select>
+	<a href="#" id="showResourceGroups">{translate key=ResourceGroups}</a>
+</div>
+
+<div id="resourceGroupsContainer">
+	<div id="resourceGroups"></div>
 </div>

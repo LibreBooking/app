@@ -1,103 +1,112 @@
-.monthCalendar
-{
+.monthCalendar {
 	width: 100%;
 	border-collapse: collapse;
 }
 
-.monthCalendar a
-{
+.monthCalendar a {
 	text-decoration: none;
 }
 
-.monthCalendar a:hover
-{
+.monthCalendar a:hover {
 	text-decoration: underline;
 }
 
-.monthCalendar, .monthCalendar td, .monthCalendar th
-{
+.monthCalendar, .monthCalendar td, .monthCalendar th {
 	border: solid 1px #dddddd;
 }
 
-.dayName th
-{
+.dayName th {
 	background-color: #fcfcfc;
 	padding: 3px 0px;
 	width: 14%;
 }
 
-.monthCalendar td
-{
+.monthCalendar td {
 	height: 120px;
 	vertical-align: top;
 	padding: 2px;
 }
 
-.today
-{
+.today {
 	background-color: #FFFFE0;
 }
 
-.unimportant
-{
+.unimportant {
 	background-color: #ededed;
 }
 
-.hover
-{
+.hover {
 	cursor: pointer;
 	background-color: #D9E9FA;
 }
 
-.calendarHeading
-{
+.calendarHeading {
 	color: #666666;
 	border-bottom: solid 1px #666666;
 	padding: 10px 0px 3px 5px;;
 	margin-bottom: 10px;
-	font-size:16pt;
+	font-size: 16pt;
 	font-weight: bold;
 }
 
-.calendarHeading a
-{
+.calendarHeading a {
 	font-weight: normal;
 	font-size: 10pt;
 }
 
-.noresults
-{
+.noresults {
 	font-style: italic;
 	font-size: 14pt;
 }
 
-.fc-agenda-allday
-{
-	display:none;
+.fc-agenda-allday {
+	display: none;
 }
 
-#filter
-{
+#filter {
 	margin: 15px;
 	text-align: center;
 }
 
-option.schedule
-{
+option.schedule {
 	padding-left: 2px;
 }
 
-option.resource
-{
+option.resource {
 	padding-left: 15px;
 }
 
-.calendar-subscription
-{
-    text-align: right;
-    padding: 10px 0px;
+.calendar-subscription {
+	text-align: right;
+	padding: 10px 0px;
 }
 
 #calendar a, #calendar a:visited {
 	color: #fff;
+}
+
+ul.jqtree-tree li.jqtree-selected > .jqtree-element,
+ul.jqtree-tree li.jqtree-selected > .jqtree-element:hover {
+	background: none;
+	font-weight: bold;
+}
+
+ul.jqtree-tree .jqtree-toggler {
+	top: 10%;
+}
+
+#resourceGroupsContainer {
+	background-color: #fff;
+	padding:10px;
+	display: none;
+	width: 200px;
+	height: 300px;
+	border: solid 1px #999;
+	z-index:200;
+	position:absolute;
+}
+
+.groupName {
+	font-size:1.5em;
+	font-weight: bold;
 }

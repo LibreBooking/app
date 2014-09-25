@@ -43,6 +43,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 {jsfile src="reservationPopup.js"}
 {jsfile src="calendar.js"}
 {jsfile src="js/fullcalendar.min.js"}
+{jsfile src="js/tree.jquery.js"}
 
 <script type="text/javascript">
 $(document).ready(function() {
@@ -81,5 +82,7 @@ $(document).ready(function() {
 
 	var calendar = new Calendar(options, reservations);
 	calendar.init();
+
+	calendar.bindResourceGroups({$ResourceGroupsAsJson}, {$SelectedGroupNode|default:0});
 });
 </script>

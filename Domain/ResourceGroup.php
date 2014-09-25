@@ -76,6 +76,15 @@ class ResourceGroupTree
 			return array_slice($this->groups, 1);
 		}
 	}
+	
+	/*
+	 * @param int $groupId
+	 * @return ResourceGroup
+	 */
+	public function GetGroup($groupId)
+	{
+		return $this->references[$groupId];
+	}
 
 	/**
 	 * @param int $groupId

@@ -95,6 +95,121 @@ function Calendar(opts, reservations)
 		$('#dayDialogCreate').click(function(e){
 			openNewReservation();
 		});
+
+		$('#showResourceGroups').click(function(e){
+			e.preventDefault();
+
+			var resourceGroupsContainer = $('#resourceGroupsContainer');
+
+			if (resourceGroupsContainer.is(':visible'))
+			{
+				resourceGroupsContainer.hide();
+			}
+			else
+			{
+				if (!resourceGroupsContainer.data('positionSet'))
+				{
+					resourceGroupsContainer.position({my:'left top',at: 'right bottom',of:'#showResourceGroups'})
+				}
+				resourceGroupsContainer.data('positionSet', true);
+				resourceGroupsContainer.show();
+			}
+		})
+	};
+
+	Calendar.prototype.bindResourceGroups = function(resourceGroups, selectedNode)
+	{
+		// this is copied out of schedule.js, so this needs to be fixed
+
+		function ChangeGroup(groupId)
+		{
+			RedirectToSelf('gid', /gid=\d+/i, "gid=" + groupId, RemoveResourceId);
+		}
+
+		function ChangeResource(resourceId)
+		{
+			RedirectToSelf('rid', /rid=\d+/i, "rid=" + resourceId, RemoveGroupId);
+		}
+
+		function RemoveResourceId(url)
+		{
+			if (!url)
+			{
+				url = window.location.href;
+			}
+			return url.replace(/&*rid=\d+/i, "");
+		}
+
+		function RemoveGroupId(url)
+		{
+			return url.replace(/&*gid=\d+/i, "");
+		}
+
+		function RedirectToSelf(queryStringParam, regexMatch, substitution, preProcess)
+		{
+			var url = window.location.href;
+			var newUrl = window.location.href;
+
+			if (preProcess)
+			{
+				newUrl = preProcess(url);
+				newUrl = newUrl.replace(/&{2,}/i, "");
+			}
+
+			if (newUrl.indexOf(queryStringParam + "=") != -1)
+			{
+				newUrl = newUrl.replace(regexMatch, substitution);
+			}
+			else if (newUrl.indexOf("?") != -1)
+			{
+				newUrl = newUrl + "&" + substitution;
+			}
+			else
+			{
+				newUrl = newUrl + "?" + substitution;
+			}
+
+			newUrl = newUrl.replace("#", "");
+
+			window.location = newUrl;
+		}
+
+		var groupDiv = $("#resourceGroups");
+		groupDiv.tree({
+					data: resourceGroups,
+					saveState: 'resourceCalendar',
+
+					onCreateLi: function (node, $li)
+					{
+						if (node.type == 'resource')
+						{
+							$li.addClass('group-resource')
+						}
+					}
+				});
+
+				groupDiv.bind(
+						'tree.select',
+						function (event)
+						{
+							if (event.node)
+							{
+								var node = event.node;
+								if (node.type == 'resource')
+								{
+									ChangeResource(node.resource_id);
+								}
+								else
+								{
+									ChangeGroup(node.id);
+								}
+							}
+						});
+
+		if (selectedNode)
+		{
+			groupDiv.tree('openNode', groupDiv.tree('getNodeById', selectedNode));
+		}
 	};
 
 	var dateVar = null;
