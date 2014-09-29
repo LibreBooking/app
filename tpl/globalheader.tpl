@@ -85,7 +85,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 	<!-- End CSS -->
 </head>
 <body>
-{if $NoBorders neq 'true' }
+
 <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
 	<div class="container-fluid">
 		<div class="navbar-header">
@@ -240,5 +240,5 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		</div>
 	</div>
 </nav>
-{/if}
+
 <div id="main" class="container-fluid">
