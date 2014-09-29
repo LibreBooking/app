@@ -384,7 +384,7 @@ class du_nl extends en_us
 		$strings['NoScheduleAdministratorLabel'] = 'Geen Plannings Administrator';
 		$strings['ScheduleAdministrator'] = 'Plannings Administrator';
 		$strings['Total'] = 'Totaal';
-		$strings['QuantityReserved'] = 'Aantal Gereserveerd;
+		$strings['QuantityReserved'] = 'Aantal Gereserveerd';
 		$strings['AllAccessories'] = 'Alle Benodigdheden';
 		$strings['GetReport'] = 'Open Rapportage';
 		$strings['NoResultsFound'] = 'Geen overeenkomende resultaten gevonden';
