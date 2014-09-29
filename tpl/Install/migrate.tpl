@@ -78,7 +78,7 @@ Done!
 							migrated.find('.legacyCount').text(data.LegacyCount);
 							migrated.find('.percentComplete').text(data.PercentComplete);
 							migrated.show();
-							console.log('Migrating data ' + elementType);
+							//console.log('Migrating data ' + elementType);
 							if (data.RemainingCount > 0)
 							{
 								migrateParams.current();
