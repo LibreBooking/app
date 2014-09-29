@@ -41,7 +41,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
 		<script type="text/javascript" src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
 		<script type="text/javascript" src="//cdn.jsdelivr.net/qtip2/2.2.0/jquery.qtip.min.js"></script>
-		<script type="text/javascript" src="//malsup.github.com/jquery.form.js"></script> 
+		<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery.form/3.50/jquery.form.min.js"></script> 
 	{/if}
 	{jsfile src="phpscheduleit.js"}
 	<!-- End JavaScript -->
@@ -85,7 +85,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 	<!-- End CSS -->
 </head>
 <body>
-
+{if $NoBorders neq 'true' }
 <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
 	<div class="container-fluid">
 		<div class="navbar-header">
@@ -240,5 +240,5 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		</div>
 	</div>
 </nav>
-
+{/if}
 <div id="main" class="container-fluid">
