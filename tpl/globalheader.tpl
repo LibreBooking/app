@@ -41,7 +41,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
 		<script type="text/javascript" src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
 		<script type="text/javascript" src="//cdn.jsdelivr.net/qtip2/2.2.0/jquery.qtip.min.js"></script>
-		<script type="text/javascript" src="http://malsup.github.com/jquery.form.js"></script> 
+		<script type="text/javascript" src="//malsup.github.com/jquery.form.js"></script> 
 	{/if}
 	{jsfile src="phpscheduleit.js"}
 	<!-- End JavaScript -->
