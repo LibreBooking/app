@@ -135,7 +135,7 @@ class ReportingServiceTests extends TestBase
 
 		$savedReport = new FakeSavedReport();
 		$data = array();
-		$report = new CustomReport($data);
+		$report = new CustomReport($data, new FakeAttributeRepository());
 
 		$this->reportingRepository->expects($this->once())
 				->method('LoadSavedReportForUser')
@@ -178,5 +178,3 @@ class ReportingServiceTests extends TestBase
 		$this->rs->DeleteSavedReport($reportId, $userId);
 	}
 }
-
-?>

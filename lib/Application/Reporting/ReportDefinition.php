@@ -2,20 +2,25 @@
 /**
 Copyright 2012-2014 Nick Korbel
 
-This file is part of Booked SchedulerBooked SchedulereIt is free software: you can redistribute it and/or modify
+This file is part of Booked Scheduler.
+
+Booked Scheduler is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation, either version 3 of the License, or
-(at your option) any later versBooked SchedulerduleIt is distributed in the hope that it will be useful,
+(at your option) any later version.
+
+Booked Scheduler is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
-alBooked SchedulercheduleIt.  If not, see <http://www.gnu.org/licenses/>.
+along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 require_once(ROOT_DIR . 'lib/Application/Reporting/ChartColumnDefinition.php');
 require_once(ROOT_DIR . 'lib/Application/Reporting/ReportColumn.php');
+require_once(ROOT_DIR . 'lib/Common/Helpers/String.php');
 
 interface IReportDefinition
 {
@@ -65,21 +70,23 @@ class ReportDefinition implements IReportDefinition
 	{
 		$dateFormat = Resources::GetInstance()->GeneralDateTimeFormat();
 		$orderedColumns = array(
-			ColumnNames::ACCESSORY_NAME => new ReportStringColumn('Accessory', ChartColumnDefinition::Label(ColumnNames::ACCESSORY_ID, ChartGroup::Accessory)),
-			ColumnNames::RESOURCE_NAME_ALIAS => new ReportStringColumn('Resource', ChartColumnDefinition::Label(ColumnNames::RESOURCE_ID, ChartGroup::Resource)),
-			ColumnNames::QUANTITY => new ReportStringColumn('QuantityReserved', ChartColumnDefinition::Total()),
-			ColumnNames::RESERVATION_START => new ReportDateColumn('BeginDate', $timezone, $dateFormat, ChartColumnDefinition::Date()),
-			ColumnNames::RESERVATION_END => new ReportDateColumn('EndDate', $timezone, $dateFormat, ChartColumnDefinition::Null()),
-			ColumnNames::RESERVATION_TITLE => new ReportStringColumn('Title', ChartColumnDefinition::Null()),
-			ColumnNames::RESERVATION_DESCRIPTION => new ReportStringColumn('Description', ChartColumnDefinition::Null()),
-			ColumnNames::REFERENCE_NUMBER => new ReportStringColumn('ReferenceNumber', ChartColumnDefinition::Null()),
-			ColumnNames::OWNER_FULL_NAME_ALIAS => new ReportStringColumn('User', ChartColumnDefinition::Label(ColumnNames::OWNER_USER_ID)),
-			ColumnNames::GROUP_NAME_ALIAS => new ReportStringColumn('Group', ChartColumnDefinition::Label(ColumnNames::GROUP_ID)),
-			ColumnNames::SCHEDULE_NAME_ALIAS => new ReportStringColumn('Schedule', ChartColumnDefinition::Label(ColumnNames::SCHEDULE_ID)),
-			ColumnNames::RESERVATION_CREATED => new ReportDateColumn('Created', $timezone, $dateFormat, ChartColumnDefinition::Null()),
-			ColumnNames::RESERVATION_MODIFIED => new ReportDateColumn('LastModified', $timezone, $dateFormat, ChartColumnDefinition::Null()),
-			ColumnNames::TOTAL => new ReportStringColumn('Total', ChartColumnDefinition::Total()),
-			ColumnNames::TOTAL_TIME => new ReportTimeColumn('Total', ChartColumnDefinition::Total()),
+				ColumnNames::ACCESSORY_NAME => new ReportStringColumn('Accessory',
+																	  ChartColumnDefinition::Label(ColumnNames::ACCESSORY_ID, ChartGroup::Accessory)),
+				ColumnNames::RESOURCE_NAME_ALIAS => new ReportStringColumn('Resource',
+																		   ChartColumnDefinition::Label(ColumnNames::RESOURCE_ID, ChartGroup::Resource)),
+				ColumnNames::QUANTITY => new ReportStringColumn('QuantityReserved', ChartColumnDefinition::Total()),
+				ColumnNames::RESERVATION_START => new ReportDateColumn('BeginDate', $timezone, $dateFormat, ChartColumnDefinition::Date()),
+				ColumnNames::RESERVATION_END => new ReportDateColumn('EndDate', $timezone, $dateFormat, ChartColumnDefinition::Null()),
+				ColumnNames::RESERVATION_TITLE => new ReportStringColumn('Title', ChartColumnDefinition::Null()),
+				ColumnNames::RESERVATION_DESCRIPTION => new ReportStringColumn('Description', ChartColumnDefinition::Null()),
+				ColumnNames::REFERENCE_NUMBER => new ReportStringColumn('ReferenceNumber', ChartColumnDefinition::Null()),
+				ColumnNames::OWNER_FULL_NAME_ALIAS => new ReportStringColumn('User', ChartColumnDefinition::Label(ColumnNames::OWNER_USER_ID)),
+				ColumnNames::GROUP_NAME_ALIAS => new ReportStringColumn('Group', ChartColumnDefinition::Label(ColumnNames::GROUP_ID)),
+				ColumnNames::SCHEDULE_NAME_ALIAS => new ReportStringColumn('Schedule', ChartColumnDefinition::Label(ColumnNames::SCHEDULE_ID)),
+				ColumnNames::RESERVATION_CREATED => new ReportDateColumn('Created', $timezone, $dateFormat, ChartColumnDefinition::Null()),
+				ColumnNames::RESERVATION_MODIFIED => new ReportDateColumn('LastModified', $timezone, $dateFormat, ChartColumnDefinition::Null()),
+				ColumnNames::TOTAL => new ReportStringColumn('Total', ChartColumnDefinition::Total()),
+				ColumnNames::TOTAL_TIME => new ReportTimeColumn('Total', ChartColumnDefinition::Total()),
 		);
 
 		$reportColumns = $report->GetColumns();
@@ -91,6 +98,11 @@ class ReportDefinition implements IReportDefinition
 				$this->columns[$key] = $column;
 			}
 		}
+
+		foreach ($reportColumns->GetCustomAttributes() as $columnName)
+		{
+			$this->columns[$columnName] = new ReportStringColumn($columnName, ChartColumnDefinition::Null());
+		}
 	}
 
 	public function GetColumnHeaders()
@@ -100,6 +112,12 @@ class ReportDefinition implements IReportDefinition
 
 	public function GetRow($row)
 	{
+		$attributes = null;
+		if (array_key_exists(ColumnNames::ATTRIBUTE_LIST, $row))
+		{
+			$attributes = CustomAttributes::Parse($row[ColumnNames::ATTRIBUTE_LIST]);
+		}
+
 		$formattedRow = array();
 		foreach ($this->columns as $key => $column)
 		{
@@ -108,7 +126,19 @@ class ReportDefinition implements IReportDefinition
 				$this->sum += $row[$key];
 				$this->sumColumn = $column;
 			}
-			$formattedRow[] = new ReportCell($column->GetData($row[$key]), $column->GetChartData($row, $key), $column->GetChartColumnType(), $column->GetChartGroup());
+			else if ($attributes != null && BookedStringHelper::StartsWith($key, 'attribute'))
+			{
+				$id = intval(str_replace('attribute', '', $key));
+				$attribute = $attributes->Get($id);
+				$formattedRow[] = new ReportAttributeCell($column->GetData($attribute));
+			}
+			else
+			{
+				$formattedRow[] = new ReportCell($column->GetData($row[$key]),
+												 $column->GetChartData($row, $key),
+												 $column->GetChartColumnType(),
+												 $column->GetChartGroup());
+			}
 		}
 
 		return $formattedRow;
@@ -132,13 +162,14 @@ class ReportDefinition implements IReportDefinition
 		{
 			return ChartType::Total;
 		}
-		else if(array_key_exists(ColumnNames::TOTAL_TIME, $this->columns))
+		else
 		{
-			return ChartType::TotalTime;
+			if (array_key_exists(ColumnNames::TOTAL_TIME, $this->columns))
+			{
+				return ChartType::TotalTime;
+			}
 		}
 
 		return ChartType::Date;
 	}
 }
-
-?>

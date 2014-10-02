@@ -191,6 +191,3 @@ class GenerateReportPresenter extends ActionPresenter
 		return new Report_Filter($this->page->GetResourceId(), $this->page->GetScheduleId(), $this->page->GetUserId(), $this->page->GetGroupId(), $this->page->GetAccessoryId());
 	}
 }
-
-
-?>

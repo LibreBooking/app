@@ -2,19 +2,38 @@
 /**
 Copyright 2012-2014 Nick Korbel
 
-This file is part of Booked SchedulerBooked SchedulereIt is free software: you can redistribute it and/or modify
+This file is part of Booked Scheduler.
+
+Booked Scheduler is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation, either version 3 of the License, or
-(at your option) any later versBooked SchedulerduleIt is distributed in the hope that it will be useful,
+(at your option) any later version.
+
+Booked Scheduler is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
-alBooked SchedulercheduleIt.  If not, see <http://www.gnu.org/licenses/>.
+along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 require_once(ROOT_DIR . 'lib/Application/Reporting/ChartColumnDefinition.php');
+
+class ReportAttributeCell extends ReportCell
+{
+	private $value;
+
+	public function __construct($value)
+	{
+		$this->value = $value;
+	}
+
+	public function Value()
+	{
+		return $this->value;
+	}
+}
 
 class ReportCell
 {
@@ -78,12 +97,17 @@ abstract class ReportColumn
 	/**
 	 * @var string
 	 */
-	private $titleKey;
+	protected $titleKey;
 
 	/**
 	 * @var ChartColumnDefinition
 	 */
-	private $chartColumnDefinition;
+	protected $chartColumnDefinition;
+
+	/**
+	 * @var string
+	 */
+	protected $title;
 
 	/**
 	 * @param $titleKey string
@@ -101,6 +125,22 @@ abstract class ReportColumn
 	public function TitleKey()
 	{
 		return $this->titleKey;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function Title()
+	{
+		return $this->title;
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function HasTitle()
+	{
+		return $this->title != null;
 	}
 
 	/**
@@ -141,9 +181,10 @@ abstract class ReportColumn
 
 class ReportStringColumn extends ReportColumn
 {
-	public function __construct($titleKey, ChartColumnDefinition $chartColumnDefinition)
+	public function __construct($title, ChartColumnDefinition $chartColumnDefinition)
 	{
-		parent::__construct($titleKey, $chartColumnDefinition);
+		parent::__construct(null, $chartColumnDefinition);
+		$this->title = $title;
 	}
 }
 
@@ -183,5 +224,3 @@ class ReportTimeColumn extends ReportColumn
 		return new TimeInterval($data);
 	}
 }
-
-?>

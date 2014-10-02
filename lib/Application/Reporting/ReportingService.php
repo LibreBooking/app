@@ -90,9 +90,27 @@ class ReportingService implements IReportingService
 	 */
 	private $repository;
 
-	public function __construct(IReportingRepository $repository)
+	/**
+	 * @var IAttributeRepository
+	 */
+	private $attributeRepository;
+
+	/**
+	 * @param IReportingRepository $repository
+	 * @param IAttributeRepository|null $attributeRepository
+	 */
+	public function __construct(IReportingRepository $repository, $attributeRepository = null)
 	{
 		$this->repository = $repository;
+
+		if ($attributeRepository == null)
+		{
+			$this->attributeRepository = new AttributeRepository();
+		}
+		else
+		{
+			$this->attributeRepository = $attributeRepository;
+		}
 	}
 
 	public function GenerateCustomReport(Report_Usage $usage, Report_ResultSelection $selection, Report_GroupBy $groupBy, Report_Range $range, Report_Filter $filter)
@@ -109,7 +127,7 @@ class ReportingService implements IReportingService
 		$filter->Add($builder);
 
 		$data = $this->repository->GetCustomReport($builder);
-		return new CustomReport($data);
+		return new CustomReport($data, $this->attributeRepository);
 	}
 
 	public function Save($reportName, $userId, Report_Usage $usage, Report_ResultSelection $selection, Report_GroupBy $groupBy, Report_Range $range, Report_Filter $filter)
@@ -151,10 +169,6 @@ class ReportingService implements IReportingService
 	public function GenerateCommonReport(ICannedReport $cannedReport)
 	{
 		$data = $this->repository->GetCustomReport($cannedReport->GetBuilder());
-		return new CustomReport($data);
+		return new CustomReport($data, $this->attributeRepository);
 	}
 }
-
-
-
-?>

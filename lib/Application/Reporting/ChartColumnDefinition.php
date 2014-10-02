@@ -128,4 +128,3 @@ class ChartColumnDefinition
 		return $this->chartGroup;
 	}
 }
-?>

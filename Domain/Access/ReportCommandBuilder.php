@@ -24,6 +24,7 @@ class ReportCommandBuilder
 				FROM reservation_instances ri
 				INNER JOIN reservation_series rs ON rs.series_id = ri.series_id
 				INNER JOIN users owner ON owner.user_id = rs.owner_id
+
 				[JOIN_TOKEN]
 				WHERE rs.status_id <> 2
 				[AND_TOKEN]
@@ -32,7 +33,9 @@ class ReportCommandBuilder
 				[LIMIT_TOKEN]';
 
 	const RESERVATION_LIST_FRAGMENT = 'rs.date_created as date_created, rs.last_modified as last_modified, rs.repeat_type,
-		rs.description as description, rs.title as title, rs.status_id as status_id, ri.reference_number, ri.start_date, ri.end_date';
+		rs.description as description, rs.title as title, rs.status_id as status_id, ri.reference_number, ri.start_date, ri.end_date,
+							(SELECT GROUP_CONCAT(CONCAT(cav.custom_attribute_id,\'=\', cav.attribute_value) SEPARATOR "!sep!")
+								FROM custom_attribute_values cav WHERE cav.entity_id = ri.series_id AND cav.attribute_category = 1) as attribute_list';
 
 	const COUNT_FRAGMENT = 'COUNT(1) as total';
 

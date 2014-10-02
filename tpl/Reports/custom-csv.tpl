@@ -16,7 +16,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 *}
-{foreach from=$Definition->GetColumnHeaders() item=column}"{translate key=$column->TitleKey()}",{/foreach}
+{foreach from=$Definition->GetColumnHeaders() item=column}"{if $column->HasTitle()}{$column->Title()}{else}{translate key=$column->TitleKey()}{/if}",{/foreach}
 
 {foreach from=$Report->GetData()->Rows() item=row}{foreach from=$Definition->GetRow($row) item=data}"{$data->Value()|escape}",{/foreach}
 

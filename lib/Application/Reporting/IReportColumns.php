@@ -22,9 +22,12 @@ interface IReportColumns
 	public function Exists($columnName);
 
 	/**
-	 * @abstract
-	 * @return array|string
+	 * @return string[]
 	 */
 	public function GetAll();
+
+	/**
+	 * @return string[]
+	 */
+	public function GetCustomAttributes();
 }
-?>

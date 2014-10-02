@@ -74,6 +74,14 @@ class FakeReportColumns implements IReportColumns
 	{
 		return array();
 	}
+
+	/**
+	 * @return string[]
+	 */
+	public function GetCustomAttributes()
+	{
+		return array();
+	}
 }
 
 class FakeReportData implements IReportData

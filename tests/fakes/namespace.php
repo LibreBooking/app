@@ -63,4 +63,4 @@ require_once(ROOT_DIR . 'tests/fakes/ExistingReservationSeriesBuilder.php');
 require_once(ROOT_DIR . 'tests/fakes/FakeAttributeList.php');
 require_once(ROOT_DIR . 'tests/fakes/FakeResourceGroupTree.php');
 require_once(ROOT_DIR . 'tests/fakes/FakeAuthorizationService.php');
-require_once(ROOT_DIR . 'tests/fakes/FakeReservationViewRepository.php');
+require_once(ROOT_DIR . 'tests/fakes/FakeReservationViewRepository.php');require_once(ROOT_DIR . 'tests/fakes/FakeAttributeRepository.php');

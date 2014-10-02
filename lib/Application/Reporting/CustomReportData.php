@@ -30,5 +30,3 @@ class CustomReportData implements IReportData
 		return $this->rows;
 	}
 }
-
-?>
