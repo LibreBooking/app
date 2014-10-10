@@ -57,8 +57,8 @@ class ReportDefinitionTests extends TestBase
 		$headerKeys = $definition->GetColumnHeaders();
 
 		$this->assertEquals(3, count($headerKeys));
-		$this->assertEquals("attribute{$attributes[0]->Id()}", $headerKeys['attribute1']->Title());
-		$this->assertEquals("attribute{$attributes[1]->Id()}", $headerKeys['attribute2']->Title());
+		$this->assertEquals('test attribute', $headerKeys['attribute1']->Title());
+		$this->assertEquals('test attribute2', $headerKeys['attribute2']->Title());
 	}
 
 	public function testOrdersAndFormatsData()

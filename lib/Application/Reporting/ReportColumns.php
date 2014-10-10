@@ -33,10 +33,11 @@ class ReportColumns implements IReportColumns
 
 	/**
 	 * @param $attributeId int
+	 * @param $label string
 	 */
-	public function AddAttribute($attributeId)
+	public function AddAttribute($attributeId, $label)
 	{
-		$this->attributeColumns[] = "attribute$attributeId";
+		$this->attributeColumns[] = new AttributeReportColumn("attribute$attributeId", $label);
 	}
 
 	public function Exists($columnName)

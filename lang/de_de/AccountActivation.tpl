@@ -18,7 +18,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 *}
 {include file='..\..\tpl\Email\emailheader.tpl'}
 
-Hallo {$FirstName},<br/>
+Sehr geehrte/r {$FirstName} {$LastName},<br/>
 <br />
 Vielen Dank für Ihre Registrierung. 
 Durch einen Klick auf diesen <h3>Link <a href="{$ActivationUrl}"></h3>aktivieren Sie Ihr Konto</a>.

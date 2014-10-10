@@ -99,9 +99,9 @@ class ReportDefinition implements IReportDefinition
 			}
 		}
 
-		foreach ($reportColumns->GetCustomAttributes() as $columnName)
+		foreach ($reportColumns->GetCustomAttributes() as $column)
 		{
-			$this->columns[$columnName] = new ReportStringColumn($columnName, ChartColumnDefinition::Null());
+			$this->columns[$column->Id] = new ReportStringColumn($column->Label, ChartColumnDefinition::Null());
 		}
 	}
 
@@ -126,7 +126,8 @@ class ReportDefinition implements IReportDefinition
 				$this->sum += $row[$key];
 				$this->sumColumn = $column;
 			}
-			else if ($attributes != null && BookedStringHelper::StartsWith($key, 'attribute'))
+			
+			if ($attributes != null && BookedStringHelper::StartsWith($key, 'attribute'))
 			{
 				$id = intval(str_replace('attribute', '', $key));
 				$attribute = $attributes->Get($id);
