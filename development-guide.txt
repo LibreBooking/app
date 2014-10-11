@@ -1,6 +1,6 @@
 A) Project:
-    - SVN Repository - https://svn.code.sf.net/p/phpscheduleit/code/development
-    - To contribute and submit your code please contact Nick Korbel <nkorbel@gmail.com>
+    - GIT Repository - https://git.code.sf.net/p/phpscheduleit/source
+    - To contribute and submit your code please contact Nick Korbel <nick@twinkletoessoftware.com>
     - Programming paradigm: toward 100% object oriented PHP5
     - Please include the GPL header on every new source file with your name and year. If you are altering an existing file, just add your name and year.
 
