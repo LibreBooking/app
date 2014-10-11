@@ -115,7 +115,7 @@ interface IReservationComponentInitializer
 	public function BindAvailableResources($resources);
 
 	/**
-	 * @param $accessories array|AccessoryDto[]
+	 * @param $accessories Accessory[]
 	 */
 	public function BindAvailableAccessories($accessories);
 
@@ -397,7 +397,7 @@ abstract class ReservationInitializerBase implements IReservationInitializer, IR
 	}
 
 	/**
-	 * @param $accessories array|AccessoryDto[]
+	 * @param $accessories Accessory[]
 	 */
 	public function BindAvailableAccessories($accessories)
 	{

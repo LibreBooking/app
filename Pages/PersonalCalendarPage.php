@@ -90,8 +90,11 @@ class PersonalCalendarPage extends ActionPage implements IPersonalCalendarPage
 		$userRepository = new UserRepository();
 		$subscriptionService = new CalendarSubscriptionService($userRepository, new ResourceRepository(), new ScheduleRepository());
 		$resourceRepository = new ResourceRepository();
-		$resourceService = new ResourceService($resourceRepository, PluginManager::Instance()
-																				 ->LoadPermission(), new AttributeService(new AttributeRepository()), $userRepository);
+		$resourceService = new ResourceService($resourceRepository,
+											   PluginManager::Instance()->LoadPermission(),
+											   new AttributeService(new AttributeRepository()),
+											   $userRepository,
+											   new AccessoryRepository());
 
 		$this->presenter = new PersonalCalendarPresenter(
 				$this,

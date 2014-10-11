@@ -14,10 +14,12 @@ function AccessoryManagement(opts) {
 		
 		editDialog: $('#editDialog'),
 		deleteDialog: $('#deleteDialog'),
+		accessoryResourcesDialog: $('#accessoryResourcesDialog'),
 
 		addForm: $('#addForm'),
 		form: $('#editForm'),
-		deleteForm: $('#deleteForm')
+		deleteForm: $('#deleteForm'),
+		accessoryResourcesForm: $('#accessoryResourcesForm')
 	};
 
 	var accessories = new Object();
@@ -26,6 +28,7 @@ function AccessoryManagement(opts) {
 
 		ConfigureAdminDialog(elements.editDialog, 450, 200);
 		ConfigureAdminDialog(elements.deleteDialog,  500, 200);
+		ConfigureAdminDialog(elements.accessoryResourcesDialog);
 
 		elements.accessoryList.delegate('a.update', 'click', function(e) {
 			setActiveId($(this));
@@ -35,8 +38,13 @@ function AccessoryManagement(opts) {
 		elements.accessoryList.delegate('.edit', 'click', function() {
 			editAccessory();
 		});
+
 		elements.accessoryList.delegate('.delete', 'click', function() {
 			deleteAccessory();
+		});
+
+		elements.accessoryList.delegate('.resources', 'click', function() {
+			showAccessoryResources();
 		});
 
 		$(".save").click(function() {
@@ -47,9 +55,15 @@ function AccessoryManagement(opts) {
 			$(this).closest('.dialog').dialog("close");
 		});
 
+
+		elements.accessoryResourcesDialog.delegate('.resourceCheckbox', 'click', function() {
+			handleAccessoryResourceClick($(this));
+		});
+
 		ConfigureAdminForm(elements.addForm, getSubmitCallback(options.actions.add));
 		ConfigureAdminForm(elements.deleteForm, getSubmitCallback(options.actions.deleteAccessory));
 		ConfigureAdminForm(elements.form, getSubmitCallback(options.actions.edit));
+		ConfigureAdminForm(elements.accessoryResourcesForm, defaultSubmitCallback);
 
 		WireUpUnlimited(elements.addUnlimited, elements.addQuantity);
 		WireUpUnlimited(elements.editUnlimited, elements.editQuantity);
@@ -59,6 +73,11 @@ function AccessoryManagement(opts) {
 		return function() {
 			return options.submitUrl + "?aid=" + getActiveId() + "&action=" + action;
 		};
+	};
+
+	var defaultSubmitCallback = function (form)
+	{
+		return options.submitUrl + "?aid=" + getActiveId() + "&action=" + form.attr('ajaxAction');
 	};
 
 	function setActiveId(activeElement) {
@@ -86,6 +105,43 @@ function AccessoryManagement(opts) {
 
 		elements.editUnlimited.trigger('change');
 		elements.editDialog.dialog('open');
+	};
+
+	function handleAccessoryResourceClick(checkbox)
+	{
+		var quantities = checkbox.closest('div').find('div');
+
+		if (checkbox.is(':checked'))
+		{
+			quantities.show();
+		}
+		else
+		{
+			quantities.hide();
+		}
+	}
+
+	var showAccessoryResources = function()
+	{
+		var accessory = getActiveAccessory();
+
+		$.get(opts.submitUrl + '?dr=accessoryResources&aid=' + accessory.id, function(data)
+		{
+			elements.accessoryResourcesDialog.find(':checkbox').prop('checked', false);
+			elements.accessoryResourcesDialog.find('.hidden').hide();
+
+			$.each(data, function(idx, resource){
+				var div = elements.accessoryResourcesDialog.find('[resource-id="' + resource.ResourceId + '"]');
+				var checkbox = div.find(':checkbox');
+				checkbox.prop('checked', true);
+				handleAccessoryResourceClick(checkbox);
+
+				div.find('[data-type="min-quantity"]').val(resource.MinQuantity);
+				div.find('[data-type="max-quantity"]').val(resource.MaxQuantity);
+			});
+			elements.accessoryResourcesDialog.dialog('option', 'title', accessory.name + ' (' + accessory.quantity + ')');
+			elements.accessoryResourcesDialog.dialog('open');
+		});
 	};
 
 	var deleteAccessory = function() {

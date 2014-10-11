@@ -46,7 +46,8 @@ class AccessoryRepositoryTests extends TestBase
 		$accessory = $this->repository->LoadById($accessoryId);
 
 		$this->assertEquals(new Accessory($accessoryId, $name, $available), $accessory);
-		$this->assertEquals($command, $this->db->_LastCommand);
+		$this->assertTrue($this->db->ContainsCommand($command));
+		$this->assertTrue($this->db->ContainsCommand(new GetAccessoryResources($accessoryId)));
 	}
 
 	public function testCanAdd()
@@ -75,7 +76,7 @@ class AccessoryRepositoryTests extends TestBase
 
 		$this->repository->Update($accessory);
 
-		$this->assertEquals($command, $this->db->_LastCommand);
+		$this->assertTrue($this->db->ContainsCommand($command));
 	}
 
 	public function testCanDelete()

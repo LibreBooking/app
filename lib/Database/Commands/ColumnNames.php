@@ -171,6 +171,9 @@ class ColumnNames
 	const ACCESSORY_ID = 'accessory_id';
 	const ACCESSORY_NAME = 'accessory_name';
 	const ACCESSORY_QUANTITY = 'accessory_quantity';
+	const ACCESSORY_RESOURCE_COUNT = 'num_resources';
+	const ACCESSORY_MINIMUM_QUANTITY = 'minimum_quantity';
+	const ACCESSORY_MAXIMUM_QUANTITY = 'maximum_quantity';
 
 	// RESERVATION ACCESSORY //
 	const QUANTITY = 'quantity';
@@ -261,6 +264,7 @@ class ColumnNames
 	const PARTICIPANT_LIST = 'participant_list';
 	const INVITEE_LIST = 'invitee_list';
 	const ATTRIBUTE_LIST = 'attribute_list';
+	const RESOURCE_ACCESSORY_LIST = 'resource_accessory_list';
 	const GROUP_LIST = 'owner_group_list';
 	const START_REMINDER_MINUTES_PRIOR = 'start_reminder_minutes';
 	const END_REMINDER_MINUTES_PRIOR = 'end_reminder_minutes';

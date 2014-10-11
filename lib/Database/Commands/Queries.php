@@ -30,6 +30,10 @@ class Queries
 			'INSERT INTO accessories (accessory_name, accessory_quantity)
 		VALUES (@accessoryname, @quantity)';
 
+	const ADD_ACCESSORY_RESOURCE =
+			'INSERT INTO resource_accessories (resource_id, accessory_id, minimum_quantity, maximum_quantity)
+		VALUES (@resourceid, @accessoryid, @minimum_quantity, @maximum_quantity)';
+
 	const ADD_ACCOUNT_ACTIVATION =
 			'INSERT INTO account_activation (user_id, activation_code, date_created) VALUES (@userid, @activation_code, @dateCreated)';
 
@@ -179,6 +183,8 @@ class Queries
 
 	const DELETE_ACCESSORY = 'DELETE FROM accessories WHERE accessory_id = @accessoryid';
 
+	const DELETE_ACCESSORY_RESOURCES = 'DELETE FROM resource_accessories WHERE accessory_id = @accessoryid';
+
 	const DELETE_ATTRIBUTE = 'DELETE FROM custom_attributes WHERE custom_attribute_id = @custom_attribute_id';
 
 	const DELETE_ATTRIBUTE_VALUES = 'DELETE FROM custom_attribute_values WHERE custom_attribute_id = @custom_attribute_id';
@@ -249,6 +255,8 @@ class Queries
 
 	const GET_ACCESSORY_BY_ID = 'SELECT * FROM accessories WHERE accessory_id = @accessoryid';
 
+	const GET_ACCESSORY_RESOURCES = 'SELECT * FROM resource_accessories WHERE accessory_id = @accessoryid';
+
 	const GET_ACCESSORY_LIST =
 			'SELECT *, rs.status_id as status_id
 		FROM reservation_instances ri
@@ -268,7 +276,17 @@ class Queries
 			ri.start_date ASC';
 
 	const GET_ALL_ACCESSORIES =
-			'SELECT * FROM accessories ORDER BY accessory_name';
+			'SELECT a.*, c.num_resources,
+			(SELECT GROUP_CONCAT(CONCAT(ra.resource_id, ",", ra.minimum_quantity, ",", ra.maximum_quantity) SEPARATOR "!sep!")
+						FROM resource_accessories ra WHERE ra.accessory_id = a.accessory_id) as resource_accessory_list
+ 			FROM accessories a
+			LEFT JOIN (
+				SELECT accessory_id, COUNT(*) AS num_resources
+				FROM resource_accessories ra
+				GROUP BY ra.accessory_id
+				) AS c ON a.accessory_id = c.accessory_id
+
+ 			ORDER BY accessory_name';
 
 	const GET_ALL_ANNOUNCEMENTS = 'SELECT * FROM announcements ORDER BY start_date';
 

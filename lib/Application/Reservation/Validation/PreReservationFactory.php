@@ -67,12 +67,18 @@ class PreReservationFactory implements IPreReservationFactory
 	 */
 	protected $userRepository;
 
+	/**
+	 * @var AccessoryRepository
+	 */
+	protected $accessoryRepository;
+
 	public function __construct()
 	{
 		$this->resourceRepository = new ResourceRepository();
 		$this->reservationRepository = new ReservationViewRepository();
 		$this->scheduleRepository = new ScheduleRepository();
 		$this->userRepository = new UserRepository();
+		$this->accessoryRepository = new AccessoryRepository();
 	}
 
 	/**
@@ -159,7 +165,8 @@ class PreReservationFactory implements IPreReservationFactory
 		$ruleProcessor->AddRule(new AdminExcludedRule(new QuotaRule(new QuotaRepository(), $this->reservationRepository, $this->userRepository, $this->scheduleRepository), $userSession, $this->userRepository));
 		$ruleProcessor->AddRule(new SchedulePeriodRule($this->scheduleRepository, $userSession));
 		$ruleProcessor->AddRule(new CustomAttributeValidationRule(new AttributeService(new AttributeRepository()), $this->userRepository), $userSession, $this->userRepository);
-		$ruleProcessor->AddRule(new AccessoryAvailabilityRule($this->reservationRepository, new AccessoryRepository(), $userSession->Timezone));
+		$ruleProcessor->AddRule(new AccessoryAvailabilityRule($this->reservationRepository, $this->accessoryRepository, $userSession->Timezone));
+		$ruleProcessor->AddRule(new AccessoryResourceRule($this->accessoryRepository));
 		$ruleProcessor->AddRule(new ResourceAvailabilityRule(new ResourceBlackoutAvailability($this->reservationRepository), $userSession->Timezone));
 		$ruleProcessor->AddRule(new ExistingResourceAvailabilityRule(new ResourceReservationAvailability($this->reservationRepository), $userSession->Timezone));
 

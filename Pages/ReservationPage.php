@@ -37,8 +37,7 @@ interface IReservationPage extends IPage
 	public function BindAvailableResources($resources);
 
 	/**
-	 * @param $accessories array|AccessoryDto[]
-	 * @return void
+	 * @param $accessories Accessory[]
 	 */
 	public function BindAvailableAccessories($accessories);
 
@@ -182,7 +181,11 @@ abstract class ReservationPage extends Page implements IReservationPage
 		$this->initializationFactory = new ReservationInitializerFactory(
 			new ScheduleRepository(),
 			$userRepository,
-			new ResourceService(new ResourceRepository(), $this->permissionServiceFactory->GetPermissionService(), new AttributeService(new AttributeRepository()), $userRepository),
+			new ResourceService(new ResourceRepository(),
+								$this->permissionServiceFactory->GetPermissionService(),
+								new AttributeService(new AttributeRepository()),
+								$userRepository,
+								new AccessoryRepository()),
 			new ReservationAuthorization(AuthorizationServiceFactory::GetAuthorizationService()),
 			ServiceLocator::GetServer()->GetUserSession()
 		);

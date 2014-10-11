@@ -17,6 +17,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 require_once(ROOT_DIR . 'lib/Config/namespace.php');
 require_once(ROOT_DIR . 'lib/Common/namespace.php');
 
@@ -151,7 +152,7 @@ class LoginPresenter
 		else
 		{
 			$defaultId = ServiceLocator::GetServer()->GetUserSession()->HomepageId;
-			$url = Pages::UrlFromId($defaultId)
+			$url = Pages::UrlFromId($defaultId);
 			$this->_page->Redirect(empty($url) ? Pages::UrlFromId(Pages::DEFAULT_HOMEPAGE_ID) : $url);
 		}
 	}

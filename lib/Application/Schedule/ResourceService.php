@@ -38,8 +38,7 @@ interface IResourceService
 	public function GetAllResources($includeInaccessibleResources, UserSession $user);
 
 	/**
-	 * @abstract
-	 * @return array|AccessoryDto[]
+	 * @return Accessory[]
 	 */
 	public function GetAccessories();
 
@@ -88,15 +87,22 @@ class ResourceService implements IResourceService
 	 */
 	private $_userRepository;
 
+	/**
+	 * @var IAccessoryRepository
+	 */
+	private $_accessoryRepository;
+
 	public function __construct(IResourceRepository $resourceRepository,
 								IPermissionService $permissionService,
 								IAttributeService $attributeService,
-								IUserRepository $userRepository)
+								IUserRepository $userRepository,
+								IAccessoryRepository $accessoryRepository)
 	{
 		$this->_resourceRepository = $resourceRepository;
 		$this->_permissionService = $permissionService;
 		$this->_attributeService = $attributeService;
 		$this->_userRepository = $userRepository;
+		$this->_accessoryRepository = $accessoryRepository;
 	}
 
 	public function GetScheduleResources($scheduleId, $includeInaccessibleResources, UserSession $user, $filter = null)
@@ -159,7 +165,7 @@ class ResourceService implements IResourceService
 
 	public function GetAccessories()
 	{
-		return $this->_resourceRepository->GetAccessoryList();
+		return $this->_accessoryRepository->LoadAll();
 	}
 
 	public function GetResourceGroups($scheduleId, UserSession $user)

@@ -24,6 +24,9 @@ class FormKeys
 	const ACCESSORY_NAME = 'accessoryName';
 	const ACCESSORY_ID = 'ACCESSORY_ID';
 	const ACCESSORY_QUANTITY_AVAILABLE = 'accessoryQuantityAvailable';
+	const ACCESSORY_RESOURCE = 'accessoryResource';
+	const ACCESSORY_MIN_QUANTITY = 'ACCESSORY_MIN_QUANTITY';
+	const ACCESSORY_MAX_QUANTITY = 'ACCESSORY_MAX_QUANTITY';
 	const ADDITIONAL_RESOURCES = 'additionalResources';
 	const ADDRESS = 'address';
 	const ALLOW_CALENDAR_SUBSCRIPTIONS = 'ALLOW_CALENDAR_SUBSCRIPTIONS';

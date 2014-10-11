@@ -500,6 +500,8 @@ class en_us extends Language
 		$strings['Common'] = 'Common';
 		$strings['AdminOnly'] = 'Is Admin Only';
 		$strings['AdvancedFilter'] = 'Advanced Filter';
+		$strings['MinimumQuantity'] = 'Minimum Quantity';
+		$strings['MaximumQuantity'] = 'Maximum Quantity';
 		$strings['ChangeLanguage'] = 'Change Language';
 		$strings['AddRule'] = 'Add Rule';
 		$strings['Attribute'] = 'Attribute';
@@ -580,6 +582,10 @@ class en_us extends Language
 		$strings['PasswordError'] = 'Password must contain at least %s letters and at least %s numbers.';
 		$strings['PasswordErrorRequirements'] = 'Password must contain a combination of at least %s upper and lower case letters and %s numbers.';
 		$strings['NoReservationAccess'] = 'You are not allowed to change this reservation.';
+		$strings['AccessoryResourceRequiredErrorMessage'] = 'Accessory %s can only be booked with resources %s';
+		$strings['AccessoryMinQuantityErrorMessage'] = 'You must book at least %s of accessory %s';
+		$strings['AccessoryMaxQuantityErrorMessage'] = 'You cannot book more than %s of accessory %s';
+		$strings['AccessoryResourceAssociationErrorMessage'] = 'Accessory \'%s\' cannot be booked with the requested resources';
 		// End Errors
 
 		// Page Titles

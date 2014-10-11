@@ -28,6 +28,8 @@ class ParameterNames
 	const ACCESSORY_ID = '@accessoryid';
 	const ACCESSORY_NAME = '@accessoryname';
 	const ACCESSORY_QUANTITY = '@quantity';
+	const ACCESSORY_MIN_QUANTITY = '@minimum_quantity';
+	const ACCESSORY_MAX_QUANTITY = '@maximum_quantity';
 
 	const ACTIVATION_CODE = '@activation_code';
 

@@ -48,4 +48,3 @@ class ReservationValidationRuleProcessor implements IReservationValidationServic
 		$this->_validationRules[] = $validationRule;
 	}
 }
-?>

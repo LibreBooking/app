@@ -30,6 +30,18 @@ class AddAccessoryCommand extends SqlCommand
 	}
 }
 
+class AddAccessoryResourceCommand extends SqlCommand
+{
+	public function __construct($accessoryId, $resourceId, $minimumQuantity, $maximumQuantity)
+	{
+		parent::__construct(Queries::ADD_ACCESSORY_RESOURCE);
+		$this->AddParameter(new Parameter(ParameterNames::ACCESSORY_ID, $accessoryId));
+		$this->AddParameter(new Parameter(ParameterNames::RESOURCE_ID, $resourceId));
+		$this->AddParameter(new Parameter(ParameterNames::ACCESSORY_MIN_QUANTITY, $minimumQuantity));
+		$this->AddParameter(new Parameter(ParameterNames::ACCESSORY_MAX_QUANTITY, $maximumQuantity));
+	}
+}
+
 class AddAccountActivationCommand extends SqlCommand
 {
 	public function __construct($userId, $activationCode)
@@ -519,6 +531,15 @@ class DeleteAccessoryCommand extends SqlCommand
 	}
 }
 
+class DeleteAcccessoryResourcesCommand extends SqlCommand
+{
+	public function __construct($accessoryId)
+	{
+		parent::__construct(Queries::DELETE_ACCESSORY_RESOURCES);
+		$this->AddParameter(new Parameter(ParameterNames::ACCESSORY_ID, $accessoryId));
+	}
+}
+
 class DeleteAttributeCommand extends SqlCommand
 {
 	public function __construct($attributeId)
@@ -784,6 +805,15 @@ class GetAccessoryByIdCommand extends SqlCommand
 	public function __construct($accessoryId)
 	{
 		parent::__construct(Queries::GET_ACCESSORY_BY_ID);
+		$this->AddParameter(new Parameter(ParameterNames::ACCESSORY_ID, $accessoryId));
+	}
+}
+
+class GetAccessoryResources extends SqlCommand
+{
+	public function __construct($accessoryId)
+	{
+		parent::__construct(Queries::GET_ACCESSORY_RESOURCES);
 		$this->AddParameter(new Parameter(ParameterNames::ACCESSORY_ID, $accessoryId));
 	}
 }

@@ -177,13 +177,13 @@ class ReservationComponentTests extends TestBase
 		$this->resourceService->expects($this->once())
 							  ->method('GetResourceGroups')
 							  ->with($this->equalTo($requestedScheduleId), $this->equalTo($this->fakeUser))
-							  ->will($this->returnValue($groups));
+		->will($this->returnValue($groups));
 
 		// accessories
-		$accessoryList = array(new AccessoryDto(1, 'a1', 30), new AccessoryDto(2, 'a2', 20));
+		$accessoryList = array(new Accessory(1, 'a1', 30), new Accessory(2, 'a2', 20));
 		$this->resourceService->expects($this->once())
-							  ->method('GetAccessories')
-							  ->will($this->returnValue($accessoryList));
+		->method('GetAccessories')
+		->will($this->returnValue($accessoryList));
 
 		$this->initializer->expects($this->once())
 						  ->method('BindResourceGroups')

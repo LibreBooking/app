@@ -47,14 +47,20 @@ class ResourceServiceTests extends TestBase
 	 */
 	private $resourceService;
 
+	/**
+	 * @var IAccessoryRepository
+	 */
+	private $accessoryRepository;
+
 	public function setup()
 	{
 		$this->permissionService = $this->getMock('IPermissionService');
 		$this->resourceRepository = $this->getMock('IResourceRepository');
 		$this->attributeService = $this->getMock('IAttributeService');
 		$this->userRepository = $this->getMock('IUserRepository');
+		$this->accessoryRepository = $this->getMock('IAccessoryRepository');
 
-		$this->resourceService = new ResourceService($this->resourceRepository, $this->permissionService, $this->attributeService, $this->userRepository);
+		$this->resourceService = new ResourceService($this->resourceRepository, $this->permissionService, $this->attributeService, $this->userRepository, $this->accessoryRepository);
 
 		parent::setup();
 	}
@@ -227,16 +233,16 @@ class ResourceServiceTests extends TestBase
 
 	public function testGetsAccessoriesFromRepository()
 	{
-		$accessoryDtos = array(new AccessoryDto(4, "lksjdf", 23));
+		$accessories = array(new Accessory(4, "lksjdf", 23));
 
-		$this->resourceRepository
+		$this->accessoryRepository
 				->expects($this->once())
-				->method('GetAccessoryList')
-				->will($this->returnValue($accessoryDtos));
+				->method('LoadAll')
+				->will($this->returnValue($accessories));
 
 		$actualAccessories = $this->resourceService->GetAccessories();
 
-		$this->assertEquals($accessoryDtos, $actualAccessories);
+		$this->assertEquals($accessories, $actualAccessories);
 	}
 
 	public function testFiltersResources()

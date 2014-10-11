@@ -65,14 +65,23 @@ class ManageAccessoriesPresenterTests extends TestBase
 	public function testWhenInitializing()
 	{
 		$accessories = array();
+		$resources = array();
 
 		$this->resourceRepository->expects($this->once())
 			->method('GetAccessoryList')
 			->will($this->returnValue($accessories));
 
+		$this->resourceRepository->expects($this->once())
+			->method('GetResourceList')
+			->will($this->returnValue($resources));
+
 		$this->page->expects($this->once())
 			->method('BindAccessories')
 			->with($this->equalTo($accessories));
+
+		$this->page->expects($this->once())
+			->method('BindResources')
+			->with($this->equalTo($resources));
 
 		$this->presenter->PageLoad();
 	}

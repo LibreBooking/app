@@ -251,8 +251,7 @@ class ResourceRepository implements IResourceRepository
 		$command = new GetAllAccessoriesCommand();
 		$accessories = array();
 
-		$reader = ServiceLocator::GetDatabase()
-				  ->Query($command);
+		$reader = ServiceLocator::GetDatabase()->Query($command);
 
 		while ($row = $reader->GetRow())
 		{
@@ -512,16 +511,28 @@ class AccessoryDto
 	 */
 	public $QuantityAvailable;
 
-	public function __construct($id, $name, $quantityAvailable)
+	/**
+	 * @var int
+	 */
+	public $AssociatedResources;
+
+	/**
+	 * @param int $id
+	 * @param string $name
+	 * @param int $quantityAvailable
+	 * @param int $associatedResourceCount
+	 */
+	public function __construct($id, $name, $quantityAvailable, $associatedResourceCount)
 	{
 		$this->Id = $id;
 		$this->Name = $name;
 		$this->QuantityAvailable = $quantityAvailable;
+		$this->AssociatedResources = (int)$associatedResourceCount;
 	}
 
 	public static function Create($row)
 	{
-		return new AccessoryDto($row[ColumnNames::ACCESSORY_ID], $row[ColumnNames::ACCESSORY_NAME], $row[ColumnNames::ACCESSORY_QUANTITY]);
+		return new AccessoryDto($row[ColumnNames::ACCESSORY_ID], $row[ColumnNames::ACCESSORY_NAME], $row[ColumnNames::ACCESSORY_QUANTITY], $row[ColumnNames::ACCESSORY_RESOURCE_COUNT]);
 	}
 }
 

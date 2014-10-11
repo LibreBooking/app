@@ -85,12 +85,12 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			<div class="col-xs-12">
 				<div class="pull-left"><span class="like-label">{translate key="ResourceList"}</span><br/>
 
-					<div id="resourceNames" style="display:inline">
-						<a href="#" class="resourceDetails">{$ResourceName}</a>
-						<input class="resourceId" type="hidden" {formname key=RESOURCE_ID} value="{$ResourceId}"/>
-						<input type="hidden" id="scheduleId" {formname key=SCHEDULE_ID} value="{$ScheduleId}"/>
-					</div>
-					{if $ShowAdditionalResources}
+                    <div id="resourceNames" style="display:inline">
+                        <a href="#" class="resourceDetails">{$ResourceName}</a>
+                        <input class="resourceId" type="hidden" id="primaryResourceId" {formname key=RESOURCE_ID} value="{$ResourceId}"/>
+                        <input type="hidden" id="scheduleId" {formname key=SCHEDULE_ID} value="{$ScheduleId}"/>
+                    </div>
+				{if $ShowAdditionalResources}
 						<a id="btnAddResources" href="#"
 						   class="small-action">{translate key=MoreResources}{html_image src="plus-small-white.png"}</a>
 					{/if}
@@ -325,24 +325,25 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 					<tr>
 						<td>{translate key=Accessory}</td>
 						<td>{translate key=QuantityRequested}</td>
-						<td>{translate key=QuantityAvailable}</td>
-					</tr>
-					{foreach from=$AvailableAccessories item=accessory}
-						<tr>
-							<td>{$accessory->Name}</td>
-							<td>
-								<input type="hidden" class="name" value="{$accessory->Name}"/>
-								<input type="hidden" class="id" value="{$accessory->Id}"/>
-								{if $accessory->QuantityAvailable == 1}
-									<input type="checkbox" name="accessory{$accessory->Id}" value="1" size="3"/>
-								{else}
-									<input type="text" name="accessory{$accessory->Id}" value="0" size="3"/>
-								{/if}
-							</td>
-							<td>{$accessory->QuantityAvailable|default:'&infin;'}</td>
-						</tr>
-					{/foreach}
-				</table>
+            <td>{translate key=QuantityAvailable}</td>
+        </tr>
+	{foreach from=$AvailableAccessories item=accessory}
+        <tr accessory-id="{$accessory->GetId()}">
+            <td>{$accessory->GetName()}</td>
+            <td>
+                <input type="hidden" class="name" value="{$accessory->GetName()}"/>
+                <input type="hidden" class="id" value="{$accessory->GetId()}"/>
+                <input type="hidden" class="resource-ids" value="{','|implode:$accessory->ResourceIds()}"/>
+				{if $accessory->GetQuantityAvailable() == 1}
+                    <input type="checkbox" name="accessory{$accessory->GetId()}" value="1" size="3"/>
+					{else}
+                    <input type="text" name="accessory{$accessory->GetId()}" value="0" size="3"/>
+				{/if}
+            </td>
+            <td>{$accessory->GetQuantityAvailable()|default:'&infin;'}</td>
+        </tr>
+	{/foreach}
+    </table>
 
 			</div>
 			<div class="modal-footer">

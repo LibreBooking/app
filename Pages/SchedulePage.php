@@ -229,7 +229,12 @@ class SchedulePage extends ActionPage implements ISchedulePage
 		$permissionServiceFactory = new PermissionServiceFactory();
 		$scheduleRepository = new ScheduleRepository();
 		$userRepository = new UserRepository();
-		$resourceService = new ResourceService(new ResourceRepository(), $permissionServiceFactory->GetPermissionService(), new AttributeService(new AttributeRepository()), $userRepository);
+		$resourceService = new ResourceService(
+				new ResourceRepository(),
+				$permissionServiceFactory->GetPermissionService(),
+				new AttributeService(new AttributeRepository()),
+				$userRepository,
+				new AccessoryRepository());
 		$pageBuilder = new SchedulePageBuilder();
 		$reservationService = new ReservationService(new ReservationViewRepository(), new ReservationListingFactory());
 		$dailyLayoutFactory = new DailyLayoutFactory();
