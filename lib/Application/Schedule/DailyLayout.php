@@ -130,7 +130,7 @@ class DailyLayout implements IDailyLayout
 
 	public function IsDateReservable(Date $date)
 	{
-		return !$date->GetDate()->LessThan(Date::Now()->GetDate());
+		 return $date->DateCompare(Date::Now()) >= 0;
 	}
 
 	public function GetLabels(Date $displayDate)
