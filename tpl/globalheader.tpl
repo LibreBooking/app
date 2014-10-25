@@ -49,7 +49,6 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 	<!-- End JavaScript -->
 
 	<!-- CSS -->
-	{cssfile src="normalize.css"}
 	{if $UseLocalJquery}
 		{cssfile src="scripts/css/smoothness/jquery-ui-1.10.4.custom.min.css"}
 		{cssfile src="css/font-awesome/css/font-awesome.min.css" rel="stylesheet"}

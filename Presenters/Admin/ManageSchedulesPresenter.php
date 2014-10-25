@@ -1,21 +1,21 @@
 <?php
 /**
-Copyright 2011-2014 Nick Korbel
-
-This file is part of Booked Scheduler.
-
-Booked Scheduler is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-Booked Scheduler is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
+ * Copyright 2011-2014 Nick Korbel
+ *
+ * This file is part of Booked Scheduler.
+ *
+ * Booked Scheduler is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Booked Scheduler is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 require_once(ROOT_DIR . 'Presenters/ActionPresenter.php');
@@ -210,6 +210,16 @@ class ManageScheduleService
 		$schedule->SetAdminGroupId($adminGroupId);
 		$this->scheduleRepository->Update($schedule);
 	}
+
+	/**
+	 * @param int $pageNumber
+	 * @param int $pageSize
+	 * @return PageableData|BookableResource[]
+	 */
+	public function GetList($pageNumber, $pageSize)
+	{
+		return $this->scheduleRepository->GetList($pageNumber, $pageSize);
+	}
 }
 
 class ManageSchedulesPresenter extends ActionPresenter
@@ -250,7 +260,9 @@ class ManageSchedulesPresenter extends ActionPresenter
 
 	public function PageLoad()
 	{
-		$schedules = $this->manageSchedulesService->GetAll();
+		$results = $this->manageSchedulesService->GetList($this->page->GetPageNumber(), $this->page->GetPageSize());
+		$schedules = $results->Results();
+
 		$sourceSchedules = $this->manageSchedulesService->GetSourceSchedules();
 
 		$layouts = array();
@@ -264,6 +276,7 @@ class ManageSchedulesPresenter extends ActionPresenter
 		$this->page->BindGroups($this->groupViewRepository->GetGroupsByRole(RoleLevel::SCHEDULE_ADMIN));
 
 		$this->page->BindSchedules($schedules, $layouts, $sourceSchedules);
+		$this->page->BindPageInfo($results->PageInfo());
 		$this->PopulateTimezones();
 
 	}

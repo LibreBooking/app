@@ -1,23 +1,24 @@
 <?php
 /**
-Copyright 2011-2014 Nick Korbel
-
-This file is part of Booked Scheduler.
-
-Booked Scheduler is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-Booked Scheduler is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
+ * Copyright 2011-2014 Nick Korbel
+ *
+ * This file is part of Booked Scheduler.
+ *
+ * Booked Scheduler is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Booked Scheduler is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+require_once(ROOT_DIR . 'Pages/IPageable.php');
 require_once(ROOT_DIR . 'Pages/Admin/AdminPage.php');
 require_once(ROOT_DIR . 'Presenters/Admin/ManageSchedulesPresenter.php');
 require_once(ROOT_DIR . 'Domain/Access/ScheduleRepository.php');
@@ -85,7 +86,7 @@ interface IUpdateSchedulePage
 	function GetTargetScheduleId();
 }
 
-interface IManageSchedulesPage extends IUpdateSchedulePage, IActionPage
+interface IManageSchedulesPage extends IUpdateSchedulePage, IActionPage, IPageable
 {
 	/**
 	 * @param Schedule[] $schedules
@@ -119,7 +120,10 @@ class ManageSchedulesPage extends ActionPage implements IManageSchedulesPage
 	public function __construct()
 	{
 		parent::__construct('ManageSchedules', 1);
-		$this->_presenter = new ManageSchedulesPresenter($this, new ManageScheduleService(new ScheduleRepository(), new ResourceRepository()), new GroupRepository());
+
+		$this->pageablePage = new PageablePage($this);
+		$this->_presenter = new ManageSchedulesPresenter($this, new ManageScheduleService(new ScheduleRepository(), new ResourceRepository()),
+														 new GroupRepository());
 	}
 
 	public function ProcessPageLoad()
@@ -248,6 +252,35 @@ class ManageSchedulesPage extends ActionPage implements IManageSchedulesPage
 	{
 		return $this->server->GetForm(FormKeys::SCHEDULE_ADMIN_GROUP_ID);
 	}
-}
 
-?>
+	/**
+	 * @return int
+	 */
+	function GetPageNumber()
+	{
+		return $this->pageablePage->GetPageNumber();
+	}
+
+	/**
+	 * @return int
+	 */
+	function GetPageSize()
+	{
+		$pageSize = $this->pageablePage->GetPageSize();
+
+		if ($pageSize > 10)
+		{
+			return 10;
+		}
+		return $pageSize;
+	}
+
+	/**
+	 * @param PageInfo $pageInfo
+	 * @return void
+	 */
+	function BindPageInfo(PageInfo $pageInfo)
+	{
+		$this->pageablePage->BindPageInfo($pageInfo);
+	}
+}

@@ -1,17 +1,17 @@
 <?php
 /**
-Copyright 2012-2014 Nick Korbel
-
-This file is part of Booked SchedulerBooked SchedulereIt is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later versBooked SchedulerduleIt is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-alBooked SchedulercheduleIt.  If not, see <http://www.gnu.org/licenses/>.
+ * Copyright 2012-2014 Nick Korbel
+ *
+ * This file is part of Booked SchedulerBooked SchedulereIt is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later versBooked SchedulerduleIt is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * alBooked SchedulercheduleIt.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 require_once(ROOT_DIR . 'Domain/Access/ScheduleRepository.php');
@@ -39,24 +39,8 @@ class ScheduleAdminScheduleRepository extends ScheduleRepository
 	{
 		$schedules = parent::GetAll();
 
-		if ($this->user->IsAdmin)
-		{
-			return $schedules;
-		}
+		return $this->Filter($schedules);
 
-		$user = $this->repo->LoadById($this->user->UserId);
-
-		$filteredList = array();
-		/** @var $schedule Schedule */
-		foreach ($schedules as $schedule)
-		{
-			if ($user->IsScheduleAdminFor($schedule))
-			{
-				$filteredList[] = $schedule;
-			}
-		}
-
-		return $filteredList;
 	}
 
 	public function Update(Schedule $schedule)
@@ -91,6 +75,54 @@ class ScheduleAdminScheduleRepository extends ScheduleRepository
 		parent::Add($schedule, $copyLayoutFromScheduleId);
 	}
 
+	/**
+	 * @param Schedule[] $schedules
+	 * @return Schedule[]
+	 */
+	private function Filter($schedules)
+	{
+		if ($this->user->IsAdmin)
+		{
+			return $schedules;
+		}
 
+		$user = $this->repo->LoadById($this->user->UserId);
+
+		$filteredList = array();
+		/** @var $schedule Schedule */
+		foreach ($schedules as $schedule)
+		{
+			if ($user->IsScheduleAdminFor($schedule))
+			{
+				$filteredList[] = $schedule;
+			}
+		}
+
+		return $filteredList;
+	}
+
+	public function GetList($pageNumber, $pageSize, $sortField = null, $sortDirection = null, $filter = null)
+	{
+		$user = $this->repo->LoadById($this->user->UserId);
+
+				if (!$user->IsInRole(RoleLevel::SCHEDULE_ADMIN))
+				{
+					return new PageableData();
+				}
+		$ids = array();
+
+		$filter = new SqlFilterNull();
+
+				foreach ($user->Groups() as $group)
+				{
+					if ($group->IsScheduleAdmin)
+					{
+						$ids[] = $group->GroupId;
+					}
+				}
+
+		$filter->_And(new SqlFilterIn(new SqlFilterColumn(TableNames::SCHEDULES_ALIAS, ColumnNames::RESOURCE_ADMIN_GROUP_ID), $ids));
+
+		return parent::GetList($pageNumber, $pageSize, $sortField, $sortDirection, $filter);
+	}
 }
-?>

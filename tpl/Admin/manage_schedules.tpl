@@ -126,6 +126,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 {/foreach}
 </div>
 
+{pagination pageInfo=$PageInfo}
+
 <div class="admin" style="margin-top:30px">
     <div class="title">
 	{translate key=AddSchedule}
