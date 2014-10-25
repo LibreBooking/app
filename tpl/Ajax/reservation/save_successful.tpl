@@ -26,6 +26,19 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 	<div class="createdMessage">{translate key=ReservationCreated}</div>
 	<div class="referenceNumber">{translate key=YourReferenceNumber args=$ReferenceNumber}</div>
 
+	<div class="dates">
+		{foreach from=$Instances item=instance name=date_list}
+			<span class="date">{format_date date=$instance->StartDate()}{if !$smarty.foreach.date_list.last}, {/if}</span>
+		{/foreach}
+	</div>
+
+	<div class="resources">
+		{translate key=Resources}:
+		{foreach from=$Resources item=resource name=resource_list}
+			<span class="resource">{$resource->GetName()}{if !$smarty.foreach.resource_list.last}, {/if}</span>
+		{/foreach}
+	</div>
+
 	{if $RequiresApproval}
 		<div class="approvalMessage">{translate key=ReservationRequiresApproval}</div>
 	{/if}
