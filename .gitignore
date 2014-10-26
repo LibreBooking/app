@@ -1,1 +1,4 @@
 /config/log4php.config.xml
+/.idea
+/tpl_c
+/config/config.php

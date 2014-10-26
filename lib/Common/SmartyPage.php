@@ -401,7 +401,11 @@ class SmartyPage extends Smarty
 
 		if (isset($params['class']))
 		{
-			$class = $params['class'];
+			$params['class'] = $params['class'] . ' form-control';
+		}
+		else
+		{
+			$params['class'] = 'form-control';
 		}
 
 		if (isset($params['value']))

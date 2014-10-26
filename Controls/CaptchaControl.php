@@ -55,9 +55,6 @@ class CaptchaControl extends Control
 		$formName = FormKeys::CAPTCHA;
 
 		echo "<img src='$url' alt='captcha' id='captchaImg'/>";
-		echo "<br/><label class=\"reg\">$label<br/><input type=\"text\" class=\"input\" name=\"$formName\" size=\"20\" id=\"captchaValue\"/>";
+		echo "<br/><label for=\"captchaValue\">$label</label><input type=\"text\" name=\"$formName\" size=\"20\" id=\"captchaValue\"/>";
 	}
 }
-
-
-?>

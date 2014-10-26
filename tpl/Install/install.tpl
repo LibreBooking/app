@@ -18,107 +18,137 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 *}
 {include file='globalheader.tpl'}
 
-<h1>{translate key=InstallApplication}</h1>
+<div id="page-install">
+	<h1>{translate key=InstallApplication}</h1>
 
-<div>
-    <form class="register" method="post" action="{$smarty.server.SCRIPT_NAME}">
+	<div>
+		<form class="register" method="post" action="{$smarty.server.SCRIPT_NAME}" role="form">
 
-        {if $ShowInvalidPassword}
-            <div class="error">{translate key=IncorrectInstallPassword}</div>
-        {/if}
+			{if $ShowInvalidPassword}
+				<div class="error">{translate key=IncorrectInstallPassword}</div>
+			{/if}
 
-        {if $InstallPasswordMissing}
-            <div class='error'>
-                <p>{translate key=SetInstallPassword}</p>
-                <p>{translate key=InstallPasswordInstructions args="$ConfigPath,$ConfigSetting,$SuggestedInstallPassword"}</p>
-            </div>
-        {/if}
+			{if $InstallPasswordMissing}
+				<div class='error'>
+					<p>{translate key=SetInstallPassword}</p>
 
-		{if $ShowUpToDateMessage}
-			<div class="error" style="margin-bottom: 10px;">
-				<h3>{translate key=NoUpgradeNeeded}</h3>
+					<p>{translate key=InstallPasswordInstructions args="$ConfigPath,$ConfigSetting,$SuggestedInstallPassword"}</p>
+				</div>
+			{/if}
+
+			{if $ShowUpToDateMessage}
+				<div class="error" style="margin-bottom: 10px;">
+					<h3>{translate key=NoUpgradeNeeded}</h3>
+				</div>
+			{/if}
+
+			{if $ShowPasswordPrompt}
+				<div class="form-group">
+					<div>{translate key=ProvideInstallPassword}</div>
+					<div>{translate key=InstallPasswordLocation args="$ConfigPath,$ConfigSetting"}</div>
+					<div>{textbox type="password" name="INSTALL_PASSWORD" size="20"}</div>
+					<div>
+						<button type="submit" name="" class="btn"
+								value="submit">{translate key=Next} {html_image src="arrow_large_right.png"}</button>
+					</div>
+				</div>
+			{/if}
+
+			{if $ShowDatabasePrompt}
+				<div class="">
+					<div>1) {translate key=VerifyInstallSettings args=$ConfigPath}
+						<div style="margin-left: 20px;">
+							<div><b>{translate key=DatabaseName}:</b> {$dbname}</div>
+							<div><b>{translate key=DatabaseUser}:</b> {$dbuser}</div>
+							<div><b>{translate key=DatabaseHost}:</b> {$dbhost}</div>
+						</div>
+					</div>
+					<div>&nbsp;</div>
+					<div>2) {translate key=DatabaseCredentials}</div>
+					<div class="form-group">
+						<label for="dbUser">{translate key=MySQLUser}</label>
+						{textbox name="INSTALL_DB_USER" size="20" id=dbUser}
+					</div>
+					<div class="form-group">
+						<label for="dbPassword">{translate key=Password}</label>
+						{textbox type="password" name="INSTALL_DB_PASSWORD" size="20" id=dbPassword}
+					</div>
+					<div>&nbsp;</div>
+					{if $ShowInstallOptions}
+						<div>3)<i>{translate key=InstallOptionsWarning}</i></div>
+						<div><input type="checkbox" name="create_database"/> {translate key=CreateDatabase} ({$dbname})
+							<span style="color:Red;">{translate key=DataWipeWarning}</span></div>
+						<div><input type="checkbox" name="create_user"/> {translate key=CreateDatabaseUser} ({$dbuser})
+						</div>
+						<div><input type="checkbox" name="create_sample_data"/> {translate key=PopulateExampleData}
+						</div>
+						<div>
+							<br/>
+							<button type="submit" name="run_install" class="btn"
+									value="submit">{translate key=RunInstallation} {html_image src="arrow_large_right.png"}
+								<br/>
+						</div>
+					{/if}
+					{if $ShowUpgradeOptions}
+						<div>3) {translate key=UpgradeNotice args="$CurrentVersion,$TargetVersion"}</div>
+						<div>
+							<br/>
+							<button type="submit" name="run_upgrade" class="btn"
+									value="submit">{translate key=RunUpgrade} {html_image src="arrow_large_right.png"}
+								<br/>
+						</div>
+					{/if}
+				</div>
+			{/if}
+
+			<div class="no-style">
+				{foreach from=$installresults item=result}
+					<div>{translate key=Executing}: {$result->taskName}</div>
+					{if $result->WasSuccessful()}
+						<div style="background-color: #9acd32">{translate key=Success}</div>
+					{else}
+						<div style="border: solid red 5px;padding:10px;">
+							{translate key=StatementFailed}
+							<div class='no-style'>
+								<div>{translate key=SQLStatement}
+									<pre>{$result->sqlText}</pre>
+								</div>
+								<div>{translate key=ErrorCode}
+									<pre>{$result->sqlErrorCode}</pre>
+								</div>
+								<div>{translate key=ErrorText}
+									<pre>{$result->sqlErrorText}</pre>
+								</div>
+							</div>
+						</div>
+					{/if}
+				{/foreach}
+				<div>&nbsp;</div>
+				<div>
+					{if $InstallCompletedSuccessfully}
+						{translate key=InstallationSuccess}
+						<br/>
+						<a href="{$Path}{Pages::REGISTRATION}">{translate key=Register}</a>
+						{translate key=RegisterAdminUser args="$ConfigPath"}
+						<br/>
+						<br/>
+						<a href="{$Path}{Pages::LOGIN}">{translate key=Login}</a>
+						{translate key=LoginWithSampleAccounts}
+					{/if}
+					{if $UpgradeCompletedSuccessfully}
+						{translate key=InstalledVersion args=$TargetVersion}
+						<h3><a href="configure.php">{translate key=InstallUpgradeConfig}</a></h3>
+					{/if}
+					{if $InstallFailed}
+						{translate key=InstallationFailure}
+					{/if}
+				</div>
 			</div>
-		{/if}
-
-        {if $ShowPasswordPrompt}
-            <ul class="no-style">
-                <li>{translate key=ProvideInstallPassword}</li>
-                <li>{translate key=InstallPasswordLocation args="$ConfigPath,$ConfigSetting"}</li>
-                <li>{textbox type="password" name="INSTALL_PASSWORD" class="textbox" size="20"}
-                    <button type="submit" name="" class="button" value="submit">{translate key=Next} {html_image src="arrow_large_right.png"}</button>
-                </li>
-            </ul>
-        {/if}
-
-        {if $ShowDatabasePrompt}
-            <ul class="no-style">
-                <li>1) {translate key=VerifyInstallSettings args=$ConfigPath}
-                    <ul class="no-style" style="margin-left: 20px;">
-                        <li><b>{translate key=DatabaseName}:</b> {$dbname}</li>
-                        <li><b>{translate key=DatabaseUser}:</b> {$dbuser}</li>
-                        <li><b>{translate key=DatabaseHost}:</b> {$dbhost}</li>
-                    </ul>
-                </li>
-                <li>&nbsp;</li>
-                <li>2) {translate key=DatabaseCredentials}</li>
-                <li>{translate key=MySQLUser}</li>
-                <li>{textbox name="INSTALL_DB_USER" class="textbox" size="20"}</li>
-                <li>{translate key=Password}</li>
-                <li>{textbox type="password" name="INSTALL_DB_PASSWORD" class="textbox" size="20"}</li>
-                <li>&nbsp;</li>
-				{if $ShowInstallOptions}
-					<li>3)<i>{translate key=InstallOptionsWarning}</i></li>
-					<li><input type="checkbox" name="create_database" /> {translate key=CreateDatabase} ({$dbname}) <span style="color:Red;">{translate key=DataWipeWarning}</span></li>
-					<li><input type="checkbox" name="create_user" /> {translate key=CreateDatabaseUser} ({$dbuser})</li>
-					<li><input type="checkbox" name="create_sample_data" /> {translate key=PopulateExampleData}</li>
-					<li>
-						<br/><button type="submit" name="run_install" class="button" value="submit">{translate key=RunInstallation} {html_image src="arrow_large_right.png"}<br/>
-					</li>
-				{/if}
-				{if $ShowUpgradeOptions}
-					<li>3) {translate key=UpgradeNotice args="$CurrentVersion,$TargetVersion"}</li>
-					<li>
-						<br/><button type="submit" name="run_upgrade" class="button" value="submit">{translate key=RunUpgrade} {html_image src="arrow_large_right.png"}<br/>
-					</li>
-				{/if}
-            </ul>
-        {/if}
-
-        <ul class="no-style">
-            {foreach from=$installresults item=result}
-                <li>{translate key=Executing}: {$result->taskName}</li>
-                {if $result->WasSuccessful()}
-                    <li style="background-color: #9acd32">{translate key=Success}</li>
-                {else}
-                    <li style="border: solid red 5px;padding:10px;">
-                        {translate key=StatementFailed}
-                        <ul class='no-style'>
-                            <li>{translate key=SQLStatement} <pre>{$result->sqlText}</pre></li>
-                            <li>{translate key=ErrorCode} <pre>{$result->sqlErrorCode}</pre></li>
-                            <li>{translate key=ErrorText} <pre>{$result->sqlErrorText}</pre></li>
-                        </ul>
-                    </li>
-                {/if}
-            {/foreach}
-			<li>&nbsp;</li>
-            <li>
-                {if $InstallCompletedSuccessfully}
-                    {translate key=InstallationSuccess}<br/>
-                    <a href="{$Path}{Pages::REGISTRATION}">{translate key=Register}</a> {translate key=RegisterAdminUser args="$ConfigPath"}<br/><br/>
-					<a href="{$Path}{Pages::LOGIN}">{translate key=Login}</a> {translate key=LoginWithSampleAccounts}
-				{/if}
-				{if $UpgradeCompletedSuccessfully}
-					{translate key=InstalledVersion args=$TargetVersion}
-					<h3><a href="configure.php">{translate key=InstallUpgradeConfig}</a></h3>
-				{/if}
-                {if $InstallFailed}
-                    {translate key=InstallationFailure}
-                {/if}
-            </li>
-        </ul>
 
 
-    </form>
+		</form>
+	</div>
+
 </div>
 
 {include file='globalfooter.tpl'}
