@@ -239,5 +239,3 @@ class RegistrationPresenter extends ActionPresenter
 		$this->page->RegisterValidator('additionalattributes', new AttributeValidator($this->attributeService, CustomAttributeCategory::USER, $this->GetAttributeValues()));
 	}
 }
-
-?>

@@ -1,5 +1,6 @@
-{*
-Copyright 2011-2014 Nick Korbel
+<?php
+/**
+Copyright 2014 Nick Korbel
 
 This file is part of Booked Scheduler.
 
@@ -15,16 +16,16 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
-*}
+ */
 
-	</div><!-- close main-->
+require_once(ROOT_DIR . 'Controls/Control.php');
 
-	<footer class="footer navbar">
-		&copy; 2014 <a href="http://www.twinkletoessoftware.com">Twinkle Toes Software</a> <br/><a href="http://www.bookedscheduler.com">Booked Scheduler v{$Version}</a>
-	</footer>
-
-	<script type="text/javascript">
-		init();
-	</script>
-	</body>
-</html>
+class CheckboxControl extends Control
+{
+	public function PageLoad()
+	{
+		$this->Set('name', FormKeys::Evaluate($this->Get('name-key')));
+		$this->Set('label', Resources::GetInstance()->GetString($this->Get('label-key')));
+		$this->Display('Controls/Checkbox.tpl');
+	}
+}

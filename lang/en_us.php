@@ -510,6 +510,7 @@ class en_us extends Language
 		$strings['AddReservationColorRule'] = 'Add Reservation Color Rule';
 		$strings['LimitAttributeScope'] = 'Limit Attribute Scope';
 		$strings['LimitTo'] = 'Limit To';
+		$strings['SignIn'] = 'Sign In';
 		// End Strings
 
 		// Install

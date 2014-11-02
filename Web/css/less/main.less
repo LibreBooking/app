@@ -45,6 +45,10 @@ a {
   background-color: @lightest-gray;
 }
 
+.straight-top {
+  .rounded(0);
+}
+
 .default-box-shadow {
   .default-box;
   .box-shadow(0px 0px 3px 0px @light-gray)
@@ -77,9 +81,9 @@ div.center {
 
 .default-box-header {
   background-color: @blue-gray;
-  margin: -1px -1px 10px -1px;
+//  margin: -1px -1px 10px -1px;
   line-height: 35px;
-  padding-left: 15px;
+  padding: 0 15px;
   font-size: 1.3em;
   font-weight: bold;
   color: @dark-gray;
@@ -224,3 +228,17 @@ div.center {
   font-size:.8em;
   font-weight: bold;
 }
+
+.wait-box {
+  display: none;
+  text-align: center;
+  top: 15%;
+  position: relative;
+}
+
+.align-right {
+  text-align: right;
+}
+
+label.booked-checkbox {margin-top:10px;}
+label.booked-checkbox span {width:10px; }

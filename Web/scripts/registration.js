@@ -47,16 +47,14 @@ function Registration()
 		$('#profileUpdatedMessage').hide();
 		$('#registrationError').hide();
 
-		$.colorbox({inline:true, href:"#modalDiv", transition:"none", width:"75%", height:"75%", overlayClose:false});
-		$('#modalDiv').show();
+		$.blockUI({ message: $('#modalDiv') });
 
 		return true;
 	}
 
 	function hideModal()
 	{
-		$('#modalDiv').hide();
-		$.colorbox.close();
+		$.unblockUI();
 
 		var top = $("#registrationbox").scrollTop();
 		$('html, body').animate({scrollTop:top}, 'slow');

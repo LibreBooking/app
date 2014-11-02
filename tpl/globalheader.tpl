@@ -37,6 +37,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		{jsfile src="js/jquery.qtip.min.js"}
 		{jsfile src="js/jquery.form-3.09.min.js"}
 		{jsfile src="js/lodash.2.4.1.min.js"}
+		{jsfile src="js/jquery.blockUI-2.66.0.min.js"}
 	{else}
 		<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 		<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
@@ -44,6 +45,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		<script type="text/javascript" src="//cdn.jsdelivr.net/qtip2/2.2.0/jquery.qtip.min.js"></script>
 		<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery.form/3.50/jquery.form.min.js"></script> 
 		<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/lodash.js/2.4.1/lodash.min.js"></script>
+		<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery.blockUI/2.66.0-2013.10.09/jquery.blockUI.min.js"></script>
 	{/if}
 	{jsfile src="phpscheduleit.js"}
 	<!-- End JavaScript -->

@@ -49,6 +49,11 @@ a {
   border: solid 1px #e9e9e9;
   background-color: #f4f5ed;
 }
+.straight-top {
+  -webkit-border-radius: 0;
+  -moz-border-radius: 0;
+  border-radius: 0;
+}
 .default-box-shadow {
   padding: 35px;
   -webkit-border-radius: 5px;
@@ -82,9 +87,8 @@ div.center {
 }
 .default-box-header {
   background-color: #d5ded9;
-  margin: -1px -1px 10px -1px;
   line-height: 35px;
-  padding-left: 15px;
+  padding: 0 15px;
   font-size: 1.3em;
   font-weight: bold;
   color: #4e4d4a;
@@ -218,6 +222,21 @@ div.center {
   color: #4e4d4a;
   font-size: .8em;
   font-weight: bold;
+}
+.wait-box {
+  display: none;
+  text-align: center;
+  top: 15%;
+  position: relative;
+}
+.align-right {
+  text-align: right;
+}
+label.booked-checkbox {
+  margin-top: 10px;
+}
+label.booked-checkbox span {
+  width: 10px;
 }
 #resourceDetailsPopup {
   min-width: 300px;

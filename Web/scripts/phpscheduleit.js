@@ -66,3 +66,8 @@ function getQueryStringValue(name)
 	  }
 
 }
+
+function init()
+{
+
+}

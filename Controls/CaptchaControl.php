@@ -54,7 +54,7 @@ class CaptchaControl extends Control
 		$label = Resources::GetInstance()->GetString('SecurityCode');
 		$formName = FormKeys::CAPTCHA;
 
-		echo "<img src='$url' alt='captcha' id='captchaImg'/>";
-		echo "<br/><label for=\"captchaValue\">$label</label><input type=\"text\" name=\"$formName\" size=\"20\" id=\"captchaValue\"/>";
+		echo "<div class=\"form-group\"><div><img src='$url' alt='captcha' id='captchaImg'/></div>";
+		echo "<label for=\"captchaValue\">$label</label><input type=\"text\" class=\"form-control\" name=\"$formName\" size=\"20\" id=\"captchaValue\"/></div>";
 	}
 }
