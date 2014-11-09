@@ -1,19 +1,19 @@
 <?php
+
 /**
-Copyright 2011-2014 Nick Korbel
-
-This file is part of Booked SchedulerBooked SchedulereIt is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later versBooked SchedulerduleIt is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-alBooked SchedulercheduleIt.  If not, see <http://www.gnu.org/licenses/>.
-*/
-
+ * Copyright 2011-2014 Nick Korbel
+ *
+ * This file is part of Booked SchedulerBooked SchedulereIt is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later versBooked SchedulerduleIt is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * alBooked SchedulercheduleIt.  If not, see <http://www.gnu.org/licenses/>.
+ */
 class DateRange
 {
 	/**
@@ -30,6 +30,16 @@ class DateRange
 	 * @var string
 	 */
 	private $_timezone;
+
+	/**
+	 * @var int
+	 */
+	private $weekdays = 0;
+
+	/**
+	 * @var int
+	 */
+	private $weekends = 0;
 
 	/**
 	 * @param Date $begin
@@ -49,6 +59,9 @@ class DateRange
 		{
 			$this->_timezone = $timezone;
 		}
+
+		$this->weekdays = 0;
+		$this->weekends = 0;
 	}
 
 	/**
@@ -98,7 +111,7 @@ class DateRange
 	{
 		return ($this->Contains($dateRange->GetBegin()) || $this->Contains($dateRange->GetEnd()) ||
 				$dateRange->Contains($this->GetBegin()) || $dateRange->Contains($this->GetEnd())) &&
-				(!$this->GetBegin()->Equals($dateRange->GetEnd()) && !$this->GetEnd()->Equals($dateRange->GetBegin()));
+		(!$this->GetBegin()->Equals($dateRange->GetEnd()) && !$this->GetEnd()->Equals($dateRange->GetBegin()));
 
 	}
 
@@ -149,16 +162,24 @@ class DateRange
 	}
 
 	/**
-	 * @return array[int]Date
+	 * @return Date[]
 	 */
 	public function Dates()
 	{
 		$current = $this->_begin->GetDate();
-		$end = $this->_end->GetDate();
+
+		if ($this->_end->IsMidnight())
+		{
+			$end = $this->_end->AddDays(-1)->GetDate();
+		}
+		else
+		{
+			$end = $this->_end->GetDate();
+		}
 
 		$dates = array($current);
 
-		for($day = 0; $current->Compare($end) < 0; $day++)
+		for ($day = 0; $current->Compare($end) < 0; $day++)
 		{
 			$current = $current->AddDays(1);
 			$dates[] = $current;
@@ -214,6 +235,60 @@ class DateRange
 	{
 		return $this->ToString();
 	}
+
+	/**
+	 * @return int
+	 */
+	public function NumberOfWeekdays()
+	{
+		$this->CountDays();
+
+		return $this->weekdays;
+	}
+
+	/**
+	 * @return int
+	 */
+	public function NumberOfWeekendDays()
+	{
+		$this->CountDays();
+
+		return $this->weekends;
+	}
+
+	private function CountDays()
+	{
+		if ($this->weekends == 0 && $this->weekdays == 0)
+		{
+			// only count if it's not cached
+			$dates = $this->Dates();
+
+			if (count($dates) == 0)
+			{
+				// just one day in range
+				if ($this->_begin->Weekday() == 0 || $this->_begin->Weekday() == 6)
+				{
+					$this->weekends = 1;
+				}
+				else
+				{
+					$this->weekdays = 1;
+				}
+			}
+
+			foreach ($dates as $date)
+			{
+				if ($date->Weekday() == 0 || $date->Weekday() == 6)
+				{
+					$this->weekends++;
+				}
+				else
+				{
+					$this->weekdays++;
+				}
+			}
+		}
+	}
 }
 
 class NullDateRange extends DateRange
@@ -230,7 +305,7 @@ class NullDateRange extends DateRange
 	 */
 	public static function Instance()
 	{
-		if(self::$instance == null)
+		if (self::$instance == null)
 		{
 			self::$instance = new NullDateRange();
 		}
@@ -238,4 +313,3 @@ class NullDateRange extends DateRange
 		return self::$instance;
 	}
 }
-?>
