@@ -19,7 +19,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 require_once(ROOT_DIR . 'Pages/CalendarPage.php');
-require_once(ROOT_DIR . 'Presenters/CalendarPresenter.php');
+require_once(ROOT_DIR . 'Presenters/Calendar/CalendarPresenter.php');
 
 class CalendarPresenterTests extends TestBase
 {
@@ -133,6 +133,12 @@ class CalendarPresenterTests extends TestBase
 				->with($this->equalTo($showInaccessible), $this->equalTo($this->fakeUser))
 				->will($this->returnValue($resources));
 
+		$this->resourceService
+				->expects($this->atLeastOnce())
+				->method('GetResourceGroups')
+				->with($this->equalTo(null), $this->equalTo($this->fakeUser))
+				->will($this->returnValue(new ResourceGroupTree()));
+
 		$this->page
 				->expects($this->atLeastOnce())
 				->method('GetScheduleId')
@@ -147,7 +153,8 @@ class CalendarPresenterTests extends TestBase
 				->expects($this->atLeastOnce())
 				->method('GetReservationList')
 				->with($this->equalTo($month->FirstDay()),
-					   $this->equalTo($month->LastDay()), $this->equalTo(null), $this->equalTo(null),
+					   $this->equalTo($month->LastDay()->AddDays(1)),
+					   $this->equalTo(null), $this->equalTo(null),
 					   $this->equalTo(null), $this->equalTo(null))
 				->will($this->returnValue($reservations));
 
@@ -191,7 +198,7 @@ class CalendarPresenterTests extends TestBase
 
 		$this->page->expects($this->atLeastOnce())->method('BindSubscription')->with($this->equalTo($details));
 
-		$calendarFilters = new CalendarFilters($schedules, $resources, null, null);
+		$calendarFilters = new CalendarFilters($schedules, $resources, null, null, new ResourceGroupTree());
 		$this->page->expects($this->atLeastOnce())->method('BindFilters')->with($this->equalTo($calendarFilters));
 
 		$this->presenter->PageLoad($this->fakeUser, $userTimezone);

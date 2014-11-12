@@ -56,6 +56,8 @@ class UserSaveControllerTests extends TestBase
 	public function testCreatesNewUser()
 	{
 		$createdUserId = 123;
+		$createdUser = new FakeUser($createdUserId);
+
 		$request = CreateUserRequest::Example();
 		$session = new FakeWebServiceUserSession(123);
 
@@ -80,7 +82,7 @@ class UserSaveControllerTests extends TestBase
 					   $this->equalTo(Pages::DEFAULT_HOMEPAGE_ID),
 					   $this->equalTo(array(UserAttribute::Phone => $request->phone, UserAttribute::Organization => $request->organization, UserAttribute::Position => $request->position)),
 					   $this->equalTo(array(new AttributeValue($request->customAttributes[0]->attributeId, $request->customAttributes[0]->attributeValue))))
-				->will($this->returnValue($createdUserId));
+				->will($this->returnValue($createdUser));
 
 		$result = $this->controller->Create($request, $session);
 
@@ -110,6 +112,7 @@ class UserSaveControllerTests extends TestBase
 	public function testUpdatesUser()
 	{
 		$userId = 123;
+		$user = new FakeUser($userId);
 		$request = UpdateUserRequest::Example();
 		$session = new FakeWebServiceUserSession(123);
 
@@ -131,7 +134,7 @@ class UserSaveControllerTests extends TestBase
 					   $this->equalTo($request->lastName),
 					   $this->equalTo($request->timezone),
 					   $this->equalTo(array(UserAttribute::Phone => $request->phone, UserAttribute::Organization => $request->organization, UserAttribute::Position => $request->position)))
-				->will($this->returnValue($userId));
+				->will($this->returnValue($user));
 
 		$this->manageUsersService->expects($this->once())
 				->method('ChangeAttributes')

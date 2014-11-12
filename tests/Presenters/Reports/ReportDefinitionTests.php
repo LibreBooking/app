@@ -36,7 +36,7 @@ class ReportDefinitionTests extends TestBase
 	public function testGetsColumns()
 	{
 		$rows = array(array(ColumnNames::ACCESSORY_NAME => 'an', ColumnNames::RESOURCE_NAME_ALIAS => 'rn', 'unknown' => 'unknown'));
-		$report = new CustomReport($rows);
+		$report = new CustomReport($rows, $this->attributeRepository);
 
 		$definition = new ReportDefinition($report, null);
 

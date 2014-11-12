@@ -32,7 +32,7 @@ interface IAuthenticationPage
 	public function SetShowLoginError();
 }
 
-interface IAuthentication extends IAuthenticationPromptOptions
+interface IAuthentication extends IAuthenticationPromptOptions, IAuthenticationActionOptions
 {
 	/**
 	 * @abstract
@@ -95,4 +95,40 @@ interface IAuthenticationPromptOptions
 	public function ShowForgotPasswordPrompt();
 }
 
-?>
+interface IAuthenticationActionOptions
+{
+	/**
+	 * @return bool
+	 */
+	public function AllowUsernameChange();
+
+	/**
+	 * @return bool
+	 */
+	public function AllowEmailAddressChange();
+
+	/**
+	 * @return bool
+	 */
+	public function AllowPasswordChange();
+
+	/**
+	 * @return bool
+	 */
+	public function AllowNameChange();
+
+	/**
+	 * @return bool
+	 */
+	public function AllowPhoneChange();
+
+	/**
+	 * @return bool
+	 */
+	public function AllowOrganizationChange();
+
+	/**
+	 * @return bool
+	 */
+	public function AllowPositionChange();
+}

@@ -100,26 +100,35 @@ class Date
 
 	/**
 	 * @param string $dateString
-	 * @param string $timezone
 	 * @return Date
 	 */
-	public static function ParseExact($dateString, $timezone)
+	public static function ParseExact($dateString)
 	{
 		if (empty($dateString))
 		{
 			return NullDate::Instance();
 		}
 
+		$offset = '';
+		$strLen = strlen($dateString);
+		$hourAdjustment = 0;
+		$minuteAdjustment = 0;
+		if ($strLen > 5)
+		{
+			$offset = substr($dateString, -5);
+			$hourAdjustment = substr($offset, 1, 2);
+			$minuteAdjustment = substr($offset, 3, 2);
+		}
+
+		if (BookedStringHelper::Contains($offset, '+'))
+		{
+			$hourAdjustment *= -1;
+			$minuteAdjustment *= -1;
+		}
+
 		$parsed = date_parse($dateString);
-		if (isset($parsed['zone']))
-		{
-			$name = timezone_name_from_abbr("", -1*$parsed['zone']*60);
-		}
-		else
-		{
-			$name = $timezone;
-		}
-		$d = Date::Create($parsed['year'], $parsed['month'], $parsed['day'], $parsed['hour'], $parsed['minute'], $parsed['second'], $name);
+
+		$d = Date::Create($parsed['year'], $parsed['month'], $parsed['day'], $parsed['hour'] + $hourAdjustment, $parsed['minute'] + $minuteAdjustment, $parsed['second'], 'UTC');
 		return $d;
 	}
 

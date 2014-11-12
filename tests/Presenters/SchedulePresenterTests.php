@@ -35,7 +35,7 @@ class SchedulePresenterTests extends TestBase
 
 		$this->scheduleId = 1;
 		$this->numDaysVisible = 10;
-		$this->currentSchedule = new Schedule($this->scheduleId, 'default', 1, '08:30', '19:00', 1, 1, $this->numDaysVisible);
+		$this->currentSchedule = new Schedule($this->scheduleId, 'default', 1, '08:30', '19:00', 'America/New_York', 1, $this->numDaysVisible);
 		$otherSchedule = new Schedule(2, 'not default', 0, '08:30', '19:00', 1, 1, $this->numDaysVisible);
 
 		$this->schedules = array($this->currentSchedule, $otherSchedule);
@@ -74,6 +74,11 @@ class SchedulePresenterTests extends TestBase
 				->expects($this->once())
 				->method('ShowInaccessibleResources')
 				->will($this->returnValue($this->showInaccessibleResources));
+
+		$page
+				->expects($this->once())
+				->method('GetDisplayTimezone')
+				->will($this->returnValue($user->Timezone));
 
 		$scheduleService
 				->expects($this->once())

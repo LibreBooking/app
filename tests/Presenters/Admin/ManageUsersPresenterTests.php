@@ -134,7 +134,6 @@ class ManageUsersPresenterTests extends TestBase
 				->will($this->returnValue($userList));
 
 		$user = new FakeUser();
-		$user->_IsResourceAdmin = true;
 
 		$this->userRepo
 				->expects($this->once())
@@ -270,6 +269,8 @@ class ManageUsersPresenterTests extends TestBase
 		$organization = 'ou';
 		$position = 'position';
 
+		$user = new FakeUser($userId);
+
 		$this->page->expects($this->atLeastOnce())
 				->method('GetUserId')
 				->will($this->returnValue($userId));
@@ -319,7 +320,8 @@ class ManageUsersPresenterTests extends TestBase
 					   $this->equalTo($fname),
 					   $this->equalTo($lname),
 					   $this->equalTo($timezone),
-					   $this->equalTo($extraAttributes));
+					   $this->equalTo($extraAttributes))
+				->will($this->returnValue($user));
 
 		$this->presenter->UpdateUser();
 	}
@@ -380,6 +382,8 @@ class ManageUsersPresenterTests extends TestBase
 		$userId = 1090;
 		$groupId = 111;
 
+		$user = new FakeUser($userId);
+
 		$group = new Group($groupId, 'name');
 		$group->AddUser($userId);
 
@@ -431,7 +435,7 @@ class ManageUsersPresenterTests extends TestBase
 					   $this->equalTo(Pages::DEFAULT_HOMEPAGE_ID),
 					   $this->equalTo(array()),
 					   $this->equalTo(array(new AttributeValue($attributeId, $attributeValue))))
-				->will($this->returnValue($userId));
+				->will($this->returnValue($user));
 
 		$this->groupRepository->expects($this->once())
 				->method('LoadById')

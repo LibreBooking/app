@@ -583,6 +583,7 @@ class en_us extends Language
 		$strings['PasswordError'] = 'Password must contain at least %s letters and at least %s numbers.';
 		$strings['PasswordErrorRequirements'] = 'Password must contain a combination of at least %s upper and lower case letters and %s numbers.';
 		$strings['NoReservationAccess'] = 'You are not allowed to change this reservation.';
+		$strings['PasswordControlledExternallyError'] = 'Your password is controlled by an external system and cannot be updated here.';
 		$strings['AccessoryResourceRequiredErrorMessage'] = 'Accessory %s can only be booked with resources %s';
 		$strings['AccessoryMinQuantityErrorMessage'] = 'You must book at least %s of accessory %s';
 		$strings['AccessoryMaxQuantityErrorMessage'] = 'You cannot book more than %s of accessory %s';

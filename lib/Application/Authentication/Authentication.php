@@ -188,6 +188,39 @@ class Authentication implements IAuthentication
 	{
 		return true;
 	}
-}
 
-?>
+	public function AllowUsernameChange()
+	{
+		return true;
+	}
+
+	public function AllowEmailAddressChange()
+	{
+		return true;
+	}
+
+	public function AllowPasswordChange()
+	{
+		return true;
+	}
+
+	public function AllowNameChange()
+	{
+		return true;
+	}
+
+	public function AllowPhoneChange()
+	{
+		return true;
+	}
+
+	public function AllowOrganizationChange()
+	{
+		return true;
+	}
+
+	public function AllowPositionChange()
+	{
+		return true;
+	}
+}

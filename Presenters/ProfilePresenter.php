@@ -86,6 +86,7 @@ class ProfilePresenter extends ActionPresenter
 
 		$this->PopulateTimezones();
 		$this->PopulateHomepages();
+		$this->page->SetAllowedActions(PluginManager::Instance()->LoadAuthentication());
 	}
 
 	public function UpdateProfile()

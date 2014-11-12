@@ -37,14 +37,20 @@ class SchedulesWebServiceTests extends TestBase
 	 */
 	private $scheduleRepository;
 
+	/**
+	 * @var IPrivacyFilter
+	 */
+	private $privacyFilter;
+
 	public function setup()
 	{
 		parent::setup();
 
 		$this->server = new FakeRestServer();
 		$this->scheduleRepository = $this->getMock('IScheduleRepository');
+		$this->privacyFilter = $this->getMock('IPrivacyFilter');
 
-		$this->service = new SchedulesWebService($this->server, $this->scheduleRepository);
+		$this->service = new SchedulesWebService($this->server, $this->scheduleRepository, $this->privacyFilter);
 	}
 
 	public function testGetsAllSchedules()

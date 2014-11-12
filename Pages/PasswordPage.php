@@ -31,6 +31,8 @@ interface IPasswordPage extends IPage
 	public function ResettingPassword();
 
 	public function ShowResetPasswordSuccess($resetPasswordSuccess);
+
+	public function SetAllowedActions($authenticationOptions);
 }
 class PasswordPage extends SecurePage implements IPasswordPage
 {
@@ -71,6 +73,11 @@ class PasswordPage extends SecurePage implements IPasswordPage
 		$x = $this->GetForm(Actions::CHANGE_PASSWORD);
 
 		return !empty($x);
+	}
+
+	public function SetAllowedActions($authenticationOptions)
+	{
+		$this->Set('AllowPasswordChange', $authenticationOptions->AllowPasswordChange());
 	}
 
 	public function ShowResetPasswordSuccess($resetPasswordSuccess)
