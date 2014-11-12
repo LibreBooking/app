@@ -38,5 +38,3 @@ class JsonRequest
 		}
 	}
 }
-
-?>

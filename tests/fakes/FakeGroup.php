@@ -30,5 +30,3 @@ class FakeGroup extends Group
 		$this->WithRole(RoleLevel::APPLICATION_ADMIN);
 	}
 }
-
-?>

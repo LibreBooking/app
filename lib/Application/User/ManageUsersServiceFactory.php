@@ -29,7 +29,6 @@ class ManageUsersServiceFactory implements IManageUsersServiceFactory
 {
 	public function CreateAdmin()
 	{
-		return new ManageUsersService(new AdminRegistration(), new UserRepository());
+		return new ManageUsersService(new AdminRegistration(), new UserRepository(), new GroupRepository());
 	}
 }
-?>

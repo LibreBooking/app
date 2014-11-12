@@ -89,11 +89,13 @@ class UserSaveController implements IUserSaveController
 			$customAttributes[] = new AttributeValue($attribute->attributeId, $attribute->attributeValue);
 		}
 
-		$userId = $userService->AddUser($request->userName, $request->emailAddress, $request->firstName,
+		$user = $userService->AddUser($request->userName, $request->emailAddress, $request->firstName,
 										$request->lastName, $request->password, $request->timezone, $request->language,
 										Pages::DEFAULT_HOMEPAGE_ID, $extraAttributes, $customAttributes);
 
-		return new UserControllerResult($userId);
+		$userService->ChangeGroups($user, $request->groups);
+
+		return new UserControllerResult($user->Id());
 	}
 
 	/**
@@ -120,10 +122,12 @@ class UserSaveController implements IUserSaveController
 			$customAttributes[] = new AttributeValue($attribute->attributeId, $attribute->attributeValue);
 		}
 
-		$userService->UpdateUser($userId, $request->userName, $request->emailAddress, $request->firstName,
+		$user = $userService->UpdateUser($userId, $request->userName, $request->emailAddress, $request->firstName,
 								 $request->lastName, $request->timezone, $extraAttributes);
 
 		$userService->ChangeAttributes($userId, $customAttributes);
+
+		$userService->ChangeGroups($user, $request->groups);
 
 		return new UserControllerResult($userId);
 	}
