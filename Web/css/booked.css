@@ -86,7 +86,8 @@ div.center {
   text-align: center;
 }
 .default-box-header {
-  background-color: #d5ded9;
+  background-color: #bcbcbc;
+  margin: -1px;
   line-height: 35px;
   padding: 0 15px;
   font-size: 1.3em;
