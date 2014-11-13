@@ -2,3 +2,5 @@
 /.idea
 /tpl_c
 /config/config.php
+/plugins/Authentication/ActiveDirectory/ActiveDirectory.config.php
+/plugins/Authentication/Ldap/Ldap.config.php
