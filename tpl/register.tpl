@@ -42,13 +42,14 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 	<div id="registration-box">
 		<form class="register" method="post" ajaxAction="{RegisterActions::Register}" id="frmRegister"
 			  action="{$smarty.server.SCRIPT_NAME}" role="form">
-			{*<div class="registrationHeader"><h3>{translate key=Login} ({translate key=AllFieldsAreRequired})</h3></div>*}
 
 			<div class="row">
 				<div class="col-xs-12 col-sm-6">
 					<div class="form-group">
-						<label class="reg" for="login">{translate key="Username"}</label>
-						{textbox name="LOGIN" value="Login" size="20"}
+						<div class="input-group">
+							<label class="reg" for="login">{translate key="Username"}</label>
+							{textbox name="LOGIN" value="Login" size="20"}
+						</div>
 					</div>
 				</div>
 
@@ -110,25 +111,39 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 					</div>
 				</div>
 			</div>
+
+			<div class="row">
+				<div class="col-xs-12 col-sm-6">
+					<div class="form-group">
+						<label class="reg" for="phone">{translate key="Phone"}</label>
+						{textbox name="PHONE" class="input" value="Phone" size="20"}
+					</div>
+				</div>
+
+				<div class="col-xs-12 col-sm-6">
+					<div class="form-group">
+						<label class="reg" for="organization">{translate key="Organization"}</label>
+						{textbox name="ORGANIZATION" class="input" value="Organization" size="20"}
+					</div>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="col-xs-12 col-sm-6">
+					<div class="form-group">
+						<label class="reg" for="position">{translate key="Position"}</label>
+						{textbox name="POSITION" class="input" value="Position" size="20"}
+					</div>
+				</div>
+
+				<div class="col-xs-12 col-sm-6">
+				</div>
+
+			</div>
+
 	</div>
 
-
-	<div class="registrationHeader"><h3>{translate key="AdditionalInformation"} ({translate key=Optional})</h3>
-	</div>
-	<div class="form-group">
-		<label class="reg" for="phone">{translate key="Phone"}</label>
-		{textbox name="PHONE" class="input" value="Phone" size="20"}
-	</div>
-
-	<div class="form-group">
-		<label class="reg" for="organization">{translate key="Organization"}</label>
-		{textbox name="ORGANIZATION" class="input" value="Organization" size="20"}
-	</div>
-
-	<div class="form-group">
-		<label class="reg" for="position">{translate key="Position"}</label>
-		{textbox name="POSITION" class="input" value="Position" size="20"}
-	</div>
+	
 
 	{if $Attributes|count > 0}
 		<div class="registrationHeader"><h3>{translate key=AdditionalAttributes}</h3></div>
