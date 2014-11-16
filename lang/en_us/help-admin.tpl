@@ -273,10 +273,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 <p class="setting"><div>$conf['settings']['schedule']['show.inaccessible.resources']</div>Whether or not resources
 	that are not accessible to the user are displayed in the schedule</p>
 
-<p class="setting"><div>$conf['settings']['schedule']['reservation.label']</div>The format of what to display for the
-	reservation slot on the Bookings page. Available tokens are {literal}{name}, {title}, {description}, {email},
-	{phone}
-	, {organization}, {position}{/literal}. Leave it blank for no label. Any combination of tokens can be used.</p>
+<p class="setting"><span>$conf['settings']['schedule']['reservation.label']</span>The format of what to display for the
+	reservation slot on the Bookings page. Available tokens are listed in the Available Label Tokens section.</p>
 
 <p class="setting"><div>$conf['settings']['schedule']['hide.blocked.periods']</div>If blocked periods should be
 	hidden on the bookings page. Default is false.</p>
