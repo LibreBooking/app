@@ -224,17 +224,9 @@ class SchedulePageBuilder implements ISchedulePageBuilder
 			$scheduleLength = 7;
 		}
 
-		// we don't want to display the last date in the range (it will be midnight of the last day)
-		$adjustedDateRange = new DateRange($dateRange
-										   ->GetBegin()
-										   ->ToTimezone($userSession->Timezone), $dateRange
-																				 ->GetEnd()
-																				 ->ToTimezone($userSession->Timezone)
-																				 ->AddDays(-1));
+		$page->SetDisplayDates($dateRange);
 
-		$page->SetDisplayDates($adjustedDateRange);
-
-		$startDate = $adjustedDateRange->GetBegin();
+		$startDate = $dateRange->GetBegin();
 
 		$startDay = $schedule->GetWeekdayStart();
 
