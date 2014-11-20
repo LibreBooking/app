@@ -18,7 +18,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 *}
-{include file='..\..\tpl\Email\emailheader.tpl'}
+
 La tua prenotazione sta per terminare.<br/>
 Dettagli prenotazione:
 	<br/>
@@ -33,4 +33,3 @@ Dettagli prenotazione:
 <a href="{$ScriptUrl}/{$ICalUrl}">Aggiungi al calendario</a> |
 <a href="{$ScriptUrl}">Accedi a Booked Scheduler</a>
 
-{include file='..\..\tpl\Email\emailfooter.tpl'}

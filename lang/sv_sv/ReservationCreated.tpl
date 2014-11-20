@@ -12,7 +12,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 alBooked SchedulercheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 *}
-{include file='..\..\tpl\Email\emailheader.tpl'}
+
 
 	Bokningsdetaljer:
 	<br/>
@@ -49,4 +49,3 @@ alBooked SchedulercheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 	<a href="{$ScriptUrl}/{$ICalUrl}">Lägg till i Outlook</a> |
 	<a href="{$ScriptUrl}">Logga in i Bokningsprogrammet</a>
 
-{include file='..\..\tpl\Email\emailfooter.tpl'}

@@ -21,7 +21,7 @@ bersamaan dengan Booked Scheduler. Jika tidak, lihat
 <http://www.gnu.org/licenses/>.
 
 *}
-{include file='..\..\tpl\Email\emailheader.tpl'}
+
 Reservasi Anda akan segera berakhir.<br/>
 Rincian Reservasi:
 	<br/>
@@ -36,4 +36,3 @@ Rincian Reservasi:
 <a href="{$ScriptUrl}/{$ICalUrl}">Tambah ke Kalender</a> |
 <a href="{$ScriptUrl}">Masuk ke Booked Scheduler</a>
 
-{include file='..\..\tpl\Email\emailfooter.tpl'}

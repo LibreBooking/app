@@ -16,7 +16,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 *}
-{include file='..\..\tpl\Email\emailheader.tpl'}
+
 
 Tässä on väliaikainen Booked Scheduler-salasanasi: {$TemporaryPassword}
 
@@ -26,4 +26,4 @@ Vanha salasanasi ei enää toimi.
 
 <a href="{$ScriptUrl}">Kirjaudu sovellukseen Booked Scheduler</a> ja vaihda salasanasi mahdollisimman pian.
 
-{include file='..\..\tpl\Email\emailfooter.tpl'}
+

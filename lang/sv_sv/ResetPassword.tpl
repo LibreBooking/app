@@ -12,7 +12,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 alBooked SchedulercheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 *}
-{include file='..\..\tpl\Email\emailheader.tpl'}
+
 
 Här är ert nya tillfälliga lösenord till Bokning: {$TemporaryPassword}
 
@@ -22,4 +22,3 @@ Ert gamla lösenord gäller inte längre.
 
 Var vänlig och <a href="{$ScriptUrl}">Logga in på Bokning</a> och ändra ert lösenord så snart som möjligt.
 
-{include file='..\..\tpl\Email\emailfooter.tpl'}

@@ -21,7 +21,7 @@ bersamaan dengan Booked Scheduler. Jika tidak, lihat
 <http://www.gnu.org/licenses/>.
 
 *}
-{include file='..\..\tpl\Email\emailheader.tpl'}
+
 
 	Rincian Reservasi:
 	<br/>
@@ -60,4 +60,3 @@ bersamaan dengan Booked Scheduler. Jika tidak, lihat
 
 	<a href="{$ScriptUrl}">Masuk Booked Scheduler</a>
 
-{include file='..\..\tpl\Email\emailfooter.tpl'}

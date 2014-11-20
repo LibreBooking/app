@@ -16,7 +16,7 @@ Voir la Licence Publique Générale GNU pour plus de détails.
 Vous devez avoir reçu une copie de la GNU General Public License
 avec Booked Scheduler. si ce n'est pas le cas consultez <http://www.gnu.org/licenses/>.
 *}
-{include file='..\..\tpl\Email\emailheader.tpl'}
+
 
 	Details de la réservation:
 	<br/>
@@ -46,4 +46,4 @@ avec Booked Scheduler. si ce n'est pas le cas consultez <http://www.gnu.org/lice
 	<br/>
 	<a href="{$ScriptUrl}/{$ReservationUrl}">Voir cette réservation</a> | <a href="{$ScriptUrl}">Connexion à Booked Scheduler</a>
 
-{include file='..\..\tpl\Email\emailfooter.tpl'}
+
