@@ -17,6 +17,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 require_once(ROOT_DIR . 'lib/Email/Messages/ReservationCreatedEmailAdmin.php');
 require_once(ROOT_DIR . 'lib/Email/Messages/ReservationUpdatedEmailAdmin.php');
 require_once(ROOT_DIR . 'lib/Email/Messages/ReservationDeletedEmailAdmin.php');
+require_once(ROOT_DIR . 'lib/Email/Messages/ReservationRequiresApprovalEmailAdmin.php');
 
 abstract class AdminEmailNotification implements IReservationNotification
 {
@@ -204,6 +205,36 @@ class AdminEmailDeletedNotification extends AdminEmailNotification
     {
         return Configuration::Instance()->GetSectionKey(ConfigSection::RESERVATION_NOTIFY,
                                                         ConfigKeys::NOTIFY_DELETE_GROUP_ADMINS,
+                                                        new BooleanConverter());
+    }
+}
+
+class AdminEmailApprovalNotification extends AdminEmailNotification
+{
+    protected function GetMessage($admin, $owner, $reservationSeries, $resource)
+    {
+        return new ReservationRequiresApprovalEmailAdmin($admin, $owner, $reservationSeries, $resource, $this->attributeRepository);
+    }
+
+    protected function SendForResourceAdmins()
+    {
+        return Configuration::Instance()->GetSectionKey(ConfigSection::RESERVATION_NOTIFY,
+                                                        ConfigKeys::NOTIFY_APPROVAL_RESOURCE_ADMINS,
+                                                        new BooleanConverter());
+    }
+
+
+    protected function SendForApplicationAdmins()
+    {
+        return Configuration::Instance()->GetSectionKey(ConfigSection::RESERVATION_NOTIFY,
+                                                        ConfigKeys::NOTIFY_APPROVAL_RESOURCE_ADMINS,
+                                                        new BooleanConverter());
+    }
+
+    protected function SendForGroupAdmins()
+    {
+        return Configuration::Instance()->GetSectionKey(ConfigSection::RESERVATION_NOTIFY,
+                                                        ConfigKeys::NOTIFY_APPROVAL_RESOURCE_ADMINS,
                                                         new BooleanConverter());
     }
 }
