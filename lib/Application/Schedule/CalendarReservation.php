@@ -215,7 +215,7 @@ class CalendarReservation
 	{
 		if ($reservation->RequiresApproval)
 		{
-			return 'pending';
+			return 'reserved pending';
 		}
 
 		$user = ServiceLocator::GetServer()->GetUserSession();
