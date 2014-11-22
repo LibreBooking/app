@@ -16,10 +16,9 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 *}
-<label class="customAttribute" for="{$attributeName}">{$attribute->Label()|escape}:</label>
-{if $align=='vertical'}
-<br/>
-{/if}
+<div class="form-group">
+	<label class="customAttribute" for="{$attributeName}">{$attribute->Label()|escape}</label>
+
 {if $readonly}
 	<span class="attributeValue {$class}">{if $attribute->Value() == "1"}{translate key='True'}{else}{translate key='False'}{/if}</span>
 {elseif $searchmode}
@@ -31,3 +30,4 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 {else}
 	<input type="checkbox" value="1" id="{$attributeName}" name="{$attributeName}" {if $attribute->Value() == "1"}checked="checked"{/if} class="{$class}" />
 {/if}
+</div>

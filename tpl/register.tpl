@@ -137,65 +137,69 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 				</div>
 
 				<div class="col-xs-12 col-sm-6">
+					{if $Attributes|count > 0}
+						{control type="AttributeControl" attribute=$Attributes[0]}
+					{/if}
 				</div>
 
 			</div>
 
-	</div>
+			{if $Attributes|count > 1}
+				{for $i=1 to $Attributes|count-1}
+					{if $i%2==1}
+						<div class="row">
+					{/if}
+					<div class="col-xs-12 col-sm-6">
+						{control type="AttributeControl" attribute=$Attributes[$i]}
+					</div>
+					{if $i%2==0 || $i==$Attributes|count-1}
+						</div>
+					{/if}
+				{/for}
+			{/if}
 
-	
 
-	{if $Attributes|count > 0}
-		<div class="registrationHeader"><h3>{translate key=AdditionalAttributes}</h3></div>
-		{foreach from=$Attributes item=attribute}
-			<div class="customAttribute">
-				{control type="AttributeControl" attribute=$attribute}
+			{if $EnableCaptcha}
+				<div class="form-group">
+					{control type="CaptchaControl"}
+				</div>
+			{else}
+				<input type="hidden" {formname key=CAPTCHA} value=""/>
+			{/if}
+
+			<div class="regsubmit">
+				<button type="submit" name="{Actions::REGISTER}" value="{translate key='Register'}"
+						class="btn btn-primary" id="btnUpdate">{translate key='Register'}</button>
 			</div>
-		{/foreach}
-	{/if}
+		</form>
+	</div>
+	{setfocus key='LOGIN'}
 
-	{if $EnableCaptcha}
-		<div class="registrationHeader"><h3>{translate key=SecurityCode}</h3></div>
-		<div class="form-group">
-			{control type="CaptchaControl"}
+	{jsfile src="js/jstz.min.js"}
+	{jsfile src="admin/edit.js"}
+	{jsfile src="js/jquery.form-3.09.min.js"}
+	{jsfile src="js/jquery.colorbox-min.js"}
+	{jsfile src="profile.js"}
+	{jsfile src="registration.js"}
+
+
+	<script type="text/javascript">
+		$(document).ready(function ()
+		{
+			var timezone = jstz.determine_timezone();
+			$('#timezoneDropDown').val(timezone.name());
+
+			var registrationPage = new Registration()
+			registrationPage.init();
+		});
+	</script>
+
+	<div id="colorbox">
+		<div id="modalDiv" class="wait-box">
+			<h3>{translate key=Working}</h3>
+			{html_image src="reservation_submitting.gif"}
 		</div>
-	{else}
-		<input type="hidden" {formname key=CAPTCHA} value=""/>
-	{/if}
-
-	<div class="regsubmit">
-		<button type="submit" name="{Actions::REGISTER}" value="{translate key='Register'}"
-				class="btn btn-primary" id="btnUpdate">{translate key='Register'}</button>
 	</div>
-	</form>
-</div>
-{setfocus key='LOGIN'}
-
-{jsfile src="js/jstz.min.js"}
-{jsfile src="admin/edit.js"}
-{jsfile src="js/jquery.form-3.09.min.js"}
-{jsfile src="js/jquery.colorbox-min.js"}
-{jsfile src="profile.js"}
-{jsfile src="registration.js"}
-
-
-<script type="text/javascript">
-	$(document).ready(function ()
-	{
-		var timezone = jstz.determine_timezone();
-		$('#timezoneDropDown').val(timezone.name());
-
-		var registrationPage = new Registration()
-		registrationPage.init();
-	});
-</script>
-
-<div id="colorbox">
-	<div id="modalDiv" class="wait-box">
-		<h3>{translate key=Working}</h3>
-		{html_image src="reservation_submitting.gif"}
-	</div>
-</div>
 
 </div>
 {include file='globalfooter.tpl'}

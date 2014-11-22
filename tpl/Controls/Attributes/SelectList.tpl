@@ -16,19 +16,19 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 *}
-<label class="customAttribute" for="{$attributeName}">{$attribute->Label()|escape}:</label>
-{if $align=='vertical'}
-<br/>
-{/if}
-{if $readonly}
-<span class="attributeValue {$class}">{$attribute->Value()|escape}</span>
-{else}
-<select id="{$attributeName}" name="{$attributeName}" class="customAttribute form-control {$class}">
-	{if !$attribute->Required() || $searchmode}
-	<option value="">--</option>
+<div class="form-group">
+	<label class="customAttribute" for="{$attributeName}">{$attribute->Label()|escape}</label>
+	{if $readonly}
+		<span class="attributeValue {$class}">{$attribute->Value()|escape}</span>
+	{else}
+		<select id="{$attributeName}" name="{$attributeName}" class="customAttribute form-control {$class}">
+			{if !$attribute->Required() || $searchmode}
+				<option value="">--</option>
+			{/if}
+			{foreach from=$attribute->PossibleValueList() item=value}
+				<option value="{$value|escape}"
+						{if $attribute->Value() == $value}selected="selected"{/if}>{$value|escape}</option>
+			{/foreach}
+		</select>
 	{/if}
-	{foreach from=$attribute->PossibleValueList() item=value}
-	<option value="{$value|escape}" {if $attribute->Value() == $value}selected="selected"{/if}>{$value|escape}</option>
-	{/foreach}
-</select>
-{/if}
+</div>
