@@ -41,15 +41,19 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 	<div id="registration-box">
 		<form class="register" method="post" ajaxAction="{RegisterActions::Register}" id="frmRegister"
-			  action="{$smarty.server.SCRIPT_NAME}" role="form">
+			  action="{$smarty.server.SCRIPT_NAME}" role="form"
+			  data-bv-feedbackicons-valid="glyphicon glyphicon-ok"
+			  data-bv-feedbackicons-invalid="glyphicon glyphicon-remove"
+			  data-bv-feedbackicons-validating="glyphicon glyphicon-refresh"
+			  data-bv-feedbackicons-required="glyphicon glyphicon-asterisk"
+			  data-bv-submitbuttons='button[type="submit"]'
+			        data-bv-live="enabled">
 
 			<div class="row">
 				<div class="col-xs-12 col-sm-6">
 					<div class="form-group">
-						<div class="input-group">
-							<label class="reg" for="login">{translate key="Username"}</label>
-							{textbox name="LOGIN" value="Login" size="20"}
-						</div>
+						<label class="reg" for="login">{translate key="Username"}</label>
+						{textbox name="LOGIN" value="Login" size="20" required="required" data-bv-notempty="true" data-bv-notempty-message="The username is required and cannot be empty"}
 					</div>
 				</div>
 
@@ -158,7 +162,6 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 				{/for}
 			{/if}
 
-
 			{if $EnableCaptcha}
 				<div class="form-group">
 					{control type="CaptchaControl"}
@@ -182,15 +185,36 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 	{jsfile src="profile.js"}
 	{jsfile src="registration.js"}
 
-
 	<script type="text/javascript">
 		$(document).ready(function ()
 		{
 			var timezone = jstz.determine_timezone();
 			$('#timezoneDropDown').val(timezone.name());
 
-			var registrationPage = new Registration()
+			var registrationPage = new Registration();
 			registrationPage.init();
+
+
+			$('#frmRegister').on('init.field.bv', function(e, data) {
+			            // data.bv      --> The BootstrapValidator instance
+			            // data.field   --> The field name
+			            // data.element --> The field element
+
+			            var $parent    = data.element.parents('.form-group'),
+			                $icon      = $parent.find('.form-control-feedback[data-bv-icon-for="' + data.field + '"]'),
+			                options    = data.bv.getOptions(),                      // Entire options
+			                validators = data.bv.getOptions(data.field).validators; // The field validators
+
+
+			            if (validators.notEmpty) {
+			                // The field uses notEmpty validator
+			                // Add required icon
+			                $icon.addClass('glyphicon glyphicon-asterisk').show();
+			            }
+			        });
+
+			$('#frmRegister').bootstrapValidator();
+
 		});
 	</script>
 
