@@ -21,7 +21,7 @@ bersamaan dengan Booked Scheduler. Jika tidak, lihat
 <http://www.gnu.org/licenses/>.
 
 *}
-{include file='..\..\tpl\Email\emailheader.tpl'}
+
 
 Berikut kata sandi Booked Scheduler sementara Anda: {$TemporaryPassword}
 
@@ -32,4 +32,3 @@ Kata sandi lama Anda tidak akan lagu berfungsi.
 
 Silahkan <a href="{$ScriptUrl}">masuk Booked Scheduler</a> dan ubah kata sandi Anda segera mungkin.
 
-{include file='..\..\tpl\Email\emailfooter.tpl'}

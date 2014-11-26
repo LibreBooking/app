@@ -16,7 +16,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 *}
-{include file='..\..\tpl\Email\emailheader.tpl'}
+
 
 	Detalji o rezervaciji:
 	<br/>
@@ -38,7 +38,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 	{if count($RepeatDates) gt 0}
 		<br/>
-		Rezervacija važi za navedeni datum:
+		Rezervacija vaï¿½i za navedeni datum:
 		<br/>
 	{/if}
 
@@ -62,7 +62,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 	{if $RequiresApproval}
 		<br/>
-		Jedan ili više terena zahtijevaju odobrenje prije upotrebe. Ova rezervacija ce biti zadržana do dozvole.
+		Jedan ili viï¿½e terena zahtijevaju odobrenje prije upotrebe. Ova rezervacija ce biti zadrï¿½ana do dozvole.
 	{/if}
 
 	<br/>
@@ -71,4 +71,3 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 	<a href="{$ScriptUrl}/{$ICalUrl}">Dodaj u kalendar</a> |
 	<a href="{$ScriptUrl}">Ulogiraj se</a>
 
-{include file='..\..\tpl\Email\emailfooter.tpl'}

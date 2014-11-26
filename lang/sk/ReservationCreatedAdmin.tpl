@@ -16,7 +16,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 *}
-{include file='..\..\tpl\Email\emailheader.tpl'}
+
 	
 	Boli vytvorené tieto nové rezervácie: 
 	<br/>
@@ -60,4 +60,3 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 	<br/>
 	<a href="{$ScriptUrl}/{$ReservationUrl}">Zobraziť rezerváciu v systéme</a> | <a href="{$ScriptUrl}">Prihlásiť sa do systému</a>
 	
-{include file='..\..\tpl\Email\emailfooter.tpl'}

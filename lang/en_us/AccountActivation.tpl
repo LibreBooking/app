@@ -16,9 +16,8 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 *}
-{include file='..\..\tpl\Email\emailheader.tpl'}
+
 
 {$FirstName},<br/>
 Thank you for registering with Booked Scheduler. Please <a href="{$ActivationUrl}">activate your account</a>.
 
-{include file='..\..\tpl\Email\emailfooter.tpl'}

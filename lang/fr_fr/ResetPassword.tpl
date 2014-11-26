@@ -16,7 +16,7 @@ Voir la Licence Publique Générale GNU pour plus de détails.
 Vous devez avoir reçu une copie de la GNU General Public License
 avec Booked Scheduler. si ce n'est pas le cas consultez <http://www.gnu.org/licenses/>.
 *}
-{include file='..\..\tpl\Email\emailheader.tpl'}
+
 
 Votre mot de passe temporaire Booked Scheduler : {$TemporaryPassword}
 
@@ -26,4 +26,4 @@ Votre ancien mot de passe ne fonctionne maintenant plus.
 
 SVP : <a href="{$ScriptUrl}">Connexion à Booked Scheduler</a> pour changer au plus vite votre mot de passe.
 
-{include file='..\..\tpl\Email\emailfooter.tpl'}
+

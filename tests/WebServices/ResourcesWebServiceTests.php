@@ -213,8 +213,8 @@ class ResourcesWebServiceTests extends TestBase
 		$endDate = $date->AddDays(7);
 		$this->reservationRepository->expects($this->once())
 									->method('GetReservationList')
-									->with($this->equalTo($date->AddDays(-1)),
-										   $this->equalTo($endDate))
+									->with($this->equalTo($date->AddDays(-1)->ToUtc()),
+										   $this->equalTo($endDate->ToUtc()))
 									->will($this->returnValue($reservations));
 
 		$this->service->GetAvailability();
@@ -295,8 +295,8 @@ class ResourcesWebServiceTests extends TestBase
 		$endDate = $date->AddDays(7);
 		$this->reservationRepository->expects($this->once())
 									->method('GetReservationList')
-									->with($this->equalTo($date->AddDays(-1)),
-										   $this->equalTo($endDate),
+									->with($this->equalTo($date->AddDays(-1)->ToUtc()),
+										   $this->equalTo($endDate->ToUtc()),
 										   $this->isEmpty(),
 										   $this->isEmpty(),
 										   $this->isEmpty(),

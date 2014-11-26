@@ -16,7 +16,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 *}
-{include file='..\..\tpl\Email\emailheader.tpl'}
+
 
 	Reserverings Details:
 	<br/>
@@ -62,11 +62,10 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 	{if $RequiresApproval}
 		<br/>
-		Eén of meerdere bronnen die gereserveerd zijn hebben goedkeuring nodig voordat ze gebruikt kunnen worden. Accepteer of wijs de reservering af.
+		Eï¿½n of meerdere bronnen die gereserveerd zijn hebben goedkeuring nodig voordat ze gebruikt kunnen worden. Accepteer of wijs de reservering af.
 	{/if}
 
 	<br/>
 	<br/>
 	<a href="{$ScriptUrl}/{$ReservationUrl}">Bekijk deze reservering</a> | <a href="{$ScriptUrl}">Login in Booked Scheduler</a>
 
-{include file='..\..\tpl\Email\emailfooter.tpl'}

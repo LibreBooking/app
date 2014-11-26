@@ -16,7 +16,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 *}
-{include file='..\..\tpl\Email\emailheader.tpl'}
+
 	
 	Byly vytvořeny tyto nové rezervace: 
 	<br/>
@@ -69,4 +69,3 @@ Konec: {formatdate date=$EndDate key=reservation_email}<br/>
 	<br/>
 	<a href="{$ScriptUrl}/{$ReservationUrl}">Zobrazit rezervaci v systému</a> | <a href="{$ScriptUrl}">Přihlásit se do systému</a>
 	
-{include file='..\..\tpl\Email\emailfooter.tpl'}

@@ -16,7 +16,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 *}
-{include file='..\..\tpl\Email\emailheader.tpl'}
+
 
 Esta é a sua senha temporária do Booked Scheduler: {$TemporaryPassword}
 
@@ -26,4 +26,3 @@ A sua senha antiga já não funciona.
 
 Por favor, <a href="{$ScriptUrl}">Entre no Booked Scheduler</a> e altere a sua senha o mais rapidamente possível.
 
-{include file='..\..\tpl\Email\emailfooter.tpl'}

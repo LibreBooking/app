@@ -3,10 +3,10 @@
 Copyright 2011-2014 Nick Korbel
 Copyright 2012-2014 Trustees of Columbia University in the City of New York
 
-This file is part of Booked SchedulerBooked SchedulereIt is free software: you can redistribute it and/or modify
+This file is part of Booked Scheduler is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation, either version 3 of the License, or
-(at your option) any later versBooked SchedulerduleIt is distributed in the hope that it will be useful,
+(at your option) any later version is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE . See {the
 }
@@ -14,7 +14,7 @@ GNU General Public License for more details .
 
 You should {have
 } received a copy of the GNU General Public License
-alBooked SchedulercheduleIt.  If not, see <http://www.gnu.org/licenses/>.
+along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 //$serverTimezone = ini_get('date.timezone');
@@ -100,26 +100,35 @@ class Date
 
 	/**
 	 * @param string $dateString
-	 * @param string $timezone
 	 * @return Date
 	 */
-	public static function ParseExact($dateString, $timezone)
+	public static function ParseExact($dateString)
 	{
 		if (empty($dateString))
 		{
 			return NullDate::Instance();
 		}
 
+		$offset = '';
+		$strLen = strlen($dateString);
+		$hourAdjustment = 0;
+		$minuteAdjustment = 0;
+		if ($strLen > 5)
+		{
+			$offset = substr($dateString, -5);
+			$hourAdjustment = substr($offset, 1, 2);
+			$minuteAdjustment = substr($offset, 3, 2);
+		}
+
+		if (BookedStringHelper::Contains($offset, '+'))
+		{
+			$hourAdjustment *= -1;
+			$minuteAdjustment *= -1;
+		}
+
 		$parsed = date_parse($dateString);
-		if (isset($parsed['zone']))
-		{
-			$name = timezone_name_from_abbr("", -1*$parsed['zone']*60);
-		}
-		else
-		{
-			$name = $timezone;
-		}
-		$d = Date::Create($parsed['year'], $parsed['month'], $parsed['day'], $parsed['hour'], $parsed['minute'], $parsed['second'], $name);
+
+		$d = Date::Create($parsed['year'], $parsed['month'], $parsed['day'], $parsed['hour'] + $hourAdjustment, $parsed['minute'] + $minuteAdjustment, $parsed['second'], 'UTC');
 		return $d;
 	}
 

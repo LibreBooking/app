@@ -16,10 +16,9 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 *}
-{include file='..\..\tpl\Email\emailheader.tpl'}
 
-Vaš izvještaj iz Booked Schedulera je priložen.<br/><br/>
+
+Vaï¿½ izvjeï¿½taj iz Booked Schedulera je priloï¿½en.<br/><br/>
 
 <a href="{$ScriptUrl}">Ulogiraj se</a>
 
-{include file='..\..\tpl\Email\emailfooter.tpl'}

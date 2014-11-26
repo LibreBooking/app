@@ -2,16 +2,16 @@
 /**
 Copyright 2013-2014 Nick Korbel
 
-This file is part of Booked SchedulerBooked SchedulereIt is free software: you can redistribute it and/or modify
+This file is part of Booked Scheduler is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation, either version 3 of the License, or
-(at your option) any later versBooked SchedulerduleIt is distributed in the hope that it will be useful,
+(at your option) any later version is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
-alBooked SchedulercheduleIt.  If not, see <http://www.gnu.org/licenses/>.
+along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 require_once(ROOT_DIR . 'Domain/Access/namespace.php');
@@ -30,7 +30,7 @@ interface IManageUsersService
 	 * @param $homePageId int
 	 * @param $extraAttributes array|string[]
 	 * @param $customAttributes array|AttributeValue[]
-	 * @return int
+	 * @return User
 	 */
 	public function AddUser(
 		$username,
@@ -52,6 +52,7 @@ interface IManageUsersService
 	 * @param $lastName string
 	 * @param $timezone string
 	 * @param $extraAttributes string[]|array
+	 * @return User
 	 */
 	public function UpdateUser($userId, $username, $email, $firstName, $lastName, $timezone, $extraAttributes);
 
@@ -65,6 +66,12 @@ interface IManageUsersService
 	 * @param $userId int
 	 */
 	public function DeleteUser($userId);
+
+	/**
+	 * @param User $user
+	 * @param int[] $groupIds
+	 */
+	public function ChangeGroups($user, $groupIds);
 }
 
 class ManageUsersService implements IManageUsersService
@@ -79,10 +86,16 @@ class ManageUsersService implements IManageUsersService
 	 */
 	private $userRepository;
 
-	public function __construct(IRegistration $registration, IUserRepository $userRepository)
+	/**
+	 * @var IGroupRepository
+	 */
+	private $groupRepository;
+
+	public function __construct(IRegistration $registration, IUserRepository $userRepository, IGroupRepository $groupRepository)
 	{
 		$this->registration = $registration;
 		$this->userRepository = $userRepository;
+		$this->groupRepository = $groupRepository;
 	}
 
 	public function AddUser(
@@ -108,7 +121,7 @@ class ManageUsersService implements IManageUsersService
 											  $extraAttributes,
 											  $customAttributes);
 
-		return $user->Id();
+		return $user;
 	}
 
 	public function ChangeAttributes($userId, $attributes)
@@ -136,7 +149,43 @@ class ManageUsersService implements IManageUsersService
 								$attributes->Get(UserAttribute::Position));
 
 		$this->userRepository->Update($user);
+
+		return $user;
+	}
+
+	public function ChangeGroups($user, $groupIds)
+	{
+		if ($groupIds == null)
+		{
+			return;
+		}
+
+		$existingGroupIds = array();
+		foreach ($user->Groups() as $group)
+		{
+			$existingGroupIds[] = $group->GroupId;
+		}
+
+		foreach ($groupIds as $targetGroupId)
+		{
+			if (!in_array($targetGroupId, $existingGroupIds))
+			{
+				// add group
+				$group = $this->groupRepository->LoadById($targetGroupId);
+				$group->AddUser($user->Id());
+				$this->groupRepository->Update($group);
+			}
+		}
+
+		foreach($existingGroupIds as $existingId)
+		{
+			if (!in_array($existingId, $groupIds))
+			{
+				// remove user
+				$group = $this->groupRepository->LoadById($existingId);
+				$group->RemoveUser($user->Id());
+				$this->groupRepository->Update($group);
+			}
+		}
 	}
 }
-
-?>

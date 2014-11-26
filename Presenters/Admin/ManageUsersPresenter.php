@@ -233,7 +233,7 @@ class ManageUsersPresenter extends ActionPresenter implements IManageUsersPresen
 
 	public function AddUser()
 	{
-		$userId = $this->manageUsersService->AddUser(
+		$user = $this->manageUsersService->AddUser(
 			$this->page->GetUserName(),
 			$this->page->GetEmail(),
 			$this->page->GetFirstName(),
@@ -245,6 +245,7 @@ class ManageUsersPresenter extends ActionPresenter implements IManageUsersPresen
 			array(),
 			$this->GetAttributeValues());
 
+		$userId = $user->Id();
 		$groupId = $this->page->GetUserGroup();
 
 		if (!empty($groupId))

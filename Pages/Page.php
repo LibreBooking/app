@@ -302,7 +302,14 @@ abstract class Page implements IPage
 	 */
 	protected function Display($templateName)
 	{
-		$this->smarty->display($templateName);
+		if (!$this->InMaintenanceMode())
+		{
+			$this->smarty->display($templateName);
+		}
+		else
+		{
+			$this->smarty->display('maintenance.tpl');
+		}
 	}
 
 	protected function DisplayCsv($templateName, $fileName)
@@ -350,4 +357,9 @@ abstract class Page implements IPage
 
 		return !empty($timeout);
     }
+
+	private function InMaintenanceMode()
+	{
+		return is_file(ROOT_DIR . 'maint.txt');
+	}
 }

@@ -16,7 +16,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 *}
-{include file='..\..\tpl\Email\emailheader.tpl'}
+
 
 Booked Scheduler の仮パスワードです:: {$TemporaryPassword}
 
@@ -27,4 +27,3 @@ Booked Scheduler の仮パスワードです:: {$TemporaryPassword}
 <br/>
 
 出来るだけ早く<a href="{$ScriptUrl}">Booked Scheduler にログイン</a>してパスワードを変更してください。
-{include file='..\..\tpl\Email\emailfooter.tpl'}

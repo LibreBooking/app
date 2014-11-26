@@ -18,7 +18,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 *}
-{include file='..\..\tpl\Email\emailheader.tpl'}
+
 
 Questa è la nuova password temporanea per Booked Scheduler: {$TemporaryPassword}
 
@@ -30,4 +30,3 @@ La vecchia password è stata disattivata.
 
 Per favore <a href="{$ScriptUrl}">Accedi a Booked Scheduler</a> e cambia la password il prima possibile.
 
-{include file='..\..\tpl\Email\emailfooter.tpl'}

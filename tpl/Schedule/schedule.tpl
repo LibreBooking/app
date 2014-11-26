@@ -114,7 +114,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		{capture name="date_navigation"}
 			<div id="schedule-dates" class="schedule_dates col-md-3">
 				{assign var=FirstDate value=$DisplayDates->GetBegin()}
-				{assign var=LastDate value=$DisplayDates->GetEnd()}
+				{assign var=LastDate value=$DisplayDates->GetEnd()->AddDays(-1)}
 				<a href="#" class="change-date" data-year="{$PreviousDate->Year()}" data-month="{$PreviousDate->Month()}" data-day="{$PreviousDate->Day()}">{html_image src="arrow_large_left.png" alt="Back"}</a>
 				{formatdate date=$FirstDate} - {formatdate date=$LastDate}
 				<a href="#"class="change-date" data-year="{$NextDate->Year()}" data-month="{$NextDate->Month()}" data-day="{$NextDate->Day()}">{html_image src="arrow_large_right.png" alt="Forward"}</a>

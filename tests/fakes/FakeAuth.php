@@ -112,5 +112,60 @@ class FakeAuth implements IAuthentication
 	{
 		return $this->_ShowForgotPasswordPrompt;
 	}
+
+	/**
+	 * @return bool
+	 */
+	public function AllowUsernameChange()
+	{
+		return true;
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function AllowEmailAddressChange()
+	{
+		return true;
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function AllowPasswordChange()
+	{
+		return true;
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function AllowNameChange()
+	{
+		return true;
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function AllowPhoneChange()
+	{
+		return true;
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function AllowOrganizationChange()
+	{
+		return true;
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function AllowPositionChange()
+	{
+		return true;
+	}
 }
-?>

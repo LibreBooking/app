@@ -82,12 +82,15 @@ $conf['settings']['reservation']['enable.reminders'] = 'false';				// if reminde
 $conf['settings']['reservation.notify']['resource.admin.add'] = 'false';
 $conf['settings']['reservation.notify']['resource.admin.update'] = 'false';
 $conf['settings']['reservation.notify']['resource.admin.delete'] = 'false';
+$conf['settings']['reservation.notify']['resource.admin.approval'] = 'false';
 $conf['settings']['reservation.notify']['application.admin.add'] = 'false';
 $conf['settings']['reservation.notify']['application.admin.update'] = 'false';
 $conf['settings']['reservation.notify']['application.admin.delete'] = 'false';
+$conf['settings']['reservation.notify']['application.admin.approval'] = 'false';
 $conf['settings']['reservation.notify']['group.admin.add'] = 'false';
 $conf['settings']['reservation.notify']['group.admin.update'] = 'false';
 $conf['settings']['reservation.notify']['group.admin.delete'] = 'false';
+$conf['settings']['reservation.notify']['group.admin.approval'] = 'false';
 /**
  * File upload configuration
  */

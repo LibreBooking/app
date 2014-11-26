@@ -16,16 +16,15 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 *}
-{include file='..\..\tpl\Email\emailheader.tpl'}
 
-Vaša privremena lozinka je: {$TemporaryPassword}
+
+Vaï¿½a privremena lozinka je: {$TemporaryPassword}
 
 <br/>
 
-Vaša stara lozinka više ne vrijedi.
+Vaï¿½a stara lozinka viï¿½e ne vrijedi.
 <br/>
 <br/>
 
-Molimo <a href="{$ScriptUrl}">ulogirajte se </a> i promjenite vašu lozinku što prije.
+Molimo <a href="{$ScriptUrl}">ulogirajte se </a> i promjenite vaï¿½u lozinku ï¿½to prije.
 
-{include file='..\..\tpl\Email\emailfooter.tpl'}

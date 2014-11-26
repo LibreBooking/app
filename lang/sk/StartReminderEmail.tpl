@@ -16,7 +16,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 *}
-{include file='..\..\tpl\Email\emailheader.tpl'}
+
 Nezmeškajte rezervovaný termín.<br/>
 Detaily rezervácie:
 	<br/>
@@ -29,4 +29,4 @@ Detaily rezervácie:
 <br/>
 <a href="{$ScriptUrl}/{$ReservationUrl}">Zobraziť túto rezerváciu v systéme</a> |
 	<a href="{$ScriptUrl}/{$ICalUrl}">Pridať do Outlook-u</a> |
-	<a href="{$ScriptUrl}">Prihlásiť sa do rezervačného systému</a>{include file='..\..\tpl\Email\emailfooter.tpl'}
+	<a href="{$ScriptUrl}">Prihlásiť sa do rezervačného systému</a>

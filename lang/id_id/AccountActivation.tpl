@@ -21,9 +21,9 @@ bersamaan dengan Booked Scheduler. Jika tidak, lihat
 <http://www.gnu.org/licenses/>.
 
 *}
-{include file='..\..\tpl\Email\emailheader.tpl'}
+
 
 {$FirstName},<br/>
 Terima kasih telah mendaftar dngan Booked Scheduler. Silahkan <a href="{$ActivationUrl}">aktivasi akun Anda</a>.
 
-{include file='..\..\tpl\Email\emailfooter.tpl'}
+

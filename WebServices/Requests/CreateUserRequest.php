@@ -39,8 +39,7 @@ class CreateUserRequest extends UserRequestBase
 		$request->organization = 'organization';
 		$request->position = 'position';
 		$request->customAttributes = array(new AttributeValueRequest(99, 'attribute value'));
+		$request->groups = array(1,2,4);
 		return $request;
 	}
 }
-
-?>

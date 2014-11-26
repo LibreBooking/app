@@ -16,10 +16,9 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 *}
-{include file='..\..\tpl\Email\emailheader.tpl'}
+
 
 {$FirstName},Tack för er registrering i vårt bokningssystem. Innan ni kan logga in måste ni aktivera ert konto detta gör ni genom att klicka på länken "Aktivering av konto"
 
 <a href="{$ActivationUrl}">aktivering av ert konto</a>.
 
-{include file='..\..\tpl\Email\emailfooter.tpl'}

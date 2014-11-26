@@ -2,16 +2,16 @@
 /**
 Copyright 2011-2014 Nick Korbel
 
-This file is part of Booked SchedulerBooked SchedulereIt is free software: you can redistribute it and/or modify
+This file is part of Booked Scheduler is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation, either version 3 of the License, or
-(at your option) any later versBooked SchedulerduleIt is distributed in the hope that it will be useful,
+(at your option) any later version is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
-alBooked SchedulercheduleIt.  If not, see <http://www.gnu.org/licenses/>.
+along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 require_once(ROOT_DIR . 'lib/Application/Schedule/SlotLabelFactory.php');
@@ -70,10 +70,7 @@ class ReservationSlot implements IReservationSlot
 	 * @param int $periodSpan
 	 * @param ReservationItemView $reservation
 	 */
-	public function __construct(SchedulePeriod $begin,
-								SchedulePeriod $end,
-								Date $displayDate,
-								$periodSpan,
+	public function __construct(SchedulePeriod $begin, SchedulePeriod $end, Date $displayDate, $periodSpan,
 								ReservationItemView $reservation)
 	{
 		$this->_reservation = $reservation;
@@ -214,20 +211,23 @@ class ReservationSlot implements IReservationSlot
 
 	public function Color()
 	{
-		return $this->_reservation->GetColor();
+		$color = $this->_reservation->UserPreferences->Get(UserPreferences::RESERVATION_COLOR);
+		if (!empty($color))
+		{
+			return "#$color";
+		}
+
+		return null;
 	}
 
 	public function TextColor()
 	{
-		return $this->_reservation->GetTextColor();
+		$color = $this->Color();
+		if (!empty($color))
+		{
+			return new ContrastingColor($color);
+		}
 
-	}
-
-	/**
-	 * @return ReservationItemView
-	 */
-	public function Reservation()
-	{
-		return $this->_reservation;
+		return null;
 	}
 }

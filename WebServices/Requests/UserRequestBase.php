@@ -33,6 +33,8 @@ abstract class UserRequestBase extends JsonRequest
 	public $position;
 	/** @var array|AttributeValueRequest[] */
 	public $customAttributes = array();
+	/** @var array|int[] */
+	public $groups = array();
 
 	/**
 	 * @return array|AttributeValueRequest[]
@@ -46,6 +48,3 @@ abstract class UserRequestBase extends JsonRequest
 		return array();
 	}
 }
-
-
-?>

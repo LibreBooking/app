@@ -16,8 +16,8 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 *}
-{include file='..\..\tpl\Email\emailheader.tpl'}
-Vaša rezervacija uskoro istice.<br/>
+
+Vaï¿½a rezervacija uskoro istice.<br/>
 Detalji o rezervaciji:
 	<br/>
 	<br/>
@@ -31,4 +31,3 @@ Detalji o rezervaciji:
 <a href="{$ScriptUrl}/{$ICalUrl}">Dodaj u kalendar</a> |
 <a href="{$ScriptUrl}">Ulogiraj se</a>
 
-{include file='..\..\tpl\Email\emailfooter.tpl'}

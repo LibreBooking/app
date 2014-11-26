@@ -571,4 +571,48 @@ class DateTests extends TestBase
 //
 //		$this->assertFalse($d1->DateEquals($d2));
 	}
+
+	public function testCountsWeekdaysAndWeekends()
+	{
+		$timezone = 'America/Chicago';
+		$begin = Date::Parse('2014-11-01 12:00', $timezone);
+		$end = Date::Parse('2014-11-20 08:00', $timezone);
+		$range = new DateRange($begin, $end, $timezone);
+
+		$this->assertEquals(14, $range->NumberOfWeekdays());
+		$this->assertEquals(6, $range->NumberOfWeekendDays());
+	}
+
+	public function testOneWeekday()
+	{
+		$timezone = 'America/Chicago';
+		$begin = Date::Parse('2014-11-03 12:00', $timezone);
+		$end = Date::Parse('2014-11-03 13:00', $timezone);
+		$range = new DateRange($begin, $end, $timezone);
+
+		$this->assertEquals(1, $range->NumberOfWeekdays());
+		$this->assertEquals(0, $range->NumberOfWeekendDays());
+	}
+
+	public function testOneWeekendDay()
+	{
+		$timezone = 'America/Chicago';
+		$begin = Date::Parse('2014-11-01 12:00', $timezone);
+		$end = Date::Parse('2014-11-01 13:00', $timezone);
+		$range = new DateRange($begin, $end, $timezone);
+
+		$this->assertEquals(0, $range->NumberOfWeekdays());
+		$this->assertEquals(1, $range->NumberOfWeekendDays());
+	}
+	
+	public function testWhenEndDateIsAtMidnight_DoNotCountIt()
+	{
+		$timezone = 'America/Chicago';
+		$begin = Date::Parse('2014-11-01 12:00', $timezone);
+		$end = Date::Parse('2014-11-02 00:00', $timezone);
+		$range = new DateRange($begin, $end, $timezone);
+
+		$this->assertEquals(0, $range->NumberOfWeekdays());
+		$this->assertEquals(1, $range->NumberOfWeekendDays());
+	}
 }
