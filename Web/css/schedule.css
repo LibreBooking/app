@@ -173,7 +173,7 @@ div.legend {
   font-size: 1.3em;
   text-align: center;
   padding: 3px 0;
-  color: #4e4d4a;
+  color: #585754;
 }
 .reservations-left-content {
   padding: 10px;
@@ -221,11 +221,11 @@ ul.jqtree-tree .jqtree-toggler {
   background-color: #bcbcbc;
 }
 #calendar_toggle {
-  color: #4e4d4a;
+  color: #585754;
   padding-left: 5px;
 }
 #calendar_toggle:hover {
-  color: #686763;
+  color: #72716d;
 }
 #calendar_toggle span {
   font-size: 16pt;
