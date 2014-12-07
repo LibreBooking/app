@@ -1,3 +1,5 @@
+SET foreign_key_checks = 0;
+
 delete from groups where admin_group_id is not null;
 delete from groups;
 alter table groups AUTO_INCREMENT = 1;
@@ -39,3 +41,5 @@ insert into custom_attributes(`custom_attribute_id`,`display_label`,`display_typ
 (2, 'Test String', 1, 1, null, false, null),
 (3, 'Test Number', 1, 4, null, false, null),
 (4, 'Test String', 1, 4, null, false, null);
+
+SET foreign_key_checks = 1;

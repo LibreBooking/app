@@ -112,6 +112,8 @@ class UpgradeDbTask extends Task
 
 		mysqli_select_db($dblink, $this->database);
 
+		mysqli_query($dblink, 'SET foreign_key_checks = 0;');
+
         $path = "$fullUpgradeDir/$fileName";
         print("Executing $path\n");
 
@@ -132,6 +134,8 @@ class UpgradeDbTask extends Task
                 }
             }
         }
+
+		mysqli_query($dblink, 'SET foreign_key_checks = 1;');
     }
 
     private function  GetFullSql($file)

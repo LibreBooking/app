@@ -31,11 +31,20 @@ class WebServiceDate
 		{
 			if (BookedStringHelper::Contains($dateString, 'T'))
 			{
-				return Date::ParseExact($dateString);
+				$dateString = str_replace('T', ' ', $dateString);
+			}
+
+			$fifthFromEnd = substr($dateString, -5, 1);
+			// contains timezone offset
+			if (strlen($dateString) > 5 && ($fifthFromEnd == '-' || $fifthFromEnd == '+'))
+			{
+				// remove timezone offset
+				$dateString = substr($dateString, 0, -5);
 			}
 
 			return Date::Parse($dateString, $session->Timezone);
-		} catch (Exception $ex)
+		}
+		catch (Exception $ex)
 		{
 			return Date::Now();
 		}

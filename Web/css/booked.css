@@ -11,21 +11,22 @@ body {
 body {
   padding-bottom: 45px;
 }
-a {
+a,
+a:visited {
   color: #2b4e72;
 }
 .footer {
   text-align: center;
-  border-top: solid 1px #343331;
+  border-top: solid 1px #3e3d3b;
   padding-top: 2px;
   color: #fff;
   font-size: .8em;
-  background: #4e4d4a;
-  background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #5b5a56), color-stop(1, #4e4d4a));
-  background: -ms-linear-gradient(bottom, #5b5a56, #4e4d4a);
-  background: -moz-linear-gradient(center bottom, #5b5a56 0%, #4e4d4a 100%);
-  background: -o-linear-gradient(#4e4d4a, #5b5a56);
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#4e4d4a', endColorstr='#5b5a56', GradientType=0);
+  background: #585754;
+  background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #656460), color-stop(1, #585754));
+  background: -ms-linear-gradient(bottom, #656460, #585754);
+  background: -moz-linear-gradient(center bottom, #656460 0%, #585754 100%);
+  background: -o-linear-gradient(#585754, #656460);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#585754', endColorstr='#656460', GradientType=0);
   height: 45px;
   min-height: 45px;
   margin-bottom: 0;
@@ -86,13 +87,12 @@ div.center {
   text-align: center;
 }
 .default-box-header {
-  background-color: #bcbcbc;
-  margin: -1px;
+  background-color: #e9e9e9;
   line-height: 35px;
   padding: 0 15px;
   font-size: 1.3em;
   font-weight: bold;
-  color: #4e4d4a;
+  color: #585754;
   border: solid 1px #e9e9e9;
   -webkit-border-top-right-radius: 5px;
   -webkit-border-bottom-right-radius: 0;
@@ -220,7 +220,7 @@ div.center {
 }
 .pagination-rows {
   padding-top: 10px;
-  color: #4e4d4a;
+  color: #585754;
   font-size: .8em;
   font-weight: bold;
 }
@@ -452,7 +452,7 @@ div.legend {
   font-size: 1.3em;
   text-align: center;
   padding: 3px 0;
-  color: #4e4d4a;
+  color: #585754;
 }
 .reservations-left-content {
   padding: 10px;
@@ -500,11 +500,11 @@ ul.jqtree-tree .jqtree-toggler {
   background-color: #bcbcbc;
 }
 #calendar_toggle {
-  color: #4e4d4a;
+  color: #585754;
   padding-left: 5px;
 }
 #calendar_toggle:hover {
-  color: #686763;
+  color: #72716d;
 }
 #calendar_toggle span {
   font-size: 16pt;
