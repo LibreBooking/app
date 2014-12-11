@@ -20,210 +20,224 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 <div class="page-register">
 
-	<div id="registrationError" class="validationSummary alert alert-danger hidden" id="validationErrors">
-		<ul>
-			{async_validator id="fname" key="FirstNameRequired"}
-			{async_validator id="lname" key="LastNameRequired"}
-			{async_validator id="username" key="UserNameRequired"}
-			{async_validator id="passwordmatch" key="PwMustMatch"}
-			{async_validator id="passwordcomplexity" key=""}
-			{async_validator id="emailformat" key="ValidEmailRequired"}
-			{async_validator id="uniqueemail" key="UniqueEmailRequired"}
-			{async_validator id="uniqueusername" key="UniqueUsernameRequired"}
-			{async_validator id="captcha" key="CaptchaMustMatch"}
-			{async_validator id="additionalattributes" key=""}
-		</ul>
-	</div>
+<div id="registrationError" class="validationSummary alert alert-danger hidden" id="validationErrors">
+	<ul>
+		{async_validator id="fname" key="FirstNameRequired"}
+		{async_validator id="lname" key="LastNameRequired"}
+		{async_validator id="username" key="UserNameRequired"}
+		{async_validator id="passwordmatch" key="PwMustMatch"}
+		{async_validator id="passwordcomplexity" key=""}
+		{async_validator id="emailformat" key="ValidEmailRequired"}
+		{async_validator id="uniqueemail" key="UniqueEmailRequired"}
+		{async_validator id="uniqueusername" key="UniqueUsernameRequired"}
+		{async_validator id="captcha" key="CaptchaMustMatch"}
+		{async_validator id="additionalattributes" key=""}
+	</ul>
+</div>
 
-	<div class="error hidden" id="registrationError">
-		{translate key=UnknownError}
-	</div>
+<div class="error hidden" id="registrationError">
+	{translate key=UnknownError}
+</div>
 
-	<div id="registration-box">
-		<form class="register" method="post" ajaxAction="{RegisterActions::Register}" id="frmRegister"
-			  action="{$smarty.server.SCRIPT_NAME}" role="form"
-			  data-bv-feedbackicons-valid="glyphicon glyphicon-ok"
-			  data-bv-feedbackicons-invalid="glyphicon glyphicon-remove"
-			  data-bv-feedbackicons-validating="glyphicon glyphicon-refresh"
-			  data-bv-feedbackicons-required="glyphicon glyphicon-asterisk"
-			  data-bv-submitbuttons='button[type="submit"]'
-			        data-bv-live="enabled">
+<div id="registration-box">
+	<form class="register" method="post" ajaxAction="{RegisterActions::Register}" id="frmRegister"
+		  action="{$smarty.server.SCRIPT_NAME}" role="form"
+		  data-bv-feedbackicons-valid="glyphicon glyphicon-ok"
+		  data-bv-feedbackicons-invalid="glyphicon glyphicon-remove"
+		  data-bv-feedbackicons-validating="glyphicon glyphicon-refresh"
+		  data-bv-feedbackicons-required="glyphicon glyphicon-asterisk"
+		  data-bv-submitbuttons='button[type="submit"]'
+		  data-bv-live="enabled">
 
-			<div class="row">
-				<div class="col-xs-12 col-sm-6">
-					<div class="form-group">
-						<label class="reg" for="login">{translate key="Username"}</label>
-						{textbox name="LOGIN" value="Login" size="20" required="required" data-bv-notempty="true" data-bv-notempty-message="The username is required and cannot be empty"}
-					</div>
-				</div>
-
-				<div class="col-xs-12 col-sm-6">
-					<div class="form-group">
-						<label class="reg" for="email">{translate key="Email"}</label>
-						{textbox name="EMAIL" class="input" value="Email" size="20"}
-					</div>
-				</div>
-			</div>
-
-			<div class="row">
-				<div class="col-xs-12 col-sm-6">
-					<div class="form-group">
-						<label class="reg" for="password">{translate key="Password"}</label>
-						{textbox type="password" name="PASSWORD" value="" size="20"}
-					</div>
-				</div>
-
-				<div class="col-xs-12 col-sm-6">
-					<div class="form-group">
-						<label class="reg" for="passwordConfirm">{translate key="PasswordConfirmation"}</label>
-						{textbox type="password" name="PASSWORD_CONFIRM" value="" size="20"}
-					</div>
-				</div>
-			</div>
-
-			<div class="row">
-				<div class="col-xs-12 col-sm-6">
-					<div class="form-group">
-						<label class="reg" for="fname">{translate key="FirstName"}</label>
-						{textbox name="FIRST_NAME" class="input" value="FirstName" size="20"}
-					</div>
-				</div>
-				<div class="col-xs-12 col-sm-6">
-					<div class="form-group">
-						<label class="reg" for="lname">{translate key="LastName"}</label>
-						{textbox name="LAST_NAME" class="input" value="LastName" size="20"}
-					</div>
-				</div>
-			</div>
-
-			<div class="row">
-				<div class="col-xs-12 col-sm-6">
-					<div class="form-group">
-						<label class="reg" for="homepage">{translate key="DefaultPage"}</label>
-						<select {formname key='DEFAULT_HOMEPAGE'} id="homepage" class="form-control">
-							{html_options values=$HomepageValues output=$HomepageOutput selected=$Homepage}
-						</select>
-					</div>
-
-				</div>
-				<div class="col-xs-12 col-sm-6">
-					<div class="form-group">
-						<label class="reg" for="timezoneDropDown">{translate key="Timezone"}</label>
-						<select {formname key='TIMEZONE'} class="form-control" id="timezoneDropDown">
-							{html_options values=$TimezoneValues output=$TimezoneOutput selected=$Timezone}
-						</select>
-					</div>
-				</div>
-			</div>
-
-			<div class="row">
-				<div class="col-xs-12 col-sm-6">
-					<div class="form-group">
-						<label class="reg" for="phone">{translate key="Phone"}</label>
-						{textbox name="PHONE" class="input" value="Phone" size="20"}
-					</div>
-				</div>
-
-				<div class="col-xs-12 col-sm-6">
-					<div class="form-group">
-						<label class="reg" for="organization">{translate key="Organization"}</label>
-						{textbox name="ORGANIZATION" class="input" value="Organization" size="20"}
-					</div>
-				</div>
-			</div>
-
-			<div class="row">
-				<div class="col-xs-12 col-sm-6">
-					<div class="form-group">
-						<label class="reg" for="position">{translate key="Position"}</label>
-						{textbox name="POSITION" class="input" value="Position" size="20"}
-					</div>
-				</div>
-
-				<div class="col-xs-12 col-sm-6">
-					{if $Attributes|count > 0}
-						{control type="AttributeControl" attribute=$Attributes[0]}
-					{/if}
-				</div>
-
-			</div>
-
-			{if $Attributes|count > 1}
-				{for $i=1 to $Attributes|count-1}
-					{if $i%2==1}
-						<div class="row">
-					{/if}
-					<div class="col-xs-12 col-sm-6">
-						{control type="AttributeControl" attribute=$Attributes[$i]}
-					</div>
-					{if $i%2==0 || $i==$Attributes|count-1}
-						</div>
-					{/if}
-				{/for}
-			{/if}
-
-			{if $EnableCaptcha}
+		<div class="row">
+			<div class="col-xs-12 col-sm-6">
 				<div class="form-group">
-					{control type="CaptchaControl"}
+					<label class="reg" for="login">{translate key="Username"}</label>
+					{textbox name="LOGIN" value="Login" required="required"
+					data-bv-notempty="true"
+					data-bv-notempty-message="{translate key=UserNameRequired}"}
 				</div>
-			{else}
-				<input type="hidden" {formname key=CAPTCHA} value=""/>
-			{/if}
-
-			<div class="regsubmit">
-				<button type="submit" name="{Actions::REGISTER}" value="{translate key='Register'}"
-						class="btn btn-primary" id="btnUpdate">{translate key='Register'}</button>
 			</div>
-		</form>
-	</div>
-	{setfocus key='LOGIN'}
 
-	{jsfile src="js/jstz.min.js"}
-	{jsfile src="admin/edit.js"}
-	{jsfile src="js/jquery.form-3.09.min.js"}
-	{jsfile src="js/jquery.colorbox-min.js"}
-	{jsfile src="profile.js"}
-	{jsfile src="registration.js"}
-
-	<script type="text/javascript">
-		$(document).ready(function ()
-		{
-			var timezone = jstz.determine_timezone();
-			$('#timezoneDropDown').val(timezone.name());
-
-			var registrationPage = new Registration();
-			registrationPage.init();
-
-
-			$('#frmRegister').on('init.field.bv', function(e, data) {
-			            // data.bv      --> The BootstrapValidator instance
-			            // data.field   --> The field name
-			            // data.element --> The field element
-
-			            var $parent    = data.element.parents('.form-group'),
-			                $icon      = $parent.find('.form-control-feedback[data-bv-icon-for="' + data.field + '"]'),
-			                options    = data.bv.getOptions(),                      // Entire options
-			                validators = data.bv.getOptions(data.field).validators; // The field validators
-
-
-			            if (validators.notEmpty) {
-			                // The field uses notEmpty validator
-			                // Add required icon
-			                $icon.addClass('glyphicon glyphicon-asterisk').show();
-			            }
-			        });
-
-			$('#frmRegister').bootstrapValidator();
-
-		});
-	</script>
-
-	<div id="colorbox">
-		<div id="modalDiv" class="wait-box">
-			<h3>{translate key=Working}</h3>
-			{html_image src="reservation_submitting.gif"}
+			<div class="col-xs-12 col-sm-6">
+				<div class="form-group">
+					<label class="reg" for="email">{translate key="Email"}</label>
+					{textbox name="EMAIL" class="input" value="Email" required="required"
+					data-bv-notempty="true"
+					data-bv-notempty-message="{translate key=ValidEmailRequired}"
+					data-bv-emailaddress="true"
+					data-bv-emailaddress-message="{translate key=ValidEmailRequired}" }
+				</div>
+			</div>
 		</div>
+
+		<div class="row">
+			<div class="col-xs-12 col-sm-6">
+				<div class="form-group">
+					<label class="reg" for="password">{translate key="Password"}</label>
+					{textbox type="password" name="PASSWORD" value="" required="required"
+					data-bv-notempty="true"
+					data-bv-notempty-message="{translate key=PwMustMatch}"
+					data-bv-identical="true"
+					data-bv-identical-field="{FormKeys::PASSWORD_CONFIRM}"
+					data-bv-identical-message="{translate key=PwMustMatch}" }
+				</div>
+			</div>
+
+			<div class="col-xs-12 col-sm-6">
+				<div class="form-group">
+					<label class="reg" for="passwordConfirm">{translate key="PasswordConfirmation"}</label>
+					{textbox type="password" name="PASSWORD_CONFIRM" value="" required="required"
+					data-bv-notempty="true"
+					data-bv-notempty-message="{translate key=PwMustMatch}"
+					data-bv-identical="true"
+					data-bv-identical-field="{FormKeys::PASSWORD}"
+					data-bv-identical-message="{translate key=PwMustMatch}"}
+				</div>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-xs-12 col-sm-6">
+				<div class="form-group">
+					<label class="reg" for="fname">{translate key="FirstName"}</label>
+					{textbox name="FIRST_NAME" class="input" value="FirstName" required="required"
+					data-bv-notempty="true"
+					data-bv-notempty-message="{translate key=FirstNameRequired}"}
+				</div>
+			</div>
+			<div class="col-xs-12 col-sm-6">
+				<div class="form-group">
+					<label class="reg" for="lname">{translate key="LastName"}</label>
+					{textbox name="LAST_NAME" class="input" value="LastName" required="required" data-bv-notempty="true"
+					data-bv-notempty-message="{translate key=LastNameRequired}"}
+				</div>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-xs-12 col-sm-6">
+				<div class="form-group">
+					<label class="reg" for="homepage">{translate key="DefaultPage"}</label>
+					<select {formname key='DEFAULT_HOMEPAGE'} id="homepage" class="form-control">
+						{html_options values=$HomepageValues output=$HomepageOutput selected=$Homepage}
+					</select>
+				</div>
+
+			</div>
+			<div class="col-xs-12 col-sm-6">
+				<div class="form-group">
+					<label class="reg" for="timezoneDropDown">{translate key="Timezone"}</label>
+					<select {formname key='TIMEZONE'} class="form-control" id="timezoneDropDown">
+						{html_options values=$TimezoneValues output=$TimezoneOutput selected=$Timezone}
+					</select>
+				</div>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-xs-12 col-sm-6">
+				<div class="form-group">
+					<label class="reg" for="phone">{translate key="Phone"}</label>
+					{textbox name="PHONE" class="input" value="Phone" size="20"}
+				</div>
+			</div>
+
+			<div class="col-xs-12 col-sm-6">
+				<div class="form-group">
+					<label class="reg" for="organization">{translate key="Organization"}</label>
+					{textbox name="ORGANIZATION" class="input" value="Organization" size="20"}
+				</div>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-xs-12 col-sm-6">
+				<div class="form-group">
+					<label class="reg" for="position">{translate key="Position"}</label>
+					{textbox name="POSITION" class="input" value="Position" size="20"}
+				</div>
+			</div>
+
+			<div class="col-xs-12 col-sm-6">
+				{if $Attributes|count > 0}
+					{control type="AttributeControl" attribute=$Attributes[0]}
+				{/if}
+			</div>
+
+		</div>
+
+		{if $Attributes|count > 1}
+			{for $i=1 to $Attributes|count-1}
+				{if $i%2==1}
+					<div class="row">
+				{/if}
+				<div class="col-xs-12 col-sm-6">
+					{control type="AttributeControl" attribute=$Attributes[$i]}
+				</div>
+				{if $i%2==0 || $i==$Attributes|count-1}
+					</div>
+				{/if}
+			{/for}
+		{/if}
+
+		{if $EnableCaptcha}
+			<div class="form-group">
+				{control type="CaptchaControl"}
+			</div>
+		{else}
+			<input type="hidden" {formname key=CAPTCHA} value=""/>
+		{/if}
+
+		<div class="regsubmit">
+			<button type="submit" name="{Actions::REGISTER}" value="{translate key='Register'}"
+					class="btn btn-primary" id="btnUpdate">{translate key='Register'}</button>
+		</div>
+	</form>
+</div>
+{setfocus key='LOGIN'}
+
+{jsfile src="js/jstz.min.js"}
+{jsfile src="admin/edit.js"}
+{jsfile src="js/jquery.form-3.09.min.js"}
+{jsfile src="js/jquery.colorbox-min.js"}
+{jsfile src="profile.js"}
+{jsfile src="registration.js"}
+
+<script type="text/javascript">
+	$(document).ready(function ()
+	{
+		var timezone = jstz.determine_timezone();
+		$('#timezoneDropDown').val(timezone.name());
+
+		var registrationPage = new Registration();
+		registrationPage.init();
+
+		$('#frmRegister')
+				.on('init.field.bv', function (e, data)
+				{
+					var $parent = data.element.parents('.form-group');
+					var $icon = $parent.find('.form-control-feedback[data-bv-icon-for="' + data.field + '"]');
+					var validators = data.bv.getOptions(data.field).validators;
+
+					if (validators.notEmpty)
+					{
+						$icon.addClass('glyphicon glyphicon-asterisk').show();
+					}
+				})
+				;
+
+		$('#frmRegister').bootstrapValidator();
+
+	});
+</script>
+
+<div id="colorbox">
+	<div id="modalDiv" class="wait-box">
+		<h3>{translate key=Working}</h3>
+		{html_image src="reservation_submitting.gif"}
 	</div>
+</div>
 
 </div>
 {include file='globalfooter.tpl'}

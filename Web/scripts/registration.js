@@ -6,7 +6,6 @@ function Registration()
 
 	Registration.prototype.init = function ()
 	{
-
 		$("#btnUpdate").click(function (e)
 		{
 			e.preventDefault();
@@ -38,12 +37,19 @@ function Registration()
 		else
 		{
 			onValidationFailed();
-			$('#registrationError').show();
+			$('#registrationError').removeClass('hidden');
 		}
 	}
 
 	function onBeforeAddSubmit(formData, jqForm, opts)
 	{
+		var bv = jqForm.data('bootstrapValidator');
+
+		if (!bv.isValid())
+		{
+			return false;
+		}
+
 		$('#profileUpdatedMessage').hide();
 		$('#registrationError').hide();
 
