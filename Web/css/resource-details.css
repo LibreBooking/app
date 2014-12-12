@@ -48,9 +48,26 @@ a:visited {
   -moz-border-radius: 5px;
   border-radius: 5px;
   border: solid 1px #e9e9e9;
-  background-color: #f4f5ed;
+  background-color: #f6f6f6;
 }
 .straight-top {
+  -webkit-border-top-right-radius: 0;
+  -webkit-border-bottom-right-radius: 5px;
+  -webkit-border-bottom-left-radius: 5px;
+  -webkit-border-top-left-radius: 0;
+  -moz-border-radius-topright: 0;
+  -moz-border-radius-bottomright: 5px;
+  -moz-border-radius-bottomleft: 5px;
+  -moz-border-radius-topleft: 0;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 5px;
+  border-bottom-left-radius: 5px;
+  border-top-left-radius: 0;
+  -moz-background-clip: padding-box;
+  -webkit-background-clip: padding-box;
+  background-clip: padding-box;
+}
+.no-rounding {
   -webkit-border-radius: 0;
   -moz-border-radius: 0;
   border-radius: 0;
@@ -61,7 +78,7 @@ a:visited {
   -moz-border-radius: 5px;
   border-radius: 5px;
   border: solid 1px #e9e9e9;
-  background-color: #f4f5ed;
+  background-color: #f6f6f6;
   -webkit-box-shadow: 0px 0px 3px 0px #e9e9e9;
   -moz-box-shadow: 0px 0px 3px 0px #e9e9e9;
   box-shadow: 0px 0px 3px 0px #e9e9e9;
@@ -239,6 +256,9 @@ label.booked-checkbox {
 }
 label.booked-checkbox span {
   width: 10px;
+}
+.bv-hidden-submit {
+  display: none !important;
 }
 #resourceDetailsPopup {
   min-width: 300px;

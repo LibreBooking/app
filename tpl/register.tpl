@@ -22,14 +22,14 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 <div id="registrationError" class="validationSummary alert alert-danger hidden" id="validationErrors">
 	<ul>
-		{async_validator id="fname" key="FirstNameRequired"}
-		{async_validator id="lname" key="LastNameRequired"}
-		{async_validator id="username" key="UserNameRequired"}
-		{async_validator id="passwordmatch" key="PwMustMatch"}
-		{async_validator id="passwordcomplexity" key=""}
-		{async_validator id="emailformat" key="ValidEmailRequired"}
 		{async_validator id="uniqueemail" key="UniqueEmailRequired"}
 		{async_validator id="uniqueusername" key="UniqueUsernameRequired"}
+		{async_validator id="username" key="UserNameRequired"}
+		{async_validator id="emailformat" key="ValidEmailRequired"}
+		{async_validator id="fname" key="FirstNameRequired"}
+		{async_validator id="lname" key="LastNameRequired"}
+		{async_validator id="passwordmatch" key="PwMustMatch"}
+		{async_validator id="passwordcomplexity" key=""}
 		{async_validator id="captcha" key="CaptchaMustMatch"}
 		{async_validator id="additionalattributes" key=""}
 	</ul>
@@ -39,7 +39,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 	{translate key=UnknownError}
 </div>
 
-<div id="registration-box">
+<div id="registration-box" class="default-box col-xs-12 col-sm-8 col-sm-offset-2">
 	<form class="register" method="post" ajaxAction="{RegisterActions::Register}" id="frmRegister"
 		  action="{$smarty.server.SCRIPT_NAME}" role="form"
 		  data-bv-feedbackicons-valid="glyphicon glyphicon-ok"
@@ -47,6 +47,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		  data-bv-feedbackicons-validating="glyphicon glyphicon-refresh"
 		  data-bv-feedbackicons-required="glyphicon glyphicon-asterisk"
 		  data-bv-submitbuttons='button[type="submit"]'
+		  data-bv-onerror="enableButton"
+		  data-bv-onsuccess="enableButton"
 		  data-bv-live="enabled">
 
 		<div class="row">
@@ -191,11 +193,10 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 		<div class="regsubmit">
 			<button type="submit" name="{Actions::REGISTER}" value="{translate key='Register'}"
-					class="btn btn-primary" id="btnUpdate">{translate key='Register'}</button>
+					class="btn btn-primary col-xs-12" id="btnUpdate">{translate key='Register'}</button>
 		</div>
 	</form>
 </div>
-{setfocus key='LOGIN'}
 
 {jsfile src="js/jstz.min.js"}
 {jsfile src="admin/edit.js"}
@@ -205,6 +206,12 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 {jsfile src="registration.js"}
 
 <script type="text/javascript">
+
+	function enableButton()
+	{
+		$('#frmRegister').find('button').removeAttr('disabled');
+	}
+
 	$(document).ready(function ()
 	{
 		var timezone = jstz.determine_timezone();
@@ -213,7 +220,9 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		var registrationPage = new Registration();
 		registrationPage.init();
 
-		$('#frmRegister')
+		var $frmRegister = $('#frmRegister');
+
+		$frmRegister
 				.on('init.field.bv', function (e, data)
 				{
 					var $parent = data.element.parents('.form-group');
@@ -224,10 +233,9 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 					{
 						$icon.addClass('glyphicon glyphicon-asterisk').show();
 					}
-				})
-				;
+				});
 
-		$('#frmRegister').bootstrapValidator();
+		$frmRegister.bootstrapValidator();
 
 	});
 </script>

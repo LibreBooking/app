@@ -14,7 +14,7 @@ function Registration()
 
 		elements.form.bind('onValidationFailed', onValidationFailed);
 
-		ConfigureAdminForm(elements.form, defaultSubmitCallback, successHandler, null, {onBeforeSubmit:onBeforeAddSubmit});
+		ConfigureAdminForm(elements.form, defaultSubmitCallback, successHandler, null, {onBeforeSubmit:onBeforeSubmit});
 	};
 
 	var defaultSubmitCallback = function (form)
@@ -24,6 +24,7 @@ function Registration()
 
 	function onValidationFailed(event, data)
 	{
+		elements.form.find('button').removeAttr('disabled');
 		refreshCaptcha();
 		hideModal();
 	}
@@ -41,7 +42,7 @@ function Registration()
 		}
 	}
 
-	function onBeforeAddSubmit(formData, jqForm, opts)
+	function onBeforeSubmit(formData, jqForm, opts)
 	{
 		var bv = jqForm.data('bootstrapValidator');
 
@@ -51,7 +52,7 @@ function Registration()
 		}
 
 		$('#profileUpdatedMessage').hide();
-		$('#registrationError').hide();
+		//$('#registrationError').hide();
 
 		$.blockUI({ message: $('#modalDiv') });
 

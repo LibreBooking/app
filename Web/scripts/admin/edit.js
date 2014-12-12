@@ -34,7 +34,7 @@ function ConfigureAdminForm(formElement, urlCallback, successHandler, responseHa
 
 				if (hasValidationSummary)
 				{
-					validationSummary.hide();
+					validationSummary.addClass('hidden');
 				}
 				if (responseHandler && hasResponseText)
 				{
@@ -42,7 +42,7 @@ function ConfigureAdminForm(formElement, urlCallback, successHandler, responseHa
 				}
 				else if (hasValidationSummary && hasResponseText)
 				{
-					$('.asyncValidation').hide();
+					$('.asyncValidation').addClass('hidden');
 					$.each(responseText.ErrorIds, function (index, errorId)
 					{
 						var errorElement = $('#' + errorId);
@@ -50,12 +50,12 @@ function ConfigureAdminForm(formElement, urlCallback, successHandler, responseHa
 						{
 							errorElement.text("" + responseText.Messages[errorId].join(' '));
 						}
-						errorElement.show();
+						errorElement.removeClass('hidden');
 					});
 
 					if (responseText.ErrorIds.length > 0)
 					{
-						validationSummary.show();
+						validationSummary.removeClass('hidden');
 						formElement.trigger('onValidationFailed', responseText);
 					}
 				}
@@ -236,7 +236,7 @@ function PerformAsyncPost(url, options)
 
 function ClearAsyncErrors(element)
 {
-	element.find('.asyncValidation').hide();
+	element.find('.asyncValidation').removeClass('hidden')
 }
 
 function HtmlDecode(encoded)

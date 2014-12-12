@@ -32,7 +32,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 																	   title="{translate key=Register}">{translate key=Register}</a>
 				</span>{/if}
 		</div>
-		<form role="form" name="login" id="login" class="login form-horizontal" method="post"
+		<form role="form" name="login" id="login" class="form-horizontal" method="post"
 			  action="{$smarty.server.SCRIPT_NAME}">
 			<div id="login-box" class="default-box straight-top">
 				{if $ShowUsernamePrompt}
