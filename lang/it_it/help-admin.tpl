@@ -1,7 +1,7 @@
 {*
 Copyright 2011-2014 Nick Korbel
 
-Translation: 2014 Nicola Ruggero <nicola@nxnt.org>
+Translation: 2014 Daniele Cordella <kordan@mclink.it>
 
 This file is part of Booked Scheduler.
 
@@ -22,449 +22,308 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 <h1 xmlns="http://www.w3.org/1999/html">Amministrazione di Booked Scheduler</h1>
 
 <div id="help">
-<h2>Amminstrazione</h2>
+<h2>Amministrazione</h2>
 
-<p>If you are in an Application Administrator role then you will see the Application Management menu item. All
-	administrative tasks can be found here.</p>
+<p>Se si ricopre il ruolo di Amministratore dell'applciazione si pu&ograve; accedere al menu "Gestione Applicazione". Tutte le attivit&agrave; di amministrazione si avviano da questo menu.</p>
 
-<h3>Configurazione calendari</h3>
+<h3>Configurazione dei calendari</h3>
 
-<p>
-	When installing Booked Scheduler a default schedule will be created with out of the box settings. From the
-	Schedules menu option you can view and edit attributes of the current schedules.
-</p>
+<p>All'installazione di Booked Scheduler, un calendario di default viene generato automaticamente. Dal menu "Prenotazioni" &egrave; possibile accedere alla modifica di tutte le caratteristiche delle prenotazioni.</p>
 
-<p>Each schedule must have a layout defined for it. This controls the availability of the resources on that
-	schedule. Clicking the Change Layout link will bring up the layout editor. Here you can create and change the
-	time slots that are available for reservation and blocked from reservation. There is no restriction on the slot
-	times, but you must provide slot values for all 24 hours of the day, one per line. Also, the time format must be
-	in 24 hour time.
-	You can also provide a display label for any or all slots, if you wish.</p>
+<p>Ogni calendario deve avere un layout definito. Cliccando il link "Modifica Layout" verr&agrave; mostrato l'editor di layout. Qui si possono creare e cambiare le caselle del calendario (time slot) disponibili e quelle negate alle prenotazioni. Non ci sono limiti al numero delle caselle dei calendari, ma &egrave; necessario definire un valore temporale per ogni casella fino a ricoprire l'intero arco delle 24 ore del giorno. &Egrave; possibile anche definire un'etichetta per ogni casella, se lo si desidera.</p>
 
-<p>A slot without a label should be formatted like this: 10:25 - 16:50</p>
+<p>Una casella del calendario senza etichetta &egrave; formattata come in questo esempio: 10:25 - 16:50</p>
 
-<p>A slot with a label should be formatted like this: 10:25 - 16:50 Schedule Period 4</p>
+<p>Una casella con etichetta pu&ograve; essere apprire come in questo esempio: 10:25 - 16:50 Periodo 4</p>
 
-<p>Below the slot configuration windows is a slot creation wizard. This will set up available slots at the given
-	interval between the start and end times.</p>
+<p>Sotto la finestra di configurazione delle caselle c'&egrave; uno strumento per la creazione veloce delle stesse. Questo configura le caselle disponibili in un dato intervallo di tempo</p>
 
 <h3>Configurazione risorse</h3>
 
-<p>You can view and manage resources from the Resources menu option. Here you can change the attributes and usage
-	configuration of a resource.
-</p>
+<p>Le risorse definite si possono accedere e gestire dal menu "Risorse". In questo modo &egrave; possibile modificare gli attributi e la modalit&agrave; di utilizzo di una risorsa.</p>
 
-<p>Resources in Booked Scheduler can be anything you want to make bookable, such as rooms or equipment. Every resource
-	must be assigned to a schedule in order for it to be bookable. The resource will inherit whatever layout the
-	schedule uses.</p>
+<p>Una risorsa di Booked Scheduler pu&ograve; essere qualsiasi cosa si possa prenotare come, ad esempio, un'aula o un equipaggiamento. Ogni risorsa deve essere assegnata ad un calendario per essere prenotabile. La risorsa eredita il layout di prenotazione del calendario al quale appartiene.</p>
 
-<p>Setting a minimum reservation duration will prevent booking from lasting longer than the set amount. The default is
-	no minimum.</p>
+<p>Definire un periodo minimo di prenotazione evita prenotazioni pi&ugrave; brevi del minimo impostato. Il parametro di default &egrave; "nessun minimo".</p>
 
-<p>Setting a maximum reservation duration will prevent booking from lasting shorter than the set amount. The default is
-	no maximum.</p>
+<p>Definire un periodo massimo di prenotazione evita prenotazioni pi&ugrave; lunghe del massimo impostato. Il parametro di default &egrave; "nessun massimo".</p>
 
-<p>Setting a resource to require approval will place all bookings for that resource into a pending state until approved.
-	The default is no approval required.</p>
+<p>Definire la "Necessaria approvazione" per una risorsa, mette le prenotazione in uno stato di attesa fino al momento dell'approvazione. L'impostazione di default &egrave; "Nessuna approvazione necessaria"</p>
 
-<p>Setting a resource to automatically grant permission to it will grant all new users permission to access the resource
-	at registration time. The default is to automatically grant permissions.</p>
+<p>L'impostazione di "Concessione automatica permessi" garantisce a tutti i nuovi utenti i permessi di accesso alla risorsa gi&agrave; al momento della registrazione. L'impostazione di default &egrave; "Concessione automatica permessi".</p>
 
-<p>You can require a booking lead time by setting a resource to require a certain number of days/hours/minutes
-	notification. For example, if it is currently 10:30 AM on a Monday and the resource requires 1 days notification,
-	the resource will not be able to be booked until 10:30 AM on Sunday. The default is that reservations can be made up
-	until the current time.</p>
+<p>&Egrave; possibile impostare un tempo di notifica in modo che una risorsa debba essere prenotata con un certo anticipo. Per esempio, se si desidera prenotare un risorsa per le 10.30 di Lunedi e la risorsa richiede un tempo di notifica di 1 giorno, non &egrave; possibile prenotarla dopo le ore 10.30 di Domenica. L'impostazione predefinita &egrave; che le prenotazioni possono essere effettuate sempre.</p>
 
-<p>You can prevent resources from being booked too far into the future by requiring a maximum notification of
-	days/hours/minutes. For example, if it is currently 10:30 AM on a Monday and the resource cannot end more than 1 day
-	in the future, the resource will bot be able to be booked past 10:30 AM on Tuesday. The default is no maximum.</p>
+<p>&Egrave; possibile impedire che le risorse vengano prenotate troppo lontano nel tempo impostando un limite temporale massimo. Per esempio, se sono le 10.30 di Lunedi e il tempo imostato come limite massimo di termine prenotazione &egrave; di 1 giorno, non &egrave; possibile eseguire prenotazioni per date successive alle 10.30 di Marted&igrave;. L'impostazione predefinita &egrave; "Nessun limite".</p>
 
-<p>Certain resources cannot have a usage capacity. For example, some conference rooms may only hold up to 8 people.
-	Setting the resource capacity will prevent any more than the configured number of participants at one time,
-	excluding the organizer. The default is that resources have unlimited capacity.</p>
+<p>&Egrave; possibile impostare una capienza per una risorsa. Ad esempio, per una sala conferenze &egrave; possibile definire il massimo numero di persone che pu&ograve; contenere. L'impostazione della capienza di una risorsa limita il numero massimo di partecipanti che possono essere coinvolti o invitati, escludendo l'organizzatore. L'impostazione predefinita &egrave; che le risorse hanno una capacit&agrave; illimitata.</p>
 
-<p>Application Administrators are exempt from usage constraints.</p>
+<p>Gli amministratori dell'applicazione sono esentati dai vincoli di utilizzo.</p>
 
-<h3>Immagini delle risorse</h3>
+<h3>Immagine delle risorsa</h3>
 
-<p>You can set a resource image which will be displayed when viewing resource details from the reservation page. This
-	requires php_gd2 to be installed and enabled in your php.ini file. <a
-			href="http://www.php.net/manual/en/book.image.php">More Details</a></p>
+<p>&Egrave; possibile associare una immagine alle risorse in modo he venga mostrata fra i dettagli della pagina di prenotazione. Occorre che php_gd2 sia installato e abilitato nel file php.ini . <a href="http://www.php.net/manual/en/book.image.php">Maggiori Informazioni</a></p>
 
 <h3>Configurazione accessori</h3>
 
-<p>Accessories can be thought of as objects used during a reservation. Examples may be projectors or chairs in a
-	conference room.</p>
+<p>Gli accessori possono essere visti come oggetti usati durante una prenotazione. Ad esempio un proiettore o delle sedie in una sala riunioni.</p>
 
-<p>Accessories can be viewed and managed from the Accessories menu item, under the Resources menu item. Setting a
-	accessory quantity will prevent more than that number of accessories from being booked at a time.</p>
+<p>Gli accessori possono essere visualizzati e gestiti dalla voce "Accessori" del menu "Risorse". Definire la quantit&agrave; disponibile di ogni accessorio evita che gli stessi vengano richiesti oltre la loro effettiva disponibilit&agrave;.</p>
 
-<h3>Configurazione quote</h3>
+<h3>Configurazione delle quote</h3>
 
-<p>Quotas prevent reservations from being booked based on a configurable limit. The quota system in Booked Scheduler is
-	very flexible, allowing you to build limits based on reservation length and number reservations. Also, quota limits
-	"stack". For example, if a quota exists limiting a resource to 5 hours per day and another quota exists limiting to
-	4 reservations per day a user would be able to make 4 hour-long reservations but would be restricting from making 3
-	two-hour-long reservations. This allows powerful quota combinations to be built.</p>
+<p>Le quote permettono di impostare limiti di utilizzo delle risorse. La gestione delle quote in Booked Scheduler &egrave; molto flessibile e permette di impostare limiti basati sia sulla lunghezza della prenotazione che sul numero di prenotazioni. Inoltre, i limiti si possono combinare. Ad esempio, se per una risorsa esiste una quota limite di 5 ore al giorno e un altro limite di 4 prenotazioni al giorno, un utente potrebbe fare una prenotazione lunga 4 ore, ma non pu&ograve; fare 3 prenotazioni di due ore ciascuna. In questo modo si possono definire limiti per le risorse che si adattano molto fedelmente alle realt&agrave; locali.</p>
 
-<p>Application Administrators are exempt from quota limits.</p>
+<p>Gli Amministratori dell'applicazione sono esentati dai limiti di quota.</p>
 
-<h3>Configurazione avvisi</h3>
+<h3>Configurazione degli avvisi</h3>
 
-<p>Announcements are a very simple way to display notifications to Booked Scheduler users. From the Announcements menu item
-	you can view and manage the announcements that are displayed on users dashboards. An announcement can be configured
-	with an optional start and end date. An optional priority level is also available, which sorts announcements from 1
-	to 10.</p>
+<p>Gli avvisi sono un modo molto semplice per informare gli utenti di Booked Scheduler. Dalla voce di menu "Annunci" &egrave; possibile visualizzare e gestire gli annunci da mostrare sul "Cruscotto" degli utenti. Un annuncio pu&ograve; essere configurato con una eventuale data di inizio e fine. &Egrave; disponibile anche un livello di priorit&agrave;, anch'esso opzionale, per ordinare gli annunci da 1 a 10.</p>
 
-<p>HTML is allows within the announcement text. This allows you to embed links or images from anywhere on the web.</p>
+<p>Nel testo dell'annuncio &egrave; possibile utilizzare il codice HTML. Questo permette di inserire link o immagini.</p>
 
-<h3>Configurazione gruppi</h3>
+<h3>Configurazione dei gruppi</h3>
 
-<p>Groups in Booked Scheduler organize users, control resource access permissions and define roles within the
-	application.</p>
+<p>I Gruppi, in Booked Scheduler permettono di organizzare gli utenti, gestire i permessi di accesso alle risorse e definire ruoli all'interno dell'applicazione.</p>
 
 <h3>Ruoli</h3>
 
-<p>Roles give a group of users the authorization to perform certain actions.</p>
+<p>I ruoli assegnano agli utenti dei gruppi l'autorizzazione ad eseguire certe azioni. I ruoli possono essere: "Amministratori di applicazione", "Amministratori di gruppo", "Amministratori di risorsa", "Amministratori di calendario"</p>
 
-<p>Application Administrator: Users that belong to a group that is given the Application Administrator role are open to
-	full administrative privileges. This role has nearly zero restrictions on what resources can be booked. It can
-	manage all aspects of the application.</p>
+<p>Amministratori di applicazione: gli utenti che appartengono a questo gruppo godono di tutti i privilegi amministrativi. Questo ruolo non subisce, praticamente, nessuna limitazione nella prenotazione delle risorse. Essi possono gestire tutti gli aspetti della applicazione.</p>
 
-<p>Group Administrator: Users that belong to a group that is given the Group Administrator role are able to manage
-	their groups and reserve on behalf of and manage users within that group.</p>
+<p>Amministratori di gruppo: gli utenti che appartengono a questo gruppo possono fare prenotazioni per conto di altri e gestire gli utenti del loro gruppo.</p>
 
-<p>Resource Administrator: Users that belong to a group that is given the Resource Administrator role are able to manage
-	their resources and approve reservations for their resources.</p>
+<p>Amministratori di risorsa: gli utenti che appartengono a questo gruppo gestiscono le loro risorse e approvano le relative prenotazioni.</p>
 
-<p>Schedule Administrator: Users that belong to a group that is given the Schedule Administrator role are able to manage
-	their schedules and resources belonging to their schedules and approve reservations on their schedules.</p>
+<p>Amministratori di calendario: gli utenti che appartengono a questo gruppo gestiscono i loro calendari e le risorse associate.</p>
 
-<h3>Visualizzazione e gestione delle prenotazioni</h3>
+<h3>Visualizzare e gestire le prenotazioni</h3>
 
-<p>You can view and manage reservations from the Reservations menu item. By default you will see the last 7 days and the
-	next 7 days worth of reservations. This can be filtered more or less granular depending on what you are looking for.
-	This tool allows you to quickly find an act on a reservation. You can also export the list of filtered reservations
-	to CSV format for further reporting.</p>
+<p>&Egrave; possibile visualizzare e gestire le prenotazioni dalla voce "Prenotazioni" del menu "Gestione applicazione". Per impostazione predefinita si vedranno gli ultimi 7 giorni e i prossimi 7 giorni di prenotazioni. La visualizzazione pu&ograve; essere filtrata in maniera pi&ugrave; o meno granulare a seconda di ci&ograve; che si st&agrave; cercando. &Egrave; inoltre possibile esportare l'elenco delle prenotazioni filtrate in formato CSV per eventuali successivi report.</p>
 
 <h3>Approvazione prenotazioni</h3>
 
-<p>Setting $conf['settings']['reservation']['updates.require.approval'] to true will put all reservation requests into a
-	pending state. The reservation becomes active only after an administrator approves it. From the Reservations admin
-	tool an administrator will be able to view and approve pending reservations. Pending reservations will be
-	highlighted.</p>
+<p>Ponendo $conf['settings']['reservation']['updates.require.approval'] a "true" ogni richiesta di prenotazione viene messa in attesa e deve essere confermata prima di diventare effettiva. Dagli strumenti di amministrazione, si possono visualizzare e approvare le prenotazioni in attesa. Le prenotazioni in attesa sono chiaramente evidenziate.</p>
 
 <h3>Visualizzazione e gestione degli utenti</h3>
 
-<p>You can add, view, and manage all registered users from the Users menu item. This tool allows you to change resource
-	access permissions of individual users, deactivate or delete accounts, reset user passwords, and edit user details.
-	You can also add new users to Booked Scheduler. This is especially useful if self-registration is turned off.</p>
+<p>&Egrave; possibile aggiungere, visualizzare e gestire tutti gli utenti registrati dalla voce "Utenti" del menu "Gestione applicazione". Questo strumento consente di modificare i permessi di accesso alle risorse per il singolo utente, disattivare o cancellare accounts, ripristinare password e modificare i dettagli degli utenti. &Egrave; possibile anche aggiungere nuovi utenti a Booked Scheduler, cosa assolutamente necessaria se l'autoregistrazione &egrave; negata.</p>
 
 <h3>Reportistica</h3>
 
-<p>Reports are accessible to all application, group, resource and schedule administrators. When the currently logged in
-	user has access to reporting features, they will see a Reports navigation item. Booked Scheduler comes with a set of
-	Common Reports which can be viewed as a list of results, a chart, exported to CSV and printed. In addition, ad-hoc
-	reports can be created from the Create New Report menu item. This also allows listing, charting, exporting and
-	printing. In addition, custom reports can be saved and accessed again at a later time from the My Saved Reports menu
-	item. Saved reports also have the ability to be emailed.</p>
+<p>I reports sono accessibili ad ogni tipo di amministratore (di applicazione, di gruppo, di risorsa o di calendario). Un amministratore autenticato pu&ograve; accedere ai report dal menu omonimo. Booked Scheduler nasce con un corredo base di report che possono essere visualizzati sotto forma di lista o di grafico, esportati in formato CSV o stampati. Inoltre, &egrave; possibile creare dei report personalizzati dalla voce di menu "Crea nuovo report". Anche i report personalizzati possono essere visualizzati sotto forma di lista o di grafico, esportati in formato CSV o stampati. Ovviamente, i report personalizzati possono essere salvati ed utilizzati nuovamente attraverso la voce di menu "Report salvati". I report salvati possono anche essere inviati per posta elettronica.</p>
 
 <h3>Promemoria prenotazioni</h3>
 
-<p>Users can request that reminder emails are send prior to the beginning or end of a reservation. In order for this
-	feature to function, $conf['settings']['enable.email'] and $conf['settings']['reservation']['enable.reminders'] must
-	both be set to true. Also, a scheduled task must be configured on your server to execute
-	/Booked Scheduler/Jobs/sendreminders.php</p>
+<p>Gli utenti possono chiedere che un promemoria gli venga inviato per posta elettronica prima dell'inizio delle prenotazioni. Affinch&eacute; ci&ograve; sia possibile, $conf['settings']['enable.email'] e $conf['settings']['reservation']['enable.reminders'] devono entrambi essere posti a "true". Inoltre, un'operazione pianificata (cron) deve essere configurata sul server per eseguire /Booked Scheduler/Jobs/sendreminders.php</p>
 
-<p>On Linux, a cron job can be used. The command to run is <span class="note">php</span> followed by the full path to
-	Booked Scheduler/Jobs/sendreminders.php. The full path to sendreminders.php on this server is <span
-			class="note">{$RemindersPath}</span>
+<p>Su linux, generalmente, si attiva un processo di cron. Il comando da eseguire &egrave; <span class="note">php</span> seguito dal percorso assoluto: Booked Scheduler/Jobs/sendreminders.php. Il percorso assoluto di sendreminders.php su questo particolare server &egrave; <span class="note">{$RemindersPath}</span>
 </p>
 
-<p>An example cron configuration might look like: <span class="note">* * * * * php {$RemindersPath}</span></p>
+<p>Un esempio di configurazione potrebbe essere: <span class="note">* * * * * php {$RemindersPath}</span></p>
 
-<p>If you have access to cPanel through a hosting provider, <a
-			href="http://docs.cpanel.net/twiki/bin/view/AllDocumentation/CpanelDocs/CronJobs" target="_blank">setting up
-		a
-		cron job in cPanel</a> is straightforward. Either select the Every Minute option from the Common Settings menu,
-	or
-	enter * for minute, hour, day, month and weekday.</p>
+<p>Se si ha l'accesso all'applicativo "cPanel" sul server che ospita l'installazione di Booked Scheduler, la documentazione: <a
+href="http://docs.cpanel.net/twiki/bin/view/AllDocumentation/CpanelDocs/CronJobs" target="_blank">creazione
+un lavoro cron in cPanel</a> &egrave; lineare sia adoperando la voce "Every mimute" dal menu "Common Settings" che digitando * per i minuti, le ore, i giorni, i mesi e il giorno della settmana.</p>
 
-<p>On Windows, <a href="http://windows.microsoft.com/en-au/windows7/schedule-a-task" target="_blank">a scheduled task
-		can be used</a>. The task must be configured to run every minute. The task to execute is php followed by the
-	full
-	path to Booked Scheduler/Jobs/sendreminders.php</p>
+<p>Su Windows, <a href="http://windows.microsoft.com/en-au/windows7/schedule-a-task" target="_blank">si possono usare le operazioni pianificate</a>. Le operazioni pianificate devono essere configurate per essere eseguite ogni minuto. Il comando da eseguire &egrave; <span class="note">php</span> seguito dal percorso assoluto: Booked Scheduler/Jobs/sendreminders.php</p>
 
 <h2>Configurazione</h2>
 
-<p>Some functionality can only be controlled by editing the config file.</p>
+<p>Alcune funzionalit&agrave; di Booked Scheduler possono essere controllate solamente modificando il file config.</p>
 
-<p class="setting"><span>$conf['settings']['default.timezone']</span>The default timezone to use. If not set, the server
-	timezone will be used. Possible values are located here:
-	<a href="http://php.net/manual/en/timezones.php" target="_blank">http://php.net/manual/en/timezones.php</a></p>
+<p class="setting"><span>$conf['settings']['app.title']</span>Il nome dell'applicazione</p>
 
-<p class="setting"><span>$conf['settings']['allow.self.registration']</span>If users are allowed to register new
-	accounts. Default is false.</p>
+<p class="setting"><span>$conf['settings']['server.timezone']</span>Indica il fuso orario del server sul quale &egrave; ospitato il Booked Scheduler. Si pu&ograve; visualizzare il fuso orario corrente dalla voce di menu "Impostazioni Server". I possibili valori si possono trovare qui: <a href="http://php.net/manual/en/timezones.php target="_blank">http://php.net/manual/en/timezones.php</a></p>
 
-<p class="setting"><span>$conf['settings']['admin.email']</span>The email address of the main application administrator
-</p>
+<p class="setting"><span>$conf['settings']['allow.self.registration']</span>Se, o meno, gli utenti hanno il permesso di auto registrarsi.</p>
 
-<p class="setting"><span>$conf['settings']['default.page.size']</span>The initial number of rows for any page that
-	displays a list of data
-</p>
+<p class="setting"><span>$conf['settings']['admin.email']</span>Indirizzo di posta elettronica dell'amministratore principale dell'applicazione.</p>
 
-<p class="setting"><span>$conf['settings']['enable.email']</span>Whether or not any emails are sent out of Booked Scheduler
-</p>
+<p class="setting"><span>$conf['settings']['admin.email.name']</span>Il nome da utilizzare nel campo "Mittente" nelle comunicazioni elettroniche inviate dall'applicativo.</p>
 
-<p class="setting"><span>$conf['settings']['default.language']</span>Default language for all users. This can be any
-	language in the
-	Booked Scheduler lang directory</p>
+<p class="setting"><span>$conf['settings']['default.page.size']</span>Il numero di righe iniziali di ogni pagina che visualizza una lista di dati.</p>
 
-<p class="setting"><span>$conf['settings']['script.url']</span>The full public URL to the root of this instance of
-	Booked Scheduler. This should be the Web directory which contains files like bookings.php and calendar.php. If this
-	value starts with //, then the protocol (http vs https) will be automatically detected.</p>
+<p class="setting"><span>$conf['settings']['enable.email']</span>Se Booked Scheduler &egrave; abilitato, o meno, ad inviare email.</p>
 
-<p class="setting"><span>$conf['settings']['image.upload.directory']</span>The physical directory to store images.
-	This directory will need to be writable (755 suggested). This can be the full directory or relative to the
-	Booked Scheduler root directory.</p>
+<p class="setting"><span>$conf['settings']['default.language']</span>Lingua impostata per default per tutti gli utenti. Si pu&ograve; impostare qualsiasi lingua contenuta nella cartella 'lang' di Booked Scheduler.</p>
 
-<p class="setting"><span>$conf['settings']['image.upload.url']</span>The URL where uploaded
-	images can be viewed from. This can be the full URL or relative to $conf['settings']['script.url'].
-</p>
+<p class="setting"><span>$conf['settings']['script.url']</span>L'URL pubblico assoluto della cartella di Booked Scheduler sul server. Questo dovrebbe essere la directory Web che contiene i file come bookings.php e calendar.php. Se questo indirizzo viene lasciato senza un protocollo specificato allora il protocollo (http vs https) viene rilevato automaticamente.</p>
 
-<p class="setting"><span>$conf['settings']['cache.templates']</span>Whether or not templates are cached. It is
-	recommended to set this to
-	true, as long as tpl_c is writable</p>
+<p class="setting"><span>$conf['settings']['image.upload.directory']</span>L'indirizzo della cartella nella quale archiviare le immagini delle risorse. Questa cartella deve avere i permessi di scrittura (755 &egrave; suggerito). Questo indirizzo pu&ograve; essere sia relativo alla cartella di Booked Scheduler, sia assoluto.</p>
 
-<p class="setting"><span>$conf['settings']['use.local.jquery']</span>Whether or not a local version of jQuery files
-	should be used. If set to false, the files will be served from the Google CDN. It is recommended to set this to
-	false to improve performance and bandwidth usage. Default is false.</p>
+<p class="setting"><span>$conf['settings']['image.upload.url']</span>L'URL dal quale le immagini caricate sono visualizzate. Questo indirizzo pu&ograve; essere sia relativo a $conf['settings']['script.url'], sia assoluto.</p>
 
-<p class="setting"><span>$conf['settings']['registration.captcha.enabled']</span>Whether or not captcha image security
-	is enabled during user account registration</p>
+<p class="setting"><span>$conf['settings']['cache.templates']</span>Se, o meno, i modelli vengono memorizzati nella cache. Si consiglia di impostare questo valore a vero, purch&eacute; tpl_c abbia i permessi di scrittura.</p>
 
-<p class="setting"><span>$conf['settings']['registration.require.email.activation']</span>Whether or not a user will be
-	required to activate their account by email before logging in.</p>
+<p class="setting"><span>$conf['settings']['use.local.jquery']</span>Se, o meno, una versione locale di jQuery deve essere usata. Qualora questo parametrro venga impostato a false i servizi di jQuery saranno acquisiti dal Google CDN. Si racomanda di porre questo parametro a false per aumentare le performance ed ottimizzare l'utilizzo di banda. Il default &egrave;: "false".</p>
 
-<p class="setting"><span>$conf['settings']['registration.auto.subscribe.email']</span>Whether or not users will be
-	automatically subscribed to all emails upon registration.</p>
+<p class="setting"><span>$conf['settings']['registration.captcha.enabled']</span>Se, o meno, deve essere introdotta l'immagine di sicurezza captcha durante la registrazione degli account.</p>
 
-<p class="setting"><span>$conf['settings']['inactivity.timeout']</span>Number of minutes before the user is
-	automatically logged out. Leave this blank if you do not want users automatically logged out.</p>
+<p class="setting"><span>$conf['settings']['registration.require.email.activation']</span>Se, o meno, gli utenti devono confermare il loro account per posta elettronica prima di potersi collegare.</p>
 
-<p class="setting"><span>$conf['settings']['name.format']</span>Display format for first name and last name. Default
-	is {literal}'{first} {last}'{/literal}.</p>
+<p class="setting"><span>$conf['settings']['registration.auto.subscribe.email']</span>Se, o meno, gli utenti sono automaticamente coinvolti nel flusso di comunicazioni elettroniche una volta registrati.</p>
 
-<p class="setting"><span>$conf['settings']['css.extension.file']</span>Full or relative URL to an additional CSS file to
-	include. This can be used to override the default style with adjustments or a full theme. Leave this blank if you
-	are not extending the style of Booked Scheduler.</p>
+<p class="setting"><span>$conf['settings']['registration.notify.admin']</span>Se, o meno, la registrazione di un nuovo utente &egrave; seguita da una mail all'amministratore.</p>
 
-<p class="setting"><span>$conf['settings']['disable.password.reset']</span>If the password reset functionality should be
-	disabled. Default is false.</p>
+<p class="setting"><span>$conf['settings']['inactivity.timeout']</span>Numero di minuti prima che l'utenta venga automaticamente disconnesso. Si lasci vuoto questo paramero se non si desidera che l'utente non venga mai disconnesso.</p>
 
-<p class="setting"><span>$conf['settings']['home.url']</span>Where the user will be redirected when the logo is clicked.
-	Default is the user's homepage.</p>
+<p class="setting"><span>$conf['settings']['name.format']</span>Il formato con il quale i nomi degli utenti &egrave; mostrato. Il default &egrave; {literal}'{first} {last}'{/literal}.</p>
 
-<p class="setting"><span>$conf['settings']['logout.url']</span>Where the user will be redirected after being logged out.
-	Default is the login page.</p>
+<p class="setting"><span>$conf['settings']['css.extension.file']</span>L'URL assoluto o relativo di fogi di stile addizionali. Questi fogli di stile possono essere utilizzati per apportare modifiche secondarie ai fogli si stile predefiniti, cos&igrave; come per definire un coordinato grafico completamente nuovo. Si lasci questo parametro vuoto se non si intendono modificare i fogli di stile di Booked Scheduler.</p>
 
+<p class="setting"><span>$conf['settings']['disable.password.reset']</span>Se, o meno, la funzionalit&agrave; di ripristino della password deve essere abilitata. Il default &egrave;: "false".</p>
 
-<p class="setting"><span>$conf['settings']['schedule']['use.per.user.colors']</span>Use user-specific,
-	administrator-defined colors for reservations. Default is false.</p>
+<p class="setting"><span>$conf['settings']['home.url']</span>L'indirizzo web al quale l'utente verr&agrave; indirizzato attraverso il logo dell'applicazione. Il default &egrave; la pagina scelta dall'utente come default.</p>
 
-<p class="setting"><span>$conf['settings']['schedule']['show.inaccessible.resources']</span>Whether or not resources
-	that are not accessible to the user are displayed in the schedule</p>
+<p class="setting"><span>$conf['settings']['logout.url']</span>L'indirizzo web al quale l'utente verr&agrave; indirizzato all'uscita da Booked Scheduler. Il default &egrave; la pagina di login.</p>
 
-<p class="setting"><span>$conf['settings']['schedule']['reservation.label']</span>The format of what to display for the
-	reservation slot on the Bookings page. Available tokens are {literal}{name}, {title}, {description}, {email},
-	{phone}
-	, {organization}, {position}{/literal}. Leave it blank for no label. Any combination of tokens can be used.</p>
+<p class="setting"><span>$conf['settings']['schedule']['use.per.user.colors']</span>Se usare, o meno, un colore specifico (prescelto dall'amministratore) per indicare le prenotazioni di ogni utente. Il default &egrave;: "false".</p>
 
-<p class="setting"><span>$conf['settings']['schedule']['hide.blocked.periods']</span>If blocked periods should be
-	hidden on the bookings page. Default is false.</p>
+<p class="setting"><span>$conf['settings']['schedule']['show.inaccessible.resources']</span>Se, o meno, le risorse non accessibili all'utente devono comunque essere visualizzate</p>
 
-<p class="setting"><span>$conf['settings']['ics']['require.login']</span>If users should be required to log in to add a
-	reservation to
-	Outlook.</p>
+<p class="setting"><span>$conf['settings']['schedule']['reservation.label']</span>Il formato del testo da mostrare nelle caselle prenotate del calendario. I termini ammessi sono: {literal}{name}, {title}, {description}, {email}, {phone}, {organization}, {position}{/literal}. Una qualunque combinazione di termini &egrave; ammessa. Si lasci questo parametro vuoto se non si intendono etichettare le caselle.</p>
 
-<p class="setting"><span>$conf['settings']['ics']['subscription.key']</span>If you want to allow calendar subscriptions,
-	set this to a difficult to guess value. If nothing is set then calendar subscriptions will be disabled.</p>
+<p class="setting"><span>$conf['settings']['schedule']['hide.blocked.periods']</span>Se, o meno, la durata della prenotazione deve essere nascosta dalla pagina delle prenotazioni. Il default &egrave;: "false".</p>
 
-<p class="setting"><span>$conf['settings']['privacy']['view.schedules']</span>If non-authenticated users can view the
-	booking schedules. Default is false.</p>
+<p class="setting"><span>$conf['settings']['ics']['require.login']</span>Se, o meno, un utente si deve autenticare per aggiungere una prenotazione ad Outlook.</p>
 
-<p class="setting"><span>$conf['settings']['privacy']['view.reservations']</span>If non-authenticated users can view
-	reservation details.
-	Default is false.</p>
+<p class="setting"><span>$conf['settings']['ics']['subscription.key']</span>Per consentire le sottoscrizioni ad un calendario si scelga per queto parametro una password difficile da indovinare. Se questo parametro &egrave; lasciato vuoto le sottoscrizioni saranno disabilitate.</p>
 
-<p class="setting"><span>$conf['settings']['privacy']['hide.user.details']</span>If non-adminstrators can view personal
-	information about other users. Default is false.</p>
+<p class="setting"><span>$conf['settings']['ics']['import']</span>Se, o meno, &egrave; abilitata l'importazione da iCal.</p>
 
-<p class="setting"><span>$conf['settings']['reservation']['start.time.constraint']</span>When reservations can be
-	created or edited.
-	Options are future, current, none. Future means reservations cannot be created or modified if the starting time of
-	the selected slot is in the past. Current means reservations can be created or modified if the ending time of the
-	selected slot is not in the past. None means that there is no restriction on when reservations can be created or
-	modified. Default is future.</p>
+<p class="setting"><span>$conf['settings']['ics']['import.key']</span>La chiave per le importazioni delle prenotazioni in iCal. Si consiglia di non lasciare vuoto questo parametro se l'importazione &egrave; abilitata</p>
 
-<p class="setting"><span>$conf['settings']['reservation']['updates.require.approval']</span>Whether or not updates to
-	reservations which have previously been approved require approval again. Default is false.</p>
+<p class="setting"><span>$conf['settings']['privacy']['view.schedules']</span>Se, o meno, un utente autenticato pu&ograve; vedere i calendari. Il default &egrave;: "false".</p>
 
-<p class="setting"><span>$conf['settings']['reservation']['prevent.participation']</span>Whether or not users should be
-	prevented from adding and inviting others to a reservation. Default is false.</p>
+<p class="setting"><span>$conf['settings']['privacy']['view.reservations']</span>Se, o meno, un utente autenticato pu&ograve; vedere le prenotazioni. Il default &egrave;: "false".</p>
 
-<p class="setting"><span>$conf['settings']['reservation']['prevent.recurrence']</span>Whether or not users should be
-	prevented creating recurring reservations. Default is false.</p>
+<p class="setting"><span>$conf['settings']['privacy']['hide.user.details']</span>Se, o meno, i dettagli del profilo utente devono essere mostrati ai non amministratori.</p>
 
-<p class="setting"><span>$conf['settings']['reservation.notify']['resource.admin.add']</span>Whether or not to send an
-	email to all resource administrators when a reservation is created. Default is false.</p>
+<p class="setting"><span>$conf['settings']['privacy']['hide.reservation.details']</span>Se, o meno, i dettagli delle prenotazioni utente devono essere mostrati ai non amministratori.</p>
 
-<p class="setting"><span>$conf['settings']['reservation.notify']['resource.admin.update']</span>Whether or not to send
-	an
-	email to all resource administrators when a reservation is updated. Default is false.</p>
+<p class="setting"><span>$conf['settings']['reservation']['start.time.constraint']</span>Quando le prenotazioni possono essere create o modificate. Le opzioni sono: "future", "current", "none". "future" significa che le prenotazioni possono essere create o modificate solo se appartengono al futuro. "current" significa che le prenotazioni possono essere create o modificate al massimo se sono in corso e, comunque, non appartengono al passato. "none" significa che non ci sono vincoli al momento in cui una prenotazione pu&ograve; essere creata o modificata. Il default &egrave;: "future".</p>
 
-<p class="setting"><span>$conf['settings']['reservation.notify']['resource.admin.delete']</span>Whether or not to send
-	an
-	email to all resource administrators when a reservation is deleted. Default is false.</p>
+<p class="setting"><span>$conf['settings']['reservation']['updates.require.approval']</span>Se, o meno, le modifiche ad una prenotazione gi&agrave; approvata richiedono una nuova approvazione. Il default &egrave;: "false".</p>
 
-<p class="setting"><span>$conf['settings']['reservation.notify']['application.admin.add']</span>Whether or not to send
-	an
-	email to all application administrators when a reservation is created. Default is false.</p>
+<p class="setting"><span>$conf['settings']['reservation']['prevent.participation']</span>Se, o meno, la sezione per la partecipazione e l'invito dei partecipanti deve essere rimossa. Il default &egrave;: "false".</p>
 
-<p class="setting"><span>$conf['settings']['reservation.notify']['application.admin.update']</span>Whether or not to
-	send an
-	email to all application administrators when a reservation is updated. Default is false.</p>
+<p class="setting"><span>$conf['settings']['reservation']['prevent.recurrence']</span>Se, o meno, le prenotazioni periodiche devono essere precluse ai non amministratori. Il default &egrave;: "false".</p>
 
-<p class="setting"><span>$conf['settings']['reservation.notify']['application.admin.delete']</span>Whether or not to
-	send an
-	email to all application administrators when a reservation is deleted. Default is false.</p>
+<p class="setting"><span>$conf['settings']['reservation']['enable.reminders']</span>Se, o meno, i promemoria sono abilitati. Questo richiede l'abiltazione dell'email e la configurazione delle operazioni pianificate. Il default &egrave;: "false".</p>
 
-<p class="setting"><span>$conf['settings']['reservation.notify']['group.admin.add']</span>Whether or not to send an
-	email to all group administrators when a reservation is created. Default is false.</p>
+<p class="setting"><span>$conf['settings']['reservation.notify']['resource.admin.add']</span>Se, o meno, inviare una email a tutti gli amministratori di rosorsa quando una prenotazione viene aggiunta. Il default &egrave;: "false".</p>
 
-<p class="setting"><span>$conf['settings']['reservation.notify']['group.admin.update']</span>Whether or not to send an
-	email to all group administrators when a reservation is updated. Default is false.</p>
+<p class="setting"><span>$conf['settings']['reservation.notify']['resource.admin.update']</span>Se, o meno, inviare una email a tutti gli amministratori di rosorsa quando una prenotazione viene aggiornata. Il default &egrave;: "false".</p>
 
-<p class="setting"><span>$conf['settings']['reservation.notify']['group.admin.delete']</span>Whether or not to send an
-	email to all group administrators when a reservation is deleted. Default is false.</p>
+<p class="setting"><span>$conf['settings']['reservation.notify']['resource.admin.delete']</span>Se, o meno, inviare una email a tutti gli amministratori di rosorsa quando una prenotazione viene cancellata. Il default &egrave;: "false".</p>
 
-<p class="setting"><span>$conf['settings']['uploads']['enable.reservation.attachments']</span>If users are allowed to
-	attach files to reservations. Default is false.</p>
+<p class="setting"><span>$conf['settings']['reservation.notify']['resource.admin.approval']</span></p>
 
-<p class="setting"><span>$conf['settings']['uploads']['reservation.attachment.path']</span>The full or relative
-	filesystem path (relative to the root of your Booked Scheduler directory) to store reservation attachments. This
-	directory must be writable by PHP (755 suggested). Default is uploads/reservation</p>
+<p class="setting"><span>$conf['settings']['reservation.notify']['application.admin.add']</span>Se, o meno, inviare una email a tutti gli amministratori dell'applicazione quando una prenotazione viene creata.</p>
 
-<p class="setting"><span>$conf['settings']['uploads']['reservation.attachment.extensions']</span>Comma separated list of
-	safe file extensions. Leaving this blank will allow all file types (not recommended).</p>
+<p class="setting"><span>$conf['settings']['reservation.notify']['application.admin.update']</span>Se, o meno, inviare una email a tutti gli amministratori dell'applicazione quando una prenotazione viene aggiornata. Il default &egrave;: "false".</p>
 
-<p class="setting"><span>$conf['settings']['database']['type']</span>Any PEAR::MDB2 supported type</p>
+<p class="setting"><span>$conf['settings']['reservation.notify']['application.admin.delete']</span>Se, o meno, inviare una email a tutti gli amministratori dell'applicazione quando una prenotazione viene cancellata. Il default &egrave;: "false".</p>
 
-<p class="setting"><span>$conf['settings']['database']['user']</span>Database user with access to the configured
-	database</p>
+<p class="setting"><span>$conf['settings']['reservation.notify']['application.admin.approval']</span></p>
 
-<p class="setting"><span>$conf['settings']['database']['password']</span>Password for the database user</p>
+<p class="setting"><span>$conf['settings']['reservation.notify']['group.admin.add']</span>Se, o meno, inviare una email a tutti gli amministratori di gruppo quando una prenotazione viene creata. Il default &egrave;: "false".</p>
 
-<p class="setting"><span>$conf['settings']['database']['hostspec']</span>Database host URL or named pipe</p>
+<p class="setting"><span>$conf['settings']['reservation.notify']['group.admin.update']</span>Se, o meno, inviare una email a tutti gli amministratori di gruppo quando una prenotazione viene aggiornata. Il default &egrave;: "false".</p>
 
-<p class="setting"><span>$conf['settings']['database']['name']</span>Name of Booked Scheduler database</p>
+<p class="setting"><span>$conf['settings']['reservation.notify']['group.admin.delete']</span>Se, o meno, inviare una email a tutti gli amministratori di gruppo quando una prenotazione viene cancellata. Il default &egrave;: "false".</p>
 
-<p class="setting"><span>$conf['settings']['phpmailer']['mailer']</span>PHP email library. Options are mail, smtp,
-	sendmail, qmail</p>
+<p class="setting"><span>$conf['settings']['reservation.notify']['group.admin.approval']</span></p>
 
-<p class="setting"><span>$conf['settings']['phpmailer']['smtp.host']</span>SMTP host, if using smtp</p>
+<p class="setting"><span>$conf['settings']['uploads']['enable.reservation.attachments']</span>Se, o meno, agli utenti è consentito allegare un documento alle prenotazioni. Il default &egrave;: "false".</p>
 
-<p class="setting"><span>$conf['settings']['phpmailer']['smtp.port']</span>SMTP port, if using smtp, usually 25</p>
+<p class="setting"><span>$conf['settings']['uploads']['reservation.attachment.path']</span>L'indirizzo della cartella nella quale archiviare i documenti allegati alle prenotazioni. Questa cartella deve avere i permessi di scrittura (755 &egrave; suggerito). Questo indirizzo pu&ograve; essere sia relativo alla cartella di Booked Scheduler, sia assoluto. Il default &egrave;: "uploads/reservation"</p>
 
-<p class="setting"><span>$conf['settings']['phpmailer']['smtp.secure']</span>SMTP security, if using smtp. Options are
-	'', ssl or tls</p>
+<p class="setting"><span>$conf['settings']['uploads']['reservation.attachment.extensions']</span>Lista separata da virgole delle estensioni consentite per i documenti allegati alle prenotazioni. Lasciare questo parametro vuoto significa consentire qualunque formato. (non raccomandato).</p>
 
-<p class="setting"><span>$conf['settings']['phpmailer']['smtp.auth']</span>SMTP requies authentication, if using smtp.
-	Options are true or false</p>
+<p class="setting"><span>$conf['settings']['database']['type']</span>Qualsiasi tipo di PEAR::MDB2 supportato</p>
 
-<p class="setting"><span>$conf['settings']['phpmailer']['smtp.username']</span>SMTP username, if using smtp</p>
+<p class="setting"><span>$conf['settings']['database']['user']</span>L'utente con abilitazione di accesso al Database configurato</p>
 
-<p class="setting"><span>$conf['settings']['phpmailer']['smtp.password']</span>SMTP password, if using smtp</p>
+<p class="setting"><span>$conf['settings']['database']['password']</span>Password per l'utente del database</p>
 
-<p class="setting"><span>$conf['settings']['phpmailer']['sendmail.path']</span>Path to sendmail, if using sendmail</p>
+<p class="setting"><span>$conf['settings']['database']['hostspec']</span>Named pipe o URL dell'host del Database</p>
 
-<p class="setting"><span>$conf['settings']['plugins']['Authentication']</span>Name of authentication plugin to use. For
-	more on plugins, see Plugins below</p>
+<p class="setting"><span>$conf['settings']['database']['name']</span>Nome del database di Booked Scheduler</p>
 
-<p class="setting"><span>$conf['settings']['plugins']['Authorization']</span>Name of authorization plugin to use. For
-	more on plugins, see Plugins below</p>
+<p class="setting"><span>$conf['settings']['phpmailer']['mailer']</span>Libreria email PHP. Le opzioni possibili sono 'mail', 'smtp', 'sendmail' o 'qmail'</p>
 
-<p class="setting"><span>$conf['settings']['plugins']['Permission']</span>Name of permission plugin to use. For more on
-	plugins, see Plugins below</p>
+<p class="setting"><span>$conf['settings']['phpmailer']['smtp.host']</span>SMTP host, se si intende fare uso del protocollo SMTP</p>
 
-<p class="setting"><span>$conf['settings']['plugins']['PreReservation']</span>Name of prereservation plugin to use. For
-	more on plugins, see Plugins below</p>
+<p class="setting"><span>$conf['settings']['phpmailer']['smtp.port']</span>Porta SMTP. Solitamente: 25</p>
 
-<p class="setting"><span>$conf['settings']['plugins']['PostReservation']</span>Name of postreservation plugin to use.
-	For more on plugins, see Plugins below</p>
+<p class="setting"><span>$conf['settings']['phpmailer']['smtp.secure']</span>Sicurezza SMTP. Le opzioni sono '', 'ssl' o 'tls'</p>
 
-<p class="setting"><span>$conf['settings']['install.password']</span>If you are running an installation or upgrade, you
-	will be required to provide a value here. Set this to any random value.</p>
+<p class="setting"><span>$conf['settings']['phpmailer']['smtp.auth']</span>Se, o meno, il protocollo SMTP richiede l'autenticazione. Le opzioni sono: 'true' o 'false'.</p>
 
-<p class="setting"><span>$conf['settings']['pages']['enable.configuration']</span>If the configuration management page
-	should be available to application administrators. Options are true or false.</p>
+<p class="setting"><span>$conf['settings']['phpmailer']['smtp.username']</span>Nome utente per il protocollo SMTP</p>
 
-<p class="setting"><span>$conf['settings']['api']['enabled']</span>If the Booked Scheduler's RESTful API should be enabled.
-	See more about prerequisites for using the API in the readme_installation.html file. Options are true or false.</p>
+<p class="setting"><span>$conf['settings']['phpmailer']['smtp.password']</span>Password utente per il protocollo SMTP</p>
 
-<p class="setting"><span>$conf['settings']['recaptcha']['enabled']</span>If reCAPTCHA should be used instead of the
-	built in captcha. Options are true or false.</p>
+<p class="setting"><span>$conf['settings']['phpmailer']['sendmail.path']</span>Path di sendmail, se si intende fare uso di sendmail</p>
 
-<p class="setting"><span>$conf['settings']['recaptcha']['public.key']</span>Your reCAPTCHA public key. Visit
-	www.google.com/recaptcha to sign up.</p>
+<p class="setting"><span>$conf['settings']['phpmailer']['sendmail.debug']</span>Se, o meno, attivare le notifiche di debug per sendamail</p>
 
-<p class="setting"><span>$conf['settings']['recaptcha']['private.key']</span>Your reCAPTCHA private key. Visit
-	www.google.com/recaptcha to sign up.</p>
+<p class="setting"><span>$conf['settings']['plugins']['Authentication']</span>Nome della plugin di autenticazione da utilizzare. Si veda: "Plugins" più avanti.</p>
 
-<p class="setting"><span>$config['settings']['email']['default.from.address']</span>The email address to use as the
-	'from' address when sending emails. If emails are bouncing or being marked as spam, set this to an email address
-	with your domain name. For example, noreply@yourdomain.com. This will not change the 'from' name or the reply-to
-	address.</p>
+<p class="setting"><span>$conf['settings']['plugins']['Authorization']</span>Nome della plugin di autorizzazione da utilizzare. Si veda: "Plugins" più avanti.</p>
 
-<p class="setting"><span>$conf['settings']['reports']['allow.all.users']</span>If non-administrators can access usage
-	reports. Default is false.</p>
+<p class="setting"><span>$conf['settings']['plugins']['Permission']</span>Nome della plugin di permessi da utilizzare. Si veda: "Plugins" più avanti.</p>
 
-<p class="setting"><span>$conf['settings']['password']['minimum.letters']</span>Minimum number of letters required for
-	user passwords. Default is 6.</p>
+<p class="setting"><span>$conf['settings']['plugins']['PreReservation']</span>Nome della plugin di pre-prenotazione da utilizzare. Si veda: "Plugins" più avanti.</p>
 
-<p class="setting"><span>$conf['settings']['password']['minimum.numbers']</span>Minimum number of numbers required for
-	user passwords. Default is 0.</p>
+<p class="setting"><span>$conf['settings']['plugins']['PostReservation']</span>Nome della plugin di post-prenotazione da utilizzare. Si veda: "Plugins" più avanti.</p>
 
-<p class="setting"><span>$conf['settings']['password']['upper.and.lower']</span>Whether user passwords require a
-	combination of upper and lower case letters. Default is false.</p>
+<p class="setting"><span>$conf['settings']['install.password']</span>Se si intende eseguire una installazione automatica o un aggiornamento, questa password sarà richiesta. Si definisca il parametro in modo che sia difficile da indovinare per l'utente malintenzionato.</p>
 
-<h2>Estensioni</h2>
+<p class="setting"><span>$conf['settings']['pages']['enable.configuration']</span>Se, o meno, la pagina di gestione della configurazione deve essere accessibile agli amministratori dell'applicazione. Le opzioni sono: 'true' o 'false'.</p>
 
-<p>The following components are currently pluggable:</p>
+<p class="setting"><span>$conf['settings']['api']['enabled']</span>Se, o meno, le API di RESTful di Booked Scheduler devono essere abilitate. Ulteriori informazioni sui prerequisiti per l'utilizzo delle API sono rintracciabili nel file readme_installation.html file. Le opzioni sono: 'true' o 'false'.</p>
+
+<p class="setting"><span>$conf['settings']['recaptcha']['enabled']</span>If reCAPTCHA should be used instead of the built in captcha. Le opzioni sono: 'true' o 'false'.</p>
+
+<p class="setting"><span>$conf['settings']['recaptcha']['public.key']</span>Your reCAPTCHA public key. Visit www.google.com/recaptcha to sign up.</p>
+
+<p class="setting"><span>$conf['settings']['recaptcha']['private.key']</span>Your reCAPTCHA private key. Visit www.google.com/recaptcha to sign up.</p>
+
+<p class="setting"><span>$config['settings']['email']['default.from.address']</span>The email address to use as the 'from' address when sending emails. If emails are bouncing or being marked as spam, set this to an email address with your domain name. For example, noreply@yourdomain.com. This will not change the 'from' name or the reply-to address.</p>
+
+<p class="setting"><span>$conf['settings']['reports']['allow.all.users']</span>If non-administrators can access usage reports. Il default &egrave;: "false".</p>
+
+<p class="setting"><span>$conf['settings']['password']['minimum.letters']</span>Minimum number of letters required for user passwords. Default is 6.</p>
+
+<p class="setting"><span>$conf['settings']['password']['minimum.numbers']</span>Minimum number of numbers required for user passwords. Default is 0.</p>
+
+<p class="setting"><span>$conf['settings']['password']['upper.and.lower']</span>Whether user passwords require a combination of upper and lower case letters. Il default &egrave;: "false".</p>
+
+<h2>Plugins</h2>
+
+<p>Categorie di componenti personalizzabili tramite la creazione di plugin:</p>
 
 <ul>
-	<li>Authentication - Who is allowed to log in</li>
-	<li>Authorization - What a user can do when you are logged in</li>
-	<li>Permission - What resources a user has access to</li>
-	<li>Pre Reservation - What happens before a reservation is booked</li>
-	<li>Post Reservation - What happens after a reservation is booked</li>
+    <li>Authentication - Chi ha il permesso di connettersi</li>
+    <li>Authorization - Cosa un utente pu&ograve; fare quando &egrave; connesso</li>
+    <li>Permission - Quali risorse un utente pu&ograve; accedere</li>
+    <li>Post Registration - Cosa succede dopo che una autenticazione &egrave; stata effettuata</li>
+    <li>Post Reservation - Cosa succede dopo che una prenotazione &egrave; stata effettuata</li>
+    <li>Pre Registration - Cosa succede prima che una autenticazione venga effettuata</li>
+    <li>Pre Reservation - Cosa succede prima che una prenotazione venga effettuata</li>
 </ul>
 
-<p>
-	To enable a plugin, set the value of the config setting to the name of the plugin folder. For example, to enable
-	LDAP
-	authentication, set
-	$conf['settings']['plugins']['Authentication'] = 'Ldap';</p>
+<p>Per abilitare un plugin, impostare il valore del parametro di configurazione uguale al nome della cartella del plugin. Per esempio, per abilitare l'autenticazione LDAP, impostare $conf['settings']['plugins']['Authentication'] = 'Ldap';</p>
 
-<p>Plugins may have their own configuration files. For LDAP, rename or copy
-	/plugins/Authentication/Ldap/Ldap.config.dist to /plugins/Authentication/Ldap/Ldap.config and edit all values that
-	are applicable to your environment.</p>
+<p>I plugin possono avere il proprio file di configurazione. Per LDAP, rinominare o copiare /plugins/Authentication/Ldap/Ldap.config.dist in /plugins/Authentication/Ldap/Ldap.config e editare tutti i valori che sono applicabili all'ambiente in cui &egrave; inserito Booked Scheduler.</p>
 
-<h3>Installazione estensioni</h3>
+<h3>Installare i Plugins</h3>
 
-<p>To install a new plugin copy the folder to either the Authentication, Authorization and Permission directory. Then
-	change either $conf['settings']['plugins']['Authentication'], $conf['settings']['plugins']['Authorization'] or
-	$conf['settings']['plugins']['Permission'] in config.php to the name of that folder.</p>
+<p>Per installare un nuovo plugin, copiare la cartella dentro una delle cartelle Authentication, Authorization e Permission. In seguito modificare $conf['settings']['plugins']['Authentication'], $conf['settings']['plugins']['Authorization'] o $conf['settings']['plugins']['Permission'] nel file config.php inserendo il nome della cartella del plugin.</p>
 
 </div>
 
