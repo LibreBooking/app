@@ -926,12 +926,21 @@ class ReservationItemView implements IReservedItemView
 	/**
 	 * @var array|int[]
 	 */
-	public $ParticipantIds = array();
+	public $ParticipantIds = array(); 
+	
+	/** @var array|string[]
+	 */
+	public $ParticipantNames = array();
 
 	/**
 	 * @var array|int[]
 	 */
 	public $InviteeIds = array();
+
+	/**
+	 * @var array|string[]
+	 */
+	public $InviteeNames = array();
 
 	/**
 	 * @var CustomAttributes
@@ -1042,12 +1051,34 @@ class ReservationItemView implements IReservedItemView
 
 		if (!empty($participant_list))
 		{
-			$this->ParticipantIds = explode(',', $participant_list);
+			$participants = explode('!sep!', $participant_list);
+
+			foreach ($participants as $participant)
+			{
+				$pair = explode('=', $participant);
+
+				$id = $pair[0];
+				$name = $pair[1];
+				$name_parts = explode(' ', $name);
+				$this->ParticipantIds[] = $id;
+				$this->ParticipantNames[$id] = new FullName($name_parts[0], $name_parts[1]);
+			}
 		}
 
 		if (!empty($invitee_list))
 		{
-			$this->InviteeIds = explode(',', $invitee_list);
+			$invitees = explode('!sep!', $invitee_list);
+
+			foreach ($invitees as $invitee)
+			{
+				$pair = explode('=', $invitee);
+
+				$id = $pair[0];
+				$name = $pair[1];
+				$name_parts = explode(' ', $name);
+				$this->InviteeIds[] = $id;
+				$this->InviteeNames[$id] = new FullName($name_parts[0], $name_parts[1]);
+			}
 		}
 
 		$this->Attributes = CustomAttributes::Parse($attribute_list);

@@ -73,6 +73,8 @@ class SlotLabelFactory
 		$label = str_replace('{startdate}', $reservation->StartDate->ToTimezone($timezone)->Format($dateFormat), $label);
 		$label = str_replace('{enddate}', $reservation->EndDate->ToTimezone($timezone)->Format($dateFormat), $label);
 		$label = str_replace('{resourcename}', $reservation->ResourceName, $label);
+		$label = str_replace('{participants}', trim(implode(', ', $reservation->ParticipantNames)), $label);
+		$label = str_replace('{invitees}', trim(implode(', ', $reservation->InviteeNames)), $label);
 
 		$matches = array();
 		preg_match_all('/\{(att\d+?)\}/', $format, $matches);

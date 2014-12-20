@@ -81,11 +81,15 @@ class SlotLabelFactoryTests extends TestBase
 		$this->reservation->OwnerOrganization = 'myorg';
 		$this->reservation->OwnerPhone = 'myphone';
 		$this->reservation->OwnerPosition = 'myposition';
+        $this->reservation->ParticipantNames = array('p1', 'p2');
+        $this->reservation->InviteeNames = array('i1', 'i2');
+        $this->reservation->StartDate = Date::Now();
+        $this->reservation->EndDate = Date::Now();
 
-		$this->SetConfig('{name} + {title} - {description} {email} {phone} {organization} {position}');
+		$this->SetConfig('{name} + {title} - {description} {email} {phone} {organization} {position} {participants} {invitees}');
 		$value = SlotLabelFactory::Create($this->reservation);
 
-        $this->assertEquals('first last + mytitle - mydescription myemail myphone myorg myposition', $value);
+        $this->assertEquals('first last + mytitle - mydescription myemail myphone myorg myposition p1, p2 i1, i2', $value);
     }
 	
 	public function testFormatsDates()
@@ -105,6 +109,7 @@ class SlotLabelFactoryTests extends TestBase
 		$this->reservation->Attributes = new CustomAttributes();
 		$this->reservation->Attributes->Add(2, 'value2');
 		$this->reservation->Attributes->Add(1, 'value1');
+
 
 		$this->SetConfig('{att1} {att2}');
 

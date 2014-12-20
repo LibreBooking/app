@@ -76,7 +76,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 	{/foreach}
 	</div>
 	{/capture}
-	{$formatter->Add('accessories', $smarty.capture.participants)}
+	{$formatter->Add('accessories', $smarty.capture.accessories)}
 
 	{capture "description"}
 	{if !$hideDetails}

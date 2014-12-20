@@ -261,8 +261,8 @@ class ReservationViewRepositoryTests extends TestBase
 		$phone = 'phone';
 		$organization = 'organization';
 		$position = 'position';
-		$participant_list = '100,200,500';
-		$invitee_list = '700,800';
+		$participant_list = '100=p 1!sep!200=p 2!sep!500=p 3';
+		$invitee_list = '700=i 1!sep!800=1 2';
 		$attributes = 'a1=av1,a2=av2';
 		$preferences = 'p1=pv1,p2=pv2';
 		$bufferTime = 3600;
