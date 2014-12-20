@@ -477,8 +477,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 	$conf['settings']['plugins']['Permission'] in config.php to the name of that folder.</p>
 
 <h2>Available Label Tokens</h2>
-<p>Available tokens for reservation lables are {literal}{name}, {title}, {description}, {email},
-	{phone}, {organization}, {position}, {startdate}, {enddate}, {resourcename}{/literal}. Custom attributes can be added using att with the attribute id. For example {literal}{att1}{/literal}
+<p>Available tokens for reservation labels are {literal}{name}, {title}, {description}, {email}, {phone}, {organization}, {position}, {startdate}, {enddate} {resourcename} {participants} {invitees}{/literal}. Custom attributes can be added using att with the attribute id. For example {literal}{att1}{/literal}
 	Leave it blank for no label. Any combination of tokens can be used.</p>
 </div>
 
