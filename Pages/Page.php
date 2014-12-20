@@ -1,6 +1,7 @@
 <?php
 /**
 Copyright 2011-2014 Nick Korbel
+Copyright 2014 Jason Gerfen
 
 This file is part of Booked Scheduler.
 
@@ -44,6 +45,8 @@ abstract class Page implements IPage
 
 	protected function __construct($titleKey = '', $pageDepth = 0)
 	{
+		$this->SetSecurityHeaders();
+		
 		$this->path = str_repeat('../', $pageDepth);
 		$this->server = ServiceLocator::GetServer();
 		$resources = Resources::GetInstance();
@@ -361,5 +364,18 @@ abstract class Page implements IPage
 	private function InMaintenanceMode()
 	{
 		return is_file(ROOT_DIR . 'maint.txt');
+	}
+	
+	private function SetSecurityHeaders()
+	{
+		$config = Configuration::Instance();
+		if ($config->GetSectionKey(ConfigSection::SECURITY, ConfigKeys::SECURITY_HEADERS, new BooleanConverter()))
+		{
+			header('Strict-Transport-Security: ' . $config->GetSectionKey(ConfigSection::SECURITY, ConfigKeys::SECURITY_STRICT_TRANSPORT));
+			header('X-Frame: ' . $config->GetSectionKey(ConfigSection::SECURITY, ConfigKeys::SECURITY_X_FRAME));
+			header('X-Xss: ' . $config->GetSectionKey(ConfigSection::SECURITY, ConfigKeys::SECURITY_X_XSS));
+			header('X-Content-Type: ' . $config->GetSectionKey(ConfigSection::SECURITY, ConfigKeys::SECURITY_X_CONTENT_TYPE));
+			header('Content-Security-Policy: ' . $config->GetSectionKey(ConfigSection::SECURITY, ConfigKeys::SECURITY_CONTENT_SECURITY_POLICY));
+		}
 	}
 }

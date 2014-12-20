@@ -119,6 +119,13 @@ class ConfigKeys
 	const RESERVATION_LABELS_MY_CALENDAR = 'my.calendar';
 	const RESERVATION_LABELS_RESOURCE_CALENDAR = 'resource.calendar';
 	const RESERVATION_LABELS_RESERVATION_POPUP = 'reservation.popup';
+	
+    const SECURITY_HEADERS = 'security.headers';
+    const SECURITY_STRICT_TRANSPORT = 'security.strict-transport';
+    const SECURITY_X_FRAME = 'security.x-frame';
+    const SECURITY_X_XSS = 'security.x-xss';
+    const SECURITY_X_CONTENT_TYPE = 'security.x-content-type';
+    const SECURITY_CONTENT_SECURITY_POLICY = 'security.content-security-policy';
 }
 
 class ConfigSection
@@ -136,6 +143,7 @@ class ConfigSection
 	const RESERVATION_LABELS = 'reservation.labels';
     const RESERVATION_NOTIFY = 'reservation.notify';
     const SCHEDULE = 'schedule';
+	const SECURITY = 'security';
 	const UPLOADS = 'uploads';
 	const RECAPTCHA = 'recaptcha';
 	const USERS = 'users';

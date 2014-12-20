@@ -168,3 +168,12 @@ $conf['settings']['reservation.labels']['rss.description'] = '<div><span>Start</
 $conf['settings']['reservation.labels']['my.calendar'] = '{resourcename} {title}';
 $conf['settings']['reservation.labels']['resource.calendar'] = '{name}';
 $conf['settings']['reservation.labels']['reservation.popup'] = ''; // Format for what to display in reservation popups. Possible values: {name} {dates} {title} {resources} {participants} {accessories} {description} {attributes}. Custom attributes can be added using att with the attribute id. For example {att1}
+/**
+ * Security header settings
+ */
+$conf['settings']['security']['security.headers'] = 'false'; // Enable the following options
+$conf['settings']['security']['security.strict-transport'] = 'true';
+$conf['settings']['security']['security.x-frame'] = 'deny';
+$conf['settings']['security']['security.x-xss'] = '1; mode=block';
+$conf['settings']['security']['security.x-content-type'] = 'nosniff';
+$conf['settings']['security']['security.content-security-policy'] = "default-src 'self'"; // Requires careful tuning (know what your doing)
