@@ -93,13 +93,13 @@ function GenerateReports(reportOptions) {
 	function wireUpAutocompleteFilters() {
 		$('#user-filter-div').find('.all, .selected').click(function (e) {
 			e.preventDefault();
-			var filter = $(this).siblings('.filter-input, .clear');
+			var filter = $(this).siblings('.filter-input, .clear-filter');
 			filter.val('');
 			filter.show();
 			$(this).hide();
 		});
 
-		$('#user-filter-div').find('.clear').click(function (e) {
+		$('#user-filter-div').find('.clear-filter').click(function (e) {
 			e.preventDefault();
 			$(this).siblings('.all').show();
 			var filter = $(this).siblings('.filter-input, .filter-id, .selected');
