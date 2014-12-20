@@ -55,6 +55,9 @@ class ReportCommandBuilder
 				INNER JOIN resources ON rr.resource_id = resources.resource_id
 				INNER JOIN schedules ON resources.schedule_id = schedules.schedule_id';
 
+	const PARTICIPANT_JOIN_FRAGMENT = 'INNER JOIN users participants ON participants.user_id = @participant_id
+			INNER JOIN reservation_users pu ON pu.user_id = participants.user_id AND pu.reservation_user_level = 2 AND pu.reservation_instance_id = ri.reservation_instance_id ';
+
 	const ACCESSORY_JOIN_FRAGMENT = 'INNER JOIN reservation_accessories ar ON rs.series_id = ar.series_id
 				INNER JOIN accessories ON ar.accessory_id = accessories.accessory_id';
 
@@ -108,6 +111,10 @@ class ReportCommandBuilder
 	/**
 	 * @var bool
 	 */
+	private $joinParticipants = false;
+	/**
+	 * @var bool
+	 */
 	private $joinGroups = false;
 	/**
 	 * @var bool
@@ -144,6 +151,10 @@ class ReportCommandBuilder
 	 * @var null|int
 	 */
 	private $userId = null;
+	/**
+	 * @var null|int
+	 */
+	private $participantId = null;
 	/**
 	 * @var null|int
 	 */
@@ -271,6 +282,17 @@ class ReportCommandBuilder
 	public function WithUserId($userId)
 	{
 		$this->userId = $userId;
+		return $this;
+	}
+
+	/**
+	 * @param int $userId
+	 * @return ReportCommandBuilder
+	 */
+	public function WithParticipantId($userId)
+	{
+		$this->joinParticipants = true;
+		$this->participantId = $userId;
 		return $this;
 	}
 
@@ -453,6 +475,11 @@ class ReportCommandBuilder
 			$join->Append(self::GROUP_JOIN_FRAGMENT);
 		}
 
+		if ($this->joinParticipants)
+		{
+			$join->Append(self::PARTICIPANT_JOIN_FRAGMENT);
+		}
+
 		return $join;
 	}
 
@@ -473,6 +500,12 @@ class ReportCommandBuilder
 		{
 			$and->Append(self::USER_ID_FRAGMENT);
 			$this->AddParameter(new Parameter(ParameterNames::USER_ID, $this->userId));
+		}
+
+
+		if (!empty($this->participantId))
+		{
+			$this->AddParameter(new Parameter(ParameterNames::PARTICIPANT_ID, $this->participantId));
 		}
 
 		if (!empty($this->groupId))
@@ -599,3 +632,5 @@ class ReportQueryFragment
 		return $this->sql;
 	}
 }
+
+?>

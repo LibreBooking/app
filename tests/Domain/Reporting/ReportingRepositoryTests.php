@@ -62,18 +62,19 @@ class ReportingRepositoryTests extends TestBase
 		$userId = 3;
 		$groupId = 4;
 		$accessoryId = 5;
+		$participantId = 6;
 
 		$usage = new Report_Usage(Report_Usage::ACCESSORIES);
 		$selection = new Report_ResultSelection(Report_ResultSelection::COUNT);
 		$groupBy = new Report_GroupBy(Report_GroupBy::RESOURCE);
 		$range = new Report_Range(Report_Range::DATE_RANGE, $startRange, $endRange, $timezone);
-		$filter = new Report_Filter($resourceId, $scheduleId, $userId, $groupId, $accessoryId);
+		$filter = new Report_Filter($resourceId, $scheduleId, $userId, $groupId, $accessoryId, $participantId);
 
 		$report = new SavedReport($reportName, $ownerId, $usage, $selection, $groupBy, $range, $filter);
 
 		$this->repository->SaveCustomReport($report);
 
-		$serializedCriteria = "usage=ACCESSORIES;selection=COUNT;groupby=RESOURCE;range=DATE_RANGE;range_start={$startDate->ToDatabase()};range_end={$endDate->ToDatabase()};resourceid=$resourceId;scheduleid=$scheduleId;userid=$userId;groupid=$groupId;accessoryid=$accessoryId";
+		$serializedCriteria = "usage=ACCESSORIES;selection=COUNT;groupby=RESOURCE;range=DATE_RANGE;range_start={$startDate->ToDatabase()};range_end={$endDate->ToDatabase()};resourceid=$resourceId;scheduleid=$scheduleId;userid=$userId;groupid=$groupId;accessoryid=$accessoryId;participantid=$participantId";
 
 		$expectedCommand = new AddSavedReportCommand($reportName, $ownerId, $report->DateCreated(), $serializedCriteria);
 
@@ -92,7 +93,7 @@ class ReportingRepositoryTests extends TestBase
 					new Report_ResultSelection(Report_ResultSelection::COUNT),
 					new Report_GroupBy(Report_GroupBy::GROUP),
 					new Report_Range(Report_Range::DATE_RANGE, Date::Now()->ToUtc(), Date::Now()->ToUtc()),
-					new Report_Filter(12, 11, 896, 123, 45234) );
+					new Report_Filter(12, 11, 896, 123, 45234, 111) );
 		$expectedReport1->WithDateCreated($date->ToUtc());
 		$expectedReport1->WithId(1);
 
@@ -127,7 +128,7 @@ class ReportingRepositoryTests extends TestBase
 					new Report_ResultSelection(Report_ResultSelection::COUNT),
 					new Report_GroupBy(Report_GroupBy::GROUP),
 					new Report_Range(Report_Range::DATE_RANGE, Date::Now()->ToUtc(), Date::Now()->ToUtc()),
-					new Report_Filter(12, 11, 896, 123, 45234) );
+					new Report_Filter(12, 11, 896, 123, 45234, 111) );
 		$expectedReport1->WithDateCreated($date->ToUtc());
 		$expectedReport1->WithId($reportId);
 

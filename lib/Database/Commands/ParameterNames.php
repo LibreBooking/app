@@ -100,6 +100,7 @@ class ParameterNames
 	const ORGANIZATION = '@organization';
 
 	const PASSWORD = '@password';
+	const PARTICIPANT_ID = '@participant_id';
 	const PERIOD_AVAILABILITY_TYPE = '@periodType';
 	const PERIOD_DAY_OF_WEEK = '@day_of_week';
 	const PERIOD_LABEL = '@label';

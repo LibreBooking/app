@@ -91,7 +91,7 @@ function GenerateReports(reportOptions) {
 	};
 
 	function wireUpAutocompleteFilters() {
-		$('#user-filter-div').find('.all, .selected').click(function (e) {
+		$('.link-filter').find('.all, .selected').click(function (e) {
 			e.preventDefault();
 			var filter = $(this).siblings('.filter-input, .clear-filter');
 			filter.val('');
@@ -99,7 +99,7 @@ function GenerateReports(reportOptions) {
 			$(this).hide();
 		});
 
-		$('#user-filter-div').find('.clear-filter').click(function (e) {
+		$('.link-filter').find('.clear-filter').click(function (e) {
 			e.preventDefault();
 			$(this).siblings('.all').show();
 			var filter = $(this).siblings('.filter-input, .filter-id, .selected');
@@ -117,6 +117,10 @@ function GenerateReports(reportOptions) {
 
 		$("#user-filter").userAutoComplete(opts.userAutocompleteUrl, function (ui) {
 			selectFilterItem($('#user-filter-div'), ui.item.value, ui.item.label);
+		});
+
+		$("#participant-filter").userAutoComplete(opts.userAutocompleteUrl, function (ui) {
+			selectFilterItem($('#participant-filter-div'), ui.item.value, ui.item.label);
 		});
 	}
 

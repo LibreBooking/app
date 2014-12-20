@@ -105,6 +105,23 @@ class ReportCommandBuilderTests extends TestBase
 		$this->assertContains(ReportCommandBuilder::ORDER_BY_FRAGMENT, $actual->GetQuery());
 	}
 
+	public function testFilteredByParticipant()
+	{
+		$userId = 123;
+
+		$builder = new ReportCommandBuilder();
+		$actual = $builder->SelectFullList()
+				->OfResources()
+				->WithParticipantId($userId)
+				->Build();
+
+		$this->assertContains(ReportCommandBuilder::RESERVATION_LIST_FRAGMENT, $actual->GetQuery());
+		$this->assertContains(ReportCommandBuilder::RESOURCE_LIST_FRAGMENT, $actual->GetQuery());
+		$this->assertContains(ReportCommandBuilder::RESOURCE_JOIN_FRAGMENT, $actual->GetQuery());
+		$this->assertContains(ReportCommandBuilder::PARTICIPANT_JOIN_FRAGMENT, $actual->GetQuery());
+		$this->assertContains(ReportCommandBuilder::ORDER_BY_FRAGMENT, $actual->GetQuery());
+	}
+
 	public function testFilteredByGroup()
 	{
 		$groupId = 123;

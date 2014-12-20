@@ -511,6 +511,7 @@ class en_us extends Language
 		$strings['LimitAttributeScope'] = 'Limit Attribute Scope';
 		$strings['LimitTo'] = 'Limit To';
 		$strings['SignIn'] = 'Sign In';
+		$strings['AllParticipants'] = 'All Participants';
 		// End Strings
 
 		// Install

@@ -77,33 +77,33 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 				<label for="today" style="width:auto;">{translate key=Today}</label>
 				<input type="radio" {formname key=REPORT_RANGE} value="{Report_Range::DATE_RANGE}" id="range_within"/>
 				<label for="range_within" style="width:auto;">{translate key=Between}</label>
-				<input type="input" class="textbox dateinput" id="startDate" title="Range start date"/> -
+				<input type="input" class="textbox dateinput" id="startDate"/> -
 				<input type="hidden" id="formattedBeginDate" {formname key=REPORT_START}/>
-				<input type="input" class="textbox dateinput" id="endDate" title="Range End Date"/>
+				<input type="input" class="textbox dateinput" id="endDate"/>
 				<input type="hidden" id="formattedEndDate" {formname key=REPORT_END} />
 			</div>
 			<div class="input-set">
 				<span class="label">{translate key=FilterBy}</span>
-				<select class="textbox" {formname key=RESOURCE_ID} title="Resource">
+				<select class="textbox" {formname key=RESOURCE_ID}>
 					<option value="">{translate key=AllResources}</option>
 				{foreach from=$Resources item=resource}
 					<option value="{$resource->GetId()}">{$resource->GetName()}</option>
 				{/foreach}
 				</select>
-				<select class="textbox" {formname key=ACCESSORY_ID} id="accessoryId" title="Accessory">
+				<select class="textbox" {formname key=ACCESSORY_ID} id="accessoryId">
 					<option value="">{translate key=AllAccessories}</option>
 				{foreach from=$Accessories item=accessory}
 					<option value="{$accessory->Id}">{$accessory->Name}</option>
 				{/foreach}
 				</select>
-				<select class="textbox" {formname key=SCHEDULE_ID} title="Schedule">
+				<select class="textbox" {formname key=SCHEDULE_ID}>
 					<option value="">{translate key=AllSchedules}</option>
 				{foreach from=$Schedules item=schedule}
 					<option value="{$schedule->GetId()}">{$schedule->GetName()}</option>
 				{/foreach}
 				</select>
 
-				<select class="textbox" {formname key=GROUP_ID} title="Group">
+				<select class="textbox" {formname key=GROUP_ID}>
 					<option value="">{translate key=AllGroups}</option>
 				{foreach from=$Groups item=group}
 					<option value="{$group->Id}">{$group->Name}</option>
@@ -113,9 +113,17 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 				<div id="user-filter-div" class="link-filter">
 					<a href="#" class="all">{translate key=AllUsers}</a>
 					<a href="#" class="selected filter-off"></a>
-					<input id="user-filter" type="text" class="textbox filter-input filter-off" title="User"/>
-				{html_image src="minus-gray.png" class="clear-filter filter-off" alt="User filter off"}
+					<input id="user-filter" type="text" class="textbox filter-input filter-off"/>
+				{html_image src="minus-gray.png" class="clear-filter filter-off"}
 					<input id="user_id" class="filter-id" type="hidden" {formname key=USER_ID}/>
+				</div>
+
+				<div id="participant-filter-div" class="link-filter">
+					<a href="#" class="all">{translate key=AllParticipants}</a>
+					<a href="#" class="selected filter-off"></a>
+					<input id="participant-filter" type="text" class="textbox filter-input filter-off"/>
+				{html_image src="minus-gray.png" class="clear-filter filter-off"}
+					<input id="participant_id" class="filter-id" type="hidden" {formname key=PARTICIPANT_ID}/>
 				</div>
 			</div>
 		</div>
@@ -140,7 +148,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 </div>
 
 <div class="dialog" id="groupPopup">
-<label for="group_filter">{translate key=Group}</label> <input id="group_filter" type="text" class="textbox"/>
+{translate key=Group}<input id="group_filter" type="text" class="textbox"/>
 </div>
 
 

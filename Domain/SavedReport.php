@@ -183,6 +183,14 @@ class SavedReport implements ISavedReport
 	/**
 	 * @return int|null
 	 */
+	public function ParticipantId()
+	{
+		return $this->filter->ParticipantId();
+	}
+
+	/**
+	 * @return int|null
+	 */
 	public function GroupId()
 	{
 		return $this->filter->GroupId();
@@ -263,7 +271,7 @@ class ReportSerializer
 	 */
 	public static function Serialize(SavedReport $report)
 	{
-		$template = 'usage=%s;selection=%s;groupby=%s;range=%s;range_start=%s;range_end=%s;resourceid=%s;scheduleid=%s;userid=%s;groupid=%s;accessoryid=%s';
+		$template = 'usage=%s;selection=%s;groupby=%s;range=%s;range_start=%s;range_end=%s;resourceid=%s;scheduleid=%s;userid=%s;groupid=%s;accessoryid=%s;participantid=%s';
 
 		return sprintf($template,
 					   $report->Usage(),
@@ -276,7 +284,8 @@ class ReportSerializer
 					   $report->ScheduleId(),
 					   $report->UserId(),
 					   $report->GroupId(),
-					   $report->AccessoryId());
+					   $report->AccessoryId(),
+					   $report->ParticipantId());
 	}
 
 	/**
@@ -386,8 +395,9 @@ class ReportSerializer
 		$userId = isset($values['userid']) ? $values['userid'] : '';
 		$groupId = isset($values['groupid']) ? $values['groupid'] : '';
 		$accessoryId = isset($values['accessoryid']) ? $values['accessoryid'] : '';
+		$participantId = isset($values['participantid']) ? $values['participantid'] : '';
 
-		return new Report_Filter($resourceId, $scheduleId, $userId, $groupId, $accessoryId);
+		return new Report_Filter($resourceId, $scheduleId, $userId, $groupId, $accessoryId, $participantId);
 	}
 }
 

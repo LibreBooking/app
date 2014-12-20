@@ -34,6 +34,11 @@ class Report_Filter
 	/**
 	 * @var int|null
 	 */
+	private $participantId;
+
+	/**
+	 * @var int|null
+	 */
 	private $groupId;
 
 	/**
@@ -42,14 +47,16 @@ class Report_Filter
 	 * @param $userId int|null
 	 * @param $groupId int|null
 	 * @param $accessoryId int|null
+	 * @param $participantId int|null
 	 */
-	public function __construct($resourceId, $scheduleId, $userId, $groupId, $accessoryId)
+	public function __construct($resourceId, $scheduleId, $userId, $groupId, $accessoryId, $participantId)
 	{
 		$this->resourceId = $resourceId;
 		$this->scheduleId = $scheduleId;
 		$this->userId = $userId;
 		$this->groupId = $groupId;
 		$this->accessoryId = $accessoryId;
+		$this->participantId = $participantId;
 	}
 
 	public function Add(ReportCommandBuilder $builder)
@@ -65,6 +72,10 @@ class Report_Filter
 		if (!empty($this->userId))
 		{
 			$builder->WithUserId($this->userId);
+		}
+		if (!empty($this->participantId))
+		{
+			$builder->WithParticipantId($this->participantId);
 		}
 		if (!empty($this->groupId))
 		{
@@ -98,6 +109,13 @@ class Report_Filter
 	public function UserId()
 	{
 		return $this->userId;
+	}
+	/**
+	 * @return int|null
+	 */
+	public function ParticipantId()
+	{
+		return $this->participantId;
 	}
 
 	/**

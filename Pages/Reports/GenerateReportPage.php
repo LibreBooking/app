@@ -86,6 +86,11 @@ interface IGenerateReportPage extends IDisplayableReportPage, IActionPage
 	public function GetUserId();
 
 	/**
+	 * @return int
+	 */
+	public function GetParticipantId();
+
+	/**
 	 * @abstract
 	 * @return int
 	 */
@@ -237,6 +242,14 @@ class GenerateReportPage extends ActionPage implements IGenerateReportPage
 	public function GetUserId()
 	{
 		return $this->GetValue(FormKeys::USER_ID);
+	}
+
+	/**
+	 * @return int
+	 */
+	public function GetParticipantId()
+	{
+		return $this->GetValue(FormKeys::PARTICIPANT_ID);
 	}
 
 	/**

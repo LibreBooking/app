@@ -62,7 +62,7 @@ class GenerateReportPresenterTests extends TestBase
 		$selection = new Report_ResultSelection($this->page->_ResultSelection);
 		$groupBy = new Report_GroupBy($this->page->_GroupBy);
 		$range = new Report_Range($this->page->_Range, $expectedStart, $expectedEnd, $this->fakeUser->Timezone);
-		$filter = new Report_Filter($this->page->_ResourceId, $this->page->_ScheduleId, $this->page->_UserId, $this->page->_GroupId, $this->page->_AccessoryId);
+		$filter = new Report_Filter($this->page->_ResourceId, $this->page->_ScheduleId, $this->page->_UserId, $this->page->_GroupId, $this->page->_AccessoryId, $this->page->_ParticipantId);
 
 		$this->reportingService->expects($this->once())
 				->method('GenerateCustomReport')
@@ -88,7 +88,7 @@ class GenerateReportPresenterTests extends TestBase
 		$selection = new Report_ResultSelection($this->page->_ResultSelection);
 		$groupBy = new Report_GroupBy($this->page->_GroupBy);
 		$range = new Report_Range($this->page->_Range, $expectedStart, $expectedEnd, $this->fakeUser->Timezone);
-		$filter = new Report_Filter($this->page->_ResourceId, $this->page->_ScheduleId, $this->page->_UserId, $this->page->_GroupId, $this->page->_AccessoryId);
+		$filter = new Report_Filter($this->page->_ResourceId, $this->page->_ScheduleId, $this->page->_UserId, $this->page->_GroupId, $this->page->_AccessoryId, $this->page->_ParticipantId);
 
 		$this->reportingService->expects($this->once())
 				->method('Save')
@@ -110,6 +110,7 @@ class GenerateReportPresenterTests extends TestBase
 		$this->page->_UserId = 40;
 		$this->page->_GroupId = 50;
 		$this->page->_AccessoryId = 60;
+		$this->page->_ParticipantId = 70;
 	}
 }
 
@@ -148,6 +149,10 @@ class FakeGenerateReportPage extends GenerateReportPage
 	 * @var int
 	 */
 	public $_UserId;
+	/**
+	 * @var int
+	 */
+	public $_ParticipantId;
 	/**
 	 * @var int
 	 */
@@ -236,6 +241,11 @@ class FakeGenerateReportPage extends GenerateReportPage
 	public function GetUserId()
 	{
 		return $this->_UserId;
+	}
+
+	public function GetParticipantId()
+	{
+		return $this->_ParticipantId;
 	}
 
 	public function GetGroupId()
