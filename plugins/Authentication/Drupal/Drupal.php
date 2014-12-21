@@ -20,7 +20,7 @@
 
 require_once(ROOT_DIR . 'plugins/Authentication/Drupal/Drupal.config.php');
 require_once(ROOT_DIR . 'lib/Application/Authentication/namespace.php');
-require_once(ROOT_DIR . 'lib/Database/MySql/namespace.php');
+require_once(ROOT_DIR . 'lib/Database/MySQL/namespace.php');
 
 define('DRUPAL_HASH_COUNT', 15);
 define('DRUPAL_MIN_HASH_COUNT', 7);
