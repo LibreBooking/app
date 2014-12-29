@@ -19,26 +19,32 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 {extends file="Schedule/schedule.tpl"}
 
 {block name="header"}
-{include file='globalheader.tpl' cssFiles='css/view-schedule.css'}
+{include file='globalheader.tpl' cssFiles='css/schedule.css,css/view-schedule.css,css/jquery.qtip.min.css,scripts/css/jqtree.css'}
 {/block}
 
 {block name="actions"}{/block}
 
 {block name="scripts-common"}
 	{jsfile src="js/jquery.qtip.min.js"}
+	{jsfile src="js/moment.min.js"}
 	{jsfile src="schedule.js"}
 	{jsfile src="resourcePopup.js"}
+	{jsfile src="js/tree.jquery.js"}
+	{jsfile src="js/jquery.cookie.js"}
 
 <script type="text/javascript">
 
 $(document).ready(function() {
 	var scheduleOptions = {
 		reservationUrlTemplate: "view-reservation.php?{QueryStringKeys::REFERENCE_NUMBER}=[referenceNumber]",
-		summaryPopupUrl: "ajax/respopup.php"
+		summaryPopupUrl: "ajax/respopup.php",
+		cookieName: "{$CookieName}",
+		scheduleId:"{$ScheduleId}"
 	};
 	var schedule = new Schedule(scheduleOptions, {$ResourceGroupsAsJson});
 	schedule.initNavigation();
 	schedule.initReservations();
+	schedule.initResourceFilter();
 	schedule.initResources();
 });
 </script>

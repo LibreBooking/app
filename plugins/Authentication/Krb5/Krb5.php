@@ -21,7 +21,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 require_once(ROOT_DIR . 'lib/Application/Authentication/namespace.php');
 
-class Krb5 implements IAuthentication
+class Krb5 extends Authentication implements IAuthentication
 {
 	private $authToDecorate;
 	private $_registration;

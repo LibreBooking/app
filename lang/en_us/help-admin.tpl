@@ -56,10 +56,10 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 	must be assigned to a schedule in order for it to be bookable. The resource will inherit whatever layout the
 	schedule uses.</p>
 
-<p>Setting a minimum reservation duration will prevent booking from lasting longer than the set amount. The default is
+<p>Setting a minimum reservation duration will prevent booking from lasting shorter than the set amount. The default is
 	no minimum.</p>
 
-<p>Setting a maximum reservation duration will prevent booking from lasting shorter than the set amount. The default is
+<p>Setting a maximum reservation duration will prevent booking from lasting longer than the set amount. The default is
 	no maximum.</p>
 
 <p>Setting a resource to require approval will place all bookings for that resource into a pending state until approved.

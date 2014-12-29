@@ -23,7 +23,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 require_once(ROOT_DIR . 'lib/Application/Authentication/namespace.php');
 require_once(ROOT_DIR . 'plugins/Authentication/CAS/namespace.php');
 
-class CAS implements IAuthentication
+class CAS extends Authentication implements IAuthentication
 {
 	private $authToDecorate;
 	private $registration;

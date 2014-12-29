@@ -80,12 +80,16 @@ class Drupal extends Authentication implements IAuthentication
 
 		if (!$account)
 		{
+			Log::Debug('DRUPAL: Could not find Drupal account for user=%s', $username);
 			return false;
 		}
 		if (!$this->user_check_password($password, $account))
 		{
+			Log::Debug('DRUPAL: Drupal account found but password was incorrect for user=%s', $username);
 			return false;
 		}
+
+		Log::Debug('DRUPAL: User was found. user=%s, Drupal username=%s, Drupal email=%s, Booked admin email=%s', $username, $account->name, $account->mail, Configuration::Instance()->GetKey(ConfigKeys::ADMIN_EMAIL));
 		return true;
 	}
 
