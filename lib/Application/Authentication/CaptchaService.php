@@ -1,19 +1,19 @@
 <?php
+
 /**
-Copyright 2011-2014 Nick Korbel
-
-This file is part of Booked Scheduler is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
+ * Copyright 2011-2014 Nick Korbel
+ *
+ * This file is part of Booked Scheduler is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 interface ICaptchaService
 {
 	/**
@@ -85,7 +85,7 @@ class CaptchaService implements ICaptchaService
 		if (Configuration::Instance()->GetKey(ConfigKeys::REGISTRATION_ENABLE_CAPTCHA, new BooleanConverter()))
 		{
 			if (Configuration::Instance()->GetSectionKey(ConfigSection::RECAPTCHA, ConfigKeys::RECAPTCHA_ENABLED,
-												  new BooleanConverter())
+														 new BooleanConverter())
 			)
 			{
 				Log::Debug('Using ReCaptchaService');
@@ -122,7 +122,7 @@ class ReCaptchaService implements ICaptchaService
 		$privatekey = Configuration::Instance()->GetSectionKey(ConfigSection::RECAPTCHA, ConfigKeys::RECAPTCHA_PRIVATE_KEY);
 
 		$resp = recaptcha_check_answer($privatekey,
-									 $server->GetRemoteAddress(),
+									   $server->GetRemoteAddress(),
 									   $server->GetForm('recaptcha_challenge_field'),
 									   $server->GetForm('recaptcha_response_field'));
 

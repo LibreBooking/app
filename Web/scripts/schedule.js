@@ -152,6 +152,54 @@ function Schedule(opts, resourceGroups)
 		});
 	};
 
+	this.toggleResourceFilter = function(){
+
+		var shown = false;
+		function hide()
+		{
+			shown = false;
+			$('#reservations-left').addClass('hidden');
+			$('#reservations').removeClass('col-md-10').addClass('col-md-12');
+			$('#restore-sidebar').removeClass('hidden');
+
+			localStorage.setItem('hide-sidebar-status', true);
+		}
+
+		function show()
+		{
+			shown = true;
+			$('#reservations-left').removeClass('hidden');
+			$('#reservations').addClass('col-md-10').removeClass('col-md-12');
+			$('#restore-sidebar').addClass('hidden');
+
+			localStorage.removeItem('hide-sidebar-status');
+		}
+
+		function toggle()
+		{
+			if (shown)
+			{
+				hide();
+			}
+			else
+			{
+				show();
+			}
+		}
+
+		$('.toggle-sidebar').on('click', function ()
+		{
+			toggle();
+		});
+
+		var hideSidebar = localStorage.getItem('hide-sidebar-status');
+		show();
+		if (hideSidebar)
+		{
+			hide();
+		}
+	};
+
 	this.initReservations = function ()
 	{
 		var reservations = $('#reservations');
@@ -343,6 +391,9 @@ function Schedule(opts, resourceGroups)
 						}
 					}
 				});
+
+
+		this.toggleResourceFilter();
 	};
 }
 

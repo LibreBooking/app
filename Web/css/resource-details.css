@@ -119,6 +119,7 @@ a:visited {
 }
 #page-login .register {
   text-align: right;
+  font-size: .8em;
 }
 .login-links {
   text-align: center;
@@ -259,6 +260,10 @@ label.booked-checkbox span {
 }
 .bv-hidden-submit {
   display: none !important;
+}
+.span0 {
+  width: 0;
+  margin-left: 0;
 }
 #resourceDetailsPopup {
   min-width: 300px;
