@@ -28,7 +28,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 	<div class="dates">
 		{foreach from=$Instances item=instance name=date_list}
-			<span class="date">{format_date date=$instance->StartDate()}{if !$smarty.foreach.date_list.last}, {/if}</span>
+			<span class="date">{format_date date=$instance->StartDate() timezone=$Timezone}{if !$smarty.foreach.date_list.last}, {/if}</span>
 		{/foreach}
 	</div>
 

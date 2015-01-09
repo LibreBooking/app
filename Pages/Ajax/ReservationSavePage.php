@@ -166,6 +166,7 @@ class ReservationSavePage extends SecurePage implements IReservationSavePage
 			{
 				$this->Set('Resources', $reservation->AllResources());
 				$this->Set('Instances', $reservation->Instances());
+				$this->Set('Timezone', ServiceLocator::GetServer()->GetUserSession()->Timezone);
 				$this->Display('Ajax/reservation/save_successful.tpl');
 			}
 			else
