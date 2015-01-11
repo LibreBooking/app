@@ -30,5 +30,11 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 						{if $attribute->Value() == $value}selected="selected"{/if}>{$value|escape}</option>
 			{/foreach}
 		</select>
+		<script type="text/javascript">
+			$(function() {
+				var name = '#{$attributeId}';
+				$(name).select2();
+			});
+		</script>
 	{/if}
 </div>

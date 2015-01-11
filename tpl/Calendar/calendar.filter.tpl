@@ -16,23 +16,34 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 *}
-<div id="filter">
-	{if $GroupName}
+<div class="row form-inline">
+	<div id="filter">
+		{if $GroupName}
 		<span class="groupName">{$GroupName}</span>
-	{else}
-<label for="calendarFilter">{translate key="ChangeCalendar"}</label>
-<select id="calendarFilter" class="textbox">
-{foreach from=$filters->GetFilters() item=filter}
-	<option value="{$filter->Id()}" class="schedule" {if $filter->Selected()}selected="selected"{/if}>{$filter->Name()}</option>
-	{foreach from=$filter->GetFilters() item=subfilter}
-		<option value="{$subfilter->Id()}" class="resource" {if $subfilter->Selected()}selected="selected"{/if}>{$subfilter->Name()}</option>
-	{/foreach}
-{/foreach}
-	{/if}
-</select>
-	<a href="#" id="showResourceGroups">{translate key=ResourceGroups}</a>
+		{else}
+		<div >
+			<label for="calendarFilter">{translate key="ChangeCalendar"}</label>
+			<select id="calendarFilter">
+				{foreach from=$filters->GetFilters() item=filter}
+					<option value="s{$filter->Id()}" class="schedule" {if $filter->Selected()}selected="selected"{/if}>{$filter->Name()}</option>
+					{foreach from=$filter->GetFilters() item=subfilter}
+						<option value="r{$subfilter->Id()}" class="resource" {if $subfilter->Selected()}selected="selected"{/if}>{$subfilter->Name()}</option>
+					{/foreach}
+				{/foreach}
+				{/if}
+			</select>
+			<a href="#" id="showResourceGroups">{translate key=ResourceGroups}</a>
+		</div>
+	</div>
+
+	<div id="resourceGroupsContainer">
+		<div id="resourceGroups"></div>
+	</div>
 </div>
 
-<div id="resourceGroupsContainer">
-	<div id="resourceGroups"></div>
-</div>
+<script type="text/javascript">
+	$(function(){
+		$('#calendarFilter').select2( { dropdownAutoWidth : true } );
+	});
+
+</script>

@@ -165,7 +165,7 @@ class ScheduleRepository implements IScheduleRepository
 
 	public function LoadById($scheduleId)
 	{
-		if (!$this->_cache->Exists($scheduleId))
+		if (!DomainCache::Exists($scheduleId, 'schedule'))
 		{
 			$schedule = null;
 
@@ -178,10 +178,11 @@ class ScheduleRepository implements IScheduleRepository
 
 			$reader->Free();
 
+			DomainCache::Add($scheduleId, $schedule, 'schedule');
 			return $schedule;
 		}
 
-		return $this->_cache->Get($scheduleId);
+		return DomainCache::Get($scheduleId, 'schedule');
 	}
 
 	public function LoadByPublicId($publicId)

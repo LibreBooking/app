@@ -197,6 +197,7 @@ class PersonalCalendarPage extends ActionPage implements IPersonalCalendarPage
 	{
 		$this->Set('filters', $filters);
 		$this->Set('IsAccessible', !$filters->IsEmpty());
+		$this->Set('ResourceGroupsAsJson', json_encode($filters->GetResourceGroupTree()->GetGroups(false)));;
 	}
 
 	public function GetScheduleId()

@@ -230,4 +230,12 @@ class ReservationSlot implements IReservationSlot
 
 		return null;
 	}
+
+	/**
+	 * @return ReservationItemView
+	 */
+	public function Reservation()
+	{
+		return $this->_reservation;
+	}
 }

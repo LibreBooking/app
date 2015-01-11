@@ -47,7 +47,7 @@ function Calendar(opts, reservations)
 			value.attachReservationPopup(refNum);
 		});
 
-		$('#calendarFilter').change(function() {
+		$('#calendarFilter').on('change', function() {
 			var day = getQueryStringValue('d');
 			var month = getQueryStringValue('m');
 			var year = getQueryStringValue('y');
@@ -57,12 +57,12 @@ function Calendar(opts, reservations)
 
 			if ($(this).find(':selected').hasClass('schedule'))
 			{
-				scheduleId = '&sid=' + $(this).val();
+				scheduleId = '&sid=' + $(this).val().replace('s', '');
 			}
 			else
 			{
-				scheduleId = '&sid=' + $(this).find(':selected').prevAll('.schedule').val();
-				resourceId = '&rid=' + $(this).val();
+				scheduleId = '&sid=' + $(this).find(':selected').prevAll('.schedule').val().replace('s', '');;
+				resourceId = '&rid=' + $(this).val().replace('r', '');;
 			}
 
 			var url = 'calendar.php?ct=' + type + '&d=' + day + '&m=' + month + '&y=' + year + scheduleId + resourceId;

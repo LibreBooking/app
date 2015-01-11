@@ -52,6 +52,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		<script type="text/javascript"
 				src="//cdnjs.cloudflare.com/ajax/libs/jquery.bootstrapvalidator/0.5.3/js/bootstrapValidator.min.js"></script>
 	{/if}
+	{jsfile src="js/select2.min.js"}
 	{jsfile src="phpscheduleit.js"}
 	<!-- End JavaScript -->
 
@@ -75,6 +76,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			  href="//cdnjs.cloudflare.com/ajax/libs/jquery.bootstrapvalidator/0.5.3/css/bootstrapValidator.min.css"
 			  type="text/css"/>
 	{/if}
+	{cssfile src="scripts/css/select2/select2.min.css"}
+	{cssfile src="scripts/css/select2/select2-bootstrap.min.css"}
 	{cssfile src="nav.css"}
 	{cssfile src="booked.css"}
 	{if $cssFiles neq ''}
