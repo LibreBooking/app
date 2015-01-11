@@ -100,9 +100,11 @@ ul.jqtree-tree .jqtree-toggler {
 }
 #dayDialog {
   display: none;
-  background-color: #f6f6f6;
-  border: solid 1px #e9e9e9;
+  border-color: #bcbcbc;
   position: absolute;
   z-index: 2;
   padding: 12px;
+}
+#dayDialog a {
+  padding: 0 5px;
 }

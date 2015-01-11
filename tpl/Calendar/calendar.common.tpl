@@ -29,7 +29,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 	<div id="calendar"></div>
 
-	<div id="dayDialog">
+	<div id="dayDialog" class="default-box-shadow">
 		<a href="#" id="dayDialogCreate">{html_image src="tick.png"}{translate key=CreateReservation}</a>
 		<a href="#" id="dayDialogView">{html_image src="search.png"}{translate key=ViewDay}</a>
 		<a href="#" id="dayDialogCancel">{html_image src="slash.png"}{translate key=Cancel}</a>
