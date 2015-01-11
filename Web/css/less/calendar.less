@@ -1,3 +1,6 @@
+@import "elements.less";
+@import "colors.less";
+
 .monthCalendar {
 	width: 100%;
 	border-collapse: collapse;
@@ -106,4 +109,13 @@ ul.jqtree-tree .jqtree-toggler {
 .groupName {
 	font-size:1.5em;
 	font-weight: bold;
+}
+
+#dayDialog {
+  display:none;
+  background-color: @lightest-gray;
+  border: solid 1px @light-gray;
+  position:absolute;
+  z-index: 2;
+  padding:12px;
 }

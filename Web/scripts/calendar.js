@@ -85,7 +85,7 @@ function Calendar(opts, reservations)
 		});
 
 		$('#dayDialogCancel').click(function(e){
-			dayDialog.dialog('close');
+			dayDialog.hide();
 		});
 
 		$('#dayDialogView').click(function(e){
@@ -119,6 +119,12 @@ function Calendar(opts, reservations)
 
 	Calendar.prototype.bindResourceGroups = function(resourceGroups, selectedNode)
 	{
+		if (resourceGroups.length == 0)
+		{
+			$('#showResourceGroups').hide();
+			return;
+		}
+
 		// this is copied out of schedule.js, so this needs to be fixed
 
 		function ChangeGroup(groupId)
@@ -230,12 +236,15 @@ function Calendar(opts, reservations)
 		}
 		else
 		{
-			dayDialog.dialog({modal: false, height: 70, width: 'auto'});
-			dayDialog.dialog("widget").position({
-						       my: 'left top',
-						       at: 'left bottom',
+			//dayDialog.dialog({modal: false, height: 70, width: 'auto'});
+			dayDialog.show();
+			dayDialog.position({
+						       my: 'left bottom',
+						       at: 'left top',
 						       of: jsEvent
 						    });
+
+
 		}
 	};
 
