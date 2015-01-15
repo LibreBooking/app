@@ -16,7 +16,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 *}
-{include file='globalheader.tpl' cssFiles=''}
+{include file='globalheader.tpl'}
 
 <div class="page-register">
 
@@ -40,7 +40,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 </div>
 
 <div id="registration-box" class="default-box col-xs-12 col-sm-8 col-sm-offset-2">
-	<form class="register" method="post" ajaxAction="{RegisterActions::Register}" id="frmRegister"
+	<h1>{translate key=RegisterANewAccount}</h1>
+	<form method="post" ajaxAction="{RegisterActions::Register}" id="form-register"
 		  action="{$smarty.server.SCRIPT_NAME}" role="form"
 		  data-bv-feedbackicons-valid="glyphicon glyphicon-ok"
 		  data-bv-feedbackicons-invalid="glyphicon glyphicon-remove"
@@ -64,7 +65,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			<div class="col-xs-12 col-sm-6">
 				<div class="form-group">
 					<label class="reg" for="email">{translate key="Email"}</label>
-					{textbox name="EMAIL" class="input" value="Email" required="required"
+					{textbox type="email" name="EMAIL" class="input" value="Email" required="required"
 					data-bv-notempty="true"
 					data-bv-notempty-message="{translate key=ValidEmailRequired}"
 					data-bv-emailaddress="true"
@@ -191,7 +192,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			<input type="hidden" {formname key=CAPTCHA} value=""/>
 		{/if}
 
-		<div class="regsubmit">
+		<div>
 			<button type="submit" name="{Actions::REGISTER}" value="{translate key='Register'}"
 					class="btn btn-primary col-xs-12" id="btnUpdate">{translate key='Register'}</button>
 		</div>

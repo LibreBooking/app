@@ -427,6 +427,10 @@ class SmartyPage extends Smarty
 		{
 			$type = strtolower($params['type']);
 		}
+		else
+		{
+			$type = 'text';
+		}
 
 		$id = null;
 		if (isset($params['id']))
@@ -444,11 +448,11 @@ class SmartyPage extends Smarty
 
 		if ($type == 'password')
 		{
-			$textbox = new SmartyPasswordbox($params['name'], $id, $value, $attributes, $smarty);
+			$textbox = new SmartyPasswordbox($params['name'], 'password', $id, $value, $attributes, $smarty);
 		}
 		else
 		{
-			$textbox = new SmartyTextbox($params['name'], $id, $value, $attributes, $smarty);
+			$textbox = new SmartyTextbox($params['name'], $type, $id, $value, $attributes, $smarty);
 		}
 
 		return $textbox->Html();

@@ -512,6 +512,7 @@ class en_us extends Language
 		$strings['LimitTo'] = 'Limit To';
 		$strings['SignIn'] = 'Sign In';
 		$strings['AllParticipants'] = 'All Participants';
+		$strings['RegisterANewAccount'] = 'Register A New Account';
 		// End Strings
 
 		// Install
