@@ -201,16 +201,14 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 {jsfile src="js/jstz.min.js"}
 {jsfile src="admin/edit.js"}
-{jsfile src="js/jquery.form-3.09.min.js"}
-{jsfile src="js/jquery.colorbox-min.js"}
-{jsfile src="profile.js"}
+{*{jsfile src="profile.js"}*}
 {jsfile src="registration.js"}
 
 <script type="text/javascript">
 
 	function enableButton()
 	{
-		$('#frmRegister').find('button').removeAttr('disabled');
+		$('#form-register').find('button').removeAttr('disabled');
 	}
 
 	$(document).ready(function ()
@@ -221,7 +219,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		var registrationPage = new Registration();
 		registrationPage.init();
 
-		var $frmRegister = $('#frmRegister');
+		var $frmRegister = $('#form-register');
 
 		$frmRegister
 				.on('init.field.bv', function (e, data)

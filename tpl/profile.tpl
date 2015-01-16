@@ -20,7 +20,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 <div class="page-profile">
 
-	<div class="hidden alert alert-success" id="profileUpdatedMessage">{translate key=YourProfileWasUpdated}</div>
+	<div class="hidden col-xs-12 col-sm-8 col-sm-offset-2 alert alert-success" role="alert" id="profileUpdatedMessage"><strong><span class="glyphicon glyphicon-ok-sign"></span> {translate key=YourProfileWasUpdated}</strong></div>
 
 	<div class="validationSummary alert alert-danger hidden" id="validationErrors">
 		<ul>
@@ -53,7 +53,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 					<div class="form-group">
 						<label class="reg" for="login">{translate key="Username"}</label>
 						{if $AllowUsernameChange}
-							{textbox name="LOGIN" value="Login" required="required"
+							{textbox name="USERNAME" value="Username" required="required"
 							data-bv-notempty="true"
 							data-bv-notempty-message="{translate key=UserNameRequired}"}
 						{else}
@@ -199,14 +199,13 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 	{setfocus key='FIRST_NAME'}
 
 	{jsfile src="admin/edit.js"}
-	{jsfile src="js/jquery.form-3.09.min.js"}
 	{jsfile src="profile.js"}
 
 	<script type="text/javascript">
 
 		function enableButton()
 		{
-			$('#frmRegister').find('button').removeAttr('disabled');
+			$('#form-profile').find('button').removeAttr('disabled');
 		}
 
 		$(document).ready(function ()
@@ -231,15 +230,11 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 			profileForm.bootstrapValidator();
 		});
-
-
 	</script>
-	
-	<div id="colorbox">
-		<div id="modalDiv" class="wait-box">
-			<h3>{translate key=Working}</h3>
-			{html_image src="reservation_submitting.gif"}
-		</div>
+
+	<div id="wait-box" class="wait-box">
+		<h3>{translate key=Working}</h3>
+		{html_image src="reservation_submitting.gif"}
 	</div>
 
 </div>

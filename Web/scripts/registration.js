@@ -1,7 +1,7 @@
 function Registration()
 {
 	var elements = {
-		form:$('#frmRegister')
+		form:$('#form-register')
 	};
 
 	Registration.prototype.init = function ()
@@ -9,7 +9,7 @@ function Registration()
 		$("#btnUpdate").click(function (e)
 		{
 			e.preventDefault();
-			$('#frmRegister').submit();
+			elements.form.submit();
 		});
 
 		elements.form.bind('onValidationFailed', onValidationFailed);
@@ -52,7 +52,6 @@ function Registration()
 		}
 
 		$('#profileUpdatedMessage').hide();
-		//$('#registrationError').hide();
 
 		$.blockUI({ message: $('#modalDiv') });
 

@@ -1,18 +1,18 @@
 function Profile() {
 	var elements = {
-		form: $('#frmRegister')
+		form: $('#form-profile')
 	};
 
 	Profile.prototype.init = function () {
 
 		$("#btnUpdate").click(function (e) {
 			e.preventDefault();
-			$('#frmRegister').submit();
+			elements.form.submit();
 		});
 
 		elements.form.bind('onValidationFailed', onValidationFailed);
 
-		ConfigureAdminForm(elements.form, defaultSubmitCallback, successHandler, null, {onBeforeSubmit: onBeforeAddSubmit});
+		ConfigureAdminForm(elements.form, defaultSubmitCallback, successHandler, null, {onBeforeSubmit: onBeforeSubmit});
 	};
 
 	var defaultSubmitCallback = function (form) {
@@ -21,31 +21,38 @@ function Profile() {
 
 	function onValidationFailed(event, data)
 	{
+		elements.form.find('button').removeAttr('disabled');
 		hideModal();
+		$('#validationErrors').removeClass('hidden');
 	}
 
 	function successHandler(response)
 	{
 		hideModal();
-		$('#profileUpdatedMessage').show();
+		$('#profileUpdatedMessage').removeClass('hidden');
 	}
 
-	function onBeforeAddSubmit(formData, jqForm, opts)
+	function onBeforeSubmit(formData, jqForm, opts)
 	{
-		$('#profileUpdatedMessage').hide();
+		var bv = jqForm.data('bootstrapValidator');
 
-		$.colorbox({inline:true, href:"#modalDiv", transition:"none", width:"75%", height:"75%", overlayClose: false});
-		$('#modalDiv').show();
+		if (!bv.isValid() && bv.$invalidFields.length > 0)
+		{
+			return false;
+		}
+
+		$('#profileUpdatedMessage').addClass('hidden');
+
+		$.blockUI({ message: $('#wait-box') });
 
 		return true;
 	}
 
 	function hideModal()
 	{
-		$('#modalDiv').hide();
-		$.colorbox.close();
+		$.unblockUI();
 
-		var top = $("#registrationbox").scrollTop();
+		var top = $("#profile-box").scrollTop();
 		$('html, body').animate({scrollTop:top}, 'slow');
 	}
 

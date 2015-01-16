@@ -9,6 +9,7 @@ html, body {
 
 body {
   padding-bottom: @footer-height; // + 30; /* this needs to be bigger than footer height*/
+  padding-top: 70px;
 }
 
 a, a:visited  {
@@ -33,7 +34,7 @@ a, a:visited  {
 }
 
 #main {
-  padding-top: 60px;
+//  padding-top: 60px;
   min-height: 100%;
   padding-bottom: @footer-height; // + 30;
 }
@@ -50,6 +51,10 @@ a, a:visited  {
     padding-bottom:5px;
     font-weight: bold;
     border-bottom:solid 1px @mid-gray;
+  }
+
+  @media(max-width:768px)  {
+    h1 {font-size:1.5em;}
   }
 }
 
@@ -103,8 +108,6 @@ div.center {
   margin-right: auto;
   text-align: center;
 }
-
-
 
 .no-padding {
   padding: 0;
@@ -249,6 +252,8 @@ div.center {
   text-align: center;
   top: 15%;
   position: relative;
+  padding:20px;
+  border:1px solid @dark-gray;
 }
 
 .align-right {
@@ -263,4 +268,8 @@ label.booked-checkbox span {width:10px; }
 .span0 {
     width: 0;
     margin-left: 0;
+}
+
+.navbar-fixed-top {
+  z-index:999;
 }

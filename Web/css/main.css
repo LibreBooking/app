@@ -10,6 +10,7 @@ body {
 }
 body {
   padding-bottom: 45px;
+  padding-top: 70px;
 }
 a,
 a:visited {
@@ -38,7 +39,6 @@ a:visited {
   color: #fff;
 }
 #main {
-  padding-top: 60px;
   min-height: 100%;
   padding-bottom: 45px;
 }
@@ -56,6 +56,11 @@ a:visited {
   padding-bottom: 5px;
   font-weight: bold;
   border-bottom: solid 1px #bcbcbc;
+}
+@media (max-width: 768px) {
+  .default-box h1 {
+    font-size: 1.5em;
+  }
 }
 .straight-top {
   -webkit-border-top-right-radius: 0;
@@ -96,6 +101,11 @@ a:visited {
   padding-bottom: 5px;
   font-weight: bold;
   border-bottom: solid 1px #bcbcbc;
+}
+@media (max-width: 768px) {
+  .default-box-shadow h1 {
+    font-size: 1.5em;
+  }
 }
 .default-box-header {
   background-color: #eeeeee;
@@ -262,6 +272,8 @@ div.center {
   text-align: center;
   top: 15%;
   position: relative;
+  padding: 20px;
+  border: 1px solid #585754;
 }
 .align-right {
   text-align: right;
@@ -278,4 +290,7 @@ label.booked-checkbox span {
 .span0 {
   width: 0;
   margin-left: 0;
+}
+.navbar-fixed-top {
+  z-index: 999;
 }
