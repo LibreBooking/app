@@ -40,7 +40,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		<div id="password-reset-box" class="default-box col-xs-12 col-sm-8 col-sm-offset-2">
 			<h1>{translate key="ChangePassword"}</h1>
 
-			<form class="register" method="post" action="{$smarty.server.SCRIPT_NAME}">
+			<form id="password-reset-form" method="post" action="{$smarty.server.SCRIPT_NAME}">
 
 				<div class="form-group">
 					<label for="{FormKeys::CURRENT_PASSWORD}">{translate key="CurrentPassword"}</label>

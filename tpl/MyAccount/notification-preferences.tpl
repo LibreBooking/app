@@ -16,92 +16,107 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 *}
-{include file='globalheader.tpl'}
+{include file='globalheader.tpl' cssFiles="my-account.css"}
 
-{if $PreferencesUpdated}
-<div class="success">{translate key=YourSettingsWereUpdated}</div>
-{/if}
+<div class="page-notification-preferences">
 
-{if !$EmailEnabled}
-<div class="error">{translate key=EmailDisabled}</div>
+	{if $PreferencesUpdated}
+		<div class="success alert alert-success col-xs-12 col-sm-8 col-sm-offset-2">
+			<span class="glyphicon glyphicon-ok-sign"></span> {translate key=YourSettingsWereUpdated}
+		</div>
+	{/if}
+
+	{if !$EmailEnabled}
+		<div class="error">{translate key=EmailDisabled}</div>
 	{else}
-<div id="notificationPreferences" class="box-form">
-	<form class="box-form" method="post" action="{$smarty.server.SCRIPT_NAME}">
-		<div class="header">
-			<h3 class="header">{translate key=NotificationPreferences}</h3>
+		<div id="notification-preferences-box" class="default-box col-xs-12 col-sm-8 col-sm-offset-2">
+			<h1 class="header">{translate key=NotificationPreferences}</h1>
+
+			<form id="notification-preferences-form" method="post" action="{$smarty.server.SCRIPT_NAME}">
+				<div>
+					<div class="notification-row">
+						<div class="notification-type">
+							{translate key=ReservationCreatedPreference}
+						</div>
+
+						<div class="btn-group form-group" data-toggle="buttons">
+							<label class="btn btn-default btn-xs {if $Created}active{/if}">
+								<input id="createdYes" type="radio" name="{ReservationEvent::Created}" value="1"
+									   {if $Created}checked="checked"{/if}/> {translate key=PreferenceSendEmail}
+							</label>
+							<label class="btn btn-default btn-xs {if !$Created}active{/if}">
+								<input id="createdNo" type="radio" name="{ReservationEvent::Created}" value="0"
+									   {if !$Created}checked="checked"{/if}/>{translate key=PreferenceNoEmail}</label>
+						</div>
+					</div>
+
+					<div class="notification-row">
+						<div class="notification-type">
+							{translate key=ReservationUpdatedPreference}
+						</div>
+
+						<div class="btn-group form-group" data-toggle="buttons">
+							<label class="btn btn-default btn-xs {if $Updated}active{/if}">
+								<input id="updatedYes" type="radio" name="{ReservationEvent::Updated}" value="1"
+									   {if $Updated}checked="checked"{/if}/> {translate key=PreferenceSendEmail}
+							</label>
+							<label class="btn btn-default btn-xs {if !$Updated}active{/if}">
+								<input id="updatedNo" type="radio" name="{ReservationEvent::Updated}" value="0"
+									   {if !$Updated}checked="checked"{/if}/>{translate key=PreferenceNoEmail}</label>
+						</div>
+					</div>
+
+					<div class="notification-row">
+						<div class="notification-type">
+							{translate key=ReservationDeletedPreference}
+						</div>
+
+						<div class="btn-group form-group" data-toggle="buttons">
+							<label class="btn btn-default btn-xs {if $Deleted}active{/if}">
+								<input id="deletedYes" type="radio" name="{ReservationEvent::Deleted}" value="1"
+									   {if $Deleted}checked="checked"{/if}/> {translate key=PreferenceSendEmail}
+							</label>
+							<label class="btn btn-default btn-xs {if !$Deleted}active{/if}">
+								<input id="deletedNo" type="radio" name="{ReservationEvent::Deleted}" value="0"
+									   {if !$Deleted}checked="checked"{/if}/>{translate key=PreferenceNoEmail}</label>
+						</div>
+					</div>
+
+					<div class="notification-row alt">
+						<div class="notification-type">
+							{translate key=ReservationApprovalPreference}
+						</div>
+
+						<div class="btn-group form-group" data-toggle="buttons">
+							<label class="btn btn-default btn-xs {if $Approved}active{/if}">
+								<input id="approvedYes" type="radio" name="{ReservationEvent::Approved}" value="1"
+									   {if $Approved}checked="checked"{/if}/> {translate key=PreferenceSendEmail}
+							</label>
+							<label class="btn btn-default btn-xs {if !$Approved}active{/if}">
+								<input id="approvedNo" type="radio" name="{ReservationEvent::Approved}" value="0"
+									   {if !$Approved}checked="checked"{/if}/>{translate key=PreferenceNoEmail}</label>
+						</div>
+
+						{*<div class="notification-status">*}
+						{*<input id="approvedYes" type="radio" name="{ReservationEvent::Approved}" value="1"*}
+						{*{if $Approved}checked="checked"{/if}/><label*}
+						{*for="approvedYes">{translate key=PreferenceSendEmail}</label>*}
+						{*<br/>*}
+						{*<input id="approvedNo" type="radio" name="{ReservationEvent::Approved}" value="0"*}
+						{*{if !$Approved}checked="checked"{/if}/><label*}
+						{*for="approvedNo">{translate key=PreferenceNoEmail}</label>*}
+						{*</div>*}
+					</div>
+				</div>
+
+				<div class="form-group">
+					<button type="submit" class="btn btn-primary update prompt" name="{Actions::SAVE}">
+						{translate key='Update'}
+					</button>
+				</div>
+			</form>
 		</div>
+	{/if}
 
-		<div style="display: table;">
-			<div class="notification-row">
-				<div class="notification-type">
-					{translate key=ReservationCreatedPreference}
-				</div>
-				<div class="notification-status">
-					<input id="createdYes" type="radio" name="{ReservationEvent::Created}" value="1"
-						   {if $Created}checked="checked"{/if}/><label
-						for="createdYes">{translate key=PreferenceSendEmail}</label>
-					<br/>
-					<input id="createdNo" type="radio" name="{ReservationEvent::Created}" value="0"
-						   {if !$Created}checked="checked"{/if}/><label
-						for="createdNo">{translate key=PreferenceNoEmail}</label>
-				</div>
-			</div>
-
-			<div class="notification-row alt">
-				<div class="notification-type">
-					{translate key=ReservationUpdatedPreference}
-				</div>
-				<div class="notification-status">
-					<input id="updatedYes" type="radio" name="{ReservationEvent::Updated}" value="1"
-						   {if $Updated}checked="checked"{/if}/><label
-						for="updatedYes">{translate key=PreferenceSendEmail}</label>
-					<br/>
-					<input id="updatedNo" type="radio" name="{ReservationEvent::Updated}" value="0"
-						   {if !$Updated}checked="checked"{/if}/><label
-						for="updatedNo">{translate key=PreferenceNoEmail}</label>
-				</div>
-			</div>
-
-			<div class="notification-row">
-				<div class="notification-type">
-					{translate key=ReservationDeletedPreference}
-				</div>
-				<div class="notification-status">
-					<input id="deletedYes" type="radio" name="{ReservationEvent::Deleted}" value="1"
-						   {if $Deleted}checked="checked"{/if}/><label
-						for="deletedYes">{translate key=PreferenceSendEmail}</label>
-					<br/>
-					<input id="deletedNo" type="radio" name="{ReservationEvent::Deleted}" value="0"
-						   {if !$Deleted}checked="checked"{/if}/><label
-						for="deletedNo">{translate key=PreferenceNoEmail}</label>
-				</div>
-			</div>
-
-			<div class="notification-row alt">
-				<div class="notification-type">
-					{translate key=ReservationApprovalPreference}
-				</div>
-				<div class="notification-status">
-					<input id="approvedYes" type="radio" name="{ReservationEvent::Approved}" value="1"
-						   {if $Approved}checked="checked"{/if}/><label
-						for="approvedYes">{translate key=PreferenceSendEmail}</label>
-					<br/>
-					<input id="approvedNo" type="radio" name="{ReservationEvent::Approved}" value="0"
-						   {if !$Approved}checked="checked"{/if}/><label
-						for="approvedNo">{translate key=PreferenceNoEmail}</label>
-				</div>
-			</div>
-		</div>
-
-		<div style="clear:both;margin-top: 15px;">
-			<button type="submit" class="button update prompt" name="{Actions::SAVE}">
-				<img src="img/tick-circle.png" alt=""/>
-				{translate key='Update'}
-			</button>
-		</div>
-	</form>
 </div>
-{/if}
-
-
 {include file='globalfooter.tpl'}

@@ -100,7 +100,7 @@ class NotificationPreferencesPage extends SecurePage implements INotificationPre
 	public function PageLoad()
 	{
 		$this->presenter->PageLoad();
-		$this->Display('notification-preferences.tpl');
+		$this->Display('MyAccount/notification-preferences.tpl');
 	}
 
     /**

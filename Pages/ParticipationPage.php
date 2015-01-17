@@ -92,7 +92,7 @@ class ParticipationPage extends SecurePage implements IParticipationPage
 
 	public function DisplayParticipation()
 	{
-		$this->Display('participation.tpl');
+		$this->Display('MyAccount/participation.tpl');
 	}
 
 	public function DisplayResult($results)
