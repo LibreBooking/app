@@ -300,6 +300,9 @@ label.booked-checkbox span {
 .no-show {
   visibility: hidden;
 }
+h1 .label {
+  padding-bottom: .2em;
+}
 #resourceDetailsPopup {
   min-width: 300px;
   max-width: 1000px;

@@ -300,6 +300,9 @@ label.booked-checkbox span {
 .no-show {
   visibility: hidden;
 }
+h1 .label {
+  padding-bottom: .2em;
+}
 #page-dashboard .panel-heading {
   background-color: #99b2b7;
   color: #fff;

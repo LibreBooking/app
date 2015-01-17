@@ -16,53 +16,63 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 *}
-{include file='globalheader.tpl' cssFiles='css/participation.css,css/jquery.qtip.min.css'}
-<h1>{translate key=OpenInvitations} ({$Reservations|count})</h1>
+{include file='globalheader.tpl' cssFiles='css/participation.css'}
 
-{if !empty($result)}
-	<div>{$result}</div>
-{/if}
+<div class="page-participation">
+	{if !empty($result)}
+		<div>{$result}</div>
+	{/if}
 
-<div id="jsonResult" class="error hidden"></div>
+	<div id="jsonResult" class="error no-show"></div>
 
-<ul class="no-style participation">
-{foreach from=$Reservations item=reservation name=invitations}
-	{assign var=referenceNumber value=$reservation->ReferenceNumber}
-	<li class="actions row{$smarty.foreach.invitations.index%2}">
-		<h3>{$reservation->Title}</h3>
-		<h3><a href="{Pages::RESERVATION}?{QueryStringKeys::REFERENCE_NUMBER}={$referenceNumber}" class="reservation" referenceNumber="{$referenceNumber}">
-		{formatdate date=$reservation->StartDate->ToTimezone($Timezone) key=dashboard} - {formatdate date=$reservation->EndDate->ToTimezone($Timezone) key=dashboard}</a></h3>
-		<input type="hidden" value="{$referenceNumber}" class="referenceNumber" />
-		<button value="{InvitationAction::Accept}" class="button participationAction">{html_image src="ticket-plus.png"} {translate key="Accept"}</button>
-		<button value="{InvitationAction::Decline}" class="button participationAction">{html_image src="ticket-minus.png"} {translate key="Decline"}</button>
-	</li>
-{foreachelse}
-	<li class="no-data"><h2>{translate key='None'}</h2></li>
-{/foreach}
-</ul>
+	<div id="participation-box" class="default-box col-xs-12 col-sm-8 col-sm-offset-2">
 
-<div class="dialog" style="display:none;">
+		<h1>{translate key=OpenInvitations} <span class="label label-default">{$Reservations|count}</span></h1>
+
+		<ul class="list-unstyled participation">
+			{foreach from=$Reservations item=reservation name=invitations}
+				{assign var=referenceNumber value=$reservation->ReferenceNumber}
+				<li class="actions row{$smarty.foreach.invitations.index%2}">
+					<h3>{$reservation->Title}</h3>
+
+					<h3><a href="{Pages::RESERVATION}?{QueryStringKeys::REFERENCE_NUMBER}={$referenceNumber}" class="reservation"
+						   referenceNumber="{$referenceNumber}">
+							{formatdate date=$reservation->StartDate->ToTimezone($Timezone) key=dashboard}
+							- {formatdate date=$reservation->EndDate->ToTimezone($Timezone) key=dashboard}</a></h3>
+					<input type="hidden" value="{$referenceNumber}" class="referenceNumber"/>
+					<button value="{InvitationAction::Accept}"
+							class="button participationAction">{html_image src="ticket-plus.png"} {translate key="Accept"}</button>
+					<button value="{InvitationAction::Decline}"
+							class="button participationAction">{html_image src="ticket-minus.png"} {translate key="Decline"}</button>
+				</li>
+				{foreachelse}
+				<li class="no-data"><p class="text-muted">{translate key='None'}</p></li>
+			{/foreach}
+		</ul>
+
+	</div>
+	<div class="dialog" style="display:none;">
+
+	</div>
+
+	{html_image src="admin-ajax-indicator.gif" id="indicator" style="display:none;"}
+
+	{jsfile src="reservationPopup.js"}
+	{jsfile src="participation.js"}
+
+	<script type="text/javascript">
+
+		$(document).ready(function () {
+
+			var participationOptions = {
+				responseType: 'json'
+			};
+
+			var participation = new Participation(participationOptions);
+			participation.initParticipation();
+		});
+
+	</script>
 
 </div>
-
-{html_image src="admin-ajax-indicator.gif" id="indicator" style="display:none;"}
-
-{jsfile src="js/jquery.qtip.min.js"}
-{jsfile src="reservationPopup.js"}
-{jsfile src="participation.js"}
-
-<script type="text/javascript">
-
-	$(document).ready(function() {
-
-		var participationOptions = {
-			responseType: 'json'
-		};
-
-		var participation = new Participation(participationOptions);
-		participation.initParticipation();
-	});
-
-</script>
-
 {include file='globalfooter.tpl'}

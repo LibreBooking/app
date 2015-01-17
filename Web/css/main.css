@@ -300,3 +300,6 @@ label.booked-checkbox span {
 .no-show {
   visibility: hidden;
 }
+h1 .label {
+  padding-bottom: .2em;
+}
