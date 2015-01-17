@@ -1,17 +1,17 @@
 <?php
 /**
-Copyright 2011-2014 Nick Korbel
-
-This file is part of Booked Scheduler is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
+ * Copyright 2011-2014 Nick Korbel
+ *
+ * This file is part of Booked Scheduler is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 
@@ -78,7 +78,7 @@ class SmartyPage extends Smarty
 			$resources = Resources::GetInstance();
 		}
 
-		$this->Resources = & $resources;
+		$this->Resources = &$resources;
 		$this->RootPath = $rootPath;
 
 		$this->AddTemplateDirectory($base . 'lang/' . $this->Resources->CurrentLanguage);
@@ -182,8 +182,7 @@ class SmartyPage extends Smarty
 			$this->Validate();
 			$this->IsValid = $this->Validators->AreAllValid();
 			return $this->IsValid;
-		}
-		catch (Exception $ex)
+		} catch (Exception $ex)
 		{
 			Log::Error('Error during page validation', $ex);
 			return false;
@@ -342,17 +341,14 @@ class SmartyPage extends Smarty
 		if (!$repeat)
 		{
 			$actualContent = trim($content);
+
 			return empty($actualContent) ? '' :
-					"<div class=\"$class\" style=\"background-image:none;\">
-					<table>
-						<tr>
-							<td><img src=\"img/alert.png\" alt=\"Alert\" width=\"60\" height=\"60\" /></td>
-							<td><ul>$actualContent</ul></td>
-						</tr>
-					</table>
+					"<div class=\"$class\">
+					<div class=\"pull-left\"><i class=\"fa fa-warning fa-2x\"></i></div>
+					<div class=\"error-list\"><ul class=\"list-unstyled\">$actualContent</ul></div>
 				</div>";
 		}
-		return;
+		return '';
 	}
 
 	public function Validator($params, &$smarty)
@@ -473,7 +469,7 @@ class SmartyPage extends Smarty
 			$_key = ($usemethod) ? $option->$key() : $option->$key;
 			$_label = ($usemethod) ? $option->$label() : $option->$label;
 			$isselected = ($_key == $selected) ? 'selected="selected"' : '';
-			$builder->Append(sprintf('<option label="%s" value="%s"%s>%s</option>', $_label,$_key,
+			$builder->Append(sprintf('<option label="%s" value="%s"%s>%s</option>', $_label, $_key,
 									 $isselected, $_label));
 		}
 
@@ -525,7 +521,7 @@ class SmartyPage extends Smarty
 		$sb->Append($this->Resources->GetString('Rows'));
 		$sb->Append(": {$pageInfo->ResultsStart} - {$pageInfo->ResultsEnd} ({$pageInfo->Total})");
 		$sb->Append('<span>&nbsp;</span>');
-		if ($pageInfo->TotalPages !=1)
+		if ($pageInfo->TotalPages != 1)
 		{
 			$sb->Append($this->CreatePageLink(array('page' => 1, 'size' => '-1', 'text' => $viewAllText), $smarty));
 		}
@@ -535,7 +531,7 @@ class SmartyPage extends Smarty
 
 		$sb->Append('<ul class="pagination">');
 		$sb->Append('<li>');
-		$sb->Append($this->CreatePageLink(array('page' => max(1,$currentPage-1), 'size' => $size, 'text' => '&laquo;'), $smarty));
+		$sb->Append($this->CreatePageLink(array('page' => max(1, $currentPage - 1), 'size' => $size, 'text' => '&laquo;'), $smarty));
 		$sb->Append('</li>');
 
 		for ($i = 1; $i <= $pageInfo->TotalPages; $i++)
@@ -554,7 +550,7 @@ class SmartyPage extends Smarty
 			$sb->Append('</li>');
 		}
 		$sb->Append('<li>');
-		$sb->Append($this->CreatePageLink(array('page' => min($pageInfo->TotalPages,$currentPage+1), 'size' => $size, 'text' => '&raquo;'), $smarty));
+		$sb->Append($this->CreatePageLink(array('page' => min($pageInfo->TotalPages, $currentPage + 1), 'size' => $size, 'text' => '&raquo;'), $smarty));
 		$sb->Append('</li>');
 		$sb->Append('</ul>');
 
@@ -671,6 +667,7 @@ class SmartyPage extends Smarty
 		$versionNumber = Configuration::VERSION;
 		echo "<script type=\"text/javascript\" src=\"{$this->RootPath}scripts/{$params['src']}?v=$versionNumber\"></script>";
 	}
+
 	public function IncludeCssFile($params, &$smarty)
 	{
 		$versionNumber = Configuration::VERSION;

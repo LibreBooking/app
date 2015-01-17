@@ -50,6 +50,8 @@ class PasswordPresenter
 
 	public function PageLoad()
 	{
+		$this->page->SetAllowedActions(PluginManager::Instance()->LoadAuthentication());
+
 		if ($this->page->ResettingPassword())
 		{
 			$this->LoadValidators();

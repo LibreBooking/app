@@ -32,8 +32,12 @@ interface IPasswordPage extends IPage
 
 	public function ShowResetPasswordSuccess($resetPasswordSuccess);
 
+	/**
+	 * @param IAuthenticationActionOptions $authenticationOptions
+	 */
 	public function SetAllowedActions($authenticationOptions);
 }
+
 class PasswordPage extends SecurePage implements IPasswordPage
 {
 	/**
@@ -50,7 +54,7 @@ class PasswordPage extends SecurePage implements IPasswordPage
 	public function PageLoad()
 	{
 		$this->presenter->PageLoad();
-		$this->Display('password.tpl');
+		$this->Display('MyAccount/password.tpl');
 	}
 
 	public function GetCurrentPassword()

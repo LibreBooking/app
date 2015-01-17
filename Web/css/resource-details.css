@@ -294,6 +294,12 @@ label.booked-checkbox span {
 .navbar-fixed-top {
   z-index: 999;
 }
+.error-list {
+  padding-left: 50px;
+}
+.no-show {
+  visibility: hidden;
+}
 #resourceDetailsPopup {
   min-width: 300px;
   max-width: 1000px;

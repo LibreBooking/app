@@ -20,7 +20,9 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 <div class="page-profile">
 
-	<div class="hidden col-xs-12 col-sm-8 col-sm-offset-2 alert alert-success" role="alert" id="profileUpdatedMessage"><strong><span class="glyphicon glyphicon-ok-sign"></span> {translate key=YourProfileWasUpdated}</strong></div>
+	<div class="hidden col-xs-12 col-sm-8 col-sm-offset-2 alert alert-success" role="alert" id="profileUpdatedMessage">
+		<span class="glyphicon glyphicon-ok-sign"></span> {translate key=YourProfileWasUpdated}
+	</div>
 
 	<div class="validationSummary alert alert-danger hidden" id="validationErrors">
 		<ul>

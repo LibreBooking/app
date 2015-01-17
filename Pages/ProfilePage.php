@@ -98,7 +98,7 @@ class ProfilePage extends ActionPage implements IProfilePage
 	public function ProcessPageLoad()
 	{
 		$this->presenter->PageLoad();
-		$this->Display('profile.tpl');
+		$this->Display('MyAccount/profile.tpl');
 	}
 
 	public function SetFirstName($firstName)
