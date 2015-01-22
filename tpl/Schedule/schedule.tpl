@@ -74,6 +74,11 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 <div id="page-schedule">
 
+	{if $ShowResourceWarning}
+		<div class="error">{translate key=NoResources} <a href="admin/manage_resources.php">{translate key=AddResource}</a></div>
+	{/if}
+
+
 	{if $IsAccessible}
 
 	<div id="defaultSetMessage" class="alert alert-success hidden">
@@ -159,9 +164,6 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 	<div class="row-fluid">
 		{if $IsDesktop}
-
-			{*visible-md visible-lg*}
-
 			<div id="reservations-left" class="col-md-2 default-box">
 				<div class="reservations-left-header">{translate key=ResourceFilter} <a href="#" class="pull-right toggle-sidebar"
 																						title="Hide Reservation Filter"><i

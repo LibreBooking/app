@@ -151,8 +151,19 @@ td.reserved {
 }
 
 .restricted {
-  background: url("../img/stripe.bg.red.png");
-  color: black;
+  background: repeating-linear-gradient(
+     45deg,
+     transparent,
+     transparent 10px,
+     #ccc 10px,
+     #ccc 20px
+   ),
+   linear-gradient(
+     to bottom,
+     #eee,
+     #999
+   );
+    color: black;
 }
 
 .schedule_title {
@@ -306,4 +317,8 @@ ul.jqtree-tree .jqtree-toggler {
 .reservations.mobile .reserved {
   .rounded(1px);
   padding: 1px 2px;
+}
+
+a.toggle-sidebar {
+  color: @dark-gray;
 }

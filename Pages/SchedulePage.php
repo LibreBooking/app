@@ -253,6 +253,11 @@ class SchedulePage extends ActionPage implements ISchedulePage
 
 		$endLoad = microtime(true);
 
+		if ($user->IsAdmin && $this->resourceCount == 0)
+		{
+			$this->Set('ShowResourceWarning', true);
+		}
+
 		$this->Set('SlotLabelFactory', new SlotLabelFactory($user));
 		$this->Set('DisplaySlotFactory', new DisplaySlotFactory());
 		$this->Set('PopupMonths', $this->IsMobile ? 1 : 3);

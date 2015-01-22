@@ -1,3 +1,9 @@
+/*---------------------------------------------------
+    LESS Elements 0.9
+  ---------------------------------------------------
+    A set of useful LESS mixins
+    More info at: http://lesselements.com
+  ---------------------------------------------------*/
 #additionalResources {
   display: inline;
 }
@@ -48,9 +54,6 @@
   font-size: 15px;
 }
 #reservationDetails {
-  float: left;
-  width: 50%;
-  border-right: solid 1px #ccc;
   padding-right: 25px;
 }
 .reservationButtons {
@@ -70,9 +73,8 @@
   float: right;
 }
 #reservationParticipation {
-  float: right;
-  width: 45%;
-  height: 100%;
+  padding-left: 25px;
+  border-left: solid 1px #bcbcbc;
 }
 #participantList,
 #inviteeList {

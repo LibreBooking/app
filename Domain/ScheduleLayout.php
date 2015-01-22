@@ -209,12 +209,13 @@ class ScheduleLayout implements IScheduleLayout, ILayoutCreation
 	 */
 	public function GetLayout(Date $layoutDate, $hideBlockedPeriods = false)
 	{
+		$targetTimezone = $this->targetTimezone;
+		$layoutDate = $layoutDate->ToTimezone($targetTimezone);
+
 		if ($this->usingDailyLayouts)
 		{
 			return $this->GetLayoutDaily($layoutDate, $hideBlockedPeriods);
 		}
-		$targetTimezone = $this->targetTimezone;
-		$layoutDate = $layoutDate->ToTimezone($targetTimezone);
 
 		$cachedValues = $this->GetCachedValuesForDate($layoutDate);
 		if (!empty($cachedValues))

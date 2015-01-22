@@ -303,3 +303,6 @@ label.booked-checkbox span {
 h1 .label {
   padding-bottom: .2em;
 }
+.inline-block {
+  display: inline-block;
+}

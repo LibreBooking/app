@@ -134,6 +134,7 @@ class ReservationViewRepository implements IReservationViewRepository
 			$reservationView->OwnerEmailAddress = $row[ColumnNames::EMAIL];
 			$reservationView->StatusId = $row[ColumnNames::RESERVATION_STATUS];
 			$reservationView->DateCreated = Date::FromDatabase($row[ColumnNames::RESERVATION_CREATED]);
+			$reservationView->DateModified = Date::FromDatabase($row[ColumnNames::RESERVATION_MODIFIED]);
 
 			$repeatConfig = RepeatConfiguration::Create($row[ColumnNames::REPEAT_TYPE],
 														$row[ColumnNames::REPEAT_OPTIONS]);
@@ -597,6 +598,10 @@ class ReservationView
 	 * @var Date
 	 */
 	public $DateCreated;
+	/**
+	 * @var Date
+	 */
+	public $DateModified;
 	public $OwnerId;
 	public $OwnerEmailAddress;
 	public $OwnerFirstName;
@@ -1231,6 +1236,9 @@ class ReservationItemView implements IReservedItemView
 		$item->RepeatWeekdays = $r->RepeatWeekdays;
 		$item->StartReminder = $r->StartReminder;
 		$item->EndReminder = $r->EndReminder;
+		$item->CreatedDate = $r->DateCreated;
+		$item->ModifiedDate = $r->DateModified;
+		$item->OwnerEmailAddress = $r->OwnerEmailAddress;
 
 		return $item;
 	}

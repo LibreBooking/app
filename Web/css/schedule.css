@@ -127,7 +127,7 @@ td.reserved {
   background-color: #BDBDBD;
 }
 .restricted {
-  background: url("../img/stripe.bg.red.png");
+  background: repeating-linear-gradient(45deg, transparent, transparent 10px, #cccccc 10px, #cccccc 20px), linear-gradient(to bottom, #eeeeee, #999999);
   color: black;
 }
 .schedule_title {
@@ -247,4 +247,7 @@ ul.jqtree-tree .jqtree-toggler {
   -moz-border-radius: 1px;
   border-radius: 1px;
   padding: 1px 2px;
+}
+a.toggle-sidebar {
+  color: #585754;
 }
