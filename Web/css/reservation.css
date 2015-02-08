@@ -162,10 +162,10 @@ label.reservationDate {
   margin: 0;
 }
 .repeat-drop {
-  width: 250px;
+  width: auto;
 }
 .repeat-interval-drop {
-  width: 68px;
+  width: auto;
 }
 .weeks {
   margin-top: 5px;
@@ -175,4 +175,13 @@ label.reservationDate {
 }
 #reservation-box label {
   min-width: 50px;
+}
+.accessory-quantity {
+  width: 60px;
+}
+.reminderTime {
+  width: auto;
+}
+.reminderInterval {
+  width: auto;
 }

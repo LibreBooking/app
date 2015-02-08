@@ -59,7 +59,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 					<div class="col-xs-12">
 						<div class="form-group">
 							<span id="userName">{$ReservationUserName}</span>
-							<input id="userId"  type="hidden" {formname key=USER_ID} value="{$UserId}"/>
+							<input id="userId" type="hidden" {formname key=USER_ID} value="{$UserId}"/>
 							{if $CanChangeUser}
 								<a href="#" id="showChangeUsers"
 								   class="small-action">{translate key=Change} <i class="fa fa-user"></i></a>
@@ -90,7 +90,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 								</div>
 								{if $ShowAdditionalResources}
 									<a id="btnAddResources" href="#"
-									   class="small-action" data-toggle="modal" data-target="#dialogResourceGroups">{translate key=MoreResources} <span class="fa fa-plus-square-o"></span></a>
+									   class="small-action" data-toggle="modal" data-target="#dialogResourceGroups">{translate key=MoreResources} <span
+												class="fa fa-plus-square-o"></span></a>
 								{/if}
 								<div id="additionalResources">
 									{foreach from=$AvailableResources item=resource}
@@ -105,7 +106,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 							<div class="pull-right">{if $AvailableAccessories|count > 0}
 									<label>{translate key="Accessories"}</label>
 									<a href="#" id="addAccessoriesPrompt"
-									   class="small-action" data-toggle="modal" data-target="#dialogAddAccessories">{translate key='Add'} <span class="fa fa-plus-square-o"></span></a>
+									   class="small-action" data-toggle="modal" data-target="#dialogAddAccessories">{translate key='Add'} <span
+												class="fa fa-plus-square-o"></span></a>
 									<div id="accessories"></div>
 								{/if}</div>
 						</div>
@@ -166,12 +168,10 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 						</div>
 					</div>
 					{if !$HideRecurrence}
-					<div class="col-xs-12">
-						{*<div class="form-group">*}
-						{control type="RecurrenceControl" RepeatTerminationDate=$RepeatTerminationDate}
-						{*</div>*}
-						{/if}
-					</div>
+						<div class="col-xs-12">
+							{control type="RecurrenceControl" RepeatTerminationDate=$RepeatTerminationDate}
+						</div>
+					{/if}
 					<div class="col-xs-12">
 						<div class="form-group ">
 							<label for="reservationTitle">{translate key="ReservationTitle"}</label>
@@ -199,30 +199,32 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			{if $RemindersEnabled}
 				<div class="row">
 					<div class="reservationReminders">
-						<div id="reminderOptionsStart">
-							<label>{translate key=SendReminder}</label>
-							<input type="checkbox" class="reminderEnabled" {formname key=START_REMINDER_ENABLED}/>
-							<input type="text" size="3" maxlength="3" value="15"
-								   class="reminderTime textbox" {formname key=START_REMINDER_TIME}/>
-							<select class="reminderInterval textbox" {formname key=START_REMINDER_INTERVAL}>
-								<option value="{ReservationReminderInterval::Minutes}">{translate key=minutes}</option>
-								<option value="{ReservationReminderInterval::Hours}">{translate key=hours}</option>
-								<option value="{ReservationReminderInterval::Days}">{translate key=days}</option>
-							</select>
-							<span class="reminderLabel">{translate key=ReminderBeforeStart}</span>
+						<div class="form-group">
+							<div id="reminderOptionsStart">
+								<label for="startReminderEnabled">{translate key=SendReminder}</label>
+								<input type="checkbox" id="startReminderEnabled" class="reminderEnabled" {formname key=START_REMINDER_ENABLED}/>
+								<input type="text" size="3" maxlength="3" value="15"
+									   class="reminderTime form-control inline-block" {formname key=START_REMINDER_TIME}/>
+								<select class="reminderInterval form-control inline-block" {formname key=START_REMINDER_INTERVAL}>
+									<option value="{ReservationReminderInterval::Minutes}">{translate key=minutes}</option>
+									<option value="{ReservationReminderInterval::Hours}">{translate key=hours}</option>
+									<option value="{ReservationReminderInterval::Days}">{translate key=days}</option>
+								</select>
+								<span class="reminderLabel">{translate key=ReminderBeforeStart}</span>
+							</div>
+							<div id="reminderOptionsEnd">
+								<input type="checkbox" class="reminderEnabled" {formname key=END_REMINDER_ENABLED}/>
+								<input type="text" size="3" maxlength="3" value="15"
+									   class="reminderTime form-control inline-block" {formname key=END_REMINDER_TIME}/>
+								<select class="reminderInterval  form-control inline-block" {formname key=END_REMINDER_INTERVAL}>
+									<option value="{ReservationReminderInterval::Minutes}">{translate key=minutes}</option>
+									<option value="{ReservationReminderInterval::Hours}">{translate key=hours}</option>
+									<option value="{ReservationReminderInterval::Days}">{translate key=days}</option>
+								</select>
+								<span class="reminderLabel">{translate key=ReminderBeforeEnd}</span>
+							</div>
+							<div class="clear">&nbsp;</div>
 						</div>
-						<div id="reminderOptionsEnd">
-							<input type="checkbox" class="reminderEnabled" {formname key=END_REMINDER_ENABLED}/>
-							<input type="text" size="3" maxlength="3" value="15"
-								   class="reminderTime textbox" {formname key=END_REMINDER_TIME}/>
-							<select class="reminderInterval textbox" {formname key=END_REMINDER_INTERVAL}>
-								<option value="{ReservationReminderInterval::Minutes}">{translate key=minutes}</option>
-								<option value="{ReservationReminderInterval::Hours}">{translate key=hours}</option>
-								<option value="{ReservationReminderInterval::Days}">{translate key=days}</option>
-							</select>
-							<span class="reminderLabel">{translate key=ReminderBeforeEnd}</span>
-						</div>
-						<div class="clear">&nbsp;</div>
 					</div>
 				</div>
 			{/if}
@@ -239,8 +241,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 						<div id="reservationAttachments">
 							<div class="attachment-item">
 								<input type="file" {formname key=RESERVATION_FILE multi=true} />
-								<a class="add-attachment" href="#">{html_image src="plus-button.png"}</a>
-								<a class="remove-attachment" href="#">{html_image src="minus-gray.png"}</a>
+								<a class="add-attachment" href="#">{translate key=Add} <i class="fa fa-plus-circle"></i></a>
+								<a class="remove-attachment" href="#"><i class="fa fa-minus-circle"></i></a>
 							</div>
 						</div>
 					</div>
@@ -300,7 +302,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		</div>
 	</div>
 
-	<div class="modal fade" id="dialogAddAccessories" tabindex="-1" role="dialog" aria-labelledby="accessoryModalLabel"	 aria-hidden="true">
+	<div class="modal fade" id="dialogAddAccessories" tabindex="-1" role="dialog" aria-labelledby="accessoryModalLabel" aria-hidden="true">
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-header">
@@ -309,12 +311,15 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 				</div>
 				<div class="modal-body">
 					{*<div id="dialogAddAccessories" class="dialog" title="{translate key=AddAccessories}" style="display:none;">*}
-					<table style="width:100%">
+					<table class="table table-condensed">
+						<thead>
 						<tr>
-							<td>{translate key=Accessory}</td>
-							<td>{translate key=QuantityRequested}</td>
-							<td>{translate key=QuantityAvailable}</td>
+							<th>{translate key=Accessory}</th>
+							<th>{translate key=QuantityRequested}</th>
+							<th>{translate key=QuantityAvailable}</th>
 						</tr>
+						</thead>
+						<tbody>
 						{foreach from=$AvailableAccessories item=accessory}
 							<tr accessory-id="{$accessory->GetId()}">
 								<td>{$accessory->GetName()}</td>
@@ -325,12 +330,13 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 									{if $accessory->GetQuantityAvailable() == 1}
 										<input type="checkbox" name="accessory{$accessory->GetId()}" value="1" size="3"/>
 									{else}
-										<input type="text" name="accessory{$accessory->GetId()}" value="0" size="3"/>
+										<input type="text" class="form-control accessory-quantity" name="accessory{$accessory->GetId()}" value="0" size="3"/>
 									{/if}
 								</td>
 								<td>{$accessory->GetQuantityAvailable()|default:'&infin;'}</td>
 							</tr>
 						{/foreach}
+						</tbody>
 					</table>
 
 				</div>
