@@ -25,6 +25,11 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 	Starting: {formatdate date=$StartDate key=reservation_email}<br/>
 	Ending: {formatdate date=$EndDate key=reservation_email}<br/>
 	Resource: {$ResourceName}<br/>
+
+	{if $ResourceImage}
+		<div class="resource-image"><img src="{$ScriptUrl}/{$ResourceImage}"/></div>
+	{/if}
+
 	Title: {$Title}<br/>
 	Description: {$Description|nl2br}<br/>
 

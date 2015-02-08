@@ -16,7 +16,6 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 *}
-
 	Резервационна информация:
 	<br/>
 	<br/>
@@ -31,6 +30,11 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		{else}
 		Ресурс: {$ResourceName}<br/>
 	{/if}
+
+	{if $ResourceImage}
+		<div class="resource-image"><img src="{$ScriptUrl}/{$ResourceImage}"/></div>
+	{/if}
+
 	Заглавие: {$Title}<br/>
 	Описание: {$Description|nl2br}<br/>
 
@@ -63,4 +67,3 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 	<a href="{$ScriptUrl}/{$ReservationUrl}">Разгледай тази резервация</a> |
 	<a href="{$ScriptUrl}/{$ICalUrl}">Добави в Outlook</a> |
 	<a href="{$ScriptUrl}">Влизане в Booked Scheduler</a>
-

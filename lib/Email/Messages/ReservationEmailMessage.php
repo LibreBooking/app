@@ -90,6 +90,11 @@ abstract class ReservationEmailMessage extends EmailMessage
         $this->Set('StartDate', $currentInstance->StartDate()->ToTimezone($this->timezone));
         $this->Set('EndDate', $currentInstance->EndDate()->ToTimezone($this->timezone));
         $this->Set('ResourceName', $this->reservationSeries->Resource()->GetName());
+        $img = $this->reservationSeries->Resource()->GetImage();
+        if (!empty($img))
+        {
+            $this->Set('ResourceImage', $this->GetFullImagePath($img));
+        }
         $this->Set('Title', $this->reservationSeries->Title());
         $this->Set('Description', $this->reservationSeries->Description());
 
@@ -123,5 +128,10 @@ abstract class ReservationEmailMessage extends EmailMessage
 		}
 
 		$this->Set('Attributes', $attributeValues);
+    }
+
+    private function GetFullImagePath($img)
+    {
+        return Configuration::Instance()->GetKey(ConfigKeys::IMAGE_UPLOAD_URL) . '/' . $img;
     }
 }

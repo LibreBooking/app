@@ -16,8 +16,6 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 *}
-
-	
 	Administrátorem byly smazány tyto rezervace:
 	<br/>
 	<br/>
@@ -33,6 +31,11 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		{else}
     Zdroj: {$ResourceName}<br/>
 	{/if}
+
+	{if $ResourceImage}
+		<div class="resource-image"><img src="{$ScriptUrl}/{$ResourceImage}"/></div>
+	{/if}
+
 	Nadpis: {$Title}<br/>
 	Popis: {$Description|nl2br}<br/>
 	
@@ -57,4 +60,3 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 	<br/>
         <br/>
 	<a href="{$ScriptUrl}">Přihlásit se do rezervačního systému</a>
-	

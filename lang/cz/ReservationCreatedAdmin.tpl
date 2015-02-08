@@ -16,9 +16,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 *}
-
-	
-	Byly vytvořeny tyto nové rezervace: 
+	Byly vytvořeny tyto nové rezervace:
 	<br/>
 	<br/>
 	
@@ -32,7 +30,12 @@ Konec: {formatdate date=$EndDate key=reservation_email}<br/>
 		{/foreach}
 		{else}
     Zdroj: {$ResourceName}<br/>
-	{/if}    
+	{/if}
+
+	{if $ResourceImage}
+		<div class="resource-image"><img src="{$ScriptUrl}/{$ResourceImage}"/></div>
+	{/if}
+
 	Nadpis: {$Title}<br/>
     Popis: {$Description}<br/>
 	
@@ -68,4 +71,3 @@ Konec: {formatdate date=$EndDate key=reservation_email}<br/>
 	<br/>
 	<br/>
 	<a href="{$ScriptUrl}/{$ReservationUrl}">Zobrazit rezervaci v systému</a> | <a href="{$ScriptUrl}">Přihlásit se do systému</a>
-	

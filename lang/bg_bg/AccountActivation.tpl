@@ -16,8 +16,5 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 *}
-
-
 {$FirstName},<br/>
 Благодаря ви за регистрирането в Booked Scheduler. Моля, <a href="{$ActivationUrl}">активирайте вашия профил</a>.
-

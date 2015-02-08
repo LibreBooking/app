@@ -26,6 +26,11 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 	Alkaa: {formatdate date=$StartDate key=reservation_email}<br/>
 	Päättyy: {formatdate date=$EndDate key=reservation_email}<br/>
 	Resurssi: {$ResourceName}<br/>
+
+	{if $ResourceImage}
+		<div class="resource-image"><img src="{$ScriptUrl}/{$ResourceImage}"/></div>
+	{/if}
+
 	Otsikko: {$Title}<br/>
 	Kuvaus: {$Description}<br/>
 

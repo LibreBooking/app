@@ -8,3 +8,9 @@ body {
     height: 100%;
 }
 
+div.resource-image
+{
+    padding-bottom:25px;
+    max-height:200px;
+    max-width:200px;
+}

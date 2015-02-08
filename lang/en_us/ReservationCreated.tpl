@@ -16,8 +16,6 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 *}
-
-
 	Reservation Details:
 	<br/>
 	<br/>
@@ -31,6 +29,10 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		{/foreach}
 		{else}
 		Resource: {$ResourceName}<br/>
+	{/if}
+
+	{if $ResourceImage}
+		<div class="resource-image"><img src="{$ScriptUrl}/{$ResourceImage}"/></div>
 	{/if}
 
 	Title: {$Title}<br/>
@@ -75,4 +77,3 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 	<a href="{$ScriptUrl}/{$ReservationUrl}">View this reservation</a> |
 	<a href="{$ScriptUrl}/{$ICalUrl}">Add to Calendar</a> |
 	<a href="{$ScriptUrl}">Log in to Booked Scheduler</a>
-

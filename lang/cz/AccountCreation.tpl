@@ -16,8 +16,6 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 *}
-
-
 <p>{$To},</p>
 
 <p>Byl registrován nový uživatel s následujícími údaji:<br/>
@@ -26,4 +24,3 @@ Jméno: {$FullName}<br/>
 Tel.: {$Phone}<br/>
 Společnost: {$Organization}<br/>
 Pozice: {$Position}</p>
-

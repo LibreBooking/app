@@ -22,6 +22,11 @@ alBooked SchedulercheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 	Er bokning startar: {formatdate date=$StartDate key=reservation_email}<br/>
 	Er Bokning slutar: {formatdate date=$EndDate key=reservation_email}<br/>
 	Bokning av: {$ResourceName}<br/>
+
+	{if $ResourceImage}
+		<div class="resource-image"><img src="{$ScriptUrl}/{$ResourceImage}"/></div>
+	{/if}
+
 	Rubrik: {$Title}<br/>
 	Beskrivning: {$Description}<br/>
 

@@ -38,6 +38,11 @@ bersamaan dengan Booked Scheduler. Jika tidak, lihat
 		{else}
 		Resource: {$ResourceName}<br/>
 	{/if}
+
+	{if $ResourceImage}
+		<div class="resource-image"><img src="{$ScriptUrl}/{$ResourceImage}"/></div>
+	{/if}
+
 	Judul: {$Title}<br/>
 	Penjelasan: {$Description}<br/>
 

@@ -24,6 +24,11 @@ alBooked SchedulercheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 	Slutar: {formatdate date=$EndDate key=reservation_email}<br/>
 	<br/>
 	Bokning: {$ResourceName}<br/>
+
+	{if $ResourceImage}
+		<div class="resource-image"><img src="{$ScriptUrl}/{$ResourceImage}"/></div>
+	{/if}
+
 	<br/>
 	Rubrik: {$Title}<br/>
 	<br/>

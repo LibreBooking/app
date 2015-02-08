@@ -16,8 +16,6 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 *}
-
-
 Това е вашaта временнa Booked Scheduler парола: {$TemporaryPassword}
 
 <br/>
@@ -26,4 +24,3 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 <br/>
 
 Моля <a href="{$ScriptUrl}">влезте е Booked Scheduler</a> и сменете вашата парола възможно най-бързо.
-

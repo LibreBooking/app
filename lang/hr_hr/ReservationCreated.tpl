@@ -33,6 +33,10 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		Tereni: {$ResourceName}<br/>
 	{/if}
 
+	{if $ResourceImage}
+		<div class="resource-image"><img src="{$ScriptUrl}/{$ResourceImage}"/></div>
+	{/if}
+
 	Naziv: {$Title}<br/>
 	Opis: {$Description|nl2br}<br/>
 
