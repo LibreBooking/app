@@ -223,7 +223,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		{/if}
 
 		<div id="reservations" class="col-md-10 col-sm-12">
-			<div ><a href="#" id="restore-sidebar" title="Show Reservation Filter" class="hidden toggle-sidebar">{translate key=ResourceFilter} <i
+			<div ><a href="#" id="restore-sidebar" title="Show Reservation Filter" class="hidden toggle-sidebar">{translate key=ResourceFilter}  <i class="glyphicon glyphicon-filter"></i> <i
 									class="glyphicon glyphicon-chevron-right"></i></a>
 			</div>
 			{block name="reservations"}

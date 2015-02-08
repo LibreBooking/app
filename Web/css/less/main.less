@@ -113,6 +113,14 @@ div.center {
   padding: 0;
 }
 
+.no-padding-left {
+  padding-left:0;
+}
+
+.no-padding-right {
+  padding-right:0;
+}
+
 .default-box-footer {
   padding: 5px 0 5px 10px;
   clear: both;
@@ -120,7 +128,7 @@ div.center {
 }
 
 .form-control.dateinput, .form-control.timeinput {
-  width: 100px;
+  width: 95px;
   padding: 3px;
   margin: 2px 0 5px 0;
 }
@@ -276,7 +284,7 @@ label.booked-checkbox span {width:10px; }
 
 .error-list {padding-left:50px;}
 
-.no-show {visibility: hidden;}
+.no-show {display:none;}
 
 h1 .label {padding-bottom:.2em;}
 
@@ -286,4 +294,10 @@ h1 .label {padding-bottom:.2em;}
 
 .inline-block {
   display: inline-block;
+}
+
+a.resourceDetails {
+  text-decoration: none;
+  cursor: default;
+  color:@brown;
 }

@@ -38,7 +38,6 @@ function Reservation(opts)
 
 		printButton: $('.btnPrint'),
 		groupDiv: $('#resourceGroups'),
-		addResourcesButton: $('#btnAddResources'),
 		resourceGroupsDialog: $('#dialogResourceGroups'),
 		addResourcesConfirm: $('.btnConfirmAddResources'),
 		reservationAttachments: $('#reservationAttachments'),
@@ -62,25 +61,13 @@ function Reservation(opts)
 		_ownerId = ownerId;
 		participation.addedUsers.push(ownerId);
 
-		$('.dialog').dialog({
-			bgiframe: true,
-			autoOpen: false,
-			modal: true,
-			width: 'auto'
-		});
-
-		$('#dialogAddResources').dialog({
-			height: 300,
-			open: function (event, ui)
-			{
-				InitializeCheckboxes('#dialogAddResources', '#additionalResources');
-				return true;
-			}
+		$('#dialogResourceGroups').on('show.bs.modal', function(e) {
+			InitializeAdditionalResources();
+			return true;
 		});
 
 		scheduleId = $('#scheduleId').val();
 
-		elements.accessoriesDialog.dialog({width: 450});
 		elements.accessoriesPrompt.click(function ()
 		{
 			ShowAccessoriesPrompt();
@@ -91,12 +78,12 @@ function Reservation(opts)
 		elements.accessoriesConfirm.click(function ()
 		{
 			AddAccessories();
-			elements.accessoriesDialog.dialog('close');
+			elements.accessoriesDialog.modal('hide');
 		});
 
 		elements.accessoriesCancel.click(function ()
 		{
-			elements.accessoriesDialog.dialog('close');
+			elements.accessoriesDialog.modal('hide');
 		});
 
 		elements.printButton.click(function ()
@@ -111,19 +98,10 @@ function Reservation(opts)
 			e.preventDefault();
 			$('input:checkbox', '#attachmentDiv').toggle();
 		});
-		// CHANGE USERS //
 
 		changeUser.init();
 
-		/////////////////////////
 		InitializeParticipationElements();
-
-		elements.addResourcesButton.click(function (e)
-		{
-			e.preventDefault();
-			InitializeAdditionalResources();
-			elements.resourceGroupsDialog.dialog('open');
-		});
 
 		elements.groupDiv.delegate('.additionalResourceCheckbox, .additionalResourceGroupCheckbox', 'click', function (e)
 		{
@@ -132,7 +110,7 @@ function Reservation(opts)
 
 		$('.btnClearAddResources').click(function ()
 		{
-			elements.resourceGroupsDialog.dialog('close');
+			elements.resourceGroupsDialog.modal('hide');
 		});
 
 		elements.addResourcesConfirm.click(function ()
@@ -291,7 +269,7 @@ function Reservation(opts)
 			quantityElement.val(quantity);
 			if (quantity > 0)
 			{
-				quantityElement.attr('checked', 'checked');
+				quantityElement.prop('checked', true);
 			}
 		});
 
@@ -350,18 +328,18 @@ function Reservation(opts)
 		});
 
 		WireUpResourceDetailPopups();
-		elements.resourceGroupsDialog.dialog('close');
+		elements.resourceGroupsDialog.modal('hide')
 	};
 
 	var InitializeAdditionalResources = function ()
 	{
-		elements.groupDiv.find('input[type=checkbox]').attr('checked', false);
+		elements.groupDiv.find('input[type=checkbox]').prop('checked', false);
 		$.each($('.resourceId'), function (idx, val)
 		{
 			var resourceCheckboxes = elements.groupDiv.find('[resource-id="' + $(val).val() + '"]');
 			$.each(resourceCheckboxes, function (ridx, checkbox)
 			{
-				$(checkbox).attr('checked', true);
+				$(checkbox).prop('checked', true);
 				handleAdditionalResourceChecked($(checkbox));
 			});
 		});
@@ -376,7 +354,7 @@ function Reservation(opts)
 			// if this is a group, check/uncheck all nested subitems
 			$.each(checkbox.closest('li').find('ul').find('input[type=checkbox]'), function (i, v)
 			{
-				$(v).attr('checked', isChecked);
+				$(v).prop('checked', isChecked);
 				handleAdditionalResourceChecked($(v));
 			});
 		}
@@ -387,7 +365,7 @@ function Reservation(opts)
 			var numberOfResources = elements.groupDiv.find('.additionalResourceCheckbox[group-id="' + groupId + '"]').length;
 			var numberOfResourcesChecked = elements.groupDiv.find('.additionalResourceCheckbox[group-id="' + groupId + '"]:checked').length;
 
-			elements.groupDiv.find('.additionalResourceGroupCheckbox[group-id="' + groupId + '"]').attr('checked', numberOfResources == numberOfResourcesChecked)
+			elements.groupDiv.find('.additionalResourceGroupCheckbox[group-id="' + groupId + '"]').prop('checked', numberOfResources == numberOfResourcesChecked)
 		}
 
 		if (elements.groupDiv.find('.additionalResourceCheckbox:checked').length == 0)
@@ -514,7 +492,7 @@ function Reservation(opts)
 			var checkboxText = $(this).next().text();
 			if ($.inArray(checkboxText, selectedItems) >= 0 || $(this).val() == resourceId)
 			{
-				$(this).attr('checked', 'checked');
+				$(this).prop('checked', true);
 			}
 			else
 			{

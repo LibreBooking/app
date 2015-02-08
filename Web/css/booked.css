@@ -156,6 +156,12 @@ div.center {
 .no-padding {
   padding: 0;
 }
+.no-padding-left {
+  padding-left: 0;
+}
+.no-padding-right {
+  padding-right: 0;
+}
 .default-box-footer {
   padding: 5px 0 5px 10px;
   clear: both;
@@ -163,7 +169,7 @@ div.center {
 }
 .form-control.dateinput,
 .form-control.timeinput {
-  width: 100px;
+  width: 95px;
   padding: 3px;
   margin: 2px 0 5px 0;
 }
@@ -298,13 +304,18 @@ label.booked-checkbox span {
   padding-left: 50px;
 }
 .no-show {
-  visibility: hidden;
+  display: none;
 }
 h1 .label {
   padding-bottom: .2em;
 }
 .inline-block {
   display: inline-block;
+}
+a.resourceDetails {
+  text-decoration: none;
+  cursor: default;
+  color: #7a6a53;
 }
 #page-dashboard .panel-heading {
   background-color: #99b2b7;
@@ -821,6 +832,21 @@ label.reservationDate {
 .reservationHeader h3 {
   margin: 0;
 }
+.repeat-drop {
+  width: 250px;
+}
+.repeat-interval-drop {
+  width: 68px;
+}
+.weeks {
+  margin-top: 5px;
+}
+.weeks .btn-sm {
+  width: 55px;
+}
+#reservation-box label {
+  min-width: 50px;
+}
 .admin {
   width: 100%;
 }
@@ -1116,10 +1142,6 @@ ul.jqtree-tree .group-resource .jqtree-title {
 #repeatDiv,
 #repeatDiv div {
   padding: 0;
-}
-#repeatDiv label {
-  display: inline-block;
-  min-width: 100px;
 }
 #repeatOnWeeklyDiv label {
   min-width: 30px;
