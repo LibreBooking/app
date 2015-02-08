@@ -21,13 +21,6 @@ class NewReservationPreconditionService implements INewReservationPreconditionSe
 {
 	public function CheckAll(INewReservationPage $page, UserSession $user)
 	{
-		$requestedScheduleId = $page->GetRequestedScheduleId();
-
-		if (empty($requestedScheduleId))
-		{
-			$page->RedirectToError(ErrorMessages::MISSING_SCHEDULE);
-			return;
-		}
 	}
 }
 
@@ -46,4 +39,3 @@ class EditReservationPreconditionService
 abstract class ReservationPreconditionService implements IReservationPreconditionService
 {
 }
-?>

@@ -42,11 +42,6 @@ class ReservationInitializerFactory implements IReservationInitializerFactory
 	private $reservationAuthorization;
 
 	/**
-	 * @var IAttributeRepository
-	 */
-	private $attributeRepository;
-
-	/**
 	 * @var IUserRepository
 	 */
 	private $userRepository;
@@ -74,7 +69,8 @@ class ReservationInitializerFactory implements IReservationInitializerFactory
 			$this->userBinder,
 			$this->dateBinder,
 			$this->resourceBinder,
-			$this->user);
+			$this->user,
+			new ScheduleRepository());
 	}
 
 	public function GetExistingInitializer(IExistingReservationPage $page, ReservationView $reservationView)

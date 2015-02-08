@@ -856,7 +856,7 @@ class ReservationRepositoryTests extends TestBase
 		$this->assertEquals($expectedFileId, $attachment->FileId());
 		$this->assertEquals($fileContent, $this->fileSystem->_AddedFileContents);
 		$this->assertEquals("$fileId.$fileExtension", $this->fileSystem->_AddedFileName);
-		$this->assertEquals(Paths::ReservationAttachments(), $this->fileSystem->_AddedFilePath);
+		$this->assertEquals($this->fileSystem->GetReservationAttachmentsPath(), $this->fileSystem->_AddedFilePath);
 	}
 
 	public function testLoadsAttachment()
@@ -889,7 +889,7 @@ class ReservationRepositoryTests extends TestBase
 
 		$this->assertEquals($command, $this->db->_LastCommand);
 		$this->assertEquals($expectedAttachment, $actualAttachment);
-		$this->assertEquals(Paths::ReservationAttachments() . "$attachmentId.$fileExtension",
+		$this->assertEquals($this->fileSystem->GetReservationAttachmentsPath() . "$attachmentId.$fileExtension",
 							$this->fileSystem->_ContentsPath);
 	}
 
@@ -944,7 +944,7 @@ class ReservationRepositoryTests extends TestBase
 		$this->assertTrue($this->db->ContainsCommand($command1));
 		$this->assertTrue($this->db->ContainsCommand($command2));
 		$this->assertEquals(2, count($this->fileSystem->_RemovedFiles));
-		$this->assertTrue(in_array(Paths::ReservationAttachments() . "$fileId2.$fileExt2",
+		$this->assertTrue(in_array($this->fileSystem->GetReservationAttachmentsPath() . "$fileId2.$fileExt2",
 								   $this->fileSystem->_RemovedFiles));
 	}
 

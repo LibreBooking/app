@@ -37,24 +37,6 @@ class SlotLabelFactoryTests extends TestBase
         $this->reservation->LastName = 'last';
     }
 
-    public function testGetsTitle()
-    {
-        $this->SetConfig('title');
-
-        $value = SlotLabelFactory::Create($this->reservation);
-
-        $this->assertEquals('some title', $value);
-    }
-
-    public function testGetsName()
-    {
-        $this->SetConfig('name');
-
-        $value = SlotLabelFactory::Create($this->reservation);
-
-        $this->assertEquals('first last', $value);
-    }
-
     public function testGetsNone()
     {
         $this->SetConfig('none');

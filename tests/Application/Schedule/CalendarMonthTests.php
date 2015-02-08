@@ -58,7 +58,7 @@ class CalendarMonthTests extends TestBase
 		$reservations = array($startsBeforeMonth, $endsAfterMonth, $firstDayOnly, $secondAndThirdDay, $notInMonth);
 
 		$timezone = 'America/Chicago';
-		$calendarReservations = CalendarReservation::FromViewList($reservations, $timezone);
+		$calendarReservations = CalendarReservation::FromViewList($reservations, $timezone, $this->fakeUser);
 
 		$month = new CalendarMonth(12, 2011, $timezone);
 
@@ -72,12 +72,12 @@ class CalendarMonthTests extends TestBase
 
 		$nullDay = CalendarDay::Null();
 		$day1 = new CalendarDay($expectedFirstDay);
-		$day1->AddReservation(CalendarReservation::FromView($startsBeforeMonth, $timezone));
-		$day1->AddReservation(CalendarReservation::FromView($firstDayOnly, $timezone));
+		$day1->AddReservation(CalendarReservation::FromView($startsBeforeMonth, $timezone, $this->fakeUser));
+		$day1->AddReservation(CalendarReservation::FromView($firstDayOnly, $timezone, $this->fakeUser));
 		$day2 = new CalendarDay($expectedFirstDay->AddDays(1));
-		$day2->AddReservation(CalendarReservation::FromView($secondAndThirdDay, $timezone));
+		$day2->AddReservation(CalendarReservation::FromView($secondAndThirdDay, $timezone, $this->fakeUser));
 		$day3 = new CalendarDay($expectedFirstDay->AddDays(2));
-		$day3->AddReservation(CalendarReservation::FromView($secondAndThirdDay, $timezone));
+		$day3->AddReservation(CalendarReservation::FromView($secondAndThirdDay, $timezone, $this->fakeUser));
 
 		$weeks = $month->Weeks();
 		/** @var $actualWeek1 CalendarWeek */
@@ -99,7 +99,7 @@ class CalendarMonthTests extends TestBase
 
 		$lastWeekDays = $weeks[4]->Days();
 		$lastDayReservations = $lastWeekDays[6]->Reservations();
-		$this->assertEquals(CalendarReservation::FromView($endsAfterMonth, $timezone), $lastDayReservations[0]);
+		$this->assertEquals(CalendarReservation::FromView($endsAfterMonth, $timezone, $this->fakeUser), $lastDayReservations[0]);
 
 		$next = Date::Parse('2012-01-01', $timezone);
 		$prev = Date::Parse('2011-11-01', $timezone);

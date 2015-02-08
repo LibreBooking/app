@@ -31,8 +31,6 @@ class FakeSavedReport extends SavedReport
 			new Report_ResultSelection(Report_ResultSelection::COUNT),
 			new Report_GroupBy(Report_GroupBy::NONE),
 			new Report_Range(Report_Range::ALL_TIME, Date::Now(), Date::Now()),
-			new Report_Filter(null, null, null, null, null) );
+			new Report_Filter(null, null, null, null, null, null) );
 	}
 }
-
-?>

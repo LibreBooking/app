@@ -377,8 +377,8 @@ class ReservationRepository implements IReservationRepository
 		{
 			$fileId = $row[ColumnNames::FILE_ID];
 			$extension = $row[ColumnNames::FILE_EXTENSION];
-			$contents = ServiceLocator::GetFileSystem()
-									  ->GetFileContents(Paths::ReservationAttachments() . "$fileId.$extension");
+			$fileSystem = ServiceLocator::GetFileSystem();
+			$contents = $fileSystem->GetFileContents($fileSystem->GetReservationAttachmentsPath() . "$fileId.$extension");
 			$attachment = ReservationAttachment::Create($row[ColumnNames::FILE_NAME],
 														$row[ColumnNames::FILE_TYPE],
 														$row[ColumnNames::FILE_SIZE],
@@ -404,8 +404,8 @@ class ReservationRepository implements IReservationRepository
 		$extension = $attachmentFile->FileExtension();
 		$attachmentFile->WithFileId($id);
 
-		ServiceLocator::GetFileSystem()->Add(Paths::ReservationAttachments(), "$id.$extension",
-											 $attachmentFile->FileContents());
+		$fileSystem = ServiceLocator::GetFileSystem();
+		$fileSystem->Add($fileSystem->GetReservationAttachmentsPath(), "$id.$extension", $attachmentFile->FileContents());
 
 		return $id;
 	}
@@ -785,7 +785,8 @@ class AttachmentRemovedCommand extends EventCommand
 	public function Execute(Database $database)
 	{
 		$database->Execute(new RemoveReservationAttachmentCommand($this->event->FileId()));
-		ServiceLocator::GetFileSystem()->RemoveFile(Paths::ReservationAttachments() . $this->event->FileName());
+		$fileSystem = ServiceLocator::GetFileSystem();
+		$fileSystem->RemoveFile($fileSystem->GetReservationAttachmentsPath() . $this->event->FileName());
 	}
 }
 

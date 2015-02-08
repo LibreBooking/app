@@ -113,6 +113,7 @@ class ReservationViewRepositoryTests extends TestBase
 			ColumnNames::RESERVATION_CREATED => $dateCreated->ToDatabase(),
 			ColumnNames::RESOURCE_NAME => $resourceName,
 			ColumnNames::EMAIL => $email,
+			ColumnNames::RESERVATION_MODIFIED => Date::Now()->ToDatabase(),
 		);
 
 		$resourceRows = array(
@@ -209,6 +210,7 @@ class ReservationViewRepositoryTests extends TestBase
 		$expectedView->OwnerLastName = $ownerLast;
 		$expectedView->StatusId = $statusId;
 		$expectedView->OwnerEmailAddress = $email;
+		$expectedView->DateModified = Date::Now()->ToUtc();
 
 		$expectedView->Participants = array(
 			new ReservationUserView($userId2, $fname2, $lname2, $email2, $participantLevel),
@@ -365,8 +367,8 @@ class ReservationViewRepositoryTests extends TestBase
 
 	public function testKnowsIfParticipatingOrInvited()
 	{
-		$participant_list = '2,3';
-		$invitee_list = '4,5';
+		$participant_list = '2=name name!sep!3=name name';
+		$invitee_list = '4=name name!sep!5=name name';
 		$reservationView = new ReservationItemView('ref', Date::Now(),Date::Now(), 'resource', 1, 1, ReservationUserLevel::OWNER, 'title', 'desc', 1, 'f', 'l', 1, null, null, null, $participant_list, $invitee_list);
 		$this->assertTrue($reservationView->IsUserParticipating(2));
 		$this->assertTrue($reservationView->IsUserParticipating(3));

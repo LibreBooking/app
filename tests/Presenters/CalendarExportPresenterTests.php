@@ -145,7 +145,7 @@ class CalendarExportPresenterTests extends TestBase
 	public function testViewHidesDetailsWhenNoAccess()
 	{
 		$user = new FakeUserSession();
-		$res = new ReservationView();
+		$res = new ReservationItemView();
 
 		$this->privacyFilter->_CanViewDetails = false;
 		$this->privacyFilter->_CanViewUser = false;

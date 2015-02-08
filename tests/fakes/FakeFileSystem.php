@@ -69,6 +69,9 @@ class FakeFileSystem implements IFileSystem
 	{
 		$this->_RemovedFiles[] = $fullPath;
 	}
-}
 
-?>
+	public function GetReservationAttachmentsPath()
+	{
+		return 'reservation/attachment/path';
+	}
+}

@@ -385,6 +385,7 @@ class ExistingReservationTests extends TestBase
 		$instance1 = new TestReservation('123', $instance1Date, 100);
 
 		$builder = new ExistingReservationSeriesBuilder();
+		$builder->WithBookedBy(new FakeUserSession(true));
 		$builder->WithRepeatOptions($repeatOptions);
 		$builder->WithInstance($instance1);
 		$builder->WithInstance(new TestReservation('223', $instance2Date, 101));

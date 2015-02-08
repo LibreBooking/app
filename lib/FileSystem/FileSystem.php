@@ -17,7 +17,6 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 interface IFileSystem
 {
 	/**
-	 * @abstract
 	 * @param $path string
 	 * @param $fileName string
 	 * @param $fileContents string
@@ -26,18 +25,21 @@ interface IFileSystem
 	public function Add($path, $fileName, $fileContents);
 
 	/**
-	 * @abstract
 	 * @param $fullPath string
 	 * @return string
 	 */
 	public function GetFileContents($fullPath);
 
 	/**
-	 * @abstract
 	 * @param $fullPath string
 	 * @return void
 	 */
 	public function RemoveFile($fullPath);
+
+	/**
+	 * @return string
+	 */
+	public function GetReservationAttachmentsPath();
 }
 
 class FileSystem implements IFileSystem
@@ -81,5 +83,12 @@ class FileSystem implements IFileSystem
 			Log::Error('Could not delete file: %s', $fullPath);
 		}
 	}
+
+	/**
+	 * @return string
+	 */
+	public function GetReservationAttachmentsPath()
+	{
+		return Paths::ReservationAttachments();
+	}
 }
-?>

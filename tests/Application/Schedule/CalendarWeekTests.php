@@ -50,7 +50,7 @@ class CalendarWeekTests extends TestBase
 		$timezone = 'America/Chicago';
 
 		$week = CalendarWeek::FromDate(2011, 8, 3, $timezone);
-		$calendarReservations = CalendarReservation::FromViewList($reservations, $timezone);
+		$calendarReservations = CalendarReservation::FromViewList($reservations, $timezone, $this->fakeUser);
 
 		$week->AddReservations($calendarReservations);
 
@@ -61,20 +61,20 @@ class CalendarWeekTests extends TestBase
 		$this->assertEquals($expectedLastDay, $week->LastDay());
 
 		$day1 = new CalendarDay($expectedFirstDay);
-		$day1->AddReservation(CalendarReservation::FromView($startsBeforeWeek, $timezone));
-		$day1->AddReservation(CalendarReservation::FromView($firstDayOnly, $timezone));
+		$day1->AddReservation(CalendarReservation::FromView($startsBeforeWeek, $timezone, $this->fakeUser));
+		$day1->AddReservation(CalendarReservation::FromView($firstDayOnly, $timezone, $this->fakeUser));
 
 		$day2 = new CalendarDay($expectedFirstDay->AddDays(1));
-		$day2->AddReservation(CalendarReservation::FromView($secondAndThirdDay, $timezone));
+		$day2->AddReservation(CalendarReservation::FromView($secondAndThirdDay, $timezone, $this->fakeUser));
 
 		$day3 = new CalendarDay($expectedFirstDay->AddDays(2));
-		$day3->AddReservation(CalendarReservation::FromView($secondAndThirdDay, $timezone));
+		$day3->AddReservation(CalendarReservation::FromView($secondAndThirdDay, $timezone, $this->fakeUser));
 
 		$day4 = new CalendarDay($expectedFirstDay->AddDays(3));
 		$day5 = new CalendarDay($expectedFirstDay->AddDays(4));
 		$day6 = new CalendarDay($expectedFirstDay->AddDays(5));
 		$day7 = new CalendarDay($expectedFirstDay->AddDays(6));
-		$day7->AddReservation(CalendarReservation::FromView($endsAfterWeek, $timezone));
+		$day7->AddReservation(CalendarReservation::FromView($endsAfterWeek, $timezone, $this->fakeUser));
 
 		/** @var $actualDays array|CalendarDay[] */
 		$actualDays = $week->Days();

@@ -20,7 +20,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 require_once(ROOT_DIR . 'Domain/Access/namespace.php');
 
-class FakeScheduleRepository
+class FakeScheduleRepository implements IScheduleRepository
 {
 	public $_GetAllCalled = false;
 
@@ -82,28 +82,14 @@ class FakeScheduleRepository
 
 	public function GetAll()
 	{
-		$this->_GetAllCalled = true;
-		return $this->_AllRows;
 	}
 
-	public function GetLayout($scheduleId, ILayoutFactory $layoutFactory)
-	{
-		throw new Exception("not implemented");
-	}
-
-	public function LoadById($scheduleId)
-	{
-		throw new Exception('mock this');
-	}
-
-	public function Update(Schedule $schedule)
-	{
-		throw new Exception('mock this');
-	}
 
 	public function AddScheduleLayout($scheduleId, IScheduleLayout $layout)
 	{
-		throw new Exception('mock this');
+		$schedule1 = new Schedule(100, 'sched1', false, DayOfWeek::MONDAY, 7);
+		$defaultSchedule = new Schedule($this->_DefaultScheduleId, 'defaultsched', true, Schedule::Today, 7);
+		return array($schedule1, $defaultSchedule);
 	}
 
 	public static function GetRow(
@@ -130,6 +116,73 @@ class FakeScheduleRepository
                 ColumnNames::PUBLIC_ID => $publicId,
                 ColumnNames::SCHEDULE_ADMIN_GROUP_ID => $adminId
 			);
+	}
+
+	/**
+	 * @param int $scheduleId
+	 * @return Schedule
+	 */
+	public function LoadById($scheduleId)
+	{
+		// TODO: Implement LoadById() method.
+	}
+
+	/**
+	 * @param string $publicId
+	 * @return Schedule
+	 */
+	public function LoadByPublicId($publicId)
+	{
+		// TODO: Implement LoadByPublicId() method.
+	}
+
+	/**
+	 * @param Schedule $schedule
+	 */
+	public function Update(Schedule $schedule)
+	{
+		// TODO: Implement Update() method.
+	}
+
+	/**
+	 * @param Schedule $schedule
+	 */
+	public function Delete(Schedule $schedule)
+	{
+		// TODO: Implement Delete() method.
+	}
+
+	/**
+	 * @param Schedule $schedule
+	 * @param int $copyLayoutFromScheduleId
+	 * @return int $insertedScheduleId
+	 */
+	public function Add(Schedule $schedule, $copyLayoutFromScheduleId)
+	{
+		// TODO: Implement Add() method.
+	}
+
+	/**
+	 * @param int $scheduleId
+	 * @param ILayoutFactory $layoutFactory factory to use to create the schedule layout
+	 * @return IScheduleLayout
+	 */
+	public function GetLayout($scheduleId, ILayoutFactory $layoutFactory)
+	{
+		// TODO: Implement GetLayout() method.
+	}
+
+	/**
+	 * @param int $pageNumber
+	 * @param int $pageSize
+	 * @param string|null $sortField
+	 * @param string|null $sortDirection
+	 * @param ISqlFilter $filter
+	 * @return PageableData|Schedule[]
+	 */
+	public function GetList($pageNumber, $pageSize, $sortField = null, $sortDirection = null, $filter = null)
+	{
+		// TODO: Implement GetList() method.
 	}
 }
 ?>

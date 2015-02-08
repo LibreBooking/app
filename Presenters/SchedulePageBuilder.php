@@ -48,11 +48,9 @@ interface ISchedulePageBuilder
 	/**
 	 * @param ISchedulePage $page
 	 * @param DateRange $dateRange display dates
-	 * @param UserSession $userSession
 	 * @param ISchedule $schedule
 	 */
-	public function BindDisplayDates(ISchedulePage $page, DateRange $dateRange, UserSession $userSession,
-									 ISchedule $schedule);
+	public function BindDisplayDates(ISchedulePage $page, DateRange $dateRange, ISchedule $schedule);
 
 	/**
 	 * @param ISchedulePage $page
@@ -155,9 +153,6 @@ class SchedulePageBuilder implements ISchedulePageBuilder
 		return $schedule;
 	}
 
-	/**
-	 * @see ISchedulePageBuilder::GetScheduleDates()
-	 */
 	public function GetScheduleDates(UserSession $user, ISchedule $schedule, ISchedulePage $page)
 	{
 		$userTimezone = $user->Timezone;
@@ -210,13 +205,7 @@ class SchedulePageBuilder implements ISchedulePageBuilder
 		return $applicableDates;
 	}
 
-	/**
-	 * @see ISchedulePageBuilder::BindDisplayDates()
-	 */
-	public function BindDisplayDates(ISchedulePage $page,
-									 DateRange $dateRange,
-									 UserSession $userSession,
-									 ISchedule $schedule)
+	public function BindDisplayDates(ISchedulePage $page, DateRange $dateRange, ISchedule $schedule)
 	{
 		$scheduleLength = $schedule->GetDaysVisible();
 		if ($page->GetShowFullWeek())

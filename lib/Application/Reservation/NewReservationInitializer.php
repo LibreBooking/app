@@ -1,18 +1,18 @@
 <?php
 /**
-Copyright 2011-2014 Nick Korbel
-
-This file is part of Booked Scheduler is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ * Copyright 2011-2014 Nick Korbel
+ *
+ * This file is part of Booked Scheduler is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 require_once(ROOT_DIR . 'Pages/NewReservationPage.php');
 require_once(ROOT_DIR . 'lib/Application/Reservation/ReservationInitializerBase.php');
@@ -24,22 +24,34 @@ class NewReservationInitializer extends ReservationInitializerBase
 	 */
 	private $page;
 
+	/**
+	 * @var int
+	 */
+	private $scheduleId;
+
+	/**
+	 * @var IScheduleRepository
+	 */
+	private $scheduleRepository;
+
 	public function __construct(
-		INewReservationPage $page,
-		IReservationComponentBinder $userBinder,
-		IReservationComponentBinder $dateBinder,
-		IReservationComponentBinder $resourceBinder,
-		UserSession $userSession
-		)
+			INewReservationPage $page,
+			IReservationComponentBinder $userBinder,
+			IReservationComponentBinder $dateBinder,
+			IReservationComponentBinder $resourceBinder,
+			UserSession $userSession,
+			IScheduleRepository $scheduleRepository
+	)
 	{
 		$this->page = $page;
+		$this->scheduleRepository = $scheduleRepository;
 
 		parent::__construct(
-						$page,
-						$userBinder,
-						$dateBinder,
-						$resourceBinder,
-						$userSession);
+				$page,
+				$userBinder,
+				$dateBinder,
+				$resourceBinder,
+				$userSession);
 	}
 
 	public function Initialize()
@@ -65,7 +77,28 @@ class NewReservationInitializer extends ReservationInitializerBase
 
 	public function GetScheduleId()
 	{
-		return $this->page->GetRequestedScheduleId();
+		if (!empty($this->scheduleId))
+		{
+			return $this->scheduleId;
+		}
+
+		$this->scheduleId = $this->page->GetRequestedScheduleId();
+
+		if (empty($this->scheduleId))
+		{
+			$schedules = $this->scheduleRepository->GetAll();
+
+			foreach ($schedules as $s)
+			{
+				if ($s->GetIsDefault())
+				{
+					$this->scheduleId = $s->GetId();
+					break;
+				}
+			}
+		}
+
+		return $this->scheduleId;
 	}
 
 	public function GetReservationDate()

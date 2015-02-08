@@ -244,4 +244,3 @@ class Schedule implements ISchedule
 		return new CalendarSubscriptionUrl(null, $this->GetPublicId(), null);
 	}
 }
-?>

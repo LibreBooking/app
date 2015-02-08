@@ -106,6 +106,8 @@ class PersonalCalendarPresenterTests extends TestBase
 		$r2 = new FakeBookableResource($resourceId, $resourceName);
 		$resources = array($r1, $r2);
 
+		$resourceGroupTree = new ResourceGroupTree();
+
 		$schedules = array(new Schedule(1, null, false, 2, null), new Schedule($defaultScheduleId, null, true, 3, null),);
 
 		$this->page
@@ -173,12 +175,17 @@ class PersonalCalendarPresenterTests extends TestBase
 				->with($this->equalTo($showInaccessible), $this->equalTo($this->fakeUser))
 				->will($this->returnValue($resources));
 
+		$this->resourceService
+				->expects($this->atLeastOnce())
+				->method('GetResourceGroups')
+				->with($this->anything(), $this->equalTo($this->fakeUser))
+				->will($this->returnValue($resourceGroupTree));
 		$this->page
 				->expects($this->atLeastOnce())
 				->method('SetFirstDay')
 				->with($this->equalTo($schedules[1]->GetWeekdayStart()));
 
-		$calendarFilters = new CalendarFilters($schedules, $resources, null, null, new ResourceGroupTree());
+		$calendarFilters = new CalendarFilters($schedules, $resources, null, null, resourceGroupTree);
 		$this->page->expects($this->atLeastOnce())->method('BindFilters')->with($this->equalTo($calendarFilters));
 
 		$this->presenter->PageLoad($this->fakeUser, $userTimezone);

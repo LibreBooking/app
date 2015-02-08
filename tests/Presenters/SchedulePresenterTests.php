@@ -146,7 +146,7 @@ class SchedulePresenterTests extends TestBase
 		$pageBuilder
 				->expects($this->once())
 				->method('BindDisplayDates')
-				->with($this->equalTo($page), $this->equalTo($bindingDates), $this->equalTo($user));
+				->with($this->equalTo($page), $this->equalTo($bindingDates), $this->equalTo($this->schedules[0]));
 
 		$reservationService
 				->expects($this->once())
@@ -640,21 +640,17 @@ class SchedulePresenterTests extends TestBase
 		$pageBuilder->BindReservations($page, $resources, $dailyLayout);
 	}
 
-	public function testBindDisplayDatesSetsPageToArrayOfDatesInUserTimezoneForRange()
+	public function testBindDisplayDatesSetsPageToArrayOfDatesInGivenTimezoneForRange()
 	{
+		$tz = 'America/New_York';
 		$daysVisible = 7;
 		$schedule = new Schedule(1, '', false, 4, $daysVisible);
-		$user = new UserSession(1);
-		$user->Timezone = 'EST';
 		$page = $this->getMock('ISchedulePage');
 
 		$start = Date::Now();
-		$end = Date::Now()
-				   ->AddDays(10);
-		$displayRange = new DateRange($start, $end);
-		$expectedRange = new DateRange($start->ToTimezone('EST'), $end
-				->AddDays(-1)
-				->ToTimezone('EST'));
+		$end = Date::Now()->AddDays(10);
+
+		$expectedRange = new DateRange($start, $end);
 
 		$expectedPrev = $expectedRange
 				->GetBegin()
@@ -674,7 +670,7 @@ class SchedulePresenterTests extends TestBase
 				->with($this->equalTo($expectedPrev), $this->equalTo($expectedNext));
 
 		$pageBuilder = new SchedulePageBuilder();
-		$pageBuilder->BindDisplayDates($page, $displayRange, $user, $schedule);
+		$pageBuilder->BindDisplayDates($page, $expectedRange, $schedule);
 	}
 
 	public function testPreviousAndNextLinksWhenStartingOnMondayShowingFiveDays()
