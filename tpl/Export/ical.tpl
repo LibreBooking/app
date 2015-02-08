@@ -34,7 +34,7 @@ ORGANIZER;CN={$reservation->Organizer}:MAILTO:{$reservation->OrganizerEmail}
 RRULE:{$reservation->RecurRule}
 {/if}
 SUMMARY:{$reservation->Summary}
-UID:{$reservation->ReferenceNumber}&{$ScriptUrl}
+UID:{$reservation->ReferenceNumber}&{$UID}
 SEQUENCE:0
 URL:{$reservation->ReservationUrl}
 X-MICROSOFT-CDO-BUSYSTATUS:BUSY

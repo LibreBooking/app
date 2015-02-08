@@ -672,7 +672,7 @@ class RepeatConfiguration
 
 	private function SetWeekdays($weekdays)
 	{
-		if (!empty($weekdays))
+		if ($weekdays != null && $weekdays != '')
 		{
 			$this->Weekdays = explode(',', $weekdays);
 		}

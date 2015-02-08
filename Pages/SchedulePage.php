@@ -210,6 +210,7 @@ class ScheduleStyle
 class SchedulePage extends ActionPage implements ISchedulePage
 {
 	protected $ScheduleStyle = ScheduleStyle::Standard;
+	private $resourceCount = 0;
 
 	/**
 	 * @var SchedulePresenter

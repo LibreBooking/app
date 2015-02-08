@@ -111,6 +111,11 @@ class ScheduleLayout implements IScheduleLayout, ILayoutCreation
 	private $layoutTimezone;
 
 	/**
+	 * @var string[]
+	 */
+	private $startTimes = array();
+
+	/**
 	 * @param string $targetTimezone target timezone of layout
 	 */
 	public function __construct($targetTimezone = null)
@@ -179,16 +184,19 @@ class ScheduleLayout implements IScheduleLayout, ILayoutCreation
 	protected function AppendGenericPeriod(Time $startTime, Time $endTime, $periodType, $label = null,
 										   $dayOfWeek = null)
 	{
-		$this->layoutTimezone = $startTime->Timezone();
-		$layoutPeriod = new LayoutPeriod($startTime, $endTime, $periodType, $label);
-		if (!is_null($dayOfWeek))
+		if ($this->StartTimeCanBeAdded($startTime, $dayOfWeek))
 		{
-			$this->usingDailyLayouts = true;
-			$this->_periods[$dayOfWeek][] = $layoutPeriod;
-		}
-		else
-		{
-			$this->_periods[] = $layoutPeriod;
+			$this->layoutTimezone = $startTime->Timezone();
+			$layoutPeriod = new LayoutPeriod($startTime, $endTime, $periodType, $label);
+			if (!is_null($dayOfWeek))
+			{
+				$this->usingDailyLayouts = true;
+				$this->_periods[$dayOfWeek][] = $layoutPeriod;
+			}
+			else
+			{
+				$this->_periods[] = $layoutPeriod;
+			}
 		}
 	}
 
@@ -531,6 +539,28 @@ class ScheduleLayout implements IScheduleLayout, ILayoutCreation
 		{
 			return $this->_periods;
 		}
+	}
+
+	private function StartTimeCanBeAdded(Time $startTime, $dayOfWeek = null)
+	{
+		$day = $dayOfWeek;
+		if ($day == null)
+		{
+			$day = 0;
+		}
+
+		if (!array_key_exists($day, $this->startTimes))
+		{
+			$this->startTimes[$day] = array();
+		}
+
+		if (array_key_exists($startTime->ToString(), $this->startTimes[$day]))
+		{
+			return false;
+		}
+
+		$this->startTimes[$day][$startTime->ToString()] = $startTime->ToString();
+		return true;
 	}
 }
 

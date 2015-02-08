@@ -104,7 +104,8 @@ abstract class ReservationEmailMessage extends EmailMessage
         $this->Set('RepeatDates', $repeatDates);
         $this->Set('RequiresApproval', $this->reservationSeries->RequiresApproval());
         $this->Set('ReservationUrl', sprintf("%s?%s=%s", Pages::RESERVATION, QueryStringKeys::REFERENCE_NUMBER, $currentInstance->ReferenceNumber()));
-        $this->Set('ICalUrl', sprintf("export/%s?%s=%s", Pages::CALENDAR_EXPORT, QueryStringKeys::REFERENCE_NUMBER, $currentInstance->ReferenceNumber()));
+        $icalUrl = sprintf("export/%s?%s=%s", Pages::CALENDAR_EXPORT, QueryStringKeys::REFERENCE_NUMBER, $currentInstance->ReferenceNumber());
+        $this->Set('ICalUrl', $icalUrl);
 
 		$resourceNames = array();
 		foreach($this->reservationSeries->AllResources() as $resource)
@@ -118,10 +119,7 @@ abstract class ReservationEmailMessage extends EmailMessage
 		$attributeValues = array();
 		foreach ($attributes as $attribute)
 		{
-			if (!$attribute->AdminOnly())
-			{
-				$attributeValues[] = new Attribute($attribute, $this->reservationSeries->GetAttributeValue($attribute->Id()));
-			}
+			$attributeValues[] = new Attribute($attribute, $this->reservationSeries->GetAttributeValue($attribute->Id()));
 		}
 
 		$this->Set('Attributes', $attributeValues);

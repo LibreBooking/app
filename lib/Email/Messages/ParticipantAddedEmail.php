@@ -56,3 +56,11 @@ class ParticipantAddedEmail extends ReservationEmailMessage
         return 'ReservationCreated.tpl';
     }
 }
+
+class ParticipantUpdatedEmail extends ParticipantAddedEmail
+{
+	public function Subject()
+	{
+		return $this->Translate('ReservationUpdatedSubject');
+	}
+}
