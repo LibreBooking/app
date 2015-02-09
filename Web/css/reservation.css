@@ -180,7 +180,7 @@ label.reservationDate {
   width: 60px;
 }
 .reminderTime {
-  width: auto;
+  width: 65px;
 }
 .reminderInterval {
   width: auto;

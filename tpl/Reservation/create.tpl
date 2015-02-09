@@ -1,5 +1,5 @@
 {*
-Copyright 2011-2014 Nick Korbel
+Copyright 2011-2015 Nick Korbel
 
 This file is part of Booked Scheduler.
 
@@ -20,9 +20,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 {/block}
 
 <div id="page-reservation">
-
 	<div id="reservation-box">
-
 		<form id="form-reservation" method="post" enctype="multipart/form-data" role="form" class="form-horizontal">
 
 			<div class="row">
@@ -198,12 +196,11 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 			{if $RemindersEnabled}
 				<div class="row">
-					<div class="reservationReminders">
-						<div class="form-group">
+					<div class="col-xs-12 reservationReminders">
 							<div id="reminderOptionsStart">
 								<label for="startReminderEnabled">{translate key=SendReminder}</label>
 								<input type="checkbox" id="startReminderEnabled" class="reminderEnabled" {formname key=START_REMINDER_ENABLED}/>
-								<input type="text" size="3" maxlength="3" value="15"
+								<input type="number" min="0" size="3" maxlength="3" value="15"
 									   class="reminderTime form-control inline-block" {formname key=START_REMINDER_TIME}/>
 								<select class="reminderInterval form-control inline-block" {formname key=START_REMINDER_INTERVAL}>
 									<option value="{ReservationReminderInterval::Minutes}">{translate key=minutes}</option>
@@ -214,7 +211,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 							</div>
 							<div id="reminderOptionsEnd">
 								<input type="checkbox" class="reminderEnabled" {formname key=END_REMINDER_ENABLED}/>
-								<input type="text" size="3" maxlength="3" value="15"
+								<input type="number" min="0" size="3" maxlength="3" value="15"
 									   class="reminderTime form-control inline-block" {formname key=END_REMINDER_TIME}/>
 								<select class="reminderInterval  form-control inline-block" {formname key=END_REMINDER_INTERVAL}>
 									<option value="{ReservationReminderInterval::Minutes}">{translate key=minutes}</option>
@@ -224,7 +221,6 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 								<span class="reminderLabel">{translate key=ReminderBeforeEnd}</span>
 							</div>
 							<div class="clear">&nbsp;</div>
-						</div>
 					</div>
 				</div>
 			{/if}

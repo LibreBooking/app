@@ -477,30 +477,6 @@ function Reservation(opts)
 		});
 	}
 
-	function InitializeCheckboxes(dialogBoxId, displayDivId)
-	{
-		var selectedItems = [];
-		$(displayDivId + ' p').each(function ()
-		{
-			selectedItems.push($(this).text())
-		});
-
-		var resourceId = $('#resourceNames').find('.resourceId').val();
-
-		$(dialogBoxId + ' :checkbox').each(function ()
-		{
-			var checkboxText = $(this).next().text();
-			if ($.inArray(checkboxText, selectedItems) >= 0 || $(this).val() == resourceId)
-			{
-				$(this).prop('checked', true);
-			}
-			else
-			{
-				$(this).removeAttr('checked');
-			}
-		});
-	}
-
 	function InitializeDateElements()
 	{
 		var periodsCache = [];
@@ -694,19 +670,18 @@ function Reservation(opts)
 		elements.reservationAttachments.delegate('.add-attachment', 'click', function (e)
 		{
 			e.preventDefault();
-			var li = $(this).closest('li');
+			var li = $(this).closest('.attachment-item');
 			var cloned = li.clone();
 			cloned.appendTo(li.parent());
 			cloned.wrap('<form>').closest('form').get(0).reset();
 			cloned.unwrap();
 			enableCorrectButtons();
-
 		});
 
 		elements.reservationAttachments.delegate('.remove-attachment', 'click', function (e)
 		{
 			e.preventDefault();
-			$(this).closest('li').remove();
+			$(this).closest('.attachment-item').remove();
 			enableCorrectButtons();
 		});
 	}

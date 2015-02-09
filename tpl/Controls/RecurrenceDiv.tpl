@@ -16,7 +16,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 *}
-<div id="{$prefix}repeatDiv">
+<div id="{$prefix}repeatDiv" class="repeat-div">
 	<div class="form-group">
 		<label for="{$prefix}repeatOptions">{translate key="RepeatPrompt"}</label>
 		<select id="{$prefix}repeatOptions" {formname key=repeat_options} class="form-control repeat-drop inline-block">
@@ -27,7 +27,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 		<div class="col-xs-12">
 			<div class="col-md-4 col-xs-12">
-				<div id="{$prefix}repeatEveryDiv" style="display:none;" class="days weeks months years">
+				<div id="{$prefix}repeatEveryDiv" class="no-show days weeks months years">
 					<label for="{$prefix}repeatInterval">{translate key="RepeatEveryPrompt"}</label>
 					<select id="{$prefix}repeatInterval" {formname key=repeat_every} class="form-control repeat-interval-drop inline-block">
 						{html_options values=$RepeatEveryOptions output=$RepeatEveryOptions}
@@ -86,7 +86,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 				</div>
 			</div>
 		</div>
-		<div id="{$prefix}repeatUntilDiv" style="display:none;">
+		<div id="{$prefix}repeatUntilDiv" class="no-show">
 			<label for="{$prefix}EndRepeat">{translate key="RepeatUntilPrompt"}</label>
 			<input type="text" id="{$prefix}EndRepeat" class="form-control inline-block dateinput" value="{formatdate date=$RepeatTerminationDate}"/>
 			<input type="hidden" id="{$prefix}formattedEndRepeat" {formname key=end_repeat_date}
