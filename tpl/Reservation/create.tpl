@@ -61,7 +61,25 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 							{if $CanChangeUser}
 								<a href="#" id="showChangeUsers"
 								   class="small-action">{translate key=Change} <i class="fa fa-user"></i></a>
-								<div id="changeUserDialog" title="{translate key=ChangeUser}" class="dialog"></div>
+								{*<div id="changeUserDialog" title="{translate key=ChangeUser}" class="dialog"></div>*}
+
+								<div class="modal fade" id="changeUserDialog" tabindex="-1" role="dialog" aria-labelledby="usersModalLabel" aria-hidden="true">
+									<div class="modal-dialog">
+										<div class="modal-content">
+											<div class="modal-header">
+												<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+												<h4 class="modal-title" id="usersModalLabel">{translate key=ChangeUser}</h4>
+											</div>
+											<div class="modal-body">
+
+											</div>
+											<div class="modal-footer">
+												<button type="button" class="btn btn-default" data-dismiss="modal">{translate key='Cancel'}</button>
+												<button type="button" class="btn btn-primary">{translate key='Done'}</button>
+											</div>
+										</div>
+									</div>
+								</div>
 							{/if}
 						</div>
 					</div>
@@ -200,7 +218,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 							<div id="reminderOptionsStart">
 								<label for="startReminderEnabled">{translate key=SendReminder}</label>
 								<input type="checkbox" id="startReminderEnabled" class="reminderEnabled" {formname key=START_REMINDER_ENABLED}/>
-								<input type="number" min="0" size="3" maxlength="3" value="15"
+								<input type="number" min="0" max="999" size="3" maxlength="3" value="15"
 									   class="reminderTime form-control inline-block" {formname key=START_REMINDER_TIME}/>
 								<select class="reminderInterval form-control inline-block" {formname key=START_REMINDER_INTERVAL}>
 									<option value="{ReservationReminderInterval::Minutes}">{translate key=minutes}</option>
@@ -211,7 +229,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 							</div>
 							<div id="reminderOptionsEnd">
 								<input type="checkbox" class="reminderEnabled" {formname key=END_REMINDER_ENABLED}/>
-								<input type="number" min="0" size="3" maxlength="3" value="15"
+								<input type="number" min="0" max="999" size="3" maxlength="3" value="15"
 									   class="reminderTime form-control inline-block" {formname key=END_REMINDER_TIME}/>
 								<select class="reminderInterval  form-control inline-block" {formname key=END_REMINDER_INTERVAL}>
 									<option value="{ReservationReminderInterval::Minutes}">{translate key=minutes}</option>
@@ -326,7 +344,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 									{if $accessory->GetQuantityAvailable() == 1}
 										<input type="checkbox" name="accessory{$accessory->GetId()}" value="1" size="3"/>
 									{else}
-										<input type="text" class="form-control accessory-quantity" name="accessory{$accessory->GetId()}" value="0" size="3"/>
+										<input type="number" min="0" max="999" class="form-control accessory-quantity" name="accessory{$accessory->GetId()}" value="0" size="3"/>
 									{/if}
 								</td>
 								<td>{$accessory->GetQuantityAvailable()|default:'&infin;'}</td>

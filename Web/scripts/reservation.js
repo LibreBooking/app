@@ -173,7 +173,7 @@ function Reservation(opts)
 	{
 		elements.accessoriesList.empty();
 
-		elements.accessoriesDialog.find('input:text, :checked').each(function ()
+		elements.accessoriesDialog.find('.accessory-quantity, :checked').each(function ()
 		{
 			AddAccessory($(this).siblings('.name').val(), $(this).siblings('.id').val(), $(this).val());
 		});
@@ -231,7 +231,7 @@ function Reservation(opts)
 
 	function GetDisallowedAccessoryIds()
 	{
-		var disAllowedAccessoryIds = new Array();
+		var disAllowedAccessoryIds = [];
 
 		var resourceIds = GetSelectedResourceIds();
 		elements.accessoriesDialog.find('tr[accessory-id]').each(function(i, row){
@@ -290,7 +290,7 @@ function Reservation(opts)
 		}
 		var x = 'accessory-id=' + id + ',quantity=' + quantity + ',name=' + encodeURIComponent(name);
 
-		elements.accessoriesList.append('<p accessoryId="' + id + '"><span class="quantity">(' + quantity + ')</span> ' + name + '<input type="hidden" name="' + options.accessoryListInputId + '" value="' + x + '"/></p>');
+		elements.accessoriesList.append('<p accessoryId="' + id + '"><span class="badge quantity">' + quantity + '</span> ' + name + '<input type="hidden" name="' + options.accessoryListInputId + '" value="' + x + '"/></p>');
 	};
 
 	var AddResources = function ()
@@ -707,7 +707,7 @@ function Reservation(opts)
 		$('#changeUserDialog').delegate('.add', 'click', function ()
 		{
 			changeUser.chooseUser($(this).attr('userId'), $(this).text());
-			$('#changeUserDialog').dialog('close');
+			$('#changeUserDialog').modal('hide');
 		});
 	};
 
@@ -728,9 +728,10 @@ function Reservation(opts)
 	changeUser.showAll = function ()
 	{
 		var dialogElement = $('#changeUserDialog');
+		var listElement = dialogElement.find('.modal-body');
 		var allUserList;
 		var items = [];
-		if (dialogElement.children().length == 0)
+		if (listElement.children().length == 0)
 		{
 			$.ajax({
 				url: options.changeUserAutocompleteUrl,
@@ -745,14 +746,14 @@ function Reservation(opts)
 
 			$.map(allUserList, function (item)
 			{
-				items.push('<li><a href="#" class="add" title="Add" userId="' + item.Id + '">' + item.DisplayName + '</a></li>')
+				items.push('<div><a href="#" class="add" title="Add" userId="' + item.Id + '">' + item.DisplayName + '</a></div>')
 			});
 		}
 
-		$('<ul/>', {'class': 'no-style', html: items.join('')}).appendTo(dialogElement);
+		$('<div/>', {'class': 'no-style', html: items.join('')}).appendTo(listElement);
 
-		dialogElement.dialog({minHeight: 400, minWidth: 700, width: 700});
-		dialogElement.dialog('open');
+
+		dialogElement.modal('show');
 	};
 
 	participation.addParticipant = function (name, userId)
