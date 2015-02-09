@@ -733,8 +733,7 @@ a.toggle-sidebar {
 .reservationReminders,
 .reservationAttachments,
 .customAttributes {
-  margin: 5px 15px;
-  padding: 5px;
+  padding-top: 6px;
   border-top: solid 1px #f0f0f0;
 }
 .reservationDeleteButtons {

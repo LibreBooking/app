@@ -243,11 +243,11 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 				</div>
 			{/if}
 
-			<div id="custom-attributes-placeholder"></div>
+			<div class="row" id="custom-attributes-placeholder"></div>
 
 			{if $UploadsEnabled}
 				<div class="row">
-					<div class="reservationAttachments">
+					<div class="col-xs-12 reservationAttachments">
 
 						<label>{translate key=AttachFile} <span class="note">({$MaxUploadSize}
 								MB {translate key=Maximum})</span><br/> </label>
@@ -376,6 +376,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 	{*</div>*}
 
 </div>
+
 {control type="DatePickerSetupControl" ControlId="BeginDate" AltId="formattedBeginDate" DefaultDate=$StartDate}
 {control type="DatePickerSetupControl" ControlId="EndDate" AltId="formattedEndDate" DefaultDate=$EndDate}
 {control type="DatePickerSetupControl" ControlId="EndRepeat" AltId="formattedEndRepeat" DefaultDate=$RepeatTerminationDate}
