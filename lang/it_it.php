@@ -497,6 +497,7 @@ class it_it extends en_us
 		$strings['Unchanged'] = 'Non modificato';
 		$strings['Common'] = 'Generale';
 		$strings['AdvancedFilter'] = 'Filtro avanzato';
+		$strings['AllParticipants'] = 'Tutti i partecipanti';
 		// End Strings
 
 		// Install

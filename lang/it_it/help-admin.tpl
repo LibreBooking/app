@@ -38,7 +38,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 <p>Sotto la finestra di configurazione delle caselle c'&egrave; uno strumento per la creazione veloce delle stesse. Questo configura le caselle disponibili in un dato intervallo di tempo</p>
 
-<h3>Configurazione risorse</h3>
+<h3>Configurazione delle risorse</h3>
 
 <p>Le risorse definite si possono accedere e gestire dal menu "Risorse". In questo modo &egrave; possibile modificare gli attributi e la modalit&agrave; di utilizzo di una risorsa.</p>
 
@@ -213,21 +213,21 @@ un lavoro cron in cPanel</a> &egrave; lineare sia adoperando la voce "Every mimu
 
 <p class="setting"><span>$conf['settings']['reservation']['enable.reminders']</span>Se, o meno, i promemoria sono abilitati. Questo richiede l'abiltazione dell'email e la configurazione delle operazioni pianificate. Il default &egrave;: "false".</p>
 
-<p class="setting"><span>$conf['settings']['reservation.notify']['resource.admin.add']</span>Se, o meno, inviare una email a tutti gli amministratori di rosorsa quando una prenotazione viene aggiunta. Il default &egrave;: "false".</p>
+<p class="setting"><span>$conf['settings']['reservation.notify']['resource.admin.add']</span>Se, o meno, inviare una email a tutti gli amministratori di risorsa quando una prenotazione viene aggiunta. Il default &egrave;: "false".</p>
 
-<p class="setting"><span>$conf['settings']['reservation.notify']['resource.admin.update']</span>Se, o meno, inviare una email a tutti gli amministratori di rosorsa quando una prenotazione viene aggiornata. Il default &egrave;: "false".</p>
+<p class="setting"><span>$conf['settings']['reservation.notify']['resource.admin.update']</span>Se, o meno, inviare una email a tutti gli amministratori di risorsa quando una prenotazione viene aggiornata. Il default &egrave;: "false".</p>
 
-<p class="setting"><span>$conf['settings']['reservation.notify']['resource.admin.delete']</span>Se, o meno, inviare una email a tutti gli amministratori di rosorsa quando una prenotazione viene cancellata. Il default &egrave;: "false".</p>
+<p class="setting"><span>$conf['settings']['reservation.notify']['resource.admin.delete']</span>Se, o meno, inviare una email a tutti gli amministratori di risorsa quando una prenotazione viene cancellata. Il default &egrave;: "false".</p>
 
-<p class="setting"><span>$conf['settings']['reservation.notify']['resource.admin.approval']</span></p>
+<p class="setting"><span>$conf['settings']['reservation.notify']['resource.admin.approval']</span>Se, o meno, inviare una email a tutti gli amministratori di risorsa quando una prenotazione viene approvata. Il default &egrave;: "false".</p>
 
-<p class="setting"><span>$conf['settings']['reservation.notify']['application.admin.add']</span>Se, o meno, inviare una email a tutti gli amministratori dell'applicazione quando una prenotazione viene creata.</p>
+<p class="setting"><span>$conf['settings']['reservation.notify']['application.admin.add']</span>Se, o meno, inviare una email a tutti gli amministratori dell'applicazione quando una prenotazione viene creata. Il default &egrave;: "false".</p>
 
 <p class="setting"><span>$conf['settings']['reservation.notify']['application.admin.update']</span>Se, o meno, inviare una email a tutti gli amministratori dell'applicazione quando una prenotazione viene aggiornata. Il default &egrave;: "false".</p>
 
 <p class="setting"><span>$conf['settings']['reservation.notify']['application.admin.delete']</span>Se, o meno, inviare una email a tutti gli amministratori dell'applicazione quando una prenotazione viene cancellata. Il default &egrave;: "false".</p>
 
-<p class="setting"><span>$conf['settings']['reservation.notify']['application.admin.approval']</span></p>
+<p class="setting"><span>$conf['settings']['reservation.notify']['application.admin.approval']</span>Se, o meno, inviare una email a tutti gli amministratori dell'applicazione quando una prenotazione viene approvata. Il default &egrave;: "false".</p>
 
 <p class="setting"><span>$conf['settings']['reservation.notify']['group.admin.add']</span>Se, o meno, inviare una email a tutti gli amministratori di gruppo quando una prenotazione viene creata. Il default &egrave;: "false".</p>
 
@@ -235,7 +235,7 @@ un lavoro cron in cPanel</a> &egrave; lineare sia adoperando la voce "Every mimu
 
 <p class="setting"><span>$conf['settings']['reservation.notify']['group.admin.delete']</span>Se, o meno, inviare una email a tutti gli amministratori di gruppo quando una prenotazione viene cancellata. Il default &egrave;: "false".</p>
 
-<p class="setting"><span>$conf['settings']['reservation.notify']['group.admin.approval']</span></p>
+<p class="setting"><span>$conf['settings']['reservation.notify']['group.admin.approval']</span>Se, o meno, inviare una email a tutti gli amministratori di gruppo quando una prenotazione viene approvata. Il default &egrave;: "false".</p>
 
 <p class="setting"><span>$conf['settings']['uploads']['enable.reservation.attachments']</span>Se, o meno, agli utenti è consentito allegare un documento alle prenotazioni. Il default &egrave;: "false".</p>
 
@@ -269,7 +269,7 @@ un lavoro cron in cPanel</a> &egrave; lineare sia adoperando la voce "Every mimu
 
 <p class="setting"><span>$conf['settings']['phpmailer']['sendmail.path']</span>Path di sendmail, se si intende fare uso di sendmail</p>
 
-<p class="setting"><span>$conf['settings']['phpmailer']['sendmail.debug']</span>Se, o meno, attivare le notifiche di debug per sendamail</p>
+<p class="setting"><span>$conf['settings']['phpmailer']['smtp.debug']</span>Se, o meno, attivare le notifiche di debug per le mail</p>
 
 <p class="setting"><span>$conf['settings']['plugins']['Authentication']</span>Nome della plugin di autenticazione da utilizzare. Si veda: "Plugins" più avanti.</p>
 
@@ -324,6 +324,10 @@ un lavoro cron in cPanel</a> &egrave; lineare sia adoperando la voce "Every mimu
 <h3>Installare i Plugins</h3>
 
 <p>Per installare un nuovo plugin, copiare la cartella dentro una delle cartelle Authentication, Authorization e Permission. In seguito modificare $conf['settings']['plugins']['Authentication'], $conf['settings']['plugins']['Authorization'] o $conf['settings']['plugins']['Permission'] nel file config.php inserendo il nome della cartella del plugin.</p>
+
+<h2>Codici disponibili per le etichette</h2>
+
+<p>I codici disponibili per le etichette delle prenotazioni sono: {literal}{name}, {title}, {description}, {email}, {phone}, {organization}, {position}, {startdate}, {enddate} {resourcename} {participants} {invitees}{/literal}. Gli attributi personalizzati possono essere aggiunti usando "att" seguito dall'ID dell'attributo. Per esempio: {literal}{att1}{/literal}. Si omettano i codici se non si desiderano le etichette. Una qualunque combinazione di codici è ammessa.</p>
 
 </div>
 
