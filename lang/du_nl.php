@@ -691,7 +691,7 @@ class du_nl extends en_us
 
     protected function _GetHtmlLangCode()
     {
-        return 'en_us';
+        return 'du_nl';
     }
 }
 
