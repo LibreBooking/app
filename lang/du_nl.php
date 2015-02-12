@@ -627,19 +627,19 @@ class du_nl extends en_us
         $strings['DaySaturdayAbbr'] = 'Zat';
 
         // Email Subjects
-        $strings['ReservationApprovedSubject'] = 'Uw reservatie is goedgekeurd';
-        $strings['ReservationCreatedSubject'] = 'Uw reservatie is aangemaakt';
-        $strings['ReservationUpdatedSubject'] = 'Uw reservatie is aangepast';
-        $strings['ReservationCreatedAdminSubject'] = 'Melding: Een reservatie is aangemaakt';
-        $strings['ReservationUpdatedAdminSubject'] = 'Melding: Een reservatie is aangepast';
+        $strings['ReservationApprovedSubject'] = 'Uw reservering is goedgekeurd';
+        $strings['ReservationCreatedSubject'] = 'Uw reservering is aangemaakt';
+        $strings['ReservationUpdatedSubject'] = 'Uw reservering is aangepast';
+        $strings['ReservationCreatedAdminSubject'] = 'Melding: Een reservering is aangemaakt';
+        $strings['ReservationUpdatedAdminSubject'] = 'Melding: Een reservering is aangepast';
         $strings['ParticipantAddedSubject'] = 'Melding: deelname aan een reservering';
         $strings['InviteeAddedSubject'] = 'Uitnodiging reservering';
         $strings['ResetPassword'] = 'Verzoek om wachtwoord te resetten';
         $strings['ForgotPasswordEmailSent'] = 'Een email is naar uw account gestuurd met de informatie om uw wachtwoord te resetten';
 		$strings['ActivateYourAccount'] = 'Activeer Je Account';
 		$strings['ReportSubject'] = 'Je Opgevraagde Rapport (%s)';
-		$strings['ReservationStartingSoonSubject'] = 'Reservatie voor %s start binnenkort';
-		$strings['ReservationEndingSoonSubject'] = 'Reservatie voor %s eindigd binnekort';
+		$strings['ReservationStartingSoonSubject'] = 'Reservering voor %s start binnenkort';
+		$strings['ReservationEndingSoonSubject'] = 'Reservering voor %s eindigd binnekort';
 		$strings['UserAdded'] = 'Een nieuwe gebruiker is toegevoegd.';
         //
 
