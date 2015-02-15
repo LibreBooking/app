@@ -207,8 +207,7 @@ class CalendarPresenterTests extends TestBase
 
 		$expectedReservations = CalendarReservation::FromScheduleReservationList($reservations,
 																				 $resources,
-																				 $this->fakeUser,
-																				 $this->privacyFilter);
+																				 $this->fakeUser);
 
 		$this->assertEquals($expectedReservations, $actualReservations);
 	}
@@ -225,12 +224,31 @@ class CalendarPresenterTests extends TestBase
 
 		$actualReservations = CalendarReservation::FromScheduleReservationList($reservations,
 																			   $resources,
-																			   $this->fakeUser,
-																			   $this->privacyFilter);
+																			   $this->fakeUser);
 
 		$this->assertEquals(1, count($actualReservations));
 
 	}
-}
 
-?>
+	public function testGroupsReservationsByResource()
+	{
+		$start = Date::Now();
+		$end = Date::Now()->AddDays(1);
+
+		$r1 = new TestReservationItemView(1, $start, $end, 1);
+		$r1->SeriesId = 1;
+
+		$r2 = new TestReservationItemView(2, $start, $end, 2);
+		$r2->SeriesId = 1;
+
+		$r3 = new TestReservationItemView(3, $start, $end, 1);
+		$r3->SeriesId = 2;
+
+		$reservations = array($r1, $r2, $r3);
+
+		$resources = array(new FakeBookableResource(1, '1'), new FakeBookableResource(2, '2'));
+		$calendarReservations = CalendarReservation::FromScheduleReservationList($reservations, $resources, $this->fakeUser, true);
+
+		$this->assertEquals(2, count($calendarReservations));
+	}
+}

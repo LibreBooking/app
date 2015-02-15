@@ -1,22 +1,22 @@
 <?php
 /**
-Copyright 2011-2014 Nick Korbel
-
-This file is part of Booked Scheduler.
-
-Booked Scheduler is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-Booked Scheduler is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ * Copyright 2011-2014 Nick Korbel
+ *
+ * This file is part of Booked Scheduler.
+ *
+ * Booked Scheduler is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Booked Scheduler is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 require_once(ROOT_DIR . 'lib/Application/Schedule/namespace.php');
 require_once(ROOT_DIR . 'Domain/Access/namespace.php');
@@ -106,5 +106,36 @@ class CalendarMonthTests extends TestBase
 
 		$this->assertEquals($next, $month->GetNextDate());
 		$this->assertEquals($prev, $month->GetPreviousDate());
+	}
+
+	public function testGroupsReservationsByResource()
+	{
+		$start = Date::Now();
+		$end = Date::Now()->AddDays(1);
+
+		$r1 = new ReservationItemView();
+		$r1->SeriesId = 1;
+		$r1->ResourceId = 1;
+		$r1->StartDate = $start;
+		$r1->EndDate = $end;
+
+		$r2 = new ReservationItemView();
+		$r2->SeriesId = 1;
+		$r2->ResourceId = 2;
+		$r2->StartDate = $start;
+		$r2->EndDate = $end;
+
+		$r3 = new ReservationItemView();
+		$r3->SeriesId = 2;
+		$r3->ResourceId = 1;
+		$r3->StartDate = $start;
+		$r3->EndDate = $end;
+
+		$reservations = array($r1, $r2, $r3);
+
+		$timezone = 'America/Chicago';
+		$calendarReservations = CalendarReservation::FromViewList($reservations, $timezone, $this->fakeUser, true);
+
+		$this->assertEquals(2, count($calendarReservations));
 	}
 }

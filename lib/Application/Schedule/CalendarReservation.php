@@ -1,19 +1,19 @@
 <?php
+
 /**
-Copyright 2011-2014 Nick Korbel
-
-This file is part of Booked Scheduler is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
+ * Copyright 2011-2014 Nick Korbel
+ *
+ * This file is part of Booked Scheduler is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 class CalendarReservation
 {
 	/**
@@ -108,14 +108,24 @@ class CalendarReservation
 	 * @param $reservations array|ReservationItemView[]
 	 * @param $timezone string
 	 * @param $user UserSession
+	 * @param $groupSeriesByResource bool
 	 * @return array|CalendarReservation[]
 	 */
-	public static function FromViewList($reservations, $timezone, $user)
+	public static function FromViewList($reservations, $timezone, $user, $groupSeriesByResource = false)
 	{
+		$knownSeries = array();
 		$results = array();
 
 		foreach ($reservations as $reservation)
 		{
+			if ($groupSeriesByResource)
+			{
+				if (array_key_exists($reservation->SeriesId, $knownSeries))
+				{
+					continue;
+				}
+				$knownSeries[$reservation->SeriesId] = true;
+			}
 			$results[] = self::FromView($reservation, $timezone, $user);
 		}
 		return $results;
@@ -139,7 +149,8 @@ class CalendarReservation
 
 		$res->Title = $reservation->Title;
 		$res->Description = $reservation->Description;
-		$res->DisplayTitle = $factory->Format($reservation, Configuration::Instance()->GetSectionKey(ConfigSection::RESERVATION_LABELS, ConfigKeys::RESERVATION_LABELS_MY_CALENDAR));
+		$res->DisplayTitle = $factory->Format($reservation, Configuration::Instance()->GetSectionKey(ConfigSection::RESERVATION_LABELS,
+																									 ConfigKeys::RESERVATION_LABELS_MY_CALENDAR));
 		$res->Invited = $reservation->UserLevelId == ReservationUserLevel::INVITEE;
 		$res->Participant = $reservation->UserLevelId == ReservationUserLevel::PARTICIPANT;
 		$res->Owner = $reservation->UserLevelId == ReservationUserLevel::OWNER;
@@ -161,12 +172,12 @@ class CalendarReservation
 	 * @param array|ReservationItemView[] $reservations
 	 * @param array|ResourceDto[] $resources
 	 * @param UserSession $userSession
-	 * @param IPrivacyFilter $privacyFilter
+	 * @param bool $groupSeriesByResource
 	 * @return array|CalendarReservation[]
 	 */
-	public static function FromScheduleReservationList($reservations, $resources, UserSession $userSession,
-													   IPrivacyFilter $privacyFilter)
+	public static function FromScheduleReservationList($reservations, $resources, UserSession $userSession, $groupSeriesByResource = false)
 	{
+		$knownSeries = array();
 		$factory = new SlotLabelFactory($userSession);
 
 		$resourceMap = array();
@@ -184,6 +195,15 @@ class CalendarReservation
 				continue;
 			}
 
+			if ($groupSeriesByResource)
+			{
+				if (array_key_exists($reservation->SeriesId, $knownSeries))
+				{
+					continue;
+				}
+				$knownSeries[$reservation->SeriesId] = true;
+			}
+
 			$timezone = $userSession->Timezone;
 			$start = $reservation->StartDate->ToTimezone($timezone);
 			$end = $reservation->EndDate->ToTimezone($timezone);
@@ -194,7 +214,8 @@ class CalendarReservation
 			$cr->OwnerName = new FullName($reservation->FirstName, $reservation->LastName);
 			$cr->OwnerFirst = $reservation->FirstName;
 			$cr->OwnerLast = $reservation->LastName;
-			$cr->DisplayTitle = $factory->Format($reservation, Configuration::Instance()->GetSectionKey(ConfigSection::RESERVATION_LABELS, ConfigKeys::RESERVATION_LABELS_RESOURCE_CALENDAR));
+			$cr->DisplayTitle = $factory->Format($reservation, Configuration::Instance()->GetSectionKey(ConfigSection::RESERVATION_LABELS,
+																										ConfigKeys::RESERVATION_LABELS_RESOURCE_CALENDAR));
 
 			$color = $reservation->UserPreferences->Get(UserPreferences::RESERVATION_COLOR);
 			if (!empty($color))
