@@ -837,7 +837,8 @@ label.reservationDate {
 .repeat-interval-drop {
   width: auto;
 }
-.weeks {
+.weeks,
+.months {
   margin-top: 5px;
 }
 .weeks .btn-sm {

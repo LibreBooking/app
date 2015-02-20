@@ -395,6 +395,20 @@ function Reservation(opts)
 		elements.endDate.trigger('change');
 	};
 
+	var SelectRepeatWeekday = function()
+	{
+		$('#repeatOnWeeklyDiv').find(':checkbox').each(function(i, v)
+		{
+			$(v).parent().removeClass('active');
+			$(v).prop('checked', false);
+		});
+
+		var date = moment(elements.beginDate.val() + 'T' + elements.beginTime.val());
+		var checkbox = $('#repeatDay'+ date.day());
+		checkbox.prop('checked', true);
+		checkbox.parent().addClass('active');
+	};
+
 	var ChangeUpdateScope = function (updateScopeValue)
 	{
 		$('#hdnSeriesUpdateScope').val(updateScopeValue);
@@ -490,6 +504,7 @@ function Reservation(opts)
 			PopulatePeriodDropDown(elements.beginDate, elements.beginTime);
 			AdjustEndDate();
 			DisplayDuration();
+			SelectRepeatWeekday();
 
 			elements.beginDate.data['beginPreviousVal'] = elements.beginDate.val();
 		});
@@ -560,6 +575,8 @@ function Reservation(opts)
 				async: false
 			});
 		};
+
+		SelectRepeatWeekday();
 	}
 
 	function InitializeParticipationElements()

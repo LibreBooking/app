@@ -72,17 +72,19 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 					</div>
 				</div>
 
-				<div id="repeatOnMonthlyDiv" class="no-show months btn-group" data-toggle="buttons">
-					<label class="btn btn-default btn-sm active">
-						<input type="radio" {formname key=REPEAT_MONTHLY_TYPE} value="{RepeatMonthlyType::DayOfMonth}"
-						   id="{$prefix}repeatMonthDay"/>
-						{translate key="repeatDayOfMonth"}
-					</label>
-					<label class="btn btn-default btn-sm">
-					<input type="radio" {formname key=REPEAT_MONTHLY_TYPE} value="{RepeatMonthlyType::DayOfWeek}"
-						   id="{$prefix}repeatMonthWeek"/>
-						{translate key="repeatDayOfWeek"}
-					</label>
+				<div id="{$prefix}repeatOnMonthlyDiv" class="months no-show">
+					<div class="btn-group" data-toggle="buttons">
+						<label class="btn btn-default btn-sm active">
+							<input type="radio" {formname key=REPEAT_MONTHLY_TYPE} value="{RepeatMonthlyType::DayOfMonth}"
+								   id="{$prefix}repeatMonthDay"/>
+							{translate key="repeatDayOfMonth"}
+						</label>
+						<label class="btn btn-default btn-sm">
+							<input type="radio" {formname key=REPEAT_MONTHLY_TYPE} value="{RepeatMonthlyType::DayOfWeek}"
+								   id="{$prefix}repeatMonthWeek"/>
+							{translate key="repeatDayOfWeek"}
+						</label>
+					</div>
 				</div>
 			</div>
 		</div>
