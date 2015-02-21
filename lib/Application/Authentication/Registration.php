@@ -109,11 +109,12 @@ class Registration implements IRegistration
 		}
 		else
 		{
+			$defaultHomePageId = Configuration::Instance()->GetKey(ConfigKeys::DEFAULT_HOMEPAGE, new IntConverter());
 			$additionalFields = array('phone' => $user->Phone(), 'organization' => $user->Organization(), 'position' => $user->Title());
 			$this->Register($user->UserName(), $user->Email(), $user->FirstName(), $user->LastName(), $user->Password(),
 							$user->TimezoneName(),
 							$user->LanguageCode(),
-							Pages::DEFAULT_HOMEPAGE_ID,
+							empty($defaultHomePageId) ? Pages::DEFAULT_HOMEPAGE_ID : $defaultHomePageId,
 							$additionalFields);
 		}
 	}

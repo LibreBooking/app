@@ -266,6 +266,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 <p class="setting"><span>$conf['settings']['logout.url']</span>Where the user will be redirected after being logged out.
 	Default is the login page.</p>
 
+<p class="setting"><span>$conf['settings']['default.homepage']</span>The default homepage to use when new users register 1 = Dashboard, 2 = Schedule, 3 = My
+	Calendar, 4 = Resource Calendar. Default is 1 (Dashboard)</p>
 
 <p class="setting"><span>$conf['settings']['schedule']['use.per.user.colors']</span>Use user-specific,
 	administrator-defined colors for reservations. Default is false.</p>

@@ -34,32 +34,26 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 	{foreach from=$settings item=setting}
 		{cycle values=',row1' assign=rowCss}
 		{assign var="name" value=$setting->Name}
-    <li class="{$rowCss}">
-	{if $setting->Key == ConfigKeys::DEFAULT_TIMEZONE || $setting->Key == ConfigKeys::LANGUAGE || $setting->Type == ConfigSettingType::String}
-	<label for="{$name}"><span class="label">{$setting->Key}</span></label>
-	{else}
-	<fieldset style="margin-bottom: 0px;">
-  	   <legend style="display: inline; width: auto; border: medium none; float: left; margin-bottom: 5px;">
-		<span class="label">{$setting->Key}</span>
-	   </legend>
-	{/if}
+    <li class="{$rowCss}"><span class="label">{$setting->Key}</span>
 		{if $setting->Key == ConfigKeys::DEFAULT_TIMEZONE}
-            <select name="{$name}" class="textbox" id="{$name}">
+            <select name="{$name}" class="textbox">
 				{html_options values=$TimezoneValues output=$TimezoneOutput selected=$setting->Value}
             </select>
-			{elseif $setting->Key == ConfigKeys::LANGUAGE}
-            <select name="{$name}" class="textbox" id="{$name}">
+		{elseif $setting->Key == ConfigKeys::LANGUAGE}
+            <select name="{$name}" class="textbox">
 				{object_html_options options=$Languages key='GetLanguageCode' label='GetDisplayName' selected=$setting->Value|strtolower}
             </select>
-			{elseif $setting->Type == ConfigSettingType::String}
-            <input type="text" size="50" name="{$name}" value="{$setting->Value|escape}" class="textbox" id="{$name}" />
-			{else}
-	    <div style="display: inline;">
+		{elseif $setting->Key == ConfigKeys::DEFAULT_HOMEPAGE}
+			<select name="{$name}" class="textbox">
+				{html_options values=$HomepageValues output=$HomepageOutput selected=$setting->Value|strtolower}
+			</select>
+		{elseif $setting->Type == ConfigSettingType::String}
+            <input type="text" size="50" name="{$name}" value="{$setting->Value|escape}" class="textbox"/>
+		{else}
             <label>{translate key="True"}<input type="radio" value="true" name="{$name}"{if $setting->Value == 'true'}
                                                 checked="checked"{/if} /></label>
             <label>{translate key="False"}<input type="radio" value="false"
                                                  name="{$name}"{if $setting->Value == 'false'} checked="checked"{/if} /></label>
-	    </div>
 		{/if}
     </li>
 	{/foreach}
@@ -93,16 +87,16 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
     <input type="button" value="{translate key=Update}" class='button save'/>
 
     <form id="frmConfigSettings" method="post" ajaxAction="{ConfigActions::Update}" action="{$smarty.server.SCRIPT_NAME}">
+		<h3>{translate key=GeneralConfigSettings}</h3>
 		<fieldset>
-		<legend>{translate key=GeneralConfigSettings}</legend>
 		<ul class="no-style config-settings">
 			{list_settings settings=$Settings}
         </ul>
 		</fieldset>
 
 		{foreach from=$SectionSettings key=section item=settings}
+            <h3>{$section}</h3>
             <fieldset>
-		<legend>{$section}</legend>
                 <ul class="no-style config-settings">
 					{list_settings settings=$settings}
                 </ul>

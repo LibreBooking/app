@@ -64,6 +64,12 @@ interface IManageConfigurationPage extends IActionPage
 	 * @param string $configFileName
 	 */
 	public function SetSelectedConfigFile($configFileName);
+
+	/**
+	 * @param string[] $homepageValues
+	 * @param string[] $homepageOutput
+	 */
+	public function SetHomepages($homepageValues, $homepageOutput);
 }
 
 class ManageConfigurationPage extends ActionPage implements IManageConfigurationPage
@@ -194,6 +200,12 @@ class ManageConfigurationPage extends ActionPage implements IManageConfiguration
 		}
 
 		return $submittedSettings;
+	}
+
+	public function SetHomepages($homepageValues, $homepageOutput)
+	{
+		$this->Set('HomepageValues', $homepageValues);
+		$this->Set('HomepageOutput', $homepageOutput);
 	}
 
 	/**
