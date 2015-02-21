@@ -30,15 +30,15 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 				<div class="col-xs-6 col-top">
 					<div class="pull-right">
+						<button type="button" class="btn btn-default" onclick="window.location='{$ReturnUrl}'">
+							{translate key='Cancel'}
+						</button>
 						{block name="submitButtons"}
 							<button type="button" class="btn btn-success save create">
 								<span class="glyphicon glyphicon-ok-circle"></span>
 								{translate key='Create'}
 							</button>
 						{/block}
-						<button type="button" class="btn btn-default" onclick="window.location='{$ReturnUrl}'">
-							{translate key='Cancel'}
-						</button>
 					</div>
 				</div>
 			</div>
@@ -99,7 +99,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 									{if $ShowAdditionalResources}
 										<a id="btnAddResources" href="#"
 										   class="small-action" data-toggle="modal" data-target="#dialogResourceGroups">{translate key=Add} <span
-													class="fa fa-plus-square-o"></span></a>
+													class="fa fa-plus-square"></span></a>
 									{/if}
 								</div>
 
@@ -123,7 +123,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 									<label>{translate key="Accessories"}</label>
 									<a href="#" id="addAccessoriesPrompt"
 									   class="small-action" data-toggle="modal" data-target="#dialogAddAccessories">{translate key='Add'} <span
-												class="fa fa-plus-square-o"></span></a>
+												class="fa fa-plus-square"></span></a>
 									<div id="accessories"></div>
 								{/if}</div>
 						</div>
@@ -255,8 +255,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 						<div id="reservationAttachments">
 							<div class="attachment-item">
 								<input type="file" {formname key=RESERVATION_FILE multi=true} />
-								<a class="add-attachment" href="#">{translate key=Add} <i class="fa fa-plus-circle"></i></a>
-								<a class="remove-attachment" href="#"><i class="fa fa-minus-circle"></i></a>
+								<a class="add-attachment" href="#">{translate key=Add} <i class="fa fa-plus-square"></i></a>
+								<a class="remove-attachment" href="#"><i class="fa fa-minus-square"></i></a>
 							</div>
 						</div>
 					</div>
@@ -278,15 +278,15 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 						{/block}
 					</div>
 					<div class="reservationSubmitButtons">
+						<button type="button" class="btn btn-default" onclick="window.location='{$ReturnUrl}'">
+							{translate key='Cancel'}
+						</button>
 						{block name="submitButtons"}
 							<button type="button" class="btn btn-success save create">
 								<span class="glyphicon glyphicon-ok-circle"></span>
 								{translate key='Create'}
 							</button>
 						{/block}
-						<button type="button" class="btn btn-default" onclick="window.location='{$ReturnUrl}'">
-							{translate key='Cancel'}
-						</button>
 					</div>
 				</div>
 			</div>

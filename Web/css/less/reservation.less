@@ -69,9 +69,7 @@
 }
 
 .reservationReminders, .reservationAttachments, .customAttributes {
-//  margin: 0 10px;
   padding-top: 6px;
-  border-top: solid 1px #f0f0f0;
 }
 
 .reservationDeleteButtons {
@@ -91,7 +89,10 @@
   height: 150px;
   width: 98%;
   overflow-y: auto;
-  border: solid 1px #ededed;
+  border: solid 1px @light-gray;
+  padding:2px;
+  .rounded(2px);
+  margin-bottom:5px;
 }
 
 #accessories {
@@ -222,4 +223,17 @@ label.reservationDate {
 
 .reminderInterval {
   width: auto;
+}
+
+a.add {
+  color:@almost-black;
+  text-decoration: none;
+}
+
+a.add .icon {
+  color: @primary-green;
+}
+
+a.remove {
+  color: @muted-red;
 }

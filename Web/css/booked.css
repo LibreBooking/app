@@ -746,7 +746,6 @@ a.toggle-sidebar {
 .reservationAttachments,
 .customAttributes {
   padding-top: 6px;
-  border-top: solid 1px #f0f0f0;
 }
 .reservationDeleteButtons {
   float: left;
@@ -763,7 +762,12 @@ a.toggle-sidebar {
   height: 150px;
   width: 98%;
   overflow-y: auto;
-  border: solid 1px #ededed;
+  border: solid 1px #e9e9e9;
+  padding: 2px;
+  -webkit-border-radius: 2px;
+  -moz-border-radius: 2px;
+  border-radius: 2px;
+  margin-bottom: 5px;
 }
 #accessories {
   max-height: 200px;
@@ -867,6 +871,16 @@ label.reservationDate {
 }
 .reminderInterval {
   width: auto;
+}
+a.add {
+  color: #353432;
+  text-decoration: none;
+}
+a.add .icon {
+  color: #94ba65;
+}
+a.remove {
+  color: #c37c82;
 }
 .admin {
   width: 100%;

@@ -19,44 +19,103 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 <div id="reservationParticipation">
 	<div class="row">
 		<div>
-		<label>{translate key="ParticipantList"}<br/>
-			{translate key=Add} <input type="text" id="participantAutocomplete" class="form-control inline-block user-search"/>
-			or
-			<button id="promptForParticipants" type="button" class="btn inline">
-				<i class="fa fa-user"></i>
-				{translate key='SelectUser'}
-			</button>
-			<button id="promptForGroupParticipants" type="button" class="btn inline">
-				<i class="fa fa-users"></i>
-				{translate key='Groups'}
-			</button>
-		</label>
+			<label>{translate key="ParticipantList"}<br/>
+				{translate key=Add} <input type="text" id="participantAutocomplete" class="form-control inline-block user-search"/>
+				|
+				<button id="promptForParticipants" type="button" class="btn inline">
+					<i class="fa fa-user"></i>
+					{translate key='SelectUser'}
+				</button>
+				<button id="promptForGroupParticipants" type="button" class="btn inline">
+					<i class="fa fa-users"></i>
+					{translate key='Groups'}
+				</button>
+			</label>
 		</div>
 		<div id="participantList">
-			<ul></ul>
 		</div>
-		<div id="participantDialog" title="{translate key=AddParticipants}" class="dialog"></div>
-		<div id="participantGroupDialog" title="{translate key=AddParticipants}" class="dialog"></div>
+
+		<div class="modal fade" id="participantDialog" tabindex="-1" role="dialog" aria-labelledby="participantModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+						<h4 class="modal-title" id="participantModalLabel">{translate key=AddParticipants}</h4>
+					</div>
+					<div class="modal-body">
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-primary" data-dismiss="modal">{translate key='Done'}</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="modal fade" id="participantGroupDialog" tabindex="-1" role="dialog" aria-labelledby="participantGroupModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+						<h4 class="modal-title" id="participantGroupModalLabel">{translate key=AddParticipants}</h4>
+					</div>
+					<div class="modal-body">
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-primary" data-dismiss="modal">{translate key='Done'}</button>
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
 	<div class="row">
 		<div>
-		<label>{translate key="InvitationList"}<br/>
-			{translate key=Add} <input type="text" id="inviteeAutocomplete" class="form-control inline-block user-search"/>
-			or
-			<button id="promptForInvitees" type="button" class="btn inline">
-				<i class="fa fa-user"></i>
-				{translate key='SelectUser'}
-			</button>
-			<button id="promptForGroupInvitees" type="button" class="btn inline">
-				<i class="fa fa-users"></i>
-				{translate key='Groups'}
-			</button>
-		</label>
+			<label>{translate key="InvitationList"}<br/>
+				{translate key=Add} <input type="text" id="inviteeAutocomplete" class="form-control inline-block user-search"/>
+				|
+				<button id="promptForInvitees" type="button" class="btn inline">
+					<i class="fa fa-user"></i>
+					{translate key='SelectUser'}
+				</button>
+				<button id="promptForGroupInvitees" type="button" class="btn inline">
+					<i class="fa fa-users"></i>
+					{translate key='Groups'}
+				</button>
+			</label>
 		</div>
 		<div id="inviteeList">
-			<ul></ul>
 		</div>
-		<div id="inviteeDialog" title="{translate key=InviteOthers}" class="dialog"></div>
-		<div id="inviteeGroupDialog" title="{translate key=InviteOthers}" class="dialog"></div>
+
+		<div class="modal fade" id="inviteeDialog" tabindex="-1" role="dialog" aria-labelledby="inviteeModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+						<h4 class="modal-title" id="inviteeModalLabel">{translate key=InviteOthers}</h4>
+					</div>
+					<div class="modal-body">
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-primary" data-dismiss="modal">{translate key='Done'}</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="modal fade" id="inviteeGroupDialog" tabindex="-1" role="dialog" aria-labelledby="inviteeGroupModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+						<h4 class="modal-title" id="inviteeGroupModalLabel">{translate key=InviteOthers}</h4>
+					</div>
+					<div class="modal-body">
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-primary" data-dismiss="modal">{translate key='Done'}</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
 	</div>
 </div>
