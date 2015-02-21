@@ -59,10 +59,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 							<span id="userName">{$ReservationUserName}</span>
 							<input id="userId" type="hidden" {formname key=USER_ID} value="{$UserId}"/>
 							{if $CanChangeUser}
-								<a href="#" id="showChangeUsers"
-								   class="small-action">{translate key=Change} <i class="fa fa-user"></i></a>
-								{*<div id="changeUserDialog" title="{translate key=ChangeUser}" class="dialog"></div>*}
-
+								<a href="#" id="showChangeUsers" class="small-action">{translate key=Change} <i class="fa fa-user"></i></a>
 								<div class="modal fade" id="changeUserDialog" tabindex="-1" role="dialog" aria-labelledby="usersModalLabel" aria-hidden="true">
 									<div class="modal-dialog">
 										<div class="modal-content">
@@ -71,7 +68,6 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 												<h4 class="modal-title" id="usersModalLabel">{translate key=ChangeUser}</h4>
 											</div>
 											<div class="modal-body">
-
 											</div>
 											<div class="modal-footer">
 												<button type="button" class="btn btn-default" data-dismiss="modal">{translate key='Cancel'}</button>
@@ -86,9 +82,9 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 					<div class="col-xs-12" id="changeUsers">
 						<div class="form-group">
-							<input type="text" id="changeUserAutocomplete" class="form-control inline-block" style="width:250px;"/>
+							<input type="text" id="changeUserAutocomplete" class="form-control inline-block user-search"/>
 							|
-							<button id="promptForChangeUsers" type="button" class="btn btn-default" style="display:inline">
+							<button id="promptForChangeUsers" type="button" class="btn inline">
 								<i class="fa fa-users"></i>
 								{translate key='AllUsers'}
 							</button>
@@ -97,18 +93,22 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 					<div class="col-xs-12">
 						<div class="form-group">
-							<div class="pull-left"><label>{translate key="ResourceList"}</label><br/>
+							<div class="pull-left">
+								<div>
+									<label>{translate key="ResourceList"}</label>
+									{if $ShowAdditionalResources}
+										<a id="btnAddResources" href="#"
+										   class="small-action" data-toggle="modal" data-target="#dialogResourceGroups">{translate key=Add} <span
+													class="fa fa-plus-square-o"></span></a>
+									{/if}
+								</div>
 
 								<div id="resourceNames" style="display:inline">
 									<a href="#" class="resourceDetails">{$ResourceName}</a>
 									<input class="resourceId" type="hidden" id="primaryResourceId" {formname key=RESOURCE_ID} value="{$ResourceId}"/>
 									<input type="hidden" id="scheduleId" {formname key=SCHEDULE_ID} value="{$ScheduleId}"/>
 								</div>
-								{if $ShowAdditionalResources}
-									<a id="btnAddResources" href="#"
-									   class="small-action" data-toggle="modal" data-target="#dialogResourceGroups">{translate key=MoreResources} <span
-												class="fa fa-plus-square-o"></span></a>
-								{/if}
+
 								<div id="additionalResources">
 									{foreach from=$AvailableResources item=resource}
 										{if is_array($AdditionalResourceIds) && in_array($resource->Id, $AdditionalResourceIds)}
@@ -215,30 +215,30 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			{if $RemindersEnabled}
 				<div class="row">
 					<div class="col-xs-12 reservationReminders">
-							<div id="reminderOptionsStart">
-								<label for="startReminderEnabled">{translate key=SendReminder}</label>
-								<input type="checkbox" id="startReminderEnabled" class="reminderEnabled" {formname key=START_REMINDER_ENABLED}/>
-								<input type="number" min="0" max="999" size="3" maxlength="3" value="15"
-									   class="reminderTime form-control inline-block" {formname key=START_REMINDER_TIME}/>
-								<select class="reminderInterval form-control inline-block" {formname key=START_REMINDER_INTERVAL}>
-									<option value="{ReservationReminderInterval::Minutes}">{translate key=minutes}</option>
-									<option value="{ReservationReminderInterval::Hours}">{translate key=hours}</option>
-									<option value="{ReservationReminderInterval::Days}">{translate key=days}</option>
-								</select>
-								<span class="reminderLabel">{translate key=ReminderBeforeStart}</span>
-							</div>
-							<div id="reminderOptionsEnd">
-								<input type="checkbox" class="reminderEnabled" {formname key=END_REMINDER_ENABLED}/>
-								<input type="number" min="0" max="999" size="3" maxlength="3" value="15"
-									   class="reminderTime form-control inline-block" {formname key=END_REMINDER_TIME}/>
-								<select class="reminderInterval  form-control inline-block" {formname key=END_REMINDER_INTERVAL}>
-									<option value="{ReservationReminderInterval::Minutes}">{translate key=minutes}</option>
-									<option value="{ReservationReminderInterval::Hours}">{translate key=hours}</option>
-									<option value="{ReservationReminderInterval::Days}">{translate key=days}</option>
-								</select>
-								<span class="reminderLabel">{translate key=ReminderBeforeEnd}</span>
-							</div>
-							<div class="clear">&nbsp;</div>
+						<div id="reminderOptionsStart">
+							<label for="startReminderEnabled">{translate key=SendReminder}</label>
+							<input type="checkbox" id="startReminderEnabled" class="reminderEnabled" {formname key=START_REMINDER_ENABLED}/>
+							<input type="number" min="0" max="999" size="3" maxlength="3" value="15"
+								   class="reminderTime form-control inline-block" {formname key=START_REMINDER_TIME}/>
+							<select class="reminderInterval form-control inline-block" {formname key=START_REMINDER_INTERVAL}>
+								<option value="{ReservationReminderInterval::Minutes}">{translate key=minutes}</option>
+								<option value="{ReservationReminderInterval::Hours}">{translate key=hours}</option>
+								<option value="{ReservationReminderInterval::Days}">{translate key=days}</option>
+							</select>
+							<span class="reminderLabel">{translate key=ReminderBeforeStart}</span>
+						</div>
+						<div id="reminderOptionsEnd">
+							<input type="checkbox" class="reminderEnabled" {formname key=END_REMINDER_ENABLED}/>
+							<input type="number" min="0" max="999" size="3" maxlength="3" value="15"
+								   class="reminderTime form-control inline-block" {formname key=END_REMINDER_TIME}/>
+							<select class="reminderInterval  form-control inline-block" {formname key=END_REMINDER_INTERVAL}>
+								<option value="{ReservationReminderInterval::Minutes}">{translate key=minutes}</option>
+								<option value="{ReservationReminderInterval::Hours}">{translate key=hours}</option>
+								<option value="{ReservationReminderInterval::Days}">{translate key=days}</option>
+							</select>
+							<span class="reminderLabel">{translate key=ReminderBeforeEnd}</span>
+						</div>
+						<div class="clear">&nbsp;</div>
 					</div>
 				</div>
 			{/if}
@@ -344,7 +344,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 									{if $accessory->GetQuantityAvailable() == 1}
 										<input type="checkbox" name="accessory{$accessory->GetId()}" value="1" size="3"/>
 									{else}
-										<input type="number" min="0" max="999" class="form-control accessory-quantity" name="accessory{$accessory->GetId()}" value="0" size="3"/>
+										<input type="number" min="0" max="999" class="form-control accessory-quantity" name="accessory{$accessory->GetId()}"
+											   value="0" size="3"/>
 									{/if}
 								</td>
 								<td>{$accessory->GetQuantityAvailable()|default:'&infin;'}</td>

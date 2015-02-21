@@ -18,19 +18,20 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 *}
 <div id="reservationParticipation">
 	<div class="row">
+		<div>
 		<label>{translate key="ParticipantList"}<br/>
-			{translate key=Add} <input type="text" id="participantAutocomplete" class="input" style="width:250px;"/>
+			{translate key=Add} <input type="text" id="participantAutocomplete" class="form-control inline-block user-search"/>
 			or
-			<button id="promptForParticipants" type="button" class="button" style="display:inline">
-				{html_image src="user-plus.png"}
+			<button id="promptForParticipants" type="button" class="btn inline">
+				<i class="fa fa-user"></i>
 				{translate key='SelectUser'}
 			</button>
-			<button id="promptForGroupParticipants" type="button" class="button" style="display:inline">
-				<img src="img/users.png" alt=""/>
+			<button id="promptForGroupParticipants" type="button" class="btn inline">
+				<i class="fa fa-users"></i>
 				{translate key='Groups'}
 			</button>
 		</label>
-
+		</div>
 		<div id="participantList">
 			<ul></ul>
 		</div>
@@ -38,19 +39,20 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		<div id="participantGroupDialog" title="{translate key=AddParticipants}" class="dialog"></div>
 	</div>
 	<div class="row">
+		<div>
 		<label>{translate key="InvitationList"}<br/>
-			{translate key=Add} <input type="text" id="inviteeAutocomplete" class="input" style="width:250px;"/>
+			{translate key=Add} <input type="text" id="inviteeAutocomplete" class="form-control inline-block user-search"/>
 			or
-			<button id="promptForInvitees" type="button" class="button" style="display:inline">
-				{html_image src="user-plus.png"}
+			<button id="promptForInvitees" type="button" class="btn inline">
+				<i class="fa fa-user"></i>
 				{translate key='SelectUser'}
 			</button>
-			<button id="promptForGroupInvitees" type="button" class="button" style="display:inline">
-				<img src="img/users.png" alt=""/>
+			<button id="promptForGroupInvitees" type="button" class="btn inline">
+				<i class="fa fa-users"></i>
 				{translate key='Groups'}
 			</button>
 		</label>
-
+		</div>
 		<div id="inviteeList">
 			<ul></ul>
 		</div>

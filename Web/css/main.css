@@ -162,6 +162,15 @@ div.center {
 .no-padding-right {
   padding-right: 0;
 }
+.no-margin {
+  margin: 0;
+}
+.no-margin-left {
+  margin-left: 0;
+}
+.no-margin-right {
+  margin-right: 0;
+}
 .default-box-footer {
   padding: 5px 0 5px 10px;
   clear: both;
@@ -316,4 +325,7 @@ a.resourceDetails {
   text-decoration: none;
   cursor: default;
   color: #7a6a53;
+}
+input[type=text].user-search {
+  width: 250px;
 }

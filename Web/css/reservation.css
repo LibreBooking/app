@@ -77,8 +77,8 @@
 }
 #participantList,
 #inviteeList {
-  height: 100px;
-  width: 100%;
+  height: 150px;
+  width: 98%;
   overflow-y: auto;
   border: solid 1px #ededed;
 }

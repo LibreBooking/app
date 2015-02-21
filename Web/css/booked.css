@@ -162,6 +162,15 @@ div.center {
 .no-padding-right {
   padding-right: 0;
 }
+.no-margin {
+  margin: 0;
+}
+.no-margin-left {
+  margin-left: 0;
+}
+.no-margin-right {
+  margin-right: 0;
+}
 .default-box-footer {
   padding: 5px 0 5px 10px;
   clear: both;
@@ -316,6 +325,9 @@ a.resourceDetails {
   text-decoration: none;
   cursor: default;
   color: #7a6a53;
+}
+input[type=text].user-search {
+  width: 250px;
 }
 #page-dashboard .panel-heading {
   background-color: #99b2b7;
@@ -748,8 +760,8 @@ a.toggle-sidebar {
 }
 #participantList,
 #inviteeList {
-  height: 100px;
-  width: 100%;
+  height: 150px;
+  width: 98%;
   overflow-y: auto;
   border: solid 1px #ededed;
 }
