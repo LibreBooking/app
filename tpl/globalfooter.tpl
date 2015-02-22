@@ -26,6 +26,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 	<script type="text/javascript">
 		init();
 		$.blockUI.defaults.css.border = 'none';
+		$.blockUI.defaults.css.top = '25%';
 	</script>
 	</body>
 </html>

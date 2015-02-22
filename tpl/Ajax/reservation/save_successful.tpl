@@ -16,17 +16,21 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 *}
-<div id="reservationCreated" class="reservationResponseMessage">
+
+<div id="{$divId|default:'reservation-created'}" class="reservationResponseMessage">
+	<div id="reservation-response-image">
 	{if $RequiresApproval}
-		{html_image src="dialog-warning.png" id="imgApprovalWarning"}
+		<span class="fa fa-warning fa-5x warning"></span>
 	{else}
-		{html_image src="dialog-success.png" id="imgReservationSuccess"}
+		<span class="fa fa-check fa-5x success"></span>
 	{/if}
-	<br/>
-	<div class="createdMessage">{translate key=ReservationCreated}</div>
-	<div class="referenceNumber">{translate key=YourReferenceNumber args=$ReferenceNumber}</div>
+	</div>
+
+	<div id="created-message" class="reservation-message">{translate key=$messageKey|default:"ReservationCreated"}</div>
+	<div id="reference-number">{translate key=YourReferenceNumber args=$ReferenceNumber}</div>
 
 	<div class="dates">
+		{translate key=Dates}:
 		{foreach from=$Instances item=instance name=date_list}
 			<span class="date">{format_date date=$instance->StartDate() timezone=$Timezone}{if !$smarty.foreach.date_list.last}, {/if}</span>
 		{/foreach}
@@ -40,9 +44,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 	</div>
 
 	{if $RequiresApproval}
-		<div class="approvalMessage">{translate key=ReservationRequiresApproval}</div>
+		<div id="approval-message">{translate key=ReservationRequiresApproval}</div>
 	{/if}
 
-	<input type="button" id="btnSaveSuccessful" value="{translate key='Close'}" class="button" />
-
+	<input type="button" id="btnSaveSuccessful" value="{translate key='Close'}" class="btn btn-success" />
 </div>

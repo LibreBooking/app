@@ -365,6 +365,18 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		</div>
 	</div>
 
+	<div id="wait-box" class="wait-box">
+		<div id="creatingNotification">
+			<h3>
+				{block name="ajaxMessage"}
+					{translate key=CreatingReservation}
+				{/block}
+			</h3>
+			{html_image src="reservation_submitting.gif"}
+		</div>
+		<div id="result"></div>
+	</div>
+
 	{*<div id="dialogSave" style="display:none;">*}
 	{*<div id="creatingNotification" style="position:relative; top:170px;">*}
 	{*{block name="ajaxMessage"}*}
@@ -460,12 +472,16 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			success: reservation.showResponse  // post-submit callback
 		};
 
-		$('#reservationForm').submit(function ()
+		$('#form-reservation').submit(function ()
 		{
 			$(this).ajaxSubmit(ajaxOptions);
 			return false;
 		});
+
 		$('#description').autogrow();
+
+		$.blockUI.defaults.css.width = '60%';
+		$.blockUI.defaults.css.left = '20%';
 	});
 </script>
 

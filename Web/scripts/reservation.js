@@ -146,7 +146,9 @@ function Reservation(opts)
 	// pre-submit callback 
 	Reservation.prototype.preSubmit = function (formData, jqForm, options)
 	{
-		$('#dialogSave').dialog('open');
+		$.blockUI({ message: $('#wait-box') });
+
+		//$('#dialogSave').dialog('open');
 		$('#result').hide();
 		$('#creatingNotification').show();
 
@@ -156,6 +158,8 @@ function Reservation(opts)
 	// post-submit callback 
 	Reservation.prototype.showResponse = function (responseText, statusText, xhr, $form)
 	{
+		$('.blockUI').css('cursor', 'default');
+
 		$('#btnSaveSuccessful').click(function (e)
 		{
 			window.location = options.returnUrl;
@@ -429,7 +433,7 @@ function Reservation(opts)
 
 	var CloseSaveDialog = function ()
 	{
-		$('#dialogSave').dialog('close');
+		$.unblockUI();
 	};
 
 	var WireUpActions = function ()
@@ -471,19 +475,18 @@ function Reservation(opts)
 
 	var WireUpSaveDialog = function ()
 	{
-		$('#dialogSave').dialog({
-			autoOpen: false, modal: true, draggable: false, resizable: false, closeOnEscape: false,
-			minHeight: 400, minWidth: 700, width: 700,
-			open: function (event, ui)
-			{
-				$(this).parents(".ui-dialog:first").find(".ui-dialog-titlebar").hide();
-			}
-		});
+		//$('#dialogSave').dialog({
+		//	autoOpen: false, modal: true, draggable: false, resizable: false, closeOnEscape: false,
+		//	minHeight: 400, minWidth: 700, width: 700,
+		//	open: function (event, ui)
+		//	{
+		//		$(this).parents(".ui-dialog:first").find(".ui-dialog-titlebar").hide();
+		//	}
+		//});
 
 		$('.save').click(function ()
 		{
-
-			$('#reservationForm').submit();
+			$('#form-reservation').submit();
 		});
 	};
 

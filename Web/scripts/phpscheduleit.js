@@ -38,18 +38,6 @@ function eraseCookie(name)
 	document.cookie = name + '=;expires=Thu, 01 Jan 1970 00:00:01 GMT;';
 }
 
-function initMenu()
-{
-	$("#nav ul").css({display: "none"}); // Opera Fix
-	$("#nav li").hover(
-			function(){
-				$(this).find('ul:first').css({visibility: "visible",display: "none"}).show(10);
-			},
-			function(){
-				$(this).find('ul:first').css({visibility: "hidden"}).hide();
-			});
-}
-
 function getQueryStringValue(name)
 {
 	name = name.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");

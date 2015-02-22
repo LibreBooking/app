@@ -199,3 +199,16 @@ a.add .icon {
 a.remove {
   color: #c37c82;
 }
+#reservation-response-image .error {
+  color: #c37c82;
+}
+#reservation-response-image .warning {
+  color: #fa6900;
+}
+#reservation-response-image .success {
+  color: #94ba65;
+}
+.reservation-message {
+  font-size: 2em;
+  font-weight: bold;
+}
