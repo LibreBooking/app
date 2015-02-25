@@ -26,32 +26,43 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 	{translate key="EditReservationHeading" args=''}
 {/block}
 
-{block name=deleteButtons}
-	{if $IsRecurring}
-		<a href="#" class="delete prompt">
-			{html_image src="cross-button.png"}
-			{translate key='Delete'}
-		</a>
-	{else}
-		<a href="#" class="delete save">
-			{html_image src="cross-button.png"}
-			{translate key='Delete'}
-		</a>
-	{/if}
-
-	<a style='margin-left:10px;' href="{$Path}export/{Pages::CALENDAR_EXPORT}?{QueryStringKeys::REFERENCE_NUMBER}={$ReferenceNumber}">
-		{html_image src="calendar-plus.png"}
-		{translate key=AddToOutlook}</a>
-
-{/block}
-
 {block name=submitButtons}
+	<div class="btn-group">
+		<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+			{translate key=More} <span class="caret"></span>
+		</button>
+		<ul class="dropdown-menu" role="menu">
+			<li><a href="{$Path}export/{Pages::CALENDAR_EXPORT}?{QueryStringKeys::REFERENCE_NUMBER}={$ReferenceNumber}">
+				<span class="fa fa-calendar"></span>
+				{translate key=AddToOutlook}</a>
+			</li>
+			<li><a href="#" class="btnPrint">
+				<span class="fa fa-print"></span>
+				{translate key='Print'}</a>
+			</li>
+
+			<li class="divider"></li>
+			<li>
+				{if $IsRecurring}
+					<a href="#" class="delete prompt">
+						<span class="fa fa-remove remove icon"></span>
+						{translate key='Delete'}
+					</a>
+				{else}
+					<a href="#" class="delete save">
+						<span class="fa fa-remove remove icon"></span>
+						{translate key='Delete'}
+					</a>
+				{/if}
+			</li>
+		</ul>
+	</div>
 	{if $IsRecurring}
-		<button type="button" class="button update prompt">
-			<img src="img/tick-circle.png" />
+		<button type="button" class="btn btn-success update prompt">
+			<span class="glyphicon glyphicon-ok-circle"></span>
 			{translate key='Update'}
 		</button>
-		<div class="updateButtons" style="display:none;" title="{translate key=ApplyUpdatesTo}">
+		<div class="updateButtons" title="{translate key=ApplyUpdatesTo}">
 			<div style="text-align: center;line-height:50px;">
 				<button type="button" class="button save btnUpdateThisInstance">
 					{html_image src="disk-black.png"}
@@ -72,31 +83,32 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			</div>
 		</div>
 	{else}
-		<button type="button" class="button save update btnCreate">
-			<img src="img/disk-black.png" />
+		<button type="button" class="btn btn-success save update btnCreate">
+			<span class="glyphicon glyphicon-ok-circle"></span>
 			{translate key='Update'}
 		</button>
 	{/if}
-	<button type="button" class="button btnPrint">
-		<img src="img/printer.png" />
-		{translate key='Print'}
-	</button>
 {/block}
 
 {block name="ajaxMessage"}
-	{translate key=UpdatingReservation}...<br/>
+	{translate key=UpdatingReservation}...
+	<br/>
 {/block}
 
 {block name='attachments'}
-<div style="clear:both">&nbsp;</div>
-
+	<div style="clear:both">&nbsp;</div>
 	<div id="attachmentDiv" class="res-attachments">
-	<span class="heading">{translate key=Attachments} ({$Attachments|count})</span>
-	{if $Attachments|count > 0}
-		<a href="#" class="remove" id="btnRemoveAttachment">({translate key="Remove"})</a><br/>
-		{foreach from=$Attachments item=attachment}
-			<a href="attachments/{Pages::RESERVATION_FILE}?{QueryStringKeys::ATTACHMENT_FILE_ID}={$attachment->FileId()}&{QueryStringKeys::REFERENCE_NUMBER}={$ReferenceNumber}" target="_blank">{$attachment->FileName()}</a>&nbsp;<input style='display: none;' type="checkbox" name="{FormKeys::REMOVED_FILE_IDS}[{$attachment->FileId()}]" />&nbsp;
-		{/foreach}
-	{/if}
+		<span class="heading">{translate key=Attachments} ({$Attachments|count})</span>
+		{if $Attachments|count > 0}
+			<a href="#" class="remove" id="btnRemoveAttachment">({translate key="Remove"})</a>
+			<br/>
+			{foreach from=$Attachments item=attachment}
+				<a href="attachments/{Pages::RESERVATION_FILE}?{QueryStringKeys::ATTACHMENT_FILE_ID}={$attachment->FileId()}&{QueryStringKeys::REFERENCE_NUMBER}={$ReferenceNumber}"
+				   target="_blank">{$attachment->FileName()}</a>
+				&nbsp;
+				<input style='display: none;' type="checkbox" name="{FormKeys::REMOVED_FILE_IDS}[{$attachment->FileId()}]"/>
+				&nbsp;
+			{/foreach}
+		{/if}
 	</div>
 {/block}

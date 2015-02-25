@@ -329,6 +329,9 @@ a.resourceDetails {
 input[type=text].user-search {
   width: 250px;
 }
+.remove.icon {
+  color: #c37c82;
+}
 #resourceDetailsPopup {
   min-width: 300px;
   max-width: 1000px;

@@ -272,11 +272,6 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 			<div class="row">
 				<div class="reservationButtons col-xs-6 col-xs-offset-6">
-					<div class="reservationDeleteButtons">
-						{block name="deleteButtons"}
-							&nbsp;
-						{/block}
-					</div>
 					<div class="reservationSubmitButtons">
 						<button type="button" class="btn btn-default" onclick="window.location='{$ReturnUrl}'">
 							{translate key='Cancel'}
@@ -376,17 +371,6 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		</div>
 		<div id="result"></div>
 	</div>
-
-	{*<div id="dialogSave" style="display:none;">*}
-	{*<div id="creatingNotification" style="position:relative; top:170px;">*}
-	{*{block name="ajaxMessage"}*}
-	{*{translate key=CreatingReservation}...*}
-	{*<br/>*}
-	{*{/block}*}
-	{*{html_image src="reservation_submitting.gif" alt="Creating reservation"}*}
-	{*</div>*}
-
-	{*</div>*}
 
 </div>
 

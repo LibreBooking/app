@@ -514,6 +514,7 @@ class en_us extends Language
 		$strings['AllParticipants'] = 'All Participants';
 		$strings['RegisterANewAccount'] = 'Register A New Account';
 		$strings['Dates'] = 'Dates';
+		$strings['More'] = 'More';
 		// End Strings
 
 		// Install

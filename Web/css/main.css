@@ -329,3 +329,6 @@ a.resourceDetails {
 input[type=text].user-search {
   width: 250px;
 }
+.remove.icon {
+  color: #c37c82;
+}

@@ -329,6 +329,9 @@ a.resourceDetails {
 input[type=text].user-search {
   width: 250px;
 }
+.remove.icon {
+  color: #c37c82;
+}
 #page-dashboard .panel-heading {
   background-color: #99b2b7;
   color: #fff;
