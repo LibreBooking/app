@@ -193,18 +193,9 @@ class ManageUsersPresenter extends ActionPresenter implements IManageUsersPresen
 		$groups = $this->groupViewRepository->GetList();
 		$this->page->BindGroups($groups->Results());
 
-		$resources = array();
-
 		$user = $this->userRepository->LoadById(ServiceLocator::GetServer()->GetUserSession()->UserId);
 
-		$allResources = $this->resourceRepository->GetResourceList();
-		foreach ($allResources as $resource)
-		{
-			if ($user->IsResourceAdminFor($resource))
-			{
-				$resources[] = $resource;
-			}
-		}
+		$resources = $this->GetResourcesThatCurrentUserCanAdminister($user);
 		$this->page->BindResources($resources);
 
 		$userIds = array();
@@ -285,6 +276,16 @@ class ManageUsersPresenter extends ActionPresenter implements IManageUsersPresen
 
 	public function ChangePermissions()
 	{
+		$user = $this->userRepository->LoadById(ServiceLocator::GetServer()->GetUserSession()->UserId);
+		$resources = $this->GetResourcesThatCurrentUserCanAdminister($user);
+
+		$acceptableResourceIds = array();
+
+		foreach ($resources as $resource)
+		{
+			$acceptableResourceIds[] = $resource->GetId();
+		}
+
 		$user = $this->userRepository->LoadById($this->page->GetUserId());
 		$allowedResources = array();
 
@@ -292,7 +293,11 @@ class ManageUsersPresenter extends ActionPresenter implements IManageUsersPresen
 		{
 			$allowedResources = $this->page->GetAllowedResourceIds();
 		}
-		$user->ChangePermissions($allowedResources);
+
+		$currentResources = $user->AllowedResourceIds();
+		$toRemainUnchanged = array_diff($currentResources, $acceptableResourceIds);
+
+		$user->ChangePermissions(array_merge($toRemainUnchanged, $allowedResources));
 		$this->userRepository->Update($user);
 	}
 
@@ -416,6 +421,22 @@ class ManageUsersPresenter extends ActionPresenter implements IManageUsersPresen
 		$this->userRepository->Update($user);
 
 	}
-}
 
-?>
+	/**
+	 * @param User $user
+	 * @return BookableResource[]
+	 */
+	private function GetResourcesThatCurrentUserCanAdminister($user)
+	{
+		$resources = array();
+		$allResources = $this->resourceRepository->GetResourceList();
+		foreach ($allResources as $resource)
+		{
+			if ($user->IsResourceAdminFor($resource))
+			{
+				$resources[] = $resource;
+			}
+		}
+		return $resources;
+	}
+}

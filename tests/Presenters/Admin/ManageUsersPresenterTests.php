@@ -189,9 +189,30 @@ class ManageUsersPresenterTests extends TestBase
 
 	public function testGetsSelectedResourcesFromPageAndAssignsPermission()
 	{
-		$resourceIds = array(1, 2, 4);
+		$resourcesThatShouldRemainUnchanged = array(5, 10);
+		$allowedResourceIds = array(1, 2, 4, 20, 30);
+		$submittedResourceIds = array(1, 4);
+		$currentResourceIds = array(1, 20, 30);
+
+		$expectedResourceIds = array(1, 4, 5, 10);
+
+		$allResourceIds = array_unique(array_merge($resourcesThatShouldRemainUnchanged, $allowedResourceIds, $submittedResourceIds, $currentResourceIds));
+
+		$resources = array();
+		foreach ($allResourceIds as $rid)
+		{
+			$resources[] = new FakeBookableResource($rid);
+		}
 
 		$userId = 9928;
+		$adminUserId = $this->fakeUser->UserId;
+
+		$user = new FakeUser();
+		$user->WithPermissions(array_merge($resourcesThatShouldRemainUnchanged, $currentResourceIds));
+
+		$adminUser = new FakeUser();
+		$adminUser->_ResourceAdminResourceIds = $allowedResourceIds;
+		$adminUser->_IsResourceAdmin = false;
 
 		$this->page->expects($this->atLeastOnce())
 				->method('GetUserId')
@@ -199,11 +220,18 @@ class ManageUsersPresenterTests extends TestBase
 
 		$this->page->expects($this->atLeastOnce())
 				->method('GetAllowedResourceIds')
-				->will($this->returnValue($resourceIds));
+				->will($this->returnValue($submittedResourceIds));
+		
+		$this->resourceRepo->expects($this->once())
+					->method('GetResourceList')
+					->will($this->returnValue($resources));
 
-		$user = new User();
+		$this->userRepo->expects($this->at(0))
+				->method('LoadById')
+				->with($this->equalTo($adminUserId))
+				->will($this->returnValue($adminUser));
 
-		$this->userRepo->expects($this->once())
+		$this->userRepo->expects($this->at(1))
 				->method('LoadById')
 				->with($this->equalTo($userId))
 				->will($this->returnValue($user));
@@ -213,6 +241,9 @@ class ManageUsersPresenterTests extends TestBase
 				->with($this->equalTo($user));
 
 		$this->presenter->ChangePermissions();
+
+		$actual = $user->AllowedResourceIds();
+		$this->assertEquals(sort($expectedResourceIds), sort($actual));
 
 	}
 

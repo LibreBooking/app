@@ -21,7 +21,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 class FakeUser extends User
 {
 	public $_IsAdminForUser = false;
-	public $_IsResourceAdmin = false;
+	public $_IsResourceAdmin = true;
+	public $_ResourceAdminResourceIds = array();
 
 	public function __construct($userId = null)
 	{
@@ -74,6 +75,8 @@ class FakeUser extends User
 
 	public function IsResourceAdminFor(IResource $resource)
 	{
-		return $this->_IsResourceAdmin;
+		return $this->_IsResourceAdmin || in_array($resource->GetId(), $this->_ResourceAdminResourceIds);
 	}
 }
+
+?>
