@@ -97,6 +97,12 @@ interface IReservationViewRepository
 	 * @return array|AccessoryReservation[]
 	 */
 	public function GetAccessoriesWithin(DateRange $dateRange);
+
+	/**
+	 * @param Date $earliestDate
+	 * @return NextReservationView[]
+	 */
+	public function GetNextReservations(Date $earliestDate);
 }
 
 class ReservationViewRepository implements IReservationViewRepository
@@ -387,6 +393,26 @@ class ReservationViewRepository implements IReservationViewRepository
 
 		$builder = array('BlackoutItemView', 'Populate');
 		return PageableDataStore::GetList($command, $builder, $pageNumber, $pageSize);
+	}
+
+	/**
+	 * @param Date $earliestDate
+	 * @return NextReservationView[]
+	 */
+	public function GetNextReservations(Date $earliestDate)
+	{
+		$command = new GetNextReservationsCommand($earliestDate);
+		$result = ServiceLocator::GetDatabase()->Query($command);
+
+		$reservations = array();
+		while ($row = $result->GetRow())
+		{
+			$reservations[$row[ColumnNames::RESOURCE_ID]] = NextReservationView::Populate($row);
+		}
+
+		$result->Free();
+
+		return $reservations;
 	}
 }
 
@@ -1861,5 +1887,101 @@ class ReservationReminderView
 	public function MinutesPrior()
 	{
 		return $this->minutes;
+	}
+}
+
+class NextReservationView
+{
+	/**
+	 * @var Date
+	 */
+	public $StartDate;
+
+	/**
+	 * @var Date
+	 */
+	public $EndDate;
+
+	/**
+	 * @var string
+	 */
+	public $ReferenceNumber;
+
+	/**
+	 * @var int
+	 */
+	public $SeriesId;
+
+	/**
+	 * @var int
+	 */
+	public $OwnerId;
+
+	/**
+	 * @var int
+	 */
+	public $ResourceId;
+
+	/**
+	 * @var string
+	 */
+	public $OwnerFirstName;
+
+	/**
+	 * @var string
+	 */
+	public $OwnerLastName;
+
+	/**
+	 * @var string
+	 */
+	public $Title;
+
+	/**
+	 * @var string
+	 */
+	public $Description;
+
+	public function __construct($referenceNumber, $seriesId, $resourceId, $startDate, $endDate, $ownerId)
+	{
+		$this->ReferenceNumber = $referenceNumber;
+		$this->SeriesId = $seriesId;
+		$this->ResourceId = $resourceId;
+		$this->OwnerId = $ownerId;
+
+		$this->StartDate = $startDate;
+		if (is_string($startDate))
+		{
+			$this->StartDate = Date::FromDatabase($startDate);
+		}
+
+		$this->EndDate = $endDate;
+		if (is_string($endDate))
+		{
+			$this->EndDate = Date::FromDatabase($endDate);
+		}
+	}
+
+	/**
+	 * @param array $row
+	 * @return NextReservationView
+	 */
+	public static function Populate($row)
+	{
+		$item = new NextReservationView(
+				$row[ColumnNames::REFERENCE_NUMBER],
+				$row[ColumnNames::SERIES_ID],
+				$row[ColumnNames::RESOURCE_ID],
+				Date::FromDatabase($row[ColumnNames::RESERVATION_START]),
+				Date::FromDatabase($row[ColumnNames::RESERVATION_END]),
+				$row[ColumnNames::USER_ID]
+		);
+
+		$item->OwnerFirstName = $row[ColumnNames::FIRST_NAME];
+		$item->OwnerLastName = $row[ColumnNames::LAST_NAME];
+		$item->Title = $row[ColumnNames::RESERVATION_TITLE];
+		$item->Description = $row[ColumnNames::RESERVATION_DESCRIPTION];
+
+		return $item;
 	}
 }

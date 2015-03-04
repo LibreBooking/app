@@ -492,6 +492,15 @@ class Queries
 		INNER JOIN group_roles gr ON r.role_id = gr.role_id
 		WHERE gr.group_id = @groupid';
 
+	const GET_NEXT_RESERVATIONS = 'SELECT  *
+		FROM reservation_instances ri
+		INNER JOIN reservation_resources rr ON ri.series_id = rr.series_id
+		INNER JOIN reservation_series rs ON ri.series_id = rs.series_id
+		INNER JOIN reservation_users ru ON ru.user_id = rs.owner_id
+		WHERE rs.status_id <> 2 AND ri.start_date > @startDate
+		GROUP BY rr.resource_id
+		ORDER BY start_date';
+
 	const GET_REMINDER_NOTICES = 'SELECT DISTINCT
 		rs.*,
 		ri.*,

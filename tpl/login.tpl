@@ -58,7 +58,10 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 						value="submit">{translate key='LogIn'}</button>
 				<input type="hidden" {formname key=RESUME} value="{$ResumeUrl}"/>
 
-				{control type=CheckboxControl id=rememberMe name-key=PERSIST_LOGIN label-key=RememberMe}
+				<div class="checkbox">
+					<input id="rememberMe" type="checkbox" {formname key=PERSIST_LOGIN}>
+					<label for="rememberMe">{translate key=RememberMe}</label>
+				</div>
 
 			</div>
 			<div id="login-footer">

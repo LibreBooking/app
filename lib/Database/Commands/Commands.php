@@ -1148,6 +1148,15 @@ class GetLayoutCommand extends SqlCommand
 	}
 }
 
+class GetNextReservationsCommand extends SqlCommand
+{
+	public function __construct(Date $earliestDate)
+	{
+		parent::__construct(Queries::GET_NEXT_RESERVATIONS);
+		$this->AddParameter(new Parameter(ParameterNames::START_DATE, $earliestDate->ToDatabase()));
+	}
+}
+
 class GetReminderByUserCommand extends SqlCommand
 {
 	public function __construct($user_id)

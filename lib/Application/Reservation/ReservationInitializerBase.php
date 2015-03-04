@@ -272,9 +272,13 @@ abstract class ReservationInitializerBase implements IReservationInitializer, IR
 	protected function SetSelectedDates(Date $startDate, Date $endDate, $startPeriods, $endPeriods)
 	{
 		$startPeriod = $this->GetStartSlotClosestTo($startPeriods, $startDate);
+
+		if ($endDate->LessThanOrEqual($startDate))
+		{
+			$endDate = $endDate->SetTime($startPeriod->End());
+		}
 		$endPeriod = $this->GetEndSlotClosestTo($endPeriods, $endDate);
 
-		//die($startPeriod . $startDate);
 		$this->basePage->SetSelectedStart($startPeriod, $startDate);
 		$this->basePage->SetSelectedEnd($endPeriod, $endDate);
 	}

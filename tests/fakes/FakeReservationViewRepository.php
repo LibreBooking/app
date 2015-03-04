@@ -22,6 +22,16 @@ class FakeReservationViewRepository implements IReservationViewRepository
 {
 	public $_ReservationView;
 
+	/**
+		 * @var ReservationItemView[]
+		 */
+		public $_ReservationList = array();
+
+	/**
+		 * @var NextReservationView[]
+		 */
+		public $_NextReservations = array();
+
 	public function __construct()
 	{
 		$this->_ReservationView = new ReservationView();
@@ -40,7 +50,7 @@ class FakeReservationViewRepository implements IReservationViewRepository
 			$scheduleId = ReservationViewRepository::ALL_SCHEDULES,
 			$resourceId = ReservationViewRepository::ALL_RESOURCES)
 	{
-		return array();
+		return $this->_ReservationList;
 	}
 
 	public function GetAccessoryReservationList(Date $startDate, Date $endDate, $accessoryName)
@@ -67,4 +77,13 @@ class FakeReservationViewRepository implements IReservationViewRepository
 	{
 		return array();
 	}
+
+	/**
+		 * @param Date $earliestDate
+		 * @return NextReservationView[]
+		 */
+		public function GetNextReservations(Date $earliestDate)
+		{
+			return $this->_NextReservations;
+		}
 }

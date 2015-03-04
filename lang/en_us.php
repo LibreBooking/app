@@ -515,6 +515,10 @@ class en_us extends Language
 		$strings['RegisterANewAccount'] = 'Register A New Account';
 		$strings['Dates'] = 'Dates';
 		$strings['More'] = 'More';
+		$strings['ResourceAvailability'] = 'Resource Availability';
+		$strings['UnavailableAllDay'] = 'Unavailable All Day';
+		$strings['AvailableUntil'] = 'Available Until';
+		$strings['AvailableBeginningAt'] = 'Available Beginning At';
 		// End Strings
 
 		// Install

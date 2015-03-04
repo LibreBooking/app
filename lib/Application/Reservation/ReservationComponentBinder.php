@@ -63,14 +63,6 @@ class ReservationDateBinder implements IReservationComponentBinder
 		}
 		$endPeriods = $layout->GetLayout($endDate);
 
-		if (empty($requestedStartDate))
-		{
-			$startDate = $startDate->SetTime($startPeriods[0]->Begin());
-		}
-		if (empty($requestedEndDate))
-		{
-			$endDate = $endDate->SetTime($startPeriods[0]->End());
-		}
 		$initializer->SetDates($startDate, $endDate, $startPeriods, $endPeriods);
 
 		$hideRecurrence = !$initializer->CurrentUser()->IsAdmin && Configuration::Instance()->GetSectionKey(ConfigSection::RESERVATION,

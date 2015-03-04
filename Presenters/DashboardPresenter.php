@@ -25,6 +25,7 @@ require_once(ROOT_DIR . 'lib/Database/Commands/namespace.php');
 
 require_once(ROOT_DIR . 'Controls/Dashboard/AnnouncementsControl.php');
 require_once(ROOT_DIR . 'Controls/Dashboard/UpcomingReservations.php');
+require_once(ROOT_DIR . 'Controls/Dashboard/ResourceAvailabilityControl.php');
 
 class DashboardPresenter
 {

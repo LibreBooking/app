@@ -25,7 +25,9 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 {/foreach}
 </ul>
 
-<script type="text/javascript" src="{$Path}scripts/dashboard.js"></script>
+{jsfile src="js/jquery.qtip.min.js"}
+{jsfile src="dashboard.js"}
+{jsfile src="resourcePopup.js"}
 
 <script type="text/javascript">
 $(document).ready(function() {

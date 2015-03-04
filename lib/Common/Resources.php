@@ -93,6 +93,7 @@ class Resources implements IResourceLocalization
 		$this->systemDateKeys['js_general_date'] = 'yy-mm-dd';
 		$this->systemDateKeys['system_datetime'] = 'Y-m-d H:i:s';
 		$this->systemDateKeys['url'] = 'Y-m-d';
+		$this->systemDateKeys['url_full'] = 'Y-m-d H:i:s';
 		$this->systemDateKeys['ical'] = 'Ymd\THis\Z';
 		$this->systemDateKeys['system'] = 'Y-m-d';
 		$this->systemDateKeys['fullcalendar'] = 'Y-m-d H:i';

@@ -259,7 +259,7 @@ class SmartyPage extends Smarty
 
 	public function FormatDate($params, &$smarty)
 	{
-		if (!isset($params['date']))
+		if (!isset($params['date']) || empty($params['date']))
 		{
 			return '';
 		}
