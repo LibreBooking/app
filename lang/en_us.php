@@ -596,6 +596,7 @@ class en_us extends Language
 		$strings['AccessoryMinQuantityErrorMessage'] = 'You must book at least %s of accessory %s';
 		$strings['AccessoryMaxQuantityErrorMessage'] = 'You cannot book more than %s of accessory %s';
 		$strings['AccessoryResourceAssociationErrorMessage'] = 'Accessory \'%s\' cannot be booked with the requested resources';
+		$strings['NoResources'] = 'You have not added any resources.';
 		// End Errors
 
 		// Page Titles

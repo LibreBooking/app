@@ -251,3 +251,9 @@ ul.jqtree-tree .jqtree-toggler {
 a.toggle-sidebar {
   color: #585754;
 }
+.no-resource-warning {
+  padding: 10px;
+  -webkit-border-radius: 2px;
+  -moz-border-radius: 2px;
+  border-radius: 2px;
+}

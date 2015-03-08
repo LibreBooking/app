@@ -75,9 +75,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 <div id="page-schedule">
 
 	{if $ShowResourceWarning}
-		<div class="error">{translate key=NoResources} <a href="admin/manage_resources.php">{translate key=AddResource}</a></div>
+		<div class="bg-warning text-warning no-resource-warning"><span class="fa fa-warning"></span> {translate key=NoResources} <a href="admin/manage_resources.php">{translate key=AddResource}</a></div>
 	{/if}
-
 
 	{if $IsAccessible}
 

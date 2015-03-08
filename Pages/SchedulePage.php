@@ -316,6 +316,7 @@ class SchedulePage extends ActionPage implements ISchedulePage
 
 	public function SetResources($resources)
 	{
+		$this->resourceCount = count($resources);
 		$this->Set('Resources', $resources);
 	}
 
