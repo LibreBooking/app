@@ -206,12 +206,11 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 								<span class="fa fa-print"></span>
 								{translate key='Print'}</button>
 						{/block}
+
+						{block name="submitButtons"}
+							&nbsp;
+						{/block}
 					</div>
-
-					{block name="submitButtons"}
-						&nbsp;
-					{/block}
-
 				</div>
 			</div>
 			{/if}
@@ -234,27 +233,27 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			<input type="hidden" id="referenceNumber" {formname key=reference_number} value="{$ReferenceNumber}"/>
 		</div>
 	</div>
-</div>
 
-<div id="dialogSave" style="display:none;">
-	<div id="creatingNotification" style="position:relative; top:170px;">
-		{block name="ajaxMessage"}
-			{translate key=UpdatingReservation}...
-			<br/>
-		{/block}
-		<img src="{$Path}img/reservation_submitting.gif" alt="Creating reservation"/>
+	<div id="wait-box" class="wait-box">
+		<div id="creatingNotification">
+			<h3>
+				{block name="ajaxMessage"}
+					{translate key=UpdatingReservation}...
+				{/block}
+			</h3>
+			{html_image src="reservation_submitting.gif"}
+		</div>
+		<div id="result"></div>
 	</div>
-	<div id="result" style="display:none;"></div>
-</div>
 
-<div style="display: none">
-	<form id="reservationForm" method="post" enctype="application/x-www-form-urlencoded">
-		<input type="hidden" {formname key=RESERVATION_ID} value="{$ReservationId}"/>
-		<input type="hidden" {formname key=REFERENCE_NUMBER} value="{$ReferenceNumber}"/>
-		<input type="hidden" {formname key=RESERVATION_ACTION} value="{$ReservationAction}"/>
-		<input type="hidden" {formname key=SERIES_UPDATE_SCOPE} id="hdnSeriesUpdateScope" value="{SeriesUpdateScope::FullSeries}"/>
-	</form>
-</div>
+	<div style="display: none">
+		<form id="reservationForm" method="post" enctype="application/x-www-form-urlencoded">
+			<input type="hidden" {formname key=RESERVATION_ID} value="{$ReservationId}"/>
+			<input type="hidden" {formname key=REFERENCE_NUMBER} value="{$ReferenceNumber}"/>
+			<input type="hidden" {formname key=RESERVATION_ACTION} value="{$ReservationAction}"/>
+			<input type="hidden" {formname key=SERIES_UPDATE_SCOPE} id="hdnSeriesUpdateScope" value="{SeriesUpdateScope::FullSeries}"/>
+		</form>
+	</div>
 </div>
 {jsfile src="participation.js"}
 {jsfile src="approval.js"}
@@ -300,17 +299,20 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		var reservation = new Reservation(reservationOpts);
 		reservation.init('{$UserId}');
 
-		var options = {
+		var ajaxOptions = {
 			target: '#result',   // target element(s) to be updated with server response
 			beforeSubmit: reservation.preSubmit,  // pre-submit callback
 			success: reservation.showResponse  // post-submit callback
 		};
 
-		$('#reservationForm').submit(function ()
+		$('#form-reservation').submit(function ()
 		{
-			$(this).ajaxSubmit(options);
+			$(this).ajaxSubmit(ajaxOptions);
 			return false;
 		});
+
+		$.blockUI.defaults.css.width = '60%';
+		$.blockUI.defaults.css.left = '20%';
 	});
 
 </script>

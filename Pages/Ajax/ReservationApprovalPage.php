@@ -68,7 +68,7 @@ class ReservationApprovalPage extends SecurePage implements IReservationApproval
 	{
 		if ($succeeded)
 		{
-			$this->SetJson(array('approved' => (string)$succeeded));
+			$this->SetJson(array('approved' => "$succeeded"));
 		}
 	}
 
@@ -76,7 +76,7 @@ class ReservationApprovalPage extends SecurePage implements IReservationApproval
 	{
 		if (!empty($errors))
 		{
-			$this->SetJson(array('approved' => (string)false), $errors);
+			$this->SetJson(array('approved' => "false"), $errors);
 		}
 	}
 

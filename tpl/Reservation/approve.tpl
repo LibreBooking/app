@@ -81,7 +81,6 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 	</div>
 </div>
 
-
 {block name=submitButtons}
 	<button type="button" class="btn btn-success" id="btnApprove">
 		<span class="glyphicon glyphicon-ok-circle"></span>
