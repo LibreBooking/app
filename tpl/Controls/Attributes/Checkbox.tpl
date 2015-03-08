@@ -16,7 +16,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 *}
-<div class="form-group has-feedback">
+<div class="form-group {if !$searchmode}has-feedback{/if} {$class}">
 	<label class="customAttribute" for="{$attributeName}">{$attribute->Label()|escape}</label>
 
 {if $readonly}
@@ -29,7 +29,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 	</select>
 {else}
 	<input type="checkbox" value="1" id="{$attributeName}" name="{$attributeName}" {if $attribute->Value() == "1"}checked="checked"{/if} class="{$class}" />
-	{if $attribute->Required()}
+	{if $attribute->Required() && !$searchmode}
 	<i class="glyphicon glyphicon-asterisk form-control-feedback" data-bv-icon-for="{$attributeName}"></i>
 	{/if}
 {/if}

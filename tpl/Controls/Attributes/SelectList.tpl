@@ -16,7 +16,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 *}
-<div class="form-group">
+<div class="form-group {$class}">
 	<label class="customAttribute" for="{$attributeName}">{$attribute->Label()|escape}</label>
 	{if $readonly}
 		<span class="attributeValue {$class}">{$attribute->Value()|escape}</span>
@@ -30,11 +30,11 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 						{if $attribute->Value() == $value}selected="selected"{/if}>{$value|escape}</option>
 			{/foreach}
 		</select>
-		<script type="text/javascript">
-			$(function() {
-				var name = '#{$attributeId}';
-				$(name).select2();
-			});
-		</script>
+		{*<script type="text/javascript">*}
+			{*$(function() {*}
+				{*var name = '#{$attributeId}';*}
+				{*$(name).select2();*}
+			{*});*}
+		{*</script>*}
 	{/if}
 </div>
