@@ -318,8 +318,15 @@ label.booked-checkbox span {
 h1 .label {
   padding-bottom: .2em;
 }
+.no-data {
+  font-style: italic;
+  color: #585754;
+}
 .inline-block {
   display: inline-block;
+}
+.inline {
+  display: inline;
 }
 a.resourceDetails {
   text-decoration: none;

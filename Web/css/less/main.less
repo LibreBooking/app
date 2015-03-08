@@ -12,7 +12,7 @@ body {
   padding-top: 70px;
 }
 
-a, a:visited  {
+a, a:visited {
   color: @link-color;
 }
 
@@ -34,7 +34,7 @@ a, a:visited  {
 }
 
 #main {
-//  padding-top: 60px;
+  //  padding-top: 60px;
   min-height: 100%;
   padding-bottom: @footer-height; // + 30;
 }
@@ -46,15 +46,17 @@ a, a:visited  {
   background-color: @lightest-gray;
 
   h1 {
-    color:@dark-gray;
-    margin-top:0;
-    padding-bottom:5px;
+    color: @dark-gray;
+    margin-top: 0;
+    padding-bottom: 5px;
     font-weight: bold;
-    border-bottom:solid 1px @mid-gray;
+    border-bottom: solid 1px @mid-gray;
   }
 
-  @media(max-width:768px)  {
-    h1 {font-size:1.5em;}
+  @media (max-width: 768px) {
+    h1 {
+      font-size: 1.5em;
+    }
   }
 }
 
@@ -114,23 +116,23 @@ div.center {
 }
 
 .no-padding-left {
-  padding-left:0;
+  padding-left: 0;
 }
 
 .no-padding-right {
-  padding-right:0;
+  padding-right: 0;
 }
 
 .no-margin {
-  margin:0;
+  margin: 0;
 }
 
 .no-margin-left {
-  margin-left:0;
+  margin-left: 0;
 }
 
 .no-margin-right {
-  margin-right:0;
+  margin-right: 0;
 }
 
 .default-box-footer {
@@ -253,17 +255,17 @@ div.center {
 }
 
 .horizontal-list label {
-  font-size:.9em;
+  font-size: .9em;
 }
 
 .center {
-	text-align: center;
+  text-align: center;
 }
 
 .pagination-rows {
-  padding-top:10px;
+  padding-top: 10px;
   color: @dark-gray;
-  font-size:.8em;
+  font-size: .8em;
   font-weight: bold;
 }
 
@@ -272,85 +274,71 @@ div.center {
   text-align: center;
   top: 15%;
   position: relative;
-  padding:20px;
-  border:1px solid @dark-gray;
+  padding: 20px;
+  border: 1px solid @dark-gray;
 }
 
 .align-right {
   text-align: right;
 }
 
-label.booked-checkbox {margin-top:10px;}
-label.booked-checkbox span {width:10px; }
+label.booked-checkbox {
+  margin-top: 10px;
+}
 
-.bv-hidden-submit {display:none !important;}
+label.booked-checkbox span {
+  width: 10px;
+}
+
+.bv-hidden-submit {
+  display: none !important;
+}
 
 .span0 {
-    width: 0;
-    margin-left: 0;
+  width: 0;
+  margin-left: 0;
 }
 
 .navbar-fixed-top {
-  z-index:999;
+  z-index: 999;
 }
 
-.error-list {padding-left:50px;}
+.error-list {
+  padding-left: 50px;
+}
 
-.no-show {display:none;}
+.no-show {
+  display: none;
+}
 
-h1 .label {padding-bottom:.2em;}
+h1 .label {
+  padding-bottom: .2em;
+}
 
 .no-data {
-
+  font-style: italic;
+  color: @dark-gray;
 }
 
 .inline-block {
   display: inline-block;
 }
 
+.inline {
+  display: inline;
+}
+
 a.resourceDetails {
   text-decoration: none;
   cursor: default;
-  color:@brown;
+  color: @brown;
 }
 
 input[type=text].user-search {
-  width:250px;
+  width: 250px;
 }
 
 .remove.icon {
-  color:@muted-red;
+  color: @muted-red;
 }
 
-//input[type="radio"],
-//input[type="checkbox"] {
-//  display:none;
-//}
-//
-//input[type="radio"] + label:before,
-//input[type="checkbox"] + label:before {
-//  font-family: 'FontAwesome';
-//  padding-right: 3px;
-//  font-size: 20px;
-//  min-width:40px;
-//}
-//
-//input[type="radio"] + label:before {
-//  content: "\f10c"; /* circle-blank */
-//}
-//
-//input[type="radio"]:checked + label:before {
-//  content: "\f111"; /* circle */
-//}
-//
-//input[type="checkbox"] + label:before {
-//  content: "\f096"; /* check-empty */
-//}
-//
-//input[type="checkbox"]:checked + label:before {
-//  content: "\f046"; /* check */
-//}
-
-//
-// Checkboxes
-// --------------------------------------------------

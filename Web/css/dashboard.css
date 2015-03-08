@@ -48,3 +48,20 @@
   cursor: pointer;
   background-color: #F0F0F0;
 }
+.availabilityDashboard .dashboardContents {
+  padding: 4px;
+}
+.availabilityDashboard .header {
+  font-size: 1.2em;
+  font-weight: bold;
+}
+.availabilityDashboard .resourceName {
+  width: 240px;
+  display: inline-block;
+  text-overflow: ellipsis;
+}
+.availabilityDashboard .availability {
+  width: 300px;
+  display: inline-block;
+  text-overflow: ellipsis;
+}

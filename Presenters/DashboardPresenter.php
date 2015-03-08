@@ -40,9 +40,11 @@ class DashboardPresenter
 	{
 		$announcement = new AnnouncementsControl(new SmartyPage());
 		$upcomingReservations = new UpcomingReservations(new SmartyPage());
+		$availability = new ResourceAvailabilityControl(new SmartyPage());
 
 		$this->_page->AddItem($announcement);
 		$this->_page->AddItem($upcomingReservations);
+		$this->_page->AddItem($availability);
 
 		if (ServiceLocator::GetServer()->GetUserSession()->IsAdmin)
 		{

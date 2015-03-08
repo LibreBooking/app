@@ -318,8 +318,15 @@ label.booked-checkbox span {
 h1 .label {
   padding-bottom: .2em;
 }
+.no-data {
+  font-style: italic;
+  color: #585754;
+}
 .inline-block {
   display: inline-block;
+}
+.inline {
+  display: inline;
 }
 a.resourceDetails {
   text-decoration: none;
@@ -582,6 +589,23 @@ input[type=text].user-search {
 .upcomingReservationsDashboard tr.reservation.clicked td {
   cursor: pointer;
   background-color: #F0F0F0;
+}
+.availabilityDashboard .dashboardContents {
+  padding: 4px;
+}
+.availabilityDashboard .header {
+  font-size: 1.2em;
+  font-weight: bold;
+}
+.availabilityDashboard .resourceName {
+  width: 240px;
+  display: inline-block;
+  text-overflow: ellipsis;
+}
+.availabilityDashboard .availability {
+  width: 300px;
+  display: inline-block;
+  text-overflow: ellipsis;
 }
 table.reservations {
   border-collapse: collapse;

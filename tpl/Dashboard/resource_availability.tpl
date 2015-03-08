@@ -17,11 +17,12 @@ You should have received a copy of the GNU General Public License
 along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 *}
 
-<div class="dashboard availabilityDashboard" id="availabilityDashboard">
-	<div class="dashboardHeader">
-		<a href="javascript:void(0);" title="{translate key='ShowHide'}">{translate key="ResourceAvailability"}</a>
+<div class="panel panel-default dashboard dashboard availabilityDashboard" id="availabilityDashboard">
+	<div class="panel-heading dashboardHeader">
+		{translate key="ResourceAvailability"}<a href="#" title="{translate key=ShowHide} {translate key="ResourceAvailability"}">
+			<span class="glyphicon"></span></a>
 	</div>
-	<div class="dashboardContents">
+	<div class="panel-body dashboardContents">
 		<div class="header">{translate key=Available}</div>
 		{foreach from=$Available item=i}
 			<div class="availabilityItem">

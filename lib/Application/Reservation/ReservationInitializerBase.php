@@ -273,6 +273,13 @@ abstract class ReservationInitializerBase implements IReservationInitializer, IR
 	{
 		$startPeriod = $this->GetStartSlotClosestTo($startPeriods, $startDate);
 
+		if (!$startPeriod->IsReservable())
+		{
+			// if there are no more slots today, move to tomorrow
+			$startDate = $startDate->AddDays(1)->GetDate();
+			$endDate = $endDate->AddDays(1)->GetDate();
+			$startPeriod = $this->GetStartSlotClosestTo($startPeriods, $startDate);
+		}
 		if ($endDate->LessThanOrEqual($startDate))
 		{
 			$endDate = $endDate->SetTime($startPeriod->End());
