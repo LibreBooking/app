@@ -30,6 +30,8 @@ function Reservation(opts)
 		userName: $('#userName'),
 		userId: $('#userId'),
 
+		referenceNumber: $('#referenceNumber'),
+
 		accessoriesPrompt: $('#addAccessoriesPrompt'),
 		accessoriesDialog: $('#dialogAddAccessories'),
 		accessoriesList: $('#accessories'),
@@ -141,6 +143,19 @@ function Reservation(opts)
 		WireUpSaveDialog();
 		DisplayDuration();
 		WireUpAttachments();
+
+		function LoadCustomAttributes()
+		{
+			var attributesPlaceholder = $('#custom-attributes-placeholder');
+			attributesPlaceholder.html('<span class="fa fa-spinner fa-spin fa-2x"/>');
+			attributesPlaceholder.load('ajax/reservation_attributes.php?uid=' + elements.userId.val() + '&rn=' + elements.referenceNumber.val() + '&ro=' + $('#reservationbox').hasClass('readonly'));
+		}
+
+		elements.userId.change(function(){
+			LoadCustomAttributes();
+		});
+
+		LoadCustomAttributes();
 	};
 
 	// pre-submit callback 
@@ -456,34 +471,19 @@ function Reservation(opts)
 
 	var WireUpButtonPrompt = function ()
 	{
-		var updateButtons = $('.updateButtons');
-		updateButtons.dialog({
-			autoOpen: false, modal: true, draggable: false, resizable: false, closeOnEscape: false,
-			minWidth: 700, width: 700, height: 100
-		});
-
-		updateButtons.find('.button').click(function ()
+		$('#updateButtons').find('button').click(function ()
 		{
-			$('.updateButtons').dialog('close');
+			$('#updateButtons').modal('hide');
 		});
 
 		$('.prompt').click(function ()
 		{
-			$('.updateButtons').dialog('open');
+			$('#updateButtons').modal('show');
 		});
 	};
 
 	var WireUpSaveDialog = function ()
 	{
-		//$('#dialogSave').dialog({
-		//	autoOpen: false, modal: true, draggable: false, resizable: false, closeOnEscape: false,
-		//	minHeight: 400, minWidth: 700, width: 700,
-		//	open: function (event, ui)
-		//	{
-		//		$(this).parents(".ui-dialog:first").find(".ui-dialog-titlebar").hide();
-		//	}
-		//});
-
 		$('.save').click(function ()
 		{
 			$('#form-reservation').submit();

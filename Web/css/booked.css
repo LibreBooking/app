@@ -339,6 +339,9 @@ input[type=text].user-search {
 .remove.icon {
   color: #c37c82;
 }
+.bold {
+  font-weight: bold;
+}
 .checkbox {
   padding-left: 20px;
 }
@@ -1134,6 +1137,13 @@ a.remove {
 .reservation-message {
   font-size: 2em;
   font-weight: bold;
+}
+#custom-attributes-placeholder .form-group {
+  margin: 0;
+}
+#custom-attributes-placeholder .customAttribute {
+  max-width: 250px;
+  display: inline-block;
 }
 .admin {
   width: 100%;

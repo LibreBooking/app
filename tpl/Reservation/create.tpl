@@ -21,7 +21,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 <div id="page-reservation">
 	<div id="reservation-box">
-		<form id="form-reservation" method="post" enctype="multipart/form-data" role="form" class="form-horizontal">
+		<form id="form-reservation" method="post" enctype="multipart/form-data" role="form" >
 
 			<div class="row">
 				<div class="col-xs-6 col-top reservationHeader">
@@ -189,9 +189,10 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 						</div>
 					{/if}
 					<div class="col-xs-12">
-						<div class="form-group ">
+						<div class="form-group has-feedback">
 							<label for="reservationTitle">{translate key="ReservationTitle"}</label>
 							{textbox name="RESERVATION_TITLE" class="form-control" value="ReservationTitle" id="reservationTitle"}
+							{*<i class="glyphicon glyphicon-asterisk form-control-feedback" data-bv-icon-for="reservationTitle"></i>*}
 						</div>
 					</div>
 					<div class="col-xs-12">
@@ -243,7 +244,11 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 				</div>
 			{/if}
 
-			<div class="row" id="custom-attributes-placeholder"></div>
+			<div class="row">
+				<div id="custom-attributes-placeholder" class="col-xs-12">
+
+				</div>
+			</div>
 
 			{if $UploadsEnabled}
 				<div class="row">
@@ -263,9 +268,9 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 				</div>
 			{/if}
 
-			<input type="hidden" {formname key=reservation_id} value="{$ReservationId}"/>
-			<input type="hidden" {formname key=reference_number} value="{$ReferenceNumber}" id="referenceNumber"/>
-			<input type="hidden" {formname key=reservation_action} value="{$ReservationAction}"/>
+			<input type="hidden" {formname key=RESERVATION_ID} value="{$ReservationId}"/>
+			<input type="hidden" {formname key=REFERENCE_NUMBER} value="{$ReferenceNumber}" id="referenceNumber"/>
+			<input type="hidden" {formname key=RESERVATION_ACTION} value="{$ReservationAction}"/>
 
 			<input type="hidden" {formname key=SERIES_UPDATE_SCOPE} id="hdnSeriesUpdateScope"
 				   value="{SeriesUpdateScope::FullSeries}"/>

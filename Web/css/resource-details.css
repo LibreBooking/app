@@ -339,6 +339,9 @@ input[type=text].user-search {
 .remove.icon {
   color: #c37c82;
 }
+.bold {
+  font-weight: bold;
+}
 #resourceDetailsPopup {
   min-width: 300px;
   max-width: 1000px;

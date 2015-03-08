@@ -16,11 +16,14 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 *}
-<div class="form-group">
+<div class="form-group has-feedback">
 <label class="customAttribute" for="{$attributeName}">{$attribute->Label()|escape}</label>
 {if $readonly}
 <span class="attributeValue {$class}">{$attribute->Value()|escape|nl2br}</span>
 {else}
 <textarea id="{$attributeName}" name="{$attributeName}" class="customAttribute form-control {$class}">{$attribute->Value()|escape}</textarea>
+	{if $attribute->Required()}
+	<i class="glyphicon glyphicon-asterisk form-control-feedback" data-bv-icon-for="{$attributeName}"></i>
+	{/if}
 {/if}
 </div>

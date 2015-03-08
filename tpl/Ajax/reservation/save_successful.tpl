@@ -30,14 +30,14 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 	<div id="reference-number">{translate key=YourReferenceNumber args=$ReferenceNumber}</div>
 
 	<div class="dates">
-		{translate key=Dates}:
+		<span class="bold">{translate key=Dates}:</span>
 		{foreach from=$Instances item=instance name=date_list}
 			<span class="date">{format_date date=$instance->StartDate() timezone=$Timezone}{if !$smarty.foreach.date_list.last}, {/if}</span>
 		{/foreach}
 	</div>
 
 	<div class="resources">
-		{translate key=Resources}:
+		<span class="bold">{translate key=Resources}:</span>
 		{foreach from=$Resources item=resource name=resource_list}
 			<span class="resource">{$resource->GetName()}{if !$smarty.foreach.resource_list.last}, {/if}</span>
 		{/foreach}

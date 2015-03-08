@@ -20,13 +20,13 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 {if $Attributes|count > 0}
 <div class="customAttributes">
     <span>{translate key=AdditionalAttributes}</span>
-    <ul>
+    <div>
 		{foreach from=$Attributes item=attribute}
-            <li class="customAttribute">
+            <div class="customAttribute">
 				{control type="AttributeControl" attribute=$attribute readonly=$ReadOnly}
-            </li>
+            </div>
 		{/foreach}
-    </ul>
+    </div>
 </div>
 <div class="clear">&nbsp;</div>
 {/if}

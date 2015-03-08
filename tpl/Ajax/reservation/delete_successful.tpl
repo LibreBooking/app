@@ -17,8 +17,11 @@ You should have received a copy of the GNU General Public License
 along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 *}
 <div>
-	<div>{translate key=ReservationRemoved}</div>
+	<div id="reservation-response-image">
+		<span class="fa fa-check fa-5x success"></span>
+	</div>
 
-	<input type="button" id="btnSaveSuccessful" value="{translate key='Close'}" class="button" />
+	<div id="deleted-message" class="reservation-message">{translate key=ReservationRemoved}</div>
 
+	<input type="button" id="btnSaveSuccessful" value="{translate key='Close'}" class="btn btn-success" />
 </div>
