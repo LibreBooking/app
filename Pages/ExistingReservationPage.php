@@ -112,6 +112,11 @@ interface IExistingReservationPage extends IReservationPage
 	 * @param ReservationReminderInterval $reminderInterval
 	 */
 	public function SetEndReminder($reminderValue, $reminderInterval);
+
+	/**
+	 * @param bool $canAlterParticipation
+	 */
+	public function SetCanAlterParticipation($canAlterParticipation);
 }
 
 class ExistingReservationPage extends ReservationPage implements IExistingReservationPage
@@ -266,5 +271,13 @@ class ExistingReservationPage extends ReservationPage implements IExistingReserv
 	{
 		$this->Set('ReminderTimeEnd', $reminderValue);
 		$this->Set('ReminderIntervalEnd', $reminderInterval);
+	}
+
+	/**
+	 * @param bool $canAlterParticipation
+	 */
+	public function SetCanAlterParticipation($canAlterParticipation)
+	{
+		$this->Set('CanAlterParticipation', $canAlterParticipation);
 	}
 }

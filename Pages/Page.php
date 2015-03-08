@@ -157,6 +157,7 @@ abstract class Page implements IPage
 	{
 		$errorMessageKey = ErrorMessages::Instance()->GetResourceKey($this->server->GetQuerystring(QueryStringKeys::MESSAGE_ID));
 		$this->Set('ErrorMessage', $errorMessageKey);
+		$this->Set('TitleKey', 'Error');
 		$this->Display('error.tpl');
 		die();
 	}

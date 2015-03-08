@@ -246,7 +246,6 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 			<div class="row">
 				<div id="custom-attributes-placeholder" class="col-xs-12">
-
 				</div>
 			</div>
 

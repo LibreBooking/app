@@ -110,7 +110,7 @@ function Schedule(opts, resourceGroups)
 			});
 		});
 
-		$('#schedule-dates').find('.change-date').on('click', function (e)
+		$('.schedule-dates').find('.change-date').on('click', function (e)
 		{
 			e.preventDefault();
 			var year = $(this).attr('data-year');

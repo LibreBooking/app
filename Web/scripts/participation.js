@@ -5,7 +5,7 @@ function Participation(opts)
 	var elements = {
 		invitationAction: $('.participationAction'),
 		referenceNumber: $("#referenceNumber"),
-		indicator: $('#indicator'),
+		indicator: $('#participate-indicator'),
 		jsonResult: $('#jsonResult')
 	};
 

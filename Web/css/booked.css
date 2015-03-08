@@ -339,6 +339,9 @@ input[type=text].user-search {
 .remove.icon {
   color: #c37c82;
 }
+.black.icon {
+  color: #585754;
+}
 .bold {
   font-weight: bold;
 }
@@ -743,7 +746,7 @@ td.reserved {
 .schedule_title span {
   font-size: 2em;
 }
-.schedule_dates {
+.schedule-dates {
   text-align: center;
   font-size: 1.5em;
   padding-bottom: 10px;

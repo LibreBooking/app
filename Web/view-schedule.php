@@ -29,5 +29,3 @@ if (!Configuration::Instance()->GetSectionKey(ConfigSection::PRIVACY, ConfigKeys
 }
 
 $page->PageLoad();
-
-?>

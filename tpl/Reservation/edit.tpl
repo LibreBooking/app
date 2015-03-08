@@ -32,28 +32,24 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			{translate key=More} <span class="caret"></span>
 		</button>
 		<ul class="dropdown-menu" role="menu">
-			<li><a href="{$Path}export/{Pages::CALENDAR_EXPORT}?{QueryStringKeys::REFERENCE_NUMBER}={$ReferenceNumber}">
+			<li>
+				{assign var=icsUrl value="{$Path}export/{Pages::CALENDAR_EXPORT}?{QueryStringKeys::REFERENCE_NUMBER}={$ReferenceNumber}"}
+				<a href="{$icsUrl}" download="{$icsUrl}">
 					<span class="fa fa-calendar"></span>
 					{translate key=AddToOutlook}</a>
 			</li>
-			<li><a href="#" class="btnPrint">
+			<li>
+				<a href="#" class="btnPrint">
 					<span class="fa fa-print"></span>
 					{translate key='Print'}</a>
 			</li>
 
 			<li class="divider"></li>
 			<li>
-				{if $IsRecurring}
-					<a href="#" class="delete prompt">
-						<span class="fa fa-remove remove icon"></span>
-						{translate key='Delete'}
-					</a>
-				{else}
-					<a href="#" class="delete save">
-						<span class="fa fa-remove remove icon"></span>
-						{translate key='Delete'}
-					</a>
-				{/if}
+				<a href="#" class="delete {if $IsRecurring}prompt{else}save{/if}">
+					<span class="fa fa-remove remove icon"></span>
+					{translate key='Delete'}
+				</a>
 			</li>
 		</ul>
 	</div>
@@ -102,19 +98,20 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 {/block}
 
 {block name='attachments'}
-	<div style="clear:both">&nbsp;</div>
-	<div id="attachmentDiv" class="res-attachments">
-		<span class="heading">{translate key=Attachments} ({$Attachments|count})</span>
-		{if $Attachments|count > 0}
+	{if $Attachments|count > 0}
+		<div class="col-xs-12">
+		<div id="attachmentDiv" class="res-attachments">
+			<span class="heading">{translate key=Attachments} ({$Attachments|count})</span>
 			<a href="#" class="remove" id="btnRemoveAttachment">({translate key="Remove"})</a>
 			<br/>
 			{foreach from=$Attachments item=attachment}
-				<a href="attachments/{Pages::RESERVATION_FILE}?{QueryStringKeys::ATTACHMENT_FILE_ID}={$attachment->FileId()}&{QueryStringKeys::REFERENCE_NUMBER}={$ReferenceNumber}"
+				{assign var=attachmentUrl value="attachments/{Pages::RESERVATION_FILE}?{QueryStringKeys::ATTACHMENT_FILE_ID}={$attachment->FileId()}&{QueryStringKeys::REFERENCE_NUMBER}={$ReferenceNumber}"}
+				<a href="{$attachmentUrl}" download="{$attachmentUrl}"
 				   target="_blank">{$attachment->FileName()}</a>
 				&nbsp;
 				<input style='display: none;' type="checkbox" name="{FormKeys::REMOVED_FILE_IDS}[{$attachment->FileId()}]"/>
 				&nbsp;
 			{/foreach}
-		{/if}
-	</div>
+		</div>
+	{/if}
 {/block}

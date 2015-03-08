@@ -148,7 +148,7 @@ function Reservation(opts)
 		{
 			var attributesPlaceholder = $('#custom-attributes-placeholder');
 			attributesPlaceholder.html('<span class="fa fa-spinner fa-spin fa-2x"/>');
-			attributesPlaceholder.load('ajax/reservation_attributes.php?uid=' + elements.userId.val() + '&rn=' + elements.referenceNumber.val() + '&ro=' + $('#reservationbox').hasClass('readonly'));
+			attributesPlaceholder.load('ajax/reservation_attributes.php?uid=' + elements.userId.val() + '&rn=' + elements.referenceNumber.val() + '&ro=' + $('#reservation-box').hasClass('readonly'));
 		}
 
 		elements.userId.change(function(){

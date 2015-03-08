@@ -16,215 +16,232 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 *}
-{include file='globalheader.tpl' TitleKey='ViewReservationHeading' TitleArgs=$ReferenceNumber cssFiles='css/reservation.css'}
-<div id="reservationbox" class="readonly">
-	<div id="reservationFormDiv">
-		<div class="reservationHeader">
-			<h3>{translate key="ViewReservationHeading" args=$ReferenceNumber}</h3>
-		</div>
-		<div id="reservationDetails">
-			<ul class="no-style">
-				<li>
-					<label>{translate key='User'}</label>
-				{if $ShowUserDetails}
-					{$ReservationUserName}
-					<input id="userId" type="hidden" value="{$UserId}"/>
-				{else}
-					{translate key=Private}
+{include file='globalheader.tpl' TitleKey='ViewReservationHeading'}
+<div id="page-reservation">
+	<div id="reservation-box" class="readonly">
+		<div id="reservationFormDiv">
+			<div class="row">
+				{assign var="detailsCol" value="col-xs-12"}
+				{assign var="participantCol" value="col-xs-12"}
+
+				{if $ShowParticipation && $AllowParticipation}
+					{assign var="detailsCol" value="col-xs-12 col-sm-6"}
+					{assign var="participantCol" value="col-xs-12 col-sm-6"}
 				{/if}
-				</li>
-				<li>
-					<label>{translate key='Resources'}</label> {$ResourceName}
-					{foreach from=$AvailableResources item=resource}
-						{if is_array($AdditionalResourceIds) && in_array($resource->Id, $AdditionalResourceIds)}
-							,{$resource->Name}
-						{/if}
-					{/foreach}
-				</li>
-				<li>
-					<label>{translate key='Accessories'}</label>
-					{foreach from=$Accessories item=accessory name=accessoryLoop}
-						({$accessory->QuantityReserved})
-						{if $smarty.foreach.accessoryLoop.last}
-							{$accessory->Name}
+
+				<div id="reservationDetails" class="{$detailsCol}">
+					<div class="col-xs-12">
+						<label>{translate key='User'}</label>
+						{if $ShowUserDetails}
+							{$ReservationUserName}
+							<input id="userId" type="hidden" value="{$UserId}"/>
 						{else}
-							{$accessory->Name},
+							{translate key=Private}
 						{/if}
-					{/foreach}
-				</li>
-				<li class="section">
-					<label>{translate key='BeginDate'}</label> {formatdate date=$StartDate}
-					<input type="hidden" id="formattedBeginDate" value="{formatdate date=$StartDate key=system}"/>
-					{foreach from=$StartPeriods item=period}
-						{if $period eq $SelectedStart}
-							{$period->Label()} <br/>
-							<input type="hidden" id="BeginPeriod" value="{$period->Begin()}"/>
-						{/if}
-					{/foreach}
-				</li>
-				<li>
-					<label>{translate key='EndDate'}</label> {formatdate date=$EndDate}
-					<input type="hidden" id="formattedEndDate" value="{formatdate date=$EndDate key=system}" />
-					{foreach from=$EndPeriods item=period}
-						{if $period eq $SelectedEnd}
-							{$period->LabelEnd()} <br/>
-							<input type="hidden" id="EndPeriod" value="{$period->End()}"/>
-						{/if}
-					{/foreach}
-				</li>
-				<li>
+					</div>
+
+					<div class="col-xs-12">
+						<div class="pull-left">
+							<label>{translate key='Resources'}</label> {$ResourceName}
+							{foreach from=$AvailableResources item=resource}
+								{if is_array($AdditionalResourceIds) && in_array($resource->Id, $AdditionalResourceIds)}
+									,{$resource->Name}
+								{/if}
+							{/foreach}
+						</div>
+						<div class="pull-right">
+							<label>{translate key='Accessories'}</label>
+							{foreach from=$Accessories item=accessory name=accessoryLoop}
+								<span class="badge quantity">{$accessory->QuantityReserved}</span>
+								{if $smarty.foreach.accessoryLoop.last}
+									{$accessory->Name}
+								{else}
+									{$accessory->Name},
+								{/if}
+							{/foreach}
+						</div>
+					</div>
+
+					<div class="col-xs-12">
+						<div class="col-md-6 no-padding-left">
+							<label>{translate key='BeginDate'}</label> {formatdate date=$StartDate}
+							<input type="hidden" id="formattedBeginDate" value="{formatdate date=$StartDate key=system}"/>
+							{foreach from=$StartPeriods item=period}
+								{if $period eq $SelectedStart}
+									{$period->Label()}
+									<input type="hidden" id="BeginPeriod" value="{$period->Begin()}"/>
+								{/if}
+							{/foreach}
+						</div>
+						<div class="col-md-6 no-padding-left">
+							<label>{translate key='EndDate'}</label> {formatdate date=$EndDate}
+							<input type="hidden" id="formattedEndDate" value="{formatdate date=$EndDate key=system}"/>
+							{foreach from=$EndPeriods item=period}
+								{if $period eq $SelectedEnd}
+									{$period->LabelEnd()}
+									<input type="hidden" id="EndPeriod" value="{$period->End()}"/>
+								{/if}
+							{/foreach}
+						</div>
+					</div>
+
+					<div class="col-xs-12">
 						<label>{translate key=ReservationLength}</label>
 
 						<div class="durationText">
 							<span id="durationDays">0</span> {translate key='days'},
 							<span id="durationHours">0</span> {translate key='hours'}
 						</div>
-					</li>
-				<li>
-					<label>{translate key='RepeatPrompt'}</label> {translate key=$RepeatOptions[$RepeatType]['key']}
-				{if $IsRecurring}
-					<div class="repeat-details">
-						<label>{translate key='RepeatEveryPrompt'}</label> {$RepeatInterval} {$RepeatOptions[$RepeatType]['everyKey']}
-						{if $RepeatMonthlyType neq ''}
-							({$RepeatMonthlyType})
+					</div>
+
+					<div class="col-xs-12">
+						<label>{translate key='RepeatPrompt'}</label> {translate key=$RepeatOptions[$RepeatType]['key']}
+						{if $IsRecurring}
+							<div class="repeat-details">
+								<label>{translate key='RepeatEveryPrompt'}</label> {$RepeatInterval} {$RepeatOptions[$RepeatType]['everyKey']}
+								{if $RepeatMonthlyType neq ''}
+									({$RepeatMonthlyType})
+								{/if}
+								{if count($RepeatWeekdays) gt 0}
+									<br/>
+									<label>{translate key='RepeatDaysPrompt'}</label>
+									{foreach from=$RepeatWeekdays item=day}{translate key=$DayNames[$day]} {/foreach}
+								{/if}
+								<br/><label>{translate key='RepeatUntilPrompt'}</label> {formatdate date=$RepeatTerminationDate}
+							</div>
 						{/if}
-						{if count($RepeatWeekdays) gt 0}
-							<br/><label>{translate key='RepeatDaysPrompt'}</label> {foreach from=$RepeatWeekdays item=day}{translate key=$DayNames[$day]} {/foreach}
-						{/if}
-						<br/><label>{translate key='RepeatUntilPrompt'}</label> {formatdate date=$RepeatTerminationDate}
+					</div>
+
+					{if $ShowReservationDetails}
+						<div class="col-xs-12">
+							<label>{translate key='ReservationTitle'}</label>
+							{if $ReservationTitle neq ''}
+								{$ReservationTitle}
+							{else}
+								<span class="no-data">{translate key='None'}</span>
+							{/if}
+						</div>
+						<div class="col-xs-12">
+							<label>{translate key='ReservationDescription'}</label>
+							{if $Description neq ''}
+								<br/>
+								{$Description|nl2br}
+							{else}
+								<span class="no-data">{translate key='None'}</span>
+							{/if}
+						</div>
+					{/if}
+				</div>
+
+				{if $ShowParticipation}
+					<div class="{$participantCol}">
+						<div id="reservationParticipation">
+							<div>
+								{if $IAmParticipating && $CanAlterParticipation}
+									{if $IsRecurring}
+										{translate key=CancelParticipation}
+										<button value="{InvitationAction::CancelAll}" class="btn btn-xs btn-info participationAction">
+											<span class="fa fa-minus-square"></span> {translate key=AllInstances}
+										</button>
+										<button value="{InvitationAction::CancelInstance}" class="btn btn-xs btn-info participationAction">
+											<span class="fa fa-minus-square"></span> {translate key=ThisInstance}
+										</button>
+									{/if}
+									<button value="{InvitationAction::CancelInstance}" class="btn btn-xs btn-info participationAction">
+										<span class="fa fa-minus-square"></span> {translate key=CancelParticipation}
+									</button>
+								{/if}
+							</div>
+
+							<div>
+								{if $IAmInvited && $CanAlterParticipation}
+									<div>{translate key=Attending}?</div>
+									<button value="{InvitationAction::Accept}" class="btn btn-xs btn-success participationAction">
+										<span class="fa fa-user-plus"></span> {translate key="Yes"}
+									</button>
+									<button value="{InvitationAction::Decline}" class="btn btn-xs btn-danger  participationAction">
+										<span class="fa fa-user-times"></span> {translate key="No"}
+									</button>
+								{/if}
+							</div>
+							<span id="participate-indicator" class="fa fa-spinner fa-spin" style="display:none;"></span>
+							{if $ShowUserDetails}
+								<div>
+									<label>{translate key='ParticipantList'}</label><br/>
+									{foreach from=$Participants item=participant}
+										<div>{$participant->FullName}</div>
+										{foreachelse}
+										<span class="no-data">{translate key='None'}</span>
+									{/foreach}
+								</div>
+								<div>
+									<label>{translate key='InvitationList'}</label><br/>
+									{foreach from=$Invitees item=invitee}
+										<div>{$invitee->FullName}</div>
+										{foreachelse}
+										<span class="no-data">{translate key='None'}</span>
+									{/foreach}
+								</div>
+							{/if}
+						</div>
 					</div>
 				{/if}
-				{if $ShowReservationDetails}
-					</li>
-					<li class="section">
-						<label>{translate key='ReservationTitle'}</label>
-						{if $ReservationTitle neq ''}
-							{$ReservationTitle}
-						{else}
-							<span class="no-data">{translate key='None'}</span>
-						{/if}
-					</li>
 
-					<li>
-						<label>{translate key='ReservationDescription'}</label>
-						{if $Description neq ''}
-							<br/>{$Description|nl2br}
-						{else}
-							<span class="no-data">{translate key='None'}</span>
-						{/if}
-					</li>
-				{/if}
-		</div>
-
-		{if $ShowParticipation}
-		<div id="reservationParticipation">
-			<ul class="no-style">
-				{if $ShowUserDetails}
-					<li class="section">
-						<label>{translate key='ParticipantList'}</label>
-						{foreach from=$Participants item=participant}
-							<br/>{$participant->FullName}
-						{foreachelse}
-							<span class="no-data">{translate key='None'}</span>
-						{/foreach}
-					</li>
-
-					<li>
-						<label>{translate key='InvitationList'}</label>
-						{foreach from=$Invitees item=invitee}
-							<br/>{$invitee->FullName}
-						{foreachelse}
-							<span class="no-data">{translate key='None'}</span>
-						{/foreach}
-					</li>
-				{/if}
-				<li>
-					{if $IAmParticipating}
-						{translate key=CancelParticipation}?
-						</li>
-						<li>
-						{if $IsRecurring}
-							<button value="{InvitationAction::CancelAll}" class="button participationAction">{html_image src="user-minus.png"} {translate key=AllInstances}</button>
-							<button value="{InvitationAction::CancelInstance}" class="button participationAction">{html_image src="user-minus.png"} {translate key=ThisInstance}</button>
-						{/if}
-						<button value="{InvitationAction::CancelInstance}" class="button participationAction">{html_image src="user-minus.png"} {translate key=CancelParticipation}</button>
-					{/if}
-
-					{if $IAmInvited}
-						{translate key=Attending}?
-						</li>
-						<li>
-						<button value="{InvitationAction::Accept}" class="button participationAction">{html_image src="ticket-plus.png"} {translate key=Yes}</button>
-						<button value="{InvitationAction::Decline}" class="button participationAction">{html_image src="ticket-minus.png"} {translate key=No}</button>
-					{/if}
-					{html_image id="indicator" src="admin-ajax-indicator.gif" style="display:none;"}
-				</li>
-			</ul>
-		</div>
-		{/if}
-		<div style="clear:both;">&nbsp;</div>
-
-		<div id="custom-attributes-placeholder"></div>
-
-		{*{if $ShowReservationDetails}*}
-			{*{if $Attributes|count > 0}*}
-			{*<div class="customAttributes">*}
-				{*<span>{translate key=AdditionalAttributes}</span>*}
-				{*<ul>*}
-				{*{foreach from=$Attributes item=attribute}*}
-					{*<li class="customAttribute">*}
-						{*{control type="AttributeControl" attribute=$attribute readonly=true}*}
-					{*</li>*}
-				{*{/foreach}*}
-				{*</ul>*}
-			{*</div>*}
-			{*<div style="clear:both;">&nbsp;</div>*}
-			{*{/if}*}
-		{*{/if}*}
-
-		{if $ShowReservationDetails}
-			<div style="float:left;">
-				{block name="deleteButtons"}
-					<a href="{$Path}export/{Pages::CALENDAR_EXPORT}?{QueryStringKeys::REFERENCE_NUMBER}={$ReferenceNumber}">
-					{html_image src="calendar-plus.png"}
-					{translate key=AddToOutlook}</a>
-				{/block}
-			</div>
-		{/if}
-		<div style="float:right;">
-			{block name="submitButtons"}
-				&nbsp
-			{/block}
-			<button type="button" class="button" onclick="window.location='{$ReturnUrl}'">
-				<img src="img/slash.png"/>
-				{translate key='Close'}
-			</button>
-					<button type="button" class="button">
-				<img src="img/printer.png" />
-				{translate key='Print'}
-			</button>
-		</div>
-
-		{if $ShowReservationDetails}
-			{if $Attachments|count > 0}
-				<div style="clear:both">&nbsp;</div>
-				<div class="res-attachments">
-				<span class="heading">{translate key=Attachments}</span>
-					{foreach from=$Attachments item=attachment}
-						<a href="attachments/{Pages::RESERVATION_FILE}?{QueryStringKeys::ATTACHMENT_FILE_ID}={$attachment->FileId()}&{QueryStringKeys::REFERENCE_NUMBER}={$ReferenceNumber}" target="_blank">{$attachment->FileName()}</a>&nbsp;
-					{/foreach}
+				<div id="custom-attributes-placeholder" class="col-xs-12">
 				</div>
+
+				{if $ShowReservationDetails}
+				<div class="col-xs-12">
+					<div class="pull-right">
+						<button type="button" class="btn btn-default" onclick="window.location='{$ReturnUrl}'">
+							{translate key='Cancel'}
+						</button>
+
+						{block name="deleteButtons"}
+							{assign var=icsUrl value="{$Path}export/{Pages::CALENDAR_EXPORT}?{QueryStringKeys::REFERENCE_NUMBER}={$ReferenceNumber}"}
+							<a href="{$icsUrl}" download="{$icsUrl}" class="btn btn-default">
+								<span class="fa fa-calendar"></span>
+								{translate key=AddToOutlook}</a>
+							<button type="button" class="btnPrint btn btn-default">
+								<span class="fa fa-print"></span>
+								{translate key='Print'}</button>
+						{/block}
+					</div>
+
+					{block name="submitButtons"}
+						&nbsp;
+					{/block}
+
+				</div>
+			</div>
 			{/if}
-		{/if}
-		<input type="hidden" id="referenceNumber" {formname key=reference_number} value="{$ReferenceNumber}"/>
+			{if $ShowReservationDetails}
+				{if $Attachments|count > 0}
+					<div class="col-xs-12">
+						<div class="res-attachments">
+							<span class="heading">{translate key=Attachments} ({$Attachments|count})</span>
+							<br/>
+							{foreach from=$Attachments item=attachment}
+								{assign var=attachmentUrl value="attachments/{Pages::RESERVATION_FILE}?{QueryStringKeys::ATTACHMENT_FILE_ID}={$attachment->FileId()}&{QueryStringKeys::REFERENCE_NUMBER}={$ReferenceNumber}"}
+								<a href="{$attachmentUrl}" download="{$attachmentUrl}"
+								   target="_blank">{$attachment->FileName()}</a>
+								&nbsp;
+							{/foreach}
+						</div>
+					</div>
+				{/if}
+			{/if}
+			<input type="hidden" id="referenceNumber" {formname key=reference_number} value="{$ReferenceNumber}"/>
+		</div>
 	</div>
 </div>
 
 <div id="dialogSave" style="display:none;">
 	<div id="creatingNotification" style="position:relative; top:170px;">
-	{block name="ajaxMessage"}
-		{translate key=UpdatingReservation}...<br/>
-	{/block}
+		{block name="ajaxMessage"}
+			{translate key=UpdatingReservation}...
+			<br/>
+		{/block}
 		<img src="{$Path}img/reservation_submitting.gif" alt="Creating reservation"/>
 	</div>
 	<div id="result" style="display:none;"></div>
@@ -232,11 +249,12 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 <div style="display: none">
 	<form id="reservationForm" method="post" enctype="application/x-www-form-urlencoded">
-		<input type="hidden" {formname key=reservation_id} value="{$ReservationId}"/>
-		<input type="hidden" {formname key=reference_number} value="{$ReferenceNumber}"/>
-		<input type="hidden" {formname key=reservation_action} value="{$ReservationAction}"/>
+		<input type="hidden" {formname key=RESERVATION_ID} value="{$ReservationId}"/>
+		<input type="hidden" {formname key=REFERENCE_NUMBER} value="{$ReferenceNumber}"/>
+		<input type="hidden" {formname key=RESERVATION_ACTION} value="{$ReservationAction}"/>
 		<input type="hidden" {formname key=SERIES_UPDATE_SCOPE} id="hdnSeriesUpdateScope" value="{SeriesUpdateScope::FullSeries}"/>
 	</form>
+</div>
 </div>
 {jsfile src="participation.js"}
 {jsfile src="approval.js"}
@@ -246,9 +264,10 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 {jsfile src="reservation.js"}
 {jsfile src="autocomplete.js"}
 
-	<script type="text/javascript">
+<script type="text/javascript">
 
-	$(document).ready(function() {
+	$(document).ready(function ()
+	{
 
 		var participationOptions = {
 			responseType: 'json'
@@ -266,10 +285,10 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		approval.initReservation();
 
 		var scopeOptions = {
-				instance: '{SeriesUpdateScope::ThisInstance}',
-				full: '{SeriesUpdateScope::FullSeries}',
-				future: '{SeriesUpdateScope::FutureInstances}'
-			};
+			instance: '{SeriesUpdateScope::ThisInstance}',
+			full: '{SeriesUpdateScope::FullSeries}',
+			future: '{SeriesUpdateScope::FutureInstances}'
+		};
 
 		var reservationOpts = {
 			returnUrl: '{$ReturnUrl}',
@@ -282,16 +301,17 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		reservation.init('{$UserId}');
 
 		var options = {
-				target: '#result',   // target element(s) to be updated with server response
-				beforeSubmit: reservation.preSubmit,  // pre-submit callback
-				success: reservation.showResponse  // post-submit callback
-			};
+			target: '#result',   // target element(s) to be updated with server response
+			beforeSubmit: reservation.preSubmit,  // pre-submit callback
+			success: reservation.showResponse  // post-submit callback
+		};
 
-			$('#reservationForm').submit(function() {
-				$(this).ajaxSubmit(options);
-				return false;
-			});
+		$('#reservationForm').submit(function ()
+		{
+			$(this).ajaxSubmit(options);
+			return false;
+		});
 	});
 
-	</script>
+</script>
 {include file='globalfooter.tpl'}

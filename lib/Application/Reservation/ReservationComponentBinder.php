@@ -326,6 +326,7 @@ class ReservationDetailsBinder implements IReservationComponentBinder
 
 		$this->page->SetCurrentUserParticipating($this->IsCurrentUserParticipating($currentUser->UserId));
 		$this->page->SetCurrentUserInvited($this->IsCurrentUserInvited($currentUser->UserId));
+		$this->page->SetCanAlterParticipation($this->reservationView->EndDate->GreaterThan(Date::Now()));
 
 		$canBeEdited = $this->reservationAuthorization->CanEdit($this->reservationView, $currentUser);
 		$this->page->SetIsEditable($canBeEdited);
