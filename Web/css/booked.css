@@ -1552,6 +1552,13 @@ ul.resource-status-reasons {
 #add-blackout-panel label {
   min-width: 100px;
 }
+td.date {
+  width: 150px;
+}
+td.update {
+  text-align: center;
+  width: 65px;
+}
 #install-page input {
   width: 250px;
 }

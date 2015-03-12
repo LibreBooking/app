@@ -40,7 +40,7 @@ function BlackoutManagement(opts)
 
 		$(".cancel").click(function ()
 		{
-			$(this).closest('.dialog').dialog("close");
+			$(this).closest('.modal').modal("hide");
 		});
 
 		$('#updateStartTime').timepicker({
@@ -201,12 +201,12 @@ function BlackoutManagement(opts)
 
 	function showDeleteBlackout()
 	{
-		elements.deleteDialog.dialog('open');
+		elements.deleteDialog.modal('show');
 	}
 
 	function showDeleteRecurringBlackout()
 	{
-		elements.deleteRecurringDialog.dialog('open');
+		elements.deleteRecurringDialog.modal('show');
 	}
 
 	function setActiveBlackoutId(id)

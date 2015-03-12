@@ -23,7 +23,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 <form id="addBlackoutForm" class="form-inline" role="form" method="post">
 	<div class="panel panel-default" id="add-blackout-panel">
-		<div class="panel-heading">{translate key="AddBlackout"} <a href=""><span class="show-hide glyphicon"></span></a></div>
+		<div class="panel-heading">{translate key="AddBlackout"} <a href=""><span
+						class="show-hide glyphicon"></span></a></div>
 		<div class="panel-body add-contents">
 
 			<div class="form-group col-xs-6 col-sm-4">
@@ -92,11 +93,12 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			</div>
 		</div>
 		<div class="panel-footer">
+			<button type="reset" class="btn btn-default btn-sm">{translate key=Reset}</button>
+
 			<button type="button" class="btn btn-success btn-sm save create">
 				<span class="glyphicon glyphicon-ok-circle"></span>
 				{translate key='Create'}
 			</button>
-			<button type="reset" class="btn btn-default btn-sm">{translate key=Reset}</button>
 		</div>
 	</div>
 </form>
@@ -154,16 +156,16 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		{cycle values='row0,row1' assign=rowCss}
 		<tr class="{$rowCss} editable" data-blackout-id="{$blackout->InstanceId}">
 			<td>{$blackout->ResourceName}</td>
-			<td style="width:150px;">{formatdate date=$blackout->StartDate timezone=$Timezone key=res_popup}</td>
-			<td style="width:150px;">{formatdate date=$blackout->EndDate timezone=$Timezone key=res_popup}</td>
+			<td class="date">{formatdate date=$blackout->StartDate timezone=$Timezone key=res_popup}</td>
+			<td class="date">{formatdate date=$blackout->EndDate timezone=$Timezone key=res_popup}</td>
 			<td>{$blackout->Title}</td>
 			<td style="max-width:150px;">{fullname first=$blackout->FirstName last=$blackout->LastName}</td>
 			{if $blackout->IsRecurring}
-				<td align="center" style="width: 65px;" class="update">
+				<td class="update">
 					<a href="#" class="update delete-recurring"><span class="fa fa-remove remove icon"></span></a>
 				</td>
 			{else}
-				<td align="center" style="width: 65px;" class="update">
+				<td class="update">
 					<a href="#" class="update delete"><span class="fa fa-remove remove icon"></span></a>
 				</td>
 			{/if}
@@ -174,30 +176,86 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 {pagination pageInfo=$PageInfo}
 
-<div id="deleteDialog" class="dialog" style="display:none;" title="{translate key=Delete}">
-	<form id="deleteForm" method="post">
-		<div class="error" style="margin-bottom: 25px;">
-			<h3>{translate key=DeleteWarning}</h3>
+<div class="modal fade" id="deleteDialog" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel"
+	 aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h4 class="modal-title" id="deleteModalLabel">{translate key=Delete}</h4>
+			</div>
+			<div class="modal-body">
+				<div class="alert alert-warning">
+					{translate key=DeleteWarning}
+				</div>
+			</div>
+			<div class="modal-footer">
+				<form id="deleteForm" method="post">
+					<button type="button" class="btn btn-default cancel"
+							data-dismiss="modal">{translate key='Cancel'}</button>
+					<button type="button" class="btn btn-danger save btnUpdateAllInstances">
+						<span class="fa fa-remove"></span> {translate key='Delete'}</button>
+				</form>
+			</div>
 		</div>
-		<button type="button"
-				class="button save btnUpdateAllInstances">{html_image src="cross-button.png"} {translate key='Delete'}</button>
-		<button type="button" class="button cancel">{html_image src="slash.png"} {translate key='Cancel'}</button>
-	</form>
+	</div>
 </div>
 
-<div id="deleteRecurringDialog" class="dialog" style="display:none;" title="{translate key=Delete}">
-	<form id="deleteRecurringForm" method="post">
-		<div class="error" style="margin-bottom: 25px;">
-			<h3>{translate key=DeleteWarning}</h3>
+<div class="modal fade" id="deleteDialog" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel"
+	 aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h4 class="modal-title" id="deleteModalLabel">{translate key=Delete}</h4>
+			</div>
+			<div class="modal-body">
+				<div class="alert alert-warning">
+					{translate key=DeleteWarning}
+				</div>
+			</div>
+			<div class="modal-footer">
+				<form id="deleteForm" method="post">
+					<button type="button" class="btn btn-default cancel"
+							data-dismiss="modal">{translate key='Cancel'}</button>
+					<button type="button" class="btn btn-danger save btnUpdateAllInstances">
+						<span class="fa fa-remove"></span> {translate key='Delete'}</button>
+				</form>
+			</div>
 		</div>
-		<button type="button"
-				class="button save btnUpdateThisInstance">{html_image src="cross-button.png"} {translate key='ThisInstance'}</button>
-		<button type="button"
-				class="button save btnUpdateAllInstances">{html_image src="cross-button.png"} {translate key='AllInstances'}</button>
-		<button type="button" class="button cancel">{html_image src="slash.png"} {translate key='Cancel'}</button>
-		<input type="hidden" {formname key=SERIES_UPDATE_SCOPE} class="hdnSeriesUpdateScope"
-			   value="{SeriesUpdateScope::FullSeries}"/>
-	</form>
+	</div>
+</div>
+
+<div class="modal fade" id="deleteRecurringDialog" tabindex="-1" role="dialog" aria-labelledby="deleteRecurringModalLabel"
+	 aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h4 class="modal-title" id="deleteRecurringModalLabel">{translate key=Delete}</h4>
+			</div>
+			<div class="modal-body">
+				<div class="alert alert-warning">
+					{translate key=DeleteWarning}
+				</div>
+			</div>
+			<div class="modal-footer">
+				<form id="deleteRecurringForm" method="post">
+					<button type="button" class="btn btn-default cancel"
+							data-dismiss="modal">{translate key='Cancel'}</button>
+
+					<button type="button" class="btn btn-danger save btnUpdateAllInstances">
+						<span class="fa fa-remove"></span> {translate key='ThisInstance'}</button>
+
+					<button type="button" class="btn btn-danger save btnUpdateAllInstances">
+						<span class="fa fa-remove"></span> {translate key='AllInstances'}</button>
+
+					<input type="hidden" {formname key=SERIES_UPDATE_SCOPE} class="hdnSeriesUpdateScope"
+						   value="{SeriesUpdateScope::FullSeries}"/>
+				</form>
+			</div>
+		</div>
+	</div>
 </div>
 
 {jsfile src="js/jquery.timePicker.min.js"}
@@ -214,7 +272,6 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 	$(document).ready(function ()
 	{
-
 		var updateScope = {};
 		updateScope.instance = '{SeriesUpdateScope::ThisInstance}';
 		updateScope.full = '{SeriesUpdateScope::FullSeries}';

@@ -74,8 +74,6 @@ function Reservation(opts)
 		elements.accessoriesPrompt.click(function ()
 		{
 			ShowAccessoriesPrompt();
-
-			elements.accessoriesDialog.dialog('open');
 		});
 
 		elements.accessoriesConfirm.click(function ()
@@ -300,7 +298,6 @@ function Reservation(opts)
 			elements.accessoriesDialog.find('tr[accessory-id="' + id + '"]').hide();
 		});
 
-		elements.accessoriesDialog.dialog('open');
 	};
 
 	var AddAccessory = function (name, id, quantity)
