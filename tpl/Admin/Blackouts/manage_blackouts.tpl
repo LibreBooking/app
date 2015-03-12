@@ -16,106 +16,128 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 *}
-{include file='globalheader.tpl' cssFiles='scripts/css/colorbox.css,css/admin.css,css/jquery.qtip.min.css,scripts/css/timePicker.css'}
 
+{include file='globalheader.tpl' cssFiles="scripts/css/timePicker.css"}
+<div class="page-manage-blackouts">
 <h1>{translate key=ManageBlackouts}</h1>
 
-<div class="admin">
-	<div class="title">
-		{translate key=AddBlackout}
-	</div>
-	<div>
-		<form id="addBlackoutForm" method="post">
-			<ul>
-				<li>
-					<label for="addStartDate" class="wideLabel">{translate key=BeginDate}</label>
-					<input type="text" id="addStartDate" class="textbox" size="10" value="{formatdate date=$AddStartDate}"/>
-					<input {formname key=BEGIN_DATE} id="formattedAddStartDate" type="hidden" value="{formatdate date=$AddStartDate key=system}"/>
-					<input {formname key=BEGIN_TIME} type="text" id="addStartTime" class="textbox" size="7" value="12:00 AM" title="Start time"/>
-				</li>
-				<li>
-					<label for="addEndDate" class="wideLabel">{translate key=EndDate}</label>
-					<input type="text" id="addEndDate" class="textbox" size="10" value="{formatdate date=$AddEndDate}"/>
-					<input {formname key=END_DATE} type="hidden" id="formattedAddEndDate" value="{formatdate date=$AddEndDate key=system}"/>
-					<input {formname key=END_TIME} type="text" id="addEndTime" class="textbox" size="7"  value="12:00 AM" title="End time"/>
-				</li>
-				<li>
-					<label for="addResourceId" class="wideLabel">{translate key=Resource}</label>
-					<select {formname key=RESOURCE_ID} class="textbox" id="addResourceId">
-						{object_html_options options=$Resources key='GetId' label="GetName" selected=$ResourceId}
-					</select>
-					{if $Schedules|count > 0}
+<form id="addBlackoutForm" class="form-inline" role="form" method="post">
+	<div class="panel panel-default" id="add-blackout-panel">
+		<div class="panel-heading">{translate key="AddBlackout"} <a href=""><span class="show-hide glyphicon"></span></a></div>
+		<div class="panel-body add-contents">
+
+			<div class="form-group col-xs-6 col-sm-4">
+				<label for="addStartDate">{translate key=BeginDate}</label>
+				<input type="text" id="addStartDate" class="form-control dateinput inline-block "
+					   value="{formatdate date=$AddStartDate}"/>
+				<input {formname key=BEGIN_DATE} id="formattedAddStartDate" type="hidden"
+												 value="{formatdate date=$AddStartDate key=system}"/>
+				<input {formname key=BEGIN_TIME} type="text" id="addStartTime"
+												 class="form-control dateinput inline-block"
+												 value="8:00 AM" title="Start time"/>
+			</div>
+			<div class="form-group col-xs-6 col-sm-4">
+				<label for="addEndDate">{translate key=EndDate}</label>
+				<input type="text" id="addEndDate" class="form-control dateinput inline-block " size="10"
+					   value="{formatdate date=$AddEndDate}"/>
+				<input {formname key=END_DATE} type="hidden" id="formattedAddEndDate"
+											   value="{formatdate date=$AddEndDate key=system}"/>
+				<input {formname key=END_TIME} type="text" id="addEndTime"
+											   class="form-control dateinput inline-block"
+											   value="9:00 AM"
+											   title="End time"/>
+			</div>
+			<div class="form-group col-xs-12">
+				<label for="addResourceId">{translate key=Resource}</label>
+				<select {formname key=RESOURCE_ID} class="form-control" id="addResourceId">
+					{object_html_options options=$Resources key='GetId' label="GetName" selected=$ResourceId}
+				</select>
+				{if $Schedules|count > 0}
 					|
-					<label for="allResources" style="">{translate key=AllResourcesOn} </label> <input {formname key=BLACKOUT_APPLY_TO_SCHEDULE} type="checkbox" id="allResources" />
-					<select {formname key=SCHEDULE_ID} id="addScheduleId" class="textbox" disabled="disabled" title="Schedule">
+					<div class="checkbox">
+						<input {formname key=BLACKOUT_APPLY_TO_SCHEDULE} type="checkbox" id="allResources"/>
+						<label for="allResources" style="">{translate key=AllResourcesOn} </label>
+					</div>
+					<select {formname key=SCHEDULE_ID} id="addScheduleId" class="form-control" disabled="disabled"
+													   title="Schedule">
 						{object_html_options options=$Schedules key='GetId' label="GetName" selected=$ScheduleId}
 					</select>
-					{/if}
-				</li>
-				<li>
-					<label for="blackoutReason" class="wideLabel">{translate key=Reason}</label>
-					<input {formname key=SUMMARY} type="text" id="blackoutReason" class="textbox required" size="100" maxlength="85"/>
-				</li>
-				<li>
-					{control type="RecurrenceControl" RepeatTerminationDate=$RepeatTerminationDate}
-				</li>
-				<li>
-					<input {formname key=CONFLICT_ACTION} type="radio" id="notifyExisting" name="existingReservations" checked="checked" value="{ReservationConflictResolution::Notify}" />
+				{/if}
+			</div>
+			<div class="col-xs-12 form-group has-feedback">
+				<label for="blackoutReason">{translate key=Reason}</label>
+				<input {formname key=SUMMARY} type="text" id="blackoutReason" required
+											  class="form-control required"/>
+				<i class="glyphicon glyphicon-asterisk form-control-feedback" data-bv-icon-for="blackoutReason"></i>
+			</div>
+			<div class="col-xs-12">
+				{control type="RecurrenceControl" RepeatTerminationDate=$RepeatTerminationDate}
+			</div>
+			<div class="form-group col-xs-12">
+				<div class="radio">
+					<input {formname key=CONFLICT_ACTION} type="radio" id="notifyExisting"
+														  name="existingReservations"
+														  checked="checked"
+														  value="{ReservationConflictResolution::Notify}"/>
 					<label for="notifyExisting">{translate key=BlackoutShowMe}</label>
-
-					<input {formname key=CONFLICT_ACTION} type="radio" id="deleteExisting" name="existingReservations" value="{ReservationConflictResolution::Delete}" />
+				</div>
+				<div class="radio">
+					<input {formname key=CONFLICT_ACTION} type="radio" id="deleteExisting"
+														  name="existingReservations"
+														  value="{ReservationConflictResolution::Delete}"/>
 					<label for="deleteExisting">{translate key=BlackoutDeleteConflicts}</label>
-				</li>
-				<li style="margin-top:15px; padding-top:15px; border-top: solid 1px #ededed;">
-					<button type="button" class="button save create">
-						{html_image src="tick-circle.png"} {translate key='Create'}
-					</button>
-					<input type="reset" value="Cancel" style="border: 0;background: transparent;color: blue;cursor:pointer;" />
-				</li>
-			</ul>
-		</form>
+				</div>
+			</div>
+		</div>
+		<div class="panel-footer">
+			<button type="button" class="btn btn-success btn-sm save create">
+				<span class="glyphicon glyphicon-ok-circle"></span>
+				{translate key='Create'}
+			</button>
+			<button type="reset" class="btn btn-default btn-sm">{translate key=Reset}</button>
+		</div>
 	</div>
-</div>
+</form>
 
-<fieldset>
-	<legend><h3>{translate key=Filter}</h3></legend>
-	<table style="display:inline;">
-		<tr>
-			<td>{translate key=Between}</td>
-			<td><label for="scheduleId">{translate key=Schedule}</label></td>
-			<td><label for="resourceId">{translate key=Resource}</label></td>
-		</tr>
-		<tr>
-			<td>
-				<input id="startDate" type="text" class="textbox" value="{formatdate date=$StartDate}" title="Between start date"/>
+<form class="form" role="form">
+	<div class="panel panel-default">
+		<div class="panel-heading">
+			{translate key="Filter"}
+		</div>
+		<div class="panel-body">
+			<div class="form-group col-xs-4">
+				<input id="startDate" type="text" class="form-control dateinput inline-block"
+					   value="{formatdate date=$StartDate}"
+					   title="Between start date" placeholder="{translate key=BeginDate}"/>
 				<input id="formattedStartDate" type="hidden" value="{formatdate date=$StartDate key=system}"/>
 				-
-				<input id="endDate" type="text" class="textbox" value="{formatdate date=$EndDate}" title="To end date"/>
+				<input id="endDate" type="text" class="form-control dateinput inline-block"
+					   value="{formatdate date=$EndDate}" placeholder="{translate key=EndDate}"/>
 				<input id="formattedEndDate" type="hidden" value="{formatdate date=$EndDate key=system}"/>
-			</td>
-			<td>
-				<select id="scheduleId" class="textbox">
+			</div>
+			<div class="form-group col-xs-4">
+				<select id="scheduleId" class="form-control col-xs-12">
 					<option value="">{translate key=AllSchedules}</option>
 					{object_html_options options=$Schedules key='GetId' label="GetName" selected=$ScheduleId}
 				</select>
-			</td>
-			<td>
-				<select id="resourceId" class="textbox">
+			</div>
+			<div class="form-group col-xs-4">
+				<select id="resourceId" class="form-control col-xs-12">
 					<option value="">{translate key=AllResources}</option>
 					{object_html_options options=$Resources key='GetId' label="GetName" selected=$ResourceId}
 				</select>
-			</td>
-			<td rowspan="2">
-				<button id="filter" class="button">{html_image src="search.png"} {translate key=Filter}</button>
-				<a href="#" id="showAll">{translate key=ViewAll}</a>
-			</td>
-		</tr>
-	</table>
-</fieldset>
+			</div>
+		</div>
+		<div class="panel-footer">
+			<button id="filter" class="btn btn-primary btn-sm"><span class="fa fa-search"></span> {translate key=Filter}
+			</button>
+			<button id="showAll" class="btn btn-link btn-sm">{translate key=ViewAll}</button>
+		</div>
+	</div>
+</form>
 
-<div>&nbsp;</div>
-
-<table class="list" id="blackoutTable">
+<table class="table" id="blackoutTable">
+	<thead>
 	<tr>
 		<th class="id">&nbsp;</th>
 		<th>{translate key=Resource}</th>
@@ -125,22 +147,29 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		<th>{translate key=CreatedBy}</th>
 		<th>{translate key=Delete}</th>
 	</tr>
+	</thead>
+	<tbody>
 	{foreach from=$blackouts item=blackout}
-	{cycle values='row0,row1' assign=rowCss}
-	<tr class="{$rowCss} editable">
-		<td class="id">{$blackout->InstanceId}</td>
-		<td>{$blackout->ResourceName}</td>
-		<td style="width:150px;">{formatdate date=$blackout->StartDate timezone=$Timezone key=res_popup}</td>
-		<td style="width:150px;">{formatdate date=$blackout->EndDate timezone=$Timezone key=res_popup}</td>
-		<td>{$blackout->Title}</td>
-		<td>{fullname first=$blackout->FirstName last=$blackout->LastName}</td>
-		{if $blackout->IsRecurring}
-			<td align="center" style="width: 65px;" class="update"><a href="#" class="update delete-recurring">{html_image src='cross-button.png'}</a></td>
-		{else}
-			<td align="center" style="width: 65px;" class="update"><a href="#" class="update delete">{html_image src='cross-button.png'}</a></td>
-		{/if}
-	</tr>
+		{cycle values='row0,row1' assign=rowCss}
+		<tr class="{$rowCss} editable">
+			<td class="id">{$blackout->InstanceId}</td>
+			<td>{$blackout->ResourceName}</td>
+			<td style="width:150px;">{formatdate date=$blackout->StartDate timezone=$Timezone key=res_popup}</td>
+			<td style="width:150px;">{formatdate date=$blackout->EndDate timezone=$Timezone key=res_popup}</td>
+			<td>{$blackout->Title}</td>
+			<td>{fullname first=$blackout->FirstName last=$blackout->LastName}</td>
+			{if $blackout->IsRecurring}
+				<td align="center" style="width: 65px;" class="update"><a href="#"
+																		  class="update delete-recurring">{html_image src='cross-button.png'}</a>
+				</td>
+			{else}
+				<td align="center" style="width: 65px;" class="update"><a href="#"
+																		  class="update delete">{html_image src='cross-button.png'}</a>
+				</td>
+			{/if}
+		</tr>
 	{/foreach}
+	</tbody>
 </table>
 
 {pagination pageInfo=$PageInfo}
@@ -150,7 +179,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		<div class="error" style="margin-bottom: 25px;">
 			<h3>{translate key=DeleteWarning}</h3>
 		</div>
-		<button type="button" class="button save btnUpdateAllInstances">{html_image src="cross-button.png"} {translate key='Delete'}</button>
+		<button type="button"
+				class="button save btnUpdateAllInstances">{html_image src="cross-button.png"} {translate key='Delete'}</button>
 		<button type="button" class="button cancel">{html_image src="slash.png"} {translate key='Cancel'}</button>
 	</form>
 </div>
@@ -160,20 +190,17 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		<div class="error" style="margin-bottom: 25px;">
 			<h3>{translate key=DeleteWarning}</h3>
 		</div>
-		<button type="button" class="button save btnUpdateThisInstance">{html_image src="cross-button.png"} {translate key='ThisInstance'}</button>
-		<button type="button" class="button save btnUpdateAllInstances">{html_image src="cross-button.png"} {translate key='AllInstances'}</button>
+		<button type="button"
+				class="button save btnUpdateThisInstance">{html_image src="cross-button.png"} {translate key='ThisInstance'}</button>
+		<button type="button"
+				class="button save btnUpdateAllInstances">{html_image src="cross-button.png"} {translate key='AllInstances'}</button>
 		<button type="button" class="button cancel">{html_image src="slash.png"} {translate key='Cancel'}</button>
-		<input type="hidden" {formname key=SERIES_UPDATE_SCOPE} class="hdnSeriesUpdateScope" value="{SeriesUpdateScope::FullSeries}"/>
+		<input type="hidden" {formname key=SERIES_UPDATE_SCOPE} class="hdnSeriesUpdateScope"
+			   value="{SeriesUpdateScope::FullSeries}"/>
 	</form>
 </div>
 
-{html_image src="admin-ajax-indicator.gif" class="indicator" style="display:none;"}
-
-{jsfile src="js/jquery.qtip.min.js"}
-{jsfile src="js/jquery.colorbox-min.js"}
-{jsfile src="js/jquery.form-3.09.min.js"}
 {jsfile src="js/jquery.timePicker.min.js"}
-{jsfile src="js/moment.min.js"}
 
 {jsfile src="reservationPopup.js"}
 
@@ -181,51 +208,52 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 {jsfile src="admin/blackouts.js"}
 
 {jsfile src="date-helper.js"}
-{jsfile src="/recurrence.js"}
+{jsfile src="recurrence.js"}
 
 <script type="text/javascript">
 
-$(document).ready(function() {
+	$(document).ready(function ()
+	{
 
-	var updateScope = {};
-	updateScope.instance = '{SeriesUpdateScope::ThisInstance}';
-	updateScope.full = '{SeriesUpdateScope::FullSeries}';
-	updateScope.future = '{SeriesUpdateScope::FutureInstances}';
+		var updateScope = {};
+		updateScope.instance = '{SeriesUpdateScope::ThisInstance}';
+		updateScope.full = '{SeriesUpdateScope::FullSeries}';
+		updateScope.future = '{SeriesUpdateScope::FutureInstances}';
 
-	var actions = {};
+		var actions = {};
 
-	var blackoutOpts = {
-		scopeOpts: updateScope,
-		actions: actions,
-		deleteUrl: '{$smarty.server.SCRIPT_NAME}?action={ManageBlackoutsActions::DELETE}&{QueryStringKeys::BLACKOUT_ID}=',
-		addUrl: '{$smarty.server.SCRIPT_NAME}?action={ManageBlackoutsActions::ADD}',
-		editUrl: '{$smarty.server.SCRIPT_NAME}?action={ManageBlackoutsActions::LOAD}&{QueryStringKeys::BLACKOUT_ID}=',
-		updateUrl: '{$smarty.server.SCRIPT_NAME}?action={ManageBlackoutsActions::UPDATE}',
-        reservationUrlTemplate: "{$Path}reservation.php?{QueryStringKeys::REFERENCE_NUMBER}=[refnum]",
-		popupUrl: "{$Path}ajax/respopup.php"
-	};
+		var blackoutOpts = {
+			scopeOpts: updateScope,
+			actions: actions,
+			deleteUrl: '{$smarty.server.SCRIPT_NAME}?action={ManageBlackoutsActions::DELETE}&{QueryStringKeys::BLACKOUT_ID}=',
+			addUrl: '{$smarty.server.SCRIPT_NAME}?action={ManageBlackoutsActions::ADD}',
+			editUrl: '{$smarty.server.SCRIPT_NAME}?action={ManageBlackoutsActions::LOAD}&{QueryStringKeys::BLACKOUT_ID}=',
+			updateUrl: '{$smarty.server.SCRIPT_NAME}?action={ManageBlackoutsActions::UPDATE}',
+			reservationUrlTemplate: "{$Path}reservation.php?{QueryStringKeys::REFERENCE_NUMBER}=[refnum]",
+			popupUrl: "{$Path}ajax/respopup.php"
+		};
 
-	var recurOpts = {
-		repeatType:'{$RepeatType}',
-		repeatInterval:'{$RepeatInterval}',
-		repeatMonthlyType:'{$RepeatMonthlyType}',
-		repeatWeekdays:[{foreach from=$RepeatWeekdays item=day}{$day},{/foreach}]
-	};
+		var recurOpts = {
+			repeatType: '{$RepeatType}',
+			repeatInterval: '{$RepeatInterval}',
+			repeatMonthlyType: '{$RepeatMonthlyType}',
+			repeatWeekdays: [{foreach from=$RepeatWeekdays item=day}{$day}, {/foreach}]
+		};
 
-	var recurElements = {
-		beginDate: $('#formattedAddStartDate'),
-		endDate: $('#formattedAddEndDate'),
-		beginTime: $('#addStartTime'),
-		endTime: $('#addEndTime')
-	};
+		var recurElements = {
+			beginDate: $('#formattedAddStartDate'),
+			endDate: $('#formattedAddEndDate'),
+			beginTime: $('#addStartTime'),
+			endTime: $('#addEndTime')
+		};
 
-	var recurrence = new Recurrence(recurOpts, recurElements);
-	recurrence.init();
+		var recurrence = new Recurrence(recurOpts, recurElements);
+		recurrence.init();
 
-	var blackoutManagement = new BlackoutManagement(blackoutOpts);
-	blackoutManagement.init();
+		var blackoutManagement = new BlackoutManagement(blackoutOpts);
+		blackoutManagement.init();
 
-});
+	});
 </script>
 
 {control type="DatePickerSetupControl" ControlId="startDate" AltId="formattedStartDate"}
@@ -234,12 +262,12 @@ $(document).ready(function() {
 {control type="DatePickerSetupControl" ControlId="addEndDate" AltId="formattedAddEndDate"}
 {control type="DatePickerSetupControl" ControlId="EndRepeat" AltId="formattedEndRepeat"}
 
-<div id="createDiv" style="display:none;text-align:center; top:15%;position:relative;">
-	<div id="creating">
+<div id="colorbox">
+	<div id="modalDiv" class="wait-box">
 		<h3>{translate key=Working}</h3>
 		{html_image src="reservation_submitting.gif"}
 	</div>
-	<div id="result" style="display:none;"></div>
 </div>
 
+</div>
 {include file='globalfooter.tpl'}

@@ -1549,6 +1549,9 @@ ul.resource-status-reasons {
 .highlight {
   background-color: #efdd6f;
 }
+#add-blackout-panel label {
+  min-width: 100px;
+}
 #install-page input {
   width: 250px;
 }

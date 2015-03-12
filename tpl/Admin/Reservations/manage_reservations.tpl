@@ -82,8 +82,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 					{control type="AttributeControl" attribute=$attribute searchmode=true class="customAttribute filter-customAttribute{$attribute->Id()}"}
 				{/foreach}
 			</form>
-			<div class="clear">&nbsp;</div>
-			<div id="adminFilterButtons">
+			</div>
+		<div class="panel-footer">
 				<button id="filter" class="btn btn-success btn-sm"><span class="glyphicon glyphicon-search"></span> {translate key=Filter}</button>
 				<button id="clearFilter" class="btn btn-default btn-sm">{translate key=Reset}</button>
 			</div>

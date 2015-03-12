@@ -39,6 +39,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		{jsfile src="js/lodash.2.4.1.min.js"}
 		{jsfile src="js/jquery.blockUI-2.66.0.min.js"}
 		{jsfile src="js/bootstrapvalidator/bootstrapValidator.min.js"}
+		{jsfile src="js/moment.min.js"}
 	{else}
 		<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 		<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
@@ -51,6 +52,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 				src="//cdnjs.cloudflare.com/ajax/libs/jquery.blockUI/2.66.0-2013.10.09/jquery.blockUI.min.js"></script>
 		<script type="text/javascript"
 				src="//cdnjs.cloudflare.com/ajax/libs/jquery.bootstrapvalidator/0.5.3/js/bootstrapValidator.min.js"></script>
+		<script type="text/javascript"
+				src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment.min.js"></script>
 	{/if}
 	{jsfile src="js/select2.min.js"}
 	{jsfile src="phpscheduleit.js"}

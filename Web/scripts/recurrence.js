@@ -46,42 +46,42 @@ function Recurrence(recurOptions, recurElements, prefix) {
 	var ChangeRepeatOptions = function () {
 		var repeatDropDown = elements.repeatOptions;
 		if (repeatDropDown.val() != 'none') {
-			$('#' + prefix + 'repeatUntilDiv').show();
+			$('#' + prefix + 'repeatUntilDiv').removeClass('no-show');
 		}
 		else {
-			$('.no-show', elements.repeatDiv).hide();
+			$('.recur-toggle', elements.repeatDiv).addClass('no-show');
 		}
 
 		if (repeatDropDown.val() == 'daily') {
-			$('.weeks', elements.repeatDiv).hide();
-			$('.months', elements.repeatDiv).hide();
-			$('.years', elements.repeatDiv).hide();
+			$('.weeks', elements.repeatDiv).addClass('no-show');
+			$('.months', elements.repeatDiv).addClass('no-show');
+			$('.years', elements.repeatDiv).addClass('no-show');
 
-			$('.days', elements.repeatDiv).show();
+			$('.days', elements.repeatDiv).removeClass('no-show');
 		}
 
 		if (repeatDropDown.val() == 'weekly') {
-			$('.days', elements.repeatDiv).hide();
-			$('.months', elements.repeatDiv).hide();
-			$('.years', elements.repeatDiv).hide();
+			$('.days', elements.repeatDiv).addClass('no-show');
+			$('.months', elements.repeatDiv).addClass('no-show');
+			$('.years', elements.repeatDiv).addClass('no-show');
 
-			$('.weeks', elements.repeatDiv).show();
+			$('.weeks', elements.repeatDiv).removeClass('no-show');
 		}
 
 		if (repeatDropDown.val() == 'monthly') {
-			$('.days', elements.repeatDiv).hide();
-			$('.weeks', elements.repeatDiv).hide();
-			$('.years', elements.repeatDiv).hide();
+			$('.days', elements.repeatDiv).addClass('no-show');
+			$('.weeks', elements.repeatDiv).addClass('no-show');
+			$('.years', elements.repeatDiv).addClass('no-show');
 
-			$('.months', elements.repeatDiv).show();
+			$('.months', elements.repeatDiv).removeClass('no-show');
 		}
 
 		if (repeatDropDown.val() == 'yearly') {
-			$('.days', elements.repeatDiv).hide();
-			$('.weeks', elements.repeatDiv).hide();
-			$('.months', elements.repeatDiv).hide();
+			$('.days', elements.repeatDiv).addClass('no-show');
+			$('.weeks', elements.repeatDiv).addClass('no-show');
+			$('.months', elements.repeatDiv).addClass('no-show');
 
-			$('.years', elements.repeatDiv).show();
+			$('.years', elements.repeatDiv).removeClass('no-show');
 		}
 	};
 

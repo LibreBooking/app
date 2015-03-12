@@ -22,7 +22,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		<span class="attributeValue {$class}">{$attribute->Value()|escape}</span>
 	{else}
 		<input type="text" id="{$attributeName}" name="{$attributeName}" value="{$attribute->Value()|escape}"
-			   class="customAttribute form-control {$class}"/>
+			   class="customAttribute form-control {$class}" {if $attribute->Required() && !$searchmode}required{/if}/>
 		{if $attribute->Required() && !$searchmode}
 		<i class="glyphicon glyphicon-asterisk form-control-feedback" data-bv-icon-for="{$attributeName}"></i>
 		{/if}
