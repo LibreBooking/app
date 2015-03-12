@@ -34,7 +34,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 				<input {formname key=BEGIN_DATE} id="formattedAddStartDate" type="hidden"
 												 value="{formatdate date=$AddStartDate key=system}"/>
 				<input {formname key=BEGIN_TIME} type="text" id="addStartTime"
-												 class="form-control dateinput inline-block"
+												 class="form-control dateinput inline-block timepicker"
 												 value="8:00 AM" title="Start time"/>
 			</div>
 			<div class="form-group col-xs-6 col-sm-4">
@@ -44,7 +44,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 				<input {formname key=END_DATE} type="hidden" id="formattedAddEndDate"
 											   value="{formatdate date=$AddEndDate key=system}"/>
 				<input {formname key=END_TIME} type="text" id="addEndTime"
-											   class="form-control dateinput inline-block"
+											   class="form-control dateinput inline-block timepicker"
 											   value="9:00 AM"
 											   title="End time"/>
 			</div>
@@ -148,6 +148,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		<th>{translate key=EndDate}</th>
 		<th>{translate key=Reason}</th>
 		<th>{translate key=CreatedBy}</th>
+		<th>{translate key=Update}</th>
 		<th>{translate key=Delete}</th>
 	</tr>
 	</thead>
@@ -160,6 +161,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			<td class="date">{formatdate date=$blackout->EndDate timezone=$Timezone key=res_popup}</td>
 			<td>{$blackout->Title}</td>
 			<td style="max-width:150px;">{fullname first=$blackout->FirstName last=$blackout->LastName}</td>
+			<td class="update edit"><a href="#"><span class="fa fa-edit"></span></a></td>
 			{if $blackout->IsRecurring}
 				<td class="update">
 					<a href="#" class="update delete-recurring"><span class="fa fa-remove remove icon"></span></a>
@@ -175,31 +177,6 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 </table>
 
 {pagination pageInfo=$PageInfo}
-
-<div class="modal fade" id="deleteDialog" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel"
-	 aria-hidden="true">
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-				<h4 class="modal-title" id="deleteModalLabel">{translate key=Delete}</h4>
-			</div>
-			<div class="modal-body">
-				<div class="alert alert-warning">
-					{translate key=DeleteWarning}
-				</div>
-			</div>
-			<div class="modal-footer">
-				<form id="deleteForm" method="post">
-					<button type="button" class="btn btn-default cancel"
-							data-dismiss="modal">{translate key='Cancel'}</button>
-					<button type="button" class="btn btn-danger save btnUpdateAllInstances">
-						<span class="fa fa-remove"></span> {translate key='Delete'}</button>
-				</form>
-			</div>
-		</div>
-	</div>
-</div>
 
 <div class="modal fade" id="deleteDialog" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel"
 	 aria-hidden="true">
@@ -311,6 +288,9 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		blackoutManagement.init();
 
 	});
+
+	$.blockUI.defaults.css.width = '60%';
+	$.blockUI.defaults.css.left = '20%';
 </script>
 
 {control type="DatePickerSetupControl" ControlId="startDate" AltId="formattedStartDate"}
@@ -323,12 +303,17 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 	<div id="creatingNotification">
 		<h3>
 			{block name="ajaxMessage"}
-				{translate key=CreatingReservation}
+				{translate key=Working}...
 			{/block}
 		</h3>
 		{html_image src="reservation_submitting.gif"}
 	</div>
 	<div id="result"></div>
+</div>
+
+<div id="update-box" class="no-show">
+	<span id="update-spinner" class="fa fa-spinner fa-spin fa-2x"></span>
+	<div id="update-contents"></div>
 </div>
 
 </div>

@@ -19,10 +19,10 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 <div>
 	{if $Successful}
 		<h2>{translate key=$SuccessKey}</h2>
-		<button class="reload button">{translate key="OK"}</button>
+		<button class="reload btn btn-primary">{translate key="OK"}</button>
 	{else}
 		<h2>{translate key=$FailKey}</h2>
-		<button class="close button">{translate key="OK"}</button>
+		<button class="close btn btn-primary">{translate key="OK"}</button>
 	{/if}
 
 	{if !empty($Message)}
@@ -38,26 +38,28 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 	{if !empty($Reservations)}
 		<h5>{translate key=ReservationConflicts}</h5>
-        <table class="list" id="reservationTable" style="margin-left: auto; margin-right: auto;">
-        	<tr>
-        		<th class="id">&nbsp;</th>
-        		<th>{translate key='User'}</th>
-        		<th>{translate key='Resource'}</th>
-        		<th>{translate key='BeginDate'}</th>
-        		<th>{translate key='EndDate'}</th>
-        		<th>{translate key='ReferenceNumber'}</th>
-        	</tr>
-        	{foreach from=$Reservations item=reservation}
-        	{cycle values='row0,row1' assign=rowCss}
-        	<tr class="{$rowCss} editable">
-        		<td class="id">{$reservation->ReservationId}</td>
-        		<td>{$reservation->FirstName} {$reservation->LastName}</td>
-        		<td>{$reservation->ResourceName}</td>
-        		<td>{formatdate date=$reservation->StartDate timezone=$Timezone key=res_popup}</td>
-        		<td>{formatdate date=$reservation->EndDate timezone=$Timezone key=res_popup}</td>
-        		<td class="referenceNumber">{$reservation->ReferenceNumber}</td>
-        	</tr>
-        	{/foreach}
-        </table>
+		<table class="table" id="reservationTable" style="margin-left: auto; margin-right: auto;">
+			<thead>
+			<tr data-reservation-id="{$reservation->ReservationId}">
+				<th>{translate key='User'}</th>
+				<th>{translate key='Resource'}</th>
+				<th>{translate key='BeginDate'}</th>
+				<th>{translate key='EndDate'}</th>
+				<th>{translate key='ReferenceNumber'}</th>
+			</tr>
+			</thead>
+			<tbody>
+			{foreach from=$Reservations item=reservation}
+				{cycle values='row0,row1' assign=rowCss}
+				<tr class="{$rowCss} editable">
+					<td>{$reservation->FirstName} {$reservation->LastName}</td>
+					<td>{$reservation->ResourceName}</td>
+					<td>{formatdate date=$reservation->StartDate timezone=$Timezone key=res_popup}</td>
+					<td>{formatdate date=$reservation->EndDate timezone=$Timezone key=res_popup}</td>
+					<td class="referenceNumber">{$reservation->ReferenceNumber}</td>
+				</tr>
+			{/foreach}
+			</tbody>
+		</table>
 	{/if}
 </div>

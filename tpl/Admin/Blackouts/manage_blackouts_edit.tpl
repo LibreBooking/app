@@ -17,94 +17,120 @@ You should have received a copy of the GNU General Public License
 along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 *}
 
-<form id="editBlackoutForm" method="post">
+<form id="editBlackoutForm" class="form-inline" role="form" method="post">
 	<div id="updateBlackout">
-		<ul>
-			<li>
-				<label for="updateStartDate" class="wideLabel">{translate key=BeginDate}</label>
-				<input type="text" id="updateStartDate" class="textbox" size="10"
-					   value="{formatdate date=$BlackoutStartDate}"/>
-				<input {formname key=BEGIN_DATE} id="formattedUpdateStartDate" type="hidden"
-												 value="{formatdate date=$BlackoutStartDate key=system}"/>
-				<input {formname key=BEGIN_TIME} type="text" id="updateStartTime" class="textbox" size="7"
-												 value="{formatdate date=$BlackoutStartDate format='h:i A'}"/>
-			</li>
-			<li>
-				<label for="updateEndDate" class="wideLabel">{translate key=EndDate}</label>
-				<input type="text" id="updateEndDate" class="textbox" size="10"
-					   value="{formatdate date=$BlackoutEndDate}"/>
-				<input {formname key=END_DATE} type="hidden" id="formattedUpdateEndDate"
-											   value="{formatdate date=$BlackoutEndDate key=system}"/>
-				<input {formname key=END_TIME} type="text" id="updateEndTime" class="textbox" size="7"
-											   value="{formatdate date=$BlackoutEndDate format='h:i A'}"/>
-			</li>
-			<li class="blackoutResources">
-				<label for="addResourceId" class="wideLabel">{translate key=Resources}</label>
-				{foreach from=$Resources item=resource}
-					{assign var=checked value=""}
-					{if in_array($resource->GetId(), $BlackoutResourceIds)}
-						{assign var=checked value="checked='checked'"}
-					{/if}
-					<label class="resourceItem"><input {formname key=RESOURCE_ID multi=true} type="checkbox" value="{$resource->GetId()}" {$checked} /> {$resource->GetName()}</label>
-				{/foreach}
-			</li>
-			<li>
-				<label for="blackoutReason" class="wideLabel">{translate key=Reason}</label>
-				<input {formname key=SUMMARY} type="text" id="blackoutReason" class="textbox required" size="100"
-											  maxlength="85" value="{$BlackoutTitle}"/>
-			</li>
-			<li>
-				{control type="RecurrenceControl" RepeatTerminationDate=$RepeatTerminationDate prefix='edit'}
-			</li>
-			<li>
-				<input {formname key=CONFLICT_ACTION} type="radio" id="notifyExisting" name="existingReservations"
+		<div class="form-group col-xs-6">
+			<label for="updateStartDate">{translate key=BeginDate}</label>
+			<input type="text" id="updateStartDate" class="form-control dateinput inline-block "
+				   value="{formatdate date=$BlackoutStartDate}"/>
+			<input {formname key=BEGIN_DATE} id="formattedUpdateStartDate" type="hidden"
+											 value="{formatdate date=$BlackoutStartDate key=system}"/>
+			<input {formname key=BEGIN_TIME} type="text" id="updateStartTime"
+											 class="form-control dateinput inline-block timepicker"
+											 value="{formatdate date=$BlackoutStartDate format='h:i A'}"/>
+		</div>
+
+		<div class="form-group col-xs-6">
+			<label for="updateEndDate">{translate key=EndDate}</label>
+			<input type="text" id="updateEndDate" class="form-control dateinput inline-block " size="10"
+				   value="{formatdate date=$BlackoutEndDate}"/>
+			<input {formname key=END_DATE} type="hidden" id="formattedAddEndDate"
+										   value="{formatdate date=$BlackoutEndDate key=system}"/>
+			<input {formname key=END_TIME} type="text" id="updateEndTime"
+										   class="form-control dateinput inline-block timepicker"
+										   value="{formatdate date=$BlackoutEndDate format='h:i A'}"/>
+		</div>
+
+		<div class="form-group col-xs-12">
+			<label>{translate key=Resources}</label>
+			{foreach from=$Resources item=resource}
+				{assign var=checked value=""}
+				{if in_array($resource->GetId(), $BlackoutResourceIds)}
+					{assign var=checked value="checked='checked'"}
+				{/if}
+				<label class="resourceItem">
+					<div class="checkbox">
+						<input {formname key=RESOURCE_ID  multi=true} type="checkbox"
+																	  value="{$resource->GetId()}" {$checked}
+																	  id="r{$resource->GetId()}"/>
+						<label for="r{$resource->GetId()}">{$resource->GetName()}</label>
+					</div>
+				</label>
+			{/foreach}
+		</div>
+
+		<div class="col-xs-12">
+			<div class="form-group has-feedback">
+				<label for="blackoutReason">{translate key=Reason}</label>
+				<input {formname key=SUMMARY} type="text" id="blackoutReason" required
+											  class="form-control required" value="{$BlackoutTitle}"/>
+				<i class="glyphicon glyphicon-asterisk form-control-feedback" data-bv-icon-for="blackoutReason"></i>
+			</div>
+		</div>
+
+		<div>
+			{control type="RecurrenceControl" RepeatTerminationDate=$RepeatTerminationDate prefix='edit'}
+		</div>
+
+		<div class="form-group col-xs-12">
+			<div class="radio">
+				<input {formname key=CONFLICT_ACTION} type="radio" id="notifyExistingUpdate"
+													  name="existingReservations"
 													  checked="checked"
 													  value="{ReservationConflictResolution::Notify}"/>
-				<label for="notifyExisting">{translate key=BlackoutShowMe}</label>
-
-				<input {formname key=CONFLICT_ACTION} type="radio" id="deleteExisting" name="existingReservations"
+				<label for="notifyExistingUpdate">{translate key=BlackoutShowMe}</label>
+			</div>
+			<div class="radio">
+				<input {formname key=CONFLICT_ACTION} type="radio" id="deleteExistingUpdate"
+													  name="existingReservations"
 													  value="{ReservationConflictResolution::Delete}"/>
-				<label for="deleteExisting">{translate key=BlackoutDeleteConflicts}</label>
-			</li>
-		</ul>
+				<label for="deleteExistingUpdate">{translate key=BlackoutDeleteConflicts}</label>
+			</div>
+		</div>
 
-		{if $IsRecurring}
-			<div>{translate key=ApplyUpdatesTo}</div>
-			<button type="button" class="button save btnUpdateThisInstance">
-				{html_image src="disk-black.png"}
-				{translate key='ThisInstance'}
-			</button>
-			<button type="button" class="button save btnUpdateAllInstances">
-				{html_image src="disks-black.png"}
-				{translate key='AllInstances'}
-			</button>
-		{else}
-			<button type="button" class="button save update btnUpdateAllInstances">
-				{html_image src="disk-black.png"}
-				{translate key='Update'}
-			</button>
-		{/if}
+		<div id="update-blackout-buttons" class="col-xs-12">
+			<div class="pull-right">
+				<button type="button" class="btn btn-default" id="cancelUpdate">
+					{translate key='Cancel'}
+				</button>
+				{if $IsRecurring}
+					<button type="button" class="btn btn-success save btnUpdateThisInstance">
+						<span class="glyphicon glyphicon-ok-circle"></span>
+						{translate key='ThisInstance'}
+					</button>
+					<button type="button" class="btn btn-success save btnUpdateAllInstances">
+						<span class="glyphicon glyphicon-ok-circle"></span>
+						{translate key='AllInstances'}
+					</button>
+				{else}
+					<button type="button" class="btn btn-success save update btnUpdateAllInstances">
+						<span class="glyphicon glyphicon-ok-circle"></span>
+						{translate key='Update'}
+					</button>
+				{/if}
 
-		<button type="button" class="button" id="cancelUpdate">
-			{html_image src="slash.png"}
-			{translate key='Cancel'}
-		</button>
+			</div>
+		</div>
 
-		<input type="hidden" {formname key=BLACKOUT_INSTANCE_ID} value="{$BlackoutId}" />
-		<input type="hidden" {formname key=SERIES_UPDATE_SCOPE} class="hdnSeriesUpdateScope" value="{SeriesUpdateScope::FullSeries}"/>
+		<input type="hidden" {formname key=BLACKOUT_INSTANCE_ID} value="{$BlackoutId}"/>
+		<input type="hidden" {formname key=SERIES_UPDATE_SCOPE} class="hdnSeriesUpdateScope"
+			   value="{SeriesUpdateScope::FullSeries}"/>
 	</div>
 </form>
 
 <script type="text/javascript">
-	var recurOpts = {
-		repeatType: '{$RepeatType}',
-		repeatInterval: '{$RepeatInterval}',
-		repeatMonthlyType: '{$RepeatMonthlyType}',
-		repeatWeekdays: [{foreach from=$RepeatWeekdays item=day}{$day}, {/foreach}]
-	};
+	$(function ()
+	{
+		var recurOpts = {
+			repeatType: '{$RepeatType}',
+			repeatInterval: '{$RepeatInterval}',
+			repeatMonthlyType: '{$RepeatMonthlyType}',
+			repeatWeekdays: [{foreach from=$RepeatWeekdays item=day}{$day}, {/foreach}]
+		};
 
-	var recurrence = new Recurrence(recurOpts, {}, 'edit');
-	recurrence.init();
+		var recurrence = new Recurrence(recurOpts, {}, 'edit');
+		recurrence.init();
+	});
 </script>
 
 {control type="DatePickerSetupControl" ControlId="updateStartDate" AltId="formattedUpdateStartDate"}

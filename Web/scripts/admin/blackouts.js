@@ -43,68 +43,63 @@ function BlackoutManagement(opts)
 			$(this).closest('.modal').modal("hide");
 		});
 
-		$('#updateStartTime').timepicker({
-			show24Hours: false
-		});
-
-		$('#updateEndTime').timepicker({
-			show24Hours: false
-		});
-
-		$('#createDiv').delegate('.reload', 'click', function (e)
+		$('#result').delegate('.reload', 'click', function (e)
 		{
 			location.reload();
 		});
 
-		$('#createDiv').delegate('.close', 'click', function (e)
+		$('#result').delegate('.close', 'click', function (e)
 		{
-			$('#createDiv').hide();
-			$.colorbox.close();
+			$('#result').hide();
+			$.unblockUI();
 		});
 
-		elements.blackoutTable.find('.editable td:not(.update)').click(function (e)
+		elements.blackoutTable.find('.edit').click(function (e)
 		{
+			$('#update-spinner').show();
 			var tr = $(this).parents('tr');
-			var id = tr.find('.id').text();
+			var id = tr.attr('data-blackout-id');
 
-			$.colorbox(
+			$.blockUI({
+				message: $('#update-box'),
+				css: {textAlign: 'left'}
+			});
+
+			var updateDiv = $('#update-contents');
+
+			updateDiv.empty();
+			updateDiv.load(opts.editUrl + id, function ()
+			{
+				$('.blockUI').css('cursor', 'default');
+
+				$('#update-spinner').hide();
+
+				ConfigureAdminForm($('#editBlackoutForm'), getUpdateUrl, onAddSuccess, null, {
+					onBeforeSubmit: onBeforeAddSubmit,
+					target: '#result'
+				});
+
+				wireUpUpdateButtons();
+
+				$(".save").click(function ()
+				{
+					$(this).closest('form').submit();
+				});
+
+				$('#cancelUpdate').click(function (e)
+				{
+					$.unblockUI();
+				});
+
+				$('.blackoutResources').click(function (e)
+				{
+					if ($(".blackoutResources input:checked").length == 0)
 					{
-						inline: false,
-						href: opts.editUrl + id,
-						transition: "none",
-						width: "75%",
-						height: "75%",
-						overlayClose: false,
-						onComplete: function ()
-						{
-							ConfigureAdminForm($('#editBlackoutForm'), getUpdateUrl, onAddSuccess, null, {
-								onBeforeSubmit: onBeforeAddSubmit,
-								target: '#result'
-							});
-
-							wireUpUpdateButtons();
-
-							$(".save").click(function ()
-							{
-								$(this).closest('form').submit();
-							});
-
-							$('#cancelUpdate').click(function (e)
-							{
-								$.colorbox.close();
-							});
-
-							$('.blackoutResources').click(function (e)
-							{
-								if ($(".blackoutResources input:checked").length == 0)
-								{
-									e.preventDefault();
-								}
-							});
-
-
-						}
-					});
+						e.preventDefault();
+					}
+				});
+				wireUpTimePickers();
+			});
 		});
 
 		handleBlackoutApplicabilityChange();
@@ -115,7 +110,7 @@ function BlackoutManagement(opts)
 			e.preventDefault();
 
 			var tr = $(this).parents('tr');
-			var id = tr.find('.id').text();
+			var id = tr.attr('data-blackout-id');
 			setActiveBlackoutId(id);
 		});
 
@@ -139,8 +134,11 @@ function BlackoutManagement(opts)
 
 			filterReservations();
 		});
-		$('#filter').click(filterReservations);
 
+		$('#filter').click(function(e){
+			e.preventDefault();
+			filterReservations();
+		});
 
 		ConfigureAdminForm(elements.addBlackoutForm, getAddUrl, onAddSuccess, null, {
 			onBeforeSubmit: onBeforeAddSubmit,
@@ -240,6 +238,7 @@ function BlackoutManagement(opts)
 
 	function onBeforeDeleteSubmit()
 	{
+		$('.modal').modal('hide');
 		showWaitBox();
 	}
 
@@ -249,14 +248,12 @@ function BlackoutManagement(opts)
 		$('#creatingNotification').hide();
 		$('#result').show();
 
-		$("#reservationTable").find('.editable').each(function ()
-		{
-			var refNum = $(this).find('.referenceNumber').text();
-			$(this).attachReservationPopup(refNum, options.popupUrl);
-		});
+		$("#reservationTable").find('.editable').each(function() {
+		   var refNum = $(this).find('.referenceNumber').text();
+		   $(this).attachReservationPopup(refNum, options.popupUrl);
+	   });
 
-		$("#reservationTable").delegate('.editable', 'click', function ()
-		{
+		$("#reservationTable").delegate('.editable', 'click', function() {
 			$(this).addClass('clicked');
 			var td = $(this).find('.referenceNumber');
 			viewReservation(td.text());
@@ -281,38 +278,6 @@ function BlackoutManagement(opts)
 	function getUpdateUrl()
 	{
 		return opts.updateUrl;
-	}
-
-	function setActiveReferenceNumber(referenceNumber)
-	{
-		this.referenceNumber = referenceNumber;
-	}
-
-	function getActiveReferenceNumber()
-	{
-		return this.referenceNumber;
-	}
-
-	function setActiveReservationId(reservationId)
-	{
-		this.reservationId = reservationId;
-	}
-
-	function getActiveReservationId()
-	{
-		return this.reservationId;
-	}
-
-	function showDeleteReservation(referenceNumber)
-	{
-		if (reservations[referenceNumber].isRecurring == '1')
-		{
-			elements.deleteSeriesDialog.modal('show');
-		}
-		else
-		{
-			elements.deleteInstanceDialog.modal('show');
-		}
 	}
 
 	function filterReservations()
@@ -350,12 +315,9 @@ function BlackoutManagement(opts)
 
 	function wireUpTimePickers()
 	{
-		$('#addStartTime').timepicker({
+		$('.timepicker').timepicker({
 			show24Hours: false
 
-		});
-		$('#addEndTime').timepicker({
-			show24Hours: false
 		});
 	}
 
