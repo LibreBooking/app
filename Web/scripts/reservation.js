@@ -163,7 +163,6 @@ function Reservation(opts)
 	{
 		$.blockUI({ message: $('#wait-box') });
 
-		//$('#dialogSave').dialog('open');
 		$('#result').hide();
 		$('#creatingNotification').show();
 

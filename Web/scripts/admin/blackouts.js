@@ -31,9 +31,6 @@ function BlackoutManagement(opts)
 	{
 		wireUpShowHide();
 
-		ConfigureAdminDialog(elements.deleteDialog, 'auto', 'auto');
-		ConfigureAdminDialog(elements.deleteRecurringDialog, 'auto', 'auto');
-
 		wireUpUpdateButtons();
 
 		$(".save").click(function ()
@@ -44,6 +41,14 @@ function BlackoutManagement(opts)
 		$(".cancel").click(function ()
 		{
 			$(this).closest('.dialog').dialog("close");
+		});
+
+		$('#updateStartTime').timepicker({
+			show24Hours: false
+		});
+
+		$('#updateEndTime').timepicker({
+			show24Hours: false
 		});
 
 		$('#createDiv').delegate('.reload', 'click', function (e)
@@ -97,13 +102,6 @@ function BlackoutManagement(opts)
 								}
 							});
 
-							$('#updateStartTime').timepicker({
-								show24Hours: false
-							});
-
-							$('#updateEndTime').timepicker({
-								show24Hours: false
-							});
 
 						}
 					});
@@ -221,43 +219,34 @@ function BlackoutManagement(opts)
 		return blackoutId;
 	}
 
+	function showWaitBox()
+	{
+		$.blockUI({message: $('#wait-box')});
+
+		$('#result').hide();
+		$('#creatingNotification').show();
+	}
+
 	function onBeforeAddSubmit(formData, jqForm, opts)
 	{
 		var isValid = BeforeFormSubmit(formData, jqForm, opts);
 
 		if (isValid)
 		{
-			$.colorbox({
-				inline: true,
-				href: "#createDiv",
-				transition: "none",
-				width: "75%",
-				height: "75%",
-				overlayClose: false
-			});
-			$('#result').hide();
-			$('#creating, #createDiv').show();
+			showWaitBox();
 		}
 		return isValid;
 	}
 
 	function onBeforeDeleteSubmit()
 	{
-		$.colorbox({
-			inline: true,
-			href: "#createDiv",
-			transition: "none",
-			width: "75%",
-			height: "75%",
-			overlayClose: false
-		});
-		$('#result').hide();
-		$('#creating, #createDiv').show();
+		showWaitBox();
 	}
 
 	function onAddSuccess()
 	{
-		$('#creating').hide();
+		$('.blockUI').css('cursor', 'default');
+		$('#creatingNotification').hide();
 		$('#result').show();
 
 		$("#reservationTable").find('.editable').each(function ()

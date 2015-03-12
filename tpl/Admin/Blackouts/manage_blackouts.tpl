@@ -64,11 +64,13 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 					</select>
 				{/if}
 			</div>
-			<div class="col-xs-12 form-group has-feedback">
-				<label for="blackoutReason">{translate key=Reason}</label>
-				<input {formname key=SUMMARY} type="text" id="blackoutReason" required
-											  class="form-control required"/>
-				<i class="glyphicon glyphicon-asterisk form-control-feedback" data-bv-icon-for="blackoutReason"></i>
+			<div class="col-xs-12">
+				<div class="form-group has-feedback">
+					<label for="blackoutReason">{translate key=Reason}</label>
+					<input {formname key=SUMMARY} type="text" id="blackoutReason" required
+												  class="form-control required"/>
+					<i class="glyphicon glyphicon-asterisk form-control-feedback" data-bv-icon-for="blackoutReason"></i>
+				</div>
 			</div>
 			<div class="col-xs-12">
 				{control type="RecurrenceControl" RepeatTerminationDate=$RepeatTerminationDate}
@@ -139,7 +141,6 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 <table class="table" id="blackoutTable">
 	<thead>
 	<tr>
-		<th class="id">&nbsp;</th>
 		<th>{translate key=Resource}</th>
 		<th>{translate key=BeginDate}</th>
 		<th>{translate key=EndDate}</th>
@@ -151,20 +152,19 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 	<tbody>
 	{foreach from=$blackouts item=blackout}
 		{cycle values='row0,row1' assign=rowCss}
-		<tr class="{$rowCss} editable">
-			<td class="id">{$blackout->InstanceId}</td>
+		<tr class="{$rowCss} editable" data-blackout-id="{$blackout->InstanceId}">
 			<td>{$blackout->ResourceName}</td>
 			<td style="width:150px;">{formatdate date=$blackout->StartDate timezone=$Timezone key=res_popup}</td>
 			<td style="width:150px;">{formatdate date=$blackout->EndDate timezone=$Timezone key=res_popup}</td>
 			<td>{$blackout->Title}</td>
-			<td>{fullname first=$blackout->FirstName last=$blackout->LastName}</td>
+			<td style="max-width:150px;">{fullname first=$blackout->FirstName last=$blackout->LastName}</td>
 			{if $blackout->IsRecurring}
-				<td align="center" style="width: 65px;" class="update"><a href="#"
-																		  class="update delete-recurring">{html_image src='cross-button.png'}</a>
+				<td align="center" style="width: 65px;" class="update">
+					<a href="#" class="update delete-recurring"><span class="fa fa-remove remove icon"></span></a>
 				</td>
 			{else}
-				<td align="center" style="width: 65px;" class="update"><a href="#"
-																		  class="update delete">{html_image src='cross-button.png'}</a>
+				<td align="center" style="width: 65px;" class="update">
+					<a href="#" class="update delete"><span class="fa fa-remove remove icon"></span></a>
 				</td>
 			{/if}
 		</tr>
@@ -262,11 +262,16 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 {control type="DatePickerSetupControl" ControlId="addEndDate" AltId="formattedAddEndDate"}
 {control type="DatePickerSetupControl" ControlId="EndRepeat" AltId="formattedEndRepeat"}
 
-<div id="colorbox">
-	<div id="modalDiv" class="wait-box">
-		<h3>{translate key=Working}</h3>
+<div id="wait-box" class="wait-box">
+	<div id="creatingNotification">
+		<h3>
+			{block name="ajaxMessage"}
+				{translate key=CreatingReservation}
+			{/block}
+		</h3>
 		{html_image src="reservation_submitting.gif"}
 	</div>
+	<div id="result"></div>
 </div>
 
 </div>
