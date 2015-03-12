@@ -506,7 +506,7 @@ class ScheduleLayout implements IScheduleLayout, ILayoutCreation
 			$end = Date::Create($tempDate->Year(), $tempDate->Month(), $tempDate->Day(), $period->End->Hour(),
 								$period->End->Minute(), 0, $timezone);
 
-			if ($end->LessThan($start) || $end->IsMidnight())
+			if ($end->IsMidnight())
 			{
 				$end = $end->AddDays(1);
 			}
