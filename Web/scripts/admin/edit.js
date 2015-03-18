@@ -137,17 +137,17 @@ function BeforeFormSubmit(formData, jqForm, opts)
 		if ($(this).is(':visible') && $(this).val() == '')
 		{
 			isValid = false;
-			if ($(this).next('span.error').length == 0)
-			{
-				$(this).after('<span class="error">*</span>');
-			}
+			$(this).closest('.form-group').addClass('has-error')
+			//if ($(this).next('span.error').length == 0)
+			//{
+			//	$(this).after('<span class="error">*</span>');
+			//}
 		}
 	});
 
 	if (isValid)
 	{
 		$(jqForm).find('button').hide();
-		$(jqForm).append($('.indicator'));
 		$(jqForm).find('.indicator').show();
 	}
 

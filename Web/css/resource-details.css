@@ -339,6 +339,9 @@ input[type=text].user-search {
 .remove.icon {
   color: #c37c82;
 }
+.add.icon {
+  color: #94ba65;
+}
 .black.icon {
   color: #585754;
 }

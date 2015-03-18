@@ -48,16 +48,20 @@ function ResourceManagement(opts) {
 		bulkUpdateList:$('#bulkUpdateList'),
 		bulkUpdateForm:$('#bulkUpdateForm'),
 		bulkEditStatusOptions:$('#bulkEditStatusId'),
-		bulkEditStatusReasons:$('#bulkEditStatusReasonId')
+		bulkEditStatusReasons:$('#bulkEditStatusReasonId'),
+
+		addResourceButton: $('#add-resource'),
+		addResourceDialog:$('#add-resource-dialog')
 	};
 
 	var resources = {};
 	var reasons = [];
 
 	ResourceManagement.prototype.init = function () {
-		$(".days").watermark('days');
-		$(".hours").watermark('hrs');
-		$(".minutes").watermark('mins');
+		// todo make placeholders
+		//$(".days").watermark('days');
+		//$(".hours").watermark('hrs');
+		//$(".minutes").watermark('mins');
 
 		ConfigureAdminDialog(elements.renameDialog);
 		ConfigureAdminDialog(elements.imageDialog);
@@ -163,6 +167,11 @@ function ResourceManagement(opts) {
 		$(".cancelColorbox").click(function () {
 			$('#bulkUpdateDialog').hide();
 			$.colorbox.close();
+		});
+
+		elements.addResourceButton.click(function(e){
+			e.preventDefault();
+			elements.addResourceDialog.modal('show');
 		});
 
 		elements.statusOptions.change(function(e){

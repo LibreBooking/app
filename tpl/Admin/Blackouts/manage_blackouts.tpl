@@ -93,19 +93,19 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			</div>
 		</div>
 		<div class="panel-footer">
-			<button type="reset" class="btn btn-default btn-sm">{translate key=Reset}</button>
-
 			<button type="button" class="btn btn-success btn-sm save create">
 				<span class="glyphicon glyphicon-ok-circle"></span>
 				{translate key='Create'}
 			</button>
+
+			<button type="reset" class="btn btn-default btn-sm">{translate key=Reset}</button>
 		</div>
 	</div>
 </form>
 
 <form class="form" role="form">
 	<div class="panel panel-default">
-		<div class="panel-heading">
+		<div class="panel-heading"><span class="glyphicon glyphicon-filter"></span>
 			{translate key="Filter"}
 		</div>
 		<div class="panel-body">
@@ -312,6 +312,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 </div>
 
 <div id="update-box" class="no-show">
+	{indicator id="update-spinner"}
 	<span id="update-spinner" class="fa fa-spinner fa-spin fa-2x"></span>
 	<div id="update-contents"></div>
 </div>

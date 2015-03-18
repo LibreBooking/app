@@ -168,6 +168,7 @@ class SmartyPage extends Smarty
 		$this->registerPlugin('function', 'flush', array($this, 'Flush'));
 		$this->registerPlugin('function', 'jsfile', array($this, 'IncludeJavascriptFile'));
 		$this->registerPlugin('function', 'cssfile', array($this, 'IncludeCssFile'));
+		$this->registerPlugin('function', 'indicator', array($this, 'DisplayIndicator'));
 
 		/**
 		 * PageValidators
@@ -677,5 +678,16 @@ class SmartyPage extends Smarty
 			$src = "css/{$src}";
 		}
 		echo "<link rel='stylesheet' type='text/css' href='{$this->RootPath}{$src}?v=$versionNumber'/>";
+	}
+
+	public function DisplayIndicator($params, &$smarty)
+	{
+		$id = $params['id'];
+		$spinClass = isset($params['spinClass']) ? $params['spinClass'] : 'fa-spinner';
+		$size = isset($params['size']) ? "fa-{$params['size']}x" : 'fa-2x';
+		$show = isset($params['show']) ? '' : 'no-show';
+		$class = isset($params['class']) ? $params['class'] : 'indicator';
+
+		echo "<span id=\"$id\" class=\"fa fa-spin $spinClass $size $class $show\"></span>";
 	}
 }
