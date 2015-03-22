@@ -586,7 +586,7 @@ class SmartyPage extends Smarty
 			}
 			else
 			{
-				$newUrl = sprintf('%s&%s=%s', $url, $key, $value); // and has existing query string
+				$newUrl = sprintf('%s&amp;%s=%s', $url, $key, $value); // and has existing query string
 			}
 		}
 		else
@@ -682,7 +682,7 @@ class SmartyPage extends Smarty
 
 	public function DisplayIndicator($params, &$smarty)
 	{
-		$id = $params['id'];
+		$id = isset($params['id']) ? $params['id'] : 'indicator-spinner';
 		$spinClass = isset($params['spinClass']) ? $params['spinClass'] : 'fa-spinner';
 		$size = isset($params['size']) ? "fa-{$params['size']}x" : 'fa-2x';
 		$show = isset($params['show']) ? '' : 'no-show';

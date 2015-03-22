@@ -16,6 +16,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 class FormKeys
 {
+
+
 	private function __construct()
 	{
 	}
@@ -113,6 +115,7 @@ class FormKeys
 	const MAX_NOTICE = 'maxNotice';
 	const MAX_NOTICE_NONE = 'maxNoticeNone';
 
+	const NAME = 'name';
 	const NOTES = 'notes';
 
 	const ORGANIZATION = 'organization';
@@ -125,6 +128,7 @@ class FormKeys
 	const PERSIST_LOGIN = 'persistLogin';
 	const PHONE = 'phone';
 	const POSITION = 'position';
+	const PK = 'pk';
 
 	const REFERENCE_NUMBER = 'referenceNumber';
 	const REMOVED_FILE_IDS = 'removeFile';
@@ -196,11 +200,11 @@ class FormKeys
 	const USERNAME = 'username';
 	const USING_SINGLE_LAYOUT = 'USING_SINGLE_LAYOUT';
 
+	const VALUE = 'value';
+
 	public static function Evaluate($formKey)
 	{
 		$key = strtoupper($formKey);
 		return eval("return FormKeys::$key;");
 	}
 }
-
-?>

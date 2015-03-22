@@ -10,7 +10,7 @@ function ResourceManagement(opts) {
 		locationDialog:$('#locationDialog'),
 		descriptionDialog:$('#descriptionDialog'),
 		notesDialog:$('#notesDialog'),
-		deleteDialog:$('#deleteDialog'),
+		deleteDialog:$('#deletePrompt'),
 		configurationDialog:$('#configurationDialog'),
 		groupAdminDialog:$('#groupAdminDialog'),
 		sortOrderDialog:$('#sortOrderDialog'),
@@ -69,7 +69,6 @@ function ResourceManagement(opts) {
 		ConfigureAdminDialog(elements.locationDialog);
 		ConfigureAdminDialog(elements.descriptionDialog);
 		ConfigureAdminDialog(elements.notesDialog);
-		ConfigureAdminDialog(elements.deleteDialog);
 		ConfigureAdminDialog(elements.configurationDialog);
 		ConfigureAdminDialog(elements.groupAdminDialog);
 		ConfigureAdminDialog(elements.sortOrderDialog);
@@ -79,65 +78,67 @@ function ResourceManagement(opts) {
 		$('.resourceDetails').each(function () {
 			var id = $(this).find(':hidden.id').val();
 			var indicator = $('.indicator');
+			var details = $(this);
 
-			$(this).find('a.update').click(function (e) {
+			details.find('a.update').click(function (e) {
 				e.preventDefault();
 				setActiveResourceId(id);
 			});
 
-			$(this).find('.imageButton').click(function (e) {
+			details.find('.imageButton').click(function (e) {
 				showChangeImage(e);
 			});
 
-			$(this).find('.removeImageButton').click(function (e) {
+			details.find('.removeImageButton').click(function (e) {
 				PerformAsyncAction($(this), getSubmitCallback(options.actions.removeImage), indicator);
 			});
 
-			$(this).find('.enableSubscription').click(function (e) {
+			details.find('.enableSubscription').click(function (e) {
 				PerformAsyncAction($(this), getSubmitCallback(options.actions.enableSubscription), indicator);
 			});
 
-			$(this).find('.disableSubscription').click(function (e) {
+			details.find('.disableSubscription').click(function (e) {
 				PerformAsyncAction($(this), getSubmitCallback(options.actions.disableSubscription), indicator);
 			});
 
-			$(this).find('.renameButton').click(function (e) {
-				showRename(e);
+			details.find('.renameButton').click(function (e) {
+				e.stopPropagation();
+				details.find('.resourceName').editable('toggle');
 			});
 
-			$(this).find('.changeScheduleButton').click(function (e) {
+			details.find('.changeScheduleButton').click(function (e) {
 				showScheduleMove(e);
 			});
 
-			$(this).find('.changeResourceType').click(function (e) {
+			details.find('.changeResourceType').click(function (e) {
 				showResourceType(e);
 			});
 
-			$(this).find('.changeLocationButton').click(function (e) {
+			details.find('.changeLocationButton').click(function (e) {
 				showChangeLocation(e);
 			});
 
-			$(this).find('.descriptionButton').click(function (e) {
+			details.find('.descriptionButton').click(function (e) {
 				showChangeDescription(e);
 			});
 
-			$(this).find('.notesButton').click(function (e) {
+			details.find('.notesButton').click(function (e) {
 				showChangeNotes(e);
 			});
 
-			$(this).find('.adminButton').click(function (e) {
+			details.find('.adminButton').click(function (e) {
 				showResourceAdmin(e);
 			});
 
-			$(this).find('.deleteButton').click(function (e) {
+			details.find('.deleteButton').click(function (e) {
 				showDeletePrompt(e);
 			});
 
-			$(this).find('.changeConfigurationButton').click(function (e) {
+			details.find('.changeConfigurationButton').click(function (e) {
 				showConfigurationPrompt(e);
 			});
 
-			$(this).find('.changeAttributes, .customAttributes .cancel').click(function (e) {
+			details.find('.changeAttributes, .customAttributes .cancel').click(function (e) {
 				var otherResources = $(".resourceDetails[resourceid!='" + id + "']");
 				otherResources.find('.attribute-readwrite, .validationSummary').hide();
 				otherResources.find('.attribute-readonly').show();
@@ -147,11 +148,11 @@ function ResourceManagement(opts) {
 				container.find('.validationSummary').hide();
 			});
 
-			$(this).find('.changeSortOrder').click(function (e) {
+			details.find('.changeSortOrder').click(function (e) {
 				showSortPrompt(e);
 			});
 
-			$(this).find('.changeStatus').click(function (e) {
+			details.find('.changeStatus').click(function (e) {
 				showStatusPrompt(e);
 			});
 		});
@@ -161,7 +162,7 @@ function ResourceManagement(opts) {
 		});
 
 		$(".cancel").click(function () {
-			$(this).closest('.dialog').dialog("close");
+			$(this).closest('.modal').modal("hide");
 		});
 
 		$(".cancelColorbox").click(function () {
@@ -172,6 +173,7 @@ function ResourceManagement(opts) {
 		elements.addResourceButton.click(function(e){
 			e.preventDefault();
 			elements.addResourceDialog.modal('show');
+			$('#resourceName').focus();
 		});
 
 		elements.statusOptions.change(function(e){
@@ -327,10 +329,10 @@ function ResourceManagement(opts) {
 		elements.imageDialog.dialog("open");
 	};
 
-	var showRename = function (e) {
-		$('#editName').val(getActiveResource().name);
-		elements.renameDialog.dialog("open");
-	};
+	//var showRename = function (e) {
+	//	$('#editName').val(getActiveResource().name);
+	//	elements.renameDialog.dialog("open");
+	//};
 
 	var showScheduleMove = function (e) {
 		$('#editSchedule').val(getActiveResource().scheduleId);
@@ -364,7 +366,8 @@ function ResourceManagement(opts) {
 	};
 
 	var showDeletePrompt = function (e) {
-		elements.deleteDialog.dialog("open");
+		//$('#deletePrompt').modal('show');
+		elements.deleteDialog.modal('show');
 	};
 
 	var showConfigurationPrompt = function (e) {

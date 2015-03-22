@@ -44,14 +44,12 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 						{object_html_options options=$Schedules key='GetId' label="GetName" selected=$ScheduleId}
 					</select>
 				</div>
-				{*<div class="clearfix visible-xs-block"></div>*}
 				<div class="form-group filter-resource {$groupClass}">
 					<select id="resourceId" class="form-control">
 						<option value="">{translate key=AllResources}</option>
 						{object_html_options options=$Resources key='GetId' label="GetName" selected=$ResourceId}
 					</select>
 				</div>
-				{*<div class="clearfix visible-md-block"></div>*}
 				<div class="form-group filter-status {$groupClass}">
 					<select id="statusId" class="form-control">
 						<option value="">{translate key=AllReservations}</option>
@@ -62,10 +60,9 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 				<div class="form-group filter-referenceNumber {$groupClass}">
 					<input id="referenceNumber" type="text" class="form-control" value="{$ReferenceNumber}" placeholder="{translate key=ReferenceNumber}"/>
 				</div>
-				{*<div class="clearfix visible-xs-block"></div>*}
 				<div class="form-group filter-resourceStatus {$groupClass}">
 					<select id="resourceStatusIdFilter" class="form-control">
-						<option value="">{translate key=All} {translate key=ResourceStatus}</option>
+						<option value="">{translate key=AllResourceStatuses}</option>
 						<option value="{ResourceStatus::AVAILABLE}">{translate key=Available}</option>
 						<option value="{ResourceStatus::UNAVAILABLE}">{translate key=Unavailable}</option>
 						<option value="{ResourceStatus::HIDDEN}">{translate key=Hidden}</option>

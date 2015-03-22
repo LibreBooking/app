@@ -247,6 +247,11 @@ interface IManageResourcesPage extends IUpdateResourcePage, IActionPage, IPageab
 	 * @return int
 	 */
 	public function GetEndNoticeNone();
+
+	/**
+	 * @return string
+	 */
+	public function GetValue();
 }
 
 class ManageResourcesPage extends ActionPage implements IManageResourcesPage
@@ -339,12 +344,23 @@ class ManageResourcesPage extends ActionPage implements IManageResourcesPage
 
 	public function GetResourceId()
 	{
-		return $this->GetQuerystring(QueryStringKeys::RESOURCE_ID);
+		$id = $this->GetQuerystring(QueryStringKeys::RESOURCE_ID);
+		if (empty($id))
+		{
+			$id = $this->GetForm(FormKeys::PK);
+		}
+
+		return $id;
 	}
 
 	public function GetScheduleId()
 	{
 		return $this->GetForm(FormKeys::SCHEDULE_ID);
+	}
+
+	public function GetValue()
+	{
+		return $this->GetForm(FormKeys::VALUE);
 	}
 
 	public function GetResourceName()

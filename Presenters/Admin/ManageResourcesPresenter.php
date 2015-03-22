@@ -1,22 +1,22 @@
 <?php
 /**
-Copyright 2011-2014 Nick Korbel
-
-This file is part of Booked Scheduler.
-
-Booked Scheduler is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-Booked Scheduler is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ * Copyright 2011-2014 Nick Korbel
+ *
+ * This file is part of Booked Scheduler.
+ *
+ * Booked Scheduler is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Booked Scheduler is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 require_once(ROOT_DIR . 'Domain/namespace.php');
 require_once(ROOT_DIR . 'Domain/Access/namespace.php');
@@ -83,13 +83,13 @@ class ManageResourcesPresenter extends ActionPresenter
 	private $userPreferenceRepository;
 
 	public function __construct(
-		IManageResourcesPage $page,
-		IResourceRepository $resourceRepository,
-		IScheduleRepository $scheduleRepository,
-		IImageFactory $imageFactory,
-		IGroupViewRepository $groupRepository,
-		IAttributeService $attributeService,
-		IUserPreferenceRepository $userPreferenceRepository)
+			IManageResourcesPage $page,
+			IResourceRepository $resourceRepository,
+			IScheduleRepository $scheduleRepository,
+			IImageFactory $imageFactory,
+			IGroupViewRepository $groupRepository,
+			IAttributeService $attributeService,
+			IUserPreferenceRepository $userPreferenceRepository)
 	{
 		parent::__construct($page);
 
@@ -127,7 +127,8 @@ class ManageResourcesPresenter extends ActionPresenter
 
 		$filterValues = $this->page->GetFilterValues();
 
-		$results = $this->resourceRepository->GetList($this->page->GetPageNumber(), $this->page->GetPageSize(), null, null, $filterValues->AsFilter($resourceAttributes));
+		$results = $this->resourceRepository->GetList($this->page->GetPageNumber(), $this->page->GetPageSize(), null, null,
+													  $filterValues->AsFilter($resourceAttributes));
 		$resources = $results->Results();
 		$this->page->BindResources($resources);
 		$this->page->BindPageInfo($results->PageInfo());
@@ -185,7 +186,8 @@ class ManageResourcesPresenter extends ActionPresenter
 		$autoAssign = $this->page->GetAutoAssign();
 		$resourceAdminGroupId = $this->page->GetAdminGroupId();
 
-		Log::Debug("Adding new resource with name: %s, scheduleId: %s, autoAssign: %s, resourceAdminGroupId %s", $name, $scheduleId, $autoAssign, $resourceAdminGroupId);
+		Log::Debug("Adding new resource with name: %s, scheduleId: %s, autoAssign: %s, resourceAdminGroupId %s", $name, $scheduleId, $autoAssign,
+				   $resourceAdminGroupId);
 
 		$resource = BookableResource::CreateNew($name, $scheduleId, $autoAssign);
 		$resource->SetAdminGroupId($resourceAdminGroupId);
@@ -250,9 +252,13 @@ class ManageResourcesPresenter extends ActionPresenter
 	{
 		$resource = $this->resourceRepository->LoadById($this->page->GetResourceId());
 
-		$resource->SetName($this->page->GetResourceName());
+		$name = $this->page->GetValue();
+		if (!empty($name))
+		{
+			$resource->SetName($name);
 
-		$this->resourceRepository->Update($resource);
+			$this->resourceRepository->Update($resource);
+		}
 	}
 
 	public function ChangeLocation()
@@ -297,9 +303,12 @@ class ManageResourcesPresenter extends ActionPresenter
 		{
 			$path = $imageUploadDirectory;
 		}
-		else if (is_dir(ROOT_DIR . $imageUploadDirectory))
+		else
 		{
-			$path = ROOT_DIR . $imageUploadDirectory ;
+			if (is_dir(ROOT_DIR . $imageUploadDirectory))
+			{
+				$path = ROOT_DIR . $imageUploadDirectory;
+			}
 		}
 
 		$path = "$path/$fileName";
@@ -578,8 +587,7 @@ class ManageResourcesPresenter extends ActionPresenter
 				}
 
 				$this->resourceRepository->Update($resource);
-			}
-			catch(Exception $ex)
+			} catch (Exception $ex)
 			{
 				Log::Error('Error bulk updating resource. Id=%s. Error=%s', $resourceId, $ex);
 			}
@@ -591,12 +599,14 @@ class ManageResourcesPresenter extends ActionPresenter
 		if ($action == ManageResourcesActions::ActionChangeAttributes)
 		{
 			$attributes = $this->GetAttributeValues();
-			$this->page->RegisterValidator('attributeValidator', new AttributeValidator($this->attributeService, CustomAttributeCategory::RESOURCE, $attributes, $this->page->GetResourceId()));
+			$this->page->RegisterValidator('attributeValidator', new AttributeValidator($this->attributeService, CustomAttributeCategory::RESOURCE, $attributes,
+																						$this->page->GetResourceId()));
 		}
 		if ($action == ManageResourcesActions::ActionBulkUpdate)
 		{
 			$attributes = $this->GetAttributeValues();
-			$this->page->RegisterValidator('bulkAttributeValidator', new AttributeValidator($this->attributeService, CustomAttributeCategory::RESOURCE, $attributes, null, true));
+			$this->page->RegisterValidator('bulkAttributeValidator',
+										   new AttributeValidator($this->attributeService, CustomAttributeCategory::RESOURCE, $attributes, null, true));
 		}
 	}
 

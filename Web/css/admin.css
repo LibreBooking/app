@@ -17,11 +17,8 @@
   border: solid 1px #CECFCE;
   font-size: 12px;
 }
-.admin div {
-  padding: 5px;
-}
 .admin a {
-  color: #005B9A;
+  color: #428bca;
 }
 .admin .label {
   font-weight: bold;
@@ -73,8 +70,21 @@ span.error {
   color: #666;
   border: solid 1px #ccc;
 }
+.resourceDetails {
+  font-size: 1.2em;
+}
 .resourceDetails img.image {
   width: 100px;
+}
+.resourceDetails .resourceImage {
+  padding-left: 3px;
+  float: left;
+  text-align: center;
+  width: 110px;
+}
+.resourceDetails .resourceName {
+  font-size: 1.4em;
+  font-weight: bold;
 }
 .admin table {
   border-collapse: collapse;
@@ -417,6 +427,7 @@ td.update {
 #page-manage-reservations select,
 #page-manage-resources select {
   height: 30px;
+  font-size: 12px;
 }
 #page-manage-blackouts .form-group,
 #page-manage-reservations .form-group,
