@@ -24,7 +24,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 <div>
 	<div class="dropdown admin-header-more pull-right">
 		<button class="btn btn-default" type="button" id="moreResourceActions" data-toggle="dropdown">
-	    <span class="glyphicon glyphicon-align-justify">
+	    <span class="glyphicon glyphicon-option-vertical">
 	    <span class="caret"></span>
 		</button>
 		<ul class="dropdown-menu" role="menu" aria-labelledby="moreResourceActions">

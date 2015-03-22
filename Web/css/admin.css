@@ -412,15 +412,19 @@ td.update {
 }
 #page-manage-blackouts input,
 #page-manage-reservations input,
+#page-manage-resources input,
 #page-manage-blackouts select,
-#page-manage-reservations select {
+#page-manage-reservations select,
+#page-manage-resources select {
   height: 30px;
 }
 #page-manage-blackouts .form-group,
-#page-manage-reservations .form-group {
+#page-manage-reservations .form-group,
+#page-manage-resources .form-group {
   padding-bottom: 2px;
 }
 #page-manage-blackouts .checkbox input,
-#page-manage-reservations .checkbox input {
+#page-manage-reservations .checkbox input,
+#page-manage-resources .checkbox input {
   height: 20px;
 }
