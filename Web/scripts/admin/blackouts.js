@@ -166,7 +166,7 @@ function BlackoutManagement(opts)
 
 		var panel = $('#add-blackout-panel');
 		var visibility = readCookie('add-blackout-panel');
-		if (visibility == '0')
+		if (visibility && visibility == '0')
 		{
 			panel.find('.panel-body, .panel-footer').hide();
 			setIcon(panel, 'glyphicon-chevron-down');

@@ -28,7 +28,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		<option value="1" {if $attribute->Value() == "1"}selected="selected"{/if}>{translate key=Yes}</option>
 	</select>
 {else}
-	<input type="checkbox" value="1" id="{$attributeName}" name="{$attributeName}" {if $attribute->Value() == "1"}checked="checked"{/if} class="{$class}" />
+	<input type="checkbox" value="1" id="{$attributeName}" name="{$attributeName}" {if $attribute->Value() == "1"}checked="checked"{/if} class="{$inputClass}" />
 	{if $attribute->Required() && !$searchmode}
 	<i class="glyphicon glyphicon-asterisk form-control-feedback" data-bv-icon-for="{$attributeName}"></i>
 	{/if}

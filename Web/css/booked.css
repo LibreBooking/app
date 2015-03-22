@@ -178,9 +178,7 @@ div.center {
 }
 .form-control.dateinput,
 .form-control.timeinput {
-  width: 95px;
-  padding: 3px;
-  margin: 2px 0 5px 0;
+  width: 100px;
 }
 /** Credit: http://www.minimit.com/articles/solutions-tutorials/bootstrap-3-responsive-columns-of-same-height **/
 /* columns of same height styles */
@@ -1509,7 +1507,7 @@ ul.jqtree-tree .group-resource .jqtree-title {
   width: 110px;
 }
 #reservationTable .resource {
-  max-width: 120px;
+  max-width: 150px;
 }
 #reservationTable .referenceNumber {
   width: 1px;
@@ -1523,7 +1521,7 @@ ul.jqtree-tree .group-resource .jqtree-title {
 #reservationTable tr.editable td {
   cursor: pointer;
 }
-#reservationTable .icon.remove {
+#reservationTable .icon {
   font-size: 1.4em;
 }
 .inlineUpdate {
@@ -1539,11 +1537,6 @@ td.action {
   margin-top: 15px;
   clear: both;
   border-top: solid 1px #cfcfcf;
-}
-.filterTable input,
-.filterTable textarea,
-.filterTable select {
-  width: 150px;
 }
 label.label-top,
 .label-top label {
@@ -1585,6 +1578,20 @@ td.update {
 }
 #update-blackout-buttons {
   padding-bottom: 5px;
+}
+#page-manage-blackouts input,
+#page-manage-reservations input,
+#page-manage-blackouts select,
+#page-manage-reservations select {
+  height: 30px;
+}
+#page-manage-blackouts .form-group,
+#page-manage-reservations .form-group {
+  padding-bottom: 2px;
+}
+#page-manage-blackouts .checkbox input,
+#page-manage-reservations .checkbox input {
+  height: 20px;
 }
 #install-page input {
   width: 250px;

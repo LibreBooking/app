@@ -18,13 +18,13 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 *}
 
 {include file='globalheader.tpl' cssFiles="scripts/css/timePicker.css"}
-<div class="page-manage-blackouts">
+<div id="page-manage-blackouts">
 <h1>{translate key=ManageBlackouts}</h1>
 
 <form id="addBlackoutForm" class="form-inline" role="form" method="post">
 	<div class="panel panel-default" id="add-blackout-panel">
 		<div class="panel-heading">{translate key="AddBlackout"} <a href=""><span
-						class="show-hide glyphicon"></span></a></div>
+						class="icon black show-hide glyphicon"></span></a></div>
 		<div class="panel-body add-contents">
 
 			<div class="form-group col-xs-6 col-sm-4">
@@ -73,7 +73,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 					<i class="glyphicon glyphicon-asterisk form-control-feedback" data-bv-icon-for="blackoutReason"></i>
 				</div>
 			</div>
-			<div class="col-xs-12">
+			<div class="form-group col-xs-12">
 				{control type="RecurrenceControl" RepeatTerminationDate=$RepeatTerminationDate}
 			</div>
 			<div class="form-group col-xs-12">
@@ -164,11 +164,11 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			<td class="update edit"><a href="#"><span class="fa fa-edit"></span></a></td>
 			{if $blackout->IsRecurring}
 				<td class="update">
-					<a href="#" class="update delete-recurring"><span class="fa fa-remove remove icon"></span></a>
+					<a href="#" class="update delete-recurring"><span class="fa fa-trash icon remove"></span></a>
 				</td>
 			{else}
 				<td class="update">
-					<a href="#" class="update delete"><span class="fa fa-remove remove icon"></span></a>
+					<a href="#" class="update delete"><span class="fa fa-trash icon remove"></span></a>
 				</td>
 			{/if}
 		</tr>

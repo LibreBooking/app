@@ -21,7 +21,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 {if $readonly}
 <span class="attributeValue {$class}">{$attribute->Value()|escape|nl2br}</span>
 {else}
-<textarea id="{$attributeName}" name="{$attributeName}" class="customAttribute form-control {$class}" {if $attribute->Required() && !$searchmode}required{/if}>{$attribute->Value()|escape}</textarea>
+<textarea id="{$attributeName}" name="{$attributeName}" class="customAttribute form-control {$inputClass}" {if $attribute->Required() && !$searchmode}required{/if}>{$attribute->Value()|escape}</textarea>
 	{if $attribute->Required() && !$searchmode}
 	<i class="glyphicon glyphicon-asterisk form-control-feedback" data-bv-icon-for="{$attributeName}"></i>
 	{/if}
