@@ -69,6 +69,11 @@ interface IPersonalCalendarPage extends IActionPage
 	 * @param int $firstDay
 	 */
 	public function SetFirstDay($firstDay);
+
+	/**
+	 * @param ResourceGroup $selectedGroup
+	 */
+	public function BindSelectedGroup($selectedGroup);
 }
 
 class PersonalCalendarPage extends ActionPage implements IPersonalCalendarPage
@@ -223,6 +228,12 @@ class PersonalCalendarPage extends ActionPage implements IPersonalCalendarPage
 	public function SetFirstDay($firstDay)
 	{
 		$this->Set('FirstDay', $firstDay == Schedule::Today ? 0 : $firstDay);
+	}
+
+	public function BindSelectedGroup($selectedGroup)
+	{
+		$this->Set('GroupName', $selectedGroup->name);
+		$this->Set('SelectedGroupNode', $selectedGroup->id);
 	}
 }
 

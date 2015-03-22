@@ -339,8 +339,14 @@ input[type=text].user-search {
 .remove.icon {
   color: #c37c82;
 }
+.remove.icon:hover {
+  color: #b35961;
+}
 .add.icon {
   color: #94ba65;
+}
+.add.icon:hover {
+  color: #7ba349;
 }
 .black.icon {
   color: #585754;
@@ -615,6 +621,18 @@ input[type=text].user-search {
   width: 300px;
   display: inline-block;
   text-overflow: ellipsis;
+}
+.availabilityDashboard .availabilityItem {
+  padding: 3px 0;
+}
+.availabilityDashboard .availabilityItem .btn {
+  background-color: #e4dad8;
+  color: #585754;
+  border-color: #cfbdba;
+}
+.availabilityDashboard .availabilityItem .btn:hover {
+  background-color: #daccc9;
+  border-color: #c5afab;
 }
 table.reservations {
   border-collapse: collapse;
@@ -1504,6 +1522,9 @@ ul.jqtree-tree .group-resource .jqtree-title {
 }
 #reservationTable tr.editable td {
   cursor: pointer;
+}
+#reservationTable .icon.remove {
+  font-size: 1.4em;
 }
 .inlineUpdate {
   cursor: pointer;

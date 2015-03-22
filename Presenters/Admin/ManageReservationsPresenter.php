@@ -162,7 +162,7 @@ class ManageReservationsPresenter extends ActionPresenter
 		foreach ($reservationAttributes as $attribute)
 		{
 			$attributeValue = null;
-			if (array_key_exists($attribute->Id(), $filters))
+			if (is_array($filters) && array_key_exists($attribute->Id(), $filters))
 			{
 				$attributeValue = $filters[$attribute->Id()];
 			}

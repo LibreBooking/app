@@ -339,8 +339,14 @@ input[type=text].user-search {
 .remove.icon {
   color: #c37c82;
 }
+.remove.icon:hover {
+  color: #b35961;
+}
 .add.icon {
   color: #94ba65;
+}
+.add.icon:hover {
+  color: #7ba349;
 }
 .black.icon {
   color: #585754;

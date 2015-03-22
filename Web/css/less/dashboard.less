@@ -4,15 +4,13 @@
 @dashboard-color: @muted-blue;
 @dashboard-border-color: darken(@dashboard-color, 5%);
 
-#page-dashboard .panel-heading
-{
+#page-dashboard .panel-heading {
   background-color: @dashboard-color;
-  color:#fff;
+  color: #fff;
 }
 
-#page-dashboard .panel-heading, #page-dashboard .panel
-{
-  border-color:@dashboard-border-color;
+#page-dashboard .panel-heading, #page-dashboard .panel {
+  border-color: @dashboard-border-color;
 }
 
 .dashboard {
@@ -20,24 +18,24 @@
 }
 
 .dashboardContents {
-	padding: 0;
+  padding: 0;
 }
 
 .dashboardHeader {
-    letter-spacing: 1px;
+  letter-spacing: 1px;
 }
 
 .dashboardHeader a {
-	color: darken(#fff, 3%);
+  color: darken(#fff, 3%);
 }
 
 .dashboard .noresults {
-	text-align: center;
-	font-style: italic;
+  text-align: center;
+  font-style: italic;
 }
 
 .dashboardContents a {
-	color: #3D72A4;
+  color: #3D72A4;
 }
 
 .dashboardContents .table {
@@ -45,39 +43,53 @@
 }
 
 .upcomingReservationsDashboard .timespan td {
-	font-style: italic;
-	color: #000;
-    background-color: @off-white;
+  font-style: italic;
+  color: #000;
+  background-color: @off-white;
 }
 
 .upcomingReservationsDashboard tr.reservation.hover td {
-	cursor: pointer;
-	background-color: lighten(@muted-blue, 25%);
-	color: #222;
+  cursor: pointer;
+  background-color: lighten(@muted-blue, 25%);
+  color: #222;
 }
 
 .upcomingReservationsDashboard tr.reservation.clicked td {
-	cursor: pointer;
-	background-color: #F0F0F0;
+  cursor: pointer;
+  background-color: #F0F0F0;
 }
 
 .availabilityDashboard .dashboardContents {
-  padding:4px;
+  padding: 4px;
 }
 
 .availabilityDashboard .header {
-  font-size:1.2em;
-  font-weight:bold;
+  font-size: 1.2em;
+  font-weight: bold;
 }
 
 .availabilityDashboard .resourceName {
-  width:240px;
-  display:inline-block;
+  width: 240px;
+  display: inline-block;
   text-overflow: ellipsis;
 }
 
 .availabilityDashboard .availability {
-  width:300px;
-    display:inline-block;
-    text-overflow: ellipsis;
+  width: 300px;
+  display: inline-block;
+  text-overflow: ellipsis;
+}
+
+.availabilityDashboard .availabilityItem {
+  padding: 3px 0;
+  @btn-color: #E4DAD8;
+  .btn {
+    background-color: @btn-color;
+    color: @dark-gray;
+    border-color: darken(@btn-color, 10%);
+  }
+  .btn:hover {
+    background-color: darken(@btn-color, 5%);
+    border-color: darken(@btn-color, 15%);
+  }
 }

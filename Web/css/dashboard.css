@@ -65,3 +65,15 @@
   display: inline-block;
   text-overflow: ellipsis;
 }
+.availabilityDashboard .availabilityItem {
+  padding: 3px 0;
+}
+.availabilityDashboard .availabilityItem .btn {
+  background-color: #e4dad8;
+  color: #585754;
+  border-color: #cfbdba;
+}
+.availabilityDashboard .availabilityItem .btn:hover {
+  background-color: #daccc9;
+  border-color: #c5afab;
+}
