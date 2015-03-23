@@ -197,7 +197,8 @@ function ReservationManagement(opts, approval)
 		ConfigureAdminForm(elements.deleteSeriesForm, getDeleteUrl, null, deleteReservationResponseHandler, {dataType: 'json'});
 		ConfigureAdminForm(elements.statusForm, getUpdateStatusUrl, function ()
 		{
-			elements.statusDialog.dialog('close');
+			elements.statusDialog.modal('hide');
+			// todo inline update
 			window.location.reload();
 		});
 	};

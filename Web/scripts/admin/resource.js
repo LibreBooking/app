@@ -35,6 +35,9 @@ function ResourceManagement(opts) {
 		statusOptions:$('#statusId'),
 		addStatusReason:$('#addStatusReason'),
 		newStatusReason:$('#newStatusReason'),
+		existingStatusReason:$('#existingStatusReason'),
+		resourceStatusReason:$('#resourceStatusReason'),
+		addStatusIcon:$('#addStatusIcon'),
 
 		addForm:$('#addResourceForm'),
 		statusOptionsFilter:$('#resourceStatusIdFilter'),
@@ -63,7 +66,7 @@ function ResourceManagement(opts) {
 		//$(".hours").watermark('hrs');
 		//$(".minutes").watermark('mins');
 
-		ConfigureAdminDialog(elements.renameDialog);
+		//ConfigureAdminDialog(elements.renameDialog);
 		ConfigureAdminDialog(elements.imageDialog);
 		ConfigureAdminDialog(elements.scheduleDialog);
 		ConfigureAdminDialog(elements.locationDialog);
@@ -73,7 +76,7 @@ function ResourceManagement(opts) {
 		ConfigureAdminDialog(elements.groupAdminDialog);
 		ConfigureAdminDialog(elements.sortOrderDialog);
 		ConfigureAdminDialog(elements.resourceTypeDialog);
-		ConfigureAdminDialog(elements.statusDialog);
+		//ConfigureAdminDialog(elements.statusDialog);
 
 		$('.resourceDetails').each(function () {
 			var id = $(this).find(':hidden.id').val();
@@ -187,13 +190,18 @@ function ResourceManagement(opts) {
 		elements.addStatusReason.click(function(e){
 			e.preventDefault();
 			elements.newStatusReason.toggle();
+			elements.existingStatusReason.toggle();
 
 			if (elements.newStatusReason.is(':visible')){
 				elements.statusReasons.data('prev', elements.statusReasons.val());
 				elements.statusReasons.val('');
+				elements.resourceStatusReason.focus();
+				elements.addStatusIcon.removeClass('fa-plus').addClass('fa-list-alt')
 			}
 			else{
 				elements.statusReasons.val(elements.statusReasons.data('prev'));
+				elements.statusReasons.focus();
+				elements.addStatusIcon.addClass('fa-plus').removeClass('fa-list-alt');
 			}
 		});
 
@@ -329,11 +337,6 @@ function ResourceManagement(opts) {
 		elements.imageDialog.dialog("open");
 	};
 
-	//var showRename = function (e) {
-	//	$('#editName').val(getActiveResource().name);
-	//	elements.renameDialog.dialog("open");
-	//};
-
 	var showScheduleMove = function (e) {
 		$('#editSchedule').val(getActiveResource().scheduleId);
 		elements.scheduleDialog.dialog("open");
@@ -366,7 +369,7 @@ function ResourceManagement(opts) {
 	};
 
 	var showDeletePrompt = function (e) {
-		//$('#deletePrompt').modal('show');
+		e.preventDefault();
 		elements.deleteDialog.modal('show');
 	};
 
@@ -399,11 +402,12 @@ function ResourceManagement(opts) {
 		var resource = getActiveResource();
 		elements.statusOptions.val(resource.statusId);
 
-		populateReasonOptions(elements.statusOptions, elements.statusReasons);
+		populateReasonOptions(elements.statusOptions.val(), elements.statusReasons);
 
 		elements.statusReasons.val(resource.reasonId);
 
-		elements.statusDialog.dialog("open");
+		elements.statusDialog.modal("show");
+		elements.statusOptions.focus();
 	};
 
 	function populateReasonOptions(statusId, reasonsElement){

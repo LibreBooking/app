@@ -169,7 +169,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 								   href="#">{translate key='Hidden'}</a>
 							{/if}
 							{if array_key_exists($resource->GetStatusReasonId(),$StatusReasons)}
-								<span class="resourceValue">{$StatusReasons[$resource->GetStatusReasonId()]->Description()}</span>
+								<span class="statusReason">{$StatusReasons[$resource->GetStatusReasonId()]->Description()}</span>
 							{/if}
 						</div>
 
@@ -249,6 +249,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 						</div>
 					</div>
 				</div>
+
 				<div style="float:right;">
 					<div>
 						<h5>{translate key='UsageConfiguration'}</h5> <a class="update changeConfigurationButton"
@@ -325,6 +326,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 				</div>
 				{assign var=attributes value=$AttributeList->GetAttributes($id)}
 				{if $attributes|count > 0}
+					<div class="clearfix"></div>
 					<div class="customAttributes">
 						<form method="post" class="attributesForm" ajaxAction="{ManageResourcesActions::ActionChangeAttributes}">
 							<h3>{translate key=AdditionalAttributes} <a href="#"
@@ -361,9 +363,10 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 	{pagination pageInfo=$PageInfo}
 
-	<form id="addResourceForm" class="form" role="form" method="post" ajaxAction="{ManageResourcesActions::ActionAdd}">
-		<div id="add-resource-dialog" class="modal" tabindex="-1" role="dialog" aria-labelledby="addResourceModalLabel"
-			 aria-hidden="true">
+
+	<div id="add-resource-dialog" class="modal" tabindex="-1" role="dialog" aria-labelledby="addResourceModalLabel"
+		 aria-hidden="true">
+		<form id="addResourceForm" class="form" role="form" method="post" ajaxAction="{ManageResourcesActions::ActionAdd}">
 			<div class="modal-dialog">
 				<div class="modal-content">
 					<div class="modal-header">
@@ -416,8 +419,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 					</div>
 				</div>
 			</div>
-		</div>
-	</form>
+		</form>
+	</div>
 
 	<input type="hidden" id="activeId" value=""/>
 
@@ -716,31 +719,45 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		</form>
 	</div>
 
-	<div id="statusDialog" class="dialog" title="{translate key=Status}">
+	<div id="statusDialog" class="modal" tabindex="-1" role="dialog" aria-labelledby="changeStatusModalLabel"
+		 aria-hidden="true">
 		<form id="statusForm" method="post" ajaxAction="{ManageResourcesActions::ActionChangeStatus}">
-			<label for="statusId" class="off-screen">{translate key=Status}</label> <label for="statusId"
-																						   class="off-screen">{translate key=Status}</label>
-			<select id="statusId" {formname key=RESOURCE_STATUS_ID} class="textbox">
-				<option value="{ResourceStatus::AVAILABLE}">{translate key=Available}</option>
-				<option value="{ResourceStatus::UNAVAILABLE}">{translate key=Unavailable}</option>
-				<option value="{ResourceStatus::HIDDEN}">{translate key=Hidden}</option>
-			</select>
-			<br/>
-			<br/>
-			<label for="reasonId">{translate key=Reason}</label> <a href="#"
-																	id="addStatusReason">{translate key=Add}</a><br/>
-			<select id="reasonId" {formname key=RESOURCE_STATUS_REASON_ID} class="textbox">
-			</select>
+			<div class="modal-dialog modal-sm">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+						<h4 class="modal-title" id="addResourceModalLabel">{translate key=ResourceStatus}</h4>
+					</div>
+					<div class="modal-body">
+						<div class="form-group">
+							<label for="statusId" class="off-screen">{translate key=Status}</label>
+							<select id="statusId" {formname key=RESOURCE_STATUS_ID} class="form-control">
+								<option value="{ResourceStatus::AVAILABLE}">{translate key=Available}</option>
+								<option value="{ResourceStatus::UNAVAILABLE}">{translate key=Unavailable}</option>
+								<option value="{ResourceStatus::HIDDEN}">{translate key=Hidden}</option>
+							</select>
+						</div>
+						<a href="#" id="addStatusReason" class="pull-right"><span id="addStatusIcon" class="fa fa-plus icon add"></span></a>
 
-			<div id="newStatusReason" class="hidden">
-				<label for="resourceStatusReason" class="off-screen">Reason text</label>
-				<input type="text" class="textbox" {formname key=RESOURCE_STATUS_REASON} id="resourceStatusReason"/>
-			</div>
-			<div class="admin-update-buttons">
-				<button type="button"
-						class="button save">{html_image src="disk-black.png"} {translate key='Update'}</button>
-				<button type="button" class="button cancel">{html_image src="slash.png"} {translate key='Cancel'}</button>
-			</div>
+						<div class="form-group no-show" id="newStatusReason">
+							<label for="resourceStatusReason" class="off-screen">Reason text</label>
+							<input type="text" class="form-control" {formname key=RESOURCE_STATUS_REASON} id="resourceStatusReason"/>
+						</div>
+						<div class="form-group" id="existingStatusReason">
+							<label for="reasonId">{translate key=Reason}</label>
+							<select id="reasonId" {formname key=RESOURCE_STATUS_REASON_ID} class="form-control">
+							</select>
+						</div>
+
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">{translate key='Cancel'}</button>
+						<button type="button" class="btn btn-success save"><span
+									class="glyphicon glyphicon-ok-circle"></span>
+							{translate key='Update'}</button>
+						{indicator}
+					</div>
+				</div>
 		</form>
 	</div>
 
@@ -1061,6 +1078,12 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 							}
 						}
 					});
+//
+//			$('.changeStatus').editable(
+//					{
+//						toggle:'auto'
+//					}
+//			);
 
 			var actions = {
 				enableSubscription: '{ManageResourcesActions::ActionEnableSubscription}',
