@@ -174,8 +174,9 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 						</div>
 
 						<div>
-							{translate key='Schedule'} <span
-									class="resourceValue">{$Schedules[$resource->GetScheduleId()]}</span>
+							{translate key='Schedule'}
+							<span class="resourceValue scheduleName"
+								  data-type="select" data-pk="{$id}" data-name="{FormKeys::SCHEDULE_ID}">{$Schedules[$resource->GetScheduleId()]}</span>
 							<a class="update changeScheduleButton" href="#">{translate key='Move'}</a>
 						</div>
 						<div>
@@ -440,36 +441,36 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		</form>
 	</div>
 
-	<div id="renameDialog" class="dialog" title="{translate key=Rename}">
-		<form id="renameForm" method="post" ajaxAction="{ManageResourcesActions::ActionRename}">
-			<label for="editName">{translate key='Name'}:</label> <input id="editName" type="text" class="textbox required"
-																		 maxlength="85"
-																		 style="width:250px" {formname key=RESOURCE_NAME} />
+	{*<div id="renameDialog" class="dialog" title="{translate key=Rename}">*}
+	{*<form id="renameForm" method="post" ajaxAction="{ManageResourcesActions::ActionRename}">*}
+	{*<label for="editName">{translate key='Name'}:</label> <input id="editName" type="text" class="textbox required"*}
+	{*maxlength="85"*}
+	{*style="width:250px" {formname key=RESOURCE_NAME} />*}
 
-			<div class="admin-update-buttons">
-				<button type="button"
-						class="button save">{html_image src="disk-black.png"} {translate key='Rename'}</button>
-				<button type="button" class="button cancel">{html_image src="slash.png"} {translate key='Cancel'}</button>
-			</div>
-		</form>
-	</div>
+	{*<div class="admin-update-buttons">*}
+	{*<button type="button"*}
+	{*class="button save">{html_image src="disk-black.png"} {translate key='Rename'}</button>*}
+	{*<button type="button" class="button cancel">{html_image src="slash.png"} {translate key='Cancel'}</button>*}
+	{*</div>*}
+	{*</form>*}
+	{*</div>*}
 
-	<div id="scheduleDialog" class="dialog" title="{translate key=MoveToSchedule}">
-		<form id="scheduleForm" method="post" ajaxAction="{ManageResourcesActions::ActionChangeSchedule}">
-			<label for="editSchedule">{translate key=MoveToSchedule}:</label>
-			<select id="editSchedule" class="textbox" {formname key=SCHEDULE_ID}>
-				{foreach from=$Schedules item=scheduleName key=scheduleId}
-					<option value="{$scheduleId}">{$scheduleName}</option>
-				{/foreach}
-			</select>
+	{*<div id="scheduleDialog" class="dialog" title="{translate key=MoveToSchedule}">*}
+	{*<form id="scheduleForm" method="post" ajaxAction="{ManageResourcesActions::ActionChangeSchedule}">*}
+	{*<label for="editSchedule">{translate key=MoveToSchedule}:</label>*}
+	{*<select id="editSchedule" class="textbox" {formname key=SCHEDULE_ID}>*}
+	{*{foreach from=$Schedules item=scheduleName key=scheduleId}*}
+	{*<option value="{$scheduleId}">{$scheduleName}</option>*}
+	{*{/foreach}*}
+	{*</select>*}
 
-			<div class="admin-update-buttons">
-				<button type="button"
-						class="button save">{html_image src="disk-black.png"} {translate key='Update'}</button>
-				<button type="button" class="button cancel">{html_image src="slash.png"} {translate key='Cancel'}</button>
-			</div>
-		</form>
-	</div>
+	{*<div class="admin-update-buttons">*}
+	{*<button type="button"*}
+	{*class="button save">{html_image src="disk-black.png"} {translate key='Update'}</button>*}
+	{*<button type="button" class="button cancel">{html_image src="slash.png"} {translate key='Cancel'}</button>*}
+	{*</div>*}
+	{*</form>*}
+	{*</div>*}
 
 	<div id="resourceTypeDialog" class="dialog" title="{translate key=ResourceType}">
 		<form id="resourceTypeForm" method="post" ajaxAction="{ManageResourcesActions::ActionChangeResourceType}">
@@ -1061,7 +1062,6 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 		$(document).ready(function ()
 		{
-			//toggle `popup` / `inline` mode
 			$.fn.editable.defaults.mode = 'popup';
 			$.fn.editable.defaults.toggle = 'manual';
 
@@ -1078,12 +1078,19 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 							}
 						}
 					});
-//
-//			$('.changeStatus').editable(
-//					{
-//						toggle:'auto'
-//					}
-//			);
+
+			$('.scheduleName').editable(
+					{
+						url: updateUrl + '{ManageResourcesActions::ActionChangeSchedule}',
+						source: [
+							{foreach from=$Schedules item=scheduleName key=scheduleId}
+								{
+									value:{$scheduleId}, text:'{$scheduleName}'
+								},
+							{/foreach}
+						]
+			}
+			);
 
 			var actions = {
 				enableSubscription: '{ManageResourcesActions::ActionEnableSubscription}',

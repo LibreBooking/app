@@ -351,9 +351,12 @@ class ManageResourcesPresenter extends ActionPresenter
 
 		$resource = $this->resourceRepository->LoadById($resourceId);
 
-		$scheduleId = $this->page->GetScheduleId();
-		$resource->SetScheduleId($scheduleId);
-		$this->resourceRepository->Update($resource);
+		$scheduleId = $this->page->GetValue();
+		if (!empty($scheduleId))
+		{
+			$resource->SetScheduleId($scheduleId);
+			$this->resourceRepository->Update($resource);
+		}
 	}
 
 	public function ChangeAdmin()

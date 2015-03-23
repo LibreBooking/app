@@ -68,7 +68,7 @@ function ResourceManagement(opts) {
 
 		//ConfigureAdminDialog(elements.renameDialog);
 		ConfigureAdminDialog(elements.imageDialog);
-		ConfigureAdminDialog(elements.scheduleDialog);
+		//ConfigureAdminDialog(elements.scheduleDialog);
 		ConfigureAdminDialog(elements.locationDialog);
 		ConfigureAdminDialog(elements.descriptionDialog);
 		ConfigureAdminDialog(elements.notesDialog);
@@ -106,11 +106,14 @@ function ResourceManagement(opts) {
 
 			details.find('.renameButton').click(function (e) {
 				e.stopPropagation();
-				details.find('.resourceName').editable('toggle');
+				details.find('.resourceName').editable.toggle();
 			});
 
 			details.find('.changeScheduleButton').click(function (e) {
-				showScheduleMove(e);
+				e.stopPropagation();
+				var scheduleName = details.find('.scheduleName');
+				scheduleName.editable('setValue',getActiveResource().scheduleId);
+				scheduleName.editable('toggle');
 			});
 
 			details.find('.changeResourceType').click(function (e) {
