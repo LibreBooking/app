@@ -250,7 +250,7 @@ class it_it extends en_us
 		$strings['Reset'] = 'Azzera';
 		$strings['FindGroup'] = 'Cerca gruppo';
 		$strings['Manage'] = 'Gestisci';
-		$strings['None'] = 'Nessuno';
+		$strings['None'] = 'Nulla';
 		$strings['AddToOutlook'] = 'Aggiungi al calendario';
 		$strings['Done'] = 'Fatto';
 		$strings['RememberMe'] = 'Ricordami';
@@ -498,6 +498,10 @@ class it_it extends en_us
 		$strings['Common'] = 'Generale';
 		$strings['AdvancedFilter'] = 'Filtro avanzato';
 		$strings['AllParticipants'] = 'Tutti i partecipanti';
+		$strings['ResourceAvailability'] = 'Disponibilità delle risorse';
+		$strings['UnavailableAllDay'] = 'Indisponibile per tutto il giorno';
+		$strings['AvailableUntil'] = 'Disponibile fino a';
+		$strings['AvailableBeginningAt'] = 'Disponibile a partire da';
 		// End Strings
 
 		// Install
@@ -571,6 +575,7 @@ class it_it extends en_us
 		$strings['PasswordErrorRequirements'] = 'La password deve contenere una combinazione di almeno %s maiuscole e minuscole e %s numeri.';
 		$strings['NoReservationAccess'] = 'Non sei abilitato a modificare questa prenotazione.';
 		$strings['PasswordControlledExternallyError'] = 'La password è controllata da un sistema esterno e non può modificata localmente.';
+		$strings['NoResources'] = 'Nessuna risorsa è stata aggiunta.';
 		// End Errors
 
 		// Page Titles
@@ -657,6 +662,7 @@ class it_it extends en_us
 		$strings['ReservationCreatedAdminSubject'] = 'Notifica: una prenotazione è stata creata';
 		$strings['ReservationUpdatedAdminSubject'] = 'Notifica: una prenotazione è stata aggiornata';
 		$strings['ReservationDeleteAdminSubject'] = 'Notifica: una prenotazione è stata rimossa';
+		$strings['ReservationApprovalAdminSubject'] = 'Notifica: una prenotazione è in attesa di approvazione';
 		$strings['ParticipantAddedSubject'] = 'Notifica di partecipazione ad una prenotazione';
 		$strings['ParticipantDeletedSubject'] = 'Annullata partecipazione ad una prenotazione';
 		$strings['InviteeAddedSubject'] = 'Invito ad una prenotazione';
