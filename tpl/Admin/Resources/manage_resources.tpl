@@ -193,7 +193,10 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 						</div>
 						<div>
 							{translate key=SortOrder}
-							<span class="resourceValue">{$resource->GetSortOrder()|default:"-"}</span>
+							<span class="resourceValue sortOrderValue"
+								  data-type="number" data-pk="{$id}" data-name="{FormKeys::RESOURCE_SORT_ORDER}" >
+								{$resource->GetSortOrder()|default:"0"}
+							</span>
 							<a class="update changeSortOrder" href="#">{translate key='Edit'}</a>
 						</div>
 						<div>
@@ -708,19 +711,19 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		</form>
 	</div>
 
-	<div id="sortOrderDialog" class="dialog" title="{translate key=SortOrder}">
-		<form id="sortOrderForm" method="post" ajaxAction="{ManageResourcesActions::ActionChangeSort}">
-			<label for="editSortOrder">{translate key=SortOrder}:</label>
-			<input type="text" id="editSortOrder" class="textbox" {formname key=RESOURCE_SORT_ORDER} maxlength="3"
-				   style="width:40px"/>
+	{*<div id="sortOrderDialog" class="dialog" title="{translate key=SortOrder}">*}
+		{*<form id="sortOrderForm" method="post" ajaxAction="{ManageResourcesActions::ActionChangeSort}">*}
+			{*<label for="editSortOrder">{translate key=SortOrder}:</label>*}
+			{*<input type="text" id="editSortOrder" class="textbox" {formname key=RESOURCE_SORT_ORDER} maxlength="3"*}
+				   {*style="width:40px"/>*}
 
-			<div class="admin-update-buttons">
-				<button type="button"
-						class="button save">{html_image src="disk-black.png"} {translate key='Update'}</button>
-				<button type="button" class="button cancel">{html_image src="slash.png"} {translate key='Cancel'}</button>
-			</div>
-		</form>
-	</div>
+			{*<div class="admin-update-buttons">*}
+				{*<button type="button"*}
+						{*class="button save">{html_image src="disk-black.png"} {translate key='Update'}</button>*}
+				{*<button type="button" class="button cancel">{html_image src="slash.png"} {translate key='Cancel'}</button>*}
+			{*</div>*}
+		{*</form>*}
+	{*</div>*}
 
 	<div id="statusDialog" class="modal" tabindex="-1" role="dialog" aria-labelledby="changeStatusModalLabel"
 		 aria-hidden="true">
@@ -1067,6 +1070,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		{
 			$.fn.editable.defaults.mode = 'popup';
 			$.fn.editable.defaults.toggle = 'manual';
+			$.fn.editable.defaults.emptyclass = '';
 
 			var updateUrl = '{$smarty.server.SCRIPT_NAME}?action=';
 
@@ -1099,11 +1103,6 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 						url: updateUrl + '{ManageResourcesActions::ActionChangeResourceType}',
 						emptytext : '{translate key=NoResourceTypeLabel}',
 						emptyclass : '',
-						{*display : function(value, source){*}
-							{*if (value == ''){*}
-								{*$(this).html('{translate key=NoResourceTypeLabel}');*}
-							{*}*}
-						{*},*}
 						source: [
 							{
 								value: '0', text: '' //'-- {translate key=None} --'
@@ -1115,6 +1114,13 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 							{/foreach}
 						]
 					});
+
+			$('.sortOrderValue').editable({
+				url : updateUrl + '{ManageResourcesActions::ActionChangeSort}',
+				emptytext : '0',
+				min: 0,
+				max:999
+			});
 
 			var actions = {
 				enableSubscription: '{ManageResourcesActions::ActionEnableSubscription}',

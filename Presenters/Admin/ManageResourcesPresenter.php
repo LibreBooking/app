@@ -405,7 +405,7 @@ class ManageResourcesPresenter extends ActionPresenter
 	public function ChangeSortOrder()
 	{
 		$resourceId = $this->page->GetResourceId();
-		$sortOrder = $this->page->GetSortOrder();
+		$sortOrder = $this->page->GetValue();
 		Log::Debug('Changing sort order for resource %s', $resourceId);
 
 		$resource = $this->resourceRepository->LoadById($resourceId);

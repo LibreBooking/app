@@ -119,6 +119,11 @@ function ResourceManagement(opts) {
 				details.find('.resourceTypeName').editable('toggle');
 			});
 
+			details.find('.changeSortOrder').click(function (e) {
+				e.stopPropagation();
+				details.find('.sortOrderValue').editable('toggle');
+			});
+
 			details.find('.changeLocationButton').click(function (e) {
 				showChangeLocation(e);
 			});
