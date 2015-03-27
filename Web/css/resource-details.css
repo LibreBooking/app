@@ -352,6 +352,9 @@ input[type=text].user-search {
 .bold {
   font-weight: bold;
 }
+.combobox-add {
+  margin-left: 5px;
+}
 #resourceDetailsPopup {
   min-width: 300px;
   max-width: 1000px;

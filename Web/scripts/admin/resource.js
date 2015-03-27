@@ -75,7 +75,7 @@ function ResourceManagement(opts) {
 		ConfigureAdminDialog(elements.configurationDialog);
 		ConfigureAdminDialog(elements.groupAdminDialog);
 		ConfigureAdminDialog(elements.sortOrderDialog);
-		ConfigureAdminDialog(elements.resourceTypeDialog);
+		//ConfigureAdminDialog(elements.resourceTypeDialog);
 		//ConfigureAdminDialog(elements.statusDialog);
 
 		$('.resourceDetails').each(function () {
@@ -106,18 +106,17 @@ function ResourceManagement(opts) {
 
 			details.find('.renameButton').click(function (e) {
 				e.stopPropagation();
-				details.find('.resourceName').editable.toggle();
+				details.find('.resourceName').editable('toggle');
 			});
 
 			details.find('.changeScheduleButton').click(function (e) {
 				e.stopPropagation();
-				var scheduleName = details.find('.scheduleName');
-				scheduleName.editable('setValue',getActiveResource().scheduleId);
-				scheduleName.editable('toggle');
+				details.find('.scheduleName').editable('toggle');
 			});
 
 			details.find('.changeResourceType').click(function (e) {
-				showResourceType(e);
+				e.stopPropagation();
+				details.find('.resourceTypeName').editable('toggle');
 			});
 
 			details.find('.changeLocationButton').click(function (e) {
@@ -273,8 +272,8 @@ function ResourceManagement(opts) {
 		};
 
 		ConfigureAdminForm(elements.imageForm, defaultSubmitCallback(elements.imageForm), null, imageSaveErrorHandler);
-		ConfigureAdminForm(elements.renameForm, defaultSubmitCallback(elements.renameForm), null, errorHandler);
-		ConfigureAdminForm(elements.scheduleForm, defaultSubmitCallback(elements.scheduleForm));
+		//ConfigureAdminForm(elements.renameForm, defaultSubmitCallback(elements.renameForm), null, errorHandler);
+		//ConfigureAdminForm(elements.scheduleForm, defaultSubmitCallback(elements.scheduleForm));
 		ConfigureAdminForm(elements.locationForm, defaultSubmitCallback(elements.locationForm));
 		ConfigureAdminForm(elements.descriptionForm, defaultSubmitCallback(elements.descriptionForm));
 		ConfigureAdminForm(elements.notesForm, defaultSubmitCallback(elements.notesForm));
@@ -282,7 +281,7 @@ function ResourceManagement(opts) {
 		ConfigureAdminForm(elements.deleteForm, defaultSubmitCallback(elements.deleteForm));
 		ConfigureAdminForm(elements.configurationForm, defaultSubmitCallback(elements.configurationForm), null, errorHandler, {onBeforeSerialize:combineIntervals});
 		ConfigureAdminForm(elements.groupAdminForm, defaultSubmitCallback(elements.groupAdminForm));
-		ConfigureAdminForm(elements.resourceTypeForm, defaultSubmitCallback(elements.resourceTypeForm));
+		//ConfigureAdminForm(elements.resourceTypeForm, defaultSubmitCallback(elements.resourceTypeForm));
 		ConfigureAdminForm(elements.bulkUpdateForm, defaultSubmitCallback(elements.bulkUpdateForm), null, bulkUpdateErrorHandler, {onBeforeSerialize:combineIntervals});
 
 		$.each(elements.attributeForm, function(i,form){
@@ -290,7 +289,7 @@ function ResourceManagement(opts) {
 		});
 
 		ConfigureAdminForm(elements.sortOrderForm, defaultSubmitCallback(elements.sortOrderForm));
-		ConfigureAdminForm(elements.statusForm, defaultSubmitCallback(elements.statusForm));
+		//ConfigureAdminForm(elements.statusForm, defaultSubmitCallback(elements.statusForm));
 	};
 
 	ResourceManagement.prototype.add = function (resource) {

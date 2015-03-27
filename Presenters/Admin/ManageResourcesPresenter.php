@@ -346,14 +346,13 @@ class ManageResourcesPresenter extends ActionPresenter
 
 	public function ChangeSchedule()
 	{
-		$resourceId = $this->page->GetResourceId();
-		Log::Debug('Changing schedule for resource %s', $resourceId);
-
-		$resource = $this->resourceRepository->LoadById($resourceId);
-
 		$scheduleId = $this->page->GetValue();
 		if (!empty($scheduleId))
 		{
+			$resourceId = $this->page->GetResourceId();
+			Log::Debug('Changing schedule for resource %s', $resourceId);
+			$resource = $this->resourceRepository->LoadById($resourceId);
+
 			$resource->SetScheduleId($scheduleId);
 			$this->resourceRepository->Update($resource);
 		}
@@ -416,13 +415,15 @@ class ManageResourcesPresenter extends ActionPresenter
 
 	public function ChangeResourceType()
 	{
-		$resourceId = $this->page->GetResourceId();
-		$resourceTypeId = $this->page->GetResourceTypeId();
-		Log::Debug('Changing resource type for resource %s', $resourceId);
-
-		$resource = $this->resourceRepository->LoadById($resourceId);
-		$resource->SetResourceTypeId($resourceTypeId);
-		$this->resourceRepository->Update($resource);
+		$resourceTypeId = $this->page->GetValue();
+		if (!empty($resourceTypeId))
+		{
+			$resourceId = $this->page->GetResourceId();
+			Log::Debug('Changing resource type for resource %s', $resourceId);
+			$resource = $this->resourceRepository->LoadById($resourceId);
+			$resource->SetResourceTypeId($resourceTypeId);
+			$this->resourceRepository->Update($resource);
+		}
 	}
 
 	private function GetAttributeValues()

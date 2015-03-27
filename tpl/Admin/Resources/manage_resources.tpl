@@ -176,16 +176,19 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 						<div>
 							{translate key='Schedule'}
 							<span class="resourceValue scheduleName"
-								  data-type="select" data-pk="{$id}" data-name="{FormKeys::SCHEDULE_ID}">{$Schedules[$resource->GetScheduleId()]}</span>
+								  data-type="select" data-pk="{$id}" data-value="{$resource->GetScheduleId()}" data-name="{FormKeys::SCHEDULE_ID}">{$Schedules[$resource->GetScheduleId()]}</span>
 							<a class="update changeScheduleButton" href="#">{translate key='Move'}</a>
 						</div>
 						<div>
 							{translate key='ResourceType'}
-							{if $resource->HasResourceType()}
-								<span class="resourceValue">{$ResourceTypes[$resource->GetResourceTypeId()]->Name()}</span>
-							{else}
-								<span class="note">{translate key='NoResourceTypeLabel'}</span>
-							{/if}
+							<span class="resourceValue resourceTypeName"
+								  data-type="select" data-pk="{$id}" data-value="{$resource->GetResourceTypeId()}" data-name="{FormKeys::RESOURCE_TYPE_ID}">
+									{if $resource->HasResourceType()}
+										{$ResourceTypes[$resource->GetResourceTypeId()]->Name()}
+									{else}
+										{translate key='NoResourceTypeLabel'}
+									{/if}
+								</span>
 							<a class="update changeResourceType" href="#">{translate key='Edit'}</a>
 						</div>
 						<div>
@@ -364,7 +367,6 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 	{pagination pageInfo=$PageInfo}
 
-
 	<div id="add-resource-dialog" class="modal" tabindex="-1" role="dialog" aria-labelledby="addResourceModalLabel"
 		 aria-hidden="true">
 		<form id="addResourceForm" class="form" role="form" method="post" ajaxAction="{ManageResourcesActions::ActionAdd}">
@@ -472,23 +474,23 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 	{*</form>*}
 	{*</div>*}
 
-	<div id="resourceTypeDialog" class="dialog" title="{translate key=ResourceType}">
-		<form id="resourceTypeForm" method="post" ajaxAction="{ManageResourcesActions::ActionChangeResourceType}">
-			<label for="editResourceType">{translate key=ResourceType}:</label>
-			<select id="editResourceType" class="textbox" {formname key=RESOURCE_TYPE_ID}>
-				<option value="">-- {translate key=None} --</option>
-				{foreach from=$ResourceTypes item=resourceType key=id}
-					<option value="{$id}">{$resourceType->Name()}</option>
-				{/foreach}
-			</select>
+	{*<div id="resourceTypeDialog" class="dialog" title="{translate key=ResourceType}">*}
+	{*<form id="resourceTypeForm" method="post" ajaxAction="{ManageResourcesActions::ActionChangeResourceType}">*}
+	{*<label for="editResourceType">{translate key=ResourceType}:</label>*}
+	{*<select id="editResourceType" class="textbox" {formname key=RESOURCE_TYPE_ID}>*}
+	{*<option value="">-- {translate key=None} --</option>*}
+	{*{foreach from=$ResourceTypes item=resourceType key=id}*}
+	{*<option value="{$id}">{$resourceType->Name()}</option>*}
+	{*{/foreach}*}
+	{*</select>*}
 
-			<div class="admin-update-buttons">
-				<button type="button"
-						class="button save">{html_image src="disk-black.png"} {translate key='Update'}</button>
-				<button type="button" class="button cancel">{html_image src="slash.png"} {translate key='Cancel'}</button>
-			</div>
-		</form>
-	</div>
+	{*<div class="admin-update-buttons">*}
+	{*<button type="button"*}
+	{*class="button save">{html_image src="disk-black.png"} {translate key='Update'}</button>*}
+	{*<button type="button" class="button cancel">{html_image src="slash.png"} {translate key='Cancel'}</button>*}
+	{*</div>*}
+	{*</form>*}
+	{*</div>*}
 
 	<div id="locationDialog" class="dialog" title="{translate key=Location}">
 		<form id="locationForm" method="post" ajaxAction="{ManageResourcesActions::ActionChangeLocation}">
@@ -1057,6 +1059,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 	{jsfile src="admin/edit.js"}
 	{jsfile src="admin/resource.js"}
+	{jsfile src="x-editable-combobox.js"}
 
 	<script type="text/javascript">
 
@@ -1084,13 +1087,34 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 						url: updateUrl + '{ManageResourcesActions::ActionChangeSchedule}',
 						source: [
 							{foreach from=$Schedules item=scheduleName key=scheduleId}
-								{
-									value:{$scheduleId}, text:'{$scheduleName}'
-								},
+							{
+								value:{$scheduleId}, text: '{$scheduleName}'
+							},
 							{/foreach}
 						]
-			}
-			);
+					});
+
+			$('.resourceTypeName').editable(
+					{
+						url: updateUrl + '{ManageResourcesActions::ActionChangeResourceType}',
+						emptytext : '{translate key=NoResourceTypeLabel}',
+						emptyclass : '',
+						{*display : function(value, source){*}
+							{*if (value == ''){*}
+								{*$(this).html('{translate key=NoResourceTypeLabel}');*}
+							{*}*}
+						{*},*}
+						source: [
+							{
+								value: '0', text: '' //'-- {translate key=None} --'
+							},
+							{foreach from=$ResourceTypes item=resourceType key=id}
+							{
+								value:{$id}, text: '{$resourceType->Name()}'
+							},
+							{/foreach}
+						]
+					});
 
 			var actions = {
 				enableSubscription: '{ManageResourcesActions::ActionEnableSubscription}',
@@ -1185,33 +1209,6 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			{/foreach}
 
 			resourceManagement.initializeStatusFilter('{$ResourceStatusFilterId}', '{$ResourceStatusReasonFilterId}');
-
-
-//			//make username editable
-//			$('#resourceName').editable(
-//			{
-//				selector: '#renameButton',
-//				toggle:manual
-//			}
-//			);
-
-			{*//make status editable*}
-			{*$('#status').editable( {*}
-			{*type: 'select',*}
-			{*title: 'Select status',*}
-			{*placement: 'right',*}
-			{*value: 2,*}
-			{*source: [*}
-			{*{value: 1, text: 'status 1'},*}
-			{*{value: 2, text: 'status 2'},*}
-			{*{value: 3, text: 'status 3'}*}
-			{*]*}
-			{*/**}
-			{*//uncomment these lines to send data on server*}
-			{*,pk: 1*}
-			{*,url: '/post'*}
-			{**/*}
-			{*});*}
 		});
 
 	</script>
