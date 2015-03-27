@@ -31,6 +31,7 @@ class ManageResourcesActions
 	const ActionChangeDescription = 'description';
 	const ActionChangeImage = 'image';
 	const ActionChangeLocation = 'location';
+	const ActionChangeContact = 'contact';
 	const ActionChangeNotes = 'notes';
 	const ActionChangeSchedule = 'schedule';
 	const ActionRemoveImage = 'removeImage';
@@ -107,6 +108,7 @@ class ManageResourcesPresenter extends ActionPresenter
 		$this->AddAction(ManageResourcesActions::ActionChangeDescription, 'ChangeDescription');
 		$this->AddAction(ManageResourcesActions::ActionChangeImage, 'ChangeImage');
 		$this->AddAction(ManageResourcesActions::ActionChangeLocation, 'ChangeLocation');
+		$this->AddAction(ManageResourcesActions::ActionChangeContact, 'ChangeContact');
 		$this->AddAction(ManageResourcesActions::ActionChangeNotes, 'ChangeNotes');
 		$this->AddAction(ManageResourcesActions::ActionChangeSchedule, 'ChangeSchedule');
 		$this->AddAction(ManageResourcesActions::ActionRemoveImage, 'RemoveImage');
@@ -265,8 +267,16 @@ class ManageResourcesPresenter extends ActionPresenter
 	{
 		$resource = $this->resourceRepository->LoadById($this->page->GetResourceId());
 
-		$resource->SetLocation($this->page->GetLocation());
-		$resource->SetContact($this->page->GetContact());
+		$resource->SetLocation($this->page->GetValue());
+
+		$this->resourceRepository->Update($resource);
+	}
+
+	public function ChangeContact()
+	{
+		$resource = $this->resourceRepository->LoadById($this->page->GetResourceId());
+
+		$resource->SetContact($this->page->GetValue());
 
 		$this->resourceRepository->Update($resource);
 	}

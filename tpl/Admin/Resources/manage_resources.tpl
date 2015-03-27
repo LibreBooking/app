@@ -201,20 +201,27 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 						</div>
 						<div>
 							{translate key='Location'}
+							<span class="resourceValue locationValue"
+								data-type="text" data-pk="{$id}" data-value="{$resource->GetLocation()}" data-name="{FormKeys::RESOURCE_LOCATION}">
 							{if $resource->HasLocation()}
-								<span class="resourceValue">{$resource->GetLocation()}</span>
+								{$resource->GetLocation()}
 							{else}
-								<span class="note">{translate key='NoLocationLabel'}</span>
+								{translate key='NoLocationLabel'}
 							{/if}
-							<a class="update changeLocationButton" href="#">{translate key='Edit'}</a>
+							</span>
+							<a class="update changeLocation" href="#">{translate key='Edit'}</a>
 						</div>
 						<div>
 							{translate key='Contact'}
+							<span class="resourceValue contactValue"
+								data-type="text" data-pk="{$id}" data-value="{$resource->GetContact()}" data-name="{FormKeys::RESOURCE_CONTACT}">
 							{if $resource->HasContact()}
-								<span class="resourceValue">{$resource->GetContact()}</span>
+								{$resource->GetContact()}
 							{else}
-								<span class="note">{translate key='NoContactLabel'}</span>
+								{translate key='NoContactLabel'}
 							{/if}
+							</span>
+							<a class="update changeContact" href="#">{translate key='Edit'}</a>
 						</div>
 						<div>
 							{translate key='Description'}
@@ -446,55 +453,6 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		</form>
 	</div>
 
-	{*<div id="renameDialog" class="dialog" title="{translate key=Rename}">*}
-	{*<form id="renameForm" method="post" ajaxAction="{ManageResourcesActions::ActionRename}">*}
-	{*<label for="editName">{translate key='Name'}:</label> <input id="editName" type="text" class="textbox required"*}
-	{*maxlength="85"*}
-	{*style="width:250px" {formname key=RESOURCE_NAME} />*}
-
-	{*<div class="admin-update-buttons">*}
-	{*<button type="button"*}
-	{*class="button save">{html_image src="disk-black.png"} {translate key='Rename'}</button>*}
-	{*<button type="button" class="button cancel">{html_image src="slash.png"} {translate key='Cancel'}</button>*}
-	{*</div>*}
-	{*</form>*}
-	{*</div>*}
-
-	{*<div id="scheduleDialog" class="dialog" title="{translate key=MoveToSchedule}">*}
-	{*<form id="scheduleForm" method="post" ajaxAction="{ManageResourcesActions::ActionChangeSchedule}">*}
-	{*<label for="editSchedule">{translate key=MoveToSchedule}:</label>*}
-	{*<select id="editSchedule" class="textbox" {formname key=SCHEDULE_ID}>*}
-	{*{foreach from=$Schedules item=scheduleName key=scheduleId}*}
-	{*<option value="{$scheduleId}">{$scheduleName}</option>*}
-	{*{/foreach}*}
-	{*</select>*}
-
-	{*<div class="admin-update-buttons">*}
-	{*<button type="button"*}
-	{*class="button save">{html_image src="disk-black.png"} {translate key='Update'}</button>*}
-	{*<button type="button" class="button cancel">{html_image src="slash.png"} {translate key='Cancel'}</button>*}
-	{*</div>*}
-	{*</form>*}
-	{*</div>*}
-
-	{*<div id="resourceTypeDialog" class="dialog" title="{translate key=ResourceType}">*}
-	{*<form id="resourceTypeForm" method="post" ajaxAction="{ManageResourcesActions::ActionChangeResourceType}">*}
-	{*<label for="editResourceType">{translate key=ResourceType}:</label>*}
-	{*<select id="editResourceType" class="textbox" {formname key=RESOURCE_TYPE_ID}>*}
-	{*<option value="">-- {translate key=None} --</option>*}
-	{*{foreach from=$ResourceTypes item=resourceType key=id}*}
-	{*<option value="{$id}">{$resourceType->Name()}</option>*}
-	{*{/foreach}*}
-	{*</select>*}
-
-	{*<div class="admin-update-buttons">*}
-	{*<button type="button"*}
-	{*class="button save">{html_image src="disk-black.png"} {translate key='Update'}</button>*}
-	{*<button type="button" class="button cancel">{html_image src="slash.png"} {translate key='Cancel'}</button>*}
-	{*</div>*}
-	{*</form>*}
-	{*</div>*}
-
 	<div id="locationDialog" class="dialog" title="{translate key=Location}">
 		<form id="locationForm" method="post" ajaxAction="{ManageResourcesActions::ActionChangeLocation}">
 			<label for="editLocation">{translate key=Location}:</label>
@@ -710,20 +668,6 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			</div>
 		</form>
 	</div>
-
-	{*<div id="sortOrderDialog" class="dialog" title="{translate key=SortOrder}">*}
-		{*<form id="sortOrderForm" method="post" ajaxAction="{ManageResourcesActions::ActionChangeSort}">*}
-			{*<label for="editSortOrder">{translate key=SortOrder}:</label>*}
-			{*<input type="text" id="editSortOrder" class="textbox" {formname key=RESOURCE_SORT_ORDER} maxlength="3"*}
-				   {*style="width:40px"/>*}
-
-			{*<div class="admin-update-buttons">*}
-				{*<button type="button"*}
-						{*class="button save">{html_image src="disk-black.png"} {translate key='Update'}</button>*}
-				{*<button type="button" class="button cancel">{html_image src="slash.png"} {translate key='Cancel'}</button>*}
-			{*</div>*}
-		{*</form>*}
-	{*</div>*}
 
 	<div id="statusDialog" class="modal" tabindex="-1" role="dialog" aria-labelledby="changeStatusModalLabel"
 		 aria-hidden="true">
@@ -1074,52 +1018,58 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 			var updateUrl = '{$smarty.server.SCRIPT_NAME}?action=';
 
-			$('.resourceName').editable(
+			$('.resourceName').editable({
+				url: updateUrl + '{ManageResourcesActions::ActionRename}',
+				validate: function (value)
+				{
+					if ($.trim(value) == '')
 					{
-						url: updateUrl + '{ManageResourcesActions::ActionRename}',
-						validate: function (value)
-						{
-							if ($.trim(value) == '')
-							{
-								return '{translate key=RequiredValue}';
-							}
-						}
-					});
+						return '{translate key=RequiredValue}';
+					}
+				}
+			});
 
-			$('.scheduleName').editable(
+			$('.scheduleName').editable({
+				url: updateUrl + '{ManageResourcesActions::ActionChangeSchedule}',
+				source: [
+					{foreach from=$Schedules item=scheduleName key=scheduleId}
 					{
-						url: updateUrl + '{ManageResourcesActions::ActionChangeSchedule}',
-						source: [
-							{foreach from=$Schedules item=scheduleName key=scheduleId}
-							{
-								value:{$scheduleId}, text: '{$scheduleName}'
-							},
-							{/foreach}
-						]
-					});
+						value:{$scheduleId}, text: '{$scheduleName}'
+					},
+					{/foreach}
+				]
+			});
 
-			$('.resourceTypeName').editable(
+			$('.resourceTypeName').editable({
+				url: updateUrl + '{ManageResourcesActions::ActionChangeResourceType}',
+				emptytext: '{translate key=NoResourceTypeLabel}',
+				source: [
 					{
-						url: updateUrl + '{ManageResourcesActions::ActionChangeResourceType}',
-						emptytext : '{translate key=NoResourceTypeLabel}',
-						emptyclass : '',
-						source: [
-							{
-								value: '0', text: '' //'-- {translate key=None} --'
-							},
-							{foreach from=$ResourceTypes item=resourceType key=id}
-							{
-								value:{$id}, text: '{$resourceType->Name()}'
-							},
-							{/foreach}
-						]
-					});
+						value: '0', text: '' //'-- {translate key=None} --'
+					},
+					{foreach from=$ResourceTypes item=resourceType key=id}
+					{
+						value:{$id}, text: '{$resourceType->Name()}'
+					},
+					{/foreach}
+				]
+			});
 
 			$('.sortOrderValue').editable({
 				url : updateUrl + '{ManageResourcesActions::ActionChangeSort}',
 				emptytext : '0',
 				min: 0,
 				max:999
+			});
+
+			$('.locationValue').editable({
+				url : updateUrl + '{{ManageResourcesActions::ActionChangeLocation}}',
+				emptytext : '{translate key='NoLocationLabel'}'
+			});
+
+			$('.contactValue').editable({
+				url : updateUrl + '{{ManageResourcesActions::ActionChangeContact}}',
+				emptytext : '{translate key='NoContactLabel'}'
 			});
 
 			var actions = {

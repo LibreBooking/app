@@ -66,17 +66,11 @@ function ResourceManagement(opts) {
 		//$(".hours").watermark('hrs');
 		//$(".minutes").watermark('mins');
 
-		//ConfigureAdminDialog(elements.renameDialog);
 		ConfigureAdminDialog(elements.imageDialog);
-		//ConfigureAdminDialog(elements.scheduleDialog);
-		ConfigureAdminDialog(elements.locationDialog);
 		ConfigureAdminDialog(elements.descriptionDialog);
 		ConfigureAdminDialog(elements.notesDialog);
 		ConfigureAdminDialog(elements.configurationDialog);
 		ConfigureAdminDialog(elements.groupAdminDialog);
-		ConfigureAdminDialog(elements.sortOrderDialog);
-		//ConfigureAdminDialog(elements.resourceTypeDialog);
-		//ConfigureAdminDialog(elements.statusDialog);
 
 		$('.resourceDetails').each(function () {
 			var id = $(this).find(':hidden.id').val();
@@ -124,8 +118,14 @@ function ResourceManagement(opts) {
 				details.find('.sortOrderValue').editable('toggle');
 			});
 
-			details.find('.changeLocationButton').click(function (e) {
-				showChangeLocation(e);
+			details.find('.changeLocation').click(function (e) {
+				e.stopPropagation();
+				details.find('.locationValue').editable('toggle');
+			});
+
+			details.find('.changeContact').click(function (e) {
+				e.stopPropagation();
+				details.find('.contactValue').editable('toggle');
 			});
 
 			details.find('.descriptionButton').click(function (e) {
@@ -156,10 +156,6 @@ function ResourceManagement(opts) {
 				container.find('.attribute-readwrite').toggle();
 				container.find('.attribute-readonly').toggle();
 				container.find('.validationSummary').hide();
-			});
-
-			details.find('.changeSortOrder').click(function (e) {
-				showSortPrompt(e);
 			});
 
 			details.find('.changeStatus').click(function (e) {
@@ -279,7 +275,7 @@ function ResourceManagement(opts) {
 		ConfigureAdminForm(elements.imageForm, defaultSubmitCallback(elements.imageForm), null, imageSaveErrorHandler);
 		//ConfigureAdminForm(elements.renameForm, defaultSubmitCallback(elements.renameForm), null, errorHandler);
 		//ConfigureAdminForm(elements.scheduleForm, defaultSubmitCallback(elements.scheduleForm));
-		ConfigureAdminForm(elements.locationForm, defaultSubmitCallback(elements.locationForm));
+		//ConfigureAdminForm(elements.locationForm, defaultSubmitCallback(elements.locationForm));
 		ConfigureAdminForm(elements.descriptionForm, defaultSubmitCallback(elements.descriptionForm));
 		ConfigureAdminForm(elements.notesForm, defaultSubmitCallback(elements.notesForm));
 		ConfigureAdminForm(elements.addForm, defaultSubmitCallback(elements.addForm), null, handleAddError);
@@ -293,7 +289,7 @@ function ResourceManagement(opts) {
 			ConfigureAdminForm($(form), defaultSubmitCallback($(form)), null, attributesHandler, {validationSummary:null});
 		});
 
-		ConfigureAdminForm(elements.sortOrderForm, defaultSubmitCallback(elements.sortOrderForm));
+		//ConfigureAdminForm(elements.sortOrderForm, defaultSubmitCallback(elements.sortOrderForm));
 		//ConfigureAdminForm(elements.statusForm, defaultSubmitCallback(elements.statusForm));
 	};
 
