@@ -120,11 +120,11 @@ class CalendarReservation
 		{
 			if ($groupSeriesByResource)
 			{
-				if (array_key_exists($reservation->SeriesId, $knownSeries))
+				if (array_key_exists($reservation->ReferenceNumber, $knownSeries))
 				{
 					continue;
 				}
-				$knownSeries[$reservation->SeriesId] = true;
+				$knownSeries[$reservation->ReferenceNumber] = true;
 			}
 			$results[] = self::FromView($reservation, $timezone, $user);
 		}
@@ -197,11 +197,11 @@ class CalendarReservation
 
 			if ($groupSeriesByResource)
 			{
-				if (array_key_exists($reservation->SeriesId, $knownSeries))
+				if (array_key_exists($reservation->ReferenceNumber, $knownSeries))
 				{
 					continue;
 				}
-				$knownSeries[$reservation->SeriesId] = true;
+				$knownSeries[$reservation->ReferenceNumber] = true;
 			}
 
 			$timezone = $userSession->Timezone;
