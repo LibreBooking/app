@@ -17,7 +17,7 @@ You should have received a copy of the GNU General Public License
 along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 *}
 
-{include file='globalheader.tpl'}
+{include file='globalheader.tpl' InlineEdit=true}
 
 <div id="page-manage-resources">
 
@@ -158,15 +158,15 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 							{if $resource->IsAvailable()}
 								{html_image src="status.png"}
 								<a class="update changeStatus"
-								   href="#">{translate key='Available'}</a>
+								   href="#" rel="popover" data-popover-content="#statusDialog">{translate key='Available'}</a>
 							{elseif $resource->IsUnavailable()}
 								{html_image src="status-away.png"}
 								<a class="update changeStatus"
-								   href="#">{translate key='Unavailable'}</a>
+								   href="#" rel="popover" data-popover-content="#statusDialog">{translate key='Unavailable'}</a>
 							{else}
 								{html_image src="status-busy.png"}
 								<a class="update changeStatus"
-								   href="#">{translate key='Hidden'}</a>
+								   href="#" rel="popover" data-popover-content="#statusDialog">{translate key='Hidden'}</a>
 							{/if}
 							{if array_key_exists($resource->GetStatusReasonId(),$StatusReasons)}
 								<span class="statusReason">{$StatusReasons[$resource->GetStatusReasonId()]->Description()}</span>
@@ -176,7 +176,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 						<div>
 							{translate key='Schedule'}
 							<span class="resourceValue scheduleName"
-								  data-type="select" data-pk="{$id}" data-value="{$resource->GetScheduleId()}" data-name="{FormKeys::SCHEDULE_ID}">{$Schedules[$resource->GetScheduleId()]}</span>
+								  data-type="select" data-pk="{$id}" data-value="{$resource->GetScheduleId()}"
+								  data-name="{FormKeys::SCHEDULE_ID}">{$Schedules[$resource->GetScheduleId()]}</span>
 							<a class="update changeScheduleButton" href="#">{translate key='Move'}</a>
 						</div>
 						<div>
@@ -194,7 +195,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 						<div>
 							{translate key=SortOrder}
 							<span class="resourceValue sortOrderValue"
-								  data-type="number" data-pk="{$id}" data-name="{FormKeys::RESOURCE_SORT_ORDER}" >
+								  data-type="number" data-pk="{$id}" data-name="{FormKeys::RESOURCE_SORT_ORDER}">
 								{$resource->GetSortOrder()|default:"0"}
 							</span>
 							<a class="update changeSortOrder" href="#">{translate key='Edit'}</a>
@@ -202,7 +203,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 						<div>
 							{translate key='Location'}
 							<span class="resourceValue locationValue"
-								data-type="text" data-pk="{$id}" data-value="{$resource->GetLocation()}" data-name="{FormKeys::RESOURCE_LOCATION}">
+								  data-type="text" data-pk="{$id}" data-value="{$resource->GetLocation()}" data-name="{FormKeys::RESOURCE_LOCATION}">
 							{if $resource->HasLocation()}
 								{$resource->GetLocation()}
 							{else}
@@ -214,7 +215,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 						<div>
 							{translate key='Contact'}
 							<span class="resourceValue contactValue"
-								data-type="text" data-pk="{$id}" data-value="{$resource->GetContact()}" data-name="{FormKeys::RESOURCE_CONTACT}">
+								  data-type="text" data-pk="{$id}" data-value="{$resource->GetContact()}" data-name="{FormKeys::RESOURCE_CONTACT}">
 							{if $resource->HasContact()}
 								{$resource->GetContact()}
 							{else}
@@ -224,13 +225,18 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 							<a class="update changeContact" href="#">{translate key='Edit'}</a>
 						</div>
 						<div>
-							{translate key='Description'}
-							{if $resource->HasDescription()}
-								<span class="resourceValue">{$resource->GetDescription()|truncate:500:"..."}</span>
-							{else}
-								<span class="note">{translate key='NoDescriptionLabel'}</span>
-							{/if}
-							<a class="update descriptionButton" href="#">{translate key='Edit'}</a>
+							{translate key='Description'} <a class="update changeDescription" href="#">{translate key='Edit'}</a>
+
+							<div class="resourceValue descriptionValue"
+								 data-type="select" data-pk="{$id}" data-name="{FormKeys::RESOURCE_DESCRIPTION}">
+								{if $resource->HasDescription()}
+									{$resource->GetDescription()} {*|truncate:500:"..."*}
+
+								{else}
+									{translate key='NoDescriptionLabel'}
+								{/if}
+							</div>
+							{*<textarea id="some-textarea"></textarea>*}
 						</div>
 						<div>
 							{translate key='Notes'}
@@ -453,37 +459,6 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		</form>
 	</div>
 
-	<div id="locationDialog" class="dialog" title="{translate key=Location}">
-		<form id="locationForm" method="post" ajaxAction="{ManageResourcesActions::ActionChangeLocation}">
-			<label for="editLocation">{translate key=Location}:</label>
-			<input id="editLocation" type="text" class="textbox" maxlength="85"
-				   style="width:250px" {formname key=RESOURCE_LOCATION} /><br/>
-			<label for="editContact">{translate key=Contact}:</label>
-			<input id="editContact" type="text" class="textbox" maxlength="85"
-				   style="width:250px" {formname key=RESOURCE_CONTACT} />
-
-			<div class="admin-update-buttons">
-				<button type="button"
-						class="button save">{html_image src="disk-black.png"} {translate key='Update'}</button>
-				<button type="button" class="button cancel">{html_image src="slash.png"} {translate key='Cancel'}</button>
-			</div>
-		</form>
-	</div>
-
-	<div id="descriptionDialog" class="dialog" title="{translate key=Description}">
-		<form id="descriptionForm" method="post" ajaxAction="{ManageResourcesActions::ActionChangeDescription}">
-			<label for="editDescription">{translate key=Description}:</label>
-		<textarea id="editDescription" class="textbox"
-				  style="width:460px;height:150px;" {formname key=RESOURCE_DESCRIPTION}></textarea>
-
-			<div class="admin-update-buttons">
-				<button type="button"
-						class="button save">{html_image src="disk-black.png"} {translate key='Update'}</button>
-				<button type="button" class="button cancel">{html_image src="slash.png"} {translate key='Cancel'}</button>
-			</div>
-		</form>
-	</div>
-
 	<div id="notesDialog" class="dialog" title="{translate key=Notes}">
 		<form id="notesForm" method="post" ajaxAction="{ManageResourcesActions::ActionChangeNotes}">
 			<label for="editNotes">{translate key=Notes}:</label>
@@ -669,49 +644,48 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		</form>
 	</div>
 
-	<div id="statusDialog" class="modal" tabindex="-1" role="dialog" aria-labelledby="changeStatusModalLabel"
-		 aria-hidden="true">
-		<form id="statusForm" method="post" ajaxAction="{ManageResourcesActions::ActionChangeStatus}">
-			<div class="modal-dialog modal-sm">
-				<div class="modal-content">
-					<div class="modal-header">
-						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-						<h4 class="modal-title" id="addResourceModalLabel">{translate key=ResourceStatus}</h4>
-					</div>
-					<div class="modal-body">
+	<div id="statusDialog" class="hide">
+		<form class="statusForm" method="post" ajaxAction="{ManageResourcesActions::ActionChangeStatus}">
+			<div class="control-group form-group">
+				<div>
+					<div class="">
 						<div class="form-group">
-							<label for="statusId" class="off-screen">{translate key=Status}</label>
-							<select id="statusId" {formname key=RESOURCE_STATUS_ID} class="form-control">
-								<option value="{ResourceStatus::AVAILABLE}">{translate key=Available}</option>
-								<option value="{ResourceStatus::UNAVAILABLE}">{translate key=Unavailable}</option>
-								<option value="{ResourceStatus::HIDDEN}">{translate key=Hidden}</option>
-							</select>
+							<label>{translate key=Status}
+								<select {formname key=RESOURCE_STATUS_ID} class="statusId form-control">
+									<option value="{ResourceStatus::AVAILABLE}">{translate key=Available}</option>
+									<option value="{ResourceStatus::UNAVAILABLE}">{translate key=Unavailable}</option>
+									<option value="{ResourceStatus::HIDDEN}">{translate key=Hidden}</option>
+								</select>
+							</label>
 						</div>
-						<a href="#" id="addStatusReason" class="pull-right"><span id="addStatusIcon" class="fa fa-plus icon add"></span></a>
 
-						<div class="form-group no-show" id="newStatusReason">
-							<label for="resourceStatusReason" class="off-screen">Reason text</label>
-							<input type="text" class="form-control" {formname key=RESOURCE_STATUS_REASON} id="resourceStatusReason"/>
+						<div class="form-group no-show newStatusReason">
+							<label>Reason text
+								<a href="#" class="pull-right addStatusReason"><span class="addStatusIcon fa fa-list-alt icon add"></span></a>
+								<input type="text" class="form-control resourceStatusReason" {formname key=RESOURCE_STATUS_REASON} />
+							</label>
 						</div>
-						<div class="form-group" id="existingStatusReason">
-							<label for="reasonId">{translate key=Reason}</label>
-							<select id="reasonId" {formname key=RESOURCE_STATUS_REASON_ID} class="form-control">
-							</select>
+						<div class="form-group existingStatusReason">
+							<label>
+								{translate key=Reason}
+								<a href="#" class="pull-right addStatusReason"><span class="addStatusIcon fa fa-plus icon add"></span></a>
+								<select {formname key=RESOURCE_STATUS_REASON_ID} class="form-control reasonId"></select>
+							</label>
 						</div>
 
 					</div>
-					<div class="modal-footer">
-						<button type="button" class="btn btn-default" data-dismiss="modal">{translate key='Cancel'}</button>
-						<button type="button" class="btn btn-success save"><span
-									class="glyphicon glyphicon-ok-circle"></span>
-							{translate key='Update'}</button>
+					<div class="editable-buttons">
+						<button type="button" class="btn btn-primary btn-sm editable-submit save"><i class="glyphicon glyphicon-ok"></i></button>
+						<button type="button" class="btn btn-default btn-sm editable-cancel"><i class="glyphicon glyphicon-remove"></i></button>
 						{indicator}
 					</div>
 				</div>
+			</div>
 		</form>
 	</div>
 
-	<div class="modal fade" id="deletePrompt" tabindex="-1" role="dialog" aria-labelledby="deleteResourceDialogLabel" aria-hidden="true">
+
+	<div id="deletePrompt" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="deleteResourceDialogLabel" aria-hidden="true">
 		<form id="deleteForm" method="post" ajaxAction="{ManageResourcesActions::ActionDelete}">
 			<div class="modal-dialog">
 				<div class="modal-content">
@@ -739,7 +713,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		</form>
 	</div>
 
-	<div class="modal fade" id="bulkUpdateDialog" tabindex="-1" role="dialog" aria-labelledby="bulkUpdateLabel" aria-hidden="true">
+	<div id="bulkUpdateDialog" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="bulkUpdateLabel" aria-hidden="true">
 		<form id="bulkUpdateForm" method="post" ajaxAction="{ManageResourcesActions::ActionBulkUpdate}" class="form-inline"
 			  role="form">
 			<div class="modal-dialog modal-lg horizontal-list">
@@ -1006,11 +980,54 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 	{jsfile src="admin/edit.js"}
 	{jsfile src="admin/resource.js"}
-	{jsfile src="x-editable-combobox.js"}
 
 	<script type="text/javascript">
 
-		$(document).ready(function ()
+		function hidePopoversWhenClickAway()
+		{
+			$('body').on('click', function (e)
+			{
+				$('[rel="popover"]').each(function ()
+				{
+					if (!$(this).is(e.target) && $(this).has(e.target).length === 0 && $('.popover').has(e.target).length === 0)
+					{
+						$(this).popover('hide');
+					}
+				});
+			});
+		}
+
+		function setUpPopovers(shownCallback)
+		{
+			$('[rel="popover"]').popover({
+				container: 'body',
+				html: true,
+				placement: 'top',
+				content: function ()
+				{
+					var popoverId = $(this).data('popover-content');
+					return $(popoverId).html();
+				}
+			}).click(function (e)
+			{
+				e.preventDefault();
+			}).on('shown.bs.popover', function ()
+			{
+				if (shownCallback)
+				{
+					shownCallback($(this));
+				}
+				var trigger = $(this);
+				var popover = trigger.data('bs.popover').tip();
+
+				popover.find('.editable-cancel').click(function ()
+				{
+					trigger.popover('hide');
+				});
+			});
+		}
+
+		function setUpEditables()
 		{
 			$.fn.editable.defaults.mode = 'popup';
 			$.fn.editable.defaults.toggle = 'manual';
@@ -1056,21 +1073,36 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			});
 
 			$('.sortOrderValue').editable({
-				url : updateUrl + '{ManageResourcesActions::ActionChangeSort}',
-				emptytext : '0',
+				url: updateUrl + '{ManageResourcesActions::ActionChangeSort}',
+				emptytext: '0',
 				min: 0,
-				max:999
+				max: 999
 			});
 
 			$('.locationValue').editable({
-				url : updateUrl + '{{ManageResourcesActions::ActionChangeLocation}}',
-				emptytext : '{translate key='NoLocationLabel'}'
+				url: updateUrl + '{ManageResourcesActions::ActionChangeLocation}',
+				emptytext: '{translate key='NoLocationLabel'}'
 			});
 
 			$('.contactValue').editable({
-				url : updateUrl + '{{ManageResourcesActions::ActionChangeContact}}',
-				emptytext : '{translate key='NoContactLabel'}'
+				url: updateUrl + '{ManageResourcesActions::ActionChangeContact}',
+				emptytext: '{translate key='NoContactLabel'}'
 			});
+
+			$('.descriptionValue').editable({
+				url: updateUrl + '{ManageResourcesActions::ActionChangeDescription}',
+				emptytext: '{translate key='NoDescriptionLabel'}'
+			});
+		}
+
+		$(document).ready(function ()
+		{
+			setUpPopovers();
+
+			hidePopoversWhenClickAway();
+
+			setUpEditables();
+//			$('#some-textarea').wysihtml5();
 
 			var actions = {
 				enableSubscription: '{ManageResourcesActions::ActionEnableSubscription}',

@@ -420,6 +420,11 @@ td.update {
 #update-blackout-buttons {
   padding-bottom: 5px;
 }
+.resourceStatusReason,
+.reasonId,
+.statusId {
+  width: 250px;
+}
 #page-manage-blackouts input,
 #page-manage-reservations input,
 #page-manage-resources input,

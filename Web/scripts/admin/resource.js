@@ -31,13 +31,13 @@ function ResourceManagement(opts) {
 		statusForm:$('#statusForm'),
 		resourceTypeForm:$('#resourceTypeForm'),
 
-		statusReasons:$('#reasonId'),
-		statusOptions:$('#statusId'),
-		addStatusReason:$('#addStatusReason'),
-		newStatusReason:$('#newStatusReason'),
-		existingStatusReason:$('#existingStatusReason'),
-		resourceStatusReason:$('#resourceStatusReason'),
-		addStatusIcon:$('#addStatusIcon'),
+		statusReasons:('.reasonId'),
+		statusOptions:('.statusId'),
+		addStatusReason:('.addStatusReason'),
+		newStatusReason:('.newStatusReason'),
+		existingStatusReason:('.existingStatusReason'),
+		resourceStatusReason:('.resourceStatusReason'),
+		addStatusIcon:('.addStatusIcon'),
 
 		addForm:$('#addResourceForm'),
 		statusOptionsFilter:$('#resourceStatusIdFilter'),
@@ -67,7 +67,6 @@ function ResourceManagement(opts) {
 		//$(".minutes").watermark('mins');
 
 		ConfigureAdminDialog(elements.imageDialog);
-		ConfigureAdminDialog(elements.descriptionDialog);
 		ConfigureAdminDialog(elements.notesDialog);
 		ConfigureAdminDialog(elements.configurationDialog);
 		ConfigureAdminDialog(elements.groupAdminDialog);
@@ -128,8 +127,9 @@ function ResourceManagement(opts) {
 				details.find('.contactValue').editable('toggle');
 			});
 
-			details.find('.descriptionButton').click(function (e) {
-				showChangeDescription(e);
+			details.find('.changeDescription').click(function (e) {
+				e.stopPropagation();
+				details.find('.descriptionValue').editable('toggle');
 			});
 
 			details.find('.notesButton').click(function (e) {
@@ -182,30 +182,8 @@ function ResourceManagement(opts) {
 			$('#resourceName').focus();
 		});
 
-		elements.statusOptions.change(function(e){
-			populateReasonOptions(elements.statusOptions.val(), elements.statusReasons);
-		});
-
 		elements.bulkEditStatusOptions.change(function(e){
 			populateReasonOptions(elements.bulkEditStatusOptions.val(), elements.bulkEditStatusReasons);
-		});
-
-		elements.addStatusReason.click(function(e){
-			e.preventDefault();
-			elements.newStatusReason.toggle();
-			elements.existingStatusReason.toggle();
-
-			if (elements.newStatusReason.is(':visible')){
-				elements.statusReasons.data('prev', elements.statusReasons.val());
-				elements.statusReasons.val('');
-				elements.resourceStatusReason.focus();
-				elements.addStatusIcon.removeClass('fa-plus').addClass('fa-list-alt')
-			}
-			else{
-				elements.statusReasons.val(elements.statusReasons.data('prev'));
-				elements.statusReasons.focus();
-				elements.addStatusIcon.addClass('fa-plus').removeClass('fa-list-alt');
-			}
 		});
 
 		elements.statusOptionsFilter.change(function(e){
@@ -276,7 +254,7 @@ function ResourceManagement(opts) {
 		//ConfigureAdminForm(elements.renameForm, defaultSubmitCallback(elements.renameForm), null, errorHandler);
 		//ConfigureAdminForm(elements.scheduleForm, defaultSubmitCallback(elements.scheduleForm));
 		//ConfigureAdminForm(elements.locationForm, defaultSubmitCallback(elements.locationForm));
-		ConfigureAdminForm(elements.descriptionForm, defaultSubmitCallback(elements.descriptionForm));
+		//ConfigureAdminForm(elements.descriptionForm, defaultSubmitCallback(elements.descriptionForm));
 		ConfigureAdminForm(elements.notesForm, defaultSubmitCallback(elements.notesForm));
 		ConfigureAdminForm(elements.addForm, defaultSubmitCallback(elements.addForm), null, handleAddError);
 		ConfigureAdminForm(elements.deleteForm, defaultSubmitCallback(elements.deleteForm));
@@ -340,27 +318,6 @@ function ResourceManagement(opts) {
 		elements.imageDialog.dialog("open");
 	};
 
-	var showScheduleMove = function (e) {
-		$('#editSchedule').val(getActiveResource().scheduleId);
-		elements.scheduleDialog.dialog("open");
-	};
-
-	var showResourceType = function (e) {
-		$('#editResourceType').val(getActiveResource().resourceTypeId);
-		elements.resourceTypeDialog.dialog("open");
-	};
-
-	var showChangeLocation = function (e) {
-		$('#editLocation').val(getActiveResource().location);
-		$('#editContact').val(getActiveResource().contact);
-		elements.locationDialog.dialog("open");
-	};
-
-	var showChangeDescription = function (e) {
-		$('#editDescription').val(HtmlDecode(getActiveResource().description));
-		elements.descriptionDialog.dialog("open");
-	};
-
 	var showChangeNotes = function (e) {
 		$('#editNotes').val(HtmlDecode(getActiveResource().notes));
 		elements.notesDialog.dialog("open");
@@ -396,21 +353,50 @@ function ResourceManagement(opts) {
 		elements.configurationDialog.dialog("open");
 	};
 
-	var showSortPrompt = function (e) {
-		$('#editSortOrder').val(getActiveResource().sortOrder);
-		elements.sortOrderDialog.dialog("open");
-	};
-
 	var showStatusPrompt = function (e) {
 		var resource = getActiveResource();
-		elements.statusOptions.val(resource.statusId);
+		var statusForm = $('.popover:visible').find('form');
 
-		populateReasonOptions(elements.statusOptions.val(), elements.statusReasons);
+		var statusOptions = statusForm.find(elements.statusOptions);
+		var statusReasons = statusForm.find(elements.statusReasons);
+		var addStatusReason = statusForm.find(elements.addStatusReason);
+		var saveButton = statusForm.find('.save');
 
-		elements.statusReasons.val(resource.reasonId);
+		statusOptions.val(resource.statusId);
+		statusReasons.val(resource.reasonId);
 
-		elements.statusDialog.modal("show");
-		elements.statusOptions.focus();
+		statusOptions.unbind();
+		statusOptions.change(function(e){
+			populateReasonOptions(statusOptions.val(), statusReasons);
+		});
+
+		populateReasonOptions(statusOptions.val(), statusReasons);
+
+		addStatusReason.unbind();
+		addStatusReason.click(function(){
+			statusForm.find(elements.newStatusReason).toggleClass('no-show');
+			statusForm.find(elements.existingStatusReason).toggleClass('no-show');
+
+			if (statusForm.find(elements.newStatusReason).hasClass('no-show')){
+				statusForm.find(elements.statusReasons).data('prev', statusReasons.val());
+				statusForm.find(elements.statusReasons).val('');
+				statusForm.find(elements.resourceStatusReason).focus();
+			}
+			else{
+				statusForm.find(elements.statusReasons).val(statusReasons.data('prev'));
+				statusForm.find(elements.statusReasons).focus();
+			}
+		});
+
+		saveButton.unbind();
+
+		ConfigureAdminForm(statusForm, defaultSubmitCallback(statusForm));
+
+		saveButton.click(function() {
+			statusForm.submit();
+		});
+
+		statusOptions.focus();
 	};
 
 	function populateReasonOptions(statusId, reasonsElement){
