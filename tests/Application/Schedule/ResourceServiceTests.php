@@ -180,7 +180,7 @@ class ResourceServiceTests extends TestBase
 		$resources = array($resource1);
 
 		$this->resourceRepository
-				->expects($this->once())
+				->expects($this->any())
 				->method('GetScheduleResources')
 				->with($this->equalTo($scheduleId))
 				->will($this->returnValue($resources));
@@ -192,7 +192,7 @@ class ResourceServiceTests extends TestBase
 					   $this->equalTo($session))
 				->will($this->returnValue(true));
 
-		$this->userRepository->expects($this->once())
+		$this->userRepository->expects($this->any())
 					->method('LoadById')
 					->with($this->equalTo($session->UserId))
 					->will($this->returnValue($user));
@@ -201,9 +201,12 @@ class ResourceServiceTests extends TestBase
 
 		$expected = array($resourceDto1);
 
-		$actual = $this->resourceService->GetScheduleResources($scheduleId, true, $session);
+		$actualInclusive = $this->resourceService->GetScheduleResources($scheduleId, true, $session);
 
-		$this->assertEquals($expected, $actual);
+		$this->assertEquals($expected, $actualInclusive);
+
+		$actualExcluded = $this->resourceService->GetScheduleResources($scheduleId, false, $session);
+		$this->assertEquals(array(), $actualExcluded);
 	}
 
 	public function testResourcesAreNotReturnedIfNotIncludingInaccessibleResources()

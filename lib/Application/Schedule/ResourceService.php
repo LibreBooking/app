@@ -154,7 +154,12 @@ class ResourceService implements IResourceService
 
 			if ($canAccess)
 			{
+
 				$canAccess = $statusFilter->ShouldInclude($resource);
+				if (!$includeInaccessibleResources && !$canAccess)
+				{
+					continue;
+				}
 			}
 
 			$resourceDtos[] = new ResourceDto($resource->GetResourceId(), $resource->GetName(), $canAccess, $resource->GetScheduleId(), $resource->GetMinLength());
