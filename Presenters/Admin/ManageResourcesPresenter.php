@@ -236,7 +236,7 @@ class ManageResourcesPresenter extends ActionPresenter
 	{
 		$resource = $this->resourceRepository->LoadById($this->page->GetResourceId());
 
-		$resource->SetDescription($this->page->GetDescription());
+		$resource->SetDescription($this->page->GetValue());
 
 		$this->resourceRepository->Update($resource);
 	}
@@ -245,7 +245,7 @@ class ManageResourcesPresenter extends ActionPresenter
 	{
 		$resource = $this->resourceRepository->LoadById($this->page->GetResourceId());
 
-		$resource->SetNotes($this->page->GetNotes());
+		$resource->SetNotes($this->page->GetValue());
 
 		$this->resourceRepository->Update($resource);
 	}

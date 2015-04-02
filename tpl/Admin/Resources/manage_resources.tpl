@@ -226,26 +226,39 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 						</div>
 						<div>
 							{translate key='Description'} <a class="update changeDescription" href="#">{translate key='Edit'}</a>
-
-							<div class="resourceValue descriptionValue"
-								 data-type="select" data-pk="{$id}" data-name="{FormKeys::RESOURCE_DESCRIPTION}">
+							{if $resource->HasDescription()}
+								{assign var=description value=$resource->GetDescription()}
+							{else}
+								{assign var=description value=''}
+							{/if}
+							{strip}
+							<div class="descriptionValue"
+								 data-type="textarea" data-pk="{$id}" data-value="{$description|escape}" data-name="{FormKeys::RESOURCE_DESCRIPTION}">
 								{if $resource->HasDescription()}
-									{$resource->GetDescription()} {*|truncate:500:"..."*}
-
+									{$description}
 								{else}
 									{translate key='NoDescriptionLabel'}
 								{/if}
 							</div>
-							{*<textarea id="some-textarea"></textarea>*}
+							{/strip}
 						</div>
 						<div>
-							{translate key='Notes'}
+							{translate key='Notes'} <a class="update changeNotes" href="#">{translate key='Edit'}</a>
 							{if $resource->HasNotes()}
-								<span class="resourceValue">{$resource->GetNotes()|truncate:500:"..."}</span>
+								{assign var=notes value=$resource->GetNotes()}
 							{else}
-								<span class="note">{translate key='NoNotesLabel'}</span>
+								{assign var=notes value=''}
 							{/if}
-							<a class="update notesButton" href="#">{translate key='Edit'}</a>
+							{strip}
+							<div class="notesValue"
+								 data-type="textarea" data-pk="{$id}" data-value="{$notes|escape}" data-name="{FormKeys::RESOURCE_NOTES}">
+								{if $resource->HasNotes()}
+									{$notes}
+								{else}
+									{translate key='NoNotesLabel'}
+								{/if}
+							</div>
+							{/strip}
 						</div>
 						<div>
 							{translate key='ResourceAdministrator'}
@@ -684,7 +697,6 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		</form>
 	</div>
 
-
 	<div id="deletePrompt" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="deleteResourceDialogLabel" aria-hidden="true">
 		<form id="deleteForm" method="post" ajaxAction="{ManageResourcesActions::ActionDelete}">
 			<div class="modal-dialog">
@@ -1093,6 +1105,11 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 				url: updateUrl + '{ManageResourcesActions::ActionChangeDescription}',
 				emptytext: '{translate key='NoDescriptionLabel'}'
 			});
+
+			$('.notesValue').editable({
+				url: updateUrl + '{ManageResourcesActions::ActionChangeNotes}',
+				emptytext: '{translate key='NoDescriptionLabel'}'
+			});
 		}
 
 		$(document).ready(function ()
@@ -1102,7 +1119,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			hidePopoversWhenClickAway();
 
 			setUpEditables();
-//			$('#some-textarea').wysihtml5();
+			$('#some-textarea').wysihtml5();
 
 			var actions = {
 				enableSubscription: '{ManageResourcesActions::ActionEnableSubscription}',

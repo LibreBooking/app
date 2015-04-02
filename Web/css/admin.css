@@ -425,6 +425,9 @@ td.update {
 .statusId {
   width: 250px;
 }
+.descriptionValue {
+  max-width: 40%;
+}
 #page-manage-blackouts input,
 #page-manage-reservations input,
 #page-manage-resources input,

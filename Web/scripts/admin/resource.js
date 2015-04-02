@@ -67,7 +67,7 @@ function ResourceManagement(opts) {
 		//$(".minutes").watermark('mins');
 
 		ConfigureAdminDialog(elements.imageDialog);
-		ConfigureAdminDialog(elements.notesDialog);
+		//ConfigureAdminDialog(elements.notesDialog);
 		ConfigureAdminDialog(elements.configurationDialog);
 		ConfigureAdminDialog(elements.groupAdminDialog);
 
@@ -132,8 +132,9 @@ function ResourceManagement(opts) {
 				details.find('.descriptionValue').editable('toggle');
 			});
 
-			details.find('.notesButton').click(function (e) {
-				showChangeNotes(e);
+			details.find('.changeNotes').click(function (e) {
+				e.stopPropagation();
+				details.find('.notesValue').editable('toggle');
 			});
 
 			details.find('.adminButton').click(function (e) {
@@ -255,7 +256,7 @@ function ResourceManagement(opts) {
 		//ConfigureAdminForm(elements.scheduleForm, defaultSubmitCallback(elements.scheduleForm));
 		//ConfigureAdminForm(elements.locationForm, defaultSubmitCallback(elements.locationForm));
 		//ConfigureAdminForm(elements.descriptionForm, defaultSubmitCallback(elements.descriptionForm));
-		ConfigureAdminForm(elements.notesForm, defaultSubmitCallback(elements.notesForm));
+		//ConfigureAdminForm(elements.notesForm, defaultSubmitCallback(elements.notesForm));
 		ConfigureAdminForm(elements.addForm, defaultSubmitCallback(elements.addForm), null, handleAddError);
 		ConfigureAdminForm(elements.deleteForm, defaultSubmitCallback(elements.deleteForm));
 		ConfigureAdminForm(elements.configurationForm, defaultSubmitCallback(elements.configurationForm), null, errorHandler, {onBeforeSerialize:combineIntervals});
@@ -373,7 +374,8 @@ function ResourceManagement(opts) {
 		populateReasonOptions(statusOptions.val(), statusReasons);
 
 		addStatusReason.unbind();
-		addStatusReason.click(function(){
+		addStatusReason.click(function(e){
+			e.preventDefault();
 			statusForm.find(elements.newStatusReason).toggleClass('no-show');
 			statusForm.find(elements.existingStatusReason).toggleClass('no-show');
 
