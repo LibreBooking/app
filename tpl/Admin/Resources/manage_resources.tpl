@@ -130,7 +130,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 		{foreach from=$Resources item=resource}
 			{assign var=id value=$resource->GetResourceId()}
-			<div class="resourceDetails" resourceId="{$id}">
+			<div class="resourceDetails" data-resourceId="{$id}">
 				<div style="float:left;max-width:50%;">
 					<input type="hidden" class="id" value="{$id}"/>
 
@@ -272,13 +272,12 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 							{/if}
 						</div>
 						<div>
-							{if $resource->GetIsCalendarSubscriptionAllowed()}
-								<a class="update disableSubscription"
-								   href="#">{translate key=TurnOffSubscription}</a>
-							{else}
-								<a class="update enableSubscription"
-								   href="#">{translate key=TurnOnSubscription}</a>
-							{/if}
+							{*{if $resource->GetIsCalendarSubscriptionAllowed()}*}
+								<a class="update disableSubscription hide subscriptionButton" href="#">{translate key=TurnOffSubscription}</a>
+							{*{else}*}
+								<a class="update enableSubscription hide subscriptionButton" href="#">{translate key=TurnOnSubscription}</a>
+							{*{/if}*}
+							{indicator id=subscriptionIndicator}
 						</div>
 					</div>
 				</div>
@@ -463,20 +462,6 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			<input id="resourceImage" type="file" class="text" size="60" {formname key=RESOURCE_IMAGE} />
 			<br/>
 			<span class="note">.gif, .jpg, or .png</span>
-
-			<div class="admin-update-buttons">
-				<button type="button"
-						class="button save">{html_image src="disk-black.png"} {translate key='Update'}</button>
-				<button type="button" class="button cancel">{html_image src="slash.png"} {translate key='Cancel'}</button>
-			</div>
-		</form>
-	</div>
-
-	<div id="notesDialog" class="dialog" title="{translate key=Notes}">
-		<form id="notesForm" method="post" ajaxAction="{ManageResourcesActions::ActionChangeNotes}">
-			<label for="editNotes">{translate key=Notes}:</label>
-		<textarea id="editNotes" class="textbox"
-				  style="width:460px;height:150px;" {formname key=RESOURCE_NOTES}></textarea>
 
 			<div class="admin-update-buttons">
 				<button type="button"
@@ -1134,7 +1119,6 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			};
 
 			var resourceManagement = new ResourceManagement(opts);
-			resourceManagement.init();
 
 			{foreach from=$Resources item=resource}
 			var resource = {
@@ -1158,7 +1142,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 				sortOrder: '{$resource->GetSortOrder()}',
 				resourceTypeId: '{$resource->GetResourceTypeId()}',
 				statusId: '{$resource->GetStatusId()}',
-				reasonId: '{$resource->GetStatusReasonId()}'
+				reasonId: '{$resource->GetStatusReasonId()}',
+				allowSubscription: '{$resource->GetIsCalendarSubscriptionAllowed()}'
 			};
 
 			{if $resource->HasMinLength()}
@@ -1213,6 +1198,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			resourceManagement.addStatusReason('{$reason->Id()}', '{$reason->StatusId()}', '{$reason->Description()|escape:javascript}');
 			{/foreach}
 
+			resourceManagement.init();
 			resourceManagement.initializeStatusFilter('{$ResourceStatusFilterId}', '{$ResourceStatusReasonFilterId}');
 		});
 

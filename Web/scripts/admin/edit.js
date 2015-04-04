@@ -176,7 +176,7 @@ function ConfigureAdminDialog(dialogElement, dialogWidth, dialogHeight)
 	dialogElement.dialog(dialogOpts);
 }
 
-function PerformAsyncAction(element, urlCallback, indicator)
+function PerformAsyncAction(element, urlCallback, indicator, successCallback)
 {
 	if (indicator)
 	{
@@ -187,11 +187,19 @@ function PerformAsyncAction(element, urlCallback, indicator)
 			urlCallback(),
 			function (data)
 			{
+				indicator.hide();
 				if (data && (data.trim() != ""))
 				{
 					alert(data);
 				}
-				window.location.reload();
+				if (!successCallback)
+				{
+					window.location.reload();
+				}
+				else
+				{
+					successCallback(data);
+				}
 			}
 	);
 }

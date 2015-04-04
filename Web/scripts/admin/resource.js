@@ -60,6 +60,21 @@ function ResourceManagement(opts) {
 	var resources = {};
 	var reasons = [];
 
+	function initializeResourceUI(id, details)
+	{
+		var resource = getResource(id);
+		if (resource.allowSubscription)
+		{
+			details.find('.disableSubscription').removeClass('hide');
+		}
+		else
+		{
+			details.find('.enableSubscription').removeClass('hide');
+		}
+	}
+
+
+
 	ResourceManagement.prototype.init = function () {
 		// todo make placeholders
 		//$(".days").watermark('days');
@@ -67,14 +82,15 @@ function ResourceManagement(opts) {
 		//$(".minutes").watermark('mins');
 
 		ConfigureAdminDialog(elements.imageDialog);
-		//ConfigureAdminDialog(elements.notesDialog);
 		ConfigureAdminDialog(elements.configurationDialog);
 		ConfigureAdminDialog(elements.groupAdminDialog);
 
 		$('.resourceDetails').each(function () {
-			var id = $(this).find(':hidden.id').val();
 			var indicator = $('.indicator');
 			var details = $(this);
+			var id = details.attr('data-resourceId');
+
+			initializeResourceUI(id, details);
 
 			details.find('a.update').click(function (e) {
 				e.preventDefault();
@@ -89,12 +105,18 @@ function ResourceManagement(opts) {
 				PerformAsyncAction($(this), getSubmitCallback(options.actions.removeImage), indicator);
 			});
 
+			var subscriptionCallback = function ()
+			{
+				details.find('.subscriptionButton').toggleClass('hide')
+			};
+
 			details.find('.enableSubscription').click(function (e) {
-				PerformAsyncAction($(this), getSubmitCallback(options.actions.enableSubscription), indicator);
+
+				PerformAsyncAction($(this), getSubmitCallback(options.actions.enableSubscription), $('#subscriptionIndicator'), subscriptionCallback);
 			});
 
 			details.find('.disableSubscription').click(function (e) {
-				PerformAsyncAction($(this), getSubmitCallback(options.actions.disableSubscription), indicator);
+				PerformAsyncAction($(this), getSubmitCallback(options.actions.disableSubscription), $('#subscriptionIndicator'), subscriptionCallback);
 			});
 
 			details.find('.renameButton').click(function (e) {
@@ -150,7 +172,7 @@ function ResourceManagement(opts) {
 			});
 
 			details.find('.changeAttributes, .customAttributes .cancel').click(function (e) {
-				var otherResources = $(".resourceDetails[resourceid!='" + id + "']");
+				var otherResources = $(".resourceDetails[data-resourceId!='" + id + "']");
 				otherResources.find('.attribute-readwrite, .validationSummary').hide();
 				otherResources.find('.attribute-readonly').show();
 				var container = $(this).closest('.customAttributes');
@@ -193,8 +215,7 @@ function ResourceManagement(opts) {
 
 		elements.filterButton.click(filterResources);
 
-		elements.clearFilterButton.click(function (e)
-		{
+		elements.clearFilterButton.click(function (e) {
 			e.preventDefault();
 			elements.filterTable.find('input,select,textarea').val('')
 
@@ -231,8 +252,7 @@ function ResourceManagement(opts) {
 			});
 		};
 
-		var attributesHandler = function(responseText, form)
-		{
+		var attributesHandler = function(responseText, form) {
 			if (responseText.ErrorIds && responseText.Messages.attributeValidator)
 			{
 				var messages =  responseText.Messages.attributeValidator.join('</li><li>');
@@ -252,24 +272,15 @@ function ResourceManagement(opts) {
 		};
 
 		ConfigureAdminForm(elements.imageForm, defaultSubmitCallback(elements.imageForm), null, imageSaveErrorHandler);
-		//ConfigureAdminForm(elements.renameForm, defaultSubmitCallback(elements.renameForm), null, errorHandler);
-		//ConfigureAdminForm(elements.scheduleForm, defaultSubmitCallback(elements.scheduleForm));
-		//ConfigureAdminForm(elements.locationForm, defaultSubmitCallback(elements.locationForm));
-		//ConfigureAdminForm(elements.descriptionForm, defaultSubmitCallback(elements.descriptionForm));
-		//ConfigureAdminForm(elements.notesForm, defaultSubmitCallback(elements.notesForm));
 		ConfigureAdminForm(elements.addForm, defaultSubmitCallback(elements.addForm), null, handleAddError);
 		ConfigureAdminForm(elements.deleteForm, defaultSubmitCallback(elements.deleteForm));
 		ConfigureAdminForm(elements.configurationForm, defaultSubmitCallback(elements.configurationForm), null, errorHandler, {onBeforeSerialize:combineIntervals});
 		ConfigureAdminForm(elements.groupAdminForm, defaultSubmitCallback(elements.groupAdminForm));
-		//ConfigureAdminForm(elements.resourceTypeForm, defaultSubmitCallback(elements.resourceTypeForm));
 		ConfigureAdminForm(elements.bulkUpdateForm, defaultSubmitCallback(elements.bulkUpdateForm), null, bulkUpdateErrorHandler, {onBeforeSerialize:combineIntervals});
 
 		$.each(elements.attributeForm, function(i,form){
 			ConfigureAdminForm($(form), defaultSubmitCallback($(form)), null, attributesHandler, {validationSummary:null});
 		});
-
-		//ConfigureAdminForm(elements.sortOrderForm, defaultSubmitCallback(elements.sortOrderForm));
-		//ConfigureAdminForm(elements.statusForm, defaultSubmitCallback(elements.statusForm));
 	};
 
 	ResourceManagement.prototype.add = function (resource) {
@@ -311,17 +322,17 @@ function ResourceManagement(opts) {
 		return elements.activeId.val();
 	};
 
+	var getResource = function(id)
+	{
+		return resources[id];
+	};
+
 	var getActiveResource = function () {
-		return resources[getActiveResourceId()];
+		return getResource(getActiveResourceId());
 	};
 
 	var showChangeImage = function (e) {
 		elements.imageDialog.dialog("open");
-	};
-
-	var showChangeNotes = function (e) {
-		$('#editNotes').val(HtmlDecode(getActiveResource().notes));
-		elements.notesDialog.dialog("open");
 	};
 
 	var showResourceAdmin = function (e) {
