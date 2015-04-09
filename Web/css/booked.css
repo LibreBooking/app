@@ -1201,14 +1201,19 @@ a.remove {
 }
 .admin h4,
 .admin h5 {
-  display: inline;
+  margin-bottom: 0;
   color: #666666;
 }
 .admin h4 {
   font-size: 12px;
 }
 .admin h5 {
-  font-size: 10px;
+  font-size: .9em;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+.admin h5:not(:first-of-type) {
+  padding-top: 5px;
 }
 span.error {
   font-weight: bold;
@@ -1234,13 +1239,13 @@ span.error {
   line-height: 20px;
 }
 .noImage {
-  width: 98px;
   height: 60px;
   background-color: #f0f0f0;
   line-height: 16px;
   text-align: center;
   color: #666;
   border: solid 1px #ccc;
+  font-size: 4em;
 }
 .resourceDetails {
   font-size: 1.2em;
@@ -1250,9 +1255,7 @@ span.error {
   width: 100px;
 }
 .resourceDetails .resourceImage {
-  float: left;
   text-align: center;
-  width: 110px;
 }
 .resourceDetails .resourceName {
   font-size: 1.4em;

@@ -37,7 +37,7 @@
 }
 
 .admin h4, .admin h5 {
-  display: inline;
+  margin-bottom:0;
   color: #666666;
 }
 
@@ -46,7 +46,13 @@
 }
 
 .admin h5 {
-  font-size: 10px;
+  font-size: .9em;
+  font-weight: bold;
+  text-transform: uppercase;
+
+}
+.admin h5:not(:first-of-type){
+    padding-top:5px;
 }
 
 span.error {
@@ -78,13 +84,14 @@ span.error {
 }
 
 .noImage {
-  width: 98px;
+//  width: 100%;
   height: 60px;
   background-color: #f0f0f0;
   line-height: 16px;
   text-align: center;
   color: #666;
   border: solid 1px #ccc;
+  font-size:4em;
 }
 
 .resourceDetails {
@@ -96,9 +103,9 @@ span.error {
   }
 
   .resourceImage {
-    float:left;
+//    float:left;
     text-align:center;
-    width:110px;
+//    min-width:110px;
   }
 
   .resourceName {

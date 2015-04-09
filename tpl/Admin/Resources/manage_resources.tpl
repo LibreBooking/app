@@ -131,10 +131,10 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		{foreach from=$Resources item=resource}
 			{assign var=id value=$resource->GetResourceId()}
 			<div class="resourceDetails" data-resourceId="{$id}">
-				<div style="float:left;max-width:50%;">
+				<div class="col-xs-5">
 					<input type="hidden" class="id" value="{$id}"/>
 
-					<div class="resourceImage">
+					<div class="col-xs-2 resourceImage">
 						{if $resource->HasImage()}
 							<img src="{resource_image image=$resource->GetImage()}" alt="Resource Image" class="image"/>
 							<br/>
@@ -142,11 +142,11 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 							|
 							<a class="update removeImageButton" href="#">{translate key='Remove'}</a>
 						{else}
-							<div class="noImage"><span class="fa fa-image fa-4x"></span></div>
+							<div class="noImage"><span class="fa fa-image"></span></div>
 							<a class="update imageButton" href="#">{translate key='AddImage'}</a>
 						{/if}
 					</div>
-					<div style="float:right;">
+					<div class="col-xs-10">
 						<div>
 							<span class="resourceName" data-type="text" data-pk="{$id}"
 								  data-name="{FormKeys::RESOURCE_NAME}">{$resource->GetName()|escape}</span>
@@ -272,22 +272,16 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 							{/if}
 						</div>
 						<div>
-							{*{if $resource->GetIsCalendarSubscriptionAllowed()}*}
-								<a class="update disableSubscription hide subscriptionButton" href="#">{translate key=TurnOffSubscription}</a>
-							{*{else}*}
-								<a class="update enableSubscription hide subscriptionButton" href="#">{translate key=TurnOnSubscription}</a>
-							{*{/if}*}
+							<a class="update disableSubscription hide subscriptionButton" href="#">{translate key=TurnOffSubscription}</a>
+							<a class="update enableSubscription hide subscriptionButton" href="#">{translate key=TurnOnSubscription}</a>
 							{indicator id=subscriptionIndicator}
 						</div>
 					</div>
 				</div>
 
-				<div style="float:right;">
-					<div>
-						<h5>{translate key='UsageConfiguration'}</h5> <a class="update changeConfigurationButton"
-																		 href="#">{translate key='ChangeConfiguration'}</a>
-					</div>
-					<div style="float:left;width:400px;">
+				<div class="col-xs-7">
+					<div class="col-xs-6">
+						<h5>{translate key=Duration}</h5>
 						<div>
 							{if $resource->HasMinLength()}
 								{translate key='ResourceMinLength' args=$resource->GetMinLength()}
@@ -303,22 +297,32 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 							{/if}
 						</div>
 						<div>
-							{if $resource->GetRequiresApproval()}
-								{translate key='ResourceRequiresApproval'}
+							{if $resource->HasBufferTime()}
+								{translate key='ResourceBufferTime' args=$resource->GetBufferTime()}
 							{else}
-								{translate key='ResourceRequiresApprovalNone'}
+								{translate key='ResourceBufferTimeNone'}
 							{/if}
 						</div>
+
 						<div>
-							{if $resource->GetAutoAssign()}
-								{translate key='ResourcePermissionAutoGranted'}
+							{if $resource->GetAllowMultiday()}
+								{translate key='ResourceAllowMultiDay'}
 							{else}
-								{translate key='ResourcePermissionNotAutoGranted'}
+								{translate key='ResourceNotAllowMultiDay'}
+							{/if}
+						</div>
+						<h5>{translate key='Capacity'}</h5>
+						<div>
+							{if $resource->HasMaxParticipants()}
+								{translate key='ResourceCapacity' args=$resource->GetMaxParticipants()}
+							{else}
+								{translate key='ResourceCapacityNone'}
 							{/if}
 						</div>
 					</div>
 
-					<div style="float:right;width:400px;">
+					<div class="col-xs-6">
+						<h5>{translate key=Access}</h5>
 						<div>
 							{if $resource->HasMinNotice()}
 								{translate key='ResourceMinNotice' args=$resource->GetMinNotice()}
@@ -334,24 +338,17 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 							{/if}
 						</div>
 						<div>
-							{if $resource->HasBufferTime()}
-								{translate key='ResourceBufferTime' args=$resource->GetBufferTime()}
+							{if $resource->GetRequiresApproval()}
+								{translate key='ResourceRequiresApproval'}
 							{else}
-								{translate key='ResourceBufferTimeNone'}
+								{translate key='ResourceRequiresApprovalNone'}
 							{/if}
 						</div>
 						<div>
-							{if $resource->GetAllowMultiday()}
-								{translate key='ResourceAllowMultiDay'}
+							{if $resource->GetAutoAssign()}
+								{translate key='ResourcePermissionAutoGranted'}
 							{else}
-								{translate key='ResourceNotAllowMultiDay'}
-							{/if}
-						</div>
-						<div>
-							{if $resource->HasMaxParticipants()}
-								{translate key='ResourceCapacity' args=$resource->GetMaxParticipants()}
-							{else}
-								{translate key='ResourceCapacityNone'}
+								{translate key='ResourcePermissionNotAutoGranted'}
 							{/if}
 						</div>
 					</div>
