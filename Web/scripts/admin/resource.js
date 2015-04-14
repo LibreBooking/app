@@ -378,6 +378,7 @@ function ResourceManagement(opts) {
 		setDaysHoursMinutes('#minDuration', resource.minLength, $('#noMinimumDuration'));
 		setDaysHoursMinutes('#maxDuration', resource.maxLength, $('#noMaximumDuration'));
 		setDaysHoursMinutes('#bufferTime', resource.bufferTime, $('#noBufferTime'));
+		$('#allowMultiDay').prop('checked', resource.allowMultiday && resource.allowMultiday == "1");
 
 		elements.durationDialog.modal('show');
 	};
@@ -412,6 +413,7 @@ function ResourceManagement(opts) {
 		setDuration(minDuration, resource.minLength);
 		setDuration(maxDuration, resource.maxLength);
 		setDuration(bufferTime, resource.bufferTime);
+		resource.allowMultiday = bufferTime.attr('data-value');
 
 		elements.durationDialog.modal('hide');
 	};

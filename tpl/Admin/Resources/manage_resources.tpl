@@ -522,6 +522,13 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 							</div>
 						</div>
 
+						<div class="editMultiDay">
+							<div class="checkbox">
+								<input type="checkbox" {formname key=ALLOW_MULTIDAY} id="allowMultiDay"/>
+								<label for="allowMultiDay">{translate key=ResourceAllowMultiDay}</label>
+							</div>
+						</div>
+
 					</div>
 
 					<div class="modal-footer">
@@ -537,86 +544,10 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		</form>
 	</div>
 
-	{*<div id="durationDialog" class="hide">*}
-
-
-											{*<label for="allowMultiday">{translate key=ResourceAllowMultiDay}</label>*}
-											{*<select id="allowMultiday" class="textbox" {formname key=ALLOW_MULTIDAY}>*}
-												{*<option value="1">{translate key='Yes'}</option>*}
-												{*<option value="0">{translate key='No'}</option>*}
-											{*</select>*}
-										{*</li>*}
-				
-
 	<div id="configurationDialog" class="hide dialog" title="{translate key=UsageConfiguration}">
 		<form id="configurationForm" method="post" ajaxAction="{ManageResourcesActions::ActionChangeConfiguration}">
 			<div style="margin-bottom: 10px;">
-				<fieldset>
-					<legend>{translate key=Duration}</legend>
-					<ul>
-						<li>
-							<label>
-								<input type="checkbox" id="noMinimumDuration"/> {translate key=ResourceMinLengthNone}
-							</label>
-						<span class="noMinimumDuration">
-							<br/>
-							{capture name="txtMinDuration" assign="txtMinDuration"}
-								<input type='text' id='minDurationDays' size='3' class='days textbox' maxlength='3'
-									   title='Days'/>
-								<input type='text' id='minDurationHours' size='2' class='hours textbox' maxlength='2'
-									   title='Hours'/>
-								<input type='text' id='minDurationMinutes' size='2' class='minutes textbox'
-									   maxlength='2' title='Minutes'/>
-								<input type='hidden' id='minDuration' class='interval' {formname key=MIN_DURATION} />
-							{/capture}
-							{translate key='ResourceMinLength' args=$txtMinDuration}
-						</span>
-						</li>
-						<li>
-							<label>
-								<input type="checkbox" id="noMaximumDuration"/> {translate key=ResourceMaxLengthNone}
-							</label>
-						<span class="noMaximumDuration">
-							<br/>
-							{capture name="txtMaxDuration" assign="txtMaxDuration"}
-								<input type='text' id='maxDurationDays' size='3' class='days textbox' maxlength='3'
-									   title='Days'/>
-								<input type='text' id='maxDurationHours' size='2' class='hours textbox' maxlength='2'
-									   title='Hours'/>
-								<input type='text' id='maxDurationMinutes' size='2' class='minutes textbox'
-									   maxlength='2' title='Minutes'/>
-								<input type='hidden' id='maxDuration' class='interval' {formname key=MAX_DURATION} />
-							{/capture}
-							{translate key=ResourceMaxLength args=$txtMaxDuration}
-						</span>
-						</li>
-						<li>
-							<label>
-								<input type="checkbox" id="noBufferTime"/> {translate key=ResourceBufferTimeNone}
-							</label>
-						<span class="noBufferTime">
-							<br/>
-							{capture name="txtBufferTime" assign="txtBufferTime"}
-								<input type='text' id='bufferTimeDays' size='3' class='days textbox' maxlength='3'
-									   title='Days'/>
-								<input type='text' id='bufferTimeHours' size='2' class='hours textbox' maxlength='2'
-									   title='Hours'/>
-								<input type='text' id='bufferTimeMinutes' size='2' class='minutes textbox'
-									   maxlength='2' title='Minutes'/>
-								<input type='hidden' id='bufferTime' class='interval' {formname key=BUFFER_TIME} />
-							{/capture}
-							{translate key=ResourceBufferTime args=$txtBufferTime}
-						</span>
-						</li>
-						<li>
-							<label for="allowMultiday">{translate key=ResourceAllowMultiDay}</label>
-							<select id="allowMultiday" class="textbox" {formname key=ALLOW_MULTIDAY}>
-								<option value="1">{translate key='Yes'}</option>
-								<option value="0">{translate key='No'}</option>
-							</select>
-						</li>
-					</ul>
-				</fieldset>
+
 				<fieldset>
 					<legend>{translate key=Access}</legend>
 					<ul>

@@ -204,14 +204,16 @@ class ManageResourcesPresenter extends ActionPresenter
 		$minDuration = $this->page->GetMinimumDuration();
 		$maxDuration = $this->page->GetMaximumDuration();
 		$bufferTime = $this->page->GetBufferTime();
+		$allowMultiDay = $this->page->GetAllowMultiday();
 
 		$resource = $this->resourceRepository->LoadById($resourceId);
 		$resource->SetMinLength($minDuration);
 		$resource->SetMaxLength($maxDuration);
 		$resource->SetBufferTime($bufferTime);
+		$resource->SetAllowMultiday($allowMultiDay);
 
-		Log::Debug('Updating resource id=%s, minDuration=%s, maxDuration=%s, buffer=%s',
-				   $resourceId, $minDuration, $maxDuration, $bufferTime);
+		Log::Debug('Updating resource id=%s, minDuration=%s, maxDuration=%s, buffer=%s, allowMultiDay=%s',
+				   $resourceId, $minDuration, $maxDuration, $bufferTime, $allowMultiDay);
 
 		$this->resourceRepository->Update($resource);
 
