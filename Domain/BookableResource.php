@@ -853,7 +853,7 @@ class BookableResource implements IResource
 	 */
 	public function SetBufferTime($bufferTime)
 	{
-		$this->_bufferTime = $bufferTime;
+		$this->_bufferTime = $this->GetIntervalValue($bufferTime);
 	}
 
 	/**

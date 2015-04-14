@@ -457,27 +457,73 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 						<h4 class="modal-title" id="durationModalLabel">{translate key=Duration}</h4>
 					</div>
 					<div class="modal-body">
-						<div class="editDuration">
+						<div class="editMinDuration">
 							<div class="checkbox">
 								<input type="checkbox" id="noMinimumDuration" class="noMinimumDuration"
 										   data-related-inputs="#minDurationInputs"/>
 								<label for="noMinimumDuration">{translate key=ResourceMinLengthNone}</label>
 							</div>
 							{capture name="txtMinDuration" assign="txtMinDuration"}
-								<input type='text' size='3' id='minDurationDays' class='days form-control minDurationDays' maxlength='3'
+								<input type='text' size='3' id='minDurationDays' class='days form-control' maxlength='3'
 									   title='Days' placeholder='{translate key=days}'/>
-								<input type='text' size='2' id='minDurationHours' class='hours form-control minDurationHours' maxlength='2'
+								<input type='text' size='2' id='minDurationHours' class='hours form-control' maxlength='2'
 									   title='Hours' placeholder='{translate key=hours}'/>
-								<input type='text' size='2' id='minDurationMinutes' class='minutes form-control minDurationMinutes'
+								<input type='text' size='2' id='minDurationMinutes' class='minutes form-control'
 									   maxlength='2' title='Minutes' placeholder='{translate key=minutes}'/>
 								<input type='hidden' id='minDuration' class='interval minDuration' {formname key=MIN_DURATION} />
 							{/capture}
 							<div id='minDurationInputs'>
 								{translate key='ResourceMinLength' args=$txtMinDuration}
 							</div>
-
 						</div>
+
+						<div class="editMaxDuration">
+							<div class="checkbox">
+								<input type="checkbox" id="noMaximumDuration" data-related-inputs="#maxDurationInputs"/>
+								<label for="noMaximumDuration">{translate key=ResourceMaxLengthNone}</label>
+							</div>
+							{capture name="txtMaxDuration" assign="txtMaxDuration"}
+								<input type='text' id='maxDurationDays' size='3' class='days form-control' maxlength='3'
+									   title='Days' placeholder='{translate key=days}'/>
+								<input type='text' id='maxDurationHours' size='2' class='hours form-control' maxlength='2'
+									   title='Hours' placeholder='{translate key=hours}'/>
+								<input type='text' id='maxDurationMinutes' size='2' class='minutes form-control'
+									   maxlength='2' title='Minutes' placeholder='{translate key=minutes}'/>
+								<input type='hidden' id='maxDuration' class='interval' {formname key=MAX_DURATION} />
+							{/capture}
+							<div id='maxDurationInputs'>
+								{translate key=ResourceMaxLength args=$txtMaxDuration}
+							</div>
+						</div>
+
+						<div class="editBuffer">
+							<div class="checkbox">
+								<input type="checkbox" id="noBufferTime" data-related-inputs="#bufferInputs"/>
+								<label for="noBufferTime">{translate key=ResourceBufferTimeNone}</label>
+							</div>
+
+							{capture name="txtBufferTime" assign="txtBufferTime"}
+								<input type='text' id='bufferTimeDays'
+									   size='3' class='days form-control'
+									   maxlength='3'
+									   title='Days' placeholder='{translate key=days}'/>
+								<input type='text' id='bufferTimeHours'
+									   size='2' class='hours form-control'
+									   maxlength='2'
+									   title='Hours' placeholder='{translate key=hours}'/>
+								<input type='text' id='bufferTimeMinutes'
+									   size='2' class='minutes form-control'
+									   maxlength='2' title='Minutes' placeholder='{translate key=minutes}'/>
+								<input type='hidden' id='bufferTime'
+									   class='interval' {formname key=BUFFER_TIME} />
+							{/capture}
+							<div id='bufferInputs'>
+								{translate key=ResourceBufferTime args=$txtBufferTime}
+							</div>
+						</div>
+
 					</div>
+
 					<div class="modal-footer">
 						<button type="button" class="btn btn-default"
 								data-dismiss="modal">{translate key='Cancel'}</button>
@@ -492,101 +538,15 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 	</div>
 
 	{*<div id="durationDialog" class="hide">*}
-			{*<form class="durationForm" method="post" ajaxAction="{ManageResourcesActions::ActionChangeDuration}">*}
-				{*<li>*}
-											{*<label>*}
-												{*<input type="checkbox" id="noMinimumDuration"/> {translate key=ResourceMinLengthNone}*}
-											{*</label>*}
-										{*<span class="noMinimumDuration">*}
-											{*<br/>*}
-											{*{capture name="txtMinDuration" assign="txtMinDuration"}*}
-												{*<input type='text' id='minDurationDays' size='3' class='days textbox' maxlength='3'*}
-													   {*title='Days'/>*}
-												{*<input type='text' id='minDurationHours' size='2' class='hours textbox' maxlength='2'*}
-													   {*title='Hours'/>*}
-												{*<input type='text' id='minDurationMinutes' size='2' class='minutes textbox'*}
-													   {*maxlength='2' title='Minutes'/>*}
-												{*<input type='hidden' id='minDuration' class='interval' {formname key=MIN_DURATION} />*}
-											{*{/capture}*}
-											{*{translate key='ResourceMinLength' args=$txtMinDuration}*}
-										{*</span>*}
-										{*</li>*}
-										{*<li>*}
-											{*<label>*}
-												{*<input type="checkbox" id="noMaximumDuration"/> {translate key=ResourceMaxLengthNone}*}
-											{*</label>*}
-										{*<span class="noMaximumDuration">*}
-											{*<br/>*}
-											{*{capture name="txtMaxDuration" assign="txtMaxDuration"}*}
-												{*<input type='text' id='maxDurationDays' size='3' class='days textbox' maxlength='3'*}
-													   {*title='Days'/>*}
-												{*<input type='text' id='maxDurationHours' size='2' class='hours textbox' maxlength='2'*}
-													   {*title='Hours'/>*}
-												{*<input type='text' id='maxDurationMinutes' size='2' class='minutes textbox'*}
-													   {*maxlength='2' title='Minutes'/>*}
-												{*<input type='hidden' id='maxDuration' class='interval' {formname key=MAX_DURATION} />*}
-											{*{/capture}*}
-											{*{translate key=ResourceMaxLength args=$txtMaxDuration}*}
-										{*</span>*}
-										{*</li>*}
-										{*<li>*}
-											{*<label>*}
-												{*<input type="checkbox" id="noBufferTime"/> {translate key=ResourceBufferTimeNone}*}
-											{*</label>*}
-										{*<span class="noBufferTime">*}
-											{*<br/>*}
-											{*{capture name="txtBufferTime" assign="txtBufferTime"}*}
-												{*<input type='text' id='bufferTimeDays' size='3' class='days textbox' maxlength='3'*}
-													   {*title='Days'/>*}
-												{*<input type='text' id='bufferTimeHours' size='2' class='hours textbox' maxlength='2'*}
-													   {*title='Hours'/>*}
-												{*<input type='text' id='bufferTimeMinutes' size='2' class='minutes textbox'*}
-													   {*maxlength='2' title='Minutes'/>*}
-												{*<input type='hidden' id='bufferTime' class='interval' {formname key=BUFFER_TIME} />*}
-											{*{/capture}*}
-											{*{translate key=ResourceBufferTime args=$txtBufferTime}*}
-										{*</span>*}
-										{*</li>*}
-										{*<li>*}
+
+
 											{*<label for="allowMultiday">{translate key=ResourceAllowMultiDay}</label>*}
 											{*<select id="allowMultiday" class="textbox" {formname key=ALLOW_MULTIDAY}>*}
 												{*<option value="1">{translate key='Yes'}</option>*}
 												{*<option value="0">{translate key='No'}</option>*}
 											{*</select>*}
 										{*</li>*}
-				{*<div class="control-group form-group">*}
-							{*<div class="form-group">*}
-								{*<label>{translate key=Status}*}
-									{*<select {formname key=RESOURCE_STATUS_ID} class="statusId form-control">*}
-										{*<option value="{ResourceStatus::AVAILABLE}">{translate key=Available}</option>*}
-										{*<option value="{ResourceStatus::UNAVAILABLE}">{translate key=Unavailable}</option>*}
-										{*<option value="{ResourceStatus::HIDDEN}">{translate key=Hidden}</option>*}
-									{*</select>*}
-								{*</label>*}
-							{*</div>*}
-
-							{*<div class="form-group no-show newStatusReason">*}
-								{*<label>Reason text*}
-									{*<a href="#" class="pull-right addStatusReason"><span class="addStatusIcon fa fa-list-alt icon add"></span></a>*}
-									{*<input type="text" class="form-control resourceStatusReason" {formname key=RESOURCE_STATUS_REASON} />*}
-								{*</label>*}
-							{*</div>*}
-							{*<div class="form-group existingStatusReason">*}
-								{*<label>*}
-									{*{translate key=Reason}*}
-									{*<a href="#" class="pull-right addStatusReason"><span class="addStatusIcon fa fa-plus icon add"></span></a>*}
-									{*<select {formname key=RESOURCE_STATUS_REASON_ID} class="form-control reasonId"></select>*}
-								{*</label>*}
-							{*</div>*}
-
-						{*</div>*}
-						{*<div class="editable-buttons">*}
-							{*<button type="button" class="btn btn-primary btn-sm editable-submit save"><i class="glyphicon glyphicon-ok"></i></button>*}
-							{*<button type="button" class="btn btn-default btn-sm editable-cancel"><i class="glyphicon glyphicon-remove"></i></button>*}
-							{*{indicator}*}
-						{*</div>*}
-			{*</form>*}
-		{*</div>*}
+				
 
 	<div id="configurationDialog" class="hide dialog" title="{translate key=UsageConfiguration}">
 		<form id="configurationForm" method="post" ajaxAction="{ManageResourcesActions::ActionChangeConfiguration}">
@@ -1214,8 +1174,6 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 		$(document).ready(function ()
 		{
-//			_.templateSettings.variable = "t";
-
 			setUpPopovers();
 
 			hidePopoversWhenClickAway();

@@ -242,6 +242,8 @@ function ResourceManagement(opts) {
 			$('#bulkUpdateDialog').modal('show');
 		});
 
+		wireUpIntervalToggle(elements.durationForm);
+
 		var imageSaveErrorHandler = function (result) {
 			alert(result);
 		};
@@ -372,25 +374,44 @@ function ResourceManagement(opts) {
 
 	var showDurationPrompt = function(e){
 		var resource = getActiveResource();
-		var activeForm = $('#durationForm');
 
-		wireUpIntervalToggle(activeForm);
-
-		setDaysHoursMinutes('.minDuration', resource.minLength, activeForm.find('.noMinimumDuration'));
+		setDaysHoursMinutes('#minDuration', resource.minLength, $('#noMinimumDuration'));
+		setDaysHoursMinutes('#maxDuration', resource.maxLength, $('#noMaximumDuration'));
+		setDaysHoursMinutes('#bufferTime', resource.bufferTime, $('#noBufferTime'));
 
 		elements.durationDialog.modal('show');
 	};
 
-	var onDurationSaved = function(resultHtml) {
+	var onDurationSaved = function (resultHtml)
+	{
+		var emptyIfZero = function(val)
+		{
+			if (val == 0)
+			{
+				return '';
+			}
+			return val;
+		};
+
+		var setDuration = function(container, resourceDuration){
+			resourceDuration.value = container.attr('data-value');
+			resourceDuration.days = emptyIfZero(container.attr('data-days'));
+			resourceDuration.hours = emptyIfZero(container.attr('data-hours'));
+			resourceDuration.minutes = emptyIfZero(container.attr('data-minutes'));
+		};
+
 		var resource = getActiveResource();
 		var resourceDiv = $("div[data-resourceId=" + resource.id + "]");
 		resourceDiv.find('.durationPlaceHolder').html(resultHtml);
 
-		var result = resourceDiv.find('.durationPlaceHolder').find('.minDuration');
-		resource.minLength.value= result.attr('data-value');
-		resource.minLength.days= result.attr('data-days');
-		resource.minLength.hours= result.attr('data-hours');
-		resource.minLength.minutes= result.attr('data-minutes');
+		var result = resourceDiv.find('.durationPlaceHolder');
+		var minDuration = result.find('.minDuration');
+		var maxDuration = result.find('.maxDuration');
+		var bufferTime = result.find('.bufferTime');
+
+		setDuration(minDuration, resource.minLength);
+		setDuration(maxDuration, resource.maxLength);
+		setDuration(bufferTime, resource.bufferTime);
 
 		elements.durationDialog.modal('hide');
 	};

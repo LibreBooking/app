@@ -28,7 +28,11 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 	{/if}
 </div>
 
-<div>
+<div class="maxDuration"
+	 data-value="{$resource->GetMaxLength()}"
+	 data-days="{$resource->GetMaxLength()->Days()}"
+	 data-hours="{$resource->GetMaxLength()->Hours()}"
+	 data-minutes="{$resource->GetMaxLength()->Minutes()}">
 	{if $resource->HasMaxLength()}
 		{translate key='ResourceMaxLength' args=$resource->GetMaxLength()}
 	{else}
@@ -36,7 +40,11 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 	{/if}
 </div>
 
-<div>
+<div class="bufferTime"
+	 data-value="{$resource->GetBufferTime()}"
+	 data-days="{$resource->GetBufferTime()->Days()}"
+	 data-hours="{$resource->GetBufferTime()->Hours()}"
+	 data-minutes="{$resource->GetBufferTime()->Minutes()}">
 	{if $resource->HasBufferTime()}
 		{translate key='ResourceBufferTime' args=$resource->GetBufferTime()}
 	{else}

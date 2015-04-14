@@ -202,14 +202,18 @@ class ManageResourcesPresenter extends ActionPresenter
 	{
 		$resourceId = $this->page->GetResourceId();
 		$minDuration = $this->page->GetMinimumDuration();
+		$maxDuration = $this->page->GetMaximumDuration();
+		$bufferTime = $this->page->GetBufferTime();
+
 		$resource = $this->resourceRepository->LoadById($resourceId);
 		$resource->SetMinLength($minDuration);
+		$resource->SetMaxLength($maxDuration);
+		$resource->SetBufferTime($bufferTime);
 
-		Log::Debug('Updating resource id=%s, minDuration=%s', $resourceId, $minDuration);
+		Log::Debug('Updating resource id=%s, minDuration=%s, maxDuration=%s, buffer=%s',
+				   $resourceId, $minDuration, $maxDuration, $bufferTime);
 
 		$this->resourceRepository->Update($resource);
-
-//		$resource = $this->resourceRepository->LoadById($resourceId);
 
 		$this->page->BindUpdatedDuration($resource);
 	}
