@@ -85,13 +85,18 @@ span.error {
 
 .noImage {
 //  width: 100%;
-  height: 60px;
-  background-color: #f0f0f0;
+//  height: 60px;
   line-height: 16px;
   text-align: center;
   color: #666;
-  border: solid 1px #ccc;
   font-size:4em;
+
+//  span {
+    background-color: #f0f0f0;
+    border: solid 1px #ccc;
+//    margin-left:-15px;
+//    padding: 3px 6px;
+//  }
 }
 
 .resourceDetails {
@@ -531,6 +536,11 @@ td.update {
   max-width: 40%;
 }
 
+.days, .hours, .minutes {
+  width:80px;
+  display:inline;
+}
+
 /// page level overrides
 
 #page-manage-blackouts, #page-manage-reservations, #page-manage-resources {
@@ -546,4 +556,8 @@ td.update {
   .checkbox input {
     height: 20px;
   }
+}
+
+.popover {
+  max-width:500px;
 }

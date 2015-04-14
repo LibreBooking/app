@@ -126,6 +126,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 	{pagination pageInfo=$PageInfo}
 
 	<div id="globalError" class="error no-show"></div>
+
 	<div class="admin">
 
 		{foreach from=$Resources item=resource}
@@ -134,7 +135,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 				<div class="col-xs-5">
 					<input type="hidden" class="id" value="{$id}"/>
 
-					<div class="col-xs-2 resourceImage">
+					<div class="col-xs-3 resourceImage">
 						{if $resource->HasImage()}
 							<img src="{resource_image image=$resource->GetImage()}" alt="Resource Image" class="image"/>
 							<br/>
@@ -146,7 +147,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 							<a class="update imageButton" href="#">{translate key='AddImage'}</a>
 						{/if}
 					</div>
-					<div class="col-xs-10">
+					<div class="col-xs-9">
 						<div>
 							<span class="resourceName" data-type="text" data-pk="{$id}"
 								  data-name="{FormKeys::RESOURCE_NAME}">{$resource->GetName()|escape}</span>
@@ -190,7 +191,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 										{translate key='NoResourceTypeLabel'}
 									{/if}
 								</span>
-							<a class="update changeResourceType" href="#">{translate key='Edit'}</a>
+							<a class="update changeResourceType" href="#"><span class="fa fa-pencil-square-o"></span></a>
 						</div>
 						<div>
 							{translate key=SortOrder}
@@ -198,7 +199,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 								  data-type="number" data-pk="{$id}" data-name="{FormKeys::RESOURCE_SORT_ORDER}">
 								{$resource->GetSortOrder()|default:"0"}
 							</span>
-							<a class="update changeSortOrder" href="#">{translate key='Edit'}</a>
+							<a class="update changeSortOrder" href="#"><span class="fa fa-pencil-square-o"></span></a>
 						</div>
 						<div>
 							{translate key='Location'}
@@ -210,7 +211,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 								{translate key='NoLocationLabel'}
 							{/if}
 							</span>
-							<a class="update changeLocation" href="#">{translate key='Edit'}</a>
+							<a class="update changeLocation" href="#"><span class="fa fa-pencil-square-o"></span></a>
 						</div>
 						<div>
 							{translate key='Contact'}
@@ -222,10 +223,10 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 								{translate key='NoContactLabel'}
 							{/if}
 							</span>
-							<a class="update changeContact" href="#">{translate key='Edit'}</a>
+							<a class="update changeContact" href="#"><span class="fa fa-pencil-square-o"></span></a>
 						</div>
 						<div>
-							{translate key='Description'} <a class="update changeDescription" href="#">{translate key='Edit'}</a>
+							{translate key='Description'} <a class="update changeDescription" href="#"><span class="fa fa-pencil-square-o"></span></a>
 							{if $resource->HasDescription()}
 								{assign var=description value=$resource->GetDescription()}
 							{else}
@@ -243,7 +244,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 							{/strip}
 						</div>
 						<div>
-							{translate key='Notes'} <a class="update changeNotes" href="#">{translate key='Edit'}</a>
+							{translate key='Notes'} <a class="update changeNotes" href="#"><span class="fa fa-pencil-square-o"></span></a>
 							{if $resource->HasNotes()}
 								{assign var=notes value=$resource->GetNotes()}
 							{else}
@@ -268,7 +269,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 								<span class="note">{translate key='NoResourceAdministratorLabel'}</span>
 							{/if}
 							{if $AdminGroups|count > 0}
-								<a class="update adminButton" href="#">{translate key='Edit'}</a>
+								<a class="update adminButton" href="#"><span class="fa fa-pencil-square-o"></span></a>
 							{/if}
 						</div>
 						<div>
@@ -281,35 +282,12 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 				<div class="col-xs-7">
 					<div class="col-xs-6">
-						<h5>{translate key=Duration}</h5>
-						<div>
-							{if $resource->HasMinLength()}
-								{translate key='ResourceMinLength' args=$resource->GetMinLength()}
-							{else}
-								{translate key='ResourceMinLengthNone'}
-							{/if}
-						</div>
-						<div>
-							{if $resource->HasMaxLength()}
-								{translate key='ResourceMaxLength' args=$resource->GetMaxLength()}
-							{else}
-								{translate key='ResourceMaxLengthNone'}
-							{/if}
-						</div>
-						<div>
-							{if $resource->HasBufferTime()}
-								{translate key='ResourceBufferTime' args=$resource->GetBufferTime()}
-							{else}
-								{translate key='ResourceBufferTimeNone'}
-							{/if}
-						</div>
-
-						<div>
-							{if $resource->GetAllowMultiday()}
-								{translate key='ResourceAllowMultiDay'}
-							{else}
-								{translate key='ResourceNotAllowMultiDay'}
-							{/if}
+						<h5 class="inline">{translate key=Duration}</h5>
+						<a href="#" class="inline update changeDuration">
+							<span class="fa fa-pencil-square-o"></span>
+						</a>
+						<div class="durationPlaceHolder">
+						{include file="Admin/Resources/manage_resources_duration.tpl" resource=$resource}
 						</div>
 						<h5>{translate key='Capacity'}</h5>
 						<div>
@@ -390,6 +368,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		{/foreach}
 	</div>
 
+
 	{pagination pageInfo=$PageInfo}
 
 	<div id="add-resource-dialog" class="modal" tabindex="-1" role="dialog" aria-labelledby="addResourceModalLabel"
@@ -468,7 +447,148 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		</form>
 	</div>
 
-	<div id="configurationDialog" class="dialog" title="{translate key=UsageConfiguration}">
+	<div id="durationDialog" class="modal" tabindex="-1" role="dialog" aria-labelledby="durationModalLabel"
+		 aria-hidden="true">
+		<form id="durationForm" method="post" role="form" ajaxAction="{ManageResourcesActions::ActionChangeDuration}">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+						<h4 class="modal-title" id="durationModalLabel">{translate key=Duration}</h4>
+					</div>
+					<div class="modal-body">
+						<div class="editDuration">
+							<div class="checkbox">
+								<input type="checkbox" id="noMinimumDuration" class="noMinimumDuration"
+										   data-related-inputs="#minDurationInputs"/>
+								<label for="noMinimumDuration">{translate key=ResourceMinLengthNone}</label>
+							</div>
+							{capture name="txtMinDuration" assign="txtMinDuration"}
+								<input type='text' size='3' id='minDurationDays' class='days form-control minDurationDays' maxlength='3'
+									   title='Days' placeholder='{translate key=days}'/>
+								<input type='text' size='2' id='minDurationHours' class='hours form-control minDurationHours' maxlength='2'
+									   title='Hours' placeholder='{translate key=hours}'/>
+								<input type='text' size='2' id='minDurationMinutes' class='minutes form-control minDurationMinutes'
+									   maxlength='2' title='Minutes' placeholder='{translate key=minutes}'/>
+								<input type='hidden' id='minDuration' class='interval minDuration' {formname key=MIN_DURATION} />
+							{/capture}
+							<div id='minDurationInputs'>
+								{translate key='ResourceMinLength' args=$txtMinDuration}
+							</div>
+
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default"
+								data-dismiss="modal">{translate key='Cancel'}</button>
+						<button type="button" class="btn btn-success save"><span
+									class="glyphicon glyphicon-ok-circle"></span>
+							{translate key='Update'}</button>
+						{indicator}
+					</div>
+				</div>
+			</div>
+		</form>
+	</div>
+
+	{*<div id="durationDialog" class="hide">*}
+			{*<form class="durationForm" method="post" ajaxAction="{ManageResourcesActions::ActionChangeDuration}">*}
+				{*<li>*}
+											{*<label>*}
+												{*<input type="checkbox" id="noMinimumDuration"/> {translate key=ResourceMinLengthNone}*}
+											{*</label>*}
+										{*<span class="noMinimumDuration">*}
+											{*<br/>*}
+											{*{capture name="txtMinDuration" assign="txtMinDuration"}*}
+												{*<input type='text' id='minDurationDays' size='3' class='days textbox' maxlength='3'*}
+													   {*title='Days'/>*}
+												{*<input type='text' id='minDurationHours' size='2' class='hours textbox' maxlength='2'*}
+													   {*title='Hours'/>*}
+												{*<input type='text' id='minDurationMinutes' size='2' class='minutes textbox'*}
+													   {*maxlength='2' title='Minutes'/>*}
+												{*<input type='hidden' id='minDuration' class='interval' {formname key=MIN_DURATION} />*}
+											{*{/capture}*}
+											{*{translate key='ResourceMinLength' args=$txtMinDuration}*}
+										{*</span>*}
+										{*</li>*}
+										{*<li>*}
+											{*<label>*}
+												{*<input type="checkbox" id="noMaximumDuration"/> {translate key=ResourceMaxLengthNone}*}
+											{*</label>*}
+										{*<span class="noMaximumDuration">*}
+											{*<br/>*}
+											{*{capture name="txtMaxDuration" assign="txtMaxDuration"}*}
+												{*<input type='text' id='maxDurationDays' size='3' class='days textbox' maxlength='3'*}
+													   {*title='Days'/>*}
+												{*<input type='text' id='maxDurationHours' size='2' class='hours textbox' maxlength='2'*}
+													   {*title='Hours'/>*}
+												{*<input type='text' id='maxDurationMinutes' size='2' class='minutes textbox'*}
+													   {*maxlength='2' title='Minutes'/>*}
+												{*<input type='hidden' id='maxDuration' class='interval' {formname key=MAX_DURATION} />*}
+											{*{/capture}*}
+											{*{translate key=ResourceMaxLength args=$txtMaxDuration}*}
+										{*</span>*}
+										{*</li>*}
+										{*<li>*}
+											{*<label>*}
+												{*<input type="checkbox" id="noBufferTime"/> {translate key=ResourceBufferTimeNone}*}
+											{*</label>*}
+										{*<span class="noBufferTime">*}
+											{*<br/>*}
+											{*{capture name="txtBufferTime" assign="txtBufferTime"}*}
+												{*<input type='text' id='bufferTimeDays' size='3' class='days textbox' maxlength='3'*}
+													   {*title='Days'/>*}
+												{*<input type='text' id='bufferTimeHours' size='2' class='hours textbox' maxlength='2'*}
+													   {*title='Hours'/>*}
+												{*<input type='text' id='bufferTimeMinutes' size='2' class='minutes textbox'*}
+													   {*maxlength='2' title='Minutes'/>*}
+												{*<input type='hidden' id='bufferTime' class='interval' {formname key=BUFFER_TIME} />*}
+											{*{/capture}*}
+											{*{translate key=ResourceBufferTime args=$txtBufferTime}*}
+										{*</span>*}
+										{*</li>*}
+										{*<li>*}
+											{*<label for="allowMultiday">{translate key=ResourceAllowMultiDay}</label>*}
+											{*<select id="allowMultiday" class="textbox" {formname key=ALLOW_MULTIDAY}>*}
+												{*<option value="1">{translate key='Yes'}</option>*}
+												{*<option value="0">{translate key='No'}</option>*}
+											{*</select>*}
+										{*</li>*}
+				{*<div class="control-group form-group">*}
+							{*<div class="form-group">*}
+								{*<label>{translate key=Status}*}
+									{*<select {formname key=RESOURCE_STATUS_ID} class="statusId form-control">*}
+										{*<option value="{ResourceStatus::AVAILABLE}">{translate key=Available}</option>*}
+										{*<option value="{ResourceStatus::UNAVAILABLE}">{translate key=Unavailable}</option>*}
+										{*<option value="{ResourceStatus::HIDDEN}">{translate key=Hidden}</option>*}
+									{*</select>*}
+								{*</label>*}
+							{*</div>*}
+
+							{*<div class="form-group no-show newStatusReason">*}
+								{*<label>Reason text*}
+									{*<a href="#" class="pull-right addStatusReason"><span class="addStatusIcon fa fa-list-alt icon add"></span></a>*}
+									{*<input type="text" class="form-control resourceStatusReason" {formname key=RESOURCE_STATUS_REASON} />*}
+								{*</label>*}
+							{*</div>*}
+							{*<div class="form-group existingStatusReason">*}
+								{*<label>*}
+									{*{translate key=Reason}*}
+									{*<a href="#" class="pull-right addStatusReason"><span class="addStatusIcon fa fa-plus icon add"></span></a>*}
+									{*<select {formname key=RESOURCE_STATUS_REASON_ID} class="form-control reasonId"></select>*}
+								{*</label>*}
+							{*</div>*}
+
+						{*</div>*}
+						{*<div class="editable-buttons">*}
+							{*<button type="button" class="btn btn-primary btn-sm editable-submit save"><i class="glyphicon glyphicon-ok"></i></button>*}
+							{*<button type="button" class="btn btn-default btn-sm editable-cancel"><i class="glyphicon glyphicon-remove"></i></button>*}
+							{*{indicator}*}
+						{*</div>*}
+			{*</form>*}
+		{*</div>*}
+
+	<div id="configurationDialog" class="hide dialog" title="{translate key=UsageConfiguration}">
 		<form id="configurationForm" method="post" ajaxAction="{ManageResourcesActions::ActionChangeConfiguration}">
 			<div style="margin-bottom: 10px;">
 				<fieldset>
@@ -642,8 +762,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 	<div id="statusDialog" class="hide">
 		<form class="statusForm" method="post" ajaxAction="{ManageResourcesActions::ActionChangeStatus}">
 			<div class="control-group form-group">
-				<div>
-					<div class="">
+				{*<div>*}
+					{*<div class="">*}
 						<div class="form-group">
 							<label>{translate key=Status}
 								<select {formname key=RESOURCE_STATUS_ID} class="statusId form-control">
@@ -674,8 +794,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 						<button type="button" class="btn btn-default btn-sm editable-cancel"><i class="glyphicon glyphicon-remove"></i></button>
 						{indicator}
 					</div>
-				</div>
-			</div>
+				{*</div>*}
+			{*</div>*}
 		</form>
 	</div>
 
@@ -991,7 +1111,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			});
 		}
 
-		function setUpPopovers(shownCallback)
+		function setUpPopovers()
 		{
 			$('[rel="popover"]').popover({
 				container: 'body',
@@ -1005,15 +1125,13 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			}).click(function (e)
 			{
 				e.preventDefault();
+			}).on('show.bs.popover', function ()
+			{
+
 			}).on('shown.bs.popover', function ()
 			{
-				if (shownCallback)
-				{
-					shownCallback($(this));
-				}
 				var trigger = $(this);
 				var popover = trigger.data('bs.popover').tip();
-
 				popover.find('.editable-cancel').click(function ()
 				{
 					trigger.popover('hide');
@@ -1096,12 +1214,13 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 		$(document).ready(function ()
 		{
+//			_.templateSettings.variable = "t";
+
 			setUpPopovers();
 
 			hidePopoversWhenClickAway();
 
 			setUpEditables();
-			$('#some-textarea').wysihtml5();
 
 			var actions = {
 				enableSubscription: '{ManageResourcesActions::ActionEnableSubscription}',

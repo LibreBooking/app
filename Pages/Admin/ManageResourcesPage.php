@@ -252,6 +252,11 @@ interface IManageResourcesPage extends IUpdateResourcePage, IActionPage, IPageab
 	 * @return string
 	 */
 	public function GetValue();
+
+	/**
+	 * @param BookableResource $resource
+	 */
+	public function BindUpdatedDuration($resource);
 }
 
 class ManageResourcesPage extends ActionPage implements IManageResourcesPage
@@ -647,6 +652,15 @@ class ManageResourcesPage extends ActionPage implements IManageResourcesPage
 	public function GetEndNoticeNone()
 	{
 		return $this->GetForm(FormKeys::MAX_NOTICE_NONE);
+	}
+
+	/**
+	 * @param BookableResource $resource
+	 */
+	public function BindUpdatedDuration($resource)
+	{
+		$this->Set('resource', $resource);
+		$this->Display('Admin/Resources/manage_resources_duration.tpl');
 	}
 }
 

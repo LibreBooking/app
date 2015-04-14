@@ -44,6 +44,7 @@ class ManageResourcesActions
 	const ActionChangeSort = 'changeSort';
 	const ActionChangeResourceType = 'changeResourceType';
 	const ActionBulkUpdate = 'bulkUpdate';
+	const ActionChangeDuration = 'changeDuration';
 }
 
 class ManageResourcesPresenter extends ActionPresenter
@@ -121,6 +122,7 @@ class ManageResourcesPresenter extends ActionPresenter
 		$this->AddAction(ManageResourcesActions::ActionChangeSort, 'ChangeSortOrder');
 		$this->AddAction(ManageResourcesActions::ActionChangeResourceType, 'ChangeResourceType');
 		$this->AddAction(ManageResourcesActions::ActionBulkUpdate, 'BulkUpdate');
+		$this->AddAction(ManageResourcesActions::ActionChangeDuration, 'ChangeDuration');
 	}
 
 	public function PageLoad()
@@ -194,6 +196,22 @@ class ManageResourcesPresenter extends ActionPresenter
 		$resource = BookableResource::CreateNew($name, $scheduleId, $autoAssign);
 		$resource->SetAdminGroupId($resourceAdminGroupId);
 		$this->resourceRepository->Add($resource);
+	}
+
+	public function ChangeDuration()
+	{
+		$resourceId = $this->page->GetResourceId();
+		$minDuration = $this->page->GetMinimumDuration();
+		$resource = $this->resourceRepository->LoadById($resourceId);
+		$resource->SetMinLength($minDuration);
+
+		Log::Debug('Updating resource id=%s, minDuration=%s', $resourceId, $minDuration);
+
+		$this->resourceRepository->Update($resource);
+
+//		$resource = $this->resourceRepository->LoadById($resourceId);
+
+		$this->page->BindUpdatedDuration($resource);
 	}
 
 	public function ChangeConfiguration()

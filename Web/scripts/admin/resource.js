@@ -16,6 +16,7 @@ function ResourceManagement(opts) {
 		sortOrderDialog:$('#sortOrderDialog'),
 		resourceTypeDialog:$('#resourceTypeDialog'),
 		statusDialog:$('#statusDialog'),
+		durationDialog:$('#durationDialog'),
 
 		renameForm:$('#renameForm'),
 		imageForm:$('#imageForm'),
@@ -24,7 +25,7 @@ function ResourceManagement(opts) {
 		descriptionForm:$('#descriptionForm'),
 		notesForm:$('#notesForm'),
 		deleteForm:$('#deleteForm'),
-		configurationForm:$('#configurationForm'),
+		durationForm:$('#durationForm'),
 		groupAdminForm:$('#groupAdminForm'),
 		attributeForm:$('.attributesForm'),
 		sortOrderForm:$('#sortOrderForm'),
@@ -184,6 +185,10 @@ function ResourceManagement(opts) {
 			details.find('.changeStatus').click(function (e) {
 				showStatusPrompt(e);
 			});
+
+			details.find('.changeDuration').click(function (e) {
+				showDurationPrompt(e);
+			});
 		});
 
 		$(".save").click(function () {
@@ -274,7 +279,7 @@ function ResourceManagement(opts) {
 		ConfigureAdminForm(elements.imageForm, defaultSubmitCallback(elements.imageForm), null, imageSaveErrorHandler);
 		ConfigureAdminForm(elements.addForm, defaultSubmitCallback(elements.addForm), null, handleAddError);
 		ConfigureAdminForm(elements.deleteForm, defaultSubmitCallback(elements.deleteForm));
-		ConfigureAdminForm(elements.configurationForm, defaultSubmitCallback(elements.configurationForm), null, errorHandler, {onBeforeSerialize:combineIntervals});
+		ConfigureAdminForm(elements.durationForm, defaultSubmitCallback(elements.durationForm), null, onDurationSaved, {onBeforeSerialize:combineIntervals});
 		ConfigureAdminForm(elements.groupAdminForm, defaultSubmitCallback(elements.groupAdminForm));
 		ConfigureAdminForm(elements.bulkUpdateForm, defaultSubmitCallback(elements.bulkUpdateForm), null, bulkUpdateErrorHandler, {onBeforeSerialize:combineIntervals});
 
@@ -365,6 +370,31 @@ function ResourceManagement(opts) {
 		elements.configurationDialog.dialog("open");
 	};
 
+	var showDurationPrompt = function(e){
+		var resource = getActiveResource();
+		var activeForm = $('#durationForm');
+
+		wireUpIntervalToggle(activeForm);
+
+		setDaysHoursMinutes('.minDuration', resource.minLength, activeForm.find('.noMinimumDuration'));
+
+		elements.durationDialog.modal('show');
+	};
+
+	var onDurationSaved = function(resultHtml) {
+		var resource = getActiveResource();
+		var resourceDiv = $("div[data-resourceId=" + resource.id + "]");
+		resourceDiv.find('.durationPlaceHolder').html(resultHtml);
+
+		var result = resourceDiv.find('.durationPlaceHolder').find('.minDuration');
+		resource.minLength.value= result.attr('data-value');
+		resource.minLength.days= result.attr('data-days');
+		resource.minLength.hours= result.attr('data-hours');
+		resource.minLength.minutes= result.attr('data-minutes');
+
+		elements.durationDialog.modal('hide');
+	};
+
 	var showStatusPrompt = function (e) {
 		var resource = getActiveResource();
 		var statusForm = $('.popover:visible').find('form');
@@ -435,8 +465,9 @@ function ResourceManagement(opts) {
 
 	function showHideConfiguration(attributeValue, attributeDisplayElement, attributeCheckbox) {
 		attributeDisplayElement.val(attributeValue);
-		var id = attributeCheckbox.attr('id');
-		var span = elements.configurationDialog.find('.' + id);
+		var selector = attributeCheckbox.attr('data-related-inputs');
+		var container = attributeCheckbox.closest('form');
+		var span = container.find(selector);
 
 		if (attributeValue == '' || attributeValue == undefined) {
 			attributeCheckbox.prop('checked', true);
@@ -451,8 +482,8 @@ function ResourceManagement(opts) {
 	function wireUpIntervalToggle(container) {
 		container.find(':checkbox').change(function ()
 		{
-			var id = $(this).attr('id');
-			var span = container.find('.' + id);
+			var selector = $(this).attr('data-related-inputs');
+			var span = container.find(selector);
 
 			if ($(this).is(":checked"))
 			{

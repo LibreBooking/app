@@ -313,8 +313,10 @@ class BookableResource implements IResource
 		{
 			return $value->TotalSeconds();
 		}
-
-		return $value;
+		else
+		{
+			return TimeInterval::Parse($value)->TotalSeconds();
+		}
 	}
 
 	/**
