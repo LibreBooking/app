@@ -26,10 +26,16 @@ require_once(ROOT_DIR . 'Domain/Values/ResourceStatus.php');
 
 class ResourceRepository implements IResourceRepository
 {
+	/**
+		 * @var DomainCache
+		 */
+		private $_cache;
+
 	const ALL_SCHEDULES = -1;
 
 	public function __construct()
 	{
+		$this->_cache = new DomainCache();
 	}
 
 	/**
@@ -108,14 +114,14 @@ class ResourceRepository implements IResourceRepository
 	 */
 	public function LoadById($resourceId)
 	{
-		if (!DomainCache::ResourceExists($resourceId))
+		if (!$this->_cache->Exists($resourceId))
 		{
 			$resource = $this->LoadResource(new GetResourceByIdCommand($resourceId));
 
-			DomainCache::AddResource($resourceId, $resource);
+			$this->_cache->Add($resourceId, $resource);
 		}
 
-		return DomainCache::GetResource($resourceId);
+		return $this->_cache->Get($resourceId);
 	}
 
 	public function LoadByContactInfo($contact_info)
@@ -230,7 +236,7 @@ class ResourceRepository implements IResourceRepository
 			$db->Execute(new AutoAssignResourcePermissionsCommand($resource->GetId()));
 		}
 
-		DomainCache::AddResource($resource->GetId(), $resource);
+		$this->_cache->Add($resource->GetId(), $resource);
 	}
 
 	public function Delete(BookableResource $resource)
@@ -243,7 +249,7 @@ class ResourceRepository implements IResourceRepository
 		$db->Execute(new DeleteResourceReservationsCommand($resourceId));
 		$db->Execute(new DeleteResourceCommand($resourceId));
 
-		DomainCache::RemoveResource($resource->GetId(), $resource);
+		$this->_cache->Remove($resource->GetId());
 	}
 
 	public function GetAccessoryList()

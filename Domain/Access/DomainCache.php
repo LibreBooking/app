@@ -1,6 +1,6 @@
 <?php
 /**
-Copyright 2011-2014 Nick Korbel
+Copyright 2011-2015 Nick Korbel
 
 This file is part of Booked Scheduler.
 
@@ -20,154 +20,45 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 class DomainCache
 {
-	private static $_cache = array();
+	private $_cache;
 
-	public static function Clear()
+	public function __construct()
 	{
-		self::$_cache = array();
-	}
-
-	/**
-	 * @param mixed $key
-	 * @param string $prefix
-	 * @return bool
-	 */
-	public static function Exists($key, $prefix)
-	{
-		return array_key_exists($prefix . '_' . $key, self::$_cache);
-	}
-
-	/**
-	 * @param mixed $key
-	 * @param string $prefix
-	 * @return mixed
-	 */
-	public static function Get($key, $prefix)
-	{
-		return self::$_cache[$prefix . '_' . $key];
-	}
-
-	/**
-	 * @param mixed $key
-	 * @param mixed $object
-	 * @param string $prefix
-	 */
-	public static function Add($key, $object, $prefix)
-	{
-		self::$_cache[$prefix . '_' . $key] = $object;
-	}
-
-	/**
-	 * @param mixed $key
-	 * @param $prefix
-	 */
-	public static function Remove($key, $prefix)
-	{
-		unset(self::$_cache[$prefix . '_' . $key]);
+		$this->_cache = array();
 	}
 
 	/**
 	 * @param mixed $key
 	 * @return bool
 	 */
-	public static function UserExists($key)
+	public function Exists($key)
 	{
-		return self::Exists($key, 'user');
+		return array_key_exists($key, $this->_cache);
 	}
 
 	/**
 	 * @param mixed $key
 	 * @return mixed
 	 */
-	public static function GetUser($key)
+	public function Get($key)
 	{
-		return self::Get($key, 'user');
+		return $this->_cache[$key];
 	}
 
 	/**
 	 * @param mixed $key
 	 * @param mixed $object
 	 */
-	public static function AddUser($key, $object)
+	public function Add($key, $object)
 	{
-		self::Add($key, $object, 'user');
+		$this->_cache[$key] = $object;
 	}
 
 	/**
 	 * @param mixed $key
 	 */
-	public static function RemoveUser($key)
+	public function Remove($key)
 	{
-		self::Remove($key, 'user');
-	}
-
-	/**
-	 * @param mixed $key
-	 * @return bool
-	 */
-	public static function GroupExists($key)
-	{
-		return self::Exists($key, 'group');
-	}
-
-	/**
-	 * @param mixed $key
-	 * @return mixed
-	 */
-	public static function GetGroup($key)
-	{
-		return self::Get($key, 'group');
-	}
-
-	/**
-	 * @param mixed $key
-	 * @param mixed $object
-	 */
-	public static function AddGroup($key, $object)
-	{
-		self::Add($key, $object, 'group');
-	}
-
-	/**
-	 * @param mixed $key
-	 */
-	public static function RemoveGroup($key)
-	{
-		self::Remove($key, 'group');
-	}
-
-	/**
-	 * @param mixed $key
-	 * @return bool
-	 */
-	public static function ResourceExists($key)
-	{
-		return self::Exists($key, 'resource');
-	}
-
-	/**
-	 * @param mixed $key
-	 * @return mixed
-	 */
-	public static function GetResource($key)
-	{
-		return self::Get($key, 'resource');
-	}
-
-	/**
-	 * @param mixed $key
-	 * @param mixed $object
-	 */
-	public static function AddResource($key, $object)
-	{
-		self::Add($key, $object, 'resource');
-	}
-
-	/**
-	 * @param mixed $key
-	 */
-	public static function RemoveResource($key)
-	{
-		self::Remove($key, 'resource');
+		unset($this->_cache[$key]);
 	}
 }

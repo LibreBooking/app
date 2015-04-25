@@ -84,8 +84,14 @@ interface IGroupViewRepository
 
 class GroupRepository implements IGroupRepository, IGroupViewRepository
 {
+	/**
+	 * @var DomainCache
+	 */
+	private $_cache;
+
 	public function __construct()
 	{
+		$this->_cache = new DomainCache();
 	}
 
 	/**
@@ -134,9 +140,9 @@ class GroupRepository implements IGroupRepository, IGroupViewRepository
 
 	public function LoadById($groupId)
 	{
-		if (DomainCache::GroupExists($groupId))
+		if ($this->_cache->Exists($groupId))
 		{
-			return DomainCache::GetGroup($groupId);
+			return $this->_cache->Get($groupId);
 		}
 
 		$group = null;
@@ -183,45 +189,47 @@ class GroupRepository implements IGroupRepository, IGroupViewRepository
 	{
 		$db = ServiceLocator::GetDatabase();
 
+		$groupId = $group->Id();
 		foreach ($group->RemovedUsers() as $userId)
 		{
-			$db->Execute(new DeleteUserGroupCommand($userId, $group->Id()));
+			$db->Execute(new DeleteUserGroupCommand($userId, $groupId));
 		}
 
 		foreach ($group->AddedUsers() as $userId)
 		{
-			$db->Execute(new AddUserGroupCommand($userId, $group->Id()));
+			$db->Execute(new AddUserGroupCommand($userId, $groupId));
 		}
 
 		foreach ($group->RemovedPermissions() as $resourceId)
 		{
-			$db->Execute(new DeleteGroupResourcePermission($group->Id(), $resourceId));
+			$db->Execute(new DeleteGroupResourcePermission($groupId, $resourceId));
 		}
 
 		foreach ($group->AddedPermissions() as $resourceId)
 		{
-			$db->Execute(new AddGroupResourcePermission($group->Id(), $resourceId));
+			$db->Execute(new AddGroupResourcePermission($groupId, $resourceId));
 		}
 
 		foreach ($group->RemovedRoles() as $roleId)
 		{
-			$db->Execute(new DeleteGroupRoleCommand($group->Id(), $roleId));
+			$db->Execute(new DeleteGroupRoleCommand($groupId, $roleId));
 		}
 
 		foreach ($group->AddedRoles() as $roleId)
 		{
-			$db->Execute(new AddGroupRoleCommand($group->Id(), $roleId));
+			$db->Execute(new AddGroupRoleCommand($groupId, $roleId));
 		}
 
-		$db->Execute(new UpdateGroupCommand($group->Id(), $group->Name(), $group->AdminGroupId()));
+		$db->Execute(new UpdateGroupCommand($groupId, $group->Name(), $group->AdminGroupId()));
 
-		DomainCache::AddGroup($group->Id(), $group);
+		$this->_cache->Add($groupId, $group);
 	}
 
 	public function Remove(Group $group)
 	{
 		ServiceLocator::GetDatabase()->Execute(new DeleteGroupCommand($group->Id()));
-		DomainCache::RemoveGroup($group->Id());
+
+		$this->_cache->Remove($group->Id());
 	}
 
 	public function Add(Group $group)
