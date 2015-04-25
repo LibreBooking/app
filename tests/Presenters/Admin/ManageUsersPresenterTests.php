@@ -1,6 +1,6 @@
 <?php
 /**
-Copyright 2011-2014 Nick Korbel
+Copyright 2011-2015 Nick Korbel
 
 This file is part of Booked Scheduler.
 
@@ -109,7 +109,7 @@ class ManageUsersPresenterTests extends TestBase
 
 		$resourceList = array(new FakeBookableResource(1));
 
-		$attributeList = new AttributeList();
+		$attributeList = array(new FakeCustomAttribute(1, '1'));
 
 		$this->page
 				->expects($this->once())
@@ -164,8 +164,8 @@ class ManageUsersPresenterTests extends TestBase
 
 		$this->attributeService
 				->expects($this->once())
-				->method('GetAttributes')
-				->with($this->equalTo(CustomAttributeCategory::USER), $this->equalTo(array($userId)))
+				->method('GetByCategory')
+				->with($this->equalTo(CustomAttributeCategory::USER))
 				->will($this->returnValue($attributeList));
 
 		$this->page

@@ -1,6 +1,6 @@
 <?php
 /**
-Copyright 2012-2014 Nick Korbel
+Copyright 2012-2015 Nick Korbel
 
 This file is part of Booked Scheduler.
 
@@ -38,7 +38,12 @@ class UserItemResponse extends RestResponse
 	/** @var array|CustomAttributeResponse[] */
 	public $customAttributes = array();
 
-	public function __construct(IRestServer $server, UserItemView $user, IEntityAttributeList $attributes)
+	/**
+	 * @param IRestServer $server
+	 * @param UserItemView $user
+	 * @param array|string[] $attributeLabels
+	 */
+	public function __construct(IRestServer $server, UserItemView $user, $attributeLabels)
 	{
 		$userId = $user->Id;
 		$this->id = $userId;
@@ -55,13 +60,11 @@ class UserItemResponse extends RestResponse
 		$this->timezone = $user->Timezone;
 		$this->username = $user->Username;
 
-		$attributeValues = $attributes->GetAttributes($userId);
-
-		if (!empty($attributeValues))
+		if (!empty($attributeLabels))
 		{
-			foreach($attributeValues as $av)
+			foreach($attributeLabels as $id => $label)
 			{
-				$this->customAttributes[] = new CustomAttributeResponse($server, $av->Id(), $av->Label(), $av->Value());
+				$this->customAttributes[] = new CustomAttributeResponse($server, $id, $label, $user->GetAttributeValue($id));
 			}
 		}
 

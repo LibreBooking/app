@@ -1,6 +1,6 @@
 <?php
 /**
-Copyright 2012-2014 Nick Korbel
+Copyright 2012-2015 Nick Korbel
 
 This file is part of Booked Scheduler.
 
@@ -48,6 +48,7 @@ class SlimServer implements IRestServer
 		$this->slim->response()->header('Content-Type', 'application/json');
 		$this->slim->response()->status($statusCode);
 		$this->slim->response()->write(json_encode($restResponse));
+		unset($restResponse);
 	}
 
 	public function GetServiceUrl($serviceName, $params = array())

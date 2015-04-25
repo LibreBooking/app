@@ -1,6 +1,6 @@
 <?php
 /**
-Copyright 2011-2014 Nick Korbel
+Copyright 2011-2015 Nick Korbel
 
 This file is part of Booked Scheduler.
 
@@ -198,13 +198,7 @@ class ManageUsersPresenter extends ActionPresenter implements IManageUsersPresen
 		$resources = $this->GetResourcesThatCurrentUserCanAdminister($user);
 		$this->page->BindResources($resources);
 
-		$userIds = array();
-		/** @var $user UserItemView */
-		foreach ($userList->Results() as $user)
-		{
-			$userIds[] = $user->Id;
-		}
-		$attributeList = $this->attributeService->GetAttributes(CustomAttributeCategory::USER, $userIds);
+		$attributeList = $this->attributeService->GetByCategory(CustomAttributeCategory::USER);
 		$this->page->BindAttributeList($attributeList);
 	}
 

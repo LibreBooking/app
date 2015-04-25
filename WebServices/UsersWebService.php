@@ -1,6 +1,6 @@
 <?php
 /**
-Copyright 2012-2014 Nick Korbel
+Copyright 2012-2015 Nick Korbel
 
 This file is part of Booked Scheduler.
 
@@ -59,18 +59,20 @@ class UsersWebService
 	{
 		$repository = $this->repositoryFactory->Create($this->server->GetSession());
 		$data = $repository->GetList(null, null);
-		$users = $data->Results();
 
 		$userIds = array();
 		/** @var $user UserItemView */
 		foreach ($users as $user)
 		{
-			$userIds[] = $user->Id;
+			$attributeLabels[$attribute->Id()] = $attribute->Label();
 		}
 
-		$attributes = $this->attributeService->GetAttributes(CustomAttributeCategory::USER, $userIds);
+		$usersResponse = new UsersResponse($this->server, $data->Results(), $attributeLabels);
+		unset($data);
+		unset($attributeLabels);
 
-		$this->server->WriteResponse(new UsersResponse($this->server, $users, $attributes));
+		$this->server->WriteResponse($usersResponse);
+		Log::Debug('after write response ' . memory_get_usage(true));
 	}
 
 	/**

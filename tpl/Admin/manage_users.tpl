@@ -1,5 +1,5 @@
 {*
-Copyright 2011-2014 Nick Korbel
+Copyright 2011-2015 Nick Korbel
 
 This file is part of Booked Scheduler.
 
@@ -90,14 +90,14 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			{/if}
 			<td align="center"><a href="#" class="update delete">{html_image src="cross-button.png"}</a></td>
 		</tr>
-		{assign var=attributes value=$AttributeList->GetAttributes($id)}
+		{assign var=attributes value=$AttributeList}
 		{if $attributes|count > 0}
 			<tr>
 				<td class="id"><input type="hidden" class="id" value="{$id}"/></td>
-				<td colspan="16" class="{$rowCss} customAttributes" userId="{$id}">
+				<td colspan="17" class="{$rowCss} customAttributes" userId="{$id}">
 						<form method="post" class="attributesForm" ajaxAction="{ManageUsersActions::ChangeAttributes}">
-							<h3>{translate key=AdditionalAttributes} <a href="#"
-																		class="update changeAttributes">{translate key=Edit}</a>
+							<h3>{translate key=AdditionalAttributes}
+								<a href="#" class="update changeAttributes">{translate key=Edit}</a>
 							</h3>
 
 							<div class="validationSummary">
@@ -109,9 +109,10 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 							<div>
 								<ul>
 									{foreach from=$attributes item=attribute}
+										{assign var="attributeValue" value=$user->GetAttributeValue($attribute->Id())}
 										<li class="customAttribute" attributeId="{$attribute->Id()}">
-											<div class="attribute-readonly">{control type="AttributeControl" attribute=$attribute readonly=true}</div>
-											<div class="attribute-readwrite hidden">{control type="AttributeControl" attribute=$attribute}
+											<div class="attribute-readonly">{control type="AttributeControl" attribute=$attribute value=$attributeValue readonly=true}</div>
+											<div class="attribute-readwrite hidden">{control type="AttributeControl" attribute=$attribute value=$attributeValue}
 										</li>
 									{/foreach}
 								</ul>
@@ -147,25 +148,25 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			<div style="display: table-row">
 				<div style="display: table-cell;">
 					<ul>
-						<li><label for="addUsername">{translate key="Username"}</label></li>
+						<li>{translate key="Username"}</li>
 						<li>{textbox name="USERNAME" class="required textbox" size="40" id="addUsername"}</li>
 					</ul>
 				</div>
 				<div style="display: table-cell;">
 					<ul>
-						<li><label for="addEmail">{translate key="Email"}</label></li>
+						<li>{translate key="Email"}</li>
 						<li>{textbox name="EMAIL" class="required textbox" size="40" id="addEmail"}</li>
 					</ul>
 				</div>
 				<div style="display: table-cell;">
 					<ul>
-						<li><label for="addFname">{translate key="FirstName"}</label></li>
+						<li>{translate key="FirstName"}</li>
 						<li>{textbox name="FIRST_NAME" class="required textbox" size="40" id="addFname"}</li>
 					</ul>
 				</div>
 				<div style="display: table-cell;">
 					<ul>
-						<li><label for="addLname">{translate key="LastName"}</label></li>
+						<li>{translate key="LastName"}</li>
 						<li>{textbox name="LAST_NAME" class="required textbox" size="40" id="addLname"}</li>
 					</ul>
 				</div>
@@ -173,9 +174,9 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			<div style="display: table-row">
 				<div style="display: table-cell;">
 					<ul>
-						<li><label for="addTimezone">{translate key="Timezone"}</label></li>
+						<li>{translate key="Timezone"}</li>
 						<li>
-							<select {formname key='TIMEZONE'} class="textbox" id="addTimezone">
+							<select {formname key='TIMEZONE'} class="textbox">
 								{html_options values=$Timezones output=$Timezones selected=$Timezone}
 							</select>
 						</li>
@@ -183,15 +184,15 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 				</div>
 				<div style="display: table-cell;">
 					<ul>
-						<li><label for="addPassword"/>{translate key="Password"}</label></li>
+						<li>{translate key="Password"}</li>
 						<li>{textbox name="PASSWORD" class="required textbox" size="40" id="addPassword"}</li>
 					</ul>
 				</div>
 				<div style="display: table-cell;">
 					<ul>
-						<li><label for="addGroupId">{translate key="Group"}</label></li>
+						<li>{translate key="Group"}</li>
 						<li>
-							<select {formname key='GROUP_ID'} class="textbox" id="addGroupId">
+							<select {formname key='GROUP_ID'} class="textbox">
 								<option value="">{translate key=None}</option>
 								{object_html_options options=$Groups label=Name key=Id}
 							</select>
@@ -202,7 +203,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 			<div class="customAttributes">
 				<ul>
-					{assign var=attributes value=$AttributeList->GetAttributes()}
+					{assign var=attributes value=$AttributeList}
 					{foreach from=$attributes item=attribute}
 						<li class="customAttribute">
 							{control type="AttributeControl" attribute=$attribute algin=vertical}
@@ -241,7 +242,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 <div id="passwordDialog" class="dialog" style="display:none;" title="{translate key=Password}">
 	<form id="passwordForm" method="post" ajaxAction="{ManageUsersActions::Password}">
-		<label for="password">{translate key=Password}</label><br/>
+		{translate key=Password}<br/>
 		{textbox type="password" name="PASSWORD" class="required textbox" value=""}
 		<div class="admin-update-buttons">
 			<button type="button" class="button save">{html_image src="disk-black.png"} {translate key='Update'}</button>
@@ -259,28 +260,28 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		</ul>
 
 		<ul>
-			<li><label for="username">{translate key="Username"}</label></li>
+			<li>{translate key="Username"}</li>
 			<li>{textbox name="USERNAME" class="required textbox" size="40" id="username"}</li>
-			<li><label for="email">{translate key="Email"}</label></li>
+			<li>{translate key="Email"}</li>
 			<li>{textbox name="EMAIL" class="required textbox" size="40" id="email"}</li>
 
-			<li><label for="fname">{translate key="FirstName"}</label></li>
+			<li>{translate key="FirstName"}</li>
 			<li>{textbox name="FIRST_NAME" class="required textbox" size="40" id="fname"}</li>
-			<li><label for="lname">{translate key="LastName"}</label></li>
+			<li>{translate key="LastName"}</li>
 			<li>{textbox name="LAST_NAME" class="required textbox" size="40" id="lname"}</li>
 
-			<li><label for="timezone">{translate key="Timezone"}</label></li>
+			<li>{translate key="Timezone"}</li>
 			<li>
 				<select {formname key='TIMEZONE'} id='timezone' class="textbox">
 					{html_options values=$Timezones output=$Timezones}
 				</select>
 			</li>
 
-			<li><label for="phone">{translate key="Phone"}</label></li>
+			<li>{translate key="Phone"}</li>
 			<li>{textbox name="PHONE" class="textbox" size="40" id="phone"}</li>
-			<li><label for="organization">{translate key="Organization"}</label></li>
+			<li>{translate key="Organization"}</li>
 			<li>{textbox name="ORGANIZATION" class="textbox" size="40" id="organization"}</li>
-			<li><label for="position">{translate key="Position"}</label></li>
+			<li>{translate key="Position"}</li>
 			<li>{textbox name="POSITION" class="textbox" size="40" id="position"}</li>
 		</ul>
 		<div class="admin-update-buttons">
@@ -322,7 +323,6 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 <div id="colorDialog" class="dialog" title="{translate key=Color}">
 	<form id="colorForm" method="post" ajaxAction="{ManageUsersActions::ChangeColor}">
-		<label for="reservationColor" class="off-screen">{translate key=Color}</label>
 		#{textbox name="RESERVATION_COLOR" class="textbox" id="reservationColor" maxlength=6}
 		<div class="admin-update-buttons">
 			<button type="button" class="button save">{html_image src="disk-black.png"} {translate key='Update'}</button>
@@ -385,9 +385,9 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 				$(el).val(hex);
 					$(el).ColorPickerHide();
 				},
-			onBeforeShow: function () {
-				$(this).ColorPickerSetColor(this.value);
-			}
+				onBeforeShow: function () {
+					$(this).ColorPickerSetColor(this.value);
+				}
 		});
 
 	});

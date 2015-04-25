@@ -743,6 +743,10 @@ class UserItemView
 	public $Language;
 	public $ReservationColor;
 	/**
+	 * @var CustomAttributes
+	 */
+	public $Attributes;
+	/**
 	 * @var UserPreferences
 	 */
 	public $Preferences;
@@ -769,6 +773,7 @@ class UserItemView
 		$user->Organization = $row[ColumnNames::ORGANIZATION];
 		$user->Position = $row[ColumnNames::POSITION];
 		$user->Language = $row[ColumnNames::LANGUAGE_CODE];
+		$user->Attributes = CustomAttributes::Parse($row[ColumnNames::ATTRIBUTE_LIST]);
 
 		if (isset($row[ColumnNames::USER_PREFERENCES]))
 		{
@@ -786,6 +791,13 @@ class UserItemView
 
 		return $user;
 	}
-}
 
-?>
+	/**
+	 * @param $attributeId int
+	 * @return null|string
+	 */
+	public function GetAttributeValue($attributeId)
+	{
+		return $this->Attributes->Get($attributeId);
+	}
+}

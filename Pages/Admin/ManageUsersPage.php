@@ -1,6 +1,6 @@
 <?php
 /**
-Copyright 2011-2014 Nick Korbel
+Copyright 2011-2015 Nick Korbel
 
 This file is part of Booked Scheduler.
 
@@ -122,7 +122,7 @@ interface IManageUsersPage extends IPageable, IActionPage
 	public function GetLanguage();
 
 	/**
-	 * @param $attributeList IEntityAttributeList
+	 * @param $attributeList CustomAttribute[]
 	 */
 	public function BindAttributeList($attributeList);
 
@@ -248,7 +248,7 @@ class ManageUsersPage extends ActionPage implements IManageUsersPage
 	}
 
 	/**
-	 * @param BookableResources[] $resources
+	 * @param BookableResource[] $resources
 	 * @return void
 	 */
 	public function BindResources($resources)
@@ -375,5 +375,3 @@ class ManageUsersPage extends ActionPage implements IManageUsersPage
 		return $this->GetForm(FormKeys::RESERVATION_COLOR);
 	}
 }
-
-?>
