@@ -1,6 +1,6 @@
 <?php
 /**
-Copyright 2012-2014 Nick Korbel
+Copyright 2012-2015 Nick Korbel
 
 This file is part of Booked Scheduler is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -149,42 +149,11 @@ class ReservationFilter
 		}
 		if (!empty($this->attributes))
 		{
-			$filteringAttributes = false;
+			$attributeFilter = AttributeFilter::Create(TableNames::RESERVATION_SERIES_ALIAS . '.' . ColumnNames::SERIES_ID, $this->attributes);
 
-			$f  = new SqlFilterFreeForm(TableNames::RESERVATION_SERIES_ALIAS . '.' . ColumnNames::SERIES_ID . ' IN (SELECT a0.' . ColumnNames::ATTRIBUTE_ENTITY_ID . ' FROM ' . TableNames::CUSTOM_ATTRIBUTE_VALUES . ' a0 ');
-
-			$attributeFragment = new SqlFilterNull();
-
-			/** @var $attribute Attribute */
-			foreach ($this->attributes as $i => $attribute)
+			if ($attributeFilter != null)
 			{
-				if ($attribute->Value() == null || $attribute->Value() == '')
-				{
-					continue;
-				}
-				$id = $attribute->Id();
-				$filteringAttributes = true;
-				$attributeId = new SqlRepeatingFilterColumn("a$id", ColumnNames::CUSTOM_ATTRIBUTE_ID, $id);
-				$attributeValue = new SqlRepeatingFilterColumn("a$id", ColumnNames::CUSTOM_ATTRIBUTE_VALUE, $id);
-
-				$idEquals = new SqlFilterEquals($attributeId, $attribute->Id());
-				$f->AppendSql('LEFT JOIN ' . TableNames::CUSTOM_ATTRIBUTE_VALUES . ' a' . $id . ' ON a0.entity_id = a' . $id . '.entity_id ');
-				if ($attribute->Type() == CustomAttributeTypes::MULTI_LINE_TEXTBOX || $attribute->Type() == CustomAttributeTypes::SINGLE_LINE_TEXTBOX)
-				{
-					$attributeFragment->_And($idEquals->_And(new SqlFilterLike($attributeValue, $attribute->Value())));
-				}
-				else
-				{
-					$attributeFragment->_And($idEquals->_And(new SqlFilterEquals($attributeValue, $attribute->Value())));
-				}
-			}
-
-			$f->AppendSql("WHERE [attribute_list_token] )");
-			$f->Substitute('attribute_list_token', $attributeFragment);
-
-			if ($filteringAttributes)
-			{
-				$filter->_And($f);
+				$filter->_And($attributeFilter);
 			}
 		}
 

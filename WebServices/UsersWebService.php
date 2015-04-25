@@ -51,28 +51,33 @@ class UsersWebService
 
 	/**
 	 * @name GetAllUsers
-	 * @description Loads all users that the current user can see
+	 * @description Loads all users that the current user can see.
+	 * Optional query string parameters: username, email, firstName, lastName, phone, organization, position and any custom attributes.
+	 * If searching on custom attributes, the query string parameter has to be in the format att#=value.
+	 * For example, Users/?att1=ExpectedAttribute1Value
 	 * @response UsersResponse
 	 * @return void
 	 */
 	public function GetUsers()
 	{
-		$repository = $this->repositoryFactory->Create($this->server->GetSession());
-		$data = $repository->GetList(null, null);
+		$attributes = $this->attributeService->GetByCategory(CustomAttributeCategory::USER);
+		$filter = $this->GetUserFilter($attributes);
 
-		$userIds = array();
-		/** @var $user UserItemView */
-		foreach ($users as $user)
+		$repository = $this->repositoryFactory->Create($this->server->GetSession());
+		$data = $repository->GetList(null, null, null, null, $filter->GetFilter(), AccountStatus::ACTIVE);
+
+		$attributeLabels = array();
+		foreach ($attributes as $attribute)
 		{
 			$attributeLabels[$attribute->Id()] = $attribute->Label();
 		}
 
 		$usersResponse = new UsersResponse($this->server, $data->Results(), $attributeLabels);
+
 		unset($data);
 		unset($attributeLabels);
 
 		$this->server->WriteResponse($usersResponse);
-		Log::Debug('after write response ' . memory_get_usage(true));
 	}
 
 	/**
@@ -126,31 +131,32 @@ class UsersWebService
 	}
 
 	/**
-	 * @name GetUserByEmail
-	 * @description Loads the requested user by emaiul address
-	 * @response UserResponse
-	 * @param string $emailAddress
-	 * @return void
+	 * @param CustomAttribute[] $attributes
+	 * @return UserFilter
 	 */
-	public function GetUserByEmail($emailAddress)
+	private function GetUserFilter($attributes)
 	{
-		$responseCode = RestResponse::OK_CODE;
+		$attributeFilters = array();
+		foreach ($attributes as $attribute)
+		{
+			$attributeValue = $this->server->GetQueryString(WebServiceQueryStringKeys::ATTRIBUTE_PREFIX . $attribute->Id());
+			if (!empty($attributeValue))
+			{
+				$attributeFilters[] = new Attribute($attribute, $attributeValue);
+			}
+		}
 
-		$hideUsers = Configuration::Instance()->GetSectionKey(ConfigSection::PRIVACY,
-															  ConfigKeys::PRIVACY_HIDE_USER_DETAILS,
-															  new BooleanConverter());
-		
-		$userSession = $this->server->GetSession();
-		$repository = $this->repositoryFactory->Create($userSession);
-		if(	$user = $repository->FindByEmail($emailAddress) )
-		{
-			$this->GetUser( $user->Id() );
-		}
-		else
-		{
-			$this->server->WriteResponse(RestResponse::NotFound(), RestResponse::NOT_FOUND_CODE);
-		}
+		$filter = new UserFilter(
+				$this->server->GetQueryString(WebServiceQueryStringKeys::USERNAME),
+				$this->server->GetQueryString(WebServiceQueryStringKeys::EMAIL),
+				$this->server->GetQueryString(WebServiceQueryStringKeys::FIRST_NAME),
+				$this->server->GetQueryString(WebServiceQueryStringKeys::LAST_NAME),
+				$this->server->GetQueryString(WebServiceQueryStringKeys::PHONE),
+				$this->server->GetQueryString(WebServiceQueryStringKeys::ORGANIZATION),
+				$this->server->GetQueryString(WebServiceQueryStringKeys::POSITION),
+				$attributeFilters
+		);
+
+		return $filter;
 	}
-	
 }
-?>

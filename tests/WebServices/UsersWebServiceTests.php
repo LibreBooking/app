@@ -1,6 +1,6 @@
 <?php
 /**
-Copyright 2012-2014 Nick Korbel
+Copyright 2012-2015 Nick Korbel
 
 This file is part of Booked Scheduler.
 
@@ -69,7 +69,17 @@ class UsersWebServiceTests extends TestBase
 
 		$userList = array($userItemView);
 		$users = new PageableData($userList);
-		$attributes = $this->getMock('IEntityAttributeList');
+		$attributes = array(new FakeCustomAttribute(1), new FakeCustomAttribute(2));
+
+		$username = 'username';
+		$position = 'position';
+		$att1 = 'att1';
+
+		$this->server->SetQueryString(WebServiceQueryStringKeys::USERNAME, $username);
+		$this->server->SetQueryString(WebServiceQueryStringKeys::POSITION, $position);
+		$this->server->SetQueryString('att1', $att1);
+
+		$expectedFilter = new UserFilter($username, null, null, null, null, null, $position, array(new Attribute($attributes[0], $att1)));
 
 		$this->userRepositoryFactory->expects($this->once())
 				->method('Create')
@@ -78,15 +88,15 @@ class UsersWebServiceTests extends TestBase
 
 		$this->userRepository->expects($this->once())
 				->method('GetList')
-				->with($this->isNull(), $this->isNull())
+				->with($this->isNull(), $this->isNull(), $this->isNull(), $this->isNull(), $expectedFilter->GetFilter(), AccountStatus::ACTIVE)
 				->will($this->returnValue($users));
 
 		$this->attributeService->expects($this->once())
-				->method('GetAttributes')
-				->with($this->equalTo(CustomAttributeCategory::USER), $this->equalTo(array($userId)))
+				->method('GetByCategory')
+				->with($this->equalTo(CustomAttributeCategory::USER))
 				->will($this->returnValue($attributes));
 
-		$expectedResponse = new UsersResponse($this->server, $userList, $attributes);
+		$expectedResponse = new UsersResponse($this->server, $userList, array(1=>'fakeCustomAttribute1', 2=>'fakeCustomAttribute2'));
 
 		$this->service->GetUsers();
 

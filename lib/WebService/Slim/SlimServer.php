@@ -90,5 +90,3 @@ class SlimServer implements IRestServer
 		return $this->slim->request()->get($queryStringKey);
 	}
 }
-
-?>

@@ -1,6 +1,6 @@
 <?php
 /**
-Copyright 2012-2014 Nick Korbel
+Copyright 2012-2015 Nick Korbel
 
 This file is part of Booked Scheduler.
 
@@ -27,4 +27,12 @@ class WebServiceQueryStringKeys
 	const RESOURCE_ID = 'resourceId';
 	const SCHEDULE_ID = 'scheduleId';
 	const UPDATE_SCOPE = 'updateScope';
+	const USERNAME = 'username';
+	const EMAIL = 'email';
+	const FIRST_NAME = 'firstName';
+	const LAST_NAME = 'lastName';
+	const PHONE = 'phone';
+	const ORGANIZATION = 'organization';
+	const POSITION = 'position';
+	const ATTRIBUTE_PREFIX = 'att';
 }
