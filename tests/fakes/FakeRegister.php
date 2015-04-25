@@ -1,6 +1,6 @@
 <?php
 /**
-Copyright 2011-2014 Nick Korbel
+Copyright 2011-2015 Nick Korbel
 
 This file is part of Booked Scheduler.
 
@@ -34,6 +34,9 @@ class FakeRegistration implements IRegistration
 	public $_Timezone;
 	public $_AdditionalFields;
 	public $_HomepageId;
+	/**
+	 * @var AuthenticatedUser
+	 */
 	public $_LastSynchronizedUser;
 	public $_RegisteredUser;
 

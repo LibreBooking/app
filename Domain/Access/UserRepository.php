@@ -1,6 +1,6 @@
 <?php
 /**
-Copyright 2011-2014 Nick Korbel
+Copyright 2011-2015 Nick Korbel
 
 This file is part of Booked Scheduler.
 
@@ -151,8 +151,14 @@ interface IAccountActivationRepository
 
 class UserRepository implements IUserRepository, IAccountActivationRepository
 {
+	/**
+	 * @var DomainCache
+	 */
+	private $_cache;
+
 	public function __construct()
 	{
+		$this->_cache = new DomainCache();
 	}
 
 	public function GetAll()
@@ -235,7 +241,7 @@ class UserRepository implements IUserRepository, IAccountActivationRepository
 
 			$user->WithDefaultSchedule($row[ColumnNames::DEFAULT_SCHEDULE_ID]);
 
-			DomainCache::AddUser($userId, $user);
+			$this->_cache->Add($userId, $user);
 
 			return $user;
 		}
@@ -251,14 +257,14 @@ class UserRepository implements IUserRepository, IAccountActivationRepository
 	 */
 	public function LoadById($userId)
 	{
-		if (!DomainCache::UserExists($userId))
+		if (!$this->_cache->Exists($userId))
 		{
 			$command = new GetUserByIdCommand($userId);
 			return $this->Load($command);
 		}
 		else
 		{
-			return DomainCache::GetUser($userId);
+			return $this->_cache->Get($userId);
 		}
 	}
 
@@ -308,6 +314,15 @@ class UserRepository implements IUserRepository, IAccountActivationRepository
 		foreach ($addedPreferences as $event)
 		{
 			$db->Execute(new AddEmailPreferenceCommand($id, $event->EventCategory(), $event->EventType()));
+		}
+
+		$userGroups = $user->Groups();
+		if (!empty($userGroups))
+		{
+			foreach ($userGroups as $group)
+			{
+				$db->Execute(new AddUserGroupCommand($id, $group->GroupId));
+			}
 		}
 
 		return $id;
@@ -389,15 +404,21 @@ class UserRepository implements IUserRepository, IAccountActivationRepository
 			$db->Execute(new UpdateUserPreferenceCommand($user->Id(), $updated, $user->GetPreference($updated)));
 		}
 
-		DomainCache::AddUser($user->Id(), $user);
+		foreach ($user->GetRemovedGroups() as $removed)
+		{
+			$db->Execute(new DeleteUserGroupCommand($user->Id(), $removed->GroupId));
+		}
+
+		foreach ($user->GetAddedGroups() as $added)
+		{
+			$db->Execute(new AddUserGroupCommand($user->Id(), $added->GroupId));
+		}
 	}
 
 	public function DeleteById($userId)
 	{
 		$deleteUserCommand = new DeleteUserCommand($userId);
 		ServiceLocator::GetDatabase()->Execute($deleteUserCommand);
-
-		DomainCache::RemoveUser($userId);
 	}
 
 	public function LoadEmailPreferences($userId)
@@ -766,3 +787,5 @@ class UserItemView
 		return $user;
 	}
 }
+
+?>

@@ -1,6 +1,6 @@
 <?php
 /**
-Copyright 2011-2014 Nick Korbel
+Copyright 2011-2015 Nick Korbel
 
 This file is part of Booked Scheduler.
 
@@ -25,6 +25,7 @@ class FakeActiveDirectoryOptions extends ActiveDirectoryOptions
 	public $_Options = array();
 	public $_Hosts = array();
 	public $_RetryAgainstDatabase = false;
+	public $_SyncGroups = false;
 
     public function __construct()
     {
@@ -45,5 +46,9 @@ class FakeActiveDirectoryOptions extends ActiveDirectoryOptions
 	{
 		return $this->_RetryAgainstDatabase;
 	}
+
+	public function SyncGroups()
+	{
+		return $this->_SyncGroups;
+	}
 }
-?>

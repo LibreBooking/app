@@ -1,6 +1,6 @@
 <?php
 /**
-Copyright 2011-2014 Nick Korbel
+Copyright 2011-2015 Nick Korbel
 
 This file is part of Booked Scheduler.
 
@@ -32,6 +32,6 @@ class ActiveDirectoryConfig
     const SECTION_AD = 'ad';
     const RETRY_AGAINST_DATABASE = 'database.auth.when.ldap.user.not.found';
 	const ATTRIBUTE_MAPPING = 'attribute.mapping';
+	const REQUIRED_GROUPS = 'required.groups';
+	const SYNC_GROUPS = 'sync.groups';
 }
-
-?>

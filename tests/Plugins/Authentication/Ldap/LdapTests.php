@@ -1,6 +1,6 @@
 <?php
 /**
-Copyright 2011-2014 Nick Korbel
+Copyright 2011-2015 Nick Korbel
 
 This file is part of Booked Scheduler.
 
@@ -77,6 +77,8 @@ class LdapTests extends TestBase
 		$ldapEntry->Set('telephonenumber', '000-000-0000');
 		$ldapEntry->Set('physicaldeliveryofficename', '');
 		$ldapEntry->Set('title', '');
+		$ldapEntry->Set('groups', 'memberOf');
+		$ldapEntry->Set('filter', '');
 
 		$this->ldapUser = new LdapUser($ldapEntry, array());
 
@@ -340,6 +342,18 @@ class LdapTests extends TestBase
 		$this->assertEquals('foo', $user->GetEmail());
 		$this->assertEquals('phone', $user->GetPhone());
 	}
+
+}
+
+class LdapIntegrationTests extends PHPUnit_Framework_TestCase
+{
+
+	public function testAuthRealLdap()
+	{
+		require_once(ROOT_DIR . 'plugins/Authentication/Ldap/namespace.php');
+		$ldap = new Ldap(PluginManager::Instance()->LoadAuthentication());
+		$ldap->Validate('riemann', 'password');
+	}
 }
 
 class FakeLdapOptions extends LdapOptions
@@ -408,7 +422,7 @@ class TestLdapEntry extends Net_LDAP2_Entry
 
 	}
 
-	public function getValue($attr, $option = NULL)
+	public function getValue($attr, $option = null)
 	{
 		return $this->_values[$attr];
 	}
@@ -418,3 +432,5 @@ class TestLdapEntry extends Net_LDAP2_Entry
 		$this->_values[$attr] = $value;
 	}
 }
+
+?>

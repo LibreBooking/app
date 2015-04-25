@@ -1,6 +1,6 @@
 <?php
 /**
-Copyright 2011-2014 Nick Korbel
+Copyright 2011-2015 Nick Korbel
 
 This file is part of Booked Scheduler is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -13,7 +13,6 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 */
-
 
 class AuthenticatedUser
 {
@@ -68,6 +67,11 @@ class AuthenticatedUser
 	private $title;
 
 	/**
+	 * @var UserGroup[]|null
+	 */
+	private $groups = null;
+
+	/**
 	 * @param string $username
 	 * @param string $email
 	 * @param string $fname
@@ -78,8 +82,9 @@ class AuthenticatedUser
 	 * @param string $phone
 	 * @param string $organization
 	 * @param string $title
+	 * @param UserGroup[]|null $groups
 	 */
-	public function __construct($username, $email, $fname, $lname, $password, $languageCode, $timezoneName, $phone, $organization, $title)
+	public function __construct($username, $email, $fname, $lname, $password, $languageCode, $timezoneName, $phone, $organization, $title, $groups = null)
 	{
 		$this->username = $username;
 		$this->email = $email;
@@ -91,6 +96,7 @@ class AuthenticatedUser
 		$this->phone = $phone;
 		$this->organization = $organization;
 		$this->title = $title;
+		$this->groups = $groups;
 	}
 
 	/**
@@ -184,6 +190,11 @@ class AuthenticatedUser
 		return trim($value);
 	}
 
+	/**
+	 * @return UserGroup[]|null
+	 */
+	public function GetGroups()
+	{
+		return $this->groups;
+	}
 }
-
-?>

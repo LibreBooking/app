@@ -1,6 +1,6 @@
 <?php
 /**
-Copyright 2011-2014 Nick Korbel
+Copyright 2011-2015 Nick Korbel
 
 This file is part of Booked Scheduler is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -47,7 +47,7 @@ class Registration implements IRegistration
 	}
 
 	public function Register($username, $email, $firstName, $lastName, $password, $timezone, $language,
-							 $homepageId, $additionalFields = array(), $attributeValues = array())
+							 $homepageId, $additionalFields = array(), $attributeValues = array(), $groups = null)
 	{
 		$encryptedPassword = $this->_passwordEncryption->EncryptPassword($password);
 
@@ -63,6 +63,11 @@ class Registration implements IRegistration
 		}
 		$user->ChangeAttributes($attributes->Get(UserAttribute::Phone), $attributes->Get(UserAttribute::Organization), $attributes->Get(UserAttribute::Position));
 		$user->ChangeCustomAttributes($attributeValues);
+
+		if ($groups != null)
+		{
+			$user->WithGroups($groups);
+		}
 
 		if (Configuration::Instance()->GetKey(ConfigKeys::REGISTRATION_AUTO_SUBSCRIBE_EMAIL, new BooleanConverter()))
 		{
@@ -104,8 +109,14 @@ class Registration implements IRegistration
 
 			$encryptedPassword = $this->_passwordEncryption->EncryptPassword($user->Password());
 			$command = new UpdateUserFromLdapCommand($user->UserName(), $user->Email(), $user->FirstName(), $user->LastName(), $encryptedPassword->EncryptedPassword(), $encryptedPassword->Salt(), $user->Phone(), $user->Organization(), $user->Title());
-
 			ServiceLocator::GetDatabase()->Execute($command);
+
+			if ($user->GetGroups() != null)
+			{
+				$updatedUser = $this->_userRepository->LoadByUsername($user->Username());
+				$updatedUser->ChangeGroups($user->GetGroups());
+				$this->_userRepository->Update($updatedUser);
+			}
 		}
 		else
 		{
@@ -115,7 +126,9 @@ class Registration implements IRegistration
 							$user->TimezoneName(),
 							$user->LanguageCode(),
 							empty($defaultHomePageId) ? Pages::DEFAULT_HOMEPAGE_ID : $defaultHomePageId,
-							$additionalFields);
+							$additionalFields,
+							array(),
+							$user->GetGroups());
 		}
 	}
 

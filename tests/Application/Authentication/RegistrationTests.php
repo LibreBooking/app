@@ -1,6 +1,6 @@
 <?php
 /**
-Copyright 2011-2014 Nick Korbel
+Copyright 2011-2015 Nick Korbel
 
 This file is part of Booked Scheduler.
 
@@ -245,12 +245,27 @@ class RegistrationTests extends TestBase
 		$title = 'title';
 		$encryptedPassword = $this->fakeEncryption->_Encrypted;
 		$salt = $this->fakeEncryption->_Salt;
+		$groups = array(new UserGroup(1, '1'), new UserGroup(2, '2'));
+
+		$updatedUser = new User();
+		$updatedUser->ChangeGroups($groups);
 
 		$this->userRepository->expects($this->once())
 				->method('UserExists')
 				->with($this->equalTo($email), $this->equalTo($username))
 				->will($this->returnValue($userId));
-		$user = new AuthenticatedUser($username, $email, $fname, $lname, 'password', 'en_US', 'UTC', $phone, $inst, $title);
+		
+		$this->userRepository->expects($this->once())
+					->method('LoadByUsername')
+					->with($this->equalTo($username))
+					->will($this->returnValue($updatedUser));
+
+		$this->userRepository->expects($this->once())
+					->method('Update')
+					->with($this->equalTo($updatedUser))
+					->will($this->returnValue($updatedUser));
+
+		$user = new AuthenticatedUser($username, $email, $fname, $lname, 'password', 'en_US', 'UTC', $phone, $inst, $title, $groups);
 		$expectedCommand = new UpdateUserFromLdapCommand($username, $email, $fname, $lname, $encryptedPassword, $salt, $phone, $inst, $title);
 
 		$this->registration->Synchronize($user);
@@ -270,10 +285,12 @@ class RegistrationTests extends TestBase
 		$langCode = 'en_US';
 		$timezone = 'UTC';
 
+		$groups = array(new UserGroup(1, 'group1'), new UserGroup(2, 'g2'));
+
 		$encryptedPassword = $this->fakeEncryption->_Encrypted;
 		$salt = $this->fakeEncryption->_Salt;
 
-		$user = new AuthenticatedUser($username, $email, $fname, $lname, 'password', $langCode, $timezone, $phone, $inst, $title);
+		$user = new AuthenticatedUser($username, $email, $fname, $lname, 'password', $langCode, $timezone, $phone, $inst, $title, $groups);
 
 		$expectedUser = User::Create($fname,
 									 $lname,
@@ -286,6 +303,7 @@ class RegistrationTests extends TestBase
 									 Pages::DEFAULT_HOMEPAGE_ID);
 
 		$expectedUser->ChangeAttributes($phone, $inst, $title);
+		$expectedUser->WithGroups($groups);
 
 		$this->userRepository->expects($this->once())
 					->method('UserExists')
@@ -319,5 +337,3 @@ class RegistrationTests extends TestBase
 		$this->assertEquals($email, $user->Email());
 	}
 }
-
-?>

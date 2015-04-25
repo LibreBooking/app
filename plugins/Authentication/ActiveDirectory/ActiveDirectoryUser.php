@@ -1,6 +1,6 @@
 <?php
 /**
-Copyright 2011-2014 Nick Korbel
+Copyright 2011-2015 Nick Korbel
 
 This file is part of Booked Scheduler.
 
@@ -27,21 +27,24 @@ class ActiveDirectoryUser
 	private $institution;
 	private $title;
 	private $mapping;
+	private $groups;
 
 	/**
 	 * @param adLDAPUserCollection $entry
 	 * @param string[]|array $mapping
+	 * @param string $groups
 	 */
-	public function __construct($entry, $mapping)
+	public function __construct($entry, $mapping, $groups = null)
 	{
 		$this->mapping = $mapping;
 
-		$this->fname = $this->Get($entry, 'givenname');//$entry->givenname;
+		$this->fname = $this->Get($entry, 'givenname');
 		$this->lname = $this->Get($entry, 'sn');
 		$this->mail = strtolower($this->Get($entry, 'mail'));
 		$this->phone = $this->Get($entry, 'telephonenumber');
 		$this->institution = $this->Get($entry, 'physicaldeliveryofficename');
 		$this->title = $this->Get($entry, 'title');
+		$this->groups = $groups == null ? null : explode(',', $groups);
 	}
 
 	public function GetFirstName()
@@ -72,6 +75,14 @@ class ActiveDirectoryUser
 	public function GetTitle()
 	{
 		return $this->title;
+	}
+
+	/**
+	 * @return array|null
+	 */
+	public function GetGroups()
+	{
+		return $this->groups;
 	}
 
 	public function __toString()

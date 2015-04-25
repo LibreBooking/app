@@ -1,6 +1,6 @@
 <?php
 /**
-Copyright 2011-2014 Nick Korbel
+Copyright 2011-2015 Nick Korbel
 
 This file is part of Booked Scheduler.
 
@@ -62,8 +62,7 @@ require_once(ROOT_DIR . 'tests/fakes/FakeReservationSavePage.php');
 require_once(ROOT_DIR . 'tests/fakes/ExistingReservationSeriesBuilder.php');
 require_once(ROOT_DIR . 'tests/fakes/FakeAttributeList.php');
 require_once(ROOT_DIR . 'tests/fakes/FakeResourceGroupTree.php');
-require_once(ROOT_DIR . 'tests/fakes/FakeAuthorizationService.php');
+require_once(ROOT_DIR . 'tests/fakes/FakeAttributeRepository.php');
+require_once(ROOT_DIR . 'tests/fakes/FakeResourceService.php');
 require_once(ROOT_DIR . 'tests/fakes/FakeReservationViewRepository.php');
-require_once(ROOT_DIR . 'tests/fakes/FakeAttributeRepository.php');
-require_once(ROOT_DIR . 'tests/fakes/FakeAttributeRepository.php');
-require_once(ROOT_DIR . 'tests/fakes/FakeAccessoryRepository.php');
+require_once(ROOT_DIR . 'tests/fakes/FakeGroupRepository.php');

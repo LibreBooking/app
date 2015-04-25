@@ -1,6 +1,6 @@
 <?php
 /**
-Copyright 2011-2014 Nick Korbel
+Copyright 2011-2015 Nick Korbel
 
 This file is part of Booked Scheduler.
 
@@ -48,6 +48,11 @@ class ActiveDirectoryTests extends TestBase
 	private $fakeRegistration;
 
 	/**
+	 * @var FakeGroupViewRepository
+	 */
+	private $fakeGroupRepository;
+
+	/**
 	 * @var FakePasswordEncryption
 	 */
 	private $encryption;
@@ -69,6 +74,7 @@ class ActiveDirectoryTests extends TestBase
 		$this->fakeLdap = new FakeActiveDirectoryWrapper();
 		$this->fakeRegistration = new FakeRegistration();
 		$this->encryption = new FakePasswordEncryption();
+		$this->fakeGroupRepository = new FakeGroupViewRepository();
 
         $ldapEntry = new TestAdLdapEntry();
 		$ldapEntry->sn = 'user';
@@ -85,7 +91,7 @@ class ActiveDirectoryTests extends TestBase
 						'physicaldeliveryofficename' => 'physicaldeliveryofficename',
 						'title' => 'title');
 
-		$this->ldapUser = new ActiveDirectoryUser($ldapEntry, $mapping);
+		$this->ldapUser = new ActiveDirectoryUser($ldapEntry, $mapping, 'group1,group2,group3');
 
 		$this->fakeLdap->_ExpectedLdapUser = $this->ldapUser;
 
@@ -187,6 +193,23 @@ class ActiveDirectoryTests extends TestBase
 		$this->assertTrue($this->fakeRegistration->_SynchronizeCalled);
 		$this->assertEquals($expectedUser, $this->fakeRegistration->_LastSynchronizedUser);
 		$this->assertEquals($this->loginContext, $this->fakeAuth->_LastLoginContext);
+	}
+
+	public function testSyncsGroups()
+	{
+		$this->fakeLdapOptions->_SyncGroups = true;
+		$auth = new ActiveDirectory($this->fakeAuth, $this->fakeLdap, $this->fakeLdapOptions);
+		$auth->SetRegistration($this->fakeRegistration);
+		$auth->SetGroupRepository($this->fakeGroupRepository);
+
+		$this->fakeGroupRepository->_AddGroup(new GroupItemView(1, 'Group1'));
+		$this->fakeGroupRepository->_AddGroup(new GroupItemView(3, 'Group3'));
+		$this->fakeGroupRepository->_AddGroup(new GroupItemView(4, 'Group4'));
+
+		$auth->Validate($this->username, $this->password);
+		$auth->Login($this->username, $this->loginContext);
+
+		$this->assertEquals(array(new UserGroup(1, 'Group1'), new UserGroup(3,'Group3')), $this->fakeRegistration->_LastSynchronizedUser->GetGroups());
 	}
 
 	public function testDoesNotSyncIfUserWasNotFoundInLdap()
@@ -329,6 +352,5 @@ class TestAdLdapEntry
     public $telephonenumber;
     public $physicaldeliveryofficename;
     public $title;
+    public $groups;
 }
-
-?>

@@ -1,6 +1,6 @@
 <?php
 /**
-Copyright 2011-2014 Nick Korbel
+Copyright 2011-2015 Nick Korbel
 
 This file is part of Booked Scheduler.
 
@@ -73,6 +73,14 @@ class ActiveDirectoryOptions
 		return Configuration::Instance()->File(ActiveDirectoryConfig::CONFIG_ID)->GetKey($keyName, $converter);
 	}
 
+	/**
+	 * @return bool
+	 */
+	public function SyncGroups()
+	{
+		return $this->GetConfig(ActiveDirectoryConfig::SYNC_GROUPS, new BooleanConverter());
+	}
+
 	private function GetHosts()
 	{
 		$hosts = explode(',', $this->GetConfig(ActiveDirectoryConfig::DOMAIN_CONTROLLERS));
@@ -113,6 +121,22 @@ class ActiveDirectoryOptions
 
 		return $attributes;
 	}
-}
 
-?>
+	/**
+	 * @return bool
+	 */
+	public function HasRequiredGroups()
+	{
+		$groupList = $this->GetConfig(ActiveDirectoryConfig::REQUIRED_GROUPS);
+		return !empty($groupList);
+	}
+
+	/**
+	 * @return string[]
+	 */
+	public function RequiredGroups()
+	{
+		$groupList = $this->GetConfig(ActiveDirectoryConfig::REQUIRED_GROUPS);
+		return explode(',', strtolower($groupList));
+	}
+}
