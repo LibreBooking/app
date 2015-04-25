@@ -251,6 +251,16 @@ abstract class Page implements IPage
 
 	/**
 	 * @param string $var
+	 * @return null|string
+	 */
+	protected function GetCheckbox($var)
+	{
+		$val = $this->server->GetForm($var);
+		return !empty($val);
+	}
+
+	/**
+	 * @param string $var
 	 * @return null
 	 */
 	protected function GetRawForm($var)

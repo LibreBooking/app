@@ -302,35 +302,10 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 					<div class="col-xs-6">
 						<h5 class="inline">{translate key=Access}</h5>
 						<a href="#" class="inline update changeAccess">
-													<span class="fa fa-pencil-square-o"></span>
-												</a>
-						<div>
-							{if $resource->HasMinNotice()}
-								{translate key='ResourceMinNotice' args=$resource->GetMinNotice()}
-							{else}
-								{translate key='ResourceMinNoticeNone'}
-							{/if}
-						</div>
-						<div>
-							{if $resource->HasMaxNotice()}
-								{translate key='ResourceMaxNotice' args=$resource->GetMaxNotice()}
-							{else}
-								{translate key='ResourceMaxNoticeNone'}
-							{/if}
-						</div>
-						<div>
-							{if $resource->GetRequiresApproval()}
-								{translate key='ResourceRequiresApproval'}
-							{else}
-								{translate key='ResourceRequiresApprovalNone'}
-							{/if}
-						</div>
-						<div>
-							{if $resource->GetAutoAssign()}
-								{translate key='ResourcePermissionAutoGranted'}
-							{else}
-								{translate key='ResourcePermissionNotAutoGranted'}
-							{/if}
+							<span class="fa fa-pencil-square-o"></span>
+						</a>
+						<div class="accessPlaceHolder">
+						{include file="Admin/Resources/manage_resources_access.tpl" resource=$resource}
 						</div>
 					</div>
 				</div>
@@ -585,93 +560,82 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			</form>
 		</div>
 
-	<div id="configurationDialog" class="hide dialog" title="{translate key=UsageConfiguration}">
-		<form id="configurationForm" method="post" ajaxAction="{ManageResourcesActions::ActionChangeConfiguration}">
-			<div style="margin-bottom: 10px;">
-
-				<fieldset>
-					<legend>{translate key=Access}</legend>
-					<ul>
-						<li>
-							<label for="requiresApproval">{translate key='ResourceRequiresApproval'}</label>
-							<select id="requiresApproval" class="textbox" {formname key=REQUIRES_APPROVAL}>
-								<option value="1">{translate key='Yes'}</option>
-								<option value="0">{translate key='No'}</option>
-							</select>
-						</li>
-						<li>
-							<label for="autoAssign">{translate key='ResourcePermissionAutoGranted'}</label>
-							<select id="autoAssign" class="textbox" {formname key=AUTO_ASSIGN}>
-								<option value="1">{translate key='Yes'}</option>
-								<option value="0">{translate key='No'}</option>
-							</select>
-						</li>
-						<li>
-							<label>
-								<input type="checkbox" id="noStartNotice"/> {translate key='ResourceMinNoticeNone'}
-							</label>
-						<span class="noStartNotice">
-							<br/>
+	<div id="accessDialog" class="modal" tabindex="-1" role="dialog" aria-labelledby="accessModalLabel"
+		 aria-hidden="true">
+		<form id="accessForm" method="post" role="form" ajaxAction="{ManageResourcesActions::ActionChangeAccess}">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+						<h4 class="modal-title" id="accessModalLabel">{translate key=Access}</h4>
+					</div>
+					<div class="modal-body">
+						<div class="editStartNotice">
+							<div class="checkbox">
+								<input type="checkbox" id="noStartNotice" class="noStartNotice"
+									   data-related-inputs="#startNoticeInputs"/>
+								<label for="noStartNotice">{translate key=ResourceMinLengthNone}</label>
+							</div>
 							{capture name="txtStartNotice" assign="txtStartNotice"}
-								<input type='text' id='startNoticeDays' size='3' class='days textbox' maxlength='3'
-									   title='Days'/>
-								<input type='text' id='startNoticeHours' size='2' class='hours textbox' maxlength='2'
-									   title='Hours'/>
-								<input type='text' id='startNoticeMinutes' size='2' class='minutes textbox'
-									   maxlength='2' title='Minutes'/>
+								<input type='text' id='startNoticeDays' size='3' class='days form-control' maxlength='3'
+									   title='Days' placeholder='{translate key=days}'/>
+								<input type='text' id='startNoticeHours' size='2' class='hours form-control' maxlength='2'
+									   title='Hours' placeholder='{translate key=hours}'/>
+								<input type='text' id='startNoticeMinutes' size='2' class='minutes form-control'
+									   maxlength='2' title='Minutes' placeholder='{translate key=minutes}'/>
 								<input type='hidden' id='startNotice' class='interval' {formname key=MIN_NOTICE} />
 							{/capture}
-							{translate key='ResourceMinNotice' args=$txtStartNotice}
-						</span>
-						</li>
-						<li>
-							<label>
-								<input type="checkbox" id="noEndNotice"/> {translate key='ResourceMaxNoticeNone'}
-							</label>
-						<span class="noEndNotice">
-							<br/>
-							{capture name="txtEndNotice" assign="txtEndNotice"}
-								<input type='text' id='endNoticeDays' size='3' class='days textbox' maxlength='3'
-									   title='Days'/>
-								<input type='text' id='endNoticeHours' size='2' class='hours textbox' maxlength='2'
-									   title='Hours'/>
-								<input type='text' id='endNoticeMinutes' size='2' class='minutes textbox'
-									   maxlength='2' title='Minutes'/>
+							<div id='startNoticeInputs'>
+								{translate key='ResourceMinNotice' args=$txtStartNotice}
+							</div>
+						</div>
+
+						<div class="editEndNotice">
+							<div class="checkbox">
+								<input type="checkbox" id="noEndNotice" data-related-inputs="#endNoticeInputs"/>
+								<label for="noEndNotice">{translate key=ResourceMaxNoticeNone}</label>
+							</div>
+							{capture name="txtEndNotice" assign="endNoticeInputs"}
+								<input type='text' id='endNoticeDays' size='3' class='days form-control' maxlength='3'
+									   title='Days' placeholder='{translate key=days}'/>
+								<input type='text' id='endNoticeHours' size='2' class='hours form-control' maxlength='2'
+									   title='Hours' placeholder='{translate key=hours}'/>
+								<input type='text' id='endNoticeMinutes' size='2' class='minutes form-control'
+									   maxlength='2' title='Minutes' placeholder='{translate key=minutes}'/>
 								<input type='hidden' id='endNotice' class='interval' {formname key=MAX_NOTICE} />
 							{/capture}
-							{translate key='ResourceMaxNotice' args=$txtEndNotice}
-						</span>
-						</li>
-					</ul>
-				</fieldset>
-				<fieldset>
-					<legend>{translate key='Capacity'}</legend>
-					<ul>
-						<li>
-							<label>
-								<input type="checkbox" id="unlimitedCapacity"/> {translate key='ResourceCapacityNone'}
-							</label>
-						<span class="unlimitedCapacity">
-							<br/>
-							<label for="maxCapacity">
-								{capture name="txtMaxCapacity" assign="txtMaxCapacity"}
-									<input type='text' id='maxCapacity' class='textbox' size='5'
-										   maxlength='5' {formname key=MAX_PARTICIPANTS} />
-								{/capture}
-							</label>
-							{translate key='ResourceCapacity' args=$txtMaxCapacity}
-						</span>
-						</li>
-					</ul>
-				</fieldset>
-			</div>
-			<div class="admin-update-buttons">
-				<button type="button"
-						class="button save">{html_image src="disk-black.png"} {translate key='Update'}</button>
-				<button type="button" class="button cancel">{html_image src="slash.png"} {translate key='Cancel'}</button>
+							<div id='endNoticeInputs'>
+								{translate key='ResourceMaxNotice' args=$txtEndNotice}
+							</div>
+						</div>
+						<div class="editRequiresApproval">
+							<div class="checkbox">
+								<input type="checkbox" {formname key=REQUIRES_APPROVAL} id="requiresApproval"/>
+								<label for="requiresApproval">{translate key=ResourceRequiresApproval}</label>
+							</div>
+						</div>
+
+						<div class="editAutoAssign">
+							<div class="checkbox">
+								<input type="checkbox" {formname key=AUTO_ASSIGN} id="autoAssign"/>
+								<label for="autoAssign">{translate key=ResourcePermissionAutoGranted}</label>
+							</div>
+						</div>
+					</div>
+
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default"
+								data-dismiss="modal">{translate key='Cancel'}</button>
+						<button type="button" class="btn btn-success save"><span
+									class="glyphicon glyphicon-ok-circle"></span>
+							{translate key='Update'}</button>
+						{indicator}
+					</div>
+				</div>
 			</div>
 		</form>
 	</div>
+
 
 	<div id="groupAdminDialog" class="dialog" title="{translate key=WhoCanManageThisResource}">
 		<form method="post" id="groupAdminForm" ajaxAction="{ManageResourcesActions::ActionChangeAdmin}">

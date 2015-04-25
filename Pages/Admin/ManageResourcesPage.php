@@ -437,7 +437,7 @@ class ManageResourcesPage extends ActionPage implements IManageResourcesPage
 	 */
 	public function GetAllowMultiday()
 	{
-		return $this->GetForm(FormKeys::ALLOW_MULTIDAY);
+		return $this->GetCheckbox(FormKeys::ALLOW_MULTIDAY);
 	}
 
 	/**
@@ -445,7 +445,7 @@ class ManageResourcesPage extends ActionPage implements IManageResourcesPage
 	 */
 	public function GetRequiresApproval()
 	{
-		return $this->GetForm(FormKeys::REQUIRES_APPROVAL);
+		return $this->GetCheckbox(FormKeys::REQUIRES_APPROVAL);
 	}
 
 	/**
@@ -453,7 +453,7 @@ class ManageResourcesPage extends ActionPage implements IManageResourcesPage
 	 */
 	public function GetAutoAssign()
 	{
-		return $this->GetForm(FormKeys::AUTO_ASSIGN);
+		return $this->GetCheckbox(FormKeys::AUTO_ASSIGN);
 	}
 
 	/**

@@ -46,6 +46,7 @@ class ManageResourcesActions
 	const ActionBulkUpdate = 'bulkUpdate';
 	const ActionChangeDuration = 'changeDuration';
 	const ActionChangeCapacity = 'changeCapacity';
+	const ActionChangeAccess = 'changeAccess';
 }
 
 class ManageResourcesPresenter extends ActionPresenter
@@ -125,6 +126,7 @@ class ManageResourcesPresenter extends ActionPresenter
 		$this->AddAction(ManageResourcesActions::ActionBulkUpdate, 'BulkUpdate');
 		$this->AddAction(ManageResourcesActions::ActionChangeDuration, 'ChangeDuration');
 		$this->AddAction(ManageResourcesActions::ActionChangeCapacity, 'ChangeCapacity');
+		$this->AddAction(ManageResourcesActions::ActionChangeAccess, 'ChangeAccess');
 	}
 
 	public function PageLoad()
@@ -236,6 +238,29 @@ class ManageResourcesPresenter extends ActionPresenter
 		$this->resourceRepository->Update($resource);
 
 		$this->page->BindUpdatedCapacity($resource);
+	}
+
+	public function ChangeAccess()
+	{
+		$resourceId = $this->page->GetResourceId();
+		$requiresApproval = $this->page->GetRequiresApproval();
+		$autoAssign = $this->page->GetAutoAssign();
+		$minNotice = $this->page->GetStartNoticeMinutes();
+		$maxNotice = $this->page->GetEndNoticeMinutes();
+
+		$resource = $this->resourceRepository->LoadById($resourceId);
+
+		$resource->SetRequiresApproval($requiresApproval);
+		$resource->SetAutoAssign($autoAssign);
+		$resource->SetMinNotice($minNotice);
+		$resource->SetMaxNotice($maxNotice);
+
+		Log::Debug('Updating resource id=%s, requiresApproval=%s, autoAssign=%s, minNotice=%s, maxNotice=%s',
+				   $resourceId, $requiresApproval, $autoAssign, $minNotice, $maxNotice);
+
+		$this->resourceRepository->Update($resource);
+
+		$this->page->BindUpdatedAccess($resource);
 	}
 
 	public function ChangeConfiguration()

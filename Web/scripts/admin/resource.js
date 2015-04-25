@@ -4,35 +4,22 @@ function ResourceManagement(opts) {
 	var elements = {
 		activeId:$('#activeId'),
 
-		//renameDialog:$('#renameDialog'),
 		imageDialog:$('#imageDialog'),
-		//scheduleDialog:$('#scheduleDialog'),
-		//locationDialog:$('#locationDialog'),
-		//descriptionDialog:$('#descriptionDialog'),
-		//notesDialog:$('#notesDialog'),
 		deleteDialog:$('#deletePrompt'),
-		//configurationDialog:$('#configurationDialog'),
 		groupAdminDialog:$('#groupAdminDialog'),
-		//sortOrderDialog:$('#sortOrderDialog'),
-		//resourceTypeDialog:$('#resourceTypeDialog'),
 		statusDialog:$('#statusDialog'),
 		durationDialog:$('#durationDialog'),
 		capacityDialog:$('#capacityDialog'),
+		accessDialog:$('#accessDialog'),
 
-		//renameForm:$('#renameForm'),
 		imageForm:$('#imageForm'),
-		//scheduleForm:$('#scheduleForm'),
-		//locationForm:$('#locationForm'),
-		//descriptionForm:$('#descriptionForm'),
-		//notesForm:$('#notesForm'),
 		deleteForm:$('#deleteForm'),
 		durationForm:$('#durationForm'),
 		capacityForm:$('#capacityForm'),
+		accessForm:$('#accessForm'),
 		groupAdminForm:$('#groupAdminForm'),
 		attributeForm:$('.attributesForm'),
-		//sortOrderForm:$('#sortOrderForm'),
 		statusForm:$('#statusForm'),
-		//resourceTypeForm:$('#resourceTypeForm'),
 
 		statusReasons:('.reasonId'),
 		statusOptions:('.statusId'),
@@ -77,13 +64,7 @@ function ResourceManagement(opts) {
 	}
 
 	ResourceManagement.prototype.init = function () {
-		// todo make placeholders
-		//$(".days").watermark('days');
-		//$(".hours").watermark('hrs');
-		//$(".minutes").watermark('mins');
-
 		ConfigureAdminDialog(elements.imageDialog);
-		//ConfigureAdminDialog(elements.configurationDialog);
 		ConfigureAdminDialog(elements.groupAdminDialog);
 
 		$('.resourceDetails').each(function () {
@@ -193,6 +174,10 @@ function ResourceManagement(opts) {
 			details.find('.changeCapacity').click(function (e) {
 				showCapacityPrompt(e);
 			});
+
+			details.find('.changeAccess').click(function (e) {
+				showAccessPrompt(e);
+			});
 		});
 
 		$(".save").click(function () {
@@ -247,6 +232,8 @@ function ResourceManagement(opts) {
 		});
 
 		wireUpCheckboxToggle(elements.durationForm);
+		wireUpCheckboxToggle(elements.capacityForm);
+		wireUpCheckboxToggle(elements.accessForm);
 
 		var imageSaveErrorHandler = function (result) {
 			alert(result);
@@ -287,7 +274,7 @@ function ResourceManagement(opts) {
 		ConfigureAdminForm(elements.deleteForm, defaultSubmitCallback(elements.deleteForm));
 		ConfigureAdminForm(elements.durationForm, defaultSubmitCallback(elements.durationForm), null, onDurationSaved, {onBeforeSerialize:combineIntervals});
 		ConfigureAdminForm(elements.capacityForm, defaultSubmitCallback(elements.capacityForm), null, onCapacitySaved);
-		//ConfigureAdminForm(elements.groupAdminForm, defaultSubmitCallback(elements.groupAdminForm));
+		ConfigureAdminForm(elements.accessForm, defaultSubmitCallback(elements.accessForm), null, onAccessSaved, {onBeforeSerialize:combineIntervals});
 		ConfigureAdminForm(elements.bulkUpdateForm, defaultSubmitCallback(elements.bulkUpdateForm), null, bulkUpdateErrorHandler, {onBeforeSerialize:combineIntervals});
 
 		$.each(elements.attributeForm, function(i,form){
@@ -357,26 +344,6 @@ function ResourceManagement(opts) {
 		elements.deleteDialog.modal('show');
 	};
 
-	var showConfigurationPrompt = function (e) {
-
-		wireUpCheckboxToggle(elements.configurationDialog);
-
-		var resource = getActiveResource();
-
-		setDaysHoursMinutes('#minDuration', resource.minLength, $('#noMinimumDuration'));
-		setDaysHoursMinutes('#maxDuration', resource.maxLength, $('#noMaximumDuration'));
-		setDaysHoursMinutes('#startNotice', resource.startNotice, $('#noStartNotice'));
-		setDaysHoursMinutes('#endNotice', resource.endNotice, $('#noEndNotice'));
-		setDaysHoursMinutes('#bufferTime', resource.bufferTime, $('#noBufferTime'));
-		showHideConfiguration(resource.maxParticipants, $('#maxCapacity'), $('#unlimitedCapacity'));
-
-		$('#allowMultiday').val(resource.allowMultiday);
-		$('#requiresApproval').val(resource.requiresApproval);
-		$('#autoAssign').val(resource.autoAssign);
-
-		elements.configurationDialog.dialog("open");
-	};
-
 	var showDurationPrompt = function(e){
 		var resource = getActiveResource();
 
@@ -392,28 +359,37 @@ function ResourceManagement(opts) {
 		var resource = getActiveResource();
 
 		showHideConfiguration(resource.maxParticipants, $('#maxCapacity'), $('#unlimitedCapacity'));
-		wireUpCheckboxToggle(elements.capacityDialog);
 		elements.capacityDialog.modal('show');
+	};
+
+	var showAccessPrompt = function(e){
+		var resource = getActiveResource();
+
+		setDaysHoursMinutes('#startNotice', resource.startNotice, $('#noStartNotice'));
+		setDaysHoursMinutes('#endNotice', resource.endNotice, $('#noEndNotice'));
+
+		$('#requiresApproval').prop('checked', resource.requiresApproval && resource.requiresApproval == "1");
+		$('#autoAssign').prop('checked', resource.autoAssign && resource.autoAssign == "1");
+
+		elements.accessDialog.modal('show');
+	};
+
+	var setDuration = function(container, resourceDuration) {
+		var emptyIfZero = function(val) {
+				if (val == 0)
+					{
+						return '';
+					}
+					return val;
+				};
+		resourceDuration.value = container.attr('data-value');
+		resourceDuration.days = emptyIfZero(container.attr('data-days'));
+		resourceDuration.hours = emptyIfZero(container.attr('data-hours'));
+		resourceDuration.minutes = emptyIfZero(container.attr('data-minutes'));
 	};
 
 	var onDurationSaved = function (resultHtml)
 	{
-		var emptyIfZero = function(val)
-		{
-			if (val == 0)
-			{
-				return '';
-			}
-			return val;
-		};
-
-		var setDuration = function(container, resourceDuration){
-			resourceDuration.value = container.attr('data-value');
-			resourceDuration.days = emptyIfZero(container.attr('data-days'));
-			resourceDuration.hours = emptyIfZero(container.attr('data-hours'));
-			resourceDuration.minutes = emptyIfZero(container.attr('data-minutes'));
-		};
-
 		var resource = getActiveResource();
 		var resourceDiv = $("div[data-resourceId=" + resource.id + "]");
 		resourceDiv.find('.durationPlaceHolder').html(resultHtml);
@@ -442,6 +418,26 @@ function ResourceManagement(opts) {
 		resource.maxParticipants = maxParticipants.attr('data-value');
 
 		elements.capacityDialog.modal('hide');
+	};
+
+	var onAccessSaved = function (resultHtml)
+	{
+		var resource = getActiveResource();
+		var resourceDiv = $("div[data-resourceId=" + resource.id + "]");
+		resourceDiv.find('.accessPlaceHolder').html(resultHtml);
+
+		var result = resourceDiv.find('.accessPlaceHolder');
+		var startNotice = result.find('.startNotice');
+		var endNotice = result.find('.endNotice');
+		var requiresApproval = result.find('.requiresApproval');
+		var autoAssign = result.find('.autoAssign');
+
+		setDuration(startNotice, resource.startNotice);
+		setDuration(endNotice, resource.endNotice);
+		resource.requiresApproval = requiresApproval.attr('data-value');
+		resource.autoAssign = autoAssign.attr('data-value');
+
+		elements.accessDialog.modal('hide');
 	};
 
 	var showStatusPrompt = function (e) {
