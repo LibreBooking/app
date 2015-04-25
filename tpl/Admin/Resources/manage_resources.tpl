@@ -263,14 +263,17 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 						</div>
 						<div>
 							{translate key='ResourceAdministrator'}
-							{if $resource->HasAdminGroup()}
-								<span class="resourceValue">{$GroupLookup[$resource->GetAdminGroupId()]->Name}</span>
-							{else}
-								<span class="note">{translate key='NoResourceAdministratorLabel'}</span>
-							{/if}
+							<span class="resourceValue resourceAdminValue"
+									  data-type="select" data-pk="{$id}" data-value="{$resource->GetAdminGroupId()}"
+									  data-name="{FormKeys::RESOURCE_ADMIN_GROUP_ID}">{$GroupLookup[$resource->GetAdminGroupId()]->Name}</span>
 							{if $AdminGroups|count > 0}
-								<a class="update adminButton" href="#"><span class="fa fa-pencil-square-o"></span></a>
+								<a class="update changeResourceAdmin" href="#"><span class="fa fa-pencil-square-o"></span></a>
 							{/if}
+							{*{if $resource->HasAdminGroup()}*}
+								{*<span class="resourceValue">{$GroupLookup[$resource->GetAdminGroupId()]->Name}</span>*}
+							{*{else}*}
+								{*<span class="note">{translate key='NoResourceAdministratorLabel'}</span>*}
+							{*{/if}*}
 						</div>
 						<div>
 							<a class="update disableSubscription hide subscriptionButton" href="#">{translate key=TurnOffSubscription}</a>
@@ -635,7 +638,6 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			</div>
 		</form>
 	</div>
-
 
 	<div id="groupAdminDialog" class="dialog" title="{translate key=WhoCanManageThisResource}">
 		<form method="post" id="groupAdminForm" ajaxAction="{ManageResourcesActions::ActionChangeAdmin}">
@@ -1106,6 +1108,22 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 				url: updateUrl + '{ManageResourcesActions::ActionChangeNotes}',
 				emptytext: '{translate key='NoDescriptionLabel'}'
 			});
+
+			$('.resourceAdminValue').editable({
+				url: updateUrl + '{ManageResourcesActions::ActionChangeAdmin}',
+				emptytext: '{translate key=None}',
+				source: [
+					{
+						value: '0', text: ''
+					},
+					{foreach from=$AdminGroups item=group key=scheduleId}
+					{
+						value:{$group->Id()}, text: '{$group->Name()}'
+					},
+					{/foreach}
+				]
+			});
+
 		}
 
 		$(document).ready(function ()

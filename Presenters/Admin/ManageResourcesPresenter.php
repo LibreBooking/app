@@ -183,7 +183,6 @@ class ManageResourcesPresenter extends ActionPresenter
 		$attributeList = $this->attributeService->GetAttributes(CustomAttributeCategory::RESOURCE, $resourceIds);
 		$this->page->BindAttributeList($attributeList);
 
-
 		$this->InitializeFilter($filterValues, $resourceAttributes);
 	}
 
@@ -441,7 +440,7 @@ class ManageResourcesPresenter extends ActionPresenter
 		Log::Debug('Changing resource admin for resource %s', $resourceId);
 
 		$resource = $this->resourceRepository->LoadById($resourceId);
-		$adminGroupId = $this->page->GetAdminGroupId();
+		$adminGroupId = $this->page->GetValue();
 		$resource->SetAdminGroupId($adminGroupId);
 		$this->resourceRepository->Update($resource);
 	}

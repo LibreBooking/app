@@ -65,7 +65,6 @@ function ResourceManagement(opts) {
 
 	ResourceManagement.prototype.init = function () {
 		ConfigureAdminDialog(elements.imageDialog);
-		ConfigureAdminDialog(elements.groupAdminDialog);
 
 		$('.resourceDetails').each(function () {
 			var indicator = $('.indicator');
@@ -141,16 +140,17 @@ function ResourceManagement(opts) {
 				details.find('.notesValue').editable('toggle');
 			});
 
+			details.find('.changeResourceAdmin').click(function (e) {
+				e.stopPropagation();
+				details.find('.resourceAdminValue').editable('toggle');
+			});
+
 			details.find('.adminButton').click(function (e) {
 				showResourceAdmin(e);
 			});
 
 			details.find('.deleteButton').click(function (e) {
 				showDeletePrompt(e);
-			});
-
-			details.find('.changeConfigurationButton').click(function (e) {
-				showConfigurationPrompt(e);
 			});
 
 			details.find('.changeAttributes, .customAttributes .cancel').click(function (e) {
@@ -259,10 +259,6 @@ function ResourceManagement(opts) {
 				validationSummary.find('ul').empty().append(messages);
 				validationSummary.show();
 			}
-		};
-
-		var errorHandler = function (result) {
-			$("#globalError").html(result).show();
 		};
 
 		var bulkUpdateErrorHandler = function (result) {
