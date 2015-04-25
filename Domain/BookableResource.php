@@ -313,8 +313,10 @@ class BookableResource implements IResource
 		{
 			return $value->TotalSeconds();
 		}
-
-		return $value;
+		else
+		{
+			return TimeInterval::Parse($value)->TotalSeconds();
+		}
 	}
 
 	/**
@@ -851,7 +853,7 @@ class BookableResource implements IResource
 	 */
 	public function SetBufferTime($bufferTime)
 	{
-		$this->_bufferTime = $bufferTime;
+		$this->_bufferTime = $this->GetIntervalValue($bufferTime);
 	}
 
 	/**

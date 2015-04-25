@@ -67,13 +67,12 @@ span.error {
   line-height: 20px;
 }
 .noImage {
-  height: 60px;
-  background-color: #f0f0f0;
   line-height: 16px;
   text-align: center;
   color: #666;
-  border: solid 1px #ccc;
   font-size: 4em;
+  background-color: #f0f0f0;
+  border: solid 1px #ccc;
 }
 .resourceDetails {
   font-size: 1.2em;
@@ -431,6 +430,12 @@ td.update {
 .descriptionValue {
   max-width: 40%;
 }
+.days,
+.hours,
+.minutes {
+  width: 80px;
+  display: inline;
+}
 #page-manage-blackouts input,
 #page-manage-reservations input,
 #page-manage-resources input,
@@ -449,4 +454,7 @@ td.update {
 #page-manage-reservations .checkbox input,
 #page-manage-resources .checkbox input {
   height: 20px;
+}
+.popover {
+  max-width: 500px;
 }

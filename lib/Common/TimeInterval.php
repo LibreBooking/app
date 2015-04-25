@@ -41,6 +41,11 @@ class TimeInterval
 	 */
 	public static function Parse($interval)
 	{
+		if (is_a($interval, 'TimeInterval'))
+		{
+			return $interval;
+		}
+
 		if (empty($interval))
 		{
 			return new TimeInterval(0);

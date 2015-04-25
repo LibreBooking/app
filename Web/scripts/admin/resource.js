@@ -16,6 +16,7 @@ function ResourceManagement(opts) {
 		sortOrderDialog:$('#sortOrderDialog'),
 		resourceTypeDialog:$('#resourceTypeDialog'),
 		statusDialog:$('#statusDialog'),
+		durationDialog:$('#durationDialog'),
 
 		renameForm:$('#renameForm'),
 		imageForm:$('#imageForm'),
@@ -24,7 +25,7 @@ function ResourceManagement(opts) {
 		descriptionForm:$('#descriptionForm'),
 		notesForm:$('#notesForm'),
 		deleteForm:$('#deleteForm'),
-		configurationForm:$('#configurationForm'),
+		durationForm:$('#durationForm'),
 		groupAdminForm:$('#groupAdminForm'),
 		attributeForm:$('.attributesForm'),
 		sortOrderForm:$('#sortOrderForm'),
@@ -184,6 +185,10 @@ function ResourceManagement(opts) {
 			details.find('.changeStatus').click(function (e) {
 				showStatusPrompt(e);
 			});
+
+			details.find('.changeDuration').click(function (e) {
+				showDurationPrompt(e);
+			});
 		});
 
 		$(".save").click(function () {
@@ -237,6 +242,8 @@ function ResourceManagement(opts) {
 			$('#bulkUpdateDialog').modal('show');
 		});
 
+		wireUpIntervalToggle(elements.durationForm);
+
 		var imageSaveErrorHandler = function (result) {
 			alert(result);
 		};
@@ -274,7 +281,7 @@ function ResourceManagement(opts) {
 		ConfigureAdminForm(elements.imageForm, defaultSubmitCallback(elements.imageForm), null, imageSaveErrorHandler);
 		ConfigureAdminForm(elements.addForm, defaultSubmitCallback(elements.addForm), null, handleAddError);
 		ConfigureAdminForm(elements.deleteForm, defaultSubmitCallback(elements.deleteForm));
-		ConfigureAdminForm(elements.configurationForm, defaultSubmitCallback(elements.configurationForm), null, errorHandler, {onBeforeSerialize:combineIntervals});
+		ConfigureAdminForm(elements.durationForm, defaultSubmitCallback(elements.durationForm), null, onDurationSaved, {onBeforeSerialize:combineIntervals});
 		ConfigureAdminForm(elements.groupAdminForm, defaultSubmitCallback(elements.groupAdminForm));
 		ConfigureAdminForm(elements.bulkUpdateForm, defaultSubmitCallback(elements.bulkUpdateForm), null, bulkUpdateErrorHandler, {onBeforeSerialize:combineIntervals});
 
@@ -365,6 +372,52 @@ function ResourceManagement(opts) {
 		elements.configurationDialog.dialog("open");
 	};
 
+	var showDurationPrompt = function(e){
+		var resource = getActiveResource();
+
+		setDaysHoursMinutes('#minDuration', resource.minLength, $('#noMinimumDuration'));
+		setDaysHoursMinutes('#maxDuration', resource.maxLength, $('#noMaximumDuration'));
+		setDaysHoursMinutes('#bufferTime', resource.bufferTime, $('#noBufferTime'));
+		$('#allowMultiDay').prop('checked', resource.allowMultiday && resource.allowMultiday == "1");
+
+		elements.durationDialog.modal('show');
+	};
+
+	var onDurationSaved = function (resultHtml)
+	{
+		var emptyIfZero = function(val)
+		{
+			if (val == 0)
+			{
+				return '';
+			}
+			return val;
+		};
+
+		var setDuration = function(container, resourceDuration){
+			resourceDuration.value = container.attr('data-value');
+			resourceDuration.days = emptyIfZero(container.attr('data-days'));
+			resourceDuration.hours = emptyIfZero(container.attr('data-hours'));
+			resourceDuration.minutes = emptyIfZero(container.attr('data-minutes'));
+		};
+
+		var resource = getActiveResource();
+		var resourceDiv = $("div[data-resourceId=" + resource.id + "]");
+		resourceDiv.find('.durationPlaceHolder').html(resultHtml);
+
+		var result = resourceDiv.find('.durationPlaceHolder');
+		var minDuration = result.find('.minDuration');
+		var maxDuration = result.find('.maxDuration');
+		var bufferTime = result.find('.bufferTime');
+
+		setDuration(minDuration, resource.minLength);
+		setDuration(maxDuration, resource.maxLength);
+		setDuration(bufferTime, resource.bufferTime);
+		resource.allowMultiday = bufferTime.attr('data-value');
+
+		elements.durationDialog.modal('hide');
+	};
+
 	var showStatusPrompt = function (e) {
 		var resource = getActiveResource();
 		var statusForm = $('.popover:visible').find('form');
@@ -435,8 +488,9 @@ function ResourceManagement(opts) {
 
 	function showHideConfiguration(attributeValue, attributeDisplayElement, attributeCheckbox) {
 		attributeDisplayElement.val(attributeValue);
-		var id = attributeCheckbox.attr('id');
-		var span = elements.configurationDialog.find('.' + id);
+		var selector = attributeCheckbox.attr('data-related-inputs');
+		var container = attributeCheckbox.closest('form');
+		var span = container.find(selector);
 
 		if (attributeValue == '' || attributeValue == undefined) {
 			attributeCheckbox.prop('checked', true);
@@ -451,8 +505,8 @@ function ResourceManagement(opts) {
 	function wireUpIntervalToggle(container) {
 		container.find(':checkbox').change(function ()
 		{
-			var id = $(this).attr('id');
-			var span = container.find('.' + id);
+			var selector = $(this).attr('data-related-inputs');
+			var span = container.find(selector);
 
 			if ($(this).is(":checked"))
 			{
