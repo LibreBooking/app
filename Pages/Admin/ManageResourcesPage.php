@@ -257,6 +257,16 @@ interface IManageResourcesPage extends IUpdateResourcePage, IActionPage, IPageab
 	 * @param BookableResource $resource
 	 */
 	public function BindUpdatedDuration($resource);
+
+	/**
+	 * @param BookableResource $resource
+	 */
+	public function BindUpdatedCapacity($resource);
+
+	/**
+	 * @param BookableResource $resource
+	 */
+	public function BindUpdatedAccess($resource);
 }
 
 class ManageResourcesPage extends ActionPage implements IManageResourcesPage
@@ -661,6 +671,24 @@ class ManageResourcesPage extends ActionPage implements IManageResourcesPage
 	{
 		$this->Set('resource', $resource);
 		$this->Display('Admin/Resources/manage_resources_duration.tpl');
+	}
+
+	/**
+	 * @param BookableResource $resource
+	 */
+	public function BindUpdatedCapacity($resource)
+	{
+		$this->Set('resource', $resource);
+		$this->Display('Admin/Resources/manage_resources_capacity.tpl');
+	}
+
+	/**
+	 * @param BookableResource $resource
+	 */
+	public function BindUpdatedAccess($resource)
+	{
+		$this->Set('resource', $resource);
+		$this->Display('Admin/Resources/manage_resources_access.tpl');
 	}
 }
 

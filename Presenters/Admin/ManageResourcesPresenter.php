@@ -45,6 +45,7 @@ class ManageResourcesActions
 	const ActionChangeResourceType = 'changeResourceType';
 	const ActionBulkUpdate = 'bulkUpdate';
 	const ActionChangeDuration = 'changeDuration';
+	const ActionChangeCapacity = 'changeCapacity';
 }
 
 class ManageResourcesPresenter extends ActionPresenter
@@ -123,6 +124,7 @@ class ManageResourcesPresenter extends ActionPresenter
 		$this->AddAction(ManageResourcesActions::ActionChangeResourceType, 'ChangeResourceType');
 		$this->AddAction(ManageResourcesActions::ActionBulkUpdate, 'BulkUpdate');
 		$this->AddAction(ManageResourcesActions::ActionChangeDuration, 'ChangeDuration');
+		$this->AddAction(ManageResourcesActions::ActionChangeCapacity, 'ChangeCapacity');
 	}
 
 	public function PageLoad()
@@ -218,6 +220,22 @@ class ManageResourcesPresenter extends ActionPresenter
 		$this->resourceRepository->Update($resource);
 
 		$this->page->BindUpdatedDuration($resource);
+	}
+
+	public function ChangeCapacity()
+	{
+		$resourceId = $this->page->GetResourceId();
+		$maxParticipants = $this->page->GetMaxParticipants();
+
+		$resource = $this->resourceRepository->LoadById($resourceId);
+		$resource->SetMaxParticipants($maxParticipants);
+
+		Log::Debug('Updating resource id=%s, maxParticipants=%s',
+				   $resourceId, $maxParticipants);
+
+		$this->resourceRepository->Update($resource);
+
+		$this->page->BindUpdatedCapacity($resource);
 	}
 
 	public function ChangeConfiguration()

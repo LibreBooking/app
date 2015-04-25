@@ -355,3 +355,6 @@ input[type=text].user-search {
 .combobox-add {
   margin-left: 5px;
 }
+.mid-number {
+  width: 100px;
+}

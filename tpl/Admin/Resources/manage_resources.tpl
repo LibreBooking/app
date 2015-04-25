@@ -289,18 +289,21 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 						<div class="durationPlaceHolder">
 						{include file="Admin/Resources/manage_resources_duration.tpl" resource=$resource}
 						</div>
-						<h5>{translate key='Capacity'}</h5>
-						<div>
-							{if $resource->HasMaxParticipants()}
-								{translate key='ResourceCapacity' args=$resource->GetMaxParticipants()}
-							{else}
-								{translate key='ResourceCapacityNone'}
-							{/if}
+
+						<h5 class="inline">{translate key='Capacity'}</h5>
+						<a href="#" class="inline update changeCapacity">
+							<span class="fa fa-pencil-square-o"></span>
+						</a>
+						<div class="capacityPlaceHolder">
+						{include file="Admin/Resources/manage_resources_capacity.tpl" resource=$resource}
 						</div>
 					</div>
 
 					<div class="col-xs-6">
-						<h5>{translate key=Access}</h5>
+						<h5 class="inline">{translate key=Access}</h5>
+						<a href="#" class="inline update changeAccess">
+													<span class="fa fa-pencil-square-o"></span>
+												</a>
 						<div>
 							{if $resource->HasMinNotice()}
 								{translate key='ResourceMinNotice' args=$resource->GetMinNotice()}
@@ -367,7 +370,6 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			</div>
 		{/foreach}
 	</div>
-
 
 	{pagination pageInfo=$PageInfo}
 
@@ -543,6 +545,45 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			</div>
 		</form>
 	</div>
+
+	<div id="capacityDialog" class="modal" tabindex="-1" role="dialog" aria-labelledby="capacityModalLabel"
+			 aria-hidden="true">
+			<form id="capacityForm" method="post" role="form" ajaxAction="{ManageResourcesActions::ActionChangeCapacity}">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+							<h4 class="modal-title" id="capacityModalLabel">{translate key=Capacity}</h4>
+						</div>
+						<div class="modal-body">
+							<div class="editCapacity">
+								<div class="checkbox">
+									<input type="checkbox" id="unlimitedCapacity" class="unlimitedCapacity"
+											   data-related-inputs="#maxCapacityInputs"/>
+									<label for="unlimitedCapacity">{translate key=ResourceCapacityNone}</label>
+								</div>
+								<div id='maxCapacityInputs'>
+									{capture name="txtMaxCapacity" assign="txtMaxCapacity"}
+										<input type='number' id='maxCapacity' class='form-control inline mid-number' min='0'
+											   max='9999' size='5' {formname key=MAX_PARTICIPANTS} />
+									{/capture}
+									{translate key='ResourceCapacity' args=$txtMaxCapacity}
+								</div>
+							</div>
+						</div>
+
+						<div class="modal-footer">
+							<button type="button" class="btn btn-default"
+									data-dismiss="modal">{translate key='Cancel'}</button>
+							<button type="button" class="btn btn-success save"><span
+										class="glyphicon glyphicon-ok-circle"></span>
+								{translate key='Update'}</button>
+							{indicator}
+						</div>
+					</div>
+				</div>
+			</form>
+		</div>
 
 	<div id="configurationDialog" class="hide dialog" title="{translate key=UsageConfiguration}">
 		<form id="configurationForm" method="post" ajaxAction="{ManageResourcesActions::ActionChangeConfiguration}">

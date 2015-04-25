@@ -17,7 +17,7 @@ You should have received a copy of the GNU General Public License
 along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 *}
 
-{include file='globalheader.tpl'}
+{include file='globalheader.tpl' Qtip=true}
 
 <div id="page-manage-reservations">
 	<h1>{translate key=ManageReservations}</h1>
