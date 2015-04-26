@@ -6,7 +6,6 @@ function ResourceManagement(opts) {
 
 		imageDialog:$('#imageDialog'),
 		deleteDialog:$('#deletePrompt'),
-		groupAdminDialog:$('#groupAdminDialog'),
 		statusDialog:$('#statusDialog'),
 		durationDialog:$('#durationDialog'),
 		capacityDialog:$('#capacityDialog'),
@@ -17,8 +16,6 @@ function ResourceManagement(opts) {
 		durationForm:$('#durationForm'),
 		capacityForm:$('#capacityForm'),
 		accessForm:$('#accessForm'),
-		groupAdminForm:$('#groupAdminForm'),
-		attributeForm:$('.attributesForm'),
 		statusForm:$('#statusForm'),
 
 		statusReasons:('.reasonId'),
@@ -86,13 +83,11 @@ function ResourceManagement(opts) {
 				PerformAsyncAction($(this), getSubmitCallback(options.actions.removeImage), indicator);
 			});
 
-			var subscriptionCallback = function ()
-			{
+			var subscriptionCallback = function () {
 				details.find('.subscriptionButton').toggleClass('hide')
 			};
 
 			details.find('.enableSubscription').click(function (e) {
-
 				PerformAsyncAction($(this), getSubmitCallback(options.actions.enableSubscription), $('#subscriptionIndicator'), subscriptionCallback);
 			});
 
@@ -183,11 +178,6 @@ function ResourceManagement(opts) {
 			$(this).closest('.modal').modal("hide");
 		});
 
-		$(".cancelColorbox").click(function () {
-			$('#bulkUpdateDialog').hide();
-			$.colorbox.close();
-		});
-
 		elements.addResourceButton.click(function(e){
 			e.preventDefault();
 			elements.addResourceDialog.modal('show');
@@ -211,15 +201,19 @@ function ResourceManagement(opts) {
 			filterResources();
 		});
 
-		elements.bulkUpdatePromptButton.click(function(e){
+		elements.bulkUpdatePromptButton.click(function(e) {
 			e.preventDefault();
 
 			var items = [];
 			elements.bulkUpdateList.empty();
 			$.each(resources, function (i, r) {
-				items.push('<li><label><input type="checkbox" name="resourceId[]" checked="checked" value="' + r.id + '" /> ' + r.name + '</li>');
+				var checkId = 'bulk' + r.id;
+				items.push('<div class="checkbox checkbox-inline">' +
+					'<input type="checkbox" id="' + checkId + '" name="resourceId[]" checked="checked" value="' + r.id + '" />'+
+					'<label for="' + checkId + '">' + r.name + '</label>' +
+				'</div>');
 			});
-			$('<ul/>', {'class': 'no-style', html: items.join('')}).appendTo(elements.bulkUpdateList);
+			$('<div/>', {html: items.join('')}).appendTo(elements.bulkUpdateList);
 
 			wireUpCheckboxToggle(elements.bulkUpdateDialog);
 
@@ -229,6 +223,7 @@ function ResourceManagement(opts) {
 		wireUpCheckboxToggle(elements.durationForm);
 		wireUpCheckboxToggle(elements.capacityForm);
 		wireUpCheckboxToggle(elements.accessForm);
+		wireUpCheckboxToggle(elements.bulkUpdateForm);
 
 		var imageSaveErrorHandler = function (result) {
 			alert(result);
@@ -241,19 +236,7 @@ function ResourceManagement(opts) {
 				var h = $('#' + id + 'Hours').val();
 				var m = $('#' + id + 'Minutes').val();
 				$(v).val(d + 'd' + h + 'h' + m + 'm');
-				//console.log($(v).val());
 			});
-		};
-
-		var attributesHandler = function(responseText, form) {
-			if (responseText.ErrorIds && responseText.Messages.attributeValidator)
-			{
-				var messages =  responseText.Messages.attributeValidator.join('</li><li>');
-				messages = '<li>' + messages + '</li>';
-				var validationSummary = $(form).find('.validationSummary');
-				validationSummary.find('ul').empty().append(messages);
-				validationSummary.show();
-			}
 		};
 
 		var bulkUpdateErrorHandler = function (result) {
@@ -267,10 +250,6 @@ function ResourceManagement(opts) {
 		ConfigureAdminForm(elements.capacityForm, defaultSubmitCallback(elements.capacityForm), null, onCapacitySaved);
 		ConfigureAdminForm(elements.accessForm, defaultSubmitCallback(elements.accessForm), null, onAccessSaved, {onBeforeSerialize:combineIntervals});
 		ConfigureAdminForm(elements.bulkUpdateForm, defaultSubmitCallback(elements.bulkUpdateForm), null, bulkUpdateErrorHandler, {onBeforeSerialize:combineIntervals});
-
-		$.each(elements.attributeForm, function(i,form){
-			ConfigureAdminForm($(form), defaultSubmitCallback($(form)), null, attributesHandler, {validationSummary:null});
-		});
 	};
 
 	ResourceManagement.prototype.add = function (resource) {
