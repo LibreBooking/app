@@ -155,7 +155,7 @@ function ResourceManagement(opts) {
 
 			details.find('.changeAttribute').click(function (e) {
 				e.stopPropagation();
-				details.find('.inlineAttribute').editable('toggle');
+				$(e.target).closest('.updateCustomAttribute').find('.inlineAttribute').editable('toggle');
 			});
 
 			details.find('.changeStatus').click(function (e) {

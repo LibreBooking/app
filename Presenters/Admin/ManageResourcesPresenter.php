@@ -436,6 +436,10 @@ class ManageResourcesPresenter extends ActionPresenter
 		$resource = $this->resourceRepository->LoadById($resourceId);
 
 		$value = $this->page->GetValue();
+		if (is_array($value))
+		{
+			$value = $value[0];
+		}
 		$id = str_replace(FormKeys::ATTRIBUTE_PREFIX, '', $this->page->GetName());
 
 		$attributeValue = new AttributeValue($id, $value);
