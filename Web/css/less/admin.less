@@ -14,12 +14,12 @@
   font-size: 14px;
   color: #596171;
   padding: 5px;
-  border-bottom: solid 1px #CECFCE;
+  border-bottom: solid 1px @mid-gray;
   position: relative;
 }
 
 .admin {
-  border: solid 1px #CECFCE;
+  border: solid 1px @mid-gray;
   font-size: 12px;
 }
 
@@ -103,24 +103,23 @@ span.error {
   font-size:1.2em;
   padding:3px;
 
+
   img.image {
     width: 100px;
   }
 
   .resourceImage {
-//    float:left;
     text-align:center;
-//    min-width:110px;
   }
 
   .resourceName {
     font-size:1.4em;
     font-weight:bold;
   }
+}
 
-  .statusReason {
-
-  }
+.resourceDetails:not(:last-child) {
+  border-bottom: solid 1px @light-gray;
 }
 
 .admin table {

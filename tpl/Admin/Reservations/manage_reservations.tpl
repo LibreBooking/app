@@ -151,16 +151,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 							<li class="update inlineUpdate updateCustomAttribute" attributeId="{$attribute->Id()}" attributeType="{$attribute->Type()}">
 								<span class="glyphicon glyphicon-pencil"></span> <label>{$attribute->Label()}:</label>
 								<span class="attributeValue">
-								{assign var=attrVal value=$reservation->Attributes->Get($attribute->Id())}
-									{if $attribute->Type() == CustomAttributeTypes::CHECKBOX}
-										{if $attrVal == 1}
-											{translate key=Yes}
-										{else}
-											{translate key=No}
-										{/if}
-									{else}
-										{$attrVal}
-									{/if}
+								{read_only_attribute value=$reservation->Attributes->Get($attribute->Id()) attribute=$attribute}
 								</span>
 							</li>
 						{/foreach}
@@ -237,10 +228,22 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 	</div>
 </div>
 
-<div id="inlineUpdateErrorDialog" class="dialog" title="{translate key=Error}">
-	<div id="inlineUpdateErrors" class="hidden error">&nbsp;</div>
-	<div id="reservationAccessError" class="hidden error"></div>
-	<button type="button" class="button cancel">{translate key='OK'}</button>
+<div id="inlineUpdateErrorDialog" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="inlineErrorLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h4 class="modal-title" id="inlineErrorLabel">{translate key=Error}</h4>
+			</div>
+			<div class="modal-body">
+				<div id="inlineUpdateErrors" class="hidden error">&nbsp;</div>
+				<div id="reservationAccessError" class="hidden error"></div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default cancel" data-dismiss="modal">{translate key='OK'}</button>
+			</div>
+		</div>
+	</div>
 </div>
 
 <div class="hidden">
@@ -257,7 +260,6 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 	{/foreach}
 
 	<form id="attributeUpdateForm" method="POST" ajaxAction="{ManageReservationsActions::UpdateAttribute}">
-		<input type="hidden" id="attributeUpdateReferenceNumber" {formname key=REFERENCE_NUMBER} />
 		<input type="hidden" id="attributeUpdateId" {formname key=ATTRIBUTE_ID} />
 		<input type="hidden" id="attributeUpdateValue" {formname key=ATTRIBUTE_VALUE} />
 	</form>
@@ -323,10 +325,6 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		{/foreach}
 
 		reservationManagement.initializeStatusFilter('{$ResourceStatusFilterId}', '{$ResourceStatusReasonFilterId}');
-//
-//		$('select').select2({
-//			dropdownAutoWidth: true, width: 'element'
-//		});
 	});
 </script>
 

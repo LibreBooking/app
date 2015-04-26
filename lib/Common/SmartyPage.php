@@ -169,6 +169,7 @@ class SmartyPage extends Smarty
 		$this->registerPlugin('function', 'jsfile', array($this, 'IncludeJavascriptFile'));
 		$this->registerPlugin('function', 'cssfile', array($this, 'IncludeCssFile'));
 		$this->registerPlugin('function', 'indicator', array($this, 'DisplayIndicator'));
+		$this->registerPlugin('function', 'read_only_attribute', array($this, 'ReadOnlyAttribute'));
 
 		/**
 		 * PageValidators
@@ -689,5 +690,26 @@ class SmartyPage extends Smarty
 		$class = isset($params['class']) ? $params['class'] : 'indicator';
 
 		echo "<span id=\"$id\" class=\"fa fa-spin $spinClass $size $class $show\"></span>";
+	}
+
+	public function ReadOnlyAttribute($params, &$smarty)
+	{
+		$attrVal = $params['value'];
+		$attribute = $params['attribute'];
+		if ($attribute->Type() == CustomAttributeTypes::CHECKBOX)
+		{
+			if ($attrVal == 1)
+			{
+				echo Resources::GetInstance()->GetString('Yes');
+			}
+			else
+			{
+				echo Resources::GetInstance()->GetString('No');
+			}
+		}
+		else
+		{
+			echo $attrVal;
+		}
 	}
 }

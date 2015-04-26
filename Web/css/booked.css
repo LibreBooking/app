@@ -260,7 +260,8 @@ div.center {
   list-style-type: none;
   padding-left: 0;
 }
-.horizontal-list li {
+.horizontal-list li,
+.updateCustomAttribute {
   clear: both;
   display: inline-block;
   list-style-type: none;
@@ -1185,11 +1186,11 @@ a.remove {
   font-size: 14px;
   color: #596171;
   padding: 5px;
-  border-bottom: solid 1px #CECFCE;
+  border-bottom: solid 1px #bcbcbc;
   position: relative;
 }
 .admin {
-  border: solid 1px #CECFCE;
+  border: solid 1px #bcbcbc;
   font-size: 12px;
 }
 .admin a {
@@ -1262,6 +1263,9 @@ span.error {
 .resourceDetails .resourceName {
   font-size: 1.4em;
   font-weight: bold;
+}
+.resourceDetails:not(:last-child) {
+  border-bottom: solid 1px #e9e9e9;
 }
 .admin table {
   border-collapse: collapse;

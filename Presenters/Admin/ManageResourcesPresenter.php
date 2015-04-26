@@ -27,7 +27,6 @@ class ManageResourcesActions
 {
 	const ActionAdd = 'add';
 	const ActionChangeAdmin = 'changeAdmin';
-	const ActionChangeConfiguration = 'configuration';
 	const ActionChangeDescription = 'description';
 	const ActionChangeImage = 'image';
 	const ActionChangeLocation = 'location';
@@ -40,13 +39,14 @@ class ManageResourcesActions
 	const ActionChangeStatus = 'changeStatus';
 	const ActionEnableSubscription = 'enableSubscription';
 	const ActionDisableSubscription = 'disableSubscription';
-	const ActionChangeAttributes = 'changeAttributes';
+//	const ActionChangeAttributes = 'changeAttributes';
 	const ActionChangeSort = 'changeSort';
 	const ActionChangeResourceType = 'changeResourceType';
 	const ActionBulkUpdate = 'bulkUpdate';
 	const ActionChangeDuration = 'changeDuration';
 	const ActionChangeCapacity = 'changeCapacity';
 	const ActionChangeAccess = 'changeAccess';
+	const ActionChangeAttribute = 'changeAttribute';
 }
 
 class ManageResourcesPresenter extends ActionPresenter
@@ -107,7 +107,6 @@ class ManageResourcesPresenter extends ActionPresenter
 
 		$this->AddAction(ManageResourcesActions::ActionAdd, 'Add');
 		$this->AddAction(ManageResourcesActions::ActionChangeAdmin, 'ChangeAdmin');
-		$this->AddAction(ManageResourcesActions::ActionChangeConfiguration, 'ChangeConfiguration');
 		$this->AddAction(ManageResourcesActions::ActionChangeDescription, 'ChangeDescription');
 		$this->AddAction(ManageResourcesActions::ActionChangeImage, 'ChangeImage');
 		$this->AddAction(ManageResourcesActions::ActionChangeLocation, 'ChangeLocation');
@@ -120,13 +119,14 @@ class ManageResourcesPresenter extends ActionPresenter
 		$this->AddAction(ManageResourcesActions::ActionChangeStatus, 'ChangeStatus');
 		$this->AddAction(ManageResourcesActions::ActionEnableSubscription, 'EnableSubscription');
 		$this->AddAction(ManageResourcesActions::ActionDisableSubscription, 'DisableSubscription');
-		$this->AddAction(ManageResourcesActions::ActionChangeAttributes, 'ChangeAttributes');
+//		$this->AddAction(ManageResourcesActions::ActionChangeAttributes, 'ChangeAttributes');
 		$this->AddAction(ManageResourcesActions::ActionChangeSort, 'ChangeSortOrder');
 		$this->AddAction(ManageResourcesActions::ActionChangeResourceType, 'ChangeResourceType');
 		$this->AddAction(ManageResourcesActions::ActionBulkUpdate, 'BulkUpdate');
 		$this->AddAction(ManageResourcesActions::ActionChangeDuration, 'ChangeDuration');
 		$this->AddAction(ManageResourcesActions::ActionChangeCapacity, 'ChangeCapacity');
 		$this->AddAction(ManageResourcesActions::ActionChangeAccess, 'ChangeAccess');
+		$this->AddAction(ManageResourcesActions::ActionChangeAttribute, 'ChangeAttributes');
 	}
 
 	public function PageLoad()
@@ -174,13 +174,7 @@ class ManageResourcesPresenter extends ActionPresenter
 		$groups = $this->groupRepository->GetGroupsByRole(RoleLevel::RESOURCE_ADMIN);
 		$this->page->BindAdminGroups($groups);
 
-		$resourceIds = array();
-		foreach ($resources as $resource)
-		{
-			$resourceIds[] = $resource->GetId();
-		}
-
-		$attributeList = $this->attributeService->GetAttributes(CustomAttributeCategory::RESOURCE, $resourceIds);
+		$attributeList = $this->attributeService->GetByCategory(CustomAttributeCategory::RESOURCE);
 		$this->page->BindAttributeList($attributeList);
 
 		$this->InitializeFilter($filterValues, $resourceAttributes);
@@ -260,36 +254,6 @@ class ManageResourcesPresenter extends ActionPresenter
 		$this->resourceRepository->Update($resource);
 
 		$this->page->BindUpdatedAccess($resource);
-	}
-
-	public function ChangeConfiguration()
-	{
-		$resourceId = $this->page->GetResourceId();
-		$minDuration = $this->page->GetMinimumDuration();
-		$maxDuration = $this->page->GetMaximumDuration();
-		$allowMultiDay = $this->page->GetAllowMultiday();
-		$requiresApproval = $this->page->GetRequiresApproval();
-		$autoAssign = $this->page->GetAutoAssign();
-		$minNotice = $this->page->GetStartNoticeMinutes();
-		$maxNotice = $this->page->GetEndNoticeMinutes();
-		$maxParticipants = $this->page->GetMaxParticipants();
-		$bufferTime = $this->page->GetBufferTime();
-
-		Log::Debug('Updating resource id %s', $resourceId);
-
-		$resource = $this->resourceRepository->LoadById($resourceId);
-
-		$resource->SetMinLength($minDuration);
-		$resource->SetMaxLength($maxDuration);
-		$resource->SetAllowMultiday($allowMultiDay);
-		$resource->SetRequiresApproval($requiresApproval);
-		$resource->SetAutoAssign($autoAssign);
-		$resource->SetMinNotice($minNotice);
-		$resource->SetMaxNotice($maxNotice);
-		$resource->SetMaxParticipants($maxParticipants);
-		$resource->SetBufferTime($bufferTime);
-
-		$this->resourceRepository->Update($resource);
 	}
 
 	public function Delete()
@@ -468,14 +432,25 @@ class ManageResourcesPresenter extends ActionPresenter
 	public function ChangeAttributes()
 	{
 		$resourceId = $this->page->GetResourceId();
-		Log::Debug('Changing attributes for resource %s', $resourceId);
 
 		$resource = $this->resourceRepository->LoadById($resourceId);
 
-		$attributes = $this->GetAttributeValues();
+		$value = $this->page->GetValue();
+		$id = str_replace(FormKeys::ATTRIBUTE_PREFIX, '', $this->page->GetName());
 
-		$resource->ChangeAttributes($attributes);
-		$this->resourceRepository->Update($resource);
+		$attributeValue = new AttributeValue($id, $value);
+		Log::Debug('Changing attributes. ResourceId=%s, AttributeId=%s, Value=%s', $resourceId, $id, $value);
+
+		$result = $this->attributeService->Validate(CustomAttributeCategory::RESOURCE, array($attributeValue), $resourceId, false, true);
+		if ($result->IsValid())
+		{
+			$resource->ChangeAttribute($attributeValue);
+			$this->resourceRepository->Update($resource);
+		}
+		else
+		{
+			$this->page->ShowAttributeError($result->Errors());
+		}
 	}
 
 	public function ChangeSortOrder()
@@ -676,7 +651,7 @@ class ManageResourcesPresenter extends ActionPresenter
 
 	protected function LoadValidators($action)
 	{
-		if ($action == ManageResourcesActions::ActionChangeAttributes)
+		if ($action == ManageResourcesActions::ActionChangeAttribute)
 		{
 			$attributes = $this->GetAttributeValues();
 			$this->page->RegisterValidator('attributeValidator', new AttributeValidator($this->attributeService, CustomAttributeCategory::RESOURCE, $attributes,
@@ -695,6 +670,12 @@ class ManageResourcesPresenter extends ActionPresenter
 		if ($dataRequest == 'all')
 		{
 			$this->page->SetResourcesJson(array_map(array('AdminResourceJson', 'FromBookable'), $this->resourceRepository->GetResourceList()));
+		}
+		else if ($dataRequest == 'attribute')
+		{
+			$rid = $this->page->GetResourceId();
+			$resource = $this->resourceRepository->LoadById($rid);
+			$this->page->SetAttributeValueAsJson($resource->GetAttributeValue($this->page->GetAttributeId()));
 		}
 	}
 

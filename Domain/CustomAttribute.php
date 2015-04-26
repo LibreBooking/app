@@ -254,6 +254,19 @@ class CustomAttribute
 	}
 
 	/**
+	 * @param $entityId
+	 * @return bool
+	 */
+	public function AppliesToEntity($entityId)
+	{
+		if ($this->UniquePerEntity())
+		{
+			return $this->EntityId() == $entityId;
+		}
+		return true;
+	}
+
+	/**
 	 * @param int $id
 	 * @param string $label
 	 * @param CustomAttributeTypes|int $type
@@ -322,7 +335,8 @@ class CustomAttribute
 
 		if (isset($row[ColumnNames::ATTRIBUTE_SECONDARY_CATEGORY]))
 		{
-			$attribute->WithSecondaryEntity($row[ColumnNames::ATTRIBUTE_SECONDARY_CATEGORY], $row[ColumnNames::ATTRIBUTE_SECONDARY_ENTITY_ID],
+			$attribute->WithSecondaryEntity($row[ColumnNames::ATTRIBUTE_SECONDARY_CATEGORY],
+											$row[ColumnNames::ATTRIBUTE_SECONDARY_ENTITY_ID],
 											$row[ColumnNames::ATTRIBUTE_SECONDARY_ENTITY_DESCRIPTION]);
 		}
 

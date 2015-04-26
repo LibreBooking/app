@@ -73,7 +73,7 @@ function ResourceManagement(opts) {
 
 			initializeResourceUI(id, details);
 
-			details.find('a.update').click(function (e) {
+			details.find('.update').click(function (e) {
 				e.preventDefault();
 				setActiveResourceId(id);
 			});
@@ -153,14 +153,9 @@ function ResourceManagement(opts) {
 				showDeletePrompt(e);
 			});
 
-			details.find('.changeAttributes, .customAttributes .cancel').click(function (e) {
-				var otherResources = $(".resourceDetails[data-resourceId!='" + id + "']");
-				otherResources.find('.attribute-readwrite, .validationSummary').hide();
-				otherResources.find('.attribute-readonly').show();
-				var container = $(this).closest('.customAttributes');
-				container.find('.attribute-readwrite').toggle();
-				container.find('.attribute-readonly').toggle();
-				container.find('.validationSummary').hide();
+			details.find('.changeAttribute').click(function (e) {
+				e.stopPropagation();
+				details.find('.inlineAttribute').editable('toggle');
 			});
 
 			details.find('.changeStatus').click(function (e) {
@@ -309,16 +304,15 @@ function ResourceManagement(opts) {
 		};
 	};
 
-	var setActiveResourceId = function (scheduleId) {
-		elements.activeId.val(scheduleId);
+	var setActiveResourceId = function (resourceId) {
+		elements.activeId.val(resourceId);
 	};
 
 	var getActiveResourceId = function () {
 		return elements.activeId.val();
 	};
 
-	var getResource = function(id)
-	{
+	var getResource = function(id) {
 		return resources[id];
 	};
 
@@ -384,8 +378,7 @@ function ResourceManagement(opts) {
 		resourceDuration.minutes = emptyIfZero(container.attr('data-minutes'));
 	};
 
-	var onDurationSaved = function (resultHtml)
-	{
+	var onDurationSaved = function (resultHtml) {
 		var resource = getActiveResource();
 		var resourceDiv = $("div[data-resourceId=" + resource.id + "]");
 		resourceDiv.find('.durationPlaceHolder').html(resultHtml);
@@ -403,8 +396,7 @@ function ResourceManagement(opts) {
 		elements.durationDialog.modal('hide');
 	};
 
-	var onCapacitySaved = function(resultHtml)
-	{
+	var onCapacitySaved = function(resultHtml) {
 		var resource = getActiveResource();
 		var resourceDiv = $("div[data-resourceId=" + resource.id + "]");
 		resourceDiv.find('.capacityPlaceHolder').html(resultHtml);
@@ -416,8 +408,7 @@ function ResourceManagement(opts) {
 		elements.capacityDialog.modal('hide');
 	};
 
-	var onAccessSaved = function (resultHtml)
-	{
+	var onAccessSaved = function (resultHtml) {
 		var resource = getActiveResource();
 		var resourceDiv = $("div[data-resourceId=" + resource.id + "]");
 		resourceDiv.find('.accessPlaceHolder').html(resultHtml);

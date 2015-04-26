@@ -269,11 +269,6 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 							{if $AdminGroups|count > 0}
 								<a class="update changeResourceAdmin" href="#"><span class="fa fa-pencil-square-o"></span></a>
 							{/if}
-							{*{if $resource->HasAdminGroup()}*}
-								{*<span class="resourceValue">{$GroupLookup[$resource->GetAdminGroupId()]->Name}</span>*}
-							{*{else}*}
-								{*<span class="note">{translate key='NoResourceAdministratorLabel'}</span>*}
-							{*{/if}*}
 						</div>
 						<div>
 							<a class="update disableSubscription hide subscriptionButton" href="#">{translate key=TurnOffSubscription}</a>
@@ -312,39 +307,39 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 						</div>
 					</div>
 				</div>
-				{assign var=attributes value=$AttributeList->GetAttributes($id)}
-				{if $attributes|count > 0}
-					<div class="clearfix"></div>
-					<div class="customAttributes">
-						<form method="post" class="attributesForm" ajaxAction="{ManageResourcesActions::ActionChangeAttributes}">
-							<h3>{translate key=AdditionalAttributes} <a href="#"
-																		class="update changeAttributes">{translate key=Edit}</a>
-							</h3>
 
-							<div class="validationSummary">
-								<ul>
-								</ul>
-								<div class="clear">&nbsp;</div>
-							</div>
-							<ul>
-								{foreach from=$attributes item=attribute}
-									<li class="customAttribute" attributeId="{$attribute->Id()}">
-										<div class="attribute-readonly">{control type="AttributeControl" attribute=$attribute readonly=true}</div>
-										<div class="attribute-readwrite hidden">{control type="AttributeControl" attribute=$attribute}</div>
-									</li>
-								{/foreach}
-							</ul>
-							<div class="attribute-readwrite hidden clear">
-								<button type="button"
-										class="button save">{html_image src="tick-circle.png"} {translate key='Update'}</button>
-								<button type="button"
-										class="button cancel">{html_image src="slash.png"} {translate key='Cancel'}</button>
-							</div>
-						</form>
-					</div>
-					<div class="clear">&nbsp;</div>
-				{/if}
-				<div class="actions">&nbsp;</div>
+				<div class="clearfix"></div>
+				<div class="customAttributes">
+					{if $AttributeList|count > 0}
+						{foreach from=$AttributeList item=attribute}
+							{if $attribute->AppliesToEntity($id)}
+							{assign var=datatype value='text'}
+							{if $attribute->Type() == CustomAttributeTypes::CHECKBOX}
+								{assign var=datatype value='checkbox'}
+							{elseif $attribute->Type() == CustomAttributeTypes::MULTI_LINE_TEXTBOX}
+								{assign var=datatype value='textarea'}
+							{elseif $attribute->Type() == CustomAttributeTypes::SELECT_LIST}
+								{assign var=datatype value='select'}
+							{/if}
+							{$attribute->Label()}
+							<span class="inlineAttribute"
+								  data-type="{$datatype}"
+								  data-pk="{$id}"
+								  data-value="{$resource->GetAttributeValue($attribute->Id())}"
+								  data-name="{FormKeys::ATTRIBUTE_PREFIX}{$attribute->Id()}"
+								  {if $attribute->Type() == CustomAttributeTypes::SELECT_LIST}
+								  data-source='[{if !$attribute->Required()}{ldelim}value:"",text:""{rdelim},{/if}
+								  {foreach from=$attribute->PossibleValueList() item=v name=vals}
+										{ldelim}value:"{$v}",text:"{$v}"{rdelim}{if not $smarty.foreach.vals.last},{/if}
+									{/foreach}]'
+								  {/if}>
+							</span>
+							<a class="update changeAttribute" href="#"><span class="fa fa-pencil-square-o"></span></a>
+							{/if}
+						{/foreach}
+					{/if}
+				</div>
+				<div class="clearfix"></div>
 			</div>
 		{/foreach}
 	</div>
@@ -635,24 +630,6 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 						{indicator}
 					</div>
 				</div>
-			</div>
-		</form>
-	</div>
-
-	<div id="groupAdminDialog" class="dialog" title="{translate key=WhoCanManageThisResource}">
-		<form method="post" id="groupAdminForm" ajaxAction="{ManageResourcesActions::ActionChangeAdmin}">
-			<label for="adminGroupId" class="off-screen">{translate key=WhoCanManageThisResource}</label>
-			<select id="adminGroupId" {formname key=RESOURCE_ADMIN_GROUP_ID} class="textbox">
-				<option value="">-- {translate key=None} --</option>
-				{foreach from=$AdminGroups item=adminGroup}
-					<option value="{$adminGroup->Id}">{$adminGroup->Name}</option>
-				{/foreach}
-			</select>
-
-			<div class="admin-update-buttons">
-				<button type="button"
-						class="button save">{html_image src="tick-circle.png"} {translate key='Update'}</button>
-				<button type="button" class="button cancel">{html_image src="slash.png"} {translate key='Cancel'}</button>
 			</div>
 		</form>
 	</div>
@@ -990,13 +967,50 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		</form>
 	</div>
 
+	<div id="inlineUpdateErrorDialog" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="inlineErrorLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+					<h4 class="modal-title" id="inlineErrorLabel">{translate key=Error}</h4>
+				</div>
+				<div class="modal-body">
+					<div id="inlineUpdateErrors" class="hidden error">&nbsp;</div>
+					<div id="accessError" class="hidden error"></div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default cancel" data-dismiss="modal">{translate key='OK'}</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="hidden">
+		{foreach from=$AttributeList item=attribute}
+			<div class="attributeTemplate" attributeId="{$attribute->Id()}">
+				{control type="AttributeControl" attribute=$attribute}
+				<div class="inlineUpdateCancelButtons">
+					<div>
+						<a href="#" class="confirmCellUpdate">{html_image src="tick-white.png"}</a>
+						<a href="#" class="cancelCellUpdate">{html_image src="cross-white.png"}</a>
+					</div>
+				</div>
+			</div>
+		{/foreach}
+
+		<form id="attributeUpdateForm" method="POST" ajaxAction="{ManageResourcesActions::ActionChangeAttribute}">
+			<input type="hidden" id="attributeUpdateReferenceNumber" {formname key=REFERENCE_NUMBER} />
+			<input type="hidden" id="attributeUpdateId" {formname key=ATTRIBUTE_ID} />
+			<input type="hidden" id="attributeUpdateValue" {formname key=ATTRIBUTE_VALUE} />
+		</form>
+	</div>
+
 	{jsfile src="admin/edit.js"}
 	{jsfile src="admin/resource.js"}
 
 	<script type="text/javascript">
 
-		function hidePopoversWhenClickAway()
-		{
+		function hidePopoversWhenClickAway() {
 			$('body').on('click', function (e)
 			{
 				$('[rel="popover"]').each(function ()
@@ -1009,8 +1023,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			});
 		}
 
-		function setUpPopovers()
-		{
+		function setUpPopovers() {
 			$('[rel="popover"]').popover({
 				container: 'body',
 				html: true,
@@ -1037,8 +1050,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			});
 		}
 
-		function setUpEditables()
-		{
+		function setUpEditables() {
 			$.fn.editable.defaults.mode = 'popup';
 			$.fn.editable.defaults.toggle = 'manual';
 			$.fn.editable.defaults.emptyclass = '';
@@ -1122,6 +1134,11 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 					},
 					{/foreach}
 				]
+			});
+
+			$('.inlineAttribute').editable({
+				url: updateUrl + '{ManageResourcesActions::ActionChangeAttribute}',
+				emptytext: '-'
 			});
 
 		}

@@ -150,20 +150,17 @@ interface IManageResourcesPage extends IUpdateResourcePage, IActionPage, IPageab
 	public function AllSchedules($schedules);
 
 	/**
-	 * @abstract
 	 * @param $adminGroups GroupItemView[]|array
 	 * @return void
 	 */
 	public function BindAdminGroups($adminGroups);
 
 	/**
-	 * @abstract
-	 * @param $attributeList IEntityAttributeList
+	 * @param $attributeList CustomAttribute[]
 	 */
 	public function BindAttributeList($attributeList);
 
 	/**
-	 * @abstract
 	 * @return AttributeFormElement[]|array
 	 */
 	public function GetAttributes();
@@ -254,6 +251,16 @@ interface IManageResourcesPage extends IUpdateResourcePage, IActionPage, IPageab
 	public function GetValue();
 
 	/**
+	 * @return string
+	 */
+	public function GetName();
+
+	/**
+	 * @return string
+	 */
+	public function GetAttributeId();
+
+	/**
 	 * @param BookableResource $resource
 	 */
 	public function BindUpdatedDuration($resource);
@@ -267,6 +274,13 @@ interface IManageResourcesPage extends IUpdateResourcePage, IActionPage, IPageab
 	 * @param BookableResource $resource
 	 */
 	public function BindUpdatedAccess($resource);
+
+	public function SetAttributeValueAsJson($attributeValue);
+
+	/**
+	 * @param string[] $errors
+	 */
+	public function ShowAttributeError($errors);
 }
 
 class ManageResourcesPage extends ActionPage implements IManageResourcesPage
@@ -376,6 +390,11 @@ class ManageResourcesPage extends ActionPage implements IManageResourcesPage
 	public function GetValue()
 	{
 		return $this->GetForm(FormKeys::VALUE);
+	}
+
+	public function GetName()
+	{
+		return $this->GetForm(FormKeys::NAME);
 	}
 
 	public function GetResourceName()
@@ -509,7 +528,7 @@ class ManageResourcesPage extends ActionPage implements IManageResourcesPage
 	}
 
 	/**
-	 * @param $attributeList IEntityAttributeList
+	 * @param $attributeList CustomAttribute[]
 	 */
 	public function BindAttributeList($attributeList)
 	{
@@ -689,6 +708,28 @@ class ManageResourcesPage extends ActionPage implements IManageResourcesPage
 	{
 		$this->Set('resource', $resource);
 		$this->Display('Admin/Resources/manage_resources_access.tpl');
+	}
+
+	/**
+	 * @return string
+	 */
+	public function GetAttributeId()
+	{
+		return $this->GetQuerystring(QueryStringKeys::ATTRIBUTE_ID);
+	}
+
+	public function SetAttributeValueAsJson($attributeValue)
+	{
+		$this->SetJson($attributeValue);
+	}
+
+	/**
+	 * @param string[] $errors
+	 */
+	public function ShowAttributeError($errors)
+	{
+		http_response_code(400);
+		echo implode(',', $errors);
 	}
 }
 

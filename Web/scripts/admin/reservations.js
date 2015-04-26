@@ -383,7 +383,7 @@ function ReservationManagement(opts, approval)
 		elements.inlineUpdateErrors.empty();
 		$('<ul/>', {'class': 'no-style', html: lis}).appendTo(elements.inlineUpdateErrors);
 		elements.inlineUpdateErrors.show();
-		elements.inlineUpdateErrorDialog.dialog('open');
+		elements.inlineUpdateErrorDialog.modal('show');
 	}
 
 	function showCustomAttributeValue(attributeId, cell)
@@ -422,7 +422,6 @@ function ReservationManagement(opts, approval)
 			previousCell = cell;
 
 			cell.empty();
-//			cell.append(template.after(updateCancelButtons));
 			cell.append(template);
 
 			attributeElement.focus();

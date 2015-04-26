@@ -344,7 +344,9 @@ class Queries
 	const GET_ALL_REMINDERS = 'SELECT * FROM reminders';
 
 	const GET_ALL_RESOURCES =
-			'SELECT r.*, s.admin_group_id as s_admin_group_id
+			'SELECT r.*, s.admin_group_id as s_admin_group_id,
+		(SELECT GROUP_CONCAT(CONCAT(cav.custom_attribute_id, \'=\', cav.attribute_value) SEPARATOR "!sep!")
+						FROM custom_attribute_values cav WHERE cav.entity_id = r.resource_id AND cav.attribute_category = 4) as attribute_list
 		FROM resources r
 		INNER JOIN schedules s ON r.schedule_id = s.schedule_id
 		ORDER BY COALESCE(r.sort_order,0), r.name';

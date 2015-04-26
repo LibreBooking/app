@@ -203,6 +203,15 @@ class BookableResource implements IResource
 		$resource->SetResourceTypeId($row[ColumnNames::RESOURCE_TYPE_ID]);
 		$resource->SetBufferTime($row[ColumnNames::RESOURCE_BUFFER_TIME]);
 
+		if (isset($row[ColumnNames::ATTRIBUTE_LIST]))
+		{
+			$attributes = CustomAttributes::Parse($row[ColumnNames::ATTRIBUTE_LIST]);
+			foreach ($attributes->All() as $id => $value)
+			{
+				$resource->WithAttribute(new AttributeValue($id, $value));
+			}
+		}
+
 		return $resource;
 	}
 
