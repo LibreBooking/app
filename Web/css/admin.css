@@ -437,7 +437,6 @@ td.update {
 .hours,
 .minutes {
   width: 80px;
-  display: inline;
 }
 #page-manage-blackouts input,
 #page-manage-reservations input,

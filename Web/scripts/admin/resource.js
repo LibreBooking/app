@@ -2,7 +2,7 @@ function ResourceManagement(opts) {
 	var options = opts;
 
 	var elements = {
-		activeId:$('#activeId'),
+		activeId : $('#activeId'),
 
 		imageDialog:$('#imageDialog'),
 		deleteDialog:$('#deletePrompt'),
@@ -47,8 +47,7 @@ function ResourceManagement(opts) {
 	var resources = {};
 	var reasons = [];
 
-	function initializeResourceUI(id, details)
-	{
+	function initializeResourceUI(id, details) {
 		var resource = getResource(id);
 		if (resource.allowSubscription)
 		{
@@ -61,8 +60,6 @@ function ResourceManagement(opts) {
 	}
 
 	ResourceManagement.prototype.init = function () {
-		ConfigureAdminDialog(elements.imageDialog);
-
 		$('.resourceDetails').each(function () {
 			var indicator = $('.indicator');
 			var details = $(this);
@@ -80,7 +77,7 @@ function ResourceManagement(opts) {
 			});
 
 			details.find('.removeImageButton').click(function (e) {
-				PerformAsyncAction($(this), getSubmitCallback(options.actions.removeImage), indicator);
+				PerformAsyncAction($(this), getSubmitCallback(options.actions.removeImage), $('#removeImageIndicator'));
 			});
 
 			var subscriptionCallback = function () {
@@ -300,7 +297,7 @@ function ResourceManagement(opts) {
 	};
 
 	var showChangeImage = function (e) {
-		elements.imageDialog.dialog("open");
+		elements.imageDialog.modal("show");
 	};
 
 	var showResourceAdmin = function (e) {

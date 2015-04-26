@@ -317,6 +317,11 @@ class ManageResourcesPresenter extends ActionPresenter
 
 		$uploadedImage = $this->page->GetUploadedImage();
 
+		if ($uploadedImage == null)
+		{
+			return;
+		}
+
 		if ($uploadedImage->IsError())
 		{
 			die("Image error: " . $uploadedImage->Error());

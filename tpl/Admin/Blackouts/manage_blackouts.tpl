@@ -313,7 +313,6 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 <div id="update-box" class="no-show">
 	{indicator id="update-spinner"}
-	<span id="update-spinner" class="fa fa-spinner fa-spin fa-2x"></span>
 	<div id="update-contents"></div>
 </div>
 

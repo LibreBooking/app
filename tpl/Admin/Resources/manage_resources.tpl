@@ -142,6 +142,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 							<a class="update imageButton" href="#">{translate key='Change'}</a>
 							|
 							<a class="update removeImageButton" href="#">{translate key='Remove'}</a>
+							{indicator id=removeImageIndicator}
 						{else}
 							<div class="noImage"><span class="fa fa-image"></span></div>
 							<a class="update imageButton" href="#">{translate key='AddImage'}</a>
@@ -417,18 +418,29 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 	<input type="hidden" id="activeId" value=""/>
 
-	<div id="imageDialog" class="dialog" title="{translate key=AddImage}">
-		<form id="imageForm" method="post" enctype="multipart/form-data"
-			  ajaxAction="{ManageResourcesActions::ActionChangeImage}">
-			<label for="resourceImage" class="off-screen">Image file</label>
-			<input id="resourceImage" type="file" class="text" size="60" {formname key=RESOURCE_IMAGE} />
-			<br/>
-			<span class="note">.gif, .jpg, or .png</span>
+	<div id="imageDialog" class="modal" tabindex="-1" role="dialog" aria-labelledby="imageModalLabel" aria-hidden="true">
+		<form id="imageForm" method="post" enctype="multipart/form-data"  ajaxAction="{ManageResourcesActions::ActionChangeImage}">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+						<h4 class="modal-title" id="imageModalLabel">{translate key=AddImage}</h4>
+					</div>
+					<div class="modal-body">
+						<label for="resourceImage" class="off-screen">Image file</label>
+						<input id="resourceImage" type="file" class="text" size="60" {formname key=RESOURCE_IMAGE} />
+						<div class="note">.gif, .jpg, or .png</div>
+					</div>
 
-			<div class="admin-update-buttons">
-				<button type="button"
-						class="button save">{html_image src="disk-black.png"} {translate key='Update'}</button>
-				<button type="button" class="button cancel">{html_image src="slash.png"} {translate key='Cancel'}</button>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default"
+								data-dismiss="modal">{translate key='Cancel'}</button>
+						<button type="button" class="btn btn-success save"><span
+									class="glyphicon glyphicon-ok-circle"></span>
+							{translate key='Update'}</button>
+						{indicator}
+					</div>
+				</div>
 			</div>
 		</form>
 	</div>
@@ -953,8 +965,6 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			</div>
 		</form>
 	</div>
-
-
 
 	{jsfile src="admin/edit.js"}
 	{jsfile src="admin/resource.js"}

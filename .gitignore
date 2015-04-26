@@ -5,3 +5,4 @@
 /plugins/Authentication/ActiveDirectory/ActiveDirectory.config.php
 /plugins/Authentication/Ldap/Ldap.config.php
 /plugins/Authentication/Drupal/Drupal.config.php
+/Web/uploads
