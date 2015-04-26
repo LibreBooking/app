@@ -508,8 +508,8 @@ class en_us extends Language
 		$strings['RequiredValue'] = 'Required Value';
 		$strings['ReservationCustomRuleAdd'] = 'If %s then the reservation color will be';
 		$strings['AddReservationColorRule'] = 'Add Reservation Color Rule';
-		$strings['LimitAttributeScope'] = 'Limit Attribute Scope';
-		$strings['LimitTo'] = 'Limit To';
+		$strings['LimitAttributeScope'] = 'Collect In Specific Cases';
+		$strings['CollectFor'] = 'Collect For';
 		$strings['SignIn'] = 'Sign In';
 		$strings['AllParticipants'] = 'All Participants';
 		$strings['RegisterANewAccount'] = 'Register A New Account';

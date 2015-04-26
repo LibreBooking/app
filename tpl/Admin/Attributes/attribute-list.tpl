@@ -18,8 +18,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 *}
 <h3>{$Attributes|count} {translate key=Attributes}</h3>
 {if $Attributes|count > 0}
-	<table class="list">
-		<tr>
+	<table class="table">
+		<thead><tr>
 			<th>ID</th>
 			<th>{translate key=SortOrder}</th>
 			<th>{translate key=DisplayLabel}</th>
@@ -32,11 +32,14 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 				<th>{translate key=Private}</th>
 			{/if}
 			<th>{translate key=AdminOnly}</th>
-			<th>{translate key=Delete}</th>
+			<th class="action">{translate key=Edit}</th>
+			<th class="action">{translate key=Delete}</th>
 		</tr>
+		</thead>
+		<tbody>
 		{foreach from=$Attributes item=attribute}
 			{cycle values='row0,row1' assign=rowCss}
-			<tr class="{$rowCss} editable" attributeId="{$attribute->Id()}">
+			<tr class="{$rowCss}" attributeId="{$attribute->Id()}">
 				<td>{$attribute->Id()}</td>
 				<td>{$attribute->SortOrder()}</td>
 				<td>{$attribute->Label()}</td>
@@ -63,9 +66,15 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 						{/if}</td>
 				{/if}
 				<td>{if $attribute->AdminOnly()}{translate key=Yes}{else}{translate key=No}{/if}</td>
-				<td align="center"><a href="#" class="update delete" attributeId="{$attribute->Id()}">{html_image src='cross-button.png'}</a></td>
+				<td class="action">
+					<a href="#" class="update edit"}"><span class="fa fa-edit icon edit"></span></a>
+				</td>
+				<td class="action">
+					<a href="#" class="update delete" attributeId="{$attribute->Id()}"><span class="fa fa-trash icon remove"></span></a>
+				</td>
 			</tr>
 		{/foreach}
+		</tbody>
 	</table>
 {/if}
 

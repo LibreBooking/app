@@ -1543,7 +1543,7 @@ ul.jqtree-tree .group-resource .jqtree-title {
 #reservationTable tr.editable td {
   cursor: pointer;
 }
-#reservationTable .icon {
+.table .icon {
   font-size: 1.4em;
 }
 .inlineUpdate {

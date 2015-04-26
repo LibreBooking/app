@@ -396,13 +396,13 @@ class Queries
 			CASE
 			WHEN a.attribute_category = 2 THEN CONCAT(u.fname, " ", u.lname)
 			WHEN a.attribute_category = 4 THEN r.name
-			WHEN a.attribute_category = 4 THEN rt.resource_type_name
+			WHEN a.attribute_category = 5 THEN rt.resource_type_name
 			ELSE null
 			END as entity_description,
 			CASE
 			WHEN a.secondary_category = 2 THEN CONCAT(u2.fname, " ", u2.lname)
 			WHEN a.secondary_category = 4 THEN r2.name
-			WHEN a.secondary_category = 4 THEN rt2.resource_type_name
+			WHEN a.secondary_category = 5 THEN rt2.resource_type_name
 			ELSE null
 			END as secondary_entity_description
 			FROM custom_attributes a
@@ -411,7 +411,7 @@ class Queries
 			LEFT JOIN resource_types rt ON rt.resource_type_id = a.entity_id AND a.attribute_category = 5
 			LEFT JOIN users u2 ON u2.user_id = a.secondary_entity_id AND a.secondary_category = 2
 			LEFT JOIN resources r2 ON r2.resource_id = a.secondary_entity_id AND a.secondary_category = 4
-			LEFT JOIN resource_types rt2 ON rt.resource_type_id = a.secondary_entity_id AND a.secondary_category = 5
+			LEFT JOIN resource_types rt2 ON rt2.resource_type_id = a.secondary_entity_id AND a.secondary_category = 5
 		WHERE a.attribute_category = @attribute_category ORDER BY a.sort_order, a.display_label';
 
 	const GET_ATTRIBUTE_BY_ID = 'SELECT * FROM custom_attributes WHERE custom_attribute_id = @custom_attribute_id';

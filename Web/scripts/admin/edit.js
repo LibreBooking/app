@@ -132,16 +132,12 @@ function ConfigureUploadForm(buttonElement, urlCallback, preSubmitCallback, succ
 function BeforeFormSubmit(formData, jqForm, opts)
 {
 	var isValid = true;
-	$(jqForm).find('.required').each(function ()
+	$(jqForm).find('.required').each(function (index, ele)
 	{
-		if ($(this).is(':visible') && $(this).val() == '')
+		if ($(ele).is(':visible') && $(ele).val() == '')
 		{
 			isValid = false;
-			$(this).closest('.form-group').addClass('has-error')
-			//if ($(this).next('span.error').length == 0)
-			//{
-			//	$(this).after('<span class="error">*</span>');
-			//}
+			$(ele).closest('.form-group').addClass('has-error')
 		}
 	});
 
