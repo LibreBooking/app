@@ -32,6 +32,11 @@ class FakeAttributeRepository implements IAttributeRepository
 	 */
 	public $_CustomAttributes;
 
+	/**
+	 * @var AttributeEntityValue[]
+	 */
+	public $_EntityValues;
+
 	public function __construct()
 	{
 		$this->_CustomAttribute = new CustomAttribute(1, 'test attribute', CustomAttributeTypes::SINGLE_LINE_TEXTBOX, CustomAttributeCategory::RESERVATION,
@@ -94,7 +99,7 @@ class FakeAttributeRepository implements IAttributeRepository
 	 */
 	public function GetEntityValues($category, $entityIds = null)
 	{
-		// TODO: Implement GetEntityValues() method.
+		return $this->_EntityValues;
 	}
 }
  

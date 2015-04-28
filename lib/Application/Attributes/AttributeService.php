@@ -73,6 +73,16 @@ class AttributeService implements IAttributeService
 	 */
 	private $authorizationService;
 
+	/**
+	 * @var IResourceService
+	 */
+	private $resourceService;
+
+	/**
+	 * @var ResourceDto[] indexed by resourceId
+	 */
+	private $allowedResources;
+
 	public function __construct(IAttributeRepository $attributeRepository)
 	{
 		$this->attributeRepository = $attributeRepository;
@@ -85,7 +95,7 @@ class AttributeService implements IAttributeService
 	{
 		if ($this->authorizationService == null)
 		{
-			$this->authorizationService = new AuthorizationService(new UserRepository());
+			$this->authorizationService = PluginManager::Instance()->LoadAuthorization();
 		}
 
 		return $this->authorizationService;
@@ -94,6 +104,25 @@ class AttributeService implements IAttributeService
 	public function SetAuthorizationService(IAuthorizationService $authorizationService)
 	{
 		$this->authorizationService = $authorizationService;
+	}
+
+	/**
+	 * @return IResourceService
+	 */
+	public function GetResourceService()
+	{
+		if ($this->resourceService == null)
+		{
+			$this->resourceService = new ResourceService(new ResourceRepository(), PluginManager::Instance()->LoadPermission(), $this, new UserRepository(),
+														 new AccessoryRepository());
+		}
+
+		return $this->resourceService;
+	}
+
+	public function SetResourceService(IResourceService $resourceService)
+	{
+		$this->resourceService = $resourceService;
 	}
 
 	public function GetAttributes($category, $entityIds = array())
@@ -186,13 +215,12 @@ class AttributeService implements IAttributeService
 		return $this->attributeRepository->GetByCategory($category);
 	}
 
-
 	public function GetById($attributeId)
 	{
 		return $this->attributeRepository->LoadById($attributeId);
 	}
 
-	public function GetReservationAttributes(UserSession $userSession,  ReservationView $reservationView, $requestedUserId = 0)
+	public function GetReservationAttributes(UserSession $userSession, ReservationView $reservationView, $requestedUserId = 0, $requestedResourceIds = array())
 	{
 		if ($requestedUserId == 0)
 		{
@@ -207,8 +235,10 @@ class AttributeService implements IAttributeService
 
 			if (empty($secondaryCategory) ||
 					($secondaryCategory == CustomAttributeCategory::USER &&
-					$attribute->SecondaryEntityId() == $requestedUserId &&
-					$this->CanReserveFor($userSession, $requestedUserId))
+							$this->AvailableForUser($userSession, $requestedUserId, $secondaryCategory, $attribute) ||
+					(($secondaryCategory == CustomAttributeCategory::RESOURCE || $secondaryCategory == CustomAttributeCategory::RESOURCE_TYPE)
+							&& $this->AvailableForResource($userSession, $secondaryCategory, $attribute, $requestedResourceIds))
+					)
 			)
 			{
 				if (!$attribute->IsPrivate() || ($attribute->IsPrivate() && $this->CanReserveFor($userSession, $requestedUserId)))
@@ -225,7 +255,76 @@ class AttributeService implements IAttributeService
 	{
 		return $userSession->UserId == $requestedUserId || $this->GetAuthorizationService()->CanReserveFor($userSession, $requestedUserId);
 	}
+
+	/**
+	 * @param UserSession $userSession
+	 * @param int $requestedUserId
+	 * @param string $secondaryCategory
+	 * @param CustomAttribute $attribute
+	 * @return bool
+	 */
+	private function AvailableForUser(UserSession $userSession, $requestedUserId, $secondaryCategory, $attribute)
+	{
+		return $secondaryCategory == CustomAttributeCategory::USER &&
+		$attribute->SecondaryEntityId() == $requestedUserId &&
+		$this->CanReserveFor($userSession, $requestedUserId);
+	}
+
+	/**
+	 * @param UserSession $userSession
+	 * @param string $secondaryCategory
+	 * @param CustomAttribute $attribute
+	 * @param int[] $requestedResourceIds
+	 * @return bool
+	 */
+	private function AvailableForResource($userSession, $secondaryCategory, $attribute, $requestedResourceIds)
+	{
+		if ($secondaryCategory == CustomAttributeCategory::RESOURCE || $secondaryCategory == CustomAttributeCategory::RESOURCE_TYPE)
+		{
+			if ($secondaryCategory == CustomAttributeCategory::RESOURCE)
+			{
+				return in_array($attribute->SecondaryEntityId(), $requestedResourceIds) && array_key_exists($attribute->SecondaryEntityId(), $this->GetAllowedResources($userSession));
+			}
+
+			if ($secondaryCategory == CustomAttributeCategory::RESOURCE_TYPE)
+			{
+				$allowedResources = $this->GetAllowedResources($userSession);
+
+				foreach ($requestedResourceIds as $resourceId)
+				{
+					if (array_key_exists($resourceId, $allowedResources))
+					{
+						$resource = $allowedResources[$resourceId];
+
+						if ($resource->GetResourceType() == $attribute->SecondaryEntityId())
+						{
+							return true;
+						}
+					}
+				}
+
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+	private function GetAllowedResources($userSession) {
+
+		if ($this->allowedResources == null)
+		{
+			$resources = $this->GetResourceService()->GetAllResources(false, $userSession);
+			foreach ($resources as $resource)
+			{
+				$this->allowedResources[$resource->GetId()] = $resource;
+				}
+		}
+
+		return $this->allowedResources;
+	}
 }
+
 
 class AttributeServiceValidationResult
 {

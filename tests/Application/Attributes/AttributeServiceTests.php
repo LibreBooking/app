@@ -28,17 +28,33 @@ class AttributeServiceTests extends TestBase
 	public $attributeService;
 
 	/**
-	 * @var IAttributeRepository
+	 * @var FakeAttributeRepository
 	 */
 	public $attributeRepository;
+
+	/**
+	 * @var FakeAuthorizationService
+	 */
+	public $authorizationService;
+
+	/**
+	 * @var FakeResourceService
+	 */
+	public $resourceService;
 
 	public function setup()
 	{
 		parent::setup();
 
-		$this->attributeRepository = $this->getMock('IAttributeRepository');
+//		$this->attributeRepository = $this->getMock('IAttributeRepository');
+
+		$this->attributeRepository = new FakeAttributeRepository();
+		$this->authorizationService = new FakeAuthorizationService();
+		$this->resourceService = new FakeResourceService();
 
 		$this->attributeService = new AttributeService($this->attributeRepository);
+		$this->attributeService->SetAuthorizationService($this->authorizationService);
+		$this->attributeService->SetResourceService($this->resourceService);
 	}
 
 	public function testGetsAttributeValuesForEntitiesInCategory()
@@ -62,15 +78,17 @@ class AttributeServiceTests extends TestBase
 			new AttributeEntityValue(4, 20, 'value20'),
 		);
 
-		$this->attributeRepository->expects($this->once())
-				->method('GetByCategory')
-				->with($this->equalTo($category))
-				->will($this->returnValue($attributes));
-
-		$this->attributeRepository->expects($this->once())
-				->method('GetEntityValues')
-				->with($this->equalTo($category), $this->equalTo($entityIds))
-				->will($this->returnValue($values));
+		$this->attributeRepository->_CustomAttributes = $attributes;
+		$this->attributeRepository->_EntityValues = $values;
+//		$this->attributeRepository->expects($this->once())
+//				->method('GetByCategory')
+//				->with($this->equalTo($category))
+//				->will($this->returnValue($attributes));
+//
+//		$this->attributeRepository->expects($this->once())
+//				->method('GetEntityValues')
+//				->with($this->equalTo($category), $this->equalTo($entityIds))
+//				->will($this->returnValue($values));
 
 		$attributeList = $this->attributeService->GetAttributes($category, $entityIds);
 
@@ -101,10 +119,8 @@ class AttributeServiceTests extends TestBase
 			new AttributeValue(3, 'value2'),
 		);
 
-		$this->attributeRepository->expects($this->once())
-				->method('GetByCategory')
-				->with($this->equalTo($category))
-				->will($this->returnValue($attributes));
+		$this->attributeRepository->_CustomAttributes = $attributes;
+		$this->attributeRepository->_EntityValues = $values;
 
 		$result = $this->attributeService->Validate($category, $values, $entityId);
 
@@ -120,10 +136,8 @@ class AttributeServiceTests extends TestBase
 		$attributes = array(new FakeCustomAttribute(1, true, false, null, true));
 		$values = array(new AttributeValue(1, 'value1'));
 
-		$this->attributeRepository->expects($this->once())
-								  ->method('GetByCategory')
-								  ->with($this->equalTo($category))
-								  ->will($this->returnValue($attributes));
+		$this->attributeRepository->_CustomAttributes = $attributes;
+		$this->attributeRepository->_EntityValues = $values;
 
 		$result = $this->attributeService->Validate($category, $values, null, false, $isAdmin);
 
@@ -138,37 +152,88 @@ class AttributeServiceTests extends TestBase
 		$attributes = array(new FakeCustomAttribute(1, true, false, null, true));
 		$values = array(new AttributeValue(1, 'value1'));
 
-		$this->attributeRepository->expects($this->once())
-								  ->method('GetByCategory')
-								  ->with($this->equalTo($category))
-								  ->will($this->returnValue($attributes));
+		$this->attributeRepository->_CustomAttributes = $attributes;
+		$this->attributeRepository->_EntityValues = $values;
 
 		$result = $this->attributeService->Validate($category, $values, null, false, $isAdmin);
 
 		$this->assertFalse($result->IsValid());
 	}
 
-	public function testPassThroughForCategory()
+//	public function testPassThroughForCategory()
+//	{
+//		$categoryId = 123;
+//
+//		$this->attributeRepository->expects($this->once())
+//				->method('GetByCategory')
+//				->with($this->equalTo($categoryId))
+//				->will($this->returnValue(array()));
+//
+//		$this->attributeService->GetByCategory($categoryId);
+//	}
+
+//	public function testPassThroughForAttribute()
+//	{
+//		$attributeId = 123;
+//
+//		$this->attributeRepository->expects($this->once())
+//				->method('LoadById')
+//				->with($this->equalTo($attributeId))
+//				->will($this->returnValue(new TestCustomAttribute(1, 'l')));
+//
+//		$this->attributeService->GetById($attributeId);
+//	}
+
+	public function testGetsAttributesForReservationUserAndResources()
 	{
-		$categoryId = 123;
+		$this->authorizationService->_CanReserveFor = false;
+		$this->fakeUser->IsAdmin = false;
+		$requestedUserId = 1;
+		$resourceId1 = 10;
+		$resourceId2 = 20;
+		$resourceId3 = 30;
 
-		$this->attributeRepository->expects($this->once())
-				->method('GetByCategory')
-				->with($this->equalTo($categoryId))
-				->will($this->returnValue(array()));
+		$resourceTypeId1 = 100;
+		$resourceTypeId2 = 200;
 
-		$this->attributeService->GetByCategory($categoryId);
-	}
+		$resource1 = new ResourceDto($resourceId1, null);
+		$resource2 = new ResourceDto($resourceId2, null);
+		$resource3 = new ResourceDto($resourceId3, null, true, null, null, $resourceTypeId1);
 
-	public function testPassThroughForAttribute()
-	{
-		$attributeId = 123;
+		$this->resourceService->_AllResources = array($resource1, $resource3);
 
-		$this->attributeRepository->expects($this->once())
-				->method('LoadById')
-				->with($this->equalTo($attributeId))
-				->will($this->returnValue(new TestCustomAttribute(1, 'l')));
+		$unrestricted = new CustomAttribute(1, 'unrestricted', CustomAttributeTypes::CHECKBOX, CustomAttributeCategory::RESERVATION, null, null, null, 0);
 
-		$this->attributeService->GetById($attributeId);
+		$forUser = new CustomAttribute(2, 'forUser', CustomAttributeTypes::CHECKBOX, CustomAttributeCategory::RESERVATION, null, null, null, 0);
+		$forUser->WithSecondaryEntity(CustomAttributeCategory::USER, $requestedUserId);
+
+		$notForUser = new CustomAttribute(3, 'notForUser', CustomAttributeTypes::CHECKBOX, CustomAttributeCategory::RESERVATION, null, null, null, 0);
+		$notForUser->WithSecondaryEntity(CustomAttributeCategory::USER, 100);
+
+		$forResource1 = new CustomAttribute(4, 'forResource1', CustomAttributeTypes::CHECKBOX, CustomAttributeCategory::RESERVATION, null, null, null, 0);
+		$forResource1->WithSecondaryEntity(CustomAttributeCategory::RESOURCE, $resourceId1);
+
+		$resource2IsNotAllowed = new CustomAttribute(5, 'forResource2', CustomAttributeTypes::CHECKBOX, CustomAttributeCategory::RESERVATION, null, null, null, 0);
+		$resource2IsNotAllowed->WithSecondaryEntity(CustomAttributeCategory::RESOURCE, $resourceId2);
+
+		$forOtherResource = new CustomAttribute(6, 'forOtherResource', CustomAttributeTypes::CHECKBOX, CustomAttributeCategory::RESERVATION, null, null, null, 0);
+		$forOtherResource->WithSecondaryEntity(CustomAttributeCategory::RESOURCE, 300);
+
+		$forResourceType1 = new CustomAttribute(7, 'forResourceType1', CustomAttributeTypes::CHECKBOX, CustomAttributeCategory::RESERVATION, null, null, null, 0);
+		$forResourceType1->WithSecondaryEntity(CustomAttributeCategory::RESOURCE_TYPE, $resourceTypeId1);
+
+		$forOtherResourceType = new CustomAttribute(8, 'forResourceType2', CustomAttributeTypes::CHECKBOX, CustomAttributeCategory::RESERVATION, null, null, null, 0);
+		$forOtherResourceType->WithSecondaryEntity(CustomAttributeCategory::RESOURCE_TYPE, $resourceTypeId2);
+
+		$this->attributeRepository->_CustomAttributes = array($unrestricted, $forUser, $notForUser, $forResource1, $resource2IsNotAllowed, $forOtherResource, $forResourceType1, $forOtherResourceType);
+
+		/** @var Attribute[] $attributes */
+		$attributes = $this->attributeService->GetReservationAttributes($this->fakeUser, new ReservationView(), $requestedUserId, array($resourceId1, $resourceId2, $resourceId3));
+
+		$this->assertEquals(4, count($attributes));
+		$this->assertEquals($unrestricted->Id(), $attributes[0]->Id());
+		$this->assertEquals($forUser->Id(), $attributes[1]->Id());
+		$this->assertEquals($forResource1->Id(), $attributes[2]->Id());
+		$this->assertEquals($forResourceType1->Id(), $attributes[3]->Id());
 	}
 }

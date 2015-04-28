@@ -272,7 +272,7 @@ function AttributeManagement(opts) {
 			$('.attributeUnique').show();
 			//$('.attributeAdminOnly').hide();
 			$('.secondaryEntities, .attributeSecondary').hide();
-			//$('.attributeIsPrivate').hide();
+			$('.attributeIsPrivate').hide();
 		}
 	};
 

@@ -88,9 +88,6 @@ span.error {
   font-size: 1.4em;
   font-weight: bold;
 }
-.resourceDetails:not(:last-child) {
-  border-bottom: solid 1px #e9e9e9;
-}
 .admin table {
   border-collapse: collapse;
 }
@@ -456,6 +453,11 @@ td.update {
 #page-manage-reservations .checkbox input,
 #page-manage-resources .checkbox input {
   height: 20px;
+}
+#page-manage-blackouts .resourceDetails:not(:last-child),
+#page-manage-reservations .resourceDetails:not(:last-child),
+#page-manage-resources .resourceDetails:not(:last-child) {
+  border-bottom: solid 1px #e9e9e9;
 }
 .popover {
   max-width: 500px;

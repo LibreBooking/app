@@ -84,8 +84,7 @@ class FakeScheduleRepository implements IScheduleRepository
 	{
 	}
 
-
-	public function AddScheduleLayout($scheduleId, IScheduleLayout $layout)
+	public function AddScheduleLayout($scheduleId, ILayoutCreation $layout)
 	{
 		$schedule1 = new Schedule(100, 'sched1', false, DayOfWeek::MONDAY, 7);
 		$defaultSchedule = new Schedule($this->_DefaultScheduleId, 'defaultsched', true, Schedule::Today, 7);
