@@ -142,12 +142,7 @@ function Reservation(opts)
 		DisplayDuration();
 		WireUpAttachments();
 
-		function LoadCustomAttributes()
-		{
-			var attributesPlaceholder = $('#custom-attributes-placeholder');
-			attributesPlaceholder.html('<span class="fa fa-spinner fa-spin fa-2x"/>');
-			attributesPlaceholder.load('ajax/reservation_attributes.php?uid=' + elements.userId.val() + '&rn=' + elements.referenceNumber.val() + '&ro=' + $('#reservation-box').hasClass('readonly'));
-		}
+
 
 		elements.userId.change(function(){
 			LoadCustomAttributes();
@@ -235,6 +230,18 @@ function Reservation(opts)
 		});
 	};
 
+	function LoadCustomAttributes()
+	{
+		var attributesPlaceholder = $('#custom-attributes-placeholder');
+		attributesPlaceholder.html('<span class="fa fa-spinner fa-spin fa-2x"/>');
+		var url = 'ajax/reservation_attributes.php?uid=' + elements.userId.val() + '&rn=' + elements.referenceNumber.val() + '&ro=' + $('#reservation-box').hasClass('readonly');
+
+		_(GetSelectedResourceIds()).forEach(function(n) {
+			url += '&rid[]=' + n;
+		});
+		attributesPlaceholder.load(url);
+	}
+
 	function GetSelectedResourceIds()
 	{
 		var resourceIds = [parseInt($('#primaryResourceId').val())];
@@ -244,6 +251,11 @@ function Reservation(opts)
 		});
 
 		return resourceIds;
+	}
+
+	function onResourcesChanged()
+	{
+		LoadCustomAttributes();
 	}
 
 	function GetDisallowedAccessoryIds()
@@ -348,7 +360,8 @@ function Reservation(opts)
 		});
 
 		WireUpResourceDetailPopups();
-		elements.resourceGroupsDialog.modal('hide')
+		elements.resourceGroupsDialog.modal('hide');
+		onResourcesChanged();
 	};
 
 	var InitializeAdditionalResources = function ()
@@ -735,7 +748,7 @@ function Reservation(opts)
 	changeUser.chooseUser = function (id, name)
 	{
 		elements.userName.text(name);
-		elements.userId.val(id);
+		elements.userId.val(id).trigger('change');;
 
 		participation.removeParticipant(_ownerId);
 		participation.removeInvitee(_ownerId);

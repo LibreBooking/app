@@ -160,30 +160,6 @@ class AttributeServiceTests extends TestBase
 		$this->assertFalse($result->IsValid());
 	}
 
-//	public function testPassThroughForCategory()
-//	{
-//		$categoryId = 123;
-//
-//		$this->attributeRepository->expects($this->once())
-//				->method('GetByCategory')
-//				->with($this->equalTo($categoryId))
-//				->will($this->returnValue(array()));
-//
-//		$this->attributeService->GetByCategory($categoryId);
-//	}
-
-//	public function testPassThroughForAttribute()
-//	{
-//		$attributeId = 123;
-//
-//		$this->attributeRepository->expects($this->once())
-//				->method('LoadById')
-//				->with($this->equalTo($attributeId))
-//				->will($this->returnValue(new TestCustomAttribute(1, 'l')));
-//
-//		$this->attributeService->GetById($attributeId);
-//	}
-
 	public function testGetsAttributesForReservationUserAndResources()
 	{
 		$this->authorizationService->_CanReserveFor = false;

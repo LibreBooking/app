@@ -36,6 +36,11 @@ interface IReservationAttributesPage
 	 * @param Attribute[] $attributes
 	 */
 	public function SetAttributes($attributes);
+
+	/**
+	 * @return int[]
+	 */
+	public function GetRequestedResourceIds();
 }
 
 class ReservationAttributesPage extends Page implements IReservationAttributesPage
@@ -79,6 +84,20 @@ class ReservationAttributesPage extends Page implements IReservationAttributesPa
 	public function GetRequestedUserId()
 	{
 		return $this->GetQuerystring(QueryStringKeys::USER_ID);
+	}
+
+	/**
+	 * @return int[]
+	 */
+	public function GetRequestedResourceIds()
+	{
+		$resourceIds = $this->GetQuerystring(QueryStringKeys::RESOURCE_ID);
+		if (is_array($resourceIds))
+		{
+			return $resourceIds;
+		}
+
+		return array();
 	}
 
 	/**

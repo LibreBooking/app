@@ -476,14 +476,11 @@ class ManageResourcesPresenter extends ActionPresenter
 	public function ChangeResourceType()
 	{
 		$resourceTypeId = $this->page->GetValue();
-		if (!empty($resourceTypeId))
-		{
-			$resourceId = $this->page->GetResourceId();
-			Log::Debug('Changing resource type for resource %s', $resourceId);
-			$resource = $this->resourceRepository->LoadById($resourceId);
-			$resource->SetResourceTypeId($resourceTypeId);
-			$this->resourceRepository->Update($resource);
-		}
+		$resourceId = $this->page->GetResourceId();
+		Log::Debug('Changing resource type for resource %s', $resourceId);
+		$resource = $this->resourceRepository->LoadById($resourceId);
+		$resource->SetResourceTypeId($resourceTypeId);
+		$this->resourceRepository->Update($resource);
 	}
 
 	private function GetAttributeValues()

@@ -268,4 +268,12 @@ class FakeReservationAttributesPage implements IReservationAttributesPage
 	{
 		return $this->_RequestedReferenceNumber;
 	}
+
+	/**
+	 * @return int[]
+	 */
+	public function GetRequestedResourceIds()
+	{
+		// TODO: Implement GetRequestedResourceIds() method.
+	}
 }

@@ -68,6 +68,7 @@ class ReservationAttributesPresenter
 	{
 		$requestedUserId = $this->page->GetRequestedUserId();
 		$requestedReferenceNumber = $this->page->GetRequestedReferenceNumber();
+		$resourceIds = $this->page->GetRequestedResourceIds();
 
 		$reservationView = new ReservationView();
 		$canViewDetails = true;
@@ -82,7 +83,7 @@ class ReservationAttributesPresenter
 
 		if ($canViewDetails)
 		{
-			$attributes = $this->attributeService->GetReservationAttributes($userSession, $reservationView, $requestedUserId);
+			$attributes = $this->attributeService->GetReservationAttributes($userSession, $reservationView, $requestedUserId, $resourceIds);
 		}
 
 		$this->page->SetAttributes($attributes);

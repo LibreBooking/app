@@ -17,20 +17,23 @@ You should have received a copy of the GNU General Public License
 along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 *}
 <div class="form-group {if !$searchmode}has-feedback{/if} {$class}">
-	<label class="customAttribute" for="{$attributeName}">{$attribute->Label()|escape}</label>
-
 {if $readonly}
+	<label class="customAttribute" for="{$attributeName}">{$attribute->Label()|escape}</label>
 	<span class="attributeValue {$class}">{if $attribute->Value() == "1"}{translate key='True'}{else}{translate key='False'}{/if}</span>
 {elseif $searchmode}
+	<label class="customAttribute" for="{$attributeName}">{$attribute->Label()|escape}</label>
 	<select id="{$attributeName}" name="{$attributeName}" class="customAttribute form-control {$class}">
 		<option value="">--</option>
 		<option value="0" {if $attribute->Value() == "0"}selected="selected"{/if}>{translate key=No}</option>
 		<option value="1" {if $attribute->Value() == "1"}selected="selected"{/if}>{translate key=Yes}</option>
 	</select>
 {else}
+	<div class="checkbox">
 	<input type="checkbox" value="1" id="{$attributeName}" name="{$attributeName}" {if $attribute->Value() == "1"}checked="checked"{/if} class="{$inputClass}" />
+	<label class="customAttribute" for="{$attributeName}">{$attribute->Label()|escape}</label>
 	{if $attribute->Required() && !$searchmode}
 	<i class="glyphicon glyphicon-asterisk form-control-feedback" data-bv-icon-for="{$attributeName}"></i>
 	{/if}
+	</div>
 {/if}
 </div>

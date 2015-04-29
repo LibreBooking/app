@@ -56,9 +56,10 @@ interface IAttributeService
 	 * @param UserSession $userSession
 	 * @param ReservationView $reservationView
 	 * @param int $requestedUserId
+	 * @param int[] $requestedResourceIds
 	 * @return Attribute[]
 	 */
-	public function GetReservationAttributes(UserSession $userSession, ReservationView $reservationView, $requestedUserId = 0);
+	public function GetReservationAttributes(UserSession $userSession, ReservationView $reservationView, $requestedUserId = 0, $requestedResourceIds = array());
 }
 
 class AttributeService implements IAttributeService
