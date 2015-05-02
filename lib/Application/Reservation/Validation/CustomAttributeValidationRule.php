@@ -67,6 +67,32 @@ class CustomAttributeValidationRule implements IReservationValidationRule
 					// the attribute applies to a different user
 					continue;
 				}
+				if ($secondaryCategory == CustomAttributeCategory::RESOURCE && !in_array($secondaryEntityId, $reservationSeries->AllResourceIds()))
+				{
+					// the attribute is not for a resource that is being booked
+					continue;
+				}
+				if ($secondaryCategory == CustomAttributeCategory::RESOURCE_TYPE)
+				{
+					$applies = false;
+					foreach ($reservationSeries->AllResources() as $resource)
+					{
+						if ($applies)
+						{
+							break;
+						}
+						if ($resource->GetResourceTypeId() == $secondaryEntityId)
+						{
+							$applies = true;
+						}
+					}
+
+					if (!$applies)
+					{
+						// the attribute is for a resource type that is not being booked
+						continue;
+					}
+				}
 
 				$errorMessage->Append($invalidAttribute->Error);
 			}

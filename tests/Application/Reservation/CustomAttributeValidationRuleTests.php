@@ -64,6 +64,11 @@ class CustomAttributeValidationRuleTests extends TestBase
 		$this->reservation = new TestReservationSeries();
 		$this->user = new FakeUser(1);
 		$this->bookedBy = new FakeUser(2);
+		$this->reservation->WithOwnerId($this->user->Id());
+		$this->reservation->WithBookedBy(new FakeUserSession(false, 'America/New_York', $this->bookedBy->Id()));
+
+		$this->bookedBy->_IsResourceAdmin = false;
+		$this->bookedBy->_SetIsAdminForUser(false);
 
 		$this->userRepository->expects($this->at(0))
 							 ->method('LoadById')
@@ -87,7 +92,10 @@ class CustomAttributeValidationRuleTests extends TestBase
 	{
 		$errors = array('error1', 'error2');
 
-		$validationResult = new AttributeServiceValidationResult(false, $errors);
+		$validationResult = new AttributeServiceValidationResult(false, $errors, array(
+				new InvalidAttribute(new FakeCustomAttribute(), 'error1'),
+				new InvalidAttribute(new FakeCustomAttribute(), 'error2')));
+
 		$this->attributeService->expects($this->once())
 				->method('Validate')
 				->with($this->equalTo(CustomAttributeCategory::RESERVATION), $this->equalTo($this->reservation->AttributeValues()), $this->isNull(), $this->isFalse(), $this->isFalse())
@@ -135,9 +143,7 @@ class CustomAttributeValidationRuleTests extends TestBase
 
 	public function testWhenTheInvalidAttributeIsForASecondaryUser_AndTheReservationUserIsNotThatUser()
 	{
-		$reservation = new TestReservationSeries();
-		$reservation->WithOwnerId(999);
-		$reservation->WithAttributeValue(new AttributeValue(1, null));
+		$this->reservation->WithAttributeValue(new AttributeValue(1, null));
 
 		$attributeService = $this->getMock('IAttributeService');
 
@@ -148,12 +154,64 @@ class CustomAttributeValidationRuleTests extends TestBase
 
 		$attributeService->expects($this->once())
 				->method('Validate')
-				->with($this->equalTo(CustomAttributeCategory::RESERVATION), $this->equalTo($reservation->AttributeValues()))
+				->with($this->equalTo(CustomAttributeCategory::RESERVATION), $this->equalTo($this->reservation->AttributeValues()))
 				->will($this->returnValue($validationResult));
 
 		$rule = new CustomAttributeValidationRule($attributeService, $this->userRepository);
 
-		$result = $rule->Validate($reservation);
+		$result = $rule->Validate($this->reservation);
+
+		$this->assertEquals(true, $result->IsValid());
+		$this->assertEmpty($result->ErrorMessage());
+	}
+
+	public function testWhenTheInvalidAttributeIsForASecondaryResource_AndTheReservationDoesNotHaveThatResource()
+	{
+		$this->reservation->WithResource(new FakeBookableResource(1));
+		$this->reservation->WithAttributeValue(new AttributeValue(1, null));
+
+		$attributeService = $this->getMock('IAttributeService');
+
+		$userAttribute = new FakeCustomAttribute();
+		$userAttribute->WithSecondaryEntity(CustomAttributeCategory::RESOURCE, 2);
+
+		$validationResult = new AttributeServiceValidationResult(false, array('error'), array(new InvalidAttribute($userAttribute, 'another message')));
+
+		$attributeService->expects($this->once())
+				->method('Validate')
+				->with($this->equalTo(CustomAttributeCategory::RESERVATION), $this->equalTo($this->reservation->AttributeValues()))
+				->will($this->returnValue($validationResult));
+
+		$rule = new CustomAttributeValidationRule($attributeService, $this->userRepository);
+
+		$result = $rule->Validate($this->reservation);
+
+		$this->assertEquals(true, $result->IsValid());
+		$this->assertEmpty($result->ErrorMessage());
+	}
+
+	public function testWhenTheInvalidAttributeIsForASecondaryResourceType_AndTheReservationDoesNotHaveAResourceWithThatResourceType()
+	{
+		$resource = new FakeBookableResource(1);
+		$resource->SetResourceTypeId(1);
+		$this->reservation->WithResource($resource);
+		$this->reservation->WithAttributeValue(new AttributeValue(1, null));
+
+		$attributeService = $this->getMock('IAttributeService');
+
+		$userAttribute = new FakeCustomAttribute();
+		$userAttribute->WithSecondaryEntity(CustomAttributeCategory::RESOURCE_TYPE, 2);
+
+		$validationResult = new AttributeServiceValidationResult(false, array('error'), array(new InvalidAttribute($userAttribute, 'another message')));
+
+		$attributeService->expects($this->once())
+				->method('Validate')
+				->with($this->equalTo(CustomAttributeCategory::RESERVATION), $this->equalTo($this->reservation->AttributeValues()))
+				->will($this->returnValue($validationResult));
+
+		$rule = new CustomAttributeValidationRule($attributeService, $this->userRepository);
+
+		$result = $rule->Validate($this->reservation);
 
 		$this->assertEquals(true, $result->IsValid());
 		$this->assertEmpty($result->ErrorMessage());
