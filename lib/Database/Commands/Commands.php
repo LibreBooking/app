@@ -1789,6 +1789,15 @@ class SelectUserGroupPermissions extends SqlCommand
 	}
 }
 
+class SelectUserGroupResourceAdminPermissions extends SqlCommand
+{
+	public function __construct($userId)
+	{
+		parent::__construct(Queries::GET_USER_ADMIN_GROUP_RESOURCE_PERMISSIONS);
+		$this->AddParameter(new Parameter(ParameterNames::USER_ID, $userId));
+	}
+}
+
 class SetDefaultScheduleCommand extends SqlCommand
 {
 	public function __construct($scheduleId)

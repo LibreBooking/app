@@ -49,8 +49,13 @@ class ScheduleUserRepositoryTests extends TestBase
 			array(ColumnNames::GROUP_ID => 200, ColumnNames::RESOURCE_ID => 5, ColumnNames::RESOURCE_NAME => 'r5'),
 		);
 
+		$groupAdminResources = array(
+			array(ColumnNames::RESOURCE_ID => 6, ColumnNames::RESOURCE_NAME => 'r6'),
+		);
+
 		$this->db->SetRow(0, $userResourceRoles);
 		$this->db->SetRow(1, $groupResourceRoles);
+		$this->db->SetRow(2, $groupAdminResources);
 
 		$repo = new ScheduleUserRepository();
 		$user = $repo->GetUser($userId);
@@ -58,9 +63,12 @@ class ScheduleUserRepositoryTests extends TestBase
 		$userPermissionsCommand = new GetUserPermissionsCommand($userId);
 		$groupPermissionsCommand = new SelectUserGroupPermissions($userId);
 
-		$this->assertEquals(2, count($this->db->_Commands));
+		$this->assertEquals(3, count($this->db->_Commands));
 		$this->assertTrue($this->db->ContainsCommand($userPermissionsCommand));
 		$this->assertTrue($this->db->ContainsCommand($groupPermissionsCommand));
+
+		$this->assertEquals(count($userResourceRoles), count($user->GetResources()));
+		$this->assertEquals(6, count($user->GetAllResources()), 'excludes the dupes');
 	}
 
 	public function testGetsAllUniqueResourcesForUserAndGroup()

@@ -739,6 +739,17 @@ const GET_RESERVATION_LIST_TEMPLATE =
 		WHERE
 			ug.user_id = @userid AND ug.group_id = grp.group_id AND grp.resource_id = r.resource_id';
 
+	const GET_USER_ADMIN_GROUP_RESOURCE_PERMISSIONS =
+				'SELECT r.resource_id, r.name FROM resources r
+			WHERE r.schedule_id IN (SELECT s.schedule_id FROM schedules s
+				INNER JOIN groups g ON s.admin_group_id
+				INNER JOIN user_groups ug on g.group_id
+				WHERE ug.user_id = @userid)
+			OR r.resource_id IN (SELECT r2.resource_id FROM resources r2
+				INNER JOIN groups g ON r2.admin_group_id
+				INNER JOIN user_groups ug on g.group_id
+				WHERE ug.user_id = @userid)';
+
 	const GET_USER_PREFERENCE = 'SELECT value FROM user_preferences WHERE user_id = @userid AND name = @name';
 
 	const GET_USER_PREFERENCES = 'SELECT name, value FROM user_preferences WHERE user_id = @userid';

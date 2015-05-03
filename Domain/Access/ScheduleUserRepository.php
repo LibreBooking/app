@@ -32,7 +32,7 @@ class ScheduleUserRepository implements IScheduleUserRepository
 {
 	public function GetUser($userId)
 	{
-		return new ScheduleUser($userId, $this->GetUserPermissions($userId), $this->GetGroupPermissions($userId));
+		return new ScheduleUser($userId, $this->GetUserPermissions($userId), $this->GetGroupPermissions($userId), $this->GetGroupAdminPermissions($userId));
 	}
 
 	private function GetUserPermissions($userId)
@@ -83,6 +83,21 @@ class ScheduleUserRepository implements IScheduleUserRepository
 
 		return $groups;
 	}
+
+	private function GetGroupAdminPermissions($userId)
+	{
+		$userCommand = new SelectUserGroupResourceAdminPermissions($userId);
+
+		$reader = ServiceLocator::GetDatabase()->Query($userCommand);
+		$resources = array();
+
+		while ($row = $reader->GetRow())
+		{
+			$resources[] = new ScheduleResource($row[ColumnNames::RESOURCE_ID], $row[ColumnNames::RESOURCE_NAME]);
+		}
+
+		return $resources;
+	}
 }
 
 interface IScheduleUser
@@ -103,6 +118,12 @@ interface IScheduleUser
 	 * @return array|ScheduleResource[]
 	 */
 	public function GetAllResources();
+
+	/**
+	 * The resources that the user or any of their groups has admin access to
+	 * @return array|ScheduleResource[]
+	 */
+	public function GetAdminResources();
 }
 
 class ScheduleUser implements IScheduleUser
@@ -110,17 +131,20 @@ class ScheduleUser implements IScheduleUser
 	private $_userId;
 	private $_groupPermissions;
 	private $_resources;
+	private $_adminResources;
 
 	/**
 	 * @param int $userId;
 	 * @param array|ScheduleResource[] $userPermissions
 	 * @param array|ScheduleGroup[] $groupPermissions
+	 * @param array|ScheduleGroup[] $groupAdminPermissions
 	 */
-	public function __construct($userId, $userPermissions, $groupPermissions)
+	public function __construct($userId, $userPermissions, $groupPermissions, $groupAdminPermissions)
 	{
 		$this->_userId = $userId;
 		$this->_resources = $userPermissions;
 		$this->_groupPermissions = $groupPermissions;
+		$this->_adminResources = $groupAdminPermissions;
 	}
 
 	public function Id()
@@ -138,6 +162,11 @@ class ScheduleUser implements IScheduleUser
 		return $this->_resources;
 	}
 
+	public function GetAdminResources()
+	{
+		return $this->_adminResources;
+	}
+
 	public function GetAllResources()
 	{
 		$resources = array();
@@ -153,6 +182,11 @@ class ScheduleUser implements IScheduleUser
 			{
 				$resources[] = $resource;
 			}
+		}
+
+		foreach ($this->GetAdminResources() as $resource)
+		{
+			$resources[] = $resource;
 		}
 
 		return array_unique($resources);
