@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Copyright 2011-2014 Nick Korbel
+ * Copyright 2011-2015 Nick Korbel
  *
  * This file is part of Booked Scheduler.
  *
@@ -74,20 +74,21 @@ class CustomAttributeValidationRule implements IReservationValidationRule
 				}
 				if ($secondaryCategory == CustomAttributeCategory::RESOURCE_TYPE)
 				{
-					$applies = false;
+					$appliesToResourceType = false;
 					foreach ($reservationSeries->AllResources() as $resource)
 					{
-						if ($applies)
+						if ($appliesToResourceType)
 						{
+							// don't keep checking if we already know it applies to this resource type
 							break;
 						}
 						if ($resource->GetResourceTypeId() == $secondaryEntityId)
 						{
-							$applies = true;
+							$appliesToResourceType = true;
 						}
 					}
 
-					if (!$applies)
+					if (!$appliesToResourceType)
 					{
 						// the attribute is for a resource type that is not being booked
 						continue;

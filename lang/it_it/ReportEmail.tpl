@@ -1,5 +1,5 @@
 {*
-Copyright 2012-2014 Nick Korbel
+Copyright 2012-2015 Nick Korbel
 
 Translation: 2014 Nicola Ruggero <nicola@nxnt.org>
 
