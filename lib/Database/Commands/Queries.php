@@ -112,7 +112,7 @@ class Queries
 	const ADD_RESERVATION_SERIES =
 			'INSERT INTO
         reservation_series (date_created, title, description, allow_participation, allow_anon_participation, repeat_type, repeat_options, type_id, status_id, owner_id)
-		VALUES (@dateCreated, @title, @description, false, false, @repeatType, @repeatOptions, @typeid, @statusid, @userid)';
+		VALUES (@dateCreated, @title, @description, @allow_participation, false, @repeatType, @repeatOptions, @typeid, @statusid, @userid)';
 
 	const ADD_RESERVATION_USER =
 			'INSERT INTO reservation_users (reservation_instance_id, user_id, reservation_user_level)
@@ -914,7 +914,8 @@ const GET_RESERVATION_LIST_TEMPLATE =
 			repeat_type = @repeatType,
 			repeat_options = @repeatOptions,
 			status_id = @statusid,
-			owner_id = @userid
+			owner_id = @userid,
+			allow_participation = @allow_participation
 		WHERE
 			series_id = @seriesid';
 

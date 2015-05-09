@@ -52,6 +52,7 @@ class FakeReservationSavePage implements IReservationSavePage
 	public $endReminderValue = "1";
 	public $endReminderInterval = ReservationReminderInterval::Hours;
 	public $hasEndReminder = true;
+	public $allowParticipation;
 
 	public function __construct()
 	{
@@ -226,6 +227,14 @@ class FakeReservationSavePage implements IReservationSavePage
 	public function SetRequiresApproval($requiresApproval)
 	{
 		$this->requiresApproval = $requiresApproval;
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function GetAllowParticipation()
+	{
+		return $this->allowParticipation;
 	}
 }
 

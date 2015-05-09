@@ -152,6 +152,11 @@ interface IReservationPage extends IPage
 	 * @return bool
 	 */
 	public function GetIsAdminForResource();
+
+	/**
+	 * @param bool $allowParticipation
+	 */
+	function SetAllowParticipantsToJoin($allowParticipation);
 }
 
 abstract class ReservationPage extends Page implements IReservationPage
@@ -327,6 +332,11 @@ abstract class ReservationPage extends Page implements IReservationPage
 	public function SetInvitees($invitees)
 	{
 		$this->Set('Invitees', $invitees);
+	}
+
+	public function SetAllowParticipantsToJoin($allowParticipantsToJoin)
+	{
+		$this->Set('AllowParticipantsToJoin', $allowParticipantsToJoin);
 	}
 
 	public function SetAccessories($accessories)

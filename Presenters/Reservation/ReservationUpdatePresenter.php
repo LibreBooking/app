@@ -115,6 +115,8 @@ class ReservationUpdatePresenter implements IReservationUpdatePresenter
 		$existingSeries->ChangeAccessories($this->GetAccessories());
 		$existingSeries->ChangeAttributes($this->GetAttributes());
 
+		$existingSeries->AllowParticipation($this->page->GetAllowParticipation());
+
 		$attachments = $this->page->GetAttachments();
 		foreach ($attachments as $attachment)
 		{

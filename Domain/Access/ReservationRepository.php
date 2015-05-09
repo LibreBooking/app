@@ -99,9 +99,7 @@ class ReservationRepository implements IReservationRepository
 		{
 			Log::Debug('Updating existing series (seriesId: %s)', $reservationSeries->SeriesId());
 
-			$updateSeries = new UpdateReservationSeriesCommand($reservationSeries->SeriesId(), $reservationSeries->Title(), $reservationSeries->Description(), $reservationSeries->RepeatOptions()
-																																												 ->RepeatType(), $reservationSeries->RepeatOptions()
-																																																				   ->ConfigurationString(), Date::Now(), $reservationSeries->StatusId(), $reservationSeries->UserId());
+			$updateSeries = new UpdateReservationSeriesCommand($reservationSeries->SeriesId(), $reservationSeries->Title(), $reservationSeries->Description(), $reservationSeries->RepeatOptions() ->RepeatType(), $reservationSeries->RepeatOptions()->ConfigurationString(), Date::Now(), $reservationSeries->StatusId(), $reservationSeries->UserId(),  $reservationSeries->GetAllowParticipation());
 
 			$database->Execute($updateSeries);
 
@@ -122,9 +120,7 @@ class ReservationRepository implements IReservationRepository
 	{
 		$database = ServiceLocator::GetDatabase();
 
-		$insertReservationSeries = new AddReservationSeriesCommand(Date::Now(), $reservationSeries->Title(), $reservationSeries->Description(), $reservationSeries->RepeatOptions()
-																																								  ->RepeatType(), $reservationSeries->RepeatOptions()
-																																																	->ConfigurationString(), ReservationTypes::Reservation, $reservationSeries->StatusId(), $reservationSeries->UserId());
+		$insertReservationSeries = new AddReservationSeriesCommand(Date::Now(), $reservationSeries->Title(), $reservationSeries->Description(), $reservationSeries->RepeatOptions()->RepeatType(), $reservationSeries->RepeatOptions()->ConfigurationString(), ReservationTypes::Reservation, $reservationSeries->StatusId(), $reservationSeries->UserId(),  $reservationSeries->GetAllowParticipation());
 
 		$reservationSeriesId = $database->ExecuteInsert($insertReservationSeries);
 
@@ -232,6 +228,7 @@ class ReservationRepository implements IReservationRepository
 			$series->WithDescription($description);
 			$series->WithOwner($row[ColumnNames::RESERVATION_OWNER]);
 			$series->WithStatus($row[ColumnNames::RESERVATION_STATUS]);
+			$series->AllowParticipation($row[ColumnNames::RESERVATION_ALLOW_PARTICIPATION]);
 
 			$startDate = Date::FromDatabase($row[ColumnNames::RESERVATION_START]);
 			$endDate = Date::FromDatabase($row[ColumnNames::RESERVATION_END]);

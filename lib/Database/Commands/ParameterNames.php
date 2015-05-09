@@ -34,6 +34,7 @@ class ParameterNames
 	const ACTIVATION_CODE = '@activation_code';
 
 	const ALLOW_CALENDAR_SUBSCRIPTION = '@allow_calendar_subscription';
+	const ALLOW_PARTICIPATION = '@allow_participation';
 
 	const ANNOUNCEMENT_ID = '@announcementid';
 	const ANNOUNCEMENT_TEXT = '@text';

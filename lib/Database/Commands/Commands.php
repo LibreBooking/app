@@ -218,7 +218,8 @@ class AddReservationSeriesCommand extends SqlCommand
 								$repeatOptions,
 								$reservationTypeId,
 								$statusId,
-								$ownerId
+								$ownerId,
+								$allowParticipation
 	)
 	{
 		parent::__construct(Queries::ADD_RESERVATION_SERIES);
@@ -231,6 +232,7 @@ class AddReservationSeriesCommand extends SqlCommand
 		$this->AddParameter(new Parameter(ParameterNames::TYPE_ID, $reservationTypeId));
 		$this->AddParameter(new Parameter(ParameterNames::STATUS_ID, $statusId));
 		$this->AddParameter(new Parameter(ParameterNames::USER_ID, $ownerId));
+		$this->AddParameter(new Parameter(ParameterNames::ALLOW_PARTICIPATION, (int)$allowParticipation));
 	}
 }
 
@@ -1924,7 +1926,8 @@ class UpdateReservationSeriesCommand extends SqlCommand
 								$repeatOptions,
 								Date $dateModified,
 								$statusId,
-								$ownerId
+								$ownerId,
+								$allowParticipation
 	)
 	{
 		parent::__construct(Queries::UPDATE_RESERVATION_SERIES);
@@ -1937,6 +1940,7 @@ class UpdateReservationSeriesCommand extends SqlCommand
 		$this->AddParameter(new Parameter(ParameterNames::DATE_MODIFIED, $dateModified->ToDatabase()));
 		$this->AddParameter(new Parameter(ParameterNames::STATUS_ID, $statusId));
 		$this->AddParameter(new Parameter(ParameterNames::USER_ID, $ownerId));
+		$this->AddParameter(new Parameter(ParameterNames::ALLOW_PARTICIPATION, (int)$allowParticipation));
 	}
 }
 

@@ -82,6 +82,8 @@ class ReservationViewRepositoryTests extends TestBase
 
 		$email = 'owner@email.com';
 
+		$allowParticipation = 1;
+
 		$ownerLevel = ReservationUserLevel::OWNER;
 		$participantLevel = ReservationUserLevel::PARTICIPANT;
 		$inviteeLevel = ReservationUserLevel::INVITEE;
@@ -114,6 +116,7 @@ class ReservationViewRepositoryTests extends TestBase
 			ColumnNames::RESOURCE_NAME => $resourceName,
 			ColumnNames::EMAIL => $email,
 			ColumnNames::RESERVATION_MODIFIED => Date::Now()->ToDatabase(),
+			ColumnNames::RESERVATION_ALLOW_PARTICIPATION => $allowParticipation,
 		);
 
 		$resourceRows = array(
@@ -238,6 +241,8 @@ class ReservationViewRepositoryTests extends TestBase
 
 		$expectedView->StartReminder = new ReservationReminderView($startReminderMinutes);
 		$expectedView->EndReminder = new ReservationReminderView($endReminderMinutes);
+
+		$expectedView->AllowParticipation = true;
 
 		$this->assertEquals($expectedView, $reservationView);
 	}

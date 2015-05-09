@@ -61,6 +61,7 @@ class ReservationRepositoryTests extends TestBase
 		$accessory = new ReservationAccessory(928, 3);
 		$attribute = new AttributeValue(1, 'value');
 		$attachment = new FakeReservationAttachment(1);
+		$allowParticipation = true;
 
 		$startUtc = Date::Parse($startCst, 'CST')->ToUtc();
 		$endUtc = Date::Parse($endCst, 'CST')->ToUtc();
@@ -93,6 +94,7 @@ class ReservationRepositoryTests extends TestBase
 		$reservation->AddAccessory($accessory);
 		$reservation->AddAttributeValue($attribute);
 		$reservation->AddAttachment($attachment);
+		$reservation->AllowParticipation($allowParticipation);
 
 		$this->repository->Add($reservation);
 
@@ -104,7 +106,8 @@ class ReservationRepositoryTests extends TestBase
 			$repeatOptionsString,
 			ReservationTypes::Reservation,
 			ReservationStatus::Created,
-			$userId);
+			$userId,
+			$allowParticipation);
 
 		$insertReservation = new AddReservationCommand(
 			$startUtc,
@@ -304,6 +307,8 @@ class ReservationRepositoryTests extends TestBase
 		$startReminderMinutes = 25;
 		$endReminderMinutes = 120;
 
+		$allowParticipation = true;
+
 		$expected = new ExistingReservationSeries();
 		$expected->WithId($seriesId);
 		$expected->WithOwner($ownerId);
@@ -319,6 +324,7 @@ class ReservationRepositoryTests extends TestBase
 		$expected->WithAttribute(new AttributeValue($attributeId1, $attributeValue1));
 		$expected->WithAttribute(new AttributeValue($attributeId2, $attributeValue2));
 		$expected->WithAttachment($fileId, 'doc');
+		$expected->AllowParticipation($allowParticipation);
 
 		$instance1 = new Reservation($expected, $duration->AddDays(10));
 		$instance1->SetReferenceNumber('instance1');
@@ -354,7 +360,8 @@ class ReservationRepositoryTests extends TestBase
 			$referenceNumber,
 			$seriesId,
 			$ownerId,
-			$statusId
+			$statusId,
+			$allowParticipation
 		);
 
 		$reservationInstanceRow = new ReservationInstanceRow($seriesId);
@@ -428,6 +435,7 @@ class ReservationRepositoryTests extends TestBase
 		$userId = 10;
 		$title = "new title";
 		$description = "new description";
+		$allowParticipation = true;
 
 		$builder = new ExistingReservationSeriesBuilder();
 		$existingReservation = $builder->Build();
@@ -439,6 +447,7 @@ class ReservationRepositoryTests extends TestBase
 		$repeatConfiguration = $repeatOptions->ConfigurationString();
 
 		$this->repository->Update($existingReservation);
+		$existingReservation->AllowParticipation($allowParticipation);
 
 		$updateSeriesCommand = new UpdateReservationSeriesCommand(
 			$existingReservation->SeriesId(),
@@ -448,7 +457,8 @@ class ReservationRepositoryTests extends TestBase
 			$repeatConfiguration,
 			Date::Now(),
 			$existingReservation->StatusId(),
-			$userId);
+			$userId,
+			$allowParticipation);
 		$this->assertEquals(1, count($this->db->_Commands));
 		$this->assertEquals($updateSeriesCommand, $this->db->_Commands[0]);
 	}
@@ -462,6 +472,7 @@ class ReservationRepositoryTests extends TestBase
 		$description = "new description";
 		$expectedRepeat = new RepeatNone();
 		$referenceNumber = 'ref number current';
+		$allowParticipation = true;
 
 		$currentReservation = new TestReservation($referenceNumber, new TestDateRange());
 
@@ -471,8 +482,8 @@ class ReservationRepositoryTests extends TestBase
 		$builder->WithCurrentInstance($currentReservation);
 
 		$existingReservation = $builder->BuildTestVersion();
-		$existingReservation->Update($userId, new FakeBookableResource($resourceId), $title, $description,
-									 new FakeUserSession());
+		$existingReservation->Update($userId, new FakeBookableResource($resourceId), $title, $description,  new FakeUserSession());
+		$existingReservation->AllowParticipation($allowParticipation);
 
 		$this->db->_ExpectedInsertId = $seriesId;
 
@@ -486,7 +497,8 @@ class ReservationRepositoryTests extends TestBase
 			$expectedRepeat->ConfigurationString(),
 			ReservationTypes::Reservation,
 			ReservationStatus::Created,
-			$userId);
+			$userId,
+			$allowParticipation);
 
 		$updateReservationCommand = $this->GetUpdateReservationCommand($seriesId, $currentReservation);
 
@@ -503,6 +515,7 @@ class ReservationRepositoryTests extends TestBase
 		$resourceId = 11;
 		$title = "new title";
 		$description = "new description";
+		$allowParticipation = true;
 
 		$dateRange = DateRange::Create('2010-01-10 05:30:00', '2010-01-10 08:30:00', 'UTC');
 		$existingInstance1 = new TestReservation('123', $dateRange->AddDays(1));
@@ -525,8 +538,8 @@ class ReservationRepositoryTests extends TestBase
 		$builder->WithCurrentInstance($currentInstance);
 
 		$existingReservation = $builder->BuildTestVersion();
-		$existingReservation->Update($userId, new FakeBookableResource($resourceId), $title, $description,
-									 new FakeUserSession());
+		$existingReservation->Update($userId, new FakeBookableResource($resourceId), $title, $description, new FakeUserSession());
+		$existingReservation->AllowParticipation($allowParticipation);
 
 		$expectedRepeat = $existingReservation->RepeatOptions();
 
@@ -544,7 +557,8 @@ class ReservationRepositoryTests extends TestBase
 			$expectedRepeat->ConfigurationString(),
 			ReservationTypes::Reservation,
 			ReservationStatus::Created,
-			$userId);
+			$userId,
+			$allowParticipation);
 
 		$updateReservationCommand1 = $this->GetUpdateReservationCommand($newSeriesId, $existingInstance1);
 		$updateReservationCommand2 = $this->GetUpdateReservationCommand($newSeriesId, $existingInstance2);

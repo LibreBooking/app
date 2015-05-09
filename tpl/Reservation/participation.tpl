@@ -85,6 +85,13 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		<div id="inviteeList">
 		</div>
 
+		<div id="allowParticipation">
+			<div class="checkbox">
+				<input type="checkbox" {if $AllowParticipantsToJoin}checked="checked"{/if} {formname key=ALLOW_PARTICIPATION} id="allowParticipationCheckbox">
+				<label for="allowParticipationCheckbox">{translate key=AllowParticipantsToJoin}</label>
+			</div>
+		</div>
+
 		<div class="modal fade" id="inviteeDialog" tabindex="-1" role="dialog" aria-labelledby="inviteeModalLabel" aria-hidden="true">
 			<div class="modal-dialog">
 				<div class="modal-content">

@@ -33,6 +33,7 @@ class FormKeys
 	const ADDRESS = 'address';
 	const ALLOW_CALENDAR_SUBSCRIPTIONS = 'ALLOW_CALENDAR_SUBSCRIPTIONS';
 	const ALLOW_MULTIDAY = 'allowMultiday';
+	const ALLOW_PARTICIPATION = 'ALLOW_PARTICIPATION';
 	const ANNOUNCEMENT_TEXT = 'announcementText';
 	const ANNOUNCEMENT_START = 'announcementStart';
 	const ANNOUNCEMENT_END = 'announcementEnd';

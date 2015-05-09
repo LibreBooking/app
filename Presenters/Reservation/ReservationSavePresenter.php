@@ -109,6 +109,8 @@ class ReservationSavePresenter implements IReservationSavePresenter
 		$inviteeIds = $this->_page->GetInvitees();
 		$reservationSeries->ChangeInvitees($inviteeIds);
 
+		$reservationSeries->AllowParticipation($this->_page->GetAllowParticipation());
+
 		$attachments = $this->_page->GetAttachments();
 
 		foreach($attachments as $attachment)

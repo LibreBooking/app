@@ -151,6 +151,7 @@ class ReservationViewRepository implements IReservationViewRepository
 			$reservationView->RepeatWeekdays = $repeatConfig->Weekdays;
 			$reservationView->RepeatMonthlyType = $repeatConfig->MonthlyType;
 			$reservationView->RepeatTerminationDate = $repeatConfig->TerminationDate;
+			$reservationView->AllowParticipation = $row[ColumnNames::RESERVATION_ALLOW_PARTICIPATION];
 
 			$this->SetResources($reservationView);
 			$this->SetParticipants($reservationView);
@@ -704,6 +705,11 @@ class ReservationView
 	 * @var ReservationReminderView|null
 	 */
 	public $EndReminder;
+
+	/**
+	 * @var bool
+	 */
+	public $AllowParticipation = false;
 
 	/**
 	 * @param AttributeValue $attribute

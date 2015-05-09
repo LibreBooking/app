@@ -105,6 +105,7 @@ class ColumnNames
 	const RESERVATION_STATUS = 'status_id';
 	const SERIES_ID = 'series_id';
 	const RESERVATION_OWNER = 'owner_id';
+	const RESERVATION_ALLOW_PARTICIPATION = 'allow_participation';
 
 	// RESERVATION_INSTANCE //
 	const RESERVATION_INSTANCE_ID = 'reservation_instance_id';

@@ -240,6 +240,11 @@ class ReservationSeries
 	 */
 	protected $endReminder;
 
+	/**
+	 * @var bool
+	 */
+	protected $allowParticipation = false;
+
 	protected function __construct()
 	{
 		$this->_repeatOptions = new RepeatNone();
@@ -451,6 +456,22 @@ class ReservationSeries
 		{
 			$instance->ChangeParticipants($participantIds);
 		}
+	}
+
+	/**
+	 * @param bool $shouldAllowParticipation
+	 */
+	public function AllowParticipation($shouldAllowParticipation)
+	{
+		$this->allowParticipation = $shouldAllowParticipation;
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function GetAllowParticipation()
+	{
+		return $this->allowParticipation;
 	}
 
 	/**

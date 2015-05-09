@@ -521,6 +521,7 @@ class en_us extends Language
 		$strings['AvailableBeginningAt'] = 'Available Beginning At';
 		$strings['AllResourceTypes'] = 'All Resource Types';
 		$strings['AllResourceStatuses'] = 'All Resource Statuses';
+		$strings['AllowParticipantsToJoin'] = 'Allow Participants To Join';
 		// End Strings
 
 		// Install

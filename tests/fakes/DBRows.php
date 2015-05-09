@@ -97,7 +97,8 @@ class ReservationRow
 		$referenceNumber,
 		$seriesId,
 		$ownerId,
-		$statusId
+		$statusId,
+		$allowParticipation
 	)
 	{
 		$this->row = array(
@@ -112,7 +113,8 @@ class ReservationRow
 			ColumnNames::REFERENCE_NUMBER => $referenceNumber,
 			ColumnNames::SERIES_ID => $seriesId,
 			ColumnNames::RESERVATION_OWNER => $ownerId,
-			ColumnNames::RESERVATION_STATUS => $statusId
+			ColumnNames::RESERVATION_STATUS => $statusId,
+			ColumnNames::RESERVATION_ALLOW_PARTICIPATION => $allowParticipation,
 		);
 	}
 }

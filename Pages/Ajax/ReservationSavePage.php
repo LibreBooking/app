@@ -133,6 +133,11 @@ interface IReservationSavePage extends IReservationSaveResultsView, IRepeatOptio
 	 * @return string
 	 */
 	public function GetEndReminderInterval();
+
+	/**
+	 * @return bool
+	 */
+	public function GetAllowParticipation();
 }
 
 class ReservationSavePage extends SecurePage implements IReservationSavePage
@@ -473,6 +478,15 @@ class ReservationSavePage extends SecurePage implements IReservationSavePage
 	public function GetEndReminderInterval()
 	{
 		return $this->server->GetForm(FormKeys::END_REMINDER_INTERVAL);
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function GetAllowParticipation()
+	{
+		$val = $this->server->GetForm(FormKeys::ALLOW_PARTICIPATION);
+		return !empty($val);
 	}
 }
 
