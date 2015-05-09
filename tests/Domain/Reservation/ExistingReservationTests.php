@@ -570,6 +570,45 @@ class ExistingReservationTests extends TestBase
 		$this->assertFalse(in_array(new InstanceUpdatedEvent($r3, $series), $events));
 	}
 
+	public function testJoinsForEachInstance()
+	{
+		$userId = 1;
+
+		$r1 = new TestReservation();
+		$r1->WithInvitees(array($userId));
+		$r1->SetReservationId(100);
+
+		$r2 = new TestReservation();
+		$r2->WithInvitees(array($userId));
+		$r2->SetReservationId(100);
+
+		$r3 = new TestReservation();
+		$r3->WithParticipants(array($userId));
+		$r3->SetReservationId(100);
+
+		$builder = new ExistingReservationSeriesBuilder();
+		$builder->WithInstance($r1);
+		$builder->WithInstance($r2);
+		$builder->WithInstance($r3);
+
+		$series = $builder->Build();
+		$series->AllowParticipation(true);
+
+		$series->JoinReservation($userId);
+
+		$events = $series->GetEvents();
+
+		$this->assertContains($userId, $r1->AddedParticipants());
+		$this->assertContains($userId, $r1->RemovedInvitees());
+
+		$this->assertContains($userId, $r2->AddedParticipants());
+		$this->assertContains($userId, $r2->RemovedInvitees());
+
+		$this->assertTrue(in_array(new InstanceUpdatedEvent($r1, $series), $events));
+		$this->assertTrue(in_array(new InstanceUpdatedEvent($r2, $series), $events));
+		$this->assertFalse(in_array(new InstanceUpdatedEvent($r3, $series), $events), 'already participating');
+	}
+
 	public function testDeclinesInvitesForEachInstance()
 	{
 		$userId = 1;
@@ -830,5 +869,3 @@ class ExistingReservationTests extends TestBase
 								   $events));
 	}
 }
-
-?>

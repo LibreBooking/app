@@ -558,6 +558,28 @@ class ExistingReservationSeries extends ReservationSeries
 	}
 
 	/**
+	 * @param int $participantId
+	 */
+	public function JoinReservation($participantId)
+	{
+		if (!$this->GetAllowParticipation())
+		{
+			return;
+		}
+
+		/** @var Reservation $instance */
+		foreach ($this->Instances() as $instance)
+		{
+			$joined = $instance->JoinReservation($participantId);
+			if ($joined)
+			{
+
+				$this->RaiseInstanceUpdatedEvent($instance);
+			}
+		}
+	}
+
+	/**
 	 * @param array|ReservationAccessory[] $accessories
 	 * @return void
 	 */

@@ -315,6 +315,29 @@ class Reservation
 	}
 
 	/**
+	 * @param int $userId
+	 * @return bool whether the user joined
+	 */
+	public function JoinReservation($userId)
+	{
+		if (in_array($userId, $this->_participantIds))
+		{
+			// already participating
+			return false;
+		}
+
+		if (in_array($userId, $this->_inviteeIds))
+		{
+			$this->removedInvitees[] = $userId;
+		}
+
+		$this->addedParticipants[] = $userId;
+
+		return true;
+	}
+
+
+	/**
 	 * @param int $inviteeId
 	 * @return bool whether the invitation was declined
 	 */
@@ -349,5 +372,3 @@ class Reservation
 		return $res1->StartDate()->Compare($res2->StartDate());
 	}
 }
-
-?>

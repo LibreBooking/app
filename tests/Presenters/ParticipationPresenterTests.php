@@ -38,6 +38,11 @@ class ParticipationPresenterTests extends TestBase
 	private $reservationViewRepo;
 
 	/**
+	 * @var IScheduleRepository|PHPUnit_Framework_MockObject_MockObject
+	 */
+	private $scheduleRepository;
+
+	/**
 	 * @var ParticipationPresenter
 	 */
 	private $presenter;
@@ -49,8 +54,9 @@ class ParticipationPresenterTests extends TestBase
 		$this->page = $this->getMock('IParticipationPage');
 		$this->reservationRepo = $this->getMock('IReservationRepository');
 		$this->reservationViewRepo = $this->getMock('IReservationViewRepository');
+		$this->scheduleRepository = $this->getMock('IScheduleRepository');
 
-		$this->presenter = new ParticipationPresenter($this->page, $this->reservationRepo, $this->reservationViewRepo);
+		$this->presenter = new ParticipationPresenter($this->page, $this->reservationRepo, $this->reservationViewRepo, $this->scheduleRepository);
 	}
 
 	public function teardown()
@@ -113,6 +119,61 @@ class ParticipationPresenterTests extends TestBase
 		$this->presenter->PageLoad();
 	}
 
+	public function testWhenUserJoinsAndThereIsSpace()
+	{
+		$invitationAction = InvitationAction::Join;
+		$seriesMethod = 'JoinReservation';
+
+		$this->assertUpdatesSeriesParticipation($invitationAction, $seriesMethod);
+	}
+
+	public function testWhenUserJoinsAndThereIsNotSpace()
+	{
+		$invitationAction = InvitationAction::Join;
+
+		$currentUserId = 1029;
+		$referenceNumber = 'abc123';
+		$builder = new ExistingReservationSeriesBuilder();
+		$instance = new TestReservation();
+		$instance->WithParticipants(array(1));
+		$instance->WithInvitee($currentUserId);
+
+		$resource = new FakeBookableResource(1);
+		$resource->SetMaxParticipants(1);
+
+		$builder->WithCurrentInstance($instance)
+			->WithPrimaryResource($resource);
+
+		$series = $builder->Build();
+
+		$this->page->expects($this->once())
+			->method('GetResponseType')
+			->will($this->returnValue('json'));
+
+		$this->page->expects($this->once())
+			->method('GetInvitationAction')
+			->will($this->returnValue($invitationAction));
+
+		$this->page->expects($this->once())
+			->method('GetInvitationReferenceNumber')
+			->will($this->returnValue($referenceNumber));
+
+		$this->page->expects($this->once())
+			->method('GetUserId')
+			->will($this->returnValue($currentUserId));
+
+		$this->reservationRepo->expects($this->once())
+			->method('LoadByReferenceNumber')
+			->with($this->equalTo($referenceNumber))
+			->will($this->returnValue($series));
+
+		$this->page->expects($this->once())
+			->method('DisplayResult')
+			->with($this->stringContains('ParticipationNotAllowed'));
+
+		$this->presenter->PageLoad();
+	}
+
 	public function testWhenUserDeclinesInvite()
 	{
 		$invitationAction = InvitationAction::Decline;
@@ -160,11 +221,54 @@ class ParticipationPresenterTests extends TestBase
 		$this->presenter->PageLoad();
 	}
 
+	public function testWhenReservationStartConstraintIsViolated()
+	{
+		$this->fakeConfig->SetSectionKey(ConfigSection::RESERVATION, ConfigKeys::RESERVATION_START_TIME_CONSTRAINT, ReservationStartTimeConstraint::FUTURE);
+
+		$referenceNumber = 'abc';
+		$currentUserId = 1029;
+
+		$builder = new ExistingReservationSeriesBuilder();
+		$instance = new TestReservation($referenceNumber, new DateRange(Date::Now()->AddMinutes(-1), Date::Now()->AddMinutes(30)), null);
+		$builder->WithCurrentInstance($instance);
+
+		$series = $builder->Build();
+
+		$this->page->expects($this->once())
+					->method('GetResponseType')
+					->will($this->returnValue('json'));
+
+		$this->page->expects($this->once())
+				   ->method('GetInvitationAction')
+				   ->will($this->returnValue(InvitationAction::Join));
+
+		$this->page->expects($this->once())
+			->method('GetInvitationReferenceNumber')
+			->will($this->returnValue($referenceNumber));
+
+		$this->page->expects($this->once())
+			->method('GetUserId')
+			->will($this->returnValue($currentUserId));
+
+		$this->reservationRepo->expects($this->once())
+							  ->method('LoadByReferenceNumber')
+							  ->with($this->equalTo($referenceNumber))
+							  ->will($this->returnValue($series));
+
+		$this->page->expects($this->once())
+				   ->method('DisplayResult')
+				   ->with($this->stringContains('ParticipationNotAllowed'));
+
+		$this->presenter->PageLoad();
+	}
+
 	private function assertUpdatesSeriesParticipation($invitationAction, $seriesMethod)
 	{
+		$this->fakeConfig->SetSectionKey(ConfigSection::RESERVATION, ConfigKeys::RESERVATION_START_TIME_CONSTRAINT, ReservationStartTimeConstraint::NONE);
 		$currentUserId = 1029;
 		$referenceNumber = 'abc123';
 		$series = $this->getMock('ExistingReservationSeries');
+		$series->expects($this->any())->method('GetAllowParticipation')->will($this->returnValue(true));
 		$series->expects($this->any())->method('AllResources')->will($this->returnValue(array()));
 
 		$this->page->expects($this->once())
@@ -203,4 +307,3 @@ class ParticipationPresenterTests extends TestBase
 		$this->presenter->PageLoad();
 	}
 }
-?>

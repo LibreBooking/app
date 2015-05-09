@@ -69,7 +69,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 {* End slot display formatting *}
 
 {block name="header"}
-	{include file='globalheader.tpl' cssFiles='scripts/css/jqtree.css'}
+	{include file='globalheader.tpl' Qtip=true cssFiles='scripts/css/jqtree.css'}
 {/block}
 
 <div id="page-schedule">
@@ -146,7 +146,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 	{/block}
 
 	{block name="legend"}
-		<div class="hidden-xs row-fluid">
+		<div class="hidden-xs row-fluid col-sm-12">
 			<div class="center">
 				<div class="legend reservable">{translate key=Reservable}</div>
 				<div class="legend unreservable">{translate key=Unreservable}</div>

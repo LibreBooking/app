@@ -82,7 +82,7 @@ class ParticipationPage extends SecurePage implements IParticipationPage
 	public function __construct()
 	{
 	    parent::__construct('OpenInvitations');
-		$this->presenter = new ParticipationPresenter($this, new ReservationRepository(), new ReservationViewRepository());
+		$this->presenter = new ParticipationPresenter($this, new ReservationRepository(), new ReservationViewRepository(), new ScheduleRepository());
 	}
 
 	public function PageLoad()

@@ -892,6 +892,9 @@ a.toggle-sidebar {
   -moz-border-radius: 2px;
   border-radius: 2px;
 }
+#showFullWeek {
+  display: block;
+}
 #resourceDetailsPopup {
   min-width: 300px;
   max-width: 1000px;
@@ -1173,6 +1176,16 @@ a.remove {
 #custom-attributes-placeholder .customAttribute {
   max-width: 250px;
   display: inline-block;
+}
+#allowParticipation {
+  margin-top: 5px;
+}
+#invite-error {
+  font-weight: bold;
+  color: #c37c82;
+}
+#page-view-reservation .participationAction {
+  margin-bottom: 5px;
 }
 .admin {
   width: 100%;

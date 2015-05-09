@@ -17,7 +17,7 @@ You should have received a copy of the GNU General Public License
 along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 *}
 {include file='globalheader.tpl' TitleKey='ViewReservationHeading'}
-<div id="page-reservation">
+<div id="page-view-reservation">
 	<div id="reservation-box" class="readonly">
 		<div id="reservationFormDiv">
 			<div class="row">
@@ -136,50 +136,61 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 				{if $ShowParticipation}
 					<div class="{$participantCol}">
 						<div id="reservationParticipation">
-							<div>
+							<div id="participationAction" class="participationAction">
 								{if $IAmParticipating && $CanAlterParticipation}
 									{if $IsRecurring}
 										{translate key=CancelParticipation}
 										<button value="{InvitationAction::CancelAll}" class="btn btn-xs btn-info participationAction">
-											<span class="fa fa-minus-square"></span> {translate key=AllInstances}
+											<i class="fa fa-minus-square"></i> {translate key=AllInstances}
 										</button>
 										<button value="{InvitationAction::CancelInstance}" class="btn btn-xs btn-info participationAction">
-											<span class="fa fa-minus-square"></span> {translate key=ThisInstance}
+											<i class="fa fa-minus-square"></i> {translate key=ThisInstance}
 										</button>
 									{/if}
 									<button value="{InvitationAction::CancelInstance}" class="btn btn-xs btn-info participationAction">
-										<span class="fa fa-minus-square"></span> {translate key=CancelParticipation}
+										<i class="fa fa-minus-square"></i> {translate key=CancelParticipation}
 									</button>
 								{/if}
 							</div>
 
-							<div>
+							<div id="invitationAction" class="participationAction">
 								{if $IAmInvited && $CanAlterParticipation}
 									<div>{translate key=Attending}?</div>
 									<button value="{InvitationAction::Accept}" class="btn btn-xs btn-success participationAction">
-										<span class="fa fa-user-plus"></span> {translate key="Yes"}
+										<i class="fa fa-user-plus"></i> {translate key="Yes"}
 									</button>
 									<button value="{InvitationAction::Decline}" class="btn btn-xs btn-danger  participationAction">
-										<span class="fa fa-user-times"></span> {translate key="No"}
+										<i class="fa fa-user-times"></i> {translate key="No"}
 									</button>
 								{/if}
 							</div>
+
+							{if $AllowParticipantsToJoin && !$IAmParticipating && !$IAmInvited}
+								<div id="joinReservation" class="participationAction">
+									<div>{translate key=JoinThisReservation}?</div>
+									<button value="{InvitationAction::Join}" class="btn btn-xs btn-success participationAction">
+										<i class="fa fa-user-plus"></i> {translate key="Yes"}
+									</button>
+								</div>
+							{/if}
+
 							<span id="participate-indicator" class="fa fa-spinner fa-spin" style="display:none;"></span>
+
 							{if $ShowUserDetails}
-								<div>
-									<label>{translate key='ParticipantList'}</label><br/>
+								<div id="ro-participantList">
+									<label>{translate key='ParticipantList'}</label>
 									{foreach from=$Participants item=participant}
 										<div>{$participant->FullName}</div>
 										{foreachelse}
-										<span class="no-data">{translate key='None'}</span>
+										<div class="no-data">{translate key='None'}</div>
 									{/foreach}
 								</div>
-								<div>
-									<label>{translate key='InvitationList'}</label><br/>
+								<div id="ro-inviteeList">
+									<label>{translate key='InvitationList'}</label>
 									{foreach from=$Invitees item=invitee}
 										<div>{$invitee->FullName}</div>
 										{foreachelse}
-										<span class="no-data">{translate key='None'}</span>
+										<div class="no-data">{translate key='None'}</div>
 									{/foreach}
 								</div>
 							{/if}

@@ -24,5 +24,5 @@ class InvitationAction
 	const CancelAll = 'cancelAll';
 	const CancelInstance = 'cancelInstance';
 	const Decline = 'decline';
+	const Join = 'join';
 }
-?>

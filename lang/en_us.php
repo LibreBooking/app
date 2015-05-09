@@ -522,6 +522,7 @@ class en_us extends Language
 		$strings['AllResourceTypes'] = 'All Resource Types';
 		$strings['AllResourceStatuses'] = 'All Resource Statuses';
 		$strings['AllowParticipantsToJoin'] = 'Allow Participants To Join';
+		$strings['JoinThisReservation'] = 'Join This Reservation';
 		// End Strings
 
 		// Install
@@ -600,6 +601,7 @@ class en_us extends Language
 		$strings['AccessoryMaxQuantityErrorMessage'] = 'You cannot book more than %s of accessory %s';
 		$strings['AccessoryResourceAssociationErrorMessage'] = 'Accessory \'%s\' cannot be booked with the requested resources';
 		$strings['NoResources'] = 'You have not added any resources.';
+		$strings['ParticipationNotAllowed'] = 'You are not allowed to join this reservation.';
 		// End Errors
 
 		// Page Titles

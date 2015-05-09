@@ -147,11 +147,13 @@ class ExistingReservationPage extends ReservationPage implements IExistingReserv
 
 	protected function GetTemplateName()
 	{
-		if ($this->IsApprovable)
+		$readOnly = $this->GetQuerystring(QueryStringKeys::READ_ONLY) == 1;
+
+		if (!$readOnly && $this->IsApprovable)
 		{
 			return 'Reservation/approve.tpl';
 		}
-		if ($this->IsEditable)
+		if (!$readOnly && $this->IsEditable)
 		{
 			return 'Reservation/edit.tpl';
 		}
