@@ -90,7 +90,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 	<!-- CSS -->
 	{if $UseLocalJquery}
 		{cssfile src="scripts/css/smoothness/jquery-ui-1.10.4.custom.min.css"}
-		{cssfile src="css/font-awesome-4.2.0/css/font-awesome.min.css" rel="stylesheet"}
+		{cssfile src="css/font-awesome-4.3.0/css/font-awesome.min.css" rel="stylesheet"}
 		{cssfile src="scripts/bootstrap/css/bootstrap.css" rel="stylesheet"}
 		{if $Qtip}
 			{cssfile src="css/jquery.qtip.min.css" rel="stylesheet"}
@@ -105,7 +105,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 	{else}
 		<link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.9.0/themes/smoothness/jquery-ui.css"
 			  type="text/css"/>
-		<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css"
+		<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css"
 			  type="text/css"/>
 		<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css"
 			  type="text/css"/>

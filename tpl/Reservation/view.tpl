@@ -138,41 +138,47 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 						<div id="reservationParticipation">
 							<div id="participationAction" class="participationAction">
 								{if $IAmParticipating && $CanAlterParticipation}
-									{if $IsRecurring}
-										{translate key=CancelParticipation}
-										<button value="{InvitationAction::CancelAll}" class="btn btn-xs btn-info participationAction">
-											<i class="fa fa-minus-square"></i> {translate key=AllInstances}
-										</button>
+									<div class="alert alert-info" role="alert">
+										<strong>{translate key=YouAreAParticipant}</strong>
+										{if $IsRecurring}
+											<button value="{InvitationAction::CancelAll}" class="btn btn-xs btn-info participationAction">
+												<i class="fa fa-minus-square"></i> {translate key=AllInstances}
+											</button>
+											<button value="{InvitationAction::CancelInstance}" class="btn btn-xs btn-info participationAction">
+												<i class="fa fa-minus-square"></i> {translate key=ThisInstance}
+											</button>
+										{/if}
 										<button value="{InvitationAction::CancelInstance}" class="btn btn-xs btn-info participationAction">
-											<i class="fa fa-minus-square"></i> {translate key=ThisInstance}
+											<i class="fa fa-minus-square"></i> {translate key=CancelParticipation}
 										</button>
-									{/if}
-									<button value="{InvitationAction::CancelInstance}" class="btn btn-xs btn-info participationAction">
-										<i class="fa fa-minus-square"></i> {translate key=CancelParticipation}
-									</button>
+									</div>
 								{/if}
 							</div>
 
 							<div id="invitationAction" class="participationAction">
 								{if $IAmInvited && $CanAlterParticipation}
-									<div>{translate key=Attending}?</div>
-									<button value="{InvitationAction::Accept}" class="btn btn-xs btn-success participationAction">
-										<i class="fa fa-user-plus"></i> {translate key="Yes"}
-									</button>
-									<button value="{InvitationAction::Decline}" class="btn btn-xs btn-danger  participationAction">
-										<i class="fa fa-user-times"></i> {translate key="No"}
-									</button>
+									<div class="alert alert-info" role="alert">
+										<strong>{translate key=YouAreAParticipant}</strong>
+										<button value="{InvitationAction::Accept}" class="btn btn-xs btn-info participationAction">
+											<i class="fa fa-user-plus"></i> {translate key="Yes"}
+										</button>
+										<button value="{InvitationAction::Decline}" class="btn btn-xs btn-danger  participationAction">
+											<i class="fa fa-user-times"></i> {translate key="No"}
+										</button>
+									</div>
 								{/if}
 							</div>
 
-							{if $AllowParticipantsToJoin && !$IAmParticipating && !$IAmInvited}
-								<div id="joinReservation" class="participationAction">
-									<div>{translate key=JoinThisReservation}?</div>
-									<button value="{InvitationAction::Join}" class="btn btn-xs btn-success participationAction">
-										<i class="fa fa-user-plus"></i> {translate key="Yes"}
-									</button>
-								</div>
-							{/if}
+							<div id="joinReservation" class="participationAction">
+								{if $AllowParticipantsToJoin && !$IAmParticipating && !$IAmInvited && $CanAlterParticipation}
+									<div class="alert alert-info " role="alert">
+										<strong>{translate key=YouCanJoinThisReservation}</strong>
+										<button value="{InvitationAction::Join}" class="btn btn-xs btn-info participationAction">
+											<i class="fa fa-user-plus"></i> {translate key="Join"}
+										</button>
+									</div>
+								{/if}
+							</div>
 
 							<span id="participate-indicator" class="fa fa-spinner fa-spin" style="display:none;"></span>
 

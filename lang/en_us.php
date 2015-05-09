@@ -522,7 +522,10 @@ class en_us extends Language
 		$strings['AllResourceTypes'] = 'All Resource Types';
 		$strings['AllResourceStatuses'] = 'All Resource Statuses';
 		$strings['AllowParticipantsToJoin'] = 'Allow Participants To Join';
-		$strings['JoinThisReservation'] = 'Join This Reservation';
+		$strings['Join'] = 'Join';
+		$strings['YouAreAParticipant'] = 'You are a participant of this reservation';
+		$strings['YouAreInvited'] = 'You are invited to this reservation';
+		$strings['YouCanJoinThisReservation'] = 'You can join this reservation';
 		// End Strings
 
 		// Install
