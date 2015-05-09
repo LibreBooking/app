@@ -100,9 +100,10 @@ interface IReservationViewRepository
 
 	/**
 	 * @param Date $earliestDate
+	 * @param null $lastDate
 	 * @return NextReservationView[]
 	 */
-	public function GetNextReservations(Date $earliestDate);
+	public function GetNextReservations(Date $earliestDate, $lastDate = null);
 }
 
 class ReservationViewRepository implements IReservationViewRepository
@@ -397,11 +398,16 @@ class ReservationViewRepository implements IReservationViewRepository
 
 	/**
 	 * @param Date $earliestDate
+	 * @param null $lastDate
 	 * @return NextReservationView[]
 	 */
-	public function GetNextReservations(Date $earliestDate)
+	public function GetNextReservations(Date $earliestDate, $lastDate = null)
 	{
-		$command = new GetNextReservationsCommand($earliestDate);
+		if ($lastDate == null)
+		{
+			$lastDate = new NullDate();
+		}
+		$command = new GetNextReservationsCommand($earliestDate, $lastDate);
 		$result = ServiceLocator::GetDatabase()->Query($command);
 
 		$reservations = array();

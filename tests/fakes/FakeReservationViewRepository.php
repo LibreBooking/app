@@ -79,10 +79,11 @@ class FakeReservationViewRepository implements IReservationViewRepository
 	}
 
 	/**
-		 * @param Date $earliestDate
-		 * @return NextReservationView[]
-		 */
-		public function GetNextReservations(Date $earliestDate)
+	 * @param Date $earliestDate
+	 * @param null $lastDate
+	 * @return NextReservationView[]
+	 */
+		public function GetNextReservations(Date $earliestDate, $lastDate = null)
 		{
 			return $this->_NextReservations;
 		}

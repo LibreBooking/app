@@ -99,7 +99,7 @@ class en_us extends Language
 		$strings['Announcements'] = 'Announcements';
 		$strings['NoUpcomingReservations'] = 'You have no upcoming reservations';
 		$strings['UpcomingReservations'] = 'Upcoming Reservations';
-		$strings['AllNoUpcomingReservations'] = 'There are no upcoming reservations';
+		$strings['AllNoUpcomingReservations'] = 'There are no upcoming reservations in next %s days';
 		$strings['AllUpcomingReservations'] = 'All Upcoming Reservations';
 		$strings['ShowHide'] = 'Show/Hide';
 		$strings['Error'] = 'Error';

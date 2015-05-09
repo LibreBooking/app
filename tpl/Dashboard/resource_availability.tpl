@@ -35,7 +35,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 						{translate key=AvailableUntil}
 						{format_date date=$i->NextTime() timezone=$Timezone key=dashboard}
 					{else}
-						<span class="no-data">{translate key=AllNoUpcomingReservations}</span>
+						<span class="no-data">{translate key=AllNoUpcomingReservations args=30}</span>
 					{/if}
 				</div>
 				<div class="inline">

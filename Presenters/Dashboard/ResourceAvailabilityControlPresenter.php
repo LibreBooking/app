@@ -52,7 +52,7 @@ class ResourceAvailabilityControlPresenter
 
 		$resources = $this->resourceService->GetAllResources(false, $user);
 		$reservations = $this->GetReservations($this->reservationViewRepository->GetReservationList($now, $now));
-		$next = $this->reservationViewRepository->GetNextReservations($now);
+		$next = $this->reservationViewRepository->GetNextReservations($now, $now->AddDays(30));
 
 		$available = array();
 		$unavailable = array();
