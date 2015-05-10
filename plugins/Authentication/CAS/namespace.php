@@ -20,7 +20,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 require_once(ROOT_DIR . 'plugins/Authentication/CAS/CAS.php');
-require_once(ROOT_DIR . 'plugins/Authentication/CAS/CAS-1.3.1/CAS.php');
+require_once(ROOT_DIR . 'plugins/Authentication/CAS/CAS-1.3.3/CAS.php');
 require_once(ROOT_DIR . 'plugins/Authentication/CAS/CASOptions.php');
 require_once(ROOT_DIR . 'plugins/Authentication/CAS/CASConfig.php');
 ?>
