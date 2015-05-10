@@ -198,6 +198,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 					<button type="button" class="btn btn-danger save btnUpdateAllInstances">
 						<span class="fa fa-remove"></span> {translate key='Delete'}</button>
 				</form>
+
 			</div>
 		</div>
 	</div>

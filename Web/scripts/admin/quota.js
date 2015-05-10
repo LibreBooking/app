@@ -13,12 +13,10 @@ function QuotaManagement(opts)
 	
 	QuotaManagement.prototype.init = function()
 	{
-		ConfigureAdminDialog(elements.deleteDialog,  400, 200);
-		    
 		$('.delete').click(function(e) {
 			e.preventDefault();
 			setActiveQuotaId($(this).attr('quotaId'));
-			elements.deleteDialog.dialog('open');
+			elements.deleteDialog.modal('show');
 		});
 
 		$(".save").click(function() {
@@ -26,7 +24,7 @@ function QuotaManagement(opts)
 		});
 		
 		$(".cancel").click(function() {
-			$(this).closest('.dialog').dialog("close");
+			$(this).closest('.dialog').modal("hide");
 		});
 
 		ConfigureAdminForm(elements.addForm, getSubmitCallback(options.actions.addQuota), null, handleAddError);

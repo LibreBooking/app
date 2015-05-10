@@ -123,10 +123,10 @@ table.list,
   padding: 4px;
 }
 .row0 {
-  background-color: #f0f0f0;
+  background-color: #fff;
 }
 .row1 {
-  background-color: #fafafa;
+  background-color: #f9f9f9;
 }
 .list th.id,
 .list td.id {
@@ -435,6 +435,12 @@ td.update {
 .minutes {
   width: 80px;
 }
+.popover {
+  max-width: 500px;
+}
+.quotaItem {
+  padding: 4px;
+}
 #page-manage-blackouts input,
 #page-manage-reservations input,
 #page-manage-resources input,
@@ -458,7 +464,4 @@ td.update {
 #page-manage-reservations .resourceDetails:not(:last-child),
 #page-manage-resources .resourceDetails:not(:last-child) {
   border-bottom: solid 1px #e9e9e9;
-}
-.popover {
-  max-width: 500px;
 }

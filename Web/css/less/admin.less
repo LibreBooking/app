@@ -157,12 +157,12 @@ table.list, .list td, .list th {
 }
 
 .row0 {
-  background-color: #f0f0f0;
-  //  background-color: @light-gray;
+//  background-color: #f0f0f0;
+    background-color: #fff;
 }
 
 .row1 {
-  background-color: #fafafa;
+  background-color: @lightest-gray;
   //  background-color: @lightest-gray;
 }
 
@@ -533,7 +533,14 @@ td.update {
 
 .days, .hours, .minutes {
   width:80px;
-//  display:inline;
+}
+
+.popover {
+  max-width:500px;
+}
+
+.quotaItem {
+  padding:4px;
 }
 
 /// page level overrides
@@ -557,6 +564,3 @@ td.update {
   }
 }
 
-.popover {
-  max-width:500px;
-}
