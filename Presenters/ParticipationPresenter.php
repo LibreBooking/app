@@ -41,19 +41,19 @@ class ParticipationPresenter
 	private $reservationViewRepository;
 
 	/**
-	 * @var IScheduleRepository
+	 * @var IReservationValidationRule[]
 	 */
-	private $scheduleRepository;
+	private $rules;
 
 	public function __construct(IParticipationPage $page,
 								IReservationRepository $reservationRepository,
 								IReservationViewRepository $reservationViewRepository,
-								IScheduleRepository $scheduleRepository)
+								$rules = array())
 	{
 		$this->page = $page;
 		$this->reservationRepository = $reservationRepository;
 		$this->reservationViewRepository = $reservationViewRepository;
-		$this->scheduleRepository = $scheduleRepository;
+		$this->rules = $rules;
 	}
 
 	public function PageLoad()
@@ -98,12 +98,14 @@ class ParticipationPresenter
 
 		$series = $this->reservationRepository->LoadByReferenceNumber($referenceNumber);
 
-		$rule = new ReservationStartTimeRule($this->scheduleRepository);
-		$ruleResult = $rule->Validate($series);
-
-		if (!$ruleResult->IsValid())
+		foreach ($this->rules as $rule)
 		{
-			return Resources::GetInstance()->GetString('ParticipationNotAllowed');
+			$ruleResult = $rule->Validate($series);
+
+			if (!$ruleResult->IsValid())
+			{
+				return Resources::GetInstance()->GetString('ParticipationNotAllowed');
+			}
 		}
 
 		$error = null;

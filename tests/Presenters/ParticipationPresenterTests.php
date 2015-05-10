@@ -55,8 +55,8 @@ class ParticipationPresenterTests extends TestBase
 		$this->reservationRepo = $this->getMock('IReservationRepository');
 		$this->reservationViewRepo = $this->getMock('IReservationViewRepository');
 		$this->scheduleRepository = $this->getMock('IScheduleRepository');
-
-		$this->presenter = new ParticipationPresenter($this->page, $this->reservationRepo, $this->reservationViewRepo, $this->scheduleRepository);
+		$rules = array(new ReservationStartTimeRule($this->scheduleRepository), new ResourceMinimumNoticeRule(), new ResourceMaximumNoticeRule());
+		$this->presenter = new ParticipationPresenter($this->page, $this->reservationRepo, $this->reservationViewRepo, $rules);
 	}
 
 	public function teardown()
