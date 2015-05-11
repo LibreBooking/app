@@ -416,7 +416,7 @@ class SchedulePageBuilder implements ISchedulePageBuilder
 		$vals = array();
 		foreach ($attributeFormElements as $e)
 		{
-			if (!empty($e->Value))
+			if (!empty($e->Value) || is_numeric($e->Value))
 			{
 				$vals[] = new AttributeValue($e->Id, $e->Value);
 			}
@@ -440,5 +440,3 @@ class SchedulePageBuilder implements ISchedulePageBuilder
 		}
 	}
 }
-
-?>

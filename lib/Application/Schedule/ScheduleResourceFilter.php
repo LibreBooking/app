@@ -226,11 +226,13 @@ class ScheduleResourceFilter implements IScheduleResourceFilter
 		{
 			return strripos($value->Value(), $attribute->Value) !== false;
 		}
+		elseif (is_numeric($value->Value()))
+		{
+			return floatval($value->Value()) == $attribute->Value;
+		}
 		else
 		{
 			return $value->Value() == $attribute->Value;
 		}
 	}
 }
-
-?>
