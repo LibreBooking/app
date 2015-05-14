@@ -44,7 +44,18 @@ class ActiveDirectoryUser
 		$this->phone = $this->Get($entry, 'telephonenumber');
 		$this->institution = $this->Get($entry, 'physicaldeliveryofficename');
 		$this->title = $this->Get($entry, 'title');
-		$this->groups = $groups == null ? null : explode(',', $groups);
+
+		$this->groups = null;
+		if ($groups != null)
+		{
+			if (is_array($groups))
+			{
+				$this->groups = $groups;
+			}
+			else{
+				$this->groups = explode(',', $groups);
+			}
+		}
 	}
 
 	public function GetFirstName()

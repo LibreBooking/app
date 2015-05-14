@@ -64,13 +64,19 @@ class ReservationListing implements IMutableReservationListing
 		$currentDate = $item->StartDate()->ToTimezone($this->timezone);
 		$lastDate = $item->EndDate()->ToTimezone($this->timezone);
 
+		if ($currentDate->GreaterThan($lastDate))
+		{
+			Log::Error("Reservation dates corrupted. ReferenceNumber=%s, Start=%s, End=%s", $item->ReferenceNumber(), $item->StartDate(), $item->EndDate());
+			return;
+		}
+
 		if ($currentDate->DateEquals($lastDate))
 		{
 			$this->AddOnDate($item, $currentDate);
 		}
 		else
 		{
-			while (!$currentDate->DateEquals($lastDate))
+			while ($currentDate->LessThan($lastDate) && !$currentDate->DateEquals($lastDate))
 			{
 				$this->AddOnDate($item, $currentDate);
 				$currentDate = $currentDate->AddDays(1);

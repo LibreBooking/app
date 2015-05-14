@@ -193,12 +193,14 @@ class ActiveDirectory extends Authentication implements IAuthentication
 		$groupsToSync = null;
 		if ($userGroups != null)
 		{
+			$lowercaseGroups = array_map('strtolower', $userGroups);
+
 			$groupsToSync = array();
 			$groups = $this->GetGroupRepository()->GetList()->Results();
 			/** @var GroupItemView $group */
 			foreach ($groups as $group)
 			{
-				if (in_array(strtolower($group->Name()), $userGroups))
+				if (in_array(strtolower($group->Name()), $lowercaseGroups))
 				{
 					Log::Debug('ActiveDirectory: Syncing group %s for user %s', $group->Name(), $username);
 					$groupsToSync[] = new UserGroup($group->Id(), $group->Name());
