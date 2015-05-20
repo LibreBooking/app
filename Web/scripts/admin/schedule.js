@@ -30,10 +30,7 @@ function ScheduleManagement(opts)
 
 	ScheduleManagement.prototype.init = function ()
 	{
-		ConfigureAdminDialog(elements.layoutDialog, 725, 'auto');
 		ConfigureAdminDialog(elements.deleteDialog, 430, 200);
-
-		$('#tabs').tabs();
 
 		$('.scheduleDetails').each(function ()
 		{
@@ -227,7 +224,6 @@ function ScheduleManagement(opts)
 		return elements.activeId.val();
 	};
 
-
 	var showChangeLayout = function (e, reservableDiv, blockedDiv, timezone, usesSingleLayout)
 	{
 		$.each(reservableDiv, function(index, val){
@@ -241,15 +237,15 @@ function ScheduleManagement(opts)
 		});
 
 		elements.layoutTimezone.val(timezone.val());
-		elements.usesSingleLayout.removeAttr('checked');
+		elements.usesSingleLayout.prop('checked', false);
 
 		if (usesSingleLayout)
 		{
-			elements.usesSingleLayout.attr('checked', 'checked');
+			elements.usesSingleLayout.prop('checked', true);
 		}
 		elements.usesSingleLayout.trigger('change');
 
-		elements.layoutDialog.dialog("open");
+		elements.layoutDialog.modal("show");
 	};
 
 	var toggleLayoutChange = function (useSingleLayout)
