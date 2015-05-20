@@ -359,6 +359,14 @@ input[type=text].user-search {
 .mid-number {
   width: 100px;
 }
+#help p.setting span,
+#help span.setting,
+#helpPopupDiv p.setting span,
+#helpPopupDiv span.setting {
+  color: green;
+  font-family: Courier, serif;
+  display: block;
+}
 #resourceDetailsPopup {
   min-width: 300px;
   max-width: 1000px;

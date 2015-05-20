@@ -23,9 +23,9 @@
 .admin .label {
   font-weight: bold;
 }
-.admin .note {
+.note {
   font-style: italic;
-  color: #8d96a8;
+  color: #585754;
 }
 .admin h4,
 .admin h5 {
@@ -54,13 +54,17 @@ span.error {
 #changeLayoutDialog p {
   margin: 0;
 }
-.scheduleDetails .layout {
-  border-left: solid 1px #f0f0f0;
-  float: right;
-  width: 550px;
+@media only screen and (max-width: 768px) {
+  .scheduleDetails .layout {
+    border-top: solid 1px #f0f0f0;
+  }
+}
+@media only screen and (min-width: 768px) {
+  .scheduleDetails .layout {
+    border-left: solid 1px #f0f0f0;
+  }
 }
 .actions {
-  clear: both;
   border-top: solid 1px #f0f0f0;
   border-bottom: solid 1px #f0f0f0;
   background-color: #fcfcfc;
@@ -85,6 +89,10 @@ span.error {
   text-align: center;
 }
 .resourceDetails .resourceName {
+  font-size: 1.4em;
+  font-weight: bold;
+}
+.scheduleDetails .scheduleName {
   font-size: 1.4em;
   font-weight: bold;
 }
@@ -364,7 +372,8 @@ ul.jqtree-tree .group-resource .jqtree-title {
 #reservationTable tr.editable td {
   cursor: pointer;
 }
-.table .icon {
+.table .icon,
+#list-quotas-panel .icon {
   font-size: 1.4em;
 }
 .inlineUpdate {
