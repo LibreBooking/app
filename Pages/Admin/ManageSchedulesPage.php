@@ -84,6 +84,11 @@ interface IUpdateSchedulePage
 	 * @return int
 	 */
 	function GetTargetScheduleId();
+
+	/**
+	 * @return string
+	 */
+	function GetValue();
 }
 
 interface IManageSchedulesPage extends IUpdateSchedulePage, IActionPage, IPageable
@@ -96,7 +101,6 @@ interface IManageSchedulesPage extends IUpdateSchedulePage, IActionPage, IPageab
 	public function BindSchedules($schedules, $layouts, $sourceSchedules);
 
 	/**
-	 * @abstract
 	 * @param GroupItemView[] $groups
 	 */
 	public function BindGroups($groups);
@@ -104,7 +108,6 @@ interface IManageSchedulesPage extends IUpdateSchedulePage, IActionPage, IPageab
 	public function SetTimezones($timezoneValues, $timezoneOutput);
 
 	/**
-	 * @abstract
 	 * @return int
 	 */
 	public function GetAdminGroupId();
@@ -156,7 +159,13 @@ class ManageSchedulesPage extends ActionPage implements IManageSchedulesPage
 
 	public function GetScheduleId()
 	{
-		return $this->server->GetQuerystring(QueryStringKeys::SCHEDULE_ID);
+		$id = $this->GetQuerystring(QueryStringKeys::SCHEDULE_ID);
+		if (empty($id))
+		{
+			$id = $this->GetForm(FormKeys::PK);
+		}
+
+		return $id;
 	}
 
 	public function GetScheduleName()
@@ -282,5 +291,10 @@ class ManageSchedulesPage extends ActionPage implements IManageSchedulesPage
 	function BindPageInfo(PageInfo $pageInfo)
 	{
 		$this->pageablePage->BindPageInfo($pageInfo);
+	}
+
+	public function GetValue()
+	{
+		return $this->GetForm(FormKeys::VALUE);
 	}
 }

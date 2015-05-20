@@ -5,13 +5,11 @@ function ScheduleManagement(opts)
 	var elements = {
 		activeId:$('#activeId'),
 
-		renameDialog:$('#renameDialog'),
 		layoutDialog:$('#changeLayoutDialog'),
 		changeSettingsDialog:$('#changeSettingsDialog'),
 		deleteDialog:$('#deleteDialog'),
 		groupAdminDialog:$('#groupAdminDialog'),
 
-		renameForm:$('#renameForm'),
 		settingsForm:$('#settingsForm'),
 		changeLayoutForm:$('#changeLayoutForm'),
 		placeholderForm:$('#placeholderForm'),
@@ -36,7 +34,6 @@ function ScheduleManagement(opts)
 
 	ScheduleManagement.prototype.init = function ()
 	{
-		ConfigureAdminDialog(elements.renameDialog, 300, 125);
 		ConfigureAdminDialog(elements.changeSettingsDialog, 'auto', 'auto');
 		ConfigureAdminDialog(elements.layoutDialog, 725, 'auto');
 		ConfigureAdminDialog(elements.deleteDialog, 430, 200);
@@ -46,65 +43,75 @@ function ScheduleManagement(opts)
 
 		$('.scheduleDetails').each(function ()
 		{
-			var id = $(this).find(':hidden.id').val();
-			var reservable = $(this).find('.reservableSlots');
-			var blocked = $(this).find('.blockedSlots');
-			var timezone = $(this).find('.timezone');
-			var daysVisible = $(this).find('.daysVisible');
-			var dayOfWeek = $(this).find('.dayOfWeek');
-			var usesDailyLayouts = $(this).find('.usesDailyLayouts');
+			var details = $(this);
+			var id = details.find(':hidden.id').val();
+			var reservable = details.find('.reservableSlots');
+			var blocked = details.find('.blockedSlots');
+			var timezone = details.find('.timezone');
+			var daysVisible = details.find('.daysVisible');
+			var dayOfWeek = details.find('.dayOfWeek');
+			var usesDailyLayouts = details.find('.usesDailyLayouts');
 
-			$(this).find('a.update').click(function ()
+			details.find('a.update').click(function ()
 			{
 				setActiveScheduleId(id);
 			});
 
-			$(this).find('.renameButton').click(function (e)
-			{
-				showRename(e);
-				return false;
+			details.find('.renameButton').click(function (e) {
+				e.stopPropagation();
+				details.find('.scheduleName').editable('toggle');
 			});
 
-			$(this).find('.changeButton').click(function (e)
+			details.find('.dayName').click(function (e) {
+				e.stopPropagation();
+				$(this).editable('toggle');
+			});
+
+			details.find('.daysVisible').click(function (e) {
+				e.stopPropagation();
+				$(this).editable('toggle');
+			});
+
+			details.find('.changeButton').click(function (e)
 			{
 				showChangeSettings(e, daysVisible, dayOfWeek);
 				return false;
 			});
 
-			$(this).find('.changeLayoutButton').click(function (e)
+			details.find('.changeLayoutButton').click(function (e)
 			{
 				showChangeLayout(e, reservable, blocked, timezone, (usesDailyLayouts.val() == 'false'));
 				return false;
 			});
 
-			$(this).find('.makeDefaultButton').click(function (e)
+			details.find('.makeDefaultButton').click(function (e)
 			{
 				PerformAsyncAction($(this), getSubmitCallback(options.makeDefaultAction), $('.indicator'));
 			});
 
-			$(this).find('.enableSubscription').click(function (e)
+			details.find('.enableSubscription').click(function (e)
 			{
 				PerformAsyncAction($(this), getSubmitCallback(options.enableSubscriptionAction), $('.indicator'));
 			});
 
-			$(this).find('.disableSubscription').click(function (e)
+			details.find('.disableSubscription').click(function (e)
 			{
 				PerformAsyncAction($(this), getSubmitCallback(options.disableSubscriptionAction), $('.indicator'));
 			});
 
-			$(this).find('.deleteScheduleButton').click(function (e)
+			details.find('.deleteScheduleButton').click(function (e)
 			{
 				showDeleteDialog(e);
 				return false;
 			});
 
-			$(this).find('.adminButton').click(function (e)
+			details.find('.adminButton').click(function (e)
 			{
 				showScheduleAdmin(e, $(this).attr('adminId'));
 				return false;
 			});
 
-			$(this).find('.showAllDailyLayouts').click(function(e)
+			details.find('.showAllDailyLayouts').click(function(e)
 			{
 				e.preventDefault();
 				$(this).next('.allDailyLayouts').toggle();
@@ -147,7 +154,6 @@ function ScheduleManagement(opts)
 			toggleLayoutChange($(this).is(':checked'));
 		});
 
-		ConfigureAdminForm(elements.renameForm, getSubmitCallback(options.renameAction));
 		ConfigureAdminForm(elements.settingsForm, getSubmitCallback(options.changeSettingsAction));
 		ConfigureAdminForm(elements.changeLayoutForm, getSubmitCallback(options.changeLayoutAction));
 		ConfigureAdminForm(elements.addForm, getSubmitCallback(options.addAction), null, handleAddError);

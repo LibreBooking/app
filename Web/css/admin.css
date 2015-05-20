@@ -379,6 +379,10 @@ ul.jqtree-tree .group-resource .jqtree-title {
 .inlineUpdate {
   cursor: pointer;
 }
+span.inlineUpdate {
+  border-bottom: 1px dashed #999;
+  text-decoration: none;
+}
 th.action,
 td.action {
   max-width: 50px;

@@ -28,7 +28,8 @@ class ManageSchedules
 {
 	const ActionAdd = 'add';
 	const ActionChangeLayout = 'changeLayout';
-	const ActionChangeSettings = 'settings';
+	const ActionChangeStartDay = 'startDay';
+	const ActionChangeDaysVisible = 'daysVisible';
 	const ActionMakeDefault = 'makeDefault';
 	const ActionRename = 'rename';
 	const ActionDelete = 'delete';
@@ -115,15 +116,22 @@ class ManageScheduleService
 
 	/**
 	 * @param int $scheduleId
-	 * @param int $startDay
-	 * @param int $daysVisible
+	 * @param int|null $startDay
+	 * @param int|null $daysVisible
 	 */
 	public function ChangeSettings($scheduleId, $startDay, $daysVisible)
 	{
 		Log::Debug('Changing scheduleId %s, WeekdayStart: %s, DaysVisible %s', $scheduleId, $startDay, $daysVisible);
 		$schedule = $this->scheduleRepository->LoadById($scheduleId);
-		$schedule->SetWeekdayStart($startDay);
-		$schedule->SetDaysVisible($daysVisible);
+		if (!is_null($startDay))
+		{
+			$schedule->SetWeekdayStart($startDay);
+		}
+
+		if(!is_null($daysVisible))
+		{
+			$schedule->SetDaysVisible($daysVisible);
+		}
 
 		$this->scheduleRepository->Update($schedule);
 	}
@@ -249,7 +257,8 @@ class ManageSchedulesPresenter extends ActionPresenter
 
 		$this->AddAction(ManageSchedules::ActionAdd, 'Add');
 		$this->AddAction(ManageSchedules::ActionChangeLayout, 'ChangeLayout');
-		$this->AddAction(ManageSchedules::ActionChangeSettings, 'ChangeSettings');
+		$this->AddAction(ManageSchedules::ActionChangeStartDay, 'ChangeStartDay');
+		$this->AddAction(ManageSchedules::ActionChangeDaysVisible, 'ChangeDaysVisible');
 		$this->AddAction(ManageSchedules::ActionMakeDefault, 'MakeDefault');
 		$this->AddAction(ManageSchedules::ActionRename, 'Rename');
 		$this->AddAction(ManageSchedules::ActionDelete, 'Delete');
@@ -315,16 +324,23 @@ class ManageSchedulesPresenter extends ActionPresenter
 	 */
 	public function Rename()
 	{
-		$this->manageSchedulesService->Rename($this->page->GetScheduleId(), $this->page->GetScheduleName());
+		$this->manageSchedulesService->Rename($this->page->GetScheduleId(), $this->page->GetValue());
 	}
 
 	/**
 	 * @internal should only be used for testing
 	 */
-	public function ChangeSettings()
+	public function ChangeStartDay()
 	{
-		$this->manageSchedulesService->ChangeSettings($this->page->GetScheduleId(), $this->page->GetStartDay(),
-													  $this->page->GetDaysVisible());
+		$this->manageSchedulesService->ChangeSettings($this->page->GetScheduleId(), $this->page->GetValue(), null);
+	}
+
+	/**
+	 * @internal should only be used for testing
+	 */
+	public function ChangeDaysVisible()
+	{
+		$this->manageSchedulesService->ChangeSettings($this->page->GetScheduleId(), null, $this->page->GetValue());
 	}
 
 	/**

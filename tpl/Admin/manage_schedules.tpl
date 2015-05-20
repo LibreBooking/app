@@ -16,114 +16,121 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 *}
-{include file='globalheader.tpl' cssFiles='css/admin.css'}
+{include file='globalheader.tpl'  InlineEdit=true}
+
+<div id="page-manage-schedules">
 
 <h1>{translate key=ManageSchedules}</h1>
 
-<div class="admin">
-    <div class="title">
-	{translate key=AllSchedules}
-    </div>
-{foreach from=$Schedules item=schedule}
-	{assign var=id value=$schedule->GetId()}
-	{assign var=daysVisible value=$schedule->GetDaysVisible()}
-	{assign var=dayOfWeek value=$schedule->GetWeekdayStart()}
-	{assign var=dayName value=$DayNames[$dayOfWeek]}
-	{if $dayOfWeek == Schedule::Today}
-		{assign var=dayName value=$Today}
-	{/if}
-    <div class="scheduleDetails">
-        <div style="float:left;">
-            <input type="hidden" class="id" value="{$id}"/>
-            <input type="hidden" class="daysVisible" value="{$daysVisible}"/>
-            <input type="hidden" class="dayOfWeek" value="{$dayOfWeek}"/>
-            <h4>{$schedule->GetName()}</h4> <a class="update renameButton"
-                                               href="javascript: void(0);">{translate key=Rename}</a><br/>
-			{translate key="LayoutDescription" args="$dayName, $daysVisible"}
-            <a class="update changeButton" href="javascript:void(0);">{translate key=Change}</a><br/>
-			{translate key='ScheduleAdministrator'}
-			{if $schedule->HasAdminGroup()}
-				{$GroupLookup[$schedule->GetAdminGroupId()]->Name}
-				{else}
-                <span class="note">{translate key='NoScheduleAdministratorLabel'}</span>
-			{/if}
-			{if $AdminGroups|count > 0}
-                <a class="update adminButton" href="javascript: void(0);"
-                   adminId="{$schedule->GetAdminGroupId()}">{translate key='Edit'}</a>
-			{/if}
-        </div>
+<div class="panel panel-default" id="list-quotas-panel">
+	<div class="panel-heading">{translate key="AllSchedules"}</div>
+	<div class="panel-body no-padding" id="scheduleList">
+	{foreach from=$Schedules item=schedule}
+		{assign var=id value=$schedule->GetId()}
+		{capture name=daysVisible}<span class='daysVisible inlineUpdate' data-type='number' data-pk='{$id}' data-name='{FormKeys::SCHEDULE_DAYS_VISIBLE}'  data-min='0'>{$schedule->GetDaysVisible()}</span>{/capture}
+		{assign var=dayOfWeek value=$schedule->GetWeekdayStart()}
+		{capture name=dayName}<span class='dayName inlineUpdate' data-type='select' data-pk='{$id}' data-name='{FormKeys::SCHEDULE_WEEKDAY_START}' data-value='{$dayOfWeek}'>{if $dayOfWeek == Schedule::Today}{$Today}{else}{$DayNames[$dayOfWeek]}{/if}</span>{/capture}
 
-        <div class="layout">
+		<div class="scheduleDetails">
+			<div class="col-xs-12 col-sm-6">
+				<input type="hidden" class="id" value="{$id}"/>
+				<input type="hidden" class="daysVisible" value="{$daysVisible}"/>
+				<input type="hidden" class="dayOfWeek" value="{$dayOfWeek}"/>
 
-			{function name="display_periods"}
-				{foreach from=$Layouts[$id]->GetSlots($day) item=period}
-					{if $period->IsReservable() == $showReservable}
-						{$period->Start->Format("H:i")} - {$period->End->Format("H:i")}
-						{if $period->IsLabelled()}
-							{$period->Label}
-						{/if}
-                        ,
-					{/if}
-					{foreachelse}
-					{translate key=None}
-				{/foreach}
-			{/function}
-
-			{translate key=ScheduleLayout args=$schedule->GetTimezone()}:<br/>
-            <input type="hidden" class="timezone" value="{$schedule->GetTimezone()}"/>
-
-			{if !$Layouts[$id]->UsesDailyLayouts()}
-                <input type="hidden" class="usesDailyLayouts" value="false"/>
-				{translate key=ReservableTimeSlots}
-                <div class="reservableSlots" id="reservableSlots" ref="reservableEdit">
-					{display_periods showReservable=true day=null}
-                </div>
-				{translate key=BlockedTimeSlots}
-                <div class="blockedSlots" id="blockedSlots" ref="blockedEdit">
-					{display_periods showReservable=false day=null}
-                </div>
-			{else}
-                <input type="hidden" class="usesDailyLayouts" value="true"/>
-				{translate key=LayoutVariesByDay} - <a href="#" class="showAllDailyLayouts">{translate key=ShowHide}</a>
-                <div class="allDailyLayouts">
-				{foreach from=DayOfWeek::Days() item=day}
-					{$DayNames[$day]}
-					<div class="reservableSlots" id="reservableSlots_{$day}" ref="reservableEdit_{$day}">
-						{display_periods showReservable=true day=$day}
-					</div>
-					<div class="blockedSlots" id="blockedSlots_{$day}" ref="blockedEdit_{$day}">
-						{display_periods showReservable=false day=$day}
-					</div>
-                {/foreach}
+				<div>
+					<span class="title scheduleName" data-type="text" data-pk="{$id}"
+						  data-name="{FormKeys::SCHEDULE_NAME}">{$schedule->GetName()|escape}</span>
+					<a class="update renameButton" href="#">{translate key='Rename'}</a>
 				</div>
-			{/if}
-        </div>
-        <div class="actions">
-			<div style="float:left;">
-				{if $schedule->GetIsDefault()}
-                <span class="note">{translate key=ThisIsTheDefaultSchedule}</span> |
-                <span class="note">{translate key=DefaultScheduleCannotBeDeleted}</span> |
-				{else}
-                <a class="update makeDefaultButton" href="javascript: void(0);">{translate key=MakeDefault}</a> |
-                <a class="update deleteScheduleButton" href="#">{translate key=Delete}</a> |
-			{/if}
-            <a class="update changeLayoutButton" href="javascript: void(0);">{translate key=ChangeLayout}</a> |
-			{if $schedule->GetIsCalendarSubscriptionAllowed()}
-                <a class="update disableSubscription"
-                   href="javascript: void(0);">{translate key=TurnOffSubscription}</a>
-				{else}
-                <a class="update enableSubscription" href="javascript: void(0);">{translate key=TurnOnSubscription}</a>
-			{/if}
+
+				<div>{translate key="LayoutDescription" args="{$smarty.capture.dayName}, {$smarty.capture.daysVisible}"}</div>
+
+				<div>{translate key='ScheduleAdministrator'}
+					{if $schedule->HasAdminGroup()}
+						{$GroupLookup[$schedule->GetAdminGroupId()]->Name}
+						{else}
+						<span class="note">{translate key='NoScheduleAdministratorLabel'}</span>
+					{/if}
+
+					{if $AdminGroups|count > 0}
+						<a class="update adminButton" href="#" adminId="{$schedule->GetAdminGroupId()}">{translate key='Edit'}</a>
+					{/if}
+				</div>
+
 			</div>
-			<div style="float:right;text-align:center;">
-				{if $schedule->GetIsCalendarSubscriptionAllowed()}
-					{html_image src="feed.png"} <a target="_blank" href="{$schedule->GetSubscriptionUrl()->GetAtomUrl()}">Atom</a> | <a target="_blank" href="{$schedule->GetSubscriptionUrl()->GetWebcalUrl()}">iCalendar</a>
+
+			<div class="layout col-xs-12 col-sm-6">
+
+				{function name="display_periods"}
+					{foreach from=$Layouts[$id]->GetSlots($day) item=period}
+						{if $period->IsReservable() == $showReservable}
+							{$period->Start->Format("H:i")} - {$period->End->Format("H:i")}
+							{if $period->IsLabelled()}
+								{$period->Label}
+							{/if}
+							,
+						{/if}
+						{foreachelse}
+						{translate key=None}
+					{/foreach}
+				{/function}
+
+				{translate key=ScheduleLayout args=$schedule->GetTimezone()}:<br/>
+				<input type="hidden" class="timezone" value="{$schedule->GetTimezone()}"/>
+
+				{if !$Layouts[$id]->UsesDailyLayouts()}
+					<input type="hidden" class="usesDailyLayouts" value="false"/>
+					{translate key=ReservableTimeSlots}
+					<div class="reservableSlots" id="reservableSlots" ref="reservableEdit">
+						{display_periods showReservable=true day=null}
+					</div>
+					{translate key=BlockedTimeSlots}
+					<div class="blockedSlots" id="blockedSlots" ref="blockedEdit">
+						{display_periods showReservable=false day=null}
+					</div>
+				{else}
+					<input type="hidden" class="usesDailyLayouts" value="true"/>
+					{translate key=LayoutVariesByDay} - <a href="#" class="showAllDailyLayouts">{translate key=ShowHide}</a>
+					<div class="allDailyLayouts">
+					{foreach from=DayOfWeek::Days() item=day}
+						{$DayNames[$day]}
+						<div class="reservableSlots" id="reservableSlots_{$day}" ref="reservableEdit_{$day}">
+							{display_periods showReservable=true day=$day}
+						</div>
+						<div class="blockedSlots" id="blockedSlots_{$day}" ref="blockedEdit_{$day}">
+							{display_periods showReservable=false day=$day}
+						</div>
+					{/foreach}
+					</div>
 				{/if}
 			</div>
-			<div class="clear"></div>
-        </div>
-    </div>
-{/foreach}
+			<div class="actions col-xs-12">
+				<div style="float:left;">
+					{if $schedule->GetIsDefault()}
+					<span class="note">{translate key=ThisIsTheDefaultSchedule}</span> |
+					<span class="note">{translate key=DefaultScheduleCannotBeDeleted}</span> |
+					{else}
+					<a class="update makeDefaultButton" href="javascript: void(0);">{translate key=MakeDefault}</a> |
+					<a class="update deleteScheduleButton" href="#">{translate key=Delete}</a> |
+				{/if}
+				<a class="update changeLayoutButton" href="javascript: void(0);">{translate key=ChangeLayout}</a> |
+				{if $schedule->GetIsCalendarSubscriptionAllowed()}
+					<a class="update disableSubscription"
+					   href="javascript: void(0);">{translate key=TurnOffSubscription}</a>
+					{else}
+					<a class="update enableSubscription" href="javascript: void(0);">{translate key=TurnOnSubscription}</a>
+				{/if}
+				</div>
+				<div style="float:right;text-align:center;">
+					{if $schedule->GetIsCalendarSubscriptionAllowed()}
+						{html_image src="feed.png"} <a target="_blank" href="{$schedule->GetSubscriptionUrl()->GetAtomUrl()}">Atom</a> | <a target="_blank" href="{$schedule->GetSubscriptionUrl()->GetWebcalUrl()}">iCalendar</a>
+					{/if}
+				</div>
+				<div class="clear"></div>
+			</div>
+		</div>
+	{/foreach}
+	</div>
 </div>
 
 {pagination pageInfo=$PageInfo}
@@ -186,6 +193,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
         <button type="button" class="button cancel">{html_image src="slash.png"} {translate key=Cancel}</button>
     </form>
 </div>
+
 <div id="placeholderDialog" style="display:none">
     <form id="placeholderForm" method="post">
     </form>
@@ -324,7 +332,6 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
     </form>
 </div>
 
-
 <div id="groupAdminDialog" class="dialog" title="{translate key=WhoCanManageThisSchedule}">
     <form method="post" id="groupAdminForm">
 	<label for="adminGroupId" class="off-screen">{translate key=WhoCanManageThisSchedule}</label>
@@ -340,7 +347,6 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
     </form>
 </div>
 
-
 {html_image src="admin-ajax-indicator.gif" class="indicator" style="display:none;"}
 {jsfile src="admin/edit.js"}
 {jsfile src="admin/schedule.js"}
@@ -348,14 +354,49 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 <script type="text/javascript">
 
+	function setUpEditables() {
+		$.fn.editable.defaults.mode = 'popup';
+		$.fn.editable.defaults.toggle = 'manual';
+		$.fn.editable.defaults.emptyclass = '';
+
+		var updateUrl = '{$smarty.server.SCRIPT_NAME}?action=';
+
+		$('.scheduleName').editable({
+			url: updateUrl + '{ManageSchedules::ActionRename}',
+			validate: function (value) {
+				if ($.trim(value) == '')
+				{
+					return '{translate key=RequiredValue}';
+				}
+			}
+		});
+
+		$('.daysVisible').editable({
+			url: updateUrl + '{ManageSchedules::ActionChangeDaysVisible}'
+		});
+
+		$('.dayName').editable({
+			url: updateUrl + '{ManageSchedules::ActionChangeStartDay}',
+			source: [
+				{
+					value: '{Schedule::Today}', text: '{$Today}'
+				},
+				{foreach from=$DayNames item="dayName" key="dayIndex"}
+				{
+					value:{$dayIndex}, text: '{$dayName}'
+				},
+				{/foreach}
+			]
+		});
+	}
+
     $(document).ready(function ()
     {
+		setUpEditables();
 
         var opts = {
             submitUrl:'{$smarty.server.SCRIPT_NAME}',
             saveRedirect:'{$smarty.server.SCRIPT_NAME}',
-            renameAction:'{ManageSchedules::ActionRename}',
-            changeSettingsAction:'{ManageSchedules::ActionChangeSettings}',
             changeLayoutAction:'{ManageSchedules::ActionChangeLayout}',
             addAction:'{ManageSchedules::ActionAdd}',
             makeDefaultAction:'{ManageSchedules::ActionMakeDefault}',
@@ -371,4 +412,5 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 </script>
 
+</div>
 {include file='globalfooter.tpl'}

@@ -22,7 +22,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 	<form id="addQuotaForm" method="post" role="form" class="form-inline">
 
-		<div class="panel panel-default" id="add-blackout-panel">
+		<div class="panel panel-default" id="add-quota-panel">
 			<div class="panel-heading">{translate key="AddQuota"}</div>
 			<div class="panel-body" id="addQuota">
 				{capture name="schedules" assign="schedules"}
@@ -87,8 +87,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			</div>
 		</div>
 	</form>
-	
-	<div class="panel panel-default" id="add-blackout-panel">
+
+	<div class="panel panel-default" id="list-quotas-panel">
 		<div class="panel-heading">{translate key="AllQuotas"}</div>
 		<div class="panel-body no-padding" id="quotaList">
 			{foreach from=$Quotas item=quota}

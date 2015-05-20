@@ -133,7 +133,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			{assign var=id value=$resource->GetResourceId()}
 			<div class="resourceDetails" data-resourceId="{$id}">
 				<div class="col-xs-5">
-					<input type="hidden" class="id" value="{$id}"/>
+					<input type="hidden" class="id" value="$id}"/>
 
 					<div class="col-xs-3 resourceImage">
 						{if $resource->HasImage()}
