@@ -1,60 +1,5 @@
 @import "colors.less";
 
-.admin {
-  width: 100%;
-}
-
-.admin ul {
-  list-style: none;
-}
-
-.admin .title {
-  background-color: #f6f6f6;
-  font-weight: bold;
-  font-size: 14px;
-  color: #596171;
-  padding: 5px;
-  border-bottom: solid 1px @mid-gray;
-  position: relative;
-}
-
-.admin {
-  border: solid 1px @mid-gray;
-  font-size: 12px;
-}
-
-.admin a {
-  color: @link-color;
-}
-
-.admin .label {
-  font-weight: bold;
-}
-
-.note {
-  font-style: italic;
-  color: @dark-gray
-}
-
-.admin h4, .admin h5 {
-  margin-bottom:0;
-  color: #666666;
-}
-
-.admin h4 {
-  font-size: 12px;
-}
-
-.admin h5 {
-  font-size: .9em;
-  font-weight: bold;
-  text-transform: uppercase;
-
-}
-.admin h5:not(:first-of-type){
-    padding-top:5px;
-}
-
 span.error {
   font-weight: bold;
   color: #CE0000;
@@ -70,10 +15,10 @@ span.error {
 }
 
 .scheduleDetails .layout {
-  @media only screen and (max-width : 768px) {
+  @media only screen and (max-width: 768px) {
     border-top: solid 1px #f0f0f0;
   }
-  @media only screen and (min-width : 768px) {
+  @media only screen and (min-width: 768px) {
     border-left: solid 1px #f0f0f0;
   }
 }
@@ -86,62 +31,69 @@ span.error {
 }
 
 .noImage {
-//  width: 100%;
-//  height: 60px;
   line-height: 16px;
   text-align: center;
   color: #666;
-  font-size:4em;
+  font-size: 4em;
 
-//  span {
-    background-color: #f0f0f0;
-    border: solid 1px #ccc;
-//    margin-left:-15px;
-//    padding: 3px 6px;
-//  }
+  background-color: #f0f0f0;
+  border: solid 1px #ccc;
 }
 
 .resourceDetails {
-  font-size:1.2em;
-  padding:3px;
-
+  font-size: 1em;
+  padding: 3px;
 
   img.image {
     width: 100px;
   }
 
   .resourceImage {
-    text-align:center;
+    text-align: center;
+  }
+}
+
+.admin-panel {
+  .title {
+    font-size: 1.4em;
+    font-weight: bold;
   }
 
-  .resourceName {
-    font-size:1.4em;
+  a {
+    color: @link-color;
+  }
+
+  .propertyValue {
+    font-weight: bold;
+  }
+
+  h4, h5 {
+    margin-bottom: 0;
+    color: #666666;
+  }
+
+  h4 {
+    font-size: 12px;
+  }
+
+  h5 {
+    font-size: .9em;
+    font-weight: bold;
+    text-transform: uppercase;
+  }
+
+  h5:not(:first-of-type) {
+    padding-top: 5px;
+  }
+
+  ul {
+    list-style: none;
+  }
+
+  .add-link {
     font-weight:bold;
   }
-}
 
-.scheduleDetails {
-  .scheduleName {
-    font-size:1.4em;
-    font-weight:bold;
-  }
-}
-
-.admin table {
-  border-collapse: collapse;
-}
-
-.admin th, .admin td {
-  padding: 5px;
-}
-
-.admin th {
-  padding-bottom: 2px;
-}
-
-.admin th {
-  text-align: left;
-  font-size: 14px;
 }
 
 .dialog ul, .dialog li {
@@ -166,8 +118,8 @@ table.list, .list td, .list th {
 }
 
 .row0 {
-//  background-color: #f0f0f0;
-    background-color: #fff;
+  //  background-color: #f0f0f0;
+  background-color: #fff;
 }
 
 .row1 {
@@ -189,10 +141,6 @@ table.list, .list td, .list th {
   background-color: #c5e4f1;
 }
 
-/*.list tr.clicked:hover, .list tr.clicked  {*/
-/*background-color: #FFFF33;*/
-/*}*/
-
 .userList .customAttributes {
 
   font-size: 9pt;
@@ -211,10 +159,6 @@ tr.pending {
   display: inline-block;
   min-width: 100px;
 }
-
-/*#addAttribute {*/
-/*width: 300px;*/
-/*}*/
 
 .attributeDialog .wideLabel {
   min-width: 160px;
@@ -380,10 +324,6 @@ ul.jqtree-tree .group-resource .jqtree-title {
   height: 35px;
 }
 
-.resourceValue {
-  font-weight: bold;
-}
-
 #repeatDiv, #repeatDiv div {
   padding: 0;
 }
@@ -462,8 +402,8 @@ ul.jqtree-tree .group-resource .jqtree-title {
   }
 }
 
-.table .icon, #list-quotas-panel .icon  {
-    font-size: 1.4em;
+.table .icon, #list-quotas-panel .icon {
+  font-size: 1.4em;
 }
 
 .inlineUpdate {
@@ -538,7 +478,7 @@ td.update {
 }
 
 .resourceStatusReason, .reasonId, .statusId {
-  width:250px;
+  width: 250px;
 }
 
 .descriptionValue {
@@ -546,19 +486,19 @@ td.update {
 }
 
 .days, .hours, .minutes {
-  width:80px;
+  width: 80px;
 }
 
 .popover {
-  max-width:500px;
+  max-width: 500px;
 }
 
 .quotaItem {
-  padding:4px;
+  padding: 4px;
 }
 
 .slotTimezone {
-  margin:5px 0;
+  margin: 5px 0;
 }
 
 .slotHelpText span {

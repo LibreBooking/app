@@ -1195,51 +1195,6 @@ a.remove {
 #page-view-reservation .participationAction {
   margin-bottom: 5px;
 }
-.admin {
-  width: 100%;
-}
-.admin ul {
-  list-style: none;
-}
-.admin .title {
-  background-color: #f6f6f6;
-  font-weight: bold;
-  font-size: 14px;
-  color: #596171;
-  padding: 5px;
-  border-bottom: solid 1px #bcbcbc;
-  position: relative;
-}
-.admin {
-  border: solid 1px #bcbcbc;
-  font-size: 12px;
-}
-.admin a {
-  color: #428bca;
-}
-.admin .label {
-  font-weight: bold;
-}
-.note {
-  font-style: italic;
-  color: #585754;
-}
-.admin h4,
-.admin h5 {
-  margin-bottom: 0;
-  color: #666666;
-}
-.admin h4 {
-  font-size: 12px;
-}
-.admin h5 {
-  font-size: .9em;
-  font-weight: bold;
-  text-transform: uppercase;
-}
-.admin h5:not(:first-of-type) {
-  padding-top: 5px;
-}
 span.error {
   font-weight: bold;
   color: #CE0000;
@@ -1276,7 +1231,7 @@ span.error {
   border: solid 1px #ccc;
 }
 .resourceDetails {
-  font-size: 1.2em;
+  font-size: 1em;
   padding: 3px;
 }
 .resourceDetails img.image {
@@ -1285,27 +1240,37 @@ span.error {
 .resourceDetails .resourceImage {
   text-align: center;
 }
-.resourceDetails .resourceName {
+.admin-panel .title {
   font-size: 1.4em;
   font-weight: bold;
 }
-.scheduleDetails .scheduleName {
-  font-size: 1.4em;
+.admin-panel a {
+  color: #428bca;
+}
+.admin-panel .propertyValue {
   font-weight: bold;
 }
-.admin table {
-  border-collapse: collapse;
+.admin-panel h4,
+.admin-panel h5 {
+  margin-bottom: 0;
+  color: #666666;
 }
-.admin th,
-.admin td {
-  padding: 5px;
+.admin-panel h4 {
+  font-size: 12px;
 }
-.admin th {
-  padding-bottom: 2px;
+.admin-panel h5 {
+  font-size: .9em;
+  font-weight: bold;
+  text-transform: uppercase;
 }
-.admin th {
-  text-align: left;
-  font-size: 14px;
+.admin-panel h5:not(:first-of-type) {
+  padding-top: 5px;
+}
+.admin-panel ul {
+  list-style: none;
+}
+.admin-panel .add-link {
+  font-weight: bold;
 }
 .dialog ul,
 .dialog li {
@@ -1345,9 +1310,6 @@ table.list,
   /*background-color: #FFFF99;*/
   background-color: #c5e4f1;
 }
-/*.list tr.clicked:hover, .list tr.clicked  {*/
-/*background-color: #FFFF33;*/
-/*}*/
 .userList .customAttributes {
   font-size: 9pt;
   font-weight: normal;
@@ -1362,9 +1324,6 @@ tr.pending {
   display: inline-block;
   min-width: 100px;
 }
-/*#addAttribute {*/
-/*width: 300px;*/
-/*}*/
 .attributeDialog .wideLabel {
   min-width: 160px;
   text-align: right;
@@ -1503,9 +1462,6 @@ ul.jqtree-tree .group-resource .jqtree-title {
   background-image: url(../img/admin-ajax-indicator.gif);
   width: 35px;
   height: 35px;
-}
-.resourceValue {
-  font-weight: bold;
 }
 #repeatDiv,
 #repeatDiv div {

@@ -40,7 +40,7 @@ function ResourceManagement(opts) {
 		bulkEditStatusOptions:$('#bulkEditStatusId'),
 		bulkEditStatusReasons:$('#bulkEditStatusReasonId'),
 
-		addResourceButton: $('#add-resource'),
+		addResourceButtons: $('.add-resource'),
 		addResourceDialog:$('#add-resource-dialog')
 	};
 
@@ -175,7 +175,7 @@ function ResourceManagement(opts) {
 			$(this).closest('.modal').modal("hide");
 		});
 
-		elements.addResourceButton.click(function(e){
+		elements.addResourceButtons.click(function(e){
 			e.preventDefault();
 			elements.addResourceDialog.modal('show');
 			$('#resourceName').focus();

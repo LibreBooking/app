@@ -7,6 +7,7 @@ function ScheduleManagement(opts)
 
 		layoutDialog:$('#changeLayoutDialog'),
 		deleteDialog:$('#deleteDialog'),
+		addDialog:$('#addDialog'),
 
 		changeLayoutForm:$('#changeLayoutForm'),
 		placeholderForm:$('#placeholderForm'),
@@ -25,7 +26,9 @@ function ScheduleManagement(opts)
 		daysVisible:$('#daysVisible'),
 		dayOfWeek:$('#dayOfWeek'),
 		deleteDestinationScheduleId:$('#targetScheduleId'),
-		usesSingleLayout:$('#usesSingleLayout')
+		usesSingleLayout:$('#usesSingleLayout'),
+
+		addScheduleButton:$('#add-schedule')
 	};
 
 	ScheduleManagement.prototype.init = function ()
@@ -74,17 +77,17 @@ function ScheduleManagement(opts)
 
 			details.find('.makeDefaultButton').click(function (e)
 			{
-				PerformAsyncAction($(this), getSubmitCallback(options.makeDefaultAction), $('.indicator'));
+				PerformAsyncAction($(this), getSubmitCallback(options.makeDefaultAction), $('#action-indicator'));
 			});
 
 			details.find('.enableSubscription').click(function (e)
 			{
-				PerformAsyncAction($(this), getSubmitCallback(options.enableSubscriptionAction), $('.indicator'));
+				PerformAsyncAction($(this), getSubmitCallback(options.enableSubscriptionAction), $('#action-indicator'));
 			});
 
 			details.find('.disableSubscription').click(function (e)
 			{
-				PerformAsyncAction($(this), getSubmitCallback(options.disableSubscriptionAction), $('.indicator'));
+				PerformAsyncAction($(this), getSubmitCallback(options.disableSubscriptionAction), $('#action-indicator'));
 			});
 
 			details.find('.deleteScheduleButton').click(function (e)
@@ -134,6 +137,11 @@ function ScheduleManagement(opts)
 		elements.usesSingleLayout.change(function ()
 		{
 			toggleLayoutChange($(this).is(':checked'));
+		});
+
+		elements.addScheduleButton.click(function(e){
+			e.preventDefault();
+			elements.addDialog.modal('show');
 		});
 
 		ConfigureAdminForm(elements.changeLayoutForm, getSubmitCallback(options.changeLayoutAction));

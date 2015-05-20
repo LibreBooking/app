@@ -22,15 +22,20 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 	<h1>{translate key=ManageSchedules}</h1>
 
-	<div class="panel panel-default" id="list-quotas-panel">
-		<div class="panel-heading">{translate key="AllSchedules"}</div>
+	<div class="panel panel-default admin-panel" id="list-schedules-panel">
+		<div class="panel-heading">{translate key="AllSchedules"}
+			<a href="#" class="add-link pull-right" id="add-schedule">{translate key="AddSchedule"}
+				<span class="fa fa-plus-circle icon add"></span>
+			</a>
+		</div>
 		<div class="panel-body no-padding" id="scheduleList">
 			{foreach from=$Schedules item=schedule}
 				{assign var=id value=$schedule->GetId()}
-				{capture name=daysVisible}<span class='daysVisible inlineUpdate' data-type='number' data-pk='{$id}'
+				{capture name=daysVisible}<span class='propertyValue daysVisible inlineUpdate' data-type='number' data-pk='{$id}'
 												data-name='{FormKeys::SCHEDULE_DAYS_VISIBLE}'  data-min='0'>{$schedule->GetDaysVisible()}</span>{/capture}
 				{assign var=dayOfWeek value=$schedule->GetWeekdayStart()}
-				{capture name=dayName}<span class='dayName inlineUpdate' data-type='select' data-pk='{$id}' data-name='{FormKeys::SCHEDULE_WEEKDAY_START}'
+				{capture name=dayName}<span class='propertyValue dayName inlineUpdate' data-type='select' data-pk='{$id}'
+											data-name='{FormKeys::SCHEDULE_WEEKDAY_START}'
 											data-value='{$dayOfWeek}'>{if $dayOfWeek == Schedule::Today}{$Today}{else}{$DayNames[$dayOfWeek]}{/if}</span>{/capture}
 				<div class="scheduleDetails">
 					<div class="col-xs-12 col-sm-6">
@@ -47,7 +52,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 						<div>{translate key="LayoutDescription" args="{$smarty.capture.dayName}, {$smarty.capture.daysVisible}"}</div>
 
 						<div>{translate key='ScheduleAdministrator'}
-							<span class="scheduleAdmin"
+							<span class="propertyValue scheduleAdmin"
 								  data-type="select" data-pk="{$id}" data-value="{$schedule->GetAdminGroupId()}"
 								  data-name="{FormKeys::SCHEDULE_ADMIN_GROUP_ID}">{$GroupLookup[$schedule->GetAdminGroupId()]->Name}</span>
 							{if $AdminGroups|count > 0}
@@ -102,34 +107,32 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 						{/if}
 					</div>
 					<div class="actions col-xs-12">
-						<div style="float:left;">
-							{if $schedule->GetIsDefault()}
-								<span class="note">{translate key=ThisIsTheDefaultSchedule}</span>
-								|
-								<span class="note">{translate key=DefaultScheduleCannotBeDeleted}</span>
-								|
-							{else}
-								<a class="update makeDefaultButton" href="#">{translate key=MakeDefault}</a>
-								|
-								<a class="update deleteScheduleButton" href="#">{translate key=Delete}</a>
-								|
-							{/if}
-							<a class="update changeLayoutButton" href="#">{translate key=ChangeLayout}</a> |
-							{if $schedule->GetIsCalendarSubscriptionAllowed()}
-								<a class="update disableSubscription"
-								   href="#">{translate key=TurnOffSubscription}</a>
-							{else}
-								<a class="update enableSubscription" href="#">{translate key=TurnOnSubscription}</a>
-							{/if}
-						</div>
-						<div style="float:right;text-align:center;">
-							{if $schedule->GetIsCalendarSubscriptionAllowed()}
-								{html_image src="feed.png"}
-								<a target="_blank" href="{$schedule->GetSubscriptionUrl()->GetAtomUrl()}">Atom</a>
-								|
-								<a target="_blank" href="{$schedule->GetSubscriptionUrl()->GetWebcalUrl()}">iCalendar</a>
-							{/if}
-						</div>
+						{if $schedule->GetIsDefault()}
+							<span class="note">{translate key=ThisIsTheDefaultSchedule}</span>
+							|
+							<span class="note">{translate key=DefaultScheduleCannotBeDeleted}</span>
+							|
+						{else}
+							<a class="update makeDefaultButton" href="#">{translate key=MakeDefault}</a>
+							|
+							<a class="update deleteScheduleButton" href="#">{translate key=Delete}</a>
+							|
+						{/if}
+						<a class="update changeLayoutButton" href="#">{translate key=ChangeLayout}</a> |
+						{if $schedule->GetIsCalendarSubscriptionAllowed()}
+							<a class="update disableSubscription"
+							   href="#">{translate key=TurnOffSubscription}</a>
+						{else}
+							<a class="update enableSubscription" href="#">{translate key=TurnOnSubscription}</a>
+						{/if}
+
+						{if $schedule->GetIsCalendarSubscriptionAllowed()}
+							{html_image src="feed.png"}
+							<a target="_blank" href="{$schedule->GetSubscriptionUrl()->GetAtomUrl()}">Atom</a>
+							|
+							<a target="_blank" href="{$schedule->GetSubscriptionUrl()->GetWebcalUrl()}">iCalendar</a>
+						{/if}
+						{indicator id="action-indicator"}
 						<div class="clear"></div>
 					</div>
 				</div>
@@ -139,42 +142,52 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 	{pagination pageInfo=$PageInfo}
 
-	<div class="admin" style="margin-top:30px">
-		<div class="title">
-			{translate key=AddSchedule}
-		</div>
-		<div>
-			<div id="addScheduleResults" class="error" style="display:none;"></div>
-			<form id="addScheduleForm" method="post">
-				<ul>
-					<li><label for="addName">{translate key=Name}</label><br/> <input type="text" id="addName" style="width:300px"
-																					  class="textbox required" {formname key=SCHEDULE_NAME} /></li>
-					<li><label for="addStartsOn">{translate key=StartsOn}</label><br/>
-						<select {formname key=SCHEDULE_WEEKDAY_START} class="textbox" id="addStartsOn">
-							<option value="{Schedule::Today}">{$Today}</option>
-							{foreach from=$DayNames item="dayName" key="dayIndex"}
-								<option value="{$dayIndex}">{$dayName}</option>
-							{/foreach}
-						</select>
-					</li>
-					<li><label for="addNumDaysVisible">{translate key=NumberOfDaysVisible}</label><br/>
-						<input type="text" class="textbox required" maxlength="3" id="addNumDaysVisible"
-							   size="3" {formname key=SCHEDULE_DAYS_VISIBLE} />
-					</li>
-					<li><label for="addSameLayoutAs">{translate key=UseSameLayoutAs}</label><br/>
-						<select style="width:300px" class="textbox" {formname key=SCHEDULE_ID} id="addSameLayoutAs">
-							{foreach from=$SourceSchedules item=schedule}
-								<option value="{$schedule->GetId()}">{$schedule->GetName()}</option>
-							{/foreach}
-						</select>
-					</li>
-					<li style="padding-top:5px;">
-						<button type="button" class="button save"
-								value="submit">{html_image src="plus-button.png"} {translate key=AddSchedule}</button>
-					</li>
-				</ul>
-			</form>
-		</div>
+	<div id="addDialog" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="addScheduleDialogLabel" aria-hidden="true">
+		<form id="addScheduleForm" method="post">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+						<h4 class="modal-title" id="addScheduleDialogLabel">{translate key=AddSchedule}</h4>
+					</div>
+					<div class="modal-body">
+						<div class="form-group has-feedback">
+							<label for="addName">{translate key=Name}</label>
+							<input type="text" id="addName" class="form-control required" {formname key=SCHEDULE_NAME} />
+							<i class="glyphicon glyphicon-asterisk form-control-feedback" data-bv-icon-for="addName"></i>
+						</div>
+						<div class="form-group">
+							<label for="addStartsOn">{translate key=StartsOn}</label>
+							<select {formname key=SCHEDULE_WEEKDAY_START} class="form-control" id="addStartsOn">
+								<option value="{Schedule::Today}">{$Today}</option>
+								{foreach from=$DayNames item="dayName" key="dayIndex"}
+									<option value="{$dayIndex}">{$dayName}</option>
+								{/foreach}
+							</select>
+						</div>
+						<div class="form-group">
+							<label for="addNumDaysVisible">{translate key=NumberOfDaysVisible}</label>
+							<input type="number" min="1" max="100" class="form-control required" id="addNumDaysVisible"
+								   value="7" {formname key=SCHEDULE_DAYS_VISIBLE} />
+						</div>
+						<div class="form-group">
+							<label for="addSameLayoutAs">{translate key=UseSameLayoutAs}</label>
+							<select class="form-control" {formname key=SCHEDULE_ID} id="addSameLayoutAs">
+								{foreach from=$SourceSchedules item=schedule}
+									<option value="{$schedule->GetId()}">{$schedule->GetName()}</option>
+								{/foreach}
+							</select>
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">{translate key='Cancel'}</button>
+						<button type="button" class="btn btn-success save"><span class="glyphicon glyphicon-ok-circle"></span>
+							{translate key='AddSchedule'}</button>
+						{indicator}
+					</div>
+				</div>
+			</div>
+		</form>
 	</div>
 
 	<input type="hidden" id="activeId" value=""/>
@@ -208,11 +221,6 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		</form>
 	</div>
 
-	<div id="placeholderDialog" style="display:none">
-		<form id="placeholderForm" method="post">
-		</form>
-	</div>
-
 	<div id="changeLayoutDialog" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="changeLayoutDialogLabel" aria-hidden="true">
 		<form id="changeLayoutForm" method="post" role="form" class="form-inline">
 			<div class="modal-dialog modal-lg">
@@ -241,7 +249,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 								{/if}
 								<div class="col-xs-6">
 									<label for="reservableEdit{$suffix}">{translate key=ReservableTimeSlots}</label>
-               						<textarea class="reservableEdit form-control" id="reservableEdit{$suffix}" name="{FormKeys::SLOTS_RESERVABLE}{$suffix}"></textarea>
+									<textarea class="reservableEdit form-control" id="reservableEdit{$suffix}"
+											  name="{FormKeys::SLOTS_RESERVABLE}{$suffix}"></textarea>
 								</div>
 								<div class="col-xs-6">
 									<label for="blockedEdit{$suffix}">{translate key=BlockedTimeSlots}</label>
@@ -253,7 +262,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 						<div class="col-xs-12" id="dailySlots">
 							<div role="tabpanel" id="tabs">
 								<ul class="nav nav-tabs" role="tablist">
-									<li role="presentation" class="active"><a href="#tabs-0" aria-controls="tabs-0" role="tab" data-toggle="tab">{$DayNames[0]}</a></li>
+									<li role="presentation" class="active"><a href="#tabs-0" aria-controls="tabs-0" role="tab"
+																			  data-toggle="tab">{$DayNames[0]}</a></li>
 									<li role="presentation"><a href="#tabs-1" aria-controls="tabs-1" role="tab" data-toggle="tab">{$DayNames[1]}</a></li>
 									<li role="presentation"><a href="#tabs-2" aria-controls="tabs-2" role="tab" data-toggle="tab">{$DayNames[2]}</a></li>
 									<li role="presentation"><a href="#tabs-3" aria-controls="tabs-3" role="tab" data-toggle="tab">{$DayNames[3]}</a></li>
@@ -329,7 +339,6 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		</form>
 	</div>
 
-	{html_image src="admin-ajax-indicator.gif" class="indicator" style="display:none;"}
 	{jsfile src="admin/edit.js"}
 	{jsfile src="admin/schedule.js"}
 	{jsfile src="js/jquery.form-3.09.min.js"}

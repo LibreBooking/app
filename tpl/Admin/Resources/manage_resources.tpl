@@ -29,8 +29,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			</button>
 			<ul class="dropdown-menu" role="menu" aria-labelledby="moreResourceActions">
 				<li role="presentation"><a role="menuitem"
-										   href="#" id="add-resource">{translate key="AddResource"} <span
-								class="fa fa-plus icon add"></span></a>
+										   href="#" class="add-resource" id="add-resource">{translate key="AddResource"} <span
+								class="fa fa-plus-circle icon add"></span></a>
 				</li>
 				<li role="presentation"><a role="menuitem"
 										   href="{$Path}admin/manage_resource_groups.php">{translate key="ManageResourceGroups"}</a>
@@ -127,7 +127,14 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 	<div id="globalError" class="error no-show"></div>
 
-	<div class="admin">
+
+	<div class="panel panel-default admin-panel" id="list-reservations-panel">
+		<div class="panel-heading">{translate key="AllResources"}
+			<a href="#" class="add-link add-resource pull-right">{translate key="AddResource"}
+			<span class="fa fa-plus-circle icon add"></span>
+			</a>
+		</div>
+		<div class="panel-body no-padding" id="resourceList">
 
 		{foreach from=$Resources item=resource}
 			{assign var=id value=$resource->GetResourceId()}
@@ -150,7 +157,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 					</div>
 					<div class="col-xs-9">
 						<div>
-							<span class="resourceName" data-type="text" data-pk="{$id}"
+							<span class="title" data-type="text" data-pk="{$id}"
 								  data-name="{FormKeys::RESOURCE_NAME}">{$resource->GetName()|escape}</span>
 							<a class="update renameButton" href="#">{translate key='Rename'}</a> |
 							<a class="update deleteButton" href="#">{translate key='Delete'}</a>
@@ -177,14 +184,14 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 						<div>
 							{translate key='Schedule'}
-							<span class="resourceValue scheduleName"
+							<span class="propertyValue scheduleName"
 								  data-type="select" data-pk="{$id}" data-value="{$resource->GetScheduleId()}"
 								  data-name="{FormKeys::SCHEDULE_ID}">{$Schedules[$resource->GetScheduleId()]}</span>
 							<a class="update changeScheduleButton" href="#">{translate key='Move'}</a>
 						</div>
 						<div>
 							{translate key='ResourceType'}
-							<span class="resourceValue resourceTypeName"
+							<span class="propertyValue resourceTypeName"
 								  data-type="select" data-pk="{$id}" data-value="{$resource->GetResourceTypeId()}" data-name="{FormKeys::RESOURCE_TYPE_ID}">
 									{if $resource->HasResourceType()}
 										{$ResourceTypes[$resource->GetResourceTypeId()]->Name()}
@@ -196,7 +203,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 						</div>
 						<div>
 							{translate key=SortOrder}
-							<span class="resourceValue sortOrderValue"
+							<span class="propertyValue sortOrderValue"
 								  data-type="number" data-pk="{$id}" data-name="{FormKeys::RESOURCE_SORT_ORDER}">
 								{$resource->GetSortOrder()|default:"0"}
 							</span>
@@ -204,7 +211,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 						</div>
 						<div>
 							{translate key='Location'}
-							<span class="resourceValue locationValue"
+							<span class="propertyValue locationValue"
 								  data-type="text" data-pk="{$id}" data-value="{$resource->GetLocation()}" data-name="{FormKeys::RESOURCE_LOCATION}">
 							{if $resource->HasLocation()}
 								{$resource->GetLocation()}
@@ -216,7 +223,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 						</div>
 						<div>
 							{translate key='Contact'}
-							<span class="resourceValue contactValue"
+							<span class="propertyValue contactValue"
 								  data-type="text" data-pk="{$id}" data-value="{$resource->GetContact()}" data-name="{FormKeys::RESOURCE_CONTACT}">
 							{if $resource->HasContact()}
 								{$resource->GetContact()}
@@ -264,7 +271,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 						</div>
 						<div>
 							{translate key='ResourceAdministrator'}
-							<span class="resourceValue resourceAdminValue"
+							<span class="propertyValue resourceAdminValue"
 								  data-type="select" data-pk="{$id}" data-value="{$resource->GetAdminGroupId()}"
 								  data-name="{FormKeys::RESOURCE_ADMIN_GROUP_ID}">{$GroupLookup[$resource->GetAdminGroupId()]->Name}</span>
 							{if $AdminGroups|count > 0}
@@ -354,6 +361,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 				<div class="clearfix"></div>
 			</div>
 		{/foreach}
+		</div>
 	</div>
 
 	{pagination pageInfo=$PageInfo}

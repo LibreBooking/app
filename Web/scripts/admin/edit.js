@@ -183,7 +183,10 @@ function PerformAsyncAction(element, urlCallback, indicator, successCallback)
 			urlCallback(),
 			function (data)
 			{
-				indicator.hide();
+				if (indicator)
+				{
+					indicator.hide();
+				}
 				if (data && (data.trim() != ""))
 				{
 					alert(data);
