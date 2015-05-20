@@ -137,7 +137,7 @@ function BeforeFormSubmit(formData, jqForm, opts)
 		if ($(ele).is(':visible') && $(ele).val() == '')
 		{
 			isValid = false;
-			$(ele).closest('.form-group').addClass('has-error')
+			$(ele).closest('.form-group').addClass('has-error');
 		}
 	});
 

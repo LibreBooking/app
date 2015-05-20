@@ -179,22 +179,32 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 	<input type="hidden" id="activeId" value=""/>
 
-	<div id="deleteDialog" class="dialog" title="{translate key=Delete}">
+	<div id="deleteDialog" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="deleteScheduleDialogLabel" aria-hidden="true">
 		<form id="deleteForm" method="post">
-			<div class="error" style="margin-bottom: 25px;">
-				<h3>{translate key=DeleteWarning}</h3>
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+						<h4 class="modal-title" id="deleteScheduleDialogLabel">{translate key=Delete}</h4>
+					</div>
+					<div class="modal-body">
+						<div class="form-group">
+							<label for="targetScheduleId">{translate key=MoveResourcesAndReservations}</label>
+							<select id="targetScheduleId" {formname key=SCHEDULE_ID} class="form-control required">
+								<option value="">-- {translate key=Schedule} --</option>
+								{foreach from=$Schedules item=schedule}
+									<option value="{$schedule->GetId()}">{$schedule->GetName()}</option>
+								{/foreach}
+							</select>
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default cancel" data-dismiss="modal">{translate key='Cancel'}</button>
+						<button type="button" class="btn btn-danger save">{translate key='Delete'}</button>
+						{indicator}
+					</div>
+				</div>
 			</div>
-
-			<label for="targetScheduleId">{translate key=MoveResourcesAndReservations}</label>
-			<select id="targetScheduleId" {formname key=SCHEDULE_ID} class="required">
-				<option value="">-- {translate key=Schedule} --</option>
-				{foreach from=$Schedules item=schedule}
-					<option value="{$schedule->GetId()}">{$schedule->GetName()}</option>
-				{/foreach}
-			</select>
-			<br/><br/>
-			<button type="button" class="button save">{html_image src="cross-button.png"} {translate key=Delete}</button>
-			<button type="button" class="button cancel">{html_image src="slash.png"} {translate key=Cancel}</button>
 		</form>
 	</div>
 

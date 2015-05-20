@@ -30,8 +30,6 @@ function ScheduleManagement(opts)
 
 	ScheduleManagement.prototype.init = function ()
 	{
-		ConfigureAdminDialog(elements.deleteDialog, 430, 200);
-
 		$('.scheduleDetails').each(function ()
 		{
 			var details = $(this);
@@ -269,7 +267,7 @@ function ScheduleManagement(opts)
 		elements.deleteDestinationScheduleId.children('option[value="' + scheduleId + '"]').attr('disabled', 'disabled');
 		elements.deleteDestinationScheduleId.val('');
 
-		elements.deleteDialog.dialog('open');
+		elements.deleteDialog.modal('show');
 	};
 
 	var reformatTimeSlots = function (div)
