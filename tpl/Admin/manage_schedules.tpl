@@ -46,15 +46,22 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 				<div>{translate key="LayoutDescription" args="{$smarty.capture.dayName}, {$smarty.capture.daysVisible}"}</div>
 
 				<div>{translate key='ScheduleAdministrator'}
-					{if $schedule->HasAdminGroup()}
-						{$GroupLookup[$schedule->GetAdminGroupId()]->Name}
-						{else}
-						<span class="note">{translate key='NoScheduleAdministratorLabel'}</span>
+					<span class="scheduleAdmin"
+						  data-type="select" data-pk="{$id}" data-value="{$schedule->GetAdminGroupId()}"
+						  data-name="{FormKeys::SCHEDULE_ADMIN_GROUP_ID}">{$GroupLookup[$schedule->GetAdminGroupId()]->Name}</span>
+					{if $AdminGroups|count > 0}
+						<a class="update changeScheduleAdmin" href="#"><span class="fa fa-pencil-square-o"></span></a>
 					{/if}
 
-					{if $AdminGroups|count > 0}
-						<a class="update adminButton" href="#" adminId="{$schedule->GetAdminGroupId()}">{translate key='Edit'}</a>
-					{/if}
+					{*{if $schedule->HasAdminGroup()}*}
+						{*{$GroupLookup[$schedule->GetAdminGroupId()]->Name}*}
+						{*{else}*}
+						{*<span class="note">{translate key='NoScheduleAdministratorLabel'}</span>*}
+					{*{/if}*}
+
+					{*{if $AdminGroups|count > 0}*}
+						{*<a class="update adminButton" href="#" adminId="{$schedule->GetAdminGroupId()}">{translate key='Edit'}</a>*}
+					{*{/if}*}
 				</div>
 
 			</div>
@@ -199,34 +206,34 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
     </form>
 </div>
 
-<div id="renameDialog" class="dialog" style="display:none;">
-    <form id="renameForm" method="post">
-	<label for="newName">{translate key=Name}:</label> 
-	<input type="text" class="textbox required" {formname key=SCHEDULE_NAME} id="newName"/><br/><br/>
-        <button type="button" class="button save">{html_image src="tick-circle.png"} {translate key=Update}</button>
-        <button type="button" class="button cancel">{html_image src="slash.png"} {translate key=Cancel}</button>
+{*<div id="renameDialog" class="dialog" style="display:none;">*}
+    {*<form id="renameForm" method="post">*}
+	{*<label for="newName">{translate key=Name}:</label> *}
+	{*<input type="text" class="textbox required" {formname key=SCHEDULE_NAME} id="newName"/><br/><br/>*}
+        {*<button type="button" class="button save">{html_image src="tick-circle.png"} {translate key=Update}</button>*}
+        {*<button type="button" class="button cancel">{html_image src="slash.png"} {translate key=Cancel}</button>*}
 
-    </form>
-</div>
+    {*</form>*}
+{*</div>*}
 
-<div id="changeSettingsDialog" class="dialog" style="display:none;">
-    <form id="settingsForm" method="post">
-	<label for="dayOfWeek">{translate key=StartsOn}:</label>
-        <select id="dayOfWeek" {formname key=SCHEDULE_WEEKDAY_START} class="textbox">
-            <option value="{Schedule::Today}">{$Today}</option>
-		{foreach from=$DayNames item="dayName" key="dayIndex"}
-            <option value="{$dayIndex}">{$dayName}</option>
-		{/foreach}
-        </select>
-        <br/>
-	<label for="daysVisible">{translate key=NumberOfDaysVisible}:</label> 
-	<input type="text" class="textbox required" id="daysVisible" maxlength="3"
-                                                size="3" {formname key=SCHEDULE_DAYS_VISIBLE} />
-        <br/><br/>
-        <button type="button" class="button save">{html_image src="tick-circle.png"} {translate key=Update}</button>
-        <button type="button" class="button cancel">{html_image src="slash.png"} {translate key=Cancel}</button>
-    </form>
-</div>
+{*<div id="changeSettingsDialog" class="dialog" style="display:none;">*}
+    {*<form id="settingsForm" method="post">*}
+	{*<label for="dayOfWeek">{translate key=StartsOn}:</label>*}
+        {*<select id="dayOfWeek" {formname key=SCHEDULE_WEEKDAY_START} class="textbox">*}
+            {*<option value="{Schedule::Today}">{$Today}</option>*}
+		{*{foreach from=$DayNames item="dayName" key="dayIndex"}*}
+            {*<option value="{$dayIndex}">{$dayName}</option>*}
+		{*{/foreach}*}
+        {*</select>*}
+        {*<br/>*}
+	{*<label for="daysVisible">{translate key=NumberOfDaysVisible}:</label> *}
+	{*<input type="text" class="textbox required" id="daysVisible" maxlength="3"*}
+                                                {*size="3" {formname key=SCHEDULE_DAYS_VISIBLE} />*}
+        {*<br/><br/>*}
+        {*<button type="button" class="button save">{html_image src="tick-circle.png"} {translate key=Update}</button>*}
+        {*<button type="button" class="button cancel">{html_image src="slash.png"} {translate key=Cancel}</button>*}
+    {*</form>*}
+{*</div>*}
 
 <div id="changeLayoutDialog" class="dialog" style="display:none;">
 
@@ -332,20 +339,20 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
     </form>
 </div>
 
-<div id="groupAdminDialog" class="dialog" title="{translate key=WhoCanManageThisSchedule}">
-    <form method="post" id="groupAdminForm">
-	<label for="adminGroupId" class="off-screen">{translate key=WhoCanManageThisSchedule}</label>
-        <select id="adminGroupId" {formname key=SCHEDULE_ADMIN_GROUP_ID} class="textbox">
-            <option value="">-- {translate key=None} --</option>
-		{foreach from=$AdminGroups item=adminGroup}
-            <option value="{$adminGroup->Id}">{$adminGroup->Name}</option>
-		{/foreach}
-        </select>
-        <br/><br/>
-        <button type="button" class="button save">{html_image src="tick-circle.png"} {translate key='Update'}</button>
-        <button type="button" class="button cancel">{html_image src="slash.png"} {translate key='Cancel'}</button>
-    </form>
-</div>
+{*<div id="groupAdminDialog" class="dialog" title="{translate key=WhoCanManageThisSchedule}">*}
+    {*<form method="post" id="groupAdminForm">*}
+	{*<label for="adminGroupId" class="off-screen">{translate key=WhoCanManageThisSchedule}</label>*}
+        {*<select id="adminGroupId" {formname key=SCHEDULE_ADMIN_GROUP_ID} class="textbox">*}
+            {*<option value="">-- {translate key=None} --</option>*}
+		{*{foreach from=$AdminGroups item=adminGroup}*}
+            {*<option value="{$adminGroup->Id}">{$adminGroup->Name}</option>*}
+		{*{/foreach}*}
+        {*</select>*}
+        {*<br/><br/>*}
+        {*<button type="button" class="button save">{html_image src="tick-circle.png"} {translate key='Update'}</button>*}
+        {*<button type="button" class="button cancel">{html_image src="slash.png"} {translate key='Cancel'}</button>*}
+    {*</form>*}
+{*</div>*}
 
 {html_image src="admin-ajax-indicator.gif" class="indicator" style="display:none;"}
 {jsfile src="admin/edit.js"}
@@ -388,6 +395,21 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 				{/foreach}
 			]
 		});
+
+		$('.scheduleAdmin').editable({
+			url: updateUrl + '{ManageSchedules::ChangeAdminGroup}',
+			emptytext: '{translate key=None}',
+			source: [
+				{
+					value: '0', text: ''
+				},
+				{foreach from=$AdminGroups item=group}
+				{
+					value:{$group->Id()}, text: '{$group->Name()}'
+				},
+				{/foreach}
+			]
+		});
 	}
 
     $(document).ready(function ()
@@ -401,7 +423,6 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
             addAction:'{ManageSchedules::ActionAdd}',
             makeDefaultAction:'{ManageSchedules::ActionMakeDefault}',
             deleteAction:'{ManageSchedules::ActionDelete}',
-            adminAction:'{ManageSchedules::ChangeAdminGroup}',
             enableSubscriptionAction:'{ManageSchedules::ActionEnableSubscription}',
             disableSubscriptionAction:'{ManageSchedules::ActionDisableSubscription}'
         };

@@ -373,7 +373,7 @@ class ManageSchedulesPresenter extends ActionPresenter
 	 */
 	public function ChangeAdminGroup()
 	{
-		$this->manageSchedulesService->ChangeAdminGroup($this->page->GetScheduleId(), $this->page->GetAdminGroupId());
+		$this->manageSchedulesService->ChangeAdminGroup($this->page->GetScheduleId(), $this->page->GetValue());
 	}
 
 	/**

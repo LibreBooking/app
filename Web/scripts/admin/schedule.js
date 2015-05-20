@@ -6,15 +6,11 @@ function ScheduleManagement(opts)
 		activeId:$('#activeId'),
 
 		layoutDialog:$('#changeLayoutDialog'),
-		changeSettingsDialog:$('#changeSettingsDialog'),
 		deleteDialog:$('#deleteDialog'),
-		groupAdminDialog:$('#groupAdminDialog'),
 
-		settingsForm:$('#settingsForm'),
 		changeLayoutForm:$('#changeLayoutForm'),
 		placeholderForm:$('#placeholderForm'),
 		deleteForm:$('#deleteForm'),
-		groupAdminForm:$('#groupAdminForm'),
 
 		addForm:$('#addScheduleForm'),
 
@@ -34,10 +30,8 @@ function ScheduleManagement(opts)
 
 	ScheduleManagement.prototype.init = function ()
 	{
-		ConfigureAdminDialog(elements.changeSettingsDialog, 'auto', 'auto');
 		ConfigureAdminDialog(elements.layoutDialog, 725, 'auto');
 		ConfigureAdminDialog(elements.deleteDialog, 430, 200);
-		ConfigureAdminDialog(elements.groupAdminDialog, 300, 125);
 
 		$('#tabs').tabs();
 
@@ -72,10 +66,9 @@ function ScheduleManagement(opts)
 				$(this).editable('toggle');
 			});
 
-			details.find('.changeButton').click(function (e)
-			{
-				showChangeSettings(e, daysVisible, dayOfWeek);
-				return false;
+			details.find('.changeScheduleAdmin').click(function (e) {
+				e.stopPropagation();
+				details.find('.scheduleAdmin').editable('toggle');
 			});
 
 			details.find('.changeLayoutButton').click(function (e)
@@ -102,12 +95,6 @@ function ScheduleManagement(opts)
 			details.find('.deleteScheduleButton').click(function (e)
 			{
 				showDeleteDialog(e);
-				return false;
-			});
-
-			details.find('.adminButton').click(function (e)
-			{
-				showScheduleAdmin(e, $(this).attr('adminId'));
 				return false;
 			});
 
@@ -154,11 +141,9 @@ function ScheduleManagement(opts)
 			toggleLayoutChange($(this).is(':checked'));
 		});
 
-		ConfigureAdminForm(elements.settingsForm, getSubmitCallback(options.changeSettingsAction));
 		ConfigureAdminForm(elements.changeLayoutForm, getSubmitCallback(options.changeLayoutAction));
 		ConfigureAdminForm(elements.addForm, getSubmitCallback(options.addAction), null, handleAddError);
 		ConfigureAdminForm(elements.deleteForm, getSubmitCallback(options.deleteAction));
-		ConfigureAdminForm(elements.groupAdminForm, getSubmitCallback(options.adminAction));
 	};
 
 	var getSubmitCallback = function (action)
@@ -242,20 +227,6 @@ function ScheduleManagement(opts)
 		return elements.activeId.val();
 	};
 
-	var showRename = function (e)
-	{
-		elements.renameDialog.dialog("option", "position", [e.pageX, e.pageY]);
-		elements.renameDialog.dialog("open");
-	};
-
-	var showChangeSettings = function (e, daysVisible, dayOfWeek)
-	{
-		elements.daysVisible.val(daysVisible.val());
-		elements.dayOfWeek.val(dayOfWeek.val());
-
-		elements.changeSettingsDialog.dialog("option", "position", [e.pageX, e.pageY]);
-		elements.changeSettingsDialog.dialog("open");
-	};
 
 	var showChangeLayout = function (e, reservableDiv, blockedDiv, timezone, usesSingleLayout)
 	{
@@ -303,12 +274,6 @@ function ScheduleManagement(opts)
 		elements.deleteDestinationScheduleId.val('');
 
 		elements.deleteDialog.dialog('open');
-	};
-
-	var showScheduleAdmin = function (e, adminGroupId)
-	{
-		$('#adminGroupId').val(adminGroupId);
-		elements.groupAdminDialog.dialog("open");
 	};
 
 	var reformatTimeSlots = function (div)
