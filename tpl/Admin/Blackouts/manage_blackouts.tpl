@@ -288,6 +288,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		var blackoutManagement = new BlackoutManagement(blackoutOpts);
 		blackoutManagement.init();
 
+		$('#add-blackout-panel').showHidePanel();
 	});
 
 	$.blockUI.defaults.css.width = '60%';

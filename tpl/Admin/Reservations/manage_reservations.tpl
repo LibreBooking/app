@@ -179,8 +179,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 				</div>
 				<div class="modal-body">
 					<div class="delResResponse"></div>
-					<div class="error">
-						<h3>{translate key=DeleteWarning}</h3>
+					<div class="alert alert-warning">
+						{translate key=DeleteWarning}
 					</div>
 
 					<input type="hidden" {formname key=SERIES_UPDATE_SCOPE} value="{SeriesUpdateScope::ThisInstance}"/>
@@ -204,8 +204,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 					<h4 class="modal-title" id="deleteSeriesDialogLabel">{translate key=Delete}</h4>
 				</div>
 				<div class="modal-body">
-					<div class="error">
-						<h3>{translate key=DeleteWarning}</h3>
+					<div class="alert alert-warning">
+						{translate key=DeleteWarning}
 					</div>
 					<input type="hidden" id="hdnSeriesUpdateScope" {formname key=SERIES_UPDATE_SCOPE} />
 					<input type="hidden" {formname key=REFERENCE_NUMBER} value="" class="referenceNumber"/>

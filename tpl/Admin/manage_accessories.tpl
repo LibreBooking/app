@@ -18,135 +18,203 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 *}
 {include file='globalheader.tpl' cssFiles='css/admin.css'}
 
-<h1>{translate key=ManageAccessories}</h1>
+<div id="page-manage-accessories">
+	<h1>{translate key=ManageAccessories}</h1>
 
-<table class="list">
-	<tr>
-		<th class="id">&nbsp;</th>
-		<th>{translate key='AccessoryName'}</th>
-		<th>{translate key='QuantityAvailable'}</th>
-		<th>{translate key='Resources'}</th>
-		<th>{translate key='Actions'}</th>
-	</tr>
-	{foreach from=$accessories item=accessory}
-		{cycle values='row0,row1' assign=rowCss}
-		<tr class="{$rowCss}" data-accessory-id="{$accessory->Id}">
-			<td class="id"><input type="hidden" class="id" value="{$accessory->Id}"/></td>
-			<td>{$accessory->Name}</td>
-			<td>{$accessory->QuantityAvailable|default:'&infin;'}</td>
-			<td><a href="#"
-				   class="update resources">{if $accessory->AssociatedResources == 0}{translate key=All}{else}{$accessory->AssociatedResources}{/if}</a></td>
-			<td align="center"><a href="#" class="update edit">{translate key='Edit'}</a> | <a href="#" class="update delete">{translate key='Delete'}</a></td>
-		</tr>
-	{/foreach}
-</table>
-
-<input type="hidden" id="activeId"/>
-
-<div id="deleteDialog" class="dialog" style="display:none;" title="{translate key=Delete}">
-	<form id="deleteForm" method="post">
-		<div class="error" style="margin-bottom: 25px;">
-			<h3>{translate key=DeleteWarning}</h3>
-
-			<div>{translate key=DeleteAccessoryWarning}</div>
-		</div>
-		<button type="button" class="button save">{html_image src="cross-button.png"} {translate key='Delete'}</button>
-		<button type="button" class="button cancel">{html_image src="slash.png"} {translate key='Cancel'}</button>
-	</form>
-</div>
-
-<div id="editDialog" class="dialog" style="display:none;" title="{translate key=Edit}">
-	<form id="editForm" method="post">
-		<label for="editName">{translate key=AccessoryName}</label><br/> <input id="editName" type="text" class="textbox required" maxlength="85" style="width:250px" {formname key=ACCESSORY_NAME} />
-		<br/><br/>
-		<label for="editQuantity">{translate key='QuantityAvailable'}</label><br/><input id="editQuantity" type="text" class="textbox" size="2" disabled="disabled" {formname key=ACCESSORY_QUANTITY_AVAILABLE} />
-		<input type="checkbox" id="chkUnlimitedEdit" class="unlimited" name="chkUnlimited" checked="checked" />
-		<label for="chkUnlimitedEdit"> {translate key=Unlimited}</label><br/><br/>
-		<button type="button" class="button save">{html_image src="disk-black.png"} {translate key='Update'}</button>
-		<button type="button" class="button cancel">{html_image src="slash.png"} {translate key='Cancel'}</button>
-	</form>
-</div>
-
-<div class="admin" style="margin-top:30px">
-	<div class="title">
-		{translate key=AddAccessory}
-	</div>
-	<div>
-		<div id="addResults" class="error" style="display:none;"></div>
-		<form id="addForm" method="post">
-			<table>
-				<tr>
-					<th><label for="addName">{translate key='AccessoryName'}</label></th>
-					<th><label for="addQuantity">{translate key='QuantityAvailable'}</label></th>
-					<th>&nbsp;</th>
-				</tr>
-				<tr>
-					<td>
-						<input type="text" id="addName" class="textbox required" maxlength="85" style="width:250px" {formname key=ACCESSORY_NAME} />
-					</td>
-					<td>
-						<input type="text" id="addQuantity" class="textbox" size="2" disabled="disabled" {formname key=ACCESSORY_QUANTITY_AVAILABLE} />
+	<form id="addForm" class="form-inline" role="form" method="post">
+		<div class="panel panel-default" id="add-accessory-panel">
+			<div class="panel-heading">{translate key="AddAccessory"} <a href=""><span class="icon black show-hide glyphicon"></span></a></div>
+			<div class="panel-body add-contents">
+				<div class="col-xs-4">
+					<div class="form-group has-feedback">
+						<label for="accessoryName">{translate key=AccessoryName}</label>
+						<input {formname key=ACCESSORY_NAME} type="text" id="accessoryName" required class="form-control required"/>
+						<i class="glyphicon glyphicon-asterisk form-control-feedback" data-bv-icon-for="blackoutReason"></i>
+					</div>
+				</div>
+				<div class="col-xs-3">
+					<div class="form-group">
+						<label for="addQuantity">{translate key='QuantityAvailable'}</label>
+						<input type="number" id="addQuantity" class="form-control" min="0" disabled="disabled" {formname key=ACCESSORY_QUANTITY_AVAILABLE} />
+					</div>
+				</div>
+				<div class="col-xs-5">
+					<div class="checkbox checkbox-align">
 						<input type="checkbox" id="chkUnlimitedAdd" class="unlimited" name="chkUnlimited" checked="checked"/>
 						<label for="chkUnlimitedAdd"> {translate key=Unlimited}</label>
-					</td>
-					<td>
-						<button type="button" class="button save">{html_image src="plus-button.png"} {translate key=AddAccessory}</button>
-					</td>
-				</tr>
-			</table>
-		</form>
-	</div>
-</div>
-
-<div id="accessoryResourcesDialog" class="dialog">
-	<form id="accessoryResourcesForm" ajaxAction="{ManageAccessoriesActions::ChangeAccessoryResource}" method="post">
-		{foreach from=$resources item=resource}
-			<div resource-id="{$resource->GetId()}">
-				<label><input type="checkbox" data-type="resource-id" class="resourceCheckbox" name="{FormKeys::ACCESSORY_RESOURCE}[{$resource->GetId()}]" value="{$resource->GetId()}"> {$resource->GetName()}</label>
-
-				<div class="hidden">
-					<label>{translate key=MinimumQuantity} <input type="text" data-type="min-quantity" class="textbox" size="4" maxlength="4" name="{FormKeys::ACCESSORY_MIN_QUANTITY}[{$resource->GetId()}]"></label>
-					<label>{translate key=MaximumQuantity} <input type="text" data-type="max-quantity" class="textbox" size="4" maxlength="4" name="{FormKeys::ACCESSORY_MAX_QUANTITY}[{$resource->GetId()}]"></label>
+					</div>
 				</div>
-			</div>
-		{/foreach}
-		<br/><br/>
 
-		<div>
-			<button type="button" class="button save">{html_image src="disk-black.png"} {translate key='Update'}</button>
-			<button type="button" class="button cancel">{html_image src="slash.png"} {translate key='Cancel'}</button>
+			</div>
+			<div class="panel-footer">
+				<button type="button" class="btn btn-success btn-sm save create">
+					<span class="glyphicon glyphicon-ok-circle"></span>
+					{translate key='Create'}
+				</button>
+
+				<button type="reset" class="btn btn-default btn-sm">{translate key=Reset}</button>
+			</div>
 		</div>
 	</form>
-</div>
 
-{html_image src="admin-ajax-indicator.gif" class="indicator" style="display:none;"}
-
-{jsfile src="admin/edit.js"}
-{jsfile src="admin/accessory.js"}
-{jsfile src="js/jquery.form-3.09.min.js"}
-
-<script type="text/javascript">
-	$(document).ready(function ()
-	{
-
-		var actions = {
-			add: '{ManageAccessoriesActions::Add}',
-			edit: '{ManageAccessoriesActions::Change}',
-			deleteAccessory: '{ManageAccessoriesActions::Delete}'
-		};
-
-		var accessoryOptions = {
-			submitUrl: '{$smarty.server.SCRIPT_NAME}',
-			saveRedirect: '{$smarty.server.SCRIPT_NAME}',
-			actions: actions
-		};
-
-		var accessoryManagement = new AccessoryManagement(accessoryOptions);
-		accessoryManagement.init();
-
+	<table class="table" id="accessoriesTable">
+		<thead>
+		<tr>
+			<th>{translate key='AccessoryName'}</th>
+			<th>{translate key='QuantityAvailable'}</th>
+			<th>{translate key='Resources'}</th>
+			<th class="action">{translate key='Actions'}</th>
+		</tr>
+		</thead>
+		<tbody>
 		{foreach from=$accessories item=accessory}
-		accessoryManagement.addAccessory('{$accessory->Id}', '{$accessory->Name|escape:javascript}', '{$accessory->QuantityAvailable}');
+			{cycle values='row0,row1' assign=rowCss}
+			<tr class="{$rowCss}" data-accessory-id="{$accessory->Id}">
+				<td>{$accessory->Name}</td>
+				<td>{$accessory->QuantityAvailable|default:'&infin;'}</td>
+				<td>
+					<a href="#"
+					   class="update resources">{if $accessory->AssociatedResources == 0}{translate key=All}{else}{$accessory->AssociatedResources}{/if}</a>
+				</td>
+				<td class="action">
+					<a href="#" class="update edit"><span class="fa fa-pencil-square-o icon"></a> | <a href="#" class="update delete"><span
+								class="fa fa-trash icon remove"></span></a>
+				</td>
+			</tr>
 		{/foreach}
-	});
-</script>
+		</tbody>
+	</table>
+
+	<input type="hidden" id="activeId"/>
+
+	<div class="modal fade" id="deleteDialog" tabindex="-1" role="dialog" aria-labelledby="deleteDialogLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<form id="deleteForm" method="post">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+						<h4 class="modal-title" id="deleteDialogLabel">{translate key=Delete}</h4>
+					</div>
+					<div class="modal-body">
+						<div class="alert alert-warning">
+							<div>{translate key=DeleteWarning}</div>
+							<div>{translate key=DeleteAccessoryWarning}</div>
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default cancel" data-dismiss="modal">{translate key='Cancel'}</button>
+						<button type="button" class="btn btn-danger save">{translate key='Delete'}</button>
+						{indicator}
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+
+	<div class="modal fade" id="editDialog" tabindex="-1" role="dialog" aria-labelledby="editDialogLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<form id="editForm" method="post">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+						<h4 class="modal-title" id="editDialogLabel">{translate key=Edit}</h4>
+					</div>
+					<div class="modal-body">
+						<div class="form-group has-feedback col-xs-12">
+							<label for="editName">{translate key=AccessoryName}</label>
+							<input id="editName" type="text" class="form-control required" maxlength="85" {formname key=ACCESSORY_NAME} />
+						</div>
+						<div class="form-group col-xs-4">
+							<label for="editQuantity">{translate key='QuantityAvailable'}</label>
+							<input id="editQuantity" type="number" min="0" class="form-control"
+								   disabled="disabled" {formname key=ACCESSORY_QUANTITY_AVAILABLE} />
+						</div>
+						<div class="form-group col-xs-8">
+							<div class="checkbox checkbox-align">
+								<input type="checkbox" id="chkUnlimitedEdit" class="unlimited" name="chkUnlimited" checked="checked"/>
+								<label for="chkUnlimitedEdit">{translate key=Unlimited}</label>
+							</div>
+						</div>
+						<div class="clearfix"></div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default cancel" data-dismiss="modal">{translate key='Cancel'}</button>
+						<button type="button" class="btn btn-success save"><span class="glyphicon glyphicon-ok-circle"></span>{translate key='Update'}</button>
+						{indicator}
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+
+	<div class="modal fade" id="accessoryResourcesDialog" tabindex="-1" role="dialog" aria-labelledby="resourcesDialogLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<form id="accessoryResourcesForm" role="form" ajaxAction="{ManageAccessoriesActions::ChangeAccessoryResource}" method="post">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+						<h4 class="modal-title" id="resourcesDialogLabel">{translate key=Resources}</h4>
+					</div>
+					<div class="modal-body">
+						{foreach from=$resources item=resource}
+							{assign var="resourceId" value="{$resource->GetId()}"}
+							<div resource-id="{$resourceId}">
+								<div class="checkbox">
+									<input id="accessoryResource{$resourceId}" type="checkbox" data-type="resource-id" class="resourceCheckbox"
+										   name="{FormKeys::ACCESSORY_RESOURCE}[{$resource->GetId()}]"
+										   value="{$resource->GetId()}">
+									<label for="accessoryResource{$resourceId}"> {$resource->GetName()}</label>
+								</div>
+								<div class="quantities no-show form-group-sm">
+									<label>{translate key=MinimumQuantity}
+										<input type="number" min="0" data-type="min-quantity" class="form-control" size="4" maxlength="4"
+											   name="{FormKeys::ACCESSORY_MIN_QUANTITY}[{$resource->GetId()}]"></label>
+									<label>{translate key=MaximumQuantity}
+										<input type="number" min="0" data-type="max-quantity" class="form-control" size="4" maxlength="4"
+											   name="{FormKeys::ACCESSORY_MAX_QUANTITY}[{$resource->GetId()}]"></label>
+								</div>
+							</div>
+						{/foreach}
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default cancel" data-dismiss="modal">{translate key='Cancel'}</button>
+						<button type="button" class="btn btn-success save"><span class="glyphicon glyphicon-ok-circle"></span>{translate key='Update'}</button>
+						{indicator}
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+
+	{jsfile src="admin/edit.js"}
+	{jsfile src="admin/accessory.js"}
+	{jsfile src="js/jquery.form-3.09.min.js"}
+
+	<script type="text/javascript">
+		$(document).ready(function () {
+
+			var actions = {
+				add: '{ManageAccessoriesActions::Add}',
+				edit: '{ManageAccessoriesActions::Change}',
+				deleteAccessory: '{ManageAccessoriesActions::Delete}'
+			};
+
+			var accessoryOptions = {
+				submitUrl: '{$smarty.server.SCRIPT_NAME}',
+				saveRedirect: '{$smarty.server.SCRIPT_NAME}',
+				actions: actions
+			};
+
+			var accessoryManagement = new AccessoryManagement(accessoryOptions);
+			accessoryManagement.init();
+
+			{foreach from=$accessories item=accessory}
+			accessoryManagement.addAccessory('{$accessory->Id}', '{$accessory->Name|escape:javascript}', '{$accessory->QuantityAvailable}');
+			{/foreach}
+
+			$('#add-accessory-panel').showHidePanel();
+		});
+	</script>
+
+</div>
 {include file='globalfooter.tpl'}

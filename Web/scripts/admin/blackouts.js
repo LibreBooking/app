@@ -26,7 +26,6 @@ function BlackoutManagement(opts) {
 	var blackoutId;
 
 	BlackoutManagement.prototype.init = function () {
-		wireUpShowHide();
 
 		wireUpUpdateButtons();
 
@@ -137,46 +136,6 @@ function BlackoutManagement(opts) {
 			target: '#result'
 		});
 	};
-
-	function wireUpShowHide() {
-		function setIcon(panel, targetIcon) {
-			var iconSpan = panel.find('.show-hide');
-			iconSpan.removeClass('glyphicon-chevron-up');
-			iconSpan.removeClass('glyphicon-chevron-down');
-			iconSpan.addClass(targetIcon);
-		}
-
-		var panel = $('#add-blackout-panel');
-		var visibility = readCookie('add-blackout-panel');
-		if (visibility && visibility == '0')
-		{
-			panel.find('.panel-body, .panel-footer').hide();
-			setIcon(panel, 'glyphicon-chevron-down');
-		}
-		else
-		{
-			setIcon(panel, 'glyphicon-chevron-up');
-		}
-
-		panel.find('.show-hide').click(function (e) {
-			e.preventDefault();
-			var id = panel.attr('id');
-
-			var dashboard = panel.find('.panel-body, .panel-footer');
-			if (dashboard.css('display') == 'none')
-			{
-				createCookie(id, '1', 30);
-				dashboard.show();
-				setIcon(panel, 'glyphicon-chevron-up');
-			}
-			else
-			{
-				createCookie(id, '0', 30);
-				dashboard.hide();
-				setIcon(panel, 'glyphicon-chevron-down');
-			}
-		})
-	}
 
 	function showDeleteBlackout() {
 		elements.deleteDialog.modal('show');

@@ -3,7 +3,7 @@ function AccessoryManagement(opts) {
 
 	var elements = {
 		activeId: $('#activeId'),
-		accessoryList: $('table.list'),
+		accessoryList: $('#accessoriesTable'),
 
 		addUnlimited: $('#chkUnlimitedAdd'),
 		addQuantity: $('#addQuantity'),
@@ -25,10 +25,6 @@ function AccessoryManagement(opts) {
 	var accessories = new Object();
 
 	AccessoryManagement.prototype.init = function() {
-
-		ConfigureAdminDialog(elements.editDialog, 450, 200);
-		ConfigureAdminDialog(elements.deleteDialog,  500, 200);
-		ConfigureAdminDialog(elements.accessoryResourcesDialog);
 
 		elements.accessoryList.delegate('a.update', 'click', function(e) {
 			setActiveId($(this));
@@ -81,7 +77,7 @@ function AccessoryManagement(opts) {
 	};
 
 	function setActiveId(activeElement) {
-		var id = activeElement.parents('td').siblings('td.id').find(':hidden').val();
+		var id = activeElement.closest('tr').attr('data-accessory-id');
 		elements.activeId.val(id);
 	}
 
@@ -96,20 +92,20 @@ function AccessoryManagement(opts) {
 
 		if (accessory.quantity == '')
 		{
-			elements.editUnlimited.attr('checked', 'checked');
+			elements.editUnlimited.prop('checked', true);
 		}
 		else
 		{
-			elements.editUnlimited.removeAttr('checked');
+			elements.editUnlimited.prop('checked', false);
 		}
 
 		elements.editUnlimited.trigger('change');
-		elements.editDialog.dialog('open');
+		elements.editDialog.modal('show');
 	};
 
 	function handleAccessoryResourceClick(checkbox)
 	{
-		var quantities = checkbox.closest('div').find('div');
+		var quantities = checkbox.closest('div[resource-id]').find('.quantities');
 
 		if (checkbox.is(':checked'))
 		{
@@ -139,13 +135,13 @@ function AccessoryManagement(opts) {
 				div.find('[data-type="min-quantity"]').val(resource.MinQuantity);
 				div.find('[data-type="max-quantity"]').val(resource.MaxQuantity);
 			});
-			elements.accessoryResourcesDialog.dialog('option', 'title', accessory.name + ' (' + accessory.quantity + ')');
-			elements.accessoryResourcesDialog.dialog('open');
+			elements.accessoryResourcesDialog.find('.resourcesDialogLabel').val(accessory.name + ' (' + accessory.quantity + ')');
+			elements.accessoryResourcesDialog.modal('show');
 		});
 	};
 
 	var deleteAccessory = function() {
-		elements.deleteDialog.dialog('open');
+		elements.deleteDialog.modal('show');
 	};
 
 	var getActiveAccessory = function ()

@@ -21,8 +21,8 @@ CREATE TABLE `resource_accessories` (
 		`resource_accessory_id` MEDIUMINT(8) UNSIGNED NOT NULL AUTO_INCREMENT,
 		`resource_id`           SMALLINT(5) UNSIGNED  NOT NULL,
 		`accessory_id`          SMALLINT(5) UNSIGNED  NOT NULL,
-		`minimum_quantity`      SMALLINT              NOT NULL,
-		`maximum_quantity`      SMALLINT              NOT NULL,
+		`minimum_quantity`      SMALLINT              NULL,
+		`maximum_quantity`      SMALLINT              NULL,
 		PRIMARY KEY (`resource_accessory_id`),
 		FOREIGN KEY (`resource_id`)
 		REFERENCES resources (`resource_id`)

@@ -260,6 +260,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 					<div class="modal-footer">
 						<button type="button" class="btn btn-default cancel" data-dismiss="modal">{translate key='Cancel'}</button>
 						<button type="button" class="btn btn-danger save">{translate key='Delete'}</button>
+						{indicator}
 					</div>
 				</div>
 			</form>
