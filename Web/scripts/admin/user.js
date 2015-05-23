@@ -39,8 +39,6 @@ function UserManagement(opts)
 
 	UserManagement.prototype.init = function ()
 	{
-		ConfigureAdminDialog(elements.passwordDialog);
-		ConfigureAdminDialog(elements.userDialog);
 		ConfigureAdminDialog(elements.deleteDialog);
 		ConfigureAdminDialog(elements.groupsDialog);
 		ConfigureAdminDialog(elements.colorDialog);
@@ -70,20 +68,18 @@ function UserManagement(opts)
 		elements.userList.delegate('.resetPassword', 'click', function (e)
 		{
 			elements.passwordDialog.find(':password').val('');
-			elements.passwordDialog.dialog('open');
+			elements.passwordDialog.modal('show');
 		});
 
 		elements.userList.delegate('.changeColor', 'click', function (e)
 		{
 			var user = getActiveUser();
 			elements.colorValue.val(user.reservationColor);
-			elements.colorDialog.dialog('open');
+			elements.colorDialog.modal('show');
 		});
 
 		elements.userList.delegate('.edit', 'click', function ()
 		{
-			//var userId = $(this).find('input:hidden.id').val();
-			//setActiveUserId(userId);
 			changeUserInfo();
 		});
 
@@ -152,7 +148,7 @@ function UserManagement(opts)
 
 		var hidePermissionsDialog = function ()
 		{
-			elements.permissionsDialog.modal('hide');
+			hideDialog(elements.permissionsDialog);
 		};
 
 		var hidePasswordDialog = function ()
@@ -162,7 +158,7 @@ function UserManagement(opts)
 
 		var hideDialog = function (dialogElement)
 		{
-			dialogElement.dialog('close');
+			dialogElement.modal('hide');
 		};
 
 		var error = function (errorText)
@@ -300,7 +296,7 @@ function UserManagement(opts)
 		{
 
 		});
-	}
+	};
 
 	var changeUserInfo = function ()
 	{
@@ -318,11 +314,11 @@ function UserManagement(opts)
 		$('#organization').val(user.organization);
 		$('#position').val(user.position);
 
-		elements.userDialog.dialog('open');
+		elements.userDialog.modal('show');
 	};
 
 	var deleteUser = function ()
 	{
-		elements.deleteDialog.dialog('open');
+		elements.deleteDialog.modal('show');
 	};
 }

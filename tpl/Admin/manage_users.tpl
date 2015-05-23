@@ -252,198 +252,278 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 	<input type="hidden" id="activeId"/>
 
-		<div id="permissionsDialog" class="modal" tabindex="-1" role="dialog" aria-labelledby="permissionsModalLabel"
-			 aria-hidden="true">
-			<form id="permissionsForm" method="post" ajaxAction="{ManageUsersActions::Permissions}">
-				<div class="modal-dialog">
-					<div class="modal-content">
-						<div class="modal-header">
-							<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-							<h4 class="modal-title" id="permissionsModalLabel">{translate key=Permissions}</h4>
-						</div>
-						<div class="modal-body">
-							<div class="alert alert-warning">{translate key=UserPermissionInfo}</div>
-							{foreach from=$resources item=resource}
-								{assign var=resourceId value=$resource->GetResourceId()}
-								<div class="checkbox">
-									<input id="resource{$resourceId}" {formname key=RESOURCE_ID  multi=true} class="resourceId" type="checkbox" value="{$resource->GetResourceId()}">
-									<label for="resource{$resourceId}"">{$resource->GetName()}</label>
-								</div>
-							{/foreach}
-						</div>
-						<div class="modal-footer">
-							<button type="button" class="btn btn-default" data-dismiss="modal">{translate key='Cancel'}</button>
-							<button type="button" class="btn btn-success save"><span class="glyphicon glyphicon-ok-circle"></span>
-								{translate key='Update'}</button>
-							{indicator}
-						</div>
+	<div id="permissionsDialog" class="modal" tabindex="-1" role="dialog" aria-labelledby="permissionsModalLabel"
+		 aria-hidden="true">
+		<form id="permissionsForm" method="post" ajaxAction="{ManageUsersActions::Permissions}">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+						<h4 class="modal-title" id="permissionsModalLabel">{translate key=Permissions}</h4>
+					</div>
+					<div class="modal-body">
+						<div class="alert alert-warning">{translate key=UserPermissionInfo}</div>
+						{foreach from=$resources item=resource}
+							{assign var=resourceId value=$resource->GetResourceId()}
+							<div class="checkbox">
+								<input id="resource{$resourceId}" {formname key=RESOURCE_ID  multi=true}
+									   class="resourceId" type="checkbox" value="{$resource->GetResourceId()}">
+								<label for="resource{$resourceId}"">{$resource->GetName()}</label>
+							</div>
+						{/foreach}
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default"
+								data-dismiss="modal">{translate key='Cancel'}</button>
+						<button type="button" class="btn btn-success save"><span
+									class="glyphicon glyphicon-ok-circle"></span>
+							{translate key='Update'}</button>
+						{indicator}
 					</div>
 				</div>
-			</form>
-		</div>
-
-		<div id="passwordDialog" class="dialog" style="display:none;" title="{translate key=Password}">
-			<form id="passwordForm" method="post" ajaxAction="{ManageUsersActions::Password}">
-				{translate key=Password}<br/>
-				{textbox type="password" name="PASSWORD" class="required textbox" value=""}
-				<div class="admin-update-buttons">
-					<button type="button"
-							class="button save">{html_image src="disk-black.png"} {translate key='Update'}</button>
-					<button type="button"
-							class="button cancel">{html_image src="slash.png"} {translate key='Cancel'}</button>
-				</div>
-			</form>
-		</div>
-
-		<div id="userDialog" class="dialog" title="{translate key=Update}">
-			<form id="userForm" method="post" ajaxAction="{ManageUsersActions::UpdateUser}">
-				<ul>
-					{async_validator id="emailformat" key="ValidEmailRequired"}
-					{async_validator id="uniqueemail" key="UniqueEmailRequired"}
-					{async_validator id="uniqueusername" key="UniqueUsernameRequired"}
-				</ul>
-
-				<ul>
-					<li>{translate key="Username"}</li>
-					<li>{textbox name="USERNAME" class="required textbox" size="40" id="username"}</li>
-					<li>{translate key="Email"}</li>
-					<li>{textbox name="EMAIL" class="required textbox" size="40" id="email"}</li>
-
-					<li>{translate key="FirstName"}</li>
-					<li>{textbox name="FIRST_NAME" class="required textbox" size="40" id="fname"}</li>
-					<li>{translate key="LastName"}</li>
-					<li>{textbox name="LAST_NAME" class="required textbox" size="40" id="lname"}</li>
-
-					<li>{translate key="Timezone"}</li>
-					<li>
-						<select {formname key='TIMEZONE'} id='timezone' class="textbox">
-							{html_options values=$Timezones output=$Timezones}
-						</select>
-					</li>
-
-					<li>{translate key="Phone"}</li>
-					<li>{textbox name="PHONE" class="textbox" size="40" id="phone"}</li>
-					<li>{translate key="Organization"}</li>
-					<li>{textbox name="ORGANIZATION" class="textbox" size="40" id="organization"}</li>
-					<li>{translate key="Position"}</li>
-					<li>{textbox name="POSITION" class="textbox" size="40" id="position"}</li>
-				</ul>
-				<div class="admin-update-buttons">
-					<button type="button"
-							class="button save">{html_image src="disk-black.png"} {translate key='Update'}</button>
-					<button type="button"
-							class="button cancel">{html_image src="slash.png"} {translate key='Cancel'}</button>
-				</div>
-			</form>
-		</div>
-
-		<div id="deleteDialog" class="dialog" title="{translate key=Delete}">
-			<form id="deleteUserForm" method="post" ajaxAction="{ManageUsersActions::DeleteUser}">
-				<div class="error" style="margin-bottom: 25px;">
-					<h3>{translate key=DeleteWarning}</h3>
-
-					<div>{translate key=DeleteUserWarning}</div>
-				</div>
-				<div class="admin-update-buttons">
-					<button type="button"
-							class="button save">{html_image src="cross-button.png"} {translate key='Delete'}</button>
-					<button type="button"
-							class="button cancel">{html_image src="slash.png"} {translate key='Cancel'}</button>
-				</div>
-			</form>
-		</div>
-
-		<div id="groupsDialog" class="dialog" title="{translate key=Groups}">
-			<div id="allUsers" style="display:none;" class="dialog" title="{translate key=AllUsers}"></div>
-
-			<div id="groupList" class="hidden">
-				{foreach from=$Groups item=group}
-					<div class="group-item" groupId="{$group->Id}"><a href="#">&nbsp;</a> <span>{$group->Name}</span>
-					</div>
-				{/foreach}
 			</div>
-
-			<div id="addedGroups">
-			</div>
-
-			<div id="removedGroups">
-			</div>
-		</div>
-
-		<div id="colorDialog" class="dialog" title="{translate key=Color}">
-			<form id="colorForm" method="post" ajaxAction="{ManageUsersActions::ChangeColor}">
-				#{textbox name="RESERVATION_COLOR" class="textbox" id="reservationColor" maxlength=6}
-				<div class="admin-update-buttons">
-					<button type="button"
-							class="button save">{html_image src="disk-black.png"} {translate key='Update'}</button>
-					<button type="button"
-							class="button cancel">{html_image src="slash.png"} {translate key='Cancel'}</button>
-				</div>
-			</form>
-		</div>
-
-		{html_image src="admin-ajax-indicator.gif" class="indicator" style="display:none;"}
-
-		{jsfile src="admin/edit.js"}
-		{jsfile src="autocomplete.js"}
-		{jsfile src="admin/user.js"}
-		{jsfile src="js/jquery.form-3.09.min.js"}
-		{jsfile src="js/colorpicker.js"}
-
-		<script type="text/javascript">
-			$(document).ready(function ()
-			{
-				var actions = {
-					activate: '{ManageUsersActions::Activate}',
-					deactivate: '{ManageUsersActions::Deactivate}'
-				};
-
-				var userOptions = {
-					userAutocompleteUrl: "../ajax/autocomplete.php?type={AutoCompleteType::MyUsers}",
-					groupsUrl: '{$smarty.server.SCRIPT_NAME}',
-					groupManagementUrl: '{$ManageGroupsUrl}',
-					permissionsUrl: '{$smarty.server.SCRIPT_NAME}',
-					submitUrl: '{$smarty.server.SCRIPT_NAME}',
-					saveRedirect: '{$smarty.server.SCRIPT_NAME}',
-					selectUserUrl: '{$smarty.server.SCRIPT_NAME}?uid=',
-					filterUrl: '{$smarty.server.SCRIPT_NAME}?{QueryStringKeys::ACCOUNT_STATUS}=',
-					actions: actions,
-					manageReservationsUrl: '{$ManageReservationsUrl}'
-				};
-
-				var userManagement = new UserManagement(userOptions);
-				userManagement.init();
-
-				{foreach from=$users item=user}
-				var user = {
-					id: {$user->Id},
-					first: '{$user->First|escape:"quotes"}',
-					last: '{$user->Last|escape:"quotes"}',
-					isActive: '{$user->IsActive()}',
-					username: '{$user->Username|escape:"quotes"}',
-					email: '{$user->Email|escape:"quotes"}',
-					timezone: '{$user->Timezone}',
-					phone: '{$user->Phone|escape:"quotes"}',
-					organization: '{$user->Organization|escape:"quotes"}',
-					position: '{$user->Position|escape:"quotes"}',
-					reservationColor: '{$user->ReservationColor|escape:"quotes"}'
-				};
-				userManagement.addUser(user);
-				{/foreach}
-
-				$('#reservationColor').ColorPicker({
-					onSubmit: function (hsb, hex, rgb, el)
-					{
-						$(el).val(hex);
-						$(el).ColorPickerHide();
-					},
-					onBeforeShow: function ()
-					{
-						$(this).ColorPickerSetColor(this.value);
-					}
-				});
-
-			});
-		</script>
+		</form>
 	</div>
+
+	<div id="passwordDialog" class="modal" tabindex="-1" role="dialog" aria-labelledby="passwordModalLabel"
+		 aria-hidden="true">
+		<form id="passwordForm" method="post" ajaxAction="{ManageUsersActions::Password}">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+						<h4 class="modal-title" id="passwordModalLabel">{translate key=Password}</h4>
+					</div>
+					<div class="modal-body">
+						<div class="form-group has-feedback">
+							<label>{translate key=Password}</label>
+							{textbox type="password" name="PASSWORD" class="required" value=""}
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default"
+								data-dismiss="modal">{translate key='Cancel'}</button>
+						<button type="button" class="btn btn-success save"><span
+									class="glyphicon glyphicon-ok-circle"></span>
+							{translate key='Update'}</button>
+						{indicator}
+					</div>
+				</div>
+			</div>
+		</form>
+	</div>
+
+	<div id="userDialog" class="modal" tabindex="-1" role="dialog" aria-labelledby="userModalLabel"
+		 aria-hidden="true">
+		<form id="userForm" method="post" ajaxAction="{ManageUsersActions::UpdateUser}">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+						<h4 class="modal-title" id="userModalLabel">{translate key=Edit}</h4>
+					</div>
+					<div class="modal-body">
+						<div id="updateUserResults" class="alert alert-danger no-show">
+							<ul>
+								{async_validator id="emailformat" key="ValidEmailRequired"}
+								{async_validator id="uniqueemail" key="UniqueEmailRequired"}
+								{async_validator id="uniqueusername" key="UniqueUsernameRequired"}
+							</ul>
+						</div>
+						<div class="col-sm-12 col-md-6">
+
+							<div class="form-group has-feedback">
+								<label for="username">{translate key="Username"}</label>
+								<input type="text" {formname key="USERNAME"} class="required form-control" required
+									   id="username"/>
+								<i class="glyphicon glyphicon-asterisk form-control-feedback"
+								   data-bv-icon-for="username"></i>
+							</div>
+						</div>
+
+						<div class="col-sm-12 col-md-6">
+							<div class="form-group has-feedback">
+								<label for="email">{translate key="Email"}</label>
+								<input type="text" {formname key="EMAIL"} class="required form-control" required
+									   id="email"/>
+								<i class="glyphicon glyphicon-asterisk form-control-feedback"
+								   data-bv-icon-for="email"></i>
+							</div>
+						</div>
+
+						<div class="col-sm-12 col-md-6">
+							<div class="form-group has-feedback">
+								<label for="fname">{translate key="FirstName"}</label>
+								<input type="text" {formname key="FIRST_NAME"} class="required form-control" required
+									   id="fname"/>
+								<i class="glyphicon glyphicon-asterisk form-control-feedback"
+								   data-bv-icon-for="fname"></i>
+							</div>
+						</div>
+
+						<div class="col-sm-12 col-md-6">
+							<div class="form-group has-feedback">
+								<label for="lname">{translate key="LastName"}</label>
+								<input type="text" {formname key="LAST_NAME"} class="required form-control" required
+									   id="lname"/>
+								<i class="glyphicon glyphicon-asterisk form-control-feedback"
+								   data-bv-icon-for="lname"></i>
+							</div>
+						</div>
+
+						<div class="col-sm-12 col-md-6">
+							<div class="form-group">
+								<label for="timezone">{translate key="Timezone"}</label>
+								<select {formname key='TIMEZONE'} id='timezone' class="form-control">
+									{html_options values=$Timezones output=$Timezones}
+								</select>
+							</div>
+						</div>
+
+						<div class="col-sm-12 col-md-6">
+
+							<div class="form-group">
+								<label for="phone">{translate key="Phone"}</label>
+								<input type="text" {formname key="PHONE"} class="form-control" id="phone"/>
+							</div>
+						</div>
+
+						<div class="col-sm-12 col-md-6">
+							<div class="form-group">
+								<label for="organization">{translate key="Organization"}</label>
+								<input type="text" {formname key="ORGANIZATION"} class="form-control"
+									   id="organization"/>
+							</div>
+						</div>
+
+						<div class="col-sm-12 col-md-6">
+							<div class="form-group">
+								<label for="position">{translate key="Position"}</label>
+								<input type="text" {formname key="POSITION"} class="form-control" id="position"/>
+							</div>
+						</div>
+						<div class="clearfix"></div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default"
+								data-dismiss="modal">{translate key='Cancel'}</button>
+						<button type="button" class="btn btn-success save"><span
+									class="glyphicon glyphicon-ok-circle"></span>
+							{translate key='Update'}</button>
+						{indicator}
+					</div>
+				</div>
+			</div>
+		</form>
+	</div>
+
+	<div id="deleteDialog" class="dialog" title="{translate key=Delete}">
+		<form id="deleteUserForm" method="post" ajaxAction="{ManageUsersActions::DeleteUser}">
+			<div class="error" style="margin-bottom: 25px;">
+				<h3>{translate key=DeleteWarning}</h3>
+
+				<div>{translate key=DeleteUserWarning}</div>
+			</div>
+			<div class="admin-update-buttons">
+				<button type="button"
+						class="button save">{html_image src="cross-button.png"} {translate key='Delete'}</button>
+				<button type="button"
+						class="button cancel">{html_image src="slash.png"} {translate key='Cancel'}</button>
+			</div>
+		</form>
+	</div>
+
+	<div id="groupsDialog" class="dialog" title="{translate key=Groups}">
+		<div id="allUsers" style="display:none;" class="dialog" title="{translate key=AllUsers}"></div>
+
+		<div id="groupList" class="hidden">
+			{foreach from=$Groups item=group}
+				<div class="group-item" groupId="{$group->Id}"><a href="#">&nbsp;</a> <span>{$group->Name}</span>
+				</div>
+			{/foreach}
+		</div>
+
+		<div id="addedGroups">
+		</div>
+
+		<div id="removedGroups">
+		</div>
+	</div>
+
+	<div id="colorDialog" class="dialog" title="{translate key=Color}">
+		<form id="colorForm" method="post" ajaxAction="{ManageUsersActions::ChangeColor}">
+			#{textbox name="RESERVATION_COLOR" class="textbox" id="reservationColor" maxlength=6}
+			<div class="admin-update-buttons">
+				<button type="button"
+						class="button save">{html_image src="disk-black.png"} {translate key='Update'}</button>
+				<button type="button"
+						class="button cancel">{html_image src="slash.png"} {translate key='Cancel'}</button>
+			</div>
+		</form>
+	</div>
+
+	{html_image src="admin-ajax-indicator.gif" class="indicator" style="display:none;"}
+
+	{jsfile src="admin/edit.js"}
+	{jsfile src="autocomplete.js"}
+	{jsfile src="admin/user.js"}
+	{jsfile src="js/jquery.form-3.09.min.js"}
+	{jsfile src="js/colorpicker.js"}
+
+	<script type="text/javascript">
+		$(document).ready(function ()
+		{
+			var actions = {
+				activate: '{ManageUsersActions::Activate}',
+				deactivate: '{ManageUsersActions::Deactivate}'
+			};
+
+			var userOptions = {
+				userAutocompleteUrl: "../ajax/autocomplete.php?type={AutoCompleteType::MyUsers}",
+				groupsUrl: '{$smarty.server.SCRIPT_NAME}',
+				groupManagementUrl: '{$ManageGroupsUrl}',
+				permissionsUrl: '{$smarty.server.SCRIPT_NAME}',
+				submitUrl: '{$smarty.server.SCRIPT_NAME}',
+				saveRedirect: '{$smarty.server.SCRIPT_NAME}',
+				selectUserUrl: '{$smarty.server.SCRIPT_NAME}?uid=',
+				filterUrl: '{$smarty.server.SCRIPT_NAME}?{QueryStringKeys::ACCOUNT_STATUS}=',
+				actions: actions,
+				manageReservationsUrl: '{$ManageReservationsUrl}'
+			};
+
+			var userManagement = new UserManagement(userOptions);
+			userManagement.init();
+
+			{foreach from=$users item=user}
+			var user = {
+				id: {$user->Id},
+				first: '{$user->First|escape:"quotes"}',
+				last: '{$user->Last|escape:"quotes"}',
+				isActive: '{$user->IsActive()}',
+				username: '{$user->Username|escape:"quotes"}',
+				email: '{$user->Email|escape:"quotes"}',
+				timezone: '{$user->Timezone}',
+				phone: '{$user->Phone|escape:"quotes"}',
+				organization: '{$user->Organization|escape:"quotes"}',
+				position: '{$user->Position|escape:"quotes"}',
+				reservationColor: '{$user->ReservationColor|escape:"quotes"}'
+			};
+			userManagement.addUser(user);
+			{/foreach}
+
+			$('#reservationColor').ColorPicker({
+				onSubmit: function (hsb, hex, rgb, el)
+				{
+					$(el).val(hex);
+					$(el).ColorPickerHide();
+				},
+				onBeforeShow: function ()
+				{
+					$(this).ColorPickerSetColor(this.value);
+				}
+			});
+
+		});
+	</script>
+</div>
 {include file='globalfooter.tpl'}

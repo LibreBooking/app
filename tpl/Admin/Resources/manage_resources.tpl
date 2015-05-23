@@ -375,7 +375,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 						<h4 class="modal-title" id="addResourceModalLabel">{translate key=AddNewResource}</h4>
 					</div>
 					<div class="modal-body">
-						<div id="addResourceResults" class="alert alert-danger" style="display:none;"></div>
+						<div id="addResourceResults" class="alert alert-danger no-show"></div>
 
 						<div class="form-group has-feedback">
 							<label for="resourceName">{translate key='Name'}</label>
