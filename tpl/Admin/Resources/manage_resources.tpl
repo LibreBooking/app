@@ -29,7 +29,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			</button>
 			<ul class="dropdown-menu" role="menu" aria-labelledby="moreResourceActions">
 				<li role="presentation"><a role="menuitem"
-										   href="#" class="add-resource" id="add-resource">{translate key="AddResource"} <span
+										   href="#" class="add-resource" id="add-resource">{translate key="AddResource"}
+						<span
 								class="fa fa-plus-circle icon add"></span></a>
 				</li>
 				<li role="presentation"><a role="menuitem"
@@ -130,210 +131,227 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 	<div class="panel panel-default admin-panel" id="list-reservations-panel">
 		<div class="panel-heading">{translate key="AllResources"}
 			<a href="#" class="add-link add-resource pull-right">{translate key="AddResource"}
-			<span class="fa fa-plus-circle icon add"></span>
+				<span class="fa fa-plus-circle icon add"></span>
 			</a>
 		</div>
 		<div class="panel-body no-padding" id="resourceList">
 
-		{foreach from=$Resources item=resource}
-			{assign var=id value=$resource->GetResourceId()}
-			<div class="resourceDetails" data-resourceId="{$id}">
-				<div class="col-xs-5">
-					<input type="hidden" class="id" value="$id}"/>
+			{foreach from=$Resources item=resource}
+				{assign var=id value=$resource->GetResourceId()}
+				<div class="resourceDetails" data-resourceId="{$id}">
+					<div class="col-xs-5">
+						<input type="hidden" class="id" value="$id}"/>
 
-					<div class="col-xs-3 resourceImage">
-						{if $resource->HasImage()}
-							<img src="{resource_image image=$resource->GetImage()}" alt="Resource Image" class="image"/>
-							<br/>
-							<a class="update imageButton" href="#">{translate key='Change'}</a>
-							|
-							<a class="update removeImageButton" href="#">{translate key='Remove'}</a>
-							{indicator id=removeImageIndicator}
-						{else}
-							<div class="noImage"><span class="fa fa-image"></span></div>
-							<a class="update imageButton" href="#">{translate key='AddImage'}</a>
-						{/if}
-					</div>
-					<div class="col-xs-9">
-						<div>
+						<div class="col-xs-3 resourceImage">
+							{if $resource->HasImage()}
+								<img src="{resource_image image=$resource->GetImage()}" alt="Resource Image"
+									 class="image"/>
+								<br/>
+								<a class="update imageButton" href="#">{translate key='Change'}</a>
+								|
+								<a class="update removeImageButton" href="#">{translate key='Remove'}</a>
+								{indicator id=removeImageIndicator}
+							{else}
+								<div class="noImage"><span class="fa fa-image"></span></div>
+								<a class="update imageButton" href="#">{translate key='AddImage'}</a>
+							{/if}
+						</div>
+						<div class="col-xs-9">
+							<div>
 							<span class="title" data-type="text" data-pk="{$id}"
 								  data-name="{FormKeys::RESOURCE_NAME}">{$resource->GetName()|escape}</span>
-							<a class="update renameButton" href="#">{translate key='Rename'}</a> |
-							<a class="update deleteButton" href="#">{translate key='Delete'}</a>
-						</div>
-						<div>
-							{translate key='Status'}
-							{if $resource->IsAvailable()}
-								{html_image src="status.png"}
-								<a class="update changeStatus"
-								   href="#" rel="popover" data-popover-content="#statusDialog">{translate key='Available'}</a>
-							{elseif $resource->IsUnavailable()}
-								{html_image src="status-away.png"}
-								<a class="update changeStatus"
-								   href="#" rel="popover" data-popover-content="#statusDialog">{translate key='Unavailable'}</a>
-							{else}
-								{html_image src="status-busy.png"}
-								<a class="update changeStatus"
-								   href="#" rel="popover" data-popover-content="#statusDialog">{translate key='Hidden'}</a>
-							{/if}
-							{if array_key_exists($resource->GetStatusReasonId(),$StatusReasons)}
-								<span class="statusReason">{$StatusReasons[$resource->GetStatusReasonId()]->Description()}</span>
-							{/if}
-						</div>
+								<a class="update renameButton" href="#">{translate key='Rename'}</a> |
+								<a class="update deleteButton" href="#">{translate key='Delete'}</a>
+							</div>
+							<div>
+								{translate key='Status'}
+								{if $resource->IsAvailable()}
+									{html_image src="status.png"}
+									<a class="update changeStatus"
+									   href="#" rel="popover"
+									   data-popover-content="#statusDialog">{translate key='Available'}</a>
+								{elseif $resource->IsUnavailable()}
+									{html_image src="status-away.png"}
+									<a class="update changeStatus"
+									   href="#" rel="popover"
+									   data-popover-content="#statusDialog">{translate key='Unavailable'}</a>
+								{else}
+									{html_image src="status-busy.png"}
+									<a class="update changeStatus"
+									   href="#" rel="popover"
+									   data-popover-content="#statusDialog">{translate key='Hidden'}</a>
+								{/if}
+								{if array_key_exists($resource->GetStatusReasonId(),$StatusReasons)}
+									<span class="statusReason">{$StatusReasons[$resource->GetStatusReasonId()]->Description()}</span>
+								{/if}
+							</div>
 
-						<div>
-							{translate key='Schedule'}
-							<span class="propertyValue scheduleName"
-								  data-type="select" data-pk="{$id}" data-value="{$resource->GetScheduleId()}"
-								  data-name="{FormKeys::SCHEDULE_ID}">{$Schedules[$resource->GetScheduleId()]}</span>
-							<a class="update changeScheduleButton" href="#">{translate key='Move'}</a>
-						</div>
-						<div>
-							{translate key='ResourceType'}
-							<span class="propertyValue resourceTypeName"
-								  data-type="select" data-pk="{$id}" data-value="{$resource->GetResourceTypeId()}" data-name="{FormKeys::RESOURCE_TYPE_ID}">
+							<div>
+								{translate key='Schedule'}
+								<span class="propertyValue scheduleName"
+									  data-type="select" data-pk="{$id}" data-value="{$resource->GetScheduleId()}"
+									  data-name="{FormKeys::SCHEDULE_ID}">{$Schedules[$resource->GetScheduleId()]}</span>
+								<a class="update changeScheduleButton" href="#">{translate key='Move'}</a>
+							</div>
+							<div>
+								{translate key='ResourceType'}
+								<span class="propertyValue resourceTypeName"
+									  data-type="select" data-pk="{$id}" data-value="{$resource->GetResourceTypeId()}"
+									  data-name="{FormKeys::RESOURCE_TYPE_ID}">
 									{if $resource->HasResourceType()}
 										{$ResourceTypes[$resource->GetResourceTypeId()]->Name()}
 									{else}
 										{translate key='NoResourceTypeLabel'}
 									{/if}
 								</span>
-							<a class="update changeResourceType" href="#"><span class="fa fa-pencil-square-o"></span></a>
-						</div>
-						<div>
-							{translate key=SortOrder}
-							<span class="propertyValue sortOrderValue"
-								  data-type="number" data-pk="{$id}" data-name="{FormKeys::RESOURCE_SORT_ORDER}">
+								<a class="update changeResourceType" href="#"><span
+											class="fa fa-pencil-square-o"></span></a>
+							</div>
+							<div>
+								{translate key=SortOrder}
+								<span class="propertyValue sortOrderValue"
+									  data-type="number" data-pk="{$id}" data-name="{FormKeys::RESOURCE_SORT_ORDER}">
 								{$resource->GetSortOrder()|default:"0"}
 							</span>
-							<a class="update changeSortOrder" href="#"><span class="fa fa-pencil-square-o"></span></a>
-						</div>
-						<div>
-							{translate key='Location'}
-							<span class="propertyValue locationValue"
-								  data-type="text" data-pk="{$id}" data-value="{$resource->GetLocation()}" data-name="{FormKeys::RESOURCE_LOCATION}">
+								<a class="update changeSortOrder" href="#"><span
+											class="fa fa-pencil-square-o"></span></a>
+							</div>
+							<div>
+								{translate key='Location'}
+								<span class="propertyValue locationValue"
+									  data-type="text" data-pk="{$id}" data-value="{$resource->GetLocation()}"
+									  data-name="{FormKeys::RESOURCE_LOCATION}">
 							{if $resource->HasLocation()}
 								{$resource->GetLocation()}
 							{else}
 								{translate key='NoLocationLabel'}
 							{/if}
 							</span>
-							<a class="update changeLocation" href="#"><span class="fa fa-pencil-square-o"></span></a>
-						</div>
-						<div>
-							{translate key='Contact'}
-							<span class="propertyValue contactValue"
-								  data-type="text" data-pk="{$id}" data-value="{$resource->GetContact()}" data-name="{FormKeys::RESOURCE_CONTACT}">
+								<a class="update changeLocation" href="#"><span
+											class="fa fa-pencil-square-o"></span></a>
+							</div>
+							<div>
+								{translate key='Contact'}
+								<span class="propertyValue contactValue"
+									  data-type="text" data-pk="{$id}" data-value="{$resource->GetContact()}"
+									  data-name="{FormKeys::RESOURCE_CONTACT}">
 							{if $resource->HasContact()}
 								{$resource->GetContact()}
 							{else}
 								{translate key='NoContactLabel'}
 							{/if}
 							</span>
-							<a class="update changeContact" href="#"><span class="fa fa-pencil-square-o"></span></a>
-						</div>
-						<div>
-							{translate key='Description'} <a class="update changeDescription" href="#"><span class="fa fa-pencil-square-o"></span></a>
-							{if $resource->HasDescription()}
-								{assign var=description value=$resource->GetDescription()}
-							{else}
-								{assign var=description value=''}
-							{/if}
-							{strip}
-								<div class="descriptionValue"
-									 data-type="textarea" data-pk="{$id}" data-value="{$description|escape}" data-name="{FormKeys::RESOURCE_DESCRIPTION}">
-									{if $resource->HasDescription()}
-										{$description}
-									{else}
-										{translate key='NoDescriptionLabel'}
-									{/if}
-								</div>
-							{/strip}
-						</div>
-						<div>
-							{translate key='Notes'} <a class="update changeNotes" href="#"><span class="fa fa-pencil-square-o"></span></a>
-							{if $resource->HasNotes()}
-								{assign var=notes value=$resource->GetNotes()}
-							{else}
-								{assign var=notes value=''}
-							{/if}
-							{strip}
-								<div class="notesValue"
-									 data-type="textarea" data-pk="{$id}" data-value="{$notes|escape}" data-name="{FormKeys::RESOURCE_NOTES}">
-									{if $resource->HasNotes()}
-										{$notes}
-									{else}
-										{translate key='NoNotesLabel'}
-									{/if}
-								</div>
-							{/strip}
-						</div>
-						<div>
-							{translate key='ResourceAdministrator'}
-							<span class="propertyValue resourceAdminValue"
-								  data-type="select" data-pk="{$id}" data-value="{$resource->GetAdminGroupId()}"
-								  data-name="{FormKeys::RESOURCE_ADMIN_GROUP_ID}">{$GroupLookup[$resource->GetAdminGroupId()]->Name}</span>
-							{if $AdminGroups|count > 0}
-								<a class="update changeResourceAdmin" href="#"><span class="fa fa-pencil-square-o"></span></a>
-							{/if}
-						</div>
-						<div>
-							<a class="update disableSubscription hide subscriptionButton" href="#">{translate key=TurnOffSubscription}</a>
-							<a class="update enableSubscription hide subscriptionButton" href="#">{translate key=TurnOnSubscription}</a>
-							{indicator id=subscriptionIndicator}
-						</div>
-					</div>
-				</div>
-
-				<div class="col-xs-7">
-					<div class="col-xs-6">
-						<h5 class="inline">{translate key=Duration}</h5>
-						<a href="#" class="inline update changeDuration">
-							<span class="fa fa-pencil-square-o"></span>
-						</a>
-
-						<div class="durationPlaceHolder">
-							{include file="Admin/Resources/manage_resources_duration.tpl" resource=$resource}
-						</div>
-
-						<h5 class="inline">{translate key='Capacity'}</h5>
-						<a href="#" class="inline update changeCapacity">
-							<span class="fa fa-pencil-square-o"></span>
-						</a>
-
-						<div class="capacityPlaceHolder">
-							{include file="Admin/Resources/manage_resources_capacity.tpl" resource=$resource}
+								<a class="update changeContact" href="#"><span class="fa fa-pencil-square-o"></span></a>
+							</div>
+							<div>
+								{translate key='Description'} <a class="update changeDescription" href="#"><span
+											class="fa fa-pencil-square-o"></span></a>
+								{if $resource->HasDescription()}
+									{assign var=description value=$resource->GetDescription()}
+								{else}
+									{assign var=description value=''}
+								{/if}
+								{strip}
+									<div class="descriptionValue"
+										 data-type="textarea" data-pk="{$id}" data-value="{$description|escape}"
+										 data-name="{FormKeys::RESOURCE_DESCRIPTION}">
+										{if $resource->HasDescription()}
+											{$description}
+										{else}
+											{translate key='NoDescriptionLabel'}
+										{/if}
+									</div>
+								{/strip}
+							</div>
+							<div>
+								{translate key='Notes'} <a class="update changeNotes" href="#"><span
+											class="fa fa-pencil-square-o"></span></a>
+								{if $resource->HasNotes()}
+									{assign var=notes value=$resource->GetNotes()}
+								{else}
+									{assign var=notes value=''}
+								{/if}
+								{strip}
+									<div class="notesValue"
+										 data-type="textarea" data-pk="{$id}" data-value="{$notes|escape}"
+										 data-name="{FormKeys::RESOURCE_NOTES}">
+										{if $resource->HasNotes()}
+											{$notes}
+										{else}
+											{translate key='NoNotesLabel'}
+										{/if}
+									</div>
+								{/strip}
+							</div>
+							<div>
+								{translate key='ResourceAdministrator'}
+								<span class="propertyValue resourceAdminValue"
+									  data-type="select" data-pk="{$id}" data-value="{$resource->GetAdminGroupId()}"
+									  data-name="{FormKeys::RESOURCE_ADMIN_GROUP_ID}">{$GroupLookup[$resource->GetAdminGroupId()]->Name}</span>
+								{if $AdminGroups|count > 0}
+									<a class="update changeResourceAdmin" href="#"><span
+												class="fa fa-pencil-square-o"></span></a>
+								{/if}
+							</div>
+							<div>
+								<a class="update disableSubscription hide subscriptionButton"
+								   href="#">{translate key=TurnOffSubscription}</a>
+								<a class="update enableSubscription hide subscriptionButton"
+								   href="#">{translate key=TurnOnSubscription}</a>
+								{indicator id=subscriptionIndicator}
+							</div>
 						</div>
 					</div>
 
-					<div class="col-xs-6">
-						<h5 class="inline">{translate key=Access}</h5>
-						<a href="#" class="inline update changeAccess">
-							<span class="fa fa-pencil-square-o"></span>
-						</a>
+					<div class="col-xs-7">
+						<div class="col-xs-6">
+							<h5 class="inline">{translate key=Duration}</h5>
+							<a href="#" class="inline update changeDuration">
+								<span class="fa fa-pencil-square-o"></span>
+							</a>
 
-						<div class="accessPlaceHolder">
-							{include file="Admin/Resources/manage_resources_access.tpl" resource=$resource}
+							<div class="durationPlaceHolder">
+								{include file="Admin/Resources/manage_resources_duration.tpl" resource=$resource}
+							</div>
+
+							<h5 class="inline">{translate key='Capacity'}</h5>
+							<a href="#" class="inline update changeCapacity">
+								<span class="fa fa-pencil-square-o"></span>
+							</a>
+
+							<div class="capacityPlaceHolder">
+								{include file="Admin/Resources/manage_resources_capacity.tpl" resource=$resource}
+							</div>
+						</div>
+
+						<div class="col-xs-6">
+							<h5 class="inline">{translate key=Access}</h5>
+							<a href="#" class="inline update changeAccess">
+								<span class="fa fa-pencil-square-o"></span>
+							</a>
+
+							<div class="accessPlaceHolder">
+								{include file="Admin/Resources/manage_resources_access.tpl" resource=$resource}
+							</div>
 						</div>
 					</div>
-				</div>
 
-				<div class="clearfix"></div>
-				<div class="customAttributes">
-					{if $AttributeList|count > 0}
-						{foreach from=$AttributeList item=attribute}
+					<div class="clearfix"></div>
+					<div class="customAttributes">
+						{if $AttributeList|count > 0}
+							{foreach from=$AttributeList item=attribute}
 
-							{if $attribute->AppliesToEntity($id)}
-								<div class="updateCustomAttribute">
-									{assign var=datatype value='text'}
-									{if $attribute->Type() == CustomAttributeTypes::CHECKBOX}
-										{assign var=datatype value='checklist'}
-									{elseif $attribute->Type() == CustomAttributeTypes::MULTI_LINE_TEXTBOX}
-										{assign var=datatype value='textarea'}
-									{elseif $attribute->Type() == CustomAttributeTypes::SELECT_LIST}
-										{assign var=datatype value='select'}
-									{/if}
-									<label>{$attribute->Label()}</label>
+								{if $attribute->AppliesToEntity($id)}
+									<div class="updateCustomAttribute">
+										{assign var=datatype value='text'}
+										{if $attribute->Type() == CustomAttributeTypes::CHECKBOX}
+											{assign var=datatype value='checklist'}
+										{elseif $attribute->Type() == CustomAttributeTypes::MULTI_LINE_TEXTBOX}
+											{assign var=datatype value='textarea'}
+										{elseif $attribute->Type() == CustomAttributeTypes::SELECT_LIST}
+											{assign var=datatype value='select'}
+										{/if}
+										<label>{$attribute->Label()}</label>
 							<span class="inlineAttribute"
 								  data-type="{$datatype}"
 								  data-pk="{$id}"
@@ -350,16 +368,17 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 									{/if}
 									>
 							</span>
-									<a class="update changeAttribute" href="#"><span class="fa fa-pencil-square-o"></span></a>
-								</div>
-							{/if}
+										<a class="update changeAttribute" href="#"><span
+													class="fa fa-pencil-square-o"></span></a>
+									</div>
+								{/if}
 
-						{/foreach}
-					{/if}
+							{/foreach}
+						{/if}
+					</div>
+					<div class="clearfix"></div>
 				</div>
-				<div class="clearfix"></div>
-			</div>
-		{/foreach}
+			{/foreach}
 		</div>
 	</div>
 
@@ -367,7 +386,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 	<div id="add-resource-dialog" class="modal" tabindex="-1" role="dialog" aria-labelledby="addResourceModalLabel"
 		 aria-hidden="true">
-		<form id="addResourceForm" class="form" role="form" method="post" ajaxAction="{ManageResourcesActions::ActionAdd}">
+		<form id="addResourceForm" class="form" role="form" method="post"
+			  ajaxAction="{ManageResourcesActions::ActionAdd}">
 			<div class="modal-dialog">
 				<div class="modal-content">
 					<div class="modal-header">
@@ -412,7 +432,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 						</div>
 					</div>
 					<div class="modal-footer">
-						<button type="button" class="btn btn-default" data-dismiss="modal">{translate key='Cancel'}</button>
+						<button type="button" class="btn btn-default"
+								data-dismiss="modal">{translate key='Cancel'}</button>
 						<button type="button" class="btn btn-success save"><span
 									class="glyphicon glyphicon-ok-circle"></span>
 							{translate key='AddResource'}</button>
@@ -425,8 +446,10 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 	<input type="hidden" id="activeId" value=""/>
 
-	<div id="imageDialog" class="modal" tabindex="-1" role="dialog" aria-labelledby="imageModalLabel" aria-hidden="true">
-		<form id="imageForm" method="post" enctype="multipart/form-data"  ajaxAction="{ManageResourcesActions::ActionChangeImage}">
+	<div id="imageDialog" class="modal" tabindex="-1" role="dialog" aria-labelledby="imageModalLabel"
+		 aria-hidden="true">
+		<form id="imageForm" method="post" enctype="multipart/form-data"
+			  ajaxAction="{ManageResourcesActions::ActionChangeImage}">
 			<div class="modal-dialog">
 				<div class="modal-content">
 					<div class="modal-header">
@@ -436,6 +459,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 					<div class="modal-body">
 						<label for="resourceImage" class="off-screen">Image file</label>
 						<input id="resourceImage" type="file" class="text" size="60" {formname key=RESOURCE_IMAGE} />
+
 						<div class="note">.gif, .jpg, or .png</div>
 					</div>
 
@@ -471,11 +495,13 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 							{capture name="txtMinDuration" assign="txtMinDuration"}
 								<input type='text' size='3' id='minDurationDays' class='days form-control' maxlength='3'
 									   title='Days' placeholder='{translate key=days}'/>
-								<input type='text' size='2' id='minDurationHours' class='hours form-control' maxlength='2'
+								<input type='text' size='2' id='minDurationHours' class='hours form-control'
+									   maxlength='2'
 									   title='Hours' placeholder='{translate key=hours}'/>
 								<input type='text' size='2' id='minDurationMinutes' class='minutes form-control'
 									   maxlength='2' title='Minutes' placeholder='{translate key=minutes}'/>
-								<input type='hidden' id='minDuration' class='interval minDuration' {formname key=MIN_DURATION} />
+								<input type='hidden' id='minDuration'
+									   class='interval minDuration' {formname key=MIN_DURATION} />
 							{/capture}
 							<div id='minDurationInputs'>
 								{translate key='ResourceMinLength' args=$txtMinDuration}
@@ -490,7 +516,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 							{capture name="txtMaxDuration" assign="txtMaxDuration"}
 								<input type='text' id='maxDurationDays' size='3' class='days form-control' maxlength='3'
 									   title='Days' placeholder='{translate key=days}'/>
-								<input type='text' id='maxDurationHours' size='2' class='hours form-control' maxlength='2'
+								<input type='text' id='maxDurationHours' size='2' class='hours form-control'
+									   maxlength='2'
 									   title='Hours' placeholder='{translate key=hours}'/>
 								<input type='text' id='maxDurationMinutes' size='2' class='minutes form-control'
 									   maxlength='2' title='Minutes' placeholder='{translate key=minutes}'/>
@@ -607,7 +634,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 							{capture name="txtStartNotice" assign="txtStartNotice"}
 								<input type='text' id='startNoticeDays' size='3' class='days form-control' maxlength='3'
 									   title='Days' placeholder='{translate key=days}'/>
-								<input type='text' id='startNoticeHours' size='2' class='hours form-control' maxlength='2'
+								<input type='text' id='startNoticeHours' size='2' class='hours form-control'
+									   maxlength='2'
 									   title='Hours' placeholder='{translate key=hours}'/>
 								<input type='text' id='startNoticeMinutes' size='2' class='minutes form-control'
 									   maxlength='2' title='Minutes' placeholder='{translate key=minutes}'/>
@@ -679,28 +707,34 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 				<div class="form-group no-show newStatusReason">
 					<label>Reason text
-						<a href="#" class="pull-right addStatusReason"><span class="addStatusIcon fa fa-list-alt icon add"></span></a>
-						<input type="text" class="form-control resourceStatusReason" {formname key=RESOURCE_STATUS_REASON} />
+						<a href="#" class="pull-right addStatusReason"><span
+									class="addStatusIcon fa fa-list-alt icon add"></span></a>
+						<input type="text"
+							   class="form-control resourceStatusReason" {formname key=RESOURCE_STATUS_REASON} />
 					</label>
 				</div>
 				<div class="form-group existingStatusReason">
 					<label>
 						{translate key=Reason}
-						<a href="#" class="pull-right addStatusReason"><span class="addStatusIcon fa fa-plus icon add"></span></a>
+						<a href="#" class="pull-right addStatusReason"><span
+									class="addStatusIcon fa fa-plus icon add"></span></a>
 						<select {formname key=RESOURCE_STATUS_REASON_ID} class="form-control reasonId"></select>
 					</label>
 				</div>
 
 			</div>
 			<div class="editable-buttons">
-				<button type="button" class="btn btn-primary btn-sm editable-submit save"><i class="glyphicon glyphicon-ok"></i></button>
-				<button type="button" class="btn btn-default btn-sm editable-cancel"><i class="glyphicon glyphicon-remove"></i></button>
+				<button type="button" class="btn btn-primary btn-sm editable-submit save"><i
+							class="glyphicon glyphicon-ok"></i></button>
+				<button type="button" class="btn btn-default btn-sm editable-cancel"><i
+							class="glyphicon glyphicon-remove"></i></button>
 				{indicator}
 			</div>
 		</form>
 	</div>
 
-	<div id="deletePrompt" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="deleteResourceDialogLabel" aria-hidden="true">
+	<div id="deletePrompt" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="deleteResourceDialogLabel"
+		 aria-hidden="true">
 		<form id="deleteForm" method="post" ajaxAction="{ManageResourcesActions::ActionDelete}">
 			<div class="modal-dialog">
 				<div class="modal-content">
@@ -709,27 +743,34 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 						<h4 class="modal-title" id="deleteResourceDialogLabel">{translate key=Delete}</h4>
 					</div>
 					<div class="modal-body">
-						<h3>{translate key=DeleteWarning}</h3>
-						<br/>{translate key=DeleteResourceWarning}:
-						<ul>
-							<li>{translate key=DeleteResourceWarningReservations}</li>
-							<li>{translate key=DeleteResourceWarningPermissions}</li>
-						</ul>
-						<br/>
+						<div class="alert alert-warning">
+							<div>{translate key=DeleteWarning}</div>
+							{translate key=DeleteResourceWarning}:
+							<ul>
+								<li>{translate key=DeleteResourceWarningReservations}</li>
+								<li>{translate key=DeleteResourceWarningPermissions}</li>
+							</ul>
+						</div>
 						{translate key=DeleteResourceWarningReassign}
+						<div>
+							<div>
+
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-default cancel"
+										data-dismiss="modal">{translate key='Cancel'}</button>
+								<button type="button" class="btn btn-danger save">{translate key='Delete'}</button>
+								{indicator}
+							</div>
+						</div>
 					</div>
-					<div class="modal-footer">
-						<button type="button" class="btn btn-default cancel" data-dismiss="modal">{translate key='Cancel'}</button>
-						<button type="button" class="btn btn-danger save">{translate key='Delete'}</button>
-						{indicator}
-					</div>
-				</div>
-			</div>
 		</form>
 	</div>
 
-	<div id="bulkUpdateDialog" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="bulkUpdateLabel" aria-hidden="true">
-		<form id="bulkUpdateForm" method="post" ajaxAction="{ManageResourcesActions::ActionBulkUpdate}" class="form-vertical"
+	<div id="bulkUpdateDialog" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="bulkUpdateLabel"
+		 aria-hidden="true">
+		<form id="bulkUpdateForm" method="post" ajaxAction="{ManageResourcesActions::ActionBulkUpdate}"
+			  class="form-vertical"
 			  role="form">
 			<div class="modal-dialog modal-lg">
 				<div class="modal-content">
@@ -745,7 +786,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 						<div>
 							<div class="title">{translate key=Common}</div>
 							<div class="form-group">
-								<label for="bulkEditSchedule" class="control-label">{translate key=MoveToSchedule}:</label>
+								<label for="bulkEditSchedule" class="control-label">{translate key=MoveToSchedule}
+									:</label>
 								<select id="bulkEditSchedule" class="form-control" {formname key=SCHEDULE_ID}>
 									<option value="-1">{translate key=Unchanged}</option>
 									{foreach from=$Schedules item=scheduleName key=scheduleId}
@@ -754,7 +796,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 								</select>
 							</div>
 							<div class="form-group">
-								<label for="bulkEditResourceType" class="control-label">{translate key=ResourceType}:</label>
+								<label for="bulkEditResourceType" class="control-label">{translate key=ResourceType}
+									:</label>
 								<select id="bulkEditResourceType" class="form-control" {formname key=RESOURCE_TYPE_ID}>
 									<option value="-1">{translate key=Unchanged}</option>
 									<option value="">-- {translate key=None} --</option>
@@ -765,15 +808,19 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 							</div>
 							<div class="form-group">
 								<label for="bulkEditLocation" class="control-label">{translate key=Location}:</label>
-								<input id="bulkEditLocation" type="text" class="form-control" maxlength="85" {formname key=RESOURCE_LOCATION} />
+								<input id="bulkEditLocation" type="text" class="form-control"
+									   maxlength="85" {formname key=RESOURCE_LOCATION} />
 							</div>
 							<div class="form-group">
 								<label for="bulkEditContact" class="control-label">{translate key=Contact}:</label>
-								<input id="bulkEditContact" type="text" class="form-control" maxlength="85" {formname key=RESOURCE_CONTACT} />
+								<input id="bulkEditContact" type="text" class="form-control"
+									   maxlength="85" {formname key=RESOURCE_CONTACT} />
 							</div>
 							<div class="form-group">
-								<label for="bulkEditAdminGroupId" class="control-label">{translate key=ResourceAdministrator}:</label>
-								<select id="bulkEditAdminGroupId" {formname key=RESOURCE_ADMIN_GROUP_ID} class="form-control">
+								<label for="bulkEditAdminGroupId"
+									   class="control-label">{translate key=ResourceAdministrator}:</label>
+								<select id="bulkEditAdminGroupId" {formname key=RESOURCE_ADMIN_GROUP_ID}
+										class="form-control">
 									<option value="-1">{translate key=Unchanged}</option>
 									<option value="">-- {translate key=None} --</option>
 									{foreach from=$AdminGroups item=adminGroup}
@@ -791,19 +838,24 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 								</select>
 							</div>
 							<div class="form-group">
-								<label for="bulkEditStatusReasonId" class="control-label">{translate key=Reason}:</label>
-								<select id="bulkEditStatusReasonId" {formname key=RESOURCE_STATUS_REASON_ID} class="form-control">
+								<label for="bulkEditStatusReasonId" class="control-label">{translate key=Reason}
+									:</label>
+								<select id="bulkEditStatusReasonId" {formname key=RESOURCE_STATUS_REASON_ID}
+										class="form-control">
 								</select>
 							</div>
 						</div>
 						<div>
 							<div class="form-group">
-								<label for="bulkEditDescription" class="control-label">{translate key=Description}:</label>
-								<textarea id="bulkEditDescription" class="form-control" {formname key=RESOURCE_DESCRIPTION}></textarea>
+								<label for="bulkEditDescription" class="control-label">{translate key=Description}
+									:</label>
+								<textarea id="bulkEditDescription"
+										  class="form-control" {formname key=RESOURCE_DESCRIPTION}></textarea>
 							</div>
 							<div class="form-group">
 								<label for="bulkEditNotes" class="control-label">{translate key=Notes}:</label>
-								<textarea id="bulkEditNotes" class="form-control" {formname key=RESOURCE_NOTES}></textarea>
+								<textarea id="bulkEditNotes"
+										  class="form-control" {formname key=RESOURCE_NOTES}></textarea>
 							</div>
 						</div>
 
@@ -812,7 +864,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 							<div class="form-group">
 								<div class="checkbox">
 									<input type="checkbox" id="bulkEditNoMinimumDuration"
-										   value="1" {formname key=MIN_DURATION_NONE} data-related-inputs="#bulkMinDuration"/>
+										   value="1" {formname key=MIN_DURATION_NONE}
+										   data-related-inputs="#bulkMinDuration"/>
 									<label for="bulkEditNoMinimumDuration">{translate key=ResourceMinLengthNone}</label>
 								</div>
 
@@ -821,7 +874,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 										   maxlength='3' placeholder='{translate key=days}'/>
 									<input type='text' id='bulkEditMinDurationHours' size='2' class='hours form-control'
 										   maxlength='2' placeholder='{translate key=hours}'/>
-									<input type='text' id='bulkEditMinDurationMinutes' size='2' class='minutes form-control'
+									<input type='text' id='bulkEditMinDurationMinutes' size='2'
+										   class='minutes form-control'
 										   maxlength='2' placeholder='{translate key=minutes}'/>
 									<input type='hidden' id='bulkEditMinDuration'
 										   class='interval' {formname key=MIN_DURATION} />
@@ -830,7 +884,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 							</div>
 							<div class="form-group">
 								<div class="checkbox">
-									<input type="checkbox" id="bulkEditNoMaximumDuration" value="1" {formname key=MAX_DURATION_NONE}
+									<input type="checkbox" id="bulkEditNoMaximumDuration"
+										   value="1" {formname key=MAX_DURATION_NONE}
 										   data-related-inputs="#bulkMaxDuration"/>
 									<label for="bulkEditNoMaximumDuration">{translate key=ResourceMaxLengthNone}</label>
 								</div>
@@ -853,7 +908,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 							</div>
 							<div class="form-group">
 								<div class="checkbox">
-									<input type="checkbox" id="bulkEditNoBufferTime" value="1" {formname key=BUFFER_TIME_NONE}
+									<input type="checkbox" id="bulkEditNoBufferTime"
+										   value="1" {formname key=BUFFER_TIME_NONE}
 										   data-related-inputs="#bulkBufferTime"/>
 									<label for="bulkEditNoBufferTime">{translate key=ResourceBufferTimeNone}</label>
 								</div>
@@ -880,7 +936,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 						<div>
 							<div class="form-group">
 								<div class="checkbox">
-									<input type="checkbox" id="bulkEditNoStartNotice" value="1" {formname key=MIN_NOTICE_NONE}
+									<input type="checkbox" id="bulkEditNoStartNotice"
+										   value="1" {formname key=MIN_NOTICE_NONE}
 										   data-related-inputs="#bulkStartNoticeInputs"/>
 									<label for="bulkEditNoStartNotice">{translate key=ResourceMinNoticeNone}</label>
 								</div>
@@ -903,7 +960,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 							</div>
 							<div class="form-group">
 								<div class="checkbox">
-									<input type="checkbox" id="bulkEditNoEndNotice" value="1" {formname key=MAX_NOTICE_NONE}
+									<input type="checkbox" id="bulkEditNoEndNotice"
+										   value="1" {formname key=MAX_NOTICE_NONE}
 										   data-related-inputs="#bulkEndNotice"/>
 									<label for="bulkEditNoEndNotice">{translate key=ResourceMaxNoticeNone}</label>
 								</div>
@@ -925,21 +983,25 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 						</div>
 
 						<div class="form-group">
-							<label for="bulkEditAllowMultiday" class="control-label">{translate key=ResourceAllowMultiDay}</label>
+							<label for="bulkEditAllowMultiday"
+								   class="control-label">{translate key=ResourceAllowMultiDay}</label>
 							<select id="bulkEditAllowMultiday" class="form-control" {formname key=ALLOW_MULTIDAY}>
 								{html_options options=$YesNoUnchangedOptions}
 							</select>
 						</div>
 
 						<div class="form-group">
-							<label for="bulkEditRequiresApproval" class="control-label">{translate key='ResourceRequiresApproval'}</label>
-							<select id="bulkEditRequiresApproval" class="form-control input-sm" {formname key=REQUIRES_APPROVAL}>
+							<label for="bulkEditRequiresApproval"
+								   class="control-label">{translate key='ResourceRequiresApproval'}</label>
+							<select id="bulkEditRequiresApproval"
+									class="form-control input-sm" {formname key=REQUIRES_APPROVAL}>
 								{html_options options=$YesNoUnchangedOptions}
 							</select>
 						</div>
 
 						<div class="form-group">
-							<label for="bulkEditAutoAssign" class="control-label">{translate key='ResourcePermissionAutoGranted'}</label>
+							<label for="bulkEditAutoAssign"
+								   class="control-label">{translate key='ResourcePermissionAutoGranted'}</label>
 							<select id="bulkEditAutoAssign" class="form-control" {formname key=AUTO_ASSIGN}>
 								{html_options options=$YesNoUnchangedOptions}
 							</select>
@@ -947,8 +1009,10 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 						<div class="form-group">
 
-							<label for="bulkEditAllowSubscriptions" class="control-label">{translate key='TurnOnSubscription'}</label>
-							<select id="bulkEditAllowSubscriptions" class="form-control" {formname key=ALLOW_CALENDAR_SUBSCRIPTIONS}>
+							<label for="bulkEditAllowSubscriptions"
+								   class="control-label">{translate key='TurnOnSubscription'}</label>
+							<select id="bulkEditAllowSubscriptions"
+									class="form-control" {formname key=ALLOW_CALENDAR_SUBSCRIPTIONS}>
 								{html_options options=$YesNoUnchangedOptions}
 							</select>
 						</div>

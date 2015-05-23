@@ -60,7 +60,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		{foreach from=$users item=user}
 			{cycle values='row0,row1' assign=rowCss}
 			{assign var=id value=$user->Id}
-			<tr class="{$rowCss} editable" data-userId="{$id}">
+			<tr class="{$rowCss}" data-userId="{$id}">
 				<td>{fullname first=$user->First last=$user->Last ignorePrivacy="true"}</td>
 				<td>{$user->Username}</td>
 				<td><a href="mailto:{$user->Email}">{$user->Email}</a></td>
@@ -118,9 +118,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			</tr>
 			{assign var=attributes value=$AttributeList}
 			{if $attributes|count > 0}
-				<tr>
-					<td class="id"><input type="hidden" class="id" value="{$id}"/></td>
-					<td colspan="15" class="{$rowCss} customAttributes" userId="{$id}">
+				<tr data-userId="{$id}">
+					<td colspan="{if $PerUserColors}11{else}10{/if}" class="{$rowCss} customAttributes" userId="{$id}">
 						<form method="post" class="attributesForm" ajaxAction="{ManageUsersActions::ChangeAttributes}">
 							<h3>{translate key=AdditionalAttributes}
 								<a href="#" class="update changeAttributes">{translate key=Edit}</a>
@@ -252,7 +251,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 	<input type="hidden" id="activeId"/>
 
-	<div id="permissionsDialog" class="modal" tabindex="-1" role="dialog" aria-labelledby="permissionsModalLabel"
+	<div id="permissionsDialog" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="permissionsModalLabel"
 		 aria-hidden="true">
 		<form id="permissionsForm" method="post" ajaxAction="{ManageUsersActions::Permissions}">
 			<div class="modal-dialog">
@@ -285,7 +284,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		</form>
 	</div>
 
-	<div id="passwordDialog" class="modal" tabindex="-1" role="dialog" aria-labelledby="passwordModalLabel"
+	<div id="passwordDialog" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="passwordModalLabel"
 		 aria-hidden="true">
 		<form id="passwordForm" method="post" ajaxAction="{ManageUsersActions::Password}">
 			<div class="modal-dialog">
@@ -313,7 +312,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		</form>
 	</div>
 
-	<div id="userDialog" class="modal" tabindex="-1" role="dialog" aria-labelledby="userModalLabel"
+	<div id="userDialog" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="userModalLabel"
 		 aria-hidden="true">
 		<form id="userForm" method="post" ajaxAction="{ManageUsersActions::UpdateUser}">
 			<div class="modal-dialog">
@@ -417,36 +416,60 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		</form>
 	</div>
 
-	<div id="deleteDialog" class="dialog" title="{translate key=Delete}">
+	<div id="deleteDialog" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel"
+		 aria-hidden="true">
 		<form id="deleteUserForm" method="post" ajaxAction="{ManageUsersActions::DeleteUser}">
-			<div class="error" style="margin-bottom: 25px;">
-				<h3>{translate key=DeleteWarning}</h3>
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+						<h4 class="modal-title" id="deleteModalLabel">{translate key=Delete}</h4>
+					</div>
+					<div class="modal-body">
+						<div class="alert alert-warning">
+							<div>{translate key=DeleteWarning}</div>
 
-				<div>{translate key=DeleteUserWarning}</div>
-			</div>
-			<div class="admin-update-buttons">
-				<button type="button"
-						class="button save">{html_image src="cross-button.png"} {translate key='Delete'}</button>
-				<button type="button"
-						class="button cancel">{html_image src="slash.png"} {translate key='Cancel'}</button>
+							<div>{translate key=DeleteUserWarning}</div>
+						</div>
+
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default cancel"
+								data-dismiss="modal">{translate key='Cancel'}</button>
+						<button type="button" class="btn btn-danger save">{translate key='Delete'}</button>
+						{indicator}
+					</div>
+				</div>
 			</div>
 		</form>
 	</div>
 
-	<div id="groupsDialog" class="dialog" title="{translate key=Groups}">
-		<div id="allUsers" style="display:none;" class="dialog" title="{translate key=AllUsers}"></div>
-
-		<div id="groupList" class="hidden">
-			{foreach from=$Groups item=group}
-				<div class="group-item" groupId="{$group->Id}"><a href="#">&nbsp;</a> <span>{$group->Name}</span>
+	<div id="groupsDialog" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="groupsModalLabel"
+		 aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+					<h4 class="modal-title" id="groupsModalLabel">{translate key=Groups}</h4>
 				</div>
-			{/foreach}
-		</div>
+				<div class="modal-body">
+					<div id="allUsers" style="display:none;" class="dialog" title="{translate key=AllUsers}"></div>
 
-		<div id="addedGroups">
-		</div>
+					<div id="groupList" class="hidden">
+						{foreach from=$Groups item=group}
+							<div class="group-item" groupId="{$group->Id}"><a href="#">&nbsp;</a>
+								<span>{$group->Name}</span>
+							</div>
+						{/foreach}
+					</div>
 
-		<div id="removedGroups">
+					<div id="addedGroups">
+					</div>
+
+					<div id="removedGroups">
+					</div>
+				</div>
+			</div>
 		</div>
 	</div>
 

@@ -39,10 +39,6 @@ function UserManagement(opts)
 
 	UserManagement.prototype.init = function ()
 	{
-		ConfigureAdminDialog(elements.deleteDialog);
-		ConfigureAdminDialog(elements.groupsDialog);
-		ConfigureAdminDialog(elements.colorDialog);
-
 		elements.userList.delegate('.update', 'click', function (e)
 		{
 			setActiveUserElement($(this));
@@ -248,12 +244,13 @@ function UserManagement(opts)
 		elements.addedGroups.find('.group-item').remove();
 		elements.removedGroups.find('.group-item').remove();
 
-		elements.groupList.find('.group-item').clone().appendTo(elements.removedGroups);
 
 		var user = getActiveUser();
 		var data = {dr:'groups', uid:user.id};
 		$.get(opts.groupsUrl, data, function (groupIds)
 		{
+			elements.groupList.find('.group-item').clone().appendTo(elements.removedGroups);
+
 			$.each(groupIds, function (index, value)
 			{
 				var groupLine = elements.removedGroups.find('div[groupId=' + value + ']');
@@ -261,7 +258,7 @@ function UserManagement(opts)
 			});
 		});
 
-		elements.groupsDialog.dialog('open');
+		elements.groupsDialog.modal('show');
 	};
 
 	var changeGroup = function(action, groupId)

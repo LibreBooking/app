@@ -177,7 +177,7 @@ class GroupRepository implements IGroupRepository, IGroupViewRepository
 		}
 		$reader->Free();
 
-		DomainCache::AddGroup($groupId, $group);
+		$this->_cache->Add($groupId, $group);
 		return $group;
 	}
 
