@@ -16,7 +16,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 *}
-{include file='globalheader.tpl' cssFiles='css/admin.css'}
+{include file='globalheader.tpl'}
 
 <div id="page-manage-accessories">
 	<h1>{translate key=ManageAccessories}</h1>

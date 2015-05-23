@@ -127,7 +127,6 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 	<div id="globalError" class="error no-show"></div>
 
-
 	<div class="panel panel-default admin-panel" id="list-reservations-panel">
 		<div class="panel-heading">{translate key="AllResources"}
 			<a href="#" class="add-link add-resource pull-right">{translate key="AddResource"}

@@ -4,7 +4,7 @@ function UserManagement(opts)
 
 	var elements = {
 		activeId:$('#activeId'),
-		userList:$('table.list'),
+		userList:$('#userList'),
 
 		userAutocomplete:$('#userSearch'),
 		filterStatusId:$('#filterStatusId'),
@@ -39,7 +39,6 @@ function UserManagement(opts)
 
 	UserManagement.prototype.init = function ()
 	{
-		ConfigureAdminDialog(elements.permissionsDialog);
 		ConfigureAdminDialog(elements.passwordDialog);
 		ConfigureAdminDialog(elements.userDialog);
 		ConfigureAdminDialog(elements.deleteDialog);
@@ -81,10 +80,10 @@ function UserManagement(opts)
 			elements.colorDialog.dialog('open');
 		});
 
-		elements.userList.delegate('.editable', 'click', function ()
+		elements.userList.delegate('.edit', 'click', function ()
 		{
-			var userId = $(this).find('input:hidden.id').val();
-			setActiveUserId(userId);
+			//var userId = $(this).find('input:hidden.id').val();
+			//setActiveUserId(userId);
 			changeUserInfo();
 		});
 
@@ -153,7 +152,7 @@ function UserManagement(opts)
 
 		var hidePermissionsDialog = function ()
 		{
-			elements.permissionsDialog.dialog('close');
+			elements.permissionsDialog.modal('hide');
 		};
 
 		var hidePasswordDialog = function ()
@@ -215,7 +214,7 @@ function UserManagement(opts)
 
 	function setActiveUserElement(activeElement)
 	{
-		var id = activeElement.parents('td').siblings('td.id').find(':hidden').val();
+		var id = activeElement.closest('tr').attr('data-userId');
 		setActiveUserId(id);
 	}
 
@@ -283,13 +282,13 @@ function UserManagement(opts)
 		var data = {dr:'permissions', uid:user.id};
 		$.get(opts.permissionsUrl, data, function (resourceIds)
 		{
-			elements.permissionsForm.find(':checkbox').attr('checked', false);
+			elements.permissionsForm.find(':checkbox').prop('checked', false);
 			$.each(resourceIds, function (index, value)
 			{
-				elements.permissionsForm.find(':checkbox[value="' + value + '"]').attr('checked', true);
+				elements.permissionsForm.find(':checkbox[value="' + value + '"]').prop('checked', true);
 			});
 
-			elements.permissionsDialog.dialog('open');
+			elements.permissionsDialog.modal('show');
 		});
 	};
 
