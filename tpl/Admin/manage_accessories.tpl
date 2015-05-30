@@ -18,7 +18,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 *}
 {include file='globalheader.tpl'}
 
-<div id="page-manage-accessories">
+<div id="page-manage-accessories" class="admin-page">
 	<h1>{translate key=ManageAccessories}</h1>
 
 	<form id="addForm" class="form-inline" role="form" method="post">

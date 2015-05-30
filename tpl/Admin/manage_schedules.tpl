@@ -18,7 +18,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 *}
 {include file='globalheader.tpl'  InlineEdit=true}
 
-<div id="page-manage-schedules">
+<div id="page-manage-schedules" class="admin-page">
 
 	<h1>{translate key=ManageSchedules}</h1>
 

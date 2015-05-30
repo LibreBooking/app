@@ -17,7 +17,7 @@ You should have received a copy of the GNU General Public License
 along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 *}
 {include file='globalheader.tpl'}
-<div id="page-manage-quotas">
+<div id="page-manage-quotas" class="admin-page">
 	<h1>{translate key=ManageQuotas}</h1>
 
 	<form id="addQuotaForm" method="post" role="form" class="form-inline">

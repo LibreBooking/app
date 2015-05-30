@@ -19,8 +19,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 {include file='globalheader.tpl' InlineEdit=true}
 
-<div id="page-manage-resources">
-
+<div id="page-manage-resources" class="admin-page">
 	<div>
 		<div class="dropdown admin-header-more pull-right">
 			<button class="btn btn-default" type="button" id="moreResourceActions" data-toggle="dropdown">
@@ -53,8 +52,10 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		<h1>{translate key='ManageResources'}</h1>
 	</div>
 
-	<div class="panel panel-default filterTable">
-		<div class="panel-heading"><span class="glyphicon glyphicon-filter"></span> {translate key="Filter"}</div>
+	<div class="panel panel-default filterTable" id="filterTable">
+		<div class="panel-heading"><span class="glyphicon glyphicon-filter"></span> {translate key="Filter"} <a href=""><span
+						class="icon black show-hide glyphicon"></span></a>
+		</div>
 		<div class="panel-body">
 			<form id="filterForm" class="horizontal-list form-inline" role="form">
 				{assign var=groupClass value="col-xs-12 col-sm-4 col-md-3"}
@@ -124,12 +125,12 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		</div>
 	</div>
 
-	{pagination pageInfo=$PageInfo}
+	{pagination pageInfo=$PageInfo showCount=false}
 
 	<div id="globalError" class="error no-show"></div>
 
 	<div class="panel panel-default admin-panel" id="list-reservations-panel">
-		<div class="panel-heading">{translate key="AllResources"}
+		<div class="panel-heading">{translate key="Resources"}
 			<a href="#" class="add-link add-resource pull-right">{translate key="AddResource"}
 				<span class="fa fa-plus-circle icon add"></span>
 			</a>
@@ -750,20 +751,18 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 								<li>{translate key=DeleteResourceWarningReservations}</li>
 								<li>{translate key=DeleteResourceWarningPermissions}</li>
 							</ul>
-						</div>
-						{translate key=DeleteResourceWarningReassign}
-						<div>
-							<div>
 
-							</div>
-							<div class="modal-footer">
-								<button type="button" class="btn btn-default cancel"
-										data-dismiss="modal">{translate key='Cancel'}</button>
-								<button type="button" class="btn btn-danger save">{translate key='Delete'}</button>
-								{indicator}
-							</div>
+							{translate key=DeleteResourceWarningReassign}
 						</div>
 					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default cancel"
+								data-dismiss="modal">{translate key='Cancel'}</button>
+						<button type="button" class="btn btn-danger save">{translate key='Delete'}</button>
+						{indicator}
+					</div>
+				</div>
+			</div>
 		</form>
 	</div>
 
@@ -1280,6 +1279,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 			resourceManagement.init();
 			resourceManagement.initializeStatusFilter('{$ResourceStatusFilterId}', '{$ResourceStatusReasonFilterId}');
+
+			$('#filterTable').showHidePanel();
 		});
 
 	</script>

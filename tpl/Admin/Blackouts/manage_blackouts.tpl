@@ -18,7 +18,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 *}
 
 {include file='globalheader.tpl' cssFiles="scripts/css/timePicker.css"}
-<div id="page-manage-blackouts">
+<div id="page-manage-blackouts" class="admin-page">
 <h1>{translate key=ManageBlackouts}</h1>
 
 <form id="addBlackoutForm" class="form-inline" role="form" method="post">

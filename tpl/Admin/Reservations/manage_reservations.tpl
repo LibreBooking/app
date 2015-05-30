@@ -19,7 +19,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 {include file='globalheader.tpl' Qtip=true}
 
-<div id="page-manage-reservations">
+<div id="page-manage-reservations" class="admin-page">
 	<h1>{translate key=ManageReservations}</h1>
 
 	<div class="panel panel-default filterTable" id="filterTable">

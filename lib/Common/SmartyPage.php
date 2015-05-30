@@ -510,6 +510,7 @@ class SmartyPage extends Smarty
 	{
 		/** @var PageInfo $pageInfo */
 		$pageInfo = $params['pageInfo'];
+		$hideCount = isset($params['showCount']) && $params['showCount'] == false;
 
 		if (empty($pageInfo->Total))
 		{
@@ -519,21 +520,26 @@ class SmartyPage extends Smarty
 		$sb = new StringBuilder();
 
 		$viewAllText = $this->Resources->GetString('ViewAll');
-		$sb->Append('<div class="pagination-rows">');
-		$sb->Append($this->Resources->GetString('Rows'));
-		$sb->Append(": {$pageInfo->ResultsStart} - {$pageInfo->ResultsEnd} ({$pageInfo->Total})");
-		$sb->Append('<span>&nbsp;</span>');
-		if ($pageInfo->TotalPages != 1)
+		if (!$hideCount)
 		{
-			$sb->Append($this->CreatePageLink(array('page' => 1, 'size' => '-1', 'text' => $viewAllText), $smarty));
+			$sb->Append('<div class="pagination-rows">');
+			$sb->Append($this->Resources->GetString('Rows'));
+			$sb->Append(": {$pageInfo->ResultsStart} - {$pageInfo->ResultsEnd} ({$pageInfo->Total})");
+			$sb->Append('<span>&nbsp;</span>');
+			if ($pageInfo->TotalPages != 1)
+			{
+				$sb->Append($this->CreatePageLink(array('page' => 1, 'size' => '-1', 'text' => $viewAllText), $smarty));
+			}
+			$sb->Append('</div>');
 		}
-		$sb->Append('</div>');
 		$size = $pageInfo->PageSize;
 		$currentPage = $pageInfo->CurrentPage;
 
 		$sb->Append('<ul class="pagination">');
 		$sb->Append('<li>');
-		$sb->Append($this->CreatePageLink(array('page' => max(1, $currentPage - 1), 'size' => $size, 'text' => '&laquo;'), $smarty));
+		$sb->Append($this->CreatePageLink(array('page' => max(1,
+															  $currentPage - 1), 'size' => $size, 'text' => '&laquo;'),
+										  $smarty));
 		$sb->Append('</li>');
 
 		for ($i = 1; $i <= $pageInfo->TotalPages; $i++)
@@ -552,7 +558,9 @@ class SmartyPage extends Smarty
 			$sb->Append('</li>');
 		}
 		$sb->Append('<li>');
-		$sb->Append($this->CreatePageLink(array('page' => min($pageInfo->TotalPages, $currentPage + 1), 'size' => $size, 'text' => '&raquo;'), $smarty));
+		$sb->Append($this->CreatePageLink(array('page' => min($pageInfo->TotalPages,
+															  $currentPage + 1), 'size' => $size, 'text' => '&raquo;'),
+										  $smarty));
 		$sb->Append('</li>');
 		$sb->Append('</ul>');
 

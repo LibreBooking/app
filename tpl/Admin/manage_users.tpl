@@ -18,7 +18,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 *}
 {include file='globalheader.tpl' InlineEdit=true cssFiles='scripts/css/colorpicker.css'}
 
-<div id="page-manage-users">
+<div id="page-manage-users" class="admin-page">
 
 	<h1>{translate key=ManageUsers}</h1>
 
@@ -36,7 +36,10 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			</select>
 		</div>
 		<div class="col-xs-6"></div>
+		<div class="clearfix"></div>
 	</form>
+
+	{pagination pageInfo=$PageInfo showCount=false}
 
 	<table class="table" id="userList">
 		<thead>
@@ -157,40 +160,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 						{/foreach}
 					</td>
 				</tr>
-				{*<tr data-userId="{$id}">*}
-				{*<td colspan="{if $PerUserColors}11{else}10{/if}" class="{$rowCss} customAttributes" userId="{$id}">*}
-				{*<form method="post" class="attributesForm" ajaxAction="{ManageUsersActions::ChangeAttributes}">*}
-				{*<h3>{translate key=AdditionalAttributes}*}
-				{*<a href="#" class="update changeAttributes">{translate key=Edit}</a>*}
-				{*</h3>*}
 
-				{*<div class="validationSummary">*}
-				{*<ul>*}
-				{*</ul>*}
-				{*<div class="clear">&nbsp;</div>*}
-				{*</div>*}
-
-				{*<div>*}
-				{*<ul>*}
-				{*{foreach from=$attributes item=attribute}*}
-				{*{assign var="attributeValue" value=$user->GetAttributeValue($attribute->Id())}*}
-				{*<li class="customAttribute" attributeId="{$attribute->Id()}">*}
-				{*<div class="attribute-readonly">{control type="AttributeControl" attribute=$attribute value=$attributeValue readonly=true}</div>*}
-				{*<div class="attribute-readwrite hidden">{control type="AttributeControl" attribute=$attribute value=$attributeValue}*}
-				{*</li>*}
-				{*{/foreach}*}
-				{*</ul>*}
-				{*</div>*}
-
-				{*<div class="attribute-readwrite hidden clear" style="height:auto;">*}
-				{*<button type="button"*}
-				{*class="button save">{html_image src="tick-circle.png"} {translate key='Update'}</button>*}
-				{*<button type="button"*}
-				{*class="button cancel">{html_image src="slash.png"} {translate key='Cancel'}</button>*}
-				{*</div>*}
-				{*</form>*}
-				{*</td>*}
-				{*</tr>*}
 			{/if}
 		{/foreach}
 		</tbody>
