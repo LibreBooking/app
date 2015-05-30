@@ -39,7 +39,6 @@ class ManageResourcesActions
 	const ActionChangeStatus = 'changeStatus';
 	const ActionEnableSubscription = 'enableSubscription';
 	const ActionDisableSubscription = 'disableSubscription';
-//	const ActionChangeAttributes = 'changeAttributes';
 	const ActionChangeSort = 'changeSort';
 	const ActionChangeResourceType = 'changeResourceType';
 	const ActionBulkUpdate = 'bulkUpdate';
@@ -119,14 +118,13 @@ class ManageResourcesPresenter extends ActionPresenter
 		$this->AddAction(ManageResourcesActions::ActionChangeStatus, 'ChangeStatus');
 		$this->AddAction(ManageResourcesActions::ActionEnableSubscription, 'EnableSubscription');
 		$this->AddAction(ManageResourcesActions::ActionDisableSubscription, 'DisableSubscription');
-//		$this->AddAction(ManageResourcesActions::ActionChangeAttributes, 'ChangeAttributes');
 		$this->AddAction(ManageResourcesActions::ActionChangeSort, 'ChangeSortOrder');
 		$this->AddAction(ManageResourcesActions::ActionChangeResourceType, 'ChangeResourceType');
 		$this->AddAction(ManageResourcesActions::ActionBulkUpdate, 'BulkUpdate');
 		$this->AddAction(ManageResourcesActions::ActionChangeDuration, 'ChangeDuration');
 		$this->AddAction(ManageResourcesActions::ActionChangeCapacity, 'ChangeCapacity');
 		$this->AddAction(ManageResourcesActions::ActionChangeAccess, 'ChangeAccess');
-		$this->AddAction(ManageResourcesActions::ActionChangeAttribute, 'ChangeAttributes');
+		$this->AddAction(ManageResourcesActions::ActionChangeAttribute, 'ChangeAttribute');
 	}
 
 	public function PageLoad()
@@ -434,12 +432,21 @@ class ManageResourcesPresenter extends ActionPresenter
 		$this->resourceRepository->Update($resource);
 	}
 
-	public function ChangeAttributes()
+	public function ChangeAttribute()
 	{
 		$resourceId = $this->page->GetResourceId();
 
 		$resource = $this->resourceRepository->LoadById($resourceId);
 
+		$attributeValue = $this->GetInlineAttributeValue();
+		Log::Debug('Changing attributes. ResourceId=%s, AttributeId=%s, Value=%s', $resourceId, $attributeValue->AttributeId, $attributeValue->Value);
+
+		$resource->ChangeAttribute($attributeValue);
+		$this->resourceRepository->Update($resource);
+	}
+
+	private function GetInlineAttributeValue()
+	{
 		$value = $this->page->GetValue();
 		if (is_array($value))
 		{
@@ -447,19 +454,7 @@ class ManageResourcesPresenter extends ActionPresenter
 		}
 		$id = str_replace(FormKeys::ATTRIBUTE_PREFIX, '', $this->page->GetName());
 
-		$attributeValue = new AttributeValue($id, $value);
-		Log::Debug('Changing attributes. ResourceId=%s, AttributeId=%s, Value=%s', $resourceId, $id, $value);
-
-		$result = $this->attributeService->Validate(CustomAttributeCategory::RESOURCE, array($attributeValue), $resourceId, false, true);
-		if ($result->IsValid())
-		{
-			$resource->ChangeAttribute($attributeValue);
-			$this->resourceRepository->Update($resource);
-		}
-		else
-		{
-			$this->page->ShowAttributeError($result->Errors());
-		}
+		return new AttributeValue($id, $value);
 	}
 
 	public function ChangeSortOrder()
@@ -552,7 +547,6 @@ class ManageResourcesPresenter extends ActionPresenter
 		$requiresApproval = $this->page->GetRequiresApproval();
 		$autoAssign = $this->page->GetAutoAssign();
 		$allowSubscription = $this->page->GetAllowSubscriptions();
-		$attributes = $this->page->GetAttributes();
 
 		$resourceIds = $this->page->GetBulkUpdateResourceIds();
 
@@ -641,10 +635,7 @@ class ManageResourcesPresenter extends ActionPresenter
 				/** @var AttributeValue $attribute */
 				foreach ($this->GetAttributeValues() as $attribute)
 				{
-					if (!empty($attribute->Value))
-					{
-						$resource->ChangeAttribute($attribute);
-					}
+					$resource->ChangeAttribute($attribute);
 				}
 
 				$this->resourceRepository->Update($resource);
@@ -659,15 +650,16 @@ class ManageResourcesPresenter extends ActionPresenter
 	{
 		if ($action == ManageResourcesActions::ActionChangeAttribute)
 		{
-			$attributes = $this->GetAttributeValues();
-			$this->page->RegisterValidator('attributeValidator', new AttributeValidator($this->attributeService, CustomAttributeCategory::RESOURCE, $attributes,
-																						$this->page->GetResourceId()));
+			$attributes = $this->GetInlineAttributeValue();
+			$this->page->RegisterValidator('attributeValidator', new AttributeValidatorInline($this->attributeService,
+																						CustomAttributeCategory::RESOURCE, $attributes,
+																						$this->page->GetResourceId(), true, true));
 		}
 		if ($action == ManageResourcesActions::ActionBulkUpdate)
 		{
 			$attributes = $this->GetAttributeValues();
 			$this->page->RegisterValidator('bulkAttributeValidator',
-										   new AttributeValidator($this->attributeService, CustomAttributeCategory::RESOURCE, $attributes, null, true));
+										   new AttributeValidator($this->attributeService, CustomAttributeCategory::RESOURCE, $attributes, null, true, true));
 		}
 	}
 

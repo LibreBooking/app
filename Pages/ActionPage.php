@@ -110,32 +110,42 @@ abstract class ActionPage extends Page implements IActionPage
 		}
 
 		$errors = new ActionErrors();
+		$inlineErrors = array();
 
-		foreach ($this->smarty->failedValidators as $id => $validator)
+		foreach ($this->smarty->failedValidators as $validator)
 		{
-			Log::Debug('Failed validator %s', $id);
-			$errors->Add($id, $validator->Messages());
+			Log::Debug('Failed validator %s', $validator);
+			$errors->Add($validator);
+
+			if ($validator->ReturnsErrorResponse())
+			{
+				http_response_code(400);
+				array_merge($validator->Messages(), $inlineErrors);
+			}
 		}
 
-		$this->SetJson($errors);
+		if (!empty($inlineErrors))
+		{
+			$this->SetJson(implode(',', $inlineErrors));
+		}
+		else{
+			$this->SetJson($errors);
+		}
 		return false;
 	}
 
 	/**
-	 * @abstract
 	 * @return void
 	 */
 	public abstract function ProcessAction();
 
 	/**
-	 * @abstract
 	 * @param $dataRequest string
 	 * @return void
 	 */
 	public abstract function ProcessDataRequest($dataRequest);
 
 	/**
-	 * @abstract
 	 * @return void
 	 */
 	public abstract function ProcessPageLoad();
@@ -152,4 +162,3 @@ class ActionErrors
 		$this->Messages[$id] = $messages;
     }
 }
-?>

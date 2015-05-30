@@ -276,11 +276,6 @@ interface IManageResourcesPage extends IUpdateResourcePage, IActionPage, IPageab
 	public function BindUpdatedAccess($resource);
 
 	public function SetAttributeValueAsJson($attributeValue);
-
-	/**
-	 * @param string[] $errors
-	 */
-	public function ShowAttributeError($errors);
 }
 
 class ManageResourcesPage extends ActionPage implements IManageResourcesPage
@@ -721,15 +716,6 @@ class ManageResourcesPage extends ActionPage implements IManageResourcesPage
 	public function SetAttributeValueAsJson($attributeValue)
 	{
 		$this->SetJson($attributeValue);
-	}
-
-	/**
-	 * @param string[] $errors
-	 */
-	public function ShowAttributeError($errors)
-	{
-		http_response_code(400);
-		echo implode(',', $errors);
 	}
 }
 

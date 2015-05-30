@@ -16,7 +16,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 *}
-{include file='globalheader.tpl' cssFiles='scripts/css/colorpicker.css'}
+{include file='globalheader.tpl' InlineEdit=true cssFiles='scripts/css/colorpicker.css'}
 
 <div id="page-manage-users">
 
@@ -120,38 +120,77 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			{if $attributes|count > 0}
 				<tr data-userId="{$id}">
 					<td colspan="{if $PerUserColors}11{else}10{/if}" class="{$rowCss} customAttributes" userId="{$id}">
-						<form method="post" class="attributesForm" ajaxAction="{ManageUsersActions::ChangeAttributes}">
-							<h3>{translate key=AdditionalAttributes}
-								<a href="#" class="update changeAttributes">{translate key=Edit}</a>
-							</h3>
+						{foreach from=$AttributeList item=attribute}
 
-							<div class="validationSummary">
-								<ul>
-								</ul>
-								<div class="clear">&nbsp;</div>
-							</div>
+							{if $attribute->AppliesToEntity($id)}
+								<div class="updateCustomAttribute">
+									{assign var=datatype value='text'}
+									{if $attribute->Type() == CustomAttributeTypes::CHECKBOX}
+										{assign var=datatype value='checklist'}
+									{elseif $attribute->Type() == CustomAttributeTypes::MULTI_LINE_TEXTBOX}
+										{assign var=datatype value='textarea'}
+									{elseif $attribute->Type() == CustomAttributeTypes::SELECT_LIST}
+										{assign var=datatype value='select'}
+									{/if}
+									<label>{$attribute->Label()}</label>
+										<span class="inlineAttribute"
+											  data-type="{$datatype}"
+											  data-pk="{$id}"
+											  data-value="{$user->GetAttributeValue($attribute->Id())}"
+											  data-name="{FormKeys::ATTRIBUTE_PREFIX}{$attribute->Id()}"
+												{if $attribute->Type() == CustomAttributeTypes::SELECT_LIST}
+													data-source='[{if !$attribute->Required()}{ldelim}value:"",text:""{rdelim},{/if}
+												  {foreach from=$attribute->PossibleValueList() item=v name=vals}
+														{ldelim}value:"{$v}",text:"{$v}"{rdelim}{if not $smarty.foreach.vals.last},{/if}
+													{/foreach}]'
+												{/if}
+												{if $attribute->Type() == CustomAttributeTypes::CHECKBOX}
+													data-source='[{ldelim}value:"1",text:"{translate key=Yes}"{rdelim}]'
+												{/if}
+												>
+										</span>
+									<a class="update changeAttribute" href="#"><span
+												class="fa fa-pencil-square-o"></span></a>
+								</div>
+							{/if}
 
-							<div>
-								<ul>
-									{foreach from=$attributes item=attribute}
-										{assign var="attributeValue" value=$user->GetAttributeValue($attribute->Id())}
-										<li class="customAttribute" attributeId="{$attribute->Id()}">
-											<div class="attribute-readonly">{control type="AttributeControl" attribute=$attribute value=$attributeValue readonly=true}</div>
-											<div class="attribute-readwrite hidden">{control type="AttributeControl" attribute=$attribute value=$attributeValue}
-										</li>
-									{/foreach}
-								</ul>
-							</div>
-
-							<div class="attribute-readwrite hidden clear" style="height:auto;">
-								<button type="button"
-										class="button save">{html_image src="tick-circle.png"} {translate key='Update'}</button>
-								<button type="button"
-										class="button cancel">{html_image src="slash.png"} {translate key='Cancel'}</button>
-							</div>
-						</form>
+						{/foreach}
 					</td>
 				</tr>
+				{*<tr data-userId="{$id}">*}
+				{*<td colspan="{if $PerUserColors}11{else}10{/if}" class="{$rowCss} customAttributes" userId="{$id}">*}
+				{*<form method="post" class="attributesForm" ajaxAction="{ManageUsersActions::ChangeAttributes}">*}
+				{*<h3>{translate key=AdditionalAttributes}*}
+				{*<a href="#" class="update changeAttributes">{translate key=Edit}</a>*}
+				{*</h3>*}
+
+				{*<div class="validationSummary">*}
+				{*<ul>*}
+				{*</ul>*}
+				{*<div class="clear">&nbsp;</div>*}
+				{*</div>*}
+
+				{*<div>*}
+				{*<ul>*}
+				{*{foreach from=$attributes item=attribute}*}
+				{*{assign var="attributeValue" value=$user->GetAttributeValue($attribute->Id())}*}
+				{*<li class="customAttribute" attributeId="{$attribute->Id()}">*}
+				{*<div class="attribute-readonly">{control type="AttributeControl" attribute=$attribute value=$attributeValue readonly=true}</div>*}
+				{*<div class="attribute-readwrite hidden">{control type="AttributeControl" attribute=$attribute value=$attributeValue}*}
+				{*</li>*}
+				{*{/foreach}*}
+				{*</ul>*}
+				{*</div>*}
+
+				{*<div class="attribute-readwrite hidden clear" style="height:auto;">*}
+				{*<button type="button"*}
+				{*class="button save">{html_image src="tick-circle.png"} {translate key='Update'}</button>*}
+				{*<button type="button"*}
+				{*class="button cancel">{html_image src="slash.png"} {translate key='Cancel'}</button>*}
+				{*</div>*}
+				{*</form>*}
+				{*</td>*}
+				{*</tr>*}
 			{/if}
 		{/foreach}
 		</tbody>
@@ -473,14 +512,31 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		</div>
 	</div>
 
-	<div id="colorDialog" class="dialog" title="{translate key=Color}">
+	<div id="colorDialog" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="colorModalLabel"
+		 aria-hidden="true">
 		<form id="colorForm" method="post" ajaxAction="{ManageUsersActions::ChangeColor}">
-			#{textbox name="RESERVATION_COLOR" class="textbox" id="reservationColor" maxlength=6}
-			<div class="admin-update-buttons">
-				<button type="button"
-						class="button save">{html_image src="disk-black.png"} {translate key='Update'}</button>
-				<button type="button"
-						class="button cancel">{html_image src="slash.png"} {translate key='Cancel'}</button>
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+						<h4 class="modal-title" id="colorModalLabel">{translate key=Color}</h4>
+					</div>
+					<div class="modal-body">
+						<div class="input-group">
+							<span class="input-group-addon">#</span>
+							<input type="text" {formname key=RESERVATION_COLOR} id="reservationColor" maxlength="6"
+								   class="form-control" placeholder="FFFFFF">
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default"
+								data-dismiss="modal">{translate key='Cancel'}</button>
+						<button type="button" class="btn btn-success save"><span
+									class="glyphicon glyphicon-ok-circle"></span>
+							{translate key='Update'}</button>
+						{indicator}
+					</div>
+				</div>
 			</div>
 		</form>
 	</div>
@@ -494,6 +550,18 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 	{jsfile src="js/colorpicker.js"}
 
 	<script type="text/javascript">
+		function setUpEditables()
+		{
+			$.fn.editable.defaults.mode = 'popup';
+			$.fn.editable.defaults.toggle = 'manual';
+			$.fn.editable.defaults.emptyclass = '';
+			var updateUrl = '{$smarty.server.SCRIPT_NAME}?action=';
+			$('.inlineAttribute').editable({
+				url: updateUrl + '{ManageUsersActions::ChangeAttribute}',
+				emptytext: '-'
+			});
+		}
+
 		$(document).ready(function ()
 		{
 			var actions = {
@@ -546,6 +614,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 				}
 			});
 
+
+			setUpEditables();
 		});
 	</script>
 </div>

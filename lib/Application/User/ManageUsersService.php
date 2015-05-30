@@ -58,9 +58,9 @@ interface IManageUsersService
 
 	/**
 	 * @param $userId int
-	 * @param $attributes AttributeValue[]|array
+	 * @param $attribute AttributeValue
 	 */
-	public function ChangeAttributes($userId, $attributes);
+	public function ChangeAttribute($userId, $attribute);
 
 	/**
 	 * @param $userId int
@@ -124,10 +124,10 @@ class ManageUsersService implements IManageUsersService
 		return $user;
 	}
 
-	public function ChangeAttributes($userId, $attributes)
+	public function ChangeAttribute($userId, $attribute)
 	{
 		$user = $this->userRepository->LoadById($userId);
-		$user->ChangeCustomAttributes($attributes);
+		$user->ChangeCustomAttribute($attribute);
 		$this->userRepository->Update($user);
 	}
 

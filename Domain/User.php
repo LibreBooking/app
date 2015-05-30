@@ -907,6 +907,16 @@ class User
 
 		$this->WithGroups($groups);
 	}
+
+	/**
+	* @param $attribute AttributeValue
+	*/
+	public function ChangeCustomAttribute($attribute)
+	{
+		$this->_removedAttributeValues[] = $attribute;
+		$this->_addedAttributeValues[] = $attribute;
+		$this->AddAttributeValue($attribute);
+	}
 }
 
 class NullUser extends User

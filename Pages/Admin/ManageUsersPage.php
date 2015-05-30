@@ -150,6 +150,16 @@ interface IManageUsersPage extends IPageable, IActionPage
 	 * @return string
 	 */
 	public function GetReservationColor();
+
+	/**
+	 * @return string
+	 */
+	public function GetValue();
+
+	/**
+	 * @return string
+	 */
+	public function GetName();
 }
 
 
@@ -244,7 +254,13 @@ class ManageUsersPage extends ActionPage implements IManageUsersPage
 	 */
 	public function GetUserId()
 	{
-		return $this->GetQuerystring(QueryStringKeys::USER_ID);
+		$id = $this->GetQuerystring(QueryStringKeys::USER_ID);
+		if (empty($id))
+		{
+			$id = $this->GetForm(FormKeys::PK);
+		}
+
+		return $id;
 	}
 
 	/**
@@ -373,5 +389,15 @@ class ManageUsersPage extends ActionPage implements IManageUsersPage
 	public function GetReservationColor()
 	{
 		return $this->GetForm(FormKeys::RESERVATION_COLOR);
+	}
+
+	public function GetValue()
+	{
+		return $this->GetForm(FormKeys::VALUE);
+	}
+
+	public function GetName()
+	{
+		return $this->GetForm(FormKeys::NAME);
 	}
 }

@@ -40,3 +40,7 @@ ALTER TABLE `custom_attributes` ADD COLUMN `secondary_entity_id` mediumint(8) un
 ALTER TABLE `custom_attributes` ADD COLUMN `is_private` tinyint(1) unsigned;
 
 ALTER TABLE `resource_groups` ADD COLUMN `public_id` varchar(20);
+
+ALTER TABLE `resources` MODIFY COLUMN `contact_info` varchar(255);
+ALTER TABLE `resources` MODIFY COLUMN `location` varchar(255);
+

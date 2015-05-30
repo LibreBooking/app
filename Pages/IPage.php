@@ -34,5 +34,3 @@ interface IPage {
 
     public function RegisterValidator($validatorId, $validator);
 }
-
-?>

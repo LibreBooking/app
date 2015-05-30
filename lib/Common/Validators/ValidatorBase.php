@@ -14,7 +14,6 @@ You should have received a copy of the GNU General Public License
 along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-
 abstract class ValidatorBase implements IValidator
 {
 	/**
@@ -44,6 +43,14 @@ abstract class ValidatorBase implements IValidator
 	}
 
 	/**
+	 * @return bool
+	 */
+	public function ReturnsErrorResponse()
+	{
+		return false;
+	}
+
+	/**
 	 * @param string $message
 	 */
 	protected function AddMessage($message)
@@ -60,5 +67,3 @@ abstract class ValidatorBase implements IValidator
 		$this->AddMessage(Resources::GetInstance()->GetString($resourceKey, $params));
 	}
 }
-
-?>

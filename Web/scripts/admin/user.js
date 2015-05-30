@@ -43,7 +43,7 @@ function UserManagement(opts)
 		{
 			setActiveUserElement($(this));
 			e.preventDefault();
-			e.stopPropagation();
+			//e.stopPropagation();
 		});
 
 		elements.userList.delegate('.changeStatus', 'click', function (e)
@@ -92,6 +92,12 @@ function UserManagement(opts)
 			window.location.href = url;
 		});
 
+		elements.userList.delegate('.changeAttribute', 'click', function (e) {
+			//e.preventDefault();
+			e.stopPropagation();
+			$(e.target).closest('.updateCustomAttribute').find('.inlineAttribute').editable('toggle');
+		});
+
 		elements.userAutocomplete.userAutoComplete(options.userAutocompleteUrl, function (ui)
 		{
 			elements.userAutocomplete.val(ui.item.label);
@@ -116,16 +122,19 @@ function UserManagement(opts)
 			$(this).appendTo(elements.addedGroups);
 		});
 
-		elements.userList.delegate('.changeAttributes, .customAttributes .cancel', 'click', function (e) {
-			var user = getActiveUser();
-			var otherUsers = $(".customAttributes[userId!='" + user.id + "']");
-			otherUsers.find('.attribute-readwrite, .validationSummary').hide();
-			otherUsers.find('.attribute-readonly').show();
-			var container = $(this).closest('.customAttributes');
-			container.find('.attribute-readwrite').toggle();
-			container.find('.attribute-readonly').toggle();
-			container.find('.validationSummary').hide();
-		});
+		//elements.userList.delegate('.changeAttributes, .customAttributes .cancel', 'click', function (e) {
+		//	var user = getActiveUser();
+		//	var otherUsers = $(".customAttributes[userId!='" + user.id + "']");
+		//	otherUsers.find('.attribute-readwrite, .validationSummary').hide();
+		//	otherUsers.find('.attribute-readonly').show();
+		//	var container = $(this).closest('.customAttributes');
+		//	container.find('.attribute-readwrite').toggle();
+		//	container.find('.attribute-readonly').toggle();
+		//	container.find('.validationSummary').hide();
+		//});
+
+
+
 
 		$(".save").click(function ()
 		{

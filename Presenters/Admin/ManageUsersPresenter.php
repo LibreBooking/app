@@ -27,7 +27,7 @@ class ManageUsersActions
 {
 	const Activate = 'activate';
 	const AddUser = 'addUser';
-	const ChangeAttributes = 'changeAttributes';
+	const ChangeAttribute = 'changeAttribute';
 	const Deactivate = 'deactivate';
 	const DeleteUser = 'deleteUser';
 	const Password = 'password';
@@ -170,7 +170,7 @@ class ManageUsersPresenter extends ActionPresenter implements IManageUsersPresen
 		$this->AddAction(ManageUsersActions::Password, 'ResetPassword');
 		$this->AddAction(ManageUsersActions::Permissions, 'ChangePermissions');
 		$this->AddAction(ManageUsersActions::UpdateUser, 'UpdateUser');
-		$this->AddAction(ManageUsersActions::ChangeAttributes, 'ChangeAttributes');
+		$this->AddAction(ManageUsersActions::ChangeAttribute, 'ChangeAttribute');
 		$this->AddAction(ManageUsersActions::ChangeColor, 'ChangeColor');
 	}
 
@@ -305,9 +305,9 @@ class ManageUsersPresenter extends ActionPresenter implements IManageUsersPresen
 		$this->userRepository->Update($user);
 	}
 
-	public function ChangeAttributes()
+	public function ChangeAttribute()
 	{
-		$this->manageUsersService->ChangeAttributes($this->page->GetUserId(), $this->GetAttributeValues());
+		$this->manageUsersService->ChangeAttribute($this->page->GetUserId(), $this->GetInlineAttributeValue());
 	}
 
 	public function ProcessDataRequest($dataRequest)
@@ -349,6 +349,18 @@ class ManageUsersPresenter extends ActionPresenter implements IManageUsersPresen
 		return $attributes;
 	}
 
+	private function GetInlineAttributeValue()
+	{
+		$value = $this->page->GetValue();
+		if (is_array($value))
+		{
+			$value = $value[0];
+		}
+		$id = str_replace(FormKeys::ATTRIBUTE_PREFIX, '', $this->page->GetName());
+
+		return new AttributeValue($id, $value);
+	}
+
 	protected function LoadValidators($action)
 	{
 		if ($action == ManageUsersActions::UpdateUser)
@@ -372,15 +384,18 @@ class ManageUsersPresenter extends ActionPresenter implements IManageUsersPresen
 			$this->page->RegisterValidator('addUserUsername',
 										   new UniqueUserNameValidator($this->userRepository, $this->page->GetUserName()));
 			$this->page->RegisterValidator('addAttributeValidator',
-										   new AttributeValidator($this->attributeService, CustomAttributeCategory::USER, $this->GetAttributeValues()));
+										   new AttributeValidator($this->attributeService, CustomAttributeCategory::USER,
+																  $this->GetAttributeValues(), null, true, true));
 		}
 
-		if ($action == ManageUsersActions::ChangeAttributes)
+		if ($action == ManageUsersActions::ChangeAttribute)
 		{
 			Log::Debug('Loading validators for %s', $action);
 
 			$this->page->RegisterValidator('attributeValidator',
-										   new AttributeValidator($this->attributeService, CustomAttributeCategory::USER, $this->GetAttributeValues(), $this->page->GetUserId()));
+										   new AttributeValidatorInline($this->attributeService, CustomAttributeCategory::USER,
+																		$this->GetInlineAttributeValue(), $this->page->GetUserId(),
+												   true, true));
 		}
 	}
 

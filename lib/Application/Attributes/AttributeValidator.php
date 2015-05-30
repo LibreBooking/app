@@ -43,19 +43,36 @@ class AttributeValidator extends ValidatorBase
 	private $messages;
 
 	/**
+	 * @var int|null
+	 */
+	private $entityId;
+
+	/**
+	 * @var bool
+	 */
+	private $ignoreEmpty;
+
+	/**
+	 * @var bool
+	 */
+	private $isAdmin;
+
+	/**
 	 * @param IAttributeService $service
 	 * @param $category int|CustomAttributeCategory
-	 * @param $attributes array|AttributeValue[]
+	 * @param $attributes AttributeValue|array|AttributeValue[]
 	 * @param $entityId int
 	 * @param bool $ignoreEmpty
+	 * @param bool $isAdmin
 	 */
-	public function __construct(IAttributeService $service, $category, $attributes, $entityId = null, $ignoreEmpty = false)
+	public function __construct(IAttributeService $service, $category, $attributes, $entityId = null, $ignoreEmpty = false, $isAdmin = false)
 	{
 		$this->service = $service;
 		$this->category = $category;
-		$this->attributes = $attributes;
+		$this->attributes = is_array($attributes) ? $attributes : array($attributes);
 		$this->entityId = $entityId;
 		$this->ignoreEmpty = $ignoreEmpty;
+		$this->isAdmin = $isAdmin;
 	}
 
 	/**
@@ -69,7 +86,7 @@ class AttributeValidator extends ValidatorBase
 			return;
 		}
 
-		$result = $this->service->Validate($this->category, $this->attributes, $this->entityId, $this->ignoreEmpty);
+		$result = $this->service->Validate($this->category, $this->attributes, $this->entityId, $this->ignoreEmpty, $this->isAdmin);
 		$this->isValid = $result->IsValid();
 		$this->messages = $result->Errors();
 	}
@@ -79,4 +96,12 @@ class AttributeValidator extends ValidatorBase
 		return $this->messages;
 	}
 
+}
+
+class AttributeValidatorInline extends AttributeValidator
+{
+	public function ReturnsErrorResponse()
+	{
+		return true;
+	}
 }

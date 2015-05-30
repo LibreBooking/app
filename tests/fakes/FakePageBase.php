@@ -29,6 +29,7 @@ class FakePageBase implements IPage
 	public $_IsValid = true;
 	public $_Validators = array();
 	public $_LastPage = '';
+	public $_InlineEditValidators = array();
 
 	public function Redirect($destination)
 	{
@@ -54,6 +55,11 @@ class FakePageBase implements IPage
 	public function RegisterValidator($validatorId, $validator)
 	{
 		$this->_Validators[$validatorId] = $validator;
+	}
+
+	public function RegisterInlineEditValidator($validatorId, $validator)
+	{
+		$this->_InlineEditValidators[$validatorId] = $validator;
 	}
 
 	public function GetLastPage()

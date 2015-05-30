@@ -118,16 +118,27 @@ abstract class AdminPage extends SecurePage implements IActionPage
 		}
 
 		$errors = new ActionErrors();
+		$inlineErrors = array();
 
 		foreach ($this->smarty->failedValidators as $validator)
 		{
 			Log::Debug('Failed validator %s', $validator);
 			$errors->Add($validator);
+
+			if ($validator->ReturnsErrorResponse())
+			{
+				http_response_code(400);
+				array_merge($validator->Messages(), $inlineErrors);
+			}
 		}
 
-		$this->SetJson($errors);
+		if (!empty($inlineErrors))
+		{
+			$this->SetJson(implode(',', $inlineErrors));
+		}
+		else{
+			$this->SetJson($errors);
+		}
 		return false;
 	}
 }
-
-?>

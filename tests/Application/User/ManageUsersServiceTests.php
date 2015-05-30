@@ -105,7 +105,7 @@ class ManageUsersServiceTests extends TestBase
 		$attributeId = 1;
 		$attributeValue = 'value';
 		$userId = 111;
-		$attributes = array(new AttributeValue($attributeId, $attributeValue));
+		$attribute = new AttributeValue($attributeId, $attributeValue);
 
 		$user = new FakeUser($userId);
 
@@ -120,7 +120,7 @@ class ManageUsersServiceTests extends TestBase
 				->method('Update')
 				->with($this->equalTo($user));
 
-		$this->service->ChangeAttributes($userId, $attributes);
+		$this->service->ChangeAttributes($userId, $attribute);
 
 		$this->assertEquals(1, count($user->GetAddedAttributes()));
 		$this->assertEquals($attributeValue, $user->GetAttributeValue($attributeId));

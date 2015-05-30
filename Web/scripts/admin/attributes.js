@@ -71,7 +71,7 @@ function AttributeManagement(opts) {
 			$('span.error', elements.addDialog).remove();
 			elements.addCategory.val(elements.attributeCategory.val());
 			elements.limitScope.prop('checked', false);
-			toggleAppliesTo();
+			showRelevantCategoryOptions();
 			elements.appliesTo.text(options.allText);
 			elements.secondaryPrompt.text(options.allText);
 			elements.appliesToId.val('');
@@ -152,7 +152,7 @@ function AttributeManagement(opts) {
 	};
 
 	var showRelevantAttributeOptions = function (selectedType, optionsDiv) {
-		$('.textBoxOptions', optionsDiv).find('div').not('.attributeSecondary').show();
+		$('.textBoxOptions', optionsDiv).find('div').not('.attributeUnique, .attributeSecondary').show();
 
 		if (selectedType != opts.selectList)
 		{
@@ -169,10 +169,11 @@ function AttributeManagement(opts) {
 			$('.attributePossibleValues, .attributeValidationExpression').hide();
 		}
 
-		if (elements.attributeCategory.val() == options.categories.reservation)
-		{
-			$('.attributeUnique').hide();
-		}
+		showRelevantCategoryOptions();
+		//if (elements.attributeCategory.val() == options.categories.reservation)
+		//{
+		//	$('.attributeUnique').hide();
+		//}
 	};
 
 	var addAttributeHandler = function () {
@@ -194,7 +195,7 @@ function AttributeManagement(opts) {
 
 	var showEditDialog = function (selectedAttribute) {
 		showRelevantAttributeOptions(selectedAttribute.type, elements.editDialog);
-		toggleAppliesTo();
+		showRelevantCategoryOptions();
 
 		$('.editAttributeType', elements.editDialog).hide();
 		$('#editType' + selectedAttribute.type).show();
@@ -258,7 +259,7 @@ function AttributeManagement(opts) {
 		return elements.activeId.val();
 	}
 
-	var toggleAppliesTo = function () {
+	var showRelevantCategoryOptions = function () {
 		if (elements.attributeCategory.val() == options.categories.reservation)
 		{
 			$('.attributeUnique').hide();
