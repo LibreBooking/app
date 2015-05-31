@@ -32,7 +32,9 @@ function UserManagement(opts)
 		addUserForm:$('#addUserForm'),
 
 		deleteDialog:$('#deleteDialog'),
-		deleteUserForm:$('#deleteUserForm')
+		deleteUserForm:$('#deleteUserForm'),
+
+		addDialog:$('#addUserDialog')
 	};
 
 	var users = {};
@@ -43,7 +45,6 @@ function UserManagement(opts)
 		{
 			setActiveUserElement($(this));
 			e.preventDefault();
-			//e.stopPropagation();
 		});
 
 		elements.userList.delegate('.changeStatus', 'click', function (e)
@@ -122,20 +123,6 @@ function UserManagement(opts)
 			$(this).appendTo(elements.addedGroups);
 		});
 
-		//elements.userList.delegate('.changeAttributes, .customAttributes .cancel', 'click', function (e) {
-		//	var user = getActiveUser();
-		//	var otherUsers = $(".customAttributes[userId!='" + user.id + "']");
-		//	otherUsers.find('.attribute-readwrite, .validationSummary').hide();
-		//	otherUsers.find('.attribute-readonly').show();
-		//	var container = $(this).closest('.customAttributes');
-		//	container.find('.attribute-readwrite').toggle();
-		//	container.find('.attribute-readonly').toggle();
-		//	container.find('.validationSummary').hide();
-		//});
-
-
-
-
 		$(".save").click(function ()
 		{
 			$(this).closest('form').submit();
@@ -149,6 +136,11 @@ function UserManagement(opts)
 		$('.clearform').click(function ()
 		{
 			$(this).closest('form')[0].reset();
+		});
+
+		$('#add-user').click(function(e){
+			e.preventDefault();
+			elements.addDialog.modal('show');
 		});
 
 		var hidePermissionsDialog = function ()
@@ -166,31 +158,23 @@ function UserManagement(opts)
 			dialogElement.modal('hide');
 		};
 
+		var hideDialogCallback = function(dialogElement) {
+			return function() {
+				hideDialog(dialogElement);
+				window.location.reload();
+			}
+		};
+
 		var error = function (errorText)
 		{
 			alert(errorText);
 		};
 
-		var attributesHandler = function(responseText, form)
-		{
-			if (responseText.ErrorIds && responseText.Messages.attributeValidator)
-			{
-				var messages =  responseText.Messages.attributeValidator.join('</li><li>');
-				messages = '<li>' + messages + '</li>';
-				var validationSummary = $(form).find('.validationSummary');
-				validationSummary.find('ul').empty().append(messages);
-				validationSummary.show();
-			}
-		};
-
 		ConfigureAdminForm(elements.permissionsForm, defaultSubmitCallback(elements.permissionsForm), hidePermissionsDialog, error);
 		ConfigureAdminForm(elements.passwordForm, defaultSubmitCallback(elements.passwordForm), hidePasswordDialog, error);
-		ConfigureAdminForm(elements.userForm, defaultSubmitCallback(elements.userForm), hideDialog(elements.userDialog));
-		ConfigureAdminForm(elements.deleteUserForm, defaultSubmitCallback(elements.deleteUserForm), hideDialog(elements.deleteDialog), error);
-		ConfigureAdminForm(elements.addUserForm, defaultSubmitCallback(elements.addUserForm));
-		$.each(elements.attributeForm, function(i,form){
-			ConfigureAdminForm($(form), defaultSubmitCallback($(form)), null, attributesHandler, {validationSummary:null});
-		});
+		ConfigureAdminForm(elements.userForm, defaultSubmitCallback(elements.userForm), hideDialogCallback(elements.userDialog));
+		ConfigureAdminForm(elements.deleteUserForm, defaultSubmitCallback(elements.deleteUserForm), hideDialogCallback(elements.deleteDialog), error);
+		ConfigureAdminForm(elements.addUserForm, defaultSubmitCallback(elements.addUserForm), hideDialogCallback(elements.addDialog));
 		ConfigureAdminForm(elements.colorForm, defaultSubmitCallback(elements.colorForm));
 	};
 

@@ -35,11 +35,13 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 				{html_options selected=$FilterStatusId options=$statusDescriptions}
 			</select>
 		</div>
-		<div class="col-xs-6"></div>
+		<div class="col-xs-6">
+			<a href="#" id="add-user" class="add-link add-user pull-right">{translate key="AddUser"}
+				<span class="fa fa-plus-circle icon add"></span>
+			</a>
+		</div>
 		<div class="clearfix"></div>
 	</form>
-
-	{pagination pageInfo=$PageInfo showCount=false}
 
 	<table class="table" id="userList">
 		<thead>
@@ -160,7 +162,6 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 						{/foreach}
 					</td>
 				</tr>
-
 			{/if}
 		{/foreach}
 		</tbody>
@@ -168,94 +169,129 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 	{pagination pageInfo=$PageInfo}
 
-	<div class="admin" style="margin-top:30px;">
-		<div class="title">
-			{translate key=AddUser}
-		</div>
-		<div>
-			<ul>
-				{async_validator id="addUserEmailformat" key="ValidEmailRequired"}
-				{async_validator id="addUserUniqueemail" key="UniqueEmailRequired"}
-				{async_validator id="addUserUsername" key="UniqueUsernameRequired"}
-				{async_validator id="addAttributeValidator" key=""}
-			</ul>
-			<form id="addUserForm" method="post" ajaxAction="{ManageUsersActions::AddUser}">
-				<div style="display: table-row">
-					<div style="display: table-cell;">
-						<ul>
-							<li>{translate key="Username"}</li>
-							<li>{textbox name="USERNAME" class="required textbox" size="40" id="addUsername"}</li>
-						</ul>
+	<div id="addUserDialog" class="modal" tabindex="-1" role="dialog" aria-labelledby="addUserModalLabel"
+		 aria-hidden="true">
+		<form id="addUserForm" class="form" role="form" method="post"
+			  ajaxAction="{ManageUsersActions::AddUser}">
+			<div class="modal-dialog modal-lg">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+						<h4 class="modal-title" id="addUserModalLabel">{translate key=AddUser}</h4>
 					</div>
-					<div style="display: table-cell;">
-						<ul>
-							<li>{translate key="Email"}</li>
-							<li>{textbox name="EMAIL" class="required textbox" size="40" id="addEmail"}</li>
-						</ul>
-					</div>
-					<div style="display: table-cell;">
-						<ul>
-							<li>{translate key="FirstName"}</li>
-							<li>{textbox name="FIRST_NAME" class="required textbox" size="40" id="addFname"}</li>
-						</ul>
-					</div>
-					<div style="display: table-cell;">
-						<ul>
-							<li>{translate key="LastName"}</li>
-							<li>{textbox name="LAST_NAME" class="required textbox" size="40" id="addLname"}</li>
-						</ul>
-					</div>
-				</div>
-				<div style="display: table-row">
-					<div style="display: table-cell;">
-						<ul>
-							<li>{translate key="Timezone"}</li>
-							<li>
-								<select {formname key='TIMEZONE'} class="textbox">
+					<div class="modal-body">
+						<div id="addResourceResults" class="alert alert-danger no-show">
+							<ul>
+								{async_validator id="addUserEmailformat" key="ValidEmailRequired"}
+								{async_validator id="addUserUniqueemail" key="UniqueEmailRequired"}
+								{async_validator id="addUserUsername" key="UniqueUsernameRequired"}
+								{async_validator id="addAttributeValidator" key=""}
+							</ul>
+						</div>
+						<div class="row">
+							<div class="col-sm-12 col-md-6">
+								<div class="form-group has-feedback">
+									<label for="addUsername">{translate key="Username"}</label>
+									<input type="text" {formname key="USERNAME"} class="required form-control" required
+										   id="addUsername"/>
+									<i class="glyphicon glyphicon-asterisk form-control-feedback"
+									   data-bv-icon-for="addUsername"></i>
+								</div>
+							</div>
+							<div class="col-sm-12 col-md-6">
+								<div class="form-group has-feedback">
+									<label for="addEmail">{translate key="Email"}</label>
+									<input type="text" {formname key="EMAIL"} class="required form-control" required
+										   id="addEmail"/>
+									<i class="glyphicon glyphicon-asterisk form-control-feedback"
+									   data-bv-icon-for="addEmail"></i>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-sm-12 col-md-6">
+								<div class="form-group has-feedback">
+									<label for="addFname">{translate key="FirstName"}</label>
+									<input type="text" {formname key="FIRST_NAME"} class="required form-control" required
+										   id="addFname"/>
+									<i class="glyphicon glyphicon-asterisk form-control-feedback"
+									   data-bv-icon-for="addFname"></i>
+								</div>
+							</div>
+							<div class="col-sm-12 col-md-6">
+								<div class="form-group has-feedback">
+									<label for="addLname">{translate key="LastName"}</label>
+									<input type="text" {formname key="LAST_NAME"} class="required form-control" required
+										   id="addLname"/>
+									<i class="glyphicon glyphicon-asterisk form-control-feedback"
+									   data-bv-icon-for="addLname"></i>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-sm-12 col-md-6">
+								<div class="form-group has-feedback">
+									<label for="addPassword">{translate key="Password"}</label>
+									<input type="text" {formname key="PASSWORD"} class="required form-control" required
+										   id="addPassword"/>
+									<i class="glyphicon glyphicon-asterisk form-control-feedback"
+									   data-bv-icon-for="addPassword"></i>
+								</div>
+							</div>
+							<div class="col-sm-12 col-md-6">
+							<div class="form-group has-feedback">
+								<label for="addTimezone">{translate key="Timezone"}</label>
+								<select id="addTimezone" {formname key='TIMEZONE'} class="form-control">
 									{html_options values=$Timezones output=$Timezones selected=$Timezone}
 								</select>
-							</li>
-						</ul>
-					</div>
-					<div style="display: table-cell;">
-						<ul>
-							<li>{translate key="Password"}</li>
-							<li>{textbox name="PASSWORD" class="required textbox" size="40" id="addPassword"}</li>
-						</ul>
-					</div>
-					<div style="display: table-cell;">
-						<ul>
-							<li>{translate key="Group"}</li>
-							<li>
-								<select {formname key='GROUP_ID'} class="textbox">
-									<option value="">{translate key=None}</option>
-									{object_html_options options=$Groups label=Name key=Id}
-								</select>
-							</li>
-						</ul>
-					</div>
-				</div>
+							</div>
+						</div>
+						</div>
+						<div class="row">
+							<div class="col-sm-12 col-md-6">
+								<div class="form-group has-feedback">
+									<label for="addGroup">{translate key="Group"}</label>
+									<select id="addGroup" {formname key='GROUP_ID'} class="form-control">
+										<option value="">{translate key=None}</option>
+										{object_html_options options=$Groups label=Name key=Id}
+									</select>
+								</div>
+							</div>
+							{if $AttributeList|count > 0}
+								<div class="col-xs-12 col-sm-6">
+									{control type="AttributeControl" attribute=$AttributeList[0]}
+								</div>
+								{else}
+								<div class="col-sm-12 col-md-6">&nbsp;</div>
+							{/if}
+						</div>
 
-				<div class="customAttributes">
-					<ul>
-						{assign var=attributes value=$AttributeList}
-						{foreach from=$attributes item=attribute}
-							<li class="customAttribute">
-								{control type="AttributeControl" attribute=$attribute algin=vertical}
-							</li>
-						{/foreach}
-					</ul>
-					<div style="clear:both;"></div>
+						{if $AttributeList|count > 1}
+							{for $i=1 to $AttributeList|count-1}
+								{if $i%2==1}
+									<div class="row">
+								{/if}
+								<div class="col-xs-12 col-sm-6">
+									{control type="AttributeControl" attribute=$AttributeList[$i]}
+								</div>
+								{if $i%2==0 || $i==$AttributeList|count-1}
+									</div>
+								{/if}
+							{/for}
+						{/if}
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default"
+								data-dismiss="modal">{translate key='Cancel'}</button>
+						<button type="button" class="btn btn-success save">
+							<span class="glyphicon glyphicon-ok-circle"></span>
+							{translate key='AddUser'}
+						</button>
+						{indicator}
+					</div>
 				</div>
-
-				<div class="admin-update-buttons">
-					<button type="button"
-							class="button save">{html_image src="disk-black.png"} {translate key='AddUser'}</button>
-					<button type="button"
-							class="button clearform">{html_image src="slash.png"} {translate key='Cancel'}</button>
-				</div>
-			</form>
-		</div>
+			</div>
+		</form>
 	</div>
 
 	<input type="hidden" id="activeId"/>
@@ -324,7 +360,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 	<div id="userDialog" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="userModalLabel"
 		 aria-hidden="true">
 		<form id="userForm" method="post" ajaxAction="{ManageUsersActions::UpdateUser}">
-			<div class="modal-dialog">
+			<div class="modal-dialog modal-lg">
 				<div class="modal-content">
 					<div class="modal-header">
 						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
