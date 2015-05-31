@@ -1,8 +1,6 @@
 function HasResponseText(responseText)
 {
-	return (
-			(responseText.trim != undefined && responseText.trim() != '') || (responseText.constructor == Object && responseText.ErrorIds != undefined)
-			);
+	return responseText.trim != undefined && responseText.trim() != '' || responseText.constructor == Object && responseText.ErrorIds != undefined;
 }
 function ConfigureAdminForm(formElement, urlCallback, successHandler, responseHandler, options)
 {
@@ -187,7 +185,7 @@ function PerformAsyncAction(element, urlCallback, indicator, successCallback)
 				{
 					indicator.hide();
 				}
-				if (data && (data.trim() != ""))
+				if (!successCallback && data && (data.trim() != ""))
 				{
 					alert(data);
 				}

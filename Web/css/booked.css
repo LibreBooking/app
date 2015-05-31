@@ -1272,7 +1272,7 @@ span.error {
 .admin-panel ul {
   list-style: none;
 }
-.admin-panel .add-link {
+.add-link {
   font-weight: bold;
 }
 .dialog ul,

@@ -75,6 +75,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 				<td>{format_date date=$user->DateCreated key=short_datetime}</td>
 				<td>{format_date date=$user->LastLogin key=short_datetime}</td>
 				<td class="action"><a href="#" class="update changeStatus">{$statusDescriptions[$user->StatusId]}</a>
+					{indicator id="userStatusIndicator"}
 				</td>
 				{if $PerUserColors}
 					<td class="action">

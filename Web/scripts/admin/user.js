@@ -49,7 +49,7 @@ function UserManagement(opts)
 
 		elements.userList.delegate('.changeStatus', 'click', function (e)
 		{
-			changeStatus();
+			changeStatus($(this));
 		});
 
 		elements.userList.delegate('.changeGroups', 'click', function (e)
@@ -218,17 +218,23 @@ function UserManagement(opts)
 		return users[getActiveUserId()];
 	}
 
-	var changeStatus = function ()
+	var changeStatus = function (statusButtonElement)
 	{
 		var user = getActiveUser();
 
+		function changeStatusResultCallback(resultStatusText)
+		{
+			user.isActive = !user.isActive;
+			elements.userList.find('[data-userId="' + user.id + '"]').find('.changeStatus').text(resultStatusText);
+		}
+
 		if (user.isActive)
 		{
-			PerformAsyncAction($(this), getSubmitCallback(options.actions.deactivate))
+			PerformAsyncAction(statusButtonElement, getSubmitCallback(options.actions.deactivate), $('#userStatusIndicator'), changeStatusResultCallback);
 		}
 		else
 		{
-			PerformAsyncAction($(this), getSubmitCallback(options.actions.activate))
+			PerformAsyncAction(statusButtonElement, getSubmitCallback(options.actions.activate), $('#userStatusIndicator'), changeStatusResultCallback);
 		}
 	};
 
@@ -236,7 +242,6 @@ function UserManagement(opts)
 	{
 		elements.addedGroups.find('.group-item').remove();
 		elements.removedGroups.find('.group-item').remove();
-
 
 		var user = getActiveUser();
 		var data = {dr:'groups', uid:user.id};

@@ -207,6 +207,7 @@ class ManageUsersPresenter extends ActionPresenter implements IManageUsersPresen
 		$user = $this->userRepository->LoadById($this->page->GetUserId());
 		$user->Deactivate();
 		$this->userRepository->Update($user);
+		$this->page->SetJsonResponse(Resources::GetInstance()->GetString('Inactive'));
 	}
 
 	public function Activate()
@@ -214,6 +215,7 @@ class ManageUsersPresenter extends ActionPresenter implements IManageUsersPresen
 		$user = $this->userRepository->LoadById($this->page->GetUserId());
 		$user->Activate();
 		$this->userRepository->Update($user);
+		$this->page->SetJsonResponse(Resources::GetInstance()->GetString('Active'));
 	}
 
 	public function AddUser()
