@@ -174,6 +174,61 @@ class ParticipationPresenterTests extends TestBase
 		$this->presenter->PageLoad();
 	}
 
+	public function testWhenUserJoinsAllAndThereIsSpace()
+	{
+		$invitationAction = InvitationAction::JoinAll;
+		$seriesMethod = 'JoinReservationSeries';
+
+		$this->assertUpdatesSeriesParticipation($invitationAction, $seriesMethod);
+	}
+
+	public function testWhenUserJoinsAllAndThereIsNotSpace()
+	{
+		$invitationAction = InvitationAction::JoinAll;
+
+		$currentUserId = 1029;
+		$referenceNumber = 'abc123';
+		$builder = new ExistingReservationSeriesBuilder();
+		$instance = new TestReservation();
+		$instance->WithParticipants(array(1));
+		$instance->WithInvitee($currentUserId);
+
+		$resource = new FakeBookableResource(1);
+		$resource->SetMaxParticipants(1);
+
+		$builder->WithCurrentInstance($instance)
+			->WithPrimaryResource($resource);
+
+		$series = $builder->Build();
+
+		$this->page->expects($this->once())
+			->method('GetResponseType')
+			->will($this->returnValue('json'));
+
+		$this->page->expects($this->once())
+			->method('GetInvitationAction')
+			->will($this->returnValue($invitationAction));
+
+		$this->page->expects($this->once())
+			->method('GetInvitationReferenceNumber')
+			->will($this->returnValue($referenceNumber));
+
+		$this->page->expects($this->once())
+			->method('GetUserId')
+			->will($this->returnValue($currentUserId));
+
+		$this->reservationRepo->expects($this->once())
+			->method('LoadByReferenceNumber')
+			->with($this->equalTo($referenceNumber))
+			->will($this->returnValue($series));
+
+		$this->page->expects($this->once())
+			->method('DisplayResult')
+			->with($this->stringContains('ParticipationNotAllowed'));
+
+		$this->presenter->PageLoad();
+	}
+
 	public function testWhenUserDeclinesInvite()
 	{
 		$invitationAction = InvitationAction::Decline;

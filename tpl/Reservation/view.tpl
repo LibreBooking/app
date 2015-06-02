@@ -147,10 +147,11 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 											<button value="{InvitationAction::CancelInstance}" class="btn btn-xs btn-info participationAction">
 												<i class="fa fa-minus-square"></i> {translate key=ThisInstance}
 											</button>
+										{else}
+											<button value="{InvitationAction::CancelInstance}" class="btn btn-xs btn-info participationAction">
+												<i class="fa fa-minus-square"></i> {translate key=CancelParticipation}
+											</button>
 										{/if}
-										<button value="{InvitationAction::CancelInstance}" class="btn btn-xs btn-info participationAction">
-											<i class="fa fa-minus-square"></i> {translate key=CancelParticipation}
-										</button>
 									</div>
 								{/if}
 							</div>
@@ -173,9 +174,18 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 								{if $AllowParticipantsToJoin && !$IAmParticipating && !$IAmInvited && $CanAlterParticipation}
 									<div class="alert alert-info " role="alert">
 										<strong>{translate key=YouCanJoinThisReservation}</strong>
-										<button value="{InvitationAction::Join}" class="btn btn-xs btn-info participationAction">
-											<i class="fa fa-user-plus"></i> {translate key="Join"}
-										</button>
+										{if $IsRecurring}
+											<button value="{InvitationAction::JoinAll}" class="btn btn-xs btn-info participationAction">
+												<i class="fa fa-user-plus"></i> {translate key="AllInstances"}
+											</button>
+											<button value="{InvitationAction::Join}" class="btn btn-xs btn-info participationAction">
+												<i class="fa fa-user-plus"></i> {translate key="ThisInstance"}
+											</button>
+										{else}
+											<button value="{InvitationAction::Join}" class="btn btn-xs btn-info participationAction">
+												<i class="fa fa-user-plus"></i> {translate key="Join"}
+											</button>
+										{/if}
 									</div>
 								{/if}
 							</div>

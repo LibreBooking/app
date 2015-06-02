@@ -139,6 +139,18 @@ class ParticipationPresenter
 				$error = $this->CheckCapacityAndReturnAnyError($series);
 			}
 		}
+		if ($invitationAction == InvitationAction::JoinAll)
+		{
+			if (!$series->GetAllowParticipation())
+			{
+				$error = Resources::GetInstance()->GetString('ParticipationNotAllowed');
+			}
+			else
+			{
+				$series->JoinReservationSeries($userId);
+				$error = $this->CheckCapacityAndReturnAnyError($series);
+			}
+		}
 
 		$this->reservationRepository->Update($series);
 
