@@ -175,14 +175,14 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 									<div class="alert alert-info " role="alert">
 										<strong>{translate key=YouCanJoinThisReservation}</strong>
 										{if $IsRecurring}
-											<button value="{InvitationAction::JoinAll}" class="btn btn-xs btn-info participationAction">
+											<button value="{InvitationAction::JoinAll}" id="btnJoinSeries" class="btn btn-xs btn-info participationAction">
 												<i class="fa fa-user-plus"></i> {translate key="AllInstances"}
 											</button>
-											<button value="{InvitationAction::Join}" class="btn btn-xs btn-info participationAction">
+											<button value="{InvitationAction::Join}" id="btnJoinInstance" class="btn btn-xs btn-info participationAction">
 												<i class="fa fa-user-plus"></i> {translate key="ThisInstance"}
 											</button>
 										{else}
-											<button value="{InvitationAction::Join}" class="btn btn-xs btn-info participationAction">
+											<button value="{InvitationAction::Join}" id="btnJoin" class="btn btn-xs btn-info participationAction">
 												<i class="fa fa-user-plus"></i> {translate key="Join"}
 											</button>
 										{/if}
