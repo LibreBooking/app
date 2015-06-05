@@ -495,15 +495,50 @@ class SmartyPage extends Smarty
 		return 'name=\'' . FormKeys::Evaluate($params['key']) . $append . '\'';
 	}
 
-	public function CreateUrl($var)
+	public function CreateUrl($url)
 	{
-		$string = preg_replace("/([^\w\/])(www\.[a-z0-9\-]+\.[a-z0-9\-]+)/i", "$1http://$2", $var);
-		$string = preg_replace("/([\w]+:\/\/[\w-?&;#~=\.\/\@]+[\w\/])/i", "<a target=\"_blank\" href=\"$1\">$1</A>",
-							   $string);
-		$string = preg_replace("/([\w-?&;#~=\.\/]+\@(\[?)[a-zA-Z0-9\-\.]+\.([a-zA-Z]{2,3}|[0-9]{1,3})(\]?))/i",
-							   "<A HREF=\"mailto:$1\">$1</A>", $string);
+		// credit to WordPress wp-includes/formatting.php
+		$make_url_clickable = function($matches) {
+			$ret = '';
+			$url = $matches[2];
 
-		return $string;
+			if ( empty($url) )
+				return $matches[0];
+			// removed trailing [.,;:] from URL
+			if ( in_array(substr($url, -1), array('.', ',', ';', ':')) === true ) {
+				$ret = substr($url, -1);
+				$url = substr($url, 0, strlen($url)-1);
+			}
+			return $matches[1] . "<a href=\"$url\" target=\"_blank\" rel=\"nofollow\">$url</a>" . $ret;
+		};
+
+		$make_web_ftp_clickable_cb = function ($matches) {
+			$ret = '';
+			$dest = $matches[2];
+			$dest = 'http://' . $dest;
+
+			if ( empty($dest) )
+				return $matches[0];
+			// removed trailing [,;:] from URL
+			if ( in_array(substr($dest, -1), array('.', ',', ';', ':')) === true ) {
+				$ret = substr($dest, -1);
+				$dest = substr($dest, 0, strlen($dest)-1);
+			}
+			return $matches[1] . "<a href=\"$dest\" rel=\"nofollow\">$dest</a>" . $ret;
+		};
+
+		$make_email_clickable_cb = function ($matches) {
+			$email = $matches[2] . '@' . $matches[3];
+			return $matches[1] . "<a href=\"mailto:$email\">$email</a>";
+		};
+
+		$url = ' ' . $url;
+		$url = preg_replace_callback('#([\s>])([\w]+?://[\w\\x80-\\xff\#$%&~/.\-;:=,?@\[\]+]*)#is', $make_url_clickable, $url);
+		$url = preg_replace_callback('#([\s>])((www|ftp)\.[\w\\x80-\\xff\#$%&~/.\-;:=,?@\[\]+]*)#is', $make_web_ftp_clickable_cb, $url);
+		$url = preg_replace_callback('#([\s>])([.0-9a-z_+-]+)@(([0-9a-z-]+\.)+[0-9a-z]{2,})#i', $make_email_clickable_cb, $url);
+		$url = preg_replace("#(<a( [^>]+?>|>))<a [^>]+?>([^>]+?)</a></a>#i", "$1$3</a>", $url);
+		$url = trim($url);
+		return $url;
 	}
 
 	public function CreatePagination($params, &$smarty)
