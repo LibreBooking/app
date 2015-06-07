@@ -32,6 +32,7 @@ class ManageThemePresenter extends ActionPresenter
 		parent::__construct($page);
 		$this->page = $page;
 		$this->AddAction('update', 'UpdateTheme');
+		$this->AddAction('removeLogo', 'RemoveLogo');
 	}
 
 	public function UpdateTheme()
@@ -43,15 +44,16 @@ class ManageThemePresenter extends ActionPresenter
 		{
 			Log::Debug('Replacing logo with ' . $logoFile->OriginalName());
 
-			$targets = glob(ROOT_DIR . 'Web/img/custom-logo.*');
-			foreach ($targets as $target) {
-				$removed = unlink($target);
-				if (!$removed)
-				{
-					Log::Error('Could not remove existing logo. Ensure %s is writable.',
-						$target);
-				}
-			}
+			$this->RemoveLogo();
+//			$targets = glob(ROOT_DIR . 'Web/img/custom-logo.*');
+//			foreach ($targets as $target) {
+//				$removed = unlink($target);
+//				if (!$removed)
+//				{
+//					Log::Error('Could not remove existing logo. Ensure %s is writable.',
+//						$target);
+//				}
+//			}
 
 			$target =  ROOT_DIR . 'Web/img/custom-logo.' . $logoFile->Extension();
 			$copied = copy($logoFile->TemporaryName(), $target);
@@ -74,6 +76,25 @@ class ManageThemePresenter extends ActionPresenter
 		}
 	}
 
+	public function RemoveLogo()
+	{
+		try
+		{
+			$targets = glob(ROOT_DIR . 'Web/img/custom-logo.*');
+			foreach ($targets as $target) {
+				$removed = unlink($target);
+				if (!$removed)
+				{
+					Log::Error('Could not remove existing logo. Ensure %s is writable.', $target);
+				}
+			}
+		}
+		catch(Exception $ex)
+		{
+			Log::Error('Could not remove logos. %s', $ex);
+		}
+	}
+
 	protected function LoadValidators($action)
 	{
 		$this->page->RegisterValidator('logoFile', new FileUploadValidator($this->page->GetLogoFile()));
@@ -83,5 +104,3 @@ class ManageThemePresenter extends ActionPresenter
 		$this->page->RegisterValidator('cssFileExt', new FileTypeValidator($this->page->GetCssFile(), 'css'));
 	}
 }
-
-?>

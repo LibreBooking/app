@@ -35,9 +35,18 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 <form id="elementForm" action="{$smarty.server.SCRIPT_NAME}" ajaxAction="update" method="post">
     <h4>{translate key="Logo"} (*.png, *.gif, *.jpg)</h4>
-    <input type="file" {formname key=LOGO_FILE} size="100"/> <a href="#" class="clearInput">{html_image src="cross-button.png"}</a><br/><br/>
+	<div>
+		<a href="{$ScriptUrl}/img/{$LogoUrl}" download="{$ScriptUrl}/img/{$LogoUrl}">{$LogoUrl}</a>
+		<a href="#" id="removeLogo">{translate key=Remove}</a></div>
+    <input type="file" {formname key=LOGO_FILE} size="100"/>
+	<a href="#" class="clearInput">{html_image src="cross-button.png"}</a>
+
+	<br/><br/>
 
     <h4>{translate key="CssFile"} (*.css)</h4>
+	<div>
+		<a href="{$ScriptUrl}/css/{$CssUrl}" download="{$ScriptUrl}/css/{$CssUrl}">{$CssUrl}</a>
+	</div>
     <input type="file" {formname key=CSS_FILE} size="100"/> <a href="#" class="clearInput">{html_image src="cross-button.png"}</a><br/><br/>
     <button type="button" class="button update" name="{Actions::SAVE}" id="saveButton">
         {html_image src="disk-black.png"} {translate key='Update'}
@@ -62,6 +71,14 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		$('.clearInput').click(function(e){
 			e.preventDefault();
 			$(this).prev('input').val('');
+		});
+
+		$('#removeLogo').click(function(e) {
+			e.preventDefault();
+
+			PerformAsyncAction($(this), function(){
+				return '{$smarty.server.SCRIPT_NAME}?action=removeLogo';
+			});
 		});
     });
 
