@@ -748,6 +748,7 @@ function Reservation(opts)
 	changeUser.chooseUser = function (id, name)
 	{
 		elements.userName.text(name);
+		elements.userName.attr('data-userid', id);
 		elements.userId.val(id).trigger('change');;
 
 		participation.removeParticipant(_ownerId);
@@ -795,13 +796,13 @@ function Reservation(opts)
 		}
 
 		var item = '<div class="user">' +
-				'<a href="#" class="remove"><span class="fa fa-remove"></span></a> ' +
+				'<a href="#" class="remove"><span class="fa fa-remove"></span></a> <a href="#" class="bindableUser" data-userid="' + userId + '">' +
 				name +
-				'<input type="hidden" class="id" name="participantList[]" value="' + userId + '" />' +
+				'</a><input type="hidden" class="id" name="participantList[]" value="' + userId + '" />' +
 				'</div>';
 
 		elements.participantList.append(item);
-
+		$('.bindableUser').bindUserDetails();
 		participation.addedUsers.push(userId);
 	};
 
@@ -823,13 +824,13 @@ function Reservation(opts)
 		}
 
 		var item = '<div class="user">' +
-				'<a href="#" class="remove"><span class="fa fa-remove"></span></a> ' +
+				'<a href="#" class="remove"><span class="fa fa-remove"></span></a> <a href="#" class="bindableUser" data-userid="' + userId + '">' +
 				name +
-				'<input type="hidden" class="id" name="invitationList[]" value="' + userId + '" />' +
+				'</a><input type="hidden" class="id" name="invitationList[]" value="' + userId + '" />' +
 				'</div>';
 
 		elements.inviteeList.append(item);
-
+		$('.bindableUser').bindUserDetails();
 		participation.addedUsers.push(userId);
 	};
 

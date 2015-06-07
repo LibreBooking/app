@@ -33,7 +33,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 					<div class="col-xs-12">
 						<label>{translate key='User'}</label>
 						{if $ShowUserDetails}
-							{$ReservationUserName}
+							<a href="#" class="bindableUser" data-userid="{$UserId}">{$ReservationUserName}</a>
 							<input id="userId" type="hidden" value="{$UserId}"/>
 						{else}
 							{translate key=Private}
@@ -196,7 +196,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 								<div id="ro-participantList">
 									<label>{translate key='ParticipantList'}</label>
 									{foreach from=$Participants item=participant}
-										<div>{$participant->FullName}</div>
+										<div><a href="#" class="bindableUser" data-userid="{$participant->UserId}">{$participant->FullName}</a></div>
 										{foreachelse}
 										<div class="no-data">{translate key='None'}</div>
 									{/foreach}
@@ -204,7 +204,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 								<div id="ro-inviteeList">
 									<label>{translate key='InvitationList'}</label>
 									{foreach from=$Invitees item=invitee}
-										<div>{$invitee->FullName}</div>
+										<div><a href="#" class="bindableUser" data-userid="{$invitee->UserId}">{$invitee->FullName}</a></div>
 										{foreachelse}
 										<div class="no-data">{translate key='None'}</div>
 									{/foreach}

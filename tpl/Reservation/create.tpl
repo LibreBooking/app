@@ -56,7 +56,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 					<div class="col-xs-12">
 						<div class="form-group">
-							<span id="userName">{$ReservationUserName}</span>
+							<a href="#" id="userName" data-userid="{$UserId}">{$ReservationUserName}</a>
 							<input id="userId" type="hidden" {formname key=USER_ID} value="{$UserId}"/>
 							{if $CanChangeUser}
 								<a href="#" id="showChangeUsers" class="small-action">{translate key=Change} <i class="fa fa-user"></i></a>
@@ -385,6 +385,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 {jsfile src="js/jquery.autogrow.js"}
 {jsfile src="js/moment.min.js"}
 {jsfile src="resourcePopup.js"}
+{jsfile src="userPopup.js"}
 {jsfile src="date-helper.js"}
 {jsfile src="recurrence.js"}
 {jsfile src="reservation.js"}
@@ -467,7 +468,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		});
 
 		$('#description').autogrow();
-
+		$('#userName').bindUserDetails();
+		
 		$.blockUI.defaults.css.width = '60%';
 		$.blockUI.defaults.css.left = '20%';
 	});

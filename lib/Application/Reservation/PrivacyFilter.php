@@ -44,9 +44,17 @@ class PrivacyFilter implements IPrivacyFilter
 	 */
 	private $reservationAuthorization;
 
-	public function __construct(IReservationAuthorization $reservationAuthorization)
+	/**
+	 *
+	 * @param $reservationAuthorization IReservationAuthorization
+	 */
+	public function __construct($reservationAuthorization = null)
 	{
 		$this->reservationAuthorization = $reservationAuthorization;
+		if (is_null($this->reservationAuthorization))
+		{
+			$this->reservationAuthorization = new ReservationAuthorization(PluginManager::Instance()->LoadAuthorization());
+		}
 	}
 
 	public function CanViewUser(UserSession $currentUser, $reservationView = null, $ownerId = null)
