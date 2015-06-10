@@ -509,7 +509,14 @@ class SmartyPage extends Smarty
 				$ret = substr($url, -1);
 				$url = substr($url, 0, strlen($url)-1);
 			}
-			return $matches[1] . "<a href=\"$url\" target=\"_blank\" rel=\"nofollow\">$url</a>" . $ret;
+
+			$text = $url;
+			if (strlen($text) > 30)
+			{
+				$text = substr($text, 0, 30) . '...';
+			}
+
+			return $matches[1] . "<a href=\"$url\" target=\"_blank\" rel=\"nofollow\">$text</a>" . $ret;
 		};
 
 		$make_web_ftp_clickable_cb = function ($matches) {
@@ -524,7 +531,14 @@ class SmartyPage extends Smarty
 				$ret = substr($dest, -1);
 				$dest = substr($dest, 0, strlen($dest)-1);
 			}
-			return $matches[1] . "<a href=\"$dest\" rel=\"nofollow\">$dest</a>" . $ret;
+
+			$text = $dest;
+			if (strlen($text) > 30)
+			{
+				$text = substr($text, 0, 30) . '...';
+			}
+
+			return $matches[1] . "<a href=\"$dest\" rel=\"nofollow\">$text</a>" . $ret;
 		};
 
 		$make_email_clickable_cb = function ($matches) {
