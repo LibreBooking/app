@@ -20,6 +20,7 @@
 
 require_once(ROOT_DIR . 'Pages/Admin/AdminPage.php');
 require_once(ROOT_DIR . 'Pages/IPageable.php');
+require_once(ROOT_DIR . 'Pages/Ajax/AutoCompletePage.php');
 require_once(ROOT_DIR . 'Presenters/Admin/ManageSchedulesPresenter.php');
 require_once(ROOT_DIR . 'Domain/Access/ScheduleRepository.php');
 require_once(ROOT_DIR . 'lib/Application/Attributes/namespace.php');
@@ -171,6 +172,11 @@ interface IManageResourcesPage extends IUpdateResourcePage, IActionPage, IPageab
 	public function SetResourcesJson($resources);
 
 	/**
+	 * @param $response mixed
+	 */
+	public function SetJsonResponse($response);
+
+	/**
 	 * @param $resourceTypes ResourceType[]
 	 */
 	public function BindResourceTypes($resourceTypes);
@@ -244,6 +250,16 @@ interface IManageResourcesPage extends IUpdateResourcePage, IActionPage, IPageab
 	 * @return int
 	 */
 	public function GetEndNoticeNone();
+
+	/**
+	 * @return int
+	 */
+	public function GetPermissionUserId();
+
+	/**
+	 * @return int
+	 */
+	public function GetPermissionGroupId();
 
 	/**
 	 * @return string
@@ -554,6 +570,11 @@ class ManageResourcesPage extends ActionPage implements IManageResourcesPage
 		$this->SetJson($resources);
 	}
 
+	public function SetJsonResponse($response)
+	{
+		parent::SetJson($response);
+	}
+
 	/**
 	 * @param $resourceTypes ResourceType[]
 	 */
@@ -716,6 +737,16 @@ class ManageResourcesPage extends ActionPage implements IManageResourcesPage
 	public function SetAttributeValueAsJson($attributeValue)
 	{
 		$this->SetJson($attributeValue);
+	}
+
+	public function GetPermissionUserId()
+	{
+		return $this->GetForm(FormKeys::USER_ID);
+	}
+
+	public function GetPermissionGroupId()
+	{
+		return $this->GetForm(FormKeys::GROUP_ID);
 	}
 }
 

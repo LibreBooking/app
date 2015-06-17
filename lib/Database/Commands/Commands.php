@@ -1649,6 +1649,24 @@ class GetResourceGroupByPublicIdCommand extends SqlCommand
 	}
 }
 
+class GetResourceGroupPermissionCommand extends SqlCommand
+{
+	public function __construct($resourceId)
+	{
+		parent::__construct(Queries::GET_RESOURCE_GROUP_PERMISSION);
+		$this->AddParameter(new Parameter(ParameterNames::RESOURCE_ID, $resourceId));
+	}
+}
+
+class GetResourceUserPermissionCommand extends SqlCommand
+{
+	public function __construct($resourceId, $accountStatusId = AccountStatus::ACTIVE)
+	{
+		parent::__construct(Queries::GET_RESOURCE_USER_PERMISSION);
+		$this->AddParameter(new Parameter(ParameterNames::RESOURCE_ID, $resourceId));
+		$this->AddParameter(new Parameter(ParameterNames::USER_STATUS_ID, $accountStatusId));
+	}
+}
 
 class RemoveReservationAccessoryCommand extends SqlCommand
 {

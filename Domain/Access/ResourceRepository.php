@@ -23,6 +23,8 @@ require_once(ROOT_DIR . 'Domain/ResourceGroup.php');
 require_once(ROOT_DIR . 'Domain/ResourceType.php');
 require_once(ROOT_DIR . 'Domain/Access/IResourceRepository.php');
 require_once(ROOT_DIR . 'Domain/Values/ResourceStatus.php');
+require_once(ROOT_DIR . 'Domain/Values/AccountStatus.php');
+require_once(ROOT_DIR . 'Domain/Values/AccountStatus.php');
 
 class ResourceRepository implements IResourceRepository
 {
@@ -497,6 +499,52 @@ class ResourceRepository implements IResourceRepository
 	public function RemoveStatusReason($reasonId)
 	{
 		ServiceLocator::GetDatabase()->Execute(new DeleteResourceStatusReasonCommand($reasonId));
+	}
+
+	public function GetUsersWithPermission($resourceId, $pageNumber = null, $pageSize = null, $filter = null, $accountStatus = AccountStatus::ACTIVE)
+	{
+		$command = new GetResourceUserPermissionCommand($resourceId, $accountStatus);
+
+		if ($filter != null)
+		{
+			$command = new FilterCommand($command, $filter);
+		}
+
+		$builder = array('UserItemView', 'Create');
+		return PageableDataStore::GetList($command, $builder, $pageNumber, $pageSize);
+	}
+
+	public function GetGroupsWithPermission($resourceId, $pageNumber = null, $pageSize = null, $filter = null)
+	{
+		$command = new GetResourceGroupPermissionCommand($resourceId);
+
+		if ($filter != null)
+		{
+			$command = new FilterCommand($command, $filter);
+		}
+
+		$builder = array('GroupItemView', 'Create');
+		return PageableDataStore::GetList($command, $builder, $pageNumber, $pageSize);
+	}
+
+	public function AddResourceUserPermission($resourceId, $userId)
+	{
+		ServiceLocator::GetDatabase()->Execute(new AddUserResourcePermission($userId, $resourceId));
+	}
+
+	public function RemoveResourceUserPermission($resourceId, $userId)
+	{
+		ServiceLocator::GetDatabase()->Execute(new DeleteUserResourcePermission($userId, $resourceId));
+	}
+
+	public function AddResourceGroupPermission($resourceId, $groupId)
+	{
+		ServiceLocator::GetDatabase()->Execute(new AddGroupResourcePermission($groupId, $resourceId));
+	}
+
+	public function RemoveResourceGroupPermission($resourceId, $groupId)
+	{
+		ServiceLocator::GetDatabase()->Execute(new DeleteGroupResourcePermission($groupId, $resourceId));
 	}
 }
 

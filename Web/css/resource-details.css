@@ -370,6 +370,9 @@ input[type=text].user-search {
 .checkbox-align {
   margin-top: 30px;
 }
+.ui-autocomplete {
+  z-index: 5000;
+}
 #resourceDetailsPopup {
   min-width: 300px;
   max-width: 1000px;

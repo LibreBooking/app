@@ -174,5 +174,47 @@ interface IResourceRepository
 	 */
 	public function RemoveStatusReason($reasonId);
 
+	/**
+	 * @param int $resourceId
+	 * @param int|null $pageNumber
+	 * @param int|null $pageSize
+	 * @param ISqlFilter|null $filter
+	 * @param int $accountStatus
+	 * @return PageableData|UserItemView[]
+	 */
+	public function GetUsersWithPermission($resourceId, $pageNumber = null, $pageSize = null, $filter = null, $accountStatus = AccountStatus::ACTIVE);
+
+	/**
+	 * @param int $resourceId
+	 * @param int|null $pageNumber
+	 * @param int|null $pageSize
+	 * @param ISqlFilter|null $filter
+	 * @return PageableData|GroupItemView[]
+	 */
+	public function GetGroupsWithPermission($resourceId, $pageNumber = null, $pageSize = null, $filter = null);
+
+	/**
+	 * @param int $resourceId
+	 * @param int $userId
+	 */
+	public function AddResourceUserPermission($resourceId, $userId);
+
+	/**
+	 * @param int $resourceId
+	 * @param int $userId
+	 */
+	public function RemoveResourceUserPermission($resourceId, $userId);
+
+	/**
+	 * @param $resourceId
+	 * @param $groupId
+	 */
+	public function AddResourceGroupPermission($resourceId, $groupId);
+
+	/**
+	 * @param $resourceId
+	 * @param $groupId
+	 */
+	public function RemoveResourceGroupPermission($resourceId, $groupId);
 
 }

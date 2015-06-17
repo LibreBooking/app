@@ -335,6 +335,13 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 								{include file="Admin/Resources/manage_resources_access.tpl" resource=$resource}
 							</div>
 						</div>
+
+						<div class="col-xs-12">
+							<h5>{translate key='Permissions'}</h5>
+							<a href="#" class="update changeUsers">{translate key=Users}</a> |
+							<a href="#" class="update changeGroups">{translate key=Groups}</a>
+						</div>
+
 					</div>
 
 					<div class="clearfix"></div>
@@ -1036,17 +1043,106 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		</form>
 	</div>
 
+	<div id="userDialog" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="userPermissionDialogLabel"
+		 aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+					<h4 class="modal-title" id="userPermissionDialogLabel">{translate key=Users}</h4>
+				</div>
+				<div class="modal-body">
+					<div class="form-group">
+						<label for="userSearch">{translate key=AddUser}</label> <a href="#" id="browseUsers">{translate key=Browse}</a>
+						<input type="text" id="userSearch" class="form-control" size="60"/>
+
+					</div>
+
+					<h4><span id="totalUsers"></span> {translate key=Users}</h4>
+
+					<div id="resourceUserList"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div id="allUsers" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="browseUsersDialogLabel"
+			 aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+					<h4 class="modal-title" id="browseUsersDialogLabel">{translate key=AllUsers}</h4>
+				</div>
+				<div class="modal-body">
+					<div id="allUsersList"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<form id="removeUserForm" method="post" ajaxAction="{ManageResourcesActions::ActionRemoveUserPermission}">
+		<input type="hidden" id="removeUserId" {formname key=USER_ID} />
+	</form>
+
+	<form id="addUserForm" method="post" ajaxAction="{ManageResourcesActions::ActionAddUserPermission}">
+		<input type="hidden" id="addUserId" {formname key=USER_ID} />
+	</form>
+
+	<div id="groupDialog" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="browseGroupsDialogLabel"
+		 aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+					<h4 class="modal-title" id="browseGroupsDialogLabel">{translate key=AllGroups}</h4>
+				</div>
+				<div class="modal-body">
+					<div class="form-group">
+						<label for="groupSearch">{translate key=AddGroup}</label> <a href="#"  id="browseGroups">{translate key=AllGroups}</a>
+						<input type="text" id="groupSearch" class="form-control" size="60"/>
+					</div>
+
+					<h4><span id="totalGroups"></span> {translate key=Groups}</h4>
+
+					<div id="resourceGroupList"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div id="allGroups" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="groupPermissionDialogLabel"
+		 aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+					<h4 class="modal-title" id="groupPermissionDialogLabel">{translate key=Groups}</h4>
+				</div>
+				<div class="modal-body">
+					<div id="allGroupsList"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<form id="removeGroupForm" method="post" ajaxAction="{ManageResourcesActions::ActionRemoveGroupPermission}">
+		<input type="hidden" id="removeGroupId" {formname key=GROUP_ID} />
+	</form>
+
+	<form id="addGroupForm" method="post" ajaxAction="{ManageResourcesActions::ActionAddGroupPermission}">
+		<input type="hidden" id="addGroupId" {formname key=GROUP_ID} />
+	</form>
+
 	{jsfile src="admin/edit.js"}
+	{jsfile src="autocomplete.js"}
 	{jsfile src="admin/resource.js"}
 
 	<script type="text/javascript">
 
-		function hidePopoversWhenClickAway()
-		{
-			$('body').on('click', function (e)
-			{
-				$('[rel="popover"]').each(function ()
-				{
+		function hidePopoversWhenClickAway() {
+			$('body').on('click', function (e) {
+				$('[rel="popover"]').each(function () {
 					if (!$(this).is(e.target) && $(this).has(e.target).length === 0 && $('.popover').has(e.target).length === 0)
 					{
 						$(this).popover('hide');
@@ -1055,36 +1151,29 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			});
 		}
 
-		function setUpPopovers()
-		{
+		function setUpPopovers() {
 			$('[rel="popover"]').popover({
 				container: 'body',
 				html: true,
 				placement: 'top',
-				content: function ()
-				{
+				content: function () {
 					var popoverId = $(this).data('popover-content');
 					return $(popoverId).html();
 				}
-			}).click(function (e)
-			{
+			}).click(function (e) {
 				e.preventDefault();
-			}).on('show.bs.popover', function ()
-			{
+			}).on('show.bs.popover', function () {
 
-			}).on('shown.bs.popover', function ()
-			{
+			}).on('shown.bs.popover', function () {
 				var trigger = $(this);
 				var popover = trigger.data('bs.popover').tip();
-				popover.find('.editable-cancel').click(function ()
-				{
+				popover.find('.editable-cancel').click(function () {
 					trigger.popover('hide');
 				});
 			});
 		}
 
-		function setUpEditables()
-		{
+		function setUpEditables() {
 			$.fn.editable.defaults.mode = 'popup';
 			$.fn.editable.defaults.toggle = 'manual';
 			$.fn.editable.defaults.emptyclass = '';
@@ -1093,8 +1182,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 			$('.resourceName').editable({
 				url: updateUrl + '{ManageResourcesActions::ActionRename}',
-				validate: function (value)
-				{
+				validate: function (value) {
 					if ($.trim(value) == '')
 					{
 						return '{translate key=RequiredValue}';
@@ -1177,8 +1265,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 		}
 
-		$(document).ready(function ()
-		{
+		$(document).ready(function () {
 			setUpPopovers();
 
 			hidePopoversWhenClickAway();
@@ -1194,7 +1281,10 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			var opts = {
 				submitUrl: '{$smarty.server.SCRIPT_NAME}',
 				saveRedirect: '{$smarty.server.SCRIPT_NAME}',
-				actions: actions
+				actions: actions,
+				userAutocompleteUrl: "../ajax/autocomplete.php?type={AutoCompleteType::User}",
+				groupAutocompleteUrl: "../ajax/autocomplete.php?type={AutoCompleteType::Group}",
+				permissionsUrl: '{$smarty.server.SCRIPT_NAME}'
 			};
 
 			var resourceManagement = new ResourceManagement(opts);

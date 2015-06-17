@@ -196,6 +196,7 @@ class en_us extends Language
 		$strings['ResourcePermissions'] = 'Resource Permissions';
 		$strings['Reservations'] = 'Reservations';
 		$strings['Groups'] = 'Groups';
+		$strings['Users'] = 'Users';
 		$strings['ResetPassword'] = 'Reset Password';
 		$strings['AllUsers'] = 'All Users';
 		$strings['AllGroups'] = 'All Groups';

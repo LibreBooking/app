@@ -46,6 +46,10 @@ class ManageResourcesActions
 	const ActionChangeCapacity = 'changeCapacity';
 	const ActionChangeAccess = 'changeAccess';
 	const ActionChangeAttribute = 'changeAttribute';
+	const ActionAddUserPermission = 'addUserPermission';
+	const ActionRemoveUserPermission = 'removeUserPermission';
+	const ActionAddGroupPermission = 'addGroupPermission';
+	const ActionRemoveGroupPermission = 'removeGroupPermission';
 }
 
 class ManageResourcesPresenter extends ActionPresenter
@@ -125,6 +129,10 @@ class ManageResourcesPresenter extends ActionPresenter
 		$this->AddAction(ManageResourcesActions::ActionChangeCapacity, 'ChangeCapacity');
 		$this->AddAction(ManageResourcesActions::ActionChangeAccess, 'ChangeAccess');
 		$this->AddAction(ManageResourcesActions::ActionChangeAttribute, 'ChangeAttribute');
+		$this->AddAction(ManageResourcesActions::ActionAddUserPermission, 'AddUserPermission');
+		$this->AddAction(ManageResourcesActions::ActionRemoveUserPermission, 'RemoveUserPermission');
+		$this->AddAction(ManageResourcesActions::ActionAddGroupPermission, 'AddGroupPermission');
+		$this->AddAction(ManageResourcesActions::ActionRemoveGroupPermission, 'RemoveGroupPermission');
 	}
 
 	public function PageLoad()
@@ -646,6 +654,38 @@ class ManageResourcesPresenter extends ActionPresenter
 		}
 	}
 
+	public function AddUserPermission()
+	{
+		$userId = $this->page->GetPermissionUserId();
+		$resourceId = $this->page->GetResourceId();
+
+		$this->resourceRepository->AddResourceUserPermission($resourceId, $userId);
+	}
+
+	public function RemoveUserPermission()
+	{
+		$userId = $this->page->GetPermissionUserId();
+		$resourceId = $this->page->GetResourceId();
+
+		$this->resourceRepository->RemoveResourceUserPermission($resourceId, $userId);
+	}
+
+	public function AddGroupPermission()
+	{
+		$groupId = $this->page->GetPermissionGroupId();
+		$resourceId = $this->page->GetResourceId();
+
+		$this->resourceRepository->AddResourceGroupPermission($resourceId, $groupId);
+	}
+
+	public function RemoveGroupPermission()
+	{
+		$groupId = $this->page->GetPermissionGroupId();
+		$resourceId = $this->page->GetResourceId();
+
+		$this->resourceRepository->RemoveResourceGroupPermission($resourceId, $groupId);
+	}
+
 	protected function LoadValidators($action)
 	{
 		if ($action == ManageResourcesActions::ActionChangeAttribute)
@@ -669,11 +709,17 @@ class ManageResourcesPresenter extends ActionPresenter
 		{
 			$this->page->SetResourcesJson(array_map(array('AdminResourceJson', 'FromBookable'), $this->resourceRepository->GetResourceList()));
 		}
-		else if ($dataRequest == 'attribute')
+		else if ($dataRequest == 'users')
 		{
-			$rid = $this->page->GetResourceId();
-			$resource = $this->resourceRepository->LoadById($rid);
-			$this->page->SetAttributeValueAsJson($resource->GetAttributeValue($this->page->GetAttributeId()));
+			$groups = $this->resourceRepository->GetUsersWithPermission($this->page->GetResourceId());
+			$response = new UserResults($groups->Results(), $groups->PageInfo()->Total);
+			$this->page->SetJsonResponse($response);
+		}
+		else if ($dataRequest == 'groups')
+		{
+			$groups = $this->resourceRepository->GetGroupsWithPermission($this->page->GetResourceId());
+			$response = new GroupResults($groups->Results(), $groups->PageInfo()->Total);
+			$this->page->SetJsonResponse($response);
 		}
 	}
 
@@ -703,4 +749,53 @@ class AdminResourceJson
 	{
 		return new AdminResourceJson($resource->GetId(), $resource->GetName());
 	}
+}
+
+class UserResults
+{
+	/**
+	 * @param UserItemView[] $users
+	 * @param int $totalUsers
+	 */
+	public function __construct($users, $totalUsers)
+	{
+		foreach ($users as $user)
+		{
+			$this->Users[] = new AutocompleteUser($user->Id, $user->First, $user->Last, $user->Email, $user->Username);
+		}
+		$this->Total = $totalUsers;
+	}
+
+	/**
+	 * @var int
+	 */
+	public $Total;
+
+	/**
+	 * @var AutocompleteUser[]
+	 */
+	public $Users;
+}
+
+class GroupResults
+{
+	/**
+	 * @param GroupItemView[] $groups
+	 * @param int $totalGroups
+	 */
+	public function __construct($groups, $totalGroups)
+	{
+		$this->Groups = $groups;
+		$this->Total = $totalGroups;
+	}
+
+	/**
+	 * @var int
+	 */
+	public $Total;
+
+	/**
+	 * @var GroupItemView[]
+	 */
+	public $Groups;
 }

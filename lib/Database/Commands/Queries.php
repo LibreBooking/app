@@ -507,7 +507,7 @@ class Queries
 	const GET_REMINDER_NOTICES = 'SELECT DISTINCT
 		rs.*,
 		ri.*,
-		u.*,
+		u.fname, u.lname, u.language, u.timezone,
 		r.name as resource_name
 		FROM reservation_instances ri
 		INNER JOIN reservation_series rs ON ri.series_id = rs.series_id
@@ -768,6 +768,20 @@ const GET_RESERVATION_LIST_TEMPLATE =
 	const GET_USER_SESSION_BY_USERID = 'SELECT * FROM user_session WHERE user_id = @userid';
 
 	const GET_VERSION = 'SELECT * FROM dbversion order by version_number desc limit 0,1';
+
+	const GET_RESOURCE_GROUP_PERMISSION = 'SELECT
+				g.*
+			FROM
+				group_resource_permissions grp, resources r, groups g
+			WHERE
+				r.resource_id = @resourceid AND r.resource_id = grp.resource_id AND g.group_id = grp.group_id';
+
+	const GET_RESOURCE_USER_PERMISSION = 'SELECT
+				u.*
+			FROM
+				user_resource_permissions urp, resources r, users u
+			WHERE
+				r.resource_id = @resourceid AND r.resource_id = urp.resource_id AND u.user_id = urp.user_id';
 
 	const MIGRATE_PASSWORD =
 			'UPDATE

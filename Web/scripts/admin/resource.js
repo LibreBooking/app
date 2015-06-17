@@ -2,46 +2,64 @@ function ResourceManagement(opts) {
 	var options = opts;
 
 	var elements = {
-		activeId : $('#activeId'),
+		activeId: $('#activeId'),
 
-		imageDialog:$('#imageDialog'),
-		deleteDialog:$('#deletePrompt'),
-		statusDialog:$('#statusDialog'),
-		durationDialog:$('#durationDialog'),
-		capacityDialog:$('#capacityDialog'),
-		accessDialog:$('#accessDialog'),
+		imageDialog: $('#imageDialog'),
+		deleteDialog: $('#deletePrompt'),
+		statusDialog: $('#statusDialog'),
+		durationDialog: $('#durationDialog'),
+		capacityDialog: $('#capacityDialog'),
+		accessDialog: $('#accessDialog'),
 
-		imageForm:$('#imageForm'),
-		deleteForm:$('#deleteForm'),
-		durationForm:$('#durationForm'),
-		capacityForm:$('#capacityForm'),
-		accessForm:$('#accessForm'),
-		statusForm:$('#statusForm'),
+		imageForm: $('#imageForm'),
+		deleteForm: $('#deleteForm'),
+		durationForm: $('#durationForm'),
+		capacityForm: $('#capacityForm'),
+		accessForm: $('#accessForm'),
+		statusForm: $('#statusForm'),
 
-		statusReasons:('.reasonId'),
-		statusOptions:('.statusId'),
-		addStatusReason:('.addStatusReason'),
-		newStatusReason:('.newStatusReason'),
-		existingStatusReason:('.existingStatusReason'),
-		resourceStatusReason:('.resourceStatusReason'),
-		addStatusIcon:('.addStatusIcon'),
+		statusReasons: ('.reasonId'),
+		statusOptions: ('.statusId'),
+		addStatusReason: ('.addStatusReason'),
+		newStatusReason: ('.newStatusReason'),
+		existingStatusReason: ('.existingStatusReason'),
+		resourceStatusReason: ('.resourceStatusReason'),
+		addStatusIcon: ('.addStatusIcon'),
 
-		addForm:$('#addResourceForm'),
-		statusOptionsFilter:$('#resourceStatusIdFilter'),
-		statusReasonsFilter:$('#resourceReasonIdFilter'),
-		filterTable:$('#filterTable'),
-		filterButton:$('#filter'),
-		clearFilterButton:$('#clearFilter'),
+		addForm: $('#addResourceForm'),
+		statusOptionsFilter: $('#resourceStatusIdFilter'),
+		statusReasonsFilter: $('#resourceReasonIdFilter'),
+		filterTable: $('#filterTable'),
+		filterButton: $('#filter'),
+		clearFilterButton: $('#clearFilter'),
 
-		bulkUpdatePromptButton:$('#bulkUpdatePromptButton'),
-		bulkUpdateDialog:$('#bulkUpdateDialog'),
-		bulkUpdateList:$('#bulkUpdateList'),
-		bulkUpdateForm:$('#bulkUpdateForm'),
-		bulkEditStatusOptions:$('#bulkEditStatusId'),
-		bulkEditStatusReasons:$('#bulkEditStatusReasonId'),
+		bulkUpdatePromptButton: $('#bulkUpdatePromptButton'),
+		bulkUpdateDialog: $('#bulkUpdateDialog'),
+		bulkUpdateList: $('#bulkUpdateList'),
+		bulkUpdateForm: $('#bulkUpdateForm'),
+		bulkEditStatusOptions: $('#bulkEditStatusId'),
+		bulkEditStatusReasons: $('#bulkEditStatusReasonId'),
 
 		addResourceButtons: $('.add-resource'),
-		addResourceDialog:$('#add-resource-dialog')
+		addResourceDialog: $('#add-resource-dialog'),
+
+		userSearch: $('#userSearch'),
+		userDialog: $('#userDialog'),
+		addUserForm: $('#addUserForm'),
+		removeUserForm: $('#removeUserForm'),
+		browseUserDialog: $('#allUsers'),
+		browseUsersButton: $('#browseUsers'),
+		resourceUserList: $('#resourceUserList'),
+		allUsersList: $('#allUsersList'),
+
+		groupSearch: $('#groupSearch'),
+		groupDialog: $('#groupDialog'),
+		addGroupForm: $('#addGroupForm'),
+		removeGroupForm: $('#removeGroupForm'),
+		browseGroupDialog: $('#allGroups'),
+		browseGroupsButton: $('#browseGroups'),
+		resourceGroupList:$('#resourceGroupList'),
+		allGroupsList:$('#allGroupsList')
 	};
 
 	var resources = {};
@@ -81,7 +99,7 @@ function ResourceManagement(opts) {
 			});
 
 			var subscriptionCallback = function () {
-				details.find('.subscriptionButton').toggleClass('hide')
+				details.find('.subscriptionButton').toggleClass('hide');
 			};
 
 			details.find('.enableSubscription').click(function (e) {
@@ -165,6 +183,16 @@ function ResourceManagement(opts) {
 			details.find('.changeAccess').click(function (e) {
 				showAccessPrompt(e);
 			});
+
+			details.find('.changeUsers').click(function (e) {
+				changeUsers();
+				elements.userDialog.modal('show');
+			});
+
+			details.find('.changeGroups').click(function(e) {
+				changeGroups();
+				elements.groupDialog.modal('show');
+			});
 		});
 
 		$(".save").click(function () {
@@ -175,17 +203,17 @@ function ResourceManagement(opts) {
 			$(this).closest('.modal').modal("hide");
 		});
 
-		elements.addResourceButtons.click(function(e){
+		elements.addResourceButtons.click(function (e) {
 			e.preventDefault();
 			elements.addResourceDialog.modal('show');
 			$('#resourceName').focus();
 		});
 
-		elements.bulkEditStatusOptions.change(function(e){
+		elements.bulkEditStatusOptions.change(function (e) {
 			populateReasonOptions(elements.bulkEditStatusOptions.val(), elements.bulkEditStatusReasons);
 		});
 
-		elements.statusOptionsFilter.change(function(e){
+		elements.statusOptionsFilter.change(function (e) {
 			populateReasonOptions(elements.statusOptionsFilter.val(), elements.statusReasonsFilter);
 		});
 
@@ -198,7 +226,7 @@ function ResourceManagement(opts) {
 			filterResources();
 		});
 
-		elements.bulkUpdatePromptButton.click(function(e) {
+		elements.bulkUpdatePromptButton.click(function (e) {
 			e.preventDefault();
 
 			var items = [];
@@ -206,8 +234,8 @@ function ResourceManagement(opts) {
 			$.each(resources, function (i, r) {
 				var checkId = 'bulk' + r.id;
 				items.push('<div class="checkbox checkbox-inline">' +
-					'<input type="checkbox" id="' + checkId + '" name="resourceId[]" checked="checked" value="' + r.id + '" />'+
-					'<label for="' + checkId + '">' + r.name + '</label>' +
+				'<input type="checkbox" id="' + checkId + '" name="resourceId[]" checked="checked" value="' + r.id + '" />' +
+				'<label for="' + checkId + '">' + r.name + '</label>' +
 				'</div>');
 			});
 			$('<div/>', {html: items.join('')}).appendTo(elements.bulkUpdateList);
@@ -217,10 +245,56 @@ function ResourceManagement(opts) {
 			$('#bulkUpdateDialog').modal('show');
 		});
 
+		elements.userSearch.userAutoComplete(options.userAutocompleteUrl, function (ui) {
+			addUserPermission(ui.item.value);
+			elements.userSearch.val('');
+		});
+
+		elements.groupSearch.groupAutoComplete(options.groupAutocompleteUrl, function(ui) {
+			addGroupPermission(ui.item.value);
+			elements.groupSearch.val('');
+		});
+
+		elements.browseUserDialog.delegate('.add', 'click', function () {
+			var link = $(this);
+			var userId = link.siblings('.id').val();
+
+			addUserPermission(userId);
+
+			link.find('img').attr('src', '../img/tick-white.png');
+		});
+
+		elements.resourceUserList.delegate('.delete', 'click', function () {
+			var userId = $(this).siblings('.id').val();
+			removeUserPermission($(this), userId);
+		});
+
+		elements.browseUsersButton.click(function () {
+			showAllUsersToAdd();
+		});
+
 		wireUpCheckboxToggle(elements.durationForm);
 		wireUpCheckboxToggle(elements.capacityForm);
 		wireUpCheckboxToggle(elements.accessForm);
 		wireUpCheckboxToggle(elements.bulkUpdateForm);
+
+		elements.browseGroupDialog.delegate('.add', 'click', function() {
+			var link = $(this);
+			var groupId = link.siblings('.id').val();
+
+			addGroupPermission(groupId);
+
+			link.find('img').attr('src', '../img/tick-white.png');
+		});
+
+		elements.resourceGroupList.delegate('.delete', 'click', function() {
+			var groupId = $(this).siblings('.id').val();
+			removeGroupPermission($(this), groupId);
+		});
+
+		elements.browseGroupsButton.click(function() {
+			showAllGroupsToAdd();
+		});
 
 		var imageSaveErrorHandler = function (result) {
 			alert(result);
@@ -240,13 +314,21 @@ function ResourceManagement(opts) {
 			$("#bulkUpdateErrors").html(result).show();
 		};
 
+		var errorHandler = function (result) {
+			$("#globalError").html(result).show();
+		};
+
 		ConfigureAdminForm(elements.imageForm, defaultSubmitCallback(elements.imageForm), null, imageSaveErrorHandler);
 		ConfigureAdminForm(elements.addForm, defaultSubmitCallback(elements.addForm), null, handleAddError);
 		ConfigureAdminForm(elements.deleteForm, defaultSubmitCallback(elements.deleteForm));
-		ConfigureAdminForm(elements.durationForm, defaultSubmitCallback(elements.durationForm), null, onDurationSaved, {onBeforeSerialize:combineIntervals});
+		ConfigureAdminForm(elements.durationForm, defaultSubmitCallback(elements.durationForm), null, onDurationSaved, {onBeforeSerialize: combineIntervals});
 		ConfigureAdminForm(elements.capacityForm, defaultSubmitCallback(elements.capacityForm), null, onCapacitySaved);
-		ConfigureAdminForm(elements.accessForm, defaultSubmitCallback(elements.accessForm), null, onAccessSaved, {onBeforeSerialize:combineIntervals});
-		ConfigureAdminForm(elements.bulkUpdateForm, defaultSubmitCallback(elements.bulkUpdateForm), null, bulkUpdateErrorHandler, {onBeforeSerialize:combineIntervals});
+		ConfigureAdminForm(elements.accessForm, defaultSubmitCallback(elements.accessForm), null, onAccessSaved, {onBeforeSerialize: combineIntervals});
+		ConfigureAdminForm(elements.bulkUpdateForm, defaultSubmitCallback(elements.bulkUpdateForm), null, bulkUpdateErrorHandler, {onBeforeSerialize: combineIntervals});
+		ConfigureAdminForm(elements.addUserForm, defaultSubmitCallback(elements.addUserForm), changeUsers, errorHandler);
+		ConfigureAdminForm(elements.removeUserForm, defaultSubmitCallback(elements.removeUserForm), changeUsers, errorHandler);
+		ConfigureAdminForm(elements.addGroupForm, defaultSubmitCallback(elements.addGroupForm), changeGroups, errorHandler);
+		ConfigureAdminForm(elements.removeGroupForm, defaultSubmitCallback(elements.removeGroupForm), changeGroups, errorHandler);
 	};
 
 	ResourceManagement.prototype.add = function (resource) {
@@ -259,10 +341,10 @@ function ResourceManagement(opts) {
 			reasons[statusId] = [];
 		}
 
-		reasons[statusId].push({id:id,description:description});
+		reasons[statusId].push({id: id, description: description});
 	};
 
-	ResourceManagement.prototype.initializeStatusFilter = function (statusId, reasonId)	{
+	ResourceManagement.prototype.initializeStatusFilter = function (statusId, reasonId) {
 		elements.statusOptionsFilter.val(statusId);
 		elements.statusOptionsFilter.trigger('change');
 		elements.statusReasonsFilter.val(reasonId);
@@ -288,7 +370,7 @@ function ResourceManagement(opts) {
 		return elements.activeId.val();
 	};
 
-	var getResource = function(id) {
+	var getResource = function (id) {
 		return resources[id];
 	};
 
@@ -302,7 +384,7 @@ function ResourceManagement(opts) {
 
 	var showResourceAdmin = function (e) {
 		$('#adminGroupId').val(getActiveResource().adminGroupId);
-		elements.groupAdminDialog.dialog("open");
+		elements.groupAdminDialog.modal('show');
 	};
 
 	var showDeletePrompt = function (e) {
@@ -310,7 +392,7 @@ function ResourceManagement(opts) {
 		elements.deleteDialog.modal('show');
 	};
 
-	var showDurationPrompt = function(e){
+	var showDurationPrompt = function (e) {
 		var resource = getActiveResource();
 
 		setDaysHoursMinutes('#minDuration', resource.minLength, $('#noMinimumDuration'));
@@ -321,14 +403,14 @@ function ResourceManagement(opts) {
 		elements.durationDialog.modal('show');
 	};
 
-	var showCapacityPrompt = function(e){
+	var showCapacityPrompt = function (e) {
 		var resource = getActiveResource();
 
 		showHideConfiguration(resource.maxParticipants, $('#maxCapacity'), $('#unlimitedCapacity'));
 		elements.capacityDialog.modal('show');
 	};
 
-	var showAccessPrompt = function(e){
+	var showAccessPrompt = function (e) {
 		var resource = getActiveResource();
 
 		setDaysHoursMinutes('#startNotice', resource.startNotice, $('#noStartNotice'));
@@ -340,14 +422,14 @@ function ResourceManagement(opts) {
 		elements.accessDialog.modal('show');
 	};
 
-	var setDuration = function(container, resourceDuration) {
-		var emptyIfZero = function(val) {
-				if (val == 0)
-					{
-						return '';
-					}
-					return val;
-				};
+	var setDuration = function (container, resourceDuration) {
+		var emptyIfZero = function (val) {
+			if (val == 0)
+			{
+				return '';
+			}
+			return val;
+		};
 		resourceDuration.value = container.attr('data-value');
 		resourceDuration.days = emptyIfZero(container.attr('data-days'));
 		resourceDuration.hours = emptyIfZero(container.attr('data-hours'));
@@ -372,7 +454,7 @@ function ResourceManagement(opts) {
 		elements.durationDialog.modal('hide');
 	};
 
-	var onCapacitySaved = function(resultHtml) {
+	var onCapacitySaved = function (resultHtml) {
 		var resource = getActiveResource();
 		var resourceDiv = $("div[data-resourceId=" + resource.id + "]");
 		resourceDiv.find('.capacityPlaceHolder').html(resultHtml);
@@ -416,24 +498,26 @@ function ResourceManagement(opts) {
 		statusReasons.val(resource.reasonId);
 
 		statusOptions.unbind();
-		statusOptions.change(function(e){
+		statusOptions.change(function (e) {
 			populateReasonOptions(statusOptions.val(), statusReasons);
 		});
 
 		populateReasonOptions(statusOptions.val(), statusReasons);
 
 		addStatusReason.unbind();
-		addStatusReason.click(function(e){
+		addStatusReason.click(function (e) {
 			e.preventDefault();
 			statusForm.find(elements.newStatusReason).toggleClass('no-show');
 			statusForm.find(elements.existingStatusReason).toggleClass('no-show');
 
-			if (statusForm.find(elements.newStatusReason).hasClass('no-show')){
+			if (statusForm.find(elements.newStatusReason).hasClass('no-show'))
+			{
 				statusForm.find(elements.statusReasons).data('prev', statusReasons.val());
 				statusForm.find(elements.statusReasons).val('');
 				statusForm.find(elements.resourceStatusReason).focus();
 			}
-			else{
+			else
+			{
 				statusForm.find(elements.statusReasons).val(statusReasons.data('prev'));
 				statusForm.find(elements.statusReasons).focus();
 			}
@@ -443,23 +527,23 @@ function ResourceManagement(opts) {
 
 		ConfigureAdminForm(statusForm, defaultSubmitCallback(statusForm));
 
-		saveButton.click(function() {
+		saveButton.click(function () {
 			statusForm.submit();
 		});
 
 		statusOptions.focus();
 	};
 
-	function populateReasonOptions(statusId, reasonsElement){
-		reasonsElement.empty().append($('<option>', {value:'', text:'-'}));
+	function populateReasonOptions(statusId, reasonsElement) {
+		reasonsElement.empty().append($('<option>', {value: '', text: '-'}));
 
 		if (statusId in reasons)
 		{
-			$.each(reasons[statusId], function(i, v){
+			$.each(reasons[statusId], function (i, v) {
 				reasonsElement.append($('<option>', {
-						value: v.id,
-						text : v.description
-					}));
+					value: v.id,
+					text: v.description
+				}));
 			});
 		}
 	}
@@ -477,19 +561,20 @@ function ResourceManagement(opts) {
 		var container = attributeCheckbox.closest('form');
 		var span = container.find(selector);
 
-		if (attributeValue == '' || attributeValue == undefined) {
+		if (attributeValue == '' || attributeValue == undefined)
+		{
 			attributeCheckbox.prop('checked', true);
 			span.hide();
 		}
-		else {
+		else
+		{
 			attributeCheckbox.prop('checked', false);
 			span.show();
 		}
 	}
 
 	function wireUpCheckboxToggle(container) {
-		container.find(':checkbox').change(function ()
-		{
+		container.find(':checkbox').change(function () {
 			var selector = $(this).attr('data-related-inputs');
 			var span = container.find(selector);
 
@@ -511,5 +596,143 @@ function ResourceManagement(opts) {
 
 	var handleAddError = function (result) {
 		$('#addResourceResults').text(result).show();
+	};
+
+	var changeUsers = function () {
+		var resourceId = getActiveResourceId();
+		$.getJSON(opts.permissionsUrl + '?dr=users', {rid: resourceId}, function (data) {
+			var items = [];
+			var userIds = [];
+
+			$('#totalUsers').text(data.Total);
+			if (data.Users != null)
+			{
+				$.map(data.Users, function (item) {
+					items.push('<div><a href="#" class="delete"><img src="../img/cross-button.png" /></a> ' + item.DisplayName + '<input type="hidden" class="id" value="' + item.Id + '"/></div>');
+					userIds[item.Id] = item.Id;
+				});
+			}
+
+			elements.resourceUserList.empty();
+			elements.resourceUserList.data('userIds', userIds);
+
+			$('<div/>', {'class': '', html: items.join('')}).appendTo(elements.resourceUserList);
+
+		});
+	};
+
+	var addUserPermission = function (userId) {
+		$('#addUserId').val(userId);
+		elements.addUserForm.submit();
+	};
+
+	var removeUserPermission = function (element, userId) {
+		$('#removeUserId').val(userId);
+		elements.removeUserForm.submit();
+	};
+
+	var allUserList;
+
+	var showAllUsersToAdd = function () {
+		elements.userDialog.modal('hide');
+		elements.allUsersList.empty();
+
+		if (allUserList == null)
+		{
+			$.ajax({
+				url: options.userAutocompleteUrl,
+				dataType: 'json',
+				async: false,
+				success: function (data) {
+					allUserList = data;
+				}
+			});
+		}
+
+		var items = [];
+		if (allUserList != null)
+		{
+			$.map(allUserList, function (item) {
+				if (elements.resourceUserList.data('userIds')[item.Id] == undefined)
+				{
+					items.push('<div><a href="#" class="add"><img src="../img/plus-button.png" alt="Add" /></a> ' + item.DisplayName + '<input type="hidden" class="id" value="' + item.Id + '"/></div>');
+				}
+				else
+				{
+					items.push('<div><img src="../img/tick-white.png" /> <span>' + item.DisplayName + '</span></div>');
+				}
+			});
+		}
+
+		$('<div/>', {'class': '', html: items.join('')}).appendTo(elements.allUsersList);
+
+		elements.browseUserDialog.modal('show');
+	};
+
+	var changeGroups = function() {
+		var resourceId = getActiveResourceId();
+		$.getJSON(opts.permissionsUrl + '?dr=groups', {rid: resourceId}, function(data) {
+			var items = [];
+			var groups = [];
+
+			$('#totalGroups').text(data.Total);
+			if (data.Groups != null)
+			{
+				$.map(data.Groups, function(item) {
+					items.push('<div><a href="#" class="delete"><img src="../img/cross-button.png" /></a> ' + item.Name + '<input type="hidden" class="id" value="' + item.Id + '"/></div>');
+					groups[item.Id] = item.Id;
+				});
+			}
+
+			elements.resourceGroupList.empty();
+			elements.resourceGroupList.data('groupIds', groups);
+
+			$('<div/>', {'class': '', html: items.join('')}).appendTo(elements.resourceGroupList);
+		});
+	};
+
+	var addGroupPermission = function(group) {
+		$('#addGroupId').val(group);
+		elements.addGroupForm.submit();
+	};
+
+	var removeGroupPermission = function(element, groupId) {
+		$('#removeGroupId').val(groupId);
+		elements.removeGroupForm.submit();
+	};
+
+	var allGroupList;
+
+	var showAllGroupsToAdd = function() {
+		elements.groupDialog.modal('hide');
+		elements.allGroupsList.empty();
+
+		if (allGroupList == null) {
+			$.ajax({
+				url: options.groupAutocompleteUrl,
+				dataType: 'json',
+				async: false,
+				success: function(data) {
+					allGroupList = data;
+				}
+			});
+		}
+
+		var items = [];
+		if (allGroupList != null)
+		{
+			$.map(allGroupList, function(item) {
+				if (elements.resourceGroupList.data('groupIds')[item.Id] == undefined) {
+					items.push('<div><a href="#" class="add"><img src="../img/plus-button.png" alt="Add" /></a> ' + item.Name + '<input type="hidden" class="id" value="' + item.Id + '"/></div>');
+				}
+				else {
+					items.push('<div><img src="../img/tick-white.png" /> <span>' + item.Name + '</span></div>');
+				}
+			});
+		}
+
+		$('<div/>', {'class': '', html: items.join('')}).appendTo(elements.allGroupsList);
+
+		elements.browseGroupDialog.modal('show');
 	};
 }

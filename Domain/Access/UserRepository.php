@@ -889,7 +889,15 @@ class UserItemView
 		$user->Organization = $row[ColumnNames::ORGANIZATION];
 		$user->Position = $row[ColumnNames::POSITION];
 		$user->Language = $row[ColumnNames::LANGUAGE_CODE];
-		$user->Attributes = CustomAttributes::Parse($row[ColumnNames::ATTRIBUTE_LIST]);
+
+		if (isset($row[ColumnNames::ATTRIBUTE_LIST]))
+		{
+			$user->Attributes = CustomAttributes::Parse($row[ColumnNames::ATTRIBUTE_LIST]);
+		}
+		else
+		{
+			$user->Attributes = new CustomAttributes();
+		}
 
 		if (isset($row[ColumnNames::USER_PREFERENCES]))
 		{

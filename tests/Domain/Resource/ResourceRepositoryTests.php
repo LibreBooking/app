@@ -522,6 +522,36 @@ class ResourceRepositoryTests extends TestBase
 		$this->assertEquals('value', $resourceType->GetAttributeValue(1));
 		$this->assertEquals('value2', $resourceType->GetAttributeValue(2));
 	}
+
+	public function testGetsUsersWithPermission()
+	{
+		$resourceId = 123;
+
+		$userRows = new UserRow();
+		$userRows->With(1)->With(2);
+		$this->db->SetRows($userRows->Rows());
+
+		$list = $this->repository->GetUsersWithPermission($resourceId);
+
+		$this->assertTrue($this->db->ContainsCommand(new GetResourceUserPermissionCommand($resourceId, AccountStatus::ACTIVE)));
+		$this->assertEquals(2, $list->PageInfo()->Total);
+	}
+
+	public function testGetsGroupsWithPermission()
+	{
+		$resourceId = 123;
+
+		$rows = array(
+				array(ColumnNames::GROUP_ID => 1, ColumnNames::GROUP_NAME => 'g1'),
+				array(ColumnNames::GROUP_ID => 2, ColumnNames::GROUP_NAME => 'g2'),
+		);
+		$this->db->SetRows($rows);
+
+		$list = $this->repository->GetGroupsWithPermission($resourceId);
+
+		$this->assertTrue($this->db->ContainsCommand(new GetResourceGroupPermissionCommand($resourceId)));
+		$this->assertEquals(2, $list->PageInfo()->Total);
+	}
 }
 
 class SkipResource5Filter implements IResourceFilter
@@ -531,5 +561,3 @@ class SkipResource5Filter implements IResourceFilter
 		return $resource->GetId() != 5;
 	}
 }
-
-?>
