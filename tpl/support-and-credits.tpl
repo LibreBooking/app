@@ -48,7 +48,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 <p>Dariusz Kliszewski, Grzegorz Bis (Polish)</p>
 <p>Tadafumi Kouzato (Japanese)</p>
 <p>Jonne Olie (Dutch)</p>
-<p>Julio Guedimin (Spanish)</p>
+<p>Julio Guedimin, Manuel J. Morgado Morano, Laura Arjona (Spanish)</p>
 <p>Jordi Divins (Catalan)</p>
 <p>Nicola Ruggero, Daniele Cordella, Marco Ponti (Italian)</p>
 <p>Olli Räisänen, Afaf Fafa (Finnish)</p>
@@ -62,7 +62,6 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 <p>Vladislav Zhivkov (Bulgarian)</p>
 <p>Linas Redeckis (Lithuanian)</p>
 <p>Davor Tomasevic (Croatian)</p>
-<p>Branislav (Slovak)</p>
 
 <h3>Thank you to the following projects and libraries</h3>
 
