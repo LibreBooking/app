@@ -33,13 +33,13 @@ class ResourceGroupTests extends TestBase
 
 		$resourceGroupTree = new ResourceGroupTree();
 		$resourceGroupTree->AddGroup($group1);
-		$resourceGroupTree->AddGroup($group1a);
 		$resourceGroupTree->AddGroup($group1a1);
+		$resourceGroupTree->AddGroup($group1a);
 
-		$resourceGroupTree->AddAssignment(new ResourceGroupAssignment($group1a1->id, new FakeBookableResource(1, 'resource1')));
-		$resourceGroupTree->AddAssignment(new ResourceGroupAssignment($group1a1->id, new FakeBookableResource(2, 'resource2')));
-		$resourceGroupTree->AddAssignment(new ResourceGroupAssignment($group1a->id, new FakeBookableResource(3, 'resource3')));
-		$resourceGroupTree->AddAssignment(new ResourceGroupAssignment($group1->id, new FakeBookableResource(4, 'resource4')));
+		$resourceGroupTree->AddAssignment(new ResourceGroupAssignment($group1a1->id, 'resource1', 1, null, 1, ResourceStatus::AVAILABLE, null));
+		$resourceGroupTree->AddAssignment(new ResourceGroupAssignment($group1a1->id, 'resource2', 2, null, 1, ResourceStatus::AVAILABLE, null));
+		$resourceGroupTree->AddAssignment(new ResourceGroupAssignment($group1a->id, 'resource3', 3, null, 1, ResourceStatus::AVAILABLE, null));
+		$resourceGroupTree->AddAssignment(new ResourceGroupAssignment($group1->id, 'resource4', 4, null, 1, ResourceStatus::AVAILABLE, null));
 
 		$group1a1ResourceIds = $resourceGroupTree->GetResourceIds($group1a1->id);
 		$group1aResourceIds = $resourceGroupTree->GetResourceIds($group1a->id);
