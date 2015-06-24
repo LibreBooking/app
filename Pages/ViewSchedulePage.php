@@ -70,6 +70,7 @@ class ViewSchedulePage extends SchedulePage
 
 	public function GetDisplayTimezone(UserSession $user, Schedule $schedule)
 	{
+		$user->Timezone = $schedule->GetTimezone();
 		return $schedule->GetTimezone();
 	}
 }
