@@ -386,67 +386,6 @@ class ReservationViewRepositoryTests extends TestBase
 		$this->assertTrue($reservationView->IsUserInvited(5));
 	}
 
-	public function testGetsNextReservationsIndexedByResource()
-	{
-		$ref1 = 'rn1';
-		$start1 = '2015-01-20 02:42';
-		$end1 = '2015-01-21 02:42';
-		$series1 = 1;
-		$user1 = 1;
-		$resource1 = 1;
-		$fn1 = 'FN1';
-		$ln2 = 'LN1';
-		$title1 = 'T1';
-		$desc1 = 'D1';
-
-		$row1 = array(
-				ColumnNames::REFERENCE_NUMBER => $ref1,
-				ColumnNames::RESERVATION_START => $start1,
-				ColumnNames::RESERVATION_END => $end1,
-				ColumnNames::SERIES_ID => $series1,
-				ColumnNames::USER_ID => $user1,
-				ColumnNames::FIRST_NAME => $fn1,
-				ColumnNames::LAST_NAME => $ln2,
-				ColumnNames::RESOURCE_ID => $resource1,
-				ColumnNames::RESERVATION_TITLE => $title1,
-				ColumnNames::RESERVATION_DESCRIPTION => $desc1,
-				);
-
-		$row2 = array(
-				ColumnNames::REFERENCE_NUMBER => 'rn2',
-				ColumnNames::RESERVATION_START => '2015-02-20 02:42',
-				ColumnNames::RESERVATION_END => '2015-02-21 02:42',
-				ColumnNames::SERIES_ID => 2,
-				ColumnNames::USER_ID => 2,
-				ColumnNames::FIRST_NAME => 'FN2',
-				ColumnNames::LAST_NAME => 'LN2',
-				ColumnNames::RESOURCE_ID => 2,
-				ColumnNames::RESERVATION_TITLE => 'T2',
-				ColumnNames::RESERVATION_DESCRIPTION => 'D2',
-				);
-
-		$this->db->SetRows(array($row1, $row2));
-
-		$next1 = NextReservationView::Populate($row1);
-		$next2 = NextReservationView::Populate($row2);
-
-		$next = $this->repository->GetNextReservations(Date::Now());
-
-		$this->assertEquals($next1, $next[1]);
-		$this->assertEquals($next2, $next[2]);
-
-		$this->assertEquals($ref1, $next1->ReferenceNumber);
-		$this->assertEquals(Date::FromDatabase($start1), $next1->StartDate);
-		$this->assertEquals(Date::FromDatabase($end1), $next1->EndDate);
-		$this->assertEquals($series1, $next1->SeriesId);
-		$this->assertEquals($user1, $next1->OwnerId);
-		$this->assertEquals($resource1, $next1->ResourceId);
-		$this->assertEquals($fn1, $next1->OwnerFirstName);
-		$this->assertEquals($ln2, $next1->OwnerLastName);
-		$this->assertEquals($title1, $next1->Title);
-		$this->assertEquals($desc1, $next1->Description);
-	}
-
 	private function GetParticipantRow($reservationId, $userId, $fname, $lname, $email, $levelId)
 	{
 		return array(

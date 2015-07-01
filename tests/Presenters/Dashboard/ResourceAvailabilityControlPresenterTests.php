@@ -78,11 +78,11 @@ class ResourceAvailabilityControlPresenterTests extends TestBase
 
 		$this->presenter->PageLoad($this->fakeUser);
 
-		$this->assertEquals(new AvailableDashboardItem($this->availableResource, $this->reservationRepo->_NextReservations[$this->availableResource->GetId()]),
+		$this->assertEquals(new AvailableDashboardItem($this->availableResource, $this->reservationRepo->_ReservationList[3]),
 							$this->control->_AvailableNow[0]);
-		$this->assertEquals(new UnavailableDashboardItem($this->unavailableResource, $this->reservationRepo->_ReservationList[0]),
+		$this->assertEquals(new UnavailableDashboardItem($this->unavailableResource, $this->reservationRepo->_ReservationList[1]),
 							$this->control->_UnavailableNow[0]);
-		$this->assertEquals(new UnavailableDashboardItem($this->unavailableAllDayResource, $this->reservationRepo->_ReservationList[1]),
+		$this->assertEquals(new UnavailableDashboardItem($this->unavailableAllDayResource, $this->reservationRepo->_ReservationList[2]),
 							$this->control->_UnavailableAllDay[0]);
 	}
 
@@ -99,16 +99,9 @@ class ResourceAvailabilityControlPresenterTests extends TestBase
 	{
 		$this->reservationRepo->_ReservationList = array(
 				new TestReservationItemView(1, Date::Now()->AddHours(-1), Date::Now()->AddHours(1), $this->unavailableResource->GetId()),
+				new TestReservationItemView(2, Date::Now()->AddHours(1), Date::Now()->AddHours(2), $this->unavailableResource->GetId()),
 				new TestReservationItemView(3, Date::Now()->AddDays(-1), Date::Now()->AddDays(1), $this->unavailableAllDayResource->GetId()),
-		);
-
-		$this->reservationRepo->_NextReservations = array(
-				$this->availableResource->GetId() => new NextReservationView('rn1', 1, $this->availableResource->GetId(), Date::Now()->AddHours(2),
-																			 Date::Now()->AddHours(3), 1),
-				$this->unavailableResource->GetId() => new NextReservationView('rn2', 2, $this->unavailableResource->GetId(), Date::Now()->AddHours(2),
-																			   Date::Now()->AddHours(3), 1),
-				$this->unavailableAllDayResource->GetId() => new NextReservationView('rn3', 3, $this->unavailableAllDayResource->GetId(),
-																					 Date::Now()->AddHours(2), Date::Now()->AddHours(3), 1),
+				new TestReservationItemView(4, Date::Now()->AddDays(1), Date::Now()->AddDays(2), $this->availableResource->GetId()),
 		);
 	}
 

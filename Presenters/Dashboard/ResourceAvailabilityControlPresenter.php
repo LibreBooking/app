@@ -51,8 +51,7 @@ class ResourceAvailabilityControlPresenter
 		$now = Date::Now();
 
 		$resources = $this->resourceService->GetAllResources(false, $user);
-		$reservations = $this->GetReservations($this->reservationViewRepository->GetReservationList($now, $now));
-		$next = $this->reservationViewRepository->GetNextReservations($now, $now->AddDays(30));
+		$reservations = $this->GetReservations($this->reservationViewRepository->GetReservationList($now, $now->AddDays(30)));
 
 		$available = array();
 		$unavailable = array();
@@ -64,20 +63,28 @@ class ResourceAvailabilityControlPresenter
 
 			if ($reservation != null)
 			{
-				if (!$reservation->EndDate->DateEquals(Date::Now()))
+				$lastReservationBeforeOpening = $this->GetLastReservationBeforeAnOpening($resource, $reservations);
+
+				if ($lastReservationBeforeOpening == null)
 				{
-					$allday[] = new UnavailableDashboardItem($resource, $reservation);
+					$lastReservationBeforeOpening = $reservation;
+				}
+
+				if (!$reservation->EndDate->DateEquals($now))
+				{
+					$allday[] = new UnavailableDashboardItem($resource, $lastReservationBeforeOpening);
 				}
 				else
 				{
-					$unavailable[] = new UnavailableDashboardItem($resource, $reservation);
+					$unavailable[] = new UnavailableDashboardItem($resource, $lastReservationBeforeOpening);
 				}
 			}
 			else
 			{
-				if (array_key_exists($resource->GetId(), $next))
+				$resourceId = $resource->GetId();
+				if (array_key_exists($resourceId, $reservations))
 				{
-					$available[] = new AvailableDashboardItem($resource, $next[$resource->GetId()]);
+					$available[] = new AvailableDashboardItem($resource, $reservations[$resourceId][0]);
 				}
 				else
 				{
@@ -93,14 +100,14 @@ class ResourceAvailabilityControlPresenter
 
 	/**
 	 * @param ResourceDto $resource
-	 * @param ReservationItemView[] $reservations
+	 * @param ReservationItemView[][] $reservations
 	 * @return ReservationItemView|null
 	 */
 	private function GetOngoingReservation($resource, $reservations)
 	{
-		if (array_key_exists($resource->GetId(), $reservations))
+		if (array_key_exists($resource->GetId(), $reservations) && $reservations[$resource->GetId()][0]->StartDate->LessThan(Date::Now()))
 		{
-			return $reservations[$resource->GetId()];
+			return $reservations[$resource->GetId()][0];
 		}
 
 		return null;
@@ -108,16 +115,46 @@ class ResourceAvailabilityControlPresenter
 
 	/**
 	 * @param ReservationItemView[] $reservations
-	 * @return ReservationItemView[]
+	 * @return ReservationItemView[][]
 	 */
 	private function GetReservations($reservations)
 	{
 		$indexed = array();
 		foreach ($reservations as $reservation)
 		{
-			$indexed[$reservation->ResourceId] = $reservation;
+			$indexed[$reservation->ResourceId][] = $reservation;
 		}
 
 		return $indexed;
+	}
+
+	/**
+	 * @param ResourceDto $resource
+	 * @param ReservationItemView[][] $reservations
+	 * @return null|ReservationItemView
+	 */
+	private function GetLastReservationBeforeAnOpening($resource, $reservations)
+	{
+		$resourceId = $resource->GetId();
+		if (!array_key_exists($resourceId, $reservations))
+		{
+			return null;
+		}
+
+		$resourceReservations = $reservations[$resourceId];
+		for ($i = 0; $i < count($resourceReservations) - 1; $i++)
+		{
+			$current = $resourceReservations[$i];
+			$next = $resourceReservations[$i+1];
+
+			if ($current->EndDate->Equals($next->StartDate))
+			{
+				continue;
+			}
+
+			return $current;
+		}
+
+		return $resourceReservations[count($resourceReservations)-1];
 	}
 }
