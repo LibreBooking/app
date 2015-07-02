@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Copyright 2012-2015 Nick Korbel
  *
@@ -14,6 +13,7 @@
  * You should have received a copy of the GNU General Public License
  * along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 class SlotLabelFactory
 {
 	/**

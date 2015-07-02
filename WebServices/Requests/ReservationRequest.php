@@ -64,6 +64,11 @@ class ReservationRequest
 	 */
 	public $endReminder;
 
+	/**
+	 * @var bool
+	 */
+	public $allowParticipation;
+
 	public static function Example()
 	{
 		$date = Date::Now()->ToIso();
@@ -81,6 +86,7 @@ class ReservationRequest
 		$request->title = 'reservation title';
 		$request->userId = 1;
 		$request->startReminder = ReminderRequestResponse::Example();
+		$request->allowParticipation = true;
 
 		return $request;
 	}

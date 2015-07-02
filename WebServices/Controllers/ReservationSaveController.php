@@ -635,6 +635,14 @@ class ReservationRequestResponseFacade implements IReservationSavePage
 	{
 		return $this->request->endReminder->interval;
 	}
+
+	/**
+	 * @return bool
+	 */
+	public function GetAllowParticipation()
+	{
+		return $this->request->allowParticipation;
+	}
 }
 
 class ReservationUpdateRequestResponseFacade extends ReservationRequestResponseFacade implements IReservationUpdatePage

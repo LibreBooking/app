@@ -69,3 +69,4 @@ require_once(ROOT_DIR . 'tests/fakes/FakeGroupRepository.php');
 require_once(ROOT_DIR . 'tests/fakes/FakeAuthorizationService.php');
 require_once(ROOT_DIR . 'tests/fakes/FakeAttributeService.php');
 require_once(ROOT_DIR . 'tests/fakes/FakeUserRepository.php');
+require_once(ROOT_DIR . 'tests/fakes/FakeAccessoryRepository.php');

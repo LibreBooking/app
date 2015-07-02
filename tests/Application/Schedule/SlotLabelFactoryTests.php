@@ -35,6 +35,8 @@ class SlotLabelFactoryTests extends TestBase
         $this->reservation->Title = 'some title';
         $this->reservation->FirstName = 'first';
         $this->reservation->LastName = 'last';
+		$this->reservation->StartDate = Date::Now();
+ 		$this->reservation->EndDate = Date::Now();
     }
 
     public function testGetsNone()

@@ -20,6 +20,7 @@
 
 require_once(ROOT_DIR . 'Pages/SecurePage.php');
 require_once(ROOT_DIR . 'Presenters/Calendar/PersonalCalendarPresenter.php');
+require_once(ROOT_DIR . 'lib/Application/Schedule/CalendarSubscriptionService.php');
 
 interface IPersonalCalendarPage extends IActionPage
 {

@@ -19,7 +19,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 require_once(ROOT_DIR . 'Pages/Export/CalendarExportDisplay.php');
-require_once(ROOT_DIR . 'Presenters/CalendarSubscriptionPresenter.php');
+require_once(ROOT_DIR . 'lib/Application/Schedule/CalendarSubscriptionService.php');
 require_once(ROOT_DIR . 'lib/Application/Schedule/namespace.php');
 require_once(ROOT_DIR . 'lib/Application/Reservation/namespace.php');
 require_once(ROOT_DIR . 'Domain/Access/namespace.php');

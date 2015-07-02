@@ -37,7 +37,7 @@ class FakeAttributeService implements IAttributeService
 	 * @param $entityId int|null
 	 * @return AttributeServiceValidationResult
 	 */
-	public function Validate($category, $attributeValues, $entityId = null)
+	public function Validate($category, $attributeValues, $entityId = null, $ignoreEmpty = false, $isAdmin = false)
 	{
 		// TODO: Implement Validate() method.
 	}
@@ -66,7 +66,7 @@ class FakeAttributeService implements IAttributeService
 	 * @param int $requestedUserId
 	 * @return Attribute[]
 	 */
-	public function GetReservationAttributes(UserSession $userSession, ReservationView $reservationView, $requestedUserId = 0)
+	public function GetReservationAttributes(UserSession $userSession, ReservationView $reservationView, $requestedUserId = 0, $requestedResourceIds = array())
 	{
 		// TODO: Implement GetReservationAttributes() method.
 	}

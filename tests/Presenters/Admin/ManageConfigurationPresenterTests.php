@@ -260,6 +260,15 @@ class FakeManageConfigurationPage extends FakeActionPageBase implements IManageC
 	{
 		// TODO: Implement SetSelectedConfigFile() method.
 	}
+
+	/**
+	 * @param string[] $homepageValues
+	 * @param string[] $homepageOutput
+	 */
+	public function SetHomepages($homepageValues, $homepageOutput)
+	{
+		// TODO: Implement SetHomepages() method.
+	}
 }
 
 ?>

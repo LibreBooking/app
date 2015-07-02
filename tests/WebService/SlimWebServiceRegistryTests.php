@@ -70,22 +70,49 @@ class TestSlim extends Slim\Slim
 		$this->getResponse = new TestSlimResponse();
 	}
 
-	public function get($route, $callback)
+	/**
+	 * @param $route
+	 * @param $callback
+	 * @return TestSlimResponse
+	 */
+	public function get()
 	{
+		$args = func_get_args();
+		$route = $args[0];
+		$callback = $args[1];
+
 		$response = new TestSlimResponse();
 		$this->gets[] = new TestSlimCall($route, $callback, $response);
 		return $response;
 	}
 
-	public function post($route, $callback)
+	/**
+	 * @param $route
+	 * @param $callback
+	 * @return TestSlimResponse
+	 */
+	public function post()
 	{
+		$args = func_get_args();
+		$route = $args[0];
+		$callback = $args[1];
+
 		$response = new TestSlimResponse();
 		$this->posts[] = new TestSlimCall($route, $callback, $response);
 		return $response;
 	}
 
-	public function delete($route, $callback)
+	/**
+	 * @param $route
+	 * @param $callback
+	 * @return TestSlimResponse
+	 */
+	public function delete()
 	{
+		$args = func_get_args();
+		$route = $args[0];
+		$callback = $args[1];
+
 		$response = new TestSlimResponse();
 		$this->deletes[] = new TestSlimCall($route, $callback, $response);
 		return $response;
