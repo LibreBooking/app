@@ -31,7 +31,7 @@ class ResourceGroupTree
 	protected $groups = array();
 
 	/**
-	 * @var array|ResourceGroupAssignment[]
+	 * @var array|ResourceDto[]
 	 */
 	protected $resources = array();
 
@@ -80,7 +80,7 @@ class ResourceGroupTree
 	{
 		if (array_key_exists($assignment->group_id, $this->references))
 		{
-			$this->resources[$assignment->resource_id] = $assignment; // new ResourceDto($assignment->resource_id, $assignment->resource_name);
+			$this->resources[$assignment->resource_id] = new ResourceDto($assignment->resource_id, $assignment->resource_name);
 			$this->references[$assignment->group_id]->AddResource($assignment);
 		}
 	}
@@ -99,15 +99,6 @@ class ResourceGroupTree
 		{
 			return array_slice($this->groups, 1);
 		}
-	}
-	
-	/*
-	 * @param int $groupId
-	 * @return ResourceGroup
-	 */
-	public function GetGroup($groupId)
-	{
-		return $this->references[$groupId];
 	}
 
 	/**
@@ -140,7 +131,16 @@ class ResourceGroupTree
 	}
 
 	/**
-	 * @return ResourceGroupAssignment[] array of resources keyed by their ids
+	 * @param int $groupId
+	 * @return ResourceGroup
+	 */
+	public function GetGroup($groupId)
+	{
+		return $this->references[$groupId];
+	}
+
+	/**
+	 * @return ResourceDto[] array of resources keyed by their ids
 	 */
 	public function GetAllResources()
 	{
@@ -199,7 +199,7 @@ class ResourceGroup
 	}
 
 	/**
-	 * @param int $id
+	 * @param int|long $id
 	 */
 	public function WithId($id)
 	{
@@ -220,9 +220,8 @@ class ResourceGroup
 		$this->parent_id = $targetId;
 	}
 
-	public function Rename($newName)
-	{
-		$this->SetName($newName);
+	public function Rename($newName) {
+	$this->SetName($newName);
 	}
 }
 
@@ -234,41 +233,31 @@ class ResourceGroupAssignment implements IResource
 	public $id;
 	public $label;
 	public $resource_id;
-	public $resourceTypeId;
 
 	private $resourceAdminGroupId;
 	private $scheduleId;
 	private $statusId;
-	private $scheduleAdminGroupId;
-	private $resource;
-
 	/**
-	 * @param int $group_id
-	 * @param BookableResource $resource
+	 * @var
 	 */
-	public function __construct($group_id, $resource)
+	private $scheduleAdminGroupId;
+
+	public function __construct($group_id, $resource_name, $resource_id, $resourceAdminGroupId, $scheduleId, $statusId, $scheduleAdminGroupId)
 	{
 		$this->group_id = $group_id;
-		$this->resource_name = $resource->GetName();
-		$this->id = "{$this->type}-{$group_id}-{$resource->GetId()}";
-		$this->label = $resource->GetName();
-		$this->resource_id = $resource->GetId();
-		$this->resourceAdminGroupId = $resource->GetAdminGroupId();
-		$this->scheduleId = $resource->GetScheduleId();
-		$this->statusId = $resource->GetStatusId();
-		$this->scheduleAdminGroupId = $resource->GetScheduleAdminGroupId();
-		$this->resourceTypeId = $resource->GetResourceTypeId();
-		$this->resource = $resource;
+		$this->resource_name = $resource_name;
+		$this->id = "{$this->type}-{$group_id}-{$resource_id}";
+		$this->label = $resource_name;
+		$this->resource_id = $resource_id;
+		$this->resourceAdminGroupId = $resourceAdminGroupId;
+		$this->scheduleId = $scheduleId;
+		$this->statusId = $statusId;
+		$this->scheduleAdminGroupId = $scheduleAdminGroupId;
 	}
 
 	public function GetId()
 	{
 		return $this->resource_id;
-	}
-
-	public function GetResourceTypeId()
-	{
-		return $this->resourceTypeId;
 	}
 
 	public function GetName()
@@ -299,13 +288,5 @@ class ResourceGroupAssignment implements IResource
 	public function GetResourceId()
 	{
 		return $this->resource_id;
-	}
-
-	/**
-	 * @return BookableResource
-	 */
-	public function GetResource()
-	{
-		return $this->resource;
 	}
 }

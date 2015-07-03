@@ -135,8 +135,12 @@ class ResourceAvailabilityControl extends DashboardItem implements IResourceAvai
 
 
 		$this->presenter = new ResourceAvailabilityControlPresenter($this,
-																	new ResourceService(new ResourceRepository(), PluginManager::Instance()->LoadPermission(),
-																						new AttributeService(new AttributeRepository()), new UserRepository()),
+																	new ResourceService(new ResourceRepository(),
+																						PluginManager::Instance()->LoadPermission(),
+																						new AttributeService(new AttributeRepository()),
+																						new UserRepository(),
+																						new AccessoryRepository()
+																	),
 																	new ReservationViewRepository());
 	}
 

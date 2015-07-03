@@ -78,6 +78,10 @@ class ReservationResponse extends RestResponse
 	 * @var ReminderRequestResponse
 	 */
 	public $endReminder;
+	/**
+	 * @var bool
+	 */
+	public $allowParticipation;
 
 	/**
 	 * @param IRestServer $server
@@ -165,6 +169,8 @@ class ReservationResponse extends RestResponse
 		{
 			$this->AddService($server, WebServices::ApproveReservation, array(WebServiceParams::ReferenceNumber => $reservation->ReferenceNumber));
 		}
+
+		$this->allowParticipation = $reservation->AllowParticipation;
 	}
 
 

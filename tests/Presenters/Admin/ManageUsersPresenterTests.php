@@ -371,31 +371,6 @@ class ManageUsersPresenterTests extends TestBase
 		$this->presenter->DeleteUser();
 	}
 
-	public function testUpdatesAttributes()
-	{
-		$attributeId = 1;
-		$attributeValue = 'value';
-		$userId = 111;
-		$attributeFormElements = array(new AttributeFormElement($attributeId, $attributeValue));
-
-		$this->page
-				->expects($this->once())
-				->method('GetAttributes')
-				->will($this->returnValue($attributeFormElements));
-
-		$this->page
-				->expects($this->once())
-				->method('GetUserId')
-				->will($this->returnValue($userId));
-
-		$this->manageUsersService->expects($this->once())
-				->method('ChangeAttributes')
-				->with($this->equalTo($userId),
-					   $this->equalTo(array(new AttributeValue($attributeId, $attributeValue))));
-
-		$this->presenter->ChangeAttributes();
-	}
-
 	public function testAddsUser()
 	{
 		$fname = 'f';
