@@ -38,7 +38,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 						<span class="no-data">{translate key=AllNoUpcomingReservations args=30}</span>
 					{/if}
 				</div>
-				<div class="inline">
+				<div class="pull-right">
 					<a class="btn btn-xs" href="{$Path}{Pages::RESERVATION}?{QueryStringKeys::RESOURCE_ID}={$i->ResourceId()}">{translate key=CreateReservation}</a>
 				</div>
 			</div>

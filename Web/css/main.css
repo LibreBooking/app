@@ -373,3 +373,13 @@ input[type=text].user-search {
 .ui-autocomplete {
   z-index: 5000;
 }
+.jqtree-tree,
+.jqtree-tree li {
+  list-style: none;
+}
+.jqtree-tree a,
+.jqtree-tree li a {
+  text-decoration: none;
+  cursor: pointer;
+  color: #000;
+}

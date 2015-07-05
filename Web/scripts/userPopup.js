@@ -19,54 +19,63 @@
 
 $.fn.bindUserDetails = function (userId, options) {
 
-	return $(this).each(function(index, value)
-	{
-			var self = $(value);
-			var opts = $.extend({preventClick: true}, options);
+	return $(this).each(function (index, value) {
+		var self = $(value);
+		var opts = $.extend({preventClick: true}, options);
 
-			bind(self);
+		bind(self);
 
-			function getDiv() {
-				if ($('#userDetailsDiv').length <= 0)
-				{
-					return $('<div id="userDetailsDiv"/>').appendTo('body');
-				}
-				else
-				{
-					return $('#userDetailsDiv');
-				}
+		function getDiv() {
+			if ($('#userDetailsDiv').length <= 0)
+			{
+				return $('<div id="userDetailsDiv"/>').appendTo('body');
+			}
+			else
+			{
+				return $('#userDetailsDiv');
+			}
+		}
+
+		function hideDiv() {
+			var tag = getDiv();
+			var timeoutId = setTimeout(function () {
+				tag.hide();
+			}, 500);
+			tag.data('timeoutId', timeoutId);
+		}
+
+		function bind(userElement) {
+			if (userElement.attr('user-details-bound') === '1')
+			{
+				return;
 			}
 
-			function hideDiv() {
-				var tag = getDiv();
-				var timeoutId = setTimeout(function () {
-					tag.hide();
-				}, 500);
-				tag.data('timeoutId', timeoutId);
-			}
-
-			function bind(userElement) {
-				if (userElement.attr('user-details-bound') === '1')
-				{
-					return;
-				}
-
-				if (opts.preventClick)
-				{
-					userElement.click(function (e) {
-						e.preventDefault();
-					});
-				}
-
-				var tag = getDiv();
-
-				tag.mouseenter(function () {
-					clearTimeout(tag.data('timeoutId'));
-				}).mouseleave(function () {
-					hideDiv();
+			if (opts.preventClick)
+			{
+				userElement.click(function (e) {
+					e.preventDefault();
 				});
+			}
 
-				userElement.mouseenter(function () {
+			var tag = getDiv();
+
+			tag.mouseenter(function () {
+				clearTimeout(tag.data('timeoutId'));
+			}).mouseleave(function () {
+				hideDiv();
+			});
+
+			var hoverTimer;
+
+			userElement.mouseenter(function () {
+
+				if (hoverTimer)
+				{
+					clearTimeout(hoverTimer);
+					hoverTimer = null;
+				}
+
+				hoverTimer = setTimeout(function () {
 					var idToLoad = userId;
 					if (!idToLoad)
 					{
@@ -102,11 +111,17 @@ $.fn.bindUserDetails = function (userId, options) {
 						tag.html(data).show();
 						tag.position({my: 'left bottom', at: 'right top', of: userElement});
 					}
-				}).mouseleave(function () {
-					hideDiv();
-				});
+				}, 500);
+			}).mouseleave(function () {
+				if (hoverTimer)
+				{
+					clearTimeout(hoverTimer);
+					hoverTimer = null;
+				}
+				hideDiv();
+			});
 
-				userElement.attr('user-details-bound', '1');
-			}
+			userElement.attr('user-details-bound', '1');
+		}
 	});
 };

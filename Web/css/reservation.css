@@ -56,6 +56,9 @@
 #reservationDetails {
   padding-right: 25px;
 }
+#reservationDetails #userName {
+  font-size: 1.2em;
+}
 .reservationButtons {
   margin-top: 20px;
 }
@@ -72,7 +75,6 @@
 }
 #reservationParticipation {
   padding-left: 25px;
-  border-left: solid 1px #bcbcbc;
 }
 #participantList,
 #inviteeList {
@@ -149,9 +151,16 @@ ul.jqtree-tree .group-resource .jqtree-title {
 .buttonsTop {
   margin-bottom: 10px;
 }
-label.reservationDate {
+.reservationDate {
   width: 50px;
   display: inline-block;
+}
+.reservationDates,
+.reservationTitle {
+  padding-top: 8px;
+}
+.reservationLength .form-group {
+  margin-bottom: 0;
 }
 #reservationCreated .approvalMessage,
 #reservationUpdated .approvalMessage {

@@ -62,72 +62,69 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		{/if}
 	</div>
 	<div class="attributes">
-		<ul>
-			<li>
-				{if $minimumDuration neq ''}
-					{translate key='ResourceMinLength' args=$minimumDuration}
-				{else}
-					{translate key='ResourceMinLengthNone'}
-				{/if}
-			</li>
-			<li>
-				{if $maximumDuration neq ''}
-					{translate key='ResourceMaxLength' args=$maximumDuration}
-				{else}
-					{translate key='ResourceMaxLengthNone'}
-				{/if}
-			</li>
-			<li>
-				{if $requiresApproval}
-					{translate key='ResourceRequiresApproval'}
-				{else}
-					{translate key='ResourceRequiresApprovalNone'}
-				{/if}
-			</li>
-			<li>
-				{if $minimumNotice neq ''}
-					{translate key='ResourceMinNotice' args=$minimumNotice}
-				{else}
-					{translate key='ResourceMinNoticeNone'}
-				{/if}
-			</li>
-			<li>
-				{if $maximumNotice neq ''}
-					{translate key='ResourceMaxNotice' args=$maximumNotice}
-				{else}
-					{translate key='ResourceMaxNoticeNone'}
-				{/if}
-			</li>
-			<li>
-				{if $allowMultiday}
-					{translate key='ResourceAllowMultiDay'}
-				{else}
-					{translate key='ResourceNotAllowMultiDay'}
-				{/if}
-			</li>
-			<li>
-				{if $maxParticipants neq ''}
-					{translate key='ResourceCapacity' args=$maxParticipants}
-				{else}
-					{translate key='ResourceCapacityNone'}
-				{/if}
-			</li>
-			{if $Attributes|count > 0}
-				{foreach from=$Attributes item=attribute}
-					<li>
-						{control type="AttributeControl" attribute=$attribute readonly=true}
-					</li>
-				{/foreach}
+		<div>
+			{if $minimumDuration neq ''}
+				{translate key='ResourceMinLength' args=$minimumDuration}
+			{else}
+				{translate key='ResourceMinLengthNone'}
 			{/if}
-			{if $ResourceTypeAttributes|count > 0}
-				{foreach from=$ResourceTypeAttributes item=attribute}
-					<li>
-						{control type="AttributeControl" attribute=$attribute readonly=true}
-					</li>
-				{/foreach}
+		</div>
+		<div>
+			{if $maximumDuration neq ''}
+				{translate key='ResourceMaxLength' args=$maximumDuration}
+			{else}
+				{translate key='ResourceMaxLengthNone'}
 			{/if}
-
-		</ul>
+		</div>
+		<div>
+			{if $requiresApproval}
+				{translate key='ResourceRequiresApproval'}
+			{else}
+				{translate key='ResourceRequiresApprovalNone'}
+			{/if}
+		</div>
+		<div>
+			{if $minimumNotice neq ''}
+				{translate key='ResourceMinNotice' args=$minimumNotice}
+			{else}
+				{translate key='ResourceMinNoticeNone'}
+			{/if}
+		</div>
+		<div>
+			{if $maximumNotice neq ''}
+				{translate key='ResourceMaxNotice' args=$maximumNotice}
+			{else}
+				{translate key='ResourceMaxNoticeNone'}
+			{/if}
+		</div>
+		<div>
+			{if $allowMultiday}
+				{translate key='ResourceAllowMultiDay'}
+			{else}
+				{translate key='ResourceNotAllowMultiDay'}
+			{/if}
+		</div>
+		<div>
+			{if $maxParticipants neq ''}
+				{translate key='ResourceCapacity' args=$maxParticipants}
+			{else}
+				{translate key='ResourceCapacityNone'}
+			{/if}
+		</div>
+		{if $Attributes|count > 0}
+			{foreach from=$Attributes item=attribute}
+				<div>
+					{control type="AttributeControl" attribute=$attribute readonly=true}
+				</div>
+			{/foreach}
+		{/if}
+		{if $ResourceTypeAttributes|count > 0}
+			{foreach from=$ResourceTypeAttributes item=attribute}
+				<div>
+					{control type="AttributeControl" attribute=$attribute readonly=true}
+				</div>
+			{/foreach}
+		{/if}
 	</div>
 	<div style="clearfix">&nbsp;</div>
 </div>

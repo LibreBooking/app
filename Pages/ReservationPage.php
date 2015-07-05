@@ -129,26 +129,6 @@ interface IReservationPage extends IPage
 	public function HideRecurrence($isHidden);
 
 	/**
-	 * @param bool $isAdminForUser
-	 */
-	public function SetIsAdminForUser($isAdminForUser);
-
-	/**
-	 * @param bool $isAdminForResource
-	 */
-	public function SetIsAdminForResource($isAdminForResource);
-
-	/**
-	 * @return bool
-	 */
-	public function GetIsAdminForUser();
-
-	/**
-	 * @return bool
-	 */
-	public function GetIsAdminForResource();
-
-	/**
 	 * @param bool $allowParticipation
 	 */
 	function SetAllowParticipantsToJoin($allowParticipation);
@@ -367,25 +347,5 @@ abstract class ReservationPage extends Page implements IReservationPage
 	public function HideRecurrence($isHidden)
 	{
 		$this->Set('HideRecurrence', $isHidden);
-	}
-
-	public function SetIsAdminForUser($isAdminForUser)
-	{
-		$this->Set('IsAdminForUser', $isAdminForUser);
-	}
-
-	public function SetIsAdminForResource($isAdminForResource)
-	{
-		$this->Set('IsAdminForResource', $isAdminForResource);
-	}
-
-	public function GetIsAdminForUser()
-	{
-		return $this->GetVar('IsAdminForUser');
-	}
-
-	public function GetIsAdminForResource()
-	{
-		return $this->GetVar('IsAdminForResource');
 	}
 }

@@ -373,6 +373,16 @@ input[type=text].user-search {
 .ui-autocomplete {
   z-index: 5000;
 }
+.jqtree-tree,
+.jqtree-tree li {
+  list-style: none;
+}
+.jqtree-tree a,
+.jqtree-tree li a {
+  text-decoration: none;
+  cursor: pointer;
+  color: #000;
+}
 .checkbox {
   padding-left: 20px;
 }
@@ -632,12 +642,11 @@ input[type=text].user-search {
   font-weight: bold;
 }
 .availabilityDashboard .resourceName {
-  width: 240px;
+  width: 350px;
   display: inline-block;
   text-overflow: ellipsis;
 }
 .availabilityDashboard .availability {
-  width: 300px;
   display: inline-block;
   text-overflow: ellipsis;
 }
@@ -909,7 +918,7 @@ a.toggle-sidebar {
 #showFullWeek {
   display: block;
 }
-#resourceDetailsPopup {
+#resourceDetailsPopup #userDetailsPopup {
   min-width: 300px;
   max-width: 1000px;
   width: auto;
@@ -917,13 +926,15 @@ a.toggle-sidebar {
 #resourceDetailsPopup ul {
   margin-left: 25px;
 }
-#resourceDetailsPopup h4 {
+#resourceDetailsPopup h4,
+#userDetailsPopup #userDetailsName {
   border-bottom: solid 1px #000;
   font-size: 1.2em;
   margin-bottom: 3px;
   font-weight: bold;
 }
-#resourceDetailsPopup .customAttribute {
+#resourceDetailsPopup .customAttribute,
+#userDetailsPopup .customAttribute {
   font-size: inherit;
 }
 #resourceDetailsPopup .attributes {
@@ -943,7 +954,8 @@ a.toggle-sidebar {
   max-height: 200px;
   max-width: 200px;
 }
-#resourceDetailsDiv {
+#resourceDetailsDiv,
+#userDetailsDiv {
   display: none;
   position: absolute;
   border: solid 2px #212121;
@@ -954,15 +966,21 @@ a.toggle-sidebar {
   box-shadow: 0px 0px 3px 0px #212121;
   z-index: 99999;
 }
+#userDetailsPopup .label {
+  font-weight: bold;
+  color: #000;
+}
 @media only screen and (max-device-width: 480px) {
-  #resourceDetailsPopup {
+  #resourceDetailsPopup,
+  #userDetailsPopup {
     min-width: 250px;
     max-width: 310px;
     font-size: .8em;
   }
   #resourceDetailsPopup .description,
-  #resourceDetailsPopup .attributes {
-    max-width: auto;
+  #resourceDetailsPopup .attributes,
+  #userDetailsPopup .attributes {
+    max-width: 100%;
     float: none;
   }
   #resourceDetailsPopup .resourceImage {
@@ -1028,6 +1046,9 @@ a.toggle-sidebar {
 #reservationDetails {
   padding-right: 25px;
 }
+#reservationDetails #userName {
+  font-size: 1.2em;
+}
 .reservationButtons {
   margin-top: 20px;
 }
@@ -1044,7 +1065,6 @@ a.toggle-sidebar {
 }
 #reservationParticipation {
   padding-left: 25px;
-  border-left: solid 1px #bcbcbc;
 }
 #participantList,
 #inviteeList {
@@ -1121,9 +1141,16 @@ ul.jqtree-tree .group-resource .jqtree-title {
 .buttonsTop {
   margin-bottom: 10px;
 }
-label.reservationDate {
+.reservationDate {
   width: 50px;
   display: inline-block;
+}
+.reservationDates,
+.reservationTitle {
+  padding-top: 8px;
+}
+.reservationLength .form-group {
+  margin-bottom: 0;
 }
 #reservationCreated .approvalMessage,
 #reservationUpdated .approvalMessage {
@@ -1237,8 +1264,9 @@ span.error {
   border: solid 1px #ccc;
 }
 .resourceDetails {
-  font-size: 1em;
+  font-size: 1.2em;
   padding: 3px;
+  font-weight: bold;
 }
 .resourceDetails img.image {
   width: 100px;

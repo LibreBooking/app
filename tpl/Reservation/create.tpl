@@ -95,7 +95,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 						<div class="form-group">
 							<div class="pull-left">
 								<div>
-									<label>{translate key="ResourceList"}</label>
+									<label>{translate key="Resources"}</label>
 									{if $ShowAdditionalResources}
 										<a id="btnAddResources" href="#"
 										   class="small-action" data-toggle="modal" data-target="#dialogResourceGroups">{translate key=Add} <span
@@ -129,7 +129,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 						</div>
 					</div>
 
-					<div class="col-xs-12">
+					<div class="col-xs-12 reservationDates">
 						<div class="col-md-6 no-padding-left">
 							<div class="form-group">
 								<label for="BeginDate" class="reservationDate">{translate key='BeginDate'}</label>
@@ -173,7 +173,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 							</div>
 						</div>
 					</div>
-					<div class="col-xs-12">
+					<div class="col-xs-12 reservationLength">
 						<div class="form-group">
 							<span class="like-label">{translate key=ReservationLength}</span>
 
@@ -188,7 +188,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 							{control type="RecurrenceControl" RepeatTerminationDate=$RepeatTerminationDate}
 						</div>
 					{/if}
-					<div class="col-xs-12">
+					<div class="col-xs-12 reservationTitle">
 						<div class="form-group has-feedback">
 							<label for="reservationTitle">{translate key="ReservationTitle"}</label>
 							{textbox name="RESERVATION_TITLE" class="form-control" value="ReservationTitle" id="reservationTitle"}
