@@ -27,7 +27,7 @@ class SmartyTextbox
 	public function __construct($formKey, $type, $id, $smartyVariable, $attributes, &$smarty)
 	{
 		$this->name = $this->GetName($formKey);
-		$this->type = $type;
+		$this->type = empty($type) ? 'text' : $type;
         $this->id = empty($id) ? $this->GetName($formKey) : $id;
 		$this->attributes = $attributes;
 		$this->smartyVariable = $smartyVariable;

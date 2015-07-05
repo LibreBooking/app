@@ -130,12 +130,12 @@ class NewReservationInitializer extends ReservationInitializerBase
 class BindableResourceData
 {
 	/**
-	 * @var BookableResource
+	 * @var ResourceDto
 	 */
 	public $ReservationResource;
 
 	/**
-	 * @var array|BookableResource[]
+	 * @var array|ResourceDto[]
 	 */
 	public $AvailableResources;
 
@@ -151,7 +151,7 @@ class BindableResourceData
 	}
 
 	/**
-	 * @param $resource BookableResource
+	 * @param $resource ResourceDto
 	 * @return void
 	 */
 	public function SetReservationResource($resource)
@@ -160,7 +160,7 @@ class BindableResourceData
 	}
 
 	/**
-	 * @param $resource BookableResource
+	 * @param $resource ResourceDto
 	 * @return void
 	 */
 	public function AddAvailableResource($resource)

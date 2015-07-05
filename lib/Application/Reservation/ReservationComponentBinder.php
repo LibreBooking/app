@@ -48,9 +48,9 @@ class ReservationDateBinder implements IReservationComponentBinder
 		{
 			$resource = $initializer->PrimaryResource();
 
-			if ($resource->GetMinLength() != null && !$resource->GetMinLength()->Interval()->IsNull())
+			if ($resource->GetMinimumLength() != null && !$resource->GetMinimumLength()->Interval()->IsNull())
 			{
-				$endDate = $startDate->ApplyDifference($resource->GetMinLength()->Interval());
+				$endDate = $startDate->ApplyDifference($resource->GetMinimumLength()->Interval());
 			}
 		}
 
@@ -111,11 +111,6 @@ class ReservationUserBinder implements IReservationComponentBinder
 
 		$initializer->ShowUserDetails(!$hideUser || $currentUser->IsAdmin);
 		$initializer->SetShowParticipation(!$hideUser || $currentUser->IsAdmin || $currentUser->IsGroupAdmin);
-
-		$currentUser = $this->userRepository->LoadById($initializer->CurrentUser()->UserId);
-		$owner = $this->userRepository->LoadById($userId);
-
-		$initializer->SetIsAdminForUser($currentUser->IsAdminFor($owner));
 	}
 }
 
@@ -126,15 +121,9 @@ class ReservationResourceBinder implements IReservationComponentBinder
 	 */
 	private $resourceService;
 
-	/**
-	 * @var IUserRepository
-	 */
-	private $userRepository;
-
-	public function __construct(IResourceService $resourceService, IUserRepository $userRepository)
+	public function __construct(IResourceService $resourceService)
 	{
 		$this->resourceService = $resourceService;
-		$this->userRepository = $userRepository;
 	}
 
 	public function Bind(IReservationComponentInitializer $initializer)
@@ -146,9 +135,8 @@ class ReservationResourceBinder implements IReservationComponentBinder
 		$resources = $groups->GetAllResources();
 		if (empty($requestedResourceId) && count($resources) > 0)
 		{
-			/** @var ResourceGroupAssignment $first */
 			$first = reset($resources);
-			$requestedResourceId = $first->GetId();
+			$requestedResourceId = $first->Id;
 		}
 
 		$bindableResourceData = $this->GetBindableResourceData($resources, $requestedResourceId);
@@ -157,17 +145,6 @@ class ReservationResourceBinder implements IReservationComponentBinder
 		{
 			$initializer->RedirectToError(ErrorMessages::INSUFFICIENT_PERMISSIONS);
 			return;
-		}
-
-		$user = $this->userRepository->LoadById($initializer->CurrentUser()->UserId);
-
-		foreach ($resources as $resource)
-		{
-			if ($user->IsResourceAdminFor($resource))
-			{
-				$initializer->SetIsAdminForResource(true);
-				break;
-			}
 		}
 
 		$initializer->BindResourceGroups($groups);
@@ -179,7 +156,7 @@ class ReservationResourceBinder implements IReservationComponentBinder
 	}
 
 	/**
-	 * @param $resources array|ResourceGroupAssignment[]
+	 * @param $resources array|ResourceDto[]
 	 * @param $requestedResourceId int
 	 * @return BindableResourceData
 	 */
@@ -187,13 +164,13 @@ class ReservationResourceBinder implements IReservationComponentBinder
 	{
 		$bindableResourceData = new BindableResourceData();
 
-		/** @var $resource ResourceGroupAssignment */
+		/** @var $resource ResourceDto */
 		foreach ($resources as $resource)
 		{
-			$bindableResourceData->AddAvailableResource($resource->GetResource());
-			if ($resource->GetId() == $requestedResourceId)
+			$bindableResourceData->AddAvailableResource($resource);
+			if ($resource->Id == $requestedResourceId)
 			{
-				$bindableResourceData->SetReservationResource($resource->GetResource());
+				$bindableResourceData->SetReservationResource($resource);
 			}
 		}
 

@@ -96,7 +96,7 @@ class AuthenticatedUser
 		$this->phone = $phone;
 		$this->organization = $organization;
 		$this->title = $title;
-		$this->groups = $groups;
+		$this->groups = is_null($groups) ? array() : $groups;;
 	}
 
 	/**

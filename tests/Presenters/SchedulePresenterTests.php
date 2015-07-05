@@ -699,7 +699,7 @@ class SchedulePresenterTests extends TestBase
 				->with($this->equalTo(true));
 
 		$builder = new SchedulePageBuilder();
-		$builder->BindDisplayDates($page, new DateRange($start, $end), $session, $schedule);
+		$builder->BindDisplayDates($page, new DateRange($start, $end), $schedule);
 	}
 
 	public function testPreviousAndNextLinksWhenStartingOnMondayShowingTenDays()
@@ -723,7 +723,7 @@ class SchedulePresenterTests extends TestBase
 				->with($this->equalTo($expectedPrevious), $this->equalTo($expectedNext));
 
 		$builder = new SchedulePageBuilder();
-		$builder->BindDisplayDates($page, new DateRange($start, $end), $session, $schedule);
+		$builder->BindDisplayDates($page, new DateRange($start, $end), $schedule);
 	}
 
 	public function testShowsSevenDaysIfWeAreShowingFullWeek()

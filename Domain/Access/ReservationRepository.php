@@ -99,7 +99,7 @@ class ReservationRepository implements IReservationRepository
 		{
 			Log::Debug('Updating existing series (seriesId: %s)', $reservationSeries->SeriesId());
 
-			$updateSeries = new UpdateReservationSeriesCommand($reservationSeries->SeriesId(), $reservationSeries->Title(), $reservationSeries->Description(), $reservationSeries->RepeatOptions() ->RepeatType(), $reservationSeries->RepeatOptions()->ConfigurationString(), Date::Now(), $reservationSeries->StatusId(), $reservationSeries->UserId(),  $reservationSeries->GetAllowParticipation());
+			$updateSeries = new UpdateReservationSeriesCommand($reservationSeries->SeriesId(), $reservationSeries->Title(), $reservationSeries->Description(), $reservationSeries->RepeatOptions() ->RepeatType(), $reservationSeries->RepeatOptions()->ConfigurationString(), Date::Now(), $reservationSeries->StatusId(), $reservationSeries->UserId(), $reservationSeries->GetAllowParticipation());
 
 			$database->Execute($updateSeries);
 

@@ -440,14 +440,14 @@ class ReservationRepositoryTests extends TestBase
 		$builder = new ExistingReservationSeriesBuilder();
 		$existingReservation = $builder->Build();
 
-		$existingReservation->Update($userId, $existingReservation->Resource(), $title, $description,
-									 new FakeUserSession());
+		$existingReservation->Update($userId, $existingReservation->Resource(), $title, $description, new FakeUserSession());
+		$existingReservation->AllowParticipation($allowParticipation);
+
 		$repeatOptions = $existingReservation->RepeatOptions();
 		$repeatType = $repeatOptions->RepeatType();
 		$repeatConfiguration = $repeatOptions->ConfigurationString();
 
 		$this->repository->Update($existingReservation);
-		$existingReservation->AllowParticipation($allowParticipation);
 
 		$updateSeriesCommand = new UpdateReservationSeriesCommand(
 			$existingReservation->SeriesId(),

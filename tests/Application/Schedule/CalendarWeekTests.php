@@ -1,22 +1,22 @@
 <?php
 /**
-Copyright 2011-2015 Nick Korbel
-
-This file is part of Booked Scheduler.
-
-Booked Scheduler is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-Booked Scheduler is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ * Copyright 2011-2015 Nick Korbel
+ *
+ * This file is part of Booked Scheduler.
+ *
+ * Booked Scheduler is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Booked Scheduler is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 require_once(ROOT_DIR . 'lib/Application/Schedule/namespace.php');
 require_once(ROOT_DIR . 'Domain/Access/namespace.php');
@@ -55,7 +55,7 @@ class CalendarWeekTests extends TestBase
 		$week->AddReservations($calendarReservations);
 
 		$expectedFirstDay = Date::Parse('2011-07-31', $timezone);
-		$expectedLastDay = Date::Parse('2011-08-07', $timezone);
+		$expectedLastDay = Date::Parse('2011-08-06', $timezone);
 
 		$this->assertEquals($expectedFirstDay, $week->FirstDay());
 		$this->assertEquals($expectedLastDay, $week->LastDay());
@@ -80,7 +80,7 @@ class CalendarWeekTests extends TestBase
 		$actualDays = $week->Days();
 
 		$this->assertEquals(7, count($actualDays));
-		$this->assertEquals($day1, $actualDays[0]);
+		$this->assertEquals($day1->Date(), $actualDays[0]->Date());
 		$this->assertEquals($day2, $actualDays[1]);
 		$this->assertEquals($day3, $actualDays[2]);
 		$this->assertEquals($day4, $actualDays[3]);
@@ -94,5 +94,23 @@ class CalendarWeekTests extends TestBase
 		$this->assertEquals($next, $week->GetNextDate());
 		$this->assertEquals($prev, $week->GetPreviousDate());
 	}
+
+	public function testWhenFirstDayOfTheWeekIsNotSunday()
+	{
+		$timezone = 'America/Chicago';
+
+		$next = Date::Parse('2014-07-14', $timezone);
+		$prev = Date::Parse('2014-06-30', $timezone);
+
+		$expectedFirstDay = Date::Parse('2014-07-07', $timezone);
+		$expectedLastDay = Date::Parse('2014-07-13', $timezone);
+
+		$week = CalendarWeek::FromDate(2014, 7, 12, $timezone, 1);
+
+		$this->assertEquals($expectedFirstDay, $week->FirstDay(), $week->FirstDay()->__toString());
+		$this->assertEquals($expectedLastDay, $week->LastDay(), $week->LastDay()->__toString());
+
+		$this->assertEquals($next, $week->GetNextDate(), $week->GetNextDate()->__toString());
+		$this->assertEquals($prev, $week->GetPreviousDate(), $week->GetPreviousDate()->__toString());
+	}
 }
-?>

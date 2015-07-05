@@ -27,13 +27,11 @@ require_once(ROOT_DIR . 'Pages/ReservationPage.php');
 interface IReservationComponentInitializer
 {
 	/**
-	 * @abstract
 	 * @return int
 	 */
 	public function GetResourceId();
 
 	/**
-	 * @abstract
 	 * @return int
 	 */
 	public function GetScheduleId();
@@ -54,13 +52,11 @@ interface IReservationComponentInitializer
 	public function GetReservationDate();
 
 	/**
-	 * @abstract
 	 * @return int
 	 */
 	public function GetOwnerId();
 
 	/**
-	 * @abstract
 	 * @return string
 	 */
 	public function GetTimezone();
@@ -79,7 +75,7 @@ interface IReservationComponentInitializer
 	public function CurrentUser();
 
 	/**
-	 * @return BookableResource
+	 * @return ResourceDto
 	 */
 	public function PrimaryResource();
 
@@ -157,26 +153,6 @@ interface IReservationComponentInitializer
 	 * @return bool
 	 */
 	public function IsNew();
-
-	/**
-	 * @param bool $isAdminForUser
-	 */
-	public function SetIsAdminForUser($isAdminForUser);
-
-	/**
-	 * @param bool $isAdminForResource
-	 */
-	public function SetIsAdminForResource($isAdminForResource);
-
-	/**
-	 * @return bool
-	 */
-	public function GetIsAdminForUser();
-
-	/**
-	 * @return bool
-	 */
-	public function GetIsAdminForResource();
 }
 
 abstract class ReservationInitializerBase implements IReservationInitializer, IReservationComponentInitializer
@@ -459,25 +435,5 @@ abstract class ReservationInitializerBase implements IReservationInitializer, IR
 	public function IsNew()
 	{
 		return true;
-	}
-
-	public function SetIsAdminForUser($isAdminForUser)
-	{
-		$this->basePage->SetIsAdminForUser($isAdminForUser);
-	}
-
-	public function SetIsAdminForResource($isAdminForResource)
-	{
-		$this->basePage->SetIsAdminForResource($isAdminForResource);
-	}
-
-	public function GetIsAdminForUser()
-	{
-		return $this->basePage->GetIsAdminForUser();
-	}
-
-	public function GetIsAdminForResource()
-	{
-		return $this->basePage->GetIsAdminForResource();
 	}
 }

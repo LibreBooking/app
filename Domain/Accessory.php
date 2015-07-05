@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Copyright 2011-2015 Nick Korbel
+ * Copyright 2011-2014 Nick Korbel
  *
  * This file is part of Booked Scheduler.
  *
@@ -155,6 +155,23 @@ class Accessory
 	public function IsTiedToResource()
 	{
 		return count($this->resources) > 0;
+	}
+
+	/**
+	 * @param int $resourceId
+	 * @return ResourceAccessory
+	 */
+	public function GetResource($resourceId)
+	{
+		foreach ($this->resources as $resource)
+		{
+			if ($resource->ResourceId == $resourceId)
+			{
+				return $resource;
+			}
+		}
+
+		return null;
 	}
 }
 

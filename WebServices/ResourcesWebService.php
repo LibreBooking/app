@@ -106,10 +106,14 @@ class ResourcesWebService
 	{
 		// Todo: add filtering
 		$scheduleId = ResourceRepository::ALL_SCHEDULES;
-		if( $resourceTypeName=='All' )
+		if ($resourceTypeName == 'All')
+		{
 			$resourceFilter = null;
+		}
 		else
-			$resourceFilter = new ResourceTypeFilter( $resourceTypeName );
+		{
+			$resourceFilter = new ResourceTypeFilter($resourceTypeName);
+		}
 
 		$resourcegrouptree = $this->resourceRepository->GetResourceGroups($scheduleId, $resourceFilter);
 		$this->server->WriteResponse(new ResourceGroupTreeResponse($this->server, $resourcegrouptree));

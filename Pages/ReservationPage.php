@@ -124,11 +124,6 @@ interface IReservationPage extends IPage
 	public function ShowReservationDetails($showReservationDetails);
 
 	/**
-	 * @param $attributes array|Attribute[]
-	 */
-	public function SetCustomAttributes($attributes);
-
-	/**
 	 * @param bool $isHidden
 	 */
 	public function HideRecurrence($isHidden);
@@ -367,11 +362,6 @@ abstract class ReservationPage extends Page implements IReservationPage
 	public function ShowReservationDetails($showReservationDetails)
 	{
 		$this->Set('ShowReservationDetails', $showReservationDetails);
-	}
-
-	public function SetCustomAttributes($attributes)
-	{
-		$this->Set('Attributes', $attributes);
 	}
 
 	public function HideRecurrence($isHidden)

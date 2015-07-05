@@ -20,10 +20,8 @@
 
 require_once(ROOT_DIR . 'Domain/Access/namespace.php');
 require_once(ROOT_DIR . 'lib/Application/Reservation/namespace.php');
-
 require_once(ROOT_DIR . 'Pages/ReservationPage.php');
 require_once(ROOT_DIR . 'Pages/NewReservationPage.php');
-
 require_once(ROOT_DIR . 'lib/Application/Reservation/NewReservationInitializer.php');
 
 class ReservationInitializationTests extends TestBase
@@ -42,10 +40,6 @@ class ReservationInitializationTests extends TestBase
 	 * @var IReservationComponentBinder|PHPUnit_Framework_MockObject_MockObject
 	 */
 	private $resourceBinder;
-	/**
-	 * @var IReservationComponentBinder|PHPUnit_Framework_MockObject_MockObject
-	 */
-	private $attributeBinder;
 
 	/**
 	 * @var INewReservationPage|PHPUnit_Framework_MockObject_MockObject
@@ -69,13 +63,10 @@ class ReservationInitializationTests extends TestBase
 		$this->userBinder = $this->getMock('IReservationComponentBinder');
 		$this->dateBinder = $this->getMock('IReservationComponentBinder');
 		$this->resourceBinder = $this->getMock('IReservationComponentBinder');
-		$this->attributeBinder = $this->getMock('IReservationComponentBinder');
 		$this->page = $this->getMock('INewReservationPage');
 
 		$this->scheduleRepository = new FakeScheduleRepository();
-		$this->initializer = new NewReservationInitializer($this->page, $this->userBinder, $this->dateBinder, $this->resourceBinder, $this->attributeBinder,
-														   $this->fakeUser, $this->scheduleRepository);
-
+		$this->initializer = new NewReservationInitializer($this->page, $this->userBinder, $this->dateBinder, $this->resourceBinder, $this->fakeUser, $this->scheduleRepository);
 	}
 
 	public function teardown()
@@ -95,10 +86,6 @@ class ReservationInitializationTests extends TestBase
 				   ->method('SetScheduleId')
 				   ->with($this->equalTo($scheduleId));
 
-		$this->page->expects($this->once())
-				   ->method('SetCustomAttributes')
-				   ->with($this->anything());
-
 		$this->userBinder->expects($this->once())
 						 ->method('Bind')
 						 ->with($this->equalTo($this->initializer));
@@ -110,10 +97,6 @@ class ReservationInitializationTests extends TestBase
 		$this->resourceBinder->expects($this->once())
 							 ->method('Bind')
 							 ->with($this->equalTo($this->initializer));
-
-		$this->attributeBinder->expects($this->once())
-							  ->method('Bind')
-							  ->with($this->equalTo($this->initializer));
 
 		$this->initializer->Initialize();
 	}
@@ -156,13 +139,14 @@ class ReservationInitializationTests extends TestBase
 			 ->method('SetRepeatTerminationDate')
 			 ->with($this->equalTo($endDate));
 
-		$initializer = new NewReservationInitializer($page, $binder, $binder, $binder, $binder, $this->fakeUser, $this->scheduleRepository);
+		$initializer = new NewReservationInitializer($page, $binder, $binder, $binder, $this->fakeUser, $this->scheduleRepository);
 		$initializer->SetDates($startDate, $endDate, $periods, $periods);
 	}
 
 	public function testWhenNoScheduleIsPassed_UseDefaultScheduleId()
 	{
 		$id = $this->scheduleRepository->_DefaultScheduleId;
+
 		$this->page->expects($this->once())
 						   ->method('GetRequestedScheduleId')
 						   ->will($this->returnValue(null));

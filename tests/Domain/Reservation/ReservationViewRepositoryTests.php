@@ -282,14 +282,13 @@ class ReservationViewRepositoryTests extends TestBase
 
 		$this->db->SetRows($rows);
 
-		$expectedCommand = new GetReservationListCommand($startDate, $endDate, $userId, ReservationUserLevel::OWNER, $scheduleId, $resourceId);
-
+		$reservationCommand = new GetReservationListCommand($startDate, $endDate, $userId, ReservationUserLevel::OWNER, $scheduleId, $resourceId);
+		$reservationColorsCommand = new GetReservationColorRulesCommand();
 		$reservations = $this->repository->GetReservationList($startDate, $endDate, $userId, null, $scheduleId,
 															  $resourceId);
 
-		$actualCommand = $this->db->_LastCommand;
-
-		$this->assertEquals($expectedCommand, $actualCommand);
+		$this->assertEquals($reservationCommand, $this->db->_Commands[0]);
+		$this->assertEquals($reservationColorsCommand, $this->db->_Commands[1]);
 
 		$this->assertEquals(count($rows), count($reservations));
 

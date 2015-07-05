@@ -587,14 +587,14 @@ class ExistingReservationTests extends TestBase
 		$r3->SetReservationId(100);
 
 		$builder = new ExistingReservationSeriesBuilder();
-		$builder->WithInstance($r1);
+		$builder->WithCurrentInstance($r1);
 		$builder->WithInstance($r2);
 		$builder->WithInstance($r3);
 
 		$series = $builder->Build();
 		$series->AllowParticipation(true);
 
-		$series->JoinReservation($userId);
+		$series->JoinReservationSeries($userId);
 
 		$events = $series->GetEvents();
 

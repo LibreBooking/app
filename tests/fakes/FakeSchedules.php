@@ -82,6 +82,7 @@ class FakeScheduleRepository implements IScheduleRepository
 
 	public function GetAll()
 	{
+		return array(new Schedule($this->_DefaultScheduleId, 'defaultsched', true, $this->_DefaultDayStart, $this->_DefaultDaysVisible));
 	}
 
 	public function AddScheduleLayout($scheduleId, ILayoutCreation $layout)

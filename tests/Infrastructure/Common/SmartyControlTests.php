@@ -30,6 +30,7 @@ class SmartyControlTests extends PHPUnit_Framework_TestCase
 	private $_expectedValue = 'expected___value';
 	private $_expectedName;
 	private $_expectedStyle;
+	private $_id = "id";
 
 	public function setUp()
 	{
@@ -48,7 +49,7 @@ class SmartyControlTests extends PHPUnit_Framework_TestCase
 
 	public function testSmartyTextboxWithoutPostback()
 	{
-		$textbox = new SmartyTextbox($this->_formKey, null, $this->_templateVar, $this->_attributes, $this->_smarty);
+		$textbox = new SmartyTextbox($this->_formKey, null, $this->_id, $this->_templateVar, $this->_attributes, $this->_smarty);
 		$expectedHtml = $this->BuildExpectedSmartyTextbox();
 
 		$this->assertEquals($expectedHtml, $textbox->Html());
@@ -59,7 +60,7 @@ class SmartyControlTests extends PHPUnit_Framework_TestCase
 		$this->_server->SetForm($this->_expectedName, $this->_expectedValue);
 		$this->_smarty->_Value = 'somewrongvalue';
 
-		$textbox = new SmartyTextbox($this->_formKey, null, $this->_templateVar, $this->_attributes, $this->_smarty);
+		$textbox = new SmartyTextbox($this->_formKey, null, $this->_id, $this->_templateVar, $this->_attributes, $this->_smarty);
 		$expectedHtml = $this->BuildExpectedSmartyTextbox();
 
 		$this->assertEquals($expectedHtml, $textbox->Html());
@@ -67,7 +68,7 @@ class SmartyControlTests extends PHPUnit_Framework_TestCase
 
 	public function testSmartyTextboxForPassword()
 	{
-		$textbox = new SmartyPasswordbox($this->_formKey, null, $this->_templateVar, $this->_attributes, $this->_smarty);
+		$textbox = new SmartyPasswordbox($this->_formKey, null, $this->_id, $this->_templateVar, $this->_attributes, $this->_smarty);
 		$expectedHtml = $this->BuildExpectedSmartyTextbox('password');
 
 		$this->assertEquals($expectedHtml, $textbox->Html());
@@ -78,8 +79,6 @@ class SmartyControlTests extends PHPUnit_Framework_TestCase
 		$expectedName = $this->_expectedName;
 		$expectedValue = $this->_expectedValue;
 		$expectedStyle = $this->_expectedStyle;
-		return "<input type=\"$type\" name=\"$expectedName\" id=\"$expectedName\" value=\"$expectedValue\" style=\"font-size:12px;\" class=\"something\" />";
+		return "<input type=\"$type\" name=\"$expectedName\" id=\"{$this->_id}\" value=\"$expectedValue\" style=\"font-size:12px;\" class=\"something\" />";
 	}
 }
-
-?>

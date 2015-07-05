@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright 2014-2015 Nick Korbel
+ * Copyright 2014 Nick Korbel
  *
  * This file is part of Booked Scheduler.
  *
@@ -45,99 +45,202 @@ class AccessoryResourceRule implements IReservationValidationRule
 	public function Validate($reservationSeries)
 	{
 		$errors = array();
-		$accessories = $this->accessoryRepository->LoadAll();
 
 		/** @var ReservationAccessory[] $bookedAccessories */
 		$bookedAccessories = array();
-		$bookedResources = $reservationSeries->AllResourceIds();
 
 		foreach ($reservationSeries->Accessories() as $accessory)
 		{
 			$bookedAccessories[$accessory->AccessoryId] = $accessory;
 		}
 
-		foreach ($accessories as $accessory)
+		$accessories = $this->accessoryRepository->LoadAll();
+
+		$association = $this->GetResourcesAndRequiredAccessories($accessories);
+
+//		if ($accessoriesCannotBeBookedWithGivenResources())
+//		{
+//
+//		}
+		$bookedResourceIds = $reservationSeries->AllResourceIds();
+//		$missingAccessories = $association->GetAccessoriesMissingRequiredResources($bookedResourceIds, $bookedAccessories, $bookedResourceIds);
+//		if (!empty($missingAccessories))
+//		{
+//			foreach ($missingAccessories as $accessory)
+//			{
+//				$errors[] = $this->strings->GetString('AccessoryResourceAssociationErrorMessage', $accessory->GetName());
+//			}
+//		}
+
+		$badAccessories = $association->GetAccessoriesThatCannotBeBookedWithGivenResources($bookedAccessories, $bookedResourceIds);
+
+		foreach($badAccessories as $accessoryName)
 		{
-			if (!$accessory->IsTiedToResource())
+			$errors[] = $this->strings->GetString('AccessoryResourceAssociationErrorMessage', $accessoryName);
+		}
+
+		foreach ($reservationSeries->AllResources() as $resource)
+		{
+
+			$resourceId = $resource->GetResourceId();
+			if ($association->ContainsResource($resourceId))
 			{
-				continue;
-			}
-
-			if (count(array_intersect($accessory->ResourceIds(), $bookedAccessories)) == 0)
-			{
-				// accessory isn't tied to any resources being booked
-				continue;
-			}
-
-			$allowedResources = array();
-
-			foreach ($accessory->Resources() as $resource)
-			{
-				$allowedResources[] = $resource->ResourceId;
-
-				if ($reservationSeries->ContainsResource($resource->ResourceId))
+				/** @var Accessory[] $resourceAccessories */
+				$resourceAccessories = $association->GetResourceAccessories($resourceId);
+				foreach ($resourceAccessories as $accessory)
 				{
-					$this->CheckMinQuantity($resource, $accessory, $bookedAccessories, $errors);
-					$this->CheckMaxQuantity($resource, $accessory, $bookedAccessories, $errors);
+					$accessoryId = $accessory->GetId();
+
+					$resource = $accessory->GetResource($resourceId);
+					if (!empty($resource->MinQuantity) && $bookedAccessories[$accessoryId]->QuantityReserved < $resource->MinQuantity)
+					{
+						$errors[] = $this->strings->GetString('AccessoryMinQuantityErrorMessage', array($resource->MinQuantity, $accessory->GetName()));
+					}
+
+					if (!empty($resource->MaxQuantity) && $bookedAccessories[$accessoryId]->QuantityReserved > $resource->MaxQuantity)
+					{
+						$errors[] = $this->strings->GetString('AccessoryMinQuantityErrorMessage', array($resource->MinQuantity, $accessory->GetName()));
+					}
 				}
 			}
-
-			$this->CheckAllowedAccessories($allowedResources, $bookedResources, $errors, $accessory->GetName());
 		}
 
 		return new ReservationRuleResult(count($errors) == 0, implode("\n", $errors));
 	}
 
 	/**
-	 * @param ResourceAccessory $resource
-	 * @param Accessory $accessory
-	 * @param ReservationAccessory[] $bookedAccessories
-	 * @param string[] $errors
+	 * @param Accessory[] $accessories
+	 * @return ResourceAccessoryAssociation
 	 */
-	private function CheckMinQuantity($resource, $accessory, $bookedAccessories, &$errors)
+	private function GetResourcesAndRequiredAccessories($accessories)
 	{
-		if (!empty($resource->MinQuantity))
+		$association = new ResourceAccessoryAssociation();
+		foreach ($accessories as $accessory)
 		{
-			if (!array_key_exists($accessory->GetId(), $bookedAccessories) ||
-					$bookedAccessories[$accessory->GetId()]->QuantityReserved < $resource->MinQuantity)
+			$association->AddAccessory($accessory);
+			foreach ($accessory->Resources() as $resource)
 			{
-				$errors[] = $this->strings->GetString('AccessoryMinQuantityErrorMessage', $resource->MinQuantity, $accessory->GetName());
+				$association->AddRelationship($resource, $accessory);
 			}
 		}
-	}
 
-	/**
-	 * @param ResourceAccessory $resource
-	 * @param Accessory $accessory
-	 * @param ReservationAccessory[] $bookedAccessories
-	 * @param string[] $errors
-	 */
-	private function CheckMaxQuantity($resource, $accessory, $bookedAccessories, &$errors)
-	{
-		if (!empty($resource->MaxQuantity))
-		{
-			if (array_key_exists($accessory->GetId(), $bookedAccessories) && $bookedAccessories[$accessory->GetId()]->QuantityReserved > $resource->MaxQuantity)
-			{
-				$errors[] = $this->strings->GetString('AccessoryMinQuantityErrorMessage', $resource->MaxQuantity, $accessory->GetName());
-			}
-		}
-	}
-
-	/**
-	 * @param int[] $allowedResources
-	 * @param int[] $bookedResources
-	 * @param string[] $errors
-	 * @param string $accessoryName
-	 */
-	private function CheckAllowedAccessories($allowedResources, $bookedResources, &$errors, $accessoryName)
-	{
-//		echo "<br/>checking $accessoryName<br/>";
-//		var_dump($allowedResources);
-//		var_dump($bookedResources);
-		if (count(array_intersect($allowedResources, $bookedResources)) == 0)
-		{
-			$errors[] = $this->strings->GetString('AccessoryResourceAssociationErrorMessage', $accessoryName);
-		}
+		return $association;
 	}
 }
- 
+
+class ResourceAccessoryAssociation
+{
+	private $resources = array();
+	private $requiredResources = array();
+
+	/** @var Accessory[] */
+	private $accessories = array();
+
+	/**
+	 * @param ResourceAccessory $resource
+	 * @param Accessory $accessory
+	 */
+	public function AddRelationship($resource, $accessory)
+	{
+		$this->resources[$resource->ResourceId][$accessory->GetId()] = $accessory;
+
+		if (!empty($resource->MinQuantity))
+		{
+			$this->requiredResources[$accessory->GetId()][] = $resource->ResourceId;
+		}
+	}
+
+//	/**
+//	 * @param int[] $resourceIds
+//	 * @param ReservationAccessory[] $bookedAccessories
+//	 * @param int[] $bookedResourceIds
+//	 * @return Accessory[]
+//	 */
+//	public function GetAccessoriesMissingRequiredResources($resourceIds, $bookedAccessories, $bookedResourceIds)
+//	{
+//		$accessories = array();
+//
+//		foreach ($this->requiredResources as $accessoryId => $requiredResourceIds)
+//		{
+//			if (!array_key_exists($accessoryId, $bookedAccessories))
+//			{
+//				// if this accessory isn't booked then we dont care if the resources are present
+//				continue;
+//			}
+//
+//			if (in_array($b))
+//
+//			$intersect = array_intersect($requiredResourceIds, $resourceIds);
+//
+//			if (count($intersect) != count($requiredResourceIds))
+//			{
+//				// this accessory can only be booked with specific resources
+//				$accessories[] = $this->accessories[$accessoryId];
+//			}
+//		}
+//
+//		return $accessories;
+//	}
+
+	/**
+	 * @param int $resourceId
+	 * @return bool
+	 */
+	public function ContainsResource($resourceId)
+	{
+		return array_key_exists($resourceId, $this->resources);
+	}
+
+	/**
+	 * @param int $resourceId
+	 * @return Accessory[]
+	 */
+	public function GetResourceAccessories($resourceId)
+	{
+		return $this->resources[$resourceId];
+	}
+
+	/**
+	 * @param Accessory $accessory
+	 */
+	public function AddAccessory(Accessory $accessory)
+	{
+		$this->accessories[$accessory->GetId()] = $accessory;
+	}
+
+	/**
+	 * @param ReservationAccessory[] $bookedAccessories
+	 * @param int[] $bookedResourceIds
+	 * @return string[]
+	 */
+	public function GetAccessoriesThatCannotBeBookedWithGivenResources($bookedAccessories, $bookedResourceIds)
+	{
+		$badAccessories = array();
+
+		$bookedAccessoryIds = array();
+		foreach ($bookedAccessories as $accessory)
+		{
+			$bookedAccessoryIds[] = $accessory->AccessoryId;
+		}
+
+		foreach ($bookedResourceIds as $resourceId)
+		{
+			if (!$this->ContainsResource($resourceId))
+			{
+				continue;
+			}
+			$resourceAccessories = $this->GetResourceAccessories($resourceId);
+
+			foreach ($bookedAccessoryIds as $accessoryId)
+			{
+				if (!array_key_exists($accessoryId, $resourceAccessories))
+				{
+					$badAccessories = $this->accessories[$accessoryId]->GetName();
+				}
+			}
+		}
+
+		return $badAccessories;
+
+	}
+}

@@ -168,69 +168,69 @@ class CalendarReservation
 	}
 
 	/**
-	 * @static
-	 * @param array|ReservationItemView[] $reservations
-	 * @param array|ResourceDto[] $resources
-	 * @param UserSession $userSession
-	 * @param bool $groupSeriesByResource
-	 * @return array|CalendarReservation[]
-	 */
-	public static function FromScheduleReservationList($reservations, $resources, UserSession $userSession, $groupSeriesByResource = false)
-	{
-		$knownSeries = array();
-		$factory = new SlotLabelFactory($userSession);
-
-		$resourceMap = array();
-		/** @var $resource ResourceDto */
-		foreach ($resources as $resource)
+		 * @static
+		 * @param array|ReservationItemView[] $reservations
+		 * @param array|ResourceDto[] $resources
+		 * @param UserSession $userSession
+		 * @param bool $groupSeriesByResource
+		 * @return array|CalendarReservation[]
+		 */
+		public static function FromScheduleReservationList($reservations, $resources, UserSession $userSession, $groupSeriesByResource = false)
 		{
-			$resourceMap[$resource->GetResourceId()] = $resource->GetName();
-		}
+			$knownSeries = array();
+			$factory = new SlotLabelFactory($userSession);
 
-		$res = array();
-		foreach ($reservations as $reservation)
-		{
-			if (!array_key_exists($reservation->ResourceId, $resourceMap))
+			$resourceMap = array();
+			/** @var $resource ResourceDto */
+			foreach ($resources as $resource)
 			{
-				continue;
+				$resourceMap[$resource->GetResourceId()] = $resource->GetName();
 			}
 
-			if ($groupSeriesByResource)
+			$res = array();
+			foreach ($reservations as $reservation)
 			{
-				if (array_key_exists($reservation->ReferenceNumber, $knownSeries))
+				if (!array_key_exists($reservation->ResourceId, $resourceMap))
 				{
 					continue;
 				}
-				$knownSeries[$reservation->ReferenceNumber] = true;
+
+				if ($groupSeriesByResource)
+				{
+					if (array_key_exists($reservation->ReferenceNumber, $knownSeries))
+					{
+						continue;
+					}
+					$knownSeries[$reservation->ReferenceNumber] = true;
+				}
+
+				$timezone = $userSession->Timezone;
+				$start = $reservation->StartDate->ToTimezone($timezone);
+				$end = $reservation->EndDate->ToTimezone($timezone);
+				$referenceNumber = $reservation->ReferenceNumber;
+
+				$cr = new CalendarReservation($start, $end, $resourceMap[$reservation->ResourceId], $referenceNumber);
+				$cr->Title = $reservation->Title;
+				$cr->OwnerName = new FullName($reservation->FirstName, $reservation->LastName);
+				$cr->OwnerFirst = $reservation->FirstName;
+				$cr->OwnerLast = $reservation->LastName;
+				$cr->DisplayTitle = $factory->Format($reservation, Configuration::Instance()->GetSectionKey(ConfigSection::RESERVATION_LABELS,
+																											ConfigKeys::RESERVATION_LABELS_RESOURCE_CALENDAR));
+
+				$color = $reservation->UserPreferences->Get(UserPreferences::RESERVATION_COLOR);
+				if (!empty($color))
+				{
+					$cr->Color = "#$color";
+					$cr->TextColor = new ContrastingColor($color);
+				}
+
+				$cr->Class = self::GetClass($reservation);
+
+				$res[] = $cr;
 			}
 
-			$timezone = $userSession->Timezone;
-			$start = $reservation->StartDate->ToTimezone($timezone);
-			$end = $reservation->EndDate->ToTimezone($timezone);
-			$referenceNumber = $reservation->ReferenceNumber;
-
-			$cr = new CalendarReservation($start, $end, $resourceMap[$reservation->ResourceId], $referenceNumber);
-			$cr->Title = $reservation->Title;
-			$cr->OwnerName = new FullName($reservation->FirstName, $reservation->LastName);
-			$cr->OwnerFirst = $reservation->FirstName;
-			$cr->OwnerLast = $reservation->LastName;
-			$cr->DisplayTitle = $factory->Format($reservation, Configuration::Instance()->GetSectionKey(ConfigSection::RESERVATION_LABELS,
-																										ConfigKeys::RESERVATION_LABELS_RESOURCE_CALENDAR));
-
-			$color = $reservation->UserPreferences->Get(UserPreferences::RESERVATION_COLOR);
-			if (!empty($color))
-			{
-				$cr->Color = "#$color";
-				$cr->TextColor = new ContrastingColor($color);
-			}
-
-			$cr->Class = self::GetClass($reservation);
-
-			$res[] = $cr;
+			return $res;
 		}
-
-		return $res;
-	}
 
 	private static function GetClass(ReservationItemView $reservation)
 	{

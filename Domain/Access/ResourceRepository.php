@@ -1,21 +1,21 @@
 <?php
 /**
-Copyright 2011-2015 Nick Korbel
-
-This file is part of Booked Scheduler.
-
-Booked Scheduler is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-Booked Scheduler is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
+ * Copyright 2011-2015 Nick Korbel
+ *
+ * This file is part of Booked Scheduler.
+ *
+ * Booked Scheduler is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Booked Scheduler is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 require_once(ROOT_DIR . 'Domain/BookableResource.php');
@@ -29,9 +29,9 @@ require_once(ROOT_DIR . 'Domain/Values/AccountStatus.php');
 class ResourceRepository implements IResourceRepository
 {
 	/**
-		 * @var DomainCache
-		 */
-		private $_cache;
+	 * @var DomainCache
+	 */
+	private $_cache;
 
 	const ALL_SCHEDULES = -1;
 
@@ -51,7 +51,7 @@ class ResourceRepository implements IResourceRepository
 		$resources = array();
 
 		$reader = ServiceLocator::GetDatabase()
-				  ->Query($command);
+								->Query($command);
 
 		while ($row = $reader->GetRow())
 		{
@@ -67,7 +67,7 @@ class ResourceRepository implements IResourceRepository
 	{
 		$resources = array();
 		$reader = ServiceLocator::GetDatabase()
-				  ->Query(new GetAllResourcesCommand());
+								->Query(new GetAllResourcesCommand());
 
 		while ($row = $reader->GetRow())
 		{
@@ -82,7 +82,7 @@ class ResourceRepository implements IResourceRepository
 	public function GetResourceGroupsList()
 	{
 		$reader = ServiceLocator::GetDatabase()
-				  ->Query(new GetAllResourceGroupsCommand());
+								->Query(new GetAllResourceGroupsCommand());
 
 		$groups = array();
 		while ($row = $reader->GetRow())
@@ -155,7 +155,7 @@ class ResourceRepository implements IResourceRepository
 
 			$getAttributes = new GetAttributeValuesCommand($resource->GetId(), CustomAttributeCategory::RESOURCE);
 			$attributeReader = ServiceLocator::GetDatabase()
-							   ->Query($getAttributes);
+											 ->Query($getAttributes);
 
 			while ($attributeRow = $attributeReader->GetRow())
 			{
@@ -174,10 +174,10 @@ class ResourceRepository implements IResourceRepository
 	{
 		$db = ServiceLocator::GetDatabase();
 		$addResourceCommand = new AddResourceCommand(
-			$resource->GetName(),
-			$resource->GetScheduleId(),
-			$resource->GetAutoAssign(),
-			$resource->GetAdminGroupId());
+				$resource->GetName(),
+				$resource->GetScheduleId(),
+				$resource->GetAutoAssign(),
+				$resource->GetAdminGroupId());
 
 		$resourceId = $db->ExecuteInsert($addResourceCommand);
 		if ($resource->GetAutoAssign())
@@ -194,30 +194,30 @@ class ResourceRepository implements IResourceRepository
 		$db = ServiceLocator::GetDatabase();
 
 		$updateResourceCommand = new UpdateResourceCommand(
-			$resource->GetResourceId(),
-			$resource->GetName(),
-			$resource->GetLocation(),
-			$resource->GetContact(),
-			$resource->GetNotes(),
-			$resource->GetMinLength(),
-			$resource->GetMaxLength(),
-			$resource->GetAutoAssign(),
-			$resource->GetRequiresApproval(),
-			$resource->GetAllowMultiday(),
-			$resource->GetMaxParticipants(),
-			$resource->GetMinNotice(),
-			$resource->GetMaxNotice(),
-			$resource->GetDescription(),
-			$resource->GetImage(),
-			$resource->GetScheduleId(),
-			$resource->GetAdminGroupId(),
-			$resource->GetIsCalendarSubscriptionAllowed(),
-			$resource->GetPublicId(),
-			$resource->GetSortOrder(),
-			$resource->GetResourceTypeId(),
-			$resource->GetStatusId(),
-			$resource->GetStatusReasonId(),
-			$resource->GetBufferTime()
+				$resource->GetResourceId(),
+				$resource->GetName(),
+				$resource->GetLocation(),
+				$resource->GetContact(),
+				$resource->GetNotes(),
+				$resource->GetMinLength(),
+				$resource->GetMaxLength(),
+				$resource->GetAutoAssign(),
+				$resource->GetRequiresApproval(),
+				$resource->GetAllowMultiday(),
+				$resource->GetMaxParticipants(),
+				$resource->GetMinNotice(),
+				$resource->GetMaxNotice(),
+				$resource->GetDescription(),
+				$resource->GetImage(),
+				$resource->GetScheduleId(),
+				$resource->GetAdminGroupId(),
+				$resource->GetIsCalendarSubscriptionAllowed(),
+				$resource->GetPublicId(),
+				$resource->GetSortOrder(),
+				$resource->GetResourceTypeId(),
+				$resource->GetStatusId(),
+				$resource->GetStatusReasonId(),
+				$resource->GetBufferTime()
 		);
 
 		$db->Execute($updateResourceCommand);
@@ -279,10 +279,10 @@ class ResourceRepository implements IResourceRepository
 		}
 
 		$groups = ServiceLocator::GetDatabase()
-				  ->Query(new GetAllResourceGroupsCommand());
+								->Query(new GetAllResourceGroupsCommand());
 
 		$resources = ServiceLocator::GetDatabase()
-					 ->Query(new GetAllResourceGroupAssignmentsCommand($scheduleId));
+								   ->Query(new GetAllResourceGroupAssignmentsCommand($scheduleId));
 
 		$_groups = array();
 		$_assignments = array();
@@ -293,8 +293,8 @@ class ResourceRepository implements IResourceRepository
 		$_groups[] = new ResourceGroup(0, Resources::GetInstance()->GetString('All'));
 		foreach ($this->GetScheduleResources($scheduleId) as $r)
 		{
-				$resourceList[$r->GetId()] = $r;
-				$_assignments[] = new ResourceGroupAssignment(0, $r);
+			$resourceList[$r->GetId()] = $r;
+			$_assignments[] = new ResourceGroupAssignment(0, $r->GetName(), $r->GetResourceId(), $r->GetAdminGroupId(), $r->GetScheduleId(), $r->GetStatusId(), $r->GetScheduleAdminGroupId());
 		}
 
 		while ($row = $groups->GetRow())
@@ -310,7 +310,7 @@ class ResourceRepository implements IResourceRepository
 			if (array_key_exists($resourceId, $resourceList))
 			{
 				$r = $resourceList[$resourceId];
-				$_assignments[] = new ResourceGroupAssignment($row[ColumnNames::RESOURCE_GROUP_ID], $r);
+				$_assignments[] = new ResourceGroupAssignment($row[ColumnNames::RESOURCE_GROUP_ID], $r->GetName(), $r->GetResourceId(), $r->GetAdminGroupId(), $r->GetScheduleId(), $r->GetStatusId(), $r->GetScheduleAdminGroupId());
 			}
 		}
 
@@ -346,19 +346,19 @@ class ResourceRepository implements IResourceRepository
 	public function AddResourceToGroup($resourceId, $groupId)
 	{
 		ServiceLocator::GetDatabase()
-		->Execute(new AddResourceToGroupCommand($resourceId, $groupId));
+					  ->Execute(new AddResourceToGroupCommand($resourceId, $groupId));
 	}
 
 	public function RemoveResourceFromGroup($resourceId, $groupId)
 	{
 		ServiceLocator::GetDatabase()
-		->Execute(new RemoveResourceFromGroupCommand($resourceId, $groupId));
+					  ->Execute(new RemoveResourceFromGroupCommand($resourceId, $groupId));
 	}
 
 	public function AddResourceGroup(ResourceGroup $group)
 	{
 		$id = ServiceLocator::GetDatabase()
-			  ->ExecuteInsert(new AddResourceGroupCommand($group->name, $group->parent_id));
+							->ExecuteInsert(new AddResourceGroupCommand($group->name, $group->parent_id));
 
 		$group->WithId($id);
 
@@ -390,13 +390,13 @@ class ResourceRepository implements IResourceRepository
 	public function UpdateResourceGroup(ResourceGroup $group)
 	{
 		ServiceLocator::GetDatabase()
-		->Execute(new UpdateResourceGroupCommand($group->id, $group->name, $group->parent_id));
+					  ->Execute(new UpdateResourceGroupCommand($group->id, $group->name, $group->parent_id));
 	}
 
 	public function DeleteResourceGroup($groupId)
 	{
 		ServiceLocator::GetDatabase()
-		->Execute(new DeleteResourceGroupCommand($groupId));
+					  ->Execute(new DeleteResourceGroupCommand($groupId));
 	}
 
 	public function GetResourceTypes()
@@ -404,11 +404,12 @@ class ResourceRepository implements IResourceRepository
 		$types = array();
 
 		$reader = ServiceLocator::GetDatabase()
-				  ->Query(new GetAllResourceTypesCommand());
+								->Query(new GetAllResourceTypesCommand());
 
 		while ($row = $reader->GetRow())
 		{
-			$types[] = new ResourceType($row[ColumnNames::RESOURCE_TYPE_ID], $row[ColumnNames::RESOURCE_TYPE_NAME], $row[ColumnNames::RESOURCE_TYPE_DESCRIPTION]);
+			$types[] = new ResourceType($row[ColumnNames::RESOURCE_TYPE_ID], $row[ColumnNames::RESOURCE_TYPE_NAME],
+										$row[ColumnNames::RESOURCE_TYPE_DESCRIPTION]);
 		}
 
 		$reader->Free();
@@ -420,14 +421,15 @@ class ResourceRepository implements IResourceRepository
 	{
 		$resourceType = null;
 		$reader = ServiceLocator::GetDatabase()
-				  ->Query(new GetResourceTypeCommand($resourceTypeId));
+								->Query(new GetResourceTypeCommand($resourceTypeId));
 		if ($row = $reader->GetRow())
 		{
-			$resourceType = new ResourceType($row[ColumnNames::RESOURCE_TYPE_ID], $row[ColumnNames::RESOURCE_TYPE_NAME], $row[ColumnNames::RESOURCE_TYPE_DESCRIPTION]);
+			$resourceType = new ResourceType($row[ColumnNames::RESOURCE_TYPE_ID], $row[ColumnNames::RESOURCE_TYPE_NAME],
+											 $row[ColumnNames::RESOURCE_TYPE_DESCRIPTION]);
 
 			$getAttributes = new GetAttributeValuesCommand($resourceTypeId, CustomAttributeCategory::RESOURCE_TYPE);
 			$attributeReader = ServiceLocator::GetDatabase()
-							   ->Query($getAttributes);
+											 ->Query($getAttributes);
 
 			while ($attributeRow = $attributeReader->GetRow())
 			{
@@ -444,7 +446,7 @@ class ResourceRepository implements IResourceRepository
 	public function AddResourceType(ResourceType $type)
 	{
 		return ServiceLocator::GetDatabase()
-			   ->ExecuteInsert(new AddResourceTypeCommand($type->Name(), $type->Description()));
+							 ->ExecuteInsert(new AddResourceTypeCommand($type->Name(), $type->Description()));
 	}
 
 	public function UpdateResourceType(ResourceType $type)
@@ -466,7 +468,7 @@ class ResourceRepository implements IResourceRepository
 	public function RemoveResourceType($id)
 	{
 		ServiceLocator::GetDatabase()
-		->Execute(new DeleteResourceTypeCommand($id));
+					  ->Execute(new DeleteResourceTypeCommand($id));
 	}
 
 	public function GetStatusReasons()
@@ -477,7 +479,8 @@ class ResourceRepository implements IResourceRepository
 
 		while ($row = $reader->GetRow())
 		{
-			$reasons[] = new ResourceStatusReason($row[ColumnNames::RESOURCE_STATUS_REASON_ID], $row[ColumnNames::RESOURCE_STATUS_ID], $row[ColumnNames::RESOURCE_STATUS_DESCRIPTION]);
+			$reasons[] = new ResourceStatusReason($row[ColumnNames::RESOURCE_STATUS_REASON_ID], $row[ColumnNames::RESOURCE_STATUS_ID],
+												  $row[ColumnNames::RESOURCE_STATUS_DESCRIPTION]);
 		}
 
 		$reader->Free();
@@ -586,7 +589,8 @@ class AccessoryDto
 
 	public static function Create($row)
 	{
-		return new AccessoryDto($row[ColumnNames::ACCESSORY_ID], $row[ColumnNames::ACCESSORY_NAME], $row[ColumnNames::ACCESSORY_QUANTITY], $row[ColumnNames::ACCESSORY_RESOURCE_COUNT]);
+		return new AccessoryDto($row[ColumnNames::ACCESSORY_ID], $row[ColumnNames::ACCESSORY_NAME], $row[ColumnNames::ACCESSORY_QUANTITY],
+								$row[ColumnNames::ACCESSORY_RESOURCE_COUNT]);
 	}
 }
 

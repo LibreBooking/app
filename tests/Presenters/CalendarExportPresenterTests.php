@@ -114,7 +114,7 @@ class CalendarExportPresenterTests extends TestBase
 	{
 		// this fixes a bug in outlook which prevents you from adding a meeting that you are the organizer of
 		$user = new FakeUserSession();
-		$res = new ReservationView();
+		$res = new ReservationItemView();
 		$res->OwnerId = $user->UserId + 1;
 		$res->OwnerFirstName = "f";
 		$res->OwnerLastName = "l";
@@ -130,7 +130,7 @@ class CalendarExportPresenterTests extends TestBase
 	{
 		// this fixes a bug in outlook which prevents you from adding a meeting that you are the organizer of
 		$user = new FakeUserSession();
-		$res = new ReservationView();
+		$res = new ReservationItemView();
 		$res->OwnerId = $user->UserId;
 		$res->OwnerFirstName = "f";
 		$res->OwnerLastName = "l";
@@ -164,5 +164,3 @@ class CalendarExportPresenterTests extends TestBase
 		$this->assertEquals('Private', $reservationView->Description);
 	}
 }
-
-?>

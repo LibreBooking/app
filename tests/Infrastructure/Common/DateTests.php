@@ -616,12 +616,12 @@ class DateTests extends TestBase
 		$this->assertEquals(1, $range->NumberOfWeekendDays());
 	}
 
-	public function testWebServiceDateDropsTimezoneOffset()
+	public function testWebServiceDateDropsUsesIfSetTimezoneOffset()
 	{
 		$date = WebServiceDate::GetDate('2014-09-14T06:00:00-0000', $this->fakeUser);
 
 		$this->assertEquals($date->Hour(), 6);
-		$this->assertEquals($date->Timezone(), $this->fakeUser->Timezone);
+		$this->assertEquals($date->Timezone(), 'UTC');
 	}
 
 	public function testWebServiceParsesJustDate()

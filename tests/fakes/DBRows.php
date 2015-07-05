@@ -299,12 +299,14 @@ class ReservationAccessoryRow
 		return $this->rows;
 	}
 
-	public function WithAccessory($accessoryId, $quantityReserved, $name = null, $quantityAvailable = 0)
+	public function WithAccessory($accessoryId, $quantityReserved, $name = null, $quantityAvailable = 0, $resourceCount = 0)
 	{
-		$this->rows[] = array(ColumnNames::ACCESSORY_ID => $accessoryId,
+		$this->rows[] = array(
+			ColumnNames::ACCESSORY_ID => $accessoryId,
 			ColumnNames::QUANTITY => $quantityReserved,
 			ColumnNames::ACCESSORY_QUANTITY => $quantityAvailable,
-			ColumnNames::ACCESSORY_NAME => $name);
+			ColumnNames::ACCESSORY_NAME => $name,
+			ColumnNames::ACCESSORY_RESOURCE_COUNT => $resourceCount);
 
 		return $this;
 	}

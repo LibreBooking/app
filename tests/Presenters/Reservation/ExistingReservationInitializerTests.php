@@ -66,7 +66,6 @@ class ExistingReservationInitializerTests extends TestBase
 			$dateBinder,
 			$resourceBinder,
 			$reservationBinder,
-			$attributeBinder,
 			$reservationView,
 			$this->fakeUser);
 
@@ -137,7 +136,6 @@ class ExistingReservationInitializerTests extends TestBase
 
 		$initializer = new ExistingReservationInitializer(
 			$page,
-			$binder,
 			$binder,
 			$binder,
 			$binder,

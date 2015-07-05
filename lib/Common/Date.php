@@ -814,49 +814,70 @@ class DateDiff
 	 */
 	public static function FromTimeString($timeString)
 	{
-		if (strpos($timeString, 'd') === false && strpos($timeString, 'h') === false && strpos($timeString,
-																							   'm') === false
-		)
+		$hasDayHourMinute = strpos($timeString, 'd') !== false || strpos($timeString, 'h') !== false || strpos($timeString, 'm') !== false;
+		$hasTime = (strpos($timeString, ':') !== false);
+		if (!$hasDayHourMinute && !$hasTime)
 		{
-			throw new Exception('Time format must contain at least a day, hour or minute. For example: 12d1h22m');
+			throw new Exception('Time format must contain at least a day, hour or minute. For example: 12d1h22m or be a valid time HH:mm');
 		}
 
-		$matches = array();
-
-		preg_match('/(\d*d)?(\d*h)?(\d*m)?/i', $timeString, $matches);
-
-		$day = 0;
-		$hour = 0;
-		$minute = 0;
-		$num_set = 0;
-
-		if (isset($matches[1]))
+		if ($hasTime)
 		{
-			$num_set++;
-			$day = intval(substr($matches[1], 0, -1));
-		}
-		if (isset($matches[2]))
-		{
-			$num_set++;
-			$hour = intval(substr($matches[2], 0, -1));
-		}
-		if (isset($matches[3]))
-		{
-			$num_set++;
-			$minute = intval(substr($matches[3], 0, -1));
-		}
+			$parts = explode(':', $timeString);
 
-		if ($num_set == 0)
-		{
-			/**
-			 * We didn't actually match anything, throw an exception
-			 * instead of silently returning 0
-			 */
-
-			throw new Exception('Time format must be in day, hour, minute order');
+			if (count($parts) == 3)
+			{
+				$day = $parts[0];
+				$hour = $parts[1];
+				$minute = $parts[2];
+			}
+			else
+			{
+				$day = 0;
+				$hour = $parts[0];
+				$minute = $parts[1];
+			}
+			return self::Create($day, $hour, $minute);
 		}
+		else
+		{
+			$matches = array();
 
-		return self::Create($day, $hour, $minute);
+			preg_match('/(\d*d)?(\d*h)?(\d*m)?/i', $timeString, $matches);
+
+			$day = 0;
+			$hour = 0;
+			$minute = 0;
+			$num_set = 0;
+
+			if (isset($matches[1]))
+			{
+				$num_set++;
+				$day = intval(substr($matches[1], 0, -1));
+			}
+			if (isset($matches[2]))
+			{
+				$num_set++;
+				$hour = intval(substr($matches[2], 0, -1));
+			}
+			if (isset($matches[3]))
+			{
+				$num_set++;
+				$minute = intval(substr($matches[3], 0, -1));
+			}
+
+			if ($num_set == 0)
+			{
+				/**
+				 * We didn't actually match anything, throw an exception
+				 * instead of silently returning 0
+				 */
+
+				throw new Exception('Time format must be in day, hour, minute order');
+			}
+
+			return self::Create($day, $hour, $minute);
+		}
 	}
 
 	/**

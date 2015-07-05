@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright 2011-2015 Nick Korbel
+ * Copyright 2011-2014 Nick Korbel
  *
  * This file is part of Booked Scheduler.
  *
@@ -96,7 +96,7 @@ class AccessoryResourceRuleTests extends TestBase
 		$this->assertTrue($result->IsValid(), $result->ErrorMessage());
 	}
 
-	public function testRuleIsNotValidIfTiedToResource_AndResourceNotPresent()
+	public function testRuleNotValidIfTiedToResource_AndAccessoryIsBeingReserved_AndResourceNotPresent()
 	{
 		$resourceId = 1;
 		$accessoryId = 1;
@@ -105,13 +105,13 @@ class AccessoryResourceRuleTests extends TestBase
 		$reservation->WithResource(new FakeBookableResource(2));
 		$reservation->WithAccessory(new ReservationAccessory($accessoryId, 10));
 		$accessory = new Accessory($accessoryId, 'name1', null);
-		$accessory->AddResource($resourceId, null, null);
+		$accessory->AddResource($resourceId, 1, null);
 
 		$this->accessoryRepository->AddAccessory($accessory);
 
 		$result = $this->rule->Validate($reservation);
 
-		$this->assertFalse($result->IsValid());
+		$this->assertTrue($result->IsValid());
 	}
 
 	public function testRuleIsNotValidIfTiedToResource_AndQuantityMinimumIsNotMet()
@@ -150,18 +150,17 @@ class AccessoryResourceRuleTests extends TestBase
 		$this->assertFalse($result->IsValid());
 	}
 
-	public function testRuleIsValidWhenAccessoryNotOnReservation_AndNotRequiredForResource()
+	public function testRuleIsValidWhenAccessoryNotOnReservation_AndTiedToResource()
 	{
 		$resourceId = 1;
 		$reservation = new TestReservationSeries();
 		$reservation->WithResource(new FakeBookableResource($resourceId));
-		$reservation->WithAccessory(new ReservationAccessory(1, 1));
 
 		$accessory1 = new Accessory(1, 'name1', null);
-		$accessory1->AddResource(3, null, null);
+		$accessory1->AddResource($resourceId, null, null);
 
 		$accessory2 = new Accessory(1, 'name1', null);
-		$accessory2->AddResource($resourceId, 1, 1);
+		$accessory2->AddResource(3, 1, 1);
 		$accessory2->AddResource(2, 1, 1);
 
 		$this->accessoryRepository->AddAccessory($accessory1);
