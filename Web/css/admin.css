@@ -417,6 +417,12 @@ td.update {
 .slotHelpText span {
   font-family: Courier new, serif;
 }
+#groupSearchPanel {
+  margin-bottom: 15px;
+}
+#groupSearch {
+  width: 400px;
+}
 .admin-page input,
 #page-manage-blackouts input,
 #page-manage-reservations input,

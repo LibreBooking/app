@@ -44,20 +44,20 @@ tr.today td.resdate, td.today {
 }
 
 #reservations .mobile {
-  font-size:.8em;
+  font-size: .8em;
 }
 
 #reservations .mobile .resdate {
-  background-color:#4279A5;
-  width:auto;
+  background-color: #4279A5;
+  width: auto;
 }
 
 #reservations .mobile td.today {
-  background-color:#5199d1;
+  background-color: #5199d1;
 }
 
 #reservations .mobile .slot {
-  padding:2px;
+  padding: 2px;
 }
 
 tr.today td.reslabel {
@@ -152,23 +152,23 @@ td.reserved {
 
 .restricted {
   background: repeating-linear-gradient(
-     45deg,
-     transparent,
-     transparent 10px,
-     #ccc 10px,
-     #ccc 20px
-   ),
-   linear-gradient(
-     to bottom,
-     #eee,
-     #999
-   );
-    color: black;
+          45deg,
+          transparent,
+          transparent 10px,
+          #ccc 10px,
+          #ccc 20px
+  ),
+  linear-gradient(
+          to bottom,
+          #eee,
+          #999
+  );
+  color: black;
 }
 
 .schedule_title {
   text-align: center;
-  vertical-align:top;
+  vertical-align: top;
 }
 
 .schedule_title span {
@@ -186,18 +186,21 @@ td.reserved {
   margin-right: auto;
 }
 
-.res_popup_details .summary {
-  font-style: italic;
-}
+.res_popup_details {
+  min-width: 450px;
+  .summary {
+    font-style: italic;
+  }
 
-.res_popup_details .user {
-  font-weight: bold;
-}
+  .user {
+    font-weight: bold;
+  }
 
-.res_popup_details .dates {
-}
+  .dates {
+  }
 
-.res_popup_details .customAttribute {
+  .customAttribute {
+  }
 }
 
 td.resourcename.hilite {
@@ -287,7 +290,7 @@ ul.jqtree-tree .jqtree-toggler {
 
 #calendar_toggle {
   color: @dark-gray;
-  padding-left:5px;
+  padding-left: 5px;
 }
 
 #calendar_toggle:hover {
@@ -324,10 +327,10 @@ a.toggle-sidebar {
 }
 
 .no-resource-warning {
-  padding:10px;
+  padding: 10px;
   .rounded(2px);
 }
 
 #showFullWeek {
-  display:block;
+  display: block;
 }

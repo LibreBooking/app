@@ -23,28 +23,25 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 	<form id="addForm" class="form-inline" role="form" method="post">
 		<div class="panel panel-default" id="add-accessory-panel">
-			<div class="panel-heading">{translate key="AddAccessory"} <a href=""><span class="icon black show-hide glyphicon"></span></a></div>
+			<div class="panel-heading">{translate key="AddAccessory"} <a href="#"><span class="icon black show-hide glyphicon"></span></a></div>
 			<div class="panel-body add-contents">
 				<div class="col-xs-4">
 					<div class="form-group has-feedback">
 						<label for="accessoryName">{translate key=AccessoryName}</label>
 						<input {formname key=ACCESSORY_NAME} type="text" id="accessoryName" required class="form-control required"/>
-						<i class="glyphicon glyphicon-asterisk form-control-feedback" data-bv-icon-for="blackoutReason"></i>
+						<i class="glyphicon glyphicon-asterisk form-control-feedback" data-bv-icon-for="accessoryName"></i>
 					</div>
 				</div>
-				<div class="col-xs-3">
+				<div class="col-xs-8">
 					<div class="form-group">
 						<label for="addQuantity">{translate key='QuantityAvailable'}</label>
 						<input type="number" id="addQuantity" class="form-control" min="0" disabled="disabled" {formname key=ACCESSORY_QUANTITY_AVAILABLE} />
 					</div>
-				</div>
-				<div class="col-xs-5">
 					<div class="checkbox checkbox-align">
 						<input type="checkbox" id="chkUnlimitedAdd" class="unlimited" name="chkUnlimited" checked="checked"/>
 						<label for="chkUnlimitedAdd"> {translate key=Unlimited}</label>
 					</div>
 				</div>
-
 			</div>
 			<div class="panel-footer">
 				<button type="button" class="btn btn-success btn-sm save create">
@@ -77,8 +74,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 					   class="update resources">{if $accessory->AssociatedResources == 0}{translate key=All}{else}{$accessory->AssociatedResources}{/if}</a>
 				</td>
 				<td class="action">
-					<a href="#" class="update edit"><span class="fa fa-pencil-square-o icon"></a> | <a href="#" class="update delete"><span
-								class="fa fa-trash icon remove"></span></a>
+					<a href="#" class="update edit"><span class="fa fa-pencil-square-o icon"></a> |
+					<a href="#" class="update delete"><span class="fa fa-trash icon remove"></span></a>
 				</td>
 			</tr>
 		{/foreach}

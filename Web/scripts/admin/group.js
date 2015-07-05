@@ -3,7 +3,7 @@ function GroupManagement(opts) {
 
 	var elements = {
 		activeId: $('#activeId'),
-		groupList: $('table.list'),
+		groupList: $('#groupList'),
 
 		autocompleteSearch: $('#groupSearch'),
 		userSearch: $('#userSearch'),
@@ -35,7 +35,6 @@ function GroupManagement(opts) {
 		ConfigureAdminDialog(elements.membersDialog, 420, 500);
 		ConfigureAdminDialog(elements.permissionsDialog, 400, 300);
 		ConfigureAdminDialog(elements.deleteDialog,  400, 300);
-		ConfigureAdminDialog(elements.renameDialog, 500, 100);
 		ConfigureAdminDialog(elements.browseUserDialog, 500, 100);
 		ConfigureAdminDialog(elements.rolesDialog, 500, 300);
 		ConfigureAdminDialog(elements.groupAdminDialog, 500, 100);
@@ -186,7 +185,7 @@ function GroupManagement(opts) {
 	};
 
 	function setActiveId(activeElement) {
-		var id = activeElement.parents('td').siblings('td.id').find(':hidden').val();
+		var id = activeElement.closest('tr').attr('data-group-id');
 		elements.activeId.val(id);
 	}
 
@@ -195,7 +194,7 @@ function GroupManagement(opts) {
 	}
 
 	var renameGroup = function() {
-		elements.renameDialog.dialog('open');
+		elements.renameDialog.modal('show');
 	};
 
 	var changeMembers = function() {

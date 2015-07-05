@@ -146,6 +146,9 @@ td.reserved {
   margin-left: auto;
   margin-right: auto;
 }
+.res_popup_details {
+  min-width: 450px;
+}
 .res_popup_details .summary {
   font-style: italic;
 }
