@@ -43,7 +43,6 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		</div>
 	</form>
 
-
 	<div id="groupSearchPanel">
 		<label for="groupSearch">{translate key='FindGroup'}</label> |  {html_link href=$smarty.server.SCRIPT_NAME key=AllGroups}
 		<input type="text" id="groupSearch" class="form-control" size="40"/>
@@ -86,27 +85,68 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 	<input type="hidden" id="activeId"/>
 
-	<div id="membersDialog" class="dialog" style="display:none;" title="{translate key=GroupMembers}">
-		<label for="userSearch">{translate key=AddUser}:</label> <input type="text" id="userSearch" class="textbox" size="40"/> <a href="#"
-																																   id="browseUsers">{translate key=Browse}</a>
+	<div class="modal fade" id="membersDialog" tabindex="-1" role="dialog" aria-labelledby="membersDialogLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+					<h4 class="modal-title" id="membersDialogLabel">{translate key=GroupMembers}</h4>
+				</div>
+				<div class="modal-body">
+					<div class="form-group">
+						<label for="userSearch">{translate key=AddUser}: <a href="#" id="browseUsers">{translate key=Browse}</a></label>
+						<input type="text" id="userSearch" class="form-control" size="40"/>
+					</div>
+					<h4><span id="totalUsers"></span> {translate key=UsersInGroup}</h4>
 
-		<div id="allUsers" style="display:none;" class="dialog" title="{translate key=AllUsers}"></div>
-		<h4><span id="totalUsers"></span> {translate key=UsersInGroup}</h4>
-
-		<div id="groupUserList"></div>
+					<div id="groupUserList"></div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default cancel" data-dismiss="modal">{translate key='Done'}</button>
+				</div>
+			</div>
+		</div>
 	</div>
 
-	<div id="permissionsDialog" class="dialog" style="display:none;" title="{translate key=Permissions}">
-		<form id="permissionsForm" method="post">
-			{foreach from=$resources item=resource}
-				<label><input {formname key=RESOURCE_ID  multi=true} class="resourceId" type="checkbox"
-																	 value="{$resource->GetResourceId()}"> {$resource->GetName()}</label>
-				<br/>
-			{/foreach}
-			<button type="button" class="button save">{html_image src="tick-circle.png"} {translate key='Update'}</button>
-			<button type="button" class="button cancel">{html_image src="slash.png"} {translate key='Cancel'}</button>
-		</form>
+	<div id="allUsers" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="browseUsersDialogLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+					<h4 class="modal-title" id="browseUsersDialogLabel">{translate key=AllUsers}</h4>
+				</div>
+				<div class="modal-body">
+					<div id="allUsersList"></div>
+				</div>
+			</div>
+		</div>
 	</div>
+
+	<div class="modal fade" id="permissionsDialog" tabindex="-1" role="dialog" aria-labelledby="permissionsDialogLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<form id="permissionsForm" method="post">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+							<h4 class="modal-title" id="permissionsDialogLabel">{translate key=Permissions}</h4>
+						</div>
+						<div class="modal-body">
+							{foreach from=$resources item=resource}
+								<div class="checkbox">
+									<input id="resource{$resource->GetResourceId()}" {formname key=RESOURCE_ID  multi=true} class="form-control resourceId" type="checkbox" value="{$resource->GetResourceId()}">
+									<label for="resource{$resource->GetResourceId()}">{$resource->GetName()} </label>
+								</div>
+							{/foreach}
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-default cancel" data-dismiss="modal">{translate key='Cancel'}</button>
+							<button type="button" class="btn btn-success save"><span class="glyphicon glyphicon-ok-circle"></span>{translate key='Update'}</button>
+							{indicator}
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
 
 	<form id="removeUserForm" method="post">
 		<input type="hidden" id="removeUserId" {formname key=USER_ID} />
@@ -116,18 +156,29 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		<input type="hidden" id="addUserId" {formname key=USER_ID} />
 	</form>
 
-	<div id="deleteDialog" class="dialog" style="display:none;" title="{translate key=Delete}">
-		<form id="deleteGroupForm" method="post">
-			<div class="error" style="margin-bottom: 25px;">
-				<h3>{translate key=DeleteWarning}</h3>
-
-				<div>{translate key=DeleteGroupWarning}</div>
-			</div>
-			<button type="button" class="button save">{html_image src="cross-button.png"} {translate key='Delete'}</button>
-			<button type="button" class="button cancel">{html_image src="slash.png"} {translate key='Cancel'}</button>
-		</form>
+	<div class="modal fade" id="deleteDialog" tabindex="-1" role="dialog" aria-labelledby="deleteDialogLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<form id="deleteGroupForm" method="post">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+						<h4 class="modal-title" id="deleteDialogLabel">{translate key=Delete}</h4>
+					</div>
+					<div class="modal-body">
+						<div class="alert alert-warning">
+							<div>{translate key=DeleteWarning}</div>
+							<div>{translate key=DeleteGroupWarning}</div>
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default cancel" data-dismiss="modal">{translate key='Cancel'}</button>
+						<button type="button" class="btn btn-danger save">{translate key='Delete'}</button>
+						{indicator}
+					</div>
+				</div>
+			</form>
+		</div>
 	</div>
-
 
 	<div class="modal fade" id="renameDialog" tabindex="-1" role="dialog" aria-labelledby="deleteDialogLabel" aria-hidden="true">
 		<div class="modal-dialog">
@@ -155,33 +206,60 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 	</div>
 
 	{if $CanChangeRoles}
-		<div id="rolesDialog" class="dialog" title="{translate key=WhatRolesApplyToThisGroup}">
-			<form id="rolesForm" method="post">
-				<ul>
-					{foreach from=$Roles item=role}
-						<li><label><input type="checkbox" {formname key=ROLE_ID multi=true}" value="{$role->Id}" /> {$role->Name}</label></li>
-					{/foreach}
-				</ul>
-
-				<button type="button" class="button save">{html_image src="tick-circle.png"} {translate key='Update'}</button>
-				<button type="button" class="button cancel">{html_image src="slash.png"} {translate key='Cancel'}</button>
-			</form>
+		<div class="modal fade" id="rolesDialog" tabindex="-1" role="dialog" aria-labelledby="rolesDialogLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<form id="rolesForm" method="post">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+							<h4 class="modal-title" id="rolesDialogLabel">{translate key=WhatRolesApplyToThisGroup}</h4>
+						</div>
+						<div class="modal-body">
+							{foreach from=$Roles item=role}
+								<div class="checkbox">
+									<input type="checkbox" id="role{$role->Id}" {formname key=ROLE_ID multi=true}" value="{$role->Id}" />
+									<label for="role{$role->Id}">{$role->Name}</label>
+								</div>
+							{/foreach}
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-default cancel" data-dismiss="modal">{translate key='Cancel'}</button>
+							<button type="button" class="btn btn-success save"><span class="glyphicon glyphicon-ok-circle"></span>{translate key='Update'}</button>
+							{indicator}
+						</div>
+					</div>
+				</form>
+			</div>
 		</div>
 	{/if}
 
-	<div id="groupAdminDialog" class="dialog" title="{translate key=WhoCanManageThisGroup}">
-		<form method="post" id="groupAdminForm">
-			<label for="groupAdmin" class="off-screen">{translate key=WhoCanManageThisGroup}</label>
-			<select {formname key=GROUP_ADMIN} class="textbox" id="groupAdmin">
-				<option value="">-- {translate key=None} --</option>
-				{foreach from=$AdminGroups item=adminGroup}
-					<option value="{$adminGroup->Id}">{$adminGroup->Name}</option>
-				{/foreach}
-			</select>
-
-			<button type="button" class="button save">{html_image src="tick-circle.png"} {translate key='Update'}</button>
-			<button type="button" class="button cancel">{html_image src="slash.png"} {translate key='Cancel'}</button>
-		</form>
+	<div class="modal fade" id="groupAdminDialog" tabindex="-1" role="dialog" aria-labelledby="groupAdminDialogLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<form id="groupAdminForm" method="post">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+						<h4 class="modal-title" id="groupAdminDialogLabel">{translate key=WhoCanManageThisGroup}</h4>
+					</div>
+					<div class="modal-body">
+						<div class="form-group has-feedback">
+							<label for="groupAdmin" class="off-screen">{translate key=WhoCanManageThisGroup}</label>
+							<select {formname key=GROUP_ADMIN} class="form-control" id="groupAdmin">
+								<option value="">-- {translate key=None} --</option>
+								{foreach from=$AdminGroups item=adminGroup}
+									<option value="{$adminGroup->Id}">{$adminGroup->Name}</option>
+								{/foreach}
+							</select>
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default cancel" data-dismiss="modal">{translate key='Cancel'}</button>
+						<button type="button" class="btn btn-success save"><span class="glyphicon glyphicon-ok-circle"></span>{translate key='Update'}</button>
+						{indicator}
+					</div>
+				</div>
+			</form>
+		</div>
 	</div>
 
 	{html_image src="admin-ajax-indicator.gif" class="indicator" style="display:none;"}

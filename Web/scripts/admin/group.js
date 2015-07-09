@@ -10,6 +10,7 @@ function GroupManagement(opts) {
 
 		groupUserList: $('#groupUserList'),
 		membersDialog: $('#membersDialog'),
+		allUsersList: $('#allUsersList'),
 		permissionsDialog: $('#permissionsDialog'),
 		deleteDialog: $('#deleteDialog'),
 		renameDialog: $('#renameDialog'),
@@ -32,13 +33,6 @@ function GroupManagement(opts) {
 
 	GroupManagement.prototype.init = function() {
 
-		ConfigureAdminDialog(elements.membersDialog, 420, 500);
-		ConfigureAdminDialog(elements.permissionsDialog, 400, 300);
-		ConfigureAdminDialog(elements.deleteDialog,  400, 300);
-		ConfigureAdminDialog(elements.browseUserDialog, 500, 100);
-		ConfigureAdminDialog(elements.rolesDialog, 500, 300);
-		ConfigureAdminDialog(elements.groupAdminDialog, 500, 100);
-
 		elements.groupList.delegate('a.update', 'click', function(e) {
 			setActiveId($(this));
 			e.preventDefault();
@@ -54,6 +48,7 @@ function GroupManagement(opts) {
 
 		elements.groupList.delegate('.members', 'click', function() {
 			changeMembers();
+			elements.membersDialog.modal('show');
 		});
 
 		elements.groupList.delegate('.delete', 'click', function() {
@@ -121,11 +116,11 @@ function GroupManagement(opts) {
 		});
 
 		$(".cancel").click(function() {
-			$(this).closest('.dialog').dialog("close");
+			$(this).closest('.dialog').modal("hide");
 		});
 
 		var hidePermissionsDialog = function() {
-			elements.permissionsDialog.dialog('close');
+			elements.permissionsDialog.modal('hide');
 		};
 
 		var error = function(errorText) {
@@ -147,7 +142,8 @@ function GroupManagement(opts) {
 	};
 
 	var showAllUsersToAdd = function() {
-		elements.browseUserDialog.empty();
+		elements.membersDialog.modal('hide');
+		elements.allUsersList.empty();
 
 		if (allUserList == null) {
 			$.ajax({
@@ -165,17 +161,16 @@ function GroupManagement(opts) {
 		{
 			$.map(allUserList, function(item) {
 				if (elements.groupUserList.data('userIds')[item.Id] == undefined) {
-					items.push('<li><a href="#" class="add"><img src="../img/plus-button.png" alt="Add To Group" /></a> ' + item.DisplayName + '<input type="hidden" class="id" value="' + item.Id + '"/></li></li>');
+					items.push('<div><a href="#" class="add"><img src="../img/plus-button.png" alt="Add To Group" /></a> ' + item.DisplayName + '<input type="hidden" class="id" value="' + item.Id + '"/></div>');
 				}
 				else {
-					items.push('<li><img src="../img/tick-white.png" alt="Group Member" /> <span>' + item.DisplayName + '</span></li>');
+					items.push('<div><img src="../img/tick-white.png" alt="Group Member" /> <span>' + item.DisplayName + '</span></div>');
 				}
 			});
 		}
 
-		$('<ul/>', {'class': '', html: items.join('')}).appendTo(elements.browseUserDialog);
-
-		elements.browseUserDialog.dialog('open');
+		$('<div/>', {'class': '', html: items.join('')}).appendTo(elements.allUsersList);
+		elements.browseUserDialog.modal('show');
 	};
 
 	var getSubmitCallback = function(action) {
@@ -207,7 +202,7 @@ function GroupManagement(opts) {
 			if (data.Users != null)
 			{
 				$.map(data.Users, function(item) {
-					items.push('<li><a href="#" class="delete"><img src="../img/cross-button.png" /></a> ' + item.DisplayName + '<input type="hidden" class="id" value="' + item.Id + '"/></li>');
+					items.push('<div><a href="#" class="delete"><img src="../img/cross-button.png" /></a> ' + item.DisplayName + '<input type="hidden" class="id" value="' + item.Id + '"/></div>');
 					userIds[item.Id] = item.Id;
 				});
 			}
@@ -215,8 +210,7 @@ function GroupManagement(opts) {
 			elements.groupUserList.empty();
 			elements.groupUserList.data('userIds', userIds);
 
-			$('<ul/>', {'class': '', html: items.join('')}).appendTo(elements.groupUserList);
-			elements.membersDialog.dialog('open');
+			$('<div/>', {'class': '', html: items.join('')}).appendTo(elements.groupUserList);
 		});
 	};
 
@@ -237,15 +231,15 @@ function GroupManagement(opts) {
 		$.get(opts.permissionsUrl, data, function(resourceIds) {
 			elements.permissionsForm.find(':checkbox').attr('checked', false);
 			$.each(resourceIds, function(index, value) {
-				elements.permissionsForm.find(':checkbox[value="' + value + '"]').attr('checked', true);
+				elements.permissionsForm.find(':checkbox[value="' + value + '"]').prop('checked', true);
 			});
 
-			elements.permissionsDialog.dialog('open');
+			elements.permissionsDialog.modal('show');
 		});
 	};
 
 	var deleteGroup = function() {
-		elements.deleteDialog.dialog('open');
+		elements.deleteDialog.modal('show');
 	};
 
 	var changeRoles = function() {
@@ -255,10 +249,10 @@ function GroupManagement(opts) {
 		$.get(opts.rolesUrl, data, function(roleIds) {
 			elements.rolesForm.find(':checkbox').attr('checked', false);
 			$.each(roleIds, function(index, value) {
-				elements.rolesForm.find(':checkbox[value="' + value + '"]').attr('checked', true);
+				elements.rolesForm.find(':checkbox[value="' + value + '"]').prop('checked', true);
 			});
 
-			elements.rolesDialog.dialog('open');
+			elements.rolesDialog.modal('show');
 		});
 	};
 
@@ -267,6 +261,6 @@ function GroupManagement(opts) {
 
 		elements.groupAdminForm.find('select').val('');
 		
-		elements.groupAdminDialog.dialog('open');
+		elements.groupAdminDialog.modal('show');
 	};
 }
