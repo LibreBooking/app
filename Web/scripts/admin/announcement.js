@@ -3,7 +3,7 @@ function AnnouncementManagement(opts) {
 
 	var elements = {
 		activeId: $('#activeId'),
-		announcementList: $('table.list'),
+		announcementList: $('#announcementList'),
 
 		editDialog: $('#editDialog'),
 		deleteDialog: $('#deleteDialog'),
@@ -12,37 +12,34 @@ function AnnouncementManagement(opts) {
 		form: $('#editForm'),
 		deleteForm: $('#deleteForm'),
 
-        editText: $('#editText'),
-        editBegin: $('#editBegin'),
-        editEnd: $('#editEnd'),
-        editPriority: $('#editPriority')
+		editText: $('#editText'),
+		editBegin: $('#editBegin'),
+		editEnd: $('#editEnd'),
+		editPriority: $('#editPriority')
 	};
 
 	var announcements = new Object();
 
-    AnnouncementManagement.prototype.init = function() {
+	AnnouncementManagement.prototype.init = function () {
 
-		ConfigureAdminDialog(elements.editDialog, 550, 300);
-		ConfigureAdminDialog(elements.deleteDialog,  500, 200);
-
-		elements.announcementList.delegate('a.update', 'click', function(e) {
+		elements.announcementList.delegate('a.update', 'click', function (e) {
 			setActiveId($(this));
 			e.preventDefault();
 		});
 
-		elements.announcementList.delegate('.edit', 'click', function() {
+		elements.announcementList.delegate('.edit', 'click', function () {
 			editAnnouncement();
 		});
-		elements.announcementList.delegate('.delete', 'click', function() {
+		elements.announcementList.delegate('.delete', 'click', function () {
 			deleteAnnouncement();
 		});
 
-		$(".save").click(function() {
+		$(".save").click(function () {
 			$(this).closest('form').submit();
 		});
 
-		$(".cancel").click(function() {
-			$(this).closest('.dialog').dialog("close");
+		$(".cancel").click(function () {
+			$(this).closest('.dialog').modal("hide");
 		});
 
 		ConfigureAdminForm(elements.addForm, getSubmitCallback(options.actions.add));
@@ -50,14 +47,14 @@ function AnnouncementManagement(opts) {
 		ConfigureAdminForm(elements.form, getSubmitCallback(options.actions.edit));
 	};
 
-	var getSubmitCallback = function(action) {
-		return function() {
+	var getSubmitCallback = function (action) {
+		return function () {
 			return options.submitUrl + "?aid=" + getActiveId() + "&action=" + action;
 		};
 	};
 
 	function setActiveId(activeElement) {
-		var id = activeElement.parents('td').siblings('td.id').find(':hidden').val();
+		var id = activeElement.closest('tr').attr('data-announcement-id');
 		elements.activeId.val(id);
 	}
 
@@ -65,29 +62,27 @@ function AnnouncementManagement(opts) {
 		return elements.activeId.val();
 	}
 
-	var editAnnouncement = function() {
+	var editAnnouncement = function () {
 		var announcement = getActiveAnnouncement();
 		elements.editText.val(HtmlDecode(announcement.text));
 		elements.editBegin.val(announcement.start);
-        elements.editBegin.trigger('change');
+		elements.editBegin.trigger('change');
 		elements.editEnd.val(announcement.end);
 		elements.editEnd.trigger('change');
 		elements.editPriority.val(announcement.priority);
 
-		elements.editDialog.dialog('open');
+		elements.editDialog.modal('show');
 	};
 
-	var deleteAnnouncement = function() {
-		elements.deleteDialog.dialog('open');
+	var deleteAnnouncement = function () {
+		elements.deleteDialog.modal('show');
 	};
 
-	var getActiveAnnouncement = function ()
-	{
+	var getActiveAnnouncement = function () {
 		return announcements[getActiveId()];
 	};
 
-	AnnouncementManagement.prototype.addAnnouncement = function(id, text, start, end, priority)
-	{
+	AnnouncementManagement.prototype.addAnnouncement = function (id, text, start, end, priority) {
 		announcements[id] = {id: id, text: text, start: start, end: end, priority: priority};
-	}
+	};
 }

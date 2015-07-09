@@ -39,6 +39,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 				</button>
 
 				<button type="reset" class="btn btn-default btn-sm">{translate key=Reset}</button>
+				{indicator}
 			</div>
 		</div>
 	</form>

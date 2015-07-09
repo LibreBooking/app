@@ -1656,6 +1656,13 @@ td.update {
 #groupSearch {
   width: 400px;
 }
+#announcementList .announcementPriority {
+  width: 100px;
+}
+#announcementList .announcementStart,
+#announcementList .announcementEnd {
+  width: 150px;
+}
 .admin-page input,
 #page-manage-blackouts input,
 #page-manage-reservations input,
