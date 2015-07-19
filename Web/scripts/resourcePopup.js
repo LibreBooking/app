@@ -20,6 +20,7 @@
 $.fn.bindResourceDetails = function (resourceId, options) {
 	var opts = $.extend({preventClick: false}, options);
 
+	$(this).removeAttr('resource-details-bound');
 	bindResourceDetails($(this));
 
 	function getDiv() {

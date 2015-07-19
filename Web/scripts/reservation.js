@@ -333,7 +333,18 @@ function Reservation(opts)
 		var resourceIdHdn = resourceNames.find('.resourceId');
 		var resourceId = resourceIdHdn.val();
 
-		var checkboxes = elements.resourceGroupsDialog.find('.additionalResourceCheckbox:checked');
+		var allCheckboxes = elements.resourceGroupsDialog.find('.additionalResourceCheckbox:checked');
+
+		var checkboxes = [];
+		var addedResources = [];
+		$.each(allCheckboxes, function (i, checkbox){
+			var checkedResourceId = $(checkbox).attr('resource-id');
+			if (addedResources.indexOf(checkedResourceId) === -1)
+			{
+				checkboxes.push(checkbox);
+				addedResources.push(checkedResourceId);
+			}
+		});
 
 		if (checkboxes.length >= 1)
 		{
@@ -344,12 +355,16 @@ function Reservation(opts)
 		{
 			$.each(checkboxes, function (i, checkbox)
 			{
+				var checkedResourceId = $(checkbox).attr('resource-id');
+				var checkedResourceName = $(checkbox).parent().text();
+
 				if (i == 0)
 				{
+					resourceNames.find('.resourceDetails').text(checkedResourceName);
+					resourceIdHdn.val(checkedResourceId);
 					return true;
 				}
-				var resourceId = $(checkbox).attr('resource-id');
-				displayDiv.append('<p><a href="#" class="resourceDetails">' + $(checkbox).parent().text() + '</a><input class="resourceId" type="hidden" name="additionalResources[]" value="' + resourceId + '"/></p>');
+				displayDiv.append('<p><a href="#" class="resourceDetails">' + checkedResourceName + '</a><input class="resourceId" type="hidden" name="additionalResources[]" value="' + checkedResourceId + '"/></p>');
 			});
 		}
 
