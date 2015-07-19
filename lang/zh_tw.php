@@ -31,7 +31,7 @@ class zh_tw extends en_us
      */
     protected function _LoadDates()
     {
-        $dates = array();
+        $dates = parent::_LoadDates();
 
         $dates['general_date'] = 'Y/m/d';
         $dates['general_datetime'] = 'Y/m/d H:i:s';
@@ -54,7 +54,7 @@ class zh_tw extends en_us
      */
     protected function _LoadStrings()
     {
-        $strings = array();
+        $strings = parent::_LoadStrings();
 
         $strings['FirstName'] = '名';
         $strings['LastName'] = '姓';
@@ -624,7 +624,7 @@ class zh_tw extends en_us
      */
     protected function _LoadDays()
     {
-        $days = array();
+        $days = parent::_LoadDays();
 
         /***
         DAY NAMES
@@ -650,7 +650,7 @@ class zh_tw extends en_us
      */
     protected function _LoadMonths()
     {
-        $months = array();
+        $months = parent::_LoadMonths();
 
         /***
         MONTH NAMES
@@ -682,5 +682,3 @@ class zh_tw extends en_us
         return 'zh_tw';
     }
 }
-
-?>

@@ -33,7 +33,7 @@ class no_no extends en_us
 	 */
 	protected function _LoadDates()
 	{
-		$dates = array();
+		$dates = parent::_LoadDates();
 
 		$dates['general_date'] = 'm/d/Y';
 		$dates['general_datetime'] = 'm/d/Y H:i:s';
@@ -56,7 +56,7 @@ class no_no extends en_us
 	 */
 	protected function _LoadStrings()
 	{
-		$strings = array();
+		$strings = parent::_LoadStrings();
 
 		$strings['FirstName'] = 'Fornavn';
 		$strings['LastName'] = 'Etternavn';
@@ -683,7 +683,7 @@ class no_no extends en_us
 	 */
 	protected function _LoadDays()
 	{
-		$days = array();
+		$days = parent::_LoadDays();
 
 		/***
         DAY NAMES

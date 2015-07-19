@@ -32,7 +32,7 @@ class cz extends en_us
 	 */
 	protected function _LoadDates()
 	{
-		$dates = array();
+		$dates = parent::_LoadDates();
 
 		$dates['general_date'] = 'd.m.Y';
 		$dates['general_datetime'] = 'd.m.Y H:i:s';
@@ -496,6 +496,13 @@ class cz extends en_us
 		$strings['Unchanged'] = 'Nezměněné';
 		$strings['Common'] = 'příbuzné';
 		$strings['AdvancedFilter'] = 'Rozšířený filtr';
+		$strings['AllParticipants'] = 'Všichni participanti';
+		$strings['NoResources'] = 'Nebyl přidán zdroj.';
+		$strings['ReservationApprovalAdminSubject'] = 'Upozornění: Rezervace vyžaduje Vaše schválení';
+		$strings['ResourceAvailability'] = 'Dostupnost zdrojů';
+		$strings['UnavailableAllDay'] = 'Nedostupné celý den';
+		$strings['AvailableUntil'] = 'Dostupných časů k rezervaci';
+		$strings['AvailableBeginningAt'] = 'Dostupný začátek';
 		// End Strings
 
 		// Install

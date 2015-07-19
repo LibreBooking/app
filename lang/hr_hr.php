@@ -33,7 +33,7 @@ class hr_hr extends Language
 	 */
 	protected function _LoadDates()
 	{
-		$dates = array();
+		$dates = parent::_LoadDates();
 
 		$dates['general_date'] = 'm/d/G';
 		$dates['general_datetime'] = 'm/d/G H:i:s';
@@ -56,7 +56,7 @@ class hr_hr extends Language
 	 */
 	protected function _LoadStrings()
 	{
-		$strings = array();
+		$strings = parent::_LoadStrings();
 
 		$strings['FirstName'] = 'Ime';
 		$strings['LastName'] = 'Prezime';
@@ -668,7 +668,7 @@ class hr_hr extends Language
 	 */
 	protected function _LoadDays()
 	{
-		$days = array();
+		$days = parent::_LoadDays();
 
 		/***
 		DAY NAMES
@@ -694,7 +694,7 @@ class hr_hr extends Language
 	 */
 	protected function _LoadMonths()
 	{
-		$months = array();
+		$months = parent::_LoadMonths();
 
 		/***
 		MONTH NAMES
@@ -723,6 +723,6 @@ class hr_hr extends Language
 
 	protected function _GetHtmlLangCode()
 	{
-		return 'en';
+		return 'hr';
 	}
 }

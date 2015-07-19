@@ -32,7 +32,7 @@ class pt_br extends Language
    */
   protected function _LoadDates()
   {
-    $dates = array();
+    $dates = parent::_LoadDates();
 
     $dates['general_date'] = 'd/m/Y';
     $dates['general_datetime'] = 'd/m/Y H:i:s';
@@ -55,7 +55,7 @@ class pt_br extends Language
   */
   protected function _LoadStrings()
   {
-    $strings = array();
+    $strings = parent::_LoadStrings();
 
     $strings['FirstName'] = 'Nome';
     $strings['LastName'] = 'Sobrenome';
@@ -685,7 +685,7 @@ class pt_br extends Language
    */
   protected function _LoadDays()
   {
-    $days = array();
+    $days = parent::_LoadDays();
 
     /***
     DAY NAMES
@@ -711,7 +711,7 @@ class pt_br extends Language
    */
   protected function _LoadMonths()
   {
-    $months = array();
+    $months = parent::_LoadMonths();
 
     /***
     MONTH NAMES
@@ -743,5 +743,3 @@ class pt_br extends Language
     return 'pt_br';
   }
 }
-
-?>

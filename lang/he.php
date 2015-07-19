@@ -47,7 +47,7 @@ class he extends en_us
      */
     protected function _LoadDates()
     {
-        $dates = array();
+        $dates = parent::_LoadDates();
 
         $dates['general_date'] = 'd/m/Y';
         /* $dates['general_datetime'] = 'd/m/Y HH:MM:s'; */
@@ -57,10 +57,10 @@ class he extends en_us
         $dates['res_popup'] = 'd/m/Y g:i A';
         $dates['dashboard'] = 'l, d/m/Y g:i A';
         $dates['period_time'] = 'g:i A';
-	$dates['general_date_js'] = 'dd/mm/yy';
-	/* $dates['calendar_time'] = 'HH:MMt'; */
-	$dates['calendar_time'] = 'h:mmt';
-	$dates['calendar_dates'] = 'd/M';
+        $dates['general_date_js'] = 'dd/mm/yy';
+        /* $dates['calendar_time'] = 'HH:MMt'; */
+        $dates['calendar_time'] = 'h:mmt';
+        $dates['calendar_dates'] = 'd/M';
 
         $this->Dates = $dates;
 
@@ -72,7 +72,7 @@ class he extends en_us
      */
     protected function _LoadStrings()
     {
-        $strings = array();
+        $strings = parent::_LoadStrings();
 
         $strings['FirstName'] = 'שם פרטי';
         $strings['LastName'] = 'שמ משפחה';
@@ -565,7 +565,7 @@ class he extends en_us
      */
     protected function _LoadDays()
     {
-        $days = array();
+        $days = parent::_LoadDays();
 
         /***
         DAY NAMES
@@ -591,7 +591,7 @@ class he extends en_us
      */
     protected function _LoadMonths()
     {
-        $months = array();
+        $months = parent::_LoadMonths();
 
         /***
         MONTH NAMES
@@ -623,5 +623,3 @@ class he extends en_us
         return 'he';
     }
 }
-
-?>
