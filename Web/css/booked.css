@@ -969,6 +969,9 @@ a.toggle-sidebar {
   box-shadow: 0px 0px 3px 0px #212121;
   z-index: 99999;
 }
+.resourceNameSelector {
+  cursor: pointer;
+}
 #userDetailsPopup .label {
   font-weight: bold;
   color: #000;

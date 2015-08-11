@@ -91,6 +91,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 							<i resourceId="{$resourceId}" class="resourceNameSelector fa fa-info-circle"></i>
 							<a href="{$href}" resourceId="{$resourceId}">{$resource->Name}</a>
 						{else}
+							<i resourceId="{$resourceId}" class="resourceNameSelector fa fa-info-circle"></i>
 							{$resource->Name}
 						{/if}
 					</td>
