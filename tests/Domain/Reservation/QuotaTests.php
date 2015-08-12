@@ -625,6 +625,50 @@ class QuotaTests extends TestBase
 		$this->assertFalse($exceeds);
 	}
 
+	public function testWhenHourlyLimitIsExceededInNextYear()
+	{
+		$duration = new QuotaDurationYear();
+		$limit = new QuotaLimitHours(1.5);
+
+		$startDate = Date::Parse('2011-12-31 23:30', $this->schedule->GetTimezone());
+		$endDate = Date::Parse('2012-01-01 00:30', $this->schedule->GetTimezone());
+
+		$series = $this->GetHourLongReservation($startDate, $endDate);
+		$quota = new Quota(1, $duration, $limit, $series->ResourceId());
+
+		$res1 = new ReservationItemView('ref1', $startDate->SetTimeString('00:00'), $startDate->SetTimeString('00:31'), '', $series->ResourceId(), 98712);
+		$res1->ScheduleId = $series->ScheduleId();
+		$reservations = array($res1);
+
+		$this->SearchReturns($reservations);
+
+		$exceeds = $quota->ExceedsQuota($series, $this->user, $this->schedule, $this->reservationViewRepository);
+
+		$this->assertFalse($exceeds);
+	}
+
+	public function testWhenHourlyLimitIsExceededInYear()
+	{
+		$duration = new QuotaDurationYear();
+		$limit = new QuotaLimitHours(1.5);
+
+		$startDate = Date::Parse('2011-04-03 0:30', $this->schedule->GetTimezone());
+		$endDate = Date::Parse('2011-04-03 1:30', $this->schedule->GetTimezone());
+
+		$series = $this->GetHourLongReservation($startDate, $endDate);
+		$quota = new Quota(1, $duration, $limit, $series->ResourceId());
+
+		$res1 = new ReservationItemView('ref1', $startDate->SetTimeString('00:00'), $endDate->SetTimeString('00:31'), '', $series->ResourceId(), 98712);
+		$res1->ScheduleId = $series->ScheduleId();
+		$reservations = array($res1);
+
+		$this->SearchReturns($reservations);
+
+		$exceeds = $quota->ExceedsQuota($series, $this->user, $this->schedule, $this->reservationViewRepository);
+
+		$this->assertTrue($exceeds);
+	}
+
 	private function GetHourLongReservation($startDate, $endDate, $resourceId1 = null, $resourceId2 = null,
 											$scheduleId = null)
 	{

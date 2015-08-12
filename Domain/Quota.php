@@ -130,7 +130,11 @@ class Quota implements IQuota
 			return new QuotaDurationWeek();
 		}
 
-		return new QuotaDurationMonth();
+		if ($duration == QuotaDuration::Month)
+		{
+			return new QuotaDurationMonth();
+		}
+		return new QuotaDurationYear();
 	}
 
 	/**
@@ -462,6 +466,7 @@ abstract class QuotaDuration implements IQuotaDuration
 	const Day = 'day';
 	const Week = 'week';
 	const Month = 'month';
+	const Year = 'year';
 
 	/**
 	 * @param ReservationSeries $reservationSeries
@@ -741,6 +746,104 @@ class QuotaDurationMonth extends QuotaDuration
 	public function Name()
 	{
 		return QuotaDuration::Month;
+	}
+}
+
+class QuotaDurationYear extends QuotaDuration
+{
+
+	/**
+	 * @return string QuotaDuration
+	 */
+	public function Name()
+	{
+		return QuotaDuration::Year;
+	}
+
+	/**
+	 * @param ReservationSeries $reservationSeries
+	 * @param string $timezone
+	 * @return QuotaSearchDates
+	 */
+	public function GetSearchDates(ReservationSeries $reservationSeries, $timezone)
+	{
+		$minMax = $this->GetFirstAndLastReservationDates($reservationSeries);
+
+		/** @var $start Date */
+		$start = $minMax[0]->ToTimezone($timezone);
+		/** @var $end Date */
+		$end = $minMax[1]->ToTimezone($timezone);
+
+		$searchStart = Date::Create($start->Year(), 1, 1, 0, 0, 0, $timezone);
+		$searchEnd = Date::Create($end->Year() + 1, 1, 1, 0, 0, 0, $timezone);
+
+		return new QuotaSearchDates($searchStart, $searchEnd);
+	}
+
+	/**
+	 * @param DateRange $dateRange
+	 * @return array|DateRange[]
+	 */
+	public function Split(DateRange $dateRange)
+	{
+		$ranges = array();
+
+		$start = $dateRange->GetBegin();
+		$end = $dateRange->GetEnd();
+
+		if (!$this->SameYear($start, $end))
+		{
+			$current = $start;
+
+			while (!$this->SameYear($current, $end))
+			{
+				$next = $this->GetFirstOfYear($current, 1);
+
+				$ranges[] = new DateRange($current, $next);
+
+				$current = $next;
+
+				if ($this->SameYear($current, $end))
+				{
+					$ranges[] = new DateRange($current, $end);
+				}
+			}
+		}
+		else
+		{
+			$ranges[] = $dateRange;
+		}
+
+		return $ranges;
+	}
+
+	/**
+	 * @param Date $date
+	 * @param int $yearOffset
+	 * @return Date
+	 */
+	private function GetFirstOfYear(Date $date, $yearOffset = 0)
+	{
+		return Date::Create($date->Year() + $yearOffset, 1, 1, 0, 0, 0, $date->Timezone());
+	}
+
+	/**
+	 * @param Date $d1
+	 * @param Date $d2
+	 * @return bool
+	 */
+	private function SameYear(Date $d1, Date $d2)
+	{
+		return ($d1->Year() == $d2->Year());
+	}
+
+	/**
+	 * @param Date $date
+	 * @return string
+	 */
+	public function GetDurationKey(Date $date)
+	{
+		return sprintf("Y%s", $date->Year());
 	}
 }
 

@@ -68,6 +68,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 						<option value='{QuotaDuration::Day}'>{translate key=day}</option>
 						<option value='{QuotaDuration::Week}'>{translate key=week}</option>
 						<option value='{QuotaDuration::Month}'>{translate key=month}</option>
+						<option value='{QuotaDuration::Year}'>{translate key=year}</option>
 					</select>
 				{/capture}
 
