@@ -36,9 +36,16 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			</select>
 		</div>
 		<div class="col-xs-6">
-			<a href="#" id="add-user" class="add-link add-user pull-right">{translate key="AddUser"}
-				<span class="fa fa-plus-circle icon add"></span>
-			</a>
+			<div class="pull-right">
+
+				<a href="#" id="add-user" class="add-link add-user">{translate key="AddUser"}
+					<span class="fa fa-plus-circle icon add"></span>
+				</a>
+
+				<a href="#" id="import-users" class="add-link add-user">{translate key="Import"}
+					<span class="fa fa-upload icon"></span>
+				</a>
+			</div>
 		</div>
 		<div class="clearfix"></div>
 	</form>
@@ -181,7 +188,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 						<h4 class="modal-title" id="addUserModalLabel">{translate key=AddUser}</h4>
 					</div>
 					<div class="modal-body">
-						<div id="addResourceResults" class="alert alert-danger no-show">
+						<div id="addUserResults" class="validationSummary alert alert-danger no-show">
 							<ul>
 								{async_validator id="addUserEmailformat" key="ValidEmailRequired"}
 								{async_validator id="addUserUniqueemail" key="UniqueEmailRequired"}
@@ -287,6 +294,49 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 						<button type="button" class="btn btn-success save">
 							<span class="glyphicon glyphicon-ok-circle"></span>
 							{translate key='AddUser'}
+						</button>
+						{indicator}
+					</div>
+				</div>
+			</div>
+		</form>
+	</div>
+
+	<div id="importUsersDialog" class="modal" tabindex="-1" role="dialog" aria-labelledby="importUsersModalLabel"
+		 aria-hidden="true">
+		<form id="importUsersForm" class="form" role="form" method="post" enctype="multipart/form-data" ajaxAction="{ManageUsersActions::ImportUsers}">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+						<h4 class="modal-title" id="importUsersModalLabel">{translate key=Import}</h4>
+					</div>
+					<div class="modal-body">
+						<div id="importUserResults" class="validationSummary alert alert-danger no-show">
+							<ul>
+								{async_validator id="fileExtensionValidator" key=""}
+							</ul>
+						</div>
+						<div id="importErrors" class="error no-show"></div>
+						<div id="importResult" class="alert alert-success no-show">
+							<span>{translate key=RowsImported}</span> <div id="importCount" class="inline bold">0</div>
+							<span>{translate key=RowsSkipped}</span> <div id="importSkipped" class="inline bold">0</div>
+							<a class="" href="{$smarty.server.SCRIPT_NAME}">{translate key=Done} <span class="fa fa-refresh"></span></a>
+						</div>
+						<div class="margin-bottom-25">
+							<input type="file" {formname key=USER_IMPORT_FILE} />
+						</div>
+						<div id="importInstructions" class="alert alert-info">
+							<div class="note">{translate key=UserImportInstructions}</div>
+							<a href="{$smarty.server.SCRIPT_NAME}?dr=template" target="_blank">{translate key=GetTemplate} <span class="fa fa-download"></span></a>
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default"
+								data-dismiss="modal">{translate key='Cancel'}</button>
+						<button type="button" class="btn btn-success save">
+							<span class="glyphicon glyphicon-ok-circle"></span>
+							{translate key='Import'}
 						</button>
 						{indicator}
 					</div>

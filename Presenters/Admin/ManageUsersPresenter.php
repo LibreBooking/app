@@ -22,6 +22,7 @@ require_once(ROOT_DIR . 'Domain/Access/namespace.php');
 require_once(ROOT_DIR . 'Presenters/ActionPresenter.php');
 require_once(ROOT_DIR . 'lib/Application/Authentication/namespace.php');
 require_once(ROOT_DIR . 'lib/Application/User/namespace.php');
+require_once(ROOT_DIR . 'lib/Application/Admin/UserImportCsv.php');
 
 class ManageUsersActions
 {
@@ -34,6 +35,7 @@ class ManageUsersActions
 	const Permissions = 'permissions';
 	const UpdateUser = 'updateUser';
 	const ChangeColor = 'changeColor';
+	const ImportUsers = 'importUsers';
 }
 
 interface IManageUsersPresenter
@@ -172,6 +174,7 @@ class ManageUsersPresenter extends ActionPresenter implements IManageUsersPresen
 		$this->AddAction(ManageUsersActions::UpdateUser, 'UpdateUser');
 		$this->AddAction(ManageUsersActions::ChangeAttribute, 'ChangeAttribute');
 		$this->AddAction(ManageUsersActions::ChangeColor, 'ChangeColor');
+		$this->AddAction(ManageUsersActions::ImportUsers, 'ImportUsers');
 	}
 
 	public function PageLoad()
@@ -327,6 +330,10 @@ class ManageUsersPresenter extends ActionPresenter implements IManageUsersPresen
 			$users = $this->userRepository->GetAll();
 			$this->page->SetJsonResponse($users);
 		}
+		elseif ($dataRequest == 'template')
+		{
+			$this->page->ShowTemplateCSV();
+		}
 	}
 
 	/**
@@ -365,10 +372,10 @@ class ManageUsersPresenter extends ActionPresenter implements IManageUsersPresen
 
 	protected function LoadValidators($action)
 	{
+		Log::Debug('Loading validators for %s', $action);
+
 		if ($action == ManageUsersActions::UpdateUser)
 		{
-			Log::Debug('Loading validators for %s', $action);
-
 			$this->page->RegisterValidator('emailformat', new EmailValidator($this->page->GetEmail()));
 			$this->page->RegisterValidator('uniqueemail',
 										   new UniqueEmailValidator($this->userRepository, $this->page->GetEmail(), $this->page->GetUserId()));
@@ -378,8 +385,6 @@ class ManageUsersPresenter extends ActionPresenter implements IManageUsersPresen
 
 		if ($action == ManageUsersActions::AddUser)
 		{
-			Log::Debug('Loading validators for %s', $action);
-
 			$this->page->RegisterValidator('addUserEmailformat', new EmailValidator($this->page->GetEmail()));
 			$this->page->RegisterValidator('addUserUniqueemail',
 										   new UniqueEmailValidator($this->userRepository, $this->page->GetEmail()));
@@ -392,12 +397,15 @@ class ManageUsersPresenter extends ActionPresenter implements IManageUsersPresen
 
 		if ($action == ManageUsersActions::ChangeAttribute)
 		{
-			Log::Debug('Loading validators for %s', $action);
-
 			$this->page->RegisterValidator('attributeValidator',
 										   new AttributeValidatorInline($this->attributeService, CustomAttributeCategory::USER,
 																		$this->GetInlineAttributeValue(), $this->page->GetUserId(),
 												   true, true));
+		}
+
+		if ($action == ManageUsersActions::ImportUsers)
+		{
+			$this->page->RegisterValidator('fileExtensionValidator', new FileExtensionValidator('csv', $this->page->GetImportFile()));
 		}
 	}
 
@@ -449,5 +457,114 @@ class ManageUsersPresenter extends ActionPresenter implements IManageUsersPresen
 			}
 		}
 		return $resources;
+	}
+
+	public function ImportUsers()
+		{
+			$groupsList = $this->groupViewRepository->GetList();
+			/** @var GroupItemView[] $groups */
+			$groups = $groupsList->Results();
+			$groupsIndexed = array();
+			foreach ($groups as $group)
+			{
+				$groupsIndexed[$group->Name()] = $group->Id();
+			}
+
+			$importFile = $this->page->GetImportFile();
+			$csv = new UserImportCsv($importFile);
+
+			$importCount = 0;
+			$messages = array();
+
+			$rows = $csv->GetRows();
+
+			if (count($rows) == 0)
+			{
+				$this->page->SetImportResult(new CsvImportResult(0, array(), 'Empty file or missing header row'));
+				return;
+			}
+
+			for ($i = 0; $i < count($rows); $i++)
+			{
+				$row = $rows[$i];
+				try
+				{
+					$emailValidator = new EmailValidator($row->email);
+					$uniqueEmailValidator = new UniqueEmailValidator($this->userRepository, $row->email);
+					$uniqueUsernameValidator = new UniqueUserNameValidator($this->userRepository, $row->username);
+
+					$emailValidator->Validate();
+					$uniqueEmailValidator->Validate();
+					$uniqueUsernameValidator->Validate();
+
+					if (!$emailValidator->IsValid())
+					{
+						$messages[] = $emailValidator->Messages()[0] . " ({$row->email})";
+						continue;
+					}
+					if (!$uniqueEmailValidator->IsValid())
+					{
+						$messages[] = $uniqueEmailValidator->Messages()[0]. " ({$row->email})";
+						continue;
+					}
+					if (!$uniqueUsernameValidator->IsValid())
+					{
+						$messages[] = $uniqueUsernameValidator->Messages()[0]. " ({$row->username})";
+						continue;
+					}
+
+					$timezone = empty($row->timezone) ? Configuration::Instance()->GetKey(ConfigKeys::DEFAULT_TIMEZONE) : $row->timezone;
+					$password = empty($row->password) ? 'password' : $row->password;
+					$language = empty($row->language) ? 'en_us' : $row->language;
+
+					$user = $this->manageUsersService->AddUser($row->username, $row->email, $row->firstName, $row->lastName, $password, $timezone, $language,
+													   Configuration::Instance()->GetKey(ConfigKeys::DEFAULT_HOMEPAGE),
+													   array(UserAttribute::Phone => $row->phone, UserAttribute::Organization => $row->organization, UserAttribute::Position => $row->position),
+													   array());
+
+					$userGroups = array();
+					foreach ($row->groups as $groupName)
+					{
+						if (array_key_exists($groupName, $groupsIndexed))
+						{
+							Log::Debug('Importing user %s with group %s', $row->username, $groupName);
+							$userGroups[] = new UserGroup($groupsIndexed[$groupName], $groupName);
+						}
+					}
+
+					if (count($userGroups) > 0)
+					{
+						$user->ChangeGroups($userGroups);
+						$this->userRepository->Update($user);
+					}
+
+					$importCount++;
+				} catch (Exception $ex)
+				{
+					Log::Error('Error importing users. %s', $ex);
+				}
+			}
+
+			$this->page->SetImportResult(new CsvImportResult($importCount, $csv->GetSkippedRowNumbers(), $messages));
+		}
+}
+
+
+class CsvImportResult
+{
+	public $importCount = 0;
+	public $skippedRows = array();
+	public $messages = array();
+
+	/**
+	 * @param $imported int
+	 * @param $skippedRows int[]
+	 * @param $messages string|string[]
+	 */
+	public function __construct($imported, $skippedRows, $messages)
+	{
+		$this->importCount = $imported;
+		$this->skippedRows = $skippedRows;
+		$this->messages = is_array($messages) ? $messages : array($messages);
 	}
 }

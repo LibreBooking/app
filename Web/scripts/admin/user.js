@@ -31,6 +31,9 @@ function UserManagement(opts)
 
 		addUserForm:$('#addUserForm'),
 
+		importUsersForm:$('#importUsersForm'),
+		importUsersDialog:$('#importUsersDialog'),
+
 		deleteDialog:$('#deleteDialog'),
 		deleteUserForm:$('#deleteUserForm'),
 
@@ -41,52 +44,43 @@ function UserManagement(opts)
 
 	UserManagement.prototype.init = function ()
 	{
-		elements.userList.delegate('.update', 'click', function (e)
-		{
+		elements.userList.delegate('.update', 'click', function (e) {
 			setActiveUserElement($(this));
 			e.preventDefault();
 		});
 
-		elements.userList.delegate('.changeStatus', 'click', function (e)
-		{
+		elements.userList.delegate('.changeStatus', 'click', function (e) {
 			changeStatus($(this));
 		});
 
-		elements.userList.delegate('.changeGroups', 'click', function (e)
-		{
+		elements.userList.delegate('.changeGroups', 'click', function (e) {
 			changeGroups();
 		});
 
-		elements.userList.delegate('.changePermissions', 'click', function (e)
-		{
+		elements.userList.delegate('.changePermissions', 'click', function (e) {
 			changePermissions();
 		});
 
-		elements.userList.delegate('.resetPassword', 'click', function (e)
-		{
+		elements.userList.delegate('.resetPassword', 'click', function (e) {
 			elements.passwordDialog.find(':password').val('');
 			elements.passwordDialog.modal('show');
 		});
 
-		elements.userList.delegate('.changeColor', 'click', function (e)
-		{
+		elements.userList.delegate('.changeColor', 'click', function (e) {
 			var user = getActiveUser();
 			elements.colorValue.val(user.reservationColor);
 			elements.colorDialog.modal('show');
 		});
 
-		elements.userList.delegate('.edit', 'click', function ()
-		{
+		elements.userList.delegate('.edit', 'click', function () {
 			changeUserInfo();
 		});
 
-		elements.userList.delegate('.delete', 'click', function (e)
-		{
+		elements.userList.delegate('.delete', 'click', function (e) {
 			deleteUser();
 		});
 
-		elements.userList.delegate('.viewReservations', 'click', function (e)
-		{
+		elements.userList.delegate('.viewReservations', 'click', function (e) {
 			var user = getActiveUser();
 			var name = encodeURI(user.first + ' ' + user.last);
 			var url = options.manageReservationsUrl + '?uid=' + user.id + '&un=' + name;
@@ -99,14 +93,12 @@ function UserManagement(opts)
 			$(e.target).closest('.updateCustomAttribute').find('.inlineAttribute').editable('toggle');
 		});
 
-		elements.userAutocomplete.userAutoComplete(options.userAutocompleteUrl, function (ui)
-		{
+		elements.userAutocomplete.userAutoComplete(options.userAutocompleteUrl, function (ui) {
 			elements.userAutocomplete.val(ui.item.label);
 			window.location.href = options.selectUserUrl + ui.item.value
 		});
 
-		elements.filterStatusId.change(function ()
-		{
+		elements.filterStatusId.change(function () {
 			var statusid = $(this).val();
 			window.location.href = options.filterUrl + statusid;
 		});
@@ -123,38 +115,37 @@ function UserManagement(opts)
 			$(this).appendTo(elements.addedGroups);
 		});
 
-		$(".save").click(function ()
-		{
+		$(".save").click(function () {
 			$(this).closest('form').submit();
 		});
 
-		$(".cancel").click(function ()
-		{
+		$(".cancel").click(function () {
 			$(this).closest('.dialog').dialog("close");
 		});
 
-		$('.clearform').click(function ()
-		{
+		$('.clearform').click(function () {
 			$(this).closest('form')[0].reset();
 		});
 
-		$('#add-user').click(function(e){
+		$('#add-user').click(function(e) {
 			e.preventDefault();
 			elements.addDialog.modal('show');
 		});
 
-		var hidePermissionsDialog = function ()
-		{
+		$('#import-users').click(function(e){
+			e.preventDefault();
+			elements.importUsersDialog.modal('show');
+		});
+
+		var hidePermissionsDialog = function () {
 			hideDialog(elements.permissionsDialog);
 		};
 
-		var hidePasswordDialog = function ()
-		{
+		var hidePasswordDialog = function () {
 			hideDialog(elements.passwordDialog);
 		};
 
-		var hideDialog = function (dialogElement)
-		{
+		var hideDialog = function (dialogElement) {
 			dialogElement.modal('hide');
 		};
 
@@ -165,9 +156,25 @@ function UserManagement(opts)
 			}
 		};
 
-		var error = function (errorText)
-		{
+		var error = function (errorText) {
 			alert(errorText);
+		};
+
+		var importHandler = function(responseText, form) {
+			if (!responseText){
+				return;
+			}
+
+			$('#importCount').text(responseText.importCount);
+			$('#importSkipped').text(responseText.skippedRows.length > 0 ? responseText.skippedRows.join(',') : '0');
+			$('#importResult').show();
+
+			var errors = $('#importErrors');
+			errors.empty();
+			if (responseText.messages && responseText.messages.length > 0) {
+				var messages =  responseText.messages.join('</li><li>');
+				errors.html('<div>' + messages + '</div>').show();
+			}
 		};
 
 		ConfigureAdminForm(elements.permissionsForm, defaultSubmitCallback(elements.permissionsForm), hidePermissionsDialog, error);
@@ -176,15 +183,14 @@ function UserManagement(opts)
 		ConfigureAdminForm(elements.deleteUserForm, defaultSubmitCallback(elements.deleteUserForm), hideDialogCallback(elements.deleteDialog), error);
 		ConfigureAdminForm(elements.addUserForm, defaultSubmitCallback(elements.addUserForm), hideDialogCallback(elements.addDialog));
 		ConfigureAdminForm(elements.colorForm, defaultSubmitCallback(elements.colorForm));
+		ConfigureAdminForm(elements.importUsersForm, defaultSubmitCallback(elements.importUsersForm), importHandler);
 	};
 
-	UserManagement.prototype.addUser = function (user)
-	{
+	UserManagement.prototype.addUser = function (user) {
 		users[user.id] = user;
 	};
 
-	var getSubmitCallback = function (action)
-	{
+	var getSubmitCallback = function (action) {
 		return function ()
 		{
 			return options.submitUrl + "?uid=" + getActiveUserId() + "&action=" + action;
@@ -197,33 +203,27 @@ function UserManagement(opts)
 		};
 	};
 
-	function setActiveUserElement(activeElement)
-	{
+	function setActiveUserElement(activeElement) {
 		var id = activeElement.closest('tr').attr('data-userId');
 		setActiveUserId(id);
 	}
 
-	function setActiveUserId(id)
-	{
+	function setActiveUserId(id) {
 		elements.activeId.val(id);
 	}
 
-	function getActiveUserId()
-	{
+	function getActiveUserId() {
 		return elements.activeId.val();
 	}
 
-	function getActiveUser()
-	{
+	function getActiveUser() {
 		return users[getActiveUserId()];
 	}
 
-	var changeStatus = function (statusButtonElement)
-	{
+	var changeStatus = function (statusButtonElement) {
 		var user = getActiveUser();
 
-		function changeStatusResultCallback(resultStatusText)
-		{
+		function changeStatusResultCallback(resultStatusText) {
 			user.isActive = !user.isActive;
 			elements.userList.find('[data-userId="' + user.id + '"]').find('.changeStatus').text(resultStatusText);
 		}
@@ -238,8 +238,7 @@ function UserManagement(opts)
 		}
 	};
 
-	var changeGroups = function ()
-	{
+	var changeGroups = function () {
 		elements.addedGroups.find('.group-item').remove();
 		elements.removedGroups.find('.group-item').remove();
 
@@ -259,16 +258,14 @@ function UserManagement(opts)
 		elements.groupsDialog.modal('show');
 	};
 
-	var changeGroup = function(action, groupId)
-	{
+	var changeGroup = function(action, groupId) {
 		var url = opts.groupManagementUrl + '?action=' + action + '&gid='+groupId;
 
 		var data = {userId:getActiveUserId()};
 		$.post(url, data);
 	};
 
-	var changePermissions = function ()
-	{
+	var changePermissions = function () {
 		var user = getActiveUser();
 		var data = {dr:'permissions', uid:user.id};
 		$.get(opts.permissionsUrl, data, function (resourceIds)
@@ -283,8 +280,7 @@ function UserManagement(opts)
 		});
 	};
 
-	var changeColor = function ()
-	{
+	var changeColor = function () {
 		var user = getActiveUser();
 		var data = {dr:'color', uid:user.id};
 		$.get(opts.colorUrl, data, function (colorIds)
@@ -293,8 +289,7 @@ function UserManagement(opts)
 		});
 	};
 
-	var changeUserInfo = function ()
-	{
+	var changeUserInfo = function () {
 		var user = getActiveUser();
 
 		ClearAsyncErrors(elements.userDialog);
@@ -312,8 +307,7 @@ function UserManagement(opts)
 		elements.userDialog.modal('show');
 	};
 
-	var deleteUser = function ()
-	{
+	var deleteUser = function () {
 		elements.deleteDialog.modal('show');
 	};
 }

@@ -29,4 +29,4 @@ require_once(ROOT_DIR . 'lib/Common/Validators/LayoutValidator.php');
 require_once(ROOT_DIR . 'lib/Common/Validators/FileTypeValidator.php');
 require_once(ROOT_DIR . 'lib/Common/Validators/FileUploadValidator.php');
 require_once(ROOT_DIR . 'lib/Common/Validators/PasswordComplexityValidator.php');
-?>
+require_once(ROOT_DIR . 'lib/Common/Validators/FileExtensionValidator.php');

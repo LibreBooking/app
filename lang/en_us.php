@@ -527,6 +527,11 @@ class en_us extends Language
 		$strings['YouAreAParticipant'] = 'You are a participant of this reservation';
 		$strings['YouAreInvited'] = 'You are invited to this reservation';
 		$strings['YouCanJoinThisReservation'] = 'You can join this reservation';
+		$strings['Import'] = 'Import';
+		$strings['GetTemplate'] = 'Get Template';
+		$strings['UserImportInstructions'] = 'File must be in CSV format. Username and email are required fields. Leaving other fields blank will set default values and \'password\' as the user\'s password. Use the supplied template as an example.';
+		$strings['RowsImported'] = 'Rows Imported';
+		$strings['RowsSkipped'] = 'Rows Skipped';
 		// End Strings
 
 		// Install

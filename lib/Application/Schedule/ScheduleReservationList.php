@@ -298,8 +298,7 @@ class ScheduleReservationList implements IScheduleReservationList
 			}
 		}
 
-		Log::Error('Could not find a fitting starting slot for reservation. Id %s, ResourceId: %s, Start: %s, End: %s',
-				   $item->Id(), $item->ResourceId(), $item->StartDate()->ToString(), $item->EndDate()->ToString());
+		Log::Error('Could not find a fitting starting slot for reservation. Item %s', var_export($item, true));
 		return null;
 	}
 

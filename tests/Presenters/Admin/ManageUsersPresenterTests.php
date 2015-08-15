@@ -469,6 +469,87 @@ class ManageUsersPresenterTests extends TestBase
 
 		$this->presenter->ProcessDataRequest('all');
 	}
-}
 
-?>
+
+	public function testParsesImportWithHeader()
+	{
+		$file = new FakeUploadedFile();
+		$file->Contents = "username,email,first name,last name,password,phone,organization,position,timezone,language,groups\nu1,e1,f1,l1,p1,ph1,o1,po1,t1,l1,g1";
+		$csv = new UserImportCsv($file);
+
+		$rows = $csv->GetRows();
+		$this->assertEquals(1, count($rows));
+
+		$row1 = $rows[0];
+		$this->assertEquals("u1", $row1->username);
+		$this->assertEquals("e1", $row1->email);
+		$this->assertEquals("f1", $row1->firstName);
+		$this->assertEquals("l1", $row1->lastName);
+		$this->assertEquals("p1", $row1->password);
+		$this->assertEquals("ph1", $row1->phone);
+		$this->assertEquals("o1", $row1->organization);
+		$this->assertEquals("po1", $row1->position);
+		$this->assertEquals("t1", $row1->timezone);
+		$this->assertEquals("l1", $row1->language);
+		$this->assertEquals(array("g1"), $row1->groups);
+	}
+
+	public function testDefaultsMissingColumns()
+	{
+		$file = new FakeUploadedFile();
+		$file->Contents = "email,username,password,first name,last name\ne1,u1,p1,f1,l1";
+		$csv = new UserImportCsv($file);
+
+		$rows = $csv->GetRows();
+		$this->assertEquals(1, count($rows));
+
+		$row1 = $rows[0];
+		$this->assertEquals("u1", $row1->username);
+		$this->assertEquals("e1", $row1->email);
+		$this->assertEquals("f1", $row1->firstName);
+		$this->assertEquals("l1", $row1->lastName);
+		$this->assertEquals("p1", $row1->password);
+		$this->assertEquals("", $row1->phone);
+		$this->assertEquals("", $row1->organization);
+		$this->assertEquals("", $row1->position);
+		$this->assertEquals("", $row1->timezone);
+		$this->assertEquals("", $row1->language);
+		$this->assertEquals(array(), $row1->groups);
+	}
+
+	public function testDefaultsMissingValuesInRow()
+	{
+		$file = new FakeUploadedFile();
+		$file->Contents = "email,username,password,first name,last name\ne1,u1";
+		$csv = new UserImportCsv($file);
+
+		$rows = $csv->GetRows();
+		$this->assertEquals(1, count($rows));
+
+		$row1 = $rows[0];
+		$this->assertEquals("u1", $row1->username);
+		$this->assertEquals("e1", $row1->email);
+		$this->assertEquals("", $row1->firstName);
+		$this->assertEquals("", $row1->lastName);
+		$this->assertEquals("", $row1->password);
+		$this->assertEquals("", $row1->phone);
+		$this->assertEquals("", $row1->organization);
+		$this->assertEquals("", $row1->position);
+		$this->assertEquals("", $row1->timezone);
+		$this->assertEquals("", $row1->language);
+		$this->assertEquals(array(), $row1->groups);
+	}
+
+	public function testInvalidRowsAreSkipped()
+	{
+		$file = new FakeUploadedFile();
+		$file->Contents = "email,username,password,first name,last name\ne\ne";
+		$csv = new UserImportCsv($file);
+
+		$rows = $csv->GetRows();
+		$skippedRowNumbers = $csv->GetSkippedRowNumbers();
+
+		$this->assertEquals(0, count($rows));
+		$this->assertEquals(array(1,2), $skippedRowNumbers);
+	}
+}

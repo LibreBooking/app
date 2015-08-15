@@ -10,7 +10,7 @@ function ConfigureAdminForm(formElement, urlCallback, successHandler, responseHa
 				onBeforeSubmit: BeforeFormSubmit,
 				onBeforeSerialize: null,
 				target: null,
-				validationSummary:$('.validationSummary')
+				validationSummary: formElement.find('.validationSummary')
 			}, options);
 
 	formElement.submit(function ()
@@ -32,7 +32,7 @@ function ConfigureAdminForm(formElement, urlCallback, successHandler, responseHa
 
 				if (hasValidationSummary)
 				{
-					validationSummary.addClass('hidden');
+					validationSummary.addClass('no-show');
 				}
 				if (responseHandler && hasResponseText)
 				{
@@ -40,7 +40,7 @@ function ConfigureAdminForm(formElement, urlCallback, successHandler, responseHa
 				}
 				else if (hasValidationSummary && hasResponseText)
 				{
-					$('.asyncValidation').addClass('hidden');
+					formElement.find('.asyncValidation').addClass('no-show');
 					$.each(responseText.ErrorIds, function (index, errorId)
 					{
 						var errorElement = $('#' + errorId);
@@ -48,12 +48,12 @@ function ConfigureAdminForm(formElement, urlCallback, successHandler, responseHa
 						{
 							errorElement.text("" + responseText.Messages[errorId].join(' '));
 						}
-						errorElement.removeClass('hidden');
+						errorElement.removeClass('no-show');
 					});
 
 					if (responseText.ErrorIds.length > 0)
 					{
-						validationSummary.removeClass('hidden');
+						validationSummary.removeClass('no-show');
 						formElement.trigger('onValidationFailed', responseText);
 					}
 				}

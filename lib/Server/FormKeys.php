@@ -199,6 +199,7 @@ class FormKeys
 	const UNIT_COST = 'unitCost';
 	const USER_ID = 'userId';
 	const USERNAME = 'username';
+	const USER_IMPORT_FILE = 'USER_IMPORT_FILE';
 	const USING_SINGLE_LAYOUT = 'USING_SINGLE_LAYOUT';
 
 	const VALUE = 'value';
