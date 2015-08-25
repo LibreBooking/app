@@ -70,7 +70,8 @@ class ReservationInitializerFactory implements IReservationInitializerFactory
 			$this->dateBinder,
 			$this->resourceBinder,
 			$this->user,
-			new ScheduleRepository());
+			new ScheduleRepository(),
+			new ResourceRepository());
 	}
 
 	public function GetExistingInitializer(IExistingReservationPage $page, ReservationView $reservationView)
