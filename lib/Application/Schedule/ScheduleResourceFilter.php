@@ -65,7 +65,7 @@ class ScheduleResourceFilter implements IScheduleResourceFilter
 		return new ScheduleResourceFilter($val->ScheduleId, $val->ResourceTypeId, $val->MinCapacity, $val->ResourceAttributes, $val->ResourceTypeAttributes);
 	}
 
-	private function HasFilter()
+	public function HasFilter()
 	{
 		return !empty($this->ResourceId) || !empty($this->GroupId) || !empty($this->ResourceTypeId) || !empty($this->MinCapacity) || !empty($this->ResourceAttributes) || !empty($this->ResourceTypeAttributes);
 	}
