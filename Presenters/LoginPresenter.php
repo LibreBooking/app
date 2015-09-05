@@ -96,6 +96,8 @@ class LoginPresenter
 		$this->_page->ShowPasswordPrompt($this->authentication->ShowPasswordPrompt());
 		$this->_page->ShowPersistLoginPrompt($this->authentication->ShowPersistLoginPrompt());
 		$this->_page->ShowUsernamePrompt($this->authentication->ShowUsernamePrompt());
+		$this->_page->SetRegistrationUrl($this->authentication->GetRegistrationUrl());
+		$this->_page->SetPasswordResetUrl($this->authentication->GetPasswordResetUrl());
 	}
 
 	public function Login()

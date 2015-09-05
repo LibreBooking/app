@@ -28,7 +28,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 	<div class="col-md-offset-3 col-md-6 col-xs-10 col-xs-offset-1">
 		<div id="login-header" class="default-box-header">
 			<span class="sign-in">{translate key=SignIn}</span>
-			{if $ShowRegisterLink}<span class="pull-right register">{translate key="FirstTimeUser?"} <a href="register.php"
+			{if $ShowRegisterLink}<span class="pull-right register">{translate key="FirstTimeUser?"} <a href="{$RegisterUrl}"
 																	   title="{translate key=Register}">{translate key=Register}</a>
 				</span>{/if}
 		</div>
@@ -67,7 +67,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			<div id="login-footer">
 				{if $ShowForgotPasswordPrompt}
 				<div id="forgot-password" class="pull-left">
-					<a href="forgot.php" class="btn btn-link"><span><i class="glyphicon glyphicon-question-sign"></i></span> {translate key='ForgotMyPassword'}</a>
+					<a href="{$ForgotPasswordUrl}" class="btn btn-link"><span><i class="glyphicon glyphicon-question-sign"></i></span> {translate key='ForgotMyPassword'}</a>
 				</div>
 				{/if}
 				<div id="change-language" class="pull-right">
