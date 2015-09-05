@@ -40,20 +40,13 @@ class ParticipationPresenter
 	 */
 	private $reservationViewRepository;
 
-	/**
-	 * @var IReservationValidationRule[]
-	 */
-	private $rules;
-
 	public function __construct(IParticipationPage $page,
 								IReservationRepository $reservationRepository,
-								IReservationViewRepository $reservationViewRepository,
-								$rules = array())
+								IReservationViewRepository $reservationViewRepository)
 	{
 		$this->page = $page;
 		$this->reservationRepository = $reservationRepository;
 		$this->reservationViewRepository = $reservationViewRepository;
-		$this->rules = $rules;
 	}
 
 	public function PageLoad()
@@ -98,12 +91,24 @@ class ParticipationPresenter
 
 		$series = $this->reservationRepository->LoadByReferenceNumber($referenceNumber);
 
-		foreach ($this->rules as $rule)
+
+		if ($invitationAction == InvitationAction::Join || $invitationAction == InvitationAction::CancelInstance)
+		{
+			$rules = array(new ReservationStartTimeRule(new ScheduleRepository()), new ResourceMinimumNoticeCurrentInstanceRule(), new ResourceMaximumNoticeCurrentInstanceRule());
+		}
+		else
+		{
+			$rules = array(new ReservationStartTimeRule(new ScheduleRepository()), new ResourceMinimumNoticeRule(), new ResourceMaximumNoticeRule());
+		}
+
+		/** @var IReservationValidationRule $rule */
+		foreach ($rules as $rule)
 		{
 			$ruleResult = $rule->Validate($series);
 
 			if (!$ruleResult->IsValid())
 			{
+				return $ruleResult->ErrorMessage();
 				return Resources::GetInstance()->GetString('ParticipationNotAllowed');
 			}
 		}
