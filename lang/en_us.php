@@ -532,6 +532,7 @@ class en_us extends Language
 		$strings['UserImportInstructions'] = 'File must be in CSV format. Username and email are required fields. Leaving other fields blank will set default values and \'password\' as the user\'s password. Use the supplied template as an example.';
 		$strings['RowsImported'] = 'Rows Imported';
 		$strings['RowsSkipped'] = 'Rows Skipped';
+		$strings['Columns'] = 'Columns';
 		// End Strings
 
 		// Install

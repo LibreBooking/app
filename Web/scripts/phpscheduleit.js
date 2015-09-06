@@ -95,3 +95,26 @@ $.fn.showHidePanel = function () {
 		}
 	});
 }
+
+$.fn.clearable = function(){
+	var textbox = $(this);
+
+	textbox.closest('div').addClass('form-group has-feedback');
+	textbox.addClass('hasclear form-control');
+	if (textbox.next('.clearer').length === 0)
+	{
+		$('<i/>', {class: 'clearer glyphicon glyphicon-remove-circle form-control-feedback'}).insertAfter(textbox);
+	}
+
+	textbox.keyup(function () {
+		var t = $(this);
+		t.next('.clearer').toggle(Boolean(t.val()));
+	});
+
+	$(".clearer").hide($(this).prev('input').val());
+
+	$(".clearer").on('click', function () {
+		$(this).siblings('input').val('').focus();
+		$(this).hide();
+	});
+}

@@ -18,19 +18,22 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 *}
 {if $Report->ResultCount() > 0}
 	<div id="report-actions">
-		<a href="#" id="btnChart">{html_image src="chart.png"}{translate key=ViewAsChart}</a> {if !$HideSave}<a href="#"
-																												id="btnSaveReportPrompt">{html_image src="disk-black.png"}{translate key=SaveThisReport}</a> | {/if}
-		<a href="#" id="btnCsv">{html_image src="table-export.png"}{translate key=ExportToCSV}</a> | <a href="#"
-																										id="btnPrint">{html_image src="printer.png"}{translate key=Print}</a>
+		<a href="#" id="btnChart"><i class="fa fa-bar-chart"></i> {translate key=ViewAsChart}</a> |
+		{if !$HideSave}
+			<a href="#" id="btnSaveReportPrompt"><i class="fa fa-save"></i> {translate key=SaveThisReport}</a> |
+		{/if}
+
+		<a href="#" id="btnCsv"><i class="fa fa-download"></i> {translate key=ExportToCSV}</a> |
+		<a href="#" id="btnPrint"><i class="fa fa-print"></i> {translate key=Print}</a> |
+		<a href="#" id="btnCustomizeColumns"><i class="fa fa-filter"></i> {translate key=Columns}</a>
 	</div>
+	<div id="customize-columns"></div>
 	<table width="100%" id="report-results" chart-type="{$Definition->GetChartType()}">
 		<tr>
 			{foreach from=$Definition->GetColumnHeaders() item=column}
-				<th>{if $column->HasTitle()}
-						{$column->Title()}
-					{else}
-						{translate key=$column->TitleKey()}
-					{/if}
+				{capture name="columnTitle"}{if $column->HasTitle()}{$column->Title()}{else}{translate key=$column->TitleKey()}{/if}{/capture}
+				<th data-columnTitle="{$smarty.capture.columnTitle}">
+					{$smarty.capture.columnTitle}
 				</th>
 			{/foreach}
 		</tr>
@@ -54,8 +57,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 {/if}
 
 <script type="text/javascript">
-	$(document).ready(function ()
-	{
+	$(document).ready(function () {
 		$('#report-no-data, #report-results').trigger('loaded');
 	});
 </script>

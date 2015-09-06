@@ -37,7 +37,7 @@ function GenerateReports(reportOptions) {
 
 			var after = function (data) {
 				elements.indicator.hide();
-				elements.resultsDiv.html(data)
+				elements.resultsDiv.html(data);
 			};
 
 			ajaxPost(elements.customReportForm, opts.customReportUrl, before, after);
@@ -66,7 +66,7 @@ function GenerateReports(reportOptions) {
 			e.preventDefault();
 
 			elements.saveDialog.find(':text').val('');
-			elements.saveDialog.dialog({modal:true});
+			elements.saveDialog.modal('show');
 		});
 
 		$(document).on('click', '#btnChart', function(e) {
@@ -77,10 +77,10 @@ function GenerateReports(reportOptions) {
 			$('#report-results').hide();
 		});
 
-		$('.dialog .cancel').click(function (e) {
-			$(this).closest('.dialog').dialog("close");
-		});
+		$('.save').on('click', function() {
+			$(this).closest('form').submit();
 
+		});
 		$('#saveReportForm').submit(function (e) {
 			handleSave(e);
 		});
@@ -91,23 +91,6 @@ function GenerateReports(reportOptions) {
 	};
 
 	function wireUpAutocompleteFilters() {
-		$('.link-filter').find('.all, .selected').click(function (e) {
-			e.preventDefault();
-			var filter = $(this).siblings('.filter-input, .clear-filter');
-			filter.val('');
-			filter.show();
-			$(this).hide();
-		});
-
-		$('.link-filter').find('.clear-filter').click(function (e) {
-			e.preventDefault();
-			$(this).siblings('.all').show();
-			var filter = $(this).siblings('.filter-input, .filter-id, .selected');
-			filter.val('');
-			filter.text('');
-			filter.hide();
-			$(this).hide();
-		});
 
 		var selectFilterItem = function (filterDiv, selectedId, selectedName) {
 			filterDiv.find('.filter-id').val(selectedId);
@@ -130,11 +113,11 @@ function GenerateReports(reportOptions) {
 		};
 
 		var after = function (data) {
-			elements.saveDialog.dialog('close');
+			elements.saveDialog.modal('hide');
 			$('#saveMessage').show().delay(3000).fadeOut(1000);
 		};
 
 		ajaxPost($('#customReportInput, #saveReportForm'), opts.saveUrl, before, after);
-	}
+	};
 
 }

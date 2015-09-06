@@ -146,6 +146,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 {jsfile src="ajax-helpers.js"}
 {jsfile src="reports/saved-reports.js"}
 {jsfile src="reports/chart.js"}
+{jsfile src="reports/common.js"}
 
 <script type="text/javascript">
 	$(document).ready(function () {
@@ -159,6 +160,9 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 		var reports = new SavedReports(reportOptions);
 		reports.init();
+
+		var common = new ReportsCommon();
+		common.init();
 	});
 </script>
 

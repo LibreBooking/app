@@ -27,11 +27,9 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 <table width="100%" border="1">
 	<tr>
 		{foreach from=$Definition->GetColumnHeaders() item=column}
-			<th>{if $column->HasTitle()}
-					{$column->Title()}
-				{else}
-					{translate key=$column->TitleKey()}
-				{/if}
+			{capture name="columnTitle"}{if $column->HasTitle()}{$column->Title()}{else}{translate key=$column->TitleKey()}{/if}{/capture}
+			<th data-columnTitle="{$smarty.capture.columnTitle}">
+				{$smarty.capture.columnTitle}
 			</th>
 		{/foreach}
 	</tr>
@@ -48,7 +46,11 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 	| {$Definition->GetTotal()} {translate key=Total}
 {/if}
 
+{jsfile src="reports/common.js"}
+
 <script type="text/javascript" >
+	var common = new ReportsCommon();
+	common.init();
 	window.print();
 </script>
 
