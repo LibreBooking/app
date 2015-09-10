@@ -76,6 +76,7 @@ class AccessoryAvailabilityRuleTests extends TestBase
 		$reservation->WithInstanceOn($dr2);
 
 		$accessoryReservation = new AccessoryReservation(2, $startDate, $endDate, $accessory1->AccessoryId, 3);
+		$accessoryReservationForOtherResource = new AccessoryReservation(2, $startDate, $endDate, $accessory1->AccessoryId, 3);
 
 		$this->accessoryRepository->expects($this->at(0))
 			->method('LoadById')
@@ -90,7 +91,7 @@ class AccessoryAvailabilityRuleTests extends TestBase
 		$this->reservationRepository->expects($this->at(0))
 			->method('GetAccessoriesWithin')
 			->with($this->equalTo($dr1))
-			->will($this->returnValue(array($accessoryReservation)));
+			->will($this->returnValue(array($accessoryReservation, $accessoryReservationForOtherResource)));
 
 		$this->reservationRepository->expects($this->at(1))
 			->method('GetAccessoriesWithin')

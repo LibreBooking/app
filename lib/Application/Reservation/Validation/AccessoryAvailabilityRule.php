@@ -151,6 +151,11 @@ class AccessoryAggregation
 	private $duration;
 
 	/**
+	 * @var string[]
+	 */
+	private $addedReservations = array();
+
+	/**
 	 * @param array|AccessoryToCheck[] $accessories
 	 * @param DateRange $duration
 	 */
@@ -174,6 +179,13 @@ class AccessoryAggregation
 		{
 			return;
 		}
+
+		if (array_key_exists($accessoryReservation->GetReferenceNumber(), $this->addedReservations))
+		{
+			return;
+		}
+
+		$this->addedReservations[$accessoryReservation->GetReferenceNumber()] = true;
 
 		$accessoryId = $accessoryReservation->GetAccessoryId();
 		if (array_key_exists($accessoryId, $this->quantities))
