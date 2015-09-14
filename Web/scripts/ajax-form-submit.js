@@ -27,7 +27,7 @@ jQuery.fn.bindAjaxSubmit = function (updateButton, successElement, modalDiv)
 	{
 		successElement.hide();
 
-		$.colorbox({inline:true, href:"#" + modalDiv.attr('id'), transition:"none", width:"75%", height:"75%", overlayClose:false});
+		$.blockUI({ message: $('#' +  modalDiv.attr('id'))});
 		modalDiv.show();
 
 		return true;
@@ -36,7 +36,7 @@ jQuery.fn.bindAjaxSubmit = function (updateButton, successElement, modalDiv)
 	function hideModal()
 	{
 		modalDiv.hide();
-		$.colorbox.close();
+		$.unblockUI();
 
 		var top = self.scrollTop();
 		$('html, body').animate({scrollTop:top}, 'slow');

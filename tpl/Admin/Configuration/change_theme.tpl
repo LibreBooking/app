@@ -16,7 +16,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 *}
-{include file='globalheader.tpl'}
+{include file='globalheader.tpl' }
 
 <div id="page-manage-accessories" class="admin-page">
 	<h1>{translate key=LookAndFeel}</h1>
@@ -62,7 +62,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		</button>
 	</form>
 
-	<div id="modalDiv" style="display:none;text-align:center; top:15%;position:relative;">
+	<div id="wait-box" class="wait-box">
 		<h3>{translate key=Working}</h3>
 		{html_image src="reservation_submitting.gif"}
 	</div>
@@ -75,7 +75,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 	<script type="text/javascript">
 		$('document').ready(function ()
 		{
-			$('#elementForm').bindAjaxSubmit($('#saveButton'), $('#successMessage'), $('#modalDiv'));
+			$('#elementForm').bindAjaxSubmit($('#saveButton'), $('#successMessage'), $('#wait-box'));
 
 			$('.clearInput').click(function (e)
 			{
