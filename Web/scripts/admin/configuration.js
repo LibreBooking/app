@@ -40,17 +40,14 @@ function Configuration() {
 	function onBeforeAddSubmit(formData, jqForm, opts)
 	{
 		$('#updatedMessage').hide();
-
-		$.colorbox({inline:true, href:"#modalDiv", transition:"none", width:"75%", height:"75%", overlayClose: false});
-		$('#modalDiv').show();
+		$.blockUI({message: $('#wait-box')});
 
 		return true;
 	}
 
 	function hideModal()
 	{
-		$('#modalDiv').hide();
-		$.colorbox.close();
+		$.unblockUI();
 
 		var top = $("#updatedMessage").scrollTop();
 		$('html, body').animate({scrollTop:top}, 'slow');
