@@ -27,8 +27,8 @@ function QuotaManagement(opts)
 			$(this).closest('.dialog').modal("hide");
 		});
 
-		ConfigureAdminForm(elements.addForm, getSubmitCallback(options.actions.addQuota), null, handleAddError);
-		ConfigureAdminForm(elements.deleteForm, getSubmitCallback(options.actions.deleteQuota), null, handleAddError);
+		ConfigureAsyncForm(elements.addForm, getSubmitCallback(options.actions.addQuota), null, handleAddError);
+		ConfigureAsyncForm(elements.deleteForm, getSubmitCallback(options.actions.deleteQuota), null, handleAddError);
 	};
 
 	var getSubmitCallback = function(action)

@@ -64,7 +64,7 @@ function BlackoutManagement(opts) {
 
 				$('#update-spinner').hide();
 
-				ConfigureAdminForm($('#editBlackoutForm'), getUpdateUrl, onAddSuccess, null, {
+				ConfigureAsyncForm($('#editBlackoutForm'), getUpdateUrl, onAddSuccess, null, {
 					onBeforeSubmit: onBeforeAddSubmit,
 					target: '#result'
 				});
@@ -123,15 +123,15 @@ function BlackoutManagement(opts) {
 			filterReservations();
 		});
 
-		ConfigureAdminForm(elements.addBlackoutForm, getAddUrl, onAddSuccess, null, {
+		ConfigureAsyncForm(elements.addBlackoutForm, getAddUrl, onAddSuccess, null, {
 			onBeforeSubmit: onBeforeAddSubmit,
 			target: '#result'
 		});
-		ConfigureAdminForm(elements.deleteForm, getDeleteUrl, onDeleteSuccess, null, {
+		ConfigureAsyncForm(elements.deleteForm, getDeleteUrl, onDeleteSuccess, null, {
 			onBeforeSubmit: onBeforeDeleteSubmit,
 			target: '#result'
 		});
-		ConfigureAdminForm(elements.deleteRecurringForm, getDeleteUrl, onDeleteSuccess, null, {
+		ConfigureAsyncForm(elements.deleteRecurringForm, getDeleteUrl, onDeleteSuccess, null, {
 			onBeforeSubmit: onBeforeDeleteSubmit,
 			target: '#result'
 		});

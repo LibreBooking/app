@@ -39,7 +39,6 @@ class NewReservationInitializer extends ReservationInitializerBase
 		IReservationComponentBinder $userBinder,
 		IReservationComponentBinder $dateBinder,
 		IReservationComponentBinder $resourceBinder,
-		IReservationComponentBinder $attributeBinder,
 		UserSession $userSession,
 		IScheduleRepository $scheduleRepository,
 		IResourceRepository $resourceRepository

@@ -43,5 +43,5 @@ jQuery.fn.bindAjaxSubmit = function (updateButton, successElement, modalDiv)
 	}
 
 	self.bind('onValidationFailed', onValidationFailed);
-	ConfigureAdminForm(self, defaultSubmitCallback, successHandler, null, {onBeforeSubmit:onBeforeAddSubmit});
+	ConfigureAsyncForm(self, defaultSubmitCallback, successHandler, null, {onBeforeSubmit:onBeforeAddSubmit});
 };

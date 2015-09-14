@@ -19,7 +19,7 @@ function Configuration() {
 
 		elements.form.bind('onValidationFailed', onValidationFailed);
 
-		ConfigureAdminForm(elements.form, defaultSubmitCallback, successHandler, null, {onBeforeSubmit: onBeforeAddSubmit});
+		ConfigureAsyncForm(elements.form, defaultSubmitCallback, successHandler, null, {onBeforeSubmit: onBeforeAddSubmit});
 	};
 
 	var defaultSubmitCallback = function (form) {

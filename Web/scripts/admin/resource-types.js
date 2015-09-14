@@ -80,12 +80,12 @@ function ResourceTypeManagement(opts) {
 			$("#globalError").html(result).show();
 		};
 
-		ConfigureAdminForm(elements.editForm, getSubmitCallback, null, errorHandler);
-		ConfigureAdminForm(elements.deleteForm, getSubmitCallback, null, errorHandler);
-		ConfigureAdminForm(elements.addForm, getSubmitCallback, null, errorHandler);
+		ConfigureAsyncForm(elements.editForm, getSubmitCallback, null, errorHandler);
+		ConfigureAsyncForm(elements.deleteForm, getSubmitCallback, null, errorHandler);
+		ConfigureAsyncForm(elements.addForm, getSubmitCallback, null, errorHandler);
 
 		$.each(elements.attributeForm, function(i,form){
-			ConfigureAdminForm($(form), getSubmitCallback, null, attributesHandler, {validationSummary:null});
+			ConfigureAsyncForm($(form), getSubmitCallback, null, attributesHandler, {validationSummary:null});
 		});
 	};
 

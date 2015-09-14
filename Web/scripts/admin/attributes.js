@@ -142,9 +142,9 @@ function AttributeManagement(opts) {
 			};
 		});
 
-		ConfigureAdminForm(elements.addForm, defaultSubmitCallback, addAttributeHandler);
-		ConfigureAdminForm(elements.form, defaultSubmitCallback, editAttributeHandler);
-		ConfigureAdminForm(elements.deleteForm, defaultSubmitCallback, deleteAttributeHandler);
+		ConfigureAsyncForm(elements.addForm, defaultSubmitCallback, addAttributeHandler);
+		ConfigureAsyncForm(elements.form, defaultSubmitCallback, editAttributeHandler);
+		ConfigureAsyncForm(elements.deleteForm, defaultSubmitCallback, deleteAttributeHandler);
 
 	};
 

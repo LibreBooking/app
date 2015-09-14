@@ -277,7 +277,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 	<input type="hidden" id="activeId" value=""/>
 
-	{jsfile src="admin/edit.js"}
+	{jsfile src="ajax-helpers.js"}
 	{jsfile src="admin/attributes.js"}
 	{jsfile src="js/jquery.form-3.09.min.js"}
 

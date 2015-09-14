@@ -267,7 +267,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 {html_image src="admin-ajax-indicator.gif" class="indicator" style="display:none;"}
 
-{jsfile src="admin/edit.js"}
+{jsfile src="ajax-helpers.js"}
 {jsfile src="admin/reservations.js"}
 
 {jsfile src="autocomplete.js"}

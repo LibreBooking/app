@@ -54,8 +54,8 @@ function ReservationColorManagement(opts)
 			elements.addDialog.dialog('open');
 		});
 
-		ConfigureAdminForm(elements.addForm, defaultSubmitCallback(elements.addForm))
-		ConfigureAdminForm(elements.deleteForm, defaultSubmitCallback(elements.deleteForm))
+		ConfigureAsyncForm(elements.addForm, defaultSubmitCallback(elements.addForm))
+		ConfigureAsyncForm(elements.deleteForm, defaultSubmitCallback(elements.deleteForm))
 	};
 
 	var defaultSubmitCallback = function (form)

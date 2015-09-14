@@ -5,6 +5,7 @@ function SavedReports(reportOptions) {
 		indicator:$('#indicator'),
 		resultsDiv:$('#resultsDiv'),
 		emailForm:$('#emailForm'),
+		deleteForm:$('#deleteForm'),
 		sendEmailButton:$('#btnSendEmail'),
 		emailIndicator:$('#sendEmailIndicator'),
 		deleteReportButton:$('#btnDeleteReport')
@@ -13,6 +14,15 @@ function SavedReports(reportOptions) {
 	var reportId = 0;
 
 	this.init = function () {
+
+		ConfigureAsyncForm(elements.emailForm,
+				function(){return opts.emailUrl + reportId;},
+				function (data) {
+						$('#emailSent').show().delay(3000).fadeOut(1000);
+						$('#emailDiv').modal('hide');
+					});
+
+		ConfigureAsyncForm(elements.deleteForm, function(){return opts.deleteUrl + reportId;});
 
 		wireUpReportLinks();
 
@@ -38,40 +48,15 @@ function SavedReports(reportOptions) {
 			$('#report-results').hide();
 		});
 
-		$('.cancel').click(function (e) {
-			e.preventDefault();
-			$(this).closest('.dialog').dialog('close');
-		});
-
-		elements.sendEmailButton.click(function (e) {
-			e.preventDefault();
-			var before = function () {
-				elements.sendEmailButton.hide();
-				elements.emailIndicator.show()
-			};
-			var after = function (data) {
-				$('#emailSent').show().delay(3000).fadeOut(1000);
-				elements.emailIndicator.hide();
-				elements.sendEmailButton.show();
-				$('#emailDiv').dialog('close');
-			};
-
-			ajaxPost(elements.emailForm, opts.emailUrl + reportId, before, after);
-		});
-
-		elements.deleteReportButton.click(function(e){
-			var after = function (data) {
-				document.location.reload();
-			};
-
-			ajaxGet(opts.deleteUrl + reportId, null, after);
+		$('.save').on('click', function() {
+			$(this).closest('form').submit();
 		});
 	};
 
 	var wireUpReportLinks = function () {
 		$('#report-list a.report').click(function (e) {
 			e.preventDefault();
-			reportId = $(this).parents('li').attr('reportId');
+			reportId = $(this).closest('tr').attr('reportId');
 		});
 
 		$('.runNow').click(function (e) {
@@ -89,12 +74,12 @@ function SavedReports(reportOptions) {
 		});
 
 		$('.emailNow').click(function (e) {
-			$('#emailDiv').dialog({modal:true});
+			$('#emailDiv').modal('show');
 		});
 
 		$('.delete').click(function(e)
 		{
-			$('#deleteDiv').dialog({modal:true});
+			$('#deleteDiv').modal('show');
 		});
 
 	};

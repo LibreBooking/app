@@ -1134,7 +1134,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		<input type="hidden" id="addGroupId" {formname key=GROUP_ID} />
 	</form>
 
-	{jsfile src="admin/edit.js"}
+	{jsfile src="ajax-helpers.js"}
 	{jsfile src="autocomplete.js"}
 	{jsfile src="admin/resource.js"}
 

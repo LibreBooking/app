@@ -318,17 +318,17 @@ function ResourceManagement(opts) {
 			$("#globalError").html(result).show();
 		};
 
-		ConfigureAdminForm(elements.imageForm, defaultSubmitCallback(elements.imageForm), null, imageSaveErrorHandler);
-		ConfigureAdminForm(elements.addForm, defaultSubmitCallback(elements.addForm), null, handleAddError);
-		ConfigureAdminForm(elements.deleteForm, defaultSubmitCallback(elements.deleteForm));
-		ConfigureAdminForm(elements.durationForm, defaultSubmitCallback(elements.durationForm), null, onDurationSaved, {onBeforeSerialize: combineIntervals});
-		ConfigureAdminForm(elements.capacityForm, defaultSubmitCallback(elements.capacityForm), null, onCapacitySaved);
-		ConfigureAdminForm(elements.accessForm, defaultSubmitCallback(elements.accessForm), null, onAccessSaved, {onBeforeSerialize: combineIntervals});
-		ConfigureAdminForm(elements.bulkUpdateForm, defaultSubmitCallback(elements.bulkUpdateForm), null, bulkUpdateErrorHandler, {onBeforeSerialize: combineIntervals});
-		ConfigureAdminForm(elements.addUserForm, defaultSubmitCallback(elements.addUserForm), changeUsers, errorHandler);
-		ConfigureAdminForm(elements.removeUserForm, defaultSubmitCallback(elements.removeUserForm), changeUsers, errorHandler);
-		ConfigureAdminForm(elements.addGroupForm, defaultSubmitCallback(elements.addGroupForm), changeGroups, errorHandler);
-		ConfigureAdminForm(elements.removeGroupForm, defaultSubmitCallback(elements.removeGroupForm), changeGroups, errorHandler);
+		ConfigureAsyncForm(elements.imageForm, defaultSubmitCallback(elements.imageForm), null, imageSaveErrorHandler);
+		ConfigureAsyncForm(elements.addForm, defaultSubmitCallback(elements.addForm), null, handleAddError);
+		ConfigureAsyncForm(elements.deleteForm, defaultSubmitCallback(elements.deleteForm));
+		ConfigureAsyncForm(elements.durationForm, defaultSubmitCallback(elements.durationForm), null, onDurationSaved, {onBeforeSerialize: combineIntervals});
+		ConfigureAsyncForm(elements.capacityForm, defaultSubmitCallback(elements.capacityForm), null, onCapacitySaved);
+		ConfigureAsyncForm(elements.accessForm, defaultSubmitCallback(elements.accessForm), null, onAccessSaved, {onBeforeSerialize: combineIntervals});
+		ConfigureAsyncForm(elements.bulkUpdateForm, defaultSubmitCallback(elements.bulkUpdateForm), null, bulkUpdateErrorHandler, {onBeforeSerialize: combineIntervals});
+		ConfigureAsyncForm(elements.addUserForm, defaultSubmitCallback(elements.addUserForm), changeUsers, errorHandler);
+		ConfigureAsyncForm(elements.removeUserForm, defaultSubmitCallback(elements.removeUserForm), changeUsers, errorHandler);
+		ConfigureAsyncForm(elements.addGroupForm, defaultSubmitCallback(elements.addGroupForm), changeGroups, errorHandler);
+		ConfigureAsyncForm(elements.removeGroupForm, defaultSubmitCallback(elements.removeGroupForm), changeGroups, errorHandler);
 	};
 
 	ResourceManagement.prototype.add = function (resource) {
@@ -525,7 +525,7 @@ function ResourceManagement(opts) {
 
 		saveButton.unbind();
 
-		ConfigureAdminForm(statusForm, defaultSubmitCallback(statusForm));
+		ConfigureAsyncForm(statusForm, defaultSubmitCallback(statusForm));
 
 		saveButton.click(function () {
 			statusForm.submit();

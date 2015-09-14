@@ -193,9 +193,9 @@ function ReservationManagement(opts, approval)
 			}
 		};
 
-		ConfigureAdminForm(elements.deleteInstanceForm, getDeleteUrl, null, deleteReservationResponseHandler, {dataType: 'json'});
-		ConfigureAdminForm(elements.deleteSeriesForm, getDeleteUrl, null, deleteReservationResponseHandler, {dataType: 'json'});
-		ConfigureAdminForm(elements.statusForm, getUpdateStatusUrl, function ()
+		ConfigureAsyncForm(elements.deleteInstanceForm, getDeleteUrl, null, deleteReservationResponseHandler, {dataType: 'json'});
+		ConfigureAsyncForm(elements.deleteSeriesForm, getDeleteUrl, null, deleteReservationResponseHandler, {dataType: 'json'});
+		ConfigureAsyncForm(elements.statusForm, getUpdateStatusUrl, function ()
 		{
 			elements.statusDialog.modal('hide');
 			// todo inline update

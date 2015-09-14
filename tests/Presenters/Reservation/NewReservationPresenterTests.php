@@ -71,4 +71,3 @@ class NewReservationPresenterTests extends TestBase
 		$presenter->PageLoad();
 	}
 }
-?>

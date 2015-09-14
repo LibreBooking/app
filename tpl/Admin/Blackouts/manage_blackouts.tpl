@@ -240,7 +240,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 {jsfile src="reservationPopup.js"}
 
-{jsfile src="admin/edit.js"}
+{jsfile src="ajax-helpers.js"}
 {jsfile src="admin/blackouts.js"}
 
 {jsfile src="date-helper.js"}

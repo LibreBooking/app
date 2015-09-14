@@ -58,7 +58,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 {html_image src="reservation_submitting.gif"}
 </div>
 
-{jsfile src="admin/edit.js"}
+{jsfile src="ajax-helpers.js"}
 {jsfile src="js/jquery.form-3.09.min.js"}
 {jsfile src="js/ajaxfileupload.js"}
 {jsfile src="js/jquery.colorbox-min.js"}

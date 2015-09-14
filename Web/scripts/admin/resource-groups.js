@@ -43,10 +43,10 @@ function ResourceGroupManagement(opts)
 		wireUpTree(groups);
 		wireUpContextMenu();
 
-		ConfigureAdminForm(elements.addGroupForm, defaultSubmitCallback(elements.addGroupForm), onGroupAdded, null, {onBeforeSubmit: onBeforeAddGroup});
-		ConfigureAdminForm(elements.renameForm, defaultSubmitCallback(elements.renameForm), hideDialogs, null, {onBeforeSubmit: onBeforeRename});
-		ConfigureAdminForm(elements.deleteForm, defaultSubmitCallback(elements.deleteForm), hideDialogs, null, {onBeforeSubmit: onBeforeDelete});
-		ConfigureAdminForm(elements.addChildForm, defaultSubmitCallback(elements.addChildForm), onChildGroupAdded, null, {onBeforeSubmit: onBeforeAddGroup});
+		ConfigureAsyncForm(elements.addGroupForm, defaultSubmitCallback(elements.addGroupForm), onGroupAdded, null, {onBeforeSubmit: onBeforeAddGroup});
+		ConfigureAsyncForm(elements.renameForm, defaultSubmitCallback(elements.renameForm), hideDialogs, null, {onBeforeSubmit: onBeforeRename});
+		ConfigureAsyncForm(elements.deleteForm, defaultSubmitCallback(elements.deleteForm), hideDialogs, null, {onBeforeSubmit: onBeforeDelete});
+		ConfigureAsyncForm(elements.addChildForm, defaultSubmitCallback(elements.addChildForm), onChildGroupAdded, null, {onBeforeSubmit: onBeforeAddGroup});
 	};
 
 	function wireUpTree(groups)

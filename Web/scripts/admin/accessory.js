@@ -56,10 +56,10 @@ function AccessoryManagement(opts) {
 			handleAccessoryResourceClick($(this));
 		});
 
-		ConfigureAdminForm(elements.addForm, getSubmitCallback(options.actions.add));
-		ConfigureAdminForm(elements.deleteForm, getSubmitCallback(options.actions.deleteAccessory));
-		ConfigureAdminForm(elements.form, getSubmitCallback(options.actions.edit));
-		ConfigureAdminForm(elements.accessoryResourcesForm, defaultSubmitCallback);
+		ConfigureAsyncForm(elements.addForm, getSubmitCallback(options.actions.add));
+		ConfigureAsyncForm(elements.deleteForm, getSubmitCallback(options.actions.deleteAccessory));
+		ConfigureAsyncForm(elements.form, getSubmitCallback(options.actions.edit));
+		ConfigureAsyncForm(elements.accessoryResourcesForm, defaultSubmitCallback);
 
 		WireUpUnlimited(elements.addUnlimited, elements.addQuantity);
 		WireUpUnlimited(elements.editUnlimited, elements.editQuantity);

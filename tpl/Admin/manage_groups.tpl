@@ -265,7 +265,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 	{html_image src="admin-ajax-indicator.gif" class="indicator" style="display:none;"}
 
-	{jsfile src="admin/edit.js"}
+	{jsfile src="ajax-helpers.js"}
 	{jsfile src="autocomplete.js"}
 	{jsfile src="admin/group.js"}
 	{jsfile src="js/jquery.form-3.09.min.js"}

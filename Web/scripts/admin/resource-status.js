@@ -60,9 +60,9 @@ function ResourceStatusManagement(opts) {
 			$("#globalError").html(result).show();
 		};
 
-		ConfigureAdminForm(elements.editForm, getSubmitCallback, null, errorHandler);
-		ConfigureAdminForm(elements.deleteForm, getSubmitCallback, null, errorHandler);
-		ConfigureAdminForm(elements.addForm, getSubmitCallback, null, errorHandler);
+		ConfigureAsyncForm(elements.editForm, getSubmitCallback, null, errorHandler);
+		ConfigureAsyncForm(elements.deleteForm, getSubmitCallback, null, errorHandler);
+		ConfigureAsyncForm(elements.addForm, getSubmitCallback, null, errorHandler);
 	};
 
 

@@ -131,14 +131,14 @@ function GroupManagement(opts) {
 			showAllUsersToAdd();
 		});
 
-		ConfigureAdminForm(elements.addUserForm, getSubmitCallback(options.actions.addUser), changeMembers, error);
-		ConfigureAdminForm(elements.removeUserForm, getSubmitCallback(options.actions.removeUser), changeMembers, error);
-		ConfigureAdminForm(elements.permissionsForm, getSubmitCallback(options.actions.permissions), hidePermissionsDialog, error);
-		ConfigureAdminForm(elements.renameGroupForm, getSubmitCallback(options.actions.renameGroup), null, error);
-		ConfigureAdminForm(elements.deleteGroupForm, getSubmitCallback(options.actions.deleteGroup), null, error);
-		ConfigureAdminForm(elements.addForm, getSubmitCallback(options.actions.addGroup), null, error);
-		ConfigureAdminForm(elements.rolesForm, getSubmitCallback(options.actions.roles), null, error);
-		ConfigureAdminForm(elements.groupAdminForm, getSubmitCallback(options.actions.groupAdmin), null, error);
+		ConfigureAsyncForm(elements.addUserForm, getSubmitCallback(options.actions.addUser), changeMembers, error);
+		ConfigureAsyncForm(elements.removeUserForm, getSubmitCallback(options.actions.removeUser), changeMembers, error);
+		ConfigureAsyncForm(elements.permissionsForm, getSubmitCallback(options.actions.permissions), hidePermissionsDialog, error);
+		ConfigureAsyncForm(elements.renameGroupForm, getSubmitCallback(options.actions.renameGroup), null, error);
+		ConfigureAsyncForm(elements.deleteGroupForm, getSubmitCallback(options.actions.deleteGroup), null, error);
+		ConfigureAsyncForm(elements.addForm, getSubmitCallback(options.actions.addGroup), null, error);
+		ConfigureAsyncForm(elements.rolesForm, getSubmitCallback(options.actions.roles), null, error);
+		ConfigureAsyncForm(elements.groupAdminForm, getSubmitCallback(options.actions.groupAdmin), null, error);
 	};
 
 	var showAllUsersToAdd = function() {

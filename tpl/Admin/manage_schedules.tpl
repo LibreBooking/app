@@ -339,7 +339,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		</form>
 	</div>
 
-	{jsfile src="admin/edit.js"}
+	{jsfile src="ajax-helpers.js"}
 	{jsfile src="admin/schedule.js"}
 	{jsfile src="js/jquery.form-3.09.min.js"}
 
