@@ -539,7 +539,7 @@ class ManageResourcesPresenter extends ActionPresenter
 
 		$statusId = $this->page->GetStatusId();
 		$reasonId = $this->page->GetStatusReasonId();
-
+		
 		// need to figure out difference between empty and unchanged
 		$minDuration = $this->page->GetMinimumDuration();
 		$minDurationNone = $this->page->GetMinimumDurationNone();
@@ -558,6 +558,8 @@ class ManageResourcesPresenter extends ActionPresenter
 
 		$resourceIds = $this->page->GetBulkUpdateResourceIds();
 
+		$emptyDuration = 'dhm';
+				
 		foreach ($resourceIds as $resourceId)
 		{
 			try
@@ -596,23 +598,23 @@ class ManageResourcesPresenter extends ActionPresenter
 				{
 					$resource->ChangeStatus($statusId, $reasonId);
 				}
-				if (!$minDurationNone)
+				if (!$minDurationNone && $minDuration != $emptyDuration)
 				{
 					$resource->SetMinLength($minDuration);
 				}
-				if (!$maxDurationNone)
+				if (!$maxDurationNone && $maxDuration != $emptyDuration)
 				{
 					$resource->SetMaxLength($maxDuration);
 				}
-				if (!$bufferTimeNone)
+				if (!$bufferTimeNone && $bufferTime != $emptyDuration)
 				{
 					$resource->SetBufferTime($bufferTime);
 				}
-				if (!$minNoticeNone)
+				if (!$minNoticeNone && $minNotice != $emptyDuration)
 				{
 					$resource->SetMinNotice($minNotice);
 				}
-				if (!$maxNoticeNone)
+				if (!$maxNoticeNone && $maxNotice != $emptyDuration)
 				{
 					$resource->SetMaxNotice($maxNotice);
 				}
