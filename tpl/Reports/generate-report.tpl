@@ -18,7 +18,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 *}
 {include file='globalheader.tpl' cssFiles="scripts/js/jqplot/jquery.jqplot.min.css"}
 
-<div id="generate-report">
+<div id="page-generate-report">
 	<div id="customReportInput-container">
 		<form role="form" id="customReportInput">
 			<div class="panel panel-default" id="report-filter-panel">

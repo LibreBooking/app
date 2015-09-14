@@ -18,7 +18,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 *}
 {include file='globalheader.tpl' cssFiles="scripts/js/jqplot/jquery.jqplot.min.css"}
 
-<div id="saved-reports">
+<div id="page-common-reports">
 
 	<div class="panel panel-default" id="saved-reports-panel">
 		<div class="panel-heading">
