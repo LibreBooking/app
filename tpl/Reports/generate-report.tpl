@@ -19,7 +19,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 {include file='globalheader.tpl' cssFiles="scripts/js/jqplot/jquery.jqplot.min.css"}
 
 <div id="generate-report">
-	<fieldset id="customReportInput-container">
+	<div id="customReportInput-container">
 		<form role="form" id="customReportInput">
 			<div class="panel panel-default" id="report-filter-panel">
 				<div class="panel-heading">
@@ -186,7 +186,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 				</div>
 			</div>
 		</form>
-	</fieldset>
+	</div>
 
 	<div id="saveMessage" class="alert alert-success no-show">
 		{translate key=ReportSaved} <a href="{$Path}reports/{Pages::REPORTS_SAVED}">{translate key=MySavedReports}</a>

@@ -30,7 +30,7 @@
   border-bottom: solid 1px #ccc;
 }
 #report-results tr.alt td,
-#report-list li.alt {
+#report-list tr.alt td {
   background-color: #ededed;
 }
 #report-actions {
@@ -40,6 +40,9 @@
 #report-list {
   max-height: 300px;
   overflow-y: scroll;
+}
+#report-list table {
+  margin-bottom: 0;
 }
 #report-list ul {
   list-style-type: none;
@@ -59,13 +62,6 @@
 }
 .report-created-date {
   font-style: italic;
-  margin-right: 25px;
-}
-.report-action {
-  display: inline-block;
-  margin: 0 25px;
-  text-align: left;
-  font-size: 10pt;
 }
 .filter-off {
   display: none;
@@ -74,7 +70,10 @@
   display: inline-block;
 }
 #report-list .right {
-  float: right;
+  text-align: right;
+}
+#report-list .report-action {
+  width: 150px;
 }
 #rangeDiv input[type="input"] {
   height: 20px;

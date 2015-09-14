@@ -335,10 +335,12 @@ a.resourceDetails {
 input[type=text].user-search {
   width: 250px;
 }
-.remove.icon {
+.remove.icon,
+.delete.icon {
   color: #c37c82;
 }
-.remove.icon:hover {
+.remove.icon:hover,
+.delete.icon:hover {
   color: #b35961;
 }
 .add.icon {

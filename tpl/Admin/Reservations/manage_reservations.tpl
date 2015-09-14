@@ -134,7 +134,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			<td class="date">{formatdate date=$reservation->CreatedDate timezone=$Timezone key=short_datetime}</td>
 			<td class="date">{formatdate date=$reservation->ModifiedDate timezone=$Timezone key=short_datetime}</td>
 			<td class="referenceNumber">{$reservation->ReferenceNumber}</td>
-			<td class="action"><a href="#" class="update delete"><span class="fa fa-trash icon remove"></span></a></td>
+			<td class="action"><a href="#" class="update delete"><span class="fa fa-trash icon remove fa-1x"></span></a></td>
 			<td class="action">
 				{if $reservation->RequiresApproval}
 					<a href="#" class="update approve"><span class="fa fa-check icon add"></span></a>
