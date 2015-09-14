@@ -1752,7 +1752,7 @@ td.update {
 }
 #report-list {
   max-height: 300px;
-  overflow-y: scroll;
+  overflow-y: auto;
 }
 #report-list table {
   margin-bottom: 0;
@@ -1770,7 +1770,6 @@ td.update {
   font-weight: bold;
   color: #444;
   font-size: 12pt;
-  display: inline-block;
   min-width: 200px;
 }
 .report-created-date {
