@@ -24,10 +24,6 @@ function ResourceGroupManagement(opts)
 
 	ResourceGroupManagement.prototype.init = function (groups)
 	{
-		ConfigureAdminDialog(elements.renameDialog, 300, 135);
-		ConfigureAdminDialog(elements.deleteDialog, 300, 200);
-		ConfigureAdminDialog(elements.addChildDialog, 300, 135);
-
 		$(".save").click(function ()
 		{
 			$(this).closest('form').submit();
@@ -35,10 +31,9 @@ function ResourceGroupManagement(opts)
 
 		$(".cancel").click(function ()
 		{
-			$(this).closest('.dialog').dialog("close");
+			$(this).closest('.modal').modal("hide");
 		});
 
-		$(".new-group").watermark(opts.newGroupText);
 
 		wireUpTree(groups);
 		wireUpContextMenu();
@@ -65,7 +60,7 @@ function ResourceGroupManagement(opts)
 				if (node.type == 'resource')
 				{
 					$li.addClass('group-resource');
-					$li.find('.jqtree-title').after('<div class="remove-resource" node-id="' + node.id + '">&nbsp;</div>');
+					$li.find('.jqtree-title').after('&nbsp;<span class="remove-resource fa fa-remove icon remove" node-id="' + node.id + '"></span>');
 				}
 				else
 				{
@@ -162,7 +157,7 @@ function ResourceGroupManagement(opts)
 	function showRename(node)
 	{
 		elements.activeId.val(node.id);
-		elements.renameDialog.dialog("open");
+		elements.renameDialog.modal("show");
 
 		elements.newName.val(node.name);
 	}
@@ -170,7 +165,7 @@ function ResourceGroupManagement(opts)
 	function showDelete(node)
 	{
 		elements.activeId.val(node.id);
-		elements.deleteDialog.dialog("open");
+		elements.deleteDialog.modal("show");
 	}
 
 	function showAddChild(node)
@@ -178,7 +173,7 @@ function ResourceGroupManagement(opts)
 		elements.activeId.val(node.id);
 		$('#groupParentId').val(node.id);
 		$('#childName').val('');
-		elements.addChildDialog.dialog("open");
+		elements.addChildDialog.modal("show");
 	}
 
 	function onBeforeRename(arr, $form, options)
@@ -277,11 +272,11 @@ function ResourceGroupManagement(opts)
 
 	function hideDialogs(data)
 	{
-		$.each($('div.dialog'), function (index, element)
+		$.each($('div.modal'), function (index, element)
 		{
 			if ($(element).is(':visible'))
 			{
-				$(element).dialog('close');
+				$(element).modal('hide');
 			}
 		});
 	}

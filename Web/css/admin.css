@@ -36,7 +36,6 @@ span.error {
 .resourceDetails {
   font-size: 1.2em;
   padding: 3px;
-  font-weight: bold;
 }
 .resourceDetails img.image {
   width: 100px;
@@ -212,12 +211,6 @@ tr.pending {
 }
 ul.jqtree-tree .group-resource .jqtree-title {
   color: #111111;
-}
-.remove-resource {
-  display: inline;
-  width: 16px;
-  margin-left: 10px;
-  background: url(../img/minus-circle.png) no-repeat 50%;
 }
 #resource-list h4 {
   font-size: 13pt;
@@ -468,4 +461,7 @@ td.update {
 #page-manage-users .resourceDetails:not(:last-child),
 #page-manage-quotas .resourceDetails:not(:last-child) {
   border-bottom: solid 1px #e9e9e9;
+}
+#page-manage-resource-groups #groupName {
+  width: 80%;
 }

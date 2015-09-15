@@ -27,11 +27,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 				<span class="caret"></span>
 			</button>
 			<ul class="dropdown-menu" role="menu" aria-labelledby="moreResourceActions">
-				<li role="presentation"><a role="menuitem"
-										   href="#" class="add-resource" id="add-resource">{translate key="AddResource"}
-						<span
-								class="fa fa-plus-circle icon add"></span></a>
-				</li>
+
 				<li role="presentation"><a role="menuitem"
 										   href="{$Path}admin/manage_resource_groups.php">{translate key="ManageResourceGroups"}</a>
 				</li>
@@ -42,6 +38,10 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 										   href="{$Path}admin/manage_resource_status.php">{translate key="ManageResourceStatus"}</a>
 				</li>
 				<li role="presentation" class="divider"></li>
+				<li role="presentation"><a role="menuitem"
+										   href="#" class="add-resource" id="add-resource">{translate key="AddResource"}
+						<span class="fa fa-plus-circle icon add"></span></a>
+				</li>
 				{if !empty($Resources)}
 				<li role="presentation"><a role="menuitem" href="#"
 										   id="bulkUpdatePromptButton">{translate key=BulkResourceUpdate}</a>
@@ -423,7 +423,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 						</div>
 						<div class="form-group">
 							<label for="permissions">{translate key='ResourcePermissions'}</label>
-							<select class="form-control" {formname key=AUTO_ASSIGN}  id="permissions">
+							<select class="form-control" {formname key=AUTO_ASSIGN} id="permissions">
 								<option value="1">{translate key="ResourcePermissionAutoGranted"}</option>
 								<option value="0">{translate key="ResourcePermissionNotAutoGranted"}</option>
 							</select>
@@ -1053,7 +1053,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 				</div>
 				<div class="modal-body">
 					<div class="form-group">
-						<label for="userSearch">{translate key=AddUser}</label> <a href="#" id="browseUsers">{translate key=Browse}</a>
+						<label for="userSearch">{translate key=AddUser}</label> <a href="#"
+																				   id="browseUsers">{translate key=Browse}</a>
 						<input type="text" id="userSearch" class="form-control" size="60"/>
 
 					</div>
@@ -1067,7 +1068,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 	</div>
 
 	<div id="allUsers" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="browseUsersDialogLabel"
-			 aria-hidden="true">
+		 aria-hidden="true">
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-header">
@@ -1099,7 +1100,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 				</div>
 				<div class="modal-body">
 					<div class="form-group">
-						<label for="groupSearch">{translate key=AddGroup}</label> <a href="#"  id="browseGroups">{translate key=AllGroups}</a>
+						<label for="groupSearch">{translate key=AddGroup}</label> <a href="#"
+																					 id="browseGroups">{translate key=AllGroups}</a>
 						<input type="text" id="groupSearch" class="form-control" size="60"/>
 					</div>
 
@@ -1140,9 +1142,12 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 	<script type="text/javascript">
 
-		function hidePopoversWhenClickAway() {
-			$('body').on('click', function (e) {
-				$('[rel="popover"]').each(function () {
+		function hidePopoversWhenClickAway()
+		{
+			$('body').on('click', function (e)
+			{
+				$('[rel="popover"]').each(function ()
+				{
 					if (!$(this).is(e.target) && $(this).has(e.target).length === 0 && $('.popover').has(e.target).length === 0)
 					{
 						$(this).popover('hide');
@@ -1151,29 +1156,36 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			});
 		}
 
-		function setUpPopovers() {
+		function setUpPopovers()
+		{
 			$('[rel="popover"]').popover({
 				container: 'body',
 				html: true,
 				placement: 'top',
-				content: function () {
+				content: function ()
+				{
 					var popoverId = $(this).data('popover-content');
 					return $(popoverId).html();
 				}
-			}).click(function (e) {
+			}).click(function (e)
+			{
 				e.preventDefault();
-			}).on('show.bs.popover', function () {
+			}).on('show.bs.popover', function ()
+			{
 
-			}).on('shown.bs.popover', function () {
+			}).on('shown.bs.popover', function ()
+			{
 				var trigger = $(this);
 				var popover = trigger.data('bs.popover').tip();
-				popover.find('.editable-cancel').click(function () {
+				popover.find('.editable-cancel').click(function ()
+				{
 					trigger.popover('hide');
 				});
 			});
 		}
 
-		function setUpEditables() {
+		function setUpEditables()
+		{
 			$.fn.editable.defaults.mode = 'popup';
 			$.fn.editable.defaults.toggle = 'manual';
 			$.fn.editable.defaults.emptyclass = '';
@@ -1182,7 +1194,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 			$('.resourceName').editable({
 				url: updateUrl + '{ManageResourcesActions::ActionRename}',
-				validate: function (value) {
+				validate: function (value)
+				{
 					if ($.trim(value) == '')
 					{
 						return '{translate key=RequiredValue}';
@@ -1265,7 +1278,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 		}
 
-		$(document).ready(function () {
+		$(document).ready(function ()
+		{
 			setUpPopovers();
 
 			hidePopoversWhenClickAway();

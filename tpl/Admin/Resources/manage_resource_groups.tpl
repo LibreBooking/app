@@ -16,125 +16,197 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 *}
-{include file='globalheader.tpl' cssFiles='scripts/css/jquery.contextMenu.css,scripts/css/jqtree.css,css/admin.css'}
+{include file='globalheader.tpl' cssFiles='scripts/css/jquery.contextMenu.css,scripts/css/jqtree.css'}
 
-<h1>{translate key='ManageResourceGroups'}</h1>
+<div id="page-manage-resource-groups" class="admin-page">
 
-<div id="globalError" class="error" style="display:none"></div>
-<div class="admin">
-	<div class="title">
-		{translate key='ResourceGroups'}
-		<div id="help-button" class="help" help-ref="help">&nbsp;</div>
+	<div>
+		<div class="dropdown admin-header-more pull-right">
+			<button class="btn btn-default" type="button" id="moreResourceActions" data-toggle="dropdown">
+				<span class="glyphicon glyphicon-option-vertical"></span>
+				<span class="caret"></span>
+			</button>
+			<ul class="dropdown-menu" role="menu" aria-labelledby="moreResourceActions">
+
+				<li role="presentation"><a role="menuitem"
+										   href="{$Path}admin/manage_resource_groups.php">{translate key="ManageResourceGroups"}</a>
+				</li>
+				<li role="presentation"><a role="menuitem"
+										   href="{$Path}admin/manage_resource_types.php">{translate key="ManageResourceTypes"}</a>
+				</li>
+				<li role="presentation"><a role="menuitem"
+										   href="{$Path}admin/manage_resource_status.php">{translate key="ManageResourceStatus"}</a>
+				</li>
+				<li role="presentation" class="divider"></li>
+				<li role="presentation"><a role="menuitem"
+										   href="{$Path}admin/manage_resources.php">{translate key="ManageResources"}</a>
+				</li>
+			</ul>
+		</div>
+
+		<h1>{translate key='ManageResourceGroups'}</h1>
 	</div>
+
+	<div id="globalError" class="alert alert-danger no-show"></div>
 
 	<div id="manage-resource-groups-container">
 		<div id="new-group">
 			<form method="post" id="addGroupForm" ajaxAction="{ManageResourceGroupsActions::AddGroup}">
-				<label for="groupName">Group name:</label>
-				<input type="text" name="{FormKeys::GROUP_NAME}" class="textbox new-group" size="30" id="groupName" />
-				<input type="hidden" name="{FormKeys::PARENT_ID}" />
-				{html_image src="plus-circle.png" class="image-button" id="btnAddGroup"}
+				<div class="form-group"><input type="text" name="{FormKeys::GROUP_NAME}" class="form-control new-group inline" size="30"
+					   id="groupName" placeholder="{translate key=AddNewGroup}"/>
+				<input type="hidden" name="{FormKeys::PARENT_ID}"/>
+				<a href="#" class="fa fa-plus-circle icon add inline" id="btnAddGroup"></a>
+				</div>
 			</form>
 		</div>
 		<div id="group-tree"></div>
 		<div id="resource-list">
 			<h4>{translate key=Resources}</h4>
-			<ul>
-				{foreach from=$Resources item=resource}
-					<li class="resource-draggable" resource-name="{$resource->GetName()|escape:javascript}"
-						resource-id="{$resource->GetId()}">{$resource->GetName()}</li>
-				{/foreach}
-			</ul>
+			{foreach from=$Resources item=resource}
+				<div class="resource-draggable" resource-name="{$resource->GetName()|escape:javascript}"
+					 resource-id="{$resource->GetId()}">{$resource->GetName()}</div>
+			{/foreach}
 		</div>
 		<div class="clear">&nbsp;</div>
 	</div>
-</div>
 
-<div class="warning" id="resourceGroupWarning">
-	{translate key=ResourceGroupWarning}
-</div>
+	<div class="clearfix"></div>
 
-<input type="hidden" id="activeId" value=""/>
+	<div class="alert alert-warning" id="resourceGroupWarning" role="alert">
+		<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
+					aria-hidden="true">&times;</span></button>
+		{translate key=ResourceGroupWarning}
+	</div>
 
-<div id="renameDialog" class="dialog" title="{translate key=Rename}">
-	<form id="renameForm" method="post" ajaxAction="{ManageResourceGroupsActions::RenameGroup}">
-		<label for="editName">{translate key='Name'}:</label>
-		<input id="editName" type="text" class="textbox required triggerSubmit" maxlength="85"
-									   style="width:250px" {formname key=GROUP_NAME} />
-		<br/><br/>
-		<button type="button" class="button save">{html_image src="disk-black.png"} {translate key='Rename'}</button>
-		<button type="button" class="button cancel">{html_image src="slash.png"} {translate key='Cancel'}</button>
-	</form>
-</div>
+	<input type="hidden" id="activeId" value=""/>
 
-<div id="deleteDialog" class="dialog" title="{translate key=Delete}">
-	<form id="deleteForm" method="post" ajaxAction="{ManageResourceGroupsActions::DeleteGroup}">
-		<div class="error" style="margin-bottom: 25px;">
-			<h3>{translate key=DeleteWarning}</h3>
-		</div>
+	<div id="renameDialog" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="renameGroupDialogLabel"
+		 aria-hidden="true">
+		<form id="renameForm" method="post" ajaxAction="{ManageResourceGroupsActions::RenameGroup}">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+						<h4 class="modal-title" id="renameGroupDialogLabel">{translate key=Rename}</h4>
+					</div>
+					<div class="modal-body">
+						<div class="form-group">
+							<label for="editName">{translate key='Name'}</label>
+							<input id="editName" type="text" class="textbox required triggerSubmit" maxlength="85"
+									{formname key=GROUP_NAME} />
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default cancel"
+								data-dismiss="modal">{translate key='Cancel'}</button>
+						<button type="button" class="btn btn-success save">{translate key='Rename'}</button>
+						{indicator}
+					</div>
+				</div>
+			</div>
+		</form>
+	</div>
 
-		<button type="button" class="button save">{html_image src="cross-button.png"} {translate key='Delete'}</button>
-		<button type="button" class="button cancel">{html_image src="slash.png"} {translate key='Cancel'}</button>
-	</form>
-</div>
+	<div id="deleteDialog" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="deleteDialogLabel"
+		 aria-hidden="true">
+		<form id="deleteForm" method="post" ajaxAction="{ManageResourceGroupsActions::DeleteGroup}">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+						<h4 class="modal-title" id="deleteDialogLabel">{translate key=Delete}</h4>
+					</div>
+					<div class="modal-body">
+						<div class="alert alert-warning">
+							<div>{translate key=DeleteWarning}</div>
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default cancel"
+								data-dismiss="modal">{translate key='Cancel'}</button>
+						<button type="button" class="btn btn-danger save">{translate key='Delete'}</button>
+						{indicator}
+					</div>
+				</div>
+			</div>
+		</form>
+	</div>
 
-<div id="addChildDialog" class="dialog" title="{translate key=AddNewGroup}">
-	<form id="addChildForm" method="post" ajaxAction="{ManageResourceGroupsActions::AddGroup}">
-	<label for="childName">{translate key='Name'}:</label>
-	<input id="childName" type="text" class="textbox required new-group" maxlength="85"
-								   style="width:250px" {formname key=GROUP_NAME} />
-		<br/><br/>
-		<button type="button" class="button save">{html_image src="disk-black.png"} {translate key='Add'}</button>
-		<button type="button" class="button cancel">{html_image src="slash.png"} {translate key='Cancel'}</button>
-		<input type="hidden" id="groupParentId" name="{FormKeys::PARENT_ID}" />
-	</form>
-</div>
+	<div id="addChildDialog" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="addGroupDialogLabel"
+		 aria-hidden="true">
+		<form id="addChildForm" method="post" ajaxAction="{ManageResourceGroupsActions::AddGroup}">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+						<h4 class="modal-title" id="addGroupDialogLabel">{translate key=AddNewGroup}</h4>
+					</div>
+					<div class="modal-body">
+						<div class="form-group">
+							<label for="childName">{translate key='Name'}</label>
+							<input id="childName" type="text" class="textbox required new-group" maxlength="85"
+									{formname key=GROUP_NAME} />
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default cancel"
+								data-dismiss="modal">{translate key='Cancel'}</button>
+						<button type="button" class="btn btn-success save">{translate key='Add'}</button>
+						<input type="hidden" id="groupParentId" name="{FormKeys::PARENT_ID}"/>
 
-<div id="help" class="dialog" title="{translate key=Help}">
-	<ul>
-		<li>{translate key=ResourceGroupHelp1}</li>
-		<li>{translate key=ResourceGroupHelp2}</li>
-		<li>{translate key=ResourceGroupHelp3}</li>
-	</ul>
-</div>
+						{indicator}
+					</div>
+				</div>
+			</div>
+		</form>
+	</div>
 
-{html_image src="admin-ajax-indicator.gif" class="indicator" style="display:none;"}
-{jsfile src="js/jquery.watermark.min.js"}
-{jsfile src="ajax-helpers.js"}
-{jsfile src="admin/resource-groups.js"}
-{jsfile src="js/jquery.form-3.09.min.js"}
-{jsfile src="js/tree.jquery.js"}
-{jsfile src="js/jquery.cookie.js"}
-{jsfile src="js/jquery.contextMenu.js"}
+	<div id="help" class="alert alert-info" role="alert">
+		<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
+					aria-hidden="true">&times;</span></button>
+		<div>{translate key=ResourceGroupHelp1}</div>
+		<div>{translate key=ResourceGroupHelp2}</div>
+		<div>{translate key=ResourceGroupHelp3}</div>
+	</div>
 
-<script type="text/javascript">
+	{html_image src="admin-ajax-indicator.gif" class="indicator" style="display:none;"}
+	{jsfile src="js/jquery.watermark.min.js"}
+	{jsfile src="ajax-helpers.js"}
+	{jsfile src="admin/resource-groups.js"}
+	{jsfile src="js/jquery.form-3.09.min.js"}
+	{jsfile src="js/tree.jquery.js"}
+	{jsfile src="js/jquery.cookie.js"}
+	{jsfile src="js/jquery.contextMenu.js"}
 
-	$(document).ready(function ()
-	{
-		var actions = {
-			addResource: '{ManageResourceGroupsActions::AddResource}',
-			removeResource: '{ManageResourceGroupsActions::RemoveResource}',
-			moveNode: '{ManageResourceGroupsActions::MoveNode}'
-		};
+	<script type="text/javascript">
 
-		var groupOptions = {
-			submitUrl: '{$smarty.server.SCRIPT_NAME}',
-			actions: actions,
-			newGroupText: '{translate key=AddNewGroup}',
-			renameText: '{translate key=Rename}',
-			addChildText: '{translate key=AddGroup}',
-			deleteText: '{translate key=Delete}',
-			exitText: '{translate key=Close}'
-		};
+		$(document).ready(function ()
+		{
+			var actions = {
+				addResource: '{ManageResourceGroupsActions::AddResource}',
+				removeResource: '{ManageResourceGroupsActions::RemoveResource}',
+				moveNode: '{ManageResourceGroupsActions::MoveNode}'
+			};
 
-		var groupManagement = new ResourceGroupManagement(groupOptions);
-		groupManagement.init({$ResourceGroups});
+			var groupOptions = {
+				submitUrl: '{$smarty.server.SCRIPT_NAME}',
+				actions: actions,
+				renameText: '{translate key=Rename}',
+				addChildText: '{translate key=AddGroup}',
+				deleteText: '{translate key=Delete}',
+				exitText: '{translate key=Close}'
+			};
 
-		$('#help-button').click(function(e){
-			$('#' + $(this).attr('help-ref')).dialog();
+			var groupManagement = new ResourceGroupManagement(groupOptions);
+			groupManagement.init({$ResourceGroups});
+
+			$('#help-button').click(function (e)
+			{
+				$('#' + $(this).attr('help-ref')).dialog();
+			});
 		});
-	});
 
-</script>
+	</script>
+</div>
 
 {include file='globalfooter.tpl'}
