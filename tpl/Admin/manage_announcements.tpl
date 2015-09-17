@@ -28,7 +28,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 				<div id="addResults" class="error no-show"></div>
 				<div class="form-group has-feedback">
 					<label for="addAnnouncement">{translate key='Announcement'}</label>
-					<textarea class="form-control required" rows="1" style="width:500px" {formname key=ANNOUNCEMENT_TEXT} id="addAnnouncement"></textarea>
+					<textarea class="form-control required" rows="1" {formname key=ANNOUNCEMENT_TEXT} id="addAnnouncement"></textarea>
 					<i class="glyphicon glyphicon-asterisk form-control-feedback" data-bv-icon-for="addAnnouncement"></i>
 				</div>
 				<div class="form-group">

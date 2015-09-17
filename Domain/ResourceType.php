@@ -1,23 +1,23 @@
 <?php
+
 /**
-Copyright 2013-2015 Nick Korbel
-
-This file is part of Booked Scheduler.
-
-Booked Scheduler is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-Booked Scheduler is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
+ * Copyright 2013-2015 Nick Korbel
+ *
+ * This file is part of Booked Scheduler.
+ *
+ * Booked Scheduler is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Booked Scheduler is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 class ResourceType
 {
 	/**
@@ -40,11 +40,19 @@ class ResourceType
 	 */
 	private $attributeValues = array();
 
-	public function __construct($id, $name, $description)
+	public function __construct($id, $name, $description, $attributeList = null)
 	{
 		$this->id = $id;
 		$this->name = $name;
 		$this->description = $description;
+		if (!empty($attributeList))
+		{
+			$attributes = CustomAttributes::Parse($attributeList);
+			foreach ($attributes->All() as $id => $value)
+			{
+				$this->WithAttribute(new AttributeValue($id, $value));
+			}
+		}
 	}
 
 	/**
@@ -141,6 +149,16 @@ class ResourceType
 	}
 
 	/**
+	 * @param $attribute AttributeValue
+	 */
+	public function ChangeAttribute($attribute)
+	{
+		$this->removedAttributeValues[] = $attribute;
+		$this->addedAttributeValues[] = $attribute;
+		$this->AddAttributeValue($attribute);
+	}
+
+	/**
 	 * @param $attributeValue AttributeValue
 	 */
 	public function AddAttributeValue($attributeValue)
@@ -177,8 +195,4 @@ class ResourceType
 
 		return null;
 	}
-
-
 }
-
-?>

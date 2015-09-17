@@ -129,7 +129,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 	<div id="globalError" class="error no-show"></div>
 
-	<div class="panel panel-default admin-panel" id="list-reservations-panel">
+	<div class="panel panel-default admin-panel" id="list-resources-panel">
 		<div class="panel-heading">{translate key="Resources"}
 			<a href="#" class="add-link add-resource pull-right">{translate key="AddResource"}
 				<span class="fa fa-plus-circle icon add"></span>
@@ -348,39 +348,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 					<div class="customAttributes">
 						{if $AttributeList|count > 0}
 							{foreach from=$AttributeList item=attribute}
-
-								{if $attribute->AppliesToEntity($id)}
-									<div class="updateCustomAttribute">
-										{assign var=datatype value='text'}
-										{if $attribute->Type() == CustomAttributeTypes::CHECKBOX}
-											{assign var=datatype value='checklist'}
-										{elseif $attribute->Type() == CustomAttributeTypes::MULTI_LINE_TEXTBOX}
-											{assign var=datatype value='textarea'}
-										{elseif $attribute->Type() == CustomAttributeTypes::SELECT_LIST}
-											{assign var=datatype value='select'}
-										{/if}
-										<label>{$attribute->Label()}</label>
-							<span class="inlineAttribute"
-								  data-type="{$datatype}"
-								  data-pk="{$id}"
-								  data-value="{$resource->GetAttributeValue($attribute->Id())}"
-								  data-name="{FormKeys::ATTRIBUTE_PREFIX}{$attribute->Id()}"
-									{if $attribute->Type() == CustomAttributeTypes::SELECT_LIST}
-										data-source='[{if !$attribute->Required()}{ldelim}value:"",text:""{rdelim},{/if}
-									  {foreach from=$attribute->PossibleValueList() item=v name=vals}
-											{ldelim}value:"{$v}",text:"{$v}"{rdelim}{if not $smarty.foreach.vals.last},{/if}
-										{/foreach}]'
-									{/if}
-									{if $attribute->Type() == CustomAttributeTypes::CHECKBOX}
-										data-source='[{ldelim}value:"1",text:"{translate key=Yes}"{rdelim}]'
-									{/if}
-									>
-							</span>
-										<a class="update changeAttribute" href="#"><span
-													class="fa fa-pencil-square-o"></span></a>
-									</div>
-								{/if}
-
+								{include file='Admin/InlineAttributeEdit.tpl' id=$id attribute=$attribute value=$resource->GetAttributeValue($attribute->Id())}
 							{/foreach}
 						{/if}
 					</div>
@@ -1281,9 +1249,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		$(document).ready(function ()
 		{
 			setUpPopovers();
-
 			hidePopoversWhenClickAway();
-
 			setUpEditables();
 
 			var actions = {
