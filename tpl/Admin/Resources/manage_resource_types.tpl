@@ -59,7 +59,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		<tr>
 			<th>{translate key='Name'}</th>
 			<th>{translate key='Description'}</th>
-			<th>{translate key='Actions'}</th>
+			<th class="action">{translate key='Actions'}</th>
 		</tr>
 		</thead>
 		<tbody>
@@ -69,7 +69,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			<tr class="{$rowCss}">
 				<td>{$type->Name()}</td>
 				<td>{$type->Description()|nl2br}</td>
-				<td align="center">
+				<td class="action">
 					<a href="#" class="update edit"><span class="fa fa-pencil-square-o icon"></a> |
 					<a href="#" class="update delete"><span class="fa fa-trash icon remove"></span></a>
 					<input type="hidden" class="id" value="{$id}"/>
@@ -84,93 +84,79 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 					</td>
 				</tr>
 			{/if}
-			{*{assign var=attributes value=$AttributeList->GetAttributes($id)}*}
-			{*{if $attributes|count > 0}*}
-			{*<tr>*}
-			{*<td colspan="4" class="{$rowCss} customAttributes" resourceTypeId="{$id}">*}
-			{*<form method="post" class="attributesForm"*}
-			{*ajaxAction="{ManageResourceTypesActions::ChangeAttributes}">*}
-			{*<h3>{translate key=AdditionalAttributes} <a href="#"*}
-			{*class="changeAttributes"*}
-			{*resourceTypeId="{$id}">{translate key=Edit}</a>*}
-			{*</h3>*}
-
-			{*<div class="validationSummary">*}
-			{*<ul>*}
-			{*</ul>*}
-			{*<div class="clear">&nbsp;</div>*}
-			{*</div>*}
-
-			{*<div>*}
-			{*<ul>*}
-			{*{foreach from=$attributes item=attribute}*}
-			{*<li class="customAttribute" attributeId="{$attribute->Id()}">*}
-			{*<div class="attribute-readonly">{control type="AttributeControl" attribute=$attribute readonly=true}</div>*}
-			{*<div class="attribute-readwrite hidden">{control type="AttributeControl" attribute=$attribute}*}
-			{*</li>*}
-			{*{/foreach}*}
-			{*</ul>*}
-			{*</div>*}
-
-			{*<div class="attribute-readwrite hidden clear" style="height:auto;">*}
-			{*<button type="button"*}
-			{*class="button save">{html_image src="tick-circle.png"} {translate key='Update'}</button>*}
-			{*<button type="button"*}
-			{*class="button cancel">{html_image src="slash.png"} {translate key='Cancel'}</button>*}
-			{*</div>*}
-			{*</form>*}
-			{*</td>*}
-			{*</tr>*}
-			{*{/if}*}
 		{/foreach}
 		</tbody>
 	</table>
 
 	<input type="hidden" id="activeId" value=""/>
 
-	<div id="editDialog" class="dialog" style="display:none;" title="{translate key=Update}">
-		<form id="editForm" method="post" ajaxAction="{ManageResourceTypesActions::Update}">
-			<label for="editName">{translate key='Name'}:</label>
-			<input id="editName" type="text" class="textbox required" maxlength="85"
-					{formname key=RESOURCE_TYPE_NAME} />
-			<br/><br/>
-
-			<label for="editDescription">{translate key=Description}:</label><br/>
-			<textarea id="editDescription" class="textbox"
-					{formname key=RESOURCE_TYPE_DESCRIPTION}></textarea>
-			<br/><br/>
-
-			<button type="button"
-					class="button save">{html_image src="disk-black.png"} {translate key='Update'}</button>
-			<button type="button" class="button cancel">{html_image src="slash.png"} {translate key='Cancel'}</button>
-		</form>
+	<div class="modal fade" id="editDialog" tabindex="-1" role="dialog" aria-labelledby="editDialogLabel"
+		 aria-hidden="true">
+		<div class="modal-dialog">
+			<form id="editForm" method="post" ajaxAction="{ManageResourceTypesActions::Update}">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+						<h4 class="modal-title" id="editDialogLabel">{translate key=Edit}</h4>
+					</div>
+					<div class="modal-body">
+						<div class="form-group has-feedback">
+							<label for="editName">{translate key=Name}</label><br/>
+							<input type="text" id="editName"
+								   class="form-control required" required="required"
+								   maxlength="85" {formname key=RESOURCE_TYPE_NAME} />
+							<i class="glyphicon glyphicon-asterisk form-control-feedback"
+							   data-bv-icon-for="editName"></i>
+						</div>
+						<div class="form-group">
+							<label for="editDescription">{translate key='Description'}</label><br/>
+							<textarea class="form-control" rows="1" {formname key=RESOURCE_TYPE_DESCRIPTION}
+									  id="resourceTypeDesc"></textarea>
+						</div>
+					</div>
+					<div class="modal-footer">
+						{cancel_button}
+						{update_button}
+						{indicator}
+					</div>
+				</div>
+			</form>
+		</div>
 	</div>
 
-	<div id="deleteDialog" class="dialog" style="display:none;" title="{translate key=Delete}">
-		<form id="deleteForm" method="post" ajaxAction="{ManageResourceTypesActions::Delete}">
-			<div class="error" style="margin-bottom: 25px;">
-				<h3>{translate key=DeleteWarning}</h3>
-			</div>
-
-			<button type="button"
-					class="button save">{html_image src="cross-button.png"} {translate key='Delete'}</button>
-			<button type="button" class="button cancel">{html_image src="slash.png"} {translate key='Cancel'}</button>
-		</form>
+	<div class="modal fade" id="deleteDialog" tabindex="-1" role="dialog" aria-labelledby="deleteDialogLabel"
+		 aria-hidden="true">
+		<div class="modal-dialog">
+			<form id="deleteForm" method="post" ajaxAction="{ManageResourceTypesActions::Delete}">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+						<h4 class="modal-title" id="deleteDialogLabel">{translate key=Delete}</h4>
+					</div>
+					<div class="modal-body">
+						<div class="alert alert-warning">
+							<div>{translate key=DeleteWarning}</div>
+						</div>
+					</div>
+					<div class="modal-footer">
+						{cancel_button}
+						{delete_button}
+						{indicator}
+					</div>
+				</div>
+			</form>
+		</div>
 	</div>
 
-	{html_image src="admin-ajax-indicator.gif" class="indicator" style="display:none;"}
 	{jsfile src="ajax-helpers.js"}
 	{jsfile src="admin/resource-types.js"}
 	{jsfile src="js/jquery.form-3.09.min.js"}
 
 	<script type="text/javascript">
 
-		function hidePopoversWhenClickAway()
-		{
-			$('body').on('click', function (e)
-			{
-				$('[rel="popover"]').each(function ()
-				{
+		function hidePopoversWhenClickAway() {
+			$('body').on('click', function (e) {
+				$('[rel="popover"]').each(function () {
 					if (!$(this).is(e.target) && $(this).has(e.target).length === 0 && $('.popover').has(e.target).length === 0)
 					{
 						$(this).popover('hide');
@@ -179,36 +165,29 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			});
 		}
 
-		function setUpPopovers()
-		{
+		function setUpPopovers() {
 			$('[rel="popover"]').popover({
 				container: 'body',
 				html: true,
 				placement: 'top',
-				content: function ()
-				{
+				content: function () {
 					var popoverId = $(this).data('popover-content');
 					return $(popoverId).html();
 				}
-			}).click(function (e)
-			{
+			}).click(function (e) {
 				e.preventDefault();
-			}).on('show.bs.popover', function ()
-			{
+			}).on('show.bs.popover', function () {
 
-			}).on('shown.bs.popover', function ()
-			{
+			}).on('shown.bs.popover', function () {
 				var trigger = $(this);
 				var popover = trigger.data('bs.popover').tip();
-				popover.find('.editable-cancel').click(function ()
-				{
+				popover.find('.editable-cancel').click(function () {
 					trigger.popover('hide');
 				});
 			});
 		}
 
-		function setUpEditables()
-		{
+		function setUpEditables() {
 			$.fn.editable.defaults.mode = 'popup';
 			$.fn.editable.defaults.toggle = 'manual';
 			$.fn.editable.defaults.emptyclass = '';
@@ -222,8 +201,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 		}
 
-		$(document).ready(function ()
-		{
+		$(document).ready(function () {
 			setUpPopovers();
 			hidePopoversWhenClickAway();
 			setUpEditables();

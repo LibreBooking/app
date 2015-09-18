@@ -170,6 +170,10 @@ class SmartyPage extends Smarty
 		$this->registerPlugin('function', 'cssfile', array($this, 'IncludeCssFile'));
 		$this->registerPlugin('function', 'indicator', array($this, 'DisplayIndicator'));
 		$this->registerPlugin('function', 'read_only_attribute', array($this, 'ReadOnlyAttribute'));
+		$this->registerPlugin('function', 'cancel_button', array($this, 'CancelButton'));
+		$this->registerPlugin('function', 'update_button', array($this, 'UpdateButton'));
+		$this->registerPlugin('function', 'add_button', array($this, 'AddButton'));
+		$this->registerPlugin('function', 'delete_button', array($this, 'DeleteButton'));
 
 		/**
 		 * PageValidators
@@ -498,16 +502,20 @@ class SmartyPage extends Smarty
 	public function CreateUrl($url)
 	{
 		// credit to WordPress wp-includes/formatting.php
-		$make_url_clickable = function($matches) {
+		$make_url_clickable = function ($matches)
+		{
 			$ret = '';
 			$url = $matches[2];
 
-			if ( empty($url) )
+			if (empty($url))
+			{
 				return $matches[0];
+			}
 			// removed trailing [.,;:] from URL
-			if ( in_array(substr($url, -1), array('.', ',', ';', ':')) === true ) {
+			if (in_array(substr($url, -1), array('.', ',', ';', ':')) === true)
+			{
 				$ret = substr($url, -1);
-				$url = substr($url, 0, strlen($url)-1);
+				$url = substr($url, 0, strlen($url) - 1);
 			}
 
 			$text = $url;
@@ -519,17 +527,21 @@ class SmartyPage extends Smarty
 			return $matches[1] . "<a href=\"$url\" target=\"_blank\" rel=\"nofollow\">$text</a>" . $ret;
 		};
 
-		$make_web_ftp_clickable_cb = function ($matches) {
+		$make_web_ftp_clickable_cb = function ($matches)
+		{
 			$ret = '';
 			$dest = $matches[2];
 			$dest = 'http://' . $dest;
 
-			if ( empty($dest) )
+			if (empty($dest))
+			{
 				return $matches[0];
+			}
 			// removed trailing [,;:] from URL
-			if ( in_array(substr($dest, -1), array('.', ',', ';', ':')) === true ) {
+			if (in_array(substr($dest, -1), array('.', ',', ';', ':')) === true)
+			{
 				$ret = substr($dest, -1);
-				$dest = substr($dest, 0, strlen($dest)-1);
+				$dest = substr($dest, 0, strlen($dest) - 1);
 			}
 
 			$text = $dest;
@@ -541,15 +553,19 @@ class SmartyPage extends Smarty
 			return $matches[1] . "<a href=\"$dest\" rel=\"nofollow\">$text</a>" . $ret;
 		};
 
-		$make_email_clickable_cb = function ($matches) {
+		$make_email_clickable_cb = function ($matches)
+		{
 			$email = $matches[2] . '@' . $matches[3];
 			return $matches[1] . "<a href=\"mailto:$email\">$email</a>";
 		};
 
 		$url = ' ' . $url;
-		$url = preg_replace_callback('#([\s>])([\w]+?://[\w\\x80-\\xff\#$%&~/.\-;:=,?@\[\]+]*)#is', $make_url_clickable, $url);
-		$url = preg_replace_callback('#([\s>])((www|ftp)\.[\w\\x80-\\xff\#$%&~/.\-;:=,?@\[\]+]*)#is', $make_web_ftp_clickable_cb, $url);
-		$url = preg_replace_callback('#([\s>])([.0-9a-z_+-]+)@(([0-9a-z-]+\.)+[0-9a-z]{2,})#i', $make_email_clickable_cb, $url);
+		$url = preg_replace_callback('#([\s>])([\w]+?://[\w\\x80-\\xff\#$%&~/.\-;:=,?@\[\]+]*)#is', $make_url_clickable,
+									 $url);
+		$url = preg_replace_callback('#([\s>])((www|ftp)\.[\w\\x80-\\xff\#$%&~/.\-;:=,?@\[\]+]*)#is',
+									 $make_web_ftp_clickable_cb, $url);
+		$url = preg_replace_callback('#([\s>])([.0-9a-z_+-]+)@(([0-9a-z-]+\.)+[0-9a-z]{2,})#i',
+									 $make_email_clickable_cb, $url);
 		$url = preg_replace("#(<a( [^>]+?>|>))<a [^>]+?>([^>]+?)</a></a>#i", "$1$3</a>", $url);
 		$url = trim($url);
 		return $url;
@@ -769,4 +785,26 @@ class SmartyPage extends Smarty
 			echo $attrVal;
 		}
 	}
+
+	public function CancelButton($params, &$smarty)
+	{
+		echo '<button type="button" class="btn btn-default cancel" data-dismiss="modal">' . Resources::GetInstance()->GetString('Cancel') . '</button>';
+
+	}
+
+	public function UpdateButton($params, &$smarty)
+	{
+		echo '<button type="button" class="btn btn-success save"><span class="glyphicon glyphicon-ok-circle"></span> ' . Resources::GetInstance()->GetString('Update') . '</span></button>';
+	}
+
+	public function AddButton($params, &$smarty)
+	{
+		echo '<button type="button" class="btn btn-success save"><span class="glyphicon glyphicon-ok-circle"></span> ' . Resources::GetInstance()->GetString('Add') . '</span></button>';
+	}
+
+	public function DeleteButton($params, &$smarty)
+	{
+		echo '<button type="button" class="btn btn-danger save">' . Resources::GetInstance()->GetString('Delete') . '</button>';
+	}
+
 }

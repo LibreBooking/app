@@ -16,99 +16,185 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 *}
-{include file='globalheader.tpl' cssFiles='css/admin.css'}
+{include file='globalheader.tpl'}
 
-{function name=displayReason}
-	{cycle values='row0,row1' assign=rowCss}
-	<li class="{$rowCss}" reasonId="{$reason->Id()}">
-		<span class="reason-description">{$reason->Description()}</span>
-		<div style="float:right">
-			<a href="#" class="update edit">{translate key=Edit}</a> | <a href="#" class="update delete">{translate key=Delete}</a>
+<div id="page-manage-resource-status" class="admin-page">
+
+	{function name=displayReason}
+		{cycle values='row0,row1' assign=rowCss}
+		<div class="{$rowCss} reason-item" reasonId="{$reason->Id()}">
+			<span class="reason-description">{$reason->Description()}</span>
+
+			<div class="pull-right">
+				<a href="#" class="update edit">{translate key=Edit}</a> |
+				<a href="#" class="update delete">{translate key=Delete}</a>
+			</div>
 		</div>
-	</li>
-{/function}
+	{/function}
 
-<h1>{translate key='ManageResourceStatus'}</h1>
+	{include file='Admin/Resources/manage_resource_menu.tpl' ResourcePageTitleKey='ManageResourceStatus'}
 
-<div id="globalError" class="error" style="display:none"></div>
+	<div id="globalError" class="error" style="display:none"></div>
 
-<h2 class="resource-status">{translate key=Available} <a href="#" class="add" add-to="{ResourceStatus::AVAILABLE}">{html_image src="plus-circle.png" alt="Add"}</a></h2>
-<ul class="no-style resource-status-reasons">
-	{foreach from=$StatusReasons[{ResourceStatus::AVAILABLE}] item=reason}
-		{displayReason reason=$reason}
-	{/foreach}
-</ul>
-
-<h2 class="resource-status">{translate key=Unavailable} <a href="#" class="add" add-to="{ResourceStatus::UNAVAILABLE}">{html_image src="plus-circle.png" alt="Add"}</a></h2>
-<ul class="no-style resource-status-reasons">
-	{foreach from=$StatusReasons[{ResourceStatus::UNAVAILABLE}] item=reason}
-		{displayReason reason=$reason}
-	{/foreach}
-</ul>
-
-<h2 class="resource-status">{translate key=Hidden} <a href="#" class="add" add-to="{ResourceStatus::HIDDEN}">{html_image src="plus-circle.png" alt="Add"}</a></h2>
-<ul class="no-style resource-status-reasons">
-	{foreach from=$StatusReasons[{ResourceStatus::HIDDEN}] item=reason}
-		{displayReason reason=$reason}
-	{/foreach}
-</ul>
-
-<input type="hidden" id="activeId" value=""/>
-
-<div id="addDialog" class="dialog" style="display:none;" title="{translate key=Reason}">
-	<form id="addForm" method="post" ajaxAction="{ManageResourceStatusActions::Add}">
-
-		<input type="text" class="textbox" id="add-reason-description" {formname key=RESOURCE_STATUS_REASON} />
-		<input type="hidden" id="add-reason-status" {formname key=RESOURCE_STATUS_ID} />
-		<div class="admin-update-buttons">
-			<button type="button" class="button save">{html_image src="disk-black.png"} {translate key='Add'}</button>
-			<button type="button" class="button cancel">{html_image src="slash.png"} {translate key='Cancel'}</button>
+	<div class="panel panel-default resource-status-list" id="resource-status-list-available">
+		<div class="panel-heading">{translate key="Available"}
+			<a href="#"><span class="icon black show-hide glyphicon"></span></a>
+			<a href="#" add-to="{ResourceStatus::AVAILABLE}" class="add-link pull-right">{translate key="Add"}
+				<span class="fa fa-plus-circle icon add"></span>
+			</a>
 		</div>
-	</form>
+		<div class="panel-body add-contents">
+			{foreach from=$StatusReasons[{ResourceStatus::AVAILABLE}] item=reason}
+				{displayReason reason=$reason}
+			{/foreach}
+		</div>
+	</div>
+
+	<div class="panel panel-default resource-status-list" id="resource-status-list-unavailable">
+		<div class="panel-heading">{translate key="Unavailable"}
+			<a href="#"><span class="icon black show-hide glyphicon"></span></a>
+			<a href="#" add-to="{ResourceStatus::UNAVAILABLE}" class="add-link pull-right">{translate key="Add"}
+				<span class="fa fa-plus-circle icon add"></span>
+			</a>
+		</div>
+		<div class="panel-body add-contents">
+			{foreach from=$StatusReasons[{ResourceStatus::UNAVAILABLE}] item=reason}
+				{displayReason reason=$reason}
+			{/foreach}
+		</div>
+	</div>
+
+	<div class="panel panel-default resource-status-list" id="resource-status-list-hidden">
+		<div class="panel-heading">{translate key="Hidden"}
+			<a href="#"><span class="icon black show-hide glyphicon"></span></a>
+			<a href="#" add-to="{ResourceStatus::HIDDEN}" class="add-link pull-right">{translate key="Add"}
+				<span class="fa fa-plus-circle icon add"></span>
+			</a>
+		</div>
+		<div class="panel-body add-contents">
+			{foreach from=$StatusReasons[{ResourceStatus::HIDDEN}] item=reason}
+				{displayReason reason=$reason}
+			{/foreach}
+		</div>
+	</div>
+
+	<input type="hidden" id="activeId" value=""/>
+
+	<div class="modal fade" id="addDialog" tabindex="-1" role="dialog" aria-labelledby="addDialogLabel"
+		 aria-hidden="true">
+		<div class="modal-dialog">
+			<form id="addForm" method="post" ajaxAction="{ManageResourceStatusActions::Add}">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+						<h4 class="modal-title" id="addDialogLabel">{translate key=Add}</h4>
+					</div>
+					<div class="modal-body">
+						<div class="form-group has-feedback">
+							<label for="add-reason-description">{translate key=Name}</label><br/>
+							<input type="text" class="form-control required" required
+								   id="add-reason-description" {formname key=RESOURCE_STATUS_REASON} />
+							<input type="hidden" id="add-reason-status" {formname key=RESOURCE_STATUS_ID} />
+							<i class="glyphicon glyphicon-asterisk form-control-feedback"
+							   data-bv-icon-for="add-reason-description"></i>
+						</div>
+					</div>
+					<div class="modal-footer">
+						{cancel_button}
+						{add_button}
+						{indicator}
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+
+	<div class="modal fade" id="editDialog" tabindex="-1" role="dialog" aria-labelledby="editDialogLabel"
+		 aria-hidden="true">
+		<div class="modal-dialog">
+			<form id="editForm" method="post" ajaxAction="{ManageResourceStatusActions::Update}">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+						<h4 class="modal-title" id="editDialogLabel">{translate key=Edit}</h4>
+					</div>
+					<div class="modal-body">
+						<div class="form-group has-feedback">
+							<label for="edit-reason-description">{translate key=Name}</label><br/>
+							<input type="text" class="form-control required" required
+								   id="edit-reason-description" {formname key=RESOURCE_STATUS_REASON} />
+							<input type="hidden" id="add-reason-status" {formname key=RESOURCE_STATUS_ID} />
+							<i class="glyphicon glyphicon-asterisk form-control-feedback"
+							   data-bv-icon-for="edit-reason-description"></i>
+						</div>
+					</div>
+					<div class="modal-footer">
+						{cancel_button}
+						{update_button}
+						{indicator}
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+
+	<div class="modal fade" id="deleteDialog" tabindex="-1" role="dialog" aria-labelledby="deleteDialogLabel"
+		 aria-hidden="true">
+		<div class="modal-dialog">
+			<form id="deleteForm" method="post" ajaxAction="{ManageResourceStatusActions::Delete}">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+						<h4 class="modal-title" id="deleteDialogLabel">{translate key=Delete}</h4>
+					</div>
+					<div class="modal-body">
+						<div class="alert alert-warning">
+							<div>{translate key=DeleteWarning}</div>
+						</div>
+					</div>
+					<div class="modal-footer">
+						{cancel_button}
+						{delete_button}
+						{indicator}
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+
+	<div id="deleteDialog" class="dialog" style="display:none;" title="{translate key=Reason}">
+		<form id="deleteForm" method="post" ajaxAction="{ManageResourceStatusActions::Delete}">
+			<div class="error" style="margin-bottom: 25px;">
+				<h3>{translate key=DeleteWarning}</h3>
+			</div>
+
+			<div class="admin-update-buttons">
+				<button type="button"
+						class="button save">{html_image src="cross-button.png"} {translate key='Delete'}</button>
+				<button type="button"
+						class="button cancel">{html_image src="slash.png"} {translate key='Cancel'}</button>
+			</div>
+		</form>
+	</div>
+
+	{jsfile src="ajax-helpers.js"}
+	{jsfile src="admin/resource-status.js"}
+	{jsfile src="js/jquery.form-3.09.min.js"}
+
+	<script type="text/javascript">
+
+		$(document).ready(function () {
+			var opts = {
+				submitUrl: '{$smarty.server.SCRIPT_NAME}',
+				saveRedirect: '{$smarty.server.SCRIPT_NAME}'
+			};
+
+			var resourceStatus = new ResourceStatusManagement(opts);
+			resourceStatus.init();
+		})
+
+	</script>
+
 </div>
-
-<div id="editDialog" class="dialog" style="display:none;" title="{translate key=Reason}">
-	<form id="editForm" method="post" ajaxAction="{ManageResourceStatusActions::Update}">
-
-		<input type="text" class="textbox" id="edit-reason-description" {formname key=RESOURCE_STATUS_REASON} />
-				<div class="admin-update-buttons">
-			<button type="button" class="button save">{html_image src="disk-black.png"} {translate key='Update'}</button>
-			<button type="button" class="button cancel">{html_image src="slash.png"} {translate key='Cancel'}</button>
-		</div>
-	</form>
-</div>
-
-<div id="deleteDialog" class="dialog" style="display:none;" title="{translate key=Reason}">
-	<form id="deleteForm" method="post" ajaxAction="{ManageResourceStatusActions::Delete}">
-		<div class="error" style="margin-bottom: 25px;">
-			<h3>{translate key=DeleteWarning}</h3>
-		</div>
-
-		<div class="admin-update-buttons">
-			<button type="button" class="button save">{html_image src="cross-button.png"} {translate key='Delete'}</button>
-			<button type="button" class="button cancel">{html_image src="slash.png"} {translate key='Cancel'}</button>
-		</div>
-	</form>
-</div>
-
-{html_image src="admin-ajax-indicator.gif" class="indicator" style="display:none;"}
-{jsfile src="ajax-helpers.js"}
-{jsfile src="admin/resource-status.js"}
-{jsfile src="js/jquery.form-3.09.min.js"}
-
-<script type="text/javascript">
-
-	$(document).ready(function ()
-	{
-		var opts = {
-			submitUrl: '{$smarty.server.SCRIPT_NAME}',
-			saveRedirect: '{$smarty.server.SCRIPT_NAME}'
-		};
-
-		var resourceStatus = new ResourceStatusManagement(opts);
-		resourceStatus.init();
-	})
-
-</script>
 
 {include file='globalfooter.tpl'}

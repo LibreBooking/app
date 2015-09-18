@@ -128,11 +128,11 @@ function ResourceTypeManagement(opts)
 		$('#editName').val(type.name);
 		$('#editDescription').val(type.description);
 
-		elements.editDialog.dialog("open");
+		elements.editDialog.modal("show");
 	};
 
 	var showDeletePrompt = function (e)
 	{
-		elements.deleteDialog.dialog("open");
+		elements.deleteDialog.modal("show");
 	};
 }
