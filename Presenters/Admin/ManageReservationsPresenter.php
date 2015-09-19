@@ -1,22 +1,22 @@
 <?php
 /**
-Copyright 2011-2015 Nick Korbel
-
-This file is part of Booked Scheduler.
-
-Booked Scheduler is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-Booked Scheduler is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ * Copyright 2011-2015 Nick Korbel
+ *
+ * This file is part of Booked Scheduler.
+ *
+ * Booked Scheduler is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Booked Scheduler is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 require_once(ROOT_DIR . 'Pages/Admin/ManageReservationsPage.php');
 require_once(ROOT_DIR . 'Domain/Access/namespace.php');
@@ -64,12 +64,12 @@ class ManageReservationsPresenter extends ActionPresenter
 	private $userPreferenceRepository;
 
 	public function __construct(
-		IManageReservationsPage $page,
-		IManageReservationsService $manageReservationsService,
-		IScheduleRepository $scheduleRepository,
-		IResourceRepository $resourceRepository,
-		IAttributeService $attributeService,
-		IUserPreferenceRepository $userPreferenceRepository)
+			IManageReservationsPage $page,
+			IManageReservationsService $manageReservationsService,
+			IScheduleRepository $scheduleRepository,
+			IResourceRepository $resourceRepository,
+			IAttributeService $attributeService,
+			IUserPreferenceRepository $userPreferenceRepository)
 	{
 		parent::__construct($page);
 
@@ -116,7 +116,7 @@ class ManageReservationsPresenter extends ActionPresenter
 		$resourceStatusId = $this->page->GetResourceStatusFilterId();
 		$resourceReasonId = $this->page->GetResourceStatusReasonFilterId();
 
-		if(!$this->page->FilterButtonPressed())
+		if (!$this->page->FilterButtonPressed())
 		{
 			// Get filter settings from db
 			$referenceNumber = $filterPreferences->GetFilterReferenceNumber();
@@ -263,10 +263,10 @@ class ManageReservationsPresenter extends ActionPresenter
 
 		Log::Debug('Updating resource status. ResourceId=%s, ReferenceNumber=%s, StatusId=%s, ReasonId=%s, UserId=%s',
 				   $resourceId,
-					$referenceNumber,
-					$statusId,
-					$reasonId,
-					$session->UserId);
+				   $referenceNumber,
+				   $statusId,
+				   $reasonId,
+				   $session->UserId);
 
 		$resourceIds = array();
 
@@ -276,7 +276,12 @@ class ManageReservationsPresenter extends ActionPresenter
 		}
 		else
 		{
-			$reservations = $this->manageReservationsService->LoadFiltered(null, null, new ReservationFilter(null, null, $referenceNumber, null, null, null, null), $session);
+			$reservations = $this->manageReservationsService->LoadFiltered(null, null, new ReservationFilter(null, null,
+																											 $referenceNumber,
+																											 null, null,
+																											 null,
+																											 null),
+																		   $session);
 			/** @var $reservation ReservationItemView */
 			foreach ($reservations->Results() as $reservation)
 			{
@@ -298,7 +303,8 @@ class ManageReservationsPresenter extends ActionPresenter
 		{
 			$referenceNumber = $this->page->GetReferenceNumber();
 
-			$rv = $this->manageReservationsService->LoadByReferenceNumber($referenceNumber, ServiceLocator::GetServer()->GetUserSession());
+			$rv = $this->manageReservationsService->LoadByReferenceNumber($referenceNumber,
+																		  ServiceLocator::GetServer()->GetUserSession());
 			$this->page->SetReservationJson($rv);
 		}
 	}
@@ -307,17 +313,33 @@ class ManageReservationsPresenter extends ActionPresenter
 	{
 		$userSession = ServiceLocator::GetServer()->GetUserSession();
 		$referenceNumber = $this->page->GetReferenceNumber();
-		$attributeId = $this->page->GetAttributeId();
-		$attributeValue = $this->page->GetAttributeValue();
+		$inlineAttribute = $this->GetInlineAttributeValue();
 
-		Log::Debug('Updating reservation attribute. UserId=%s, AttributeId=%s, AttributeValue=%s, ReferenceNumber=%s', $userSession->UserId, $attributeId, $attributeValue, $referenceNumber);
+		$attributeId = $inlineAttribute->AttributeId;
+		$attributeValue = $inlineAttribute->Value;
+		Log::Debug('Updating reservation attribute. UserId=%s, AttributeId=%s, AttributeValue=%s, ReferenceNumber=%s',
+				   $userSession->UserId, $attributeId, $attributeValue, $referenceNumber);
 
-		$errors = $this->manageReservationsService->UpdateAttribute($referenceNumber, $attributeId, $attributeValue, $userSession);
+		$errors = $this->manageReservationsService->UpdateAttribute($referenceNumber, $attributeId, $attributeValue,
+																	$userSession);
 		if (!empty($errors))
 		{
 			$this->page->BindAttributeUpdateErrors($errors);
 		}
 	}
+
+	private function GetInlineAttributeValue()
+	{
+		$value = $this->page->GetValue();
+		if (is_array($value))
+		{
+			$value = $value[0];
+		}
+		$id = str_replace(FormKeys::ATTRIBUTE_PREFIX, '', $this->page->GetName());
+
+		return new AttributeValue($id, $value);
+	}
+
 }
 
 class ReservationFilterPreferences
@@ -471,16 +493,16 @@ class ReservationFilterPreferences
 	}
 
 	static $filterKeys = array('FilterStartDateDelta' => -7,
-		'FilterEndDateDelta' => +7,
-		'FilterUserId' => '',
-		'FilterUserName' => '',
-		'FilterScheduleId' => '',
-		'FilterResourceId' => '',
-		'FilterReservationStatusId' => 0,
-		'FilterReferenceNumber' => '',
-		'FilterResourceStatusId' => '',
-		'FilterResourceReasonId' => '',
-		'FilterCustomAttributes' => '',
+			'FilterEndDateDelta' => +7,
+			'FilterUserId' => '',
+			'FilterUserName' => '',
+			'FilterScheduleId' => '',
+			'FilterResourceId' => '',
+			'FilterReservationStatusId' => 0,
+			'FilterReferenceNumber' => '',
+			'FilterResourceStatusId' => '',
+			'FilterResourceReasonId' => '',
+			'FilterCustomAttributes' => '',
 	);
 
 	/**

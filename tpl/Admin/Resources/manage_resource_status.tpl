@@ -38,7 +38,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 	<div class="panel panel-default resource-status-list" id="resource-status-list-available">
 		<div class="panel-heading">{translate key="Available"}
-			<a href="#"><span class="icon black show-hide glyphicon"></span></a>
+			{showhide_icon}
 			<a href="#" add-to="{ResourceStatus::AVAILABLE}" class="add-link pull-right">{translate key="Add"}
 				<span class="fa fa-plus-circle icon add"></span>
 			</a>
@@ -52,7 +52,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 	<div class="panel panel-default resource-status-list" id="resource-status-list-unavailable">
 		<div class="panel-heading">{translate key="Unavailable"}
-			<a href="#"><span class="icon black show-hide glyphicon"></span></a>
+			{showhide_icon}
 			<a href="#" add-to="{ResourceStatus::UNAVAILABLE}" class="add-link pull-right">{translate key="Add"}
 				<span class="fa fa-plus-circle icon add"></span>
 			</a>
@@ -66,7 +66,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 	<div class="panel panel-default resource-status-list" id="resource-status-list-hidden">
 		<div class="panel-heading">{translate key="Hidden"}
-			<a href="#"><span class="icon black show-hide glyphicon"></span></a>
+			{showhide_icon}
 			<a href="#" add-to="{ResourceStatus::HIDDEN}" class="add-link pull-right">{translate key="Add"}
 				<span class="fa fa-plus-circle icon add"></span>
 			</a>
@@ -162,21 +162,6 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		</div>
 	</div>
 
-	<div id="deleteDialog" class="dialog" style="display:none;" title="{translate key=Reason}">
-		<form id="deleteForm" method="post" ajaxAction="{ManageResourceStatusActions::Delete}">
-			<div class="error" style="margin-bottom: 25px;">
-				<h3>{translate key=DeleteWarning}</h3>
-			</div>
-
-			<div class="admin-update-buttons">
-				<button type="button"
-						class="button save">{html_image src="cross-button.png"} {translate key='Delete'}</button>
-				<button type="button"
-						class="button cancel">{html_image src="slash.png"} {translate key='Cancel'}</button>
-			</div>
-		</form>
-	</div>
-
 	{jsfile src="ajax-helpers.js"}
 	{jsfile src="admin/resource-status.js"}
 	{jsfile src="js/jquery.form-3.09.min.js"}
@@ -191,6 +176,10 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 			var resourceStatus = new ResourceStatusManagement(opts);
 			resourceStatus.init();
+
+			$('#resource-status-list-available').showHidePanel();
+			$('#resource-status-list-unavailable').showHidePanel();
+			$('#resource-status-list-hidden').showHidePanel();
 		})
 
 	</script>

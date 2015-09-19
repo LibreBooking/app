@@ -1,5 +1,4 @@
-function ResourceTypeManagement(opts)
-{
+function ResourceTypeManagement(opts) {
 	var options = opts;
 
 	var elements = {
@@ -18,17 +17,14 @@ function ResourceTypeManagement(opts)
 
 	var types = {};
 
-	ResourceTypeManagement.prototype.init = function ()
-	{
+	ResourceTypeManagement.prototype.init = function () {
 
-		$('.changeAttribute').click(function (e)
-		{
+		$('.changeAttribute').click(function (e) {
 			e.stopPropagation();
 			$(e.target).closest('.updateCustomAttribute').find('.inlineAttribute').editable('toggle');
 		});
 
-		elements.resourceTypes.delegate('a.update', 'click', function (e)
-		{
+		elements.resourceTypes.delegate('a.update', 'click', function (e) {
 			var id = $(this).siblings(':hidden.id').val();
 			setActiveId(id);
 
@@ -36,24 +32,20 @@ function ResourceTypeManagement(opts)
 			e.stopPropagation();
 		});
 
-		elements.resourceTypes.delegate('a.edit', 'click', function (e)
-		{
+		elements.resourceTypes.delegate('a.edit', 'click', function (e) {
 			showEdit(e);
 		});
 
-		elements.resourceTypes.delegate('a.delete', 'click', function (e)
-		{
+		elements.resourceTypes.delegate('a.delete', 'click', function (e) {
 			showDeletePrompt(e);
 		});
 
-		elements.resourceTypes.delegate('.changeAttributes', 'click', function (e)
-		{
+		elements.resourceTypes.delegate('.changeAttributes', 'click', function (e) {
 			var id = $(this).attr('resourceTypeId');
 			setActiveId(id);
 		});
 
-		elements.resourceTypes.delegate('.changeAttributes, .customAttributes .cancel', 'click', function (e)
-		{
+		elements.resourceTypes.delegate('.changeAttributes, .customAttributes .cancel', 'click', function (e) {
 			var id = getActiveId();
 			var otherUsers = $(".customAttributes[resourceTypeId!='" + id + "']");
 			otherUsers.find('.attribute-readwrite, .validationSummary').hide();
@@ -64,18 +56,15 @@ function ResourceTypeManagement(opts)
 			container.find('.validationSummary').hide();
 		});
 
-		$(".save").click(function ()
-		{
+		$(".save").click(function () {
 			$(this).closest('form').submit();
 		});
 
-		$(".cancel").click(function ()
-		{
+		$(".cancel").click(function () {
 			$(this).closest('.dialog').dialog("close");
 		});
 
-		var attributesHandler = function (responseText, form)
-		{
+		var attributesHandler = function (responseText, form) {
 			if (responseText.ErrorIds && responseText.Messages.attributeValidator)
 			{
 				var messages = responseText.Messages.attributeValidator.join('</li><li>');
@@ -86,8 +75,7 @@ function ResourceTypeManagement(opts)
 			}
 		};
 
-		var errorHandler = function (result)
-		{
+		var errorHandler = function (result) {
 			$("#globalError").html(result).show();
 		};
 
@@ -95,34 +83,28 @@ function ResourceTypeManagement(opts)
 		ConfigureAsyncForm(elements.deleteForm, getSubmitCallback, null, errorHandler);
 		ConfigureAsyncForm(elements.addForm, getSubmitCallback, null, errorHandler);
 
-		$.each(elements.attributeForm, function (i, form)
-		{
+		$.each(elements.attributeForm, function (i, form) {
 			ConfigureAsyncForm($(form), getSubmitCallback, null, attributesHandler, {validationSummary: null});
 		});
 	};
 
-	ResourceTypeManagement.prototype.add = function (resourceType)
-	{
+	ResourceTypeManagement.prototype.add = function (resourceType) {
 		types[resourceType.id] = resourceType;
 	};
 
-	var getSubmitCallback = function (form)
-	{
+	var getSubmitCallback = function (form) {
 		return options.submitUrl + "?rtid=" + getActiveId() + "&action=" + form.attr('ajaxAction');
 	};
 
-	var setActiveId = function (id)
-	{
+	var setActiveId = function (id) {
 		elements.activeId.val(id);
 	};
 
-	var getActiveId = function ()
-	{
+	var getActiveId = function () {
 		return elements.activeId.val();
 	};
 
-	var showEdit = function (e)
-	{
+	var showEdit = function (e) {
 		var type = types[getActiveId()];
 
 		$('#editName').val(type.name);
@@ -131,8 +113,7 @@ function ResourceTypeManagement(opts)
 		elements.editDialog.modal("show");
 	};
 
-	var showDeletePrompt = function (e)
-	{
+	var showDeletePrompt = function (e) {
 		elements.deleteDialog.modal("show");
 	};
 }

@@ -17,7 +17,7 @@ You should have received a copy of the GNU General Public License
 along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 *}
 
-{include file='globalheader.tpl' Qtip=true}
+{include file='globalheader.tpl' Qtip=true InlineEdit=true}
 
 <div id="page-manage-reservations" class="admin-page">
 	<h1>{translate key=ManageReservations}</h1>
@@ -28,14 +28,17 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			{assign var=groupClass value="col-xs-12 col-sm-4 col-md-3"}
 			<form id="filterForm" class="form-inline" role="form">
 				<div class="form-group filter-dates {$groupClass}">
-					<input id="startDate" type="text" class="form-control dateinput inline" value="{formatdate date=$StartDate}"/>
+					<input id="startDate" type="text" class="form-control dateinput inline"
+						   value="{formatdate date=$StartDate}"/>
 					<input id="formattedStartDate" type="hidden" value="{formatdate date=$StartDate key=system}"/>
 					-
-					<input id="endDate" type="text" class="form-control dateinput inline" value="{formatdate date=$EndDate}"/>
+					<input id="endDate" type="text" class="form-control dateinput inline"
+						   value="{formatdate date=$EndDate}"/>
 					<input id="formattedEndDate" type="hidden" value="{formatdate date=$EndDate key=system}"/>
 				</div>
 				<div class="form-group filter-user {$groupClass}">
-					<input id="userFilter" type="text" class="form-control" value="{$UserNameFilter}" placeholder="{translate key=User}"/>
+					<input id="userFilter" type="text" class="form-control" value="{$UserNameFilter}"
+						   placeholder="{translate key=User}"/>
 					<input id="userId" type="hidden" value="{$UserIdFilter}"/>
 				</div>
 				<div class="form-group filter-schedule {$groupClass}">
@@ -58,7 +61,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 					</select>
 				</div>
 				<div class="form-group filter-referenceNumber {$groupClass}">
-					<input id="referenceNumber" type="text" class="form-control" value="{$ReferenceNumber}" placeholder="{translate key=ReferenceNumber}"/>
+					<input id="referenceNumber" type="text" class="form-control" value="{$ReferenceNumber}"
+						   placeholder="{translate key=ReferenceNumber}"/>
 				</div>
 				<div class="form-group filter-resourceStatus {$groupClass}">
 					<select id="resourceStatusIdFilter" class="form-control">
@@ -78,11 +82,12 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			</form>
 		</div>
 		<div class="panel-footer">
-			<button id="filter" class="btn btn-primary btn-sm"><span class="glyphicon glyphicon-search"></span> {translate key=Filter}</button>
+			<button id="filter" class="btn btn-primary btn-sm"><span
+						class="glyphicon glyphicon-search"></span> {translate key=Filter}</button>
 			<button id="clearFilter" class="btn btn-link btn-sm">{translate key=Reset}</button>
 		</div>
 	</div>
-</div>
+
 
 <table class="table" id="reservationTable">
 	<thead>
@@ -108,23 +113,24 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		{if $reservation->RequiresApproval}
 			{assign var=rowCss value='pending'}
 		{/if}
-		<tr class="{$rowCss} editable" data-seriesId="{$reservation->SeriesId}" data-refnum="{$reservation->ReferenceNumber}">
+		<tr class="{$rowCss} editable" data-seriesId="{$reservation->SeriesId}"
+			data-refnum="{$reservation->ReferenceNumber}">
 			<td class="id hidden">{$reservation->ReservationId}</td>
 			<td class="user">{fullname first=$reservation->FirstName last=$reservation->LastName ignorePrivacy=true}</td>
 			<td class="resource">{$reservation->ResourceName}
 				{if $reservation->ResourceStatusId == ResourceStatus::AVAILABLE}
-						{html_image src="status.png"}
-						{*{translate key='Available'}*}
-					{elseif $reservation->ResourceStatusId == ResourceStatus::UNAVAILABLE}
-						{html_image src="status-away.png"}
-						{*{translate key='Unavailable'}*}
-					{else}
-						{html_image src="status-busy.png"}
-						{*{translate key='Hidden'}*}
-					{/if}
-					{*{if array_key_exists($reservation->ResourceStatusReasonId,$StatusReasons)}*}
-						{*<span class="reservationResourceStatusReason">{$StatusReasons[$reservation->ResourceStatusReasonId]->Description()}</span>*}
-					{*{/if}*}
+					{html_image src="status.png"}
+					{*{translate key='Available'}*}
+				{elseif $reservation->ResourceStatusId == ResourceStatus::UNAVAILABLE}
+					{html_image src="status-away.png"}
+					{*{translate key='Unavailable'}*}
+				{else}
+					{html_image src="status-busy.png"}
+					{*{translate key='Hidden'}*}
+				{/if}
+				{*{if array_key_exists($reservation->ResourceStatusReasonId,$StatusReasons)}*}
+				{*<span class="reservationResourceStatusReason">{$StatusReasons[$reservation->ResourceStatusReasonId]->Description()}</span>*}
+				{*{/if}*}
 			</td>
 			<td class="title">{$reservation->Title}</td>
 			<td class="description">{$reservation->Description}</td>
@@ -134,7 +140,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			<td class="date">{formatdate date=$reservation->CreatedDate timezone=$Timezone key=short_datetime}</td>
 			<td class="date">{formatdate date=$reservation->ModifiedDate timezone=$Timezone key=short_datetime}</td>
 			<td class="referenceNumber">{$reservation->ReferenceNumber}</td>
-			<td class="action"><a href="#" class="update delete"><span class="fa fa-trash icon remove fa-1x"></span></a></td>
+			<td class="action"><a href="#" class="update delete"><span class="fa fa-trash icon remove fa-1x"></span></a>
+			</td>
 			<td class="action">
 				{if $reservation->RequiresApproval}
 					<a href="#" class="update approve"><span class="fa fa-check icon add"></span></a>
@@ -143,33 +150,47 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 				{/if}
 			</td>
 		</tr>
-		{if $ReservationAttributes|count > 0}
-			<tr class="{$rowCss} customAttributeUpdate" data-seriesId="{$reservation->SeriesId}" data-refnum="{$reservation->ReferenceNumber}">
-				<td colspan="13" class="horizontal-list">
-					<ul>
+			{if $ReservationAttributes|count > 0}
+				<tr class="{$rowCss}">
+					<td colspan="13">
 						{foreach from=$ReservationAttributes item=attribute}
-							<li class="update inlineUpdate updateCustomAttribute" attributeId="{$attribute->Id()}" attributeType="{$attribute->Type()}">
-								<span class="glyphicon glyphicon-pencil"></span> <label>{$attribute->Label()}:</label>
-								<span class="attributeValue">
-								{read_only_attribute value=$reservation->Attributes->Get($attribute->Id()) attribute=$attribute}
-								</span>
-							</li>
+							{include file='Admin/InlineAttributeEdit.tpl' id=$reservation->ReferenceNumber attribute=$attribute value=$reservation->Attributes->Get($attribute->Id())}
 						{/foreach}
-					</ul>
-				</td>
-			</tr>
-		{/if}
+					</td>
+				</tr>
+			{/if}
+		{*{if $ReservationAttributes|count > 0}*}
+			{**}
+			{*<tr class="{$rowCss} customAttributeUpdate" data-seriesId="{$reservation->SeriesId}"*}
+				{*data-refnum="{$reservation->ReferenceNumber}">*}
+				{*<td colspan="13" class="horizontal-list">*}
+					{*<ul>*}
+						{*{foreach from=$ReservationAttributes item=attribute}*}
+							{*<li class="update inlineUpdate updateCustomAttribute" attributeId="{$attribute->Id()}"*}
+								{*attributeType="{$attribute->Type()}">*}
+								{*<span class="glyphicon glyphicon-pencil"></span> <label>{$attribute->Label()}:</label>*}
+								{*<span class="attributeValue">*}
+								{*{read_only_attribute value=$reservation->Attributes->Get($attribute->Id()) attribute=$attribute}*}
+								{*</span>*}
+							{*</li>*}
+						{*{/foreach}*}
+					{*</ul>*}
+				{*</td>*}
+			{*</tr>*}
+		{*{/if}*}
 	{/foreach}
 	</tbody>
 </table>
 
 <div id="csvExport">
-	<a href="{$CsvExportUrl}" download="{$CsvExportUrl}" class="btn btn-default btn-sm">{translate key=ExportToCSV} <span
+	<a href="{$CsvExportUrl}" download="{$CsvExportUrl}" class="btn btn-default btn-sm">{translate key=ExportToCSV}
+		<span
 				class="glyphicon glyphicon-export"></span></a>
 </div>
 {pagination pageInfo=$PageInfo}
 
-<div class="modal fade" id="deleteInstanceDialog" tabindex="-1" role="dialog" aria-labelledby="deleteInstanceDialogLabel" aria-hidden="true">
+<div class="modal fade" id="deleteInstanceDialog" tabindex="-1" role="dialog"
+	 aria-labelledby="deleteInstanceDialogLabel" aria-hidden="true">
 	<div class="modal-dialog">
 		<form id="deleteInstanceForm" method="post">
 			<div class="modal-content">
@@ -187,15 +208,17 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 					<input type="hidden" {formname key=REFERENCE_NUMBER} value="" class="referenceNumber"/>
 				</div>
 				<div class="modal-footer">
-					<button type="button" class="btn btn-default cancel" data-dismiss="modal">{translate key='Cancel'}</button>
-					<button type="button" class="btn btn-danger save">{translate key='Delete'}</button>
+					{cancel_button}
+					{delete_button}
+					{indicator}
 				</div>
 			</div>
 		</form>
 	</div>
 </div>
 
-<div class="modal fade" id="deleteSeriesDialog" tabindex="-1" role="dialog" aria-labelledby="deleteSeriesDialogLabel" aria-hidden="true">
+<div class="modal fade" id="deleteSeriesDialog" tabindex="-1" role="dialog" aria-labelledby="deleteSeriesDialogLabel"
+	 aria-hidden="true">
 	<div class="modal-dialog">
 		<form id="deleteSeriesForm" method="post">
 			<div class="modal-content">
@@ -211,7 +234,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 					<input type="hidden" {formname key=REFERENCE_NUMBER} value="" class="referenceNumber"/>
 				</div>
 				<div class="modal-footer">
-					<button type="button" class="btn btn-default cancel" data-dismiss="modal">{translate key='Cancel'}</button>
+					<button type="button" class="btn btn-default cancel"
+							data-dismiss="modal">{translate key='Cancel'}</button>
 
 					<button type="button" class="btn btn-danger saveSeries btnUpdateThisInstance">
 						{translate key='ThisInstance'}
@@ -228,7 +252,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 	</div>
 </div>
 
-<div id="inlineUpdateErrorDialog" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="inlineErrorLabel" aria-hidden="true">
+<div id="inlineUpdateErrorDialog" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="inlineErrorLabel"
+	 aria-hidden="true">
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header">
@@ -246,26 +271,26 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 	</div>
 </div>
 
-<div class="hidden">
-	{foreach from=$AttributeFilters item=attribute}
-		<div class="attributeTemplate" attributeId="{$attribute->Id()}">
-			{control type="AttributeControl" attribute=$attribute}
-			<div class="inlineUpdateCancelButtons">
-				<div>
-					<a href="#" class="confirmCellUpdate">{html_image src="tick-white.png"}</a>
-					<a href="#" class="cancelCellUpdate">{html_image src="cross-white.png"}</a>
-				</div>
-			</div>
-		</div>
-	{/foreach}
+{*<div class="hidden">*}
+	{*{foreach from=$AttributeFilters item=attribute}*}
+		{*<div class="attributeTemplate" attributeId="{$attribute->Id()}">*}
+			{*{control type="AttributeControl" attribute=$attribute}*}
+			{*<div class="inlineUpdateCancelButtons">*}
+				{*<div>*}
+					{*<a href="#" class="confirmCellUpdate">{html_image src="tick-white.png"}</a>*}
+					{*<a href="#" class="cancelCellUpdate">{html_image src="cross-white.png"}</a>*}
+				{*</div>*}
+			{*</div>*}
+		{*</div>*}
+	{*{/foreach}*}
 
-	<form id="attributeUpdateForm" method="POST" ajaxAction="{ManageReservationsActions::UpdateAttribute}">
-		<input type="hidden" id="attributeUpdateId" {formname key=ATTRIBUTE_ID} />
-		<input type="hidden" id="attributeUpdateValue" {formname key=ATTRIBUTE_VALUE} />
-	</form>
-</div>
+	{*<form id="attributeUpdateForm" method="POST" ajaxAction="{ManageReservationsActions::UpdateAttribute}">*}
+		{*<input type="hidden" id="attributeUpdateId" {formname key=ATTRIBUTE_ID} />*}
+		{*<input type="hidden" id="attributeUpdateValue" {formname key=ATTRIBUTE_VALUE} />*}
+	{*</form>*}
+{*</div>*}
 
-{html_image src="admin-ajax-indicator.gif" class="indicator" style="display:none;"}
+{*{html_image src="admin-ajax-indicator.gif" class="indicator" style="display:none;"}*}
 
 {jsfile src="ajax-helpers.js"}
 {jsfile src="admin/reservations.js"}
@@ -276,8 +301,57 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 <script type="text/javascript">
 
-	$(document).ready(function ()
-	{
+	function hidePopoversWhenClickAway() {
+		$('body').on('click', function (e) {
+			$('[rel="popover"]').each(function () {
+				if (!$(this).is(e.target) && $(this).has(e.target).length === 0 && $('.popover').has(e.target).length === 0)
+				{
+					$(this).popover('hide');
+				}
+			});
+		});
+	}
+
+	function setUpPopovers() {
+		$('[rel="popover"]').popover({
+			container: 'body',
+			html: true,
+			placement: 'top',
+			content: function () {
+				var popoverId = $(this).data('popover-content');
+				return $(popoverId).html();
+			}
+		}).click(function (e) {
+			e.preventDefault();
+		}).on('show.bs.popover', function () {
+
+		}).on('shown.bs.popover', function () {
+			var trigger = $(this);
+			var popover = trigger.data('bs.popover').tip();
+			popover.find('.editable-cancel').click(function () {
+				trigger.popover('hide');
+			});
+		});
+	}
+
+	function setUpEditables() {
+		$.fn.editable.defaults.mode = 'popup';
+		$.fn.editable.defaults.toggle = 'manual';
+		$.fn.editable.defaults.emptyclass = '';
+
+		var updateUrl = '{$smarty.server.SCRIPT_NAME}?action=';
+
+		$('.inlineAttribute').editable({
+			url: updateUrl + '{ManageReservationsActions::UpdateAttribute}',
+			emptytext: '-'
+		});
+	}
+
+	$(document).ready(function () {
+
+		setUpPopovers();
+		hidePopoversWhenClickAway();
+		setUpEditables();
 
 		var updateScope = {};
 		updateScope['btnUpdateThisInstance'] = '{SeriesUpdateScope::ThisInstance}';
@@ -337,4 +411,5 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 </div>
 
 </div>
+
 {include file='globalfooter.tpl'}

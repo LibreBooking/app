@@ -53,8 +53,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 	</div>
 
 	<div class="panel panel-default filterTable" id="filterTable">
-		<div class="panel-heading"><span class="glyphicon glyphicon-filter"></span> {translate key="Filter"} <a href=""><span
-						class="icon black show-hide glyphicon"></span></a>
+		<div class="panel-heading"><span
+					class="glyphicon glyphicon-filter"></span> {translate key="Filter"} {showhide_icon}
 		</div>
 		<div class="panel-body">
 			<form id="filterForm" class="horizontal-list form-inline" role="form">
@@ -408,11 +408,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 						</div>
 					</div>
 					<div class="modal-footer">
-						<button type="button" class="btn btn-default"
-								data-dismiss="modal">{translate key='Cancel'}</button>
-						<button type="button" class="btn btn-success save"><span
-									class="glyphicon glyphicon-ok-circle"></span>
-							{translate key='AddResource'}</button>
+						{cancel_button}
+						{add_button}
 						{indicator}
 					</div>
 				</div>
@@ -440,11 +437,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 					</div>
 
 					<div class="modal-footer">
-						<button type="button" class="btn btn-default"
-								data-dismiss="modal">{translate key='Cancel'}</button>
-						<button type="button" class="btn btn-success save"><span
-									class="glyphicon glyphicon-ok-circle"></span>
-							{translate key='Update'}</button>
+						{cancel_button}
+						{update_button}
 						{indicator}
 					</div>
 				</div>
@@ -540,11 +534,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 					</div>
 
 					<div class="modal-footer">
-						<button type="button" class="btn btn-default"
-								data-dismiss="modal">{translate key='Cancel'}</button>
-						<button type="button" class="btn btn-success save"><span
-									class="glyphicon glyphicon-ok-circle"></span>
-							{translate key='Update'}</button>
+						{cancel_button}
+						{update_button}
 						{indicator}
 					</div>
 				</div>
@@ -579,11 +570,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 					</div>
 
 					<div class="modal-footer">
-						<button type="button" class="btn btn-default"
-								data-dismiss="modal">{translate key='Cancel'}</button>
-						<button type="button" class="btn btn-success save"><span
-									class="glyphicon glyphicon-ok-circle"></span>
-							{translate key='Update'}</button>
+						{cancel_button}
+						{update_button}
 						{indicator}
 					</div>
 				</div>
@@ -656,11 +644,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 					</div>
 
 					<div class="modal-footer">
-						<button type="button" class="btn btn-default"
-								data-dismiss="modal">{translate key='Cancel'}</button>
-						<button type="button" class="btn btn-success save"><span
-									class="glyphicon glyphicon-ok-circle"></span>
-							{translate key='Update'}</button>
+						{cancel_button}
+						{update_button}
 						{indicator}
 					</div>
 				</div>
@@ -731,9 +716,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 						</div>
 					</div>
 					<div class="modal-footer">
-						<button type="button" class="btn btn-default cancel"
-								data-dismiss="modal">{translate key='Cancel'}</button>
-						<button type="button" class="btn btn-danger save">{translate key='Delete'}</button>
+						{cancel_button}
+						{delete_button}
 						{indicator}
 					</div>
 				</div>
@@ -1003,8 +987,9 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 						</div>
 					</div>
 					<div class="modal-footer">
-						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-						<button type="button" class="btn btn-primary save">Save changes</button>
+						{cancel_button}
+						{update_button}
+						{indicator}
 					</div>
 				</div>
 			</div>
@@ -1110,12 +1095,9 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 	<script type="text/javascript">
 
-		function hidePopoversWhenClickAway()
-		{
-			$('body').on('click', function (e)
-			{
-				$('[rel="popover"]').each(function ()
-				{
+		function hidePopoversWhenClickAway() {
+			$('body').on('click', function (e) {
+				$('[rel="popover"]').each(function () {
 					if (!$(this).is(e.target) && $(this).has(e.target).length === 0 && $('.popover').has(e.target).length === 0)
 					{
 						$(this).popover('hide');
@@ -1124,36 +1106,29 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			});
 		}
 
-		function setUpPopovers()
-		{
+		function setUpPopovers() {
 			$('[rel="popover"]').popover({
 				container: 'body',
 				html: true,
 				placement: 'top',
-				content: function ()
-				{
+				content: function () {
 					var popoverId = $(this).data('popover-content');
 					return $(popoverId).html();
 				}
-			}).click(function (e)
-			{
+			}).click(function (e) {
 				e.preventDefault();
-			}).on('show.bs.popover', function ()
-			{
+			}).on('show.bs.popover', function () {
 
-			}).on('shown.bs.popover', function ()
-			{
+			}).on('shown.bs.popover', function () {
 				var trigger = $(this);
 				var popover = trigger.data('bs.popover').tip();
-				popover.find('.editable-cancel').click(function ()
-				{
+				popover.find('.editable-cancel').click(function () {
 					trigger.popover('hide');
 				});
 			});
 		}
 
-		function setUpEditables()
-		{
+		function setUpEditables() {
 			$.fn.editable.defaults.mode = 'popup';
 			$.fn.editable.defaults.toggle = 'manual';
 			$.fn.editable.defaults.emptyclass = '';
@@ -1162,8 +1137,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 			$('.resourceName').editable({
 				url: updateUrl + '{ManageResourcesActions::ActionRename}',
-				validate: function (value)
-				{
+				validate: function (value) {
 					if ($.trim(value) == '')
 					{
 						return '{translate key=RequiredValue}';
@@ -1246,8 +1220,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 		}
 
-		$(document).ready(function ()
-		{
+		$(document).ready(function () {
 			setUpPopovers();
 			hidePopoversWhenClickAway();
 			setUpEditables();

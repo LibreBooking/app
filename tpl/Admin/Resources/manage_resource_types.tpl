@@ -26,8 +26,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 	<form id="addForm" ajaxAction="{ManageResourceTypesActions::Add}" class="form-inline" role="form" method="post">
 		<div class="panel panel-default" id="add-resource-type-panel">
-			<div class="panel-heading">{translate key="AddResourceType"} <a href="#"><span
-							class="icon black show-hide glyphicon"></span></a></div>
+			<div class="panel-heading">{translate key="AddResourceType"} {showhide_icon}</div>
 			<div class="panel-body add-contents">
 				<div id="addResults" class="error no-show"></div>
 				<div class="form-group has-feedback">
@@ -198,7 +197,6 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 				url: updateUrl + '{ManageResourceTypesActions::ChangeAttribute}',
 				emptytext: '-'
 			});
-
 		}
 
 		$(document).ready(function () {
