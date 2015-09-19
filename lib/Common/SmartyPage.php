@@ -792,32 +792,37 @@ class SmartyPage extends Smarty
 
 	public function CancelButton($params, &$smarty)
 	{
+		$key = isset($params['key']) ? $params['key'] : 'Cancel';
 		$class = isset($params['class']) ? $params['class'] : '';
-		echo '<button type="button" class="btn btn-default cancel ' . $class . '" data-dismiss="modal">' . Resources::GetInstance()->GetString('Cancel') . '</button>';
+		echo '<button type="button" class="btn btn-default cancel ' . $class . '" data-dismiss="modal">' . Resources::GetInstance()->GetString($key) . '</button>';
 	}
 
 	public function UpdateButton($params, &$smarty)
 	{
+		$key = isset($params['key']) ? $params['key'] : 'Update';
 		$class = isset($params['class']) ? $params['class'] : '';
-		echo '<button type="button" class="btn btn-success save ' . $class . '"><span class="glyphicon glyphicon-ok-circle"></span> ' . Resources::GetInstance()->GetString('Update') . '</span></button>';
+		echo '<button type="button" class="btn btn-success save ' . $class . '"><span class="glyphicon glyphicon-ok-circle"></span> ' . Resources::GetInstance()->GetString($key) . '</span></button>';
 	}
 
 	public function AddButton($params, &$smarty)
 	{
+		$key = isset($params['key']) ? $params['key'] : 'Add';
 		$class = isset($params['class']) ? $params['class'] : '';
-		echo '<button type="button" class="btn btn-success save ' . $class . '"><span class="glyphicon glyphicon-ok-circle"></span> ' . Resources::GetInstance()->GetString('Add') . '</span></button>';
+		echo '<button type="button" class="btn btn-success save ' . $class . '"><span class="glyphicon glyphicon-ok-circle"></span> ' . Resources::GetInstance()->GetString($key) . '</span></button>';
 	}
 
 	public function DeleteButton($params, &$smarty)
 	{
+		$key = isset($params['key']) ? $params['key'] : 'Delete';
 		$class = isset($params['class']) ? $params['class'] : '';
-		echo '<button type="button" class="btn btn-danger save ' . $class . '">' . Resources::GetInstance()->GetString('Delete') . '</button>';
+		echo '<button type="button" class="btn btn-danger save ' . $class . '">' . Resources::GetInstance()->GetString($key) . '</button>';
 	}
 
 	public function ResetButton($params, &$smarty)
 	{
+		$key = isset($params['key']) ? $params['key'] : 'Reset';
 		$class = isset($params['class']) ? $params['class'] : '';
-		echo '<button type="reset" class="btn btn-default ' . $class . '">' . Resources::GetInstance()->GetString('Reset') . '</button>';
+		echo '<button type="reset" class="btn btn-default ' . $class . '">' . Resources::GetInstance()->GetString($key) . '</button>';
 	}
 
 	public function ShowHideIcon($params, &$smarty)

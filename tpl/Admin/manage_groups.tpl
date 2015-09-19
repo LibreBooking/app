@@ -23,7 +23,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 	<form id="addGroupForm" class="form-inline" role="form" method="post">
 		<div class="panel panel-default" id="add-group-panel">
-			<div class="panel-heading">{translate key="AddGroup"} <a href="#"><span class="icon black show-hide glyphicon"></span></a></div>
+			<div class="panel-heading">{translate key="AddGroup"} {showhide_icon}></div>
 			<div class="panel-body add-contents">
 				<div id="addGroupResults" class="error" style="display:none;"></div>
 				<div class="form-group has-feedback">
@@ -33,12 +33,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 				</div>
 			</div>
 			<div class="panel-footer">
-				<button type="button" class="btn btn-success btn-sm save create">
-					<span class="glyphicon glyphicon-ok-circle"></span>
-					{translate key='Create'}
-				</button>
-
-				<button type="reset" class="btn btn-default btn-sm">{translate key=Reset}</button>
+				{add_button class="btn-sm"}
+				{reset_button class="btn-sm"}
 				{indicator}
 			</div>
 		</div>
@@ -140,8 +136,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 							{/foreach}
 						</div>
 						<div class="modal-footer">
-							<button type="button" class="btn btn-default cancel" data-dismiss="modal">{translate key='Cancel'}</button>
-							<button type="button" class="btn btn-success save"><span class="glyphicon glyphicon-ok-circle"></span>{translate key='Update'}</button>
+							{cancel_button}
+							{update_button}
 							{indicator}
 						</div>
 					</div>
@@ -172,8 +168,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 						</div>
 					</div>
 					<div class="modal-footer">
-						<button type="button" class="btn btn-default cancel" data-dismiss="modal">{translate key='Cancel'}</button>
-						<button type="button" class="btn btn-danger save">{translate key='Delete'}</button>
+						{cancel_button}
+						{delete_button}
 						{indicator}
 					</div>
 				</div>
@@ -197,8 +193,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 						</div>
 					</div>
 					<div class="modal-footer">
-						<button type="button" class="btn btn-default cancel" data-dismiss="modal">{translate key='Cancel'}</button>
-						<button type="button" class="btn btn-success save"><span class="glyphicon glyphicon-ok-circle"></span>{translate key='Update'}</button>
+						{cancel_button}
+						{update_button}
 						{indicator}
 					</div>
 				</div>
@@ -224,8 +220,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 							{/foreach}
 						</div>
 						<div class="modal-footer">
-							<button type="button" class="btn btn-default cancel" data-dismiss="modal">{translate key='Cancel'}</button>
-							<button type="button" class="btn btn-success save"><span class="glyphicon glyphicon-ok-circle"></span>{translate key='Update'}</button>
+							{cancel_button}
+							{update_button}
 							{indicator}
 						</div>
 					</div>
@@ -254,16 +250,14 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 						</div>
 					</div>
 					<div class="modal-footer">
-						<button type="button" class="btn btn-default cancel" data-dismiss="modal">{translate key='Cancel'}</button>
-						<button type="button" class="btn btn-success save"><span class="glyphicon glyphicon-ok-circle"></span>{translate key='Update'}</button>
+						{cancel_button}
+						{update_button}
 						{indicator}
 					</div>
 				</div>
 			</form>
 		</div>
 	</div>
-
-	{html_image src="admin-ajax-indicator.gif" class="indicator" style="display:none;"}
 
 	{jsfile src="ajax-helpers.js"}
 	{jsfile src="autocomplete.js"}

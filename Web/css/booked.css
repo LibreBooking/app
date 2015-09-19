@@ -1357,6 +1357,7 @@ table.list,
 }
 tr.pending {
   background-color: #ffb540;
+  background-color: #fffa5f;
 }
 #cboxClose {
   display: none !important;

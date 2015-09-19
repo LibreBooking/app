@@ -134,39 +134,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 				<tr data-userId="{$id}">
 					<td colspan="{if $PerUserColors}11{else}10{/if}" class="{$rowCss} customAttributes" userId="{$id}">
 						{foreach from=$AttributeList item=attribute}
-
-							{if $attribute->AppliesToEntity($id)}
-								<div class="updateCustomAttribute">
-									{assign var=datatype value='text'}
-									{if $attribute->Type() == CustomAttributeTypes::CHECKBOX}
-										{assign var=datatype value='checklist'}
-									{elseif $attribute->Type() == CustomAttributeTypes::MULTI_LINE_TEXTBOX}
-										{assign var=datatype value='textarea'}
-									{elseif $attribute->Type() == CustomAttributeTypes::SELECT_LIST}
-										{assign var=datatype value='select'}
-									{/if}
-									<label>{$attribute->Label()}</label>
-										<span class="inlineAttribute"
-											  data-type="{$datatype}"
-											  data-pk="{$id}"
-											  data-value="{$user->GetAttributeValue($attribute->Id())}"
-											  data-name="{FormKeys::ATTRIBUTE_PREFIX}{$attribute->Id()}"
-												{if $attribute->Type() == CustomAttributeTypes::SELECT_LIST}
-													data-source='[{if !$attribute->Required()}{ldelim}value:"",text:""{rdelim},{/if}
-												  {foreach from=$attribute->PossibleValueList() item=v name=vals}
-														{ldelim}value:"{$v}",text:"{$v}"{rdelim}{if not $smarty.foreach.vals.last},{/if}
-													{/foreach}]'
-												{/if}
-												{if $attribute->Type() == CustomAttributeTypes::CHECKBOX}
-													data-source='[{ldelim}value:"1",text:"{translate key=Yes}"{rdelim}]'
-												{/if}
-												>
-										</span>
-									<a class="update changeAttribute" href="#"><span
-												class="fa fa-pencil-square-o"></span></a>
-								</div>
-							{/if}
-
+							{include file='Admin/InlineAttributeEdit.tpl' id=$id attribute=$attribute value=$user->GetAttributeValue($attribute->Id())}
 						{/foreach}
 					</td>
 				</tr>
@@ -289,12 +257,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 						{/if}
 					</div>
 					<div class="modal-footer">
-						<button type="button" class="btn btn-default"
-								data-dismiss="modal">{translate key='Cancel'}</button>
-						<button type="button" class="btn btn-success save">
-							<span class="glyphicon glyphicon-ok-circle"></span>
-							{translate key='AddUser'}
-						</button>
+						{cancel_button}
+						{add_button}
 						{indicator}
 					</div>
 				</div>
@@ -332,12 +296,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 						</div>
 					</div>
 					<div class="modal-footer">
-						<button type="button" class="btn btn-default"
-								data-dismiss="modal">{translate key='Cancel'}</button>
-						<button type="button" class="btn btn-success save">
-							<span class="glyphicon glyphicon-ok-circle"></span>
-							{translate key='Import'}
-						</button>
+						{cancel_button}
+						{add_button key=Import}
 						{indicator}
 					</div>
 				</div>
@@ -368,11 +328,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 						{/foreach}
 					</div>
 					<div class="modal-footer">
-						<button type="button" class="btn btn-default"
-								data-dismiss="modal">{translate key='Cancel'}</button>
-						<button type="button" class="btn btn-success save"><span
-									class="glyphicon glyphicon-ok-circle"></span>
-							{translate key='Update'}</button>
+						{cancel_button}
+						{update_button}
 						{indicator}
 					</div>
 				</div>
@@ -396,11 +353,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 						</div>
 					</div>
 					<div class="modal-footer">
-						<button type="button" class="btn btn-default"
-								data-dismiss="modal">{translate key='Cancel'}</button>
-						<button type="button" class="btn btn-success save"><span
-									class="glyphicon glyphicon-ok-circle"></span>
-							{translate key='Update'}</button>
+						{cancel_button}
+						{update_button}
 						{indicator}
 					</div>
 				</div>
@@ -500,11 +454,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 						<div class="clearfix"></div>
 					</div>
 					<div class="modal-footer">
-						<button type="button" class="btn btn-default"
-								data-dismiss="modal">{translate key='Cancel'}</button>
-						<button type="button" class="btn btn-success save"><span
-									class="glyphicon glyphicon-ok-circle"></span>
-							{translate key='Update'}</button>
+						{cancel_button}
+						{update_button}
 						{indicator}
 					</div>
 				</div>
@@ -530,9 +481,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 					</div>
 					<div class="modal-footer">
-						<button type="button" class="btn btn-default cancel"
-								data-dismiss="modal">{translate key='Cancel'}</button>
-						<button type="button" class="btn btn-danger save">{translate key='Delete'}</button>
+						{cancel_button}
+						{delete_button}
 						{indicator}
 					</div>
 				</div>
@@ -586,11 +536,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 						</div>
 					</div>
 					<div class="modal-footer">
-						<button type="button" class="btn btn-default"
-								data-dismiss="modal">{translate key='Cancel'}</button>
-						<button type="button" class="btn btn-success save"><span
-									class="glyphicon glyphicon-ok-circle"></span>
-							{translate key='Update'}</button>
+						{cancel_button}
+						{update_button}
 						{indicator}
 					</div>
 				</div>
@@ -598,7 +545,6 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		</form>
 	</div>
 
-	{html_image src="admin-ajax-indicator.gif" class="indicator" style="display:none;"}
 
 	{jsfile src="ajax-helpers.js"}
 	{jsfile src="autocomplete.js"}

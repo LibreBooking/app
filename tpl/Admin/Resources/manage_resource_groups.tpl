@@ -72,9 +72,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 						</div>
 					</div>
 					<div class="modal-footer">
-						<button type="button" class="btn btn-default cancel"
-								data-dismiss="modal">{translate key='Cancel'}</button>
-						<button type="button" class="btn btn-success save">{translate key='Rename'}</button>
+						{cancel_button}
+						{update_button}
 						{indicator}
 					</div>
 				</div>
@@ -97,9 +96,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 						</div>
 					</div>
 					<div class="modal-footer">
-						<button type="button" class="btn btn-default cancel"
-								data-dismiss="modal">{translate key='Cancel'}</button>
-						<button type="button" class="btn btn-danger save">{translate key='Delete'}</button>
+						{cancel_button}
+						{delete_button}
 						{indicator}
 					</div>
 				</div>
@@ -124,9 +122,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 						</div>
 					</div>
 					<div class="modal-footer">
-						<button type="button" class="btn btn-default cancel"
-								data-dismiss="modal">{translate key='Cancel'}</button>
-						<button type="button" class="btn btn-success save">{translate key='Add'}</button>
+						{cancel_button}
+						{add_button}
 						<input type="hidden" id="groupParentId" name="{FormKeys::PARENT_ID}"/>
 
 						{indicator}
@@ -144,7 +141,6 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		<div>{translate key=ResourceGroupHelp3}</div>
 	</div>
 
-	{html_image src="admin-ajax-indicator.gif" class="indicator" style="display:none;"}
 	{jsfile src="js/jquery.watermark.min.js"}
 	{jsfile src="ajax-helpers.js"}
 	{jsfile src="admin/resource-groups.js"}

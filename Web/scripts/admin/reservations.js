@@ -88,30 +88,6 @@ function ReservationManagement(opts, approval) {
 			viewReservation($(this).attr('data-refnum'));
 		});
 
-		//elements.reservationTable.delegate('.updateCustomAttribute', 'click', function (e) {
-		//	e.stopPropagation();
-		//
-		//	setCurrentReservationInformation($(this));
-		//
-		//	showCustomAttributeValue($(this).attr('attributeId'), $(this));
-		//});
-
-		//elements.reservationTable.delegate('.confirmCellUpdate', 'click', function (e) {
-		//	e.preventDefault();
-		//	e.stopPropagation();
-		//
-		//	var value = $(this).closest('.attributeTemplate').find('input, select, textarea').val();
-		//
-		//	confirmCellUpdate(value, $(this).closest('.attributeTemplate').attr('attributeId'), $(this).closest('tr').attr('data-seriesId'));
-		//});
-		//
-		//elements.reservationTable.delegate('.cancelCellUpdate', 'click', function (e) {
-		//	e.preventDefault();
-		//	e.stopPropagation();
-		//
-		//	cancelCurrentCellUpdate();
-		//});
-
 		elements.reservationTable.find('.editable').each(function () {
 			var seriesId = $(this).attr('data-seriesId');
 			var refNum = $(this).attr('data-refnum');
@@ -298,130 +274,12 @@ function ReservationManagement(opts, approval) {
 		window.location = document.location.pathname + '?' + encodeURI(filterQuery) + attributeString;
 	}
 
-	//var previousContents;
-	//var previousCell;
-	//
-	//function cancelCurrentCellUpdate() {
-	//	if (previousCell != undefined && previousContents != undefined)
-	//	{
-	//		previousCell.empty();
-	//		previousCell.html(previousContents);
-	//		previousCell = null;
-	//	}
-	//}
-
-	//function confirmCellUpdate(value, attributeId, seriesId) {
-	//	elements.inlineUpdateErrors.hide();
-	//	function onReservationUpdate() {
-	//		cancelCurrentCellUpdate();
-	//		$('#reservationTable').find('tr.customAttributeUpdate[data-seriesId="' + seriesId + '"] li[attributeId="' + attributeId + '"] .attributeValue').text(value).effect("highlight", {}, 3000);
-	//	}
-	//
-	//	$('#attributeUpdateId').val(attributeId);
-	//	$('#attributeUpdateValue').val(value);
-	//
-	//	$.ajax({
-	//		url: defaultSubmitCallback(elements.attributeUpdateForm)(),
-	//		data: elements.attributeUpdateForm.serialize(),
-	//		type: 'POST'
-	//	}).done(function (data) {
-	//		if (data && data.errors)
-	//		{
-	//			var errors = $.map(data.errors, function (e) {
-	//				return '<li>' + e + '</li>'
-	//			});
-	//
-	//			showInlineUpdateError(errors.join(''));
-	//		}
-	//		else
-	//		{
-	//			onReservationUpdate();
-	//		}
-	//	}).fail(function (jqXHR, textStatus, errorThrown) {
-	//		showInlineUpdateError('<li>' + textStatus + '</li>');
-	//	});
-	//}
-	//
-	//function showInlineUpdateError(lis) {
-	//	elements.inlineUpdateErrors.empty();
-	//	$('<ul/>', {'class': 'no-style', html: lis}).appendTo(elements.inlineUpdateErrors);
-	//	elements.inlineUpdateErrors.show();
-	//	elements.inlineUpdateErrorDialog.modal('show');
-	//}
-	//
-	//function showCustomAttributeValue(attributeId, cell) {
-	//	if (previousCell != undefined && cell[0] == previousCell[0])
-	//	{
-	//		return;
-	//	}
-	//
-	//	cancelCurrentCellUpdate();
-	//
-	//	var showValue = function (currentReservation) {
-	//		if (currentReservation == null)
-	//		{
-	//			showError();
-	//		}
-	//
-	//		var template = $('.attributeTemplate[attributeId="' + attributeId + '"]').clone();
-	//		var attributeElement = template.find("[id^=psiattribute]");
-	//
-	//		var attribute = currentReservation.Attributes[attributeId];
-	//		var attributeValue = attribute ? attribute.Value : '';
-	//
-	//		if (attributeElement.is(':checkbox'))
-	//		{
-	//			if (attributeValue)
-	//			{
-	//				template.find(':checkbox').attr('checked', true)
-	//			}
-	//		}
-	//		else
-	//		{
-	//			attributeElement.val(attributeValue);
-	//		}
-	//
-	//		previousContents = cell.html();
-	//		previousCell = cell;
-	//
-	//		cell.empty();
-	//		cell.append(template);
-	//
-	//		attributeElement.focus();
-	//	};
-	//
-	//	getCurrentReservation(showValue);
-	//}
-
-	//function getCurrentReservation(showValue) {
-	//	var refNum = getActiveReferenceNumber();
-	//
-	//	$.ajax({
-	//		url: 'manage_reservations.php?dr=load&rn=' + refNum,
-	//		dataType: 'json'
-	//	})
-	//			.done(function (data) {
-	//				showValue(data);
-	//			})
-	//			.fail(function (jqXHR, textStatus, errorThrown) {
-	//				showValue(null);
-	//			});
-	//}
-
 	function viewReservation(referenceNumber) {
 		window.location = options.reservationUrlTemplate.replace('[refnum]', referenceNumber);
 	}
 
 	function approveReservation(referenceNumber) {
-		$.colorbox({
-			inline: true,
-			href: "#approveDiv",
-			transition: "none",
-			width: "75%",
-			height: "75%",
-			overlayClose: false
-		});
-		$('#approveDiv').show();
+		$.blockUI({ message: $('#approveDiv')});
 		approval.Approve(referenceNumber);
 	}
 }
