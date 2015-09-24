@@ -409,7 +409,7 @@ class ResourceRepository implements IResourceRepository
 		while ($row = $reader->GetRow())
 		{
 			$types[] = new ResourceType($row[ColumnNames::RESOURCE_TYPE_ID], $row[ColumnNames::RESOURCE_TYPE_NAME],
-										$row[ColumnNames::RESOURCE_TYPE_DESCRIPTION]);
+										$row[ColumnNames::RESOURCE_TYPE_DESCRIPTION], $row[ColumnNames::ATTRIBUTE_LIST]);
 		}
 
 		$reader->Free();

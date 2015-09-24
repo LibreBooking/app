@@ -14,7 +14,7 @@ function Registration()
 
 		elements.form.bind('onValidationFailed', onValidationFailed);
 
-		ConfigureAdminForm(elements.form, defaultSubmitCallback, successHandler, null, {onBeforeSubmit:onBeforeSubmit});
+		ConfigureAsyncForm(elements.form, defaultSubmitCallback, successHandler, null, {onBeforeSubmit:onBeforeSubmit});
 	};
 
 	var defaultSubmitCallback = function (form)

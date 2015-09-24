@@ -128,11 +128,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 					</div>
 					<div class="modal-footer">
-						<button type="button" class="btn btn-default cancel" data-dismiss="modal">{translate key='Cancel'}</button>
-						<button type="button" class="btn btn-success save">
-							<span class="glyphicon glyphicon-ok-circle"></span>
-							{translate key='Add'}
-						</button>
+						{cancel_button}
+						{add_button}
 						{indicator}
 					</div>
 				</div>
@@ -235,8 +232,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 						</div>
 					</div>
 					<div class="modal-footer">
-						<button type="button" class="btn btn-default" data-dismiss="modal">{translate key='Cancel'}</button>
-						<button type="button" class="btn btn-success save"><span class="glyphicon glyphicon-ok-circle"></span>{translate key='Update'}</button>
+						{cancel_button}
+						{update_button}
 						{indicator}
 					</div>
 				</div>
@@ -258,8 +255,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 						</div>
 					</div>
 					<div class="modal-footer">
-						<button type="button" class="btn btn-default cancel" data-dismiss="modal">{translate key='Cancel'}</button>
-						<button type="button" class="btn btn-danger save">{translate key='Delete'}</button>
+						{cancel_button}
+						{delete_button}
 						{indicator}
 					</div>
 				</div>
@@ -273,11 +270,11 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 	<div id="entityChoices">
 	</div>
 
-	{html_image src="admin-ajax-indicator.gif" class="indicator" id="indicator" style="display:none;"}
+	{csrf_token}
 
 	<input type="hidden" id="activeId" value=""/>
 
-	{jsfile src="admin/edit.js"}
+	{jsfile src="ajax-helpers.js"}
 	{jsfile src="admin/attributes.js"}
 	{jsfile src="js/jquery.form-3.09.min.js"}
 

@@ -18,11 +18,11 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 *}
 {include file='globalheader.tpl' cssFiles="scripts/js/jqplot/jquery.jqplot.min.css"}
 
-<div id="saved-reports">
+<div id="page-saved-reports">
 
 	<div class="panel panel-default" id="saved-reports-panel">
 		<div class="panel-heading">
-			{translate key=MySavedReports} (<span id="reportCount">{$ReportList|count}</span>)
+			{translate key=MySavedReports} <span class="badge">{$ReportList|count}</span>
 		</div>
 		<div class="panel-body no-padding">
 			{if $ReportList|count == 0}
@@ -36,11 +36,18 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 							{cycle values=',alt' assign=rowCss}
 							<tr reportId="{$report->Id()}" class="{$rowCss}">
 								<td><span class="report-title">{$report->ReportName()|default:$untitled}</span></td>
-								<td class="right"><span class="report-created-date">{format_date date=$report->DateCreated()}</span></td>
+								<td class="right"><span
+											class="report-created-date">{format_date date=$report->DateCreated()}</span>
+								</td>
 
-								<td class="report-action"><a href="#" class="runNow report"><span class="fa fa-play-circle-o icon add"></span> {translate key=RunReport}</a></td>
-								<td class="report-action"><a href="#" class="emailNow report"><span class="fa fa-envelope-o icon"></span> {translate key=EmailReport}</a></td>
-								<td class="report-action"><a href="#" class="delete report"><span class="fa fa-trash icon remove"></span> {translate key=Delete}</a></td>
+								<td class="report-action"><a href="#" class="runNow report"><span
+												class="fa fa-play-circle-o icon add"></span> {translate key=RunReport}
+									</a></td>
+								<td class="report-action"><a href="#" class="emailNow report"><span
+												class="fa fa-envelope-o icon"></span> {translate key=EmailReport}</a>
+								</td>
+								<td class="report-action"><a href="#" class="delete report"><span
+												class="fa fa-trash icon remove"></span> {translate key=Delete}</a></td>
 								{*
 								   {if $report->IsScheduled()}
 									   Schedule: <a href="#" class="editSchedule report">{translate key=Edit}</a>
@@ -63,30 +70,60 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 	<div id="resultsDiv">
 	</div>
 
-	<div id="emailSent" style="display:none" class="success">
-		{translate key=ReportSent}
+	<div id="emailSent" class="alert alert-success no-show">
+		<strong>{translate key=ReportSent}</strong>N
 	</div>
 
-	<div id="emailDiv" class="dialog" title="{translate key=EmailReport}">
-		<form id="emailForm">
-			<label for="emailTo">{translate key=Email}</label> <input id="emailTo" type="text" {formname key=email}
-																	  value="{$UserEmail}" class="textbox"/>
-			<br/>
-			<br/>
-			<button type="button" id="btnSendEmail"
-					class="button">{html_image src="mail-send.png"} {translate key=EmailReport}</button>
-			<button type="button" class="button cancel">{html_image src="slash.png"} {translate key=Cancel}</button>
-			<span id="sendEmailIndicator" style="display:none">{translate key=Working}</span>
-		</form>
-	</div>
-
-	<div id="deleteDiv" class="dialog" title="{translate key=Delete}">
-		<div class="error" style="margin-bottom: 25px;">
-			<h3>{translate key=DeleteWarning}</h3>
+	<div class="modal fade" id="emailDiv" tabindex="-1" role="dialog" aria-labelledby="emailDialogLabel"
+		 aria-hidden="true">
+		<div class="modal-dialog">
+			<form id="emailForm" method="post">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+						<h4 class="modal-title" id="emailDialogLabel">{translate key=EmailReport}</h4>
+					</div>
+					<div class="modal-body">
+						<div class="form-group">
+							<label for="emailTo">{translate key=Email}</label>
+							<input id="emailTo" value="{$UserEmail}" class="form-control"/>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-default cancel"
+									data-dismiss="modal">{translate key='Cancel'}</button>
+							<button id="btnSendEmail" type="button" class="btn btn-success save"><span
+										class="fa fa-envelope-o"></span> {translate key=EmailReport}
+							</button>
+							{indicator}
+						</div>
+					</div>
+				</div>
+			</form>
 		</div>
-		<button type="button" id="btnDeleteReport"
-				class="button">{html_image src="cross-button.png"} {translate key='Delete'}</button>
-		<button type="button" class="button cancel">{html_image src="slash.png"} {translate key='Cancel'}</button>
+	</div>
+
+	<div class="modal fade" id="deleteDiv" tabindex="-1" role="dialog" aria-labelledby="deleteLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<form id="deleteForm" method="post">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+						<h4 class="modal-title" id="deleteLabel">{translate key=Delete}</h4>
+					</div>
+					<div class="modal-body">
+						<div class="alert alert-danger">
+							{translate key=DeleteWarning}
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default cancel"
+								data-dismiss="modal">{translate key='Cancel'}</button>
+						<button type="button" class="btn btn-danger save">{translate key='Delete'}</button>
+						{indicator}
+					</div>
+				</div>
+			</form>
+		</div>
 	</div>
 
 	<div id="indicator" style="display:none; text-align: center;">
@@ -156,7 +193,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 	{jsfile src="reports/common.js"}
 
 	<script type="text/javascript">
-		$(document).ready(function () {
+		$(document).ready(function ()
+		{
 			var reportOptions = {
 				generateUrl: "{$smarty.server.SCRIPT_NAME}?{QueryStringKeys::ACTION}={ReportActions::Generate}&{QueryStringKeys::REPORT_ID}=",
 				emailUrl: "{$smarty.server.SCRIPT_NAME}?{QueryStringKeys::ACTION}={ReportActions::Email}&{QueryStringKeys::REPORT_ID}=",

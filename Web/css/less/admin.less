@@ -41,9 +41,8 @@ span.error {
 }
 
 .resourceDetails {
-  font-size: 1.2em;
+  //font-size: 1.2em;
   padding: 3px;
-  font-weight: bold;
 
   img.image {
     width: 100px;
@@ -93,7 +92,7 @@ span.error {
 }
 
 .add-link {
-  font-weight:bold;
+  font-weight: bold;
 }
 
 .dialog ul, .dialog li {
@@ -149,6 +148,7 @@ table.list, .list td, .list th {
 
 tr.pending {
   background-color: #ffb540;
+  background-color: #fffa5f;
 }
 
 #cboxClose {
@@ -260,13 +260,13 @@ tr.pending {
 ul.jqtree-tree .group-resource .jqtree-title {
   color: #111111;
 }
-
-.remove-resource {
-  display: inline;
-  width: 16px;
-  margin-left: 10px;
-  background: url(../img/minus-circle.png) no-repeat 50%;
-}
+//
+//.remove-resource:after {
+//  display: inline;
+//  width: 16px;
+//  margin-left: 10px;
+//
+//}
 
 #resource-list h4 {
   font-size: 13pt;
@@ -506,11 +506,11 @@ td.update {
 }
 
 #groupSearchPanel {
-  margin-bottom:15px;
+  margin-bottom: 15px;
 }
 
 #groupSearch {
-  width:400px;
+  width: 400px;
 }
 
 #announcementList {
@@ -519,11 +519,11 @@ td.update {
   }
 
   .announcementPriority {
-    width:100px;
+    width: 100px;
   }
 
   .announcementStart, .announcementEnd {
-    width:150px;
+    width: 150px;
   }
 }
 
@@ -546,5 +546,12 @@ td.update {
   .resourceDetails:not(:last-child) {
     border-bottom: solid 1px @light-gray;
   }
+
+  textarea {width: 500px;}
 }
 
+#page-manage-resource-groups {
+  #groupName {
+    width: 80%;
+  }
+}

@@ -27,11 +27,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 				<span class="caret"></span>
 			</button>
 			<ul class="dropdown-menu" role="menu" aria-labelledby="moreResourceActions">
-				<li role="presentation"><a role="menuitem"
-										   href="#" class="add-resource" id="add-resource">{translate key="AddResource"}
-						<span
-								class="fa fa-plus-circle icon add"></span></a>
-				</li>
+
 				<li role="presentation"><a role="menuitem"
 										   href="{$Path}admin/manage_resource_groups.php">{translate key="ManageResourceGroups"}</a>
 				</li>
@@ -42,6 +38,10 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 										   href="{$Path}admin/manage_resource_status.php">{translate key="ManageResourceStatus"}</a>
 				</li>
 				<li role="presentation" class="divider"></li>
+				<li role="presentation"><a role="menuitem"
+										   href="#" class="add-resource" id="add-resource">{translate key="AddResource"}
+						<span class="fa fa-plus-circle icon add"></span></a>
+				</li>
 				{if !empty($Resources)}
 				<li role="presentation"><a role="menuitem" href="#"
 										   id="bulkUpdatePromptButton">{translate key=BulkResourceUpdate}</a>
@@ -53,8 +53,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 	</div>
 
 	<div class="panel panel-default filterTable" id="filterTable">
-		<div class="panel-heading"><span class="glyphicon glyphicon-filter"></span> {translate key="Filter"} <a href=""><span
-						class="icon black show-hide glyphicon"></span></a>
+		<div class="panel-heading"><span
+					class="glyphicon glyphicon-filter"></span> {translate key="Filter"} {showhide_icon}
 		</div>
 		<div class="panel-body">
 			<form id="filterForm" class="horizontal-list form-inline" role="form">
@@ -129,7 +129,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 	<div id="globalError" class="error no-show"></div>
 
-	<div class="panel panel-default admin-panel" id="list-reservations-panel">
+	<div class="panel panel-default admin-panel" id="list-resources-panel">
 		<div class="panel-heading">{translate key="Resources"}
 			<a href="#" class="add-link add-resource pull-right">{translate key="AddResource"}
 				<span class="fa fa-plus-circle icon add"></span>
@@ -348,39 +348,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 					<div class="customAttributes">
 						{if $AttributeList|count > 0}
 							{foreach from=$AttributeList item=attribute}
-
-								{if $attribute->AppliesToEntity($id)}
-									<div class="updateCustomAttribute">
-										{assign var=datatype value='text'}
-										{if $attribute->Type() == CustomAttributeTypes::CHECKBOX}
-											{assign var=datatype value='checklist'}
-										{elseif $attribute->Type() == CustomAttributeTypes::MULTI_LINE_TEXTBOX}
-											{assign var=datatype value='textarea'}
-										{elseif $attribute->Type() == CustomAttributeTypes::SELECT_LIST}
-											{assign var=datatype value='select'}
-										{/if}
-										<label>{$attribute->Label()}</label>
-							<span class="inlineAttribute"
-								  data-type="{$datatype}"
-								  data-pk="{$id}"
-								  data-value="{$resource->GetAttributeValue($attribute->Id())}"
-								  data-name="{FormKeys::ATTRIBUTE_PREFIX}{$attribute->Id()}"
-									{if $attribute->Type() == CustomAttributeTypes::SELECT_LIST}
-										data-source='[{if !$attribute->Required()}{ldelim}value:"",text:""{rdelim},{/if}
-									  {foreach from=$attribute->PossibleValueList() item=v name=vals}
-											{ldelim}value:"{$v}",text:"{$v}"{rdelim}{if not $smarty.foreach.vals.last},{/if}
-										{/foreach}]'
-									{/if}
-									{if $attribute->Type() == CustomAttributeTypes::CHECKBOX}
-										data-source='[{ldelim}value:"1",text:"{translate key=Yes}"{rdelim}]'
-									{/if}
-									>
-							</span>
-										<a class="update changeAttribute" href="#"><span
-													class="fa fa-pencil-square-o"></span></a>
-									</div>
-								{/if}
-
+								{include file='Admin/InlineAttributeEdit.tpl' id=$id attribute=$attribute value=$resource->GetAttributeValue($attribute->Id())}
 							{/foreach}
 						{/if}
 					</div>
@@ -423,7 +391,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 						</div>
 						<div class="form-group">
 							<label for="permissions">{translate key='ResourcePermissions'}</label>
-							<select class="form-control" {formname key=AUTO_ASSIGN}  id="permissions">
+							<select class="form-control" {formname key=AUTO_ASSIGN} id="permissions">
 								<option value="1">{translate key="ResourcePermissionAutoGranted"}</option>
 								<option value="0">{translate key="ResourcePermissionNotAutoGranted"}</option>
 							</select>
@@ -440,11 +408,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 						</div>
 					</div>
 					<div class="modal-footer">
-						<button type="button" class="btn btn-default"
-								data-dismiss="modal">{translate key='Cancel'}</button>
-						<button type="button" class="btn btn-success save"><span
-									class="glyphicon glyphicon-ok-circle"></span>
-							{translate key='AddResource'}</button>
+						{cancel_button}
+						{add_button}
 						{indicator}
 					</div>
 				</div>
@@ -472,11 +437,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 					</div>
 
 					<div class="modal-footer">
-						<button type="button" class="btn btn-default"
-								data-dismiss="modal">{translate key='Cancel'}</button>
-						<button type="button" class="btn btn-success save"><span
-									class="glyphicon glyphicon-ok-circle"></span>
-							{translate key='Update'}</button>
+						{cancel_button}
+						{update_button}
 						{indicator}
 					</div>
 				</div>
@@ -572,11 +534,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 					</div>
 
 					<div class="modal-footer">
-						<button type="button" class="btn btn-default"
-								data-dismiss="modal">{translate key='Cancel'}</button>
-						<button type="button" class="btn btn-success save"><span
-									class="glyphicon glyphicon-ok-circle"></span>
-							{translate key='Update'}</button>
+						{cancel_button}
+						{update_button}
 						{indicator}
 					</div>
 				</div>
@@ -611,11 +570,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 					</div>
 
 					<div class="modal-footer">
-						<button type="button" class="btn btn-default"
-								data-dismiss="modal">{translate key='Cancel'}</button>
-						<button type="button" class="btn btn-success save"><span
-									class="glyphicon glyphicon-ok-circle"></span>
-							{translate key='Update'}</button>
+						{cancel_button}
+						{update_button}
 						{indicator}
 					</div>
 				</div>
@@ -688,11 +644,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 					</div>
 
 					<div class="modal-footer">
-						<button type="button" class="btn btn-default"
-								data-dismiss="modal">{translate key='Cancel'}</button>
-						<button type="button" class="btn btn-success save"><span
-									class="glyphicon glyphicon-ok-circle"></span>
-							{translate key='Update'}</button>
+						{cancel_button}
+						{update_button}
 						{indicator}
 					</div>
 				</div>
@@ -763,9 +716,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 						</div>
 					</div>
 					<div class="modal-footer">
-						<button type="button" class="btn btn-default cancel"
-								data-dismiss="modal">{translate key='Cancel'}</button>
-						<button type="button" class="btn btn-danger save">{translate key='Delete'}</button>
+						{cancel_button}
+						{delete_button}
 						{indicator}
 					</div>
 				</div>
@@ -1035,8 +987,9 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 						</div>
 					</div>
 					<div class="modal-footer">
-						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-						<button type="button" class="btn btn-primary save">Save changes</button>
+						{cancel_button}
+						{update_button}
+						{indicator}
 					</div>
 				</div>
 			</div>
@@ -1053,7 +1006,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 				</div>
 				<div class="modal-body">
 					<div class="form-group">
-						<label for="userSearch">{translate key=AddUser}</label> <a href="#" id="browseUsers">{translate key=Browse}</a>
+						<label for="userSearch">{translate key=AddUser}</label> <a href="#"
+																				   id="browseUsers">{translate key=Browse}</a>
 						<input type="text" id="userSearch" class="form-control" size="60"/>
 
 					</div>
@@ -1067,7 +1021,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 	</div>
 
 	<div id="allUsers" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="browseUsersDialogLabel"
-			 aria-hidden="true">
+		 aria-hidden="true">
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-header">
@@ -1099,7 +1053,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 				</div>
 				<div class="modal-body">
 					<div class="form-group">
-						<label for="groupSearch">{translate key=AddGroup}</label> <a href="#"  id="browseGroups">{translate key=AllGroups}</a>
+						<label for="groupSearch">{translate key=AddGroup}</label> <a href="#"
+																					 id="browseGroups">{translate key=AllGroups}</a>
 						<input type="text" id="groupSearch" class="form-control" size="60"/>
 					</div>
 
@@ -1134,7 +1089,9 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		<input type="hidden" id="addGroupId" {formname key=GROUP_ID} />
 	</form>
 
-	{jsfile src="admin/edit.js"}
+	{csrf_token}
+
+	{jsfile src="ajax-helpers.js"}
 	{jsfile src="autocomplete.js"}
 	{jsfile src="admin/resource.js"}
 
@@ -1267,9 +1224,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 		$(document).ready(function () {
 			setUpPopovers();
-
 			hidePopoversWhenClickAway();
-
 			setUpEditables();
 
 			var actions = {

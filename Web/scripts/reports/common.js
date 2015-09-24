@@ -40,7 +40,7 @@ function ReportsCommon() {
 				var th = reportResults.find('th[data-columnTitle="' + title + '"]');
 				var allCells = th.closest('tr').children();
 				var normalIndex = allCells.index(th) + 1;
-var colSelector = 'td:nth-child(' + normalIndex + ')';
+				var colSelector = 'td:nth-child(' + normalIndex + ')';
 				var col = reportResults.find(colSelector );
 
 				if (show)
@@ -57,7 +57,11 @@ var colSelector = 'td:nth-child(' + normalIndex + ')';
 
 			function initColumns(savedColumns){
 				$.each(getAllColumnTitles(), function(i, title){
-					if ($.inArray(title, savedColumns) == -1 && savedColumns.length > 0) {
+					if (savedColumns.length < 1)
+					{
+						showColumn(title, false);
+					}
+					else if ($.inArray(title, savedColumns) == -1) {
 						showColumn(title, false);
 					}
 				});

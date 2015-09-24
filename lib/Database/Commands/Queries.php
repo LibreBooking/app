@@ -1,25 +1,25 @@
 <?php
+
 /**
-Copyright 2011-2015 Nick Korbel
-Copyright 2012-2014, Moritz Schepp, IST Austria
-Copyright 2012-2014, Alois Schloegl, IST Austria
-
-This file is part of Booked Scheduler.
-
-Booked Scheduler is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-Booked Scheduler is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
+ * Copyright 2011-2015 Nick Korbel
+ * Copyright 2012-2014, Moritz Schepp, IST Austria
+ * Copyright 2012-2014, Alois Schloegl, IST Austria
+ *
+ * This file is part of Booked Scheduler.
+ *
+ * Booked Scheduler is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Booked Scheduler is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 class Queries
 {
 	private function __construct()
@@ -82,7 +82,7 @@ class Queries
 		VALUES (@limit, @unit, @duration, @resourceid, @groupid, @scheduleid)';
 
 	const ADD_REMINDER =
-				'INSERT INTO reminders (user_id, address, message, sendtime, refnumber)
+			'INSERT INTO reminders (user_id, address, message, sendtime, refnumber)
 			VALUES (@user_id, @address, @message, @sendtime, @refnumber)';
 
 	const ADD_RESERVATION =
@@ -226,7 +226,7 @@ class Queries
 		INNER JOIN reservation_resources rs ON s.series_id = rs.series_id
 		WHERE rs.resource_id = @resourceid';
 
-	const DELETE_RESOURCE_STATUS_REASON_COMMAND= 'DELETE FROM resource_status_reasons WHERE resource_status_reason_id = @resource_status_reason_id';
+	const DELETE_RESOURCE_STATUS_REASON_COMMAND = 'DELETE FROM resource_status_reasons WHERE resource_status_reason_id = @resource_status_reason_id';
 
 	const DELETE_RESOURCE_TYPE_COMMAND = 'DELETE FROM resource_types WHERE resource_type_id = @resource_type_id';
 
@@ -235,7 +235,7 @@ class Queries
 	const DELETE_SCHEDULE = 'DELETE FROM schedules WHERE schedule_id = @scheduleid';
 
 	const DELETE_SERIES =
-		'UPDATE reservation_series
+			'UPDATE reservation_series
 		    SET status_id = @statusid,
 			last_modified = @dateModified
 		  WHERE series_id = @seriesid';
@@ -375,7 +375,10 @@ class Queries
 
 	const GET_ALL_RESOURCE_STATUS_REASONS = 'SELECT * FROM resource_status_reasons';
 
-	const GET_ALL_RESOURCE_TYPES = 'SELECT * FROM resource_types';
+	const GET_ALL_RESOURCE_TYPES = 'SELECT *,
+			(SELECT GROUP_CONCAT(CONCAT(cav.custom_attribute_id, \'=\', cav.attribute_value) SEPARATOR "!sep!")
+							FROM custom_attribute_values cav WHERE cav.entity_id = r.resource_type_id AND cav.attribute_category = 5) as attribute_list
+							FROM resource_types r';
 
 	const GET_ALL_SAVED_REPORTS = 'SELECT * FROM saved_reports WHERE user_id = @userid ORDER BY report_name, date_created';
 
@@ -445,7 +448,7 @@ class Queries
 		ORDER BY bi.start_date ASC';
 
 	const GET_BLACKOUT_LIST_FULL =
-		'SELECT bi.*, r.resource_id, r.name, u.*, bs.description, bs.title, bs.repeat_type, bs.repeat_options, schedules.schedule_id
+			'SELECT bi.*, r.resource_id, r.name, u.*, bs.description, bs.title, bs.repeat_type, bs.repeat_options, schedules.schedule_id
 					FROM blackout_instances bi
 					INNER JOIN blackout_series bs ON bi.blackout_series_id = bs.blackout_series_id
 					INNER JOIN blackout_series_resources bsr ON  bi.blackout_series_id = bsr.blackout_series_id
@@ -511,7 +514,7 @@ class Queries
 
 	const GET_REMINDERS_BY_USER = 'SELECT * FROM reminders WHERE user_id = @user_id';
 
-   	const GET_REMINDERS_BY_REFNUMBER = 'SELECT * FROM reminders WHERE refnumber = @refnumber';
+	const GET_REMINDERS_BY_REFNUMBER = 'SELECT * FROM reminders WHERE refnumber = @refnumber';
 
 	const GET_RESOURCE_BY_CONTACT_INFO =
 			'SELECT r.*, s.admin_group_id as s_admin_group_id
@@ -586,7 +589,7 @@ class Queries
 //			GROUP BY ri.reservation_instance_id, rr.resource_id, ri.series_id
 //			ORDER BY ri.start_date ASC';
 
-const GET_RESERVATION_LIST_TEMPLATE =
+	const GET_RESERVATION_LIST_TEMPLATE =
 			'SELECT
 				[SELECT_TOKEN]
 			FROM reservation_instances ri
@@ -1068,8 +1071,9 @@ class QueryBuilder
 	private static function Build($selectValue, $joinValue, $andValue)
 	{
 		return str_replace('[AND_TOKEN]', $andValue,
-			   str_replace('[JOIN_TOKEN]', $joinValue,
-			   str_replace('[SELECT_TOKEN]', $selectValue, Queries::GET_RESERVATION_LIST_TEMPLATE)));
+						   str_replace('[JOIN_TOKEN]', $joinValue,
+									   str_replace('[SELECT_TOKEN]', $selectValue,
+												   Queries::GET_RESERVATION_LIST_TEMPLATE)));
 	}
 
 	public static function GET_RESERVATION_LIST()

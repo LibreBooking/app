@@ -23,7 +23,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 	<form id="addQuotaForm" method="post" role="form" class="form-inline">
 
 		<div class="panel panel-default" id="add-quota-panel">
-			<div class="panel-heading">{translate key="AddQuota"}</div>
+			<div class="panel-heading">{translate key="AddQuota"} {showhide_icon}</div>
 			<div class="panel-body" id="addQuota">
 				{capture name="schedules" assign="schedules"}
 					<select class='form-control' {formname key=SCHEDULE_ID} title="Select Schedule">
@@ -78,12 +78,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			</div>
 
 			<div class="panel-footer">
-				<button type="button" class="btn btn-success btn-sm save">
-					<span class="glyphicon glyphicon-ok-circle"></span>
-					{translate key='Add'}
-				</button>
-
-				<button type="reset" class="btn btn-default btn-sm">{translate key=Reset}</button>
+				{add_button class="btn-sm"}
+				{reset_button class="btn-sm"}
 				{indicator}
 			</div>
 		</div>
@@ -138,7 +134,6 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		</div>
 	</div>
 
-
 	<div class="modal fade" id="deleteDialog" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
 		<div class="modal-dialog">
 			<div class="modal-content">
@@ -153,10 +148,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 				</div>
 				<div class="modal-footer">
 					<form id="deleteQuotaForm" method="post">
-						<button type="button" class="btn btn-default cancel"
-								data-dismiss="modal">{translate key='Cancel'}</button>
-						<button type="button" class="btn btn-danger save">
-							<span class="fa fa-remove"></span> {translate key='Delete'}</button>
+						{cancel_button}
+						{delete_button}
 						{indicator}
 					</form>
 				</div>
@@ -164,7 +157,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		</div>
 	</div>
 
-	{jsfile src="admin/edit.js"}
+	{csrf_token}
+	{jsfile src="ajax-helpers.js"}
 	{jsfile src="admin/quota.js"}
 	{jsfile src="js/jquery.form-3.09.min.js"}
 
@@ -184,6 +178,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 			var quotaManagement = new QuotaManagement(quotaOptions);
 			quotaManagement.init();
+
+			$('#add-quota-panel').showHidePanel();
 		});
 	</script>
 </div>

@@ -1,21 +1,21 @@
 <?php
 /**
-Copyright 2011-2015 Nick Korbel
-
-This file is part of Booked Scheduler.
-
-Booked Scheduler is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-Booked Scheduler is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
+ * Copyright 2011-2015 Nick Korbel
+ *
+ * This file is part of Booked Scheduler.
+ *
+ * Booked Scheduler is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Booked Scheduler is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 require_once(ROOT_DIR . 'Pages/Admin/AdminPage.php');
@@ -36,6 +36,11 @@ interface IManageResourceTypesPage extends IActionPage
 	/**
 	 * @return string
 	 */
+	public function GetResourceTypeName();
+
+	/**
+	 * @return string
+	 */
 	public function GetName();
 
 	/**
@@ -49,7 +54,7 @@ interface IManageResourceTypesPage extends IActionPage
 	public function GetAttributes();
 
 	/**
-	 * @param IEntityAttributeList $attributeList
+	 * @param CustomAttribute[] $attributeList
 	 */
 	public function BindAttributeList($attributeList);
 
@@ -57,6 +62,11 @@ interface IManageResourceTypesPage extends IActionPage
 	 * @param ResourceTypeJson[] $resourceTypes
 	 */
 	public function SetResourceTypesJson($resourceTypes);
+
+	/**
+	 * @return string
+	 */
+	public function GetValue();
 }
 
 class ManageResourceTypesPage extends ActionPage implements IManageResourceTypesPage
@@ -70,10 +80,10 @@ class ManageResourceTypesPage extends ActionPage implements IManageResourceTypes
 	{
 		parent::__construct('ManageResourceTypes', 1);
 		$this->presenter = new ManageResourceTypesPresenter($this,
-															 ServiceLocator::GetServer()
-															 ->GetUserSession(),
-															 new ResourceRepository(),
-															 new AttributeService(new AttributeRepository()));
+															ServiceLocator::GetServer()
+																		  ->GetUserSession(),
+															new ResourceRepository(),
+															new AttributeService(new AttributeRepository()));
 	}
 
 	public function ProcessPageLoad()
@@ -111,9 +121,14 @@ class ManageResourceTypesPage extends ActionPage implements IManageResourceTypes
 	/**
 	 * @return string
 	 */
-	public function GetName()
+	public function GetResourceTypeName()
 	{
 		return $this->GetForm(FormKeys::RESOURCE_TYPE_NAME);
+	}
+
+	public function GetName()
+	{
+		return $this->GetForm(FormKeys::NAME);
 	}
 
 	/**
@@ -145,7 +160,13 @@ class ManageResourceTypesPage extends ActionPage implements IManageResourceTypes
 	 */
 	public function GetId()
 	{
-		return $this->GetQuerystring(QueryStringKeys::RESOURCE_TYPE_ID);
+		$id = $this->GetQuerystring(QueryStringKeys::RESOURCE_TYPE_ID);
+		if (empty($id))
+		{
+			$id = $this->GetForm(FormKeys::PK);
+		}
+
+		return $id;
 	}
 
 	/**
@@ -155,6 +176,9 @@ class ManageResourceTypesPage extends ActionPage implements IManageResourceTypes
 	{
 		$this->SetJson($resourceTypes);
 	}
-}
 
-?>
+	public function GetValue()
+	{
+		return $this->GetForm(FormKeys::VALUE);
+	}
+}

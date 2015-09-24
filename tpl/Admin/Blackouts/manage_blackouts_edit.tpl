@@ -116,6 +116,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		<input type="hidden" {formname key=SERIES_UPDATE_SCOPE} class="hdnSeriesUpdateScope"
 			   value="{SeriesUpdateScope::FullSeries}"/>
 	</div>
+	{csrf_token}
 </form>
 
 <script type="text/javascript">
