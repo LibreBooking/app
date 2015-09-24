@@ -76,6 +76,8 @@ abstract class ActionPresenter
 
 		if ($this->ActionIsKnown($action))
 		{
+			$this->actionPage->EnforceCSRFCheck();
+
 			$method = $this->actions[$action];
 			try
 			{

@@ -33,4 +33,6 @@ interface IPage {
     public function GetLastPage();
 
     public function RegisterValidator($validatorId, $validator);
+
+    public function EnforceCSRFCheck();
 }

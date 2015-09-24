@@ -69,6 +69,7 @@ class FormKeys
 	const CONFLICT_ACTION = 'conflictAction';
 	const CONTACT_INFO = 'contactInfo';
 	const CSS_FILE = 'CSS_FILE';
+	const CSRF_TOKEN = 'CSRF_TOKEN';
 	const CURRENT_PASSWORD = 'currentPassword';
 
 	const DEFAULT_HOMEPAGE = 'defaultHomepage';

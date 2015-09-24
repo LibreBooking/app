@@ -37,6 +37,7 @@ class ReservationApprovalPage extends SecurePage implements IReservationApproval
 	{
 		try
 		{
+			$this->EnforceCSRFCheck();
 			$reservationAction = ReservationAction::Approve;
 			$factory = new ReservationPersistenceFactory();
 			$persistenceService = $factory->Create($reservationAction);

@@ -59,6 +59,7 @@ class ReservationDeletePage extends SecurePage implements IReservationDeletePage
 	{
 		try
 		{
+			$this->EnforceCSRFCheck();
 			$reservation = $this->presenter->BuildReservation();
 			$this->presenter->HandleReservation($reservation);
 

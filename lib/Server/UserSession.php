@@ -36,6 +36,7 @@ class UserSession
 	public $ScheduleId = '';
 	public $Groups = array();
 	public $AdminGroups = array();
+	public $CSRFToken = '';
 
 	public function __construct($id)
 	{

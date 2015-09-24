@@ -40,7 +40,8 @@ class ActiveDirectoryOptions
 		$this->SetOption('ad_port', $this->GetConfig(ActiveDirectoryConfig::PORT), new IntConverter());
 		$this->SetOption('admin_username', $this->GetConfig(ActiveDirectoryConfig::USERNAME));
 		$this->SetOption('admin_password', $this->GetConfig(ActiveDirectoryConfig::PASSWORD));
-		$this->SetOption('base_dn', $this->GetConfig(ActiveDirectoryConfig::BASEDN));
+		$baseDn = $this->GetConfig(ActiveDirectoryConfig::BASEDN);
+		$this->SetOption('base_dn', empty($baseDn) ? null : $baseDn);
 		$this->SetOption('use_ssl', $this->GetConfig(ActiveDirectoryConfig::USE_SSL, new BooleanConverter()));
 		$this->SetOption('account_suffix', $this->GetConfig(ActiveDirectoryConfig::ACCOUNT_SUFFIX));
 		$this->SetOption('ldap_version', $this->GetConfig(ActiveDirectoryConfig::VERSION), new IntConverter());

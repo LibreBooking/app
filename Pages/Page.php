@@ -1,23 +1,23 @@
 <?php
 /**
-Copyright 2011-2015 Nick Korbel
-Copyright 2014 Jason Gerfen
-
-This file is part of Booked Scheduler.
-
-Booked Scheduler is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-Booked Scheduler is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ * Copyright 2011-2015 Nick Korbel
+ * Copyright 2014 Jason Gerfen
+ *
+ * This file is part of Booked Scheduler.
+ *
+ * Booked Scheduler is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Booked Scheduler is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 require_once(ROOT_DIR . 'Pages/IPage.php');
 require_once(ROOT_DIR . 'Pages/Pages.php');
@@ -46,7 +46,7 @@ abstract class Page implements IPage
 	protected function __construct($titleKey = '', $pageDepth = 0)
 	{
 		$this->SetSecurityHeaders();
-		
+
 		$this->path = str_repeat('../', $pageDepth);
 		$this->server = ServiceLocator::GetServer();
 		$resources = Resources::GetInstance();
@@ -62,7 +62,7 @@ abstract class Page implements IPage
 		$this->smarty->assign('HtmlLang', $resources->HtmlLang);
 		$this->smarty->assign('HtmlTextDirection', $resources->TextDirection);
 		$appTitle = Configuration::Instance()->GetKey(ConfigKeys::APP_TITLE);
-		$pageTile =  $resources->GetString($titleKey);
+		$pageTile = $resources->GetString($titleKey);
 		$this->smarty->assign('Title', (empty($appTitle) ? 'Booked' : $appTitle) . (empty($pageTile) ? '' : ' - ' . $pageTile));
 		$this->smarty->assign('CalendarJSFile', $resources->CalendarLanguageFile);
 
@@ -77,38 +77,43 @@ abstract class Page implements IPage
 		$this->smarty->assign('CanViewGroupAdmin', $userSession->IsGroupAdmin);
 		$this->smarty->assign('CanViewResourceAdmin', $userSession->IsResourceAdmin);
 		$this->smarty->assign('CanViewScheduleAdmin', $userSession->IsScheduleAdmin);
-		$this->smarty->assign('CanViewResponsibilities', !$userSession->IsAdmin && ($userSession->IsGroupAdmin || $userSession->IsResourceAdmin || $userSession->IsScheduleAdmin));
+		$this->smarty->assign('CanViewResponsibilities',
+							  !$userSession->IsAdmin && ($userSession->IsGroupAdmin || $userSession->IsResourceAdmin || $userSession->IsScheduleAdmin));
 		$allowAllUsersToReports = Configuration::Instance()->GetSectionKey(ConfigSection::REPORTS, ConfigKeys::REPORTS_ALLOW_ALL, new BooleanConverter());
-		$this->smarty->assign('CanViewReports', ($allowAllUsersToReports || $userSession->IsAdmin || $userSession->IsGroupAdmin || $userSession->IsResourceAdmin || $userSession->IsScheduleAdmin));
-        $timeout = Configuration::Instance()->GetKey(ConfigKeys::INACTIVITY_TIMEOUT);
+		$this->smarty->assign('CanViewReports',
+				($allowAllUsersToReports || $userSession->IsAdmin || $userSession->IsGroupAdmin || $userSession->IsResourceAdmin || $userSession->IsScheduleAdmin));
+		$timeout = Configuration::Instance()->GetKey(ConfigKeys::INACTIVITY_TIMEOUT);
 		if (!empty($timeout))
 		{
 			$this->smarty->assign('SessionTimeoutSeconds', max($timeout, 1) * 60);
 		}
 		$this->smarty->assign('ShouldLogout', $this->GetShouldAutoLogout());
-        $this->smarty->assign('CssExtensionFile', Configuration::Instance()->GetKey(ConfigKeys::CSS_EXTENSION_FILE));
-        $this->smarty->assign('UseLocalJquery', Configuration::Instance()->GetKey(ConfigKeys::USE_LOCAL_JQUERY, new BooleanConverter()));
-        $this->smarty->assign('EnableConfigurationPage', Configuration::Instance()->GetSectionKey(ConfigSection::PAGES, ConfigKeys::PAGES_ENABLE_CONFIGURATION, new BooleanConverter()));
-		$this->smarty->assign('ShowParticipation', !Configuration::Instance()->GetSectionKey(ConfigSection::RESERVATION, ConfigKeys::RESERVATION_PREVENT_PARTICIPATION, new BooleanConverter()));
+		$this->smarty->assign('CssExtensionFile', Configuration::Instance()->GetKey(ConfigKeys::CSS_EXTENSION_FILE));
+		$this->smarty->assign('UseLocalJquery', Configuration::Instance()->GetKey(ConfigKeys::USE_LOCAL_JQUERY, new BooleanConverter()));
+		$this->smarty->assign('EnableConfigurationPage',
+							  Configuration::Instance()->GetSectionKey(ConfigSection::PAGES, ConfigKeys::PAGES_ENABLE_CONFIGURATION, new BooleanConverter()));
+		$this->smarty->assign('ShowParticipation', !Configuration::Instance()
+																 ->GetSectionKey(ConfigSection::RESERVATION, ConfigKeys::RESERVATION_PREVENT_PARTICIPATION,
+																				 new BooleanConverter()));
 
 		$this->smarty->assign('LogoUrl', 'booked.png');
 		if (file_exists($this->path . 'img/custom-logo.png'))
 		{
-			$this->smarty->assign('LogoUrl','custom-logo.png');
+			$this->smarty->assign('LogoUrl', 'custom-logo.png');
 		}
 		if (file_exists($this->path . 'img/custom-logo.gif'))
 		{
-			$this->smarty->assign('LogoUrl','custom-logo.gif');
+			$this->smarty->assign('LogoUrl', 'custom-logo.gif');
 		}
 		if (file_exists($this->path . 'img/custom-logo.jpg'))
 		{
-			$this->smarty->assign('LogoUrl','custom-logo.jpg');
+			$this->smarty->assign('LogoUrl', 'custom-logo.jpg');
 		}
 
 		$this->smarty->assign('CssUrl', 'null-style.css');
 		if (file_exists($this->path . 'css/custom-style.css'))
 		{
-			$this->smarty->assign('CssUrl','custom-style.css');
+			$this->smarty->assign('CssUrl', 'custom-style.css');
 		}
 
 		$logoUrl = Configuration::Instance()->GetKey(ConfigKeys::HOME_URL);
@@ -233,6 +238,17 @@ abstract class Page implements IPage
 		$this->smarty->assign($var, $value);
 	}
 
+	public function EnforceCSRFCheck()
+	{
+		$token = $this->GetForm(FormKeys::CSRF_TOKEN);
+		$session = $this->server->GetUserSession();
+		if ($_SERVER['REQUEST_METHOD'] == 'POST' && (empty($token) || $token != $session->CSRFToken))
+		{
+			Log::Error('Possible CSRF attack. Submitted token=%s, Expected token=%s', $token, $session->CSRFToken);
+			die('Insecure request');
+		}
+	}
+
 	/**
 	 * @param string $var
 	 * @return string
@@ -291,7 +307,8 @@ abstract class Page implements IPage
 		if (empty($error))
 		{
 			$this->Set('data', json_encode($objectToSerialize));
-		} else
+		}
+		else
 		{
 			$this->Set('error', json_encode(array('response' => $objectToSerialize, 'errors' => $error)));
 		}
@@ -357,7 +374,7 @@ abstract class Page implements IPage
 
 		if (file_exists($localizedPath . '/' . $templateName))
 		{
-           $this->smarty->AddTemplateDirectory($localizedPath);
+			$this->smarty->AddTemplateDirectory($localizedPath);
 		}
 		else
 		{
@@ -367,18 +384,18 @@ abstract class Page implements IPage
 		$this->Display($templateName);
 	}
 
-    protected function GetShouldAutoLogout()
-    {
-        $timeout = $this->GetVar('SessionTimeoutSeconds');
+	protected function GetShouldAutoLogout()
+	{
+		$timeout = $this->GetVar('SessionTimeoutSeconds');
 
 		return !empty($timeout);
-    }
+	}
 
 	private function InMaintenanceMode()
 	{
 		return is_file(ROOT_DIR . 'maint.txt');
 	}
-	
+
 	private function SetSecurityHeaders()
 	{
 		$config = Configuration::Instance();
