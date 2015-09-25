@@ -32,7 +32,7 @@ class Cookie
 
 		if (is_null($path))
 		{
-			$path = '';
+			$path = Configuration::Instance()->GetScriptUrl();
 		}
 
 		$this->Name = $name;

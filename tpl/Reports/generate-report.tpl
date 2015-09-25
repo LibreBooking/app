@@ -200,6 +200,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 						   id="btnCustomReport" asyncAction=""/>
 				</div>
 			</div>
+			{csrf_token}
 		</form>
 	</div>
 
@@ -253,8 +254,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 	{jsfile src="reports/chart.js"}
 
 	<script type="text/javascript">
-		$(document).ready(function ()
-		{
+		$(document).ready(function () {
 			var reportOptions = {
 				userAutocompleteUrl: "{$Path}ajax/autocomplete.php?type={AutoCompleteType::User}",
 				groupAutocompleteUrl: "{$Path}ajax/autocomplete.php?type={AutoCompleteType::Group}",
@@ -267,7 +267,11 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			var reports = new GenerateReports(reportOptions);
 			reports.init();
 
-			var common = new ReportsCommon();
+			var common = new ReportsCommon(
+					{
+						scriptUrl: '{$ScriptUrl}'
+					}
+			);
 			common.init();
 		});
 

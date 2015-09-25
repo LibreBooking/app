@@ -17,7 +17,7 @@
  along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-function ReportsCommon() {
+function ReportsCommon(opts) {
 	return {
 		init: function () {
 
@@ -102,7 +102,7 @@ function ReportsCommon() {
 					var columnsToSave = $.map(customizeColumns.find(':checked'), function(checkbox){
 						return $(checkbox).val();
 					});
-					createCookie(cookieName, columnsToSave.join(separator));
+					createCookie(cookieName, columnsToSave.join(separator), 30, opts.scriptUrl);
 				});
 
 				btnCustomizeColumns.unbind('click').on('click', function(e) {

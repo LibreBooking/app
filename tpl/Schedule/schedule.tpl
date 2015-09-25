@@ -298,7 +298,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 				summaryPopupUrl: "{$Path}ajax/respopup.php",
 				setDefaultScheduleUrl: "{$Path}{Pages::PROFILE}?action=changeDefaultSchedule&{QueryStringKeys::SCHEDULE_ID}=[scheduleId]",
 				cookieName: "{$CookieName}",
-				scheduleId: "{$ScheduleId}"
+				scheduleId: "{$ScheduleId}",
+				scriptUrl: '{$ScriptUrl}'
 			};
 
 			var schedule = new Schedule(scheduleOpts, {$ResourceGroupsAsJson});

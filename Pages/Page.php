@@ -240,6 +240,11 @@ abstract class Page implements IPage
 
 	public function EnforceCSRFCheck()
 	{
+		$session = $this->server->GetUserSession();
+		if (!$session->IsLoggedIn())
+		{
+			return;
+		}
 		$token = $this->GetForm(FormKeys::CSRF_TOKEN);
 		$session = $this->server->GetUserSession();
 		if ($_SERVER['REQUEST_METHOD'] == 'POST' && (empty($token) || $token != $session->CSRFToken))

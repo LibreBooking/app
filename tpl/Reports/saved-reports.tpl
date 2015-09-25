@@ -193,8 +193,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 	{jsfile src="reports/common.js"}
 
 	<script type="text/javascript">
-		$(document).ready(function ()
-		{
+		$(document).ready(function () {
 			var reportOptions = {
 				generateUrl: "{$smarty.server.SCRIPT_NAME}?{QueryStringKeys::ACTION}={ReportActions::Generate}&{QueryStringKeys::REPORT_ID}=",
 				emailUrl: "{$smarty.server.SCRIPT_NAME}?{QueryStringKeys::ACTION}={ReportActions::Email}&{QueryStringKeys::REPORT_ID}=",
@@ -206,7 +205,11 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			var reports = new SavedReports(reportOptions);
 			reports.init();
 
-			var common = new ReportsCommon();
+			var common = new ReportsCommon(
+					{
+						scriptUrl: '{$ScriptUrl}'
+					}
+			);
 			common.init();
 		});
 	</script>

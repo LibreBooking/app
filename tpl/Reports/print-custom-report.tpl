@@ -48,8 +48,12 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 {jsfile src="reports/common.js"}
 
-<script type="text/javascript" >
-	var common = new ReportsCommon();
+<script type="text/javascript">
+	var common = new ReportsCommon(
+			{
+				scriptUrl: '{$ScriptUrl}'
+			}
+	);
 	common.init();
 	window.print();
 </script>

@@ -147,7 +147,7 @@ function Schedule(opts, resourceGroups)
 		$('#schedule-actions .schedule-style').click(function (e)
 		{
 			e.preventDefault();
-			createCookie(opts.cookieName, $(this).attr('schedule-display'), 30);
+			createCookie(opts.cookieName, $(this).attr('schedule-display'), 30, opts.scriptUrl);
 			window.location.reload();
 		});
 	};
