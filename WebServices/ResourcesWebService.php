@@ -24,7 +24,7 @@ require_once(ROOT_DIR . 'lib/Application/Attributes/namespace.php');
 require_once(ROOT_DIR . 'lib/Application/Schedule/namespace.php');
 require_once(ROOT_DIR . 'WebServices/Responses/ResourceResponse.php');
 require_once(ROOT_DIR . 'WebServices/Responses/ResourcesResponse.php');
-require_once(ROOT_DIR . 'WebServices/Responses/CustomAttributeResponse.php');
+require_once(ROOT_DIR . 'WebServices/Responses/CustomAttributes/CustomAttributeResponse.php');
 require_once(ROOT_DIR . 'WebServices/Responses/Resource/ResourceStatusResponse.php');
 require_once(ROOT_DIR . 'WebServices/Responses/Resource/ResourceStatusReasonsResponse.php');
 require_once(ROOT_DIR . 'WebServices/Responses/Resource/ResourceGroupTreeResponse.php');

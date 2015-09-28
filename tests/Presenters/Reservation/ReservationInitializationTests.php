@@ -56,6 +56,11 @@ class ReservationInitializationTests extends TestBase
 	 */
 	private $scheduleRepository;
 
+	/**
+	 * @var IResourceRepository
+	 */
+	private $resourceRepository;
+
 	public function setup()
 	{
 		parent::setup();
@@ -66,7 +71,14 @@ class ReservationInitializationTests extends TestBase
 		$this->page = $this->getMock('INewReservationPage');
 
 		$this->scheduleRepository = new FakeScheduleRepository();
-		$this->initializer = new NewReservationInitializer($this->page, $this->userBinder, $this->dateBinder, $this->resourceBinder, $this->fakeUser, $this->scheduleRepository);
+		$this->resourceRepository = $this->getMock('IResourceRepository');
+		$this->initializer = new NewReservationInitializer($this->page,
+														   $this->userBinder,
+														   $this->dateBinder,
+														   $this->resourceBinder,
+														   $this->fakeUser,
+														   $this->scheduleRepository,
+														   $this->resourceRepository);
 	}
 
 	public function teardown()
@@ -139,7 +151,7 @@ class ReservationInitializationTests extends TestBase
 			 ->method('SetRepeatTerminationDate')
 			 ->with($this->equalTo($endDate));
 
-		$initializer = new NewReservationInitializer($page, $binder, $binder, $binder, $this->fakeUser, $this->scheduleRepository);
+		$initializer = new NewReservationInitializer($page, $binder, $binder, $binder, $this->fakeUser, $this->scheduleRepository, $this->resourceRepository);
 		$initializer->SetDates($startDate, $endDate, $periods, $periods);
 	}
 

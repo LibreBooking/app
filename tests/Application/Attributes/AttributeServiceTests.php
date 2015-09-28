@@ -80,16 +80,6 @@ class AttributeServiceTests extends TestBase
 
 		$this->attributeRepository->_CustomAttributes = $attributes;
 		$this->attributeRepository->_EntityValues = $values;
-//		$this->attributeRepository->expects($this->once())
-//				->method('GetByCategory')
-//				->with($this->equalTo($category))
-//				->will($this->returnValue($attributes));
-//
-//		$this->attributeRepository->expects($this->once())
-//				->method('GetEntityValues')
-//				->with($this->equalTo($category), $this->equalTo($entityIds))
-//				->will($this->returnValue($values));
-
 		$attributeList = $this->attributeService->GetAttributes($category, $entityIds);
 
 		$this->assertEquals(array(

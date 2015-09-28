@@ -451,7 +451,8 @@ class ResourceTypeRow
 		$this->rows[] = array(
 			ColumnNames::RESOURCE_TYPE_ID => $typeId,
 			ColumnNames::RESOURCE_TYPE_NAME => $name,
-			ColumnNames::RESOURCE_TYPE_DESCRIPTION => $description
+			ColumnNames::RESOURCE_TYPE_DESCRIPTION => $description,
+			ColumnNames::ATTRIBUTE_LIST => '1=a!sep!2=b'
 		);
 
 		return $this;

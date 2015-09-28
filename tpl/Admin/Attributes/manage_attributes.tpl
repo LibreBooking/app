@@ -82,7 +82,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 							<div class="attributeUnique form-group">
 								<label for="addAttributeEntityId">{translate key=AppliesTo}</label>
 								<a href="#" class="appliesTo">{translate key=All}</a>
-								<input type="hidden" class="appliesToId" {formname key=ATTRIBUTE_ENTITY} id="addAttributeEntityId"/>
+								<div class="appliesToId" id="addAttributeEntityId" style="display:none;"></div>
 							</div>
 
 							<div class="attributeRequired form-group">
@@ -184,7 +184,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 							<div class="form-group attributeUnique">
 								<label for="editAttributeEntityId">{translate key=AppliesTo}</label>
 								<a href="#" class="appliesTo">{translate key=All}</a>
-								<input type="hidden" class="appliesToId" {formname key=ATTRIBUTE_ENTITY} id='editAttributeEntityId'/>
+								<div class="appliesToId" id='editAttributeEntityId' style="display:none;"></div>
 							</div>
 
 							<div class="form-group attributeRequired">

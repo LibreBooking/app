@@ -22,7 +22,7 @@ require_once(ROOT_DIR . 'lib/WebService/namespace.php');
 require_once(ROOT_DIR . 'WebServices/Responses/RecurrenceRequestResponse.php');
 require_once(ROOT_DIR . 'WebServices/Responses/ResourceItemResponse.php');
 require_once(ROOT_DIR . 'WebServices/Responses/ReservationAccessoryResponse.php');
-require_once(ROOT_DIR . 'WebServices/Responses/CustomAttributeResponse.php');
+require_once(ROOT_DIR . 'WebServices/Responses/CustomAttributes/CustomAttributeResponse.php');
 require_once(ROOT_DIR . 'WebServices/Responses/AttachmentResponse.php');
 require_once(ROOT_DIR . 'WebServices/Responses/ReservationUserResponse.php');
 require_once(ROOT_DIR . 'WebServices/Responses/ReminderRequestResponse.php');

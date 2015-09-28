@@ -19,7 +19,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 require_once(ROOT_DIR . 'WebServices/Requests/ReservationAccessoryRequest.php');
-require_once(ROOT_DIR . 'WebServices/Requests/AttributeValueRequest.php');
+require_once(ROOT_DIR . 'WebServices/Requests/CustomAttributes/AttributeValueRequest.php');
 require_once(ROOT_DIR . 'WebServices/Responses/RecurrenceRequestResponse.php');
 require_once(ROOT_DIR . 'WebServices/Responses/ReminderRequestResponse.php');
 

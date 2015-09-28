@@ -19,7 +19,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 <h3>{$Attributes|count} {translate key=Attributes}</h3>
 {if $Attributes|count > 0}
 	<table class="table">
-		<thead><tr>
+		<thead>
+		<tr>
 			<th>ID</th>
 			<th>{translate key=SortOrder}</th>
 			<th>{translate key=DisplayLabel}</th>
@@ -50,7 +51,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 						{translate key=No}
 					{/if}</td>
 				<td>{if $attribute->UniquePerEntity()}
-						{$attribute->EntityDescription()}
+						{$attribute->EntityDescriptions()|implode:','}
 					{elseif $attribute->HasSecondaryEntity()}
 						{$attribute->SecondaryEntityDescription()}
 					{else}
@@ -67,7 +68,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 				{/if}
 				<td>{if $attribute->AdminOnly()}{translate key=Yes}{else}{translate key=No}{/if}</td>
 				<td class="action">
-					<a href="#" class="update edit"}"><span class="fa fa-edit icon edit"></span></a>
+					<a href="#" class="update edit" }"><span class="fa fa-edit icon edit"></span></a>
 				</td>
 				<td class="action">
 					<a href="#" class="update delete" attributeId="{$attribute->Id()}"><span class="fa fa-trash icon remove"></span></a>
@@ -90,7 +91,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		possibleValues: "{$attribute->PossibleValues()|escape:'javascript'}",
 		type: "{$attribute->Type()}",
 		sortOrder: "{$attribute->SortOrder()}",
-		entityId: "{$attribute->EntityId()}",
+		entityIds: [{$attribute->EntityIds()|implode:','}],
+		entityDescriptions: ["{$attribute->EntityDescriptions()|implode:','|escape:'javascript'}"],
 		entityDescription: "{$attribute->EntityDescription()|escape:'javascript'}",
 		adminOnly: {$attribute->AdminOnly()},
 		secondaryEntityId: "{$attribute->SecondaryEntityId()}",

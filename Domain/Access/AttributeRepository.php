@@ -80,11 +80,18 @@ class AttributeRepository implements IAttributeRepository
 
 	public function Add(CustomAttribute $attribute)
 	{
-		return ServiceLocator::GetDatabase()
-			   ->ExecuteInsert(
-			new AddAttributeCommand($attribute->Label(), $attribute->Type(), $attribute->Category(), $attribute->Regex(),
-									$attribute->Required(), $attribute->PossibleValues(), $attribute->SortOrder(), $attribute->EntityId(), $attribute->AdminOnly(),
-									$attribute->SecondaryCategory(), $attribute->SecondaryEntityId(), $attribute->IsPrivate()));
+		$id = ServiceLocator::GetDatabase()->ExecuteInsert(
+				new AddAttributeCommand($attribute->Label(), $attribute->Type(), $attribute->Category(), $attribute->Regex(),
+										$attribute->Required(), $attribute->PossibleValues(), $attribute->SortOrder(),
+										$attribute->AdminOnly(), $attribute->SecondaryCategory(), $attribute->SecondaryEntityId(),
+										$attribute->IsPrivate()));
+
+		foreach ($attribute->EntityIds() as $entityId)
+		{
+			ServiceLocator::GetDatabase()->ExecuteInsert(new AddAttributeEntityCommand($id, $entityId));
+		}
+
+		return $id;
 	}
 
 	/**
@@ -132,11 +139,21 @@ class AttributeRepository implements IAttributeRepository
 	 */
 	public function Update(CustomAttribute $attribute)
 	{
-		ServiceLocator::GetDatabase()
-		->Execute(
-			new UpdateAttributeCommand($attribute->Id(), $attribute->Label(), $attribute->Type(), $attribute->Category(),
-									   $attribute->Regex(), $attribute->Required(), $attribute->PossibleValues(), $attribute->SortOrder(),
-									   $attribute->EntityId(), $attribute->AdminOnly(), $attribute->SecondaryCategory(), $attribute->SecondaryEntityId(), $attribute->IsPrivate()));
+		$db = ServiceLocator::GetDatabase();
+		$db->Execute(new UpdateAttributeCommand($attribute->Id(), $attribute->Label(), $attribute->Type(), $attribute->Category(),
+												$attribute->Regex(), $attribute->Required(), $attribute->PossibleValues(), $attribute->SortOrder(),
+												$attribute->AdminOnly(), $attribute->SecondaryCategory(),
+												$attribute->SecondaryEntityId(), $attribute->IsPrivate()));
+
+		foreach ($attribute->RemovedEntityIds() as $entityId)
+		{
+			$db->Execute(new RemoveAttributeEntityCommand($attribute->Id(), $entityId));
+		}
+
+		foreach ($attribute->AddedEntityIds() as $entityId)
+		{
+			$db->Execute(new AddAttributeEntityCommand($attribute->Id(), $entityId));
+		}
 	}
 
 	/**

@@ -436,12 +436,14 @@ class ResourceRepositoryTests extends TestBase
 
 		$this->db->SetRows($rows->Rows());
 
+		/** @var ResourceType[] $types */
 		$types = $this->repository->GetResourceTypes();
 
 		$this->assertEquals(3, count($types));
 		$this->assertEquals(1, $types[0]->Id());
 		$this->assertEquals('resourcetype1', $types[0]->Name());
 		$this->assertEquals('description', $types[0]->Description());
+		$this->assertEquals('a', $types[0]->GetAttributeValue(1));
 
 		$expectedCommand = new GetAllResourceTypesCommand();
 		$this->assertEquals($expectedCommand, $this->db->_LastCommand);

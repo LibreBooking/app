@@ -74,7 +74,7 @@ class ManageAttributesPresenterTests extends TestBase
 		$regex = '/$\d^/';
 		$possibleValues = '1,2,3';
 		$sortOrder = "5";
-		$entityId = 10;
+		$entityIds = array(10);
 		$adminOnly = true;
 		$secondaryEntityId = 1029;
 
@@ -85,13 +85,13 @@ class ManageAttributesPresenterTests extends TestBase
 		$this->page->_regex = $regex;
 		$this->page->_possibleValues = $possibleValues;
 		$this->page->_sortOrder = $sortOrder;
-		$this->page->_entityId = $entityId;
+		$this->page->_entityIds = $entityIds;
 		$this->page->_adminOnly = $adminOnly;
 		$this->page->_limitAttributeScope = true;
 		$this->page->_secondaryCategory = CustomAttributeCategory::USER;
 		$this->page->_secondaryEntityId = $secondaryEntityId;
 
-		$expectedAttribute = CustomAttribute::Create($label, $type, $scope, $regex, $required, $possibleValues, $sortOrder, $entityId, $adminOnly);
+		$expectedAttribute = CustomAttribute::Create($label, $type, $scope, $regex, $required, $possibleValues, $sortOrder, $entityIds, $adminOnly);
 		$expectedAttribute->WithSecondaryEntity(CustomAttributeCategory::USER, $secondaryEntityId);
 
 		$this->attributeRepository->expects($this->once())
@@ -110,7 +110,7 @@ class ManageAttributesPresenterTests extends TestBase
 		$regex = '/$\d^/';
 		$possibleValues = '1,2,3';
 		$sortOrder = "5";
-		$entityId = 123;
+		$entityIds = array(1,2,3);
 		$secondaryEntityId = 555;
 		$isPrivate = true;
 		$adminOnly = true;
@@ -121,14 +121,14 @@ class ManageAttributesPresenterTests extends TestBase
 		$this->page->_possibleValues = $possibleValues;
 		$this->page->_attributeId = $attributeId;
 		$this->page->_sortOrder = $sortOrder;
-		$this->page->_entityId = $entityId;
+		$this->page->_entityIds = $entityIds;
 		$this->page->_adminOnly = $adminOnly;
 		$this->page->_limitAttributeScope = true;
 		$this->page->_secondaryCategory = CustomAttributeCategory::USER;
 		$this->page->_secondaryEntityId = $secondaryEntityId;
 		$this->page->_isPrivate = $isPrivate;
 
-		$expectedAttribute = CustomAttribute::Create('', CustomAttributeTypes::CHECKBOX, CustomAttributeCategory::USER, null, false, null, $sortOrder, $entityId, $adminOnly);
+		$expectedAttribute = CustomAttribute::Create('', CustomAttributeTypes::CHECKBOX, CustomAttributeCategory::USER, null, false, null, $sortOrder, $entityIds, $adminOnly);
 
 		$this->attributeRepository->expects($this->once())
 				->method('LoadById')
@@ -146,7 +146,7 @@ class ManageAttributesPresenterTests extends TestBase
 		$this->assertEquals($required, $expectedAttribute->Required());
 		$this->assertEquals($possibleValues, $expectedAttribute->PossibleValues());
 		$this->assertEquals($sortOrder, $expectedAttribute->SortOrder());
-		$this->assertEquals($entityId, $expectedAttribute->EntityId());
+		$this->assertEquals($entityIds, $expectedAttribute->EntityIds());
 		$this->assertEquals($adminOnly, $expectedAttribute->AdminOnly());
 		$this->assertEquals($secondaryEntityId, $expectedAttribute->SecondaryEntityId());
 		$this->assertEquals(CustomAttributeCategory::USER, $expectedAttribute->SecondaryCategory());
@@ -178,7 +178,7 @@ class FakeAttributePage extends FakeActionPageBase implements IManageAttributesP
 	public $_boundAttributes;
 	public $_attributeId;
 	public $_sortOrder;
-	public $_entityId;
+	public $_entityIds;
 	public $_adminOnly;
 	public $_limitAttributeScope;
 	public $_secondaryCategory;
@@ -211,9 +211,9 @@ class FakeAttributePage extends FakeActionPageBase implements IManageAttributesP
 		return $this->_required;
 	}
 
-	public function GetEntityId()
+	public function GetEntityIds()
 	{
-		return $this->_entityId;
+		return $this->_entityIds;
 	}
 
 	public function GetPossibleValues()

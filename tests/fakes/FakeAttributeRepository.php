@@ -37,6 +37,21 @@ class FakeAttributeRepository implements IAttributeRepository
 	 */
 	public $_EntityValues;
 
+	/**
+	 * @var int
+	 */
+	public $_LastCreateId = 1;
+
+	/**
+	 * @var CustomAttribute
+	 */
+	public $_Added;
+
+	/**
+	 * @var CustomAttribute
+	 */
+	public $_Updated;
+
 	public function __construct()
 	{
 		$this->_CustomAttribute = new CustomAttribute(1, 'test attribute', CustomAttributeTypes::SINGLE_LINE_TEXTBOX, CustomAttributeCategory::RESERVATION,
@@ -54,7 +69,8 @@ class FakeAttributeRepository implements IAttributeRepository
 	 */
 	public function Add(CustomAttribute $attribute)
 	{
-		// TODO: Implement Add() method.
+		$this->_Added = $attribute;
+		return $this->_LastCreateId;
 	}
 
 	/**
@@ -71,7 +87,7 @@ class FakeAttributeRepository implements IAttributeRepository
 	 */
 	public function Update(CustomAttribute $attribute)
 	{
-		// TODO: Implement Update() method.
+		$this->_Updated = $attribute;
 	}
 
 	/**

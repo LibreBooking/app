@@ -312,7 +312,7 @@ class ParticipationPresenterTests extends TestBase
 
 		$this->page->expects($this->once())
 				   ->method('DisplayResult')
-				   ->with($this->stringContains('ParticipationNotAllowed'));
+				   ->with($this->stringContains('StartIsInPast'));
 
 		$this->presenter->PageLoad();
 	}

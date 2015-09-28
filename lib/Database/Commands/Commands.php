@@ -68,7 +68,7 @@ class AddAnnouncementCommand extends SqlCommand
 
 class AddAttributeCommand extends SqlCommand
 {
-	public function __construct($label, $type, $category, $regex, $required, $possibleValues, $sortOrder, $entityId, $adminOnly, $secondaryCategory, $secondaryEntityId, $isPrivate)
+	public function __construct($label, $type, $category, $regex, $required, $possibleValues, $sortOrder, $adminOnly, $secondaryCategory, $secondaryEntityId, $isPrivate)
 	{
 		parent::__construct(Queries::ADD_ATTRIBUTE);
 		$this->AddParameter(new Parameter(ParameterNames::ATTRIBUTE_LABEL, $label));
@@ -78,11 +78,20 @@ class AddAttributeCommand extends SqlCommand
 		$this->AddParameter(new Parameter(ParameterNames::ATTRIBUTE_REQUIRED, (int)$required));
 		$this->AddParameter(new Parameter(ParameterNames::ATTRIBUTE_POSSIBLE_VALUES, $possibleValues));
 		$this->AddParameter(new Parameter(ParameterNames::ATTRIBUTE_SORT_ORDER, $sortOrder));
-		$this->AddParameter(new Parameter(ParameterNames::ATTRIBUTE_ENTITY_ID, $entityId));
 		$this->AddParameter(new Parameter(ParameterNames::ATTRIBUTE_ADMIN_ONLY, (int)$adminOnly));
 		$this->AddParameter(new Parameter(ParameterNames::ATTRIBUTE_SECONDARY_CATEGORY, $secondaryCategory));
 		$this->AddParameter(new Parameter(ParameterNames::ATTRIBUTE_SECONDARY_ENTITY_ID, $secondaryEntityId));
 		$this->AddParameter(new Parameter(ParameterNames::ATTRIBUTE_IS_PRIVATE, (int)$isPrivate));
+	}
+}
+
+class AddAttributeEntityCommand extends SqlCommand
+{
+	public function __construct($attributeId, $entityId)
+	{
+		parent::__construct(Queries::ADD_ATTRIBUTE_ENTITY);
+		$this->AddParameter(new Parameter(ParameterNames::ATTRIBUTE_ID, $attributeId));
+		$this->AddParameter(new Parameter(ParameterNames::ATTRIBUTE_ENTITY_ID, $entityId));
 	}
 }
 
@@ -1630,6 +1639,17 @@ class RemoveAttributeValueCommand extends SqlCommand
 	}
 }
 
+class RemoveAttributeEntityCommand extends SqlCommand
+{
+	public function __construct($attributeId, $entityId)
+	{
+		parent::__construct(Queries::REMOVE_ATTRIBUTE_ENTITY);
+
+		$this->AddParameter(new Parameter(ParameterNames::ATTRIBUTE_ID, $attributeId));
+		$this->AddParameter(new Parameter(ParameterNames::ATTRIBUTE_ENTITY_ID, $entityId));
+	}
+}
+
 class RemoveLegacyPasswordCommand extends SqlCommand
 {
 	public function __construct($userId)
@@ -1854,7 +1874,7 @@ class UpdateAnnouncementCommand extends SqlCommand
 
 class UpdateAttributeCommand extends SqlCommand
 {
-	public function __construct($attributeId, $label, $type, $category, $regex, $required, $possibleValues, $sortOrder, $entityId, $adminOnly, $secondaryCategory, $secondaryEntityId, $isPrivate)
+	public function __construct($attributeId, $label, $type, $category, $regex, $required, $possibleValues, $sortOrder, $adminOnly, $secondaryCategory, $secondaryEntityId, $isPrivate)
 	{
 		parent::__construct(Queries::UPDATE_ATTRIBUTE);
 		$this->AddParameter(new Parameter(ParameterNames::ATTRIBUTE_ID, $attributeId));
@@ -1865,7 +1885,6 @@ class UpdateAttributeCommand extends SqlCommand
 		$this->AddParameter(new Parameter(ParameterNames::ATTRIBUTE_REQUIRED, (int)$required));
 		$this->AddParameter(new Parameter(ParameterNames::ATTRIBUTE_POSSIBLE_VALUES, $possibleValues));
 		$this->AddParameter(new Parameter(ParameterNames::ATTRIBUTE_SORT_ORDER, $sortOrder));
-		$this->AddParameter(new Parameter(ParameterNames::ATTRIBUTE_ENTITY_ID, $entityId));
 		$this->AddParameter(new Parameter(ParameterNames::ATTRIBUTE_ADMIN_ONLY, (int)$adminOnly));
 		$this->AddParameter(new Parameter(ParameterNames::ATTRIBUTE_SECONDARY_CATEGORY, $secondaryCategory));
 		$this->AddParameter(new Parameter(ParameterNames::ATTRIBUTE_SECONDARY_ENTITY_ID, $secondaryEntityId));

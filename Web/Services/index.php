@@ -32,6 +32,7 @@ require_once(ROOT_DIR . 'WebServices/UsersWebService.php');
 require_once(ROOT_DIR . 'WebServices/UsersWriteWebService.php');
 require_once(ROOT_DIR . 'WebServices/SchedulesWebService.php');
 require_once(ROOT_DIR . 'WebServices/AttributesWebService.php');
+require_once(ROOT_DIR . 'WebServices/AttributesWriteWebService.php');
 require_once(ROOT_DIR . 'WebServices/GroupsWebService.php');
 require_once(ROOT_DIR . 'WebServices/AccessoriesWebService.php');
 
@@ -187,9 +188,14 @@ function RegisterSchedules(SlimServer $server, SlimWebServiceRegistry $registry)
 function RegisterAttributes(SlimServer $server, SlimWebServiceRegistry $registry)
 {
 	$webService = new AttributesWebService($server, new AttributeService(new AttributeRepository()));
+	$writeWebService = new AttributesWriteWebService($server, new AttributeSaveController(new AttributeRepository()));
+
 	$category = new SlimWebServiceRegistryCategory('Attributes');
 	$category->AddSecureGet('Category/:categoryId', array($webService, 'GetAttributes'), WebServices::AllCustomAttributes);
 	$category->AddSecureGet('/:attributeId', array($webService, 'GetAttribute'), WebServices::GetCustomAttribute);
+	$category->AddAdminPost('/', array($writeWebService, 'Create'), WebServices::CreateCustomAttribute);
+	$category->AddAdminPost('/:attributeId', array($writeWebService, 'Update'), WebServices::UpdateCustomAttribute);
+	$category->AddAdminDelete('/:attributeId', array($writeWebService, 'Delete'), WebServices::DeleteCustomAttribute);
 	$registry->AddCategory($category);
 }
 

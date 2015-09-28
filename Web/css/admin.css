@@ -423,6 +423,9 @@ td.update {
 #announcementList .announcementEnd {
   width: 150px;
 }
+.appliesToId {
+  display: none;
+}
 .admin-page input,
 #page-manage-blackouts input,
 #page-manage-reservations input,

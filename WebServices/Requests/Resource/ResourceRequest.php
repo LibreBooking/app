@@ -19,7 +19,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 require_once(ROOT_DIR . 'lib/WebService/JsonRequest.php');
-require_once(ROOT_DIR . 'WebServices/Requests/AttributeValueRequest.php');
+require_once(ROOT_DIR . 'WebServices/Requests/CustomAttributes/AttributeValueRequest.php');
 
 class ResourceRequest extends JsonRequest
 {

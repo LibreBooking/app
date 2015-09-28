@@ -71,6 +71,11 @@ class FakePageBase implements IPage
 	{
 		// TODO: Implement PageLoad() method.
 	}
+
+	public function EnforceCSRFCheck()
+	{
+		// TODO: Implement EnforceCSRFCheck() method.
+	}
 }
 
 class FakeActionPageBase extends FakePageBase implements IActionPage

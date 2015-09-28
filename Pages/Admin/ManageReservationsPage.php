@@ -249,6 +249,11 @@ interface IManageReservationsPage extends IPageable, IActionPage
 	 * @return string
 	 */
 	public function GetValue();
+
+	/**
+	 * return string
+	 */
+	public function GetName();
 }
 
 class ManageReservationsPage extends ActionPage implements IManageReservationsPage

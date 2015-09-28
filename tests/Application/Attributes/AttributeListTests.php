@@ -62,5 +62,22 @@ class AttributeListTests extends TestBase
 
 		$this->assertEquals(array(new Attribute($attribute1, 'att1'), new Attribute($attribute2, null), new Attribute($attribute3, 'att3')), $values);
 	}
+
+	public function testWhenAttributeAppliesToSubsetOfEntities()
+	{
+		$entityId = 400;
+		$attribute1 = new TestCustomAttribute(1, 'a1', $entityId);
+
+		$value1 = new AttributeEntityValue(1, $entityId, 'att1');
+		$value2 = new AttributeEntityValue(1, 2, 'att2');
+
+		$list = new AttributeList();
+		$list->AddDefinition($attribute1);
+		$list->AddValue($value1);
+		$list->AddValue($value2);
+
+		$values = $list->GetAttributes($entityId);
+
+		$this->assertEquals(array(new Attribute($attribute1, 'att1')), $values);
+	}
 }
-?>

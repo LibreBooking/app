@@ -119,8 +119,14 @@ function AttributeManagement(opts) {
 			}
 		});
 
-		elements.entityChoices.delegate('a', 'click', function (e) {
+		elements.entityChoices.delegate('a.all', 'click', function (e) {
 			onEntityChoiceClick(e);
+		});
+
+		elements.entityChoices.delegate('a.ok', 'click', function (e) {
+			e.preventDefault();
+			elements.entityChoices.hide();
+			handleEntitiesSelected();
 		});
 
 		elements.limitScope.change(function (e) {
@@ -148,7 +154,26 @@ function AttributeManagement(opts) {
 
 	};
 
+	function handleEntitiesSelected() {
+		elements.appliesToId.empty();
+		var entities = elements.entityChoices.find(':checked');
+		elements.appliesToId.append(entities);
+		if (entities.length > 0)
+		{
+			elements.appliesTo.text(entities.length);
+		}
+		else
+		{
+			elements.appliesTo.text(opts.allText);
+		}
+	}
+
 	var onEntityChoiceClick = function (e) {
+		e.preventDefault();
+		elements.entityChoices.hide();
+		elements.appliesToId.empty();
+		elements.entityChoices.find('input:checkbox').removeAttr('checked');
+		elements.appliesTo.text(opts.allText);
 	};
 
 	var showRelevantAttributeOptions = function (selectedType, optionsDiv) {
@@ -201,24 +226,28 @@ function AttributeManagement(opts) {
 		$('#editType' + selectedAttribute.type).show();
 
 		$('#editAttributeLabel').val(selectedAttribute.label);
-		$('#editAttributeRequired').prop('checked',selectedAttribute.required);
-		$('#editAttributeUnique').prop('checked',selectedAttribute.unique);
-		$('#editAttributeAdminOnly').prop('checked',selectedAttribute.adminOnly);
+		$('#editAttributeRequired').prop('checked', selectedAttribute.required);
+		$('#editAttributeUnique').prop('checked', selectedAttribute.unique);
+		$('#editAttributeAdminOnly').prop('checked', selectedAttribute.adminOnly);
 
 		$('#editAttributeRegex').val(selectedAttribute.regex);
 		$('#editAttributePossibleValues').val(selectedAttribute.possibleValues);
 		$('#editAttributeSortOrder').val(selectedAttribute.sortOrder);
 		$('#editAttributeEntityId').val(selectedAttribute.entityId);
 
-		if (selectedAttribute.entityDescription == '')
+		elements.entityChoices.empty();
+		if (selectedAttribute.entityDescriptions.length == 0)
 		{
 			elements.appliesTo.text(options.allText);
 			elements.appliesToId.val('');
 		}
 		else
 		{
-			elements.appliesTo.text(selectedAttribute.entityDescription);
-			elements.appliesToId.val(selectedAttribute.entityId);
+			$.each(selectedAttribute.entityIds, function (i, id) {
+				elements.entityChoices.append($('<input type="checkbox" name="ATTRIBUTE_ENTITY[]" value="' + id + '" checked="checked"/>'));
+			});
+			handleEntitiesSelected();
+			elements.appliesToId.hide();
 		}
 
 		var limitScope = $('#editAttributeLimitScope');
@@ -278,6 +307,11 @@ function AttributeManagement(opts) {
 	};
 
 	var showEntities = function (element, categoryId) {
+		var selectedIds = [];
+		elements.appliesToId.find(':checked').each(function (i, v) {
+			selectedIds.push($(v).val());
+		});
+
 		elements.entityChoices.empty();
 		elements.entityChoices.css({left: element.offset().left, top: element.offset().top + element.height()});
 		elements.entityChoices.show();
@@ -301,9 +335,14 @@ function AttributeManagement(opts) {
 			data = getResourceTypes();
 		}
 
-		var items = ['<div><a href="#" entity-id="">' + options.allText + '</a></div>'];
+		var items = ['<li><a href="#" class="all">' + options.allText + '</a> <a href="#" class="ok">OK</a></li>'];
 		$.each(data, function (index, item) {
-			items.push('<div><a href="#" entity-id="' + item.Id + '">' + item.Name + '</a></div>');
+			var checked = '';
+			if (selectedIds.indexOf(item.Id) != -1)
+			{
+				checked = ' checked="checked" '
+			}
+			items.push('<li><label><input type="checkbox" name="ATTRIBUTE_ENTITY[]" value="' + item.Id + '"' + checked + '/>' + item.Name + '</label></li>');
 		});
 
 		elements.entityChoices.empty();
