@@ -1,4 +1,6 @@
 function ajaxPost(formElement, url, onBefore, onAfter) {
+	BeforeSerialize(formElement);
+
 	$.ajax({
 		type: 'POST',
 		data: formElement.serialize(),
@@ -195,9 +197,8 @@ function BeforeFormSubmit(formData, jqForm, opts) {
 	return isValid;
 }
 
-function BeforeSerializeDecorator(onBeforeSerialize)
-{
-	return function(jqForm, options){
+function BeforeSerializeDecorator(onBeforeSerialize) {
+	return function (jqForm, options) {
 		BeforeSerialize(jqForm, options);
 		if (onBeforeSerialize)
 		{
@@ -205,16 +206,22 @@ function BeforeSerializeDecorator(onBeforeSerialize)
 		}
 	}
 }
-function BeforeSerialize(jqForm, options)
-{
+function BeforeSerialize(jqForm, options) {
 	var csrf_token = $('#csrf_token');
-	if (csrf_token.length != 0)
+	if (csrf_token.length != 0 && $(jqForm).find('#csrf_token').length == 0)
 	{
 		$(jqForm).append(csrf_token);
 	}
 }
 
 function PerformAsyncAction(element, urlCallback, indicator, successCallback) {
+	var data = null;
+	var csrf_token = $('#csrf_token');
+	if (csrf_token.length != 0)
+	{
+		data = csrf_token.serialize();
+	}
+
 	if (indicator)
 	{
 		element.after(indicator);
@@ -222,6 +229,7 @@ function PerformAsyncAction(element, urlCallback, indicator, successCallback) {
 	}
 	$.post(
 			urlCallback(),
+			data,
 			function (data) {
 				if (indicator)
 				{
@@ -256,6 +264,11 @@ function PerformAsyncPost(url, options) {
 		},
 		data: {}
 	}, options);
+	var csrf_token = $('#csrf_token');
+	if (csrf_token.length != 0)
+	{
+		opts.data = csrf_token.serialize();
+	}
 	if (opts.indicator)
 	{
 		opts.element.after(opts.indicator);
