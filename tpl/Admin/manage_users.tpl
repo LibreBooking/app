@@ -215,13 +215,13 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 								</div>
 							</div>
 							<div class="col-sm-12 col-md-6">
-							<div class="form-group has-feedback">
-								<label for="addTimezone">{translate key="Timezone"}</label>
-								<select id="addTimezone" {formname key='TIMEZONE'} class="form-control">
-									{html_options values=$Timezones output=$Timezones selected=$Timezone}
-								</select>
+								<div class="form-group has-feedback">
+									<label for="addTimezone">{translate key="Timezone"}</label>
+									<select id="addTimezone" {formname key='TIMEZONE'} class="form-control">
+										{html_options values=$Timezones output=$Timezones selected=$Timezone}
+									</select>
+								</div>
 							</div>
-						</div>
 						</div>
 						<div class="row">
 							<div class="col-sm-12 col-md-6">
@@ -237,7 +237,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 								<div class="col-xs-12 col-sm-6">
 									{control type="AttributeControl" attribute=$AttributeList[0]}
 								</div>
-								{else}
+							{else}
 								<div class="col-sm-12 col-md-6">&nbsp;</div>
 							{/if}
 						</div>
@@ -283,8 +283,12 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 						</div>
 						<div id="importErrors" class="error no-show"></div>
 						<div id="importResult" class="alert alert-success no-show">
-							<span>{translate key=RowsImported}</span> <div id="importCount" class="inline bold">0</div>
-							<span>{translate key=RowsSkipped}</span> <div id="importSkipped" class="inline bold">0</div>
+							<span>{translate key=RowsImported}</span>
+
+							<div id="importCount" class="inline bold">0</div>
+							<span>{translate key=RowsSkipped}</span>
+
+							<div id="importSkipped" class="inline bold">0</div>
 							<a class="" href="{$smarty.server.SCRIPT_NAME}">{translate key=Done} <span class="fa fa-refresh"></span></a>
 						</div>
 						<div class="margin-bottom-25">
@@ -514,6 +518,16 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 					<div id="removedGroups">
 					</div>
+
+					<form id="addGroupForm" method="post" ajaxAction="addUser">
+						<input type="hidden" id="addGroupId" {formname key=GROUP_ID} />
+						<input type="hidden" id="addGroupUserId" {formname key=USER_ID} />
+					</form>
+
+					<form id="removeGroupForm" method="post" ajaxAction="removeUser">
+						<input type="hidden" id="removeGroupId" {formname key=GROUP_ID} />
+						<input type="hidden" id="removeGroupUserId" {formname key=USER_ID} />
+					</form>
 				</div>
 			</div>
 		</div>
@@ -554,8 +568,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 	{jsfile src="js/colorpicker.js"}
 
 	<script type="text/javascript">
-		function setUpEditables()
-		{
+		function setUpEditables() {
 			$.fn.editable.defaults.mode = 'popup';
 			$.fn.editable.defaults.toggle = 'manual';
 			$.fn.editable.defaults.emptyclass = '';
@@ -566,8 +579,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			});
 		}
 
-		$(document).ready(function ()
-		{
+		$(document).ready(function () {
 			var actions = {
 				activate: '{ManageUsersActions::Activate}',
 				deactivate: '{ManageUsersActions::Deactivate}'
@@ -607,13 +619,11 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			{/foreach}
 
 			$('#reservationColor').ColorPicker({
-				onSubmit: function (hsb, hex, rgb, el)
-				{
+				onSubmit: function (hsb, hex, rgb, el) {
 					$(el).val(hex);
 					$(el).ColorPickerHide();
 				},
-				onBeforeShow: function ()
-				{
+				onBeforeShow: function () {
 					$(this).ColorPickerSetColor(this.value);
 				}
 			});

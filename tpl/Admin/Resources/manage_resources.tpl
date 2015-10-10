@@ -993,6 +993,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 					</div>
 				</div>
 			</div>
+			{csrf_token}
 		</form>
 	</div>
 
