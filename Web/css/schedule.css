@@ -263,3 +263,6 @@ a.toggle-sidebar {
 #showFullWeek {
   display: block;
 }
+.schedule-legend {
+  margin-bottom: 10px;
+}

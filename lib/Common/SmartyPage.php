@@ -762,7 +762,7 @@ class SmartyPage extends Smarty
 
 	public function DisplayIndicator($params, &$smarty)
 	{
-		$id = isset($params['id']) ? $params['id'] : 'indicator-spinner';
+		$id = isset($params['id']) ? $params['id'] : '';
 		$spinClass = isset($params['spinClass']) ? $params['spinClass'] : 'fa-spinner';
 		$size = isset($params['size']) ? "fa-{$params['size']}x" : 'fa-2x';
 		$show = isset($params['show']) ? '' : 'no-show';

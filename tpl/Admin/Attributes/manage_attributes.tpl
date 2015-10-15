@@ -271,6 +271,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 	</div>
 
 	{csrf_token}
+	{indicator id="indicator"}
 
 	<input type="hidden" id="activeId" value=""/>
 

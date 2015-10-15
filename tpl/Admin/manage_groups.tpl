@@ -23,7 +23,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 	<form id="addGroupForm" class="form-inline" role="form" method="post">
 		<div class="panel panel-default" id="add-group-panel">
-			<div class="panel-heading">{translate key="AddGroup"} {showhide_icon}></div>
+			<div class="panel-heading">{translate key="AddGroup"} {showhide_icon}</div>
 			<div class="panel-body add-contents">
 				<div id="addGroupResults" class="error" style="display:none;"></div>
 				<div class="form-group has-feedback">
