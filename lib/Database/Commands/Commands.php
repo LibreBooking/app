@@ -1400,6 +1400,15 @@ class GetResourceGroupCommand extends SqlCommand
 	}
 }
 
+class GetResourceGroupAssignmentsCommand extends SqlCommand
+{
+	public function __construct($resourceId)
+	{
+		parent::__construct(Queries::GET_RESOURCE_GROUP_ASSIGNMENTS);
+		$this->AddParameter(new Parameter(ParameterNames::RESOURCE_ID, $resourceId));
+	}
+}
+
 class GetResourceTypeCommand extends SqlCommand
 {
 	public function __construct($resourceTypeId)

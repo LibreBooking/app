@@ -350,7 +350,8 @@ class Queries
 	const GET_ALL_RESOURCES =
 			'SELECT r.*, s.admin_group_id as s_admin_group_id,
 		(SELECT GROUP_CONCAT(CONCAT(cav.custom_attribute_id, \'=\', cav.attribute_value) SEPARATOR "!sep!")
-						FROM custom_attribute_values cav WHERE cav.entity_id = r.resource_id AND cav.attribute_category = 4) as attribute_list
+						FROM custom_attribute_values cav WHERE cav.entity_id = r.resource_id AND cav.attribute_category = 4) as attribute_list,
+		(SELECT GROUP_CONCAT(rga.resource_group_id SEPARATOR "!sep!") FROM resource_group_assignment rga WHERE rga.resource_id = r.resource_id) AS group_list
 		FROM resources r
 		INNER JOIN schedules s ON r.schedule_id = s.schedule_id
 		ORDER BY COALESCE(r.sort_order,0), r.name';
@@ -381,7 +382,7 @@ class Queries
 
 	const GET_ALL_RESOURCE_TYPES = 'SELECT *,
 			(SELECT GROUP_CONCAT(CONCAT(cav.custom_attribute_id, \'=\', cav.attribute_value) SEPARATOR "!sep!")
-							FROM custom_attribute_values cav INNER JOIN custom_attribute_entities cae on cav.attribute_id = cae.attribute_id
+							FROM custom_attribute_values cav INNER JOIN custom_attribute_entities cae on cav.custom_attribute_id = cae.custom_attribute_id
 							WHERE cav.entity_id = r.resource_type_id AND cav.attribute_category = 5) as attribute_list
 							FROM resource_types r';
 
@@ -414,7 +415,7 @@ class Queries
 												FROM resource_types rt INNER JOIN custom_attribute_entities e
 												WHERE e.custom_attribute_id = a.custom_attribute_id AND rt.resource_type_id = e.entity_id ORDER BY e.entity_id)
 			ELSE null
-			END as entity_descriptions
+			END as entity_descriptions,
 			CASE
 			WHEN a.secondary_category = 2 THEN CONCAT(u2.fname, " ", u2.lname)
 			WHEN a.secondary_category = 4 THEN r2.name
@@ -560,6 +561,8 @@ class Queries
 			WHERE r.public_id = @publicid';
 
 	const GET_RESOURCE_GROUP_BY_ID = 'SELECT * FROM resource_groups WHERE resource_group_id = @resourcegroupid';
+
+	const GET_RESOURCE_GROUP_ASSIGNMENTS = 'SELECT * FROM resource_group_assignment WHERE resource_id = @resourceid';
 
 	const GET_RESOURCE_GROUP_BY_PUBLIC_ID = 'SELECT * FROM resource_groups WHERE public_id = @publicid';
 

@@ -291,7 +291,23 @@ interface IManageResourcesPage extends IUpdateResourcePage, IActionPage, IPageab
 	 */
 	public function BindUpdatedAccess($resource);
 
+	/**
+	 * @param BookableResource $resource
+	 * @param ResourceGroup[] $groupList
+	 */
+	public function BindUpdatedResourceGroups($resource, $groupList);
+
 	public function SetAttributeValueAsJson($attributeValue);
+
+	/**
+	 * @param ResourceGroupTree $resourceGroups
+	 */
+	public function BindResourceGroups(ResourceGroupTree $resourceGroups);
+
+	/**
+	 * @return int[]
+	 */
+	public function GetResourceGroupIds();
 }
 
 class ManageResourcesPage extends ActionPage implements IManageResourcesPage
@@ -727,6 +743,17 @@ class ManageResourcesPage extends ActionPage implements IManageResourcesPage
 	}
 
 	/**
+	 * @param BookableResource $resource
+	 * @param ResourceGroup[] $groupList
+	 */
+	public function BindUpdatedResourceGroups($resource, $groupList)
+	{
+		$this->Set('resource', $resource);
+		$this->Set('ResourceGroupList', $groupList);
+		$this->Display('Admin/Resources/manage_resources_groups.tpl');
+	}
+
+	/**
 	 * @return string
 	 */
 	public function GetAttributeId()
@@ -748,6 +775,31 @@ class ManageResourcesPage extends ActionPage implements IManageResourcesPage
 	{
 		return $this->GetForm(FormKeys::GROUP_ID);
 	}
+
+	/**
+	 * @param ResourceGroupTree $resourceGroups
+	 */
+	public function BindResourceGroups(ResourceGroupTree $resourceGroups)
+	{
+		$this->Set('ResourceGroups', json_encode($resourceGroups->GetGroups(false)));
+		$groupList = $resourceGroups->GetGroupList(false);
+		$this->Set('ResourceGroupList', $groupList);
+	}
+
+	/**
+	 * @return int[]
+	 */
+	public function GetResourceGroupIds()
+	{
+		$groupIds = $this->GetForm(FormKeys::GROUP_ID);
+		if (empty($groupIds))
+		{
+			return array();
+		}
+
+		return $groupIds;
+	}
+
 }
 
 class ResourceFilterValues

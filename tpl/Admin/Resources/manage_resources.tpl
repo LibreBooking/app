@@ -314,15 +314,6 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 							<div class="durationPlaceHolder">
 								{include file="Admin/Resources/manage_resources_duration.tpl" resource=$resource}
 							</div>
-
-							<h5 class="inline">{translate key='Capacity'}</h5>
-							<a href="#" class="inline update changeCapacity">
-								<span class="fa fa-pencil-square-o"></span>
-							</a>
-
-							<div class="capacityPlaceHolder">
-								{include file="Admin/Resources/manage_resources_capacity.tpl" resource=$resource}
-							</div>
 						</div>
 
 						<div class="col-xs-6">
@@ -336,10 +327,32 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 							</div>
 						</div>
 
-						<div class="col-xs-12">
+						<div class="col-xs-6">
+							<h5 class="inline">{translate key='Capacity'}</h5>
+							<a href="#" class="inline update changeCapacity">
+								<span class="fa fa-pencil-square-o"></span>
+							</a>
+
+							<div class="capacityPlaceHolder">
+								{include file="Admin/Resources/manage_resources_capacity.tpl" resource=$resource}
+							</div>
+						</div>
+
+						<div class="col-xs-6">
 							<h5>{translate key='Permissions'}</h5>
 							<a href="#" class="update changeUsers">{translate key=Users}</a> |
 							<a href="#" class="update changeGroups">{translate key=Groups}</a>
+						</div>
+
+						<div class="col-xs-6">
+							<h5 class="inline">{translate key='ResourceGroups'}</h5>
+							<a href="#" class="inline update changeResourceGroups">
+								<span class="fa fa-pencil-square-o"></span>
+							</a>
+
+							<div class="resourceGroupsPlaceHolder">
+								{include file="Admin/Resources/manage_resources_groups.tpl" resource=$resource}
+							</div>
 						</div>
 
 					</div>
@@ -1090,10 +1103,34 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		<input type="hidden" id="addGroupId" {formname key=GROUP_ID} />
 	</form>
 
+	<div class="modal fade" id="resourceGroupDialog" tabindex="-1" role="dialog"
+		 aria-labelledby="resourceGroupsModalLabel"
+		 aria-hidden="true">
+		<form id="resourceGroupForm" method="post" ajaxAction="{ManageResourcesActions::ActionChangeResourceGroups}">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+						<h4 class="modal-title" id="resourceGroupsModalLabel">{translate key=ResourceGroups}</h4>
+					</div>
+					<div class="modal-body">
+						<div id="resourceGroups">{translate key=None}</div>
+					</div>
+					<div class="modal-footer">
+						{cancel_button}
+						{update_button}
+						{indicator}
+					</div>
+				</div>
+			</div>
+		</form>
+	</div>
+
 	{csrf_token}
 
 	{jsfile src="ajax-helpers.js"}
 	{jsfile src="autocomplete.js"}
+	{jsfile src="js/tree.jquery.js"}
 	{jsfile src="admin/resource.js"}
 
 	<script type="text/javascript">
@@ -1316,6 +1353,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			};
 			{/if}
 
+			resource.resourceGroupIds = [{$resource->GetResourceGroupIds()|join:','}]
+
 			resourceManagement.add(resource);
 			{/foreach}
 
@@ -1325,6 +1364,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 			resourceManagement.init();
 			resourceManagement.initializeStatusFilter('{$ResourceStatusFilterId}', '{$ResourceStatusReasonFilterId}');
+			resourceManagement.addResourceGroups({$ResourceGroups});
 
 			$('#filterTable').showHidePanel();
 		});

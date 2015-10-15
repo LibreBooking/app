@@ -46,12 +46,19 @@ class ResourceRepository implements IResourceRepository
 	 */
 	public function GetScheduleResources($scheduleId)
 	{
-		$command = new GetScheduleResourcesCommand($scheduleId);
+		if ($scheduleId == -1)
+		{
+			$filter = new SqlFilterNull();
+		}
+		else
+		{
+			$filter = new SqlFilterEquals(new SqlFilterColumn('r', ColumnNames::SCHEDULE_ID), $scheduleId);
+		}
+		$command = new FilterCommand(new GetAllResourcesCommand(), $filter);
 
 		$resources = array();
 
-		$reader = ServiceLocator::GetDatabase()
-								->Query($command);
+		$reader = ServiceLocator::GetDatabase()->Query($command);
 
 		while ($row = $reader->GetRow())
 		{
@@ -66,8 +73,7 @@ class ResourceRepository implements IResourceRepository
 	public function GetResourceList()
 	{
 		$resources = array();
-		$reader = ServiceLocator::GetDatabase()
-								->Query(new GetAllResourcesCommand());
+		$reader = ServiceLocator::GetDatabase()->Query(new GetAllResourcesCommand());
 
 		while ($row = $reader->GetRow())
 		{
@@ -154,8 +160,7 @@ class ResourceRepository implements IResourceRepository
 			$resource = BookableResource::Create($row);
 
 			$getAttributes = new GetAttributeValuesCommand($resource->GetId(), CustomAttributeCategory::RESOURCE);
-			$attributeReader = ServiceLocator::GetDatabase()
-											 ->Query($getAttributes);
+			$attributeReader = ServiceLocator::GetDatabase()->Query($getAttributes);
 
 			while ($attributeRow = $attributeReader->GetRow())
 			{
@@ -163,6 +168,16 @@ class ResourceRepository implements IResourceRepository
 			}
 
 			$attributeReader->Free();
+
+			$getGroupAssignments = new GetResourceGroupAssignmentsCommand($resource->GetId());
+			$groupAssignmentReader = ServiceLocator::GetDatabase()->Query($getGroupAssignments);
+
+			while ($groupAssignmentRow = $groupAssignmentReader->GetRow())
+			{
+				$resource->WithResourceGroupId($groupAssignmentRow[ColumnNames::RESOURCE_GROUP_ID]);
+			}
+
+			$groupAssignmentReader->Free();
 		}
 
 		$reader->Free();

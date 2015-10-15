@@ -59,7 +59,11 @@ function ResourceManagement(opts) {
 		browseGroupDialog: $('#allGroups'),
 		browseGroupsButton: $('#browseGroups'),
 		resourceGroupList:$('#resourceGroupList'),
-		allGroupsList:$('#allGroupsList')
+		allGroupsList:$('#allGroupsList'),
+
+		resourceGroupDialog: $('#resourceGroupDialog'),
+		resourceGroupForm: $('#resourceGroupForm'),
+		groupDiv:$('#resourceGroups')
 	};
 
 	var resources = {};
@@ -192,6 +196,11 @@ function ResourceManagement(opts) {
 			details.find('.changeGroups').click(function(e) {
 				changeGroups();
 				elements.groupDialog.modal('show');
+			});
+
+			details.find('.changeResourceGroups').click(function(e) {
+				changeResourceGroups();
+				elements.resourceGroupDialog.modal('show');
 			});
 		});
 
@@ -329,6 +338,7 @@ function ResourceManagement(opts) {
 		ConfigureAsyncForm(elements.removeUserForm, defaultSubmitCallback(elements.removeUserForm), changeUsers, errorHandler);
 		ConfigureAsyncForm(elements.addGroupForm, defaultSubmitCallback(elements.addGroupForm), changeGroups, errorHandler);
 		ConfigureAsyncForm(elements.removeGroupForm, defaultSubmitCallback(elements.removeGroupForm), changeGroups, errorHandler);
+		ConfigureAsyncForm(elements.resourceGroupForm, defaultSubmitCallback(elements.resourceGroupForm), null, onResourceGroupsSaved);
 	};
 
 	ResourceManagement.prototype.add = function (resource) {
@@ -348,6 +358,28 @@ function ResourceManagement(opts) {
 		elements.statusOptionsFilter.val(statusId);
 		elements.statusOptionsFilter.trigger('change');
 		elements.statusReasonsFilter.val(reasonId);
+	};
+
+	ResourceManagement.prototype.addResourceGroups = function (resourceGroups)
+	{
+		elements.groupDiv.tree({
+			data: resourceGroups,
+			saveState: false,
+			dragAndDrop: false,
+			selectable: false,
+			autoOpen: true,
+
+			onCreateLi: function (node, $li)
+			{
+				var span = $li.find('span');
+				var itemName = span.text();
+				var id = 'group_id' + node.id;
+
+				var label = $('<div class="checkbox inline"><input group-id="' + node.id + '" name="group_id[]" type="checkbox" id="' + id + '" value="' + node.id + '"/><label for="' + id + '">' + itemName + '</label></div>');
+
+				$li.find('span').html(label);
+			}
+		});
 	};
 
 	var getSubmitCallback = function (action) {
@@ -483,6 +515,23 @@ function ResourceManagement(opts) {
 		resource.autoAssign = autoAssign.attr('data-value');
 
 		elements.accessDialog.modal('hide');
+	};
+
+	var onResourceGroupsSaved = function (resultHtml) {
+		var resource = getActiveResource();
+		var resourceDiv = $("div[data-resourceId=" + resource.id + "]");
+		resourceDiv.find('.resourceGroupsPlaceHolder').html(resultHtml);
+
+		var result = resourceDiv.find('.resourceGroupsPlaceHolder');
+		var groupIdElements = result.find('.resourceGroupId');
+
+		var groupIds = [];
+		$.each(groupIdElements, function(i, group){
+			groupIds.push($(group).attr('data-value'));
+		});
+		resource.resourceGroupIds = groupIds;
+
+		elements.resourceGroupDialog.modal('hide');
 	};
 
 	var showStatusPrompt = function (e) {
@@ -735,4 +784,14 @@ function ResourceManagement(opts) {
 
 		elements.browseGroupDialog.modal('show');
 	};
+
+	function changeResourceGroups()	{
+		var resource = getActiveResource();
+
+		elements.groupDiv.find(':checked').prop('checked', false);
+
+		$.each(resource.resourceGroupIds, function(i, id){
+			elements.groupDiv.find('[group-id=' + id+ ']').prop('checked', true);
+		});
+	}
 }

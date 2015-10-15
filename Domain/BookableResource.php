@@ -102,6 +102,7 @@ class BookableResource implements IResource
 	protected $_scheduleAdminGroupId;
 	protected $_sortOrder;
 	protected $_resourceTypeId;
+	protected $_resourceGroupIds = array();
 
 	/**
 	 * @var array|AttributeValue[]
@@ -211,6 +212,14 @@ class BookableResource implements IResource
 				$resource->WithAttribute(new AttributeValue($id, $value));
 			}
 		}
+		if (isset($row[ColumnNames::RESOURCE_GROUP_LIST]))
+		{
+			$groupIds = explode('!sep!', $row[ColumnNames::RESOURCE_GROUP_LIST]);
+			for ($i = 0; $i < count($groupIds); $i++)
+			{
+				$resource->WithResourceGroupId($groupIds[$i]);
+			}
+		}
 
 		return $resource;
 	}
@@ -314,6 +323,30 @@ class BookableResource implements IResource
 	public function SetMinLength($value)
 	{
 		$this->_minLength = $this->GetIntervalValue($value);
+	}
+
+	/**
+	 * @param $resourceGroupIds int[]
+	 */
+	public function SetResourceGroupIds($resourceGroupIds)
+	{
+		$this->_resourceGroupIds = $resourceGroupIds;
+	}
+
+	/**
+	 * @param $resourceGroupId int
+	 */
+	public function WithResourceGroupId($resourceGroupId)
+	{
+		$this->_resourceGroupIds[] = $resourceGroupId;
+	}
+
+	/**
+	 * @return int[]
+	 */
+	public function GetResourceGroupIds()
+	{
+		return $this->_resourceGroupIds;
 	}
 
 	private function GetIntervalValue($value)

@@ -45,14 +45,16 @@ function HasResponseText(responseText) {
 
 function ConfigureAsyncForm(formElement, urlCallback, successHandler, responseHandler, options) {
 	var validationSummary = formElement.find('.validationSummary');
+	var beforeSerialize = (options ? options.onBeforeSerialize : null);
 	var opts = $.extend(
 			{
 				dataType: null,
 				onBeforeSubmit: BeforeFormSubmit,
-				onBeforeSerialize: BeforeSerializeDecorator(opts.onBeforeSerialize),
 				target: null,
 				validationSummary: validationSummary.length > 0 ? validationSummary : $('.validationSummary')
 			}, options);
+
+	opts.onBeforeSerialize = BeforeSerializeDecorator(beforeSerialize);
 
 	formElement.submit(function () {
 

@@ -173,6 +173,7 @@ function ResourceGroupManagement(opts)
 		elements.activeId.val(node.id);
 		$('#groupParentId').val(node.id);
 		$('#childName').val('');
+		$('#childName').focus();
 		elements.addChildDialog.modal("show");
 	}
 
