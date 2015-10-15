@@ -119,9 +119,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			</form>
 		</div>
 		<div class="panel-footer">
-			<button id="filter" class="btn btn-primary btn-sm"><span
-						class="glyphicon glyphicon-search"></span> {translate key=Filter}</button>
-			<button id="clearFilter" class="btn btn-link btn-sm">{translate key=Reset}</button>
+			{filter_button id="filter" class="btn-sm"}
+			{reset_button id="clearFilter" class="btn-sm"}
 		</div>
 	</div>
 

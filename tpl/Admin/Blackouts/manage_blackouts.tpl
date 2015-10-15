@@ -128,8 +128,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 				</div>
 			</div>
 			<div class="panel-footer">
-				<button id="filter" class="btn btn-primary btn-sm"><span class="fa fa-search"></span> {translate key=Filter}
-				</button>
+				{filter_button class="btn-sm"}
 				<button id="showAll" class="btn btn-link btn-sm">{translate key=ViewAll}</button>
 			</div>
 		</div>
