@@ -200,13 +200,15 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 							</div>
 
 							{foreach from=$ResourceAttributes item=attribute}
-								<div class="form-group">
-									{control type="AttributeControl" attribute=$attribute align='vertical' searchmode=true namePrefix='r' class="input-sm"}
-								</div>
+								{*<div class="form-group">*}
+									{control type="AttributeControl" attribute=$attribute align='vertical' searchmode=true namePrefix='r' inputClass="input-sm"}
+								{*</div>*}
 							{/foreach}
 
 							{foreach from=$ResourceTypeAttributes item=attribute}
-								<div class="form-group">{control type="AttributeControl" attribute=$attribute align='vertical' searchmode=true namePrefix='rt' class="input-sm"}</div>
+								{*<div class="form-group">*}
+									{control type="AttributeControl" attribute=$attribute align='vertical' searchmode=true namePrefix='rt' inputClass="input-sm"}
+								{*</div>*}
 							{/foreach}
 
 							<div class="btn-submit">
