@@ -70,7 +70,25 @@ class PrivacyFilter implements IPrivacyFilter
 	{
 		$hideReservationDetails = Configuration::Instance()->GetSectionKey(ConfigSection::PRIVACY,
 																		   ConfigKeys::PRIVACY_HIDE_RESERVATION_DETAILS,
-																		   new BooleanConverter());
+																		   new LowerCaseConverter());
+
+		if ($reservationView != null)
+		{
+			/** @var ReservationView $reservationView */
+			if ($hideReservationDetails == 'past')
+			{
+				$hideReservationDetails = $reservationView->EndDate->LessThan(Date::Now());
+			}
+			elseif ($hideReservationDetails == 'future')
+			{
+				$hideReservationDetails = $reservationView->EndDate->GreaterThan(Date::Now());
+			}
+			else
+			{
+				$converter = new BooleanConverter();
+				$hideReservationDetails = $converter->Convert($hideReservationDetails);
+			}
+		}
 
 		return $this->CanView($hideReservationDetails, $currentUser, $ownerId, $reservationView);
 	}

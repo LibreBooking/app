@@ -303,6 +303,11 @@ class ConfigSetting
 
 		$type = strtolower($value) == 'true' || strtolower($value) == 'false' ? ConfigSettingType::Boolean : ConfigSettingType::String;
 
+		if ($key == ConfigKeys::PRIVACY_HIDE_RESERVATION_DETAILS && $section == ConfigSection::PRIVACY)
+		{
+			$type = ConfigSettingType::String;
+		}
+
 		$this->Type = $type;
 
 		if ($type == ConfigSettingType::Boolean)

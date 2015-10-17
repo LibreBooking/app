@@ -425,6 +425,9 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		<p class="setting"><span>$conf['settings']['privacy']['hide.user.details']</span>If non-adminstrators can view personal
 			information about other users. Default is false.</p>
 
+		<p class="setting"><span>$conf['settings']['privacy']['hide.reservation.details']</span>If non-adminstrators can view reservation details.
+					Options are true, false, past, future. Default is false.</p>
+
 		<p class="setting"><span>$conf['settings']['reservation']['start.time.constraint']</span>When reservations can be
 			created or edited.
 			Options are future, current, none. Future means reservations cannot be created or modified if the starting time of

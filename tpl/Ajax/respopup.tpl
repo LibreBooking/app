@@ -20,7 +20,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 <div class="res_popup_details" style="margin:0">
 	{capture "name"}
 	<div class="user">
-		{if $hideUserInfo}
+		{if $hideUserInfo || $hideDetails}
 			{translate key=Private}
 		{else}
 			{$fullName}
@@ -53,7 +53,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 	{$formatter->Add('resources', $smarty.capture.resources)}
 
 	{capture "participants"}
-	{if !$hideUserInfo}
+	{if !$hideUserInfo && !$hideDetails}
 	<div class="users">
 	{translate key="Participants"} ({$participants|@count}):
 	{foreach from=$participants item=user name=participant_loop}
@@ -68,6 +68,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 	{$formatter->Add('participants', $smarty.capture.participants)}
 
 	{capture "accessories"}
+	{if !$hideDetails}
 	<div class="accessories">
 	{translate key="Accessories"} ({$accessories|@count}):
 	{foreach from=$accessories item=accessory name=accessory_loop}
@@ -75,6 +76,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		{if !$smarty.foreach.accessory_loop.last}, {/if}
 	{/foreach}
 	</div>
+	{/if}
 	{/capture}
 	{$formatter->Add('accessories', $smarty.capture.accessories)}
 
