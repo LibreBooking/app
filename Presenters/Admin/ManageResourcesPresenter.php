@@ -50,6 +50,7 @@ class ManageResourcesActions
 	const ActionRemoveUserPermission = 'removeUserPermission';
 	const ActionAddGroupPermission = 'addGroupPermission';
 	const ActionRemoveGroupPermission = 'removeGroupPermission';
+	const ActionChangeResourceGroups = 'changeResourceGroups';
 }
 
 class ManageResourcesPresenter extends ActionPresenter
@@ -133,6 +134,7 @@ class ManageResourcesPresenter extends ActionPresenter
 		$this->AddAction(ManageResourcesActions::ActionRemoveUserPermission, 'RemoveUserPermission');
 		$this->AddAction(ManageResourcesActions::ActionAddGroupPermission, 'AddGroupPermission');
 		$this->AddAction(ManageResourcesActions::ActionRemoveGroupPermission, 'RemoveGroupPermission');
+		$this->AddAction(ManageResourcesActions::ActionChangeResourceGroups, 'ChangeResourceGroups');
 	}
 
 	public function PageLoad()
@@ -184,6 +186,8 @@ class ManageResourcesPresenter extends ActionPresenter
 		$this->page->BindAttributeList($attributeList);
 
 		$this->InitializeFilter($filterValues, $resourceAttributes);
+
+		$this->page->BindResourceGroups($this->resourceRepository->GetResourceGroups(null, new ResourceFilterNone()));
 	}
 
 	public function Add()
@@ -688,6 +692,32 @@ class ManageResourcesPresenter extends ActionPresenter
 		$this->resourceRepository->RemoveResourceGroupPermission($resourceId, $groupId);
 	}
 
+	public function ChangeResourceGroups()
+	{
+		$resourceId = $this->page->GetResourceId();
+		$resourceGroups = $this->page->GetResourceGroupIds();
+
+		$resource = $this->resourceRepository->LoadById($resourceId);
+		$currentGroupIds = $resource->GetResourceGroupIds();
+
+		$diff = new ArrayDiff($currentGroupIds, $resourceGroups);
+
+		foreach ($diff->GetRemovedFromArray1() as $i => $groupId)
+		{
+			$this->resourceRepository->RemoveResourceFromGroup($resourceId, $groupId);
+		}
+
+		foreach ($diff->GetAddedToArray1() as $i => $groupId)
+		{
+			$this->resourceRepository->AddResourceToGroup($resourceId, $groupId);
+		}
+
+		$resource->SetResourceGroupIds($resourceGroups);
+
+		$groups = $this->resourceRepository->GetResourceGroups();
+		$this->page->BindUpdatedResourceGroups($resource, $groups->GetGroupList(false));
+	}
+
 	protected function LoadValidators($action)
 	{
 		if ($action == ManageResourcesActions::ActionChangeAttribute)
@@ -800,4 +830,17 @@ class GroupResults
 	 * @var GroupItemView[]
 	 */
 	public $Groups;
+}
+
+class ResourceFilterNone implements IResourceFilter
+{
+
+	/**
+	 * @param IResource $resource
+	 * @return bool
+	 */
+	function ShouldInclude($resource)
+	{
+		return false;
+	}
 }

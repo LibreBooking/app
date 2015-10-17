@@ -117,7 +117,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 					<div class="modal-body">
 						<div class="form-group">
 							<label for="childName">{translate key='Name'}</label>
-							<input id="childName" type="text" class="textbox required new-group" maxlength="85"
+							<input id="childName" type="text" class="form-control required new-group" maxlength="85"
 									{formname key=GROUP_NAME} />
 						</div>
 					</div>

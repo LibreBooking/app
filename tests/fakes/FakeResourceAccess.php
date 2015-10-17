@@ -106,6 +106,7 @@ class FakeResourceAccess extends ResourceRepository
 			ColumnNames::RESOURCE_STATUS_ID => $statusId,
 			ColumnNames::RESOURCE_STATUS_REASON_ID => $reasonId,
 			ColumnNames::RESOURCE_BUFFER_TIME => $bufferTime,
+			ColumnNames::RESOURCE_GROUP_LIST => '1!sep!2'
 		);
 
 		return $this;

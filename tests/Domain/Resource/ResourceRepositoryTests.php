@@ -261,13 +261,17 @@ class ResourceRepositoryTests extends TestBase
 		->With(1, 'value')
 		->With(2, 'value2');
 		$this->db->SetRow(1, $car->Rows());
+		$this->db->SetRow(2, array( array(ColumnNames::RESOURCE_ID => $id, ColumnNames::RESOURCE_GROUP_ID => 1)));
+
 		$loadResourceCommand = new GetResourceByIdCommand($id);
 		$attributes = new GetAttributeValuesCommand(1, CustomAttributeCategory::RESOURCE);
+		$groups = new GetResourceGroupAssignmentsCommand($id);
 
 		$resource = $this->repository->LoadById($id);
 
 		$this->assertTrue($this->db->ContainsCommand($loadResourceCommand));
 		$this->assertTrue($this->db->ContainsCommand($attributes));
+		$this->assertTrue($this->db->ContainsCommand($groups));
 		$this->assertNotNull($resource);
 		$this->assertEquals('value', $resource->GetAttributeValue(1));
 		$this->assertEquals('value2', $resource->GetAttributeValue(2));
@@ -335,9 +339,9 @@ class ResourceRepositoryTests extends TestBase
 		$this->db->SetRow(1, $assignmentRows->Rows());
 		$this->db->SetRow(2, $resourceRows->Rows());
 
-		$groups = $this->repository
-				  ->GetResourceGroups($scheduleId, new SkipResource5Filter())
-				  ->GetGroups();
+		$resourceGroupTree = $this->repository->GetResourceGroups($scheduleId, new SkipResource5Filter());
+		$groups = $resourceGroupTree->GetGroups();
+		$groupList = $resourceGroupTree->GetGroupList(false);
 
 		$getResourceGroupsCommand = new GetAllResourceGroupsCommand();
 		$getResourceGroupAssignments = new GetAllResourceGroupAssignmentsCommand($scheduleId);
@@ -359,6 +363,9 @@ class ResourceRepositoryTests extends TestBase
 
 		$this->assertEquals($getResourceGroupsCommand, $this->db->_Commands[0]);
 		$this->assertEquals($getResourceGroupAssignments, $this->db->_Commands[1]);
+
+		$this->assertEquals(count($groupRows->Rows()), count($groupList));
+		$this->assertEquals('group1a1', $groupList[3]->name);
 	}
 
 	public function testAddsResourceToGroup()

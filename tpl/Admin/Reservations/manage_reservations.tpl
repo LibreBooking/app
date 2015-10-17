@@ -82,9 +82,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			</form>
 		</div>
 		<div class="panel-footer">
-			<button id="filter" class="btn btn-primary btn-sm"><span
-						class="glyphicon glyphicon-search"></span> {translate key=Filter}</button>
-			<button id="clearFilter" class="btn btn-link btn-sm">{translate key=Reset}</button>
+			{filter_button class="btn-sm"}
+			{reset_button class="btn-sm"}
 		</div>
 	</div>
 
@@ -165,8 +164,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 	<div id="csvExport">
 		<a href="{$CsvExportUrl}" download="{$CsvExportUrl}" class="btn btn-default btn-sm">{translate key=ExportToCSV}
-			<span
-					class="glyphicon glyphicon-export"></span></a>
+			<span class="glyphicon glyphicon-export"></span></a>
 	</div>
 	{pagination pageInfo=$PageInfo}
 
@@ -253,6 +251,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 				</div>
 			</div>
 		</div>
+	</div>
 
 		{jsfile src="ajax-helpers.js"}
 		{jsfile src="admin/reservations.js"}

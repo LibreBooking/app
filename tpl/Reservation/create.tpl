@@ -329,7 +329,6 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 					<h4 class="modal-title" id="accessoryModalLabel">{translate key=AddAccessories}</h4>
 				</div>
 				<div class="modal-body">
-					{*<div id="dialogAddAccessories" class="dialog" title="{translate key=AddAccessories}" style="display:none;">*}
 					<table class="table table-condensed">
 						<thead>
 						<tr>

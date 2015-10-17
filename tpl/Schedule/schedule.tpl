@@ -146,7 +146,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 	{/block}
 
 	{block name="legend"}
-		<div class="hidden-xs row-fluid col-sm-12">
+		<div class="hidden-xs row-fluid col-sm-12 schedule-legend">
 			<div class="center">
 				<div class="legend reservable">{translate key=Reservable}</div>
 				<div class="legend unreservable">{translate key=Unreservable}</div>
@@ -158,7 +158,6 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 				<div class="legend restricted">{translate key=Restricted}</div>
 			</div>
 		</div>
-		<div style="height:10px" class="hidden-xs row">&nbsp;</div>
 	{/block}
 
 	<div class="row-fluid">
@@ -200,13 +199,15 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 							</div>
 
 							{foreach from=$ResourceAttributes item=attribute}
-								<div class="form-group">
-									{control type="AttributeControl" attribute=$attribute align='vertical' searchmode=true namePrefix='r' class="input-sm"}
-								</div>
+								{*<div class="form-group">*}
+									{control type="AttributeControl" attribute=$attribute align='vertical' searchmode=true namePrefix='r' inputClass="input-sm"}
+								{*</div>*}
 							{/foreach}
 
 							{foreach from=$ResourceTypeAttributes item=attribute}
-								<div class="form-group">{control type="AttributeControl" attribute=$attribute align='vertical' searchmode=true namePrefix='rt' class="input-sm"}</div>
+								{*<div class="form-group">*}
+									{control type="AttributeControl" attribute=$attribute align='vertical' searchmode=true namePrefix='rt' inputClass="input-sm"}
+								{*</div>*}
 							{/foreach}
 
 							<div class="btn-submit">

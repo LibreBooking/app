@@ -51,7 +51,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			</div>
 			<div class="panel-footer">
 			 	{add_button class="btn-sm"}
-				{filter_button class="btn-sm"}
+				{reset_button class="btn-sm"}
 				{indicator}
 			</div>
 		</div>

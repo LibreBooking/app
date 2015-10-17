@@ -43,7 +43,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 				</a>
 
 				<a href="#" id="import-users" class="add-link add-user">{translate key="Import"}
-					<span class="fa fa-upload icon"></span>
+					<span class="fa fa-upload icon add"></span>
 				</a>
 			</div>
 		</div>

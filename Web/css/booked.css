@@ -923,6 +923,9 @@ a.toggle-sidebar {
 #showFullWeek {
   display: block;
 }
+.schedule-legend {
+  margin-bottom: 10px;
+}
 #resourceDetailsPopup #userDetailsPopup {
   min-width: 300px;
   max-width: 1000px;

@@ -533,6 +533,7 @@ class en_us extends Language
 		$strings['RowsImported'] = 'Rows Imported';
 		$strings['RowsSkipped'] = 'Rows Skipped';
 		$strings['Columns'] = 'Columns';
+		$strings['Reserve'] = 'Reserve';
 		// End Strings
 
 		// Install
