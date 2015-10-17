@@ -90,6 +90,7 @@ class CalendarSubscriptionPresenter
 
 		$summaryFormat = Configuration::Instance()->GetSectionKey(ConfigSection::RESERVATION_LABELS, ConfigKeys::RESERVATION_LABELS_ICS_SUMMARY);
 
+		$reservationUserLevel = ReservationUserLevel::OWNER;
 		if (!empty($scheduleId))
 		{
 			$schedule = $this->subscriptionService->GetSchedule($scheduleId);
@@ -110,6 +111,7 @@ class CalendarSubscriptionPresenter
 		{
 			$user = $this->subscriptionService->GetUser($userId);
 			$uid = $user->Id();
+			$reservationUserLevel = ReservationUserLevel::ALL;
 			$summaryFormat = Configuration::Instance()->GetSectionKey(ConfigSection::RESERVATION_LABELS, ConfigKeys::RESERVATION_LABELS_MY_ICS_SUMMARY);
 		}
 		if (!empty($resourceGroupId))
@@ -119,7 +121,7 @@ class CalendarSubscriptionPresenter
 
 		if (!empty($uid) || !empty($sid) || !empty($rid) || !empty($resourceIds))
 		{
-			$res = $this->reservationViewRepository->GetReservationList($weekAgo, $nextYear, $uid, null, $sid, $rid);
+			$res = $this->reservationViewRepository->GetReservationList($weekAgo, $nextYear, $uid, $reservationUserLevel, $sid, $rid);
 		}
 		elseif (!empty($aid))
 		{
