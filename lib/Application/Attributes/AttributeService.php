@@ -175,7 +175,8 @@ class AttributeService implements IAttributeService
 		$attributes = $this->attributeRepository->GetByCategory($category);
 		foreach ($attributes as $attribute)
 		{
-			if ($attribute->UniquePerEntity() && count(array_intersect($entityIds, $attribute->EntityIds())) == 0)
+			if ( ($attribute->UniquePerEntity() && count(array_intersect($entityIds, $attribute->EntityIds())) == 0) ||
+					($attribute->HasSecondaryEntity() && !in_array($attribute->SecondaryEntityId(), $entityIds)) )
 			{
 				continue;
 			}

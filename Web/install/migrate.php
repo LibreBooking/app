@@ -405,7 +405,7 @@ class MigrationPresenter
 
 		$scheduleRepo = new ScheduleRepository();
 
-		$getExistingSchedules = new AdHocCommand('select legacyid from schedules');
+		$getExistingSchedules = new AdHocCommand('select legacyid from schedules where legacyid is not null');
 		$reader = $currentDatabase->Query($getExistingSchedules);
 
 		$knownIds = array();
@@ -465,7 +465,7 @@ class MigrationPresenter
 
 		$resourceRepo = new ResourceRepository();
 
-		$getExisting = new AdHocCommand('select legacyid from resources');
+		$getExisting = new AdHocCommand('select legacyid from resources where legacyid is not null');
 		$reader = $currentDatabase->Query($getExisting);
 
 		$knownIds = array();
@@ -543,7 +543,7 @@ class MigrationPresenter
 
 		$accessoryRepo = new AccessoryRepository();
 
-		$getExisting = new AdHocCommand('select legacyid from accessories');
+		$getExisting = new AdHocCommand('select legacyid from accessories where legacyid is not null');
 		$reader = $currentDatabase->Query($getExisting);
 
 		$knownIds = array();
@@ -589,7 +589,7 @@ class MigrationPresenter
 		$groupsMigrated = 0;
 		$groupRepo = new GroupRepository();
 
-		$getExisting = new AdHocCommand('select legacyid from groups');
+		$getExisting = new AdHocCommand('select legacyid from groups where legacyid is not null');
 		$reader = $currentDatabase->Query($getExisting);
 
 		$knownIds = array();
@@ -636,7 +636,7 @@ class MigrationPresenter
 	{
 		$usersMigrated = 0;
 
-		$getExisting = new AdHocCommand('select legacyid from users order by legacyid');
+		$getExisting = new AdHocCommand('select legacyid from users where legacyid is not null order by legacyid');
 		$reader = $currentDatabase->Query($getExisting);
 
 		$knownIds = array();
@@ -783,7 +783,7 @@ class MigrationPresenter
             FROM reservations r INNER JOIN reservation_users ru ON r.resid = ru.resid AND owner = 1
             ORDER BY r.resid LIMIT $reservationsMigrated, 100");
 
-		$getExisting = new AdHocCommand('select legacyid from reservation_series');
+		$getExisting = new AdHocCommand('select legacyid from reservation_series where legacyid is not null');
 		$reader = $currentDatabase->Query($getExisting);
 
 		$knownIds = array();

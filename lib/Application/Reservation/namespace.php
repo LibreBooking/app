@@ -38,3 +38,4 @@ require_once(ROOT_DIR . 'lib/Application/Reservation/ResourceStatusFilter.php');
 require_once(ROOT_DIR . 'lib/Application/Reservation/ResourceTypeFilter.php');
 require_once(ROOT_DIR . 'lib/Application/Reservation/CompositeResourceFilter.php');
 require_once(ROOT_DIR . 'lib/Application/Reservation/ReservationHandler.php');
+require_once(ROOT_DIR . 'lib/Application/Reservation/ReservationDetailsFilter.php');

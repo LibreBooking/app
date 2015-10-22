@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright 2012-2015 Nick Korbel
  *
@@ -13,7 +14,6 @@
  * You should have received a copy of the GNU General Public License
  * along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 class SlotLabelFactory
 {
 	/**
@@ -21,12 +21,23 @@ class SlotLabelFactory
 	 */
 	private $user = null;
 
-	public function __construct($user = null)
+	/**
+	 * @var PrivacyFilter
+	 */
+	private $privacyFilter;
+
+	public function __construct($user = null, $privacyFilter = null)
 	{
 		$this->user = $user;
 		if ($this->user == null)
 		{
 			$this->user = ServiceLocator::GetServer()->GetUserSession();
+		}
+
+		$this->privacyFilter = $privacyFilter;
+		if ($this->privacyFilter == null)
+		{
+			$this->privacyFilter = new PrivacyFilter(new ReservationAuthorization(PluginManager::Instance()->LoadAuthorization()));
 		}
 	}
 
@@ -48,11 +59,13 @@ class SlotLabelFactory
 	 */
 	public function Format(ReservationItemView $reservation, $format = null)
 	{
-		$shouldHide = Configuration::Instance()->GetSectionKey(ConfigSection::PRIVACY,
-															   ConfigKeys::PRIVACY_HIDE_USER_DETAILS,
-															   new BooleanConverter());
+		$shouldHideUser = Configuration::Instance()->GetSectionKey(ConfigSection::PRIVACY,
+																   ConfigKeys::PRIVACY_HIDE_USER_DETAILS,
+																   new BooleanConverter());
 
-		if ($shouldHide && (is_null($this->user) || ($this->user->UserId != $reservation->UserId && !$this->user->IsAdminForGroup($reservation->OwnerGroupIds()))))
+		$shouldHideDetails = ReservationDetailsFilter::HideReservationDetails($reservation->StartDate, $reservation->EndDate);
+
+		if (($shouldHideUser || $shouldHideDetails) && (is_null($this->user) || ($this->user->UserId != $reservation->UserId && !$this->user->IsAdminForGroup($reservation->OwnerGroupIds()))))
 		{
 			return '';
 		}

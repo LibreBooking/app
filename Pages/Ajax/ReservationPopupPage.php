@@ -317,8 +317,6 @@ class ReservationPopupPresenter
 																 ConfigKeys::PRIVACY_HIDE_USER_DETAILS,
 																 new BooleanConverter());
 
-		$hideReservationDetails = Configuration::Instance()->GetSectionKey(ConfigSection::PRIVACY, ConfigKeys::PRIVACY_HIDE_RESERVATION_DETAILS, new LowerCaseConverter());
-
 		$userSession = ServiceLocator::GetServer()->GetUserSession();
 		$tz = $userSession->Timezone;
 
@@ -329,19 +327,7 @@ class ReservationPopupPresenter
 			return;
 		}
 
-		if ($hideReservationDetails == 'past')
-		{
-			$hideReservationDetails = $reservation->EndDate->LessThan(Date::Now());
-		}
-		elseif ($hideReservationDetails == 'future')
-		{
-			$hideReservationDetails = $reservation->EndDate->GreaterThan(Date::Now());
-		}
-		else
-		{
-			$converter = new BooleanConverter();
-			$hideReservationDetails = $converter->Convert($hideReservationDetails);
-		}
+		$hideReservationDetails = ReservationDetailsFilter::HideReservationDetails($reservation->StartDate, $reservation->EndDate);
 
 		if ($hideReservationDetails || $hideUserInfo)
 		{
