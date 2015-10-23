@@ -131,6 +131,8 @@ class ConfigKeys
     const SECURITY_X_XSS = 'security.x-xss';
     const SECURITY_X_CONTENT_TYPE = 'security.x-content-type';
     const SECURITY_CONTENT_SECURITY_POLICY = 'security.content-security-policy';
+
+    const GOOGLE_ANALYTICS_TRACKING_ID = 'tracking.id';
 }
 
 class ConfigSection
@@ -152,4 +154,5 @@ class ConfigSection
 	const UPLOADS = 'uploads';
 	const RECAPTCHA = 'recaptcha';
 	const USERS = 'users';
+    const GOOGLE_ANALYTICS = 'google.analytics';
 }

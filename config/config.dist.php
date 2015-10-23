@@ -178,3 +178,7 @@ $conf['settings']['security']['security.x-frame'] = 'deny';
 $conf['settings']['security']['security.x-xss'] = '1; mode=block';
 $conf['settings']['security']['security.x-content-type'] = 'nosniff';
 $conf['settings']['security']['security.content-security-policy'] = "default-src 'self'"; // Requires careful tuning (know what your doing)
+/**
+ * Google Analytics settings
+ */
+$conf['settings']['google.analytics']['tracking.id'] = ''; // if set, Google Analytics tracking code will be added to every page in Booked

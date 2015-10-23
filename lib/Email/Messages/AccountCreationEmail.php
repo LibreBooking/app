@@ -23,9 +23,15 @@ class AccountCreationEmail extends EmailMessage
 	 */
 	private $user;
 
-	public function __construct(User $user)
+	/**
+	 * @var null|UserSession
+	 */
+	private $userSession;
+
+	public function __construct(User $user, $userSession = null)
 	{
 		$this->user = $user;
+		$this->userSession = $userSession;
 		parent::__construct(Configuration::Instance()->GetKey(ConfigKeys::LANGUAGE));
 	}
 
@@ -58,7 +64,11 @@ class AccountCreationEmail extends EmailMessage
 		$this->Set('Organization',	$this->user->GetAttribute('Organization'));
 		$this->Set('Position',		$this->user->GetAttribute('Position'));
 
+		if ($this->userSession != null && $this->userSession->UserId != $this->user->Id())
+		{
+			$this->Set('CreatedBy', new FullName($this->userSession->FirstName, $this->userSession->LastName));
+		}
+
 		return $this->FetchTemplate('AccountCreation.tpl');
 	}
 }
-?>

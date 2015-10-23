@@ -1,21 +1,22 @@
 <?php
 /**
-Copyright 2013-2015 Nick Korbel
-
-This file is part of Booked Scheduler is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
+ * Copyright 2013-2015 Nick Korbel
+ *
+ * This file is part of Booked Scheduler is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 require_once(ROOT_DIR . 'Domain/Access/namespace.php');
 require_once(ROOT_DIR . 'lib/Application/Authentication/namespace.php');
+require_once(ROOT_DIR . 'lib/Email/Messages/AccountDeletedEmail.php');
 
 interface IManageUsersService
 {
@@ -33,16 +34,16 @@ interface IManageUsersService
 	 * @return User
 	 */
 	public function AddUser(
-		$username,
-		$email,
-		$firstName,
-		$lastName,
-		$password,
-		$timezone,
-		$language,
-		$homePageId,
-		$extraAttributes,
-		$customAttributes);
+			$username,
+			$email,
+			$firstName,
+			$lastName,
+			$password,
+			$timezone,
+			$language,
+			$homePageId,
+			$extraAttributes,
+			$customAttributes);
 
 	/**
 	 * @param $userId int
@@ -91,24 +92,31 @@ class ManageUsersService implements IManageUsersService
 	 */
 	private $groupRepository;
 
-	public function __construct(IRegistration $registration, IUserRepository $userRepository, IGroupRepository $groupRepository)
+	/**
+	 * @var IUserViewRepository
+	 */
+	private $userViewRepository;
+
+	public function __construct(IRegistration $registration, IUserRepository $userRepository, IGroupRepository $groupRepository,
+								IUserViewRepository $userViewRepository)
 	{
 		$this->registration = $registration;
 		$this->userRepository = $userRepository;
 		$this->groupRepository = $groupRepository;
+		$this->userViewRepository = $userViewRepository;
 	}
 
 	public function AddUser(
-		$username,
-		$email,
-		$firstName,
-		$lastName,
-		$password,
-		$timezone,
-		$language,
-		$homePageId,
-		$extraAttributes,
-		$customAttributes)
+			$username,
+			$email,
+			$firstName,
+			$lastName,
+			$password,
+			$timezone,
+			$language,
+			$homePageId,
+			$extraAttributes,
+			$customAttributes)
 	{
 		$user = $this->registration->Register($username,
 											  $email,
@@ -133,7 +141,25 @@ class ManageUsersService implements IManageUsersService
 
 	public function DeleteUser($userId)
 	{
+		$user = $this->userRepository->LoadById($userId);
 		$this->userRepository->DeleteById($userId);
+
+		if (Configuration::Instance()->GetKey(ConfigKeys::REGISTRATION_NOTIFY, new BooleanConverter()))
+		{
+			$currentUser = ServiceLocator::GetServer()->GetUserSession();
+			$applicationAdmins = $this->userViewRepository->GetApplicationAdmins();
+			$groupAdmins = $this->userViewRepository->GetGroupAdmins($userId);
+
+			foreach ($applicationAdmins as $applicationAdmin)
+			{
+				ServiceLocator::GetEmailService()->Send(new AccountDeletedEmail($user, $applicationAdmin, $currentUser));
+			}
+
+			foreach ($groupAdmins as $groupAdmin)
+			{
+				ServiceLocator::GetEmailService()->Send(new AccountDeletedEmail($user, $groupAdmin, $currentUser));
+			}
+		}
 	}
 
 	public function UpdateUser($userId, $username, $email, $firstName, $lastName, $timezone, $extraAttributes)
@@ -177,7 +203,7 @@ class ManageUsersService implements IManageUsersService
 			}
 		}
 
-		foreach($existingGroupIds as $existingId)
+		foreach ($existingGroupIds as $existingId)
 		{
 			if (!in_array($existingId, $groupIds))
 			{

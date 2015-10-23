@@ -405,11 +405,6 @@ class UserRepository implements IUserRepository, IAccountActivationRepository
 
 		$user->WithId($id);
 
-		if (Configuration::Instance()->GetKey(ConfigKeys::REGISTRATION_NOTIFY, new BooleanConverter()))
-		{
-			ServiceLocator::GetEmailService()->Send(new AccountCreationEmail($user));
-		}
-
 		foreach ($user->GetAddedAttributes() as $added)
 		{
 			$db->Execute(new AddAttributeValueCommand($added->AttributeId, $added->Value, $user->Id(), CustomAttributeCategory::USER));

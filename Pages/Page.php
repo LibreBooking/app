@@ -130,6 +130,7 @@ abstract class Page implements IPage
 		$this->Set('IsMobile', $this->IsMobile);
 		$this->Set('IsTablet', $this->IsTablet);
 		$this->Set('IsDesktop', $this->IsDesktop);
+		$this->Set('GoogleAnalyticsTrackingId', Configuration::Instance()->GetSectionKey(ConfigSection::GOOGLE_ANALYTICS, ConfigKeys::GOOGLE_ANALYTICS_TRACKING_ID));
 	}
 
 	protected function SetTitle($title)

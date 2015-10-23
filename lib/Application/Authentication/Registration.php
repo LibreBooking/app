@@ -80,6 +80,11 @@ class Registration implements IRegistration
 		$userId = $this->_userRepository->Add($user);
 		$this->AutoAssignPermissions($userId);
 
+		if (Configuration::Instance()->GetKey(ConfigKeys::REGISTRATION_NOTIFY, new BooleanConverter()))
+		{
+			ServiceLocator::GetEmailService()->Send(new AccountCreationEmail($user, ServiceLocator::GetServer()->GetUserSession()));
+		}
+
 		return $user;
 	}
 

@@ -710,6 +710,7 @@ class en_us extends Language
 		$strings['ReservationStartingSoonSubject'] = 'Reservation for %s is starting soon';
 		$strings['ReservationEndingSoonSubject'] = 'Reservation for %s is ending soon';
 		$strings['UserAdded'] = 'A new user has been added';
+		$strings['UserDeleted'] = 'User account for %s was deleted by %s';
 		// End Email Subjects
 
 		$this->Strings = $strings;

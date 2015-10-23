@@ -67,4 +67,3 @@ class AccountActivationEmail extends EmailMessage
 		return $this->FetchTemplate('AccountActivation.tpl');
 	}
 }
-?>
