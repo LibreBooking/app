@@ -52,7 +52,7 @@ class Server
 		if (!$this->IsSessionStarted())
 		{
 			$parts = parse_url(Configuration::Instance()->GetScriptUrl());
-			$path = $parts['path'];
+			$path = isset($parts['path']) ? $parts['path'] : '';
 			session_set_cookie_params(0, $path);
 			@session_start();
 		}
@@ -65,7 +65,7 @@ class Server
 		if (!$this->IsSessionStarted())
 		{
 			$parts = parse_url(Configuration::Instance()->GetScriptUrl());
-			$path = $parts['path'];
+			$path = isset($parts['path']) ? $parts['path'] : '';
 			session_set_cookie_params(0, $path);
 			@session_start();
 		}
