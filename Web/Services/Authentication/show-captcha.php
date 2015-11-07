@@ -24,6 +24,7 @@ require_once(ROOT_DIR . 'lib/Common/namespace.php');
 
 try
 {
+	@session_start();
 	ob_clean();
 	require_once(ROOT_DIR . 'lib/external/securimage/securimage.php');
 

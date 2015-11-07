@@ -253,5 +253,9 @@ class RegistrationPage extends ActionPage implements IRegistrationPage
 	{
 		return AttributeFormParser::GetAttributes($this->GetForm(FormKeys::ATTRIBUTE_PREFIX));
 	}
+
+	public function EnforceCSRFCheck()
+	{
+		return false;
+	}
 }
-?>

@@ -36,10 +36,10 @@ class Cookie
 			$path = Configuration::Instance()->GetScriptUrl();
 		}
 
-		if (BookedStringHelper::StartsWith($path, 'http'))
+		if (BookedStringHelper::StartsWith($path,'http'))
 		{
 			$parts = parse_url($path);
-			$path = $parts['path'];
+			$path = isset($parts['path']) ? $parts['path'] : '';
 		}
 
 		$this->Name = $name;
