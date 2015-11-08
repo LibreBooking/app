@@ -1,23 +1,23 @@
 <?php
+
 /**
-Copyright 2011-2015 Nick Korbel
-
-This file is part of Booked Scheduler.
-
-Booked Scheduler is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-Booked Scheduler is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
+ * Copyright 2011-2015 Nick Korbel
+ *
+ * This file is part of Booked Scheduler.
+ *
+ * Booked Scheduler is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Booked Scheduler is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 interface IQuota
 {
 	/**
@@ -65,14 +65,33 @@ class Quota implements IQuota
 	private $scheduleId;
 
 	/**
+	 * @var null|Time
+	 */
+	private $enforcedStartTime;
+
+	/**
+	 * @var null|Time
+	 */
+	private $enforcedEndTime;
+
+	/**
+	 * @var array|int[]|string[]
+	 */
+	private $enforcedDays = array();
+
+	/**
 	 * @param int $quotaId
 	 * @param IQuotaDuration $duration
 	 * @param IQuotaLimit $limit
 	 * @param int $resourceId
 	 * @param int $groupId
 	 * @param int $scheduleId
+	 * @param string $enforcedStartTime
+	 * @param string null $enforcedEndTime
+	 * @param array $enforcedDays
 	 */
-	public function __construct($quotaId, $duration, $limit, $resourceId = null, $groupId = null, $scheduleId = null)
+	public function __construct($quotaId, $duration, $limit, $resourceId = null, $groupId = null, $scheduleId = null, $enforcedStartTime = null,
+								$enforcedEndTime = null, $enforcedDays = array())
 	{
 		$this->quotaId = $quotaId;
 		$this->duration = $duration;
@@ -80,6 +99,9 @@ class Quota implements IQuota
 		$this->resourceId = empty($resourceId) ? null : $resourceId;
 		$this->groupId = empty($groupId) ? null : $groupId;
 		$this->scheduleId = empty($scheduleId) ? null : $scheduleId;
+		$this->enforcedStartTime = empty($enforcedStartTime) ? null : Time::Parse($enforcedStartTime);
+		$this->enforcedEndTime = empty($enforcedEndTime) ? null : Time::Parse($enforcedEndTime);
+		$this->enforcedDays = empty($enforcedDays) ? array() : $enforcedDays;
 	}
 
 	/**
@@ -90,11 +112,15 @@ class Quota implements IQuota
 	 * @param int $resourceId
 	 * @param int $groupId
 	 * @param int $scheduleId
+	 * @param string $enforcedStartTime
+	 * @param string $enforcedEndTime
+	 * @param array|int[]|string[] $enforcedDays
 	 * @return Quota
 	 */
-	public static function Create($duration, $limit, $unit, $resourceId, $groupId, $scheduleId)
+	public static function Create($duration, $limit, $unit, $resourceId, $groupId, $scheduleId, $enforcedStartTime, $enforcedEndTime, $enforcedDays)
 	{
-		return new Quota(0, self::CreateDuration($duration), self::CreateLimit($limit, $unit), $resourceId, $groupId, $scheduleId);
+		return new Quota(0, self::CreateDuration($duration), self::CreateLimit($limit, $unit), $resourceId, $groupId, $scheduleId, $enforcedStartTime,
+						 $enforcedEndTime, $enforcedDays);
 	}
 
 	/**
@@ -194,13 +220,13 @@ class Quota implements IQuota
 		}
 
 		$dates = $this->duration->GetSearchDates($reservationSeries, $timezone);
-		$reservationsWithinRange = $reservationViewRepository->GetReservationList($dates->Start(), $dates->End(), $reservationSeries->UserId(), ReservationUserLevel::OWNER);
+		$reservationsWithinRange = $reservationViewRepository->GetReservationList($dates->Start(), $dates->End(), $reservationSeries->UserId(),
+																				  ReservationUserLevel::OWNER);
 
 		try
 		{
 			$this->CheckAll($reservationsWithinRange, $reservationSeries, $timezone);
-		}
-		catch (QuotaExceededException $ex)
+		} catch (QuotaExceededException $ex)
 		{
 			return true;
 		}
@@ -286,6 +312,55 @@ class Quota implements IQuota
 		return $this->scheduleId;
 	}
 
+	/**
+	 * @return null|Time
+	 */
+	public function EnforcedStartTime()
+	{
+		return $this->enforcedStartTime;
+	}
+
+	/**
+	 * @return null|Time
+	 */
+	public function EnforcedEndTime()
+	{
+		return $this->enforcedEndTime;
+	}
+
+	/**
+	 * @return array|int[]|string[]
+	 */
+	public function EnforcedDays()
+	{
+		return $this->enforcedDays;
+	}
+
+	/**
+	 * @return bool
+	 */
+	private function EnforcedAllDay()
+	{
+		return $this->enforcedStartTime == null || $this->enforcedEndTime == null;
+	}
+
+	/**
+	 * @return bool
+	 */
+	private function EnforcedEveryDay()
+	{
+		return empty($this->enforcedDays);
+	}
+
+	/**
+	 * @param int $weekday
+	 * @return bool
+	 */
+	private function EnforcedOnWeekday($weekday)
+	{
+		return in_array($weekday, $this->enforcedDays);
+	}
+
 	private function AddExisting(ReservationItemView $reservation, $timezone)
 	{
 		$this->_breakAndAdd($reservation->StartDate, $reservation->EndDate, $timezone);
@@ -340,9 +415,9 @@ class Quota implements IQuota
 				$applies = $series->ContainsResource($reservation->ResourceId) || ($series->ScheduleId() == $reservation->ScheduleId);
 			}
 
-			if ( $applies &&
-				 !array_key_exists($reservation->ReferenceNumber, $toBeSkipped) &&
-				 !$this->willBeDeleted($series, $reservation->ReservationId )
+			if ($applies &&
+					!array_key_exists($reservation->ReferenceNumber, $toBeSkipped) &&
+					!$this->willBeDeleted($series, $reservation->ReservationId)
 			)
 			{
 				$this->AddExisting($reservation, $timezone);
@@ -382,6 +457,25 @@ class Quota implements IQuota
 
 	private function _add(DateRange $dateRange)
 	{
+		if (!$this->EnforcedEveryDay() && !$this->EnforcedOnWeekday($dateRange->GetBegin()->Weekday()))
+		{
+			return;
+		}
+
+		if (!$this->EnforcedAllDay())
+		{
+			$enforcedStart = $dateRange->GetBegin()->SetTime($this->EnforcedStartTime());
+			$enforcedEnd = $dateRange->GetEnd()->SetTime($this->EnforcedEndTime());
+			$enforcedRange = new DateRange($enforcedStart, $enforcedEnd);
+			if (!$enforcedRange->Overlaps($dateRange))
+			{
+				return;
+			}
+			$newStart = $dateRange->GetBegin()->LessThan($enforcedStart) ? $dateRange->GetBegin() : $enforcedStart;
+			$newEnd = $dateRange->GetEnd()->LessThan($enforcedEnd) ? $dateRange->GetEnd() : $enforcedEnd;
+			$dateRange = new DateRange($newStart, $newEnd);
+
+		}
 		$durationKey = $this->duration->GetDurationKey($dateRange->GetBegin());
 
 		$this->limit->TryAdd($dateRange->GetBegin(), $dateRange->GetEnd(), $durationKey);

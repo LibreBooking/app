@@ -312,7 +312,7 @@ label.booked-checkbox span {
   padding-left: 50px;
 }
 .no-show {
-  display: none;
+  display: none !important;
 }
 h1 .label {
   padding-bottom: .2em;

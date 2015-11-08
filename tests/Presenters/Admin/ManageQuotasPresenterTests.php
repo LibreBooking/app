@@ -1,22 +1,22 @@
 <?php
 /**
-Copyright 2011-2015 Nick Korbel
-
-This file is part of Booked Scheduler.
-
-Booked Scheduler is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-Booked Scheduler is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ * Copyright 2011-2015 Nick Korbel
+ *
+ * This file is part of Booked Scheduler.
+ *
+ * Booked Scheduler is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Booked Scheduler is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 require_once(ROOT_DIR . 'Pages/Admin/ManageQuotasPage.php');
 
@@ -63,11 +63,11 @@ class ManageQuotasPresenterTests extends TestBase
 		$this->quotaRepository = $this->getMock('QuotaRepository');
 
 		$this->presenter = new ManageQuotasPresenter(
-			$this->page,
-			$this->resourceRepository,
-			$this->groupRepository,
-			$this->scheduleRepository,
-			$this->quotaRepository);
+				$this->page,
+				$this->resourceRepository,
+				$this->groupRepository,
+				$this->scheduleRepository,
+				$this->quotaRepository);
 	}
 
 	public function teardown()
@@ -86,32 +86,32 @@ class ManageQuotasPresenterTests extends TestBase
 		$quotaList = array();
 
 		$this->resourceRepository->expects($this->once())
-			->method('GetResourceList')
-			->will($this->returnValue($bookableResources));
+								 ->method('GetResourceList')
+								 ->will($this->returnValue($bookableResources));
 
 		$this->page->expects($this->once())
-			->method('BindResources')
-			->with($this->equalTo($bookableResources));
+				   ->method('BindResources')
+				   ->with($this->equalTo($bookableResources));
 
 		$this->groupRepository->expects($this->once())
-			->method('GetList')
-			->will($this->returnValue($groupResult));
+							  ->method('GetList')
+							  ->will($this->returnValue($groupResult));
 
 		$this->page->expects($this->once())
-			->method('BindGroups')
-			->with($this->equalTo($groups));
+				   ->method('BindGroups')
+				   ->with($this->equalTo($groups));
 
 		$this->scheduleRepository->expects($this->once())
-			->method('GetAll')
-			->will($this->returnValue($schedules));
+								 ->method('GetAll')
+								 ->will($this->returnValue($schedules));
 
 		$this->page->expects($this->once())
-			->method('BindSchedules')
-			->with($this->equalTo($schedules));
+				   ->method('BindSchedules')
+				   ->with($this->equalTo($schedules));
 
 		$this->quotaRepository->expects($this->once())
-			->method('GetAll')
-			->will($this->returnValue($quotaList));
+							  ->method('GetAll')
+							  ->will($this->returnValue($quotaList));
 
 		$this->presenter->PageLoad();
 	}
@@ -124,36 +124,59 @@ class ManageQuotasPresenterTests extends TestBase
 		$resourceId = 987;
 		$groupId = 8287;
 		$scheduleId = 400;
+		$enforcedStartTime = '10:00am';
+		$enforcedEndTime = '4:30pm';
+		$enforcedDays = array(1, 3, 5);
 
 		$this->page->expects($this->atLeastOnce())
-				->method('GetDuration')
-				->will($this->returnValue($duration));
+				   ->method('GetDuration')
+				   ->will($this->returnValue($duration));
 
 		$this->page->expects($this->atLeastOnce())
-				->method('GetLimit')
-				->will($this->returnValue($limit));
+				   ->method('GetLimit')
+				   ->will($this->returnValue($limit));
 
 		$this->page->expects($this->atLeastOnce())
-				->method('GetUnit')
-				->will($this->returnValue($unit));
+				   ->method('GetUnit')
+				   ->will($this->returnValue($unit));
 
 		$this->page->expects($this->atLeastOnce())
-				->method('GetResourceId')
-				->will($this->returnValue($resourceId));
+				   ->method('GetResourceId')
+				   ->will($this->returnValue($resourceId));
 
 		$this->page->expects($this->atLeastOnce())
-				->method('GetGroupId')
-				->will($this->returnValue($groupId));
+				   ->method('GetGroupId')
+				   ->will($this->returnValue($groupId));
 
 		$this->page->expects($this->atLeastOnce())
-				->method('GetScheduleId')
-				->will($this->returnValue($scheduleId));
+				   ->method('GetScheduleId')
+				   ->will($this->returnValue($scheduleId));
 
-		$expectedQuota = Quota::Create($duration, $limit, $unit, $resourceId, $groupId, $scheduleId);
+		$this->page->expects($this->atLeastOnce())
+				   ->method('GetEnforcedAllDay')
+				   ->will($this->returnValue(false));
+
+		$this->page->expects($this->atLeastOnce())
+				   ->method('GetEnforcedStartTime')
+				   ->will($this->returnValue($enforcedStartTime));
+
+		$this->page->expects($this->atLeastOnce())
+				   ->method('GetEnforcedEndTime')
+				   ->will($this->returnValue($enforcedEndTime));
+
+		$this->page->expects($this->atLeastOnce())
+				   ->method('GetEnforcedEveryDay')
+				   ->will($this->returnValue(false));
+
+		$this->page->expects($this->atLeastOnce())
+				   ->method('GetEnforcedDays')
+				   ->will($this->returnValue($enforcedDays));
+
+		$expectedQuota = Quota::Create($duration, $limit, $unit, $resourceId, $groupId, $scheduleId, $enforcedStartTime, $enforcedEndTime, $enforcedDays);
 
 		$this->quotaRepository->expects($this->once())
-			->method('Add')
-			->with($this->equalTo($expectedQuota));
+							  ->method('Add')
+							  ->with($this->equalTo($expectedQuota));
 
 		$this->presenter->AddQuota();
 	}

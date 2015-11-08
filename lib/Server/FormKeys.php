@@ -1,19 +1,19 @@
 <?php
+
 /**
-Copyright 2011-2015 Nick Korbel
-
-This file is part of Booked Scheduler is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
+ * Copyright 2011-2015 Nick Korbel
+ *
+ * This file is part of Booked Scheduler is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 class FormKeys
 {
 
@@ -72,6 +72,7 @@ class FormKeys
 	const CSRF_TOKEN = 'CSRF_TOKEN';
 	const CURRENT_PASSWORD = 'currentPassword';
 
+	const DAY = 'DAY';
 	const DEFAULT_HOMEPAGE = 'defaultHomepage';
 	const DESCRIPTION = 'reservationDescription';
 	const DURATION = 'duration';
@@ -84,6 +85,8 @@ class FormKeys
 	const END_REMINDER_INTERVAL = 'END_REMINDER_INTERVAL';
 	const END_REPEAT_DATE = 'endRepeatDate';
 	const END_TIME = 'endTime';
+	const ENFORCE_ALL_DAY = 'ENFORCE_ALL_DAY';
+	const ENFORCE_EVERY_DAY = 'ENFORCE_EVERY_DAY';
 
 	const FIRST_NAME = 'fname';
 

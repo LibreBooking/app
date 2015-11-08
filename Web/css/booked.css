@@ -312,7 +312,7 @@ label.booked-checkbox span {
   padding-left: 50px;
 }
 .no-show {
-  display: none;
+  display: none !important;
 }
 h1 .label {
   padding-bottom: .2em;
@@ -1668,6 +1668,15 @@ td.update {
 .appliesToId {
   display: none;
 }
+.add-quota-line {
+  height: 50px;
+}
+#enforce-hours-times {
+  padding-left: 10px;
+}
+#enforce-hours-times span {
+  margin-top: 10px;
+}
 .admin-page input,
 #page-manage-blackouts input,
 #page-manage-reservations input,
@@ -1680,7 +1689,6 @@ td.update {
 #page-manage-resources select,
 #page-manage-users select,
 #page-manage-quotas select {
-  height: 30px;
   font-size: 12px;
 }
 .admin-page .form-group,
@@ -1690,14 +1698,6 @@ td.update {
 #page-manage-users .form-group,
 #page-manage-quotas .form-group {
   padding-bottom: 2px;
-}
-.admin-page .checkbox input,
-#page-manage-blackouts .checkbox input,
-#page-manage-reservations .checkbox input,
-#page-manage-resources .checkbox input,
-#page-manage-users .checkbox input,
-#page-manage-quotas .checkbox input {
-  height: 20px;
 }
 .admin-page .resourceDetails:not(:last-child),
 #page-manage-blackouts .resourceDetails:not(:last-child),

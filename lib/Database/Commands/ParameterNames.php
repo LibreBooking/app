@@ -75,6 +75,7 @@ class ParameterNames
 
 	const END_DATE = '@endDate';
 	const END_TIME = '@endTime';
+	const ENFORCED_DAYS = '@enforcedDays';
 	const EMAIL_ADDRESS = '@email';
 	const EVENT_CATEGORY = '@event_category';
 	const EVENT_TYPE = '@event_type';

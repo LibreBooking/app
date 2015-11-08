@@ -84,6 +84,9 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 	{if $Select2}
 		{jsfile src="js/select2.min.js"}
 	{/if}
+	{if $Timepicker}
+		{jsfile src="js/jquery.timePicker.min.js"}
+	{/if}
 	{jsfile src="phpscheduleit.js"}
 	<!-- End JavaScript -->
 
@@ -102,6 +105,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			{cssfile src="scripts/js/x-editable/css/bootstrap-editable.css" rel="stylesheet"}
 			{cssfile src="scripts/js/wysihtml5/bootstrap3-wysihtml5.min.css" rel="stylesheet"}
 		{/if}
+
 	{else}
 		<link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.9.0/themes/smoothness/jquery-ui.css"
 			  type="text/css"/>
@@ -124,6 +128,9 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 	{if $Select2}
 		{cssfile src="scripts/css/select2/select2.min.css"}
 		{cssfile src="scripts/css/select2/select2-bootstrap.min.css"}
+	{/if}
+	{if $Timepicker}
+		{cssfile src="scripts/css/timePicker.css" rel="stylesheet"}
 	{/if}
 	{cssfile src="nav.css"}
 	{cssfile src="booked.css"}
@@ -194,13 +201,13 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 							   data-toggle="dropdown">{translate key="ApplicationManagement"}
 								<b class="caret"></b></a>
 							<ul class="dropdown-menu">
-								<li> <a href="{$Path}admin/manage_reservations.php">{translate key="ManageReservations"}</a></li>
+								<li><a href="{$Path}admin/manage_reservations.php">{translate key="ManageReservations"}</a></li>
 								<li><a href="{$Path}admin/manage_blackouts.php">{translate key="ManageBlackouts"}</a></li>
 								<li><a href="{$Path}admin/manage_quotas.php">{translate key="ManageQuotas"}</a></li>
 								<li class="divider"></li>
 								<li><a href="{$Path}admin/manage_schedules.php">{translate key="ManageSchedules"}</a>
 								<li><a href="{$Path}admin/manage_resources.php">{translate key="ManageResources"}</a></li>
-								<li> <a href="{$Path}admin/manage_accessories.php">{translate key="ManageAccessories"}</a></li>
+								<li><a href="{$Path}admin/manage_accessories.php">{translate key="ManageAccessories"}</a></li>
 
 								<li class="divider"></li>
 								<li><a href="{$Path}admin/manage_users.php">{translate key="ManageUsers"}</a></li>

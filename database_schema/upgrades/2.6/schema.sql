@@ -74,3 +74,7 @@ CREATE TABLE `custom_attribute_entities` (
 INSERT INTO custom_attribute_entities (custom_attribute_id, entity_id) (SELECT custom_attribute_id, entity_id FROM `custom_attributes` WHERE entity_id IS NOT NULL AND entity_id <> 0);
 
 ALTER TABLE custom_attributes DROP COLUMN `entity_id`;
+
+ALTER TABLE `quotas` ADD COLUMN `enforced_days` varchar(15);
+ALTER TABLE `quotas` ADD COLUMN `enforced_time_start` time;
+ALTER TABLE `quotas` ADD COLUMN `enforced_time_end` time;

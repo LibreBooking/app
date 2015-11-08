@@ -17,7 +17,7 @@ You should have received a copy of the GNU General Public License
 along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 *}
 
-{include file='globalheader.tpl' cssFiles="scripts/css/timePicker.css"}
+{include file='globalheader.tpl' Timepicker=true}
 <div id="page-manage-blackouts" class="admin-page">
 	<h1>{translate key=ManageBlackouts}</h1>
 
@@ -230,7 +230,6 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 	{csrf_token}
 
-	{jsfile src="js/jquery.timePicker.min.js"}
 	{jsfile src="reservationPopup.js"}
 	{jsfile src="ajax-helpers.js"}
 	{jsfile src="admin/blackouts.js"}

@@ -531,21 +531,32 @@ td.update {
 	display:none;
 }
 
+.add-quota-line {
+  height:50px;
+}
+
+#enforce-hours-times {
+  padding-left:10px;
+  span {
+    margin-top:10px;
+  }
+}
+
 /// page level overrides
 
 .admin-page, #page-manage-blackouts, #page-manage-reservations, #page-manage-resources, #page-manage-users, #page-manage-quotas {
   input, select {
-    height: 30px;
+  //  height: 30px;
     font-size: 12px;
   }
 
   .form-group {
     padding-bottom: 2px;
   }
-
-  .checkbox input {
-    height: 20px;
-  }
+  //
+  //.checkbox input {
+  //  height: 20px;
+  //}
 
   .resourceDetails:not(:last-child) {
     border-bottom: solid 1px @light-gray;

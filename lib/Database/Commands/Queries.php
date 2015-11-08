@@ -82,8 +82,8 @@ class Queries
 		VALUES (@layoutid, @startTime, @endTime, @periodType, @label, @day_of_week)';
 
 	const ADD_QUOTA =
-			'INSERT INTO quotas (quota_limit, unit, duration, resource_id, group_id, schedule_id)
-		VALUES (@limit, @unit, @duration, @resourceid, @groupid, @scheduleid)';
+			'INSERT INTO quotas (quota_limit, unit, duration, resource_id, group_id, schedule_id, enforced_time_start, enforced_time_end, enforced_days)
+			VALUES (@limit, @unit, @duration, @resourceid, @groupid, @scheduleid, @startTime, @endTime, @enforcedDays)';
 
 	const ADD_REMINDER =
 			'INSERT INTO reminders (user_id, address, message, sendtime, refnumber)

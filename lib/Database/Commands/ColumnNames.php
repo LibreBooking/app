@@ -167,6 +167,9 @@ class ColumnNames
 	const QUOTA_LIMIT = 'quota_limit';
 	const QUOTA_UNIT = 'unit';
 	const QUOTA_DURATION = 'duration';
+	const ENFORCED_START_TIME = 'enforced_time_start';
+	const ENFORCED_END_TIME = 'enforced_time_end';
+	const ENFORCED_DAYS = 'enforced_days';
 
 	// ACCESSORIES //
 	const ACCESSORY_ID = 'accessory_id';
