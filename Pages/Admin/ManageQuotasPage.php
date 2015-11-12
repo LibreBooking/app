@@ -118,6 +118,11 @@ interface IManageQuotasPage extends IActionPage
 	 * @return array
 	 */
 	public function GetEnforcedDays();
+
+	/**
+	 * @return string
+	 */
+	public function GetScope();
 }
 
 class ManageQuotasPage extends ActionPage implements IManageQuotasPage
@@ -313,4 +318,13 @@ class ManageQuotasPage extends ActionPage implements IManageQuotasPage
 
 		return $days;
 	}
+
+	/**
+	 * @return string
+	 */
+	public function GetScope()
+	{
+		return $this->GetForm(FormKeys::QUOTA_SCOPE);
+	}
+
 }

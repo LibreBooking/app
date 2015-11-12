@@ -427,7 +427,7 @@ td.update {
   display: none;
 }
 .add-quota-line {
-  height: 50px;
+  padding: 10px 0;
 }
 #enforce-hours-times {
   padding-left: 10px;

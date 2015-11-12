@@ -127,6 +127,7 @@ class ManageQuotasPresenterTests extends TestBase
 		$enforcedStartTime = '10:00am';
 		$enforcedEndTime = '4:30pm';
 		$enforcedDays = array(1, 3, 5);
+		$scope = QuotaScope::ExcludeCompleted;
 
 		$this->page->expects($this->atLeastOnce())
 				   ->method('GetDuration')
@@ -172,7 +173,11 @@ class ManageQuotasPresenterTests extends TestBase
 				   ->method('GetEnforcedDays')
 				   ->will($this->returnValue($enforcedDays));
 
-		$expectedQuota = Quota::Create($duration, $limit, $unit, $resourceId, $groupId, $scheduleId, $enforcedStartTime, $enforcedEndTime, $enforcedDays);
+		$this->page->expects($this->atLeastOnce())
+						->method('GetScope')
+						->will($this->returnValue($scope));
+
+		$expectedQuota = Quota::Create($duration, $limit, $unit, $resourceId, $groupId, $scheduleId, $enforcedStartTime, $enforcedEndTime, $enforcedDays, $scope);
 
 		$this->quotaRepository->expects($this->once())
 							  ->method('Add')
@@ -181,5 +186,3 @@ class ManageQuotasPresenterTests extends TestBase
 		$this->presenter->AddQuota();
 	}
 }
-
-?>

@@ -170,6 +170,7 @@ class ColumnNames
 	const ENFORCED_START_TIME = 'enforced_time_start';
 	const ENFORCED_END_TIME = 'enforced_time_end';
 	const ENFORCED_DAYS = 'enforced_days';
+	const QUOTA_SCOPE = 'scope';
 
 	// ACCESSORIES //
 	const ACCESSORY_ID = 'accessory_id';

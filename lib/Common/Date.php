@@ -1,20 +1,20 @@
 <?php
 /**
-Copyright 2011-2015 Nick Korbel
-Copyright 2012-2014 Trustees of Columbia University in the City of New York
-
-This file is part of Booked Scheduler is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE . See {the
-}
-GNU General Public License for more details .
-
-You should {have
-} received a copy of the GNU General Public License
-along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
+ * Copyright 2011-2015 Nick Korbel
+ * Copyright 2012-2014 Trustees of Columbia University in the City of New York
+ *
+ * This file is part of Booked Scheduler is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE . See {the
+ * }
+ * GNU General Public License for more details .
+ *
+ * You should {have
+ * } received a copy of the GNU General Public License
+ * along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 //$serverTimezone = ini_get('date.timezone');
@@ -128,7 +128,8 @@ class Date
 
 		$parsed = date_parse($dateString);
 
-		$d = Date::Create($parsed['year'], $parsed['month'], $parsed['day'], $parsed['hour'] + $hourAdjustment, $parsed['minute'] + $minuteAdjustment, $parsed['second'], 'UTC');
+		$d = Date::Create($parsed['year'], $parsed['month'], $parsed['day'], $parsed['hour'] + $hourAdjustment, $parsed['minute'] + $minuteAdjustment,
+						  $parsed['second'], 'UTC');
 		return $d;
 	}
 
@@ -428,6 +429,23 @@ class Date
 	}
 
 	/**
+	 * @return bool
+	 */
+	public function IsWeekday()
+	{
+		$weekday = $this->Weekday();
+		return $weekday != 0 && $weekday != 6;
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function IsWeekend()
+	{
+		return !$this->IsWeekday();
+	}
+
+	/**
 	 * @param int $days
 	 * @return Date
 	 */
@@ -553,7 +571,7 @@ class Date
 
 		$this->parts['hours'] = $parts[0];
 		$this->parts['minutes'] = $parts[1];
-		$this->parts['seconds'] =$parts[2];
+		$this->parts['seconds'] = $parts[2];
 		$this->parts['mon'] = $parts[3];
 		$this->parts['mday'] = $parts[4];
 		$this->parts['year'] = $parts[5];
@@ -932,7 +950,7 @@ class DateDiff
 	 */
 	public function Invert()
 	{
-		return new DateDiff($this->seconds*-1);
+		return new DateDiff($this->seconds * -1);
 	}
 
 	/**

@@ -102,6 +102,7 @@ class ManageQuotasPresenter extends ActionPresenter
 		$endTime = $this->page->GetEnforcedEndTime();
 		$everyDay = $this->page->GetEnforcedEveryDay();
 		$enforcedDays = $this->page->GetEnforcedDays();
+		$scope = $this->page->GetScope();
 
 		if ($allDay)
 		{
@@ -114,7 +115,7 @@ class ManageQuotasPresenter extends ActionPresenter
 			$enforcedDays = array();
 		}
 
-		Log::Debug('Adding new quota. Duration %s, Limit %s, Unit %s, Resource %s, Group %s, Schedule %s, All Day %s, Start Time %s, End Time %s, Every Day %s, Days %s',
+		Log::Debug('Adding new quota. Duration %s, Limit %s, Unit %s, Resource %s, Group %s, Schedule %s, All Day %s, Start Time %s, End Time %s, Every Day %s, Days %s, Scope %s',
 				   $duration,
 				   $decimal,
 				   $unit,
@@ -125,7 +126,8 @@ class ManageQuotasPresenter extends ActionPresenter
 				   $startTime,
 				   $endTime,
 				   $everyDay,
-				   implode(',', $enforcedDays));
+				   implode(',', $enforcedDays),
+				   $scope);
 
 		$quota = Quota::Create($duration,
 							   $decimal,
@@ -135,7 +137,8 @@ class ManageQuotasPresenter extends ActionPresenter
 							   $scheduleId,
 							   $startTime,
 							   $endTime,
-							   $enforcedDays);
+							   $enforcedDays,
+							   $scope);
 
 		$this->quotaRepository->Add($quota);
 	}

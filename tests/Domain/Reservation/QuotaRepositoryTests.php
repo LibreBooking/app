@@ -49,9 +49,11 @@ class QuotaRepositoryTests extends TestBase
 		$groupId = 923;
 		$scheduleId = 828;
 
-		$rows[] = $this->GetRow(1, $limit, QuotaUnit::Reservations, QuotaDuration::Month, $resourceId, $groupId, $scheduleId);
-		$rows[] = $this->GetRow(2, $limit, QuotaUnit::Hours, QuotaDuration::Day, null, null, null);
-		$rows[] = $this->GetRow(3, $limit, QuotaUnit::Hours, QuotaDuration::Week, null, $groupId, $scheduleId);
+		$rows[] = $this->GetRow(1, $limit, QuotaUnit::Reservations, QuotaDuration::Month, $resourceId, $groupId, $scheduleId, '11:00', '12:00', '0,6',
+								QuotaScope::ExcludeCompleted);
+		$rows[] = $this->GetRow(2, $limit, QuotaUnit::Hours, QuotaDuration::Day, null, null, null, null, null, null, QuotaScope::IncludeCompleted);
+		$rows[] = $this->GetRow(3, $limit, QuotaUnit::Hours, QuotaDuration::Week, null, $groupId, $scheduleId, '00:00', '12:00', '1,2,3,4,5',
+								QuotaScope::ExcludeCompleted);
 
 		$this->db->SetRows($rows);
 
@@ -72,6 +74,18 @@ class QuotaRepositoryTests extends TestBase
 		$this->assertEquals(new QuotaDurationMonth(), $quota1->GetDuration());
 		$this->assertEquals(new QuotaDurationDay(), $quota2->GetDuration());
 		$this->assertEquals(new QuotaDurationWeek(), $quota3->GetDuration());
+
+		$this->assertEquals(new QuotaScopeExcluded(), $quota1->GetScope());
+		$this->assertEquals(new QuotaScopeIncluded(), $quota2->GetScope());
+		$this->assertEquals(new QuotaScopeExcluded(), $quota3->GetScope());
+
+		$this->assertEquals(Time::Parse('11:00'), $quota1->EnforcedStartTime());
+		$this->assertEquals(Time::Parse('12:00'), $quota1->EnforcedEndTime());
+		$this->assertEquals(array(0, 6), $quota1->EnforcedDays());
+
+		$this->assertEquals(null, $quota2->EnforcedStartTime());
+		$this->assertEquals(null, $quota2->EnforcedEndTime());
+		$this->assertEquals(array(), $quota2->EnforcedDays());
 
 		$this->assertTrue($quota1->AppliesToResource($resourceId));
 		$this->assertTrue($quota1->AppliesToGroup($groupId));
@@ -102,12 +116,12 @@ class QuotaRepositoryTests extends TestBase
 		$enforcedDays = array(2, 4, 5);
 		$enforcedStartTime = '12:30pm';
 		$enforcedEndTime = '4:00pm';
+		$scope = QuotaScope::ExcludeCompleted;
 
-		$quota = Quota::Create($duration, $limit, $unit, $resourceId, $groupId, $scheduleId, $enforcedStartTime, $enforcedEndTime, $enforcedDays);
+		$quota = Quota::Create($duration, $limit, $unit, $resourceId, $groupId, $scheduleId, $enforcedStartTime, $enforcedEndTime, $enforcedDays, $scope);
 
 		$command = new AddQuotaCommand($duration, $limit, $unit, $resourceId, $groupId, $scheduleId, Time::Parse($enforcedStartTime),
-									   Time::Parse($enforcedEndTime),
-									   $enforcedDays);
+									   Time::Parse($enforcedEndTime), $enforcedDays, $scope);
 
 		$this->repository->Add($quota);
 
@@ -126,7 +140,7 @@ class QuotaRepositoryTests extends TestBase
 
 	}
 
-	private function GetRow($quotaId, $limit, $unit, $duration, $resourceId, $groupId, $scheduleId)
+	private function GetRow($quotaId, $limit, $unit, $duration, $resourceId, $groupId, $scheduleId, $enforcedStartTime, $enforcedEndTime, $enforcedDays, $scope)
 	{
 		return array(ColumnNames::QUOTA_ID => $quotaId,
 				ColumnNames::QUOTA_LIMIT => $limit,
@@ -134,9 +148,11 @@ class QuotaRepositoryTests extends TestBase
 				ColumnNames::QUOTA_DURATION => $duration,
 				ColumnNames::RESOURCE_ID => $resourceId,
 				ColumnNames::GROUP_ID => $groupId,
-				ColumnNames::SCHEDULE_ID => $scheduleId
+				ColumnNames::SCHEDULE_ID => $scheduleId,
+				ColumnNames::ENFORCED_START_TIME => $enforcedStartTime,
+				ColumnNames::ENFORCED_END_TIME => $enforcedEndTime,
+				ColumnNames::ENFORCED_DAYS => $enforcedDays,
+				ColumnNames::QUOTA_SCOPE => $scope,
 		);
 	}
 }
-
-?>

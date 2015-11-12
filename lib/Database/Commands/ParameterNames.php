@@ -113,6 +113,7 @@ class ParameterNames
 	const QUOTA_DURATION = '@duration';
 	const QUOTA_ID = '@quotaid';
 	const QUOTA_LIMIT = '@limit';
+	const QUOTA_SCOPE = '@scope';
 	const QUOTA_UNIT = '@unit';
 
 	const REMINDER_ID = '@reminder_id';

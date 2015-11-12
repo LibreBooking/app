@@ -18,6 +18,7 @@
  * You should have received a copy of the GNU General Public License
  * along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 interface IQuota
 {
 	/**
@@ -28,6 +29,11 @@ interface IQuota
 	 * @return bool
 	 */
 	public function ExceedsQuota($reservationSeries, $user, $schedule, IReservationViewRepository $reservationViewRepository);
+
+	/**
+	 * @return int
+	 */
+	public function Id();
 
 	public function ToString();
 }
@@ -80,6 +86,11 @@ class Quota implements IQuota
 	private $enforcedDays = array();
 
 	/**
+	 * @var IQuotaScope
+	 */
+	private $scope;
+
+	/**
 	 * @param int $quotaId
 	 * @param IQuotaDuration $duration
 	 * @param IQuotaLimit $limit
@@ -89,9 +100,10 @@ class Quota implements IQuota
 	 * @param string $enforcedStartTime
 	 * @param string null $enforcedEndTime
 	 * @param array $enforcedDays
+	 * @param IQuotaScope $scope
 	 */
 	public function __construct($quotaId, $duration, $limit, $resourceId = null, $groupId = null, $scheduleId = null, $enforcedStartTime = null,
-								$enforcedEndTime = null, $enforcedDays = array())
+								$enforcedEndTime = null, $enforcedDays = array(), $scope = null)
 	{
 		$this->quotaId = $quotaId;
 		$this->duration = $duration;
@@ -102,6 +114,7 @@ class Quota implements IQuota
 		$this->enforcedStartTime = empty($enforcedStartTime) ? null : Time::Parse($enforcedStartTime);
 		$this->enforcedEndTime = empty($enforcedEndTime) ? null : Time::Parse($enforcedEndTime);
 		$this->enforcedDays = empty($enforcedDays) ? array() : $enforcedDays;
+		$this->scope = empty($scope) ? new QuotaScopeIncluded() : $scope;
 	}
 
 	/**
@@ -115,12 +128,13 @@ class Quota implements IQuota
 	 * @param string $enforcedStartTime
 	 * @param string $enforcedEndTime
 	 * @param array|int[]|string[] $enforcedDays
+	 * @param string $scope
 	 * @return Quota
 	 */
-	public static function Create($duration, $limit, $unit, $resourceId, $groupId, $scheduleId, $enforcedStartTime, $enforcedEndTime, $enforcedDays)
+	public static function Create($duration, $limit, $unit, $resourceId, $groupId, $scheduleId, $enforcedStartTime, $enforcedEndTime, $enforcedDays, $scope)
 	{
 		return new Quota(0, self::CreateDuration($duration), self::CreateLimit($limit, $unit), $resourceId, $groupId, $scheduleId, $enforcedStartTime,
-						 $enforcedEndTime, $enforcedDays);
+						 $enforcedEndTime, $enforcedDays, self::CreateScope($scope));
 	}
 
 	/**
@@ -161,6 +175,20 @@ class Quota implements IQuota
 			return new QuotaDurationMonth();
 		}
 		return new QuotaDurationYear();
+	}
+
+	/**
+	 * @param string|QuotaScope $scope
+	 * @return IQuotaScope
+	 */
+	public static function CreateScope($scope)
+	{
+		if ($scope == QuotaScope::ExcludeCompleted)
+		{
+			return new QuotaScopeExcluded();
+		}
+
+		return new QuotaScopeIncluded();
 	}
 
 	/**
@@ -220,7 +248,8 @@ class Quota implements IQuota
 		}
 
 		$dates = $this->duration->GetSearchDates($reservationSeries, $timezone);
-		$reservationsWithinRange = $reservationViewRepository->GetReservationList($dates->Start(), $dates->End(), $reservationSeries->UserId(),
+		$reservationsWithinRange = $reservationViewRepository->GetReservationList($this->GetScope()->GetSearchStartDate($dates->Start()), $dates->End(),
+																				  $reservationSeries->UserId(),
 																				  ReservationUserLevel::OWNER);
 
 		try
@@ -262,6 +291,14 @@ class Quota implements IQuota
 	}
 
 	/**
+	 * @return IQuotaScope
+	 */
+	public function GetScope()
+	{
+		return $this->scope;
+	}
+
+	/**
 	 * @param int $resourceId
 	 * @return bool
 	 */
@@ -286,6 +323,14 @@ class Quota implements IQuota
 	public function AppliesToSchedule($scheduleId)
 	{
 		return is_null($this->scheduleId) || $this->scheduleId == $scheduleId;
+	}
+
+	/**
+	 * @return int
+	 */
+	public function Id()
+	{
+		return $this->quotaId;
 	}
 
 	/**
@@ -488,7 +533,6 @@ class QuotaUnit
 	const Hours = 'hours';
 	const Reservations = 'reservations';
 }
-
 
 interface IQuotaDuration
 {
@@ -944,23 +988,18 @@ class QuotaDurationYear extends QuotaDuration
 interface IQuotaLimit
 {
 	/**
-	 * @abstract
 	 * @param Date $start
 	 * @param Date $end
 	 * @param string $key
-	 * @return void
-	 * @throws QuotaExceededException
 	 */
 	public function TryAdd($start, $end, $key);
 
 	/**
-	 * @abstract
 	 * @return decimal
 	 */
 	public function Amount();
 
 	/**
-	 * @abstract
 	 * @return string|QuotaUnit
 	 */
 	public function Name();
@@ -1055,7 +1094,6 @@ class QuotaLimitHours implements IQuotaLimit
 	 * @param Date $start
 	 * @param Date $end
 	 * @param string $key
-	 * @return void
 	 * @throws QuotaExceededException
 	 */
 	public function TryAdd($start, $end, $key)
@@ -1099,6 +1137,58 @@ class QuotaLimitHours implements IQuotaLimit
 	}
 }
 
+interface IQuotaScope
+{
+	/**
+	 * @return string|QuotaScope
+	 */
+	public function Name();
+
+	/**
+	 * @param Date $startDate
+	 * @return Date
+	 */
+	public function GetSearchStartDate($startDate);
+}
+
+abstract class QuotaScope implements IQuotaScope
+{
+	const IncludeCompleted = 'IncludeCompleted';
+	const ExcludeCompleted = 'ExcludeCompleted';
+
+	public function __toString()
+	{
+		return sprintf('QuotaScope Name=%s', $this->Name());
+	}
+}
+
+class QuotaScopeExcluded extends QuotaScope
+{
+
+	public function Name()
+	{
+		return QuotaScope::ExcludeCompleted;
+	}
+
+	public function GetSearchStartDate($startDate)
+	{
+		return Date::Now();
+	}
+}
+
+class QuotaScopeIncluded extends QuotaScope
+{
+	public function Name()
+	{
+		return QuotaScope::IncludeCompleted;
+	}
+
+	public function GetSearchStartDate($startDate)
+	{
+		return $startDate;
+	}
+}
+
 class QuotaExceededException extends Exception
 {
 	/**
@@ -1109,5 +1199,3 @@ class QuotaExceededException extends Exception
 		parent::__construct($message);
 	}
 }
-
-?>

@@ -72,8 +72,9 @@ class QuotaRepository implements IQuotaRepository, IQuotaViewRepository
 			$enforcedStartTime = $row[ColumnNames::ENFORCED_START_TIME];
 			$enforcedEndTime = $row[ColumnNames::ENFORCED_END_TIME];
 			$enforcedDays = empty($row[ColumnNames::ENFORCED_DAYS]) ? array() : explode(',', $row[ColumnNames::ENFORCED_DAYS]);
+			$scope = Quota::CreateScope($row[ColumnNames::QUOTA_SCOPE]);
 
-			$quotas[] = new Quota($quotaId, $duration, $limit, $resourceId, $groupId, $scheduleId, $enforcedStartTime, $enforcedEndTime, $enforcedDays);
+			$quotas[] = new Quota($quotaId, $duration, $limit, $resourceId, $groupId, $scheduleId, $enforcedStartTime, $enforcedEndTime, $enforcedDays, $scope);
 		}
 
 		return $quotas;
@@ -102,9 +103,10 @@ class QuotaRepository implements IQuotaRepository, IQuotaViewRepository
 			$enforcedStartTime = $row[ColumnNames::ENFORCED_START_TIME];
 			$enforcedEndTime = $row[ColumnNames::ENFORCED_END_TIME];
 			$enforcedDays = empty($row[ColumnNames::ENFORCED_DAYS]) ? array() : explode(',', $row[ColumnNames::ENFORCED_DAYS]);
+			$scope = $row[ColumnNames::QUOTA_SCOPE];
 
 			$quotas[] = new QuotaItemView($quotaId, $limit, $unit, $duration, $groupName, $resourceName, $scheduleName, $enforcedStartTime, $enforcedEndTime,
-										  $enforcedDays);
+										  $enforcedDays, $scope);
 		}
 
 		return $quotas;
@@ -124,7 +126,8 @@ class QuotaRepository implements IQuotaRepository, IQuotaViewRepository
 									   $quota->ScheduleId(),
 									   $quota->EnforcedStartTime(),
 									   $quota->EnforcedEndTime(),
-									   $quota->EnforcedDays());
+									   $quota->EnforcedDays(),
+									   $quota->GetScope()->Name());
 
 		ServiceLocator::GetDatabase()->Execute($command);
 	}
@@ -167,9 +170,10 @@ class QuotaItemView
 	 * @param string|null $enforcedStartTime
 	 * @param string|null $enforcedEndTime
 	 * @param array|int[] $enforcedDays
+	 * @param string $scope
 	 */
 	public function __construct($quotaId, $limit, $unit, $duration, $groupName, $resourceName, $scheduleName, $enforcedStartTime, $enforcedEndTime,
-								$enforcedDays)
+								$enforcedDays, $scope)
 	{
 		$this->Id = $quotaId;
 		$this->Limit = $limit;
@@ -183,5 +187,6 @@ class QuotaItemView
 		$this->EnforcedDays = empty($enforcedDays) ? array() : $enforcedDays;
 		$this->AllDay = empty($enforcedStartTime) || empty($enforcedEndTime);
 		$this->Everyday = empty($enforcedDays);
+		$this->Scope = empty($scope) ? QuotaScope::IncludeCompleted : $scope;
 	}
 }

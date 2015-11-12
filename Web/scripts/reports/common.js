@@ -78,7 +78,7 @@ function ReportsCommon(opts) {
 				var separator = '!s!';
 				var cookie = readCookie(cookieName);
 				var savedCols = cookie ? cookie.split(separator) : [];
-				initColumns(savedCols);
+				//initColumns(savedCols);
 
 				var items = [];
 				var allColumns = getAllColumnTitles();
