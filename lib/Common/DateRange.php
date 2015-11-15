@@ -189,6 +189,26 @@ class DateRange
 	}
 
 	/**
+	 * Get all date times within the range. The first date will include the start time. The last date will include the end time. All other days will be at midnight
+	 * @return Date[]
+	 */
+	public function DateTimes()
+	{
+		$dates = array($this->_begin);
+
+		$current = $this->_begin->AddDays(1);
+
+		while ($current->LessThan($this->_end))
+		{
+			$dates[] = $current->GetDate();
+			$current = $current->AddDays(1);
+		}
+
+		$dates[] = $this->_end;
+		return $dates;
+	}
+
+	/**
 	 * @param DateRange $otherRange
 	 * @return bool
 	 */

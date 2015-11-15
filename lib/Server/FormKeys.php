@@ -135,6 +135,8 @@ class FormKeys
 	const POSITION = 'position';
 	const PK = 'pk';
 
+	const QUOTA_SCOPE= 'QUOTA_SCOPE';
+
 	const REFERENCE_NUMBER = 'referenceNumber';
 	const REMOVED_FILE_IDS = 'removeFile';
 	const REPEAT_OPTIONS = 'repeatOptions';
@@ -181,6 +183,7 @@ class FormKeys
 	const RESOURCE_STATUS_REASON = 'RESOURCE_STATUS_REASON';
 	const RESOURCE_STATUS_REASON_ID = 'RESOURCE_STATUS_REASON_ID';
 	const RESOURCE_STATUS_UPDATE_SCOPE = 'RESOURCE_STATUS_UPDATE_SCOPE';
+	const ROLLING = 'ROLLING';
 
 	const SCHEDULE_ID = 'scheduleId';
 	const SCHEDULE_NAME = 'scheduleName';

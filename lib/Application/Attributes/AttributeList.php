@@ -122,7 +122,7 @@ class AttributeList implements IEntityAttributeList
 			Log::Debug('Adding custom attribute value for entityId=%s, attributeId=%s', $entityId, $attributeId);
 			$this->values[$entityId][$attributeId] = new Attribute($this->definitions[$attributeId], $attributeEntityValue->Value);
 		}
-		elseif ($this->IsEntityAttribute($attributeId, $entityId))
+		elseif ($this->EntityAttributeExists($attributeId, $entityId))
 		{
 			Log::Debug('Adding entity specific custom attribute value for entityId=%s, attributeId=%s', $entityId,
 					   $attributeId);

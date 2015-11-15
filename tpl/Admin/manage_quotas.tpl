@@ -53,7 +53,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 				{/capture}
 
 				{capture name="amount" assign="amount"}
-					<input type='number' step='any' class='form-control' min='0' value='0' {formname key=LIMIT} title='Quota number'/>
+					<input type='number' step='any' class='form-control mid-number' min='0' max='10000' value='0' {formname key=LIMIT} title='Quota number'/>
 				{/capture}
 
 				{capture name="unit" assign="unit"}
@@ -73,7 +73,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 				{/capture}
 
 				{capture name="enforceHours" assign="enforceHours"}
-					<div class='checkbox checkbox-align'>
+					<div class='checkbox'>
 						<input type='checkbox' id='enforce-all-day' checked='checked' value='1' {formname key=ENFORCE_ALL_DAY}/>
 						<label for='enforce-all-day'>{translate key=AllDay}</label>
 					</div>
@@ -129,7 +129,16 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 					</div>
 				{/capture}
 
-				<div class="add-quota-line">{translate key=QuotaConfiguration args="$schedules,$resources,$groups,$amount,$unit,$duration"}</div>
+				{capture name="scope" assign="scope"}
+					<div class='form-group'>
+						<select class='form-control' {formname key=QUOTA_SCOPE}>
+							<option value='{QuotaScope::IncludeCompleted}'>{translate key=IncludingCompletedReservations}</option>
+							<option value='{QuotaScope::ExcludeCompleted}'>{translate key=NotCountingCompletedReservations}</option>
+						</select>
+					</div>
+				{/capture}
+
+				<div class="add-quota-line">{translate key=QuotaConfiguration args="$schedules,$resources,$groups,$amount,$unit,$duration"} {$scope}</div>
 				<div class="add-quota-line">{translate key=QuotaEnforcement args="$enforceHours,$enforceDays"}</div>
 
 				<div class="note">{translate key=QuotaReminder}</div>
@@ -201,9 +210,16 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 					{/if}
 					</span>
 				{/capture}
+				{capture name="scope" assign="scope"}
+					{if $quota->Scope == QuotaScope::IncludeCompleted}
+						{translate key=IncludingCompletedReservations}
+					{else}
+						{translate key=NotCountingCompletedReservations}
+					{/if}
+				{/capture}
 				{cycle values='row0,row1' assign=rowCss}
 				<div class="quotaItem {$rowCss}">
-					{translate key=QuotaConfiguration args="$scheduleName,$resourceName,$groupName,$amount,$unit,$duration"}
+					{translate key=QuotaConfiguration args="$scheduleName,$resourceName,$groupName,$amount,$unit,$duration"} <span class="bold">{$scope}</span>.
 					{translate key=QuotaEnforcement args="$enforceHours,$enforceDays"}
 					<a href="#" quotaId="{$quota->Id}" class="delete pull-right"><span class="fa fa-trash icon remove"></span></a>
 				</div>

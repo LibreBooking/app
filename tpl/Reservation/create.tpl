@@ -296,6 +296,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 				</div>
 			</div>
 
+			{csrf_token}
+
 			{if $UploadsEnabled}
 				{block name='attachments'}
 				{/block}

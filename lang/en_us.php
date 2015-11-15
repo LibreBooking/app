@@ -537,6 +537,8 @@ class en_us extends Language
 		$strings['Reserve'] = 'Reserve';
 		$strings['AllDay'] = 'All Day';
 		$strings['Everyday'] = 'Everyday';
+		$strings['IncludingCompletedReservations'] = 'Including Completed Reservations';
+		$strings['NotCountingCompletedReservations'] = 'Not Counting Completed Reservations';
 		// End Strings
 
 		// Install

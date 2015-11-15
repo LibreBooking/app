@@ -110,6 +110,7 @@ class ReservationUserBinder implements IReservationComponentBinder
 															 new BooleanConverter());
 
 		$initializer->ShowUserDetails(!$hideUser || $currentUser->IsAdmin);
+		$initializer->ShowReservationDetails(true);
 		$initializer->SetShowParticipation(!$hideUser || $currentUser->IsAdmin || $currentUser->IsGroupAdmin);
 	}
 }
