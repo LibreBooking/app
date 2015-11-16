@@ -49,7 +49,7 @@ class ResourceMinimumDurationRuleTests extends TestBase
 		$reservation->AddResource($resource2);
 
 		$rule = new ResourceMinimumDurationRule();
-		$result = $rule->Validate($reservation);
+		$result = $rule->Validate($reservation, null);
 
 		$this->assertFalse($result->IsValid());
 	}
@@ -66,7 +66,7 @@ class ResourceMinimumDurationRuleTests extends TestBase
 		$reservation->WithDuration($duration);
 
 		$rule = new ResourceMinimumDurationRule();
-		$result = $rule->Validate($reservation);
+		$result = $rule->Validate($reservation, null);
 
 		$this->assertTrue($result->IsValid());
 	}

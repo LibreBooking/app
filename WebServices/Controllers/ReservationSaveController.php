@@ -89,7 +89,8 @@ class ReservationSaveController implements IReservationSaveController
 		$reservation = $presenter->BuildReservation();
 		$presenter->HandleReservation($reservation);
 
-		return new ReservationControllerResult($facade->ReferenceNumber(), $facade->Errors(), $facade->RequiresApproval());
+		return new ReservationControllerResult($facade->ReferenceNumber(), $facade->Errors(),
+											   $facade->RequiresApproval());
 	}
 
 	public function Update($request, $session, $referenceNumber, $updateScope)
@@ -107,7 +108,8 @@ class ReservationSaveController implements IReservationSaveController
 		$reservation = $presenter->BuildReservation();
 		$presenter->HandleReservation($reservation);
 
-		return new ReservationControllerResult($facade->ReferenceNumber(), $facade->Errors(), $facade->RequiresApproval());
+		return new ReservationControllerResult($facade->ReferenceNumber(), $facade->Errors(),
+											   $facade->RequiresApproval());
 	}
 
 	/**
@@ -359,6 +361,16 @@ class ReservationRequestResponseFacade implements IReservationSavePage
 	 * @var RecurrenceRequestResponse
 	 */
 	private $recurrenceRule;
+
+	/**
+	 * @var bool
+	 */
+	private $_canBeRetried;
+
+	/**
+	 * @var ReservationRetryParameter[]
+	 */
+	private $_retryParameters = array();
 
 	/**
 	 * @param ReservationRequest $request
@@ -643,6 +655,44 @@ class ReservationRequestResponseFacade implements IReservationSavePage
 	{
 		return $this->request->allowParticipation;
 	}
+
+	/**
+	 * @param bool $canBeRetried
+	 */
+	public function SetCanBeRetried($canBeRetried)
+	{
+		$this->_canBeRetried = $canBeRetried;
+	}
+
+	/**
+	 * @param ReservationRetryParameter[] $retryParameters
+	 */
+	public function SetRetryParameters($retryParameters)
+	{
+		$this->_retryParameters = $retryParameters;
+	}
+
+	/**
+	 * @return ReservationRetryParameter[]
+	 */
+	public function GetRetryParameters()
+	{
+		$retryParams = array();
+		if (isset($this->request->retryParameters))
+		{
+			$params = $this->request->retryParameters;
+
+			if (is_array($params))
+			{
+				foreach ($params as $param)
+				{
+					$retryParams[] = new ReservationRetryParameter($param->name, $param->value);
+				}
+			}
+		}
+
+		return $retryParams;
+	}
 }
 
 class ReservationUpdateRequestResponseFacade extends ReservationRequestResponseFacade implements IReservationUpdatePage
@@ -767,6 +817,30 @@ class ReservationDeleteRequestResponseFacade implements IReservationDeletePage
 	{
 		return $this->errors;
 	}
+
+	/**
+	 * @param bool $canBeRetried
+	 */
+	public function SetCanBeRetried($canBeRetried)
+	{
+		// no-op
+	}
+
+	/**
+	 * @param ReservationRetryParameter[] $retryParameters
+	 */
+	public function SetRetryParameters($retryParameters)
+	{
+		// no-op
+	}
+
+	/**
+	 * @return ReservationRetryParameter[]
+	 */
+	public function GetRetryParameters()
+	{
+		// no-op
+	}
 }
 
 class ReservationApprovalRequestResponseFacade implements IReservationApprovalPage
@@ -817,5 +891,26 @@ class ReservationApprovalRequestResponseFacade implements IReservationApprovalPa
 	public function GetReferenceNumber()
 	{
 		return $this->referenceNumber;
+	}
+
+	public function SetCanBeRetried($canBeRetried)
+	{
+		// no-op
+	}
+
+	/**
+	 * @param ReservationRetryParameter[] $retryParameters
+	 */
+	public function SetRetryParameters($retryParameters)
+	{
+		// no-op
+	}
+
+	/**
+	 * @return ReservationRetryParameter[]
+	 */
+	public function GetRetryParameters()
+	{
+		// no-op
 	}
 }

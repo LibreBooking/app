@@ -18,9 +18,10 @@ class ResourceParticipationRule implements IReservationValidationRule
 {
 	/**
 	 * @param ReservationSeries $reservationSeries
+	 * @param $retryParameters
 	 * @return ReservationRuleResult
 	 */
-	public function Validate($reservationSeries)
+	public function Validate($reservationSeries, $retryParameters)
 	{
 		$errorMessage = new StringBuilder();
 		foreach ($reservationSeries->AllResources() as $resource)

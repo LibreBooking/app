@@ -1,19 +1,19 @@
 <?php
+
 /**
-Copyright 2011-2015 Nick Korbel
-
-This file is part of Booked Scheduler is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
-*/
-
+ * Copyright 2011-2015 Nick Korbel
+ *
+ * This file is part of Booked Scheduler is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
+ */
 interface IResourceAvailabilityStrategy
 {
 	/**
@@ -78,12 +78,9 @@ class ResourceAvailabilityRule implements IReservationValidationRule
 		$this->timezone = $timezone;
 	}
 
-	/**
-	 * @param ReservationSeries $reservationSeries
-	 * @return ReservationRuleResult
-	 */
-	public function Validate($reservationSeries)
+	public function Validate($reservationSeries, $retryParameters = null)
 	{
+		$shouldSkipConflicts = ReservationRetryParameter::GetValue('skipconflicts', $retryParameters, new BooleanConverter()) == true;
 		$conflicts = array();
 
 		$reservations = $reservationSeries->Instances();
@@ -116,9 +113,9 @@ class ResourceAvailabilityRule implements IReservationValidationRule
 			foreach ($existingItems as $existingItem)
 			{
 				if (
-					($bufferTime == null || $reservationSeries->BookedBy()->IsAdmin) &&
-					($existingItem->GetStartDate()->Equals($reservation->EndDate()) ||
-					$existingItem->GetEndDate()->Equals($reservation->StartDate()))
+						($bufferTime == null || $reservationSeries->BookedBy()->IsAdmin) &&
+						($existingItem->GetStartDate()->Equals($reservation->EndDate()) ||
+								$existingItem->GetEndDate()->Equals($reservation->StartDate()))
 				)
 				{
 					continue;
@@ -126,8 +123,19 @@ class ResourceAvailabilityRule implements IReservationValidationRule
 
 				if ($this->IsInConflict($reservation, $reservationSeries, $existingItem, $keyedResources))
 				{
-					Log::Debug("Reference number %s conflicts with existing %s with id %s", $reservation->ReferenceNumber(), get_class($existingItem), $existingItem->GetId());
-					array_push($conflicts, $existingItem);
+					$skipped = false;
+					if ($shouldSkipConflicts)
+					{
+						Log::Debug("Skipping conflicting reservation. Reference number %s conflicts with existing %s with id %s",
+								   $reservation->ReferenceNumber(), get_class($existingItem), $existingItem->GetId());
+						$skipped = $reservationSeries->RemoveInstance($reservation);
+					}
+					if (!$skipped)
+					{
+						Log::Debug("Reference number %s conflicts with existing %s with id %s",
+								   $reservation->ReferenceNumber(), get_class($existingItem), $existingItem->GetId());
+						array_push($conflicts, $existingItem);
+					}
 				}
 			}
 		}
@@ -136,7 +144,12 @@ class ResourceAvailabilityRule implements IReservationValidationRule
 
 		if ($thereAreConflicts)
 		{
-			return new ReservationRuleResult(false, $this->GetErrorString($conflicts));
+			$shouldRetry = count($conflicts) < count($reservationSeries->Instances());
+			return new ReservationRuleResult(false,
+											 $this->GetErrorString($conflicts),
+											 $shouldRetry,
+											 Resources::GetInstance()->GetString('RetrySkipConflicts'),
+											 array(new ReservationRetryParameter('skipconflicts', true)));
 		}
 
 		return new ReservationRuleResult();
@@ -149,7 +162,8 @@ class ResourceAvailabilityRule implements IReservationValidationRule
 	 * @param BookableResource[] $keyedResources
 	 * @return bool
 	 */
-	protected function IsInConflict(Reservation $instance, ReservationSeries $series, IReservedItemView $existingItem, $keyedResources)
+	protected function IsInConflict(Reservation $instance, ReservationSeries $series, IReservedItemView $existingItem,
+									$keyedResources)
 	{
 		if (array_key_exists($existingItem->GetResourceId(), $keyedResources))
 		{
@@ -173,9 +187,10 @@ class ResourceAvailabilityRule implements IReservationValidationRule
 
 		$dates = array();
 		/** @var IReservedItemView $conflict */
-		foreach($conflicts as $conflict)
+		foreach ($conflicts as $conflict)
 		{
-			$dates[] = sprintf('%s - %s', $conflict->GetStartDate()->ToTimezone($this->timezone)->Format($format), $conflict->GetResourceName());
+			$dates[] = sprintf('%s - %s', $conflict->GetStartDate()->ToTimezone($this->timezone)->Format($format),
+							   $conflict->GetResourceName());
 		}
 
 		$uniqueDates = array_unique($dates);

@@ -29,6 +29,14 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		{/foreach}
 	</div>
 
+	{if $CanBeRetried}
+		<div id="retryParams" class="no-show">
+		{foreach from=$RetryParameters item=retryParam}
+			<input type="hidden" id="{$retryParam->Name}" name="{FormKeys::RESERVATION_RETRY_PREFIX}[{$retryParam->Name}]" value="{$retryParam->Value|escape}" />
+		{/foreach}
+		</div>
+	{/if}
+
 	<div>
 		<button id="btnSaveFailed" class="btn btn-warning"><span class="fa fa-arrow-circle-left"></span> {translate key='ReservationErrors'}</button>
 	</div>

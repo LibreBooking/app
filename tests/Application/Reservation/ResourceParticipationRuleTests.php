@@ -58,7 +58,7 @@ class ResourceParticipationRuleTests extends TestBase
 		$series->AddResource(new FakeBookableResource(3));
 		$series->ChangeParticipants(range(1, 5));
 
-		$result = $this->rule->Validate($series);
+		$result = $this->rule->Validate($series, null);
 
 		$this->assertTrue($result->IsValid());
 	}
@@ -71,7 +71,7 @@ class ResourceParticipationRuleTests extends TestBase
 		$series->AddResource($this->resourceLimit20);
 		$series->ChangeParticipants(range(1, 12));
 
-		$result = $this->rule->Validate($series);
+		$result = $this->rule->Validate($series, null);
 		$this->assertFalse($result->IsValid());
 	}
 
@@ -83,7 +83,7 @@ class ResourceParticipationRuleTests extends TestBase
 		$series->AddResource($this->resourceLimit20);
 		$series->ChangeParticipants(range(1, 22));
 
-		$result = $this->rule->Validate($series);
+		$result = $this->rule->Validate($series, null);
 		$this->assertFalse($result->IsValid());
 	}
 }

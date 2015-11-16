@@ -104,7 +104,7 @@ class CustomAttributeValidationRuleTests extends TestBase
 		$userAttribute = new FakeCustomAttribute();
 		$userAttribute->WithSecondaryEntity(CustomAttributeCategory::USER, 123);
 
-		$result = $this->rule->Validate($this->reservation);
+		$result = $this->rule->Validate($this->reservation, null);
 
 		$this->assertEquals(false, $result->IsValid());
 		$this->assertContains('error1', $result->ErrorMessage());
@@ -121,7 +121,7 @@ class CustomAttributeValidationRuleTests extends TestBase
 				->with($this->equalTo(CustomAttributeCategory::RESERVATION), $this->equalTo($this->reservation->AttributeValues()), $this->isNull(), $this->isFalse(), $this->isFalse())
 				->will($this->returnValue($validationResult));
 
-		$result = $this->rule->Validate($this->reservation);
+		$result = $this->rule->Validate($this->reservation, null);
 
 		$this->assertEquals(true, $result->IsValid());
 	}
@@ -136,7 +136,7 @@ class CustomAttributeValidationRuleTests extends TestBase
 				->with($this->equalTo(CustomAttributeCategory::RESERVATION), $this->equalTo($this->reservation->AttributeValues()), $this->isNull(), $this->isFalse(), $this->isTrue())
 				->will($this->returnValue($validationResult));
 
-		$result = $this->rule->Validate($this->reservation);
+		$result = $this->rule->Validate($this->reservation, null);
 
 		$this->assertEquals(true, $result->IsValid());
 	}
@@ -159,7 +159,7 @@ class CustomAttributeValidationRuleTests extends TestBase
 
 		$rule = new CustomAttributeValidationRule($attributeService, $this->userRepository);
 
-		$result = $rule->Validate($this->reservation);
+		$result = $rule->Validate($this->reservation, null);
 
 		$this->assertEquals(true, $result->IsValid());
 		$this->assertEmpty($result->ErrorMessage());
@@ -184,7 +184,7 @@ class CustomAttributeValidationRuleTests extends TestBase
 
 		$rule = new CustomAttributeValidationRule($attributeService, $this->userRepository);
 
-		$result = $rule->Validate($this->reservation);
+		$result = $rule->Validate($this->reservation, null);
 
 		$this->assertEquals(true, $result->IsValid());
 		$this->assertEmpty($result->ErrorMessage());
@@ -211,7 +211,7 @@ class CustomAttributeValidationRuleTests extends TestBase
 
 		$rule = new CustomAttributeValidationRule($attributeService, $this->userRepository);
 
-		$result = $rule->Validate($this->reservation);
+		$result = $rule->Validate($this->reservation, null);
 
 		$this->assertEquals(true, $result->IsValid());
 		$this->assertEmpty($result->ErrorMessage());

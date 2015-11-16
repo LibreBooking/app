@@ -30,20 +30,21 @@ class PermissionValidationRule implements IReservationValidationRule
 	}
 
 	/**
-	 * @param ReservationSeries $reservation
+	 * @param ReservationSeries $reservationSeries
+	 * @param $retryParameters
 	 * @return ReservationRuleResult
 	 */
-	public function Validate($reservation)
+	public function Validate($reservationSeries, $retryParameters)
 	{
-		$reservation->UserId();
+		$reservationSeries->UserId();
 
 		$permissionService = $this->permissionServiceFactory->GetPermissionService();
 
-		$resourceIds = $reservation->AllResourceIds();
+		$resourceIds = $reservationSeries->AllResourceIds();
 
 		foreach ($resourceIds as $resourceId)
 		{
-			if (!$permissionService->CanAccessResource(new ReservationResource($resourceId), $reservation->BookedBy()))
+			if (!$permissionService->CanAccessResource(new ReservationResource($resourceId), $reservationSeries->BookedBy()))
 			{
 				return new ReservationRuleResult(false, Resources::GetInstance()->GetString('NoResourcePermission'));
 			}

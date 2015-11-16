@@ -56,7 +56,7 @@ class ReservationStartTimeRuleTests extends TestBase
 		$reservation->WithCurrentInstance(new TestReservation('1', new DateRange($start, $end)));
 
 		$rule = new ReservationStartTimeRule($this->scheduleRepository);
-		$result = $rule->Validate($reservation);
+		$result = $rule->Validate($reservation, null);
 
 		$this->assertTrue($result->IsValid());
 	}
@@ -70,7 +70,7 @@ class ReservationStartTimeRuleTests extends TestBase
 		$reservation->WithCurrentInstance(new TestReservation('1', new DateRange($start, $end)));
 
 		$rule = new ReservationStartTimeRule($this->scheduleRepository);
-		$result = $rule->Validate($reservation);
+		$result = $rule->Validate($reservation, null);
 
 		$this->assertTrue($result->IsValid());
 	}
@@ -84,7 +84,7 @@ class ReservationStartTimeRuleTests extends TestBase
 		$reservation->WithCurrentInstance(new TestReservation('1', new DateRange($start, $end)));
 
 		$rule = new ReservationStartTimeRule($this->scheduleRepository);
-		$result = $rule->Validate($reservation);
+		$result = $rule->Validate($reservation, null);
 
 		$this->assertFalse($result->IsValid());
 	}
@@ -100,7 +100,7 @@ class ReservationStartTimeRuleTests extends TestBase
 		$reservation->WithCurrentInstance(new TestReservation('1', new DateRange($start, $end)));
 
 		$rule = new ReservationStartTimeRule($this->scheduleRepository);
-		$result = $rule->Validate($reservation);
+		$result = $rule->Validate($reservation, null);
 
 		$this->assertFalse($result->IsValid());
 	}
@@ -136,7 +136,7 @@ class ReservationStartTimeRuleTests extends TestBase
 
 
         $rule = new ReservationStartTimeRule($this->scheduleRepository);
-        $result = $rule->Validate($reservation);
+        $result = $rule->Validate($reservation, null);
 
         $this->assertTrue($result->IsValid());
     }
@@ -172,7 +172,7 @@ class ReservationStartTimeRuleTests extends TestBase
 
 
         $rule = new ReservationStartTimeRule($this->scheduleRepository);
-        $result = $rule->Validate($reservation);
+        $result = $rule->Validate($reservation, null);
 
         $this->assertFalse($result->IsValid());
     }
@@ -189,7 +189,7 @@ class ReservationStartTimeRuleTests extends TestBase
         $reservation->WithCurrentInstance(new TestReservation('1',new DateRange($start, $end)));
 
         $rule = new ReservationStartTimeRule($this->scheduleRepository);
-        $result = $rule->Validate($reservation);
+        $result = $rule->Validate($reservation, null);
 
        	$this->assertTrue($result->IsValid());
     }

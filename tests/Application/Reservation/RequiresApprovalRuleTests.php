@@ -57,7 +57,7 @@ class RequiresApprovalRuleTests extends TestBase
 							->with($this->equalTo($this->fakeUser), $this->equalTo($resource))
 							->will($this->returnValue(false));
 
-		$this->rule->Validate($series);
+		$this->rule->Validate($series, null);
 
 		$this->assertTrue($series->RequiresApproval());
 	}
@@ -70,7 +70,7 @@ class RequiresApprovalRuleTests extends TestBase
 		$series->WithResource($resource);
 		$series->WithBookedBy($this->fakeUser);
 
-		$this->rule->Validate($series);
+		$this->rule->Validate($series, null);
 
 		$this->assertFalse($series->RequiresApproval());
 	}
@@ -88,7 +88,7 @@ class RequiresApprovalRuleTests extends TestBase
 									->with($this->equalTo($this->fakeUser), $this->equalTo($resource))
 									->will($this->returnValue(true));
 
-		$this->rule->Validate($series);
+		$this->rule->Validate($series, null);
 
 		$this->assertFalse($series->RequiresApproval());
 	}

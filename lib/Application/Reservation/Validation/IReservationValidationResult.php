@@ -22,13 +22,23 @@ interface IReservationValidationResult
 	public function CanBeSaved();
 
 	/**
-	 * @return array[int]string
+	 * @return string[]
 	 */
 	public function GetErrors();
 
 	/**
-	 * @return array[int]string
+	 * @return string[]
 	 */
 	public function GetWarnings();
+
+	/**
+	 * @return bool
+	 */
+	public function CanBeRetried();
+
+	/**
+	 * @return ReservationRetryParameter[]
+	 */
+	public function GetRetryParameters();
+
 }
-?>

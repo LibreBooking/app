@@ -38,7 +38,7 @@ class AdminExcludedRule implements IReservationValidationRule
 		$this->userRepository = $userRepository;
 	}
 
-	public function Validate($reservationSeries)
+	public function Validate($reservationSeries, $retryParameters)
 	{
 		if ($this->userSession->IsAdmin)
 		{
@@ -82,6 +82,6 @@ class AdminExcludedRule implements IReservationValidationRule
 			}
 		}
 
-		return $this->rule->Validate($reservationSeries);
+		return $this->rule->Validate($reservationSeries, $retryParameters);
 	}
 }

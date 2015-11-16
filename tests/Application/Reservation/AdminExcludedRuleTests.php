@@ -70,7 +70,7 @@ class AdminExcludedRuleTests extends TestBase
 	{
 		$this->fakeUser->IsAdmin = true;
 
-		$result = $this->rule->Validate($this->reservationSeries);
+		$result = $this->rule->Validate($this->reservationSeries, null);
 
 		$this->assertTrue($result->IsValid());
 	}
@@ -95,7 +95,7 @@ class AdminExcludedRuleTests extends TestBase
 					->with($this->equalTo($this->resource2))
 					->will($this->returnValue(true));
 
-		$result = $this->rule->Validate($this->reservationSeries);
+		$result = $this->rule->Validate($this->reservationSeries, null);
 
 		$this->assertTrue($result->IsValid());
 	}
@@ -125,7 +125,7 @@ class AdminExcludedRuleTests extends TestBase
 					->with($this->equalTo($this->reservationSeries))
 					->will($this->returnValue($expectedResult));
 
-		$result = $this->rule->Validate($this->reservationSeries);
+		$result = $this->rule->Validate($this->reservationSeries, null);
 
 		$this->assertEquals($expectedResult, $result);
 	}
@@ -153,7 +153,7 @@ class AdminExcludedRuleTests extends TestBase
 					->with($this->equalTo($reservationUser))
 					->will($this->returnValue(true));
 
-		$result = $this->rule->Validate($this->reservationSeries);
+		$result = $this->rule->Validate($this->reservationSeries, null);
 
 		$this->assertTrue($result->IsValid());
 	}
