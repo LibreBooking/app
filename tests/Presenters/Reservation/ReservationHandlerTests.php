@@ -112,12 +112,14 @@ class ReservationHandlerTests extends TestBase
 		$errorMessage2 = 'e2';
 		$errors = array($errorMessage1, $errorMessage2);
 
+		$retryMessages = array('m1', 'm2');
+
 		$retryParams = array(new ReservationRetryParameter('name', 'value'));
 
 		$builder = new ExistingReservationSeriesBuilder();
 		$series = $builder->Build();
 
-		$validationResult = new ReservationValidationResult(false, $errors, null, true, $retryParams);
+		$validationResult = new ReservationValidationResult(false, $errors, null, true, $retryParams, $retryMessages);
 
 		$validationService->expects($this->once())
 						  ->method('Validate')
@@ -137,5 +139,6 @@ class ReservationHandlerTests extends TestBase
 		$this->assertEquals($errors, $page->errors);
 		$this->assertTrue($page->canBeRetried);
 		$this->assertEquals($retryParams, $page->retryParameters);
+		$this->assertEquals($retryMessages, $page->retryMessages);
 	}
 }

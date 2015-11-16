@@ -373,6 +373,11 @@ class ReservationRequestResponseFacade implements IReservationSavePage
 	private $_retryParameters = array();
 
 	/**
+	 * @var string[]
+	 */
+	private $_retryMessages = array();
+
+	/**
 	 * @param ReservationRequest $request
 	 * @param WebServiceUserSession $session
 	 */
@@ -693,6 +698,14 @@ class ReservationRequestResponseFacade implements IReservationSavePage
 
 		return $retryParams;
 	}
+
+	/**
+	 * @param array|string[] $messages
+	 */
+	public function SetRetryMessages($messages)
+	{
+		$this->_retryMessages = $messages;
+	}
 }
 
 class ReservationUpdateRequestResponseFacade extends ReservationRequestResponseFacade implements IReservationUpdatePage
@@ -841,6 +854,14 @@ class ReservationDeleteRequestResponseFacade implements IReservationDeletePage
 	{
 		// no-op
 	}
+
+	/**
+	 * @param array|string[] $messages
+	 */
+	public function SetRetryMessages($messages)
+	{
+		// no-op
+	}
 }
 
 class ReservationApprovalRequestResponseFacade implements IReservationApprovalPage
@@ -910,6 +931,14 @@ class ReservationApprovalRequestResponseFacade implements IReservationApprovalPa
 	 * @return ReservationRetryParameter[]
 	 */
 	public function GetRetryParameters()
+	{
+		// no-op
+	}
+
+	/**
+	 * @param array|string[] $messages
+	 */
+	public function SetRetryMessages($messages)
 	{
 		// no-op
 	}

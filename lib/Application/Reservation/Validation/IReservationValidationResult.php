@@ -41,4 +41,9 @@ interface IReservationValidationResult
 	 */
 	public function GetRetryParameters();
 
+	/**
+	 * @return string[]
+	 */
+	public function GetRetryMessages();
+
 }

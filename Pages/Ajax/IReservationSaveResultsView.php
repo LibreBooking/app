@@ -36,6 +36,11 @@ interface IReservationSaveResultsView
 	public function SetWarnings($warnings);
 
 	/**
+	 * @param array|string[] $messages
+	 */
+	public function SetRetryMessages($messages);
+
+	/**
 	 * @param bool $canBeRetried
 	 */
 	public function SetCanBeRetried($canBeRetried);

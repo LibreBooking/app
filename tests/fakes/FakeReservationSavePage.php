@@ -55,6 +55,7 @@ class FakeReservationSavePage implements IReservationSavePage
 	public $allowParticipation;
 	public $canBeRetried = false;
 	public $retryParameters = array();
+	public $retryMessages = array();
 
 	public function __construct()
 	{
@@ -261,6 +262,14 @@ class FakeReservationSavePage implements IReservationSavePage
 	public function GetRetryParameters()
 	{
 		return $this->retryParameters;
+	}
+
+	/**
+	 * @param array|string[] $messages
+	 */
+	public function SetRetryMessages($messages)
+	{
+		$this->retryMessages = $messages;
 	}
 }
 

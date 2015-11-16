@@ -121,6 +121,7 @@ class ReservationHandler implements IReservationHandler
 
 			$view->SetCanBeRetried($validationResult->CanBeRetried());
 			$view->SetRetryParameters($validationResult->GetRetryParameters());
+			$view->SetRetryMessages($validationResult->GetRetryMessages());
 		}
 
 		$view->SetWarnings($validationResult->GetWarnings());

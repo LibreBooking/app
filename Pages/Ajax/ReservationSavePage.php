@@ -513,6 +513,14 @@ class ReservationSavePage extends SecurePage implements IReservationSavePage
 	{
 		return ReservationRetryParameter::GetParamsFromForm($this->GetForm(FormKeys::RESERVATION_RETRY_PREFIX));
 	}
+
+	/**
+	 * @param array|string[] $messages
+	 */
+	public function SetRetryMessages($messages)
+	{
+		$this->Set('RetryMessages', $messages);
+	}
 }
 
 class AccessoryFormElement

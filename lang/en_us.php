@@ -539,6 +539,8 @@ class en_us extends Language
 		$strings['Everyday'] = 'Everyday';
 		$strings['IncludingCompletedReservations'] = 'Including Completed Reservations';
 		$strings['NotCountingCompletedReservations'] = 'Not Counting Completed Reservations';
+		$strings['RetrySkipConflicts'] = 'Skip conflicting reservations';
+		$strings['Retry'] = 'Retry';
 		// End Strings
 
 		// Install

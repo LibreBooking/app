@@ -31,12 +31,12 @@ class ReservationValidationRuleProcessor implements IReservationValidationServic
 		/** @var $rule IReservationValidationRule */
 		foreach ($this->_validationRules as $rule)
 		{
-			$result = $rule->Validate($reservationSeries, null, $retryParameters);
+			$result = $rule->Validate($reservationSeries, $retryParameters);
 			Log::Debug('Validating rule %s. Passed?: %s', get_class($rule), $result->IsValid() . '');
 
 			if (!$result->IsValid())
 			{
-				return new ReservationValidationResult(false, array($result->ErrorMessage()));
+				return new ReservationValidationResult(false, array($result->ErrorMessage()), array(), $result->CanBeRetried(), $result->RetryParameters(), array($result->RetryMessage()));
 			}
 		}
 

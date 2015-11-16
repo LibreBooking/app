@@ -39,5 +39,14 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 	<div>
 		<button id="btnSaveFailed" class="btn btn-warning"><span class="fa fa-arrow-circle-left"></span> {translate key='ReservationErrors'}</button>
+		{if $CanBeRetried}
+			<div>
+				{foreach from=$RetryMessages item=each}
+					<div>{$each|nl2br}</div>
+				{/foreach}
+			</div>
+			<button id="btnRetry" class="btn btn-success"><span class="fa fa-refresh"></span> {translate key='Retry'}</button>
+			<div>Tool tip icon here</div>
+		{/if}
 	</div>
 </div>
