@@ -98,7 +98,7 @@ class AccessoryAvailabilityRuleTests extends TestBase
 			->with($this->equalTo($dr2))
 			->will($this->returnValue(array()));
 
-		$result = $this->rule->Validate($reservation);
+		$result = $this->rule->Validate($reservation, null);
 
 		$this->assertTrue($result->IsValid());
 	}
@@ -130,7 +130,7 @@ class AccessoryAvailabilityRuleTests extends TestBase
 			->with($this->equalTo($dr1))
 			->will($this->returnValue(array($lowerQuantity1, $lowerQuantity2, $notOnReservation)));
 
-		$result = $this->rule->Validate($reservation);
+		$result = $this->rule->Validate($reservation, null);
 
 		$this->assertFalse($result->IsValid());
 		$this->assertFalse(is_null($result->ErrorMessage()));
@@ -156,7 +156,7 @@ class AccessoryAvailabilityRuleTests extends TestBase
 			->with($this->anything())
 			->will($this->returnValue(array()));
 
-		$result = $this->rule->Validate($reservation);
+		$result = $this->rule->Validate($reservation, null);
 
 		$this->assertFalse($result->IsValid());
 		$this->assertFalse(is_null($result->ErrorMessage()));
@@ -180,7 +180,7 @@ class AccessoryAvailabilityRuleTests extends TestBase
 			->with($accessory1->AccessoryId)
 			->will($this->returnValue(new Accessory($accessory1->AccessoryId, 'name1', $quantityAvailable)));
 
-		$result = $this->rule->Validate($reservation);
+		$result = $this->rule->Validate($reservation, null);
 
 		$this->assertTrue($result->IsValid());
 	}

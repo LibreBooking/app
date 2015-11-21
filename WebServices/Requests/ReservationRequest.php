@@ -22,6 +22,7 @@ require_once(ROOT_DIR . 'WebServices/Requests/ReservationAccessoryRequest.php');
 require_once(ROOT_DIR . 'WebServices/Requests/CustomAttributes/AttributeValueRequest.php');
 require_once(ROOT_DIR . 'WebServices/Responses/RecurrenceRequestResponse.php');
 require_once(ROOT_DIR . 'WebServices/Responses/ReminderRequestResponse.php');
+require_once(ROOT_DIR . 'WebServices/Responses/Reservation/ReservationRetryParameterRequestResponse.php');
 
 class ReservationRequest
 {
@@ -69,6 +70,11 @@ class ReservationRequest
 	 */
 	public $allowParticipation;
 
+	/**
+	 * @var ReservationRetryParameterRequestResponse[]
+	 */
+	public $retryParameters;
+
 	public static function Example()
 	{
 		$date = Date::Now()->ToIso();
@@ -87,9 +93,8 @@ class ReservationRequest
 		$request->userId = 1;
 		$request->startReminder = ReminderRequestResponse::Example();
 		$request->allowParticipation = true;
+		$request->retryParameters = array( ReservationRetryParameterRequestResponse::Example());
 
 		return $request;
 	}
 }
-
-?>

@@ -1,5 +1,4 @@
-function Reservation(opts)
-{
+function Reservation(opts) {
 	var options = opts;
 
 	var elements = {
@@ -58,44 +57,37 @@ function Reservation(opts)
 
 	var _ownerId;
 
-	Reservation.prototype.init = function (ownerId)
-	{
+	Reservation.prototype.init = function (ownerId) {
 		_ownerId = ownerId;
 		participation.addedUsers.push(ownerId);
 
-		$('#dialogResourceGroups').on('show.bs.modal', function (e)
-		{
+		$('#dialogResourceGroups').on('show.bs.modal', function (e) {
 			InitializeAdditionalResources();
 			return true;
 		});
 
 		scheduleId = $('#scheduleId').val();
 
-		elements.accessoriesPrompt.click(function ()
-		{
+		elements.accessoriesPrompt.click(function () {
 			ShowAccessoriesPrompt();
 		});
 
-		elements.accessoriesConfirm.click(function ()
-		{
+		elements.accessoriesConfirm.click(function () {
 			AddAccessories();
 			elements.accessoriesDialog.modal('hide');
 		});
 
-		elements.accessoriesCancel.click(function ()
-		{
+		elements.accessoriesCancel.click(function () {
 			elements.accessoriesDialog.modal('hide');
 		});
 
-		elements.printButton.click(function ()
-		{
+		elements.printButton.click(function () {
 			window.print();
 		});
 
 		WireUpResourceDetailPopups();
 
-		$('#btnRemoveAttachment').click(function (e)
-		{
+		$('#btnRemoveAttachment').click(function (e) {
 			e.preventDefault();
 			$('input:checkbox', '#attachmentDiv').toggle();
 		});
@@ -104,33 +96,27 @@ function Reservation(opts)
 
 		InitializeParticipationElements();
 
-		elements.groupDiv.delegate('.additionalResourceCheckbox, .additionalResourceGroupCheckbox', 'click', function (e)
-		{
+		elements.groupDiv.delegate('.additionalResourceCheckbox, .additionalResourceGroupCheckbox', 'click', function (e) {
 			handleAdditionalResourceChecked($(this), e);
 		});
 
-		$('.btnClearAddResources').click(function ()
-		{
+		$('.btnClearAddResources').click(function () {
 			elements.resourceGroupsDialog.modal('hide');
 		});
 
-		elements.addResourcesConfirm.click(function ()
-		{
+		elements.addResourcesConfirm.click(function () {
 			AddResources();
 		});
 
-		$('.btnUpdateThisInstance').click(function ()
-		{
+		$('.btnUpdateThisInstance').click(function () {
 			ChangeUpdateScope(options.scopeOpts.instance);
 		});
 
-		$('.btnUpdateAllInstances').click(function ()
-		{
+		$('.btnUpdateAllInstances').click(function () {
 			ChangeUpdateScope(options.scopeOpts.full);
 		});
 
-		$('.btnUpdateFutureInstances').click(function ()
-		{
+		$('.btnUpdateFutureInstances').click(function () {
 			ChangeUpdateScope(options.scopeOpts.future);
 		});
 
@@ -141,10 +127,9 @@ function Reservation(opts)
 		WireUpSaveDialog();
 		DisplayDuration();
 		WireUpAttachments();
+		WireUpReservationFailed();
 
-
-
-		elements.userId.change(function(){
+		elements.userId.change(function () {
 			LoadCustomAttributes();
 		});
 
@@ -152,9 +137,8 @@ function Reservation(opts)
 	};
 
 	// pre-submit callback 
-	Reservation.prototype.preSubmit = function (formData, jqForm, options)
-	{
-		$.blockUI({ message: $('#wait-box') });
+	Reservation.prototype.preSubmit = function (formData, jqForm, options) {
+		$.blockUI({message: $('#wait-box')});
 
 		$('#result').hide();
 		$('#creatingNotification').show();
@@ -163,17 +147,14 @@ function Reservation(opts)
 	};
 
 	// post-submit callback 
-	Reservation.prototype.showResponse = function (responseText, statusText, xhr, $form)
-	{
+	Reservation.prototype.showResponse = function (responseText, statusText, xhr, $form) {
 		$('.blockUI').css('cursor', 'default');
 
-		$('#btnSaveSuccessful').click(function (e)
-		{
+		$('#btnSaveSuccessful').click(function (e) {
 			window.location = options.returnUrl;
 		});
 
-		$('#btnSaveFailed').click(function ()
-		{
+		$('#btnSaveFailed').click(function () {
 			CloseSaveDialog();
 		});
 
@@ -181,23 +162,19 @@ function Reservation(opts)
 		$('#result').show();
 	};
 
-	var AddAccessories = function ()
-	{
+	var AddAccessories = function () {
 		elements.accessoriesList.empty();
 
-		elements.accessoriesDialog.find('.accessory-quantity, :checked').each(function ()
-		{
+		elements.accessoriesDialog.find('.accessory-quantity, :checked').each(function () {
 			AddAccessory($(this).siblings('.name').val(), $(this).siblings('.id').val(), $(this).val());
 		});
 	};
 
-	Reservation.prototype.addAccessory = function (accessoryId, quantity, name)
-	{
+	Reservation.prototype.addAccessory = function (accessoryId, quantity, name) {
 		AddAccessory(name, accessoryId, quantity);
 	};
 
-	Reservation.prototype.addResourceGroups = function (resourceGroups)
-	{
+	Reservation.prototype.addResourceGroups = function (resourceGroups) {
 		elements.groupDiv.tree({
 			data: resourceGroups,
 			saveState: false,
@@ -205,8 +182,7 @@ function Reservation(opts)
 			selectable: false,
 			autoOpen: true,
 
-			onCreateLi: function (node, $li)
-			{
+			onCreateLi: function (node, $li) {
 				var span = $li.find('span');
 				var itemName = span.text();
 				var label = $('<label><input type="checkbox"/>' + itemName + '</label>');
@@ -230,46 +206,39 @@ function Reservation(opts)
 		});
 	};
 
-	function LoadCustomAttributes()
-	{
+	function LoadCustomAttributes() {
 		var attributesPlaceholder = $('#custom-attributes-placeholder');
 		attributesPlaceholder.html('<span class="fa fa-spinner fa-spin fa-2x"/>');
 		var url = 'ajax/reservation_attributes.php?uid=' + elements.userId.val() + '&rn=' + elements.referenceNumber.val() + '&ro=' + $('#reservation-box').hasClass('readonly');
 
-		_(GetSelectedResourceIds()).forEach(function(n) {
+		_(GetSelectedResourceIds()).forEach(function (n) {
 			url += '&rid[]=' + n;
 		});
 		attributesPlaceholder.load(url);
 	}
 
-	function GetSelectedResourceIds()
-	{
+	function GetSelectedResourceIds() {
 		var resourceIds = [parseInt($('#primaryResourceId').val())];
-		elements.additionalResources.find('.resourceId').each(function (i, element)
-		{
+		elements.additionalResources.find('.resourceId').each(function (i, element) {
 			resourceIds.push(parseInt($(element).val()));
 		});
 
 		return resourceIds;
 	}
 
-	function onResourcesChanged()
-	{
+	function onResourcesChanged() {
 		LoadCustomAttributes();
 	}
 
-	function GetDisallowedAccessoryIds()
-	{
+	function GetDisallowedAccessoryIds() {
 		var disAllowedAccessoryIds = [];
 
 		var resourceIds = GetSelectedResourceIds();
-		elements.accessoriesDialog.find('tr[accessory-id]').each(function (i, row)
-		{
+		elements.accessoriesDialog.find('tr[accessory-id]').each(function (i, row) {
 			var allowedResourcesTxt = $(row).find('.resource-ids').val();
 			if (allowedResourcesTxt)
 			{
-				var allowedResources = $.map(allowedResourcesTxt.split(','), function (i)
-				{
+				var allowedResources = $.map(allowedResourcesTxt.split(','), function (i) {
 					return parseInt(i);
 				});
 
@@ -284,13 +253,11 @@ function Reservation(opts)
 		return disAllowedAccessoryIds;
 	}
 
-	var ShowAccessoriesPrompt = function ()
-	{
+	var ShowAccessoriesPrompt = function () {
 		elements.accessoriesDialog.find('input:text').val('0');
 		elements.accessoriesDialog.find('tr[accessory-id]').show();
 
-		elements.accessoriesList.find('input:hidden').each(function ()
-		{
+		elements.accessoriesList.find('input:hidden').each(function () {
 			var idAndQuantity = $(this).val();
 			var y = idAndQuantity.split('-');
 			var params = y[1].split(',');
@@ -305,15 +272,13 @@ function Reservation(opts)
 		});
 
 		var accessoryIds = GetDisallowedAccessoryIds();
-		_.forEach(accessoryIds, function (id)
-		{
+		_.forEach(accessoryIds, function (id) {
 			elements.accessoriesDialog.find('tr[accessory-id="' + id + '"]').hide();
 		});
 
 	};
 
-	var AddAccessory = function (name, id, quantity)
-	{
+	var AddAccessory = function (name, id, quantity) {
 		if (quantity == 0 || isNaN(quantity))
 		{
 			elements.accessoriesList.find('p [accessoryId=' + id + ']').remove();
@@ -324,8 +289,7 @@ function Reservation(opts)
 		elements.accessoriesList.append('<p accessoryId="' + id + '"><span class="badge quantity">' + quantity + '</span> ' + name + '<input type="hidden" name="' + options.accessoryListInputId + '" value="' + x + '"/></p>');
 	};
 
-	var AddResources = function ()
-	{
+	var AddResources = function () {
 		var displayDiv = elements.additionalResources;
 		displayDiv.empty();
 
@@ -337,7 +301,7 @@ function Reservation(opts)
 
 		var checkboxes = [];
 		var addedResources = [];
-		$.each(allCheckboxes, function (i, checkbox){
+		$.each(allCheckboxes, function (i, checkbox) {
 			var checkedResourceId = $(checkbox).attr('resource-id');
 			if (addedResources.indexOf(checkedResourceId) === -1)
 			{
@@ -353,8 +317,7 @@ function Reservation(opts)
 		}
 		if (checkboxes.length > 1)
 		{
-			$.each(checkboxes, function (i, checkbox)
-			{
+			$.each(checkboxes, function (i, checkbox) {
 				var checkedResourceId = $(checkbox).attr('resource-id');
 				var checkedResourceName = $(checkbox).parent().text();
 
@@ -369,8 +332,7 @@ function Reservation(opts)
 		}
 
 		var accessoryIds = GetDisallowedAccessoryIds();
-		_.forEach(accessoryIds, function (id)
-		{
+		_.forEach(accessoryIds, function (id) {
 			elements.accessoriesList.find('[accessoryid="' + id + '"]').remove();
 		});
 
@@ -379,29 +341,24 @@ function Reservation(opts)
 		onResourcesChanged();
 	};
 
-	var InitializeAdditionalResources = function ()
-	{
+	var InitializeAdditionalResources = function () {
 		elements.groupDiv.find('input[type=checkbox]').prop('checked', false);
-		$.each($('.resourceId'), function (idx, val)
-		{
+		$.each($('.resourceId'), function (idx, val) {
 			var resourceCheckboxes = elements.groupDiv.find('[resource-id="' + $(val).val() + '"]');
-			$.each(resourceCheckboxes, function (ridx, checkbox)
-			{
+			$.each(resourceCheckboxes, function (ridx, checkbox) {
 				$(checkbox).prop('checked', true);
 				handleAdditionalResourceChecked($(checkbox));
 			});
 		});
 	};
 
-	var handleAdditionalResourceChecked = function (checkbox, event)
-	{
+	var handleAdditionalResourceChecked = function (checkbox, event) {
 		var isChecked = checkbox.is(':checked');
 
 		if (!checkbox[0].hasAttribute('resource-id'))
 		{
 			// if this is a group, check/uncheck all nested subitems
-			$.each(checkbox.closest('li').find('ul').find('input[type=checkbox]'), function (i, v)
-			{
+			$.each(checkbox.closest('li').find('ul').find('input[type=checkbox]'), function (i, v) {
 				$(v).prop('checked', isChecked);
 				handleAdditionalResourceChecked($(v));
 			});
@@ -429,8 +386,7 @@ function Reservation(opts)
 		}
 	};
 
-	var AdjustEndDate = function ()
-	{
+	var AdjustEndDate = function () {
 		var firstDate = new Date(elements.beginDate.data['beginPreviousVal'] + 'T' + elements.beginTime.val());
 		var secondDate = new Date(elements.beginDate.val() + 'T' + elements.beginTime.val());
 
@@ -443,10 +399,8 @@ function Reservation(opts)
 		elements.endDate.trigger('change');
 	};
 
-	var SelectRepeatWeekday = function ()
-	{
-		$('#repeatOnWeeklyDiv').find(':checkbox').each(function (i, v)
-		{
+	var SelectRepeatWeekday = function () {
+		$('#repeatOnWeeklyDiv').find(':checkbox').each(function (i, v) {
 			$(v).parent().removeClass('active');
 			$(v).prop('checked', false);
 		});
@@ -457,82 +411,66 @@ function Reservation(opts)
 		checkbox.parent().addClass('active');
 	};
 
-	var ChangeUpdateScope = function (updateScopeValue)
-	{
+	var ChangeUpdateScope = function (updateScopeValue) {
 		$('#hdnSeriesUpdateScope').val(updateScopeValue);
 	};
 
-	var DisplayDuration = function ()
-	{
+	var DisplayDuration = function () {
 		var rounded = dateHelper.GetDateDifference(elements.beginDate, elements.beginTime, elements.endDate, elements.endTime);
 
 		elements.durationDays.text(rounded.RoundedDays);
 		elements.durationHours.text(rounded.RoundedHours);
 	};
 
-	var CloseSaveDialog = function ()
-	{
+	var CloseSaveDialog = function () {
 		$.unblockUI();
 	};
 
-	var WireUpActions = function ()
-	{
-		$('.create').click(function ()
-		{
+	var WireUpActions = function () {
+		$('.create').click(function () {
 			$('form').attr("action", options.createUrl);
 		});
 
-		$('.update').click(function ()
-		{
+		$('.update').click(function () {
 			$('form').attr("action", options.updateUrl);
 		});
 
-		$('.delete').click(function ()
-		{
+		$('.delete').click(function () {
 			$('form').attr("action", options.deleteUrl);
 		});
 	};
 
-	var WireUpButtonPrompt = function ()
-	{
-		$('#updateButtons').find('button').click(function ()
-		{
+	var WireUpButtonPrompt = function () {
+		$('#updateButtons').find('button').click(function () {
 			$('#updateButtons').modal('hide');
 		});
 
-		$('.prompt').click(function ()
-		{
+		$('.prompt').click(function () {
 			$('#updateButtons').modal('show');
 		});
 	};
 
-	var WireUpSaveDialog = function ()
-	{
-		$('.save').click(function ()
-		{
+	var WireUpSaveDialog = function () {
+		$('.save').click(function () {
 			$('#form-reservation').submit();
 		});
 	};
 
-	function WireUpResourceDetailPopups()
-	{
-		$('#resourceNames, #additionalResources').find('.resourceDetails').each(function ()
-		{
+	function WireUpResourceDetailPopups() {
+		$('#resourceNames, #additionalResources').find('.resourceDetails').each(function () {
 			var resourceId = $(this).siblings(".resourceId").val();
 			$(this).bindResourceDetails(resourceId);
 		});
 	}
 
-	function InitializeDateElements()
-	{
+	function InitializeDateElements() {
 		var periodsCache = [];
 
 		elements.beginDate.data['beginPreviousVal'] = elements.beginDate.val();
 		elements.endDate.data['endPreviousVal'] = elements.endDate.val();
 		elements.beginTime.data['beginTimePreviousVal'] = elements.beginTime.val();
 
-		elements.beginDate.change(function ()
-		{
+		elements.beginDate.change(function () {
 			PopulatePeriodDropDown(elements.beginDate, elements.beginTime);
 			AdjustEndDate();
 			DisplayDuration();
@@ -541,16 +479,14 @@ function Reservation(opts)
 			elements.beginDate.data['beginPreviousVal'] = elements.beginDate.val();
 		});
 
-		elements.endDate.change(function ()
-		{
+		elements.endDate.change(function () {
 			PopulatePeriodDropDown(elements.endDate, elements.endTime);
 			DisplayDuration();
 
 			elements.endDate.data['endPreviousVal'] = elements.endDate.val();
 		});
 
-		elements.beginTime.change(function ()
-		{
+		elements.beginTime.change(function () {
 			var diff = dateHelper.GetTimeDifference(elements.beginTime.data['beginTimePreviousVal'], elements.beginTime.val());
 
 			var newTime = dateHelper.AddTimeDiff(diff, elements.endTime.val());
@@ -562,13 +498,11 @@ function Reservation(opts)
 			DisplayDuration();
 		});
 
-		elements.endTime.change(function ()
-		{
+		elements.endTime.change(function () {
 			DisplayDuration();
 		});
 
-		var PopulatePeriodDropDown = function (dateElement, periodElement)
-		{
+		var PopulatePeriodDropDown = function (dateElement, periodElement) {
 			var prevDate = new Date(dateElement.data['previousVal']);
 			var currDate = new Date(dateElement.val());
 			if (prevDate.getTime() == currDate.getTime())
@@ -591,12 +525,10 @@ function Reservation(opts)
 				url: 'schedule.php',
 				dataType: 'json',
 				data: {dr: 'layout', 'sid': scheduleId, 'ld': dateElement.val()},
-				success: function (data)
-				{
+				success: function (data) {
 					var items = [];
 					periodElement.empty();
-					$.map(data.periods, function (item)
-					{
+					$.map(data.periods, function (item) {
 						items.push('<option value="' + item.begin + '">' + item.label + '</option>')
 					});
 					var html = items.join('');
@@ -611,84 +543,68 @@ function Reservation(opts)
 		SelectRepeatWeekday();
 	}
 
-	function InitializeParticipationElements()
-	{
-		elements.participantDialogPrompt.click(function ()
-		{
+	function InitializeParticipationElements() {
+		elements.participantDialogPrompt.click(function () {
 			participation.showAllUsersToAdd(elements.participantDialog);
 		});
 
-		elements.participantGroupDialogPrompt.click(function ()
-		{
+		elements.participantGroupDialogPrompt.click(function () {
 			participation.showAllGroupsToAdd(elements.participantGroupDialog);
 		});
 
-		elements.participantDialog.delegate('.add', 'click', function ()
-		{
+		elements.participantDialog.delegate('.add', 'click', function () {
 			participation.addParticipant($(this).find('.name').text(), $(this).attr('user-id'));
 		});
 
-		elements.participantGroupDialog.delegate('.add', 'click', function ()
-		{
+		elements.participantGroupDialog.delegate('.add', 'click', function () {
 			participation.addGroupParticipants($(this).attr('group-id'));
 		});
 
-		elements.participantList.delegate('.remove', 'click', function ()
-		{
+		elements.participantList.delegate('.remove', 'click', function () {
 			var item = $(this).closest('.user');
 			var id = item.find('.id').val();
 			item.remove();
 			participation.removeParticipant(id);
 		});
 
-		elements.participantAutocomplete.userAutoComplete(options.userAutocompleteUrl, function (ui)
-		{
+		elements.participantAutocomplete.userAutoComplete(options.userAutocompleteUrl, function (ui) {
 			participation.addParticipant(ui.item.label, ui.item.value);
 		});
 
-		elements.inviteeDialogPrompt.click(function ()
-		{
+		elements.inviteeDialogPrompt.click(function () {
 			participation.showAllUsersToAdd(elements.inviteeDialog);
 		});
 
-		elements.inviteeGroupDialogPrompt.click(function ()
-		{
+		elements.inviteeGroupDialogPrompt.click(function () {
 			participation.showAllGroupsToAdd(elements.inviteeGroupDialog);
 		});
 
-		elements.inviteeDialog.delegate('.add', 'click', function ()
-		{
+		elements.inviteeDialog.delegate('.add', 'click', function () {
 			participation.addInvitee($(this).find('.name').text(), $(this).attr('user-id'));
 		});
 
-		elements.inviteeGroupDialog.delegate('.add', 'click', function ()
-		{
+		elements.inviteeGroupDialog.delegate('.add', 'click', function () {
 			participation.addGroupInvitees($(this).attr('group-id'));
 		});
 
-		elements.inviteeList.delegate('.remove', 'click', function ()
-		{
+		elements.inviteeList.delegate('.remove', 'click', function () {
 			var item = $(this).closest('.user');
 			var id = item.find('.id').val();
 			item.remove();
 			participation.removeInvitee(id);
 		});
 
-		elements.inviteeAutocomplete.userAutoComplete(options.userAutocompleteUrl, function (ui)
-		{
+		elements.inviteeAutocomplete.userAutoComplete(options.userAutocompleteUrl, function (ui) {
 			participation.addInvitee(ui.item.label, ui.item.value);
 		});
 	}
 
-	function WireUpAttachments()
-	{
-		var enableCorrectButtons = function ()
-		{
+	function WireUpAttachments() {
+		var enableCorrectButtons = function () {
 			var allAttachments = elements.reservationAttachments.find('.attachment-item');
 			if (allAttachments.length > 1)
 			{
-				$.each(allAttachments, function (i, v)
-				{
+				$.each(allAttachments, function (i, v) {
 					var addbutton = $(v).find('.add-attachment');
 					if (i == allAttachments.length - 1)
 					{
@@ -716,8 +632,7 @@ function Reservation(opts)
 
 		enableCorrectButtons();
 
-		elements.reservationAttachments.delegate('.add-attachment', 'click', function (e)
-		{
+		elements.reservationAttachments.delegate('.add-attachment', 'click', function (e) {
 			e.preventDefault();
 			var li = $(this).closest('.attachment-item');
 			var cloned = li.clone();
@@ -727,44 +642,71 @@ function Reservation(opts)
 			enableCorrectButtons();
 		});
 
-		elements.reservationAttachments.delegate('.remove-attachment', 'click', function (e)
-		{
+		elements.reservationAttachments.delegate('.remove-attachment', 'click', function (e) {
 			e.preventDefault();
 			$(this).closest('.attachment-item').remove();
 			enableCorrectButtons();
 		});
 	}
 
-	changeUser.init = function ()
-	{
-		$('#showChangeUsers').click(function (e)
-		{
+	function WireUpReservationFailed() {
+		$(document).on('loaded', '#reservation-failed', function (e) {
+			$('#retryToolTip').qtip({
+						position: {
+							my: 'bottom left',
+							at: 'top left',
+							effect: false
+						},
+
+						content: {
+							text: function (event, api)
+							{
+								return $('#retryMessages');
+							}
+						},
+
+						show: {
+							delay: 300,
+							effect: false
+						},
+
+						hide: {
+							fixed: true,
+							delay: 500
+						},
+
+						style: {
+							classes: 'qtip-light qtip-bootstrap'
+						}
+					});
+		});
+	}
+
+	changeUser.init = function () {
+		$('#showChangeUsers').click(function (e) {
 			$('#changeUsers').toggle();
 			e.preventDefault();
 		});
 
-		elements.changeUserAutocomplete.userAutoComplete(options.changeUserAutocompleteUrl, function (ui)
-		{
+		elements.changeUserAutocomplete.userAutoComplete(options.changeUserAutocompleteUrl, function (ui) {
 			changeUser.chooseUser(ui.item.value, ui.item.label);
 		});
 
-		$('#promptForChangeUsers').click(function ()
-		{
+		$('#promptForChangeUsers').click(function () {
 			changeUser.showAll();
 		});
 
-		$('#changeUserDialog').delegate('.add', 'click', function ()
-		{
+		$('#changeUserDialog').delegate('.add', 'click', function () {
 			changeUser.chooseUser($(this).attr('userId'), $(this).text());
 			$('#changeUserDialog').modal('hide');
 		});
 	};
 
-	changeUser.chooseUser = function (id, name)
-	{
+	changeUser.chooseUser = function (id, name) {
 		elements.userName.text(name);
 		elements.userName.attr('data-userid', id);
-		elements.userId.val(id).trigger('change');;
+		elements.userId.val(id).trigger('change');
+		;
 
 		participation.removeParticipant(_ownerId);
 		participation.removeInvitee(_ownerId);
@@ -775,8 +717,7 @@ function Reservation(opts)
 		$('#changeUsers').hide();
 	};
 
-	changeUser.showAll = function ()
-	{
+	changeUser.showAll = function () {
 		var allUserList;
 		var dialogElement = $('#changeUserDialog');
 		var listElement = dialogElement.find('.modal-body');
@@ -787,11 +728,9 @@ function Reservation(opts)
 				url: options.changeUserAutocompleteUrl,
 				dataType: 'json',
 				async: false,
-				success: function (data)
-				{
+				success: function (data) {
 					allUserList = data;
-					$.map(allUserList, function (item)
-					{
+					$.map(allUserList, function (item) {
 						items.push('<div><a href="#" class="add" title="Add" userId="' + item.Id + '">' + item.DisplayName + '</a></div>');
 					});
 
@@ -803,8 +742,7 @@ function Reservation(opts)
 		dialogElement.modal('show');
 	};
 
-	participation.addParticipant = function (name, userId)
-	{
+	participation.addParticipant = function (name, userId) {
 		if ($.inArray(userId, participation.addedUsers) >= 0)
 		{
 			return;
@@ -821,18 +759,15 @@ function Reservation(opts)
 		participation.addedUsers.push(userId);
 	};
 
-	Reservation.prototype.addParticipant = function (name, userId)
-	{
+	Reservation.prototype.addParticipant = function (name, userId) {
 		participation.addParticipant(name, userId);
 	};
 
-	Reservation.prototype.addInvitee = function (name, userId)
-	{
+	Reservation.prototype.addInvitee = function (name, userId) {
 		participation.addInvitee(name, userId);
 	};
 
-	participation.addInvitee = function (name, userId)
-	{
+	participation.addInvitee = function (name, userId) {
 		if ($.inArray(userId, participation.addedUsers) >= 0)
 		{
 			return;
@@ -849,8 +784,7 @@ function Reservation(opts)
 		participation.addedUsers.push(userId);
 	};
 
-	participation.removeParticipant = function (userId)
-	{
+	participation.removeParticipant = function (userId) {
 		var index = $.inArray(userId, participation.addedUsers);
 		if (index >= 0)
 		{
@@ -858,8 +792,7 @@ function Reservation(opts)
 		}
 	};
 
-	participation.removeInvitee = function (userId)
-	{
+	participation.removeInvitee = function (userId) {
 		var index = $.inArray(userId, participation.addedUsers);
 		if (index >= 0)
 		{
@@ -867,8 +800,7 @@ function Reservation(opts)
 		}
 	};
 
-	participation.showAllUsersToAdd = function (dialogElement)
-	{
+	participation.showAllUsersToAdd = function (dialogElement) {
 		var allUserList;
 		var listElement = dialogElement.find('.modal-body');
 		var items = [];
@@ -878,16 +810,14 @@ function Reservation(opts)
 				url: options.userAutocompleteUrl,
 				dataType: 'json',
 				async: false,
-				success: function (data)
-				{
+				success: function (data) {
 					allUserList = data;
-					$.map(allUserList, function (item)
-					{
+					$.map(allUserList, function (item) {
 						if (item.Id != _ownerId)
 						{
 							items.push('<div><a href="#" class="add" title="Add" user-id="' + item.Id + '">' +
-							'<span class="fa fa-plus-square icon"></span> <span class="name">' +
-							item.DisplayName + '</span></a></div>');
+									'<span class="fa fa-plus-square icon"></span> <span class="name">' +
+									item.DisplayName + '</span></a></div>');
 						}
 					});
 
@@ -899,8 +829,7 @@ function Reservation(opts)
 		dialogElement.modal('show');
 	};
 
-	participation.showAllGroupsToAdd = function (dialogElement)
-	{
+	participation.showAllGroupsToAdd = function (dialogElement) {
 		var allUserList;
 		var listElement = dialogElement.find('.modal-body');
 		var items = [];
@@ -910,16 +839,14 @@ function Reservation(opts)
 				url: options.groupAutocompleteUrl,
 				dataType: 'json',
 				async: false,
-				success: function (data)
-				{
+				success: function (data) {
 					allUserList = data;
-					$.map(allUserList, function (item)
-					{
+					$.map(allUserList, function (item) {
 						if (item.Id != _ownerId)
 						{
 							items.push('<div><a href="#" class="add" title="Add" group-id="' + item.Id + '">' +
-							'<span class="fa fa-plus-square icon"></span> <span class="name">' +
-							item.Name + '</span></a></div>');
+									'<span class="fa fa-plus-square icon"></span> <span class="name">' +
+									item.Name + '</span></a></div>');
 						}
 					});
 
@@ -931,29 +858,24 @@ function Reservation(opts)
 		dialogElement.modal('show');
 	};
 
-	participation.addGroupUsers = function (groupId, addUserCallback)
-	{
+	participation.addGroupUsers = function (groupId, addUserCallback) {
 		$.ajax({
 			url: options.userAutocompleteUrl + '&term=group&gid=' + groupId,
 			dataType: 'json',
 			async: false,
-			success: function (data)
-			{
-				$.each(data, function (i, user)
-				{
+			success: function (data) {
+				$.each(data, function (i, user) {
 					addUserCallback(user.DisplayName, user.Id);
 				});
 			}
 		});
 	};
 
-	participation.addGroupParticipants = function (groupId)
-	{
+	participation.addGroupParticipants = function (groupId) {
 		participation.addGroupUsers(groupId, participation.addParticipant);
 	};
 
-	participation.addGroupInvitees = function (groupId)
-	{
+	participation.addGroupInvitees = function (groupId) {
 		participation.addGroupUsers(groupId, participation.addInvitee);
 	};
 }

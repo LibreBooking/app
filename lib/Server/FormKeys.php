@@ -163,6 +163,7 @@ class FormKeys
 	const RESERVATION_FILE = 'reservationFile';
 	const RESERVATION_ID = 'reservationId';
 	const RESERVATION_TITLE = 'reservationTitle';
+	const RESERVATION_RETRY_PREFIX = 'RESERVATION_RETRY_PREFIX';
 	const RESOURCE = 'resource';
 	const RESOURCE_ADMIN_GROUP_ID = 'resourceAdminGroupId';
 	const RESOURCE_CONTACT = 'resourceContact';

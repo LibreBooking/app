@@ -60,16 +60,16 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 							   class="form-control"/>
 					{else}
 						<div class="radio">
-							<div class="col-xs-1">
+
 								<input id="radio{$name}t" type="radio" value="true"
 									   name="{$name}"{if $setting->Value == 'true'} checked="checked"{/if} />
 								<label for="radio{$name}t">{translate key="True"}</label>
-							</div>
-							<div class="col-xs-11">
+
+							<div class="radio">
 								<input id="radio{$name}f" type="radio" value="false"
 									   name="{$name}"{if $setting->Value == 'false'} checked="checked"{/if} />
 								<label for="radio{$name}f">{translate key="False"}</label>
-							</div>
+
 						</div>
 					{/if}
 				</div>

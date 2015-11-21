@@ -181,19 +181,19 @@ class ExistingReservationSeries extends ReservationSeries
 
 	/**
 	 * @internal
+	 * @return bool
 	 */
 	public function RemoveInstance(Reservation $reservation)
 	{
-		if ($reservation == $this->CurrentInstance())
+		$removed = parent::RemoveInstance($reservation);
+
+		if ($removed)
 		{
-			return; // never remove the current instance
+			$this->AddEvent(new InstanceRemovedEvent($reservation, $this));
+			$this->_deleteRequestIds[] = $reservation->ReservationId();
 		}
 
-		$instanceKey = $this->GetNewKey($reservation);
-		unset($this->instances[$instanceKey]);
-
-		$this->AddEvent(new InstanceRemovedEvent($reservation, $this));
-		$this->_deleteRequestIds[] = $reservation->ReservationId();
+		return $removed;
 	}
 
 	public function RequiresNewSeries()

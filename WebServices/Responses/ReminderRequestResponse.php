@@ -17,6 +17,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 require_once(ROOT_DIR . 'lib/WebService/namespace.php');
 
 class ReminderRequestResponse
@@ -35,6 +36,3 @@ class ReminderRequestResponse
 		return new ReminderRequestResponse(15, ReservationReminderInterval::Hours . ' or ' . ReservationReminderInterval::Minutes . ' or ' . ReservationReminderInterval::Days);
 	}
 }
-
-
-?>

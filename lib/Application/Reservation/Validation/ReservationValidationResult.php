@@ -19,17 +19,26 @@ class ReservationValidationResult implements IReservationValidationResult
 	private $_canBeSaved;
 	private $_errors;
 	private $_warnings;
+	private $_canBeRetried;
+	private $_retryParams;
+	private $_retryMessages;
 
 	/**
 	 * @param $canBeSaved bool
 	 * @param $errors string[]
 	 * @param $warnings string[]
+	 * @param bool $canBeRetried
+	 * @param array|ReservationRetryParameter[] $retryParams
+	 * @param array|string[] $retryMessages
 	 */
-	public function __construct($canBeSaved = true, $errors = null, $warnings = null)
+	public function __construct($canBeSaved = true, $errors = null, $warnings = null, $canBeRetried = false, $retryParams = array(), $retryMessages = array())
 	{
 		$this->_canBeSaved = $canBeSaved;
 		$this->_errors = $errors == null ? array() : $errors;
 		$this->_warnings = $warnings == null ? array() : $warnings;
+		$this->_canBeRetried = $canBeRetried;
+		$this->_retryParams = $retryParams == null ? array() : $retryParams;
+		$this->_retryMessages = $retryMessages == null ? array() : $retryMessages;
 	}
 
 	public function CanBeSaved()
@@ -46,5 +55,19 @@ class ReservationValidationResult implements IReservationValidationResult
 	{
 		return $this->_warnings;
 	}
+
+	public function CanBeRetried()
+	{
+		return $this->_canBeRetried;
+	}
+
+	public function GetRetryParameters()
+	{
+		return $this->_retryParams;
+	}
+
+	public function GetRetryMessages()
+	{
+		return $this->_retryMessages;
+	}
 }
-?>

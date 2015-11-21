@@ -38,11 +38,7 @@ class AccessoryResourceRule implements IReservationValidationRule
 		$this->strings = Resources::GetInstance();
 	}
 
-	/**
-	 * @param ReservationSeries $reservationSeries
-	 * @return ReservationRuleResult
-	 */
-	public function Validate($reservationSeries)
+	public function Validate($reservationSeries, $retryParameters)
 	{
 		$errors = array();
 

@@ -71,11 +71,7 @@ class ReservationValidationFactory implements IReservationValidationFactory
 
 class NullReservationValidationService implements IReservationValidationService
 {
-    /**
-     * @param ReservationSeries $reservation
-     * @return IReservationValidationResult
-     */
-    function Validate($reservation)
+    function Validate($reservation, $retryParameters = null)
     {
         return new ReservationValidationResult();
     }

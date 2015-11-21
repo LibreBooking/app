@@ -23,11 +23,13 @@ class ReservationStartTimeRule implements IReservationValidationRule
         $this->scheduleRepository = $scheduleRepository;
     }
 
-	/**
-	 * @param ReservationSeries $reservationSeries
-	 * @return ReservationRuleResult
-	 */
-	public function Validate($reservationSeries)
+    /**
+     * @param ReservationSeries $reservationSeries
+     * @param $retryParameters
+     * @return ReservationRuleResult
+     * @throws Exception
+     */
+	public function Validate($reservationSeries, $retryParameters)
 	{
         $constraint = Configuration::Instance()->GetSectionKey(ConfigSection::RESERVATION, ConfigKeys::RESERVATION_START_TIME_CONSTRAINT);
 

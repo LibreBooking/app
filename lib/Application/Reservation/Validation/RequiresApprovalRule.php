@@ -28,9 +28,10 @@ class RequiresApprovalRule implements IReservationValidationRule
 
 	/**
 	 * @param ReservationSeries $reservationSeries
+	 * @param null|ReservationRetryParameter[] $retryParameters
 	 * @return ReservationRuleResult
 	 */
-	function Validate($reservationSeries)
+	function Validate($reservationSeries, $retryParameters)
 	{
 		$status = ReservationStatus::Created;
 

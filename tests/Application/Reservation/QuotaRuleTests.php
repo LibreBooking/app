@@ -109,7 +109,7 @@ class QuotaRuleTests extends TestBase
 
 		$rule = new QuotaRule($this->quotaRepository, $this->reservationViewRepository, $this->userRepository, $this->scheduleRepository,
 							  $this->quotaViewRepository);
-		$result = $rule->Validate($series);
+		$result = $rule->Validate($series, null);
 
 		$this->assertTrue($result->IsValid(), 'no quotas were exceeded');
 
@@ -160,7 +160,7 @@ class QuotaRuleTests extends TestBase
 
 		$rule = new QuotaRule($this->quotaRepository, $this->reservationViewRepository, $this->userRepository, $this->scheduleRepository,
 							  $this->quotaViewRepository);
-		$result = $rule->Validate($series);
+		$result = $rule->Validate($series, null);
 
 		$this->assertFalse($result->IsValid(), 'first quotas was exceeded');
 	}

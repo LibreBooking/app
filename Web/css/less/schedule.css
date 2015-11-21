@@ -1,0 +1,268 @@
+/*---------------------------------------------------
+    LESS Elements 0.9
+  ---------------------------------------------------
+    A set of useful LESS mixins
+    More info at: http://lesselements.com
+  ---------------------------------------------------*/
+table.reservations {
+  border-collapse: collapse;
+  width: 100%;
+  font-size: .85em;
+  table-layout: fixed;
+  border: solid #36648B 1px;
+}
+table.reservations td {
+  border: solid #36648B 1px;
+  height: 30px;
+  display: table-cell;
+}
+td.resourcename {
+  padding: 1px 3px;
+  background-color: #EDEDED;
+  color: #999999;
+}
+td.resourcename a {
+  color: #0772A1;
+  text-decoration: none;
+}
+td.resourcename a:hover {
+  color: #3BA3D0;
+}
+td.resdate {
+  width: 150px;
+  padding: 0 3px;
+  background-color: #36648B;
+  color: #F0F0F0;
+}
+tr.today td.resdate,
+td.today {
+  font-weight: bold;
+  color: #FFFFFF;
+  background-color: #5199d1;
+}
+#reservations .mobile {
+  font-size: .8em;
+}
+#reservations .mobile .resdate {
+  background-color: #4279A5;
+  width: auto;
+}
+#reservations .mobile td.today {
+  background-color: #5199d1;
+}
+#reservations .mobile .slot {
+  padding: 2px;
+}
+tr.today td.reslabel {
+  font-weight: bold;
+  background-color: #cfcfcf;
+}
+.slot {
+  min-width: 1px;
+  max-width: 1px;
+  overflow: hidden;
+}
+td.reslabel {
+  padding-left: 2px;
+  background-color: #EDEDED;
+  color: #333333;
+}
+tr.today td.reslabel {
+  color: #000000;
+}
+.unreservable {
+  background-color: #CF9D9B;
+  color: #fff;
+}
+td.reservable,
+div.reservable {
+  background-color: #FFF;
+  color: #333;
+}
+.reserved {
+  background-color: #408AD2;
+  color: #fff;
+}
+td.reserved {
+  padding-left: 1px;
+}
+.reserved.hilite {
+  background-color: #59A8EF;
+}
+.reserved.mine {
+  background-color: #6F9BAE;
+}
+.reserved.mine.hilite {
+  background-color: #63AFD0;
+  color: #ffffff;
+}
+.reserved.participating {
+  background-color: #875cae;
+}
+.reserved.participating.hilite {
+  background-color: #a979d1;
+}
+.reserved.pending {
+  background-color: #ffb540;
+  color: black;
+}
+.reserved.pending.hilite {
+  background-color: #ffc973;
+}
+.reservable.hilite,
+#reservations .ui-selecting {
+  background-color: #23BF35;
+}
+.hilite {
+  cursor: pointer;
+}
+.reservable.clicked,
+#reservations .ui-selected {
+  background-color: #259433;
+}
+.reserved.clicked {
+  background-color: #1979CF;
+}
+.pasttime {
+  background-color: #BDBDBD;
+}
+.restricted {
+  background: repeating-linear-gradient(45deg, transparent, transparent 10px, #cccccc 10px, #cccccc 20px), linear-gradient(to bottom, #eeeeee, #999999);
+  color: black;
+}
+.schedule_title {
+  text-align: center;
+  vertical-align: top;
+}
+.schedule_title span {
+  font-size: 2em;
+}
+.schedule-dates {
+  text-align: center;
+  font-size: 1.5em;
+  padding-bottom: 10px;
+}
+.ui-datepicker {
+  margin-left: auto;
+  margin-right: auto;
+}
+.res_popup_details {
+  min-width: 450px;
+}
+.res_popup_details .summary {
+  font-style: italic;
+}
+.res_popup_details .user {
+  font-weight: bold;
+}
+td.resourcename.hilite {
+  background-color: #fbffc2;
+}
+div.legend {
+  line-height: 25px;
+  width: 110px;
+  border: solid #555 2px;
+  text-align: center;
+  display: inline-block;
+  *display: inline;
+  margin: 0px 2px;
+}
+#reservations-left {
+  padding: 0;
+}
+.reservations-left-header {
+  border-bottom: solid 1px #e9e9e9;
+  font-weight: bold;
+  font-size: 1.3em;
+  text-align: center;
+  padding: 3px 0;
+  color: #585754;
+}
+.reservations-left-content {
+  padding: 10px;
+}
+ul.jqtree-tree .group-resource .jqtree-title {
+  color: #111111;
+}
+#reservations-left > h4 {
+  text-align: center;
+}
+ul.jqtree-tree li.jqtree-selected > .jqtree-element,
+ul.jqtree-tree li.jqtree-selected > .jqtree-element:hover {
+  background: none;
+  font-weight: bold;
+}
+ul.jqtree-tree .jqtree-toggler {
+  top: 10%;
+}
+#make_default {
+  padding-right: 10px;
+}
+.table-cell-wrapper {
+  position: relative;
+  height: 100%;
+  width: 100%;
+}
+#reservations-left .textbox {
+  width: 120px;
+}
+#reservations-left select.textbox,
+#reservations-left textarea,
+#reservations-left .button {
+  width: 128px;
+}
+#reservations-left {
+  font-size: .9em;
+}
+.advancedFilterTitle {
+  margin-top: 10px;
+  text-align: center;
+}
+#reservations-left hr {
+  border: 0;
+  height: 1px;
+  background-color: #bcbcbc;
+}
+#calendar_toggle {
+  color: #585754;
+  padding-left: 5px;
+}
+#calendar_toggle:hover {
+  color: #72716d;
+}
+#calendar_toggle span {
+  font-size: 16pt;
+}
+#page-schedule a {
+  text-decoration: none;
+}
+#reservations-left .btn {
+  width: 100%;
+}
+#reservations-left .form-group {
+  margin-bottom: 3px;
+}
+#reservations-left .btn-clear {
+  margin-top: 3px;
+}
+.reservations.mobile .reserved {
+  -webkit-border-radius: 1px;
+  -moz-border-radius: 1px;
+  border-radius: 1px;
+  padding: 1px 2px;
+}
+a.toggle-sidebar {
+  color: #585754;
+}
+.no-resource-warning {
+  padding: 10px;
+  -webkit-border-radius: 2px;
+  -moz-border-radius: 2px;
+  border-radius: 2px;
+}
+#showFullWeek {
+  display: block;
+}
+.schedule-legend {
+  margin-bottom: 10px;
+}

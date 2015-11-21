@@ -48,7 +48,7 @@ class AttachmentExtensionTests extends TestBase
 		$attachment->SetExtension('doc');
 		$this->series->AddAttachment($attachment);
 
-		$result = $this->validator->Validate($this->series);
+		$result = $this->validator->Validate($this->series, null);
 
 		$this->assertTrue($result->IsValid());
 	}
@@ -61,7 +61,7 @@ class AttachmentExtensionTests extends TestBase
 		$attachment->SetExtension('doc');
 		$this->series->AddAttachment($attachment);
 
-		$result = $this->validator->Validate($this->series);
+		$result = $this->validator->Validate($this->series, null);
 
 		$this->assertTrue($result->IsValid());
 	}
@@ -74,7 +74,7 @@ class AttachmentExtensionTests extends TestBase
 		$attachment->SetExtension('doc');
 		$this->series->AddAttachment($attachment);
 
-		$result = $this->validator->Validate($this->series);
+		$result = $this->validator->Validate($this->series, null);
 
 		$this->assertTrue($result->IsValid());
 	}
@@ -87,7 +87,7 @@ class AttachmentExtensionTests extends TestBase
 		$attachment->SetExtension('doc');
 		$this->series->AddAttachment($attachment);
 
-		$result = $this->validator->Validate($this->series);
+		$result = $this->validator->Validate($this->series, null);
 
 		$this->assertFalse($result->IsValid());
 	}

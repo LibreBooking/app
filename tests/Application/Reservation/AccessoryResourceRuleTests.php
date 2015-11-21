@@ -52,7 +52,7 @@ class AccessoryResourceRuleTests extends TestBase
 		$reservation->WithAccessory($accessory1);
 		$reservation->WithResource(new FakeBookableResource(1));
 
-		$result = $this->rule->Validate($reservation);
+		$result = $this->rule->Validate($reservation, null);
 
 		$this->assertTrue($result->IsValid());
 	}
@@ -72,7 +72,7 @@ class AccessoryResourceRuleTests extends TestBase
 
 		$this->accessoryRepository->AddAccessory($accessory);
 
-		$result = $this->rule->Validate($reservation);
+		$result = $this->rule->Validate($reservation, null);
 
 		$this->assertTrue($result->IsValid());
 	}
@@ -91,7 +91,7 @@ class AccessoryResourceRuleTests extends TestBase
 
 		$this->accessoryRepository->AddAccessory($accessory);
 
-		$result = $this->rule->Validate($reservation);
+		$result = $this->rule->Validate($reservation, null);
 
 		$this->assertTrue($result->IsValid(), $result->ErrorMessage());
 	}
@@ -109,7 +109,7 @@ class AccessoryResourceRuleTests extends TestBase
 
 		$this->accessoryRepository->AddAccessory($accessory);
 
-		$result = $this->rule->Validate($reservation);
+		$result = $this->rule->Validate($reservation, null);
 
 		$this->assertTrue($result->IsValid());
 	}
@@ -127,7 +127,7 @@ class AccessoryResourceRuleTests extends TestBase
 
 		$this->accessoryRepository->AddAccessory($accessory);
 
-		$result = $this->rule->Validate($reservation);
+		$result = $this->rule->Validate($reservation, null);
 
 		$this->assertFalse($result->IsValid());
 	}
@@ -145,7 +145,7 @@ class AccessoryResourceRuleTests extends TestBase
 
 		$this->accessoryRepository->AddAccessory($accessory);
 
-		$result = $this->rule->Validate($reservation);
+		$result = $this->rule->Validate($reservation, null);
 
 		$this->assertFalse($result->IsValid());
 	}
@@ -166,7 +166,7 @@ class AccessoryResourceRuleTests extends TestBase
 		$this->accessoryRepository->AddAccessory($accessory1);
 		$this->accessoryRepository->AddAccessory($accessory2);
 
-		$result = $this->rule->Validate($reservation);
+		$result = $this->rule->Validate($reservation, null);
 
 		$this->assertTrue($result->IsValid(), $result->ErrorMessage());
 	}

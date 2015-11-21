@@ -51,7 +51,7 @@ class ResourceMinimumNoticeRuleTests extends TestBase
 		$reservation->AddResource($resource2);
 
 		$rule = new ResourceMinimumNoticeRule();
-		$result = $rule->Validate($reservation);
+		$result = $rule->Validate($reservation, null);
 
 		$this->assertFalse($result->IsValid());
 	}
@@ -68,7 +68,7 @@ class ResourceMinimumNoticeRuleTests extends TestBase
 		$reservation->WithDuration($duration);
 
 		$rule = new ResourceMinimumNoticeRule();
-		$result = $rule->Validate($reservation);
+		$result = $rule->Validate($reservation, null);
 
 		$this->assertTrue($result->IsValid());
 	}

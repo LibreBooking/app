@@ -20,9 +20,11 @@ class ResourceMaximumDurationRule implements IReservationValidationRule
 	 * @see IReservationValidationRule::Validate()
 	 *
 	 * @param ReservationSeries $reservationSeries
+	 * @param $retryParameters
 	 * @return ReservationRuleResult
+	 * @throws Exception
 	 */
-	public function Validate($reservationSeries)
+	public function Validate($reservationSeries, $retryParameters)
 	{
 		$r = Resources::GetInstance();
 

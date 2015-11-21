@@ -82,11 +82,13 @@ class ReservationValidationRuleProcessorTests extends TestBase
 			->will($this->returnValue(new ReservationRuleResult()));
 
 		$error = 'something went wrong';
+		$retryMessage = 'retry message';
+		$retryParams = array(new ReservationRetryParameter('n', 'v'));
 
 		$rule2->expects($this->once())
 			->method('Validate')
 			->with($this->equalTo($reservation))
-			->will($this->returnValue(new ReservationRuleResult(false, $error)));
+			->will($this->returnValue(new ReservationRuleResult(false, $error, true, $retryMessage, $retryParams)));
 
 		$vs = new ReservationValidationRuleProcessor($rules);
 
@@ -96,7 +98,8 @@ class ReservationValidationRuleProcessorTests extends TestBase
 		$actualErrors = $result->GetErrors();
 		$this->assertEquals($error, $actualErrors[0]);
 		$this->assertEquals(0, count($result->GetWarnings()));
+		$this->assertEquals(true, $result->CanBeRetried());
+		$this->assertEquals(array($retryMessage), $result->GetRetryMessages());
+		$this->assertEquals($retryParams, $result->GetRetryParameters());
 	}
 }
-
-?>

@@ -64,7 +64,7 @@ class ResourceCrossDayRuleTests extends TestBase
 		->will($this->returnValue($this->schedule));
 
 		$rule = new ResourceCrossDayRule($this->scheduleRepository);
-		$result = $rule->Validate($reservation);
+		$result = $rule->Validate($reservation, null);
 
 		$this->assertTrue($result->IsValid());
 	}
@@ -86,7 +86,7 @@ class ResourceCrossDayRuleTests extends TestBase
 		$reservation->AddResource($resource2);
 
 		$rule = new ResourceCrossDayRule($this->scheduleRepository);
-		$result = $rule->Validate($reservation);
+		$result = $rule->Validate($reservation, null);
 
 		$this->assertTrue($result->IsValid());
 	}
@@ -113,7 +113,7 @@ class ResourceCrossDayRuleTests extends TestBase
 		->will($this->returnValue($this->schedule));
 
 		$rule = new ResourceCrossDayRule($this->scheduleRepository);
-		$result = $rule->Validate($reservation);
+		$result = $rule->Validate($reservation, null);
 
 		$this->assertFalse($result->IsValid());
 	}

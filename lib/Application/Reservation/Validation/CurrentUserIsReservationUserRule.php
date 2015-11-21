@@ -30,11 +30,7 @@ class CurrentUserIsReservationUserRule implements IReservationValidationRule
 		$this->userSession = $userSession;
 	}
 
-	/**
-	 * @param ReservationSeries $reservationSeries
-	 * @return ReservationRuleResult
-	 */
-	public function Validate($reservationSeries)
+	public function Validate($reservationSeries, $retryParameters)
 	{
 		return new ReservationRuleResult($this->userSession->UserId == $reservationSeries->UserId(), Resources::GetInstance()->GetString('NoReservationAccess'));
 	}

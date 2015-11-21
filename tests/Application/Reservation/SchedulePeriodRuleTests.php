@@ -71,7 +71,7 @@ class SchedulePeriodRuleTests extends TestBase
 				->with($this->equalTo($series->CurrentInstance()->StartDate()))
 				->will($this->returnValue(new SchedulePeriod($date, $date->AddMinutes(1))));
 
-		$result = $this->rule->Validate($series);
+		$result = $this->rule->Validate($series, null);
 
 		$this->assertFalse($result->IsValid());
 	}
@@ -105,7 +105,7 @@ class SchedulePeriodRuleTests extends TestBase
 				->with($this->equalTo($series->CurrentInstance()->EndDate()))
 				->will($this->returnValue(new SchedulePeriod($date->AddMinutes(1), $date)));
 
-		$result = $this->rule->Validate($series);
+		$result = $this->rule->Validate($series, null);
 
 		$this->assertFalse($result->IsValid());
 	}
@@ -140,7 +140,7 @@ class SchedulePeriodRuleTests extends TestBase
 				->with($this->equalTo($series->CurrentInstance()->EndDate()))
 				->will($this->returnValue($period));
 
-		$result = $this->rule->Validate($series);
+		$result = $this->rule->Validate($series, null);
 
 		$this->assertTrue($result->IsValid());
 	}

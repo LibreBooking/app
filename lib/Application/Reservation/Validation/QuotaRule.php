@@ -56,9 +56,10 @@ class QuotaRule implements IReservationValidationRule
 
 	/**
 	 * @param ReservationSeries $reservationSeries
+	 * @param $retryParameters
 	 * @return ReservationRuleResult
 	 */
-	public function Validate($reservationSeries)
+	public function Validate($reservationSeries, $retryParameters)
 	{
 		$quotas = $this->quotaRepository->LoadAll();
 		$user = $this->userRepository->LoadById($reservationSeries->UserId());

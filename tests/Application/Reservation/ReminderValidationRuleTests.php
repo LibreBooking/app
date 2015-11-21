@@ -29,7 +29,7 @@ class ReminderValidationRuleTests extends TestBase
 		$series->AddStartReminder(new ReservationReminder(2, ReservationReminderInterval::Days));
 		$series->AddEndReminder(new ReservationReminder(1, ReservationReminderInterval::Days));
 		$rule = new ReminderValidationRule();
-		$result = $rule->Validate($series);
+		$result = $rule->Validate($series, null);
 
 		$this->assertTrue($result->IsValid());
 	}
@@ -39,7 +39,7 @@ class ReminderValidationRuleTests extends TestBase
 		$series = new TestReservationSeries();
 		$series->AddStartReminder(new ReservationReminder('abc', ReservationReminderInterval::Days));
 		$rule = new ReminderValidationRule();
-		$result = $rule->Validate($series);
+		$result = $rule->Validate($series, null);
 
 		$this->assertFalse($result->IsValid());
 	}
@@ -49,7 +49,7 @@ class ReminderValidationRuleTests extends TestBase
 		$series = new TestReservationSeries();
 		$series->AddEndReminder(new ReservationReminder('abc', ReservationReminderInterval::Days));
 		$rule = new ReminderValidationRule();
-		$result = $rule->Validate($series);
+		$result = $rule->Validate($series, null);
 
 		$this->assertFalse($result->IsValid());
 	}
