@@ -74,6 +74,9 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 	<table class="reservations mobile" border="1" cellpadding="0" style="width:100%;">
 
 		{foreach from=$BoundDates item=date}
+			{assign var=ts value=$date->Timestamp()}
+			{$periods.$ts = $DailyLayout->GetPeriods($date)}
+			{if $periods[$ts]|count == 0}{continue}{*dont show if there are no slots*}{/if}
 			<tr>
 				{assign var=class value=""}
 				{if $TodaysDate->DateEquals($date) eq true}

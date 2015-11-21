@@ -229,6 +229,9 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			{block name="reservations"}
 				{assign var=TodaysDate value=Date::Now()}
 				{foreach from=$BoundDates item=date}
+					{assign var=ts value=$date->Timestamp()}
+					{$periods.$ts = $DailyLayout->GetPeriods($date, true)}
+					{if $periods[$ts]|count == 0}{continue}{*dont show if there are no slots*}{/if}
 					<div style="position:relative;">
 						<table class="reservations" border="1" cellpadding="0" width="100%">
 							{if $date->DateEquals($TodaysDate)}
@@ -237,7 +240,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 							<tr>
 								{/if}
 								<td class="resdate">{formatdate date=$date key="schedule_daily"}</td>
-								{foreach from=$DailyLayout->GetPeriods($date, true) item=period}
+								{foreach from=$periods.$ts item=period}
 									<td class="reslabel" colspan="{$period->Span()}">{$period->Label($date)}</td>
 								{/foreach}
 							</tr>

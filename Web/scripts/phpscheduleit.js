@@ -1,16 +1,40 @@
 // Cookie functions from http://www.quirksmode.org/js/cookies.html //
-function createCookie(name, value, days) {
-	if (days)
+
+function startsWith(haystack, needle) {
+	return haystack.slice(0, needle.length) == needle;
+}
+
+function createCookie(name, value, days, path)
+{
+	var getLocation = function(href) {
+	    var l = document.createElement("a");
+	    l.href = href;
+	    return l;
+	};
+
+	if (!path)
+	{
+		path = '/';
+	}
+	else {
+		var location = getLocation(path);
+		path = location.pathname;
+		if (!startsWith(path, '/'))
+		{
+			path = '/' + path;
+		}
+	}
+	if (days) 
 	{
 		var date = new Date();
-		date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
-		var expires = "; expires=" + date.toGMTString();
+		date.setTime(date.getTime()+(days*24*60*60*1000));
+		var expires = "; expires="+date.toGMTString();
 	}
-	else
+	else 
 	{
 		var expires = "";
 	}
-	document.cookie = name + "=" + value + expires + "; path=/";
+	document.cookie = name+"="+value+expires+"; path=" + path;
 }
 
 function readCookie(name) {

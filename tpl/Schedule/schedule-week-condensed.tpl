@@ -76,6 +76,9 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 				<td>&nbsp;</td>
 				{foreach from=$BoundDates item=date}
 					{assign var=class value=""}
+					{assign var=ts value=$date->Timestamp()}
+					{$periods.$ts = $DailyLayout->GetPeriods($date)}
+					{if $periods[$ts]|count == 0}{continue}{*dont show if there are no slots*}{/if}
 					{if $date->DateEquals($TodaysDate)}
 						{assign var=class value="today"}
 					{/if}
@@ -96,6 +99,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 						{/if}
 					</td>
 					{foreach from=$BoundDates item=date}
+						{assign var=ts value=$date->Timestamp()}
+						{if $periods[$ts]|count == 0}{continue}{*dont show if there are no slots*}{/if}
 						{assign var=resourceId value=$resource->Id}
 						{assign var=href value="{Pages::RESERVATION}?rid={$resourceId}&sid={$ScheduleId}"}
 						{assign var=slots value=$DailyLayout->GetLayout($date, $resourceId)}
