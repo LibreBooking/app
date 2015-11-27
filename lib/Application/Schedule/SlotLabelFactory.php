@@ -26,7 +26,12 @@ class SlotLabelFactory
 	 */
 	private $privacyFilter;
 
-	public function __construct($user = null, $privacyFilter = null)
+	/**
+	 * @var IAttributeRepository
+	 */
+	private $attributeRepository;
+
+	public function __construct($user = null, $privacyFilter = null, $attributeRepository = null)
 	{
 		$this->user = $user;
 		if ($this->user == null)
@@ -38,6 +43,12 @@ class SlotLabelFactory
 		if ($this->privacyFilter == null)
 		{
 			$this->privacyFilter = new PrivacyFilter(new ReservationAuthorization(PluginManager::Instance()->LoadAuthorization()));
+		}
+
+		$this->attributeRepository = $attributeRepository;
+		if ($this->attributeRepository == null)
+		{
+			$this->attributeRepository = new AttributeRepository();
 		}
 	}
 
@@ -63,7 +74,8 @@ class SlotLabelFactory
 																   ConfigKeys::PRIVACY_HIDE_USER_DETAILS,
 																   new BooleanConverter());
 
-		$shouldHideDetails = ReservationDetailsFilter::HideReservationDetails($reservation->StartDate, $reservation->EndDate);
+		$shouldHideDetails = ReservationDetailsFilter::HideReservationDetails($reservation->StartDate,
+																			  $reservation->EndDate);
 
 		if (($shouldHideUser || $shouldHideDetails) && (is_null($this->user) || ($this->user->UserId != $reservation->UserId && !$this->user->IsAdminForGroup($reservation->OwnerGroupIds()))))
 		{
@@ -72,7 +84,8 @@ class SlotLabelFactory
 
 		if (empty($format))
 		{
-			$format = Configuration::Instance()->GetSectionKey(ConfigSection::SCHEDULE, ConfigKeys::SCHEDULE_RESERVATION_LABEL);
+			$format = Configuration::Instance()->GetSectionKey(ConfigSection::SCHEDULE,
+															   ConfigKeys::SCHEDULE_RESERVATION_LABEL);
 		}
 
 		if ($format == 'none' || empty($format))
@@ -96,7 +109,8 @@ class SlotLabelFactory
 		$label = str_replace('{organization}', $reservation->OwnerOrganization, $label);
 		$label = str_replace('{phone}', $reservation->OwnerPhone, $label);
 		$label = str_replace('{position}', $reservation->OwnerPosition, $label);
-		$label = str_replace('{startdate}', $reservation->StartDate->ToTimezone($timezone)->Format($dateFormat), $label);
+		$label = str_replace('{startdate}', $reservation->StartDate->ToTimezone($timezone)->Format($dateFormat),
+							 $label);
 		$label = str_replace('{enddate}', $reservation->EndDate->ToTimezone($timezone)->Format($dateFormat), $label);
 		$label = str_replace('{resourcename}', $reservation->ResourceName, $label);
 		$label = str_replace('{participants}', trim(implode(', ', $reservation->ParticipantNames)), $label);
@@ -115,6 +129,18 @@ class SlotLabelFactory
 
 				$label = str_replace($matches[$m], $value, $label);
 			}
+		}
+
+		if (BookedStringHelper::Contains($label, '{reservationAttributes}'))
+		{
+			$attributesLabel = new StringBuilder();
+			$attributes = $this->attributeRepository->GetByCategory(CustomAttributeCategory::RESERVATION);
+			foreach ($attributes as $attribute)
+			{
+				$attributesLabel->Append($attribute->Label() . ': ' . $reservation->GetAttributeValue($attribute->Id()) . ', ');
+			}
+
+			$label = str_replace('{reservationAttributes}', rtrim($attributesLabel->ToString(), ', '), $label);
 		}
 
 		return $label;

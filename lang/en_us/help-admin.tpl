@@ -618,7 +618,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 	<h2>Available Label Tokens</h2>
 
 	<p>Available tokens for reservation labels
-		are {literal}{name}, {title}, {description}, {email}, {phone}, {organization}, {position}, {startdate}, {enddate} {resourcename} {participants} {invitees}{/literal}
+		are {literal}{name}, {title}, {description}, {email}, {phone}, {organization}, {position}, {startdate}, {enddate} {resourcename} {participants} {invitees} {reservationAttributes}{/literal}
 		. Custom attributes can be added using att with the attribute id. For example {literal}{att1}{/literal}
 		Leave it blank for no label. Any combination of tokens can be used.</p>
 
