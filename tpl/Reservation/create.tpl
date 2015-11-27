@@ -302,6 +302,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 				{block name='attachments'}
 				{/block}
 			{/if}
+
+			<div id="retrySubmitParams" class="no-show"></div>
 		</form>
 	</div>
 

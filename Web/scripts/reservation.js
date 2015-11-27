@@ -661,7 +661,7 @@ function Reservation(opts) {
 						content: {
 							text: function (event, api)
 							{
-								return $('#retryMessages');
+								return $('#retryMessages').html();
 							}
 						},
 
@@ -679,6 +679,15 @@ function Reservation(opts) {
 							classes: 'qtip-light qtip-bootstrap'
 						}
 					});
+
+			$('#btnRetry').on('click', function (e){
+				e.preventDefault();
+				var retryParams = $('#retryParams');
+				$('#retrySubmitParams').empty().append(retryParams.find('input'));
+				retryParams.empty();
+				CloseSaveDialog();
+				$('#form-reservation').submit();
+			});
 		});
 	}
 
