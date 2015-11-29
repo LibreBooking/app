@@ -305,13 +305,14 @@ class CustomAttribute
 	 * @param bool $adminOnly
 	 * @return CustomAttribute
 	 */
-	public function __construct($id, $label, $type, $category, $regex, $required, $possibleValues, $sortOrder, $entityIds = array(), $adminOnly = false)
+	public function __construct($id, $label, $type, $category, $regex, $required, $possibleValues, $sortOrder,
+								$entityIds = array(), $adminOnly = false)
 	{
 		$this->id = $id;
 		$this->label = $label;
 		$this->type = $type;
 		$this->category = $category;
-		$this->regex = $regex;
+		$this->SetRegex($regex);
 		$this->required = $required;
 		$this->entityIds = is_array($entityIds) ? $entityIds : array($entityIds);
 		$this->adminOnly = $adminOnly;
@@ -332,9 +333,11 @@ class CustomAttribute
 	 * @param bool $adminOnly
 	 * @return CustomAttribute
 	 */
-	public static function Create($label, $type, $category, $regex, $required, $possibleValues, $sortOrder, $entityIds = array(), $adminOnly = false)
+	public static function Create($label, $type, $category, $regex, $required, $possibleValues, $sortOrder,
+								  $entityIds = array(), $adminOnly = false)
 	{
-		return new CustomAttribute(null, $label, $type, $category, $regex, $required, $possibleValues, $sortOrder, $entityIds, $adminOnly);
+		return new CustomAttribute(null, $label, $type, $category, $regex, $required, $possibleValues, $sortOrder,
+								   $entityIds, $adminOnly);
 	}
 
 	/**
@@ -438,7 +441,7 @@ class CustomAttribute
 	public function Update($label, $regex, $required, $possibleValues, $sortOrder, $entityIds, $adminOnly)
 	{
 		$this->label = $label;
-		$this->regex = $regex;
+		$this->SetRegex($regex);
 		$this->required = $required;
 		$this->entityIds = is_array($entityIds) ? $entityIds : array($entityIds);
 		$this->adminOnly = $adminOnly;
@@ -500,5 +503,26 @@ class CustomAttribute
 	public function WithIsPrivate($isPrivate)
 	{
 		$this->isPrivate = BooleanConverter::ConvertValue($isPrivate);
+	}
+
+	/**
+	 * @param string $regex
+	 */
+	private function SetRegex($regex)
+	{
+		$this->regex = $regex;
+		if (empty($this->regex))
+		{
+			return;
+		}
+
+		if (!BookedStringHelper::StartsWith($this->regex, '/'))
+		{
+			$this->regex = '/' . $this->regex;
+		}
+		if (!BookedStringHelper::EndsWith($this->regex, '/'))
+		{
+			$this->regex = $this->regex . '/';
+		}
 	}
 }
