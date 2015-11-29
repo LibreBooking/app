@@ -248,6 +248,7 @@ class ManageResourcesPresenter extends ActionPresenter
 		$resourceId = $this->page->GetResourceId();
 		$requiresApproval = $this->page->GetRequiresApproval();
 		$autoAssign = $this->page->GetAutoAssign();
+		$clearAllPermissions = $this->page->GetAutoAssignClear();
 		$minNotice = $this->page->GetStartNoticeMinutes();
 		$maxNotice = $this->page->GetEndNoticeMinutes();
 
@@ -255,6 +256,7 @@ class ManageResourcesPresenter extends ActionPresenter
 
 		$resource->SetRequiresApproval($requiresApproval);
 		$resource->SetAutoAssign($autoAssign);
+		$resource->SetClearAllPermissions($clearAllPermissions);
 		$resource->SetMinNotice($minNotice);
 		$resource->SetMaxNotice($maxNotice);
 

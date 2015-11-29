@@ -500,6 +500,15 @@ class AutoAssignResourcePermissionsCommand extends SqlCommand
 	}
 }
 
+class AutoAssignClearResourcePermissionsCommand extends SqlCommand
+{
+	public function __construct($resourceId)
+	{
+		parent::__construct(Queries::AUTO_ASSIGN_CLEAR_RESOURCE_PERMISSIONS);
+		$this->AddParameter(new Parameter(ParameterNames::RESOURCE_ID, $resourceId));
+	}
+}
+
 class CheckEmailCommand extends SqlCommand
 {
 	public function __construct($emailAddress)

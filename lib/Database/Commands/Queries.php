@@ -165,6 +165,8 @@ class Queries
                           WHERE u.user_id = p.user_id AND p.resource_id = @resourceid)
             )';
 
+	const AUTO_ASSIGN_CLEAR_RESOURCE_PERMISSIONS = 'DELETE FROM user_resource_permissions WHERE resource_id = @resourceid';
+
 	const CHECK_EMAIL =
 			'SELECT user_id
 		FROM users

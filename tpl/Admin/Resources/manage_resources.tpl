@@ -649,8 +649,15 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 						<div class="editAutoAssign">
 							<div class="checkbox">
-								<input type="checkbox" {formname key=AUTO_ASSIGN} id="autoAssign"/>
+								<input type="checkbox" {formname key=AUTO_ASSIGN} id="autoAssign" value="1" />
 								<label for="autoAssign">{translate key=ResourcePermissionAutoGranted}</label>
+							</div>
+						</div>
+						<div class="no-show" id="autoAssignRemoveAllPermissions">
+							<div class="checkbox">
+								<input type="checkbox" {formname key=AUTO_ASSIGN_CLEAR}
+									   id="autoAssignRemoveAllPermissionsChk" value="1" />
+								<label for="autoAssignRemoveAllPermissionsChk">{translate key=RemoveExistingPermissions}</label>
 							</div>
 						</div>
 					</div>

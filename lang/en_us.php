@@ -541,6 +541,7 @@ class en_us extends Language
 		$strings['NotCountingCompletedReservations'] = 'Not Counting Completed Reservations';
 		$strings['RetrySkipConflicts'] = 'Skip conflicting reservations';
 		$strings['Retry'] = 'Retry';
+		$strings['RemoveExistingPermissions'] = 'Remove existing permissions?';
 		// End Strings
 
 		// Install

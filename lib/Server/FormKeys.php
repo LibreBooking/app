@@ -14,10 +14,9 @@
  * You should have received a copy of the GNU General Public License
  * along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 class FormKeys
 {
-
-
 	private function __construct()
 	{
 	}
@@ -56,6 +55,7 @@ class FormKeys
 	const ATTRIBUTE_SECONDARY_CATEGORY = 'ATTRIBUTE_SECONDARY_CATEGORY';
 	const ATTRIBUTE_SECONDARY_ENTITY = 'ATTRIBUTE_SECONDARY_ENTITY';
 	const AUTO_ASSIGN = 'autoAssign';
+	const AUTO_ASSIGN_CLEAR = 'AUTO_ASSIGN_CLEAR';
 
 	const BEGIN_DATE = 'beginDate';
 	const BEGIN_PERIOD = 'beginPeriod';

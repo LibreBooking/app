@@ -100,6 +100,11 @@ interface IUpdateResourcePage
 	/**
 	 * @return string
 	 */
+	public function GetAutoAssignClear();
+
+	/**
+	 * @return string
+	 */
 	public function GetAllowSubscriptions();
 
 	/**
@@ -505,6 +510,14 @@ class ManageResourcesPage extends ActionPage implements IManageResourcesPage
 	/**
 	 * @return string
 	 */
+	public function GetAutoAssignClear()
+	{
+		return $this->GetForm(FormKeys::AUTO_ASSIGN_CLEAR);
+	}
+
+	/**
+	 * @return string
+	 */
 	public function GetStartNoticeMinutes()
 	{
 		return $this->GetForm(FormKeys::MIN_NOTICE);
@@ -850,35 +863,50 @@ class ResourceFilterValues
 		$filter = new SqlFilterNull();
 		if (!empty($this->ResourceNameFilter))
 		{
-			$filter->_And(new SqlFilterLike(new SqlFilterColumn(TableNames::RESOURCES_ALIAS, ColumnNames::RESOURCE_NAME), $this->ResourceNameFilter));
+			$filter->_And(new SqlFilterLike(new SqlFilterColumn(TableNames::RESOURCES_ALIAS,
+																ColumnNames::RESOURCE_NAME),
+											$this->ResourceNameFilter));
 		}
 		if (!empty($this->ScheduleIdFilter))
 		{
-			$filter->_And(new SqlFilterEquals(new SqlFilterColumn(TableNames::RESOURCES_ALIAS, ColumnNames::SCHEDULE_ID), $this->ScheduleIdFilter));
+			$filter->_And(new SqlFilterEquals(new SqlFilterColumn(TableNames::RESOURCES_ALIAS,
+																  ColumnNames::SCHEDULE_ID), $this->ScheduleIdFilter));
 		}
 		if (!empty($this->ResourceTypeFilter))
 		{
-			$filter->_And(new SqlFilterEquals(new SqlFilterColumn(TableNames::RESOURCES_ALIAS, ColumnNames::RESOURCE_TYPE_ID), $this->ResourceTypeFilter));
+			$filter->_And(new SqlFilterEquals(new SqlFilterColumn(TableNames::RESOURCES_ALIAS,
+																  ColumnNames::RESOURCE_TYPE_ID),
+											  $this->ResourceTypeFilter));
 		}
 		if (!empty($this->ResourceStatusFilterId))
 		{
-			$filter->_And(new SqlFilterEquals(new SqlFilterColumn(TableNames::RESOURCES_ALIAS, ColumnNames::RESOURCE_STATUS_ID), $this->ResourceStatusFilterId));
+			$filter->_And(new SqlFilterEquals(new SqlFilterColumn(TableNames::RESOURCES_ALIAS,
+																  ColumnNames::RESOURCE_STATUS_ID),
+											  $this->ResourceStatusFilterId));
 		}
 		if (!empty($this->CapacityFilter))
 		{
-			$filter->_And(new SqlFilterGreaterThan(new SqlFilterColumn(TableNames::RESOURCES_ALIAS, ColumnNames::RESOURCE_MAX_PARTICIPANTS), $this->CapacityFilter, true));
+			$filter->_And(new SqlFilterGreaterThan(new SqlFilterColumn(TableNames::RESOURCES_ALIAS,
+																	   ColumnNames::RESOURCE_MAX_PARTICIPANTS),
+												   $this->CapacityFilter, true));
 		}
 		if ($this->RequiresApprovalFilter != '')
 		{
-			$filter->_And(new SqlFilterEquals(new SqlFilterColumn(TableNames::RESOURCES_ALIAS, ColumnNames::RESOURCE_REQUIRES_APPROVAL), $this->RequiresApprovalFilter));
+			$filter->_And(new SqlFilterEquals(new SqlFilterColumn(TableNames::RESOURCES_ALIAS,
+																  ColumnNames::RESOURCE_REQUIRES_APPROVAL),
+											  $this->RequiresApprovalFilter));
 		}
 		if ($this->AutoPermissionFilter != '')
 		{
-			$filter->_And(new SqlFilterEquals(new SqlFilterColumn(TableNames::RESOURCES_ALIAS, ColumnNames::RESOURCE_AUTOASSIGN), $this->AutoPermissionFilter));
+			$filter->_And(new SqlFilterEquals(new SqlFilterColumn(TableNames::RESOURCES_ALIAS,
+																  ColumnNames::RESOURCE_AUTOASSIGN),
+											  $this->AutoPermissionFilter));
 		}
 		if ($this->AllowMultiDayFilter != '')
 		{
-			$filter->_And(new SqlFilterEquals(new SqlFilterColumn(TableNames::RESOURCES_ALIAS, ColumnNames::RESOURCE_ALLOW_MULTIDAY), $this->AllowMultiDayFilter));
+			$filter->_And(new SqlFilterEquals(new SqlFilterColumn(TableNames::RESOURCES_ALIAS,
+																  ColumnNames::RESOURCE_ALLOW_MULTIDAY),
+											  $this->AllowMultiDayFilter));
 		}
 
 		if (!empty($this->Attributes))
