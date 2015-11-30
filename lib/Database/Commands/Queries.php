@@ -530,7 +530,7 @@ class Queries
 	const GET_REMINDER_NOTICES = 'SELECT DISTINCT
 		rs.*,
 		ri.*,
-		u.fname, u.lname, u.language, u.timezone,
+		u.fname, u.lname, u.language, u.timezone, u.email,
 		r.name as resource_name
 		FROM reservation_instances ri
 		INNER JOIN reservation_series rs ON ri.series_id = rs.series_id
