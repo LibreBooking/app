@@ -191,6 +191,7 @@ abstract class ReservationPage extends Page implements IReservationPage
 	public function PageLoad()
 	{
 		$this->presenter->PageLoad();
+
 		$this->Set('ReturnUrl', $this->GetLastPage(Pages::SCHEDULE));
 		$this->Set('ReservationAction', $this->GetReservationAction());
 		$this->Set('MaxUploadSize', UploadedFile::GetMaxSize());

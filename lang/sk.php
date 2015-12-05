@@ -4,20 +4,20 @@ Copyright 2011-2013 Nick Korbel
 
 Translation: 2014 Slovak Language: Branislav Ďorď <branislav.dord@eurogalaxy.sk>
 
-This file is part of phpScheduleIt.
+This file is part of Booked Scheduler.
 
-phpScheduleIt is free software: you can redistribute it and/or modify
+Booked Scheduler is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation, either version 3 of the License, or
 (at your option) any later version.
 
-phpScheduleIt is distributed in the hope that it will be useful,
+Booked Scheduler is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
-along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
+along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 require_once('en_us.php');
@@ -533,7 +533,7 @@ class sk extends en_us
 		$strings['InstalledVersion'] = 'You are now running version %s of phpScheduleIt';
 		$strings['InstallUpgradeConfig'] = 'It is recommended to upgrade your config file';
 		$strings['InstallationFailure'] = 'There were problems with the installation.  Please correct them and retry the installation.';
-		$strings['ConfigureApplication'] = 'Configure phpScheduleIt';
+		$strings['ConfigureApplication'] = 'Configure Booked Scheduler';
 		$strings['ConfigUpdateSuccess'] = 'Your config file is now up to date!';
 		$strings['ConfigUpdateFailure'] = 'We could not automatically update your config file. Please overwrite the contents of config.php with the following:';
 		$strings['SelectUser'] = 'Vybrať užívateľa';

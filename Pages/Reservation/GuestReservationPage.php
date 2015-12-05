@@ -3,25 +3,30 @@
 /**
  * Copyright 2015 Nick Korbel
  *
- * This file is part of phpScheduleIt.
+ * This file is part of Booked Scheduler.
  *
- * phpScheduleIt is free software: you can redistribute it and/or modify
+ * Booked Scheduler is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * phpScheduleIt is distributed in the hope that it will be useful,
+ * Booked Scheduler is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
+ * along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-require_once(ROOT_DIR . 'Pages/Reservation/ReservationPage.php');
+require_once(ROOT_DIR . 'Pages/Reservation/NewReservationPage.php');
 
-class GuestReservationPage extends ReservationPage
+interface IGuestReservationPage extends INewReservationPage
+{
+	public function GuestInformationCollected();
+}
+
+class GuestReservationPage extends NewReservationPage implements IGuestReservationPage
 {
 	public function PageLoad()
 	{
@@ -34,27 +39,52 @@ class GuestReservationPage extends ReservationPage
 		}
 	}
 
-	/**
-	 * @return IReservationPresenter
-	 */
 	protected function GetPresenter()
 	{
-		// TODO: Implement GetPresenter() method.
+		return new GuestReservationPresenter(
+					$this,
+					$this->initializationFactory,
+					new NewReservationPreconditionService());
 	}
 
-	/**
-	 * @return string
-	 */
 	protected function GetTemplateName()
 	{
-		// TODO: Implement GetTemplateName() method.
+		if ($this->GuestInformationCollected())
+		{
+			return parent::GetTemplateName();
+		}
+
+		return 'Reservation/collect-guest.tpl';
 	}
 
-	/**
-	 * @return string
-	 */
-	protected function GetReservationAction()
+	public function GuestInformationCollected()
 	{
-		// TODO: Implement GetReservationAction() method.
+		return ServiceLocator::GetServer()->GetUserSession()->IsGuest();
+	}
+}
+
+class GuestReservationPresenter extends ReservationPresenter
+{
+	/**
+	 * @var IGuestReservationPage
+	 */
+	private $page;
+
+	public function __construct(IGuestReservationPage $page, IReservationInitializerFactory $initializationFactory, INewReservationPreconditionService $preconditionService)
+	{
+		$this->page = $page;
+		parent::__construct($page, $initializationFactory, $preconditionService);
+	}
+
+	public function PageLoad()
+	{
+		if ($this->page->GuestInformationCollected())
+		{
+			parent::PageLoad();
+		}
+		else
+		{
+
+		}
 	}
 }

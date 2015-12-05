@@ -20,7 +20,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 require_once(ROOT_DIR . 'Pages/SchedulePage.php');
 require_once(ROOT_DIR . 'Presenters/SchedulePresenter.php');
-require_once(ROOT_DIR . 'lib/Application/Authorization/ViewSchedulePermissionServiceFactory.php');
+require_once(ROOT_DIR . 'lib/Application/Authorization/GuestPermissionServiceFactory.php');
 
 class ViewSchedulePage extends SchedulePage
 {
@@ -31,7 +31,7 @@ class ViewSchedulePage extends SchedulePage
 		$userRepository = new UserRepository();
 		$resourceService = new ResourceService(
 				new ResourceRepository(),
-				new ViewSchedulePermissionService(),
+				new GuestPermissionService(),
 				new AttributeService(new AttributeRepository()),
 				$userRepository,
 				new AccessoryRepository());

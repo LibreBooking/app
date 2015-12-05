@@ -19,21 +19,9 @@
  * along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-require_once(ROOT_DIR . 'lib/WebService/namespace.php');
-
-class ReservationRetryParameterRequestResponse
+class GuestReservationPresenterTests extends TestBase
 {
-	public $name;
-	public $value;
 
-	public function __construct($name, $value)
-	{
-		$this->name = $name;
-		$this->value = $value;
-	}
-
-	public static function Example()
-	{
-		return new ReservationRetryParameterRequestResponse('name', 'value');
-	}
 }
+
+?>
