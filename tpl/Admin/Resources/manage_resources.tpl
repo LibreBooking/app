@@ -52,7 +52,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		<h1>{translate key='ManageResources'}</h1>
 	</div>
 
-	<div class="panel panel-default filterTable" id="filterTable">
+	<div class="panel panel-default filterTable" id="filter-resources-panel">
 		<div class="panel-heading"><span
 					class="glyphicon glyphicon-filter"></span> {translate key="Filter"} {showhide_icon}
 		</div>
@@ -1372,7 +1372,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			resourceManagement.initializeStatusFilter('{$ResourceStatusFilterId}', '{$ResourceStatusReasonFilterId}');
 			resourceManagement.addResourceGroups({$ResourceGroups});
 
-			$('#filterTable').showHidePanel();
+			$('#filter-resources-panel').showHidePanel();
 		});
 
 	</script>

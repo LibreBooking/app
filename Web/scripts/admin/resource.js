@@ -29,7 +29,7 @@ function ResourceManagement(opts) {
 		addForm: $('#addResourceForm'),
 		statusOptionsFilter: $('#resourceStatusIdFilter'),
 		statusReasonsFilter: $('#resourceReasonIdFilter'),
-		filterTable: $('#filterTable'),
+		filterTable: $('#filter-resources-panel'),
 		filterButton: $('#filter'),
 		clearFilterButton: $('#clearFilter'),
 

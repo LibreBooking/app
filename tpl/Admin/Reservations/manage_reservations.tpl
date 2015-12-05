@@ -22,8 +22,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 <div id="page-manage-reservations" class="admin-page">
 	<h1>{translate key=ManageReservations}</h1>
 
-	<div class="panel panel-default filterTable" id="filterTable">
-		<div class="panel-heading"><span class="glyphicon glyphicon-filter"></span> {translate key="Filter"}</div>
+	<div class="panel panel-default filterTable" id="filter-reservations-panel">
+		<div class="panel-heading"><span class="glyphicon glyphicon-filter"></span> {translate key="Filter"} {showhide_icon}</div>
 		<div class="panel-body">
 			{assign var=groupClass value="col-xs-12 col-sm-4 col-md-3"}
 			<form id="filterForm" class="form-inline" role="form">
@@ -361,6 +361,9 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 				reservationManagement.initializeStatusFilter('{$ResourceStatusFilterId}', '{$ResourceStatusReasonFilterId}');
 			});
+
+			$('#filter-reservations-panel').showHidePanel();
+
 		</script>
 
 		{control type="DatePickerSetupControl" ControlId="startDate" AltId="formattedStartDate"}

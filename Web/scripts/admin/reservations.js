@@ -30,7 +30,7 @@ function ReservationManagement(opts, approval) {
 
 		filterButton: $('#filter'),
 		clearFilterButton: $('#clearFilter'),
-		filterTable: $('#filterTable'),
+		filterTable: $('#filter-reservations-panel'),
 
 		attributeUpdateForm: $('#attributeUpdateForm'),
 

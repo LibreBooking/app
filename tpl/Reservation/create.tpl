@@ -24,11 +24,11 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		<form id="form-reservation" method="post" enctype="multipart/form-data" role="form" >
 
 			<div class="row">
-				<div class="col-xs-6 col-top reservationHeader">
+				<div class="col-m-6 col-xs-12 col-top reservationHeader">
 					<h3>{block name=reservationHeader}{translate key="CreateReservationHeading"}{/block}</h3>
 				</div>
 
-				<div class="col-xs-6 col-top">
+				<div class="col-m-6 col-xs-12 col-top">
 					<div class="pull-right">
 						<button type="button" class="btn btn-default" onclick="window.location='{$ReturnUrl}'">
 							{translate key='Cancel'}
@@ -281,7 +281,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 				   value="{SeriesUpdateScope::FullSeries}"/>
 
 			<div class="row">
-				<div class="reservationButtons col-xs-6 col-xs-offset-6">
+				<div class="reservationButtons col-m-6 col-m-offset-6 col-xs-12">
 					<div class="reservationSubmitButtons">
 						<button type="button" class="btn btn-default" onclick="window.location='{$ReturnUrl}'">
 							{translate key='Cancel'}
