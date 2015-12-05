@@ -20,14 +20,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 define('ROOT_DIR', '../');
 
-require_once(ROOT_DIR . '/Pages/ViewSchedulePage.php');
+require_once(ROOT_DIR . 'Pages/Reservation/GuestReservationPage.php');
 
-$page = new ViewSchedulePage();
-$allowAnonymousSchedule = Configuration::Instance()->GetSectionKey(ConfigSection::PRIVACY,  ConfigKeys::PRIVACY_VIEW_SCHEDULES,  new BooleanConverter());
-$allowGuestBookings = Configuration::Instance()->GetSectionKey(ConfigSection::PRIVACY, ConfigKeys::PRIVACY_ALLOW_GUEST_BOOKING, new BooleanConverter());
-if (!$allowAnonymousSchedule && !$allowGuestBookings)
-{
-    $page = new SecurePageDecorator($page);
-}
-
+$page = new GuestReservationPage();
 $page->PageLoad();

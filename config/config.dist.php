@@ -65,10 +65,11 @@ $conf['settings']['ics']['import.key'] = '';					// it's recommended  to set thi
 /**
  * Privacy configuration
  */
-$conf['settings']['privacy']['view.schedules'] = 'false';       			// if unauthenticated users can view schedules
+$conf['settings']['privacy']['view.schedules'] = 'true';       			// if unauthenticated users can view schedules
 $conf['settings']['privacy']['view.reservations'] = 'false';    			// if unauthenticated users can view reservations
 $conf['settings']['privacy']['hide.user.details'] = 'false';    			// if personal user details should be displayed to non-administrators
 $conf['settings']['privacy']['hide.reservation.details'] = 'false';			// if reservation details should be displayed to non-administrators
+$conf['settings']['privacy']['allow.guest.reservations'] = 'false';			// if reservations can be made by users without a Booked account, if true this overrides schedule and resource visibility
 /**
  * Reservation specific configuration
  */

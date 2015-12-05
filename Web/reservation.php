@@ -21,8 +21,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 define('ROOT_DIR', '../');
 
 require_once(ROOT_DIR . 'Pages/Ajax/AutoCompletePage.php');
-require_once(ROOT_DIR . 'Pages/NewReservationPage.php');
-require_once(ROOT_DIR . 'Pages/ExistingReservationPage.php');
+require_once(ROOT_DIR . 'Pages/Reservation/NewReservationPage.php');
+require_once(ROOT_DIR . 'Pages/Reservation/ExistingReservationPage.php');
 
 $server = ServiceLocator::GetServer();
 
@@ -36,4 +36,3 @@ else
 }
 
 $page->PageLoad();
-?>

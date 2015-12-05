@@ -266,6 +266,8 @@ class SchedulePage extends ActionPage implements ISchedulePage
 		$this->Set('SlotLabelFactory', new SlotLabelFactory($user));
 		$this->Set('DisplaySlotFactory', new DisplaySlotFactory());
 		$this->Set('PopupMonths', $this->IsMobile ? 1 : 3);
+		$this->Set('CreateReservationPage', Pages::RESERVATION);
+
 		if ($this->IsMobile)
 		{
 			$this->Display('Schedule/schedule-mobile.tpl');

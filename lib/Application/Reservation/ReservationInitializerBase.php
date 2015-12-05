@@ -22,7 +22,7 @@ require_once(ROOT_DIR . 'lib/Application/Schedule/namespace.php');
 require_once(ROOT_DIR . 'lib/Application/Attributes/namespace.php');
 require_once(ROOT_DIR . 'lib/Application/Reservation/ReservationComponentBinder.php');
 
-require_once(ROOT_DIR . 'Pages/ReservationPage.php');
+require_once(ROOT_DIR . 'Pages/Reservation/ReservationPage.php');
 
 interface IReservationComponentInitializer
 {

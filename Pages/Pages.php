@@ -30,6 +30,7 @@ class Pages
 	const DASHBOARD = 'dashboard.php';
 	const DEFAULT_LOGIN = 'dashboard.php';
 	const FORGOT_PASSWORD = 'forgot.php';
+	const GUEST_RESERVATION = 'guest-reservation.php';
 	const INVITATION_RESPONSES = 'participation.php';
 	const LOGIN = 'index.php';
 	const MANAGE_RESERVATIONS = 'manage_reservations.php';

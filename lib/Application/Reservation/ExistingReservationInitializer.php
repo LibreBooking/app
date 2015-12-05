@@ -15,7 +15,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 require_once(ROOT_DIR . 'lib/Application/Reservation/ReservationInitializerBase.php');
-require_once(ROOT_DIR . 'Pages/ExistingReservationPage.php');
+require_once(ROOT_DIR . 'Pages/Reservation/ExistingReservationPage.php');
 
 class ExistingReservationInitializer extends ReservationInitializerBase implements IReservationComponentInitializer
 {

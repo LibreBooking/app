@@ -77,6 +77,7 @@ class ConfigKeys
     const PRIVACY_HIDE_RESERVATION_DETAILS = 'hide.reservation.details';
     const PRIVACY_VIEW_RESERVATIONS = 'view.reservations';
     const PRIVACY_VIEW_SCHEDULES = 'view.schedules';
+    const PRIVACY_ALLOW_GUEST_BOOKING = 'allow.guest.reservations';
 
     const NOTIFY_CREATE_RESOURCE_ADMINS = 'resource.admin.add';
     const NOTIFY_CREATE_APPLICATION_ADMINS = 'application.admin.add';
