@@ -23,7 +23,20 @@ require_once(ROOT_DIR . 'Pages/Reservation/NewReservationPage.php');
 
 interface IGuestReservationPage extends INewReservationPage
 {
+	/**
+	 * @return bool
+	 */
 	public function GuestInformationCollected();
+
+	/**
+	 * @return string
+	 */
+	public function GetEmail();
+
+	/**
+	 * @return bool
+	 */
+	public function IsCreatingAccount();
 }
 
 class GuestReservationPage extends NewReservationPage implements IGuestReservationPage
@@ -43,6 +56,7 @@ class GuestReservationPage extends NewReservationPage implements IGuestReservati
 	{
 		return new GuestReservationPresenter(
 					$this,
+					new Registration(),
 					$this->initializationFactory,
 					new NewReservationPreconditionService());
 	}
@@ -61,30 +75,18 @@ class GuestReservationPage extends NewReservationPage implements IGuestReservati
 	{
 		return ServiceLocator::GetServer()->GetUserSession()->IsGuest();
 	}
-}
 
-class GuestReservationPresenter extends ReservationPresenter
-{
+	public function GetEmail()
+	{
+		return $this->GetForm(FormKeys::EMAIL);
+	}
+
 	/**
-	 * @var IGuestReservationPage
+	 * @return bool
 	 */
-	private $page;
-
-	public function __construct(IGuestReservationPage $page, IReservationInitializerFactory $initializationFactory, INewReservationPreconditionService $preconditionService)
+	public function IsCreatingAccount()
 	{
-		$this->page = $page;
-		parent::__construct($page, $initializationFactory, $preconditionService);
-	}
-
-	public function PageLoad()
-	{
-		if ($this->page->GuestInformationCollected())
-		{
-			parent::PageLoad();
-		}
-		else
-		{
-
-		}
+		return $this->IsPostBack() && !$this->GuestInformationCollected();
 	}
 }
+

@@ -51,6 +51,7 @@ class Registration implements IRegistration
 	{
 		$homepageId = empty($homepageId) ? Pages::DEFAULT_HOMEPAGE_ID : $homepageId;
 		$encryptedPassword = $this->_passwordEncryption->EncryptPassword($password);
+		$timezone = empty($timezone) ? Configuration::Instance()->GetKey(ConfigKeys::DEFAULT_TIMEZONE) : $timezone;
 
 		$attributes = new UserAttribute($additionalFields);
 
