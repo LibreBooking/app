@@ -80,6 +80,12 @@ abstract class ReservationEmailMessage extends EmailMessage
 
 	public function From()
 	{
+		$bookedBy = $this->reservationSeries->BookedBy();
+		if ($bookedBy != null)
+		{
+			$name = new FullName($bookedBy->FirstName, $bookedBy->LastName);
+			return new EmailAddress($bookedBy->Email, $name->__toString());
+		}
 		return new EmailAddress($this->reservationOwner->EmailAddress(), $this->reservationOwner->FullName());
 	}
 
