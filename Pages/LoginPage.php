@@ -250,10 +250,18 @@ class LoginPage extends Page implements ILoginPage
 	public function SetPasswordResetUrl($url)
 	{
 		$this->Set('ForgotPasswordUrl', empty($url) ? Pages::FORGOT_PASSWORD : $url);
+		if (BookedStringHelper::StartsWith($url, 'http'))
+		{
+			$this->Set('ForgotPasswordUrlNew', "target='_new'");
+		}
 	}
 
 	public function SetRegistrationUrl($url)
 	{
 		$this->Set('RegisterUrl', empty($url) ? Pages::REGISTRATION : $url);
+		if (BookedStringHelper::StartsWith($url, 'http'))
+		{
+			$this->Set('RegisterUrlNew', "target='_new'");
+		}
 	}
 }
