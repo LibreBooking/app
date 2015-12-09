@@ -20,6 +20,7 @@
  */
 
 require_once(ROOT_DIR . 'Pages/Reservation/NewReservationPage.php');
+require_once(ROOT_DIR . 'Presenters/Reservation/GuestReservationPresenter.php');
 
 interface IGuestReservationPage extends INewReservationPage
 {
@@ -45,7 +46,9 @@ class GuestReservationPage extends NewReservationPage implements IGuestReservati
 	{
 		if (Configuration::Instance()->GetSectionKey(ConfigSection::PRIVACY, ConfigKeys::PRIVACY_ALLOW_GUEST_BOOKING, new BooleanConverter()))
 		{
-			parent::PageLoad();
+			$this->presenter = $this->GetPresenter();
+			$this->presenter->PageLoad();
+			$this->Display($this->GetTemplateName());
 		}
 		else {
 			$this->RedirectToError(ErrorMessages::INSUFFICIENT_PERMISSIONS);
@@ -56,8 +59,9 @@ class GuestReservationPage extends NewReservationPage implements IGuestReservati
 	{
 		return new GuestReservationPresenter(
 					$this,
-					new Registration(),
-					$this->initializationFactory,
+					new GuestRegistration(new PasswordEncryption(), new UserRepository(), new GuestRegistrationNotificationStrategy(), new GuestReservationPermissionStrategy($this)),
+					new WebAuthentication(PluginManager::Instance()->LoadAuthentication()),
+					$this->LoadInitializerFactory(),
 					new NewReservationPreconditionService());
 	}
 
@@ -73,7 +77,7 @@ class GuestReservationPage extends NewReservationPage implements IGuestReservati
 
 	public function GuestInformationCollected()
 	{
-		return ServiceLocator::GetServer()->GetUserSession()->IsGuest();
+		return !ServiceLocator::GetServer()->GetUserSession()->IsGuest();
 	}
 
 	public function GetEmail()
@@ -89,4 +93,3 @@ class GuestReservationPage extends NewReservationPage implements IGuestReservati
 		return $this->IsPostBack() && !$this->GuestInformationCollected();
 	}
 }
-

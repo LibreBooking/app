@@ -95,7 +95,7 @@ class CalendarSubscriptionPresenterTests extends TestBase
 
 		$this->repo->expects($this->once())
 				->method('GetReservationList')
-				->with($this->equalTo($weekAgo), $this->equalTo($nextYear), $this->isNull(), $this->isNull(), $scheduleId, $this->isNull())
+				->with($this->equalTo($weekAgo), $this->equalTo($nextYear), $this->isNull(), ReservationUserLevel::OWNER, $scheduleId, $this->isNull())
 				->will($this->returnValue($reservationResult));
 
 		$this->presenter->PageLoad();
@@ -123,7 +123,7 @@ class CalendarSubscriptionPresenterTests extends TestBase
 
 		$this->repo->expects($this->once())
 				->method('GetReservationList')
-				->with($this->equalTo($weekAgo), $this->equalTo($nextYear), $this->isNull(), $this->isNull(), $this->isNull(), $resourceId)
+				->with($this->equalTo($weekAgo), $this->equalTo($nextYear), $this->isNull(), ReservationUserLevel::OWNER, $this->isNull(), $resourceId)
 				->will($this->returnValue($reservationResult));
 
 		$this->presenter->PageLoad();
@@ -151,7 +151,7 @@ class CalendarSubscriptionPresenterTests extends TestBase
 
 		$this->repo->expects($this->once())
 				->method('GetReservationList')
-				->with($this->equalTo($weekAgo), $this->equalTo($nextYear), $this->equalTo($userId), $this->isNull(), $this->isNull(), $this->isNull())
+				->with($this->equalTo($weekAgo), $this->equalTo($nextYear), $this->equalTo($userId), ReservationUserLevel::ALL, $this->isNull(), $this->isNull())
 				->will($this->returnValue($reservationResult));
 
 		$this->presenter->PageLoad();
@@ -181,7 +181,7 @@ class CalendarSubscriptionPresenterTests extends TestBase
 
 		$this->repo->expects($this->once())
 				->method('GetReservationList')
-				->with($this->equalTo($weekAgo), $this->equalTo($nextYear), $this->isNull(), $this->isNull(), $this->isNull(), $this->isNull())
+				->with($this->equalTo($weekAgo), $this->equalTo($nextYear), $this->isNull(), ReservationUserLevel::OWNER, $this->isNull(), $this->isNull())
 				->will($this->returnValue($reservationResult));
 
 		$this->presenter->PageLoad();

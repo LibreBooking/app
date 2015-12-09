@@ -143,18 +143,19 @@ class Queries
 		VALUES (@userid, @dateModified, @session_token, @user_session_value)';
 
 	const AUTO_ASSIGN_PERMISSIONS =
-			'INSERT INTO
-          user_resource_permissions (user_id, resource_id)
-		SELECT
-			@userid as user_id, resource_id
-		FROM
-			resources
-		WHERE
-			autoassign=1';
+			'INSERT INTO user_resource_permissions (user_id, resource_id)
+		SELECT @userid as user_id, resource_id
+		FROM resources
+		WHERE autoassign=1';
+
+	const AUTO_ASSIGN_GUEST_PERMISSIONS =
+			'INSERT INTO user_resource_permissions (user_id, resource_id)
+		SELECT @userid as user_id, resource_id
+		FROM resources
+		WHERE schedule_id = @scheduleid';
 
 	const AUTO_ASSIGN_RESOURCE_PERMISSIONS =
-			'INSERT INTO
-				user_resource_permissions (user_id, resource_id)
+			'INSERT INTO user_resource_permissions (user_id, resource_id)
 			(
 			SELECT
 				user_id, @resourceid as resource_id

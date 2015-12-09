@@ -163,7 +163,7 @@ abstract class Page implements IPage
 
 	public function RedirectToError($errorMessageId = ErrorMessages::UNKNOWN_ERROR, $lastPage = '')
 	{
-		$errorMessageKey = ErrorMessages::Instance()->GetResourceKey($this->server->GetQuerystring(QueryStringKeys::MESSAGE_ID));
+		$errorMessageKey = ErrorMessages::Instance()->GetResourceKey($errorMessageId);
 		$this->Set('ErrorMessage', $errorMessageKey);
 		$this->Set('TitleKey', 'Error');
 		$this->Display('error.tpl');

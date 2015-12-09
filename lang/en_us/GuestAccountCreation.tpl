@@ -1,6 +1,5 @@
-<?php
-/**
-Copyright 2011-2015 Nick Korbel
+{*
+Copyright 2011-2015 Nick Korbel, Paul Menchini
 
 This file is part of Booked Scheduler.
 
@@ -16,32 +15,10 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
-*/
+*}
 
-require_once(ROOT_DIR . 'Pages/Page.php');
+<p>You have created a new Booked account with the following information:<br/>
+Email: {$EmailAddress}<br/>
+Password: {$Password}<br/>
 
-class ErrorPage extends Page
-{
-	public function __construct()
-	{
-		parent::__construct('Error');
-	}
-
-	public function PageLoad()
-	{
-		$returnUrl = $this->server->GetQuerystring(QueryStringKeys::REDIRECT);
-
-		if (empty($returnUrl))
-		{
-			$returnUrl = "index.php";
-		}
-
-		$errorMessageKey = ErrorMessages::Instance()->GetResourceKey($this->server->GetQuerystring(QueryStringKeys::MESSAGE_ID));
-
-		//TODO: Log
-
-		$this->Set('ReturnUrl', urldecode($returnUrl));
-		$this->Set('ErrorMessage', $errorMessageKey);
-		$this->Display('error.tpl');
-	}
-}
+<a href="{$ScriptUrl}">Log in to view your reservations and manage your account</a>

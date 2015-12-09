@@ -542,6 +542,8 @@ class en_us extends Language
 		$strings['RetrySkipConflicts'] = 'Skip conflicting reservations';
 		$strings['Retry'] = 'Retry';
 		$strings['RemoveExistingPermissions'] = 'Remove existing permissions?';
+		$strings['Continue'] = 'Continue';
+		$strings['WeNeedYourEmailAddress'] = 'We need your email address to reserve';
 		// End Strings
 
 		// Install
@@ -719,6 +721,7 @@ class en_us extends Language
 		$strings['ReservationEndingSoonSubject'] = 'Reservation for %s is ending soon';
 		$strings['UserAdded'] = 'A new user has been added';
 		$strings['UserDeleted'] = 'User account for %s was deleted by %s';
+		$strings['GuestAccountCreatedSubject'] = 'Your account details';
 		// End Email Subjects
 
 		$this->Strings = $strings;

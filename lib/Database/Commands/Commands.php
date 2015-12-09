@@ -491,6 +491,16 @@ class AutoAssignPermissionsCommand extends SqlCommand
 	}
 }
 
+class AutoAssignGuestPermissionsCommand extends SqlCommand
+{
+	public function __construct($userId, $scheduleId)
+	{
+		parent::__construct(Queries::AUTO_ASSIGN_GUEST_PERMISSIONS);
+		$this->AddParameter(new Parameter(ParameterNames::USER_ID, $userId));
+		$this->AddParameter(new Parameter(ParameterNames::SCHEDULE_ID, $scheduleId));
+	}
+}
+
 class AutoAssignResourcePermissionsCommand extends SqlCommand
 {
 	public function __construct($resourceId)

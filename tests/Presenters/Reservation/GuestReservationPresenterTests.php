@@ -49,6 +49,10 @@ class GuestReservationPresenterTests extends TestBase
 	 * @var IReservationInitializer
 	 */
 	private $initializer;
+	/**
+	 * @var FakeWebAuthentication
+	 */
+	private $authentication;
 
 	public function setup()
 	{
@@ -57,13 +61,18 @@ class GuestReservationPresenterTests extends TestBase
 		$this->factory = $this->getMock('IReservationInitializerFactory');
 		$this->preconditionService = $this->getMock('INewReservationPreconditionService');
 		$this->initializer = $this->getMock('IReservationInitializer');
+		$this->authentication = new FakeWebAuthentication();
 
 		$this->factory->expects($this->any())
 					->method('GetNewInitializer')
 					->with($this->anything())
 					->will($this->returnValue($this->initializer));
 
-		$this->presenter = new GuestReservationPresenter($this->page, $this->registration, $this->factory, $this->preconditionService);
+		$this->presenter = new GuestReservationPresenter($this->page,
+														 $this->registration,
+														 $this->authentication,
+														 $this->factory,
+														 $this->preconditionService);
 		parent::setup();
 	}
 
@@ -80,6 +89,19 @@ class GuestReservationPresenterTests extends TestBase
 
 		$this->assertEquals($this->page->_Email, $this->registration->_Email);
 		$this->assertTrue($this->registration->_RegisterCalled);
+		$this->assertEquals($this->authentication->_LastLogin, $this->page->_Email);
+	}
+
+	public function testPermissionStrategyAddsPermissionForAllScheduleResources()
+	{
+		$this->page->_ScheduleId = 455;
+		$strategy = new GuestReservationPermissionStrategy($this->page);
+
+		$user = new FakeUser(123);
+
+		$strategy->AddAccount($user);
+
+		$this->assertTrue($this->db->ContainsCommand(new AutoAssignGuestPermissionsCommand($user->Id(), $this->page->_ScheduleId)));
 	}
 }
 
@@ -88,6 +110,7 @@ class FakeGuestReservationPage implements IGuestReservationPage
 	public $_GuestInformationCollected = false;
 	public $_Email;
 	public $_CreatingAccount = false;
+	public $_ScheduleId;
 
 	public function GuestInformationCollected()
 	{
@@ -151,7 +174,7 @@ class FakeGuestReservationPage implements IGuestReservationPage
 
 	public function GetRequestedScheduleId()
 	{
-		// TODO: Implement GetRequestedScheduleId() method.
+		return $this->_ScheduleId;
 	}
 
 	/**
