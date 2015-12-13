@@ -28,47 +28,67 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 	<div class="col-md-offset-3 col-md-6 col-xs-10 col-xs-offset-1">
 		<div id="login-header" class="default-box-header">
 			<span class="sign-in">{translate key=SignIn}</span>
-			{if $ShowRegisterLink}<span class="pull-right register">{translate key="FirstTimeUser?"} <a href="{$RegisterUrl}" {$RegisterUrlNew}
-																	   title="{translate key=Register}">{translate key=Register}</a>
+			{if $ShowRegisterLink}<span class="pull-right register">{translate key="FirstTimeUser?"}
+				<a href="{$RegisterUrl}" {$RegisterUrlNew}
+				   title="{translate key=Register}">{translate key=Register}</a>
 				</span>{/if}
 		</div>
 		<form role="form" name="login" id="login" class="form-horizontal" method="post"
 			  action="{$smarty.server.SCRIPT_NAME}">
-			<div id="login-box" class="default-box straight-top">
+			<div id="login-box" class="col-xs-12 default-box straight-top">
 				{if $ShowUsernamePrompt}
-					<div class="input-group margin-bottom-25">
-						<span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
-						<input type="text" required="" class="form-control"
-							   id="email" {formname key=EMAIL}
-							   placeholder="{translate key=UsernameOrEmail}"/>
+					<div class="col-xs-12">
+						<div class="input-group margin-bottom-25">
+							<span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+							<input type="text" required="" class="form-control"
+								   id="email" {formname key=EMAIL}
+								   placeholder="{translate key=UsernameOrEmail}"/>
+						</div>
 					</div>
 				{/if}
 
 				{if $ShowPasswordPrompt}
-					<div class="input-group margin-bottom-25">
-					<span class="input-group-addon">
-					<i class="glyphicon glyphicon-lock"></i>
-					</span>
-						<input type="password" required="" id="password" {formname key=PASSWORD}
-							   class="form-control"
-							   value="" placeholder="{translate key=Password}"/>
+					<div class="col-xs-12">
+						<div class="input-group margin-bottom-25">
+							<span class="input-group-addon">
+							<i class="glyphicon glyphicon-lock"></i>
+							</span>
+							<input type="password" required="" id="password" {formname key=PASSWORD}
+								   class="form-control"
+								   value="" placeholder="{translate key=Password}"/>
+						</div>
 					</div>
 				{/if}
-				<button type="submit" class="btn btn-large btn-primary  btn-block" name="{Actions::LOGIN}"
-						value="submit">{translate key='LogIn'}</button>
-				<input type="hidden" {formname key=RESUME} value="{$ResumeUrl}"/>
 
-				<div class="checkbox">
-					<input id="rememberMe" type="checkbox" {formname key=PERSIST_LOGIN}>
-					<label for="rememberMe">{translate key=RememberMe}</label>
+				<div class="col-xs-12">
+					<button type="submit" class="btn btn-large btn-primary  btn-block" name="{Actions::LOGIN}"
+							value="submit">{translate key='LogIn'}</button>
+					<input type="hidden" {formname key=RESUME} value="{$ResumeUrl}"/>
 				</div>
 
+				<div class="col-xs-12">
+					<div class="checkbox">
+						<input id="rememberMe" type="checkbox" {formname key=PERSIST_LOGIN}>
+						<label for="rememberMe">{translate key=RememberMe}</label>
+					</div>
+				</div>
+
+				<div class="col-xs-6">
+					<a href="https://accounts.google.com/o/oauth2/v2/auth?scope=email%20profile&state=&redirect_uri={$ScriptUrl}/external-auth.php%3Ftype%3Dgoogle&response_type=code&client_id={$GoogleClientId}">
+						<img src="img/external/btn_google_signin_dark_normal_web.png" alt="Sign in with Google"/>
+					</a>
+				</div>
+
+				<div class="col-xs-6">
+					facebook here
+				</div>
 			</div>
 			<div id="login-footer">
 				{if $ShowForgotPasswordPrompt}
-				<div id="forgot-password" class="pull-left">
-					<a href="{$ForgotPasswordUrl}" {$ForgotPasswordUrlNew} class="btn btn-link"><span><i class="glyphicon glyphicon-question-sign"></i></span> {translate key='ForgotMyPassword'}</a>
-				</div>
+					<div id="forgot-password" class="pull-left">
+						<a href="{$ForgotPasswordUrl}" {$ForgotPasswordUrlNew} class="btn btn-link"><span><i
+										class="glyphicon glyphicon-question-sign"></i></span> {translate key='ForgotMyPassword'}</a>
+					</div>
 				{/if}
 				<div id="change-language" class="pull-right">
 					<button type="button" class="btn btn-link" data-toggle="collapse"
@@ -82,6 +102,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 					</div>
 				</div>
 			</div>
+
+
 		</form>
 	</div>
 </div>
@@ -90,10 +112,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 <script type="text/javascript">
 	var url = 'index.php?{QueryStringKeys::LANGUAGE}=';
-	$(document).ready(function ()
-	{
-		$('#languageDropDown').change(function ()
-		{
+	$(document).ready(function () {
+		$('#languageDropDown').change(function () {
 			window.location.href = url + $(this).val();
 		});
 

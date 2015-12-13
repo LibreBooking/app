@@ -45,18 +45,17 @@ abstract class Page implements IPage
 
 	protected function __construct($titleKey = '', $pageDepth = 0)
 	{
+		ExceptionHandler::SetExceptionHandler(new WebExceptionHandler(array($this, 'RedirectToError')));
+
 		$this->SetSecurityHeaders();
 
 		$this->path = str_repeat('../', $pageDepth);
 		$this->server = ServiceLocator::GetServer();
 		$resources = Resources::GetInstance();
 
-		ExceptionHandler::SetExceptionHandler(new WebExceptionHandler(array($this, 'RedirectToError')));
-
 		$this->smarty = new SmartyPage($resources, $this->path);
 
 		$userSession = ServiceLocator::GetServer()->GetUserSession();
-
 		$this->smarty->assign('Charset', $resources->Charset);
 		$this->smarty->assign('CurrentLanguage', $resources->CurrentLanguage);
 		$this->smarty->assign('HtmlLang', $resources->HtmlLang);

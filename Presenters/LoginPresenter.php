@@ -20,6 +20,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 require_once(ROOT_DIR . 'lib/Config/namespace.php');
 require_once(ROOT_DIR . 'lib/Common/namespace.php');
+require_once(ROOT_DIR . 'Presenters/Authentication/LoginRedirector.php');
 
 class LoginPresenter
 {
@@ -144,18 +145,7 @@ class LoginPresenter
 
 	private function _Redirect()
 	{
-		$redirect = $this->_page->GetResumeUrl();
-
-		if (!empty($redirect))
-		{
-			$this->_page->Redirect(html_entity_decode($redirect));
-		}
-		else
-		{
-			$defaultId = ServiceLocator::GetServer()->GetUserSession()->HomepageId;
-			$url = Pages::UrlFromId($defaultId);
-			$this->_page->Redirect(empty($url) ? Pages::UrlFromId(Pages::DEFAULT_HOMEPAGE_ID) : $url);
-		}
+		LoginRedirector::Redirect($this->_page);
 	}
 
 	private function IsCookieLogin($loginCookie)
@@ -176,7 +166,7 @@ class LoginPresenter
 		$languageHeader = ServiceLocator::GetServer()->GetLanguage();
 		$languageCode = Configuration::Instance()->GetKey(ConfigKeys::LANGUAGE);
 
-		$resources = Resources::GetInstance($languageCookie);
+		$resources = Resources::GetInstance();
 
 		if ($resources->IsLanguageSupported($languageCookie))
 		{

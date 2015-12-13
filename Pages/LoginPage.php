@@ -20,9 +20,11 @@
  */
 
 require_once(ROOT_DIR . 'Pages/Page.php');
+require_once(ROOT_DIR . 'Pages/Authentication/ILoginBasePage.php');
 require_once(ROOT_DIR . 'lib/Application/Authentication/namespace.php');
+require_once(ROOT_DIR . 'lib/Application/Authentication/GoogleAuthentication.php');
 
-interface ILoginPage extends IPage
+interface ILoginPage extends IPage, ILoginBasePage
 {
 	/**
 	 * @return string
@@ -58,11 +60,6 @@ interface ILoginPage extends IPage
 	public function SetUseLogonName($value);
 
 	public function SetResumeUrl($value);
-
-	/**
-	 * @return string
-	 */
-	public function GetResumeUrl();
 
 	public function SetShowLoginError();
 
@@ -116,6 +113,7 @@ class LoginPage extends Page implements ILoginPage
 		$this->Set('ResumeUrl', $resumeUrl);
 		$this->Set('ShowLoginError', false);
 		$this->Set('Languages', Resources::GetInstance()->AvailableLanguages);
+		$this->Set('GoogleClientId', GoogleAuthentication::CLIENT_ID);
 	}
 
 	public function PageLoad()
