@@ -49,6 +49,10 @@ class ExternalAuthLoginPresenter
 		{
 			$this->ProcessGoogleSingleSignOn();
 		}
+		if ($this->page->GetType() == 'fb')
+		{
+			$this->ProcessFacebookSingleSignOn();
+		}
 	}
 
 	private function ProcessGoogleSingleSignOn()
@@ -57,17 +61,36 @@ class ExternalAuthLoginPresenter
 		$userInfo = $googleAuth->GetUser($_GET['code']);
 
 		$this->registration->Synchronize(new AuthenticatedUser($userInfo->email,
-														 $userInfo->email,
-														 $userInfo->givenName,
-														 $userInfo->familyName,
-														 Password::GenerateRandom(),
-														 Resources::GetInstance()->CurrentLanguage,
-														 Configuration::Instance()->GetDefaultTimezone(),
-														 null,
-														 null,
-														 null));
+															   $userInfo->email,
+															   $userInfo->givenName,
+															   $userInfo->familyName,
+															   Password::GenerateRandom(),
+															   Resources::GetInstance()->CurrentLanguage,
+															   Configuration::Instance()->GetDefaultTimezone(),
+															   null,
+															   null,
+															   null));
 
 		$this->authentication->Login($userInfo->email, new WebLoginContext(new LoginData()));
+		LoginRedirector::Redirect($this->page);
+	}
+
+	private function ProcessFacebookSingleSignOn()
+	{
+		$result = file_get_contents('http://localhost/fblogin/fbprofile.php?code=' . $_GET['code']);
+		$profile = json_decode($result);
+		$this->registration->Synchronize(new AuthenticatedUser($profile->email,
+															   $profile->email,
+															   $profile->first_name,
+															   $profile->last_name,
+															   Password::GenerateRandom(),
+															   Resources::GetInstance()->CurrentLanguage,
+															   Configuration::Instance()->GetDefaultTimezone(),
+															   null,
+															   null,
+															   null));
+
+		$this->authentication->Login($profile->email, new WebLoginContext(new LoginData()));
 		LoginRedirector::Redirect($this->page);
 	}
 }
