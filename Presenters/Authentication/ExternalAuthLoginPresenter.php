@@ -77,7 +77,7 @@ class ExternalAuthLoginPresenter
 
 	private function ProcessFacebookSingleSignOn()
 	{
-		$result = file_get_contents('http://localhost/fblogin/fbprofile.php?code=' . $_GET['code']);
+		$result = file_get_contents('http://www.bookedscheduler.com/api/fbprofile.php?code=' . $_GET['code']);
 		$profile = json_decode($result);
 		$this->registration->Synchronize(new AuthenticatedUser($profile->email,
 															   $profile->email,

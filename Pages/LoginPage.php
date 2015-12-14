@@ -115,8 +115,6 @@ class LoginPage extends Page implements ILoginPage
 		$this->Set('ShowLoginError', false);
 		$this->Set('Languages', Resources::GetInstance()->AvailableLanguages);
 		$this->Set('GoogleClientId', GoogleAuthentication::CLIENT_ID);
-//		$fbAuth=new FacebookAuthentication();
-//		$this->Set('FacebookLoginUrl', $fbAuth->GetLoginUrl());
 	}
 
 	public function PageLoad()
