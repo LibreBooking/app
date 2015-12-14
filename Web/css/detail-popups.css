@@ -388,6 +388,14 @@ input.mid-number {
   cursor: pointer;
   color: #000;
 }
+@media (min-width: 768px) {
+  .pull-left-sm {
+    float: left;
+  }
+  .pull-right-sm {
+    float: right;
+  }
+}
 #resourceDetailsPopup #userDetailsPopup {
   min-width: 300px;
   max-width: 1000px;

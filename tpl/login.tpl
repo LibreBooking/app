@@ -25,7 +25,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		</div>
 	{/if}
 
-	<div class="col-md-offset-3 col-md-6 col-xs-10 col-xs-offset-1">
+	<div class="col-md-offset-3 col-md-6 col-xs-12 ">
 		<div id="login-header" class="default-box-header">
 			<span class="sign-in">{translate key=SignIn}</span>
 			{if $ShowRegisterLink}<span class="pull-right register">{translate key="FirstTimeUser?"}
@@ -73,25 +73,25 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 					</div>
 				</div>
 
-				<div class="col-xs-6">
-					<a href="https://accounts.google.com/o/oauth2/v2/auth?scope=email%20profile&state=&redirect_uri={$ScriptUrl}/external-auth.php%3Ftype%3Dgoogle&response_type=code&client_id={$GoogleClientId}" class="pull-left">
+				<div class="col-sm-6 col-xs-12">
+					<a href="https://accounts.google.com/o/oauth2/v2/auth?scope=email%20profile&state=&redirect_uri={$ScriptUrl}/external-auth.php%3Ftype%3Dgoogle&response_type=code&client_id={$GoogleClientId}" class="pull-left-sm">
 						<img src="img/external/btn_google_signin_dark_normal_web.png" alt="Sign in with Google"/>
 					</a>
 				</div>
 
-				<div class="col-xs-6">
-					<a href="https://www.bookedscheduler.com/api/fblogin.php?resume={$ScriptUrl}/external-auth.php%3Ftype%3Dfb" class="pull-right"><img height="42px" src="img/external/btn_facebook_login.png" alt="Sign in with Facebook"/></a>
+				<div class="col-sm-6 col-xs-12">
+					<a href="https://www.bookedscheduler.com/api/fblogin.php?resume={$ScriptUrl}/external-auth.php%3Ftype%3Dfb" class="pull-right-sm"><img style="max-height:42px" src="img/external/btn_facebook_login.png" alt="Sign in with Facebook"/></a>
 				</div>
 			</div>
-			<div id="login-footer">
+			<div id="login-footer" class="col-xs-12">
 				{if $ShowForgotPasswordPrompt}
-					<div id="forgot-password" class="pull-left">
-						<a href="{$ForgotPasswordUrl}" {$ForgotPasswordUrlNew} class="btn btn-link"><span><i
+					<div id="forgot-password" class="col-xs-12 col-sm-6">
+						<a href="{$ForgotPasswordUrl}" {$ForgotPasswordUrlNew} class="btn btn-link pull-left-sm"><span><i
 										class="glyphicon glyphicon-question-sign"></i></span> {translate key='ForgotMyPassword'}</a>
 					</div>
 				{/if}
-				<div id="change-language" class="pull-right">
-					<button type="button" class="btn btn-link" data-toggle="collapse"
+				<div id="change-language" class="col-xs-12 col-sm-6">
+					<button type="button" class="btn btn-link pull-right-sm" data-toggle="collapse"
 							data-target="#change-language-options"><span><i class="glyphicon glyphicon-globe"></i></span>
 						{translate key=ChangeLanguage}
 					</button>
