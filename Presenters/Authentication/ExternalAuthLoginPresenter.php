@@ -57,9 +57,13 @@ class ExternalAuthLoginPresenter
 
 	private function ProcessGoogleSingleSignOn()
 	{
-		$googleAuth = new GoogleAuthentication();
-		$userInfo = $googleAuth->GetUser($_GET['code']);
+		$code = $_GET['code'];
 
+		Log::Debug('Logging in with Google. Code=%s', $code);
+		$googleAuth = new GoogleAuthentication();
+		$userInfo = $googleAuth->GetUser($code);
+
+		Log::Debug('Google login successful. Email=%s', $userInfo->email);
 		$this->registration->Synchronize(new AuthenticatedUser($userInfo->email,
 															   $userInfo->email,
 															   $userInfo->givenName,
@@ -77,8 +81,11 @@ class ExternalAuthLoginPresenter
 
 	private function ProcessFacebookSingleSignOn()
 	{
-		$result = file_get_contents('http://www.bookedscheduler.com/api/fbprofile.php?code=' . $_GET['code']);
+		$code = $_GET['code'];
+		Log::Debug('Logging in with Facebook. Code=%s', $code);
+		$result = file_get_contents('http://www.bookedscheduler.com/api/fbprofile.php?code=' . $code);
 		$profile = json_decode($result);
+		Log::Debug('Facebook login successful. Email=%s', $profile->email);
 		$this->registration->Synchronize(new AuthenticatedUser($profile->email,
 															   $profile->email,
 															   $profile->first_name,

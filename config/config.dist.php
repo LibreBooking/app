@@ -183,3 +183,4 @@ $conf['settings']['security']['security.content-security-policy'] = "default-src
  * Google Analytics settings
  */
 $conf['settings']['google.analytics']['tracking.id'] = ''; // if set, Google Analytics tracking code will be added to every page in Booked
+$conf['settings']['authentication']['allow.social.login'] = 'false';
