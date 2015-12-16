@@ -460,7 +460,7 @@ class ReportCommandBuilder
 	{
 		$join = new ReportQueryFragment();
 
-		if ($this->joinResources)
+		if ($this->joinResources || $this->joinAccessories)
 		{
 			$join->Append(self::RESOURCE_JOIN_FRAGMENT);
 		}

@@ -77,6 +77,7 @@ class ConfigKeys
     const PRIVACY_HIDE_RESERVATION_DETAILS = 'hide.reservation.details';
     const PRIVACY_VIEW_RESERVATIONS = 'view.reservations';
     const PRIVACY_VIEW_SCHEDULES = 'view.schedules';
+    const PRIVACY_ALLOW_GUEST_BOOKING = 'allow.guest.reservations';
 
     const NOTIFY_CREATE_RESOURCE_ADMINS = 'resource.admin.add';
     const NOTIFY_CREATE_APPLICATION_ADMINS = 'application.admin.add';
@@ -131,11 +132,16 @@ class ConfigKeys
     const SECURITY_X_XSS = 'security.x-xss';
     const SECURITY_X_CONTENT_TYPE = 'security.x-content-type';
     const SECURITY_CONTENT_SECURITY_POLICY = 'security.content-security-policy';
+
+    const GOOGLE_ANALYTICS_TRACKING_ID = 'tracking.id';
+
+    const AUTHENTICATION_ALLOW_SOCIAL = 'allow.social.login';
 }
 
 class ConfigSection
 {
     const API = 'api';
+    const AUTHENTICATION = 'authentication';
     const DATABASE = 'database';
 	const EMAIL = 'email';
     const ICS = 'ics';
@@ -152,4 +158,5 @@ class ConfigSection
 	const UPLOADS = 'uploads';
 	const RECAPTCHA = 'recaptcha';
 	const USERS = 'users';
+    const GOOGLE_ANALYTICS = 'google.analytics';
 }

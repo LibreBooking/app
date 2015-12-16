@@ -62,6 +62,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 					<button type="submit" name="{Actions::CHANGE_PASSWORD}" value="{translate key='ChangePassword'}"
 							class="btn btn-primary">{translate key='ChangePassword'}</button>
 				</div>
+				{csrf_token}
 			</form>
 		</div>
 		{setfocus key='CURRENT_PASSWORD'}

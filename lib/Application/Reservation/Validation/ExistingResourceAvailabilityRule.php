@@ -17,12 +17,13 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 class ExistingResourceAvailabilityRule extends ResourceAvailabilityRule implements IUpdateReservationValidationRule
 {
 	/**
-	 * @param ReservationSeries|ExistingReservationSeries $series
+	 * @param ReservationSeries|ExistingReservationSeries $reservationSeries
+	 * @param null|ReservationRetryParameter[] $retryParameters
 	 * @return ReservationRuleResult
 	 */
-	public function Validate($series)
+	public function Validate($reservationSeries, $retryParameters = null)
 	{
-		return parent::Validate($series);
+		return parent::Validate($reservationSeries, $retryParameters);
 	}
 
 	/**

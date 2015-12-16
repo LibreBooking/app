@@ -46,12 +46,19 @@ class ResourceRepository implements IResourceRepository
 	 */
 	public function GetScheduleResources($scheduleId)
 	{
-		$command = new GetScheduleResourcesCommand($scheduleId);
+		if ($scheduleId == -1)
+		{
+			$filter = new SqlFilterNull();
+		}
+		else
+		{
+			$filter = new SqlFilterEquals(new SqlFilterColumn('r', ColumnNames::SCHEDULE_ID), $scheduleId);
+		}
+		$command = new FilterCommand(new GetAllResourcesCommand(), $filter);
 
 		$resources = array();
 
-		$reader = ServiceLocator::GetDatabase()
-								->Query($command);
+		$reader = ServiceLocator::GetDatabase()->Query($command);
 
 		while ($row = $reader->GetRow())
 		{
@@ -66,8 +73,7 @@ class ResourceRepository implements IResourceRepository
 	public function GetResourceList()
 	{
 		$resources = array();
-		$reader = ServiceLocator::GetDatabase()
-								->Query(new GetAllResourcesCommand());
+		$reader = ServiceLocator::GetDatabase()->Query(new GetAllResourcesCommand());
 
 		while ($row = $reader->GetRow())
 		{
@@ -154,15 +160,25 @@ class ResourceRepository implements IResourceRepository
 			$resource = BookableResource::Create($row);
 
 			$getAttributes = new GetAttributeValuesCommand($resource->GetId(), CustomAttributeCategory::RESOURCE);
-			$attributeReader = ServiceLocator::GetDatabase()
-											 ->Query($getAttributes);
+			$attributeReader = ServiceLocator::GetDatabase()->Query($getAttributes);
 
 			while ($attributeRow = $attributeReader->GetRow())
 			{
-				$resource->WithAttribute(new AttributeValue($attributeRow[ColumnNames::ATTRIBUTE_ID], $attributeRow[ColumnNames::ATTRIBUTE_VALUE]));
+				$resource->WithAttribute(new AttributeValue($attributeRow[ColumnNames::ATTRIBUTE_ID],
+															$attributeRow[ColumnNames::ATTRIBUTE_VALUE]));
 			}
 
 			$attributeReader->Free();
+
+			$getGroupAssignments = new GetResourceGroupAssignmentsCommand($resource->GetId());
+			$groupAssignmentReader = ServiceLocator::GetDatabase()->Query($getGroupAssignments);
+
+			while ($groupAssignmentRow = $groupAssignmentReader->GetRow())
+			{
+				$resource->WithResourceGroupId($groupAssignmentRow[ColumnNames::RESOURCE_GROUP_ID]);
+			}
+
+			$groupAssignmentReader->Free();
 		}
 
 		$reader->Free();
@@ -230,12 +246,18 @@ class ResourceRepository implements IResourceRepository
 
 		foreach ($resource->GetAddedAttributes() as $added)
 		{
-			$db->Execute(new AddAttributeValueCommand($added->AttributeId, $added->Value, $resource->GetId(), CustomAttributeCategory::RESOURCE));
+			$db->Execute(new AddAttributeValueCommand($added->AttributeId, $added->Value, $resource->GetId(),
+													  CustomAttributeCategory::RESOURCE));
 		}
 
 		if ($resource->WasAutoAssignToggledOn())
 		{
 			$db->Execute(new AutoAssignResourcePermissionsCommand($resource->GetId()));
+		}
+
+		if ($resource->GetClearAllPermissions())
+		{
+			$db->Execute(new AutoAssignClearResourcePermissionsCommand($resource->GetId()));
 		}
 
 		$this->_cache->Add($resource->GetId(), $resource);
@@ -294,7 +316,9 @@ class ResourceRepository implements IResourceRepository
 		foreach ($this->GetScheduleResources($scheduleId) as $r)
 		{
 			$resourceList[$r->GetId()] = $r;
-			$_assignments[] = new ResourceGroupAssignment(0, $r->GetName(), $r->GetResourceId(), $r->GetAdminGroupId(), $r->GetScheduleId(), $r->GetStatusId(), $r->GetScheduleAdminGroupId());
+			$_assignments[] = new ResourceGroupAssignment(0, $r->GetName(), $r->GetResourceId(), $r->GetAdminGroupId(),
+														  $r->GetScheduleId(), $r->GetStatusId(),
+														  $r->GetScheduleAdminGroupId());
 		}
 
 		while ($row = $groups->GetRow())
@@ -310,7 +334,10 @@ class ResourceRepository implements IResourceRepository
 			if (array_key_exists($resourceId, $resourceList))
 			{
 				$r = $resourceList[$resourceId];
-				$_assignments[] = new ResourceGroupAssignment($row[ColumnNames::RESOURCE_GROUP_ID], $r->GetName(), $r->GetResourceId(), $r->GetAdminGroupId(), $r->GetScheduleId(), $r->GetStatusId(), $r->GetScheduleAdminGroupId());
+				$_assignments[] = new ResourceGroupAssignment($row[ColumnNames::RESOURCE_GROUP_ID], $r->GetName(),
+															  $r->GetResourceId(), $r->GetAdminGroupId(),
+															  $r->GetScheduleId(), $r->GetStatusId(),
+															  $r->GetScheduleAdminGroupId());
 			}
 		}
 
@@ -381,7 +408,8 @@ class ResourceRepository implements IResourceRepository
 
 		if ($row = $rows->GetRow())
 		{
-			return new ResourceGroup($row[ColumnNames::RESOURCE_GROUP_ID], $row[ColumnNames::RESOURCE_GROUP_NAME], $row[ColumnNames::RESOURCE_GROUP_PARENT_ID]);
+			return new ResourceGroup($row[ColumnNames::RESOURCE_GROUP_ID], $row[ColumnNames::RESOURCE_GROUP_NAME],
+									 $row[ColumnNames::RESOURCE_GROUP_PARENT_ID]);
 		}
 
 		return null;
@@ -409,7 +437,8 @@ class ResourceRepository implements IResourceRepository
 		while ($row = $reader->GetRow())
 		{
 			$types[] = new ResourceType($row[ColumnNames::RESOURCE_TYPE_ID], $row[ColumnNames::RESOURCE_TYPE_NAME],
-										$row[ColumnNames::RESOURCE_TYPE_DESCRIPTION]);
+										$row[ColumnNames::RESOURCE_TYPE_DESCRIPTION],
+										$row[ColumnNames::ATTRIBUTE_LIST]);
 		}
 
 		$reader->Free();
@@ -433,7 +462,8 @@ class ResourceRepository implements IResourceRepository
 
 			while ($attributeRow = $attributeReader->GetRow())
 			{
-				$resourceType->WithAttribute(new AttributeValue($attributeRow[ColumnNames::ATTRIBUTE_ID], $attributeRow[ColumnNames::ATTRIBUTE_VALUE]));
+				$resourceType->WithAttribute(new AttributeValue($attributeRow[ColumnNames::ATTRIBUTE_ID],
+																$attributeRow[ColumnNames::ATTRIBUTE_VALUE]));
 			}
 
 			$attributeReader->Free();
@@ -461,7 +491,8 @@ class ResourceRepository implements IResourceRepository
 
 		foreach ($type->GetAddedAttributes() as $added)
 		{
-			$db->Execute(new AddAttributeValueCommand($added->AttributeId, $added->Value, $type->Id(), CustomAttributeCategory::RESOURCE_TYPE));
+			$db->Execute(new AddAttributeValueCommand($added->AttributeId, $added->Value, $type->Id(),
+													  CustomAttributeCategory::RESOURCE_TYPE));
 		}
 	}
 
@@ -479,7 +510,8 @@ class ResourceRepository implements IResourceRepository
 
 		while ($row = $reader->GetRow())
 		{
-			$reasons[] = new ResourceStatusReason($row[ColumnNames::RESOURCE_STATUS_REASON_ID], $row[ColumnNames::RESOURCE_STATUS_ID],
+			$reasons[] = new ResourceStatusReason($row[ColumnNames::RESOURCE_STATUS_REASON_ID],
+												  $row[ColumnNames::RESOURCE_STATUS_ID],
 												  $row[ColumnNames::RESOURCE_STATUS_DESCRIPTION]);
 		}
 
@@ -490,7 +522,8 @@ class ResourceRepository implements IResourceRepository
 
 	public function AddStatusReason($statusId, $reasonDescription)
 	{
-		return ServiceLocator::GetDatabase()->ExecuteInsert(new AddResourceStatusReasonCommand($statusId, $reasonDescription));
+		return ServiceLocator::GetDatabase()->ExecuteInsert(new AddResourceStatusReasonCommand($statusId,
+																							   $reasonDescription));
 	}
 
 
@@ -504,7 +537,8 @@ class ResourceRepository implements IResourceRepository
 		ServiceLocator::GetDatabase()->Execute(new DeleteResourceStatusReasonCommand($reasonId));
 	}
 
-	public function GetUsersWithPermission($resourceId, $pageNumber = null, $pageSize = null, $filter = null, $accountStatus = AccountStatus::ACTIVE)
+	public function GetUsersWithPermission($resourceId, $pageNumber = null, $pageSize = null, $filter = null,
+										   $accountStatus = AccountStatus::ACTIVE)
 	{
 		$command = new GetResourceUserPermissionCommand($resourceId, $accountStatus);
 
@@ -589,7 +623,8 @@ class AccessoryDto
 
 	public static function Create($row)
 	{
-		return new AccessoryDto($row[ColumnNames::ACCESSORY_ID], $row[ColumnNames::ACCESSORY_NAME], $row[ColumnNames::ACCESSORY_QUANTITY],
+		return new AccessoryDto($row[ColumnNames::ACCESSORY_ID], $row[ColumnNames::ACCESSORY_NAME],
+								$row[ColumnNames::ACCESSORY_QUANTITY],
 								$row[ColumnNames::ACCESSORY_RESOURCE_COUNT]);
 	}
 }
@@ -614,7 +649,8 @@ class ResourceDto
 	 * @param null|TimeInterval $minLength
 	 * @param null|int $resourceTypeId
 	 */
-	public function __construct($id, $name, $canAccess = true, $scheduleId = null, $minLength = null, $resourceTypeId = null)
+	public function __construct($id, $name, $canAccess = true, $scheduleId = null, $minLength = null,
+								$resourceTypeId = null)
 	{
 		$this->Id = $id;
 		$this->Name = $name;

@@ -1,23 +1,23 @@
 <?php
+
 /**
-Copyright 2013-2015 Nick Korbel
-
-This file is part of Booked Scheduler.
-
-Booked Scheduler is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-Booked Scheduler is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
+ * Copyright 2013-2015 Nick Korbel
+ *
+ * This file is part of Booked Scheduler.
+ *
+ * Booked Scheduler is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Booked Scheduler is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 class ResourceGroupTree
 {
 	/**
@@ -80,7 +80,8 @@ class ResourceGroupTree
 	{
 		if (array_key_exists($assignment->group_id, $this->references))
 		{
-			$this->resources[$assignment->resource_id] = new ResourceDto($assignment->resource_id, $assignment->resource_name);
+			$this->resources[$assignment->resource_id] = new ResourceDto($assignment->resource_id,
+																		 $assignment->resource_name);
 			$this->references[$assignment->group_id]->AddResource($assignment);
 		}
 	}
@@ -98,6 +99,22 @@ class ResourceGroupTree
 		else
 		{
 			return array_slice($this->groups, 1);
+		}
+	}
+
+	/**
+	 * @param bool $includeDefaultGroup
+	 * @return array|ResourceGroup[]
+	 */
+	public function GetGroupList($includeDefaultGroup = true)
+	{
+		if ($includeDefaultGroup)
+		{
+			return $this->references;
+		}
+		else
+		{
+			return array_slice($this->references, 1, null, true);
 		}
 	}
 
@@ -220,8 +237,14 @@ class ResourceGroup
 		$this->parent_id = $targetId;
 	}
 
-	public function Rename($newName) {
-	$this->SetName($newName);
+	public function Rename($newName)
+	{
+		$this->SetName($newName);
+	}
+
+	public function __toString()
+	{
+		return $this->name;
 	}
 }
 
@@ -242,7 +265,8 @@ class ResourceGroupAssignment implements IResource
 	 */
 	private $scheduleAdminGroupId;
 
-	public function __construct($group_id, $resource_name, $resource_id, $resourceAdminGroupId, $scheduleId, $statusId, $scheduleAdminGroupId)
+	public function __construct($group_id, $resource_name, $resource_id, $resourceAdminGroupId, $scheduleId, $statusId,
+								$scheduleAdminGroupId)
 	{
 		$this->group_id = $group_id;
 		$this->resource_name = $resource_name;

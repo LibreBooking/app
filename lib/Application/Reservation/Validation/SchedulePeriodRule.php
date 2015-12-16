@@ -34,9 +34,11 @@ class SchedulePeriodRule implements IReservationValidationRule
 
 	/**
 	 * @param ReservationSeries $reservationSeries
+	 * @param $retryParameters
 	 * @return ReservationRuleResult
+	 * @throws Exception
 	 */
-	public function Validate($reservationSeries)
+	public function Validate($reservationSeries, $retryParameters)
 	{
 		$layout = $this->repository->GetLayout($reservationSeries->Resource()->GetScheduleId(), new ScheduleLayoutFactory($this->session->Timezone));
 

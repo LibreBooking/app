@@ -18,15 +18,24 @@ class ReservationRuleResult
 {
 	private $_isValid;
 	private $_errorMessage;
+	private $_canBeRetried;
+	private $_retryMessage;
+	private $_retryParameters;
 
 	/**
 	 * @param bool $isValid
 	 * @param string $errorMessage
+	 * @param bool $canBeRetried
+	 * @param null $retryMessage
+	 * @param array|ReservationRetryParameter[] $retryParams
 	 */
-	public function __construct($isValid = true, $errorMessage = null)
+	public function __construct($isValid = true, $errorMessage = null, $canBeRetried = false, $retryMessage = null, $retryParams = array())
 	{
 		$this->_isValid = $isValid;
 		$this->_errorMessage = $errorMessage;
+		$this->_canBeRetried = $canBeRetried;
+		$this->_retryMessage = $retryMessage;
+		$this->_retryParameters = $retryParams;
 	}
 
 	/**
@@ -43,5 +52,26 @@ class ReservationRuleResult
 	public function ErrorMessage()
 	{
 		return $this->_errorMessage;
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function CanBeRetried()
+	{
+		return $this->_canBeRetried;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function RetryMessage()
+	{
+		return $this->_retryMessage;
+	}
+
+	public function RetryParameters()
+	{
+		return $this->_retryParameters;
 	}
 }

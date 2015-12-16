@@ -66,7 +66,7 @@ class PermissionValidationRuleTests extends TestBase
 			->will($this->returnValue($service));
 
 		$rule = new PermissionValidationRule($factory);
-		$result = $rule->Validate($reservation);
+		$result = $rule->Validate($reservation, null);
 
 		$this->assertEquals(false, $result->IsValid());
 

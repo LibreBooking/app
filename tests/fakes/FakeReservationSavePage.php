@@ -53,6 +53,9 @@ class FakeReservationSavePage implements IReservationSavePage
 	public $endReminderInterval = ReservationReminderInterval::Hours;
 	public $hasEndReminder = true;
 	public $allowParticipation;
+	public $canBeRetried = false;
+	public $retryParameters = array();
+	public $retryMessages = array();
 
 	public function __construct()
 	{
@@ -235,6 +238,38 @@ class FakeReservationSavePage implements IReservationSavePage
 	public function GetAllowParticipation()
 	{
 		return $this->allowParticipation;
+	}
+
+	/**
+	 * @param bool $canBeRetried
+	 */
+	public function SetCanBeRetried($canBeRetried)
+	{
+		$this->canBeRetried = $canBeRetried;
+	}
+
+	/**
+	 * @param ReservationRetryParameter[] $retryParameters
+	 */
+	public function SetRetryParameters($retryParameters)
+	{
+		$this->retryParameters = $retryParameters;
+	}
+
+	/**
+	 * @return ReservationRetryParameter[]
+	 */
+	public function GetRetryParameters()
+	{
+		return $this->retryParameters;
+	}
+
+	/**
+	 * @param array|string[] $messages
+	 */
+	public function SetRetryMessages($messages)
+	{
+		$this->retryMessages = $messages;
 	}
 }
 

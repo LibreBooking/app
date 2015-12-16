@@ -469,4 +469,9 @@ class ScheduleWebServiceView implements ISchedulePage
 	{
 		return $this->resources;
 	}
+
+	public function EnforceCSRFCheck()
+	{
+		// no-op
+	}
 }

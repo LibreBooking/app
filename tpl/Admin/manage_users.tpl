@@ -43,7 +43,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 				</a>
 
 				<a href="#" id="import-users" class="add-link add-user">{translate key="Import"}
-					<span class="fa fa-upload icon"></span>
+					<span class="fa fa-upload icon add"></span>
 				</a>
 			</div>
 		</div>
@@ -134,39 +134,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 				<tr data-userId="{$id}">
 					<td colspan="{if $PerUserColors}11{else}10{/if}" class="{$rowCss} customAttributes" userId="{$id}">
 						{foreach from=$AttributeList item=attribute}
-
-							{if $attribute->AppliesToEntity($id)}
-								<div class="updateCustomAttribute">
-									{assign var=datatype value='text'}
-									{if $attribute->Type() == CustomAttributeTypes::CHECKBOX}
-										{assign var=datatype value='checklist'}
-									{elseif $attribute->Type() == CustomAttributeTypes::MULTI_LINE_TEXTBOX}
-										{assign var=datatype value='textarea'}
-									{elseif $attribute->Type() == CustomAttributeTypes::SELECT_LIST}
-										{assign var=datatype value='select'}
-									{/if}
-									<label>{$attribute->Label()}</label>
-										<span class="inlineAttribute"
-											  data-type="{$datatype}"
-											  data-pk="{$id}"
-											  data-value="{$user->GetAttributeValue($attribute->Id())}"
-											  data-name="{FormKeys::ATTRIBUTE_PREFIX}{$attribute->Id()}"
-												{if $attribute->Type() == CustomAttributeTypes::SELECT_LIST}
-													data-source='[{if !$attribute->Required()}{ldelim}value:"",text:""{rdelim},{/if}
-												  {foreach from=$attribute->PossibleValueList() item=v name=vals}
-														{ldelim}value:"{$v}",text:"{$v}"{rdelim}{if not $smarty.foreach.vals.last},{/if}
-													{/foreach}]'
-												{/if}
-												{if $attribute->Type() == CustomAttributeTypes::CHECKBOX}
-													data-source='[{ldelim}value:"1",text:"{translate key=Yes}"{rdelim}]'
-												{/if}
-												>
-										</span>
-									<a class="update changeAttribute" href="#"><span
-												class="fa fa-pencil-square-o"></span></a>
-								</div>
-							{/if}
-
+							{include file='Admin/InlineAttributeEdit.tpl' id=$id attribute=$attribute value=$user->GetAttributeValue($attribute->Id())}
 						{/foreach}
 					</td>
 				</tr>
@@ -247,13 +215,13 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 								</div>
 							</div>
 							<div class="col-sm-12 col-md-6">
-							<div class="form-group has-feedback">
-								<label for="addTimezone">{translate key="Timezone"}</label>
-								<select id="addTimezone" {formname key='TIMEZONE'} class="form-control">
-									{html_options values=$Timezones output=$Timezones selected=$Timezone}
-								</select>
+								<div class="form-group has-feedback">
+									<label for="addTimezone">{translate key="Timezone"}</label>
+									<select id="addTimezone" {formname key='TIMEZONE'} class="form-control">
+										{html_options values=$Timezones output=$Timezones selected=$Timezone}
+									</select>
+								</div>
 							</div>
-						</div>
 						</div>
 						<div class="row">
 							<div class="col-sm-12 col-md-6">
@@ -269,7 +237,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 								<div class="col-xs-12 col-sm-6">
 									{control type="AttributeControl" attribute=$AttributeList[0]}
 								</div>
-								{else}
+							{else}
 								<div class="col-sm-12 col-md-6">&nbsp;</div>
 							{/if}
 						</div>
@@ -289,12 +257,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 						{/if}
 					</div>
 					<div class="modal-footer">
-						<button type="button" class="btn btn-default"
-								data-dismiss="modal">{translate key='Cancel'}</button>
-						<button type="button" class="btn btn-success save">
-							<span class="glyphicon glyphicon-ok-circle"></span>
-							{translate key='AddUser'}
-						</button>
+						{cancel_button}
+						{add_button}
 						{indicator}
 					</div>
 				</div>
@@ -319,8 +283,12 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 						</div>
 						<div id="importErrors" class="error no-show"></div>
 						<div id="importResult" class="alert alert-success no-show">
-							<span>{translate key=RowsImported}</span> <div id="importCount" class="inline bold">0</div>
-							<span>{translate key=RowsSkipped}</span> <div id="importSkipped" class="inline bold">0</div>
+							<span>{translate key=RowsImported}</span>
+
+							<div id="importCount" class="inline bold">0</div>
+							<span>{translate key=RowsSkipped}</span>
+
+							<div id="importSkipped" class="inline bold">0</div>
 							<a class="" href="{$smarty.server.SCRIPT_NAME}">{translate key=Done} <span class="fa fa-refresh"></span></a>
 						</div>
 						<div class="margin-bottom-25">
@@ -332,12 +300,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 						</div>
 					</div>
 					<div class="modal-footer">
-						<button type="button" class="btn btn-default"
-								data-dismiss="modal">{translate key='Cancel'}</button>
-						<button type="button" class="btn btn-success save">
-							<span class="glyphicon glyphicon-ok-circle"></span>
-							{translate key='Import'}
-						</button>
+						{cancel_button}
+						{add_button key=Import}
 						{indicator}
 					</div>
 				</div>
@@ -368,11 +332,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 						{/foreach}
 					</div>
 					<div class="modal-footer">
-						<button type="button" class="btn btn-default"
-								data-dismiss="modal">{translate key='Cancel'}</button>
-						<button type="button" class="btn btn-success save"><span
-									class="glyphicon glyphicon-ok-circle"></span>
-							{translate key='Update'}</button>
+						{cancel_button}
+						{update_button}
 						{indicator}
 					</div>
 				</div>
@@ -396,11 +357,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 						</div>
 					</div>
 					<div class="modal-footer">
-						<button type="button" class="btn btn-default"
-								data-dismiss="modal">{translate key='Cancel'}</button>
-						<button type="button" class="btn btn-success save"><span
-									class="glyphicon glyphicon-ok-circle"></span>
-							{translate key='Update'}</button>
+						{cancel_button}
+						{update_button}
 						{indicator}
 					</div>
 				</div>
@@ -500,11 +458,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 						<div class="clearfix"></div>
 					</div>
 					<div class="modal-footer">
-						<button type="button" class="btn btn-default"
-								data-dismiss="modal">{translate key='Cancel'}</button>
-						<button type="button" class="btn btn-success save"><span
-									class="glyphicon glyphicon-ok-circle"></span>
-							{translate key='Update'}</button>
+						{cancel_button}
+						{update_button}
 						{indicator}
 					</div>
 				</div>
@@ -530,9 +485,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 					</div>
 					<div class="modal-footer">
-						<button type="button" class="btn btn-default cancel"
-								data-dismiss="modal">{translate key='Cancel'}</button>
-						<button type="button" class="btn btn-danger save">{translate key='Delete'}</button>
+						{cancel_button}
+						{delete_button}
 						{indicator}
 					</div>
 				</div>
@@ -564,6 +518,16 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 					<div id="removedGroups">
 					</div>
+
+					<form id="addGroupForm" method="post" ajaxAction="addUser">
+						<input type="hidden" id="addGroupId" {formname key=GROUP_ID} />
+						<input type="hidden" id="addGroupUserId" {formname key=USER_ID} />
+					</form>
+
+					<form id="removeGroupForm" method="post" ajaxAction="removeUser">
+						<input type="hidden" id="removeGroupId" {formname key=GROUP_ID} />
+						<input type="hidden" id="removeGroupUserId" {formname key=USER_ID} />
+					</form>
 				</div>
 			</div>
 		</div>
@@ -586,11 +550,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 						</div>
 					</div>
 					<div class="modal-footer">
-						<button type="button" class="btn btn-default"
-								data-dismiss="modal">{translate key='Cancel'}</button>
-						<button type="button" class="btn btn-success save"><span
-									class="glyphicon glyphicon-ok-circle"></span>
-							{translate key='Update'}</button>
+						{cancel_button}
+						{update_button}
 						{indicator}
 					</div>
 				</div>
@@ -598,17 +559,16 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		</form>
 	</div>
 
-	{html_image src="admin-ajax-indicator.gif" class="indicator" style="display:none;"}
+	{csrf_token}
 
-	{jsfile src="admin/edit.js"}
+	{jsfile src="ajax-helpers.js"}
 	{jsfile src="autocomplete.js"}
 	{jsfile src="admin/user.js"}
 	{jsfile src="js/jquery.form-3.09.min.js"}
 	{jsfile src="js/colorpicker.js"}
 
 	<script type="text/javascript">
-		function setUpEditables()
-		{
+		function setUpEditables() {
 			$.fn.editable.defaults.mode = 'popup';
 			$.fn.editable.defaults.toggle = 'manual';
 			$.fn.editable.defaults.emptyclass = '';
@@ -619,8 +579,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			});
 		}
 
-		$(document).ready(function ()
-		{
+		$(document).ready(function () {
 			var actions = {
 				activate: '{ManageUsersActions::Activate}',
 				deactivate: '{ManageUsersActions::Deactivate}'
@@ -660,13 +619,11 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			{/foreach}
 
 			$('#reservationColor').ColorPicker({
-				onSubmit: function (hsb, hex, rgb, el)
-				{
+				onSubmit: function (hsb, hex, rgb, el) {
 					$(el).val(hex);
 					$(el).ColorPickerHide();
 				},
-				onBeforeShow: function ()
-				{
+				onBeforeShow: function () {
 					$(this).ColorPickerSetColor(this.value);
 				}
 			});

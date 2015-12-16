@@ -1,22 +1,22 @@
 <?php
 /**
-Copyright 2011-2015 Nick Korbel
-
-This file is part of Booked Scheduler.
-
-Booked Scheduler is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-Booked Scheduler is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ * Copyright 2011-2015 Nick Korbel
+ *
+ * This file is part of Booked Scheduler.
+ *
+ * Booked Scheduler is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Booked Scheduler is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 require_once(ROOT_DIR . 'lib/Config/namespace.php');
 require_once(ROOT_DIR . 'lib/Server/namespace.php');
@@ -55,7 +55,9 @@ class ReservationHandler implements IReservationHandler
 	 */
 	private $notificationService;
 
-	public function __construct(IReservationPersistenceService $persistenceService, IReservationValidationService $validationService, IReservationNotificationService $notificationService)
+	public function __construct(IReservationPersistenceService $persistenceService,
+								IReservationValidationService $validationService,
+								IReservationNotificationService $notificationService)
 	{
 		$this->persistenceService = $persistenceService;
 		$this->validationService = $validationService;
@@ -90,19 +92,21 @@ class ReservationHandler implements IReservationHandler
 	 * @param ReservationSeries $reservationSeries
 	 * @param IReservationSaveResultsView $view
 	 * @return bool if the reservation was handled or not
+	 * @throws Exception
 	 */
 	public function Handle(ReservationSeries $reservationSeries, IReservationSaveResultsView $view)
 	{
-		$validationResult = $this->validationService->Validate($reservationSeries);
+		Log::Debug('submitted retry params %s', var_export($view->GetRetryParameters(), true));
+
+		$validationResult = $this->validationService->Validate($reservationSeries, $view->GetRetryParameters());
 		$result = $validationResult->CanBeSaved();
 
 		if ($validationResult->CanBeSaved())
-        {
+		{
 			try
 			{
 				$this->persistenceService->Persist($reservationSeries);
-			}
-			catch (Exception $ex)
+			} catch (Exception $ex)
 			{
 				Log::Error('Error saving reservation: %s', $ex);
 				throw($ex);
@@ -116,11 +120,16 @@ class ReservationHandler implements IReservationHandler
 		{
 			$view->SetSaveSuccessfulMessage($result);
 			$view->SetErrors($validationResult->GetErrors());
+
+			$view->SetCanBeRetried($validationResult->CanBeRetried());
+			Log::Debug('retry params %s', var_export($validationResult->GetRetryParameters(), true));
+			Log::Debug('retry messages %s', var_export($validationResult->GetRetryMessages(), true));
+			$view->SetRetryParameters($validationResult->GetRetryParameters());
+			$view->SetRetryMessages($validationResult->GetRetryMessages());
 		}
 
 		$view->SetWarnings($validationResult->GetWarnings());
 
 		return $result;
 	}
-
 }

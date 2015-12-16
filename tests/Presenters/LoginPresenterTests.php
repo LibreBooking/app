@@ -323,6 +323,20 @@ class FakeLoginPage extends FakePageBase implements ILoginPage
 	{
 		$this->_ShowScheduleLink = $shouldShow;
 	}
-}
 
-?>
+	/**
+	 * @param $url string
+	 */
+	public function SetRegistrationUrl($url)
+	{
+		// TODO: Implement SetRegistrationUrl() method.
+	}
+
+	/**
+	 * @param $url string
+	 */
+	public function SetPasswordResetUrl($url)
+	{
+		// TODO: Implement SetPasswordResetUrl() method.
+	}
+}

@@ -18,14 +18,14 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 *}
 {if $Report->ResultCount() > 0}
 	<div id="report-actions">
-		<a href="#" id="btnChart"><i class="fa fa-bar-chart"></i> {translate key=ViewAsChart}</a> |
+		<a href="#" id="btnChart"><span class="fa fa-bar-chart"></span> {translate key=ViewAsChart}</a> |
 		{if !$HideSave}
-			<a href="#" id="btnSaveReportPrompt"><i class="fa fa-save"></i> {translate key=SaveThisReport}</a> |
+			<a href="#" id="btnSaveReportPrompt"><span class="fa fa-save"></span> {translate key=SaveThisReport}</a> |
 		{/if}
 
-		<a href="#" id="btnCsv"><i class="fa fa-download"></i> {translate key=ExportToCSV}</a> |
-		<a href="#" id="btnPrint"><i class="fa fa-print"></i> {translate key=Print}</a> |
-		<a href="#" id="btnCustomizeColumns"><i class="fa fa-filter"></i> {translate key=Columns}</a>
+		<a href="#" id="btnCsv"><span class="fa fa-download"></span> {translate key=ExportToCSV}</a> |
+		<a href="#" id="btnPrint"><span class="fa fa-print"></span> {translate key=Print}</a> |
+		<a href="#" id="btnCustomizeColumns"><span class="fa fa-filter"></span> {translate key=Columns}</a>
 	</div>
 	<div id="customize-columns"></div>
 	<table width="100%" id="report-results" chart-type="{$Definition->GetChartType()}">

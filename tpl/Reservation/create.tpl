@@ -16,7 +16,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 *}
-{block name="header"}{include file='globalheader.tpl'}
+{block name="header"}{include file='globalheader.tpl' Qtip=true}
 {/block}
 
 <div id="page-reservation">
@@ -24,11 +24,11 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		<form id="form-reservation" method="post" enctype="multipart/form-data" role="form" >
 
 			<div class="row">
-				<div class="col-xs-6 col-top reservationHeader">
+				<div class="col-m-6 col-xs-12 col-top reservationHeader">
 					<h3>{block name=reservationHeader}{translate key="CreateReservationHeading"}{/block}</h3>
 				</div>
 
-				<div class="col-xs-6 col-top">
+				<div class="col-m-6 col-xs-12 col-top">
 					<div class="pull-right">
 						<button type="button" class="btn btn-default" onclick="window.location='{$ReturnUrl}'">
 							{translate key='Cancel'}
@@ -47,7 +47,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 				{assign var="detailsCol" value="col-xs-12"}
 				{assign var="participantCol" value="col-xs-12"}
 
-				{if $ShowParticipation && $AllowParticipation}
+				{if $ShowParticipation && $AllowParticipation && $ShowReservationDetails}
 					{assign var="detailsCol" value="col-xs-12 col-sm-6"}
 					{assign var="participantCol" value="col-xs-12 col-sm-6"}
 				{/if}
@@ -56,7 +56,11 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 					<div class="col-xs-12">
 						<div class="form-group">
-							<a href="#" id="userName" data-userid="{$UserId}">{$ReservationUserName}</a>
+							{if $ShowUserDetails && $ShowReservationDetails}
+								<a href="#" id="userName" data-userid="{$UserId}">{$ReservationUserName}</a>
+							{else}
+								{translate key=Private}
+							{/if}
 							<input id="userId" type="hidden" {formname key=USER_ID} value="{$UserId}"/>
 							{if $CanChangeUser}
 								<a href="#" id="showChangeUsers" class="small-action">{translate key=Change} <i class="fa fa-user"></i></a>
@@ -119,13 +123,15 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 									{/foreach}
 								</div>
 							</div>
-							<div class="pull-right">{if $AvailableAccessories|count > 0}
+							<div class="pull-right">
+								{if $ShowReservationDetails && $AvailableAccessories|count > 0}
 									<label>{translate key="Accessories"}</label>
 									<a href="#" id="addAccessoriesPrompt"
 									   class="small-action" data-toggle="modal" data-target="#dialogAddAccessories">{translate key='Add'} <span
 												class="fa fa-plus-square"></span></a>
 									<div id="accessories"></div>
-								{/if}</div>
+								{/if}
+							</div>
 						</div>
 					</div>
 
@@ -205,7 +211,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 				</div>
 
 				<div class="{$participantCol}">
-					{if $ShowParticipation && $AllowParticipation}
+					{if $ShowParticipation && $AllowParticipation && $ShowReservationDetails}
 						{include file="Reservation/participation.tpl"}
 					{else}
 						{include file="Reservation/private-participation.tpl"}
@@ -275,7 +281,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 				   value="{SeriesUpdateScope::FullSeries}"/>
 
 			<div class="row">
-				<div class="reservationButtons col-xs-6 col-xs-offset-6">
+				<div class="reservationButtons col-m-6 col-m-offset-6 col-xs-12">
 					<div class="reservationSubmitButtons">
 						<button type="button" class="btn btn-default" onclick="window.location='{$ReturnUrl}'">
 							{translate key='Cancel'}
@@ -290,10 +296,14 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 				</div>
 			</div>
 
+			{csrf_token}
+
 			{if $UploadsEnabled}
 				{block name='attachments'}
 				{/block}
 			{/if}
+
+			<div id="retrySubmitParams" class="no-show"></div>
 		</form>
 	</div>
 
@@ -323,7 +333,6 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 					<h4 class="modal-title" id="accessoryModalLabel">{translate key=AddAccessories}</h4>
 				</div>
 				<div class="modal-body">
-					{*<div id="dialogAddAccessories" class="dialog" title="{translate key=AddAccessories}" style="display:none;">*}
 					<table class="table table-condensed">
 						<thead>
 						<tr>

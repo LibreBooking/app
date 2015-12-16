@@ -68,19 +68,29 @@ class CustomAttribute
 	protected $required;
 
 	/**
-	 * @var int
+	 * @var int[]
 	 */
-	protected $entityId;
+	protected $entityIds = array();
+
+	/**
+	 * @var int[]
+	 */
+	protected $addedEntityIds = array();
+
+	/**
+	 * @var int[]
+	 */
+	protected $removedEntityIds = array();
+
+	/**
+	 * @var string[]
+	 */
+	protected $entityDescriptions = array();
 
 	/**
 	 * @var bool
 	 */
 	protected $adminOnly = false;
-
-	/**
-	 * @var string|null
-	 */
-	protected $entityDescription;
 
 	/**
 	 * @var string
@@ -165,15 +175,31 @@ class CustomAttribute
 	 */
 	public function UniquePerEntity()
 	{
-		return !empty($this->entityId);
+		return !empty($this->entityIds);
 	}
 
 	/**
-	 * @return int|null
+	 * @return int[]
 	 */
-	public function EntityId()
+	public function EntityIds()
 	{
-		return empty($this->entityId) ? null : $this->entityId;
+		return empty($this->entityIds) ? null : $this->entityIds;
+	}
+
+	/**
+	 * @return int[]
+	 */
+	public function AddedEntityIds()
+	{
+		return $this->addedEntityIds;
+	}
+
+	/**
+	 * @return int[]
+	 */
+	public function RemovedEntityIds()
+	{
+		return $this->removedEntityIds;
 	}
 
 	/**
@@ -181,7 +207,7 @@ class CustomAttribute
 	 */
 	public function EntityDescription()
 	{
-		return $this->entityDescription;
+		return $this->entityDescriptions;
 	}
 
 	/**
@@ -261,7 +287,7 @@ class CustomAttribute
 	{
 		if ($this->UniquePerEntity())
 		{
-			return $this->EntityId() == $entityId;
+			return $this->entityIds() == $entityId;
 		}
 		return true;
 	}
@@ -275,19 +301,20 @@ class CustomAttribute
 	 * @param bool $required
 	 * @param string $possibleValues
 	 * @param int $sortOrder
-	 * @param int|null $entityId
+	 * @param int[] $entityIds
 	 * @param bool $adminOnly
 	 * @return CustomAttribute
 	 */
-	public function __construct($id, $label, $type, $category, $regex, $required, $possibleValues, $sortOrder, $entityId = null, $adminOnly = false)
+	public function __construct($id, $label, $type, $category, $regex, $required, $possibleValues, $sortOrder,
+								$entityIds = array(), $adminOnly = false)
 	{
 		$this->id = $id;
 		$this->label = $label;
 		$this->type = $type;
 		$this->category = $category;
-		$this->regex = $regex;
+		$this->SetRegex($regex);
 		$this->required = $required;
-		$this->entityId = $entityId;
+		$this->entityIds = is_array($entityIds) ? $entityIds : array($entityIds);
 		$this->adminOnly = $adminOnly;
 		$this->SetSortOrder($sortOrder);
 		$this->SetPossibleValues($possibleValues);
@@ -302,13 +329,15 @@ class CustomAttribute
 	 * @param bool $required
 	 * @param string $possibleValues
 	 * @param int $sortOrder
-	 * @param int|null $entityId
+	 * @param int[] $entityIds
 	 * @param bool $adminOnly
 	 * @return CustomAttribute
 	 */
-	public static function Create($label, $type, $category, $regex, $required, $possibleValues, $sortOrder, $entityId = null, $adminOnly = false)
+	public static function Create($label, $type, $category, $regex, $required, $possibleValues, $sortOrder,
+								  $entityIds = array(), $adminOnly = false)
 	{
-		return new CustomAttribute(null, $label, $type, $category, $regex, $required, $possibleValues, $sortOrder, $entityId, $adminOnly);
+		return new CustomAttribute(null, $label, $type, $category, $regex, $required, $possibleValues, $sortOrder,
+								   $entityIds, $adminOnly);
 	}
 
 	/**
@@ -318,20 +347,32 @@ class CustomAttribute
 	 */
 	public static function FromRow($row)
 	{
+		$entityIds = array();
+		if (!empty($row[ColumnNames::ATTRIBUTE_ENTITY_IDS]))
+		{
+			$entityIds = explode('!sep!', $row[ColumnNames::ATTRIBUTE_ENTITY_IDS]);
+		}
+
+		$descriptions = array();
+		if (!empty($row[ColumnNames::ATTRIBUTE_ENTITY_DESCRIPTIONS]))
+		{
+			$descriptions = explode('!sep!', $row[ColumnNames::ATTRIBUTE_ENTITY_DESCRIPTIONS]);
+		}
+
 		$attribute = new CustomAttribute(
-			$row[ColumnNames::ATTRIBUTE_ID],
-			$row[ColumnNames::ATTRIBUTE_LABEL],
-			$row[ColumnNames::ATTRIBUTE_TYPE],
-			$row[ColumnNames::ATTRIBUTE_CATEGORY],
-			$row[ColumnNames::ATTRIBUTE_CONSTRAINT],
-			$row[ColumnNames::ATTRIBUTE_REQUIRED],
-			$row[ColumnNames::ATTRIBUTE_POSSIBLE_VALUES],
-			$row[ColumnNames::ATTRIBUTE_SORT_ORDER],
-			$row[ColumnNames::ATTRIBUTE_ENTITY_ID],
-			$row[ColumnNames::ATTRIBUTE_ADMIN_ONLY]
+				$row[ColumnNames::ATTRIBUTE_ID],
+				$row[ColumnNames::ATTRIBUTE_LABEL],
+				$row[ColumnNames::ATTRIBUTE_TYPE],
+				$row[ColumnNames::ATTRIBUTE_CATEGORY],
+				$row[ColumnNames::ATTRIBUTE_CONSTRAINT],
+				$row[ColumnNames::ATTRIBUTE_REQUIRED],
+				$row[ColumnNames::ATTRIBUTE_POSSIBLE_VALUES],
+				$row[ColumnNames::ATTRIBUTE_SORT_ORDER],
+				$entityIds,
+				$row[ColumnNames::ATTRIBUTE_ADMIN_ONLY]
 		);
 
-		$attribute->WithEntityDescription($row[ColumnNames::ATTRIBUTE_ENTITY_DESCRIPTION]);
+		$attribute->WithEntityDescriptions($descriptions);
 
 		if (isset($row[ColumnNames::ATTRIBUTE_SECONDARY_CATEGORY]))
 		{
@@ -394,15 +435,15 @@ class CustomAttribute
 	 * @param bool $required
 	 * @param string $possibleValues
 	 * @param int $sortOrder
-	 * @param int $entityId
+	 * @param int[] $entityIds
 	 * @param bool $adminOnly
 	 */
-	public function Update($label, $regex, $required, $possibleValues, $sortOrder, $entityId, $adminOnly)
+	public function Update($label, $regex, $required, $possibleValues, $sortOrder, $entityIds, $adminOnly)
 	{
 		$this->label = $label;
-		$this->regex = $regex;
+		$this->SetRegex($regex);
 		$this->required = $required;
-		$this->entityId = $entityId;
+		$this->entityIds = is_array($entityIds) ? $entityIds : array($entityIds);
 		$this->adminOnly = $adminOnly;
 		$this->SetPossibleValues($possibleValues);
 		$this->SetSortOrder($sortOrder);
@@ -428,11 +469,11 @@ class CustomAttribute
 	}
 
 	/**
-	 * @param string $entityDescription
+	 * @param string[] $entityDescriptions
 	 */
-	public function WithEntityDescription($entityDescription)
+	public function WithEntityDescriptions($entityDescriptions)
 	{
-		$this->entityDescription = $entityDescription;
+		$this->entityDescriptions = $entityDescriptions;
 	}
 
 	/**
@@ -462,5 +503,26 @@ class CustomAttribute
 	public function WithIsPrivate($isPrivate)
 	{
 		$this->isPrivate = BooleanConverter::ConvertValue($isPrivate);
+	}
+
+	/**
+	 * @param string $regex
+	 */
+	private function SetRegex($regex)
+	{
+		$this->regex = $regex;
+		if (empty($this->regex))
+		{
+			return;
+		}
+
+		if (!BookedStringHelper::StartsWith($this->regex, '/'))
+		{
+			$this->regex = '/' . $this->regex;
+		}
+		if (!BookedStringHelper::EndsWith($this->regex, '/'))
+		{
+			$this->regex = $this->regex . '/';
+		}
 	}
 }

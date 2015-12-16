@@ -155,6 +155,7 @@ class Authentication implements IAuthentication
 		$userSession->IsGroupAdmin = $this->roleService->IsGroupAdministrator($user);
 		$userSession->IsResourceAdmin = $this->roleService->IsResourceAdministrator($user);
 		$userSession->IsScheduleAdmin = $this->roleService->IsScheduleAdministrator($user);
+		$userSession->CSRFToken = CSRFToken::Create();
 
 		foreach ($user->Groups() as $group)
 		{

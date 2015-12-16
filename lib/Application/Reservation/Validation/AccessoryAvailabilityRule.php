@@ -41,11 +41,7 @@ class AccessoryAvailabilityRule implements IReservationValidationRule
 		$this->timezone = $timezone;
 	}
 
-	/**
-	 * @param ReservationSeries $reservationSeries
-	 * @return ReservationRuleResult
-	 */
-	public function Validate($reservationSeries)
+	public function Validate($reservationSeries, $retryParameters)
 	{
 		$conflicts = array();
 		$reservationAccessories = $reservationSeries->Accessories();

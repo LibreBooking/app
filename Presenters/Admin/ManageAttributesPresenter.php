@@ -65,12 +65,12 @@ class ManageAttributesPresenter extends ActionPresenter
 		$required = $this->page->GetIsRequired();
 		$possibleValues = $this->page->GetPossibleValues();
 		$sortOrder = $this->page->GetSortOrder();
-		$entityId = $this->page->GetEntityId();
+		$entityIds = $this->page->GetEntityIds();
 		$adminOnly = $this->page->GetIsAdminOnly();
 
         Log::Debug('Adding new attribute named: %s', $attributeName);
 
-        $attribute = CustomAttribute::Create($attributeName, $type, $scope, $regex, $required, $possibleValues, $sortOrder, $entityId, $adminOnly);
+        $attribute = CustomAttribute::Create($attributeName, $type, $scope, $regex, $required, $possibleValues, $sortOrder, $entityIds, $adminOnly);
 		$this->AddSecondaryEntity($attribute);
 		$attribute->WithIsPrivate($this->page->GetIsPrivate());
 
@@ -92,13 +92,13 @@ class ManageAttributesPresenter extends ActionPresenter
 		$required = $this->page->GetIsRequired();
 		$possibleValues = $this->page->GetPossibleValues();
 		$sortOrder = $this->page->GetSortOrder();
-		$entityId = $this->page->GetEntityId();
+		$entityIds = $this->page->GetEntityIds();
 		$adminOnly = $this->page->GetIsAdminOnly();
 
 		Log::Debug('Updating attribute with id: %s', $attributeId);
 
 		$attribute = $this->attributeRepository->LoadById($attributeId);
-		$attribute->Update($attributeName, $regex, $required, $possibleValues, $sortOrder, $entityId, $adminOnly);
+		$attribute->Update($attributeName, $regex, $required, $possibleValues, $sortOrder, $entityIds, $adminOnly);
 		$this->AddSecondaryEntity($attribute);
 		$attribute->WithIsPrivate($this->page->GetIsPrivate());
 

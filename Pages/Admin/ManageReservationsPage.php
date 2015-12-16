@@ -1,22 +1,22 @@
 <?php
 /**
-Copyright 2011-2015 Nick Korbel
-
-This file is part of Booked Scheduler.
-
-Booked Scheduler is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-Booked Scheduler is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ * Copyright 2011-2015 Nick Korbel
+ *
+ * This file is part of Booked Scheduler.
+ *
+ * Booked Scheduler is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Booked Scheduler is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 require_once(ROOT_DIR . 'Pages/IPageable.php');
 require_once(ROOT_DIR . 'Pages/Admin/AdminPage.php');
@@ -71,12 +71,12 @@ interface IManageReservationsPage extends IPageable, IActionPage
 	public function GetReferenceNumber();
 
 	/**
-	 * @param Date $date|null
+	 * @param Date $date |null
 	 */
 	public function SetStartDate($date);
 
 	/**
-	 * @param Date $date|null
+	 * @param Date $date |null
 	 * @return void
 	 */
 	public function SetEndDate($date);
@@ -244,6 +244,16 @@ interface IManageReservationsPage extends IPageable, IActionPage
 	 * @param string[] $errors
 	 */
 	public function BindAttributeUpdateErrors($errors);
+
+	/**
+	 * @return string
+	 */
+	public function GetValue();
+
+	/**
+	 * return string
+	 */
+	public function GetName();
 }
 
 class ManageReservationsPage extends ActionPage implements IManageReservationsPage
@@ -260,14 +270,14 @@ class ManageReservationsPage extends ActionPage implements IManageReservationsPa
 
 	public function __construct()
 	{
-	    parent::__construct('ManageReservations', 1);
+		parent::__construct('ManageReservations', 1);
 
 		$this->presenter = new ManageReservationsPresenter($this,
-			new ManageReservationsService(new ReservationViewRepository()),
-			new ScheduleRepository(),
-			new ResourceRepository(),
-			new AttributeService(new AttributeRepository()),
-			new UserPreferenceRepository());
+														   new ManageReservationsService(new ReservationViewRepository()),
+														   new ScheduleRepository(),
+														   new ResourceRepository(),
+														   new AttributeService(new AttributeRepository()),
+														   new UserPreferenceRepository());
 
 		$this->pageablePage = new PageablePage($this);
 
@@ -311,7 +321,7 @@ class ManageReservationsPage extends ActionPage implements IManageReservationsPa
 
 	public function FilterButtonPressed()
 	{
-		return count($_GET)>0;
+		return count($_GET) > 0;
 	}
 
 	/**
@@ -431,7 +441,14 @@ class ManageReservationsPage extends ActionPage implements IManageReservationsPa
 	 */
 	public function GetReferenceNumber()
 	{
-		return $this->GetQuerystring(QueryStringKeys::REFERENCE_NUMBER);
+		$rn = $this->GetQuerystring(QueryStringKeys::REFERENCE_NUMBER);
+
+		if (empty($rn))
+		{
+			$rn = $this->GetForm(FormKeys::PK);
+		}
+
+		return $rn;
 	}
 
 	/**
@@ -652,5 +669,15 @@ class ManageReservationsPage extends ActionPage implements IManageReservationsPa
 	public function BindAttributeUpdateErrors($errors)
 	{
 		$this->SetJson(null, $errors);
+	}
+
+	public function GetName()
+	{
+		return $this->GetForm(FormKeys::NAME);
+	}
+
+	public function GetValue()
+	{
+		return $this->GetForm(FormKeys::VALUE);
 	}
 }

@@ -18,9 +18,11 @@ class ReservationDateTimeRule implements IReservationValidationRule
 {
 	/**
 	 * @param ReservationSeries $reservationSeries
+	 * @param $retryParameters
 	 * @return ReservationRuleResult
+	 * @throws Exception
 	 */
-	public function Validate($reservationSeries)
+	public function Validate($reservationSeries, $retryParameters)
 	{
 		$currentInstance = $reservationSeries->CurrentInstance();
 

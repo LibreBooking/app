@@ -16,7 +16,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 *}
-{include file='globalheader.tpl' cssFiles='css/dashboard.css'}
+{include file='globalheader.tpl' cssFiles='css/dashboard.css' Qtip=true}
 
 <div id="page-dashboard">
 <ul id="dashboardList" class="list-unstyled">
@@ -25,7 +25,6 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 {/foreach}
 </ul>
 
-{jsfile src="js/jquery.qtip.min.js"}
 {jsfile src="dashboard.js"}
 {jsfile src="resourcePopup.js"}
 
@@ -34,7 +33,8 @@ $(document).ready(function() {
 
 	var dashboardOpts = {
 		reservationUrl: "{Pages::RESERVATION}?{QueryStringKeys::REFERENCE_NUMBER}=",
-		summaryPopupUrl: "ajax/respopup.php"
+		summaryPopupUrl: "ajax/respopup.php",
+		scriptUrl: '{$ScriptUrl}'
 	};
 
 	var dashboard = new Dashboard(dashboardOpts);

@@ -37,6 +37,7 @@ class ReservationApprovalPage extends SecurePage implements IReservationApproval
 	{
 		try
 		{
+			$this->EnforceCSRFCheck();
 			$reservationAction = ReservationAction::Approve;
 			$factory = new ReservationPersistenceFactory();
 			$persistenceService = $factory->Create($reservationAction);
@@ -82,6 +83,38 @@ class ReservationApprovalPage extends SecurePage implements IReservationApproval
 
 	public function SetWarnings($warnings)
 	{
-		// nothing to do
+		// no-op
+	}
+
+	/**
+	 * @param array|string[] $messages
+	 */
+	public function SetRetryMessages($messages)
+	{
+		// no-op
+	}
+
+	/**
+	 * @param bool $canBeRetried
+	 */
+	public function SetCanBeRetried($canBeRetried)
+	{
+		// no-op
+	}
+
+	/**
+	 * @param ReservationRetryParameter[] $retryParameters
+	 */
+	public function SetRetryParameters($retryParameters)
+	{
+		// no-op
+	}
+
+	/**
+	 * @return ReservationRetryParameter[]
+	 */
+	public function GetRetryParameters()
+	{
+		// no-op
 	}
 }

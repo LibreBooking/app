@@ -91,7 +91,7 @@ class AuthenticatedUser
 		$this->fname = $fname;
 		$this->lname = $lname;
 		$this->password = $password;
-		$this->languageCode = $languageCode;
+		$this->languageCode = empty($languageCode) ? Configuration::Instance()->GetKey(ConfigKeys::LANGUAGE) : $languageCode;
 		$this->timezoneName = $timezoneName;
 		$this->phone = $phone;
 		$this->organization = $organization;

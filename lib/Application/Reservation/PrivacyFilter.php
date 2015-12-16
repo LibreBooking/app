@@ -68,15 +68,20 @@ class PrivacyFilter implements IPrivacyFilter
 
 	public function CanViewDetails(UserSession $currentUser, $reservationView = null, $ownerId = null)
 	{
-		$hideReservationDetails = Configuration::Instance()->GetSectionKey(ConfigSection::PRIVACY,
-																		   ConfigKeys::PRIVACY_HIDE_RESERVATION_DETAILS,
-																		   new BooleanConverter());
+		$hideReservationDetails = ReservationDetailsFilter::HideReservationDetails();
+
+		if ($reservationView != null)
+		{
+			/** @var ReservationView $reservationView */
+			$hideReservationDetails = ReservationDetailsFilter::HideReservationDetails($reservationView->StartDate, $reservationView->EndDate);
+		}
 
 		return $this->CanView($hideReservationDetails, $currentUser, $ownerId, $reservationView);
 	}
 
 	private function CanView($hideFlagEnabled, $userSession, $ownerId, $reservationView)
 	{
+
 		if (!$hideFlagEnabled || $userSession->IsAdmin)
 		{
 			return true;

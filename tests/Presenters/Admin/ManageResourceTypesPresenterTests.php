@@ -56,7 +56,6 @@ class ManageResourceTypesPresenterTests extends TestBase
 	public function testBindsResourceTypes()
 	{
 		$types = array(new ResourceType(1, 'name', 'desc'));
-		$ids = array(1);
 
 		$attributes = $this->getMock('IEntityAttributeList');
 
@@ -67,8 +66,8 @@ class ManageResourceTypesPresenterTests extends TestBase
 
 		$this->attributeService
 				->expects($this->once())
-		->method('GetAttributes')
-		->with($this->equalTo(CustomAttributeCategory::RESOURCE_TYPE), $this->equalTo($ids))
+		->method('GetByCategory')
+		->with($this->equalTo(CustomAttributeCategory::RESOURCE_TYPE))
 		->will($this->returnValue($attributes));
 
 		$this->page
@@ -88,13 +87,11 @@ class ManageResourceTypesPresenterTests extends TestBase
 	{
 		$name = 'name';
 		$description = 'description';
-		$this->page
-				->expects($this->once())
-		->method('GetName')
+		$this->page->expects($this->once())
+		->method('GetResourceTypeName')
 		->will($this->returnValue($name));
 
-		$this->page
-				->expects($this->once())
+		$this->page->expects($this->once())
 		->method('GetDescription')
 		->will($this->returnValue($description));
 
@@ -123,7 +120,7 @@ class ManageResourceTypesPresenterTests extends TestBase
 
 		$this->page
 				->expects($this->once())
-		->method('GetName')
+		->method('GetResourceTypeName')
 		->will($this->returnValue($id));
 
 		$this->page
@@ -145,41 +142,6 @@ class ManageResourceTypesPresenterTests extends TestBase
 		$this->presenter->Update();
 	}
 
-	public function testChangesAttributes()
-	{
-		$id = 1232;
-		$name = 'name';
-		$description = 'description';
-
-		$resourceType = new ResourceType($id, $name, $description);
-		$resourceType->ChangeAttributes(array(new AttributeValue(1, 'val')));
-
-		$attributeVals = array(new AttributeValue(1, 'val'));
-
-		$this->page
-				->expects($this->once())
-		->method('GetId')
-		->will($this->returnValue($id));
-
-		$this->page
-				->expects($this->once())
-		->method('GetAttributes')
-		->will($this->returnValue($attributeVals));
-
-		$this->resourceRepository
-				->expects($this->once())
-		->method('LoadResourceType')
-		->with($this->equalTo($id))
-		->will($this->returnValue($resourceType));
-
-		$this->resourceRepository
-				->expects($this->once())
-		->method('UpdateResourceType')
-		->with($this->equalTo($resourceType));
-
-		$this->presenter->ChangeAttributes();
-	}
-
 	public function testDeletesResourceType()
 	{
 		$id = 9919;
@@ -197,5 +159,3 @@ class ManageResourceTypesPresenterTests extends TestBase
 		$this->presenter->Delete();
 	}
 }
-
-?>

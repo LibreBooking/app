@@ -104,7 +104,7 @@ class ParticipationPresenter
 		/** @var IReservationValidationRule $rule */
 		foreach ($rules as $rule)
 		{
-			$ruleResult = $rule->Validate($series);
+			$ruleResult = $rule->Validate($series, null);
 
 			if (!$ruleResult->IsValid())
 			{

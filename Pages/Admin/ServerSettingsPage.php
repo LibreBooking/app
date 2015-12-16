@@ -41,11 +41,11 @@ class ServerSettingsPage extends AdminPage
 		$cacheDir = new TemplateCacheDirectory();
 
 		$this->Set('plugins', $plugins);
-		$this->Set('currentTime', date('Y-m-d, H:i:s (e P)'));
+		$this->Set('currentTime', date('Y-m-d H:i:s (e P)'));
 		$this->Set('imageUploadDirPermissions', substr(sprintf('%o', fileperms($uploadDir->GetDirectory())), -4));
 		$this->Set('imageUploadDirectory', $uploadDir->GetDirectory());
 		$this->Set('tempalteCacheDirectory', $cacheDir->GetDirectory());
-		$this->Display('server_settings.tpl');
+		$this->Display('Configuration/server_settings.tpl');
 	}
 
 	function ProcessAction()

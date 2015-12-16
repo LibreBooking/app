@@ -36,11 +36,7 @@ class CustomAttributeValidationRule implements IReservationValidationRule
 		$this->userRepository = $userRepository;
 	}
 
-	/**
-	 * @param ReservationSeries $reservationSeries
-	 * @return ReservationRuleResult
-	 */
-	public function Validate($reservationSeries)
+	public function Validate($reservationSeries, $retryParameters)
 	{
 		$resources = Resources::GetInstance();
 		$errorMessage = new StringBuilder();

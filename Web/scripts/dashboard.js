@@ -34,13 +34,13 @@ function Dashboard(opts)
 				var id = dashboard.parent().attr('id');
 				if (dashboard.css('display') == 'none')
 				{
-					createCookie(id, '1', 30);
+					createCookie(id, '1', 30, opts.scriptUrl);
 					dashboard.show();
 					setIcon(dash, 'glyphicon-chevron-up');
 				}
 				else
 				{
-					createCookie(id, '0', 30);
+					createCookie(id, '0', 30, opts.scriptUrl);
 					dashboard.hide();
 					setIcon(dash, 'glyphicon-chevron-down');
 				}

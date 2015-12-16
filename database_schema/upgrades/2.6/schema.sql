@@ -44,3 +44,38 @@ ALTER TABLE `resource_groups` ADD COLUMN `public_id` varchar(20);
 ALTER TABLE `resources` MODIFY COLUMN `contact_info` varchar(255);
 ALTER TABLE `resources` MODIFY COLUMN `location` varchar(255);
 
+DROP TABLE IF EXISTS `resource_type_assignment`;
+CREATE TABLE `resource_type_assignment` (
+		`resource_id`      SMALLINT(5) UNSIGNED  NOT NULL,
+		`resource_type_id` MEDIUMINT(8) UNSIGNED NOT NULL,
+		PRIMARY KEY (`resource_id`, `resource_type_id`),
+		FOREIGN KEY (`resource_id`)
+		REFERENCES resources (`resource_id`)
+				ON DELETE CASCADE,
+		FOREIGN KEY (`resource_type_id`)
+		REFERENCES resource_types (`resource_type_id`)
+				ON DELETE CASCADE
+)
+		ENGINE = InnoDB
+		DEFAULT CHARACTER SET utf8;
+
+DROP TABLE IF EXISTS `custom_attribute_entities`;
+CREATE TABLE `custom_attribute_entities` (
+		`custom_attribute_id` MEDIUMINT(8) UNSIGNED NOT NULL,
+		`entity_id`           MEDIUMINT(8) UNSIGNED NOT NULL,
+		PRIMARY KEY (`custom_attribute_id`, `entity_id`),
+		FOREIGN KEY (`custom_attribute_id`)
+		REFERENCES custom_attributes (`custom_attribute_id`)
+				ON DELETE CASCADE
+)
+		ENGINE = InnoDB
+		DEFAULT CHARACTER SET utf8;
+
+INSERT INTO custom_attribute_entities (custom_attribute_id, entity_id) (SELECT custom_attribute_id, entity_id FROM `custom_attributes` WHERE entity_id IS NOT NULL AND entity_id <> 0);
+
+ALTER TABLE custom_attributes DROP COLUMN `entity_id`;
+
+ALTER TABLE `quotas` ADD COLUMN `enforced_days` varchar(15);
+ALTER TABLE `quotas` ADD COLUMN `enforced_time_start` time;
+ALTER TABLE `quotas` ADD COLUMN `enforced_time_end` time;
+ALTER TABLE `quotas` ADD COLUMN `scope` VARCHAR(25);

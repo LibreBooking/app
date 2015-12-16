@@ -30,6 +30,31 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 	</div>
 
 	<div>
-		<button id="btnSaveFailed" class="btn btn-warning"><span class="fa fa-arrow-circle-left"></span> {translate key='ReservationErrors'}</button>
+		<button id="btnSaveFailed" class="btn btn-warning"><span
+					class="fa fa-arrow-circle-left"></span> {translate key='ReservationErrors'}</button>
+		{if $CanBeRetried}
+			<div id="retryParams" class="no-show">
+				{foreach from=$RetryParameters item=retryParam}
+					<input type="hidden" id="{$retryParam->Name()}"
+						   name="{FormKeys::RESERVATION_RETRY_PREFIX}[{$retryParam->Name()}]"
+						   value="{$retryParam->Value()|escape}"/>
+				{/foreach}
+			</div>
+			<div id="retryMessages" class="no-show">
+				{foreach from=$RetryMessages item=each}
+					<div>{$each|nl2br}</div>
+				{/foreach}
+			</div>
+			<button id="btnRetry" class="btn btn-success"><span class="fa fa-refresh"></span> {translate key='Retry'}
+			</button>
+			<div id="retryToolTip" class="inline">Tool tip icon here</div>
+		{/if}
 	</div>
 </div>
+
+
+<script type="text/javascript">
+	$(document).ready(function () {
+		$('#reservation-failed').trigger('loaded');
+	});
+</script>

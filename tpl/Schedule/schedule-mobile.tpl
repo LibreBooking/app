@@ -74,6 +74,9 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 	<table class="reservations mobile" border="1" cellpadding="0" style="width:100%;">
 
 		{foreach from=$BoundDates item=date}
+			{assign var=ts value=$date->Timestamp()}
+			{$periods.$ts = $DailyLayout->GetPeriods($date)}
+			{if $periods[$ts]|count == 0}{continue}{*dont show if there are no slots*}{/if}
 			<tr>
 				{assign var=class value=""}
 				{if $TodaysDate->DateEquals($date) eq true}
@@ -106,7 +109,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 						</td>
 					{else}
 						{assign var=href value="{Pages::RESERVATION}?rid={$resource->Id}&sid={$ScheduleId}&rd={formatdate date=$date key=url}"}
-						<td class="reservable clickres slot" ref="{$href}">
+						<td class="reservable clickres slot" data-href="{$href}">
 							&nbsp;
 							<input type="hidden" class="href" value="{$href}"/>
 						</td>

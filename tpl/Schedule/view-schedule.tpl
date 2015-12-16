@@ -42,10 +42,14 @@ $(document).ready(function() {
 		scheduleId:"{$ScheduleId}"
 	};
 	var schedule = new Schedule(scheduleOptions, {$ResourceGroupsAsJson});
+	{if $AllowGuestBooking}
+	schedule.init();
+	{else}
 	schedule.initNavigation();
 	schedule.initReservations();
 	schedule.initResourceFilter();
 	schedule.initResources();
+	{/if}
 });
 </script>
 

@@ -34,10 +34,12 @@ class FakeAttributeService implements IAttributeService
 	/**
 	 * @param $category int|CustomAttributeCategory
 	 * @param $attributeValues AttributeValue[]|array
-	 * @param $entityId int|null
+	 * @param $entityIds int[]
+	 * @param bool $ignoreEmpty
+	 * @param bool $isAdmin
 	 * @return AttributeServiceValidationResult
 	 */
-	public function Validate($category, $attributeValues, $entityId = null, $ignoreEmpty = false, $isAdmin = false)
+	public function Validate($category, $attributeValues, $entityIds = array(), $ignoreEmpty = false, $isAdmin = false)
 	{
 		// TODO: Implement Validate() method.
 	}

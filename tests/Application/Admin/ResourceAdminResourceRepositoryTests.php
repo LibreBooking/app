@@ -145,7 +145,6 @@ class ResourceAdminResourceRepositoryTests extends TestBase
 		$repo = new ResourceAdminResourceRepository($this->userRepository, $this->fakeUser);
 		$resources = $repo->GetScheduleResources($scheduleId);
 
-		$this->assertTrue($this->db->ContainsCommand(new GetScheduleResourcesCommand($scheduleId)));
 		$this->assertEquals(1, count($resources));
 		$this->assertEquals(2, $resources[0]->GetId());
 	}

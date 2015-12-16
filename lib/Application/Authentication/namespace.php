@@ -31,4 +31,8 @@ require_once(ROOT_DIR . 'lib/Application/Authentication/IAccountActivation.php')
 require_once(ROOT_DIR . 'lib/Application/Authentication/AccountActivation.php');
 require_once(ROOT_DIR . 'lib/Application/Authentication/IPostRegistration.php');
 require_once(ROOT_DIR . 'lib/Application/Authentication/PostRegistration.php');
-?>
+require_once(ROOT_DIR . 'lib/Application/Authentication/CSRFToken.php');
+require_once(ROOT_DIR . 'lib/Application/Authentication/IRegistrationNotificationStrategy.php');
+require_once(ROOT_DIR . 'lib/Application/Authentication/RegistrationNotificationStrategy.php');
+require_once(ROOT_DIR . 'lib/Application/Authentication/IRegistrationPermissionStrategy.php');
+require_once(ROOT_DIR . 'lib/Application/Authentication/RegistrationPermissionStrategy.php');

@@ -42,9 +42,9 @@ function AnnouncementManagement(opts) {
 			$(this).closest('.dialog').modal("hide");
 		});
 
-		ConfigureAdminForm(elements.addForm, getSubmitCallback(options.actions.add));
-		ConfigureAdminForm(elements.deleteForm, getSubmitCallback(options.actions.deleteAnnouncement));
-		ConfigureAdminForm(elements.form, getSubmitCallback(options.actions.edit));
+		ConfigureAsyncForm(elements.addForm, getSubmitCallback(options.actions.add));
+		ConfigureAsyncForm(elements.deleteForm, getSubmitCallback(options.actions.deleteAnnouncement));
+		ConfigureAsyncForm(elements.form, getSubmitCallback(options.actions.edit));
 	};
 
 	var getSubmitCallback = function (action) {

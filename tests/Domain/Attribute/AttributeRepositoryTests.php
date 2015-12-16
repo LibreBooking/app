@@ -44,7 +44,7 @@ class AttributeRepositoryTests extends TestBase
 		$label = 'label';
 		$type = CustomAttributeTypes::SINGLE_LINE_TEXTBOX;
 		$category = CustomAttributeCategory::RESERVATION;
-		$regex = 'regex';
+		$regex = '/regex/';
 		$required = false;
 		$possibleValues = '';
 		$sortOrder = '4';
@@ -61,8 +61,8 @@ class AttributeRepositoryTests extends TestBase
 		$attribute->WithIsPrivate($isPrivate);
 
 		$this->repository->Add($attribute);
-		$this->assertEquals(new AddAttributeCommand($label, $type, $category, $regex, $required, $possibleValues, $sortOrder, $entityId, $adminOnly, $secondaryCategory, $secondaryEntityId, $isPrivate),
-							$this->db->_LastCommand);
+		$this->assertTrue($this->db->ContainsCommand(new AddAttributeCommand($label, $type, $category, $regex, $required, $possibleValues, $sortOrder, $adminOnly, $secondaryCategory, $secondaryEntityId, $isPrivate)));
+		$this->assertTrue($this->db->ContainsCommand(new AddAttributeEntityCommand($this->db->_ExpectedInsertId, $entityId)));
 	}
 
 	public function testLoadsAttributeById()
@@ -71,11 +71,11 @@ class AttributeRepositoryTests extends TestBase
 		$label = 'label';
 		$type = CustomAttributeTypes::SINGLE_LINE_TEXTBOX;
 		$category = CustomAttributeCategory::RESERVATION;
-		$regex = 'regex';
+		$regex = '/regex/';
 		$required = false;
 		$possibleValues = 'val1,val2,val3';
 		$sortOrder = '4';
-		$entityId = 12;
+		$entityId = "12";
 		$adminOnly = true;
 
 		$row1 = $this->GetAttributeRow($id, $label, $type, $category, $regex, $required, $possibleValues, $sortOrder, $entityId, null, $adminOnly);
@@ -96,7 +96,7 @@ class AttributeRepositoryTests extends TestBase
 		$label = 'label';
 		$type = CustomAttributeTypes::SINGLE_LINE_TEXTBOX;
 		$category = CustomAttributeCategory::RESERVATION;
-		$regex = 'regex';
+		$regex = '/regex/';
 		$required = false;
 		$possibleValues = 'val1,val2,val3';
 		$sortOrder = '4';
@@ -112,8 +112,7 @@ class AttributeRepositoryTests extends TestBase
 
 		$this->repository->Update($attribute);
 
-		$this->assertEquals(new UpdateAttributeCommand($id, $label, $type, $category, $regex, $required, $possibleValues, $sortOrder, $entityId, $adminOnly, $secondaryCategory, $secondaryEntityId, $isPrivate),
-							$this->db->_LastCommand);
+		$this->assertTrue($this->db->ContainsCommand(new UpdateAttributeCommand($id, $label, $type, $category, $regex, $required, $possibleValues, $sortOrder, $adminOnly, $secondaryCategory, $secondaryEntityId, $isPrivate)));
 	}
 
 	public function testDeletesAttributeById()
@@ -131,23 +130,23 @@ class AttributeRepositoryTests extends TestBase
 		$label = 'label';
 		$type = CustomAttributeTypes::SINGLE_LINE_TEXTBOX;
 		$category = CustomAttributeCategory::RESERVATION;
-		$regex = 'regex';
+		$regex = '/regex/';
 		$required = false;
 		$possibleValues = 'val1,val2,val3';
 		$sortOrder = '4';
-		$entityId = 12;
-		$entityDescription = 'entity desc';
+		$entityIds = '12';
+		$entityDescriptions = 'entity desc';
 
 		$row1 = $this->GetAttributeRow($id, $label, $type, $category, $regex, $required, $possibleValues, $sortOrder,
-									   $entityId, $entityDescription);
+									   $entityIds, $entityDescriptions);
 		$row2 = $this->GetAttributeRow(2);
 
 		$this->db->SetRows(array($row1, $row2));
 
 		$attributes = $this->repository->GetByCategory(CustomAttributeCategory::RESERVATION);
 
-		$expectedFirstAttribute = new CustomAttribute($id, $label, $type, $category, $regex, $required, $possibleValues, $sortOrder, $entityId);
-		$expectedFirstAttribute->WithEntityDescription($entityDescription);
+		$expectedFirstAttribute = new CustomAttribute($id, $label, $type, $category, $regex, $required, $possibleValues, $sortOrder, $entityIds);
+		$expectedFirstAttribute->WithEntityDescriptions(array($entityDescriptions));
 
 		$this->assertEquals(2, count($attributes));
 		$this->assertEquals($expectedFirstAttribute, $attributes[0]);
@@ -203,8 +202,8 @@ class AttributeRepositoryTests extends TestBase
 				ColumnNames::ATTRIBUTE_REQUIRED => $required,
 				ColumnNames::ATTRIBUTE_POSSIBLE_VALUES => $possibleValues,
 				ColumnNames::ATTRIBUTE_SORT_ORDER => $sortOrder,
-				ColumnNames::ATTRIBUTE_ENTITY_ID => $entityId,
-				ColumnNames::ATTRIBUTE_ENTITY_DESCRIPTION => $entityDescription,
+				ColumnNames::ATTRIBUTE_ENTITY_IDS => $entityId,
+				ColumnNames::ATTRIBUTE_ENTITY_DESCRIPTIONS => $entityDescription,
 				ColumnNames::ATTRIBUTE_ADMIN_ONLY => $adminOnly,
 		);
 	}

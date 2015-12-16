@@ -167,6 +167,10 @@ class ColumnNames
 	const QUOTA_LIMIT = 'quota_limit';
 	const QUOTA_UNIT = 'unit';
 	const QUOTA_DURATION = 'duration';
+	const ENFORCED_START_TIME = 'enforced_time_start';
+	const ENFORCED_END_TIME = 'enforced_time_end';
+	const ENFORCED_DAYS = 'enforced_days';
+	const QUOTA_SCOPE = 'scope';
 
 	// ACCESSORIES //
 	const ACCESSORY_ID = 'accessory_id';
@@ -198,7 +202,8 @@ class ColumnNames
 	const ATTRIBUTE_POSSIBLE_VALUES = 'possible_values';
 	const ATTRIBUTE_VALUE = 'attribute_value';
 	const ATTRIBUTE_ENTITY_ID = 'entity_id';
-	const ATTRIBUTE_ENTITY_DESCRIPTION = 'entity_description';
+	const ATTRIBUTE_ENTITY_IDS = 'entity_ids';
+	const ATTRIBUTE_ENTITY_DESCRIPTIONS = 'entity_descriptions';
 	const ATTRIBUTE_SORT_ORDER = 'sort_order';
 	const ATTRIBUTE_SECONDARY_CATEGORY = 'secondary_category';
 	const ATTRIBUTE_SECONDARY_ENTITY_ID = 'secondary_entity_id';
@@ -266,6 +271,7 @@ class ColumnNames
 	const INVITEE_LIST = 'invitee_list';
 	const ATTRIBUTE_LIST = 'attribute_list';
 	const RESOURCE_ACCESSORY_LIST = 'resource_accessory_list';
+	const RESOURCE_GROUP_LIST = 'group_list';
 	const GROUP_LIST = 'owner_group_list';
 	const START_REMINDER_MINUTES_PRIOR = 'start_reminder_minutes';
 	const END_REMINDER_MINUTES_PRIOR = 'end_reminder_minutes';

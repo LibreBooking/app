@@ -23,33 +23,57 @@ class Registration implements IRegistration
 	/**
 	 * @var PasswordEncryption
 	 */
-	private $_passwordEncryption;
+	private $passwordEncryption;
 
 	/**
 	 * @var IUserRepository
 	 */
-	private $_userRepository;
+	private $userRepository;
 
-	public function __construct($passwordEncryption = null, $userRepository = null)
+	/**
+	 * @var IRegistrationNotificationStrategy
+	 */
+	private $notificationStrategy;
+
+	/**
+	 * @var IRegistrationPermissionStrategy
+	 */
+	private $permissionAssignmentStrategy;
+
+	public function __construct($passwordEncryption = null, $userRepository = null, $notificationStrategy = null, $permissionAssignmentStrategy = null)
 	{
-		$this->_passwordEncryption = $passwordEncryption;
-		$this->_userRepository = $userRepository;
+		$this->passwordEncryption = $passwordEncryption;
+		$this->userRepository = $userRepository;
+		$this->notificationStrategy = $notificationStrategy;
+		$this->permissionAssignmentStrategy = $permissionAssignmentStrategy;
 
 		if ($passwordEncryption == null)
 		{
-			$this->_passwordEncryption = new PasswordEncryption();
+			$this->passwordEncryption = new PasswordEncryption();
 		}
 
 		if ($userRepository == null)
 		{
-			$this->_userRepository = new UserRepository();
+			$this->userRepository = new UserRepository();
+		}
+
+		if ($notificationStrategy == null)
+		{
+			$this->notificationStrategy = new RegistrationNotificationStrategy();
+		}
+
+		if ($permissionAssignmentStrategy == null)
+		{
+			$this->permissionAssignmentStrategy = new RegistrationPermissionStrategy();
 		}
 	}
 
 	public function Register($username, $email, $firstName, $lastName, $password, $timezone, $language,
 							 $homepageId, $additionalFields = array(), $attributeValues = array(), $groups = null)
 	{
-		$encryptedPassword = $this->_passwordEncryption->EncryptPassword($password);
+		$homepageId = empty($homepageId) ? Pages::DEFAULT_HOMEPAGE_ID : $homepageId;
+		$encryptedPassword = $this->passwordEncryption->EncryptPassword($password);
+		$timezone = empty($timezone) ? Configuration::Instance()->GetKey(ConfigKeys::DEFAULT_TIMEZONE) : $timezone;
 
 		$attributes = new UserAttribute($additionalFields);
 
@@ -77,8 +101,13 @@ class Registration implements IRegistration
 			}
 		}
 
-		$userId = $this->_userRepository->Add($user);
-		$this->AutoAssignPermissions($userId);
+		$userId = $this->userRepository->Add($user);
+		if ($user->Id() != $userId)
+		{
+			$user->WithId($userId);
+		}
+		$this->permissionAssignmentStrategy->AddAccount($user);
+		$this->notificationStrategy->NotifyAccountCreated($user, $password);
 
 		return $user;
 	}
@@ -93,7 +122,7 @@ class Registration implements IRegistration
 
 	public function UserExists($loginName, $emailAddress)
 	{
-		$userId = $this->_userRepository->UserExists($emailAddress, $loginName);
+		$userId = $this->userRepository->UserExists($emailAddress, $loginName);
 
 		return !empty($userId);
 	}
@@ -107,15 +136,15 @@ class Registration implements IRegistration
 				return;
 			}
 
-			$encryptedPassword = $this->_passwordEncryption->EncryptPassword($user->Password());
+			$encryptedPassword = $this->passwordEncryption->EncryptPassword($user->Password());
 			$command = new UpdateUserFromLdapCommand($user->UserName(), $user->Email(), $user->FirstName(), $user->LastName(), $encryptedPassword->EncryptedPassword(), $encryptedPassword->Salt(), $user->Phone(), $user->Organization(), $user->Title());
 			ServiceLocator::GetDatabase()->Execute($command);
 
 			if ($user->GetGroups() != null)
 			{
-				$updatedUser = $this->_userRepository->LoadByUsername($user->Username());
+				$updatedUser = $this->userRepository->LoadByUsername($user->Username());
 				$updatedUser->ChangeGroups($user->GetGroups());
-				$this->_userRepository->Update($updatedUser);
+				$this->userRepository->Update($updatedUser);
 			}
 		}
 		else
@@ -130,12 +159,6 @@ class Registration implements IRegistration
 							array(),
 							$user->GetGroups());
 		}
-	}
-
-	private function AutoAssignPermissions($userId)
-	{
-		$autoAssignCommand = new AutoAssignPermissionsCommand($userId);
-		ServiceLocator::GetDatabase()->Execute($autoAssignCommand);
 	}
 }
 

@@ -180,9 +180,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 						</div>
 					</div>
 					<div class="modal-footer">
-						<button type="button" class="btn btn-default" data-dismiss="modal">{translate key='Cancel'}</button>
-						<button type="button" class="btn btn-success save"><span class="glyphicon glyphicon-ok-circle"></span>
-							{translate key='AddSchedule'}</button>
+						{cancel_button}
+						{add_button}
 						{indicator}
 					</div>
 				</div>
@@ -212,8 +211,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 						</div>
 					</div>
 					<div class="modal-footer">
-						<button type="button" class="btn btn-default cancel" data-dismiss="modal">{translate key='Cancel'}</button>
-						<button type="button" class="btn btn-danger save">{translate key='Delete'}</button>
+						{cancel_button}
+						{delete_button}
 						{indicator}
 					</div>
 				</div>
@@ -330,8 +329,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 						<div class="clearfix"></div>
 					</div>
 					<div class="modal-footer">
-						<button type="button" class="btn btn-default cancel" data-dismiss="modal">{translate key='Cancel'}</button>
-						<button type="button" class="btn btn-success save"><span class="glyphicon glyphicon-ok-circle"></span>{translate key='Update'}</button>
+						{cancel_button}
+						{update_button}
 						{indicator}
 					</div>
 				</div>
@@ -339,7 +338,9 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		</form>
 	</div>
 
-	{jsfile src="admin/edit.js"}
+	{csrf_token}
+
+	{jsfile src="ajax-helpers.js"}
 	{jsfile src="admin/schedule.js"}
 	{jsfile src="js/jquery.form-3.09.min.js"}
 

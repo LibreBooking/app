@@ -1,21 +1,21 @@
 <?php
 /**
-Copyright 2011-2015 Nick Korbel
-
-This file is part of Booked Scheduler.
-
-Booked Scheduler is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-Booked Scheduler is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
+ * Copyright 2011-2015 Nick Korbel
+ *
+ * This file is part of Booked Scheduler.
+ *
+ * Booked Scheduler is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Booked Scheduler is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 require_once('Language.php');
@@ -208,6 +208,7 @@ class en_us extends Language
 		$strings['CancelParticipation'] = 'Cancel Participation';
 		$strings['Attending'] = 'Attending';
 		$strings['QuotaConfiguration'] = 'On %s for %s users in %s are limited to %s %s per %s';
+		$strings['QuotaEnforcement'] = 'Enforced %s %s';
 		$strings['reservations'] = 'reservations';
 		$strings['reservation'] = 'reservation';
 		$strings['ChangeCalendar'] = 'Change Calendar';
@@ -533,6 +534,16 @@ class en_us extends Language
 		$strings['RowsImported'] = 'Rows Imported';
 		$strings['RowsSkipped'] = 'Rows Skipped';
 		$strings['Columns'] = 'Columns';
+		$strings['Reserve'] = 'Reserve';
+		$strings['AllDay'] = 'All Day';
+		$strings['Everyday'] = 'Everyday';
+		$strings['IncludingCompletedReservations'] = 'Including Completed Reservations';
+		$strings['NotCountingCompletedReservations'] = 'Not Counting Completed Reservations';
+		$strings['RetrySkipConflicts'] = 'Skip conflicting reservations';
+		$strings['Retry'] = 'Retry';
+		$strings['RemoveExistingPermissions'] = 'Remove existing permissions?';
+		$strings['Continue'] = 'Continue';
+		$strings['WeNeedYourEmailAddress'] = 'We need your email address to reserve';
 		// End Strings
 
 		// Install
@@ -709,6 +720,8 @@ class en_us extends Language
 		$strings['ReservationStartingSoonSubject'] = 'Reservation for %s is starting soon';
 		$strings['ReservationEndingSoonSubject'] = 'Reservation for %s is ending soon';
 		$strings['UserAdded'] = 'A new user has been added';
+		$strings['UserDeleted'] = 'User account for %s was deleted by %s';
+		$strings['GuestAccountCreatedSubject'] = 'Your account details';
 		// End Email Subjects
 
 		$this->Strings = $strings;
@@ -724,9 +737,9 @@ class en_us extends Language
 		$days = array();
 
 		/***
-		DAY NAMES
-		All of these arrays MUST start with Sunday as the first element
-		and go through the seven day week, ending on Saturday
+		 * DAY NAMES
+		 * All of these arrays MUST start with Sunday as the first element
+		 * and go through the seven day week, ending on Saturday
 		 ***/
 		// The full day name
 		$days['full'] = array('Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday');
@@ -750,9 +763,9 @@ class en_us extends Language
 		$months = array();
 
 		/***
-		MONTH NAMES
-		All of these arrays MUST start with January as the first element
-		and go through the twelve months of the year, ending on December
+		 * MONTH NAMES
+		 * All of these arrays MUST start with January as the first element
+		 * and go through the twelve months of the year, ending on December
 		 ***/
 		// The full month name
 		$months['full'] = array('January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December');

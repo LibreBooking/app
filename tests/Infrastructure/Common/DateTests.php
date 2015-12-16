@@ -604,7 +604,7 @@ class DateTests extends TestBase
 		$this->assertEquals(0, $range->NumberOfWeekdays());
 		$this->assertEquals(1, $range->NumberOfWeekendDays());
 	}
-	
+
 	public function testWhenEndDateIsAtMidnight_DoNotCountIt()
 	{
 		$timezone = 'America/Chicago';
@@ -638,5 +638,26 @@ class DateTests extends TestBase
 
 		$this->assertEquals($date->Hour(), 6);
 		$this->assertEquals($date->Timezone(), $this->fakeUser->Timezone);
+	}
+
+	public function testDateRangeReturnsAllDatesTimesForRange()
+	{
+		$begin = Date::Create(2008, 9, 9, 10, 11, 12, 'UTC');
+		$end = Date::Create(2008, 9, 12, 10, 11, 12, 'UTC');
+
+		$range = new DateRange($begin, $end);
+
+		$expected[] = $begin;
+		$expected[] = $begin->AddDays(1)->GetDate();
+		$expected[] = $begin->AddDays(2)->GetDate();
+		$expected[] = $end;
+
+		$actual = $range->DateTimes();
+
+		$this->assertEquals(count($expected), count($actual));
+		$this->assertTrue($expected[0]->Equals($actual[0]), "Dates[0] are not equal");
+		$this->assertTrue($expected[1]->Equals($actual[1]), "Dates[1] are not equal");
+		$this->assertTrue($expected[2]->Equals($actual[2]), "Dates[2] are not equal");
+		$this->assertTrue($expected[3]->Equals($actual[3]), "Dates[3] are not equal");
 	}
 }

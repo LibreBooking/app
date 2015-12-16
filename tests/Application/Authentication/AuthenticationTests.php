@@ -137,6 +137,7 @@ class AuthenticationTests extends TestBase
 
 	function testLoginGetsUserDataFromDatabase()
 	{
+		CSRFToken::$_Token = 'token';
 		$language = 'en_gb';
 
 		$this->userRepository->expects($this->once())
@@ -189,6 +190,7 @@ class AuthenticationTests extends TestBase
 		$user->LoginTime = LoginTime::Now();
 		$user->PublicId = $this->publicId;
 		$user->ScheduleId = $this->scheduleId;
+		$user->CSRFToken = CSRFToken::$_Token;
 		foreach ($this->groups as $group)
 		{
 			$user->Groups[] = $group->GroupId;

@@ -20,9 +20,12 @@
  */
 
 require_once(ROOT_DIR . 'Pages/Page.php');
+require_once(ROOT_DIR . 'Pages/Authentication/ILoginBasePage.php');
 require_once(ROOT_DIR . 'lib/Application/Authentication/namespace.php');
+require_once(ROOT_DIR . 'lib/Application/Authentication/GoogleAuthentication.php');
+//require_once(ROOT_DIR . 'lib/Application/Authentication/FacebookAuthentication.php');
 
-interface ILoginPage extends IPage
+interface ILoginPage extends IPage, ILoginBasePage
 {
 	/**
 	 * @return string
@@ -58,11 +61,6 @@ interface ILoginPage extends IPage
 	public function SetUseLogonName($value);
 
 	public function SetResumeUrl($value);
-
-	/**
-	 * @return string
-	 */
-	public function GetResumeUrl();
 
 	public function SetShowLoginError();
 
@@ -116,6 +114,8 @@ class LoginPage extends Page implements ILoginPage
 		$this->Set('ResumeUrl', $resumeUrl);
 		$this->Set('ShowLoginError', false);
 		$this->Set('Languages', Resources::GetInstance()->AvailableLanguages);
+		$this->Set('GoogleClientId', GoogleAuthentication::CLIENT_ID);
+		$this->Set('AllowSocialLogin', Configuration::Instance()->GetSectionKey(ConfigSection::AUTHENTICATION, ConfigKeys::AUTHENTICATION_ALLOW_SOCIAL, new BooleanConverter()));
 	}
 
 	public function PageLoad()
@@ -250,10 +250,18 @@ class LoginPage extends Page implements ILoginPage
 	public function SetPasswordResetUrl($url)
 	{
 		$this->Set('ForgotPasswordUrl', empty($url) ? Pages::FORGOT_PASSWORD : $url);
+		if (BookedStringHelper::StartsWith($url, 'http'))
+		{
+			$this->Set('ForgotPasswordUrlNew', "target='_new'");
+		}
 	}
 
 	public function SetRegistrationUrl($url)
 	{
 		$this->Set('RegisterUrl', empty($url) ? Pages::REGISTRATION : $url);
+		if (BookedStringHelper::StartsWith($url, 'http'))
+		{
+			$this->Set('RegisterUrlNew', "target='_new'");
+		}
 	}
 }

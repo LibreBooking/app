@@ -34,7 +34,7 @@ class ReservationDateTimeRuleTests extends TestBase
 
 		$rule = new ReservationDateTimeRule();
 
-		$result = $rule->Validate($reservationSeries);
+		$result = $rule->Validate($reservationSeries, null);
 
 		$this->assertFalse($result->IsValid());
 	}

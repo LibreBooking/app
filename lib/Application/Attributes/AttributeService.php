@@ -33,12 +33,12 @@ interface IAttributeService
 	/**
 	 * @param $category int|CustomAttributeCategory
 	 * @param $attributeValues AttributeValue[]|array
-	 * @param $entityId int|null
+	 * @param $entityIds int[]
 	 * @param bool $ignoreEmpty
 	 * @param bool $isAdmin
 	 * @return AttributeServiceValidationResult
 	 */
-	public function Validate($category, $attributeValues, $entityId = null, $ignoreEmpty = false, $isAdmin = false);
+	public function Validate($category, $attributeValues, $entityIds = array(), $ignoreEmpty = false, $isAdmin = false);
 
 	/**
 	 * @param $category int|CustomAttributeCategory
@@ -156,11 +156,13 @@ class AttributeService implements IAttributeService
 		return $attributeList;
 	}
 
-	public function Validate($category, $attributeValues, $entityId = null, $ignoreEmpty = false, $isAdmin = false)
+	public function Validate($category, $attributeValues, $entityIds = array(), $ignoreEmpty = false, $isAdmin = false)
 	{
 		$isValid = true;
 		$errors = array();
 		$invalidAttributes = array();
+
+		$entityIds = is_array($entityIds) ? $entityIds : array($entityIds);
 
 		$resources = Resources::GetInstance();
 
@@ -173,7 +175,8 @@ class AttributeService implements IAttributeService
 		$attributes = $this->attributeRepository->GetByCategory($category);
 		foreach ($attributes as $attribute)
 		{
-			if ($attribute->UniquePerEntity() && $entityId != $attribute->EntityId())
+			if ( ($attribute->UniquePerEntity() && count(array_intersect($entityIds, $attribute->EntityIds())) == 0) ||
+					($attribute->HasSecondaryEntity() && !in_array($attribute->SecondaryEntityId(), $entityIds)) )
 			{
 				continue;
 			}

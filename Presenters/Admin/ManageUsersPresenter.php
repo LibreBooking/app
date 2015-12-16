@@ -499,17 +499,20 @@ class ManageUsersPresenter extends ActionPresenter implements IManageUsersPresen
 
 					if (!$emailValidator->IsValid())
 					{
-						$messages[] = $emailValidator->Messages()[0] . " ({$row->email})";
+						$evMsgs = $emailValidator->Messages();
+						$messages[] = $evMsgs[0] . " ({$row->email})";
 						continue;
 					}
 					if (!$uniqueEmailValidator->IsValid())
 					{
-						$messages[] = $uniqueEmailValidator->Messages()[0]. " ({$row->email})";
+						$uevMsgs = $uniqueEmailValidator->Messages();
+						$messages[] = $uevMsgs[0]. " ({$row->email})";
 						continue;
 					}
 					if (!$uniqueUsernameValidator->IsValid())
 					{
-						$messages[] = $uniqueUsernameValidator->Messages()[0]. " ({$row->username})";
+						$uuvMsgs = $uniqueUsernameValidator->Messages();
+						$messages[] = $uuvMsgs[0]. " ({$row->username})";
 						continue;
 					}
 

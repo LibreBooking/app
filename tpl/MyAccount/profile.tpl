@@ -196,11 +196,12 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 					{translate key='Update'}
 				</button>
 			</div>
+			{csrf_token}
 		</form>
 	</div>
 	{setfocus key='FIRST_NAME'}
 
-	{jsfile src="admin/edit.js"}
+	{jsfile src="ajax-helpers.js"}
 	{jsfile src="profile.js"}
 
 	<script type="text/javascript">

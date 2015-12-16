@@ -2,42 +2,35 @@ function ResourceStatusManagement(opts) {
 	var options = opts;
 
 	var elements = {
-		addDialog:$('#addDialog'),
-		editDialog:$('#editDialog'),
-		deleteDialog:$('#deleteDialog'),
+		addDialog: $('#addDialog'),
+		editDialog: $('#editDialog'),
+		deleteDialog: $('#deleteDialog'),
 
-		activeId:$('#activeId'),
+		activeId: $('#activeId'),
 
-		editForm:$('#editForm'),
-		addForm:$('#addForm'),
-		deleteForm:$('#deleteForm'),
-		attributeForm:$('.attributesForm')
+		editForm: $('#editForm'),
+		addForm: $('#addForm'),
+		deleteForm: $('#deleteForm'),
+		attributeForm: $('.attributesForm')
 	};
 
 	ResourceStatusManagement.prototype.init = function () {
-		ConfigureAdminDialog(elements.addDialog, 'auto', 'auto');
-		ConfigureAdminDialog(elements.editDialog, 'auto', 'auto');
-		ConfigureAdminDialog(elements.deleteDialog, 'auto', 'auto');
+		var statusList = $('.resource-status-list');
 
-		var statusList = $('ul');
-
-		statusList.delegate('a.update', 'click', function (e)
-		{
-			var id = $(this).closest('li').attr('reasonId');
+		statusList.delegate('a.update', 'click', function (e) {
+			var id = $(this).closest('.reason-item').attr('reasonId');
 			setActiveId(id);
 
 			e.preventDefault();
 			e.stopPropagation();
 		});
 
-		statusList.delegate('a.edit', 'click', function (e)
-		{
-			$('#edit-reason-description').val($(this).closest('li').find('.reason-description').text());
+		statusList.delegate('a.edit', 'click', function (e) {
+			$('#edit-reason-description').val($(this).closest('.reason-item').find('.reason-description').text());
 			showEditPrompt(e);
 		});
 
-		statusList.delegate('a.delete', 'click', function (e)
-		{
+		statusList.delegate('a.delete', 'click', function (e) {
 			showDeletePrompt(e);
 		});
 
@@ -45,12 +38,7 @@ function ResourceStatusManagement(opts) {
 			$(this).closest('form').submit();
 		});
 
-		$(".cancel").click(function () {
-			$(this).closest('.dialog').dialog("close");
-		});
-
-		$('.add').click(function(e)
-		{
+		$('.add-link').click(function (e) {
 			e.preventDefault();
 			$('#add-reason-status').val($(this).attr('add-to'));
 			showAddPrompt(e);
@@ -60,9 +48,9 @@ function ResourceStatusManagement(opts) {
 			$("#globalError").html(result).show();
 		};
 
-		ConfigureAdminForm(elements.editForm, getSubmitCallback, null, errorHandler);
-		ConfigureAdminForm(elements.deleteForm, getSubmitCallback, null, errorHandler);
-		ConfigureAdminForm(elements.addForm, getSubmitCallback, null, errorHandler);
+		ConfigureAsyncForm(elements.editForm, getSubmitCallback, null, errorHandler);
+		ConfigureAsyncForm(elements.deleteForm, getSubmitCallback, null, errorHandler);
+		ConfigureAsyncForm(elements.addForm, getSubmitCallback, null, errorHandler);
 	};
 
 
@@ -79,15 +67,14 @@ function ResourceStatusManagement(opts) {
 	};
 
 	var showAddPrompt = function (e) {
-		elements.addDialog.dialog("open");
+		elements.addDialog.modal("show");
 	};
 
 	var showEditPrompt = function (e) {
-
-		elements.editDialog.dialog("open");
+		elements.editDialog.modal("show");
 	};
 
 	var showDeletePrompt = function (e) {
-		elements.deleteDialog.dialog("open");
+		elements.deleteDialog.modal("show");
 	};
 }

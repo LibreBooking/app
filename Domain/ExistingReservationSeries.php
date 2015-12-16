@@ -1,21 +1,21 @@
 <?php
 /**
-Copyright 2011-2015 Nick Korbel
-
-This file is part of Booked Scheduler.
-
-Booked Scheduler is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-Booked Scheduler is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
+ * Copyright 2011-2015 Nick Korbel
+ *
+ * This file is part of Booked Scheduler.
+ *
+ * Booked Scheduler is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Booked Scheduler is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 require_once(ROOT_DIR . 'lib/Common/namespace.php');
@@ -37,6 +37,11 @@ class ExistingReservationSeries extends ReservationSeries
 	 * @var array|int[]
 	 */
 	private $_deleteRequestIds = array();
+
+	/**
+	 * @var bool
+	 */
+	private $_seriesBeingDeleted = false;
 
 	/**
 	 * @var array|int[]
@@ -181,19 +186,19 @@ class ExistingReservationSeries extends ReservationSeries
 
 	/**
 	 * @internal
+	 * @return bool
 	 */
 	public function RemoveInstance(Reservation $reservation)
 	{
-		if ($reservation == $this->CurrentInstance())
+		$removed = parent::RemoveInstance($reservation);
+
+		if ($removed)
 		{
-			return; // never remove the current instance
+			$this->AddEvent(new InstanceRemovedEvent($reservation, $this));
+			$this->_deleteRequestIds[] = $reservation->ReservationId();
 		}
 
-		$instanceKey = $this->GetNewKey($reservation);
-		unset($this->instances[$instanceKey]);
-
-		$this->AddEvent(new InstanceRemovedEvent($reservation, $this));
-		$this->_deleteRequestIds[] = $reservation->ReservationId();
+		return $removed;
 	}
 
 	public function RequiresNewSeries()
@@ -346,15 +351,14 @@ class ExistingReservationSeries extends ReservationSeries
 
 			foreach ($instances as $instance)
 			{
-				Log::Debug("Removing instance %s from series %s", $instance->ReferenceNumber(), $this->SeriesId());
-
-				$this->AddEvent(new InstanceRemovedEvent($instance, $this));
+				$this->RemoveInstance($instance);
 			}
 		}
 		else
 		{
 			Log::Debug("Removing series %s", $this->SeriesId());
 
+			$this->_seriesBeingDeleted = true;
 			$this->AddEvent(new SeriesDeletedEvent($this));
 		}
 	}
@@ -452,7 +456,7 @@ class ExistingReservationSeries extends ReservationSeries
 
 	public function IsMarkedForDelete($reservationId)
 	{
-		return in_array($reservationId, $this->_deleteRequestIds);
+		return $this->_seriesBeingDeleted || in_array($reservationId, $this->_deleteRequestIds);
 	}
 
 	public function IsMarkedForUpdate($reservationId)

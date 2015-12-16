@@ -34,9 +34,7 @@ span.error {
   border: solid 1px #ccc;
 }
 .resourceDetails {
-  font-size: 1.2em;
   padding: 3px;
-  font-weight: bold;
 }
 .resourceDetails img.image {
   width: 100px;
@@ -120,6 +118,7 @@ table.list,
 }
 tr.pending {
   background-color: #ffb540;
+  background-color: #fffa5f;
 }
 #cboxClose {
   display: none !important;
@@ -212,12 +211,6 @@ tr.pending {
 }
 ul.jqtree-tree .group-resource .jqtree-title {
   color: #111111;
-}
-.remove-resource {
-  display: inline;
-  width: 16px;
-  margin-left: 10px;
-  background: url(../img/minus-circle.png) no-repeat 50%;
 }
 #resource-list h4 {
   font-size: 13pt;
@@ -430,6 +423,18 @@ td.update {
 #announcementList .announcementEnd {
   width: 150px;
 }
+.appliesToId {
+  display: none;
+}
+.add-quota-line {
+  padding: 10px 0;
+}
+#enforce-hours-times {
+  padding-left: 10px;
+}
+#enforce-hours-times span {
+  margin-top: 10px;
+}
 .admin-page input,
 #page-manage-blackouts input,
 #page-manage-reservations input,
@@ -442,7 +447,6 @@ td.update {
 #page-manage-resources select,
 #page-manage-users select,
 #page-manage-quotas select {
-  height: 30px;
   font-size: 12px;
 }
 .admin-page .form-group,
@@ -453,14 +457,6 @@ td.update {
 #page-manage-quotas .form-group {
   padding-bottom: 2px;
 }
-.admin-page .checkbox input,
-#page-manage-blackouts .checkbox input,
-#page-manage-reservations .checkbox input,
-#page-manage-resources .checkbox input,
-#page-manage-users .checkbox input,
-#page-manage-quotas .checkbox input {
-  height: 20px;
-}
 .admin-page .resourceDetails:not(:last-child),
 #page-manage-blackouts .resourceDetails:not(:last-child),
 #page-manage-reservations .resourceDetails:not(:last-child),
@@ -468,4 +464,15 @@ td.update {
 #page-manage-users .resourceDetails:not(:last-child),
 #page-manage-quotas .resourceDetails:not(:last-child) {
   border-bottom: solid 1px #e9e9e9;
+}
+.admin-page textarea,
+#page-manage-blackouts textarea,
+#page-manage-reservations textarea,
+#page-manage-resources textarea,
+#page-manage-users textarea,
+#page-manage-quotas textarea {
+  width: 500px;
+}
+#page-manage-resource-groups #groupName {
+  width: 80%;
 }

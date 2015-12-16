@@ -366,11 +366,11 @@ class ManageReservationsPresenterTests extends TestBase
 							->will($this->returnValue($referenceNumber));
 
 		$this->page->expects($this->once())
-							->method('GetAttributeId')
+							->method('GetName')
 							->will($this->returnValue($attrId));
 
 		$this->page->expects($this->once())
-							->method('GetAttributeValue')
+							->method('GetValue')
 							->will($this->returnValue($attrValue));
 
 		$this->reservationsService->expects($this->once())

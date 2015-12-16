@@ -18,8 +18,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 *}
 {include file='globalheader.tpl' cssFiles="scripts/js/jqplot/jquery.jqplot.min.css"}
 
-<div id="generate-report">
-	<fieldset id="customReportInput-container">
+<div id="page-generate-report">
+	<div id="customReportInput-container">
 		<form role="form" id="customReportInput">
 			<div class="panel panel-default" id="report-filter-panel">
 				<div class="panel-heading">
@@ -31,17 +31,20 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 							<div class="col-md-1"><span>{translate key=Select}</span></div>
 							<div class="col-md-11 radio">
 								<div class="col-md-1">
-									<input type="radio" {formname key=REPORT_RESULTS} value="{Report_ResultSelection::FULL_LIST}"
+									<input type="radio" {formname key=REPORT_RESULTS}
+										   value="{Report_ResultSelection::FULL_LIST}"
 										   id="results_list" checked="checked"/>
 									<label for="results_list">{translate key=List}</label>
 								</div>
 								<div class="col-md-1">
-									<input type="radio" {formname key=REPORT_RESULTS} value="{Report_ResultSelection::TIME}"
+									<input type="radio" {formname key=REPORT_RESULTS}
+										   value="{Report_ResultSelection::TIME}"
 										   id="results_time"/>
 									<label for="results_time">{translate key=TotalTime}</label>
 								</div>
 								<div class="col-md-10">
-									<input type="radio" {formname key=REPORT_RESULTS} value="{Report_ResultSelection::COUNT}"
+									<input type="radio" {formname key=REPORT_RESULTS}
+										   value="{Report_ResultSelection::COUNT}"
 										   id="results_count"/>
 									<label for="results_count">{translate key=Count}</label>
 								</div>
@@ -52,7 +55,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 							<div class="col-md-1"><span>{translate key=Usage}</span></div>
 							<div class="col-md-11 radio">
 								<div class="col-md-1">
-									<input type="radio" {formname key=REPORT_USAGE} value="{Report_Usage::RESOURCES}" id="usage_resources"
+									<input type="radio" {formname key=REPORT_USAGE} value="{Report_Usage::RESOURCES}"
+										   id="usage_resources"
 										   checked="checked">
 									<label for="usage_resources">{translate key=Resources}</label>
 								</div>
@@ -98,24 +102,29 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 							<div class="col-md-1"><span class="">{translate key=Range}</span></div>
 							<div class="col-md-11 radio">
 								<div class="col-md-1">
-									<input type="radio" {formname key=REPORT_RANGE} value="{Report_Range::ALL_TIME}" id="range_all"
+									<input type="radio" {formname key=REPORT_RANGE} value="{Report_Range::ALL_TIME}"
+										   id="range_all"
 										   checked="checked"/>
 									<label for="range_all">{translate key=AllTime}</label>
 								</div>
 								<div class="col-md-2">
-									<input type="radio" {formname key=REPORT_RANGE} value="{Report_Range::CURRENT_MONTH}" id="current_month"/>
+									<input type="radio" {formname key=REPORT_RANGE}
+										   value="{Report_Range::CURRENT_MONTH}" id="current_month"/>
 									<label for="current_month">{translate key=CurrentMonth}</label>
 								</div>
 								<div class="col-md-2">
-									<input type="radio" {formname key=REPORT_RANGE} value="{Report_Range::CURRENT_WEEK}" id="current_week"/>
+									<input type="radio" {formname key=REPORT_RANGE} value="{Report_Range::CURRENT_WEEK}"
+										   id="current_week"/>
 									<label for="current_week">{translate key=CurrentWeek}</label>
 								</div>
 								<div class="col-md-1">
-									<input type="radio" {formname key=REPORT_RANGE} value="{Report_Range::TODAY}" id="today"/>
+									<input type="radio" {formname key=REPORT_RANGE} value="{Report_Range::TODAY}"
+										   id="today"/>
 									<label for="today" style="width:auto;">{translate key=Today}</label>
 								</div>
 								<div class="col-md-6">
-									<input type="radio" {formname key=REPORT_RANGE} value="{Report_Range::DATE_RANGE}" id="range_within"/>
+									<input type="radio" {formname key=REPORT_RANGE} value="{Report_Range::DATE_RANGE}"
+										   id="range_within"/>
 									<label for="range_within" style="width:auto;">{translate key=Between}</label>
 									<input type="input" class="form-control dateinput inline" id="startDate"/> -
 									<input type="hidden" id="formattedBeginDate" {formname key=REPORT_START}/>
@@ -162,8 +171,10 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 								<div class="form-group col-md-2">
 									<div id="user-filter-div">
 										<div class="">
-											<label class="control-label sr-only" for="inputSuccess2">{translate key=AllUsers}</label>
-											<input id="user-filter" type="text" class="form-control" placeholder="{translate key=AllUsers}"/>
+											<label class="control-label sr-only"
+												   for="inputSuccess2">{translate key=AllUsers}</label>
+											<input id="user-filter" type="text" class="form-control"
+												   placeholder="{translate key=AllUsers}"/>
 											<input id="user_id" class="filter-id" type="hidden" {formname key=USER_ID}/>
 										</div>
 									</div>
@@ -171,9 +182,12 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 								<div class="form-group col-md-2">
 									<div id="participant-filter-div">
 										<div class="form-group">
-											<label class="control-label sr-only" for="inputSuccess2">{translate key=AllParticipants}</label>
-											<input id="participant-filter" type="text" class="form-control" placeholder="{translate key=AllParticipants}"/>
-											<input id="participant_id" class="filter-id" type="hidden" {formname key=PARTICIPANT_ID}/>
+											<label class="control-label sr-only"
+												   for="inputSuccess2">{translate key=AllParticipants}</label>
+											<input id="participant-filter" type="text" class="form-control"
+												   placeholder="{translate key=AllParticipants}"/>
+											<input id="participant_id" class="filter-id"
+												   type="hidden" {formname key=PARTICIPANT_ID}/>
 										</div>
 									</div>
 								</div>
@@ -182,14 +196,17 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 					</div>
 				</div>
 				<div class="panel-footer">
-					<input type="submit" value="{translate key=GetReport}" class="btn btn-primary btn-sm" id="btnCustomReport" asyncAction=""/>
+					<input type="submit" value="{translate key=GetReport}" class="btn btn-primary btn-sm"
+						   id="btnCustomReport" asyncAction=""/>
 				</div>
 			</div>
+			{csrf_token}
 		</form>
-	</fieldset>
+	</div>
 
 	<div id="saveMessage" class="alert alert-success no-show">
-		{translate key=ReportSaved} <a href="{$Path}reports/{Pages::REPORTS_SAVED}">{translate key=MySavedReports}</a>
+		<strong>{translate key=ReportSaved}</strong> <a
+				href="{$Path}reports/{Pages::REPORTS_SAVED}">{translate key=MySavedReports}</a>
 	</div>
 
 	<div id="resultsDiv">
@@ -200,7 +217,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 	{include file="Reports/chart.tpl"}
 
-	<div class="modal fade" id="saveDialog" tabindex="-1" role="dialog" aria-labelledby="saveDialogLabel" aria-hidden="true">
+	<div class="modal fade" id="saveDialog" tabindex="-1" role="dialog" aria-labelledby="saveDialogLabel"
+		 aria-hidden="true">
 		<div class="modal-dialog">
 			<form id="saveReportForm" method="post">
 				<div class="modal-content">
@@ -211,12 +229,16 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 					<div class="modal-body">
 						<div class="form-group">
 							<label for="savereportname">{translate key=Name}</label>
-							<input type="text" id="saveReportName" {formname key=REPORT_NAME} class="form-control" placeholder="{translate key=NoTitleLabel}"/>
+							<input type="text" id="saveReportName" {formname key=REPORT_NAME} class="form-control"
+								   placeholder="{translate key=NoTitleLabel}"/>
 						</div>
 					</div>
 					<div class="modal-footer">
-						<button type="button" class="btn btn-default cancel" data-dismiss="modal">{translate key='Cancel'}</button>
-						<button type="button" class="btn btn-success save"><span class="glyphicon glyphicon-ok-circle"></span>{translate key='SaveThisReport'}
+						<button type="button" class="btn btn-default cancel"
+								data-dismiss="modal">{translate key='Cancel'}</button>
+						<button type="button" class="btn btn-success save"><span
+									class="glyphicon glyphicon-ok-circle"></span>
+							{translate key='SaveThisReport'}
 						</button>
 						{indicator}
 					</div>
@@ -245,7 +267,11 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			var reports = new GenerateReports(reportOptions);
 			reports.init();
 
-			var common = new ReportsCommon();
+			var common = new ReportsCommon(
+					{
+						scriptUrl: '{$ScriptUrl}'
+					}
+			);
 			common.init();
 		});
 

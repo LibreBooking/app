@@ -11,7 +11,7 @@
 * E-mail: mingminghomework@gmail.com
 *
 * 
-* Tested on phpScheduleIt 2.4.2
+* Tested on Booked Scheduler 2.4.2
 * 
 * 
 * 

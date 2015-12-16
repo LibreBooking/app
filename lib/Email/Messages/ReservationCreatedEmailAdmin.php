@@ -1,18 +1,18 @@
 <?php
 /**
-Copyright 2011-2015 Nick Korbel
-
-This file is part of Booked Scheduler is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ * Copyright 2011-2015 Nick Korbel
+ *
+ * This file is part of Booked Scheduler is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 require_once(ROOT_DIR . 'lib/Email/namespace.php');
 
@@ -51,7 +51,8 @@ class ReservationCreatedEmailAdmin extends EmailMessage
 	 * @param IResource $primaryResource
 	 * @param IAttributeRepository $attributeRepository
 	 */
-	public function __construct(UserDto $adminDto, User $reservationOwner, ReservationSeries $reservationSeries, IResource $primaryResource, IAttributeRepository $attributeRepository)
+	public function __construct(UserDto $adminDto, User $reservationOwner, ReservationSeries $reservationSeries, IResource $primaryResource,
+								IAttributeRepository $attributeRepository)
 	{
 		parent::__construct($adminDto->Language());
 
@@ -96,10 +97,10 @@ class ReservationCreatedEmailAdmin extends EmailMessage
 		return $this->FetchTemplate($this->GetTemplateName());
 	}
 
-    protected function GetTemplateName()
-    {
-        return 'ReservationCreatedAdmin.tpl';
-    }
+	protected function GetTemplateName()
+	{
+		return 'ReservationCreatedAdmin.tpl';
+	}
 
 	private function PopulateTemplate()
 	{
@@ -123,7 +124,7 @@ class ReservationCreatedEmailAdmin extends EmailMessage
 		$this->Set('ReservationUrl', Pages::RESERVATION . "?" . QueryStringKeys::REFERENCE_NUMBER . '=' . $currentInstance->ReferenceNumber());
 
 		$resourceNames = array();
-		foreach($this->reservationSeries->AllResources() as $resource)
+		foreach ($this->reservationSeries->AllResources() as $resource)
 		{
 			$resourceNames[] = $resource->GetName();
 		}
@@ -138,5 +139,11 @@ class ReservationCreatedEmailAdmin extends EmailMessage
 		}
 
 		$this->Set('Attributes', $attributeValues);
+
+		$bookedBy = $this->reservationSeries->BookedBy();
+		if ($bookedBy != null && ($bookedBy->UserId != $this->reservationOwner->Id()))
+		{
+			$this->Set('CreatedBy', new FullName($bookedBy->FirstName, $bookedBy->LastName));
+		}
 	}
 }

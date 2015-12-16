@@ -77,7 +77,7 @@ class ExistingResourceAvailabilityRuleTests extends TestBase
 			->will($this->returnValue($reservations));
 
 		$rule = new ExistingResourceAvailabilityRule($this->strategy, $this->timezone);
-		$ruleResult = $rule->Validate($series);
+		$ruleResult = $rule->Validate($series, null);
 
 		$this->assertTrue($ruleResult->IsValid());
 	}
@@ -104,7 +104,7 @@ class ExistingResourceAvailabilityRuleTests extends TestBase
 			->will($this->returnValue($reservations));
 
 		$rule = new ExistingResourceAvailabilityRule($this->strategy, $this->timezone);
-		$ruleResult = $rule->Validate($series);
+		$ruleResult = $rule->Validate($series, null);
 
 		$this->assertTrue($ruleResult->IsValid());
 	}
@@ -132,7 +132,7 @@ class ExistingResourceAvailabilityRuleTests extends TestBase
 			->will($this->returnValue($reservations));
 
 		$rule = new ExistingResourceAvailabilityRule($this->strategy, $this->timezone);
-		$ruleResult = $rule->Validate($series);
+		$ruleResult = $rule->Validate($series, null);
 
 		$this->assertFalse($ruleResult->IsValid());
 	}
@@ -162,7 +162,7 @@ class ExistingResourceAvailabilityRuleTests extends TestBase
 			->will($this->returnValue($reservations));
 
 		$rule = new ExistingResourceAvailabilityRule($this->strategy, $this->timezone);
-		$ruleResult = $rule->Validate($series);
+		$ruleResult = $rule->Validate($series, null);
 
 		$this->assertTrue($ruleResult->IsValid());
 	}
@@ -221,7 +221,7 @@ class ExistingResourceAvailabilityRuleTests extends TestBase
 				 ->will($this->returnValue(array($scheduleReservation1, $scheduleReservation2, $scheduleReservation3, $scheduleReservation4, $scheduleReservation5)));
 
 		$rule = new ExistingResourceAvailabilityRule($strategy, 'UTC');
-		$result = $rule->Validate($reservation);
+		$result = $rule->Validate($reservation, null);
 
 		$this->assertTrue($result->IsValid());
 	}
@@ -275,7 +275,7 @@ class ExistingResourceAvailabilityRuleTests extends TestBase
 
 
 		$rule = new ExistingResourceAvailabilityRule($strategy, 'UTC');
-		$result = $rule->Validate($reservation);
+		$result = $rule->Validate($reservation, null);
 
 		$this->assertFalse($result->IsValid());
 	}

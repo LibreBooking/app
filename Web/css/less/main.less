@@ -5,7 +5,7 @@ html, body {
   height: 100%;
 }
 
-@footer-height: 45px;
+@footer-height: 40px;
 
 body {
   padding-bottom: @footer-height; // + 30; /* this needs to be bigger than footer height*/
@@ -306,7 +306,7 @@ label.booked-checkbox span {
 }
 
 .no-show {
-  display: none;
+  display: none !important;
 }
 
 h1 .label {
@@ -336,11 +336,11 @@ input[type=text].user-search {
   width: 250px;
 }
 
-.remove.icon {
+.remove.icon, .delete.icon {
   color: @muted-red;
 }
 
-.remove.icon:hover {
+.remove.icon:hover, .delete.icon:hover {
   color: darken(@muted-red, 10%);
 }
 
@@ -364,8 +364,12 @@ input[type=text].user-search {
   margin-left: 5px;
 }
 
-.mid-number {
-  width: 100px;
+input.small-number {
+  width: 50px !important;
+}
+
+input.mid-number {
+  width: 100px !important;
 }
 
 #help p.setting span, #help span.setting, #helpPopupDiv p.setting span, #helpPopupDiv span.setting {
@@ -388,5 +392,15 @@ input[type=text].user-search {
     text-decoration: none;
     cursor: pointer;
     color:#000;
+  }
+}
+
+@media(min-width:768px) {
+  .pull-left-sm {
+    float:left;
+  }
+
+  .pull-right-sm {
+    float:right;
   }
 }

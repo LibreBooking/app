@@ -58,7 +58,8 @@ class ResourceRepositoryTests extends TestBase
 		$resourceAccess = new ResourceRepository();
 		$resources = $resourceAccess->GetScheduleResources($scheduleId);
 
-		$this->assertEquals(new GetScheduleResourcesCommand($scheduleId), $this->db->_Commands[0]);
+		$filter = new SqlFilterEquals(new SqlFilterColumn('r', ColumnNames::SCHEDULE_ID), $scheduleId);
+		$this->assertEquals(new FilterCommand(new GetAllResourcesCommand(), $filter), $this->db->_Commands[0]);
 		$this->assertTrue($this->db->GetReader(0)->_FreeCalled);
 		$this->assertEquals(count($rows), count($resources));
 		$this->assertEquals($expected, $resources);
@@ -154,10 +155,12 @@ class ResourceRepositoryTests extends TestBase
 		$resource = new FakeBookableResource($resourceId);
 		$resource->SetAutoAssign('0');
 		$resource->SetAutoAssign('1');
+		$resource->SetClearAllPermissions(true);
 
 		$this->repository->Update($resource);
 
 		$this->assertTrue($this->db->ContainsCommand(new AutoAssignResourcePermissionsCommand($resourceId)));
+		$this->assertTrue($this->db->ContainsCommand(new AutoAssignClearResourcePermissionsCommand($resourceId)));
 	}
 
 	public function testCanAddResourceWithMinimumAttributes()
@@ -261,13 +264,17 @@ class ResourceRepositoryTests extends TestBase
 		->With(1, 'value')
 		->With(2, 'value2');
 		$this->db->SetRow(1, $car->Rows());
+		$this->db->SetRow(2, array( array(ColumnNames::RESOURCE_ID => $id, ColumnNames::RESOURCE_GROUP_ID => 1)));
+
 		$loadResourceCommand = new GetResourceByIdCommand($id);
 		$attributes = new GetAttributeValuesCommand(1, CustomAttributeCategory::RESOURCE);
+		$groups = new GetResourceGroupAssignmentsCommand($id);
 
 		$resource = $this->repository->LoadById($id);
 
 		$this->assertTrue($this->db->ContainsCommand($loadResourceCommand));
 		$this->assertTrue($this->db->ContainsCommand($attributes));
+		$this->assertTrue($this->db->ContainsCommand($groups));
 		$this->assertNotNull($resource);
 		$this->assertEquals('value', $resource->GetAttributeValue(1));
 		$this->assertEquals('value2', $resource->GetAttributeValue(2));
@@ -335,9 +342,9 @@ class ResourceRepositoryTests extends TestBase
 		$this->db->SetRow(1, $assignmentRows->Rows());
 		$this->db->SetRow(2, $resourceRows->Rows());
 
-		$groups = $this->repository
-				  ->GetResourceGroups($scheduleId, new SkipResource5Filter())
-				  ->GetGroups();
+		$resourceGroupTree = $this->repository->GetResourceGroups($scheduleId, new SkipResource5Filter());
+		$groups = $resourceGroupTree->GetGroups();
+		$groupList = $resourceGroupTree->GetGroupList(false);
 
 		$getResourceGroupsCommand = new GetAllResourceGroupsCommand();
 		$getResourceGroupAssignments = new GetAllResourceGroupAssignmentsCommand($scheduleId);
@@ -359,6 +366,9 @@ class ResourceRepositoryTests extends TestBase
 
 		$this->assertEquals($getResourceGroupsCommand, $this->db->_Commands[0]);
 		$this->assertEquals($getResourceGroupAssignments, $this->db->_Commands[1]);
+
+		$this->assertEquals(count($groupRows->Rows()), count($groupList));
+		$this->assertEquals('group1a1', $groupList[3]->name);
 	}
 
 	public function testAddsResourceToGroup()
@@ -436,12 +446,14 @@ class ResourceRepositoryTests extends TestBase
 
 		$this->db->SetRows($rows->Rows());
 
+		/** @var ResourceType[] $types */
 		$types = $this->repository->GetResourceTypes();
 
 		$this->assertEquals(3, count($types));
 		$this->assertEquals(1, $types[0]->Id());
 		$this->assertEquals('resourcetype1', $types[0]->Name());
 		$this->assertEquals('description', $types[0]->Description());
+		$this->assertEquals('a', $types[0]->GetAttributeValue(1));
 
 		$expectedCommand = new GetAllResourceTypesCommand();
 		$this->assertEquals($expectedCommand, $this->db->_LastCommand);

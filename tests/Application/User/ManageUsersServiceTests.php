@@ -42,12 +42,20 @@ class ManageUsersServiceTests extends TestBase
 	 */
 	private $groupRepo;
 
+	/**
+	 * @var IUserViewRepository
+	 */
+	private $userViewRepo;
+
 	public function setup()
 	{
+		parent::setup();
+
 		$this->registration = $this->getMock('IRegistration');
 		$this->userRepo = $this->getMock('IUserRepository');
 		$this->groupRepo = $this->getMock('IGroupRepository');
-		$this->service = new ManageUsersService($this->registration, $this->userRepo, $this->groupRepo);
+		$this->userViewRepo = $this->getMock('IUserRepository');
+		$this->service = new ManageUsersService($this->registration, $this->userRepo, $this->groupRepo, $this->userViewRepo);
 	}
 
 	public function testAddsUser()
@@ -87,15 +95,15 @@ class ManageUsersServiceTests extends TestBase
 						   ->will($this->returnValue($user));
 
 		$actualUser = $this->service->AddUser($username,
-												$email,
-												$fname,
-												$lname,
-												$password,
-												$timezone,
-												$lang,
-												$homePageId,
-												$extraAttributes,
-												$customAttributes);
+											  $email,
+											  $fname,
+											  $lname,
+											  $password,
+											  $timezone,
+											  $lang,
+											  $homePageId,
+											  $extraAttributes,
+											  $customAttributes);
 
 		$this->assertEquals($userId, $actualUser->Id());
 	}
@@ -126,15 +134,37 @@ class ManageUsersServiceTests extends TestBase
 		$this->assertEquals($attributeValue, $user->GetAttributeValue($attributeId));
 	}
 
-	public function testDeleteDelegatesToRepository()
+	public function testDeleteDelegatesToRepositoryAndSendsEmails()
 	{
+		$this->fakeConfig->SetKey(ConfigKeys::REGISTRATION_NOTIFY, 'true');
+
 		$userId = 809;
+		$user = new FakeUser($userId);
+
+		$appAdmins = array(new UserDto(1, 'f, l', null, 'en_us'));
+		$groupAdmins = array(new UserDto(2, 'f, l', null, 'en_gb'));
+
+		$this->userRepo->expects($this->once())
+					   ->method('LoadById')
+					   ->with($this->equalTo($userId))
+					   ->will($this->returnValue($user));
 
 		$this->userRepo->expects($this->once())
 					   ->method('DeleteById')
 					   ->with($this->equalTo($userId));
 
+		$this->userViewRepo->expects($this->once())
+						   ->method('GetApplicationAdmins')
+						   ->will($this->returnValue($appAdmins));
+
+		$this->userViewRepo->expects($this->once())
+						   ->method('GetGroupAdmins')
+						   ->with($this->equalTo($userId))
+						   ->will($this->returnValue($groupAdmins));
+
 		$this->service->DeleteUser($userId);
+
+		$this->assertEquals(2, count($this->fakeEmailService->_Messages));
 	}
 
 	public function testUpdatesUser()
@@ -209,9 +239,9 @@ class ManageUsersServiceTests extends TestBase
 
 		$this->service->ChangeGroups($user, $groupids);
 
-		$this->assertTrue(in_array($userId,$group2->AddedUsers()));
-		$this->assertTrue(in_array($userId,$group3->AddedUsers()));
-		$this->assertTrue(in_array($userId,$group4->RemovedUsers()));
+		$this->assertTrue(in_array($userId, $group2->AddedUsers()));
+		$this->assertTrue(in_array($userId, $group3->AddedUsers()));
+		$this->assertTrue(in_array($userId, $group4->RemovedUsers()));
 	}
 
 }

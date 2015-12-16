@@ -82,7 +82,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 							<div class="attributeUnique form-group">
 								<label for="addAttributeEntityId">{translate key=AppliesTo}</label>
 								<a href="#" class="appliesTo">{translate key=All}</a>
-								<input type="hidden" class="appliesToId" {formname key=ATTRIBUTE_ENTITY} id="addAttributeEntityId"/>
+								<div class="appliesToId" id="addAttributeEntityId" style="display:none;"></div>
 							</div>
 
 							<div class="attributeRequired form-group">
@@ -128,11 +128,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 					</div>
 					<div class="modal-footer">
-						<button type="button" class="btn btn-default cancel" data-dismiss="modal">{translate key='Cancel'}</button>
-						<button type="button" class="btn btn-success save">
-							<span class="glyphicon glyphicon-ok-circle"></span>
-							{translate key='Add'}
-						</button>
+						{cancel_button}
+						{add_button}
 						{indicator}
 					</div>
 				</div>
@@ -187,7 +184,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 							<div class="form-group attributeUnique">
 								<label for="editAttributeEntityId">{translate key=AppliesTo}</label>
 								<a href="#" class="appliesTo">{translate key=All}</a>
-								<input type="hidden" class="appliesToId" {formname key=ATTRIBUTE_ENTITY} id='editAttributeEntityId'/>
+								<div class="appliesToId" id='editAttributeEntityId' style="display:none;"></div>
 							</div>
 
 							<div class="form-group attributeRequired">
@@ -235,8 +232,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 						</div>
 					</div>
 					<div class="modal-footer">
-						<button type="button" class="btn btn-default" data-dismiss="modal">{translate key='Cancel'}</button>
-						<button type="button" class="btn btn-success save"><span class="glyphicon glyphicon-ok-circle"></span>{translate key='Update'}</button>
+						{cancel_button}
+						{update_button}
 						{indicator}
 					</div>
 				</div>
@@ -258,8 +255,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 						</div>
 					</div>
 					<div class="modal-footer">
-						<button type="button" class="btn btn-default cancel" data-dismiss="modal">{translate key='Cancel'}</button>
-						<button type="button" class="btn btn-danger save">{translate key='Delete'}</button>
+						{cancel_button}
+						{delete_button}
 						{indicator}
 					</div>
 				</div>
@@ -273,11 +270,12 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 	<div id="entityChoices">
 	</div>
 
-	{html_image src="admin-ajax-indicator.gif" class="indicator" id="indicator" style="display:none;"}
+	{csrf_token}
+	{indicator id="indicator"}
 
 	<input type="hidden" id="activeId" value=""/>
 
-	{jsfile src="admin/edit.js"}
+	{jsfile src="ajax-helpers.js"}
 	{jsfile src="admin/attributes.js"}
 	{jsfile src="js/jquery.form-3.09.min.js"}
 

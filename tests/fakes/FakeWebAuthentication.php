@@ -123,4 +123,20 @@ class FakeWebAuthentication implements IWebAuthentication
 	{
 		return $this->_IsLoggedIn;
 	}
+
+	/**
+	 * @return string
+	 */
+	public function GetRegistrationUrl()
+	{
+		return '';
+	}
+
+	/**
+	 * @return string
+	 */
+	public function GetPasswordResetUrl()
+	{
+		return '';
+	}
 }

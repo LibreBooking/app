@@ -44,14 +44,14 @@ class FakeCustomAttribute extends CustomAttribute
 	 * @param int $id
 	 * @param bool $isRequiredOk
 	 * @param bool $isRegexOk
-	 * @param int $entityId
+	 * @param int[] $entityIds
 	 * @param bool $adminOnly
 	 */
-	public function __construct($id = 1, $isRequiredOk = true, $isRegexOk = true, $entityId = null, $adminOnly = false)
+	public function __construct($id = 1, $isRequiredOk = true, $isRegexOk = true, $entityIds = array(), $adminOnly = false)
 	{
 		$this->id = $id;
 		$this->label = "fakeCustomAttribute$id";
-		$this->entityId = $entityId;
+		$this->entityIds = is_array($entityIds) ? $entityIds : array($entityIds);
 
 		$this->_IsRequiredSatisfied = $isRequiredOk;
 		$this->_IsConstraintSatisfied = $isRegexOk;
@@ -78,10 +78,10 @@ class FakeCustomAttribute extends CustomAttribute
 
 class TestCustomAttribute extends CustomAttribute
 {
-	public function __construct($id, $label, $entityId = null)
+	public function __construct($id, $label, $entityIds = array())
 	{
 		$this->id = $id;
 		$this->label = $label;
-		$this->entityId = $entityId;
+		$this->entityIds = is_array($entityIds) ? $entityIds : array($entityIds);
 	}
 }

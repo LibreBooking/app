@@ -58,6 +58,7 @@ class PasswordPresenter
 
 			if ($this->page->IsValid())
 			{
+				$this->page->EnforceCSRFCheck();
 				$user = $this->GetUser();
 				$password = $this->page->GetPassword();
 				$encrypted = $this->passwordEncryption->EncryptPassword($password);

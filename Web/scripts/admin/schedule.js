@@ -144,9 +144,9 @@ function ScheduleManagement(opts)
 			elements.addDialog.modal('show');
 		});
 
-		ConfigureAdminForm(elements.changeLayoutForm, getSubmitCallback(options.changeLayoutAction));
-		ConfigureAdminForm(elements.addForm, getSubmitCallback(options.addAction), null, handleAddError);
-		ConfigureAdminForm(elements.deleteForm, getSubmitCallback(options.deleteAction));
+		ConfigureAsyncForm(elements.changeLayoutForm, getSubmitCallback(options.changeLayoutAction));
+		ConfigureAsyncForm(elements.addForm, getSubmitCallback(options.addAction), null, handleAddError);
+		ConfigureAsyncForm(elements.deleteForm, getSubmitCallback(options.deleteAction));
 	};
 
 	var getSubmitCallback = function (action)

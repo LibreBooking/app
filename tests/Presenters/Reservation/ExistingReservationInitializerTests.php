@@ -21,9 +21,9 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 require_once(ROOT_DIR . 'Domain/Access/namespace.php');
 require_once(ROOT_DIR . 'lib/Application/Reservation/namespace.php');
 
-require_once(ROOT_DIR . 'Pages/ReservationPage.php');
-require_once(ROOT_DIR . 'Pages/NewReservationPage.php');
-require_once(ROOT_DIR . 'Pages/ExistingReservationPage.php');
+require_once(ROOT_DIR . 'Pages/Reservation/ReservationPage.php');
+require_once(ROOT_DIR . 'Pages/Reservation/NewReservationPage.php');
+require_once(ROOT_DIR . 'Pages/Reservation/ExistingReservationPage.php');
 
 require_once(ROOT_DIR . 'lib/Application/Reservation/ExistingReservationInitializer.php');
 

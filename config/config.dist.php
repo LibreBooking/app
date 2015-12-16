@@ -52,7 +52,7 @@ $conf['settings']['default.homepage'] = '1'; 	      			// the default homepage t
 
 $conf['settings']['schedule']['use.per.user.colors'] = 'false'; 		// color reservations by user
 $conf['settings']['schedule']['show.inaccessible.resources'] = 'true';  // whether or not resources that are inaccessible to the user are visible
-$conf['settings']['schedule']['reservation.label'] = '{name}';    		// format for what to display on the reservation slot label.  Available properties are: {name}, {title}, {description}, {email}, {phone}, {organization}, {position}, {startdate}, {enddate} {resourcename} {participants} {invitees}. Custom attributes can be added using att with the attribute id. For example {att1}
+$conf['settings']['schedule']['reservation.label'] = '{name}';    		// format for what to display on the reservation slot label.  Available properties are: {name}, {title}, {description}, {email}, {phone}, {organization}, {position}, {startdate}, {enddate} {resourcename} {participants} {invitees} {reservationAttributes}. Custom attributes can be added using att with the attribute id. For example {att1}
 $conf['settings']['schedule']['hide.blocked.periods'] = 'false';    	// if blocked periods should be hidden or shown
 
 /**
@@ -65,10 +65,11 @@ $conf['settings']['ics']['import.key'] = '';					// it's recommended  to set thi
 /**
  * Privacy configuration
  */
-$conf['settings']['privacy']['view.schedules'] = 'false';       			// if unauthenticated users can view schedules
+$conf['settings']['privacy']['view.schedules'] = 'true';       			// if unauthenticated users can view schedules
 $conf['settings']['privacy']['view.reservations'] = 'false';    			// if unauthenticated users can view reservations
 $conf['settings']['privacy']['hide.user.details'] = 'false';    			// if personal user details should be displayed to non-administrators
 $conf['settings']['privacy']['hide.reservation.details'] = 'false';			// if reservation details should be displayed to non-administrators
+$conf['settings']['privacy']['allow.guest.reservations'] = 'false';			// if reservations can be made by users without a Booked account, if true this overrides schedule and resource visibility
 /**
  * Reservation specific configuration
  */
@@ -178,3 +179,8 @@ $conf['settings']['security']['security.x-frame'] = 'deny';
 $conf['settings']['security']['security.x-xss'] = '1; mode=block';
 $conf['settings']['security']['security.x-content-type'] = 'nosniff';
 $conf['settings']['security']['security.content-security-policy'] = "default-src 'self'"; // Requires careful tuning (know what your doing)
+/**
+ * Google Analytics settings
+ */
+$conf['settings']['google.analytics']['tracking.id'] = ''; // if set, Google Analytics tracking code will be added to every page in Booked
+$conf['settings']['authentication']['allow.social.login'] = 'false';

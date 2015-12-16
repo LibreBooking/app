@@ -9,7 +9,7 @@ body {
   height: 100%;
 }
 body {
-  padding-bottom: 45px;
+  padding-bottom: 40px;
   padding-top: 70px;
 }
 a,
@@ -28,8 +28,8 @@ a:visited {
   background: -moz-linear-gradient(center bottom, #656460 0%, #585754 100%);
   background: -o-linear-gradient(#585754, #656460);
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#585754', endColorstr='#656460', GradientType=0);
-  height: 45px;
-  min-height: 45px;
+  height: 40px;
+  min-height: 40px;
   margin-bottom: 0;
   -webkit-border-radius: 0;
   -moz-border-radius: 0;
@@ -40,7 +40,7 @@ a:visited {
 }
 #main {
   min-height: 100%;
-  padding-bottom: 45px;
+  padding-bottom: 40px;
 }
 .default-box {
   padding: 35px;
@@ -312,7 +312,7 @@ label.booked-checkbox span {
   padding-left: 50px;
 }
 .no-show {
-  display: none;
+  display: none !important;
 }
 h1 .label {
   padding-bottom: .2em;
@@ -335,10 +335,12 @@ a.resourceDetails {
 input[type=text].user-search {
   width: 250px;
 }
-.remove.icon {
+.remove.icon,
+.delete.icon {
   color: #c37c82;
 }
-.remove.icon:hover {
+.remove.icon:hover,
+.delete.icon:hover {
   color: #b35961;
 }
 .add.icon {
@@ -356,8 +358,11 @@ input[type=text].user-search {
 .combobox-add {
   margin-left: 5px;
 }
-.mid-number {
-  width: 100px;
+input.small-number {
+  width: 50px !important;
+}
+input.mid-number {
+  width: 100px !important;
 }
 #help p.setting span,
 #help span.setting,
@@ -382,6 +387,14 @@ input[type=text].user-search {
   text-decoration: none;
   cursor: pointer;
   color: #000;
+}
+@media (min-width: 768px) {
+  .pull-left-sm {
+    float: left;
+  }
+  .pull-right-sm {
+    float: right;
+  }
 }
 #resourceDetailsPopup #userDetailsPopup {
   min-width: 300px;

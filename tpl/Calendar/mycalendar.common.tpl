@@ -35,7 +35,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 {jsfile src="reservationPopup.js"}
 {jsfile src="calendar.js"}
 {jsfile src="js/fullcalendar.min.js"}
-{jsfile src="admin/edit.js"}
+{jsfile src="ajax-helpers.js"}
 {jsfile src="js/tree.jquery.js"}
 
 <script type="text/javascript">

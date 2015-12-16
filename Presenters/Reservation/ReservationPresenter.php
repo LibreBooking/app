@@ -72,7 +72,6 @@ class ReservationPresenter extends ReservationPresenterBase
 	public function PageLoad()
 	{
 		$user = ServiceLocator::GetServer()->GetUserSession();
-
 		$this->preconditionService->CheckAll($this->_page, $user);
 		$initializer = $this->initializationFactory->GetNewInitializer($this->_page);
 		$initializer->Initialize();

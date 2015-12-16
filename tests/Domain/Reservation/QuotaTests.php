@@ -1,21 +1,21 @@
 <?php
 /**
-Copyright 2011-2015 Nick Korbel
-
-This file is part of Booked Scheduler.
-
-Booked Scheduler is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-Booked Scheduler is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
+ * Copyright 2011-2015 Nick Korbel
+ *
+ * This file is part of Booked Scheduler.
+ *
+ * Booked Scheduler is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Booked Scheduler is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 require_once(ROOT_DIR . 'Domain/namespace.php');
@@ -669,6 +669,60 @@ class QuotaTests extends TestBase
 		$this->assertTrue($exceeds);
 	}
 
+	public function testWhenHourlyLimitIsExceededOnSameDayForSameResourceButOnlyEnforcedCertainHours()
+	{
+		$duration = new QuotaDurationDay();
+		$limit = new QuotaLimitHours(1.5);
+
+		$startDate = Date::Parse('2011-04-03 0:30', 'UTC');
+		$endDate = Date::Parse('2011-04-03 1:30', 'UTC');
+
+		$series = $this->GetHourLongReservation($startDate, $endDate);
+
+		$quota = new Quota(1, $duration, $limit, $series->ResourceId(), null, null, "00:00", "00:30");
+
+		$res1 = new ReservationItemView('', $startDate->SetTimeString('00:00'), $endDate->SetTimeString('00:31'), '', $series->ResourceId(), 98712);
+		$reservations = array($res1);
+
+		$this->SearchReturns($reservations);
+
+		$exceeds = $quota->ExceedsQuota($series, $this->user, $this->schedule, $this->reservationViewRepository);
+
+		$this->assertFalse($exceeds);
+	}
+
+	public function testWhenTotalLimitIsExceededForButOnlyEnforcedOnCertainDaysWeek()
+	{
+		$tz = 'UTC';
+		$this->schedule->SetTimezone($tz);
+
+		$duration = new QuotaDurationWeek();
+		$limit = new QuotaLimitCount(2);
+
+		$quota = new Quota(1, $duration, $limit, null, null, null, null, null, array(1, 2, 4));
+
+		// week 07/31/2011 - 08/05/2011
+		$startDate = Date::Parse('2011-07-30 5:30', $tz);
+		$endDate = Date::Parse('2011-08-03 5:30', $tz);
+
+		$series = $this->GetHourLongReservation($startDate, $endDate);
+
+		$res1 = new ReservationItemView('', Date::Parse('2011-08-04 1:30', $tz), Date::Parse('2011-08-04 2:30',
+																							 $tz), '', $series->ResourceId(), 98712);
+		$res2 = new ReservationItemView('', Date::Parse('2011-08-05 1:30', $tz), Date::Parse('2011-08-05 2:30',
+																							 $tz), '', $series->ResourceId(), 98712);
+		$reservations = array($res1, $res2);
+
+		$startSearch = Date::Parse('2011-07-24 00:00', $tz);
+		$endSearch = Date::Parse('2011-08-07 00:00', $tz);
+
+		$this->ShouldSearchBy($startSearch, $endSearch, $series, $reservations);
+
+		$exceeds = $quota->ExceedsQuota($series, $this->user, $this->schedule, $this->reservationViewRepository);
+
+		$this->assertFalse($exceeds);
+	}
+
 	private function GetHourLongReservation($startDate, $endDate, $resourceId1 = null, $resourceId2 = null,
 											$scheduleId = null)
 	{
@@ -691,18 +745,18 @@ class QuotaTests extends TestBase
 	private function ShouldSearchBy($startSearch, $endSearch, $series, $reservations)
 	{
 		$this->reservationViewRepository->expects($this->once())
-				->method('GetReservationList')
-				->with($this->equalTo($startSearch), $this->equalTo($endSearch), $this->equalTo($series->UserId()),
-					   $this->equalTo(ReservationUserLevel::OWNER))
-				->will($this->returnValue($reservations));
+										->method('GetReservationList')
+										->with($this->equalTo($startSearch), $this->equalTo($endSearch), $this->equalTo($series->UserId()),
+											   $this->equalTo(ReservationUserLevel::OWNER))
+										->will($this->returnValue($reservations));
 	}
 
 	private function SearchReturns($reservations)
 	{
 		$this->reservationViewRepository->expects($this->once())
-				->method('GetReservationList')
-				->with($this->anything(), $this->anything(), $this->anything(), $this->anything())
-				->will($this->returnValue($reservations));
+										->method('GetReservationList')
+										->with($this->anything(), $this->anything(), $this->anything(), $this->anything())
+										->will($this->returnValue($reservations));
 	}
 }
 

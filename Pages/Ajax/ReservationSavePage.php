@@ -164,6 +164,7 @@ class ReservationSavePage extends SecurePage implements IReservationSavePage
 	{
 		try
 		{
+			$this->EnforceCSRFCheck();
 			$reservation = $this->_presenter->BuildReservation();
 			$this->_presenter->HandleReservation($reservation);
 
@@ -487,6 +488,38 @@ class ReservationSavePage extends SecurePage implements IReservationSavePage
 	{
 		$val = $this->server->GetForm(FormKeys::ALLOW_PARTICIPATION);
 		return !empty($val);
+	}
+
+	/**
+	 * @param bool $canBeRetried
+	 */
+	public function SetCanBeRetried($canBeRetried)
+	{
+		$this->Set('CanBeRetried', $canBeRetried);
+	}
+
+	/**
+	 * @param ReservationRetryParameter[] $retryParameters
+	 */
+	public function SetRetryParameters($retryParameters)
+	{
+		$this->Set('RetryParameters', $retryParameters);
+	}
+
+	/**
+	 * @return ReservationRetryParameter[]
+	 */
+	public function GetRetryParameters()
+	{
+		return ReservationRetryParameter::GetParamsFromForm($this->GetForm(FormKeys::RESERVATION_RETRY_PREFIX));
+	}
+
+	/**
+	 * @param array|string[] $messages
+	 */
+	public function SetRetryMessages($messages)
+	{
+		$this->Set('RetryMessages', $messages);
 	}
 }
 

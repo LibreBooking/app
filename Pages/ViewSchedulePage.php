@@ -20,7 +20,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 require_once(ROOT_DIR . 'Pages/SchedulePage.php');
 require_once(ROOT_DIR . 'Presenters/SchedulePresenter.php');
-require_once(ROOT_DIR . 'lib/Application/Authorization/ViewSchedulePermissionServiceFactory.php');
+require_once(ROOT_DIR . 'lib/Application/Authorization/GuestPermissionServiceFactory.php');
 
 class ViewSchedulePage extends SchedulePage
 {
@@ -31,7 +31,7 @@ class ViewSchedulePage extends SchedulePage
 		$userRepository = new UserRepository();
 		$resourceService = new ResourceService(
 				new ResourceRepository(),
-				new ViewSchedulePermissionService(),
+				new GuestPermissionService(),
 				new AttributeService(new AttributeRepository()),
 				$userRepository,
 				new AccessoryRepository());
@@ -52,9 +52,14 @@ class ViewSchedulePage extends SchedulePage
 	{
 		$user = new NullUserSession();
 		$this->_presenter->PageLoad($user);
+
 		$viewReservations = Configuration::Instance()->GetSectionKey(ConfigSection::PRIVACY, ConfigKeys::PRIVACY_VIEW_RESERVATIONS, new BooleanConverter());
+		$allowGuestBookings = Configuration::Instance()->GetSectionKey(ConfigSection::PRIVACY, ConfigKeys::PRIVACY_ALLOW_GUEST_BOOKING,  new BooleanConverter());
+
 		$this->Set('DisplaySlotFactory', new DisplaySlotFactory());
-		$this->Set('SlotLabelFactory', $viewReservations ? new SlotLabelFactory($user) : new NullSlotLabelFactory());
+		$this->Set('SlotLabelFactory', $viewReservations || $allowGuestBookings ? new SlotLabelFactory($user) : new NullSlotLabelFactory());
+		$this->Set('AllowGuestBooking', $allowGuestBookings);
+		$this->Set('CreateReservationPage', Pages::GUEST_RESERVATION);
 		$this->Display('Schedule/view-schedule.tpl');
 	}
 

@@ -20,9 +20,10 @@ class ResourceMinimumNoticeRule implements IReservationValidationRule
 	 * @see IReservationValidationRule::Validate()
 	 *
 	 * @param ReservationSeries $reservationSeries
+	 * @param null|ReservationRetryParameter[] $retryParameters
 	 * @return ReservationRuleResult
 	 */
-	public function Validate($reservationSeries)
+	public function Validate($reservationSeries, $retryParameters)
 	{
 		$r = Resources::GetInstance();
 

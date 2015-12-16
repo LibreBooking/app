@@ -31,7 +31,7 @@ abstract class EmailMessage implements IEmailMessage
 
 	protected function __construct($languageCode = null)
 	{
-		$resources = new Resources();
+		$resources = Resources::GetInstance();
 		if (!empty($languageCode))
 		{
 			$resources->SetLanguage($languageCode);

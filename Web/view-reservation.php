@@ -20,7 +20,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 define('ROOT_DIR', '../');
 
-require_once(ROOT_DIR . 'Pages/ReadOnlyReservationPage.php');
+require_once(ROOT_DIR . 'Pages/Reservation/ReadOnlyReservationPage.php');
 
 $page = new ReadOnlyReservationPage();
 
@@ -29,5 +29,3 @@ if (!Configuration::Instance()->GetSectionKey(ConfigSection::PRIVACY, ConfigKeys
     $page = new SecurePageDecorator($page);
 }
 $page->PageLoad();
-
-?>

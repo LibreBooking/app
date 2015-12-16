@@ -80,20 +80,38 @@ function Schedule(opts, resourceGroups)
 
 	this.initNavigation = function ()
 	{
+		var datePicker = $("#datepicker");
+		var expandCalendar = readCookie('schedule_calendar_toggle');
+
+		function collapse() {
+			createCookie('schedule_calendar_toggle', false);
+			datePicker.hide();
+		}
+
+		function expand() {
+			createCookie('schedule_calendar_toggle', true);
+			datePicker.show();
+		}
+
+		if (expandCalendar == "true")
+		{
+			expand();
+		}
+		else {
+			collapse();
+		}
+
 		$("#calendar_toggle").click(function (event)
 		{
 			event.preventDefault();
 
-			var datePicker = $("#datepicker");
-			datePicker.toggle();
-
 			if (datePicker.css("display") == "none")
 			{
-				$(this).find("img").first().attr("src", "img/calendar.png");
+				expand();
 			}
 			else
 			{
-				$(this).find("img").first().attr("src", "img/calendar-minus.png");
+				collapse();
 			}
 		});
 
@@ -147,7 +165,7 @@ function Schedule(opts, resourceGroups)
 		$('#schedule-actions .schedule-style').click(function (e)
 		{
 			e.preventDefault();
-			createCookie(opts.cookieName, $(this).attr('schedule-display'), 30);
+			createCookie(opts.cookieName, $(this).attr('schedule-display'), 30, opts.scriptUrl);
 			window.location.reload();
 		});
 	};

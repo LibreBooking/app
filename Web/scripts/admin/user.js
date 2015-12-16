@@ -1,49 +1,49 @@
-function UserManagement(opts)
-{
+function UserManagement(opts) {
 	var options = opts;
 
 	var elements = {
-		activeId:$('#activeId'),
-		userList:$('#userList'),
+		activeId: $('#activeId'),
+		userList: $('#userList'),
 
-		userAutocomplete:$('#userSearch'),
-		filterStatusId:$('#filterStatusId'),
+		userAutocomplete: $('#userSearch'),
+		filterStatusId: $('#filterStatusId'),
 
-		permissionsDialog:$('#permissionsDialog'),
-		passwordDialog:$('#passwordDialog'),
+		permissionsDialog: $('#permissionsDialog'),
+		passwordDialog: $('#passwordDialog'),
 
-		attributeForm:$('.attributesForm'),
+		attributeForm: $('.attributesForm'),
 
-		permissionsForm:$('#permissionsForm'),
-		passwordForm:$('#passwordForm'),
+		permissionsForm: $('#permissionsForm'),
+		passwordForm: $('#passwordForm'),
 
-		userDialog:$('#userDialog'),
-		userForm:$('#userForm'),
+		userDialog: $('#userDialog'),
+		userForm: $('#userForm'),
 
-		groupsDialog:$('#groupsDialog'),
-		addedGroups : $('#addedGroups'),
-		removedGroups : $('#removedGroups'),
-		groupList : $('#groupList'),
+		groupsDialog: $('#groupsDialog'),
+		addedGroups: $('#addedGroups'),
+		removedGroups: $('#removedGroups'),
+		groupList: $('#groupList'),
+		addGroupForm: $('#addGroupForm'),
+		removeGroupForm: $('#removeGroupForm'),
 
-		colorDialog:$('#colorDialog'),
-		colorValue:$('#reservationColor'),
-		colorForm:$('#colorForm'),
+		colorDialog: $('#colorDialog'),
+		colorValue: $('#reservationColor'),
+		colorForm: $('#colorForm'),
 
-		addUserForm:$('#addUserForm'),
+		addUserForm: $('#addUserForm'),
 
-		importUsersForm:$('#importUsersForm'),
-		importUsersDialog:$('#importUsersDialog'),
+		importUsersForm: $('#importUsersForm'),
+		importUsersDialog: $('#importUsersDialog'),
 
-		deleteDialog:$('#deleteDialog'),
-		deleteUserForm:$('#deleteUserForm'),
+		deleteDialog: $('#deleteDialog'),
+		deleteUserForm: $('#deleteUserForm'),
 
-		addDialog:$('#addUserDialog')
+		addDialog: $('#addUserDialog')
 	};
 
 	var users = {};
 
-	UserManagement.prototype.init = function ()
-	{
+	UserManagement.prototype.init = function () {
 		elements.userList.delegate('.update', 'click', function (e) {
 			setActiveUserElement($(this));
 			e.preventDefault();
@@ -103,15 +103,20 @@ function UserManagement(opts)
 			window.location.href = options.filterUrl + statusid;
 		});
 
-		elements.addedGroups.delegate('div', 'click', function(e){
+		elements.addedGroups.delegate('div', 'click', function (e) {
 			e.preventDefault();
-			changeGroup('removeUser', $(this).attr('groupId'));
+			$('#removeGroupId').val($(this).attr('groupId'));
+			$('#removeGroupUserId').val(getActiveUserId());
+			elements.removeGroupForm.submit();
+
 			$(this).appendTo(elements.removedGroups);
 		});
 
-		elements.removedGroups.delegate('div', 'click', function(e){
+		elements.removedGroups.delegate('div', 'click', function (e) {
 			e.preventDefault();
-			changeGroup('addUser', $(this).attr('groupId'));
+			$('#addGroupId').val($(this).attr('groupId'));
+			$('#addGroupUserId').val(getActiveUserId());
+			elements.addGroupForm.submit();
 			$(this).appendTo(elements.addedGroups);
 		});
 
@@ -127,12 +132,12 @@ function UserManagement(opts)
 			$(this).closest('form')[0].reset();
 		});
 
-		$('#add-user').click(function(e) {
+		$('#add-user').click(function (e) {
 			e.preventDefault();
 			elements.addDialog.modal('show');
 		});
 
-		$('#import-users').click(function(e){
+		$('#import-users').click(function (e) {
 			e.preventDefault();
 			elements.importUsersDialog.modal('show');
 		});
@@ -149,8 +154,8 @@ function UserManagement(opts)
 			dialogElement.modal('hide');
 		};
 
-		var hideDialogCallback = function(dialogElement) {
-			return function() {
+		var hideDialogCallback = function (dialogElement) {
+			return function () {
 				hideDialog(dialogElement);
 				window.location.reload();
 			}
@@ -160,8 +165,9 @@ function UserManagement(opts)
 			alert(errorText);
 		};
 
-		var importHandler = function(responseText, form) {
-			if (!responseText){
+		var importHandler = function (responseText, form) {
+			if (!responseText)
+			{
 				return;
 			}
 
@@ -171,19 +177,22 @@ function UserManagement(opts)
 
 			var errors = $('#importErrors');
 			errors.empty();
-			if (responseText.messages && responseText.messages.length > 0) {
-				var messages =  responseText.messages.join('</li><li>');
+			if (responseText.messages && responseText.messages.length > 0)
+			{
+				var messages = responseText.messages.join('</li><li>');
 				errors.html('<div>' + messages + '</div>').show();
 			}
 		};
 
-		ConfigureAdminForm(elements.permissionsForm, defaultSubmitCallback(elements.permissionsForm), hidePermissionsDialog, error);
-		ConfigureAdminForm(elements.passwordForm, defaultSubmitCallback(elements.passwordForm), hidePasswordDialog, error);
-		ConfigureAdminForm(elements.userForm, defaultSubmitCallback(elements.userForm), hideDialogCallback(elements.userDialog));
-		ConfigureAdminForm(elements.deleteUserForm, defaultSubmitCallback(elements.deleteUserForm), hideDialogCallback(elements.deleteDialog), error);
-		ConfigureAdminForm(elements.addUserForm, defaultSubmitCallback(elements.addUserForm), hideDialogCallback(elements.addDialog));
-		ConfigureAdminForm(elements.colorForm, defaultSubmitCallback(elements.colorForm));
-		ConfigureAdminForm(elements.importUsersForm, defaultSubmitCallback(elements.importUsersForm), importHandler);
+		ConfigureAsyncForm(elements.permissionsForm, defaultSubmitCallback(elements.permissionsForm), hidePermissionsDialog, error);
+		ConfigureAsyncForm(elements.passwordForm, defaultSubmitCallback(elements.passwordForm), hidePasswordDialog, error);
+		ConfigureAsyncForm(elements.userForm, defaultSubmitCallback(elements.userForm), hideDialogCallback(elements.userDialog));
+		ConfigureAsyncForm(elements.deleteUserForm, defaultSubmitCallback(elements.deleteUserForm), hideDialogCallback(elements.deleteDialog), error);
+		ConfigureAsyncForm(elements.addUserForm, defaultSubmitCallback(elements.addUserForm), hideDialogCallback(elements.addDialog));
+		ConfigureAsyncForm(elements.colorForm, defaultSubmitCallback(elements.colorForm));
+		ConfigureAsyncForm(elements.importUsersForm, defaultSubmitCallback(elements.importUsersForm), importHandler);
+		ConfigureAsyncForm(elements.addGroupForm, changeGroupUrlCallback(elements.addGroupForm));
+		ConfigureAsyncForm(elements.removeGroupForm, changeGroupUrlCallback(elements.removeGroupForm));
 	};
 
 	UserManagement.prototype.addUser = function (user) {
@@ -191,8 +200,7 @@ function UserManagement(opts)
 	};
 
 	var getSubmitCallback = function (action) {
-		return function ()
-		{
+		return function () {
 			return options.submitUrl + "?uid=" + getActiveUserId() + "&action=" + action;
 		};
 	};
@@ -200,6 +208,12 @@ function UserManagement(opts)
 	var defaultSubmitCallback = function (form) {
 		return function () {
 			return options.submitUrl + "?action=" + form.attr('ajaxAction') + '&uid=' + getActiveUserId();
+		};
+	};
+
+	var changeGroupUrlCallback = function (form) {
+		return function () {
+			return options.groupManagementUrl + "?action=" + form.attr('ajaxAction') + '&uid=' + getActiveUserId();
 		};
 	};
 
@@ -243,13 +257,11 @@ function UserManagement(opts)
 		elements.removedGroups.find('.group-item').remove();
 
 		var user = getActiveUser();
-		var data = {dr:'groups', uid:user.id};
-		$.get(opts.groupsUrl, data, function (groupIds)
-		{
+		var data = {dr: 'groups', uid: user.id};
+		$.get(opts.groupsUrl, data, function (groupIds) {
 			elements.groupList.find('.group-item').clone().appendTo(elements.removedGroups);
 
-			$.each(groupIds, function (index, value)
-			{
+			$.each(groupIds, function (index, value) {
 				var groupLine = elements.removedGroups.find('div[groupId=' + value + ']');
 				groupLine.appendTo(elements.addedGroups);
 			});
@@ -258,21 +270,19 @@ function UserManagement(opts)
 		elements.groupsDialog.modal('show');
 	};
 
-	var changeGroup = function(action, groupId) {
-		var url = opts.groupManagementUrl + '?action=' + action + '&gid='+groupId;
+	var changeGroup = function (action, groupId) {
+		var url = opts.groupManagementUrl + '?action=' + action + '&gid=' + groupId;
 
-		var data = {userId:getActiveUserId()};
+		var data = {userId: getActiveUserId()};
 		$.post(url, data);
 	};
 
 	var changePermissions = function () {
 		var user = getActiveUser();
-		var data = {dr:'permissions', uid:user.id};
-		$.get(opts.permissionsUrl, data, function (resourceIds)
-		{
+		var data = {dr: 'permissions', uid: user.id};
+		$.get(opts.permissionsUrl, data, function (resourceIds) {
 			elements.permissionsForm.find(':checkbox').prop('checked', false);
-			$.each(resourceIds, function (index, value)
-			{
+			$.each(resourceIds, function (index, value) {
 				elements.permissionsForm.find(':checkbox[value="' + value + '"]').prop('checked', true);
 			});
 
@@ -282,9 +292,8 @@ function UserManagement(opts)
 
 	var changeColor = function () {
 		var user = getActiveUser();
-		var data = {dr:'color', uid:user.id};
-		$.get(opts.colorUrl, data, function (colorIds)
-		{
+		var data = {dr: 'color', uid: user.id};
+		$.get(opts.colorUrl, data, function (colorIds) {
 
 		});
 	};

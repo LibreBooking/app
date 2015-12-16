@@ -52,7 +52,7 @@ class ResourceMaximumDurationRuleTests extends TestBase
 		$reservation->AddResource($resource2);
 
 		$rule = new ResourceMaximumDurationRule();
-		$result = $rule->Validate($reservation);
+		$result = $rule->Validate($reservation, null);
 
 		$this->assertFalse($result->IsValid());
 	}
@@ -69,7 +69,7 @@ class ResourceMaximumDurationRuleTests extends TestBase
 		$reservation->WithDuration($duration);
 
 		$rule = new ResourceMaximumDurationRule();
-		$result = $rule->Validate($reservation);
+		$result = $rule->Validate($reservation, null);
 
 		$this->assertTrue($result->IsValid());
 	}

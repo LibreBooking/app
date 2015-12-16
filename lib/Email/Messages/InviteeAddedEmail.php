@@ -66,4 +66,3 @@ class InviteeAddedEmail extends ReservationEmailMessage
 		$this->Set('DeclineUrl', sprintf("%s?%s=%s&%s=%s", Pages::INVITATION_RESPONSES, QueryStringKeys::REFERENCE_NUMBER, $currentInstance->ReferenceNumber(), QueryStringKeys::INVITATION_ACTION, InvitationAction::Decline));
 	}
 }
-?>

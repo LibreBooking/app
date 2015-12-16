@@ -75,6 +75,7 @@ class ParameterNames
 
 	const END_DATE = '@endDate';
 	const END_TIME = '@endTime';
+	const ENFORCED_DAYS = '@enforcedDays';
 	const EMAIL_ADDRESS = '@email';
 	const EVENT_CATEGORY = '@event_category';
 	const EVENT_TYPE = '@event_type';
@@ -112,6 +113,7 @@ class ParameterNames
 	const QUOTA_DURATION = '@duration';
 	const QUOTA_ID = '@quotaid';
 	const QUOTA_LIMIT = '@limit';
+	const QUOTA_SCOPE = '@scope';
 	const QUOTA_UNIT = '@unit';
 
 	const REMINDER_ID = '@reminder_id';

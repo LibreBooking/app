@@ -24,7 +24,7 @@ require_once(ROOT_DIR . 'lib/Application/Attributes/namespace.php');
 require_once(ROOT_DIR . 'lib/Application/Schedule/namespace.php');
 require_once(ROOT_DIR . 'WebServices/Responses/ResourceResponse.php');
 require_once(ROOT_DIR . 'WebServices/Responses/ResourcesResponse.php');
-require_once(ROOT_DIR . 'WebServices/Responses/CustomAttributeResponse.php');
+require_once(ROOT_DIR . 'WebServices/Responses/CustomAttributes/CustomAttributeResponse.php');
 require_once(ROOT_DIR . 'WebServices/Responses/Resource/ResourceStatusResponse.php');
 require_once(ROOT_DIR . 'WebServices/Responses/Resource/ResourceStatusReasonsResponse.php');
 require_once(ROOT_DIR . 'WebServices/Responses/Resource/ResourceGroupTreeResponse.php');
@@ -186,6 +186,18 @@ class ResourcesWebService
 	}
 
 	/**
+	 * @name GetResourceTypes
+	 * @description Returns all available resource types
+	 * @response ResourceTypesResponse
+	 * @return void
+	 */
+	public function GetTypes()
+	{
+		$types = $this->resourceRepository->GetResourceTypes();
+		$this->server->WriteResponse(new ResourceTypesResponse($this->server, $types));
+	}
+
+	/**
 	 * @name GetAvailability
 	 * @description Returns resource availability for the requested time. "availableAt" and "availableUntil" will include availability through the next 7 days
 	 * Optional query string parameter: dateTime. If no dateTime is requested the current datetime will be used.
@@ -214,97 +226,100 @@ class ResourcesWebService
 			$resources[] = $this->resourceRepository->LoadById($resourceId);
 		}
 
-		$startDate = $requestedTime->AddDays(-1);
-		$endDate = $requestedTime->AddDays(7);
-		$reservations = $this->reservationRepository->GetReservationList($startDate,
-																		 $endDate,
-																		 null, null, null,
-																		 $resourceId);
-
-		$indexedReservations = array();
-
-		foreach ($reservations as $reservation)
-		{
-			$key = $reservation->GetResourceId();
-			if (!array_key_exists($key, $indexedReservations))
-			{
-				$indexedReservations[$key] = array();
-			}
-
-			$indexedReservations[$key][] = $reservation;
-		}
+		$lastDateSearched = $requestedTime->AddDays(30);
+		$reservations = $this->GetReservations($this->reservationRepository->GetReservationList($requestedTime, $lastDateSearched, null, null, null, $resourceId));
 
 		$resourceAvailability = array();
 
 		foreach ($resources as $resource)
 		{
-			$resourceId = $resource->GetResourceId();
-			$conflict = null;
-			$nextReservation = null;
-			$opening = null;
+			$reservation = $this->GetOngoingReservation($resource, $reservations);
 
-			if (array_key_exists($resourceId, $indexedReservations))
+			if ($reservation != null)
 			{
-				$resourceReservations = $indexedReservations[$resourceId];
+				$lastReservationBeforeOpening = $this->GetLastReservationBeforeAnOpening($resource, $reservations);
 
-				/** @var $reservation ReservationItemView */
-				foreach ($resourceReservations as $i => $reservation)
+				if ($lastReservationBeforeOpening == null)
 				{
-					if ($conflict == null && $reservation->BufferedTimes()->Contains($requestedTime, false)
-					)
-					{
-						$conflict = $reservation;
-					}
-
-					if ($nextReservation == null && $reservation->StartDate->GreaterThan($requestedTime))
-					{
-						$nextReservation = $reservation;
-					}
+					$lastReservationBeforeOpening = $reservation;
 				}
 
-				$opening = $this->GetOpeningAfter($resourceReservations, $requestedTime);
-
-				if ($opening == null && $conflict != null)
+				$resourceAvailability[] = new ResourceAvailabilityResponse($this->server, $resource, $lastReservationBeforeOpening, null, $lastReservationBeforeOpening->EndDate, $lastDateSearched);
+			}
+			else
+			{
+				$resourceId = $resource->GetId();
+				if (array_key_exists($resourceId, $reservations))
 				{
-					$opening = $conflict->BufferedTimes()->GetEnd();
+					$resourceAvailability[] = new ResourceAvailabilityResponse($this->server, $resource, null, $reservations[$resourceId][0], null, $lastDateSearched);
+				}
+				else
+				{
+					$resourceAvailability[] = new ResourceAvailabilityResponse($this->server, $resource, null, null, null, $lastDateSearched);
 				}
 			}
-
-			$resourceAvailability[] = new ResourceAvailabilityResponse($this->server, $resource, $conflict, $nextReservation, $opening, $endDate);
 		}
 
 		$this->server->WriteResponse(new ResourcesAvailabilityResponse($this->server, $resourceAvailability));
 	}
 
 	/**
-	 * @param ReservationItemView[] $reservations
-	 * @param Date $requestedTime
-	 * @return Date|null
+	 * @param BookableResource $resource
+	 * @param ReservationItemView[][] $reservations
+	 * @return ReservationItemView|null
 	 */
-	private function GetOpeningAfter($reservations, $requestedTime)
+	private function GetOngoingReservation($resource, $reservations)
 	{
-		/** @var $reservation ReservationItemView */
-		foreach ($reservations as $i => $reservation)
+		if (array_key_exists($resource->GetId(), $reservations) && $reservations[$resource->GetId()][0]->StartDate->LessThan(Date::Now()))
 		{
-			if ($reservation->BufferedTimes()
-							->GetBegin()
-							->GreaterThanOrEqual($requestedTime) >= 0
-			)
-			{
-				for ($r = $i; $r < count($reservations) - 1; $r++)
-				{
-					$thisRes = $reservations[$r]->BufferedTimes();
-					$nextRes = $reservations[$r + 1]->BufferedTimes();
-					if ($thisRes->GetEnd()
-								->LessThan($nextRes->GetBegin())
-					)
-					{
-						return $thisRes->GetEnd();
-					}
-				}
-			}
+			return $reservations[$resource->GetId()][0];
 		}
 
 		return null;
+	}
+
+	/**
+	 * @param ReservationItemView[] $reservations
+	 * @return ReservationItemView[][]
+	 */
+	private function GetReservations($reservations)
+	{
+		$indexed = array();
+		foreach ($reservations as $reservation)
+		{
+			$indexed[$reservation->ResourceId][] = $reservation;
+		}
+
+		return $indexed;
+	}
+
+	/**
+	 * @param BookableResource $resource
+	 * @param ReservationItemView[][] $reservations
+	 * @return null|ReservationItemView
+	 */
+	private function GetLastReservationBeforeAnOpening($resource, $reservations)
+	{
+		$resourceId = $resource->GetId();
+		if (!array_key_exists($resourceId, $reservations))
+		{
+			return null;
+		}
+
+		$resourceReservations = $reservations[$resourceId];
+		for ($i = 0; $i < count($resourceReservations) - 1; $i++)
+		{
+			$current = $resourceReservations[$i];
+			$next = $resourceReservations[$i + 1];
+
+			if ($current->EndDate->Equals($next->StartDate))
+			{
+				continue;
+			}
+
+			return $current;
+		}
+
+		return $resourceReservations[count($resourceReservations) - 1];
 	}
 }

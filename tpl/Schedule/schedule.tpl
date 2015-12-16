@@ -146,7 +146,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 	{/block}
 
 	{block name="legend"}
-		<div class="hidden-xs row-fluid col-sm-12">
+		<div class="hidden-xs row-fluid col-sm-12 schedule-legend">
 			<div class="center">
 				<div class="legend reservable">{translate key=Reservable}</div>
 				<div class="legend unreservable">{translate key=Unreservable}</div>
@@ -158,7 +158,6 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 				<div class="legend restricted">{translate key=Restricted}</div>
 			</div>
 		</div>
-		<div style="height:10px" class="hidden-xs row">&nbsp;</div>
 	{/block}
 
 	<div class="row-fluid">
@@ -200,13 +199,15 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 							</div>
 
 							{foreach from=$ResourceAttributes item=attribute}
-								<div class="form-group">
-									{control type="AttributeControl" attribute=$attribute align='vertical' searchmode=true namePrefix='r' class="input-sm"}
-								</div>
+								{*<div class="form-group">*}
+									{control type="AttributeControl" attribute=$attribute align='vertical' searchmode=true namePrefix='r' inputClass="input-sm"}
+								{*</div>*}
 							{/foreach}
 
 							{foreach from=$ResourceTypeAttributes item=attribute}
-								<div class="form-group">{control type="AttributeControl" attribute=$attribute align='vertical' searchmode=true namePrefix='rt' class="input-sm"}</div>
+								{*<div class="form-group">*}
+									{control type="AttributeControl" attribute=$attribute align='vertical' searchmode=true namePrefix='rt' inputClass="input-sm"}
+								{*</div>*}
 							{/foreach}
 
 							<div class="btn-submit">
@@ -228,6 +229,9 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			{block name="reservations"}
 				{assign var=TodaysDate value=Date::Now()}
 				{foreach from=$BoundDates item=date}
+					{assign var=ts value=$date->Timestamp()}
+					{$periods.$ts = $DailyLayout->GetPeriods($date, true)}
+					{if $periods[$ts]|count == 0}{continue}{*dont show if there are no slots*}{/if}
 					<div style="position:relative;">
 						<table class="reservations" border="1" cellpadding="0" width="100%">
 							{if $date->DateEquals($TodaysDate)}
@@ -236,14 +240,14 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 							<tr>
 								{/if}
 								<td class="resdate">{formatdate date=$date key="schedule_daily"}</td>
-								{foreach from=$DailyLayout->GetPeriods($date, true) item=period}
+								{foreach from=$periods.$ts item=period}
 									<td class="reslabel" colspan="{$period->Span()}">{$period->Label($date)}</td>
 								{/foreach}
 							</tr>
 							{foreach from=$Resources item=resource name=resource_loop}
 								{assign var=resourceId value=$resource->Id}
 								{assign var=slots value=$DailyLayout->GetLayout($date, $resourceId)}
-								{assign var=href value="{Pages::RESERVATION}?rid={$resource->Id}&sid={$ScheduleId}&rd={formatdate date=$date key=url}"}
+								{assign var=href value="{$CreateReservationPage}?rid={$resource->Id}&sid={$ScheduleId}&rd={formatdate date=$date key=url}"}
 								<tr class="slots">
 									<td class="resourcename">
 										{if $resource->CanAccess && $DailyLayout->IsDateReservable($date)}
@@ -298,7 +302,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 				summaryPopupUrl: "{$Path}ajax/respopup.php",
 				setDefaultScheduleUrl: "{$Path}{Pages::PROFILE}?action=changeDefaultSchedule&{QueryStringKeys::SCHEDULE_ID}=[scheduleId]",
 				cookieName: "{$CookieName}",
-				scheduleId: "{$ScheduleId}"
+				scheduleId: "{$ScheduleId}",
+				scriptUrl: '{$ScriptUrl}'
 			};
 
 			var schedule = new Schedule(scheduleOpts, {$ResourceGroupsAsJson});
