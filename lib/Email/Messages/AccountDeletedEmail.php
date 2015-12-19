@@ -66,7 +66,7 @@ class AccountDeletedEmail extends EmailMessage
 	function Body()
 	{
 		$this->Set('UserFullName', $this->deletedUser->FullName());
-		$this->Set('AdminFullName', $this->to->FullName());
+		$this->Set('AdminFullName', $this->userSession->FullName());
 		return $this->FetchTemplate('AccountDeleted.tpl');
 	}
 }
