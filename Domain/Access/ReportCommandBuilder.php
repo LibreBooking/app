@@ -394,7 +394,7 @@ class ReportCommandBuilder
 		$sql = str_replace('[ORDER_TOKEN]', $this->GetOrderBy(), $sql);
 		$sql = str_replace('[LIMIT_TOKEN]', $this->GetLimit(), $sql);
 
-		$query = new AdHocCommand($sql);
+		$query = new AdHocCommand($sql, true);
 		foreach ($this->parameters as $parameter)
 		{
 			$query->AddParameter($parameter);

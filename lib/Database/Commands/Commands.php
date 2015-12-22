@@ -1098,6 +1098,11 @@ class GetAllUsersByStatusCommand extends SqlCommand
 		parent::__construct(Queries::GET_ALL_USERS_BY_STATUS);
 		$this->AddParameter(new Parameter(ParameterNames::USER_STATUS_ID, $userStatusId));
 	}
+
+	public function ContainsGroupConcat()
+	{
+		return true;
+	}
 }
 
 class GetBlackoutListCommand extends SqlCommand
@@ -1265,6 +1270,11 @@ class GetReservationListCommand extends SqlCommand
 		$this->AddParameter(new Parameter(ParameterNames::RESERVATION_USER_LEVEL_ID, $userLevelId));
 		$this->AddParameter(new Parameter(ParameterNames::SCHEDULE_ID, $scheduleId));
 		$this->AddParameter(new Parameter(ParameterNames::RESOURCE_ID, $resourceId));
+	}
+
+	public function ContainsGroupConcat()
+	{
+		return true;
 	}
 }
 
