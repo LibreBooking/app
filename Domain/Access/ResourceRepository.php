@@ -300,11 +300,8 @@ class ResourceRepository implements IResourceRepository
 			$scheduleId = ResourceRepository::ALL_SCHEDULES;
 		}
 
-		$groups = ServiceLocator::GetDatabase()
-								->Query(new GetAllResourceGroupsCommand());
-
-		$resources = ServiceLocator::GetDatabase()
-								   ->Query(new GetAllResourceGroupAssignmentsCommand($scheduleId));
+		$groups = ServiceLocator::GetDatabase()->Query(new GetAllResourceGroupsCommand());
+		$resources = ServiceLocator::GetDatabase()->Query(new GetAllResourceGroupAssignmentsCommand($scheduleId));
 
 		$_groups = array();
 		$_assignments = array();
@@ -317,8 +314,9 @@ class ResourceRepository implements IResourceRepository
 		{
 			$resourceList[$r->GetId()] = $r;
 			$_assignments[] = new ResourceGroupAssignment(0, $r->GetName(), $r->GetResourceId(), $r->GetAdminGroupId(),
-														  $r->GetScheduleId(), $r->GetStatusId(),
-														  $r->GetScheduleAdminGroupId());
+														  $r->GetScheduleId(), $r->GetStatusId(), $r->GetScheduleAdminGroupId(),
+														  $r->GetRequiresApproval(), $r->IsCheckInEnabled(), $r->IsAutoReleased(), $r->GetAutoReleaseMinutes(),
+														  $r->GetMinimumLength(), $r->GetResourceTypeId());
 		}
 
 		while ($row = $groups->GetRow())
@@ -336,8 +334,9 @@ class ResourceRepository implements IResourceRepository
 				$r = $resourceList[$resourceId];
 				$_assignments[] = new ResourceGroupAssignment($row[ColumnNames::RESOURCE_GROUP_ID], $r->GetName(),
 															  $r->GetResourceId(), $r->GetAdminGroupId(),
-															  $r->GetScheduleId(), $r->GetStatusId(),
-															  $r->GetScheduleAdminGroupId());
+															  $r->GetScheduleId(), $r->GetStatusId(), $r->GetScheduleAdminGroupId(),
+															  $r->GetRequiresApproval(), $r->IsCheckInEnabled(), $r->IsAutoReleased(),
+															  $r->GetAutoReleaseMinutes(), $r->GetMinimumLength(), $r->GetResourceTypeId());
 			}
 		}
 
@@ -638,19 +637,37 @@ interface IResourceFilter
 	function ShouldInclude($resource);
 }
 
-
-class ResourceDto
+class ResourceDto implements IBookableResource
 {
 	/**
 	 * @param int $id
 	 * @param string $name
 	 * @param bool $canAccess
-	 * @param null|int $scheduleId
-	 * @param null|TimeInterval $minLength
-	 * @param null|int $resourceTypeId
+	 * @param int $scheduleId
+	 * @param TimeInterval $minLength
+	 * @param int|null $resourceTypeId
+	 * @param int|null $adminGroupId
+	 * @param int|null $scheduleAdminGroupId
+	 * @param int|null $statusId
+	 * @param bool $requiresApproval
+	 * @param bool $isCheckInEnabled
+	 * @param bool $isAutoReleased
+	 * @param int|null $autoReleaseMinutes
 	 */
-	public function __construct($id, $name, $canAccess = true, $scheduleId = null, $minLength = null,
-								$resourceTypeId = null)
+	public function __construct($id,
+								$name,
+								$canAccess,
+								$scheduleId,
+								$minLength,
+								$resourceTypeId,
+								$adminGroupId,
+								$scheduleAdminGroupId,
+								$statusId,
+								$requiresApproval,
+								$isCheckInEnabled,
+								$isAutoReleased,
+								$autoReleaseMinutes
+	)
 	{
 		$this->Id = $id;
 		$this->Name = $name;
@@ -658,6 +675,13 @@ class ResourceDto
 		$this->ScheduleId = $scheduleId;
 		$this->MinimumLength = $minLength;
 		$this->ResourceTypeId = $resourceTypeId;
+		$this->AdminGroupId = $adminGroupId;
+		$this->ScheduleAdminGroupId = $scheduleAdminGroupId;
+		$this->StatusId = $statusId;
+		$this->RequiresApproval = $requiresApproval;
+		$this->IsCheckInEnabled = $isCheckInEnabled;
+		$this->IsAutoReleased = $isAutoReleased;
+		$this->AutoReleaseMinutes = $autoReleaseMinutes;
 	}
 
 	/**
@@ -689,6 +713,38 @@ class ResourceDto
 	 * @var int|null
 	 */
 	public $ResourceTypeId;
+
+	/**
+	 * @var int|null
+	 */
+	public $AdminGroupId;
+	/**
+	 * @var int|null
+	 */
+	public $ScheduleAdminGroupId;
+	/**
+	 * @var int|null
+	 */
+	public $StatusId;
+	/**
+	 * @var bool
+	 */
+	public $RequiresApproval;
+
+	/**
+	 * @var bool
+	 */
+	public $IsCheckInEnabled;
+
+	/**
+	 * @var bool
+	 */
+	public $IsAutoReleased;
+
+	/**
+	 * @var int|null
+	 */
+	public $AutoReleaseMinutes;
 
 	/**
 	 * alias of GetId()
@@ -737,5 +793,69 @@ class ResourceDto
 	public function GetResourceType()
 	{
 		return $this->ResourceTypeId;
+	}
+
+	/**
+	 * @return int|null
+	 */
+	public function GetResourceTypeId()
+	{
+		return $this->GetResourceType();
+	}
+
+	/**
+	 * @return int
+	 */
+	public function GetAdminGroupId()
+	{
+		return $this->AdminGroupId;
+	}
+
+	/**
+	 * @return int
+	 */
+	public function GetScheduleAdminGroupId()
+	{
+		return $this->ScheduleAdminGroupId;
+	}
+
+	/**
+	 * @return int|null
+	 */
+	public function GetStatusId()
+	{
+		return $this->StatusId;
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function GetRequiresApproval()
+	{
+		return $this->RequiresApproval;
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function IsCheckInEnabled()
+	{
+		return $this->IsCheckInEnabled;
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function IsAutoReleased()
+	{
+		return $this->IsAutoReleased;
+	}
+
+	/**
+	 * @return null|int
+	 */
+	public function GetAutoReleaseMinutes()
+	{
+		return $this->AutoReleaseMinutes;
 	}
 }

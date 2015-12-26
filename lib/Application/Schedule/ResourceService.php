@@ -162,7 +162,19 @@ class ResourceService implements IResourceService
 				}
 			}
 
-			$resourceDtos[] = new ResourceDto($resource->GetResourceId(), $resource->GetName(), $canAccess, $resource->GetScheduleId(), $resource->GetMinLength(), $resource->GetResourceTypeId());
+			$resourceDtos[] = new ResourceDto($resource->GetResourceId(),
+											  $resource->GetName(),
+											  $canAccess,
+											  $resource->GetScheduleId(),
+											  $resource->GetMinLength(),
+											  $resource->GetResourceTypeId(),
+											  $resource->GetAdminGroupId(),
+											  $resource->GetScheduleAdminGroupId(),
+											  $resource->GetStatusId(),
+											  $resource->GetRequiresApproval(),
+											  $resource->IsCheckInEnabled(),
+											  $resource->IsAutoReleased(),
+											  $resource->GetAutoReleaseMinutes());
 		}
 
 		return $resourceDtos;

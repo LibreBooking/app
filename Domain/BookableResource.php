@@ -59,7 +59,40 @@ interface IPermissibleResource
 	public function GetResourceId();
 }
 
-class BookableResource implements IResource
+interface IBookableResource extends IResource
+{
+	/**
+	 * @return TimeInterval
+	 */
+	public function GetMinimumLength();
+
+	/**
+	 * @return bool
+	 */
+	public function GetRequiresApproval();
+
+	/**
+	 * @return bool
+	 */
+	public function IsCheckInEnabled();
+
+	/**
+	 * @return bool
+	 */
+	public function IsAutoReleased();
+
+	/**
+	 * @return null|int
+	 */
+	public function GetAutoReleaseMinutes();
+
+	/**
+	 * @return int
+	 */
+	public function GetResourceTypeId();
+}
+
+class BookableResource implements IBookableResource
 {
 	protected $_resourceId;
 	protected $_name;
@@ -104,6 +137,8 @@ class BookableResource implements IResource
 	protected $_sortOrder;
 	protected $_resourceTypeId;
 	protected $_resourceGroupIds = array();
+	protected $_enableCheckIn = false;
+	protected $_autoReleaseMinutes = null;
 
 	/**
 	 * @var array|AttributeValue[]
@@ -221,6 +256,14 @@ class BookableResource implements IResource
 				$resource->WithResourceGroupId($groupIds[$i]);
 			}
 		}
+		if (isset($row[ColumnNames::ENABLE_CHECK_IN]))
+		{
+			$resource->_enableCheckIn = boolval($row[ColumnNames::ENABLE_CHECK_IN]);
+		}
+		if (isset($row[ColumnNames::AUTO_RELEASE_MINUTES]))
+		{
+			$resource->_autoReleaseMinutes = intval($row[ColumnNames::AUTO_RELEASE_MINUTES]);
+		}
 
 		return $resource;
 	}
@@ -316,6 +359,11 @@ class BookableResource implements IResource
 	public function GetMinLength()
 	{
 		return TimeInterval::Parse($this->_minLength);
+	}
+
+	public function GetMinimumLength()
+	{
+		return $this->GetMinLength();
 	}
 
 	/**
@@ -725,6 +773,30 @@ class BookableResource implements IResource
 	public function WithAttribute(AttributeValue $attribute)
 	{
 		$this->_attributeValues[$attribute->AttributeId] = $attribute;
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function IsCheckInEnabled()
+	{
+		return $this->_enableCheckIn;
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function IsAutoReleased()
+	{
+		return !is_null($this->_autoReleaseMinutes);
+	}
+
+	/**
+	 * @return int|null
+	 */
+	public function GetAutoReleaseMinutes()
+	{
+		return $this->_autoReleaseMinutes;
 	}
 
 	/**

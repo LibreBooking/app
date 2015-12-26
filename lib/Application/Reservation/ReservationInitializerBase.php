@@ -106,7 +106,7 @@ interface IReservationComponentInitializer
 	public function ShowReservationDetails($showReservationDetails);
 
 	/**
-	 * @param $resources array|IResource[]
+	 * @param $resources array|IBookableResource[]
 	 */
 	public function BindAvailableResources($resources);
 
@@ -126,7 +126,7 @@ interface IReservationComponentInitializer
 	public function ShowAdditionalResources($shouldShow);
 
 	/**
-	 * @param $resource BookableResource
+	 * @param $resource ResourceDto
 	 */
 	public function SetReservationResource($resource);
 
@@ -405,7 +405,7 @@ abstract class ReservationInitializerBase implements IReservationInitializer, IR
 	}
 
 	/**
-	 * @param IResource $resource
+	 * @param IBookableResource $resource
 	 */
 	public function SetReservationResource($resource)
 	{

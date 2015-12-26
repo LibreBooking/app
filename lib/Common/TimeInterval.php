@@ -91,6 +91,14 @@ class TimeInterval
 	}
 
 	/**
+	 * @return TimeInterval
+	 */
+	public static function None()
+	{
+		return new TimeInterval(0);
+	}
+
+	/**
 	 * @return int
 	 */
 	public function Days()

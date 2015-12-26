@@ -192,11 +192,8 @@ class ExistingReservationSeries extends ReservationSeries
 	{
 		$removed = parent::RemoveInstance($reservation);
 
-		if ($removed)
-		{
-			$this->AddEvent(new InstanceRemovedEvent($reservation, $this));
-			$this->_deleteRequestIds[] = $reservation->ReservationId();
-		}
+		$this->AddEvent(new InstanceRemovedEvent($reservation, $this));
+		$this->_deleteRequestIds[] = $reservation->ReservationId();
 
 		return $removed;
 	}

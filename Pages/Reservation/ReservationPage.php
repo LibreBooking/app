@@ -261,13 +261,14 @@ abstract class ReservationPage extends Page implements IReservationPage
 	}
 
 	/**
-	 * @param $resource IResource
+	 * @param $resource IBookableResource
 	 * @return void
 	 */
 	public function SetReservationResource($resource)
 	{
 		$this->Set('ResourceName', $resource->GetName());
 		$this->Set('ResourceId', $resource->GetId());
+		$this->Set('Resource', $resource);
 	}
 
 	public function SetScheduleId($scheduleId)

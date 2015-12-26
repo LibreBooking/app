@@ -21,7 +21,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 <div id="page-reservation">
 	<div id="reservation-box">
-		<form id="form-reservation" method="post" enctype="multipart/form-data" role="form" >
+		<form id="form-reservation" method="post" enctype="multipart/form-data" role="form">
 
 			<div class="row">
 				<div class="col-m-6 col-xs-12 col-top reservationHeader">
@@ -116,9 +116,10 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 								<div id="additionalResources">
 									{foreach from=$AvailableResources item=resource}
 										{if is_array($AdditionalResourceIds) && in_array($resource->Id, $AdditionalResourceIds)}
-											<p><a href="#" class="resourceDetails">{$resource->Name}</a><input
-														class="resourceId" type="hidden"
-														name="{FormKeys::ADDITIONAL_RESOURCES}[]" value="{$resource->Id}"/></p>
+											<div>
+												<a href="#" class="resourceDetails">{$resource->Name}</a>
+												<input class="resourceId" type="hidden" name="{FormKeys::ADDITIONAL_RESOURCES}[]" value="{$resource->Id}"/>
+											</div>
 										{/if}
 									{/foreach}
 								</div>
@@ -222,28 +223,37 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			{if $RemindersEnabled}
 				<div class="row">
 					<div class="col-xs-12 reservationReminders">
+						<div>
+						<label for="startReminderEnabled">{translate key=SendReminder}</label>
+						</div>
 						<div id="reminderOptionsStart">
-							<label for="startReminderEnabled">{translate key=SendReminder}</label>
-							<input type="checkbox" id="startReminderEnabled" class="reminderEnabled" {formname key=START_REMINDER_ENABLED}/>
-							<input type="number" min="0" max="999" size="3" maxlength="3" value="15"
-								   class="reminderTime form-control inline-block" {formname key=START_REMINDER_TIME}/>
-							<select class="reminderInterval form-control inline-block" {formname key=START_REMINDER_INTERVAL}>
-								<option value="{ReservationReminderInterval::Minutes}">{translate key=minutes}</option>
-								<option value="{ReservationReminderInterval::Hours}">{translate key=hours}</option>
-								<option value="{ReservationReminderInterval::Days}">{translate key=days}</option>
-							</select>
-							<span class="reminderLabel">{translate key=ReminderBeforeStart}</span>
+							<div class="checkbox">
+								<input type="checkbox" id="startReminderEnabled" class="reminderEnabled" {formname key=START_REMINDER_ENABLED}/>
+								<label for="startReminderEnabled">
+									<input type="number" min="0" max="999" size="3" maxlength="3" value="15"
+										   class="reminderTime form-control input-sm inline-block" {formname key=START_REMINDER_TIME}/>
+									<select class="reminderInterval form-control input-sm inline-block" {formname key=START_REMINDER_INTERVAL}>
+										<option value="{ReservationReminderInterval::Minutes}">{translate key=minutes}</option>
+										<option value="{ReservationReminderInterval::Hours}">{translate key=hours}</option>
+										<option value="{ReservationReminderInterval::Days}">{translate key=days}</option>
+									</select>
+									<span class="reminderLabel">{translate key=ReminderBeforeStart}</span></label>
+							</div>
 						</div>
 						<div id="reminderOptionsEnd">
-							<input type="checkbox" class="reminderEnabled" {formname key=END_REMINDER_ENABLED}/>
-							<input type="number" min="0" max="999" size="3" maxlength="3" value="15"
-								   class="reminderTime form-control inline-block" {formname key=END_REMINDER_TIME}/>
-							<select class="reminderInterval  form-control inline-block" {formname key=END_REMINDER_INTERVAL}>
-								<option value="{ReservationReminderInterval::Minutes}">{translate key=minutes}</option>
-								<option value="{ReservationReminderInterval::Hours}">{translate key=hours}</option>
-								<option value="{ReservationReminderInterval::Days}">{translate key=days}</option>
-							</select>
-							<span class="reminderLabel">{translate key=ReminderBeforeEnd}</span>
+							<div class="checkbox">
+								<input type="checkbox" id="endReminderEnabled" class="reminderEnabled" {formname key=END_REMINDER_ENABLED}/>
+								<label for="endReminderEnabled">
+									<input type="number" min="0" max="999" size="3" maxlength="3" value="15"
+										   class="reminderTime form-control input-sm inline-block" {formname key=END_REMINDER_TIME}/>
+									<select class="reminderInterval form-control input-sm inline-block" {formname key=END_REMINDER_INTERVAL}>
+										<option value="{ReservationReminderInterval::Minutes}">{translate key=minutes}</option>
+										<option value="{ReservationReminderInterval::Hours}">{translate key=hours}</option>
+										<option value="{ReservationReminderInterval::Days}">{translate key=days}</option>
+									</select>
+									<span class="reminderLabel">{translate key=ReminderBeforeEnd}</span></label>
+							</div>
+
 						</div>
 						<div class="clear">&nbsp;</div>
 					</div>
@@ -405,8 +415,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 <script type="text/javascript">
 
-	$(document).ready(function ()
-	{
+	$(document).ready(function () {
 		var scopeOptions = {
 			instance: '{SeriesUpdateScope::ThisInstance}',
 			full: '{SeriesUpdateScope::FullSeries}',
@@ -470,15 +479,14 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			success: reservation.showResponse  // post-submit callback
 		};
 
-		$('#form-reservation').submit(function ()
-		{
+		$('#form-reservation').submit(function () {
 			$(this).ajaxSubmit(ajaxOptions);
 			return false;
 		});
 
 		$('#description').autogrow();
 		$('#userName').bindUserDetails();
-		
+
 		$.blockUI.defaults.css.width = '60%';
 		$.blockUI.defaults.css.left = '20%';
 	});
