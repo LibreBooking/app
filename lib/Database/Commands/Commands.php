@@ -2048,7 +2048,8 @@ class UpdateResourceCommand extends SqlCommand
 								$resourceTypeId,
 								$statusId,
 								$reasonId,
-								TimeInterval $bufferTime)
+								TimeInterval $bufferTime,
+								$color)
 	{
 		parent::__construct(Queries::UPDATE_RESOURCE);
 
@@ -2076,6 +2077,7 @@ class UpdateResourceCommand extends SqlCommand
 		$this->AddParameter(new Parameter(ParameterNames::RESOURCE_STATUS, $statusId));
 		$this->AddParameter(new Parameter(ParameterNames::RESOURCE_STATUS_REASON_ID, $reasonId));
 		$this->AddParameter(new Parameter(ParameterNames::RESOURCE_BUFFER_TIME, $bufferTime->ToDatabase()));
+		$this->AddParameter(new Parameter(ParameterNames::COLOR, $color));
 
 	}
 }

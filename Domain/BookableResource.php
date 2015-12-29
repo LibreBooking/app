@@ -139,6 +139,7 @@ class BookableResource implements IBookableResource
 	protected $_resourceGroupIds = array();
 	protected $_enableCheckIn = false;
 	protected $_autoReleaseMinutes = null;
+	protected $_color;
 
 	/**
 	 * @var array|AttributeValue[]
@@ -239,6 +240,7 @@ class BookableResource implements IBookableResource
 		$resource->WithScheduleAdminGroupId($row[ColumnNames::SCHEDULE_ADMIN_GROUP_ID_ALIAS]);
 		$resource->SetResourceTypeId($row[ColumnNames::RESOURCE_TYPE_ID]);
 		$resource->SetBufferTime($row[ColumnNames::RESOURCE_BUFFER_TIME]);
+		$resource->SetColor($row[ColumnNames::RESERVATION_COLOR]);
 
 		if (isset($row[ColumnNames::ATTRIBUTE_LIST]))
 		{
@@ -998,5 +1000,34 @@ class BookableResource implements IBookableResource
 	public function WasAutoAssignToggledOn()
 	{
 		return $this->_autoAssignToggledOn;
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function HasColor()
+	{
+		return !empty($this->_color);
+	}
+
+	/**
+	 * @return string|null
+	 */
+	public function GetColor()
+	{
+		return $this->_color;
+	}
+
+	/**
+	 * @param string $color
+	 */
+	public function SetColor($color)
+	{
+		if (BookedStringHelper::StartsWith($color, '#'))
+		{
+			$color = trim($color, '#');
+		}
+
+		$this->_color = $color;
 	}
 }

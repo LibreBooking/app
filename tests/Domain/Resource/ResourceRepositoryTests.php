@@ -89,6 +89,7 @@ class ResourceRepositoryTests extends TestBase
 		$resourceTypeId = 111;
 		$reasonId = 19;
 		$bufferTime = 88881;
+		$color = '#cccccc';
 
 		$resource = new BookableResource($id,
 										 $name,
@@ -112,6 +113,7 @@ class ResourceRepositoryTests extends TestBase
 		$resource->SetSortOrder($sortOrder);
 		$resource->SetResourceTypeId($resourceTypeId);
 		$resource->SetBufferTime($bufferTime);
+		$resource->SetColor($color);
 
 		$publicId = $resource->GetPublicId();
 
@@ -141,7 +143,8 @@ class ResourceRepositoryTests extends TestBase
 			$resourceTypeId,
 			ResourceStatus::AVAILABLE,
 			$reasonId,
-			new TimeInterval($bufferTime));
+			new TimeInterval($bufferTime),
+			'cccccc');
 
 		$actualUpdateResourceCommand = $this->db->_Commands[0];
 

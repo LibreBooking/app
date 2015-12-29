@@ -1295,6 +1295,12 @@ span.error {
 .resourceDetails .resourceImage {
   text-align: center;
 }
+.resourceDetails .resourceColorPicker {
+  height: 45px;
+  width: 75%;
+  border: solid 1px #000000;
+  padding: 0;
+}
 .admin-panel .title {
   font-size: 1.4em;
   font-weight: bold;

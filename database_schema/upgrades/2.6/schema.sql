@@ -82,3 +82,5 @@ ALTER TABLE `quotas` ADD COLUMN `scope` VARCHAR(25);
 
 ALTER TABLE `resources` ADD COLUMN `enable_check_in` tinyint(1) unsigned NOT NULL DEFAULT 0;
 ALTER TABLE `resources` ADD COLUMN `auto_release_minutes` SMALLINT unsigned;
+
+ALTER TABLE `resources` ADD COLUMN `color` varchar(10);

@@ -51,6 +51,7 @@ class ManageResourcesActions
 	const ActionAddGroupPermission = 'addGroupPermission';
 	const ActionRemoveGroupPermission = 'removeGroupPermission';
 	const ActionChangeResourceGroups = 'changeResourceGroups';
+	const ActionChangeColor = 'changeColor';
 }
 
 class ManageResourcesPresenter extends ActionPresenter
@@ -135,6 +136,7 @@ class ManageResourcesPresenter extends ActionPresenter
 		$this->AddAction(ManageResourcesActions::ActionAddGroupPermission, 'AddGroupPermission');
 		$this->AddAction(ManageResourcesActions::ActionRemoveGroupPermission, 'RemoveGroupPermission');
 		$this->AddAction(ManageResourcesActions::ActionChangeResourceGroups, 'ChangeResourceGroups');
+		$this->AddAction(ManageResourcesActions::ActionChangeColor, 'ChangeColor');
 	}
 
 	public function PageLoad()
@@ -718,6 +720,16 @@ class ManageResourcesPresenter extends ActionPresenter
 
 		$groups = $this->resourceRepository->GetResourceGroups();
 		$this->page->BindUpdatedResourceGroups($resource, $groups->GetGroupList(false));
+	}
+
+	public function ChangeColor()
+	{
+		$color = $this->page->GetColor();
+		$resource = $this->resourceRepository->LoadById($this->page->GetResourceId());
+
+		$resource->SetColor($color);
+
+		$this->resourceRepository->Update($resource);
 	}
 
 	protected function LoadValidators($action)

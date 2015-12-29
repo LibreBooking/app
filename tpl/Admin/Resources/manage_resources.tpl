@@ -139,24 +139,32 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			{foreach from=$Resources item=resource}
 				{assign var=id value=$resource->GetResourceId()}
 				<div class="resourceDetails" data-resourceId="{$id}">
-					<div class="col-xs-5">
+					<div class="col-xs-12 col-sm-5">
 						<input type="hidden" class="id" value="$id}"/>
 
-						<div class="col-xs-3 resourceImage">
-							{if $resource->HasImage()}
-								<img src="{resource_image image=$resource->GetImage()}" alt="Resource Image"
-									 class="image"/>
-								<br/>
-								<a class="update imageButton" href="#">{translate key='Change'}</a>
-								|
-								<a class="update removeImageButton" href="#">{translate key='Remove'}</a>
-								{indicator id=removeImageIndicator}
-							{else}
-								<div class="noImage"><span class="fa fa-image"></span></div>
-								<a class="update imageButton" href="#">{translate key='AddImage'}</a>
-							{/if}
+						<div class="col-sm-3 col-xs-6 resourceImage">
+							<div class="margin-bottom-25">
+								{if $resource->HasImage()}
+									<img src="{resource_image image=$resource->GetImage()}" alt="Resource Image" class="image"/>
+									<br/>
+									<a class="update imageButton" href="#">{translate key='Change'}</a>
+									|
+									<a class="update removeImageButton" href="#">{translate key='Remove'}</a>
+									{indicator id=removeImageIndicator}
+								{else}
+									<div class="noImage"><span class="fa fa-image"></span></div>
+									<a class="update imageButton" href="#">{translate key='AddImage'}</a>
+								{/if}
+							</div>
+							<div>
+								{translate key=ResourceColor}
+								<input class="resourceColorPicker" type="color"
+									   value='#{if $resource->HasColor()}{$resource->GetColor()}{else}ffffff{/if}' alt="{translate key=ResourceColor}"
+									   title="{translate key=ResourceColor}"/>
+								<a href="#" class="update clearColor">{translate key=Remove}</a>
+							</div>
 						</div>
-						<div class="col-xs-9">
+						<div class="col-sm-9 col-xs-6">
 							<div>
 							<span class="title" data-type="text" data-pk="{$id}"
 								  data-name="{FormKeys::RESOURCE_NAME}">{$resource->GetName()|escape}</span>
@@ -303,7 +311,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 						</div>
 					</div>
 
-					<div class="col-xs-7">
+					<div class="col-xs-12 col-sm-7">
 						<div class="col-xs-6">
 							<h5 class="inline">{translate key=Duration}</h5>
 							<a href="#" class="inline update changeDuration">
@@ -649,14 +657,14 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 						<div class="editAutoAssign">
 							<div class="checkbox">
-								<input type="checkbox" {formname key=AUTO_ASSIGN} id="autoAssign" value="1" />
+								<input type="checkbox" {formname key=AUTO_ASSIGN} id="autoAssign" value="1"/>
 								<label for="autoAssign">{translate key=ResourcePermissionAutoGranted}</label>
 							</div>
 						</div>
 						<div class="no-show" id="autoAssignRemoveAllPermissions">
 							<div class="checkbox">
 								<input type="checkbox" {formname key=AUTO_ASSIGN_CLEAR}
-									   id="autoAssignRemoveAllPermissionsChk" value="1" />
+									   id="autoAssignRemoveAllPermissionsChk" value="1"/>
 								<label for="autoAssignRemoveAllPermissionsChk">{translate key=RemoveExistingPermissions}</label>
 							</div>
 						</div>

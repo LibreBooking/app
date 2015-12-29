@@ -544,6 +544,7 @@ class en_us extends Language
 		$strings['RemoveExistingPermissions'] = 'Remove existing permissions?';
 		$strings['Continue'] = 'Continue';
 		$strings['WeNeedYourEmailAddress'] = 'We need your email address to reserve';
+		$strings['ResourceColor'] = 'Resource Color';
 		// End Strings
 
 		// Install

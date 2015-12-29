@@ -211,24 +211,12 @@ class ReservationSlot implements IReservationSlot
 
 	public function Color()
 	{
-		$color = $this->_reservation->UserPreferences->Get(UserPreferences::RESERVATION_COLOR);
-		if (!empty($color))
-		{
-			return "#$color";
-		}
-
-		return null;
+		return $this->_reservation->GetColor();
 	}
 
 	public function TextColor()
 	{
-		$color = $this->Color();
-		if (!empty($color))
-		{
-			return new ContrastingColor($color);
-		}
-
-		return null;
+		return $this->_reservation->GetTextColor();
 	}
 
 	/**

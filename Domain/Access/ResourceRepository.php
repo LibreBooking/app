@@ -233,7 +233,8 @@ class ResourceRepository implements IResourceRepository
 				$resource->GetResourceTypeId(),
 				$resource->GetStatusId(),
 				$resource->GetStatusReasonId(),
-				$resource->GetBufferTime()
+				$resource->GetBufferTime(),
+				$resource->GetColor()
 		);
 
 		$db->Execute($updateResourceCommand);
