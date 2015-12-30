@@ -250,6 +250,7 @@ abstract class Page implements IPage
 		if ($_SERVER['REQUEST_METHOD'] == 'POST' && (empty($token) || $token != $session->CSRFToken))
 		{
 			Log::Error('Possible CSRF attack. Submitted token=%s, Expected token=%s', $token, $session->CSRFToken);
+			http_response_code(500);
 			die('Insecure request');
 		}
 	}

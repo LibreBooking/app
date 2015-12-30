@@ -987,7 +987,7 @@ class Queries
 			resource_type_id = @resource_type_id,
 			status_id = @status_id,
 			resource_status_reason_id = @resource_status_reason_id,
-			buffer_time = @buffer_time
+			buffer_time = @buffer_time,
 			color = @color
 		WHERE
 			resource_id = @resourceid';

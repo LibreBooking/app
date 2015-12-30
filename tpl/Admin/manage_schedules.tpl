@@ -350,6 +350,10 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			$.fn.editable.defaults.mode = 'popup';
 			$.fn.editable.defaults.toggle = 'manual';
 			$.fn.editable.defaults.emptyclass = '';
+			$.fn.editable.defaults.params = function(params) {
+				params.CSRF_TOKEN = $('#csrf_token').val();
+				return params;
+			};
 
 			var updateUrl = '{$smarty.server.SCRIPT_NAME}?action=';
 
