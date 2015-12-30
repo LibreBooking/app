@@ -18,10 +18,10 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 *}
 <div class="form-group checkbox-align {if !$searchmode && $attribute->Required()}has-feedback{/if} {$class}">
 {if $readonly}
-	<label class="customAttribute" for="{$attributeName}">{$attribute->Label()|escape}</label>
+	<label class="customAttribute" for="{$attributeName}">{$attribute->Label()}</label>
 	<span class="attributeValue {$class}">{if $attribute->Value() == "1"}{translate key='True'}{else}{translate key='False'}{/if}</span>
 {elseif $searchmode}
-	<label class="customAttribute" for="{$attributeName}">{$attribute->Label()|escape}</label>
+	<label class="customAttribute" for="{$attributeName}">{$attribute->Label()}</label>
 	<select id="{$attributeName}" name="{$attributeName}" class="customAttribute form-control {$inputClass}">
 		<option value="">--</option>
 		<option value="0" {if $attribute->Value() == "0"}selected="selected"{/if}>{translate key=No}</option>
@@ -30,7 +30,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 {else}
 	<div class="checkbox">
 	<input type="checkbox" value="1" id="{$attributeName}" name="{$attributeName}" {if $attribute->Value() == "1"}checked="checked"{/if} class="{$inputClass}" />
-	<label class="customAttribute" for="{$attributeName}">{$attribute->Label()|escape}</label>
+	<label class="customAttribute" for="{$attributeName}">{$attribute->Label()}</label>
 	{if $attribute->Required() && !$searchmode}
 	<i class="glyphicon glyphicon-asterisk form-control-feedback" data-bv-icon-for="{$attributeName}"></i>
 	{/if}

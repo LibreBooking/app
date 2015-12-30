@@ -17,11 +17,11 @@ You should have received a copy of the GNU General Public License
 along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 *}
 <div class="form-group {if !$searchmode && $attribute->Required()}has-feedback{/if} {$class}">
-	<label class="customAttribute" for="{$attributeName}">{$attribute->Label()|escape}</label>
+	<label class="customAttribute" for="{$attributeName}">{$attribute->Label()}</label>
 	{if $readonly}
-		<span class="attributeValue {$class}">{$attribute->Value()|escape}</span>
+		<span class="attributeValue {$class}">{$attribute->Value()}</span>
 	{else}
-		<input type="text" id="{$attributeName}" name="{$attributeName}" value="{$attribute->Value()|escape}"
+		<input type="text" id="{$attributeName}" name="{$attributeName}" value="{$attribute->Value()}"
 			   class="customAttribute form-control {$inputClass}" {if $attribute->Required() && !$searchmode}required{/if}/>
 		{if $attribute->Required() && !$searchmode}
 		<i class="glyphicon glyphicon-asterisk form-control-feedback" data-bv-icon-for="{$attributeName}"></i>

@@ -33,6 +33,7 @@ class AttributeControl extends Control
 		$templates[CustomAttributeTypes::MULTI_LINE_TEXTBOX] = 'MultiLineTextbox.tpl';
 		$templates[CustomAttributeTypes::SELECT_LIST] = 'SelectList.tpl';
 		$templates[CustomAttributeTypes::SINGLE_LINE_TEXTBOX] = 'SingleLineTextbox.tpl';
+		$templates[CustomAttributeTypes::DATETIME] = 'Date.tpl';
 
 		/** @var $attribute Attribute|CustomAttribute */
 		$attribute = $this->Get('attribute');

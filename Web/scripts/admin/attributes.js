@@ -225,7 +225,7 @@ function AttributeManagement(opts) {
 		$('.editAttributeType', elements.editDialog).hide();
 		$('#editType' + selectedAttribute.type).show();
 
-		$('#editAttributeLabel').val(selectedAttribute.label);
+		$('#editAttributeLabel').val(HtmlDecode(selectedAttribute.label));
 		$('#editAttributeRequired').prop('checked', selectedAttribute.required);
 		$('#editAttributeUnique').prop('checked', selectedAttribute.unique);
 		$('#editAttributeAdminOnly').prop('checked', selectedAttribute.adminOnly);

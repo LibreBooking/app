@@ -183,7 +183,7 @@ class CustomAttribute
 	 */
 	public function EntityIds()
 	{
-		return empty($this->entityIds) ? null : $this->entityIds;
+		return empty($this->entityIds) ? array() : $this->entityIds;
 	}
 
 	/**
@@ -191,7 +191,7 @@ class CustomAttribute
 	 */
 	public function AddedEntityIds()
 	{
-		return $this->addedEntityIds;
+		return empty($this->addedEntityIds) ? array() : $this->addedEntityIds;
 	}
 
 	/**
@@ -199,15 +199,15 @@ class CustomAttribute
 	 */
 	public function RemovedEntityIds()
 	{
-		return $this->removedEntityIds;
+		return empty($this->removedEntityIds) ? array() : $this->removedEntityIds;
 	}
 
 	/**
-	 * @return null|string
+	 * @return array|string[]
 	 */
-	public function EntityDescription()
+	public function EntityDescriptions()
 	{
-		return $this->entityDescriptions;
+		return empty($this->entityDescriptions) ? array() : $this->entityDescriptions;
 	}
 
 	/**
@@ -287,7 +287,7 @@ class CustomAttribute
 	{
 		if ($this->UniquePerEntity())
 		{
-			return $this->entityIds() == $entityId;
+			return $this->EntityIds() == $entityId;
 		}
 		return true;
 	}
