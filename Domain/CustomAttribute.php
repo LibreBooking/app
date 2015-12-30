@@ -24,6 +24,7 @@ class CustomAttributeTypes
 	const MULTI_LINE_TEXTBOX = 2;
 	const SELECT_LIST = 3;
 	const CHECKBOX = 4;
+	const DATETIME = 5;
 }
 
 class CustomAttributeCategory
