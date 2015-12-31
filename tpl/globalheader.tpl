@@ -87,6 +87,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 	{if $Timepicker}
 		{jsfile src="js/jquery.timePicker.min.js"}
 	{/if}
+	{jsfile src="js/jquery-ui-timepicker-addon.js"}
 	{jsfile src="phpscheduleit.js"}
 	<!-- End JavaScript -->
 
@@ -132,6 +133,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 	{if $Timepicker}
 		{cssfile src="scripts/css/timePicker.css" rel="stylesheet"}
 	{/if}
+	{cssfile src="scripts/css/jquery-ui-timepicker-addon.css"}
 	{cssfile src="nav.css"}
 	{cssfile src="booked.css"}
 	{if $cssFiles neq ''}

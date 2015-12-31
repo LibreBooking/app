@@ -465,6 +465,15 @@ class Date
 	}
 
 	/**
+	 * @param int $years
+	 * @return Date
+	 */
+	public function AddYears($years)
+	{
+		return new Date($this->Format(self::SHORT_FORMAT) . " +" . $years . " years", $this->timezone);
+	}
+
+	/**
 	 * @param int $minutes
 	 * @return Date
 	 */

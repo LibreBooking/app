@@ -18,6 +18,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 *}
 
 {if $attribute->AppliesToEntity($id)}
+	{assign var=attributeId value="inline{$attribute->Id()}{$id}"}
 	<div class="updateCustomAttribute">
 		{assign var=datatype value='text'}
 		{if $attribute->Type() == CustomAttributeTypes::CHECKBOX}
@@ -26,9 +27,13 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 			{assign var=datatype value='textarea'}
 		{elseif $attribute->Type() == CustomAttributeTypes::SELECT_LIST}
 			{assign var=datatype value='select'}
+		{elseif $attribute->Type() == CustomAttributeTypes::DATETIME}
+			{assign var=datatype value='combodate'}
+			{assign var=value value={formatdate date=$value key=fullcalendar}}
 		{/if}
 		<label>{$attribute->Label()}</label>
 		<span class="inlineAttribute"
+			  id="inline{$attributeId}"
 			  data-type="{$datatype}"
 			  data-pk="{$id}"
 			  data-value="{$value}"
@@ -44,7 +49,30 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 				{/if}
 				>
 		</span>
-		<a class="update changeAttribute" href="#"><span
-					class="fa fa-pencil-square-o"></span></a>
+		{if $attribute->Type() == CustomAttributeTypes::DATETIME}
+			<script type="text/javascript">
+				$(function() {
+					$('#inline{$attributeId}').editable({
+						url: "{$url}",
+						viewformat: "{Resources::GetInstance()->GetDateFormat('momentjs_datetime')}",
+						format: "YYYY-M-D H:m",
+						template: "{Resources::GetInstance()->GetDateFormat('momentjs_datetime')}",
+						combodate: {
+							minYear: "{Date::Now()->AddYears(-20)->Format('Y')}",
+							maxYear: "{Date::Now()->AddYears(20)->Format('Y')}",
+							firstItem: "none"
+						},
+						emptytext: '-',
+						emptyclass: '',
+						toggle : 'manual',
+						params : function(params) {
+							params.CSRF_TOKEN = $('#csrf_token').val();
+							return params;
+						}
+					});
+				});
+			</script>
+		{/if}
+		<a class="update changeAttribute" href="#"><span class="fa fa-pencil-square-o"></span></a>
 	</div>
 {/if}

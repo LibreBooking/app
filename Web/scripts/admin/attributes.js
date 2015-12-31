@@ -184,7 +184,7 @@ function AttributeManagement(opts) {
 			$('.attributePossibleValues').hide();
 		}
 
-		if (selectedType == opts.selectList)
+		if (selectedType == opts.selectList || selectedType == opts.date)
 		{
 			$('.attributeValidationExpression').hide();
 		}

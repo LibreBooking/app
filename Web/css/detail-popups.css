@@ -388,6 +388,9 @@ input.mid-number {
   cursor: pointer;
   color: #000;
 }
+.qtip {
+  max-width: none;
+}
 @media (min-width: 768px) {
   .pull-left-sm {
     float: left;

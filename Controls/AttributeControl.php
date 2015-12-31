@@ -46,8 +46,10 @@ class AttributeControl extends Control
 		}
 
 		$prefix = $this->Get('namePrefix');
+		$idPrefix = $this->Get('idPrefix');
 
 		$this->Set('attributeName', sprintf('%s%s[%s]', $prefix, FormKeys::ATTRIBUTE_PREFIX, $attribute->Id()));
+		$this->Set('attributeId', sprintf('%s%s%s', $idPrefix, FormKeys::ATTRIBUTE_PREFIX, $attribute->Id()));
 		$this->Display('Controls/Attributes/' . $templates[$attribute->Type()]);
 	}
 }

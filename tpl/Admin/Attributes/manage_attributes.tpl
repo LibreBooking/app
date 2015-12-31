@@ -54,6 +54,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 								<option value="{CustomAttributeTypes::MULTI_LINE_TEXTBOX}">{translate key=$Types[CustomAttributeTypes::MULTI_LINE_TEXTBOX]}</option>
 								<option value="{CustomAttributeTypes::SELECT_LIST}">{translate key=$Types[CustomAttributeTypes::SELECT_LIST]}</option>
 								<option value="{CustomAttributeTypes::CHECKBOX}">{translate key=$Types[CustomAttributeTypes::CHECKBOX]}</option>
+								<option value="{CustomAttributeTypes::DATETIME}">{translate key=$Types[CustomAttributeTypes::DATETIME]}</option>
 							</select>
 						</div>
 						<div class="textBoxOptions">
@@ -288,6 +289,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 				singleLine: '{CustomAttributeTypes::SINGLE_LINE_TEXTBOX}',
 				multiLine: '{CustomAttributeTypes::MULTI_LINE_TEXTBOX}',
 				selectList: '{CustomAttributeTypes::SELECT_LIST}',
+				date: '{CustomAttributeTypes::DATETIME}',
 				checkbox: '{CustomAttributeTypes::CHECKBOX}',
 				allText: "{translate key=All|escape:'javascript'}",
 				categories: {

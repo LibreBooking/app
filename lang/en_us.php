@@ -45,6 +45,8 @@ class en_us extends Language
 		$dates['period_time'] = 'g:i A';
 		$dates['mobile_reservation_date'] = 'n/j g:i A';
 		$dates['general_date_js'] = 'mm/dd/yy';
+		$dates['general_time_js'] = 'h:mm tt';
+		$dates['momentjs_datetime'] = 'M/D/YY h:mm A';
 		$dates['calendar_time'] = 'h:mmt';
 		$dates['calendar_dates'] = 'M/d';
 
@@ -545,6 +547,7 @@ class en_us extends Language
 		$strings['Continue'] = 'Continue';
 		$strings['WeNeedYourEmailAddress'] = 'We need your email address to reserve';
 		$strings['ResourceColor'] = 'Resource Color';
+		$strings['DateTime'] = 'Date Time';
 		// End Strings
 
 		// Install
