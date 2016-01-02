@@ -160,7 +160,7 @@ ul.jqtree-tree .group-resource .jqtree-title {
   padding-top: 8px;
 }
 .reservationLength .form-group {
-  margin-bottom: 0;
+  margin: 5px 0;
 }
 #reservationCreated .approvalMessage,
 #reservationUpdated .approvalMessage {

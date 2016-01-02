@@ -138,7 +138,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 					<div class="col-xs-12 reservationDates">
 						<div class="col-md-6 no-padding-left">
-							<div class="form-group">
+							<div class="form-group no-margin-bottom">
 								<label for="BeginDate" class="reservationDate">{translate key='BeginDate'}</label>
 								<input type="text" id="BeginDate" class="form-control inline-block dateinput"
 									   value="{formatdate date=$StartDate}"/>
@@ -158,7 +158,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 							</div>
 						</div>
 						<div class="col-md-6 no-padding-left">
-							<div class="form-group">
+							<div class="form-group no-margin-bottom">
 								<label for="EndDate" class="reservationDate">{translate key='EndDate'}</label>
 								<input type="text" id="EndDate" class="form-control inline-block dateinput" value="{formatdate date=$EndDate}"/>
 								<input type="hidden" id="formattedEndDate" {formname key=END_DATE}
@@ -179,11 +179,11 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 								</select>
 							</div>
 						</div>
+
 					</div>
-					<div class="col-xs-12 reservationLength">
+					<div class="col-md-12 reservationLength">
 						<div class="form-group">
 							<span class="like-label">{translate key=ReservationLength}</span>
-
 							<div class="durationText">
 								<span id="durationDays">0</span> {translate key=days},
 								<span id="durationHours">0</span> {translate key=hours}
@@ -217,6 +217,11 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 					{else}
 						{include file="Reservation/private-participation.tpl"}
 					{/if}
+				</div>
+			</div>
+
+			<div class="row">
+				<div id="custom-attributes-placeholder" class="col-xs-12">
 				</div>
 			</div>
 
@@ -259,11 +264,6 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 					</div>
 				</div>
 			{/if}
-
-			<div class="row">
-				<div id="custom-attributes-placeholder" class="col-xs-12">
-				</div>
-			</div>
 
 			{if $UploadsEnabled}
 				<div class="row">

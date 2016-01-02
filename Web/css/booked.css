@@ -162,6 +162,12 @@ div.center {
 .no-padding-right {
   padding-right: 0;
 }
+.no-padding-bottom {
+  padding-bottom: 0;
+}
+.no-padding-top {
+  padding-top: 0;
+}
 .no-margin {
   margin: 0;
 }
@@ -170,6 +176,12 @@ div.center {
 }
 .no-margin-right {
   margin-right: 0;
+}
+.no-margin-bottom {
+  margin-bottom: 0;
+}
+.no-margin-top {
+  margin-top: 0;
 }
 .default-box-footer {
   padding: 5px 0 5px 10px;
@@ -1176,7 +1188,7 @@ ul.jqtree-tree .group-resource .jqtree-title {
   padding-top: 8px;
 }
 .reservationLength .form-group {
-  margin-bottom: 0;
+  margin: 5px 0;
 }
 #reservationCreated .approvalMessage,
 #reservationUpdated .approvalMessage {
@@ -1522,9 +1534,11 @@ ul.jqtree-tree .group-resource .jqtree-title {
   width: 35px;
   height: 35px;
 }
-#repeatDiv,
-#repeatDiv div {
+#repeatDiv {
   padding: 0;
+}
+#repeatDiv div {
+  padding: 2px 0;
 }
 #repeatOnWeeklyDiv label {
   min-width: 30px;

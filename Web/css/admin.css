@@ -266,9 +266,11 @@ ul.jqtree-tree .group-resource .jqtree-title {
   width: 35px;
   height: 35px;
 }
-#repeatDiv,
-#repeatDiv div {
+#repeatDiv {
   padding: 0;
+}
+#repeatDiv div {
+  padding: 2px 0;
 }
 #repeatOnWeeklyDiv label {
   min-width: 30px;
