@@ -394,11 +394,12 @@ class ReservationViewRepositoryTests extends TestBase
 		$reservationItemView = new ReservationItemView();
 		$reservationItemView->ResourceColor = 'ffffff';
 
-		$this->assertEquals('#ffffff', $reservationItemView->Color(), 'uses reservation color if no user color defined');
+		$this->assertEquals('#ffffff', $reservationItemView->GetColor(), 'uses reservation color if no user color defined');
 
+		$reservationItemView = new ReservationItemView();
 		$reservationItemView->UserPreferences = $preferences;
 
-		$this->assertEquals('#000000', $reservationItemView->Color(), 'uses user color if defined');
+		$this->assertEquals('#000000', $reservationItemView->GetColor(), 'uses user color if defined');
 	}
 
 	private function GetParticipantRow($reservationId, $userId, $fname, $lname, $email, $levelId)
