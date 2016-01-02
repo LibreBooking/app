@@ -40,6 +40,10 @@ $(function(){
 	  		altField: "#{$AltId}",
 	  	 	altFormat: '{$AltFormat}'
 		  {/if}
+		  {if $DefaultDate}
+			,
+			defaultDate: '{$DefaultDate->Format("m/d/y")}'
+		{/if}
   {rdelim});
 
   {if $AltId neq ''}
