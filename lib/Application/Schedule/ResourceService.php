@@ -174,7 +174,8 @@ class ResourceService implements IResourceService
 											  $resource->GetRequiresApproval(),
 											  $resource->IsCheckInEnabled(),
 											  $resource->IsAutoReleased(),
-											  $resource->GetAutoReleaseMinutes());
+											  $resource->GetAutoReleaseMinutes(),
+											  $resource->GetColor());
 		}
 
 		return $resourceDtos;

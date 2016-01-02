@@ -1220,7 +1220,7 @@ class ReservationItemView implements IReservedItemView
 		}
 		if (isset($row[ColumnNames::RESERVATION_COLOR]))
 		{
-			$view->ResourceColor = $row[ColumnNames::END_REMINDER_MINUTES_PRIOR];
+			$view->ResourceColor = $row[ColumnNames::RESERVATION_COLOR];
 		}
 
 		return $view;
@@ -1466,7 +1466,7 @@ class ReservationItemView implements IReservedItemView
 			}
 			elseif(!empty($resourceColor))
 			{
-				$this->_color = "#$resourceColor";
+				$this->_color = "$resourceColor";
 			}
 			else
 			{

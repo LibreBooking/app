@@ -28,4 +28,4 @@ require_once(ROOT_DIR . 'lib/Common/PluginManager.php');
 require_once(ROOT_DIR . 'lib/Common/ErrorMessages.php');
 require_once(ROOT_DIR . 'lib/Common/Logging/Log.php');
 require_once(ROOT_DIR . 'lib/Common/Logging/ExceptionHandler.php');
-?>
+require_once(ROOT_DIR . 'lib/Common/ContrastingColor.php');

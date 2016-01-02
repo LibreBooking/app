@@ -284,6 +284,16 @@ a.remove {
 	color: @muted-red;
 }
 
+.resourceName {
+  .rounded(2px);
+  padding:1px;
+  display:inline-block;
+  margin-right:2px;
+  a::after {
+    content: '  ';
+  }
+}
+
 #page-view-reservation {
   .participationAction {margin-bottom:5px;}
 }

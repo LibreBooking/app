@@ -369,6 +369,7 @@ function ResourceManagement(opts) {
 		ConfigureAsyncForm(elements.addGroupForm, defaultSubmitCallback(elements.addGroupForm), changeGroups, errorHandler);
 		ConfigureAsyncForm(elements.removeGroupForm, defaultSubmitCallback(elements.removeGroupForm), changeGroups, errorHandler);
 		ConfigureAsyncForm(elements.resourceGroupForm, defaultSubmitCallback(elements.resourceGroupForm), null, onResourceGroupsSaved);
+		ConfigureAsyncForm(elements.colorForm, defaultSubmitCallback(elements.colorForm), function(){});
 	};
 
 	ResourceManagement.prototype.add = function (resource) {

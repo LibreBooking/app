@@ -159,7 +159,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 							<div>
 								{translate key=ResourceColor}
 								<input class="resourceColorPicker" type="color"
-									   value='#{if $resource->HasColor()}{$resource->GetColor()}{else}ffffff{/if}' alt="{translate key=ResourceColor}"
+									   value='{if $resource->HasColor()}{$resource->GetColor()}{else}#ffffff{/if}' alt="{translate key=ResourceColor}"
 									   title="{translate key=ResourceColor}"/>
 								<a href="#" class="update clearColor">{translate key=Remove}</a>
 							</div>
@@ -1139,6 +1139,10 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			</div>
 		</form>
 	</div>
+
+	<form id="colorForm" method="post" ajaxAction="{ManageResourcesActions::ActionChangeColor}">
+		<input type="hidden" id="reservationColor" {formname key=RESERVATION_COLOR} />
+	</form>
 
 	{csrf_token}
 

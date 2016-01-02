@@ -189,10 +189,12 @@ function Reservation(opts) {
 
 				var checkbox = label.find('input');
 
-				if (node.type == 'resource')
+				if (node.type === 'resource')
 				{
 					checkbox.attr('resource-id', node.resource_id);
 					checkbox.attr('group-id', node.group_id);
+					checkbox.attr('reservation-color', node.color);
+					checkbox.attr('reservation-text-color', node.textColor);
 					checkbox.addClass('additionalResourceCheckbox');
 				}
 				else
@@ -286,7 +288,7 @@ function Reservation(opts) {
 		}
 		var x = 'accessory-id=' + id + ',quantity=' + quantity + ',name=' + encodeURIComponent(name);
 
-		elements.accessoriesList.append('<p accessoryId="' + id + '"><span class="badge quantity">' + quantity + '</span> ' + name + '<input type="hidden" name="' + options.accessoryListInputId + '" value="' + x + '"/></p>');
+		elements.accessoriesList.append('<div accessoryId="' + id + '"><span class="badge quantity">' + quantity + '</span> ' + name + '<input type="hidden" name="' + options.accessoryListInputId + '" value="' + x + '"/></div>');
 	};
 
 	var AddResources = function () {
@@ -320,6 +322,8 @@ function Reservation(opts) {
 			$.each(checkboxes, function (i, checkbox) {
 				var checkedResourceId = $(checkbox).attr('resource-id');
 				var checkedResourceName = $(checkbox).parent().text();
+				var color = $(checkbox).attr('reservation-color');
+				var textColor = $(checkbox).attr('reservation-text-color');
 
 				if (i == 0)
 				{
@@ -327,7 +331,7 @@ function Reservation(opts) {
 					resourceIdHdn.val(checkedResourceId);
 					return true;
 				}
-				displayDiv.append('<p><a href="#" class="resourceDetails">' + checkedResourceName + '</a><input class="resourceId" type="hidden" name="additionalResources[]" value="' + checkedResourceId + '"/></p>');
+				displayDiv.append('<div class="resourceName" style="background-color:' + color + '"><a href="#" style="color:' + textColor + '" class="resourceDetails">' + checkedResourceName + '</a> <input class="resourceId" type="hidden" name="additionalResources[]" value="' + checkedResourceId + '"/></div>');
 			});
 		}
 
@@ -715,7 +719,6 @@ function Reservation(opts) {
 		elements.userName.text(name);
 		elements.userName.attr('data-userid', id);
 		elements.userId.val(id).trigger('change');
-		;
 
 		participation.removeParticipant(_ownerId);
 		participation.removeInvitee(_ownerId);

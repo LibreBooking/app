@@ -317,7 +317,7 @@ class ResourceRepository implements IResourceRepository
 			$_assignments[] = new ResourceGroupAssignment(0, $r->GetName(), $r->GetResourceId(), $r->GetAdminGroupId(),
 														  $r->GetScheduleId(), $r->GetStatusId(), $r->GetScheduleAdminGroupId(),
 														  $r->GetRequiresApproval(), $r->IsCheckInEnabled(), $r->IsAutoReleased(), $r->GetAutoReleaseMinutes(),
-														  $r->GetMinimumLength(), $r->GetResourceTypeId());
+														  $r->GetMinimumLength(), $r->GetResourceTypeId(), $r->GetColor());
 		}
 
 		while ($row = $groups->GetRow())
@@ -337,7 +337,7 @@ class ResourceRepository implements IResourceRepository
 															  $r->GetResourceId(), $r->GetAdminGroupId(),
 															  $r->GetScheduleId(), $r->GetStatusId(), $r->GetScheduleAdminGroupId(),
 															  $r->GetRequiresApproval(), $r->IsCheckInEnabled(), $r->IsAutoReleased(),
-															  $r->GetAutoReleaseMinutes(), $r->GetMinimumLength(), $r->GetResourceTypeId());
+															  $r->GetAutoReleaseMinutes(), $r->GetMinimumLength(), $r->GetResourceTypeId(), $r->GetColor());
 			}
 		}
 
@@ -654,6 +654,7 @@ class ResourceDto implements IBookableResource
 	 * @param bool $isCheckInEnabled
 	 * @param bool $isAutoReleased
 	 * @param int|null $autoReleaseMinutes
+	 * @param string|null $color
 	 */
 	public function __construct($id,
 								$name,
@@ -667,7 +668,8 @@ class ResourceDto implements IBookableResource
 								$requiresApproval,
 								$isCheckInEnabled,
 								$isAutoReleased,
-								$autoReleaseMinutes
+								$autoReleaseMinutes,
+								$color
 	)
 	{
 		$this->Id = $id;
@@ -683,6 +685,13 @@ class ResourceDto implements IBookableResource
 		$this->IsCheckInEnabled = $isCheckInEnabled;
 		$this->IsAutoReleased = $isAutoReleased;
 		$this->AutoReleaseMinutes = $autoReleaseMinutes;
+		$this->Color = $color;
+		$this->TextColor = '';
+		if (!empty($color))
+		{
+			$textColor = new ContrastingColor($color);
+			$this->TextColor = $textColor->__toString();
+		}
 	}
 
 	/**
@@ -746,6 +755,16 @@ class ResourceDto implements IBookableResource
 	 * @var int|null
 	 */
 	public $AutoReleaseMinutes;
+
+	/**
+	 * @var string|null
+	 */
+	public $Color;
+
+	/**
+	 * @var string|null
+	 */
+	public $TextColor;
 
 	/**
 	 * alias of GetId()
@@ -858,5 +877,21 @@ class ResourceDto implements IBookableResource
 	public function GetAutoReleaseMinutes()
 	{
 		return $this->AutoReleaseMinutes;
+	}
+
+	/**
+	 * @return null|string
+	 */
+	public function GetColor()
+	{
+		return $this->Color;
+	}
+
+	/**
+	 * @return null|string
+	 */
+	public function GetTextColor()
+	{
+		return $this->TextColor;
 	}
 }

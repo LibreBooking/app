@@ -85,7 +85,8 @@ class ResourceGroupTree
 																		 $assignment->GetResourceTypeId(), $assignment->GetAdminGroupId(),
 																		 $assignment->GetScheduleAdminGroupId(), $assignment->GetStatusId(),
 																		 $assignment->GetRequiresApproval(), $assignment->IsCheckInEnabled(),
-																		 $assignment->IsAutoReleased(), $assignment->GetAutoReleaseMinutes());
+																		 $assignment->IsAutoReleased(), $assignment->GetAutoReleaseMinutes(),
+																		 $assignment->GetColor());
 			$this->references[$assignment->group_id]->AddResource($assignment);
 		}
 	}
@@ -260,20 +261,21 @@ class ResourceGroupAssignment implements IBookableResource
 	public $id;
 	public $label;
 	public $resource_id;
+	public $resourceAdminGroupId;
+	public $scheduleId;
+	public $statusId;
+	public $scheduleAdminGroupId;
+	public $requiresApproval;
+	public $isCheckInEnabled;
+	public $isAutoReleased;
+	public $autoReleaseMinutes;
+	public $minLength;
+	public $resourceTypeId;
+	public $color;
+	public $textColor;
 
-	private $resourceAdminGroupId;
-	private $scheduleId;
-	private $statusId;
-	private $scheduleAdminGroupId;
-	private $requiresApproval;
-	private $isCheckInEnabled;
-	private $isAutoReleased;
-	private $autoReleaseMinutes;
-	private $minLength;
-	private $resourceTypeId;
-
-	public function __construct($group_id, $resource_name, $resource_id, $resourceAdminGroupId, $scheduleId, $statusId,
-								$scheduleAdminGroupId, $requiresApproval, $isCheckInEnabled, $isAutoReleased, $autoReleaseMinutes, $minLength, $resourceTypeId)
+	public function __construct($group_id, $resource_name, $resource_id, $resourceAdminGroupId, $scheduleId, $statusId, $scheduleAdminGroupId,
+								$requiresApproval, $isCheckInEnabled, $isAutoReleased, $autoReleaseMinutes, $minLength, $resourceTypeId, $color)
 	{
 		$this->group_id = $group_id;
 		$this->resource_name = $resource_name;
@@ -290,6 +292,13 @@ class ResourceGroupAssignment implements IBookableResource
 		$this->autoReleaseMinutes = $autoReleaseMinutes;
 		$this->minLength = $minLength;
 		$this->resourceTypeId = $resourceTypeId;
+		$this->color = $color;
+		$this->textColor = '';
+		if (!empty($color))
+		{
+			$textColor = new ContrastingColor($color);
+			$this->textColor = $textColor->__toString();
+		}
 	}
 
 	public function GetId()
@@ -355,5 +364,15 @@ class ResourceGroupAssignment implements IBookableResource
 	public function GetResourceTypeId()
 	{
 		return $this->resourceTypeId;
+	}
+
+	public function GetColor()
+	{
+		return $this->color;
+	}
+
+	public function GetTextColor()
+	{
+		return $this->textColor;
 	}
 }

@@ -90,6 +90,16 @@ interface IBookableResource extends IResource
 	 * @return int
 	 */
 	public function GetResourceTypeId();
+
+	/**
+	 * @return null|string
+	 */
+	public function GetColor();
+
+	/**
+	 * @return null|string
+	 */
+	public function GetTextColor();
 }
 
 class BookableResource implements IBookableResource
@@ -140,6 +150,7 @@ class BookableResource implements IBookableResource
 	protected $_enableCheckIn = false;
 	protected $_autoReleaseMinutes = null;
 	protected $_color;
+	protected $_textColor;
 
 	/**
 	 * @var array|AttributeValue[]
@@ -1023,11 +1034,27 @@ class BookableResource implements IBookableResource
 	 */
 	public function SetColor($color)
 	{
-		if (BookedStringHelper::StartsWith($color, '#'))
+		if (empty($color))
 		{
-			$color = trim($color, '#');
+			$this->_color = '';
+			$this->_textColor = '';
+			return;
+		}
+		if (!BookedStringHelper::StartsWith($color, '#'))
+		{
+			$color = '#' .$color;
 		}
 
 		$this->_color = $color;
+		$contrast = new ContrastingColor($color);
+		$this->_textColor = $contrast;
+	}
+
+	/**
+	 * @return null|string
+	 */
+	public function GetTextColor()
+	{
+		return $this->_textColor;
 	}
 }

@@ -107,17 +107,19 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 									{/if}
 								</div>
 
-								<div id="resourceNames" style="display:inline">
-									<a href="#" class="resourceDetails">{$ResourceName}</a>
-									<input class="resourceId" type="hidden" id="primaryResourceId" {formname key=RESOURCE_ID} value="{$ResourceId}"/>
-									<input type="hidden" id="scheduleId" {formname key=SCHEDULE_ID} value="{$ScheduleId}"/>
+								<div id="resourceNames" class="inline">
+									<div class="resourceName" style="background-color:{$Resource->GetColor()};">
+										<a href="#" style="color:{$Resource->GetTextColor()}" class="resourceDetails">{$ResourceName}</a>
+										<input class="resourceId" type="hidden" id="primaryResourceId" {formname key=RESOURCE_ID} value="{$ResourceId}"/>
+										<input type="hidden" id="scheduleId" {formname key=SCHEDULE_ID} value="{$ScheduleId}"/>
+									</div>
 								</div>
 
 								<div id="additionalResources">
 									{foreach from=$AvailableResources item=resource}
 										{if is_array($AdditionalResourceIds) && in_array($resource->Id, $AdditionalResourceIds)}
-											<div>
-												<a href="#" class="resourceDetails">{$resource->Name}</a>
+											<div class="resourceName" style="background-color:{$resource->GetColor()};">
+												<a href="#" style="color:{$resource->GetTextColor()}" class="resourceDetails">{$resource->Name}</a>
 												<input class="resourceId" type="hidden" name="{FormKeys::ADDITIONAL_RESOURCES}[]" value="{$resource->Id}"/>
 											</div>
 										{/if}
@@ -229,7 +231,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 				<div class="row">
 					<div class="col-xs-12 reservationReminders">
 						<div>
-						<label for="startReminderEnabled">{translate key=SendReminder}</label>
+							<label for="startReminderEnabled">{translate key=SendReminder}</label>
 						</div>
 						<div id="reminderOptionsStart">
 							<div class="checkbox">

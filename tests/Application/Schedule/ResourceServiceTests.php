@@ -112,16 +112,16 @@ class ResourceServiceTests extends TestBase
 
 		$resourceDto1 = new ResourceDto(1, 'resource1', true, $resource1->GetScheduleId(), $resource1->GetMinLength(), $resource1->GetResourceTypeId(),
 														$resource1->GetAdminGroupId(), $resource1->GetScheduleAdminGroupId(), $resource1->GetStatusId(), $resource1->GetRequiresApproval(),
-														$resource1->IsCheckInEnabled(), $resource1->IsAutoReleased(), $resource1->GetAutoReleaseMinutes());
+														$resource1->IsCheckInEnabled(), $resource1->IsAutoReleased(), $resource1->GetAutoReleaseMinutes(), $resource1->GetColor());
 		$resourceDto2 = new ResourceDto(2, 'resource2', true, $resource2->GetScheduleId(), $resource2->GetMinLength(), $resource2->GetResourceTypeId(),
 														$resource2->GetAdminGroupId(), $resource2->GetScheduleAdminGroupId(), $resource2->GetStatusId(), $resource2->GetRequiresApproval(),
-														$resource2->IsCheckInEnabled(), $resource2->IsAutoReleased(), $resource2->GetAutoReleaseMinutes());
+														$resource2->IsCheckInEnabled(), $resource2->IsAutoReleased(), $resource2->GetAutoReleaseMinutes(), $resource2->GetColor());
 		$resourceDto3 = new ResourceDto(3, 'resource3', true, $resource3->GetScheduleId(), $resource3->GetMinLength(), $resource3->GetResourceTypeId(),
 														$resource3->GetAdminGroupId(), $resource3->GetScheduleAdminGroupId(), $resource3->GetStatusId(), $resource3->GetRequiresApproval(),
-														$resource3->IsCheckInEnabled(), $resource3->IsAutoReleased(), $resource3->GetAutoReleaseMinutes());
+														$resource3->IsCheckInEnabled(), $resource3->IsAutoReleased(), $resource3->GetAutoReleaseMinutes(), $resource3->GetColor());
 		$resourceDto4 = new ResourceDto(4, 'resource4', false, $resource4->GetScheduleId(), $resource4->GetMinLength(), $resource4->GetResourceTypeId(),
 														$resource4->GetAdminGroupId(), $resource4->GetScheduleAdminGroupId(), $resource4->GetStatusId(), $resource4->GetRequiresApproval(),
-														$resource4->IsCheckInEnabled(), $resource4->IsAutoReleased(), $resource4->GetAutoReleaseMinutes());
+														$resource4->IsCheckInEnabled(), $resource4->IsAutoReleased(), $resource4->GetAutoReleaseMinutes(), $resource4->GetColor());
 		$expected = array($resourceDto1, $resourceDto2, $resourceDto3, $resourceDto4);
 
 		$actual = $this->resourceService->GetScheduleResources($scheduleId, true, $user);
@@ -166,10 +166,10 @@ class ResourceServiceTests extends TestBase
 
 		$resourceDto1 = new ResourceDto(1, 'resource1', false, $resource1->GetScheduleId(), $resource1->GetMinLength(), $resource1->GetResourceTypeId(),
 														$resource1->GetAdminGroupId(), $resource1->GetScheduleAdminGroupId(), $resource1->GetStatusId(), $resource1->GetRequiresApproval(),
-														$resource1->IsCheckInEnabled(), $resource1->IsAutoReleased(), $resource1->GetAutoReleaseMinutes());
+														$resource1->IsCheckInEnabled(), $resource1->IsAutoReleased(), $resource1->GetAutoReleaseMinutes(), $resource1->GetColor());
 		$resourceDto2 = new ResourceDto(2, 'resource2', true, $resource2->GetScheduleId(), $resource2->GetMinLength(), $resource2->GetResourceTypeId(),
 														$resource2->GetAdminGroupId(), $resource2->GetScheduleAdminGroupId(), $resource2->GetStatusId(), $resource2->GetRequiresApproval(),
-														$resource2->IsCheckInEnabled(), $resource2->IsAutoReleased(), $resource2->GetAutoReleaseMinutes());
+														$resource2->IsCheckInEnabled(), $resource2->IsAutoReleased(), $resource2->GetAutoReleaseMinutes(), $resource1->GetColor());
 
 		$expected = array($resourceDto1, $resourceDto2);
 
@@ -210,7 +210,7 @@ class ResourceServiceTests extends TestBase
 
 		$resourceDto1 = new ResourceDto(1, 'resource1', false, $resource1->GetScheduleId(), $resource1->GetMinLength(), $resource1->GetResourceTypeId(),
 										$resource1->GetAdminGroupId(), $resource1->GetScheduleAdminGroupId(), $resource1->GetStatusId(), $resource1->GetRequiresApproval(),
-										$resource1->IsCheckInEnabled(), $resource1->IsAutoReleased(), $resource1->GetAutoReleaseMinutes());
+										$resource1->IsCheckInEnabled(), $resource1->IsAutoReleased(), $resource1->GetAutoReleaseMinutes(), $resource1->GetColor());
 
 		$expected = array($resourceDto1);
 

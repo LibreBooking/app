@@ -35,9 +35,10 @@ class TestResourceDto extends ResourceDto
 								$requiresApproval = false,
 								$isCheckInEnabled = false,
 								$isAutoReleased = false,
-								$autoReleaseMinutes = null)
+								$autoReleaseMinutes = null,
+								$color = null)
 	{
 		parent::__construct($id, $name, $canAccess, $scheduleId, ($minLength == null ? TimeInterval::None() : $minLength), $resourceTypeId, $adminGroupId,
-							$scheduleAdminGroupId, $statusId, $requiresApproval, $isCheckInEnabled, $isAutoReleased, $autoReleaseMinutes);
+							$scheduleAdminGroupId, $statusId, $requiresApproval, $isCheckInEnabled, $isAutoReleased, $autoReleaseMinutes, $color);
 	}
 }

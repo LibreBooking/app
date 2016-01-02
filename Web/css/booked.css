@@ -1263,6 +1263,17 @@ a.remove {
   font-weight: bold;
   color: #c37c82;
 }
+.resourceName {
+  -webkit-border-radius: 2px;
+  -moz-border-radius: 2px;
+  border-radius: 2px;
+  padding: 1px;
+  display: inline-block;
+  margin-right: 2px;
+}
+.resourceName a::after {
+  content: '  ';
+}
 #page-view-reservation .participationAction {
   margin-bottom: 5px;
 }
