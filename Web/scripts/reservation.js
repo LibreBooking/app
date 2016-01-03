@@ -197,6 +197,7 @@ function Reservation(opts) {
 					checkbox.attr('reservation-text-color', node.textColor);
 					checkbox.attr('requires-approval', node.requiresApproval);
 					checkbox.attr('requires-checkin', node.isCheckInEnabled);
+					checkbox.attr('autorelease-minutes', node.autoReleaseMinutes);
 					checkbox.addClass('additionalResourceCheckbox');
 				}
 				else
@@ -297,8 +298,8 @@ function Reservation(opts) {
 		var displayDiv = elements.additionalResources;
 		displayDiv.empty();
 
-		var resourceNames = $('#resourceNames');
-		var resourceIdHdn = resourceNames.find('.resourceId');
+		var primaryResourceContainer = $('#primaryResourceContainer');
+		var resourceIdHdn = primaryResourceContainer.find('.resourceId');
 		var resourceId = resourceIdHdn.val();
 
 		var allCheckboxes = elements.resourceGroupsDialog.find('.additionalResourceCheckbox:checked');
@@ -307,7 +308,7 @@ function Reservation(opts) {
 		var addedResources = [];
 		$.each(allCheckboxes, function (i, checkbox) {
 			var checkedResourceId = $(checkbox).attr('resource-id');
-			if (addedResources.indexOf(checkedResourceId) === -1)
+			if (!_.includes(addedResources, checkedResourceId))
 			{
 				checkboxes.push(checkbox);
 				addedResources.push(checkedResourceId);
@@ -316,29 +317,28 @@ function Reservation(opts) {
 
 		if (checkboxes.length >= 1)
 		{
-			resourceNames.find('.resourceDetails').text($(checkboxes[0]).parent().text());
 			resourceIdHdn.val($(checkboxes[0]).attr('resource-id'));
-		}
-		if (checkboxes.length > 1)
-		{
 			$.each(checkboxes, function (i, checkbox) {
+				displayDiv = elements.additionalResources;
 				var checkedResourceId = $(checkbox).attr('resource-id');
 				var checkedResourceName = $(checkbox).parent().text();
 				var color = $(checkbox).attr('reservation-color');
 				var textColor = $(checkbox).attr('reservation-text-color');
 				var requiresApproval = $(checkbox).attr('requires-approval');
 				var requiresCheckin = $(checkbox).attr('requires-checkin');
+				var autoReleaseMinutes = $(checkbox).attr('autorelease-minutes');
+
 				if (i === 0)
 				{
-					resourceNames.find('.resourceDetails').text(checkedResourceName);
-					resourceIdHdn.val(checkedResourceId);
-					return true;
+					primaryResourceContainer.find('.resourceName').remove();
+					displayDiv = primaryResourceContainer;
 				}
 				displayDiv.append('<div class="resourceName" style="background-color:' + color + '; color:' + textColor + ';">' +
 						'<span class="resourceDetails">' + checkedResourceName + '</span> ' +
 						'<input class="resourceId" type="hidden" name="additionalResources[]" value="' + checkedResourceId + '"/>' +
 						(requiresApproval ? ' <i class="fa fa-lock" data-tooltip="approval"></i> ' : '') +
 						(requiresCheckin ? ' <i class="fa fa-check" data-tooltip="checkin"></i> ' : '') +
+						(_.isEmpty(autoReleaseMinutes) ? ' <i class="fa fa-clock-o" data-tooltip="autorelease" data-autorelease="' + autoReleaseMinutes + '"></i> ' : '') +
 						'</div>');
 			});
 		}
@@ -664,35 +664,34 @@ function Reservation(opts) {
 	function WireUpReservationFailed() {
 		$(document).on('loaded', '#reservation-failed', function (e) {
 			$('#retryToolTip').qtip({
-						position: {
-							my: 'bottom left',
-							at: 'top left',
-							effect: false
-						},
+				position: {
+					my: 'bottom left',
+					at: 'top left',
+					effect: false
+				},
 
-						content: {
-							text: function (event, api)
-							{
-								return $('#retryMessages').html();
-							}
-						},
+				content: {
+					text: function (event, api) {
+						return $('#retryMessages').html();
+					}
+				},
 
-						show: {
-							delay: 300,
-							effect: false
-						},
+				show: {
+					delay: 300,
+					effect: false
+				},
 
-						hide: {
-							fixed: true,
-							delay: 500
-						},
+				hide: {
+					fixed: true,
+					delay: 500
+				},
 
-						style: {
-							classes: 'qtip-light qtip-bootstrap'
-						}
-					});
+				style: {
+					classes: 'qtip-light qtip-bootstrap'
+				}
+			});
 
-			$('#btnRetry').on('click', function (e){
+			$('#btnRetry').on('click', function (e) {
 				e.preventDefault();
 				var retryParams = $('#retryParams');
 				$('#retrySubmitParams').empty().append(retryParams.find('input'));

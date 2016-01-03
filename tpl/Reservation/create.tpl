@@ -19,6 +19,15 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 {block name="header"}{include file='globalheader.tpl' Qtip=true}
 {/block}
 
+{function name="displayResource"}
+	<div class="resourceName" style="background-color:{$resource->GetColor()};color:{$resource->GetTextColor()}">
+		<span class="resourceDetails">{$resource->Name}</span>
+		{if $resource->GetRequiresApproval()}<i class="fa fa-lock" data-tooltip="approval"></i>{/if}
+		{if true || $resource->IsCheckInEnabled()}<i class="fa fa-check" data-tooltip="checkin"></i>{/if}
+		{if true || $resource->IsAutoReleased()}<i class="fa fa-clock-o" data-tooltip="autorelease" data-autorelease="{$resource->GetAutoReleaseMinutes()}"></i>{/if}
+	</div>
+{/function}
+
 <div id="page-reservation">
 	<div id="reservation-box">
 		<form id="form-reservation" method="post" enctype="multipart/form-data" role="form">
@@ -107,25 +116,17 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 									{/if}
 								</div>
 
-								<div id="resourceNames" class="inline">
-									<div class="resourceName" style="background-color:{$Resource->GetColor()};color:{$Resource->GetTextColor()}">
-										<span class="resourceDetails">{$ResourceName}</span>
-										<input class="resourceId" type="hidden" id="primaryResourceId" {formname key=RESOURCE_ID} value="{$ResourceId}"/>
-										<input type="hidden" id="scheduleId" {formname key=SCHEDULE_ID} value="{$ScheduleId}"/>
-										{if $Resource->GetRequiresApproval()}<i class="fa fa-lock" data-tooltip="approval"></i>{/if}
-										{if true || $Resource->IsCheckInEnabled()}<i class="fa fa-check" data-tooltip="checkin"></i>{/if}
-									</div>
+								<div id="primaryResourceContainer" class="inline">
+									<input type="hidden" id="scheduleId" {formname key=SCHEDULE_ID} value="{$ScheduleId}"/>
+									<input class="resourceId" type="hidden" id="primaryResourceId" {formname key=RESOURCE_ID} value="{$ResourceId}"/>
+									{displayResource resource=$Resource}
 								</div>
 
 								<div id="additionalResources">
 									{foreach from=$AvailableResources item=resource}
 										{if is_array($AdditionalResourceIds) && in_array($resource->Id, $AdditionalResourceIds)}
-											<div class="resourceName" style="background-color:{$resource->GetColor()};color:{$resource->GetTextColor()}">
-												<span class="resourceDetails">{$resource->Name}</span>
-												<input class="resourceId" type="hidden" name="{FormKeys::ADDITIONAL_RESOURCES}[]" value="{$resource->Id}"/>
-												{if $resource->GetRequiresApproval()}<i class="fa fa-lock" data-tooltip="approval"></i>{/if}
-												{if true || $resource->IsCheckInEnabled()}<i class="fa fa-check" data-tooltip="checkin"></i>{/if}
-											</div>
+											<input class="resourceId" type="hidden" name="{FormKeys::ADDITIONAL_RESOURCES}[]" value="{$resource->Id}"/>
+											{displayResource resource=$resource}
 										{/if}
 									{/foreach}
 								</div>
@@ -500,14 +501,18 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		resources.tooltip({
 		    selector: '[data-tooltip]',
 			title: function(){
-				var tooltipType = $(this).attr('data-tooltip');
+				var tooltipType = $(this).data('tooltip');
 				if (tooltipType === 'approval')
 				{
 					return "Requires Approval";
 				}
 				if (tooltipType === 'checkin')
 				{
-					return "Requires Check In";
+					return "Requires Check In/Out";
+				}
+				if (tooltipType === 'autorelease')
+				{
+					return "Automatically released if not checked in within " + $(this).data('autorelease') + " minutes";
 				}
 			}
 		});
