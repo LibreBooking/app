@@ -195,6 +195,8 @@ function Reservation(opts) {
 					checkbox.attr('group-id', node.group_id);
 					checkbox.attr('reservation-color', node.color);
 					checkbox.attr('reservation-text-color', node.textColor);
+					checkbox.attr('requires-approval', node.requiresApproval);
+					checkbox.attr('requires-checkin', node.isCheckInEnabled);
 					checkbox.addClass('additionalResourceCheckbox');
 				}
 				else
@@ -324,14 +326,20 @@ function Reservation(opts) {
 				var checkedResourceName = $(checkbox).parent().text();
 				var color = $(checkbox).attr('reservation-color');
 				var textColor = $(checkbox).attr('reservation-text-color');
-
-				if (i == 0)
+				var requiresApproval = $(checkbox).attr('requires-approval');
+				var requiresCheckin = $(checkbox).attr('requires-checkin');
+				if (i === 0)
 				{
 					resourceNames.find('.resourceDetails').text(checkedResourceName);
 					resourceIdHdn.val(checkedResourceId);
 					return true;
 				}
-				displayDiv.append('<div class="resourceName" style="background-color:' + color + '"><a href="#" style="color:' + textColor + '" class="resourceDetails">' + checkedResourceName + '</a> <input class="resourceId" type="hidden" name="additionalResources[]" value="' + checkedResourceId + '"/></div>');
+				displayDiv.append('<div class="resourceName" style="background-color:' + color + '; color:' + textColor + ';">' +
+						'<span class="resourceDetails">' + checkedResourceName + '</span> ' +
+						'<input class="resourceId" type="hidden" name="additionalResources[]" value="' + checkedResourceId + '"/>' +
+						(requiresApproval ? ' <i class="fa fa-lock" data-tooltip="approval"></i> ' : '') +
+						(requiresCheckin ? ' <i class="fa fa-check" data-tooltip="checkin"></i> ' : '') +
+						'</div>');
 			});
 		}
 

@@ -339,10 +339,9 @@ h1 .label {
 .inline {
   display: inline;
 }
-a.resourceDetails {
+.resourceDetails {
   text-decoration: none;
   cursor: default;
-  color: #7a6a53;
 }
 input[type=text].user-search {
   width: 250px;

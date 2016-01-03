@@ -95,7 +95,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 						</div>
 					</div>
 
-					<div class="col-xs-12">
+					<div class="col-xs-12" id="reservation-resources">
 						<div class="form-group">
 							<div class="pull-left">
 								<div>
@@ -108,19 +108,23 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 								</div>
 
 								<div id="resourceNames" class="inline">
-									<div class="resourceName" style="background-color:{$Resource->GetColor()};">
-										<a href="#" style="color:{$Resource->GetTextColor()}" class="resourceDetails">{$ResourceName}</a>
+									<div class="resourceName" style="background-color:{$Resource->GetColor()};color:{$Resource->GetTextColor()}">
+										<span class="resourceDetails">{$ResourceName}</span>
 										<input class="resourceId" type="hidden" id="primaryResourceId" {formname key=RESOURCE_ID} value="{$ResourceId}"/>
 										<input type="hidden" id="scheduleId" {formname key=SCHEDULE_ID} value="{$ScheduleId}"/>
+										{if $Resource->GetRequiresApproval()}<i class="fa fa-lock" data-tooltip="approval"></i>{/if}
+										{if true || $Resource->IsCheckInEnabled()}<i class="fa fa-check" data-tooltip="checkin"></i>{/if}
 									</div>
 								</div>
 
 								<div id="additionalResources">
 									{foreach from=$AvailableResources item=resource}
 										{if is_array($AdditionalResourceIds) && in_array($resource->Id, $AdditionalResourceIds)}
-											<div class="resourceName" style="background-color:{$resource->GetColor()};">
-												<a href="#" style="color:{$resource->GetTextColor()}" class="resourceDetails">{$resource->Name}</a>
+											<div class="resourceName" style="background-color:{$resource->GetColor()};color:{$resource->GetTextColor()}">
+												<span class="resourceDetails">{$resource->Name}</span>
 												<input class="resourceId" type="hidden" name="{FormKeys::ADDITIONAL_RESOURCES}[]" value="{$resource->Id}"/>
+												{if $resource->GetRequiresApproval()}<i class="fa fa-lock" data-tooltip="approval"></i>{/if}
+												{if true || $resource->IsCheckInEnabled()}<i class="fa fa-check" data-tooltip="checkin"></i>{/if}
 											</div>
 										{/if}
 									{/foreach}
@@ -417,7 +421,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 <script type="text/javascript">
 
-	$(document).ready(function () {
+	$(function () {
 		var scopeOptions = {
 			instance: '{SeriesUpdateScope::ThisInstance}',
 			full: '{SeriesUpdateScope::FullSeries}',
@@ -491,6 +495,23 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 		$.blockUI.defaults.css.width = '60%';
 		$.blockUI.defaults.css.left = '20%';
+
+		var resources = $('#reservation-resources');
+		resources.tooltip({
+		    selector: '[data-tooltip]',
+			title: function(){
+				var tooltipType = $(this).attr('data-tooltip');
+				if (tooltipType === 'approval')
+				{
+					return "Requires Approval";
+				}
+				if (tooltipType === 'checkin')
+				{
+					return "Requires Check In";
+				}
+			}
+		});
+
 	});
 </script>
 

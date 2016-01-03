@@ -285,13 +285,15 @@ a.remove {
 }
 
 .resourceName {
+  color: @brown;
   .rounded(2px);
   padding:1px;
   display:inline-block;
   margin-right:2px;
-  a::after {
-    content: '  ';
+  .fa:last-of-type {
+    margin-right:2px;
   }
+  background-color:@light-brown;
 }
 
 #page-view-reservation {

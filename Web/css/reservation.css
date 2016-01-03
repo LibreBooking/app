@@ -236,15 +236,17 @@ a.remove {
   color: #c37c82;
 }
 .resourceName {
+  color: #7a6a53;
   -webkit-border-radius: 2px;
   -moz-border-radius: 2px;
   border-radius: 2px;
   padding: 1px;
   display: inline-block;
   margin-right: 2px;
+  background-color: #d9ceb2;
 }
-.resourceName a::after {
-  content: '  ';
+.resourceName .fa:last-of-type {
+  margin-right: 2px;
 }
 #page-view-reservation .participationAction {
   margin-bottom: 5px;
