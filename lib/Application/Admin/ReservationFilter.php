@@ -119,12 +119,35 @@ class ReservationFilter
 	public function GetFilter()
 	{
 		$filter = new SqlFilterNull();
+		$surroundFilter = null;
+		$startFilter = null;
+		$endFilter = null;
 
+		if (!empty($this->startDate) && !empty($this->endDate)) {
+			$surroundFilter = new SqlFilterLessThan(new SqlRepeatingFilterColumn(null, ColumnNames::RESERVATION_START, 1), $this->startDate->ToDatabase(), true);
+			$surroundFilter->_And(new SqlFilterGreaterThan(new SqlRepeatingFilterColumn(null, ColumnNames::RESERVATION_END, 1), $this->endDate->AddDays(1)->ToDatabase(), true));
+		}
 		if (!empty($this->startDate)) {
-			$filter->_And(new SqlFilterGreaterThan(ColumnNames::RESERVATION_START, $this->startDate->ToDatabase(), true));
+			$startFilter = new SqlFilterGreaterThan(new SqlRepeatingFilterColumn(null, ColumnNames::RESERVATION_START, 2), $this->startDate->ToDatabase(), true);
+			$endFilter = new SqlFilterGreaterThan(new SqlRepeatingFilterColumn(null, ColumnNames::RESERVATION_END, 2), $this->startDate->ToDatabase(), true);
 		}
 		if (!empty($this->endDate)) {
-			$filter->_And(new SqlFilterLessThan(ColumnNames::RESERVATION_END, $this->endDate->AddDays(1)->ToDatabase(), true));
+			if ($startFilter == null)
+			{
+				$startFilter = new SqlFilterLessThan(new SqlRepeatingFilterColumn(null, ColumnNames::RESERVATION_START, 3), $this->endDate->AddDays(1)->ToDatabase(), true);
+			}
+			else
+			{
+				$startFilter->_And(new SqlFilterLessThan(new SqlRepeatingFilterColumn(null, ColumnNames::RESERVATION_START, 4), $this->endDate->AddDays(1)->ToDatabase(), true));
+			}
+			if ($endFilter == null)
+			{
+				$endFilter = new SqlFilterLessThan(new SqlRepeatingFilterColumn(null, ColumnNames::RESERVATION_END, 3), $this->endDate->AddDays(1)->ToDatabase(), true);
+			}
+			else
+			{
+				$endFilter->_And(new SqlFilterLessThan(new SqlRepeatingFilterColumn(null, ColumnNames::RESERVATION_END, 4), $this->endDate->AddDays(1)->ToDatabase(), true));
+			}
 		}
 		if (!empty($this->referenceNumber)) {
 			$filter->_And(new SqlFilterEquals(ColumnNames::REFERENCE_NUMBER, $this->referenceNumber));
@@ -155,6 +178,13 @@ class ReservationFilter
 			{
 				$filter->_And($attributeFilter);
 			}
+		}
+
+		if ($surroundFilter != null || $startFilter != null || $endFilter != null)
+		{
+			$dateFilter = new SqlFilterNull(true);
+			$dateFilter->_Or($surroundFilter)->_Or($startFilter)->_Or($endFilter);
+			$filter->_And($dateFilter);
 		}
 
 		foreach ($this->_and as $and)
