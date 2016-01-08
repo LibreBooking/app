@@ -32,6 +32,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 <div id="calendar"></div>
 
+{csrf_token}
+
 {jsfile src="reservationPopup.js"}
 {jsfile src="calendar.js"}
 {jsfile src="js/fullcalendar.min.js"}

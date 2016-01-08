@@ -39,6 +39,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 <div class="error">{translate key=NoResourcePermission}</div>
 {/if}
 
+{csrf_token}
+
 {jsfile src="js/jquery.qtip.min.js"}
 {jsfile src="reservationPopup.js"}
 {jsfile src="calendar.js"}
