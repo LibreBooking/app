@@ -504,15 +504,16 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 				var tooltipType = $(this).data('tooltip');
 				if (tooltipType === 'approval')
 				{
-					return "Requires Approval";
+					return "{translate key=RequiresApproval}";
 				}
 				if (tooltipType === 'checkin')
 				{
-					return "Requires Check In/Out";
+					return "{translate key=RequiresCheckInNotification}";
 				}
 				if (tooltipType === 'autorelease')
 				{
-					return "Automatically released if not checked in within " + $(this).data('autorelease') + " minutes";
+					var text = "{translate key=AutoReleaseNotification}";
+					return text.replace('%s', $(this).data('autorelease'));
 				}
 			}
 		});

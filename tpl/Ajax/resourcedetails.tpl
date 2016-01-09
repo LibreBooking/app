@@ -17,9 +17,8 @@ You should have received a copy of the GNU General Public License
 along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 *}
 <div id="resourceDetailsPopup">
-	<h4>{$resourceName}</h4> <a href="#" class="visible-xs hideResourceDetailsPopup">{translate key=Close}</a>
+	<h4{if !empty($color)} style="background-color:{$color};color:{$textColor};padding:5px 3px;"{/if}>{$resourceName}</h4> <a href="#" class="visible-xs hideResourceDetailsPopup">{translate key=Close}</a>
 
-	{*<div style="clearfix">&nbsp;</div>*}
 	{if $imageUrl neq ''}
 		<div class="resourceImage">
 			<img src="{$imageUrl}" alt="{$resourceName|escape}"/>
@@ -59,6 +58,20 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			{$resourceType}
 		{else}
 			{translate key=NoResourceTypeLabel}
+		{/if}
+		{if $Attributes|count > 0}
+			{foreach from=$Attributes item=attribute}
+				<div>
+					{control type="AttributeControl" attribute=$attribute readonly=true}
+				</div>
+			{/foreach}
+		{/if}
+		{if $ResourceTypeAttributes|count > 0}
+			{foreach from=$ResourceTypeAttributes item=attribute}
+				<div>
+					{control type="AttributeControl" attribute=$attribute readonly=true}
+				</div>
+			{/foreach}
 		{/if}
 	</div>
 	<div class="attributes">
@@ -111,20 +124,16 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 				{translate key='ResourceCapacityNone'}
 			{/if}
 		</div>
-		{if $Attributes|count > 0}
-			{foreach from=$Attributes item=attribute}
-				<div>
-					{control type="AttributeControl" attribute=$attribute readonly=true}
-				</div>
-			{/foreach}
-		{/if}
-		{if $ResourceTypeAttributes|count > 0}
-			{foreach from=$ResourceTypeAttributes item=attribute}
-				<div>
-					{control type="AttributeControl" attribute=$attribute readonly=true}
-				</div>
-			{/foreach}
-		{/if}
+		<div>
+			{if $autoReleaseMinutes neq ''}
+				{translate key='AutoReleaseNotification' args=$autoReleaseMinutes}
+			{/if}
+		</div>
+		<div>
+			{if $isCheckInEnabled neq ''}
+				{translate key='RequiresCheckInNotification'}
+			{/if}
+		</div>
 	</div>
 	<div style="clearfix">&nbsp;</div>
 </div>
