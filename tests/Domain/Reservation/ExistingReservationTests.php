@@ -223,7 +223,7 @@ class ExistingReservationTests extends TestBase
 
 		$events = $series->GetEvents();
 
-		$this->assertEquals(12, count($events), "2 removals, 10 adds");
+		$this->assertEquals(13, count($events), "3 removals, 10 adds");
 		// remove all future events
 		$instanceRemovedEvent1 = new InstanceRemovedEvent($afterTodayButBeforeCurrent, $series);
 		$instanceRemovedEvent2 = new InstanceRemovedEvent($afterCurrent, $series);

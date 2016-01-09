@@ -14,6 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 class CalendarReservation
 {
 	/**
@@ -155,12 +156,8 @@ class CalendarReservation
 		$res->Participant = $reservation->UserLevelId == ReservationUserLevel::PARTICIPANT;
 		$res->Owner = $reservation->UserLevelId == ReservationUserLevel::OWNER;
 
-		$color = $reservation->UserPreferences->Get(UserPreferences::RESERVATION_COLOR);
-		if (!empty($color))
-		{
-			$res->Color = "#$color";
-			$res->TextColor = new ContrastingColor($color);
-		}
+		$res->Color = $reservation->GetColor();
+		$res->TextColor = $reservation->GetTextColor();
 
 		$res->Class = self::GetClass($reservation);
 

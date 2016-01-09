@@ -92,6 +92,8 @@ class Resources implements IResourceLocalization
 		$this->LanguageDirectory = dirname(__FILE__) . '/../../lang/';
 
 		$this->systemDateKeys['js_general_date'] = 'yy-mm-dd';
+		$this->systemDateKeys['js_general_datetime'] = 'yy-mm-dd HH:mm';
+		$this->systemDateKeys['js_general_time'] = 'HH:mm';
 		$this->systemDateKeys['system_datetime'] = 'Y-m-d H:i:s';
 		$this->systemDateKeys['url'] = 'Y-m-d';
 		$this->systemDateKeys['url_full'] = 'Y-m-d H:i:s';

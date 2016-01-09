@@ -68,6 +68,8 @@ class PrivacyFilter implements IPrivacyFilter
 
 	public function CanViewDetails(UserSession $currentUser, $reservationView = null, $ownerId = null)
 	{
+		$hideReservationDetails = ReservationDetailsFilter::HideReservationDetails();
+
 		if ($reservationView != null)
 		{
 			/** @var ReservationView $reservationView */

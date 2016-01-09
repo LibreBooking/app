@@ -58,7 +58,8 @@ class ResourceRepositoryTests extends TestBase
 		$resourceAccess = new ResourceRepository();
 		$resources = $resourceAccess->GetScheduleResources($scheduleId);
 
-		$this->assertEquals(new GetScheduleResourcesCommand($scheduleId), $this->db->_Commands[0]);
+		$filter = new SqlFilterEquals(new SqlFilterColumn('r', ColumnNames::SCHEDULE_ID), $scheduleId);
+		$this->assertEquals(new FilterCommand(new GetAllResourcesCommand(), $filter), $this->db->_Commands[0]);
 		$this->assertTrue($this->db->GetReader(0)->_FreeCalled);
 		$this->assertEquals(count($rows), count($resources));
 		$this->assertEquals($expected, $resources);
@@ -88,6 +89,7 @@ class ResourceRepositoryTests extends TestBase
 		$resourceTypeId = 111;
 		$reasonId = 19;
 		$bufferTime = 88881;
+		$color = '#cccccc';
 
 		$resource = new BookableResource($id,
 										 $name,
@@ -111,6 +113,7 @@ class ResourceRepositoryTests extends TestBase
 		$resource->SetSortOrder($sortOrder);
 		$resource->SetResourceTypeId($resourceTypeId);
 		$resource->SetBufferTime($bufferTime);
+		$resource->SetColor($color);
 
 		$publicId = $resource->GetPublicId();
 
@@ -140,7 +143,8 @@ class ResourceRepositoryTests extends TestBase
 			$resourceTypeId,
 			ResourceStatus::AVAILABLE,
 			$reasonId,
-			new TimeInterval($bufferTime));
+			new TimeInterval($bufferTime),
+			'cccccc');
 
 		$actualUpdateResourceCommand = $this->db->_Commands[0];
 

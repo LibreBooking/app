@@ -313,6 +313,11 @@ interface IManageResourcesPage extends IUpdateResourcePage, IActionPage, IPageab
 	 * @return int[]
 	 */
 	public function GetResourceGroupIds();
+
+	/**
+	 * @return string
+	 */
+	public function GetColor();
 }
 
 class ManageResourcesPage extends ActionPage implements IManageResourcesPage
@@ -813,6 +818,13 @@ class ManageResourcesPage extends ActionPage implements IManageResourcesPage
 		return $groupIds;
 	}
 
+	/**
+	 * @return string
+	 */
+	public function GetColor()
+	{
+		return $this->GetForm(FormKeys::RESERVATION_COLOR);
+	}
 }
 
 class ResourceFilterValues

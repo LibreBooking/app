@@ -21,7 +21,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		<div class="col-xs-12">
 			<label for="{$prefix}repeatOptions">{translate key="RepeatPrompt"}</label>
 			<select id="{$prefix}repeatOptions" {formname key=repeat_options}
-					class="form-control repeat-drop inline-block">
+					class="form-control input-sm repeat-drop inline-block">
 				{foreach from=$RepeatOptions key=k item=v}
 					<option value="{$k}">{translate key=$v['key']}</option>
 				{/foreach}
@@ -32,7 +32,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			<div id="{$prefix}repeatEveryDiv" class="recur-toggle no-show days weeks months years">
 				<label for="{$prefix}repeatInterval">{translate key="RepeatEveryPrompt"}</label>
 				<select id="{$prefix}repeatInterval" {formname key=repeat_every}
-						class="form-control repeat-interval-drop inline-block">
+						class="form-control input-sm repeat-interval-drop inline-block">
 					{html_options values=$RepeatEveryOptions output=$RepeatEveryOptions}
 				</select>
 				<span class="days">{translate key=$RepeatOptions['daily']['everyKey']}</span>
@@ -96,7 +96,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 		<div id="{$prefix}repeatUntilDiv" class="col-xs-12 no-show recur-toggle">
 			<label for="{$prefix}EndRepeat">{translate key="RepeatUntilPrompt"}</label>
-			<input type="text" id="{$prefix}EndRepeat" class="form-control inline-block dateinput"
+			<input type="text" id="{$prefix}EndRepeat" class="form-control input-sm inline-block dateinput"
 				   value="{formatdate date=$RepeatTerminationDate}"/>
 			<input type="hidden" id="{$prefix}formattedEndRepeat" {formname key=end_repeat_date}
 				   value="{formatdate date=$RepeatTerminationDate key=system}"/>

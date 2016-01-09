@@ -49,6 +49,8 @@ class ManageUsersServiceTests extends TestBase
 
 	public function setup()
 	{
+		parent::setup();
+
 		$this->registration = $this->getMock('IRegistration');
 		$this->userRepo = $this->getMock('IUserRepository');
 		$this->groupRepo = $this->getMock('IGroupRepository');

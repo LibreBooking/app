@@ -79,13 +79,26 @@ class SqlCommand implements ISqlCommand
 	{
 		return $this->ToString();
 	}
+
+	public function ContainsGroupConcat()
+	{
+		return false;
+	}
 }
 
 class AdHocCommand extends SqlCommand
 {
-	public function __construct($rawSql)
+	private $containsGroupConcat = false;
+
+	public function __construct($rawSql, $containsGroupConcat = false)
 	{
 		parent::__construct($rawSql);
+		$this->containsGroupConcat = $containsGroupConcat;
+	}
+
+	public function ContainsGroupConcat()
+	{
+		return $this->containsGroupConcat;
 	}
 }
 

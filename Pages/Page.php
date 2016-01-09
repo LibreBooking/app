@@ -45,18 +45,18 @@ abstract class Page implements IPage
 
 	protected function __construct($titleKey = '', $pageDepth = 0)
 	{
+		ExceptionHandler::SetExceptionHandler(new WebExceptionHandler(array($this, 'RedirectToError')));
+
 		$this->SetSecurityHeaders();
 
 		$this->path = str_repeat('../', $pageDepth);
 		$this->server = ServiceLocator::GetServer();
 		$resources = Resources::GetInstance();
 
-		ExceptionHandler::SetExceptionHandler(new WebExceptionHandler(array($this, 'RedirectToError')));
-
 		$this->smarty = new SmartyPage($resources, $this->path);
 
 		$userSession = ServiceLocator::GetServer()->GetUserSession();
-
+		$this->smarty->assign('Timezone', $userSession->Timezone);
 		$this->smarty->assign('Charset', $resources->Charset);
 		$this->smarty->assign('CurrentLanguage', $resources->CurrentLanguage);
 		$this->smarty->assign('HtmlLang', $resources->HtmlLang);
@@ -163,7 +163,7 @@ abstract class Page implements IPage
 
 	public function RedirectToError($errorMessageId = ErrorMessages::UNKNOWN_ERROR, $lastPage = '')
 	{
-		$errorMessageKey = ErrorMessages::Instance()->GetResourceKey($this->server->GetQuerystring(QueryStringKeys::MESSAGE_ID));
+		$errorMessageKey = ErrorMessages::Instance()->GetResourceKey($errorMessageId);
 		$this->Set('ErrorMessage', $errorMessageKey);
 		$this->Set('TitleKey', 'Error');
 		$this->Display('error.tpl');
@@ -251,6 +251,7 @@ abstract class Page implements IPage
 		if ($_SERVER['REQUEST_METHOD'] == 'POST' && (empty($token) || $token != $session->CSRFToken))
 		{
 			Log::Error('Possible CSRF attack. Submitted token=%s, Expected token=%s', $token, $session->CSRFToken);
+			http_response_code(500);
 			die('Insecure request');
 		}
 	}

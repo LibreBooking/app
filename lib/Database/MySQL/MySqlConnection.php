@@ -55,8 +55,8 @@ class MySqlConnection implements IDbConnection
 
 		if (!$this->_db || !$selected)
 		{
-			throw new Exception("Error connecting to database\nError: " . mysql_error());
-			Log::Error("Error connecting to database\n%s",  mysql_error());
+			throw new Exception("Error connecting to database\nError: " . mysqli_error($this->_db));
+			Log::Error("Error connecting to database\n%s",  mysqli_error($this->_db));
 		}
 
 		$this->_connected = true;
@@ -113,9 +113,9 @@ class MySqlConnection implements IDbConnection
 			{
 				echo $sqlCommand->GetQuery();
 			}
-			throw new Exception('There was an error executing your query\n' .  mysql_error());
+			throw new Exception('There was an error executing your query\n' .  mysqli_error($this->_db));
 
-           	Log::Error("Error executing MySQL query %s",  mysql_error());
+           	Log::Error("Error executing MySQL query %s",  mysqli_error($this->_db));
 		}
         return false;
 	}

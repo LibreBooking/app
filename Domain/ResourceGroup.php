@@ -80,8 +80,13 @@ class ResourceGroupTree
 	{
 		if (array_key_exists($assignment->group_id, $this->references))
 		{
-			$this->resources[$assignment->resource_id] = new ResourceDto($assignment->resource_id,
-																		 $assignment->resource_name);
+			$this->resources[$assignment->resource_id] = new ResourceDto($assignment->resource_id, $assignment->resource_name, true,
+																		 $assignment->GetScheduleId(), $assignment->GetMinimumLength(),
+																		 $assignment->GetResourceTypeId(), $assignment->GetAdminGroupId(),
+																		 $assignment->GetScheduleAdminGroupId(), $assignment->GetStatusId(),
+																		 $assignment->GetRequiresApproval(), $assignment->IsCheckInEnabled(),
+																		 $assignment->IsAutoReleased(), $assignment->GetAutoReleaseMinutes(),
+																		 $assignment->GetColor());
 			$this->references[$assignment->group_id]->AddResource($assignment);
 		}
 	}
@@ -157,7 +162,7 @@ class ResourceGroupTree
 	}
 
 	/**
-	 * @return ResourceDto[] array of resources keyed by their ids
+	 * @return IBookableResource[] array of resources keyed by their ids
 	 */
 	public function GetAllResources()
 	{
@@ -248,7 +253,7 @@ class ResourceGroup
 	}
 }
 
-class ResourceGroupAssignment implements IResource
+class ResourceGroupAssignment implements IBookableResource
 {
 	public $type = ResourceGroup::RESOURCE_TYPE;
 	public $group_id;
@@ -256,17 +261,21 @@ class ResourceGroupAssignment implements IResource
 	public $id;
 	public $label;
 	public $resource_id;
+	public $resourceAdminGroupId;
+	public $scheduleId;
+	public $statusId;
+	public $scheduleAdminGroupId;
+	public $requiresApproval;
+	public $isCheckInEnabled;
+	public $isAutoReleased;
+	public $autoReleaseMinutes;
+	public $minLength;
+	public $resourceTypeId;
+	public $color;
+	public $textColor;
 
-	private $resourceAdminGroupId;
-	private $scheduleId;
-	private $statusId;
-	/**
-	 * @var
-	 */
-	private $scheduleAdminGroupId;
-
-	public function __construct($group_id, $resource_name, $resource_id, $resourceAdminGroupId, $scheduleId, $statusId,
-								$scheduleAdminGroupId)
+	public function __construct($group_id, $resource_name, $resource_id, $resourceAdminGroupId, $scheduleId, $statusId, $scheduleAdminGroupId,
+								$requiresApproval, $isCheckInEnabled, $isAutoReleased, $autoReleaseMinutes, $minLength, $resourceTypeId, $color)
 	{
 		$this->group_id = $group_id;
 		$this->resource_name = $resource_name;
@@ -277,6 +286,19 @@ class ResourceGroupAssignment implements IResource
 		$this->scheduleId = $scheduleId;
 		$this->statusId = $statusId;
 		$this->scheduleAdminGroupId = $scheduleAdminGroupId;
+		$this->requiresApproval = $requiresApproval;
+		$this->isCheckInEnabled = $isCheckInEnabled;
+		$this->isAutoReleased = $isAutoReleased;
+		$this->autoReleaseMinutes = $autoReleaseMinutes;
+		$this->minLength = $minLength;
+		$this->resourceTypeId = $resourceTypeId;
+		$this->color = $color;
+		$this->textColor = '';
+		if (!empty($color))
+		{
+			$textColor = new ContrastingColor($color);
+			$this->textColor = $textColor->__toString();
+		}
 	}
 
 	public function GetId()
@@ -312,5 +334,45 @@ class ResourceGroupAssignment implements IResource
 	public function GetResourceId()
 	{
 		return $this->resource_id;
+	}
+
+	public function GetRequiresApproval()
+	{
+		return $this->requiresApproval;
+	}
+
+	public function IsCheckInEnabled()
+	{
+		return $this->isCheckInEnabled;
+	}
+
+	public function IsAutoReleased()
+	{
+		return $this->isAutoReleased;
+	}
+
+	public function GetAutoReleaseMinutes()
+	{
+		return $this->autoReleaseMinutes;
+	}
+
+	public function GetMinimumLength()
+	{
+		return $this->minLength;
+	}
+
+	public function GetResourceTypeId()
+	{
+		return $this->resourceTypeId;
+	}
+
+	public function GetColor()
+	{
+		return $this->color;
+	}
+
+	public function GetTextColor()
+	{
+		return $this->textColor;
 	}
 }

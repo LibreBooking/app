@@ -59,7 +59,50 @@ interface IPermissibleResource
 	public function GetResourceId();
 }
 
-class BookableResource implements IResource
+interface IBookableResource extends IResource
+{
+	/**
+	 * @return TimeInterval
+	 */
+	public function GetMinimumLength();
+
+	/**
+	 * @return bool
+	 */
+	public function GetRequiresApproval();
+
+	/**
+	 * @return bool
+	 */
+	public function IsCheckInEnabled();
+
+	/**
+	 * @return bool
+	 */
+	public function IsAutoReleased();
+
+	/**
+	 * @return null|int
+	 */
+	public function GetAutoReleaseMinutes();
+
+	/**
+	 * @return int
+	 */
+	public function GetResourceTypeId();
+
+	/**
+	 * @return null|string
+	 */
+	public function GetColor();
+
+	/**
+	 * @return null|string
+	 */
+	public function GetTextColor();
+}
+
+class BookableResource implements IBookableResource
 {
 	protected $_resourceId;
 	protected $_name;
@@ -104,6 +147,10 @@ class BookableResource implements IResource
 	protected $_sortOrder;
 	protected $_resourceTypeId;
 	protected $_resourceGroupIds = array();
+	protected $_enableCheckIn = false;
+	protected $_autoReleaseMinutes = null;
+	protected $_color;
+	protected $_textColor;
 
 	/**
 	 * @var array|AttributeValue[]
@@ -204,6 +251,7 @@ class BookableResource implements IResource
 		$resource->WithScheduleAdminGroupId($row[ColumnNames::SCHEDULE_ADMIN_GROUP_ID_ALIAS]);
 		$resource->SetResourceTypeId($row[ColumnNames::RESOURCE_TYPE_ID]);
 		$resource->SetBufferTime($row[ColumnNames::RESOURCE_BUFFER_TIME]);
+		$resource->SetColor($row[ColumnNames::RESERVATION_COLOR]);
 
 		if (isset($row[ColumnNames::ATTRIBUTE_LIST]))
 		{
@@ -220,6 +268,14 @@ class BookableResource implements IResource
 			{
 				$resource->WithResourceGroupId($groupIds[$i]);
 			}
+		}
+		if (isset($row[ColumnNames::ENABLE_CHECK_IN]))
+		{
+			$resource->_enableCheckIn = boolval($row[ColumnNames::ENABLE_CHECK_IN]);
+		}
+		if (isset($row[ColumnNames::AUTO_RELEASE_MINUTES]))
+		{
+			$resource->_autoReleaseMinutes = intval($row[ColumnNames::AUTO_RELEASE_MINUTES]);
 		}
 
 		return $resource;
@@ -316,6 +372,11 @@ class BookableResource implements IResource
 	public function GetMinLength()
 	{
 		return TimeInterval::Parse($this->_minLength);
+	}
+
+	public function GetMinimumLength()
+	{
+		return $this->GetMinLength();
 	}
 
 	/**
@@ -728,6 +789,30 @@ class BookableResource implements IResource
 	}
 
 	/**
+	 * @return bool
+	 */
+	public function IsCheckInEnabled()
+	{
+		return $this->_enableCheckIn;
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function IsAutoReleased()
+	{
+		return !is_null($this->_autoReleaseMinutes);
+	}
+
+	/**
+	 * @return int|null
+	 */
+	public function GetAutoReleaseMinutes()
+	{
+		return $this->_autoReleaseMinutes;
+	}
+
+	/**
 	 * @var array|AttributeValue[]
 	 */
 	private $_addedAttributeValues = array();
@@ -926,5 +1011,50 @@ class BookableResource implements IResource
 	public function WasAutoAssignToggledOn()
 	{
 		return $this->_autoAssignToggledOn;
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function HasColor()
+	{
+		return !empty($this->_color);
+	}
+
+	/**
+	 * @return string|null
+	 */
+	public function GetColor()
+	{
+		return $this->_color;
+	}
+
+	/**
+	 * @param string $color
+	 */
+	public function SetColor($color)
+	{
+		if (empty($color))
+		{
+			$this->_color = '';
+			$this->_textColor = '';
+			return;
+		}
+		if (!BookedStringHelper::StartsWith($color, '#'))
+		{
+			$color = '#' .$color;
+		}
+
+		$this->_color = $color;
+		$contrast = new ContrastingColor($color);
+		$this->_textColor = $contrast;
+	}
+
+	/**
+	 * @return null|string
+	 */
+	public function GetTextColor()
+	{
+		return $this->_textColor;
 	}
 }

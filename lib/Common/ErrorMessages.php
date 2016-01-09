@@ -62,4 +62,3 @@ class ErrorMessages
 		return $this->_resourceKeys[$errorMessageId];
 	}
 }
-?>

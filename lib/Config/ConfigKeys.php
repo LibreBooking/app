@@ -134,11 +134,14 @@ class ConfigKeys
     const SECURITY_CONTENT_SECURITY_POLICY = 'security.content-security-policy';
 
     const GOOGLE_ANALYTICS_TRACKING_ID = 'tracking.id';
+
+    const AUTHENTICATION_ALLOW_SOCIAL = 'allow.social.login';
 }
 
 class ConfigSection
 {
     const API = 'api';
+    const AUTHENTICATION = 'authentication';
     const DATABASE = 'database';
 	const EMAIL = 'email';
     const ICS = 'ics';

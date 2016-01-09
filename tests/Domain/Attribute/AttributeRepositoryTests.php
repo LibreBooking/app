@@ -44,7 +44,7 @@ class AttributeRepositoryTests extends TestBase
 		$label = 'label';
 		$type = CustomAttributeTypes::SINGLE_LINE_TEXTBOX;
 		$category = CustomAttributeCategory::RESERVATION;
-		$regex = 'regex';
+		$regex = '/regex/';
 		$required = false;
 		$possibleValues = '';
 		$sortOrder = '4';
@@ -71,7 +71,7 @@ class AttributeRepositoryTests extends TestBase
 		$label = 'label';
 		$type = CustomAttributeTypes::SINGLE_LINE_TEXTBOX;
 		$category = CustomAttributeCategory::RESERVATION;
-		$regex = 'regex';
+		$regex = '/regex/';
 		$required = false;
 		$possibleValues = 'val1,val2,val3';
 		$sortOrder = '4';
@@ -96,7 +96,7 @@ class AttributeRepositoryTests extends TestBase
 		$label = 'label';
 		$type = CustomAttributeTypes::SINGLE_LINE_TEXTBOX;
 		$category = CustomAttributeCategory::RESERVATION;
-		$regex = 'regex';
+		$regex = '/regex/';
 		$required = false;
 		$possibleValues = 'val1,val2,val3';
 		$sortOrder = '4';
@@ -130,7 +130,7 @@ class AttributeRepositoryTests extends TestBase
 		$label = 'label';
 		$type = CustomAttributeTypes::SINGLE_LINE_TEXTBOX;
 		$category = CustomAttributeCategory::RESERVATION;
-		$regex = 'regex';
+		$regex = '/regex/';
 		$required = false;
 		$possibleValues = 'val1,val2,val3';
 		$sortOrder = '4';

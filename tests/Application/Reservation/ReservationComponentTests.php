@@ -137,9 +137,9 @@ class ReservationComponentTests extends TestBase
 						  ->will($this->returnValue($this->fakeUser));
 
 
-		$bookedResource = new ResourceDto($requestedResourceId, 'resource 1');
-		$otherResource = new ResourceDto(2, 'resource 2');
-		$otherResource2 = new ResourceDto(100, 'something', false);
+		$bookedResource = new TestResourceDto($requestedResourceId, 'resource 1', true, 1, TimeInterval::None(), null, null, null, 1, false, false, false, null);
+		$otherResource = new TestResourceDto(2, 'resource 2', true, 1, TimeInterval::None(), null, null, null, 1, false, false, false, null);
+		$otherResource2 = new TestResourceDto(100, 'something', false, true, 1, TimeInterval::None(), null, null, null, 1, false, false, false, null);
 		$resourceList = array($otherResource, $bookedResource, $otherResource2);
 
 		$groups = new FakeResourceGroupTree();
@@ -221,7 +221,7 @@ class ReservationComponentTests extends TestBase
 		$startDate = Date::Parse($dateString, $timezone);
 		$endDate = Date::Parse($endDateString, $timezone);
 
-		$resourceDto = new ResourceDto(1, 'resource', true, $scheduleId, null);
+		$resourceDto = new TestResourceDto(1, 'resource', true, $scheduleId, null);
 
 		$this->initializer->expects($this->any())
 						  ->method('CurrentUser')
@@ -296,7 +296,7 @@ class ReservationComponentTests extends TestBase
 
 		$expectedEndDate = $startDate->AddHours(2);
 
-		$resourceDto = new ResourceDto(1, 'resource', true, $scheduleId, TimeInterval::FromHours(2));
+		$resourceDto = new TestResourceDto(1, 'resource', true, $scheduleId, TimeInterval::FromHours(2));
 
 		$this->initializer->expects($this->any())
 						  ->method('CurrentUser')

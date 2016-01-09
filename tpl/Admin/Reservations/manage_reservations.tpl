@@ -82,8 +82,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			</form>
 		</div>
 		<div class="panel-footer">
-			{filter_button class="btn-sm"}
-			{reset_button class="btn-sm"}
+			{filter_button id="filter" class="btn-sm"}
+			{reset_button id="clearFilter" class="btn-sm"}
 		</div>
 	</div>
 
@@ -112,8 +112,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			{if $reservation->RequiresApproval}
 				{assign var=rowCss value='pending'}
 			{/if}
-			<tr class="{$rowCss} editable" data-seriesId="{$reservation->SeriesId}"
-				data-refnum="{$reservation->ReferenceNumber}">
+			<tr class="{$rowCss} editable" data-seriesId="{$reservation->SeriesId}" data-refnum="{$reservation->ReferenceNumber}">
 				<td class="id hidden">{$reservation->ReservationId}</td>
 				<td class="user">{fullname first=$reservation->FirstName last=$reservation->LastName ignorePrivacy=true}</td>
 				<td class="resource">{$reservation->ResourceName}
@@ -150,10 +149,14 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 				</td>
 			</tr>
 			{if $ReservationAttributes|count > 0}
-				<tr class="{$rowCss}">
+				<tr class="{$rowCss}" data-seriesId="{$reservation->SeriesId}" data-refnum="{$reservation->ReferenceNumber}">
 					<td colspan="13">
 						{foreach from=$ReservationAttributes item=attribute}
-							{include file='Admin/InlineAttributeEdit.tpl' id=$reservation->ReferenceNumber attribute=$attribute value=$reservation->Attributes->Get($attribute->Id())}
+							{include file='Admin/InlineAttributeEdit.tpl'
+							id=$reservation->ReferenceNumber attribute=$attribute
+							value=$reservation->Attributes->Get($attribute->Id())
+							url="{$smarty.server.SCRIPT_NAME}?action={ManageReservationsActions::UpdateAttribute}"
+							}
 						{/foreach}
 					</td>
 				</tr>
@@ -299,6 +302,10 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 				$.fn.editable.defaults.mode = 'popup';
 				$.fn.editable.defaults.toggle = 'manual';
 				$.fn.editable.defaults.emptyclass = '';
+				$.fn.editable.defaults.params = function(params) {
+					params.CSRF_TOKEN = $('#csrf_token').val();
+					return params;
+				};
 
 				var updateUrl = '{$smarty.server.SCRIPT_NAME}?action=';
 

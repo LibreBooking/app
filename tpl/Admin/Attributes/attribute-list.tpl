@@ -93,7 +93,6 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		sortOrder: "{$attribute->SortOrder()}",
 		entityIds: [{$attribute->EntityIds()|implode:','}],
 		entityDescriptions: ["{$attribute->EntityDescriptions()|implode:','|escape:'javascript'}"],
-		entityDescription: "{$attribute->EntityDescription()|escape:'javascript'}",
 		adminOnly: {$attribute->AdminOnly()},
 		secondaryEntityId: "{$attribute->SecondaryEntityId()}",
 		secondaryEntityDescription: "{$attribute->SecondaryEntityDescription()|escape:'javascript'}",

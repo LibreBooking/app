@@ -491,6 +491,16 @@ class AutoAssignPermissionsCommand extends SqlCommand
 	}
 }
 
+class AutoAssignGuestPermissionsCommand extends SqlCommand
+{
+	public function __construct($userId, $scheduleId)
+	{
+		parent::__construct(Queries::AUTO_ASSIGN_GUEST_PERMISSIONS);
+		$this->AddParameter(new Parameter(ParameterNames::USER_ID, $userId));
+		$this->AddParameter(new Parameter(ParameterNames::SCHEDULE_ID, $scheduleId));
+	}
+}
+
 class AutoAssignResourcePermissionsCommand extends SqlCommand
 {
 	public function __construct($resourceId)
@@ -1088,6 +1098,11 @@ class GetAllUsersByStatusCommand extends SqlCommand
 		parent::__construct(Queries::GET_ALL_USERS_BY_STATUS);
 		$this->AddParameter(new Parameter(ParameterNames::USER_STATUS_ID, $userStatusId));
 	}
+
+	public function ContainsGroupConcat()
+	{
+		return true;
+	}
 }
 
 class GetBlackoutListCommand extends SqlCommand
@@ -1255,6 +1270,11 @@ class GetReservationListCommand extends SqlCommand
 		$this->AddParameter(new Parameter(ParameterNames::RESERVATION_USER_LEVEL_ID, $userLevelId));
 		$this->AddParameter(new Parameter(ParameterNames::SCHEDULE_ID, $scheduleId));
 		$this->AddParameter(new Parameter(ParameterNames::RESOURCE_ID, $resourceId));
+	}
+
+	public function ContainsGroupConcat()
+	{
+		return true;
 	}
 }
 
@@ -2028,7 +2048,8 @@ class UpdateResourceCommand extends SqlCommand
 								$resourceTypeId,
 								$statusId,
 								$reasonId,
-								TimeInterval $bufferTime)
+								TimeInterval $bufferTime,
+								$color)
 	{
 		parent::__construct(Queries::UPDATE_RESOURCE);
 
@@ -2056,6 +2077,7 @@ class UpdateResourceCommand extends SqlCommand
 		$this->AddParameter(new Parameter(ParameterNames::RESOURCE_STATUS, $statusId));
 		$this->AddParameter(new Parameter(ParameterNames::RESOURCE_STATUS_REASON_ID, $reasonId));
 		$this->AddParameter(new Parameter(ParameterNames::RESOURCE_BUFFER_TIME, $bufferTime->ToDatabase()));
+		$this->AddParameter(new Parameter(ParameterNames::COLOR, $color));
 
 	}
 }

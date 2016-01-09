@@ -65,7 +65,10 @@ function ResourceManagement(opts) {
 		resourceGroupForm: $('#resourceGroupForm'),
 		groupDiv: $('#resourceGroups'),
 		autoAssign: $('#autoAssign'),
-		removeAllPermissions: $('#autoAssignRemoveAllPermissions')
+		removeAllPermissions: $('#autoAssignRemoveAllPermissions'),
+
+		colorForm: $('#colorForm'),
+		reservationColor: $('#reservationColor')
 	};
 
 	var resources = {};
@@ -203,6 +206,19 @@ function ResourceManagement(opts) {
 			details.find('.changeResourceGroups').click(function (e) {
 				changeResourceGroups();
 				elements.resourceGroupDialog.modal('show');
+			});
+
+			details.find('.resourceColorPicker').on('change', function (e) {
+				setActiveResourceId(id);
+				var color = $(this).val();
+				elements.reservationColor.val(color);
+				elements.colorForm.submit();
+			});
+
+			details.find('.clearColor').click(function (e) {
+				$(this).siblings('.resourceColorPicker').val('#ffffff');
+				elements.reservationColor.val('');
+				elements.colorForm.submit();
 			});
 		});
 
@@ -353,6 +369,7 @@ function ResourceManagement(opts) {
 		ConfigureAsyncForm(elements.addGroupForm, defaultSubmitCallback(elements.addGroupForm), changeGroups, errorHandler);
 		ConfigureAsyncForm(elements.removeGroupForm, defaultSubmitCallback(elements.removeGroupForm), changeGroups, errorHandler);
 		ConfigureAsyncForm(elements.resourceGroupForm, defaultSubmitCallback(elements.resourceGroupForm), null, onResourceGroupsSaved);
+		ConfigureAsyncForm(elements.colorForm, defaultSubmitCallback(elements.colorForm), function(){});
 	};
 
 	ResourceManagement.prototype.add = function (resource) {

@@ -33,6 +33,7 @@ class AttributeControl extends Control
 		$templates[CustomAttributeTypes::MULTI_LINE_TEXTBOX] = 'MultiLineTextbox.tpl';
 		$templates[CustomAttributeTypes::SELECT_LIST] = 'SelectList.tpl';
 		$templates[CustomAttributeTypes::SINGLE_LINE_TEXTBOX] = 'SingleLineTextbox.tpl';
+		$templates[CustomAttributeTypes::DATETIME] = 'Date.tpl';
 
 		/** @var $attribute Attribute|CustomAttribute */
 		$attribute = $this->Get('attribute');
@@ -45,8 +46,10 @@ class AttributeControl extends Control
 		}
 
 		$prefix = $this->Get('namePrefix');
+		$idPrefix = $this->Get('idPrefix');
 
 		$this->Set('attributeName', sprintf('%s%s[%s]', $prefix, FormKeys::ATTRIBUTE_PREFIX, $attribute->Id()));
+		$this->Set('attributeId', sprintf('%s%s%s', $idPrefix, FormKeys::ATTRIBUTE_PREFIX, $attribute->Id()));
 		$this->Display('Controls/Attributes/' . $templates[$attribute->Type()]);
 	}
 }

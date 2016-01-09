@@ -1,21 +1,21 @@
 <?php
 /**
-Copyright 2011-2015 Nick Korbel
-
-This file is part of Booked Scheduler.
-
-Booked Scheduler is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-Booked Scheduler is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
+ * Copyright 2011-2015 Nick Korbel
+ *
+ * This file is part of Booked Scheduler.
+ *
+ * Booked Scheduler is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Booked Scheduler is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 require_once(ROOT_DIR . 'Pages/SecurePage.php');
@@ -142,11 +142,6 @@ abstract class ReservationPage extends Page implements IReservationPage
 	 */
 	protected $permissionServiceFactory;
 
-	/**
-	 * @var ReservationInitializerFactory
-	 */
-	protected $initializationFactory;
-
 	public function __construct($title = null)
 	{
 		parent::__construct($title);
@@ -155,22 +150,6 @@ abstract class ReservationPage extends Page implements IReservationPage
 		{
 			$this->permissionServiceFactory = new PermissionServiceFactory();
 		}
-
-		$userRepository = new UserRepository();
-
-		$this->initializationFactory = new ReservationInitializerFactory(
-			new ScheduleRepository(),
-			$userRepository,
-			new ResourceService(new ResourceRepository(),
-								$this->permissionServiceFactory->GetPermissionService(),
-								new AttributeService(new AttributeRepository()),
-								$userRepository,
-								new AccessoryRepository()),
-			new ReservationAuthorization(AuthorizationServiceFactory::GetAuthorizationService()),
-			ServiceLocator::GetServer()->GetUserSession()
-		);
-
-		$this->presenter = $this->GetPresenter();
 	}
 
 	/**
@@ -190,6 +169,7 @@ abstract class ReservationPage extends Page implements IReservationPage
 
 	public function PageLoad()
 	{
+		$this->presenter = $this->GetPresenter();
 		$this->presenter->PageLoad();
 
 		$this->Set('ReturnUrl', $this->GetLastPage(Pages::SCHEDULE));
@@ -200,8 +180,8 @@ abstract class ReservationPage extends Page implements IReservationPage
 																			  ConfigKeys::UPLOAD_ENABLE_RESERVATION_ATTACHMENTS,
 																			  new BooleanConverter()));
 		$this->Set('AllowParticipation', !Configuration::Instance()->GetSectionKey(ConfigSection::RESERVATION,
-																				  ConfigKeys::RESERVATION_PREVENT_PARTICIPATION,
-																				  new BooleanConverter()));
+																				   ConfigKeys::RESERVATION_PREVENT_PARTICIPATION,
+																				   new BooleanConverter()));
 		$remindersEnabled = Configuration::Instance()->GetSectionKey(ConfigSection::RESERVATION,
 																	 ConfigKeys::RESERVATION_REMINDERS_ENABLED,
 																	 new BooleanConverter());
@@ -211,21 +191,21 @@ abstract class ReservationPage extends Page implements IReservationPage
 
 		$this->Set('RepeatEveryOptions', range(1, 20));
 		$this->Set('RepeatOptions', array(
-									  'none' => array('key' => 'DoesNotRepeat', 'everyKey' => ''),
-									  'daily' => array('key' => 'Daily', 'everyKey' => 'days'),
-									  'weekly' => array('key' => 'Weekly', 'everyKey' => 'weeks'),
-									  'monthly' => array('key' => 'Monthly', 'everyKey' => 'months'),
-									  'yearly' => array('key' => 'Yearly', 'everyKey' => 'years'),
+										  'none' => array('key' => 'DoesNotRepeat', 'everyKey' => ''),
+										  'daily' => array('key' => 'Daily', 'everyKey' => 'days'),
+										  'weekly' => array('key' => 'Weekly', 'everyKey' => 'weeks'),
+										  'monthly' => array('key' => 'Monthly', 'everyKey' => 'months'),
+										  'yearly' => array('key' => 'Yearly', 'everyKey' => 'years'),
 								  )
 		);
 		$this->Set('DayNames', array(
-								 0 => 'DaySundayAbbr',
-								 1 => 'DayMondayAbbr',
-								 2 => 'DayTuesdayAbbr',
-								 3 => 'DayWednesdayAbbr',
-								 4 => 'DayThursdayAbbr',
-								 5 => 'DayFridayAbbr',
-								 6 => 'DaySaturdayAbbr',
+									 0 => 'DaySundayAbbr',
+									 1 => 'DayMondayAbbr',
+									 2 => 'DayTuesdayAbbr',
+									 3 => 'DayWednesdayAbbr',
+									 4 => 'DayThursdayAbbr',
+									 5 => 'DayFridayAbbr',
+									 6 => 'DaySaturdayAbbr',
 							 )
 		);
 
@@ -281,13 +261,14 @@ abstract class ReservationPage extends Page implements IReservationPage
 	}
 
 	/**
-	 * @param $resource IResource
+	 * @param $resource IBookableResource
 	 * @return void
 	 */
 	public function SetReservationResource($resource)
 	{
 		$this->Set('ResourceName', $resource->GetName());
 		$this->Set('ResourceId', $resource->GetId());
+		$this->Set('Resource', $resource);
 	}
 
 	public function SetScheduleId($scheduleId)
@@ -348,5 +329,18 @@ abstract class ReservationPage extends Page implements IReservationPage
 	public function HideRecurrence($isHidden)
 	{
 		$this->Set('HideRecurrence', $isHidden);
+	}
+
+	protected function LoadInitializerFactory()
+	{
+		$userRepository = new UserRepository();
+		return new ReservationInitializerFactory(
+				new ScheduleRepository(), $userRepository, new ResourceService(new ResourceRepository(),
+																			   $this->permissionServiceFactory->GetPermissionService(),
+																			   new AttributeService(new AttributeRepository()),
+																			   $userRepository,
+																			   new AccessoryRepository()),
+				new ReservationAuthorization(AuthorizationServiceFactory::GetAuthorizationService())
+		);
 	}
 }

@@ -39,7 +39,10 @@ class ReservationItemResponse extends RestResponse
 	public $bufferTime;
 	public $bufferedStartDate;
 	public $bufferedEndDate;
-
+	public $statusId;
+	public $participants = array();
+	public $invitees = array();
+	
 	public function __construct(ReservationItemView $reservationItemView, IRestServer $server, $showUser, $showDetails)
 	{
 		$this->referenceNumber = $reservationItemView->ReferenceNumber;
@@ -52,6 +55,8 @@ class ReservationItemResponse extends RestResponse
 		{
 			$this->firstName = $reservationItemView->FirstName;
 			$this->lastName = $reservationItemView->LastName;
+			$this->particpants = $reservationItemView->ParticipantNames;
+			$this->invitees = $reservationItemView->InviteeNames;
 		}
 
 		if ($showDetails)
@@ -70,6 +75,7 @@ class ReservationItemResponse extends RestResponse
 		$bufferedDuration = $reservationItemView->BufferedTimes();
 		$this->bufferedStartDate = $bufferedDuration->GetBegin()->ToIso();
 		$this->bufferedEndDate = $bufferedDuration->GetEnd()->ToIso();
+		$this->statusId = $reservationItemView->StatusId;
 
 		$this->AddService($server, WebServices::GetResource,
 						  array(WebServiceParams::ResourceId => $reservationItemView->ResourceId));
@@ -106,7 +112,8 @@ class ExampleReservationItemResponse extends ReservationItemResponse
 		$this->startDate = Date::Now()->ToIso();
 		$this->title = 'reservation title';
 		$this->userId = 11;
+		$this->statusId = 1;
+		$this->participants = array('participant name');
+		$this->invitees = array('invitee name');
 	}
 }
-
-?>

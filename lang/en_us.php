@@ -45,6 +45,8 @@ class en_us extends Language
 		$dates['period_time'] = 'g:i A';
 		$dates['mobile_reservation_date'] = 'n/j g:i A';
 		$dates['general_date_js'] = 'mm/dd/yy';
+		$dates['general_time_js'] = 'h:mm tt';
+		$dates['momentjs_datetime'] = 'M/D/YY h:mm A';
 		$dates['calendar_time'] = 'h:mmt';
 		$dates['calendar_dates'] = 'M/d';
 
@@ -542,6 +544,10 @@ class en_us extends Language
 		$strings['RetrySkipConflicts'] = 'Skip conflicting reservations';
 		$strings['Retry'] = 'Retry';
 		$strings['RemoveExistingPermissions'] = 'Remove existing permissions?';
+		$strings['Continue'] = 'Continue';
+		$strings['WeNeedYourEmailAddress'] = 'We need your email address to reserve';
+		$strings['ResourceColor'] = 'Resource Color';
+		$strings['DateTime'] = 'Date Time';
 		// End Strings
 
 		// Install
@@ -719,6 +725,7 @@ class en_us extends Language
 		$strings['ReservationEndingSoonSubject'] = 'Reservation for %s is ending soon';
 		$strings['UserAdded'] = 'A new user has been added';
 		$strings['UserDeleted'] = 'User account for %s was deleted by %s';
+		$strings['GuestAccountCreatedSubject'] = 'Your account details';
 		// End Email Subjects
 
 		$this->Strings = $strings;

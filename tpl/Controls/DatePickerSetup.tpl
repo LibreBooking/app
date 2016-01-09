@@ -18,7 +18,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 *}
 <script type="text/javascript">
 $(function(){
-  $("#{$ControlId}").datepicker({ldelim}
+  $("#{$ControlId}").{if $HasTimepicker}datetimepicker{else}datepicker{/if}({ldelim}
 		 numberOfMonths: {$NumberOfMonths},
 		 showButtonPanel: {$ShowButtonPanel},
 		 onSelect: {$OnSelect},
@@ -31,15 +31,19 @@ $(function(){
 		 {/if}
 		 monthNames: {$MonthNames},
 		 monthNamesShort: {$MonthNamesShort},
-		 currentText: "{translate key='Today'}"
+		 currentText: "{translate key='Today'}",
+		 timeFormat: "{$TimeFormat}",
+	  	 altFieldTimeOnly: false,
+	  	 controlType: 'select'
 	  	 {if $AltId neq ''}
 		   ,
 	  		altField: "#{$AltId}",
 	  	 	altFormat: '{$AltFormat}'
 		  {/if}
-	  	{if $MaxDate neq ''}
-	  	,maxDate: "{$MaxDate}"
-	  	{/if}
+		  {if $DefaultDate}
+			,
+			defaultDate: '{$DefaultDate->Format("m/d/y")}'
+		{/if}
   {rdelim});
 
   {if $AltId neq ''}
@@ -48,13 +52,15 @@ $(function(){
 			$("#{$AltId}").val('');
 		}
 		else{
-			var dateVal = $("#{$ControlId}").datepicker('getDate');
+			var dateVal = $("#{$ControlId}").{if $HasTimepicker}datetimepicker{else}datepicker{/if}('getDate');
 			var dateString = dateVal.getFullYear() + '-' + ('0' + (dateVal.getMonth()+1)).slice(-2) + '-' + ('0' + dateVal.getDate()).slice(-2);
+			{if $HasTimepicker}
+				dateString = dateString + ' ' + dateVal.getHours() + ':' + dateVal.getMinutes();
+			{/if}
 			$("#{$AltId}").val(dateString);
 		}
   	});
   {/if}
 
-	$("#{$ControlId}").find('.ui-datepicker-current').click({$OnSelect});
 });
 </script>

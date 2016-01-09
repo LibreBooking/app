@@ -339,14 +339,20 @@ class SqlFilterIn extends BaseSqlFilter
 
 class SqlFilterNull extends BaseSqlFilter
 {
-	public function __construct()
+	/**
+	 * @var bool
+	 */
+	private $defaultNegativeCondition;
+
+	public function __construct($defaultNegativeCondition = false)
 	{
 		parent::__construct('1', '1');
 		$this->criteria = null;
+		$this->defaultNegativeCondition = $defaultNegativeCondition;
 	}
 
 	protected function GetSql()
 	{
-		return '1=1';
+		return $this->defaultNegativeCondition ? '0=1' : '1=1';
 	}
 }

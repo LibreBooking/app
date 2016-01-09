@@ -1,22 +1,22 @@
 <?php
 /**
-Copyright 2011-2015 Nick Korbel
-Copyright 2012-2014 Alois Schloegl
-
-This file is part of Booked Scheduler.
-
-Booked Scheduler is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-Booked Scheduler is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
+ * Copyright 2011-2015 Nick Korbel
+ * Copyright 2012-2014 Alois Schloegl
+ *
+ * This file is part of Booked Scheduler.
+ *
+ * Booked Scheduler is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Booked Scheduler is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 require_once(ROOT_DIR . 'Domain/Values/ReservationUserLevel.php');
@@ -45,12 +45,12 @@ interface IReservationViewRepository
 	 * @return ReservationItemView[]
 	 */
 	public function GetReservationList(
-		Date $startDate,
-		Date $endDate,
-		$userId = ReservationViewRepository::ALL_USERS,
-		$userLevel = ReservationUserLevel::OWNER,
-		$scheduleId = ReservationViewRepository::ALL_SCHEDULES,
-		$resourceId = ReservationViewRepository::ALL_RESOURCES);
+			Date $startDate,
+			Date $endDate,
+			$userId = ReservationViewRepository::ALL_USERS,
+			$userLevel = ReservationUserLevel::OWNER,
+			$scheduleId = ReservationViewRepository::ALL_SCHEDULES,
+			$resourceId = ReservationViewRepository::ALL_RESOURCES);
 
 	/**
 	 * @abstract
@@ -158,12 +158,12 @@ class ReservationViewRepository implements IReservationViewRepository
 	}
 
 	public function GetReservationList(
-		Date $startDate,
-		Date $endDate,
-		$userId = self::ALL_USERS,
-		$userLevel = ReservationUserLevel::OWNER,
-		$scheduleId = self::ALL_SCHEDULES,
-		$resourceId = self::ALL_RESOURCES)
+			Date $startDate,
+			Date $endDate,
+			$userId = self::ALL_USERS,
+			$userLevel = ReservationUserLevel::OWNER,
+			$scheduleId = self::ALL_SCHEDULES,
+			$resourceId = self::ALL_RESOURCES)
 	{
 		if (empty($userId))
 		{
@@ -247,12 +247,12 @@ class ReservationViewRepository implements IReservationViewRepository
 				$reservationView->AdditionalResourceIds[] = $row[ColumnNames::RESOURCE_ID];
 			}
 			$reservationView->Resources[] = new ReservationResourceView(
-				$row[ColumnNames::RESOURCE_ID],
-				$row[ColumnNames::RESOURCE_NAME],
-				$row[ColumnNames::RESOURCE_ADMIN_GROUP_ID],
-				$row[ColumnNames::SCHEDULE_ID],
-				$row[ColumnNames::SCHEDULE_ADMIN_GROUP_ID_ALIAS],
-				$row[ColumnNames::RESOURCE_STATUS_ID]
+					$row[ColumnNames::RESOURCE_ID],
+					$row[ColumnNames::RESOURCE_NAME],
+					$row[ColumnNames::RESOURCE_ADMIN_GROUP_ID],
+					$row[ColumnNames::SCHEDULE_ID],
+					$row[ColumnNames::SCHEDULE_ADMIN_GROUP_ID_ALIAS],
+					$row[ColumnNames::RESOURCE_STATUS_ID]
 			);
 		}
 	}
@@ -267,11 +267,11 @@ class ReservationViewRepository implements IReservationViewRepository
 		{
 			$levelId = $row[ColumnNames::RESERVATION_USER_LEVEL];
 			$reservationUserView = new ReservationUserView(
-				$row[ColumnNames::USER_ID],
-				$row[ColumnNames::FIRST_NAME],
-				$row[ColumnNames::LAST_NAME],
-				$row[ColumnNames::EMAIL],
-				$levelId);
+					$row[ColumnNames::USER_ID],
+					$row[ColumnNames::FIRST_NAME],
+					$row[ColumnNames::LAST_NAME],
+					$row[ColumnNames::EMAIL],
+					$levelId);
 
 			if ($levelId == ReservationUserLevel::PARTICIPANT)
 			{
@@ -293,7 +293,8 @@ class ReservationViewRepository implements IReservationViewRepository
 
 		while ($row = $result->GetRow())
 		{
-			$reservationView->Accessories[] = new ReservationAccessoryView($row[ColumnNames::ACCESSORY_ID], $row[ColumnNames::QUANTITY], $row[ColumnNames::ACCESSORY_NAME], $row[ColumnNames::ACCESSORY_QUANTITY]);
+			$reservationView->Accessories[] = new ReservationAccessoryView($row[ColumnNames::ACCESSORY_ID], $row[ColumnNames::QUANTITY],
+																		   $row[ColumnNames::ACCESSORY_NAME], $row[ColumnNames::ACCESSORY_QUANTITY]);
 		}
 	}
 
@@ -305,7 +306,8 @@ class ReservationViewRepository implements IReservationViewRepository
 
 		while ($row = $result->GetRow())
 		{
-			$reservationView->AddAttribute(new AttributeValue($row[ColumnNames::ATTRIBUTE_ID], $row[ColumnNames::ATTRIBUTE_VALUE], $row[ColumnNames::ATTRIBUTE_LABEL]));
+			$reservationView->AddAttribute(new AttributeValue($row[ColumnNames::ATTRIBUTE_ID], $row[ColumnNames::ATTRIBUTE_VALUE],
+															  $row[ColumnNames::ATTRIBUTE_LABEL]));
 		}
 	}
 
@@ -317,7 +319,8 @@ class ReservationViewRepository implements IReservationViewRepository
 
 		while ($row = $result->GetRow())
 		{
-			$reservationView->AddAttachment(new ReservationAttachmentView($row[ColumnNames::FILE_ID], $row[ColumnNames::SERIES_ID], $row[ColumnNames::FILE_NAME]));
+			$reservationView->AddAttachment(new ReservationAttachmentView($row[ColumnNames::FILE_ID], $row[ColumnNames::SERIES_ID],
+																		  $row[ColumnNames::FILE_NAME]));
 		}
 	}
 
@@ -348,11 +351,11 @@ class ReservationViewRepository implements IReservationViewRepository
 		while ($row = $result->GetRow())
 		{
 			$accessories[] = new AccessoryReservation(
-				$row[ColumnNames::REFERENCE_NUMBER],
-				Date::FromDatabase($row[ColumnNames::RESERVATION_START]),
-				Date::FromDatabase($row[ColumnNames::RESERVATION_END]),
-				$row[ColumnNames::ACCESSORY_ID],
-				$row[ColumnNames::QUANTITY]);
+					$row[ColumnNames::REFERENCE_NUMBER],
+					Date::FromDatabase($row[ColumnNames::RESERVATION_START]),
+					Date::FromDatabase($row[ColumnNames::RESERVATION_END]),
+					$row[ColumnNames::ACCESSORY_ID],
+					$row[ColumnNames::QUANTITY]);
 		}
 
 		$result->Free();
@@ -937,8 +940,8 @@ class ReservationItemView implements IReservedItemView
 	/**
 	 * @var array|int[]
 	 */
-	public $ParticipantIds = array(); 
-	
+	public $ParticipantIds = array();
+
 	/** @var array|string[]
 	 */
 	public $ParticipantNames = array();
@@ -984,6 +987,26 @@ class ReservationItemView implements IReservedItemView
 	public $EndReminder;
 
 	/**
+	 * @var string|null
+	 */
+	public $ResourceColor;
+
+	/**
+	 * @var int|null
+	 */
+	public $ResourceId;
+
+	/**
+	 * @var null|string
+	 */
+	public $OwnerFirstName;
+
+	/**
+	 * @var null|string
+	 */
+	public $OwnerLastName;
+
+	/**
 	 * @var int|null
 	 */
 	private $bufferSeconds = 0;
@@ -1013,26 +1036,26 @@ class ReservationItemView implements IReservedItemView
 	 * @param $preferences string
 	 */
 	public function __construct(
-		$referenceNumber = null,
-		$startDate = null,
-		$endDate = null,
-		$resourceName = null,
-		$resourceId = null,
-		$reservationId = null,
-		$userLevelId = null,
-		$title = null,
-		$description = null,
-		$scheduleId = null,
-		$userFirstName = null,
-		$userLastName = null,
-		$userId = null,
-		$userPhone = null,
-		$userOrganization = null,
-		$userPosition = null,
-		$participant_list = null,
-		$invitee_list = null,
-		$attribute_list = null,
-		$preferences = null
+			$referenceNumber = null,
+			$startDate = null,
+			$endDate = null,
+			$resourceName = null,
+			$resourceId = null,
+			$reservationId = null,
+			$userLevelId = null,
+			$title = null,
+			$description = null,
+			$scheduleId = null,
+			$userFirstName = null,
+			$userLastName = null,
+			$userId = null,
+			$userPhone = null,
+			$userOrganization = null,
+			$userPosition = null,
+			$participant_list = null,
+			$invitee_list = null,
+			$attribute_list = null,
+			$preferences = null
 	)
 	{
 		$this->ReferenceNumber = $referenceNumber;
@@ -1104,26 +1127,26 @@ class ReservationItemView implements IReservedItemView
 	public static function Populate($row)
 	{
 		$view = new ReservationItemView (
-			$row[ColumnNames::REFERENCE_NUMBER],
-			Date::FromDatabase($row[ColumnNames::RESERVATION_START]),
-			Date::FromDatabase($row[ColumnNames::RESERVATION_END]),
-			$row[ColumnNames::RESOURCE_NAME],
-			$row[ColumnNames::RESOURCE_ID],
-			$row[ColumnNames::RESERVATION_INSTANCE_ID],
-			$row[ColumnNames::RESERVATION_USER_LEVEL],
-			$row[ColumnNames::RESERVATION_TITLE],
-			$row[ColumnNames::RESERVATION_DESCRIPTION],
-			$row[ColumnNames::SCHEDULE_ID],
-			$row[ColumnNames::OWNER_FIRST_NAME],
-			$row[ColumnNames::OWNER_LAST_NAME],
-			$row[ColumnNames::OWNER_USER_ID],
-			$row[ColumnNames::OWNER_PHONE],
-			$row[ColumnNames::OWNER_ORGANIZATION],
-			$row[ColumnNames::OWNER_POSITION],
-			$row[ColumnNames::PARTICIPANT_LIST],
-			$row[ColumnNames::INVITEE_LIST],
-			$row[ColumnNames::ATTRIBUTE_LIST],
-			$row[ColumnNames::USER_PREFERENCES]
+				$row[ColumnNames::REFERENCE_NUMBER],
+				Date::FromDatabase($row[ColumnNames::RESERVATION_START]),
+				Date::FromDatabase($row[ColumnNames::RESERVATION_END]),
+				$row[ColumnNames::RESOURCE_NAME],
+				$row[ColumnNames::RESOURCE_ID],
+				$row[ColumnNames::RESERVATION_INSTANCE_ID],
+				$row[ColumnNames::RESERVATION_USER_LEVEL],
+				$row[ColumnNames::RESERVATION_TITLE],
+				$row[ColumnNames::RESERVATION_DESCRIPTION],
+				$row[ColumnNames::SCHEDULE_ID],
+				$row[ColumnNames::OWNER_FIRST_NAME],
+				$row[ColumnNames::OWNER_LAST_NAME],
+				$row[ColumnNames::OWNER_USER_ID],
+				$row[ColumnNames::OWNER_PHONE],
+				$row[ColumnNames::OWNER_ORGANIZATION],
+				$row[ColumnNames::OWNER_POSITION],
+				$row[ColumnNames::PARTICIPANT_LIST],
+				$row[ColumnNames::INVITEE_LIST],
+				$row[ColumnNames::ATTRIBUTE_LIST],
+				$row[ColumnNames::USER_PREFERENCES]
 		);
 
 		if (isset($row[ColumnNames::RESERVATION_CREATED]))
@@ -1195,6 +1218,10 @@ class ReservationItemView implements IReservedItemView
 		{
 			$view->EndReminder = new ReservationReminderView($row[ColumnNames::END_REMINDER_MINUTES_PRIOR]);
 		}
+		if (isset($row[ColumnNames::RESERVATION_COLOR]))
+		{
+			$view->ResourceColor = $row[ColumnNames::RESERVATION_COLOR];
+		}
 
 		return $view;
 	}
@@ -1203,7 +1230,8 @@ class ReservationItemView implements IReservedItemView
 	 * @param ReservationView $r
 	 * @return ReservationItemView
 	 */
-	public static function FromReservationView(ReservationView $r) {
+	public static function FromReservationView(ReservationView $r)
+	{
 
 		$item = new ReservationItemView($r->ReferenceNumber,
 										$r->StartDate,
@@ -1430,32 +1458,41 @@ class ReservationItemView implements IReservedItemView
 		{
 			// cache the color after the first call to prevent multiple iterations of this logic
 			$this->_color = $this->UserPreferences->Get(UserPreferences::RESERVATION_COLOR);
+			$resourceColor = $color = $this->ResourceColor;
+
 			if (!empty($this->_color))
 			{
 				$this->_color = "#{$this->_color}";
 			}
-			else if (count($this->_colorRules) > 0)
+			elseif(!empty($resourceColor))
 			{
-				foreach ($this->_colorRules as $rule)
-				{
-					if ($rule->IsSatisfiedBy($this))
-					{
-						$this->_color = "#{$rule->Color}";
-						break;
-					}
-				}
+				$this->_color = "$resourceColor";
 			}
 			else
 			{
-				$this->_color = "";
+				if (count($this->_colorRules) > 0)
+				{
+					foreach ($this->_colorRules as $rule)
+					{
+						if ($rule->IsSatisfiedBy($this))
+						{
+							$this->_color = "#{$rule->Color}";
+							break;
+						}
+					}
+				}
+				else
+				{
+					$this->_color = "";
+				}
 			}
 		}
 
 		return $this->_color;
 	}
 
-	public function GetTextColor() {
-
+	public function GetTextColor()
+	{
 		$color = $this->GetColor();
 		if (!empty($color))
 		{
@@ -1560,20 +1597,20 @@ class BlackoutItemView implements IReservedItemView
 	 * @param string $repeatType
 	 */
 	public function __construct(
-		$instanceId,
-		Date $startDate,
-		Date $endDate,
-		$resourceId,
-		$ownerId,
-		$scheduleId,
-		$title,
-		$description,
-		$firstName,
-		$lastName,
-		$resourceName,
-		$seriesId,
-		$repeatOptions,
-		$repeatType)
+			$instanceId,
+			Date $startDate,
+			Date $endDate,
+			$resourceId,
+			$ownerId,
+			$scheduleId,
+			$title,
+			$description,
+			$firstName,
+			$lastName,
+			$resourceName,
+			$seriesId,
+			$repeatOptions,
+			$repeatType)
 	{
 		$this->InstanceId = $instanceId;
 		$this->StartDate = $startDate;

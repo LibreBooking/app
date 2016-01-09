@@ -140,7 +140,7 @@ class ExistingReservationPage extends ReservationPage implements IExistingReserv
 		$reservationViewRepository = new ReservationViewRepository();
 
 		return new EditReservationPresenter($this,
-											$this->initializationFactory,
+											$this->LoadInitializerFactory(),
 											$preconditionService,
 											$reservationViewRepository);
 	}

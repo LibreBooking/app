@@ -34,5 +34,9 @@ interface ISqlCommand
 	 * @return string the underlying query to be executed
 	 */
 	public function GetQuery();
+
+	/**
+	 * @return bool
+	 */
+	public function ContainsGroupConcat();
 }
-?>

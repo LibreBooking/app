@@ -184,7 +184,7 @@ function AttributeManagement(opts) {
 			$('.attributePossibleValues').hide();
 		}
 
-		if (selectedType == opts.selectList)
+		if (selectedType == opts.selectList || selectedType == opts.date)
 		{
 			$('.attributeValidationExpression').hide();
 		}
@@ -225,7 +225,7 @@ function AttributeManagement(opts) {
 		$('.editAttributeType', elements.editDialog).hide();
 		$('#editType' + selectedAttribute.type).show();
 
-		$('#editAttributeLabel').val(selectedAttribute.label);
+		$('#editAttributeLabel').val(HtmlDecode(selectedAttribute.label));
 		$('#editAttributeRequired').prop('checked', selectedAttribute.required);
 		$('#editAttributeUnique').prop('checked', selectedAttribute.unique);
 		$('#editAttributeAdminOnly').prop('checked', selectedAttribute.adminOnly);

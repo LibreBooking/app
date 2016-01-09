@@ -1,21 +1,21 @@
 <?php
 /**
-Copyright 2012-2015 Nick Korbel
-
-This file is part of Booked Scheduler.
-
-Booked Scheduler is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-Booked Scheduler is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
+ * Copyright 2012-2015 Nick Korbel
+ *
+ * This file is part of Booked Scheduler.
+ *
+ * Booked Scheduler is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Booked Scheduler is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 require_once(ROOT_DIR . 'lib/Application/Reservation/namespace.php');
@@ -95,9 +95,9 @@ class PrivacyFilterTests extends TestBase
 		$reservation = new ReservationView();
 
 		$this->reservationAuthorization->expects($this->once())
-					->method('CanViewDetails')
-					->with($this->equalTo($reservation), $this->equalTo($user))
-					->will($this->returnValue(true));
+									   ->method('CanViewDetails')
+									   ->with($this->equalTo($reservation), $this->equalTo($user))
+									   ->will($this->returnValue(true));
 
 		$canView = $this->privacyFilter->CanViewUser($user, $reservation);
 		$canView2 = $this->privacyFilter->CanViewUser($user, $reservation);
@@ -160,15 +160,53 @@ class PrivacyFilterTests extends TestBase
 		$reservation = new ReservationView();
 
 		$this->reservationAuthorization->expects($this->once())
-					->method('CanViewDetails')
-					->with($this->equalTo($reservation), $this->equalTo($user))
-					->will($this->returnValue(true));
+									   ->method('CanViewDetails')
+									   ->with($this->equalTo($reservation), $this->equalTo($user))
+									   ->will($this->returnValue(true));
 
 		$canView = $this->privacyFilter->CanViewDetails($user, $reservation);
 		$canView2 = $this->privacyFilter->CanViewDetails($user, $reservation);
 
 		$this->assertTrue($canView);
 		$this->assertTrue($canView2);
+	}
+
+	public function testHidesPast()
+	{
+		$this->hideReservationDetails('past');
+
+		$user = new UserSession(1);
+		$res = new ReservationView();
+		$res->StartDate = Date::Now()->AddDays(-2);
+		$res->EndDate = Date::Now()->AddDays(-1);
+
+		$this->reservationAuthorization->expects($this->once())
+									   ->method('CanViewDetails')
+									   ->with($this->equalTo($res), $this->equalTo($user))
+									   ->will($this->returnValue(false));
+
+		$canView = $this->privacyFilter->CanViewDetails($user, $res);
+
+		$this->assertFalse($canView);
+	}
+
+	public function testHidesFuture()
+	{
+		$this->hideReservationDetails('future');
+
+		$user = new UserSession(1);
+		$res = new ReservationView();
+		$res->StartDate = Date::Now()->AddDays(1);
+		$res->EndDate = Date::Now()->AddDays(2);
+
+		$this->reservationAuthorization->expects($this->once())
+									   ->method('CanViewDetails')
+									   ->with($this->equalTo($res), $this->equalTo($user))
+									   ->will($this->returnValue(false));
+
+		$canView = $this->privacyFilter->CanViewDetails($user, $res);
+
+		$this->assertFalse($canView);
 	}
 
 	private function hideUserDetails($hide)
@@ -181,5 +219,3 @@ class PrivacyFilterTests extends TestBase
 		$this->fakeConfig->SetSectionKey(ConfigSection::PRIVACY, ConfigKeys::PRIVACY_HIDE_RESERVATION_DETAILS, $hide);
 	}
 }
-
-?>

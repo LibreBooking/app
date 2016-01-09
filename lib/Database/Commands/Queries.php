@@ -143,18 +143,19 @@ class Queries
 		VALUES (@userid, @dateModified, @session_token, @user_session_value)';
 
 	const AUTO_ASSIGN_PERMISSIONS =
-			'INSERT INTO
-          user_resource_permissions (user_id, resource_id)
-		SELECT
-			@userid as user_id, resource_id
-		FROM
-			resources
-		WHERE
-			autoassign=1';
+			'INSERT INTO user_resource_permissions (user_id, resource_id)
+		SELECT @userid as user_id, resource_id
+		FROM resources
+		WHERE autoassign=1';
+
+	const AUTO_ASSIGN_GUEST_PERMISSIONS =
+			'INSERT INTO user_resource_permissions (user_id, resource_id)
+		SELECT @userid as user_id, resource_id
+		FROM resources
+		WHERE schedule_id = @scheduleid';
 
 	const AUTO_ASSIGN_RESOURCE_PERMISSIONS =
-			'INSERT INTO
-				user_resource_permissions (user_id, resource_id)
+			'INSERT INTO user_resource_permissions (user_id, resource_id)
 			(
 			SELECT
 				user_id, @resourceid as resource_id
@@ -986,7 +987,8 @@ class Queries
 			resource_type_id = @resource_type_id,
 			status_id = @status_id,
 			resource_status_reason_id = @resource_status_reason_id,
-			buffer_time = @buffer_time
+			buffer_time = @buffer_time,
+			color = @color
 		WHERE
 			resource_id = @resourceid';
 
@@ -1084,7 +1086,7 @@ class QueryBuilder
 
 	public static $SELECT_LIST_FRAGMENT = 'ri.*, rs.date_created as date_created, rs.last_modified as last_modified, rs.description as description, rs.status_id as status_id, rs.title, rs.repeat_type, rs.repeat_options,
 					owner.fname as owner_fname, owner.lname as owner_lname, owner.user_id as owner_id, owner.phone as owner_phone, owner.position as owner_position, owner.organization as owner_organization, owner.email as email,
-					resources.name, resources.resource_id, resources.schedule_id, resources.status_id as resource_status_id, resources.resource_status_reason_id, resources.buffer_time, ru.reservation_user_level,
+					resources.name, resources.resource_id, resources.schedule_id, resources.status_id as resource_status_id, resources.resource_status_reason_id, resources.buffer_time, resources.color, ru.reservation_user_level,
 					start_reminder.minutes_prior AS start_reminder_minutes, end_reminder.minutes_prior AS end_reminder_minutes,
 					(SELECT GROUP_CONCAT(groups.group_id)
 						FROM user_groups groups WHERE owner.user_id = groups.user_id) as owner_group_list,

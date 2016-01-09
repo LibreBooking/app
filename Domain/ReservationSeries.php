@@ -336,7 +336,6 @@ class ReservationSeries
 	}
 
 	/**
-	 * @internal
 	 * @return bool
 	 */
 	public function RemoveInstance(Reservation $reservation)

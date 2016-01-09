@@ -100,7 +100,7 @@ class ReportDefinitionTests extends TestBase
 		$this->assertEquals(ChartColumnType::Label, $row[2]->GetChartColumnType());
 		$this->assertEmpty($row[2]->GetChartGroup());
 
-		$this->assertEquals($oneHourThirtyMinutes, $row[3]->Value());
+		$this->assertEquals($oneHourThirtyMinutes->ToString(true), $row[3]->Value());
 		$this->assertEquals($oneHourThirtyMinutes->TotalSeconds(), $row[3]->ChartValue());
 		$this->assertEquals(ChartColumnType::Total, $row[3]->GetChartColumnType());
 	}

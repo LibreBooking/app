@@ -83,12 +83,12 @@ function ReservationManagement(opts, approval) {
 			setCurrentReservationInformation(td);
 		});
 
-		elements.reservationTable.delegate('.editable', 'click', function () {
+		elements.reservationTable.delegate('tr.editable', 'click', function () {
 			$(this).addClass('clicked');
 			viewReservation($(this).attr('data-refnum'));
 		});
 
-		elements.reservationTable.find('.editable').each(function () {
+		elements.reservationTable.find('tr.editable').each(function () {
 			var seriesId = $(this).attr('data-seriesId');
 			var refNum = $(this).attr('data-refnum');
 			$(this).attachReservationPopup(refNum, options.popupUrl);

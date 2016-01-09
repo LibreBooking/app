@@ -123,6 +123,14 @@ div.center {
   padding-right: 0;
 }
 
+.no-padding-bottom {
+  padding-bottom: 0;
+}
+
+.no-padding-top {
+  padding-top:0;
+}
+
 .no-margin {
   margin: 0;
 }
@@ -133,6 +141,14 @@ div.center {
 
 .no-margin-right {
   margin-right: 0;
+}
+
+.no-margin-bottom {
+  margin-bottom: 0;
+}
+
+.no-margin-top {
+  margin-top:0;
 }
 
 .default-box-footer {
@@ -326,10 +342,9 @@ h1 .label {
   display: inline;
 }
 
-a.resourceDetails {
+.resourceDetails {
   text-decoration: none;
   cursor: default;
-  color: @brown;
 }
 
 input[type=text].user-search {
@@ -392,5 +407,19 @@ input.mid-number {
     text-decoration: none;
     cursor: pointer;
     color:#000;
+  }
+}
+
+.qtip {
+  max-width:none;
+}
+
+@media(min-width:768px) {
+  .pull-left-sm {
+    float:left;
+  }
+
+  .pull-right-sm {
+    float:right;
   }
 }

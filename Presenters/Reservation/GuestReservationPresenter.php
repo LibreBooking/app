@@ -22,6 +22,7 @@
 require_once(ROOT_DIR . 'Pages/Reservation/GuestReservationPage.php');
 require_once(ROOT_DIR . 'Presenters/Reservation/ReservationPresenter.php');
 require_once(ROOT_DIR . 'lib/Application/Authentication/namespace.php');
+require_once(ROOT_DIR . 'lib/Email/Messages/GuestAccountCreationEmail.php');
 
 class GuestReservationPresenter extends ReservationPresenter
 {
@@ -35,10 +36,20 @@ class GuestReservationPresenter extends ReservationPresenter
 	 */
 	private $registration;
 
-	public function __construct(IGuestReservationPage $page, IRegistration $registration, IReservationInitializerFactory $initializationFactory, INewReservationPreconditionService $preconditionService)
+	/**
+	 * @var IWebAuthentication
+	 */
+	private $authentication;
+
+	public function __construct(IGuestReservationPage $page,
+								IRegistration $registration,
+								IWebAuthentication $authentication,
+								IReservationInitializerFactory $initializationFactory,
+								INewReservationPreconditionService $preconditionService)
 	{
 		$this->page = $page;
 		$this->registration = $registration;
+		$this->authentication = $authentication;
 		parent::__construct($page, $initializationFactory, $preconditionService);
 	}
 
@@ -50,10 +61,15 @@ class GuestReservationPresenter extends ReservationPresenter
 		}
 		else
 		{
+			$this->LoadValidators();
 			if ($this->page->IsCreatingAccount() && $this->page->IsValid())
 			{
 				$email = $this->page->GetEmail();
-				$this->registration->Register($email, $email, '', '', Password::GenerateRandom(), null, Resources::GetInstance()->CurrentLanguage, null);
+				Log::Debug('Creating a guest reservation as %s', $email);
+
+				$currentLanguage = Resources::GetInstance()->CurrentLanguage;
+				$this->registration->Register($email, $email, 'Guest', 'Guest', Password::GenerateRandom(), null, $currentLanguage, null);
+				$this->authentication->Login($email, new WebLoginContext(new LoginData(false, $currentLanguage)));
 				parent::PageLoad();
 			}
 		}
@@ -63,5 +79,40 @@ class GuestReservationPresenter extends ReservationPresenter
 	{
 		$this->page->RegisterValidator('emailformat', new EmailValidator($this->page->GetEmail()));
 		$this->page->RegisterValidator('uniqueemail', new UniqueEmailValidator(new UserRepository(), $this->page->GetEmail()));
+	}
+}
+
+class GuestRegistrationNotificationStrategy implements IRegistrationNotificationStrategy
+{
+	public function NotifyAccountCreated(User $user, $password)
+	{
+		ServiceLocator::GetEmailService()->Send(new GuestAccountCreationEmail($user, $password));
+	}
+}
+
+class GuestReservationPermissionStrategy implements IRegistrationPermissionStrategy
+{
+	/**
+	 * @var IRequestedResourcePage
+	 */
+	private $page;
+
+	public function __construct(IRequestedResourcePage $page)
+	{
+		$this->page = $page;
+	}
+
+	public function AddAccount(User $user)
+	{
+		$autoAssignCommand = new AutoAssignGuestPermissionsCommand($user->Id(), $this->page->GetRequestedScheduleId());
+		ServiceLocator::GetDatabase()->Execute($autoAssignCommand);
+	}
+}
+
+class GuestRegistration extends Registration
+{
+	protected function CreatePending()
+	{
+		return false;
 	}
 }

@@ -162,6 +162,12 @@ div.center {
 .no-padding-right {
   padding-right: 0;
 }
+.no-padding-bottom {
+  padding-bottom: 0;
+}
+.no-padding-top {
+  padding-top: 0;
+}
 .no-margin {
   margin: 0;
 }
@@ -170,6 +176,12 @@ div.center {
 }
 .no-margin-right {
   margin-right: 0;
+}
+.no-margin-bottom {
+  margin-bottom: 0;
+}
+.no-margin-top {
+  margin-top: 0;
 }
 .default-box-footer {
   padding: 5px 0 5px 10px;
@@ -327,10 +339,9 @@ h1 .label {
 .inline {
   display: inline;
 }
-a.resourceDetails {
+.resourceDetails {
   text-decoration: none;
   cursor: default;
-  color: #7a6a53;
 }
 input[type=text].user-search {
   width: 250px;
@@ -387,6 +398,17 @@ input.mid-number {
   text-decoration: none;
   cursor: pointer;
   color: #000;
+}
+.qtip {
+  max-width: none;
+}
+@media (min-width: 768px) {
+  .pull-left-sm {
+    float: left;
+  }
+  .pull-right-sm {
+    float: right;
+  }
 }
 #resourceDetailsPopup #userDetailsPopup {
   min-width: 300px;

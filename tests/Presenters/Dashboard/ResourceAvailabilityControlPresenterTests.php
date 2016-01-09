@@ -66,9 +66,9 @@ class ResourceAvailabilityControlPresenterTests extends TestBase
 		$this->reservationRepo = new FakeReservationViewRepository();
 		$this->presenter = new ResourceAvailabilityControlPresenter($this->control, $this->resourceService, $this->reservationRepo);
 
-		$this->unavailableResource = new ResourceDto(1, '1');
-		$this->availableResource = new ResourceDto(2, '2');
-		$this->unavailableAllDayResource = new ResourceDto(3, '3');
+		$this->unavailableResource = new TestResourceDto(1, '1');
+		$this->availableResource = new TestResourceDto(2, '2');
+		$this->unavailableAllDayResource = new TestResourceDto(3, '3');
 	}
 
 	public function testSetsResourceAvailability()

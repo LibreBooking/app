@@ -34,7 +34,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		{jsfile src="js/jquery-2.1.1.min.js"}
 		{jsfile src="js/jquery-ui-1.10.4.custom.min.js"}
 		{jsfile src="bootstrap/js/bootstrap.min.js"}
-		{jsfile src="js/lodash.2.4.1.min.js"}
+		{jsfile src="js/lodash.3.10.1.min.js"}
 		{jsfile src="js/moment.min.js"}
 		{jsfile src="js/jquery.form-3.09.min.js"}
 		{jsfile src="js/jquery.blockUI-2.66.0.min.js"}
@@ -57,7 +57,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		<script type="text/javascript"
 				src="//netdna.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
 		<script type="text/javascript"
-				src="//cdnjs.cloudflare.com/ajax/libs/lodash.js/2.4.1/lodash.min.js"></script>
+				src="//cdnjs.cloudflare.com/ajax/libs/lodash.js/3.10.1/lodash.min.js"></script>
 		<script type="text/javascript"
 				src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment.min.js"></script>
 		<script type="text/javascript"
@@ -87,13 +87,14 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 	{if $Timepicker}
 		{jsfile src="js/jquery.timePicker.min.js"}
 	{/if}
+	{jsfile src="js/jquery-ui-timepicker-addon.js"}
 	{jsfile src="phpscheduleit.js"}
 	<!-- End JavaScript -->
 
 	<!-- CSS -->
 	{if $UseLocalJquery}
 		{cssfile src="scripts/css/smoothness/jquery-ui-1.10.4.custom.min.css"}
-		{cssfile src="css/font-awesome-4.3.0/css/font-awesome.min.css" rel="stylesheet"}
+		{cssfile src="css/font-awesome-4.5.0/css/font-awesome.min.css" rel="stylesheet"}
 		{cssfile src="scripts/bootstrap/css/bootstrap.css" rel="stylesheet"}
 		{if $Qtip}
 			{cssfile src="css/jquery.qtip.min.css" rel="stylesheet"}
@@ -109,7 +110,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 	{else}
 		<link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.9.0/themes/smoothness/jquery-ui.css"
 			  type="text/css"/>
-		<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css"
+		<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css"
 			  type="text/css"/>
 		<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css"
 			  type="text/css"/>
@@ -132,6 +133,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 	{if $Timepicker}
 		{cssfile src="scripts/css/timePicker.css" rel="stylesheet"}
 	{/if}
+	{cssfile src="scripts/css/jquery-ui-timepicker-addon.css"}
 	{cssfile src="nav.css"}
 	{cssfile src="booked.css"}
 	{if $cssFiles neq ''}
