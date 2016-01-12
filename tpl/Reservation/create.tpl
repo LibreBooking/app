@@ -22,8 +22,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 {function name="displayResource"}
 	<div class="resourceName" style="background-color:{$resource->GetColor()};color:{$resource->GetTextColor()}">
 		<span class="resourceDetails">{$resource->Name}</span>
-		{if $resource->GetRequiresApproval()}<i class="fa fa-lock" data-tooltip="approval"></i>{/if}
-		{if true || $resource->IsCheckInEnabled()}<i class="fa fa-check" data-tooltip="checkin"></i>{/if}
+		{if $resource->GetRequiresApproval()}<span class="fa fa-lock" data-tooltip="approval"></span>{/if}
+		{if true || $resource->IsCheckInEnabled()}<i class="fa fa-sign-in" data-tooltip="checkin"></i>{/if}
 		{if true || $resource->IsAutoReleased()}<i class="fa fa-clock-o" data-tooltip="autorelease" data-autorelease="{$resource->GetAutoReleaseMinutes()}"></i>{/if}
 	</div>
 {/function}
@@ -504,15 +504,16 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 				var tooltipType = $(this).data('tooltip');
 				if (tooltipType === 'approval')
 				{
-					return "Requires Approval";
+					return "{translate key=RequiresApproval}";
 				}
 				if (tooltipType === 'checkin')
 				{
-					return "Requires Check In/Out";
+					return "{translate key=RequiresCheckInNotification}";
 				}
 				if (tooltipType === 'autorelease')
 				{
-					return "Automatically released if not checked in within " + $(this).data('autorelease') + " minutes";
+					var text = "{translate key=AutoReleaseNotification}";
+					return text.replace('%s', $(this).data('autorelease'));
 				}
 			}
 		});

@@ -548,6 +548,9 @@ class en_us extends Language
 		$strings['WeNeedYourEmailAddress'] = 'We need your email address to reserve';
 		$strings['ResourceColor'] = 'Resource Color';
 		$strings['DateTime'] = 'Date Time';
+		$strings['AutoReleaseNotification'] = 'Automatically released if not checked in within %s minutes';
+		$strings['RequiresCheckInNotification'] = 'Requires Check In/Out';
+		$strings['RequiresApproval'] = 'Requires Approval';
 		// End Strings
 
 		// Install

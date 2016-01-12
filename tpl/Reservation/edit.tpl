@@ -53,6 +53,12 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			</li>
 		</ul>
 	</div>
+	{if true || $CheckInRequired}
+		<button type="button" class="btn btn-warning"><i class="fa fa-sign-in"></i> Check In{if $AutoReleaseMinutes} - Released in <span>15</span> minutes{/if}</button>
+	{/if}
+	{if true || $CheckOutRequired}
+		<button type="button" class="btn btn-warning"><i class="fa fa-sign-out"></i> Check Out</button>
+	{/if}
 	{if $IsRecurring}
 		<button type="button" class="btn btn-success update prompt">
 			<span class="glyphicon glyphicon-ok-circle"></span>

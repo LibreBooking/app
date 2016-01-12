@@ -58,6 +58,10 @@ class ResourceDetailsPage extends Page implements IResourceDetailsPage
         $this->Set('minimumNotice', $resource->GetMinNotice());
         $this->Set('requiresApproval', $resource->GetRequiresApproval());
         $this->Set('autoAssign', $resource->GetAutoAssign());
+        $this->Set('color', $resource->GetColor());
+        $this->Set('textColor', $resource->GetTextColor());
+        $this->Set('autoReleaseMinutes', $resource->GetAutoReleaseMinutes());
+        $this->Set('isCheckInEnabled', $resource->IsCheckInEnabled());
 
         if ($resource->HasImage())
         {
