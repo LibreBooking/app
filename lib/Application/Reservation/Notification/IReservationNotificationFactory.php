@@ -23,4 +23,3 @@ interface IReservationNotificationFactory
 	 */
 	function Create($reservationAction, $userSession);
 }
-?>

@@ -43,6 +43,18 @@ interface IPreReservationFactory
 	 * @return IReservationValidationService
 	 */
 	public function CreatePreApprovalService(UserSession $userSession);
+
+	/**
+	 * @param UserSession $userSession
+	 * @return IReservationValidationService
+	 */
+	public function CreatePreCheckinService(UserSession $userSession);
+
+	/**
+	 * @param UserSession $userSession
+	 * @return IReservationValidationService
+	 */
+	public function CreatePreCheckoutService(UserSession $userSession);
 }
 
 class PreReservationFactory implements IPreReservationFactory
@@ -117,6 +129,34 @@ class PreReservationFactory implements IPreReservationFactory
 		return new NullReservationValidationService();
 	}
 
+	/**
+	 * @param UserSession $userSession
+	 * @return IReservationValidationService
+	 */
+	public function CreatePreCheckinService(UserSession $userSession)
+	{
+		$rules = array();
+		$rules[] = new AdminExcludedRule(new CurrentUserIsReservationUserRule($userSession), $userSession, $this->userRepository);
+
+		throw new Exception('need to implement rule that doesnt allow checkin after auto release');
+
+		return new ReservationValidationRuleProcessor($rules);
+	}
+
+	/**
+	 * @param UserSession $userSession
+	 * @return IReservationValidationService
+	 */
+	public function CreatePreCheckoutService(UserSession $userSession)
+	{
+		$rules = array();
+		$rules[] = new AdminExcludedRule(new CurrentUserIsReservationUserRule($userSession), $userSession, $this->userRepository);
+
+		throw new Exception('need to implement rule that doesnt allow checkin after auto release');
+
+		return new ReservationValidationRuleProcessor($rules);
+	}
+
 	private function CreateAddService(ReservationValidationRuleProcessor $ruleProcessor, UserSession $userSession)
 	{
 		$ruleProcessor->AddRule(new AdminExcludedRule(new RequiresApprovalRule(PluginManager::Instance()->LoadAuthorization()), $userSession, $this->userRepository));
@@ -172,4 +212,6 @@ class PreReservationFactory implements IPreReservationFactory
 
 		return $ruleProcessor;
 	}
+
+
 }

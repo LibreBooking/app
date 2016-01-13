@@ -252,7 +252,9 @@ class ReservationViewRepository implements IReservationViewRepository
 					$row[ColumnNames::RESOURCE_ADMIN_GROUP_ID],
 					$row[ColumnNames::SCHEDULE_ID],
 					$row[ColumnNames::SCHEDULE_ADMIN_GROUP_ID_ALIAS],
-					$row[ColumnNames::RESOURCE_STATUS_ID]
+					$row[ColumnNames::RESOURCE_STATUS_ID],
+					$row[ColumnNames::ENABLE_CHECK_IN],
+					$row[ColumnNames::AUTO_RELEASE_MINUTES]
 			);
 		}
 	}
@@ -402,8 +404,11 @@ class ReservationResourceView implements IResource
 	private $_scheduleId;
 	private $_scheduleAdminGroupId;
 	private $_statusId;
+	private $_checkinEnabled;
+	private $_autoReleaseMinutes;
 
-	public function __construct($resourceId, $resourceName, $adminGroupId, $scheduleId, $scheduleAdminGroupId, $statusId = ResourceStatus::AVAILABLE)
+	public function __construct($resourceId, $resourceName, $adminGroupId, $scheduleId, $scheduleAdminGroupId,
+								$statusId = ResourceStatus::AVAILABLE, $enableCheckin, $autoReleaseMinutes)
 	{
 		$this->_id = $resourceId;
 		$this->_resourceName = $resourceName;
@@ -411,6 +416,8 @@ class ReservationResourceView implements IResource
 		$this->_scheduleId = $scheduleId;
 		$this->_scheduleAdminGroupId = $scheduleAdminGroupId;
 		$this->_statusId = $statusId;
+		$this->_checkinEnabled = $enableCheckin;
+		$this->_autoReleaseMinutes = $autoReleaseMinutes;
 	}
 
 	/**
@@ -484,6 +491,30 @@ class ReservationResourceView implements IResource
 	public function GetStatusId()
 	{
 		return $this->_statusId;
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function IsCheckInEnabled()
+	{
+		return $this->_checkinEnabled;
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function IsAutoReleased()
+	{
+		return !is_null($this->_autoReleaseMinutes);
+	}
+
+	/**
+	 * @return int|null
+	 */
+	public function GetAutoReleaseMinutes()
+	{
+		return $this->_autoReleaseMinutes;
 	}
 }
 
@@ -606,6 +637,14 @@ class ReservationView
 	 * @var Date
 	 */
 	public $DateModified;
+	/**
+	 * @var Date|null
+	 */
+	public $CheckinDate;
+	/**
+	 * @var Date|null
+	 */
+	public $CheckoutDate;
 	public $OwnerId;
 	public $OwnerEmailAddress;
 	public $OwnerFirstName;

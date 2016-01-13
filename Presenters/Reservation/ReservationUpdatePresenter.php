@@ -55,6 +55,11 @@ class ReservationUpdatePresenter implements IReservationUpdatePresenter
 	 */
 	private $resourceRepository;
 
+	/**
+	 * @var UserSession
+	 */
+	private $userSession;
+
 	public function __construct(
 		IReservationUpdatePage $page,
 		IUpdateReservationPersistenceService $persistenceService,

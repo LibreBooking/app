@@ -20,5 +20,6 @@ class ReservationAction
 	const Delete = 'delete';
 	const Update = 'update';
 	const Approve = 'approve';
+	const Checkin = 'checkin';
+	const Checkout = 'checkout';
 }
-?>

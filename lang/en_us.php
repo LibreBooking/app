@@ -551,6 +551,11 @@ class en_us extends Language
 		$strings['AutoReleaseNotification'] = 'Automatically released if not checked in within %s minutes';
 		$strings['RequiresCheckInNotification'] = 'Requires Check In/Out';
 		$strings['RequiresApproval'] = 'Requires Approval';
+		$strings['CheckingIn'] = 'Checking In';
+		$strings['CheckingOut'] = 'Checking Out';
+		$strings['CheckIn'] = 'Check In';
+		$strings['CheckOut'] = 'Check Out';
+		$strings['ReleasedIn'] = 'Released in';
 		// End Strings
 
 		// Install

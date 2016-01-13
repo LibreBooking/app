@@ -117,6 +117,15 @@ class Reservation
 	 */
 	protected $unchangedInvitees = array();
 
+	/**
+	 * @var Date|null
+	 */
+	protected $checkinDate;
+
+	/**
+	 * @var Date|null
+	 */
+	protected $checkoutDate;
 
 	/**
 	 * @var ReservationSeries
@@ -367,8 +376,35 @@ class Reservation
 		return false;
 	}
 
+	/**
+	 * @return Date|null
+	 */
+	public function CheckinDate()
+	{
+		return $this->checkinDate;
+	}
+
+	public function Checkin()
+	{
+		$this->checkinDate = Date::Now();
+	}
+
+	/**
+	 * @return Date|null
+	 */
+	public function CheckoutDate()
+	{
+		return $this->checkoutDate;
+	}
+
+	public function Checkout()
+	{
+		$this->checkoutDate = Date::Now();
+	}
+
 	static function Compare(Reservation $res1, Reservation $res2)
 	{
 		return $res1->StartDate()->Compare($res2->StartDate());
 	}
+
 }

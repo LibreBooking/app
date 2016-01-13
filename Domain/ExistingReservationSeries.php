@@ -388,6 +388,20 @@ class ExistingReservationSeries extends ReservationSeries
 		$this->_bookedBy = $bookedBy;
 	}
 
+	public function Checkin(UserSession $checkedInBy)
+	{
+		$this->_bookedBy = $checkedInBy;
+		$this->CurrentInstance()->Checkin();
+		$this->AddEvent(new InstanceUpdatedEvent($this->CurrentInstance(), $this));
+	}
+
+	public function Checkout(UserSession $checkedInBy)
+	{
+		$this->_bookedBy = $checkedInBy;
+		$this->CurrentInstance()->Checkout();
+		$this->AddEvent(new InstanceUpdatedEvent($this->CurrentInstance(), $this));
+	}
+
 	protected function AddNewInstance(DateRange $reservationDate)
 	{
 		if (!$this->InstanceStartsOnDate($reservationDate))

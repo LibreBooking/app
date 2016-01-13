@@ -271,7 +271,7 @@ class BookableResource implements IBookableResource
 		}
 		if (isset($row[ColumnNames::ENABLE_CHECK_IN]))
 		{
-			$resource->_enableCheckIn = boolval($row[ColumnNames::ENABLE_CHECK_IN]);
+			$resource->_enableCheckIn = intval($row[ColumnNames::ENABLE_CHECK_IN]);
 		}
 		if (isset($row[ColumnNames::AUTO_RELEASE_MINUTES]))
 		{

@@ -69,7 +69,7 @@ class ExistingReservationInitializer extends ReservationInitializerBase implemen
 	{
 		parent::Initialize();
 
-		$this->reservationBinder->Bind($this, $this->page, $this->reservationView);
+		$this->reservationBinder->Bind($this);
 	}
 
 	protected function SetSelectedDates(Date $startDate, Date $endDate, $startPeriods, $endPeriods)

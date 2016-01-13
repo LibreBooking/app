@@ -162,6 +162,12 @@ div.center {
 .no-padding-right {
   padding-right: 0;
 }
+.no-padding-bottom {
+  padding-bottom: 0;
+}
+.no-padding-top {
+  padding-top: 0;
+}
 .no-margin {
   margin: 0;
 }
@@ -170,6 +176,12 @@ div.center {
 }
 .no-margin-right {
   margin-right: 0;
+}
+.no-margin-bottom {
+  margin-bottom: 0;
+}
+.no-margin-top {
+  margin-top: 0;
 }
 .default-box-footer {
   padding: 5px 0 5px 10px;
@@ -327,10 +339,9 @@ h1 .label {
 .inline {
   display: inline;
 }
-a.resourceDetails {
+.resourceDetails {
   text-decoration: none;
   cursor: default;
-  color: #7a6a53;
 }
 input[type=text].user-search {
   width: 250px;
@@ -358,8 +369,11 @@ input[type=text].user-search {
 .combobox-add {
   margin-left: 5px;
 }
-.mid-number {
-  width: 100px;
+input.small-number {
+  width: 50px !important;
+}
+input.mid-number {
+  width: 100px !important;
 }
 #help p.setting span,
 #help span.setting,
@@ -384,6 +398,17 @@ input[type=text].user-search {
   text-decoration: none;
   cursor: pointer;
   color: #000;
+}
+.qtip {
+  max-width: none;
+}
+@media (min-width: 768px) {
+  .pull-left-sm {
+    float: left;
+  }
+  .pull-right-sm {
+    float: right;
+  }
 }
 .checkbox {
   padding-left: 20px;
@@ -1162,7 +1187,7 @@ ul.jqtree-tree .group-resource .jqtree-title {
   padding-top: 8px;
 }
 .reservationLength .form-group {
-  margin-bottom: 0;
+  margin: 5px 0;
 }
 #reservationCreated .approvalMessage,
 #reservationUpdated .approvalMessage {
@@ -1237,6 +1262,22 @@ a.remove {
   font-weight: bold;
   color: #c37c82;
 }
+.resourceName {
+  color: #7a6a53;
+  -webkit-border-radius: 2px;
+  -moz-border-radius: 2px;
+  border-radius: 2px;
+  padding: 1px;
+  display: inline-block;
+  margin-right: 2px;
+  background-color: #d9ceb2;
+}
+.resourceName .fa:last-of-type {
+  margin-right: 2px;
+}
+.autoReleaseButtonMessage {
+  display: none;
+}
 #page-view-reservation .participationAction {
   margin-bottom: 5px;
 }
@@ -1283,6 +1324,12 @@ span.error {
 }
 .resourceDetails .resourceImage {
   text-align: center;
+}
+.resourceDetails .resourceColorPicker {
+  height: 45px;
+  width: 75%;
+  border: solid 1px #000000;
+  padding: 0;
 }
 .admin-panel .title {
   font-size: 1.4em;
@@ -1502,9 +1549,11 @@ ul.jqtree-tree .group-resource .jqtree-title {
   width: 35px;
   height: 35px;
 }
-#repeatDiv,
-#repeatDiv div {
+#repeatDiv {
   padding: 0;
+}
+#repeatDiv div {
+  padding: 2px 0;
 }
 #repeatOnWeeklyDiv label {
   min-width: 30px;
@@ -1669,7 +1718,7 @@ td.update {
   display: none;
 }
 .add-quota-line {
-  height: 50px;
+  padding: 10px 0;
 }
 #enforce-hours-times {
   padding-left: 10px;

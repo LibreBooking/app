@@ -117,7 +117,14 @@ class ReservationViewAdapter extends ReservationView
 
 		foreach($series->AllResources() as $resource)
 		{
-			$this->Resources[] = new ReservationResourceView($resource->GetId(), $resource->GetName(), $resource->GetAdminGroupId(), $resource->GetScheduleId(), $resource->GetScheduleAdminGroupId(), $resource->GetStatusId());
+			$this->Resources[] = new ReservationResourceView($resource->GetId(),
+															 $resource->GetName(),
+															 $resource->GetAdminGroupId(),
+															 $resource->GetScheduleId(),
+															 $resource->GetScheduleAdminGroupId(),
+															 $resource->GetStatusId(),
+															 $resource->IsCheckInEnabled(),
+															 $resource->GetAutoReleaseMinutes());
 		}
 
 		$this->ScheduleId = $series->ScheduleId();

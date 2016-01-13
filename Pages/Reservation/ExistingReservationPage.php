@@ -117,6 +117,21 @@ interface IExistingReservationPage extends IReservationPage
 	 * @param bool $canAlterParticipation
 	 */
 	public function SetCanAlterParticipation($canAlterParticipation);
+
+	/**
+	 * @param bool $isCheckInRequired
+	 */
+	public function SetCheckInRequired($isCheckInRequired);
+
+	/**
+	 * @param bool $isCheckOutRequired
+	 */
+	public function SetCheckOutRequired($isCheckOutRequired);
+
+	/**
+	 * @param int $autoReleaseMinutes
+	 */
+	public function SetAutoReleaseMinutes($autoReleaseMinutes);
 }
 
 class ExistingReservationPage extends ReservationPage implements IExistingReservationPage
@@ -230,56 +245,50 @@ class ExistingReservationPage extends ReservationPage implements IExistingReserv
 		$this->IsEditable = $canBeEdited;
 	}
 
-	/**
-	 * @param $amIParticipating
-	 */
 	public function SetCurrentUserParticipating($amIParticipating)
 	{
 		$this->Set('IAmParticipating', $amIParticipating);
 	}
 
-	/**
-	 * @param $amIInvited
-	 */
 	public function SetCurrentUserInvited($amIInvited)
 	{
 		$this->Set('IAmInvited', $amIInvited);
 	}
 
-	/**
-	 * @param $canBeApproved bool
-	 * @return void
-	 */
 	public function SetIsApprovable($canBeApproved)
 	{
 		$this->IsApprovable = $canBeApproved;
 	}
 
-	/**
-	 * @param int $reminderValue
-	 * @param ReservationReminderInterval $reminderInterval
-	 */
 	public function SetStartReminder($reminderValue, $reminderInterval)
 	{
 		$this->Set('ReminderTimeStart', $reminderValue);
 		$this->Set('ReminderIntervalStart', $reminderInterval);
 	}
 
-	/**
-	 * @param int $reminderValue
-	 * @param ReservationReminderInterval $reminderInterval
-	 */
 	public function SetEndReminder($reminderValue, $reminderInterval)
 	{
 		$this->Set('ReminderTimeEnd', $reminderValue);
 		$this->Set('ReminderIntervalEnd', $reminderInterval);
 	}
 
-	/**
-	 * @param bool $canAlterParticipation
-	 */
 	public function SetCanAlterParticipation($canAlterParticipation)
 	{
 		$this->Set('CanAlterParticipation', $canAlterParticipation);
+	}
+
+	public function SetCheckInRequired($isCheckInRequired)
+	{
+		$this->Set('CheckInRequired', $isCheckInRequired);
+	}
+
+	public function SetCheckOutRequired($isCheckOutRequired)
+	{
+		$this->Set('CheckOutRequired', $isCheckOutRequired);
+	}
+
+	public function SetAutoReleaseMinutes($autoReleaseMinutes)
+	{
+		$this->Set('AutoReleaseMinutes', $autoReleaseMinutes);
 	}
 }
