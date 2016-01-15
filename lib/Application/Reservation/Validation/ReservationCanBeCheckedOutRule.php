@@ -34,7 +34,7 @@ class ReservationCanBeCheckedOutRule implements IReservationValidationRule
 				$atLeastOneReservationRequiresCheckIn = true;
 			}
 
-			if ($tooEarly || $reservationSeries->CurrentInstance()->CheckinDate() == null)
+			if ($tooEarly || !$reservationSeries->CurrentInstance()->IsCheckedIn())
 			{
 				$isOk = false;
 				break;

@@ -145,6 +145,8 @@ class ReservationViewRepository implements IReservationViewRepository
 			$reservationView->RepeatMonthlyType = $repeatConfig->MonthlyType;
 			$reservationView->RepeatTerminationDate = $repeatConfig->TerminationDate;
 			$reservationView->AllowParticipation = $row[ColumnNames::RESERVATION_ALLOW_PARTICIPATION];
+			$reservationView->CheckinDate = Date::FromDatabase($row[ColumnNames::CHECKIN_DATE]);
+			$reservationView->CheckoutDate = Date::FromDatabase($row[ColumnNames::CHECKOUT_DATE]);
 
 			$this->SetResources($reservationView);
 			$this->SetParticipants($reservationView);

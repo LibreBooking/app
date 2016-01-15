@@ -477,6 +477,11 @@ function Reservation(opts) {
 			$('#creatingNotification').find('h3').addClass('no-show');
 			$('#checkingOutMessage').removeClass('no-show');
 			$.blockUI({message: $('#wait-box')});
+
+			ajaxPost($('#form-reservation'), opts.checkoutUrl, null, function (data) {
+				$('#result').html(data);
+				ShowReservationAjaxResponse();
+			});
 		});
 	};
 

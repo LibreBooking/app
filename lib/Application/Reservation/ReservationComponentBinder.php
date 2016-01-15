@@ -306,9 +306,8 @@ class ReservationDetailsBinder implements IReservationComponentBinder
 
 	private function SetCheckinRequired()
 	{
-		if ($this->reservationView->CheckinDate == null &&
-				Date::Now()->AddMinutes(5)->GreaterThanOrEqual($this->reservationView->StartDate)
-		)
+		if ($this->reservationView->CheckinDate->ToString() == '' &&
+			Date::Now()->AddMinutes(5)->GreaterThanOrEqual($this->reservationView->StartDate))
 		{
 			// within 5 minutes
 			foreach ($this->reservationView->Resources as $resource)
@@ -325,8 +324,8 @@ class ReservationDetailsBinder implements IReservationComponentBinder
 	private function SetCheckoutRequired()
 	{
 		if ($this->reservationView->StartDate->LessThan(Date::Now()) &&
-				$this->reservationView->CheckoutDate == null &&
-				$this->reservationView->CheckinDate != null)
+				$this->reservationView->CheckoutDate->ToString() == '' &&
+				$this->reservationView->CheckinDate->ToString() != '')
 		{
 			foreach ($this->reservationView->Resources as $resource)
 			{
@@ -342,7 +341,7 @@ class ReservationDetailsBinder implements IReservationComponentBinder
 	private function SetAutoReleaseMinutes()
 	{
 		$minAutoReleaseMinutes = null;
-		if ($this->reservationView->CheckinDate == null)
+		if ($this->reservationView->CheckinDate->ToString() == '')
 		{
 			foreach ($this->reservationView->Resources as $resource)
 			{

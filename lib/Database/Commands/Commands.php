@@ -1985,7 +1985,9 @@ class UpdateReservationCommand extends SqlCommand
 	public function __construct($referenceNumber,
 								$seriesId,
 								Date $startDate,
-								Date $endDate)
+								Date $endDate,
+								Date $checkinDate,
+								Date $checkoutDate)
 	{
 		parent::__construct(Queries::UPDATE_RESERVATION_INSTANCE);
 
@@ -1993,6 +1995,8 @@ class UpdateReservationCommand extends SqlCommand
 		$this->AddParameter(new Parameter(ParameterNames::SERIES_ID, $seriesId));
 		$this->AddParameter(new Parameter(ParameterNames::START_DATE, $startDate->ToDatabase()));
 		$this->AddParameter(new Parameter(ParameterNames::END_DATE, $endDate->ToDatabase()));
+		$this->AddParameter(new Parameter(ParameterNames::CHECKIN_DATE, $checkinDate->ToDatabase()));
+		$this->AddParameter(new Parameter(ParameterNames::CHECKOUT_DATE, $checkoutDate->ToDatabase()));
 	}
 }
 

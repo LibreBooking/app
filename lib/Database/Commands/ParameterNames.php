@@ -60,6 +60,8 @@ class ParameterNames
 	const BLACKOUT_SERIES_ID = '@blackout_series_id';
 	const BLACKOUT_INSTANCE_ID = '@blackout_instance_id';
 
+	const CHECKIN_DATE = '@checkin_date';
+	const CHECKOUT_DATE = '@checkout_date';
 	const COLOR_ATTRIBUTE_TYPE = '@attribute_type';
 	const COLOR = '@color';
 	const COMPARISON_TYPE = '@comparison_type';

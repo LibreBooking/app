@@ -84,3 +84,7 @@ ALTER TABLE `resources` ADD COLUMN `enable_check_in` tinyint(1) unsigned NOT NUL
 ALTER TABLE `resources` ADD COLUMN `auto_release_minutes` SMALLINT unsigned;
 
 ALTER TABLE `resources` ADD COLUMN `color` varchar(10);
+
+ALTER TABLE `reservation_instances` ADD COLUMN `checkin_date` datetime;
+ALTER TABLE `reservation_instances` ADD COLUMN `checkout_date` datetime;
+ALTER TABLE `reservation_series` ADD COLUMN `last_action_by` mediumint(8) unsigned;

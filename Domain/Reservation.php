@@ -1,21 +1,21 @@
 <?php
 /**
-Copyright 2011-2015 Nick Korbel
-
-This file is part of Booked Scheduler.
-
-Booked Scheduler is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-Booked Scheduler is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
+ * Copyright 2011-2015 Nick Korbel
+ *
+ * This file is part of Booked Scheduler.
+ *
+ * Booked Scheduler is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Booked Scheduler is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 require_once(ROOT_DIR . 'lib/Common/namespace.php');
@@ -68,6 +68,32 @@ class Reservation
 	public function Duration()
 	{
 		return new DateRange($this->StartDate(), $this->EndDate());
+	}
+
+	/**
+	 * @var Date
+	 */
+	protected $previousStart;
+
+	/**
+	 * @return Date
+	 */
+	public function PreviousStartDate()
+	{
+		return $this->previousStart;
+	}
+
+	/**
+	 * @var Date
+	 */
+	protected $previousEnd;
+
+	/**
+	 * @return Date
+	 */
+	public function PreviousEndDate()
+	{
+		return $this->previousEnd;
 	}
 
 	protected $reservationId;
@@ -149,6 +175,11 @@ class Reservation
 		{
 			$this->SetReferenceNumber(str_replace('.', '', uniqid('', true)));
 		}
+
+		$this->checkinDate = new NullDate();
+		$this->checkoutDate = new NullDate();
+		$this->previousStart = new NullDate();
+		$this->previousEnd = new NullDate();
 	}
 
 	public function SetReservationId($reservationId)
@@ -163,8 +194,16 @@ class Reservation
 
 	public function SetReservationDate(DateRange $reservationDate)
 	{
+		$this->previousStart = $this->startDate;
+		$this->previousEnd = $this->endDate;
+
 		$this->startDate = $reservationDate->GetBegin();
 		$this->endDate = $reservationDate->GetEnd();
+
+		if ($this->previousStart != null && !($this->previousStart->Equals($reservationDate->GetBegin())) && $this->CheckinDate()->LessThan($this->startDate))
+		{
+			$this->WithCheckin(new NullDate(), $this->CheckoutDate());
+		}
 	}
 
 	/**
@@ -384,6 +423,14 @@ class Reservation
 		return $this->checkinDate;
 	}
 
+	/**
+	 * @return bool
+	 */
+	public function IsCheckedIn()
+	{
+		return $this->checkinDate != null && $this->checkinDate->ToString() != '';
+	}
+
 	public function Checkin()
 	{
 		$this->checkinDate = Date::Now();
@@ -397,6 +444,14 @@ class Reservation
 		return $this->checkoutDate;
 	}
 
+	/**
+	 * @return bool
+	 */
+	public function IsCheckedOut()
+	{
+		return $this->checkoutDate != null && $this->checkoutDate->ToString() != '';
+	}
+
 	public function Checkout()
 	{
 		$this->checkoutDate = Date::Now();
@@ -405,6 +460,16 @@ class Reservation
 	static function Compare(Reservation $res1, Reservation $res2)
 	{
 		return $res1->StartDate()->Compare($res2->StartDate());
+	}
+
+	/**
+	 * @param Date $checkinDate
+	 * @param Date $checkoutDate
+	 */
+	public function WithCheckin(Date $checkinDate, Date $checkoutDate)
+	{
+		$this->checkinDate = $checkinDate;
+		$this->checkoutDate = $checkoutDate;
 	}
 
 }
