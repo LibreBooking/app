@@ -1,5 +1,4 @@
-<?php
-/**
+{*
 Copyright 2011-2015 Nick Korbel
 
 This file is part of Booked Scheduler.
@@ -16,24 +15,17 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
-*/
+*}
+<div>
+	<div id="reservation-response-image">
+		<span class="fa fa-check fa-5x success"></span>
+	</div>
 
-class FakeBookableResource extends BookableResource
-{
-	public function __construct($id, $name = null)
-	{
-		$this->_resourceId = $id;
-		$this->_name = $name;
-	}
+	{if $IsCheckingIn}
+		<div id="checked-in-message" class="reservation-message">{translate key=CheckedInSuccess}</div>
+	{else}
+		<div id="checked-out-message" class="reservation-message">{translate key=CheckedOutSuccess}</div>
+	{/if}
 
-	public function RequiresApproval($requiresApproval)
-	{
-		$this->_requiresApproval = $requiresApproval;
-	}
-
-	public function SetScheduleAdminGroupId($scheduleAdminGroupId)
-	{
-		$this->_scheduleAdminGroupId = $scheduleAdminGroupId;
-	}
-
-}
+	<input type="button" id="btnSaveSuccessful" value="{translate key='Close'}" class="btn btn-success" />
+</div>

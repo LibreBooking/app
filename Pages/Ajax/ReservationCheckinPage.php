@@ -20,6 +20,7 @@
 
 require_once(ROOT_DIR . 'Pages/SecurePage.php');
 require_once(ROOT_DIR . 'Presenters/Reservation/ReservationPresenterFactory.php');
+require_once(ROOT_DIR . 'Pages/Ajax/IReservationSaveResultsView.php');
 
 interface IReservationCheckinPage extends IReservationSaveResultsView
 {
@@ -61,6 +62,8 @@ class ReservationCheckinPage extends SecurePage implements IReservationCheckinPa
 			$this->EnforceCSRFCheck();
 			$this->_presenter->PageLoad();
 
+			$this->Set('IsCheckingIn', $this->GetAction() == ReservationAction::Checkin);
+			$this->Set('IsCheckingOut', $this->GetAction() != ReservationAction::Checkin);
 			if ($this->_reservationSavedSuccessfully)
 			{
 				$this->Display('Ajax/reservation/checkin_successful.tpl');

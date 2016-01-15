@@ -137,8 +137,7 @@ class PreReservationFactory implements IPreReservationFactory
 	{
 		$rules = array();
 		$rules[] = new AdminExcludedRule(new CurrentUserIsReservationUserRule($userSession), $userSession, $this->userRepository);
-
-		throw new Exception('need to implement rule that doesnt allow checkin after auto release');
+		$rules[] = new AdminExcludedRule(new ReservationCanBeCheckedInRule($userSession), $userSession, $this->userRepository);
 
 		return new ReservationValidationRuleProcessor($rules);
 	}
@@ -151,8 +150,7 @@ class PreReservationFactory implements IPreReservationFactory
 	{
 		$rules = array();
 		$rules[] = new AdminExcludedRule(new CurrentUserIsReservationUserRule($userSession), $userSession, $this->userRepository);
-
-		throw new Exception('need to implement rule that doesnt allow checkin after auto release');
+		$rules[] = new AdminExcludedRule(new ReservationCanBeCheckedOutRule($userSession), $userSession, $this->userRepository);
 
 		return new ReservationValidationRuleProcessor($rules);
 	}

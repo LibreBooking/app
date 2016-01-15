@@ -155,18 +155,7 @@ function Reservation(opts) {
 
 	// post-submit callback 
 	Reservation.prototype.showResponse = function (responseText, statusText, xhr, $form) {
-		$('.blockUI').css('cursor', 'default');
-
-		$('#btnSaveSuccessful').click(function (e) {
-			window.location = options.returnUrl;
-		});
-
-		$('#btnSaveFailed').click(function () {
-			CloseSaveDialog();
-		});
-
-		$('#creatingNotification').hide();
-		$('#result').show();
+		ShowReservationAjaxResponse();
 	};
 
 	var AddAccessories = function () {
@@ -441,6 +430,21 @@ function Reservation(opts) {
 		elements.durationHours.text(rounded.RoundedHours);
 	};
 
+	var ShowReservationAjaxResponse = function () {
+		$('.blockUI').css('cursor', 'default');
+
+		$('#btnSaveSuccessful').click(function (e) {
+			window.location = options.returnUrl;
+		});
+
+		$('#btnSaveFailed').click(function () {
+			CloseSaveDialog();
+		});
+
+		$('#creatingNotification').hide();
+		$('#result').show();
+	};
+
 	var CloseSaveDialog = function () {
 		$.unblockUI();
 	};
@@ -458,17 +462,18 @@ function Reservation(opts) {
 			$('form').attr("action", options.deleteUrl);
 		});
 
-		$('.btnCheckin').click(function() {
+		$('.btnCheckin').click(function () {
 			$('#creatingNotification').find('h3').addClass('no-show');
 			$('#checkingInMessage').removeClass('no-show');
 			$.blockUI({message: $('#wait-box')});
 
-			ajaxPost($('#form-reservation'), opts.checkinUrl, null, function(data){
+			ajaxPost($('#form-reservation'), opts.checkinUrl, null, function (data) {
 				$('#result').html(data);
+				ShowReservationAjaxResponse();
 			});
 		});
 
-		$('.btnCheckout').click(function() {
+		$('.btnCheckout').click(function () {
 			$('#creatingNotification').find('h3').addClass('no-show');
 			$('#checkingOutMessage').removeClass('no-show');
 			$.blockUI({message: $('#wait-box')});
@@ -727,19 +732,26 @@ function Reservation(opts) {
 
 	function InitializeAutoRelease() {
 		var autoReleaseButtonMessage = $('.autoReleaseButtonMessage');
-		if (autoReleaseButtonMessage.length > 0) {
+		if (autoReleaseButtonMessage.length > 0)
+		{
 
 			var autoReleaseMinutes = autoReleaseButtonMessage.first().data('autorelease-minutes');
 			if (autoReleaseMinutes != '')
 			{
-				var updateAutoReleaseMinutes = function() {
-					//startdate (minutes ago) - autorelease, math min 0
-					$('.autoReleaseMinutes').text(autoReleaseMinutes);
-					console.log(autoReleaseMinutes);
+				var interval;
+				var updateAutoReleaseMinutes = function () {
+					var ms = _startDate.diff(moment());
+					var releaseMinutesText = Math.max(0, Math.ceil(moment.duration(ms).asMinutes()) + autoReleaseMinutes);
+					$('.autoReleaseMinutes').text(releaseMinutesText);
+
+					if (releaseMinutesText <= 0)
+					{
+						clearInterval(interval)
+					}
 				};
 
 				updateAutoReleaseMinutes();
-				setTimeout(updateAutoReleaseMinutes, 6000);
+				interval = setInterval(updateAutoReleaseMinutes, 5000);
 				autoReleaseButtonMessage.show();
 			}
 		}
