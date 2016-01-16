@@ -42,7 +42,7 @@ $(function(){
 		  {/if}
 		  {if $DefaultDate}
 			,
-			defaultDate: '{$DefaultDate->Format("m/d/y")}'
+	  		defaultDate: new Date('{$DefaultDate->Format('Y-m-d')}')
 		{/if}
   {rdelim});
 
