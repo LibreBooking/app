@@ -86,6 +86,9 @@ class ReservationViewRepositoryTests extends TestBase
 		$email = 'owner@email.com';
 
 		$allowParticipation = 1;
+		$checkin = Date::Now()->AddMinutes(1)->ToUtc();
+		$checkout = Date::Now()->AddMinutes(2)->ToUtc();
+		$previousEnd = Date::Now()->AddMinutes(3)->ToUtc();
 
 		$ownerLevel = ReservationUserLevel::OWNER;
 		$participantLevel = ReservationUserLevel::PARTICIPANT;
@@ -120,6 +123,9 @@ class ReservationViewRepositoryTests extends TestBase
 				ColumnNames::EMAIL => $email,
 				ColumnNames::RESERVATION_MODIFIED => Date::Now()->ToDatabase(),
 				ColumnNames::RESERVATION_ALLOW_PARTICIPATION => $allowParticipation,
+				ColumnNames::CHECKIN_DATE => $checkin->ToDatabase(),
+				ColumnNames::CHECKOUT_DATE => $checkout->ToDatabase(),
+				ColumnNames::PREVIOUS_END_DATE => $previousEnd->ToDatabase(),
 		);
 
 		$resourceRows = array(
@@ -217,6 +223,9 @@ class ReservationViewRepositoryTests extends TestBase
 		$expectedView->StatusId = $statusId;
 		$expectedView->OwnerEmailAddress = $email;
 		$expectedView->DateModified = Date::Now()->ToUtc();
+		$expectedView->CheckinDate = $checkin;
+		$expectedView->CheckoutDate = $checkout;
+		$expectedView->PreviousEndDate = $previousEnd;
 
 		$expectedView->Participants = array(
 				new ReservationUserView($userId2, $fname2, $lname2, $email2, $participantLevel),

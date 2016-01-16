@@ -656,7 +656,7 @@ class ReservationComponentTests extends TestBase
 				new ReservationResourceView(1, 'r1', null, null, null, ResourceStatus::AVAILABLE, false, null),
 				new ReservationResourceView(2, 'r2', null, null, null, ResourceStatus::AVAILABLE, true, 20),
 		);
-		$this->reservationView->CheckinDate = null;
+		$this->reservationView->CheckinDate = new NullDate();
 
 		$this->initializer->expects($this->any())
 						  ->method('CurrentUser')
@@ -702,7 +702,7 @@ class ReservationComponentTests extends TestBase
 				new ReservationResourceView(1, 'r1', null, null, null, ResourceStatus::AVAILABLE, false, null),
 				new ReservationResourceView(2, 'r2', null, null, null, ResourceStatus::AVAILABLE, false, null),
 		);
-		$this->reservationView->CheckinDate = null;
+		$this->reservationView->CheckinDate = new NullDate();
 
 		$this->initializer->expects($this->any())
 						  ->method('CurrentUser')
@@ -725,7 +725,7 @@ class ReservationComponentTests extends TestBase
 				new ReservationResourceView(1, 'r1', null, null, null, ResourceStatus::AVAILABLE, true, null),
 				new ReservationResourceView(2, 'r2', null, null, null, ResourceStatus::AVAILABLE, true, null),
 		);
-		$this->reservationView->CheckinDate = null;
+		$this->reservationView->CheckinDate = new NullDate();
 
 		$this->initializer->expects($this->any())
 						  ->method('CurrentUser')
@@ -749,7 +749,8 @@ class ReservationComponentTests extends TestBase
 				new ReservationResourceView(2, 'r2', null, null, null, ResourceStatus::AVAILABLE, false, null),
 		);
 
-		$this->reservationView->CheckoutDate = null;
+		$this->reservationView->CheckinDate = Date::Now();
+		$this->reservationView->CheckoutDate = new NullDate();
 
 		$this->initializer->expects($this->any())
 						  ->method('CurrentUser')
@@ -818,8 +819,8 @@ class ReservationComponentTests extends TestBase
 				new ReservationResourceView(1, 'r1', null, null, null, ResourceStatus::AVAILABLE, true, null),
 				new ReservationResourceView(2, 'r2', null, null, null, ResourceStatus::AVAILABLE, true, null),
 		);
-		$this->reservationView->CheckinDate = null;
-		$this->reservationView->CheckoutDate = null;
+		$this->reservationView->CheckinDate = new NullDate();
+		$this->reservationView->CheckoutDate = new NullDate();
 
 		$this->initializer->expects($this->any())
 						  ->method('CurrentUser')
@@ -842,7 +843,7 @@ class ReservationComponentTests extends TestBase
 				new ReservationResourceView(1, 'r1', null, null, null, ResourceStatus::AVAILABLE, true, null),
 				new ReservationResourceView(2, 'r2', null, null, null, ResourceStatus::AVAILABLE, true, null),
 		);
-		$this->reservationView->CheckoutDate = null;
+		$this->reservationView->CheckoutDate = new NullDate();
 
 		$this->initializer->expects($this->any())
 						  ->method('CurrentUser')
@@ -865,7 +866,7 @@ class ReservationComponentTests extends TestBase
 				new ReservationResourceView(1, 'r1', null, null, null, ResourceStatus::AVAILABLE, true, 20),
 				new ReservationResourceView(2, 'r2', null, null, null, ResourceStatus::AVAILABLE, true, 10),
 		);
-		$this->reservationView->CheckinDate = null;
+		$this->reservationView->CheckinDate = new NullDate();
 
 		$this->initializer->expects($this->any())
 						  ->method('CurrentUser')

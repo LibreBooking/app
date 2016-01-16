@@ -144,7 +144,7 @@ class ResourceRepositoryTests extends TestBase
 			ResourceStatus::AVAILABLE,
 			$reasonId,
 			new TimeInterval($bufferTime),
-			'cccccc');
+			'#cccccc');
 
 		$actualUpdateResourceCommand = $this->db->_Commands[0];
 

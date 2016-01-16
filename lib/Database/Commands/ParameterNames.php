@@ -110,6 +110,7 @@ class ParameterNames
 	const PERIOD_LABEL = '@label';
 	const PHONE = '@phone';
 	const POSITION = '@position';
+	const PREVIOUS_END_DATE = '@previous_end_date';
 	const PUBLIC_ID = '@publicid';
 
 	const QUOTA_DURATION = '@duration';

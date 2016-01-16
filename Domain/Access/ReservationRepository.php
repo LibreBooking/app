@@ -90,7 +90,13 @@ class ReservationRepository implements IReservationRepository
 			/** @var $instance Reservation */
 			foreach ($reservationSeries->Instances() as $instance)
 			{
-				$updateReservationCommand = new UpdateReservationCommand($instance->ReferenceNumber(), $newSeriesId, $instance->StartDate(), $instance->EndDate());
+				$updateReservationCommand = new UpdateReservationCommand($instance->ReferenceNumber(),
+																		 $newSeriesId,
+																		 $instance->StartDate(),
+																		 $instance->EndDate(),
+																		 $instance->CheckinDate(),
+																		 $instance->CheckoutDate(),
+																		 $instance->PreviousEndDate());
 
 				$database->Execute($updateReservationCommand);
 			}
@@ -709,7 +715,8 @@ class InstanceUpdatedEventCommand extends EventCommand
 																 $this->instance->StartDate(),
 																 $this->instance->EndDate(),
 																 $this->instance->CheckinDate(),
-																 $this->instance->CheckoutDate());
+																 $this->instance->CheckoutDate(),
+																 $this->instance->PreviousEndDate());
 
 		$database->Execute($updateReservationCommand);
 

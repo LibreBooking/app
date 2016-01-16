@@ -1016,7 +1016,10 @@ class ReservationRepositoryTests extends TestBase
 			$expectedInstance->ReferenceNumber(),
 			$expectedSeriesId,
 			$expectedInstance->StartDate(),
-			$expectedInstance->EndDate());
+			$expectedInstance->EndDate(),
+			$expectedInstance->CheckinDate(),
+			$expectedInstance->CheckoutDate(),
+			$expectedInstance->PreviousEndDate());
 	}
 
 	private function GetAddReservationCommand($expectedSeriesId, Reservation $expectedInstance)

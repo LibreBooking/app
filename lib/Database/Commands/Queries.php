@@ -945,7 +945,8 @@ class Queries
 			start_date = @startDate,
 			end_date = @endDate,
 			checkin_date = @checkin_date,
-			checkout_date = @checkout_date
+			checkout_date = @checkout_date,
+			previous_end_date = @previous_end_date
 		WHERE
 			reference_number = @referenceNumber';
 

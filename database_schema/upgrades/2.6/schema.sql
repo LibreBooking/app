@@ -87,4 +87,5 @@ ALTER TABLE `resources` ADD COLUMN `color` varchar(10);
 
 ALTER TABLE `reservation_instances` ADD COLUMN `checkin_date` datetime;
 ALTER TABLE `reservation_instances` ADD COLUMN `checkout_date` datetime;
+ALTER TABLE `reservation_instances` ADD COLUMN `previous_end_date` datetime;
 ALTER TABLE `reservation_series` ADD COLUMN `last_action_by` mediumint(8) unsigned;

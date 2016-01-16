@@ -18,6 +18,7 @@
  * You should have received a copy of the GNU General Public License
  * along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 class ColumnNames
 {
 	private function __construct()
@@ -114,6 +115,7 @@ class ColumnNames
 	const REFERENCE_NUMBER = 'reference_number';
 	const CHECKIN_DATE = 'checkin_date';
 	const CHECKOUT_DATE = 'checkout_date';
+	const PREVIOUS_END_DATE = 'previous_end_date';
 
 	// RESERVATION_USER //
 	const RESERVATION_USER_LEVEL = 'reservation_user_level';

@@ -140,9 +140,10 @@ class ReservationInstanceRow
 	 * @param DateRange $duration
 	 * @param Date $checkinTime
 	 * @param Date $checkoutTime
+	 * @param Date $previousEnd
 	 * @return ReservationInstanceRow
 	 */
-	public function WithInstance($instanceId, $referenceNum, $duration, $checkinTime = null, $checkoutTime = null)
+	public function WithInstance($instanceId, $referenceNum, $duration, $checkinTime = null, $checkoutTime = null, $previousEnd = null)
 	{
 		$this->rows[] = array(
 			ColumnNames::SERIES_ID => $this->seriesId,
@@ -152,6 +153,7 @@ class ReservationInstanceRow
 			ColumnNames::RESERVATION_END => $duration->GetEnd()->ToDatabase(),
 			ColumnNames::CHECKIN_DATE => $checkinTime == null ? null : $checkinTime->ToDatabase(),
 			ColumnNames::CHECKOUT_DATE => $checkoutTime == null ? null : $checkoutTime->ToDatabase(),
+			ColumnNames::PREVIOUS_END_DATE => $previousEnd == null ? null : $previousEnd->ToDatabase(),
 		);
 
 		return $this;

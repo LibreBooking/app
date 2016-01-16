@@ -89,7 +89,7 @@ class ExistingReservationInitializerTests extends TestBase
 
 		$reservationBinder->expects($this->once())
 				->method('Bind')
-				->with($this->equalTo($initializer), $this->equalTo($page), $this->equalTo($reservationView));
+				->with($this->equalTo($initializer));
 
 		$initializer->Initialize();
 	}

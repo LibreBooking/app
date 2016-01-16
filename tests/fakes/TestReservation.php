@@ -27,6 +27,8 @@ class TestReservation extends Reservation
 	 */
 	public function __construct($referenceNumber = null, $reservationDate = null, $reservationId = null)
 	{
+		$this->startDate = new NullDate();
+		$this->endDate = new NullDate();
 		$this->checkinDate = new NullDate();
 		$this->checkoutDate = new NullDate();
 		$this->previousStart = new NullDate();

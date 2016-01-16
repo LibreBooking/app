@@ -147,6 +147,7 @@ class ReservationViewRepository implements IReservationViewRepository
 			$reservationView->AllowParticipation = $row[ColumnNames::RESERVATION_ALLOW_PARTICIPATION];
 			$reservationView->CheckinDate = Date::FromDatabase($row[ColumnNames::CHECKIN_DATE]);
 			$reservationView->CheckoutDate = Date::FromDatabase($row[ColumnNames::CHECKOUT_DATE]);
+			$reservationView->PreviousEndDate = Date::FromDatabase($row[ColumnNames::PREVIOUS_END_DATE]);
 
 			$this->SetResources($reservationView);
 			$this->SetParticipants($reservationView);
@@ -557,10 +558,6 @@ class NullReservationView extends ReservationView
 	 */
 	private static $instance;
 
-	private function __construct()
-	{
-	}
-
 	public static function Instance()
 	{
 		if (is_null(self::$instance))
@@ -640,13 +637,17 @@ class ReservationView
 	 */
 	public $DateModified;
 	/**
-	 * @var Date|null
+	 * @var Date
 	 */
 	public $CheckinDate;
 	/**
-	 * @var Date|null
+	 * @var Date
 	 */
 	public $CheckoutDate;
+	/**
+	 * @var Date
+	 */
+	public $PreviousEndDate;
 	public $OwnerId;
 	public $OwnerEmailAddress;
 	public $OwnerFirstName;
@@ -722,6 +723,13 @@ class ReservationView
 	 * @var bool
 	 */
 	public $AllowParticipation = false;
+
+	public function __construct()
+	{
+		$this->CheckinDate = new NullDate();
+		$this->CheckoutDate = new NullDate();
+		$this->PreviousEndDate = new NullDate();
+	}
 
 	/**
 	 * @param AttributeValue $attribute
@@ -1527,6 +1535,11 @@ class ReservationItemView implements IReservedItemView
 					$this->_color = "";
 				}
 			}
+		}
+
+		if (!BookedStringHelper::StartsWith($this->_color, '#'))
+		{
+			$this->_color = "#$color";
 		}
 
 		return $this->_color;

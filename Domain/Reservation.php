@@ -93,7 +93,7 @@ class Reservation
 	 */
 	public function PreviousEndDate()
 	{
-		return $this->previousEnd;
+		return $this->previousEnd == null ? new NullDate() : $this->previousEnd;
 	}
 
 	protected $reservationId;
@@ -194,8 +194,8 @@ class Reservation
 
 	public function SetReservationDate(DateRange $reservationDate)
 	{
-		$this->previousStart = $this->startDate;
-		$this->previousEnd = $this->endDate;
+		$this->previousStart = $this->StartDate();
+		$this->previousEnd = $this->EndDate();
 
 		$this->startDate = $reservationDate->GetBegin();
 		$this->endDate = $reservationDate->GetEnd();
@@ -420,7 +420,7 @@ class Reservation
 	 */
 	public function CheckinDate()
 	{
-		return $this->checkinDate;
+		return $this->checkinDate == null ? new NullDate() : $this->checkinDate;
 	}
 
 	/**
@@ -441,7 +441,7 @@ class Reservation
 	 */
 	public function CheckoutDate()
 	{
-		return $this->checkoutDate;
+		return $this->checkoutDate == null ? new NullDate() : $this->checkoutDate;
 	}
 
 	/**
@@ -454,6 +454,8 @@ class Reservation
 
 	public function Checkout()
 	{
+		$this->previousEnd = $this->endDate;
+		$this->endDate = Date::Now();
 		$this->checkoutDate = Date::Now();
 	}
 

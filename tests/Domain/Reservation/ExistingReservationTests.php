@@ -920,6 +920,16 @@ class ExistingReservationTests extends TestBase
 
 	public function testWhenCheckingOut_EndDateIsUpdated_AndPreviousValueCaptured()
 	{
-		$this->fail();
+		$oldEnd = Date::Now()->AddDays(1);
+		$reservation = new TestReservation(null, new DateRange(Date::Now(), $oldEnd));
+		$reservation->WithCheckin(Date::Now(), new NullDate());
+
+		$series = new ExistingReservationSeries();
+		$series->WithCurrentInstance($reservation);
+
+		$series->Checkout($this->fakeUser);
+
+		$this->assertEquals($oldEnd, $reservation->PreviousEndDate());
+		$this->assertEquals(Date::Now(), $reservation->EndDate());
 	}
 }
