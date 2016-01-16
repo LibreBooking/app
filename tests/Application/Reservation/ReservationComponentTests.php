@@ -59,6 +59,26 @@ class ReservationComponentTests extends TestBase
 	 */
 	private $initializer;
 
+	/**
+	 * @var ReservationDetailsBinder
+	 */
+	private $reservationDetailsBinder;
+
+	/**
+	 * @var IExistingReservationPage|PHPUnit_Framework_MockObject_MockObject
+	 */
+	private $page;
+
+	/**
+	 * @var ReservationView
+	 */
+	private $reservationView;
+
+	/**
+	 * @var IPrivacyFilter|PHPUnit_Framework_MockObject_MockObject
+	 */
+	private $privacyFilter;
+
 	public function setup()
 	{
 		parent::setup();
@@ -73,6 +93,13 @@ class ReservationComponentTests extends TestBase
 		$this->reservationAuthorization = $this->getMock('IReservationAuthorization');
 
 		$this->initializer = $this->getMock('IReservationComponentInitializer');
+		$this->page = $this->getMock('IExistingReservationPage');
+		$this->reservationView = new ReservationView();
+		$this->privacyFilter = $this->getMock('IPrivacyFilter');
+
+		$this->reservationDetailsBinder = new ReservationDetailsBinder($this->reservationAuthorization, $this->page,
+																	   $this->reservationView, $this->privacyFilter);
+
 	}
 
 	public function teardown()
@@ -137,9 +164,12 @@ class ReservationComponentTests extends TestBase
 						  ->will($this->returnValue($this->fakeUser));
 
 
-		$bookedResource = new TestResourceDto($requestedResourceId, 'resource 1', true, 1, TimeInterval::None(), null, null, null, 1, false, false, false, null);
-		$otherResource = new TestResourceDto(2, 'resource 2', true, 1, TimeInterval::None(), null, null, null, 1, false, false, false, null);
-		$otherResource2 = new TestResourceDto(100, 'something', false, true, 1, TimeInterval::None(), null, null, null, 1, false, false, false, null);
+		$bookedResource = new TestResourceDto($requestedResourceId, 'resource 1', true, 1, TimeInterval::None(), null,
+											  null, null, 1, false, false, false, null);
+		$otherResource = new TestResourceDto(2, 'resource 2', true, 1, TimeInterval::None(), null, null, null, 1, false,
+											 false, false, null);
+		$otherResource2 = new TestResourceDto(100, 'something', false, true, 1, TimeInterval::None(), null, null, null,
+											  1, false, false, false, null);
 		$resourceList = array($otherResource, $bookedResource, $otherResource2);
 
 		$groups = new FakeResourceGroupTree();
@@ -257,7 +287,8 @@ class ReservationComponentTests extends TestBase
 
 		$this->scheduleRepository->expects($this->once())
 								 ->method('GetLayout')
-								 ->with($this->equalTo($scheduleId), $this->equalTo(new ReservationLayoutFactory($timezone)))
+								 ->with($this->equalTo($scheduleId),
+										$this->equalTo(new ReservationLayoutFactory($timezone)))
 								 ->will($this->returnValue($layout));
 
 		$layout->expects($this->at(0))
@@ -332,7 +363,8 @@ class ReservationComponentTests extends TestBase
 
 		$this->scheduleRepository->expects($this->once())
 								 ->method('GetLayout')
-								 ->with($this->equalTo($scheduleId), $this->equalTo(new ReservationLayoutFactory($timezone)))
+								 ->with($this->equalTo($scheduleId),
+										$this->equalTo(new ReservationLayoutFactory($timezone)))
 								 ->will($this->returnValue($layout));
 
 		$layout->expects($this->at(0))
@@ -347,7 +379,8 @@ class ReservationComponentTests extends TestBase
 
 		$this->initializer->expects($this->once())
 						  ->method('SetDates')
-						  ->with($this->equalTo($startDate), $this->equalTo($expectedEndDate), $this->equalTo($startPeriods),
+						  ->with($this->equalTo($startDate), $this->equalTo($expectedEndDate),
+								 $this->equalTo($startPeriods),
 								 $this->equalTo($endPeriods));
 
 		$this->initializer->expects($this->once())
@@ -396,15 +429,18 @@ class ReservationComponentTests extends TestBase
 						  ->will($this->returnValue($scheduleId));
 
 		$periods = array(
-				new SchedulePeriod(Date::Parse('2012-01-22 22:00', $timezone), Date::Parse('2012-01-22 10:00', $timezone)),
-				new SchedulePeriod(Date::Parse('2012-01-22 10:00', $timezone), Date::Parse('2012-01-23 22:00', $timezone)),
+				new SchedulePeriod(Date::Parse('2012-01-22 22:00', $timezone),
+								   Date::Parse('2012-01-22 10:00', $timezone)),
+				new SchedulePeriod(Date::Parse('2012-01-22 10:00', $timezone),
+								   Date::Parse('2012-01-23 22:00', $timezone)),
 		);
 		$startPeriods = array($periods[1], $periods[0]);
 		$layout = $this->getMock('IScheduleLayout');
 
 		$this->scheduleRepository->expects($this->once())
 								 ->method('GetLayout')
-								 ->with($this->equalTo($scheduleId), $this->equalTo(new ReservationLayoutFactory($timezone)))
+								 ->with($this->equalTo($scheduleId),
+										$this->equalTo(new ReservationLayoutFactory($timezone)))
 								 ->will($this->returnValue($layout));
 
 		$layout->expects($this->any())
@@ -414,7 +450,8 @@ class ReservationComponentTests extends TestBase
 
 		$this->initializer->expects($this->once())
 						  ->method('SetDates')
-						  ->with($this->equalTo($requestedDate), $this->equalTo($requestedDate), $this->equalTo($startPeriods),
+						  ->with($this->equalTo($requestedDate), $this->equalTo($requestedDate),
+								 $this->equalTo($startPeriods),
 								 $this->equalTo($periods));
 
 		$binder = new ReservationDateBinder($this->scheduleRepository);
@@ -423,11 +460,6 @@ class ReservationComponentTests extends TestBase
 
 	public function testBindsReservationDetails()
 	{
-		$page = $this->getMock('IExistingReservationPage');
-		$reservationAuthorization = $this->getMock('IReservationAuthorization');
-		$privacyFilter = $this->getMock('IPrivacyFilter');
-		$initializer = $this->getMock('IReservationComponentInitializer');
-
 		$timezone = 'UTC';
 		$repeatType = RepeatType::Monthly;
 		$repeatInterval = 2;
@@ -472,147 +504,400 @@ class ReservationComponentTests extends TestBase
 		$startReminderValue = 15;
 		$startReminderInterval = ReservationReminderInterval::Minutes;
 
-		$reservationView = new ReservationView();
-		$reservationView->ReservationId = $reservationId;
-		$reservationView->ReferenceNumber = $referenceNumber;
-		$reservationView->ResourceId = $resourceId;
-		$reservationView->ScheduleId = $scheduleId;
-		$reservationView->StartDate = $expectedStartDate;
-		$reservationView->EndDate = $expectedEndDate;
-		$reservationView->OwnerId = $ownerId;
-		$reservationView->OwnerFirstName = $firstName;
-		$reservationView->OwnerLastName = $lastName;
-		$reservationView->AdditionalResourceIds = $additionalResourceIds;
-		$reservationView->Participants = $participants;
-		$reservationView->Invitees = $invitees;
-		$reservationView->Title = $title;
-		$reservationView->Description = $description;
-		$reservationView->RepeatType = $repeatType;
-		$reservationView->RepeatInterval = $repeatInterval;
-		$reservationView->RepeatWeekdays = $repeatWeekdays;
-		$reservationView->RepeatMonthlyType = $repeatMonthlyType;
-		$reservationView->RepeatTerminationDate = $repeatTerminationDate;
-		$reservationView->StatusId = ReservationStatus::Pending;
-		$reservationView->Accessories = $accessories;
-		$reservationView->Attachments = $attachments;
-		$reservationView->StartReminder = new ReservationReminderView($startReminderValue);
-		$reservationView->EndReminder = null;
+		$this->reservationView->ReservationId = $reservationId;
+		$this->reservationView->ReferenceNumber = $referenceNumber;
+		$this->reservationView->ResourceId = $resourceId;
+		$this->reservationView->ScheduleId = $scheduleId;
+		$this->reservationView->StartDate = $expectedStartDate;
+		$this->reservationView->EndDate = $expectedEndDate;
+		$this->reservationView->OwnerId = $ownerId;
+		$this->reservationView->OwnerFirstName = $firstName;
+		$this->reservationView->OwnerLastName = $lastName;
+		$this->reservationView->AdditionalResourceIds = $additionalResourceIds;
+		$this->reservationView->Participants = $participants;
+		$this->reservationView->Invitees = $invitees;
+		$this->reservationView->Title = $title;
+		$this->reservationView->Description = $description;
+		$this->reservationView->RepeatType = $repeatType;
+		$this->reservationView->RepeatInterval = $repeatInterval;
+		$this->reservationView->RepeatWeekdays = $repeatWeekdays;
+		$this->reservationView->RepeatMonthlyType = $repeatMonthlyType;
+		$this->reservationView->RepeatTerminationDate = $repeatTerminationDate;
+		$this->reservationView->StatusId = ReservationStatus::Pending;
+		$this->reservationView->Accessories = $accessories;
+		$this->reservationView->Attachments = $attachments;
+		$this->reservationView->StartReminder = new ReservationReminderView($startReminderValue);
+		$this->reservationView->EndReminder = null;
 
-		$page->expects($this->once())
-			 ->method('SetAdditionalResources')
-			 ->with($this->equalTo($additionalResourceIds));
+		$this->page->expects($this->once())
+				   ->method('SetAdditionalResources')
+				   ->with($this->equalTo($additionalResourceIds));
 
-		$page->expects($this->once())
-			 ->method('SetParticipants')
-			 ->with($this->equalTo($participants));
+		$this->page->expects($this->once())
+				   ->method('SetParticipants')
+				   ->with($this->equalTo($participants));
 
-		$page->expects($this->once())
-			 ->method('SetInvitees')
-			 ->with($this->equalTo($invitees));
+		$this->page->expects($this->once())
+				   ->method('SetInvitees')
+				   ->with($this->equalTo($invitees));
 
-		$page->expects($this->once())
-			 ->method('SetTitle')
-			 ->with($this->equalTo($title));
+		$this->page->expects($this->once())
+				   ->method('SetTitle')
+				   ->with($this->equalTo($title));
 
-		$page->expects($this->once())
-			 ->method('SetDescription')
-			 ->with($this->equalTo($description));
+		$this->page->expects($this->once())
+				   ->method('SetDescription')
+				   ->with($this->equalTo($description));
 
-		$page->expects($this->once())
-			 ->method('SetRepeatType')
-			 ->with($this->equalTo($repeatType));
+		$this->page->expects($this->once())
+				   ->method('SetRepeatType')
+				   ->with($this->equalTo($repeatType));
 
-		$page->expects($this->once())
-			 ->method('SetRepeatInterval')
-			 ->with($this->equalTo($repeatInterval));
+		$this->page->expects($this->once())
+				   ->method('SetRepeatInterval')
+				   ->with($this->equalTo($repeatInterval));
 
-		$page->expects($this->once())
-			 ->method('SetRepeatMonthlyType')
-			 ->with($this->equalTo($repeatMonthlyType));
+		$this->page->expects($this->once())
+				   ->method('SetRepeatMonthlyType')
+				   ->with($this->equalTo($repeatMonthlyType));
 
-		$page->expects($this->any())
-			 ->method('SetRepeatTerminationDate')
-			 ->with($repeatTerminationDate->ToTimezone($timezone));
+		$this->page->expects($this->any())
+				   ->method('SetRepeatTerminationDate')
+				   ->with($repeatTerminationDate->ToTimezone($timezone));
 
-		$page->expects($this->once())
-			 ->method('SetRepeatWeekdays')
-			 ->with($this->equalTo($repeatWeekdays));
+		$this->page->expects($this->once())
+				   ->method('SetRepeatWeekdays')
+				   ->with($this->equalTo($repeatWeekdays));
 
-		$page->expects($this->once())
-			 ->method('SetAccessories')
-			 ->with($this->equalTo($accessories));
+		$this->page->expects($this->once())
+				   ->method('SetAccessories')
+				   ->with($this->equalTo($accessories));
 
-		$page->expects($this->once())
-			 ->method('SetAttachments')
-			 ->with($this->equalTo($attachments));
+		$this->page->expects($this->once())
+				   ->method('SetAttachments')
+				   ->with($this->equalTo($attachments));
 
 		$isEditable = false;
 
-		$reservationAuthorization->expects($this->once())
-								 ->method('CanEdit')
-								 ->with($this->equalTo($reservationView), $this->equalTo($this->fakeUser))
-								 ->will($this->returnValue($isEditable));
+		$this->reservationAuthorization->expects($this->once())
+									   ->method('CanEdit')
+									   ->with($this->equalTo($this->reservationView), $this->equalTo($this->fakeUser))
+									   ->will($this->returnValue($isEditable));
 
-		$page->expects($this->once())
-			 ->method('SetIsEditable')
-			 ->with($this->equalTo($isEditable));
+		$this->page->expects($this->once())
+				   ->method('SetIsEditable')
+				   ->with($this->equalTo($isEditable));
 
 		$isApprovable = true;
-		$reservationAuthorization->expects($this->once())
-								 ->method('CanApprove')
-								 ->with($this->equalTo($reservationView), $this->equalTo($this->fakeUser))
-								 ->will($this->returnValue($isApprovable));
+		$this->reservationAuthorization->expects($this->once())
+									   ->method('CanApprove')
+									   ->with($this->equalTo($this->reservationView), $this->equalTo($this->fakeUser))
+									   ->will($this->returnValue($isApprovable));
 
-		$page->expects($this->once())
-			 ->method('SetIsApprovable')
-			 ->with($this->equalTo($isApprovable));
+		$this->page->expects($this->once())
+				   ->method('SetIsApprovable')
+				   ->with($this->equalTo($isApprovable));
 
 		$isParticipating = false;
-		$page->expects($this->once())
-			 ->method('SetCurrentUserParticipating')
-			 ->with($this->equalTo($isParticipating));
+		$this->page->expects($this->once())
+				   ->method('SetCurrentUserParticipating')
+				   ->with($this->equalTo($isParticipating));
 
-		$page->expects($this->once())
-			 ->method('SetStartReminder')
-			 ->with($this->equalTo($startReminderValue), $this->equalTo($startReminderInterval));
+		$this->page->expects($this->once())
+				   ->method('SetStartReminder')
+				   ->with($this->equalTo($startReminderValue), $this->equalTo($startReminderInterval));
 
-		$page->expects($this->never())
-			 ->method('SetEndReminder');
+		$this->page->expects($this->never())
+				   ->method('SetEndReminder');
 
 		$isInvited = true;
-		$page->expects($this->once())
-			 ->method('SetCurrentUserInvited')
-			 ->with($this->equalTo($isInvited));
+		$this->page->expects($this->once())
+				   ->method('SetCurrentUserInvited')
+				   ->with($this->equalTo($isInvited));
 
-		$initializer->expects($this->atLeastOnce())
-					->method('GetTimezone')
-					->will($this->returnValue($timezone));
+		$this->initializer->expects($this->atLeastOnce())
+						  ->method('GetTimezone')
+						  ->will($this->returnValue($timezone));
 
-		$initializer->expects($this->atLeastOnce())
-					->method('CurrentUser')
-					->will($this->returnValue($this->fakeUser));
+		$this->initializer->expects($this->atLeastOnce())
+						  ->method('CurrentUser')
+						  ->will($this->returnValue($this->fakeUser));
 
 		$canViewDetails = true;
 		$canViewUser = true;
-		$privacyFilter->expects($this->once())
-					  ->method('CanViewDetails')
-					  ->with($this->equalTo($this->fakeUser), $this->equalTo($reservationView))
-					  ->will($this->returnValue($canViewDetails));
+		$this->privacyFilter->expects($this->once())
+							->method('CanViewDetails')
+							->with($this->equalTo($this->fakeUser), $this->equalTo($this->reservationView))
+							->will($this->returnValue($canViewDetails));
 
-		$privacyFilter->expects($this->once())
-					  ->method('CanViewUser')
-					  ->with($this->equalTo($this->fakeUser), $this->equalTo($reservationView))
-					  ->will($this->returnValue($canViewUser));
+		$this->privacyFilter->expects($this->once())
+							->method('CanViewUser')
+							->with($this->equalTo($this->fakeUser), $this->equalTo($this->reservationView))
+							->will($this->returnValue($canViewUser));
 
-		$initializer->expects($this->once())
-					->method('ShowUserDetails')
-					->with($this->equalTo($canViewDetails));
+		$this->initializer->expects($this->once())
+						  ->method('ShowUserDetails')
+						  ->with($this->equalTo($canViewDetails));
 
-		$initializer->expects($this->once())
-					->method('ShowReservationDetails')
-					->with($this->equalTo($canViewDetails));
+		$this->initializer->expects($this->once())
+						  ->method('ShowReservationDetails')
+						  ->with($this->equalTo($canViewDetails));
 
-		$binder = new ReservationDetailsBinder($reservationAuthorization, $page, $reservationView, $privacyFilter);
-		$binder->Bind($initializer);
+		$this->reservationDetailsBinder->Bind($this->initializer);
+	}
+
+	public function testCheckInIsRequiredIfAtLeastOneResourceRequiresIt_And_ReservationIsNotCheckedIn_And_WithinCheckinWindow()
+	{
+		$page = new FakeExistingReservationPage();
+		$this->reservationView->StartDate = Date::Now()->AddMinutes(4);
+		$this->reservationView->EndDate = Date::Now()->AddMinutes(45);
+
+		$this->reservationView->Resources = array(
+				new ReservationResourceView(1, 'r1', null, null, null, ResourceStatus::AVAILABLE, false, null),
+				new ReservationResourceView(2, 'r2', null, null, null, ResourceStatus::AVAILABLE, true, 20),
+		);
+		$this->reservationView->CheckinDate = null;
+
+		$this->initializer->expects($this->any())
+						  ->method('CurrentUser')
+						  ->will($this->returnValue($this->fakeUser));
+
+		$this->reservationDetailsBinder = new ReservationDetailsBinder($this->reservationAuthorization, $page,
+																	   $this->reservationView, $this->privacyFilter);
+		$this->reservationDetailsBinder->Bind($this->initializer);
+
+		$this->assertTrue($page->_CheckInRequired);
+	}
+
+	public function testCheckInNotRequiredIfCheckedIn()
+	{
+		$page = new FakeExistingReservationPage();
+		$this->reservationView->StartDate = Date::Now()->AddMinutes(4);
+		$this->reservationView->EndDate = Date::Now()->AddMinutes(45);
+
+		$this->reservationView->Resources = array(
+				new ReservationResourceView(1, 'r1', null, null, null, ResourceStatus::AVAILABLE, false, null),
+				new ReservationResourceView(2, 'r2', null, null, null, ResourceStatus::AVAILABLE, true, 20),
+		);
+		$this->reservationView->CheckinDate = Date::Now();
+
+		$this->initializer->expects($this->any())
+						  ->method('CurrentUser')
+						  ->will($this->returnValue($this->fakeUser));
+
+		$this->reservationDetailsBinder = new ReservationDetailsBinder($this->reservationAuthorization, $page,
+																	   $this->reservationView, $this->privacyFilter);
+		$this->reservationDetailsBinder->Bind($this->initializer);
+
+		$this->assertFalse($page->_CheckInRequired);
+	}
+
+	public function testCheckInIsNotRequiredIfNoResourceRequiresIt()
+	{
+		$page = new FakeExistingReservationPage();
+		$this->reservationView->StartDate = Date::Now()->AddMinutes(4);
+		$this->reservationView->EndDate = Date::Now()->AddMinutes(45);
+
+		$this->reservationView->Resources = array(
+				new ReservationResourceView(1, 'r1', null, null, null, ResourceStatus::AVAILABLE, false, null),
+				new ReservationResourceView(2, 'r2', null, null, null, ResourceStatus::AVAILABLE, false, null),
+		);
+		$this->reservationView->CheckinDate = null;
+
+		$this->initializer->expects($this->any())
+						  ->method('CurrentUser')
+						  ->will($this->returnValue($this->fakeUser));
+
+		$this->reservationDetailsBinder = new ReservationDetailsBinder($this->reservationAuthorization, $page,
+																	   $this->reservationView, $this->privacyFilter);
+		$this->reservationDetailsBinder->Bind($this->initializer);
+
+		$this->assertFalse($page->_CheckInRequired);
+	}
+
+	public function testCheckInIsNotRequiredIfTooEarly()
+	{
+		$page = new FakeExistingReservationPage();
+		$this->reservationView->StartDate = Date::Now()->AddMinutes(6);
+		$this->reservationView->EndDate = Date::Now()->AddMinutes(45);
+
+		$this->reservationView->Resources = array(
+				new ReservationResourceView(1, 'r1', null, null, null, ResourceStatus::AVAILABLE, true, null),
+				new ReservationResourceView(2, 'r2', null, null, null, ResourceStatus::AVAILABLE, true, null),
+		);
+		$this->reservationView->CheckinDate = null;
+
+		$this->initializer->expects($this->any())
+						  ->method('CurrentUser')
+						  ->will($this->returnValue($this->fakeUser));
+
+		$this->reservationDetailsBinder = new ReservationDetailsBinder($this->reservationAuthorization, $page,
+																	   $this->reservationView, $this->privacyFilter);
+		$this->reservationDetailsBinder->Bind($this->initializer);
+
+		$this->assertFalse($page->_CheckInRequired);
+	}
+
+	public function testCheckOutRequiredIfAtLeastOneResourceRequiresIt_AndTheReservationHasStarted_AndNotCheckedOut()
+	{
+		$page = new FakeExistingReservationPage();
+		$this->reservationView->StartDate = Date::Now()->AddMinutes(-6);
+		$this->reservationView->EndDate = Date::Now()->AddMinutes(45);
+
+		$this->reservationView->Resources = array(
+				new ReservationResourceView(1, 'r1', null, null, null, ResourceStatus::AVAILABLE, true, null),
+				new ReservationResourceView(2, 'r2', null, null, null, ResourceStatus::AVAILABLE, false, null),
+		);
+
+		$this->reservationView->CheckoutDate = null;
+
+		$this->initializer->expects($this->any())
+						  ->method('CurrentUser')
+						  ->will($this->returnValue($this->fakeUser));
+
+		$this->reservationDetailsBinder = new ReservationDetailsBinder($this->reservationAuthorization, $page,
+																	   $this->reservationView, $this->privacyFilter);
+		$this->reservationDetailsBinder->Bind($this->initializer);
+
+		$this->assertTrue($page->_CheckOutRequired);
+	}
+
+	public function testCheckOutIsNotRequiredIfNoResourceRequiresIt()
+	{
+		$page = new FakeExistingReservationPage();
+		$this->reservationView->StartDate = Date::Now()->AddMinutes(-6);
+		$this->reservationView->EndDate = Date::Now()->AddMinutes(45);
+
+		$this->reservationView->Resources = array(
+				new ReservationResourceView(1, 'r1', null, null, null, ResourceStatus::AVAILABLE, false, null),
+				new ReservationResourceView(2, 'r2', null, null, null, ResourceStatus::AVAILABLE, false, null),
+		);
+		$this->reservationView->CheckinDate = Date::Now();
+
+		$this->initializer->expects($this->any())
+						  ->method('CurrentUser')
+						  ->will($this->returnValue($this->fakeUser));
+
+		$this->reservationDetailsBinder = new ReservationDetailsBinder($this->reservationAuthorization, $page,
+																	   $this->reservationView, $this->privacyFilter);
+		$this->reservationDetailsBinder->Bind($this->initializer);
+
+		$this->assertFalse($page->_CheckOutRequired);
+	}
+
+	public function testCheckOutIsNotRequiredIfAlreadyCheckedOut()
+	{
+		$page = new FakeExistingReservationPage();
+		$this->reservationView->StartDate = Date::Now()->AddMinutes(-6);
+		$this->reservationView->EndDate = Date::Now()->AddMinutes(45);
+
+		$this->reservationView->Resources = array(
+				new ReservationResourceView(1, 'r1', null, null, null, ResourceStatus::AVAILABLE, true, null),
+				new ReservationResourceView(2, 'r2', null, null, null, ResourceStatus::AVAILABLE, true, null),
+		);
+		$this->reservationView->CheckoutDate = Date::Now();
+
+		$this->initializer->expects($this->any())
+						  ->method('CurrentUser')
+						  ->will($this->returnValue($this->fakeUser));
+
+		$this->reservationDetailsBinder = new ReservationDetailsBinder($this->reservationAuthorization, $page,
+																	   $this->reservationView, $this->privacyFilter);
+		$this->reservationDetailsBinder->Bind($this->initializer);
+
+		$this->assertFalse($page->_CheckOutRequired);
+	}
+
+	public function testCheckOutIsNotRequiredIfNotCheckedIn()
+	{
+		$page = new FakeExistingReservationPage();
+		$this->reservationView->StartDate = Date::Now()->AddMinutes(-6);
+		$this->reservationView->EndDate = Date::Now()->AddMinutes(45);
+
+		$this->reservationView->Resources = array(
+				new ReservationResourceView(1, 'r1', null, null, null, ResourceStatus::AVAILABLE, true, null),
+				new ReservationResourceView(2, 'r2', null, null, null, ResourceStatus::AVAILABLE, true, null),
+		);
+		$this->reservationView->CheckinDate = null;
+		$this->reservationView->CheckoutDate = null;
+
+		$this->initializer->expects($this->any())
+						  ->method('CurrentUser')
+						  ->will($this->returnValue($this->fakeUser));
+
+		$this->reservationDetailsBinder = new ReservationDetailsBinder($this->reservationAuthorization, $page,
+																	   $this->reservationView, $this->privacyFilter);
+		$this->reservationDetailsBinder->Bind($this->initializer);
+
+		$this->assertFalse($page->_CheckOutRequired);
+	}
+
+	public function testCheckOutIsNotRequiredIfNotStarted()
+	{
+		$page = new FakeExistingReservationPage();
+		$this->reservationView->StartDate = Date::Now()->AddMinutes(6);
+		$this->reservationView->EndDate = Date::Now()->AddMinutes(45);
+
+		$this->reservationView->Resources = array(
+				new ReservationResourceView(1, 'r1', null, null, null, ResourceStatus::AVAILABLE, true, null),
+				new ReservationResourceView(2, 'r2', null, null, null, ResourceStatus::AVAILABLE, true, null),
+		);
+		$this->reservationView->CheckoutDate = null;
+
+		$this->initializer->expects($this->any())
+						  ->method('CurrentUser')
+						  ->will($this->returnValue($this->fakeUser));
+
+		$this->reservationDetailsBinder = new ReservationDetailsBinder($this->reservationAuthorization, $page,
+																	   $this->reservationView, $this->privacyFilter);
+		$this->reservationDetailsBinder->Bind($this->initializer);
+
+		$this->assertFalse($page->_CheckOutRequired);
+	}
+
+	public function testAutoReleaseMinutesIsSetToMinimumAutoReleaseMinutes_IfNotCheckedIn()
+	{
+		$page = new FakeExistingReservationPage();
+		$this->reservationView->StartDate = Date::Now()->AddMinutes(6);
+		$this->reservationView->EndDate = Date::Now()->AddMinutes(45);
+
+		$this->reservationView->Resources = array(
+				new ReservationResourceView(1, 'r1', null, null, null, ResourceStatus::AVAILABLE, true, 20),
+				new ReservationResourceView(2, 'r2', null, null, null, ResourceStatus::AVAILABLE, true, 10),
+		);
+		$this->reservationView->CheckinDate = null;
+
+		$this->initializer->expects($this->any())
+						  ->method('CurrentUser')
+						  ->will($this->returnValue($this->fakeUser));
+
+		$this->reservationDetailsBinder = new ReservationDetailsBinder($this->reservationAuthorization, $page,
+																	   $this->reservationView, $this->privacyFilter);
+		$this->reservationDetailsBinder->Bind($this->initializer);
+
+		$this->assertEquals(10, $page->_AutoReleaseMinutes);
+	}
+
+	public function testAutoReleaseMinutesNotSetIfCheckedIn()
+	{
+		$page = new FakeExistingReservationPage();
+		$this->reservationView->StartDate = Date::Now()->AddMinutes(6);
+		$this->reservationView->EndDate = Date::Now()->AddMinutes(45);
+
+		$this->reservationView->Resources = array(
+				new ReservationResourceView(1, 'r1', null, null, null, ResourceStatus::AVAILABLE, true, 20),
+				new ReservationResourceView(2, 'r2', null, null, null, ResourceStatus::AVAILABLE, true, 10),
+		);
+		$this->reservationView->CheckinDate = Date::Now();
+
+		$this->initializer->expects($this->any())
+						  ->method('CurrentUser')
+						  ->will($this->returnValue($this->fakeUser));
+
+		$this->reservationDetailsBinder = new ReservationDetailsBinder($this->reservationAuthorization, $page,
+																	   $this->reservationView, $this->privacyFilter);
+		$this->reservationDetailsBinder->Bind($this->initializer);
+
+		$this->assertEquals(null, $page->_AutoReleaseMinutes);
 	}
 }

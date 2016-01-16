@@ -1275,6 +1275,9 @@ a.remove {
 .resourceName .fa:last-of-type {
   margin-right: 2px;
 }
+.autoReleaseButtonMessage {
+  display: none;
+}
 #page-view-reservation .participationAction {
   margin-bottom: 5px;
 }

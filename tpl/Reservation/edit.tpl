@@ -19,7 +19,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 {extends file="Reservation/create.tpl"}
 
 {block name=header}
-	{include file='globalheader.tpl' TitleKey='EditReservationHeading' TitleArgs='' cssFiles='css/reservation.css,css/jquery.qtip.min.css,scripts/css/jqtree.css'}
+	{include file='globalheader.tpl' TitleKey='EditReservationHeading' TitleArgs='' Qtip=true}
 {/block}
 
 {block name=reservationHeader}
@@ -53,11 +53,12 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			</li>
 		</ul>
 	</div>
-	{if true || $CheckInRequired}
-		<button type="button" class="btn btn-warning"><i class="fa fa-sign-in"></i> Check In{if $AutoReleaseMinutes} - Released in <span>15</span> minutes{/if}</button>
+
+	{if $CheckInRequired}
+		<button type="button" class="btn btn-warning btnCheckin"><i class="fa fa-sign-in"></i> {translate key=CheckIn}<span class="autoReleaseButtonMessage" data-autorelease-minutes="{$AutoReleaseMinutes}"> - {translate key=ReleasedIn} <span class="autoReleaseMinutes"></span> {translate key=minutes}</span></button>
 	{/if}
-	{if true || $CheckOutRequired}
-		<button type="button" class="btn btn-warning"><i class="fa fa-sign-out"></i> Check Out</button>
+	{if $CheckOutRequired}
+		<button type="button" class="btn btn-warning btnCheckout"><i class="fa fa-sign-out"></i> {translate key=CheckOut}</button>
 	{/if}
 	{if $IsRecurring}
 		<button type="button" class="btn btn-success update prompt">
@@ -121,3 +122,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		</div>
 	{/if}
 {/block}
+
+				{if $AutoReleaseMinutes != null}
+		<input type="hidden" id="autoReleaseMinutes" value="{$AutoReleaseMinutes}"/>
+	{/if}

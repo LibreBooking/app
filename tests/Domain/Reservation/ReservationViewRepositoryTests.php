@@ -18,6 +18,7 @@
  * You should have received a copy of the GNU General Public License
  * along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 class ReservationViewRepositoryTests extends TestBase
 {
 	/**
@@ -61,6 +62,8 @@ class ReservationViewRepositoryTests extends TestBase
 		$resourceName1 = 'r1';
 		$adminGroupId1 = 1239;
 		$scheduleAdminGroupId = 992323;
+		$resourceCheckIn1 = true;
+		$resourceAutoRelease1 = 10;
 
 		$resourceId2 = 99;
 		$resourceName2 = 'r2';
@@ -121,7 +124,7 @@ class ReservationViewRepositoryTests extends TestBase
 
 		$resourceRows = array(
 				$this->GetResourceRow($reservationId, $resourceId1, $resourceName1, $adminGroupId1, $scheduleId,
-									  $scheduleAdminGroupId),
+									  $scheduleAdminGroupId, ResourceStatus::AVAILABLE, $resourceCheckIn1, $resourceAutoRelease1),
 				$this->GetResourceRow($reservationId, $resourceId2, $resourceName2, null, $scheduleId,
 									  $scheduleAdminGroupId),
 		);
@@ -224,8 +227,8 @@ class ReservationViewRepositoryTests extends TestBase
 		);
 
 		$expectedView->Resources = array(
-				new ReservationResourceView($resourceId1, $resourceName1, $adminGroupId1, $scheduleId, $scheduleAdminGroupId, ResourceStatus::AVAILABLE),
-				new ReservationResourceView($resourceId2, $resourceName2, null, $scheduleId, $scheduleAdminGroupId, ResourceStatus::AVAILABLE),
+				new ReservationResourceView($resourceId1, $resourceName1, $adminGroupId1, $scheduleId, $scheduleAdminGroupId, ResourceStatus::AVAILABLE, $resourceCheckIn1, $resourceAutoRelease1),
+				new ReservationResourceView($resourceId2, $resourceName2, null, $scheduleId, $scheduleAdminGroupId, ResourceStatus::AVAILABLE, false, null),
 		);
 
 		$expectedView->Accessories = array(
@@ -415,7 +418,8 @@ class ReservationViewRepositoryTests extends TestBase
 	}
 
 	private function GetResourceRow($reservationId, $resourceId, $resourceName, $adminGroupId, $scheduleId,
-									$scheduleAdminGroupId, $statusId = ResourceStatus::AVAILABLE)
+									$scheduleAdminGroupId, $statusId = ResourceStatus::AVAILABLE, $checkinEnabled = false,
+									$autoReleaseMinutes = null)
 	{
 		return array(
 				ColumnNames::RESERVATION_INSTANCE_ID => $reservationId,
@@ -426,6 +430,8 @@ class ReservationViewRepositoryTests extends TestBase
 				ColumnNames::SCHEDULE_ID => $scheduleId,
 				ColumnNames::SCHEDULE_ADMIN_GROUP_ID_ALIAS => $scheduleAdminGroupId,
 				ColumnNames::RESOURCE_STATUS_ID => $statusId,
+				ColumnNames::ENABLE_CHECK_IN => $checkinEnabled,
+				ColumnNames::AUTO_RELEASE_MINUTES => $autoReleaseMinutes,
 		);
 
 	}

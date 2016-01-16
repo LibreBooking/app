@@ -392,10 +392,16 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 	<div id="wait-box" class="wait-box">
 		<div id="creatingNotification">
-			<h3>
+			<h3 id="createUpdateMessage" class="no-show">
 				{block name="ajaxMessage"}
 					{translate key=CreatingReservation}
 				{/block}
+			</h3>
+			<h3 id="checkingInMessage" class="no-show">
+				{translate key=CheckingIn}
+			</h3>
+			<h3 id="checkingOutMessage" class="no-show">
+				{translate key=CheckingOut}
 			</h3>
 			{html_image src="reservation_submitting.gif"}
 		</div>
@@ -418,6 +424,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 {jsfile src="autocomplete.js"}
 {jsfile src="force-numeric.js"}
 {jsfile src="reservation-reminder.js"}
+{jsfile src="ajax-helpers.js"}
 {jsfile src="js/tree.jquery.js"}
 
 <script type="text/javascript">
@@ -437,6 +444,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			createUrl: 'ajax/reservation_save.php',
 			updateUrl: 'ajax/reservation_update.php',
 			deleteUrl: 'ajax/reservation_delete.php',
+			checkinUrl: 'ajax/reservation_checkin.php?action={ReservationAction::Checkin}',
+			checkoutUrl: 'ajax/reservation_checkin.php?action={ReservationAction::Checkout}',
 			userAutocompleteUrl: "ajax/autocomplete.php?type={AutoCompleteType::User}",
 			groupAutocompleteUrl: "ajax/autocomplete.php?type={AutoCompleteType::Group}",
 			changeUserAutocompleteUrl: "ajax/autocomplete.php?type={AutoCompleteType::MyUsers}",
@@ -461,7 +470,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		recurrence.init();
 
 		var reservation = new Reservation(reservationOpts);
-		reservation.init('{$UserId}');
+		reservation.init('{$UserId}', '{format_date date=$StartDate key=system_datetime timezone=$Timezone}', '{format_date date=$EndDate key=system_datetime timezone=$Timezone}');
 
 		var reminders = new Reminder(reminderOpts);
 		reminders.init();
@@ -517,7 +526,6 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 				}
 			}
 		});
-
 	});
 </script>
 

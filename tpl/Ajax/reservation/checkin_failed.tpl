@@ -1,5 +1,4 @@
-<?php
-/**
+{*
 Copyright 2011-2015 Nick Korbel
 
 This file is part of Booked Scheduler.
@@ -16,24 +15,29 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
-*/
+*}
+<div>
+	<div id="reservation-response-image">
+		<span class="fa fa-warning fa-5x error"></span>
+	</div>
 
-class FakeBookableResource extends BookableResource
-{
-	public function __construct($id, $name = null)
-	{
-		$this->_resourceId = $id;
-		$this->_name = $name;
-	}
+	<div id="failed-message" class="reservation-message">
+		{if $IsCheckingIn}
+			{translate key=CheckInFailed}
+		{else}
+			{translate key=CheckOutFailed}
+		{/if}
+	</div>
 
-	public function RequiresApproval($requiresApproval)
-	{
-		$this->_requiresApproval = $requiresApproval;
-	}
+	<div class="error">
+		{foreach from=$Errors item=each}
+			<div>{$each|nl2br}</div>
+		{/foreach}
+	</div>
 
-	public function SetScheduleAdminGroupId($scheduleAdminGroupId)
-	{
-		$this->_scheduleAdminGroupId = $scheduleAdminGroupId;
-	}
+	<div>
+		<button id="btnSaveFailed" class="btn btn-warning"><span
+					class="fa fa-arrow-circle-left"></span> {translate key='Close'}</button>
+	</div>
 
-}
+</div>

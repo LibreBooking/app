@@ -271,7 +271,7 @@ class BookableResource implements IBookableResource
 		}
 		if (isset($row[ColumnNames::ENABLE_CHECK_IN]))
 		{
-			$resource->_enableCheckIn = boolval($row[ColumnNames::ENABLE_CHECK_IN]);
+			$resource->_enableCheckIn = intval($row[ColumnNames::ENABLE_CHECK_IN]);
 		}
 		if (isset($row[ColumnNames::AUTO_RELEASE_MINUTES]))
 		{
@@ -813,6 +813,16 @@ class BookableResource implements IBookableResource
 	}
 
 	/**
+	 * @param bool $enabled
+	 * @param int|null $autoReleaseMinutes
+	 */
+	public function SetCheckin($enabled, $autoReleaseMinutes = null)
+	{
+		$this->_enableCheckIn = $enabled;
+		$this->_autoReleaseMinutes = $autoReleaseMinutes;
+	}
+
+	/**
 	 * @var array|AttributeValue[]
 	 */
 	private $_addedAttributeValues = array();
@@ -1042,7 +1052,7 @@ class BookableResource implements IBookableResource
 		}
 		if (!BookedStringHelper::StartsWith($color, '#'))
 		{
-			$color = '#' .$color;
+			$color = '#' . $color;
 		}
 
 		$this->_color = $color;

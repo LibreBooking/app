@@ -112,6 +112,8 @@ class ColumnNames
 	const RESERVATION_START = 'start_date';
 	const RESERVATION_END = 'end_date';
 	const REFERENCE_NUMBER = 'reference_number';
+	const CHECKIN_DATE = 'checkin_date';
+	const CHECKOUT_DATE = 'checkout_date';
 
 	// RESERVATION_USER //
 	const RESERVATION_USER_LEVEL = 'reservation_user_level';

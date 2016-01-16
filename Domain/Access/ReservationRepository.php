@@ -253,7 +253,11 @@ class ReservationRepository implements IReservationRepository
 			$start = Date::FromDatabase($row[ColumnNames::RESERVATION_START]);
 			$end = Date::FromDatabase($row[ColumnNames::RESERVATION_END]);
 
-			$reservation = new Reservation($series, new DateRange($start, $end), $row[ColumnNames::RESERVATION_INSTANCE_ID], $row[ColumnNames::REFERENCE_NUMBER]);
+			$reservation = new Reservation($series,
+										   new DateRange($start, $end),
+										   $row[ColumnNames::RESERVATION_INSTANCE_ID],
+										   $row[ColumnNames::REFERENCE_NUMBER]);
+			$reservation->WithCheckin(Date::FromDatabase($row[ColumnNames::CHECKIN_DATE]), Date::FromDatabase($row[ColumnNames::CHECKOUT_DATE]));
 
 			$series->WithInstance($reservation);
 		}
@@ -700,7 +704,12 @@ class InstanceUpdatedEventCommand extends EventCommand
 	public function Execute(Database $database)
 	{
 		$instanceId = $this->instance->ReservationId();
-		$updateReservationCommand = new UpdateReservationCommand($this->instance->ReferenceNumber(), $this->series->SeriesId(), $this->instance->StartDate(), $this->instance->EndDate());
+		$updateReservationCommand = new UpdateReservationCommand($this->instance->ReferenceNumber(),
+																 $this->series->SeriesId(),
+																 $this->instance->StartDate(),
+																 $this->instance->EndDate(),
+																 $this->instance->CheckinDate(),
+																 $this->instance->CheckoutDate());
 
 		$database->Execute($updateReservationCommand);
 

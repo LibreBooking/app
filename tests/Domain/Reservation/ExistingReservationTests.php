@@ -904,4 +904,22 @@ class ExistingReservationTests extends TestBase
 		$this->assertTrue(in_array(new ReminderRemovedEvent($series, ReservationReminderType::End),
 								   $events));
 	}
+
+	public function testWhenUpdatingReservationDatesPastCheckedInTime_RequireCheckInAgain()
+	{
+		$reservation = new TestReservation(null, new DateRange(Date::Now(), Date::Now()));
+		$reservation->WithCheckin(Date::Now(), new NullDate());
+
+		$series = new ExistingReservationSeries();
+		$series->WithCurrentInstance($reservation);
+
+		$series->UpdateDuration(new DateRange(Date::Now()->AddDays(1), Date::Now()->AddDays(2)));
+
+		$this->assertFalse($series->CurrentInstance()->IsCheckedIn());
+	}
+
+	public function testWhenCheckingOut_EndDateIsUpdated_AndPreviousValueCaptured()
+	{
+		$this->fail();
+	}
 }

@@ -269,6 +269,13 @@ class ReservationDetailsBinder implements IReservationComponentBinder
 			$this->page->SetEndReminder($this->reservationView->EndReminder->GetValue(),
 										$this->reservationView->EndReminder->GetInterval());
 		}
+
+		$this->page->SetCheckInRequired(false);
+		$this->page->SetCheckOutRequired(false);
+		$this->page->SetAutoReleaseMinutes(null);
+		$this->SetCheckinRequired();
+		$this->SetCheckoutRequired();
+		$this->SetAutoReleaseMinutes();
 	}
 
 	private function IsCurrentUserParticipating($currentUserId)
@@ -295,5 +302,59 @@ class ReservationDetailsBinder implements IReservationComponentBinder
 			}
 		}
 		return false;
+	}
+
+	private function SetCheckinRequired()
+	{
+		if ($this->reservationView->CheckinDate->ToString() == '' &&
+			Date::Now()->AddMinutes(5)->GreaterThanOrEqual($this->reservationView->StartDate))
+		{
+			// within 5 minutes
+			foreach ($this->reservationView->Resources as $resource)
+			{
+				if ($resource->IsCheckInEnabled())
+				{
+					$this->page->SetCheckInRequired(true);
+					break;
+				}
+			}
+		}
+	}
+
+	private function SetCheckoutRequired()
+	{
+		if ($this->reservationView->StartDate->LessThan(Date::Now()) &&
+				$this->reservationView->CheckoutDate->ToString() == '' &&
+				$this->reservationView->CheckinDate->ToString() != '')
+		{
+			foreach ($this->reservationView->Resources as $resource)
+			{
+				if ($resource->IsCheckInEnabled())
+				{
+					$this->page->SetCheckOutRequired(true);
+					break;
+				}
+			}
+		}
+	}
+
+	private function SetAutoReleaseMinutes()
+	{
+		$minAutoReleaseMinutes = null;
+		if ($this->reservationView->CheckinDate->ToString() == '')
+		{
+			foreach ($this->reservationView->Resources as $resource)
+			{
+				$autoReleaseMinutes = $resource->GetAutoReleaseMinutes();
+				if ($autoReleaseMinutes != null)
+				{
+					if ($minAutoReleaseMinutes == null || ($autoReleaseMinutes < $minAutoReleaseMinutes))
+					{
+						$minAutoReleaseMinutes = $autoReleaseMinutes;
+					}
+				}
+			}
+		}
+		$this->page->SetAutoReleaseMinutes($minAutoReleaseMinutes);
 	}
 }

@@ -769,6 +769,11 @@ class NullDate extends Date
 	{
 		return $this;
 	}
+
+	public function Compare(Date $date)
+	{
+		return -1;
+	}
 }
 
 class DateDiff

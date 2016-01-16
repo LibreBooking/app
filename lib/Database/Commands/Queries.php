@@ -943,7 +943,9 @@ class Queries
 		SET
 			series_id = @seriesid,
 			start_date = @startDate,
-			end_date = @endDate
+			end_date = @endDate,
+			checkin_date = @checkin_date,
+			checkout_date = @checkout_date
 		WHERE
 			reference_number = @referenceNumber';
 

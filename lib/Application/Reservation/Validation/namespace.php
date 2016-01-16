@@ -57,3 +57,5 @@ require_once(ROOT_DIR . 'lib/Application/Reservation/Validation/BlackoutValidati
 require_once(ROOT_DIR . 'lib/Application/Reservation/Validation/BlackoutDateTimeValidationResult.php');
 require_once(ROOT_DIR . 'lib/Application/Reservation/Validation/CurrentUserIsReservationUserRule.php');
 require_once(ROOT_DIR . 'lib/Application/Reservation/Validation/AccessoryResourceRule.php');
+require_once(ROOT_DIR . 'lib/Application/Reservation/Validation/ReservationCanBeCheckedInRule.php');
+require_once(ROOT_DIR . 'lib/Application/Reservation/Validation/ReservationCanBeCheckedOutRule.php');

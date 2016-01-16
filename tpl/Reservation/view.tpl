@@ -16,7 +16,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 *}
-{include file='globalheader.tpl' TitleKey='ViewReservationHeading'}
+{include file='globalheader.tpl' TitleKey='ViewReservationHeading' Qtip=true}
 <div id="page-view-reservation">
 	<div id="reservation-box" class="readonly">
 		<div id="reservationFormDiv">
@@ -65,7 +65,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 					<div class="col-xs-12">
 						<div class="col-md-6 no-padding-left">
 							<label>{translate key='BeginDate'}</label> {formatdate date=$StartDate}
-							<input type="hidden" id="formattedBeginDate" value="{formatdate date=$StartDate key=system}"/>
+							<input type="hidden" id="formattedBeginDate"
+								   value="{formatdate date=$StartDate key=system}"/>
 							{foreach from=$StartPeriods item=period}
 								{if $period eq $SelectedStart}
 									{$period->Label()}
@@ -141,14 +142,17 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 									<div class="alert alert-info" role="alert">
 										<strong>{translate key=YouAreAParticipant}</strong>
 										{if $IsRecurring}
-											<button value="{InvitationAction::CancelAll}" class="btn btn-xs btn-info participationAction">
+											<button value="{InvitationAction::CancelAll}"
+													class="btn btn-xs btn-info participationAction">
 												<i class="fa fa-minus-square"></i> {translate key=AllInstances}
 											</button>
-											<button value="{InvitationAction::CancelInstance}" class="btn btn-xs btn-info participationAction">
+											<button value="{InvitationAction::CancelInstance}"
+													class="btn btn-xs btn-info participationAction">
 												<i class="fa fa-minus-square"></i> {translate key=ThisInstance}
 											</button>
 										{else}
-											<button value="{InvitationAction::CancelInstance}" class="btn btn-xs btn-info participationAction">
+											<button value="{InvitationAction::CancelInstance}"
+													class="btn btn-xs btn-info participationAction">
 												<i class="fa fa-minus-square"></i> {translate key=CancelParticipation}
 											</button>
 										{/if}
@@ -160,10 +164,12 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 								{if $IAmInvited && $CanAlterParticipation}
 									<div class="alert alert-info" role="alert">
 										<strong>{translate key=YouAreAParticipant}</strong>
-										<button value="{InvitationAction::Accept}" class="btn btn-xs btn-info participationAction">
+										<button value="{InvitationAction::Accept}"
+												class="btn btn-xs btn-info participationAction">
 											<i class="fa fa-user-plus"></i> {translate key="Yes"}
 										</button>
-										<button value="{InvitationAction::Decline}" class="btn btn-xs btn-danger  participationAction">
+										<button value="{InvitationAction::Decline}"
+												class="btn btn-xs btn-danger  participationAction">
 											<i class="fa fa-user-times"></i> {translate key="No"}
 										</button>
 									</div>
@@ -175,14 +181,17 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 									<div class="alert alert-info " role="alert">
 										<strong>{translate key=YouCanJoinThisReservation}</strong>
 										{if $IsRecurring}
-											<button value="{InvitationAction::JoinAll}" id="btnJoinSeries" class="btn btn-xs btn-info participationAction">
+											<button value="{InvitationAction::JoinAll}" id="btnJoinSeries"
+													class="btn btn-xs btn-info participationAction">
 												<i class="fa fa-user-plus"></i> {translate key="AllInstances"}
 											</button>
-											<button value="{InvitationAction::Join}" id="btnJoinInstance" class="btn btn-xs btn-info participationAction">
+											<button value="{InvitationAction::Join}" id="btnJoinInstance"
+													class="btn btn-xs btn-info participationAction">
 												<i class="fa fa-user-plus"></i> {translate key="ThisInstance"}
 											</button>
 										{else}
-											<button value="{InvitationAction::Join}" id="btnJoin" class="btn btn-xs btn-info participationAction">
+											<button value="{InvitationAction::Join}" id="btnJoin"
+													class="btn btn-xs btn-info participationAction">
 												<i class="fa fa-user-plus"></i> {translate key="Join"}
 											</button>
 										{/if}
@@ -196,7 +205,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 								<div id="ro-participantList">
 									<label>{translate key='ParticipantList'}</label>
 									{foreach from=$Participants item=participant}
-										<div><a href="#" class="bindableUser" data-userid="{$participant->UserId}">{$participant->FullName}</a></div>
+										<div><a href="#" class="bindableUser"
+												data-userid="{$participant->UserId}">{$participant->FullName}</a></div>
 										{foreachelse}
 										<div class="no-data">{translate key='None'}</div>
 									{/foreach}
@@ -204,7 +214,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 								<div id="ro-inviteeList">
 									<label>{translate key='InvitationList'}</label>
 									{foreach from=$Invitees item=invitee}
-										<div><a href="#" class="bindableUser" data-userid="{$invitee->UserId}">{$invitee->FullName}</a></div>
+										<div><a href="#" class="bindableUser"
+												data-userid="{$invitee->UserId}">{$invitee->FullName}</a></div>
 										{foreachelse}
 										<div class="no-data">{translate key='None'}</div>
 									{/foreach}
@@ -235,7 +246,17 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 						{/block}
 
 						{block name="submitButtons"}
-							&nbsp;
+							{if $CheckInRequired}
+								<button type="button" class="btn btn-warning btnCheckin"><i
+											class="fa fa-sign-in"></i> {translate key=CheckIn}<span
+											class="autoReleaseButtonMessage"
+											data-autorelease-minutes="{$AutoReleaseMinutes}"> - {translate key=ReleasedIn}
+										<span class="autoReleaseMinutes"></span> {translate key=minutes}</span></button>
+							{/if}
+							{if $CheckOutRequired}
+								<button type="button" class="btn btn-warning btnCheckout"><i
+											class="fa fa-sign-out"></i> {translate key=CheckOut}</button>
+							{/if}
 						{/block}
 					</div>
 				</div>
@@ -263,37 +284,53 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 	<div id="wait-box" class="wait-box">
 		<div id="creatingNotification">
-			<h3>
+			<h3 id="createUpdateMessage" class="no-show">
 				{block name="ajaxMessage"}
-					{translate key=UpdatingReservation}...
+					{translate key=UpdatingReservation}
 				{/block}
+			</h3>
+			<h3 id="checkingInMessage" class="no-show">
+				{translate key=CheckingIn}
+			</h3>
+			<h3 id="checkingOutMessage" class="no-show">
+				{translate key=CheckingOut}
 			</h3>
 			{html_image src="reservation_submitting.gif"}
 		</div>
 		<div id="result"></div>
 	</div>
 
+
 	<div style="display: none">
-		<form id="reservationForm" method="post" enctype="application/x-www-form-urlencoded">
+		<form id="form-reservation" method="post" enctype="application/x-www-form-urlencoded">
 			<input type="hidden" {formname key=RESERVATION_ID} value="{$ReservationId}"/>
 			<input type="hidden" {formname key=REFERENCE_NUMBER} value="{$ReferenceNumber}"/>
 			<input type="hidden" {formname key=RESERVATION_ACTION} value="{$ReservationAction}"/>
-			<input type="hidden" {formname key=SERIES_UPDATE_SCOPE} id="hdnSeriesUpdateScope" value="{SeriesUpdateScope::FullSeries}"/>
+			<input type="hidden" {formname key=SERIES_UPDATE_SCOPE} id="hdnSeriesUpdateScope"
+				   value="{SeriesUpdateScope::FullSeries}"/>
+			{csrf_token}
 		</form>
 	</div>
 </div>
+
 {jsfile src="participation.js"}
 {jsfile src="approval.js"}
-{jsfile src="js/jquery.form-3.09.min.js"}
+{jsfile src="js/jquery.autogrow.js"}
 {jsfile src="js/moment.min.js"}
+{jsfile src="resourcePopup.js"}
+{jsfile src="userPopup.js"}
 {jsfile src="date-helper.js"}
+{jsfile src="recurrence.js"}
 {jsfile src="reservation.js"}
 {jsfile src="autocomplete.js"}
+{jsfile src="force-numeric.js"}
+{jsfile src="reservation-reminder.js"}
+{jsfile src="ajax-helpers.js"}
+{jsfile src="js/tree.jquery.js"}
 
 <script type="text/javascript">
 
-	$(document).ready(function ()
-	{
+	$(document).ready(function () {
 
 		var participationOptions = {
 			responseType: 'json'
@@ -320,6 +357,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			returnUrl: '{$ReturnUrl}',
 			scopeOpts: scopeOptions,
 			deleteUrl: 'ajax/reservation_delete.php',
+			checkinUrl: 'ajax/reservation_checkin.php?action={ReservationAction::Checkin}',
+			checkoutUrl: 'ajax/reservation_checkin.php?action={ReservationAction::Checkout}',
 			userAutocompleteUrl: "ajax/autocomplete.php?type={AutoCompleteType::User}",
 			changeUserAutocompleteUrl: "ajax/autocomplete.php?type={AutoCompleteType::MyUsers}"
 		};
@@ -332,8 +371,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			success: reservation.showResponse  // post-submit callback
 		};
 
-		$('#form-reservation').submit(function ()
-		{
+		$('#form-reservation').submit(function () {
 			$(this).ajaxSubmit(ajaxOptions);
 			return false;
 		});

@@ -551,6 +551,15 @@ class en_us extends Language
 		$strings['AutoReleaseNotification'] = 'Automatically released if not checked in within %s minutes';
 		$strings['RequiresCheckInNotification'] = 'Requires Check In/Out';
 		$strings['RequiresApproval'] = 'Requires Approval';
+		$strings['CheckingIn'] = 'Checking In';
+		$strings['CheckingOut'] = 'Checking Out';
+		$strings['CheckIn'] = 'Check In';
+		$strings['CheckOut'] = 'Check Out';
+		$strings['ReleasedIn'] = 'Released in';
+		$strings['CheckedInSuccess'] = 'You are checked in';
+		$strings['CheckedOutSuccess'] = 'You are checked out';
+		$strings['CheckInFailed'] = 'You could not be checked in';
+		$strings['CheckOutFailed'] = 'You could not be checked out';
 		// End Strings
 
 		// Install
@@ -630,11 +639,13 @@ class en_us extends Language
 		$strings['AccessoryResourceAssociationErrorMessage'] = 'Accessory \'%s\' cannot be booked with the requested resources';
 		$strings['NoResources'] = 'You have not added any resources.';
 		$strings['ParticipationNotAllowed'] = 'You are not allowed to join this reservation.';
+		$strings['ReservationCannotBeCheckedInTo'] = 'This reservation cannot be checked in to.';
+		$strings['ReservationCannotBeCheckedOutFrom'] = 'This reservation cannot be checked out from.';
 		// End Errors
 
 		// Page Titles
 		$strings['CreateReservation'] = 'Create Reservation';
-		$strings['EditReservation'] = 'Editing Reservation';
+		$strings['EditReservation'] = 'Update Reservation';
 		$strings['LogIn'] = 'Log In';
 		$strings['ManageReservations'] = 'Reservations';
 		$strings['AwaitingActivation'] = 'Awaiting Activation';

@@ -1,6 +1,6 @@
 <?php
 /**
-Copyright 2011-2015 Nick Korbel
+Copyright 2016 Nick Korbel
 
 This file is part of Booked Scheduler.
 
@@ -18,22 +18,9 @@ You should have received a copy of the GNU General Public License
 along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-class FakeBookableResource extends BookableResource
-{
-	public function __construct($id, $name = null)
-	{
-		$this->_resourceId = $id;
-		$this->_name = $name;
-	}
+define('ROOT_DIR', '../../');
 
-	public function RequiresApproval($requiresApproval)
-	{
-		$this->_requiresApproval = $requiresApproval;
-	}
+require_once(ROOT_DIR . 'Pages/Ajax/ReservationCheckinPage.php');
 
-	public function SetScheduleAdminGroupId($scheduleAdminGroupId)
-	{
-		$this->_scheduleAdminGroupId = $scheduleAdminGroupId;
-	}
-
-}
+$page = new ReservationCheckinPage();
+$page->PageLoad();

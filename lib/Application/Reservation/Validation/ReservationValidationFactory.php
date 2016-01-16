@@ -27,6 +27,8 @@ class ReservationValidationFactory implements IReservationValidationFactory
         $this->creationStrategies[ReservationAction::Create] = 'CreateAddService';
         $this->creationStrategies[ReservationAction::Delete] = 'CreateDeleteService';
         $this->creationStrategies[ReservationAction::Update] = 'CreateUpdateService';
+        $this->creationStrategies[ReservationAction::Checkin] = 'CreateCheckinService';
+        $this->creationStrategies[ReservationAction::Checkout] = 'CreateCheckoutService';
     }
 
     public function Create($reservationAction, $userSession)
@@ -64,6 +66,26 @@ class ReservationValidationFactory implements IReservationValidationFactory
 		if (method_exists($factory,'CreatePreApprovalService'))
 		{
 			return $factory->CreatePreApprovalService($userSession);
+		}
+		return new NullReservationValidationService();
+    }
+
+    private function CreateCheckinService(UserSession $userSession)
+    {
+        $factory = PluginManager::Instance()->LoadPreReservation();
+		if (method_exists($factory,'CreatePreCheckinService'))
+		{
+			return $factory->CreatePreCheckinService($userSession);
+		}
+		return new NullReservationValidationService();
+    }
+
+    private function CreateCheckoutService(UserSession $userSession)
+    {
+        $factory = PluginManager::Instance()->LoadPreReservation();
+		if (method_exists($factory,'CreatePreCheckoutService'))
+		{
+			return $factory->CreatePreCheckoutService($userSession);
 		}
 		return new NullReservationValidationService();
     }

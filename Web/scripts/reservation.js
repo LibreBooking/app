@@ -56,9 +56,13 @@ function Reservation(opts) {
 	var scheduleId;
 
 	var _ownerId;
+	var _startDate;
+	var _endDate;
 
-	Reservation.prototype.init = function (ownerId) {
+	Reservation.prototype.init = function (ownerId, startDateString, endDateString) {
 		_ownerId = ownerId;
+		_startDate = moment(startDateString);
+		_endDate = moment(endDateString);
 		participation.addedUsers.push(ownerId);
 
 		$('#dialogResourceGroups').on('show.bs.modal', function (e) {
@@ -128,6 +132,7 @@ function Reservation(opts) {
 		DisplayDuration();
 		WireUpAttachments();
 		WireUpReservationFailed();
+		InitializeAutoRelease();
 
 		elements.userId.change(function () {
 			LoadCustomAttributes();
@@ -140,6 +145,8 @@ function Reservation(opts) {
 	Reservation.prototype.preSubmit = function (formData, jqForm, options) {
 		$.blockUI({message: $('#wait-box')});
 
+		$('#creatingNotification').find('h3').addClass('no-show');
+		$('#createUpdateMessage').removeClass('no-show');
 		$('#result').hide();
 		$('#creatingNotification').show();
 
@@ -148,18 +155,7 @@ function Reservation(opts) {
 
 	// post-submit callback 
 	Reservation.prototype.showResponse = function (responseText, statusText, xhr, $form) {
-		$('.blockUI').css('cursor', 'default');
-
-		$('#btnSaveSuccessful').click(function (e) {
-			window.location = options.returnUrl;
-		});
-
-		$('#btnSaveFailed').click(function () {
-			CloseSaveDialog();
-		});
-
-		$('#creatingNotification').hide();
-		$('#result').show();
+		ShowReservationAjaxResponse();
 	};
 
 	var AddAccessories = function () {
@@ -434,6 +430,21 @@ function Reservation(opts) {
 		elements.durationHours.text(rounded.RoundedHours);
 	};
 
+	var ShowReservationAjaxResponse = function () {
+		$('.blockUI').css('cursor', 'default');
+
+		$('#btnSaveSuccessful').click(function (e) {
+			window.location = options.returnUrl;
+		});
+
+		$('#btnSaveFailed').click(function () {
+			CloseSaveDialog();
+		});
+
+		$('#creatingNotification').hide();
+		$('#result').show();
+	};
+
 	var CloseSaveDialog = function () {
 		$.unblockUI();
 	};
@@ -449,6 +460,28 @@ function Reservation(opts) {
 
 		$('.delete').click(function () {
 			$('form').attr("action", options.deleteUrl);
+		});
+
+		$('.btnCheckin').click(function () {
+			$('#creatingNotification').find('h3').addClass('no-show');
+			$('#checkingInMessage').removeClass('no-show');
+			$.blockUI({message: $('#wait-box')});
+
+			ajaxPost($('#form-reservation'), opts.checkinUrl, null, function (data) {
+				$('#result').html(data);
+				ShowReservationAjaxResponse();
+			});
+		});
+
+		$('.btnCheckout').click(function () {
+			$('#creatingNotification').find('h3').addClass('no-show');
+			$('#checkingOutMessage').removeClass('no-show');
+			$.blockUI({message: $('#wait-box')});
+
+			ajaxPost($('#form-reservation'), opts.checkoutUrl, null, function (data) {
+				$('#result').html(data);
+				ShowReservationAjaxResponse();
+			});
 		});
 	};
 
@@ -700,6 +733,33 @@ function Reservation(opts) {
 				$('#form-reservation').submit();
 			});
 		});
+	}
+
+	function InitializeAutoRelease() {
+		var autoReleaseButtonMessage = $('.autoReleaseButtonMessage');
+		if (autoReleaseButtonMessage.length > 0)
+		{
+
+			var autoReleaseMinutes = autoReleaseButtonMessage.first().data('autorelease-minutes');
+			if (autoReleaseMinutes != '')
+			{
+				var interval;
+				var updateAutoReleaseMinutes = function () {
+					var ms = _startDate.diff(moment());
+					var releaseMinutesText = Math.max(0, Math.ceil(moment.duration(ms).asMinutes()) + autoReleaseMinutes);
+					$('.autoReleaseMinutes').text(releaseMinutesText);
+
+					if (releaseMinutesText <= 0)
+					{
+						clearInterval(interval)
+					}
+				};
+
+				updateAutoReleaseMinutes();
+				interval = setInterval(updateAutoReleaseMinutes, 5000);
+				autoReleaseButtonMessage.show();
+			}
+		}
 	}
 
 	changeUser.init = function () {
