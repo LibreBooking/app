@@ -30,7 +30,6 @@ This script must be executed every minute for to enable Reservation Reminders fu
 */
 
 define('ROOT_DIR', dirname(__FILE__) . '/../');
-//define('ROOT_DIR', __DIR__ . '/../');
 require_once(ROOT_DIR . 'Domain/Access/namespace.php');
 require_once(ROOT_DIR . 'Domain/Reminder.php');
 require_once(ROOT_DIR . 'lib/Email/Messages/ReminderEmail.php');
@@ -64,4 +63,3 @@ try
 }
 
 Log::Debug('Finished running sendreminders.php');
-?>
