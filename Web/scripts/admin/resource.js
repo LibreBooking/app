@@ -317,14 +317,7 @@ function ResourceManagement(opts) {
 		});
 
 		elements.enableCheckIn.on('click', function () {
-			if (!elements.enableCheckIn.is(':checked'))
-			{
-				elements.autoReleaseMinutesDiv.addClass('no-show');
-			}
-			else
-			{
-				elements.autoReleaseMinutesDiv.removeClass('no-show');
-			}
+			showHideAutoRelease();
 		});
 
 		wireUpCheckboxToggle(elements.durationForm);
@@ -497,13 +490,22 @@ function ResourceManagement(opts) {
 		elements.autoAssign.prop('checked', resource.autoAssign && resource.autoAssign == "1");
 		elements.removeAllPermissions.addClass('no-show');
 
-		if (resource.enableCheckin && resource.enableCheckin == "1")
-		{
-			elements.autoReleaseMinutes.val(resource.autoReleaseMinutes);
-			elements.enableCheckIn.trigger('click');
-		}
+		elements.enableCheckIn.prop('checked', resource.enableCheckin && resource.enableCheckin == "1");
+		elements.autoReleaseMinutes.val(resource.autoReleaseMinutes);
+		showHideAutoRelease()
 
 		elements.accessDialog.modal('show');
+	};
+
+	var showHideAutoRelease = function() {
+		if (!elements.enableCheckIn.is(':checked'))
+		{
+			elements.autoReleaseMinutesDiv.addClass('no-show');
+		}
+		else
+		{
+			elements.autoReleaseMinutesDiv.removeClass('no-show');
+		}
 	};
 
 	var setDuration = function (container, resourceDuration) {
