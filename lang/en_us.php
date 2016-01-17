@@ -35,8 +35,8 @@ class en_us extends Language
 		$dates = array();
 
 		$dates['general_date'] = 'm/d/Y';
-		$dates['general_datetime'] = 'm/d/Y H:i:s';
-		$dates['short_datetime'] = 'n/j/y H:i:s';
+		$dates['general_datetime'] = 'm/d/Y g:i:s A';
+		$dates['short_datetime'] = 'n/j/y g:i A';
 		$dates['schedule_daily'] = 'l, m/d/Y';
 		$dates['reservation_email'] = 'm/d/Y @ g:i A (e)';
 		$dates['res_popup'] = 'D, n/d g:i A';
@@ -561,6 +561,9 @@ class en_us extends Language
 		$strings['CheckedOutSuccess'] = 'You are checked out';
 		$strings['CheckInFailed'] = 'You could not be checked in';
 		$strings['CheckOutFailed'] = 'You could not be checked out';
+		$strings['CheckInTime'] = 'Check In Time';
+		$strings['CheckOutTime'] = 'Check Out Time';
+		$strings['OriginalEndDate'] = 'Original End';
 		// End Strings
 
 		// Install

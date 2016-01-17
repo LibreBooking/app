@@ -99,8 +99,6 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			<th>{translate key='BeginDate'}</th>
 			<th>{translate key='EndDate'}</th>
 			<th>{translate key='Duration'}</th>
-			<th>{translate key='Created'}</th>
-			<th>{translate key='LastModified'}</th>
 			<th>{translate key='ReferenceNumber'}</th>
 			<th class="action">{translate key='Delete'}</th>
 			<th class="action">{translate key='Approve'}</th>
@@ -135,8 +133,6 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 				<td class="date">{formatdate date=$reservation->StartDate timezone=$Timezone key=short_reservation_date}</td>
 				<td class="date">{formatdate date=$reservation->EndDate timezone=$Timezone key=short_reservation_date}</td>
 				<td class="duration">{$reservation->GetDuration()->__toString()}</td>
-				<td class="date">{formatdate date=$reservation->CreatedDate timezone=$Timezone key=short_datetime}</td>
-				<td class="date">{formatdate date=$reservation->ModifiedDate timezone=$Timezone key=short_datetime}</td>
 				<td class="referenceNumber">{$reservation->ReferenceNumber}</td>
 				<td class="action"><a href="#" class="update delete"><span class="fa fa-trash icon remove fa-1x"></span></a>
 				</td>
@@ -148,19 +144,39 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 					{/if}
 				</td>
 			</tr>
-			{if $ReservationAttributes|count > 0}
-				<tr class="{$rowCss}" data-seriesId="{$reservation->SeriesId}" data-refnum="{$reservation->ReferenceNumber}">
-					<td colspan="13">
-						{foreach from=$ReservationAttributes item=attribute}
-							{include file='Admin/InlineAttributeEdit.tpl'
-							id=$reservation->ReferenceNumber attribute=$attribute
-							value=$reservation->Attributes->Get($attribute->Id())
-							url="{$smarty.server.SCRIPT_NAME}?action={ManageReservationsActions::UpdateAttribute}"
-							}
-						{/foreach}
-					</td>
-				</tr>
-			{/if}
+			<tr class="{$rowCss}" data-seriesId="{$reservation->SeriesId}" data-refnum="{$reservation->ReferenceNumber}">
+				<td colspan="11">
+					<div class="reservation-list-dates">
+						<div>
+							<label>{translate key='Created'}</label> {formatdate date=$reservation->CreatedDate timezone=$Timezone key=short_datetime}
+						</div>
+						<div>
+							<label>{translate key='LastModified'}</label> {formatdate date=$reservation->ModifiedDate timezone=$Timezone key=short_datetime}
+						</div>
+						<div>
+							<label>{translate key='CheckInTime'}</label> {formatdate date=$reservation->CheckinDate timezone=$Timezone key=short_datetime}
+						</div>
+						<div>
+							<label>{translate key='CheckOutTime'}</label> {formatdate date=$reservation->CheckoutDate timezone=$Timezone key=short_datetime}
+						</div>
+						<div>
+							<label>{translate key='OriginalEndDate'}</label> {formatdate date=$reservation->OriginalEndDate timezone=$Timezone key=short_datetime}
+						</div>
+					</div>
+					{if $ReservationAttributes|count > 0}
+						<div class="reservation-list-attributes">
+							{foreach from=$ReservationAttributes item=attribute}
+								{include file='Admin/InlineAttributeEdit.tpl'
+								id=$reservation->ReferenceNumber attribute=$attribute
+								value=$reservation->Attributes->Get($attribute->Id())
+								url="{$smarty.server.SCRIPT_NAME}?action={ManageReservationsActions::UpdateAttribute}"
+								}
+							{/foreach}
+						</div>
+					{/if}
+
+				</td>
+			</tr>
 		{/foreach}
 		</tbody>
 	</table>
@@ -256,135 +272,135 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		</div>
 	</div>
 
-		{jsfile src="ajax-helpers.js"}
-		{jsfile src="admin/reservations.js"}
+	{jsfile src="ajax-helpers.js"}
+	{jsfile src="admin/reservations.js"}
 
-		{jsfile src="autocomplete.js"}
-		{jsfile src="reservationPopup.js"}
-		{jsfile src="approval.js"}
+	{jsfile src="autocomplete.js"}
+	{jsfile src="reservationPopup.js"}
+	{jsfile src="approval.js"}
 
-		<script type="text/javascript">
+	<script type="text/javascript">
 
-			function hidePopoversWhenClickAway() {
-				$('body').on('click', function (e) {
-					$('[rel="popover"]').each(function () {
-						if (!$(this).is(e.target) && $(this).has(e.target).length === 0 && $('.popover').has(e.target).length === 0)
-						{
-							$(this).popover('hide');
-						}
-					});
-				});
-			}
-
-			function setUpPopovers() {
-				$('[rel="popover"]').popover({
-					container: 'body',
-					html: true,
-					placement: 'top',
-					content: function () {
-						var popoverId = $(this).data('popover-content');
-						return $(popoverId).html();
+		function hidePopoversWhenClickAway() {
+			$('body').on('click', function (e) {
+				$('[rel="popover"]').each(function () {
+					if (!$(this).is(e.target) && $(this).has(e.target).length === 0 && $('.popover').has(e.target).length === 0)
+					{
+						$(this).popover('hide');
 					}
-				}).click(function (e) {
-					e.preventDefault();
-				}).on('show.bs.popover', function () {
-
-				}).on('shown.bs.popover', function () {
-					var trigger = $(this);
-					var popover = trigger.data('bs.popover').tip();
-					popover.find('.editable-cancel').click(function () {
-						trigger.popover('hide');
-					});
 				});
-			}
-
-			function setUpEditables() {
-				$.fn.editable.defaults.mode = 'popup';
-				$.fn.editable.defaults.toggle = 'manual';
-				$.fn.editable.defaults.emptyclass = '';
-				$.fn.editable.defaults.params = function(params) {
-					params.CSRF_TOKEN = $('#csrf_token').val();
-					return params;
-				};
-
-				var updateUrl = '{$smarty.server.SCRIPT_NAME}?action=';
-
-				$('.inlineAttribute').editable({
-					url: updateUrl + '{ManageReservationsActions::UpdateAttribute}',
-					emptytext: '-'
-				});
-			}
-
-			$(document).ready(function () {
-
-				setUpPopovers();
-				hidePopoversWhenClickAway();
-				setUpEditables();
-
-				var updateScope = {};
-				updateScope['btnUpdateThisInstance'] = '{SeriesUpdateScope::ThisInstance}';
-				updateScope['btnUpdateAllInstances'] = '{SeriesUpdateScope::FullSeries}';
-				updateScope['btnUpdateFutureInstances'] = '{SeriesUpdateScope::FutureInstances}';
-
-				var actions = {};
-
-				var resOpts = {
-					autocompleteUrl: "{$Path}ajax/autocomplete.php?type={AutoCompleteType::User}",
-					reservationUrlTemplate: "{$Path}reservation.php?{QueryStringKeys::REFERENCE_NUMBER}=[refnum]",
-					popupUrl: "{$Path}ajax/respopup.php",
-					updateScope: updateScope,
-					actions: actions,
-					deleteUrl: '{$Path}ajax/reservation_delete.php?{QueryStringKeys::RESPONSE_TYPE}=json',
-					resourceStatusUrl: '{$smarty.server.SCRIPT_NAME}?{QueryStringKeys::ACTION}=changeStatus',
-					submitUrl: '{$smarty.server.SCRIPT_NAME}'
-				};
-
-				var approvalOpts = {
-					url: '{$Path}ajax/reservation_approve.php'
-				};
-
-				var approval = new Approval(approvalOpts);
-
-				var reservationManagement = new ReservationManagement(resOpts, approval);
-				reservationManagement.init();
-
-				{foreach from=$reservations item=reservation}
-
-				reservationManagement.addReservation(
-						{
-							id: '{$reservation->ReservationId}',
-							referenceNumber: '{$reservation->ReferenceNumber}',
-							isRecurring: '{$reservation->IsRecurring}',
-							resourceStatusId: '{$reservation->ResourceStatusId}',
-							resourceStatusReasonId: '{$reservation->ResourceStatusReasonId}',
-							resourceId: '{$reservation->ResourceId}'
-						}
-				);
-				{/foreach}
-
-				{foreach from=$StatusReasons item=reason}
-				reservationManagement.addStatusReason('{$reason->Id()}', '{$reason->StatusId()}', '{$reason->Description()|escape:javascript}');
-				{/foreach}
-
-				reservationManagement.initializeStatusFilter('{$ResourceStatusFilterId}', '{$ResourceStatusReasonFilterId}');
 			});
+		}
 
-			$('#filter-reservations-panel').showHidePanel();
+		function setUpPopovers() {
+			$('[rel="popover"]').popover({
+				container: 'body',
+				html: true,
+				placement: 'top',
+				content: function () {
+					var popoverId = $(this).data('popover-content');
+					return $(popoverId).html();
+				}
+			}).click(function (e) {
+				e.preventDefault();
+			}).on('show.bs.popover', function () {
 
-		</script>
+			}).on('shown.bs.popover', function () {
+				var trigger = $(this);
+				var popover = trigger.data('bs.popover').tip();
+				popover.find('.editable-cancel').click(function () {
+					trigger.popover('hide');
+				});
+			});
+		}
 
-		{control type="DatePickerSetupControl" ControlId="startDate" AltId="formattedStartDate"}
-		{control type="DatePickerSetupControl" ControlId="endDate" AltId="formattedEndDate"}
+		function setUpEditables() {
+			$.fn.editable.defaults.mode = 'popup';
+			$.fn.editable.defaults.toggle = 'manual';
+			$.fn.editable.defaults.emptyclass = '';
+			$.fn.editable.defaults.params = function (params) {
+				params.CSRF_TOKEN = $('#csrf_token').val();
+				return params;
+			};
 
-		{csrf_token}
+			var updateUrl = '{$smarty.server.SCRIPT_NAME}?action=';
 
-		<div id="colorbox">
-			<div id="approveDiv" class="wait-box">
-				<h3>{translate key=Approving}</h3>
-				{html_image src="reservation_submitting.gif"}
-			</div>
+			$('.inlineAttribute').editable({
+				url: updateUrl + '{ManageReservationsActions::UpdateAttribute}',
+				emptytext: '-'
+			});
+		}
+
+		$(document).ready(function () {
+
+			setUpPopovers();
+			hidePopoversWhenClickAway();
+			setUpEditables();
+
+			var updateScope = {};
+			updateScope['btnUpdateThisInstance'] = '{SeriesUpdateScope::ThisInstance}';
+			updateScope['btnUpdateAllInstances'] = '{SeriesUpdateScope::FullSeries}';
+			updateScope['btnUpdateFutureInstances'] = '{SeriesUpdateScope::FutureInstances}';
+
+			var actions = {};
+
+			var resOpts = {
+				autocompleteUrl: "{$Path}ajax/autocomplete.php?type={AutoCompleteType::User}",
+				reservationUrlTemplate: "{$Path}reservation.php?{QueryStringKeys::REFERENCE_NUMBER}=[refnum]",
+				popupUrl: "{$Path}ajax/respopup.php",
+				updateScope: updateScope,
+				actions: actions,
+				deleteUrl: '{$Path}ajax/reservation_delete.php?{QueryStringKeys::RESPONSE_TYPE}=json',
+				resourceStatusUrl: '{$smarty.server.SCRIPT_NAME}?{QueryStringKeys::ACTION}=changeStatus',
+				submitUrl: '{$smarty.server.SCRIPT_NAME}'
+			};
+
+			var approvalOpts = {
+				url: '{$Path}ajax/reservation_approve.php'
+			};
+
+			var approval = new Approval(approvalOpts);
+
+			var reservationManagement = new ReservationManagement(resOpts, approval);
+			reservationManagement.init();
+
+			{foreach from=$reservations item=reservation}
+
+			reservationManagement.addReservation(
+					{
+						id: '{$reservation->ReservationId}',
+						referenceNumber: '{$reservation->ReferenceNumber}',
+						isRecurring: '{$reservation->IsRecurring}',
+						resourceStatusId: '{$reservation->ResourceStatusId}',
+						resourceStatusReasonId: '{$reservation->ResourceStatusReasonId}',
+						resourceId: '{$reservation->ResourceId}'
+					}
+			);
+			{/foreach}
+
+			{foreach from=$StatusReasons item=reason}
+			reservationManagement.addStatusReason('{$reason->Id()}', '{$reason->StatusId()}', '{$reason->Description()|escape:javascript}');
+			{/foreach}
+
+			reservationManagement.initializeStatusFilter('{$ResourceStatusFilterId}', '{$ResourceStatusReasonFilterId}');
+		});
+
+		$('#filter-reservations-panel').showHidePanel();
+
+	</script>
+
+	{control type="DatePickerSetupControl" ControlId="startDate" AltId="formattedStartDate"}
+	{control type="DatePickerSetupControl" ControlId="endDate" AltId="formattedEndDate"}
+
+	{csrf_token}
+
+	<div id="colorbox">
+		<div id="approveDiv" class="wait-box">
+			<h3>{translate key=Approving}</h3>
+			{html_image src="reservation_submitting.gif"}
 		</div>
-
 	</div>
+
+</div>
 
 {include file='globalfooter.tpl'}

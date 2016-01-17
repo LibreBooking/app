@@ -154,16 +154,22 @@ class Reservation
 	protected $checkoutDate;
 
 	/**
+	 * @var bool
+	 */
+	protected $reservationDatesChanged = false;
+
+	/**
 	 * @var ReservationSeries
 	 */
 	public $series;
 
-	public function __construct(ReservationSeries $reservationSeries, DateRange $reservationDate, $reservationId = null,
-								$referenceNumber = null)
+	public function __construct(ReservationSeries $reservationSeries, DateRange $reservationDate, $reservationId = null, $referenceNumber = null)
 	{
 		$this->series = $reservationSeries;
 
-		$this->SetReservationDate($reservationDate);
+		$this->startDate = $reservationDate->GetBegin();
+		$this->endDate = $reservationDate->GetEnd();
+
 		$this->SetReferenceNumber($referenceNumber);
 
 		if (!empty($reservationId))
@@ -196,6 +202,11 @@ class Reservation
 	{
 		$this->previousStart = $this->StartDate();
 		$this->previousEnd = $this->EndDate();
+
+		if (!$this->startDate->Equals($reservationDate->GetBegin()) || !$this->endDate->Equals($reservationDate->GetEnd()))
+		{
+			$this->reservationDatesChanged = true;
+		}
 
 		$this->startDate = $reservationDate->GetBegin();
 		$this->endDate = $reservationDate->GetEnd();
@@ -384,7 +395,6 @@ class Reservation
 		return true;
 	}
 
-
 	/**
 	 * @param int $inviteeId
 	 * @return bool whether the invitation was declined
@@ -474,4 +484,11 @@ class Reservation
 		$this->checkoutDate = $checkoutDate;
 	}
 
+	/**
+	 * @return bool
+	 */
+	public function WereDatesChanged()
+	{
+		return $this->reservationDatesChanged || empty($this->reservationId);
+	}
 }

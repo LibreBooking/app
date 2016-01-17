@@ -1056,6 +1056,21 @@ class ReservationItemView implements IReservedItemView
 	public $OwnerLastName;
 
 	/**
+	 * @var Date
+	 */
+	public $CheckinDate;
+
+	/**
+	 * @var Date
+	 */
+	public $CheckoutDate;
+
+	/**
+	 * @var Date
+	 */
+	public $OriginalEndDate;
+
+	/**
 	 * @var int|null
 	 */
 	private $bufferSeconds = 0;
@@ -1220,7 +1235,6 @@ class ReservationItemView implements IReservedItemView
 			$view->RepeatMonthlyType = $repeatConfig->MonthlyType;
 			$view->RepeatTerminationDate = $repeatConfig->TerminationDate;
 
-
 			$view->IsRecurring = $row[ColumnNames::REPEAT_TYPE] != RepeatType::None;
 		}
 
@@ -1271,6 +1285,9 @@ class ReservationItemView implements IReservedItemView
 		{
 			$view->ResourceColor = $row[ColumnNames::RESERVATION_COLOR];
 		}
+		$view->CheckinDate = Date::FromDatabase($row[ColumnNames::CHECKIN_DATE]);
+		$view->CheckoutDate = Date::FromDatabase($row[ColumnNames::CHECKOUT_DATE]);
+		$view->OriginalEndDate = Date::FromDatabase($row[ColumnNames::PREVIOUS_END_DATE]);
 
 		return $view;
 	}

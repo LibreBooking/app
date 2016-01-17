@@ -18,6 +18,7 @@
  * You should have received a copy of the GNU General Public License
  * along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 class TestReservation extends Reservation
 {
 	/**
@@ -53,8 +54,6 @@ class TestReservation extends Reservation
 		}
 
 		$this->SetReservationId($reservationId);
-
-
 	}
 
 	public function WithAddedInvitees($inviteeIds)
@@ -72,5 +71,3 @@ class TestReservation extends Reservation
 		$this->unchangedParticipants = $participantIds;
 	}
 }
-
-?>

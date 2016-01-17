@@ -18,7 +18,6 @@
  * You should have received a copy of the GNU General Public License
  * along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 class ReservationViewRepositoryTests extends TestBase
 {
 	/**
@@ -236,7 +235,8 @@ class ReservationViewRepositoryTests extends TestBase
 		);
 
 		$expectedView->Resources = array(
-				new ReservationResourceView($resourceId1, $resourceName1, $adminGroupId1, $scheduleId, $scheduleAdminGroupId, ResourceStatus::AVAILABLE, $resourceCheckIn1, $resourceAutoRelease1),
+				new ReservationResourceView($resourceId1, $resourceName1, $adminGroupId1, $scheduleId, $scheduleAdminGroupId, ResourceStatus::AVAILABLE,
+											$resourceCheckIn1, $resourceAutoRelease1),
 				new ReservationResourceView($resourceId2, $resourceName2, null, $scheduleId, $scheduleAdminGroupId, ResourceStatus::AVAILABLE, false, null),
 		);
 
@@ -450,7 +450,8 @@ class ReservationViewRepositoryTests extends TestBase
 										   $userId, $phone = 'phone', $organization = 'organization',
 										   $position = 'position',
 										   $participant_list = '', $invitee_list = null,
-										   $attributes = null, $preferences = null, $bufferTime = 0)
+										   $attributes = null, $preferences = null, $bufferTime = 0, $checkinDate = null, $checkoutDate = null,
+										   $previousEndDate = null)
 	{
 		return array(
 				ColumnNames::REFERENCE_NUMBER => $referenceNumber,
@@ -477,6 +478,9 @@ class ReservationViewRepositoryTests extends TestBase
 				ColumnNames::ATTRIBUTE_LIST => $attributes,
 				ColumnNames::USER_PREFERENCES => $preferences,
 				ColumnNames::RESOURCE_BUFFER_TIME => $bufferTime,
+				ColumnNames::CHECKIN_DATE => $checkinDate == null ? null : $checkinDate->ToDatabase(),
+				ColumnNames::CHECKOUT_DATE =>  $checkoutDate == null ? null : $checkoutDate->ToDatabase(),
+				ColumnNames::PREVIOUS_END_DATE => $previousEndDate == null ? null : $previousEndDate->ToDatabase(),
 		);
 	}
 

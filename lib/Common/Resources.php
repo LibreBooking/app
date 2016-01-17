@@ -42,6 +42,7 @@ class ResourceKeys
 {
 	const DATE_GENERAL = 'general_date';
 	const DATETIME_GENERAL = 'general_datetime';
+	const DATETIME_SHORT = 'short_datetime';
 	const DATETIME_SYSTEM = 'system_datetime';
 }
 
@@ -209,6 +210,11 @@ class Resources implements IResourceLocalization
 	public function GeneralDateTimeFormat()
 	{
 		return $this->GetDateFormat(ResourceKeys::DATETIME_GENERAL);
+	}
+
+	public function ShortDateTimeFormat()
+	{
+		return $this->GetDateFormat(ResourceKeys::DATETIME_SHORT);
 	}
 
 	public function SystemDateTimeFormat()
