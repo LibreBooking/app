@@ -76,7 +76,15 @@ Description: {$Description}<br/>
 
 {if $RequiresApproval}
 	<br/>
-	One or more of the resources reserved require approval before usage.  Please ensure that this reservation request is approved or rejected.
+	At least one of the resources reserved requires approval before usage. Please ensure that this reservation request is approved or rejected.
+{/if}
+
+{if $CheckInEnabled}
+	<br/>
+	At least one of the resources reserved requires that the user check in and out of the reservation.
+	{if $AutoReleaseMinutes != null}
+		This reservation will be cancelled unless the user checks in within {$AutoReleaseMinutes} minutes after the scheduled start time.
+	{/if}
 {/if}
 
 <br/>

@@ -71,7 +71,15 @@ Description: {$Description|nl2br}<br/>
 
 {if $RequiresApproval}
 	<br/>
-	One or more of the resources reserved require approval before usage.  This reservation will be pending until it is approved.
+	At least one of the resources reserved requires approval before usage. This reservation will be pending until it is approved.
+{/if}
+
+{if $CheckInEnabled}
+	<br/>
+	At least one of the resources reserved requires you to check in and out of your reservation.
+	{if $AutoReleaseMinutes != null}
+		This reservation will be cancelled unless you check in within {$AutoReleaseMinutes} minutes after the scheduled start time.
+	{/if}
 {/if}
 
 {if !empty($ApprovedBy)}

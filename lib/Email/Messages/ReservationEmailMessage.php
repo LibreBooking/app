@@ -140,6 +140,25 @@ abstract class ReservationEmailMessage extends EmailMessage
 		{
 			$this->Set('CreatedBy', new FullName($bookedBy->FirstName, $bookedBy->LastName));
 		}
+
+		$minimumAutoRelease = null;
+		foreach ($this->reservationSeries->AllResources() as $resource)
+		{
+			if ($resource->IsCheckInEnabled())
+			{
+				$this->Set('CheckInEnabled', true);
+			}
+
+			if ($resource->IsAutoReleased())
+			{
+				if ($minimumAutoRelease == null || $resource->GetAutoReleaseMinutes() < $minimumAutoRelease)
+				{
+					$minimumAutoRelease = $resource->GetAutoReleaseMinutes();
+				}
+			}
+		}
+
+		$this->Set('AutoReleaseMinutes', $minimumAutoRelease);
 	}
 
 	private function GetFullImagePath($img)
