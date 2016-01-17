@@ -56,6 +56,7 @@ class FormKeys
 	const ATTRIBUTE_SECONDARY_ENTITY = 'ATTRIBUTE_SECONDARY_ENTITY';
 	const AUTO_ASSIGN = 'autoAssign';
 	const AUTO_ASSIGN_CLEAR = 'AUTO_ASSIGN_CLEAR';
+	const AUTO_RELEASE_MINUTES = 'AUTO_RELEASE_MINUTES';
 
 	const BEGIN_DATE = 'beginDate';
 	const BEGIN_PERIOD = 'beginPeriod';
@@ -87,6 +88,8 @@ class FormKeys
 	const END_TIME = 'endTime';
 	const ENFORCE_ALL_DAY = 'ENFORCE_ALL_DAY';
 	const ENFORCE_EVERY_DAY = 'ENFORCE_EVERY_DAY';
+	const ENABLE_CHECK_IN = 'ENABLE_CHECK_IN';
+	const ENABLE_AUTO_RELEASE = 'ENABLE_AUTO_RELEASE';
 
 	const FIRST_NAME = 'fname';
 

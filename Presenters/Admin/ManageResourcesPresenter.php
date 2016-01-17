@@ -253,6 +253,8 @@ class ManageResourcesPresenter extends ActionPresenter
 		$clearAllPermissions = $this->page->GetAutoAssignClear();
 		$minNotice = $this->page->GetStartNoticeMinutes();
 		$maxNotice = $this->page->GetEndNoticeMinutes();
+		$enableCheckin = $this->page->GetEnableCheckin();
+		$autoReleaseMinutes = $this->page->GetAutoReleaseMinutes();
 
 		$resource = $this->resourceRepository->LoadById($resourceId);
 
@@ -261,6 +263,7 @@ class ManageResourcesPresenter extends ActionPresenter
 		$resource->SetClearAllPermissions($clearAllPermissions);
 		$resource->SetMinNotice($minNotice);
 		$resource->SetMaxNotice($maxNotice);
+		$resource->SetCheckin($enableCheckin, $autoReleaseMinutes);
 
 		Log::Debug('Updating resource id=%s, requiresApproval=%s, autoAssign=%s, minNotice=%s, maxNotice=%s',
 				   $resourceId, $requiresApproval, $autoAssign, $minNotice, $maxNotice);

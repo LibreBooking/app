@@ -90,6 +90,8 @@ class ResourceRepositoryTests extends TestBase
 		$reasonId = 19;
 		$bufferTime = 88881;
 		$color = '#cccccc';
+		$enableCheckin = true;
+		$autoReleaseMinutes = 40;
 
 		$resource = new BookableResource($id,
 										 $name,
@@ -114,6 +116,7 @@ class ResourceRepositoryTests extends TestBase
 		$resource->SetResourceTypeId($resourceTypeId);
 		$resource->SetBufferTime($bufferTime);
 		$resource->SetColor($color);
+		$resource->SetCheckin($enableCheckin, $autoReleaseMinutes);
 
 		$publicId = $resource->GetPublicId();
 
@@ -144,7 +147,10 @@ class ResourceRepositoryTests extends TestBase
 			ResourceStatus::AVAILABLE,
 			$reasonId,
 			new TimeInterval($bufferTime),
-			'#cccccc');
+			'#cccccc',
+			$enableCheckin,
+			$autoReleaseMinutes
+		);
 
 		$actualUpdateResourceCommand = $this->db->_Commands[0];
 

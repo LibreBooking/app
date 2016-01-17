@@ -549,7 +549,8 @@ class en_us extends Language
 		$strings['ResourceColor'] = 'Resource Color';
 		$strings['DateTime'] = 'Date Time';
 		$strings['AutoReleaseNotification'] = 'Automatically released if not checked in within %s minutes';
-		$strings['RequiresCheckInNotification'] = 'Requires Check In/Out';
+		$strings['RequiresCheckInNotification'] = 'Requires check in/out';
+		$strings['NoCheckInRequiredNotification'] = 'Does not require check in/out';
 		$strings['RequiresApproval'] = 'Requires Approval';
 		$strings['CheckingIn'] = 'Checking In';
 		$strings['CheckingOut'] = 'Checking Out';

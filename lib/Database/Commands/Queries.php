@@ -991,7 +991,9 @@ class Queries
 			status_id = @status_id,
 			resource_status_reason_id = @resource_status_reason_id,
 			buffer_time = @buffer_time,
-			color = @color
+			color = @color,
+			enable_check_in = @enable_check_in,
+			auto_release_minutes = @auto_release_minutes
 		WHERE
 			resource_id = @resourceid';
 

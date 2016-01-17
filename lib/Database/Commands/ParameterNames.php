@@ -56,6 +56,7 @@ class ParameterNames
 	const ATTRIBUTE_SECONDARY_CATEGORY = '@secondary_category';
 	const ATTRIBUTE_SECONDARY_ENTITY_ID = '@secondary_entity_id';
 	const ATTRIBUTE_IS_PRIVATE = '@is_private';
+	const AUTO_RELEASE_MINUTES = '@auto_release_minutes';
 
 	const BLACKOUT_SERIES_ID = '@blackout_series_id';
 	const BLACKOUT_INSTANCE_ID = '@blackout_instance_id';
@@ -77,6 +78,7 @@ class ParameterNames
 
 	const END_DATE = '@endDate';
 	const END_TIME = '@endTime';
+	const ENABLE_CHECK_IN = '@enable_check_in';
 	const ENFORCED_DAYS = '@enforcedDays';
 	const EMAIL_ADDRESS = '@email';
 	const EVENT_CATEGORY = '@event_category';

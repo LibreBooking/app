@@ -318,6 +318,16 @@ interface IManageResourcesPage extends IUpdateResourcePage, IActionPage, IPageab
 	 * @return string
 	 */
 	public function GetColor();
+
+	/**
+	 * @return bool
+	 */
+	public function GetEnableCheckin();
+
+	/**
+	 * @return string
+	 */
+	public function GetAutoReleaseMinutes();
 }
 
 class ManageResourcesPage extends ActionPage implements IManageResourcesPage
@@ -824,6 +834,22 @@ class ManageResourcesPage extends ActionPage implements IManageResourcesPage
 	public function GetColor()
 	{
 		return $this->GetForm(FormKeys::RESERVATION_COLOR);
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function GetEnableCheckin()
+	{
+		return $this->GetCheckbox(FormKeys::ENABLE_CHECK_IN);
+	}
+
+	/**
+	 * @return string
+	 */
+	public function GetAutoReleaseMinutes()
+	{
+		return $this->GetForm(FormKeys::AUTO_RELEASE_MINUTES);
 	}
 }
 

@@ -55,3 +55,17 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 		{translate key='ResourcePermissionNotAutoGranted'}
 	{/if}
 </div>
+<div class="enableCheckin"
+	 data-value="{$resource->IsCheckInEnabled()}">
+	{if $resource->IsCheckInEnabled()}
+		{translate key=RequiresCheckInNotification}
+	{else}
+		{translate key=NoCheckInRequiredNotification}
+	{/if}
+</div>
+<div class="autoRelease"
+	 data-value="{$resource->GetAutoReleaseMinutes()}">
+	{if $resource->IsAutoReleased()}
+		{translate key=AutoReleaseNotification args=$resource->GetAutoReleaseMinutes()}
+	{/if}
+</div>

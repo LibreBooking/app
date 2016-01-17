@@ -67,6 +67,10 @@ function ResourceManagement(opts) {
 		autoAssign: $('#autoAssign'),
 		removeAllPermissions: $('#autoAssignRemoveAllPermissions'),
 
+		enableCheckIn: $('#enableCheckIn'),
+		autoReleaseMinutes: $('#autoReleaseMinutes'),
+		autoReleaseMinutesDiv: $('#autoReleaseMinutesDiv'),
+
 		colorForm: $('#colorForm'),
 		reservationColor: $('#reservationColor')
 	};
@@ -312,6 +316,17 @@ function ResourceManagement(opts) {
 			}
 		});
 
+		elements.enableCheckIn.on('click', function () {
+			if (!elements.enableCheckIn.is(':checked'))
+			{
+				elements.autoReleaseMinutesDiv.addClass('no-show');
+			}
+			else
+			{
+				elements.autoReleaseMinutesDiv.removeClass('no-show');
+			}
+		});
+
 		wireUpCheckboxToggle(elements.durationForm);
 		wireUpCheckboxToggle(elements.capacityForm);
 		wireUpCheckboxToggle(elements.accessForm);
@@ -481,6 +496,13 @@ function ResourceManagement(opts) {
 
 		elements.autoAssign.prop('checked', resource.autoAssign && resource.autoAssign == "1");
 		elements.removeAllPermissions.addClass('no-show');
+
+		if (resource.enableCheckin && resource.enableCheckin == "1")
+		{
+			elements.autoReleaseMinutes.val(resource.autoReleaseMinutes);
+			elements.enableCheckIn.trigger('click');
+		}
+
 		elements.accessDialog.modal('show');
 	};
 
@@ -538,11 +560,16 @@ function ResourceManagement(opts) {
 		var endNotice = result.find('.endNotice');
 		var requiresApproval = result.find('.requiresApproval');
 		var autoAssign = result.find('.autoAssign');
+		var enableCheckin = result.find('.enableCheckin');
+		var autoRelease = result.find('.autoRelease');
 
 		setDuration(startNotice, resource.startNotice);
 		setDuration(endNotice, resource.endNotice);
 		resource.requiresApproval = requiresApproval.attr('data-value');
 		resource.autoAssign = autoAssign.attr('data-value');
+
+		resource.enableCheckin = enableCheckin.attr('data-value');
+		resource.autoReleaseMinutes = autoRelease.attr('data-value');
 
 		elements.accessDialog.modal('hide');
 	};

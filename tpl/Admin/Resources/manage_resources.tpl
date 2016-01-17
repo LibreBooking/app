@@ -483,13 +483,13 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 								<label for="noMinimumDuration">{translate key=ResourceMinLengthNone}</label>
 							</div>
 							{capture name="txtMinDuration" assign="txtMinDuration"}
-								<input type='text' size='3' id='minDurationDays' class='days form-control' maxlength='3'
-									   title='Days' placeholder='{translate key=days}'/>
-								<input type='text' size='2' id='minDurationHours' class='hours form-control'
+								<input type='number' size='3' id='minDurationDays' class='days form-control inline' maxlength='3'
+									   title='Days' max='999' min='0' placeholder='{translate key=days}'/>
+								<input type='number' size='2' id='minDurationHours' class='hours form-control inline'
 									   maxlength='2'
-									   title='Hours' placeholder='{translate key=hours}'/>
-								<input type='text' size='2' id='minDurationMinutes' class='minutes form-control'
-									   maxlength='2' title='Minutes' placeholder='{translate key=minutes}'/>
+									   title='Hours' max='99' min='0' placeholder='{translate key=hours}'/>
+								<input type='number' size='2' id='minDurationMinutes' class='minutes form-control inline'
+									   maxlength='2' title='Minutes' max='99' min='0' placeholder='{translate key=minutes}'/>
 								<input type='hidden' id='minDuration'
 									   class='interval minDuration' {formname key=MIN_DURATION} />
 							{/capture}
@@ -504,13 +504,13 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 								<label for="noMaximumDuration">{translate key=ResourceMaxLengthNone}</label>
 							</div>
 							{capture name="txtMaxDuration" assign="txtMaxDuration"}
-								<input type='text' id='maxDurationDays' size='3' class='days form-control' maxlength='3'
-									   title='Days' placeholder='{translate key=days}'/>
-								<input type='text' id='maxDurationHours' size='2' class='hours form-control'
+								<input type='number' id='maxDurationDays' size='3' class='days form-control inline' maxlength='3'
+									   title='Days' max='999' min='0' placeholder='{translate key=days}'/>
+								<input type='number' id='maxDurationHours' size='2' class='hours form-control inline'
 									   maxlength='2'
-									   title='Hours' placeholder='{translate key=hours}'/>
-								<input type='text' id='maxDurationMinutes' size='2' class='minutes form-control'
-									   maxlength='2' title='Minutes' placeholder='{translate key=minutes}'/>
+									   title='Hours' max='99' min='0' placeholder='{translate key=hours}'/>
+								<input type='number' id='maxDurationMinutes' size='2' class='minutes form-control inline'
+									   maxlength='2' title='Minutes' max='99' min='0' placeholder='{translate key=minutes}'/>
 								<input type='hidden' id='maxDuration' class='interval' {formname key=MAX_DURATION} />
 							{/capture}
 							<div id='maxDurationInputs'>
@@ -525,17 +525,17 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 							</div>
 
 							{capture name="txtBufferTime" assign="txtBufferTime"}
-								<input type='text' id='bufferTimeDays'
-									   size='3' class='days form-control'
+								<input type='number' id='bufferTimeDays'
+									   size='3' class='days form-control inline'
 									   maxlength='3'
-									   title='Days' placeholder='{translate key=days}'/>
-								<input type='text' id='bufferTimeHours'
-									   size='2' class='hours form-control'
+									   title='Days' max='999' min='0' placeholder='{translate key=days}'/>
+								<input type='number' id='bufferTimeHours'
+									   size='2' class='hours form-control inline'
 									   maxlength='2'
-									   title='Hours' placeholder='{translate key=hours}'/>
-								<input type='text' id='bufferTimeMinutes'
-									   size='2' class='minutes form-control'
-									   maxlength='2' title='Minutes' placeholder='{translate key=minutes}'/>
+									   title='Hours' max='99' min='0' placeholder='{translate key=hours}'/>
+								<input type='number' id='bufferTimeMinutes'
+									   size='2' class='minutes form-control inline'
+									   maxlength='2' title='Minutes' max='99' min='0' placeholder='{translate key=minutes}'/>
 								<input type='hidden' id='bufferTime'
 									   class='interval' {formname key=BUFFER_TIME} />
 							{/capture}
@@ -616,13 +616,13 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 								<label for="noStartNotice">{translate key=ResourceMinLengthNone}</label>
 							</div>
 							{capture name="txtStartNotice" assign="txtStartNotice"}
-								<input type='text' id='startNoticeDays' size='3' class='days form-control' maxlength='3'
-									   title='Days' placeholder='{translate key=days}'/>
-								<input type='text' id='startNoticeHours' size='2' class='hours form-control'
-									   maxlength='2'
+								<input type='number' id='startNoticeDays' size='3' class='days form-control inline' maxlength='3'
+									   title='Days' max='999' min='0' placeholder='{translate key=days}'/>
+								<input type='number' id='startNoticeHours' size='2' class='hours form-control inline'
+									   maxlength='2' max='99' min='0'
 									   title='Hours' placeholder='{translate key=hours}'/>
-								<input type='text' id='startNoticeMinutes' size='2' class='minutes form-control'
-									   maxlength='2' title='Minutes' placeholder='{translate key=minutes}'/>
+								<input type='number' id='startNoticeMinutes' size='2' class='minutes form-control inline'
+									   maxlength='2' max='99' min='0' title='Minutes' placeholder='{translate key=minutes}'/>
 								<input type='hidden' id='startNotice' class='interval' {formname key=MIN_NOTICE} />
 							{/capture}
 							<div id='startNoticeInputs'>
@@ -635,13 +635,13 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 								<input type="checkbox" id="noEndNotice" data-related-inputs="#endNoticeInputs"/>
 								<label for="noEndNotice">{translate key=ResourceMaxNoticeNone}</label>
 							</div>
-							{capture name="txtEndNotice" assign="endNoticeInputs"}
-								<input type='text' id='endNoticeDays' size='3' class='days form-control' maxlength='3'
-									   title='Days' placeholder='{translate key=days}'/>
-								<input type='text' id='endNoticeHours' size='2' class='hours form-control' maxlength='2'
-									   title='Hours' placeholder='{translate key=hours}'/>
-								<input type='text' id='endNoticeMinutes' size='2' class='minutes form-control'
-									   maxlength='2' title='Minutes' placeholder='{translate key=minutes}'/>
+							{capture name="txtEndNotice" assign="txtEndNotice"}
+								<input type='number' id='endNoticeDays' size='3' class='days form-control inline' maxlength='3'
+									   title='Days' max='999' min='0' placeholder='{translate key=days}'/>
+								<input type='number' id='endNoticeHours' size='2' class='hours form-control inline' maxlength='2'
+									   title='Hours' max='99' min='0' placeholder='{translate key=hours}'/>
+								<input type='number' id='endNoticeMinutes' size='2' class='minutes form-control inline'
+									   maxlength='2' max='99' min='0' title='Minutes' placeholder='{translate key=minutes}'/>
 								<input type='hidden' id='endNotice' class='interval' {formname key=MAX_NOTICE} />
 							{/capture}
 							<div id='endNoticeInputs'>
@@ -661,11 +661,30 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 								<label for="autoAssign">{translate key=ResourcePermissionAutoGranted}</label>
 							</div>
 						</div>
+
 						<div class="no-show" id="autoAssignRemoveAllPermissions">
 							<div class="checkbox">
 								<input type="checkbox" {formname key=AUTO_ASSIGN_CLEAR}
 									   id="autoAssignRemoveAllPermissionsChk" value="1"/>
 								<label for="autoAssignRemoveAllPermissionsChk">{translate key=RemoveExistingPermissions}</label>
+							</div>
+						</div>
+
+						<div class="editCheckin">
+							<div class="checkbox">
+								<input type="checkbox" {formname key=ENABLE_CHECK_IN} id="enableCheckIn"/>
+								<label for="enableCheckIn">{translate key=RequiresCheckInNotification}</label>
+							</div>
+							<div class="no-show" id="autoReleaseMinutesDiv">
+								{*<div class="checkbox inline">*}
+									{*<input type="checkbox" {formname key=ENABLE_AUTO_RELEASE} id="enableAutoRelease"/>*}
+									{*<label for="enableAutoRelease"></label>*}
+								{*</div>*}
+								{capture name="txtAutoRelease" assign="txtAutoRelease"}
+									<input type='number' max='99' min='0' id='autoReleaseMinutes'
+										   class='minutes form-control inline' {formname key=AUTO_RELEASE_MINUTES} />
+								{/capture}
+								{translate key='AutoReleaseNotification' args=$txtAutoRelease}
 							</div>
 						</div>
 					</div>
@@ -1190,7 +1209,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			$.fn.editable.defaults.mode = 'popup';
 			$.fn.editable.defaults.toggle = 'manual';
 			$.fn.editable.defaults.emptyclass = '';
-			$.fn.editable.defaults.params = function(params) {
+			$.fn.editable.defaults.params = function (params) {
 				params.CSRF_TOKEN = $('#csrf_token').val();
 				return params;
 			};
@@ -1327,7 +1346,9 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 				resourceTypeId: '{$resource->GetResourceTypeId()}',
 				statusId: '{$resource->GetStatusId()}',
 				reasonId: '{$resource->GetStatusReasonId()}',
-				allowSubscription: '{$resource->GetIsCalendarSubscriptionAllowed()}'
+				allowSubscription: '{$resource->GetIsCalendarSubscriptionAllowed()}',
+				enableCheckin: '{$resource->IsCheckInEnabled()}',
+				autoReleaseMinutes: '{$resource->GetAutoReleaseMinutes()}'
 			};
 
 			{if $resource->HasMinLength()}

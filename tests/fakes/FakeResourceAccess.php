@@ -79,7 +79,10 @@ class FakeResourceAccess extends ResourceRepository
 						 $statusId = ResourceStatus::AVAILABLE,
 						 $reasonId = null,
 					     $bufferTime = null,
-						 $color = null)
+						 $color = null,
+						 $enableCheckin = null,
+						 $autoReleaseMinutes = null
+)
 	{
 
 		$this->rows[] = array(ColumnNames::RESOURCE_ID => $id,
@@ -109,6 +112,8 @@ class FakeResourceAccess extends ResourceRepository
 			ColumnNames::RESOURCE_BUFFER_TIME => $bufferTime,
 			ColumnNames::RESOURCE_GROUP_LIST => '1!sep!2',
 			ColumnNames::RESERVATION_COLOR => $color,
+			ColumnNames::ENABLE_CHECK_IN => $enableCheckin,
+			ColumnNames::AUTO_RELEASE_MINUTES => $autoReleaseMinutes,
 		);
 
 		return $this;
@@ -117,7 +122,7 @@ class FakeResourceAccess extends ResourceRepository
 	public function GetRows()
 	{
 		$this->With(1, 'resource 1', null, null, 'notes 1', null, null, 0, 0, 0, null, null, null, null, 10, null, null,
-					1, '1232', 1154, 1, 10, ResourceStatus::AVAILABLE, null, 60*30, '000000');
+					1, '1232', 1154, 1, 10, ResourceStatus::AVAILABLE, null, 60*30, '000000', true, 20);
 
 		$this->With(2, 'resource 2',
 					'here 2',

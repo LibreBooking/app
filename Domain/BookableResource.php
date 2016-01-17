@@ -818,8 +818,13 @@ class BookableResource implements IBookableResource
 	 */
 	public function SetCheckin($enabled, $autoReleaseMinutes = null)
 	{
+		if ($autoReleaseMinutes <= 0)
+		{
+			$autoReleaseMinutes = null;
+		}
+
 		$this->_enableCheckIn = $enabled;
-		$this->_autoReleaseMinutes = $autoReleaseMinutes;
+		$this->_autoReleaseMinutes = $enabled ? $autoReleaseMinutes : null;
 	}
 
 	/**
