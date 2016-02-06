@@ -15,18 +15,30 @@
 
 .dashboard {
   margin-top: 15px;
+  border-width: 1px 2px 2px 1px;
+  border-color: @muted-blue;
+  border-style: solid;
+  background-color: @blue-gray;
+  .rounded()
 }
 
 .dashboardContents {
-  padding: 0;
+  padding: 15px;
+  .resourceName {
+    background-color: @off-white;
+  }
 }
 
 .dashboardHeader {
   letter-spacing: 1px;
+  padding: 5px 20px;
+  //margin: 0 2px;
+  background-color: darken(@blue-gray, 5%);
+  //border-bottom: solid 1px fade(@muted-blue, 95%);
 }
 
 .dashboardHeader a {
-  color: darken(#fff, 3%);
+  color: @almost-black
 }
 
 .dashboard .noresults {
@@ -36,6 +48,7 @@
 
 .dashboardContents a {
   color: #3D72A4;
+  padding: 5px;
 }
 
 .dashboardContents .table {
@@ -59,36 +72,40 @@
   background-color: #F0F0F0;
 }
 
-.availabilityDashboard .dashboardContents {
-  padding: 4px;
-}
-
-.availabilityDashboard .header {
-  font-size: 1.2em;
-  font-weight: bold;
-}
-
-.availabilityDashboard .resourceName {
-  width: 350px;
-  display: inline-block;
-  text-overflow: ellipsis;
-}
-
-.availabilityDashboard .availability {
-  display: inline-block;
-  text-overflow: ellipsis;
-}
-
-.availabilityDashboard .availabilityItem {
-  padding: 3px 0;
-  @btn-color: #E4DAD8;
-  .btn {
-    background-color: @btn-color;
-    color: @dark-gray;
-    border-color: darken(@btn-color, 10%);
+//.availabilityDashboard .dashboardContents {
+//  padding: 4px;
+//}
+//
+.availabilityDashboard {
+  .header {
+    font-size: 1.2em;
+    font-weight: bold;
   }
-  .btn:hover {
-    background-color: darken(@btn-color, 5%);
-    border-color: darken(@btn-color, 15%);
+  .resourceName {
+    width: 350px;
+    display: inline-block;
+    text-overflow: ellipsis;
+  }
+  .availability {
+    display: inline-block;
+    text-overflow: ellipsis;
+  }
+  .reserveButton {
+    display:inline-block;
+    float:right;
+  }
+  .availabilityItem {
+    padding: 3px 0;
+    @btn-color: #E4DAD8;
+    .btn {
+      background-color: @btn-color;
+      color: @dark-gray;
+      border-color: darken(@btn-color, 10%);
+padding: 1px 20px;
+    }
+    .btn:hover {
+      background-color: darken(@btn-color, 5%);
+      border-color: darken(@btn-color, 15%);
+    }
   }
 }
