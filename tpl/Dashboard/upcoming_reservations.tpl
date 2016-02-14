@@ -18,52 +18,58 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 *}
 
 {function name=displayReservation}
-<tr class="reservation" id="{$reservation->ReferenceNumber}">
-	<td>{$reservation->Title|default:$DefaultTitle}</td>
-	<td>{fullname first=$reservation->FirstName last=$reservation->LastName ignorePrivacy=$reservation->IsUserOwner($UserId)} {if !$reservation->IsUserOwner($UserId)}{html_image src="users.png" altKey=Participant}{/if}</td>
-	<td>{formatdate date=$reservation->StartDate->ToTimezone($Timezone) key=dashboard}</td>
-	<td>{formatdate date=$reservation->EndDate->ToTimezone($Timezone) key=dashboard}</td>
-	<td>{$reservation->ResourceName}</td>
-</tr>
+	<tr class="reservation" id="{$reservation->ReferenceNumber}">
+		<td>{$reservation->Title|default:$DefaultTitle}</td>
+		<td>{fullname first=$reservation->FirstName last=$reservation->LastName ignorePrivacy=$reservation->IsUserOwner($UserId)} {if !$reservation->IsUserOwner($UserId)}{html_image src="users.png" altKey=Participant}{/if}</td>
+		<td>{formatdate date=$reservation->StartDate->ToTimezone($Timezone) key=dashboard}</td>
+		<td>{formatdate date=$reservation->EndDate->ToTimezone($Timezone) key=dashboard}</td>
+		<td>{$reservation->ResourceName}</td>
+	</tr>
 {/function}
 
 
 <div class="dashboard upcomingReservationsDashboard" id="upcomingReservationsDashboard">
 	<div class="dashboardHeader">
-		{translate key="UpcomingReservations"} <span class="badge">{$Total}</span> <a href="#" title="{translate key=ShowHide} {translate key="UpcomingReservations"}"><span class="glyphicon"></span></a>
+		<div class="pull-left">{translate key="UpcomingReservations"} <span class="badge">{$Total}</span></div>
+		<div class="pull-right">
+			<a href="#" title="{translate key=ShowHide} {translate key="UpcomingReservations"}">
+				<i class="glyphicon"></i>
+			</a>
+		</div>
+		<div class="clearfix"></div>
 	</div>
 	<div class="dashboardContents">
 		{assign var=colspan value="5"}
 		{if $Total > 0}
-		<table class="table">
-			<tr class="timespan">
-				<td colspan="{$colspan}">{translate key="Today"} ({$TodaysReservations|count})</td>
-			</tr>
-			{foreach from=$TodaysReservations item=reservation}
-                {displayReservation reservation=$reservation}
-			{/foreach}
+			<table class="table">
+				<tr class="timespan">
+					<td colspan="{$colspan}">{translate key="Today"} ({$TodaysReservations|count})</td>
+				</tr>
+				{foreach from=$TodaysReservations item=reservation}
+					{displayReservation reservation=$reservation}
+				{/foreach}
 
-			<tr class="timespan">
-				<td colspan="{$colspan}">{translate key="Tomorrow"} ({$TomorrowsReservations|count})</td>
-			</tr>
-			{foreach from=$TomorrowsReservations item=reservation}
-                {displayReservation reservation=$reservation}
-			{/foreach}
+				<tr class="timespan">
+					<td colspan="{$colspan}">{translate key="Tomorrow"} ({$TomorrowsReservations|count})</td>
+				</tr>
+				{foreach from=$TomorrowsReservations item=reservation}
+					{displayReservation reservation=$reservation}
+				{/foreach}
 
-			<tr class="timespan">
-				<td colspan="{$colspan}">{translate key="LaterThisWeek"} ({$ThisWeeksReservations|count})</td>
-			</tr>
-			{foreach from=$ThisWeeksReservations item=reservation}
-                {displayReservation reservation=$reservation}
-			{/foreach}
+				<tr class="timespan">
+					<td colspan="{$colspan}">{translate key="LaterThisWeek"} ({$ThisWeeksReservations|count})</td>
+				</tr>
+				{foreach from=$ThisWeeksReservations item=reservation}
+					{displayReservation reservation=$reservation}
+				{/foreach}
 
-			<tr class="timespan">
-				<td colspan="{$colspan}">{translate key="NextWeek"} ({$NextWeeksReservations|count})</td>
-			</tr>
-			{foreach from=$NextWeeksReservations item=reservation}
-                {displayReservation reservation=$reservation}
-			{/foreach}
-		</table>
+				<tr class="timespan">
+					<td colspan="{$colspan}">{translate key="NextWeek"} ({$NextWeeksReservations|count})</td>
+				</tr>
+				{foreach from=$NextWeeksReservations item=reservation}
+					{displayReservation reservation=$reservation}
+				{/foreach}
+			</table>
 		{else}
 			<div class="noresults">{translate key="NoUpcomingReservations"}</div>
 		{/if}

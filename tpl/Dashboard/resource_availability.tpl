@@ -19,8 +19,13 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 <div class="dashboard dashboard availabilityDashboard" id="availabilityDashboard">
 	<div class="dashboardHeader">
-		{translate key="ResourceAvailability"}<a href="#" title="{translate key=ShowHide} {translate key="ResourceAvailability"}">
-			<span class="glyphicon"></span></a>
+		<div class="pull-left">{translate key="ResourceAvailability"} <span class="badge">{$Available|count}</span></div>
+		<div class="pull-right">
+			<a href="#" title="{translate key=ShowHide} {translate key="ResourceAvailability"}">
+				<i class="glyphicon"></i>
+			</a>
+		</div>
+		<div class="clearfix"></div>
 	</div>
 	<div class="dashboardContents">
 		<div class="header">{translate key=Available}</div>
@@ -38,7 +43,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 					{/if}
 				</div>
 				<div class="reserveButton">
-					<a class="btn btn-xs" href="{$Path}{Pages::RESERVATION}?{QueryStringKeys::RESOURCE_ID}={$i->ResourceId()}">{translate key=Reserve}</a>
+					<a class="btn btn-xs"
+					   href="{$Path}{Pages::RESERVATION}?{QueryStringKeys::RESOURCE_ID}={$i->ResourceId()}">{translate key=Reserve}</a>
 				</div>
 			</div>
 			{foreachelse}
@@ -55,7 +61,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 					{translate key=AvailableBeginningAt} {format_date date=$i->ReservationEnds() timezone=$Timezone key=dashboard}
 				</div>
 				<div class="reserveButton">
-					<a class="btn btn-xs" href="{$Path}{Pages::RESERVATION}?{QueryStringKeys::RESOURCE_ID}={$i->ResourceId()}&{QueryStringKeys::START_DATE}={format_date date=$i->ReservationEnds() timezone=$Timezone key=url_full}">{translate key=Reserve}</a>
+					<a class="btn btn-xs"
+					   href="{$Path}{Pages::RESERVATION}?{QueryStringKeys::RESOURCE_ID}={$i->ResourceId()}&{QueryStringKeys::START_DATE}={format_date date=$i->ReservationEnds() timezone=$Timezone key=url_full}">{translate key=Reserve}</a>
 				</div>
 			</div>
 			{foreachelse}
@@ -72,7 +79,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 					Available At {format_date date=$i->ReservationEnds() timezone=$Timezone key=dashboard}
 				</div>
 				<div class="reserveButton">
-					<a class="btn btn-xs" href="{$Path}{Pages::RESERVATION}?{QueryStringKeys::RESOURCE_ID}={$i->ResourceId()}&{QueryStringKeys::START_DATE}={format_date date=$i->ReservationEnds() timezone=$Timezone key=url_full}">{translate key=Reserve}</a>
+					<a class="btn btn-xs"
+					   href="{$Path}{Pages::RESERVATION}?{QueryStringKeys::RESOURCE_ID}={$i->ResourceId()}&{QueryStringKeys::START_DATE}={format_date date=$i->ReservationEnds() timezone=$Timezone key=url_full}">{translate key=Reserve}</a>
 				</div>
 			</div>
 			{foreachelse}

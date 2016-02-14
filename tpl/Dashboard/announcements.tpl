@@ -17,14 +17,22 @@ You should have received a copy of the GNU General Public License
 along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 *}
 <div class="dashboard" id="announcementsDashboard">
-  <div class="dashboardHeader">{translate key="Announcements"} <span class="badge">{$Announcements|count}</span> <a href="#" title="{translate key=ShowHide} {translate key="Announcements"}"><span class="glyphicon"></span></a></div>
-  <div class="dashboardContents">
-	  <ul>
-		{foreach from=$Announcements item=each}
-			<li>{$each|html_entity_decode|url2link|nl2br}</li>
-		{foreachelse}
-			<div class="noresults">{translate key="NoAnnouncements"}</div>
-		{/foreach}
-	</ul>
-  </div>
+	<div class="dashboardHeader">
+		<div class="pull-left">{translate key="Announcements"} <span class="badge">{$Announcements|count}</span></div>
+		<div class="pull-right">
+			<a href="#" title="{translate key=ShowHide} {translate key="Announcements"}">
+				<i class="glyphicon"></i>
+			</a>
+		</div>
+		<div class="clearfix"></div>
+	</div>
+	<div class="dashboardContents">
+		<ul>
+			{foreach from=$Announcements item=each}
+				<li>{$each|html_entity_decode|url2link|nl2br}</li>
+				{foreachelse}
+				<div class="noresults">{translate key="NoAnnouncements"}</div>
+			{/foreach}
+		</ul>
+	</div>
 </div>

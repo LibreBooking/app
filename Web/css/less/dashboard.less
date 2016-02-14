@@ -15,26 +15,26 @@
 
 .dashboard {
   margin-top: 15px;
-  border-width: 1px 2px 2px 1px;
-  border-color: @muted-blue;
+  border-width: 1px;
+  border-color: @color-boxes-complement-3;
   border-style: solid;
-  background-color: @blue-gray;
-  .rounded()
+  background-color:@color-boxes-content;
+  .rounded();
+  .box-shadow(0px 0px 5px 1px @color-boxes-primary-0);
 }
 
 .dashboardContents {
   padding: 15px;
-  .resourceName {
-    background-color: @off-white;
-  }
 }
 
 .dashboardHeader {
   letter-spacing: 1px;
   padding: 5px 20px;
-  //margin: 0 2px;
-  background-color: darken(@blue-gray, 5%);
-  //border-bottom: solid 1px fade(@muted-blue, 95%);
+  color: @color-gray-1-0;
+  background-color: @color-boxes-complement-2;//@color-secondary-2-0;
+  .badge {
+    background-color: @color-boxes-complement-1;
+  }
 }
 
 .dashboardHeader a {
@@ -72,10 +72,6 @@
   background-color: #F0F0F0;
 }
 
-//.availabilityDashboard .dashboardContents {
-//  padding: 4px;
-//}
-//
 .availabilityDashboard {
   .header {
     font-size: 1.2em;
@@ -91,17 +87,17 @@
     text-overflow: ellipsis;
   }
   .reserveButton {
-    display:inline-block;
-    float:right;
+    display: inline-block;
+    float: right;
   }
   .availabilityItem {
     padding: 3px 0;
-    @btn-color: #E4DAD8;
+    @btn-color: @color-complement-3;
     .btn {
       background-color: @btn-color;
-      color: @dark-gray;
+      color: #fff;
       border-color: darken(@btn-color, 10%);
-padding: 1px 20px;
+      padding: 1px 20px;
     }
     .btn:hover {
       background-color: darken(@btn-color, 5%);
