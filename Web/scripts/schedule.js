@@ -84,12 +84,12 @@ function Schedule(opts, resourceGroups)
 		var expandCalendar = readCookie('schedule_calendar_toggle');
 
 		function collapse() {
-			createCookie('schedule_calendar_toggle', false);
+			createCookie('schedule_calendar_toggle', false, 30, opts.scriptUrl);
 			datePicker.hide();
 		}
 
 		function expand() {
-			createCookie('schedule_calendar_toggle', true);
+			createCookie('schedule_calendar_toggle', true, 30, opts.scriptUrl);
 			datePicker.show();
 		}
 

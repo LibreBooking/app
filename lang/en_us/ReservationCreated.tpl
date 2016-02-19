@@ -39,7 +39,7 @@ Ending: {formatdate date=$EndDate key=reservation_email}<br/>
 {/if}
 
 Title: {$Title}<br/>
-Description: {$Description|nl2br}<br/>
+Description: {$Description|nl2br}
 
 {if count($RepeatDates) gt 0}
 	<br/>
