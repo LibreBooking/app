@@ -20,13 +20,15 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 class FakeResources extends Resources
 {
-	private $_dateFormats = array(ResourceKeys::DATE_GENERAL => 'm/d/y', ResourceKeys::DATETIME_GENERAL => 'm/d/y h:i:s', ResourceKeys::DATETIME_SYSTEM => 'Y-m-d H:i:s');
+	private $_dateFormats = array(ResourceKeys::DATE_GENERAL => 'm/d/y',
+			ResourceKeys::DATETIME_GENERAL => 'm/d/y h:i:s',
+			ResourceKeys::DATETIME_SYSTEM => 'Y-m-d H:i:s',
+			ResourceKeys::DATETIME_SHORT => 'Y-m-d');
 
     public $_SetCurrentLanguageResult = true;
 
 	public function __construct()
 	{
-
 	}
 
 	public function GetString($key, $args = array())

@@ -87,7 +87,7 @@ class ReportDefinitionTests extends TestBase
 		$this->assertEquals(4, count($row));
 		$this->assertEquals('an', $row[0]->Value());
 
-		$format = Resources::GetInstance()->GeneralDateTimeFormat();
+		$format = Resources::GetInstance()->ShortDateTimeFormat();
 		$systemFormat = Resources::GetInstance()->GeneralDateFormat();
 
 		$this->assertEquals(Date::FromDatabase($date)->ToTimezone($timezone)->Format($format), $row[1]->Value());

@@ -295,7 +295,7 @@ class ScheduleWebServiceView implements ISchedulePage
 	 */
 	public function GetLayoutDate()
 	{
-		// TODO: Implement GetLayoutDate() method.
+		// no op
 	}
 
 	public function GetScheduleStyle($scheduleId)
@@ -473,5 +473,13 @@ class ScheduleWebServiceView implements ISchedulePage
 	public function EnforceCSRFCheck()
 	{
 		// no-op
+	}
+
+	/**
+	 * @return int[]
+	 */
+	public function GetResourceIds()
+	{
+		return array();
 	}
 }

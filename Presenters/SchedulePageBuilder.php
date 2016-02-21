@@ -81,9 +81,9 @@ interface ISchedulePageBuilder
 	/**
 	 * @param int $scheduleId
 	 * @param ISchedulePage $page
-	 * @return int
+	 * @return int[]
 	 */
-	public function GetResourceId($scheduleId, ISchedulePage $page);
+	public function GetResourceIds($scheduleId, ISchedulePage $page);
 
 	/**
 	 * @param int $scheduleId
@@ -305,33 +305,21 @@ class SchedulePageBuilder implements ISchedulePageBuilder
 		return null;
 	}
 
-	public function GetResourceId($scheduleId, ISchedulePage $page)
+	public function GetResourceIds($scheduleId, ISchedulePage $page)
 	{
-		$resourceId = $page->GetResourceId();
+		$resourceIds = $page->GetResourceIds();
 
-		if (!empty($resourceId))
+		if (!empty($resourceIds))
 		{
-			return $resourceId;
+			return $resourceIds;
 		}
 
-		$cookie = $this->getTreeCookie($scheduleId);
-
-		if (!empty($cookie))
-		{
-			if (strpos($cookie, '-') !== false)
-			{
-				$parts = explode('-', $cookie);
-				return $parts[2];
-			}
-		}
-
-		return null;
+		return array();
 	}
 
 	private function getTreeCookie($scheduleId)
 	{
-		$cookie = ServiceLocator::GetServer()
-				  ->GetCookie('tree' . $scheduleId);
+		$cookie = ServiceLocator::GetServer()->GetCookie('tree' . $scheduleId);
 		if (!empty($cookie))
 		{
 			$val = json_decode($cookie, true);
@@ -360,12 +348,12 @@ class SchedulePageBuilder implements ISchedulePageBuilder
 												 $page->GetResourceTypeId(),
 												 $page->GetMaxParticipants(),
 												 $this->AsAttributeValues($page->GetResourceAttributes()),
-												 $this->AsAttributeValues($page->GetResourceTypeAttributes()));
+												 $this->AsAttributeValues($page->GetResourceTypeAttributes()),
+												 $page->GetResourceIds());
 		}
 		else
 		{
-			$cookie = ServiceLocator::GetServer()
-					  ->GetCookie('resource_filter' . $scheduleId);
+			$cookie = ServiceLocator::GetServer()->GetCookie('resource_filter' . $scheduleId);
 			if (!empty($cookie))
 			{
 				$val = json_decode($cookie);
@@ -374,7 +362,6 @@ class SchedulePageBuilder implements ISchedulePageBuilder
 		}
 
 		$filter->ScheduleId = $scheduleId;
-		$filter->ResourceId = $this->GetResourceId($scheduleId, $page);
 		$filter->GroupId = $this->GetGroupId($scheduleId, $page);
 
 		return $filter;

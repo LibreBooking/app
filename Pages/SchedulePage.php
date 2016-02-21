@@ -132,6 +132,11 @@ interface ISchedulePage extends IActionPage
 	public function GetResourceId();
 
 	/**
+	 * @return int[]
+	 */
+	public function GetResourceIds();
+
+	/**
 	 * @param ResourceGroupTree $resourceGroupTree
 	 */
 	public function SetResourceGroupTree(ResourceGroupTree $resourceGroupTree);
@@ -418,6 +423,25 @@ class SchedulePage extends ActionPage implements ISchedulePage
 		return $this->GetQuerystring(QueryStringKeys::RESOURCE_ID);
 	}
 
+	/**
+	 * @return int[]
+	 */
+	public function GetResourceIds()
+	{
+		$resourceIds = $this->GetForm(FormKeys::RESOURCE_ID);
+		if (empty($resourceIds))
+		{
+			return array();
+		}
+
+		if (!is_array($resourceIds))
+		{
+			return array($resourceIds);
+		}
+
+		return $resourceIds;
+	}
+
 	public function SetResourceGroupTree(ResourceGroupTree $resourceGroupTree)
 	{
 		$this->Set('ResourceGroupsAsJson', json_encode($resourceGroupTree->GetGroups()));
@@ -471,6 +495,7 @@ class SchedulePage extends ActionPage implements ISchedulePage
 		$this->Set('ResourceIdFilter', $this->GetResourceId());
 		$this->Set('ResourceTypeIdFilter', $resourceFilter->ResourceTypeId);
 		$this->Set('MaxParticipantsFilter', $resourceFilter->MinCapacity);
+		$this->Set('ResourceIds', $resourceFilter->ResourceIds);
 		$this->_isFiltered = $resourceFilter->HasFilter();
 	}
 
@@ -488,6 +513,8 @@ class SchedulePage extends ActionPage implements ISchedulePage
 	{
 		return $user->Timezone;
 	}
+
+
 }
 
 class DisplaySlotFactory

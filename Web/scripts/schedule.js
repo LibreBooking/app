@@ -160,8 +160,7 @@ function Schedule(opts, resourceGroups)
 		});
 	};
 
-	this.initRotateSchedule = function ()
-	{
+	this.initRotateSchedule = function () {
 		$('#schedule-actions .schedule-style').click(function (e)
 		{
 			e.preventDefault();
@@ -218,8 +217,7 @@ function Schedule(opts, resourceGroups)
 		}
 	};
 
-	this.initReservations = function ()
-	{
+	this.initReservations = function () {
 		var reservations = $('#reservations');
 
 		this.makeSlotsSelectable(reservations);
@@ -297,8 +295,7 @@ function Schedule(opts, resourceGroups)
 		});
 	};
 
-	this.makeSlotsSelectable = function (reservationsElement)
-	{
+	this.makeSlotsSelectable = function (reservationsElement) {
 		var startHref = '';
 		var startDate = '';
 		var endDate = '';
@@ -350,8 +347,7 @@ function Schedule(opts, resourceGroups)
 		});
 	};
 
-	this.initResourceFilter = function ()
-	{
+	this.initResourceFilter = function () {
 		$('#show_all_resources').click(function (e)
 		{
 			e.preventDefault();
@@ -383,27 +379,36 @@ function Schedule(opts, resourceGroups)
 			data: resourceGroups,
 			saveState: 'tree' + options.scheduleId,
 
-			onCreateLi: function (node, $li)
-			{
+			onCreateLi: function (node, $li) {
+				var span = $li.find('span');
+				var itemName = span.text();
+				var label = $('<label><input type="checkbox" name="resourceId[]"/> ' + itemName + '</label>');
+
+				var checkbox = label.find('input');
+
 				if (node.type == 'resource')
 				{
-					$li.addClass('group-resource')
+					checkbox.attr('resource-id', node.resource_id);
+					checkbox.attr('group-id', node.group_id);
+					checkbox.val(node.resource_id);
+					if (opts.selectedResources.indexOf(parseInt(node.resource_id)) !== -1)
+					{
+						checkbox.attr('checked', true);
+						groupDiv.tree("openNode", node.parent);
+					}
+					$li.find('span').html(label);
 				}
 			}
 		});
 
 		groupDiv.bind(
-				'tree.select',
+				'tree.click',
 				function (event)
 				{
 					if (event.node)
 					{
 						var node = event.node;
-						if (node.type == 'resource')
-						{
-							ChangeResource(node.resource_id);
-						}
-						else
+						if (node.type != 'resource')
 						{
 							ChangeGroup(node.id);
 						}
@@ -441,7 +446,11 @@ function RemoveGroupId(url)
 
 function ChangeGroup(groupId)
 {
-	RedirectToSelf('gid', /gid=\d+/i, "gid=" + groupId, RemoveResourceId);
+	var $resourceGroups = $('#resourceGroups');
+
+	$resourceGroups.find(':checkbox').attr('checked', false);
+	$resourceGroups.find('input[group-id="' + groupId + '"]').click();
+	//RedirectToSelf('gid', /gid=\d+/i, "gid=" + groupId, RemoveResourceId);
 }
 
 function ChangeResource(resourceId)

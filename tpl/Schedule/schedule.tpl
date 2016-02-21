@@ -75,7 +75,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 <div id="page-schedule">
 
 	{if $ShowResourceWarning}
-		<div class="alert alert-warning no-resource-warning"><span class="fa fa-warning"></span> {translate key=NoResources} <a href="admin/manage_resources.php">{translate key=AddResource}</a></div>
+		<div class="alert alert-warning no-resource-warning"><span class="fa fa-warning"></span> {translate key=NoResources} <a
+					href="admin/manage_resources.php">{translate key=AddResource}</a></div>
 	{/if}
 
 	{if $IsAccessible}
@@ -169,20 +170,19 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 				<div class="reservations-left-content">
 					<div class="form-group">
-						<label for="resourceIdFilter">Resource Type</label>
+						<label for="resourceIdFilter">{translate key=Resource}</label>
 						<select {formname key=RESOURCE_ID} id="resourceIdFilter" class="form-control input-sm">
 							<option value="">- {translate key=All} -</option>
 							{object_html_options options=$Resources label='Name' key='Id' usemethod=false selected=$ResourceIdFilter}
 						</select>
 					</div>
 
-					<div>
-						<div id="resourceGroups"></div>
-					</div>
-
 					<form method="POST" role="form" id="advancedFilter">
 						<hr/>
 
+						<div>
+							<div id="resourceGroups"></div>
+						</div>
 						<div>
 							<div class="form-group">
 								<label for="maxCapactiy">{translate key=MinimumCapacity}</label>
@@ -200,13 +200,13 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 							{foreach from=$ResourceAttributes item=attribute}
 								{*<div class="form-group">*}
-									{control type="AttributeControl" attribute=$attribute align='vertical' searchmode=true namePrefix='r' inputClass="input-sm"}
+								{control type="AttributeControl" attribute=$attribute align='vertical' searchmode=true namePrefix='r' inputClass="input-sm"}
 								{*</div>*}
 							{/foreach}
 
 							{foreach from=$ResourceTypeAttributes item=attribute}
 								{*<div class="form-group">*}
-									{control type="AttributeControl" attribute=$attribute align='vertical' searchmode=true namePrefix='rt' inputClass="input-sm"}
+								{control type="AttributeControl" attribute=$attribute align='vertical' searchmode=true namePrefix='rt' inputClass="input-sm"}
 								{*</div>*}
 							{/foreach}
 
@@ -223,8 +223,9 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		{/if}
 
 		<div id="reservations" class="col-md-10 col-sm-12">
-			<div ><a href="#" id="restore-sidebar" title="Show Reservation Filter" class="hidden toggle-sidebar">{translate key=ResourceFilter}  <i class="glyphicon glyphicon-filter"></i> <i
-									class="glyphicon glyphicon-chevron-right"></i></a>
+			<div><a href="#" id="restore-sidebar" title="Show Reservation Filter" class="hidden toggle-sidebar">{translate key=ResourceFilter} <i
+							class="glyphicon glyphicon-filter"></i> <i
+							class="glyphicon glyphicon-chevron-right"></i></a>
 			</div>
 			{block name="reservations"}
 				{assign var=TodaysDate value=Date::Now()}
@@ -254,7 +255,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 											<a href="{$href}" resourceId="{$resource->Id}"
 											   class="resourceNameSelector">{$resource->Name}</a>
 										{else}
-											<span resourceId="{$resource->Id}" resourceId="{$resource->Id}" class="resourceNameSelector">{$resource->Name}</span>
+											<span resourceId="{$resource->Id}" resourceId="{$resource->Id}"
+												  class="resourceNameSelector">{$resource->Name}</span>
 										{/if}
 									</td>
 									{foreach from=$slots item=slot}
@@ -295,15 +297,15 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 	{jsfile src="js/jquery.cookie.js"}
 	<script type="text/javascript">
 
-		$(document).ready(function ()
-		{
+		$(document).ready(function () {
 			var scheduleOpts = {
 				reservationUrlTemplate: "{$Path}{Pages::RESERVATION}?{QueryStringKeys::REFERENCE_NUMBER}=[referenceNumber]",
 				summaryPopupUrl: "{$Path}ajax/respopup.php",
 				setDefaultScheduleUrl: "{$Path}{Pages::PROFILE}?action=changeDefaultSchedule&{QueryStringKeys::SCHEDULE_ID}=[scheduleId]",
 				cookieName: "{$CookieName}",
 				scheduleId: "{$ScheduleId}",
-				scriptUrl: '{$ScriptUrl}'
+				scriptUrl: '{$ScriptUrl}',
+				selectedResources: [{','|implode:$ResourceIds}]
 			};
 
 			var schedule = new Schedule(scheduleOpts, {$ResourceGroupsAsJson});

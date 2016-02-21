@@ -65,7 +65,7 @@ class ScheduleResourceFilterTests extends TestBase
 		$resources = array($resource1, $resource2, $resource3, $resource4);
 
 		$filter = new ScheduleResourceFilter();
-		$filter->ResourceId = $resourceId;
+		$filter->ResourceIds = array($resourceId);
 
 		$resourceIds = $filter->FilterResources($resources, $this->resourceRepository, $this->attributeService);
 
