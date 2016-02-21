@@ -6,7 +6,7 @@ function Dashboard(opts)
 	{
 		function setIcon(dash, targetIcon)
 		{
-			var iconSpan = dash.find('.dashboardHeader>a>span');
+			var iconSpan = dash.find('.dashboardHeader').find('a>.glyphicon');
 			iconSpan.removeClass('glyphicon-chevron-up');
 			iconSpan.removeClass('glyphicon-chevron-down');
 			iconSpan.addClass(targetIcon);

@@ -10,10 +10,14 @@ html, body {
 body {
   padding-bottom: @footer-height; // + 30; /* this needs to be bigger than footer height*/
   padding-top: 70px;
+  background-color: @color-body-background;
 }
 
 a, a:visited {
   color: @link-color;
+}
+a:hover {
+  color: @link-color-hover;
 }
 
 .footer {
@@ -42,8 +46,8 @@ a, a:visited {
 .default-box {
   padding: 35px;
   .rounded(5px);
-  border: solid 1px @light-gray;
-  background-color: @lightest-gray;
+  border: solid 1px @color-boxes-border;//@light-gray;
+  background-color: @color-boxes-content;//@lightest-gray;
 
   h1 {
     color: @dark-gray;
@@ -74,14 +78,14 @@ a, a:visited {
 }
 
 .default-box-header {
-  background-color: lighten(@light-gray, 2%);
+  background-color: @color-boxes-header;//lighten(@light-gray, 2%);#E7E4D3;//
   margin-bottom: -1px;
   line-height: 35px;
   padding: 0 15px;
   font-size: 1.3em;
   font-weight: bold;
-  color: @dark-gray;
-  border: solid 1px @light-gray;
+  color: #fff;// @dark-gray;
+  border: solid 1px @color-boxes-border;//@light-gray;
   .border-radius(5px, 0, 0, 5px);
 }
 
@@ -92,8 +96,8 @@ a, a:visited {
 }
 
 #page-login .default-box {
-  background-color: lighten(@light-gray, 5%);
-  border: solid 1px @light-gray;
+  background-color: @color-boxes-content;// lighten(@color-secondary-2-1, 25%);//#F3EFE0;//@color-gray-1-0;//
+  border: solid 1px @color-boxes-border;// @color-secondary-2-2;//@light-gray;
 }
 
 #page-login .register {
