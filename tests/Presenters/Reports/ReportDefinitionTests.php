@@ -47,8 +47,6 @@ class ReportDefinitionTests extends TestBase
 
 	public function testGetsColumnsWithCustomAttributes()
 	{
-		$attributes = $this->attributeRepository->_CustomAttributes;
-
 		$rows = array(array(ColumnNames::ACCESSORY_NAME => 'an', 'unknown' => 'unknown', ColumnNames::ATTRIBUTE_LIST => '1=1!sep!2=!sep!3='));
 		$report = new CustomReport($rows, $this->attributeRepository);
 
@@ -57,8 +55,50 @@ class ReportDefinitionTests extends TestBase
 		$headerKeys = $definition->GetColumnHeaders();
 
 		$this->assertEquals(3, count($headerKeys));
-		$this->assertEquals('test attribute', $headerKeys['attribute1']->Title());
-		$this->assertEquals('test attribute2', $headerKeys['attribute2']->Title());
+		$this->assertEquals('test attribute', $headerKeys['1attribute1']->Title());
+		$this->assertEquals('test attribute2', $headerKeys['1attribute2']->Title());
+	}
+
+	public function testGetsColumnsWithUserCustomAttributes()
+	{
+		$rows = array(array(ColumnNames::ACCESSORY_NAME => 'an', 'unknown' => 'unknown', ColumnNames::USER_ATTRIBUTE_LIST => '1=1!sep!2=!sep!3='));
+		$report = new CustomReport($rows, $this->attributeRepository);
+
+		$definition = new ReportDefinition($report, null);
+
+		$headerKeys = $definition->GetColumnHeaders();
+
+		$this->assertEquals(3, count($headerKeys));
+		$this->assertEquals('test attribute', $headerKeys['2attribute1']->Title());
+		$this->assertEquals('test attribute2', $headerKeys['2attribute2']->Title());
+	}
+
+	public function testGetsColumnsWithResourceCustomAttributes()
+	{
+		$rows = array(array(ColumnNames::ACCESSORY_NAME => 'an', 'unknown' => 'unknown', ColumnNames::RESOURCE_ATTRIBUTE_LIST => '1=1!sep!2=!sep!3='));
+		$report = new CustomReport($rows, $this->attributeRepository);
+
+		$definition = new ReportDefinition($report, null);
+
+		$headerKeys = $definition->GetColumnHeaders();
+
+		$this->assertEquals(3, count($headerKeys));
+		$this->assertEquals('test attribute', $headerKeys['4attribute1']->Title());
+		$this->assertEquals('test attribute2', $headerKeys['4attribute2']->Title());
+	}
+
+	public function testGetsColumnsWithResourceTypeCustomAttributes()
+	{
+		$rows = array(array(ColumnNames::ACCESSORY_NAME => 'an', 'unknown' => 'unknown', ColumnNames::RESOURCE_TYPE_ATTRIBUTE_LIST => '1=1!sep!2=!sep!3='));
+		$report = new CustomReport($rows, $this->attributeRepository);
+
+		$definition = new ReportDefinition($report, null);
+
+		$headerKeys = $definition->GetColumnHeaders();
+
+		$this->assertEquals(3, count($headerKeys));
+		$this->assertEquals('test attribute', $headerKeys['5attribute1']->Title());
+		$this->assertEquals('test attribute2', $headerKeys['5attribute2']->Title());
 	}
 
 	public function testOrdersAndFormatsData()
@@ -122,22 +162,82 @@ class ReportDefinitionTests extends TestBase
 	}
 
 	public function testGetsRowDataForCustomAttributes()
-	{
-		$rows = array(array(
-				ColumnNames::ACCESSORY_NAME => 'an',
-				ColumnNames::ACCESSORY_ID => 1,
-				ColumnNames::ATTRIBUTE_LIST => '1=1!sep!2=!sep!3=3'));
+		{
+			$rows = array(array(
+					ColumnNames::ACCESSORY_NAME => 'an',
+					ColumnNames::ACCESSORY_ID => 1,
+					ColumnNames::ATTRIBUTE_LIST => '1=1!sep!2=!sep!3=3'));
 
-		$report = new CustomReport($rows, $this->attributeRepository);
+			$report = new CustomReport($rows, $this->attributeRepository);
 
-		$definition = new ReportDefinition($report, null);
+			$definition = new ReportDefinition($report, null);
 
-		/** @var $row ReportCell[] */
-		$row = $definition->GetRow($rows[0]);
+			/** @var $row ReportCell[] */
+			$row = $definition->GetRow($rows[0]);
 
-		$this->assertEquals(3, count($row));
-		$this->assertEquals('an', $row[0]->Value());
-		$this->assertEquals('1', $row[1]->Value());
-		$this->assertEquals(null, $row[2]->Value(), 'there is no 3rd attribute in the fake');
-	}
+			$this->assertEquals(3, count($row));
+			$this->assertEquals('an', $row[0]->Value());
+			$this->assertEquals('1', $row[1]->Value());
+			$this->assertEquals(null, $row[2]->Value(), 'there is no 3rd attribute in the fake');
+		}
+
+		public function testGetsRowDataForUserCustomAttributes()
+		{
+			$rows = array(array(
+					ColumnNames::ACCESSORY_NAME => 'an',
+					ColumnNames::ACCESSORY_ID => 1,
+					ColumnNames::USER_ATTRIBUTE_LIST => '1=1!sep!2=!sep!3=3'));
+
+			$report = new CustomReport($rows, $this->attributeRepository);
+
+			$definition = new ReportDefinition($report, null);
+
+			/** @var $row ReportCell[] */
+			$row = $definition->GetRow($rows[0]);
+
+			$this->assertEquals(3, count($row));
+			$this->assertEquals('an', $row[0]->Value());
+			$this->assertEquals('1', $row[1]->Value());
+			$this->assertEquals(null, $row[2]->Value(), 'there is no 3rd attribute in the fake');
+		}
+
+		public function testGetsRowDataForResourceCustomAttributes()
+		{
+			$rows = array(array(
+					ColumnNames::ACCESSORY_NAME => 'an',
+					ColumnNames::ACCESSORY_ID => 1,
+					ColumnNames::RESOURCE_ATTRIBUTE_LIST => '1=1!sep!2=!sep!3=3'));
+
+			$report = new CustomReport($rows, $this->attributeRepository);
+
+			$definition = new ReportDefinition($report, null);
+
+			/** @var $row ReportCell[] */
+			$row = $definition->GetRow($rows[0]);
+
+			$this->assertEquals(3, count($row));
+			$this->assertEquals('an', $row[0]->Value());
+			$this->assertEquals('1', $row[1]->Value());
+			$this->assertEquals(null, $row[2]->Value(), 'there is no 3rd attribute in the fake');
+		}
+
+		public function testGetsRowDataForResourceTypeCustomAttributes()
+		{
+			$rows = array(array(
+					ColumnNames::ACCESSORY_NAME => 'an',
+					ColumnNames::ACCESSORY_ID => 1,
+					ColumnNames::RESOURCE_TYPE_ATTRIBUTE_LIST => '1=1!sep!2=!sep!3=3'));
+
+			$report = new CustomReport($rows, $this->attributeRepository);
+
+			$definition = new ReportDefinition($report, null);
+
+			/** @var $row ReportCell[] */
+			$row = $definition->GetRow($rows[0]);
+
+			$this->assertEquals(3, count($row));
+			$this->assertEquals('an', $row[0]->Value());
+			$this->assertEquals('1', $row[1]->Value());
+			$this->assertEquals(null, $row[2]->Value(), 'there is no 3rd attribute in the fake');
+		}
 }

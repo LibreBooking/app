@@ -36,7 +36,16 @@ class ReportCommandBuilder
 	rs.title as title, rs.status_id as status_id,
 		ri.reference_number, ri.start_date, ri.end_date, ri.checkin_date, ri.checkout_date, ri.previous_end_date, TIMESTAMPDIFF(SECOND, ri.start_date, ri.end_date) as duration,
 							(SELECT GROUP_CONCAT(CONCAT(cav.custom_attribute_id,\'=\', cav.attribute_value) SEPARATOR "!sep!")
-								FROM custom_attribute_values cav WHERE cav.entity_id = ri.series_id AND cav.attribute_category = 1) as attribute_list';
+								FROM custom_attribute_values cav WHERE cav.entity_id = ri.series_id AND cav.attribute_category = 1) as attribute_list,
+							(SELECT GROUP_CONCAT(CONCAT(participant_users.fname, " ", participant_users.lname) SEPARATOR "!sep!")
+								FROM reservation_users participants INNER JOIN users participant_users ON participant_users.user_id = participants.user_id WHERE participants.reservation_instance_id = ri.reservation_instance_id AND participants.reservation_user_level = 2) as participant_list,
+							(SELECT GROUP_CONCAT(CONCAT(cav.custom_attribute_id,\'=\', cav.attribute_value) SEPARATOR "!sep!")
+								FROM custom_attribute_values cav WHERE cav.entity_id = rs.owner_id AND cav.attribute_category = 2) as user_attribute_list,
+							(SELECT GROUP_CONCAT(CONCAT(cav.custom_attribute_id,\'=\', cav.attribute_value) SEPARATOR "!sep!")
+								FROM custom_attribute_values cav WHERE cav.entity_id = resources.resource_id AND cav.attribute_category = 4) as resource_attribute_list,
+							(SELECT GROUP_CONCAT(CONCAT(cav.custom_attribute_id,\'=\', cav.attribute_value) SEPARATOR "!sep!")
+								FROM custom_attribute_values cav WHERE cav.entity_id = resources.resource_type_id AND cav.attribute_category = 5) as resource_type_attribute_list
+								';
 
 	const COUNT_FRAGMENT = 'COUNT(1) as total';
 
