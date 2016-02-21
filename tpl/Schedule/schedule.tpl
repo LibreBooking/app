@@ -121,7 +121,17 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 						</ul>
 					</div>
 				{/if}
-				<a href="#" id="calendar_toggle" title="{translate key=ShowHideNavigation}"><span class="glyphicon glyphicon-calendar"></span></a>
+				<a href="#" id="calendar_toggle" title="{translate key=ShowHideNavigation}">
+					<span class="glyphicon glyphicon-calendar"></span>
+				</a>
+				<div id="individualDates">
+					<div class="checkbox inline">
+						<input type='checkbox' id='multidateselect'/>
+						<label for='multidateselect'>{translate key=SpecificDates}</label>
+					</div>
+					<a class="btn btn-default btn-sm" href="#" id="individualDatesGo"><i class="fa fa-angle-double-right"></i></a>
+				</div>
+				<div id="individualDatesList"></div>
 			</div>
 
 			{capture name="date_navigation"}
@@ -305,7 +315,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 				cookieName: "{$CookieName}",
 				scheduleId: "{$ScheduleId}",
 				scriptUrl: '{$ScriptUrl}',
-				selectedResources: [{','|implode:$ResourceIds}]
+				selectedResources: [{','|implode:$ResourceIds}],
+				specificDates: [{foreach from=$SpecificDates item=d}'{$d->Format('Y-m-d')}',{/foreach}]
 			};
 
 			var schedule = new Schedule(scheduleOpts, {$ResourceGroupsAsJson});

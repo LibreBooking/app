@@ -356,8 +356,8 @@ class en_us extends Language
 		$strings['AddAnnouncement'] = 'Add Announcement';
 		$strings['Announcement'] = 'Announcement';
 		$strings['Priority'] = 'Priority';
-		$strings['Reservable'] = 'Reservable';
-		$strings['Unreservable'] = 'Unreservable';
+		$strings['Reservable'] = 'Open';
+		$strings['Unreservable'] = 'Blocked';
 		$strings['Reserved'] = 'Reserved';
 		$strings['MyReservation'] = 'My Reservation';
 		$strings['Pending'] = 'Pending';
@@ -564,6 +564,7 @@ class en_us extends Language
 		$strings['CheckInTime'] = 'Check In Time';
 		$strings['CheckOutTime'] = 'Check Out Time';
 		$strings['OriginalEndDate'] = 'Original End';
+		$strings['SpecificDates'] = 'Show Specific Dates';
 		// End Strings
 
 		// Install

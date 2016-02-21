@@ -832,16 +832,16 @@ class SchedulePresenterTests extends TestBase
 		$page->_FilterSubmitted = true;
 		$page->_ResourceTypeId = 1;
 		$page->_MaxParticipants = 10;
-		$page->_ResourceAttributes = array(new AttributeFormElement(2,2));
-		$page->_ResourceTypeAttributes = array(new AttributeFormElement(1,1));
-		$page->_ResourceIds = array(1,2,3);
+		$page->_ResourceAttributes = array(new AttributeFormElement(2, 2));
+		$page->_ResourceTypeAttributes = array(new AttributeFormElement(1, 1));
+		$page->_ResourceIds = array(1, 2, 3);
 		$builder = new SchedulePageBuilder();
 
 		$filter = $builder->GetResourceFilter($scheduleId, $page);
 
 		$this->assertEquals($page->_ResourceIds, $filter->ResourceIds);
-		$this->assertEquals(array(new AttributeValue(2,2)), $filter->ResourceAttributes);
-		$this->assertEquals(array(new AttributeValue(1,1)), $filter->ResourceTypeAttributes);
+		$this->assertEquals(array(new AttributeValue(2, 2)), $filter->ResourceAttributes);
+		$this->assertEquals(array(new AttributeValue(1, 1)), $filter->ResourceTypeAttributes);
 	}
 
 	public function testGetsResourceFilterFromCookie()
@@ -849,7 +849,7 @@ class SchedulePresenterTests extends TestBase
 		$scheduleId = 1;
 		$page = new FakeSchedulePage();
 
-		$filter = new ScheduleResourceFilter(1, 2, 3, array(new AttributeValue(1,1)), array(new AttributeValue(2,2)), array(1,2,3));
+		$filter = new ScheduleResourceFilter(1, 2, 3, array(new AttributeValue(1, 1)), array(new AttributeValue(2, 2)), array(1, 2, 3));
 		$this->fakeServer->SetCookie(new Cookie('resource_filter' . $scheduleId, json_encode($filter)));
 		$page->_FilterSubmitted = false;
 		$builder = new SchedulePageBuilder();
@@ -858,6 +858,21 @@ class SchedulePresenterTests extends TestBase
 
 		$this->assertEquals($filter->ScheduleId, $builtFilter->ScheduleId);
 		$this->assertEquals($filter->ResourceIds, $builtFilter->ResourceIds);
+	}
+
+	public function testGetsRangeForSpecificDates()
+	{
+		$d1 = Date::Parse('2015-10-31', $this->fakeUser->Timezone);
+		$d2 = Date::Parse('2015-12-25', $this->fakeUser->Timezone);
+
+		$page = new FakeSchedulePage();
+		$page->_SelectedDates = array($d1, $d2);
+
+		$builder = new SchedulePageBuilder();
+
+		$dates = $builder->GetScheduleDates($this->fakeUser, new FakeSchedule(), $page);
+
+		$this->assertEquals(new DateRange($d1, $d2->AddDays(1)), $dates);
 	}
 }
 
@@ -870,6 +885,7 @@ class FakeSchedulePage implements ISchedulePage
 	public $_ResourceAttributes = array();
 	public $_ResourceTypeAttributes = array();
 	public $_ResourceIds = array();
+	public $_SelectedDates = array();
 
 	public function TakingAction()
 	{
@@ -1205,5 +1221,21 @@ class FakeSchedulePage implements ISchedulePage
 	public function GetResourceId()
 	{
 		// TODO: Implement GetResourceId() method.
+	}
+
+	/**
+	 * @return Date[]
+	 */
+	public function GetSelectedDates()
+	{
+		return $this->_SelectedDates;
+	}
+
+	/**
+	 * @param Date[] $specificDates
+	 */
+	public function SetSpecificDates($specificDates)
+	{
+		// TODO: Implement SetSpecificDates() method.
 	}
 }

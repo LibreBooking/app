@@ -66,6 +66,7 @@ class QueryStringKeys
 	const SCHEDULE_ID = 'sid';
 	const SHOW_FULL_WEEK = 'sfw';
 	const START_DATE = 'sd';
+	const START_DATES = 'sds';
     const SUBSCRIPTION_KEY = 'icskey';
     const TYPE = 'type';
 	const USER_ID = 'uid';

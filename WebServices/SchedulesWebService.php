@@ -262,7 +262,7 @@ class ScheduleWebServiceView implements ISchedulePage
 
 	public function SetPreviousNextDates($previousDate, $nextDate)
 	{
-		// TODO: Implement SetPreviousNextDates() method.
+		// no op
 	}
 
 	public function GetSelectedDate()
@@ -476,5 +476,21 @@ class ScheduleWebServiceView implements ISchedulePage
 	public function GetResourceIds()
 	{
 		return array();
+	}
+
+	/**
+	 * @return Date[]
+	 */
+	public function GetSelectedDates()
+	{
+		// no op
+	}
+
+	/**
+	 * @param Date[] $specificDates
+	 */
+	public function SetSpecificDates($specificDates)
+	{
+		// no op
 	}
 }
