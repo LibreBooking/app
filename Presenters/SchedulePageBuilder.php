@@ -362,7 +362,6 @@ class SchedulePageBuilder implements ISchedulePageBuilder
 		}
 
 		$filter->ScheduleId = $scheduleId;
-		$filter->GroupId = $this->GetGroupId($scheduleId, $page);
 
 		return $filter;
 	}

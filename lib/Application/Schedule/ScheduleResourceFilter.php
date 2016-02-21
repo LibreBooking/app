@@ -30,7 +30,6 @@ class ScheduleResourceFilter implements IScheduleResourceFilter
 {
 	public $ScheduleId;
 	public $ResourceIds;
-	public $GroupId;
 	public $ResourceTypeId;
 	public $MinCapacity;
 	public $ResourceAttributes;
@@ -76,7 +75,7 @@ class ScheduleResourceFilter implements IScheduleResourceFilter
 
 	public function HasFilter()
 	{
-		return !empty($this->ResourceIds) || !empty($this->GroupId) || !empty($this->ResourceTypeId) || !empty($this->MinCapacity) || !empty($this->ResourceAttributes) || !empty($this->ResourceTypeAttributes);
+		return !empty($this->ResourceIds) || !empty($this->ResourceTypeId) || !empty($this->MinCapacity) || !empty($this->ResourceAttributes) || !empty($this->ResourceTypeAttributes);
 	}
 
 	public function FilterResources($resources, IResourceRepository $resourceRepository, IAttributeService $attributeService)
@@ -91,13 +90,6 @@ class ScheduleResourceFilter implements IScheduleResourceFilter
 			}
 
 			return $resourceIds;
-		}
-
-		$groupResourceIds = array();
-		if (!empty($this->GroupId) && empty($this->ResourceId))
-		{
-			$groups = $resourceRepository->GetResourceGroups($this->ScheduleId);
-			$groupResourceIds = $groups->GetResourceIds($this->GroupId);
 		}
 
 		$resourceAttributeValues = null;
@@ -119,12 +111,6 @@ class ScheduleResourceFilter implements IScheduleResourceFilter
 			$resourceIds[] = $resource->GetId();
 
 			if (!empty($this->ResourceIds) && !in_array($resource->GetId(), $this->ResourceIds))
-			{
-				array_pop($resourceIds);
-				continue;
-			}
-
-			if (!empty($this->GroupId) && !in_array($resource->GetId(), $groupResourceIds))
 			{
 				array_pop($resourceIds);
 				continue;

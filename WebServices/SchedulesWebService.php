@@ -308,11 +308,6 @@ class ScheduleWebServiceView implements ISchedulePage
 		// no op
 	}
 
-	public function GetGroupId()
-	{
-		return null;
-	}
-
 	public function GetResourceId()
 	{
 		return null;

@@ -124,11 +124,6 @@ interface ISchedulePage extends IActionPage
 	/**
 	 * @return int
 	 */
-	public function GetGroupId();
-
-	/**
-	 * @return int
-	 */
 	public function GetResourceId();
 
 	/**
@@ -405,14 +400,6 @@ class SchedulePage extends ActionPage implements ISchedulePage
 		$this->ScheduleStyle = $direction;
 		$this->Set('CookieName', 'schedule-direction-' . $this->GetVar('ScheduleId'));
 		$this->Set('CookieValue', $direction);
-	}
-
-	/**
-	 * @return int
-	 */
-	public function GetGroupId()
-	{
-		return $this->GetQuerystring(QueryStringKeys::GROUP_ID);
 	}
 
 	/**
