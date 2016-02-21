@@ -521,7 +521,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 				}
 				if (tooltipType === 'autorelease')
 				{
-					var text = "{translate key=AutoReleaseNotification}";
+					var text = "{translate key=AutoReleaseNotification args='%s'}";
 					return text.replace('%s', $(this).data('autorelease'));
 				}
 			}

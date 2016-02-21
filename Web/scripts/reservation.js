@@ -739,7 +739,6 @@ function Reservation(opts) {
 		var autoReleaseButtonMessage = $('.autoReleaseButtonMessage');
 		if (autoReleaseButtonMessage.length > 0)
 		{
-
 			var autoReleaseMinutes = autoReleaseButtonMessage.first().data('autorelease-minutes');
 			if (autoReleaseMinutes != '')
 			{
@@ -751,7 +750,7 @@ function Reservation(opts) {
 
 					if (releaseMinutesText <= 0)
 					{
-						clearInterval(interval)
+						clearInterval(interval);
 					}
 				};
 
