@@ -32,8 +32,9 @@ class ReportCommandBuilder
 				[ORDER_TOKEN]
 				[LIMIT_TOKEN]';
 
-	const RESERVATION_LIST_FRAGMENT = 'rs.date_created as date_created, rs.last_modified as last_modified, rs.repeat_type,
-		rs.description as description, rs.title as title, rs.status_id as status_id, ri.reference_number, ri.start_date, ri.end_date, ri.checkin_date, ri.checkout_date, ri.previous_end_date,
+	const RESERVATION_LIST_FRAGMENT = 'rs.date_created as date_created, rs.last_modified as last_modified, rs.repeat_type, rs.description as description,
+	rs.title as title, rs.status_id as status_id,
+		ri.reference_number, ri.start_date, ri.end_date, ri.checkin_date, ri.checkout_date, ri.previous_end_date, TIMESTAMPDIFF(SECOND, ri.start_date, ri.end_date) as duration,
 							(SELECT GROUP_CONCAT(CONCAT(cav.custom_attribute_id,\'=\', cav.attribute_value) SEPARATOR "!sep!")
 								FROM custom_attribute_values cav WHERE cav.entity_id = ri.series_id AND cav.attribute_category = 1) as attribute_list';
 

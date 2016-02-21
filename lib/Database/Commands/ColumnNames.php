@@ -281,6 +281,7 @@ class ColumnNames
 	const GROUP_LIST = 'owner_group_list';
 	const START_REMINDER_MINUTES_PRIOR = 'start_reminder_minutes';
 	const END_REMINDER_MINUTES_PRIOR = 'end_reminder_minutes';
+	const DURATION_ALIAS = 'duration';
 
 	// shared
 	const ALLOW_CALENDAR_SUBSCRIPTION = 'allow_calendar_subscription';
