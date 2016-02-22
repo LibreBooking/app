@@ -144,6 +144,46 @@ class Reservation
 	protected $unchangedInvitees = array();
 
 	/**
+	 * @var string[]
+	 */
+	private $_invitedGuests = array();
+
+	/**
+	 * @var string[]
+	 */
+	protected $addedInvitedGuests = array();
+
+	/**
+	 * @var string[]
+	 */
+	protected $removedInvitedGuests = array();
+
+	/**
+	 * @var string[]
+	 */
+	protected $unchangedInvitedGuests = array();
+
+	/**
+	 * @var string[]
+	 */
+	private $_participatingGuests = array();
+
+	/**
+	 * @var string[]
+	 */
+	protected $addedParticipatingGuests = array();
+
+	/**
+	 * @var string[]
+	 */
+	protected $removedParticipatingGuests = array();
+
+	/**
+	 * @var string[]
+	 */
+	protected $unchangedParticipatingGuests = array();
+
+	/**
 	 * @var Date|null
 	 */
 	protected $checkinDate;
@@ -307,6 +347,46 @@ class Reservation
 	}
 
 	/**
+	 * @param string $guest
+	 */
+	public function WithInvitedGuest($guest)
+	{
+		$this->_invitedGuests[] = $guest;
+		$this->unchangedInvitedGuests[] = $guest;
+	}
+
+//	/**
+//	 * @internal
+//	 * @param string[] $guests
+//	 * @return void
+//	 */
+//	public function WithInvitedGuests($guests)
+//	{
+//		$this->_invitedGuests = $guests;
+//		$this->unchangedInvitedGuests = $guests;
+//	}
+
+	/**
+	 * @param string $guest
+	 */
+	public function WithParticipatingGuest($guest)
+	{
+		$this->_participatingGuests[] = $guest;
+		$this->unchangedParticipatingGuests[] = $guest;
+	}
+
+//	/**
+//	 * @internal
+//	 * @param string[] $guests
+//	 * @return void
+//	 */
+//	public function WithParticipatingGuests($guests)
+//	{
+//		$this->_invitedGuests = $guests;
+//		$this->unchangedInvitedGuests = $guests;
+//	}
+
+	/**
 	 * @return array|int[]
 	 */
 	public function AddedInvitees()
@@ -345,6 +425,88 @@ class Reservation
 		$this->_inviteeIds = $inviteeIds;
 
 		return count($this->addedInvitees) + count($this->removedInvitees);
+	}
+
+	/**
+	 * @param string[] $invitedGuests
+	 * @return int
+	 */
+	public function ChangeInvitedGuests($invitedGuests)
+	{
+		$inviteeDiff = new ArrayDiff($this->_invitedGuests, $invitedGuests);
+
+		$this->addedInvitedGuests = $inviteeDiff->GetAddedToArray1();
+		$this->removedInvitedGuests = $inviteeDiff->GetRemovedFromArray1();
+		$this->unchangedInvitedGuests = $inviteeDiff->GetUnchangedInArray1();
+
+		$this->_invitedGuests = $invitedGuests;
+
+		return count($this->addedInvitedGuests) + count($this->removedInvitedGuests);
+	}
+
+	/**
+	 * @param string[] $participatingGuests
+	 * @return int
+	 */
+	public function ChangeParticipatingGuests($participatingGuests)
+	{
+		$participantDiff = new ArrayDiff($this->_participatingGuests, $participatingGuests);
+
+		$this->addedParticipatingGuests = $participantDiff->GetAddedToArray1();
+		$this->removedParticipatingGuests = $participantDiff->GetRemovedFromArray1();
+		$this->unchangedParticipatingGuests = $participantDiff->GetUnchangedInArray1();
+
+		$this->_participatingGuests = $participatingGuests;
+
+		return count($this->addedParticipatingGuests) + count($this->removedParticipatingGuests);
+	}
+
+	/**
+	 * @return string[]
+	 */
+	public function AddedInvitedGuests()
+	{
+		return $this->addedInvitedGuests;
+	}
+
+	/**
+	 * @return string[]
+	 */
+	public function RemovedInvitedGuests()
+	{
+		return $this->removedInvitedGuests;
+	}
+
+	/**
+	 * @return string[]
+	 */
+	public function UnchangedInvitedGuests()
+	{
+		return $this->unchangedInvitedGuests;
+	}
+
+	/**
+	 * @return string[]
+	 */
+	public function AddedParticipatingGuests()
+	{
+		return $this->addedParticipatingGuests;
+	}
+
+	/**
+	 * @return string[]
+	 */
+	public function RemovedParticipatingGuests()
+	{
+		return $this->removedParticipatingGuests;
+	}
+
+	/**
+	 * @return string[]
+	 */
+	public function UnchangedParticipatingGuests()
+	{
+		return $this->unchangedParticipatingGuests;
 	}
 
 	/**

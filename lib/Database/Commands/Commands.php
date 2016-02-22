@@ -329,6 +329,18 @@ class AddReservationCommand extends SqlCommand
 	}
 }
 
+class AddReservationGuestCommand extends SqlCommand
+{
+	public function __construct($instanceId, $guestEmail, $levelId)
+	{
+		parent::__construct(Queries::ADD_RESERVATION_GUEST);
+
+		$this->AddParameter(new Parameter(ParameterNames::RESERVATION_INSTANCE_ID, $instanceId));
+		$this->AddParameter(new Parameter(ParameterNames::EMAIL_ADDRESS, $guestEmail));
+		$this->AddParameter(new Parameter(ParameterNames::RESERVATION_USER_LEVEL_ID, $levelId));
+	}
+}
+
 class AddReservationUserCommand extends SqlCommand
 {
 	public function __construct($instanceId, $userId, $levelId)
@@ -1317,6 +1329,15 @@ class GetReservationAttachmentsCommand extends SqlCommand
 	}
 }
 
+class GetReservationGuestsCommand extends SqlCommand
+{
+	public function __construct($instanceId)
+	{
+		parent::__construct(Queries::GET_RESERVATION_GUESTS);
+		$this->AddParameter(new Parameter(ParameterNames::RESERVATION_INSTANCE_ID, $instanceId));
+	}
+}
+
 class GetReservationColorRulesCommand extends SqlCommand
 {
 	public function __construct()
@@ -1376,6 +1397,15 @@ class GetReservationByReferenceNumberCommand extends SqlCommand
 	{
 		parent::__construct(Queries::GET_RESERVATION_BY_REFERENCE_NUMBER);
 		$this->AddParameter(new Parameter(ParameterNames::REFERENCE_NUMBER, $referenceNumber));
+	}
+}
+
+class GetReservationSeriesGuestsCommand extends SqlCommand
+{
+	public function __construct($seriesId)
+	{
+		parent::__construct(Queries::GET_RESERVATION_SERIES_GUESTS);
+		$this->AddParameter(new Parameter(ParameterNames::SERIES_ID, $seriesId));
 	}
 }
 
@@ -1761,6 +1791,17 @@ class RemoveReservationCommand extends SqlCommand
 		parent::__construct(Queries::REMOVE_RESERVATION_INSTANCE);
 
 		$this->AddParameter(new Parameter(ParameterNames::REFERENCE_NUMBER, $referenceNumber));
+	}
+}
+
+class RemoveReservationGuestCommand extends SqlCommand
+{
+	public function __construct($instanceId, $emailAddress)
+	{
+		parent::__construct(Queries::REMOVE_RESERVATION_GUEST);
+
+		$this->AddParameter(new Parameter(ParameterNames::RESERVATION_INSTANCE_ID, $instanceId));
+		$this->AddParameter(new Parameter(ParameterNames::EMAIL_ADDRESS, $emailAddress));
 	}
 }
 

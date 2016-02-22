@@ -24,7 +24,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		<span class="resourceDetails">{$resource->Name}</span>
 		{if $resource->GetRequiresApproval()}<span class="fa fa-lock" data-tooltip="approval"></span>{/if}
 		{if true || $resource->IsCheckInEnabled()}<i class="fa fa-sign-in" data-tooltip="checkin"></i>{/if}
-		{if true || $resource->IsAutoReleased()}<i class="fa fa-clock-o" data-tooltip="autorelease" data-autorelease="{$resource->GetAutoReleaseMinutes()}"></i>{/if}
+		{if true || $resource->IsAutoReleased()}<i class="fa fa-clock-o" data-tooltip="autorelease"
+												   data-autorelease="{$resource->GetAutoReleaseMinutes()}"></i>{/if}
 	</div>
 {/function}
 
@@ -431,9 +432,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 	$(function () {
 		var scopeOptions = {
-			instance: '{SeriesUpdateScope::ThisInstance}',
-			full: '{SeriesUpdateScope::FullSeries}',
-			future: '{SeriesUpdateScope::FutureInstances}'
+			instance: '{SeriesUpdateScope::ThisInstance}', full: '{SeriesUpdateScope::FullSeries}', future: '{SeriesUpdateScope::FutureInstances}'
 		};
 
 		var reservationOpts = {
@@ -449,7 +448,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			userAutocompleteUrl: "ajax/autocomplete.php?type={AutoCompleteType::User}",
 			groupAutocompleteUrl: "ajax/autocomplete.php?type={AutoCompleteType::Group}",
 			changeUserAutocompleteUrl: "ajax/autocomplete.php?type={AutoCompleteType::MyUsers}",
-			maxConcurrentUploads: '{$MaxUploadCount}'
+			maxConcurrentUploads: '{$MaxUploadCount}',
+			guestLabel: '({translate key=Guest})'
 		};
 
 		var recurOpts = {
@@ -483,6 +483,14 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		reservation.addInvitee("{$user->FullName|escape:'javascript'}", '{$user->UserId}');
 		{/foreach}
 
+		{foreach from=$ParticipatingGuests item=guest}
+		reservation.addParticipatingGuest('{$guest}');
+		{/foreach}
+
+		{foreach from=$InvitedGuests item=guest}
+		reservation.addInvitedGuest('{$guest}');
+		{/foreach}
+
 		{foreach from=$Accessories item=accessory}
 		reservation.addAccessory('{$accessory->AccessoryId}', '{$accessory->QuantityReserved}', "{$accessory->Name|escape:'javascript'}");
 		{/foreach}
@@ -508,8 +516,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 		var resources = $('#reservation-resources');
 		resources.tooltip({
-		    selector: '[data-tooltip]',
-			title: function(){
+			selector: '[data-tooltip]', title: function () {
 				var tooltipType = $(this).data('tooltip');
 				if (tooltipType === 'approval')
 				{

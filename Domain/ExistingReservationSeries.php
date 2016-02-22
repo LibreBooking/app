@@ -510,6 +510,26 @@ class ExistingReservationSeries extends ReservationSeries
 	}
 
 	/**
+	 * @param string[] $invitedGuests
+	 * @param string[] $participatingGuests
+	 * @return void
+	 */
+	public function ChangeGuests($invitedGuests, $participatingGuests)
+	{
+		/** @var Reservation $instance */
+		foreach ($this->Instances() as $instance)
+		{
+			$invitedChanged = $instance->ChangeInvitedGuests($invitedGuests);
+			$participatingChanged = $instance->ChangeParticipatingGuests($participatingGuests);
+
+			if ($invitedChanged + $participatingChanged != 0)
+			{
+				$this->RaiseInstanceUpdatedEvent($instance);
+			}
+		}
+	}
+
+	/**
 	 * @param int $inviteeId
 	 * @return void
 	 */
@@ -680,8 +700,11 @@ class ExistingReservationSeries extends ReservationSeries
 	 */
 	public function RemoveAttachment($fileId)
 	{
-		$this->AddEvent(new AttachmentRemovedEvent($this, $fileId, $this->attachmentIds[$fileId]));
-		$this->_removedAttachmentIds[] = $fileId;
+		if (array_key_exists($fileId, $this->attachmentIds))
+		{
+			$this->AddEvent(new AttachmentRemovedEvent($this, $fileId, $this->attachmentIds[$fileId]));
+			$this->_removedAttachmentIds[] = $fileId;
+		}
 	}
 
 	/**

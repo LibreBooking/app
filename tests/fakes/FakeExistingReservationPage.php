@@ -414,4 +414,20 @@ class FakeExistingReservationPage implements IExistingReservationPage
 	{
 		// TODO: Implement SetAllowParticipantsToJoin() method.
 	}
+
+	/**
+	 * @param string[] $participatingGuests
+	 */
+	public function SetParticipatingGuests($participatingGuests)
+	{
+		// TODO: Implement SetParticipatingGuests() method.
+	}
+
+	/**
+	 * @param string[] $invitedGuests
+	 */
+	public function SetInvitedGuests($invitedGuests)
+	{
+		// TODO: Implement SetInvitedGuests() method.
+	}
 }

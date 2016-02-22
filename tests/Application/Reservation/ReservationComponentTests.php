@@ -490,6 +490,8 @@ class ReservationComponentTests extends TestBase
 				new ReservationUserView($this->fakeUser->UserId, 'i1', 'l', null, ReservationUserLevel::INVITEE),
 				new ReservationUserView(110, 'i2', 'l', null, ReservationUserLevel::INVITEE)
 		);
+		$participatingGuests = array('p1@email.com', 'p2@email.com');
+		$invitedGuests = array('i1@email.com', 'i2@email.com');
 		$accessories = array(
 				new ReservationAccessory(1, 2)
 		);
@@ -528,6 +530,8 @@ class ReservationComponentTests extends TestBase
 		$this->reservationView->Attachments = $attachments;
 		$this->reservationView->StartReminder = new ReservationReminderView($startReminderValue);
 		$this->reservationView->EndReminder = null;
+		$this->reservationView->ParticipatingGuests = $participatingGuests;
+		$this->reservationView->InvitedGuests = $invitedGuests;
 
 		$this->page->expects($this->once())
 				   ->method('SetAdditionalResources')
@@ -540,6 +544,14 @@ class ReservationComponentTests extends TestBase
 		$this->page->expects($this->once())
 				   ->method('SetInvitees')
 				   ->with($this->equalTo($invitees));
+
+		$this->page->expects($this->once())
+			 ->method('SetParticipatingGuests')
+			 ->with($this->equalTo($participatingGuests));
+
+		$this->page->expects($this->once())
+			 ->method('SetInvitedGuests')
+			 ->with($this->equalTo($invitedGuests));
 
 		$this->page->expects($this->once())
 				   ->method('SetTitle')

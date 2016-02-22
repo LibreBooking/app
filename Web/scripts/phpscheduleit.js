@@ -119,7 +119,7 @@ $.fn.showHidePanel = function () {
 			setIcon(panel, 'glyphicon-chevron-down');
 		}
 	});
-}
+};
 
 $.fn.clearable = function(){
 	var textbox = $(this);
@@ -136,10 +136,16 @@ $.fn.clearable = function(){
 		t.next('.clearer').toggle(Boolean(t.val()));
 	});
 
-	$(".clearer").hide($(this).prev('input').val());
+	var $clearer = $(".clearer");
+	$clearer.hide($(this).prev('input').val());
 
-	$(".clearer").on('click', function () {
+	$clearer.on('click', function () {
 		$(this).siblings('input').val('').focus();
 		$(this).hide();
 	});
+};
+
+function validateEmail(email) {
+    var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(email);
 }

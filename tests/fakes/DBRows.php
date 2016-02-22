@@ -298,6 +298,50 @@ class ReservationUserRow
 	}
 }
 
+class ReservationGuestRow
+{
+	private $rows = array();
+
+	public function Rows()
+	{
+		return $this->rows;
+	}
+
+	private function AddRow($referenceNumber, $email, $levelId)
+	{
+		$this->rows[] = array(ColumnNames::REFERENCE_NUMBER => $referenceNumber,
+			ColumnNames::EMAIL => $email,
+			ColumnNames::RESERVATION_USER_LEVEL => $levelId);
+	}
+
+	/**
+	 * @param Reservation $instance
+	 * @param array|string[] $participants
+	 * @return ReservationUserRow
+	 */
+	public function WithParticipants($instance, $participants)
+	{
+		foreach ($participants as $email)
+		{
+			$this->AddRow($instance->ReferenceNumber(), $email, ReservationUserLevel::PARTICIPANT);
+		}
+		return $this;
+	}
+
+	/**
+	 * @param Reservation $instance
+	 * @param array|int[] $invitees
+	 * @return ReservationUserRow
+	 */
+	public function WithInvitees($instance, $invitees)
+	{
+		foreach ($invitees as $email)
+		{
+			$this->AddRow($instance->ReferenceNumber(), $email, ReservationUserLevel::INVITEE);
+		}
+		return $this;
+	}
+}
 
 class ReservationAccessoryRow
 {

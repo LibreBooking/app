@@ -155,6 +155,7 @@ class ReservationViewRepository implements IReservationViewRepository
 			$this->SetAttributes($reservationView);
 			$this->SetAttachments($reservationView);
 			$this->SetReminders($reservationView);
+			$this->SetGuests($reservationView);
 		}
 
 		return $reservationView;
@@ -342,6 +343,29 @@ class ReservationViewRepository implements IReservationViewRepository
 			else
 			{
 				$reservationView->EndReminder = new ReservationReminderView($row[ColumnNames::REMINDER_MINUTES_PRIOR]);
+			}
+		}
+	}
+
+	private function SetGuests(ReservationView $reservationView)
+	{
+		$getGuests = new GetReservationGuestsCommand($reservationView->ReservationId);
+
+		$result = ServiceLocator::GetDatabase()->Query($getGuests);
+
+		while ($row = $result->GetRow())
+		{
+			$levelId = $row[ColumnNames::RESERVATION_USER_LEVEL];
+			$email = $row[ColumnNames::EMAIL];
+
+			if ($levelId == ReservationUserLevel::PARTICIPANT)
+			{
+				$reservationView->ParticipatingGuests[] = $email;
+			}
+
+			if ($levelId == ReservationUserLevel::INVITEE)
+			{
+				$reservationView->InvitedGuests[] = $email;
 			}
 		}
 	}
@@ -718,6 +742,16 @@ class ReservationView
 	 * @var ReservationReminderView|null
 	 */
 	public $EndReminder;
+
+	/**
+	 * @var string[]
+	 */
+	public $ParticipatingGuests = array();
+
+	/**
+	 * @var string[]
+	 */
+	public $InvitedGuests = array();
 
 	/**
 	 * @var bool
@@ -1530,7 +1564,7 @@ class ReservationItemView implements IReservedItemView
 			{
 				$this->_color = "#{$this->_color}";
 			}
-			elseif(!empty($resourceColor))
+			elseif (!empty($resourceColor))
 			{
 				$this->_color = "$resourceColor";
 			}

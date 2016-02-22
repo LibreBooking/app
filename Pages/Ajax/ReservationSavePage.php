@@ -138,6 +138,16 @@ interface IReservationSavePage extends IReservationSaveResultsView, IRepeatOptio
 	 * @return bool
 	 */
 	public function GetAllowParticipation();
+
+	/**
+	 * @return string[]
+	 */
+	public function GetParticipatingGuests();
+
+	/**
+	 * @return string[]
+	 */
+	public function GetInvitedGuests();
 }
 
 class ReservationSavePage extends SecurePage implements IReservationSavePage
@@ -379,6 +389,28 @@ class ReservationSavePage extends SecurePage implements IReservationSavePage
 		if (is_array($invitees))
 		{
 			return $invitees;
+		}
+
+		return array();
+	}
+
+	public function GetInvitedGuests()
+	{
+		$invitees = $this->GetForm(FormKeys::GUEST_INVITATION_LIST);
+		if (is_array($invitees))
+		{
+			return $invitees;
+		}
+
+		return array();
+	}
+
+	public function GetParticipatingGuests()
+	{
+		$participants = $this->GetForm(FormKeys::GUEST_PARTICIPATION_LIST);
+		if (is_array($participants))
+		{
+			return $participants;
 		}
 
 		return array();

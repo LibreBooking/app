@@ -24,6 +24,10 @@ function Reservation(opts) {
 		inviteeGroupDialog: $('#inviteeGroupDialog'),
 		inviteeList: $('#inviteeList'),
 		inviteeAutocomplete: $('#inviteeAutocomplete'),
+		guestDialogPrompt: $('#promptForGuests'),
+		inviteeGuestDialog: $('#inviteeGuestDialog'),
+		guestEmail: $('#txtGuestEmail'),
+		addGuestButton: $('#btnAddGuest'),
 
 		changeUserAutocomplete: $('#changeUserAutocomplete'),
 		userName: $('#userName'),
@@ -172,11 +176,7 @@ function Reservation(opts) {
 
 	Reservation.prototype.addResourceGroups = function (resourceGroups) {
 		elements.groupDiv.tree({
-			data: resourceGroups,
-			saveState: false,
-			dragAndDrop: false,
-			selectable: false,
-			autoOpen: true,
+			data: resourceGroups, saveState: false, dragAndDrop: false, selectable: false, autoOpen: true,
 
 			onCreateLi: function (node, $li) {
 				var span = $li.find('span');
@@ -329,13 +329,7 @@ function Reservation(opts) {
 					primaryResourceContainer.find('.resourceName').remove();
 					displayDiv = primaryResourceContainer;
 				}
-				displayDiv.append('<div class="resourceName" style="background-color:' + color + '; color:' + textColor + ';">' +
-						'<span class="resourceDetails">' + checkedResourceName + '</span> ' +
-						'<input class="resourceId" type="hidden" name="additionalResources[]" value="' + checkedResourceId + '"/>' +
-						(requiresApproval ? ' <i class="fa fa-lock" data-tooltip="approval"></i> ' : '') +
-						(requiresCheckin ? ' <i class="fa fa-check" data-tooltip="checkin"></i> ' : '') +
-						(_.isEmpty(autoReleaseMinutes) ? ' <i class="fa fa-clock-o" data-tooltip="autorelease" data-autorelease="' + autoReleaseMinutes + '"></i> ' : '') +
-						'</div>');
+				displayDiv.append('<div class="resourceName" style="background-color:' + color + '; color:' + textColor + ';">' + '<span class="resourceDetails">' + checkedResourceName + '</span> ' + '<input class="resourceId" type="hidden" name="additionalResources[]" value="' + checkedResourceId + '"/>' + (requiresApproval ? ' <i class="fa fa-lock" data-tooltip="approval"></i> ' : '') + (requiresCheckin ? ' <i class="fa fa-check" data-tooltip="checkin"></i> ' : '') + (_.isEmpty(autoReleaseMinutes) ? ' <i class="fa fa-clock-o" data-tooltip="autorelease" data-autorelease="' + autoReleaseMinutes + '"></i> ' : '') + '</div>');
 			});
 		}
 
@@ -567,10 +561,7 @@ function Reservation(opts) {
 				return;
 			}
 			$.ajax({
-				url: 'schedule.php',
-				dataType: 'json',
-				data: {dr: 'layout', 'sid': scheduleId, 'ld': dateElement.val()},
-				success: function (data) {
+				url: 'schedule.php', dataType: 'json', data: {dr: 'layout', 'sid': scheduleId, 'ld': dateElement.val()}, success: function (data) {
 					var items = [];
 					periodElement.empty();
 					$.map(data.periods, function (item) {
@@ -580,8 +571,7 @@ function Reservation(opts) {
 					periodsCache[weekday] = html;
 					periodElement.html(html);
 					periodElement.val(selectedPeriod);
-				},
-				async: false
+				}, async: false
 			});
 		};
 
@@ -642,6 +632,26 @@ function Reservation(opts) {
 		elements.inviteeAutocomplete.userAutoComplete(options.userAutocompleteUrl, function (ui) {
 			participation.addInvitee(ui.item.label, ui.item.value);
 		});
+
+		elements.guestDialogPrompt.click(function () {
+			elements.inviteeGuestDialog.modal('show');
+		});
+
+		elements.addGuestButton.click(function (e) {
+			if (validateEmail(elements.guestEmail.val()))
+			{
+				participation.addInvitedGuest(elements.guestEmail.val());
+				elements.guestEmail.val('');
+			}
+		});
+
+		elements.guestEmail.keyup(function (e) {
+			var code = e.keyCode || e.which;
+			if (code == 13)
+			{
+				elements.addGuestButton.trigger('click');
+			}
+		});
 	}
 
 	function WireUpAttachments() {
@@ -698,9 +708,7 @@ function Reservation(opts) {
 		$(document).on('loaded', '#reservation-failed', function (e) {
 			$('#retryToolTip').qtip({
 				position: {
-					my: 'bottom left',
-					at: 'top left',
-					effect: false
+					my: 'bottom left', at: 'top left', effect: false
 				},
 
 				content: {
@@ -710,13 +718,11 @@ function Reservation(opts) {
 				},
 
 				show: {
-					delay: 300,
-					effect: false
+					delay: 300, effect: false
 				},
 
 				hide: {
-					fixed: true,
-					delay: 500
+					fixed: true, delay: 500
 				},
 
 				style: {
@@ -803,10 +809,7 @@ function Reservation(opts) {
 		if (listElement.children().length == 0)
 		{
 			$.ajax({
-				url: options.changeUserAutocompleteUrl,
-				dataType: 'json',
-				async: false,
-				success: function (data) {
+				url: options.changeUserAutocompleteUrl, dataType: 'json', async: false, success: function (data) {
 					allUserList = data;
 					$.map(allUserList, function (item) {
 						items.push('<div><a href="#" class="add" title="Add" userId="' + item.Id + '">' + item.DisplayName + '</a></div>');
@@ -826,11 +829,7 @@ function Reservation(opts) {
 			return;
 		}
 
-		var item = '<div class="user">' +
-				'<a href="#" class="remove"><span class="fa fa-remove"></span></a> <a href="#" class="bindableUser" data-userid="' + userId + '">' +
-				name +
-				'</a><input type="hidden" class="id" name="participantList[]" value="' + userId + '" />' +
-				'</div>';
+		var item = '<div class="user">' + '<a href="#" class="remove"><span class="fa fa-remove"></span></a> <a href="#" class="bindableUser" data-userid="' + userId + '">' + name + '</a><input type="hidden" class="id" name="participantList[]" value="' + userId + '" />' + '</div>';
 
 		elements.participantList.append(item);
 		$('.bindableUser').bindUserDetails();
@@ -845,21 +844,51 @@ function Reservation(opts) {
 		participation.addInvitee(name, userId);
 	};
 
+	Reservation.prototype.addParticipatingGuest = function (email) {
+		participation.addParticipatingGuest(email);
+	};
+
+	Reservation.prototype.addInvitedGuest = function (email) {
+		participation.addInvitedGuest(email);
+	};
+
 	participation.addInvitee = function (name, userId) {
 		if ($.inArray(userId, participation.addedUsers) >= 0)
 		{
 			return;
 		}
 
-		var item = '<div class="user">' +
-				'<a href="#" class="remove"><span class="fa fa-remove"></span></a> <a href="#" class="bindableUser" data-userid="' + userId + '">' +
-				name +
-				'</a><input type="hidden" class="id" name="invitationList[]" value="' + userId + '" />' +
-				'</div>';
+		var item = '<div class="user">' + '<a href="#" class="remove"><span class="fa fa-remove"></span></a> <a href="#" class="bindableUser" data-userid="' + userId + '">' + name + '</a><input type="hidden" class="id" name="invitationList[]" value="' + userId + '" />' + '</div>';
 
 		elements.inviteeList.append(item);
 		$('.bindableUser').bindUserDetails();
 		participation.addedUsers.push(userId);
+	};
+
+	participation.addInvitedGuest = function (emailAddress) {
+		if ($.inArray(emailAddress, participation.addedUsers) >= 0)
+		{
+			return;
+		}
+
+		var item = '<div class="user">' + '<a href="#" class="remove"><span class="fa fa-remove"></span></a> ' + emailAddress + opts.guestLabel + '<input type="hidden" class="id" name="guestInvitationList[]" value="' + emailAddress + '" />' + '</div>';
+
+		elements.inviteeList.append(item);
+
+		participation.addedUsers.push(emailAddress);
+	};
+
+	participation.addParticipatingGuest = function (emailAddress) {
+		if ($.inArray(emailAddress, participation.addedUsers) >= 0)
+		{
+			return;
+		}
+
+		var item = '<div class="user">' + '<a href="#" class="remove"><span class="fa fa-remove"></span></a> ' + emailAddress + opts.guestLabel + '<input type="hidden" class="id" name="guestParticipationList[]" value="' + emailAddress + '" />' + '</div>';
+
+		elements.participantList.append(item);
+
+		participation.addedUsers.push(emailAddress);
 	};
 
 	participation.removeParticipant = function (userId) {
@@ -885,17 +914,12 @@ function Reservation(opts) {
 		if (listElement.children().length == 0)
 		{
 			$.ajax({
-				url: options.userAutocompleteUrl,
-				dataType: 'json',
-				async: false,
-				success: function (data) {
+				url: options.userAutocompleteUrl, dataType: 'json', async: false, success: function (data) {
 					allUserList = data;
 					$.map(allUserList, function (item) {
 						if (item.Id != _ownerId)
 						{
-							items.push('<div><a href="#" class="add" title="Add" user-id="' + item.Id + '">' +
-									'<span class="fa fa-plus-square icon"></span> <span class="name">' +
-									item.DisplayName + '</span></a></div>');
+							items.push('<div><a href="#" class="add" title="Add" user-id="' + item.Id + '">' + '<span class="fa fa-plus-square icon"></span> <span class="name">' + item.DisplayName + '</span></a></div>');
 						}
 					});
 
@@ -914,17 +938,12 @@ function Reservation(opts) {
 		if (listElement.children().length == 0)
 		{
 			$.ajax({
-				url: options.groupAutocompleteUrl,
-				dataType: 'json',
-				async: false,
-				success: function (data) {
+				url: options.groupAutocompleteUrl, dataType: 'json', async: false, success: function (data) {
 					allUserList = data;
 					$.map(allUserList, function (item) {
 						if (item.Id != _ownerId)
 						{
-							items.push('<div><a href="#" class="add" title="Add" group-id="' + item.Id + '">' +
-									'<span class="fa fa-plus-square icon"></span> <span class="name">' +
-									item.Name + '</span></a></div>');
+							items.push('<div><a href="#" class="add" title="Add" group-id="' + item.Id + '">' + '<span class="fa fa-plus-square icon"></span> <span class="name">' + item.Name + '</span></a></div>');
 						}
 					});
 
@@ -938,10 +957,7 @@ function Reservation(opts) {
 
 	participation.addGroupUsers = function (groupId, addUserCallback) {
 		$.ajax({
-			url: options.userAutocompleteUrl + '&term=group&gid=' + groupId,
-			dataType: 'json',
-			async: false,
-			success: function (data) {
+			url: options.userAutocompleteUrl + '&term=group&gid=' + groupId, dataType: 'json', async: false, success: function (data) {
 				$.each(data, function (i, user) {
 					addUserCallback(user.DisplayName, user.Id);
 				});

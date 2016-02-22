@@ -24,7 +24,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 				|
 				<button id="promptForParticipants" type="button" class="btn inline">
 					<i class="fa fa-user"></i>
-					{translate key='SelectUser'}
+					{translate key='Users'}
 				</button>
 				<button id="promptForGroupParticipants" type="button" class="btn inline">
 					<i class="fa fa-users"></i>
@@ -74,12 +74,18 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 				|
 				<button id="promptForInvitees" type="button" class="btn inline">
 					<i class="fa fa-user"></i>
-					{translate key='SelectUser'}
+					{translate key='Users'}
 				</button>
 				<button id="promptForGroupInvitees" type="button" class="btn inline">
 					<i class="fa fa-users"></i>
 					{translate key='Groups'}
 				</button>
+				{if $AllowGuestParticipation}
+					<button id="promptForGuests" type="button" class="btn inline">
+						<i class="fa fa-user-plus"></i>
+						{translate key='Guest'}
+					</button>
+				{/if}
 			</label>
 		</div>
 		<div id="inviteeList">
@@ -105,6 +111,31 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 						<button type="button" class="btn btn-primary" data-dismiss="modal">{translate key='Done'}</button>
 					</div>
 				</div>
+			</div>
+		</div>
+
+		<div class="modal fade" id="inviteeGuestDialog" tabindex="-1" role="dialog" aria-labelledby="inviteeGuestModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+							<h4 class="modal-title" id="inviteeGuestModalLabel">{translate key=InviteOthers}</h4>
+						</div>
+						<div class="modal-body">
+							<div class="form-group row">
+								<label for="txtGuestEmail" class="col-xs-2 form-control-label">{translate key=Email}</label>
+								<div class="col-xs-8">
+									<input id="txtGuestEmail" type="email" class="form-control"/>
+								</div>
+								<div class="col-xs-2">
+									<button id="btnAddGuest" class="btn btn-link" type="button"><i class="fa fa-user-plus icon add"></i></button>
+								</div>
+							</div>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-primary" data-dismiss="modal">{translate key='Done'}</button>
+						</div>
+					</div>
 			</div>
 		</div>
 

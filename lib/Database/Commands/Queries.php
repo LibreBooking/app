@@ -118,6 +118,10 @@ class Queries
         reservation_series (date_created, title, description, allow_participation, allow_anon_participation, repeat_type, repeat_options, type_id, status_id, owner_id)
 		VALUES (@dateCreated, @title, @description, @allow_participation, false, @repeatType, @repeatOptions, @typeid, @statusid, @userid)';
 
+	const ADD_RESERVATION_GUEST =
+				'INSERT INTO reservation_guests (reservation_instance_id, email, reservation_user_level)
+			VALUES (@reservationid, @email, @levelid)';
+
 	const ADD_RESERVATION_USER =
 			'INSERT INTO reservation_users (reservation_instance_id, user_id, reservation_user_level)
 		VALUES (@reservationid, @userid, @levelid)';
@@ -649,6 +653,11 @@ class Queries
 
 	const GET_RESERVATION_ATTACHMENTS_FOR_SERIES = 'SELECT * FROM reservation_files WHERE series_id = @seriesid';
 
+	const GET_RESERVATION_GUESTS =
+			'SELECT	rg.*
+		FROM reservation_guests rg
+		WHERE reservation_instance_id = @reservationid';
+
 	const GET_RESERVATION_COLOR_RULES = 'SELECT * FROM reservation_color_rules r
 		LEFT JOIN custom_attributes ca ON ca.custom_attribute_id = r.custom_attribute_id';
 
@@ -676,6 +685,12 @@ class Queries
 		INNER JOIN schedules s ON r.schedule_id = s.schedule_id
 		WHERE rr.series_id = @seriesid
 		ORDER BY resource_level_id, r.name';
+
+	const GET_RESERVATION_SERIES_GUESTS =
+				'SELECT rg.*, ri.*
+			FROM reservation_guests rg
+			INNER JOIN reservation_instances ri ON rg.reservation_instance_id = ri.reservation_instance_id
+			WHERE series_id = @seriesid';
 
 	const GET_RESERVATION_SERIES_INSTANCES =
 			'SELECT *
@@ -860,6 +875,9 @@ class Queries
 
 	const REMOVE_RESERVATION_INSTANCE =
 			'DELETE FROM reservation_instances WHERE reference_number = @referenceNumber';
+
+	const REMOVE_RESERVATION_GUEST =
+			'DELETE FROM reservation_guests WHERE reservation_instance_id = @reservationid AND email = @email';
 
 	const REMOVE_RESERVATION_REMINDER =
 			'DELETE FROM reservation_reminders WHERE series_id = @seriesid AND reminder_type = @reminder_type';

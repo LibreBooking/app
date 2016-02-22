@@ -1,21 +1,21 @@
 <?php
 /**
-Copyright 2011-2015 Nick Korbel
-
-This file is part of Booked Scheduler.
-
-Booked Scheduler is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-Booked Scheduler is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
+ * Copyright 2011-2015 Nick Korbel
+ *
+ * This file is part of Booked Scheduler.
+ *
+ * Booked Scheduler is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Booked Scheduler is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 require_once(ROOT_DIR . 'Pages/Reservation/ReservationPage.php');
@@ -132,6 +132,16 @@ interface IExistingReservationPage extends IReservationPage
 	 * @param int $autoReleaseMinutes
 	 */
 	public function SetAutoReleaseMinutes($autoReleaseMinutes);
+
+	/**
+	 * @param string[] $participatingGuests
+	 */
+	public function SetParticipatingGuests($participatingGuests);
+
+	/**
+	 * @param string[] $invitedGuests
+	 */
+	public function SetInvitedGuests($invitedGuests);
 }
 
 class ExistingReservationPage extends ReservationPage implements IExistingReservationPage
@@ -290,5 +300,21 @@ class ExistingReservationPage extends ReservationPage implements IExistingReserv
 	public function SetAutoReleaseMinutes($autoReleaseMinutes)
 	{
 		$this->Set('AutoReleaseMinutes', $autoReleaseMinutes);
+	}
+
+	/**
+	 * @param string[] $participatingGuests
+	 */
+	public function SetParticipatingGuests($participatingGuests)
+	{
+		$this->Set('ParticipatingGuests', $participatingGuests);
+	}
+
+	/**
+	 * @param string[] $invitedGuests
+	 */
+	public function SetInvitedGuests($invitedGuests)
+	{
+		$this->Set('InvitedGuests', $invitedGuests);
 	}
 }

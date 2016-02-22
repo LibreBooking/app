@@ -190,5 +190,3 @@ class ResourceControllerResult
 		return $this->errors;
 	}
 }
-
-?>

@@ -89,3 +89,19 @@ ALTER TABLE `reservation_instances` ADD COLUMN `checkin_date` datetime;
 ALTER TABLE `reservation_instances` ADD COLUMN `checkout_date` datetime;
 ALTER TABLE `reservation_instances` ADD COLUMN `previous_end_date` datetime;
 ALTER TABLE `reservation_series` ADD COLUMN `last_action_by` mediumint(8) unsigned;
+
+DROP TABLE IF EXISTS `reservation_guests`;
+CREATE TABLE `reservation_guests` (
+		`reservation_instance_id` INT UNSIGNED        NOT NULL,
+		`email`           VARCHAR(255)        NOT NULL,
+		`reservation_user_level`  TINYINT(2) UNSIGNED NOT NULL,
+		PRIMARY KEY (`reservation_instance_id`, `email`),
+		KEY `reservation_guests_reservation_instance_id` (`reservation_instance_id`),
+		KEY `reservation_guests_email_address` (`email`),
+		KEY `reservation_guests_reservation_user_level` (`reservation_user_level`),
+		FOREIGN KEY (`reservation_instance_id`) REFERENCES `reservation_instances` (`reservation_instance_id`)
+				ON DELETE CASCADE
+				ON UPDATE CASCADE
+)
+		ENGINE =InnoDB
+		DEFAULT CHARACTER SET utf8;

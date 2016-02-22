@@ -179,6 +179,7 @@ class ReservationSaveControllerTests extends TestBase
 		$description = 'reservation description';
 		$invitees = array(9, 8);
 		$participants = array(99, 88);
+		$guests = array('u1@guest.com', 'u2@guest.com');
 		$repeatInterval = 1;
 		$repeatMonthlyType = null;
 		$repeatType = RepeatType::Weekly;
@@ -198,6 +199,7 @@ class ReservationSaveControllerTests extends TestBase
 		$request->endDateTime = $endDate->ToIso();
 		$request->invitees = $invitees;
 		$request->participants = $participants;
+		$request->invitedGuests = $guests;
 		$recurrence = new RecurrenceRequestResponse($repeatType, $repeatInterval, $repeatMonthlyType, $repeatWeekdays, $repeatTerminationDate->ToIso());
 		$request->recurrenceRule = $recurrence;
 		$request->resourceId = $resourceId;
@@ -228,6 +230,7 @@ class ReservationSaveControllerTests extends TestBase
 		$this->assertEquals($endDateUserTz->Format('H:i'), $facade->GetEndTime());
 		$this->assertEquals($invitees, $facade->GetInvitees());
 		$this->assertEquals($participants, $facade->GetParticipants());
+		$this->assertEquals($guests, $facade->GetInvitedGuests());
 		$this->assertEquals($repeatInterval, $facade->GetRepeatInterval());
 		$this->assertEquals($repeatMonthlyType, $facade->GetRepeatMonthlyType());
 		$this->assertEquals($repeatType, $facade->GetRepeatType());

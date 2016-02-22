@@ -505,6 +505,21 @@ class ReservationSeries
 	}
 
 	/**
+	 * @param string[] $invitedGuests
+	 * @param string[] $participatingGuests
+	 * @return void
+	 */
+	public function ChangeGuests($invitedGuests, $participatingGuests)
+	{
+		/** @var Reservation $instance */
+		foreach ($this->Instances() as $instance)
+		{
+			$instance->ChangeInvitedGuests($invitedGuests);
+			$instance->ChangeParticipatingGuests($participatingGuests);
+		}
+	}
+
+	/**
 	 * @param Reservation $current
 	 * @return void
 	 */

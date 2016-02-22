@@ -1,21 +1,21 @@
 <?php
 /**
-Copyright 2011-2015 Nick Korbel
-
-This file is part of Booked Scheduler.
-
-Booked Scheduler is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-Booked Scheduler is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
+ * Copyright 2011-2015 Nick Korbel
+ *
+ * This file is part of Booked Scheduler.
+ *
+ * Booked Scheduler is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Booked Scheduler is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 require_once(ROOT_DIR . 'Presenters/Reservation/ReservationSavePresenter.php');
@@ -73,11 +73,11 @@ class ReservationSavePresenterTests extends TestBase
 		$this->resourceRepository = $this->getMock('IResourceRepository');
 
 		$this->presenter = new ReservationSavePresenter(
-			$this->page,
-			$this->persistenceService,
-			$this->handler,
-			$this->resourceRepository,
-			$this->fakeUser);
+				$this->page,
+				$this->persistenceService,
+				$this->handler,
+				$this->resourceRepository,
+				$this->fakeUser);
 	}
 
 	public function teardown()
@@ -101,6 +101,10 @@ class ReservationSavePresenterTests extends TestBase
 		$additionalResources = $this->page->GetResources();
 		$pageAccessories = $this->page->GetAccessories();
 		$pageAttributes = $this->page->GetAttributes();
+		$participatingGuests = array('p1@email.com');
+		$this->page->participatingGuests = $participatingGuests;
+		$invitedGuests = array('i1@email.com');
+		$this->page->invitedGuests = $invitedGuests;
 
 		$roFactory = new RepeatOptionsFactory();
 		$repeatOptions = $roFactory->CreateFromComposite($this->page, $timezone);
@@ -130,19 +134,19 @@ class ReservationSavePresenterTests extends TestBase
 		$endReminder = new ReservationReminder($this->page->GetEndReminderValue(), $this->page->GetEndReminderInterval());
 
 		$this->resourceRepository->expects($this->at(0))
-				->method('LoadById')
-				->with($this->equalTo($resourceId))
-				->will($this->returnValue($resource));
+								 ->method('LoadById')
+								 ->with($this->equalTo($resourceId))
+								 ->will($this->returnValue($resource));
 
 		$this->resourceRepository->expects($this->at(1))
-				->method('LoadById')
-				->with($this->equalTo($additionalResources[0]))
-				->will($this->returnValue($additionalResource1));
+								 ->method('LoadById')
+								 ->with($this->equalTo($additionalResources[0]))
+								 ->will($this->returnValue($additionalResource1));
 
 		$this->resourceRepository->expects($this->at(2))
-				->method('LoadById')
-				->with($this->equalTo($additionalResources[1]))
-				->will($this->returnValue($additionalResource2));
+								 ->method('LoadById')
+								 ->with($this->equalTo($additionalResources[1]))
+								 ->will($this->returnValue($additionalResource2));
 
 		$duration = DateRange::Create($startDate . ' ' . $startTime, $endDate . ' ' . $endTime, $timezone);
 
@@ -164,6 +168,8 @@ class ReservationSavePresenterTests extends TestBase
 		$this->assertEquals(array($expectedAttachment), $actualReservation->AddedAttachments());
 		$this->assertEquals($startReminder, $actualReservation->GetStartReminder());
 		$this->assertEquals($endReminder, $actualReservation->GetEndReminder());
+		$this->assertEquals($participatingGuests, $actualReservation->CurrentInstance()->AddedParticipatingGuests());
+		$this->assertEquals($invitedGuests, $actualReservation->CurrentInstance()->AddedInvitedGuests());
 	}
 
 	public function testHandlingReservationCreationDelegatesToHandler()
@@ -173,9 +179,9 @@ class ReservationSavePresenterTests extends TestBase
 		$series->WithCurrentInstance($instance);
 
 		$this->handler->expects($this->once())
-				->method('Handle')
-				->with($this->equalTo($series), $this->isInstanceOf('FakeReservationSavePage'))
-				->will($this->returnValue(true));
+					  ->method('Handle')
+					  ->with($this->equalTo($series), $this->isInstanceOf('FakeReservationSavePage'))
+					  ->will($this->returnValue(true));
 
 		$this->presenter->HandleReservation($series);
 

@@ -27,7 +27,6 @@ require_once(ROOT_DIR . 'lib/Application/Reservation/namespace.php');
 
 require_once(ROOT_DIR . 'WebServices/Requests/ReservationRequest.php');
 
-
 interface IReservationSaveController
 {
 	/**
@@ -97,7 +96,7 @@ class ReservationSaveController implements IReservationSaveController
 	{
 		$facade = new ReservationUpdateRequestResponseFacade($request, $session, $referenceNumber, $updateScope);
 
-		$validationErrors = $this->ValidateUpdateRequest($facade, $referenceNumber, $updateScope);
+		$validationErrors = $this->ValidateUpdateRequest($facade);
 
 		if (count($validationErrors) > 0)
 		{
@@ -261,8 +260,6 @@ class ReservationSaveController implements IReservationSaveController
 
 		return $errors;
 	}
-
-
 }
 
 class ReservationControllerResult
@@ -548,6 +545,24 @@ class ReservationRequestResponseFacade implements IReservationSavePage
 		if (!empty($this->request->invitees) && is_array($this->request->invitees))
 		{
 			return $this->getIntArray($this->request->invitees);
+		}
+		return array();
+	}
+
+	public function GetParticipatingGuests()
+	{
+		if (!empty($this->request->participatingGuests) && is_array($this->request->participatingGuests))
+		{
+			return $this->request->participatingGuests;
+		}
+		return array();
+	}
+
+	public function GetInvitedGuests()
+	{
+		if (!empty($this->request->invitedGuests) && is_array($this->request->invitedGuests))
+		{
+			return $this->request->invitedGuests;
 		}
 		return array();
 	}

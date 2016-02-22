@@ -237,6 +237,9 @@ class ReservationDetailsBinder implements IReservationComponentBinder
 		$this->page->SetParticipants($participants);
 		$this->page->SetInvitees($invitees);
 
+		$this->page->SetParticipatingGuests($this->reservationView->ParticipatingGuests);
+		$this->page->SetInvitedGuests($this->reservationView->InvitedGuests);
+
 		$this->page->SetAllowParticipantsToJoin($this->reservationView->AllowParticipation);
 
 		$this->page->SetAccessories($this->reservationView->Accessories);

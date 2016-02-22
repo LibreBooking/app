@@ -565,6 +565,8 @@ class en_us extends Language
 		$strings['CheckOutTime'] = 'Check Out Time';
 		$strings['OriginalEndDate'] = 'Original End';
 		$strings['SpecificDates'] = 'Show Specific Dates';
+		$strings['Users'] = 'Users';
+		$strings['Guest'] = 'Guest';
 		// End Strings
 
 		// Install

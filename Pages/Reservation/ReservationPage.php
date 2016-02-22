@@ -176,15 +176,10 @@ abstract class ReservationPage extends Page implements IReservationPage
 		$this->Set('ReservationAction', $this->GetReservationAction());
 		$this->Set('MaxUploadSize', UploadedFile::GetMaxSize());
 		$this->Set('MaxUploadCount', UploadedFile::GetMaxUploadCount());
-		$this->Set('UploadsEnabled', Configuration::Instance()->GetSectionKey(ConfigSection::UPLOADS,
-																			  ConfigKeys::UPLOAD_ENABLE_RESERVATION_ATTACHMENTS,
-																			  new BooleanConverter()));
-		$this->Set('AllowParticipation', !Configuration::Instance()->GetSectionKey(ConfigSection::RESERVATION,
-																				   ConfigKeys::RESERVATION_PREVENT_PARTICIPATION,
-																				   new BooleanConverter()));
-		$remindersEnabled = Configuration::Instance()->GetSectionKey(ConfigSection::RESERVATION,
-																	 ConfigKeys::RESERVATION_REMINDERS_ENABLED,
-																	 new BooleanConverter());
+		$this->Set('UploadsEnabled', Configuration::Instance()->GetSectionKey(ConfigSection::UPLOADS, ConfigKeys::UPLOAD_ENABLE_RESERVATION_ATTACHMENTS,  new BooleanConverter()));
+		$this->Set('AllowParticipation', !Configuration::Instance()->GetSectionKey(ConfigSection::RESERVATION, ConfigKeys::RESERVATION_PREVENT_PARTICIPATION,  new BooleanConverter()));
+		$this->Set('AllowGuestParticipation', Configuration::Instance()->GetSectionKey(ConfigSection::RESERVATION, ConfigKeys::RESERVATION_ALLOW_GUESTS,  new BooleanConverter()));
+		$remindersEnabled = Configuration::Instance()->GetSectionKey(ConfigSection::RESERVATION,  ConfigKeys::RESERVATION_REMINDERS_ENABLED,  new BooleanConverter());
 		$emailEnabled = Configuration::Instance()->GetKey(ConfigKeys::ENABLE_EMAIL,
 														  new BooleanConverter());
 		$this->Set('RemindersEnabled', $remindersEnabled && $emailEnabled);

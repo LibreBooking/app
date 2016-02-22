@@ -1,21 +1,21 @@
 <?php
 /**
-Copyright 2012-2015 Nick Korbel
-
-This file is part of Booked Scheduler.
-
-Booked Scheduler is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-Booked Scheduler is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
+ * Copyright 2012-2015 Nick Korbel
+ *
+ * This file is part of Booked Scheduler.
+ *
+ * Booked Scheduler is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Booked Scheduler is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 require_once(ROOT_DIR . 'WebServices/Requests/ReservationAccessoryRequest.php');
@@ -44,6 +44,14 @@ class ReservationRequest
 	 * @var array|int[]
 	 */
 	public $participants = array();
+	/**
+	 * @var array|string[]
+	 */
+	public $participatingGuests = array();
+	/**
+	 * @var array|string[]
+	 */
+	public $invitedGuests = array();
 	/**
 	 * @var RecurrenceRequestResponse
 	 */
@@ -85,6 +93,8 @@ class ReservationRequest
 		$request->endDateTime = $date;
 		$request->invitees = array(1, 2, 3);
 		$request->participants = array(1, 2);
+		$request->participatingGuests = array('participating.guest@email.com');
+		$request->invitedGuests = array('invited.guest@email.com');
 		$request->recurrenceRule = RecurrenceRequestResponse::Example();
 		$request->resourceId = 1;
 		$request->resources = array(2, 3);
@@ -93,7 +103,7 @@ class ReservationRequest
 		$request->userId = 1;
 		$request->startReminder = ReminderRequestResponse::Example();
 		$request->allowParticipation = true;
-		$request->retryParameters = array( ReservationRetryParameterRequestResponse::Example());
+		$request->retryParameters = array(ReservationRetryParameterRequestResponse::Example());
 
 		return $request;
 	}

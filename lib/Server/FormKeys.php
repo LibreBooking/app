@@ -97,6 +97,8 @@ class FormKeys
 	const GROUP_ID = 'group_id';
 	const GROUP_NAME = 'group_name';
 	const GROUP_ADMIN = 'group_admin';
+	const GUEST_INVITATION_LIST = 'guestInvitationList';
+	const GUEST_PARTICIPATION_LIST = 'guestParticipationList';
 
 	const INSTALL_PASSWORD = 'install_password';
 	const INSTALL_DB_USER = 'install_db_user';

@@ -18,6 +18,7 @@
  * You should have received a copy of the GNU General Public License
  * along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 class ReservationViewRepositoryTests extends TestBase
 {
 	/**
@@ -100,6 +101,7 @@ class ReservationViewRepositoryTests extends TestBase
 		$getAttributes = new GetAttributeValuesCommand($seriesId, CustomAttributeCategory::RESERVATION);
 		$getAttachments = new GetReservationAttachmentsCommand($seriesId);
 		$getReminders = new GetReservationReminders($seriesId);
+		$getGuests = new GetReservationGuestsCommand($reservationId);
 
 		$reservationRow = array(
 				ColumnNames::RESERVATION_INSTANCE_ID => $reservationId,
@@ -138,6 +140,11 @@ class ReservationViewRepositoryTests extends TestBase
 				$this->GetParticipantRow($reservationId, $userId1, $fname1, $lname1, $email1, $ownerLevel),
 				$this->GetParticipantRow($reservationId, $userId2, $fname2, $lname2, $email2, $participantLevel),
 				$this->GetParticipantRow($reservationId, $userId3, $fname3, $lname3, $email3, $inviteeLevel),
+		);
+
+		$guestRows = array(
+				array(ColumnNames::RESERVATION_USER_LEVEL => ReservationUserLevel::INVITEE, ColumnNames::EMAIL => 'i1@email.com'),
+				array(ColumnNames::RESERVATION_USER_LEVEL => ReservationUserLevel::PARTICIPANT,  ColumnNames::EMAIL => 'p1@email.com')
 		);
 
 		$accessory1 = 123;
@@ -187,12 +194,13 @@ class ReservationViewRepositoryTests extends TestBase
 		$this->db->SetRow(4, $attributeRows->Rows());
 		$this->db->SetRow(5, $attachmentRows->Rows());
 		$this->db->SetRow(6, $reminderRows->Rows());
+		$this->db->SetRow(7, $guestRows);
 
 		$reservationView = $this->repository->GetReservationForEditing($referenceNumber);
 
 		$commands = $this->db->_Commands;
 
-		$this->assertEquals(7, count($commands));
+		$this->assertEquals(8, count($commands));
 		$this->assertEquals($getReservationForEditingCommand, $commands[0]);
 		$this->assertEquals($getReservationResources, $commands[1]);
 		$this->assertEquals($getParticipants, $commands[2]);
@@ -200,6 +208,7 @@ class ReservationViewRepositoryTests extends TestBase
 		$this->assertEquals($getAttributes, $commands[4]);
 		$this->assertEquals($getAttachments, $commands[5]);
 		$this->assertEquals($getReminders, $commands[6]);
+		$this->assertEquals($getGuests, $commands[7]);
 
 		$expectedView = new ReservationView();
 		$expectedView->AdditionalResourceIds = array($resourceId1, $resourceId2);
@@ -255,6 +264,9 @@ class ReservationViewRepositoryTests extends TestBase
 		$expectedView->EndReminder = new ReservationReminderView($endReminderMinutes);
 
 		$expectedView->AllowParticipation = true;
+
+		$expectedView->ParticipatingGuests = array('p1@email.com');
+		$expectedView->InvitedGuests = array('i1@email.com');
 
 		$this->assertEquals($expectedView, $reservationView);
 	}
@@ -479,7 +491,7 @@ class ReservationViewRepositoryTests extends TestBase
 				ColumnNames::USER_PREFERENCES => $preferences,
 				ColumnNames::RESOURCE_BUFFER_TIME => $bufferTime,
 				ColumnNames::CHECKIN_DATE => $checkinDate == null ? null : $checkinDate->ToDatabase(),
-				ColumnNames::CHECKOUT_DATE =>  $checkoutDate == null ? null : $checkoutDate->ToDatabase(),
+				ColumnNames::CHECKOUT_DATE => $checkoutDate == null ? null : $checkoutDate->ToDatabase(),
 				ColumnNames::PREVIOUS_END_DATE => $previousEndDate == null ? null : $previousEndDate->ToDatabase(),
 		);
 	}

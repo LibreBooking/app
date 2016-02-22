@@ -1,22 +1,22 @@
 <?php
 /**
-Copyright 2011-2015 Nick Korbel
-
-This file is part of Booked Scheduler.
-
-Booked Scheduler is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-Booked Scheduler is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ * Copyright 2011-2015 Nick Korbel
+ *
+ * This file is part of Booked Scheduler.
+ *
+ * Booked Scheduler is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Booked Scheduler is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 require_once(ROOT_DIR . 'Presenters/Reservation/ReservationUpdatePresenter.php');
 require_once(ROOT_DIR . 'Pages/Ajax/ReservationUpdatePage.php');
@@ -46,7 +46,6 @@ class ReservationUpdatePresenterTests extends TestBase
 	 */
 	private $handler;
 
-
 	/**
 	 * @var IResourceRepository
 	 */
@@ -71,11 +70,11 @@ class ReservationUpdatePresenterTests extends TestBase
 		$this->page = new FakeReservationUpdatePage();
 
 		$this->presenter = new ReservationUpdatePresenter(
-								$this->page,
-								$this->persistenceService,
-								$this->handler,
-								$this->resourceRepository,
-								$this->fakeUser);
+				$this->page,
+				$this->persistenceService,
+				$this->handler,
+				$this->resourceRepository,
+				$this->fakeUser);
 	}
 
 	public function teardown()
@@ -102,44 +101,51 @@ class ReservationUpdatePresenterTests extends TestBase
 		$expectedSeries->WithPrimaryResource($resource);
 		$expectedSeries->WithResource(new FakeBookableResource($removedResourceId));
 		$expectedSeries->WithAttribute(new AttributeValue(100, 'to be removed'));
+		$expectedSeries->WithAttachment(1, '1');
+		$expectedSeries->WithAttachment(2, '1');
+		$expectedSeries->WithAttachment(3, '1');
 
 		$referenceNumber = $this->page->existingReferenceNumber;
 
 		$timezone = $this->user->Timezone;
 
 		$this->persistenceService->expects($this->once())
-			->method('LoadByReferenceNumber')
-			->with($this->equalTo($referenceNumber))
-			->will($this->returnValue($expectedSeries));
+								 ->method('LoadByReferenceNumber')
+								 ->with($this->equalTo($referenceNumber))
+								 ->will($this->returnValue($expectedSeries));
 
 		$this->resourceRepository->expects($this->at(0))
-			->method('LoadById')
-			->with($this->equalTo($this->page->resourceId))
-			->will($this->returnValue($resource));
+								 ->method('LoadById')
+								 ->with($this->equalTo($this->page->resourceId))
+								 ->will($this->returnValue($resource));
 
 		$this->resourceRepository->expects($this->at(1))
-			->method('LoadById')
-			->with($this->equalTo($additionalId1))
-			->will($this->returnValue($additional1));
+								 ->method('LoadById')
+								 ->with($this->equalTo($additionalId1))
+								 ->will($this->returnValue($additional1));
 
 		$this->resourceRepository->expects($this->at(2))
-			->method('LoadById')
-			->with($this->equalTo($additionalId2))
-			->will($this->returnValue($additional2));
+								 ->method('LoadById')
+								 ->with($this->equalTo($additionalId2))
+								 ->will($this->returnValue($additional2));
 
 		$this->page->repeatType = RepeatType::Daily;
 		$roFactory = new RepeatOptionsFactory();
 		$repeatOptions = $roFactory->CreateFromComposite($this->page, $this->user->Timezone);
 
 		$expectedDuration = DateRange::Create(
-			$this->page->GetStartDate() . " " . $this->page->GetStartTime(),
-			$this->page->GetEndDate() . " " . $this->page->GetEndTime(),
-			$timezone);
+				$this->page->GetStartDate() . " " . $this->page->GetStartTime(),
+				$this->page->GetEndDate() . " " . $this->page->GetEndTime(),
+				$timezone);
 
 		$attachment = new FakeUploadedFile();
 		$this->page->attachment = $attachment;
 
 		$this->page->hasEndReminder = false;
+		$participatingGuests = array('p1@email.com');
+		$this->page->participatingGuests = $participatingGuests;
+		$invitedGuests = array('i1@email.com');
+		$this->page->invitedGuests = $invitedGuests;
 
 		$existingSeries = $this->presenter->BuildReservation();
 
@@ -156,15 +162,20 @@ class ReservationUpdatePresenterTests extends TestBase
 		$this->assertEquals(array($additional1, $additional2), $existingSeries->AdditionalResources());
 		$this->assertEquals($this->page->participants, $existingSeries->CurrentInstance()->AddedParticipants());
 		$this->assertEquals($this->page->invitees, $existingSeries->CurrentInstance()->AddedInvitees());
-		$this->assertTrue($expectedDuration->Equals($existingSeries->CurrentInstance()->Duration()), "Expected: $expectedDuration Actual: {$existingSeries->CurrentInstance()->Duration()}");
+		$this->assertTrue($expectedDuration->Equals($existingSeries->CurrentInstance()->Duration()),
+						  "Expected: $expectedDuration Actual: {$existingSeries->CurrentInstance()->Duration()}");
 		$this->assertEquals($this->user, $expectedSeries->BookedBy());
 		$this->assertEquals($expectedAccessories, $existingSeries->Accessories());
 		$this->assertEquals($expectedAttributes, $existingSeries->AttributeValues());
-		$expectedAttachment = ReservationAttachment::Create($attachment->OriginalName(), $attachment->MimeType(), $attachment->Size(), $attachment->Contents(), $attachment->Extension(), $seriesId);
+		$expectedAttachment = ReservationAttachment::Create($attachment->OriginalName(), $attachment->MimeType(), $attachment->Size(), $attachment->Contents(),
+															$attachment->Extension(), $seriesId);
 		$this->assertEquals(array($expectedAttachment), $expectedSeries->AddedAttachments());
 		$this->assertEquals($this->page->removedFileIds, $existingSeries->RemovedAttachmentIds());
-		$this->assertEquals(new ReservationReminder($this->page->GetStartReminderValue(), $this->page->GetStartReminderInterval()), $existingSeries->GetStartReminder());
+		$this->assertEquals(new ReservationReminder($this->page->GetStartReminderValue(), $this->page->GetStartReminderInterval()),
+							$existingSeries->GetStartReminder());
 		$this->assertEquals(ReservationReminder::None(), $existingSeries->GetEndReminder());
+		$this->assertEquals($participatingGuests, $existingSeries->CurrentInstance()->AddedParticipatingGuests());
+		$this->assertEquals($invitedGuests, $existingSeries->CurrentInstance()->AddedInvitedGuests());
 	}
 
 	public function testUsesFirstAdditionalResourceIfPrimaryIsRemoved()
@@ -181,14 +192,14 @@ class ReservationUpdatePresenterTests extends TestBase
 		$resource = new FakeBookableResource($additionalId);
 
 		$this->persistenceService->expects($this->once())
-			->method('LoadByReferenceNumber')
-			->with($this->equalTo($referenceNumber))
-			->will($this->returnValue($expectedSeries));
+								 ->method('LoadByReferenceNumber')
+								 ->with($this->equalTo($referenceNumber))
+								 ->will($this->returnValue($expectedSeries));
 
 		$this->resourceRepository->expects($this->once())
-			->method('LoadById')
-			->with($this->equalTo($additionalId))
-			->will($this->returnValue($resource));
+								 ->method('LoadById')
+								 ->with($this->equalTo($additionalId))
+								 ->will($this->returnValue($resource));
 
 		$existingSeries = $this->presenter->BuildReservation();
 
@@ -204,9 +215,9 @@ class ReservationUpdatePresenterTests extends TestBase
 		$series->WithCurrentInstance($instance);
 
 		$this->handler->expects($this->once())
-				->method('Handle')
-				->with($this->equalTo($series), $this->isInstanceOf('FakeReservationUpdatePage'))
-				->will($this->returnValue(true));
+					  ->method('Handle')
+					  ->with($this->equalTo($series), $this->isInstanceOf('FakeReservationUpdatePage'))
+					  ->will($this->returnValue(true));
 
 		$this->presenter->HandleReservation($series);
 
@@ -219,11 +230,11 @@ class FakeReservationUpdatePage extends FakeReservationSavePage implements IRese
 {
 	public $existingReferenceNumber = 100;
 	public $seriesUpdateScope = SeriesUpdateScope::FullSeries;
-	public $removedFileIds = array(1,2,3);
+	public $removedFileIds = array(1, 2, 3);
 
 	public function __construct()
 	{
-	    parent::__construct();
+		parent::__construct();
 	}
 
 	public function GetReferenceNumber()
