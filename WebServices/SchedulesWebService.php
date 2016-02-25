@@ -262,7 +262,7 @@ class ScheduleWebServiceView implements ISchedulePage
 
 	public function SetPreviousNextDates($previousDate, $nextDate)
 	{
-		// TODO: Implement SetPreviousNextDates() method.
+		// no op
 	}
 
 	public function GetSelectedDate()
@@ -295,7 +295,7 @@ class ScheduleWebServiceView implements ISchedulePage
 	 */
 	public function GetLayoutDate()
 	{
-		// TODO: Implement GetLayoutDate() method.
+		// no op
 	}
 
 	public function GetScheduleStyle($scheduleId)
@@ -306,11 +306,6 @@ class ScheduleWebServiceView implements ISchedulePage
 	public function SetScheduleStyle($direction)
 	{
 		// no op
-	}
-
-	public function GetGroupId()
-	{
-		return null;
 	}
 
 	public function GetResourceId()
@@ -473,5 +468,29 @@ class ScheduleWebServiceView implements ISchedulePage
 	public function EnforceCSRFCheck()
 	{
 		// no-op
+	}
+
+	/**
+	 * @return int[]
+	 */
+	public function GetResourceIds()
+	{
+		return array();
+	}
+
+	/**
+	 * @return Date[]
+	 */
+	public function GetSelectedDates()
+	{
+		// no op
+	}
+
+	/**
+	 * @param Date[] $specificDates
+	 */
+	public function SetSpecificDates($specificDates)
+	{
+		// no op
 	}
 }

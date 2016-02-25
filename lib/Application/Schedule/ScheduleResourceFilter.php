@@ -29,8 +29,7 @@ interface IScheduleResourceFilter
 class ScheduleResourceFilter implements IScheduleResourceFilter
 {
 	public $ScheduleId;
-	public $ResourceId;
-	public $GroupId;
+	public $ResourceIds;
 	public $ResourceTypeId;
 	public $MinCapacity;
 	public $ResourceAttributes;
@@ -42,18 +41,21 @@ class ScheduleResourceFilter implements IScheduleResourceFilter
 	 * @param int|null $minCapacity
 	 * @param AttributeValue[]|null $resourceAttributes
 	 * @param AttributeValue[]|null $resourceTypeAttributes
+	 * @param int[]|null $resourceIds
 	 */
 	public function __construct($scheduleId = null,
 								$resourceTypeId = null,
 								$minCapacity = null,
 								$resourceAttributes = null,
-								$resourceTypeAttributes = null)
+								$resourceTypeAttributes = null,
+								$resourceIds = null)
 	{
 		$this->ScheduleId = $scheduleId;
 		$this->ResourceTypeId = $resourceTypeId;
 		$this->MinCapacity = empty($minCapacity) ? null : $minCapacity;
 		$this->ResourceAttributes = empty($resourceAttributes) ? array() : $resourceAttributes;
 		$this->ResourceTypeAttributes = empty($resourceTypeAttributes) ? array() : $resourceTypeAttributes;
+		$this->ResourceIds = empty($resourceIds) ? array() : $resourceIds;
 	}
 
 	public static function FromCookie($val)
@@ -62,16 +64,21 @@ class ScheduleResourceFilter implements IScheduleResourceFilter
 		{
 			return new ScheduleResourceFilter();
 		}
-		return new ScheduleResourceFilter($val->ScheduleId, $val->ResourceTypeId, $val->MinCapacity, $val->ResourceAttributes, $val->ResourceTypeAttributes);
+
+		return new ScheduleResourceFilter($val->ScheduleId,
+										  $val->ResourceTypeId,
+										  $val->MinCapacity,
+										  $val->ResourceAttributes,
+										  $val->ResourceTypeAttributes,
+										  isset($val->ResourceIds) ? $val->ResourceIds : null);
 	}
 
 	public function HasFilter()
 	{
-		return !empty($this->ResourceId) || !empty($this->GroupId) || !empty($this->ResourceTypeId) || !empty($this->MinCapacity) || !empty($this->ResourceAttributes) || !empty($this->ResourceTypeAttributes);
+		return !empty($this->ResourceIds) || !empty($this->ResourceTypeId) || !empty($this->MinCapacity) || !empty($this->ResourceAttributes) || !empty($this->ResourceTypeAttributes);
 	}
 
-	public function FilterResources($resources, IResourceRepository $resourceRepository,
-									IAttributeService $attributeService)
+	public function FilterResources($resources, IResourceRepository $resourceRepository, IAttributeService $attributeService)
 	{
 		$resourceIds = array();
 
@@ -85,13 +92,6 @@ class ScheduleResourceFilter implements IScheduleResourceFilter
 			return $resourceIds;
 		}
 
-		$groupResourceIds = array();
-		if (!empty($this->GroupId) && empty($this->ResourceId))
-		{
-			$groups = $resourceRepository->GetResourceGroups($this->ScheduleId);
-			$groupResourceIds = $groups->GetResourceIds($this->GroupId);
-		}
-
 		$resourceAttributeValues = null;
 		if (!empty($this->ResourceAttributes))
 		{
@@ -101,8 +101,7 @@ class ScheduleResourceFilter implements IScheduleResourceFilter
 		$resourceTypeAttributeValues = null;
 		if (!empty($this->ResourceTypeAttributes))
 		{
-			$resourceTypeAttributeValues = $attributeService->GetAttributes(CustomAttributeCategory::RESOURCE_TYPE,
-																			null);
+			$resourceTypeAttributeValues = $attributeService->GetAttributes(CustomAttributeCategory::RESOURCE_TYPE, null);
 		}
 
 		$resourceIds = array();
@@ -111,13 +110,7 @@ class ScheduleResourceFilter implements IScheduleResourceFilter
 		{
 			$resourceIds[] = $resource->GetId();
 
-			if (!empty($this->ResourceId) && $resource->GetId() != $this->ResourceId)
-			{
-				array_pop($resourceIds);
-				continue;
-			}
-
-			if (!empty($this->GroupId) && !in_array($resource->GetId(), $groupResourceIds))
+			if (!empty($this->ResourceIds) && !in_array($resource->GetId(), $this->ResourceIds))
 			{
 				array_pop($resourceIds);
 				continue;
@@ -187,7 +180,6 @@ class ScheduleResourceFilter implements IScheduleResourceFilter
 				array_pop($resourceIds);
 				continue;
 			}
-
 		}
 
 		return $resourceIds;

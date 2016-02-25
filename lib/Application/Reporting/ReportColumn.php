@@ -214,14 +214,17 @@ class ReportDateColumn extends ReportColumn
 
 class ReportTimeColumn extends ReportColumn
 {
-	public function __construct($titleKey, ChartColumnDefinition $chartColumnDefinition)
+	private $includeTotalHours;
+
+	public function __construct($titleKey, ChartColumnDefinition $chartColumnDefinition, $includeTotalHours = true)
 	{
 		parent::__construct($titleKey, $chartColumnDefinition);
+		$this->includeTotalHours = $includeTotalHours;
 	}
 
 	public function GetData($data)
 	{
 		$interval = new TimeInterval($data);
-		return $interval->ToString(true);
+		return $interval->ToString($this->includeTotalHours);
 	}
 }

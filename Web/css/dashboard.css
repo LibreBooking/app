@@ -48,14 +48,14 @@
 .dashboardHeader {
   letter-spacing: 1px;
   padding: 5px 20px;
-  color: #b2c5ab;
+  color: #fff;
   background-color: #58545d;
 }
 .dashboardHeader .badge {
   background-color: #736a81;
 }
 .dashboardHeader a {
-  color: #353432;
+  color: #fff;
 }
 .dashboard .noresults {
   text-align: center;

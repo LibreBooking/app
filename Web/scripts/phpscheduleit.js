@@ -55,8 +55,9 @@ function readCookie(name) {
 	return null;
 }
 
-function eraseCookie(name) {
-	document.cookie = name + '=;expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+function eraseCookie(name, path)
+{
+	createCookie(name, '', -30, path);
 }
 
 function getQueryStringValue(name) {

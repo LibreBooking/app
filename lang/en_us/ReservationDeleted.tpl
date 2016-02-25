@@ -37,7 +37,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 	{/if}
 
 	Title: {$Title}<br/>
-	Description: {$Description|nl2br}<br/>
+	Description: {$Description|nl2br}
 
 	{if count($RepeatDates) gt 0}
 		<br/>

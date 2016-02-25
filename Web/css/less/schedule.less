@@ -282,10 +282,25 @@ ul.jqtree-tree .jqtree-toggler {
   text-align: center;
 }
 
-#reservations-left hr {
-  border: 0;
-  height: 1px;
-  background-color: @mid-gray;
+#reservations-left {
+  hr {
+    border: 0;
+    height: 1px;
+    background-color: @mid-gray;
+  }
+  .btn {
+    width: 100%;
+  }
+  .form-group {
+    margin-bottom: 3px;
+  }
+  .btn-clear {
+    margin-top: 3px;
+  }
+  ul.jqtree-tree li.jqtree-selected > .jqtree-element, ul.jqtree-tree li.jqtree-selected > .jqtree-element:hover {
+    background-color: transparent;
+    background: none;
+  }
 }
 
 #calendar_toggle {
@@ -303,18 +318,6 @@ ul.jqtree-tree .jqtree-toggler {
 
 #page-schedule a {
   text-decoration: none;
-}
-
-#reservations-left .btn {
-  width: 100%;
-}
-
-#reservations-left .form-group {
-  margin-bottom: 3px;
-}
-
-#reservations-left .btn-clear {
-  margin-top: 3px;
 }
 
 .reservations.mobile .reserved {
@@ -335,4 +338,18 @@ a.toggle-sidebar {
   display: block;
 }
 
-.schedule-legend {margin-bottom: 10px;}
+.schedule-legend {
+  margin-bottom: 10px;
+}
+
+#individualDatesGo {
+  display:none;
+}
+
+#individualDatesList {
+  display:none;
+  div {
+    display: inline-block;
+    padding-right: 5px;
+  }
+}

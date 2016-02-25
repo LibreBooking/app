@@ -1,21 +1,21 @@
 <?php
 /**
-Copyright 2011-2015 Nick Korbel
-
-This file is part of Booked Scheduler.
-
-Booked Scheduler is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-Booked Scheduler is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
+ * Copyright 2011-2015 Nick Korbel
+ *
+ * This file is part of Booked Scheduler.
+ *
+ * Booked Scheduler is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Booked Scheduler is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 require_once(ROOT_DIR . 'Pages/SecurePage.php');
@@ -84,6 +84,11 @@ interface ISchedulePage extends IActionPage
 	public function GetSelectedDate();
 
 	/**
+	 * @return Date[]
+	 */
+	public function GetSelectedDates();
+
+	/**
 	 * @abstract
 	 */
 	public function ShowInaccessibleResources();
@@ -124,12 +129,12 @@ interface ISchedulePage extends IActionPage
 	/**
 	 * @return int
 	 */
-	public function GetGroupId();
+	public function GetResourceId();
 
 	/**
-	 * @return int
+	 * @return int[]
 	 */
-	public function GetResourceId();
+	public function GetResourceIds();
 
 	/**
 	 * @param ResourceGroupTree $resourceGroupTree
@@ -197,6 +202,12 @@ interface ISchedulePage extends IActionPage
 	 * @return string
 	 */
 	public function GetDisplayTimezone(UserSession $user, Schedule $schedule);
+
+	/**
+	 * @param Date[] $specificDates
+	 */
+	public function SetSpecificDates($specificDates);
+
 }
 
 class ScheduleStyle
@@ -218,9 +229,9 @@ class SchedulePage extends ActionPage implements ISchedulePage
 	protected $_presenter;
 
 	private $_styles = array(
-		ScheduleStyle::Wide => 'Schedule/schedule-days-horizontal.tpl',
-		ScheduleStyle::Tall => 'Schedule/schedule-flipped.tpl',
-		ScheduleStyle::CondensedWeek => 'Schedule/schedule-week-condensed.tpl',
+			ScheduleStyle::Wide => 'Schedule/schedule-days-horizontal.tpl',
+			ScheduleStyle::Tall => 'Schedule/schedule-flipped.tpl',
+			ScheduleStyle::CondensedWeek => 'Schedule/schedule-week-condensed.tpl',
 	);
 
 	/**
@@ -272,13 +283,16 @@ class SchedulePage extends ActionPage implements ISchedulePage
 		{
 			$this->Display('Schedule/schedule-mobile.tpl');
 		}
-		else if (array_key_exists($this->ScheduleStyle, $this->_styles))
-		{
-			$this->Display($this->_styles[$this->ScheduleStyle]);
-		}
 		else
 		{
-			$this->Display('Schedule/schedule.tpl');
+			if (array_key_exists($this->ScheduleStyle, $this->_styles))
+			{
+				$this->Display($this->_styles[$this->ScheduleStyle]);
+			}
+			else
+			{
+				$this->Display('Schedule/schedule.tpl');
+			}
 		}
 
 		$endDisplay = microtime(true);
@@ -292,7 +306,7 @@ class SchedulePage extends ActionPage implements ISchedulePage
 	public function ProcessDataRequest($dataRequest)
 	{
 		$this->_presenter->GetLayout(ServiceLocator::GetServer()
-									 ->GetUserSession());
+												   ->GetUserSession());
 	}
 
 	public function GetScheduleId()
@@ -337,6 +351,15 @@ class SchedulePage extends ActionPage implements ISchedulePage
 		$this->Set('BoundDates', $dateRange->Dates());
 	}
 
+	public function SetSpecificDates($specificDates)
+	{
+		if (!empty($specificDates))
+		{
+			$this->Set('BoundDates', $specificDates);
+		}
+		$this->Set('SpecificDates', $specificDates);
+	}
+
 	public function SetPreviousNextDates($previousDate, $nextDate)
 	{
 		$this->Set('PreviousDate', $previousDate);
@@ -345,16 +368,36 @@ class SchedulePage extends ActionPage implements ISchedulePage
 
 	public function GetSelectedDate()
 	{
-		// TODO: Clean date
 		return $this->server->GetQuerystring(QueryStringKeys::START_DATE);
+	}
+
+	public function GetSelectedDates()
+	{
+		$dates = $this->server->GetQuerystring(QueryStringKeys::START_DATES);
+		if (empty($dates))
+		{
+			return array();
+		}
+		$parseDates = array();
+		foreach (explode(',', $dates) as $date)
+		{
+			$parseDates[] = Date::Parse($date, ServiceLocator::GetServer()->GetUserSession()->Timezone);
+		}
+
+		usort($parseDates, function ($d1, $d2)
+		{
+			return $d1->Compare($d2);
+		});
+
+		return $parseDates;
 	}
 
 	public function ShowInaccessibleResources()
 	{
 		return Configuration::Instance()
-			   ->GetSectionKey(ConfigSection::SCHEDULE,
-							   ConfigKeys::SCHEDULE_SHOW_INACCESSIBLE_RESOURCES,
-							   new BooleanConverter());
+							->GetSectionKey(ConfigSection::SCHEDULE,
+											ConfigKeys::SCHEDULE_SHOW_INACCESSIBLE_RESOURCES,
+											new BooleanConverter());
 	}
 
 	public function ShowFullWeekToggle($showShowFullWeekToggle)
@@ -405,17 +448,28 @@ class SchedulePage extends ActionPage implements ISchedulePage
 	/**
 	 * @return int
 	 */
-	public function GetGroupId()
-	{
-		return $this->GetQuerystring(QueryStringKeys::GROUP_ID);
-	}
-
-	/**
-	 * @return int
-	 */
 	public function GetResourceId()
 	{
 		return $this->GetQuerystring(QueryStringKeys::RESOURCE_ID);
+	}
+
+	/**
+	 * @return int[]
+	 */
+	public function GetResourceIds()
+	{
+		$resourceIds = $this->GetForm(FormKeys::RESOURCE_ID);
+		if (empty($resourceIds))
+		{
+			return array();
+		}
+
+		if (!is_array($resourceIds))
+		{
+			return array($resourceIds);
+		}
+
+		return $resourceIds;
 	}
 
 	public function SetResourceGroupTree(ResourceGroupTree $resourceGroupTree)
@@ -471,6 +525,7 @@ class SchedulePage extends ActionPage implements ISchedulePage
 		$this->Set('ResourceIdFilter', $this->GetResourceId());
 		$this->Set('ResourceTypeIdFilter', $resourceFilter->ResourceTypeId);
 		$this->Set('MaxParticipantsFilter', $resourceFilter->MinCapacity);
+		$this->Set('ResourceIds', $resourceFilter->ResourceIds);
 		$this->_isFiltered = $resourceFilter->HasFilter();
 	}
 
@@ -541,20 +596,20 @@ class DisplaySlotFactory
 	private function UserHasAdminRights()
 	{
 		return ServiceLocator::GetServer()
-			   ->GetUserSession()->IsAdmin;
+							 ->GetUserSession()->IsAdmin;
 	}
 
 	private function IsMyReservation(IReservationSlot $slot)
 	{
 		$mySession = ServiceLocator::GetServer()
-					 ->GetUserSession();
+								   ->GetUserSession();
 		return $slot->IsOwnedBy($mySession);
 	}
 
 	private function AmIParticipating(IReservationSlot $slot)
 	{
 		$mySession = ServiceLocator::GetServer()
-					 ->GetUserSession();
+								   ->GetUserSession();
 		return $slot->IsParticipating($mySession);
 	}
 }

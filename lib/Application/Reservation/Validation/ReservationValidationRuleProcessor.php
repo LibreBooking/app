@@ -47,4 +47,9 @@ class ReservationValidationRuleProcessor implements IReservationValidationServic
 	{
 		$this->_validationRules[] = $validationRule;
 	}
+
+	public function PushRule($validationRule)
+	{
+		array_unshift($this->_validationRules, $validationRule);
+	}
 }

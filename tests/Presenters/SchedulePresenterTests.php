@@ -824,6 +824,418 @@ class SchedulePresenterTests extends TestBase
 
 		$presenter->GetLayout($user);
 	}
+
+	public function testGetsResourceFilterWhenSubmitted()
+	{
+		$scheduleId = 1;
+		$page = new FakeSchedulePage();
+		$page->_FilterSubmitted = true;
+		$page->_ResourceTypeId = 1;
+		$page->_MaxParticipants = 10;
+		$page->_ResourceAttributes = array(new AttributeFormElement(2, 2));
+		$page->_ResourceTypeAttributes = array(new AttributeFormElement(1, 1));
+		$page->_ResourceIds = array(1, 2, 3);
+		$builder = new SchedulePageBuilder();
+
+		$filter = $builder->GetResourceFilter($scheduleId, $page);
+
+		$this->assertEquals($page->_ResourceIds, $filter->ResourceIds);
+		$this->assertEquals(array(new AttributeValue(2, 2)), $filter->ResourceAttributes);
+		$this->assertEquals(array(new AttributeValue(1, 1)), $filter->ResourceTypeAttributes);
+	}
+
+	public function testGetsResourceFilterFromCookie()
+	{
+		$scheduleId = 1;
+		$page = new FakeSchedulePage();
+
+		$filter = new ScheduleResourceFilter(1, 2, 3, array(new AttributeValue(1, 1)), array(new AttributeValue(2, 2)), array(1, 2, 3));
+		$this->fakeServer->SetCookie(new Cookie('resource_filter' . $scheduleId, json_encode($filter)));
+		$page->_FilterSubmitted = false;
+		$builder = new SchedulePageBuilder();
+
+		$builtFilter = $builder->GetResourceFilter($scheduleId, $page);
+
+		$this->assertEquals($filter->ScheduleId, $builtFilter->ScheduleId);
+		$this->assertEquals($filter->ResourceIds, $builtFilter->ResourceIds);
+	}
+
+	public function testGetsRangeForSpecificDates()
+	{
+		$d1 = Date::Parse('2015-10-31', $this->fakeUser->Timezone);
+		$d2 = Date::Parse('2015-12-25', $this->fakeUser->Timezone);
+
+		$page = new FakeSchedulePage();
+		$page->_SelectedDates = array($d1, $d2);
+
+		$builder = new SchedulePageBuilder();
+
+		$dates = $builder->GetScheduleDates($this->fakeUser, new FakeSchedule(), $page);
+
+		$this->assertEquals(new DateRange($d1, $d2->AddDays(1)), $dates);
+	}
 }
 
-?>
+
+class FakeSchedulePage implements ISchedulePage
+{
+	public $_FilterSubmitted = false;
+	public $_ResourceTypeId;
+	public $_MaxParticipants;
+	public $_ResourceAttributes = array();
+	public $_ResourceTypeAttributes = array();
+	public $_ResourceIds = array();
+	public $_SelectedDates = array();
+
+	public function TakingAction()
+	{
+		// TODO: Implement TakingAction() method.
+	}
+
+	public function GetAction()
+	{
+		// TODO: Implement GetAction() method.
+	}
+
+	public function RequestingData()
+	{
+		// TODO: Implement RequestingData() method.
+	}
+
+	public function GetDataRequest()
+	{
+		// TODO: Implement GetDataRequest() method.
+	}
+
+	public function PageLoad()
+	{
+		// TODO: Implement PageLoad() method.
+	}
+
+	public function Redirect($url)
+	{
+		// TODO: Implement Redirect() method.
+	}
+
+	public function RedirectToError($errorMessageId = ErrorMessages::UNKNOWN_ERROR, $lastPage = '')
+	{
+		// TODO: Implement RedirectToError() method.
+	}
+
+	public function IsPostBack()
+	{
+		// TODO: Implement IsPostBack() method.
+	}
+
+	public function IsValid()
+	{
+		// TODO: Implement IsValid() method.
+	}
+
+	public function GetLastPage()
+	{
+		// TODO: Implement GetLastPage() method.
+	}
+
+	public function RegisterValidator($validatorId, $validator)
+	{
+		// TODO: Implement RegisterValidator() method.
+	}
+
+	public function EnforceCSRFCheck()
+	{
+		// TODO: Implement EnforceCSRFCheck() method.
+	}
+
+	/**
+	 * Bind schedules to the page
+	 *
+	 * @param array|Schedule[] $schedules
+	 */
+	public function SetSchedules($schedules)
+	{
+		// TODO: Implement SetSchedules() method.
+	}
+
+	/**
+	 * Bind resources to the page
+	 *
+	 * @param array|ResourceDto[] $resources
+	 */
+	public function SetResources($resources)
+	{
+		// TODO: Implement SetResources() method.
+	}
+
+	/**
+	 * Bind layout to the page for daily time slot layouts
+	 *
+	 * @param IDailyLayout $dailyLayout
+	 */
+	public function SetDailyLayout($dailyLayout)
+	{
+		// TODO: Implement SetDailyLayout() method.
+	}
+
+	/**
+	 * Returns the currently selected scheduleId
+	 * @return int
+	 */
+	public function GetScheduleId()
+	{
+		// TODO: Implement GetScheduleId() method.
+	}
+
+	/**
+	 * @param int $scheduleId
+	 */
+	public function SetScheduleId($scheduleId)
+	{
+		// TODO: Implement SetScheduleId() method.
+	}
+
+	/**
+	 * @param string $scheduleName
+	 */
+	public function SetScheduleName($scheduleName)
+	{
+		// TODO: Implement SetScheduleName() method.
+	}
+
+	/**
+	 * @param int $firstWeekday
+	 */
+	public function SetFirstWeekday($firstWeekday)
+	{
+		// TODO: Implement SetFirstWeekday() method.
+	}
+
+	/**
+	 * Sets the dates to be displayed for the schedule, adjusted for timezone if necessary
+	 *
+	 * @param DateRange $dates
+	 */
+	public function SetDisplayDates($dates)
+	{
+		// TODO: Implement SetDisplayDates() method.
+	}
+
+	/**
+	 * @param Date $previousDate
+	 * @param Date $nextDate
+	 */
+	public function SetPreviousNextDates($previousDate, $nextDate)
+	{
+		// TODO: Implement SetPreviousNextDates() method.
+	}
+
+	/**
+	 * @return string
+	 */
+	public function GetSelectedDate()
+	{
+		// TODO: Implement GetSelectedDate() method.
+	}
+
+	/**
+	 */
+	public function ShowInaccessibleResources()
+	{
+		// TODO: Implement ShowInaccessibleResources() method.
+	}
+
+	/**
+	 * @param bool $showShowFullWeekToggle
+	 */
+	public function ShowFullWeekToggle($showShowFullWeekToggle)
+	{
+		// TODO: Implement ShowFullWeekToggle() method.
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function GetShowFullWeek()
+	{
+		// TODO: Implement GetShowFullWeek() method.
+	}
+
+	/**
+	 * @param ScheduleLayoutSerializable $layoutResponse
+	 */
+	public function SetLayoutResponse($layoutResponse)
+	{
+		// TODO: Implement SetLayoutResponse() method.
+	}
+
+	/**
+	 * @return string
+	 */
+	public function GetLayoutDate()
+	{
+		// TODO: Implement GetLayoutDate() method.
+	}
+
+	/**
+	 * @param int $scheduleId
+	 * @return string|ScheduleStyle
+	 */
+	public function GetScheduleStyle($scheduleId)
+	{
+		// TODO: Implement GetScheduleStyle() method.
+	}
+
+	/**
+	 * @param string|ScheduleStyle Direction
+	 */
+	public function SetScheduleStyle($direction)
+	{
+		// TODO: Implement SetScheduleStyle() method.
+	}
+
+	/**
+	 * @return int
+	 */
+	public function GetGroupId()
+	{
+		// TODO: Implement GetGroupId() method.
+	}
+
+	/**
+	 * @return int[]
+	 */
+	public function GetResourceIds()
+	{
+		return $this->_ResourceIds;
+	}
+
+	/**
+	 * @param ResourceGroupTree $resourceGroupTree
+	 */
+	public function SetResourceGroupTree(ResourceGroupTree $resourceGroupTree)
+	{
+		// TODO: Implement SetResourceGroupTree() method.
+	}
+
+	/**
+	 * @param ResourceType[] $resourceTypes
+	 */
+	public function SetResourceTypes($resourceTypes)
+	{
+		// TODO: Implement SetResourceTypes() method.
+	}
+
+	/**
+	 * @param Attribute[] $attributes
+	 */
+	public function SetResourceCustomAttributes($attributes)
+	{
+		// TODO: Implement SetResourceCustomAttributes() method.
+	}
+
+	/**
+	 * @param Attribute[] $attributes
+	 */
+	public function SetResourceTypeCustomAttributes($attributes)
+	{
+		// TODO: Implement SetResourceTypeCustomAttributes() method.
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function FilterSubmitted()
+	{
+		return $this->_FilterSubmitted;
+	}
+
+	/**
+	 * @return int
+	 */
+	public function GetResourceTypeId()
+	{
+		return $this->_ResourceTypeId;
+	}
+
+	/**
+	 * @return int
+	 */
+	public function GetMaxParticipants()
+	{
+		return $this->_MaxParticipants;
+	}
+
+	/**
+	 * @return AttributeFormElement[]|array
+	 */
+	public function GetResourceAttributes()
+	{
+		return $this->_ResourceAttributes;
+	}
+
+	/**
+	 * @return AttributeFormElement[]|array
+	 */
+	public function GetResourceTypeAttributes()
+	{
+		return $this->_ResourceTypeAttributes;
+	}
+
+	/**
+	 * @param ScheduleResourceFilter $resourceFilter
+	 */
+	public function SetFilter($resourceFilter)
+	{
+		// TODO: Implement SetFilter() method.
+	}
+
+	/**
+	 * @param CalendarSubscriptionUrl $subscriptionUrl
+	 */
+	public function SetSubscriptionUrl(CalendarSubscriptionUrl $subscriptionUrl)
+	{
+		// TODO: Implement SetSubscriptionUrl() method.
+	}
+
+	/**
+	 * @param bool $shouldShow
+	 */
+	public function ShowPermissionError($shouldShow)
+	{
+		// TODO: Implement ShowPermissionError() method.
+	}
+
+	/**
+	 * @param UserSession $user
+	 * @param Schedule $schedule
+	 * @return string
+	 */
+	public function GetDisplayTimezone(UserSession $user, Schedule $schedule)
+	{
+		// TODO: Implement GetDisplayTimezone() method.
+	}
+
+	/**
+	 * @return int
+	 */
+	public function GetResourceId()
+	{
+		// TODO: Implement GetResourceId() method.
+	}
+
+	/**
+	 * @return Date[]
+	 */
+	public function GetSelectedDates()
+	{
+		return $this->_SelectedDates;
+	}
+
+	/**
+	 * @param Date[] $specificDates
+	 */
+	public function SetSpecificDates($specificDates)
+	{
+		// TODO: Implement SetSpecificDates() method.
+	}
+}
