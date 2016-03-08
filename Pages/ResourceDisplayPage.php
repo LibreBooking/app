@@ -26,14 +26,48 @@ interface IResourceDisplayPage extends IPage, IActionPage
 
 	public function DisplayLogin();
 
-	public function DisplayResourceList();
-
-	public function DisplayResourceAvailability();
-
 	/**
 	 * @return string
 	 */
 	public function GetResourceId();
+
+	/**
+	 * @return string
+	 */
+	public function GetPublicResourceId();
+
+	/**
+	 * @return string
+	 */
+	public function GetEmail();
+
+	/**
+	 * @return string
+	 */
+	public function GetPassword();
+
+	public function BindInvalidLogin();
+
+	/**
+	 * @param BookableResource[] $resourceList
+	 */
+	public function BindResourceList($resourceList);
+
+	/**
+	 * @param $publicId
+	 */
+	public function SetActivatedResourceId($publicId);
+
+	public function BindResource(BookableResource $resource);
+
+	public function DisplayAvailability(IDailyLayout $dailyLayout, Date $today);
+
+	/**
+	 * @param bool $availableNow
+	 */
+	public function SetIsAvailableNow($availableNow);
+
+	public function DisplayNotEnabled();
 }
 
 class ResourceDisplayPage extends ActionPage implements IResourceDisplayPage
@@ -46,55 +80,104 @@ class ResourceDisplayPage extends ActionPage implements IResourceDisplayPage
 	public function __construct()
 	{
 		parent::__construct('Resource');
-		$this->presenter = new ResourceDisplayPresenter($this, new ResourceRepository(), new ReservationViewRepository(), PluginManager::Instance()->LoadAuthorization());
+		$this->presenter = new ResourceDisplayPresenter($this,
+														new ResourceRepository(),
+														new ReservationService(new ReservationViewRepository(), new ReservationListingFactory()),
+														PluginManager::Instance()->LoadAuthorization(),
+														new WebAuthentication(PluginManager::Instance()->LoadAuthentication()),
+														new ScheduleRepository(),
+														new DailyLayoutFactory());
 	}
 
-	/**
-	 * @return void
-	 */
 	public function ProcessAction()
 	{
-		// TODO: Implement ProcessAction() method.
+		$this->presenter->ProcessAction();
 	}
 
-	/**
-	 * @param $dataRequest string
-	 * @return void
-	 */
 	public function ProcessDataRequest($dataRequest)
 	{
-		// TODO: Implement ProcessDataRequest() method.
+		// no op
 	}
 
-	/**
-	 * @return void
-	 */
 	public function ProcessPageLoad()
 	{
 		$this->presenter->PageLoad();
 	}
 
-	/**
-	 * @return string
-	 */
 	public function GetResourceId()
 	{
-		// TODO: Implement GetResourceId() method.
+		return $this->GetForm(FormKeys::RESOURCE_ID);
 	}
 
 	public function DisplayLogin()
 	{
-		// TODO: Implement DisplayLogin() method.
+		$this->Display('ResourceDisplay/resource-display-shell.tpl');
 	}
 
-	public function DisplayResourceList()
+	public function EnforceCSRFCheck()
 	{
-		// TODO: Implement DisplayResourceList() method.
+		// no op
 	}
 
-	public function DisplayResourceAvailability()
+	public function GetEmail()
 	{
-		// TODO: Implement DisplayResourceAvailability() method.
+		return $this->GetForm(FormKeys::EMAIL);
+	}
+
+	public function GetPassword()
+	{
+		return $this->GetForm(FormKeys::PASSWORD);
+	}
+
+	public function BindInvalidLogin()
+	{
+		$this->SetJson(array('error' => true));
+	}
+
+	public function BindResourceList($resourceList)
+	{
+		$resources = array();
+		foreach ($resourceList as $resource)
+		{
+			$resources[] = array('id' => $resource->GetId(), 'name' => $resource->GetName());
+		}
+
+		$this->SetJson(array('resources' => $resources));
+	}
+
+	public function SetActivatedResourceId($publicId)
+	{
+		$resourceDisplayUrl = Configuration::Instance()->GetScriptUrl() . '/' . Pages::DISPLAY_RESOURCE . '?' . QueryStringKeys::RESOURCE_ID . '=' . $publicId;
+		$this->SetJson(array('location' => $resourceDisplayUrl));
+	}
+
+	public function GetPublicResourceId()
+	{
+		return $this->GetQuerystring(QueryStringKeys::RESOURCE_ID);
+	}
+
+	public function BindResource(BookableResource $resource)
+	{
+		$this->Set('ResourceName', $resource->GetName());
+		$this->Set('ResourceId', $resource->GetId());
+	}
+
+	public function DisplayAvailability(IDailyLayout $dailyLayout, Date $today)
+	{
+		$this->Set('Today', $today);
+		$this->Set('DailyLayout', $dailyLayout);
+		$this->Set('SlotLabelFactory', new SlotLabelFactory(new NullUserSession()));
+		$this->Display('ResourceDisplay/resource-display-resource.tpl');
+	}
+
+	public function SetIsAvailableNow($availableNow)
+	{
+		$this->Set('AvailableNow', $availableNow);
+	}
+
+	public function DisplayNotEnabled()
+	{
+		$this->Display('ResourceDisplay/resource-display-not-enabled.tpl');
 	}
 }
 

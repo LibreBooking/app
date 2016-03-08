@@ -565,6 +565,7 @@ class en_us extends Language
 		$strings['CheckOutTime'] = 'Check Out Time';
 		$strings['OriginalEndDate'] = 'Original End';
 		$strings['SpecificDates'] = 'Show Specific Dates';
+		$strings['ResourceDisplayPrompt'] = 'Resource to Display';
 		// End Strings
 
 		// Install

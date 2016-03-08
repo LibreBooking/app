@@ -25,6 +25,6 @@ class FakeSchedule extends Schedule
     public function __construct($id = 1, $name = 'test', $isDefault = true, $weekdayStart = 0, $daysVisible = 7)
     {
         parent::__construct($id, $name, $isDefault, $weekdayStart, $daysVisible);
+        $this->_timezone = 'America/Chicago';
     }
 }
-?>

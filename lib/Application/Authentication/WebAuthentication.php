@@ -74,6 +74,9 @@ interface IWebAuthentication extends IAuthenticationPromptOptions
 
 class WebAuthentication implements IWebAuthentication
 {
+	private $authentication;
+	private $server;
+
 	/**
 	 * @param IAuthentication $authentication
 	 * @param Server $server

@@ -22,6 +22,20 @@ require_once(ROOT_DIR . 'Domain/Access/ResourceRepository.php');
 
 class FakeResourceRepository implements IResourceRepository
 {
+	/**
+	 * @var array|BookableResource[]
+	 */
+	public $_ResourceList = array();
+
+	/**
+	 * @var FakeBookableResource
+	 */
+	public $_Resource;
+
+	/**
+	 * @var BookableResource|FakeBookableResource
+	 */
+	public $_UpdatedResource;
 
 	/**
 	 * Gets all Resources for the given scheduleId
@@ -40,7 +54,7 @@ class FakeResourceRepository implements IResourceRepository
 	 */
 	public function LoadById($resourceId)
 	{
-		// TODO: Implement LoadById() method.
+		return $this->_Resource;
 	}
 
 	/**
@@ -49,7 +63,7 @@ class FakeResourceRepository implements IResourceRepository
 	 */
 	public function LoadByPublicId($publicId)
 	{
-		// TODO: Implement LoadByPublicId() method.
+		return $this->_Resource;
 	}
 
 	/**
@@ -66,7 +80,7 @@ class FakeResourceRepository implements IResourceRepository
 	 */
 	public function Update(BookableResource $resource)
 	{
-		// TODO: Implement Update() method.
+		$this->_UpdatedResource = $resource;
 	}
 
 	/**
@@ -82,7 +96,7 @@ class FakeResourceRepository implements IResourceRepository
 	 */
 	public function GetResourceList()
 	{
-		// TODO: Implement GetResourceList() method.
+		return $this->_ResourceList;
 	}
 
 	/**

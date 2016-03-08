@@ -35,9 +35,20 @@ class FakeScheduleRepository implements IScheduleRepository
 	public $_DefaultEndTime = '17:00';
 	public $_DefaultDayStart = 0;
 
+	/**
+	 * @var FakeSchedule
+	 */
+	public $_Schedule;
+
+	/**
+	 * @var ScheduleLayout|null
+	 */
+	public $_Layout;
+
 	public function __construct()
 	{
 		$this->_AllRows = $this->_GetAllRows();
+		$this->_Schedule = new FakeSchedule();
 	}
 
 	/**
@@ -124,7 +135,7 @@ class FakeScheduleRepository implements IScheduleRepository
 	 */
 	public function LoadById($scheduleId)
 	{
-		// TODO: Implement LoadById() method.
+		return $this->_Schedule;
 	}
 
 	/**
@@ -169,7 +180,7 @@ class FakeScheduleRepository implements IScheduleRepository
 	 */
 	public function GetLayout($scheduleId, ILayoutFactory $layoutFactory)
 	{
-		// TODO: Implement GetLayout() method.
+		return $this->_Layout;
 	}
 
 	/**
@@ -185,4 +196,3 @@ class FakeScheduleRepository implements IScheduleRepository
 		// TODO: Implement GetList() method.
 	}
 }
-?>

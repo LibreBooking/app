@@ -2046,7 +2046,8 @@ class UpdateResourceCommand extends SqlCommand
 								TimeInterval $bufferTime,
 								$color,
 								$checkinEnabled,
-								$autoReleaseMinutes)
+								$autoReleaseMinutes,
+								$isDisplayEnabled)
 	{
 		parent::__construct(Queries::UPDATE_RESOURCE);
 
@@ -2077,6 +2078,7 @@ class UpdateResourceCommand extends SqlCommand
 		$this->AddParameter(new Parameter(ParameterNames::COLOR, $color));
 		$this->AddParameter(new Parameter(ParameterNames::ENABLE_CHECK_IN, $checkinEnabled));
 		$this->AddParameter(new Parameter(ParameterNames::AUTO_RELEASE_MINUTES, $autoReleaseMinutes));
+		$this->AddParameter(new Parameter(ParameterNames::RESOURCE_ALLOW_DISPLAY, (int)$isDisplayEnabled));
 
 	}
 }

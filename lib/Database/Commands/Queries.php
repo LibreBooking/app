@@ -993,7 +993,8 @@ class Queries
 			buffer_time = @buffer_time,
 			color = @color,
 			enable_check_in = @enable_check_in,
-			auto_release_minutes = @auto_release_minutes
+			auto_release_minutes = @auto_release_minutes,
+			allow_display = @allow_display
 		WHERE
 			resource_id = @resourceid';
 

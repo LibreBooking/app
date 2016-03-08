@@ -146,6 +146,7 @@ class ColumnNames
 	const RESOURCE_BUFFER_TIME = 'buffer_time';
 	const ENABLE_CHECK_IN = 'enable_check_in';
 	const AUTO_RELEASE_MINUTES = 'auto_release_minutes';
+	const RESOURCE_ALLOW_DISPLAY = 'allow_display';
 
 	// RESERVATION RESOURCES
 	const RESOURCE_LEVEL_ID = 'resource_level_id';

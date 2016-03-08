@@ -142,6 +142,7 @@ class BookableResource implements IBookableResource
 	protected $_statusReasonId;
 	protected $_adminGroupId;
 	protected $_isCalendarSubscriptionAllowed = false;
+	protected $_isDisplayAllowed = false;
 	protected $_publicId;
 	protected $_scheduleAdminGroupId;
 	protected $_sortOrder;
@@ -276,6 +277,10 @@ class BookableResource implements IBookableResource
 		if (isset($row[ColumnNames::AUTO_RELEASE_MINUTES]))
 		{
 			$resource->_autoReleaseMinutes = intval($row[ColumnNames::AUTO_RELEASE_MINUTES]);
+		}
+		if (isset($row[ColumnNames::RESOURCE_ALLOW_DISPLAY]))
+		{
+			$resource->_isDisplayAllowed = intval($row[ColumnNames::RESOURCE_ALLOW_DISPLAY]);
 		}
 
 		return $resource;
@@ -754,6 +759,22 @@ class BookableResource implements IBookableResource
 	}
 
 	/**
+	 * @param bool $isAllowed
+	 */
+	protected function SetIsDisplayEnabled($isAllowed)
+	{
+		$this->_isDisplayAllowed = $isAllowed;
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function GetIsDisplayEnabled()
+	{
+		return $this->_isDisplayAllowed;
+	}
+
+	/**
 	 * @param string $publicId
 	 */
 	protected function SetPublicId($publicId)
@@ -781,6 +802,15 @@ class BookableResource implements IBookableResource
 	public function DisableSubscription()
 	{
 		$this->SetIsCalendarSubscriptionAllowed(false);
+	}
+
+	public function EnableDisplay()
+	{
+		$this->SetIsDisplayEnabled(true);
+		if (empty($this->_publicId))
+		{
+			$this->SetPublicId(uniqid());
+		}
 	}
 
 	public function WithAttribute(AttributeValue $attribute)
@@ -1072,4 +1102,5 @@ class BookableResource implements IBookableResource
 	{
 		return $this->_textColor;
 	}
+
 }
