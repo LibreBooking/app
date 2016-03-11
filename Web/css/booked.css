@@ -285,6 +285,9 @@ div.center {
 .margin-bottom-0 {
   margin-bottom: 0;
 }
+.margin-top-25 {
+  margin-top: 25px;
+}
 .horizontal-list ul {
   display: block;
   width: 100%;
@@ -1007,21 +1010,24 @@ a.toggle-sidebar {
   display: inline-block;
   padding-right: 5px;
 }
-.resource-display-available {
+.resource-display-available,
+.resource-display-unavailable {
   background-color: #88cc88;
-  line-height: 70px;
   border: solid 1px #76c476;
+  line-height: 70px;
   text-align: center;
   font-size: 3em;
   color: #fff;
-  -webkit-border-radius: 2px;
-  -moz-border-radius: 2px;
-  border-radius: 2px;
+  -webkit-border-radius: 6px;
+  -moz-border-radius: 6px;
+  border-radius: 6px;
   margin-top: 30px;
   cursor: pointer;
+  font-weight: bold;
 }
 .resource-display-unavailable {
   background-color: #ffaaaa;
+  border: solid 1px #ff9090;
 }
 .resource-display-name,
 .resource-display-date {
@@ -1035,6 +1041,7 @@ a.toggle-sidebar {
 }
 #page-resource-display-resource table.reservations td {
   line-height: 60px;
+  font-size: 1.1em;
 }
 #resourceDetailsPopup #userDetailsPopup {
   min-width: 300px;

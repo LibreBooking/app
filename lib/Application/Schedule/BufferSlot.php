@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright 2013-2015 Nick Korbel
  *
@@ -17,6 +18,7 @@
  * You should have received a copy of the GNU General Public License
  * along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 class BufferSlot implements IReservationSlot
 {
 	/**
@@ -163,7 +165,8 @@ class BufferSlot implements IReservationSlot
 
 	public function ToTimezone($timezone)
 	{
-		return new BufferSlot($this->_beginPeriod->ToTimezone($timezone), $this->_endPeriod->ToTimezone($timezone), $this->Date(), $this->PeriodSpan(), $this->_reservation);
+		return new BufferSlot($this->_beginPeriod->ToTimezone($timezone), $this->_endPeriod->ToTimezone($timezone),
+							  $this->Date(), $this->PeriodSpan(), $this->_reservation);
 	}
 
 	public function Id()
@@ -209,5 +212,11 @@ class BufferSlot implements IReservationSlot
 	public function TextColor()
 	{
 		return null;
+	}
+
+	public function CollidesWith(Date $date)
+	{
+		$range = new DateRange($this->_begin, $this->_end);
+		return $range->Contains($date, false);
 	}
 }

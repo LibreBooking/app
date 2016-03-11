@@ -169,3 +169,11 @@ class AdminRegistration extends Registration
 		return false;
 	}
 }
+
+class GuestRegistration extends Registration
+{
+	protected function CreatePending()
+	{
+		return false;
+	}
+}

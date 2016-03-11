@@ -68,9 +68,37 @@ interface IResourceDisplayPage extends IPage, IActionPage
 	public function SetIsAvailableNow($availableNow);
 
 	public function DisplayNotEnabled();
+
+	public function DisplayResourceShell();
+
+	/**
+	 * @return string
+	 */
+	public function GetTimezone();
+
+	/**
+	 * @return string
+	 */
+	public function GetBeginTime();
+
+	/**
+	 * @return string
+	 */
+	public function GetEndTime();
+
+	/**
+	 * @param bool $success
+	 * @param ReservationResultCollector $resultCollector
+	 */
+	public function SetReservationSaveResults($success, $resultCollector);
+
+	/**
+	 * @param Schedule $schedule
+	 */
+	public function BindSchedule(Schedule $schedule);
 }
 
-class ResourceDisplayPage extends ActionPage implements IResourceDisplayPage
+class ResourceDisplayPage extends ActionPage implements IResourceDisplayPage, IRequestedResourcePage
 {
 	/**
 	 * @var ResourceDisplayPresenter
@@ -82,11 +110,17 @@ class ResourceDisplayPage extends ActionPage implements IResourceDisplayPage
 		parent::__construct('Resource');
 		$this->presenter = new ResourceDisplayPresenter($this,
 														new ResourceRepository(),
-														new ReservationService(new ReservationViewRepository(), new ReservationListingFactory()),
+														new ReservationService(new ReservationViewRepository(),
+																			   new ReservationListingFactory()),
 														PluginManager::Instance()->LoadAuthorization(),
 														new WebAuthentication(PluginManager::Instance()->LoadAuthentication()),
 														new ScheduleRepository(),
-														new DailyLayoutFactory());
+														new DailyLayoutFactory(),
+														new GuestUserService(PluginManager::Instance()->LoadAuthentication(),
+																			 new GuestRegistration(new PasswordEncryption(),
+																								   new UserRepository(),
+																								   new GuestRegistrationNotificationStrategy(),
+																								   new GuestReservationPermissionStrategy($this))));
 	}
 
 	public function ProcessAction()
@@ -96,7 +130,7 @@ class ResourceDisplayPage extends ActionPage implements IResourceDisplayPage
 
 	public function ProcessDataRequest($dataRequest)
 	{
-		// no op
+		$this->presenter->ProcessDataRequest($dataRequest);
 	}
 
 	public function ProcessPageLoad()
@@ -111,7 +145,7 @@ class ResourceDisplayPage extends ActionPage implements IResourceDisplayPage
 
 	public function DisplayLogin()
 	{
-		$this->Display('ResourceDisplay/resource-display-shell.tpl');
+		$this->Display('ResourceDisplay/resource-display-login.tpl');
 	}
 
 	public function EnforceCSRFCheck()
@@ -164,6 +198,7 @@ class ResourceDisplayPage extends ActionPage implements IResourceDisplayPage
 
 	public function DisplayAvailability(IDailyLayout $dailyLayout, Date $today)
 	{
+		$this->Set('TimeFormat', Resources::GetInstance()->GetDateFormat('period_time'));
 		$this->Set('Today', $today);
 		$this->Set('DailyLayout', $dailyLayout);
 		$this->Set('SlotLabelFactory', new SlotLabelFactory(new NullUserSession()));
@@ -179,5 +214,46 @@ class ResourceDisplayPage extends ActionPage implements IResourceDisplayPage
 	{
 		$this->Display('ResourceDisplay/resource-display-not-enabled.tpl');
 	}
-}
 
+	public function DisplayResourceShell()
+	{
+		$this->Set('PublicResourceId', $this->GetPublicResourceId());
+		$this->Display('ResourceDisplay/resource-display-shell.tpl');
+	}
+
+	public function GetTimezone()
+	{
+		return $this->GetForm(FormKeys::TIMEZONE);
+	}
+
+	public function GetBeginTime()
+	{
+		return $this->GetForm(FormKeys::BEGIN_PERIOD);
+	}
+
+	public function GetEndTime()
+	{
+		return $this->GetForm(FormKeys::END_PERIOD);
+	}
+
+	public function SetReservationSaveResults($success, $resultCollector)
+	{
+		$this->SetJson(array('success' => $success, 'errors' => $resultCollector->Errors));
+	}
+
+	public function GetRequestedResourceId()
+	{
+		return $this->GetResourceId();
+	}
+
+	public function GetRequestedScheduleId()
+	{
+		return $this->GetForm(FormKeys::SCHEDULE_ID);
+	}
+
+	public function BindSchedule(Schedule $schedule)
+	{
+		$this->Set('ScheduleId', $schedule->GetId());
+		$this->Set('Timezone', $schedule->GetTimezone());
+	}
+}

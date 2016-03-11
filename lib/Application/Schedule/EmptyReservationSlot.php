@@ -214,4 +214,15 @@ class EmptyReservationSlot implements IReservationSlot
 	{
 		return null;
 	}
+
+	public function CollidesWith(Date $date)
+	{
+		if ($this->IsReservable())
+		{
+			return false;
+		}
+
+		$range = new DateRange($this->_begin, $this->_end);
+		return $range->Contains($date, false);
+	}
 }

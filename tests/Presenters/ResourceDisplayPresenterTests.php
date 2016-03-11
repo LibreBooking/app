@@ -24,6 +24,11 @@ require_once(ROOT_DIR . 'Pages/ResourceDisplayPage.php');
 class ResourceDisplayPresenterTests extends TestBase
 {
 	/**
+	 * @var FakeGuestUserService
+	 */
+	private $guestUserService;
+
+	/**
 	 * @var TestResourceDisplayPage
 	 */
 	private $page;
@@ -63,6 +68,11 @@ class ResourceDisplayPresenterTests extends TestBase
 	 */
 	private $dailyLayoutFactory;
 
+	/**
+	 * @var FakeReservationHandler
+	 */
+	private $reservationHandler;
+
 	public function setup()
 	{
 		parent::setup();
@@ -74,13 +84,17 @@ class ResourceDisplayPresenterTests extends TestBase
 		$this->authorizationService = new FakeAuthorizationService();
 		$this->authentication = new FakeWebAuthentication();
 		$this->dailyLayoutFactory = new DailyLayoutFactory();
+		$this->guestUserService = new FakeGuestUserService();
+		$this->reservationHandler = new FakeReservationHandler();
 		$this->presenter = new ResourceDisplayPresenter($this->page,
 														$this->resourceRepository,
 														$this->reservationService,
 														$this->authorizationService,
 														$this->authentication,
 														$this->scheduleRepository,
-														$this->dailyLayoutFactory);
+														$this->dailyLayoutFactory,
+														$this->guestUserService,
+														$this->reservationHandler);
 	}
 
 	public function testShowsLoginIfNotLoggedInAndNoResource()
@@ -149,6 +163,7 @@ class ResourceDisplayPresenterTests extends TestBase
 		$this->scheduleRepository->_Schedule = $schedule;
 		$this->scheduleRepository->_Layout = new ScheduleLayout($timezone);
 
+		$this->presenter->reservationHandler = $this->reservationHandler;
 		$this->presenter->DisplayResource($publicId);
 		$expectedDate = DateRange::Create('2016-03-07', '2016-03-08', 'UTC');
 
@@ -158,60 +173,72 @@ class ResourceDisplayPresenterTests extends TestBase
 		$this->assertEquals(1, $this->reservationService->_LastResourceId);
 		$this->assertEquals($resource, $this->page->_BoundResource);
 		$this->assertFalse($this->page->_DisplayNotEnabledMessage);
-
 	}
 
-	public function testAvailableNow()
-	{
-		$now = new Date('2016-03-07 11:00', 'UTC');
-		Date::_SetNow($now);
-		$scheduleId = 123;
-		$timezone = 'America/Chicago';
-		$resource = new FakeBookableResource(1);
-		$resource->EnableDisplay();
-		$this->resourceRepository->_Resource = $resource;
-		$schedule = new FakeSchedule($scheduleId);
-		$this->scheduleRepository->_Schedule = $schedule;
-		$this->scheduleRepository->_Layout = new ScheduleLayout($timezone);
-
-		$reservationListing = new ReservationListing($timezone);
-		$reservationListing->Add(new TestReservationItemView(1,$now->AddHours(-1), $now));
-		$this->reservationService->_ReservationListing = $reservationListing;
-
-		$this->presenter->DisplayResource('whatever');
-
-		$this->assertTrue($this->page->_AvailableNow);
-	}
-
-	public function testUnvailableNow()
-	{
-		$now = new Date('2016-03-07 11:00', 'UTC');
-		Date::_SetNow($now);
-		$scheduleId = 123;
-		$timezone = 'America/Chicago';
-		$resource = new FakeBookableResource(1);
-		$resource->EnableDisplay();
-		$this->resourceRepository->_Resource = $resource;
-		$schedule = new FakeSchedule($scheduleId);
-		$this->scheduleRepository->_Schedule = $schedule;
-		$this->scheduleRepository->_Layout = new ScheduleLayout($timezone);
-
-		$reservationListing = new ReservationListing($timezone);
-		$reservationListing->Add(new TestReservationItemView(1, $now->AddHours(-1), $now->AddMinutes(1)));
-		$this->reservationService->_ReservationListing = $reservationListing;
-
-		$this->presenter->DisplayResource('whatever');
-
-		$this->assertFalse($this->page->_AvailableNow);
-	}
-	
 	public function testWhenNotEnabledToDisplay()
 	{
 		$resource = new FakeBookableResource(1);
 		$this->resourceRepository->_Resource = $resource;
+
 		$this->presenter->DisplayResource('whatever');
 
 		$this->assertTrue($this->page->_DisplayNotEnabledMessage);
+	}
+
+	public function testWhenBookingSucceeds()
+	{
+		Date::_SetNow(Date::Parse('2016-03-11 13:46'));
+		$this->page->_Email = 'some@user.com';
+		$this->page->_BeginTime = '08:00';
+		$this->page->_EndTime = '17:00';
+		$this->page->_Timezone = 'America/New_York';
+		$this->page->_ResourceId = 292;
+
+		$userAccount = new FakeUserSession(123);
+		$this->guestUserService->_UserSession = $userAccount;
+		$this->reservationHandler->_Success = true;
+
+		$resource = new FakeBookableResource(122);
+		$this->resourceRepository->_Resource = $resource;
+
+		$begin = Date::Parse('2016-03-11 08:00', $this->page->_Timezone);
+		$end = Date::Parse('2016-03-11 17:00', $this->page->_Timezone);
+
+		$this->presenter->reservationHandler = $this->reservationHandler;
+
+		$this->presenter->Reserve();
+
+		$this->assertEquals(true, $this->page->_ReservationCreatedSuccessfully);
+		$this->assertEquals($resource, $this->reservationHandler->_LastSeries->Resource());
+		$this->assertEquals($userAccount->UserId, $this->reservationHandler->_LastSeries->UserId());
+		$this->assertEquals($userAccount, $this->reservationHandler->_LastSeries->BookedBy());
+		$this->assertEquals($begin, $this->reservationHandler->_LastSeries->CurrentInstance()->StartDate());
+		$this->assertEquals($end, $this->reservationHandler->_LastSeries->CurrentInstance()->EndDate());
+	}
+
+	public function testWhenReservationFails()
+	{
+		Date::_SetNow(Date::Parse('2016-03-11 13:46'));
+		$this->page->_Email = 'some@user.com';
+		$this->page->_BeginTime = '08:00';
+		$this->page->_EndTime = '17:00';
+		$this->page->_Timezone = 'America/New_York';
+		$this->page->_ResourceId = 292;
+
+		$userAccount = new FakeUserSession(123);
+		$this->guestUserService->_UserSession = $userAccount;
+		$this->reservationHandler->_Success = false;
+		$this->reservationHandler->_Errors = array('one', 'two');
+
+		$resource = new FakeBookableResource(122);
+		$this->resourceRepository->_Resource = $resource;
+
+		$this->presenter->reservationHandler = $this->reservationHandler;
+
+		$this->presenter->Reserve();
+
+		$this->assertEquals(false, $this->page->_ReservationCreatedSuccessfully);
+		$this->assertEquals($this->reservationHandler->_Errors, $this->page->_ResultCollector->Errors);
 	}
 }
 
@@ -229,6 +256,15 @@ class TestResourceDisplayPage extends FakePageBase implements IResourceDisplayPa
 	public $_BoundResource;
 	public $_AvailableNow = false;
 	public $_DisplayNotEnabledMessage = false;
+	public $_Email;
+	public $_BeginTime;
+	public $_EndTime;
+	public $_Timezone;
+	public $_ReservationCreatedSuccessfully;
+	/**
+	 * @var ReservationResultCollector
+	 */
+	public $_ResultCollector;
 
 	public function TakingAction()
 	{
@@ -313,5 +349,48 @@ class TestResourceDisplayPage extends FakePageBase implements IResourceDisplayPa
 	public function SetIsAvailableNow($availableNow)
 	{
 		$this->_AvailableNow = $availableNow;
+	}
+
+	public function DisplayNotEnabled()
+	{
+		$this->_DisplayNotEnabledMessage = true;
+	}
+
+	public function DisplayResourceShell()
+	{
+		// TODO: Implement DisplayResourceShell() method.
+	}
+
+	public function GetTimezone()
+	{
+		return $this->_Timezone;
+	}
+
+	public function GetBeginTime()
+	{
+		return $this->_BeginTime;
+	}
+
+	public function GetEndTime()
+	{
+		return $this->_EndTime;
+	}
+
+	/**
+	 * @param bool $success
+	 * @param IReservationSaveResultsView $resultCollector
+	 */
+	public function SetReservationSaveResults($success, $resultCollector)
+	{
+		$this->_ReservationCreatedSuccessfully = $success;
+		$this->_ResultCollector = $resultCollector;
+	}
+
+	/**
+	 * @param Schedule $schedule
+	 */
+	public function BindSchedule(Schedule $schedule)
+	{
+		// TODO: Implement BindSchedule() method.
 	}
 }

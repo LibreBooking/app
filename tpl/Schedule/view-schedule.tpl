@@ -19,7 +19,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 {extends file="Schedule/schedule.tpl"}
 
 {block name="header"}
-{include file='globalheader.tpl' cssFiles='css/schedule.css,css/view-schedule.css,css/jquery.qtip.min.css,scripts/css/jqtree.css'}
+	{include file='globalheader.tpl' cssFiles='css/schedule.css,css/view-schedule.css,css/jquery.qtip.min.css,scripts/css/jqtree.css'}
 {/block}
 
 {block name="actions"}{/block}
@@ -31,26 +31,27 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 	{jsfile src="resourcePopup.js"}
 	{jsfile src="js/tree.jquery.js"}
 	{jsfile src="js/jquery.cookie.js"}
+	<script type="text/javascript">
 
-<script type="text/javascript">
-
-$(document).ready(function() {
-	var scheduleOptions = {
-		reservationUrlTemplate: "view-reservation.php?{QueryStringKeys::REFERENCE_NUMBER}=[referenceNumber]",
-		summaryPopupUrl: "ajax/respopup.php",
-		cookieName: "{$CookieName}",
-		scheduleId:"{$ScheduleId}"
-	};
-	var schedule = new Schedule(scheduleOptions, {$ResourceGroupsAsJson});
-	{if $AllowGuestBooking}
-	schedule.init();
-	{else}
-	schedule.initNavigation();
-	schedule.initReservations();
-	schedule.initResourceFilter();
-	schedule.initResources();
-	{/if}
-});
-</script>
-
+		$(document).ready(function () {
+			var scheduleOptions = {
+				reservationUrlTemplate: "view-reservation.php?{QueryStringKeys::REFERENCE_NUMBER}=[referenceNumber]",
+				summaryPopupUrl: "ajax/respopup.php",
+				cookieName: "{$CookieName}",
+				scheduleId: "{$ScheduleId}",
+				scriptUrl: '{$ScriptUrl}',
+				selectedResources: [{','|implode:$ResourceIds}],
+				specificDates: [{foreach from=$SpecificDates item=d}'{$d->Format('Y-m-d')}',{/foreach}]
+			};
+			var schedule = new Schedule(scheduleOptions, {$ResourceGroupsAsJson});
+			{if $AllowGuestBooking}
+			schedule.init();
+			{else}
+			schedule.initNavigation();
+			schedule.initReservations();
+			schedule.initResourceFilter();
+			schedule.initResources();
+			{/if}
+		});
+	</script>
 {/block}

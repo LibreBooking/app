@@ -55,6 +55,11 @@ class ReservationSavePresenter implements IReservationSavePresenter
 	 */
 	private $_resourceRepository;
 
+	/**
+	 * @var UserSession
+	 */
+	private $_userSession;
+
 	public function __construct(
 		IReservationSavePage $page,
 		IReservationPersistenceService $persistenceService,
@@ -66,7 +71,7 @@ class ReservationSavePresenter implements IReservationSavePresenter
 		$this->_persistenceService = $persistenceService;
 		$this->_handler = $handler;
 		$this->_resourceRepository = $resourceRepository;
-		$this->userSession = $userSession;
+		$this->_userSession = $userSession;
 	}
 
 	public function BuildReservation()
@@ -77,10 +82,10 @@ class ReservationSavePresenter implements IReservationSavePresenter
 		$title = $this->_page->GetTitle();
 		$description = $this->_page->GetDescription();
 		$roFactory = new RepeatOptionsFactory();
-		$repeatOptions = $roFactory->CreateFromComposite($this->_page, $this->userSession->Timezone);
+		$repeatOptions = $roFactory->CreateFromComposite($this->_page, $this->_userSession->Timezone);
 		$duration = $this->GetReservationDuration();
 
-		$reservationSeries = ReservationSeries::Create($userId, $resource, $title, $description, $duration, $repeatOptions, $this->userSession);
+		$reservationSeries = ReservationSeries::Create($userId, $resource, $title, $description, $duration, $repeatOptions, $this->_userSession);
 
 		$resourceIds = $this->_page->GetResources();
 		foreach ($resourceIds as $resourceId)
@@ -169,7 +174,7 @@ class ReservationSavePresenter implements IReservationSavePresenter
 		$endDate = $this->_page->GetEndDate();
 		$endTime = $this->_page->GetEndTime();
 
-		$timezone = $this->userSession->Timezone;
+		$timezone = $this->_userSession->Timezone;
 		return DateRange::Create($startDate . ' ' . $startTime, $endDate . ' ' . $endTime, $timezone);
 	}
 }
