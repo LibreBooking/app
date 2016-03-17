@@ -567,6 +567,7 @@ class en_us extends Language
 		$strings['SpecificDates'] = 'Show Specific Dates';
 		$strings['Users'] = 'Users';
 		$strings['Guest'] = 'Guest';
+		$strings['ResourceDisplayPrompt'] = 'Resource to Display';
 		// End Strings
 
 		// Install

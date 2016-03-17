@@ -298,3 +298,36 @@ a.toggle-sidebar {
   display: inline-block;
   padding-right: 5px;
 }
+.resource-display-available,
+.resource-display-unavailable {
+  background-color: #88cc88;
+  border: solid 1px #76c476;
+  line-height: 70px;
+  text-align: center;
+  font-size: 3em;
+  color: #fff;
+  -webkit-border-radius: 6px;
+  -moz-border-radius: 6px;
+  border-radius: 6px;
+  margin-top: 30px;
+  cursor: pointer;
+  font-weight: bold;
+}
+.resource-display-unavailable {
+  background-color: #ffaaaa;
+  border: solid 1px #ff9090;
+}
+.resource-display-name,
+.resource-display-date {
+  font-size: 2.5em;
+  font-weight: bold;
+  color: #585754;
+}
+.resource-display-date {
+  text-align: right;
+  color: #bcbcbc;
+}
+#page-resource-display-resource table.reservations td {
+  line-height: 60px;
+  font-size: 1.1em;
+}

@@ -28,6 +28,7 @@ class Pages
 	const CALENDAR_SUBSCRIBE = 'ical-subscribe.php';
 	const CALENDAR_SUBSCRIBE_ATOM = 'atom-subscribe.php';
 	const DASHBOARD = 'dashboard.php';
+	const DISPLAY_RESOURCE = 'resource-display.php';
 	const DEFAULT_LOGIN = 'dashboard.php';
 	const GUEST_INVITATION_RESPONSES = 'guest-participation.php';
 	const FORGOT_PASSWORD = 'forgot.php';

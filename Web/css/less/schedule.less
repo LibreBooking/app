@@ -343,13 +343,49 @@ a.toggle-sidebar {
 }
 
 #individualDatesGo {
-  display:none;
+  display: none;
 }
 
 #individualDatesList {
-  display:none;
+  display: none;
   div {
     display: inline-block;
     padding-right: 5px;
+  }
+}
+
+.resource-display-available, .resource-display-unavailable {
+  background-color: @primary-green;
+  border: solid 1px darken(@primary-green, 5%);
+  line-height: 70px;
+  text-align: center;
+  font-size: 3em;
+  color: #fff;
+  .rounded(6px);
+  margin-top: 30px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.resource-display-unavailable {
+  background-color: @muted-red;
+  border: solid 1px darken(@muted-red, 5%);
+}
+
+.resource-display-name, .resource-display-date {
+  font-size:2.5em;
+  font-weight:bold;
+  color: @dark-gray;
+}
+
+.resource-display-date {
+  text-align:right;
+  color: @mid-gray;
+}
+
+#page-resource-display-resource {
+  table.reservations td {
+    line-height: 60px;
+    font-size:1.1em;
   }
 }

@@ -144,6 +144,7 @@ class ParameterNames
 
 	const RESOURCE_ID = '@resourceid';
 	const RESOURCE_ALLOW_MULTIDAY = '@allow_multiday_reservations';
+	const RESOURCE_ALLOW_DISPLAY = '@allow_display';
 	const RESOURCE_AUTOASSIGN = '@autoassign';
 	const RESOURCE_CONTACT = '@contact_info';
 	const RESOURCE_COST = '@unit_cost';

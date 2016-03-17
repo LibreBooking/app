@@ -1,6 +1,7 @@
 <?php
+
 /**
-Copyright 2012-2015 Nick Korbel
+Copyright 2016 Nick Korbel
 
 This file is part of Booked Scheduler.
 
@@ -16,15 +17,17 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
- */
+*/
 
-require_once(ROOT_DIR . 'Domain/Schedule.php');
+require_once(ROOT_DIR . 'lib/Application/Reservation/namespace.php');
 
-class FakeSchedule extends Schedule
+class FakeNewReservationPreconditionService implements INewReservationPreconditionService
 {
-    public function __construct($id = 1, $name = 'test', $isDefault = true, $weekdayStart = 0, $daysVisible = 7)
-    {
-        parent::__construct($id, $name, $isDefault, $weekdayStart, $daysVisible);
-        $this->_timezone = 'America/Chicago';
-    }
+	/**
+	 * @param INewReservationPage $page
+	 */
+	public function CheckAll(INewReservationPage $page, UserSession $user)
+	{
+		// TODO: Implement CheckAll() method.
+	}
 }

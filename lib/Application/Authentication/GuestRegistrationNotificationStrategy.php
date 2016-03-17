@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Copyright 2015 Nick Korbel
+ * Copyright 2016 Nick Korbel
  *
  * This file is part of Booked Scheduler.
  *
@@ -19,14 +19,12 @@
  * along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-class RegistrationNotificationStrategy implements IRegistrationNotificationStrategy
+require_once (ROOT_DIR . 'lib/Email/Messages/GuestAccountCreationEmail.php');
+
+class GuestRegistrationNotificationStrategy implements IRegistrationNotificationStrategy
 {
 	public function NotifyAccountCreated(User $user, $password)
 	{
-		if (Configuration::Instance()->GetKey(ConfigKeys::REGISTRATION_NOTIFY, new BooleanConverter()))
-		{
-			ServiceLocator::GetEmailService()->Send(new AccountCreationEmail($user,
-																			 ServiceLocator::GetServer()->GetUserSession()));
-		}
+		ServiceLocator::GetEmailService()->Send(new GuestAccountCreationEmail($user, $password));
 	}
 }

@@ -236,11 +236,11 @@ class ResourceRepository implements IResourceRepository
 				$resource->GetBufferTime(),
 				$resource->GetColor(),
 				$resource->IsCheckInEnabled(),
-				$resource->GetAutoReleaseMinutes()
+				$resource->GetAutoReleaseMinutes(),
+				$resource->GetIsDisplayEnabled()
 		);
 
 		$db->Execute($updateResourceCommand);
-
 
 		foreach ($resource->GetRemovedAttributes() as $removed)
 		{

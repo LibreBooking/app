@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Copyright 2015 Nick Korbel
+ * Copyright 2016 Nick Korbel
  *
  * This file is part of Booked Scheduler.
  *
@@ -19,30 +19,18 @@
  * along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-class RegistrationPermissionStrategy implements IRegistrationPermissionStrategy
-{
-	public function AddAccount(User $user)
-	{
-		$autoAssignCommand = new AutoAssignPermissionsCommand($user->Id());
-		ServiceLocator::GetDatabase()->Execute($autoAssignCommand);
-	}
-}
+require_once(ROOT_DIR . 'lib/Application/Authentication/namespace.php');
 
-class GuestReservationPermissionStrategy implements IRegistrationPermissionStrategy
+class FakeGuestUserService implements IGuestUserService
 {
+
 	/**
-	 * @var IRequestedResourcePage
+	 * @var UserSession
 	 */
-	private $page;
+	public $_UserSession;
 
-	public function __construct(IRequestedResourcePage $page)
+	public function CreateOrLoad($email)
 	{
-		$this->page = $page;
-	}
-
-	public function AddAccount(User $user)
-	{
-		$autoAssignCommand = new AutoAssignGuestPermissionsCommand($user->Id(), $this->page->GetRequestedScheduleId());
-		ServiceLocator::GetDatabase()->Execute($autoAssignCommand);
+		return $this->_UserSession;
 	}
 }

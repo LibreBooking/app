@@ -186,7 +186,8 @@ class ReservationViewRepository implements IReservationViewRepository
 			$resourceId = self::ALL_RESOURCES;
 		}
 
-		$getReservations = new GetReservationListCommand($startDate, $endDate, $userId, $userLevel, $scheduleId, $resourceId);
+		$getReservations = new GetReservationListCommand($startDate, $endDate, $userId, $userLevel, $scheduleId,
+														 $resourceId);
 
 		$result = ServiceLocator::GetDatabase()->Query($getReservations);
 
@@ -299,20 +300,24 @@ class ReservationViewRepository implements IReservationViewRepository
 
 		while ($row = $result->GetRow())
 		{
-			$reservationView->Accessories[] = new ReservationAccessoryView($row[ColumnNames::ACCESSORY_ID], $row[ColumnNames::QUANTITY],
-																		   $row[ColumnNames::ACCESSORY_NAME], $row[ColumnNames::ACCESSORY_QUANTITY]);
+			$reservationView->Accessories[] = new ReservationAccessoryView($row[ColumnNames::ACCESSORY_ID],
+																		   $row[ColumnNames::QUANTITY],
+																		   $row[ColumnNames::ACCESSORY_NAME],
+																		   $row[ColumnNames::ACCESSORY_QUANTITY]);
 		}
 	}
 
 	private function SetAttributes(ReservationView $reservationView)
 	{
-		$getAttributes = new GetAttributeValuesCommand($reservationView->SeriesId, CustomAttributeCategory::RESERVATION);
+		$getAttributes = new GetAttributeValuesCommand($reservationView->SeriesId,
+													   CustomAttributeCategory::RESERVATION);
 
 		$result = ServiceLocator::GetDatabase()->Query($getAttributes);
 
 		while ($row = $result->GetRow())
 		{
-			$reservationView->AddAttribute(new AttributeValue($row[ColumnNames::ATTRIBUTE_ID], $row[ColumnNames::ATTRIBUTE_VALUE],
+			$reservationView->AddAttribute(new AttributeValue($row[ColumnNames::ATTRIBUTE_ID],
+															  $row[ColumnNames::ATTRIBUTE_VALUE],
 															  $row[ColumnNames::ATTRIBUTE_LABEL]));
 		}
 	}
@@ -325,7 +330,8 @@ class ReservationViewRepository implements IReservationViewRepository
 
 		while ($row = $result->GetRow())
 		{
-			$reservationView->AddAttachment(new ReservationAttachmentView($row[ColumnNames::FILE_ID], $row[ColumnNames::SERIES_ID],
+			$reservationView->AddAttachment(new ReservationAttachmentView($row[ColumnNames::FILE_ID],
+																		  $row[ColumnNames::SERIES_ID],
 																		  $row[ColumnNames::FILE_NAME]));
 		}
 	}
@@ -1528,7 +1534,27 @@ class ReservationItemView implements IReservedItemView
 		}
 
 		$buffer = $this->GetBufferTime();
-		return new DateRange($this->GetStartDate()->SubtractInterval($buffer), $this->GetEndDate()->AddInterval($buffer));
+		return new DateRange($this->GetStartDate()->SubtractInterval($buffer),
+							 $this->GetEndDate()->AddInterval($buffer));
+	}
+
+	/**
+	 * @param Date $date
+	 * @return bool
+	 */
+	public function CollidesWith(Date $date)
+	{
+		if ($this->HasBufferTime())
+		{
+			$range = new DateRange($this->StartDate->SubtractInterval($this->BufferTime),
+								   $this->EndDate->AddInterval($this->BufferTime));
+		}
+		else
+		{
+			$range = new DateRange($this->StartDate, $this->EndDate);
+		}
+
+		return $range->Contains($date, false);
 	}
 
 	/**
@@ -1830,6 +1856,11 @@ class BlackoutItemView implements IReservedItemView
 	public function BufferedTimes()
 	{
 		return new DateRange($this->GetStartDate(), $this->GetEndDate());
+	}
+
+	public function CollidesWith(Date $date)
+	{
+		return $this->BufferedTimes()->Contains($date, false);
 	}
 }
 

@@ -36,3 +36,5 @@ require_once(ROOT_DIR . 'lib/Application/Authentication/IRegistrationNotificatio
 require_once(ROOT_DIR . 'lib/Application/Authentication/RegistrationNotificationStrategy.php');
 require_once(ROOT_DIR . 'lib/Application/Authentication/IRegistrationPermissionStrategy.php');
 require_once(ROOT_DIR . 'lib/Application/Authentication/RegistrationPermissionStrategy.php');
+require_once(ROOT_DIR . 'lib/Application/Authentication/GuestUserService.php');
+require_once(ROOT_DIR . 'lib/Application/Authentication/GuestRegistrationNotificationStrategy.php');

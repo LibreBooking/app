@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Copyright 2015 Nick Korbel
+ * Copyright 2016 Nick Korbel
  *
  * This file is part of Booked Scheduler.
  *
@@ -19,30 +19,29 @@
  * along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-class RegistrationPermissionStrategy implements IRegistrationPermissionStrategy
-{
-	public function AddAccount(User $user)
-	{
-		$autoAssignCommand = new AutoAssignPermissionsCommand($user->Id());
-		ServiceLocator::GetDatabase()->Execute($autoAssignCommand);
-	}
-}
+require_once(ROOT_DIR. 'lib/Application/Reservation/namespace.php');
 
-class GuestReservationPermissionStrategy implements IRegistrationPermissionStrategy
+class FakeReservationHandler implements IReservationHandler
 {
 	/**
-	 * @var IRequestedResourcePage
+	 * @var bool
 	 */
-	private $page;
+	public $_Success = false;
 
-	public function __construct(IRequestedResourcePage $page)
-	{
-		$this->page = $page;
-	}
+	/**
+	 * @var ReservationSeries
+	 */
+	public $_LastSeries;
 
-	public function AddAccount(User $user)
+	/**
+	 * @var string[]
+	 */
+	public $_Errors = array();
+
+	public function Handle(ReservationSeries $reservationSeries, IReservationSaveResultsView $view)
 	{
-		$autoAssignCommand = new AutoAssignGuestPermissionsCommand($user->Id(), $this->page->GetRequestedScheduleId());
-		ServiceLocator::GetDatabase()->Execute($autoAssignCommand);
+		$this->_LastSeries = $reservationSeries;
+		$view->SetErrors($this->_Errors);
+		return $this->_Success;
 	}
 }

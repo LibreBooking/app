@@ -28,7 +28,7 @@ body {
 body {
   padding-bottom: 40px;
   padding-top: 70px;
-  background-color: #f1efe2;
+  background-color: #f2f2f2;
 }
 a,
 a:visited {
@@ -284,6 +284,9 @@ div.center {
 }
 .margin-bottom-0 {
   margin-bottom: 0;
+}
+.margin-top-25 {
+  margin-top: 25px;
 }
 .horizontal-list ul {
   display: block;

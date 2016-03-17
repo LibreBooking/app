@@ -4,7 +4,7 @@ function ajaxPost(formElement, url, onBefore, onAfter) {
 	$.ajax({
 		type: 'POST',
 		data: formElement.serialize(),
-		url: url,
+		url: url ? url : formElement.attr('action'),
 		cache: false,
 		beforeSend: function () {
 			if (onBefore)

@@ -81,38 +81,3 @@ class GuestReservationPresenter extends ReservationPresenter
 		$this->page->RegisterValidator('uniqueemail', new UniqueEmailValidator(new UserRepository(), $this->page->GetEmail()));
 	}
 }
-
-class GuestRegistrationNotificationStrategy implements IRegistrationNotificationStrategy
-{
-	public function NotifyAccountCreated(User $user, $password)
-	{
-		ServiceLocator::GetEmailService()->Send(new GuestAccountCreationEmail($user, $password));
-	}
-}
-
-class GuestReservationPermissionStrategy implements IRegistrationPermissionStrategy
-{
-	/**
-	 * @var IRequestedResourcePage
-	 */
-	private $page;
-
-	public function __construct(IRequestedResourcePage $page)
-	{
-		$this->page = $page;
-	}
-
-	public function AddAccount(User $user)
-	{
-		$autoAssignCommand = new AutoAssignGuestPermissionsCommand($user->Id(), $this->page->GetRequestedScheduleId());
-		ServiceLocator::GetDatabase()->Execute($autoAssignCommand);
-	}
-}
-
-class GuestRegistration extends Registration
-{
-	protected function CreatePending()
-	{
-		return false;
-	}
-}

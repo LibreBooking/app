@@ -18,6 +18,146 @@ You should have received a copy of the GNU General Public License
 along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+class FakeAuthentication implements IAuthentication
+{
+	public $_ValidateResult = false;
+	public $_UserSession;
+
+	/**
+	 * @param string $username
+	 * @param string $password
+	 * @return bool If user is valid
+	 */
+	public function Validate($username, $password)
+	{
+		return $this->_ValidateResult;
+	}
+
+	/**
+	 * @param string $username
+	 * @param ILoginContext $loginContext
+	 * @return UserSession
+	 */
+	public function Login($username, $loginContext)
+	{
+		return $this->_UserSession;
+	}
+
+	/**
+	 * @param UserSession $user
+	 * @return void
+	 */
+	public function Logout(UserSession $user)
+	{
+		// TODO: Implement Logout() method.
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function AreCredentialsKnown()
+	{
+		// TODO: Implement AreCredentialsKnown() method.
+	}
+
+	/**
+	 * @param IAuthenticationPage $loginPage
+	 * @return void
+	 */
+	public function HandleLoginFailure(IAuthenticationPage $loginPage)
+	{
+		// TODO: Implement HandleLoginFailure() method.
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function ShowUsernamePrompt()
+	{
+		// TODO: Implement ShowUsernamePrompt() method.
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function ShowPasswordPrompt()
+	{
+		// TODO: Implement ShowPasswordPrompt() method.
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function ShowPersistLoginPrompt()
+	{
+		// TODO: Implement ShowPersistLoginPrompt() method.
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function ShowForgotPasswordPrompt()
+	{
+		// TODO: Implement ShowForgotPasswordPrompt() method.
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function AllowUsernameChange()
+	{
+		// TODO: Implement AllowUsernameChange() method.
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function AllowEmailAddressChange()
+	{
+		// TODO: Implement AllowEmailAddressChange() method.
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function AllowPasswordChange()
+	{
+		// TODO: Implement AllowPasswordChange() method.
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function AllowNameChange()
+	{
+		// TODO: Implement AllowNameChange() method.
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function AllowPhoneChange()
+	{
+		// TODO: Implement AllowPhoneChange() method.
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function AllowOrganizationChange()
+	{
+		// TODO: Implement AllowOrganizationChange() method.
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function AllowPositionChange()
+	{
+		// TODO: Implement AllowPositionChange() method.
+	}
+}
+
 class FakeWebAuthentication implements IWebAuthentication
 {
 	/**

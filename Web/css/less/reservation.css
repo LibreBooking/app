@@ -104,6 +104,7 @@
   -moz-border-radius: 2px;
   border-radius: 2px;
   margin-bottom: 5px;
+  background-color: #fff;
 }
 #accessories {
   max-height: 200px;

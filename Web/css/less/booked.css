@@ -28,7 +28,7 @@ body {
 body {
   padding-bottom: 40px;
   padding-top: 70px;
-  background-color: #f1efe2;
+  background-color: #f2f2f2;
 }
 a,
 a:visited {
@@ -284,6 +284,9 @@ div.center {
 }
 .margin-bottom-0 {
   margin-bottom: 0;
+}
+.margin-top-25 {
+  margin-top: 25px;
 }
 .horizontal-list ul {
   display: block;
@@ -666,14 +669,14 @@ input.mid-number {
 .dashboardHeader {
   letter-spacing: 1px;
   padding: 5px 20px;
-  color: #b2c5ab;
+  color: #fff;
   background-color: #58545d;
 }
 .dashboardHeader .badge {
   background-color: #736a81;
 }
 .dashboardHeader a {
-  color: #353432;
+  color: #fff;
 }
 .dashboard .noresults {
   text-align: center;
@@ -949,6 +952,20 @@ ul.jqtree-tree .jqtree-toggler {
   height: 1px;
   background-color: #bcbcbc;
 }
+#reservations-left .btn {
+  width: 100%;
+}
+#reservations-left .form-group {
+  margin-bottom: 3px;
+}
+#reservations-left .btn-clear {
+  margin-top: 3px;
+}
+#reservations-left ul.jqtree-tree li.jqtree-selected > .jqtree-element,
+#reservations-left ul.jqtree-tree li.jqtree-selected > .jqtree-element:hover {
+  background-color: transparent;
+  background: none;
+}
 #calendar_toggle {
   color: #585754;
   padding-left: 5px;
@@ -961,15 +978,6 @@ ul.jqtree-tree .jqtree-toggler {
 }
 #page-schedule a {
   text-decoration: none;
-}
-#reservations-left .btn {
-  width: 100%;
-}
-#reservations-left .form-group {
-  margin-bottom: 3px;
-}
-#reservations-left .btn-clear {
-  margin-top: 3px;
 }
 .reservations.mobile .reserved {
   -webkit-border-radius: 1px;
@@ -991,6 +999,49 @@ a.toggle-sidebar {
 }
 .schedule-legend {
   margin-bottom: 10px;
+}
+#individualDatesGo {
+  display: none;
+}
+#individualDatesList {
+  display: none;
+}
+#individualDatesList div {
+  display: inline-block;
+  padding-right: 5px;
+}
+.resource-display-available,
+.resource-display-unavailable {
+  background-color: #88cc88;
+  border: solid 1px #76c476;
+  line-height: 70px;
+  text-align: center;
+  font-size: 3em;
+  color: #fff;
+  -webkit-border-radius: 6px;
+  -moz-border-radius: 6px;
+  border-radius: 6px;
+  margin-top: 30px;
+  cursor: pointer;
+  font-weight: bold;
+}
+.resource-display-unavailable {
+  background-color: #ffaaaa;
+  border: solid 1px #ff9090;
+}
+.resource-display-name,
+.resource-display-date {
+  font-size: 2.5em;
+  font-weight: bold;
+  color: #585754;
+}
+.resource-display-date {
+  text-align: right;
+  color: #bcbcbc;
+}
+#page-resource-display-resource table.reservations td {
+  line-height: 60px;
+  font-size: 1.1em;
 }
 #resourceDetailsPopup #userDetailsPopup {
   min-width: 300px;
@@ -1155,6 +1206,7 @@ a.toggle-sidebar {
   -moz-border-radius: 2px;
   border-radius: 2px;
   margin-bottom: 5px;
+  background-color: #fff;
 }
 #accessories {
   max-height: 200px;

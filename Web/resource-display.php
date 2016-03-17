@@ -1,7 +1,6 @@
 <?php
-
 /**
- * Copyright 2015 Nick Korbel
+ * Copyright 2016 Nick Korbel
  *
  * This file is part of Booked Scheduler.
  *
@@ -19,14 +18,9 @@
  * along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-class RegistrationNotificationStrategy implements IRegistrationNotificationStrategy
-{
-	public function NotifyAccountCreated(User $user, $password)
-	{
-		if (Configuration::Instance()->GetKey(ConfigKeys::REGISTRATION_NOTIFY, new BooleanConverter()))
-		{
-			ServiceLocator::GetEmailService()->Send(new AccountCreationEmail($user,
-																			 ServiceLocator::GetServer()->GetUserSession()));
-		}
-	}
-}
+define('ROOT_DIR', '../');
+
+require_once(ROOT_DIR . 'Pages/ResourceDisplayPage.php');
+
+$page = new ResourceDisplayPage();
+$page->PageLoad();
