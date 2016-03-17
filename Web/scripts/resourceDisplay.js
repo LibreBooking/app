@@ -67,25 +67,66 @@ function ResourceDisplay(opts) {
 			}
 
 			$('#formReserve').submit();
-		})
-	};
+		});
 
-	function refreshResource() {
-		ajaxGet(url, null, function (data) {
-			$('#placeholder').html(data);
-			var formReserve = $('#formReserve');
-			formReserve.unbind('submit');
-			formReserve.unbind('onValidationFailed');
-			formReserve.bind('onValidationFailed', function () {
-				hideWait();
-				$('.reserveResults').addClass('no-show');
+		var beginIndex = 0;
+
+		function refreshResource() {
+			ajaxGet(url, null, function (data) {
+				$('#placeholder').html(data);
+				var formReserve = $('#formReserve');
+				formReserve.unbind('submit');
+				formReserve.unbind('onValidationFailed');
+				formReserve.bind('onValidationFailed', function () {
+					hideWait();
+					$('.reserveResults').addClass('no-show');
+				});
+
+				ConfigureAsyncForm(formReserve, function () {
+					return formReserve.attr('action');
+				}, afterReserve, null, {onBeforeSubmit: showWait});
+
+				var begin = $('#beginPeriod');
+				var end = $('#endPeriod');
+				beginIndex = begin.find('option:selected').index();
+
+				begin.unbind('change');
+				begin.on('change', function () {
+					var newIndex = begin.find('option:selected').index();
+					var currentEnd = end.find('option:selected').index();
+					var newSelectedEnd = newIndex - beginIndex + currentEnd;
+					var totalNumberOfEnds = end.find('option').length-1;
+					if (newSelectedEnd < 0)
+					{
+						newSelectedEnd = 0;
+					}
+					if (newSelectedEnd > totalNumberOfEnds)
+					{
+						newSelectedEnd = totalNumberOfEnds;
+					}
+					end.prop('selectedIndex', newSelectedEnd);
+					beginIndex = newIndex;
+				})
 			});
 
-			ConfigureAsyncForm(formReserve, function () {
-				return formReserve.attr('action');
-			}, afterReserve, null, {onBeforeSubmit: showWait})
-		});
-	}
+			function afterReserve(data) {
+				var validationErrors = $('#validationErrors');
+				if (data.success)
+				{
+					validationErrors.find('ul').empty().addClass('no-show');
+					refreshResource();
+				}
+				else
+				{
+					validationErrors.find('ul').empty().html($.map(data.errors, function (item) {
+						return "<li>" + item + "</li>";
+					}));
+					validationErrors.removeClass('no-show');
+				}
+				hideWait();
+			}
+		}
+	};
 
 	function showWait() {
 		$('#waitIndicator').removeClass('no-show');
@@ -94,23 +135,6 @@ function ResourceDisplay(opts) {
 
 	function hideWait() {
 		$.unblockUI();
-	}
-
-	function afterReserve(data) {
-		var validationErrors = $('#validationErrors');
-		if (data.success)
-		{
-			validationErrors.find('ul').empty().addClass('no-show');
-			refreshResource();
-		}
-		else
-		{
-			validationErrors.find('ul').empty().html($.map(data.errors, function (item) {
-				return "<li>" + item + "</li>";
-			}));
-			validationErrors.removeClass('no-show');
-		}
-		hideWait();
 	}
 
 	elements.loginButton.click(function (e) {

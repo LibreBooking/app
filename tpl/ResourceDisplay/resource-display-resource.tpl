@@ -108,7 +108,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 			<div class="input-group input-group-lg has-feedback">
 				<span class="input-group-addon" id="starttime-addon"><span
 							class="glyphicon glyphicon-time"></span></span>
-				<select class="form-control" aria-describedby="starttime-addon" {formname key=BEGIN_PERIOD}>
+				<select class="form-control" aria-describedby="starttime-addon" id="beginPeriod" {formname key=BEGIN_PERIOD}>
 					{foreach from=$slots item=slot}
 						{if $slot->IsReservable() && !$slot->IsPastDate($Today)}
 							<option value="{$slot->Begin()}">{$slot->Begin()->Format($TimeFormat)}</option>
@@ -121,7 +121,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 			<div class="input-group input-group-lg">
 				<span class="input-group-addon" id="endtime-addon"><span
 							class="glyphicon glyphicon-time"></span></span>
-				<select class="form-control input-lg" aria-describedby="endtime-addon" {formname key=END_PERIOD}>
+				<select class="form-control input-lg" aria-describedby="endtime-addon" id="endPeriod" {formname key=END_PERIOD}>
 					{foreach from=$slots item=slot}
 						{if $slot->IsReservable() && !$slot->IsPastDate($Today)}
 							<option value="{$slot->End()}">{$slot->End()->Format($TimeFormat)}</option>
