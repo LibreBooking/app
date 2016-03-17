@@ -16,7 +16,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 *}
-{include file='globalheader.tpl' cssFiles='css/calendar.css,scripts/css/fullcalendar.css,css/schedule.css,scripts/css/jqtree.css' printCssFiles='scripts/css/fullcalendar.print.css'}
+{include file='globalheader.tpl' Select2=true Qtip=true Fullcalendar=true}
 
 <div class="page-my-calendar-week">
 

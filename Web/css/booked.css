@@ -692,7 +692,7 @@ input.mid-number {
 .upcomingReservationsDashboard .timespan td {
   font-style: italic;
   color: #000;
-  background-color: #bfd6b8;
+  background-color: #fff8e7;
 }
 .upcomingReservationsDashboard tr.reservation.hover td {
   cursor: pointer;
@@ -1865,6 +1865,116 @@ td.update {
 }
 #install-page input {
   width: 250px;
+}
+.monthCalendar {
+  width: 100%;
+  border-collapse: collapse;
+}
+.monthCalendar a {
+  text-decoration: none;
+}
+.monthCalendar a:hover {
+  text-decoration: underline;
+}
+.monthCalendar,
+.monthCalendar td,
+.monthCalendar th {
+  border: solid 1px #dddddd;
+}
+.dayName th {
+  background-color: #fcfcfc;
+  padding: 3px 0px;
+  width: 14%;
+}
+.monthCalendar td {
+  height: 120px;
+  vertical-align: top;
+  padding: 2px;
+}
+.today {
+  background-color: #FFFFE0;
+}
+.unimportant {
+  background-color: #ededed;
+}
+.hover {
+  cursor: pointer;
+  background-color: #D9E9FA;
+}
+.calendarHeading {
+  color: #666666;
+  border-bottom: solid 1px #666666;
+  padding: 10px 0px 3px 5px;
+  margin-bottom: 10px;
+  font-size: 16pt;
+  font-weight: bold;
+}
+.calendarHeading a {
+  font-weight: normal;
+  font-size: 10pt;
+}
+.noresults {
+  font-style: italic;
+  font-size: 14pt;
+}
+.fc-agenda-allday {
+  display: none;
+}
+#filter {
+  margin: 15px;
+  text-align: center;
+}
+.select2-results .schedule {
+  font-weight: bold;
+}
+.select2-results .resource {
+  padding-left: 15px;
+}
+.calendar-subscription {
+  text-align: right;
+  padding: 10px 0;
+}
+#calendar a,
+#calendar a:visited {
+  color: #fff;
+}
+ul.jqtree-tree li.jqtree-selected > .jqtree-element,
+ul.jqtree-tree li.jqtree-selected > .jqtree-element:hover {
+  background: none;
+  font-weight: bold;
+}
+ul.jqtree-tree .jqtree-toggler {
+  top: 10%;
+}
+#resourceGroupsContainer {
+  background-color: #fff;
+  padding: 10px;
+  display: none;
+  width: 200px;
+  height: 300px;
+  border: solid 1px #999;
+  z-index: 200;
+  position: absolute;
+}
+.groupName {
+  font-size: 1.5em;
+  font-weight: bold;
+}
+#dayDialog {
+  display: none;
+  border-color: #bcbcbc;
+  position: absolute;
+  z-index: 2;
+  padding: 12px;
+}
+#dayDialog a {
+  padding: 0 5px;
+}
+.fc-day {
+  background-color: #fff;
+}
+.fc-day-header {
+  background-color: #fff8e7;
 }
 #custom-report-input {
   font-size: 10pt;

@@ -41,11 +41,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 {csrf_token}
 
-{jsfile src="js/jquery.qtip.min.js"}
 {jsfile src="reservationPopup.js"}
 {jsfile src="calendar.js"}
-{jsfile src="js/fullcalendar.min.js"}
-{jsfile src="js/tree.jquery.js"}
 
 <script type="text/javascript">
 $(document).ready(function() {

@@ -71,7 +71,7 @@
 .upcomingReservationsDashboard .timespan td {
   font-style: italic;
   color: #000;
-  background-color: #bfd6b8;
+  background-color: #fff8e7;
 }
 .upcomingReservationsDashboard tr.reservation.hover td {
   cursor: pointer;

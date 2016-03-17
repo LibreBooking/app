@@ -1614,9 +1614,9 @@ class ReservationItemView implements IReservedItemView
 			}
 		}
 
-		if (!BookedStringHelper::StartsWith($this->_color, '#'))
+		if (!empty($this->_color) && !BookedStringHelper::StartsWith($this->_color, '#'))
 		{
-			$this->_color = "#$color";
+			$this->_color = "#$this->_color";
 		}
 
 		return $this->_color;

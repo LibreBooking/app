@@ -133,6 +133,11 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 	{if $Timepicker}
 		{cssfile src="scripts/css/timePicker.css" rel="stylesheet"}
 	{/if}
+	{if $Fullcalendar}
+		{cssfile src="scripts/css/fullcalendar.css"}
+		<link rel='stylesheet' type='text/css' href='scripts/css/fullcalendar.print.css' media='print'/>
+		{jsfile src="js/fullcalendar.min.js"}
+	{/if}
 	{cssfile src="scripts/css/jquery-ui-timepicker-addon.css"}
 	{cssfile src="nav.css"}
 	{cssfile src="booked.css"}
