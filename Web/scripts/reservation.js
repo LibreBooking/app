@@ -645,16 +645,12 @@ function Reservation(opts) {
 					participation.addInvitedGuest($.trim(email));
 					elements.guestEmail.val('');
 				}
-				else
-				{
-
-				}
-			})
+			});
 		});
 
 		elements.guestEmail.keyup(function (e) {
 			var code = e.keyCode || e.which;
-			if (code == 13)
+			if (code === 13)
 			{
 				elements.addGuestButton.trigger('click');
 			}
@@ -878,7 +874,7 @@ function Reservation(opts) {
 			return;
 		}
 
-		var item = '<div class="user">' + '<a href="#" class="remove"><span class="fa fa-remove"></span></a> ' + emailAddress + opts.guestLabel + '<input type="hidden" class="id" name="guestInvitationList[]" value="' + emailAddress + '" />' + '</div>';
+		var item = '<div class="user">' + '<a href="#" class="remove"><span class="fa fa-remove"></span></a> ' + emailAddress + ' ' + opts.guestLabel + '<input type="hidden" class="id" name="guestInvitationList[]" value="' + emailAddress + '" />' + '</div>';
 
 		elements.inviteeList.append(item);
 
@@ -891,7 +887,7 @@ function Reservation(opts) {
 			return;
 		}
 
-		var item = '<div class="user">' + '<a href="#" class="remove"><span class="fa fa-remove"></span></a> ' + emailAddress + opts.guestLabel + '<input type="hidden" class="id" name="guestParticipationList[]" value="' + emailAddress + '" />' + '</div>';
+		var item = '<div class="user">' + '<a href="#" class="remove"><span class="fa fa-remove"></span></a> ' + emailAddress + ' ' +  opts.guestLabel + '<input type="hidden" class="id" name="guestParticipationList[]" value="' + emailAddress + '" />' + '</div>';
 
 		elements.participantList.append(item);
 
