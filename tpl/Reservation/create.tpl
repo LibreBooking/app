@@ -492,7 +492,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		{/foreach}
 
 		{foreach from=$Accessories item=accessory}
-		reservation.addAccessory('{$accessory->AccessoryId}', '{$accessory->QuantityReserved}', "{$accessory->Name|escape:'javascript'}");
+		reservation.addAccessoryRule("{$accessory->GetName()|escape:'javascript'}", {$accessory->GetId()}, {$resourceAccessory->ResourceId}, {$resourceAccessory->MinQuantity|default:'0'}, {$resourceAccessory->MaxQuantity|default:'0'});
 		{/foreach}
 
 		reservation.addResourceGroups({$ResourceGroupsAsJson});

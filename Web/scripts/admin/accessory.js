@@ -109,11 +109,11 @@ function AccessoryManagement(opts) {
 
 		if (checkbox.is(':checked'))
 		{
-			quantities.show();
+			quantities.removeClass('no-show');
 		}
 		else
 		{
-			quantities.hide();
+			quantities.addClass('no-show');
 		}
 	}
 
@@ -167,5 +167,5 @@ function AccessoryManagement(opts) {
 	AccessoryManagement.prototype.addAccessory = function(id, name, quantity)
 	{
 		accessories[id] = {id: id, name: name, quantity: quantity};
-	}
+	};
 }
