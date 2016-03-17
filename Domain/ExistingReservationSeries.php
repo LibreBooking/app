@@ -564,6 +564,56 @@ class ExistingReservationSeries extends ReservationSeries
 	}
 
 	/**
+	 * @param string $email
+	 */
+	public function AcceptGuestInvitation($email)
+	{
+		/** @var Reservation $instance */
+		foreach ($this->Instances() as $instance)
+		{
+			$wasAccepted = $instance->AcceptGuestInvitation($email);
+			if ($wasAccepted)
+			{
+				$this->RaiseInstanceUpdatedEvent($instance);
+			}
+		}
+	}
+
+	/**
+	 * @param string $email
+	 * @param User $user
+	 */
+	public function AcceptGuestAsUserInvitation($email, $user)
+	{
+		/** @var Reservation $instance */
+		foreach ($this->Instances() as $instance)
+		{
+			$instance->RemoveInvitedGuest($email);
+
+			$instance->WithInvitee($user->Id());
+			$instance->AcceptInvitation($user->Id());
+
+			$this->RaiseInstanceUpdatedEvent($instance);
+		}
+	}
+
+	/**
+	 * @param string $email
+	 */
+	public function DeclineGuestInvitation($email)
+	{
+		/** @var Reservation $instance */
+		foreach ($this->Instances() as $instance)
+		{
+			$wasAccepted = $instance->DeclineGuestInvitation($email);
+			if ($wasAccepted)
+			{
+				$this->RaiseInstanceUpdatedEvent($instance);
+			}
+		}
+	}
+
+	/**
 	 * @param int $participantId
 	 * @return void
 	 */

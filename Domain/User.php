@@ -251,6 +251,14 @@ class User
 		return $this->preferences;
 	}
 
+	/**
+	 * @return bool
+	 */
+	public function IsRegistered()
+	{
+		return !empty($this->id);
+	}
+
 	public function ChangePreference($name, $value)
 	{
 		$this->preferences->Update($name, $value);
@@ -921,6 +929,17 @@ class User
 
 class NullUser extends User
 {
+}
+
+class GuestUser extends User
+{
+	public function __construct($email)
+	{
+		parent::__construct();
+		$this->emailAddress = $email;
+		$this->language = Configuration::Instance()->GetKey(ConfigKeys::LANGUAGE);
+		$this->timezone = Configuration::Instance()->GetDefaultTimezone();
+	}
 }
 
 class UserAttribute

@@ -355,17 +355,6 @@ class Reservation
 		$this->unchangedInvitedGuests[] = $guest;
 	}
 
-//	/**
-//	 * @internal
-//	 * @param string[] $guests
-//	 * @return void
-//	 */
-//	public function WithInvitedGuests($guests)
-//	{
-//		$this->_invitedGuests = $guests;
-//		$this->unchangedInvitedGuests = $guests;
-//	}
-
 	/**
 	 * @param string $guest
 	 */
@@ -374,17 +363,6 @@ class Reservation
 		$this->_participatingGuests[] = $guest;
 		$this->unchangedParticipatingGuests[] = $guest;
 	}
-
-//	/**
-//	 * @internal
-//	 * @param string[] $guests
-//	 * @return void
-//	 */
-//	public function WithParticipatingGuests($guests)
-//	{
-//		$this->_invitedGuests = $guests;
-//		$this->unchangedInvitedGuests = $guests;
-//	}
 
 	/**
 	 * @return array|int[]
@@ -442,6 +420,24 @@ class Reservation
 		$this->_invitedGuests = $invitedGuests;
 
 		return count($this->addedInvitedGuests) + count($this->removedInvitedGuests);
+	}
+
+	/**
+	 * @param string $email
+	 */
+	public function RemoveInvitedGuest($email)
+	{
+		$newInvitees = array();
+
+		foreach ($this->_invitedGuests as $invitee)
+		{
+			if ($invitee != $email)
+			{
+				$newInvitees[] = $invitee;
+			}
+		}
+
+		$this->ChangeInvitedGuests($newInvitees);
 	}
 
 	/**
@@ -510,6 +506,14 @@ class Reservation
 	}
 
 	/**
+	 * @return string[]
+	 */
+	public function ParticipatingGuests()
+	{
+		return $this->_participatingGuests;
+	}
+
+	/**
 	 * @return bool
 	 */
 	public function IsNew()
@@ -566,6 +570,39 @@ class Reservation
 		if (in_array($inviteeId, $this->_inviteeIds))
 		{
 			$this->removedInvitees[] = $inviteeId;
+			return true;
+		}
+
+		return false;
+	}
+
+	/**
+	 * @param string $email
+	 * @return bool whether the invitation was accepted
+	 */
+	public function AcceptGuestInvitation($email)
+	{
+		if (in_array($email, $this->_invitedGuests))
+		{
+			$this->addedParticipatingGuests[] = $email;
+			$this->_participatingGuests[] = $email;
+			$this->removedInvitedGuests[] = $email;
+
+			return true;
+		}
+
+		return false;
+	}
+
+	/**
+	 * @param string $email
+	 * @return bool whether the invitation was declined
+	 */
+	public function DeclineGuestInvitation($email)
+	{
+		if (in_array($email, $this->_invitedGuests))
+		{
+			$this->removedInvitedGuests[] = $email;
 			return true;
 		}
 

@@ -35,6 +35,7 @@ class QueryStringKeys
 	const CONFIG_FILE = 'cf';
 	const DATA_REQUEST = 'dr';
 	const DAY = 'd';
+	const EMAIL = 'e';
 	const END_DATE = 'ed';
 	const FORMAT = 'format';
 	const GROUP_ID = 'gid';

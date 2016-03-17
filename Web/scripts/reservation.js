@@ -638,11 +638,18 @@ function Reservation(opts) {
 		});
 
 		elements.addGuestButton.click(function (e) {
-			if (validateEmail(elements.guestEmail.val()))
-			{
-				participation.addInvitedGuest(elements.guestEmail.val());
-				elements.guestEmail.val('');
-			}
+			var emails = elements.guestEmail.val().split(/[ ,]+/);
+			$.each(emails, function (i, email) {
+				if (validateEmail(email))
+				{
+					participation.addInvitedGuest($.trim(email));
+					elements.guestEmail.val('');
+				}
+				else
+				{
+
+				}
+			})
 		});
 
 		elements.guestEmail.keyup(function (e) {

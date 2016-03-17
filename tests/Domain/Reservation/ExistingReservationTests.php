@@ -1,21 +1,21 @@
 <?php
 /**
-Copyright 2011-2015 Nick Korbel
-
-This file is part of Booked Scheduler.
-
-Booked Scheduler is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-Booked Scheduler is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
+ * Copyright 2011-2015 Nick Korbel
+ *
+ * This file is part of Booked Scheduler.
+ *
+ * Booked Scheduler is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Booked Scheduler is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 require_once(ROOT_DIR . 'Domain/namespace.php');
@@ -532,44 +532,6 @@ class ExistingReservationTests extends TestBase
 		$this->assertEquals(count($unique), count($events));
 	}
 
-	public function testAcceptsInvitesForEachInstance()
-	{
-		$userId = 1;
-
-		$r1 = new TestReservation();
-		$r1->WithInvitees(array($userId));
-		$r1->SetReservationId(100);
-
-		$r2 = new TestReservation();
-		$r2->WithInvitees(array($userId));
-		$r2->SetReservationId(100);
-
-		$r3 = new TestReservation();
-		$r3->WithInvitees(array(10));
-		$r3->SetReservationId(100);
-
-		$builder = new ExistingReservationSeriesBuilder();
-		$builder->WithInstance($r1);
-		$builder->WithInstance($r2);
-		$builder->WithInstance($r3);
-
-		$series = $builder->Build();
-
-		$series->AcceptInvitation($userId);
-
-		$events = $series->GetEvents();
-
-		$this->assertContains($userId, $r1->AddedParticipants());
-		$this->assertContains($userId, $r1->RemovedInvitees());
-
-		$this->assertContains($userId, $r2->AddedParticipants());
-		$this->assertContains($userId, $r2->RemovedInvitees());
-
-		$this->assertTrue(in_array(new InstanceUpdatedEvent($r1, $series), $events));
-		$this->assertTrue(in_array(new InstanceUpdatedEvent($r2, $series), $events));
-		$this->assertFalse(in_array(new InstanceUpdatedEvent($r3, $series), $events));
-	}
-
 	public function testJoinsForEachInstance()
 	{
 		$userId = 1;
@@ -645,6 +607,44 @@ class ExistingReservationTests extends TestBase
 		$this->assertFalse(in_array(new InstanceUpdatedEvent($r3, $series), $events));
 	}
 
+	public function testAcceptsInvitesForEachInstance()
+	{
+		$userId = 1;
+
+		$r1 = new TestReservation();
+		$r1->WithInvitees(array($userId));
+		$r1->SetReservationId(100);
+
+		$r2 = new TestReservation();
+		$r2->WithInvitees(array($userId));
+		$r2->SetReservationId(100);
+
+		$r3 = new TestReservation();
+		$r3->WithInvitees(array(10));
+		$r3->SetReservationId(100);
+
+		$builder = new ExistingReservationSeriesBuilder();
+		$builder->WithInstance($r1);
+		$builder->WithInstance($r2);
+		$builder->WithInstance($r3);
+
+		$series = $builder->Build();
+
+		$series->AcceptInvitation($userId);
+
+		$events = $series->GetEvents();
+
+		$this->assertContains($userId, $r1->AddedParticipants());
+		$this->assertContains($userId, $r1->RemovedInvitees());
+
+		$this->assertContains($userId, $r2->AddedParticipants());
+		$this->assertContains($userId, $r2->RemovedInvitees());
+
+		$this->assertTrue(in_array(new InstanceUpdatedEvent($r1, $series), $events));
+		$this->assertTrue(in_array(new InstanceUpdatedEvent($r2, $series), $events));
+		$this->assertFalse(in_array(new InstanceUpdatedEvent($r3, $series), $events));
+	}
+
 	public function testDeclinesInvitesForEachInstance()
 	{
 		$userId = 1;
@@ -674,6 +674,114 @@ class ExistingReservationTests extends TestBase
 
 		$this->assertContains($userId, $r1->RemovedInvitees());
 		$this->assertContains($userId, $r2->RemovedInvitees());
+
+		$this->assertTrue(in_array(new InstanceUpdatedEvent($r1, $series), $events));
+		$this->assertTrue(in_array(new InstanceUpdatedEvent($r2, $series), $events));
+		$this->assertFalse(in_array(new InstanceUpdatedEvent($r3, $series), $events));
+	}
+
+	public function testAcceptsAsGuestInvitesForEachInstance()
+	{
+		$invitedEmail = 'invited@email.com';
+
+		$r1 = new TestReservation();
+		$r1->WithInvitedGuest($invitedEmail);
+		$r1->SetReservationId(100);
+
+		$r2 = new TestReservation();
+		$r2->WithInvitedGuest($invitedEmail);
+		$r2->SetReservationId(100);
+
+		$r3 = new TestReservation();
+		$r3->WithInvitedGuest('someone@else.com');
+		$r3->SetReservationId(100);
+
+		$builder = new ExistingReservationSeriesBuilder();
+		$builder->WithInstance($r1);
+		$builder->WithInstance($r2);
+		$builder->WithInstance($r3);
+
+		$series = $builder->Build();
+
+		$series->AcceptGuestInvitation($invitedEmail);
+
+		$events = $series->GetEvents();
+
+		$this->assertContains($invitedEmail, $r1->ParticipatingGuests());
+		$this->assertContains($invitedEmail, $r2->ParticipatingGuests());
+
+		$this->assertTrue(in_array(new InstanceUpdatedEvent($r1, $series), $events));
+		$this->assertTrue(in_array(new InstanceUpdatedEvent($r2, $series), $events));
+		$this->assertFalse(in_array(new InstanceUpdatedEvent($r3, $series), $events));
+	}
+
+	public function testAcceptsAsUserInvitesForEachInstance()
+	{
+		$invitedEmail = 'invited@email.com';
+		$user = new FakeUser(1);
+
+		$r1 = new TestReservation();
+		$r1->WithInvitedGuest($invitedEmail);
+		$r1->SetReservationId(100);
+
+		$r2 = new TestReservation();
+		$r2->WithInvitedGuest($invitedEmail);
+		$r2->SetReservationId(100);
+
+		$r3 = new TestReservation();
+		$r3->WithInvitedGuest('someone@else.com');
+		$r3->SetReservationId(100);
+
+		$builder = new ExistingReservationSeriesBuilder();
+		$builder->WithInstance($r1);
+		$builder->WithInstance($r2);
+		$builder->WithInstance($r3);
+
+		$series = $builder->Build();
+
+		$series->AcceptGuestAsUserInvitation($invitedEmail, $user);
+
+		$events = $series->GetEvents();
+
+		$this->assertContains($invitedEmail, $r1->RemovedInvitedGuests());
+		$this->assertContains($invitedEmail, $r2->RemovedInvitedGuests());
+		$this->assertContains($user->Id(), $r1->AddedParticipants());
+		$this->assertContains($user->Id(), $r2->AddedParticipants());
+
+		$this->assertTrue(in_array(new InstanceUpdatedEvent($r1, $series), $events));
+		$this->assertTrue(in_array(new InstanceUpdatedEvent($r2, $series), $events));
+		$this->assertFalse(!in_array(new InstanceUpdatedEvent($r3, $series), $events));
+	}
+
+	public function testDeclinesAsGuestInvitesForEachInstance()
+	{
+		$invitedEmail = 'invited@email.com';
+
+		$r1 = new TestReservation();
+		$r1->WithInvitedGuest($invitedEmail);
+		$r1->SetReservationId(100);
+
+		$r2 = new TestReservation();
+		$r2->WithInvitedGuest($invitedEmail);
+		$r2->SetReservationId(100);
+
+		$r3 = new TestReservation();
+		$r2->WithInvitedGuest('someone@else.com');
+		$r3->SetReservationId(100);
+
+		$builder = new ExistingReservationSeriesBuilder();
+		$builder->WithInstance($r1);
+		$builder->WithInstance($r2);
+		$builder->WithInstance($r3);
+
+		$series = $builder->Build();
+
+		$series->DeclineGuestInvitation($invitedEmail);
+
+		$events = $series->GetEvents();
+
+		$this->assertContains($invitedEmail, $r1->RemovedInvitedGuests());
+		$this->assertContains($invitedEmail, $r2->RemovedInvitedGuests());
 
 		$this->assertTrue(in_array(new InstanceUpdatedEvent($r1, $series), $events));
 		$this->assertTrue(in_array(new InstanceUpdatedEvent($r2, $series), $events));

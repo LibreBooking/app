@@ -29,6 +29,7 @@ class Pages
 	const CALENDAR_SUBSCRIBE_ATOM = 'atom-subscribe.php';
 	const DASHBOARD = 'dashboard.php';
 	const DEFAULT_LOGIN = 'dashboard.php';
+	const GUEST_INVITATION_RESPONSES = 'guest-participation.php';
 	const FORGOT_PASSWORD = 'forgot.php';
 	const GUEST_RESERVATION = 'guest-reservation.php';
 	const INVITATION_RESPONSES = 'participation.php';
@@ -72,5 +73,3 @@ class Pages
 		return self::$_pages;
 	}
 }
-
-?>

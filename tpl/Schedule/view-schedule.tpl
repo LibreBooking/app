@@ -39,7 +39,9 @@ $(document).ready(function() {
 		reservationUrlTemplate: "view-reservation.php?{QueryStringKeys::REFERENCE_NUMBER}=[referenceNumber]",
 		summaryPopupUrl: "ajax/respopup.php",
 		cookieName: "{$CookieName}",
-		scheduleId:"{$ScheduleId}"
+		scheduleId:"{$ScheduleId}",
+		selectedResources: [{','|implode:$ResourceIds}],
+		specificDates: [{foreach from=$SpecificDates item=d}'{$d->Format('Y-m-d')}',{/foreach}]
 	};
 	var schedule = new Schedule(scheduleOptions, {$ResourceGroupsAsJson});
 	{if $AllowGuestBooking}

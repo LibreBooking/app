@@ -53,5 +53,13 @@ class ParticipantUpdatedEmailNotification extends ParticipantAddedEmailNotificat
 				$message = new ParticipantUpdatedEmail($owner, $participant, $reservationSeries, $this->attributeRepository);
 				ServiceLocator::GetEmailService()->Send($message);
 			}
+
+			foreach ($instance->RemovedParticipants() as $userId)
+			{
+				$participant = $this->userRepository->LoadById($userId);
+
+				$message = new ParticipantDeletedEmail($owner, $participant, $reservationSeries, $this->attributeRepository);
+				ServiceLocator::GetEmailService()->Send($message);
+			}
 		}
 }
