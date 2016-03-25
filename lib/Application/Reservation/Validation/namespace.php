@@ -59,3 +59,4 @@ require_once(ROOT_DIR . 'lib/Application/Reservation/Validation/CurrentUserIsRes
 require_once(ROOT_DIR . 'lib/Application/Reservation/Validation/AccessoryResourceRule.php');
 require_once(ROOT_DIR . 'lib/Application/Reservation/Validation/ReservationCanBeCheckedInRule.php');
 require_once(ROOT_DIR . 'lib/Application/Reservation/Validation/ReservationCanBeCheckedOutRule.php');
+require_once(ROOT_DIR . 'lib/Application/Reservation/Validation/CreditsRule.php');

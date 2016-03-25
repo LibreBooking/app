@@ -69,6 +69,7 @@ class FormKeys
 	const CAPTCHA = 'captcha';
 	const CONFLICT_ACTION = 'conflictAction';
 	const CONTACT_INFO = 'contactInfo';
+	const CREDITS = 'CREDITS';
 	const CSS_FILE = 'CSS_FILE';
 	const CSRF_TOKEN = 'CSRF_TOKEN';
 	const CURRENT_PASSWORD = 'currentPassword';
@@ -135,6 +136,7 @@ class FormKeys
 	const PARTICIPANT_ID = 'PARTICIPANT_ID';
 	const PASSWORD = 'password';
 	const PASSWORD_CONFIRM = 'passwordConfirm';
+	const PEAK_CREDITS = 'PEAK_CREDITS';
 	const PERSIST_LOGIN = 'persistLogin';
 	const PHONE = 'phone';
 	const POSITION = 'position';

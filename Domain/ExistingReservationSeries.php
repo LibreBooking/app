@@ -129,7 +129,7 @@ class ExistingReservationSeries extends ReservationSeries
 	public function WithRepeatOptions(IRepeatOptions $repeatOptions)
 	{
 		$this->_originalRepeatOptions = $repeatOptions;
-		$this->_repeatOptions = $repeatOptions;
+		$this->repeatOptions = $repeatOptions;
 	}
 
 	/**
@@ -291,7 +291,7 @@ class ExistingReservationSeries extends ReservationSeries
 		{
 			Log::Debug('Updating recurrence for series %s', $this->SeriesId());
 
-			$this->_repeatOptions = $repeatOptions;
+			$this->repeatOptions = $repeatOptions;
 
 			foreach ($this->instances as $instance)
 			{
@@ -809,5 +809,16 @@ class ExistingReservationSeries extends ReservationSeries
 	public function WithEndReminder(ReservationReminder $reminder)
 	{
 		$this->endReminder = $reminder;
+	}
+
+	public function GetCreditsConsumed()
+	{
+		$consumed = 0;
+		foreach ($this->Instances() as $instance)
+		{
+			$consumed += $instance->GetCreditsConsumed();
+		}
+
+		return $consumed;
 	}
 }

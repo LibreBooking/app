@@ -1,21 +1,22 @@
 <?php
+
 /**
-Copyright 2011-2015 Nick Korbel
-
-This file is part of Booked Scheduler.
-
-Booked Scheduler is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-Booked Scheduler is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
+ * Copyright 2011-2015 Nick Korbel
+ *
+ * This file is part of Booked Scheduler.
+ *
+ * Booked Scheduler is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Booked Scheduler is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 class UserRepositoryTests extends TestBase
@@ -35,12 +36,13 @@ class UserRepositoryTests extends TestBase
 		$timezone = 'UTC';
 		$language = 'en_us';
 		$preferences = 'n1=v1';
+		$creditCount = 100;
 
 		$userRows = array
 		(
-			array(ColumnNames::USER_ID => 1, ColumnNames::FIRST_NAME => "f1", ColumnNames::LAST_NAME => 'l1', ColumnNames::EMAIL => 'e1', ColumnNames::TIMEZONE_NAME => $timezone, ColumnNames::LANGUAGE_CODE => $language),
-			array(ColumnNames::USER_ID => 2, ColumnNames::FIRST_NAME => "f2", ColumnNames::LAST_NAME => 'l2', ColumnNames::EMAIL => 'e2', ColumnNames::TIMEZONE_NAME => $timezone, ColumnNames::LANGUAGE_CODE => $language, ColumnNames::USER_PREFERENCES => $preferences),
-			array(ColumnNames::USER_ID => 3, ColumnNames::FIRST_NAME => "f3", ColumnNames::LAST_NAME => 'l3', ColumnNames::EMAIL => 'e3', ColumnNames::TIMEZONE_NAME => $timezone, ColumnNames::LANGUAGE_CODE => $language),
+				array(ColumnNames::USER_ID => 1, ColumnNames::FIRST_NAME => "f1", ColumnNames::LAST_NAME => 'l1', ColumnNames::EMAIL => 'e1', ColumnNames::TIMEZONE_NAME => $timezone, ColumnNames::LANGUAGE_CODE => $language),
+				array(ColumnNames::USER_ID => 2, ColumnNames::FIRST_NAME => "f2", ColumnNames::LAST_NAME => 'l2', ColumnNames::EMAIL => 'e2', ColumnNames::TIMEZONE_NAME => $timezone, ColumnNames::LANGUAGE_CODE => $language, ColumnNames::USER_PREFERENCES => $preferences, ColumnNames::CREDIT_COUNT => $creditCount),
+				array(ColumnNames::USER_ID => 3, ColumnNames::FIRST_NAME => "f3", ColumnNames::LAST_NAME => 'l3', ColumnNames::EMAIL => 'e3', ColumnNames::TIMEZONE_NAME => $timezone, ColumnNames::LANGUAGE_CODE => $language),
 		);
 
 		$this->db->SetRows($userRows);
@@ -49,7 +51,7 @@ class UserRepositoryTests extends TestBase
 		$users = $userRepository->GetAll();
 
 		$user1 = new UserDto(1, "f1", "l1", "e1", $timezone, $language);
-		$user2 = new UserDto(2, "f2", "l2", "e2", $timezone, $language, $preferences);
+		$user2 = new UserDto(2, "f2", "l2", "e2", $timezone, $language, $preferences, $creditCount);
 		$user3 = new UserDto(3, "f3", "l3", "e3", $timezone, $language);
 
 		$getAllUsersCommand = new GetAllUsersByStatusCommand(AccountStatus::ACTIVE);
@@ -112,9 +114,11 @@ class UserRepositoryTests extends TestBase
 		$row2 = $groupsRows[1];
 		$row3 = $groupsRows[2];
 
-		$group1 = new UserGroup($row1[ColumnNames::GROUP_ID], $row1[ColumnNames::GROUP_NAME], $row1[ColumnNames::GROUP_ADMIN_GROUP_ID], $row1[ColumnNames::ROLE_LEVEL]);
+		$group1 = new UserGroup($row1[ColumnNames::GROUP_ID], $row1[ColumnNames::GROUP_NAME], $row1[ColumnNames::GROUP_ADMIN_GROUP_ID],
+								$row1[ColumnNames::ROLE_LEVEL]);
 		$group1->AddRole($row2[ColumnNames::ROLE_LEVEL]);
-		$group2 = new UserGroup($row3[ColumnNames::GROUP_ID], $row3[ColumnNames::GROUP_NAME], $row3[ColumnNames::GROUP_ADMIN_GROUP_ID], $row3[ColumnNames::ROLE_LEVEL]);
+		$group2 = new UserGroup($row3[ColumnNames::GROUP_ID], $row3[ColumnNames::GROUP_NAME], $row3[ColumnNames::GROUP_ADMIN_GROUP_ID],
+								$row3[ColumnNames::ROLE_LEVEL]);
 
 		$groups = $user->Groups();
 		$this->assertEquals(2, count($groups));
@@ -264,6 +268,7 @@ class UserRepositoryTests extends TestBase
 		$username = 'u';
 		$timezone = 'America/New_York';
 		$scheduleId = 99;
+		$credits = 100;
 
 		$user->ChangePassword($password, $salt);
 		$user->ChangeName($fname, $lname);
@@ -274,10 +279,12 @@ class UserRepositoryTests extends TestBase
 		$user->EnableSubscription();
 		$user->Login($loginTime, $language);
 		$user->ChangeDefaultSchedule($scheduleId);
+		$user->ChangeCurrentCredits($credits);
 
 		$publicId = $user->GetPublicId();
 
-		$command = new UpdateUserCommand($userId, $user->StatusId(), $password, $salt, $fname, $lname, $email, $username, $homepageId, $timezone, $loginTime, true, $publicId, $language, $scheduleId);
+		$command = new UpdateUserCommand($userId, $user->StatusId(), $password, $salt, $fname, $lname, $email, $username, $homepageId, $timezone, $loginTime,
+										 true, $publicId, $language, $scheduleId, $credits);
 
 		$repo = new UserRepository();
 		$repo->Update($user);
@@ -307,6 +314,7 @@ class UserRepositoryTests extends TestBase
 		$this->assertTrue($this->db->ContainsCommand(new AddUserPreferenceCommand($userId, 'pref3', 'val4')));
 
 	}
+
 	public function testOnlyUpdatesPermissionsIfTheyHaveChanged()
 	{
 		$userId = 987;
@@ -450,8 +458,8 @@ class UserRepositoryTests extends TestBase
 		$newId = $repo->Add($user);
 
 		$command = new RegisterUserCommand($userName, $emailAddress, $firstName, $lastName, $password, $passwordSalt,
-			$timezone, $language, Pages::DEFAULT_HOMEPAGE_ID, $phone, $organization, $position, AccountStatus::ACTIVE,
-			$publicId, $scheduleId);
+										   $timezone, $language, Pages::DEFAULT_HOMEPAGE_ID, $phone, $organization, $position, AccountStatus::ACTIVE,
+										   $publicId, $scheduleId);
 
 		$addAttr1Command = new AddAttributeValueCommand($attr1->AttributeId, $attr1->Value, $expectedId, CustomAttributeCategory::USER);
 		$addAttr2Command = new AddAttributeValueCommand($attr2->AttributeId, $attr2->Value, $expectedId, CustomAttributeCategory::USER);
@@ -474,9 +482,9 @@ class UserRepositoryTests extends TestBase
 		$command = new GetAllResourceAdminsCommand($resourceId);
 		$userRows = array
 		(
-			$this->GetUserRow(1, 'admin', 'guy', 'email'),
-			$this->GetUserRow(),
-			$this->GetUserRow(),
+				$this->GetUserRow(1, 'admin', 'guy', 'email'),
+				$this->GetUserRow(),
+				$this->GetUserRow(),
 		);
 
 		$this->db->SetRows($userRows);
@@ -499,9 +507,9 @@ class UserRepositoryTests extends TestBase
 		$command = new GetAllApplicationAdminsCommand();
 		$userRows = array
 		(
-			$this->GetUserRow(1, 'admin', 'guy', 'email'),
-			$this->GetUserRow(),
-			$this->GetUserRow(),
+				$this->GetUserRow(1, 'admin', 'guy', 'email'),
+				$this->GetUserRow(),
+				$this->GetUserRow(),
 		);
 
 		$this->db->SetRows($userRows);
@@ -525,9 +533,9 @@ class UserRepositoryTests extends TestBase
 		$command = new GetAllGroupAdminsCommand($userId);
 		$userRows = array
 		(
-			$this->GetUserRow(1, 'admin', 'guy', 'email'),
-			$this->GetUserRow(),
-			$this->GetUserRow(),
+				$this->GetUserRow(1, 'admin', 'guy', 'email'),
+				$this->GetUserRow(),
+				$this->GetUserRow(),
 		);
 
 		$this->db->SetRows($userRows);
@@ -609,30 +617,32 @@ class UserRepositoryTests extends TestBase
 								$timezone = 'UTC',
 								$statusId = AccountStatus::ACTIVE,
 								$scheduleId = 123,
-								$preferences = null)
+								$preferences = null,
+								$creditCount = null)
 	{
 		$row =
 				array(
-					ColumnNames::USER_ID => $userId,
-					ColumnNames::USERNAME => $userName,
-					ColumnNames::FIRST_NAME => $first,
-					ColumnNames::LAST_NAME => $last,
-					ColumnNames::EMAIL => $email,
-					ColumnNames::LAST_LOGIN => $lastLogin,
-					ColumnNames::LANGUAGE_CODE => 'en_us',
-					ColumnNames::TIMEZONE_NAME => $timezone,
-					ColumnNames::USER_STATUS_ID => $statusId,
-					ColumnNames::PASSWORD => 'encryptedPassword',
-					ColumnNames::SALT => 'passwordsalt',
-					ColumnNames::HOMEPAGE_ID => 3,
-					ColumnNames::PHONE_NUMBER => '123-456-7890',
-					ColumnNames::POSITION => 'head honcho',
-					ColumnNames::ORGANIZATION => 'earth',
-					ColumnNames::USER_CREATED => '2011-01-04 12:12:12',
-					ColumnNames::ALLOW_CALENDAR_SUBSCRIPTION => 1,
-					ColumnNames::PUBLIC_ID => uniqid(),
-					ColumnNames::DEFAULT_SCHEDULE_ID => $scheduleId,
-					ColumnNames::USER_PREFERENCES => $preferences,
+						ColumnNames::USER_ID => $userId,
+						ColumnNames::USERNAME => $userName,
+						ColumnNames::FIRST_NAME => $first,
+						ColumnNames::LAST_NAME => $last,
+						ColumnNames::EMAIL => $email,
+						ColumnNames::LAST_LOGIN => $lastLogin,
+						ColumnNames::LANGUAGE_CODE => 'en_us',
+						ColumnNames::TIMEZONE_NAME => $timezone,
+						ColumnNames::USER_STATUS_ID => $statusId,
+						ColumnNames::PASSWORD => 'encryptedPassword',
+						ColumnNames::SALT => 'passwordsalt',
+						ColumnNames::HOMEPAGE_ID => 3,
+						ColumnNames::PHONE_NUMBER => '123-456-7890',
+						ColumnNames::POSITION => 'head honcho',
+						ColumnNames::ORGANIZATION => 'earth',
+						ColumnNames::USER_CREATED => '2011-01-04 12:12:12',
+						ColumnNames::ALLOW_CALENDAR_SUBSCRIPTION => 1,
+						ColumnNames::PUBLIC_ID => uniqid(),
+						ColumnNames::DEFAULT_SCHEDULE_ID => $scheduleId,
+						ColumnNames::USER_PREFERENCES => $preferences,
+						ColumnNames::CREDIT_COUNT => $creditCount
 				);
 
 		return $row;
@@ -642,8 +652,8 @@ class UserRepositoryTests extends TestBase
 	{
 		$row = array
 		(
-			array(ColumnNames::EVENT_CATEGORY => 'reservation', ColumnNames::EVENT_TYPE => ReservationEvent::Created),
-			array(ColumnNames::EVENT_CATEGORY => 'reservation', ColumnNames::EVENT_TYPE => ReservationEvent::Updated),
+				array(ColumnNames::EVENT_CATEGORY => 'reservation', ColumnNames::EVENT_TYPE => ReservationEvent::Created),
+				array(ColumnNames::EVENT_CATEGORY => 'reservation', ColumnNames::EVENT_TYPE => ReservationEvent::Updated),
 		);
 
 		return $row;
@@ -652,9 +662,9 @@ class UserRepositoryTests extends TestBase
 	private function GetPermissionsRows()
 	{
 		return array(
-			array(ColumnNames::RESOURCE_ID => 1),
-			array(ColumnNames::RESOURCE_ID => 2),
-			array(ColumnNames::RESOURCE_ID => 3),
+				array(ColumnNames::RESOURCE_ID => 1),
+				array(ColumnNames::RESOURCE_ID => 2),
+				array(ColumnNames::RESOURCE_ID => 3),
 		);
 	}
 
@@ -663,26 +673,26 @@ class UserRepositoryTests extends TestBase
 		$groupId1 = 98017;
 		$groupId2 = 128736;
 		return array(
-			array(ColumnNames::GROUP_ID => $groupId1, ColumnNames::GROUP_NAME => 'group1', ColumnNames::GROUP_ADMIN_GROUP_ID => null, ColumnNames::ROLE_LEVEL => RoleLevel::GROUP_ADMIN),
-			array(ColumnNames::GROUP_ID => $groupId1, ColumnNames::GROUP_NAME => 'group1', ColumnNames::GROUP_ADMIN_GROUP_ID => null, ColumnNames::ROLE_LEVEL => RoleLevel::RESOURCE_ADMIN),
-			array(ColumnNames::GROUP_ID => $groupId2, ColumnNames::GROUP_NAME => 'group1', ColumnNames::GROUP_ADMIN_GROUP_ID => $groupId1, ColumnNames::ROLE_LEVEL => RoleLevel::NONE),
+				array(ColumnNames::GROUP_ID => $groupId1, ColumnNames::GROUP_NAME => 'group1', ColumnNames::GROUP_ADMIN_GROUP_ID => null, ColumnNames::ROLE_LEVEL => RoleLevel::GROUP_ADMIN),
+				array(ColumnNames::GROUP_ID => $groupId1, ColumnNames::GROUP_NAME => 'group1', ColumnNames::GROUP_ADMIN_GROUP_ID => null, ColumnNames::ROLE_LEVEL => RoleLevel::RESOURCE_ADMIN),
+				array(ColumnNames::GROUP_ID => $groupId2, ColumnNames::GROUP_NAME => 'group1', ColumnNames::GROUP_ADMIN_GROUP_ID => $groupId1, ColumnNames::ROLE_LEVEL => RoleLevel::NONE),
 		);
 	}
 
 	private function GetOwnedGroupRows()
 	{
 		return array(
-					array(ColumnNames::GROUP_ID => 10000, ColumnNames::GROUP_NAME => 'G1'),
-					array(ColumnNames::GROUP_ID => 20000, ColumnNames::GROUP_NAME => 'G2'),
-				);
+				array(ColumnNames::GROUP_ID => 10000, ColumnNames::GROUP_NAME => 'G1'),
+				array(ColumnNames::GROUP_ID => 20000, ColumnNames::GROUP_NAME => 'G2'),
+		);
 	}
 
 	private function GetPreferenceRows()
 	{
 		return array(
-					array(ColumnNames::USER_ID => 1, ColumnNames::PREFERENCE_NAME => 'n1', ColumnNames::PREFERENCE_VALUE => 'v1'),
-					array(ColumnNames::USER_ID => 1, ColumnNames::PREFERENCE_NAME => 'n2', ColumnNames::PREFERENCE_VALUE => 'v2'),
-				);
+				array(ColumnNames::USER_ID => 1, ColumnNames::PREFERENCE_NAME => 'n1', ColumnNames::PREFERENCE_VALUE => 'v1'),
+				array(ColumnNames::USER_ID => 1, ColumnNames::PREFERENCE_NAME => 'n2', ColumnNames::PREFERENCE_VALUE => 'v2'),
+		);
 	}
 
 	private function GetAttributeRows()

@@ -328,6 +328,18 @@ interface IManageResourcesPage extends IUpdateResourcePage, IActionPage, IPageab
 	 * @return string
 	 */
 	public function GetAutoReleaseMinutes();
+
+	/**
+	 * @return int
+	 */
+	public function GetCredits();
+
+	/**
+	 * @return int
+	 */
+	public function GetPeakCredits();
+
+	public function BindUpdatedResourceCredits(BookableResource $resource);
 }
 
 class ManageResourcesPage extends ActionPage implements IManageResourcesPage
@@ -814,9 +826,6 @@ class ManageResourcesPage extends ActionPage implements IManageResourcesPage
 		$this->Set('ResourceGroupList', $groupList);
 	}
 
-	/**
-	 * @return int[]
-	 */
 	public function GetResourceGroupIds()
 	{
 		$groupIds = $this->GetForm(FormKeys::GROUP_ID);
@@ -828,28 +837,35 @@ class ManageResourcesPage extends ActionPage implements IManageResourcesPage
 		return $groupIds;
 	}
 
-	/**
-	 * @return string
-	 */
 	public function GetColor()
 	{
 		return $this->GetForm(FormKeys::RESERVATION_COLOR);
 	}
 
-	/**
-	 * @return bool
-	 */
 	public function GetEnableCheckin()
 	{
 		return $this->GetCheckbox(FormKeys::ENABLE_CHECK_IN);
 	}
 
-	/**
-	 * @return string
-	 */
 	public function GetAutoReleaseMinutes()
 	{
 		return $this->GetForm(FormKeys::AUTO_RELEASE_MINUTES);
+	}
+
+	public function GetCredits()
+	{
+		return $this->GetForm(FormKeys::CREDITS);
+	}
+
+	public function GetPeakCredits()
+	{
+		return $this->GetForm(FormKeys::PEAK_CREDITS);
+	}
+
+	public function BindUpdatedResourceCredits(BookableResource $resource)
+	{
+		$this->Set('resource', $resource);
+		$this->Display('Admin/Resources/manage_resources_credits.tpl');
 	}
 }
 

@@ -182,6 +182,16 @@ class AddGroupRoleCommand extends SqlCommand
 	}
 }
 
+class AdjustUserCreditsCommand extends SqlCommand
+{
+	public function __construct($userId, $creditsToDeduct)
+	{
+		parent::__construct(Queries::ADJUST_USER_CREDITS);
+		$this->AddParameter(new Parameter(ParameterNames::USER_ID, $userId));
+		$this->AddParameter(new Parameter(ParameterNames::CREDIT_COUNT, $creditsToDeduct));
+	}
+}
+
 class AddLayoutCommand extends SqlCommand
 {
 	public function __construct($timezone)
@@ -2018,7 +2028,8 @@ class UpdateReservationCommand extends SqlCommand
 								Date $endDate,
 								Date $checkinDate,
 								Date $checkoutDate,
-								Date $previousEndDate)
+								Date $previousEndDate,
+								$credits)
 	{
 		parent::__construct(Queries::UPDATE_RESERVATION_INSTANCE);
 
@@ -2029,6 +2040,7 @@ class UpdateReservationCommand extends SqlCommand
 		$this->AddParameter(new Parameter(ParameterNames::CHECKIN_DATE, $checkinDate->ToDatabase()));
 		$this->AddParameter(new Parameter(ParameterNames::CHECKOUT_DATE, $checkoutDate->ToDatabase()));
 		$this->AddParameter(new Parameter(ParameterNames::PREVIOUS_END_DATE, $previousEndDate->ToDatabase()));
+		$this->AddParameter(new Parameter(ParameterNames::CREDIT_COUNT, $credits));
 	}
 }
 
@@ -2088,7 +2100,9 @@ class UpdateResourceCommand extends SqlCommand
 								$color,
 								$checkinEnabled,
 								$autoReleaseMinutes,
-								$isDisplayEnabled)
+								$isDisplayEnabled,
+								$credits,
+								$peakCredits)
 	{
 		parent::__construct(Queries::UPDATE_RESOURCE);
 
@@ -2120,6 +2134,8 @@ class UpdateResourceCommand extends SqlCommand
 		$this->AddParameter(new Parameter(ParameterNames::ENABLE_CHECK_IN, $checkinEnabled));
 		$this->AddParameter(new Parameter(ParameterNames::AUTO_RELEASE_MINUTES, $autoReleaseMinutes));
 		$this->AddParameter(new Parameter(ParameterNames::RESOURCE_ALLOW_DISPLAY, (int)$isDisplayEnabled));
+		$this->AddParameter(new Parameter(ParameterNames::CREDIT_COUNT, $credits));
+		$this->AddParameter(new Parameter(ParameterNames::PEAK_CREDIT_COUNT, $peakCredits));
 
 	}
 }
@@ -2208,7 +2224,8 @@ class UpdateUserCommand extends SqlCommand
 			$allowCalendarSubscription,
 			$publicId,
 			$language,
-			$scheduleId)
+			$scheduleId,
+			$currentCreditCount)
 	{
 		parent::__construct(Queries::UPDATE_USER);
 		$this->AddParameter(new Parameter(ParameterNames::USER_ID, $userId));
@@ -2221,13 +2238,14 @@ class UpdateUserCommand extends SqlCommand
 		$this->AddParameter(new Parameter(ParameterNames::USERNAME, $username));
 		$this->AddParameter(new Parameter(ParameterNames::HOMEPAGE_ID, $homepageId));
 		$this->AddParameter(new Parameter(ParameterNames::TIMEZONE_NAME, $timezoneName));
-		$this->AddParameter(new Parameter(ParameterNames::DATE_MODIFIED, Date::Now()
-																			 ->ToDatabase()));
+		$this->AddParameter(new Parameter(ParameterNames::DATE_MODIFIED, Date::Now()->ToDatabase()));
 		$this->AddParameter(new Parameter(ParameterNames::LAST_LOGIN, $lastLogin));
 		$this->AddParameter(new Parameter(ParameterNames::ALLOW_CALENDAR_SUBSCRIPTION, (int)$allowCalendarSubscription));
 		$this->AddParameter(new Parameter(ParameterNames::PUBLIC_ID, $publicId));
 		$this->AddParameter(new Parameter(ParameterNames::LANGUAGE, $language));
 		$this->AddParameter(new Parameter(ParameterNames::SCHEDULE_ID, $scheduleId));
+		$this->AddParameter(new Parameter(ParameterNames::CREDIT_COUNT, $currentCreditCount));
+
 	}
 }
 

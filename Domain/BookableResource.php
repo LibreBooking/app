@@ -152,6 +152,8 @@ class BookableResource implements IBookableResource
 	protected $_autoReleaseMinutes = null;
 	protected $_color;
 	protected $_textColor;
+	protected $_creditsPerSlot;
+	protected $_peakCreditsPerSlot;
 
 	/**
 	 * @var array|AttributeValue[]
@@ -184,7 +186,7 @@ class BookableResource implements IBookableResource
 		$this->SetDescription($description);
 		$this->SetMinLength($minLength);
 		$this->SetMaxLength($maxLength);
-		$this->SetAutoAssign($autoAssign);
+		$this->_autoAssign = $autoAssign;
 		$this->SetRequiresApproval($requiresApproval);
 		$this->SetAllowMultiday($allowMultiday);
 		$this->SetMaxParticipants($maxParticipants);
@@ -282,6 +284,9 @@ class BookableResource implements IBookableResource
 		{
 			$resource->_isDisplayAllowed = intval($row[ColumnNames::RESOURCE_ALLOW_DISPLAY]);
 		}
+
+		$resource->WithCreditsPerSlot($row[ColumnNames::CREDIT_COUNT]);
+		$resource->WithPeakCreditsPerSlot($row[ColumnNames::PEAK_CREDIT_COUNT]);
 
 		return $resource;
 	}
@@ -1101,6 +1106,52 @@ class BookableResource implements IBookableResource
 	public function GetTextColor()
 	{
 		return $this->_textColor;
+	}
+
+	/**
+	 * @param $creditsPerSlot int
+	 */
+	protected function WithCreditsPerSlot($creditsPerSlot)
+	{
+		$this->_creditsPerSlot = $creditsPerSlot;
+	}
+
+	/**
+	 * @param $creditsPerSlot int
+	 */
+	protected function WithPeakCreditsPerSlot($creditsPerSlot)
+	{
+		$this->_peakCreditsPerSlot = $creditsPerSlot;
+	}
+
+	/**
+	 * @return int
+	 */
+	public function GetCreditsPerSlot()
+	{
+		return empty($this->_creditsPerSlot) ? 0 : $this->_creditsPerSlot;
+	}
+
+	public function GetPeakCreditsPerSlot()
+	{
+		return empty($this->_peakCreditsPerSlot) ? 0 : $this->_peakCreditsPerSlot;
+	}
+
+	/**
+	 * @param $creditsPerSlot int
+	 */
+	public function SetCreditsPerSlot($creditsPerSlot)
+	{
+		Log::Debug('set cps to ' . $creditsPerSlot);
+		$this->_creditsPerSlot = $creditsPerSlot;
+	}
+
+	/**
+	 * @param $creditsPerSlot int
+	 */
+	public function SetPeakCreditsPerSlot($creditsPerSlot)
+	{
+		$this->_peakCreditsPerSlot = $creditsPerSlot;
 	}
 
 }

@@ -237,7 +237,9 @@ class ResourceRepository implements IResourceRepository
 				$resource->GetColor(),
 				$resource->IsCheckInEnabled(),
 				$resource->GetAutoReleaseMinutes(),
-				$resource->GetIsDisplayEnabled()
+				$resource->GetIsDisplayEnabled(),
+				$resource->GetCreditsPerSlot(),
+				$resource->GetPeakCreditsPerSlot()
 		);
 
 		$db->Execute($updateResourceCommand);

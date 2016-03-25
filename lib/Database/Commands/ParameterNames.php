@@ -71,6 +71,7 @@ class ParameterNames
 	const CURRENT_DATE = '@current_date';
 	const CURRENT_SERIES_ID = '@currentSeriesId';
 	const COLOR_RULE_ID = '@reservation_color_rule_id';
+	const CREDIT_COUNT = '@credit_count';
 
 	const DATE_CREATED = '@dateCreated';
 	const DATE_MODIFIED = '@dateModified';
@@ -107,6 +108,7 @@ class ParameterNames
 
 	const PASSWORD = '@password';
 	const PARTICIPANT_ID = '@participant_id';
+	const PEAK_CREDIT_COUNT = '@peak_credit_count';
 	const PERIOD_AVAILABILITY_TYPE = '@periodType';
 	const PERIOD_DAY_OF_WEEK = '@day_of_week';
 	const PERIOD_LABEL = '@label';

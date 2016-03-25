@@ -105,3 +105,9 @@ CREATE TABLE `reservation_guests` (
 )
 		ENGINE =InnoDB
 		DEFAULT CHARACTER SET utf8;
+
+ALTER TABLE `users` ADD COLUMN `credit_count` decimal(7,2) unsigned;
+ALTER TABLE `resources` ADD COLUMN `credit_count` decimal(7,2) unsigned;
+ALTER TABLE `resources` ADD COLUMN `peak_credit_count` decimal(7,2) unsigned;
+ALTER TABLE `reservation_instances` ADD COLUMN `credit_count` decimal(7,2) unsigned;
+

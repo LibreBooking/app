@@ -94,4 +94,9 @@ class TestReservationSeries extends ReservationSeries
 	{
 		$this->AddAttributeValue($attributeValue);
 	}
+
+	public function WithCreditsRequired($credits)
+	{
+		$this->creditsRequired = $credits;
+	}
 }

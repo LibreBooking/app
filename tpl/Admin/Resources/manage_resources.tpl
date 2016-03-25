@@ -362,6 +362,16 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 							</div>
 						</div>
 
+						<div class="col-xs-6">
+							<h5 class="inline">{translate key='Credits'}</h5>
+							<a href="#" class="inline update changeCredits">
+								<span class="fa fa-pencil-square-o"></span>
+							</a>
+							<div class="creditsPlaceHolder">
+								{include file="Admin/Resources/manage_resources_credits.tpl" resource=$resource}
+							</div>
+						</div>
+
 					</div>
 
 					<div class="clearfix"></div>
@@ -677,8 +687,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 							</div>
 							<div class="no-show" id="autoReleaseMinutesDiv">
 								{*<div class="checkbox inline">*}
-									{*<input type="checkbox" {formname key=ENABLE_AUTO_RELEASE} id="enableAutoRelease"/>*}
-									{*<label for="enableAutoRelease"></label>*}
+								{*<input type="checkbox" {formname key=ENABLE_AUTO_RELEASE} id="enableAutoRelease"/>*}
+								{*<label for="enableAutoRelease"></label>*}
 								{*</div>*}
 								{capture name="txtAutoRelease" assign="txtAutoRelease"}
 									<input type='number' max='99' min='0' id='autoReleaseMinutes'
@@ -1163,6 +1173,43 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		<input type="hidden" id="reservationColor" {formname key=RESERVATION_COLOR} />
 	</form>
 
+	<div id="creditsDialog" class="modal" tabindex="-1" role="dialog" aria-labelledby="creditsModalLabel"
+			 aria-hidden="true">
+			<form id="creditsForm" method="post" role="form" ajaxAction="{ManageResourcesActions::ActionChangeCredits}">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+							<h4 class="modal-title" id="creditsModalLabel">{translate key=Credits}</h4>
+						</div>
+						<div class="modal-body">
+							<div>
+							{capture name="creditsPerSLot" assign="creditsPerSLot"}
+								<input type='number' min='0' step='1' id='creditsPerSlot'
+									   class='credits form-control inline' {formname key=CREDITS} />
+							{/capture}
+							{translate key='CreditUsagePerSlot' args=$creditsPerSLot}
+							</div>
+
+							<div>
+							{capture name="peakCreditsPerSlot" assign="peakCreditsPerSlot"}
+								<input type='number' min='0' step='1' id='peakCreditsPerSlot'
+									   class='credits form-control inline' {formname key=PEAK_CREDITS} />
+							{/capture}
+							{translate key='PeakCreditUsagePerSlot' args=$peakCreditsPerSlot}
+							</div>
+						</div>
+
+						<div class="modal-footer">
+							{cancel_button}
+							{update_button}
+							{indicator}
+						</div>
+					</div>
+				</div>
+			</form>
+		</div>
+
 	{csrf_token}
 
 	{jsfile src="ajax-helpers.js"}
@@ -1185,10 +1232,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 		function setUpPopovers() {
 			$('[rel="popover"]').popover({
-				container: 'body',
-				html: true,
-				placement: 'top',
-				content: function () {
+				container: 'body', html: true, placement: 'top', content: function () {
 					var popoverId = $(this).data('popover-content');
 					return $(popoverId).html();
 				}
@@ -1217,8 +1261,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			var updateUrl = '{$smarty.server.SCRIPT_NAME}?action=';
 
 			$('.resourceName').editable({
-				url: updateUrl + '{ManageResourcesActions::ActionRename}',
-				validate: function (value) {
+				url: updateUrl + '{ManageResourcesActions::ActionRename}', validate: function (value) {
 					if ($.trim(value) == '')
 					{
 						return '{translate key=RequiredValue}';
@@ -1227,8 +1270,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			});
 
 			$('.scheduleName').editable({
-				url: updateUrl + '{ManageResourcesActions::ActionChangeSchedule}',
-				source: [
+				url: updateUrl + '{ManageResourcesActions::ActionChangeSchedule}', source: [
 					{foreach from=$Schedules item=scheduleName key=scheduleId}
 					{
 						value:{$scheduleId}, text: '{$scheduleName}'
@@ -1238,12 +1280,9 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			});
 
 			$('.resourceTypeName').editable({
-				url: updateUrl + '{ManageResourcesActions::ActionChangeResourceType}',
-				emptytext: '{translate key=NoResourceTypeLabel}',
-				source: [
-					{
-						value: '0', text: '' //'-- {translate key=None} --'
-					},
+				url: updateUrl + '{ManageResourcesActions::ActionChangeResourceType}', emptytext: '{translate key=NoResourceTypeLabel}', source: [{
+					value: '0', text: '' //'-- {translate key=None} --'
+				},
 					{foreach from=$ResourceTypes item=resourceType key=id}
 					{
 						value:{$id}, text: '{$resourceType->Name()}'
@@ -1253,39 +1292,29 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			});
 
 			$('.sortOrderValue').editable({
-				url: updateUrl + '{ManageResourcesActions::ActionChangeSort}',
-				emptytext: '0',
-				min: 0,
-				max: 999
+				url: updateUrl + '{ManageResourcesActions::ActionChangeSort}', emptytext: '0', min: 0, max: 999
 			});
 
 			$('.locationValue').editable({
-				url: updateUrl + '{ManageResourcesActions::ActionChangeLocation}',
-				emptytext: '{translate key='NoLocationLabel'}'
+				url: updateUrl + '{ManageResourcesActions::ActionChangeLocation}', emptytext: '{translate key='NoLocationLabel'}'
 			});
 
 			$('.contactValue').editable({
-				url: updateUrl + '{ManageResourcesActions::ActionChangeContact}',
-				emptytext: '{translate key='NoContactLabel'}'
+				url: updateUrl + '{ManageResourcesActions::ActionChangeContact}', emptytext: '{translate key='NoContactLabel'}'
 			});
 
 			$('.descriptionValue').editable({
-				url: updateUrl + '{ManageResourcesActions::ActionChangeDescription}',
-				emptytext: '{translate key='NoDescriptionLabel'}'
+				url: updateUrl + '{ManageResourcesActions::ActionChangeDescription}', emptytext: '{translate key='NoDescriptionLabel'}'
 			});
 
 			$('.notesValue').editable({
-				url: updateUrl + '{ManageResourcesActions::ActionChangeNotes}',
-				emptytext: '{translate key='NoDescriptionLabel'}'
+				url: updateUrl + '{ManageResourcesActions::ActionChangeNotes}', emptytext: '{translate key='NoDescriptionLabel'}'
 			});
 
 			$('.resourceAdminValue').editable({
-				url: updateUrl + '{ManageResourcesActions::ActionChangeAdmin}',
-				emptytext: '{translate key=None}',
-				source: [
-					{
-						value: '0', text: ''
-					},
+				url: updateUrl + '{ManageResourcesActions::ActionChangeAdmin}', emptytext: '{translate key=None}', source: [{
+					value: '0', text: ''
+				},
 					{foreach from=$AdminGroups item=group key=scheduleId}
 					{
 						value:{$group->Id()}, text: '{$group->Name()}'
@@ -1295,8 +1324,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			});
 
 			$('.inlineAttribute').editable({
-				url: updateUrl + '{ManageResourcesActions::ActionChangeAttribute}',
-				emptytext: '-'
+				url: updateUrl + '{ManageResourcesActions::ActionChangeAttribute}', emptytext: '-'
 			});
 
 		}
@@ -1348,7 +1376,9 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 				reasonId: '{$resource->GetStatusReasonId()}',
 				allowSubscription: '{$resource->GetIsCalendarSubscriptionAllowed()}',
 				enableCheckin: '{$resource->IsCheckInEnabled()}',
-				autoReleaseMinutes: '{$resource->GetAutoReleaseMinutes()}'
+				autoReleaseMinutes: '{$resource->GetAutoReleaseMinutes()}',
+				credits: '{$resource->GetCreditsPerSlot()}',
+				peakCredits: '{$resource->GetPeakCreditsPerSlot()}'
 			};
 
 			{if $resource->HasMinLength()}

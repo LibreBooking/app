@@ -260,6 +260,10 @@ class ColumnNames
 	const COLOR_ATTRIBUTE_TYPE = 'attribute_type';
 	const COMPARISON_TYPE = 'comparison_type';
 
+	// CURRENT_CREDITS //
+	const CREDIT_COUNT = 'credit_count';
+	const PEAK_CREDIT_COUNT = 'peak_credit_count';
+
 	// dynamic
 	const TOTAL = 'total';
 	const TOTAL_TIME = 'totalTime';

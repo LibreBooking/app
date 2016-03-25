@@ -52,6 +52,11 @@ class ReservationUpdatePresenterTests extends TestBase
 	private $resourceRepository;
 
 	/**
+	 * @var FakeScheduleRepository
+	 */
+	private $scheduleRepository;
+
+	/**
 	 * @var ReservationUpdatePresenter
 	 */
 	private $presenter;
@@ -66,6 +71,7 @@ class ReservationUpdatePresenterTests extends TestBase
 		$this->persistenceService = $this->getMock('IUpdateReservationPersistenceService');
 		$this->handler = $this->getMock('IReservationHandler');
 		$this->resourceRepository = $this->getMock('IResourceRepository');
+		$this->scheduleRepository = new FakeScheduleRepository();
 
 		$this->page = new FakeReservationUpdatePage();
 
@@ -74,6 +80,7 @@ class ReservationUpdatePresenterTests extends TestBase
 				$this->persistenceService,
 				$this->handler,
 				$this->resourceRepository,
+				$this->scheduleRepository,
 				$this->fakeUser);
 	}
 
@@ -84,18 +91,22 @@ class ReservationUpdatePresenterTests extends TestBase
 
 	public function testLoadsExistingReservationAndUpdatesData()
 	{
+		$this->fakeConfig->SetSectionKey(ConfigSection::CREDITS, ConfigKeys::CREDITS_ENABLED, 'true');
+
 		$seriesId = 109809;
 		$expectedSeries = new ExistingReservationSeries();
 		$currentDuration = new DateRange(Date::Now()->AddDays(1), Date::Now()->AddDays(2), 'UTC');
 		$removedResourceId = 190;
 
 		$resource = new FakeBookableResource(1);
+		$resource->SetCreditsPerSlot(1);
+		$resource->SetPeakCreditsPerSlot(1);
 		$additionalId1 = $this->page->resourceIds[0];
 		$additionalId2 = $this->page->resourceIds[1];
 		$additional1 = new FakeBookableResource($additionalId1);
 		$additional2 = new FakeBookableResource($additionalId2);
 
-		$reservation = new Reservation($expectedSeries, $currentDuration);
+		$reservation = new Reservation($expectedSeries, $currentDuration, 1);
 		$expectedSeries->WithId($seriesId);
 		$expectedSeries->WithCurrentInstance($reservation);
 		$expectedSeries->WithPrimaryResource($resource);
@@ -147,10 +158,16 @@ class ReservationUpdatePresenterTests extends TestBase
 		$invitedGuests = array('i1@email.com');
 		$this->page->invitedGuests = $invitedGuests;
 
+		$fakeScheduleLayout = new FakeScheduleLayout();
+		$fakeScheduleLayout->_SlotCount = new SlotCount(1, 2);
+		$this->scheduleRepository->_Layout = $fakeScheduleLayout;
+		$expectedCredits = 162;
+
 		$existingSeries = $this->presenter->BuildReservation();
 
 		$expectedAccessories = array(new ReservationAccessory(1, 2, 'accessoryname'));
 		$expectedAttributes = array(1 => new AttributeValue(1, 'something'));
+
 
 		$this->assertEquals($seriesId, $existingSeries->SeriesId());
 		$this->assertEquals($this->page->seriesUpdateScope, $existingSeries->SeriesUpdateScope());
@@ -176,6 +193,7 @@ class ReservationUpdatePresenterTests extends TestBase
 		$this->assertEquals(ReservationReminder::None(), $existingSeries->GetEndReminder());
 		$this->assertEquals($participatingGuests, $existingSeries->CurrentInstance()->AddedParticipatingGuests());
 		$this->assertEquals($invitedGuests, $existingSeries->CurrentInstance()->AddedInvitedGuests());
+		$this->assertEquals($expectedCredits, $existingSeries->GetCreditsRequired());
 	}
 
 	public function testUsesFirstAdditionalResourceIfPrimaryIsRemoved()

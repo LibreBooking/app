@@ -185,7 +185,10 @@ class ReservationResourceRow
 								$maxNotice = null,
 								$scheduleId = null,
 								$statusId = ResourceStatus::AVAILABLE,
-								$color = null)
+								$color = null,
+								$creditCount = null,
+								$peakCreditCount = null
+	)
 	{
 		$this->seriesId = $seriesId;
 		$this->resourceName = $resourceName;
@@ -204,6 +207,8 @@ class ReservationResourceRow
 		$this->description = null;
 		$this->statusId = $statusId;
 		$this->color = $color;
+		$this->creditCount = $creditCount;
+		$this->peakCreditCount = $peakCreditCount;
 	}
 
 	public function WithPrimary($resourceId)
@@ -249,6 +254,8 @@ class ReservationResourceRow
 			ColumnNames::RESOURCE_SORT_ORDER => null,
 			ColumnNames::RESOURCE_BUFFER_TIME => null,
 			ColumnNames::RESERVATION_COLOR => $this->color,
+			ColumnNames::CREDIT_COUNT => $this->creditCount,
+			ColumnNames::PEAK_CREDIT_COUNT => $this->peakCreditCount,
 		);
 	}
 }

@@ -72,7 +72,12 @@ function ResourceManagement(opts) {
 		autoReleaseMinutesDiv: $('#autoReleaseMinutesDiv'),
 
 		colorForm: $('#colorForm'),
-		reservationColor: $('#reservationColor')
+		reservationColor: $('#reservationColor'),
+
+		creditsDialog: $('#creditsDialog'),
+		creditsForm: $('#creditsForm'),
+		creditsPerSlot: $('#creditsPerSlot'),
+		peakCreditsPerSlot: $('#peakCreditsPerSlot')
 	};
 
 	var resources = {};
@@ -224,6 +229,13 @@ function ResourceManagement(opts) {
 				elements.reservationColor.val('');
 				elements.colorForm.submit();
 			});
+
+			details.find('.changeCredits').click(function (e) {
+				var resource = getActiveResource();
+				elements.creditsPerSlot.val(resource.credits);
+				elements.peakCreditsPerSlot.val(resource.peakCredits);
+				elements.creditsDialog.modal('show');
+			});
 		});
 
 		$(".save").click(function () {
@@ -264,10 +276,7 @@ function ResourceManagement(opts) {
 			elements.bulkUpdateList.empty();
 			$.each(resources, function (i, r) {
 				var checkId = 'bulk' + r.id;
-				items.push('<div class="checkbox checkbox-inline">' +
-						'<input type="checkbox" id="' + checkId + '" name="resourceId[]" checked="checked" value="' + r.id + '" />' +
-						'<label for="' + checkId + '">' + r.name + '</label>' +
-						'</div>');
+				items.push('<div class="checkbox checkbox-inline">' + '<input type="checkbox" id="' + checkId + '" name="resourceId[]" checked="checked" value="' + r.id + '" />' + '<label for="' + checkId + '">' + r.name + '</label>' + '</div>');
 			});
 			$('<div/>', {html: items.join('')}).appendTo(elements.bulkUpdateList);
 
@@ -368,16 +377,17 @@ function ResourceManagement(opts) {
 		ConfigureAsyncForm(elements.imageForm, defaultSubmitCallback(elements.imageForm), null, imageSaveErrorHandler);
 		ConfigureAsyncForm(elements.addForm, defaultSubmitCallback(elements.addForm), null, handleAddError);
 		ConfigureAsyncForm(elements.deleteForm, defaultSubmitCallback(elements.deleteForm));
-		ConfigureAsyncForm(elements.durationForm, defaultSubmitCallback(elements.durationForm), null, onDurationSaved, {onBeforeSerialize: combineIntervals});
-		ConfigureAsyncForm(elements.capacityForm, defaultSubmitCallback(elements.capacityForm), null, onCapacitySaved);
-		ConfigureAsyncForm(elements.accessForm, defaultSubmitCallback(elements.accessForm), null, onAccessSaved, {onBeforeSerialize: combineIntervals});
+		ConfigureAsyncForm(elements.durationForm, defaultSubmitCallback(elements.durationForm), onDurationSaved, null, {onBeforeSerialize: combineIntervals});
+		ConfigureAsyncForm(elements.capacityForm, defaultSubmitCallback(elements.capacityForm), onCapacitySaved);
+		ConfigureAsyncForm(elements.accessForm, defaultSubmitCallback(elements.accessForm), onAccessSaved, null, {onBeforeSerialize: combineIntervals});
 		ConfigureAsyncForm(elements.bulkUpdateForm, defaultSubmitCallback(elements.bulkUpdateForm), null, bulkUpdateErrorHandler, {onBeforeSerialize: combineIntervals});
 		ConfigureAsyncForm(elements.addUserForm, defaultSubmitCallback(elements.addUserForm), changeUsers, errorHandler);
 		ConfigureAsyncForm(elements.removeUserForm, defaultSubmitCallback(elements.removeUserForm), changeUsers, errorHandler);
 		ConfigureAsyncForm(elements.addGroupForm, defaultSubmitCallback(elements.addGroupForm), changeGroups, errorHandler);
 		ConfigureAsyncForm(elements.removeGroupForm, defaultSubmitCallback(elements.removeGroupForm), changeGroups, errorHandler);
-		ConfigureAsyncForm(elements.resourceGroupForm, defaultSubmitCallback(elements.resourceGroupForm), null, onResourceGroupsSaved);
-		ConfigureAsyncForm(elements.colorForm, defaultSubmitCallback(elements.colorForm), function(){});
+		ConfigureAsyncForm(elements.resourceGroupForm, defaultSubmitCallback(elements.resourceGroupForm), onResourceGroupsSaved);
+		ConfigureAsyncForm(elements.colorForm, defaultSubmitCallback(elements.colorForm), function () {});
+		ConfigureAsyncForm(elements.creditsForm, defaultSubmitCallback(elements.creditsForm), onCreditsSaved, null, errorHandler);
 	};
 
 	ResourceManagement.prototype.add = function (resource) {
@@ -401,11 +411,7 @@ function ResourceManagement(opts) {
 
 	ResourceManagement.prototype.addResourceGroups = function (resourceGroups) {
 		elements.groupDiv.tree({
-			data: resourceGroups,
-			saveState: false,
-			dragAndDrop: false,
-			selectable: false,
-			autoOpen: true,
+			data: resourceGroups, saveState: false, dragAndDrop: false, selectable: false, autoOpen: true,
 
 			onCreateLi: function (node, $li) {
 				var span = $li.find('span');
@@ -492,12 +498,12 @@ function ResourceManagement(opts) {
 
 		elements.enableCheckIn.prop('checked', resource.enableCheckin && resource.enableCheckin == "1");
 		elements.autoReleaseMinutes.val(resource.autoReleaseMinutes);
-		showHideAutoRelease()
+		showHideAutoRelease();
 
 		elements.accessDialog.modal('show');
 	};
 
-	var showHideAutoRelease = function() {
+	var showHideAutoRelease = function () {
 		if (!elements.enableCheckIn.is(':checked'))
 		{
 			elements.autoReleaseMinutesDiv.addClass('no-show');
@@ -593,6 +599,20 @@ function ResourceManagement(opts) {
 		elements.resourceGroupDialog.modal('hide');
 	};
 
+	var onCreditsSaved = function (resultHtml) {
+		var resource = getActiveResource();
+		var resourceDiv = $("div[data-resourceId=" + resource.id + "]");
+		resourceDiv.find('.creditsPlaceHolder').html(resultHtml);
+
+		var credits = resourceDiv.find('.creditsPerSlot');
+		var peak = resourceDiv.find('.peakCreditsPerSlot');
+
+		resource.credits = credits.attr('data-value');
+		resource.peakCredits = peak.attr('data-value');
+
+		elements.creditsDialog.modal('hide');
+	};
+
 	var showStatusPrompt = function (e) {
 		var resource = getActiveResource();
 		var statusForm = $('.popover:visible').find('form');
@@ -649,8 +669,7 @@ function ResourceManagement(opts) {
 		{
 			$.each(reasons[statusId], function (i, v) {
 				reasonsElement.append($('<option>', {
-					value: v.id,
-					text: v.description
+					value: v.id, text: v.description
 				}));
 			});
 		}
@@ -748,10 +767,7 @@ function ResourceManagement(opts) {
 		if (allUserList == null)
 		{
 			$.ajax({
-				url: options.userAutocompleteUrl,
-				dataType: 'json',
-				async: false,
-				success: function (data) {
+				url: options.userAutocompleteUrl, dataType: 'json', async: false, success: function (data) {
 					allUserList = data;
 				}
 			});
@@ -818,10 +834,7 @@ function ResourceManagement(opts) {
 		if (allGroupList == null)
 		{
 			$.ajax({
-				url: options.groupAutocompleteUrl,
-				dataType: 'json',
-				async: false,
-				success: function (data) {
+				url: options.groupAutocompleteUrl, dataType: 'json', async: false, success: function (data) {
 					allGroupList = data;
 				}
 			});

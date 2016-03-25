@@ -333,6 +333,20 @@ class Date
 	}
 
 	/**
+	 * Compares the time component of this date to the one passed in
+	 * Returns:
+	 * -1 if this time is less than the passed in time
+	 * 0 if the times are equal
+	 * 1 if this times is greater than the passed in times
+	 * @param Time $time
+	 * @return int comparison result
+	 */
+	public function CompareTimes(Time $time)
+	{
+		return $this->GetTime()->Compare($time);
+	}
+
+	/**
 	 * Compares this date to the one passed in
 	 * @param Date $end
 	 * @return bool if the current object is greater than the one passed in

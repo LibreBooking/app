@@ -38,89 +38,95 @@ class ReservationSavePresenter implements IReservationSavePresenter
 	/**
 	 * @var IReservationSavePage
 	 */
-	private $_page;
+	private $page;
 
 	/**
 	 * @var IReservationPersistenceService
 	 */
-	private $_persistenceService;
+	private $persistenceService;
 
 	/**
 	 * @var IReservationHandler
 	 */
-	private $_handler;
+	private $handler;
 
 	/**
 	 * @var IResourceRepository
 	 */
-	private $_resourceRepository;
+	private $resourceRepository;
 
 	/**
 	 * @var UserSession
 	 */
-	private $_userSession;
+	private $userSession;
+	/**
+	 * @var IScheduleRepository
+	 */
+	private $scheduleRepository;
 
 	public function __construct(
 		IReservationSavePage $page,
 		IReservationPersistenceService $persistenceService,
 		IReservationHandler $handler,
 		IResourceRepository $resourceRepository,
+		IScheduleRepository $scheduleRepository,
 		UserSession $userSession)
 	{
-		$this->_page = $page;
-		$this->_persistenceService = $persistenceService;
-		$this->_handler = $handler;
-		$this->_resourceRepository = $resourceRepository;
-		$this->_userSession = $userSession;
+		$this->page = $page;
+		$this->persistenceService = $persistenceService;
+		$this->handler = $handler;
+		$this->resourceRepository = $resourceRepository;
+		$this->scheduleRepository = $scheduleRepository;
+		$this->userSession = $userSession;
 	}
 
 	public function BuildReservation()
 	{
-		$userId = $this->_page->GetUserId();
-		$primaryResourceId = $this->_page->GetResourceId();
-		$resource = $this->_resourceRepository->LoadById($primaryResourceId);
-		$title = $this->_page->GetTitle();
-		$description = $this->_page->GetDescription();
+		$userId = $this->page->GetUserId();
+		$primaryResourceId = $this->page->GetResourceId();
+		$resource = $this->resourceRepository->LoadById($primaryResourceId);
+		$title = $this->page->GetTitle();
+		$description = $this->page->GetDescription();
 		$roFactory = new RepeatOptionsFactory();
-		$repeatOptions = $roFactory->CreateFromComposite($this->_page, $this->_userSession->Timezone);
+		$repeatOptions = $roFactory->CreateFromComposite($this->page, $this->userSession->Timezone);
 		$duration = $this->GetReservationDuration();
 
-		$reservationSeries = ReservationSeries::Create($userId, $resource, $title, $description, $duration, $repeatOptions, $this->_userSession);
+		$reservationSeries = ReservationSeries::Create($userId, $resource, $title, $description, $duration, $repeatOptions, $this->userSession);
 
-		$resourceIds = $this->_page->GetResources();
+		$resourceIds = $this->page->GetResources();
 		foreach ($resourceIds as $resourceId)
 		{
 			if ($primaryResourceId != $resourceId)
 			{
-				$reservationSeries->AddResource($this->_resourceRepository->LoadById($resourceId));
+				$reservationSeries->AddResource($this->resourceRepository->LoadById($resourceId));
 			}
 		}
 
-		$accessories = $this->_page->GetAccessories();
+		$accessories = $this->page->GetAccessories();
 		foreach ($accessories as $accessory)
 		{
 			$reservationSeries->AddAccessory(new ReservationAccessory($accessory->Id, $accessory->Quantity, $accessory->Name));
 		}
 
-		$attributes = $this->_page->GetAttributes();
+		$attributes = $this->page->GetAttributes();
 		foreach ($attributes as $attribute)
 		{
 			$reservationSeries->AddAttributeValue(new AttributeValue($attribute->Id, $attribute->Value));
 		}
 
-		$participantIds = $this->_page->GetParticipants();
+		$participantIds = $this->page->GetParticipants();
 		$reservationSeries->ChangeParticipants($participantIds);
 
-		$inviteeIds = $this->_page->GetInvitees();
+		$inviteeIds = $this->page->GetInvitees();
 		$reservationSeries->ChangeInvitees($inviteeIds);
 
-		$invitedGuests = $this->_page->GetInvitedGuests();
-		$participatingGuests = $this->_page->GetParticipatingGuests();
+		$invitedGuests = $this->page->GetInvitedGuests();
+		$participatingGuests = $this->page->GetParticipatingGuests();
 		$reservationSeries->ChangeGuests($invitedGuests, $participatingGuests);
 
-		$reservationSeries->AllowParticipation($this->_page->GetAllowParticipation());
+		$reservationSeries->AllowParticipation($this->page->GetAllowParticipation());
 
-		$attachments = $this->_page->GetAttachments();
+		$attachments = $this->page->GetAttachments();
 
 		foreach($attachments as $attachment)
 		{
@@ -138,14 +144,20 @@ class ReservationSavePresenter implements IReservationSavePresenter
 			}
 		}
 
-		if ($this->_page->HasStartReminder())
+		if ($this->page->HasStartReminder())
 		{
-			$reservationSeries->AddStartReminder(new ReservationReminder($this->_page->GetStartReminderValue(), $this->_page->GetStartReminderInterval()));
+			$reservationSeries->AddStartReminder(new ReservationReminder($this->page->GetStartReminderValue(), $this->page->GetStartReminderInterval()));
 		}
 
-		if ($this->_page->HasEndReminder())
+		if ($this->page->HasEndReminder())
 		{
-			$reservationSeries->AddEndReminder(new ReservationReminder($this->_page->GetEndReminderValue(), $this->_page->GetEndReminderInterval()));
+			$reservationSeries->AddEndReminder(new ReservationReminder($this->page->GetEndReminderValue(), $this->page->GetEndReminderInterval()));
+		}
+
+		if (Configuration::Instance()->GetSectionKey(ConfigSection::CREDITS, ConfigKeys::CREDITS_ENABLED, new BooleanConverter()))
+		{
+			$layout = $this->scheduleRepository->GetLayout($reservationSeries->ScheduleId(), new ScheduleLayoutFactory($this->userSession->Timezone));
+			$reservationSeries->CalculateCredits($layout);
 		}
 
 		return $reservationSeries;
@@ -156,15 +168,15 @@ class ReservationSavePresenter implements IReservationSavePresenter
 	 */
 	public function HandleReservation($reservationSeries)
 	{
-		$successfullySaved = $this->_handler->Handle(
+		$successfullySaved = $this->handler->Handle(
 					$reservationSeries,
-					$this->_page);
+					$this->page);
 
 
 		if ($successfullySaved)
 		{
-			$this->_page->SetRequiresApproval($reservationSeries->RequiresApproval());
-			$this->_page->SetReferenceNumber($reservationSeries->CurrentInstance()->ReferenceNumber());
+			$this->page->SetRequiresApproval($reservationSeries->RequiresApproval());
+			$this->page->SetReferenceNumber($reservationSeries->CurrentInstance()->ReferenceNumber());
 		}
 	}
 
@@ -173,12 +185,12 @@ class ReservationSavePresenter implements IReservationSavePresenter
 	 */
 	private function GetReservationDuration()
 	{
-		$startDate = $this->_page->GetStartDate();
-		$startTime = $this->_page->GetStartTime();
-		$endDate = $this->_page->GetEndDate();
-		$endTime = $this->_page->GetEndTime();
+		$startDate = $this->page->GetStartDate();
+		$startTime = $this->page->GetStartTime();
+		$endDate = $this->page->GetEndDate();
+		$endTime = $this->page->GetEndTime();
 
-		$timezone = $this->_userSession->Timezone;
+		$timezone = $this->userSession->Timezone;
 		return DateRange::Create($startDate . ' ' . $startTime, $endDate . ' ' . $endTime, $timezone);
 	}
 }

@@ -52,6 +52,7 @@ class ManageResourcesActions
 	const ActionRemoveGroupPermission = 'removeGroupPermission';
 	const ActionChangeResourceGroups = 'changeResourceGroups';
 	const ActionChangeColor = 'changeColor';
+	const ActionChangeCredits = 'changeCredits';
 }
 
 class ManageResourcesPresenter extends ActionPresenter
@@ -137,6 +138,7 @@ class ManageResourcesPresenter extends ActionPresenter
 		$this->AddAction(ManageResourcesActions::ActionRemoveGroupPermission, 'RemoveGroupPermission');
 		$this->AddAction(ManageResourcesActions::ActionChangeResourceGroups, 'ChangeResourceGroups');
 		$this->AddAction(ManageResourcesActions::ActionChangeColor, 'ChangeColor');
+		$this->AddAction(ManageResourcesActions::ActionChangeCredits, 'ChangeCredits');
 	}
 
 	public function PageLoad()
@@ -733,6 +735,21 @@ class ManageResourcesPresenter extends ActionPresenter
 		$resource->SetColor($color);
 
 		$this->resourceRepository->Update($resource);
+	}
+
+	public function ChangeCredits()
+	{
+		$resourceId = $this->page->GetResourceId();
+		$credits = $this->page->GetCredits();
+		$peakCredits = $this->page->GetPeakCredits();
+
+		$resource = $this->resourceRepository->LoadById($resourceId);
+		$resource->SetCreditsPerSlot($credits);
+		$resource->SetPeakCreditsPerSlot($peakCredits);
+
+		$this->resourceRepository->Update($resource);
+
+		$this->page->BindUpdatedResourceCredits($resource);
 	}
 
 	protected function LoadValidators($action)

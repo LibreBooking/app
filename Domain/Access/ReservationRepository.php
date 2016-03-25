@@ -97,7 +97,8 @@ class ReservationRepository implements IReservationRepository
 																		 $instance->EndDate(),
 																		 $instance->CheckinDate(),
 																		 $instance->CheckoutDate(),
-																		 $instance->PreviousEndDate());
+																		 $instance->PreviousEndDate(),
+																		 $instance->GetCreditsRequired());
 
 				$database->Execute($updateReservationCommand);
 			}
@@ -118,6 +119,17 @@ class ReservationRepository implements IReservationRepository
 			{
 				$this->AddReservationAttachment($attachment);
 			}
+
+			$creditsToDeduct = $reservationSeries->GetCreditsRequired() - $reservationSeries->GetCreditsConsumed();
+
+			Log::Debug('CREDITS - Reservation update adjusting credits for user %s by %s. Required %s, consumed %s',
+					   $reservationSeries->UserId(), $creditsToDeduct, $reservationSeries->GetCreditsRequired(), $reservationSeries->GetCreditsConsumed());
+
+			if ($creditsToDeduct != 0)
+			{
+				$adjustCreditsCommand = new AdjustUserCreditsCommand($reservationSeries->UserId(), $creditsToDeduct);
+				$database->Execute($adjustCreditsCommand);
+			}
 		}
 
 		$this->ExecuteEvents($reservationSeries);
@@ -133,7 +145,8 @@ class ReservationRepository implements IReservationRepository
 
 		$insertReservationSeries = new AddReservationSeriesCommand(Date::Now(), $reservationSeries->Title(), $reservationSeries->Description(),
 																   $reservationSeries->RepeatOptions()->RepeatType(),
-																   $reservationSeries->RepeatOptions()->ConfigurationString(), ReservationTypes::Reservation,
+																   $reservationSeries->RepeatOptions()->ConfigurationString(),
+																   ReservationTypes::Reservation,
 																   $reservationSeries->StatusId(), $reservationSeries->UserId(),
 																   $reservationSeries->GetAllowParticipation());
 
@@ -189,6 +202,17 @@ class ReservationRepository implements IReservationRepository
 
 	public function Delete(ExistingReservationSeries $existingReservationSeries)
 	{
+		$database = ServiceLocator::GetDatabase();
+
+		$creditAdjustment = 0 - $existingReservationSeries->GetCreditsConsumed();
+		if ($creditAdjustment != 0)
+		{
+			Log::Debug('CREDITS - Reservation delete adjusting credits for user %s by %s', $existingReservationSeries->UserId(), $creditAdjustment);
+
+			$adjustCreditsCommand = new AdjustUserCreditsCommand($existingReservationSeries->UserId(), $creditAdjustment);
+			$database->Execute($adjustCreditsCommand);
+		}
+
 		$this->ExecuteEvents($existingReservationSeries);
 	}
 
@@ -763,7 +787,8 @@ class InstanceUpdatedEventCommand extends EventCommand
 																 $this->instance->EndDate(),
 																 $this->instance->CheckinDate(),
 																 $this->instance->CheckoutDate(),
-																 $this->instance->PreviousEndDate());
+																 $this->instance->PreviousEndDate(),
+																 $this->instance->GetCreditsRequired());
 
 		$database->Execute($updateReservationCommand);
 

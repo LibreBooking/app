@@ -74,6 +74,8 @@ class Queries
 	const ADD_GROUP_ROLE =
 			'INSERT INTO group_roles (group_id, role_id) VALUES (@groupid, @roleid)';
 
+	const ADJUST_USER_CREDITS = 'UPDATE users SET credit_count = credit_count - @credit_count WHERE user_id = @userid';
+
 	const ADD_LAYOUT =
 			'INSERT INTO layouts (timezone) VALUES (@timezone)';
 
@@ -119,7 +121,7 @@ class Queries
 		VALUES (@dateCreated, @title, @description, @allow_participation, false, @repeatType, @repeatOptions, @typeid, @statusid, @userid)';
 
 	const ADD_RESERVATION_GUEST =
-				'INSERT INTO reservation_guests (reservation_instance_id, email, reservation_user_level)
+			'INSERT INTO reservation_guests (reservation_instance_id, email, reservation_user_level)
 			VALUES (@reservationid, @email, @levelid)';
 
 	const ADD_RESERVATION_USER =
@@ -687,7 +689,7 @@ class Queries
 		ORDER BY resource_level_id, r.name';
 
 	const GET_RESERVATION_SERIES_GUESTS =
-				'SELECT rg.*, ri.*
+			'SELECT rg.*, ri.*
 			FROM reservation_guests rg
 			INNER JOIN reservation_instances ri ON rg.reservation_instance_id = ri.reservation_instance_id
 			WHERE series_id = @seriesid';
@@ -964,7 +966,8 @@ class Queries
 			end_date = @endDate,
 			checkin_date = @checkin_date,
 			checkout_date = @checkout_date,
-			previous_end_date = @previous_end_date
+			previous_end_date = @previous_end_date,
+			credit_count = @credit_count
 		WHERE
 			reference_number = @referenceNumber';
 
@@ -1012,7 +1015,9 @@ class Queries
 			color = @color,
 			enable_check_in = @enable_check_in,
 			auto_release_minutes = @auto_release_minutes,
-			allow_display = @allow_display
+			allow_display = @allow_display,
+			credit_count = @credit_count,
+			peak_credit_count = @peak_credit_count
 		WHERE
 			resource_id = @resourceid';
 
@@ -1059,7 +1064,8 @@ class Queries
 			public_id = @publicid,
 			language = @language,
 			lastlogin = @lastlogin,
-			default_schedule_id = @scheduleid
+			default_schedule_id = @scheduleid,
+			credit_count = @credit_count
 		WHERE
 			user_id = @userid';
 

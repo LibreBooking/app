@@ -1,21 +1,21 @@
 <?php
 /**
-Copyright 2011-2015 Nick Korbel
-
-This file is part of Booked Scheduler.
-
-Booked Scheduler is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-Booked Scheduler is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
+ * Copyright 2011-2015 Nick Korbel
+ *
+ * This file is part of Booked Scheduler.
+ *
+ * Booked Scheduler is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Booked Scheduler is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 require_once(ROOT_DIR . 'Domain/Values/RoleLevel.php');
@@ -168,7 +168,7 @@ class User
 	 */
 	public function IsInGroup($groupId)
 	{
-		foreach($this->groups as $group)
+		foreach ($this->groups as $group)
 		{
 			if ($group->GroupId == $groupId)
 			{
@@ -655,8 +655,8 @@ class User
 			foreach ($this->groups as $group)
 			{
 				if (
-					($group->GroupId == $resource->GetAdminGroupId()) ||
-					($group->GroupId == $resource->GetScheduleAdminGroupId())
+						($group->GroupId == $resource->GetAdminGroupId()) ||
+						($group->GroupId == $resource->GetScheduleAdminGroupId())
 				)
 				{
 					return true;
@@ -776,6 +776,11 @@ class User
 	 * @var array|AttributeValue[]
 	 */
 	private $_removedAttributeValues = array();
+
+	/**
+	 * @var int
+	 */
+	private $credits;
 
 	/**
 	 * @param $attributes AttributeValue[]|array
@@ -917,13 +922,28 @@ class User
 	}
 
 	/**
-	* @param $attribute AttributeValue
-	*/
+	 * @param $attribute AttributeValue
+	 */
 	public function ChangeCustomAttribute($attribute)
 	{
 		$this->_removedAttributeValues[] = $attribute;
 		$this->_addedAttributeValues[] = $attribute;
 		$this->AddAttributeValue($attribute);
+	}
+
+	public function GetCurrentCredits()
+	{
+		return empty($this->credits) ? 0 : $this->credits;
+	}
+
+	public function WithCredits($credits)
+	{
+		$this->credits = $credits;
+	}
+
+	public function ChangeCurrentCredits($credits)
+	{
+		$this->credits = $credits;
 	}
 }
 

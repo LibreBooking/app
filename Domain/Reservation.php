@@ -89,6 +89,12 @@ class Reservation
 	protected $previousEnd;
 
 	/**
+	 * @var int
+	 */
+	protected $creditsRequired;
+
+
+	/**
 	 * @return Date
 	 */
 	public function PreviousEndDate()
@@ -689,5 +695,35 @@ class Reservation
 	public function WereDatesChanged()
 	{
 		return $this->reservationDatesChanged || empty($this->reservationId);
+	}
+
+	public function GetCreditsRequired()
+	{
+		if ($this->EndDate()->GreaterThan(Date::Now()))
+		{
+			return $this->creditsRequired;
+		}
+		return 0;
+	}
+
+	public function SetCreditsRequired($creditsRequired)
+	{
+		$this->creditsRequired = $creditsRequired;
+	}
+
+	private $creditsConsumed;
+
+	public function WithCreditsConsumed($credits)
+	{
+		$this->creditsConsumed = $credits;
+	}
+
+	public function GetCreditsConsumed()
+	{
+		if ($this->EndDate()->GreaterThan(Date::Now()))
+		{
+			return empty($this->creditsConsumed) ? 0 : $this->creditsConsumed;
+		}
+		return 0;
 	}
 }

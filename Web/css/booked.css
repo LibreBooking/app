@@ -1782,7 +1782,8 @@ td.update {
 }
 .days,
 .hours,
-.minutes {
+.minutes,
+.credits {
   width: 80px;
 }
 .popover {

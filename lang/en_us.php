@@ -568,6 +568,11 @@ class en_us extends Language
 		$strings['Users'] = 'Users';
 		$strings['Guest'] = 'Guest';
 		$strings['ResourceDisplayPrompt'] = 'Resource to Display';
+		$strings['Credits'] = 'Credits';
+		$strings['AvailableCredits'] = 'Available Credits';
+		$strings['CreditUsagePerSlot'] = 'Requires %s credits per slot (off peak)';
+		$strings['PeakCreditUsagePerSlot'] = 'Requires %s credits per slot (peak)';
+		$strings['CreditsRule'] = 'You do not have enough credits. Credits required: %s. Credits in account: %s';
 		// End Strings
 
 		// Install
@@ -818,5 +823,3 @@ class en_us extends Language
 		return 'en';
 	}
 }
-
-?>

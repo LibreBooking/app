@@ -270,8 +270,10 @@ class UserRepository implements IUserRepository, IAccountActivationRepository
 		while ($row = $reader->GetRow())
 		{
 			$preferences = isset($row[ColumnNames::USER_PREFERENCES]) ? $row[ColumnNames::USER_PREFERENCES] : '';
+			$creditCount = isset($row[ColumnNames::CREDIT_COUNT]) ? $row[ColumnNames::CREDIT_COUNT] : '';
+
 			$users[] = new UserDto($row[ColumnNames::USER_ID], $row[ColumnNames::FIRST_NAME], $row[ColumnNames::LAST_NAME], $row[ColumnNames::EMAIL],
-								   $row[ColumnNames::TIMEZONE_NAME], $row[ColumnNames::LANGUAGE_CODE], $preferences);
+								   $row[ColumnNames::TIMEZONE_NAME], $row[ColumnNames::LANGUAGE_CODE], $preferences, $creditCount);
 		}
 
 		return $users;
@@ -329,6 +331,7 @@ class UserRepository implements IUserRepository, IAccountActivationRepository
 			$user->WithEmailPreferences($emailPreferences);
 			$user->WithPermissions($permissions);
 			$user->WithGroups($groups);
+			$user->WithCredits($row[ColumnNames::CREDIT_COUNT]);
 			$this->LoadAttributes($userId, $user);
 
 			if ($user->IsGroupAdmin())
@@ -451,7 +454,8 @@ class UserRepository implements IUserRepository, IAccountActivationRepository
 												   $user->GetIsCalendarSubscriptionAllowed(),
 												   $user->GetPublicId(),
 												   $user->Language(),
-												   $user->GetDefaultScheduleId());
+												   $user->GetDefaultScheduleId(),
+												   $user->GetCurrentCredits());
 		$db->Execute($updateUserCommand);
 
 		$removedPermissions = $user->GetRemovedPermissions();
@@ -762,8 +766,10 @@ class UserDto
 	public $Timezone;
 	public $LanguageCode;
 	public $Preferences;
+	public $CurrentCreditCount;
 
-	public function __construct($userId, $firstName, $lastName, $emailAddress, $timezone = null, $languageCode = null, $preferences = null)
+	public function __construct($userId, $firstName, $lastName, $emailAddress, $timezone = null, $languageCode = null, $preferences = null,
+								$currentCreditCount = null)
 	{
 		$this->UserId = $userId;
 		$this->FirstName = $firstName;
@@ -774,6 +780,7 @@ class UserDto
 		$name = new FullName($this->FirstName(), $this->LastName());
 		$this->FullName = $name->__toString() . " ({$this->EmailAddress})";
 		$this->Preferences = UserPreferences::Parse($preferences)->All();
+		$this->CurrentCreditCount = $currentCreditCount;
 	}
 
 	public function Id()
@@ -811,13 +818,17 @@ class UserDto
 		return $this->LanguageCode;
 	}
 
+	public function CurrentCreditCount()
+	{
+		return $this->CurrentCreditCount;
+	}
 }
 
 class NullUserDto extends UserDto
 {
 	public function __construct()
 	{
-		parent::__construct(0, null, null, null, null, null);
+		parent::__construct(0, null, null, null, null, null, null, null);
 	}
 
 	public function FullName()

@@ -132,14 +132,14 @@ class ReservationSeries
 	/**
 	 * @var IRepeatOptions
 	 */
-	protected $_repeatOptions;
+	protected $repeatOptions;
 
 	/**
 	 * @return IRepeatOptions
 	 */
 	public function RepeatOptions()
 	{
-		return $this->_repeatOptions;
+		return $this->repeatOptions;
 	}
 
 	/**
@@ -245,9 +245,14 @@ class ReservationSeries
 	 */
 	protected $allowParticipation = false;
 
+	/**
+	 * @var int
+	 */
+	protected $creditsRequired = 0;
+
 	protected function __construct()
 	{
-		$this->_repeatOptions = new RepeatNone();
+		$this->repeatOptions = new RepeatNone();
 		$this->startReminder = ReservationReminder::None();
 		$this->endReminder = ReservationReminder::None();
 	}
@@ -297,7 +302,7 @@ class ReservationSeries
 	 */
 	protected function Repeats(IRepeatOptions $repeatOptions)
 	{
-		$this->_repeatOptions = $repeatOptions;
+		$this->repeatOptions = $repeatOptions;
 
 		$dates = $repeatOptions->GetDates($this->CurrentInstance()->Duration()->ToTimezone($this->_bookedBy->Timezone));
 
@@ -647,5 +652,94 @@ class ReservationSeries
 	public function AddEndReminder(ReservationReminder $reminder)
 	{
 		$this->endReminder = $reminder;
+	}
+
+	public function GetCreditsRequired()
+	{
+		return $this->creditsRequired;
+	}
+
+	public function CalculateCredits(IScheduleLayout $layout)
+	{
+		$this->TotalSlots($layout);
+		$creditsRequired = 0;
+		foreach ($this->Instances() as $instance)
+		{
+			$creditsRequired += $instance->GetCreditsRequired();
+		}
+
+		$this->creditsRequired = $creditsRequired;
+	}
+
+	public function TotalSlots(IScheduleLayout $layout)
+	{
+		$slots = 0;
+		foreach ($this->Instances() as $instance)
+		{
+			if ($this->IsMarkedForDelete($instance->ReservationId()))
+			{
+				continue;
+			}
+
+			$instanceSlots = 0;
+			$peakSlots = 0;
+			$startDate = $instance->StartDate();
+			$endDate = $instance->EndDate();
+
+			if ($startDate->DateEquals($endDate))
+			{
+				$count = $layout->GetSlotCount($startDate, $endDate, $startDate, $this->ScheduleId());
+				Log::Debug('SLOT COUNT op %s peak %s', $count->OffPeak, $count->Peak);
+				$instanceSlots += $count->OffPeak;
+				$peakSlots += $count->Peak;
+			}
+			else
+			{
+				for ($date = $startDate; $date->Compare($endDate) <= 0; $date = $date->GetDate()->AddDays(1))
+				{
+					if ($date->DateEquals($startDate))
+					{
+						$count = $layout->GetSlotCount($startDate, $endDate, $startDate->AddDays(1)->GetDate(), $this->ScheduleId());
+						$instanceSlots += $count->OffPeak;
+						$peakSlots += $count->Peak;
+					}
+					else
+					{
+						if ($date->DateEquals($endDate))
+						{
+							$count = $layout->GetSlotCount($endDate->GetDate(), $endDate, $endDate, $this->ScheduleId());
+							$instanceSlots += $count->OffPeak;
+							$peakSlots += $count->Peak;
+						}
+						else
+						{
+							$count = $layout->GetSlotCount($date, $endDate, $date->AddDays(1), $this->ScheduleId());
+							$instanceSlots += $count->OffPeak;
+							$peakSlots += $count->Peak;
+						}
+					}
+				}
+			}
+
+			$creditsRequired = 0;
+			foreach ($this->AllResources() as $resource)
+			{
+				$resourceCredits = $resource->GetCreditsPerSlot();
+				$peakCredits = $resource->GetPeakCreditsPerSlot();
+
+				$creditsRequired += $resourceCredits * $instanceSlots;
+				$creditsRequired += $peakCredits * $peakSlots;
+			}
+			$instance->SetCreditsRequired($creditsRequired);
+
+			$slots += $instanceSlots;
+		}
+
+		return $slots;
+	}
+
+	public function GetCreditsConsumed()
+	{
+		return 0;
 	}
 }

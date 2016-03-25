@@ -499,6 +499,118 @@ class ReservationRepositoryTests extends TestBase
 		$this->assertEquals($updateSeriesCommand, $this->db->_Commands[0]);
 	}
 
+	public function testWhenCreditsConsumedIncreases()
+	{
+		$layout = new FakeScheduleLayout();
+		$layout->_SlotCount = new SlotCount(2, 2);
+		$userId = 10;
+		$title = "new title";
+		$description = "new description";
+
+		$resource = new FakeBookableResource(1);
+		$resource->SetCreditsPerSlot(2);
+		$resource->SetPeakCreditsPerSlot(4);
+
+		$instance = new TestReservation('ref', new DateRange(Date::Now()->AddDays(1), Date::Now()->AddDays(1)->AddHours(1)));
+		$instance->WithCreditsConsumed(10);
+
+		$builder = new ExistingReservationSeriesBuilder();
+		$builder->WithCurrentInstance($instance);
+		$builder->WithPrimaryResource($resource);
+		$existingReservation = $builder->Build();
+
+		$existingReservation->CalculateCredits($layout);
+		$existingReservation->Update($userId, $existingReservation->Resource(), $title, $description, new FakeUserSession());
+
+		$this->repository->Update($existingReservation);
+
+		$this->assertEquals(new AdjustUserCreditsCommand($userId, 2), $this->db->_Commands[1], 'was taking 10, required 12');
+	}
+
+	public function testWhenCreditsConsumedDecreases()
+	{
+		$layout = new FakeScheduleLayout();
+		$layout->_SlotCount = new SlotCount(2, 2);
+		$userId = 10;
+		$title = "new title";
+		$description = "new description";
+
+		$resource = new FakeBookableResource(1);
+		$resource->SetCreditsPerSlot(2);
+		$resource->SetPeakCreditsPerSlot(4);
+
+		$instance = new TestReservation('ref', new DateRange(Date::Now()->AddDays(1), Date::Now()->AddDays(1)->AddHours(1)));
+		$instance->WithCreditsConsumed(14);
+
+		$builder = new ExistingReservationSeriesBuilder();
+		$builder->WithCurrentInstance($instance);
+		$builder->WithPrimaryResource($resource);
+		$existingReservation = $builder->Build();
+
+		$existingReservation->CalculateCredits($layout);
+		$existingReservation->Update($userId, $existingReservation->Resource(), $title, $description, new FakeUserSession());
+
+		$this->repository->Update($existingReservation);
+
+		$this->assertEquals(new AdjustUserCreditsCommand($userId, -2), $this->db->_Commands[1], 'was taking 10, required 12');
+	}
+
+	public function testDoesNotDeductCreditsForPastInstances()
+	{
+		$layout = new FakeScheduleLayout();
+		$layout->_SlotCount = new SlotCount(2, 2);
+		$userId = 10;
+		$title = "new title";
+		$description = "new description";
+
+		$resource = new FakeBookableResource(1);
+		$resource->SetCreditsPerSlot(2);
+		$resource->SetPeakCreditsPerSlot(4);
+
+		$instance = new TestReservation('ref', new DateRange(Date::Now()->AddDays(-2), Date::Now()->AddDays(-1)));
+		$instance->WithCreditsConsumed(10);
+
+		$builder = new ExistingReservationSeriesBuilder();
+		$builder->WithCurrentInstance($instance);
+		$builder->WithPrimaryResource($resource);
+		$existingReservation = $builder->Build();
+
+		$existingReservation->CalculateCredits($layout);
+		$existingReservation->Update($userId, $existingReservation->Resource(), $title, $description, new FakeUserSession());
+
+		$this->repository->Update($existingReservation);
+
+		$this->assertEquals(1, count($this->db->_Commands));
+	}
+
+	public function testDoesNotDeductCreditsForWhenNoChangeInCredits()
+	{
+		$layout = new FakeScheduleLayout();
+		$layout->_SlotCount = new SlotCount(2, 2);
+		$userId = 10;
+		$title = "new title";
+		$description = "new description";
+
+		$resource = new FakeBookableResource(1);
+		$resource->SetCreditsPerSlot(2);
+		$resource->SetPeakCreditsPerSlot(4);
+
+		$instance = new TestReservation('ref', new DateRange(Date::Now()->AddDays(-2), Date::Now()->AddDays(-1)));
+		$instance->WithCreditsConsumed(12);
+
+		$builder = new ExistingReservationSeriesBuilder();
+		$builder->WithCurrentInstance($instance);
+		$builder->WithPrimaryResource($resource);
+		$existingReservation = $builder->Build();
+
+		$existingReservation->CalculateCredits($layout);
+		$existingReservation->Update($userId, $existingReservation->Resource(), $title, $description, new FakeUserSession());
+
+		$this->repository->Update($existingReservation);
+
+		$this->assertEquals(1, count($this->db->_Commands));
+	}
+
 	public function testBranchedSingleInstance()
 	{
 		$seriesId = 10909;
@@ -665,14 +777,17 @@ class ReservationRepositoryTests extends TestBase
 		$builder = new ExistingReservationSeriesBuilder();
 		$builder->WithEvent(new SeriesDeletedEvent($eventSeries));
 		$series = $builder->BuildTestVersion();
+		$series->TestSetCreditsConsumed(10);
 		$series->WithId($seriesId);
 
 		$this->repository->Delete($series);
 
-		$deleteSeriesCommand = new DeleteSeriesCommand($eventSeries->SeriesId(), Date::Now());
+		$deleteSeriesCommand = new DeleteSeriesCommand($series->SeriesId(), Date::Now());
+		$adjustCreditsCommand = new AdjustUserCreditsCommand($series->UserId(), -10);
 
-		$this->assertEquals(1, count($this->db->_Commands));
+		$this->assertEquals(2, count($this->db->_Commands));
 		$this->assertTrue(in_array($deleteSeriesCommand, $this->db->_Commands));
+		$this->assertTrue(in_array($adjustCreditsCommand, $this->db->_Commands));
 	}
 
 	public function testDeleteInstances()
@@ -1085,7 +1200,8 @@ class ReservationRepositoryTests extends TestBase
 				$expectedInstance->EndDate(),
 				$expectedInstance->CheckinDate(),
 				$expectedInstance->CheckoutDate(),
-				$expectedInstance->PreviousEndDate());
+				$expectedInstance->PreviousEndDate(),
+				$expectedInstance->GetCreditsRequired());
 	}
 
 	private function GetAddReservationCommand($expectedSeriesId, Reservation $expectedInstance)

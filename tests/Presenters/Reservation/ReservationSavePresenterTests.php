@@ -59,6 +59,11 @@ class ReservationSavePresenterTests extends TestBase
 	 */
 	private $resourceRepository;
 
+	/**
+	 * @var FakeScheduleRepository
+	 */
+	private $scheduleRepository;
+
 	public function setup()
 	{
 		parent::setup();
@@ -71,12 +76,14 @@ class ReservationSavePresenterTests extends TestBase
 		$this->persistenceService = $this->getMock('IReservationPersistenceService');
 		$this->handler = $this->getMock('IReservationHandler');
 		$this->resourceRepository = $this->getMock('IResourceRepository');
+		$this->scheduleRepository = new FakeScheduleRepository();
 
 		$this->presenter = new ReservationSavePresenter(
 				$this->page,
 				$this->persistenceService,
 				$this->handler,
 				$this->resourceRepository,
+				$this->scheduleRepository,
 				$this->fakeUser);
 	}
 
@@ -87,6 +94,7 @@ class ReservationSavePresenterTests extends TestBase
 
 	public function testCreationBuildsReservationFromPageData()
 	{
+		$this->fakeConfig->SetSectionKey(ConfigSection::CREDITS, ConfigKeys::CREDITS_ENABLED, 'true');
 		$timezone = $this->user->Timezone;
 
 		$userId = $this->page->GetUserId();
@@ -115,6 +123,8 @@ class ReservationSavePresenterTests extends TestBase
 		$this->page->attachment = $attachment;
 
 		$resource = new FakeBookableResource($resourceId, 'r1');
+		$resource->SetCreditsPerSlot(1);
+		$resource->SetPeakCreditsPerSlot(1);
 		$additionalResource1 = new FakeBookableResource($additionalResources[0], 'r2');
 		$additionalResource2 = new FakeBookableResource($additionalResources[1], 'r3');
 
@@ -148,6 +158,11 @@ class ReservationSavePresenterTests extends TestBase
 								 ->with($this->equalTo($additionalResources[1]))
 								 ->will($this->returnValue($additionalResource2));
 
+		$fakeScheduleLayout = new FakeScheduleLayout();
+		$fakeScheduleLayout->_SlotCount = new SlotCount(1, 2);
+		$this->scheduleRepository->_Layout = $fakeScheduleLayout;
+		$expectedCredits = 168;
+
 		$duration = DateRange::Create($startDate . ' ' . $startTime, $endDate . ' ' . $endTime, $timezone);
 
 		$actualReservation = $this->presenter->BuildReservation();
@@ -170,6 +185,7 @@ class ReservationSavePresenterTests extends TestBase
 		$this->assertEquals($endReminder, $actualReservation->GetEndReminder());
 		$this->assertEquals($participatingGuests, $actualReservation->CurrentInstance()->AddedParticipatingGuests());
 		$this->assertEquals($invitedGuests, $actualReservation->CurrentInstance()->AddedInvitedGuests());
+		$this->assertEquals($expectedCredits, $actualReservation->GetCreditsRequired(), '3 credits per slot, 2 day reservation, recurs 28 times');
 	}
 
 	public function testHandlingReservationCreationDelegatesToHandler()

@@ -1,21 +1,21 @@
 <?php
 /**
-Copyright 2011-2015 Nick Korbel
-
-This file is part of Booked Scheduler.
-
-Booked Scheduler is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-Booked Scheduler is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
+ * Copyright 2011-2015 Nick Korbel
+ *
+ * This file is part of Booked Scheduler.
+ *
+ * Booked Scheduler is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Booked Scheduler is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 require_once(ROOT_DIR . 'Domain/Values/DayOfWeek.php');
@@ -43,11 +43,19 @@ interface IScheduleLayout extends ILayoutTimezone, IDailyScheduleLayout
 	public function GetLayout(Date $layoutDate, $hideBlockedPeriods = false);
 
 	/**
-	 * @abstract
 	 * @param Date $date
 	 * @return SchedulePeriod|null period which occurs at this datetime. Includes start time, excludes end time. null if no match is found
 	 */
 	public function GetPeriod(Date $date);
+
+	/**
+	 * @param Date $startDate
+	 * @param Date $endDate
+	 * @param Date $testDate
+	 * @param $scheduleId
+	 * @return SlotCount
+	 */
+	public function GetSlotCount(Date $startDate, Date $endDate, Date $testDate = null, $scheduleId);
 }
 
 interface ILayoutCreation extends ILayoutTimezone, IDailyScheduleLayout
@@ -276,7 +284,7 @@ class ScheduleLayout implements IScheduleLayout, ILayoutCreation
 				$periodEnd = $layoutDate->SetTime($endTime, true);
 			}
 
-			if ($this->SpansMidnight($periodStart, $periodEnd, $layoutDate))
+			if ($this->SpansMidnight($periodStart, $periodEnd))
 			{
 				if ($periodStart->LessThan($midnight))
 				{
@@ -561,6 +569,118 @@ class ScheduleLayout implements IScheduleLayout, ILayoutCreation
 
 		$this->startTimes[$day][$startTime->ToString()] = $startTime->ToString();
 		return true;
+	}
+
+	/**
+	 * @param Date $startDate
+	 * @param Date $endDate
+	 * @param Date $testDate
+	 * @param $scheduleId
+	 * @return SlotCount
+	 */
+	public function GetSlotCount(Date $startDate, Date $endDate, Date $testDate = null, $scheduleId)
+	{
+		$slots = 0;
+		$peakSlots = 0;
+		$start = $startDate->ToTimezone($this->layoutTimezone);
+		$end = $endDate->ToTimezone($this->layoutTimezone);
+		$testDate = $testDate->ToTimezone($this->layoutTimezone);
+
+		$periods = $this->getPeriods($startDate);
+		$peak = new PeakPeriod();
+
+		/** var LayoutPeriod $period */
+		foreach ($periods as $period)
+		{
+			if (!$period->IsReservable())
+			{
+				continue;
+			}
+
+			if ($start->Compare($testDate->SetTime($period->Start)) <= 0 && $end->Compare($testDate->SetTime($period->End)) > 0)
+			{
+				$isPeak = $peak->IsWithinPeak($testDate->SetTime($period->Start), $scheduleId);
+				if ($isPeak)
+				{
+					$peakSlots++;
+				}
+				else
+				{
+					$slots++;
+				}
+			}
+		}
+
+		return new SlotCount($slots, $peakSlots);
+	}
+}
+
+class SlotCount
+{
+	public $OffPeak = 0;
+	public $Peak = 0;
+
+	public function __construct($offPeak, $peak)
+	{
+		$this->OffPeak = $offPeak;
+		$this->Peak = $peak;
+	}
+}
+
+class PeakPeriod
+{
+	public function IsWithinPeak(Date $date, $scheduleId)
+	{
+		$peakPeriods = Configuration::Instance()->GetKey('peak.periods');
+
+		if (empty($peakPeriods))
+		{
+			return false;
+		}
+
+		foreach ($peakPeriods as $period)
+		{
+			if (!isset($period['schedule.id']) || $period['schedule.id'] != $scheduleId)
+			{
+				continue;
+			}
+			$year = $date->Year();
+			$endYear = $year;
+			$startMonth = $period['start.month'];
+			$endMonth = $period['end.month'];
+			$startHour = $period['start.hour'];
+			$weekdays = $period['days.of.week'];
+
+			if (empty($weekdays) || !is_array($weekdays))
+			{
+				$weekdays = null;
+			}
+
+			if ($endMonth <= $startMonth)
+			{
+				$endYear = $year + 1;
+			}
+
+			$peakStart = Date::Create($year, $startMonth, 1, 0, 0, 0, $date->Timezone());
+			$peakEnd = Date::Create($endYear, $endMonth, 1, 0, 0, 0, $date->Timezone());
+
+			if ($date->Compare($peakStart) >= 0 && $date->Compare($peakEnd) <= 0)
+			{
+				$isPeakHour = $date->CompareTimes(new Time($startHour, 0)) >= 0;
+				$isPeakWeekday = true;
+
+				if ($weekdays != null)
+				{
+					$isPeakWeekday = in_array($date->Weekday(), $weekdays);
+				}
+
+				if ($isPeakHour && $isPeakWeekday)
+				{
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 }
 

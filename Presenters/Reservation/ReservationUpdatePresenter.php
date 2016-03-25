@@ -1,21 +1,21 @@
 <?php
 /**
-Copyright 2011-2015 Nick Korbel
-
-This file is part of Booked Scheduler.
-
-Booked Scheduler is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-Booked Scheduler is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
+ * Copyright 2011-2015 Nick Korbel
+ *
+ * This file is part of Booked Scheduler.
+ *
+ * Booked Scheduler is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Booked Scheduler is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 require_once(ROOT_DIR . 'lib/Application/Reservation/namespace.php');
@@ -56,21 +56,28 @@ class ReservationUpdatePresenter implements IReservationUpdatePresenter
 	private $resourceRepository;
 
 	/**
+	 * @var IScheduleRepository
+	 */
+	private $scheduleRepository;
+
+	/**
 	 * @var UserSession
 	 */
 	private $userSession;
 
 	public function __construct(
-		IReservationUpdatePage $page,
-		IUpdateReservationPersistenceService $persistenceService,
-		IReservationHandler $handler,
-		IResourceRepository $resourceRepository,
-		UserSession $userSession)
+			IReservationUpdatePage $page,
+			IUpdateReservationPersistenceService $persistenceService,
+			IReservationHandler $handler,
+			IResourceRepository $resourceRepository,
+			IScheduleRepository $scheduleRepository,
+			UserSession $userSession)
 	{
 		$this->page = $page;
 		$this->persistenceService = $persistenceService;
 		$this->handler = $handler;
 		$this->resourceRepository = $resourceRepository;
+		$this->scheduleRepository = $scheduleRepository;
 		$this->userSession = $userSession;
 	}
 
@@ -94,11 +101,11 @@ class ReservationUpdatePresenter implements IReservationUpdatePresenter
 
 		$resource = $this->resourceRepository->LoadById($resourceId);
 		$existingSeries->Update(
-			$this->page->GetUserId(),
-			$resource,
-			$this->page->GetTitle(),
-			$this->page->GetDescription(),
-			$this->userSession);
+				$this->page->GetUserId(),
+				$resource,
+				$this->page->GetTitle(),
+				$this->page->GetDescription(),
+				$this->userSession);
 
 		$existingSeries->UpdateDuration($this->GetReservationDuration());
 		$roFactory = new RepeatOptionsFactory();
@@ -167,6 +174,12 @@ class ReservationUpdatePresenter implements IReservationUpdatePresenter
 		else
 		{
 			$existingSeries->RemoveEndReminder();
+		}
+
+		if (Configuration::Instance()->GetSectionKey(ConfigSection::CREDITS, ConfigKeys::CREDITS_ENABLED, new BooleanConverter()))
+		{
+			$layout = $this->scheduleRepository->GetLayout($existingSeries->ScheduleId(), new ScheduleLayoutFactory($this->userSession->Timezone));
+			$existingSeries->CalculateCredits($layout);
 		}
 
 		return $existingSeries;

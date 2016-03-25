@@ -188,6 +188,7 @@ class ExistingReservationSeriesBuilder
 class TestHelperExistingReservationSeries extends ExistingReservationSeries
 {
 	public $requiresNewSeries = false;
+	public $_creditsConsumed = 0;
 
 	public function __construct()
 	{
@@ -222,5 +223,17 @@ class TestHelperExistingReservationSeries extends ExistingReservationSeries
 	{
 		$this->_bookedBy = $bookedBy;
 	}
+
+	/**
+	 * @param int $credits
+	 */
+	public function TestSetCreditsConsumed($credits)
+	{
+		$this->_creditsConsumed = $credits;
+	}
+
+	public function GetCreditsConsumed()
+	{
+		return $this->_creditsConsumed;
+	}
 }
-?>
