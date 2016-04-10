@@ -137,10 +137,10 @@ function Recurrence(recurOptions, recurElements, prefix) {
 			elements.repeatInterval.val(options.repeatInterval);
 			for (var i = 0; i < options.repeatWeekdays.length; i++) {
 				var id = '#' + prefix + 'repeatDay' + options.repeatWeekdays[i];
-				$(id).attr('checked', true);
+				$(id).closest('label').button('toggle');
 			}
 
-			$("#" + prefix + "repeatOnMonthlyDiv :radio[value='" + options.repeatMonthlyType + "']").attr('checked', true);
+			$("#" + prefix + "repeatOnMonthlyDiv :radio[value='" + options.repeatMonthlyType + "']").prop('checked', true);
 
 			ChangeRepeatOptions();
 		}
@@ -151,7 +151,7 @@ function Recurrence(recurOptions, recurElements, prefix) {
 			elements.repeatOptions.val(value);
 			elements.repeatOptions.trigger('change');
 			if (disabled) {
-				$('select, input', elements.repeatDiv).attr("disabled", 'disabled');
+				$('select, input', elements.repeatDiv).prop("disabled", 'disabled');
 			}
 			else {
 				$('select, input', elements.repeatDiv).removeAttr("disabled");

@@ -68,11 +68,16 @@ class FakeScheduleLayout implements IScheduleLayout
 	 * @param Date $startDate
 	 * @param Date $endDate
 	 * @param Date $testDate
-	 * @param $scheduleId
 	 * @return SlotCount
+	 * @internal param $scheduleId
 	 */
-	public function GetSlotCount(Date $startDate, Date $endDate, Date $testDate = null, $scheduleId)
+	public function GetSlotCount(Date $startDate, Date $endDate, Date $testDate = null)
 	{
 		return $this->_SlotCount;
+	}
+
+	public function ChangePeakTimes(PeakTimes $peakTimes)
+	{
+		// TODO: Implement ChangePeakTimes() method.
 	}
 }

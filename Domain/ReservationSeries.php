@@ -688,7 +688,7 @@ class ReservationSeries
 
 			if ($startDate->DateEquals($endDate))
 			{
-				$count = $layout->GetSlotCount($startDate, $endDate, $startDate, $this->ScheduleId());
+				$count = $layout->GetSlotCount($startDate, $endDate, $startDate);
 				Log::Debug('SLOT COUNT op %s peak %s', $count->OffPeak, $count->Peak);
 				$instanceSlots += $count->OffPeak;
 				$peakSlots += $count->Peak;
@@ -699,7 +699,7 @@ class ReservationSeries
 				{
 					if ($date->DateEquals($startDate))
 					{
-						$count = $layout->GetSlotCount($startDate, $endDate, $startDate->AddDays(1)->GetDate(), $this->ScheduleId());
+						$count = $layout->GetSlotCount($startDate, $endDate, $startDate->AddDays(1)->GetDate());
 						$instanceSlots += $count->OffPeak;
 						$peakSlots += $count->Peak;
 					}
@@ -707,13 +707,13 @@ class ReservationSeries
 					{
 						if ($date->DateEquals($endDate))
 						{
-							$count = $layout->GetSlotCount($endDate->GetDate(), $endDate, $endDate, $this->ScheduleId());
+							$count = $layout->GetSlotCount($endDate->GetDate(), $endDate, $endDate);
 							$instanceSlots += $count->OffPeak;
 							$peakSlots += $count->Peak;
 						}
 						else
 						{
-							$count = $layout->GetSlotCount($date, $endDate, $date->AddDays(1), $this->ScheduleId());
+							$count = $layout->GetSlotCount($date, $endDate, $date->AddDays(1));
 							$instanceSlots += $count->OffPeak;
 							$peakSlots += $count->Peak;
 						}

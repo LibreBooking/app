@@ -573,6 +573,8 @@ class en_us extends Language
 		$strings['CreditUsagePerSlot'] = 'Requires %s credits per slot (off peak)';
 		$strings['PeakCreditUsagePerSlot'] = 'Requires %s credits per slot (peak)';
 		$strings['CreditsRule'] = 'You do not have enough credits. Credits required: %s. Credits in account: %s';
+		$strings['PeakTimes'] = 'Peak Times';
+		$strings['AllYear'] = 'All Year';
 		// End Strings
 
 		// Install

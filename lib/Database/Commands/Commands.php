@@ -215,6 +215,39 @@ class AddLayoutTimeCommand extends SqlCommand
 	}
 }
 
+
+class AddPeakTimesCommand extends SqlCommand
+{
+	/**
+	 * @param int $scheduleId
+	 * @param bool $allDay
+	 * @param string $beginTime
+	 * @param string $endTime
+	 * @param bool $everyDay
+	 * @param string $peakDays
+	 * @param bool $allYear
+	 * @param int $beginDay
+	 * @param int $beginMonth
+	 * @param int $endDay
+	 * @param int $endMonth
+	 */
+	public function __construct($scheduleId, $allDay, $beginTime, $endTime, $everyDay, $peakDays, $allYear, $beginDay, $beginMonth, $endDay, $endMonth)
+	{
+		parent::__construct(Queries::ADD_PEAK_TIMES);
+		$this->AddParameter(new Parameter(ParameterNames::SCHEDULE_ID, $scheduleId));
+		$this->AddParameter(new Parameter(ParameterNames::PEAK_TIMES_ALL_DAY, (int)$allDay));
+		$this->AddParameter(new Parameter(ParameterNames::PEAK_TIMES_START_TIME, $beginTime));
+		$this->AddParameter(new Parameter(ParameterNames::PEAK_TIMES_END_TIME, $endTime));
+		$this->AddParameter(new Parameter(ParameterNames::PEAK_TIMES_EVERY_DAY, (int)$everyDay));
+		$this->AddParameter(new Parameter(ParameterNames::PEAK_TIMES_DAYS, $peakDays));
+		$this->AddParameter(new Parameter(ParameterNames::PEAK_TIMES_ALL_YEAR, (int)$allYear));
+		$this->AddParameter(new Parameter(ParameterNames::PEAK_TIMES_BEGIN_DAY, $beginDay));
+		$this->AddParameter(new Parameter(ParameterNames::PEAK_TIMES_BEGIN_MONTH, $beginMonth));
+		$this->AddParameter(new Parameter(ParameterNames::PEAK_TIMES_END_DAY, $endDay));
+		$this->AddParameter(new Parameter(ParameterNames::PEAK_TIMES_END_MONTH, $endMonth));
+	}
+}
+
 class AddQuotaCommand extends SqlCommand
 {
 	public function __construct($duration, $limit, $unit, $resourceId, $groupId, $scheduleId, $enforcedStartTime, $enforcedEndTime, $enforcedDays, $scope)
@@ -696,6 +729,15 @@ class DeleteOrphanLayoutsCommand extends SqlCommand
 	public function __construct()
 	{
 		parent::__construct(Queries::DELETE_ORPHAN_LAYOUTS);
+	}
+}
+
+class DeletePeakTimesCommand extends SqlCommand
+{
+	public function __construct($scheduleId)
+	{
+		parent::__construct(Queries::DELETE_PEAK_TIMES);
+		$this->AddParameter(new Parameter(ParameterNames::SCHEDULE_ID, $scheduleId));
 	}
 }
 
@@ -1206,6 +1248,15 @@ class GetLayoutCommand extends SqlCommand
 	public function __construct($scheduleId)
 	{
 		parent::__construct(Queries::GET_SCHEDULE_TIME_BLOCK_GROUPS);
+		$this->AddParameter(new Parameter(ParameterNames::SCHEDULE_ID, $scheduleId));
+	}
+}
+
+class GetPeakTimesCommand extends SqlCommand
+{
+	public function __construct($scheduleId)
+	{
+		parent::__construct(Queries::GET_PEAK_TIMES);
 		$this->AddParameter(new Parameter(ParameterNames::SCHEDULE_ID, $scheduleId));
 	}
 }

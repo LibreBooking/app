@@ -363,13 +363,15 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 						</div>
 
 						<div class="col-xs-6">
-							<h5 class="inline">{translate key='Credits'}</h5>
-							<a href="#" class="inline update changeCredits">
-								<span class="fa fa-pencil-square-o"></span>
-							</a>
-							<div class="creditsPlaceHolder">
-								{include file="Admin/Resources/manage_resources_credits.tpl" resource=$resource}
-							</div>
+							{if $CreditsEnabled}
+								<h5 class="inline">{translate key='Credits'}</h5>
+								<a href="#" class="inline update changeCredits">
+									<span class="fa fa-pencil-square-o"></span>
+								</a>
+								<div class="creditsPlaceHolder">
+									{include file="Admin/Resources/manage_resources_credits.tpl" resource=$resource}
+								</div>
+							{/if}
 						</div>
 
 					</div>

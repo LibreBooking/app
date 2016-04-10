@@ -51,7 +51,7 @@ function ConfigureAsyncForm(formElement, urlCallback, successHandler, responseHa
 				dataType: null,
 				onBeforeSubmit: BeforeFormSubmit,
 				target: null,
-				validationSummary: validationSummary.length > 0 ? validationSummary : $('.validationSummary')
+				validationSummary: validationSummary.length > 0 ? validationSummary : null
 			}, options);
 
 	opts.onBeforeSerialize = BeforeSerializeDecorator(beforeSerialize);

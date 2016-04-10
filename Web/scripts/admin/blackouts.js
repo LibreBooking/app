@@ -239,8 +239,7 @@ function BlackoutManagement(opts) {
 
 	function wireUpTimePickers() {
 		$('.timepicker').timepicker({
-			show24Hours: false
-
+			timeFormat: options.timeFormat
 		});
 	}
 

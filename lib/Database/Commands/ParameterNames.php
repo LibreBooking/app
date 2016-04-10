@@ -109,6 +109,16 @@ class ParameterNames
 	const PASSWORD = '@password';
 	const PARTICIPANT_ID = '@participant_id';
 	const PEAK_CREDIT_COUNT = '@peak_credit_count';
+	const PEAK_TIMES_ALL_DAY = '@all_day';
+	const PEAK_TIMES_START_TIME = '@start_time';
+	const PEAK_TIMES_END_TIME = '@end_time';
+	const PEAK_TIMES_EVERY_DAY = '@every_day';
+	const PEAK_TIMES_DAYS = '@peak_days';
+	const PEAK_TIMES_ALL_YEAR = '@all_year';
+	const PEAK_TIMES_BEGIN_DAY = '@begin_day';
+	const PEAK_TIMES_BEGIN_MONTH = '@begin_month';
+	const PEAK_TIMES_END_DAY = '@end_day';
+	const PEAK_TIMES_END_MONTH = '@end_month';
 	const PERIOD_AVAILABILITY_TYPE = '@periodType';
 	const PERIOD_DAY_OF_WEEK = '@day_of_week';
 	const PERIOD_LABEL = '@label';

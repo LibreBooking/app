@@ -1,21 +1,21 @@
 <?php
 /**
-Copyright 2011-2015 Nick Korbel
-
-This file is part of Booked Scheduler.
-
-Booked Scheduler is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-Booked Scheduler is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
+ * Copyright 2011-2015 Nick Korbel
+ *
+ * This file is part of Booked Scheduler.
+ *
+ * Booked Scheduler is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Booked Scheduler is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 require_once(ROOT_DIR . 'Domain/Access/namespace.php');
@@ -52,12 +52,12 @@ class ScheduleRepositoryTests extends TestBase
 		foreach ($rows as $item)
 		{
 			$schedule = new Schedule(
-				$item[ColumnNames::SCHEDULE_ID],
-				$item[ColumnNames::SCHEDULE_NAME],
-				$item[ColumnNames::SCHEDULE_DEFAULT],
-				$item[ColumnNames::SCHEDULE_WEEKDAY_START],
-				$item[ColumnNames::SCHEDULE_DAYS_VISIBLE],
-				$item[ColumnNames::TIMEZONE_NAME]
+					$item[ColumnNames::SCHEDULE_ID],
+					$item[ColumnNames::SCHEDULE_NAME],
+					$item[ColumnNames::SCHEDULE_DEFAULT],
+					$item[ColumnNames::SCHEDULE_WEEKDAY_START],
+					$item[ColumnNames::SCHEDULE_DAYS_VISIBLE],
+					$item[ColumnNames::TIMEZONE_NAME]
 			);
 			$schedule->SetAdminGroupId($item[ColumnNames::SCHEDULE_ADMIN_GROUP_ID]);
 			$expected[] = $schedule;
@@ -75,30 +75,30 @@ class ScheduleRepositoryTests extends TestBase
 		$timezone = 'America/New_York';
 
 		$layoutRows[] = array(
-			ColumnNames::BLOCK_START => '02:00:00',
-			ColumnNames::BLOCK_END => '03:00:00',
-			ColumnNames::BLOCK_LABEL => 'PERIOD1',
-			ColumnNames::BLOCK_CODE => PeriodTypes::RESERVABLE,
-			ColumnNames::BLOCK_TIMEZONE => $timezone,
-			ColumnNames::BLOCK_DAY_OF_WEEK => null,
+				ColumnNames::BLOCK_START => '02:00:00',
+				ColumnNames::BLOCK_END => '03:00:00',
+				ColumnNames::BLOCK_LABEL => 'PERIOD1',
+				ColumnNames::BLOCK_CODE => PeriodTypes::RESERVABLE,
+				ColumnNames::BLOCK_TIMEZONE => $timezone,
+				ColumnNames::BLOCK_DAY_OF_WEEK => null,
 		);
 
 		$layoutRows[] = array(
-			ColumnNames::BLOCK_START => '03:00:00',
-			ColumnNames::BLOCK_END => '04:00:00',
-			ColumnNames::BLOCK_LABEL => 'PERIOD2',
-			ColumnNames::BLOCK_CODE => PeriodTypes::RESERVABLE,
-			ColumnNames::BLOCK_TIMEZONE => $timezone,
-			ColumnNames::BLOCK_DAY_OF_WEEK => null,
+				ColumnNames::BLOCK_START => '03:00:00',
+				ColumnNames::BLOCK_END => '04:00:00',
+				ColumnNames::BLOCK_LABEL => 'PERIOD2',
+				ColumnNames::BLOCK_CODE => PeriodTypes::RESERVABLE,
+				ColumnNames::BLOCK_TIMEZONE => $timezone,
+				ColumnNames::BLOCK_DAY_OF_WEEK => null,
 		);
 
 		$layoutRows[] = array(
-			ColumnNames::BLOCK_START => '04:00:00',
-			ColumnNames::BLOCK_END => '05:00:00',
-			ColumnNames::BLOCK_LABEL => 'PERIOD3',
-			ColumnNames::BLOCK_CODE => PeriodTypes::NONRESERVABLE,
-			ColumnNames::BLOCK_TIMEZONE => $timezone,
-			ColumnNames::BLOCK_DAY_OF_WEEK => null,
+				ColumnNames::BLOCK_START => '04:00:00',
+				ColumnNames::BLOCK_END => '05:00:00',
+				ColumnNames::BLOCK_LABEL => 'PERIOD3',
+				ColumnNames::BLOCK_CODE => PeriodTypes::NONRESERVABLE,
+				ColumnNames::BLOCK_TIMEZONE => $timezone,
+				ColumnNames::BLOCK_DAY_OF_WEEK => null,
 		);
 
 		$this->db->SetRows($layoutRows);
@@ -109,8 +109,8 @@ class ScheduleRepositoryTests extends TestBase
 		$expectedLayout = new ScheduleLayout($timezone);
 
 		$layoutFactory->expects($this->once())
-				->method('CreateLayout')
-				->will($this->returnValue($expectedLayout));
+					  ->method('CreateLayout')
+					  ->will($this->returnValue($expectedLayout));
 
 		$layout = $this->scheduleRepository->GetLayout($scheduleId, $layoutFactory);
 
@@ -133,39 +133,39 @@ class ScheduleRepositoryTests extends TestBase
 		$timezone = 'America/New_York';
 
 		$layoutRows[] = array(
-			ColumnNames::BLOCK_START => '02:00:00',
-			ColumnNames::BLOCK_END => '03:00:00',
-			ColumnNames::BLOCK_LABEL => 'PERIOD1',
-			ColumnNames::BLOCK_CODE => PeriodTypes::RESERVABLE,
-			ColumnNames::BLOCK_TIMEZONE => $timezone,
-			ColumnNames::BLOCK_DAY_OF_WEEK => DayOfWeek::SUNDAY,
+				ColumnNames::BLOCK_START => '02:00:00',
+				ColumnNames::BLOCK_END => '03:00:00',
+				ColumnNames::BLOCK_LABEL => 'PERIOD1',
+				ColumnNames::BLOCK_CODE => PeriodTypes::RESERVABLE,
+				ColumnNames::BLOCK_TIMEZONE => $timezone,
+				ColumnNames::BLOCK_DAY_OF_WEEK => DayOfWeek::SUNDAY,
 		);
 
 		$layoutRows[] = array(
-			ColumnNames::BLOCK_START => '03:00:00',
-			ColumnNames::BLOCK_END => '04:00:00',
-			ColumnNames::BLOCK_LABEL => 'PERIOD2',
-			ColumnNames::BLOCK_CODE => PeriodTypes::RESERVABLE,
-			ColumnNames::BLOCK_TIMEZONE => $timezone,
-			ColumnNames::BLOCK_DAY_OF_WEEK => DayOfWeek::SUNDAY,
+				ColumnNames::BLOCK_START => '03:00:00',
+				ColumnNames::BLOCK_END => '04:00:00',
+				ColumnNames::BLOCK_LABEL => 'PERIOD2',
+				ColumnNames::BLOCK_CODE => PeriodTypes::RESERVABLE,
+				ColumnNames::BLOCK_TIMEZONE => $timezone,
+				ColumnNames::BLOCK_DAY_OF_WEEK => DayOfWeek::SUNDAY,
 		);
 
 		$layoutRows[] = array(
-			ColumnNames::BLOCK_START => '04:00:00',
-			ColumnNames::BLOCK_END => '05:00:00',
-			ColumnNames::BLOCK_LABEL => 'PERIOD3',
-			ColumnNames::BLOCK_CODE => PeriodTypes::NONRESERVABLE,
-			ColumnNames::BLOCK_TIMEZONE => $timezone,
-			ColumnNames::BLOCK_DAY_OF_WEEK => DayOfWeek::MONDAY,
+				ColumnNames::BLOCK_START => '04:00:00',
+				ColumnNames::BLOCK_END => '05:00:00',
+				ColumnNames::BLOCK_LABEL => 'PERIOD3',
+				ColumnNames::BLOCK_CODE => PeriodTypes::NONRESERVABLE,
+				ColumnNames::BLOCK_TIMEZONE => $timezone,
+				ColumnNames::BLOCK_DAY_OF_WEEK => DayOfWeek::MONDAY,
 		);
 
 		$layoutRows[] = array(
-			ColumnNames::BLOCK_START => '04:00:00',
-			ColumnNames::BLOCK_END => '05:00:00',
-			ColumnNames::BLOCK_LABEL => 'PERIOD3',
-			ColumnNames::BLOCK_CODE => PeriodTypes::NONRESERVABLE,
-			ColumnNames::BLOCK_TIMEZONE => $timezone,
-			ColumnNames::BLOCK_DAY_OF_WEEK => DayOfWeek::TUESDAY,
+				ColumnNames::BLOCK_START => '04:00:00',
+				ColumnNames::BLOCK_END => '05:00:00',
+				ColumnNames::BLOCK_LABEL => 'PERIOD3',
+				ColumnNames::BLOCK_CODE => PeriodTypes::NONRESERVABLE,
+				ColumnNames::BLOCK_TIMEZONE => $timezone,
+				ColumnNames::BLOCK_DAY_OF_WEEK => DayOfWeek::TUESDAY,
 		);
 
 		$this->db->SetRows($layoutRows);
@@ -176,8 +176,8 @@ class ScheduleRepositoryTests extends TestBase
 		$expectedLayout = new ScheduleLayout($timezone);
 
 		$layoutFactory->expects($this->once())
-				->method('CreateLayout')
-				->will($this->returnValue($expectedLayout));
+					  ->method('CreateLayout')
+					  ->will($this->returnValue($expectedLayout));
 
 		$layout = $this->scheduleRepository->GetLayout($scheduleId, $layoutFactory);
 
@@ -201,6 +201,56 @@ class ScheduleRepositoryTests extends TestBase
 		$tuesday = Date::Parse("2013-01-08", $timezone);
 		$periods = $layout->GetLayout($tuesday);
 		$this->assertEquals(1, count($periods));
+	}
+
+	public function testLoadsPeakTimesWithLayout()
+	{
+		$timezone = 'America/New_York';
+		$scheduleId = 109;
+
+		$layoutFactory = $this->getMock('ILayoutFactory');
+		$expectedLayout = new ScheduleLayout($timezone);
+
+		$layoutFactory->expects($this->once())
+					  ->method('CreateLayout')
+					  ->will($this->returnValue($expectedLayout));
+
+		$layoutRows = array(
+						ColumnNames::BLOCK_START => '02:00:00',
+						ColumnNames::BLOCK_END => '03:00:00',
+						ColumnNames::BLOCK_LABEL => 'PERIOD1',
+						ColumnNames::BLOCK_CODE => PeriodTypes::RESERVABLE,
+						ColumnNames::BLOCK_TIMEZONE => $timezone,
+						ColumnNames::BLOCK_DAY_OF_WEEK => DayOfWeek::SUNDAY,
+				);
+		$peakTimeRows = array(ColumnNames::PEAK_ALL_DAY => 0,
+				ColumnNames::PEAK_START_TIME => '08:30 am',
+				ColumnNames::PEAK_END_TIME => '05:45 pm',
+				ColumnNames::PEAK_EVERY_DAY => 0,
+				ColumnNames::PEAK_DAYS => '1,3,5',
+				ColumnNames::PEAK_ALL_YEAR => 0,
+				ColumnNames::PEAK_BEGIN_MONTH => 2,
+				ColumnNames::PEAK_BEGIN_DAY => 22,
+				ColumnNames::PEAK_END_MONTH => 4,
+				ColumnNames::PEAK_END_DAY => 10,
+		);
+		$this->db->SetRow(0, array($layoutRows));
+		$this->db->SetRow(1, array($peakTimeRows));
+
+		$layout = $this->scheduleRepository->GetLayout($scheduleId, $layoutFactory);
+
+		$peakTimes = $layout->GetPeakTimes();
+		
+		$this->assertEquals(false, $peakTimes->IsAllDay());
+		$this->assertEquals(Time::Parse("08:30 am"), $peakTimes->GetBeginTime());
+		$this->assertEquals(Time::Parse("05:45 pm"), $peakTimes->GetEndTime());
+		$this->assertEquals(false, $peakTimes->IsAllDay());
+		$this->assertEquals(array(1,3,5), $peakTimes->GetWeekdays());
+		$this->assertEquals(false, $peakTimes->IsAllYear());
+		$this->assertEquals(2, $peakTimes->GetBeginMonth());
+		$this->assertEquals(22, $peakTimes->GetBeginDay());
+		$this->assertEquals(4, $peakTimes->GetEndMonth());
+		$this->assertEquals(10, $peakTimes->GetEndDay());
 	}
 
 	public function testCanGetScheduleById()
@@ -286,24 +336,24 @@ class ScheduleRepositoryTests extends TestBase
 		$end2 = new Time(0, 0);
 
 		$slots = array(
-			new LayoutPeriod($start1, $end1, PeriodTypes::RESERVABLE, $label1),
-			new LayoutPeriod($start2, $end2, PeriodTypes::NONRESERVABLE),
+				new LayoutPeriod($start1, $end1, PeriodTypes::RESERVABLE, $label1),
+				new LayoutPeriod($start2, $end2, PeriodTypes::NONRESERVABLE),
 		);
 
 		$layout = $this->getMock('ILayoutCreation');
 
 		$layout->expects($this->once())
-				->method('UsesDailyLayouts')
-				->will($this->returnValue(false));
+			   ->method('UsesDailyLayouts')
+			   ->will($this->returnValue(false));
 
 		$layout->expects($this->once())
-				->method('Timezone')
-				->will($this->returnValue($timezone));
+			   ->method('Timezone')
+			   ->will($this->returnValue($timezone));
 
 		$layout->expects($this->once())
-				->method('GetSlots')
-				->with($this->isNull())
-				->will($this->returnValue($slots));
+			   ->method('GetSlots')
+			   ->with($this->isNull())
+			   ->will($this->returnValue($slots));
 
 		$this->db->_ExpectedInsertId = $layoutId;
 
@@ -341,26 +391,26 @@ class ScheduleRepositoryTests extends TestBase
 		$end2 = new Time(0, 0);
 
 		$slots = array(
-			new LayoutPeriod($start1, $end1, PeriodTypes::RESERVABLE, $label1),
-			new LayoutPeriod($start2, $end2, PeriodTypes::NONRESERVABLE),
+				new LayoutPeriod($start1, $end1, PeriodTypes::RESERVABLE, $label1),
+				new LayoutPeriod($start2, $end2, PeriodTypes::NONRESERVABLE),
 		);
 
 		$layout = $this->getMock('ILayoutCreation');
 
 		$layout->expects($this->once())
-				->method('UsesDailyLayouts')
-				->will($this->returnValue(true));
+			   ->method('UsesDailyLayouts')
+			   ->will($this->returnValue(true));
 
 		$layout->expects($this->once())
-				->method('Timezone')
-				->will($this->returnValue($timezone));
+			   ->method('Timezone')
+			   ->will($this->returnValue($timezone));
 
 		foreach (DayOfWeek::Days() as $day)
 		{
 			$layout->expects($this->at($day + 2))
-					->method('GetSlots')
-					->with($this->equalTo($day))
-					->will($this->returnValue($slots));
+				   ->method('GetSlots')
+				   ->with($this->equalTo($day))
+				   ->will($this->returnValue($slots));
 		}
 
 		$this->db->_ExpectedInsertId = $layoutId;

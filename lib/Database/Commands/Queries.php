@@ -87,6 +87,10 @@ class Queries
 			'INSERT INTO quotas (quota_limit, unit, duration, resource_id, group_id, schedule_id, enforced_time_start, enforced_time_end, enforced_days, scope)
 			VALUES (@limit, @unit, @duration, @resourceid, @groupid, @scheduleid, @startTime, @endTime, @enforcedDays, @scope)';
 
+	const ADD_PEAK_TIMES =
+			'INSERT INTO peak_times (schedule_id, all_day, start_time, end_time, every_day, peak_days, all_year, begin_month, begin_day, end_month, end_day)
+			VALUES (@scheduleid, @all_day, @start_time, @end_time, @every_day, @peak_days, @all_year, @begin_month, @begin_day, @end_month, @end_day)';
+
 	const ADD_REMINDER =
 			'INSERT INTO reminders (user_id, address, message, sendtime, refnumber)
 			VALUES (@user_id, @address, @message, @sendtime, @refnumber)';
@@ -224,6 +228,8 @@ class Queries
 	const DELETE_GROUP_ROLE = 'DELETE FROM group_roles WHERE group_id = @groupid AND role_id = @roleid';
 
 	const DELETE_ORPHAN_LAYOUTS = 'DELETE l.* FROM layouts l LEFT JOIN schedules s ON l.layout_id = s.layout_id WHERE s.layout_id IS NULL';
+
+	const DELETE_PEAK_TIMES = 'DELETE FROM peak_times WHERE schedule_id = @scheduleid';
 
 	const DELETE_QUOTA = 'DELETE	FROM quotas	WHERE quota_id = @quotaid';
 
@@ -723,6 +729,8 @@ class Queries
 			tb.layout_id = l.layout_id AND
 			s.schedule_id = @scheduleid
 		ORDER BY tb.start_time';
+
+	const GET_PEAK_TIMES = 'SELECT * FROM peak_times WHERE schedule_id = @scheduleid';
 
 	const GET_SAVED_REPORT = 'SELECT * FROM saved_reports WHERE saved_report_id = @report_id AND user_id = @userid';
 

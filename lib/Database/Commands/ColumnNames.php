@@ -264,6 +264,19 @@ class ColumnNames
 	const CREDIT_COUNT = 'credit_count';
 	const PEAK_CREDIT_COUNT = 'peak_credit_count';
 
+	// PEAK TIMES //
+	const PEAK_TIMES_ID = 'peak_times_id';
+	const PEAK_ALL_DAY = 'all_day';
+	const PEAK_START_TIME = 'start_time';
+	const PEAK_END_TIME = 'end_time';
+	const PEAK_EVERY_DAY = 'every_day';
+	const PEAK_DAYS = 'peak_days';
+	const PEAK_ALL_YEAR = 'all_year';
+	const PEAK_BEGIN_MONTH = 'begin_month';
+	const PEAK_BEGIN_DAY = 'begin_day';
+	const PEAK_END_MONTH = 'end_month';
+	const PEAK_END_DAY = 'end_day';
+
 	// dynamic
 	const TOTAL = 'total';
 	const TOTAL_TIME = 'totalTime';

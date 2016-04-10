@@ -254,7 +254,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 				editUrl: '{$smarty.server.SCRIPT_NAME}?action={ManageBlackoutsActions::LOAD}&{QueryStringKeys::BLACKOUT_ID}=',
 				updateUrl: '{$smarty.server.SCRIPT_NAME}?action={ManageBlackoutsActions::UPDATE}',
 				reservationUrlTemplate: "{$Path}reservation.php?{QueryStringKeys::REFERENCE_NUMBER}=[refnum]",
-				popupUrl: "{$Path}ajax/respopup.php"
+				popupUrl: "{$Path}ajax/respopup.php",
+				timeFormat: '{$TimeFormat}'
 			};
 
 			var recurOpts = {

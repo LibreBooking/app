@@ -136,7 +136,17 @@ class FormKeys
 	const PARTICIPANT_ID = 'PARTICIPANT_ID';
 	const PASSWORD = 'password';
 	const PASSWORD_CONFIRM = 'passwordConfirm';
+	const PEAK_ALL_DAY = 'PEAK_ALL_DAY';
+	const PEAK_ALL_YEAR = 'PEAK_ALL_YEAR';
+	const PEAK_EVERY_DAY = 'PEAK_EVERY_DAY';
 	const PEAK_CREDITS = 'PEAK_CREDITS';
+	const PEAK_BEGIN_MONTH = 'PEAK_BEGIN_MONTH';
+	const PEAK_BEGIN_DAY = 'PEAK_BEGIN_DAY';
+	const PEAK_END_MONTH = 'PEAK_END_MONTH';
+	const PEAK_END_DAY = 'PEAK_END_DAY';
+	const PEAK_BEGIN_TIME = 'PEAK_BEGIN_TIME';
+	const PEAK_END_TIME = 'PEAK_END_TIME';
+	const PEAK_DELETE = 'PEAK_DELETE';
 	const PERSIST_LOGIN = 'persistLogin';
 	const PHONE = 'phone';
 	const POSITION = 'position';

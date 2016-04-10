@@ -348,6 +348,7 @@ class ManageResourcesPage extends ActionPage implements IManageResourcesPage
 	 * @var ManageResourcesPresenter
 	 */
 	protected $presenter;
+	protected $pageablePage;
 
 	public function __construct()
 	{
@@ -364,12 +365,17 @@ class ManageResourcesPage extends ActionPage implements IManageResourcesPage
 
 		$this->pageablePage = new PageablePage($this);
 		$this->Set('YesNoOptions',
-				   array('' => '-', '1' => Resources::GetInstance()->GetString('Yes'), '0' => Resources::GetInstance()
-																									   ->GetString('No')));
+				   array('' => '-',
+						   '1' => Resources::GetInstance()->GetString('Yes'),
+						   '0' => Resources::GetInstance()->GetString('No'))
+		);
 		$this->Set('YesNoUnchangedOptions',
-				   array('-1' => Resources::GetInstance()->GetString('Unchanged'), '1' => Resources::GetInstance()
-																								   ->GetString('Yes'), '0' => Resources::GetInstance()
-																																	   ->GetString('No')));
+				   array('-1' => Resources::GetInstance()->GetString('Unchanged'),
+						   '1' => Resources::GetInstance()->GetString('Yes'),
+						   '0' => Resources::GetInstance()->GetString('No'))
+		);
+
+		$this->Set('CreditsEnabled', Configuration::Instance()->GetSectionKey(ConfigSection::CREDITS, ConfigKeys::CREDITS_ENABLED, new BooleanConverter()));
 	}
 
 	public function ProcessPageLoad()

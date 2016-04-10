@@ -195,4 +195,13 @@ class FakeScheduleRepository implements IScheduleRepository
 	{
 		// TODO: Implement GetList() method.
 	}
+
+	/**
+	 * @param int $scheduleId
+	 * @param ScheduleLayout $layout
+	 */
+	public function UpdatePeakTimes($scheduleId, ScheduleLayout $layout)
+	{
+		// TODO: Implement UpdatePeakTimes() method.
+	}
 }

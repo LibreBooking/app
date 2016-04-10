@@ -37,7 +37,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 				{capture name=dayName}<span class='propertyValue dayName inlineUpdate' data-type='select' data-pk='{$id}'
 											data-name='{FormKeys::SCHEDULE_WEEKDAY_START}'
 											data-value='{$dayOfWeek}'>{if $dayOfWeek == Schedule::Today}{$Today}{else}{$DayNames[$dayOfWeek]}{/if}</span>{/capture}
-				<div class="scheduleDetails">
+				<div class="scheduleDetails" data-schedule-id="{$id}">
 					<div class="col-xs-12 col-sm-6">
 						<input type="hidden" class="id" value="{$id}"/>
 						<input type="hidden" class="daysVisible" value="{$daysVisible}"/>
@@ -46,7 +46,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 						<div>
 					<span class="title scheduleName" data-type="text" data-pk="{$id}"
 						  data-name="{FormKeys::SCHEDULE_NAME}">{$schedule->GetName()|escape}</span>
-							<a class="update renameButton" href="#">{translate key='Rename'}</a>
+							<a class="update renameButton" href="#"><span class="fa fa-pencil-square-o"></span></a>
 						</div>
 
 						<div>{translate key="LayoutDescription" args="{$smarty.capture.dayName}, {$smarty.capture.daysVisible}"}</div>
@@ -59,10 +59,17 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 								<a class="update changeScheduleAdmin" href="#"><span class="fa fa-pencil-square-o"></span></a>
 							{/if}
 						</div>
+
+						{if $CreditsEnabled}
+							<span>{translate key=PeakTimes}</span>
+							<a class="update changePeakTimes" href="#"><span class="fa fa-pencil-square-o"></span></a>
+							<div class="peakPlaceHolder">
+								{include file="Admin/Schedules/manage_peak_times.tpl" Layout=$Layouts[$id] Months=$Months DayNames=$DayNames}
+							</div>
+						{/if}
 					</div>
 
 					<div class="layout col-xs-12 col-sm-6">
-
 						{function name="display_periods"}
 							{foreach from=$Layouts[$id]->GetSlots($day) item=period name=layouts}
 								{if $period->IsReservable() == $showReservable}
@@ -338,6 +345,122 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		</form>
 	</div>
 
+	<div id="peakTimesDialog" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="peakTimesDialogLabel" aria-hidden="true">
+		<form id="peakTimesForm" method="post">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+						<h4 class="modal-title" id="peakTimesDialogLabel">{translate key=PeakTimes}</h4>
+					</div>
+					<div class="modal-body">
+						<div class="form-group">
+							<div class="checkbox">
+								<input type="checkbox" id="peakAllDay" {formname key=PEAK_ALL_DAY} />
+								<label for="peakAllDay">{translate key=AllDay}</label>
+							</div>
+							<div id="peakTimes">
+								{translate key=Between}
+								<input type="text" id="peakStartTime" class="form-control input-sm inline-block timeinput timepicker"
+									   value="{formatdate date=$DefaultDate format='h:i A'}" {formname key=PEAK_BEGIN_TIME}/>
+								-
+								<input type="text" id="peakEndTime" class="form-control input-sm inline-block timeinput timepicker"
+									   value="{formatdate date=$DefaultDate->AddHours(9) format='h:i A'}" {formname key=PEAK_END_TIME}/>
+							</div>
+						</div>
+						<div class="form-group">
+							<div class="checkbox">
+								<input type="checkbox" id="peakEveryDay" checked="checked" {formname key=PEAK_EVERY_DAY} />
+								<label for="peakEveryDay">{translate key=Everyday}</label>
+							</div>
+							<div id="peakDayList" class="no-show">
+								<div class="btn-group" data-toggle="buttons">
+									<label class="btn btn-default btn-sm">
+										<input type="checkbox" id="peakDay0" {formname key=repeat_sunday} />
+										{$DayNames[0]}
+									</label>
+									<label class="btn btn-default btn-sm">
+										<input type="checkbox" id="peakDay1" {formname key=repeat_monday} />
+										{$DayNames[1]}
+									</label>
+									<label class="btn btn-default btn-sm">
+										<input type="checkbox" id="peakDay2" {formname key=repeat_tuesday} />
+										{$DayNames[2]}
+									</label>
+									<label class="btn btn-default btn-sm">
+										<input type="checkbox" id="peakDay3" {formname key=repeat_wednesday} />
+										{$DayNames[3]}
+									</label>
+									<label class="btn btn-default btn-sm">
+										<input type="checkbox" id="peakDay4" {formname key=repeat_thursday} />
+										{$DayNames[4]}
+									</label>
+									<label class="btn btn-default btn-sm">
+										<input type="checkbox" id="peakDay5" {formname key=repeat_friday} />
+										{$DayNames[5]}
+									</label>
+									<label class="btn btn-default btn-sm">
+										<input type="checkbox" id="peakDay6" {formname key=repeat_saturday} />
+										{$DayNames[6]}
+									</label>
+								</div>
+							</div>
+						</div>
+						<div class="form-group">
+							<div class="checkbox">
+								<input type="checkbox" id="peakAllYear" checked="checked" {formname key=PEAK_ALL_YEAR} />
+								<label for="peakAllYear">{translate key=AllYear}</label>
+							</div>
+							<div id="peakDateRange" class="no-show">
+								<label for="peakBeginMonth" class="col-xs-2">{translate key=BeginDate}</label>
+								<div class="col-xs-5">
+									<select id="peakBeginMonth" class="form-control input-sm" {formname key=PEAK_BEGIN_MONTH}>
+										{foreach from=$Months item=month name=startMonths}
+											<option value="{$smarty.foreach.startMonths.iteration}">{$month}</option>
+										{/foreach}
+									</select>
+								</div>
+								<div class="col-xs-2">
+									<select id="peakBeginDay" class="form-control input-sm" {formname key=PEAK_BEGIN_DAY}>
+										{foreach from=$DayList item=day}
+											<option value="{$day}">{$day}</option>
+										{/foreach}
+									</select>
+								</div>
+								<div class="col-xs-3">&nbsp;</div>
+								<div class="clearfix"></div>
+								<label for="peakEndMonth" class="col-xs-2">{translate key=EndDate}</label>
+								<div class="col-xs-5">
+									<select id="peakEndMonth" class="form-control input-sm" {formname key=PEAK_END_MONTH}>
+										{foreach from=$Months item=month name=endMonths}
+											<option value="{$smarty.foreach.endMonths.iteration}">{$month}</option>
+										{/foreach}
+									</select>
+								</div>
+								<div class="col-xs-2">
+									<select id="peakEndDay" class="form-control input-sm" {formname key=PEAK_END_DAY}>
+										{foreach from=$DayList item=day}
+											<option value="{$day}">{$day}</option>
+										{/foreach}
+									</select>
+								</div>
+								<div class="col-xs-3">&nbsp;</div>
+							</div>
+						</div>
+						<div class="clearfix"></div>
+						<input type="hidden" {formname key=PEAK_DELETE} id="deletePeakTimes" value="" />
+					</div>
+					<div class="modal-footer">
+						{delete_button class='pull-left' id="deletePeakBtn"}
+						{cancel_button}
+						{update_button}
+						{indicator}
+					</div>
+				</div>
+			</div>
+		</form>
+	</div>
+
 	{csrf_token}
 
 	{jsfile src="ajax-helpers.js"}
@@ -350,7 +473,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			$.fn.editable.defaults.mode = 'popup';
 			$.fn.editable.defaults.toggle = 'manual';
 			$.fn.editable.defaults.emptyclass = '';
-			$.fn.editable.defaults.params = function(params) {
+			$.fn.editable.defaults.params = function (params) {
 				params.CSRF_TOKEN = $('#csrf_token').val();
 				return params;
 			};
@@ -358,8 +481,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			var updateUrl = '{$smarty.server.SCRIPT_NAME}?action=';
 
 			$('.scheduleName').editable({
-				url: updateUrl + '{ManageSchedules::ActionRename}',
-				validate: function (value) {
+				url: updateUrl + '{ManageSchedules::ActionRename}', validate: function (value) {
 					if ($.trim(value) == '')
 					{
 						return '{translate key=RequiredValue}';
@@ -372,11 +494,9 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			});
 
 			$('.dayName').editable({
-				url: updateUrl + '{ManageSchedules::ActionChangeStartDay}',
-				source: [
-					{
-						value: '{Schedule::Today}', text: '{$Today}'
-					},
+				url: updateUrl + '{ManageSchedules::ActionChangeStartDay}', source: [{
+					value: '{Schedule::Today}', text: '{$Today}'
+				},
 					{foreach from=$DayNames item="dayName" key="dayIndex"}
 					{
 						value:{$dayIndex}, text: '{$dayName}'
@@ -386,12 +506,9 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			});
 
 			$('.scheduleAdmin').editable({
-				url: updateUrl + '{ManageSchedules::ChangeAdminGroup}',
-				emptytext: '{translate key=None}',
-				source: [
-					{
-						value: '0', text: ''
-					},
+				url: updateUrl + '{ManageSchedules::ChangeAdminGroup}', emptytext: '{translate key=None}', source: [{
+					value: '0', text: ''
+				},
 					{foreach from=$AdminGroups item=group}
 					{
 						value:{$group->Id()}, text: '{$group->Name()}'
@@ -409,6 +526,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 				saveRedirect: '{$smarty.server.SCRIPT_NAME}',
 				changeLayoutAction: '{ManageSchedules::ActionChangeLayout}',
 				addAction: '{ManageSchedules::ActionAdd}',
+				peakTimesAction: '{ManageSchedules::ActionChangePeakTimes}',
 				makeDefaultAction: '{ManageSchedules::ActionMakeDefault}',
 				deleteAction: '{ManageSchedules::ActionDelete}',
 				enableSubscriptionAction: '{ManageSchedules::ActionEnableSubscription}',
@@ -417,6 +535,10 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 			var scheduleManagement = new ScheduleManagement(opts);
 			scheduleManagement.init();
+
+			$('.timepicker').timepicker({
+				timeFormat: '{$TimeFormat}'
+			});
 		});
 
 	</script>

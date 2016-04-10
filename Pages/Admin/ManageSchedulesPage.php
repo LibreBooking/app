@@ -111,6 +111,63 @@ interface IManageSchedulesPage extends IUpdateSchedulePage, IActionPage, IPageab
 	 * @return int
 	 */
 	public function GetAdminGroupId();
+
+	/**
+	 * @return int[]
+	 */
+	public function GetPeakWeekdays();
+
+	/**
+	 * @return bool
+	 */
+	public function GetPeakAllDay();
+
+	/**
+	 * @return bool
+	 */
+	public function GetPeakEveryDay();
+
+	/**
+	 * @return bool
+	 */
+	public function GetPeakAllYear();
+
+	/**
+	 * @return string
+	 */
+	public function GetPeakBeginTime();
+
+	/**
+	 * @return string
+	 */
+	public function GetPeakEndTime();
+
+	/**
+	 * @return int
+	 */
+	public function GetPeakBeginDay();
+
+	/**
+	 * @return int
+	 */
+	public function GetPeakBeginMonth();
+
+	/**
+	 * @return int
+	 */
+	public function GetPeakEndDay();
+
+	/**
+	 * @return int
+	 */
+	public function GetPeakEndDMonth();
+	
+	public function DisplayPeakTimes(IScheduleLayout $layout);
+
+	/**
+	 * @return bool
+	 */
+	public function GetDeletePeakTimes();
 }
 
 class ManageSchedulesPage extends ActionPage implements IManageSchedulesPage
@@ -119,6 +176,7 @@ class ManageSchedulesPage extends ActionPage implements IManageSchedulesPage
 	 * @var ManageSchedulesPresenter
 	 */
 	protected $_presenter;
+	protected $pageablePage;
 
 	public function __construct()
 	{
@@ -127,16 +185,29 @@ class ManageSchedulesPage extends ActionPage implements IManageSchedulesPage
 		$this->pageablePage = new PageablePage($this);
 		$this->_presenter = new ManageSchedulesPresenter($this, new ManageScheduleService(new ScheduleRepository(), new ResourceRepository()),
 														 new GroupRepository());
+
+		$this->Set('CreditsEnabled', Configuration::Instance()->GetSectionKey(ConfigSection::CREDITS, ConfigKeys::CREDITS_ENABLED, new BooleanConverter()));
 	}
 
 	public function ProcessPageLoad()
 	{
 		$this->_presenter->PageLoad();
 
-		$daynames = Resources::GetInstance()->GetDays('full');
-		$this->Set('DayNames', $daynames);
+		$this->Set('DayNames', Resources::GetInstance()->GetDays('full'));
 		$this->Set('Today', Resources::GetInstance()->GetString('Today'));
+		$this->Set('TimeFormat', Resources::GetInstance()->GetDateFormat('general_time_js'));
+		$this->Set('DefaultDate', Date::Now()->SetTimeString('08:00'));
+		$this->Set('Months', Resources::GetInstance()->GetMonths('full'));
+		$this->Set('DayList', range(1, 31));
 		$this->Display('Admin/manage_schedules.tpl');
+	}
+
+	public function DisplayPeakTimes(IScheduleLayout $layout)
+	{
+		$this->Set('Layout', $layout);
+		$this->Set('Months', Resources::GetInstance()->GetMonths('full'));
+		$this->Set('DayNames', Resources::GetInstance()->GetDays('full'));
+		$this->Display('Admin/Schedules/manage_peak_times.tpl');
 	}
 
 	public function ProcessAction()
@@ -296,5 +367,108 @@ class ManageSchedulesPage extends ActionPage implements IManageSchedulesPage
 	public function GetValue()
 	{
 		return $this->GetForm(FormKeys::VALUE);
+	}
+
+	public function GetPeakWeekdays()
+	{
+		$days = array();
+
+		$sun = $this->GetForm(FormKeys::REPEAT_SUNDAY);
+		if (!empty($sun))
+		{
+			$days[] = 0;
+		}
+
+		$mon = $this->GetForm(FormKeys::REPEAT_MONDAY);
+		if (!empty($mon))
+		{
+			$days[] = 1;
+		}
+
+		$tue = $this->GetForm(FormKeys::REPEAT_TUESDAY);
+		if (!empty($tue))
+		{
+			$days[] = 2;
+		}
+
+		$wed = $this->GetForm(FormKeys::REPEAT_WEDNESDAY);
+		if (!empty($wed))
+		{
+			$days[] = 3;
+		}
+
+		$thu = $this->GetForm(FormKeys::REPEAT_THURSDAY);
+		if (!empty($thu))
+		{
+			$days[] = 4;
+		}
+
+		$fri = $this->GetForm(FormKeys::REPEAT_FRIDAY);
+		if (!empty($fri))
+		{
+			$days[] = 5;
+		}
+
+		$sat = $this->GetForm(FormKeys::REPEAT_SATURDAY);
+		if (!empty($sat))
+		{
+			$days[] = 6;
+		}
+
+		return $days;
+	}
+
+	public function GetPeakAllDay()
+	{
+		$allDay = $this->GetForm(FormKeys::PEAK_ALL_DAY);
+		return !empty($allDay);
+	}
+
+	public function GetPeakEveryDay()
+	{
+		$everyDay = $this->GetForm(FormKeys::PEAK_EVERY_DAY);
+		return !empty($everyDay);
+	}
+
+	public function GetPeakAllYear()
+	{
+		$allYear = $this->GetForm(FormKeys::PEAK_ALL_YEAR);
+		return !empty($allYear);
+	}
+
+	public function GetPeakBeginTime()
+	{
+		return $this->GetForm(FormKeys::PEAK_BEGIN_TIME);
+	}
+
+	public function GetPeakEndTime()
+	{
+		return $this->GetForm(FormKeys::PEAK_END_TIME);
+	}
+
+	public function GetPeakBeginDay()
+	{
+		return $this->GetForm(FormKeys::PEAK_BEGIN_DAY);
+	}
+
+	public function GetPeakBeginMonth()
+	{
+		return $this->GetForm(FormKeys::PEAK_BEGIN_MONTH);
+	}
+
+	public function GetPeakEndDay()
+	{
+		return $this->GetForm(FormKeys::PEAK_END_DAY);
+	}
+
+	public function GetPeakEndDMonth()
+	{
+		return $this->GetForm(FormKeys::PEAK_END_MONTH);
+	}
+
+	public function GetDeletePeakTimes()
+	{
+		$delete = $this->GetForm(FormKeys::PEAK_DELETE);
+		return $delete == '1';
 	}
 }

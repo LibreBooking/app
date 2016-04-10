@@ -1,19 +1,21 @@
-ALTER TABLE `custom_attributes` ADD COLUMN `admin_only` tinyint(1) unsigned;
+ALTER TABLE `custom_attributes` ADD COLUMN `admin_only` TINYINT(1) UNSIGNED;
 
-ALTER TABLE  `user_preferences` CHANGE COLUMN `value` `value` text;
+ALTER TABLE `user_preferences` CHANGE COLUMN `value` `value` TEXT;
 
-ALTER TABLE  `reservation_files` CHANGE COLUMN `file_type` `file_type` varchar(75);
+ALTER TABLE `reservation_files` CHANGE COLUMN `file_type` `file_type` VARCHAR(75);
 
 DROP TABLE IF EXISTS `reservation_color_rules`;
 CREATE TABLE `reservation_color_rules` (
- `reservation_color_rule_id` mediumint(8) unsigned NOT NULL auto_increment,
- `custom_attribute_id` mediumint(8) unsigned,
- `attribute_type` smallint unsigned,
- `required_value` text,
- `comparison_type` smallint unsigned,
- `color` varchar(50),
-  PRIMARY KEY (`reservation_color_rule_id`)
-) ENGINE=InnoDB DEFAULT CHARACTER SET utf8;
+		`reservation_color_rule_id` MEDIUMINT(8) UNSIGNED NOT NULL AUTO_INCREMENT,
+		`custom_attribute_id`       MEDIUMINT(8) UNSIGNED,
+		`attribute_type`            SMALLINT UNSIGNED,
+		`required_value`            TEXT,
+		`comparison_type`           SMALLINT UNSIGNED,
+		`color`                     VARCHAR(50),
+		PRIMARY KEY (`reservation_color_rule_id`)
+)
+		ENGINE = InnoDB
+		DEFAULT CHARACTER SET utf8;
 
 DROP TABLE IF EXISTS `resource_accessories`;
 
@@ -31,18 +33,18 @@ CREATE TABLE `resource_accessories` (
 		REFERENCES accessories (`accessory_id`)
 				ON DELETE CASCADE
 )
-		ENGINE =InnoDB
+		ENGINE = InnoDB
 		DEFAULT CHARACTER SET utf8;
 
 
-ALTER TABLE `custom_attributes` ADD COLUMN `secondary_category` tinyint(2) unsigned;
-ALTER TABLE `custom_attributes` ADD COLUMN `secondary_entity_id` mediumint(8) unsigned;
-ALTER TABLE `custom_attributes` ADD COLUMN `is_private` tinyint(1) unsigned;
+ALTER TABLE `custom_attributes` ADD COLUMN `secondary_category` TINYINT(2) UNSIGNED;
+ALTER TABLE `custom_attributes` ADD COLUMN `secondary_entity_id` MEDIUMINT(8) UNSIGNED;
+ALTER TABLE `custom_attributes` ADD COLUMN `is_private` TINYINT(1) UNSIGNED;
 
-ALTER TABLE `resource_groups` ADD COLUMN `public_id` varchar(20);
+ALTER TABLE `resource_groups` ADD COLUMN `public_id` VARCHAR(20);
 
-ALTER TABLE `resources` MODIFY COLUMN `contact_info` varchar(255);
-ALTER TABLE `resources` MODIFY COLUMN `location` varchar(255);
+ALTER TABLE `resources` MODIFY COLUMN `contact_info` VARCHAR(255);
+ALTER TABLE `resources` MODIFY COLUMN `location` VARCHAR(255);
 
 DROP TABLE IF EXISTS `resource_type_assignment`;
 CREATE TABLE `resource_type_assignment` (
@@ -71,29 +73,33 @@ CREATE TABLE `custom_attribute_entities` (
 		ENGINE = InnoDB
 		DEFAULT CHARACTER SET utf8;
 
-INSERT INTO custom_attribute_entities (custom_attribute_id, entity_id) (SELECT custom_attribute_id, entity_id FROM `custom_attributes` WHERE entity_id IS NOT NULL AND entity_id <> 0);
+INSERT INTO custom_attribute_entities (custom_attribute_id, entity_id) (SELECT
+																																						custom_attribute_id,
+																																						entity_id
+																																				FROM `custom_attributes`
+																																				WHERE entity_id IS NOT NULL AND entity_id <> 0);
 
 ALTER TABLE custom_attributes DROP COLUMN `entity_id`;
 
-ALTER TABLE `quotas` ADD COLUMN `enforced_days` varchar(15);
-ALTER TABLE `quotas` ADD COLUMN `enforced_time_start` time;
-ALTER TABLE `quotas` ADD COLUMN `enforced_time_end` time;
+ALTER TABLE `quotas` ADD COLUMN `enforced_days` VARCHAR(15);
+ALTER TABLE `quotas` ADD COLUMN `enforced_time_start` TIME;
+ALTER TABLE `quotas` ADD COLUMN `enforced_time_end` TIME;
 ALTER TABLE `quotas` ADD COLUMN `scope` VARCHAR(25);
 
-ALTER TABLE `resources` ADD COLUMN `enable_check_in` tinyint(1) unsigned NOT NULL DEFAULT 0;
-ALTER TABLE `resources` ADD COLUMN `auto_release_minutes` SMALLINT unsigned;
-ALTER TABLE `resources` ADD COLUMN `color` varchar(10);
-ALTER TABLE `resources` ADD COLUMN `allow_display` tinyint(1) unsigned NOT NULL DEFAULT 0;
+ALTER TABLE `resources` ADD COLUMN `enable_check_in` TINYINT(1) UNSIGNED NOT NULL DEFAULT 0;
+ALTER TABLE `resources` ADD COLUMN `auto_release_minutes` SMALLINT UNSIGNED;
+ALTER TABLE `resources` ADD COLUMN `color` VARCHAR(10);
+ALTER TABLE `resources` ADD COLUMN `allow_display` TINYINT(1) UNSIGNED NOT NULL DEFAULT 0;
 
-ALTER TABLE `reservation_instances` ADD COLUMN `checkin_date` datetime;
-ALTER TABLE `reservation_instances` ADD COLUMN `checkout_date` datetime;
-ALTER TABLE `reservation_instances` ADD COLUMN `previous_end_date` datetime;
-ALTER TABLE `reservation_series` ADD COLUMN `last_action_by` mediumint(8) unsigned;
+ALTER TABLE `reservation_instances` ADD COLUMN `checkin_date` DATETIME;
+ALTER TABLE `reservation_instances` ADD COLUMN `checkout_date` DATETIME;
+ALTER TABLE `reservation_instances` ADD COLUMN `previous_end_date` DATETIME;
+ALTER TABLE `reservation_series` ADD COLUMN `last_action_by` MEDIUMINT(8) UNSIGNED;
 
 DROP TABLE IF EXISTS `reservation_guests`;
 CREATE TABLE `reservation_guests` (
 		`reservation_instance_id` INT UNSIGNED        NOT NULL,
-		`email`           VARCHAR(255)        NOT NULL,
+		`email`                   VARCHAR(255)        NOT NULL,
 		`reservation_user_level`  TINYINT(2) UNSIGNED NOT NULL,
 		PRIMARY KEY (`reservation_instance_id`, `email`),
 		KEY `reservation_guests_reservation_instance_id` (`reservation_instance_id`),
@@ -103,11 +109,33 @@ CREATE TABLE `reservation_guests` (
 				ON DELETE CASCADE
 				ON UPDATE CASCADE
 )
-		ENGINE =InnoDB
+		ENGINE = InnoDB
 		DEFAULT CHARACTER SET utf8;
 
-ALTER TABLE `users` ADD COLUMN `credit_count` decimal(7,2) unsigned;
-ALTER TABLE `resources` ADD COLUMN `credit_count` decimal(7,2) unsigned;
-ALTER TABLE `resources` ADD COLUMN `peak_credit_count` decimal(7,2) unsigned;
-ALTER TABLE `reservation_instances` ADD COLUMN `credit_count` decimal(7,2) unsigned;
+ALTER TABLE `users` ADD COLUMN `credit_count` DECIMAL(7, 2) UNSIGNED;
+ALTER TABLE `resources` ADD COLUMN `credit_count` DECIMAL(7, 2) UNSIGNED;
+ALTER TABLE `resources` ADD COLUMN `peak_credit_count` DECIMAL(7, 2) UNSIGNED;
+ALTER TABLE `reservation_instances` ADD COLUMN `credit_count` DECIMAL(7, 2) UNSIGNED;
 
+
+DROP TABLE IF EXISTS `peak_times`;
+CREATE TABLE `peak_times` (
+		`peak_times_id` MEDIUMINT(8) UNSIGNED NOT NULL AUTO_INCREMENT,
+		`schedule_id`   SMALLINT(5) UNSIGNED  NOT NULL,
+		`all_day`   TINYINT(1) UNSIGNED  NOT NULL,
+		`start_time`   VARCHAR(10),
+		`end_time`   VARCHAR(10),
+		`every_day`   TINYINT(1) UNSIGNED  NOT NULL,
+		`peak_days`   VARCHAR(13),
+		`all_year`   TINYINT(1) UNSIGNED  NOT NULL,
+		`begin_month`   TINYINT(1) UNSIGNED  NOT NULL,
+		`begin_day`   TINYINT(1) UNSIGNED  NOT NULL,
+		`end_month`   TINYINT(1) UNSIGNED  NOT NULL,
+		`end_day`   TINYINT(1) UNSIGNED  NOT NULL,
+		PRIMARY KEY (`peak_times_id`),
+		FOREIGN KEY (`schedule_id`)
+		REFERENCES `schedules` (`schedule_id`)
+				ON DELETE CASCADE
+)
+		ENGINE = InnoDB
+		DEFAULT CHARACTER SET utf8;
