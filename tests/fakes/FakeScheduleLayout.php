@@ -80,4 +80,9 @@ class FakeScheduleLayout implements IScheduleLayout
 	{
 		// TODO: Implement ChangePeakTimes() method.
 	}
+
+	public function RemovePeakTimes()
+	{
+		// TODO: Implement RemovePeakTimes() method.
+	}
 }

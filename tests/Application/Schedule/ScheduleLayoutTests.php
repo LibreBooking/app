@@ -36,7 +36,7 @@ class ScheduleLayoutTests extends TestBase
 		parent::teardown();
 	}
 
-	function testConvertingEasternLayoutToCentralPreAndPostDaylightSavings()
+	public function testConvertingEasternLayoutToCentralPreAndPostDaylightSavings()
 	{
 		$cst = 'America/Chicago';
 		$est = 'America/New_York';
@@ -73,7 +73,7 @@ class ScheduleLayoutTests extends TestBase
 		}
 	}
 
-	function testLayoutCanBeCreatedAsCSTFromPSTTimes()
+	public function testLayoutCanBeCreatedAsCSTFromPSTTimes()
 	{
 		$userTz = 'America/Chicago';
 		$periodTz = 'America/Los_Angeles';
@@ -759,6 +759,104 @@ class ScheduleLayoutTests extends TestBase
 		$this->assertEquals(1, count($friPeriods));
 		$this->assertEquals(1, count($satPeriods));
 	}
-}
 
-?>
+	public function testCanGetSlotCounts()
+	{
+		$totalAvailableSlots = 16;
+		$layout = $this->GetLayoutBetween(9, 17);
+
+		$start = Date::Parse('2016-04-11 8:00', 'UTC');
+		$end = Date::Parse('2016-04-11 18:00', 'UTC');
+
+		$slotCount = $layout->GetSlotCount($start, $end, $start);
+
+		$this->assertEquals($totalAvailableSlots, $slotCount->OffPeak);
+		$this->assertEquals(0, $slotCount->Peak);
+	}
+
+	public function testCanGetSlotCountsWithPeakTimesForWholeDay()
+	{
+		$totalAvailableSlots = 16;
+		$layout = $this->GetLayoutBetween(9, 17);
+		$layout->ChangePeakTimes(new PeakTimes(true, null, null, false, array(1,3), true, 0, 0, 0, 0));
+
+		$start = Date::Parse('2016-04-11 8:00', 'UTC');
+		$end = Date::Parse('2016-04-11 18:00', 'UTC');
+
+		$slotCount = $layout->GetSlotCount($start, $end, $start);
+
+		$this->assertEquals(0, $slotCount->OffPeak);
+		$this->assertEquals($totalAvailableSlots, $slotCount->Peak);
+	}
+	
+	public function testCanGetPeakForSpecificHours()
+	{
+		$layout = $this->GetLayoutBetween(9, 17);
+		$layout->ChangePeakTimes(new PeakTimes(false, '00:00', '10:00', false, array(1,3), true, 0, 0, 0, 0));
+
+		$start = Date::Parse('2016-04-11 8:00', 'UTC');
+		$end = Date::Parse('2016-04-11 18:00', 'UTC');
+
+		$slotCount = $layout->GetSlotCount($start, $end, $start);
+
+		$this->assertEquals(14, $slotCount->OffPeak);
+		$this->assertEquals(2, $slotCount->Peak);
+	}
+
+	public function testCanGetPeakForSpecificDays()
+	{
+		$layout = $this->GetLayoutBetween(9, 17);
+		$layout->ChangePeakTimes(new PeakTimes(false, '00:00', '10:00', false, array(1,3), true, 0, 0, 0, 0));
+
+		$start = Date::Parse('2016-04-12 8:00', 'UTC');
+		$end = Date::Parse('2016-04-12 18:00', 'UTC');
+
+		$slotCount = $layout->GetSlotCount($start, $end, $start);
+
+		$this->assertEquals(16, $slotCount->OffPeak);
+		$this->assertEquals(0, $slotCount->Peak);
+	}
+
+	public function testCanGetPeakWhenLimitedDates()
+	{
+		$layout = $this->GetLayoutBetween(9, 17);
+		$layout->ChangePeakTimes(new PeakTimes(true, '', '', true, array(), false, 13, 1, 13, 4));
+
+		$start = Date::Parse('2016-04-13 8:00', 'UTC');
+		$end = Date::Parse('2016-04-13 18:00', 'UTC');
+
+		$slotCountWithin = $layout->GetSlotCount($start, $end, $start);
+		$slotCountOutsideDates = $layout->GetSlotCount($start->AddDays(1), $end->AddDays(1), $start->AddDays(1));
+
+		$this->assertEquals(0, $slotCountWithin->OffPeak);
+		$this->assertEquals(16, $slotCountWithin->Peak);
+
+		$this->assertEquals(16, $slotCountOutsideDates->OffPeak);
+		$this->assertEquals(0, $slotCountOutsideDates->Peak);
+	}
+
+	private function GetLayoutBetween($firstAvailable, $lastAvailable)
+	{
+		$layout = new ScheduleLayout('UTC');
+
+		for ($hour = 0; $hour < $firstAvailable; $hour++)
+		{
+			$layout->AppendBlockedPeriod(new Time($hour, 0, 0, 'UTC'), new Time($hour, 30, 0, 'UTC'));
+			$layout->AppendBlockedPeriod(new Time($hour, 30, 0, 'UTC'), new Time($hour+1, 0, 0, 'UTC'));
+		}
+
+		for ($hour = $firstAvailable; $hour < $lastAvailable; $hour++)
+		{
+			$layout->AppendPeriod(new Time($hour, 0, 0, 'UTC'), new Time($hour, 30, 0, 'UTC'));
+			$layout->AppendPeriod(new Time($hour, 30, 0, 'UTC'), new Time($hour+1, 0, 0, 'UTC'));
+		}
+
+		for ($hour = $lastAvailable; $hour < 24; $hour++)
+		{
+			$layout->AppendBlockedPeriod(new Time($hour, 0, 0, 'UTC'), new Time($hour, 30, 0, 'UTC'));
+			$layout->AppendBlockedPeriod(new Time($hour, 30, 0, 'UTC'), new Time($hour+1, 0, 0, 'UTC'));
+		}
+
+		return $layout;
+	}
+}

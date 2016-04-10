@@ -54,7 +54,7 @@ interface IScheduleLayout extends ILayoutTimezone, IDailyScheduleLayout
 	 * @param Date $testDate
 	 * @return SlotCount
 	 */
-	public function GetSlotCount(Date $startDate, Date $endDate, Date $testDate = null);
+	public function GetSlotCount(Date $startDate, Date $endDate, Date $testDate);
 
 	/**
 	 * @param PeakTimes $peakTimes
@@ -596,7 +596,7 @@ class ScheduleLayout implements IScheduleLayout, ILayoutCreation
 	 * @param Date $testDate
 	 * @return SlotCount
 	 */
-	public function GetSlotCount(Date $startDate, Date $endDate, Date $testDate = null)
+	public function GetSlotCount(Date $startDate, Date $endDate, Date $testDate)
 	{
 		$slots = 0;
 		$peakSlots = 0;
@@ -616,7 +616,7 @@ class ScheduleLayout implements IScheduleLayout, ILayoutCreation
 
 			if ($start->Compare($testDate->SetTime($period->Start)) <= 0 && $end->Compare($testDate->SetTime($period->End)) > 0)
 			{
-				$isPeak = $this->peakTimes->IsWithinPeak($testDate->SetTime($period->Start));
+				$isPeak = $this->HasPeakTimesDefined() && $this->peakTimes->IsWithinPeak($testDate->SetTime($period->Start));
 				if ($isPeak)
 				{
 					$peakSlots++;
@@ -638,6 +638,7 @@ class ScheduleLayout implements IScheduleLayout, ILayoutCreation
 
 	public function ChangePeakTimes(PeakTimes $peakTimes)
 	{
+		$peakTimes->InTimezone($this->layoutTimezone);
 		$this->peakTimes = $peakTimes;
 	}
 
@@ -817,16 +818,32 @@ class PeakTimes
 
 	public function IsWithinPeak(Date $date)
 	{
-		throw new Exception('need to implement');
 		$year = $date->Year();
 		$endYear = $year;
+
 		$startMonth = $this->GetBeginMonth();
+		$startDay = $this->GetBeginDay();
 		$endMonth = $this->GetEndMonth();
-		$startHour = $this->GetBeginTime();
-		$startHour = $this->GetEndTime();
+		$endDay = $this->GetEndDay();
+		$startTime = $this->GetBeginTime();
+		$endTime = $this->GetEndTime();
 		$weekdays = $this->GetWeekdays();
 
-		if (empty($weekdays) || !is_array($weekdays))
+		if ($this->IsAllDay())
+		{
+			$startTime = new Time(0, 0, 0, $date->Timezone());
+			$endTime = new Time(0, 0, 0, $date->Timezone());
+		}
+
+		if ($this->IsAllYear())
+		{
+			$startMonth = 1;
+			$endMonth = 1;
+			$startDay = 1;
+			$endDay = 1;
+		}
+
+		if ($this->IsEveryDay() || empty($weekdays) || !is_array($weekdays))
 		{
 			$weekdays = null;
 		}
@@ -836,12 +853,17 @@ class PeakTimes
 			$endYear = $year + 1;
 		}
 
-		$peakStart = Date::Create($year, $startMonth, 1, 0, 0, 0, $date->Timezone());
-		$peakEnd = Date::Create($endYear, $endMonth, 1, 0, 0, 0, $date->Timezone());
+		if ($endTime->Compare($startTime) <= 0)
+		{
+			$endDay = $endDay + 1;
+		}
+
+		$peakStart = Date::Create($year, $startMonth, $startDay, $startTime->Hour(), $startTime->Minute(), 0, $date->Timezone());
+		$peakEnd = Date::Create($endYear, $endMonth, $endDay, $endTime->Hour(), $endTime->Minute(), 0, $date->Timezone());
 
 		if ($date->Compare($peakStart) >= 0 && $date->Compare($peakEnd) <= 0)
 		{
-			$isPeakHour = $date->CompareTimes(new Time($startHour, 0)) >= 0;
+			$isPeakHour = $this->IsAllDay() || ($date->CompareTimes($startTime) >= 0 && $date->CompareTimes($endTime) < 0);
 			$isPeakWeekday = true;
 
 			if ($weekdays != null)
@@ -855,6 +877,15 @@ class PeakTimes
 			}
 		}
 		return false;
+	}
+
+	public function InTimezone($timezone)
+	{
+		if (!$this->IsAllDay())
+		{
+			$this->beginTime = new Time($this->beginTime->Hour(), $this->beginTime->Minute(), 0, $timezone);
+			$this->endTime = new Time($this->endTime->Hour(), $this->endTime->Minute(), 0, $timezone);
+		}
 	}
 }
 
