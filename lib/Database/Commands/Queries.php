@@ -551,7 +551,7 @@ class Queries
 		INNER JOIN users u on ru.user_id = u.user_id
 		INNER JOIN reservation_resources ON reservation_resources.series_id = ri.series_id AND resource_level_id = 1
 		INNER JOIN resources r on reservation_resources.resource_id = r.resource_id
-		WHERE rs.status_id <> 2 AND (@reminder_type=0 AND date_sub(start_date,INTERVAL rr.minutes_prior MINUTE) = @current_date) OR (@reminder_type=1 AND date_sub(end_date,INTERVAL rr.minutes_prior MINUTE) = @current_date)';
+		WHERE rs.status_id <> 2 AND (reminder_type=@reminder_type AND date_sub(start_date,INTERVAL rr.minutes_prior MINUTE) = @current_date) OR (@reminder_type=1 AND date_sub(end_date,INTERVAL rr.minutes_prior MINUTE) = @current_date)';
 
 	const GET_REMINDERS_BY_USER = 'SELECT * FROM reminders WHERE user_id = @user_id';
 
