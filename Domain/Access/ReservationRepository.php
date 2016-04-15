@@ -197,6 +197,17 @@ class ReservationRepository implements IReservationRepository
 			$database->Execute($insertAccessory);
 		}
 
+		$creditsToDeduct = $reservationSeries->GetCreditsRequired() - $reservationSeries->GetCreditsConsumed();
+
+		Log::Debug('CREDITS - Reservation update adjusting credits for user %s by %s. Required %s, consumed %s',
+				   $reservationSeries->UserId(), $creditsToDeduct, $reservationSeries->GetCreditsRequired(), $reservationSeries->GetCreditsConsumed());
+
+		if ($creditsToDeduct != 0)
+		{
+			$adjustCreditsCommand = new AdjustUserCreditsCommand($reservationSeries->UserId(), $creditsToDeduct);
+			$database->Execute($adjustCreditsCommand);
+		}
+
 		return $reservationSeriesId;
 	}
 
@@ -275,6 +286,8 @@ class ReservationRepository implements IReservationRepository
 			$duration = new DateRange($startDate, $endDate);
 
 			$instance = new Reservation($series, $duration, $row[ColumnNames::RESERVATION_INSTANCE_ID], $row[ColumnNames::REFERENCE_NUMBER]);
+			$instance->WithCheckin(Date::FromDatabase($row[ColumnNames::CHECKIN_DATE]), Date::FromDatabase($row[ColumnNames::CHECKOUT_DATE]));
+			$instance->WithCreditsConsumed($row[ColumnNames::CREDIT_COUNT]);
 
 			$series->WithCurrentInstance($instance);
 		}
@@ -298,6 +311,7 @@ class ReservationRepository implements IReservationRepository
 										   $row[ColumnNames::RESERVATION_INSTANCE_ID],
 										   $row[ColumnNames::REFERENCE_NUMBER]);
 			$reservation->WithCheckin(Date::FromDatabase($row[ColumnNames::CHECKIN_DATE]), Date::FromDatabase($row[ColumnNames::CHECKOUT_DATE]));
+			$reservation->WithCreditsConsumed($row[ColumnNames::CREDIT_COUNT]);
 
 			$series->WithInstance($reservation);
 		}
@@ -725,8 +739,11 @@ class InstanceAddedEventCommand extends EventCommand
 
 	public function Execute(Database $database)
 	{
-		$insertReservation = new AddReservationCommand($this->instance->StartDate(), $this->instance->EndDate(), $this->instance->ReferenceNumber(),
-													   $this->series->SeriesId());
+		$insertReservation = new AddReservationCommand($this->instance->StartDate(),
+													   $this->instance->EndDate(),
+													   $this->instance->ReferenceNumber(),
+													   $this->series->SeriesId(),
+													   $this->instance->GetCreditsRequired());
 
 		$reservationId = $database->ExecuteInsert($insertReservation);
 

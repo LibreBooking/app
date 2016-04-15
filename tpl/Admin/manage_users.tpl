@@ -62,6 +62,9 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			<th>{translate key='Created'}</th>
 			<th>{translate key='LastLogin'}</th>
 			<th class="action">{translate key='Status'}</th>
+			{if $CreditsEnabled}
+				<th class="action">{translate key=Credits}</th>
+			{/if}
 			{if $PerUserColors}
 				<th class="action">{translate key='Color'}</th>
 			{/if}
@@ -84,6 +87,13 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 				<td class="action"><a href="#" class="update changeStatus">{$statusDescriptions[$user->StatusId]}</a>
 					{indicator id="userStatusIndicator"}
 				</td>
+				{if $CreditsEnabled}
+					<td class="align-right">
+						<span class="propertyValue inlineUpdate changeCredits"
+						  data-type="number" data-pk="{$id}" data-value="{$user->CurrentCreditCount}"
+						  data-name="{FormKeys::CREDITS}">{$user->CurrentCreditCount}</span>
+					</td>
+				{/if}
 				{if $PerUserColors}
 					<td class="action">
 						<a href="#" class="update changeColor">{translate key='Edit'}</a>
@@ -572,9 +582,19 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			$.fn.editable.defaults.mode = 'popup';
 			$.fn.editable.defaults.toggle = 'manual';
 			$.fn.editable.defaults.emptyclass = '';
+			$.fn.editable.defaults.params = function (params) {
+				params.CSRF_TOKEN = $('#csrf_token').val();
+				return params;
+			};
+
 			var updateUrl = '{$smarty.server.SCRIPT_NAME}?action=';
 			$('.inlineAttribute').editable({
 				url: updateUrl + '{ManageUsersActions::ChangeAttribute}',
+				emptytext: '-'
+			});
+
+			$('.changeCredits').editable({
+				url: updateUrl + '{ManageUsersActions::ChangeCredits}',
 				emptytext: '-'
 			});
 		}

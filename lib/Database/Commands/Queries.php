@@ -96,8 +96,8 @@ class Queries
 			VALUES (@user_id, @address, @message, @sendtime, @refnumber)';
 
 	const ADD_RESERVATION =
-			'INSERT INTO reservation_instances (start_date, end_date, reference_number, series_id)
-		VALUES (@startDate, @endDate, @referenceNumber, @seriesid)';
+			'INSERT INTO reservation_instances (start_date, end_date, reference_number, series_id, credit_count)
+		VALUES (@startDate, @endDate, @referenceNumber, @seriesid, @credit_count)';
 
 	const ADD_RESERVATION_ACCESSORY =
 			'INSERT INTO reservation_accessories (series_id, accessory_id, quantity)

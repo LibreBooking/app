@@ -242,8 +242,8 @@ class ScheduleRepositoryTests extends TestBase
 		$peakTimes = $layout->GetPeakTimes();
 		
 		$this->assertEquals(false, $peakTimes->IsAllDay());
-		$this->assertEquals(Time::Parse("08:30 am"), $peakTimes->GetBeginTime());
-		$this->assertEquals(Time::Parse("05:45 pm"), $peakTimes->GetEndTime());
+		$this->assertEquals(Time::Parse("08:30 am", $timezone), $peakTimes->GetBeginTime());
+		$this->assertEquals(Time::Parse("05:45 pm", $timezone), $peakTimes->GetEndTime());
 		$this->assertEquals(false, $peakTimes->IsAllDay());
 		$this->assertEquals(array(1,3,5), $peakTimes->GetWeekdays());
 		$this->assertEquals(false, $peakTimes->IsAllYear());

@@ -604,6 +604,8 @@ class ScheduleLayout implements IScheduleLayout, ILayoutCreation
 		$end = $endDate->ToTimezone($this->layoutTimezone);
 		$testDate = $testDate->ToTimezone($this->layoutTimezone);
 
+		Log::Debug('s %s e %s t %s', $start, $end, $testDate);
+
 		$periods = $this->getPeriods($startDate);
 
 		/** var LayoutPeriod $period */
@@ -614,8 +616,11 @@ class ScheduleLayout implements IScheduleLayout, ILayoutCreation
 				continue;
 			}
 
-			if ($start->Compare($testDate->SetTime($period->Start)) <= 0 && $end->Compare($testDate->SetTime($period->End)) > 0)
+			if ($start->Compare($testDate->SetTime($period->Start)) <= 0 && $end->Compare($testDate->SetTime($period->End, true)) >= 0)
 			{
+				Log::Debug($period->Start);
+				Log::Debug($period->End);
+
 				$isPeak = $this->HasPeakTimesDefined() && $this->peakTimes->IsWithinPeak($testDate->SetTime($period->Start));
 				if ($isPeak)
 				{
@@ -873,9 +878,12 @@ class PeakTimes
 
 			if ($isPeakHour && $isPeakWeekday)
 			{
+				Log::Debug('Date %s is within peak start %s end %s', $date, $peakStart, $peakEnd);
 				return true;
 			}
 		}
+
+		Log::Debug('Date %s is not within peak %s end %s', $date, $peakStart, $peakEnd);
 		return false;
 	}
 

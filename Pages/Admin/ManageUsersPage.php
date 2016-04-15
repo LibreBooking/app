@@ -207,6 +207,7 @@ class ManageUsersPage extends ActionPage implements IManageUsersPage
 		$this->Set('ManageReservationsUrl', Pages::MANAGE_RESERVATIONS);
 		$this->Set('FilterStatusId', $this->GetFilterStatusId());
 		$this->Set('PerUserColors', $config->GetSectionKey(ConfigSection::SCHEDULE, ConfigKeys::SCHEDULE_PER_USER_COLORS, new BooleanConverter()));
+		$this->Set('CreditsEnabled', $config->GetSectionKey(ConfigSection::CREDITS, ConfigKeys::CREDITS_ENABLED, new BooleanConverter()));
 
 		$this->RenderTemplate();
 	}

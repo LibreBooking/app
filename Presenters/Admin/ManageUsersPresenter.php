@@ -36,6 +36,7 @@ class ManageUsersActions
 	const UpdateUser = 'updateUser';
 	const ChangeColor = 'changeColor';
 	const ImportUsers = 'importUsers';
+	const ChangeCredits = 'changeCredits';
 }
 
 interface IManageUsersPresenter
@@ -175,6 +176,7 @@ class ManageUsersPresenter extends ActionPresenter implements IManageUsersPresen
 		$this->AddAction(ManageUsersActions::ChangeAttribute, 'ChangeAttribute');
 		$this->AddAction(ManageUsersActions::ChangeColor, 'ChangeColor');
 		$this->AddAction(ManageUsersActions::ImportUsers, 'ImportUsers');
+		$this->AddAction(ManageUsersActions::ChangeCredits, 'ChangeCredits');
 	}
 
 	public function PageLoad()
@@ -437,6 +439,18 @@ class ManageUsersPresenter extends ActionPresenter implements IManageUsersPresen
 		$user = $this->userRepository->LoadById($userId);
 		$user->ChangePreference(UserPreferences::RESERVATION_COLOR, $color);
 
+		$this->userRepository->Update($user);
+	}
+
+	public function ChangeCredits()
+	{
+		$userId = $this->page->GetUserId();
+		$creditCount = $this->page->GetValue();
+
+		Log::Debug('Changing credit count for userId: %s to %s', $userId, $creditCount);
+
+		$user = $this->userRepository->LoadById($userId);
+		$user->ChangeCurrentCredits($creditCount);
 		$this->userRepository->Update($user);
 
 	}

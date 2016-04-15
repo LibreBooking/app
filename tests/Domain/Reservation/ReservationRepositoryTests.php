@@ -62,6 +62,7 @@ class ReservationRepositoryTests extends TestBase
 		$attribute = new AttributeValue(1, 'value');
 		$attachment = new FakeReservationAttachment(1);
 		$allowParticipation = true;
+		$creditsRequired = 10;
 
 		$startUtc = Date::Parse($startCst, 'CST')->ToUtc();
 		$endUtc = Date::Parse($endCst, 'CST')->ToUtc();
@@ -84,6 +85,7 @@ class ReservationRepositoryTests extends TestBase
 				$duration,
 				$repeatOptions,
 				$userSession);
+		$reservation->CurrentInstance()->SetCreditsRequired($creditsRequired);
 
 		$repeatType = $repeatOptions->RepeatType();
 		$repeatOptionsString = $repeatOptions->ConfigurationString();
@@ -113,7 +115,8 @@ class ReservationRepositoryTests extends TestBase
 				$startUtc,
 				$endUtc,
 				$referenceNumber,
-				$seriesId);
+				$seriesId,
+				$creditsRequired);
 
 		$insertReservationResource = new AddReservationResourceCommand(
 				$seriesId,
@@ -203,7 +206,8 @@ class ReservationRepositoryTests extends TestBase
 					$instance->StartDate()->ToUtc(),
 					$instance->EndDate()->ToUtc(),
 					$instance->ReferenceNumber(),
-					$reservationSeriesId);
+					$reservationSeriesId,
+					$instance->GetCreditsRequired());
 
 			$this->assertTrue(in_array($insertRepeatCommand, $this->db->_Commands),
 							  "command $insertRepeatCommand not found");
@@ -1210,7 +1214,8 @@ class ReservationRepositoryTests extends TestBase
 				$expectedInstance->StartDate(),
 				$expectedInstance->EndDate(),
 				$expectedInstance->ReferenceNumber(),
-				$expectedSeriesId);
+				$expectedSeriesId,
+				$expectedInstance->GetCreditsRequired());
 	}
 
 	private function GetAddUserCommand($reservationId, $userId, $levelId)

@@ -867,6 +867,8 @@ class UserItemView
 	 * @var UserPreferences
 	 */
 	public $Preferences;
+	
+	public $CurrentCreditCount;
 
 	public function __construct()
 	{
@@ -918,6 +920,9 @@ class UserItemView
 		{
 			$user->Preferences = new UserPreferences();
 		}
+
+		$user->CurrentCreditCount = isset($row[ColumnNames::CREDIT_COUNT]) ? $row[ColumnNames::CREDIT_COUNT] : '';
+
 
 		return $user;
 	}

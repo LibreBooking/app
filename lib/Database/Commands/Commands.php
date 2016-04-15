@@ -362,13 +362,15 @@ class AddReservationCommand extends SqlCommand
 	public function __construct(Date $startDate,
 								Date $endDateUtc,
 								$referenceNumber,
-								$seriesId)
+								$seriesId,
+								$credits)
 	{
 		parent::__construct(Queries::ADD_RESERVATION);
 		$this->AddParameter(new Parameter(ParameterNames::START_DATE, $startDate->ToDatabase()));
 		$this->AddParameter(new Parameter(ParameterNames::END_DATE, $endDateUtc->ToDatabase()));
 		$this->AddParameter(new Parameter(ParameterNames::REFERENCE_NUMBER, $referenceNumber));
 		$this->AddParameter(new Parameter(ParameterNames::SERIES_ID, $seriesId));
+		$this->AddParameter(new Parameter(ParameterNames::CREDIT_COUNT, $credits));
 	}
 }
 
