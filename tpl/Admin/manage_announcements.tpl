@@ -43,10 +43,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 				</div>
 				<div class="form-group">
 					<label for="addPriority">{translate key='Priority'}</label>
-					<select class="form-control" {formname key=ANNOUNCEMENT_PRIORITY} id="addPriority">
-						<option value="">---</option>
-						{html_options values=$priorities output=$priorities}
-					</select>
+					<input type="number" min="0" step="1" class="form-control" {formname key=ANNOUNCEMENT_PRIORITY} id="addPriority" />
 				</div>
 				<div><a data-toggle="collapse" data-target="#advancedAnnouncementOptions">{translate key=MoreOptions} &raquo;</a></div>
 				<div id="advancedAnnouncementOptions" class="collapse">
@@ -165,9 +162,22 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 						</div>
 						<div class="form-group">
 							<label for="editPriority">{translate key='Priority'}</label> <br/>
-							<select id="editPriority" class="form-control" {formname key=ANNOUNCEMENT_PRIORITY}>
-								<option value="">---</option>
-								{html_options values=$priorities output=$priorities}
+							<input type="number" min="0" step="1" id="editPriority" class="form-control" {formname key=ANNOUNCEMENT_PRIORITY} />
+						</div>
+						<div class="form-group">
+							<label for="editUserGroups" class="no-show">{translate key=UsersInGroups}</label>
+							<select id="editUserGroups" class="form-control" multiple="multiple" style="width:100%" {formname key=FormKeys::GROUP_ID multi=true}>
+								{foreach from=$Groups item=group}
+									<option value="{$group->Id}">{$group->Name}</option>
+								{/foreach}
+							</select>
+						</div>
+						<div class="form-group">
+							<label for="editResourceGroups" class="no-show">{translate key=UsersWithAccessToResources}</label>
+							<select id="editResourceGroups" class="form-control" multiple="multiple" style="width:100%" {formname key=RESOURCE_ID multi=true}>
+								{foreach from=$Resources item=resource}
+									<option value="{$resource->GetId()}">{$resource->GetName()}</option>
+								{/foreach}
 							</select>
 						</div>
 					</div>
@@ -239,17 +249,19 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 					'{$announcement->Text()|escape:"quotes"|regex_replace:"/[\n]/":"\\n"}',
 					'{formatdate date=$announcement->Start()->ToTimezone($timezone)}',
 					'{formatdate date=$announcement->End()->ToTimezone($timezone)}',
-					'{$announcement->Priority()}'
+					'{$announcement->Priority()}',
+					[{foreach from=$announcement->GroupIds() item=id}{$id},{/foreach}],
+					[{foreach from=$announcement->ResourceIds() item=id}{$id},{/foreach}]
 			);
 			{/foreach}
 
 			$('#add-announcement-panel').showHidePanel();
 
-			$('#announcementGroups').select2({
+			$('#announcementGroups, #editUserGroups').select2({
 				placeholder: '{translate key=UsersInGroups}'
 			});
 
-			$('#resourceGroups').select2({
+			$('#resourceGroups, #editResourceGroups').select2({
 				placeholder: '{translate key=UsersWithAccessToResources}'
 			});
 		});

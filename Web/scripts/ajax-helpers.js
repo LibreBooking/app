@@ -65,8 +65,8 @@ function ConfigureAsyncForm(formElement, urlCallback, successHandler, responseHa
 			dataType: opts.dataType,
 			target: opts.target,
 			success: function (responseText, statusText, xhr, form) {
-				formElement.find('.indicator').hide();
-				formElement.find('button').show();
+				formElement.find('.indicator').addClass('no-show');
+				formElement.find('button').removeClass('no-show');
 
 				var validationSummary = opts.validationSummary;
 				var hasValidationSummary = validationSummary && validationSummary.length > 0;
@@ -151,8 +151,8 @@ function ConfigureUploadForm(buttonElement, urlCallback, preSubmitCallback, succ
 					secureuri: false,
 					fileElementId: uploadElementId,
 					success: function (responseText, status) {
-						form.find('.indicator').hide();
-						form.find('button').show();
+						form.find('.indicator').addClass('no-show');
+						form.find('button').removeClass('no-show');
 
 						if (responseText.trim() != '' && responseHandler)
 						{
@@ -192,8 +192,8 @@ function BeforeFormSubmit(formData, jqForm, opts) {
 
 	if (isValid)
 	{
-		$(jqForm).find('button').hide();
-		$(jqForm).find('.indicator').show();
+		$(jqForm).find('button').addClass('no-show');
+		$(jqForm).find('.indicator').removeClass('no-show');
 	}
 
 	return isValid;
@@ -227,7 +227,7 @@ function PerformAsyncAction(element, urlCallback, indicator, successCallback) {
 	if (indicator)
 	{
 		element.after(indicator);
-		indicator.show();
+		indicator.removeClass('no-show');
 	}
 	$.post(
 			urlCallback(),
@@ -235,7 +235,7 @@ function PerformAsyncAction(element, urlCallback, indicator, successCallback) {
 			function (data) {
 				if (indicator)
 				{
-					indicator.hide();
+					indicator.addClass('no-show');
 				}
 				if (!successCallback && data && (data.trim() != ""))
 				{
@@ -274,7 +274,7 @@ function PerformAsyncPost(url, options) {
 	if (opts.indicator)
 	{
 		opts.element.after(opts.indicator);
-		opts.indicator.show();
+		opts.indicator.removeClass('no-show');
 	}
 	$.post(url, opts.data)
 			.done(

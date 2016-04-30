@@ -18,6 +18,8 @@ function AnnouncementManagement(opts) {
 		editBegin: $('#editBegin'),
 		editEnd: $('#editEnd'),
 		editPriority: $('#editPriority'),
+		editUserGroups: $('#editUserGroups'),
+		editResourceGroups: $('#editResourceGroups'),
 
 		emailCount: $('#emailCount')
 	};
@@ -52,7 +54,9 @@ function AnnouncementManagement(opts) {
 		ConfigureAsyncForm(elements.addForm, getSubmitCallback(options.actions.add));
 		ConfigureAsyncForm(elements.deleteForm, getSubmitCallback(options.actions.deleteAnnouncement));
 		ConfigureAsyncForm(elements.form, getSubmitCallback(options.actions.edit));
-		ConfigureAsyncForm(elements.emailForm, getSubmitCallback(options.actions.email), function(){elements.emailDialog.modal('hide');});
+		ConfigureAsyncForm(elements.emailForm, getSubmitCallback(options.actions.email), function() {
+			elements.emailDialog.modal('hide');}
+		);
 	};
 
 	var getSubmitCallback = function (action) {
@@ -79,6 +83,16 @@ function AnnouncementManagement(opts) {
 		elements.editEnd.trigger('change');
 		elements.editPriority.val(announcement.priority);
 
+		elements.editUserGroups.val($.map(announcement.groupIds, function(i){
+			return i + "";
+		}));
+		elements.editUserGroups.trigger('change');
+
+		elements.editResourceGroups.val($.map(announcement.resourceIds, function(i){
+			return i + "";
+		}));
+		elements.editResourceGroups.trigger('change');
+
 		elements.editDialog.modal('show');
 	};
 
@@ -99,7 +113,7 @@ function AnnouncementManagement(opts) {
 		return announcements[getActiveId()];
 	};
 
-	AnnouncementManagement.prototype.addAnnouncement = function (id, text, start, end, priority) {
-		announcements[id] = {id: id, text: text, start: start, end: end, priority: priority};
+	AnnouncementManagement.prototype.addAnnouncement = function (id, text, start, end, priority, groupIds, resourceIds) {
+		announcements[id] = {id: id, text: text, start: start, end: end, priority: priority, groupIds: groupIds, resourceIds: resourceIds};
 	};
 }
