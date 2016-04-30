@@ -26,7 +26,10 @@ if (!defined('ROOT_DIR'))
 	define('ROOT_DIR', dirname(__FILE__) . '/../');
 }
 
-require_once 'PHPUnit/Autoload.php';
+if (class_exists('PHPUnit')) {
+	require_once 'PHPUnit/Autoload.php';
+}
+
 require_once(ROOT_DIR . 'tests/TestBase.php');
 require_once(ROOT_DIR . 'tests/Fakes/namespace.php');
 require_once(ROOT_DIR . 'lib/Common/Helpers/namespace.php');

@@ -76,10 +76,4 @@ class InvitationEmailNotificationTests extends TestBase
 //		$this->assertEquals($lastExpectedMessage, $this->fakeEmailService->_LastMessage);
 
 	}
-
-	public function testSendsReservationUpdatedEmailToExistingInvitees()
-	{
-		$this->markTestIncomplete('2011.07.14');
-	}
 }
-?>

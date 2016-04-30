@@ -96,13 +96,14 @@ class UpcomingReservationsPresenterTests extends TestBase
 
 	public function testGroupsReservations()
 	{
-		$now = Date::Parse('2011-03-24'); // thursday
+		$this->fakeUser->Timezone = 'UTC';
+		$now = Date::Parse('2016-04-28'); // thursday
 		Date::_SetNow($now);
 
 		$today = new ReservationItemView('1', $now, $now);
 		$tomorrow = new ReservationItemView('2', $now->AddDays(1), $now->AddDays(1));  // friday
 		$thisWeek = new ReservationItemView('3', $now->AddDays(2), $now->AddDays(2));  // saturday
-		$nextWeek = new ReservationItemView('3', $now->AddDays(3), $now->AddDays(3));  // sunday of next week
+		$nextWeek = new ReservationItemView('4', $now->AddDays(3), $now->AddDays(3));  // sunday of next week
 
 		$reservations[] = $today;
 		$reservations[] = $tomorrow;
@@ -134,4 +135,3 @@ class UpcomingReservationsPresenterTests extends TestBase
 		$presenter->PageLoad();
 	}
 }
-?>

@@ -329,4 +329,17 @@ class FakeResourceRepository implements IResourceRepository
 	{
 		// TODO: Implement RemoveResourceGroupPermission() method.
 	}
+
+	/**
+	 * @param int $resourceId
+	 * @param int|null $pageNumber
+	 * @param int|null $pageSize
+	 * @param ISqlFilter|null $filter
+	 * @param int $accountStatus
+	 * @return PageableData|UserItemView[]
+	 */
+	public function GetUsersWithPermissionsIncludingGroups($resourceId, $pageNumber = null, $pageSize = null, $filter = null, $accountStatus = AccountStatus::ACTIVE)
+	{
+		// TODO: Implement GetUsersWithPermissionsIncludingGroups() method.
+	}
 }

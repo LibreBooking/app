@@ -23,8 +23,20 @@ require_once(ROOT_DIR . 'Controls/Dashboard/AnnouncementsControl.php');
 
 class AnnouncementPresenterTests extends TestBase
 {
+	private $permissionService;
+	/**
+	 * @var AnnouncementPresenter
+	 */
 	private $presenter;
+
+	/**
+	 * @var FakeAnnouncementsControl
+	 */
 	private $page;
+
+	/**
+	 * @var FakeAnnouncementRepository
+	 */
 	private $announcements;
 
 	public function setup()
@@ -36,7 +48,8 @@ class AnnouncementPresenterTests extends TestBase
 		$this->page = new FakeAnnouncementsControl();
 
 		$this->announcements = new FakeAnnouncementRepository();
-		$this->presenter = new AnnouncementPresenter($this->page, $this->announcements);
+		$this->permissionService = new FakePermissionService();
+		$this->presenter = new AnnouncementPresenter($this->page, $this->announcements, $this->permissionService);
 	}
 
 	public function teardown()
@@ -50,30 +63,14 @@ class AnnouncementPresenterTests extends TestBase
 	{
 		$now = Date::Now();
 
-		$announcements = $this->GetAnnouncementRows();
-		$this->db->SetRow(0, $announcements);
-
-		$expectedAnnouncements = array();
-		foreach($announcements as $item)
-		{
-			$expectedAnnouncements[] = $item[ColumnNames::ANNOUNCEMENT_TEXT];
-		}
+		$announcement = new Announcement(1, 'text', $now, $now, 1, array(), array());
+		$this->announcements->_ExpectedAnnouncements = array($announcement);
 
 		$this->presenter->PageLoad();
 
 		$this->assertEquals($this->announcements->_ExpectedAnnouncements, $this->page->_LastAnnouncements);
 		$this->assertTrue($this->announcements->_GetFutureCalled);
 	}
-
-	private function GetAnnouncementRows()
-	{
-		return array(
-			array (ColumnNames::ANNOUNCEMENT_TEXT => 'announcement 1'),
-			array (ColumnNames::ANNOUNCEMENT_TEXT => 'announcement 2'),
-			array (ColumnNames::ANNOUNCEMENT_TEXT => 'announcement 3')
-		);
-	}
-
 }
 
 class FakeAnnouncementsControl implements IAnnouncementsControl

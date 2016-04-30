@@ -396,20 +396,6 @@ class ScheduleReservationListTests extends TestBase
 		$this->assertTrue($reservation->OccursOn($endDate->ToTimezone('US/Central')));
 	}
 
-	public function testReservationShouldOccurOnDateIfTheReservationStartsAtAnyTimeOnThatDate()
-	{
-		$d1 = Date::Parse('2009-10-10 05:00:00', 'UTC');
-		$d2 = Date::Parse('2009-10-10 00:00:00', 'CST');
-
-		$this->assertEquals($d1->Timestamp(), $d2->Timestamp());
-
-		$res1 = new ReservationItemView(1, Date::Parse('2009-10-09 22:00:00', 'UTC'), Date::Parse('2009-10-09 23:00:00',
-																								  'UTC'));
-		// 2009-10-09 17:00:00 - 2009-10-09 18:00:00 CST
-
-		$this->assertTrue($res1->OccursOn(Date::Parse('2009-10-09', 'CST')));
-	}
-
 	public function testReservationDoesNotOccurOnDateIfNoneOfTheReservationOccursAtAnyTimeOnThatDate()
 	{
 		$d1 = new Date('2009-10-09 22:00:00', 'UTC'); // 2009-10-09 17:00:00 CST

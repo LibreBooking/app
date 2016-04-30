@@ -63,7 +63,7 @@ class AnnouncementRepositoryTests extends TestBase
         $expectedAnnouncements = array();
         foreach ($rows as $item)
         {
-            $expectedAnnouncements[] = $item[ColumnNames::ANNOUNCEMENT_TEXT];
+            $expectedAnnouncements[] = Announcement::FromRow($item);
         }
 
         $actualRows = $this->repository->GetFuture();
@@ -103,6 +103,8 @@ class AnnouncementRepositoryTests extends TestBase
 
     public function testAddsAnnouncement()
     {
+        $announcementId = 1;
+        $this->db->_ExpectedInsertId = $announcementId;
         $text = 'text';
         $start = Date::Parse('2011-01-01', 'America/Chicago');
         $end = NullDate::Instance();
@@ -113,7 +115,13 @@ class AnnouncementRepositoryTests extends TestBase
         $announcement = Announcement::Create($text, $start, $end, $priority, $groups, $resources);
 
         $this->repository->Add($announcement);
-        $this->assertEquals(new AddAnnouncementCommand($text, $start, $end, $priority, $groups, $resources), $this->db->_LastCommand);
+        $this->assertEquals(new AddAnnouncementCommand($text, $start, $end, $priority), $this->db->_Commands[0]);
+        $this->assertEquals(new AddAnnouncementGroupCommand($announcementId, $groups[0]), $this->db->_Commands[1]);
+        $this->assertEquals(new AddAnnouncementGroupCommand($announcementId, $groups[1]), $this->db->_Commands[2]);
+        $this->assertEquals(new AddAnnouncementGroupCommand($announcementId, $groups[2]), $this->db->_Commands[3]);
+        $this->assertEquals(new AddAnnouncementResourceCommand($announcementId, $resources[0]), $this->db->_Commands[4]);
+        $this->assertEquals(new AddAnnouncementResourceCommand($announcementId, $resources[1]), $this->db->_Commands[5]);
+        $this->assertEquals(new AddAnnouncementResourceCommand($announcementId, $resources[2]), $this->db->_Commands[6]);
     }
 
     public function testDeletesAnnouncement()
@@ -155,7 +163,8 @@ class AnnouncementRepositoryTests extends TestBase
         $a = new Announcement($id, $text1, $start1, $end1, $priority1, $groupIds, $resourceIds);
 
         $this->repository->Update($a);
-        $this->assertEquals(new UpdateAnnouncementCommand($id, $text1, $start1, $end1, $priority1, $groupIds, $resourceIds), $this->db->_LastCommand);
+        $this->assertEquals(new DeleteAnnouncementCommand($id), $this->db->_Commands[0]);
+        $this->assertEquals(new AddAnnouncementCommand($text1, $start1, $end1, $priority1), $this->db->_Commands[1]);
     }
 
     public function testAppliesToUserIfNoGroupsOrResources()
@@ -167,7 +176,7 @@ class AnnouncementRepositoryTests extends TestBase
     public function testAppliesToUserIfResourceAllowed()
     {
         $announcement = Announcement::Create('a', Date::Now(), Date::Now(), 1, array(), array(1,2,3));
-        $this->permissionService->ReturnValues[2] = true;
+        $this->permissionService->ReturnValues = array(true, true, true);
         $this->assertTrue($announcement->AppliesToUser($this->fakeUser, $this->permissionService));
     }
 

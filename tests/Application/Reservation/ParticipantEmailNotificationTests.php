@@ -119,17 +119,4 @@ class ParticipantEmailNotificationTests extends TestBase
 		$this->assertInstanceOf('ParticipantDeletedEmail', $this->fakeEmailService->_LastMessage);
 		//		$this->assertEquals($lastExpectedMessage, $this->fakeEmailService->_LastMessage);
 	}
-
-	public function testSendsReservationUpdatedEmailToExistingParticipants()
-	{
-		$this->markTestIncomplete('2011.07.15');
-	}
-
-	public function testSendsReservationDeletedEmailToExistingParticipants()
-	{
-		$this->markTestIncomplete('2011.07.15');
-	}
 }
-
-
-?>
