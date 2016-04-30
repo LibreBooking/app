@@ -30,7 +30,7 @@ class AnnouncementRepository implements IAnnouncementRepository
 
         while ($row = $reader->GetRow())
         {
-            $announcements[] = $row[ColumnNames::ANNOUNCEMENT_TEXT];
+            $announcements[] = Announcement::FromRow($row);
         }
 
         $reader->Free();
@@ -59,7 +59,18 @@ class AnnouncementRepository implements IAnnouncementRepository
      */
     public function Add(Announcement $announcement)
     {
-        ServiceLocator::GetDatabase()->ExecuteInsert(new AddAnnouncementCommand($announcement->Text(), $announcement->Start(), $announcement->End(), $announcement->Priority()));
+        $db = ServiceLocator::GetDatabase();
+        $announcementId = $db->ExecuteInsert(new AddAnnouncementCommand($announcement->Text(), $announcement->Start(), $announcement->End(), $announcement->Priority()));
+
+        foreach ($announcement->GroupIds() as $groupId)
+        {
+            $db->ExecuteInsert(new AddAnnouncementGroupCommand($announcementId, $groupId));
+        }
+
+        foreach ($announcement->ResourceIds() as $resourceId)
+        {
+            $db->ExecuteInsert(new AddAnnouncementResourceCommand($announcementId, $resourceId));
+        }
     }
 
     /**
@@ -89,7 +100,8 @@ class AnnouncementRepository implements IAnnouncementRepository
 
     public function Update(Announcement $announcement)
     {
-        ServiceLocator::GetDatabase()->Execute(new UpdateAnnouncementCommand($announcement->Id(), $announcement->Text(), $announcement->Start(), $announcement->End(), $announcement->Priority()));
+        $this->Delete($announcement->Id());
+        $this->Add($announcement);
     }
 }
 
@@ -97,36 +109,31 @@ interface IAnnouncementRepository
 {
     /**
      * Gets all announcements to be displayed for the user
-     * @return string[]|array list of announcement text values
+     * @return Announcement[]
      */
     public function GetFuture();
 
     /**
-     * @abstract
      * @return Announcement[]|array
      */
     public function GetAll();
 
     /**
-     * @abstract
      * @param Announcement $announcement
      */
     public function Add(Announcement $announcement);
 
     /**
-     * @abstract
      * @param Announcement $announcement
      */
     public function Update(Announcement $announcement);
 
     /**
-     * @abstract
      * @param int $announcementId
      */
     public function Delete($announcementId);
 
     /**
-     * @abstract
      * @param int $announcementId
      * @return Announcement
      */

@@ -35,7 +35,7 @@ class FakePermissionService implements IPermissionService
 	/**
 	 * @var array|bool[]
 	 */
-	public $ReturnValues;
+	public $ReturnValues = array();
 
 	private $_invocationCount = 0;
 

@@ -575,6 +575,12 @@ class en_us extends Language
 		$strings['CreditsRule'] = 'You do not have enough credits. Credits required: %s. Credits in account: %s';
 		$strings['PeakTimes'] = 'Peak Times';
 		$strings['AllYear'] = 'All Year';
+		$strings['MoreOptions'] = 'More Options';
+		$strings['SendAsEmail'] = 'Send As Email';
+		$strings['UsersInGroups'] = 'Users In Groups';
+		$strings['UsersWithAccessToResources'] = 'Users With Access To Resources';
+		$strings['AnnouncementSubject'] = 'A new announcement was posted by %s';
+		$strings['AnnouncementEmailNotice'] = 'users will be sent this announcement as an email';
 		// End Strings
 
 		// Install

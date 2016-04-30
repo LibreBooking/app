@@ -175,7 +175,7 @@ interface IUserViewRepository
 	function GetById($userId);
 
 	/**
-	 * @return array[int]UserDto
+	 * @return UserDto[]
 	 */
 	function GetAll();
 

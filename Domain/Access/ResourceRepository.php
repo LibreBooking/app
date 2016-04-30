@@ -568,6 +568,21 @@ class ResourceRepository implements IResourceRepository
 		return PageableDataStore::GetList($command, $builder, $pageNumber, $pageSize);
 	}
 
+	public function GetUsersWithPermissionsIncludingGroups($resourceId, $pageNumber = null, $pageSize = null, $filter = null,
+										   $accountStatus = AccountStatus::ACTIVE)
+	{
+
+		$command = new GetResourceUserGroupPermissionCommand($resourceId, $accountStatus);
+
+		if ($filter != null)
+		{
+			$command = new FilterCommand($command, $filter);
+		}
+
+		$builder = array('UserItemView', 'Create');
+		return PageableDataStore::GetList($command, $builder, $pageNumber, $pageSize);
+	}
+
 	public function AddResourceUserPermission($resourceId, $userId)
 	{
 		ServiceLocator::GetDatabase()->Execute(new AddUserResourcePermission($userId, $resourceId));

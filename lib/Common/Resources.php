@@ -86,8 +86,6 @@ class Resources implements IResourceLocalization
 	 */
 	private $_lang;
 
-	private $overrides = array();
-
 	protected function __construct()
 	{
 		$this->LanguageDirectory = dirname(__FILE__) . '/../../lang/';
@@ -158,7 +156,7 @@ class Resources implements IResourceLocalization
 			$args = array($args);
 		}
 
-		$strings = array_merge($this->_lang->Strings, $this->overrides);
+		$strings = $this->_lang->Strings;
 
 		if (!isset($strings[$key]) || empty($strings[$key]))
 		{
@@ -304,11 +302,7 @@ class Resources implements IResourceLocalization
 		{
 			global $langOverrides;
 			include_once($overrideFile);
-			$this->overrides = $langOverrides;
-		}
-		else
-		{
-			$this->overrides = array();
+			$this->_lang->Strings = array_merge($this->_lang->Strings, $langOverrides);
 		}
 	}
 }

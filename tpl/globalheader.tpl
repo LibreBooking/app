@@ -270,6 +270,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 										<a href="{$Path}admin/manage_schedule_reservations.php">{translate key=ScheduleReservations}</a>
 									</li>
 								{/if}
+								<li><a href="{$Path}admin/manage_announcements.php">{translate key="ManageAnnouncements"}</a></li>
 							</ul>
 						</li>
 					{/if}

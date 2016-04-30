@@ -27,6 +27,11 @@ class AnnouncementRepositoryTests extends TestBase
      */
     private $repository;
 
+    /**
+     * @var FakePermissionService
+     */
+    private $permissionService;
+
     public function setup()
     {
         parent::setup();
@@ -34,6 +39,7 @@ class AnnouncementRepositoryTests extends TestBase
         Date::_SetNow(new Date());
 
         $this->repository = new AnnouncementRepository();
+        $this->permissionService = new FakePermissionService();
     }
 
     public function teardown()
@@ -77,16 +83,18 @@ class AnnouncementRepositoryTests extends TestBase
         $end2 = '2011-01-01';
         $priority1 = 3;
         $priority2 = null;
+        $groups1 = '1,2,3';
+        $resources1 = '9,10,11';
 
         $rows = array();
-        $rows[] = $this->GetAnnouncementRow(1, $text1, $start1, $end1, $priority1);
+        $rows[] = $this->GetAnnouncementRow(1, $text1, $start1, $end1, $priority1, $groups1, $resources1);
         $rows[] = $this->GetAnnouncementRow(2, $text2, $start2, $end2, $priority2);
         $this->db->SetRows($rows);
         $announcements = $this->repository->GetAll();
 
         $expectedAnnouncements = array(
-            new Announcement(1, $text1, Date::FromDatabase($start1), Date::FromDatabase($end1), $priority1),
-            new Announcement(2, $text2, Date::FromDatabase($start2), Date::FromDatabase($end2), $priority2),
+            new Announcement(1, $text1, Date::FromDatabase($start1), Date::FromDatabase($end1), $priority1, array(1,2,3), array(9,10,11)),
+            new Announcement(2, $text2, Date::FromDatabase($start2), Date::FromDatabase($end2), $priority2, array(), array()),
         );
 
         $this->assertEquals(new GetAllAnnouncementsCommand(), $this->db->_LastCommand);
@@ -99,11 +107,13 @@ class AnnouncementRepositoryTests extends TestBase
         $start = Date::Parse('2011-01-01', 'America/Chicago');
         $end = NullDate::Instance();
         $priority = 1;
+        $groups = array(1,2,3);
+        $resources = array(9,10,11);
 
-        $announcement = Announcement::Create($text, $start, $end, $priority);
+        $announcement = Announcement::Create($text, $start, $end, $priority, $groups, $resources);
 
         $this->repository->Add($announcement);
-        $this->assertEquals(new AddAnnouncementCommand($text, $start, $end, $priority), $this->db->_LastCommand);
+        $this->assertEquals(new AddAnnouncementCommand($text, $start, $end, $priority, $groups, $resources), $this->db->_LastCommand);
     }
 
     public function testDeletesAnnouncement()
@@ -119,13 +129,16 @@ class AnnouncementRepositoryTests extends TestBase
         $start1 = null;
         $end1 = null;
         $priority1 = 3;
-        $rows = array($this->GetAnnouncementRow(1, $text1, $start1, $end1, $priority1));
+        $groups1 = '1,2,3';
+        $resources1 = '9,10,11';
+
+        $rows = array($this->GetAnnouncementRow(1, $text1, $start1, $end1, $priority1, $groups1, $resources1));
         $this->db->SetRows($rows);
 
         $id = 1232;
         $actual = $this->repository->LoadById($id);
 
-        $expected = new Announcement(1, $text1, Date::FromDatabase($start1), Date::FromDatabase($end1), $priority1);
+        $expected = new Announcement(1, $text1, Date::FromDatabase($start1), Date::FromDatabase($end1), $priority1, array(1,2,3), array(9, 10, 11));
         $this->assertEquals(new GetAnnouncementByIdCommand($id), $this->db->_LastCommand);
         $this->assertEquals($actual, $expected);
     }
@@ -137,21 +150,44 @@ class AnnouncementRepositoryTests extends TestBase
         $start1 = Date::Parse('2011-01-01', 'UTC');
         $end1 = Date::Parse('2011-01-01', 'UTC');
         $priority1 = 3;
-        $a = new Announcement($id, $text1, $start1, $end1, $priority1);
+        $groupIds = array(1, 2, 3);
+        $resourceIds = array(9, 10, 11);
+        $a = new Announcement($id, $text1, $start1, $end1, $priority1, $groupIds, $resourceIds);
 
         $this->repository->Update($a);
-        $this->assertEquals(new UpdateAnnouncementCommand($id, $text1, $start1, $end1, $priority1), $this->db->_LastCommand);
+        $this->assertEquals(new UpdateAnnouncementCommand($id, $text1, $start1, $end1, $priority1, $groupIds, $resourceIds), $this->db->_LastCommand);
     }
 
-    private function GetAnnouncementRow($id, $text, $startDate, $endDate, $priority)
+    public function testAppliesToUserIfNoGroupsOrResources()
+    {
+        $announcement = Announcement::Create('a', Date::Now(), Date::Now(), 1, array(), array());
+        $this->assertTrue($announcement->AppliesToUser($this->fakeUser, $this->permissionService));
+    }
+
+    public function testAppliesToUserIfResourceAllowed()
+    {
+        $announcement = Announcement::Create('a', Date::Now(), Date::Now(), 1, array(), array(1,2,3));
+        $this->permissionService->ReturnValues[2] = true;
+        $this->assertTrue($announcement->AppliesToUser($this->fakeUser, $this->permissionService));
+    }
+
+    public function testAppliesToUserIfInGroup()
+    {
+        $announcement = Announcement::Create('a', Date::Now(), Date::Now(), 1, array(1,2,3), array());
+        $this->fakeUser->Groups = array(2);
+        $this->assertTrue($announcement->AppliesToUser($this->fakeUser, $this->permissionService));
+    }
+
+    private function GetAnnouncementRow($id, $text, $startDate, $endDate, $priority, $groups = '', $resources = '')
     {
         return array(
             ColumnNames::ANNOUNCEMENT_ID => $id,
             ColumnNames::ANNOUNCEMENT_TEXT => $text,
             ColumnNames::ANNOUNCEMENT_START => $startDate,
             ColumnNames::ANNOUNCEMENT_END => $endDate,
-            ColumnNames::ANNOUNCEMENT_PRIORITY => $priority);
+            ColumnNames::ANNOUNCEMENT_PRIORITY => $priority,
+            ColumnNames::GROUP_IDS => $groups,
+            ColumnNames::RESOURCE_IDS => $resources,
+        );
     }
 }
-
-?>

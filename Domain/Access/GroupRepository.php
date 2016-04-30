@@ -69,7 +69,7 @@ interface IGroupViewRepository
 	 * @param int $pageSize
 	 * @param ISqlFilter $filter
 	 * @param AccountStatus|int $accountStatus
-	 * @return PageableData|GroupUserView[]
+	 * @return PageableData|UserItemView[]
 	 */
 	public function GetUsersInGroup($groupIds, $pageNumber = null, $pageSize = null, $filter = null,
 									$accountStatus = AccountStatus::ALL);

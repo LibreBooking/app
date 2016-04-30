@@ -41,6 +41,10 @@ class Queries
 			'INSERT INTO announcements (announcement_text, priority, start_date, end_date)
 		VALUES (@text, @priority, @startDate, @endDate)';
 
+	const ADD_ANNOUNCEMENT_GROUP = 'INSERT INTO announcement_groups (announcementid, group_id) VALUES (@announcementid, @groupid)';
+
+	const ADD_ANNOUNCEMENT_RESOURCE = 'INSERT INTO announcement_resources (announcementid, resource_id) VALUES (@announcementid, @resourceid)';
+
 	const ADD_ATTRIBUTE =
 			'INSERT INTO custom_attributes (display_label, display_type, attribute_category, validation_regex, is_required, possible_values, sort_order, admin_only, secondary_category, secondary_entity_id, is_private)
 		VALUES (@display_label, @display_type, @attribute_category, @validation_regex, @is_required, @possible_values, @sort_order, @admin_only, @secondary_category, @secondary_entity_id, @is_private)';
@@ -307,7 +311,10 @@ class Queries
 
  			ORDER BY accessory_name';
 
-	const GET_ALL_ANNOUNCEMENTS = 'SELECT * FROM announcements ORDER BY start_date';
+	const GET_ALL_ANNOUNCEMENTS = 'SELECT a.*, 
+			(SELECT GROUP_CONCAT(ag.group_id) FROM announcement_groups ag WHERE ag.announcementid = a.announcementid) as group_ids,
+			(SELECT GROUP_CONCAT(ar.resource_id) FROM announcement_resources ar WHERE ar.announcementid = a.announcementid) as resource_ids
+			FROM announcements a ORDER BY start_date';
 
 	const GET_ALL_APPLICATION_ADMINS = 'SELECT *
             FROM users
@@ -414,7 +421,10 @@ class Queries
 			FROM users u
 			WHERE (0 = @user_statusid OR status_id = @user_statusid) ORDER BY lname, fname';
 
-	const GET_ANNOUNCEMENT_BY_ID = 'SELECT * FROM announcements WHERE announcementid = @announcementid';
+	const GET_ANNOUNCEMENT_BY_ID = 'SELECT a.*,
+ 		(SELECT GROUP_CONCAT(ag.group_id) FROM announcement_groups ag WHERE ag.announcementid = a.announcementid) as group_ids,
+		(SELECT GROUP_CONCAT(ar.resource_id) FROM announcement_resources ar WHERE ar.announcementid = a.announcementid) as resource_ids
+		FROM announcements a WHERE a.announcementid = @announcementid';
 
 	const GET_ATTRIBUTES_BY_CATEGORY = 'SELECT a.*,
 			(SELECT GROUP_CONCAT(e.entity_id SEPARATOR "!sep!")
@@ -513,8 +523,10 @@ class Queries
 		ORDER BY r.name';
 
 	const GET_DASHBOARD_ANNOUNCEMENTS =
-			'SELECT announcement_text
-		FROM announcements
+			'SELECT a.*, 
+			(SELECT GROUP_CONCAT(ag.group_id) FROM announcement_groups ag WHERE ag.announcementid = a.announcementid) as group_ids,
+			(SELECT GROUP_CONCAT(ar.resource_id) FROM announcement_resources ar WHERE ar.announcementid = a.announcementid) as resource_ids
+			FROM announcements a
 		WHERE (start_date <= @current_date AND end_date >= @current_date) OR (end_date IS NULL)
 		ORDER BY priority, start_date, end_date';
 
@@ -832,7 +844,25 @@ class Queries
 			FROM
 				user_resource_permissions urp, resources r, users u
 			WHERE
-				r.resource_id = @resourceid AND r.resource_id = urp.resource_id AND u.user_id = urp.user_id';
+				r.resource_id = @resourceid AND r.resource_id = urp.resource_id AND u.user_id = urp.user_id AND u.status_id = @user_statusid';
+
+	const GET_RESOURCE_USER_GROUP_PERMISSION = 'SELECT u.*
+			FROM
+				user_resource_permissions urp, resources r, users u
+			WHERE
+				r.resource_id = @resourceid AND r.resource_id = urp.resource_id AND u.user_id = urp.user_id AND u.status_id = @user_statusid
+		UNION 
+			SELECT u.* 
+			FROM users u 
+			INNER JOIN user_groups ug on u.user_id = ug.user_id 
+			WHERE group_id IN (
+				SELECT
+					g.group_id
+				FROM
+					group_resource_permissions grp, resources r, groups g
+				WHERE
+					r.resource_id = @resourceid AND r.resource_id = grp.resource_id AND g.group_id = grp.group_id) 
+			AND u.status_id = @user_statusid';
 
 	const MIGRATE_PASSWORD =
 			'UPDATE

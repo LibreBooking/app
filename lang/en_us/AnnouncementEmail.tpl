@@ -1,6 +1,5 @@
-<?php
-/**
-Copyright 2011-2015 Nick Korbel
+{*
+Copyright 2016 Nick Korbel
 
 This file is part of Booked Scheduler.
 
@@ -16,11 +15,5 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
-*/
-
-define('ROOT_DIR', '../../');
-
-require_once(ROOT_DIR . 'Pages/Admin/ManageAnnouncementsPage.php');
-
-$page = new RoleRestrictedPageDecorator(new ManageAnnouncementsPage());
-$page->PageLoad();
+*}
+{$AnnouncementText|nl2br}

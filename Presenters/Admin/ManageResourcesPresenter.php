@@ -777,8 +777,8 @@ class ManageResourcesPresenter extends ActionPresenter
 		}
 		else if ($dataRequest == 'users')
 		{
-			$groups = $this->resourceRepository->GetUsersWithPermission($this->page->GetResourceId());
-			$response = new UserResults($groups->Results(), $groups->PageInfo()->Total);
+			$users = $this->resourceRepository->GetUsersWithPermission($this->page->GetResourceId());
+			$response = new UserResults($users->Results(), $users->PageInfo()->Total);
 			$this->page->SetJsonResponse($response);
 		}
 		else if ($dataRequest == 'groups')

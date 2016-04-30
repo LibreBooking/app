@@ -139,3 +139,33 @@ CREATE TABLE `peak_times` (
 )
 		ENGINE = InnoDB
 		DEFAULT CHARACTER SET utf8;
+
+DROP TABLE IF EXISTS `announcement_groups`;
+CREATE TABLE `announcement_groups` (
+		`announcementid` MEDIUMINT(8) UNSIGNED NOT NULL,
+		`group_id` SMALLINT(5) UNSIGNED NOT NULL,
+		PRIMARY KEY (`announcementid`, `group_id`),
+		FOREIGN KEY (`announcementid`)
+		REFERENCES `announcements` (`announcementid`)
+				ON DELETE CASCADE,
+    FOREIGN KEY (`group_id`)
+		REFERENCES `groups` (`group_id`)
+				ON DELETE CASCADE
+		)
+    ENGINE = InnoDB
+		DEFAULT CHARACTER SET utf8;
+
+DROP TABLE IF EXISTS `announcement_resources`;
+CREATE TABLE `announcement_resources` (
+		`announcementid` MEDIUMINT(8) UNSIGNED NOT NULL,
+		`resource_id` SMALLINT(5) UNSIGNED NOT NULL,
+		PRIMARY KEY (`announcementid`, `resource_id`),
+		FOREIGN KEY (`announcementid`)
+		REFERENCES `announcements` (`announcementid`)
+				ON DELETE CASCADE,
+    FOREIGN KEY (`resource_id`)
+		REFERENCES `resources` (`resource_id`)
+				ON DELETE CASCADE
+		)
+    ENGINE = InnoDB
+		DEFAULT CHARACTER SET utf8;

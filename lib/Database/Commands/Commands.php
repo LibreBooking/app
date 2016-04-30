@@ -66,6 +66,25 @@ class AddAnnouncementCommand extends SqlCommand
 	}
 }
 
+class AddAnnouncementGroupCommand extends SqlCommand
+{
+	public function __construct($announcementId, $groupId)
+	{
+		parent::__construct(Queries::ADD_ANNOUNCEMENT_GROUP);
+		$this->AddParameter(new Parameter(ParameterNames::ANNOUNCEMENT_ID, $announcementId));
+		$this->AddParameter(new Parameter(ParameterNames::GROUP_ID, $groupId));
+	}
+}
+class AddAnnouncementResourceCommand extends SqlCommand
+{
+	public function __construct($announcementId, $resourceId)
+	{
+		parent::__construct(Queries::ADD_ANNOUNCEMENT_RESOURCE);
+		$this->AddParameter(new Parameter(ParameterNames::ANNOUNCEMENT_ID, $announcementId));
+		$this->AddParameter(new Parameter(ParameterNames::RESOURCE_ID, $resourceId));
+	}
+}
+
 class AddAttributeCommand extends SqlCommand
 {
 	public function __construct($label, $type, $category, $regex, $required, $possibleValues, $sortOrder, $adminOnly, $secondaryCategory, $secondaryEntityId,
@@ -1820,6 +1839,16 @@ class GetResourceUserPermissionCommand extends SqlCommand
 	public function __construct($resourceId, $accountStatusId = AccountStatus::ACTIVE)
 	{
 		parent::__construct(Queries::GET_RESOURCE_USER_PERMISSION);
+		$this->AddParameter(new Parameter(ParameterNames::RESOURCE_ID, $resourceId));
+		$this->AddParameter(new Parameter(ParameterNames::USER_STATUS_ID, $accountStatusId));
+	}
+}
+
+class GetResourceUserGroupPermissionCommand extends SqlCommand
+{
+	public function __construct($resourceId, $accountStatusId = AccountStatus::ACTIVE)
+	{
+		parent::__construct(Queries::GET_RESOURCE_USER_GROUP_PERMISSION);
 		$this->AddParameter(new Parameter(ParameterNames::RESOURCE_ID, $resourceId));
 		$this->AddParameter(new Parameter(ParameterNames::USER_STATUS_ID, $accountStatusId));
 	}

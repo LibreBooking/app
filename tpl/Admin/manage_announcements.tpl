@@ -16,7 +16,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 *}
-{include file='globalheader.tpl'}
+{include file='globalheader.tpl' Select2=true}
 
 <div id="page-manage-announcements" class="admin-page">
 	<h1>{translate key=ManageAnnouncements}</h1>
@@ -48,6 +48,31 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 						{html_options values=$priorities output=$priorities}
 					</select>
 				</div>
+				<div><a data-toggle="collapse" data-target="#advancedAnnouncementOptions">{translate key=MoreOptions} &raquo;</a></div>
+				<div id="advancedAnnouncementOptions" class="collapse">
+					<div class="form-group col-xs-12 col-md-6">
+						<label for="announcementGroups" class="no-show">{translate key=UsersInGroups}</label>
+						<select id="announcementGroups" class="form-control" multiple="multiple" style="width:100%" {formname key=FormKeys::GROUP_ID multi=true}>
+							{foreach from=$Groups item=group}
+								<option value="{$group->Id}">{$group->Name}</option>
+							{/foreach}
+						</select>
+					</div>
+					<div class="form-group col-xs-12 col-md-6">
+						<label for="resourceGroups" class="no-show">{translate key=UsersWithAccessToResources}</label>
+						<select id="resourceGroups" class="form-control" multiple="multiple" style="width:100%" {formname key=RESOURCE_ID multi=true}>
+							{foreach from=$Resources item=resource}
+								<option value="{$resource->GetId()}">{$resource->GetName()}</option>
+							{/foreach}
+						</select>
+					</div>
+					<div class="form-group col-xs-12">
+						<div class="checkbox no-padding-left">
+							<input type="checkbox" id="sendAsEmail" {formname key=FormKeys::SEND_AS_EMAIL} />
+							<label for="sendAsEmail">{translate key=SendAsEmail}</label>
+						</div>
+					</div>
+				</div>
 			</div>
 			<div class="panel-footer">
 			 	{add_button class="btn-sm"}
@@ -64,6 +89,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			<th>{translate key='Priority'}</th>
 			<th>{translate key='BeginDate'}</th>
 			<th>{translate key='EndDate'}</th>
+			<th>{translate key='Groups'}</th>
+			<th>{translate key='Resources'}</th>
 			<th class="action">{translate key='Actions'}</th>
 		</tr>
 		</thead>
@@ -75,9 +102,12 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 				<td class="announcementPriority">{$announcement->Priority()}</td>
 				<td class="announcementStart">{formatdate date=$announcement->Start()->ToTimezone($timezone)}</td>
 				<td class="announcementEnd">{formatdate date=$announcement->End()->ToTimezone($timezone)}</td>
+				<td class="announcementGroups">{foreach from=$announcement->GroupIds() item=groupId}{$Groups[$groupId]->Name} {/foreach}</td>
+				<td class="announcementResources">{foreach from=$announcement->ResourceIds() item=resourceId}{$Resources[$resourceId]->GetName()} {/foreach}</td>
 				<td class="action announcementActions">
-					<a href="#" class="update edit"><span class="fa fa-pencil-square-o icon"></a> |
-					<a href="#" class="update delete"><span class="fa fa-trash icon remove"></span></a>
+					<a href="#" title="{translate key=Edit}" class="update edit"><span class="fa fa-pencil-square-o icon"></a> |
+					<a href="#" title="{translate key=Email}" class="update sendEmail"><span class="fa fa-envelope-o icon"></a> |
+					<a href="#" title="{translate key=Delete}" class="update delete"><span class="fa fa-trash icon remove"></span></a>
 				</td>
 			</tr>
 		{/foreach}
@@ -151,6 +181,27 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		</div>
 	</div>
 
+	<div class="modal fade" id="emailDialog" tabindex="-1" role="dialog" aria-labelledby="emailDialogLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<form id="emailForm" method="post">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+						<h4 class="modal-title" id="emailDialogLabel">{translate key=SendAsEmail}</h4>
+					</div>
+					<div class="modal-body">
+						<div class="alert alert-info"><span id="emailCount" class="bold"></span> {translate key=AnnouncementEmailNotice}</div>
+					</div>
+					<div class="modal-footer">
+						{cancel_button}
+						{update_button key=SendAsEmail}
+						{indicator}
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+
 	{control type="DatePickerSetupControl" ControlId="BeginDate" AltId="formattedBeginDate"}
 	{control type="DatePickerSetupControl" ControlId="EndDate" AltId="formattedEndDate"}
 	{control type="DatePickerSetupControl" ControlId="editBegin" AltId="formattedEditBegin"}
@@ -168,12 +219,14 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			var actions = {
 				add: '{ManageAnnouncementsActions::Add}',
 				edit: '{ManageAnnouncementsActions::Change}',
-				deleteAnnouncement: '{ManageAnnouncementsActions::Delete}'
+				deleteAnnouncement: '{ManageAnnouncementsActions::Delete}',
+				email: '{ManageAnnouncementsActions::Email}'
 			};
 
 			var accessoryOptions = {
 				submitUrl: '{$smarty.server.SCRIPT_NAME}',
 				saveRedirect: '{$smarty.server.SCRIPT_NAME}',
+				getEmailCountUrl: '{$smarty.server.SCRIPT_NAME}?dr=emailCount',
 				actions: actions
 			};
 
@@ -191,6 +244,14 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			{/foreach}
 
 			$('#add-announcement-panel').showHidePanel();
+
+			$('#announcementGroups').select2({
+				placeholder: '{translate key=UsersInGroups}'
+			});
+
+			$('#resourceGroups').select2({
+				placeholder: '{translate key=UsersWithAccessToResources}'
+			});
 		});
 	</script>
 </div>

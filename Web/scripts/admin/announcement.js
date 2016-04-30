@@ -7,15 +7,19 @@ function AnnouncementManagement(opts) {
 
 		editDialog: $('#editDialog'),
 		deleteDialog: $('#deleteDialog'),
+		emailDialog: $('#emailDialog'),
 
 		addForm: $('#addForm'),
 		form: $('#editForm'),
 		deleteForm: $('#deleteForm'),
+		emailForm: $('#emailForm'),
 
 		editText: $('#editText'),
 		editBegin: $('#editBegin'),
 		editEnd: $('#editEnd'),
-		editPriority: $('#editPriority')
+		editPriority: $('#editPriority'),
+
+		emailCount: $('#emailCount')
 	};
 
 	var announcements = new Object();
@@ -29,6 +33,9 @@ function AnnouncementManagement(opts) {
 
 		elements.announcementList.delegate('.edit', 'click', function () {
 			editAnnouncement();
+		});
+		elements.announcementList.delegate('.sendEmail', 'click', function () {
+			emailAnnouncement();
 		});
 		elements.announcementList.delegate('.delete', 'click', function () {
 			deleteAnnouncement();
@@ -45,6 +52,7 @@ function AnnouncementManagement(opts) {
 		ConfigureAsyncForm(elements.addForm, getSubmitCallback(options.actions.add));
 		ConfigureAsyncForm(elements.deleteForm, getSubmitCallback(options.actions.deleteAnnouncement));
 		ConfigureAsyncForm(elements.form, getSubmitCallback(options.actions.edit));
+		ConfigureAsyncForm(elements.emailForm, getSubmitCallback(options.actions.email), function(){elements.emailDialog.modal('hide');});
 	};
 
 	var getSubmitCallback = function (action) {
@@ -72,6 +80,15 @@ function AnnouncementManagement(opts) {
 		elements.editPriority.val(announcement.priority);
 
 		elements.editDialog.modal('show');
+	};
+
+	var emailAnnouncement = function() {
+		var announcement = getActiveAnnouncement();
+
+		ajaxGet(options.getEmailCountUrl + '&aid=' +announcement.id, function(){}, function(data) {
+			elements.emailCount.text(data.users);
+			elements.emailDialog.modal('show');
+		});
 	};
 
 	var deleteAnnouncement = function () {

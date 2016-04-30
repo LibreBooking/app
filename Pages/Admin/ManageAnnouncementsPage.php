@@ -24,41 +24,65 @@ require_once(ROOT_DIR . 'Presenters/Admin/ManageAnnouncementsPresenter.php');
 interface IManageAnnouncementsPage extends IActionPage
 {
 	/**
-	 * @abstract
 	 * @return int
 	 */
 	public function GetAnnouncementId();
 
     /**
-     * @abstract
      * @return string
      */
     public function GetText();
 
     /**
-     * @abstract
      * @return string
      */
     public function GetStart();
 
     /**
-     * @abstract
      * @return string
      */
     public function GetEnd();
 
     /**
-     * @abstract
      * @return string
      */
     public function GetPriority();
 
 	/**
-	 * @abstract
-	 * @param $announcements AnnouncementDto[]
+	 * @return int[]
+	 */
+	public function GetGroups();
+
+	/**
+	 * @return int[]
+	 */
+	public function GetResources();
+
+	/**
+	 * @return bool
+	 */
+	public function GetSendAsEmail();
+
+	/**
+	 * @param $announcements Announcement[]
 	 * @return void
 	 */
 	public function BindAnnouncements($announcements);
+
+	/**
+	 * @param GroupItemView[] $groups
+	 */
+	public function BindGroups($groups);
+
+	/**
+	 * @param BookableResource[] $resources
+	 */
+	public function BindResources($resources);
+
+	/**
+	 * @param int $number
+	 */
+	public function BindNumberOfUsersToBeSent($number);
 }
 
 class ManageAnnouncementsPage extends ActionPage implements IManageAnnouncementsPage
@@ -71,7 +95,15 @@ class ManageAnnouncementsPage extends ActionPage implements IManageAnnouncements
 	public function __construct()
 	{
 		parent::__construct('ManageAnnouncements', 1);
-		$this->presenter = new ManageAnnouncementsPresenter($this, new AnnouncementRepository());
+		$resourceRepository = new ResourceRepository();
+		$this->presenter = new ManageAnnouncementsPresenter(
+			$this,
+			new AnnouncementRepository(),
+			new GroupRepository(),
+			$resourceRepository,
+			PluginManager::Instance()->LoadPermission(),
+			new UserRepository()
+			);
 	}
 
 	public function ProcessPageLoad()
@@ -94,41 +126,26 @@ class ManageAnnouncementsPage extends ActionPage implements IManageAnnouncements
 		$this->presenter->ProcessAction();
 	}
 
-	/**
-	 * @return int
-	 */
 	public function GetAnnouncementId()
 	{
 		return $this->GetQuerystring(QueryStringKeys::ANNOUNCEMENT_ID);
 	}
 
-    /**
-     * @return string
-     */
     public function GetText()
     {
         return $this->GetForm(FormKeys::ANNOUNCEMENT_TEXT);
     }
 
-    /**
-     * @return string
-     */
     public function GetStart()
     {
         return $this->GetForm(FormKeys::ANNOUNCEMENT_START);
     }
 
-    /**
-     * @return string
-     */
     public function GetEnd()
     {
         return $this->GetForm(FormKeys::ANNOUNCEMENT_END);
     }
 
-    /**
-     * @return string
-     */
     public function GetPriority()
     {
         return $this->GetForm(FormKeys::ANNOUNCEMENT_PRIORITY);
@@ -136,8 +153,51 @@ class ManageAnnouncementsPage extends ActionPage implements IManageAnnouncements
 
 	public function ProcessDataRequest($dataRequest)
 	{
-		// no-op
+		$this->presenter->ProcessDataRequest($dataRequest);
+	}
+
+	public function BindGroups($groups)
+	{
+		$this->Set('Groups', $groups);
+	}
+
+	public function BindResources($resources)
+	{
+		$this->Set('Resources', $resources);
+	}
+
+	public function BindNumberOfUsersToBeSent($number)
+	{
+		$this->SetJson(array('users' => $number));
+	}
+	public function GetGroups()
+	{
+		$groupIds = $this->GetForm(FormKeys::GROUP_ID);
+
+		if (!is_array($groupIds))
+		{
+			return array();
+		}
+
+		return $groupIds;
+	}
+
+	public function GetResources()
+	{
+		$resourceIds = $this->GetForm(FormKeys::RESOURCE_ID);
+
+		if (!is_array($resourceIds))
+		{
+			return array();
+		}
+
+		return $resourceIds;
+	}
+
+	public function GetSendAsEmail()
+	{
+		$send = $this->GetForm(FormKeys::SEND_AS_EMAIL);
+
+		return isset($send);
 	}
 }
-
-?>
