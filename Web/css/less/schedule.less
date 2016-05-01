@@ -100,6 +100,19 @@ td.reserved {
   padding-left: 1px;
 }
 
+@keyframes droppedpulse {
+  0%, 100% {
+    background-color: #6F9BAE;
+  }
+  50% {
+    background-color: transparent;
+  }
+}
+
+td.dropped {
+  animation: droppedpulse 1s infinite;
+}
+
 .reserved.hilite {
   background-color: #59A8EF;
 }
