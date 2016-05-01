@@ -161,8 +161,11 @@ class Announcement
      */
     public function AppliesToUser(UserSession $user, IPermissionService $permissionService)
     {
-        $allowedForGroup = empty($this->GroupIds());
-        $allowedForResource = empty($this->ResourceIds());
+        $groupIds = $this->GroupIds();
+        $resourceIds = $this->ResourceIds();
+
+        $allowedForGroup = empty($groupIds);
+        $allowedForResource = empty($resourceIds);
 
         foreach ($this->ResourceIds() as $resourceId)
         {

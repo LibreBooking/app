@@ -24,3 +24,5 @@ require_once('config/config.php');
 #echo '<br/>You will be redirected automatically in 20 seconds, but portions of Booked Scheduler will not function correctly.';
 
 header( "refresh:0;url=Web?" + urlencode($_SERVER['QUERY_STRING']) );
+exit;
+?>

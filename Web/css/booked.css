@@ -68,7 +68,7 @@ a:hover {
   -webkit-border-radius: 5px;
   -moz-border-radius: 5px;
   border-radius: 5px;
-  border: solid 1px #CFE4E4;
+  border: solid 1px #cfe4e4;
   background-color: #fcfcfc;
 }
 .default-box h1 {
@@ -76,7 +76,7 @@ a:hover {
   margin-top: 0;
   padding-bottom: 5px;
   font-weight: bold;
-  border-bottom: solid 1px #BCBCBC;
+  border-bottom: solid 1px #bcbcbc;
 }
 @media (max-width: 768px) {
   .default-box h1 {
@@ -110,18 +110,18 @@ a:hover {
   -webkit-border-radius: 5px;
   -moz-border-radius: 5px;
   border-radius: 5px;
-  border: solid 1px #CFE4E4;
+  border: solid 1px #cfe4e4;
   background-color: #fcfcfc;
-  -webkit-box-shadow: 0px 0px 3px 0px #E9E9E9;
-  -moz-box-shadow: 0px 0px 3px 0px #E9E9E9;
-  box-shadow: 0px 0px 3px 0px #E9E9E9;
+  -webkit-box-shadow: 0px 0px 3px 0px #e9e9e9;
+  -moz-box-shadow: 0px 0px 3px 0px #e9e9e9;
+  box-shadow: 0px 0px 3px 0px #e9e9e9;
 }
 .default-box-shadow h1 {
   color: #585754;
   margin-top: 0;
   padding-bottom: 5px;
   font-weight: bold;
-  border-bottom: solid 1px #BCBCBC;
+  border-bottom: solid 1px #bcbcbc;
 }
 @media (max-width: 768px) {
   .default-box-shadow h1 {
@@ -129,14 +129,14 @@ a:hover {
   }
 }
 .default-box-header {
-  background-color: #9BC2C2;
+  background-color: #9bc2c2;
   margin-bottom: -1px;
   line-height: 35px;
   padding: 0 15px;
   font-size: 1.3em;
   font-weight: bold;
   color: #fff;
-  border: solid 1px #CFE4E4;
+  border: solid 1px #cfe4e4;
   -webkit-border-top-right-radius: 5px;
   -webkit-border-bottom-right-radius: 0;
   -webkit-border-bottom-left-radius: 0;
@@ -160,7 +160,7 @@ a:hover {
 }
 #page-login .default-box {
   background-color: #fcfcfc;
-  border: solid 1px #CFE4E4;
+  border: solid 1px #cfe4e4;
 }
 #page-login .register {
   text-align: right;
@@ -207,7 +207,7 @@ div.center {
 .default-box-footer {
   padding: 5px 0 5px 10px;
   clear: both;
-  border-top: solid 1px #E9E9E9;
+  border-top: solid 1px #e9e9e9;
 }
 .form-control.dateinput,
 .form-control.timeinput {
@@ -373,14 +373,14 @@ input[type=text].user-search {
 }
 .remove.icon,
 .delete.icon {
-  color: #FFAAAA;
+  color: #ffaaaa;
 }
 .remove.icon:hover,
 .delete.icon:hover {
   color: #ff7777;
 }
 .add.icon {
-  color: #88CC88;
+  color: #88cc88;
 }
 .add.icon:hover {
   color: #64bd64;
@@ -647,7 +647,7 @@ input.mid-number {
   background-color: #5cb85c;
 }
 #page-dashboard .panel-heading {
-  background-color: #9BC2C2;
+  background-color: #9bc2c2;
   color: #fff;
 }
 #page-dashboard .panel-heading,
@@ -696,7 +696,7 @@ input.mid-number {
 .upcomingReservationsDashboard .timespan td {
   font-style: italic;
   color: #000;
-  background-color: #FFF8E7;
+  background-color: #fff8e7;
 }
 .upcomingReservationsDashboard tr.reservation.hover td {
   cursor: pointer;
@@ -728,7 +728,7 @@ input.mid-number {
   padding: 3px 0;
 }
 .availabilityDashboard .availabilityItem .btn {
-  background-color: #58AC58;
+  background-color: #58ac58;
   color: #fff;
   border-color: #458c45;
   padding: 1px 20px;
@@ -860,7 +860,7 @@ td.reserved {
   background-color: #BDBDBD;
 }
 .restricted {
-  background: repeating-linear-gradient(45deg, transparent, transparent 10px, #ccc 10px, #ccc 20px), linear-gradient(to bottom, #eee, #999);
+  background: repeating-linear-gradient(45deg, transparent, transparent 10px, #cccccc 10px, #cccccc 20px), linear-gradient(to bottom, #eeeeee, #999999);
   color: black;
 }
 .schedule_title {
@@ -907,7 +907,7 @@ div.legend {
   padding: 0;
 }
 .reservations-left-header {
-  border-bottom: solid 1px #E9E9E9;
+  border-bottom: solid 1px #e9e9e9;
   font-weight: bold;
   font-size: 1.3em;
   text-align: center;
@@ -957,7 +957,7 @@ ul.jqtree-tree .jqtree-toggler {
 #reservations-left hr {
   border: 0;
   height: 1px;
-  background-color: #BCBCBC;
+  background-color: #bcbcbc;
 }
 #reservations-left .btn {
   width: 100%;
@@ -1019,7 +1019,7 @@ a.toggle-sidebar {
 }
 .resource-display-available,
 .resource-display-unavailable {
-  background-color: #88CC88;
+  background-color: #88cc88;
   border: solid 1px #76c476;
   line-height: 70px;
   text-align: center;
@@ -1033,7 +1033,7 @@ a.toggle-sidebar {
   font-weight: bold;
 }
 .resource-display-unavailable {
-  background-color: #FFAAAA;
+  background-color: #ffaaaa;
   border: solid 1px #ff9090;
 }
 .resource-display-name,
@@ -1044,7 +1044,7 @@ a.toggle-sidebar {
 }
 .resource-display-date {
   text-align: right;
-  color: #BCBCBC;
+  color: #bcbcbc;
 }
 #page-resource-display-resource table.reservations td {
   line-height: 60px;
@@ -1207,7 +1207,7 @@ a.toggle-sidebar {
   height: 150px;
   width: 98%;
   overflow-y: auto;
-  border: solid 1px #E9E9E9;
+  border: solid 1px #e9e9e9;
   padding: 2px;
   -webkit-border-radius: 2px;
   -moz-border-radius: 2px;
@@ -1330,19 +1330,19 @@ a.add {
   text-decoration: none;
 }
 a.add .icon {
-  color: #88CC88;
+  color: #88cc88;
 }
 a.remove {
-  color: #FFAAAA;
+  color: #ffaaaa;
 }
 #reservation-response-image .error {
-  color: #FFAAAA;
+  color: #ffaaaa;
 }
 #reservation-response-image .warning {
-  color: #FA6900;
+  color: #fa6900;
 }
 #reservation-response-image .success {
-  color: #88CC88;
+  color: #88cc88;
 }
 .reservation-message {
   font-size: 2em;
@@ -1360,7 +1360,7 @@ a.remove {
 }
 #invite-error {
   font-weight: bold;
-  color: #FFAAAA;
+  color: #ffaaaa;
 }
 .resourceName {
   color: #428181;
@@ -1370,7 +1370,7 @@ a.remove {
   padding: 1px;
   display: inline-block;
   margin-right: 2px;
-  background-color: #CFE4E4;
+  background-color: #cfe4e4;
 }
 .resourceName a {
   color: #428181;
@@ -1490,7 +1490,7 @@ table.list,
   background-color: #fff;
 }
 .row1 {
-  background-color: #F9F9F9;
+  background-color: #f9f9f9;
 }
 .list th.id,
 .list td.id {
@@ -1858,7 +1858,7 @@ td.update {
 #page-manage-resources .resourceDetails:not(:last-child),
 #page-manage-users .resourceDetails:not(:last-child),
 #page-manage-quotas .resourceDetails:not(:last-child) {
-  border-bottom: solid 1px #E9E9E9;
+  border-bottom: solid 1px #e9e9e9;
 }
 .admin-page textarea,
 #page-manage-blackouts textarea,
@@ -1970,7 +1970,7 @@ ul.jqtree-tree .jqtree-toggler {
 }
 #dayDialog {
   display: none;
-  border-color: #BCBCBC;
+  border-color: #bcbcbc;
   position: absolute;
   z-index: 2;
   padding: 12px;
@@ -1982,7 +1982,7 @@ ul.jqtree-tree .jqtree-toggler {
   background-color: #fff;
 }
 .fc-day-header {
-  background-color: #FFF8E7;
+  background-color: #fff8e7;
 }
 #custom-report-input {
   font-size: 10pt;
