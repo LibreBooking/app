@@ -350,7 +350,8 @@ class Queries
           WHERE ug.user_id = @userid AND g.admin_group_id IS NOT NULL)';
 
 	const GET_ALL_GROUP_USERS =
-			'SELECT *
+			'SELECT u.*, (SELECT GROUP_CONCAT(CONCAT(cav.custom_attribute_id, \' = \', cav.attribute_value) SEPARATOR "!sep!")
+			FROM custom_attribute_values cav WHERE cav.entity_id = u.user_id AND cav.attribute_category = 2) as attribute_list
 		FROM users u
 		WHERE u.user_id IN (
 		  SELECT DISTINCT (ug.user_id) FROM user_groups ug
