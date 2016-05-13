@@ -261,6 +261,7 @@ function Schedule(opts, resourceGroups) {
 		var reservations = $('#reservations');
 
 		this.makeSlotsSelectable(reservations);
+		this.makeReservationsMoveable(reservations);
 
 		$('.reserved', reservations).each(function () {
 			var resid = $(this).attr('resid');
@@ -338,7 +339,10 @@ function Schedule(opts, resourceGroups) {
 		};
 
 		reservationsElement.selectable({
-			filter: 'td.reservable', distance: 20, start: function (event, ui) {
+			filter: 'td.reservable',
+			cancel: 'td.reserved',
+			distance: 20,
+			start: function (event, ui) {
 				startHref = '';
 			}, selecting: function (event, ui) {
 				select($(ui.selecting));
@@ -360,6 +364,57 @@ function Schedule(opts, resourceGroups) {
 						window.location = href + "&sd=" + startDate + "&ed=" + endDate;
 					}
 				}
+			}
+		});
+	};
+
+	this.makeReservationsMoveable = function (reservations) {
+		var sourceResourceId = null;
+		var referenceNumber = null;
+
+		reservations.find('td.reserved.mine').on('dragstart', function (event) {
+			$(event.target).removeClass('clicked');
+			referenceNumber = $(event.target).attr('resid');
+			sourceResourceId = $(event.target).attr('data-resourceId');
+
+			event.originalEvent.dataTransfer.setData("text", event.target.id);
+		});
+
+		reservations.find('td.reservable').on('dragover dragleave drop', function (event) {
+			event.preventDefault();
+
+			var targetSlot = $(event.target);
+
+			if (event.type == 'dragover')
+			{
+				$(event.target).addClass('hilite');
+			}
+			else if (event.type == 'dragleave')
+			{
+				$(event.target).removeClass('hilite');
+			}
+			else if (event.type === 'drop')
+			{
+				$(event.target).addClass('dropped');
+
+				var targetResourceId = targetSlot.attr('data-resourceId');
+				var startDate = decodeURIComponent(targetSlot.attr('data-start'));
+				$('#moveStartDate').val(startDate);
+				$('#moveReferenceNumber').val(referenceNumber);
+				$('#moveResourceId').val(targetResourceId);
+				$('#moveSourceResourceId').val(sourceResourceId);
+
+				ajaxPost($('#moveReservationForm'), options.updateReservationUrl, null, function (updateResult) {
+					if (updateResult.success)
+					{
+						document.location.reload();
+					}
+					else
+					{
+						$(event.target).removeClass('dropped');
+						return false;
+					}
+				});
 			}
 		});
 	};
