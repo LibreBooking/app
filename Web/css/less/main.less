@@ -87,6 +87,7 @@ a:hover {
   color: #fff;// @dark-gray;
   border: solid 1px @color-boxes-border;//@light-gray;
   .border-radius(5px, 0, 0, 5px);
+  a { color: @color-primary-1}
 }
 
 #page-login {
@@ -161,8 +162,17 @@ div.center {
   border-top: solid 1px @light-gray;
 }
 
-.form-control.dateinput, .form-control.timeinput {
-  width: 111px;
+.form-control.dateinput {
+  width: 99px;
+}
+.form-control.timeinput {
+  width: 110px;
+}
+.form-control.dateinput.input-sm {
+  width: 85px;
+}
+.form-control.timeinput.input-sm {
+  width: 95px;
 }
 
 /** Credit: http://www.minimit.com/articles/solutions-tutorials/bootstrap-3-responsive-columns-of-same-height **/

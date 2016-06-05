@@ -130,7 +130,7 @@ class en_us extends Language
 		$strings['RepeatUntilPrompt'] = 'Until';
 		$strings['RepeatEveryPrompt'] = 'Every';
 		$strings['RepeatDaysPrompt'] = 'On';
-		$strings['CreateReservationHeading'] = 'Create a new reservation';
+		$strings['CreateReservationHeading'] = 'New Reservation';
 		$strings['EditReservationHeading'] = 'Editing Reservation %s';
 		$strings['ViewReservationHeading'] = 'Viewing Reservation %s';
 		$strings['ReservationErrors'] = 'Change Reservation';

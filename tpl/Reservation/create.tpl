@@ -148,11 +148,11 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 						<div class="col-md-6 no-padding-left">
 							<div class="form-group no-margin-bottom">
 								<label for="BeginDate" class="reservationDate">{translate key='BeginDate'}</label>
-								<input type="text" id="BeginDate" class="form-control inline-block dateinput"
+								<input type="text" id="BeginDate" class="form-control input-sm inline-block dateinput"
 									   value="{formatdate date=$StartDate}"/>
 								<input type="hidden" id="formattedBeginDate" {formname key=BEGIN_DATE}
 									   value="{formatdate date=$StartDate key=system}"/>
-								<select id="BeginPeriod" {formname key=BEGIN_PERIOD} class="form-control inline-block timeinput" title="Begin time">
+								<select id="BeginPeriod" {formname key=BEGIN_PERIOD} class="form-control input-sm inline-block timeinput" title="Begin time">
 									{foreach from=$StartPeriods item=period}
 										{if $period->IsReservable()}
 											{assign var='selected' value=''}
@@ -168,10 +168,10 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 						<div class="col-md-6 no-padding-left">
 							<div class="form-group no-margin-bottom">
 								<label for="EndDate" class="reservationDate">{translate key='EndDate'}</label>
-								<input type="text" id="EndDate" class="form-control inline-block dateinput" value="{formatdate date=$EndDate}"/>
+								<input type="text" id="EndDate" class="form-control input-sm inline-block dateinput" value="{formatdate date=$EndDate}"/>
 								<input type="hidden" id="formattedEndDate" {formname key=END_DATE}
 									   value="{formatdate date=$EndDate key=system}"/>
-								<select id="EndPeriod" {formname key=END_PERIOD} class="form-control inline-block timeinput" title="End time">
+								<select id="EndPeriod" {formname key=END_PERIOD} class="form-control  input-sm inline-block timeinput" title="End time">
 									{foreach from=$EndPeriods item=period name=endPeriods}
 										{if $period->BeginDate()->IsMidnight()}
 											<option value="{$period->Begin()}"{$selected}>{$period->Label()}</option>
