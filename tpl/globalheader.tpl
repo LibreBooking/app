@@ -59,7 +59,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		<script type="text/javascript"
 				src="//cdnjs.cloudflare.com/ajax/libs/lodash.js/3.10.1/lodash.min.js"></script>
 		<script type="text/javascript"
-				src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment.min.js"></script>
+				src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.13.0/moment.min.js"></script>
 		<script type="text/javascript"
 				src="//cdnjs.cloudflare.com/ajax/libs/jquery.form/3.50/jquery.form.min.js"></script>
 		<script type="text/javascript"
@@ -134,12 +134,11 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		{cssfile src="scripts/css/timePicker.css" rel="stylesheet"}
 	{/if}
 	{if $Fullcalendar}
-		{cssfile src="scripts/css/fullcalendar.css"}
+		{cssfile src="scripts/css/fullcalendar.min.css"}
 		<link rel='stylesheet' type='text/css' href='scripts/css/fullcalendar.print.css' media='print'/>
-		{jsfile src="js/fullcalendar.min.js"}
+		{jsfile src="js/fullcalendar.js"}
 	{/if}
 	{cssfile src="scripts/css/jquery-ui-timepicker-addon.css"}
-	{cssfile src="nav.css"}
 	{cssfile src="booked.css"}
 	{if $cssFiles neq ''}
 		{assign var='CssFileList' value=','|explode:$cssFiles}

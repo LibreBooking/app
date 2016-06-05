@@ -21,18 +21,10 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 require_once(ROOT_DIR . 'Pages/SecurePage.php');
 require_once(ROOT_DIR . 'Presenters/Calendar/CalendarPresenter.php');
 
-
-interface ICalendarPage extends IPage
+interface ICalendarPage extends IActionPage, ICommonCalendarPage
 {
-	public function GetDay();
 
-	public function GetMonth();
-
-	public function GetYear();
-
-	public function GetCalendarType();
-
-	public function BindCalendar(ICalendarSegment $calendar);
+    public function BindCalendarType($calendarType);
 
 	/**
 	 * @param CalendarFilters $filters
@@ -87,16 +79,24 @@ interface ICalendarPage extends IPage
 	 * @param ResourceGroup $selectedGroup
 	 */
 	public function BindSelectedGroup($selectedGroup);
+
+    /**
+     * @param CalendarReservation[] $reservationList
+     */
+    public function BindEvents($reservationList);
+
+    public function RenderSubscriptionDetails();
 }
 
-class CalendarPage extends SecurePage implements ICalendarPage
+class CalendarPage extends ActionPage implements ICalendarPage
 {
 	/**
 	 * @var string
 	 */
 	private $template;
+    private $presenter;
 
-	public function __construct()
+    public function __construct()
 	{
 		parent::__construct('ResourceCalendar');
 		$resourceRepository = new ResourceRepository();
@@ -105,7 +105,7 @@ class CalendarPage extends SecurePage implements ICalendarPage
 		$resourceService = new ResourceService($resourceRepository, PluginManager::Instance()->LoadPermission(), new AttributeService(new AttributeRepository()), $userRepository, new AccessoryRepository());
 		$subscriptionService = new CalendarSubscriptionService($userRepository, $resourceRepository, $scheduleRepository);
 		$privacyFilter = new PrivacyFilter(new ReservationAuthorization(PluginManager::Instance()->LoadAuthorization()));
-		$this->_presenter = new CalendarPresenter($this,
+		$this->presenter = new CalendarPresenter($this,
 												  new CalendarFactory(),
 												  new ReservationViewRepository(),
 												  $scheduleRepository,
@@ -114,17 +114,17 @@ class CalendarPage extends SecurePage implements ICalendarPage
 												  $privacyFilter);
 	}
 
-	public function PageLoad()
+	public function ProcessPageLoad()
 	{
 		$user = ServiceLocator::GetServer()->GetUserSession();
-		$this->_presenter->PageLoad($user, $user->Timezone);
+		$this->presenter->PageLoad($user);
 
 		$this->Set('HeaderLabels', Resources::GetInstance()->GetDays('full'));
 		$this->Set('Today', Date::Now()->ToTimezone($user->Timezone));
 		$this->Set('TimeFormat', Resources::GetInstance()->GetDateFormat('calendar_time'));
 		$this->Set('DateFormat', Resources::GetInstance()->GetDateFormat('calendar_dates'));
 
-		$this->Display('Calendar/' . $this->template);
+		$this->Display('Calendar/calendar.tpl');
 	}
 
 	public function GetDay()
@@ -147,20 +147,11 @@ class CalendarPage extends SecurePage implements ICalendarPage
 		return $this->GetQuerystring(QueryStringKeys::CALENDAR_TYPE);
 	}
 
-	public function BindCalendar(ICalendarSegment $calendar)
-	{
-		$this->Set('Calendar', $calendar);
-
-		$prev = $calendar->GetPreviousDate();
-		$next = $calendar->GetNextDate();
-
-		$calendarType = $calendar->GetType();
-
-		$this->Set('PrevLink', CalendarUrl::Create($prev, $calendarType));
-		$this->Set('NextLink', CalendarUrl::Create($next, $calendarType));
-
-		$this->template = sprintf('calendar.%s.tpl', strtolower($calendarType));
-	}
+    public function BindCalendarType($calendarType)
+    {
+        $calendarType = empty($calendarType) ? 'month' : $calendarType;
+        $this->Set('CalendarType',$calendarType);
+    }
 
 	/**
 	 * @param Date $displayDate
@@ -251,6 +242,43 @@ class CalendarPage extends SecurePage implements ICalendarPage
 		$this->Set('GroupName', $selectedGroup->name);
 		$this->Set('SelectedGroupNode', $selectedGroup->id);
 	}
+
+    public function ProcessAction()
+    {
+        $this->presenter->ProcessAction();
+    }
+
+    public function ProcessDataRequest($dataRequest)
+    {
+        $this->presenter->ProcessDataRequest($dataRequest);
+    }
+    
+    public function BindEvents($reservationList)
+    {
+        $events = array();
+        foreach ($reservationList as $r)
+        {
+            $events[] = $r->AsFullCalendarEvent();
+        }
+
+        $this->SetJson($events);
+    }
+
+
+    public function GetStartDate()
+    {
+        return $this->GetQuerystring(QueryStringKeys::START);
+    }
+
+    public function GetEndDate()
+    {
+        return $this->GetQuerystring(QueryStringKeys::END);
+    }
+
+    public function RenderSubscriptionDetails()
+    {
+        $this->Display('Calendar/calendar.subscription.tpl');
+    }
 }
 
 class CalendarUrl

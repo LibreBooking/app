@@ -68,7 +68,7 @@ a:hover {
   -webkit-border-radius: 5px;
   -moz-border-radius: 5px;
   border-radius: 5px;
-  border: solid 1px #cfe4e4;
+  border: solid 1px #CFE4E4;
   background-color: #fcfcfc;
 }
 .default-box h1 {
@@ -76,7 +76,7 @@ a:hover {
   margin-top: 0;
   padding-bottom: 5px;
   font-weight: bold;
-  border-bottom: solid 1px #bcbcbc;
+  border-bottom: solid 1px #BCBCBC;
 }
 @media (max-width: 768px) {
   .default-box h1 {
@@ -110,18 +110,18 @@ a:hover {
   -webkit-border-radius: 5px;
   -moz-border-radius: 5px;
   border-radius: 5px;
-  border: solid 1px #cfe4e4;
+  border: solid 1px #CFE4E4;
   background-color: #fcfcfc;
-  -webkit-box-shadow: 0px 0px 3px 0px #e9e9e9;
-  -moz-box-shadow: 0px 0px 3px 0px #e9e9e9;
-  box-shadow: 0px 0px 3px 0px #e9e9e9;
+  -webkit-box-shadow: 0px 0px 3px 0px #E9E9E9;
+  -moz-box-shadow: 0px 0px 3px 0px #E9E9E9;
+  box-shadow: 0px 0px 3px 0px #E9E9E9;
 }
 .default-box-shadow h1 {
   color: #585754;
   margin-top: 0;
   padding-bottom: 5px;
   font-weight: bold;
-  border-bottom: solid 1px #bcbcbc;
+  border-bottom: solid 1px #BCBCBC;
 }
 @media (max-width: 768px) {
   .default-box-shadow h1 {
@@ -129,14 +129,14 @@ a:hover {
   }
 }
 .default-box-header {
-  background-color: #9bc2c2;
+  background-color: #9BC2C2;
   margin-bottom: -1px;
   line-height: 35px;
   padding: 0 15px;
   font-size: 1.3em;
   font-weight: bold;
   color: #fff;
-  border: solid 1px #cfe4e4;
+  border: solid 1px #CFE4E4;
   -webkit-border-top-right-radius: 5px;
   -webkit-border-bottom-right-radius: 0;
   -webkit-border-bottom-left-radius: 0;
@@ -160,7 +160,7 @@ a:hover {
 }
 #page-login .default-box {
   background-color: #fcfcfc;
-  border: solid 1px #cfe4e4;
+  border: solid 1px #CFE4E4;
 }
 #page-login .register {
   text-align: right;
@@ -207,7 +207,7 @@ div.center {
 .default-box-footer {
   padding: 5px 0 5px 10px;
   clear: both;
-  border-top: solid 1px #e9e9e9;
+  border-top: solid 1px #E9E9E9;
 }
 .form-control.dateinput,
 .form-control.timeinput {
@@ -373,14 +373,14 @@ input[type=text].user-search {
 }
 .remove.icon,
 .delete.icon {
-  color: #ffaaaa;
+  color: #FFAAAA;
 }
 .remove.icon:hover,
 .delete.icon:hover {
   color: #ff7777;
 }
 .add.icon {
-  color: #88cc88;
+  color: #88CC88;
 }
 .add.icon:hover {
   color: #64bd64;
@@ -438,4 +438,7 @@ input.mid-number {
 .select2-container .select2-search__field:not([placeholder='']) {
   width: 100% !important;
   margin-right: 100000px;
+}
+.navbar-brand {
+  padding: 0;
 }

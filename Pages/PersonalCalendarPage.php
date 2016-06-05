@@ -22,18 +22,8 @@ require_once(ROOT_DIR . 'Pages/SecurePage.php');
 require_once(ROOT_DIR . 'Presenters/Calendar/PersonalCalendarPresenter.php');
 require_once(ROOT_DIR . 'lib/Application/Schedule/CalendarSubscriptionService.php');
 
-interface IPersonalCalendarPage extends IActionPage
+interface IPersonalCalendarPage extends IActionPage, ICommonCalendarPage
 {
-	public function GetDay();
-
-	public function GetMonth();
-
-	public function GetYear();
-
-	public function GetCalendarType();
-
-	public function BindCalendar(ICalendarSegment $calendar);
-
 	public function BindSubscription(CalendarSubscriptionDetails $details);
 
 	public function SetDisplayDate($displayDate);
@@ -75,6 +65,10 @@ interface IPersonalCalendarPage extends IActionPage
 	 * @param ResourceGroup $selectedGroup
 	 */
 	public function BindSelectedGroup($selectedGroup);
+
+    public function BindCalendarType($calendarType);
+
+    public function RenderSubscriptionDetails();
 }
 
 class PersonalCalendarPage extends ActionPage implements IPersonalCalendarPage
@@ -115,14 +109,14 @@ class PersonalCalendarPage extends ActionPage implements IPersonalCalendarPage
 	public function ProcessPageLoad()
 	{
 		$user = ServiceLocator::GetServer()->GetUserSession();
-		$this->presenter->PageLoad($user, $user->Timezone);
+		$this->presenter->PageLoad($user);
 
 		$this->Set('HeaderLabels', Resources::GetInstance()->GetDays('full'));
 		$this->Set('Today', Date::Now()->ToTimezone($user->Timezone));
 		$this->Set('TimeFormat', Resources::GetInstance()->GetDateFormat('calendar_time'));
 		$this->Set('DateFormat', Resources::GetInstance()->GetDateFormat('calendar_dates'));
 
-		$this->Display('Calendar/' . $this->template);
+		$this->Display('Calendar/mycalendar.tpl');
 	}
 
 	public function GetDay()
@@ -145,20 +139,11 @@ class PersonalCalendarPage extends ActionPage implements IPersonalCalendarPage
 		return $this->GetQuerystring(QueryStringKeys::CALENDAR_TYPE);
 	}
 
-	public function BindCalendar(ICalendarSegment $calendar)
-	{
-		$this->Set('Calendar', $calendar);
-
-		$prev = $calendar->GetPreviousDate();
-		$next = $calendar->GetNextDate();
-
-		$calendarType = $calendar->GetType();
-
-		$this->Set('PrevLink', PersonalCalendarUrl::Create($prev, $calendarType));
-		$this->Set('NextLink', PersonalCalendarUrl::Create($next, $calendarType));
-
-		$this->template = sprintf('mycalendar.%s.tpl', strtolower($calendarType));
-	}
+    public function BindCalendarType($calendarType)
+    {
+        $calendarType = empty($calendarType) ? 'month' : $calendarType;
+        $this->Set('CalendarType',$calendarType);
+    }
 
 	/**
 	 * @param $displayDate Date
@@ -189,7 +174,7 @@ class PersonalCalendarPage extends ActionPage implements IPersonalCalendarPage
 
 	public function ProcessDataRequest($dataRequest)
 	{
-		// no-op
+		$this->presenter->ProcessDataRequest($dataRequest);
 	}
 
 	public function BindSubscription(CalendarSubscriptionDetails $details)
@@ -236,6 +221,32 @@ class PersonalCalendarPage extends ActionPage implements IPersonalCalendarPage
 		$this->Set('GroupName', $selectedGroup->name);
 		$this->Set('SelectedGroupNode', $selectedGroup->id);
 	}
+
+    public function BindEvents($reservationList)
+    {
+        $events = array();
+        foreach ($reservationList as $r)
+        {
+            $events[] = $r->AsFullCalendarEvent();
+        }
+
+        $this->SetJson($events);
+    }
+
+    public function GetStartDate()
+    {
+        return $this->GetQuerystring(QueryStringKeys::START);
+    }
+
+    public function GetEndDate()
+    {
+        return $this->GetQuerystring(QueryStringKeys::END);
+    }
+
+    public function RenderSubscriptionDetails()
+    {
+        $this->Display('Calendar/mycalendar.subscription.tpl');
+    }
 }
 
 class PersonalCalendarUrl

@@ -17,11 +17,13 @@ You should have received a copy of the GNU General Public License
 along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 *}
 <div class="row form-inline">
-	<div id="filter">
+    <div id="filter">
+
 		{if $GroupName}
 		<span class="groupName">{$GroupName}</span>
 		{else}
-		<div >
+		<div>
+            <div class="inline">{indicator id=loadingIndicator}</div>
 			<label for="calendarFilter">{translate key="ChangeCalendar"}</label>
 			<select id="calendarFilter">
 				{foreach from=$filters->GetFilters() item=filter}

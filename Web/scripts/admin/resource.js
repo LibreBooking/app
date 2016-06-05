@@ -85,7 +85,7 @@ function ResourceManagement(opts) {
 
 	function initializeResourceUI(id, details) {
 		var resource = getResource(id);
-		if (resource.allowSubscription)
+		if (resource.allowSubscription == 1)
 		{
 			details.find('.disableSubscription').removeClass('hide');
 		}

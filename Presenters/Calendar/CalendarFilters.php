@@ -43,7 +43,7 @@ class CalendarFilters
 	public function __construct($schedules, $resources, $selectedScheduleId, $selectedResourceId, ResourceGroupTree $resourceGroupTree)
 	{
 		$this->resourceGroupTree = $resourceGroupTree;
-
+        
 		if (!empty($resources))
 		{
 			$this->filters[] = new CalendarFilter(self::FilterSchedule, null, Resources::GetInstance()->GetString("AllReservations"), (empty($selectedResourceId) && empty($selectedScheduleId)));

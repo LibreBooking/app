@@ -258,7 +258,7 @@ class CalendarSubscriptionService implements ICalendarSubscriptionService
     public function ForResource($resourceId)
     {
         $resource = $this->resourceRepository->LoadById($resourceId);
-
+        
         return new CalendarSubscriptionDetails(
             $resource->GetIsCalendarSubscriptionAllowed(),
             new CalendarSubscriptionUrl(null, null, $resource->GetPublicId()));

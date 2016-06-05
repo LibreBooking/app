@@ -581,6 +581,7 @@ class en_us extends Language
 		$strings['UsersWithAccessToResources'] = 'Users With Access To Resources';
 		$strings['AnnouncementSubject'] = 'A new announcement was posted by %s';
 		$strings['AnnouncementEmailNotice'] = 'users will be sent this announcement as an email';
+		$strings['Day'] = 'Day';
 		// End Strings
 
 		// Install

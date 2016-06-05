@@ -21,41 +21,6 @@
   background: #428181;
   border-color: #226666;
 }
-.monthCalendar {
-  width: 100%;
-  border-collapse: collapse;
-}
-.monthCalendar a {
-  text-decoration: none;
-}
-.monthCalendar a:hover {
-  text-decoration: underline;
-}
-.monthCalendar,
-.monthCalendar td,
-.monthCalendar th {
-  border: solid 1px #dddddd;
-}
-.dayName th {
-  background-color: #fcfcfc;
-  padding: 3px 0px;
-  width: 14%;
-}
-.monthCalendar td {
-  height: 120px;
-  vertical-align: top;
-  padding: 2px;
-}
-.today {
-  background-color: #FFFFE0;
-}
-.unimportant {
-  background-color: #ededed;
-}
-.hover {
-  cursor: pointer;
-  background-color: #D9E9FA;
-}
 .calendarHeading {
   color: #666666;
   border-bottom: solid 1px #666666;
@@ -117,7 +82,7 @@ ul.jqtree-tree .jqtree-toggler {
 }
 #dayDialog {
   display: none;
-  border-color: #bcbcbc;
+  border-color: #BCBCBC;
   position: absolute;
   z-index: 2;
   padding: 12px;
@@ -129,5 +94,5 @@ ul.jqtree-tree .jqtree-toggler {
   background-color: #fff;
 }
 .fc-day-header {
-  background-color: #fff8e7;
+  background-color: #FFF8E7;
 }

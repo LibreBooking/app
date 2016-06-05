@@ -21,8 +21,5 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 define('ROOT_DIR', '../');
 require_once(ROOT_DIR . 'Pages/CalendarPage.php');
 
-$page = new CalendarPage();
-
+$page = new SecurePageDecorator(new CalendarPage());
 $page->PageLoad();
-
-?>
