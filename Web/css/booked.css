@@ -385,11 +385,11 @@ input[type=text].user-search {
 }
 .remove.icon,
 .delete.icon {
-  color: #FFAAAA;
+  color: #AA3939;
 }
 .remove.icon:hover,
 .delete.icon:hover {
-  color: #ff7777;
+  color: #842c2c;
 }
 .add.icon {
   color: #88CC88;
@@ -1060,8 +1060,8 @@ a.toggle-sidebar {
   font-weight: bold;
 }
 .resource-display-unavailable {
-  background-color: #FFAAAA;
-  border: solid 1px #ff9090;
+  background-color: #AA3939;
+  border: solid 1px #973333;
 }
 .resource-display-name,
 .resource-display-date {
@@ -1365,10 +1365,10 @@ a.add .icon {
   color: #88CC88;
 }
 a.remove {
-  color: #FFAAAA;
+  color: #AA3939;
 }
 #reservation-response-image .error {
-  color: #FFAAAA;
+  color: #AA3939;
 }
 #reservation-response-image .warning {
   color: #FA6900;
@@ -1392,7 +1392,7 @@ a.remove {
 }
 #invite-error {
   font-weight: bold;
-  color: #FFAAAA;
+  color: #AA3939;
 }
 .resourceName {
   color: #428181;

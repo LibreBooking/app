@@ -385,11 +385,11 @@ input[type=text].user-search {
 }
 .remove.icon,
 .delete.icon {
-  color: #FFAAAA;
+  color: #AA3939;
 }
 .remove.icon:hover,
 .delete.icon:hover {
-  color: #ff7777;
+  color: #842c2c;
 }
 .add.icon {
   color: #88CC88;

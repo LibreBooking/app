@@ -230,10 +230,10 @@ a.add .icon {
   color: #88CC88;
 }
 a.remove {
-  color: #FFAAAA;
+  color: #AA3939;
 }
 #reservation-response-image .error {
-  color: #FFAAAA;
+  color: #AA3939;
 }
 #reservation-response-image .warning {
   color: #FA6900;
@@ -257,7 +257,7 @@ a.remove {
 }
 #invite-error {
   font-weight: bold;
-  color: #FFAAAA;
+  color: #AA3939;
 }
 .resourceName {
   color: #428181;
