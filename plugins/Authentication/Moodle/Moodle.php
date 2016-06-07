@@ -41,8 +41,6 @@ class Moodle extends Authentication implements IAuthentication
 	/** @var moodle user */
 	private $user;
 
-	private $sso = false;
-	
 	public function SetRegistration($registration)
 	{
 		$this->_registration = $registration;
@@ -64,44 +62,43 @@ class Moodle extends Authentication implements IAuthentication
 	public function __construct(IAuthentication $authentication)
 	{
 		Log::Debug('Moodle authentication plugin - __construct');
-		global $CFG, $DB;
 		
 		$this->authToDecorate = $authentication;
 
-		$this->options = new MoodleOptions();
-
-		require_once($this->options->GetPath() . 'config.php');
-		require_once($this->options->GetPath() . 'lib/moodlelib.php');
-
-		$this->CheckForMoodleSession(); 
-
-		if (!function_exists('validate_internal_user_password'))
-		{
-			throw new Exception('Could not load Moodle authentication hook. Please verify moodle.root.directory config setting');
-		}
+		if(!ServiceLocator::GetServer()->GetUserSession()->IsLoggedIn())
+        {
+    		$this->CheckForMoodleSession(); 
+        }
  	}
 
 	private function CheckForMoodleSession()
 	{
 		global $CFG;
 	
-		Log::Debug('Moodle authentication plugin - CheckForMoodleSession');
+		Log::Debug('Moodle authentication plugin - in CheckForMoodleSession');
 	
-		// if we are already logged in just return
-		$userSession = ServiceLocator::GetServer()->GetUserSession();
-		if( $userSession->IsLoggedIn() )
-			return true;
-
+		$this->options = new MoodleOptions();
+        
 		// phpScheduleIt can only 'see' Moodle cookies if they are on the same (main) domain
 		// from Moodle 2.6 this can be set in Site Administration>Server>Session Handling (admin/settings.php?section=sessionhandling)
-		if( isset( $_COOKIE[$this->options->GetMoodleCookieId()] ) )
-		{
-			$moodlesid = $_COOKIE[$this->options->GetMoodleCookieId()];
+		$server = ServiceLocator::GetServer();
+        if($moodleCookie = $server->GetCookie($this->options->GetMoodleCookieId()))
+        {
+            $moodlesid = $_COOKIE[$this->options->GetMoodleCookieId()];
 			
+            Log::Debug('Moodle authentication plugin - using Moodle session: '.$moodleCookie);
+	
+            require_once($this->options->GetPath().'config.php');
+
+            Log::Debug('Moodle authentication plugin - Moodle config loaded from '.$this->options->GetPath().'config.php');
+
+            // get Moodle username from existing Moodle session in database
 			$moodledb = new Database(new MySqlConnection($CFG->dbuser, $CFG->dbpass, $CFG->dbhost, $CFG->dbname));
 			$reader = $moodledb->Query(new GetMoodleSessionCommand($moodlesid) );
 			if ($moodleuser = (object)$reader->GetRow())
 			{
+                Log::Debug('Moodle authentication plugin - valid Moodle user found: '.$moodleuser->username);
+
 				$userRepository = new UserRepository();
 				if( $this->user = $userRepository->LoadByUsername($moodleuser->username) )
 				{
@@ -111,34 +108,16 @@ class Moodle extends Authentication implements IAuthentication
 					$userSession = $this->authToDecorate->Login($moodleuser->username, $webLoginContext );
 					if ($userSession->IsLoggedIn())
 					{
-						ServiceLocator::GetServer()->SetUserSession($userSession);
-						
-						$url = Configuration::Instance()->GetKey(ConfigKeys::SCRIPT_URL);
-						$parsedurl = parse_url( $url );
-						
-						if( isset( $_REQUEST['redirect'] ))
-							$url = $parsedurl['scheme'] . '://' . $parsedurl['host'] . $_REQUEST['redirect']; 
-						else
-							$url = $parsedurl['scheme'] . '://' . $parsedurl['host'];
-						
-						header( 'Location: ' . $url );
-						exit;
+						$server->SetUserSession($userSession);
+                        return true;
 					}
-					
-					// if the Moodle signed-in-user exists in phpScheduleIt
-					// create a phpScheduleIt persistent cookie
-// THIS USES A PERSISTENT COOKIE WHICH IS NOT WHAT WE WANT SINCE IT IS
-// NOT POSSIBLE TO LOGOUT
-//					$cookie = new LoginCookie($this->user->Id(), $this->user->LastLogin());
-//					ServiceLocator::GetServer()->SetCookie($cookie);
-//					$url = Configuration::Instance()->GetKey(ConfigKeys::SCRIPT_URL);
-//					if( isset( $_REQUEST['redirect'] ))
-//						$url .= $_REQUEST['redirect']; 
-//					header( 'Location: ' . $url );
-//					exit;
 				}
 			}
 		}
+        else
+        {
+            Log::Debug('Moodle authentication plugin - no Moodle session found');
+        }
 		
 		return false;
 	}
@@ -154,6 +133,10 @@ class Moodle extends Authentication implements IAuthentication
 
 		Log::Debug('Attempting to authenticate user against Moodle. User=%s', $username);
 
+        require_once($this->options->GetPath().'config.php');
+
+        Log::Debug('Moodle authentication plugin - Moodle config loaded from '.$this->options->GetPath().'config.php');
+
 		$moodledb = new Database(new MySqlConnection($CFG->dbuser, $CFG->dbpass, $CFG->dbhost, $CFG->dbname));
 		
 		// Note: only teachers are allowed to login using their Moodle account
@@ -161,7 +144,9 @@ class Moodle extends Authentication implements IAuthentication
 		$reader = $moodledb->Query(new GetMoodleUserCommand($username));
 		if ($moodleuser = (object)$reader->GetRow())
 		{
-			if ( validate_internal_user_password( $moodleuser,$password ) )
+    		require_once($this->options->GetPath() . 'lib/moodlelib.php');
+        
+			if (validate_internal_user_password($moodleuser,$password))
 			{
 				Log::Debug('Moodle authentication successful. User=%s', $username);
 				$this->user = $moodleuser;
@@ -216,7 +201,7 @@ class Moodle extends Authentication implements IAuthentication
 	{
 		Log::Debug('Moodle authentication plugin - UserExists');
 		
-		return $this->user != null;
+		return ($this->user!=null) && $this->user->exists();
 	}
 
 	private function Synchronize()
@@ -252,7 +237,7 @@ class GetMoodleUserCommand extends SqlCommand
 {
 	public function __construct($username)
 	{
-		parent::__construct('SELECT u.* FROM mdl_user u JOIN mdl_role_assignments a ON u.id = a.userid WHERE u.deleted = 0 AND u.suspended = 0 AND (a.roleid = @roleid0 OR a.roleid = @roleid1 OR a.roleid = @roleid2) AND u.username = @username');
+		parent::__construct('SELECT u.* FROM mdl_user u JOIN mdl_role_assignments a ON u.id=a.userid WHERE u.deleted=0 AND u.suspended=0 AND (a.roleid=@roleid0 OR a.roleid=@roleid1 OR a.roleid=@roleid2) AND u.username=@username');
 		$this->AddParameter(new Parameter('@roleid0', MOODLE_MANAGER_ROLE_ID ));
 		$this->AddParameter(new Parameter('@roleid1', MOODLE_EDITING_TEACHER_ROLE_ID ));
 		$this->AddParameter(new Parameter('@roleid2', MOODLE_TEACHER_ROLE_ID ));
@@ -266,7 +251,7 @@ class GetMoodleSessionCommand extends SqlCommand
 	
 	public function __construct($sid)
 	{
-		parent::__construct('SELECT u.* FROM mdl_sessions s JOIN mdl_user u ON s.userid = u.id AND NOT s.userid = 0 WHERE s.state = 0 AND s.sid = @sid AND u.suspended = 0 AND u.deleted = 0');
+		parent::__construct('SELECT u.* FROM mdl_sessions s JOIN mdl_user u ON s.userid=u.id AND NOT s.userid=0 WHERE s.state=0 AND s.sid=@sid AND u.suspended=0 AND u.deleted=0');
 		$this->AddParameter(new Parameter('@sid', $sid));
 	}
 }

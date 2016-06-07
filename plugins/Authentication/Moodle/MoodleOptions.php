@@ -13,6 +13,8 @@ class MoodleOptions
 		Configuration::Instance()->Register(
 			dirname(__FILE__) . '/Moodle.config.php',
 			self::CONFIG_ID);
+
+		Log::Debug('Moodle authentication plugin - Moodle options loaded');
 	}
 
 	public function RetryAgainstDatabase()
@@ -24,11 +26,11 @@ class MoodleOptions
 	{
 		$path = $this->GetConfig('moodle.root.directory');
 
-		if (!StringHelper::StartsWith($path, '/'))
+		if (!BookedStringHelper::StartsWith($path, '/'))
 		{
 			$path = ROOT_DIR . "/$path";
 		}
-		if (StringHelper::EndsWith($path, '/'))
+		if (BookedStringHelper::EndsWith($path, '/'))
 		{
 			return $path;
 		}
