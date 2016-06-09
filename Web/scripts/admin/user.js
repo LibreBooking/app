@@ -178,14 +178,14 @@ function UserManagement(opts) {
 
 			$('#importCount').text(responseText.importCount);
 			$('#importSkipped').text(responseText.skippedRows.length > 0 ? responseText.skippedRows.join(',') : '0');
-			$('#importResult').show();
+			$('#importResult').removeClass('no-show');
 
 			var errors = $('#importErrors');
 			errors.empty();
 			if (responseText.messages && responseText.messages.length > 0)
 			{
 				var messages = responseText.messages.join('</li><li>');
-				errors.html('<div>' + messages + '</div>').show();
+				errors.html('<div>' + messages + '</div>').removeClass('no-show');
 			}
 		};
 

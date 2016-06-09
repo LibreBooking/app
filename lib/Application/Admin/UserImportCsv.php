@@ -43,7 +43,7 @@ class UserImportCsvRow
 	{
 		$this->values = $values;
 		$this->indexes = $indexes;
-
+        
 		$this->username = $this->valueOrDefault('username');
 		$this->email = $this->valueOrDefault('email');
 		$this->firstName = $this->valueOrDefault('firstName');
@@ -59,7 +59,12 @@ class UserImportCsvRow
 
 	public function IsValid()
 	{
-		return !empty($this->username) && !empty($this->email);
+		$isValid = !empty($this->username) && !empty($this->email);
+        if (!$isValid)
+        {
+            Log::Debug('User import row is not valid. Username %s, Email %s', $this->username, $this->email);
+        }
+        return $isValid;
 	}
 
 	/**
@@ -121,10 +126,12 @@ class UserImportCsv
 	public function GetRows()
 	{
 		$rows = array();
-		$csvRows = str_getcsv($this->file->Contents(), "\n");
+
+        $csvRows = str_getcsv($this->file->Contents(), "\n");
 
 		if (count($csvRows) == 0)
 		{
+            Log::Debug('No rows in user import file');
 			return $rows;
 		}
 
@@ -132,7 +139,8 @@ class UserImportCsv
 
 		if (!$headers)
 		{
-			return $rows;
+            Log::Debug('No headers in user import file');
+            return $rows;
 		}
 
 		for($i = 1; $i < count($csvRows); $i++)

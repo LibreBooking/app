@@ -291,7 +291,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 								{async_validator id="fileExtensionValidator" key=""}
 							</ul>
 						</div>
-						<div id="importErrors" class="error no-show"></div>
+						<div id="importErrors" class="alert alert-danger no-show"></div>
 						<div id="importResult" class="alert alert-success no-show">
 							<span>{translate key=RowsImported}</span>
 
