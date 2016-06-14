@@ -109,6 +109,11 @@ class Date
 			return NullDate::Instance();
 		}
 
+/*
+ * This wasn't producing correct results. 
+ * Parameter $datestring is provided in ISO 8601 format and therefore has the correct timezone
+ * This then needs to be converted to UTC.
+ * 
 		$offset = '';
 		$strLen = strlen($dateString);
 		$hourAdjustment = 0;
@@ -128,8 +133,14 @@ class Date
 
 		$parsed = date_parse($dateString);
 
-		$d = Date::Create($parsed['year'], $parsed['month'], $parsed['day'], $parsed['hour'] + $hourAdjustment, $parsed['minute'] + $minuteAdjustment,
-						  $parsed['second'], 'UTC');
+		$d = Date::Create($parsed['year'], $parsed['month'], $parsed['day'], $parsed['hour'] + $hourAdjustment, $parsed['minute'] + $minuteAdjustment,						  $parsed['second'], 'UTC');
+ */
+        
+        $dt = new DateTime($dateString);
+        $utc = $dt->setTimezone(new DateTimeZone('UTC'));
+
+		$d = Date::Create($utc->format('Y'), $utc->format('m'), $utc->format('d'), $utc->format('H'), $utc->format('i'), $utc->format('s'), 'UTC');
+
 		return $d;
 	}
 

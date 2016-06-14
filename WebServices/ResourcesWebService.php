@@ -96,7 +96,7 @@ class ResourcesWebService
 	}
 
 	/**
-	 * @name GetResourceGroupTree
+	 * @name GetResourceGroupTreeByType
 	 * @param string $resourceTypeName
 	 * @description Loads all resource groups and its resources of a specific type
 	 * @response ResourceGroupTreeResponse

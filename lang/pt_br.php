@@ -494,7 +494,13 @@ class pt_br extends Language
     $strings['BulkResourceUpdate'] = 'Atualização de recursos em massa';
     $strings['Unchanged'] = 'Inalterado';
     $strings['Common'] = 'Comum';
-    $strings['AdvancedFilter'] = 'Filtro avançado';
+	$strings['AdvancedFilter'] = 'Filtro avançado';
+	$strings['AllParticipants'] = 'Todos os participantes';
+	$strings['ResourceAvailability'] = 'Recurso disponível';
+	$strings['UnavailableAllDay'] = 'Indisponivel todo o dia';
+	$strings['AvailableUntil'] = 'Disponível até';
+	$strings['AvailableBeginningAt'] = 'Disponível a parit de';
+
     // End Strings
 
     // Install
