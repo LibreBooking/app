@@ -144,6 +144,7 @@ function UserManagement(opts) {
 
 		$('#import-users').click(function (e) {
 			e.preventDefault();
+            $('#importErrors').empty().addClass('no-show');
 			elements.importUsersDialog.modal('show');
 		});
 
