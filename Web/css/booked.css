@@ -155,7 +155,7 @@ a:hover {
   background-clip: padding-box;
 }
 .default-box-header a {
-  color: #FFE8E8;
+  color: #E9E9E9;
 }
 #page-login {
   height: 100%;
@@ -168,7 +168,7 @@ a:hover {
 }
 #page-login .register {
   text-align: right;
-  font-size: .8em;
+  padding-top: 7px;
 }
 .login-links {
   text-align: center;
@@ -1379,6 +1379,12 @@ a.remove {
 .reservation-message {
   font-size: 2em;
   font-weight: bold;
+}
+@media only screen and (max-device-width: 480px) {
+  .reservation-message {
+    font-size: 1em;
+    font-weight: bold;
+  }
 }
 #custom-attributes-placeholder .form-group {
   margin: 0;

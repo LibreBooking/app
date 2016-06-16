@@ -245,6 +245,12 @@ a.remove {
   font-size: 2em;
   font-weight: bold;
 }
+@media only screen and (max-device-width: 480px) {
+  .reservation-message {
+    font-size: 1em;
+    font-weight: bold;
+  }
+}
 #custom-attributes-placeholder .form-group {
   margin: 0;
 }

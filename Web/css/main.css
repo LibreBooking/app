@@ -155,7 +155,7 @@ a:hover {
   background-clip: padding-box;
 }
 .default-box-header a {
-  color: #FFE8E8;
+  color: #E9E9E9;
 }
 #page-login {
   height: 100%;
@@ -168,7 +168,7 @@ a:hover {
 }
 #page-login .register {
   text-align: right;
-  font-size: .8em;
+  padding-top: 7px;
 }
 .login-links {
   text-align: center;

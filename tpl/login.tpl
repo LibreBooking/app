@@ -28,10 +28,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 	<div class="col-md-offset-3 col-md-6 col-xs-12 ">
 		<div id="login-header" class="default-box-header">
 			<span class="sign-in">{translate key=SignIn}</span>
-			{if $ShowRegisterLink}<span class="pull-right register">{translate key="FirstTimeUser?"}
-				<a href="{$RegisterUrl}" {$RegisterUrlNew}
-				   title="{translate key=Register}">{translate key=Register}</a>
-				</span>{/if}
+
 		</div>
 		<form role="form" name="login" id="login" class="form-horizontal" method="post"
 			  action="{$smarty.server.SCRIPT_NAME}">
@@ -66,12 +63,21 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 					<input type="hidden" {formname key=RESUME} value="{$ResumeUrl}"/>
 				</div>
 
-				<div class="col-xs-12">
+				<div class="col-xs-12 {if $ShowRegisterLink}col-sm-6{/if}">
 					<div class="checkbox">
 						<input id="rememberMe" type="checkbox" {formname key=PERSIST_LOGIN}>
 						<label for="rememberMe">{translate key=RememberMe}</label>
 					</div>
 				</div>
+
+                {if $ShowRegisterLink}
+                    <div class="col-xs-12 col-sm-6 register">
+                    <span>{translate key="FirstTimeUser?"}
+                    <a href="{$RegisterUrl}" {$RegisterUrlNew}
+                       title="{translate key=Register}">{translate key=Register}</a>
+                    </span>
+                    </div>
+                {/if}
 
 				{if $AllowSocialLogin}
 					<div class="col-sm-6 col-xs-12">
