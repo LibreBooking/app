@@ -51,6 +51,11 @@ interface IUserSessionRepository
 	 * @return void
 	 */
 	public function Delete(WebServiceUserSession $session);
+    
+	/**
+	 * @return void
+	 */
+	public function CleanUp();
 }
 
 class UserSessionRepository implements IUserSessionRepository
@@ -90,5 +95,10 @@ class UserSessionRepository implements IUserSessionRepository
 	public function Delete(WebServiceUserSession $session)
 	{
 		ServiceLocator::GetDatabase()->Execute(new DeleteUserSessionCommand($session->SessionToken));
+	}
+
+	public function CleanUp()
+	{
+		ServiceLocator::GetDatabase()->Execute(new CleanUpUserSessionsCommand());
 	}
 }

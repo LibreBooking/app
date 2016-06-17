@@ -920,6 +920,14 @@ class DeleteUserSessionCommand extends SqlCommand
 	}
 }
 
+class CleanUpUserSessionsCommand extends SqlCommand
+{
+	public function __construct()
+	{
+		parent::__construct(Queries::CLEANUP_USER_SESSIONS);
+	}
+}
+
 class GetAccessoryByIdCommand extends SqlCommand
 {
 	public function __construct($accessoryId)

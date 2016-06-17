@@ -197,6 +197,9 @@ class Queries
 		FROM users
 		WHERE ( (username IS NOT NULL AND username = @username) OR (email IS NOT NULL AND email = @email) )';
 
+	const CLEANUP_USER_SESSIONS =
+            'DELETE FROM user_session WHERE utc_timestamp()>date_add(last_modified,interval 24 hour)';
+
 	const COOKIE_LOGIN =
 			'SELECT user_id, lastlogin, email
 		FROM users
@@ -1137,9 +1140,8 @@ class Queries
 			'UPDATE user_session
 		SET
 			last_modified = @dateModified,
-			session_token = @session_token,
 			user_session_value = @user_session_value
-		WHERE user_id = @userid';
+		WHERE user_id = @userid AND session_token = @session_token';
 
 	const VALIDATE_USER =
 			'SELECT user_id, password, salt, legacypassword
