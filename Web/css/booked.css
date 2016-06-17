@@ -155,7 +155,7 @@ a:hover {
   background-clip: padding-box;
 }
 .default-box-header a {
-  color: #FFE8E8;
+  color: #E9E9E9;
 }
 #page-login {
   height: 100%;
@@ -168,7 +168,7 @@ a:hover {
 }
 #page-login .register {
   text-align: right;
-  font-size: .8em;
+  padding-top: 7px;
 }
 .login-links {
   text-align: center;
@@ -385,11 +385,11 @@ input[type=text].user-search {
 }
 .remove.icon,
 .delete.icon {
-  color: #FFAAAA;
+  color: #AA3939;
 }
 .remove.icon:hover,
 .delete.icon:hover {
-  color: #ff7777;
+  color: #842c2c;
 }
 .add.icon {
   color: #88CC88;
@@ -1060,8 +1060,8 @@ a.toggle-sidebar {
   font-weight: bold;
 }
 .resource-display-unavailable {
-  background-color: #FFAAAA;
-  border: solid 1px #ff9090;
+  background-color: #AA3939;
+  border: solid 1px #973333;
 }
 .resource-display-name,
 .resource-display-date {
@@ -1365,10 +1365,10 @@ a.add .icon {
   color: #88CC88;
 }
 a.remove {
-  color: #FFAAAA;
+  color: #AA3939;
 }
 #reservation-response-image .error {
-  color: #FFAAAA;
+  color: #AA3939;
 }
 #reservation-response-image .warning {
   color: #FA6900;
@@ -1379,6 +1379,12 @@ a.remove {
 .reservation-message {
   font-size: 2em;
   font-weight: bold;
+}
+@media only screen and (max-device-width: 480px) {
+  .reservation-message {
+    font-size: 1em;
+    font-weight: bold;
+  }
 }
 #custom-attributes-placeholder .form-group {
   margin: 0;
@@ -1392,7 +1398,7 @@ a.remove {
 }
 #invite-error {
   font-weight: bold;
-  color: #FFAAAA;
+  color: #AA3939;
 }
 .resourceName {
   color: #428181;

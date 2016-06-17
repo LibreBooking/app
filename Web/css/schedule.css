@@ -330,8 +330,8 @@ a.toggle-sidebar {
   font-weight: bold;
 }
 .resource-display-unavailable {
-  background-color: #FFAAAA;
-  border: solid 1px #ff9090;
+  background-color: #AA3939;
+  border: solid 1px #973333;
 }
 .resource-display-name,
 .resource-display-date {
