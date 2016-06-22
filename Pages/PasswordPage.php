@@ -81,7 +81,8 @@ class PasswordPage extends SecurePage implements IPasswordPage
 
 	public function SetAllowedActions($authenticationOptions)
 	{
-		$this->Set('AllowPasswordChange', $authenticationOptions->AllowPasswordChange());
+        $allowPasswordChange = !Configuration::Instance()->GetKey(ConfigKeys::DISABLE_PASSWORD_RESET, new BooleanConverter());
+		$this->Set('AllowPasswordChange', $authenticationOptions->AllowPasswordChange() && $allowPasswordChange);
 	}
 
 	public function ShowResetPasswordSuccess($resetPasswordSuccess)
