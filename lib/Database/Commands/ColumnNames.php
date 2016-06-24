@@ -302,6 +302,7 @@ class ColumnNames
 	const START_REMINDER_MINUTES_PRIOR = 'start_reminder_minutes';
 	const END_REMINDER_MINUTES_PRIOR = 'end_reminder_minutes';
 	const DURATION_ALIAS = 'duration';
+	const DURATION_HOURS = 'duration_in_hours';
 	const GROUP_IDS = 'group_ids';
 	const RESOURCE_IDS = 'resource_ids';
 

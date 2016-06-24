@@ -78,6 +78,7 @@ class ReportDefinition implements IReportDefinition
 				ColumnNames::RESERVATION_START => new ReportDateColumn('BeginDate', $timezone, $dateFormat, ChartColumnDefinition::Date()),
 				ColumnNames::RESERVATION_END => new ReportDateColumn('EndDate', $timezone, $dateFormat, ChartColumnDefinition::Null()),
 				ColumnNames::DURATION_ALIAS => new ReportTimeColumn('Duration', ChartColumnDefinition::Null(), false),
+				ColumnNames::DURATION_HOURS => new ReportStringColumn('Hours', ChartColumnDefinition::Null()),
 				ColumnNames::RESERVATION_TITLE => new ReportStringColumn('Title', ChartColumnDefinition::Null()),
 				ColumnNames::RESERVATION_DESCRIPTION => new ReportStringColumn('Description', ChartColumnDefinition::Null()),
 				ColumnNames::REFERENCE_NUMBER => new ReportStringColumn('ReferenceNumber', ChartColumnDefinition::Null()),

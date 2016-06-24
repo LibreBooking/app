@@ -79,7 +79,7 @@ ul.jqtree-tree .jqtree-toggler {
 }
 #dayDialog {
   display: none;
-  border-color: #BCBCBC;
+  border-color: #bcbcbc;
   position: absolute;
   z-index: 2;
   padding: 12px;
@@ -91,7 +91,7 @@ ul.jqtree-tree .jqtree-toggler {
   background-color: #fff;
 }
 .fc-day-header {
-  background-color: #FFF8E7;
+  background-color: #fff8e7;
 }
 #page-calendar #filter,
 #page-my-calendar #filter {
