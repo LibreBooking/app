@@ -94,12 +94,14 @@
 @link-color: @color-secondary-2-0;
 @link-color-hover: @color-secondary-2-3;
 @muted-blue: @color-secondary-2-2;
-@muted-red: @color-primary-0;
+@muted-red: @color-primary-4;
 @primary-green: @color-complement-0;
 @row-highlight: @color-gray-1-0;
 @off-white: #FFF8E7;
 @brown:@color-secondary-1-0;
 @light-brown: @color-secondary-1-1;
+
+@button-color: #53577F;
 
 
 
@@ -107,10 +109,10 @@
 /* http://paletton.com */
 
 .btn-primary {
-  background-color: #53577F;//@color-boxes-primary-2;
-  border-color: darken(#53577F, 20%);//@color-secondary-2-3;
+  background-color: @button-color;//@color-boxes-primary-2;
+  border-color: darken(@button-color, 20%);//@color-secondary-2-3;
 }
 .btn-primary:hover, .btn-primary:active{
-   background: lighten(#53577F, 5%);//@color-secondary-2-3;
-   border-color: #53577F;//@color-secondary-2-4;
+   background: lighten(@button-color, 5%);//@color-secondary-2-3;
+   border-color: @button-color;//@color-secondary-2-4;
  }

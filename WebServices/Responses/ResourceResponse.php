@@ -41,7 +41,7 @@ class ResourceResponse extends RestResponse
 	public $statusReasonId;
 	public $customAttributes = array();
 	public $typeId;
-	
+	public $groupIds;
 	/**
 	 * @param IRestServer $server
 	 * @param BookableResource $resource
@@ -68,7 +68,8 @@ class ResourceResponse extends RestResponse
 		$this->statusReasonId = $resource->GetStatusReasonId();
 		$this->bufferTime = $resource->GetBufferTime()->__toString();
 		$this->typeId = $resource->GetResourceTypeId();
-
+        $this->groupIds = $resource->GetResourceGroupIds();
+        
 		$attributeValues = $attributes->GetAttributes($resourceId);
 
 		$i=0;

@@ -159,9 +159,11 @@ class InstallPresenter
 		else
 		{
 			$this->page->ShowUpToDate(true);
-			$this->page->ShowInstallOptions(true);
-		}
+			$this->page->ShowInstallOptions(false);
+			$this->page->ShowUpgradeOptions(false);
+            $this->page->SetShowDatabasePrompt(false);
+            $this->page->SetShowPasswordPrompt(false);
+            $this->page->SetInstallPasswordMissing(false);
+        }
 	}
 }
-
-?>

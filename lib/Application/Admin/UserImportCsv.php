@@ -59,7 +59,12 @@ class UserImportCsvRow
 
 	public function IsValid()
 	{
-		return !empty($this->username) && !empty($this->email);
+		$isValid = !empty($this->username) && !empty($this->email);
+        if (!$isValid)
+        {
+            Log::Debug('User import row is not valid. Username %s, Email %s', $this->username, $this->email);
+        }
+        return $isValid;
 	}
 
 	/**
@@ -73,20 +78,30 @@ class UserImportCsvRow
 			return false;
 		}
 
-		$indexes['email'] = array_search('email', $values);
-		$indexes['username'] = array_search('username', $values);
-		$indexes['firstName'] = array_search('first name', $values);
-		$indexes['lastName'] = array_search('last name', $values);
-		$indexes['password'] = array_search('password', $values);
-		$indexes['phone'] = array_search('phone', $values);
-		$indexes['organization'] = array_search('organization', $values);
-		$indexes['position'] = array_search('position', $values);
-		$indexes['timezone'] = array_search('timezone', $values);
-		$indexes['language'] = array_search('language', $values);
-		$indexes['groups'] = array_search('groups', $values);
+		$indexes['email'] = self::indexOrNull('email', $values);
+		$indexes['username'] = self::indexOrNull('username', $values);
+		$indexes['firstName'] = self::indexOrNull('first name', $values);
+		$indexes['lastName'] = self::indexOrNull('last name', $values);
+		$indexes['password'] = self::indexOrNull('password', $values);
+		$indexes['phone'] = self::indexOrNull('phone', $values);
+		$indexes['organization'] = self::indexOrNull('organization', $values);
+		$indexes['position'] = self::indexOrNull('position', $values);
+		$indexes['timezone'] = self::indexOrNull('timezone', $values);
+		$indexes['language'] = self::indexOrNull('language', $values);
+		$indexes['groups'] = self::indexOrNull('groups', $values);
 
 		return $indexes;
 	}
+
+    private static function indexOrNull($columnName, $values) {
+        $index = array_search($columnName, $values);
+        if ($index === false)
+        {
+            return null;
+        }
+
+        return intval($index);
+    }
 
 	/**
 	 * @param $column string
@@ -121,21 +136,29 @@ class UserImportCsv
 	public function GetRows()
 	{
 		$rows = array();
-		$csvRows = str_getcsv($this->file->Contents(), "\n");
 
-		if (count($csvRows) == 0)
+        $contents = $this->file->Contents();
+
+        $contents = $this->RemoveUTF8BOM($contents);
+        $csvRows = preg_split('/\n|\r\n?/', $contents);
+
+        if (count($csvRows) == 0)
 		{
+            Log::Debug('No rows in user import file');
 			return $rows;
 		}
+
+        Log::Debug('%s rows in user import file', count($csvRows));
 
 		$headers = UserImportCsvRow::GetHeaders(str_getcsv($csvRows[0]));
 
 		if (!$headers)
 		{
-			return $rows;
+            Log::Debug('No headers in user import file');
+            return $rows;
 		}
 
-		for($i = 1; $i < count($csvRows); $i++)
+		for ($i = 1; $i < count($csvRows); $i++)
 		{
 			$values = str_getcsv($csvRows[$i]);
 
@@ -162,4 +185,9 @@ class UserImportCsv
 	{
 		return $this->skippedRowNumbers;
 	}
+
+    private function RemoveUTF8BOM($text)
+    {
+        return str_replace("\xEF\xBB\xBF",'',$text);
+    }
 }

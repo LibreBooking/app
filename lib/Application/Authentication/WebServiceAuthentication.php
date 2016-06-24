@@ -75,7 +75,10 @@ class WebServiceAuthentication implements IWebServiceAuthentication
 		if ($userSession->IsLoggedIn())
 		{
 			$webSession = WebServiceUserSession::FromSession($userSession);
+			$existingSession = $this->userSessionRepository->LoadBySessionToken($webSession->SessionToken);
+/*
 			$existingSession = $this->userSessionRepository->LoadByUserId($userSession->UserId);
+ */
 			if ($existingSession == null)
 			{
 				$this->userSessionRepository->Add($webSession);

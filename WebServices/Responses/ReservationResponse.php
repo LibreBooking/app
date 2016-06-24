@@ -113,7 +113,7 @@ class ReservationResponse extends RestResponse
 
 		foreach ($reservation->Resources as $resource)
 		{
-			$this->resources[] = new ResourceItemResponse($server, $resource->Id(), $resource->GetName());
+			$this->resources[$resource->Id()] = new ResourceItemResponse($server, $resource->Id(), $resource->GetName() );
 		}
 
 		foreach ($reservation->Accessories as $accessory)

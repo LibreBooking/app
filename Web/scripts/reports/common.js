@@ -92,7 +92,7 @@ function ReportsCommon(opts) {
 				$('<div/>', {'class': '', html: items.join('')}).appendTo(customizeColumns);
 
 				var btnCustomizeColumns = $('#btnCustomizeColumns');
-				customizeColumns.position({my:'right top', at:'right bottom', of: btnCustomizeColumns});
+
 
 				customizeColumns.find(':checkbox').unbind('click');
 
@@ -107,6 +107,7 @@ function ReportsCommon(opts) {
 
 				btnCustomizeColumns.unbind('click').on('click', function(e) {
 					e.preventDefault();
+                    customizeColumns.position({my:'right top', at:'right bottom', of: btnCustomizeColumns});
 					customizeColumns.show();
 				});
 			});
