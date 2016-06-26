@@ -157,7 +157,7 @@ td.dropped {
   background-color: #BDBDBD;
 }
 .restricted {
-  background: repeating-linear-gradient(45deg, transparent, transparent 10px, #ccc 10px, #ccc 20px), linear-gradient(to bottom, #eee, #999);
+  background: repeating-linear-gradient(45deg, transparent, transparent 10px, #cccccc 10px, #cccccc 20px), linear-gradient(to bottom, #eeeeee, #999999);
   color: black;
 }
 .schedule_title {
@@ -204,7 +204,7 @@ div.legend {
   padding: 0;
 }
 .reservations-left-header {
-  border-bottom: solid 1px #E9E9E9;
+  border-bottom: solid 1px #e9e9e9;
   font-weight: bold;
   font-size: 1.3em;
   text-align: center;
@@ -254,7 +254,7 @@ ul.jqtree-tree .jqtree-toggler {
 #reservations-left hr {
   border: 0;
   height: 1px;
-  background-color: #BCBCBC;
+  background-color: #bcbcbc;
 }
 #reservations-left .btn {
   width: 100%;
@@ -316,7 +316,7 @@ a.toggle-sidebar {
 }
 .resource-display-available,
 .resource-display-unavailable {
-  background-color: #88CC88;
+  background-color: #88cc88;
   border: solid 1px #76c476;
   line-height: 70px;
   text-align: center;
@@ -330,8 +330,8 @@ a.toggle-sidebar {
   font-weight: bold;
 }
 .resource-display-unavailable {
-  background-color: #AA3939;
-  border: solid 1px #973333;
+  background-color: #ffaaaa;
+  border: solid 1px #ff9090;
 }
 .resource-display-name,
 .resource-display-date {
@@ -341,7 +341,7 @@ a.toggle-sidebar {
 }
 .resource-display-date {
   text-align: right;
-  color: #BCBCBC;
+  color: #bcbcbc;
 }
 #page-resource-display-resource table.reservations td {
   line-height: 60px;

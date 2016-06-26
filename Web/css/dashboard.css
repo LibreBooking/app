@@ -23,7 +23,7 @@
   border-color: #53577F;
 }
 #page-dashboard .panel-heading {
-  background-color: #9BC2C2;
+  background-color: #9bc2c2;
   color: #fff;
 }
 #page-dashboard .panel-heading,
@@ -72,7 +72,7 @@
 .upcomingReservationsDashboard .timespan td {
   font-style: italic;
   color: #000;
-  background-color: #FFF8E7;
+  background-color: #fff8e7;
 }
 .upcomingReservationsDashboard tr.reservation.hover td {
   cursor: pointer;
@@ -104,7 +104,7 @@
   padding: 3px 0;
 }
 .availabilityDashboard .availabilityItem .btn {
-  background-color: #58AC58;
+  background-color: #58ac58;
   color: #fff;
   border-color: #458c45;
   padding: 1px 20px;
