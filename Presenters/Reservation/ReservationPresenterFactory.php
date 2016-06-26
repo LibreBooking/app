@@ -22,6 +22,7 @@ require_once(ROOT_DIR . 'Presenters/Reservation/ReservationSavePresenter.php');
 require_once(ROOT_DIR . 'Presenters/Reservation/ReservationUpdatePresenter.php');
 require_once(ROOT_DIR . 'Presenters/Reservation/ReservationDeletePresenter.php');
 require_once(ROOT_DIR . 'Presenters/Reservation/ReservationCheckinPresenter.php');
+require_once(ROOT_DIR . 'Presenters/Reservation/ReservationWaitlistPresenter.php');
 
 interface IReservationPresenterFactory
 {
@@ -54,11 +55,11 @@ interface IReservationPresenterFactory
 	public function Approve(IReservationApprovalPage $approvePage, UserSession $userSession);
 
 	/**
-	 * @param IReservationCheckinPage $page
+	 * @param IReservationWaitlistPage $page
 	 * @param UserSession $userSession
-	 * @return ReservationCheckinPresenter
+	 * @return ReservationWaitlistPresenter
 	 */
-	public function Checkin(IReservationCheckinPage $page, UserSession $userSession);
+	public function JoinWaitlist(IReservationWaitlistPage $page, UserSession $userSession);
 }
 
 class ReservationPresenterFactory implements IReservationPresenterFactory
@@ -148,4 +149,9 @@ class ReservationPresenterFactory implements IReservationPresenterFactory
 				$userSession
 		);
 	}
+
+    public function JoinWaitlist(IReservationWaitlistPage $page, UserSession $userSession)
+    {
+        return new ReservationWaitlistPresenter($page, $userSession, new ReservationWaitlistRepository());
+    }
 }

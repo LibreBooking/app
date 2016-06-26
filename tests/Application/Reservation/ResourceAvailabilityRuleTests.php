@@ -101,6 +101,7 @@ class ResourceAvailabilityRuleTests extends TestBase
 
 		$this->assertFalse($result->IsValid());
 		$this->assertFalse($result->CanBeRetried());
+        $this->assertTrue($result->CanJoinWaitlist());
 	}
 
 	public function testGetsConflictingReservationTimesForSingleDateMultipleResources()

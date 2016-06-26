@@ -417,6 +417,24 @@ class AddReservationUserCommand extends SqlCommand
 	}
 }
 
+class AddReservationWaitlistCommand extends SqlCommand
+{
+    /**
+     * @param int $userId
+     * @param Date $startDate
+     * @param Date $endDate
+     * @param int[] $resourceIds
+     */
+    public function __construct($userId, $startDate, $endDate, $resourceIds)
+    {
+        parent::__construct(Queries::ADD_RESERVATION_WAITLIST);
+        $this->AddParameter(new Parameter(ParameterNames::USER_ID, $userId));
+        $this->AddParameter(new Parameter(ParameterNames::START_DATE, $startDate->ToDatabase()));
+        $this->AddParameter(new Parameter(ParameterNames::END_DATE, $endDate->ToDatabase()));
+        $this->AddParameter(new Parameter(ParameterNames::RESOURCE_IDS, implode(',', $resourceIds)));
+    }
+}
+
 class AddResourceCommand extends SqlCommand
 {
 	public function __construct($name, $schedule_id, $autoassign = 1, $admin_group_id = null,

@@ -155,6 +155,7 @@ class ParameterNames
 	const RESERVATION_USER_LEVEL_ID = '@levelid';
 
 	const RESOURCE_ID = '@resourceid';
+	const RESOURCE_IDS = '@resourceids';
 	const RESOURCE_ALLOW_MULTIDAY = '@allow_multiday_reservations';
 	const RESOURCE_ALLOW_DISPLAY = '@allow_display';
 	const RESOURCE_AUTOASSIGN = '@autoassign';

@@ -134,6 +134,14 @@ class ReservationDeletePage extends SecurePage implements IReservationDeletePage
 	{
 		// no-op
 	}
+
+    /**
+     * @param bool $canJoinWaitlist
+     */
+    public function SetCanJoinWaitList($canJoinWaitlist)
+    {
+        // no-op
+    }
 }
 
 class ReservationDeleteJsonPage extends ReservationDeletePage implements IReservationDeletePage

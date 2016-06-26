@@ -117,4 +117,12 @@ class ReservationApprovalPage extends SecurePage implements IReservationApproval
 	{
 		// no-op
 	}
+
+    /**
+     * @param bool $canJoinWaitlist
+     */
+    public function SetCanJoinWaitList($canJoinWaitlist)
+    {
+        // no-op
+    }
 }

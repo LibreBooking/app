@@ -78,3 +78,4 @@ require_once(ROOT_DIR . 'tests/fakes/FakeReservationService.php');
 require_once(ROOT_DIR . 'tests/fakes/FakeGuestUserService.php');
 require_once(ROOT_DIR . 'tests/fakes/FakeReservationHandler.php');
 require_once(ROOT_DIR . 'tests/fakes/FakeScheduleLayout.php');
+require_once(ROOT_DIR . 'tests/fakes/FakeReservationWaitlistRepository.php');

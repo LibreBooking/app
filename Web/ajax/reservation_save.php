@@ -24,4 +24,3 @@ require_once(ROOT_DIR . 'Pages/Ajax/ReservationSavePage.php');
 
 $page = new ReservationSavePage();
 $page->PageLoad();
-?>

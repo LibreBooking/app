@@ -404,6 +404,9 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			<h3 id="checkingOutMessage" class="no-show">
 				{translate key=CheckingOut}
 			</h3>
+            <h3 id="joiningWaitingList" class="no-show">
+				{translate key=AddingToWaitlist}
+			</h3>
 			{html_image src="reservation_submitting.gif"}
 		</div>
 		<div id="result"></div>
@@ -445,6 +448,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			deleteUrl: 'ajax/reservation_delete.php',
 			checkinUrl: 'ajax/reservation_checkin.php?action={ReservationAction::Checkin}',
 			checkoutUrl: 'ajax/reservation_checkin.php?action={ReservationAction::Checkout}',
+			waitlistUrl: 'ajax/reservation_waitlist.php',
 			userAutocompleteUrl: "ajax/autocomplete.php?type={AutoCompleteType::User}",
 			groupAutocompleteUrl: "ajax/autocomplete.php?type={AutoCompleteType::Group}",
 			changeUserAutocompleteUrl: "ajax/autocomplete.php?type={AutoCompleteType::MyUsers}",

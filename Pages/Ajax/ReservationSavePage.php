@@ -462,97 +462,69 @@ class ReservationSavePage extends SecurePage implements IReservationSavePage
 														ConfigKeys::UPLOAD_ENABLE_RESERVATION_ATTACHMENTS,
 														new BooleanConverter());
 	}
-
-	/**
-	 * @return bool
-	 */
+    
 	public function HasStartReminder()
 	{
 		$val = $this->server->GetForm(FormKeys::START_REMINDER_ENABLED);
 		return !empty($val);
 	}
 
-	/**
-	 * @return string
-	 */
 	public function GetStartReminderValue()
 	{
 		return $this->server->GetForm(FormKeys::START_REMINDER_TIME);
 	}
 
-	/**
-	 * @return string
-	 */
 	public function GetStartReminderInterval()
 	{
 		return $this->server->GetForm(FormKeys::START_REMINDER_INTERVAL);
 	}
 
-	/**
-	 * @return bool
-	 */
 	public function HasEndReminder()
 	{
 		$val = $this->server->GetForm(FormKeys::END_REMINDER_ENABLED);
 		return !empty($val);
 	}
 
-	/**
-	 * @return string
-	 */
 	public function GetEndReminderValue()
 	{
 		return $this->server->GetForm(FormKeys::END_REMINDER_TIME);
 	}
 
-	/**
-	 * @return string
-	 */
 	public function GetEndReminderInterval()
 	{
 		return $this->server->GetForm(FormKeys::END_REMINDER_INTERVAL);
 	}
 
-	/**
-	 * @return bool
-	 */
 	public function GetAllowParticipation()
 	{
 		$val = $this->server->GetForm(FormKeys::ALLOW_PARTICIPATION);
 		return !empty($val);
 	}
 
-	/**
-	 * @param bool $canBeRetried
-	 */
 	public function SetCanBeRetried($canBeRetried)
 	{
 		$this->Set('CanBeRetried', $canBeRetried);
 	}
 
-	/**
-	 * @param ReservationRetryParameter[] $retryParameters
-	 */
 	public function SetRetryParameters($retryParameters)
 	{
 		$this->Set('RetryParameters', $retryParameters);
 	}
 
-	/**
-	 * @return ReservationRetryParameter[]
-	 */
 	public function GetRetryParameters()
 	{
 		return ReservationRetryParameter::GetParamsFromForm($this->GetForm(FormKeys::RESERVATION_RETRY_PREFIX));
 	}
 
-	/**
-	 * @param array|string[] $messages
-	 */
 	public function SetRetryMessages($messages)
 	{
 		$this->Set('RetryMessages', $messages);
 	}
+
+    public function SetCanJoinWaitList($canJoinWaitlist)
+    {
+        $this->Set('CanJoinWaitList', $canJoinWaitlist);
+    }
 }
 
 class AccessoryFormElement

@@ -136,6 +136,10 @@ class Queries
 			'INSERT INTO reservation_users (reservation_instance_id, user_id, reservation_user_level)
 		VALUES (@reservationid, @userid, @levelid)';
 
+    const ADD_RESERVATION_WAITLIST =
+        'INSERT INTO reservation_waitlist_requests (user_id, start_date, end_date, resource_ids)
+      VALUES (@userid, @startDate, @endDate, @resourceids)';
+
 	const ADD_SAVED_REPORT =
 			'INSERT INTO saved_reports (report_name, user_id, date_created, report_details)
 			VALUES (@report_name, @userid, @dateCreated, @report_details)';

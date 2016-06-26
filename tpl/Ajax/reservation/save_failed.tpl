@@ -32,6 +32,12 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 	<div>
 		<button id="btnSaveFailed" class="btn btn-warning"><span
 					class="fa fa-arrow-circle-left"></span> {translate key='ReservationErrors'}</button>
+
+        {if $CanJoinWaitList}
+            <button id="btnWaitList" class="btn btn-info"><span
+					class="fa fa-bell-o"></span> {translate key='NotifyWhenAvailable'}</button>
+        {/if}
+
 		{if $CanBeRetried}
 			<div id="retryParams" class="no-show">
 				{foreach from=$RetryParameters item=retryParam}

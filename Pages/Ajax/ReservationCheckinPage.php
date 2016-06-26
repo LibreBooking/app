@@ -129,4 +129,12 @@ class ReservationCheckinPage extends SecurePage implements IReservationCheckinPa
 	{
 		return array();
 	}
+
+    /**
+     * @param bool $canJoinWaitlist
+     */
+    public function SetCanJoinWaitList($canJoinWaitlist)
+    {
+        // no-op
+    }
 }

@@ -132,7 +132,8 @@ class ReservationHandler implements IReservationHandler
 			}
 			$view->SetRetryParameters($validationResult->GetRetryParameters());
 			$view->SetRetryMessages($validationResult->GetRetryMessages());
-		}
+            $view->SetCanJoinWaitList($validationResult->CanJoinWaitList() && Configuration::Instance()->GetSectionKey(ConfigSection::RESERVATION, ConfigKeys::RESERVATION_ALLOW_WAITLIST, new BooleanConverter()));
+        }
 
 		$view->SetWarnings($validationResult->GetWarnings());
 

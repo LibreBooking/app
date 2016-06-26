@@ -582,6 +582,9 @@ class en_us extends Language
 		$strings['AnnouncementSubject'] = 'A new announcement was posted by %s';
 		$strings['AnnouncementEmailNotice'] = 'users will be sent this announcement as an email';
 		$strings['Day'] = 'Day';
+		$strings['NotifyWhenAvailable'] = 'Notify Me When Available';
+		$strings['AddingToWaitlist'] = 'Adding you to the wait list';
+		$strings['WaitlistRequestAdded'] = 'You will be notified if this time becomes available';
 		// End Strings
 
 		// Install
