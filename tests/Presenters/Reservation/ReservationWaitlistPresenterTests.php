@@ -50,9 +50,9 @@ class ReservationWaitlistPresenterTests extends TestBase
     {
         $startDate = Date::Parse($this->page->_StartDate . ' ' . $this->page->_StartTime, $this->fakeUser->Timezone);
         $endDate = Date::Parse($this->page->_EndDate . ' ' . $this->page->_EndTime, $this->fakeUser->Timezone);
-        $resourceIds = array_merge(array($this->page->_ResourceId), $this->page->_ResourceIds);
+        $resourceId = $this->page->_ResourceId;
 
-        $expectedWaitlistRequest = ReservationWaitlistRequest::Create($this->page->_UserId, $startDate, $endDate, $resourceIds);
+        $expectedWaitlistRequest = ReservationWaitlistRequest::Create($this->page->_UserId, $startDate, $endDate, $resourceId);
 
         $this->presenter->PageLoad();
 
@@ -93,11 +93,6 @@ class FakeReservationWaitlistPage implements IReservationWaitlistPage
     public $_ResourceId;
 
     /**
-     * @var int[]
-     */
-    public $_ResourceIds;
-
-    /**
      * FakeReservationWaitlistPage constructor.
      */
     public function __construct()
@@ -108,7 +103,6 @@ class FakeReservationWaitlistPage implements IReservationWaitlistPage
         $this->_EndDate = '2016-06-25';
         $this->_EndTime = '16:45';
         $this->_ResourceId = 999;
-        $this->_ResourceIds = array(888, 777);
     }
 
     /**
@@ -237,13 +231,5 @@ class FakeReservationWaitlistPage implements IReservationWaitlistPage
     public function GetResourceId()
     {
         return $this->_ResourceId;
-    }
-
-    /**
-     * @return int[]
-     */
-    public function GetResources()
-    {
-        return $this->_ResourceIds;
     }
 }

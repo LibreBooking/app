@@ -137,8 +137,8 @@ class Queries
 		VALUES (@reservationid, @userid, @levelid)';
 
     const ADD_RESERVATION_WAITLIST =
-        'INSERT INTO reservation_waitlist_requests (user_id, start_date, end_date, resource_ids)
-      VALUES (@userid, @startDate, @endDate, @resourceids)';
+        'INSERT INTO reservation_waitlist_requests (user_id, start_date, end_date, resource_id)
+      VALUES (@userid, @startDate, @endDate, @resourceid)';
 
 	const ADD_SAVED_REPORT =
 			'INSERT INTO saved_reports (report_name, user_id, date_created, report_details)
@@ -245,6 +245,8 @@ class Queries
 	const DELETE_QUOTA = 'DELETE	FROM quotas	WHERE quota_id = @quotaid';
 
 	const DELETE_RESERVATION_COLOR_RULE_COMMAND = 'DELETE FROM reservation_color_rules WHERE reservation_color_rule_id = @reservation_color_rule_id';
+
+    const DELETE_RESERVATION_WAITLIST_COMMAND = 'DELETE FROM reservation_waitlist_requests WHERE reservation_waitlist_request_id = @reservation_waitlist_request_id';
 
 	const DELETE_RESOURCE_COMMAND = 'DELETE FROM resources WHERE resource_id = @resourceid';
 
@@ -376,6 +378,8 @@ class Queries
 		LEFT JOIN schedules s ON s.schedule_id = q.schedule_id';
 
 	const GET_ALL_REMINDERS = 'SELECT * FROM reminders';
+
+    const GET_ALL_RESERVATION_WAITLIST_REQUESTS = 'SELECT * FROM reservation_waitlist_requests';
 
 	const GET_ALL_RESOURCES =
 			'SELECT r.*, s.admin_group_id as s_admin_group_id,

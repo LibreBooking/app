@@ -24,17 +24,33 @@ require_once (ROOT_DIR . 'Domain/Access/namespace.php');
 class FakeReservationWaitlistRepository implements IReservationWaitlistRepository
 {
 
+    /**
+     * @var ReservationWaitlistRequest
+     */
     public $_AddedWaitlistRequest;
 
     public $_LastAddedId = 120;
 
     /**
-     * @param ReservationWaitlistRequest $waitlistRequest
+     * @var ReservationWaitlistRequest[]
+     */
+    public $_AllRequests = array();
+
+    /**
+     * @param ReservationWaitlistRequest $request
      * @return int
      */
-    public function Add(ReservationWaitlistRequest $waitlistRequest)
+    public function Add(ReservationWaitlistRequest $request)
     {
-        $this->_AddedWaitlistRequest = $waitlistRequest;
+        $this->_AddedWaitlistRequest = $request;
         return $this->_LastAddedId;
+    }
+
+    /**
+     * @return ReservationWaitlistRequest[]
+     */
+    public function GetAll()
+    {
+       return $this->_AllRequests;
     }
 }

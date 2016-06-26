@@ -423,15 +423,15 @@ class AddReservationWaitlistCommand extends SqlCommand
      * @param int $userId
      * @param Date $startDate
      * @param Date $endDate
-     * @param int[] $resourceIds
+     * @param int $resourceId
      */
-    public function __construct($userId, $startDate, $endDate, $resourceIds)
+    public function __construct($userId, $startDate, $endDate, $resourceId)
     {
         parent::__construct(Queries::ADD_RESERVATION_WAITLIST);
         $this->AddParameter(new Parameter(ParameterNames::USER_ID, $userId));
         $this->AddParameter(new Parameter(ParameterNames::START_DATE, $startDate->ToDatabase()));
         $this->AddParameter(new Parameter(ParameterNames::END_DATE, $endDate->ToDatabase()));
-        $this->AddParameter(new Parameter(ParameterNames::RESOURCE_IDS, implode(',', $resourceIds)));
+        $this->AddParameter(new Parameter(ParameterNames::RESOURCE_ID, $resourceId));
     }
 }
 
@@ -825,6 +825,15 @@ class DeleteReservationColorRuleCommand extends SqlCommand
 	}
 }
 
+class DeleteReservationWaitlistCommand extends SqlCommand
+{
+	public function __construct($requestId)
+	{
+		parent::__construct(Queries::DELETE_RESERVATION_WAITLIST_COMMAND);
+		$this->AddParameter(new Parameter(ParameterNames::RESERVATION_WAITLIST_REQUEST_ID, $requestId));
+	}
+}
+
 class DeleteResourceCommand extends SqlCommand
 {
 	public function __construct($resourceId)
@@ -1129,6 +1138,14 @@ class GetAllRemindersCommand extends SqlCommand
 	{
 		parent::__construct(Queries::GET_ALL_REMINDERS);
 	}
+}
+
+class GetAllReservationWaitlistRequests extends SqlCommand
+{
+    public function __construct()
+    {
+        parent::__construct(Queries::GET_ALL_RESERVATION_WAITLIST_REQUESTS);
+    }
 }
 
 class GetAllResourcesCommand extends SqlCommand

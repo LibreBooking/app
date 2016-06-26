@@ -45,12 +45,9 @@ class ReservationWaitlistPresenter
     public function PageLoad()
     {
         $duration = $this->GetReservationDuration();
-        $resourceIds = array($this->page->GetResourceId());
-        foreach ($this->page->GetResources() as $id)
-        {
-            $resourceIds[] = $id;
-        }
-        $request = ReservationWaitlistRequest::Create($this->page->GetUserId(), $duration->GetBegin(), $duration->GetEnd(), $resourceIds);
+        $resourceId = $this->page->GetResourceId();
+
+        $request = ReservationWaitlistRequest::Create($this->page->GetUserId(), $duration->GetBegin(), $duration->GetEnd(), $resourceId);
         $this->repository->Add($request);
     }
 

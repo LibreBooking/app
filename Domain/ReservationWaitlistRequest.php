@@ -18,7 +18,6 @@
  * You should have received a copy of the GNU General Public License
  * along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 class ReservationWaitlistRequest
 {
     /**
@@ -37,25 +36,41 @@ class ReservationWaitlistRequest
      * @var Date
      */
     private $endDate;
+
     /**
-     * @var int[]
+     * @var int
      */
-    private $resourceIds;
+    private $resourceId;
 
     /**
      * @param int $id
      * @param int $userId
      * @param Date $startDate
      * @param Date $endDate
-     * @param int[] $resourceIds
+     * @param int $resourceId
      */
-    public function __construct($id, $userId, $startDate, $endDate, $resourceIds)
+    public function __construct($id, $userId, $startDate, $endDate, $resourceId)
     {
         $this->id = $id;
         $this->userId = $userId;
         $this->startDate = $startDate;
         $this->endDate = $endDate;
-        $this->resourceIds = $resourceIds;
+        $this->resourceId = $resourceId;
+    }
+
+    /**
+     * @param array $row
+     * @return ReservationWaitlistRequest
+     */
+    public static function FromRow($row)
+    {
+        return new ReservationWaitlistRequest(
+            $row[ColumnNames::RESERVATION_WAITLIST_REQUEST_ID],
+            $row[ColumnNames::USER_ID],
+            Date::FromDatabase($row[ColumnNames::RESERVATION_START]),
+            Date::FromDatabase($row[ColumnNames::RESERVATION_END]),
+            $row[ColumnNames::RESOURCE_ID]
+        );
     }
 
     /**
@@ -91,23 +106,23 @@ class ReservationWaitlistRequest
     }
 
     /**
-     * @return int[]
+     * @return int
      */
-    public function ResourceIds()
+    public function ResourceId()
     {
-        return $this->resourceIds;
+        return $this->resourceId;
     }
 
     /**
      * @param int $userId
      * @param Date $startDate
      * @param Date $endDate
-     * @param int[] $resourceIds
+     * @param int $resourceId
      * @return ReservationWaitlistRequest
      */
-    public static function Create($userId, $startDate, $endDate, $resourceIds)
+    public static function Create($userId, $startDate, $endDate, $resourceId)
     {
-        return new ReservationWaitlistRequest(0, $userId, $startDate, $endDate, $resourceIds);
+        return new ReservationWaitlistRequest(0, $userId, $startDate, $endDate, $resourceId);
     }
 
     /**
@@ -116,5 +131,13 @@ class ReservationWaitlistRequest
     public function WithId($id)
     {
         $this->id = $id;
+    }
+
+    /**
+     * @return DateRange
+     */
+    public function Duration()
+    {
+        return new DateRange($this->StartDate(), $this->EndDate());
     }
 }

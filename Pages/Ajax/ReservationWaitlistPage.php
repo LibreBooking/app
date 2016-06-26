@@ -63,11 +63,6 @@ interface IReservationWaitlistPage extends IReservationSaveResultsView
      * @return int
      */
     public function GetResourceId();
-
-    /**
-     * @return int[]
-     */
-    public function GetResources();
 }
 
 
@@ -190,19 +185,5 @@ class ReservationWaitlistPage extends SecurePage implements IReservationWaitlist
     public function GetResourceId()
     {
         return $this->GetForm(FormKeys::RESOURCE_ID);
-    }
-
-    public function GetResources()
-    {
-        $resources = $this->GetForm(FormKeys::ADDITIONAL_RESOURCES);
-        if (is_null($resources)) {
-            return array();
-        }
-
-        if (!is_array($resources)) {
-            return array($resources);
-        }
-
-        return $resources;
     }
 }
