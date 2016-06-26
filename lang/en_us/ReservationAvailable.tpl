@@ -20,5 +20,5 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 {$ResourceName} is currently available between {formatdate date=$StartDate key=res_popup} and {formatdate date=$EndDate key=res_popup}
 <br/>
 <br/>
-<a href="{$ScriptUrl}/{$ReservationUrl}">Book Now</a> |
+<a href="{$ScriptUrl}/{$ReservationUrl}">Book now</a> |
 <a href="{$ScriptUrl}">Log in to Booked Scheduler</a>

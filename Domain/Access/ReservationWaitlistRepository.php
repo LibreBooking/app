@@ -33,6 +33,17 @@ interface IReservationWaitlistRepository
      * @return ReservationWaitlistRequest[]
      */
     public function GetAll();
+
+    /**
+     * @param int $waitlistId
+     * @return ReservationWaitlistRequest
+     */
+    public function LoadById($waitlistId);
+
+    /**
+     * @param ReservationWaitlistRequest $request
+     */
+    public function Delete(ReservationWaitlistRequest $request);
 }
 
 class ReservationWaitlistRepository implements IReservationWaitlistRepository
@@ -70,5 +81,17 @@ class ReservationWaitlistRepository implements IReservationWaitlistRepository
     public function Delete(ReservationWaitlistRequest $request)
     {
         ServiceLocator::GetDatabase()->Execute(new DeleteReservationWaitlistCommand($request->Id()));
+    }
+
+    public function LoadById($waitlistId)
+    {
+        $reader = ServiceLocator::GetDatabase()->Query(new GetReservationWaitlistRequestCommand($waitlistId));
+
+        if ($row = $reader->GetRow())
+        {
+           return ReservationWaitlistRequest::FromRow($row);
+        }
+
+       return null;
     }
 }

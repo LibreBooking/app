@@ -1552,6 +1552,15 @@ class GetReservationSeriesParticipantsCommand extends SqlCommand
 	}
 }
 
+class GetReservationWaitlistRequestCommand extends SqlCommand
+{
+	public function __construct($waitlistId)
+	{
+		parent::__construct(Queries::GET_RESERVATION_WAITLIST_REQUEST);
+		$this->AddParameter(new Parameter(ParameterNames::RESERVATION_WAITLIST_REQUEST_ID, $waitlistId));
+	}
+}
+
 
 ## (C) 2012 Alois Schloegl
 class GetResourceByContactInfoCommand extends SqlCommand

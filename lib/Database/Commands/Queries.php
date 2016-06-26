@@ -735,7 +735,9 @@ class Queries
 		INNER JOIN reservation_instances ri ON ru.reservation_instance_id = ri.reservation_instance_id
 		WHERE series_id = @seriesid';
 
-	const GET_SCHEDULE_TIME_BLOCK_GROUPS =
+    const GET_RESERVATION_WAITLIST_REQUEST = 'SELECT * FROM reservation_waitlist_requests WHERE reservation_waitlist_request_id = @reservation_waitlist_request_id';
+
+    const GET_SCHEDULE_TIME_BLOCK_GROUPS =
 			'SELECT
 			tb.label,
 			tb.end_label,

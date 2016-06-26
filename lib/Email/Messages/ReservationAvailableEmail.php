@@ -76,6 +76,7 @@ class ReservationAvailableEmail extends EmailMessage
             QueryStringKeys::START_DATE, urlencode($startDate->Format($format)),
             QueryStringKeys::END_DATE, urlencode($endDate->Format($format))
         ));
+        
         return $this->FetchTemplate('ReservationAvailable.tpl');
     }
 }

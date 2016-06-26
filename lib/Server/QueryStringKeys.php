@@ -59,6 +59,7 @@ class QueryStringKeys
 	const RESERVATION_DATE = 'rd';
 	const RESERVATION_STATUS_ID = 'rsid';
 	const RESERVATION_STATUS_REASON_ID = 'rsrid';
+    const RESERVATION_WAITLIST_REQUEST_ID = 'rwrid';
 	const RESPONSE_TYPE = 'rs';
 	const RESOURCE_ID = 'rid';
 	const RESOURCE_GROUP_ID = 'rgid';
