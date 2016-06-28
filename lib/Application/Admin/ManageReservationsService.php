@@ -200,4 +200,12 @@ class ManageReservationsUpdateAttributeResultCollector implements IReservationSa
 	{
 		// no-op
 	}
+
+    /**
+     * @param bool $canJoinWaitlist
+     */
+    public function SetCanJoinWaitList($canJoinWaitlist)
+    {
+        // no-op
+    }
 }

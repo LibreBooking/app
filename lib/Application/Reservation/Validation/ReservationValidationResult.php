@@ -22,16 +22,18 @@ class ReservationValidationResult implements IReservationValidationResult
 	private $_canBeRetried;
 	private $_retryParams;
 	private $_retryMessages;
+    private $_canJoinWaitList;
 
-	/**
+    /**
 	 * @param $canBeSaved bool
 	 * @param $errors string[]
 	 * @param $warnings string[]
 	 * @param bool $canBeRetried
 	 * @param array|ReservationRetryParameter[] $retryParams
 	 * @param array|string[] $retryMessages
+     * @param bool $canJoinWaitList
 	 */
-	public function __construct($canBeSaved = true, $errors = null, $warnings = null, $canBeRetried = false, $retryParams = array(), $retryMessages = array())
+	public function __construct($canBeSaved = true, $errors = null, $warnings = null, $canBeRetried = false, $retryParams = array(), $retryMessages = array(), $canJoinWaitList = false)
 	{
 		$this->_canBeSaved = $canBeSaved;
 		$this->_errors = $errors == null ? array() : $errors;
@@ -39,6 +41,7 @@ class ReservationValidationResult implements IReservationValidationResult
 		$this->_canBeRetried = $canBeRetried;
 		$this->_retryParams = $retryParams == null ? array() : $retryParams;
 		$this->_retryMessages = $retryMessages == null ? array() : $retryMessages;
+        $this->_canJoinWaitList = $canJoinWaitList == null ? false : $canJoinWaitList;
 	}
 
 	public function CanBeSaved()
@@ -70,4 +73,9 @@ class ReservationValidationResult implements IReservationValidationResult
 	{
 		return $this->_retryMessages;
 	}
+
+    public function CanJoinWaitList()
+    {
+        return $this->_canJoinWaitList;
+    }
 }

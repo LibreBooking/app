@@ -96,4 +96,12 @@ class FakeReservationCheckinPage implements IReservationCheckinPage
 	{
 		return $this->_Action;
 	}
+
+    /**
+     * @param bool $canJoinWaitlist
+     */
+    public function SetCanJoinWaitList($canJoinWaitlist)
+    {
+        // TODO: Implement SetCanJoinWaitList() method.
+    }
 }

@@ -85,8 +85,8 @@ class Database
 	/**
 	 * Executes an insert query against the database and returns the auto-increment id
 	 *
-	 * @param SqlCommand $command
-	 * @return long last id inserted for this connection
+	 * @param ISqlCommand $command
+	 * @return int last id inserted for this connection
 	 */
 	public function ExecuteInsert(ISqlCommand $command)
 	{

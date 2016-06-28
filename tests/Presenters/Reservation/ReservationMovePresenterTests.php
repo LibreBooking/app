@@ -226,4 +226,44 @@ class FakeReservationMovePage implements IReservationMovePage
 	{
 		return $this->_OriginalResourceId;
 	}
+
+    /**
+     * @param array|string[] $messages
+     */
+    public function SetRetryMessages($messages)
+    {
+        // TODO: Implement SetRetryMessages() method.
+    }
+
+    /**
+     * @param bool $canBeRetried
+     */
+    public function SetCanBeRetried($canBeRetried)
+    {
+        // TODO: Implement SetCanBeRetried() method.
+    }
+
+    /**
+     * @param ReservationRetryParameter[] $retryParameters
+     */
+    public function SetRetryParameters($retryParameters)
+    {
+        // TODO: Implement SetRetryParameters() method.
+    }
+
+    /**
+     * @return ReservationRetryParameter[]
+     */
+    public function GetRetryParameters()
+    {
+        // TODO: Implement GetRetryParameters() method.
+    }
+
+    /**
+     * @param bool $canJoinWaitlist
+     */
+    public function SetCanJoinWaitList($canJoinWaitlist)
+    {
+        // TODO: Implement SetCanJoinWaitList() method.
+    }
 }

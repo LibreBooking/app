@@ -1,6 +1,6 @@
 <?php
 /**
-Copyright 2011-2015 Nick Korbel
+Copyright 2016 Nick Korbel
 
 This file is part of Booked Scheduler.
 
@@ -20,7 +20,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 define('ROOT_DIR', '../../');
 
-require_once(ROOT_DIR . 'Pages/Ajax/ReservationUpdatePage.php');
+require_once(ROOT_DIR . 'Pages/Ajax/ReservationWaitlistPage.php');
 
-$page = new ReservationUpdatePage();
+$page = new ReservationWaitlistPage();
 $page->PageLoad();

@@ -96,12 +96,6 @@ class CalendarPresenterTests extends TestBase
 
 		$calendarType = CalendarTypes::Month;
 
-		$requestedDay = 4;
-		$requestedMonth = 3;
-		$requestedYear = 2011;
-
-		$month = new CalendarMonth($requestedMonth, $requestedYear, $userTimezone);
-
 		$startDate = Date::Parse('2011-01-01', 'UTC');
 		$endDate = Date::Parse('2011-01-02', 'UTC');
 		$summary = 'foo summary';
@@ -117,7 +111,6 @@ class CalendarPresenterTests extends TestBase
 		$r1 = new FakeBookableResource(1, 'dude1');
 		$r2 = new FakeBookableResource($resourceId, $resourceName);
 
-		$reservations = array($res);
 		$resources = array($r1, $r2);
 		/** @var Schedule[] $schedules */
 		$schedules = array(new Schedule(1, null, false, 2, null), new Schedule($defaultScheduleId, null, true, 3, null),);
@@ -136,7 +129,7 @@ class CalendarPresenterTests extends TestBase
 		$this->resourceService
 				->expects($this->atLeastOnce())
 				->method('GetResourceGroups')
-				->with($this->equalTo(null), $this->equalTo($this->fakeUser))
+				->with($this->equalTo($defaultScheduleId), $this->equalTo($this->fakeUser))
 				->will($this->returnValue(new ResourceGroupTree()));
 
 		$this->page
@@ -149,67 +142,27 @@ class CalendarPresenterTests extends TestBase
 				->method('GetResourceId')
 				->will($this->returnValue(null));
 
-		$this->repository
-				->expects($this->atLeastOnce())
-				->method('GetReservationList')
-				->with($this->equalTo($month->FirstDay()),
-					   $this->equalTo($month->LastDay()->AddDays(1)),
-					   $this->equalTo(null), $this->equalTo(null),
-					   $this->equalTo(null), $this->equalTo(null))
-				->will($this->returnValue($reservations));
 
 		$this->page
 				->expects($this->atLeastOnce())
 				->method('GetCalendarType')
 				->will($this->returnValue($calendarType));
 
-		$this->page
-				->expects($this->atLeastOnce())
-				->method('GetDay')
-				->will($this->returnValue($requestedDay));
-
-		$this->page
-				->expects($this->atLeastOnce())
-				->method('GetMonth')
-				->will($this->returnValue($requestedMonth));
-
-		$this->page
-				->expects($this->atLeastOnce())
-				->method('GetYear')
-				->will($this->returnValue($requestedYear));
 
 		$this->page
 				->expects($this->atLeastOnce())
 				->method('SetFirstDay')
 				->with($this->equalTo($schedules[1]->GetWeekdayStart()));
 
-		$this->calendarFactory
-				->expects($this->atLeastOnce())
-				->method('Create')
-				->with($this->equalTo($calendarType),
-					   $this->equalTo($requestedYear), $this->equalTo($requestedMonth), $this->equalTo($requestedDay),
-					   $this->equalTo($userTimezone))
-				->will($this->returnValue($month));
-
-		$this->page->expects($this->atLeastOnce())->method('BindCalendar')->with($this->equalTo($month));
-
 		$details = new CalendarSubscriptionDetails(true);
 		$this->subscriptionService->expects($this->once())->method('ForSchedule')->with($this->equalTo($defaultScheduleId))->will($this->returnValue($details));
 
 		$this->page->expects($this->atLeastOnce())->method('BindSubscription')->with($this->equalTo($details));
 
-		$calendarFilters = new CalendarFilters($schedules, $resources, null, null, new ResourceGroupTree());
+		$calendarFilters = new CalendarFilters($schedules, $resources, $defaultScheduleId, null, new ResourceGroupTree());
 		$this->page->expects($this->atLeastOnce())->method('BindFilters')->with($this->equalTo($calendarFilters));
 
 		$this->presenter->PageLoad($this->fakeUser, $userTimezone);
-
-		$actualReservations = $month->Reservations();
-
-		$expectedReservations = CalendarReservation::FromScheduleReservationList($reservations,
-																				 $resources,
-																				 $this->fakeUser);
-
-		$this->assertEquals($expectedReservations, $actualReservations);
 	}
 
 	public function testSkipsReservationsForUnknownResources()

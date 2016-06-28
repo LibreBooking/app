@@ -63,6 +63,7 @@ class ReservationHandlerTests extends TestBase
 
 	public function testPreventsPersistenceAndNotificationAndShowsFailedMessageWhenValidationFails()
 	{
+        $this->fakeConfig->SetSectionKey(ConfigSection::RESERVATION, ConfigKeys::RESERVATION_ALLOW_WAITLIST, true);
 		$persistenceService = $this->getMock('IReservationPersistenceService');
 		$validationService = $this->getMock('IReservationValidationService');
 		$notificationService = $this->getMock('IReservationNotificationService');
@@ -75,7 +76,7 @@ class ReservationHandlerTests extends TestBase
 		$builder = new ExistingReservationSeriesBuilder();
 		$series = $builder->Build();
 
-		$validationResult = new ReservationValidationResult(false, $errors);
+        $validationResult = new ReservationValidationResult(false, $errors, null, false, array(), array(), true);
 
 		$validationService->expects($this->once())
 						  ->method('Validate')
@@ -95,6 +96,10 @@ class ReservationHandlerTests extends TestBase
 		$page->expects($this->once())
 			 ->method('SetErrors')
 			 ->with($this->equalTo($errors));
+
+        $page->expects($this->once())
+			 ->method('SetCanJoinWaitList')
+			 ->with($this->equalTo(true));
 
 		$handler = new ReservationHandler($persistenceService, $validationService, $notificationService);
 		$handler->Handle($series, $page);
@@ -141,4 +146,44 @@ class ReservationHandlerTests extends TestBase
 		$this->assertEquals($retryParams, $page->retryParameters);
 		$this->assertEquals($retryMessages, $page->retryMessages);
 	}
+
+    public function testCanJoinWaitListIfTurnedOnAndNotRecurringSeriesAndOnlyErrorIsAvailability()
+    {
+
+        $persistenceService = $this->getMock('IReservationPersistenceService');
+        $validationService = $this->getMock('IReservationValidationService');
+        $notificationService = $this->getMock('IReservationNotificationService');
+        $page = $this->getMock('IReservationSaveResultsView');
+
+        $errorMessage1 = 'e1';
+        $errorMessage2 = 'e2';
+        $errors = array($errorMessage1, $errorMessage2);
+
+        $builder = new ExistingReservationSeriesBuilder();
+        $series = $builder->Build();
+
+        $validationResult = new ReservationValidationResult(false, $errors, null, false, array(), array(), true);
+
+        $validationService->expects($this->once())
+            ->method('Validate')
+            ->with($this->equalTo($series))
+            ->will($this->returnValue($validationResult));
+
+        $persistenceService->expects($this->never())
+            ->method('Persist');
+
+        $notificationService->expects($this->never())
+            ->method('Notify');
+
+        $page->expects($this->once())
+            ->method('SetSaveSuccessfulMessage')
+            ->with($this->equalTo(false));
+
+        $page->expects($this->once())
+            ->method('SetErrors')
+            ->with($this->equalTo($errors));
+
+        $handler = new ReservationHandler($persistenceService, $validationService, $notificationService);
+        $handler->Handle($series, $page);
+    }
 }

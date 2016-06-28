@@ -374,7 +374,12 @@ class ReservationRequestResponseFacade implements IReservationSavePage
 	 */
 	private $_retryMessages = array();
 
-	/**
+    /**
+     * @var bool
+     */
+    private $_canJoinWaitlist = false;
+
+    /**
 	 * @param ReservationRequest $request
 	 * @param WebServiceUserSession $session
 	 */
@@ -721,6 +726,14 @@ class ReservationRequestResponseFacade implements IReservationSavePage
 	{
 		$this->_retryMessages = $messages;
 	}
+
+    /**
+     * @param bool $canJoinWaitlist
+     */
+    public function SetCanJoinWaitList($canJoinWaitlist)
+    {
+        $this->_canJoinWaitlist = $canJoinWaitlist;
+    }
 }
 
 class ReservationUpdateRequestResponseFacade extends ReservationRequestResponseFacade implements IReservationUpdatePage
@@ -877,6 +890,14 @@ class ReservationDeleteRequestResponseFacade implements IReservationDeletePage
 	{
 		// no-op
 	}
+
+    /**
+     * @param bool $canJoinWaitlist
+     */
+    public function SetCanJoinWaitList($canJoinWaitlist)
+    {
+        // no-op
+    }
 }
 
 class ReservationApprovalRequestResponseFacade implements IReservationApprovalPage
@@ -957,4 +978,12 @@ class ReservationApprovalRequestResponseFacade implements IReservationApprovalPa
 	{
 		// no-op
 	}
+
+    /**
+     * @param bool $canJoinWaitlist
+     */
+    public function SetCanJoinWaitList($canJoinWaitlist)
+    {
+        // no-op
+    }
 }

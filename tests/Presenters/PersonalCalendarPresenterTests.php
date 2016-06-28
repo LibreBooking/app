@@ -87,14 +87,6 @@ class PersonalCalendarPresenterTests extends TestBase
 
 		$calendarType = CalendarTypes::Month;
 
-		$requestedDay = 4;
-		$requestedMonth = 3;
-		$requestedYear = 2011;
-
-		$month = new CalendarMonth($requestedMonth, $requestedYear, $userTimezone);
-
-		$reservations = array();
-
 		$showInaccessible = true;
 		$this->fakeConfig->SetSectionKey(ConfigSection::SCHEDULE, ConfigKeys::SCHEDULE_SHOW_INACCESSIBLE_RESOURCES, 'true');
 
@@ -120,38 +112,9 @@ class PersonalCalendarPresenterTests extends TestBase
 				->method('GetResourceId')
 				->will($this->returnValue(null));
 
-		$this->repository->expects($this->once())
-						 ->method('GetReservationList')
-						 ->with($this->equalTo($month->FirstDay()), $this->equalTo($month->LastDay()->AddDays(1)),
-								$this->equalTo($userId), $this->equalTo(ReservationUserLevel::ALL), $this->isNull(), $this->isNull())
-						 ->will($this->returnValue($reservations));
-
 		$this->page->expects($this->once())
 				   ->method('GetCalendarType')
 				   ->will($this->returnValue($calendarType));
-
-		$this->page->expects($this->once())
-				   ->method('GetDay')
-				   ->will($this->returnValue($requestedDay));
-
-		$this->page->expects($this->once())
-				   ->method('GetMonth')
-				   ->will($this->returnValue($requestedMonth));
-
-		$this->page->expects($this->once())
-				   ->method('GetYear')
-				   ->will($this->returnValue($requestedYear));
-
-		$this->calendarFactory->expects($this->once())
-							  ->method('Create')
-							  ->with($this->equalTo($calendarType), $this->equalTo($requestedYear),
-									 $this->equalTo($requestedMonth), $this->equalTo($requestedDay),
-									 $this->equalTo($userTimezone))
-							  ->will($this->returnValue($month));
-
-		$this->page->expects($this->once())
-				   ->method('BindCalendar')
-				   ->with($this->equalTo($month));
 
 		$details = new CalendarSubscriptionDetails(true);
 

@@ -21,6 +21,7 @@ class ReservationRuleResult
 	private $_canBeRetried;
 	private $_retryMessage;
 	private $_retryParameters;
+	private $_canJoinWaitlist;
 
 	/**
 	 * @param bool $isValid
@@ -28,14 +29,16 @@ class ReservationRuleResult
 	 * @param bool $canBeRetried
 	 * @param null $retryMessage
 	 * @param array|ReservationRetryParameter[] $retryParams
+     * @param bool $canJoinWaitlist
 	 */
-	public function __construct($isValid = true, $errorMessage = null, $canBeRetried = false, $retryMessage = null, $retryParams = array())
+	public function __construct($isValid = true, $errorMessage = null, $canBeRetried = false, $retryMessage = null, $retryParams = array(), $canJoinWaitlist = false)
 	{
 		$this->_isValid = $isValid;
 		$this->_errorMessage = $errorMessage;
 		$this->_canBeRetried = $canBeRetried;
 		$this->_retryMessage = $retryMessage;
 		$this->_retryParameters = $retryParams;
+		$this->_canJoinWaitlist = $canJoinWaitlist;
 	}
 
 	/**
@@ -74,4 +77,9 @@ class ReservationRuleResult
 	{
 		return $this->_retryParameters;
 	}
+
+    public function CanJoinWaitlist()
+    {
+        return $this->_canJoinWaitlist;
+    }
 }

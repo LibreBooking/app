@@ -277,6 +277,9 @@ class ColumnNames
 	const PEAK_END_MONTH = 'end_month';
 	const PEAK_END_DAY = 'end_day';
 
+    // RESERVATION_WAITLIST_REQUEST_ID //
+    const RESERVATION_WAITLIST_REQUEST_ID = 'reservation_waitlist_request_id';
+
 	// dynamic
 	const TOTAL = 'total';
 	const TOTAL_TIME = 'totalTime';

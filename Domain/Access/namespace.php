@@ -41,3 +41,4 @@ require_once(ROOT_DIR . 'Domain/Access/UserSessionRepository.php');
 require_once(ROOT_DIR . 'Domain/Access/ReminderRepository.php');
 require_once(ROOT_DIR . 'Domain/Access/UserPreferenceRepository.php');
 require_once(ROOT_DIR . 'Domain/Access/AttributeFilter.php');
+require_once(ROOT_DIR . 'Domain/Access/ReservationWaitlistRepository.php');

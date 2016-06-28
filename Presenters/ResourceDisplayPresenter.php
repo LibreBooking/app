@@ -299,4 +299,12 @@ class ReservationResultCollector implements IReservationSaveResultsView
 	{
 		return array();
 	}
+
+    /**
+     * @param bool $canJoinWaitlist
+     */
+    public function SetCanJoinWaitList($canJoinWaitlist)
+    {
+        // no-op
+    }
 }

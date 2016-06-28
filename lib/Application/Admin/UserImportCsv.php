@@ -78,26 +78,26 @@ class UserImportCsvRow
 			return false;
 		}
 
-		$indexes['email'] = self::indexOrNull('email', $values);
-		$indexes['username'] = self::indexOrNull('username', $values);
-		$indexes['firstName'] = self::indexOrNull('first name', $values);
-		$indexes['lastName'] = self::indexOrNull('last name', $values);
-		$indexes['password'] = self::indexOrNull('password', $values);
-		$indexes['phone'] = self::indexOrNull('phone', $values);
-		$indexes['organization'] = self::indexOrNull('organization', $values);
-		$indexes['position'] = self::indexOrNull('position', $values);
-		$indexes['timezone'] = self::indexOrNull('timezone', $values);
-		$indexes['language'] = self::indexOrNull('language', $values);
-		$indexes['groups'] = self::indexOrNull('groups', $values);
+		$indexes['email'] = self::indexOrFalse('email', $values);
+		$indexes['username'] = self::indexOrFalse('username', $values);
+		$indexes['firstName'] = self::indexOrFalse('first name', $values);
+		$indexes['lastName'] = self::indexOrFalse('last name', $values);
+		$indexes['password'] = self::indexOrFalse('password', $values);
+		$indexes['phone'] = self::indexOrFalse('phone', $values);
+		$indexes['organization'] = self::indexOrFalse('organization', $values);
+		$indexes['position'] = self::indexOrFalse('position', $values);
+		$indexes['timezone'] = self::indexOrFalse('timezone', $values);
+		$indexes['language'] = self::indexOrFalse('language', $values);
+		$indexes['groups'] = self::indexOrFalse('groups', $values);
 
 		return $indexes;
 	}
 
-    private static function indexOrNull($columnName, $values) {
+    private static function indexOrFalse($columnName, $values) {
         $index = array_search($columnName, $values);
         if ($index === false)
         {
-            return null;
+            return false;
         }
 
         return intval($index);

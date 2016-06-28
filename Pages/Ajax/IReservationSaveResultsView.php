@@ -54,4 +54,9 @@ interface IReservationSaveResultsView
 	 * @return ReservationRetryParameter[]
 	 */
 	public function GetRetryParameters();
+
+    /**
+     * @param bool $canJoinWaitlist
+     */
+    public function SetCanJoinWaitList($canJoinWaitlist);
 }

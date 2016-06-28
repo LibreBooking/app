@@ -439,12 +439,16 @@ function Reservation(opts) {
 	var ShowReservationAjaxResponse = function () {
 		$('.blockUI').css('cursor', 'default');
 
-		$('#btnSaveSuccessful').click(function (e) {
+		$('#btnSaveSuccessful').unbind().click(function (e) {
 			window.location = options.returnUrl;
 		});
 
-		$('#btnSaveFailed').click(function () {
+		$('#btnSaveFailed').unbind().click(function () {
 			CloseSaveDialog();
+		});
+
+        $('#btnWaitList').unbind().click(function () {
+			JoinWaitList();
 		});
 
 		$('#creatingNotification').hide();
@@ -453,6 +457,17 @@ function Reservation(opts) {
 
 	var CloseSaveDialog = function () {
 		$.unblockUI();
+	};
+
+    var JoinWaitList = function () {
+        $('#result').hide();
+        $('#creatingNotification').show();
+        $('#joiningWaitingList').removeClass('no-show');
+
+        ajaxPost($('#form-reservation'), opts.waitlistUrl, null, function (data) {
+            $('#result').html(data);
+            ShowReservationAjaxResponse();
+        });
 	};
 
 	var WireUpActions = function () {

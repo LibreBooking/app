@@ -36,7 +36,7 @@ class ReservationValidationRuleProcessor implements IReservationValidationServic
 
 			if (!$result->IsValid())
 			{
-				return new ReservationValidationResult(false, array($result->ErrorMessage()), array(), $result->CanBeRetried(), $result->RetryParameters(), array($result->RetryMessage()));
+				return new ReservationValidationResult(false, array($result->ErrorMessage()), array(), $result->CanBeRetried(), $result->RetryParameters(), array($result->RetryMessage()), $result->CanJoinWaitlist());
 			}
 		}
 

@@ -46,4 +46,9 @@ interface IReservationValidationResult
 	 */
 	public function GetRetryMessages();
 
+    /**
+     * @return bool
+     */
+    public function CanJoinWaitList();
+
 }

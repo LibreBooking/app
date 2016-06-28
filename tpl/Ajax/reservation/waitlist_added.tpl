@@ -1,6 +1,5 @@
-<?php
-/**
-Copyright 2011-2015 Nick Korbel
+{*
+Copyright 2016 Nick Korbel
 
 This file is part of Booked Scheduler.
 
@@ -16,11 +15,14 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
-*/
+*}
 
-define('ROOT_DIR', '../../');
+<div id="waitlist-added" class="reservationResponseMessage">
+    <div id="reservation-response-image">
+        <span class="fa fa-check fa-5x success"></span>
+    </div>
 
-require_once(ROOT_DIR . 'Pages/Ajax/ReservationUpdatePage.php');
+    <div id="created-message" class="reservation-message">{translate key=WaitlistRequestAdded}</div>
 
-$page = new ReservationUpdatePage();
-$page->PageLoad();
+    <input type="button" id="btnSaveSuccessful" value="{translate key='Close'}" class="btn btn-success"/>
+</div>

@@ -169,3 +169,21 @@ CREATE TABLE `announcement_resources` (
 		)
     ENGINE = InnoDB
 		DEFAULT CHARACTER SET utf8;
+
+DROP TABLE IF EXISTS `reservation_waitlist_requests`;
+CREATE TABLE `reservation_waitlist_requests` (
+  `reservation_waitlist_request_id` MEDIUMINT(8) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `user_id` MEDIUMINT(8) UNSIGNED NOT NULL,
+  `resource_id` SMALLINT(5) UNSIGNED NOT NULL,
+  `start_date` DATETIME,
+  `end_date` DATETIME,
+  PRIMARY KEY (`reservation_waitlist_request_id`),
+  FOREIGN KEY (`user_id`)
+  REFERENCES `users` (`user_id`)
+    ON DELETE CASCADE,
+  FOREIGN KEY (`resource_id`)
+  REFERENCES `resources` (`resource_id`)
+    ON DELETE CASCADE
+)
+  ENGINE = InnoDB
+  DEFAULT CHARACTER SET utf8;

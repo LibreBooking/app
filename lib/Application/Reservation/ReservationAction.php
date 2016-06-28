@@ -22,4 +22,5 @@ class ReservationAction
 	const Approve = 'approve';
 	const Checkin = 'checkin';
 	const Checkout = 'checkout';
+	const WaitList = 'waitlist';
 }

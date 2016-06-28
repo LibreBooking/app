@@ -131,4 +131,12 @@ class ReservationMovePage extends Page implements IReservationMovePage
 	{
 		return array();
 	}
+
+    /**
+     * @param bool $canJoinWaitlist
+     */
+    public function SetCanJoinWaitList($canJoinWaitlist)
+    {
+        // no-op
+    }
 }
