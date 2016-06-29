@@ -26,11 +26,13 @@ var dateHelper = function ()
 		var difference = end.getTime() - begin.getTime();
 		var days = difference / oneDay;
 		var hours = (days % 1) * 24;
+        var minutes = (hours % 1) * 60;
 
-		var roundedHours = (hours % 1) ? hours.toPrecision(2) : hours;
+		var roundedHours = (hours % 1) ? Math.floor(hours) : hours;
 		var roundedDays = Math.floor(days);
+        var roundedMinutes = minutes;
 
-		return {RoundedHours: roundedHours, RoundedDays: roundedDays};
+		return {RoundedHours: roundedHours, RoundedDays: roundedDays, RoundedMinutes: roundedMinutes};
 	};
 
 	var parse = function(time)
