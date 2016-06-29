@@ -57,7 +57,6 @@ class AccessoriesWebService
 	public function GetAll()
 	{
 		$accessories = $this->resourceRepository->GetAccessoryList();
-
 		$this->server->WriteResponse(new AccessoriesResponse($this->server, $accessories));
 	}
 
@@ -82,5 +81,3 @@ class AccessoriesWebService
 		}
 	}
 }
-
-?>

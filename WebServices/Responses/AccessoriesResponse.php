@@ -20,9 +20,14 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 class AccessoriesResponse extends RestResponse
 {
-	/**
+    /**
+     * @var AccessoryItemResponse
+     */
+    public $accessories;
+
+    /**
 	 * @param IRestServer $server
-	 * @param array|AccessoryDto[] $accessories
+	 * @param AccessoryDto[] $accessories
 	 */
 	public function __construct(IRestServer $server, $accessories)
 	{
@@ -52,12 +57,14 @@ class AccessoryItemResponse extends RestResponse
 	public $id;
 	public $name;
 	public $quantityAvailable;
+    public $associatedResourceCount;
 
-	public function __construct(IRestServer $server, AccessoryDto $accessory)
+    public function __construct(IRestServer $server, AccessoryDto $accessory)
 	{
 		$this->id = $accessory->Id;
 		$this->name = $accessory->Name;
 		$this->quantityAvailable = $accessory->QuantityAvailable;
+        $this->associatedResourceCount = $accessory->AssociatedResources;
 		$this->AddService($server, WebServices::GetAccessory, array(WebServiceParams::AccessoryId => $this->id));
 	}
 
@@ -74,7 +81,6 @@ class ExampleAccessoryItemResponse extends AccessoryItemResponse
 		$this->id = 1;
 		$this->name = 'accessoryName';
 		$this->quantityAvailable = 3;
+        $this->associatedResourceCount = 10;
 	}
 }
-
-?>
