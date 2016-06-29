@@ -131,33 +131,6 @@ class UsersWebService
 	}
 
 	/**
-	 * @name GetUserByEmail
-	 * @description Loads the requested user by emaiul address
-	 * @response UserResponse
-	 * @param string $emailAddress
-	 * @return void
-	 */
-	public function GetUserByEmail($emailAddress)
-	{
-		$responseCode = RestResponse::OK_CODE;
-
-		$hideUsers = Configuration::Instance()->GetSectionKey(ConfigSection::PRIVACY,
-															  ConfigKeys::PRIVACY_HIDE_USER_DETAILS,
-															  new BooleanConverter());
-		
-		$userSession = $this->server->GetSession();
-		$repository = $this->repositoryFactory->Create($userSession);
-		if(	$user = $repository->FindByEmail($emailAddress) )
-		{
-			$this->GetUser( $user->Id() );
-		}
-		else
-		{
-			$this->server->WriteResponse(RestResponse::NotFound(), RestResponse::NOT_FOUND_CODE);
-		}
-	}
-
-	/**
 	 * @param CustomAttribute[] $attributes
 	 * @return UserFilter
 	 */
