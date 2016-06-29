@@ -24,7 +24,6 @@ class QRGenerator
 {
     public function SavePng($url, $path)
     {
-        define(QR_LOG_DIR, false);
         QRcode::png($url, $path);
     }
 }
