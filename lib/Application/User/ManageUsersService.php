@@ -181,7 +181,7 @@ class ManageUsersService implements IManageUsersService
 
 	public function ChangeGroups($user, $groupIds)
 	{
-		if ($groupIds == null)
+		if (is_null($groupIds))
 		{
 			return;
 		}

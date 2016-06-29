@@ -513,7 +513,6 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 					<h4 class="modal-title" id="groupsModalLabel">{translate key=Groups}</h4>
 				</div>
 				<div class="modal-body">
-					<div id="allUsers" style="display:none;" class="dialog" title="{translate key=AllUsers}"></div>
 
 					<div id="groupList" class="hidden">
 						{foreach from=$Groups item=group}
@@ -523,9 +522,11 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 						{/foreach}
 					</div>
 
+                    <h5>Group Membership <span class="badge" id="groupCount">0</span></h5>
 					<div id="addedGroups">
 					</div>
 
+                    <h5>Available Groups</h5>
 					<div id="removedGroups">
 					</div>
 

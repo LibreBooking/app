@@ -191,6 +191,7 @@ tr.pending {
 .allDailyLayouts {
   display: none;
 }
+#addedGroups,
 #removedGroups {
   margin-top: 5px;
   padding-top: 5px;

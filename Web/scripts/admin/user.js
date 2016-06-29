@@ -25,6 +25,7 @@ function UserManagement(opts) {
 		groupList: $('#groupList'),
 		addGroupForm: $('#addGroupForm'),
 		removeGroupForm: $('#removeGroupForm'),
+        groupCount: $('#groupCount'),
 
 		colorDialog: $('#colorDialog'),
 		colorValue: $('#reservationColor'),
@@ -114,7 +115,10 @@ function UserManagement(opts) {
 			$('#removeGroupUserId').val(getActiveUserId());
 			elements.removeGroupForm.submit();
 
-			$(this).appendTo(elements.removedGroups);
+            var count = elements.groupCount.text();
+            elements.groupCount.text(--count);
+
+            $(this).appendTo(elements.removedGroups);
 		});
 
 		elements.removedGroups.delegate('div', 'click', function (e) {
@@ -122,6 +126,10 @@ function UserManagement(opts) {
 			$('#addGroupId').val($(this).attr('groupId'));
 			$('#addGroupUserId').val(getActiveUserId());
 			elements.addGroupForm.submit();
+
+            var count = elements.groupCount.text();
+            elements.groupCount.text(++count);
+
 			$(this).appendTo(elements.addedGroups);
 		});
 
@@ -197,8 +205,8 @@ function UserManagement(opts) {
 		ConfigureAsyncForm(elements.addUserForm, defaultSubmitCallback(elements.addUserForm), hideDialogCallback(elements.addDialog));
 		ConfigureAsyncForm(elements.colorForm, defaultSubmitCallback(elements.colorForm));
 		ConfigureAsyncForm(elements.importUsersForm, defaultSubmitCallback(elements.importUsersForm), importHandler);
-		ConfigureAsyncForm(elements.addGroupForm, changeGroupUrlCallback(elements.addGroupForm));
-		ConfigureAsyncForm(elements.removeGroupForm, changeGroupUrlCallback(elements.removeGroupForm));
+		ConfigureAsyncForm(elements.addGroupForm, changeGroupUrlCallback(elements.addGroupForm), function(){});
+		ConfigureAsyncForm(elements.removeGroupForm, changeGroupUrlCallback(elements.removeGroupForm), function(){});
 	};
 
 	UserManagement.prototype.addUser = function (user) {
@@ -267,10 +275,15 @@ function UserManagement(opts) {
 		$.get(opts.groupsUrl, data, function (groupIds) {
 			elements.groupList.find('.group-item').clone().appendTo(elements.removedGroups);
 
-			$.each(groupIds, function (index, value) {
+            var count = 0;
+
+            $.each(groupIds, function (index, value) {
 				var groupLine = elements.removedGroups.find('div[groupId=' + value + ']');
 				groupLine.appendTo(elements.addedGroups);
+                count++;
 			});
+
+            elements.groupCount.text(count);
 		});
 
 		elements.groupsDialog.modal('show');
