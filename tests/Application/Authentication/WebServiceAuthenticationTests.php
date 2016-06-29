@@ -70,8 +70,8 @@ class WebServiceAuthenticationTests extends TestBase
 		$expectedSession = WebServiceUserSession::FromSession($session);
 
 		$this->userSessionRepository->expects($this->once())
-				->method('LoadByUserId')
-				->with($this->equalTo($session->UserId))
+				->method('LoadBySessionToken')
+				->with($this->equalTo($expectedSession->SessionToken))
 				->will($this->returnValue(null));
 
 		$this->userSessionRepository->expects($this->once())
@@ -90,8 +90,8 @@ class WebServiceAuthenticationTests extends TestBase
 		$expectedSession = WebServiceUserSession::FromSession($user);
 
 		$this->userSessionRepository->expects($this->once())
-				->method('LoadByUserId')
-				->with($this->equalTo($user->UserId))
+				->method('LoadBySessionToken')
+				->with($this->equalTo($expectedSession->SessionToken))
 				->will($this->returnValue(new WebServiceUserSession(123)));
 
 		$this->userSessionRepository->expects($this->once())

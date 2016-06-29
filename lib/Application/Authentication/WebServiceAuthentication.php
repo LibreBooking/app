@@ -44,7 +44,10 @@ interface IWebServiceAuthentication
 
 class WebServiceAuthentication implements IWebServiceAuthentication
 {
-	/**
+    private $authentication;
+    private $userSessionRepository;
+
+    /**
 	 * @param IAuthentication $authentication
 	 * @param IUserSessionRepository $userSessionRepository
 	 */
@@ -76,9 +79,7 @@ class WebServiceAuthentication implements IWebServiceAuthentication
 		{
 			$webSession = WebServiceUserSession::FromSession($userSession);
 			$existingSession = $this->userSessionRepository->LoadBySessionToken($webSession->SessionToken);
-/*
-			$existingSession = $this->userSessionRepository->LoadByUserId($userSession->UserId);
- */
+
 			if ($existingSession == null)
 			{
 				$this->userSessionRepository->Add($webSession);
