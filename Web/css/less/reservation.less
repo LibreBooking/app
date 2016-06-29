@@ -297,19 +297,21 @@ a.remove {
 	color: @muted-red;
 }
 
-.resourceName {
-  color: @color-secondary-2-3;
-  a {
-    color:@color-secondary-2-3;
+#reservation-box {
+  .resourceName {
+    color: @color-secondary-2-3;
+    a {
+      color: @color-secondary-2-3;
+    }
+    .rounded(2px);
+    padding: 1px;
+    display: inline-block;
+    margin-right: 2px;
+    .fa:last-of-type {
+      margin-right: 2px;
+    }
+    background-color: @color-secondary-2-1;
   }
-  .rounded(2px);
-  padding:1px;
-  display:inline-block;
-  margin-right:2px;
-  .fa:last-of-type {
-    margin-right:2px;
-  }
-  background-color:@color-secondary-2-1;
 }
 
 .autoReleaseButtonMessage {
