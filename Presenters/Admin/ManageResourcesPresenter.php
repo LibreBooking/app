@@ -22,6 +22,7 @@ require_once(ROOT_DIR . 'Domain/namespace.php');
 require_once(ROOT_DIR . 'Domain/Access/namespace.php');
 require_once(ROOT_DIR . 'lib/Graphics/namespace.php');
 require_once(ROOT_DIR . 'Presenters/ActionPresenter.php');
+require_once(ROOT_DIR . 'lib/Application/Admin/ImageUploadDirectory.php');
 
 class ManageResourcesActions
 {
@@ -53,6 +54,7 @@ class ManageResourcesActions
 	const ActionChangeResourceGroups = 'changeResourceGroups';
 	const ActionChangeColor = 'changeColor';
 	const ActionChangeCredits = 'changeCredits';
+	const ActionPrintQR = 'printQR';
 }
 
 class ManageResourcesPresenter extends ActionPresenter
@@ -139,6 +141,7 @@ class ManageResourcesPresenter extends ActionPresenter
 		$this->AddAction(ManageResourcesActions::ActionChangeResourceGroups, 'ChangeResourceGroups');
 		$this->AddAction(ManageResourcesActions::ActionChangeColor, 'ChangeColor');
 		$this->AddAction(ManageResourcesActions::ActionChangeCredits, 'ChangeCredits');
+		$this->AddAction(ManageResourcesActions::ActionPrintQR, 'PrintQRCode');
 	}
 
 	public function PageLoad()
@@ -751,6 +754,24 @@ class ManageResourcesPresenter extends ActionPresenter
 
 		$this->page->BindUpdatedResourceCredits($resource);
 	}
+
+    public function PrintQRCode()
+    {
+        $qrGenerator = new QRGenerator();
+
+        $resourceId = $this->page->GetResourceId();
+
+        $imageUploadDir = new ImageUploadDirectory();
+        $imageName = "/resourceqr{$resourceId}.png";
+        $url = $imageUploadDir->GetPath() . $imageName;
+        $savePath = $imageUploadDir->GetDirectory() . $imageName;
+
+        $qrPath = sprintf('%s/%s?%s=%s', Configuration::Instance()->GetScriptUrl(), Pages::RESERVATION, QueryStringKeys::RESOURCE_ID, $resourceId);
+        $qrGenerator->SavePng($qrPath, $savePath);
+        $resource = $this->resourceRepository->LoadById($resourceId);
+
+        $this->page->ShowQRCode($url, $resource->GetName());
+    }
 
 	protected function LoadValidators($action)
 	{

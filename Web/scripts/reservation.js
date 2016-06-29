@@ -523,7 +523,7 @@ function Reservation(opts) {
 	};
 
 	function WireUpResourceDetailPopups() {
-		$('#resourceNames, #additionalResources').find('.resourceDetails').each(function () {
+		$('#primaryResourceContainer, #additionalResources').find('.resourceDetails').each(function () {
 			var resourceId = $(this).siblings(".resourceId").val();
 			$(this).bindResourceDetails(resourceId);
 		});

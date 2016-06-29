@@ -585,6 +585,7 @@ class en_us extends Language
 		$strings['NotifyWhenAvailable'] = 'Notify Me When Available';
 		$strings['AddingToWaitlist'] = 'Adding you to the wait list';
 		$strings['WaitlistRequestAdded'] = 'You will be notified if this time becomes available';
+		$strings['PrintQRCode'] = 'Print QR Code';
 		// End Strings
 
 		// Install

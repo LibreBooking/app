@@ -308,6 +308,9 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 								   href="#">{translate key=TurnOnSubscription}</a>
 								{indicator id=subscriptionIndicator}
 							</div>
+                            <div>
+                                <a href="{$smarty.server.SCRIPT_NAME}?action={ManageResourcesActions::ActionPrintQR}&rid={$id}" target="_blank">{translate key=PrintQRCode} <i class="fa fa-qrcode"></i></a>
+                            </div>
 						</div>
 					</div>
 

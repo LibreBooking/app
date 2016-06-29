@@ -16,4 +16,4 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 require_once(ROOT_DIR . 'lib/Graphics/Image.php');
 require_once(ROOT_DIR . 'lib/Graphics/ImageFactory.php');
-?>
+require_once(ROOT_DIR . 'lib/Graphics/QRGenerator.php');
