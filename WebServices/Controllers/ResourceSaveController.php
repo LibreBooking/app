@@ -151,6 +151,11 @@ class ResourceSaveController implements IResourceSaveController
 			$resource->ChangeStatus($request->statusId, $request->statusReasonId);
 		}
 
+        $resource->SetCheckin($request->requiresCheckIn, $request->autoReleaseMinutes);
+        $resource->SetColor($request->color);
+        $resource->SetCreditsPerSlot($request->creditsPerSlot);
+        $resource->SetPeakCreditsPerSlot($request->peakCreditsPerSlot);
+
 		return $resource;
 	}
 }
