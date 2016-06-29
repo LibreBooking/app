@@ -113,7 +113,7 @@ class ManageUsersServiceTests extends TestBase
 		$attributeId = 1;
 		$attributeValue = 'value';
 		$userId = 111;
-		$attribute = new AttributeValue($attributeId, $attributeValue);
+		$attribute = array(new AttributeValue($attributeId, $attributeValue));
 
 		$user = new FakeUser($userId);
 

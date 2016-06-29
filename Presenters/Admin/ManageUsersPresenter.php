@@ -309,7 +309,7 @@ class ManageUsersPresenter extends ActionPresenter implements IManageUsersPresen
 
     public function ChangeAttribute()
     {
-        $this->manageUsersService->ChangeAttributes($this->page->GetUserId(), $this->GetInlineAttributeValue());
+        $this->manageUsersService->ChangeAttribute($this->page->GetUserId(), $this->GetInlineAttributeValue());
     }
 
     public function ProcessDataRequest($dataRequest)

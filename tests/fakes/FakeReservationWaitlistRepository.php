@@ -53,4 +53,21 @@ class FakeReservationWaitlistRepository implements IReservationWaitlistRepositor
     {
        return $this->_AllRequests;
     }
+
+    /**
+     * @param int $waitlistId
+     * @return ReservationWaitlistRequest
+     */
+    public function LoadById($waitlistId)
+    {
+        // TODO: Implement LoadById() method.
+    }
+
+    /**
+     * @param ReservationWaitlistRequest $request
+     */
+    public function Delete(ReservationWaitlistRequest $request)
+    {
+        // TODO: Implement Delete() method.
+    }
 }
