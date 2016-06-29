@@ -54,5 +54,3 @@ class ExampleResourceStatusReasonsResponse extends ResourceStatusReasonsResponse
 		$this->AddReason(1, 'reason description', ResourceStatus::UNAVAILABLE);
 	}
 }
-
-?>

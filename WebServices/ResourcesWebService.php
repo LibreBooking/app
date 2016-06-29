@@ -32,6 +32,7 @@ require_once(ROOT_DIR . 'WebServices/Responses/Resource/ResourceGroupsResponse.p
 require_once(ROOT_DIR . 'WebServices/Responses/Resource/ResourceGroupResponse.php');
 require_once(ROOT_DIR . 'WebServices/Responses/Resource/ResourceAvailabilityResponse.php');
 require_once(ROOT_DIR . 'WebServices/Responses/Resource/ResourceReference.php');
+require_once(ROOT_DIR . 'WebServices/Responses/Resource/ResourceTypesResponse.php');
 
 class ResourcesWebService
 {
@@ -64,18 +65,6 @@ class ResourcesWebService
 		$this->resourceRepository = $resourceRepository;
 		$this->attributeService = $attributeService;
 		$this->reservationRepository = $reservationRepository;
-	}
-
-	/**
-	 * @name GetResourceGroups
-	 * @description Loads all resource groups
-	 * @response ResourceGroupsResponse
-	 * @return void
-	 */
-	public function GetResourceGroups()
-	{
-		$resourcegroups = $this->resourceRepository->GetResourceGroupsList();
-		$this->server->WriteResponse(new ResourceGroupsResponse($this->server, $resourcegroups));
 	}
 
 	/**
@@ -199,7 +188,7 @@ class ResourcesWebService
 
 	/**
 	 * @name GetAvailability
-	 * @description Returns resource availability for the requested time. "availableAt" and "availableUntil" will include availability through the next 7 days
+	 * @description Returns resource availability for the requested resource (optional). "availableAt" and "availableUntil" will include availability through the next 7 days
 	 * Optional query string parameter: dateTime. If no dateTime is requested the current datetime will be used.
 	 * @response ResourcesAvailabilityResponse
 	 * @return void

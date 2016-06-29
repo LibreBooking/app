@@ -138,7 +138,7 @@ function RegisterResources(SlimServer $server, SlimWebServiceRegistry $registry)
 	$category->AddSecureGet('/', array($webService, 'GetAll'), WebServices::AllResources);
 	$category->AddSecureGet('/Tree', array($webService, 'GetResourceGroupTree'), WebServices::GetResourceGroupTree);
 	$category->AddSecureGet('/Type/:resourceTypeName', array($webService, 'GetResourceGroupTreeByType'), WebServices::GetResourceGroupTreeByType);
-	$category->AddSecureGet('/Groups', array($webService, 'GetResourceGroups'), WebServices::GetResourceGroups);
+//	$category->AddSecureGet('/Groups', array($webService, 'GetResourceGroups'), WebServices::GetResourceGroups);
 	$category->AddGet('/Status', array($webService, 'GetStatuses'), WebServices::GetStatuses);
 	$category->AddSecureGet('/Status/Reasons', array($webService, 'GetStatusReasons'), WebServices::GetStatusReasons);
 	$category->AddSecureGet('/Availability', array($webService, 'GetAvailability'), WebServices::AllAvailability);
