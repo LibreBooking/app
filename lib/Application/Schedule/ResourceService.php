@@ -105,7 +105,18 @@ class ResourceService implements IResourceService
 		$this->_accessoryRepository = $accessoryRepository;
 	}
 
-	public function GetScheduleResources($scheduleId, $includeInaccessibleResources, UserSession $user, $filter = null)
+    /**
+     * @return ResourceService
+     */
+    public static function Create()
+    {
+        return new ResourceService(new ResourceRepository(),
+            PluginManager::Instance()->LoadPermission(),
+            new AttributeService(new AttributeRepository()),
+            new UserRepository(), new AccessoryRepository());
+    }
+
+    public function GetScheduleResources($scheduleId, $includeInaccessibleResources, UserSession $user, $filter = null)
 	{
 		if ($filter == null)
 		{

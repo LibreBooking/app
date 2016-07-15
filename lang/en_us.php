@@ -48,7 +48,7 @@ class en_us extends Language
 		$dates['general_time_js'] = 'h:mm tt';
 		$dates['momentjs_datetime'] = 'M/D/YY h:mm A';
 		$dates['calendar_time'] = 'h:mmt';
-		$dates['calendar_dates'] = 'M/d';
+		$dates['calendar_dates'] = 'M d';
 
 		$this->Dates = $dates;
 
@@ -586,6 +586,11 @@ class en_us extends Language
 		$strings['AddingToWaitlist'] = 'Adding you to the wait list';
 		$strings['WaitlistRequestAdded'] = 'You will be notified if this time becomes available';
 		$strings['PrintQRCode'] = 'Print QR Code';
+		$strings['FindATime'] = 'Find A Time';
+		$strings['AnyResource'] = 'Any Resource';
+		$strings['ThisWeek'] = 'This Week';
+		$strings['Hours'] = 'Hours';
+		$strings['Minutes'] = 'Minutes';
 		// End Strings
 
 		// Install

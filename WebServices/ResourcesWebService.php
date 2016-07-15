@@ -216,7 +216,7 @@ class ResourcesWebService
 		}
 
 		$lastDateSearched = $requestedTime->AddDays(30);
-		$reservations = $this->GetReservations($this->reservationRepository->GetReservationList($requestedTime, $lastDateSearched, null, null, null, $resourceId));
+		$reservations = $this->GetReservations($this->reservationRepository->GetReservations($requestedTime, $lastDateSearched, null, null, null, $resourceId));
 
 		$resourceAvailability = array();
 

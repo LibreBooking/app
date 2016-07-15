@@ -51,7 +51,7 @@ class ResourceAvailabilityControlPresenter
 		$now = Date::Now();
 
 		$resources = $this->resourceService->GetAllResources(false, $user);
-		$reservations = $this->GetReservations($this->reservationViewRepository->GetReservationList($now, $now->AddDays(30)));
+		$reservations = $this->GetReservations($this->reservationViewRepository->GetReservations($now, $now->AddDays(30)));
 
 		$available = array();
 		$unavailable = array();

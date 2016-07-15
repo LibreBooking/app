@@ -27,6 +27,11 @@ class FakeResourceService implements IResourceService
 	 */
 	public $_AllResources = array();
 
+    /**
+	 * @var ResourceDto[]
+	 */
+	public $_ScheduleResources = array();
+
 	/**
 	 * Gets resource list for a schedule
 	 * @param int $scheduleId
@@ -37,7 +42,7 @@ class FakeResourceService implements IResourceService
 	 */
 	public function GetScheduleResources($scheduleId, $includeInaccessibleResources, UserSession $user, $filter = null)
 	{
-		// TODO: Implement GetScheduleResources() method.
+		return $this->_ScheduleResources;
 	}
 
 	/**

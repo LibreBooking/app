@@ -248,7 +248,7 @@ class Quota implements IQuota
 		}
 
 		$dates = $this->duration->GetSearchDates($reservationSeries, $timezone);
-		$reservationsWithinRange = $reservationViewRepository->GetReservationList($this->GetScope()->GetSearchStartDate($dates->Start()), $dates->End(),
+		$reservationsWithinRange = $reservationViewRepository->GetReservations($this->GetScope()->GetSearchStartDate($dates->Start()), $dates->End(),
 																				  $reservationSeries->UserId(),
 																				  ReservationUserLevel::OWNER);
 

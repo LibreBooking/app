@@ -984,6 +984,15 @@ class DateDiff
 		return $this->seconds > $diff->seconds;
 	}
 
+    /**
+	 * @param DateDiff $diff
+	 * @return bool
+	 */
+	public function GreaterThanOrEqual(DateDiff $diff)
+	{
+		return $this->seconds >= $diff->seconds;
+	}
+
 	/**
 	 * @return DateDiff
 	 */

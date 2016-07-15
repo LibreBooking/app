@@ -79,3 +79,5 @@ require_once(ROOT_DIR . 'tests/fakes/FakeGuestUserService.php');
 require_once(ROOT_DIR . 'tests/fakes/FakeReservationHandler.php');
 require_once(ROOT_DIR . 'tests/fakes/FakeScheduleLayout.php');
 require_once(ROOT_DIR . 'tests/fakes/FakeReservationWaitlistRepository.php');
+require_once(ROOT_DIR . 'tests/fakes/FakeDailyLayout.php');
+require_once(ROOT_DIR . 'tests/fakes/FakeScheduleService.php');

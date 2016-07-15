@@ -163,7 +163,7 @@ class ManageBlackoutsService implements IManageBlackoutsService
 		$blackouts = $blackoutSeries->AllBlackouts();
 		foreach ($blackouts as $blackout)
 		{
-			$existingReservations = $this->reservationViewRepository->GetReservationList($blackout->StartDate(), $blackout->EndDate());
+			$existingReservations = $this->reservationViewRepository->GetReservations($blackout->StartDate(), $blackout->EndDate());
 
 			foreach ($existingReservations as $existingReservation)
 			{

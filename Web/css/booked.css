@@ -294,6 +294,9 @@ div.center {
 .margin-bottom-25 {
   margin-bottom: 25px;
 }
+.margin-bottom-15 {
+  margin-bottom: 15px;
+}
 .margin-bottom-0 {
   margin-bottom: 0;
 }
@@ -2078,4 +2081,36 @@ ul.jqtree-tree .jqtree-toggler {
 }
 #generate-report #saveMessage {
   text-align: center;
+}
+.page-search-availability .opening {
+  float: left;
+  margin: 5px 10px;
+  border: solid 1px #353432;
+  -webkit-border-radius: 2px;
+  -moz-border-radius: 2px;
+  border-radius: 2px;
+  width: 30%;
+  cursor: pointer;
+}
+.page-search-availability .opening .resourceName {
+  background-color: #CFE4E4;
+  padding: 1px 3px;
+  color: #428181;
+}
+.page-search-availability .opening .dates {
+  padding: 2px;
+}
+@media (max-width: 991px) {
+  .page-search-availability .opening {
+    width: 45%;
+  }
+}
+@media (max-width: 767px) {
+  .page-search-availability .opening {
+    width: 100%;
+    margin: 5px 0;
+  }
+}
+.page-search-availability span.hours-minutes {
+  min-width: 120px;
 }

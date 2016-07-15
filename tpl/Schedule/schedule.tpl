@@ -196,7 +196,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 						<div>
 							<div class="form-group">
 								<label for="maxCapactiy">{translate key=MinimumCapacity}</label>
-								<input type='text' id='maxCapactiy' size='5' maxlength='5' class="form-control input-sm" {formname key=MAX_PARTICIPANTS}
+								<input type='number' min='0' id='maxCapactiy' size='5' maxlength='5' class="form-control input-sm" {formname key=MAX_PARTICIPANTS}
 									   value="{$MaxParticipantsFilter}"/>
 							</div>
 

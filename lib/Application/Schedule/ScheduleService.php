@@ -33,6 +33,14 @@ interface IScheduleService
 	 * @return IScheduleLayout
 	 */
 	public function GetLayout($scheduleId, ILayoutFactory $layoutFactory);
+
+    /**
+     * @param int $scheduleId
+     * @param ILayoutFactory $layoutFactory
+     * @param IReservationListing $reservationListing
+     * @return IDailyLayout
+     */
+    public function GetDailyLayout($scheduleId, ILayoutFactory $layoutFactory, $reservationListing);
 }
 
 class ScheduleService implements IScheduleService
@@ -47,10 +55,16 @@ class ScheduleService implements IScheduleService
 	 */
 	private $resourceService;
 
-	public function __construct(IScheduleRepository $scheduleRepository, IResourceService $resourceService)
+    /**
+     * @var IDailyLayoutFactory
+     */
+    private $dailyLayoutFactory;
+
+    public function __construct(IScheduleRepository $scheduleRepository, IResourceService $resourceService, IDailyLayoutFactory $dailyLayoutFactory)
 	{
 		$this->scheduleRepository = $scheduleRepository;
 		$this->resourceService = $resourceService;
+        $this->dailyLayoutFactory = $dailyLayoutFactory;
 	}
 
 	public function GetAll($includeInaccessible = true, UserSession $session = null)
@@ -89,6 +103,10 @@ class ScheduleService implements IScheduleService
 	{
 		return $this->scheduleRepository->GetLayout($scheduleId, $layoutFactory);
 	}
-}
 
-?>
+    public function GetDailyLayout($scheduleId, ILayoutFactory $layoutFactory, $reservationListing)
+    {
+        return $this->dailyLayoutFactory->Create($reservationListing, $this->GetLayout($scheduleId, $layoutFactory));
+
+    }
+}

@@ -710,7 +710,7 @@ class ResourceDto implements IBookableResource
 		{
 			$textColor = new ContrastingColor($color);
 			$this->TextColor = $textColor->__toString();
-		}
+        }
 	}
 
 	/**
@@ -913,4 +913,12 @@ class ResourceDto implements IBookableResource
 	{
 		return $this->TextColor;
 	}
+
+    /**
+     * @return bool
+     */
+    public function HasColor()
+    {
+        return $this->Color != '' && $this->Color != null;
+    }
 }

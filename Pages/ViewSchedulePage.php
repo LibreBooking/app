@@ -41,11 +41,10 @@ class ViewSchedulePage extends SchedulePage
 
 		$this->_presenter = new SchedulePresenter(
 			$this,
-			new ScheduleService($scheduleRepository, $resourceService),
+			new ScheduleService($scheduleRepository, $resourceService, $dailyLayoutFactory),
 			$resourceService,
 			$pageBuilder,
-			$reservationService,
-			$dailyLayoutFactory);
+			$reservationService);
 	}
 
 	public function ProcessPageLoad()

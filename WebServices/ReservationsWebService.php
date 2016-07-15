@@ -75,7 +75,7 @@ class ReservationsWebService
 
 		Log::Debug('GetReservations called. userId=%s, startDate=%s, endDate=%s', $userId, $startDate, $endDate);
 
-		$reservations = $this->reservationViewRepository->GetReservationList($startDate, $endDate, $userId, null,
+		$reservations = $this->reservationViewRepository->GetReservations($startDate, $endDate, $userId, null,
 																			 $scheduleId, $resourceId);
 
 		$response = new ReservationsResponse($this->server, $reservations, $this->privacyFilter, $startDate, $endDate);

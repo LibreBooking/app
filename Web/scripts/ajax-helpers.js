@@ -56,10 +56,17 @@ function ConfigureAsyncForm(formElement, urlCallback, successHandler, responseHa
 
 	opts.onBeforeSerialize = BeforeSerializeDecorator(beforeSerialize);
 
+    var getAction = function(form) {
+        var action = $(form).attr('action');
+        var ajaxAction = $(form).attr('ajax-action');
+
+        return _.isEmpty(action) ? ajaxAction : action;
+    };
+
 	formElement.submit(function () {
 
 		var submitOptions = {
-			url: urlCallback(formElement),
+			url: urlCallback ? urlCallback(formElement) : getAction(formElement) ,
 			beforeSubmit: opts.onBeforeSubmit,
 			beforeSerialize: opts.onBeforeSerialize,
 			dataType: opts.dataType,

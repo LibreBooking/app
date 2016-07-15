@@ -135,7 +135,7 @@ class CalendarPresenter extends ActionPresenter
         $resources = $this->common->GetAllResources($userSession);
         $selectedResourceId = $this->page->GetResourceId();
 
-        $reservations = $this->reservationRepository->GetReservationList($this->common->GetStartDate(), $this->common->GetEndDate()->AddDays(1),
+        $reservations = $this->reservationRepository->GetReservations($this->common->GetStartDate(), $this->common->GetEndDate()->AddDays(1),
             null, null, $selectedSchedule->GetId(),
             $selectedResourceId);
 

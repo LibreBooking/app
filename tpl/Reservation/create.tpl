@@ -21,7 +21,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 {function name="displayResource"}
 	<div class="resourceName" style="background-color:{$resource->GetColor()};color:{$resource->GetTextColor()}">
-		<span class="resourceDetails">{$resource->Name}</span>
+		<span class="resourceDetails" data-resourceId="{$resource->GetId()}">{$resource->Name}</span>
 		{if $resource->GetRequiresApproval()}<span class="fa fa-lock" data-tooltip="approval"></span>{/if}
 		{if $resource->IsCheckInEnabled()}<i class="fa fa-sign-in" data-tooltip="checkin"></i>{/if}
 		{if $resource->IsAutoReleased()}<i class="fa fa-clock-o" data-tooltip="autorelease"

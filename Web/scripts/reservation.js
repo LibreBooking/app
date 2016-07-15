@@ -526,7 +526,7 @@ function Reservation(opts) {
 
 	function WireUpResourceDetailPopups() {
 		$('#primaryResourceContainer, #additionalResources').find('.resourceDetails').each(function () {
-			var resourceId = $(this).siblings(".resourceId").val();
+			var resourceId = $(this).attr("data-resourceId");
 			$(this).bindResourceDetails(resourceId);
 		});
 	}

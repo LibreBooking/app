@@ -109,8 +109,8 @@ class SchedulesWebService
 		$builder = new ScheduleWebServicePageBuilder($startDate, $endDate, $resourceId);
 		$reservationService = new ReservationService(new ReservationViewRepository(), new ReservationListingFactory());
 		$dailyLayoutFactory = new DailyLayoutFactory();
-		$scheduleService = new ScheduleService($scheduleRepository, $resourceService);
-		$presenter = new SchedulePresenter($scheduleWebServiceView, $scheduleService, $resourceService, $builder, $reservationService, $dailyLayoutFactory);
+		$scheduleService = new ScheduleService($scheduleRepository, $resourceService, $dailyLayoutFactory);
+		$presenter = new SchedulePresenter($scheduleWebServiceView, $scheduleService, $resourceService, $builder, $reservationService);
 
 		$presenter->PageLoad($this->server->GetSession());
 

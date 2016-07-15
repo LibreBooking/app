@@ -44,7 +44,7 @@ interface IReservationViewRepository
 	 * @param int|null $resourceId
 	 * @return ReservationItemView[]
 	 */
-	public function GetReservationList(
+	public function GetReservations(
 			Date $startDate,
 			Date $endDate,
 			$userId = ReservationViewRepository::ALL_USERS,
@@ -161,7 +161,7 @@ class ReservationViewRepository implements IReservationViewRepository
 		return $reservationView;
 	}
 
-	public function GetReservationList(
+	public function GetReservations(
 			Date $startDate,
 			Date $endDate,
 			$userId = self::ALL_USERS,
