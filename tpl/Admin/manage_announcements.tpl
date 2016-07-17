@@ -45,7 +45,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 					<label for="addPriority">{translate key='Priority'}</label>
 					<input type="number" min="0" step="1" class="form-control" {formname key=ANNOUNCEMENT_PRIORITY} id="addPriority" />
 				</div>
-				<div><a data-toggle="collapse" data-target="#advancedAnnouncementOptions">{translate key=MoreOptions} &raquo;</a></div>
+				<div><a href="#" data-toggle="collapse" data-target="#advancedAnnouncementOptions">{translate key=MoreOptions} &raquo;</a></div>
 				<div id="advancedAnnouncementOptions" class="collapse">
 					<div class="form-group col-xs-12 col-md-6">
 						<label for="announcementGroups" class="no-show">{translate key=UsersInGroups}</label>

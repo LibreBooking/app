@@ -67,11 +67,45 @@ interface ISearchAvailabilityPage extends IActionPage
      * @return string
      */
     public function GetRequestedEndDate();
+
+    /**
+     * @return int[]
+     */
+    public function GetResources();
+
+    /**
+     * @return int
+     */
+    public function GetResourceType();
+
+    /**
+     * @return int
+     */
+    public function GetMaxParticipants();
+
+    /**
+     * @return AttributeFormElement[]
+     */
+    public function GetResourceAttributeValues();
+
+    /**
+     * @return AttributeFormElement[]
+     */
+    public function GetResourceTypeAttributeValues();
+
+    /**
+     * @param Attribute[] $attributes
+     */
+    public function SetResourceAttributes($attributes);
+
+    /**
+     * @param Attribute[] $attributes
+     */
+    public function SetResourceTypeAttributes($attributes);
 }
 
 class SearchAvailabilityPage extends ActionPage implements ISearchAvailabilityPage
 {
-
     /**
      * @var SearchAvailabilityPresenter
      */
@@ -148,5 +182,46 @@ class SearchAvailabilityPage extends ActionPage implements ISearchAvailabilityPa
     public function GetRequestedEndDate()
     {
         return $this->GetForm(FormKeys::END_DATE);
+    }
+
+    public function GetResources()
+    {
+        $resources = $this->GetForm(FormKeys::RESOURCE_ID);
+        if (empty($resources))
+        {
+            return array();
+        }
+
+        return $resources;
+    }
+
+    public function GetResourceType()
+    {
+        return $this->GetForm(FormKeys::RESOURCE_TYPE_ID);
+    }
+
+    public function GetMaxParticipants()
+    {
+       return $this->GetForm(FormKeys::MAX_PARTICIPANTS);
+    }
+
+    public function GetResourceAttributeValues()
+    {
+        return AttributeFormParser::GetAttributes($this->GetForm('r' . FormKeys::ATTRIBUTE_PREFIX));
+    }
+
+    public function GetResourceTypeAttributeValues()
+    {
+        return AttributeFormParser::GetAttributes($this->GetForm('rt' . FormKeys::ATTRIBUTE_PREFIX));
+    }
+
+    public function SetResourceAttributes($attributes)
+    {
+       $this->Set('ResourceAttributes', $attributes);
+    }
+
+    public function SetResourceTypeAttributes($attributes)
+    {
+        $this->Set('ResourceTypeAttributes', $attributes);
     }
 }

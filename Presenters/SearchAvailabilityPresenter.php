@@ -67,6 +67,8 @@ class SearchAvailabilityPresenter extends ActionPresenter
     {
         $this->page->SetResources($this->resourceService->GetAllResources(false, $this->user));
         $this->page->SetResourceTypes($this->resourceService->GetResourceTypes());
+        $this->page->SetResourceAttributes($this->resourceService->GetResourceAttributes());
+        $this->page->SetResourceTypeAttributes($this->resourceService->GetResourceTypeAttributes());
     }
 
     public function SearchAvailability()
@@ -74,9 +76,9 @@ class SearchAvailabilityPresenter extends ActionPresenter
         $openings = array();
         $dateRange = $this->GetSearchRange();
         $requestedLength = $this->GetRequestedLength();
-        $resources = $this->resourceService->GetAllResources(false, $this->user);
+        $resources = $this->resourceService->GetAllResources(false, $this->user, $this->GetFilter());
 
-        /** @var BookableResource $resource */
+        /** @var ResourceDto $resource */
         foreach ($resources as $resource) {
             $scheduleId = $resource->GetScheduleId();
             $resourceId = $resource->GetResourceId();
@@ -109,7 +111,7 @@ class SearchAvailabilityPresenter extends ActionPresenter
      * @param int $currentIndex
      * @param IReservationSlot[] $slots
      * @param DateDiff $requestedLength
-     * @param BookableResource $resource
+     * @param ResourceDto $resource
      * @return AvailableOpeningView|null
      */
     private function GetSlot($startIndex, $currentIndex, $slots, $requestedLength, $resource)
@@ -176,6 +178,36 @@ class SearchAvailabilityPresenter extends ActionPresenter
         $hourSeconds = 3600 * $this->page->GetRequestedHours();
         $minuteSeconds = 60 * $this->page->GetRequestedMinutes();
         return new DateDiff($hourSeconds + $minuteSeconds);
+    }
+
+    /**
+     * @return ScheduleResourceFilter
+     */
+    private function GetFilter()
+    {
+        return new ScheduleResourceFilter(null,
+            $this->page->GetResourceType(),
+            $this->page->GetMaxParticipants(),
+            $this->AsAttributeValues($this->page->GetResourceAttributeValues()),
+            $this->AsAttributeValues($this->page->GetResourceTypeAttributeValues()),
+            $this->page->GetResources());
+    }
+
+    /**
+     * @param $attributeFormElements AttributeFormElement[]
+     * @return AttributeValue[]
+     */
+    private function AsAttributeValues($attributeFormElements)
+    {
+        $vals = array();
+        foreach ($attributeFormElements as $e)
+        {
+            if (!empty($e->Value) || (is_numeric($e->Value) && $e->Value == 0))
+            {
+                $vals[] = new AttributeValue($e->Id, $e->Value);
+            }
+        }
+        return $vals;
     }
 }
 

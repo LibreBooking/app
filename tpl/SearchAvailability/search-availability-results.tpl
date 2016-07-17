@@ -11,7 +11,7 @@
             {assign var=key value=period_time}
         {/if}
         <div class="dates">
-        {format_date date=$opening->Start() key=mobile_reservation_date} -
+        {format_date date=$opening->Start() key=res_popup} -
         {format_date date=$opening->End() key=$key}
         </div>
     </div>

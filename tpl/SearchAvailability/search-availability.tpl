@@ -57,7 +57,7 @@
                     <i class="fa fa-calendar"></i><span class="hidden-xs"> Date Range</span>
                 </label>
             </div>
-            <div>
+            <div class="">
                 <input type="text" id="beginDate" class="form-control inline dateinput"
                        placeholder="{translate key=BeginDate}" disabled="disabled"/>
                 <input type="hidden" id="formattedBeginDate" {formname key=BEGIN_DATE} />
@@ -65,38 +65,47 @@
                 <input type="text" id="endDate" class="form-control inline dateinput"
                        placeholder="{translate key=EndDate}" disabled="disabled"/>
                 <input type="hidden" id="formatteEndDate" {formname key=END_DATE} />
+                <a href=""#" data-toggle="collapse" data-target="#advancedSearchOptions">{translate key=MoreOptions}</a>
             </div>
         </div>
 
         <div class="clearfix"></div>
 
-        <div class="form-group col-xs-6">
-            <label for="maxCapacity" class="hidden">{translate key=MinimumCapacity}</label>
-            <input type='number' id='maxCapacity' min='0' size='5' maxlength='5'
-                   class="form-control input-sm" {formname key=MAX_PARTICIPANTS}
-                   value="{$MaxParticipantsFilter}" placeholder="{translate key=MinimumCapacity}"/>
+        <div class="collapse" id="advancedSearchOptions">
+            <div class="form-group col-xs-6">
+                <label for="maxCapacity" class="hidden">{translate key=MinimumCapacity}</label>
+                <input type='number' id='maxCapacity' min='0' size='5' maxlength='5'
+                       class="form-control input-sm" {formname key=MAX_PARTICIPANTS}
+                       value="{$MaxParticipantsFilter}" placeholder="{translate key=MinimumCapacity}"/>
 
+            </div>
+            <div class="form-group col-xs-6">
+                <label for="resourceType" class="hidden">{translate key=ResourceType}</label>
+                <select id="resourceType" {formname key=RESOURCE_TYPE_ID} {formname key=RESOURCE_TYPE_ID}
+                        class="form-control input-sm">
+                    <option value="">- {translate key=ResourceType} -</option>
+                    {object_html_options options=$ResourceTypes label='Name' key='Id' selected=$ResourceTypeIdFilter}
+                </select>
+            </div>
+
+            <div>
+                {foreach from=$ResourceAttributes item=attribute}
+                    {control type="AttributeControl" attribute=$attribute align='vertical' searchmode=true namePrefix='r' class="col-sm-6 col-xs-12" inputClass="input-sm"}
+                {/foreach}
+                {if $ResourceAttributes|count%2 != 0}
+                    <div class="col-sm-6 hidden-xs">&nbsp;</div>
+                {/if}
+            </div>
+
+            <div>
+                {foreach from=$ResourceTypeAttributes item=attribute}
+                    {control type="AttributeControl" attribute=$attribute align='vertical' searchmode=true namePrefix='rt' class="col-sm-6 col-xs-12" inputClass="input-sm"}
+                {/foreach}
+                {if $ResourceTypeAttributes|count%2 != 0}
+                    <div class="col-sm-6 hidden-xs">&nbsp;</div>
+                {/if}
+            </div>
         </div>
-        <div class="form-group col-xs-6">
-            <label for="resourceType" class="hidden">{translate key=ResourceType}</label>
-            <select id="resourceType" {formname key=RESOURCE_TYPE_ID} {formname key=RESOURCE_TYPE_ID}
-                    class="form-control input-sm">
-                <option value="">- {translate key=ResourceType} -</option>
-                {object_html_options options=$ResourceTypes label='Name' key='Id' selected=$ResourceTypeIdFilter}
-            </select>
-        </div>
-        {*</div>*}
-
-        {*{foreach from=$ResourceAttributes item=attribute}*}
-
-        {*{control type="AttributeControl" attribute=$attribute align='vertical' searchmode=true namePrefix='r' inputClass="input-sm"}*}
-
-        {*{/foreach}*}
-
-        {*{foreach from=$ResourceTypeAttributes item=attribute}*}
-        {*{control type="AttributeControl" attribute=$attribute align='vertical' searchmode=true namePrefix='rt' inputClass="input-sm"}*}
-        {*{/foreach}*}
-
 
         <div class="form-group col-xs-12">
             <button type="submit" class="btn btn-success col-xs-12"

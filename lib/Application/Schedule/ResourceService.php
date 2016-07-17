@@ -33,9 +33,10 @@ interface IResourceService
 	 * Gets resource list
 	 * @param bool $includeInaccessibleResources
 	 * @param UserSession $user
+     * @param ScheduleResourceFilter|null $filter
 	 * @return array|ResourceDto[]
 	 */
-	public function GetAllResources($includeInaccessibleResources, UserSession $user);
+	public function GetAllResources($includeInaccessibleResources, UserSession $user, $filter = null);
 
 	/**
 	 * @return Accessory[]
@@ -129,11 +130,18 @@ class ResourceService implements IResourceService
 		return $this->Filter($resources, $user, $includeInaccessibleResources, $resourceIds);
 	}
 
-	public function GetAllResources($includeInaccessibleResources, UserSession $user)
+	public function GetAllResources($includeInaccessibleResources, UserSession $user, $filter = null)
 	{
+        if ($filter == null)
+        {
+            $filter = new ScheduleResourceFilter();
+        }
+
 		$resources = $this->_resourceRepository->GetResourceList();
 
-		return $this->Filter($resources, $user, $includeInaccessibleResources);
+        $resourceIds = $filter->FilterResources($resources, $this->_resourceRepository, $this->_attributeService);
+
+        return $this->Filter($resources, $user, $includeInaccessibleResources, $resourceIds);
 	}
 
 	/**
