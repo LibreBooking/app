@@ -27,7 +27,6 @@ require_once(ROOT_DIR . 'Domain/Access/namespace.php');
 
 interface ISearchAvailabilityPage extends IActionPage
 {
-
     /**
      * @param ResourceDto[] $resources
      */
