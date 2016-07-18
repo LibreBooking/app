@@ -30,7 +30,11 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 	{$formatter->Add('name', $smarty.capture.name)}
 
 	{capture "dates"}
-		<div class="dates">{formatdate date=$startDate key=res_popup} - {formatdate date=$endDate key=res_popup}</div>
+        {assign var="key" value="res_popup"}
+        {if $startDate->DateEquals($endDate)}
+            {assign var="key" value="res_popup_time"}
+        {/if}
+		<div class="dates">{formatdate date=$startDate key=res_popup} - {formatdate date=$endDate key=$key}</div>
 	{/capture}
 	{$formatter->Add('dates', $smarty.capture.dates)}
 

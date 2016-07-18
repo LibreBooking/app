@@ -175,18 +175,6 @@ function Reservation(opts) {
 		AddAccessory(name, accessoryId, quantity);
 	};
 
-	Reservation.prototype.addAccessoryRule = function (accessoryName, accessoryId, resourceId, min, max)
-	{
-		var resourceIds = GetSelectedResourceIds();
-		if (_.contains(resourceIds, resourceId) && min > 0)
-		{
-			if (elements.accessoriesList.find("p[accessoryId='" + accessoryId + "']").length === 0)
-			{
-				AddAccessory(accessoryName, accessoryId, min);
-			}
-		}
-	};
-
 	Reservation.prototype.addResourceGroups = function (resourceGroups) {
 		elements.groupDiv.tree({
 			data: resourceGroups, saveState: false, dragAndDrop: false, selectable: false, autoOpen: true,

@@ -40,6 +40,7 @@ class en_us extends Language
 		$dates['schedule_daily'] = 'l, m/d/Y';
 		$dates['reservation_email'] = 'm/d/Y @ g:i A (e)';
 		$dates['res_popup'] = 'D, n/d g:i A';
+		$dates['res_popup_time'] = 'g:i A';
 		$dates['short_reservation_date'] = 'n/j/y g:i A';
 		$dates['dashboard'] = 'l, n/d/y g:i A';
 		$dates['period_time'] = 'g:i A';
