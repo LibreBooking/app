@@ -23,7 +23,7 @@
   border-color: #53577F;
 }
 #page-dashboard .panel-heading {
-  background-color: #9bc2c2;
+  background-color: #9BC2C2;
   color: #fff;
 }
 #page-dashboard .panel-heading,
@@ -69,17 +69,24 @@
 .dashboardContents .table {
   margin-bottom: 1px;
 }
-.upcomingReservationsDashboard .timespan td {
+.upcomingReservationsDashboard .timespan {
+  padding: 3px;
   font-style: italic;
   color: #000;
-  background-color: #fff8e7;
+  background-color: #FFF8E7;
+  border-bottom: 1px solid #E9E9E9;
 }
-.upcomingReservationsDashboard tr.reservation.hover td {
+.upcomingReservationsDashboard .reservation {
+  padding: 3px 0;
+  border-bottom: 1px solid #E9E9E9;
+  margin: 0 3px;
+}
+.upcomingReservationsDashboard .reservation.hover {
   cursor: pointer;
   background-color: #eaf2f2;
   color: #222;
 }
-.upcomingReservationsDashboard tr.reservation.clicked td {
+.upcomingReservationsDashboard .reservation.clicked {
   cursor: pointer;
   background-color: #F0F0F0;
 }
@@ -104,7 +111,7 @@
   padding: 3px 0;
 }
 .availabilityDashboard .availabilityItem .btn {
-  background-color: #58ac58;
+  background-color: #58AC58;
   color: #fff;
   border-color: #458c45;
   padding: 1px 20px;

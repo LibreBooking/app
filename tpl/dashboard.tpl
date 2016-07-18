@@ -19,11 +19,11 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 {include file='globalheader.tpl' cssFiles='css/dashboard.css' Qtip=true}
 
 <div id="page-dashboard">
-<ul id="dashboardList" class="list-unstyled">
+<div id="dashboardList">
 {foreach from=$items item=dashboardItem}
-    <li>{$dashboardItem->PageLoad()}</li>
+    <div>{$dashboardItem->PageLoad()}</div>
 {/foreach}
-</ul>
+</div>
 
 {jsfile src="dashboard.js"}
 {jsfile src="resourcePopup.js"}

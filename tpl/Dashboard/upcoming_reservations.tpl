@@ -18,13 +18,14 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 *}
 
 {function name=displayReservation}
-	<tr class="reservation" id="{$reservation->ReferenceNumber}">
-		<td>{$reservation->Title|default:$DefaultTitle}</td>
-		<td>{fullname first=$reservation->FirstName last=$reservation->LastName ignorePrivacy=$reservation->IsUserOwner($UserId)} {if !$reservation->IsUserOwner($UserId)}{html_image src="users.png" altKey=Participant}{/if}</td>
-		<td>{formatdate date=$reservation->StartDate->ToTimezone($Timezone) key=dashboard}</td>
-		<td>{formatdate date=$reservation->EndDate->ToTimezone($Timezone) key=dashboard}</td>
-		<td>{$reservation->ResourceName}</td>
-	</tr>
+	<div class="reservation row" id="{$reservation->ReferenceNumber}">
+		<div class="col-sm-3 col-xs-12">{$reservation->Title|default:$DefaultTitle}</div>
+		<div class="col-sm-2 col-xs-12">{fullname first=$reservation->FirstName last=$reservation->LastName ignorePrivacy=$reservation->IsUserOwner($UserId)} {if !$reservation->IsUserOwner($UserId)}{html_image src="users.png" altKey=Participant}{/if}</div>
+		<div class="col-sm-2 col-xs-6">{formatdate date=$reservation->StartDate->ToTimezone($Timezone) key=dashboard}</div>
+		<div class="col-sm-2 col-xs-6">{formatdate date=$reservation->EndDate->ToTimezone($Timezone) key=dashboard}</div>
+		<div class="col-sm-3 col-xs-12">{$reservation->ResourceName}</div>
+	</div>
+    <div class="clearfix"></div>
 {/function}
 
 
@@ -41,35 +42,35 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 	<div class="dashboardContents">
 		{assign var=colspan value="5"}
 		{if $Total > 0}
-			<table class="table">
-				<tr class="timespan">
-					<td colspan="{$colspan}">{translate key="Today"} ({$TodaysReservations|count})</td>
-				</tr>
+			<div>
+				<div class="timespan">
+					{translate key="Today"} ({$TodaysReservations|count})
+				</div>
 				{foreach from=$TodaysReservations item=reservation}
 					{displayReservation reservation=$reservation}
 				{/foreach}
 
-				<tr class="timespan">
-					<td colspan="{$colspan}">{translate key="Tomorrow"} ({$TomorrowsReservations|count})</td>
-				</tr>
+				<div class="timespan">
+					{translate key="Tomorrow"} ({$TomorrowsReservations|count})
+				</div>
 				{foreach from=$TomorrowsReservations item=reservation}
 					{displayReservation reservation=$reservation}
 				{/foreach}
 
-				<tr class="timespan">
-					<td colspan="{$colspan}">{translate key="LaterThisWeek"} ({$ThisWeeksReservations|count})</td>
-				</tr>
+				<div class="timespan">
+					{translate key="LaterThisWeek"} ({$ThisWeeksReservations|count})
+				</div>
 				{foreach from=$ThisWeeksReservations item=reservation}
 					{displayReservation reservation=$reservation}
 				{/foreach}
 
-				<tr class="timespan">
-					<td colspan="{$colspan}">{translate key="NextWeek"} ({$NextWeeksReservations|count})</td>
-				</tr>
+				<div class="timespan">
+					{translate key="NextWeek"} ({$NextWeeksReservations|count})
+				</div>
 				{foreach from=$NextWeeksReservations item=reservation}
 					{displayReservation reservation=$reservation}
 				{/foreach}
-			</table>
+			</div>
 		{else}
 			<div class="noresults">{translate key="NoUpcomingReservations"}</div>
 		{/if}

@@ -18,7 +18,7 @@
   border-width: 1px;
   border-color: @color-boxes-complement-3;
   border-style: solid;
-  background-color:@color-boxes-content;
+  background-color: @color-boxes-content;
   .rounded();
   .box-shadow(0px 0px 5px 1px @color-boxes-primary-0);
 }
@@ -31,11 +31,11 @@
   letter-spacing: 1px;
   padding: 5px 20px;
   color: #fff;
-  background-color: @color-boxes-complement-2;//@color-secondary-2-0;
+  background-color: @color-boxes-complement-2; //@color-secondary-2-0;
   .badge {
     background-color: @color-boxes-complement-1;
   }
-  a{
+  a {
     color: #fff;
   }
 }
@@ -54,21 +54,31 @@
   margin-bottom: 1px;
 }
 
-.upcomingReservationsDashboard .timespan td {
-  font-style: italic;
-  color: #000;
-  background-color: @off-white;
-}
+.upcomingReservationsDashboard {
+  .timespan {
+    padding: 3px;
+    font-style: italic;
+    color: #000;
+    background-color: @off-white;
+    border-bottom: 1px solid @light-gray;
+  }
 
-.upcomingReservationsDashboard tr.reservation.hover td {
-  cursor: pointer;
-  background-color: lighten(@muted-blue, 25%);
-  color: #222;
-}
+  .reservation {
+    padding: 3px 0;
+    border-bottom: 1px solid @light-gray;
+    margin:0 3px;
+  }
 
-.upcomingReservationsDashboard tr.reservation.clicked td {
-  cursor: pointer;
-  background-color: #F0F0F0;
+  .reservation.hover {
+    cursor: pointer;
+    background-color: lighten(@muted-blue, 25%);
+    color: #222;
+  }
+
+  .reservation.clicked {
+    cursor: pointer;
+    background-color: #F0F0F0;
+  }
 }
 
 .availabilityDashboard {
