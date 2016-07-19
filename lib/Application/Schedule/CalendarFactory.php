@@ -18,8 +18,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 class CalendarTypes
 {
 	const Month = 'month';
-	const Week = 'week';
-	const Day = 'day';
+	const Week = 'agendaWeek';
+	const Day = 'agendDay';
 }
 
 interface ICalendarFactory

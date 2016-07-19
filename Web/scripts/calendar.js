@@ -260,25 +260,23 @@ function Calendar(opts) {
     };
 
     var drillDownClick = function () {
-        var month = dateVar.getMonth() + 1;
+        var month = dateVar.month() + 1;
         var url = _options.dayClickUrl;
-        url = url + '&y=' + dateVar.getFullYear() + '&m=' + month + '&d=' + dateVar.getDate();
+        url = url + '&start=' + dateVar.year() + '-' + month + '-' + dateVar.date();
 
         window.location = url;
     };
 
     var openNewReservation = function () {
-        var end = new Date(dateVar);
-        end.setMinutes(dateVar.getMinutes() + 30);
-
+        var end = dateVar.add(30, 'minutes');
         var url = _options.reservationUrl + "&sd=" + getUrlFormattedDate(dateVar) + "&ed=" + getUrlFormattedDate(end);
 
         window.location = url;
     };
 
     var getUrlFormattedDate = function (d) {
-        var month = d.getMonth() + 1;
-        return encodeURI(d.getFullYear() + "-" + month + "-" + d.getDate() + " " + d.getHours() + ":" + d.getMinutes());
+        var month = d.month() + 1;
+        return encodeURI(d.year() + "-" + month + "-" + d.date() + " " + d.hour() + ":" + d.minute());
     }
 
 }

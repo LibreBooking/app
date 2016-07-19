@@ -102,7 +102,8 @@ class CalendarPresenter extends ActionPresenter
 			$selectedGroup = $resourceGroups->GetGroup($selectedGroupId);
 			$this->page->BindSelectedGroup($selectedGroup);
 
-			foreach ($resources as $resource)
+            /** @var ResourceDTO $resource */
+            foreach ($resources as $resource)
 			{
 				if (in_array($resource->GetId(), $resourceIds))
 				{
