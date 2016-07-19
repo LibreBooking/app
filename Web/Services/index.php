@@ -135,16 +135,13 @@ function RegisterResources(SlimServer $server, SlimWebServiceRegistry $registry)
 	$webService = new ResourcesWebService($server, $resourceRepository, $attributeService, new ReservationViewRepository());
 	$writeWebService = new ResourcesWriteWebService($server, new ResourceSaveController($resourceRepository, new ResourceRequestValidator($attributeService)));
 	$category = new SlimWebServiceRegistryCategory('Resources');
-	$category->AddSecureGet('/', array($webService, 'GetAll'), WebServices::AllResources);
-	$category->AddSecureGet('/Tree', array($webService, 'GetResourceGroupTree'), WebServices::GetResourceGroupTree);
-	$category->AddSecureGet('/Type/:resourceTypeName', array($webService, 'GetResourceGroupTreeByType'), WebServices::GetResourceGroupTreeByType);
-//	$category->AddSecureGet('/Groups', array($webService, 'GetResourceGroups'), WebServices::GetResourceGroups);
-	$category->AddGet('/Status', array($webService, 'GetStatuses'), WebServices::GetStatuses);
+    $category->AddGet('/Status', array($webService, 'GetStatuses'), WebServices::GetStatuses);
+    $category->AddSecureGet('/', array($webService, 'GetAll'), WebServices::AllResources);
 	$category->AddSecureGet('/Status/Reasons', array($webService, 'GetStatusReasons'), WebServices::GetStatusReasons);
 	$category->AddSecureGet('/Availability', array($webService, 'GetAvailability'), WebServices::AllAvailability);
-	$category->AddSecureGet('/:resourceId', array($webService, 'GetResource'), WebServices::GetResource);
+    $category->AddSecureGet('/Groups', array($webService, 'GetGroups'), WebServices::GetResourceGroups);
+    $category->AddSecureGet('/:resourceId', array($webService, 'GetResource'), WebServices::GetResource);
 	$category->AddSecureGet('/:resourceId/Availability', array($webService, 'GetAvailability'), WebServices::GetResourceAvailability);
-
 	$category->AddAdminPost('/', array($writeWebService, 'Create'), WebServices::CreateResource);
 	$category->AddAdminPost('/:resourceId', array($writeWebService, 'Update'), WebServices::UpdateResource);
 	$category->AddAdminDelete('/:resourceId', array($writeWebService, 'Delete'), WebServices::DeleteResource);

@@ -27,12 +27,10 @@ require_once(ROOT_DIR . 'WebServices/Responses/ResourcesResponse.php');
 require_once(ROOT_DIR . 'WebServices/Responses/CustomAttributes/CustomAttributeResponse.php');
 require_once(ROOT_DIR . 'WebServices/Responses/Resource/ResourceStatusResponse.php');
 require_once(ROOT_DIR . 'WebServices/Responses/Resource/ResourceStatusReasonsResponse.php');
-require_once(ROOT_DIR . 'WebServices/Responses/Resource/ResourceGroupTreeResponse.php');
-require_once(ROOT_DIR . 'WebServices/Responses/Resource/ResourceGroupsResponse.php');
-require_once(ROOT_DIR . 'WebServices/Responses/Resource/ResourceGroupResponse.php');
 require_once(ROOT_DIR . 'WebServices/Responses/Resource/ResourceAvailabilityResponse.php');
 require_once(ROOT_DIR . 'WebServices/Responses/Resource/ResourceReference.php');
 require_once(ROOT_DIR . 'WebServices/Responses/Resource/ResourceTypesResponse.php');
+require_once(ROOT_DIR . 'WebServices/Responses/Resource/ResourceGroupsResponse.php');
 
 class ResourcesWebService
 {
@@ -65,47 +63,6 @@ class ResourcesWebService
 		$this->resourceRepository = $resourceRepository;
 		$this->attributeService = $attributeService;
 		$this->reservationRepository = $reservationRepository;
-	}
-
-	/**
-	 * @name GetResourceGroupTree
-	 * @param int $resourceTypeId
-	 * @description Loads all resource groups and its resources
-	 * @response ResourceGroupTreeResponse
-	 * @return void
-	 */
-	public function GetResourceGroupTree()
-	{
-		// Todo: add filtering
-		$scheduleId = ResourceRepository::ALL_SCHEDULES;
-		$resourceFilter = null;
-
-		$resourcegrouptree = $this->resourceRepository->GetResourceGroups($scheduleId, $resourceFilter);
-		$this->server->WriteResponse(new ResourceGroupTreeResponse($this->server, $resourcegrouptree));
-	}
-
-	/**
-	 * @name GetResourceGroupTreeByType
-	 * @param string $resourceTypeName
-	 * @description Loads all resource groups and its resources of a specific type
-	 * @response ResourceGroupTreeResponse
-	 * @return void
-	 */
-	public function GetResourceGroupTreeByType($resourceTypeName)
-	{
-		// Todo: add filtering
-		$scheduleId = ResourceRepository::ALL_SCHEDULES;
-		if ($resourceTypeName == 'All')
-		{
-			$resourceFilter = null;
-		}
-		else
-		{
-			$resourceFilter = new ResourceTypeFilter($resourceTypeName);
-		}
-
-		$resourcegrouptree = $this->resourceRepository->GetResourceGroups($scheduleId, $resourceFilter);
-		$this->server->WriteResponse(new ResourceGroupTreeResponse($this->server, $resourcegrouptree));
 	}
 
 	/**
@@ -251,6 +208,19 @@ class ResourcesWebService
 
 		$this->server->WriteResponse(new ResourcesAvailabilityResponse($this->server, $resourceAvailability));
 	}
+
+    /**
+     * @name GetGroups
+     * @description Returns the full resource group tree
+     * @response ResourceGroupsResponse
+     * @return void
+     */
+    public function GetGroups()
+    {
+        $groups = $this->resourceRepository->GetResourceGroups();
+
+        $this->server->WriteResponse(new ResourceGroupsResponse($this->server, $groups));
+    }
 
 	/**
 	 * @param BookableResource $resource
