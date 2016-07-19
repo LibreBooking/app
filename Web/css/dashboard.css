@@ -32,9 +32,7 @@
 }
 .dashboard {
   margin-top: 15px;
-  border-width: 1px;
-  border-color: #4c4854;
-  border-style: solid;
+  border: 1px solid #4c4854;
   background-color: #fcfcfc;
   -webkit-border-radius: 2px;
   -moz-border-radius: 2px;

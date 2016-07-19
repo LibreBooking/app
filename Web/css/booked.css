@@ -677,9 +677,7 @@ input.mid-number {
 }
 .dashboard {
   margin-top: 15px;
-  border-width: 1px;
-  border-color: #4c4854;
-  border-style: solid;
+  border: 1px solid #4c4854;
   background-color: #fcfcfc;
   -webkit-border-radius: 2px;
   -moz-border-radius: 2px;
@@ -2088,12 +2086,15 @@ ul.jqtree-tree .jqtree-toggler {
 .page-search-availability .opening {
   float: left;
   margin: 5px 10px;
-  border: solid 1px #353432;
+  border: solid 1px #4c4854;
   -webkit-border-radius: 2px;
   -moz-border-radius: 2px;
   border-radius: 2px;
   width: 30%;
   cursor: pointer;
+  -webkit-box-shadow: 0px 0px 5px 1px #99988e;
+  -moz-box-shadow: 0px 0px 5px 1px #99988e;
+  box-shadow: 0px 0px 5px 1px #99988e;
 }
 .page-search-availability .opening .resourceName {
   background-color: #CFE4E4;

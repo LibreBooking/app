@@ -3,7 +3,7 @@
 
 <div class="page-search-availability">
 
-    <form role="form" name="searchForm" id="searchForm" class="form-horizontal" method="post"
+    <form role="form" name="searchForm" id="searchForm" method="post"
           action="{$smarty.server.SCRIPT_NAME}?action=search">
         <div class="form-group col-xs-12 col-sm-3">
             <div class="checkbox">
@@ -21,7 +21,9 @@
             </select>
         </div>
 
-        <div class="form-group col-sm-3 col-xs-12">
+        <div class="clearfix"></div>
+
+        <div class="form-group col-xs-12 col-sm-3">
             <div class="input-group margin-bottom-15">
                 <input type="number" min="0" class="form-control hours-minutes"
                        id="hours" {formname key=HOURS}" />
@@ -34,7 +36,7 @@
             </div>
         </div>
 
-        <div class="form-group col-sm-9 col-xs-12">
+        <div class="form-group col-xs-12 col-sm-9">
             <div class="btn-group margin-bottom-15" data-toggle="buttons">
                 <label class="btn btn-default active">
                     <input type="radio" id="today" checked="checked"
@@ -67,6 +69,8 @@
                 <input type="hidden" id="formatteEndDate" {formname key=END_DATE} />
                 <a href=""#" data-toggle="collapse" data-target="#advancedSearchOptions">{translate key=MoreOptions}</a>
             </div>
+            <div class="clearfix"></div>
+
         </div>
 
         <div class="clearfix"></div>
