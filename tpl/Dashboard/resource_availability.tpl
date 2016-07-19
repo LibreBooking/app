@@ -31,10 +31,10 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		<div class="header">{translate key=Available}</div>
 		{foreach from=$Available item=i}
 			<div class="availabilityItem">
-				<div class="resourceName">
+				<div class="resourceName col-xs-12 col-sm-5">
 					<a href="#" resource-id="{$i->ResourceId()}" class="resourceNameSelector">{$i->ResourceName()}</a>
 				</div>
-				<div class="availability">
+				<div class="availability col-xs-12 col-sm-4">
 					{if $i->NextTime() != null}
 						{translate key=AvailableUntil}
 						{format_date date=$i->NextTime() timezone=$Timezone key=dashboard}
@@ -42,11 +42,12 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 						<span class="no-data">{translate key=AllNoUpcomingReservations args=30}</span>
 					{/if}
 				</div>
-				<div class="reserveButton">
-					<a class="btn btn-xs"
+				<div class="reserveButton col-xs-12 col-sm-3">
+					<a class="btn btn-xs col-xs-12"
 					   href="{$Path}{Pages::RESERVATION}?{QueryStringKeys::RESOURCE_ID}={$i->ResourceId()}">{translate key=Reserve}</a>
 				</div>
 			</div>
+            <div class="clearfix"></div>
 			{foreachelse}
 			<div class="no-data">{translate key=None}</div>
 		{/foreach}

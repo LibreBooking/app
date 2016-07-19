@@ -18,7 +18,7 @@
  */
 
 $.fn.bindResourceDetails = function (resourceId, options) {
-	var opts = $.extend({preventClick: false, position:'top right'}, options);
+	var opts = $.extend({preventClick: false, position:'left top'}, options);
 
 	$(this).removeAttr('resource-details-bound');
 	bindResourceDetails($(this));

@@ -95,20 +95,13 @@
   font-weight: bold;
 }
 .availabilityDashboard .resourceName {
-  width: 350px;
-  display: inline-block;
   text-overflow: ellipsis;
 }
 .availabilityDashboard .availability {
-  display: inline-block;
   text-overflow: ellipsis;
 }
-.availabilityDashboard .reserveButton {
-  display: inline-block;
-  float: right;
-}
 .availabilityDashboard .availabilityItem {
-  padding: 3px 0;
+  padding: 10px 0;
 }
 .availabilityDashboard .availabilityItem .btn {
   background-color: #58AC58;
