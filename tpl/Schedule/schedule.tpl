@@ -190,7 +190,13 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 					<form method="POST" role="form" id="advancedFilter">
 						<hr/>
 
-						<div>
+                        {if count($ResourceAttributes) + count($ResourceTypeAttributes) > 5}
+                            <div>
+                                <input type="submit" value="{translate key=Filter}" class="button" {formname key=SUBMIT}/>
+                            </div>
+                        {/if}
+
+                        <div>
 							<div id="resourceGroups"></div>
 						</div>
 						<div>
