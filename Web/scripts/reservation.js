@@ -48,6 +48,7 @@ function Reservation(opts) {
 		addResourcesConfirm: $('.btnConfirmAddResources'),
 		reservationAttachments: $('#reservationAttachments'),
 
+        deleteButtonPrompt: $('#deleteButtonPrompt'),
 		additionalResources: $('#additionalResources')
 	};
 
@@ -129,7 +130,19 @@ function Reservation(opts) {
 			ChangeUpdateScope(options.scopeOpts.future);
 		});
 
-		InitializeDateElements();
+        $('#triggerDeletePrompt').click(function(e){
+            e.preventDefault();
+            elements.deleteButtonPrompt.modal('show');
+        });
+
+        $('#cancelDelete, #confirmDelete').click(function (e)
+        {
+            e.preventDefault();
+            elements.deleteButtonPrompt.modal('hide');
+        });
+
+
+        InitializeDateElements();
 
 		WireUpActions();
 		WireUpButtonPrompt();

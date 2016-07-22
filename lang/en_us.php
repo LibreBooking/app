@@ -40,9 +40,9 @@ class en_us extends Language
 		$dates['schedule_daily'] = 'l, m/d/Y';
 		$dates['reservation_email'] = 'm/d/Y @ g:i A (e)';
 		$dates['res_popup'] = 'D, n/d g:i A';
-		$dates['res_popup_time'] = 'g:i A';
+		$dates['res_popup_time'] = 'D, n/d g:i A';
 		$dates['short_reservation_date'] = 'n/j/y g:i A';
-		$dates['dashboard'] = 'D, n/d g:i A';
+		$dates['dashboard'] = 'l, n/d/y g:i A';
 		$dates['period_time'] = 'g:i A';
 		$dates['mobile_reservation_date'] = 'n/j g:i A';
 		$dates['general_date_js'] = 'mm/dd/yy';
@@ -454,8 +454,8 @@ class en_us extends Language
 		$strings['ReminderSendtimeTime'] = 'Time of Reminder (HH:MM)';
 		$strings['ReminderSendtimeAMPM'] = 'AM / PM';
 		$strings['AddReminder'] = 'Add Reminder';
-		$strings['DeleteReminderWarning'] = 'You sure about this?';
-		$strings['NoReminders'] = 'You have no upcoming reminders.';
+        $strings['DeleteReminderWarning'] = 'Are you sure you want to delete this?';
+        $strings['NoReminders'] = 'You have no upcoming reminders.';
 		$strings['Reminders'] = 'Reminders';
 		$strings['SendReminder'] = 'Send Reminder';
 		$strings['minutes'] = 'minutes';

@@ -16,6 +16,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 *}
+
 {extends file="Reservation/create.tpl"}
 
 {block name=header}
@@ -46,10 +47,17 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 			<li class="divider"></li>
 			<li>
-				<a href="#" class="delete {if $IsRecurring}prompt{else}save{/if}">
+			{if $IsRecurring}
+			    <a href="#" class="delete prompt">
 					<span class="fa fa-remove remove icon"></span>
 					{translate key='Delete'}
 				</a>
+            {else}
+				<a href="#" id="triggerDeletePrompt" class="delete prompt-single">
+                    <span class="fa fa-remove remove icon"></span>
+                    {translate key='Delete'}
+                </a>
+			{/if}
 			</li>
 		</ul>
 	</div>
@@ -98,6 +106,23 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			{translate key='Update'}
 		</button>
 	{/if}
+    <div id="deleteButtonPrompt" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="updateButtonsLabel">{translate key=Delete}</h4>
+                </div>
+                <div class="modal-body">
+                    <div>{translate key=DeleteReminderWarning}</div>
+                 </div>
+                <div class="modal-footer">
+                {cancel_button id="cancelDelete" class="cancel"}
+                {delete_button id="confirmDelete" class="delete save"}
+               </div>
+            </div>
+        </div>
+    </div>
 {/block}
 
 {block name="ajaxMessage"}
@@ -123,6 +148,6 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 	{/if}
 {/block}
 
-				{if $AutoReleaseMinutes != null}
-		<input type="hidden" id="autoReleaseMinutes" value="{$AutoReleaseMinutes}"/>
-	{/if}
+{if $AutoReleaseMinutes != null}
+    <input type="hidden" id="autoReleaseMinutes" value="{$AutoReleaseMinutes}"/>
+{/if}
