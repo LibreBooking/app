@@ -38,11 +38,18 @@ class AnnouncementRepository implements IAnnouncementRepository
         return $announcements;
     }
 
-    public function GetAll()
+    public function GetAll($sortField = null, $sortDirection = null)
     {
         $announcements = array();
 
-        $reader = ServiceLocator::GetDatabase()->Query(new GetAllAnnouncementsCommand());
+        $command = new GetAllAnnouncementsCommand();
+
+        if (!empty($sortField))
+        {
+            $command = new SortCommand($command, $sortField, $sortDirection);
+        }
+
+        $reader = ServiceLocator::GetDatabase()->Query($command);
 
         while ($row = $reader->GetRow())
         {
@@ -114,9 +121,11 @@ interface IAnnouncementRepository
     public function GetFuture();
 
     /**
+     * @param null|string $sortField
+     * @param null|string $sortDirection
      * @return Announcement[]|array
      */
-    public function GetAll();
+    public function GetAll($sortField = null, $sortDirection = null);
 
     /**
      * @param Announcement $announcement

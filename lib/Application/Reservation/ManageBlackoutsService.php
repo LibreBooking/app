@@ -20,15 +20,17 @@ require_once(ROOT_DIR . 'lib/Application/Reservation/BlackoutFilter.php');
 
 interface IManageBlackoutsService
 {
-	/**
-	 * @abstract
-	 * @param $pageNumber int
-	 * @param $pageSize int
-	 * @param $filter BlackoutFilter
-	 * @param $user UserSession
-	 * @return PageableData
-	 */
-	public function LoadFiltered($pageNumber, $pageSize, $filter, $user);
+    /**
+     * @abstract
+     * @param $pageNumber int
+     * @param $pageSize int
+     * @param $sortField string
+     * @param $sortDirection string
+     * @param $filter BlackoutFilter
+     * @param $user UserSession
+     * @return PageableData
+     */
+	public function LoadFiltered($pageNumber, $pageSize, $sortField, $sortDirection, $filter, $user);
 
 	/**
 	 * @param DateRange $blackoutDate
@@ -90,14 +92,7 @@ class ManageBlackoutsService implements IManageBlackoutsService
 		$this->userRepository = $userRepository;
 	}
 
-	/**
-	 * @param int $pageNumber
-	 * @param int $pageSize
-	 * @param BlackoutFilter $filter
-	 * @param UserSession $user
-	 * @return BlackoutItemView[]|PageableData
-	 */
-	public function LoadFiltered($pageNumber, $pageSize, $filter, $user)
+	public function LoadFiltered($pageNumber, $pageSize, $sortField, $sortDirection, $filter, $user)
 	{
 		$blackoutFilter = $filter->GetFilter();
 		if (!$user->IsAdmin)
@@ -113,7 +108,7 @@ class ManageBlackoutsService implements IManageBlackoutsService
 			$blackoutFilter->_And($adminFilter);
 		}
 
-		return $this->reservationViewRepository->GetBlackoutList($pageNumber, $pageSize, null, null, $blackoutFilter);
+		return $this->reservationViewRepository->GetBlackoutList($pageNumber, $pageSize, $sortField, $sortDirection, $blackoutFilter);
 	}
 
 	public function Add(DateRange $blackoutDate, $resourceIds, $title, IReservationConflictResolution $reservationConflictResolution, IRepeatOptions $repeatOptions)

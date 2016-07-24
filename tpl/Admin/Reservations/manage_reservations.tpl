@@ -92,12 +92,12 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		<thead>
 		<tr>
 			<th class="id hidden">&nbsp;</th>
-			<th>{translate key='User'}</th>
-			<th>{translate key='Resource'}</th>
-			<th>{translate key='Title'}</th>
-			<th>{translate key='Description'}</th>
-			<th>{translate key='BeginDate'}</th>
-			<th>{translate key='EndDate'}</th>
+			<th>{sort_column key=User field=ColumnNames::OWNER_LAST_NAME}</th>
+			<th>{sort_column key=Resource field=ColumnNames::RESOURCE_NAME}</th>
+			<th>{sort_column key=Title field=ColumnNames::RESERVATION_TITLE}</th>
+			<th>{sort_column key=Description field=ColumnNames::RESERVATION_DESCRIPTION}</th>
+			<th>{sort_column key=BeginDate field=ColumnNames::RESERVATION_START}</th>
+			<th>{sort_column key=EndDate field=ColumnNames::RESERVATION_END}</th>
 			<th>{translate key='Duration'}</th>
 			<th>{translate key='ReferenceNumber'}</th>
 			<th class="action">{translate key='Delete'}</th>

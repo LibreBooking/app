@@ -45,11 +45,13 @@ class GroupAdminManageReservationsService extends ManageReservationsService impl
     /**
      * @param $pageNumber int
      * @param $pageSize int
+     * @param null|string $sortField
+     * @param null|string $sortDirection
      * @param $filter ReservationFilter
      * @param $userSession UserSession
      * @return PageableData|ReservationItemView[]
      */
-    public function LoadFiltered($pageNumber, $pageSize, $filter, $userSession)
+    public function LoadFiltered($pageNumber, $pageSize, $sortField, $sortDirection, $filter, $userSession)
     {
         $user = $this->userRepository->LoadById($userSession->UserId);
 
@@ -68,6 +70,6 @@ class GroupAdminManageReservationsService extends ManageReservationsService impl
         }
 
         $builder = array('ReservationItemView', 'Populate');
-        return PageableDataStore::GetList($command, $builder, $pageNumber, $pageSize);
+        return PageableDataStore::GetList($command, $builder, $pageNumber, $pageSize, $sortField, $sortDirection);
     }
 }

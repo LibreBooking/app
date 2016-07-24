@@ -286,10 +286,15 @@ class ResourceRepository implements IResourceRepository
 		$this->_cache->Remove($resource->GetId());
 	}
 
-	public function GetAccessoryList()
+	public function GetAccessoryList($sortField = null, $sortDirection = null)
 	{
 		$command = new GetAllAccessoriesCommand();
 		$accessories = array();
+
+        if (!empty($sortField))
+        {
+            $command = new SortCommand($command, $sortField, $sortDirection);
+        }
 
 		$reader = ServiceLocator::GetDatabase()->Query($command);
 

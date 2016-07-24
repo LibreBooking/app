@@ -67,7 +67,7 @@ class ManageAccessoriesPresenter extends ActionPresenter
 
 	public function PageLoad()
 	{
-		$accessories = $this->resourceRepository->GetAccessoryList();
+		$accessories = $this->resourceRepository->GetAccessoryList($this->page->GetSortField(), $this->page->GetSortDirection());
 		$resources = $this->resourceRepository->GetResourceList();
 
 		$this->page->BindAccessories($accessories);

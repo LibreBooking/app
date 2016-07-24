@@ -53,8 +53,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 	<table class="table" id="accessoriesTable">
 		<thead>
 		<tr>
-			<th>{translate key='AccessoryName'}</th>
-			<th>{translate key='QuantityAvailable'}</th>
+			<th>{sort_column key=AccessoryName field=ColumnNames::ACCESSORY_NAME}</th>
+			<th>{sort_column key=QuantityAvailable field=ColumnNames::ACCESSORY_QUANTITY}</th>
 			<th>{translate key='Resources'}</th>
 			<th class="action">{translate key='Actions'}</th>
 		</tr>

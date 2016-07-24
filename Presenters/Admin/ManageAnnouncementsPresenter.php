@@ -90,7 +90,7 @@ class ManageAnnouncementsPresenter extends ActionPresenter
 
     public function PageLoad()
     {
-        $this->page->BindAnnouncements($this->announcementRepository->GetAll());
+        $this->page->BindAnnouncements($this->announcementRepository->GetAll($this->page->GetSortField(), $this->page->GetSortDirection()));
         $this->page->BindGroups($this->GetGroups());
         $this->page->BindResources($this->GetResources());
     }

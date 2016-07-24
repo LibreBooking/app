@@ -137,10 +137,10 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 	<table class="table" id="blackoutTable">
 		<thead>
 		<tr>
-			<th>{translate key=Resource}</th>
-			<th>{translate key=BeginDate}</th>
-			<th>{translate key=EndDate}</th>
-			<th>{translate key=Reason}</th>
+			<th>{sort_column key=Resource field=ColumnNames::RESOURCE_NAME}</th>
+			<th>{sort_column key=BeginDate field=ColumnNames::BLACKOUT_START}</th>
+			<th>{sort_column key=EndDate field=ColumnNames::BLACKOUT_END}</th>
+			<th>{sort_column key=Reason field=ColumnNames::BLACKOUT_TITLE}</th>
 			<th>{translate key=CreatedBy}</th>
 			<th>{translate key=Update}</th>
 			<th>{translate key=Delete}</th>

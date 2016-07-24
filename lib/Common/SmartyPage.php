@@ -825,8 +825,6 @@ class SmartyPage extends Smarty
             $url = "$url&$sf=$sortField";
         }
 
-
-
         echo '<a href="' . $url . '">' . $this->Resources->GetString($params['key']) . ' ' . $indicator . '</a>';
     }
 

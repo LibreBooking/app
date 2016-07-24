@@ -122,7 +122,7 @@ class FakeResourceRepository implements IResourceRepository
 	/**
 	 * @return array|AccessoryDto[] all accessories
 	 */
-	public function GetAccessoryList()
+	public function GetAccessoryList($sortField = null, $sortDirection = null)
 	{
 		// TODO: Implement GetAccessoryList() method.
 	}

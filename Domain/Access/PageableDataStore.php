@@ -41,8 +41,6 @@ class PageableDataStore
 		$pageNumber = intval($pageNumber);
 		$pageSize = intval($pageSize);
 
-        Log::Debug('sorting on ' . $sortField);
-
         if (!empty($sortField))
         {
             $command = new SortCommand($command, $sortField, $sortDirection);

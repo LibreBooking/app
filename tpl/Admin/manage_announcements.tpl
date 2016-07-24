@@ -82,10 +82,10 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 	<table class="table" id="announcementList">
 		<thead>
 		<tr>
-			<th>{translate key='Announcement'}</th>
-			<th>{translate key='Priority'}</th>
-			<th>{translate key='BeginDate'}</th>
-			<th>{translate key='EndDate'}</th>
+			<th>{sort_column key=Announcement field=ColumnNames::ANNOUNCEMENT_TEXT}</th>
+			<th>{sort_column key=Priority field=ColumnNames::ANNOUNCEMENT_PRIORITY}</th>
+			<th>{sort_column key=BeginDate field=ColumnNames::ANNOUNCEMENT_START}</th>
+			<th>{sort_column key=EndDate field=ColumnNames::ANNOUNCEMENT_END}</th>
 			<th>{translate key='Groups'}</th>
 			<th>{translate key='Resources'}</th>
 			<th class="action">{translate key='Actions'}</th>

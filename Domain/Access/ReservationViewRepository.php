@@ -236,7 +236,7 @@ class ReservationViewRepository implements IReservationViewRepository
 		}
 
 		$builder = array('ReservationItemView', 'Populate');
-		return PageableDataStore::GetList($command, $builder, $pageNumber, $pageSize);
+		return PageableDataStore::GetList($command, $builder, $pageNumber, $pageSize, $sortField, $sortDirection);
 	}
 
 	private function SetResources(ReservationView $reservationView)
