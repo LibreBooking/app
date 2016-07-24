@@ -53,15 +53,15 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 	<table class="table" id="userList">
 		<thead>
 		<tr>
-			<th>{translate key='Name'}</th>
-			<th>{translate key='Username'}</th>
-			<th>{translate key='Email'}</th>
-			<th>{translate key='Phone'}</th>
-			<th>{translate key='Organization'}</th>
-			<th>{translate key='Position'}</th>
-			<th>{translate key='Created'}</th>
-			<th>{translate key='LastLogin'}</th>
-			<th class="action">{translate key='Status'}</th>
+			<th>{sort_column key=Name field=ColumnNames::LAST_NAME}</th>
+			<th>{sort_column key=Username field=ColumnNames::USERNAME}</th>
+			<th>{sort_column key=Email field=ColumnNames::EMAIL}</th>
+			<th>{sort_column key=Phone field=ColumnNames::PHONE_NUMBER}</th>
+			<th>{sort_column key=Organization field=ColumnNames::ORGANIZATION}</th>
+			<th>{sort_column key=Position field=ColumnNames::POSITION}</th>
+			<th>{sort_column key=Created field=ColumnNames::USER_CREATED}</th>
+			<th>{sort_column key=LastLogin field=ColumnNames::LAST_LOGIN}</th>
+			<th class="action">{sort_column key=Status field=ColumnNames::USER_STATUS}</th>
 			{if $CreditsEnabled}
 				<th class="action">{translate key=Credits}</th>
 			{/if}

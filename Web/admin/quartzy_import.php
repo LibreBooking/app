@@ -18,25 +18,9 @@ You should have received a copy of the GNU General Public License
 along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-interface IPage {
+define('ROOT_DIR', '../../');
 
-	public function PageLoad();
+require_once(ROOT_DIR . 'Pages/Admin/Import/QuartzyImportPage.php');
 
-    public function Redirect($url);
-
-    public function RedirectToError($errorMessageId = ErrorMessages::UNKNOWN_ERROR, $lastPage = '');
-
-    public function IsPostBack();
-
-    public function IsValid();
-
-    public function GetLastPage();
-
-    public function RegisterValidator($validatorId, $validator);
-
-    public function EnforceCSRFCheck();
-
-    public function GetSortField();
-
-    public function GetSortDirection();
-}
+$page = new AdminPageDecorator(new QuartzyImportPage());
+$page->PageLoad();

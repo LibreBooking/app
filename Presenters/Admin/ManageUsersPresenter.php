@@ -186,8 +186,9 @@ class ManageUsersPresenter extends ActionPresenter implements IManageUsersPresen
                 new SqlFilterEquals(ColumnNames::USER_ID, $this->page->GetUserId()));
         }
         else {
-            $userList = $this->userRepository->GetList($this->page->GetPageNumber(), $this->page->GetPageSize(), null,
-                null, null, $this->page->GetFilterStatusId());
+            $userList = $this->userRepository->GetList($this->page->GetPageNumber(), $this->page->GetPageSize(),
+                $this->page->GetSortField(),
+                $this->page->GetSortDirection(), null, $this->page->GetFilterStatusId());
         }
 
         $this->page->BindUsers($userList->Results());

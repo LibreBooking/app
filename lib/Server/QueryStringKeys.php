@@ -68,6 +68,8 @@ class QueryStringKeys
 	const RESERVATION_RESOURCE_REASON_ID = 'rrsrid';
 	const SCHEDULE_ID = 'sid';
 	const SHOW_FULL_WEEK = 'sfw';
+    const SORT_DIRECTION = 'dir';
+    const SORT_FIELD = 'sort';
     const START = 'start';
 	const START_DATE = 'sd';
 	const START_DATES = 'sds';

@@ -309,7 +309,7 @@ class UserRepository implements IUserRepository, IAccountActivationRepository
 		}
 
 		$builder = array('UserItemView', 'Create');
-		return PageableDataStore::GetList($command, $builder, $pageNumber, $pageSize);
+		return PageableDataStore::GetList($command, $builder, $pageNumber, $pageSize, $sortField, $sortDirection);
 	}
 
 	/**

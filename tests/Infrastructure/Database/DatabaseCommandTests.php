@@ -317,6 +317,20 @@ class DatabaseCommandTests extends PHPUnit_Framework_TestCase
         $this->assertThat($countQuery, $containsSubQuery, $countQuery);
         $this->assertThat($countQuery, $containsFilter, $countQuery);
     }
-}
 
-?>
+    public function testSorts()
+    {
+        $command = new SortCommand(new AdHocCommand('SELECT u.*,
+			ORDER BY something that shouldnt change
+			FROM users u
+			WHERE (whatever = whatever else) ORDER BY lname, fname'), 'email', 'desc');
+
+        $expected = 'SELECT u.*,
+			ORDER BY something that shouldnt change
+			FROM users u
+			WHERE (whatever = whatever else) ORDER BY @sort_params';
+
+        $this->assertEquals($expected, $command->GetQuery());
+        $this->assertEquals(new Parameter('@sort_params', 'email desc'), $command->Parameters->Items(0));
+    }
+}

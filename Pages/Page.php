@@ -256,6 +256,16 @@ abstract class Page implements IPage
 		}
 	}
 
+	public function GetSortField()
+    {
+        return $this->GetQuerystring(QueryStringKeys::SORT_FIELD);
+    }
+
+    public function GetSortDirection()
+    {
+        return $this->GetQuerystring(QueryStringKeys::SORT_DIRECTION);
+    }
+
 	/**
 	 * @param string $var
 	 * @return string
