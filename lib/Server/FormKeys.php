@@ -109,6 +109,7 @@ class FormKeys
 	const INSTALL_DB_PASSWORD = 'install_db_password';
 	const INVITATION_LIST = 'invitationList';
 	const IS_ACTIVE = 'isactive';
+    const ICS_IMPORT_FILE = 'ICS_IMPORT_FILE';
 
 	const LANGUAGE = 'language';
 	const LAST_NAME = 'lname';

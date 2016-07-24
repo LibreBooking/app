@@ -460,3 +460,7 @@ input.mid-number {
 .ui-datepicker {
   z-index: 1000 !important;
 }
+.note {
+  font-style: italic;
+  color: #585754;
+}

@@ -37,6 +37,8 @@ class FakeResourceRepository implements IResourceRepository
 	 */
 	public $_UpdatedResource;
 
+    public $_NamedResources = array();
+
 	/**
 	 * Gets all Resources for the given scheduleId
 	 *
@@ -65,6 +67,11 @@ class FakeResourceRepository implements IResourceRepository
 	{
 		return $this->_Resource;
 	}
+
+    public function LoadByName($name)
+    {
+        return $this->_NamedResources[$name];
+    }
 
 	/**
 	 * @param BookableResource $resource

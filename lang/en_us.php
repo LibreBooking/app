@@ -592,7 +592,13 @@ class en_us extends Language
 		$strings['ThisWeek'] = 'This Week';
 		$strings['Hours'] = 'Hours';
 		$strings['Minutes'] = 'Minutes';
-		// End Strings
+        $strings['ImportICS'] = 'Import From ICS';
+        $strings['ImportQuartzy'] = 'Import From Quartzy';
+        $strings['OnlyIcs'] = 'Only *.ics files can be uploaded.';
+        $strings['IcsLocationsAsResources'] = 'Locations will be imported as resources.';
+        $strings['IcsMissingOrganizer'] = 'Any event missing an organizer will have the owner set to the current user.';
+        $strings['IcsWarning'] = 'Reservation rules will not be enforced - conflicts, duplicates, etc are possible.';
+        // End Strings
 
 		// Install
 		$strings['InstallApplication'] = 'Install Booked Scheduler (MySQL only)';

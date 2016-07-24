@@ -146,6 +146,11 @@ class ResourceRepository implements IResourceRepository
 		return $this->LoadResource(new GetResourceByPublicIdCommand($publicId));
 	}
 
+    public function LoadByName($resourceName)
+    {
+        return $this->LoadResource(new GetResourceByNameCommand($resourceName));
+    }
+
 	/**
 	 * @param $command SqlCommand
 	 * @return BookableResource

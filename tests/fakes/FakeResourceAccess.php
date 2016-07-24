@@ -25,6 +25,7 @@ class FakeResourceAccess extends ResourceRepository
 	public $_GetForScheduleCalled = false;
 	public $_LastScheduleId;
 	public $_Resources = array();
+    public $_NamedResources = array();
 	private $rows = array();
 
 	public function __construct()
@@ -39,6 +40,11 @@ class FakeResourceAccess extends ResourceRepository
 
 		return $this->_Resources;
 	}
+
+    public function LoadByName($name)
+    {
+        return $this->_NamedResources[$name];
+    }
 
 	private function FillRows()
 	{

@@ -428,6 +428,15 @@ class UserRepository implements IUserRepository, IAccountActivationRepository
 			}
 		}
 
+        $addedPermissions = $user->GetAddedPermissions();
+        if (!empty($addedPermissions))
+        {
+            foreach ($addedPermissions as $resourceId)
+            {
+                $db->Execute(new AddUserResourcePermission($id, $resourceId));
+            }
+        }
+
 		return $id;
 	}
 

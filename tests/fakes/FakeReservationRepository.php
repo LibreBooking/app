@@ -20,13 +20,14 @@
 
 require_once(ROOT_DIR . 'Domain/Access/namespace.php');
 
-class FakeReservationRepository
+class FakeReservationRepository implements IReservationRepository
 {
 	public $_Reservations = array();
+    public $_LastAddedReservation;
+    public $_FirstAddedReservation;
 
 	public function __construct()
 	{
-		$this->FillRows();
 	}
 
 	public static function GetReservationRows()
@@ -136,15 +137,116 @@ class FakeReservationRepository
 		);
 	}
 
-	private function FillRows()
-	{
-		$rows = self::GetReservationRows();
+    /**
+     * Insert a new reservation
+     *
+     * @param ReservationSeries $reservation
+     * @return void
+     */
+    public function Add(ReservationSeries $reservation)
+    {
+        if ($this->_FirstAddedReservation == null)
+        {
+            $this->_FirstAddedReservation = $reservation;
+        }
+        $this->_LastAddedReservation = $reservation;
+    }
 
-		foreach ($rows as $row)
-		{
-			$this->_Reservations[] = ReservationFactory::CreateForSchedule($row);
-		}
-	}
+    /**
+     * Return an existing reservation series
+     *
+     * @param int $reservationInstanceId
+     * @return ExistingReservationSeries or null if no reservation found
+     */
+    public function LoadById($reservationInstanceId)
+    {
+        // TODO: Implement LoadById() method.
+    }
+
+    /**
+     * Return an existing reservation series
+     *
+     * @param string $referenceNumber
+     * @return ExistingReservationSeries or null if no reservation found
+     */
+    public function LoadByReferenceNumber($referenceNumber)
+    {
+        // TODO: Implement LoadByReferenceNumber() method.
+    }
+
+    /**
+     * Update an existing reservation
+     *
+     * @param ExistingReservationSeries $existingReservationSeries
+     * @return void
+     */
+    public function Update(ExistingReservationSeries $existingReservationSeries)
+    {
+        // TODO: Implement Update() method.
+    }
+
+    /**
+     * Delete all or part of an existing reservation
+     *
+     * @param ExistingReservationSeries $existingReservationSeries
+     * @return void
+     */
+    public function Delete(ExistingReservationSeries $existingReservationSeries)
+    {
+        // TODO: Implement Delete() method.
+    }
+
+    /**
+     * @param $attachmentFileId int
+     * @return ReservationAttachment
+     */
+    public function LoadReservationAttachment($attachmentFileId)
+    {
+        // TODO: Implement LoadReservationAttachment() method.
+    }
+
+    /**
+     * @param $attachmentFile ReservationAttachment
+     * @return int
+     */
+    public function AddReservationAttachment(ReservationAttachment $attachmentFile)
+    {
+        // TODO: Implement AddReservationAttachment() method.
+    }
+
+    /**
+     * @return ReservationColorRule[]
+     */
+    public function GetReservationColorRules()
+    {
+        // TODO: Implement GetReservationColorRules() method.
+    }
+
+    /**
+     * @param int $ruleId
+     * @return ReservationColorRule
+     */
+    public function GetReservationColorRule($ruleId)
+    {
+        // TODO: Implement GetReservationColorRule() method.
+    }
+
+    /**
+     * @param ReservationColorRule $colorRule
+     * @return int
+     */
+    public function AddReservationColorRule(ReservationColorRule $colorRule)
+    {
+        // TODO: Implement AddReservationColorRule() method.
+    }
+
+    /**
+     * @param ReservationColorRule $colorRule
+     */
+    public function DeleteReservationColorRule(ReservationColorRule $colorRule)
+    {
+        // TODO: Implement DeleteReservationColorRule() method.
+    }
 }
 
 ?>

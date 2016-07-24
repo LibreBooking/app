@@ -40,6 +40,12 @@ interface IResourceRepository
 	 */
 	public function LoadByPublicId($publicId);
 
+    /**
+     * @param string $resourceName
+     * @return BookableResource
+     */
+    public function LoadByName($resourceName);
+
 	/**
 	 * @param BookableResource $resource
 	 * @return int ID of created resource

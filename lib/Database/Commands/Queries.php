@@ -599,7 +599,13 @@ class Queries
 			INNER JOIN  schedules s ON r.schedule_id = s.schedule_id
 			WHERE r.public_id = @publicid';
 
-	const GET_RESOURCE_GROUP_BY_ID = 'SELECT * FROM resource_groups WHERE resource_group_id = @resourcegroupid';
+    const GET_RESOURCE_BY_NAME =
+        'SELECT r.*, s.admin_group_id as s_admin_group_id
+			FROM resources r
+			INNER JOIN  schedules s ON r.schedule_id = s.schedule_id
+			WHERE r.name = @resource_name';
+
+    const GET_RESOURCE_GROUP_BY_ID = 'SELECT * FROM resource_groups WHERE resource_group_id = @resourcegroupid';
 
 	const GET_RESOURCE_GROUP_ASSIGNMENTS = 'SELECT * FROM resource_group_assignment WHERE resource_id = @resourceid';
 
