@@ -59,9 +59,9 @@ class ManageReservationsPresenter extends ActionPresenter
     private $attributeService;
 
     /**
-     * @var IUserPreferenceRepository
+     * @var IUserRepository
      */
-    private $userPreferenceRepository;
+    private $userRepository;
 
     public function __construct(
         IManageReservationsPage $page,
@@ -69,7 +69,7 @@ class ManageReservationsPresenter extends ActionPresenter
         IScheduleRepository $scheduleRepository,
         IResourceRepository $resourceRepository,
         IAttributeService $attributeService,
-        IUserPreferenceRepository $userPreferenceRepository)
+        IUserRepository $userRepository)
     {
         parent::__construct($page);
 
@@ -78,7 +78,7 @@ class ManageReservationsPresenter extends ActionPresenter
         $this->scheduleRepository = $scheduleRepository;
         $this->resourceRepository = $resourceRepository;
         $this->attributeService = $attributeService;
-        $this->userPreferenceRepository = $userPreferenceRepository;
+        $this->userRepository = $userRepository;
 
         $this->AddAction(ManageReservationsActions::UpdateAttribute, 'UpdateAttribute');
         $this->AddAction(ManageReservationsActions::ChangeStatus, 'UpdateResourceStatus');
@@ -100,8 +100,8 @@ class ManageReservationsPresenter extends ActionPresenter
         $startDateString = $this->page->GetStartDate();
         $endDateString = $this->page->GetEndDate();
 
-        $filterPreferences = new ReservationFilterPreferences();
-        $filterPreferences->Load($this->userPreferenceRepository, $session->UserId);
+        $filterPreferences = new ReservationFilterPreferences($this->userRepository, $session->UserId);
+        $filterPreferences->Load();
 
         $startDate = $this->GetDate($startDateString, $userTimezone, $filterPreferences->GetFilterStartDateDelta());
         $endDate = $this->GetDate($endDateString, $userTimezone, $filterPreferences->GetFilterEndDateDelta());
@@ -149,7 +149,7 @@ class ManageReservationsPresenter extends ActionPresenter
             $filterPreferences->SetFilterResourceReasonId($resourceReasonId);
             $filterPreferences->SetFilterCustomAttributes($filters);
 
-            $filterPreferences->Update($this->userPreferenceRepository, $session->UserId);
+            $filterPreferences->Update();
         }
 
         $reservationAttributes = $this->attributeService->GetByCategory(CustomAttributeCategory::RESERVATION);
@@ -262,12 +262,19 @@ class ManageReservationsPresenter extends ActionPresenter
             $resourceIds[] = $resourceId;
         }
         else {
-            $reservations = $this->manageReservationsService->LoadFiltered(null, null, new ReservationFilter(null, null,
-                $referenceNumber,
-                null, null,
+            $reservations = $this->manageReservationsService->LoadFiltered(
                 null,
-                null),
+                null,
+                $this->page->GetSortField(),
+                $this->page->GetSortDirection(),
+                new ReservationFilter(null, null,
+                    $referenceNumber,
+                    null,
+                    null,
+                    null,
+                    null),
                 $session);
+
             /** @var $reservation ReservationItemView */
             foreach ($reservations->Results() as $reservation) {
                 $resourceIds[] = $reservation->ResourceId;
@@ -336,6 +343,21 @@ class ReservationFilterPreferences
     private $FilterResourceStatusId = '';
     private $FilterResourceReasonId = '';
     private $FilterCustomAttributes = '';
+
+    /**
+     * @var User
+     */
+    private $user;
+    /**
+     * @var IUserRepository
+     */
+    private $userRepository;
+
+    public function __construct(IUserRepository $userRepository, $userId)
+    {
+        $this->userRepository = $userRepository;
+        $this->user = $userRepository->LoadById($userId);
+    }
 
     public function GetFilterStartDateDelta()
     {
@@ -482,17 +504,15 @@ class ReservationFilterPreferences
         'FilterCustomAttributes' => '',
     );
 
-    /**
-     * @param IUserPreferenceRepository $userPreferenceRepository
-     * @param int $userId
-     */
-    public function Load(IUserPreferenceRepository $userPreferenceRepository, $userId)
+
+    public function Load()
     {
         foreach (self::$filterKeys as $filterName => $defaultValue) {
             $this->$filterName = $defaultValue;
         }
 
-        $prefs = $userPreferenceRepository->GetAllUserPreferences($userId);
+        $prefs = $this->user->GetPreferences()->All();
+
         foreach ($prefs as $key => $val) {
             if (array_key_exists($key, self::$filterKeys)) {
                 $this->$key = $val;
@@ -500,16 +520,12 @@ class ReservationFilterPreferences
         }
     }
 
-    /**
-     * @param IUserPreferenceRepository $userPreferenceRepository
-     * @param int $userId
-     */
-    public function Update(IUserPreferenceRepository $userPreferenceRepository, $userId)
+    public function Update()
     {
         foreach (self::$filterKeys as $filterName => $defaultValue) {
-            $userPreferenceRepository->SetUserPreference($userId, $filterName, $this->$filterName);
+            $this->user->ChangePreference($filterName, $this->$filterName);
         }
+
+        $this->userRepository->Update($this->user);
     }
-
-
 }

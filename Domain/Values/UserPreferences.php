@@ -95,11 +95,14 @@ class UserPreferences
 			$currentValue = $this->preferences[$name];
 			if ($value != $currentValue)
 			{
-				$this->changed[] = $name;
+                Log::Debug('changed ' . $name);
+
+                $this->changed[] = $name;
 			}
 		}
 		else
 		{
+		    Log::Debug('added ' . $name);
 			$this->added[] = $name;
 		}
 

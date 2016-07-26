@@ -277,7 +277,7 @@ class ManageReservationsPage extends ActionPage implements IManageReservationsPa
 														   new ScheduleRepository(),
 														   new ResourceRepository(),
 														   new AttributeService(new AttributeRepository()),
-														   new UserPreferenceRepository());
+														   new UserRepository());
 
 		$this->pageablePage = new PageablePage($this);
 

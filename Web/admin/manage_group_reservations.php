@@ -28,12 +28,13 @@ class GroupAdminManageReservationsPage extends ManageReservationsPage
     {
         parent::__construct();
 
-		$this->presenter = new ManageReservationsPresenter($this,
-                    new GroupAdminManageReservationsService(new ReservationViewRepository(), new UserRepository(), new ReservationAuthorization(PluginManager::Instance()->LoadAuthorization())),
+        $userRepository = new UserRepository();
+        $this->presenter = new ManageReservationsPresenter($this,
+                    new GroupAdminManageReservationsService(new ReservationViewRepository(), $userRepository, new ReservationAuthorization(PluginManager::Instance()->LoadAuthorization())),
                     new ScheduleRepository(),
                     new ResourceRepository(),
 					new AttributeService(new AttributeRepository()),
-					new UserPreferenceRepository());
+                    $userRepository);
 
 		$this->SetCanUpdateResourceStatus(false);
     }
