@@ -20,8 +20,13 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 class WebServiceExpiration
 {
-	const SESSION_LENGTH_IN_MINUTES = 30;
+	private static $SESSION_LENGTH_IN_MINUTES = 30;
 
+    public function __construct()
+    {
+        self::$SESSION_LENGTH_IN_MINUTES = Configuration::Instance()->GetKey(ConfigKeys::INACTIVITY_TIMEOUT, new IntConverter());
+    }
+    
 	/**
 	 * @param string $expirationTime
 	 * @return bool
@@ -36,7 +41,6 @@ class WebServiceExpiration
 	 */
 	public static function Create()
 	{
-		return Date::Now()->AddMinutes(self::SESSION_LENGTH_IN_MINUTES)->ToUtc()->ToIso();
+		return Date::Now()->AddMinutes(self::$SESSION_LENGTH_IN_MINUTES)->ToUtc()->ToIso();
 	}
 }
-?>

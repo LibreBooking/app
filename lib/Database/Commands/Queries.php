@@ -426,7 +426,7 @@ class Queries
 
 	const GET_ALL_USERS_BY_STATUS =
 			'SELECT u.*,
-			(SELECT GROUP_CONCAT(CONCAT(p.name, "=", p.value) SEPARATOR ",")
+			(SELECT GROUP_CONCAT(CONCAT(p.name, "=", p.value) SEPARATOR "!sep!")
 						FROM user_preferences p WHERE u.user_id = p.user_id) as preferences,
 			(SELECT GROUP_CONCAT(CONCAT(cav.custom_attribute_id, \'=\', cav.attribute_value) SEPARATOR "!sep!")
 						FROM custom_attribute_values cav WHERE cav.entity_id = u.user_id AND cav.attribute_category = 2) as attribute_list
