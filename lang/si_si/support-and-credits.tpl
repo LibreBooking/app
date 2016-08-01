@@ -1,4 +1,7 @@
 {*
+Modified by Alenka Kavčič (alenka.kavcic@fri.uni-lj.si), UL FRI, July 2015
+Translated and adapted for Slovenian language
+
 Copyright 2012-2015 Nick Korbel
 
 This file is part of Booked Scheduler.
@@ -17,11 +20,11 @@ You should have received a copy of the GNU General Public License
 along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 *}
 {include file='globalheader.tpl'}
-<h1>About Booked Scheduler</h1>
+<h1>O programu Booked Scheduler</h1>
 
 <div id="help">
 
-<h2>Support</h2>
+<h2>Dodatne povezave:</h2>
 
 <p><a href="http://www.bookedscheduler.com/">Booked Scheduler Official Project Home</a></p>
 
@@ -29,9 +32,9 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 <p><a href="https://sourceforge.net/projects/Booked Scheduler/">Booked Scheduler SourceForge Project Home</a></p>
 
-<h2>Credits</h2>
+<h2>Zahvale</h2>
 
-<h3>Authors</h3>
+<h3>Avtorji:</h3>
 
 <p>Nick Korbel</p>
 
@@ -42,7 +45,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 <p>Paul Menchini</p>
 
 
-<h3>Translators</h3>
+<h3>Prevajalci:</h3>
 
 <p>Boris Vatin (French)</p>
 <p>Dariusz Kliszewski, Grzegorz Bis (Polish)</p>
@@ -64,7 +67,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 <p>Davor Tomasevic (Croatian)</p>
 <p>Alenka Kavčič (Slovenian)</p>
 
-<h3>Thank you to the following projects and libraries</h3>
+<h3>Zahvaljujemo se tudi naslednjim projektom in knjižnicam:</h3>
 
 <p>Smarty</p>
 
@@ -92,9 +95,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 <p>Slim</p>
 
-<h2>License</h2>
+<h2>Licence</h2>
 
-<p>Booked Scheduler free and open source, licenced under the GNU GENERAL PUBLIC LICENSE. Please see the included
-	License file for more details.</p>
+<p>Program Booked Scheduler je prosto dostopen in odprtokoden, pod licenco GNU GENERAL PUBLIC LICENSE. Prosimo, za podrobnosti poglejte vključeno licenčno datoteko.</p>
 
 {include file='globalfooter.tpl'}
