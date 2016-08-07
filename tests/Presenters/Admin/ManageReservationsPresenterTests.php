@@ -55,7 +55,7 @@ class ManageReservationsPresenterTests extends TestBase
 	/**
 	 * @var IUserPreferenceRepository|PHPUnit_Framework_MockObject_MockObject
 	 */
-	private $userPreferenceRepository;
+	private $userRepository;
 
 	public function setup()
 	{
@@ -66,19 +66,19 @@ class ManageReservationsPresenterTests extends TestBase
 		$this->scheduleRepository = $this->getMock('IScheduleRepository');
 		$this->resourceRepository = $this->getMock('IResourceRepository');
 		$this->attributeService = $this->getMock('IAttributeService');
-		$this->userPreferenceRepository = $this->getMock('IUserPreferenceRepository');
+		$this->userRepository = $this->getMock('IUserRepository');
 
 		$this->presenter = new ManageReservationsPresenter($this->page,
 														   $this->reservationsService,
 														   $this->scheduleRepository,
 														   $this->resourceRepository,
 														   $this->attributeService,
-														   $this->userPreferenceRepository);
+														   $this->userRepository);
 
-		$this->userPreferenceRepository->expects($this->any())
-									   ->method('GetAllUserPreferences')
+		$this->userRepository->expects($this->any())
+									   ->method('LoadById')
 									   ->with($this->anything())
-									   ->will($this->returnValue(array()));
+									   ->will($this->returnValue(new FakeUser()));
 	}
 
 	public function testUsesTwoWeekSpanWhenNoDateFilterProvided()
@@ -158,7 +158,7 @@ class ManageReservationsPresenterTests extends TestBase
 		$data = new PageableData($this->getReservations());
 		$this->reservationsService->expects($this->once())
 								  ->method('LoadFiltered')
-								  ->with($this->anything(), $this->anything(), $this->equalTo($filter),
+								  ->with($this->anything(), $this->anything(), $this->anything(), $this->anything(), $this->equalTo($filter),
 										 $this->equalTo($this->fakeUser))
 								  ->will($this->returnValue($data));
 

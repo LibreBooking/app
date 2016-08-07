@@ -40,6 +40,7 @@ class en_us extends Language
 		$dates['schedule_daily'] = 'l, m/d/Y';
 		$dates['reservation_email'] = 'm/d/Y @ g:i A (e)';
 		$dates['res_popup'] = 'D, n/d g:i A';
+		$dates['res_popup_time'] = 'D, n/d g:i A';
 		$dates['short_reservation_date'] = 'n/j/y g:i A';
 		$dates['dashboard'] = 'l, n/d/y g:i A';
 		$dates['period_time'] = 'g:i A';
@@ -48,7 +49,7 @@ class en_us extends Language
 		$dates['general_time_js'] = 'h:mm tt';
 		$dates['momentjs_datetime'] = 'M/D/YY h:mm A';
 		$dates['calendar_time'] = 'h:mmt';
-		$dates['calendar_dates'] = 'M/d';
+		$dates['calendar_dates'] = 'M d';
 
 		$this->Dates = $dates;
 
@@ -453,8 +454,8 @@ class en_us extends Language
 		$strings['ReminderSendtimeTime'] = 'Time of Reminder (HH:MM)';
 		$strings['ReminderSendtimeAMPM'] = 'AM / PM';
 		$strings['AddReminder'] = 'Add Reminder';
-		$strings['DeleteReminderWarning'] = 'You sure about this?';
-		$strings['NoReminders'] = 'You have no upcoming reminders.';
+        $strings['DeleteReminderWarning'] = 'Are you sure you want to delete this?';
+        $strings['NoReminders'] = 'You have no upcoming reminders.';
 		$strings['Reminders'] = 'Reminders';
 		$strings['SendReminder'] = 'Send Reminder';
 		$strings['minutes'] = 'minutes';
@@ -585,7 +586,19 @@ class en_us extends Language
 		$strings['NotifyWhenAvailable'] = 'Notify Me When Available';
 		$strings['AddingToWaitlist'] = 'Adding you to the wait list';
 		$strings['WaitlistRequestAdded'] = 'You will be notified if this time becomes available';
-		// End Strings
+		$strings['PrintQRCode'] = 'Print QR Code';
+		$strings['FindATime'] = 'Find A Time';
+		$strings['AnyResource'] = 'Any Resource';
+		$strings['ThisWeek'] = 'This Week';
+		$strings['Hours'] = 'Hours';
+		$strings['Minutes'] = 'Minutes';
+        $strings['ImportICS'] = 'Import From ICS';
+        $strings['ImportQuartzy'] = 'Import From Quartzy';
+        $strings['OnlyIcs'] = 'Only *.ics files can be uploaded.';
+        $strings['IcsLocationsAsResources'] = 'Locations will be imported as resources.';
+        $strings['IcsMissingOrganizer'] = 'Any event missing an organizer will have the owner set to the current user.';
+        $strings['IcsWarning'] = 'Reservation rules will not be enforced - conflicts, duplicates, etc are possible.';
+        // End Strings
 
 		// Install
 		$strings['InstallApplication'] = 'Install Booked Scheduler (MySQL only)';

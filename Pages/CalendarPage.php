@@ -150,7 +150,7 @@ class CalendarPage extends ActionPage implements ICalendarPage
     public function BindCalendarType($calendarType)
     {
         $calendarType = empty($calendarType) ? 'month' : $calendarType;
-        $this->Set('CalendarType',$calendarType);
+        $this->Set('CalendarType',  $calendarType);
     }
 
 	/**

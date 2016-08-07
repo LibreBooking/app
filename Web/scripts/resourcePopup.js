@@ -18,7 +18,7 @@
  */
 
 $.fn.bindResourceDetails = function (resourceId, options) {
-	var opts = $.extend({preventClick: false}, options);
+	var opts = $.extend({preventClick: false, position:'left top'}, options);
 
 	$(this).removeAttr('resource-details-bound');
 	bindResourceDetails($(this));
@@ -90,7 +90,7 @@ $.fn.bindResourceDetails = function (resourceId, options) {
 						cache: true,
 						beforeSend: function () {
 							tag.html('Loading...').show();
-							tag.position({my: 'left bottom', at: 'right top', of: resourceNameElement});
+							tag.position({my: 'left bottom', at: opts.position, of: resourceNameElement});
 						},
 						error: tag.html('Error loading resource data!').show(),
 						success: function (data, textStatus, jqXHR) {
@@ -106,7 +106,7 @@ $.fn.bindResourceDetails = function (resourceId, options) {
 						e.preventDefault();
 						hideDiv();
 					});
-					tag.position({my: 'left bottom', at: 'right top', of: resourceNameElement});
+					tag.position({my: 'left bottom', at: opts.position, of: resourceNameElement});
 				}
 			}, 500);
 		}).mouseleave(function () {

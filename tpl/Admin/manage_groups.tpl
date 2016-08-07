@@ -48,7 +48,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 	<table class="table" id="groupList">
 		<thead>
 		<tr>
-			<th>{translate key='GroupName'}</th>
+			<th>{sort_column key=GroupName field=ColumnNames::GROUP_NAME}</th>
 			<th>{translate key='GroupMembers'}</th>
 			<th>{translate key='Permissions'}</th>
 			{if $CanChangeRoles}

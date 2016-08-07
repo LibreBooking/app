@@ -27,8 +27,8 @@ class UserUpdatedResponse extends RestResponse
 	public function __construct(IRestServer $server, $userId)
 	{
 		$this->userId = $userId;
-		$this->AddService($server, WebServices::GetUser, array(WebServiceParams::UserId, $userId));
-		$this->AddService($server, WebServices::UpdateUser, array(WebServiceParams::UserId, $userId));
+		$this->AddService($server, WebServices::GetUser, array(WebServiceParams::UserId => $userId));
+		$this->AddService($server, WebServices::UpdateUser, array(WebServiceParams::UserId => $userId));
 	}
 
 	public static function Example()
@@ -45,5 +45,3 @@ class ExampleUserUpdatedResponse extends UserCreatedResponse
 		$this->AddLink('http://url/to/update/user', WebServices::UpdateUser);
 	}
 }
-
-?>

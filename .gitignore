@@ -6,3 +6,12 @@
 /plugins/Authentication/Ldap/Ldap.config.php
 /plugins/Authentication/Drupal/Drupal.config.php
 /Web/uploads
+/lib/external/phpqrcode/cache/*.dat
+/lib/external/phpqrcode/cache/mask_0/*.dat
+/lib/external/phpqrcode/cache/mask_1/*.dat
+/lib/external/phpqrcode/cache/mask_2/*.dat
+/lib/external/phpqrcode/cache/mask_3/*.dat
+/lib/external/phpqrcode/cache/mask_4/*.dat
+/lib/external/phpqrcode/cache/mask_5/*.dat
+/lib/external/phpqrcode/cache/mask_6/*.dat
+/lib/external/phpqrcode/cache/mask_7/*.dat

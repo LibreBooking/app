@@ -61,7 +61,13 @@ interface IManageUsersService
 	 * @param $userId int
 	 * @param $attribute AttributeValue
 	 */
-	public function ChangeAttributes($userId, $attribute);
+	public function ChangeAttribute($userId, $attribute);
+
+    /**
+	 * @param $userId int
+	 * @param $attributes AttributeValue[]
+	 */
+	public function ChangeAttributes($userId, $attributes);
 
 	/**
 	 * @param $userId int
@@ -132,11 +138,19 @@ class ManageUsersService implements IManageUsersService
 		return $user;
 	}
 
-	public function ChangeAttributes($userId, $attribute)
+    public function ChangeAttribute($userId, $attributeValue)
+    {
+        $user = $this->userRepository->LoadById($userId);
+        $user->ChangeCustomAttribute($attributeValue);
+        $this->userRepository->Update($user);
+    }
+
+	public function ChangeAttributes($userId, $attributes)
 	{
 		$user = $this->userRepository->LoadById($userId);
-		$user->ChangeCustomAttribute($attribute);
-		$this->userRepository->Update($user);
+		foreach($attributes as $attribute) {
+            $user->ChangeCustomAttribute($attribute);
+        }$this->userRepository->Update($user);
 	}
 
 	public function DeleteUser($userId)
@@ -181,7 +195,7 @@ class ManageUsersService implements IManageUsersService
 
 	public function ChangeGroups($user, $groupIds)
 	{
-		if ($groupIds == null)
+		if (is_null($groupIds))
 		{
 			return;
 		}

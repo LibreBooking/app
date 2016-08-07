@@ -40,7 +40,7 @@ class Pages
 	const MANAGE_GROUPS_ADMIN = 'manage_admin_groups.php';
 	const MANAGE_GROUP_RESERVATIONS = 'manage_group_reservations.php';
 	const MY_CALENDAR = 'my-calendar.php';
-	const OPENINGS = 'openings.php';
+	const OPENINGS = 'search-availability.php';
 	const NOTIFICATION_PREFERENCES = 'notification-preferences.php';
 	const PARTICIPATION = 'participation.php';
 	const PASSWORD = 'password.php';

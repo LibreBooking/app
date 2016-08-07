@@ -65,7 +65,7 @@ class MySqlCommandAdapter
 			else
 			{
 				$escapedValue = mysqli_real_escape_string($this->_db, $curParam->Value);
-				$query = str_replace($curParam->Name, "'$escapedValue'", $query);
+				$query = str_replace($curParam->Name, $curParam->QuotedValue($escapedValue), $query);
 			}
 		}
 

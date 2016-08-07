@@ -426,7 +426,7 @@ class Queries
 
 	const GET_ALL_USERS_BY_STATUS =
 			'SELECT u.*,
-			(SELECT GROUP_CONCAT(CONCAT(p.name, "=", p.value) SEPARATOR ",")
+			(SELECT GROUP_CONCAT(CONCAT(p.name, "=", p.value) SEPARATOR "!sep!")
 						FROM user_preferences p WHERE u.user_id = p.user_id) as preferences,
 			(SELECT GROUP_CONCAT(CONCAT(cav.custom_attribute_id, \'=\', cav.attribute_value) SEPARATOR "!sep!")
 						FROM custom_attribute_values cav WHERE cav.entity_id = u.user_id AND cav.attribute_category = 2) as attribute_list
@@ -599,7 +599,13 @@ class Queries
 			INNER JOIN  schedules s ON r.schedule_id = s.schedule_id
 			WHERE r.public_id = @publicid';
 
-	const GET_RESOURCE_GROUP_BY_ID = 'SELECT * FROM resource_groups WHERE resource_group_id = @resourcegroupid';
+    const GET_RESOURCE_BY_NAME =
+        'SELECT r.*, s.admin_group_id as s_admin_group_id
+			FROM resources r
+			INNER JOIN  schedules s ON r.schedule_id = s.schedule_id
+			WHERE r.name = @resource_name';
+
+    const GET_RESOURCE_GROUP_BY_ID = 'SELECT * FROM resource_groups WHERE resource_group_id = @resourcegroupid';
 
 	const GET_RESOURCE_GROUP_ASSIGNMENTS = 'SELECT * FROM resource_group_assignment WHERE resource_id = @resourceid';
 

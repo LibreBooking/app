@@ -74,7 +74,8 @@ class UserPreferences
 	 */
 	public function Get($name)
 	{
-		if (array_key_exists($name, $this->preferences))
+		if (Configuration::Instance()->GetSectionKey(ConfigSection::SCHEDULE, ConfigKeys::SCHEDULE_PER_USER_COLORS, new BooleanConverter())
+            && array_key_exists($name, $this->preferences))
 		{
 			return $this->preferences[$name];
 		}
@@ -95,11 +96,14 @@ class UserPreferences
 			$currentValue = $this->preferences[$name];
 			if ($value != $currentValue)
 			{
-				$this->changed[] = $name;
+                Log::Debug('changed ' . $name);
+
+                $this->changed[] = $name;
 			}
 		}
 		else
 		{
+		    Log::Debug('added ' . $name);
 			$this->added[] = $name;
 		}
 

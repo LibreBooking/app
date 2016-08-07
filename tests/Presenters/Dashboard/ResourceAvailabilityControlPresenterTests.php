@@ -78,11 +78,11 @@ class ResourceAvailabilityControlPresenterTests extends TestBase
 
 		$this->presenter->PageLoad($this->fakeUser);
 
-		$this->assertEquals(new AvailableDashboardItem($this->availableResource, $this->reservationRepo->_ReservationList[3]),
+		$this->assertEquals(new AvailableDashboardItem($this->availableResource, $this->reservationRepo->_Reservations[3]),
 							$this->control->_AvailableNow[0]);
-		$this->assertEquals(new UnavailableDashboardItem($this->unavailableResource, $this->reservationRepo->_ReservationList[1]),
+		$this->assertEquals(new UnavailableDashboardItem($this->unavailableResource, $this->reservationRepo->_Reservations[1]),
 							$this->control->_UnavailableNow[0]);
-		$this->assertEquals(new UnavailableDashboardItem($this->unavailableAllDayResource, $this->reservationRepo->_ReservationList[2]),
+		$this->assertEquals(new UnavailableDashboardItem($this->unavailableAllDayResource, $this->reservationRepo->_Reservations[2]),
 							$this->control->_UnavailableAllDay[0]);
 	}
 
@@ -97,7 +97,7 @@ class ResourceAvailabilityControlPresenterTests extends TestBase
 
 	private function PopulateReservations()
 	{
-		$this->reservationRepo->_ReservationList = array(
+		$this->reservationRepo->_Reservations = array(
 				new TestReservationItemView(1, Date::Now()->AddHours(-1), Date::Now()->AddHours(1), $this->unavailableResource->GetId()),
 				new TestReservationItemView(2, Date::Now()->AddHours(1), Date::Now()->AddHours(2), $this->unavailableResource->GetId()),
 				new TestReservationItemView(3, Date::Now()->AddDays(-1), Date::Now()->AddDays(1), $this->unavailableAllDayResource->GetId()),

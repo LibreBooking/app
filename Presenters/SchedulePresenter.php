@@ -61,25 +61,18 @@ class SchedulePresenter extends ActionPresenter implements ISchedulePresenter {
     private $_reservationService;
 
 	/**
-	 * @var IDailyLayoutFactory
-	 */
-	private $_dailyLayoutFactory;
-
-	/**
      * @param ISchedulePage $page
      * @param IScheduleService $scheduleService
      * @param IResourceService $resourceService
      * @param ISchedulePageBuilder $schedulePageBuilder
      * @param IReservationService $reservationService
-     * @param IDailyLayoutFactory $dailyLayoutFactory
      */
     public function __construct(
         ISchedulePage $page,
         IScheduleService $scheduleService,
         IResourceService $resourceService,
         ISchedulePageBuilder $schedulePageBuilder,
-        IReservationService $reservationService,
-        IDailyLayoutFactory $dailyLayoutFactory
+        IReservationService $reservationService
     )
     {
 		parent::__construct($page);
@@ -88,7 +81,6 @@ class SchedulePresenter extends ActionPresenter implements ISchedulePresenter {
         $this->_resourceService = $resourceService;
         $this->_builder = $schedulePageBuilder;
         $this->_reservationService = $reservationService;
-        $this->_dailyLayoutFactory = $dailyLayoutFactory;
     }
 
     public function PageLoad(UserSession $user)
@@ -124,10 +116,8 @@ class SchedulePresenter extends ActionPresenter implements ISchedulePresenter {
 		$resourceAttributes = $this->_resourceService->GetResourceAttributes();
 		$resourceTypeAttributes = $this->_resourceService->GetResourceTypeAttributes();
 
-        $layout = $this->_scheduleService->GetLayout($activeScheduleId, new ScheduleLayoutFactory($targetTimezone));
-
         $reservationListing = $this->_reservationService->GetReservations($scheduleDates, $activeScheduleId, $targetTimezone);
-        $dailyLayout = $this->_dailyLayoutFactory->Create($reservationListing, $layout);
+        $dailyLayout = $this->_scheduleService->GetDailyLayout($activeScheduleId, new ScheduleLayoutFactory($targetTimezone), $reservationListing);
 
 		$filter = $this->_builder->GetResourceFilter($activeScheduleId, $this->_page);
 		$this->_builder->BindResourceFilter($this->_page, $filter, $resourceAttributes, $resourceTypeAttributes);

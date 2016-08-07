@@ -10,6 +10,7 @@ function Reservation(opts) {
 		endTime: $('#EndPeriod'),
 		durationDays: $('#durationDays'),
 		durationHours: $('#durationHours'),
+        durationMinutes: $('#durationMinutes'),
 
 		participantDialogPrompt: $('#promptForParticipants'),
 		participantDialog: $('#participantDialog'),
@@ -47,6 +48,7 @@ function Reservation(opts) {
 		addResourcesConfirm: $('.btnConfirmAddResources'),
 		reservationAttachments: $('#reservationAttachments'),
 
+        deleteButtonPrompt: $('#deleteButtonPrompt'),
 		additionalResources: $('#additionalResources')
 	};
 
@@ -128,7 +130,19 @@ function Reservation(opts) {
 			ChangeUpdateScope(options.scopeOpts.future);
 		});
 
-		InitializeDateElements();
+        $('#triggerDeletePrompt').click(function(e){
+            e.preventDefault();
+            elements.deleteButtonPrompt.modal('show');
+        });
+
+        $('#cancelDelete, #confirmDelete').click(function (e)
+        {
+            e.preventDefault();
+            elements.deleteButtonPrompt.modal('hide');
+        });
+
+
+        InitializeDateElements();
 
 		WireUpActions();
 		WireUpButtonPrompt();
@@ -172,18 +186,6 @@ function Reservation(opts) {
 
 	Reservation.prototype.addAccessory = function (accessoryId, quantity, name) {
 		AddAccessory(name, accessoryId, quantity);
-	};
-
-	Reservation.prototype.addAccessoryRule = function (accessoryName, accessoryId, resourceId, min, max)
-	{
-		var resourceIds = GetSelectedResourceIds();
-		if (_.contains(resourceIds, resourceId) && min > 0)
-		{
-			if (elements.accessoriesList.find("p[accessoryId='" + accessoryId + "']").length === 0)
-			{
-				AddAccessory(accessoryName, accessoryId, min);
-			}
-		}
 	};
 
 	Reservation.prototype.addResourceGroups = function (resourceGroups) {
@@ -433,7 +435,8 @@ function Reservation(opts) {
 		var rounded = dateHelper.GetDateDifference(elements.beginDate, elements.beginTime, elements.endDate, elements.endTime);
 
 		elements.durationDays.text(rounded.RoundedDays);
-		elements.durationHours.text(rounded.RoundedHours);
+		elements.durationHours.text(rounded.RoundedHours)
+        elements.durationMinutes.text(rounded.RoundedMinutes);
 	};
 
 	var ShowReservationAjaxResponse = function () {
@@ -523,8 +526,8 @@ function Reservation(opts) {
 	};
 
 	function WireUpResourceDetailPopups() {
-		$('#resourceNames, #additionalResources').find('.resourceDetails').each(function () {
-			var resourceId = $(this).siblings(".resourceId").val();
+		$('#primaryResourceContainer, #additionalResources').find('.resourceDetails').each(function () {
+			var resourceId = $(this).attr("data-resourceId");
 			$(this).bindResourceDetails(resourceId);
 		});
 	}

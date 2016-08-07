@@ -1590,6 +1590,15 @@ class GetResourceByPublicIdCommand extends SqlCommand
 	}
 }
 
+class GetResourceByNameCommand extends SqlCommand
+{
+    public function __construct($resourceName)
+    {
+        parent::__construct(Queries::GET_RESOURCE_BY_NAME);
+        $this->AddParameter(new Parameter(ParameterNames::RESOURCE_NAME, $resourceName));
+    }
+}
+
 class GetResourceGroupCommand extends SqlCommand
 {
 	public function __construct($groupId)

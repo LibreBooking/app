@@ -255,7 +255,7 @@ class SchedulePage extends ActionPage implements ISchedulePage
 		$pageBuilder = new SchedulePageBuilder();
 		$reservationService = new ReservationService(new ReservationViewRepository(), new ReservationListingFactory());
 		$dailyLayoutFactory = new DailyLayoutFactory();
-		$scheduleService = new ScheduleService($scheduleRepository, $resourceService);
+		$scheduleService = new ScheduleService($scheduleRepository, $resourceService, $dailyLayoutFactory);
 		$this->_presenter = new SchedulePresenter($this, $scheduleService, $resourceService, $pageBuilder, $reservationService, $dailyLayoutFactory);
 	}
 

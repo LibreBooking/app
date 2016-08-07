@@ -57,6 +57,7 @@ class FormKeys
 	const AUTO_ASSIGN = 'autoAssign';
 	const AUTO_ASSIGN_CLEAR = 'AUTO_ASSIGN_CLEAR';
 	const AUTO_RELEASE_MINUTES = 'AUTO_RELEASE_MINUTES';
+	const AVAILABILITY_RANGE = 'AVAILABILITY_RANGE';
 
 	const BEGIN_DATE = 'beginDate';
 	const BEGIN_PERIOD = 'beginPeriod';
@@ -101,11 +102,14 @@ class FormKeys
 	const GUEST_INVITATION_LIST = 'guestInvitationList';
 	const GUEST_PARTICIPATION_LIST = 'guestParticipationList';
 
+    const HOURS = 'HOURS';
+
 	const INSTALL_PASSWORD = 'install_password';
 	const INSTALL_DB_USER = 'install_db_user';
 	const INSTALL_DB_PASSWORD = 'install_db_password';
 	const INVITATION_LIST = 'invitationList';
 	const IS_ACTIVE = 'isactive';
+    const ICS_IMPORT_FILE = 'ICS_IMPORT_FILE';
 
 	const LANGUAGE = 'language';
 	const LAST_NAME = 'lname';
@@ -118,6 +122,7 @@ class FormKeys
 	const MIN_DURATION_NONE = 'minDurationNone';
 	const MIN_INCREMENT = 'minIncrement';
 	const MIN_INCREMENT_NONE = 'minIncrementNone';
+    const MINUTES = 'MINUTES';
 	const MAX_DURATION = 'maxDuration';
 	const MAX_DURATION_NONE = 'maxDurationNone';
 	const MAX_PARTICIPANTS = 'maxParticipants';
@@ -220,7 +225,10 @@ class FormKeys
 	const SUMMARY = 'summary';
 	const SCHEDULE_ADMIN_GROUP_ID = 'adminGroupId';
 
+	const THISWEEK = 'THISWEEK';
 	const TIMEZONE = 'timezone';
+	const TODAY = 'TODAY';
+	const TOMMOROW = 'TOMMOROW';
 
 	const UNIT = 'unit';
 	const UNIT_COST = 'unitCost';

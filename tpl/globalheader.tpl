@@ -199,7 +199,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 							<li><a href="{$Path}{Pages::MY_CALENDAR}">{translate key="MyCalendar"}</a></li>
 							<li><a href="{$Path}{Pages::CALENDAR}">{translate key="ResourceCalendar"}</a></li>
 							<!--<li class="menuitem"><a href="#">{translate key="Current Status"}</a></li>-->
-							<!--<li class="menuitem"><a href="{$Path}{Pages::OPENINGS}">{translate key="FindAnOpening"}</a></li>-->
+							<li class="menuitem"><a href="{$Path}{Pages::OPENINGS}">{translate key="FindATime"}</a></li>
 						</ul>
 					</li>
 					{if $CanViewAdmin}
@@ -228,6 +228,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 									<li><a href="{$Path}admin/manage_configuration.php">{translate key="ManageConfiguration"}</a></li>
 								{/if}
 								<li><a href="{$Path}admin/manage_theme.php">{translate key="LookAndFeel"}</a></li>
+								<li><a href="{$Path}admin/import.php">{translate key="Import"}</a></li>
 								<li><a href="{$Path}admin/server_settings.php">{translate key="ServerSettings"}</a></li>
 							</ul>
 						</li>

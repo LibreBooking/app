@@ -29,5 +29,3 @@ class WebServiceParams
 	const ScheduleId = 'scheduleId';
 	const UserId = 'userId';
 }
-
-?>

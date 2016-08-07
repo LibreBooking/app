@@ -45,7 +45,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 					<label for="addPriority">{translate key='Priority'}</label>
 					<input type="number" min="0" step="1" class="form-control" {formname key=ANNOUNCEMENT_PRIORITY} id="addPriority" />
 				</div>
-				<div><a data-toggle="collapse" data-target="#advancedAnnouncementOptions">{translate key=MoreOptions} &raquo;</a></div>
+				<div><a href="#" data-toggle="collapse" data-target="#advancedAnnouncementOptions">{translate key=MoreOptions} &raquo;</a></div>
 				<div id="advancedAnnouncementOptions" class="collapse">
 					<div class="form-group col-xs-12 col-md-6">
 						<label for="announcementGroups" class="no-show">{translate key=UsersInGroups}</label>
@@ -82,10 +82,10 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 	<table class="table" id="announcementList">
 		<thead>
 		<tr>
-			<th>{translate key='Announcement'}</th>
-			<th>{translate key='Priority'}</th>
-			<th>{translate key='BeginDate'}</th>
-			<th>{translate key='EndDate'}</th>
+			<th>{sort_column key=Announcement field=ColumnNames::ANNOUNCEMENT_TEXT}</th>
+			<th>{sort_column key=Priority field=ColumnNames::ANNOUNCEMENT_PRIORITY}</th>
+			<th>{sort_column key=BeginDate field=ColumnNames::ANNOUNCEMENT_START}</th>
+			<th>{sort_column key=EndDate field=ColumnNames::ANNOUNCEMENT_END}</th>
 			<th>{translate key='Groups'}</th>
 			<th>{translate key='Resources'}</th>
 			<th class="action">{translate key='Actions'}</th>

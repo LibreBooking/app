@@ -80,10 +80,7 @@ class FakeAnnouncementRepository implements IAnnouncementRepository
         return $expectedAnnouncements;
     }
 
-    /**
-     * @return Announcement[]|array
-     */
-    public function GetAll()
+    public function GetAll($sortField = null, $sortDirection = null)
     {
     }
 

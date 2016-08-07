@@ -157,6 +157,8 @@ interface IManageUsersPage extends IPageable, IActionPage
 	 * @param CsvImportResult $importResult
 	 */
 	public function SetImportResult($importResult);
+
+
 }
 
 

@@ -949,6 +949,10 @@ class User
 
 class NullUser extends User
 {
+    public function Id()
+    {
+        return null;
+    }
 }
 
 class GuestUser extends User

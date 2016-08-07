@@ -20,7 +20,7 @@
 
 require_once(ROOT_DIR . 'Pages/Reservation/ExistingReservationPage.php');
 
-class FakeExistingReservationPage implements IExistingReservationPage
+class FakeExistingReservationPage extends FakePageBase implements IExistingReservationPage
 {
 	public $_CheckInRequired = false;
 	public $_CheckOutRequired = false;

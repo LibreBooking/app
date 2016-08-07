@@ -76,6 +76,16 @@ class FakePageBase implements IPage
 	{
 		// TODO: Implement EnforceCSRFCheck() method.
 	}
+
+    public function GetSortField()
+    {
+        // TODO: Implement GetSortField() method.
+    }
+
+    public function GetSortDirection()
+    {
+        // TODO: Implement GetSortDirection() method.
+    }
 }
 
 class FakeActionPageBase extends FakePageBase implements IActionPage

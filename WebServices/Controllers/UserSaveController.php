@@ -192,6 +192,3 @@ class UserControllerResult
 		return $this->errors;
 	}
 }
-
-
-?>

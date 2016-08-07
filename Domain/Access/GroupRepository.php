@@ -113,7 +113,7 @@ class GroupRepository implements IGroupRepository, IGroupViewRepository
 		}
 
 		$builder = array('GroupItemView', 'Create');
-		return PageableDataStore::GetList($command, $builder, $pageNumber, $pageSize);
+		return PageableDataStore::GetList($command, $builder, $pageNumber, $pageSize, $sortField, $sortDirection);
 	}
 
 	/**

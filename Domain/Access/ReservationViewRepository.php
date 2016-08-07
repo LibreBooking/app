@@ -44,7 +44,7 @@ interface IReservationViewRepository
 	 * @param int|null $resourceId
 	 * @return ReservationItemView[]
 	 */
-	public function GetReservationList(
+	public function GetReservations(
 			Date $startDate,
 			Date $endDate,
 			$userId = ReservationViewRepository::ALL_USERS,
@@ -161,7 +161,7 @@ class ReservationViewRepository implements IReservationViewRepository
 		return $reservationView;
 	}
 
-	public function GetReservationList(
+	public function GetReservations(
 			Date $startDate,
 			Date $endDate,
 			$userId = self::ALL_USERS,
@@ -236,7 +236,7 @@ class ReservationViewRepository implements IReservationViewRepository
 		}
 
 		$builder = array('ReservationItemView', 'Populate');
-		return PageableDataStore::GetList($command, $builder, $pageNumber, $pageSize);
+		return PageableDataStore::GetList($command, $builder, $pageNumber, $pageSize, $sortField, $sortDirection);
 	}
 
 	private function SetResources(ReservationView $reservationView)
@@ -1583,7 +1583,7 @@ class ReservationItemView implements IReservedItemView
 		if ($this->_color == null)
 		{
 			// cache the color after the first call to prevent multiple iterations of this logic
-			$this->_color = $this->UserPreferences->Get(UserPreferences::RESERVATION_COLOR);
+            $this->_color = $this->UserPreferences->Get(UserPreferences::RESERVATION_COLOR);
 			$resourceColor = $color = $this->ResourceColor;
 
 			if (!empty($this->_color))

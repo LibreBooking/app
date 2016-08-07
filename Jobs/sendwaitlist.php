@@ -49,7 +49,7 @@ try
     /** @var ReservationWaitlistRequest $r */
     foreach ($waitlistRequests as $r)
     {
-        $reservations = $reservationViewRepository->GetReservationList($r->StartDate(), $r->EndDate(), null, null, null, $r->ResourceId());
+        $reservations = $reservationViewRepository->GetReservations($r->StartDate(), $r->EndDate(), null, null, null, $r->ResourceId());
 
         $conflicts = false;
 

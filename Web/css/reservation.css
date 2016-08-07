@@ -265,7 +265,7 @@ a.remove {
   font-weight: bold;
   color: #AA3939;
 }
-.resourceName {
+#reservation-box .resourceName {
   color: #428181;
   -webkit-border-radius: 2px;
   -moz-border-radius: 2px;
@@ -275,10 +275,10 @@ a.remove {
   margin-right: 2px;
   background-color: #CFE4E4;
 }
-.resourceName a {
+#reservation-box .resourceName a {
   color: #428181;
 }
-.resourceName .fa:last-of-type {
+#reservation-box .resourceName .fa:last-of-type {
   margin-right: 2px;
 }
 .autoReleaseButtonMessage {

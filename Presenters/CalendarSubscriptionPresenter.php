@@ -121,7 +121,7 @@ class CalendarSubscriptionPresenter
 
 		if (!empty($uid) || !empty($sid) || !empty($rid) || !empty($resourceIds))
 		{
-			$res = $this->reservationViewRepository->GetReservationList($weekAgo, $nextYear, $uid, $reservationUserLevel, $sid, $rid);
+			$res = $this->reservationViewRepository->GetReservations($weekAgo, $nextYear, $uid, $reservationUserLevel, $sid, $rid);
 		}
 		elseif (!empty($aid))
 		{

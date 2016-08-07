@@ -40,6 +40,12 @@ interface IResourceRepository
 	 */
 	public function LoadByPublicId($publicId);
 
+    /**
+     * @param string $resourceName
+     * @return BookableResource
+     */
+    public function LoadByName($resourceName);
+
 	/**
 	 * @param BookableResource $resource
 	 * @return int ID of created resource
@@ -71,11 +77,12 @@ interface IResourceRepository
 	 */
 	public function GetList($pageNumber, $pageSize, $sortField = null, $sortDirection = null, $filter = null);
 
-	/**
-	 * @abstract
-	 * @return array|AccessoryDto[] all accessories
-	 */
-	public function GetAccessoryList();
+    /**
+     * @param null|string $sortField
+     * @param null|string $sortDirection
+     * @return AccessoryDto[]|array all accessories
+     */
+	public function GetAccessoryList($sortField = null, $sortDirection = null);
 
 	/**
 	 * @param int|null $scheduleId

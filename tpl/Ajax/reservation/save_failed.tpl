@@ -53,7 +53,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			</div>
 			<button id="btnRetry" class="btn btn-success"><span class="fa fa-refresh"></span> {translate key='Retry'}
 			</button>
-			<div id="retryToolTip" class="inline">Tool tip icon here</div>
+			<div id="retryToolTip" class="inline"><i class="fa fa-info-circle"></i></div>
 		{/if}
 	</div>
 </div>

@@ -71,7 +71,7 @@ class ParticipationPresenter
 		$user = ServiceLocator::GetServer()->GetUserSession();
 		$userId = $user->UserId;
 
-		$reservations = $this->reservationViewRepository->GetReservationList($startDate, $endDate, $userId, ReservationUserLevel::INVITEE);
+		$reservations = $this->reservationViewRepository->GetReservations($startDate, $endDate, $userId, ReservationUserLevel::INVITEE);
 
 		$this->page->SetTimezone($user->Timezone);
 		$this->page->BindReservations($reservations);

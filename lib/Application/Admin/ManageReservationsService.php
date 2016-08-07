@@ -23,14 +23,16 @@ require_once(ROOT_DIR . 'lib/Application/Reservation/Persistence/namespace.php')
 
 interface IManageReservationsService
 {
-	/**
-	 * @param $pageNumber int
-	 * @param $pageSize int
-	 * @param $filter ReservationFilter
-	 * @param $user UserSession
-	 * @return PageableData|ReservationItemView[]
-	 */
-	public function LoadFiltered($pageNumber, $pageSize, $filter, $user);
+    /**
+     * @param $pageNumber int
+     * @param $pageSize int
+     * @param $sortField string|null
+     * @param $sortDirection string|null
+     * @param $filter ReservationFilter
+     * @param $user UserSession
+     * @return PageableData|ReservationItemView[]
+     */
+	public function LoadFiltered($pageNumber, $pageSize, $sortField, $sortDirection, $filter, $user);
 
 	/**
 	 * @param  $referenceNumber string
@@ -89,9 +91,9 @@ class ManageReservationsService implements IManageReservationsService
 
 	}
 
-	public function LoadFiltered($pageNumber, $pageSize, $filter, $user)
+	public function LoadFiltered($pageNumber, $pageSize, $sortField, $sortDirection, $filter, $user)
 	{
-		return $this->reservationViewRepository->GetList($pageNumber, $pageSize, null, null, $filter->GetFilter());
+		return $this->reservationViewRepository->GetList($pageNumber, $pageSize, $sortField, $sortDirection, $filter->GetFilter());
 	}
 
 	public function LoadByReferenceNumber($referenceNumber, $user)

@@ -300,4 +300,12 @@ class Server
 		$isHttps = $this->GetHeader('HTTPS');
 		return $isHttps == 'on';
 	}
+
+    /**
+     * @return string
+     */
+    public function GetRequestUri()
+    {
+        return $this->GetHeader('REQUEST_URI');
+    }
 }

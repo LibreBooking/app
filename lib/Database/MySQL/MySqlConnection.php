@@ -76,6 +76,11 @@ class MySqlConnection implements IDbConnection
 
 		Log::Sql('MySql Query: ' . str_replace('%', '%%', $mysqlCommand->GetQuery()));
 
+        if ($sqlCommand->ContainsGroupConcat())
+        {
+            mysqli_query($this->_db,'SET SESSION group_concat_max_len = 1000000;');
+        }
+
 		$result = mysqli_query($this->_db, $mysqlCommand->GetQuery());
 
 		$this->_handleError($result);

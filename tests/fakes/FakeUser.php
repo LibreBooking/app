@@ -32,6 +32,7 @@ class FakeUser extends User
 		$this->id = $userId;
 		$this->statusId = AccountStatus::ACTIVE;
 		$this->homepageId = Pages::CALENDAR;
+        $this->preferences = new UserPreferences();
 	}
 
 	public function SetStatus($statusId)

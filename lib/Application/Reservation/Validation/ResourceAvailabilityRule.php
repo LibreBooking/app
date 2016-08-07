@@ -38,7 +38,7 @@ class ResourceReservationAvailability implements IResourceAvailabilityStrategy
 
     public function GetItemsBetween(Date $startDate, Date $endDate)
     {
-        return $this->_repository->GetReservationList($startDate, $endDate);
+        return $this->_repository->GetReservations($startDate, $endDate);
     }
 }
 

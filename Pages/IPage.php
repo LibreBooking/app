@@ -35,4 +35,8 @@ interface IPage {
     public function RegisterValidator($validatorId, $validator);
 
     public function EnforceCSRFCheck();
+
+    public function GetSortField();
+
+    public function GetSortDirection();
 }

@@ -45,6 +45,7 @@ class ColumnNames
 	const POSITION = 'position';
 	const DEFAULT_SCHEDULE_ID = 'default_schedule_id';
 	const USER_PREFERENCES = 'preferences';
+	const USER_STATUS = 'status_id';
 
 	// USER_ADDRESSES //
 	const ADDRESS_ID = 'address_id';

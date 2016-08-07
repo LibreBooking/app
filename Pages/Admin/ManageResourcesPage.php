@@ -340,6 +340,8 @@ interface IManageResourcesPage extends IUpdateResourcePage, IActionPage, IPageab
 	public function GetPeakCredits();
 
 	public function BindUpdatedResourceCredits(BookableResource $resource);
+
+    public function ShowQRCode($qrCodeImageUrl, $resourceName);
 }
 
 class ManageResourcesPage extends ActionPage implements IManageResourcesPage
@@ -873,6 +875,14 @@ class ManageResourcesPage extends ActionPage implements IManageResourcesPage
 		$this->Set('resource', $resource);
 		$this->Display('Admin/Resources/manage_resources_credits.tpl');
 	}
+
+    public function ShowQRCode($qrCodeImageUrl, $resourceName)
+    {
+        $this->Set('QRImageUrl', $qrCodeImageUrl);
+        $this->Set('ResourceName', $resourceName);
+        
+        $this->Display('Admin/Resources/show_resource_qr.tpl');
+    }
 }
 
 class ResourceFilterValues

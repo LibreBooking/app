@@ -309,7 +309,7 @@ class UserRepository implements IUserRepository, IAccountActivationRepository
 		}
 
 		$builder = array('UserItemView', 'Create');
-		return PageableDataStore::GetList($command, $builder, $pageNumber, $pageSize);
+		return PageableDataStore::GetList($command, $builder, $pageNumber, $pageSize, $sortField, $sortDirection);
 	}
 
 	/**
@@ -427,6 +427,15 @@ class UserRepository implements IUserRepository, IAccountActivationRepository
 				$db->Execute(new AddUserGroupCommand($id, $group->GroupId));
 			}
 		}
+
+        $addedPermissions = $user->GetAddedPermissions();
+        if (!empty($addedPermissions))
+        {
+            foreach ($addedPermissions as $resourceId)
+            {
+                $db->Execute(new AddUserResourcePermission($id, $resourceId));
+            }
+        }
 
 		return $id;
 	}

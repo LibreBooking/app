@@ -146,6 +146,11 @@ class ResourceRepository implements IResourceRepository
 		return $this->LoadResource(new GetResourceByPublicIdCommand($publicId));
 	}
 
+    public function LoadByName($resourceName)
+    {
+        return $this->LoadResource(new GetResourceByNameCommand($resourceName));
+    }
+
 	/**
 	 * @param $command SqlCommand
 	 * @return BookableResource
@@ -281,10 +286,15 @@ class ResourceRepository implements IResourceRepository
 		$this->_cache->Remove($resource->GetId());
 	}
 
-	public function GetAccessoryList()
+	public function GetAccessoryList($sortField = null, $sortDirection = null)
 	{
 		$command = new GetAllAccessoriesCommand();
 		$accessories = array();
+
+        if (!empty($sortField))
+        {
+            $command = new SortCommand($command, $sortField, $sortDirection);
+        }
 
 		$reader = ServiceLocator::GetDatabase()->Query($command);
 
@@ -710,7 +720,7 @@ class ResourceDto implements IBookableResource
 		{
 			$textColor = new ContrastingColor($color);
 			$this->TextColor = $textColor->__toString();
-		}
+        }
 	}
 
 	/**
@@ -913,4 +923,12 @@ class ResourceDto implements IBookableResource
 	{
 		return $this->TextColor;
 	}
+
+    /**
+     * @return bool
+     */
+    public function HasColor()
+    {
+        return $this->Color != '' && $this->Color != null;
+    }
 }

@@ -64,7 +64,7 @@ class UpcomingReservationsPresenter
 		$dayOfWeek = $today->Weekday();
 
 		$lastDate = $now->AddDays(13-$dayOfWeek-1);
-		$reservations = $this->repository->GetReservationList($now, $lastDate, $this->searchUserId, $this->searchUserLevel);
+		$reservations = $this->repository->GetReservations($now, $lastDate, $this->searchUserId, $this->searchUserLevel);
 		$tomorrow = $today->AddDays(1);
 
 		$startOfNextWeek = $today->AddDays(7-$dayOfWeek);

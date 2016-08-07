@@ -25,6 +25,7 @@ function GroupManagement(opts) {
 		deleteGroupForm: $('#deleteGroupForm'),
 		rolesForm: $('#rolesForm'),
 		groupAdminForm: $('#groupAdminForm'),
+        groupCount: $('#groupCount'),
 
 		addForm: $('#addGroupForm')
 	};
@@ -215,12 +216,15 @@ function GroupManagement(opts) {
 	};
 
 	var addUserToGroup = function(userId) {
+
+
 		$('#addUserId').val(userId);
 		elements.addUserForm.submit();
 	};
 
 	var removeUserFromGroup = function(element, userId) {
-		$('#removeUserId').val(userId);
+
+        $('#removeUserId').val(userId);
 		elements.removeUserForm.submit();
 	};
 

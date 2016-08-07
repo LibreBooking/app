@@ -166,7 +166,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 						</div>
 						<div class="col-sm-9 col-xs-6">
 							<div>
-							<span class="title" data-type="text" data-pk="{$id}"
+							<span class="title resourceName" data-type="text" data-pk="{$id}"
 								  data-name="{FormKeys::RESOURCE_NAME}">{$resource->GetName()|escape}</span>
 								<a class="update renameButton" href="#">{translate key='Rename'}</a> |
 								<a class="update deleteButton" href="#">{translate key='Delete'}</a>
@@ -308,6 +308,9 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 								   href="#">{translate key=TurnOnSubscription}</a>
 								{indicator id=subscriptionIndicator}
 							</div>
+                            <div>
+                                <a href="{$smarty.server.SCRIPT_NAME}?action={ManageResourcesActions::ActionPrintQR}&rid={$id}" target="_blank">{translate key=PrintQRCode} <i class="fa fa-qrcode"></i></a>
+                            </div>
 						</div>
 					</div>
 

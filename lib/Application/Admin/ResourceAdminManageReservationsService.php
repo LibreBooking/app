@@ -45,14 +45,16 @@ class ResourceAdminManageReservationsService extends ManageReservationsService i
 		$this->userRepository = $userRepository;
 	}
 
-	/**
-	 * @param $pageNumber int
-	 * @param $pageSize int
-	 * @param $filter ReservationFilter
-	 * @param $user UserSession
-	 * @return PageableData|ReservationItemView[]
-	 */
-	public function LoadFiltered($pageNumber, $pageSize, $filter, $user)
+    /**
+     * @param $pageNumber int
+     * @param $pageSize int
+     * @param null|string $sortField
+     * @param null|string $sortDirection
+     * @param $filter ReservationFilter
+     * @param $user UserSession
+     * @return PageableData|ReservationItemView[]
+     */
+	public function LoadFiltered($pageNumber, $pageSize, $sortField, $sortDirection, $filter, $user)
 	{
 		$groupIds = array();
 		$groups = $this->userRepository->LoadGroups($user->UserId, RoleLevel::RESOURCE_ADMIN);
@@ -62,6 +64,6 @@ class ResourceAdminManageReservationsService extends ManageReservationsService i
 		}
 
 		$filter->_And(new SqlFilterIn(new SqlFilterColumn(TableNames::RESOURCES, ColumnNames::RESOURCE_ADMIN_GROUP_ID), $groupIds));
-		return $this->reservationViewRepository->GetList($pageNumber, $pageSize, null, null, $filter->GetFilter());
+		return $this->reservationViewRepository->GetList($pageNumber, $pageSize, $sortField, $sortDirection, $filter->GetFilter());
 	}
 }

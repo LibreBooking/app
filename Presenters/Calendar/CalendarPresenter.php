@@ -102,7 +102,8 @@ class CalendarPresenter extends ActionPresenter
 			$selectedGroup = $resourceGroups->GetGroup($selectedGroupId);
 			$this->page->BindSelectedGroup($selectedGroup);
 
-			foreach ($resources as $resource)
+            /** @var ResourceDTO $resource */
+            foreach ($resources as $resource)
 			{
 				if (in_array($resource->GetId(), $resourceIds))
 				{
@@ -135,7 +136,7 @@ class CalendarPresenter extends ActionPresenter
         $resources = $this->common->GetAllResources($userSession);
         $selectedResourceId = $this->page->GetResourceId();
 
-        $reservations = $this->reservationRepository->GetReservationList($this->common->GetStartDate(), $this->common->GetEndDate()->AddDays(1),
+        $reservations = $this->reservationRepository->GetReservations($this->common->GetStartDate(), $this->common->GetEndDate()->AddDays(1),
             null, null, $selectedSchedule->GetId(),
             $selectedResourceId);
 
@@ -151,9 +152,10 @@ class CalendarPresenter extends ActionPresenter
         if ($dataRequest == 'events') {
             $this->BindCalendarEvents();
         }
-
-        $this->BindSubscriptionDetails($this->page->GetResourceId(), $this->page->GetScheduleId());
-        $this->page->RenderSubscriptionDetails();
+        else {
+            $this->BindSubscriptionDetails($this->page->GetResourceId(), $this->page->GetScheduleId());
+            $this->page->RenderSubscriptionDetails();
+        }
     }
 
     /**

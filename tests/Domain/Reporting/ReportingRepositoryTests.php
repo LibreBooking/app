@@ -39,10 +39,12 @@ class ReportingRepositoryTests extends TestBase
 		$builder = new ReportCommandBuilder();
 		$expected = $builder->Build();
 
-		$expectedRows = array(array('c' => 'v'));
+		$expectedRows = array(array(ColumnNames::DURATION_ALIAS => 3600));
 		$this->db->SetRows($expectedRows);
 
 		$rows = $this->repository->GetCustomReport($builder);
+
+        $expectedRows[0][ColumnNames::DURATION_HOURS] = 1;
 
 		$this->assertEquals($expected, $this->db->_LastCommand);
 		$this->assertEquals($expectedRows, $rows);

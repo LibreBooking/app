@@ -1,75 +1,83 @@
 <?php
+
 /**
-Copyright 2014-2015 Nick Korbel
-
-This file is part of Booked Scheduler.
-
-Booked Scheduler is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-Booked Scheduler is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
-*/
-
+ * Copyright 2014-2015 Nick Korbel
+ *
+ * This file is part of Booked Scheduler.
+ *
+ * Booked Scheduler is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Booked Scheduler is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
+ */
 class FakeReservationViewRepository implements IReservationViewRepository
 {
-	public $_ReservationView;
+    public $_ReservationView;
 
-	/**
-		 * @var ReservationItemView[]
-		 */
-		public $_ReservationList = array();
+    /**
+     * @var ReservationItemView[]
+     */
+    public $_Reservations = array();
 
-	public function __construct()
-	{
-		$this->_ReservationView = new ReservationView();
-	}
+    /**
+     * @var BlackoutItemView[]
+     */
+    public $_Blackouts = array();
 
-	public function GetReservationForEditing($referenceNumber)
-	{
-		return $this->_ReservationView;
-	}
+    public $_LastRange;
 
-	public function GetReservationList(
-			Date $startDate,
-			Date $endDate,
-			$userId = ReservationViewRepository::ALL_USERS,
-			$userLevel = ReservationUserLevel::OWNER,
-			$scheduleId = ReservationViewRepository::ALL_SCHEDULES,
-			$resourceId = ReservationViewRepository::ALL_RESOURCES)
-	{
-		return $this->_ReservationList;
-	}
+    public function __construct()
+    {
+        $this->_ReservationView = new ReservationView();
+    }
 
-	public function GetAccessoryReservationList(Date $startDate, Date $endDate, $accessoryName)
-	{
-		return array();
-	}
+    public function GetReservationForEditing($referenceNumber)
+    {
+        return $this->_ReservationView;
+    }
 
-	public function GetList($pageNumber, $pageSize, $sortField = null, $sortDirection = null, $filter = null)
-	{
-		return new PageableData();
-	}
+    public function GetReservations(
+        Date $startDate,
+        Date $endDate,
+        $userId = ReservationViewRepository::ALL_USERS,
+        $userLevel = ReservationUserLevel::OWNER,
+        $scheduleId = ReservationViewRepository::ALL_SCHEDULES,
+        $resourceId = ReservationViewRepository::ALL_RESOURCES)
+    {
+        $this->_LastRange = new DateRange($startDate, $endDate);
+        return $this->_Reservations;
+    }
 
-	public function GetBlackoutsWithin(DateRange $dateRange, $scheduleId = ReservationViewRepository::ALL_SCHEDULES)
-	{
-		return array();
-	}
+    public function GetAccessoryReservationList(Date $startDate, Date $endDate, $accessoryName)
+    {
+        return array();
+    }
 
-	public function GetBlackoutList($pageNumber, $pageSize, $sortField = null, $sortDirection = null, $filter = null)
-	{
-		return new PageableData();
-	}
+    public function GetList($pageNumber, $pageSize, $sortField = null, $sortDirection = null, $filter = null)
+    {
+        return new PageableData();
+    }
 
-	public function GetAccessoriesWithin(DateRange $dateRange)
-	{
-		return array();
-	}
+    public function GetBlackoutsWithin(DateRange $dateRange, $scheduleId = ReservationViewRepository::ALL_SCHEDULES)
+    {
+        return $this->_Blackouts;
+    }
+
+    public function GetBlackoutList($pageNumber, $pageSize, $sortField = null, $sortDirection = null, $filter = null)
+    {
+        return new PageableData();
+    }
+
+    public function GetAccessoriesWithin(DateRange $dateRange)
+    {
+        return array();
+    }
 }
