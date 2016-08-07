@@ -83,7 +83,7 @@ class ExternalAuthLoginPresenter
 	{
 		$code = $_GET['code'];
 		Log::Debug('Logging in with Facebook. Code=%s', $code);
-		$result = file_get_contents('http://www.bookedscheduler.com/api/fbprofile.php?code=' . $code);
+		$result = file_get_contents('http://www.facebook.twinkletoessoftware.com/fbprofile.php?code=' . $code);
 		$profile = json_decode($result);
 		Log::Debug('Facebook login successful. Email=%s', $profile->email);
 		$this->registration->Synchronize(new AuthenticatedUser($profile->email,

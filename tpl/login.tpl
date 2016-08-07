@@ -87,7 +87,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 						</a>
 					</div>
 					<div class="col-sm-6 col-xs-12">
-						<a href="https://www.bookedscheduler.com/api/fblogin.php?resume={$ScriptUrl}/external-auth.php%3Ftype%3Dfb" class="pull-right-sm">
+						<a href="http://www.facebook.twinkletoessoftware.com/fblogin.php?resume={$ScriptUrl}/external-auth.php%3Ftype%3Dfb" class="pull-right-sm">
 							<img style="max-height:42px" src="img/external/btn_facebook_login.png" alt="Sign in with Facebook"/>
 						</a>
 					</div>
