@@ -152,9 +152,10 @@ class CalendarPresenter extends ActionPresenter
         if ($dataRequest == 'events') {
             $this->BindCalendarEvents();
         }
-
-        $this->BindSubscriptionDetails($this->page->GetResourceId(), $this->page->GetScheduleId());
-        $this->page->RenderSubscriptionDetails();
+        else {
+            $this->BindSubscriptionDetails($this->page->GetResourceId(), $this->page->GetScheduleId());
+            $this->page->RenderSubscriptionDetails();
+        }
     }
 
     /**

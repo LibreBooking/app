@@ -1583,7 +1583,7 @@ class ReservationItemView implements IReservedItemView
 		if ($this->_color == null)
 		{
 			// cache the color after the first call to prevent multiple iterations of this logic
-			$this->_color = $this->UserPreferences->Get(UserPreferences::RESERVATION_COLOR);
+            $this->_color = $this->UserPreferences->Get(UserPreferences::RESERVATION_COLOR);
 			$resourceColor = $color = $this->ResourceColor;
 
 			if (!empty($this->_color))

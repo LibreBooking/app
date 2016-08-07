@@ -175,9 +175,11 @@ class PersonalCalendarPresenter extends ActionPresenter
         if ($dataRequest == 'events') {
             $this->BindCalendarEvents();
         }
-
-        $this->BindSubscriptionDetails(ServiceLocator::GetServer()->GetUserSession());
-        $this->page->RenderSubscriptionDetails();
+        else
+        {
+            $this->BindSubscriptionDetails(ServiceLocator::GetServer()->GetUserSession());
+            $this->page->RenderSubscriptionDetails();
+        }
     }
 
     /**
