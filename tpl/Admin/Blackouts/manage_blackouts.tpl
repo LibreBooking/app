@@ -77,9 +77,15 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 				</div>
 				<div class="form-group col-xs-12">
 					<div class="radio">
-						<input {formname key=CONFLICT_ACTION} type="radio" id="notifyExisting"
+						<input {formname key=CONFLICT_ACTION} type="radio" id="bookAround"
 															  name="existingReservations"
 															  checked="checked"
+															  value="{ReservationConflictResolution::BookAround}"/>
+						<label for="notifyExisting">{translate key=BlackoutAroundConflicts}</label>
+					</div>
+					<div class="radio">
+						<input {formname key=CONFLICT_ACTION} type="radio" id="notifyExisting"
+															  name="existingReservations"
 															  value="{ReservationConflictResolution::Notify}"/>
 						<label for="notifyExisting">{translate key=BlackoutShowMe}</label>
 					</div>

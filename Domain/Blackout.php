@@ -1,23 +1,23 @@
 <?php
+
 /**
-Copyright 2011-2015 Nick Korbel
-
- This file is part of Booked Scheduler.
-
- Booked Scheduler is free software: you can redistribute it and/or modify
- it under the terms of the GNU General Public License as published by
- the Free Software Foundation, either version 3 of the License, or
- (at your option) any later version.
-
- Booked Scheduler is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU General Public License for more details.
-
- You should have received a copy of the GNU General Public License
- along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
+ * Copyright 2011-2015 Nick Korbel
+ *
+ * This file is part of Booked Scheduler.
+ *
+ * Booked Scheduler is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Booked Scheduler is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 class BlackoutSeries
 {
 	/**
@@ -43,7 +43,12 @@ class BlackoutSeries
 	/**
 	 * @var Blackout[]
 	 */
-	protected $blackouts= array();
+	protected $blackouts = array();
+
+	/**
+	 * @var int
+	 */
+	protected $blackoutIteration = 0;
 
 	/**
 	 * @var string
@@ -110,7 +115,7 @@ class BlackoutSeries
 		$this->ownerId = $ownerId;
 		$this->title = $title;
 		$this->resourceIds = array();
-		foreach($resourceIds as $rid)
+		foreach ($resourceIds as $rid)
 		{
 			$this->AddResourceId($rid);
 		}
@@ -152,7 +157,7 @@ class BlackoutSeries
 	{
 		$earliestDate = $blackoutDate;
 
-		foreach($this->blackouts as $blackout)
+		foreach ($this->blackouts as $blackout)
 		{
 			if ($blackout->StartDate()->LessThan($earliestDate->GetBegin()))
 			{
@@ -212,7 +217,25 @@ class BlackoutSeries
 
 	public function AddBlackout(Blackout $blackout)
 	{
+		$this->blackoutIteration = 0;
+		$blackout->SetSeries($this);
 		$this->blackouts[$this->ToKey($blackout->Date())] = $blackout;
+	}
+
+	public function Delete(Blackout $blackout)
+	{
+		if (count($this->blackouts) <= 1)
+		{
+			Log::Debug('Only blackout in the series. Cannot delete. Id %s', $blackout->Id());
+			return false;
+		}
+		$key = $this->ToKey($blackout->Date());
+		$this->blackoutIteration = 0;
+		unset($this->blackouts[$key]);
+		$this->currentBlackoutInstanceId = null;
+
+		Log::Debug('Deleted blackout Id %s', $blackout->Id());
+		return true;
 	}
 
 	/**
@@ -220,8 +243,13 @@ class BlackoutSeries
 	 */
 	public function AllBlackouts()
 	{
+		if (count($this->blackouts) == 0)
+		{
+			return array();
+		}
+
 		asort($this->blackouts);
-		return array_values($this->blackouts);
+		return $this->blackouts;
 	}
 
 	/**
@@ -317,7 +345,7 @@ class BlackoutSeries
 		$configuration = RepeatConfiguration::Create($row[ColumnNames::REPEAT_TYPE], $row[ColumnNames::REPEAT_OPTIONS]);
 		$factory = new RepeatOptionsFactory();
 		$options = $factory->Create($row[ColumnNames::REPEAT_TYPE], $configuration->Interval, $configuration->TerminationDate,
-										$configuration->Weekdays, $configuration->MonthlyType);
+									$configuration->Weekdays, $configuration->MonthlyType);
 
 		$series->WithRepeatOptions($options);
 
@@ -356,6 +384,25 @@ class BlackoutSeries
 	{
 		return $this->currentBlackoutInstanceId;
 	}
+
+	/**
+	 * @return Blackout|false
+	 */
+	public function NextBlackout()
+	{
+		if ($this->blackoutIteration == 0)
+		{
+			$this->blackouts = $this->AllBlackouts();
+		}
+
+		if ($this->blackoutIteration < count($this->blackouts))
+		{
+			$keys = array_keys($this->blackouts);
+			return $this->blackouts[$keys[$this->blackoutIteration++]];
+		}
+
+		return false;
+	}
 }
 
 class Blackout
@@ -369,6 +416,11 @@ class Blackout
 	 * @var
 	 */
 	protected $id;
+
+	/**
+	 * @var BlackoutSeries
+	 */
+	protected $series;
 
 	/**
 	 * @param DateRange $blackoutDate
@@ -403,6 +455,15 @@ class Blackout
 	}
 
 	/**
+	 * @param DateRange $date
+	 */
+	public function SetDate(DateRange $date)
+	{
+		$this->date = $date;
+	}
+
+
+	/**
 	 * @param int $id
 	 */
 	public function WithId($id)
@@ -416,6 +477,16 @@ class Blackout
 	public function Id()
 	{
 		return $this->id;
+	}
+
+	public function SetSeries(BlackoutSeries $blackoutSeries)
+	{
+		$this->series = $blackoutSeries;
+	}
+
+	public function GetSeries()
+	{
+		return $this->series;
 	}
 }
 
