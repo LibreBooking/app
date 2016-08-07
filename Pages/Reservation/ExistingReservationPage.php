@@ -318,3 +318,39 @@ class ExistingReservationPage extends ReservationPage implements IExistingReserv
 		$this->Set('InvitedGuests', $invitedGuests);
 	}
 }
+
+class DuplicateReservationPage extends ExistingReservationPage
+{
+	public function __construct()
+	{
+		parent::__construct();
+		$this->Set('Title', Resources::GetInstance()->GetString('DuplicateReservation'));
+	}
+
+	protected function GetTemplateName()
+	{
+		return 'Reservation/create.tpl';
+	}
+
+	public function PageLoad()
+	{
+		parent::PageLoad();
+
+		$this->Set('ReturnUrl', urldecode($this->GetQuerystring('return')));
+	}
+
+	protected function GetReservationAction()
+	{
+		return ReservationAction::Create;
+	}
+
+	public function GetReferenceNumber()
+	{
+		return $this->server->GetQuerystring(QueryStringKeys::SOURCE_REFERENCE_NUMBER);
+	}
+
+	protected function GetReturnUrl()
+	{
+		return urldecode($this->GetQuerystring(QueryStringKeys::REDIRECT));
+	}
+}

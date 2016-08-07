@@ -599,6 +599,7 @@ class en_us extends Language
         $strings['IcsMissingOrganizer'] = 'Any event missing an organizer will have the owner set to the current user.';
         $strings['IcsWarning'] = 'Reservation rules will not be enforced - conflicts, duplicates, etc are possible.';
 		$strings['BlackoutAroundConflicts'] = 'Blackout around conflicting reservations';
+		$strings['DuplicateReservation'] = 'Duplicate';
         // End Strings
 
 		// Install

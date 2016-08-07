@@ -72,6 +72,8 @@ interface IRegistrationPage extends IPage, IActionPage
 
 class RegistrationPage extends ActionPage implements IRegistrationPage
 {
+	private $_presenter;
+
 	public function __construct()
 	{
 		parent::__construct('Registration');

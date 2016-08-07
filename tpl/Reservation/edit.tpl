@@ -44,6 +44,11 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 					<span class="fa fa-print"></span>
 					{translate key='Print'}</a>
 			</li>
+			<li>
+				<a href="{$Path}{Pages::RESERVATION}?{QueryStringKeys::SOURCE_REFERENCE_NUMBER}={$ReferenceNumber}&{QueryStringKeys::REDIRECT}={$ReturnUrl|urlencode}">
+					<span class="fa fa-copy"></span>
+					{translate key='DuplicateReservation'}</a>
+			</li>
 
 			<li class="divider"></li>
 			<li>

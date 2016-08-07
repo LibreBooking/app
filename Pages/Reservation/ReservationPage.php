@@ -137,6 +137,7 @@ interface IReservationPage extends IPage
 abstract class ReservationPage extends Page implements IReservationPage
 {
 	protected $presenter;
+
 	/**
 	 * @var PermissionServiceFactory
 	 */
@@ -172,14 +173,18 @@ abstract class ReservationPage extends Page implements IReservationPage
 		$this->presenter = $this->GetPresenter();
 		$this->presenter->PageLoad();
 
-		$this->Set('ReturnUrl', $this->GetLastPage(Pages::SCHEDULE));
+		$this->Set('ReturnUrl', $this->GetReturnUrl());
 		$this->Set('ReservationAction', $this->GetReservationAction());
 		$this->Set('MaxUploadSize', UploadedFile::GetMaxSize());
 		$this->Set('MaxUploadCount', UploadedFile::GetMaxUploadCount());
-		$this->Set('UploadsEnabled', Configuration::Instance()->GetSectionKey(ConfigSection::UPLOADS, ConfigKeys::UPLOAD_ENABLE_RESERVATION_ATTACHMENTS,  new BooleanConverter()));
-		$this->Set('AllowParticipation', !Configuration::Instance()->GetSectionKey(ConfigSection::RESERVATION, ConfigKeys::RESERVATION_PREVENT_PARTICIPATION,  new BooleanConverter()));
-		$this->Set('AllowGuestParticipation', Configuration::Instance()->GetSectionKey(ConfigSection::RESERVATION, ConfigKeys::RESERVATION_ALLOW_GUESTS,  new BooleanConverter()));
-		$remindersEnabled = Configuration::Instance()->GetSectionKey(ConfigSection::RESERVATION,  ConfigKeys::RESERVATION_REMINDERS_ENABLED,  new BooleanConverter());
+		$this->Set('UploadsEnabled',
+				   Configuration::Instance()->GetSectionKey(ConfigSection::UPLOADS, ConfigKeys::UPLOAD_ENABLE_RESERVATION_ATTACHMENTS, new BooleanConverter()));
+		$this->Set('AllowParticipation', !Configuration::Instance()->GetSectionKey(ConfigSection::RESERVATION, ConfigKeys::RESERVATION_PREVENT_PARTICIPATION,
+																				   new BooleanConverter()));
+		$this->Set('AllowGuestParticipation',
+				   Configuration::Instance()->GetSectionKey(ConfigSection::RESERVATION, ConfigKeys::RESERVATION_ALLOW_GUESTS, new BooleanConverter()));
+		$remindersEnabled = Configuration::Instance()
+										 ->GetSectionKey(ConfigSection::RESERVATION, ConfigKeys::RESERVATION_REMINDERS_ENABLED, new BooleanConverter());
 		$emailEnabled = Configuration::Instance()->GetKey(ConfigKeys::ENABLE_EMAIL,
 														  new BooleanConverter());
 		$this->Set('RemindersEnabled', $remindersEnabled && $emailEnabled);
@@ -324,6 +329,11 @@ abstract class ReservationPage extends Page implements IReservationPage
 	public function HideRecurrence($isHidden)
 	{
 		$this->Set('HideRecurrence', $isHidden);
+	}
+
+	protected function GetReturnUrl()
+	{
+		return $this->GetLastPage(Pages::SCHEDULE);
 	}
 
 	protected function LoadInitializerFactory()

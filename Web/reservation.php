@@ -29,6 +29,10 @@ if (!is_null($server->GetQuerystring(QueryStringKeys::REFERENCE_NUMBER)))
 {
 	$page = new SecurePageDecorator(new ExistingReservationPage());
 }
+else if(!is_null($server->GetQuerystring(QueryStringKeys::SOURCE_REFERENCE_NUMBER)))
+{
+	$page = new SecurePageDecorator(new DuplicateReservationPage());
+}
 else
 {
 	$page = new SecurePageDecorator(new NewReservationPage());
