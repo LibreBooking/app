@@ -49,6 +49,3 @@ class Report_Usage
 		return $this->usage;
 	}
 }
-
-
-?>
