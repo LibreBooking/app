@@ -86,7 +86,9 @@ function BlackoutManagement(opts) {
 					}
 				});
 				wireUpTimePickers();
-			});
+
+                $('#update-box').removeClass('no-show');
+            });
 		});
 
 		handleBlackoutApplicabilityChange();

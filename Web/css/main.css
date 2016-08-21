@@ -498,7 +498,7 @@ input.mid-number {
   padding: 0;
 }
 .ui-datepicker {
-  z-index: 1000 !important;
+  z-index: 10000 !important;
 }
 .note {
   font-style: italic;

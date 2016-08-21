@@ -101,6 +101,9 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			<th>{translate key='Duration'}</th>
 			<th>{translate key='ReferenceNumber'}</th>
 			<th class="action">{translate key='Delete'}</th>
+            {if !$IsDesktop}
+                <th class="action">{translate key='Edit'}</th>
+            {/if}
 			<th class="action">{translate key='Approve'}</th>
 		</tr>
 		</thead>
@@ -110,7 +113,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			{if $reservation->RequiresApproval}
 				{assign var=rowCss value='pending'}
 			{/if}
-			<tr class="{$rowCss} editable" data-seriesId="{$reservation->SeriesId}" data-refnum="{$reservation->ReferenceNumber}">
+			<tr class="{$rowCss} {if $IsDesktop}editable{/if}" data-seriesId="{$reservation->SeriesId}" data-refnum="{$reservation->ReferenceNumber}">
 				<td class="id hidden">{$reservation->ReservationId}</td>
 				<td class="user">{fullname first=$reservation->FirstName last=$reservation->LastName ignorePrivacy=true}</td>
 				<td class="resource">{$reservation->ResourceName}
@@ -134,9 +137,15 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 				<td class="date">{formatdate date=$reservation->EndDate timezone=$Timezone key=short_reservation_date}</td>
 				<td class="duration">{$reservation->GetDuration()->__toString()}</td>
 				<td class="referenceNumber">{$reservation->ReferenceNumber}</td>
-				<td class="action"><a href="#" class="update delete"><span class="fa fa-trash icon remove fa-1x"></span></a>
-				</td>
 				<td class="action">
+                    <a href="#" class="update delete"><span class="fa fa-trash icon remove fa-1x"></span></a>
+                </td>
+                {if !$IsDesktop}
+                    <td class="action">
+                        <a href="#" class="update edit"><span class="fa fa-pencil icon fa-1x"></span></a>
+                    </td>
+                {/if}
+                <td class="action">
 					{if $reservation->RequiresApproval}
 						<a href="#" class="update approve"><span class="fa fa-check icon add"></span></a>
 					{else}
