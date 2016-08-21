@@ -68,6 +68,9 @@ body {
   padding-top: 70px;
   background-color: #f2f2f2;
 }
+.adjust-nav-bar-static {
+  margin-top: -70px;
+}
 a,
 a:visited {
   color: #669999;
