@@ -1509,7 +1509,7 @@ span.error {
   padding: 3px;
 }
 .resourceDetails img.image {
-  width: 100px;
+  width: 100%;
 }
 .resourceDetails .resourceImage {
   text-align: center;
