@@ -41,7 +41,7 @@ function BlackoutManagement(opts) {
 			location.reload();
 		});
 
-		$('#result').delegate('.close', 'click', function (e) {
+		$('#result').delegate('.unblock', 'click', function (e) {
 			$('#result').hide();
 			$.unblockUI();
 		});

@@ -26,7 +26,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			<div class="panel-heading">{translate key="AddBlackout"} {showhide_icon}</div>
 			<div class="panel-body add-contents">
 
-				<div class="form-group col-xs-6 col-sm-4">
+				<div class="form-group col-xs-6">
 					<label for="addStartDate">{translate key=BeginDate}</label>
 					<input type="text" id="addStartDate" class="form-control dateinput inline-block "
 						   value="{formatdate date=$AddStartDate}"/>
@@ -36,7 +36,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 													 class="form-control dateinput inline-block timepicker"
 													 value="{format_date format='h:00 A' date=now}" title="Start time"/>
 				</div>
-				<div class="form-group col-xs-6 col-sm-4">
+				<div class="form-group col-xs-6">
 					<label for="addEndDate">{translate key=EndDate}</label>
 					<input type="text" id="addEndDate" class="form-control dateinput inline-block " size="10"
 						   value="{formatdate date=$AddEndDate}"/>
