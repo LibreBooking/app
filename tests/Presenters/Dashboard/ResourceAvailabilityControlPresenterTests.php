@@ -57,14 +57,20 @@ class ResourceAvailabilityControlPresenterTests extends TestBase
 	 */
 	private $unavailableAllDayResource;
 
-	public function setup()
+    /**
+     * @var FakeScheduleRepository
+     */
+    private $scheduleRepo;
+
+    public function setup()
 	{
 		parent::setup();
 
 		$this->control = new FakeResourceAvailabilityControl();
 		$this->resourceService = new FakeResourceService();
 		$this->reservationRepo = new FakeReservationViewRepository();
-		$this->presenter = new ResourceAvailabilityControlPresenter($this->control, $this->resourceService, $this->reservationRepo);
+        $this->scheduleRepo = new FakeScheduleRepository();
+		$this->presenter = new ResourceAvailabilityControlPresenter($this->control, $this->resourceService, $this->reservationRepo, $this->scheduleRepo);
 
 		$this->unavailableResource = new TestResourceDto(1, '1');
 		$this->availableResource = new TestResourceDto(2, '2');
@@ -73,17 +79,18 @@ class ResourceAvailabilityControlPresenterTests extends TestBase
 
 	public function testSetsResourceAvailability()
 	{
+	    $this->PopulateSchedules();
 		$this->PopulateResources();
 		$this->PopulateReservations();
 
 		$this->presenter->PageLoad($this->fakeUser);
 
 		$this->assertEquals(new AvailableDashboardItem($this->availableResource, $this->reservationRepo->_Reservations[3]),
-							$this->control->_AvailableNow[0]);
+							$this->control->_AvailableNow[1][0]);
 		$this->assertEquals(new UnavailableDashboardItem($this->unavailableResource, $this->reservationRepo->_Reservations[1]),
-							$this->control->_UnavailableNow[0]);
+							$this->control->_UnavailableNow[1][0]);
 		$this->assertEquals(new UnavailableDashboardItem($this->unavailableAllDayResource, $this->reservationRepo->_Reservations[2]),
-							$this->control->_UnavailableAllDay[0]);
+							$this->control->_UnavailableAllDay[1][0]);
 	}
 
 	private function PopulateResources()
@@ -105,6 +112,10 @@ class ResourceAvailabilityControlPresenterTests extends TestBase
 		);
 	}
 
+    private function PopulateSchedules()
+    {
+        $this->scheduleRepo->_Schedules = array(new FakeSchedule(1), new FakeSchedule(2));
+    }
 }
 
 class FakeResourceAvailabilityControl implements IResourceAvailabilityControl

@@ -148,3 +148,8 @@
   background-color: #4e9d4e;
   border-color: #3d7b3d;
 }
+.availabilityDashboard h5 {
+  margin: 0;
+  font-weight: bold;
+  color: #BCBCBC;
+}
