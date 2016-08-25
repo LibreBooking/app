@@ -147,4 +147,15 @@ class PrivacyFilter implements IPrivacyFilter
 	}
 }
 
-?>
+class NullPrivacyFilter implements IPrivacyFilter
+{
+    public function CanViewUser(UserSession $currentUser, $reservationView = null, $ownerId = null)
+    {
+        return true;
+    }
+
+    public function CanViewDetails(UserSession $currentUser, $reservationView = null, $ownerId = null)
+    {
+        return true;
+    }
+}

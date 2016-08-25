@@ -22,9 +22,10 @@ class FakeUser extends User
 {
 	public $_IsAdminForUser = false;
 	public $_IsResourceAdmin = true;
-	public $_ResourceAdminResourceIds = array();
+    public $_ResourceAdminResourceIds = array();
+    public $_WantsEmail;
 
-	public function __construct($userId = null)
+    public function __construct($userId = null)
 	{
 		$this->timezone = 'America/Chicago';
 		$this->language = 'en_us';
@@ -78,6 +79,9 @@ class FakeUser extends User
 	{
 		return $this->_IsResourceAdmin || in_array($resource->GetId(), $this->_ResourceAdminResourceIds);
 	}
-}
 
-?>
+	public function WantsEventEmail(IDomainEvent $event)
+    {
+        return $this->_WantsEmail;
+    }
+}
