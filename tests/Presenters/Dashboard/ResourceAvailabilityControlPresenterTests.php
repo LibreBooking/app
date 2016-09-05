@@ -158,4 +158,12 @@ class FakeResourceAvailabilityControl implements IResourceAvailabilityControl
 	{
 		$this->_UnavailableAllDay = $items;
 	}
+
+    /**
+     * @param Schedule[] $schedules
+     */
+    public function SetSchedules($schedules)
+    {
+        // TODO: Implement SetSchedules() method.
+    }
 }

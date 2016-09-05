@@ -94,7 +94,7 @@ class CalendarSubscriptionPresenterTests extends TestBase
 				->will($this->returnValue($schedule));
 
 		$this->repo->expects($this->once())
-				->method('GetReservationList')
+				->method('GetReservations')
 				->with($this->equalTo($weekAgo), $this->equalTo($nextYear), $this->isNull(), ReservationUserLevel::OWNER, $scheduleId, $this->isNull())
 				->will($this->returnValue($reservationResult));
 
@@ -122,7 +122,7 @@ class CalendarSubscriptionPresenterTests extends TestBase
 				->will($this->returnValue($resource));
 
 		$this->repo->expects($this->once())
-				->method('GetReservationList')
+				->method('GetReservations')
 				->with($this->equalTo($weekAgo), $this->equalTo($nextYear), $this->isNull(), ReservationUserLevel::OWNER, $this->isNull(), $resourceId)
 				->will($this->returnValue($reservationResult));
 
@@ -150,7 +150,7 @@ class CalendarSubscriptionPresenterTests extends TestBase
 				->will($this->returnValue($user));
 
 		$this->repo->expects($this->once())
-				->method('GetReservationList')
+				->method('GetReservations')
 				->with($this->equalTo($weekAgo), $this->equalTo($nextYear), $this->equalTo($userId), ReservationUserLevel::ALL, $this->isNull(), $this->isNull())
 				->will($this->returnValue($reservationResult));
 
@@ -180,7 +180,7 @@ class CalendarSubscriptionPresenterTests extends TestBase
 				->will($this->returnValue($resourceIds));
 
 		$this->repo->expects($this->once())
-				->method('GetReservationList')
+				->method('GetReservations')
 				->with($this->equalTo($weekAgo), $this->equalTo($nextYear), $this->isNull(), ReservationUserLevel::OWNER, $this->isNull(), $this->isNull())
 				->will($this->returnValue($reservationResult));
 

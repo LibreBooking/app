@@ -203,10 +203,8 @@ class QuotaWhenModifyingTests extends TestBase
 	private function SearchReturns($reservations)
 	{
 		$this->reservationViewRepository->expects($this->once())
-			->method('GetReservationList')
+			->method('GetReservations')
 			->with($this->anything(), $this->anything(), $this->anything(), $this->anything())
 			->will($this->returnValue($reservations));
 	}
 }
-
-?>

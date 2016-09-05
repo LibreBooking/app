@@ -380,7 +380,12 @@ a.toggle-sidebar {
   text-align: right;
   color: #BCBCBC;
 }
+#page-resource-display-resource {
+  margin-top: -40px;
+}
 #page-resource-display-resource table.reservations td {
-  line-height: 60px;
   font-size: 1.1em;
+}
+#page-resource-display-resource table.reservations tbody td {
+  height: 60px;
 }

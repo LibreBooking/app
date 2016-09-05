@@ -745,7 +745,7 @@ class QuotaTests extends TestBase
 	private function ShouldSearchBy($startSearch, $endSearch, $series, $reservations)
 	{
 		$this->reservationViewRepository->expects($this->once())
-										->method('GetReservationList')
+										->method('GetReservations')
 										->with($this->equalTo($startSearch), $this->equalTo($endSearch), $this->equalTo($series->UserId()),
 											   $this->equalTo(ReservationUserLevel::OWNER))
 										->will($this->returnValue($reservations));
@@ -754,10 +754,8 @@ class QuotaTests extends TestBase
 	private function SearchReturns($reservations)
 	{
 		$this->reservationViewRepository->expects($this->once())
-										->method('GetReservationList')
+										->method('GetReservations')
 										->with($this->anything(), $this->anything(), $this->anything(), $this->anything())
 										->will($this->returnValue($reservations));
 	}
 }
-
-?>

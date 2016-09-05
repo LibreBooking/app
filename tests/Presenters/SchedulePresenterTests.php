@@ -86,12 +86,6 @@ class SchedulePresenterTests extends TestBase
 				->with($this->equalTo($this->showInaccessibleResources), $this->equalTo($this->fakeUser))
 				->will($this->returnValue($this->schedules));
 
-		$scheduleService
-				->expects($this->once())
-				->method('GetLayout')
-				->with($this->equalTo($this->scheduleId), $this->equalTo(new ScheduleLayoutFactory($user->Timezone)))
-				->will($this->returnValue($layout));
-
 		$pageBuilder
 				->expects($this->once())
 				->method('GetCurrentSchedule')
@@ -155,10 +149,10 @@ class SchedulePresenterTests extends TestBase
 					   $this->equalTo($user->Timezone))
 				->will($this->returnValue($reservations));
 
-		$dailyLayoutFactory
+		$scheduleService
 				->expects($this->once())
-				->method('Create')
-				->with($this->equalTo($reservations), $this->equalTo($layout))
+				->method('GetDailyLayout')
+				->with($this->equalTo($this->scheduleId), new ScheduleLayoutFactory($user->Timezone), $reservations)
 				->will($this->returnValue($dailyLayout));
 
 		$pageBuilder
@@ -1238,4 +1232,14 @@ class FakeSchedulePage implements ISchedulePage
 	{
 		// TODO: Implement SetSpecificDates() method.
 	}
+
+    public function GetSortField()
+    {
+        // TODO: Implement GetSortField() method.
+    }
+
+    public function GetSortDirection()
+    {
+        // TODO: Implement GetSortDirection() method.
+    }
 }

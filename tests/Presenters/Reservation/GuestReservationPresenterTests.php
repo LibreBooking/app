@@ -373,4 +373,14 @@ class FakeGuestReservationPage implements IGuestReservationPage
 	{
 		// TODO: Implement SetAllowParticipantsToJoin() method.
 	}
+
+    public function GetSortField()
+    {
+        // TODO: Implement GetSortField() method.
+    }
+
+    public function GetSortDirection()
+    {
+        // TODO: Implement GetSortDirection() method.
+    }
 }

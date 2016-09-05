@@ -331,6 +331,6 @@ class DatabaseCommandTests extends PHPUnit_Framework_TestCase
 			WHERE (whatever = whatever else) ORDER BY @sort_params';
 
         $this->assertEquals($expected, $command->GetQuery());
-        $this->assertEquals(new Parameter('@sort_params', 'email desc'), $command->Parameters->Items(0));
+        $this->assertEquals(new ParameterRaw('@sort_params', 'email desc'), $command->Parameters->Items(0));
     }
 }

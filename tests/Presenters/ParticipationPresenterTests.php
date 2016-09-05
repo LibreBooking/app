@@ -265,7 +265,7 @@ class ParticipationPresenterTests extends TestBase
 		$reservations[] = new ReservationItemView();
 
 		$this->reservationViewRepo->expects($this->once())
-				->method('GetReservationList')
+				->method('GetReservations')
 				->with($this->equalTo($startDate), $this->equalTo($endDate), $this->equalTo($userId), $this->equalTo($inviteeLevel))
 				->will($this->returnValue($reservations));
 

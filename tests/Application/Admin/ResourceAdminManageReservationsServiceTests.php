@@ -83,7 +83,7 @@ class ResourceAdminManageReservationsServiceTests extends TestBase
 				->with($pageNumber, $pageSize, null, null, $expectedFilter)
 				->will($this->returnValue($data));
 
-		$actualData = $this->service->LoadFiltered($pageNumber, $pageSize, $filter, $this->fakeUser);
+		$actualData = $this->service->LoadFiltered($pageNumber, $pageSize, null, null, $filter, $this->fakeUser);
 
 		$this->assertEquals($data, $actualData);
 	}

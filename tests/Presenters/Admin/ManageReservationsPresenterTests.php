@@ -304,8 +304,8 @@ class ManageReservationsPresenterTests extends TestBase
 
 		$this->reservationsService->expects($this->once())
 								  ->method('LoadFiltered')
-								  ->with($this->isNull(), $this->isNull(),
-										 $this->equalTo(new ReservationFilter(null, null, $referenceNumber, null, null, null, null, null)),
+								  ->with($this->isNull(), $this->isNull(), $this->anything(), $this->anything(),
+                                      $this->equalTo(new ReservationFilter(null, null, $referenceNumber, null, null, null, null, null)),
 										 $this->equalTo($this->fakeUser))
 								  ->will($this->returnValue($pageableReservations));
 

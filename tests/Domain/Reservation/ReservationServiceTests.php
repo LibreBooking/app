@@ -58,7 +58,7 @@ class ReservationServiceTests extends TestBase
 
 		$repository
 			->expects($this->once())
-			->method('GetReservationList')
+			->method('GetReservations')
 			->with($this->equalTo($startDate), $this->equalTo($endDate), $this->isNull(), $this->isNull(), $this->equalTo($scheduleId), $this->isNull())
 			->will($this->returnValue(array($res1, $res2, $res3)));
 

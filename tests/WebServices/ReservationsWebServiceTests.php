@@ -95,7 +95,7 @@ class ReservationsWebServiceTests extends TestBase
 		$reservations = array();
 
 		$this->reservationViewRepository->expects($this->once())
-				->method('GetReservationList')
+				->method('GetReservations')
 				->with($this->equalTo($this->defaultStartDate), $this->equalTo($this->defaultEndDate))
 				->will($this->returnValue($reservations));
 
@@ -114,7 +114,7 @@ class ReservationsWebServiceTests extends TestBase
 		$this->server->SetQueryString(WebServiceQueryStringKeys::USER_ID, $userId);
 
 		$this->reservationViewRepository->expects($this->once())
-				->method('GetReservationList')
+				->method('GetReservations')
 				->with($this->anything(), $this->anything(), $this->equalTo($userId))
 				->will($this->returnValue(array()));
 
@@ -128,7 +128,7 @@ class ReservationsWebServiceTests extends TestBase
 		$this->server->SetQueryString(WebServiceQueryStringKeys::RESOURCE_ID, $resourceId);
 
 		$this->reservationViewRepository->expects($this->once())
-				->method('GetReservationList')
+				->method('GetReservations')
 				->with($this->equalTo($this->defaultStartDate), $this->equalTo($this->defaultEndDate),
 					   $this->isNull(), $this->isNull(),
 					   $this->isNull(), $this->equalTo($resourceId))
@@ -144,7 +144,7 @@ class ReservationsWebServiceTests extends TestBase
 		$this->server->SetQueryString(WebServiceQueryStringKeys::SCHEDULE_ID, $scheduleId);
 
 		$this->reservationViewRepository->expects($this->once())
-				->method('GetReservationList')
+				->method('GetReservations')
 				->with($this->equalTo($this->defaultStartDate), $this->equalTo($this->defaultEndDate),
 					   $this->isNull(), $this->isNull(),
 					   $this->equalTo($scheduleId), $this->isNull())
