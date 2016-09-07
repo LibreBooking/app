@@ -14,6 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 class BlackoutSlot implements IReservationSlot
 {
 	/**
@@ -190,17 +191,11 @@ class BlackoutSlot implements IReservationSlot
 		return null;
 	}
 
-	/**
-	 * @return bool
-	 */
 	public function HasCustomColor()
 	{
 		return false;
 	}
 
-	/**
-	 * @return string
-	 */
 	public function TextColor()
 	{
 		return null;
@@ -210,4 +205,14 @@ class BlackoutSlot implements IReservationSlot
 	{
 		return $this->blackout->CollidesWith($date);
 	}
+
+    public function RequiresCheckin()
+    {
+        return false;
+    }
+
+    public function AutoReleaseMinutes()
+    {
+       return null;
+    }
 }

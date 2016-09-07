@@ -73,6 +73,16 @@ interface IReservationSlot
 	 */
 	public function IsPastDate(Date $date);
 
+    /**
+     * @return bool
+     */
+    public function RequiresCheckin();
+
+    /**
+     * @return int
+     */
+    public function AutoReleaseMinutes();
+
 	/**
 	 * @param string $timezone
 	 * @return IReservationSlot

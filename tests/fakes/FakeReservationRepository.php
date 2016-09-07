@@ -62,6 +62,8 @@ class FakeReservationRepository implements IReservationRepository
 				ColumnNames::CHECKIN_DATE => null,
 				ColumnNames::CHECKOUT_DATE => null,
 				ColumnNames::PREVIOUS_END_DATE => null,
+                ColumnNames::ENABLE_CHECK_IN => null,
+                ColumnNames::AUTO_RELEASE_MINUTES => null,
 		);
 
 		$row2 = array(ColumnNames::RESERVATION_INSTANCE_ID => 1,
@@ -95,6 +97,8 @@ class FakeReservationRepository implements IReservationRepository
 				ColumnNames::CHECKIN_DATE => null,
 				ColumnNames::CHECKOUT_DATE => null,
 				ColumnNames::PREVIOUS_END_DATE => null,
+				ColumnNames::ENABLE_CHECK_IN => 1,
+				ColumnNames::AUTO_RELEASE_MINUTES => 1,
 		);
 
 		$row3 = array(ColumnNames::RESERVATION_INSTANCE_ID => 2,
@@ -128,6 +132,8 @@ class FakeReservationRepository implements IReservationRepository
 				ColumnNames::CHECKIN_DATE => null,
 				ColumnNames::CHECKOUT_DATE => null,
 				ColumnNames::PREVIOUS_END_DATE => null,
+				ColumnNames::ENABLE_CHECK_IN => 0,
+				ColumnNames::AUTO_RELEASE_MINUTES => 0,
 		);
 
 		return array(

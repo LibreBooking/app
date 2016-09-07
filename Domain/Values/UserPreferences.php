@@ -74,6 +74,12 @@ class UserPreferences
 	 */
 	public function Get($name)
 	{
+	    if ($name == UserPreferences::RESERVATION_COLOR &&
+            Configuration::Instance()->GetSectionKey(ConfigSection::SCHEDULE, ConfigKeys::SCHEDULE_PER_USER_COLORS, new BooleanConverter()) == false)
+        {
+            return null;
+        }
+
 		if (array_key_exists($name, $this->preferences))
 		{
            return $this->preferences[$name];

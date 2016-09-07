@@ -1173,7 +1173,7 @@ class QueryBuilder
 
 	public static $SELECT_LIST_FRAGMENT = 'ri.*, rs.date_created as date_created, rs.last_modified as last_modified, rs.description as description, rs.status_id as status_id, rs.title, rs.repeat_type, rs.repeat_options,
 					owner.fname as owner_fname, owner.lname as owner_lname, owner.user_id as owner_id, owner.phone as owner_phone, owner.position as owner_position, owner.organization as owner_organization, owner.email as email,
-					resources.name, resources.resource_id, resources.schedule_id, resources.status_id as resource_status_id, resources.resource_status_reason_id, resources.buffer_time, resources.color, ru.reservation_user_level,
+					resources.name, resources.resource_id, resources.schedule_id, resources.status_id as resource_status_id, resources.resource_status_reason_id, resources.buffer_time, resources.color, resources.enable_check_in, resources.auto_release_minutes, ru.reservation_user_level,
 					start_reminder.minutes_prior AS start_reminder_minutes, end_reminder.minutes_prior AS end_reminder_minutes,
 					(SELECT GROUP_CONCAT(groups.group_id)
 						FROM user_groups groups WHERE owner.user_id = groups.user_id) as owner_group_list,

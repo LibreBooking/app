@@ -89,49 +89,31 @@ class BufferSlot implements IReservationSlot
 		$this->_endPeriod = $end;
 	}
 
-	/**
-	 * @return Time
-	 */
 	public function Begin()
 	{
 		return $this->_begin->GetTime();
 	}
 
-	/**
-	 * @return Date
-	 */
 	public function BeginDate()
 	{
 		return $this->_begin;
 	}
 
-	/**
-	 * @return Time
-	 */
 	public function End()
 	{
 		return $this->_end->GetTime();
 	}
 
-	/**
-	 * @return Date
-	 */
 	public function EndDate()
 	{
 		return $this->_end;
 	}
 
-	/**
-	 * @return Date
-	 */
 	public function Date()
 	{
 		return $this->_displayDate;
 	}
 
-	/**
-	 * @return int
-	 */
 	public function PeriodSpan()
 	{
 		return $this->_periodSpan;
@@ -219,4 +201,14 @@ class BufferSlot implements IReservationSlot
 		$range = new DateRange($this->_begin, $this->_end);
 		return $range->Contains($date, false);
 	}
+
+    public function RequiresCheckin()
+    {
+        return false;
+    }
+
+    public function AutoReleaseMinutes()
+    {
+        return null;
+    }
 }

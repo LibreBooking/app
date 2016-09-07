@@ -78,49 +78,32 @@ class EmptyReservationSlot implements IReservationSlot
 		$this->_endPeriod = $end;
 	}
 
-	/**
-	 * @return Time
-	 */
 	public function Begin()
 	{
 		return $this->_beginDisplayTime;
 	}
 
-	/**
-	 * @return Date
-	 */
 	public function BeginDate()
 	{
 		return $this->_begin;
 	}
 
-	/**
-	 * @return Time
-	 */
+
 	public function End()
 	{
 		return $this->_endDisplayTime;
 	}
 
-	/**
-	 * @return Date
-	 */
 	public function EndDate()
 	{
 		return $this->_end;
 	}
 
-	/**
-	 * @return Date
-	 */
 	public function Date()
 	{
 		return $this->_date;
 	}
 
-	/**
-	 * @return int
-	 */
 	public function PeriodSpan()
 	{
 		return 1;
@@ -199,17 +182,11 @@ class EmptyReservationSlot implements IReservationSlot
 		return null;
 	}
 
-	/**
-	 * @return bool
-	 */
 	public function HasCustomColor()
 	{
 		return false;
 	}
 
-	/**
-	 * @return string
-	 */
 	public function TextColor()
 	{
 		return null;
@@ -225,4 +202,14 @@ class EmptyReservationSlot implements IReservationSlot
 		$range = new DateRange($this->_begin, $this->_end);
 		return $range->Contains($date, false);
 	}
+
+    public function RequiresCheckin()
+    {
+        return false;
+    }
+
+    public function AutoReleaseMinutes()
+    {
+       return null;
+    }
 }

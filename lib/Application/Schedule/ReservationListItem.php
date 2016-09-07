@@ -17,11 +17,11 @@
 class ReservationListItem
 {
 	/**
-	 * @var IReservedItemView
+	 * @var ReservationItemView
 	 */
 	protected $item;
 
-	public function __construct(IReservedItemView $reservedItem)
+	public function __construct(ReservationItemView $reservedItem)
 	{
 		$this->item = $reservedItem;
 	}
@@ -214,6 +214,13 @@ class BufferItem extends ReservationListItem
 
 class BlackoutListItem extends ReservationListItem
 {
+    protected $blackoutItem;
+
+    public function __construct(BlackoutItemView $item)
+    {
+        $this->blackoutItem = $item;
+    }
+
 	/**
 	 * @param SchedulePeriod $start
 	 * @param SchedulePeriod $end
@@ -223,7 +230,7 @@ class BlackoutListItem extends ReservationListItem
 	 */
 	public function BuildSlot(SchedulePeriod $start, SchedulePeriod $end, Date $displayDate, $span)
 	{
-		return new BlackoutSlot($start, $end, $displayDate, $span, $this->item);
+		return new BlackoutSlot($start, $end, $displayDate, $span, $this->blackoutItem);
 	}
 
 	public function IsReservation()
@@ -231,5 +238,3 @@ class BlackoutListItem extends ReservationListItem
 		return false;
 	}
 }
-
-?>

@@ -52,7 +52,7 @@ function ResourceDisplay(opts) {
 		});
 	};
 
-	ResourceDisplay.prototype.initDisplay = function (url) {
+	ResourceDisplay.prototype.initDisplay = function (url, checkinUrl) {
 
 		refreshResource();
 

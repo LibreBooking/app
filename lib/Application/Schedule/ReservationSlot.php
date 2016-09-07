@@ -167,7 +167,19 @@ class ReservationSlot implements IReservationSlot
 		return $this->_displayDate->SetTime($this->Begin())->LessThan($date);
 	}
 
-	public function ToTimezone($timezone)
+	public function RequiresCheckin()
+    {
+        return ($this->_reservation->CheckinDate->ToString() == '' &&
+            Date::Now()->AddMinutes(5)->GreaterThanOrEqual($this->_reservation->StartDate) &&
+            $this->_reservation->IsCheckInEnabled);
+    }
+
+    public function AutoReleaseMinutes()
+    {
+        return empty($this->_reservation->AutoReleaseMinutes) ? 0 : $this->_reservation->AutoReleaseMinutes;
+    }
+
+    public function ToTimezone($timezone)
 	{
 		return new ReservationSlot($this->_beginPeriod->ToTimezone($timezone), $this->_endPeriod->ToTimezone($timezone), $this->Date(), $this->PeriodSpan(), $this->_reservation);
 	}

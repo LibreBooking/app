@@ -35,7 +35,7 @@ interface IReservationCheckinPage extends IReservationSaveResultsView
 	public function GetAction();
 }
 
-class ReservationCheckinPage extends SecurePage implements IReservationCheckinPage
+class ReservationCheckinPage extends Page implements IReservationCheckinPage
 {
 	/**
 	 * @var ReservationCheckinPresenter
@@ -97,12 +97,9 @@ class ReservationCheckinPage extends SecurePage implements IReservationCheckinPa
 		$this->_reservationSavedSuccessfully = $succeeded;
 	}
 
-	/**
-	 * @param array|string[] $errors
-	 */
 	public function SetErrors($errors)
 	{
-		// TODO: Implement SetErrors() method.
+        // no-op
 	}
 
 	public function SetWarnings($warnings)
@@ -130,9 +127,6 @@ class ReservationCheckinPage extends SecurePage implements IReservationCheckinPa
 		return array();
 	}
 
-    /**
-     * @param bool $canJoinWaitlist
-     */
     public function SetCanJoinWaitList($canJoinWaitlist)
     {
         // no-op
