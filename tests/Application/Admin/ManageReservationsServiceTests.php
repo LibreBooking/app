@@ -72,7 +72,7 @@ class ManageReservationsServiceTests extends TestBase
 				->with($pageNumber, $pageSize, null, null, $filter->GetFilter())
 				->will($this->returnValue($data));
 
-		$actualData = $this->service->LoadFiltered($pageNumber, $pageSize, $filter, $this->fakeUser);
+		$actualData = $this->service->LoadFiltered($pageNumber, $pageSize, null, null, $filter, $this->fakeUser);
 
 		$this->assertEquals($data, $actualData);
 	}

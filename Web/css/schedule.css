@@ -4,6 +4,43 @@
     A set of useful LESS mixins
     More info at: http://lesselements.com
   ---------------------------------------------------*/
+@media (max-width: 1000px) {
+  .navbar-header {
+    float: none;
+  }
+  .navbar-left,
+  .navbar-right {
+    float: none !important;
+  }
+  .navbar-toggle {
+    display: block;
+  }
+  .navbar-collapse {
+    border-top: 1px solid transparent;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  }
+  .navbar-fixed-top {
+    top: 0;
+    border-width: 0 0 1px;
+  }
+  .navbar-collapse.collapse {
+    display: none!important;
+  }
+  .navbar-nav {
+    float: none!important;
+    margin-top: 7.5px;
+  }
+  .navbar-nav > li {
+    float: none;
+  }
+  .navbar-nav > li > a {
+    padding-top: 10px;
+    padding-bottom: 10px;
+  }
+  .collapse.in {
+    display: block !important;
+  }
+}
 /* Main Primary color */
 /* Main Secondary color (1) */
 /* Main Secondary color (2) */
@@ -157,7 +194,7 @@ td.dropped {
   background-color: #BDBDBD;
 }
 .restricted {
-  background: repeating-linear-gradient(45deg, transparent, transparent 10px, #cccccc 10px, #cccccc 20px), linear-gradient(to bottom, #eeeeee, #999999);
+  background: repeating-linear-gradient(45deg, transparent, transparent 10px, #ccc 10px, #ccc 20px), linear-gradient(to bottom, #eee, #999);
   color: black;
 }
 .schedule_title {
@@ -204,7 +241,7 @@ div.legend {
   padding: 0;
 }
 .reservations-left-header {
-  border-bottom: solid 1px #e9e9e9;
+  border-bottom: solid 1px #E9E9E9;
   font-weight: bold;
   font-size: 1.3em;
   text-align: center;
@@ -254,7 +291,7 @@ ul.jqtree-tree .jqtree-toggler {
 #reservations-left hr {
   border: 0;
   height: 1px;
-  background-color: #bcbcbc;
+  background-color: #BCBCBC;
 }
 #reservations-left .btn {
   width: 100%;
@@ -316,7 +353,7 @@ a.toggle-sidebar {
 }
 .resource-display-available,
 .resource-display-unavailable {
-  background-color: #88cc88;
+  background-color: #88CC88;
   border: solid 1px #76c476;
   line-height: 70px;
   text-align: center;
@@ -330,8 +367,8 @@ a.toggle-sidebar {
   font-weight: bold;
 }
 .resource-display-unavailable {
-  background-color: #ffaaaa;
-  border: solid 1px #ff9090;
+  background-color: #AA3939;
+  border: solid 1px #973333;
 }
 .resource-display-name,
 .resource-display-date {
@@ -341,9 +378,14 @@ a.toggle-sidebar {
 }
 .resource-display-date {
   text-align: right;
-  color: #bcbcbc;
+  color: #BCBCBC;
+}
+#page-resource-display-resource {
+  margin-top: -40px;
 }
 #page-resource-display-resource table.reservations td {
-  line-height: 60px;
   font-size: 1.1em;
+}
+#page-resource-display-resource table.reservations tbody td {
+  height: 60px;
 }

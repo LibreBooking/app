@@ -16,6 +16,10 @@
 
 require_once(ROOT_DIR . 'lib/Email/namespace.php');
 require_once(ROOT_DIR . 'Pages/Pages.php');
+require_once(ROOT_DIR . 'Pages/Export/CalendarExportDisplay.php');
+require_once(ROOT_DIR . 'lib/Application/Schedule/namespace.php');
+require_once(ROOT_DIR . 'lib/Application/Reservation/namespace.php');
+require_once(ROOT_DIR . 'Domain/Access/namespace.php');
 
 abstract class ReservationEmailMessage extends EmailMessage
 {
@@ -158,6 +162,8 @@ abstract class ReservationEmailMessage extends EmailMessage
 			}
 		}
 
+        $this->PopulateIcsAttachment($currentInstance, $attributeValues);
+
 		$this->Set('AutoReleaseMinutes', $minimumAutoRelease);
 	}
 
@@ -165,4 +171,43 @@ abstract class ReservationEmailMessage extends EmailMessage
 	{
 		return Configuration::Instance()->GetKey(ConfigKeys::IMAGE_UPLOAD_URL) . '/' . $img;
 	}
+
+    /**
+     * @param Reservation $currentInstance
+     * @param Attribute[] $attributeValues
+     */
+    protected function PopulateIcsAttachment($currentInstance, $attributeValues)
+    {
+        $rv = new ReservationItemView($currentInstance->ReferenceNumber(),
+            $currentInstance->StartDate(),
+            $currentInstance->EndDate(),
+            $this->reservationSeries->Resource()->GetName(),
+            $this->reservationSeries->Resource()->GetResourceId(),
+            $currentInstance->ReservationId(),
+            null,
+            $this->reservationSeries->Title(),
+            $this->reservationSeries->Description(),
+            $this->reservationSeries->ScheduleId(),
+            $this->reservationOwner->FirstName(),
+            $this->reservationOwner->LastName(),
+            $this->reservationOwner->Id(),
+            $this->reservationOwner->GetAttribute(UserAttribute::Phone),
+            $this->reservationOwner->GetAttribute(UserAttribute::Organization),
+            $this->reservationOwner->GetAttribute(UserAttribute::Position)
+        );
+
+        $ca = new CustomAttributes();
+        /** @var Attribute $attribute */
+        foreach ($attributeValues as $attribute) {
+            $ca->Add($attribute->Id(), $attribute->Value());
+        }
+        $rv->Attributes = $ca;
+        $rv->UserPreferences = $this->reservationOwner->GetPreferences();
+
+        $icsView = new iCalendarReservationView($rv, $this->reservationSeries->BookedBy(), new NullPrivacyFilter());
+
+        $display = new CalendarExportDisplay();
+        $icsContents = $display->Render(array($icsView));
+        $this->AddStringAttachment($icsContents, 'reservation.ics');
+    }
 }

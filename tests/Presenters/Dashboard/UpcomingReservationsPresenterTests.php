@@ -64,7 +64,7 @@ class UpcomingReservationsPresenterTests extends TestBase
 
 
 		$this->repository->expects($this->once())
-			->method('GetReservationList')
+			->method('GetReservations')
 			->with($this->equalTo($startDate), $this->equalTo($endDate), $this->equalTo($userId), $this->equalTo(ReservationUserLevel::ALL))
 			->will($this->returnValue($reservations));
 
@@ -111,7 +111,7 @@ class UpcomingReservationsPresenterTests extends TestBase
 		$reservations[] = $nextWeek;
 
 		$this->repository->expects($this->once())
-			->method('GetReservationList')
+			->method('GetReservations')
 			->with($this->anything(), $this->anything(), $this->anything())
 			->will($this->returnValue($reservations));
 

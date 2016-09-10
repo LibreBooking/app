@@ -506,4 +506,13 @@ class ScheduleWebServiceView implements ISchedulePage
 	}
 
 
+    public function GetSortField()
+    {
+        return null;
+    }
+
+    public function GetSortDirection()
+    {
+        return null;
+    }
 }

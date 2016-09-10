@@ -34,11 +34,11 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
         <form id="form-reservation" method="post" enctype="multipart/form-data" role="form">
 
             <div class="row">
-                <div class="col-m-6 col-xs-12 col-top reservationHeader">
+                <div class="col-md-6 col-xs-12 col-top reservationHeader">
                     <h3>{block name=reservationHeader}{translate key="CreateReservationHeading"}{/block}</h3>
                 </div>
 
-                <div class="col-m-6 col-xs-12 col-top">
+                <div class="col-md-6 col-xs-12 col-top">
                     <div class="pull-right">
                         <button type="button" class="btn btn-default" onclick="window.location='{$ReturnUrl}'">
                             {translate key='Cancel'}
@@ -63,7 +63,6 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                 {/if}
 
                 <div id="reservationDetails" class="{$detailsCol}">
-
                     <div class="col-xs-12">
                         <div class="form-group">
                             {if $ShowUserDetails && $ShowReservationDetails}
@@ -204,7 +203,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                         </div>
 
                     </div>
-                    <div class="col-md-12 reservationLength">
+
+                    <div class="col-xs-12 reservationLength">
                         <div class="form-group">
                             <span class="like-label">{translate key=ReservationLength}</span>
                             <div class="durationText">
@@ -214,11 +214,13 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                             </div>
                         </div>
                     </div>
+
                     {if !$HideRecurrence}
                         <div class="col-xs-12">
                             {control type="RecurrenceControl" RepeatTerminationDate=$RepeatTerminationDate}
                         </div>
                     {/if}
+
                     <div class="col-xs-12 reservationTitle">
                         <div class="form-group has-feedback">
                             <label for="reservationTitle">{translate key="ReservationTitle"}</label>
@@ -226,6 +228,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                             {*<i class="glyphicon glyphicon-asterisk form-control-feedback" data-bv-icon-for="reservationTitle"></i>*}
                         </div>
                     </div>
+
                     <div class="col-xs-12">
                         <div class="form-group">
                             <label for="description">{translate key="ReservationDescription"}</label>

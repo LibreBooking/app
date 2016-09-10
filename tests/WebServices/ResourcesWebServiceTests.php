@@ -162,7 +162,7 @@ class ResourcesWebServiceTests extends TestBase
 
 		$endDate = Date::Now()->AddDays(30);
 		$this->reservationRepository->expects($this->once())
-									->method('GetReservationList')
+									->method('GetReservations')
 									->with($this->equalTo(Date::Now()), $this->equalTo($endDate))
 									->will($this->returnValue($reservations));
 
@@ -192,7 +192,7 @@ class ResourcesWebServiceTests extends TestBase
 
 		$endDate = $date->AddDays(30);
 		$this->reservationRepository->expects($this->once())
-									->method('GetReservationList')
+									->method('GetReservations')
 									->with($this->equalTo($date->ToUtc()),
 										   $this->equalTo($endDate->ToUtc()))
 									->will($this->returnValue($reservations));
@@ -214,7 +214,7 @@ class ResourcesWebServiceTests extends TestBase
 
 		$endDate = Date::Now()->AddDays(30);
 		$this->reservationRepository->expects($this->once())
-									->method('GetReservationList')
+									->method('GetReservations')
 									->with($this->equalTo(Date::Now()),
 										   $this->equalTo($endDate),
 										   $this->isEmpty(),
@@ -242,7 +242,7 @@ class ResourcesWebServiceTests extends TestBase
 
 		$endDate = $date->AddDays(30);
 		$this->reservationRepository->expects($this->once())
-									->method('GetReservationList')
+									->method('GetReservations')
 									->with($this->equalTo($date->ToUtc()),
 										   $this->equalTo($endDate->ToUtc()),
 										   $this->isEmpty(),

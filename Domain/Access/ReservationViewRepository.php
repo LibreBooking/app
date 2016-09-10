@@ -1105,12 +1105,22 @@ class ReservationItemView implements IReservedItemView
 	 */
 	public $CheckoutDate;
 
+    /**
+     * @var bool
+     */
+    public $IsCheckInEnabled;
+
+    /**
+     * @var int|null
+     */
+    public $AutoReleaseMinutes;
+
 	/**
 	 * @var Date
 	 */
 	public $OriginalEndDate;
 
-	/**
+    /**
 	 * @var int|null
 	 */
 	private $bufferSeconds = 0;
@@ -1328,6 +1338,8 @@ class ReservationItemView implements IReservedItemView
 		$view->CheckinDate = Date::FromDatabase($row[ColumnNames::CHECKIN_DATE]);
 		$view->CheckoutDate = Date::FromDatabase($row[ColumnNames::CHECKOUT_DATE]);
 		$view->OriginalEndDate = Date::FromDatabase($row[ColumnNames::PREVIOUS_END_DATE]);
+        $view->IsCheckInEnabled = (bool)$row[ColumnNames::ENABLE_CHECK_IN];
+        $view->AutoReleaseMinutes = $row[ColumnNames::AUTO_RELEASE_MINUTES];
 
 		return $view;
 	}

@@ -162,7 +162,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 <body>
 
 {if $HideNavBar == false}
-<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+<nav class="navbar navbar-default {if $IsDesktop}navbar-fixed-top{else}navbar-static-top adjust-nav-bar-static{/if}" role="navigation">
 	<div class="container-fluid">
 		<div class="navbar-header">
 			<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#booked-navigation">

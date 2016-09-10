@@ -417,4 +417,14 @@ class FakeICalImportPage implements IICalImportPage
 	{
 		// TODO: Implement SetNumberImported() method.
 	}
+
+    public function GetSortField()
+    {
+        // TODO: Implement GetSortField() method.
+    }
+
+    public function GetSortDirection()
+    {
+        // TODO: Implement GetSortDirection() method.
+    }
 }

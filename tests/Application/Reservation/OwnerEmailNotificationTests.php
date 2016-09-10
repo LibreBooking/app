@@ -38,7 +38,6 @@ class OwnerEmailNotificationTests extends TestBase
 
 	public function testSendsReservationCreatedEmailIfUserWantsIt()
 	{
-		$event = new ReservationCreatedEvent();
 		$ownerId = 100;
 		$resourceId = 200;
 
@@ -47,12 +46,12 @@ class OwnerEmailNotificationTests extends TestBase
 		$reservation = new TestReservationSeries();
 		$reservation->WithOwnerId($ownerId);
 		$reservation->WithResource($resource);
+        $reservation->WithCurrentInstance(new TestReservation());
 
 		$userRepo = $this->getMock('IUserRepository');
-		$attributeRepo = $this->getMock('IAttributeRepository');
+		$attributeRepo = new FakeAttributeRepository();
 
 		$user = $this->LoadsUser($userRepo, $ownerId);
-		$this->AsksUser($user, $event);
 
 		$notification = new OwnerEmailCreatedNotification($userRepo, $attributeRepo);
 		$notification->Notify($reservation);
@@ -60,7 +59,9 @@ class OwnerEmailNotificationTests extends TestBase
 		$expectedMessage = new ReservationCreatedEmail($user, $reservation, null, $attributeRepo);
 
 		$lastMessage = $this->fakeEmailService->_LastMessage;
+        $body = $lastMessage->Body();
         $this->assertInstanceOf('ReservationCreatedEmail', $lastMessage);
+        $this->assertNotEmpty($lastMessage->AttachmentContents());
 //		$this->assertEquals($expectedMessage, $lastMessage);
 	}
 
@@ -80,7 +81,6 @@ class OwnerEmailNotificationTests extends TestBase
 		$attributeRepo = $this->getMock('IAttributeRepository');
 
 		$user = $this->LoadsUser($userRepo, $ownerId);
-		$this->AsksUser($user, $event);
 
 		$notification = new OwnerEmailUpdatedNotification($userRepo, $attributeRepo);
 		$notification->Notify($reservation);
@@ -94,7 +94,6 @@ class OwnerEmailNotificationTests extends TestBase
 
     public function testSendsReservationDeletedEmailIfUserWantsIt()
     {
-        $event = new ReservationDeletedEvent();
         $ownerId = 100;
         $resourceId = 200;
 
@@ -108,7 +107,6 @@ class OwnerEmailNotificationTests extends TestBase
 		$attributeRepo = $this->getMock('IAttributeRepository');
 
         $user = $this->LoadsUser($userRepo, $ownerId);
-        $this->AsksUser($user, $event);
 
         $notification = new OwnerEmailDeletedNotification($userRepo, $attributeRepo);
         $notification->Notify($reservation);
@@ -119,17 +117,18 @@ class OwnerEmailNotificationTests extends TestBase
         $this->assertInstanceOf('ReservationDeletedEmail', $lastMessage);
     }
 
-	public function AsksUser($user, $event)
-	{
-		$user->expects($this->once())
-			->method('WantsEventEmail')
-			->with($this->equalTo($event))
-			->will($this->returnValue(true));
-	}
+//	public function AsksUser($user, $event)
+//	{
+//		$user->expects($this->once())
+//			->method('WantsEventEmail')
+//			->with($this->equalTo($event))
+//			->will($this->returnValue(true));
+//	}
 
 	public function LoadsUser($userRepo, $ownerId)
 	{
-		$user = $this->getMock('User');
+		$user = new FakeUser();
+        $user->_WantsEmail = true;
 
 		$userRepo->expects($this->once())
 			->method('LoadById')
@@ -139,4 +138,3 @@ class OwnerEmailNotificationTests extends TestBase
 		return $user;
 	}
 }
-?>

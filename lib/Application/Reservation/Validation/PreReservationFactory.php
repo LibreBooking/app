@@ -136,7 +136,7 @@ class PreReservationFactory implements IPreReservationFactory
 	public function CreatePreCheckinService(UserSession $userSession)
 	{
 		$rules = array();
-		$rules[] = new AdminExcludedRule(new CurrentUserIsReservationUserRule($userSession), $userSession, $this->userRepository);
+		$rules[] = new AdminExcludedRule(new AnonymousResourceExcludedRule(new CurrentUserIsReservationUserRule($userSession), $userSession, $this->userRepository));
 		$rules[] = new AdminExcludedRule(new ReservationCanBeCheckedInRule($userSession), $userSession, $this->userRepository);
 
 		return new ReservationValidationRuleProcessor($rules);

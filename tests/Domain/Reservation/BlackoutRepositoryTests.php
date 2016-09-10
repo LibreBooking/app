@@ -131,10 +131,11 @@ class BlackoutRepositoryTests extends TestBase
 		$this->assertEquals($repeatType, $series->RepeatType());
 		$this->assertEquals($repeatDaily->ConfigurationString(), $series->RepeatConfigurationString());
 
-		$this->assertEquals(2, count($series->AllBlackouts()));
-		$instances = $series->AllBlackouts();
-		$this->assertEquals($b1Start, $instances[0]->StartDate());
-		$this->assertEquals($b1End, $instances[0]->EndDate());
+        $instances = $series->AllBlackouts();
+		$this->assertEquals(2, count($instances));
+        $keys = array_keys($instances);
+		$this->assertEquals($b1Start, $instances[$keys[0]]->StartDate());
+		$this->assertEquals($b1End, $instances[$keys[0]]->EndDate());
 
 		$this->assertEquals(count($resources->Rows()), count($series->Resources()));
 

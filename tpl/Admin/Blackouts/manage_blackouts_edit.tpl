@@ -73,22 +73,28 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		</div>
 
 		<div class="form-group col-xs-12">
-			<div class="radio">
-				<input {formname key=CONFLICT_ACTION} type="radio" id="notifyExistingUpdate"
-													  name="existingReservations"
-													  checked="checked"
-													  value="{ReservationConflictResolution::Notify}"/>
-				<label for="notifyExistingUpdate">{translate key=BlackoutShowMe}</label>
-			</div>
-			<div class="radio">
-				<input {formname key=CONFLICT_ACTION} type="radio" id="deleteExistingUpdate"
-													  name="existingReservations"
-													  value="{ReservationConflictResolution::Delete}"/>
-				<label for="deleteExistingUpdate">{translate key=BlackoutDeleteConflicts}</label>
-			</div>
+            <div class="radio">
+                <input {formname key=CONFLICT_ACTION} type="radio" id="bookAroundUpdate"
+                                                      name="existingReservations"
+                                                      checked="checked"
+                                                      value="{ReservationConflictResolution::BookAround}"/>
+                <label for="notifyExisting">{translate key=BlackoutAroundConflicts}</label>
+            </div>
+            <div class="radio">
+                <input {formname key=CONFLICT_ACTION} type="radio" id="notifyExistingUpdate"
+                                                      name="existingReservations"
+                                                      value="{ReservationConflictResolution::Notify}"/>
+                <label for="notifyExisting">{translate key=BlackoutShowMe}</label>
+            </div>
+            <div class="radio">
+                <input {formname key=CONFLICT_ACTION} type="radio" id="deleteExistingUpdate"
+                                                      name="existingReservations"
+                                                      value="{ReservationConflictResolution::Delete}"/>
+                <label for="deleteExisting">{translate key=BlackoutDeleteConflicts}</label>
+            </div>
 		</div>
 
-		<div id="update-blackout-buttons" class="col-xs-12">
+		<div id="update-blackout-buttons" class="col-xs-12 margin-bottom-25">
 			<div class="pull-right">
 				<button type="button" class="btn btn-default" id="cancelUpdate">
 					{translate key='Cancel'}

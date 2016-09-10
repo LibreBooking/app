@@ -333,7 +333,7 @@ class ResourceAvailabilityRuleTests extends TestBase
 
 		$reservations = array();
 		$repository->expects($this->once())
-				   ->method('GetReservationList')
+				   ->method('GetReservations')
 				   ->with($this->equalTo($startDate), $this->equalTo($endDate))
 				   ->will($this->returnValue($reservations));
 

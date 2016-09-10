@@ -387,19 +387,24 @@ a.toggle-sidebar {
 }
 
 .resource-display-name, .resource-display-date {
-  font-size:2.5em;
-  font-weight:bold;
+  font-size: 2.5em;
+  font-weight: bold;
   color: @dark-gray;
 }
 
 .resource-display-date {
-  text-align:right;
+  text-align: right;
   color: @mid-gray;
 }
 
 #page-resource-display-resource {
-  table.reservations td {
-    line-height: 60px;
-    font-size:1.1em;
+  margin-top: -40px;
+  table.reservations {
+    td {
+      font-size: 1.1em;
+    }
+    tbody td {
+      height: 60px;
+    }
   }
 }

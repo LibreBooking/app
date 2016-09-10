@@ -33,7 +33,9 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 <script type="text/javascript">
 	$(function () {
 		var resourceDisplay = new ResourceDisplay();
-		resourceDisplay.initDisplay('{$smarty.server.SCRIPT_NAME}?dr=resource&rid={$PublicResourceId}&dr=display');
+		resourceDisplay.initDisplay('{$smarty.server.SCRIPT_NAME}?dr=resource&rid={$PublicResourceId}&dr=display',
+            'ajax/reservation_checkin.php?action={ReservationAction::Checkin}'
+        );
 	});
 </script>
 

@@ -90,7 +90,7 @@ class ManageBlackoutsPresenterTests extends TestBase
 		$data = new PageableData();
 		$this->blackoutsService->expects($this->once())
 				->method('LoadFiltered')
-				->with($this->anything(), $this->anything(), $this->equalTo($filter), $this->equalTo($this->fakeUser))
+				->with($this->anything(), $this->anything(), $this->anything(), $this->anything(), $this->equalTo($filter), $this->equalTo($this->fakeUser))
 				->will($this->returnValue($data));
 
 		$this->page->expects($this->once())

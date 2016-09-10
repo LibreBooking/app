@@ -46,7 +46,7 @@ class GroupAdminManageReservationsServiceTests extends TestBase
         $this->db->SetRow(1, $reservationRows);
 
         $filter = new ReservationFilter();
-        $results = $service->LoadFiltered(1, 2, $filter, $this->fakeUser);
+        $results = $service->LoadFiltered(1, 2, null, null, $filter, $this->fakeUser);
 
         $getGroupReservationsCommand = new GetFullGroupReservationListCommand(array(2, 3));
 

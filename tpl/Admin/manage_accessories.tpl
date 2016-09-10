@@ -25,14 +25,14 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		<div class="panel panel-default" id="add-accessory-panel">
 			<div class="panel-heading">{translate key="AddAccessory"} {showhide_icon}</div>
 			<div class="panel-body add-contents">
-				<div class="col-xs-4">
+				<div class="col-xs-5">
 					<div class="form-group has-feedback">
 						<label for="accessoryName">{translate key=AccessoryName}</label>
 						<input {formname key=ACCESSORY_NAME} type="text" id="accessoryName" required class="form-control required"/>
 						<i class="glyphicon glyphicon-asterisk form-control-feedback" data-bv-icon-for="accessoryName"></i>
 					</div>
 				</div>
-				<div class="col-xs-8">
+				<div class="col-xs-7">
 					<div class="form-group">
 						<label for="addQuantity">{translate key='QuantityAvailable'}</label>
 						<input type="number" id="addQuantity" class="form-control" min="0" disabled="disabled" {formname key=ACCESSORY_QUANTITY_AVAILABLE} />

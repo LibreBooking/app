@@ -236,7 +236,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 					<div class="modal-footer">
 						<button type="button" class="btn btn-default cancel"
 								data-dismiss="modal">{translate key='Cancel'}</button>
-						<button type="button" class="btn btn-success save"><span
+						<button type="button" id="btnSaveReport" class="btn btn-success"><span
 									class="glyphicon glyphicon-ok-circle"></span>
 							{translate key='SaveThisReport'}
 						</button>

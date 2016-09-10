@@ -88,6 +88,10 @@ function ReservationManagement(opts, approval) {
 			viewReservation($(this).attr('data-refnum'));
 		});
 
+        elements.reservationTable.delegate('.edit', 'click', function(){
+            viewReservation($(this).closest('tr').attr('data-refnum'));
+        });
+
 		elements.reservationTable.find('tr.editable').each(function () {
 			var seriesId = $(this).attr('data-seriesId');
 			var refNum = $(this).attr('data-refnum');
@@ -100,11 +104,15 @@ function ReservationManagement(opts, approval) {
 			});
 		});
 
-		elements.reservationTable.delegate('.delete', 'click', function () {
+		elements.reservationTable.delegate('.delete', 'click', function (e) {
+		    e.preventDefault();
+            e.stopPropagation();
 			showDeleteReservation(getActiveReferenceNumber());
 		});
 
-		elements.reservationTable.delegate('.approve', 'click', function () {
+		elements.reservationTable.delegate('.approve', 'click', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
 			approveReservation(getActiveReferenceNumber());
 		});
 

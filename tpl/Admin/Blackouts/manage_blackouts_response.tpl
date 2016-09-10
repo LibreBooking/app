@@ -22,7 +22,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		<button class="reload btn btn-primary">{translate key="OK"}</button>
 	{else}
 		<h2>{translate key=$FailKey}</h2>
-		<button class="close btn btn-primary">{translate key="OK"}</button>
+		<button class="unblock btn btn-primary">{translate key="OK"}</button>
 	{/if}
 
 	{if !empty($Message)}

@@ -466,7 +466,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 					</div>
 					<div class="modal-body">
 						<label for="resourceImage" class="off-screen">Image file</label>
-						<input id="resourceImage" type="file" class="text" size="60" {formname key=RESOURCE_IMAGE} />
+						<input id="resourceImage" type="file" class="text" size="60" {formname key=RESOURCE_IMAGE} accept="image/*;capture=camera" />
 
 						<div class="note">.gif, .jpg, or .png</div>
 					</div>

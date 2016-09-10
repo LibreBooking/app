@@ -45,7 +45,12 @@ class FakeScheduleRepository implements IScheduleRepository
 	 */
 	public $_Layout;
 
-	public function __construct()
+    /**
+     * @var Schedule[]
+     */
+    public $_Schedules;
+
+    public function __construct()
 	{
 		$this->_AllRows = $this->_GetAllRows();
 		$this->_Schedule = new FakeSchedule();
