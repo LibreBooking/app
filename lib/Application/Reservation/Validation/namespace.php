@@ -60,3 +60,4 @@ require_once(ROOT_DIR . 'lib/Application/Reservation/Validation/AccessoryResourc
 require_once(ROOT_DIR . 'lib/Application/Reservation/Validation/ReservationCanBeCheckedInRule.php');
 require_once(ROOT_DIR . 'lib/Application/Reservation/Validation/ReservationCanBeCheckedOutRule.php');
 require_once(ROOT_DIR . 'lib/Application/Reservation/Validation/CreditsRule.php');
+require_once(ROOT_DIR . 'lib/Application/Reservation/Validation/AnonymousResourceExcludedRule.php');

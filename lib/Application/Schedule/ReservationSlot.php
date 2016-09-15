@@ -179,6 +179,18 @@ class ReservationSlot implements IReservationSlot
         return empty($this->_reservation->AutoReleaseMinutes) ? 0 : $this->_reservation->AutoReleaseMinutes;
     }
 
+    public function AutoReleaseMinutesRemaining()
+    {
+        $min = $this->AutoReleaseMinutes();
+        if (empty($min))
+        {
+            return 0;
+        }
+        $maxCheckinTime = $this->BeginDate()->AddMinutes($min);
+        $d = DateDiff::BetweenDates(Date::Now(), $maxCheckinTime);
+        return $d->Minutes();
+    }
+
     public function ToTimezone($timezone)
 	{
 		return new ReservationSlot($this->_beginPeriod->ToTimezone($timezone), $this->_endPeriod->ToTimezone($timezone), $this->Date(), $this->PeriodSpan(), $this->_reservation);

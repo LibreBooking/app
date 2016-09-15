@@ -212,4 +212,9 @@ class EmptyReservationSlot implements IReservationSlot
     {
        return null;
     }
+
+    public function AutoReleaseMinutesRemaining()
+    {
+        return null;
+    }
 }

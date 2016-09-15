@@ -25,54 +25,56 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 {assign var=AutoReleaseMinutes value=null}
 {assign var=CheckInRequired value=false}
 <div class="col-xs-12">
-	<table class="reservations">
-		<thead>
-		<tr>
-			{foreach from=$DailyLayout->GetPeriods($Today, true) item=period}
-				<td class="reslabel" colspan="{$period->Span()}">{$period->Label($Today)}</td>
-			{/foreach}
-		</tr>
-		</thead>
-		<tbody>
-		<tr>
-			{assign var=slots value=$DailyLayout->GetLayout($Today, $ResourceId)}
-			{foreach from=$slots item=slot}
-				{if $slot->IsReserved()}
-					{if $slot->CollidesWith($Today)}
-						{assign var=AvailableNow value=false}
-					{/if}
-					{assign var="class" value="reserved"}
-				{elseif $slot->IsReservable()}
-					{if $NextAvailable == false && !$slot->IsPastDate($Today)}
-						{assign var=NextAvailable value=$slot->BeginDate()}
-					{/if}
-					{assign var="class" value="reservable"}
-				{else}
-					{if $slot->CollidesWith($Today)}
-						{assign var=AvailableNow value=false}
-					{/if}
-					{assign var="class" value="unreservable"}
-				{/if}
-				{if $slot->HasCustomColor()}
-					{assign var=color value='style="background-color:'|cat:$slot->Color()|cat:';color:'|cat:$slot->TextColor()|cat:';"'}
-				{/if}
-				{if $slot->AutoReleaseMinutes() != 0}
-				    {assign var=AutoReleaseMinutes value=$slot->AutoReleaseMinutes()}
-				{/if}
-				{if $slot->RequiresCheckin()}
-				    {assign var=CheckInRequired value=true}
-				{/if}
-				<td colspan="{$slot->PeriodSpan()}" $color
-					class="slot {$class}">{$slot->Label($SlotLabelFactory)|escape|default:'&nbsp;'}</td>
-			{/foreach}
-		</tr>
-		</tbody>
-	</table>
+    <table class="reservations">
+        <thead>
+        <tr>
+            {foreach from=$DailyLayout->GetPeriods($Today, true) item=period}
+                <td class="reslabel" colspan="{$period->Span()}">{$period->Label($Today)}</td>
+            {/foreach}
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            {assign var=slots value=$DailyLayout->GetLayout($Today, $ResourceId)}
+            {foreach from=$slots item=slot}
+                {assign var="referenceNumber" value=""}
+                {if $slot->IsReserved()}
+                    {if $slot->CollidesWith($Today)}
+                        {assign var=AvailableNow value=false}
+                    {/if}
+                    {assign var="class" value="reserved"}
+                    {assign var="referenceNumber" value=$slot->Reservation()->ReferenceNumber}
+                {elseif $slot->IsReservable()}
+                    {if $NextAvailable == false && !$slot->IsPastDate($Today)}
+                        {assign var=NextAvailable value=$slot->BeginDate()}
+                    {/if}
+                    {assign var="class" value="reservable"}
+                {else}
+                    {if $slot->CollidesWith($Today)}
+                        {assign var=AvailableNow value=false}
+                    {/if}
+                    {assign var="class" value="unreservable"}
+                {/if}
+                {if $slot->HasCustomColor()}
+                    {assign var=color value='style="background-color:'|cat:$slot->Color()|cat:';color:'|cat:$slot->TextColor()|cat:';"'}
+                {/if}
+                {if $slot->AutoReleaseMinutes() != 0}
+                    {assign var=AutoReleaseMinutes value=$slot->AutoReleaseMinutesRemaining()}
+                {/if}
+                {if $slot->RequiresCheckin()}
+                    {assign var=CheckInRequired value=true}
+                {/if}
+                <td colspan="{$slot->PeriodSpan()}" $color
+                    class="slot {$class}" data-refnum="{$referenceNumber}"
+                    data-checkin="{$CheckInRequired}">{$slot->Label($SlotLabelFactory)|escape|default:'&nbsp;'}</td>
+            {/foreach}
+        </tr>
+        </tbody>
+    </table>
 </div>
 
 {if $NextAvailable != false}
     <div id="process-reservation">
-
         <form role="form" method="post" id="formReserve" action="{$smarty.server.SCRIPT_NAME}?action=reserve">
             <div class="col-xs-12 margin-top-25">
                 <div class="clearfix"></div>
@@ -97,7 +99,8 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
                     <div class="input-group input-group-lg has-feedback">
 				<span class="input-group-addon" id="starttime-addon"><span
                             class="glyphicon glyphicon-time"></span></span>
-                        <select class="form-control" aria-describedby="starttime-addon" id="beginPeriod" {formname key=BEGIN_PERIOD}>
+                        <select class="form-control" aria-describedby="starttime-addon"
+                                id="beginPeriod" {formname key=BEGIN_PERIOD}>
                             {foreach from=$slots item=slot}
                                 {if $slot->IsReservable() && !$slot->IsPastDate($Today)}
                                     <option value="{$slot->Begin()}">{$slot->Begin()->Format($TimeFormat)}</option>
@@ -110,7 +113,8 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
                     <div class="input-group input-group-lg">
 				<span class="input-group-addon" id="endtime-addon"><span
                             class="glyphicon glyphicon-time"></span></span>
-                        <select class="form-control input-lg" aria-describedby="endtime-addon" id="endPeriod" {formname key=END_PERIOD}>
+                        <select class="form-control input-lg" aria-describedby="endtime-addon"
+                                id="endPeriod" {formname key=END_PERIOD}>
                             {foreach from=$slots item=slot}
                                 {if $slot->IsReservable() && !$slot->IsPastDate($Today)}
                                     <option value="{$slot->End()}">{$slot->End()->Format($TimeFormat)}</option>
@@ -120,48 +124,48 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
                     </div>
                 </div>
             </div>
-            <input type="hidden" {formname key=RESOURCE_ID} value="{$ResourceId}" />
-            <input type="hidden" {formname key=SCHEDULE_ID} value="{$ScheduleId}" />
-            <input type="hidden" {formname key=TIMEZONE} value="{$Timezone}" />
+            <input type="hidden" {formname key=RESOURCE_ID} value="{$ResourceId}"/>
+            <input type="hidden" {formname key=SCHEDULE_ID} value="{$ScheduleId}"/>
+            <input type="hidden" {formname key=TIMEZONE} value="{$Timezone}"/>
         </form>
     </div>
 {/if}
 
 {if $AvailableNow}
-	<div class="col-xs-12">
-		<div class="resource-display-available reservePrompt"
-			 data-next-time="{formatdate date=$NextAvailable key=url_full}">
-			{translate key=Available} - {translate key=Reserve}
-		</div>
-	</div>
+<div class="col-xs-12">
+    <div class="resource-display-available reservePrompt"
+         data-next-time="{formatdate date=$NextAvailable key=url_full}">
+        {translate key=Available} - {translate key=Reserve}
+    </div>
+</div>
 {else}
+{if $CheckInRequired}
+<div class="col-xs-6">
+    {else}
+    <div class="col-xs-12">
+{/if}
+{if $NextAvailable != false}
+    <div class="resource-display-unavailable reservePrompt"
+         data-next-time="{formatdate date=$NextAvailable key=url_full}">
+        {else}
+        <div class="resource-display-unavailable">
+            {/if}
+            {translate key=Unavailable}{if $NextAvailable != false} - {translate key=Reserve}{/if}
+        </div>
+    </div>
+
     {if $CheckInRequired}
         <div class="col-xs-6">
-    {else}
-	    <div class="col-xs-12">
-	{/if}
-		{if $NextAvailable != false}
-			<div class="resource-display-unavailable reservePrompt" data-next-time="{formatdate date=$NextAvailable key=url_full}">
-		{else}
-			<div class="resource-display-unavailable">
-		{/if}
-			{translate key=Unavailable}{if $NextAvailable != false} - {translate key=Reserve}{/if}
-		</div>
-	</div>
-
-	{if $CheckInRequired}
-	 <div class="col-xs-6">
-		<button type="button" class="btn btn-warning btnCheckin">{translate key=CheckIn}
-            <span class="autoReleaseButtonMessage" data-autorelease-minutes="{$AutoReleaseMinutes}"> - {translate key=ReleasedIn}
-                <span class="autoReleaseMinutes"></span> {translate key=minutes}
-            </span>
-        </button>
-	 </div>
-	{/if}
-
+            <form role="form" method="post" id="formCheckin"
+                  action="ajax/reservation_checkin.php?action={ReservationAction::Checkin}">
+                {csrf_token}
+                <input type="hidden" {formname key=REFERENCE_NUMBER} id="referenceNumber"/>
+                <button type="submit" class="col-xs-12 resource-display-checkin">{translate key=CheckIn}
+                    {if !empty($AutoReleaseMinutes)}
+                    <span> - {$AutoReleaseMinutes} {translate key=minutes}</span>
+                    {/if}
+                </button>
+            </form>
+        </div>
+    {/if}
 {/if}
-
-{if $AutoReleaseMinutes != null}
-    <input type="hidden" id="autoReleaseMinutes" value="{$AutoReleaseMinutes}"/>
-{/if}
-

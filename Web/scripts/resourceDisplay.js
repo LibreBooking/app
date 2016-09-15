@@ -52,7 +52,10 @@ function ResourceDisplay(opts) {
 		});
 	};
 
-	ResourceDisplay.prototype.initDisplay = function (url, checkinUrl) {
+	ResourceDisplay.prototype.initDisplay = function (opts) {
+
+        var url = opts.url;
+        var checkinUrl = opts.checkinUrl;
 
 		refreshResource();
 
@@ -86,7 +89,13 @@ function ResourceDisplay(opts) {
 					return formReserve.attr('action');
 				}, afterReserve, null, {onBeforeSubmit: showWait});
 
-				var begin = $('#beginPeriod');
+
+                var formCheckin = $('#formCheckin');
+                formCheckin.unbind('submit');
+
+                ConfigureAsyncForm(formCheckin, null, afterCheckin, null, {onBeforeSubmit: showWait, onBeforeSerialize: beforeCheckin});
+
+                var begin = $('#beginPeriod');
 				var end = $('#endPeriod');
 				beginIndex = begin.find('option:selected').index();
 
@@ -125,6 +134,15 @@ function ResourceDisplay(opts) {
 				}
 				hideWait();
 			}
+
+			function beforeCheckin() {
+                $('#referenceNumber').val($('td[data-checkin="1"]').attr('data-refnum'));
+            }
+
+			function afterCheckin(data) {
+			    refreshResource();
+                hideWait();
+            }
 		}
 	};
 
