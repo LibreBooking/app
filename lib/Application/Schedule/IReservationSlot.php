@@ -83,6 +83,11 @@ interface IReservationSlot
      */
     public function AutoReleaseMinutes();
 
+    /**
+     * @return int
+     */
+    public function AutoReleaseMinutesRemaining();
+
 	/**
 	 * @param string $timezone
 	 * @return IReservationSlot

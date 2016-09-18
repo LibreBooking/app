@@ -352,7 +352,8 @@ a.toggle-sidebar {
   padding-right: 5px;
 }
 .resource-display-available,
-.resource-display-unavailable {
+.resource-display-unavailable,
+.resource-display-checkin {
   background-color: #88CC88;
   border: solid 1px #76c476;
   line-height: 70px;

@@ -211,4 +211,9 @@ class BufferSlot implements IReservationSlot
     {
         return null;
     }
+
+    public function AutoReleaseMinutesRemaining()
+    {
+        return null;
+    }
 }
