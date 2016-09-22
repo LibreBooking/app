@@ -1642,7 +1642,7 @@ class ReservationItemView implements IReservedItemView
 			return new ContrastingColor($color);
 		}
 
-		return null;
+		return '';
 	}
 }
 

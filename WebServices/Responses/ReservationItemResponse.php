@@ -39,10 +39,19 @@ class ReservationItemResponse extends RestResponse
 	public $bufferTime;
 	public $bufferedStartDate;
 	public $bufferedEndDate;
-	public $statusId;
 	public $participants = array();
 	public $invitees = array();
-	
+	public $startReminder;
+	public $endReminder;
+	public $color;
+	public $textColor;
+	public $checkInDate;
+	public $checkOutDate;
+	public $originalEndDate;
+	public $isCheckInEnabled;
+	public $autoReleaseMinutes;
+	public $resourceStatusId;
+
 	public function __construct(ReservationItemView $reservationItemView, IRestServer $server, $showUser, $showDetails)
 	{
 		$this->referenceNumber = $reservationItemView->ReferenceNumber;
@@ -55,7 +64,7 @@ class ReservationItemResponse extends RestResponse
 		{
 			$this->firstName = $reservationItemView->FirstName;
 			$this->lastName = $reservationItemView->LastName;
-			$this->particpants = $reservationItemView->ParticipantNames;
+			$this->participants = $reservationItemView->ParticipantNames;
 			$this->invitees = $reservationItemView->InviteeNames;
 		}
 
@@ -75,7 +84,25 @@ class ReservationItemResponse extends RestResponse
 		$bufferedDuration = $reservationItemView->BufferedTimes();
 		$this->bufferedStartDate = $bufferedDuration->GetBegin()->ToIso();
 		$this->bufferedEndDate = $bufferedDuration->GetEnd()->ToIso();
-		$this->statusId = $reservationItemView->StatusId;
+		$this->resourceStatusId = $reservationItemView->ResourceStatusId;
+
+		if ($reservationItemView->StartReminder != null)
+		{
+			$this->startReminder = $reservationItemView->StartReminder->MinutesPrior();
+		}
+
+		if ($reservationItemView->EndReminder != null)
+		{
+			$this->endReminder = $reservationItemView->EndReminder->MinutesPrior();
+		}
+
+		$this->color = $reservationItemView->GetColor();
+		$this->textColor = $reservationItemView->GetTextColor();
+		$this->checkInDate = $reservationItemView->CheckinDate->ToIso();
+		$this->checkOutDate = $reservationItemView->CheckoutDate->ToIso();
+		$this->originalEndDate = $reservationItemView->OriginalEndDate->ToIso();
+		$this->isCheckInEnabled = $reservationItemView->IsCheckInEnabled;
+		$this->autoReleaseMinutes = $reservationItemView->AutoReleaseMinutes;
 
 		$this->AddService($server, WebServices::GetResource,
 						  array(WebServiceParams::ResourceId => $reservationItemView->ResourceId));
@@ -112,8 +139,20 @@ class ExampleReservationItemResponse extends ReservationItemResponse
 		$this->startDate = Date::Now()->ToIso();
 		$this->title = 'reservation title';
 		$this->userId = 11;
-		$this->statusId = 1;
 		$this->participants = array('participant name');
 		$this->invitees = array('invitee name');
+		$this->autoReleaseMinutes = 1;
+		$this->bufferedStartDate = Date::Now()->ToIso();
+		$this->bufferedEndDate = Date::Now()->ToIso();
+		$this->bufferTime = TimeInterval::FromMinutes(1.5)->__toString();
+		$this->checkInDate = Date::Now()->ToIso();
+		$this->checkOutDate = Date::Now()->ToIso();
+		$this->originalEndDate = Date::Now()->ToIso();
+		$this->color = '#FFFFFF';
+		$this->duration = DateDiff::FromTimeString('1:45')->__toString();
+		$this->endReminder = 10;
+		$this->isCheckInEnabled = true;
+		$this->startReminder = 10;
+		$this->textColor = '#000000';
 	}
 }
