@@ -415,6 +415,7 @@ class ReservationViewRepositoryTests extends TestBase
 
     public function testGetsCorrectReservationColor()
     {
+		$this->fakeConfig->SetSectionKey(ConfigSection::SCHEDULE, ConfigKeys::SCHEDULE_PER_USER_COLORS, true);
         $preferences = UserPreferences::Parse(UserPreferences::RESERVATION_COLOR . '=000000');
         $reservationItemView = new ReservationItemView();
         $reservationItemView->ResourceColor = 'ffffff';

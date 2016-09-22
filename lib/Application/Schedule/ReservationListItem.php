@@ -17,11 +17,11 @@
 class ReservationListItem
 {
 	/**
-	 * @var ReservationItemView
+	 * @var IReservedItemView
 	 */
 	protected $item;
 
-	public function __construct(ReservationItemView $reservedItem)
+	public function __construct(IReservedItemView $reservedItem)
 	{
 		$this->item = $reservedItem;
 	}
@@ -219,6 +219,7 @@ class BlackoutListItem extends ReservationListItem
     public function __construct(BlackoutItemView $item)
     {
         $this->blackoutItem = $item;
+		parent::__construct($item);
     }
 
 	/**
