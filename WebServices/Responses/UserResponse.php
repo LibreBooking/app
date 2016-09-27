@@ -37,6 +37,8 @@ class UserResponse extends RestResponse
 	public $position;
 	public $language;
 	public $icsUrl;
+	public $defaultScheduleId;
+	public $currentCredits;
 	/** @var array|CustomAttributeResponse[] */
 	public $customAttributes = array();
 	/** @var array|ResourceItemResponse[] */
@@ -59,6 +61,8 @@ class UserResponse extends RestResponse
 		$this->statusId = $user->StatusId();
 		$this->timezone = $user->Timezone();
 		$this->username = $user->Username();
+		$this->defaultScheduleId = $user->GetDefaultScheduleId();
+		$this->currentCredits = $user->GetCurrentCredits();
 
 		$attributeValues = $attributes->GetAttributes($userId);
 
