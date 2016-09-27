@@ -1178,11 +1178,11 @@ class QueryBuilder
 					(SELECT GROUP_CONCAT(groups.group_id)
 						FROM user_groups groups WHERE owner.user_id = groups.user_id) as owner_group_list,
 
-					(SELECT GROUP_CONCAT(participants.user_id)
-						FROM reservation_users participants WHERE participants.reservation_instance_id = ri.reservation_instance_id AND participants.reservation_user_level = 2) as participant_list,
+					(SELECT GROUP_CONCAT(CONCAT(participants.user_id, \'=\', CONCAT(participant_users.fname, " ", participant_users.lname)) SEPARATOR "!sep!")
+						FROM reservation_users participants INNER JOIN users participant_users ON participants.user_id = participant_users.user_id WHERE participants.reservation_instance_id = ri.reservation_instance_id AND participants.reservation_user_level = 2) as participant_list,
 
-					(SELECT GROUP_CONCAT(invitees.user_id)
-						FROM reservation_users invitees WHERE invitees.reservation_instance_id = ri.reservation_instance_id AND invitees.reservation_user_level = 3) as invitee_list,
+					(SELECT GROUP_CONCAT(CONCAT(invitees.user_id, \'=\', CONCAT(invitee_users.fname, " ", invitee_users.lname)) SEPARATOR "!sep!")
+						FROM reservation_users invitees INNER JOIN users invitee_users ON invitees.user_id = invitee_users.user_id WHERE invitees.reservation_instance_id = ri.reservation_instance_id AND invitees.reservation_user_level = 3) as invitee_list,
 
 					(SELECT GROUP_CONCAT(CONCAT(cav.custom_attribute_id,\'=\', cav.attribute_value) SEPARATOR "!sep!")
 						FROM custom_attribute_values cav WHERE cav.entity_id = ri.series_id AND cav.attribute_category = 1) as attribute_list,

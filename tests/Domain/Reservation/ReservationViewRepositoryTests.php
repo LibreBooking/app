@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Copyright 2011-2015 Nick Korbel
  *
@@ -18,6 +17,7 @@
  * You should have received a copy of the GNU General Public License
  * along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 class ReservationViewRepositoryTests extends TestBase
 {
     /**
@@ -126,6 +126,7 @@ class ReservationViewRepositoryTests extends TestBase
             ColumnNames::CHECKIN_DATE => $checkin->ToDatabase(),
             ColumnNames::CHECKOUT_DATE => $checkout->ToDatabase(),
             ColumnNames::PREVIOUS_END_DATE => $previousEnd->ToDatabase(),
+            ColumnNames::CREDIT_COUNT => 20,
         );
 
         $resourceRows = array(
@@ -232,7 +233,7 @@ class ReservationViewRepositoryTests extends TestBase
         $expectedView->DateModified = Date::Now()->ToUtc();
         $expectedView->CheckinDate = $checkin;
         $expectedView->CheckoutDate = $checkout;
-        $expectedView->PreviousEndDate = $previousEnd;
+        $expectedView->OriginalEndDate = $previousEnd;
 
         $expectedView->Participants = array(
             new ReservationUserView($userId2, $fname2, $lname2, $email2, $participantLevel),
@@ -266,8 +267,36 @@ class ReservationViewRepositoryTests extends TestBase
 
         $expectedView->ParticipatingGuests = array('p1@email.com');
         $expectedView->InvitedGuests = array('i1@email.com');
+        $expectedView->CreditsConsumed = 20;
 
         $this->assertEquals($expectedView, $reservationView);
+    }
+
+    public function testIsCheckinEnabled()
+    {
+        $view = new ReservationView();
+        $view->Resources = array(new ReservationResourceView(1, 1, 1, 1, 1, 1, true, 10), new ReservationResourceView(1, 1, 1, 1, 1, 1, false, null));
+        
+        $this->assertTrue($view->IsCheckinEnabled());
+    }
+
+    public function testIsCheckinAvailableWithin5MinutesOfStart()
+    {
+        $view = new ReservationView();
+        $view->StartDate = Date::Now()->AddMinutes(4);
+        $view->Resources = array(new ReservationResourceView(1, 1, 1, 1, 1, 1, true, 10), new ReservationResourceView(1, 1, 1, 1, 1, 1, false, null));
+
+        $this->assertTrue($view->IsCheckinAvailable());
+    }
+    
+    public function testIsCheckOutAvailableIfNotCheckedOut()
+    {
+        $view = new ReservationView();
+        $view->StartDate = Date::Now()->AddMinutes(-20);
+        $view->CheckinDate = Date::Now();
+        $view->Resources = array(new ReservationResourceView(1, 1, 1, 1, 1, 1, true, 10), new ReservationResourceView(1, 1, 1, 1, 1, 1, false, null));
+
+        $this->assertTrue($view->IsCheckoutAvailable());
     }
 
     public function testGetsReservationListForDateRangeAndUser()
@@ -497,7 +526,7 @@ class ReservationViewRepositoryTests extends TestBase
             ColumnNames::PREVIOUS_END_DATE => $previousEndDate == null ? null : $previousEndDate->ToDatabase(),
             ColumnNames::ENABLE_CHECK_IN => $requireCheckin,
             ColumnNames::AUTO_RELEASE_MINUTES => $autoReleaseMinutes,
-
+            ColumnNames::CREDIT_COUNT => null,
         );
     }
 

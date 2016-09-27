@@ -83,6 +83,13 @@ class ReservationResponse extends RestResponse
 	 */
 	public $allowParticipation;
 
+    public $checkInDate;
+    public $checkOutDate;
+    public $originalEndDate;
+    public $isCheckInAvailable;
+    public $isCheckoutAvailable;
+    public $autoReleaseMinutes;
+
 	/**
 	 * @param IRestServer $server
 	 * @param ReservationView $reservation
@@ -108,8 +115,7 @@ class ReservationResponse extends RestResponse
 		$this->recurrenceRule = new RecurrenceRequestResponse($reservation->RepeatType, $reservation->RepeatInterval, $reservation->RepeatMonthlyType, $reservation->RepeatWeekdays, $repeatTerminationDate);
 		$this->resourceId = $reservation->ResourceId;
 		$this->scheduleId = $reservation->ScheduleId;
-		$this->AddService($server, WebServices::GetSchedule,
-						  array(WebServiceParams::ScheduleId => $reservation->ScheduleId));
+		$this->AddService($server, WebServices::GetSchedule, array(WebServiceParams::ScheduleId => $reservation->ScheduleId));
 
 		foreach ($reservation->Resources as $resource)
 		{
@@ -171,6 +177,14 @@ class ReservationResponse extends RestResponse
 		}
 
 		$this->allowParticipation = $reservation->AllowParticipation;
+
+
+        $this->checkInDate = $reservation->CheckinDate->ToIso();
+        $this->checkOutDate = $reservation->CheckoutDate->ToIso();
+        $this->originalEndDate = $reservation->OriginalEndDate->ToIso();
+        $this->isCheckInAvailable = $reservation->IsCheckinAvailable();
+        $this->isCheckoutAvailable = $reservation->IsCheckoutAvailable();
+        $this->autoReleaseMinutes = $reservation->AutoReleaseMinutes();
 	}
 
 

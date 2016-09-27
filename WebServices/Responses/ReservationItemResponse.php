@@ -51,6 +51,7 @@ class ReservationItemResponse extends RestResponse
 	public $isCheckInEnabled;
 	public $autoReleaseMinutes;
 	public $resourceStatusId;
+    public $creditsConsumed;
 
 	public function __construct(ReservationItemView $reservationItemView, IRestServer $server, $showUser, $showDetails)
 	{
@@ -97,12 +98,13 @@ class ReservationItemResponse extends RestResponse
 		}
 
 		$this->color = $reservationItemView->GetColor();
-		$this->textColor = $reservationItemView->GetTextColor();
+		$this->textColor = $reservationItemView->GetTextColor()->__toString();
 		$this->checkInDate = $reservationItemView->CheckinDate->ToIso();
 		$this->checkOutDate = $reservationItemView->CheckoutDate->ToIso();
 		$this->originalEndDate = $reservationItemView->OriginalEndDate->ToIso();
 		$this->isCheckInEnabled = $reservationItemView->IsCheckInEnabled;
 		$this->autoReleaseMinutes = $reservationItemView->AutoReleaseMinutes;
+        $this->creditsConsumed = $reservationItemView->CreditsConsumed;
 
 		$this->AddService($server, WebServices::GetResource,
 						  array(WebServiceParams::ResourceId => $reservationItemView->ResourceId));
@@ -154,5 +156,6 @@ class ExampleReservationItemResponse extends ReservationItemResponse
 		$this->isCheckInEnabled = true;
 		$this->startReminder = 10;
 		$this->textColor = '#000000';
+        $this->creditsConsumed = 15;
 	}
 }

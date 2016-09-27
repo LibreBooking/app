@@ -44,5 +44,3 @@ class FullName
         return $this->fullName;
     }
 }
-
-?>

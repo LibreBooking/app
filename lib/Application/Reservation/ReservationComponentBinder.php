@@ -309,36 +309,12 @@ class ReservationDetailsBinder implements IReservationComponentBinder
 
 	private function SetCheckinRequired()
 	{
-		if ($this->reservationView->CheckinDate->ToString() == '' &&
-			Date::Now()->AddMinutes(5)->GreaterThanOrEqual($this->reservationView->StartDate))
-		{
-			// within 5 minutes
-			foreach ($this->reservationView->Resources as $resource)
-			{
-				if ($resource->IsCheckInEnabled())
-				{
-					$this->page->SetCheckInRequired(true);
-					break;
-				}
-			}
-		}
+	    $this->page->SetCheckInRequired($this->reservationView->IsCheckinAvailable());
 	}
 
 	private function SetCheckoutRequired()
 	{
-		if ($this->reservationView->StartDate->LessThan(Date::Now()) &&
-				$this->reservationView->CheckoutDate->ToString() == '' &&
-				$this->reservationView->CheckinDate->ToString() != '')
-		{
-			foreach ($this->reservationView->Resources as $resource)
-			{
-				if ($resource->IsCheckInEnabled())
-				{
-					$this->page->SetCheckOutRequired(true);
-					break;
-				}
-			}
-		}
+	    $this->page->SetCheckOutRequired($this->reservationView->IsCheckoutAvailable());
 	}
 
 	private function SetAutoReleaseMinutes()

@@ -574,7 +574,7 @@ class ReminderAddedEvent extends SeriesEvent
 	/**
 	 * @param ExistingReservationSeries $series
 	 * @param int $minutesPrior
-	 * @param ReservationReminderType $reminderType
+	 * @param ReservationReminderType|int $reminderType
 	 */
 	public function __construct(ExistingReservationSeries $series, $minutesPrior, $reminderType)
 	{
