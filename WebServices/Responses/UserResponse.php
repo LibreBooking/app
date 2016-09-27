@@ -39,6 +39,8 @@ class UserResponse extends RestResponse
 	public $icsUrl;
 	public $defaultScheduleId;
 	public $currentCredits;
+	public $reservationColor;
+
 	/** @var array|CustomAttributeResponse[] */
 	public $customAttributes = array();
 	/** @var array|ResourceItemResponse[] */
@@ -63,6 +65,7 @@ class UserResponse extends RestResponse
 		$this->username = $user->Username();
 		$this->defaultScheduleId = $user->GetDefaultScheduleId();
 		$this->currentCredits = $user->GetCurrentCredits();
+		$this->reservationColor = $user->GetPreference(UserPreferences::RESERVATION_COLOR);
 
 		$attributeValues = $attributes->GetAttributes($userId);
 
@@ -118,8 +121,8 @@ class ExampleUserResponse extends UserResponse
 		$this->customAttributes = array(CustomAttributeResponse::Example());
 		$this->permissions = array(ResourceItemResponse::Example());
 		$this->groups = array(GroupItemResponse::Example());
-
+		$this->defaultScheduleId = 1;
+		$this->currentCredits = '2.50';
+		$this->reservationColor = '#000000';
 	}
 }
-
-?>

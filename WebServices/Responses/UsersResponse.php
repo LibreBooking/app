@@ -55,5 +55,3 @@ class ExampleUsersResponse extends UsersResponse
 		$this->users = array(UserItemResponse::Example());
 	}
 }
-
-?>

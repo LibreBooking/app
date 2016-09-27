@@ -37,6 +37,8 @@ class UserItemResponse extends RestResponse
 	public $language;
 	/** @var array|CustomAttributeResponse[] */
 	public $customAttributes = array();
+	public $currentCredits;
+	public $reservationColor;
 
 	/**
 	 * @param IRestServer $server
@@ -59,6 +61,8 @@ class UserItemResponse extends RestResponse
 		$this->statusId = $user->StatusId;
 		$this->timezone = $user->Timezone;
 		$this->username = $user->Username;
+		$this->currentCredits = $user->CurrentCreditCount;
+		$this->reservationColor = $user->ReservationColor;
 
 		if (!empty($attributeLabels))
 		{
@@ -96,7 +100,7 @@ class ExampleUserItemResponse extends UserItemResponse
 		$this->username = 'username';
 		$this->position = 'position';
 		$this->customAttributes = array(CustomAttributeResponse::Example());
+		$this->currentCredits = '2.50';
+		$this->reservationColor = '#000000';
 	}
 }
-
-?>
