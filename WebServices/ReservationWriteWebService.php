@@ -124,25 +124,75 @@ class ReservationWriteWebService
 	 */
 	public function Approve($referenceNumber)
 	{
-		Log::Debug('ReservationWriteWebService.Approve() User=%s, ReferenceNumber=%s', $referenceNumber,
-				   $this->server->GetSession()->UserId);
+		Log::Debug('ReservationWriteWebService.Approve() User=%s, ReferenceNumber=%s', $referenceNumber, $this->server->GetSession()->UserId);
 
 		$result = $this->controller->Approve($this->server->GetSession(), $referenceNumber);
 
 		if ($result->WasSuccessful())
 		{
-			Log::Debug('ReservationWriteWebService.Approve() - Reservation Approved. ReferenceNumber=%s',
-					   $referenceNumber);
+			Log::Debug('ReservationWriteWebService.Approve() - Reservation Approved. ReferenceNumber=%s', $referenceNumber);
 
-			$this->server->WriteResponse(new ReservationApprovedResponse($this->server, $referenceNumber),
-										 RestResponse::OK_CODE);
+			$this->server->WriteResponse(new ReservationApprovedResponse($this->server, $referenceNumber), RestResponse::OK_CODE);
 		}
 		else
 		{
 			Log::Debug('ReservationWriteWebService.Approve() - Reservation Failed.');
 
-			$this->server->WriteResponse(new FailedResponse($this->server, $result->Errors()),
-										 RestResponse::BAD_REQUEST_CODE);
+			$this->server->WriteResponse(new FailedResponse($this->server, $result->Errors()), RestResponse::BAD_REQUEST_CODE);
+		}
+	}
+
+	/**
+	 * @name CheckinReservation
+	 * @description Checks in to a reservation.
+	 * @response ReservationCheckedInResponse
+	 * @param string $referenceNumber
+	 * @return void
+	 */
+	public function Checkin($referenceNumber)
+	{
+		Log::Debug('ReservationWriteWebService.Checkin() User=%s, ReferenceNumber=%s', $referenceNumber, $this->server->GetSession()->UserId);
+
+		$result = $this->controller->Checkin($this->server->GetSession(), $referenceNumber);
+
+		if ($result->WasSuccessful())
+		{
+			Log::Debug('ReservationWriteWebService.Checkin() - Reservation checked in. ReferenceNumber=%s', $referenceNumber);
+
+			$this->server->WriteResponse(new ReservationCheckedInResponse($this->server, $referenceNumber), RestResponse::OK_CODE);
+		}
+		else
+		{
+			Log::Debug('ReservationWriteWebService.Checkin() - Reservation Failed.');
+
+			$this->server->WriteResponse(new FailedResponse($this->server, $result->Errors()), RestResponse::BAD_REQUEST_CODE);
+		}
+	}
+
+	/**
+	 * @name CheckoutReservation
+	 * @description Checks out of a reservation.
+	 * @response ReservationCheckedOutResponse
+	 * @param string $referenceNumber
+	 * @return void
+	 */
+	public function Checkout($referenceNumber)
+	{
+		Log::Debug('ReservationWriteWebService.Checkout() User=%s, ReferenceNumber=%s', $referenceNumber, $this->server->GetSession()->UserId);
+
+		$result = $this->controller->Checkout($this->server->GetSession(), $referenceNumber);
+
+		if ($result->WasSuccessful())
+		{
+			Log::Debug('ReservationWriteWebService.Checkout() - Reservation checked out. ReferenceNumber=%s', $referenceNumber);
+
+			$this->server->WriteResponse(new ReservationCheckedOutResponse($this->server, $referenceNumber), RestResponse::OK_CODE);
+		}
+		else
+		{
+			Log::Debug('ReservationWriteWebService.Checkout() - Reservation Failed.');
+
+			$this->server->WriteResponse(new FailedResponse($this->server, $result->Errors()), RestResponse::BAD_REQUEST_CODE);
 		}
 	}
 

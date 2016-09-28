@@ -123,6 +123,8 @@ function RegisterReservations(SlimServer $server, SlimWebServiceRegistry $regist
 	$category->AddSecureGet('/:referenceNumber', array($readService, 'GetReservation'), WebServices::GetReservation);
 	$category->AddSecurePost('/:referenceNumber', array($writeService, 'Update'), WebServices::UpdateReservation);
 	$category->AddSecurePost('/:referenceNumber/Approval', array($writeService, 'Approve'), WebServices::ApproveReservation);
+	$category->AddSecurePost('/:referenceNumber/CheckIn', array($writeService, 'Checkin'), WebServices::CheckinReservation);
+	$category->AddSecurePost('/:referenceNumber/CheckOut', array($writeService, 'Checkout'), WebServices::CheckoutReservation);
 	$category->AddSecureDelete('/:referenceNumber', array($writeService, 'Delete'), WebServices::DeleteReservation);
 
 	$registry->AddCategory($category);

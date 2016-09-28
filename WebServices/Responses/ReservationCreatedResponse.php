@@ -41,6 +41,7 @@ class ReservationCreatedResponse extends RestResponse
 class ReservationUpdatedResponse extends RestResponse
 {
 	public $referenceNumber;
+	public $isPendingApproval;
 
 	public function __construct(IRestServer $server, $referenceNumber, $isPendingApproval)
 	{
@@ -63,6 +64,40 @@ class ReservationApprovedResponse extends RestResponse
 	public function __construct(IRestServer $server, $referenceNumber)
 	{
 		$this->message = 'The reservation was approved';
+		$this->referenceNumber = $referenceNumber;
+		$this->AddService($server, WebServices::GetReservation, array(WebServiceParams::ReferenceNumber => $referenceNumber));
+	}
+
+	public static function Example()
+	{
+		return new ExampleReservationCreatedResponse();
+	}
+}
+
+class ReservationCheckedInResponse extends RestResponse
+{
+	public $referenceNumber;
+
+	public function __construct(IRestServer $server, $referenceNumber)
+	{
+		$this->message = 'The reservation was checked in';
+		$this->referenceNumber = $referenceNumber;
+		$this->AddService($server, WebServices::GetReservation, array(WebServiceParams::ReferenceNumber => $referenceNumber));
+	}
+
+	public static function Example()
+	{
+		return new ExampleReservationCreatedResponse();
+	}
+}
+
+class ReservationCheckedOutResponse extends RestResponse
+{
+	public $referenceNumber;
+
+	public function __construct(IRestServer $server, $referenceNumber)
+	{
+		$this->message = 'The reservation was checked out';
 		$this->referenceNumber = $referenceNumber;
 		$this->AddService($server, WebServices::GetReservation, array(WebServiceParams::ReferenceNumber => $referenceNumber));
 	}

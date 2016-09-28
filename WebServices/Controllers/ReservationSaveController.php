@@ -22,6 +22,7 @@ require_once(ROOT_DIR . 'Pages/Ajax/ReservationSavePage.php');
 require_once(ROOT_DIR . 'Pages/Ajax/ReservationUpdatePage.php');
 require_once(ROOT_DIR . 'Pages/Ajax/ReservationDeletePage.php');
 require_once(ROOT_DIR . 'Pages/Ajax/ReservationApprovalPage.php');
+require_once(ROOT_DIR . 'Pages/Ajax/ReservationCheckinPage.php');
 require_once(ROOT_DIR . 'Presenters/Reservation/ReservationPresenterFactory.php');
 require_once(ROOT_DIR . 'lib/Application/Reservation/namespace.php');
 
@@ -59,6 +60,20 @@ interface IReservationSaveController
 	 * @return ReservationControllerResult
 	 */
 	public function Delete($session, $referenceNumber, $updateScope);
+
+	/**
+	 * @param WebServiceUserSession $session
+	 * @param string $referenceNumber
+	 * @return ReservationControllerResult
+	 */
+	public function Checkin($session, $referenceNumber);
+
+	/**
+	 * @param WebServiceUserSession $session
+	 * @param string $referenceNumber
+	 * @return ReservationControllerResult
+	 */
+	public function Checkout($session, $referenceNumber);
 }
 
 class ReservationSaveController implements IReservationSaveController
@@ -120,6 +135,32 @@ class ReservationSaveController implements IReservationSaveController
 	{
 		$facade = new ReservationApprovalRequestResponseFacade($referenceNumber, $session);
 		$presenter = $this->factory->Approve($facade, $session);
+		$presenter->PageLoad();
+		return new ReservationControllerResult($referenceNumber, $facade->Errors());
+	}
+
+	/**
+	 * @param WebServiceUserSession $session
+	 * @param string $referenceNumber
+	 * @return ReservationControllerResult
+	 */
+	public function Checkin($session, $referenceNumber)
+	{
+		$facade = new ReservationCheckinRequestResponseFacade($referenceNumber, ReservationAction::Checkin);
+		$presenter = $this->factory->Checkin($facade, $session);
+		$presenter->PageLoad();
+		return new ReservationControllerResult($referenceNumber, $facade->Errors());
+	}
+
+	/**
+	 * @param WebServiceUserSession $session
+	 * @param string $referenceNumber
+	 * @return ReservationControllerResult
+	 */
+	public function Checkout($session, $referenceNumber)
+	{
+		$facade = new ReservationCheckinRequestResponseFacade($referenceNumber, ReservationAction::Checkout);
+		$presenter = $this->factory->Checkin($facade, $session);
 		$presenter->PageLoad();
 		return new ReservationControllerResult($referenceNumber, $facade->Errors());
 	}
@@ -374,12 +415,12 @@ class ReservationRequestResponseFacade implements IReservationSavePage
 	 */
 	private $_retryMessages = array();
 
-    /**
-     * @var bool
-     */
-    private $_canJoinWaitlist = false;
+	/**
+	 * @var bool
+	 */
+	private $_canJoinWaitlist = false;
 
-    /**
+	/**
 	 * @param ReservationRequest $request
 	 * @param WebServiceUserSession $session
 	 */
@@ -727,13 +768,13 @@ class ReservationRequestResponseFacade implements IReservationSavePage
 		$this->_retryMessages = $messages;
 	}
 
-    /**
-     * @param bool $canJoinWaitlist
-     */
-    public function SetCanJoinWaitList($canJoinWaitlist)
-    {
-        $this->_canJoinWaitlist = $canJoinWaitlist;
-    }
+	/**
+	 * @param bool $canJoinWaitlist
+	 */
+	public function SetCanJoinWaitList($canJoinWaitlist)
+	{
+		$this->_canJoinWaitlist = $canJoinWaitlist;
+	}
 }
 
 class ReservationUpdateRequestResponseFacade extends ReservationRequestResponseFacade implements IReservationUpdatePage
@@ -770,7 +811,7 @@ class ReservationUpdateRequestResponseFacade extends ReservationRequestResponseF
 	}
 
 	/**
-	 * @return SeriesUpdateScope
+	 * @return SeriesUpdateScope|string
 	 */
 	public function GetSeriesUpdateScope()
 	{
@@ -891,13 +932,13 @@ class ReservationDeleteRequestResponseFacade implements IReservationDeletePage
 		// no-op
 	}
 
-    /**
-     * @param bool $canJoinWaitlist
-     */
-    public function SetCanJoinWaitList($canJoinWaitlist)
-    {
-        // no-op
-    }
+	/**
+	 * @param bool $canJoinWaitlist
+	 */
+	public function SetCanJoinWaitList($canJoinWaitlist)
+	{
+		// no-op
+	}
 }
 
 class ReservationApprovalRequestResponseFacade implements IReservationApprovalPage
@@ -979,11 +1020,112 @@ class ReservationApprovalRequestResponseFacade implements IReservationApprovalPa
 		// no-op
 	}
 
-    /**
-     * @param bool $canJoinWaitlist
-     */
-    public function SetCanJoinWaitList($canJoinWaitlist)
-    {
-        // no-op
-    }
+	/**
+	 * @param bool $canJoinWaitlist
+	 */
+	public function SetCanJoinWaitList($canJoinWaitlist)
+	{
+		// no-op
+	}
+}
+
+class ReservationCheckinRequestResponseFacade implements IReservationCheckinPage
+{
+	private $referenceNumber;
+	private $action;
+	private $errors = array();
+
+	public function __construct($referenceNumber, $action)
+	{
+		$this->referenceNumber = $referenceNumber;
+		$this->action = $action;
+	}
+
+	/**
+	 * @return string[]
+	 */
+	public function Errors()
+	{
+		return $this->errors;
+	}
+
+	/**
+	 * @param bool $succeeded
+	 */
+	public function SetSaveSuccessfulMessage($succeeded)
+	{
+		// no-op
+	}
+
+	/**
+	 * @param array|string[] $errors
+	 */
+	public function SetErrors($errors)
+	{
+		$this->errors = $errors;
+	}
+
+	/**
+	 * @param array|string[] $warnings
+	 */
+	public function SetWarnings($warnings)
+	{
+		// no-op
+	}
+
+	/**
+	 * @param array|string[] $messages
+	 */
+	public function SetRetryMessages($messages)
+	{
+		// no-op
+	}
+
+	/**
+	 * @param bool $canBeRetried
+	 */
+	public function SetCanBeRetried($canBeRetried)
+	{
+		// no-op
+	}
+
+	/**
+	 * @param ReservationRetryParameter[] $retryParameters
+	 */
+	public function SetRetryParameters($retryParameters)
+	{
+		// no-op
+	}
+
+	/**
+	 * @return ReservationRetryParameter[]
+	 */
+	public function GetRetryParameters()
+	{
+		return array();
+	}
+
+	/**
+	 * @param bool $canJoinWaitlist
+	 */
+	public function SetCanJoinWaitList($canJoinWaitlist)
+	{
+		// no-op
+	}
+
+	/**
+	 * @return string
+	 */
+	public function GetReferenceNumber()
+	{
+		return $this->referenceNumber;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function GetAction()
+	{
+		return $this->action;
+	}
 }

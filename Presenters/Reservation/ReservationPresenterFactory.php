@@ -60,6 +60,13 @@ interface IReservationPresenterFactory
 	 * @return ReservationWaitlistPresenter
 	 */
 	public function JoinWaitlist(IReservationWaitlistPage $page, UserSession $userSession);
+
+	/**
+	 * @param IReservationCheckinPage $page
+	 * @param UserSession $userSession
+	 * @return ReservationCheckinPresenter
+	 */
+	public function Checkin(IReservationCheckinPage $page, UserSession $userSession);
 }
 
 class ReservationPresenterFactory implements IReservationPresenterFactory
