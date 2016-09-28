@@ -1408,7 +1408,7 @@ class GetReservationListCommand extends SqlCommand
 		$this->AddParameter(new Parameter(ParameterNames::USER_ID, $userId));
 		$this->AddParameter(new Parameter(ParameterNames::RESERVATION_USER_LEVEL_ID, $userLevelId));
 		$this->AddParameter(new Parameter(ParameterNames::SCHEDULE_ID, $scheduleId));
-		$this->AddParameter(new Parameter(ParameterNames::RESOURCE_ID, $resourceId));
+		$this->AddParameter(new Parameter(ParameterNames::RESOURCE_ID, is_array($resourceId) ? implode(',', $resourceId) : $resourceId));
 	}
 
 	public function ContainsGroupConcat()

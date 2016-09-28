@@ -19,9 +19,10 @@ interface IResourceAvailabilityStrategy
     /**
      * @param Date $startDate
      * @param Date $endDate
+	 * @param int[] $resourceIds
      * @return array|IReservedItemView[]
      */
-    public function GetItemsBetween(Date $startDate, Date $endDate);
+    public function GetItemsBetween(Date $startDate, Date $endDate, $resourceIds);
 }
 
 class ResourceReservationAvailability implements IResourceAvailabilityStrategy
@@ -36,9 +37,9 @@ class ResourceReservationAvailability implements IResourceAvailabilityStrategy
         $this->_repository = $repository;
     }
 
-    public function GetItemsBetween(Date $startDate, Date $endDate)
+    public function GetItemsBetween(Date $startDate, Date $endDate, $resourceIds)
     {
-        return $this->_repository->GetReservations($startDate, $endDate);
+        return $this->_repository->GetReservations($startDate, $endDate, null, null, null, $resourceIds);
     }
 }
 
@@ -54,7 +55,7 @@ class ResourceBlackoutAvailability implements IResourceAvailabilityStrategy
         $this->_repository = $repository;
     }
 
-    public function GetItemsBetween(Date $startDate, Date $endDate)
+    public function GetItemsBetween(Date $startDate, Date $endDate, $resourceIds)
     {
         return $this->_repository->GetBlackoutsWithin(new DateRange($startDate, $endDate));
     }
@@ -104,7 +105,7 @@ class ResourceAvailabilityRule implements IReservationValidationRule
                 $endDate = $endDate->AddInterval($bufferTime);
             }
 
-            $existingItems = $this->strategy->GetItemsBetween($startDate, $endDate);
+            $existingItems = $this->strategy->GetItemsBetween($startDate, $endDate, array_keys($keyedResources));
 
             /** @var IReservedItemView $existingItem */
             foreach ($existingItems as $existingItem) {

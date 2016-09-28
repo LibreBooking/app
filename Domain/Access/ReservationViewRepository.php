@@ -49,7 +49,7 @@ interface IReservationViewRepository
 	 * @param int|null $userId
 	 * @param int|ReservationUserLevel|null $userLevel
 	 * @param int|null $scheduleId
-	 * @param int|null $resourceId
+	 * @param int|int[]|null $resourceId
 	 * @return ReservationItemView[]
 	 */
 	public function GetReservations(
@@ -195,6 +195,11 @@ class ReservationViewRepository implements IReservationViewRepository
 			$resourceId = self::ALL_RESOURCES;
 		}
 
+		if (!empty($resourceId) && $resourceId != ReservationViewRepository::ALL_RESOURCES && !is_array($resourceId))
+		{
+			$resourceId = array($resourceId);
+		}
+
 		$getReservations = new GetReservationListCommand($startDate, $endDate, $userId, $userLevel, $scheduleId,
 														 $resourceId);
 
@@ -260,19 +265,19 @@ class ReservationViewRepository implements IReservationViewRepository
 			{
 				$reservationView->AdditionalResourceIds[] = $row[ColumnNames::RESOURCE_ID];
 			}
-            $rrv = new ReservationResourceView(
-                $row[ColumnNames::RESOURCE_ID],
-                $row[ColumnNames::RESOURCE_NAME],
-                $row[ColumnNames::RESOURCE_ADMIN_GROUP_ID],
-                $row[ColumnNames::SCHEDULE_ID],
-                $row[ColumnNames::SCHEDULE_ADMIN_GROUP_ID_ALIAS],
-                $row[ColumnNames::RESOURCE_STATUS_ID],
-                $row[ColumnNames::ENABLE_CHECK_IN],
-                $row[ColumnNames::AUTO_RELEASE_MINUTES]
-            );
-            $rrv->SetColor(ColumnNames::RESERVATION_COLOR);
+			$rrv = new ReservationResourceView(
+					$row[ColumnNames::RESOURCE_ID],
+					$row[ColumnNames::RESOURCE_NAME],
+					$row[ColumnNames::RESOURCE_ADMIN_GROUP_ID],
+					$row[ColumnNames::SCHEDULE_ID],
+					$row[ColumnNames::SCHEDULE_ADMIN_GROUP_ID_ALIAS],
+					$row[ColumnNames::RESOURCE_STATUS_ID],
+					$row[ColumnNames::ENABLE_CHECK_IN],
+					$row[ColumnNames::AUTO_RELEASE_MINUTES]
+			);
+			$rrv->SetColor(ColumnNames::RESERVATION_COLOR);
 
-            $reservationView->Resources[] = $rrv;
+			$reservationView->Resources[] = $rrv;
 		}
 	}
 
