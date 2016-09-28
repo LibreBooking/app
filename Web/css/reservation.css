@@ -188,8 +188,9 @@
 #reservationbox .res-attachments a {
   font-size: 9pt;
 }
-#reminderOptionsStart {
-  float: left;
+#reminderOptionsStart,
+#reminderOptionsEnd {
+  display: inline-block;
   padding-right: 30px;
 }
 .reminderLabel {
