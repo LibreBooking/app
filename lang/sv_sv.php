@@ -577,5 +577,3 @@ class sv_sv extends en_us
         return 'sv';
     }
 }
-
-?>

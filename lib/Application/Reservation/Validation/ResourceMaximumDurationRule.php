@@ -49,4 +49,3 @@ class ResourceMaximumDurationRule implements IReservationValidationRule
 		return new ReservationRuleResult();
 	}
 }
-?>

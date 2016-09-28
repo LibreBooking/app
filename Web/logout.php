@@ -26,4 +26,3 @@ $page = new LogoutPage();
 
 $page->PageLoad();
 
-?>

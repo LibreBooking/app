@@ -38,4 +38,3 @@ interface IReader
 	public function Free();
 }
 
-?>

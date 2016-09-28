@@ -29,4 +29,3 @@ class RequiredValidator extends ValidatorBase implements IValidator
 		$this->isValid = !empty($trimmed);
 	}
 }
-?>

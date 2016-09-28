@@ -46,4 +46,3 @@ interface IRegistration
 	 */
 	public function Synchronize(AuthenticatedUser $user, $insertOnly = false);
 }
-?>

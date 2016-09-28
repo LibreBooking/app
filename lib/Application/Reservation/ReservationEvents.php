@@ -94,6 +94,3 @@ class ReservationApprovedEvent implements IDomainEvent
 		return EventCategory::Reservation;
 	}
 }
-
-
-?>

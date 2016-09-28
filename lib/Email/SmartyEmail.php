@@ -96,4 +96,3 @@ class SmartyEmail extends Smarty
 		return $params['date']->Format($this->Resources->GetDateFormat($key));
 	}
 }
-?>

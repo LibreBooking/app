@@ -400,5 +400,3 @@ class ReportSerializer
 		return new Report_Filter($resourceId, $scheduleId, $userId, $groupId, $accessoryId, $participantId);
 	}
 }
-
-?>

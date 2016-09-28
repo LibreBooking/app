@@ -66,5 +66,3 @@ class en_gb extends en_us
         // change defaults here
     }
 }
-
-?>

@@ -205,4 +205,3 @@ class ManageResourceGroupsPage extends ActionPage implements IManageResourceGrou
 	}
 }
 
-?>

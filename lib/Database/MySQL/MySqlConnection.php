@@ -153,4 +153,3 @@ class MySqlLimitCommand extends SqlCommand
 	}
 
 }
-?>

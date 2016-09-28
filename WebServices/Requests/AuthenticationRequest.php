@@ -39,4 +39,3 @@ class AuthenticationRequest
 		$this->password = $password;
 	}
 }
-?>

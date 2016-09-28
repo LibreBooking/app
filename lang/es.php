@@ -811,4 +811,3 @@ class es extends en_us
     }
 }
 
-?>

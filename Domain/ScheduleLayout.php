@@ -1097,5 +1097,3 @@ class ReservationLayout extends ScheduleLayout implements IScheduleLayout
 		return false;
 	}
 }
-
-?>

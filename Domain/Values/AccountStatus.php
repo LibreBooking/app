@@ -28,4 +28,3 @@ class AccountStatus
 	const AWAITING_ACTIVATION = 2;
 	const INACTIVE = 3;
 }
-?>

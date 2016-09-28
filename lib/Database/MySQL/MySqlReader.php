@@ -42,4 +42,3 @@ class MySqlReader implements IReader
 		mysqli_free_result($this->_result);
 	}
 }
-?>

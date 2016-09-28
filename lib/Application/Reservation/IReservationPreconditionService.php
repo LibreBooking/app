@@ -31,5 +31,3 @@ interface IReservationPreconditionService
 	 */
 	public function CheckAll(IReservationPage $page, UserSession $user);
 }
-
-?>

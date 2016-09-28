@@ -69,5 +69,3 @@ class GroupAdminGroupRepository extends GroupRepository
 		return Group::Null();
 	}
 }
-
-?>

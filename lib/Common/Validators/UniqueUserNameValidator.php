@@ -43,5 +43,3 @@ class UniqueUserNameValidator extends ValidatorBase implements IValidator
 		}
 	}
 }
-
-?>

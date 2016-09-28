@@ -60,5 +60,3 @@ class NullAttributeValue extends AttributeValue
 		parent::__construct(null, null);
 	}
 }
-
-?>

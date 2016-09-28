@@ -134,6 +134,3 @@ class Report_Filter
 		return $this->accessoryId;
 	}
 }
-
-
-?>

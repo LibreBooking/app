@@ -105,4 +105,3 @@ class ReservationAttachmentPage extends SecurePage implements IReservationAttach
 	}
 }
 
-?>

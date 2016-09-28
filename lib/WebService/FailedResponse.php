@@ -35,4 +35,3 @@ class FailedResponse extends RestResponse
 		$this->errors = $errors;
 	}
 }
-?>

@@ -34,4 +34,3 @@ class EmailLogger implements IEmailService
 	}
 }
 
-?>

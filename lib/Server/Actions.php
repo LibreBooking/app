@@ -29,4 +29,3 @@ class Actions {
     const SAVE = 'save';
 }
 
-?>

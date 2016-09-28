@@ -181,5 +181,3 @@ class NullLog4php
 		return false;
 	}
 }
-
-?>

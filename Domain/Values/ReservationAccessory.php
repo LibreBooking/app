@@ -52,5 +52,3 @@ class ReservationAccessory
         return sprintf("ReservationAccessory id:%d quantity reserved:%d", $this->AccessoryId, $this->QuantityReserved);
     }
 }
-
-?>

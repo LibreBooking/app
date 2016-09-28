@@ -68,4 +68,3 @@ class ExampleGroupResponse extends GroupResponse
 	}
 }
 
-?>

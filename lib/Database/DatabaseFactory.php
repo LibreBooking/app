@@ -50,5 +50,3 @@ class DatabaseFactory
 		return self::$_instance;
 	}
 }
-
-?>

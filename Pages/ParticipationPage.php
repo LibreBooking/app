@@ -138,4 +138,3 @@ class ParticipationPage extends SecurePage implements IParticipationPage
 		$this->Set('ActionResult', $result);
 	}
 }
-?>

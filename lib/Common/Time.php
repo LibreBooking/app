@@ -145,4 +145,3 @@ class NullTime extends Time
 		return '';
 	}
 }
-?>

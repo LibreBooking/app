@@ -475,5 +475,3 @@ class ca extends en_us
         return 'ca';
     }
 }
-
-?>

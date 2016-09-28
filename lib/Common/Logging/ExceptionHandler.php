@@ -58,5 +58,3 @@ class WebExceptionHandler extends ExceptionHandler
 }
 
 set_exception_handler(array('ExceptionHandler', 'Handle'));
-
-?>

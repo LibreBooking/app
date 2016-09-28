@@ -43,4 +43,3 @@ class CompositeResourceFilter implements IResourceFilter
 		return true;
 	}
 }
-?>

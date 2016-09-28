@@ -24,4 +24,3 @@ class ReservationStatus
 	const Deleted = 2;
 	const Pending = 3;
 }
-?>

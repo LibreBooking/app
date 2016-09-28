@@ -61,4 +61,3 @@ class ReservationStartTimeRule implements IReservationValidationRule
 		return new ReservationRuleResult($startIsInFuture, Resources::GetInstance()->GetString('StartIsInPast'));
 	}
 }
-?>

@@ -27,4 +27,3 @@ $page = new ForgotPwdPage();
 
 $page->PageLoad();
 
-?>

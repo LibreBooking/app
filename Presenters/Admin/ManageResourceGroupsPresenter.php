@@ -152,4 +152,3 @@ class ManageResourceGroupsPresenter extends ActionPresenter
 	}
 }
 
-?>

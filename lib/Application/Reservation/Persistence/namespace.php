@@ -21,4 +21,3 @@ require_once(ROOT_DIR . 'lib/Application/Reservation/Persistence/ReservationPers
 require_once(ROOT_DIR . 'lib/Application/Reservation/Persistence/AddReservationPersistenceService.php');
 require_once(ROOT_DIR . 'lib/Application/Reservation/Persistence/UpdateReservationPersistenceService.php');
 require_once(ROOT_DIR . 'lib/Application/Reservation/Persistence/DeleteReservationPersistenceService.php');
-?>

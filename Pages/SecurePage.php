@@ -233,4 +233,3 @@ class SecurePageDecorator extends Page implements IPage
 		return sprintf("%s%s?%s=%s", $this->page->path, Pages::LOGIN, QueryStringKeys::REDIRECT, urlencode($this->page->server->GetUrl()));
 	}
 }
-?>

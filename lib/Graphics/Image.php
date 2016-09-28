@@ -39,4 +39,3 @@ class Image implements IImage
 	}
 }
 
-?>

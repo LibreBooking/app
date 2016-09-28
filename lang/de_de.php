@@ -734,5 +734,3 @@ class de_de extends en_us
         return 'de';
     }
 }
-
-?>

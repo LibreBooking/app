@@ -19,4 +19,3 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
  */
 $conf['settings']['custom.attribute.max.value'] = '100';
 $conf['settings']['custom.attribute.id'] = '3';
-?>

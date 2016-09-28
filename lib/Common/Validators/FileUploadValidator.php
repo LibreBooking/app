@@ -43,5 +43,3 @@ class FileUploadValidator extends ValidatorBase implements IValidator
 		}
 	}
 }
-
-?>

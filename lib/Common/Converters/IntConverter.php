@@ -21,4 +21,3 @@ class IntConverter implements IConvert
 		return intval($value);
 	}
 }
-?>

@@ -45,4 +45,3 @@ class RequestRequiredValueValidator extends RequiredValidator
 	}
 }
 
-?>

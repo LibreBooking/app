@@ -150,4 +150,3 @@ class OldPassword extends Password
 		ServiceLocator::GetDatabase()->Execute(new RemoveLegacyPasswordCommand($userid));
 	}
 }
-?>

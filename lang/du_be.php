@@ -478,5 +478,3 @@ class du_be extends en_us
         return 'en_us';
     }
 }
-
-?>

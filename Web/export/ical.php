@@ -29,4 +29,3 @@ if (Configuration::Instance()->GetSectionKey('ics', 'require.login', new Boolean
 }
 $page->PageLoad();
 
-?>

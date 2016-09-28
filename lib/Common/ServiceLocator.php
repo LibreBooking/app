@@ -124,5 +124,3 @@ class ServiceLocator
 	}
 
 }
-
-?>

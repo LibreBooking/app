@@ -167,4 +167,3 @@ class SavedReportsPage extends ActionPage implements ISavedReportsPage
 	}
 }
 
-?>

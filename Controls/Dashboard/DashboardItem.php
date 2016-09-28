@@ -37,4 +37,3 @@ abstract class DashboardItem extends Control
 		$this->Set($name, $value);
 	}
 }
-?>

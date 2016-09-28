@@ -47,4 +47,3 @@ class ExampleSchedulesResponse extends SchedulesResponse
 		$this->schedules = array(ScheduleItemResponse::Example());
 	}
 }
-?>

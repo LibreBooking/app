@@ -358,5 +358,3 @@ class RoleDto
 		$this->Level = $level;
 	}
 }
-
-?>

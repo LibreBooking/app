@@ -71,5 +71,3 @@ class BlackoutValidationResult implements IBlackoutValidationResult
 		return $this->conflictingBlackouts;
 	}
 }
-
-?>

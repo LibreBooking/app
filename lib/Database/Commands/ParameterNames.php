@@ -231,4 +231,3 @@ class ParameterNames
 	const TIMEZONE_SELECTION_SETTING = '@timezone_setting';
 }
 
-?>

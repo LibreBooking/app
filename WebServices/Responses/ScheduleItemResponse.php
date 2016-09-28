@@ -58,4 +58,3 @@ class ExampleScheduleItemResponse extends ScheduleItemResponse
 	}
 }
 
-?>

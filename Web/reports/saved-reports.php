@@ -30,4 +30,3 @@ if (Configuration::Instance()->GetSectionKey(ConfigSection::REPORTS, ConfigKeys:
 $page = new RoleRestrictedPageDecorator(new SavedReportsPage(), $roles);
 $page->PageLoad();
 
-?>

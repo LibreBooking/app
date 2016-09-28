@@ -72,4 +72,3 @@ class ManageThemePage extends ActionPage
 	}
 }
 
-?>

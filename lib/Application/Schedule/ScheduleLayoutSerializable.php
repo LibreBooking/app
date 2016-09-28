@@ -54,5 +54,3 @@ class PeriodSerializable
 		$this->labelEnd = $period->LabelEnd();
 	}
 }
-
-?>

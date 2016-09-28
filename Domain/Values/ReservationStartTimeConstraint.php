@@ -55,4 +55,3 @@ class ReservationStartTimeConstraint
 		return strtolower($startTimeConstraint) == self::FUTURE;
 	}
 }
-?>

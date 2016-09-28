@@ -131,4 +131,3 @@ class SavedReportsPresenter extends ActionPresenter
 	}
 }
 
-?>

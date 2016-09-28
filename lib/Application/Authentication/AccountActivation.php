@@ -98,4 +98,3 @@ class ActivationResult
 		return $this->user;
 	}
 }
-?>

@@ -50,4 +50,3 @@ class ResourceMinimumDurationRule implements IReservationValidationRule
 		return new ReservationRuleResult();
 	}
 }
-?>

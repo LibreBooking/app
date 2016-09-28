@@ -567,5 +567,3 @@ class BlackoutResource implements IResource
 		return $this->statusId;
 	}
 }
-
-?>

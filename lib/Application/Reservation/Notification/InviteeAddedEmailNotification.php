@@ -56,4 +56,3 @@ class InviteeAddedEmailNotification implements IReservationNotification
 		}
 	}
 }
-?>

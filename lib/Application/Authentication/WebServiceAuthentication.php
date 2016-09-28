@@ -123,5 +123,3 @@ class WebServiceLoginContext implements ILoginContext
 		return new LoginData(false, null);
 	}
 }
-
-?>

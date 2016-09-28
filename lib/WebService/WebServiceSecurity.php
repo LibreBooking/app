@@ -75,4 +75,3 @@ class WebServiceSecurity
 		return true;
 	}
 }
-?>

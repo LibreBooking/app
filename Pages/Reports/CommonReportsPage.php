@@ -118,4 +118,3 @@ class CommonReportsPage extends ActionPage implements ICommonReportsPage
 	}
 }
 
-?>

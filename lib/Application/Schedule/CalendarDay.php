@@ -281,5 +281,3 @@ class NullCalendarDay implements ICalendarDay
 		return NullDate::Instance();
 	}
 }
-
-?>

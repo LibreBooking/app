@@ -33,4 +33,3 @@ class OpeningsPage extends SecurePage
 	}
 }
 
-?>

@@ -84,5 +84,3 @@ class BlackoutSecurityValidationResult implements IBlackoutValidationResult
 		return array();
 	}
 }
-
-?>

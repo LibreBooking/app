@@ -105,6 +105,3 @@ class Report_Range
 		return new Report_Range(Report_Range::ALL_TIME, Date::Min(), Date::Max());
 	}
 }
-
-
-?>

@@ -190,5 +190,3 @@ class NonSchedulePeriod extends SchedulePeriod
 		return new NonSchedulePeriod($this->_begin->ToTimezone($timezone), $this->_end->ToTimezone($timezone), $this->_label);
 	}
 }
-
-?>

@@ -29,4 +29,3 @@ class ReservationUserLevel
 	const PARTICIPANT = 2;
 	const INVITEE = 3;
 }
-?>

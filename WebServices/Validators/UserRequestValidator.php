@@ -134,4 +134,3 @@ class UserRequestValidator implements IUserRequestValidator
 	}
 }
 
-?>

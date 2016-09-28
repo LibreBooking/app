@@ -31,4 +31,3 @@ class AddReservationPersistenceService implements IReservationPersistenceService
 		$this->_repository->Add($reservation);
 	}
 }
-?>

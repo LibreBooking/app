@@ -16,4 +16,3 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 require_once(ROOT_DIR . 'lib/FileSystem/Paths.php');
 require_once(ROOT_DIR . 'lib/FileSystem/FileSystem.php');
-?>

@@ -733,5 +733,3 @@ class ja_jp extends en_us
         return 'ja';
     }
 }
-
-?>

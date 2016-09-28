@@ -41,4 +41,3 @@ class LoginData
 		$this->Language = $language;
 	}
 }
-?>

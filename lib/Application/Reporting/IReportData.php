@@ -22,4 +22,3 @@ interface IReportData
 	 */
 	public function Rows();
 }
-?>

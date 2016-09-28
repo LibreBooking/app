@@ -80,4 +80,3 @@ class ExampleAuthenticationResponse extends AuthenticationResponse
 		$this->version = '1.0';
 	}
 }
-?>

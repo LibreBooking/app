@@ -63,5 +63,3 @@ class Report_ResultSelection
 		return $this->selection;
 	}
 }
-
-?>

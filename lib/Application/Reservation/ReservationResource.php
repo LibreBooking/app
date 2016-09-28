@@ -40,4 +40,3 @@ class ReservationResource implements IPermissibleResource
 		return $this->_id;
 	}
 }
-?>

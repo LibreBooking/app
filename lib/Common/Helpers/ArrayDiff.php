@@ -60,4 +60,3 @@ class ArrayDiff
 		return $this->_unchanged;
 	}
 }
-?>

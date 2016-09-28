@@ -39,4 +39,3 @@ class ImageFactory implements IImageFactory
       	return new Image($image);
 	}
 }
-?>

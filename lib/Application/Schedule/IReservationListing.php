@@ -51,7 +51,6 @@ interface IReservationListing extends IResourceReservationListing
 	public function ForResource($resourceId);
 
 	/**
-	 * @abstract
 	 * @param Date $date
 	 * @param int $resourceId
 	 * @return array|ReservationListItem[]
@@ -62,17 +61,14 @@ interface IReservationListing extends IResourceReservationListing
 interface IMutableReservationListing extends IReservationListing
 {
 	/**
-	 * @abstract
 	 * @param ReservationItemView $reservation
 	 * @return void
 	 */
 	public function Add($reservation);
 
 	/**
-	 * @abstract
 	 * @param BlackoutItemView $blackout
 	 * @return void
 	 */
 	public function AddBlackout($blackout);
 }
-?>

@@ -44,5 +44,3 @@ class UniqueEmailValidator extends ValidatorBase implements IValidator
 		}
 	}
 }
-
-?>

@@ -347,4 +347,3 @@ class InstallPage extends Page implements IInstallPage
 	}
 }
 
-?>

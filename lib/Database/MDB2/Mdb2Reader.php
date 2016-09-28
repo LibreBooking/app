@@ -46,4 +46,3 @@ class Mdb2Reader implements IReader
 		$this->_result->free();
 	}
 }
-?>

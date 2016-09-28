@@ -126,4 +126,3 @@ class ResourceRequestValidator implements IResourceRequestValidator
 	}
 }
 
-?>

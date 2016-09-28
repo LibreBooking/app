@@ -52,5 +52,3 @@ class AttributeEntityValue
 		return sprintf("AttributeEntityValue attributeid:%s entityid:%s value:%s", $this->AttributeId, $this->EntityId, $this->Value);
 	}
 }
-
-?>

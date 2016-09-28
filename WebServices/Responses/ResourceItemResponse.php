@@ -90,4 +90,3 @@ class ExampleResourceItemResponse extends ResourceItemResponse
 		$this->name = 'resource name';
 	}
 }
-?>

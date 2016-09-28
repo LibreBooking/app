@@ -22,4 +22,3 @@ interface IUpdateReservationValidationRule
 	 */
 	function Validate($reservationSeries);
 }
-?>

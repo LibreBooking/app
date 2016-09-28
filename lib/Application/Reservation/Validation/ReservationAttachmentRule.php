@@ -48,4 +48,3 @@ class ReservationAttachmentRule implements IReservationValidationRule
 		return new ReservationRuleResult();
 	}
 }
-?>

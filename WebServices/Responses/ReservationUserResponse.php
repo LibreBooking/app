@@ -69,4 +69,3 @@ class ExampleReservationUserResponse extends ReservationUserResponse
 	}
 }
 
-?>

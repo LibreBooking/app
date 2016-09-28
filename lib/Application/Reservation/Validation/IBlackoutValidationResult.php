@@ -40,5 +40,3 @@ interface IBlackoutValidationResult
 	 */
 	public function ConflictingBlackouts();
 }
-
-?>

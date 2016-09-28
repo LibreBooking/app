@@ -181,4 +181,3 @@ class Mdb2Connection implements IDbConnection
 		return $this->_dbName;
 	}
 }
-?>

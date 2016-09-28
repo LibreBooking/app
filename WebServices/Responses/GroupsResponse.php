@@ -52,4 +52,3 @@ class ExampleGroupsResponse extends GroupsResponse
 		$this->groups = array(GroupItemResponse::Example());
 	}
 }
-?>

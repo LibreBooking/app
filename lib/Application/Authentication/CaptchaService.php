@@ -131,5 +131,3 @@ class ReCaptchaService implements ICaptchaService
 		return $resp->is_valid;
 	}
 }
-
-?>

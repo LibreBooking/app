@@ -745,5 +745,3 @@ return $this->Strings;
 		return 'cz';
 	}
 }
-
-?>

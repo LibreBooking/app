@@ -41,5 +41,3 @@ class LoginCookie extends Cookie
 		return null;
 	}
 }
-
-?>

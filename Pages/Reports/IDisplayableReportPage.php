@@ -31,4 +31,3 @@ interface IDisplayableReportPage
 	public function ShowCsv();
 }
 
-?>

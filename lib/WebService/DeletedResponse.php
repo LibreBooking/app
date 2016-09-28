@@ -31,4 +31,3 @@ class DeletedResponse extends RestResponse
 	}
 }
 
-?>

@@ -269,5 +269,3 @@ class CannedReport implements ICannedReport
 		return $this->LimitToMonth($this->AccessoriesAllTime());
 	}
 }
-
-?>

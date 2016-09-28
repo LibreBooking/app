@@ -31,4 +31,3 @@ class RegexValidator extends ValidatorBase implements IValidator
 		}
 	}
 }
-?>

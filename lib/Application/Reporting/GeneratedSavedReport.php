@@ -79,5 +79,3 @@ class GeneratedSavedReport implements IGeneratedSavedReport
 		return $this->savedReport->Id();
 	}
 }
-
-?>

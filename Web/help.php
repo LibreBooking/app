@@ -25,4 +25,3 @@ $page = new HelpPage();
 $page->PageLoad();
 
 
-?>

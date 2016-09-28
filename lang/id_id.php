@@ -663,5 +663,3 @@ class id_id extends en_us
         return 'id';
     }
 }
-
-?>

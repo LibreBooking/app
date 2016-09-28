@@ -55,5 +55,3 @@ class ResourceParticipationRule implements IReservationValidationRule
 		return new ReservationRuleResult();
 	}
 }
-
-?>

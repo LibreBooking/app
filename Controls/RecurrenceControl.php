@@ -47,5 +47,3 @@ class RecurrenceControl extends Control
 		$this->Display('Controls/RecurrenceDiv.tpl');
 	}
 }
-
-?>

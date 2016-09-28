@@ -38,5 +38,3 @@ class DayOfWeek
 		return range(self::SUNDAY, self::SATURDAY);
 	}
 }
-
-?>

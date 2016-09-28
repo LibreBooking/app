@@ -637,5 +637,3 @@ class ReminderRemovedEvent extends SeriesEvent
 					   $this->series->SeriesId());
 	}
 }
-
-?>

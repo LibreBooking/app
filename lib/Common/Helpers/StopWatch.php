@@ -86,5 +86,3 @@ class StopWatch
 		return $this->stopTime - $this->startTime;
 	}
 }
-
-?>

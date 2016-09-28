@@ -22,4 +22,3 @@ class CookieKeys
 	const LANGUAGE = 'language';
 	const PERSIST_LOGIN = 'persist_login';
 }
-?>

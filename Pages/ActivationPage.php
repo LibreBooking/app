@@ -79,4 +79,3 @@ class ActivationPage extends ActionPage implements IActivationPage
 	}
 }
 
-?>

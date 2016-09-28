@@ -185,4 +185,3 @@ class NotificationPreferencesPage extends SecurePage implements INotificationPre
 
 }
 
-?>

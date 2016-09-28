@@ -729,5 +729,3 @@ class no_no extends en_us
         return 'no_no';
     }
 }
-
-?>

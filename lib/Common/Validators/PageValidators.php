@@ -92,4 +92,3 @@ class NullValidator extends ValidatorBase implements IValidator
 		$this->isValid = true;
 	}
 }
-?>

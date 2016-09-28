@@ -138,4 +138,3 @@ mysql_free_result($schedule);
 mysql_free_result($result);
 mysql_close($link);
 
-?>

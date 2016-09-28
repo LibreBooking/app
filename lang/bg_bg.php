@@ -601,5 +601,3 @@ class bg_bg extends Language
         return 'bg';
     }
 }
-
-?>

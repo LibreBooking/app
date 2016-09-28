@@ -155,5 +155,3 @@ class ReservationAttachment
 		$this->seriesId = $seriesId;
 	}
 }
-
-?>

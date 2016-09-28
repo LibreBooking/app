@@ -60,5 +60,3 @@ class Report_GroupBy
 		return $this->groupBy;
 	}
 }
-
-?>

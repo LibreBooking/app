@@ -694,5 +694,3 @@ class du_nl extends en_us
         return 'du_nl';
     }
 }
-
-?>

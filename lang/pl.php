@@ -601,5 +601,3 @@ class pl extends en_us
         return 'pl';
     }
 }
-
-?>

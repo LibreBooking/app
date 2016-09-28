@@ -24,4 +24,3 @@ require_once(ROOT_DIR . 'lib/Database/Database.php');
 require_once(ROOT_DIR . 'lib/Database/DatabaseFactory.php');
 require_once(ROOT_DIR . 'lib/Database/SqlFilter.php');
 require_once(ROOT_DIR . 'lib/Common/Helpers/namespace.php');
-?>

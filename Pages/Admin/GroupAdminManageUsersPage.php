@@ -41,4 +41,3 @@ class GroupAdminManageUsersPage extends ManageUsersPage
 
 }
 
-?>

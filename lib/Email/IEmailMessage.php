@@ -81,4 +81,3 @@ interface IEmailMessage
 	 */
 	public function AttachmentFileName();
 }
-?>

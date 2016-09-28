@@ -158,5 +158,3 @@ class CalendarMonth implements ICalendarSegment
 		return $this->reservations;
 	}
 }
-
-?>

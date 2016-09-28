@@ -21,4 +21,3 @@ interface IReservationNotification
 	 */
 	function Notify($reservationSeries);
 }
-?>

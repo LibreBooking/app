@@ -35,4 +35,3 @@ class EqualValidator extends ValidatorBase implements IValidator
 		return sprintf('value1: %s, value2: %s', $this->_value1, $this->_value2);
 	}
 }
-?>

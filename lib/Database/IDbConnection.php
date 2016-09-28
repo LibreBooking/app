@@ -48,8 +48,7 @@ interface IDbConnection
 	public function Execute(ISqlCommand $command);
 
 	/**
-	 * @return long last auto-increment id inserted for this connection
+	 * @return int last auto-increment id inserted for this connection
 	 */
 	public function GetLastInsertId();
 }
-?>

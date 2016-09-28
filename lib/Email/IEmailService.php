@@ -21,4 +21,3 @@ interface IEmailService
 	 */
 	function Send(IEmailMessage $emailMessage);
 }
-?>

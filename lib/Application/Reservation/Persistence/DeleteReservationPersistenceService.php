@@ -47,5 +47,3 @@ class DeleteReservationPersistenceService implements IDeleteReservationPersisten
 		$this->_repository->Delete($existingReservationSeries);
 	}
 }
-
-?>

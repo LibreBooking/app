@@ -30,4 +30,3 @@ class RoleLevel
 	const SCHEDULE_ADMIN = 4;
 
 }
-?>

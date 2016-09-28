@@ -256,4 +256,3 @@ class AccessoryToCheck
 		return $this->accessory->GetQuantityAvailable();
 	}
 }
-?>

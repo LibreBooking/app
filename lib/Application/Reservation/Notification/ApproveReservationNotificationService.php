@@ -28,5 +28,3 @@ class ApproveReservationNotificationService extends ReservationNotificationServi
 		parent::__construct($notifications);
 	}
 }
-
-?>

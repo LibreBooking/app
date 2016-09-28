@@ -701,4 +701,3 @@ class ManageBlackoutsPage extends ActionPage implements IManageBlackoutsPage
 	}
 }
 
-?>

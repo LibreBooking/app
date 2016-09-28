@@ -29,4 +29,3 @@ require_once(ROOT_DIR . 'lib/WebService/WebServiceSecurity.php');
 require_once(ROOT_DIR . 'lib/WebService/WebServiceQueryStringKeys.php');
 require_once(ROOT_DIR . 'lib/WebService/WebServiceParams.php');
 require_once(ROOT_DIR . 'lib/WebService/WebServiceDate.php');
-?>

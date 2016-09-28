@@ -54,4 +54,3 @@ class ExampleReservationAccessoryResponse extends ReservationAccessoryResponse
 	}
 }
 
-?>

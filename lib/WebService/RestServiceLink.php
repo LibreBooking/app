@@ -29,4 +29,3 @@ class RestServiceLink
 		$this->title = $title;
 	}
 }
-?>

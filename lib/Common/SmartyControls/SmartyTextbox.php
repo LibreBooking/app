@@ -98,4 +98,3 @@ class SmartyPasswordbox extends SmartyTextbox
 		return 'password';
 	}
 }
-?>

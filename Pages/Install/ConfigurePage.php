@@ -123,4 +123,3 @@ class ConfigurePage extends Page implements IConfgurePage
 	}
 }
 
-?>

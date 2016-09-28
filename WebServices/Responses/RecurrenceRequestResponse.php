@@ -63,4 +63,3 @@ class ExampleRecurrenceRequestResponse extends RecurrenceRequestResponse
 	}
 }
 
-?>

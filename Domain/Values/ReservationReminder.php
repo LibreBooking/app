@@ -110,5 +110,3 @@ class ReservationReminderType
 	const Start = 0;
 	const End = 1;
 }
-
-?>

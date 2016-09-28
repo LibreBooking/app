@@ -124,5 +124,3 @@ class iCalendarReservationView
 		return $rrule;
 	}
 }
-
-?>

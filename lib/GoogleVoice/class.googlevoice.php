@@ -81,4 +81,3 @@ class GoogleVoice
         return preg_match($regex, $str, $match) == 1 ? $match[$out_ary] : false;
     }
 }
-?>

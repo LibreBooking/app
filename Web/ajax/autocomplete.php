@@ -24,4 +24,3 @@ require_once(ROOT_DIR . 'Pages/Ajax/AutoCompletePage.php');
 $page = new AutoCompletePage();
 $page->PageLoad();
 
-?>

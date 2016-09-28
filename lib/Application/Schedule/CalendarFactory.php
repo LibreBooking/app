@@ -53,5 +53,3 @@ class CalendarFactory implements ICalendarFactory
 		return new CalendarMonth($month, $year, $timezone);
 	}
 }
-
-?>

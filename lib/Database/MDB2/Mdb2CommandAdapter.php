@@ -60,4 +60,3 @@ class Mdb2CommandAdapter
 		$this->_query = str_replace('@', ':', $command->GetQuery());
 	}
 }
-?>

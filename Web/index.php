@@ -42,4 +42,3 @@ if ($page->ChangingLanguage())
 
 $page->PageLoad();
 
-?>

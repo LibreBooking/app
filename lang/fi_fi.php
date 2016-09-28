@@ -515,5 +515,3 @@ class fi_fi extends en_us
 		return 'fi';
 	}
 }
-
-?>

@@ -56,5 +56,3 @@ class FileTypeValidator extends ValidatorBase implements IValidator
 		}
 	}
 }
-
-?>

@@ -64,5 +64,3 @@ class CalendarSubscriptionUrl
         return $this->GetWebcalUrl();
     }
 }
-
-?>

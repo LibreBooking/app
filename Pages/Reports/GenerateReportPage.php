@@ -345,4 +345,3 @@ class GenerateReportPage extends ActionPage implements IGenerateReportPage
 	}
 }
 
-?>

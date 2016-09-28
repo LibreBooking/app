@@ -43,5 +43,3 @@ class ResourceTypeFilter implements IResourceFilter
 		return in_array( $assignment->GetResourceTypeId(), $this->resourcetypeids );
 	}
 }
-
-?>

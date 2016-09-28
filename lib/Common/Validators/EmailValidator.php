@@ -35,5 +35,3 @@ class EmailValidator extends ValidatorBase implements IValidator
 		}
 	}
 }
-
-?>

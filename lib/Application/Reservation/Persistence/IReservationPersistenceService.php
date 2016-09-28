@@ -21,4 +21,3 @@ interface IReservationPersistenceService
 	 */
 	function Persist($reservation);
 }
-?>

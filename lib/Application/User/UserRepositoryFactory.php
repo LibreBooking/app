@@ -41,5 +41,3 @@ class UserRepositoryFactory implements IUserRepositoryFactory
 		return new GroupAdminUserRepository(new GroupRepository(), $session);
 	}
 }
-
-?>

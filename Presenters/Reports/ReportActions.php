@@ -28,4 +28,3 @@ class ReportActions
 	const Delete = 'delete';
 }
 
-?>

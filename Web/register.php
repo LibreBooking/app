@@ -25,4 +25,3 @@ $page = new RegistrationPage();
 
 $page->PageLoad();
 
-?>

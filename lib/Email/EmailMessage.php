@@ -112,4 +112,3 @@ abstract class EmailMessage implements IEmailMessage
 
 }
 
-?>

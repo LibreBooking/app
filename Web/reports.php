@@ -25,4 +25,3 @@ $page = new ReportPage();
 
 $page->PageLoad();
 
-?>

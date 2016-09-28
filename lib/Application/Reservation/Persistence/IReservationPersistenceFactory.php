@@ -22,5 +22,3 @@ interface IReservationPersistenceFactory
 	 */
 	function Create($reservationAction);
 }
-
-?>

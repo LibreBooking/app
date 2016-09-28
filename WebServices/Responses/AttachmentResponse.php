@@ -50,4 +50,3 @@ class ExampleAttachmentResponse extends AttachmentResponse
 		$this->url = 'http://example/attachments/url';
 	}
 }
-?>

@@ -192,4 +192,3 @@ class ProfilePresenter extends ActionPresenter
 	}
 }
 
-?>

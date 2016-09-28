@@ -31,5 +31,3 @@ class ReservationListingFactory implements IReservationListingFactory
 		return new ReservationListing($targetTimezone);
 	}
 }
-
-?>

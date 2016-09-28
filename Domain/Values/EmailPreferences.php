@@ -111,5 +111,3 @@ interface IEmailPreferences
 	 */
 	public function GetRemoved();
 }
-
-?>

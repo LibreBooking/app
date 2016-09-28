@@ -139,4 +139,3 @@ class NullEmailService implements IEmailService
 		// no-op
 	}
 }
-?>

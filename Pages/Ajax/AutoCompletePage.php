@@ -189,4 +189,3 @@ class AutoCompleteType
 	const MyUsers = 'myUsers';
 }
 
-?>

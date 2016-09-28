@@ -304,5 +304,3 @@ class SeriesUpdateScope_Future extends SeriesUpdateScopeBase
 		return true;
 	}
 }
-
-?>

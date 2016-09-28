@@ -30,4 +30,3 @@ class ReservationDateTimeRule implements IReservationValidationRule
 		return new ReservationRuleResult($startIsBeforeEnd, Resources::GetInstance()->GetString('StartDateBeforeEndDateRule'));
 	}
 }
-?>

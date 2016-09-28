@@ -35,5 +35,3 @@ class WebLoginContext implements ILoginContext
 		return $this->data;
 	}
 }
-
-?>

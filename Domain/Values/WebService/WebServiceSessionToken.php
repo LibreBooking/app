@@ -38,5 +38,3 @@ class WebServiceSessionToken
 		return self::$_Token;
 	}
 }
-
-?>

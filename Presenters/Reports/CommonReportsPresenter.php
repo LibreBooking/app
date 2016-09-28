@@ -130,4 +130,3 @@ class CommonReportsPresenter extends ActionPresenter
 	}
 }
 
-?>

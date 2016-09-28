@@ -248,4 +248,3 @@ class ManageGroupsPage extends ActionPage implements IManageGroupsPage
 	}
 }
 
-?>

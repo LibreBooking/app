@@ -153,4 +153,3 @@ class ManageQuotasPresenter extends ActionPresenter
 
 }
 
-?>

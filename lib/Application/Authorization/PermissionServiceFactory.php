@@ -32,4 +32,3 @@ class PermissionServiceFactory implements IPermissionServiceFactory
 		return PluginManager::Instance()->LoadPermission();
 	}
 }
-?>

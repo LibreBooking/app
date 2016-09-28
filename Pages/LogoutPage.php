@@ -39,4 +39,3 @@ class LogoutPage extends LoginPage
 		return $this->GetQuerystring(QueryStringKeys::REDIRECT);
 	}
 }
-?>

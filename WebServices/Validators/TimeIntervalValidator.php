@@ -50,4 +50,3 @@ class TimeIntervalValidator extends ValidatorBase
 
 }
 
-?>

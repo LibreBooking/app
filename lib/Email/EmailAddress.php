@@ -40,4 +40,3 @@ class EmailAddress
         return "{$this->address}<{$this->name}>";
     }
 }
-?>

@@ -26,4 +26,3 @@ $page = new ConfigurePage();
 $page->PageLoad();
 
 
-?>

@@ -54,5 +54,3 @@ class ReminderValidationRule implements IReservationValidationRule
 		return $minutes > 0;
 	}
 }
-
-?>

@@ -320,5 +320,3 @@ class NullGroup extends Group
 		parent::__construct(0, null);
 	}
 }
-
-?>

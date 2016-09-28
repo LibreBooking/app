@@ -573,5 +573,3 @@ class fr_fr extends en_us
         return 'fr';
     }
 }
-
-?>

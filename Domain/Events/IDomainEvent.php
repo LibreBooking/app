@@ -32,4 +32,3 @@ interface IDomainEvent
      */
     function EventCategory();
 }
-?>
