@@ -98,7 +98,7 @@ class ReservationItemResponse extends RestResponse
 		}
 
 		$this->color = $reservationItemView->GetColor();
-		$this->textColor = $reservationItemView->GetTextColor()->__toString();
+		$this->textColor = $reservationItemView->GetTextColor();
 		$this->checkInDate = $reservationItemView->CheckinDate->ToIso();
 		$this->checkOutDate = $reservationItemView->CheckoutDate->ToIso();
 		$this->originalEndDate = $reservationItemView->OriginalEndDate->ToIso();

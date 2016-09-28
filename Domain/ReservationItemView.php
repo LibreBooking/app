@@ -801,11 +801,15 @@ class ReservationItemView implements IReservedItemView
         return $this->_color;
     }
 
+	/**
+	 * @return string
+	 */
     public function GetTextColor()
     {
         $color = $this->GetColor();
         if (!empty($color)) {
-            return new ContrastingColor($color);
+			$contrastingColor = new ContrastingColor($color);
+			return $contrastingColor->__toString();
         }
 
         return '';
