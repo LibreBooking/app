@@ -211,7 +211,7 @@ class RegisterPresenterTests extends TestBase
 
 		$v = $this->page->_Validators;
 
-		$this->assertEquals(10, count($v));
+		$this->assertEquals(11, count($v));
 		$this->assertEquals($v['fname'], new RequiredValidator($this->fname));
 		$this->assertEquals($v['lname'], new RequiredValidator($this->lname));
 		$this->assertEquals($v['username'], new RequiredValidator($this->login));
@@ -221,6 +221,7 @@ class RegisterPresenterTests extends TestBase
 		$this->assertEquals($v['uniqueemail'], new UniqueEmailValidator(new UserRepository(), $this->email));
 		$this->assertEquals($v['uniqueusername'], new UniqueUserNameValidator(new UserRepository(), $this->login));
 		$this->assertEquals($v['additionalattributes'], new AttributeValidator($this->attributeService, CustomAttributeCategory::USER, $expectedAttributeValues));
+		$this->assertEquals($v['requiredEmailDomain'], new RequiredEmailDomainValidator($this->email));
 	}
 
     public function testDoesNotRegisterIfPageIsNotValid()

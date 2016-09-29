@@ -24,20 +24,9 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		<span class="glyphicon glyphicon-ok-sign"></span> {translate key=YourProfileWasUpdated}
 	</div>
 
-	<div class="validationSummary alert alert-danger hidden" id="validationErrors">
-		<ul>
-			{async_validator id="fname" key="FirstNameRequired"}
-			{async_validator id="lname" key="LastNameRequired"}
-			{async_validator id="username" key="UserNameRequired"}
-			{async_validator id="emailformat" key="ValidEmailRequired"}
-			{async_validator id="uniqueemail" key="UniqueEmailRequired"}
-			{async_validator id="uniqueusername" key="UniqueUsernameRequired"}
-			{async_validator id="additionalattributes" key=""}
-		</ul>
-	</div>
 
 	<div id="profile-box" class="default-box col-xs-12 col-sm-8 col-sm-offset-2">
-		<h1>{translate key=EditProfile}</h1>
+
 
 		<form method="post" ajaxAction="{ProfileActions::Update}" id="form-profile" action="{$smarty.server.SCRIPT_NAME}"
 			  role="form"
@@ -49,6 +38,20 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			  data-bv-onerror="enableButton"
 			  data-bv-onsuccess="enableButton"
 			  data-bv-live="enabled">
+
+			<h1>{translate key=EditProfile}</h1>
+
+			<div class="validationSummary alert alert-danger no-show" id="validationErrors">
+				<ul>
+					{async_validator id="fname" key="FirstNameRequired"}
+					{async_validator id="lname" key="LastNameRequired"}
+					{async_validator id="username" key="UserNameRequired"}
+					{async_validator id="emailformat" key="ValidEmailRequired"}
+					{async_validator id="uniqueemail" key="UniqueEmailRequired"}
+					{async_validator id="uniqueusername" key="UniqueUsernameRequired"}
+					{async_validator id="additionalattributes" key=""}
+				</ul>
+			</div>
 
 			<div class="row">
 				<div class="col-xs-12 col-sm-6">
@@ -206,21 +209,18 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 	<script type="text/javascript">
 
-		function enableButton()
-		{
+		function enableButton() {
 			$('#form-profile').find('button').removeAttr('disabled');
 		}
 
-		$(document).ready(function ()
-		{
+		$(document).ready(function () {
 			var profilePage = new Profile();
 			profilePage.init();
 
 			var profileForm = $('#form-profile');
 
 			profileForm
-					.on('init.field.bv', function (e, data)
-					{
+					.on('init.field.bv', function (e, data) {
 						var $parent = data.element.parents('.form-group');
 						var $icon = $parent.find('.form-control-feedback[data-bv-icon-for="' + data.field + '"]');
 						var validators = data.bv.getOptions(data.field).validators;

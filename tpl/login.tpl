@@ -72,7 +72,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
                 {if $ShowRegisterLink}
                     <div class="col-xs-12 col-sm-6 register">
-                    <span>{translate key="FirstTimeUser?"}
+                    <span class="bold">{translate key="FirstTimeUser?"}
                     <a href="{$RegisterUrl}" {$RegisterUrlNew}
                        title="{translate key=Register}">{translate key=Register}</a>
                     </span>

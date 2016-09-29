@@ -681,6 +681,7 @@ class en_us extends Language
 		$strings['ParticipationNotAllowed'] = 'You are not allowed to join this reservation.';
 		$strings['ReservationCannotBeCheckedInTo'] = 'This reservation cannot be checked in to.';
 		$strings['ReservationCannotBeCheckedOutFrom'] = 'This reservation cannot be checked out from.';
+		$strings['InvalidEmailDomain'] = 'That email address is not from an allowed domain';
 		// End Errors
 
 		// Page Titles

@@ -25,16 +25,16 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		{translate key=ThemeUploadSuccess}
 	</div>
 
-	<div class="validationSummary alert alert-danger no-show" id="validationErrors">
-		<ul>
-			{async_validator id="logoFileExt"}
-			{async_validator id="cssFileExt"}
-			{async_validator id="logoFile"}
-			{async_validator id="cssFile"}
-		</ul>
-	</div>
-
 	<form id="elementForm" action="{$smarty.server.SCRIPT_NAME}" ajaxAction="update" method="post">
+		<div class="validationSummary alert alert-danger no-show" id="validationErrors">
+				<ul>
+					{async_validator id="logoFileExt"}
+					{async_validator id="cssFileExt"}
+					{async_validator id="logoFile"}
+					{async_validator id="cssFile"}
+				</ul>
+			</div>
+
 		<div>
 			<h4>{translate key="Logo"} (*.png, *.gif, *.jpg)</h4>
 

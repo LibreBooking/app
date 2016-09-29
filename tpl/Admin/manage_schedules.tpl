@@ -236,7 +236,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 						<h4 class="modal-title" id="changeLayoutDialogLabel">{translate key=ChangeLayout}</h4>
 					</div>
 					<div class="modal-body">
-						<div class="validationSummary alert alert-danger hidden">
+						<div class="validationSummary alert alert-danger no-show">
 							<ul>{async_validator id="layoutValidator" key="ValidLayoutRequired"}</ul>
 						</div>
 

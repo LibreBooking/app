@@ -139,6 +139,7 @@ class ConfigKeys
     const GOOGLE_ANALYTICS_TRACKING_ID = 'tracking.id';
 
     const AUTHENTICATION_ALLOW_SOCIAL = 'allow.social.login';
+	const AUTHENTICATION_REQUIRED_EMAIL_DOMAINS = 'required.email.domains';
 }
 
 class ConfigSection
