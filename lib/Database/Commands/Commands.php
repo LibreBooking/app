@@ -1700,6 +1700,14 @@ class GetUserByPublicIdCommand extends SqlCommand
 	}
 }
 
+class GetUserCountCommand extends SqlCommand
+{
+	public function __construct()
+	{
+		parent::__construct(Queries::GET_USER_COUNT);
+	}
+}
+
 class GetUserEmailPreferencesCommand extends SqlCommand
 {
 	public function __construct($userId)

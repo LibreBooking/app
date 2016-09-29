@@ -76,6 +76,11 @@ class AuthenticationTests extends TestBase
 	 */
 	private $userRepository;
 
+	/**
+	 * @var FakeFirstRegistrationStrategy
+	 */
+	private $fakeFirstRegistration;
+
 	function setup()
 	{
 		parent::setup();
@@ -113,9 +118,11 @@ class AuthenticationTests extends TestBase
 
 		$this->authorization = $this->getMock('IRoleService');
 		$this->userRepository = $this->getMock('IUserRepository');
+		$this->fakeFirstRegistration = new FakeFirstRegistrationStrategy();
 
 		$this->auth = new Authentication($this->authorization, $this->userRepository);
 		$this->auth->SetMigration($this->fakeMigration);
+		$this->auth->SetFirstRegistrationStrategy($this->fakeFirstRegistration);
 
 		$this->loginContext = new WebLoginContext(new LoginData());
 	}
@@ -196,6 +203,8 @@ class AuthenticationTests extends TestBase
 			$user->Groups[] = $group->GroupId;
 		}
 		$this->assertEquals($user, $actualSession);
+
+		$this->assertTrue($this->fakeFirstRegistration->_Handled);
 	}
 
 	function testMigratesPasswordNewPasswordHasNotBeenSet()
@@ -267,4 +276,12 @@ class FakePassword implements IPassword
 	}
 }
 
-?>
+class FakeFirstRegistrationStrategy implements IFirstRegistrationStrategy
+{
+	public $_Handled;
+
+	public function HandleLogin(User $user, IUserRepository $userRepository)
+	{
+		$this->_Handled = true;
+	}
+}

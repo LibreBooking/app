@@ -157,4 +157,12 @@ class FakeUserRepository implements IUserRepository
 	{
 		// TODO: Implement UserExists() method.
 	}
+
+	/**
+	 * @return int
+	 */
+	public function GetCount()
+	{
+		// TODO: Implement GetCount() method.
+	}
 }

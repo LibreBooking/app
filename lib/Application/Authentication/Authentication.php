@@ -38,6 +38,11 @@ class Authentication implements IAuthentication
 	 */
 	private $userRepository;
 
+	/**
+	 * @var IFirstRegistrationStrategy
+	 */
+	private $firstRegistration;
+
 	public function __construct(IRoleService $roleService, IUserRepository $userRepository)
 	{
 		$this->roleService = $roleService;
@@ -60,6 +65,24 @@ class Authentication implements IAuthentication
 		}
 
 		return $this->passwordMigration;
+	}
+
+	public function SetFirstRegistrationStrategy(IFirstRegistrationStrategy $migration)
+	{
+		$this->firstRegistration = $migration;
+	}
+
+	/**
+	 * @return IFirstRegistrationStrategy
+	 */
+	private function GetFirstRegistrationStrategy()
+	{
+		if (is_null($this->firstRegistration))
+		{
+			$this->firstRegistration = new SetAdminFirstRegistrationStrategy();
+		}
+
+		return $this->firstRegistration;
 	}
 
 	public function Validate($username, $password)
@@ -111,6 +134,8 @@ class Authentication implements IAuthentication
 
 			$user->Login($loginTime, $language);
 			$this->userRepository->Update($user);
+
+			$this->GetFirstRegistrationStrategy()->HandleLogin($user, $this->userRepository);
 
 			return $this->GetUserSession($user, $loginTime);
 		}

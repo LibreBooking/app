@@ -788,14 +788,13 @@ class Queries
 			INNER JOIN users u ON u.user_id = a.user_id
 			WHERE activation_code = @activation_code AND u.status_id = @statusid';
 
-	const GET_USER_BY_ID =
-			'SELECT * FROM users WHERE user_id = @userid';
+	const GET_USER_BY_ID = 'SELECT * FROM users WHERE user_id = @userid';
 
-	const GET_USER_BY_PUBLIC_ID =
-			'SELECT * FROM users WHERE public_id = @publicid';
+	const GET_USER_BY_PUBLIC_ID = 'SELECT * FROM users WHERE public_id = @publicid';
 
-	const GET_USER_EMAIL_PREFERENCES =
-			'SELECT * FROM user_email_preferences WHERE user_id = @userid';
+	const GET_USER_COUNT = 'SELECT COUNT(*) as count FROM users';
+
+	const GET_USER_EMAIL_PREFERENCES = 'SELECT * FROM user_email_preferences WHERE user_id = @userid';
 
 	const GET_USER_GROUPS =
 			'SELECT g.*, r.role_level
