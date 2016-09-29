@@ -64,6 +64,10 @@ class ResourceAvailabilityControlPresenter
         $allday = array();
 
         foreach ($resources as $resource) {
+        	if ($resource->StatusId == ResourceStatus::HIDDEN)
+			{
+				continue;
+			}
             $reservation = $this->GetOngoingReservation($resource, $reservations);
 
             if ($reservation != null) {

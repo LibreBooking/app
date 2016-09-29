@@ -223,7 +223,7 @@ class it_it extends en_us
 		$strings['PasswordChangedSuccessfully'] = 'Password modificata correttamente';
 		$strings['SignedInAs'] = 'Collegato come';
 		$strings['NotSignedIn'] = 'Non sei collegato';
-		$strings['ReservationTitle'] = 'Note prenotazione';
+		$strings['ReservationTitle'] = 'Nome prenotazione';
 		$strings['ReservationDescription'] = 'Descrizione prenotazione';
 		$strings['ResourceList'] = 'Risorsa relativa:';
 		$strings['Accessories'] = 'Accessori';
