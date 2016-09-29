@@ -326,6 +326,7 @@ class ResourceAvailabilityRuleTests extends TestBase
 	{
 		$startDate = Date::Now();
 		$endDate = Date::Now();
+		$resourceIds = array(1,2);
 
 		$repository = $this->getMock('IReservationViewRepository');
 
@@ -334,10 +335,10 @@ class ResourceAvailabilityRuleTests extends TestBase
 		$reservations = array();
 		$repository->expects($this->once())
 				   ->method('GetReservations')
-				   ->with($this->equalTo($startDate), $this->equalTo($endDate))
+				   ->with($this->equalTo($startDate), $this->equalTo($endDate), $this->isNull(), $this->isNull(), $this->isNull(), $this->equalTo($resourceIds))
 				   ->will($this->returnValue($reservations));
 
-		$items = $strategy->GetItemsBetween($startDate, $endDate);
+		$items = $strategy->GetItemsBetween($startDate, $endDate, $resourceIds);
 
 		$this->assertEquals($reservations, $items);
 	}
@@ -357,7 +358,7 @@ class ResourceAvailabilityRuleTests extends TestBase
 				   ->with($this->equalTo(new DateRange($startDate, $endDate)))
 				   ->will($this->returnValue($blackouts));
 
-		$items = $strategy->GetItemsBetween($startDate, $endDate);
+		$items = $strategy->GetItemsBetween($startDate, $endDate, array());
 
 		$this->assertEquals($blackouts, $items);
 	}

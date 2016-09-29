@@ -18,8 +18,6 @@
  * along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-use ReservationReminderView\ReservationReminderView;
-
 require_once(ROOT_DIR . 'Domain/Access/namespace.php');
 require_once(ROOT_DIR . 'lib/Application/Reservation/namespace.php');
 require_once(ROOT_DIR . 'lib/Application/Reservation/ReservationInitializerBase.php');
