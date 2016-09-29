@@ -25,7 +25,7 @@
 
         <div class="form-group col-xs-12 col-sm-3">
             <div class="input-group margin-bottom-15">
-                <input type="number" min="0" class="form-control hours-minutes"
+                <input type="number" min="0" step="1" value="0" class="form-control hours-minutes"
                        id="hours" {formname key=HOURS}" />
                 <span class="input-group-addon hours-minutes">{translate key=Hours}</span>
             </div>
