@@ -215,7 +215,9 @@ class ManageAnnouncementsPresenter extends ActionPresenter
         $usersToSendTo = array();
         $validUsers = array();
 
-        if (empty($announcement->GroupIds()) && empty($announcement->ResourceIds())) {
+		$groupIds = $announcement->GroupIds();
+		$resourceIds = $announcement->ResourceIds();
+		if (empty($groupIds) && empty($resourceIds)) {
             $userList = $this->userViewRepository->GetList(null, null, null, null, null, AccountStatus::ACTIVE)->Results();
             foreach ($userList as $user) {
                 $allUsers[$user->Id] = $user;
