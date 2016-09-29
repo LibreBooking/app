@@ -158,7 +158,7 @@ class it_it extends en_us
 		$strings['Notes'] = 'Note';
 		$strings['NoNotesLabel'] = '(nessuna nota)';
 		$strings['NoTitleLabel'] = '(nessuna nota)';
-		$strings['UsageConfiguration'] = 'Utilizzo configurazione';
+		$strings['UsageConfiguration'] = 'Configurazione Utilizzo';
 		$strings['ChangeConfiguration'] = 'Cambia configurazione';
 		$strings['ResourceMinLength'] = 'Le prenotazioni devono durare almeno %s';
 		$strings['ResourceMinLengthNone'] = 'Non è prevista una durata minima della prenotazione';
@@ -616,7 +616,7 @@ class it_it extends en_us
 		$strings['ForgotPassword'] = 'Password dimenticata';
 		$strings['NotificationPreferences'] = 'Preferenze di notifica';
 		$strings['ManageAnnouncements'] = 'Avvisi';
-		$strings['Responsibilities'] = 'Responsibilities';
+		$strings['Responsibilities'] = 'Amministrazione';
 		$strings['GroupReservations'] = 'Prenotazioni gruppo';
 		$strings['ResourceReservations'] = 'Prenotazioni risorsa';
 		$strings['Customization'] = 'Personalizzazione';
