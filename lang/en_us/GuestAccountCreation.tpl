@@ -1,5 +1,5 @@
 {*
-Copyright 2011-2015 Nick Korbel, Paul Menchini
+Copyright 2011-2016 Nick Korbel, Paul Menchini
 
 This file is part of Booked Scheduler.
 

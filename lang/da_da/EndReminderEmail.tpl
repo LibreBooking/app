@@ -1,5 +1,5 @@
 {*
-Copyright 2013-2015 Nick Korbel
+Copyright 2013-2016 Nick Korbel
 
 This file is part of Booked Scheduler.
 
@@ -27,5 +27,5 @@ Reservationsdetaljer:
 	Beskrivelse: {$Description|nl2br}
 <br/>
 <a href="{$ScriptUrl}/{$ReservationUrl}">Vis reservationer</a> |
-<a href="{$ScriptUrl}/{$ICalUrl}">Føj til kalender</a> |
-<a href="{$ScriptUrl}">Log ind på Booked</a>
+<a href="{$ScriptUrl}/{$ICalUrl}">Fï¿½j til kalender</a> |
+<a href="{$ScriptUrl}">Log ind pï¿½ Booked</a>
