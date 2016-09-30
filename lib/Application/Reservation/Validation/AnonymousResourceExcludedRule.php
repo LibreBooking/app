@@ -24,22 +24,32 @@ class AnonymousResourceExcludedRule implements IReservationValidationRule
      * @var IReservationValidationRule
      */
     private $rule;
+	/**
+	 * @var UserSession
+	 */
+	private $session;
 
-    public function __construct(IReservationValidationRule $baseRule)
+	public function __construct(IReservationValidationRule $baseRule, UserSession $session)
     {
         $this->rule = $baseRule;
-    }
+		$this->session = $session;
+	}
 
     public function Validate($reservationSeries, $retryParameters)
     {
+    	if ($this->session->IsLoggedIn())
+		{
+			return new ReservationRuleResult(true);
+		}
+
         foreach ($reservationSeries->AllResources() as $resource)
         {
             if ($resource->GetIsDisplayEnabled())
             {
-                return true;
+                return new ReservationRuleResult(true);
             }
         }
 
-        return false;
+		return new ReservationRuleResult(false);
     }
 }
