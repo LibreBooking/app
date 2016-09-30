@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright 2011-2015 Nick Korbel
+ * Copyright 2011-2016 Nick Korbel
  *
  * This file is part of Booked Scheduler.
  *
@@ -64,6 +64,7 @@ class FakeReservationRepository implements IReservationRepository
 				ColumnNames::PREVIOUS_END_DATE => null,
                 ColumnNames::ENABLE_CHECK_IN => null,
                 ColumnNames::AUTO_RELEASE_MINUTES => null,
+				ColumnNames::CREDIT_COUNT => null,
 		);
 
 		$row2 = array(ColumnNames::RESERVATION_INSTANCE_ID => 1,
@@ -99,6 +100,7 @@ class FakeReservationRepository implements IReservationRepository
 				ColumnNames::PREVIOUS_END_DATE => null,
 				ColumnNames::ENABLE_CHECK_IN => 1,
 				ColumnNames::AUTO_RELEASE_MINUTES => 1,
+				ColumnNames::CREDIT_COUNT => 1,
 		);
 
 		$row3 = array(ColumnNames::RESERVATION_INSTANCE_ID => 2,
@@ -134,6 +136,7 @@ class FakeReservationRepository implements IReservationRepository
 				ColumnNames::PREVIOUS_END_DATE => null,
 				ColumnNames::ENABLE_CHECK_IN => 0,
 				ColumnNames::AUTO_RELEASE_MINUTES => 0,
+				ColumnNames::CREDIT_COUNT => 0,
 		);
 
 		return array(

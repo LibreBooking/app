@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright 2011-2015 Nick Korbel
+ * Copyright 2011-2016 Nick Korbel
  *
  * This file is part of Booked Scheduler.
  *
@@ -31,40 +31,42 @@ interface IUserRepository extends IUserViewRepository
 	 * @param int $userId
 	 * @return User
 	 */
-	function LoadById($userId);
+	public function LoadById($userId);
 
 	/**
 	 * @param string $publicId
 	 * @return User
 	 */
-	function LoadByPublicId($publicId);
+	public function LoadByPublicId($publicId);
 
 	/**
 	 * @param string $userName
 	 * @return User
 	 */
-	function LoadByUsername($userName);
+	public function LoadByUsername($userName);
 
 	/**
-	 * @abstract
 	 * @param User $user
 	 * @return void
 	 */
-	function Update(User $user);
+	public function Update(User $user);
 
 	/**
-	 * @abstract
 	 * @param User $user
 	 * @return int
 	 */
-	function Add(User $user);
+	public function Add(User $user);
 
 	/**
-	 * @abstract
 	 * @param $userId int
 	 * @return void
 	 */
-	function DeleteById($userId);
+	public function DeleteById($userId);
+
+	/**
+	 * @return int
+	 */
+	public function GetCount();
 }
 
 class UserFilter
@@ -428,14 +430,14 @@ class UserRepository implements IUserRepository, IAccountActivationRepository
 			}
 		}
 
-        $addedPermissions = $user->GetAddedPermissions();
-        if (!empty($addedPermissions))
-        {
-            foreach ($addedPermissions as $resourceId)
-            {
-                $db->Execute(new AddUserResourcePermission($id, $resourceId));
-            }
-        }
+		$addedPermissions = $user->GetAddedPermissions();
+		if (!empty($addedPermissions))
+		{
+			foreach ($addedPermissions as $resourceId)
+			{
+				$db->Execute(new AddUserResourcePermission($id, $resourceId));
+			}
+		}
 
 		return $id;
 	}
@@ -763,6 +765,18 @@ class UserRepository implements IUserRepository, IAccountActivationRepository
 
 		return null;
 	}
+
+	public function GetCount()
+	{
+		$reader = ServiceLocator::GetDatabase()->Query(new GetUserCountCommand());
+
+		if ($row = $reader->GetRow())
+		{
+			return $row['count'];
+		}
+
+		return 0;
+	}
 }
 
 class UserDto
@@ -876,12 +890,12 @@ class UserItemView
 	 * @var UserPreferences
 	 */
 	public $Preferences;
-	
+
 	public $CurrentCreditCount;
 
 	public function __construct()
 	{
-		$this->Attributes = new Customattributes();
+		$this->Attributes = new CustomAttributes();
 	}
 
 	public function IsActive()

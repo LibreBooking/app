@@ -36,12 +36,12 @@ function AttributeManagement(opts) {
 			url: opts.changeCategoryUrl + categoryId,
 			cache: false,
 			beforeSend: function () {
-				$('#indicator').show().insertBefore(elements.attributeList);
+				$('#indicator').removeClass('no-show').insertBefore(elements.attributeList);
 				$(elements.attributeList).html('');
 			}
 		}).done(function (data) {
-			$('#indicator').hide();
-			$(elements.attributeList).html(data)
+			$('#indicator').addClass('no-show');
+			$(elements.attributeList).html(data);
 		});
 	}
 

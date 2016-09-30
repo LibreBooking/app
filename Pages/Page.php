@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright 2011-2015 Nick Korbel
+ * Copyright 2011-2016 Nick Korbel
  * Copyright 2014 Jason Gerfen
  *
  * This file is part of Booked Scheduler.

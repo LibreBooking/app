@@ -1,5 +1,5 @@
 {*
-Copyright 2011-2015 Nick Korbel
+Copyright 2011-2016 Nick Korbel
 
 Translation: 2014 Daniele Cordella <kordan@mclink.it>
 

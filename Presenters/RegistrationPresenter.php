@@ -1,6 +1,6 @@
 <?php
 /**
-Copyright 2011-2015 Nick Korbel
+Copyright 2011-2016 Nick Korbel
 
 This file is part of Booked Scheduler.
 
@@ -237,5 +237,6 @@ class RegistrationPresenter extends ActionPresenter
 		$this->page->RegisterValidator('uniqueusername', new UniqueUserNameValidator(new UserRepository(), $this->page->GetLoginName()));
 		$this->page->RegisterValidator('captcha', new CaptchaValidator($this->page->GetCaptcha(), $this->captchaService));
 		$this->page->RegisterValidator('additionalattributes', new AttributeValidator($this->attributeService, CustomAttributeCategory::USER, $this->GetAttributeValues()));
+		$this->page->RegisterValidator('requiredEmailDomain', new RequiredEmailDomainValidator($this->page->GetEmail()));
 	}
 }

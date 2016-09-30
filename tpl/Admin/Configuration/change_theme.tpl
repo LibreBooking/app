@@ -1,5 +1,5 @@
 {*
-Copyright 2013-2015 Nick Korbel
+Copyright 2013-2016 Nick Korbel
 
 This file is part of Booked Scheduler.
 
@@ -25,16 +25,16 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		{translate key=ThemeUploadSuccess}
 	</div>
 
-	<div class="validationSummary alert alert-danger no-show" id="validationErrors">
-		<ul>
-			{async_validator id="logoFileExt"}
-			{async_validator id="cssFileExt"}
-			{async_validator id="logoFile"}
-			{async_validator id="cssFile"}
-		</ul>
-	</div>
-
 	<form id="elementForm" action="{$smarty.server.SCRIPT_NAME}" ajaxAction="update" method="post">
+		<div class="validationSummary alert alert-danger no-show" id="validationErrors">
+				<ul>
+					{async_validator id="logoFileExt"}
+					{async_validator id="cssFileExt"}
+					{async_validator id="logoFile"}
+					{async_validator id="cssFile"}
+				</ul>
+			</div>
+
 		<div>
 			<h4>{translate key="Logo"} (*.png, *.gif, *.jpg)</h4>
 
@@ -55,12 +55,21 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			<a href="#" class="clearInput">{html_image src="cross-button.png"}</a>
 		</div>
 
+		<div>
+			<div>
+				<h4>{translate key="ReservationColors"}</h4>
+
+				<a href="manage_reservation_colors.php">{translate key=Manage}</a>
+			</div>
+		</div>
+
 		<div class="clearfix"></div>
 
-		<button type="button" class="btn btn-success update" name="{Actions::SAVE}" id="saveButton">
+		<button type="button" class="btn btn-success update margin-top-25" name="{Actions::SAVE}" id="saveButton">
 			{translate key='Update'}
 		</button>
 	</form>
+
 
 	<div id="wait-box" class="wait-box">
 		<h3>{translate key=Working}</h3>
@@ -74,22 +83,18 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 	{jsfile src="ajax-form-submit.js"}
 
 	<script type="text/javascript">
-		$('document').ready(function ()
-		{
+		$('document').ready(function () {
 			$('#elementForm').bindAjaxSubmit($('#saveButton'), $('#successMessage'), $('#wait-box'));
 
-			$('.clearInput').click(function (e)
-			{
+			$('.clearInput').click(function (e) {
 				e.preventDefault();
 				$(this).prev('input').val('');
 			});
 
-			$('#removeLogo').click(function (e)
-			{
+			$('#removeLogo').click(function (e) {
 				e.preventDefault();
 
-				PerformAsyncAction($(this), function ()
-				{
+				PerformAsyncAction($(this), function () {
 					return '{$smarty.server.SCRIPT_NAME}?action=removeLogo';
 				});
 			});

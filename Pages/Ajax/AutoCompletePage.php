@@ -1,6 +1,6 @@
 <?php
 /**
-Copyright 2011-2015 Nick Korbel
+Copyright 2011-2016 Nick Korbel
 
 This file is part of Booked Scheduler.
 
@@ -83,7 +83,7 @@ class AutoCompletePage extends SecurePage
 		$users = array();
 
 		$r = new UserRepository();
-		$results = $r->GetList(1, PageInfo::All, null, null, $filter)->Results();
+		$results = $r->GetList(1, PageInfo::All, null, null, $filter, AccountStatus::ACTIVE)->Results();
 
 		/** @var $result UserItemView */
 		foreach($results as $result)

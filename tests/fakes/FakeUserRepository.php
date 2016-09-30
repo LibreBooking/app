@@ -1,6 +1,6 @@
 <?php
 /**
-Copyright 2015 Nick Korbel
+Copyright 2016 Nick Korbel
 
 This file is part of Booked Scheduler.
 
@@ -156,5 +156,13 @@ class FakeUserRepository implements IUserRepository
 	public function UserExists($emailAddress, $userName)
 	{
 		// TODO: Implement UserExists() method.
+	}
+
+	/**
+	 * @return int
+	 */
+	public function GetCount()
+	{
+		// TODO: Implement GetCount() method.
 	}
 }

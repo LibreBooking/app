@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright 2012-2015 Nick Korbel
+ * Copyright 2012-2016 Nick Korbel
  *
  * This file is part of Booked Scheduler.
  *
@@ -17,8 +17,6 @@
  * You should have received a copy of the GNU General Public License
  * along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
  */
-
-use ReservationReminderView\ReservationReminderView;
 
 require_once(ROOT_DIR . 'Domain/Access/namespace.php');
 require_once(ROOT_DIR . 'lib/Application/Reservation/namespace.php');

@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright 2015 Nick Korbel
+ * Copyright 2016 Nick Korbel
  *
  * This file is part of Booked Scheduler.
  *
@@ -64,6 +64,10 @@ class ResourceAvailabilityControlPresenter
         $allday = array();
 
         foreach ($resources as $resource) {
+        	if ($resource->StatusId == ResourceStatus::HIDDEN)
+			{
+				continue;
+			}
             $reservation = $this->GetOngoingReservation($resource, $reservations);
 
             if ($reservation != null) {

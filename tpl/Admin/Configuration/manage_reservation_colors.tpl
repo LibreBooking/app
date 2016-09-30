@@ -1,5 +1,5 @@
 {*
-Copyright 2013-2015 Nick Korbel
+Copyright 2013-2016 Nick Korbel
 
 This file is part of Booked Scheduler.
 
@@ -16,90 +16,121 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 *}
-{include file='globalheader.tpl' cssFiles='css/admin.css,scripts/css/colorbox.css,scripts/css/colorpicker.css'}
 
-<h1>{translate key=ReservationColors}</h1>
+{include file='globalheader.tpl'}
 
-<label for="attributeOption">Attribute</label>
-<select class="textbox" id="attributeOption">
-	{foreach from=$Attributes item=attribute}
-		<option value="{$attribute->Id()}">{$attribute->Label()}</option>
-	{/foreach}
-	</select>
-<button type="button" class="button" id="addRuleButton">
-   {html_image src="plus-button.png"} {translate key='AddRule'}
-</button>
+<div id="page-manage-accessories" class="admin-page">
+	<h1>{translate key=ReservationColors}</h1>
 
-<table class="list" style="margin-top:15px;">
-	<tr>
-		<th>{translate key=Attribute}</th>
-		<th>{translate key=RequiredValue}</th>
-		<th>{translate key=Color}</th>
-		<th>{translate key=Remove}</th>
-	</tr>
-{foreach from=$Rules item=rule}
-	{cycle values='row0,row1' assign=rowCss}
-	<tr class="{$rowCss}">
-		<td>{$rule->AttributeName}</td>
-		<td>{$rule->RequiredValue}</td>
-		<td style="background-color:#{$rule->Color}">&nbsp;</td>
-		<td style="text-align: center;"><a href="#" ruleId="{$rule->Id}" class="delete">{html_image src="cross-button.png"}</td>
-	</tr>
-{/foreach}
-</table>
+	<form class="form-inline" role="form">
+		<div class="form-group">
+			<label for="attributeOption">{translate key=Attribute}</label>
+			<select class="form-control" id="attributeOption">
+				{foreach from=$Attributes item=attribute}
+					<option value="{$attribute->Id()}">{$attribute->Label()}</option>
+				{/foreach}
+			</select>
 
-<div class="dialog" id="addDialog" title="{translate key=AddReservationColorRule}">
-	<form id="addForm" action="{$smarty.server.SCRIPT_NAME}" ajaxAction="add" method="post">
-		<div>
-			{translate key=ReservationCustomRuleAdd args="<div id='attributeFillIn' style='display:inline;'></div>"} <div id="color" style="display:inline;">#{textbox name="RESERVATION_COLOR" class="textbox required" id="reservationColor" maxlength=6}</div>
-		</div>
-		<div class="admin-update-buttons">
-			<button type="button" class="button save" name="{Actions::SAVE}" id="saveButton">
-				{html_image src="disk-black.png"} {translate key='Add'}
+			<button type="button" class="btn btn-success" id="addRuleButton">
+				<i class="fa fa-plus"></i> {translate key='AddRule'}
 			</button>
-			<button type="button" class="button cancel">{html_image src="slash.png"} {translate key='Cancel'}</button>
 		</div>
 	</form>
-</div>
 
-<div id="deleteDialog" class="dialog" title="{translate key=Delete}">
-	<form id="deleteForm" action="{$smarty.server.SCRIPT_NAME}" ajaxAction="delete" method="post">
-		<div class="error" style="margin-bottom: 25px;">
-			<h3>{translate key=DeleteWarning}</h3>
+	<div class="clearfix">&nbsp;</div>
+
+	<table class="table" id="reservationTable">
+		<thead>
+		<tr>
+			<th>{translate key=Attribute}</th>
+			<th>{translate key=RequiredValue}</th>
+			<th>{translate key=Color}</th>
+			<th class="action">{translate key='Delete'}</th>
+		</tr>
+		</thead>
+		<tbody>
+		{foreach from=$Rules item=rule}
+			{cycle values='row0,row1' assign=rowCss}
+			<tr class="{$rowCss}">
+				<td>{$rule->AttributeName}</td>
+				<td>{$rule->RequiredValue}</td>
+				<td style="background-color:{$rule->Color}">&nbsp;</td>
+				<td class="action">
+					<a href="#" class="update delete" ruleId="{$rule->Id}"><span class="fa fa-trash icon remove fa-1x"></span></a>
+				</td>
+			</tr>
+		{/foreach}
+		</tbody>
+	</table>
+
+	<div class="modal fade" id="addDialog" tabindex="-1" role="dialog"
+		 aria-labelledby="addDialogLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<form id="addForm" method="post" action="{$smarty.server.SCRIPT_NAME}?action=add" method="post">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+						<h4 class="modal-title" id="addDialogLabel">{translate key=AddReservationColorRule}</h4>
+					</div>
+					<div class="modal-body">
+						{translate key=ReservationCustomRuleAdd args="<div id='attributeFillIn' class='inline-block'></div>"}
+						<div id="color" class="inline-block">
+							<input type="color" {formname key="RESERVATION_COLOR"} class="form-control required" id="reservationColor" maxlength="6"/>
+						</div>
+					</div>
+					<div class="modal-footer">
+						{cancel_button}
+						{add_button}
+						{indicator}
+					</div>
+				</div>
+			</form>
 		</div>
-		<div class="admin-update-buttons">
-			<button type="button" class="button save">{html_image src="cross-button.png"} {translate key='Delete'}</button>
-			<button type="button" class="button cancel">{html_image src="slash.png"} {translate key='Cancel'}</button>
+	</div>
+
+	<div class="modal fade" id="deleteDialog" tabindex="-1" role="dialog"
+		 aria-labelledby="deleteDialogLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<form id="deleteForm" action="{$smarty.server.SCRIPT_NAME}?action=delete" method="post">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+						<h4 class="modal-title" id="deleteDialogLabel">{translate key=Delete}</h4>
+					</div>
+					<div class="modal-body">
+						<div class="alert alert-warning">
+							{translate key=DeleteWarning}
+						</div>
+						<input type="hidden" id="deleteRuleId" {formname key=RESERVATION_COLOR_RULE_ID} />
+					</div>
+					<div class="modal-footer">
+						{cancel_button}
+						{delete_button}
+						{indicator}
+					</div>
+				</div>
+			</form>
 		</div>
-		<input type="hidden" name="{FormKeys::RESERVATION_COLOR_RULE_ID}" id="deleteRuleId" />
-	</form>
+	</div>
+
+	{foreach from=$Attributes item=attribute}
+		<div id="attribute{$attribute->Id()}" class="hidden">{control type="AttributeControl" attribute=$attribute searchmode=true}</div>
+	{/foreach}
+
+	{csrf_token}
+
 </div>
-
-
-<div id="modalDiv" style="display:none;text-align:center; top:15%;position:relative;">
-    <h3>{translate key=Working}</h3>
-{html_image src="reservation_submitting.gif"}
-</div>
-
-{foreach from=$Attributes item=attribute}
-	<div id="attribute{$attribute->Id()}" class="hidden">{control type="AttributeControl" attribute=$attribute searchmode=true}</div>
-{/foreach}
-
-{csrf_token}
 
 {jsfile src="ajax-helpers.js"}
 {jsfile src="js/jquery.form-3.09.min.js"}
-{jsfile src="js/jquery.colorbox-min.js"}
 {jsfile src="ajax-form-submit.js"}
-{jsfile src="js/colorpicker.js"}
 {jsfile src="admin/reservation-colors.js"}
 
 <script type="text/javascript">
-	$('document').ready(function(){
-
+	$('document').ready(function () {
 		var mgmt = new ReservationColorManagement();
 		mgmt.init();
-    });
+	});
 </script>
 
 {include file='globalfooter.tpl'}

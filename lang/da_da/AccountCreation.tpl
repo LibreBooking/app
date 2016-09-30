@@ -1,5 +1,5 @@
 {*
-Copyright 2011-2015 Nick Korbel, Paul Menchini
+Copyright 2011-2016 Nick Korbel, Paul Menchini
 
 This file is part of Booked Scheduler.
 
@@ -18,7 +18,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 *}
 <p>{$To},</p>
 
-<p>En ny bruger blev registreret med følgende informationer:<br/>
+<p>En ny bruger blev registreret med fï¿½lgende informationer:<br/>
 Email: {$EmailAddress}<br/>
 Navn: {$FullName}<br/>
 Telefon: {$Phone}<br/>

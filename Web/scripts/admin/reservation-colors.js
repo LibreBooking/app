@@ -1,7 +1,5 @@
 function ReservationColorManagement(opts)
 {
-	var options = opts;
-
 	var elements = {
 		deleteRuleId:$('#deleteRuleId'),
 		attributeOption:$('#attributeOption'),
@@ -18,8 +16,6 @@ function ReservationColorManagement(opts)
 
 	ReservationColorManagement.prototype.init = function ()
 	{
-		ConfigureAdminDialog(elements.addDialog);
-		ConfigureAdminDialog(elements.deleteDialog);
 
 		$(".save").click(function ()
 		{
@@ -28,41 +24,23 @@ function ReservationColorManagement(opts)
 
 		$(".cancel").click(function ()
 		{
-			$(this).closest('.dialog').dialog("close");
+			$(this).closest('.modal').modal("hide");
 		});
 
 		$(".delete").click(function()
 		{
 			elements.deleteRuleId.val($(this).attr('ruleId'));
-			elements.deleteDialog.dialog('open');
-		});
-
-		$('#reservationColor').ColorPicker({
-			onSubmit: function(hsb, hex, rgb, el) {
-				$(el).val(hex);
-					$(el).ColorPickerHide();
-				},
-			onBeforeShow: function () {
-				$(this).ColorPickerSetColor(this.value);
-			}
+			elements.deleteDialog.modal('show');
 		});
 
 		$('#addRuleButton').click(function(e){
 			var attrId = '#attribute' + elements.attributeOption.val();
 			$('#attributeFillIn').empty();
-			$('#attributeFillIn').append($(attrId).clone().attr('style',' display:inline'));
-			elements.addDialog.dialog('open');
+			$('#attributeFillIn').append($(attrId).clone().removeClass('hidden'));
+			elements.addDialog.modal('show');
 		});
 
-		ConfigureAsyncForm(elements.addForm, defaultSubmitCallback(elements.addForm))
-		ConfigureAsyncForm(elements.deleteForm, defaultSubmitCallback(elements.deleteForm))
-	};
-
-	var defaultSubmitCallback = function (form)
-	{
-		return function()
-		{
-			return form.attr('action') + "?action=" + form.attr('ajaxAction');
-		}
+		ConfigureAsyncForm(elements.addForm);
+		ConfigureAsyncForm(elements.deleteForm);
 	};
 }

@@ -1,6 +1,6 @@
 <?php
 /**
-Copyright 2011-2015 Nick Korbel
+Copyright 2011-2016 Nick Korbel
 
 This file is part of Booked Scheduler.
 
@@ -186,6 +186,7 @@ $conf['settings']['security']['security.content-security-policy'] = "default-src
  */
 $conf['settings']['google.analytics']['tracking.id'] = ''; // if set, Google Analytics tracking code will be added to every page in Booked
 $conf['settings']['authentication']['allow.social.login'] = 'false';
+$conf['settings']['authentication']['required.email.domains'] = '';
 /**
  * Credits functionality
  */

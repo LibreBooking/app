@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright 2011-2015 Nick Korbel
+ * Copyright 2011-2016 Nick Korbel
  *
  * Translation: 2014 Nicola Ruggero <nicola@nxnt.org>, Daniele Cordella <kordan@mclink.it>
  *
@@ -158,7 +158,7 @@ class it_it extends en_us
 		$strings['Notes'] = 'Note';
 		$strings['NoNotesLabel'] = '(nessuna nota)';
 		$strings['NoTitleLabel'] = '(nessuna nota)';
-		$strings['UsageConfiguration'] = 'Utilizzo configurazione';
+		$strings['UsageConfiguration'] = 'Configurazione Utilizzo';
 		$strings['ChangeConfiguration'] = 'Cambia configurazione';
 		$strings['ResourceMinLength'] = 'Le prenotazioni devono durare almeno %s';
 		$strings['ResourceMinLengthNone'] = 'Non è prevista una durata minima della prenotazione';
@@ -223,7 +223,7 @@ class it_it extends en_us
 		$strings['PasswordChangedSuccessfully'] = 'Password modificata correttamente';
 		$strings['SignedInAs'] = 'Collegato come';
 		$strings['NotSignedIn'] = 'Non sei collegato';
-		$strings['ReservationTitle'] = 'Note prenotazione';
+		$strings['ReservationTitle'] = 'Nome prenotazione';
 		$strings['ReservationDescription'] = 'Descrizione prenotazione';
 		$strings['ResourceList'] = 'Risorsa relativa:';
 		$strings['Accessories'] = 'Accessori';
@@ -616,7 +616,7 @@ class it_it extends en_us
 		$strings['ForgotPassword'] = 'Password dimenticata';
 		$strings['NotificationPreferences'] = 'Preferenze di notifica';
 		$strings['ManageAnnouncements'] = 'Avvisi';
-		$strings['Responsibilities'] = 'Responsibilities';
+		$strings['Responsibilities'] = 'Amministrazione';
 		$strings['GroupReservations'] = 'Prenotazioni gruppo';
 		$strings['ResourceReservations'] = 'Prenotazioni risorsa';
 		$strings['Customization'] = 'Personalizzazione';

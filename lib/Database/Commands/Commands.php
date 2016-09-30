@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright 2011-2015 Nick Korbel
+ * Copyright 2011-2016 Nick Korbel
  *
  * This file is part of Booked Scheduler.
  *
@@ -1697,6 +1697,14 @@ class GetUserByPublicIdCommand extends SqlCommand
 	{
 		parent::__construct(Queries::GET_USER_BY_PUBLIC_ID);
 		$this->AddParameter(new Parameter(ParameterNames::PUBLIC_ID, $publicId));
+	}
+}
+
+class GetUserCountCommand extends SqlCommand
+{
+	public function __construct()
+	{
+		parent::__construct(Queries::GET_USER_COUNT);
 	}
 }
 

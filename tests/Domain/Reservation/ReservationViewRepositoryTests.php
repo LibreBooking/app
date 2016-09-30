@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright 2011-2015 Nick Korbel
+ * Copyright 2011-2016 Nick Korbel
  *
  * This file is part of Booked Scheduler.
  *
@@ -248,6 +248,10 @@ class ReservationViewRepositoryTests extends TestBase
                 $resourceCheckIn1, $resourceAutoRelease1),
             new ReservationResourceView($resourceId2, $resourceName2, null, $scheduleId, $scheduleAdminGroupId, ResourceStatus::AVAILABLE, false, null),
         );
+		foreach($expectedView->Resources as $r)
+		{
+			$r->SetColor('color');
+		}
 
         $expectedView->Accessories = array(
             new ReservationAccessoryView($accessory1, $quantity1, $accessoryName1, $accessoryQuantity1),

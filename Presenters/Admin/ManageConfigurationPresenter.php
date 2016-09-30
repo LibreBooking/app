@@ -45,6 +45,8 @@ class ManageConfigurationPresenter extends ActionPresenter
 
 	private $deletedSettings = array('password.pattern');
 
+	private $configFilePathDist;
+
 
 	public function __construct(IManageConfigurationPage $page, IConfigurationSettings $settings)
 	{

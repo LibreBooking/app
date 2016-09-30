@@ -1,6 +1,6 @@
 <?php
 /**
-Copyright 2011-2015 Nick Korbel
+Copyright 2011-2016 Nick Korbel
 
 This file is part of Booked Scheduler.
 
@@ -81,7 +81,7 @@ class Configuration implements IConfiguration
 	const DEFAULT_CONFIG_ID = 'booked';
 	const DEFAULT_CONFIG_FILE_PATH = 'config/config.php';
 
-    const VERSION = '2.6 beta2';
+    const VERSION = '2.6 RC1';
 
 	protected function __construct()
 	{
