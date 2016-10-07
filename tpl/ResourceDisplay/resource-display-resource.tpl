@@ -124,6 +124,27 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
                     </div>
                 </div>
             </div>
+
+            {if $Attributes|count > 0}
+                <div class="customAttributes col-xs-12">
+                    {foreach from=$Attributes item=attribute name=attributeEach}
+                        {if $smarty.foreach.attributeEach.index % 2 == 0}
+                            <div class="row">
+                        {/if}
+                        <div class="customAttribute col-xs-6">
+                            {control type="AttributeControl" attribute=$attribute}
+                        </div>
+                        {if $smarty.foreach.attributeEach.index % 2 ==1}
+                            </div>
+                        {/if}
+                    {/foreach}
+                    {if $Attributes|count % 2 == 1}
+                        <div class="col-xs-6">&nbsp;</div>
+                        </div>
+                    {/if}
+                </div>
+            {/if}
+
             <input type="hidden" {formname key=RESOURCE_ID} value="{$ResourceId}"/>
             <input type="hidden" {formname key=SCHEDULE_ID} value="{$ScheduleId}"/>
             <input type="hidden" {formname key=TIMEZONE} value="{$Timezone}"/>
@@ -143,29 +164,29 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 <div class="col-xs-6">
     {else}
     <div class="col-xs-12">
-{/if}
-{if $NextAvailable != false}
-    <div class="resource-display-unavailable reservePrompt"
-         data-next-time="{formatdate date=$NextAvailable key=url_full}">
-        {else}
-        <div class="resource-display-unavailable">
-            {/if}
-            {translate key=Unavailable}{if $NextAvailable != false} - {translate key=Reserve}{/if}
+        {/if}
+        {if $NextAvailable != false}
+        <div class="resource-display-unavailable reservePrompt"
+             data-next-time="{formatdate date=$NextAvailable key=url_full}">
+            {else}
+            <div class="resource-display-unavailable">
+                {/if}
+                {translate key=Unavailable}{if $NextAvailable != false} - {translate key=Reserve}{/if}
+            </div>
         </div>
-    </div>
 
-    {if $CheckInRequired}
-        <div class="col-xs-6">
-            <form role="form" method="post" id="formCheckin"
-                  action="ajax/reservation_checkin.php?action={ReservationAction::Checkin}">
-                {csrf_token}
-                <input type="hidden" {formname key=REFERENCE_NUMBER} id="referenceNumber"/>
-                <button type="submit" class="col-xs-12 resource-display-checkin">{translate key=CheckIn}
-                    {if !empty($AutoReleaseMinutes)}
-                    <span> - {$AutoReleaseMinutes} {translate key=minutes}</span>
-                    {/if}
-                </button>
-            </form>
-        </div>
-    {/if}
-{/if}
+        {if $CheckInRequired}
+            <div class="col-xs-6">
+                <form role="form" method="post" id="formCheckin"
+                      action="ajax/reservation_checkin.php?action={ReservationAction::Checkin}">
+                    {csrf_token}
+                    <input type="hidden" {formname key=REFERENCE_NUMBER} id="referenceNumber"/>
+                    <button type="submit" class="col-xs-12 resource-display-checkin">{translate key=CheckIn}
+                        {if !empty($AutoReleaseMinutes)}
+                            <span> - {$AutoReleaseMinutes} {translate key=minutes}</span>
+                        {/if}
+                    </button>
+                </form>
+            </div>
+        {/if}
+        {/if}
