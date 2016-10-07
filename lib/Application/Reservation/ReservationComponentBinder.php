@@ -322,17 +322,7 @@ class ReservationDetailsBinder implements IReservationComponentBinder
 		$minAutoReleaseMinutes = null;
 		if ($this->reservationView->CheckinDate->ToString() == '')
 		{
-			foreach ($this->reservationView->Resources as $resource)
-			{
-				$autoReleaseMinutes = $resource->GetAutoReleaseMinutes();
-				if ($autoReleaseMinutes != null)
-				{
-					if ($minAutoReleaseMinutes == null || ($autoReleaseMinutes < $minAutoReleaseMinutes))
-					{
-						$minAutoReleaseMinutes = $autoReleaseMinutes;
-					}
-				}
-			}
+			$minAutoReleaseMinutes = $this->reservationView->AutoReleaseMinutes();
 		}
 		$this->page->SetAutoReleaseMinutes($minAutoReleaseMinutes);
 	}
