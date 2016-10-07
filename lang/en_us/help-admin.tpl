@@ -303,8 +303,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
         <h3>Reservation Colors</h3>
 
-        <p>Reservation colors can be set for individual users. The slot background color of the user's reservations on
-            the Schedule and Calendar views will be
+        <p>Reservation colors can be set for individual users, resources, or dynamically based on a custom attribute
+            value. The slot background color of a reservation on the Schedule and Calendar views will be
             displayed in this color.</p>
 
     </div>
@@ -326,7 +326,11 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
             Applies To property. If an attribute is
             configured to apply to a single entity then it will only be collected for that entity.</p>
 
-        <p>Reservation attributes will be collected during the reservation process.</p>
+        <p>Reservation attributes will be collected during the reservation process. To collect an attribute value only
+            for
+            specific users or resources, check the 'Collect In Specific Cases' option and pick the cases when the
+            attribute
+            should be shown.</p>
 
         <p>User attributes are collected when registering and updating a user's profile.</p>
 
@@ -335,6 +339,11 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
         <p>Resource Type attributes are entered when managing resource types and will be displayed when viewing resource
             details.</p>
+
+        <p>Admin only attributes are only shown to users who have administrative privileges over that reservation.</p>
+
+        <p>Private attributes are only shown to the reservation owner and those users who have administrative privileges
+            over that reservation.</p>
 
         <p>Custom attributes are available to plugins and can be used to extend the functionality of Booked.</p>
     </div>
@@ -367,7 +376,12 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
     <div id="help-credits">
         <h3>Credits</h3>
 
-        <p></p>
+        <p>Credits allow control over a user's usage. Credits must first be enabled in the application configuration
+            before they can be managed. Once enabled, administrators will have the ability to set the credit redemption
+            rates for peak and off peak times. Peak times are defined per schedule.</p>
+
+        <p>If a reservation would bring a user over their credit limit, the reservation will be rejected. Administrators
+            can manage user credits when managing user details.</p>
     </div>
 
     <div id="help-reminders">
@@ -532,6 +546,9 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
             be
             automatically subscribed to all emails upon registration.</p>
 
+        <p class="setting"><span>$conf['settings']['registration.notify.admin']</span>Whether or not admins will be
+            notified upon new user registration.</p>
+
         <p class="setting"><span>$conf['settings']['inactivity.timeout']</span>Number of minutes before the user is
             automatically logged out. Leave this blank if you do not want users automatically logged out.</p>
 
@@ -561,7 +578,6 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
             register 1 = Dashboard, 2 = Schedule, 3
             = My
             Calendar, 4 = Resource Calendar. Default is 1 (Dashboard)</p>
-
 
         <p class="setting"><span>$conf['settings']['schedule']['use.per.user.colors']</span>Use user-specific,
             administrator-defined colors for reservations. Default is false.</p>
@@ -627,6 +643,17 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
         <p class="setting"><span>$conf['settings']['reservation']['prevent.recurrence']</span>Whether or not users
             should be
             prevented creating recurring reservations. Default is false.</p>
+
+        <p class="setting"><span>$conf['settings']['reservation']['enable.reminders']</span>Whether or not users
+            can be reminded about their reservations via email. This requires the reminders job to be running. Default
+            is false.</p>
+
+        <p class="setting"><span>$conf['settings']['reservation']['allow.guest.participation']</span>Whether or not
+            non-registered users can be invited to reservations. Default is false.</p>
+
+        <p class="setting"><span>$conf['settings']['reservation']['allow.wait.list']</span>Whether or not
+            users can be notified of time slot availability. This requires the wait list job to be running. Default is
+            false.</p>
 
         <p class="setting"><span>$conf['settings']['reservation.notify']['resource.admin.add']</span>Whether or not to
             send an
@@ -761,12 +788,12 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
             www.google.com/recaptcha to sign up.</p>
 
         <p class="setting"><span>$config['settings']['email']['default.from.address']</span>The email address to use as
-            the
-            'from' address when sending emails. If emails are bouncing or being marked as spam, set this to an email
-            address
-            with your domain name. For example, noreply@yourdomain.com. This will not change the 'from' name or the
-            reply-to
-            address.</p>
+            the 'from' address when sending emails. If emails are bouncing or being marked as spam, set this to an email
+            address with your domain name. For example, noreply@yourdomain.com. This will not change the 'from' name or
+            the reply-to address.</p>
+
+        <p class="setting"><span>$config['settings']['email']['default.from.name']</span>The friendly name to use as the
+            'from' address when sending emails.</p>
 
         <p class="setting"><span>$conf['settings']['reports']['allow.all.users']</span>If non-administrators can access
             usage
@@ -815,6 +842,9 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
         <p class="setting"><span>$conf['settings']['authentication']['allow.social.login']</span>If users can log in to
             Booked using Google and Facebook. Default is false.</p>
+
+        <p class="setting"><span>$conf['settings']['credits']['enabled']</span>Whether or not credit functionality is
+            enabled. Default is false.</p>
     </div>
 
     <h2>Plugins</h2>

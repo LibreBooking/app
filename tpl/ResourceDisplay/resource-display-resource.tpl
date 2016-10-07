@@ -49,6 +49,9 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
                         {assign var=NextAvailable value=$slot->BeginDate()}
                     {/if}
                     {assign var="class" value="reservable"}
+                    {if $slot->IsPastDate(Date::Now())}
+                        {assign var="class" value="pasttime"}
+                    {/if}
                 {else}
                     {if $slot->CollidesWith($Today)}
                         {assign var=AvailableNow value=false}
@@ -171,7 +174,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
             {else}
             <div class="resource-display-unavailable">
                 {/if}
-                {translate key=Unavailable}{if $NextAvailable != false} - {translate key=Reserve}{/if}
+                {translate key=UnavailableNow}{if $NextAvailable != false} - {translate key=ReserveLater}{/if}
             </div>
         </div>
 

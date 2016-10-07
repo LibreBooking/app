@@ -185,8 +185,15 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
         would violate any quota, you will be notified and the reservation will be denied.</p>
 
     <h2>Waiting For Availability</h2>
+
     <p>If a time is not available you can sign up to be notified if it becomes available. This option will be shown
         after a reservation attempt is made.</p>
+
+    <h2>Reservation Tablet View</h2>
+
+    <p>Booked provides a tablet-friendly view of a resource's current availability. To launch this view,
+        open {$ScriptUrl}/resource-display.php then choose the resource to display. From this view users can view the
+        current availability, check in to their reservation, and book new reservations.</p>
 
 </div>
 
