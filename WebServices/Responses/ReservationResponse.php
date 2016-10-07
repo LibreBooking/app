@@ -30,8 +30,8 @@ require_once(ROOT_DIR . 'WebServices/Responses/ReminderRequestResponse.php');
 class ReservationResponse extends RestResponse
 {
 	public $referenceNumber;
-	public $startDateTime;
-	public $endDateTime;
+	public $startDate;
+	public $endDate;
 	public $title;
 	public $description;
 	public $requiresApproval;
@@ -107,8 +107,8 @@ class ReservationResponse extends RestResponse
 		$canViewDetails = $privacyFilter->CanViewDetails($server->GetSession(), $reservation);
 
 		$this->referenceNumber = $reservation->ReferenceNumber;
-		$this->startDateTime = $reservation->StartDate->ToTimezone($server->GetSession()->Timezone)->ToIso();
-		$this->endDateTime = $reservation->EndDate->ToTimezone($server->GetSession()->Timezone)->ToIso();
+		$this->startDate = $reservation->StartDate->ToTimezone($server->GetSession()->Timezone)->ToIso();
+		$this->endDate = $reservation->EndDate->ToTimezone($server->GetSession()->Timezone)->ToIso();
 		$this->requiresApproval = $reservation->RequiresApproval();
 		$this->isRecurring = $reservation->IsRecurring();
 		$repeatTerminationDate = $reservation->RepeatTerminationDate != null ? $reservation->RepeatTerminationDate->ToIso() : null;
@@ -205,7 +205,7 @@ class ExampleReservationResponse extends ReservationResponse
 		$this->attachments = array(AttachmentResponse::Example());
 		$this->customAttributes = array(CustomAttributeResponse::Example());
 		$this->description = 'reservation description';
-		$this->endDateTime = Date::Now()->ToIso();
+		$this->endDate = Date::Now()->ToIso();
 		$this->invitees = array(ReservationUserResponse::Example());
 		$this->isRecurring = true;
 		$this->owner = ReservationUserResponse::Example();
@@ -216,7 +216,7 @@ class ExampleReservationResponse extends ReservationResponse
 		$this->resourceId = 123;
 		$this->resources = array(ResourceItemResponse::Example());
 		$this->scheduleId = 123;
-		$this->startDateTime = Date::Now()->ToIso();
+		$this->startDate = Date::Now()->ToIso();
 		$this->title = 'reservation title';
 		$this->startReminder = ReminderRequestResponse::Example();
 		$this->endReminder = ReminderRequestResponse::Example();
