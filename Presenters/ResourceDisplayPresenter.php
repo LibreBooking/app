@@ -28,277 +28,292 @@ require_once(ROOT_DIR . 'Pages/Ajax/IReservationSaveResultsView.php');
 
 class ResourceDisplayPresenter extends ActionPresenter
 {
-	/**
-	 * @var IResourceDisplayPage
-	 */
-	private $page;
+    /**
+     * @var IResourceDisplayPage
+     */
+    private $page;
 
-	/**
-	 * @var IResourceRepository
-	 */
-	private $resourceRepository;
+    /**
+     * @var IResourceRepository
+     */
+    private $resourceRepository;
 
-	/**
-	 * @var IReservationViewRepository
-	 */
-	private $reservationService;
-	/**
-	 * @var IAuthorizationService
-	 */
-	private $authorizationService;
-	/**
-	 * @var IWebAuthentication
-	 */
-	private $authentication;
-	/**
-	 * @var IScheduleRepository
-	 */
-	private $scheduleRepository;
-	/**
-	 * @var IDailyLayoutFactory
-	 */
-	private $dailyLayoutFactory;
+    /**
+     * @var IReservationViewRepository
+     */
+    private $reservationService;
+    /**
+     * @var IAuthorizationService
+     */
+    private $authorizationService;
+    /**
+     * @var IWebAuthentication
+     */
+    private $authentication;
+    /**
+     * @var IScheduleRepository
+     */
+    private $scheduleRepository;
+    /**
+     * @var IDailyLayoutFactory
+     */
+    private $dailyLayoutFactory;
 
-	/**
-	 * @var IGuestUserService
-	 */
-	private $guestUserService;
+    /**
+     * @var IGuestUserService
+     */
+    private $guestUserService;
 
-	/**
-	 * @var IReservationHandler
-	 */
-	public $reservationHandler;
+    /**
+     * @var IReservationHandler
+     */
+    public $reservationHandler;
 
-	public function __construct(IResourceDisplayPage $page,
-								IResourceRepository $resourceRepository,
-								IReservationService $reservationService,
-								IAuthorizationService $authorizationService,
-								IWebAuthentication $authentication,
-								IScheduleRepository $scheduleRepository,
-								IDailyLayoutFactory $dailyLayoutFactory,
-								IGuestUserService $guestUserService)
-	{
-		parent::__construct($page);
-		$this->page = $page;
-		$this->resourceRepository = $resourceRepository;
-		$this->reservationService = $reservationService;
-		$this->authorizationService = $authorizationService;
-		$this->authentication = $authentication;
-		$this->scheduleRepository = $scheduleRepository;
-		$this->dailyLayoutFactory = $dailyLayoutFactory;
-		$this->guestUserService = $guestUserService;
+    /**
+     * @var IAttributeService
+     */
+    private $attributeService;
 
-		parent::AddAction('login', 'Login');
-		parent::AddAction('activate', 'Activate');
-		parent::AddAction('reserve', 'Reserve');
-	}
+    public function __construct(IResourceDisplayPage $page,
+                                IResourceRepository $resourceRepository,
+                                IReservationService $reservationService,
+                                IAuthorizationService $authorizationService,
+                                IWebAuthentication $authentication,
+                                IScheduleRepository $scheduleRepository,
+                                IDailyLayoutFactory $dailyLayoutFactory,
+                                IGuestUserService $guestUserService,
+                                IAttributeService $attributeService)
+    {
+        parent::__construct($page);
+        $this->page = $page;
+        $this->resourceRepository = $resourceRepository;
+        $this->reservationService = $reservationService;
+        $this->authorizationService = $authorizationService;
+        $this->authentication = $authentication;
+        $this->scheduleRepository = $scheduleRepository;
+        $this->dailyLayoutFactory = $dailyLayoutFactory;
+        $this->guestUserService = $guestUserService;
+        $this->attributeService = $attributeService;
 
-	public function PageLoad()
-	{
-		$resourceId = $this->page->GetPublicResourceId();
-		$loggedIn = ServiceLocator::GetServer()->GetUserSession()->IsLoggedIn();
+        parent::AddAction('login', 'Login');
+        parent::AddAction('activate', 'Activate');
+        parent::AddAction('reserve', 'Reserve');
+    }
 
-		if (empty($resourceId) || !$loggedIn)
-		{
-			$this->page->DisplayLogin();
-		}
-		if (!empty($resourceId))
-		{
-			$this->page->DisplayResourceShell();
-		}
-	}
+    public function PageLoad()
+    {
+        $resourceId = $this->page->GetPublicResourceId();
+        $loggedIn = ServiceLocator::GetServer()->GetUserSession()->IsLoggedIn();
 
-	public function Login()
-	{
-		$username = $this->page->GetEmail();
-		$password = $this->page->GetPassword();
+        if (empty($resourceId) || !$loggedIn) {
+            $this->page->DisplayLogin();
+        }
+        if (!empty($resourceId)) {
+            $this->page->DisplayResourceShell();
+        }
+    }
 
-		$isValid = $this->authentication->Validate($username, $password);
+    public function Login()
+    {
+        $username = $this->page->GetEmail();
+        $password = $this->page->GetPassword();
 
-		if ($isValid)
-		{
-			$this->authentication->Login($username, new WebLoginContext(new LoginData()));
-			$user = ServiceLocator::GetServer()->GetUserSession();
-			$resourceList = array();
-			$resources = $this->resourceRepository->GetResourceList();
-			foreach ($resources as $resource)
-			{
-				if ($this->authorizationService->CanEditForResource($user, $resource))
-				{
-					$resourceList[] = $resource;
-				}
-			}
+        $isValid = $this->authentication->Validate($username, $password);
 
-			$this->page->BindResourceList($resourceList);
-		}
-		else
-		{
-			$this->page->BindInvalidLogin();
-		}
-	}
+        if ($isValid) {
+            $this->authentication->Login($username, new WebLoginContext(new LoginData()));
+            $user = ServiceLocator::GetServer()->GetUserSession();
+            $resourceList = array();
+            $resources = $this->resourceRepository->GetResourceList();
+            foreach ($resources as $resource) {
+                if ($this->authorizationService->CanEditForResource($user, $resource)) {
+                    $resourceList[] = $resource;
+                }
+            }
 
-	public function Activate()
-	{
-		$resource = $this->resourceRepository->LoadById($this->page->GetResourceId());
-		if ($this->authorizationService->CanEditForResource(ServiceLocator::GetServer()->GetUserSession(), $resource))
-		{
-			$resource->EnableDisplay();
-			$this->resourceRepository->Update($resource);
-			$this->page->SetActivatedResourceId($resource->GetPublicId());
-		}
-	}
+            $this->page->BindResourceList($resourceList);
+        }
+        else {
+            $this->page->BindInvalidLogin();
+        }
+    }
 
-	public function DisplayResource($resourcePublicId)
-	{
-		$resource = $this->resourceRepository->LoadByPublicId($resourcePublicId);
+    public function Activate()
+    {
+        $resource = $this->resourceRepository->LoadById($this->page->GetResourceId());
+        if ($this->authorizationService->CanEditForResource(ServiceLocator::GetServer()->GetUserSession(), $resource)) {
+            $resource->EnableDisplay();
+            $this->resourceRepository->Update($resource);
+            $this->page->SetActivatedResourceId($resource->GetPublicId());
+        }
+    }
 
-		if (!$resource->GetIsDisplayEnabled())
-		{
+    public function DisplayResource($resourcePublicId)
+    {
+        $resource = $this->resourceRepository->LoadByPublicId($resourcePublicId);
 
-			$this->page->DisplayNotEnabled();
-			return;
-		}
-		$scheduleId = $resource->GetScheduleId();
+        if (!$resource->GetIsDisplayEnabled()) {
 
-		$schedule = $this->scheduleRepository->LoadById($scheduleId);
-		$timezone = $schedule->GetTimezone();
+            $this->page->DisplayNotEnabled();
+            return;
+        }
+        $scheduleId = $resource->GetScheduleId();
 
-		$now = Date::Now();
-		$today = new DateRange($now->GetDate()->ToUtc(), $now->AddDays(1)->GetDate()->ToUtc());
+        $schedule = $this->scheduleRepository->LoadById($scheduleId);
+        $timezone = $schedule->GetTimezone();
 
-		$layout = $this->scheduleRepository->GetLayout($scheduleId, new ScheduleLayoutFactory($timezone));
-		$reservations = $this->reservationService->GetReservations($today, null, $timezone, $resource->GetResourceId());
+        $now = Date::Now();
+        $today = new DateRange($now->GetDate()->ToUtc(), $now->AddDays(1)->GetDate()->ToUtc());
 
-		$this->page->BindResource($resource);
-		$this->page->BindSchedule($schedule);
-		$dailyLayout = $this->dailyLayoutFactory->Create($reservations, $layout);
+        $layout = $this->scheduleRepository->GetLayout($scheduleId, new ScheduleLayoutFactory($timezone));
+        $reservations = $this->reservationService->GetReservations($today, null, $timezone, $resource->GetResourceId());
 
-		$this->page->DisplayAvailability($dailyLayout, $now->ToTimezone($timezone));
-	}
+        $attributes = $this->attributeService->GetReservationAttributes(ServiceLocator::GetServer()->GetUserSession(),
+            new ReservationView(), 0, array($resource->GetResourceId()));
 
-	public function Reserve()
-	{
-		$timezone = $this->page->GetTimezone();
-		$resourceId = $this->page->GetResourceId();
-		$email = $this->page->GetEmail();
+        $requiredAttributes = array();
+        /** @var Attribute $attribute */
+        foreach ($attributes as $attribute)
+        {
+            if ($attribute->Required())
+            {
+                $requiredAttributes[] = $attribute;
+            }
+        }
+        $this->page->BindResource($resource);
+        $this->page->BindSchedule($schedule);
+        $this->page->BindAttributes($requiredAttributes);
 
-		$now = Date::Now()->ToTimezone($timezone)->Format('Y-m-d ');
+        $dailyLayout = $this->dailyLayoutFactory->Create($reservations, $layout);
 
-		$date = DateRange::Create($now . $this->page->GetBeginTime(), $now . $this->page->GetEndTime(), $timezone);
+        $this->page->DisplayAvailability($dailyLayout, $now->ToTimezone($timezone));
+    }
 
-		Log::Debug('date %s', $date);
-		$userSession = $this->guestUserService->CreateOrLoad($email);
-		$resource = $this->resourceRepository->LoadById($resourceId);
+    public function Reserve()
+    {
+        $timezone = $this->page->GetTimezone();
+        $resourceId = $this->page->GetResourceId();
+        $email = $this->page->GetEmail();
 
-		$resultCollector = new ReservationResultCollector();
-		$series = ReservationSeries::Create($userSession->UserId, $resource, '', '', $date, new RepeatNone(), $userSession);
+        $now = Date::Now()->ToTimezone($timezone)->Format('Y-m-d ');
 
-		$success = $this->GetHandler($userSession)->Handle($series, $resultCollector);
+        $date = DateRange::Create($now . $this->page->GetBeginTime(), $now . $this->page->GetEndTime(), $timezone);
 
-		$this->page->SetReservationSaveResults($success, $resultCollector);
-	}
+        $userSession = $this->guestUserService->CreateOrLoad($email);
+        $resource = $this->resourceRepository->LoadById($resourceId);
 
-	public function ProcessDataRequest($dataRequest)
-	{
-		if ($dataRequest == 'display')
-		{
-			$resourceId = $this->page->GetPublicResourceId();
+        $resultCollector = new ReservationResultCollector();
+        $series = ReservationSeries::Create($userSession->UserId, $resource, '', '', $date, new RepeatNone(), $userSession);
 
-			$this->DisplayResource($resourceId);
-		}
-	}
+        $attributes = $this->page->GetAttributes();
+        foreach ($attributes as $attribute)
+        {
+            $series->AddAttributeValue(new AttributeValue($attribute->Id, $attribute->Value));
+        }
 
-	protected function LoadValidators($action)
-	{
-		if ($action == 'reserve')
-		{
-			$this->page->RegisterValidator('emailformat', new EmailValidator($this->page->GetEmail()));
-		}
-	}
+        $success = $this->GetHandler($userSession)->Handle($series, $resultCollector);
 
-	private function GetHandler($userSession)
-	{
-		if ($this->reservationHandler == null)
-		{
-			return ReservationHandler::Create(ReservationAction::Create,
-											  new AddReservationPersistenceService(new ReservationRepository()),
-											  $userSession);
-		}
+        $this->page->SetReservationSaveResults($success, $resultCollector);
+    }
 
-		return $this->reservationHandler;
-	}
+    public function ProcessDataRequest($dataRequest)
+    {
+        if ($dataRequest == 'display') {
+            $resourceId = $this->page->GetPublicResourceId();
+
+            $this->DisplayResource($resourceId);
+        }
+    }
+
+    protected function LoadValidators($action)
+    {
+        if ($action == 'reserve') {
+            $this->page->RegisterValidator('emailformat', new EmailValidator($this->page->GetEmail()));
+        }
+    }
+
+    private function GetHandler($userSession)
+    {
+        if ($this->reservationHandler == null) {
+            return ReservationHandler::Create(ReservationAction::Create,
+                new AddReservationPersistenceService(new ReservationRepository()),
+                $userSession);
+        }
+
+        return $this->reservationHandler;
+    }
 
 }
 
 class ReservationResultCollector implements IReservationSaveResultsView
 {
-	/**
-	 * @var string[]
-	 */
-	public $Warnings;
+    /**
+     * @var string[]
+     */
+    public $Warnings;
 
-	/**
-	 * @var bool
-	 */
-	public $Succeeded;
+    /**
+     * @var bool
+     */
+    public $Succeeded;
 
-	/**
-	 * @var string[]
-	 */
-	public $Errors;
+    /**
+     * @var string[]
+     */
+    public $Errors;
 
-	/**
-	 * @param bool $succeeded
-	 */
-	public function SetSaveSuccessfulMessage($succeeded)
-	{
-		$this->Succeeded = $succeeded;
-	}
+    /**
+     * @param bool $succeeded
+     */
+    public function SetSaveSuccessfulMessage($succeeded)
+    {
+        $this->Succeeded = $succeeded;
+    }
 
-	/**
-	 * @param array|string[] $errors
-	 */
-	public function SetErrors($errors)
-	{
-		$this->Errors = $errors;
-	}
+    /**
+     * @param array|string[] $errors
+     */
+    public function SetErrors($errors)
+    {
+        $this->Errors = $errors;
+    }
 
-	/**
-	 * @param array|string[] $warnings
-	 */
-	public function SetWarnings($warnings)
-	{
-		$this->Warnings = $warnings;
-	}
+    /**
+     * @param array|string[] $warnings
+     */
+    public function SetWarnings($warnings)
+    {
+        $this->Warnings = $warnings;
+    }
 
-	/**
-	 * @param array|string[] $messages
-	 */
-	public function SetRetryMessages($messages)
-	{
-	}
+    /**
+     * @param array|string[] $messages
+     */
+    public function SetRetryMessages($messages)
+    {
+    }
 
-	/**
-	 * @param bool $canBeRetried
-	 */
-	public function SetCanBeRetried($canBeRetried)
-	{
-	}
+    /**
+     * @param bool $canBeRetried
+     */
+    public function SetCanBeRetried($canBeRetried)
+    {
+    }
 
-	/**
-	 * @param ReservationRetryParameter[] $retryParameters
-	 */
-	public function SetRetryParameters($retryParameters)
-	{
-	}
+    /**
+     * @param ReservationRetryParameter[] $retryParameters
+     */
+    public function SetRetryParameters($retryParameters)
+    {
+    }
 
-	/**
-	 * @return ReservationRetryParameter[]
-	 */
-	public function GetRetryParameters()
-	{
-		return array();
-	}
+    /**
+     * @return ReservationRetryParameter[]
+     */
+    public function GetRetryParameters()
+    {
+        return array();
+    }
 
     /**
      * @param bool $canJoinWaitlist
