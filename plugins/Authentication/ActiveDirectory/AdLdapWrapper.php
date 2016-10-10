@@ -92,16 +92,21 @@ class AdLdapWrapper implements IActiveDirectory
 			{
 				$groups = $this->ldap->user()->groups($username);
 				$groupList = array();
-				if (!empty($groups))
+				if (!empty($groups) && !is_array($groups))
 				{
 					$groupList = explode(',', strtolower($groups));
+				}
+				if (is_array($groups))
+				{
+					$groupList = $groups;
 				}
 
 				$requiredGroups = $this->options->RequiredGroups();
 				$authenticated = false;
+
 				foreach ($groupList as $groupName)
 				{
-					if (in_array($groupName, $requiredGroups))
+					if (in_array(strtolower($groupName), $requiredGroups))
 					{
 						return true;
 					}
