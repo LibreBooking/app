@@ -52,14 +52,14 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 						{translate key=No}
 					{/if}</td>
 				<td>{if $attribute->UniquePerEntity()}
-						{$attribute->EntityDescriptions()|implode:','}
+						{$attribute->EntityDescriptions()|implode:', '}
 					{else}
 						{translate key=All}
 					{/if}
 				</td>
 				<td>
 					{if $attribute->HasSecondaryEntities()}
-						{$attribute->SecondaryEntityDescriptions()|implode:','}
+						{$attribute->SecondaryEntityDescriptions()|implode:', '}
 					{else}
 						{translate key=All}
 					{/if}

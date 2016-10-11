@@ -125,7 +125,6 @@ class ManageAttributesPresenter extends ActionPresenter
 			$secondaryEntityIds = $this->page->GetSecondaryEntityIds();
 			$secondaryCategory = $this->page->GetSecondaryCategory();
 
-			die('ids' . implode(',', $secondaryEntityIds));
 			$attribute->WithSecondaryEntities($secondaryCategory, $secondaryEntityIds);
 		}
 		else

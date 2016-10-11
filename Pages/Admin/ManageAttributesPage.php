@@ -232,7 +232,6 @@ class ManageAttributesPage extends ActionPage implements IManageAttributesPage
 	public function GetSecondaryEntityIds()
 	{
 		$ids = $this->GetForm(FormKeys::ATTRIBUTE_SECONDARY_ENTITY_IDS);
-		die('fids' . implode(',', $ids));
 		if (is_null($ids))
 		{
 			return array();

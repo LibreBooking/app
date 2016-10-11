@@ -455,7 +455,7 @@ class Queries
 				END as entity_descriptions,
 				CASE
 				WHEN a.secondary_category = 2 THEN (SELECT GROUP_CONCAT(CONCAT( fname, " ", lname ) SEPARATOR  "!sep!" ) FROM users WHERE FIND_IN_SET( user_id, a.secondary_entity_ids ))
-				WHEN a.secondary_category = 4 THEN (SELECT GROUP_CONCAT(name SEPARATOR  "!sep!" ) FROM resources WHERE FIND_IN_SET( resource_type_id, a.secondary_entity_ids ))
+				WHEN a.secondary_category = 4 THEN (SELECT GROUP_CONCAT(name SEPARATOR  "!sep!" ) FROM resources WHERE FIND_IN_SET( resource_id, a.secondary_entity_ids ))
 				WHEN a.secondary_category = 5 THEN (SELECT GROUP_CONCAT(resource_type_name SEPARATOR  "!sep!" ) FROM resource_types WHERE FIND_IN_SET( resource_type_id, a.secondary_entity_ids ))
 				ELSE null
 				END as secondary_entity_descriptions
