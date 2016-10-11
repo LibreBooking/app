@@ -20,8 +20,12 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 class FakeAttributeService implements IAttributeService
 {
+    /**
+     * @var Attribute[]
+     */
+    public $_ReservationAttributes = array();
 
-	/**
+    /**
 	 * @param $category CustomAttributeCategory|int
 	 * @param $entityIds array|int[]|int
 	 * @return IEntityAttributeList
@@ -70,6 +74,6 @@ class FakeAttributeService implements IAttributeService
 	 */
 	public function GetReservationAttributes(UserSession $userSession, ReservationView $reservationView, $requestedUserId = 0, $requestedResourceIds = array())
 	{
-		// TODO: Implement GetReservationAttributes() method.
+		return $this->_ReservationAttributes;
 	}
 }

@@ -26,7 +26,9 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			<th>{translate key=DisplayLabel}</th>
 			<th>{translate key=Type}</th>
 			<th>{translate key=Required}</th>
-			<th>{translate key=AppliesTo}</th>
+			{if $Category != CustomAttributeCategory::RESERVATION}
+				<th>{translate key=AppliesTo}</th>
+			{/if}
 			<th>{translate key=CollectedFor}</th>
 			<th>{translate key=ValidationExpression}</th>
 			<th>{translate key=PossibleValues}</th>
@@ -51,12 +53,14 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 					{else}
 						{translate key=No}
 					{/if}</td>
-				<td>{if $attribute->UniquePerEntity()}
-						{$attribute->EntityDescriptions()|implode:', '}
-					{else}
-						{translate key=All}
-					{/if}
-				</td>
+				{if $Category != CustomAttributeCategory::RESERVATION}
+					<td>{if $attribute->UniquePerEntity()}
+							{$attribute->EntityDescriptions()|implode:', '}
+						{else}
+							{translate key=All}
+						{/if}
+					</td>
+				{/if}
 				<td>
 					{if $attribute->HasSecondaryEntities()}
 						{$attribute->SecondaryEntityDescriptions()|implode:', '}

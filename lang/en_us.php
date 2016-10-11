@@ -600,6 +600,8 @@ class en_us extends Language
         $strings['IcsWarning'] = 'Reservation rules will not be enforced - conflicts, duplicates, etc are possible.';
 		$strings['BlackoutAroundConflicts'] = 'Blackout around conflicting reservations';
 		$strings['DuplicateReservation'] = 'Duplicate';
+		$strings['UnavailableNow'] = 'Unavailable Now';
+		$strings['ReserveLater'] = 'Reserve Later';
 		$strings['CollectedFor'] = 'Collected For';
         // End Strings
 
