@@ -51,17 +51,18 @@ class AttributeRepositoryTests extends TestBase
 		$entityId = 12;
 		$adminOnly = true;
 		$secondaryCategory = CustomAttributeCategory::USER;
-		$secondaryEntityId = 828;
+		$secondaryEntityId = '828';
 		$isPrivate = true;
 
 		$attribute = CustomAttribute::Create($label, $type, $category, $regex, $required, $possibleValues, $sortOrder,
 											 $entityId, $adminOnly);
 
-		$attribute->WithSecondaryEntity($secondaryCategory, $secondaryEntityId);
+		$attribute->WithSecondaryEntities($secondaryCategory, $secondaryEntityId);
 		$attribute->WithIsPrivate($isPrivate);
 
 		$this->repository->Add($attribute);
-		$this->assertTrue($this->db->ContainsCommand(new AddAttributeCommand($label, $type, $category, $regex, $required, $possibleValues, $sortOrder, $adminOnly, $secondaryCategory, $secondaryEntityId, $isPrivate)));
+		$this->assertTrue($this->db->ContainsCommand(new AddAttributeCommand($label, $type, $category, $regex, $required, $possibleValues, $sortOrder,
+																			 $adminOnly, $secondaryCategory, array($secondaryEntityId), $isPrivate)));
 		$this->assertTrue($this->db->ContainsCommand(new AddAttributeEntityCommand($this->db->_ExpectedInsertId, $entityId)));
 	}
 
@@ -78,13 +79,15 @@ class AttributeRepositoryTests extends TestBase
 		$entityId = "12";
 		$adminOnly = true;
 
-		$row1 = $this->GetAttributeRow($id, $label, $type, $category, $regex, $required, $possibleValues, $sortOrder, $entityId, null, $adminOnly);
+		$row1 = $this->GetAttributeRow($id, $label, $type, $category, $regex, $required, $possibleValues, $sortOrder, $entityId, null, $adminOnly,
+									   CustomAttributeCategory::USER, '1,2,3', '1!sep!2!sep!3');
 
 		$this->db->SetRows(array($row1));
 
 		$attribute = $this->repository->LoadById($id);
 
 		$expectedFirstAttribute = new CustomAttribute($id, $label, $type, $category, $regex, $required, $possibleValues, $sortOrder, $entityId, $adminOnly);
+		$expectedFirstAttribute->WithSecondaryEntities(CustomAttributeCategory::USER, array(1, 2, 3), '1!sep!2!sep!3');
 
 		$this->assertEquals($expectedFirstAttribute, $attribute);
 		$this->assertEquals(new GetAttributeByIdCommand($id), $this->db->_LastCommand);
@@ -103,16 +106,17 @@ class AttributeRepositoryTests extends TestBase
 		$entityId = 10;
 		$adminOnly = true;
 		$secondaryCategory = CustomAttributeCategory::USER;
-		$secondaryEntityId = 828;
+		$secondaryEntityIds = '828,829';
 		$isPrivate = true;
 
 		$attribute = new CustomAttribute($id, $label, $type, $category, $regex, $required, $possibleValues, $sortOrder, $entityId, $adminOnly);
-		$attribute->WithSecondaryEntity($secondaryCategory, $secondaryEntityId);
+		$attribute->WithSecondaryEntities($secondaryCategory, $secondaryEntityIds);
 		$attribute->WithIsPrivate($isPrivate);
 
 		$this->repository->Update($attribute);
 
-		$this->assertTrue($this->db->ContainsCommand(new UpdateAttributeCommand($id, $label, $type, $category, $regex, $required, $possibleValues, $sortOrder, $adminOnly, $secondaryCategory, $secondaryEntityId, $isPrivate)));
+		$this->assertTrue($this->db->ContainsCommand(new UpdateAttributeCommand($id, $label, $type, $category, $regex, $required, $possibleValues, $sortOrder,
+																				$adminOnly, $secondaryCategory, array(828, 829), $isPrivate)));
 	}
 
 	public function testDeletesAttributeById()
@@ -190,7 +194,10 @@ class AttributeRepositoryTests extends TestBase
 									 $sortOrder = null,
 									 $entityId = null,
 									 $entityDescription = null,
-									 $adminOnly = false
+									 $adminOnly = false,
+									 $secondaryCategory = null,
+									 $secondaryEntityIds = null,
+									 $secondaryEntityDescriptions = null
 	)
 	{
 		return array(
@@ -205,6 +212,9 @@ class AttributeRepositoryTests extends TestBase
 				ColumnNames::ATTRIBUTE_ENTITY_IDS => $entityId,
 				ColumnNames::ATTRIBUTE_ENTITY_DESCRIPTIONS => $entityDescription,
 				ColumnNames::ATTRIBUTE_ADMIN_ONLY => $adminOnly,
+				ColumnNames::ATTRIBUTE_SECONDARY_CATEGORY => $secondaryCategory,
+				ColumnNames::ATTRIBUTE_SECONDARY_ENTITY_IDS => $secondaryEntityIds,
+				ColumnNames::ATTRIBUTE_SECONDARY_ENTITY_DESCRIPTIONS => $secondaryEntityDescriptions,
 		);
 	}
 

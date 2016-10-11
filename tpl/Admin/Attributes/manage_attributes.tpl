@@ -82,7 +82,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 							<div class="attributeUnique form-group">
 								<label for="addAttributeEntityId">{translate key=AppliesTo}</label>
-								<a href="#" class="appliesTo">{translate key=All}</a>
+								<a href="#" id="appliesTo">{translate key=All}</a>
 								<div class="appliesToId" id="addAttributeEntityId" style="display:none;"></div>
 							</div>
 
@@ -123,9 +123,11 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 							<div class="attributeSecondary no-show form-group">
 								<label for="attributeSecondaryEntityDescription">{translate key=CollectFor}</label>
 								<a href="#" class="secondaryPrompt" id="attributeSecondaryEntityDescription">{translate key=All}</a>
-								<input type="hidden" class="secondaryEntityId" {formname key=ATTRIBUTE_SECONDARY_ENTITY} id="attributeSecondaryEntityId"/>
+
 							</div>
 						</div>
+
+						<div id="entityChoices"></div>
 
 					</div>
 					<div class="modal-footer">
@@ -184,7 +186,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 							<div class="form-group attributeUnique">
 								<label for="editAttributeEntityId">{translate key=AppliesTo}</label>
-								<a href="#" class="appliesTo">{translate key=All}</a>
+								<a href="#" id="editAppliesTo">{translate key=All}</a>
 								<div class="appliesToId" id='editAttributeEntityId' style="display:none;"></div>
 							</div>
 
@@ -226,11 +228,12 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 							</div>
 
 							<div class="form-group attributeSecondary no-show">
-								<label for="editAttributeSecondaryEntityId">{translate key=CollectFor}</label>
+								<label for="editAttributeSecondaryEntityDescription">{translate key=CollectFor}</label>
 								<a href="#" class="secondaryPrompt" id="editAttributeSecondaryEntityDescription">{translate key=All}</a>
-								<input type="hidden" class="secondaryEntityId" {formname key=ATTRIBUTE_SECONDARY_ENTITY} id="editAttributeSecondaryEntityId"/>
+								{*<input type="hidden" class="secondaryEntityIds" {formname key=ATTRIBUTE_SECONDARY_ENTITY_IDS} id="editAttributeSecondaryEntityIds"/>*}
 							</div>
 						</div>
+						<div id="editEntityChoices"></div>
 					</div>
 					<div class="modal-footer">
 						{cancel_button}
@@ -266,9 +269,6 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 	</div>
 
 	<div id="attributeList">
-	</div>
-
-	<div id="entityChoices">
 	</div>
 
 	{csrf_token}

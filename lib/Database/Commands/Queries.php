@@ -46,8 +46,8 @@ class Queries
 	const ADD_ANNOUNCEMENT_RESOURCE = 'INSERT INTO announcement_resources (announcementid, resource_id) VALUES (@announcementid, @resourceid)';
 
 	const ADD_ATTRIBUTE =
-			'INSERT INTO custom_attributes (display_label, display_type, attribute_category, validation_regex, is_required, possible_values, sort_order, admin_only, secondary_category, secondary_entity_id, is_private)
-		VALUES (@display_label, @display_type, @attribute_category, @validation_regex, @is_required, @possible_values, @sort_order, @admin_only, @secondary_category, @secondary_entity_id, @is_private)';
+			'INSERT INTO custom_attributes (display_label, display_type, attribute_category, validation_regex, is_required, possible_values, sort_order, admin_only, secondary_category, secondary_entity_ids, is_private)
+		VALUES (@display_label, @display_type, @attribute_category, @validation_regex, @is_required, @possible_values, @sort_order, @admin_only, @secondary_category, @secondary_entity_ids, @is_private)';
 
 	const ADD_ATTRIBUTE_ENTITY =
 			'INSERT INTO custom_attribute_entities (custom_attribute_id, entity_id)
@@ -438,49 +438,32 @@ class Queries
 		(SELECT GROUP_CONCAT(ar.resource_id) FROM announcement_resources ar WHERE ar.announcementid = a.announcementid) as resource_ids
 		FROM announcements a WHERE a.announcementid = @announcementid';
 
-	const GET_ATTRIBUTES_BY_CATEGORY = 'SELECT a.*,
-			(SELECT GROUP_CONCAT(e.entity_id SEPARATOR "!sep!")
-						FROM custom_attribute_entities e WHERE e.custom_attribute_id = a.custom_attribute_id ORDER BY e.entity_id) as entity_ids,
-			CASE
-			WHEN a.attribute_category = 2 THEN (SELECT GROUP_CONCAT(CONCAT(u.fname, " ", u.lname) SEPARATOR "!sep!")
-												FROM users u INNER JOIN custom_attribute_entities e
-												WHERE e.custom_attribute_id = a.custom_attribute_id AND u.user_id = e.entity_id ORDER BY e.entity_id)
-			WHEN a.attribute_category = 4 THEN (SELECT GROUP_CONCAT(r.name SEPARATOR "!sep!")
-												FROM resources r INNER JOIN custom_attribute_entities e
-												WHERE e.custom_attribute_id = a.custom_attribute_id AND r.resource_id = e.entity_id ORDER BY e.entity_id)
-			WHEN a.attribute_category = 5  THEN (SELECT GROUP_CONCAT(rt.resource_type_name SEPARATOR "!sep!")
-												FROM resource_types rt INNER JOIN custom_attribute_entities e
-												WHERE e.custom_attribute_id = a.custom_attribute_id AND rt.resource_type_id = e.entity_id ORDER BY e.entity_id)
-			ELSE null
-			END as entity_descriptions,
-			CASE
-			WHEN a.secondary_category = 2 THEN CONCAT(u2.fname, " ", u2.lname)
-			WHEN a.secondary_category = 4 THEN r2.name
-			WHEN a.secondary_category = 5 THEN rt2.resource_type_name
-			ELSE null
-			END as secondary_entity_description
-			FROM custom_attributes a
-			LEFT JOIN users u2 ON u2.user_id = a.secondary_entity_id AND a.secondary_category = 2
-			LEFT JOIN resources r2 ON r2.resource_id = a.secondary_entity_id AND a.secondary_category = 4
-			LEFT JOIN resource_types rt2 ON rt2.resource_type_id = a.secondary_entity_id AND a.secondary_category = 5
-		WHERE a.attribute_category = @attribute_category ORDER BY a.sort_order, a.display_label';
+	const GET_ATTRIBUTES_BASE_QUERY = 'SELECT a.*,
+				(SELECT GROUP_CONCAT(e.entity_id SEPARATOR "!sep!")
+							FROM custom_attribute_entities e WHERE e.custom_attribute_id = a.custom_attribute_id ORDER BY e.entity_id) as entity_ids,
+				CASE
+				WHEN a.attribute_category = 2 THEN (SELECT GROUP_CONCAT(CONCAT(u.fname, " ", u.lname) SEPARATOR "!sep!")
+													FROM users u INNER JOIN custom_attribute_entities e
+													WHERE e.custom_attribute_id = a.custom_attribute_id AND u.user_id = e.entity_id ORDER BY e.entity_id)
+				WHEN a.attribute_category = 4 THEN (SELECT GROUP_CONCAT(r.name SEPARATOR "!sep!")
+													FROM resources r INNER JOIN custom_attribute_entities e
+													WHERE e.custom_attribute_id = a.custom_attribute_id AND r.resource_id = e.entity_id ORDER BY e.entity_id)
+				WHEN a.attribute_category = 5  THEN (SELECT GROUP_CONCAT(rt.resource_type_name SEPARATOR "!sep!")
+													FROM resource_types rt INNER JOIN custom_attribute_entities e
+													WHERE e.custom_attribute_id = a.custom_attribute_id AND rt.resource_type_id = e.entity_id ORDER BY e.entity_id)
+				ELSE null
+				END as entity_descriptions,
+				CASE
+				WHEN a.secondary_category = 2 THEN (SELECT GROUP_CONCAT(CONCAT( fname, " ", lname ) SEPARATOR  "!sep!" ) FROM users WHERE FIND_IN_SET( user_id, a.secondary_entity_ids ))
+				WHEN a.secondary_category = 4 THEN (SELECT GROUP_CONCAT(name SEPARATOR  "!sep!" ) FROM resources WHERE FIND_IN_SET( resource_type_id, a.secondary_entity_ids ))
+				WHEN a.secondary_category = 5 THEN (SELECT GROUP_CONCAT(resource_type_name SEPARATOR  "!sep!" ) FROM resource_types WHERE FIND_IN_SET( resource_type_id, a.secondary_entity_ids ))
+				ELSE null
+				END as secondary_entity_descriptions
+				FROM custom_attributes a';
 
-	const GET_ATTRIBUTE_BY_ID = 'SELECT a.*,
-			(SELECT GROUP_CONCAT(e.entity_id SEPARATOR "!sep!")
-						FROM custom_attribute_entities e WHERE e.custom_attribute_id = a.custom_attribute_id ORDER BY e.entity_id) as entity_ids,
-			CASE
-			WHEN a.attribute_category = 2 THEN (SELECT GROUP_CONCAT(CONCAT(u.fname, " ", u.lname) SEPARATOR "!sep!")
-												FROM users u INNER JOIN custom_attribute_entities e
-												WHERE e.custom_attribute_id = a.custom_attribute_id AND u.user_id = e.entity_id ORDER BY e.entity_id)
-			WHEN a.attribute_category = 4 THEN (SELECT GROUP_CONCAT(r.name SEPARATOR "!sep!")
-												FROM resources r INNER JOIN custom_attribute_entities e
-												WHERE e.custom_attribute_id = a.custom_attribute_id AND r.resource_id = e.entity_id ORDER BY e.entity_id)
-			WHEN a.attribute_category = 5  THEN (SELECT GROUP_CONCAT(rt.resource_type_name SEPARATOR "!sep!")
-												FROM resource_types rt INNER JOIN custom_attribute_entities e
-												WHERE e.custom_attribute_id = a.custom_attribute_id AND rt.resource_type_id = e.entity_id ORDER BY e.entity_id)
-			ELSE null
-			END as entity_descriptions
-			FROM custom_attributes a WHERE custom_attribute_id = @custom_attribute_id';
+	const GET_ATTRIBUTES_BY_CATEGORY_WHERE = ' WHERE a.attribute_category = @attribute_category ORDER BY a.sort_order, a.display_label';
+
+	const GET_ATTRIBUTE_BY_ID_WHERE = '	WHERE custom_attribute_id = @custom_attribute_id';
 
 	const GET_ATTRIBUTE_ALL_VALUES = 'SELECT * FROM custom_attribute_values WHERE attribute_category = @attribute_category';
 
@@ -990,7 +973,7 @@ class Queries
 			'UPDATE custom_attributes
 				SET display_label = @display_label, display_type = @display_type, attribute_category = @attribute_category,
 				validation_regex = @validation_regex, is_required = @is_required, possible_values = @possible_values, sort_order = @sort_order, admin_only = @admin_only,
-				secondary_category = @secondary_category, secondary_entity_id = @secondary_entity_id, is_private = @is_private
+				secondary_category = @secondary_category, secondary_entity_ids = @secondary_entity_ids, is_private = @is_private
 			WHERE custom_attribute_id = @custom_attribute_id';
 
 	const UPDATE_BLACKOUT_INSTANCE = 'UPDATE blackout_instances

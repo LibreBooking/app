@@ -38,7 +38,7 @@ CREATE TABLE `resource_accessories` (
 
 
 ALTER TABLE `custom_attributes` ADD COLUMN `secondary_category` TINYINT(2) UNSIGNED;
-ALTER TABLE `custom_attributes` ADD COLUMN `secondary_entity_id` MEDIUMINT(8) UNSIGNED;
+ALTER TABLE `custom_attributes` ADD COLUMN `secondary_entity_ids` VARCHAR(2000);
 ALTER TABLE `custom_attributes` ADD COLUMN `is_private` TINYINT(1) UNSIGNED;
 
 ALTER TABLE `resource_groups` ADD COLUMN `public_id` VARCHAR(20);
@@ -88,11 +88,20 @@ ALTER TABLE `quotas` ADD COLUMN `scope` VARCHAR(25);
 
 ALTER TABLE `resources` ADD COLUMN `enable_check_in` TINYINT(1) UNSIGNED NOT NULL DEFAULT 0;
 ALTER TABLE `resources` ADD COLUMN `auto_release_minutes` SMALLINT UNSIGNED;
+##################
+### INDEX THIS ###
+##################
 ALTER TABLE `resources` ADD COLUMN `color` VARCHAR(10);
 ALTER TABLE `resources` ADD COLUMN `allow_display` TINYINT(1) UNSIGNED NOT NULL DEFAULT 0;
 
 ALTER TABLE `reservation_instances` ADD COLUMN `checkin_date` DATETIME;
+##################
+### INDEX THIS ###
+##################
 ALTER TABLE `reservation_instances` ADD COLUMN `checkout_date` DATETIME;
+##################
+### INDEX THIS ###
+##################
 ALTER TABLE `reservation_instances` ADD COLUMN `previous_end_date` DATETIME;
 ALTER TABLE `reservation_series` ADD COLUMN `last_action_by` MEDIUMINT(8) UNSIGNED;
 

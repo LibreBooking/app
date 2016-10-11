@@ -93,7 +93,7 @@ interface IManageAttributesPage extends IActionPage
 	/**
 	 * @return int|null
 	 */
-	public function GetSecondaryEntityId();
+	public function GetSecondaryEntityIds();
 
 	/**
 	 * @return CustomAttributeCategory|int|null
@@ -229,9 +229,21 @@ class ManageAttributesPage extends ActionPage implements IManageAttributesPage
 		return $this->GetQuerystring(QueryStringKeys::ATTRIBUTE_ID);
 	}
 
-	public function GetSecondaryEntityId()
+	public function GetSecondaryEntityIds()
 	{
-		return $this->GetForm(FormKeys::ATTRIBUTE_SECONDARY_ENTITY);
+		$ids = $this->GetForm(FormKeys::ATTRIBUTE_SECONDARY_ENTITY_IDS);
+		die('fids' . implode(',', $ids));
+		if (is_null($ids))
+		{
+			return array();
+		}
+
+		if (!is_array($ids))
+		{
+			return array($ids);
+		}
+
+		return $ids;
 	}
 
 	public function GetSecondaryCategory()

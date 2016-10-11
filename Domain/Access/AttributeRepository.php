@@ -83,7 +83,7 @@ class AttributeRepository implements IAttributeRepository
 		$id = ServiceLocator::GetDatabase()->ExecuteInsert(
 				new AddAttributeCommand($attribute->Label(), $attribute->Type(), $attribute->Category(), $attribute->Regex(),
 										$attribute->Required(), $attribute->PossibleValues(), $attribute->SortOrder(),
-										$attribute->AdminOnly(), $attribute->SecondaryCategory(), $attribute->SecondaryEntityId(),
+										$attribute->AdminOnly(), $attribute->SecondaryCategory(), $attribute->SecondaryEntityIds(),
 										$attribute->IsPrivate()));
 
 		foreach ($attribute->EntityIds() as $entityId)
@@ -143,7 +143,7 @@ class AttributeRepository implements IAttributeRepository
 		$db->Execute(new UpdateAttributeCommand($attribute->Id(), $attribute->Label(), $attribute->Type(), $attribute->Category(),
 												$attribute->Regex(), $attribute->Required(), $attribute->PossibleValues(), $attribute->SortOrder(),
 												$attribute->AdminOnly(), $attribute->SecondaryCategory(),
-												$attribute->SecondaryEntityId(), $attribute->IsPrivate()));
+												$attribute->SecondaryEntityIds(), $attribute->IsPrivate()));
 
 		foreach ($attribute->RemovedEntityIds() as $entityId)
 		{

@@ -86,10 +86,10 @@ class ReservationAttributesPresenterTests extends TestBase
 
 		$attributeWithoutSecondaryEntity = new FakeCustomAttribute(1);
 		$attributeWithSecondaryEntityOfRequestedUser = new FakeCustomAttribute(2);
-		$attributeWithSecondaryEntityOfRequestedUser->WithSecondaryEntity(CustomAttributeCategory::USER, $requestedUserId);
+		$attributeWithSecondaryEntityOfRequestedUser->WithSecondaryEntities(CustomAttributeCategory::USER, $requestedUserId);
 
 		$attributeWithSecondaryEntityOfAnotherUser = new FakeCustomAttribute(3);
-		$attributeWithSecondaryEntityOfAnotherUser->WithSecondaryEntity(CustomAttributeCategory::USER, 1212);
+		$attributeWithSecondaryEntityOfAnotherUser->WithSecondaryEntities(CustomAttributeCategory::USER, 1212);
 
 		$attributes = array(
 				$attributeWithoutSecondaryEntity,
@@ -119,7 +119,7 @@ class ReservationAttributesPresenterTests extends TestBase
 
 		$attributeWithoutSecondaryEntity = new FakeCustomAttribute(1);
 		$attributeWithSecondaryEntityOfRequestedUser = new FakeCustomAttribute(2);
-		$attributeWithSecondaryEntityOfRequestedUser->WithSecondaryEntity(CustomAttributeCategory::USER, $requestedUserId);
+		$attributeWithSecondaryEntityOfRequestedUser->WithSecondaryEntities(CustomAttributeCategory::USER, $requestedUserId);
 
 		$attributes = array(
 				$attributeWithoutSecondaryEntity,

@@ -27,6 +27,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			<th>{translate key=Type}</th>
 			<th>{translate key=Required}</th>
 			<th>{translate key=AppliesTo}</th>
+			<th>{translate key=CollectedFor}</th>
 			<th>{translate key=ValidationExpression}</th>
 			<th>{translate key=PossibleValues}</th>
 			{if $Category == CustomAttributeCategory::RESERVATION}
@@ -52,11 +53,17 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 					{/if}</td>
 				<td>{if $attribute->UniquePerEntity()}
 						{$attribute->EntityDescriptions()|implode:','}
-					{elseif $attribute->HasSecondaryEntity()}
-						{$attribute->SecondaryEntityDescription()}
 					{else}
 						{translate key=All}
-					{/if}</td>
+					{/if}
+				</td>
+				<td>
+					{if $attribute->HasSecondaryEntities()}
+						{$attribute->SecondaryEntityDescriptions()|implode:','}
+					{else}
+						{translate key=All}
+					{/if}
+				</td>
 				<td>{$attribute->Regex()}</td>
 				<td>{$attribute->PossibleValues()}</td>
 				{if $Category == CustomAttributeCategory::RESERVATION}
@@ -91,11 +98,20 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		possibleValues: "{$attribute->PossibleValues()|escape:'javascript'}",
 		type: "{$attribute->Type()}",
 		sortOrder: "{$attribute->SortOrder()}",
-		entityIds: [{$attribute->EntityIds()|implode:','}],
-		entityDescriptions: ["{$attribute->EntityDescriptions()|implode:','|escape:'javascript'}"],
+		{if $attribute->EntityIds()|count > 0}
+		entityIds: ["{$attribute->EntityIds()|implode:'","'}"],
+		{else}
+		entityIds: [],
+		{/if}
+		entityDescriptions: ["{$attribute->EntityDescriptions()|implode:'","'}"],
 		adminOnly: {$attribute->AdminOnly()},
-		secondaryEntityId: "{$attribute->SecondaryEntityId()}",
-		secondaryEntityDescription: "{$attribute->SecondaryEntityDescription()|escape:'javascript'}",
+		{if $attribute->HasSecondaryEntities()}
+		secondaryEntityIds: ["{$attribute->SecondaryEntityIds()|implode:'","'}"],
+		secondaryEntityDescriptions: ["{$attribute->SecondaryEntityDescriptions()|implode:'","'}"],
+		{else}
+		secondaryEntityIds: [],
+		secondaryEntityDescriptions: [],
+		{/if}
 		secondaryCategory: "{$attribute->SecondaryCategory()}",
 		isPrivate: "{$attribute->IsPrivate()}"
 	};

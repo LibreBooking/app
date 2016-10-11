@@ -8,9 +8,11 @@ function AttributeManagement(opts) {
 		attributeCategory: $('#attributeCategory'),
 		addCategory: $('#addCategory'),
 		attributeType: $('#attributeType'),
-		appliesTo: $('.appliesTo'),
+		appliesTo: $('#appliesTo'),
+		editAppliesTo: $('#editAppliesTo'),
 		appliesToId: $('.appliesToId'),
 		entityChoices: $('#entityChoices'),
+		editEntityChoices: $('#editEntityChoices'),
 
 		editName: $('#editName'),
 		editUnlimited: $('#chkUnlimitedEdit'),
@@ -26,16 +28,15 @@ function AttributeManagement(opts) {
 
 		limitScope: $('.limitScope'),
 		attributeSecondary: $('.attributeSecondary'),
-		secondaryPrompt: $('.secondaryPrompt')
+		secondaryPrompt: $('.secondaryPrompt'),
+		secondaryAttributeCategory: $('.secondaryAttributeCategory ')
 	};
 
 	function RefreshAttributeList() {
 		var categoryId = elements.attributeCategory.val();
 
 		$.ajax({
-			url: opts.changeCategoryUrl + categoryId,
-			cache: false,
-			beforeSend: function () {
+			url: opts.changeCategoryUrl + categoryId, cache: false, beforeSend: function () {
 				$('#indicator').removeClass('no-show').insertBefore(elements.attributeList);
 				$(elements.attributeList).html('');
 			}
@@ -44,6 +45,12 @@ function AttributeManagement(opts) {
 			$(elements.attributeList).html(data);
 		});
 	}
+
+	var currentAttributeEntities = {entityIds: [], secondaryEntityIds: []};
+	var selectedEntityChoices = $('#entityChoices, #editEntityChoices');
+	var activeAppliesTo;
+	var updateEntityCallback = function () {
+	};
 
 	AttributeManagement.prototype.init = function () {
 
@@ -66,8 +73,18 @@ function AttributeManagement(opts) {
 			e.stopPropagation();
 		});
 
+		elements.attributeList.delegate('.delete', 'click', function (e) {
+			e.preventDefault();
+			var attributeId = $(this).closest('tr').attr('attributeId');
+
+			showDeleteDialog(attributeId);
+		});
+
 		$('#addAttributeButton').click(function (e) {
 			e.preventDefault();
+			selectedEntityChoices = elements.entityChoices;
+			currentAttributeEntities.entityIds = [];
+			currentAttributeEntities.secondaryEntityIds = [];
 			$('span.error', elements.addDialog).remove();
 			elements.addCategory.val(elements.attributeCategory.val());
 			elements.limitScope.prop('checked', false);
@@ -84,34 +101,42 @@ function AttributeManagement(opts) {
 
 		elements.attributeList.delegate('.edit', 'click', function (e) {
 			e.preventDefault();
+			e.stopPropagation();
+			selectedEntityChoices = elements.editEntityChoices;
 			var attributeId = $(this).closest('tr').attr('attributeId');
 			var dataList = elements.attributeList.data('list');
 			var selectedAttribute = dataList[attributeId];
 
+			currentAttributeEntities.entityIds = selectedAttribute.entityIds;
+			currentAttributeEntities.secondaryEntityIds = selectedAttribute.secondaryEntityIds;
+
 			showEditDialog(selectedAttribute);
 		});
 
-		elements.attributeList.delegate('.delete', 'click', function (e) {
+		$('#appliesTo, #editAppliesTo').click(function (e) {
 			e.preventDefault();
-			var attributeId = $(this).closest('tr').attr('attributeId');
+			activeAppliesTo = $(this);
 
-			showDeleteDialog(attributeId);
+			showEntities($(this), elements.attributeCategory.val(), currentAttributeEntities.entityIds, 'ATTRIBUTE_ENTITY');
+
+			updateEntityCallback = function (selectedIds) {
+				currentAttributeEntities.entityIds = selectedIds;
+			};
 		});
 
-		elements.appliesTo.click(function (e) {
+		elements.secondaryPrompt.click(function (e) {
 			e.preventDefault();
-			showEntities(elements.appliesTo, elements.attributeCategory.val());
+			activeAppliesTo = $(this);
 
-			onEntityChoiceClick = function (e) {
-				e.preventDefault();
-				elements.entityChoices.hide();
-				elements.appliesToId.val($(e.target).attr('entity-id'));
-				elements.appliesTo.text($(e.target).text());
+			showEntities($(this), $(this).closest('.textBoxOptions').find('.secondaryAttributeCategory').val(), currentAttributeEntities.secondaryEntityIds, 'ATTRIBUTE_SECONDARY_ENTITY_IDS');
+
+			updateEntityCallback = function (selectedIds) {
+				currentAttributeEntities.secondaryEntityIds = selectedIds;
 			};
 		});
 
 		$(document).mouseup(function (e) {
-			var container = elements.entityChoices;
+			var container = selectedEntityChoices;
 
 			if (!container.is(e.target) && container.has(e.target).length === 0)
 			{
@@ -119,60 +144,63 @@ function AttributeManagement(opts) {
 			}
 		});
 
-		elements.entityChoices.delegate('a.all', 'click', function (e) {
+		selectedEntityChoices.delegate('a.all', 'click', function (e) {
 			onEntityChoiceClick(e);
 		});
 
-		elements.entityChoices.delegate('a.ok', 'click', function (e) {
+		selectedEntityChoices.delegate('a.ok', 'click', function (e) {
 			e.preventDefault();
-			elements.entityChoices.hide();
-			handleEntitiesSelected();
+			selectedEntityChoices.hide();
+			handleEntitiesSelected(activeAppliesTo);
 		});
 
 		elements.limitScope.change(function (e) {
-			elements.attributeSecondary.hide();
+			elements.attributeSecondary.addClass('no-show');
 			if (elements.limitScope.is(':checked'))
 			{
-				elements.attributeSecondary.show();
+				elements.attributeSecondary.removeClass('no-show');
 			}
 		});
 
-		elements.secondaryPrompt.click(function (e) {
-			e.preventDefault();
-			showEntities($(this), $(this).closest('.textBoxOptions').find('.secondaryAttributeCategory').val());
-			onEntityChoiceClick = function (e) {
-				e.preventDefault();
-				elements.entityChoices.hide();
-				$('.secondaryEntityId').val($(e.target).attr('entity-id'));
-				$('.secondaryPrompt').text($(e.target).text());
-			};
+		elements.secondaryAttributeCategory.change(function (e) {
+			currentAttributeEntities.entityIds = [];
+			currentAttributeEntities.secondaryEntityIds = [];
+			elements.secondaryPrompt.text(opts.allText);
 		});
 
 		ConfigureAsyncForm(elements.addForm, defaultSubmitCallback, addAttributeHandler);
 		ConfigureAsyncForm(elements.form, defaultSubmitCallback, editAttributeHandler);
 		ConfigureAsyncForm(elements.deleteForm, defaultSubmitCallback, deleteAttributeHandler);
-
 	};
 
-	function handleEntitiesSelected() {
-		elements.appliesToId.empty();
-		var entities = elements.entityChoices.find(':checked');
-		elements.appliesToId.append(entities);
+	function handleEntitiesSelected(element) {
+		element.empty();
+		var entities = selectedEntityChoices.find(':checked');
+		// element.append(entities);
 		if (entities.length > 0)
 		{
-			elements.appliesTo.text(entities.length);
+			var text = _.map(entities, function (e) {
+				return $(e).attr('data-text');
+			}).join(', ');
+
+			element.text(text);
+			// elements.secondaryPrompt.text(text);
+
+			updateEntityCallback(_.map(entities, function (e) {
+				return $(e).val();
+			}));
 		}
 		else
 		{
-			elements.appliesTo.text(opts.allText);
+			element.text(opts.allText);
 		}
 	}
 
 	var onEntityChoiceClick = function (e) {
 		e.preventDefault();
-		elements.entityChoices.hide();
+		selectedEntityChoices.hide();
 		elements.appliesToId.empty();
-		elements.entityChoices.find('input:checkbox').removeAttr('checked');
+		selectedEntityChoices.find('input:checkbox').removeAttr('checked');
 		elements.appliesTo.text(opts.allText);
 	};
 
@@ -195,10 +223,6 @@ function AttributeManagement(opts) {
 		}
 
 		showRelevantCategoryOptions();
-		//if (elements.attributeCategory.val() == options.categories.reservation)
-		//{
-		//	$('.attributeUnique').hide();
-		//}
 	};
 
 	var addAttributeHandler = function () {
@@ -235,7 +259,7 @@ function AttributeManagement(opts) {
 		$('#editAttributeSortOrder').val(selectedAttribute.sortOrder);
 		$('#editAttributeEntityId').val(selectedAttribute.entityId);
 
-		elements.entityChoices.empty();
+		selectedEntityChoices.empty();
 		if (selectedAttribute.entityDescriptions.length == 0)
 		{
 			elements.appliesTo.text(options.allText);
@@ -243,10 +267,21 @@ function AttributeManagement(opts) {
 		}
 		else
 		{
-			$.each(selectedAttribute.entityIds, function (i, id) {
-				elements.entityChoices.append($('<input type="checkbox" name="ATTRIBUTE_ENTITY[]" value="' + id + '" checked="checked"/>'));
-			});
-			handleEntitiesSelected();
+			if (elements.attributeCategory.val() == options.categories.reservation)
+			{
+				$.each(selectedAttribute.secondaryEntityIds, function (i, id) {
+					var name = selectedAttribute.secondaryEntityDescriptions[i].replace(/"/g, '&quot;')
+					selectedEntityChoices.append($('<input type="checkbox" name="ATTRIBUTE_SECONDARY_ENTITY_IDS[]" value="' + id + '" checked="checked" data-text="' + name + '"/>'));
+				});
+			}
+			else
+			{
+				$.each(selectedAttribute.entityIds, function (i, id) {
+					var name = selectedAttribute.entityDescriptions[i].replace(/"/g, '&quot;')
+					selectedEntityChoices.append($('<input type="checkbox" name="ATTRIBUTE_ENTITY[]" value="' + id + '" checked="checked" data-text="' + name + '"/>'));
+				});
+			}
+			handleEntitiesSelected(elements.editAppliesTo);
 			elements.appliesToId.hide();
 		}
 
@@ -255,13 +290,13 @@ function AttributeManagement(opts) {
 
 		$('#editAttributeSecondaryEntityId').val('');
 		elements.secondaryPrompt.text(options.allText);
-		if (selectedAttribute.secondaryEntityId)
+		if (selectedAttribute.secondaryEntityIds.length > 0)
 		{
 			limitScope.prop('checked', true);
 			limitScope.trigger('change');
 			$('#editAttributeSecondaryCategory').val(selectedAttribute.secondaryCategory);
-			$('#editAttributeSecondaryEntityId').val(selectedAttribute.secondaryEntityId);
-			$('.secondaryPrompt').text(selectedAttribute.secondaryEntityDescription);
+			$('#editAttributeSecondaryEntityId').val(selectedAttribute.secondaryEntityIds.join());
+			elements.secondaryPrompt.text(selectedAttribute.secondaryEntityDescriptions.join(', '));
 		}
 
 		$('#editAttributePrivate').prop('checked', selectedAttribute.isPrivate);
@@ -293,30 +328,28 @@ function AttributeManagement(opts) {
 		{
 			$('.attributeUnique').hide();
 			$('.attributeAdminOnly').show();
-			$('.secondaryEntities, .attributeSecondary').hide();
-			$('.secondaryEntities').show();
+			$('.secondaryEntities, .attributeSecondary').addClass('no-show');
+			$('.secondaryEntities').removeClass('no-show');
 			$('.attributeIsPrivate').show();
 		}
 		else
 		{
 			$('.attributeUnique').show();
 			//$('.attributeAdminOnly').hide();
-			$('.secondaryEntities, .attributeSecondary').hide();
+			$('.secondaryEntities, .attributeSecondary').addClass('no-show');
 			$('.attributeIsPrivate').hide();
 		}
 	};
 
-	var showEntities = function (element, categoryId) {
-		var selectedIds = [];
-		elements.appliesToId.find(':checked').each(function (i, v) {
-			selectedIds.push($(v).val());
-		});
+	var showEntities = function (element, categoryId, selectedIds, formName) {
+		//var selectedIds = [];
+		elements.appliesToId.find('input:checkbox').removeAttr('checked');
 
-		elements.entityChoices.empty();
-		elements.entityChoices.css({left: element.offset().left, top: element.offset().top + element.height()});
-		elements.entityChoices.show();
+		selectedEntityChoices.empty();
+		selectedEntityChoices.css({left: element.position().left, top: element.position().top + element.height()});
+		selectedEntityChoices.show();
 
-		$('<div class="ajax-indicator">&nbsp;</div>"').appendTo(elements.entityChoices).show();
+		$('<div class="ajax-indicator">&nbsp;</div>').appendTo(selectedEntityChoices).show();
 
 		var data = [];
 
@@ -338,27 +371,25 @@ function AttributeManagement(opts) {
 		var items = ['<li><a href="#" class="all">' + options.allText + '</a> <a href="#" class="ok">OK</a></li>'];
 		$.each(data, function (index, item) {
 			var checked = '';
-			if (selectedIds.indexOf(item.Id) != -1)
+			if (selectedIds.indexOf(item.Id) !== -1)
 			{
-				checked = ' checked="checked" '
+				checked = ' checked="checked" ';
 			}
-			items.push('<li><label><input type="checkbox" name="ATTRIBUTE_ENTITY[]" value="' + item.Id + '"' + checked + '/>' + item.Name + '</label></li>');
+			items.push('<li><label><input type="checkbox" name="' + formName + '[]" value="' + item.Id + '"' + checked + ' data-text="' + item.Name.replace(/"/g, '&quot;') + '"/>' + item.Name + '</label></li>');
 		});
 
-		elements.entityChoices.empty();
+		selectedEntityChoices.empty();
 
-		$('<div/>', {'class': '', html: items.join('')}).appendTo(elements.entityChoices);
+		$('<div/>', {'class': '', html: items.join('')}).appendTo(selectedEntityChoices);
 	};
 
 	var getResources = function () {
 		var items = [];
 		$.ajax({
-					url: options.resourcesUrl,
-					async: false
-				}
-		).done(function (data) {
-					items = data;
-				});
+			url: options.resourcesUrl, async: false
+		}).done(function (data) {
+			items = data;
+		});
 
 		return items;
 	};
@@ -366,14 +397,12 @@ function AttributeManagement(opts) {
 	var getUsers = function () {
 		var items = [];
 		$.ajax({
-					url: options.usersUrl,
-					async: false
-				}
-		).done(function (data) {
-					items = $.map(data, function (item, index) {
-						return {Id: item.UserId, Name: item.FullName};
-					});
-				});
+			url: options.usersUrl, async: false
+		}).done(function (data) {
+			items = $.map(data, function (item, index) {
+				return {Id: item.UserId, Name: item.FullName};
+			});
+		});
 
 		return items;
 	};
@@ -381,14 +410,12 @@ function AttributeManagement(opts) {
 	var getResourceTypes = function () {
 		var items = [];
 		$.ajax({
-					url: options.resourceTypesUrl,
-					async: false
-				}
-		).done(function (data) {
-					items = $.map(data, function (item, index) {
-						return {Id: item.Id, Name: item.Name};
-					});
-				});
+			url: options.resourceTypesUrl, async: false
+		}).done(function (data) {
+			items = $.map(data, function (item, index) {
+				return {Id: item.Id, Name: item.Name};
+			});
+		});
 
 		return items;
 	}

@@ -261,7 +261,8 @@ ul.jqtree-tree .group-resource .jqtree-title {
 .textBoxOptions div {
   margin: 1px 0;
 }
-#entityChoices {
+#entityChoices,
+#editEntityChoices {
   display: none;
   min-width: 150px;
   border: solid 1px #e2e2e2;
@@ -276,7 +277,8 @@ ul.jqtree-tree .group-resource .jqtree-title {
   -webkit-box-shadow: 0px 0px 3px 0px #ccc;
   box-shadow: 0px 0px 3px 0px #ccc;
 }
-#entityChoices li {
+#entityChoices li,
+#editEntityChoices li {
   list-style: none;
   font-size: 10pt;
 }

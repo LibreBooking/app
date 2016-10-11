@@ -56,7 +56,7 @@ class CustomAttributeValidationRule implements IReservationValidationRule
 			foreach ($result->InvalidAttributes() as $invalidAttribute)
 			{
 				$secondaryCategory = $invalidAttribute->Attribute->SecondaryCategory();
-				$secondaryEntityId = $invalidAttribute->Attribute->SecondaryEntityId();
+				$secondaryEntityId = $invalidAttribute->Attribute->SecondaryEntityIds();
 
 				if ($secondaryCategory == CustomAttributeCategory::USER && $secondaryEntityId != $reservationSeries->UserId())
 				{

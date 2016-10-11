@@ -87,7 +87,7 @@ class AddAnnouncementResourceCommand extends SqlCommand
 
 class AddAttributeCommand extends SqlCommand
 {
-	public function __construct($label, $type, $category, $regex, $required, $possibleValues, $sortOrder, $adminOnly, $secondaryCategory, $secondaryEntityId,
+	public function __construct($label, $type, $category, $regex, $required, $possibleValues, $sortOrder, $adminOnly, $secondaryCategory, $secondaryEntityIds,
 								$isPrivate)
 	{
 		parent::__construct(Queries::ADD_ATTRIBUTE);
@@ -100,7 +100,7 @@ class AddAttributeCommand extends SqlCommand
 		$this->AddParameter(new Parameter(ParameterNames::ATTRIBUTE_SORT_ORDER, $sortOrder));
 		$this->AddParameter(new Parameter(ParameterNames::ATTRIBUTE_ADMIN_ONLY, (int)$adminOnly));
 		$this->AddParameter(new Parameter(ParameterNames::ATTRIBUTE_SECONDARY_CATEGORY, $secondaryCategory));
-		$this->AddParameter(new Parameter(ParameterNames::ATTRIBUTE_SECONDARY_ENTITY_ID, $secondaryEntityId));
+		$this->AddParameter(new Parameter(ParameterNames::ATTRIBUTE_SECONDARY_ENTITY_IDS, implode(',', $secondaryEntityIds)));
 		$this->AddParameter(new Parameter(ParameterNames::ATTRIBUTE_IS_PRIVATE, (int)$isPrivate));
 	}
 }
@@ -986,7 +986,7 @@ class GetAttributesByCategoryCommand extends SqlCommand
 {
 	public function __construct($attributeCategoryId)
 	{
-		parent::__construct(Queries::GET_ATTRIBUTES_BY_CATEGORY);
+		parent::__construct(Queries::GET_ATTRIBUTES_BASE_QUERY . Queries::GET_ATTRIBUTES_BY_CATEGORY_WHERE);
 		$this->AddParameter(new Parameter(ParameterNames::ATTRIBUTE_CATEGORY, $attributeCategoryId));
 	}
 }
@@ -995,7 +995,7 @@ class GetAttributeByIdCommand extends SqlCommand
 {
 	public function __construct($attributeId)
 	{
-		parent::__construct(Queries::GET_ATTRIBUTE_BY_ID);
+		parent::__construct(Queries::GET_ATTRIBUTES_BASE_QUERY . Queries::GET_ATTRIBUTE_BY_ID_WHERE);
 		$this->AddParameter(new Parameter(ParameterNames::ATTRIBUTE_ID, $attributeId));
 	}
 }
@@ -2107,7 +2107,7 @@ class UpdateAnnouncementCommand extends SqlCommand
 class UpdateAttributeCommand extends SqlCommand
 {
 	public function __construct($attributeId, $label, $type, $category, $regex, $required, $possibleValues, $sortOrder, $adminOnly, $secondaryCategory,
-								$secondaryEntityId, $isPrivate)
+								$secondaryEntityIds, $isPrivate)
 	{
 		parent::__construct(Queries::UPDATE_ATTRIBUTE);
 		$this->AddParameter(new Parameter(ParameterNames::ATTRIBUTE_ID, $attributeId));
@@ -2120,7 +2120,7 @@ class UpdateAttributeCommand extends SqlCommand
 		$this->AddParameter(new Parameter(ParameterNames::ATTRIBUTE_SORT_ORDER, $sortOrder));
 		$this->AddParameter(new Parameter(ParameterNames::ATTRIBUTE_ADMIN_ONLY, (int)$adminOnly));
 		$this->AddParameter(new Parameter(ParameterNames::ATTRIBUTE_SECONDARY_CATEGORY, $secondaryCategory));
-		$this->AddParameter(new Parameter(ParameterNames::ATTRIBUTE_SECONDARY_ENTITY_ID, $secondaryEntityId));
+		$this->AddParameter(new Parameter(ParameterNames::ATTRIBUTE_SECONDARY_ENTITY_IDS, implode(',', $secondaryEntityIds)));
 		$this->AddParameter(new Parameter(ParameterNames::ATTRIBUTE_IS_PRIVATE, (int)$isPrivate));
 	}
 }

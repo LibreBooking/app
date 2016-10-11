@@ -213,8 +213,8 @@ class ColumnNames
 	const ATTRIBUTE_ENTITY_DESCRIPTIONS = 'entity_descriptions';
 	const ATTRIBUTE_SORT_ORDER = 'sort_order';
 	const ATTRIBUTE_SECONDARY_CATEGORY = 'secondary_category';
-	const ATTRIBUTE_SECONDARY_ENTITY_ID = 'secondary_entity_id';
-	const ATTRIBUTE_SECONDARY_ENTITY_DESCRIPTION = 'secondary_entity_description';
+	const ATTRIBUTE_SECONDARY_ENTITY_IDS = 'secondary_entity_ids';
+	const ATTRIBUTE_SECONDARY_ENTITY_DESCRIPTIONS = 'secondary_entity_descriptions';
 	const ATTRIBUTE_IS_PRIVATE = 'is_private';
 
 	// RESERVATION FILES //

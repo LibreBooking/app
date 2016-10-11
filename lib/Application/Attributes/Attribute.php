@@ -118,6 +118,6 @@ class Attribute
 	 */
 	public function SecondaryEntityId()
 	{
-		return $this->attributeDefinition->SecondaryEntityId();
+		return $this->attributeDefinition->SecondaryEntityIds();
 	}
 }

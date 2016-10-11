@@ -71,7 +71,7 @@ class ManageAttributesPresenter extends ActionPresenter
         Log::Debug('Adding new attribute named: %s', $attributeName);
 
         $attribute = CustomAttribute::Create($attributeName, $type, $scope, $regex, $required, $possibleValues, $sortOrder, $entityIds, $adminOnly);
-		$this->AddSecondaryEntity($attribute);
+		$this->AddSecondaryEntities($attribute);
 		$attribute->WithIsPrivate($this->page->GetIsPrivate());
 
 		$this->attributeRepository->Add($attribute);
@@ -99,7 +99,7 @@ class ManageAttributesPresenter extends ActionPresenter
 
 		$attribute = $this->attributeRepository->LoadById($attributeId);
 		$attribute->Update($attributeName, $regex, $required, $possibleValues, $sortOrder, $entityIds, $adminOnly);
-		$this->AddSecondaryEntity($attribute);
+		$this->AddSecondaryEntities($attribute);
 		$attribute->WithIsPrivate($this->page->GetIsPrivate());
 
 		$this->attributeRepository->Update($attribute);
@@ -118,18 +118,19 @@ class ManageAttributesPresenter extends ActionPresenter
 		$this->page->BindAttributes($this->attributeRepository->GetByCategory($categoryId));
 	}
 
-	private function AddSecondaryEntity(CustomAttribute $attribute)
+	private function AddSecondaryEntities(CustomAttribute $attribute)
 	{
 		if ($this->page->GetLimitAttributeScope())
 		{
-			$secondaryEntityId = $this->page->GetSecondaryEntityId();
+			$secondaryEntityIds = $this->page->GetSecondaryEntityIds();
 			$secondaryCategory = $this->page->GetSecondaryCategory();
 
-			$attribute->WithSecondaryEntity($secondaryCategory, $secondaryEntityId);
+			die('ids' . implode(',', $secondaryEntityIds));
+			$attribute->WithSecondaryEntities($secondaryCategory, $secondaryEntityIds);
 		}
 		else
 		{
-			$attribute->WithSecondaryEntity(null, null);
+			$attribute->WithSecondaryEntities(null, null);
 		}
 	}
 }

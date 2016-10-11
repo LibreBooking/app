@@ -54,7 +54,7 @@ class ParameterNames
 	const ATTRIBUTE_ENTITY_IDS = '@entity_ids';
 	const ATTRIBUTE_UNIQUE_PER_ENTITY = '@unique_per_entity';
 	const ATTRIBUTE_SECONDARY_CATEGORY = '@secondary_category';
-	const ATTRIBUTE_SECONDARY_ENTITY_ID = '@secondary_entity_id';
+	const ATTRIBUTE_SECONDARY_ENTITY_IDS = '@secondary_entity_ids';
 	const ATTRIBUTE_IS_PRIVATE = '@is_private';
 	const AUTO_RELEASE_MINUTES = '@auto_release_minutes';
 

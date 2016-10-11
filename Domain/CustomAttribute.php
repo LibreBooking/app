@@ -109,14 +109,14 @@ class CustomAttribute
 	protected $secondaryCategory;
 
 	/**
-	 * @var int
+	 * @var int[]
 	 */
-	protected $secondaryEntityId;
+	protected $secondaryEntityIds = array();
 
 	/**
-	 * @var string
+	 * @var string[]
 	 */
-	protected $secondaryEntityDescription;
+	protected $secondaryEntityDescriptions = array();
 
 	/**
 	 * @var bool
@@ -227,9 +227,9 @@ class CustomAttribute
 		return $this->type;
 	}
 
-	public function HasSecondaryEntity()
+	public function HasSecondaryEntities()
 	{
-		return !empty($this->secondaryCategory) && !empty($this->secondaryEntityId);
+		return !empty($this->secondaryCategory) && !empty($this->secondaryEntityIds);
 	}
 
 	/**
@@ -241,19 +241,19 @@ class CustomAttribute
 	}
 
 	/**
-	 * @return int|null
+	 * @return int[]
 	 */
-	public function SecondaryEntityId()
+	public function SecondaryEntityIds()
 	{
-		return empty($this->secondaryEntityId) ? null : $this->secondaryEntityId;
+		return empty($this->secondaryEntityIds) ? array() : $this->secondaryEntityIds;
 	}
 
 	/**
-	 * @return string|null
+	 * @return string[]
 	 */
-	public function SecondaryEntityDescription()
+	public function SecondaryEntityDescriptions()
 	{
-		return $this->secondaryEntityDescription;
+		return empty($this->secondaryEntityDescriptions) ? array() : $this->secondaryEntityDescriptions;
 	}
 
 	/**
@@ -344,7 +344,7 @@ class CustomAttribute
 	/**
 	 * @static
 	 * @param $row array
-	 * @return Attribute
+	 * @return CustomAttribute
 	 */
 	public static function FromRow($row)
 	{
@@ -377,9 +377,9 @@ class CustomAttribute
 
 		if (isset($row[ColumnNames::ATTRIBUTE_SECONDARY_CATEGORY]))
 		{
-			$attribute->WithSecondaryEntity($row[ColumnNames::ATTRIBUTE_SECONDARY_CATEGORY],
-											$row[ColumnNames::ATTRIBUTE_SECONDARY_ENTITY_ID],
-											$row[ColumnNames::ATTRIBUTE_SECONDARY_ENTITY_DESCRIPTION]);
+			$attribute->WithSecondaryEntities($row[ColumnNames::ATTRIBUTE_SECONDARY_CATEGORY],
+											  $row[ColumnNames::ATTRIBUTE_SECONDARY_ENTITY_IDS],
+											  $row[ColumnNames::ATTRIBUTE_SECONDARY_ENTITY_DESCRIPTIONS]);
 		}
 
 		if (isset($row[ColumnNames::ATTRIBUTE_IS_PRIVATE]))
@@ -444,7 +444,19 @@ class CustomAttribute
 		$this->label = $label;
 		$this->SetRegex($regex);
 		$this->required = $required;
-		$this->entityIds = is_array($entityIds) ? $entityIds : array($entityIds);
+
+		$entityIds = is_array($entityIds) ? $entityIds : array($entityIds);
+		$removed = array_diff($this->entityIds, $entityIds);
+		$added = array_diff($entityIds, $this->entityIds);
+
+		if (!empty($removed) || !empty($added))
+		{
+			$this->removedEntityIds = $removed;
+			$this->addedEntityIds = $added;
+		}
+
+		$this->entityIds = $entityIds;
+
 		$this->adminOnly = $adminOnly;
 		$this->SetPossibleValues($possibleValues);
 		$this->SetSortOrder($sortOrder);
@@ -479,22 +491,36 @@ class CustomAttribute
 
 	/**
 	 * @param int|CustomAttributeCategory $category
-	 * @param int $entityId
-	 * @param string|null $entityDescription
+	 * @param string|int[] $entityIds
+	 * @param string|null $entityDescriptions
 	 */
-	public function WithSecondaryEntity($category, $entityId, $entityDescription = null)
+	public function WithSecondaryEntities($category, $entityIds, $entityDescriptions = null)
 	{
-		if (!empty($category) && !empty($entityId))
+		if (!empty($category) && !empty($entityIds))
 		{
 			$this->secondaryCategory = $category;
-			$this->secondaryEntityId = $entityId;
-			$this->secondaryEntityDescription = $entityDescription;
+
+			if (is_array($entityIds))
+			{
+				$this->secondaryEntityIds = $entityIds;
+			}
+			else
+			{
+				$this->secondaryEntityIds = explode(',', $entityIds);
+			}
+
+			$descriptions = array();
+			if (!empty($entityDescriptions))
+			{
+				$descriptions = explode('!sep!', $entityDescriptions);
+			}
+			$this->secondaryEntityDescriptions = $descriptions;
 		}
 		else
 		{
 			$this->secondaryCategory = null;
-			$this->secondaryEntityId = null;
-			$this->secondaryEntityDescription = null;
+			$this->secondaryEntityIds = null;
+			$this->secondaryEntityDescriptions = null;
 		}
 	}
 
