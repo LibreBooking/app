@@ -236,7 +236,6 @@ class AttributeService implements IAttributeService
 		foreach ($customAttributes as $attribute)
 		{
 			$secondaryCategory = $attribute->SecondaryCategory();
-
 			if (empty($secondaryCategory) ||
 					($secondaryCategory == CustomAttributeCategory::USER &&
 							$this->AvailableForUser($userSession, $requestedUserId, $secondaryCategory, $attribute) ||
@@ -289,6 +288,9 @@ class AttributeService implements IAttributeService
 			{
 				$applies = array_intersect($attribute->SecondaryEntityIds(), $requestedResourceIds);
 				$allowed = array_intersect($attribute->SecondaryEntityIds(), array_keys($this->GetAllowedResources($userSession)));
+
+				Log::Debug('applies %s allowed %s, ids %s requested %s', count($applies), count($allowed), join(',', $attribute->SecondaryEntityIds()), join(',', $requestedResourceIds));
+
 				return count($applies) > 0 && count($allowed) > 0;
 			}
 

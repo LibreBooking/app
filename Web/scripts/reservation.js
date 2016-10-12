@@ -226,7 +226,8 @@ function Reservation(opts) {
 		attributesPlaceholder.html('<span class="fa fa-spinner fa-spin fa-2x"/>');
 		var url = 'ajax/reservation_attributes.php?uid=' + elements.userId.val() + '&rn=' + elements.referenceNumber.val() + '&ro=' + $('#reservation-box').hasClass('readonly');
 
-		_(GetSelectedResourceIds()).forEach(function (n) {
+		var resourceIds = GetSelectedResourceIds();
+		_.each(resourceIds, function (n) {
 			url += '&rid[]=' + n;
 		});
 		attributesPlaceholder.load(url);
