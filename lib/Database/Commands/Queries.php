@@ -1130,7 +1130,7 @@ class Queries
 			organization = COALESCE(@organization, organization),
 			position = COALESCE(@position, position)
 		WHERE
-			username = @username';
+			username = @username OR email = @email';
 
 	const UPDATE_USER_PREFERENCE = 'UPDATE user_preferences SET value = @value WHERE user_id = @userid AND name = @name';
 
