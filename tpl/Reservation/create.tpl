@@ -299,7 +299,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                     <div class="col-xs-12 reservationAttachments">
 
                         <label>{translate key=AttachFile} <span class="note">({$MaxUploadSize}
-                                MB {translate key=Maximum})</span><br/> </label>
+                                MB {translate key=Maximum})</span>
+                        </label>
 
                         <div id="reservationAttachments">
                             <div class="attachment-item">

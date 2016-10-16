@@ -58,7 +58,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 					{translate key='Delete'}
 				</a>
             {else}
-				<a href="#" id="triggerDeletePrompt" class="delete prompt-single">
+				<a href="#" class="triggerDeletePrompt delete prompt-single">
                     <span class="fa fa-remove remove icon"></span>
                     {translate key='Delete'}
                 </a>
@@ -149,6 +149,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 				<input style='display: none;' type="checkbox" name="{FormKeys::REMOVED_FILE_IDS}[{$attachment->FileId()}]"/>
 				&nbsp;
 			{/foreach}
+		</div>
 		</div>
 	{/if}
 {/block}
