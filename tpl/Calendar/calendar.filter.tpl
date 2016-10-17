@@ -47,8 +47,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 	$(function(){
 		$('#calendarFilter').select2(
 				{
-					dropdownAutoWidth: true,
-					width: 'element'
+//					dropdownAutoWidth: true,
+//					width: 'auto'
 				});
 	});
 
