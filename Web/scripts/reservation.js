@@ -130,7 +130,7 @@ function Reservation(opts) {
 			ChangeUpdateScope(options.scopeOpts.future);
 		});
 
-        $('#triggerDeletePrompt').click(function(e){
+        $('.triggerDeletePrompt').click(function(e){
             e.preventDefault();
             elements.deleteButtonPrompt.modal('show');
         });

@@ -1,0 +1,3 @@
+select u.fname, u.lname, u.email, u.organization, u.position, u.date_created, u.lastlogin, t.tenant_name from users u
+inner join tenants t on u.tenant_id = t.tenant_id
+order  by u.tenant_id

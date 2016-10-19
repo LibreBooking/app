@@ -45,11 +45,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 <script type="text/javascript">
 	$(function(){
-		$('#calendarFilter').select2(
-				{
-					dropdownAutoWidth: true,
-					width: 'element'
-				});
+		$('#calendarFilter').select2();
 	});
 
 </script>

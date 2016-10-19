@@ -19,8 +19,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 <div class="dashboard dashboard availabilityDashboard" id="availabilityDashboard">
     <div class="dashboardHeader">
-        <div class="pull-left">{translate key="ResourceAvailability"} <span class="badge">{$Available|count}</span>
-        </div>
+        <div class="pull-left">{translate key="ResourceAvailability"}</div>
         <div class="pull-right">
             <a href="#" title="{translate key=ShowHide} {translate key="ResourceAvailability"}">
                 <i class="glyphicon"></i>

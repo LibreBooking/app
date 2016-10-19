@@ -247,13 +247,13 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                 </div>
             </div>
 
-            <div class="row">
+            <div class="row col-xs-12">
                 <div id="custom-attributes-placeholder" class="col-xs-12">
                 </div>
             </div>
 
             {if $RemindersEnabled}
-                <div class="row">
+                <div class="row col-xs-12">
                     <div class="col-xs-12 reservationReminders">
                         <div>
                             <label for="startReminderEnabled">{translate key=SendReminder}</label>
@@ -295,11 +295,12 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
             {/if}
 
             {if $UploadsEnabled}
-                <div class="row">
+                <div class="row col-xs-12">
                     <div class="col-xs-12 reservationAttachments">
 
                         <label>{translate key=AttachFile} <span class="note">({$MaxUploadSize}
-                                MB {translate key=Maximum})</span><br/> </label>
+                                MB {translate key=Maximum})</span>
+                        </label>
 
                         <div id="reservationAttachments">
                             <div class="attachment-item">

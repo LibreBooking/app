@@ -231,7 +231,8 @@ function ScheduleManagement(opts) {
 	};
 
 	var showChangeLayout = function (e, reservableDiv, blockedDiv, timezone, usesSingleLayout) {
-		$.each(reservableDiv, function (index, val) {
+		elements.changeLayoutForm.find('.validationSummary ').addClass('no-show');
+	    $.each(reservableDiv, function (index, val) {
 			var slots = reformatTimeSlots($(val));
 			$('#' + $(val).attr('ref')).val(slots);
 		});
