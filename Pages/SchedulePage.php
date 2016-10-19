@@ -458,7 +458,7 @@ class SchedulePage extends ActionPage implements ISchedulePage
 	 */
 	public function GetResourceIds()
 	{
-		$resourceIds = $this->GetForm(FormKeys::RESOURCE_ID);
+		$resourceIds = $this->GetQuerystring(FormKeys::RESOURCE_ID);
 		if (empty($resourceIds))
 		{
 			return array();
@@ -494,30 +494,30 @@ class SchedulePage extends ActionPage implements ISchedulePage
 
 	public function FilterSubmitted()
 	{
-		$k = $this->GetForm(FormKeys::SUBMIT);
+		$k = $this->GetQuerystring(FormKeys::SUBMIT);
 
 		return !empty($k);
 	}
 
 	public function GetResourceTypeId()
 	{
-		return $this->GetForm(FormKeys::RESOURCE_TYPE_ID);
+		return $this->GetQuerystring(FormKeys::RESOURCE_TYPE_ID);
 	}
 
 	public function GetMaxParticipants()
 	{
-		$max = $this->GetForm(FormKeys::MAX_PARTICIPANTS);
+		$max = $this->GetQuerystring(FormKeys::MAX_PARTICIPANTS);
 		return intval($max);
 	}
 
 	public function GetResourceAttributes()
 	{
-		return AttributeFormParser::GetAttributes($this->GetForm('r' . FormKeys::ATTRIBUTE_PREFIX));
+		return AttributeFormParser::GetAttributes($this->GetQuerystring('r' . FormKeys::ATTRIBUTE_PREFIX));
 	}
 
 	public function GetResourceTypeAttributes()
 	{
-		return AttributeFormParser::GetAttributes($this->GetForm('rt' . FormKeys::ATTRIBUTE_PREFIX));
+		return AttributeFormParser::GetAttributes($this->GetQuerystring('rt' . FormKeys::ATTRIBUTE_PREFIX));
 	}
 
 	public function SetFilter($resourceFilter)

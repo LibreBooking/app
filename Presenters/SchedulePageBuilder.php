@@ -88,13 +88,6 @@ interface ISchedulePageBuilder
 	/**
 	 * @param int $scheduleId
 	 * @param ISchedulePage $page
-	 * @return int[]
-	 */
-	public function GetResourceIds($scheduleId, ISchedulePage $page);
-
-	/**
-	 * @param int $scheduleId
-	 * @param ISchedulePage $page
 	 * @return ScheduleResourceFilter
 	 */
 	public function GetResourceFilter($scheduleId, ISchedulePage $page);
@@ -337,18 +330,20 @@ class SchedulePageBuilder implements ISchedulePageBuilder
 
 		return null;
 	}
-
-	public function GetResourceIds($scheduleId, ISchedulePage $page)
-	{
-		$resourceIds = $page->GetResourceIds();
-
-		if (!empty($resourceIds))
-		{
-			return $resourceIds;
-		}
-
-		return array();
-	}
+//
+//	public function GetResourceIds($scheduleId, ISchedulePage $page)
+//	{
+//
+//
+//		$resourceIds = $page->GetResourceIds();
+//
+//		if (!empty($resourceIds))
+//		{
+//			return $resourceIds;
+//		}
+//
+//		return array();
+//	}
 
 	private function getTreeCookie($scheduleId)
 	{
@@ -392,6 +387,13 @@ class SchedulePageBuilder implements ISchedulePageBuilder
 				$val = json_decode($cookie);
 				$filter = ScheduleResourceFilter::FromCookie($val);
 			}
+		}
+
+		$resourceId = $page->GetResourceId();
+
+		if (!empty($resourceId))
+		{
+			$filter->ResourceIds = array($resourceId);
 		}
 
 		$filter->ScheduleId = $scheduleId;

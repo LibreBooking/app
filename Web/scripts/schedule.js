@@ -147,11 +147,11 @@ function Schedule(opts, resourceGroups) {
 			if (multidateselect.is(':checked'))
 			{
 				var dates = scheduleSpecificDates.join(',');
-				RedirectToSelf('sds', /(sds=[\d\-\,]+)/i, 'sds=' + dates);
+				RedirectToSelf('sds', /(sds=[\d\-\,]*)/i, 'sds=' + dates);
 			}
 			else
 			{
-				RedirectToSelf('sds', /(sds=[\d\-\,]+)/i, '');
+				RedirectToSelf('sds', /(sds=[\d\-\,]*)/i, '');
 			}
 		});
 
@@ -420,13 +420,17 @@ function Schedule(opts, resourceGroups) {
 	};
 
 	this.initResourceFilter = function () {
+
+		$('#advancedFilter').attr('action', opts.filterUrl);
+
 		$('#show_all_resources').click(function (e) {
 			e.preventDefault();
 
 			groupDiv.tree('selectNode', null);
 
-			eraseCookie('resource_filter' + scheduleId.val());
-			ShowAllResources();
+			eraseCookie('resource_filter' + scheduleId.val(), opts.scriptUrl);
+			$('#resettable').find('input, select').val('');
+			$(this).closest('form').submit();
 		});
 
 		$('#resourceIdFilter').change(function (e) {

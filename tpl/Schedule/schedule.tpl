@@ -50,7 +50,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 {function name=displayReservable}
 	<td {$spantype|default:'col'}span="{$Slot->PeriodSpan()}" ref="{$SlotRef}" class="reservable clickres slot" data-href="{$Href}"
-		data-start="{$Slot->BeginDate()->Format('Y-m-d H:i:s')|escape:url}" data-end="{$Slot->EndDate()->Format('Y-m-d H:i:s')|escape:url}" data-resourceId="{$ResourceId}">&nbsp;</td>
+		data-start="{$Slot->BeginDate()->Format('Y-m-d H:i:s')|escape:url}" data-end="{$Slot->EndDate()->Format('Y-m-d H:i:s')|escape:url}"
+		data-resourceId="{$ResourceId}">&nbsp;</td>
 {/function}
 
 {function name=displayRestricted}
@@ -179,30 +180,23 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 								class="glyphicon glyphicon-remove"></i></a></div>
 
 				<div class="reservations-left-content">
-					<div class="form-group">
-						<label for="resourceIdFilter">{translate key=Resource}</label>
-						<select {formname key=RESOURCE_ID} id="resourceIdFilter" class="form-control input-sm">
-							<option value="">- {translate key=All} -</option>
-							{object_html_options options=$Resources label='Name' key='Id' usemethod=false selected=$ResourceIdFilter}
-						</select>
-					</div>
+					<form method="get" role="form" id="advancedFilter">
 
-					<form method="POST" role="form" id="advancedFilter">
-						<hr/>
+						{if count($ResourceAttributes) + count($ResourceTypeAttributes) > 5}
+							<div>
+								<input type="submit" value="{translate key=Filter}" class="button" {formname key=SUBMIT}/>
+							</div>
+						{/if}
 
-                        {if count($ResourceAttributes) + count($ResourceTypeAttributes) > 5}
-                            <div>
-                                <input type="submit" value="{translate key=Filter}" class="button" {formname key=SUBMIT}/>
-                            </div>
-                        {/if}
-
-                        <div>
+						<div>
+							{*<label>{translate key=Resource}</label>*}
 							<div id="resourceGroups"></div>
 						</div>
-						<div>
+						<div class="resettable">
 							<div class="form-group">
 								<label for="maxCapactiy">{translate key=MinimumCapacity}</label>
-								<input type='number' min='0' id='maxCapactiy' size='5' maxlength='5' class="form-control input-sm" {formname key=MAX_PARTICIPANTS}
+								<input type='number' min='0' id='maxCapactiy' size='5' maxlength='5'
+									   class="form-control input-sm" {formname key=MAX_PARTICIPANTS}
 									   value="{$MaxParticipantsFilter}"/>
 							</div>
 
@@ -215,15 +209,11 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 							</div>
 
 							{foreach from=$ResourceAttributes item=attribute}
-								{*<div class="form-group">*}
 								{control type="AttributeControl" attribute=$attribute align='vertical' searchmode=true namePrefix='r' inputClass="input-sm"}
-								{*</div>*}
 							{/foreach}
 
 							{foreach from=$ResourceTypeAttributes item=attribute}
-								{*<div class="form-group">*}
 								{control type="AttributeControl" attribute=$attribute align='vertical' searchmode=true namePrefix='rt' inputClass="input-sm"}
-								{*</div>*}
 							{/foreach}
 
 							<div class="btn-submit">
@@ -232,7 +222,12 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 							<div class="btn-clear">
 								<button id="show_all_resources" type="button" class="btn btn-default btn-xs">{translate key=ClearFilter}</button>
 							</div>
+
 						</div>
+
+						<input type="hidden" name="sid" value="{$ScheduleId}"/>
+						<input type="hidden" name="sds" value="{foreach from=$SpecificDates item=d}{$d->Format('Y-m-d')},{/foreach}"/>
+						<input type="hidden" name="sd" value="{$DisplayDates->GetBegin()->Format('Y-m-d')}"/>
 					</form>
 				</div>
 			</div>
@@ -320,7 +315,6 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 	{jsfile src="js/tree.jquery.js"}
 	{jsfile src="js/jquery.cookie.js"}
 	{jsfile src="ajax-helpers.js"}
-
 	<script type="text/javascript">
 
 		$(document).ready(function () {
