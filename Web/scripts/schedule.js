@@ -433,21 +433,6 @@ function Schedule(opts, resourceGroups) {
 			$(this).closest('form').submit();
 		});
 
-		$('#resourceIdFilter').change(function (e) {
-			var resourceId = $(this).val();
-			if (resourceId == '')
-			{
-				RedirectToSelf('', '', '', function (url) {
-					groupDiv.tree('selectNode', null);
-					return RemoveResourceId(url);
-				});
-			}
-			else
-			{
-				ChangeResource(resourceId);
-			}
-		});
-
 		groupDiv.tree({
 			data: resourceGroups, saveState: 'tree' + options.scheduleId,
 
@@ -488,20 +473,12 @@ function Schedule(opts, resourceGroups) {
 	};
 }
 
-function ShowAllResources() {
-	RedirectToSelf("", "", "", function (url) {
-		var x = RemoveGroupId(url);
-		x = RemoveResourceId(x);
-		return x;
-	});
-}
-
 function RemoveResourceId(url) {
 	if (!url)
 	{
 		url = window.location.href;
 	}
-	return url.replace(/&*rid=\d+/i, "");
+	return url.replace(/&*rid[]=\d+/i, "");
 }
 
 function RemoveGroupId(url) {
@@ -514,10 +491,6 @@ function ChangeGroup(groupId) {
 	$resourceGroups.find(':checkbox').attr('checked', false);
 	$resourceGroups.find('input[group-id="' + groupId + '"]').click();
 	//RedirectToSelf('gid', /gid=\d+/i, "gid=" + groupId, RemoveResourceId);
-}
-
-function ChangeResource(resourceId) {
-	RedirectToSelf('rid', /rid=\d+/i, "rid=" + resourceId, RemoveGroupId);
 }
 
 function AddSpecificDate(dateText, inst) {
