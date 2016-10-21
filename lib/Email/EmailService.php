@@ -16,6 +16,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 require_once(ROOT_DIR . 'lib/Email/namespace.php');
 require_once(ROOT_DIR . 'lib/external/phpmailer/class.phpmailer.php');
+require_once(ROOT_DIR . 'lib/external/phpmailer/class.pop3.php');
+require_once(ROOT_DIR . 'lib/external/phpmailer/class.smtp.php');
 
 class EmailService implements IEmailService
 {
@@ -31,7 +33,7 @@ class EmailService implements IEmailService
 		if (is_null($phpMailer))
 		{
 			$this->phpMailer = new PHPMailer();
-			$this->phpMailer->IsHTML(true);
+			$this->phpMailer->isHTML(true);
 			$this->phpMailer->Mailer = $this->Config('mailer');
 			$this->phpMailer->Host = $this->Config('smtp.host');
 			$this->phpMailer->Port = $this->Config('smtp.port', new IntConverter());
@@ -46,8 +48,8 @@ class EmailService implements IEmailService
 
 	public function Send(IEmailMessage $emailMessage)
 	{
-		$this->phpMailer->ClearAllRecipients();
-		$this->phpMailer->ClearReplyTos();
+		$this->phpMailer->clearAllRecipients();
+		$this->phpMailer->clearReplyTos();
 		$this->phpMailer->CharSet = $emailMessage->Charset();
 		$this->phpMailer->Subject = $emailMessage->Subject();
 		$this->phpMailer->Body = $emailMessage->Body();
@@ -57,35 +59,35 @@ class EmailService implements IEmailService
 		$defaultName = Configuration::Instance()->GetSectionKey(ConfigSection::EMAIL, ConfigKeys::DEFAULT_FROM_NAME);
 		$address = empty($defaultFrom) ? $from->Address() : $defaultFrom;
 		$name = empty($defaultName) ? $from->Name() : $defaultName;
-		$this->phpMailer->SetFrom($address, $name);
+		$this->phpMailer->setFrom($address, $name);
 
 		$replyTo = $emailMessage->ReplyTo();
-		$this->phpMailer->AddReplyTo($replyTo->Address(), $replyTo->Name());
+		$this->phpMailer->addReplyTo($replyTo->Address(), $replyTo->Name());
 
 		$to = $this->ensureArray($emailMessage->To());
 		$toAddresses = new StringBuilder();
 		foreach ($to as $address)
 		{
 			$toAddresses->Append($address->Address());
-			$this->phpMailer->AddAddress($address->Address(), $address->Name());
+			$this->phpMailer->addAddress($address->Address(), $address->Name());
 		}
 
 		$cc = $this->ensureArray($emailMessage->CC());
 		foreach ($cc as $address)
 		{
-			$this->phpMailer->AddCC($address->Address(), $address->Name());
+			$this->phpMailer->addCC($address->Address(), $address->Name());
 		}
 
 		$bcc = $this->ensureArray($emailMessage->BCC());
 		foreach ($bcc as $address)
 		{
-			$this->phpMailer->AddBCC($address->Address(), $address->Name());
+			$this->phpMailer->addBCC($address->Address(), $address->Name());
 		}
 
 		if ($emailMessage->HasStringAttachment())
 		{
 			Log::Debug('Adding email attachment %s', $emailMessage->AttachmentFileName());
-			$this->phpMailer->AddStringAttachment($emailMessage->AttachmentContents(), $emailMessage->AttachmentFileName());
+			$this->phpMailer->addStringAttachment($emailMessage->AttachmentContents(), $emailMessage->AttachmentFileName());
 		}
 
 		Log::Debug('Sending %s email to: %s from: %s', get_class($emailMessage), $toAddresses->ToString(), $from->Address());
@@ -93,7 +95,7 @@ class EmailService implements IEmailService
 		$success = false;
 		try
 		{
-			$success = $this->phpMailer->Send();
+			$success = $this->phpMailer->send();
 		}
 		catch(Exception $ex)
 		{
