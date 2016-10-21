@@ -17,7 +17,7 @@ You should have received a copy of the GNU General Public License
 along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 *}
 <div id="resourceDetailsPopup">
-	<h4{if !empty($color)} style="background-color:{$color};color:{$textColor};padding:5px 3px;"{/if}>{$resourceName}</h4> <a href="#" class="visible-xs hideResourceDetailsPopup">{translate key=Close}</a>
+	<h4{if !empty($color)} style="background-color:{$color};color:{$textColor};padding:5px 3px;"{/if}>{$resourceName}</h4> <a href="#" class="visible-sm hideResourceDetailsPopup">{translate key=Close}</a>
 
 	{if $imageUrl neq ''}
 		<div class="resourceImage">

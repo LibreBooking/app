@@ -89,13 +89,13 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 					{assign var=resourceId value=$resource->Id}
 					{assign var=href value="{Pages::RESERVATION}?rid={$resourceId}&sid={$ScheduleId}"}
 
-					<td class="resourcename">
+					<td class="resourcename" {if $resource->HasColor()}style="background-color:{$resource->GetColor()}"{/if}>
 						{if $resource->CanAccess}
-							<i resourceId="{$resourceId}" class="resourceNameSelector fa fa-info-circle"></i>
-							<a href="{$href}" resourceId="{$resourceId}">{$resource->Name}</a>
+							<i resourceId="{$resourceId}" class="resourceNameSelector fa fa-info-circle" {if $resource->HasColor()}style="color:{$resource->GetTextColor()}"{/if}></i>
+							<a href="{$href}" resourceId="{$resourceId}" {if $resource->HasColor()}style="color:{$resource->GetTextColor()}"{/if}>{$resource->Name}</a>
 						{else}
-							<i resourceId="{$resourceId}" class="resourceNameSelector fa fa-info-circle"></i>
-							{$resource->Name}
+							<i resourceId="{$resourceId}" class="resourceNameSelector fa fa-info-circle" {if $resource->HasColor()}style="color:{$resource->GetTextColor()}"{/if}></i>
+							<span {if $resource->HasColor()}style="color:{$resource->GetTextColor()}"{/if}>{$resource->Name}</span>
 						{/if}
 					</td>
 

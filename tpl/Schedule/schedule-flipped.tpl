@@ -30,12 +30,12 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 					{assign var=resourceId value=$resource->Id}
 					{assign var=href value="{Pages::RESERVATION}?rid={$resource->Id}&sid={$ScheduleId}"}
 
-                    <td class="resourcename" resourceId="{$resource->Id}">
+                    <td class="resourcename" resourceId="{$resource->Id}" {if $resource->HasColor()}style="background-color:{$resource->GetColor()}"{/if}>
 						{if $resource->CanAccess}
                             <a href="{$href}" resourceId="{$resource->Id}"
-                               class="resourceNameSelector">{$resource->Name}</a>
+                               class="resourceNameSelector" {if $resource->HasColor()}style="color:{$resource->GetTextColor()}"{/if}>{$resource->Name}</a>
 						{else}
-							<span resourceId="{$resource->Id}" resourceId="{$resource->Id}" class="resourceNameSelector">{$resource->Name}</span>
+							<span resourceId="{$resource->Id}" resourceId="{$resource->Id}" class="resourceNameSelector" {if $resource->HasColor()}style="color:{$resource->GetTextColor()}"{/if}>{$resource->Name}</span>
 						{/if}
                     </td>
 				{/foreach}

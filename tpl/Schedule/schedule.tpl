@@ -261,13 +261,13 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 								{assign var=slots value=$DailyLayout->GetLayout($date, $resourceId)}
 								{assign var=href value="{$CreateReservationPage}?rid={$resource->Id}&sid={$ScheduleId}&rd={formatdate date=$date key=url}"}
 								<tr class="slots">
-									<td class="resourcename">
+                                    <td class="resourcename" {if $resource->HasColor()}style="background-color:{$resource->GetColor()}"{/if}>
 										{if $resource->CanAccess && $DailyLayout->IsDateReservable($date)}
 											<a href="{$href}" resourceId="{$resource->Id}"
-											   class="resourceNameSelector">{$resource->Name}</a>
+											   class="resourceNameSelector" {if $resource->HasColor()}style="color:{$resource->GetTextColor()}"{/if}>{$resource->Name}</a>
 										{else}
 											<span resourceId="{$resource->Id}" resourceId="{$resource->Id}"
-												  class="resourceNameSelector">{$resource->Name}</span>
+												  class="resourceNameSelector" {if $resource->HasColor()}style="color:{$resource->GetTextColor()}"{/if}>{$resource->Name}</span>
 										{/if}
 									</td>
 									{foreach from=$slots item=slot}
