@@ -25,7 +25,7 @@ require_once(ROOT_DIR . 'WebServices/Responses/GroupItemResponse.php');
 class UserResponse extends RestResponse
 {
 	public $id;
-	public $username;
+	public $userName;
 	public $firstName;
 	public $lastName;
 	public $emailAddress;
@@ -62,7 +62,7 @@ class UserResponse extends RestResponse
 		$this->position = $user->GetAttribute(UserAttribute::Position);
 		$this->statusId = $user->StatusId();
 		$this->timezone = $user->Timezone();
-		$this->username = $user->Username();
+		$this->userName = $user->Username();
 		$this->defaultScheduleId = $user->GetDefaultScheduleId();
 		$this->currentCredits = $user->GetCurrentCredits();
 		$this->reservationColor = $user->GetPreference(UserPreferences::RESERVATION_COLOR);
@@ -115,7 +115,7 @@ class ExampleUserResponse extends UserResponse
 		$this->phoneNumber = 'phone';
 		$this->statusId = 'statusId';
 		$this->timezone = 'timezone';
-		$this->username = 'username';
+		$this->userName = 'username';
 		$this->position = 'position';
 		$this->icsUrl = 'webcal://url/to/calendar';
 		$this->customAttributes = array(CustomAttributeResponse::Example());

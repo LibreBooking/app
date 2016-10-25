@@ -23,7 +23,7 @@ require_once(ROOT_DIR . 'lib/WebService/namespace.php');
 class UserItemResponse extends RestResponse
 {
 	public $id;
-	public $username;
+	public $userName;
 	public $firstName;
 	public $lastName;
 	public $emailAddress;
@@ -60,7 +60,7 @@ class UserItemResponse extends RestResponse
 		$this->position = $user->Position;
 		$this->statusId = $user->StatusId;
 		$this->timezone = $user->Timezone;
-		$this->username = $user->Username;
+		$this->userName = $user->Username;
 		$this->currentCredits = $user->CurrentCreditCount;
 		$this->reservationColor = $user->ReservationColor;
 
@@ -97,7 +97,7 @@ class ExampleUserItemResponse extends UserItemResponse
 		$this->phoneNumber = 'phone';
 		$this->statusId = 'statusId';
 		$this->timezone = 'timezone';
-		$this->username = 'username';
+		$this->userName = 'username';
 		$this->position = 'position';
 		$this->customAttributes = array(CustomAttributeResponse::Example());
 		$this->currentCredits = '2.50';
