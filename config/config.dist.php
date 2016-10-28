@@ -80,6 +80,7 @@ $conf['settings']['reservation']['prevent.recurrence'] = 'false';			// if recurr
 $conf['settings']['reservation']['enable.reminders'] = 'false';				// if reminders are enabled. this requires email to be enabled and the reminder job to be configured
 $conf['settings']['reservation']['allow.guest.participation'] = 'false';
 $conf['settings']['reservation']['allow.wait.list'] = 'false';
+$conf['settings']['reservation']['checkin.minutes.prior'] = '5';
 /**
  * Email notification configuration
  */

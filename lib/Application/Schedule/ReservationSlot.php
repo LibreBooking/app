@@ -169,8 +169,10 @@ class ReservationSlot implements IReservationSlot
 
 	public function RequiresCheckin()
     {
+    	$checkinMinutes = Configuration::Instance()->GetSectionKey(ConfigSection::RESERVATION, ConfigKeys::RESERVATION_CHECKIN_MINUTES, new IntConverter());
+
         return ($this->_reservation->CheckinDate->ToString() == '' &&
-            Date::Now()->AddMinutes(5)->GreaterThanOrEqual($this->_reservation->StartDate) &&
+            Date::Now()->AddMinutes($checkinMinutes)->GreaterThanOrEqual($this->_reservation->StartDate) &&
             $this->_reservation->IsCheckInEnabled);
     }
 
