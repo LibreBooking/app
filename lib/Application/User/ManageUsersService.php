@@ -150,7 +150,8 @@ class ManageUsersService implements IManageUsersService
 		$user = $this->userRepository->LoadById($userId);
 		foreach($attributes as $attribute) {
             $user->ChangeCustomAttribute($attribute);
-        }$this->userRepository->Update($user);
+        }
+        $this->userRepository->Update($user);
 	}
 
 	public function DeleteUser($userId)
