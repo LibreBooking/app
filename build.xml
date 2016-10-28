@@ -1,6 +1,6 @@
-<?xml version="1.0"?>
+(<?xml version="1.0"?>
 <project name="booked" default="package">
-	<property name="version" value="2.6-RC2"/>
+	<property name="version" value="2.6"/>
 	<property name="is.pre.release" value="false"/>
 	<property name="packagename" value="booked-${version}"/>
 	<property name="root.dir" value="../.."/>
@@ -54,7 +54,7 @@
 			</then>
 		</if>
 
-        <echo message="Using MySQL from ${mysql.bin}" />
+		<echo message="Using MySQL from ${mysql.bin}"/>
 		<echo message="Create db file: ${sql.file.create.db}"/>
 		<exec command="mysql --user=${mysql.username} --password=${mysql.password} --host=${mysql.server} mysql &lt; ${application.startdir}/${sql.file.create.db}"
 			  checkreturn="true"
@@ -106,9 +106,9 @@
 
 		<property name="zip.file.name" value="${zipdirectory}/${packagename}.zip"/>
 		<if>
-			<contains string="${project.basedir}" substring="development" />
+			<contains string="${project.basedir}" substring="development"/>
 			<then>
-                <echo message="Packaging pre-release version" />
+				<echo message="Packaging pre-release version"/>
 				<property name="zip.file.name" value="${zipdirectory}/${packagename}${DSTAMP}.zip" override="true"/>
 			</then>
 		</if>
@@ -131,20 +131,20 @@
 		<delete dir="${staging}" failonerror="false"/>
 	</target>
 
-    <target name="create.demo" depends="stage.files">
-    		<delete dir="${demo.dir}" failonerror="false"/>
-    		<mkdir dir="${demo.dir}"/>
-    		<copy todir="${demo.dir}" includeemptydirs="true">
-    			<fileset dir="${stagingdir}">
-    				<include name="**/*"/>
-    			</fileset>
-    		</copy>
+	<target name="create.demo" depends="stage.files">
+		<delete dir="${demo.dir}" failonerror="false"/>
+		<mkdir dir="${demo.dir}"/>
+		<copy todir="${demo.dir}" includeemptydirs="true">
+			<fileset dir="${stagingdir}">
+				<include name="**/*"/>
+			</fileset>
+		</copy>
 
-            <delete file="C:/work/demo/reload.v2.sql" failonerror="false" />
-    		<append destFile="C:/work/demo/reload.v2.sql">
-                <filelist dir="${demo.dir}/database_schema" files="create-schema.sql,create-data.sql,sample-data-utf8.sql"/>
-    		</append>
-    	</target>
+		<delete file="C:/work/demo/reload.v2.sql" failonerror="false"/>
+		<append destFile="C:/work/demo/reload.v2.sql">
+			<filelist dir="${demo.dir}/database_schema" files="create-schema.sql,create-data.sql,sample-data-utf8.sql"/>
+		</append>
+	</target>
 
 	<target name="stage.files">
 		<delete dir="${staging}" failonerror="false"/>
@@ -184,9 +184,9 @@
 
 		</phingcall>
 
-        <append destFile="${stagingdir}/${sql.file.full}">
-            <filelist dir="${stagingdir}/database_schema" files="create-db.sql,create-user.sql,create-schema.sql,create-data.sql"/>
-        </append>
+		<append destFile="${stagingdir}/${sql.file.full}">
+			<filelist dir="${stagingdir}/database_schema" files="create-db.sql,create-user.sql,create-schema.sql,create-data.sql"/>
+		</append>
 
 	</target>
 
