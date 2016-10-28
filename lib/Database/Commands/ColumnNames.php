@@ -309,6 +309,7 @@ class ColumnNames
 	const DURATION_HOURS = 'duration_in_hours';
 	const GROUP_IDS = 'group_ids';
 	const RESOURCE_IDS = 'resource_ids';
+	const GUEST_LIST = 'guest_list';
 
 	// shared
 	const ALLOW_CALENDAR_SUBSCRIPTION = 'allow_calendar_subscription';

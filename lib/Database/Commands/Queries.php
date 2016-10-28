@@ -1170,7 +1170,10 @@ class QueryBuilder
 						FROM custom_attribute_values cav WHERE cav.entity_id = ri.series_id AND cav.attribute_category = 1) as attribute_list,
 
 					(SELECT GROUP_CONCAT(CONCAT(p.name, "=", p.value) SEPARATOR "!sep!")
-						FROM user_preferences p WHERE owner.user_id = p.user_id) as preferences';
+						FROM user_preferences p WHERE owner.user_id = p.user_id) as preferences,
+						
+					(SELECT GROUP_CONCAT(CONCAT(guests.email, "=", guests.reservation_user_level) SEPARATOR "!sep!")
+						FROM reservation_guests guests WHERE guests.reservation_instance_id = ri.reservation_instance_id) as guest_list';
 
 	private static function Build($selectValue, $joinValue, $andValue)
 	{

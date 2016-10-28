@@ -41,6 +41,8 @@ class ReservationItemResponse extends RestResponse
 	public $bufferedEndDate;
 	public $participants = array();
 	public $invitees = array();
+	public $participatingGuests = array();
+	public $invitedGuests = array();
 	public $startReminder;
 	public $endReminder;
 	public $color;
@@ -67,6 +69,8 @@ class ReservationItemResponse extends RestResponse
 			$this->lastName = $reservationItemView->LastName;
 			$this->participants = $reservationItemView->ParticipantNames;
 			$this->invitees = $reservationItemView->InviteeNames;
+			$this->participatingGuests = $reservationItemView->ParticipatingGuests;
+			$this->invitedGuests = $reservationItemView->InvitedGuests;
 		}
 
 		if ($showDetails)
