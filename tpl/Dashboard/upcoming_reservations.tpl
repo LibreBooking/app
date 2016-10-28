@@ -64,4 +64,9 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			<div class="noresults">{translate key="NoUpcomingReservations"}</div>
 		{/if}
 	</div>
+
+	<form id="form-checkin" method="post" action="ajax/reservation_checkin.php?action={ReservationAction::Checkin}">
+		<input type="hidden" id="referenceNumber" {formname key=REFERENCE_NUMBER} />
+		{csrf_token}
+	</form>
 </div>

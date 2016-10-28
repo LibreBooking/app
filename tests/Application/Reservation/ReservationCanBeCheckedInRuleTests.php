@@ -121,6 +121,7 @@ class ReservationCanBeCheckedInRuleTests extends TestBase
 
 	public function testCannotBeCheckedInIfMoreThanFiveMinutesUntilStart()
 	{
+		$this->fakeConfig->SetSectionKey(ConfigSection::RESERVATION, ConfigKeys::RESERVATION_CHECKIN_MINUTES, 5);
 		$resource1 = new FakeBookableResource(1);
 		$resource1->SetCheckin(true);
 		$reservation = new TestReservation(null, new DateRange(Date::Now()->AddMinutes(6), Date::Now()->AddHours(1)));

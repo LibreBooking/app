@@ -42,7 +42,7 @@ class en_us extends Language
 		$dates['res_popup'] = 'D, n/d g:i A';
 		$dates['res_popup_time'] = 'D, n/d g:i A';
 		$dates['short_reservation_date'] = 'n/j/y g:i A';
-		$dates['dashboard'] = 'l, n/d/y g:i A';
+		$dates['dashboard'] = 'D, n/d g:i A';
 		$dates['period_time'] = 'g:i A';
 		$dates['mobile_reservation_date'] = 'n/j g:i A';
 		$dates['general_date_js'] = 'mm/dd/yy';

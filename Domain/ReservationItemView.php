@@ -745,6 +745,20 @@ class ReservationItemView implements IReservedItemView
         return $range->Contains($date, false);
     }
 
+    public function IsCheckinEnabled()
+	{
+		return $this->IsCheckInEnabled;
+	}
+
+	public function RequiresCheckin()
+	{
+		$checkinMinutes = Configuration::Instance()->GetSectionKey(ConfigSection::RESERVATION, ConfigKeys::RESERVATION_CHECKIN_MINUTES, new IntConverter());
+
+		return ($this->CheckinDate->ToString() == '' &&
+			Date::Now()->AddMinutes($checkinMinutes)->GreaterThanOrEqual($this->StartDate) &&
+			$this->IsCheckInEnabled);
+	}
+
     /**
      * @var null|string
      */

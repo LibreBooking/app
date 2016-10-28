@@ -25,7 +25,9 @@ class ReservationCanBeCheckedInRule implements IReservationValidationRule
 	{
 		$isOk = true;
 		$atLeastOneReservationRequiresCheckIn = false;
-		$tooEarly = Date::Now()->LessThan($reservationSeries->CurrentInstance()->StartDate()->AddMinutes(-5));
+		$checkinMinutes = Configuration::Instance()->GetSectionKey(ConfigSection::RESERVATION, ConfigKeys::RESERVATION_CHECKIN_MINUTES, new IntConverter());
+
+		$tooEarly = Date::Now()->LessThan($reservationSeries->CurrentInstance()->StartDate()->AddMinutes(-$checkinMinutes));
 		$tooLate = Date::Now()->GreaterThanOrEqual($reservationSeries->CurrentInstance()->EndDate());
 
 		foreach ($reservationSeries->AllResources() as $resource)

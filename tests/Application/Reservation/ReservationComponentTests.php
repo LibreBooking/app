@@ -660,6 +660,8 @@ class ReservationComponentTests extends TestBase
 
 	public function testCheckInIsRequiredIfAtLeastOneResourceRequiresIt_And_ReservationIsNotCheckedIn_And_WithinCheckinWindow()
 	{
+		$this->fakeConfig->SetSectionKey(ConfigSection::RESERVATION, ConfigKeys::RESERVATION_CHECKIN_MINUTES, 5);
+
 		$page = new FakeExistingReservationPage();
 		$this->reservationView->StartDate = Date::Now()->AddMinutes(4);
 		$this->reservationView->EndDate = Date::Now()->AddMinutes(45);
@@ -683,6 +685,8 @@ class ReservationComponentTests extends TestBase
 
 	public function testCheckInNotRequiredIfCheckedIn()
 	{
+		$this->fakeConfig->SetSectionKey(ConfigSection::RESERVATION, ConfigKeys::RESERVATION_CHECKIN_MINUTES, 5);
+
 		$page = new FakeExistingReservationPage();
 		$this->reservationView->StartDate = Date::Now()->AddMinutes(4);
 		$this->reservationView->EndDate = Date::Now()->AddMinutes(45);

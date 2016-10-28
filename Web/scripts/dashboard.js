@@ -1,19 +1,15 @@
-function Dashboard(opts)
-{
+function Dashboard(opts) {
 	var options = opts;
 
-	Dashboard.prototype.init = function ()
-	{
-		function setIcon(dash, targetIcon)
-		{
+	Dashboard.prototype.init = function () {
+		function setIcon(dash, targetIcon) {
 			var iconSpan = dash.find('.dashboardHeader').find('a>.glyphicon');
 			iconSpan.removeClass('glyphicon-chevron-up');
 			iconSpan.removeClass('glyphicon-chevron-down');
 			iconSpan.addClass(targetIcon);
 		}
 
-		$(".dashboard").each(function (i, v)
-		{
+		$(".dashboard").each(function (i, v) {
 			var dash = $(v);
 			var id = dash.attr('id');
 			var visibility = readCookie(id);
@@ -27,8 +23,7 @@ function Dashboard(opts)
 				setIcon(dash, 'glyphicon-chevron-up');
 			}
 
-			dash.find('.dashboardHeader a').click(function (e)
-			{
+			dash.find('.dashboardHeader a').click(function (e) {
 				e.preventDefault();
 				var dashboard = dash.find('.dashboardContents');
 				var id = dashboard.parent().attr('id');
@@ -47,10 +42,9 @@ function Dashboard(opts)
 			});
 		});
 
-		$('.resourceNameSelector').each(function ()
-		{
+		$('.resourceNameSelector').each(function () {
 			$(this).bindResourceDetails($(this).attr('resource-id'));
-			$(this).click(function(e){
+			$(this).click(function (e) {
 				e.preventDefault();
 			});
 		});
@@ -59,22 +53,17 @@ function Dashboard(opts)
 
 		reservations.qtip({
 			position: {
-				my: 'bottom left',
-				at: 'top left',
-				effect: false
+				my: 'bottom left', at: 'top left', effect: false
 			},
 
 			content: {
-				text: function (event, api)
-				{
+				text: function (event, api) {
 					var refNum = $(this).attr('id');
-					$.ajax({ url: options.summaryPopupUrl, data: { id: refNum } })
-							.done(function (html)
-							{
+					$.ajax({url: options.summaryPopupUrl, data: {id: refNum}})
+							.done(function (html) {
 								api.set('content.text', html)
 							})
-							.fail(function (xhr, status, error)
-							{
+							.fail(function (xhr, status, error) {
 								api.set('content.text', status + ': ' + error)
 							});
 
@@ -83,13 +72,11 @@ function Dashboard(opts)
 			},
 
 			show: {
-				delay: 700,
-				effect: false
+				delay: 700, effect: false
 			},
 
 			hide: {
-				fixed: true,
-				delay: 500
+				fixed: true, delay: 500
 			},
 
 			style: {
@@ -97,31 +84,39 @@ function Dashboard(opts)
 			}
 		});
 
-		reservations.hover(
-				function ()
-				{
-					$(this).addClass('hover');
-				},
-				function ()
-				{
-					$(this).removeClass('hover');
-				}
-		);
+		reservations.hover(function () {
+			$(this).addClass('hover');
+		}, function () {
+			$(this).removeClass('hover');
+		});
 
-		reservations.mousedown(function ()
-		{
+		reservations.mousedown(function () {
 			$(this).addClass('clicked');
 		});
 
-		reservations.mouseup(function ()
-		{
+		reservations.mouseup(function () {
 			$(this).removeClass('clicked');
 		});
 
-		reservations.click(function ()
-		{
+		reservations.click(function () {
 			var refNum = $(this).attr('id');
 			window.location = options.reservationUrl + refNum;
 		});
-	}
+
+		$('.btnCheckin').click(function (e) {
+			e.preventDefault();
+			e.stopPropagation();
+			var button = $(this);
+			button.attr('disabled', 'disabled');
+			button.find('i').removeClass('fa-sign-in').addClass('fa-spinner');
+
+			var form = $('#form-checkin');
+			var refNum = $(this).attr('data-referencenumber');
+			$('#referenceNumber').val(refNum);
+
+			ajaxPost(form, null, null, function (data) {
+				$('button[data-referencenumber="' + refNum + '"]').addClass('no-show');
+			});
+		});
+	};
 }

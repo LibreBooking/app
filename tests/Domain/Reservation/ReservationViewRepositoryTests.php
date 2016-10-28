@@ -286,6 +286,8 @@ class ReservationViewRepositoryTests extends TestBase
 
     public function testIsCheckinAvailableWithin5MinutesOfStart()
     {
+		$this->fakeConfig->SetSectionKey(ConfigSection::RESERVATION, ConfigKeys::RESERVATION_CHECKIN_MINUTES, 5);
+
         $view = new ReservationView();
         $view->StartDate = Date::Now()->AddMinutes(4);
         $view->Resources = array(new ReservationResourceView(1, 1, 1, 1, 1, 1, true, 10), new ReservationResourceView(1, 1, 1, 1, 1, 1, false, null));
