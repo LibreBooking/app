@@ -116,7 +116,7 @@ class SchedulePresenter extends ActionPresenter implements ISchedulePresenter {
 		$resourceAttributes = $this->_resourceService->GetResourceAttributes();
 		$resourceTypeAttributes = $this->_resourceService->GetResourceTypeAttributes();
 
-        $reservationListing = $this->_reservationService->GetReservations($scheduleDates, $activeScheduleId, $targetTimezone);
+        $reservationListing = $this->_reservationService->GetReservations($scheduleDates, $activeScheduleId, $targetTimezone, $this->_page->GetResourceIds());
         $dailyLayout = $this->_scheduleService->GetDailyLayout($activeScheduleId, new ScheduleLayoutFactory($targetTimezone), $reservationListing);
 
 		$filter = $this->_builder->GetResourceFilter($activeScheduleId, $this->_page);

@@ -57,15 +57,15 @@ class FakeReservationService implements IReservationService
 	 * @param DateRange $dateRangeUtc range of dates to search against in UTC
 	 * @param int $scheduleId
 	 * @param string $targetTimezone timezone to convert the results to
-	 * @param null|int $resourceId
+	 * @param null|int $resourceIds
 	 * @return IReservationListing
 	 */
-	function GetReservations(DateRange $dateRangeUtc, $scheduleId, $targetTimezone, $resourceId = null)
+	function GetReservations(DateRange $dateRangeUtc, $scheduleId, $targetTimezone, $resourceIds = null)
 	{
 		$this->_LastDateRange = $dateRangeUtc;
 		$this->_LastScheduleId = $scheduleId;
 		$this->_LastTimezone = $targetTimezone;
-		$this->_LastResourceId = $resourceId;
+		$this->_LastResourceId = $resourceIds;
 
 		return $this->_ReservationListing;
 	}

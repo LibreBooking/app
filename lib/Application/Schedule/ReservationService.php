@@ -32,11 +32,11 @@ class ReservationService implements IReservationService
 		$this->_coordinatorFactory = $listingFactory;
 	}
 
-	public function GetReservations(DateRange $dateRangeUtc, $scheduleId, $targetTimezone, $resourceId = null)
+	public function GetReservations(DateRange $dateRangeUtc, $scheduleId, $targetTimezone, $resourceIds = null)
 	{
 		$reservationListing = $this->_coordinatorFactory->CreateReservationListing($targetTimezone);
 
-		$reservations = $this->_repository->GetReservations($dateRangeUtc->GetBegin(), $dateRangeUtc->GetEnd(), null, null, $scheduleId, $resourceId);
+		$reservations = $this->_repository->GetReservations($dateRangeUtc->GetBegin(), $dateRangeUtc->GetEnd(), null, null, $scheduleId, $resourceIds);
 		Log::Debug("Found %s reservations for schedule %s between %s and %s", count($reservations), $scheduleId, $dateRangeUtc->GetBegin(), $dateRangeUtc->GetEnd());
 
 		foreach ($reservations as $reservation)
@@ -62,8 +62,8 @@ interface IReservationService
 	 * @param DateRange $dateRangeUtc range of dates to search against in UTC
 	 * @param int $scheduleId
 	 * @param string $targetTimezone timezone to convert the results to
-	 * @param null|int $resourceId
+	 * @param null|int $resourceIds
 	 * @return IReservationListing
 	 */
-	function GetReservations(DateRange $dateRangeUtc, $scheduleId, $targetTimezone, $resourceId = null);
+	function GetReservations(DateRange $dateRangeUtc, $scheduleId, $targetTimezone, $resourceIds = null);
 }
