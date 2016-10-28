@@ -26,61 +26,51 @@ require_once(ROOT_DIR . 'Presenters/Reports/GenerateReportPresenter.php');
 interface IGenerateReportPage extends IDisplayableReportPage, IActionPage
 {
 	/**
-	 * @abstract
 	 * @return string|Report_Usage
 	 */
 	public function GetUsage();
 
 	/**
-	 * @abstract
 	 * @return string|Report_ResultSelection
 	 */
 	public function GetResultSelection();
 
 	/**
-	 * @abstract
 	 * @return string|Report_GroupBy
 	 */
 	public function GetGroupBy();
 
 	/**
-	 * @abstract
 	 * @return string|Report_Range
 	 */
 	public function GetRange();
 
 	/**
-	 * @abstract
 	 * @return string
 	 */
 	public function GetStart();
 
 	/**
-	 * @abstract
 	 * @return string
 	 */
 	public function GetEnd();
 
 	/**
-	 * @abstract
 	 * @return int
 	 */
 	public function GetResourceId();
 
 	/**
-	 * @abstract
 	 * @return int
 	 */
 	public function GetAccessoryId();
 
 	/**
-	 * @abstract
 	 * @return int
 	 */
 	public function GetScheduleId();
 
 	/**
-	 * @abstract
 	 * @return int
 	 */
 	public function GetUserId();
@@ -91,40 +81,39 @@ interface IGenerateReportPage extends IDisplayableReportPage, IActionPage
 	public function GetParticipantId();
 
 	/**
-	 * @abstract
 	 * @return int
 	 */
 	public function GetGroupId();
 
 	/**
-	 * @abstract
 	 * @return string
 	 */
 	public function GetReportName();
 
 	/**
-	 * @abstract
 	 * @param array|BookableResource[] $resources
 	 */
 	public function BindResources($resources);
 
 	/**
-	 * @abstract
 	 * @param array|AccessoryDto[] $accessories
 	 */
 	public function BindAccessories($accessories);
 
 	/**
-	 * @abstract
 	 * @param array|Schedule[] $schedules
 	 */
 	public function BindSchedules($schedules);
 
 	/**
-	 * @abstract
 	 * @param array|GroupItemView[] $groups
 	 */
 	public function BindGroups($groups);
+
+	/**
+	 * @return bool
+	 */
+	public function GetIncludeDeleted();
 }
 
 class GenerateReportPage extends ActionPage implements IGenerateReportPage
@@ -342,6 +331,12 @@ class GenerateReportPage extends ActionPage implements IGenerateReportPage
 	public function BindGroups($groups)
 	{
 		$this->Set('Groups', $groups);
+	}
+
+	public function GetIncludeDeleted()
+	{
+		$include = $this->GetForm(FormKeys::INCLUDE_DELETED);
+		return isset($include);
 	}
 }
 

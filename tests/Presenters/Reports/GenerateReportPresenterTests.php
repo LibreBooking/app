@@ -62,7 +62,7 @@ class GenerateReportPresenterTests extends TestBase
 		$selection = new Report_ResultSelection($this->page->_ResultSelection);
 		$groupBy = new Report_GroupBy($this->page->_GroupBy);
 		$range = new Report_Range($this->page->_Range, $expectedStart, $expectedEnd, $this->fakeUser->Timezone);
-		$filter = new Report_Filter($this->page->_ResourceId, $this->page->_ScheduleId, $this->page->_UserId, $this->page->_GroupId, $this->page->_AccessoryId, $this->page->_ParticipantId);
+		$filter = new Report_Filter($this->page->_ResourceId, $this->page->_ScheduleId, $this->page->_UserId, $this->page->_GroupId, $this->page->_AccessoryId, $this->page->_ParticipantId, $this->page->_IncludeDeleted);
 
 		$this->reportingService->expects($this->once())
 				->method('GenerateCustomReport')
@@ -88,7 +88,7 @@ class GenerateReportPresenterTests extends TestBase
 		$selection = new Report_ResultSelection($this->page->_ResultSelection);
 		$groupBy = new Report_GroupBy($this->page->_GroupBy);
 		$range = new Report_Range($this->page->_Range, $expectedStart, $expectedEnd, $this->fakeUser->Timezone);
-		$filter = new Report_Filter($this->page->_ResourceId, $this->page->_ScheduleId, $this->page->_UserId, $this->page->_GroupId, $this->page->_AccessoryId, $this->page->_ParticipantId);
+		$filter = new Report_Filter($this->page->_ResourceId, $this->page->_ScheduleId, $this->page->_UserId, $this->page->_GroupId, $this->page->_AccessoryId, $this->page->_ParticipantId, $this->page->_IncludeDeleted);
 
 		$this->reportingService->expects($this->once())
 				->method('Save')
@@ -202,6 +202,8 @@ class FakeGenerateReportPage extends GenerateReportPage
 	 * @var bool
 	 */
 	public $_CsvShown;
+
+	public $_IncludeDeleted;
 
 	public function GetResultSelection()
 	{

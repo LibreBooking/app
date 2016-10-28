@@ -188,6 +188,26 @@ class ReportStringColumn extends ReportColumn
 	}
 }
 
+class ReportStatusColumn extends ReportStringColumn
+{
+	public function GetData($data)
+	{
+		$r = Resources::GetInstance();
+
+		if ($data == ReservationStatus::Created)
+		{
+			return $r->GetString('Created');
+		}
+
+		if ($data == ReservationStatus::Pending)
+		{
+			return $r->GetString('Pending');
+		}
+
+		return $r->GetString('Deleted');
+	}
+}
+
 class ReportDateColumn extends ReportColumn
 {
 	private $timezone;

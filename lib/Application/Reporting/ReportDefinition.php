@@ -87,6 +87,7 @@ class ReportDefinition implements IReportDefinition
 				ColumnNames::SCHEDULE_NAME_ALIAS => new ReportStringColumn('Schedule', ChartColumnDefinition::Label(ColumnNames::SCHEDULE_ID)),
 				ColumnNames::RESERVATION_CREATED => new ReportDateColumn('Created', $timezone, $dateFormat, ChartColumnDefinition::Null()),
 				ColumnNames::RESERVATION_MODIFIED => new ReportDateColumn('LastModified', $timezone, $dateFormat, ChartColumnDefinition::Null()),
+				ColumnNames::RESERVATION_STATUS => new ReportStatusColumn('Status', ChartColumnDefinition::Null()),
 				ColumnNames::CHECKIN_DATE => new ReportDateColumn('CheckInTime', $timezone, $dateFormat, ChartColumnDefinition::Null()),
 				ColumnNames::CHECKOUT_DATE => new ReportDateColumn('CheckOutTime', $timezone, $dateFormat, ChartColumnDefinition::Null()),
 				ColumnNames::PREVIOUS_END_DATE => new ReportDateColumn('OriginalEndDate', $timezone, $dateFormat, ChartColumnDefinition::Null()),

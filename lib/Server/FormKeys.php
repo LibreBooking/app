@@ -110,6 +110,7 @@ class FormKeys
 	const INVITATION_LIST = 'invitationList';
 	const IS_ACTIVE = 'isactive';
     const ICS_IMPORT_FILE = 'ICS_IMPORT_FILE';
+    const INCLUDE_DELETED = 'INCLUDE_DELETED';
 
 	const LANGUAGE = 'language';
 	const LAST_NAME = 'lname';

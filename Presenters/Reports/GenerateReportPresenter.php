@@ -1,21 +1,21 @@
 <?php
 /**
-Copyright 2012-2016 Nick Korbel
-
-This file is part of Booked Scheduler.
-
-Booked Scheduler is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-Booked Scheduler is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
+ * Copyright 2012-2016 Nick Korbel
+ *
+ * This file is part of Booked Scheduler.
+ *
+ * Booked Scheduler is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Booked Scheduler is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 require_once(ROOT_DIR . 'Presenters/Reports/ReportActions.php');
@@ -60,12 +60,12 @@ class GenerateReportPresenter extends ActionPresenter
 	 * @param IGroupViewRepository $groupRepo
 	 */
 	public function __construct(
-		IGenerateReportPage $page,
-		UserSession $user,
-		IReportingService $reportingService,
-		IResourceRepository $resourceRepo,
-		IScheduleRepository $scheduleRepo,
-		IGroupViewRepository $groupRepo)
+			IGenerateReportPage $page,
+			UserSession $user,
+			IReportingService $reportingService,
+			IResourceRepository $resourceRepo,
+			IScheduleRepository $scheduleRepo,
+			IGroupViewRepository $groupRepo)
 	{
 		parent::__construct($page);
 		$this->page = $page;
@@ -94,8 +94,7 @@ class GenerateReportPresenter extends ActionPresenter
 		try
 		{
 			parent::ProcessAction();
-		}
-		catch (Exception $ex)
+		} catch (Exception $ex)
 		{
 			Log::Error('Error getting report: %s', $ex);
 			$this->page->DisplayError();
@@ -188,6 +187,12 @@ class GenerateReportPresenter extends ActionPresenter
 	 */
 	private function GetFilter()
 	{
-		return new Report_Filter($this->page->GetResourceId(), $this->page->GetScheduleId(), $this->page->GetUserId(), $this->page->GetGroupId(), $this->page->GetAccessoryId(), $this->page->GetParticipantId());
+		return new Report_Filter($this->page->GetResourceId(),
+								 $this->page->GetScheduleId(),
+								 $this->page->GetUserId(),
+								 $this->page->GetGroupId(),
+								 $this->page->GetAccessoryId(),
+								 $this->page->GetParticipantId(),
+								 $this->page->GetIncludeDeleted());
 	}
 }

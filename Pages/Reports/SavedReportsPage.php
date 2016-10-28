@@ -52,6 +52,8 @@ interface ISavedReportsPage extends IDisplayableReportPage, IActionPage
 
 class SavedReportsPage extends ActionPage implements ISavedReportsPage
 {
+	private $presenter;
+
 	public function __construct()
 	{
 		parent::__construct('MySavedReports', 1);

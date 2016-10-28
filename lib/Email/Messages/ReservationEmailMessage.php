@@ -204,7 +204,7 @@ abstract class ReservationEmailMessage extends EmailMessage
         $rv->Attributes = $ca;
         $rv->UserPreferences = $this->reservationOwner->GetPreferences();
 		$rv->OwnerEmailAddress = $this->reservationOwner->EmailAddress();
-		
+
         $icsView = new iCalendarReservationView($rv, $this->reservationSeries->BookedBy(), new NullPrivacyFilter());
 
         $display = new CalendarExportDisplay();

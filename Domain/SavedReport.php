@@ -1,33 +1,31 @@
 <?php
+
 /**
-Copyright 2012-2016 Nick Korbel
-
-This file is part of Booked Scheduler.
-
-Booked Scheduler is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-Booked Scheduler is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
+ * Copyright 2012-2016 Nick Korbel
+ *
+ * This file is part of Booked Scheduler.
+ *
+ * Booked Scheduler is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Booked Scheduler is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 interface ISavedReport
 {
 	/**
-	 * @abstract
 	 * @return string
 	 */
 	public function ReportName();
 
 	/**
-	 * @abstract
 	 * @return int
 	 */
 	public function Id();
@@ -75,7 +73,8 @@ class SavedReport implements ISavedReport
 	 */
 	private $dateCreated;
 
-	public function __construct($reportName, $userId, Report_Usage $usage, Report_ResultSelection $selection, Report_GroupBy $groupBy, Report_Range $range, Report_Filter $filter)
+	public function __construct($reportName, $userId, Report_Usage $usage, Report_ResultSelection $selection, Report_GroupBy $groupBy, Report_Range $range,
+								Report_Filter $filter)
 	{
 		$this->reportName = $reportName;
 		$this->userId = $userId;
@@ -205,6 +204,14 @@ class SavedReport implements ISavedReport
 	}
 
 	/**
+	 * @return bool
+	 */
+	public function IncludeDeleted()
+	{
+		return $this->filter->IncludeDeleted();
+	}
+
+	/**
 	 * @return string
 	 */
 	public function ReportName()
@@ -271,7 +278,7 @@ class ReportSerializer
 	 */
 	public static function Serialize(SavedReport $report)
 	{
-		$template = 'usage=%s;selection=%s;groupby=%s;range=%s;range_start=%s;range_end=%s;resourceid=%s;scheduleid=%s;userid=%s;groupid=%s;accessoryid=%s;participantid=%s';
+		$template = 'usage=%s;selection=%s;groupby=%s;range=%s;range_start=%s;range_end=%s;resourceid=%s;scheduleid=%s;userid=%s;groupid=%s;accessoryid=%s;participantid=%s;deleted=%s';
 
 		return sprintf($template,
 					   $report->Usage(),
@@ -285,7 +292,8 @@ class ReportSerializer
 					   $report->UserId(),
 					   $report->GroupId(),
 					   $report->AccessoryId(),
-					   $report->ParticipantId());
+					   $report->ParticipantId(),
+					   $report->IncludeDeleted());
 	}
 
 	/**
@@ -309,7 +317,8 @@ class ReportSerializer
 			}
 		}
 
-		return new SavedReport($reportName, $userId, self::GetUsage($values), self::GetSelection($values), self::GetGroupBy($values), self::GetRange($values), self::GetFilter($values));
+		return new SavedReport($reportName, $userId, self::GetUsage($values), self::GetSelection($values), self::GetGroupBy($values), self::GetRange($values),
+							   self::GetFilter($values));
 	}
 
 	/**
@@ -396,7 +405,8 @@ class ReportSerializer
 		$groupId = isset($values['groupid']) ? $values['groupid'] : '';
 		$accessoryId = isset($values['accessoryid']) ? $values['accessoryid'] : '';
 		$participantId = isset($values['participantid']) ? $values['participantid'] : '';
+		$deleted = isset($values['deleted']) ? intval($values['deleted']) : false;
 
-		return new Report_Filter($resourceId, $scheduleId, $userId, $groupId, $accessoryId, $participantId);
+		return new Report_Filter($resourceId, $scheduleId, $userId, $groupId, $accessoryId, $participantId, $deleted);
 	}
 }

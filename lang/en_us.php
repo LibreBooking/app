@@ -603,6 +603,8 @@ class en_us extends Language
 		$strings['UnavailableNow'] = 'Unavailable Now';
 		$strings['ReserveLater'] = 'Reserve Later';
 		$strings['CollectedFor'] = 'Collected For';
+		$strings['IncludeDeleted'] = 'Include Deleted Reservations';
+		$strings['Deleted'] = 'Deleted';
         // End Strings
 
 		// Install
