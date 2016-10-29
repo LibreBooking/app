@@ -218,4 +218,4 @@ CREATE TABLE `reservation_waitlist_requests` (
   DEFAULT CHARACTER SET utf8;
 
 ALTER TABLE `custom_attribute_values`
-  CHANGE `custom_attribute_value_id`  `custom_attribute_value_id` INT(8) UNSIGNED NOT NULL AUTO_INCREMENT
+  CHANGE `custom_attribute_value_id`  `custom_attribute_value_id` INT(8) UNSIGNED NOT NULL AUTO_INCREMENT;
