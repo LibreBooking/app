@@ -51,7 +51,7 @@ class ForgotPasswordEmail extends EmailMessage
 	 */
 	function Subject()
 	{
-		return $this->Translate('ResetPassword');
+		return $this->Translate('ResetPasswordRequest');
 	}
 
 	/**

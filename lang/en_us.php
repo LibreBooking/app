@@ -185,8 +185,6 @@ class en_us extends Language
 		$strings['ResourceCapacityNone'] = 'This resource has unlimited capacity';
 		$strings['AddNewResource'] = 'Add New Resource';
 		$strings['AddNewUser'] = 'Add New User';
-		$strings['AddUser'] = 'Add User';
-		$strings['Schedule'] = 'Schedule';
 		$strings['AddResource'] = 'Add Resource';
 		$strings['Capacity'] = 'Capacity';
 		$strings['Access'] = 'Access';
@@ -200,7 +198,6 @@ class en_us extends Language
 		$strings['Reservations'] = 'Reservations';
 		$strings['Groups'] = 'Groups';
 		$strings['Users'] = 'Users';
-		$strings['ResetPassword'] = 'Reset Password';
 		$strings['AllUsers'] = 'All Users';
 		$strings['AllGroups'] = 'All Groups';
 		$strings['AllSchedules'] = 'All Schedules';
@@ -234,7 +231,6 @@ class en_us extends Language
 		$strings['ReservationDescription'] = 'Description of reservation';
 		$strings['ResourceList'] = 'Resources to be reserved';
 		$strings['Accessories'] = 'Accessories';
-		$strings['ParticipantList'] = 'Participants';
 		$strings['InvitationList'] = 'Invitees';
 		$strings['AccessoryName'] = 'Accessory Name';
 		$strings['QuantityAvailable'] = 'Quantity Available';
@@ -289,7 +285,6 @@ class en_us extends Language
 		$strings['ReservationRemoved'] = 'Your reservation was removed';
 		$strings['ReservationRequiresApproval'] = 'One or more of the resources reserved require approval before usage.  This reservation will be pending until it is approved.';
 		$strings['YourReferenceNumber'] = 'Your reference number is %s';
-		$strings['UpdatingReservation'] = 'Updating reservation';
 		$strings['ChangeUser'] = 'Change User';
 		$strings['MoreResources'] = 'More Resources';
 		$strings['ReservationLength'] = 'Reservation Length';
@@ -325,7 +320,6 @@ class en_us extends Language
 		$strings['WhatRolesApplyToThisGroup'] = 'Which roles apply to this group?';
 		$strings['WhoCanManageThisGroup'] = 'Who can manage this group?';
 		$strings['WhoCanManageThisSchedule'] = 'Who can manage this schedule?';
-		$strings['AddGroup'] = 'Add Group';
 		$strings['AllQuotas'] = 'All Quotas';
 		$strings['QuotaReminder'] = 'Remember: Quotas are enforced based on the schedule\'s timezone.';
 		$strings['AllReservations'] = 'All Reservations';
@@ -711,12 +705,10 @@ class en_us extends Language
 		$strings['About'] = 'About';
 		$strings['Bookings'] = 'Bookings';
 		$strings['Schedule'] = 'Schedule';
-		$strings['Reservations'] = 'Reservations';
 		$strings['Account'] = 'Account';
 		$strings['EditProfile'] = 'Edit My Profile';
 		$strings['FindAnOpening'] = 'Find An Opening';
 		$strings['OpenInvitations'] = 'Open Invitations';
-		$strings['MyCalendar'] = 'My Calendar';
 		$strings['ResourceCalendar'] = 'Resource Calendar';
 		$strings['Reservation'] = 'New Reservation';
 		$strings['Install'] = 'Installation';
@@ -778,7 +770,7 @@ class en_us extends Language
 		$strings['ParticipantAddedSubject'] = 'Reservation Participation Notification';
 		$strings['ParticipantDeletedSubject'] = 'Reservation Removed';
 		$strings['InviteeAddedSubject'] = 'Reservation Invitation';
-		$strings['ResetPassword'] = 'Password Reset Request';
+		$strings['ResetPasswordRequest'] = 'Password Reset Request';
 		$strings['ActivateYourAccount'] = 'Please Activate Your Account';
 		$strings['ReportSubject'] = 'Your Requested Report (%s)';
 		$strings['ReservationStartingSoonSubject'] = 'Reservation for %s is starting soon';
