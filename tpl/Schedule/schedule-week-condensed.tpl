@@ -71,7 +71,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 	{assign var=TodaysDate value=Date::Now()}
 	<div id="reservations">
-		<table class="reservations condensed" border="1" cellpadding="0" style="width:auto;">
+		<table class="reservations condensed" border="1" cellpadding="0" style="width:100%;">
 			<tr>
 				<td>&nbsp;</td>
 				{foreach from=$BoundDates item=date}
@@ -106,7 +106,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 						{assign var=slots value=$DailyLayout->GetLayout($date, $resourceId)}
 						{assign var=summary value=$DailyLayout->GetSummary($date, $resourceId)}
 						{if $summary->NumberOfReservations() > 0}
-							<td class="reservable clickres slot" ref="{$href}">
+							<td class="reservable clickres slot" ref="{$href} data-href="{$href}" data-start="{$date->Format('Y-m-d H:i:s')|escape:url}" data-end="{$date->Format('Y-m-d H:i:s')|escape:url}">
 								<input type="hidden" class="href" value="{$href}"/>
 								{foreach from=$slots item=slot}
 									{call name=displaySlotCondensed Slot=$slot Href="$href" AccessAllowed=$resource->CanAccess}
@@ -114,7 +114,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 							</td>
 						{else}
 							{assign var=href value="{Pages::RESERVATION}?rid={$resource->Id}&sid={$ScheduleId}&rd={formatdate date=$date key=url}"}
-							<td class="reservable clickres slot" ref="{$href}" data-href="{$href}">
+							<td class="reservable clickres slot" ref="{$href}" data-href="{$href}" data-start="{$date->Format('Y-m-d H:i:s')|escape:url}" data-end="{$date->Format('Y-m-d H:i:s')|escape:url}">
 								&nbsp;
 								<input type="hidden" class="href" value="{$href}"/>
 							</td>
