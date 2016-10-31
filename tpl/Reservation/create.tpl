@@ -119,7 +119,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                                     {if $ShowAdditionalResources}
                                         <a id="btnAddResources" href="#"
                                            class="small-action" data-toggle="modal"
-                                           data-target="#dialogResourceGroups">{translate key=Add} <span
+                                           data-target="#dialogResourceGroups">{translate key=Change} <span
                                                     class="fa fa-plus-square"></span></a>
                                     {/if}
                                 </div>

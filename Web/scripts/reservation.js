@@ -384,8 +384,13 @@ function Reservation(opts) {
 		{
 			// if all resources in a group are checked, check the group
 			var groupId = checkbox.attr('group-id');
+			var resourceId = checkbox.attr('resource-id');
 			var numberOfResources = elements.groupDiv.find('.additionalResourceCheckbox[group-id="' + groupId + '"]').length;
 			var numberOfResourcesChecked = elements.groupDiv.find('.additionalResourceCheckbox[group-id="' + groupId + '"]:checked').length;
+
+
+			elements.groupDiv.find('[resource-id="' + resourceId + '"]').prop('checked', isChecked);
+
 
 			elements.groupDiv.find('.additionalResourceGroupCheckbox[group-id="' + groupId + '"]').prop('checked', numberOfResources == numberOfResourcesChecked)
 		}
