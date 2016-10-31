@@ -281,6 +281,10 @@ class SchedulePage extends ActionPage implements ISchedulePage
 
 		if ($this->IsMobile)
 		{
+			if ($this->ScheduleStyle == ScheduleStyle::Tall)
+			{
+				$this->Display('Schedule/schedule-flipped.tpl');
+			}
 			$this->Display('Schedule/schedule-mobile.tpl');
 		}
 		else
