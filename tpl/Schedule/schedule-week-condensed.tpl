@@ -114,7 +114,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 							</td>
 						{else}
 							{assign var=href value="{Pages::RESERVATION}?rid={$resource->Id}&sid={$ScheduleId}&rd={formatdate date=$date key=url}"}
-							<td class="reservable clickres slot" ref="{$href}">
+							<td class="reservable clickres slot" ref="{$href}" data-href="{$href}">
 								&nbsp;
 								<input type="hidden" class="href" value="{$href}"/>
 							</td>
