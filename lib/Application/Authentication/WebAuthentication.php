@@ -98,7 +98,7 @@ class WebAuthentication implements IWebAuthentication
 	 */
 	public function Validate($username, $password)
 	{
-		if (empty($password))
+		if (empty($password) && !$this->authentication->AreCredentialsKnown())
 		{
 			return false;
 		}
