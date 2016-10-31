@@ -47,7 +47,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
             var options = {
                 view: '{$CalendarType}',
                 defaultDate: moment('{$DisplayDate->Format('Y-m-d')}', 'YYYY-MM-DD'),
-                todayText: '{translate key=Today}',
+                todayText: '{{translate key=Today}|escape:'javascript'}',
                 dayText: '{translate key=Day}',
                 monthText: '{translate key=Month}',
                 weekText: '{translate key=Week}',

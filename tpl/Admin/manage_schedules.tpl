@@ -506,7 +506,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			});
 
 			$('.scheduleAdmin').editable({
-				url: updateUrl + '{ManageSchedules::ChangeAdminGroup}', emptytext: '{translate key=None}', source: [{
+				url: updateUrl + '{ManageSchedules::ChangeAdminGroup}', emptytext: '{{translate key=None}|escape:'javascript'}', source: [{
 					value: '0', text: ''
 				},
 					{foreach from=$AdminGroups item=group}

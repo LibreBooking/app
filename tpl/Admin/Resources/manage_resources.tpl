@@ -1285,7 +1285,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			});
 
 			$('.resourceTypeName').editable({
-				url: updateUrl + '{ManageResourcesActions::ActionChangeResourceType}', emptytext: '{translate key=NoResourceTypeLabel}', source: [{
+				url: updateUrl + '{ManageResourcesActions::ActionChangeResourceType}', emptytext: '{{translate key=NoResourceTypeLabel}|escape:'javascript'}', source: [{
 					value: '0', text: '' //'-- {translate key=None} --'
 				},
 					{foreach from=$ResourceTypes item=resourceType key=id}
@@ -1301,23 +1301,23 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			});
 
 			$('.locationValue').editable({
-				url: updateUrl + '{ManageResourcesActions::ActionChangeLocation}', emptytext: '{translate key='NoLocationLabel'}'
+				url: updateUrl + '{ManageResourcesActions::ActionChangeLocation}', emptytext: '{{translate key='NoLocationLabel'}|escape:'javascript'}'
 			});
 
 			$('.contactValue').editable({
-				url: updateUrl + '{ManageResourcesActions::ActionChangeContact}', emptytext: '{translate key='NoContactLabel'}'
+				url: updateUrl + '{ManageResourcesActions::ActionChangeContact}', emptytext: '{{translate key='NoContactLabel'}|escape:'javascript'}}'
 			});
 
 			$('.descriptionValue').editable({
-				url: updateUrl + '{ManageResourcesActions::ActionChangeDescription}', emptytext: '{translate key='NoDescriptionLabel'}'
+				url: updateUrl + '{ManageResourcesActions::ActionChangeDescription}', emptytext: '{{translate key='NoDescriptionLabel'}|escape:'javascript'}'
 			});
 
 			$('.notesValue').editable({
-				url: updateUrl + '{ManageResourcesActions::ActionChangeNotes}', emptytext: '{translate key='NoDescriptionLabel'}'
+				url: updateUrl + '{ManageResourcesActions::ActionChangeNotes}', emptytext: '{{translate key='NoDescriptionLabel'}|escape:'javascript'}'
 			});
 
 			$('.resourceAdminValue').editable({
-				url: updateUrl + '{ManageResourcesActions::ActionChangeAdmin}', emptytext: '{translate key=None}', source: [{
+				url: updateUrl + '{ManageResourcesActions::ActionChangeAdmin}', emptytext: '{{translate key=None}|escape:'javascript'}', source: [{
 					value: '0', text: ''
 				},
 					{foreach from=$AdminGroups item=group key=scheduleId}
