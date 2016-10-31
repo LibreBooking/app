@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <project name="booked" default="package">
-	<property name="version" value="2.6"/>
+	<property name="version" value="2.6.1"/>
 	<property name="is.pre.release" value="false"/>
 	<property name="packagename" value="booked-${version}"/>
 	<property name="root.dir" value="../.."/>
@@ -105,13 +105,13 @@
 		<tstamp/>
 
 		<property name="zip.file.name" value="${zipdirectory}/${packagename}.zip"/>
-		<if>
-			<contains string="${project.basedir}" substring="development"/>
-			<then>
-				<echo message="Packaging pre-release version"/>
-				<property name="zip.file.name" value="${zipdirectory}/${packagename}${DSTAMP}.zip" override="true"/>
-			</then>
-		</if>
+		<!--<if>-->
+			<!--<contains string="${project.basedir}" substring="development"/>-->
+			<!--<then>-->
+				<!--<echo message="Packaging pre-release version"/>-->
+				<!--<property name="zip.file.name" value="${zipdirectory}/${packagename}${DSTAMP}.zip" override="true"/>-->
+			<!--</then>-->
+		<!--</if>-->
 
 		<zip destfile="${zip.file.name}">
 			<fileset dir="${staging}">
