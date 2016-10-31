@@ -16,7 +16,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 *}
-{include file='globalheader.tpl' Select2=true Qtip=true Fullcalendar=true}
+{include file='globalheader.tpl' Select2=true Qtip=true Fullcalendar=true cssFiles='scripts/css/jqtree.css'}
 
 <div class="page-my-calendar">
 
@@ -28,11 +28,18 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
     <div id="calendar"></div>
 
+    <div id="dayDialog" class="default-box-shadow">
+        <a href="#" id="dayDialogCreate">{html_image src="tick.png"}{translate key=CreateReservation}</a>
+        <a href="#" id="dayDialogView">{html_image src="search.png"}{translate key=ViewDay}</a>
+        <a href="#" id="dayDialogCancel">{html_image src="slash.png"}{translate key=Cancel}</a>
+    </div>
+
     {csrf_token}
 
     {jsfile src="reservationPopup.js"}
     {jsfile src="calendar.js"}
     {jsfile src="ajax-helpers.js"}
+    {jsfile src="js/tree.jquery.js"}
 
     <script type="text/javascript">
         $(document).ready(function () {
@@ -44,7 +51,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                 dayText: '{translate key=Day}',
                 monthText: '{translate key=Month}',
                 weekText: '{translate key=Week}',
-                dayClickUrl: '{Pages::CALENDAR}?ct={CalendarTypes::Day}&sid={$ScheduleId}&rid={$ResourceId}',
+                dayClickUrl: '{Pages::MY_CALENDAR}?ct={CalendarTypes::Day}&sid={$ScheduleId}&rid={$ResourceId}',
+                dayClickUrlTemplate: '{Pages::MY_CALENDAR}?ct={CalendarTypes::Day}&sid=[sid]&rid=[rid]',
                 dayNames: {js_array array=$DayNames},
                 dayNamesShort: {js_array array=$DayNamesShort},
                 monthNames: {js_array array=$MonthNames},
@@ -52,9 +60,12 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                 timeFormat: '{$TimeFormat}',
                 dayMonth: '{$DateFormat}',
                 firstDay: {$FirstDay},
+                reservationUrl: '{Pages::RESERVATION}?sid={$ScheduleId}&rid={$ResourceId}',
+                reservationUrlTemplate: '{Pages::RESERVATION}?sid=[sid]&rid=[rid]',
                 subscriptionEnableUrl: '{Pages::MY_CALENDAR}?{QueryStringKeys::ACTION}={PersonalCalendarActions::ActionEnableSubscription}',
                 subscriptionDisableUrl: '{Pages::MY_CALENDAR}?{QueryStringKeys::ACTION}={PersonalCalendarActions::ActionDisableSubscription}',
                 eventsUrl: '{Pages::MY_CALENDAR}',
+                reservable: true,
                 eventsData: {
                     dr: 'events',
                     sid: '',

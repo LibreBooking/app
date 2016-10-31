@@ -19,7 +19,7 @@ class CalendarTypes
 {
 	const Month = 'month';
 	const Week = 'agendaWeek';
-	const Day = 'agendDay';
+	const Day = 'agendaDay';
 }
 
 interface ICalendarFactory

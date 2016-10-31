@@ -75,6 +75,8 @@ function Calendar(opts) {
 
             _options.eventsData.sid = sid;
             _options.eventsData.rid = rid;
+            _options.dayClickUrl = _options.dayClickUrlTemplate.replace('[sid]', sid).replace('[rid]', rid);
+            _options.reservationUrl = _options.reservationUrlTemplate.replace('[sid]', sid).replace('[rid]', rid);
             _fullCalendar.fullCalendar('refetchEvents');
 
             rebindSubscriptionData(rid, sid);
