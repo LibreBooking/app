@@ -80,14 +80,14 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                 {/if}
 
 				{if $AllowSocialLogin}
-					<div class="col-sm-6 col-xs-12">
+					<div class="col-lg-6 col-md-12">
 						<a href="https://accounts.google.com/o/oauth2/v2/auth?scope=email%20profile&state=&redirect_uri={$ScriptUrl}/external-auth.php%3Ftype%3Dgoogle&response_type=code&client_id={$GoogleClientId}"
-						   class="pull-left-sm">
+						   class="pull-left-lg">
 							<img src="img/external/btn_google_signin_dark_normal_web.png" alt="Sign in with Google"/>
 						</a>
 					</div>
-					<div class="col-sm-6 col-xs-12">
-						<a href="http://www.facebook.twinkletoessoftware.com/fblogin.php?resume={$ScriptUrl}/external-auth.php%3Ftype%3Dfb" class="pull-right-sm">
+					<div class="col-lg-6 col-md-12">
+						<a href="http://www.facebook.twinkletoessoftware.com/fblogin.php?resume={$ScriptUrl}/external-auth.php%3Ftype%3Dfb" class="pull-right-lg">
 							<img style="max-height:42px" src="img/external/btn_facebook_login.png" alt="Sign in with Facebook"/>
 						</a>
 					</div>

@@ -136,7 +136,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			</div>
 
 			{capture name="date_navigation"}
-				<div class="schedule-dates col-md-3">
+				<div class="row">
+				<div class="schedule-dates col-lg-3 col-md-12">
 					{assign var=FirstDate value=$DisplayDates->GetBegin()}
 					{assign var=LastDate value=$DisplayDates->GetEnd()->AddDays(-1)}
 					<a href="#" class="change-date" data-year="{$PreviousDate->Year()}" data-month="{$PreviousDate->Month()}"
@@ -149,6 +150,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 						<a href="{add_querystring key=SHOW_FULL_WEEK value=1}"
 						   id="showFullWeek">({translate key=ShowFullWeek})</a>
 					{/if}
+				</div>
 				</div>
 			{/capture}
 
@@ -173,68 +175,67 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 	{/block}
 
 	<div class="row-fluid">
-		{if $IsDesktop}
-			<div id="reservations-left" class="col-md-2 default-box">
-				<div class="reservations-left-header">{translate key=ResourceFilter} <a href="#" class="pull-right toggle-sidebar"
-																						title="Hide Reservation Filter"><i
-								class="glyphicon glyphicon-remove"></i></a></div>
-
-				<div class="reservations-left-content">
-					<form method="get" role="form" id="advancedFilter">
-
-						{if count($ResourceAttributes) + count($ResourceTypeAttributes) > 5}
-							<div>
-								<input type="submit" value="{translate key=Filter}" class="button" {formname key=SUBMIT}/>
-							</div>
-						{/if}
-
-						<div>
-							{*<label>{translate key=Resource}</label>*}
-							<div id="resourceGroups"></div>
-						</div>
-						<div class="resettable">
-							<div class="form-group">
-								<label for="maxCapactiy">{translate key=MinimumCapacity}</label>
-								<input type='number' min='0' id='maxCapactiy' size='5' maxlength='5'
-									   class="form-control input-sm" {formname key=MAX_PARTICIPANTS}
-									   value="{$MaxParticipantsFilter}"/>
-							</div>
-
-							<div class="form-group">
-								<label for="resourceType">{translate key=ResourceType}</label>
-								<select id="resourceType" {formname key=RESOURCE_TYPE_ID} {formname key=RESOURCE_TYPE_ID} class="form-control input-sm">
-									<option value="">- {translate key=All} -</option>
-									{object_html_options options=$ResourceTypes label='Name' key='Id' selected=$ResourceTypeIdFilter}
-								</select>
-							</div>
-
-							{foreach from=$ResourceAttributes item=attribute}
-								{control type="AttributeControl" attribute=$attribute align='vertical' searchmode=true namePrefix='r' inputClass="input-sm"}
-							{/foreach}
-
-							{foreach from=$ResourceTypeAttributes item=attribute}
-								{control type="AttributeControl" attribute=$attribute align='vertical' searchmode=true namePrefix='rt' inputClass="input-sm"}
-							{/foreach}
-
-							<div class="btn-submit">
-								<button type="submit" class="btn btn-success btn-sm" value="submit" {formname key=SUBMIT}>{translate key=Filter}</button>
-							</div>
-							<div class="btn-clear">
-								<button id="show_all_resources" type="button" class="btn btn-default btn-xs">{translate key=ClearFilter}</button>
-							</div>
-
-						</div>
-
-						<input type="hidden" name="sid" value="{$ScheduleId}"/>
-						<input type="hidden" name="sds" value="{foreach from=$SpecificDates item=d}{$d->Format('Y-m-d')},{/foreach}"/>
-						<input type="hidden" name="sd" value="{$DisplayDates->GetBegin()->Format('Y-m-d')}"/>
-					</form>
-				</div>
+		<div id="reservations-left" class="col-md-2 col-sm-12 default-box">
+			<div class="reservations-left-header">{translate key=ResourceFilter}
+				<a href="#" class="pull-right toggle-sidebar" title="Hide Reservation Filter"><i class="glyphicon glyphicon-remove"></i></a>
 			</div>
-		{/if}
+
+			<div class="reservations-left-content">
+				<form method="get" role="form" id="advancedFilter">
+
+					{if count($ResourceAttributes) + count($ResourceTypeAttributes) > 5}
+						<div>
+							<input type="submit" value="{translate key=Filter}" class="button" {formname key=SUBMIT}/>
+						</div>
+					{/if}
+
+					<div>
+						{*<label>{translate key=Resource}</label>*}
+						<div id="resourceGroups"></div>
+					</div>
+					<div class="resettable">
+						<div class="form-group">
+							<label for="maxCapactiy">{translate key=MinimumCapacity}</label>
+							<input type='number' min='0' id='maxCapactiy' size='5' maxlength='5'
+								   class="form-control input-sm" {formname key=MAX_PARTICIPANTS}
+								   value="{$MaxParticipantsFilter}"/>
+						</div>
+
+						<div class="form-group">
+							<label for="resourceType">{translate key=ResourceType}</label>
+							<select id="resourceType" {formname key=RESOURCE_TYPE_ID} {formname key=RESOURCE_TYPE_ID} class="form-control input-sm">
+								<option value="">- {translate key=All} -</option>
+								{object_html_options options=$ResourceTypes label='Name' key='Id' selected=$ResourceTypeIdFilter}
+							</select>
+						</div>
+
+						{foreach from=$ResourceAttributes item=attribute}
+							{control type="AttributeControl" attribute=$attribute align='vertical' searchmode=true namePrefix='r' inputClass="input-sm"}
+						{/foreach}
+
+						{foreach from=$ResourceTypeAttributes item=attribute}
+							{control type="AttributeControl" attribute=$attribute align='vertical' searchmode=true namePrefix='rt' inputClass="input-sm"}
+						{/foreach}
+
+						<div class="btn-submit">
+							<button type="submit" class="btn btn-success btn-sm" value="submit" {formname key=SUBMIT}>{translate key=Filter}</button>
+						</div>
+						<div class="btn-clear">
+							<button id="show_all_resources" type="button" class="btn btn-default btn-xs">{translate key=ClearFilter}</button>
+						</div>
+
+					</div>
+
+					<input type="hidden" name="sid" value="{$ScheduleId}"/>
+					<input type="hidden" name="sds" value="{foreach from=$SpecificDates item=d}{$d->Format('Y-m-d')},{/foreach}"/>
+					<input type="hidden" name="sd" value="{$DisplayDates->GetBegin()->Format('Y-m-d')}"/>
+				</form>
+			</div>
+		</div>
 
 		<div id="reservations" class="col-md-10 col-sm-12">
-			<div><a href="#" id="restore-sidebar" title="Show Reservation Filter" class="hidden toggle-sidebar">{translate key=ResourceFilter} <i
+			<div>
+				<a href="#" id="restore-sidebar" title="Show Reservation Filter" class="hidden toggle-sidebar">{translate key=ResourceFilter} <i
 							class="glyphicon glyphicon-filter"></i> <i
 							class="glyphicon glyphicon-chevron-right"></i></a>
 			</div>
@@ -261,13 +262,15 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 								{assign var=slots value=$DailyLayout->GetLayout($date, $resourceId)}
 								{assign var=href value="{$CreateReservationPage}?rid={$resource->Id}&sid={$ScheduleId}&rd={formatdate date=$date key=url}"}
 								<tr class="slots">
-                                    <td class="resourcename" {if $resource->HasColor()}style="background-color:{$resource->GetColor()}"{/if}>
+									<td class="resourcename" {if $resource->HasColor()}style="background-color:{$resource->GetColor()}"{/if}>
 										{if $resource->CanAccess && $DailyLayout->IsDateReservable($date)}
 											<a href="{$href}" resourceId="{$resource->Id}"
-											   class="resourceNameSelector" {if $resource->HasColor()}style="color:{$resource->GetTextColor()}"{/if}>{$resource->Name}</a>
+											   class="resourceNameSelector"
+											   {if $resource->HasColor()}style="color:{$resource->GetTextColor()}"{/if}>{$resource->Name}</a>
 										{else}
 											<span resourceId="{$resource->Id}" resourceId="{$resource->Id}"
-												  class="resourceNameSelector" {if $resource->HasColor()}style="color:{$resource->GetTextColor()}"{/if}>{$resource->Name}</span>
+												  class="resourceNameSelector"
+												  {if $resource->HasColor()}style="color:{$resource->GetTextColor()}"{/if}>{$resource->Name}</span>
 										{/if}
 									</td>
 									{foreach from=$slots item=slot}

@@ -491,6 +491,14 @@ input.mid-number {
     float: right;
   }
 }
+@media (min-width: 1200px) {
+  .pull-left-lg {
+    float: left;
+  }
+  .pull-right-lg {
+    float: right;
+  }
+}
 .select2-container .select2-search__field:not([placeholder='']) {
   width: 100% !important;
   margin-right: 100000px;
