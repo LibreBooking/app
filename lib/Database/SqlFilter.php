@@ -196,6 +196,23 @@ class SqlFilterEquals extends BaseSqlFilter
 	}
 }
 
+class SqlFilterNotEquals extends BaseSqlFilter
+{
+	/**
+	 * @param string|SqlFilterColumn $columnName
+	 * @param string $columnValue
+	 */
+	public function __construct($columnName, $columnValue)
+	{
+		parent::__construct($columnName, $columnValue);
+	}
+
+	protected function GetSql()
+	{
+		return "{$this->criteria->Name} != {$this->criteria->Variable}";
+	}
+}
+
 class SqlFilterFreeForm extends BaseSqlFilter
 {
 	/**

@@ -53,6 +53,7 @@ class ResourceRepository implements IResourceRepository
 		else
 		{
 			$filter = new SqlFilterEquals(new SqlFilterColumn('r', ColumnNames::SCHEDULE_ID), $scheduleId);
+			$filter = $filter->_And(new SqlFilterNotEquals(new SqlFilterColumn('r', ColumnNames::RESOURCE_STATUS_ID), ResourceStatus::HIDDEN));
 		}
 		$command = new FilterCommand(new GetAllResourcesCommand(), $filter);
 
@@ -343,6 +344,10 @@ class ResourceRepository implements IResourceRepository
 
 		while ($row = $resources->GetRow())
 		{
+			if ($row[ColumnNames::RESOURCE_STATUS_ID] == ResourceStatus::HIDDEN)
+			{
+				continue;
+			}
 			$resourceId = $row[ColumnNames::RESOURCE_ID];
 			if (array_key_exists($resourceId, $resourceList))
 			{

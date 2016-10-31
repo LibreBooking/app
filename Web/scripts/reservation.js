@@ -388,9 +388,7 @@ function Reservation(opts) {
 			var numberOfResources = elements.groupDiv.find('.additionalResourceCheckbox[group-id="' + groupId + '"]').length;
 			var numberOfResourcesChecked = elements.groupDiv.find('.additionalResourceCheckbox[group-id="' + groupId + '"]:checked').length;
 
-
 			elements.groupDiv.find('[resource-id="' + resourceId + '"]').prop('checked', isChecked);
-
 
 			elements.groupDiv.find('.additionalResourceGroupCheckbox[group-id="' + groupId + '"]').prop('checked', numberOfResources == numberOfResourcesChecked)
 		}

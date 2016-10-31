@@ -261,11 +261,21 @@ class SchedulePageBuilder implements ISchedulePageBuilder
 	}
 
 	/**
-	 * @see ISchedulePageBuilder::BindReservations()
+	 * @param ISchedulePage $page
+	 * @param ResourceDto[] $resources
+	 * @param IDailyLayout $dailyLayout
 	 */
 	public function BindReservations(ISchedulePage $page, $resources, IDailyLayout $dailyLayout)
 	{
-		$page->SetResources($resources);
+		$r = array();
+		foreach($resources as $resource)
+		{
+			if ($resource->StatusId != ResourceStatus::HIDDEN)
+			{
+				$r[] = $resource;
+			}
+		}
+		$page->SetResources($r);
 		$page->SetDailyLayout($dailyLayout);
 	}
 
