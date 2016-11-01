@@ -224,20 +224,22 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 			var $frmRegister = $('#form-register');
 
-			$frmRegister
-					.on('init.field.bv', function (e, data) {
-						var $parent = data.element.parents('.form-group');
-						var $icon = $parent.find('.form-control-feedback[data-bv-icon-for="' + data.field + '"]');
-						var validators = data.bv.getOptions(data.field).validators;
+			$frmRegister.on('init.field.bv', function (e, data) {
+									var $parent = data.element.parents('.form-group');
+									var $icon = $parent.find('.form-control-feedback[data-bv-icon-for="' + data.field + '"]');
+									var validators = data.bv.getOptions(data.field).validators;
 
-						if (validators.notEmpty)
-						{
-							$icon.addClass('glyphicon glyphicon-asterisk').show();
-						}
-					});
+									if (validators.notEmpty)
+									{
+										$icon.addClass('glyphicon glyphicon-asterisk').show();
+									}
+								})
+								.off('success.form.bv')
+								.on('success.form.bv', function (e) {
+									e.preventDefault();
+								});
 
-			$frmRegister.bootstrapValidator();
-
+			$frmRegister.bootstrapValidator()
 		});
 	</script>
 

@@ -6,11 +6,12 @@ function Registration()
 
 	Registration.prototype.init = function ()
 	{
-		$("#btnUpdate").click(function (e)
-		{
-			e.preventDefault();
-			elements.form.submit();
-		});
+		// $("#btnUpdate").click(function (e)
+		// {
+		// 	e.preventDefault();
+		// 	e.stopPropagation();
+		// 	elements.form.submit();
+		// });
 
 		elements.form.bind('onValidationFailed', onValidationFailed);
 

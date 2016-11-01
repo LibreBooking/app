@@ -229,6 +229,10 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 						{
 							$icon.addClass('glyphicon glyphicon-asterisk').show();
 						}
+					})
+					.off('success.form.bv')
+					.on('success.form.bv', function (e) {
+						e.preventDefault();
 					});
 
 			profileForm.bootstrapValidator();
