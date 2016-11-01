@@ -39,7 +39,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 					{textbox name="EMAIL" class="input" size="20" tabindex="10"}</label>
 			</p>
 			<p class="resetpassword">
-				<button type="submit" class="button" name="{Actions::RESET}" value="{Actions::RESET}">{html_image src="tick-circle.png"} {translate key='ChangePassword'}</button>
+				<button type="submit" class="btn btn-default" name="{Actions::RESET}" value="{Actions::RESET}">{translate key='ChangePassword'}</button>
 			</p>
 		</div>
 	</form>
