@@ -177,6 +177,7 @@
 				<exclude name="**/config.php"/>
 				<exclude name="**/*.config.php"/>
 				<exclude name="config/log4php.config.xml"/>
+				<include name="**/qrconfig.php" />
 			</fileset>
 		</copy>
 
