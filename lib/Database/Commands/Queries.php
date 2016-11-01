@@ -1189,7 +1189,7 @@ class QueryBuilder
 					(@userid = -1 OR ru.user_id = @userid) AND
 					(@levelid = 0 OR ru.reservation_user_level = @levelid) AND
 					(@scheduleid = -1 OR resources.schedule_id = @scheduleid) AND
-					(@resourceid = -1 OR rr.resource_id IN (@resourceid))');
+					(@all_resources = 1 OR rr.resource_id IN (@resourceid))');
 	}
 
 	public static function GET_RESERVATION_LIST_FULL()
