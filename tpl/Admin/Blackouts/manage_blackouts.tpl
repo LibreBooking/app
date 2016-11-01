@@ -134,7 +134,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 				</div>
 			</div>
 			<div class="panel-footer">
-				{filter_button class="btn-sm"}
+				{filter_button class="btn-sm" id="filter"}
 				<button id="showAll" class="btn btn-link btn-sm">{translate key=ViewAll}</button>
 			</div>
 		</div>
