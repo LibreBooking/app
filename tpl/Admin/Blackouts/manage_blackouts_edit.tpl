@@ -41,7 +41,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 										   value="{formatdate date=$BlackoutEndDate format='h:i A'}"/>
 		</div>
 
-		<div class="form-group col-xs-12">
+		<div class="form-group col-xs-12 blackouts-edit-resources">
 			<label>{translate key=Resources}</label>
 			{foreach from=$Resources item=resource}
 				{assign var=checked value=""}
