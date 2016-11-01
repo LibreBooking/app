@@ -109,7 +109,7 @@ class ReservationUserBinder implements IReservationComponentBinder
 															 ConfigKeys::PRIVACY_HIDE_USER_DETAILS,
 															 new BooleanConverter());
 
-		$initializer->ShowUserDetails(!$hideUser || $currentUser->IsAdmin);
+		$initializer->ShowUserDetails(!$hideUser || $currentUser->IsAdmin || $userId == $currentUser->UserId);
 		$initializer->ShowReservationDetails(true);
 		$initializer->SetShowParticipation(!$hideUser || $currentUser->IsAdmin || $currentUser->IsGroupAdmin);
 	}
