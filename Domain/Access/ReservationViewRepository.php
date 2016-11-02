@@ -195,6 +195,11 @@ class ReservationViewRepository implements IReservationViewRepository
 			$resourceId = self::ALL_RESOURCES;
 		}
 
+		if ($resourceId == self::ALL_RESOURCES)
+		{
+			$resourceId = null;
+		}
+
 		if (!empty($resourceId) && $resourceId != ReservationViewRepository::ALL_RESOURCES && !is_array($resourceId))
 		{
 			$resourceId = array($resourceId);

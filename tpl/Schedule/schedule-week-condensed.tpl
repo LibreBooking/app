@@ -106,7 +106,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 						{assign var=slots value=$DailyLayout->GetLayout($date, $resourceId)}
 						{assign var=summary value=$DailyLayout->GetSummary($date, $resourceId)}
 						{if $summary->NumberOfReservations() > 0}
-							<td class="reservable clickres slot" ref="{$href} data-href="{$href}" data-start="{$date->Format('Y-m-d H:i:s')|escape:url}" data-end="{$date->Format('Y-m-d H:i:s')|escape:url}">
+							<td class="reservable clickres slot" ref="{$href}&rd={formatdate date=$date key=url}" data-href="{$href}" data-start="{$date->Format('Y-m-d H:i:s')|escape:url}" data-end="{$date->Format('Y-m-d H:i:s')|escape:url}">
 								<input type="hidden" class="href" value="{$href}"/>
 								{foreach from=$slots item=slot}
 									{call name=displaySlotCondensed Slot=$slot Href="$href" AccessAllowed=$resource->CanAccess}

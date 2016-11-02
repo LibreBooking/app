@@ -273,7 +273,8 @@ function Schedule(opts, resourceGroups) {
 				$(pattern, reservations).removeClass('hilite');
 			});
 
-			$(this).click(function () {
+			$(this).click(function (e) {
+				e.stopPropagation();
 				var reservationUrl = options.reservationUrlTemplate.replace("[referenceNumber]", resid);
 				window.location = reservationUrl;
 			});
@@ -282,10 +283,15 @@ function Schedule(opts, resourceGroups) {
 
 			if ($(this).is('div'))
 			{
-				qTipElement = $(this).find('.fa');
-				qTipElement.click(function (e) {
-					e.stopPropagation();
-				});
+				var fa = $(this).find('.fa');
+				if (fa.length > 0)
+				{
+					qTipElement = $(this).find('.fa');
+
+					qTipElement.click(function (e) {
+						e.stopPropagation();
+					});
+				}
 			}
 
 			qTipElement.qtip({
