@@ -181,6 +181,8 @@
 			</fileset>
 		</copy>
 
+		<copy tofile="${stagingdir}/lib/external/phpqrcode/qrconfig.php" file="./lib/external/phpqrcode/qrconfig.php" />
+
 		<phingcall target="combine.db.files">
 
 		</phingcall>
