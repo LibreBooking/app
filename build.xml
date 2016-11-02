@@ -173,6 +173,7 @@
 				<exclude name="**/phing-tasks/**"/>
 				<exclude name="*phing-tasks*"/>
 				<exclude name="**/uploads/images/*"/>
+				<exclude name="**/uploads/reservation/*"/>
 
 				<exclude name="**/config.php"/>
 				<exclude name="**/*.config.php"/>

@@ -20,7 +20,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 {extends file="Reservation/create.tpl"}
 
 {block name=header}
-	{include file='globalheader.tpl' TitleKey='EditReservationHeading' TitleArgs='' Qtip=true}
+	{include file='globalheader.tpl' TitleKey='EditReservationHeading' TitleArgs='' Qtip=true printCssFiles='css/reservation.print.css'}
 {/block}
 
 {block name=reservationHeader}
