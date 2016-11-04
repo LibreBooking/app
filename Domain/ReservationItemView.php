@@ -615,6 +615,7 @@ class ReservationItemView implements IReservedItemView
 		$item->StartReminder = $r->StartReminder;
 		$item->EndReminder = $r->EndReminder;
 		$item->CreatedDate = $r->DateCreated;
+		$item->DateCreated = $r->DateCreated;
 		$item->ModifiedDate = $r->DateModified;
 		$item->OwnerEmailAddress = $r->OwnerEmailAddress;
 
