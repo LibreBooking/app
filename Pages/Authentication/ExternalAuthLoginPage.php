@@ -25,6 +25,8 @@ require_once(ROOT_DIR . 'lib/Application/Authentication/namespace.php');
 
 class ExternalAuthLoginPage extends Page implements ILoginBasePage
 {
+	public $presenter;
+
 	public function __construct()
 	{
 		$this->presenter = new ExternalAuthLoginPresenter($this, new WebAuthentication(PluginManager::Instance()->LoadAuthentication()), new Registration());

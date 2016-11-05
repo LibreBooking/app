@@ -116,6 +116,10 @@ class LoginPage extends Page implements ILoginPage
 		$this->Set('Languages', Resources::GetInstance()->AvailableLanguages);
 		$this->Set('GoogleClientId', GoogleAuthentication::CLIENT_ID);
 		$this->Set('AllowSocialLogin', Configuration::Instance()->GetSectionKey(ConfigSection::AUTHENTICATION, ConfigKeys::AUTHENTICATION_ALLOW_SOCIAL, new BooleanConverter()));
+		$scriptUrl = Configuration::Instance()->GetScriptUrl();
+		$parts = explode('://', $scriptUrl);
+		$this->Set('Protocol', $parts[0]);
+		$this->Set('ScriptUrlNoProtocol', $parts[1]);
 	}
 
 	public function PageLoad()
