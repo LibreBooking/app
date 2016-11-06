@@ -22,8 +22,6 @@
 require_once(ROOT_DIR . 'Pages/Page.php');
 require_once(ROOT_DIR . 'Pages/Authentication/ILoginBasePage.php');
 require_once(ROOT_DIR . 'lib/Application/Authentication/namespace.php');
-require_once(ROOT_DIR . 'lib/Application/Authentication/GoogleAuthentication.php');
-//require_once(ROOT_DIR . 'lib/Application/Authentication/FacebookAuthentication.php');
 
 interface ILoginPage extends IPage, ILoginBasePage
 {
@@ -114,7 +112,6 @@ class LoginPage extends Page implements ILoginPage
 		$this->Set('ResumeUrl', $resumeUrl);
 		$this->Set('ShowLoginError', false);
 		$this->Set('Languages', Resources::GetInstance()->AvailableLanguages);
-//		$this->Set('GoogleClientId', GoogleAuthentication::CLIENT_ID);
 
 		$this->Set('AllowSocialLogin', Configuration::Instance()->GetSectionKey(ConfigSection::AUTHENTICATION, ConfigKeys::AUTHENTICATION_ALLOW_SOCIAL, new BooleanConverter()));
 		$scriptUrl = Configuration::Instance()->GetScriptUrl();
