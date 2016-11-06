@@ -42,6 +42,10 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 					<span class="fa fa-plus-circle icon add"></span>
 				</a>
 
+				<a href="#" id="invite-users" class="add-link add-user">{translate key="InviteUsers"}
+					<span class="fa fa-send icon add"></span>
+				</a>
+
 				<a href="#" id="import-users" class="add-link add-user">{translate key="Import"}
 					<span class="fa fa-upload icon add"></span>
 				</a>
@@ -369,6 +373,31 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 					<div class="modal-footer">
 						{cancel_button}
 						{update_button}
+						{indicator}
+					</div>
+				</div>
+			</div>
+		</form>
+	</div>
+
+	<div id="invitationDialog" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="invitationModalLabel"
+		 aria-hidden="true">
+		<form id="invitationForm" method="post" ajaxAction="{ManageUsersActions::InviteUsers}">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+						<h4 class="modal-title" id="invitationModalLabel">{translate key=InviteUsers}</h4>
+					</div>
+					<div class="modal-body">
+						<div class="form-group has-feedback">
+							<label for="inviteEmails">{translate key=InviteUsersLabel}</label>
+							<textarea id="inviteEmails" class="form-control" rows="5" {formname key=INVITED_EMAILS}></textarea>
+						</div>
+					</div>
+					<div class="modal-footer">
+						{cancel_button}
+						<button type="button" class="btn btn-success save"><span class="fa fa-send"></span> {translate key=InviteUsers}</button>
 						{indicator}
 					</div>
 				</div>

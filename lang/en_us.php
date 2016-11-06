@@ -638,6 +638,8 @@ class en_us extends Language
 		$strings['ConfigUpdateSuccess'] = 'Your config file is now up to date!';
 		$strings['ConfigUpdateFailure'] = 'We could not automatically update your config file. Please overwrite the contents of config.php with the following:';
 		$strings['SelectUser'] = 'Select User';
+		$strings['InviteUsers'] = 'Invite Users';
+		$strings['InviteUsersLabel'] = 'Enter the email addresses of the people to invite';
 		// End Install
 
 		// Errors
@@ -778,6 +780,7 @@ class en_us extends Language
 		$strings['UserAdded'] = 'A new user has been added';
 		$strings['UserDeleted'] = 'User account for %s was deleted by %s';
 		$strings['GuestAccountCreatedSubject'] = 'Your account details';
+		$strings['InviteUserSubject'] = '%s has invited you to join %s';
 		// End Email Subjects
 
 		$this->Strings = $strings;

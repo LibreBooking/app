@@ -39,7 +39,11 @@ function UserManagement(opts) {
 		deleteDialog: $('#deleteDialog'),
 		deleteUserForm: $('#deleteUserForm'),
 
-		addDialog: $('#addUserDialog')
+		addDialog: $('#addUserDialog'),
+
+		invitationDialog: $('#invitationDialog'),
+		invitationForm: $('#invitationForm'),
+		inviteEmails: $('#inviteEmails')
 	};
 
 	var users = {};
@@ -150,6 +154,11 @@ function UserManagement(opts) {
 			elements.addDialog.modal('show');
 		});
 
+		$('#invite-users').click(function (e) {
+			e.preventDefault();
+			elements.invitationDialog.modal('show');
+		});
+
 		$('#import-users').click(function (e) {
 			e.preventDefault();
             $('#importErrors').empty().addClass('no-show');
@@ -198,6 +207,11 @@ function UserManagement(opts) {
 			}
 		};
 
+		var inviteHandler = function(responseText, form) {
+			elements.inviteEmails.val('');
+			elements.invitationDialog.modal('hide');
+		};
+
 		ConfigureAsyncForm(elements.permissionsForm, defaultSubmitCallback(elements.permissionsForm), hidePermissionsDialog, error);
 		ConfigureAsyncForm(elements.passwordForm, defaultSubmitCallback(elements.passwordForm), hidePasswordDialog, error);
 		ConfigureAsyncForm(elements.userForm, defaultSubmitCallback(elements.userForm), hideDialogCallback(elements.userDialog));
@@ -207,6 +221,7 @@ function UserManagement(opts) {
 		ConfigureAsyncForm(elements.importUsersForm, defaultSubmitCallback(elements.importUsersForm), importHandler);
 		ConfigureAsyncForm(elements.addGroupForm, changeGroupUrlCallback(elements.addGroupForm), function(){});
 		ConfigureAsyncForm(elements.removeGroupForm, changeGroupUrlCallback(elements.removeGroupForm), function(){});
+		ConfigureAsyncForm(elements.invitationForm, defaultSubmitCallback(elements.invitationForm), inviteHandler);
 	};
 
 	UserManagement.prototype.addUser = function (user) {

@@ -158,9 +158,11 @@ interface IManageUsersPage extends IPageable, IActionPage
 	 */
 	public function SetImportResult($importResult);
 
-
+	/**
+	 * @return string
+	 */
+	public function GetInvitedEmails();
 }
-
 
 class ManageUsersPage extends ActionPage implements IManageUsersPage
 {
@@ -358,34 +360,22 @@ class ManageUsersPage extends ActionPage implements IManageUsersPage
 		return AttributeFormParser::GetAttributes($this->GetForm(FormKeys::ATTRIBUTE_PREFIX));
 	}
 
-	/**
-	 * @return AccountStatus|int
-	 */
 	public function GetFilterStatusId()
 	{
 		$statusId = $this->GetQuerystring(QueryStringKeys::ACCOUNT_STATUS);
 		return empty($statusId) ? AccountStatus::ALL : $statusId;
 	}
 
-	/**
-	 * @return int
-	 */
 	public function GetUserGroup()
 	{
 		return $this->GetForm(FormKeys::GROUP_ID);
 	}
 
-	/**
-	 * @param GroupItemView[] $groups
-	 */
 	public function BindGroups($groups)
 	{
 		$this->Set('Groups', $groups);
 	}
 
-	/**
-	 * @return string
-	 */
 	public function GetReservationColor()
 	{
 		return $this->GetForm(FormKeys::RESERVATION_COLOR);
@@ -407,19 +397,18 @@ class ManageUsersPage extends ActionPage implements IManageUsersPage
 		$this->DisplayCsv('Admin/Users/import_user_template_csv.tpl', 'users.csv');
 	}
 
-	/**
-	 * @return UploadedFile
-	 */
 	public function GetImportFile()
 	{
 		return $this->server->GetFile(FormKeys::USER_IMPORT_FILE);
 	}
 
-	/**
-	 * @param CsvImportResult $importResult
-	 */
 	public function SetImportResult($importResult)
 	{
 		$this->SetJsonResponse($importResult);
+	}
+
+	public function GetInvitedEmails()
+	{
+		return $this->GetForm(FormKeys::INVITED_EMAILS);
 	}
 }

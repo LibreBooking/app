@@ -23,6 +23,7 @@ require_once(ROOT_DIR . 'Presenters/ActionPresenter.php');
 require_once(ROOT_DIR . 'lib/Application/Authentication/namespace.php');
 require_once(ROOT_DIR . 'lib/Application/User/namespace.php');
 require_once(ROOT_DIR . 'lib/Application/Admin/UserImportCsv.php');
+require_once(ROOT_DIR . 'lib/Email/Messages/InviteUserEmail.php');
 
 class ManageUsersActions
 {
@@ -37,6 +38,7 @@ class ManageUsersActions
     const ChangeColor = 'changeColor';
     const ImportUsers = 'importUsers';
     const ChangeCredits = 'changeCredits';
+    const InviteUsers = 'inviteUsers';
 }
 
 interface IManageUsersPresenter
@@ -177,6 +179,7 @@ class ManageUsersPresenter extends ActionPresenter implements IManageUsersPresen
         $this->AddAction(ManageUsersActions::ChangeColor, 'ChangeColor');
         $this->AddAction(ManageUsersActions::ImportUsers, 'ImportUsers');
         $this->AddAction(ManageUsersActions::ChangeCredits, 'ChangeCredits');
+        $this->AddAction(ManageUsersActions::InviteUsers, 'InviteUsers');
     }
 
     public function PageLoad()
@@ -437,7 +440,6 @@ class ManageUsersPresenter extends ActionPresenter implements IManageUsersPresen
         $user = $this->userRepository->LoadById($userId);
         $user->ChangeCurrentCredits($creditCount);
         $this->userRepository->Update($user);
-
     }
 
     /**
@@ -536,6 +538,16 @@ class ManageUsersPresenter extends ActionPresenter implements IManageUsersPresen
 
         $this->page->SetImportResult(new CsvImportResult($importCount, $csv->GetSkippedRowNumbers(), $messages));
     }
+
+    public function InviteUsers()
+	{
+		$emailList = $this->page->GetInvitedEmails();
+		$emails = preg_split('/[,;\s\n]+/', $emailList);
+		foreach ($emails as $email)
+		{
+			ServiceLocator::GetEmailService()->Send(new InviteUserEmail(trim($email), ServiceLocator::GetServer()->GetUserSession()));
+		}
+	}
 }
 
 
