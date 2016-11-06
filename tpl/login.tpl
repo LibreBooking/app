@@ -81,13 +81,13 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 				{if $AllowSocialLogin}
 					<div class="col-lg-6 col-md-12">
-						<a href="https://accounts.google.com/o/oauth2/v2/auth?scope=email%20profile&state=&redirect_uri=urn:ietf:wg:oauth:2.0:oob:auto&response_type=code&client_id={$GoogleClientId}"
+						<a href="https://accounts.google.com/o/oauth2/v2/auth?scope=email%20profile&state={$GoogleState}&redirect_uri=http://www.social.twinkletoessoftware.com/googleresume.php&response_type=code&client_id=531675809673-3sfvrchh6svd9bfl7m55dao8n4s6cqpc.apps.googleusercontent.com"
 						   class="pull-left-lg">
 							<img src="img/external/btn_google_signin_dark_normal_web.png" alt="Sign in with Google"/>
 						</a>
 					</div>
 					<div class="col-lg-6 col-md-12">
-						<a href="http://www.facebook.twinkletoessoftware.com/fblogin.php?protocol={$Protocol}&resume={$ScriptUrlNoProtocol}/external-auth.php%3Ftype%3Dfb" class="pull-right-lg">
+						<a href="http://www.social.twinkletoessoftware.com/fblogin.php?protocol={$Protocol}&resume={$ScriptUrlNoProtocol}/external-auth.php%3Ftype%3Dfb" class="pull-right-lg">
 							<img style="max-height:42px" src="img/external/btn_facebook_login.png" alt="Sign in with Facebook"/>
 						</a>
 					</div>

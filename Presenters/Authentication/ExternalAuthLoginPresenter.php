@@ -47,45 +47,22 @@ class ExternalAuthLoginPresenter
 	{
 		if ($this->page->GetType() == 'google')
 		{
-			$this->ProcessGoogleSingleSignOn();
+			$this->ProcessSocialSingleSignOn('googleprofile.php');
 		}
 		if ($this->page->GetType() == 'fb')
 		{
-			$this->ProcessFacebookSingleSignOn();
+			$this->ProcessSocialSingleSignOn('fbprofile.php');
 		}
 	}
 
-	private function ProcessGoogleSingleSignOn()
+	private function ProcessSocialSingleSignOn($page)
 	{
 		$code = $_GET['code'];
-
-		Log::Debug('Logging in with Google. Code=%s', $code);
-		$googleAuth = new GoogleAuthentication();
-		$userInfo = $googleAuth->GetUser($code);
-
-		Log::Debug('Google login successful. Email=%s', $userInfo->email);
-		$this->registration->Synchronize(new AuthenticatedUser($userInfo->email,
-															   $userInfo->email,
-															   $userInfo->givenName,
-															   $userInfo->familyName,
-															   Password::GenerateRandom(),
-															   Resources::GetInstance()->CurrentLanguage,
-															   Configuration::Instance()->GetDefaultTimezone(),
-															   null,
-															   null,
-															   null));
-
-		$this->authentication->Login($userInfo->email, new WebLoginContext(new LoginData()));
-		LoginRedirector::Redirect($this->page);
-	}
-
-	private function ProcessFacebookSingleSignOn()
-	{
-		$code = $_GET['code'];
-		Log::Debug('Logging in with Facebook. Code=%s', $code);
-		$result = file_get_contents('http://www.facebook.twinkletoessoftware.com/fbprofile.php?code=' . $code);
+		Log::Debug('Logging in with social. Code=%s', $code);
+		$result = file_get_contents("http://www.social.twinkletoessoftware.com/$page?code=$code");
 		$profile = json_decode($result);
-		Log::Debug('Facebook login successful. Email=%s', $profile->email);
+
+		Log::Debug('Social login successful. Email=%s', $profile->email);
 		$this->registration->Synchronize(new AuthenticatedUser($profile->email,
 															   $profile->email,
 															   $profile->first_name,
