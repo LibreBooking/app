@@ -326,3 +326,9 @@ a.remove {
 #page-view-reservation .participationAction {
   margin-bottom: 5px;
 }
+table.reservations {
+  table-layout: fixed;
+}
+table.reservations td {
+  word-wrap: break-word;
+}
