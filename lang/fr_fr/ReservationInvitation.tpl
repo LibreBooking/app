@@ -17,7 +17,7 @@ Vous devez avoir reçu une copie de la GNU General Public License
 avec Booked Scheduler. si ce n'est pas le cas consultez <http://www.gnu.org/licenses/>.
 *}
 
-	Details de la réservation:
+	Détails de la réservation:
 	<br/>
 	<br/>
 

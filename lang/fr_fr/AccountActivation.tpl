@@ -20,6 +20,6 @@ avec Booked Scheduler. si ce n'est pas le cas consultez <http://www.gnu.org/lice
 
 
 {$FirstName},<br/>
-Merci de votre inscription a Booked Scheduler. Merci de cliquer ici pour <a href="{$ActivationUrl}">activer votre compte</a>.
+Merci de votre inscription à Booked Scheduler. Merci de cliquer ici pour <a href="{$ActivationUrl}">activer votre compte</a>.
 
 

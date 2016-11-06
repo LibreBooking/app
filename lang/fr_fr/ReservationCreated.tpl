@@ -18,7 +18,7 @@ avec Booked Scheduler. si ce n'est pas le cas consultez <http://www.gnu.org/lice
 *}
 
 
-	Details de la réservation:
+	Détails de la réservation:
 	<br/>
 	<br/>
 

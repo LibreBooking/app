@@ -23,7 +23,7 @@ avec Booked Scheduler. si ce n'est pas le cas consultez <http://www.gnu.org/lice
 <h2>Enregistrement</h2>
 
 <p>L'enregistrement est obligatoire pour utiliser Booked Scheduler.
-    Si l'administrateur a activé l'automatisme chaque utilisateur peut le faire lui même. Sinon, c'est l'administrateur qui crée les comptes.
+    Si l'administrateur a activé l'automatisme, chaque utilisateur peut le faire lui-même. Sinon, c'est l'administrateur qui crée les comptes.
     Après enregistrement, vous pourrez vous connecter et avoir accès à toutes les ressources qui vous sont autorisées.
 </p>
 
@@ -52,24 +52,24 @@ avec Booked Scheduler. si ce n'est pas le cas consultez <http://www.gnu.org/lice
     Il est possible que votre réservation soit refusée.
 
     <br>Vérifiez donc :
-    <br>- Que vous ayez le droit de reserver la ressource
-    <br>- Que le créneau horaire soit cohérent (heure de début avant l'heure de fin par exemple)
+    <br>- Que vous ayez le droit de réserver la ressource.
+    <br>- Que le créneau horaire soit cohérent (heure de début avant l'heure de fin, par exemple).
     <br>- Qu'elle ne soit pas bloquée pour tout autre raison.
-    <br>En tout état de cause, contactez l'administrateur qui devrait, soit résoudre votre souci, soit vous en donner la raison.
+    <br>En dernier recours, contactez l'administrateur qui devrait soit résoudre votre souci, soit vous en donner la raison.
 </p>
 
 
 <h3>Ressources Multiples</h3>
 
 <p>Vous pouvez réserver toutes les ressources qui vous sont autorisées en une seule réservation. Pour ajouter plus
-    de ressources à votre réservation, cliquez sur "(+ de Resources)" , à droite de la première ressource affichée.
+    de ressources à votre réservation, cliquez sur "(+ de Ressources)" à droite de la première ressource affichée.
     Vous pourrez ensuite ajouter des ressources en les sélectionnant puis en cliquant sur le bouton "Valider".</p>
 
-<p>Pour ôter des ressources supplémentaires à la réservation, cliquez sur "(+ de Resources)", déselectionnez la/les
+<p>Pour ôter des ressources supplémentaires à la réservation, cliquez sur "(+ de Resources)", désélectionnez la/les
    ressource(s) concernée(s) puis validez.</p>
 
-<p>Les ressources supplémentaires obéissent aux même rêgles que la première.Par exemple, cela veut dire que si
-   vous essayez de créer une réservation de  2 heures avec
+<p>Les ressources supplémentaires obéissent aux mêmes rêgles que la première. Par exemple, cela veut dire que si
+   vous essayez de créer une réservation de 2 heures avec
    <br>- La Ressource 1 qui a un maximum de 3 heures
    <br>et
    <br>- La Ressource 2 qui a un maximum de 1 heure
@@ -81,21 +81,21 @@ avec Booked Scheduler. si ce n'est pas le cas consultez <http://www.gnu.org/lice
 <h3>Dates récurrentes</h3>
 
 <p>Vous pouvez configurer votre réservation pour qu'elle se reproduise régulièrement.
- Notez que cet evenement se répetera  aussi le jour de la date fixée dans "jusqu'au XX/XX/XXXX". </p>
+ Notez que cet évènement se répetera aussi le jour de la date fixée dans "jusqu'au XX/XX/XXXX".</p>
 
-<p>Cette option offre de nombreux possibilités.
+<p>Cette option offre de nombreuses possibilités.
    <br>Par exemple :
 
-   <br>- Une "Répétition">"Journalière">Tous les "2 jours" --> créera des réservations régulières espacées de deux jours.
-   <br>- Une "Répétition">"Hebdomadaire">Tous les "2 semaines" fixée au Jeudi --> créera une réservation le jeudi toute les 2 semaines.
-   <br>- Une "Répétition" > "Mensuelle">Tous le "2 mois"Jour du mois --> répetera votre résa tous les 2 mois,  les 3 du mois, si on est le 3.
-   <br>- Une "Répétition" > "Mensuelle">Tous le "2 mois">Jour de la semaine --> répetera votre résa tous les 2 mois les premiers samedi du mois, si on est le premier samedi du mois.
+   <br>- Une "Répétition" > "Journalière" > Tous les "2 jours" --> créera des réservations régulières espacées de deux jours.
+   <br>- Une "Répétition" > "Hebdomadaire" > Tous les "2 semaines" fixée au Jeudi --> créera une réservation le jeudi toutes les 2 semaines.
+   <br>- Une "Répétition" > "Mensuelle" > Tous les "2 mois" > Jour du mois --> répétera votre réservation tous les 2 mois, les 3 du mois, si on est le 3.
+   <br>- Une "Répétition" > "Mensuelle" > Tous les "2 mois" > Jour de la semaine --> répétera votre réservation tous les 2 mois les premiers samedi du mois, si on est le premier samedi du mois.
 </p>
 
 <h3>Participants et invités</h3>
 
 <p>Vous pouvez ajouter des participants et/ou des invités lors d'une réservation.
-Les participants seront rajoutés à la réservation et recevront un mail de confirmation.
+Les participants seront rajoutés à la réservation et recevront un email de confirmation.
 Les invités devront, en plus, accepter l'invitation qui leur sera notifiée par email.
 S'ils confirment leur accord, ils deviennent des participants, s'il refusent, ils sont effacés de la liste des invités.
 
@@ -121,12 +121,12 @@ La quantité dont vous pourrez disposer sera fonction de ce qui est diponible (l
 
 <h2>Mettre à jour une Réservation</h2>
 
-<p>Vous pouvez mettre à jour une réservation que vous avez créé ou que l'on a créé en votre nom.</p>
+<p>Vous pouvez mettre à jour une réservation que vous avez créée ou que l'on a créée en votre nom.</p>
 
 <h3>Mettre à jour toutes les instances d'une série</h3>
 
 <p>
-    Si une réservation est réglée pour se répéter, une série est crée.
+    Si une réservation est réglée pour se répéter, une série est créée.
     <br>Chaque réservation de cette série est une instance.
     <br>Si vous modifiez votre réservation, il
     vous sera demandé quelles instances de la série sont concernées par cette modification. Vous pouvez soit
@@ -144,15 +144,15 @@ La quantité dont vous pourrez disposer sera fonction de ce qui est diponible (l
 
 <h3>Effacer des Instances spécifiques d'une série</h3>
 
-<p>La démarche est la même que pour la mise à jour, vous choisissez quelle instance vous voulez effacer à l'effacement d'une dans la série.</p>
+<p>La démarche est la même que pour la mise à jour: vous choisissez quelle instance vous voulez effacer dans la série.</p>
 
 <p>Seuls les administrateurs de l'application peuvent effacer des réservations passées.</p>
 
 <h2>Ajouter une Réservation à Outlook &reg;, Ical, ...</h2>
 
 <p>A la consultation ou à la mise à jour d'une réservation, vous verrez un bouton "Ajouter à Outlook".
-    Si Outlook est installé sur votre ordi, il vous sera demandé si vous voulez l'ajouter, sinon vous pourrez
-    télécharger le fichier ".ics".C'est un format standard de calendrier, utilisable dans toutes les
+    Si Outlook est installé sur votre ordinateur, il vous sera demandé si vous voulez l'ajouter, sinon vous pourrez
+    télécharger le fichier ".ics". C'est un format standard de calendrier, utilisable dans toutes les
     applications qui supportent le format "iCalendar".</p>
 
 -------------------------------------------------------------
@@ -160,25 +160,25 @@ La quantité dont vous pourrez disposer sera fonction de ce qui est diponible (l
 <h2>Inscription aux Calendriers</h2>
 
 <p>Des calendriers peuvent être publiés pour les plannings, les ressources et les utilisateurs.
-Il faut, pour cela, que l'administrateur ai déterminé une clé d'inscription dans le fichier de configuration.
+Il faut, pour cela, que l'administrateur ait déterminé une clé d'inscription dans le fichier de configuration.
 Pour activer les inscriptions aux calendriers, aux plannings, et Ressources,
 il suffit de cliquer sur le lien concerné lors de la gestion du planning ou de la ressource.
-Pour un calendrier personnel allez dans "Planning/Mon Calendrier" et cliquez sur "Permettre les inscriptions au Calendrier".
+Pour un calendrier personnel, allez dans "Planning/Mon Calendrier" et cliquez sur "Permettre les inscriptions au Calendrier".
 </p>
 
-<p>Pour s'inscrire a un  calendrier de planning : ouvrez "Plannings/Calendrier des Ressources" et choissisez le planning désiré.
+<p>Pour s'inscrire à un calendrier de planning : ouvrez "Plannings/Calendrier des Ressources" et choissisez le planning désiré.
 A droite, vous trouverez un lien pour vous inscrire.
 La démarche est la même pour une ressource.
-Pour vous inscrire à votre propre calendrier allez sur "Planning/Mon Calendrier" et inscrivez vous en utilisant le lien disponible.</p>
+Pour vous inscrire à votre propre calendrier, allez sur "Planning/Mon Calendrier" et inscrivez-vous en utilisant le lien disponible.</p>
 
-<h3>Logiciels Clients (Outlook&reg;, iCal, Mozilla Lightning, Evolution)</h3>
+<h3>Logiciels Clients (Outlook&reg;, iCal, Mozilla Thunderbird, Evolution)</h3>
 
-<p>Dans la plupart des cas le lien d'inscription ouvrira votre logiciel client et mettra tout automatiquement en place.
+<p>Dans la plupart des cas, le lien d'inscription ouvrira votre logiciel client et mettra tout automatiquement en place.
 Pour Outlook, si cela ne fonctionne pas, ajouter manuellement un calendrier dans le logiciel en copiant l'URL fournie lors de l'inscription au calendrier de Booked Scheduler.</p>
 
 <h3>Agenda Google&reg;</h3>
 
-<p>Cliquez sur la flèche d' "Autres agendas" puis sur  "Ajouter par URL". Copiez l'URL fournie lors de l'inscription dans Booked Scheduler.</p>
+<p>Cliquez sur la flèche d' "Autres agendas" puis sur "Ajouter par URL". Copiez l'URL fournie lors de l'inscription dans Booked Scheduler.</p>
 
 
 -------------------------------------------------------------
@@ -186,8 +186,8 @@ Pour Outlook, si cela ne fonctionne pas, ajouter manuellement un calendrier dans
 
 <h2>Quotas</h2>
 
-<p>Les Administrateurs peuvent configurer des rêgles de quotas basées sur différents critères. si votre
-   réservation va à l'encontre de ces rêgles, vous serez prévenu, et celle-ci sera refusée.</p>
+<p>Les Administrateurs peuvent configurer des règles de quotas basées sur différents critères. Si votre
+   réservation va à l'encontre de ces règles, vous serez prévenu et celle-ci sera refusée.</p>
 
 </div>
 

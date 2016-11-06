@@ -18,7 +18,7 @@ avec Booked Scheduler. si ce n'est pas le cas consultez <http://www.gnu.org/lice
 *}
 
 
-Votre rapport de Booked Scheduler est en piece jointe.<br/>
+Votre rapport de Booked Scheduler est en piece-jointe.<br/>
 
 <a href="{$ScriptUrl}">Connexion à Booked Scheduler</a>
 

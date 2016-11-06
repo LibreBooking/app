@@ -18,11 +18,11 @@ avec Booked Scheduler. si ce n'est pas le cas consultez <http://www.gnu.org/lice
 *}
 
 
-	Details de Reservation :
+	Détails de la réservation :
 	<br/>
 	<br/>
 
-	Debut: {formatdate date=$StartDate key=reservation_email}<br/>
+	Début: {formatdate date=$StartDate key=reservation_email}<br/>
 	Fin: {formatdate date=$EndDate key=reservation_email}<br/>
 	{if $ResourceNames|count > 1}
 		Ressources:<br/>
@@ -37,7 +37,7 @@ avec Booked Scheduler. si ce n'est pas le cas consultez <http://www.gnu.org/lice
 
 	{if count($RepeatDates) gt 0}
 		<br/>
-		Les dates suivantes on été effacées:
+		Les dates suivantes ont été effacées:
 		<br/>
 	{/if}
 
