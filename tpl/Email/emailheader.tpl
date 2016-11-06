@@ -23,7 +23,23 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset={$Charset}" />
 		<style type="text/css">
-			@import url({$ScriptUrl}/css/email.css);
+			* { margin:0; padding:0; }
+
+			body {
+			    font: 13px Helvetica, "Lucida Grande", Verdana, Arial, sans-serif;
+			    background-color: #fefefe;
+			    margin: 0px;
+			    color: #333333;
+			    height: 100%;
+			}
+
+			div.resource-image
+			{
+			    padding-bottom:25px;
+			    max-height:200px;
+			    max-width:200px;
+			}
+
 		</style>
 	</head>
 	<body>
