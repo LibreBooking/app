@@ -375,6 +375,32 @@ class ScheduleReservationListTests extends TestBase
 		$this->assertEquals($slot6, $slots[5]);
 	}
 
+	public function testReservationStartingBeforeFirstPeriodAndEndingOnDateStartsAtFirstSlot()
+	{
+		$userTz = 'America/Chicago';
+		$layoutTz = 'America/New_York';
+		$date = Date::Parse('2008-11-12', $userTz);
+
+		$layout = new ScheduleLayout($userTz);
+		$layout->AppendBlockedPeriod(new Time(0, 0, 0, $layoutTz), new Time(6, 0, 0, $layoutTz));
+		$layout->AppendPeriod(new Time(6, 0, 0, $layoutTz), new Time(8, 0, 0, $layoutTz));
+		$layout->AppendPeriod(new Time(8, 0, 0, $layoutTz), new Time(12, 0, 0, $layoutTz));
+		$layout->AppendPeriod(new Time(12, 0, 0, $layoutTz), new Time(18, 0, 0, $layoutTz));
+		$layout->AppendPeriod(new Time(18, 0, 0, $layoutTz), new Time(0, 0, 0, $layoutTz));
+
+		$periods = $layout->GetLayout($date);
+
+		$item = new TestReservationItemView(1, Date::Parse('2008-11-12 4:0:0', $layoutTz)->ToUtc(), Date::Parse('2008-11-12 12:0:0', $layoutTz)->ToUtc());
+		$r1 = new ReservationListItem($item);
+
+		$list = new ScheduleReservationList(array($r1), $layout, $date, true);
+		$slots = $list->BuildSlots();
+
+		$slot1 = new ReservationSlot($periods[0], $periods[2], $date, 3, $item);
+
+		$this->assertEquals($slot1, $slots[0]);
+	}
+
 	public function testCanTellIfReservationOccursOnSpecifiedDates()
 	{
 		$startDate = Date::Parse('2009-11-1 0:0:0', 'UTC');
