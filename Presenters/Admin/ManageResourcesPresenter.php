@@ -358,6 +358,20 @@ class ManageResourcesPresenter extends ActionPresenter
 			die("Invalid image type: $fileType");
 		}
 
+		$imageSize = getimagesize($uploadedImage->TemporaryName());
+        $bytesNeeded = $imageSize[0] * $imageSize[1] * 3;
+        $memoryLimit = ini_get('memory_limit');
+        $currentUsage = memory_get_usage();
+        $needed = ($bytesNeeded + $currentUsage)/1048576;
+        $limit = str_replace('M', '', $memoryLimit);
+
+        if ($needed > $limit)
+        {
+            echo 'Image too big. Resize to a smaller size or reduce the resolution and try again.';
+            Log::Error("Uploaded image for %s is too big. Needed %s limit %s", $this->page->GetResourceId(), $needed, $limit);
+            die();
+        }
+
 		$image = $this->imageFactory->Load($uploadedImage->TemporaryName());
 		$image->ResizeToWidth(300);
 
