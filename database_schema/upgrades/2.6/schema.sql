@@ -11,7 +11,7 @@ ALTER TABLE `reservation_files`
 DROP TABLE IF EXISTS `reservation_color_rules`;
 CREATE TABLE `reservation_color_rules` (
 		`reservation_color_rule_id` MEDIUMINT(8) UNSIGNED NOT NULL AUTO_INCREMENT,
-		`custom_attribute_id`       MEDIUMINT(8) UNSIGNED,
+		`custom_attribute_id`       MEDIUMINT(8) UNSIGNED NOT NULL,
 		`attribute_type`            SMALLINT UNSIGNED,
 		`required_value`            TEXT,
 		`comparison_type`           SMALLINT UNSIGNED,
