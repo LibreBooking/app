@@ -269,7 +269,7 @@ class CustomAttribute
 	 */
 	public function AdminOnly()
 	{
-		return (bool)$this->adminOnly;
+		return (int)$this->adminOnly;
 	}
 
 	/**
