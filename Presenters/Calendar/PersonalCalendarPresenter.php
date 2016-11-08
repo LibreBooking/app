@@ -163,9 +163,10 @@ class PersonalCalendarPresenter extends ActionPresenter
         $selectedSchedule = $this->common->GetSelectedSchedule(array());
 
         $selectedResourceId = $this->page->GetResourceId();
+        $selectedScheduleId = $this->page->GetScheduleId();
 
         $reservations = $this->reservationRepository->GetReservations($this->common->GetStartDate(), $this->common->GetEndDate()->AddDays(1), $userSession->UserId,
-            ReservationUserLevel::ALL, $selectedSchedule->GetId(), $selectedResourceId);
+            ReservationUserLevel::ALL, $selectedScheduleId, $selectedResourceId);
 
         $this->page->BindEvents(CalendarReservation::FromViewList($reservations, $userSession->Timezone, $userSession));
     }
