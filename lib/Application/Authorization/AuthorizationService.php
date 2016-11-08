@@ -43,6 +43,13 @@ interface IRoleService
 	 * @return bool
 	 */
 	public function IsScheduleAdministrator(User $user);
+
+    /**
+     * @param UserSession $userSession
+     * @param int $otherUserId
+     * @return bool
+     */
+    public function IsAdminFor(UserSession $userSession, $otherUserId);
 }
 
 interface IAuthorizationService extends IRoleService
@@ -180,7 +187,7 @@ class AuthorizationService implements IAuthorizationService
 	 * @param int $otherUserId
 	 * @return bool
 	 */
-	private function IsAdminFor(UserSession $userSession, $otherUserId)
+	public function IsAdminFor(UserSession $userSession, $otherUserId)
 	{
 		if ($userSession->IsAdmin)
 		{

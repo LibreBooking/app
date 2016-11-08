@@ -244,7 +244,9 @@ class AttributeService implements IAttributeService
 					)
 			)
 			{
-				if (!$attribute->IsPrivate() || ($attribute->IsPrivate() && $this->CanReserveFor($userSession, $requestedUserId)))
+                $viewableForPrivate = (!$attribute->IsPrivate() || ($attribute->IsPrivate() && $this->CanReserveFor($userSession, $requestedUserId)));
+                $viewableForAdmin = (!$attribute->AdminOnly() || ($attribute->AdminOnly() && $this->GetAuthorizationService()->IsAdminFor($userSession, $requestedUserId) ));
+				if ($viewableForPrivate && $viewableForAdmin)
 				{
 					$attributes[] = new Attribute($attribute, $reservationView->GetAttributeValue($attribute->Id()));
 				}
