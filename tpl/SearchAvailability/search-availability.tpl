@@ -67,7 +67,7 @@
                 <input type="text" id="endDate" class="form-control inline dateinput"
                        placeholder="{translate key=EndDate}" disabled="disabled"/>
                 <input type="hidden" id="formatteEndDate" {formname key=END_DATE} />
-                <a href=""#" data-toggle="collapse" data-target="#advancedSearchOptions">{translate key=MoreOptions}</a>
+                <a href="#" data-toggle="collapse" data-target="#advancedSearchOptions">{translate key=MoreOptions}</a>
             </div>
             <div class="clearfix"></div>
 
