@@ -205,11 +205,8 @@ class CalendarReservation
             $cr->DisplayTitle = $factory->Format($reservation, Configuration::Instance()->GetSectionKey(ConfigSection::RESERVATION_LABELS,
                 ConfigKeys::RESERVATION_LABELS_RESOURCE_CALENDAR));
 
-            $color = $reservation->UserPreferences->Get(UserPreferences::RESERVATION_COLOR);
-            if (!empty($color)) {
-                $cr->Color = "#$color";
-                $cr->TextColor = new ContrastingColor($color);
-            }
+            $cr->Color = $reservation->GetColor();
+            $cr->TextColor = $reservation->GetTextColor();
 
             $cr->Class = self::GetClass($reservation);
 

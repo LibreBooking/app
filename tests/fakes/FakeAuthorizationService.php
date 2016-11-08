@@ -118,4 +118,14 @@ class FakeAuthorizationService implements IAuthorizationService
 	{
 		return $this->_CanApproveForResource;
 	}
+
+    /**
+     * @param UserSession $userSession
+     * @param int $otherUserId
+     * @return bool
+     */
+    public function IsAdminFor(UserSession $userSession, $otherUserId)
+    {
+        // TODO: Implement IsAdminFor() method.
+    }
 }
