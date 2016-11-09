@@ -439,7 +439,7 @@ function Reservation(opts) {
 		var rounded = dateHelper.GetDateDifference(elements.beginDate, elements.beginTime, elements.endDate, elements.endTime);
 
 		elements.durationDays.text(rounded.RoundedDays);
-		elements.durationHours.text(rounded.RoundedHours)
+		elements.durationHours.text(rounded.RoundedHours);
         elements.durationMinutes.text(rounded.RoundedMinutes);
 	};
 

@@ -42,6 +42,7 @@ function Recurrence(recurOptions, recurElements, prefix) {
 		InitializeDateElements();
 		InitializeRepeatElements();
 		InitializeRepeatOptions();
+        ToggleRepeatOptions();
 	};
 
 	var show = function(element) {
@@ -161,7 +162,7 @@ function Recurrence(recurOptions, recurElements, prefix) {
 		if (dateHelper.MoreThanOneDayBetweenBeginAndEnd(elements.beginDate, elements.beginTime, elements.endDate, elements.endTime)) {
 			elements.repeatOptions.data["current"] = elements.repeatOptions.val();
 			repeatToggled = true;
-			SetValue('none', true);
+			SetValue('none', false);
 		}
 		else {
 			if (repeatToggled) {
