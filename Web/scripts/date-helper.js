@@ -30,7 +30,7 @@ var dateHelper = function ()
 
 		var roundedHours = (hours % 1) ? Math.floor(hours) : hours;
 		var roundedDays = Math.floor(days);
-        var roundedMinutes = minutes;
+        var roundedMinutes = Math.ceil(minutes);
 
 		return {RoundedHours: roundedHours, RoundedDays: roundedDays, RoundedMinutes: roundedMinutes};
 	};
