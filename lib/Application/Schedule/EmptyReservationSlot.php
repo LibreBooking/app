@@ -154,7 +154,8 @@ class EmptyReservationSlot implements IReservationSlot
 
 	public function ToTimezone($timezone)
 	{
-		return new EmptyReservationSlot($this->_beginPeriod->ToTimezone($timezone), $this->_endPeriod->ToTimezone($timezone), $this->Date(), $this->_isReservable);
+		return new EmptyReservationSlot($this->_beginPeriod->ToTimezone($timezone), $this->_endPeriod->ToTimezone($timezone), $this->Date(),
+										$this->_isReservable);
 	}
 
 	public function IsOwnedBy(UserSession $session)
@@ -203,18 +204,23 @@ class EmptyReservationSlot implements IReservationSlot
 		return $range->Contains($date, false);
 	}
 
-    public function RequiresCheckin()
-    {
-        return false;
-    }
+	public function RequiresCheckin()
+	{
+		return false;
+	}
 
-    public function AutoReleaseMinutes()
-    {
-       return null;
-    }
+	public function AutoReleaseMinutes()
+	{
+		return null;
+	}
 
-    public function AutoReleaseMinutesRemaining()
-    {
-        return null;
-    }
+	public function AutoReleaseMinutesRemaining()
+	{
+		return null;
+	}
+
+	public function Id()
+	{
+		return '';
+	}
 }
