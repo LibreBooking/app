@@ -378,7 +378,7 @@ function Schedule(opts, resourceGroups) {
 		var sourceResourceId = null;
 		var referenceNumber = null;
 
-		reservations.find('td.reserved.mine').on('dragstart', function (event) {
+		reservations.find('td[draggable="true"]').on('dragstart', function (event) {
 			$(event.target).removeClass('clicked');
 			referenceNumber = $(event.target).attr('resid');
 			sourceResourceId = $(event.target).attr('data-resourceId');

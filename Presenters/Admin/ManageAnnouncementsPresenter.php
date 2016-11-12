@@ -245,10 +245,11 @@ class ManageAnnouncementsPresenter extends ActionPresenter
                 }
             }
 
-            Log::Debug(var_export($groupUserIds, true));
-            Log::Debug(var_export($resourceUserIds, true));
-            $usersToSendTo = array_intersect($groupUserIds, $resourceUserIds);
-            Log::Debug(var_export($usersToSendTo, true));
+            //Log::Debug(var_export($groupUserIds, true));
+            //Log::Debug(var_export($resourceUserIds, true));
+			$usersToSendTo = array_unique(array_merge($groupUserIds, $resourceUserIds));
+
+           // Log::Debug(var_export($usersToSendTo, true));
             foreach ($usersToSendTo as $userId)
             {
                 $validUsers[] = $allUsers[$userId];

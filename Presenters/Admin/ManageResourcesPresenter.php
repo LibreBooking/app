@@ -675,7 +675,10 @@ class ManageResourcesPresenter extends ActionPresenter
 				/** @var AttributeValue $attribute */
 				foreach ($this->GetAttributeValues() as $attribute)
 				{
-					$resource->ChangeAttribute($attribute);
+					if (!empty($attribute->Value))
+					{
+						$resource->ChangeAttribute($attribute);
+					}
 				}
 
 				$this->resourceRepository->Update($resource);
