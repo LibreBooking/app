@@ -335,7 +335,7 @@ class GenerateReportPage extends ActionPage implements IGenerateReportPage
 
 	public function GetIncludeDeleted()
 	{
-		$include = $this->GetForm(FormKeys::INCLUDE_DELETED);
+		$include = $this->GetValue(FormKeys::INCLUDE_DELETED);
 		return isset($include);
 	}
 }
