@@ -114,7 +114,7 @@ class CalendarPresenter extends ActionPresenter
 			$resources = $tempResources;
 		}
 
-        $this->BindSubscriptionDetails($selectedResourceId, $selectedSchedule->GetId());
+        $this->BindSubscriptionDetails($selectedResourceId, $selectedScheduleId);
 
 		$this->page->BindFilters(new CalendarFilters($schedules, $resources, $selectedScheduleId, $selectedResourceId, $resourceGroups));
 
@@ -130,8 +130,6 @@ class CalendarPresenter extends ActionPresenter
     private function BindCalendarEvents()
     {
         $userSession = ServiceLocator::GetServer()->GetUserSession();
-
-        $selectedSchedule = $this->common->GetSelectedSchedule(array());
 
         $resources = $this->common->GetAllResources($userSession);
         $selectedResourceId = $this->page->GetResourceId();

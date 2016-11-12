@@ -80,32 +80,6 @@ class CalendarCommon
         $this->resourceService = $resourceService;
     }
 
-//    public function GetCalendar() {
-//
-//        $timezone = ServiceLocator::GetServer()->GetUserSession()->Timezone;
-//        $year = $this->page->GetYear();
-//        $month = $this->page->GetMonth();
-//        $day = $this->page->GetDay();
-//
-//        $defaultDate = Date::Now()->ToTimezone($timezone);
-//
-//        if (empty($year))
-//        {
-//            $year = $defaultDate->Year();
-//        }
-//        if (empty($month))
-//        {
-//            $month = $defaultDate->Month();
-//        }
-//        if (empty($day))
-//        {
-//            $day = $defaultDate->Day();
-//        }
-//        $type = $this->page->GetCalendarType();
-//
-//        return $this->calendarFactory->Create($type, $year, $month, $day, $timezone);
-//    }
-
     public function GetAllResources($userSession)
     {
         $showInaccessible = Configuration::Instance()->GetSectionKey(ConfigSection::SCHEDULE, ConfigKeys::SCHEDULE_SHOW_INACCESSIBLE_RESOURCES, new BooleanConverter());
@@ -124,7 +98,7 @@ class CalendarCommon
             $schedules = $this->scheduleRepository->GetAll();
         }
 
-        $default = null;
+        $default = new NullSchedule();
         $scheduleId = $this->page->GetScheduleId();
 
         /** @var $schedule Schedule */
@@ -133,11 +107,6 @@ class CalendarCommon
             if (!empty($scheduleId) && $schedule->GetId() == $scheduleId)
             {
                 return $schedule;
-            }
-
-            if ($schedule->GetIsDefault())
-            {
-                $default = $schedule;
             }
         }
 
