@@ -24,15 +24,8 @@ var dateHelper = function ()
 	var getDifference = function (end, begin)
 	{
 		var difference = end.getTime() - begin.getTime();
-		var days = difference / oneDay;
-		var hours = (days % 1) * 24;
-        var minutes = (hours % 1) * 60;
-
-		var roundedHours = (hours % 1) ? Math.floor(hours) : hours;
-		var roundedDays = Math.floor(days);
-        var roundedMinutes = Math.ceil(minutes);
-
-		return {RoundedHours: roundedHours, RoundedDays: roundedDays, RoundedMinutes: roundedMinutes};
+        var duration = moment.duration(difference);
+		return {RoundedHours: duration.hours(), RoundedDays: duration.days(), RoundedMinutes: duration.minutes()};
 	};
 
 	var parse = function(time)
@@ -72,8 +65,6 @@ var dateHelper = function ()
 		AddTimeDiff : function(diff, time){
 			var d = parse(time);
 			return d.add('ms', diff).format('HH:mm') + ':00';
-//			var minutes = parseFloat(diff) * 60;
-//			return d.add('minutes', minutes).format('HH:mm') + ':00';
 		},
 
 		GetTimeDifference: function (beginTime, endTime)
@@ -82,10 +73,6 @@ var dateHelper = function ()
 			var end = parse(endTime);
 
 			return end.toDate().getTime() - start.toDate().getTime();
-//			var diff = getDifference(end.toDate(), start.toDate());
-//
-//			return diff.RoundedHours;
 		}
 	};
-
 }();
