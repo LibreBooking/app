@@ -16,7 +16,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 *}
-<div class="form-group {if !$searchmode && $attribute->Required()}has-feedback{/if} {$class}">
+<div class="form-group {$class}">
     {if $readonly}
         <label class="customAttribute" for="{$attributeId}">{$attribute->Label()}</label>
         <span class="attributeValue {$class}">{if $attribute->Value() == "1"}{translate key='True'}{else}{translate key='False'}{/if}</span>
@@ -31,10 +31,11 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
         <div class="checkbox">
             <input type="checkbox" value="1" id="{$attributeId}" name="{$attributeName}"
                    {if $attribute->Value() == "1"}checked="checked"{/if} class="{$inputClass}"/>
-            <label class="customAttribute" for="{$attributeId}">{$attribute->Label()}</label>
-            {if $attribute->Required() && !$searchmode}
-                <i class="glyphicon glyphicon-asterisk form-control-feedback" data-bv-icon-for="{$attributeId}"></i>
-            {/if}
+            <label class="customAttribute" for="{$attributeId}">{$attribute->Label()}
+                {if $attribute->Required() && !$searchmode}
+                    <i class="glyphicon glyphicon-asterisk"></i>
+                {/if}
+            </label>
         </div>
     {/if}
 </div>

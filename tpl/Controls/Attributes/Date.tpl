@@ -18,7 +18,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 *}
 <div class="form-group {if !$searchmode && $attribute->Required()}has-feedback{/if} {$class}">
 	{assign value="{$attribute->Value()}" var="attributeValue"}
-	<label class="customAttribute" for="{$attributeId}">{$attribute->Label()}:</label>
+	<label class="customAttribute" for="{$attributeId}">{$attribute->Label()}</label>
 	{if $readonly}
 		<span class="attributeValue {$class}">{formatdate date=$attributeValue key=general_datetime}</span>
 	{else}
