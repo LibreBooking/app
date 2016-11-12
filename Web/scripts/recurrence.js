@@ -28,7 +28,8 @@ function Recurrence(recurOptions, recurElements, prefix) {
 		beginDate: $('#' + prefix + 'formattedBeginDate'),
 		endDate: $('#' + prefix + 'formattedEndDate'),
 		beginTime: $('#' + prefix + 'BeginPeriod'),
-		endTime: $('#' + prefix + 'EndPeriod')
+		endTime: $('#' + prefix + 'EndPeriod'),
+        repeatOnWeeklyDiv: $('#' + prefix + 'repeatOnWeeklyDiv')
 	};
 
 	var options = recurOptions;
@@ -135,7 +136,7 @@ function Recurrence(recurOptions, recurElements, prefix) {
 	function InitializeRepeatOptions() {
 		if (options.repeatType) {
 			elements.repeatOptions.val(options.repeatType);
-			elements.repeatInterval.val(options.repeatInterval);
+			elements.repeatInterval.val(options.repeatInterval == '' ? 1 : options.repeatInterval);
 			for (var i = 0; i < options.repeatWeekdays.length; i++) {
 				var id = '#' + prefix + 'repeatDay' + options.repeatWeekdays[i];
 				$(id).closest('label').button('toggle');
@@ -162,14 +163,22 @@ function Recurrence(recurOptions, recurElements, prefix) {
 		if (dateHelper.MoreThanOneDayBetweenBeginAndEnd(elements.beginDate, elements.beginTime, elements.endDate, elements.endTime)) {
 			elements.repeatOptions.data["current"] = elements.repeatOptions.val();
 			repeatToggled = true;
-			SetValue('none', false);
-		}
+            if (elements.repeatOptions.val() == 'daily')
+            {
+                elements.repeatOptions.val('none');
+                elements.repeatOptions.trigger('change');
+            }
+            elements.repeatOptions.find("option[value='daily']").prop("disabled","disabled");
+            elements.repeatOnWeeklyDiv.addClass('no-show');
+        }
 		else {
 			if (repeatToggled) {
 				SetValue(elements.repeatOptions.data["current"], false);
 				repeatToggled = false;
 			}
-		}
+            elements.repeatOptions.find("option[value='daily']").removeAttr("disabled");
+
+        }
 	};
 
 	var AdjustTerminationDate = function () {
@@ -177,7 +186,7 @@ function Recurrence(recurOptions, recurElements, prefix) {
 			return;
 		}
 
-		var newEndDate = new Date(elements.beginDate.val());
+		var newEndDate = new Date(elements.endDate.val());
 		var interval = parseInt(elements.repeatInterval.val());
 		var currentEnd = new Date(elements.repeatTermination.val());
 
@@ -187,7 +196,7 @@ function Recurrence(recurOptions, recurElements, prefix) {
 			newEndDate.setDate(newEndDate.getDate() + interval);
 		}
 		else if (repeatOption == 'weekly') {
-			newEndDate.setDate(newEndDate.getDate() + (7 * interval));
+			newEndDate.setDate(newEndDate.getDate() + (8 * interval));
 		}
 		else if (repeatOption == 'monthly') {
 			newEndDate.setMonth(newEndDate.getMonth() + interval);
