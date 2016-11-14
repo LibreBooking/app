@@ -59,6 +59,7 @@ class ResourceRepositoryTests extends TestBase
 		$resources = $resourceAccess->GetScheduleResources($scheduleId);
 
 		$filter = new SqlFilterEquals(new SqlFilterColumn('r', ColumnNames::SCHEDULE_ID), $scheduleId);
+		$filter = $filter->_And(new SqlFilterNotEquals(new SqlFilterColumn('r', ColumnNames::RESOURCE_STATUS_ID), ResourceStatus::HIDDEN));
 		$this->assertEquals(new FilterCommand(new GetAllResourcesCommand(), $filter), $this->db->_Commands[0]);
 		$this->assertTrue($this->db->GetReader(0)->_FreeCalled);
 		$this->assertEquals(count($rows), count($resources));

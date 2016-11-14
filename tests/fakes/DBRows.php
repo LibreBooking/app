@@ -496,7 +496,8 @@ class ResourceGroupAssignmentRow
 		$this->rows[] = array(
 				ColumnNames::RESOURCE_GROUP_ID => $groupId,
 				ColumnNames::RESOURCE_NAME => $resourceName,
-				ColumnNames::RESOURCE_ID => $resourceId
+				ColumnNames::RESOURCE_ID => $resourceId,
+				ColumnNames::RESOURCE_STATUS_ID => ResourceStatus::AVAILABLE,
 		);
 
 		return $this;

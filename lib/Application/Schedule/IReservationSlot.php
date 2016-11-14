@@ -136,4 +136,9 @@ interface IReservationSlot
 	 * @return bool
 	 */
 	public function CollidesWith(Date $date);
+
+	/**
+	 * @return string
+	 */
+	public function Id();
 }

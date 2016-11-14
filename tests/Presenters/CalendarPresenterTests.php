@@ -135,7 +135,7 @@ class CalendarPresenterTests extends TestBase
 		$this->page
 				->expects($this->atLeastOnce())
 				->method('GetScheduleId')
-				->will($this->returnValue(null));
+				->will($this->returnValue($defaultScheduleId));
 
 		$this->page
 				->expects($this->atLeastOnce())
