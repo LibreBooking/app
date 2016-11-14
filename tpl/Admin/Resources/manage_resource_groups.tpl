@@ -164,10 +164,10 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			var groupOptions = {
 				submitUrl: '{$smarty.server.SCRIPT_NAME}',
 				actions: actions,
-				renameText: '{translate key=Rename}',
-				addChildText: '{translate key=AddGroup}',
-				deleteText: '{translate key=Delete}',
-				exitText: '{translate key=Close}'
+				renameText: '{translate key=Rename|escape:'javascript'}',
+				addChildText: '{translate key=AddGroup|escape:'javascript'}',
+				deleteText: '{translate key=Delete|escape:'javascript'}',
+				exitText: '{translate key=Close|escape:'javascript'}'
 			};
 
 			var groupManagement = new ResourceGroupManagement(groupOptions);

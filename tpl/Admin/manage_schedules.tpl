@@ -484,7 +484,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 				url: updateUrl + '{ManageSchedules::ActionRename}', validate: function (value) {
 					if ($.trim(value) == '')
 					{
-						return '{translate key=RequiredValue}';
+						return '{translate key=RequiredValue|escape:'javascript'}';
 					}
 				}
 			});
@@ -495,11 +495,11 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 			$('.dayName').editable({
 				url: updateUrl + '{ManageSchedules::ActionChangeStartDay}', source: [{
-					value: '{Schedule::Today}', text: '{$Today}'
+					value: '{Schedule::Today}', text: '{$Today|escape:'javascript'}'
 				},
 					{foreach from=$DayNames item="dayName" key="dayIndex"}
 					{
-						value:{$dayIndex}, text: '{$dayName}'
+						value:{$dayIndex}, text: '{$dayName|escape:'javascript'}'
 					},
 					{/foreach}
 				]
@@ -511,7 +511,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 				},
 					{foreach from=$AdminGroups item=group}
 					{
-						value:{$group->Id()}, text: '{$group->Name()}'
+						value:{$group->Id()}, text: '{$group->Name()|escape:'javascript'}'
 					},
 					{/foreach}
 				]

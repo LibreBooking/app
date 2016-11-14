@@ -1278,7 +1278,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 				url: updateUrl + '{ManageResourcesActions::ActionChangeSchedule}', source: [
 					{foreach from=$Schedules item=scheduleName key=scheduleId}
 					{
-						value:{$scheduleId}, text: '{$scheduleName}'
+						value:{$scheduleId}, text: '{$scheduleName|escape:'javascript'}'
 					},
 					{/foreach}
 				]
@@ -1290,7 +1290,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 				},
 					{foreach from=$ResourceTypes item=resourceType key=id}
 					{
-						value:{$id}, text: '{$resourceType->Name()}'
+						value:{$id}, text: '{$resourceType->Name()|escape:'javascript'}'
 					},
 					{/foreach}
 				]
@@ -1322,7 +1322,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 				},
 					{foreach from=$AdminGroups item=group key=scheduleId}
 					{
-						value:{$group->Id()}, text: '{$group->Name()}'
+						value:{$group->Id()}, text: '{$group->Name()|escape:'javascript'}'
 					},
 					{/foreach}
 				]

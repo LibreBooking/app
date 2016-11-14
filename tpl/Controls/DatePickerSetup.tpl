@@ -31,7 +31,7 @@ $(function(){
 		 {/if}
 		 monthNames: {$MonthNames},
 		 monthNamesShort: {$MonthNamesShort},
-		 currentText: "{translate key='Today'}",
+		 currentText: "{{translate key='Today'}|escape:'javascript'}",
 		 timeFormat: "{$TimeFormat}",
 	  	 altFieldTimeOnly: false,
 	  	 controlType: 'select'
