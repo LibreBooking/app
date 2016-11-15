@@ -285,7 +285,10 @@ class SchedulePage extends ActionPage implements ISchedulePage
 			{
 				$this->Display('Schedule/schedule-flipped.tpl');
 			}
-			$this->Display('Schedule/schedule-mobile.tpl');
+			else
+			{
+				$this->Display('Schedule/schedule-mobile.tpl');
+			}
 		}
 		else
 		{
