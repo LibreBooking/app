@@ -90,6 +90,13 @@ class LayoutValidator extends ValidatorBase implements IValidator
 					$this->isValid = false;
 				}
 
+				if ($firstDate->IsMidnight() && $lastDate->IsMidnight())
+				{
+					Log::Debug('Both dates are midnight');
+					$this->isValid = true;
+					return;
+				}
+
 				for ($i = 0; $i < count($slots) - 1; $i++)
 				{
 					if (!$slots[$i]->EndDate()->Equals($slots[$i + 1]->BeginDate()))
@@ -100,7 +107,7 @@ class LayoutValidator extends ValidatorBase implements IValidator
 			}
 		} catch (Exception $ex)
 		{
-			Log::Error('Error during LayoutValidator', $ex);
+			Log::Error('Error during LayoutValidator %s', $ex);
 			$this->isValid = false;
 		}
 
