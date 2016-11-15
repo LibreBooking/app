@@ -279,7 +279,7 @@ class SchedulePage extends ActionPage implements ISchedulePage
 		$this->Set('PopupMonths', $this->IsMobile ? 1 : 3);
 		$this->Set('CreateReservationPage', Pages::RESERVATION);
 
-		if ($this->IsMobile)
+		if ($this->IsMobile && !$this->IsTablet)
 		{
 			if ($this->ScheduleStyle == ScheduleStyle::Tall)
 			{

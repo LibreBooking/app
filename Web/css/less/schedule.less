@@ -5,8 +5,12 @@ table.reservations {
   border-collapse: collapse;
   width: 100%;
   font-size: .85em;
-  table-layout: fixed;
+  table-layout: auto;
   border: solid #36648B 1px;
+}
+
+table.reservations.mobile {
+    table-layout:fixed;
 }
 
 table.reservations td {
@@ -15,10 +19,17 @@ table.reservations td {
   display: table-cell;
 }
 
+//table.reservations {
+//  table-layout:fixed;
+//  td {
+//    word-wrap:break-word;
+//  }
+//}
+
 .reservations.condensed {
-  td.resdate
-  {
+  td.resdate {
     width:auto;
+    min-width:120px;
   }
 }
 
@@ -26,6 +37,10 @@ td.resourcename {
   padding: 1px 3px;
   background-color: #EDEDED;
   color: #999999;
+  width:150px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space:nowrap;
 }
 
 td.resourcename a {
