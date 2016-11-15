@@ -67,6 +67,7 @@ class ReservationMovePresenter
 	{
 		$referenceNumber = $this->page->GetReferenceNumber();
 		$existingSeries = $this->persistenceService->LoadByReferenceNumber($referenceNumber);
+		$existingSeries->UpdateBookedBy(ServiceLocator::GetServer()->GetUserSession());
 		$existingSeries->ApplyChangesTo(SeriesUpdateScope::ThisInstance);
 
 		$currentDuration = $existingSeries->CurrentInstance()->Duration();
