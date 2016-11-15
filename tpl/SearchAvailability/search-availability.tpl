@@ -56,7 +56,7 @@
                 </label>
                 <label class="btn btn-default">
                     <input type="radio" id="daterange" value="daterange" {formname key=AVAILABILITY_RANGE} />
-                    <i class="fa fa-calendar"></i><span class="hidden-xs"> Date Range</span>
+                    <i class="fa fa-calendar"></i><span class="hidden-xs"> {translate key=DateRange}</span>
                 </label>
             </div>
             <div class="">

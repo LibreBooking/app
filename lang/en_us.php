@@ -599,6 +599,9 @@ class en_us extends Language
 		$strings['CollectedFor'] = 'Collected For';
 		$strings['IncludeDeleted'] = 'Include Deleted Reservations';
 		$strings['Deleted'] = 'Deleted';
+		$strings['Back'] = 'Back';
+		$strings['Forward'] = 'Forward';
+		$strings['DateRange'] = 'Date Range';
         // End Strings
 
 		// Install

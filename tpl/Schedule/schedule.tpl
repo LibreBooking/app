@@ -141,10 +141,10 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 					{assign var=FirstDate value=$DisplayDates->GetBegin()}
 					{assign var=LastDate value=$DisplayDates->GetEnd()->AddDays(-1)}
 					<a href="#" class="change-date" data-year="{$PreviousDate->Year()}" data-month="{$PreviousDate->Month()}"
-					   data-day="{$PreviousDate->Day()}">{html_image src="arrow_large_left.png" alt="Back"}</a>
+					   data-day="{$PreviousDate->Day()}">{html_image src="arrow_large_left.png" alt="{translate key=Back}"}</a>
 					{formatdate date=$FirstDate} - {formatdate date=$LastDate}
 					<a href="#" class="change-date" data-year="{$NextDate->Year()}" data-month="{$NextDate->Month()}"
-					   data-day="{$NextDate->Day()}">{html_image src="arrow_large_right.png" alt="Forward"}</a>
+					   data-day="{$NextDate->Day()}">{html_image src="arrow_large_right.png" alt="{translate key=Forward}"}</a>
 
 					{if $ShowFullWeekLink}
 						<a href="{add_querystring key=SHOW_FULL_WEEK value=1}"
