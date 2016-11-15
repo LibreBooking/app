@@ -83,8 +83,8 @@ class ReportDefinition implements IReportDefinition
 				ColumnNames::RESERVATION_DESCRIPTION => new ReportStringColumn('Description', ChartColumnDefinition::Null()),
 				ColumnNames::REFERENCE_NUMBER => new ReportStringColumn('ReferenceNumber', ChartColumnDefinition::Null()),
 				ColumnNames::OWNER_FULL_NAME_ALIAS => new ReportStringColumn('User', ChartColumnDefinition::Label(ColumnNames::OWNER_USER_ID)),
-				ColumnNames::OWNER_FIRST_NAME => new ReportStringColumn('First', ChartColumnDefinition::Label(ColumnNames::OWNER_USER_ID)),
-				ColumnNames::OWNER_LAST_NAME => new ReportStringColumn('Last', ChartColumnDefinition::Label(ColumnNames::OWNER_USER_ID)),
+				ColumnNames::OWNER_FIRST_NAME => new ReportStringColumn('FirstName', ChartColumnDefinition::Label(ColumnNames::OWNER_USER_ID)),
+				ColumnNames::OWNER_LAST_NAME => new ReportStringColumn('LastName', ChartColumnDefinition::Label(ColumnNames::OWNER_USER_ID)),
 				ColumnNames::EMAIL => new ReportStringColumn('Email', ChartColumnDefinition::Label(ColumnNames::OWNER_USER_ID)),
 				ColumnNames::GROUP_NAME_ALIAS => new ReportStringColumn('Group', ChartColumnDefinition::Label(ColumnNames::GROUP_ID)),
 				ColumnNames::SCHEDULE_NAME_ALIAS => new ReportStringColumn('Schedule', ChartColumnDefinition::Label(ColumnNames::SCHEDULE_ID)),
@@ -110,7 +110,7 @@ class ReportDefinition implements IReportDefinition
 
 		foreach ($reportColumns->GetCustomAttributes() as $column)
 		{
-			$this->columns[$column->Id] = new ReportStringColumn($column->Label, ChartColumnDefinition::Null());
+			$this->columns[$column->Id] = new ReportAttributeColumn($column->Label, ChartColumnDefinition::Null());
 		}
 	}
 

@@ -181,6 +181,15 @@ abstract class ReportColumn
 
 class ReportStringColumn extends ReportColumn
 {
+	public function __construct($titleKey, ChartColumnDefinition $chartColumnDefinition)
+	{
+		parent::__construct(null, $chartColumnDefinition);
+		$this->titleKey = $titleKey;
+	}
+}
+
+class ReportAttributeColumn extends ReportColumn
+{
 	public function __construct($title, ChartColumnDefinition $chartColumnDefinition)
 	{
 		parent::__construct(null, $chartColumnDefinition);
