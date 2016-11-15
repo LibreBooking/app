@@ -48,7 +48,7 @@ class AttributeFilter
             if ($attribute->Type() == CustomAttributeTypes::MULTI_LINE_TEXTBOX || $attribute->Type() == CustomAttributeTypes::SINGLE_LINE_TEXTBOX) {
                 $attributeFragment->_And($idEquals->_And(new SqlFilterLike($attributeValue, $attribute->Value())));
             }
-            if ($attribute->Type() == CustomAttributeTypes::CHECKBOX && $attribute->Value() == '0') {
+            else if ($attribute->Type() == CustomAttributeTypes::CHECKBOX && $attribute->Value() == '0') {
                 $attributeFragment->_And(new SqlFilterFreeForm('NOT EXISTS (SELECT 1 FROM ' . TableNames::CUSTOM_ATTRIBUTE_VALUES . ' b WHERE b.entity_id = a0.entity_id AND b.custom_attribute_id = ' . $id . ')'));
             }
             else {
