@@ -179,8 +179,8 @@ abstract class ReservationEmailMessage extends EmailMessage
     protected function PopulateIcsAttachment($currentInstance, $attributeValues)
     {
         $rv = new ReservationItemView($currentInstance->ReferenceNumber(),
-            $currentInstance->StartDate(),
-            $currentInstance->EndDate(),
+            $currentInstance->StartDate()->ToUTC(),
+            $currentInstance->EndDate()->ToUTC(),
             $this->reservationSeries->Resource()->GetName(),
             $this->reservationSeries->Resource()->GetResourceId(),
             $currentInstance->ReservationId(),
