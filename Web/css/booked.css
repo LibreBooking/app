@@ -857,7 +857,6 @@ td.resdate {
 }
 tr.today td.resdate,
 td.today {
-  font-weight: bold;
   color: #FFFFFF;
   background-color: #5199d1;
 }
@@ -875,7 +874,6 @@ td.today {
   padding: 2px;
 }
 tr.today td.reslabel {
-  font-weight: bold;
   background-color: #cfcfcf;
 }
 .slot {
