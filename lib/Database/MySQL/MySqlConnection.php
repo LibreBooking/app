@@ -55,8 +55,8 @@ class MySqlConnection implements IDbConnection
 
 		if (!$this->_db || !$selected)
 		{
-			throw new Exception("Error connecting to database\nError: " . mysqli_error($this->_db));
 			Log::Error("Error connecting to database\n%s",  mysqli_error($this->_db));
+			throw new Exception("Error connecting to database\nError: " . mysqli_error($this->_db));
 		}
 
 		$this->_connected = true;
@@ -74,12 +74,17 @@ class MySqlConnection implements IDbConnection
 		mysqli_set_charset($this->_db, Resources::GetInstance()->Charset);
 		$mysqlCommand = new MySqlCommandAdapter($sqlCommand, $this->_db);
 
-		Log::Sql('MySql Query: ' . str_replace('%', '%%', $mysqlCommand->GetQuery()));
+		if (Log::DebugEnabled())
+		{
+			Log::Sql('MySql Query: ' . str_replace('%', '%%', $mysqlCommand->GetQuery()));
+		}
 
         if ($sqlCommand->ContainsGroupConcat())
         {
             mysqli_query($this->_db,'SET SESSION group_concat_max_len = 1000000;');
         }
+
+		mysqli_query($this->_db, "SET SESSION sql_mode = 'STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION'");
 
 		$result = mysqli_query($this->_db, $mysqlCommand->GetQuery());
 
@@ -98,7 +103,12 @@ class MySqlConnection implements IDbConnection
 		mysqli_set_charset($this->_db, Resources::GetInstance()->Charset);
 		$mysqlCommand = new MySqlCommandAdapter($sqlCommand, $this->_db);
 
-		Log::Sql('MySql Execute: ' . str_replace('%', '%%', $mysqlCommand->GetQuery()));
+		if (Log::DebugEnabled())
+		{
+			Log::Sql('MySql Execute: ' . str_replace('%', '%%', $mysqlCommand->GetQuery()));
+		}
+
+		mysqli_query($this->_db, "SET SESSION sql_mode = 'STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION'");
 
 		$result = mysqli_query($this->_db, $mysqlCommand->GetQuery());
 
@@ -118,9 +128,10 @@ class MySqlConnection implements IDbConnection
 			{
 				echo $sqlCommand->GetQuery();
 			}
-			throw new Exception('There was an error executing your query\n' .  mysqli_error($this->_db));
 
-           	Log::Error("Error executing MySQL query %s",  mysqli_error($this->_db));
+			Log::Error("Error executing MySQL query %s",  mysqli_error($this->_db));
+
+			throw new Exception('There was an error executing your query\n' .  mysqli_error($this->_db));
 		}
         return false;
 	}
