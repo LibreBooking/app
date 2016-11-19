@@ -74,12 +74,20 @@ class Attribute
 	}
 
 	/**
-	 * @return boolean
+	 * @return bool
 	 */
 	public function Required()
 	{
 		return $this->attributeDefinition->Required();
 	}
+
+    /**
+     * @return bool
+     */
+	public function AdminOnly()
+    {
+        return $this->attributeDefinition->AdminOnly();
+    }
 
 	/**
 	 * @return int
@@ -114,7 +122,7 @@ class Attribute
 	}
 
 	/**
-	 * @return int|null
+	 * @return int[]|null
 	 */
 	public function SecondaryEntityId()
 	{
