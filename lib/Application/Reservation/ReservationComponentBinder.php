@@ -44,11 +44,12 @@ class ReservationDateBinder implements IReservationComponentBinder
 		$startDate = ($requestedStartDate == null) ? $requestedDate : $requestedStartDate->ToTimezone($timezone);
 		$endDate = ($requestedEndDate == null) ? $requestedDate : $requestedEndDate->ToTimezone($timezone);
 
-		if ($initializer->IsNew())
+        if ($initializer->IsNew())
 		{
 			$resource = $initializer->PrimaryResource();
 
-			if ($resource->GetMinimumLength() != null && !$resource->GetMinimumLength()->Interval()->IsNull())
+			if ($resource->GetMinimumLength() != null && !$resource->GetMinimumLength()->Interval()->IsNull() &&
+                !DateDiff::BetweenDates($startDate, $endDate)->GreaterThan($resource->GetMinimumLength()->Interval()))
 			{
 				$endDate = $startDate->ApplyDifference($resource->GetMinimumLength()->Interval());
 			}
