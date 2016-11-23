@@ -41,8 +41,11 @@ class CaptchaControl extends Control
 	{
 		Log::Debug('CaptchaControl using Recaptcha');
 		require_once(ROOT_DIR . 'lib/external/recaptcha/recaptchalib.php');
+
+		$isHttps = ServiceLocator::GetServer()->GetIsHttps();
+
 		$response = recaptcha_get_html(Configuration::Instance()->GetSectionKey(ConfigSection::RECAPTCHA,
-																				ConfigKeys::RECAPTCHA_PUBLIC_KEY));
+																				ConfigKeys::RECAPTCHA_PUBLIC_KEY), null, $isHttps);
 		echo $response;
 	}
 
