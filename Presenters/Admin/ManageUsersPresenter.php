@@ -460,6 +460,7 @@ class ManageUsersPresenter extends ActionPresenter implements IManageUsersPresen
 
     public function ImportUsers()
     {
+		ini_set('max_execution_time', 300);
         $groupsList = $this->groupViewRepository->GetList();
         /** @var GroupItemView[] $groups */
         $groups = $groupsList->Results();
