@@ -23,7 +23,7 @@ class ReservationDeletedEmail extends ReservationEmailMessage
      */
     function Subject()
     {
-        return $this->Translate('ReservationDeletedSubject');
+        return $this->Translate('ReservationDeletedSubjectWithResource', array($this->primaryResource->GetName()));
     }
 
     protected function GetTemplateName()

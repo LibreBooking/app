@@ -49,16 +49,22 @@ class LayoutValidatorTests extends TestBase
 		$v2 = new LayoutValidator("00:00-10:00\n10:30-21:00", "10:00-10:30\n21:00-00:00");
 		$v3 = new LayoutValidator("00:00-00:30\n21:00-23:30", "00:30-21:00\n23:30-00:00");
 		$v4 = new LayoutValidator("08:00 - 08:30\n08:30 - 09:00\n09:00 - 09:30\n09:30 - 10:00\n10:00 - 10:30\n10:30 - 11:00\n11:00 - 11:30\n11:30 - 12:00\n12:00 - 12:30\n12:30 - 13:00\n13:00 - 13:30\n13:30 - 14:00\n14:00 - 14:30\n14:30 - 15:00\n15:00 - 15:30\n15:30 - 16:00\n16:00 - 16:30\n16:30 - 17:00\n17:00 - 17:30\n17:30 - 18:00", "00:00-08:00\n18:00-00:00");
+		$v5 = new LayoutValidator("00:00-00:00", '');
+		$v6 = new LayoutValidator("", '00:00-00:00');
 
 		$v1->Validate();
 		$v2->Validate();
 		$v3->Validate();
 		$v4->Validate();
+		$v5->Validate();
+		$v6->Validate();
 
 		$this->assertTrue($v1->IsValid());
 		$this->assertTrue($v2->IsValid());
 		$this->assertTrue($v3->IsValid());
 		$this->assertTrue($v4->IsValid());
+		$this->assertTrue($v5->IsValid());
+		$this->assertTrue($v6->IsValid());
 	}
 
 	public function testInvalidUnlessThereIsASlotCoveringEveryMinuteForTheWholeDayForWholeWeek()

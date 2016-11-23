@@ -21,7 +21,7 @@ class ReservationApprovedEmail extends ReservationEmailMessage
 {
 	public function Subject()
 	{
-		return $this->Translate('ReservationApprovedSubject');
+		return $this->Translate('ReservationApprovedSubjectWithResource', array($this->primaryResource->GetName()));
 	}
 
 	protected function PopulateTemplate()

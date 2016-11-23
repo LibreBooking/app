@@ -784,6 +784,18 @@ class en_us extends Language
 		$strings['UserDeleted'] = 'User account for %s was deleted by %s';
 		$strings['GuestAccountCreatedSubject'] = 'Your account details';
 		$strings['InviteUserSubject'] = '%s has invited you to join %s';
+
+		$strings['ReservationApprovedSubjectWithResource'] = 'Reservation Has Been Approved For %s';
+		$strings['ReservationCreatedSubjectWithResource'] = 'Reservation Created For %s';
+		$strings['ReservationUpdatedSubjectWithResource'] = 'Reservation Updated For %s';
+		$strings['ReservationDeletedSubjectWithResource'] = 'Reservation Removed For %s';
+		$strings['ReservationCreatedAdminSubjectWithResource'] = 'Notification: Reservation Created For %s';
+		$strings['ReservationUpdatedAdminSubjectWithResource'] = 'Notification: Reservation Updated For %s';
+		$strings['ReservationDeleteAdminSubjectWithResource'] = 'Notification: Reservation Removed For %s';
+		$strings['ReservationApprovalAdminSubjectWithResource'] = 'Notification: Reservation For %s Requires Your Approval';
+		$strings['ParticipantAddedSubjectWithResource'] = '%s Added You To A Reservation For %s';
+		$strings['ParticipantDeletedSubjectWithResource'] = '%s Removed A Reservation For %s';
+		$strings['InviteeAddedSubjectWithResource'] = '%s Invited You Reservation For %s';
 		// End Email Subjects
 
 		$this->Strings = $strings;
