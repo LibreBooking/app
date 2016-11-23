@@ -138,6 +138,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			{capture name="date_navigation"}
 				<div class="row">
 				<div class="schedule-dates col-lg-3 col-md-12">
+					{assign var=TodaysDate value=Date::Now()}
+					<a href="#" class="change-date btn-link btn-success" data-year="{$TodaysDate->Year()}" data-month="{$TodaysDate->Month()}" data-day="{$TodaysDate->Day()}" alt="{translate key=Today}"><i class="fa fa-home"></i></a>
 					{assign var=FirstDate value=$DisplayDates->GetBegin()}
 					{assign var=LastDate value=$DisplayDates->GetEnd()->AddDays(-1)}
 					<a href="#" class="change-date" data-year="{$PreviousDate->Year()}" data-month="{$PreviousDate->Month()}"
