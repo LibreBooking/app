@@ -270,6 +270,21 @@ function Reservation(opts) {
 	}
 
 	var ShowAccessoriesPrompt = function () {
+
+		var url = options.accessoriesUrl
+						.replace('[sd]', elements.beginDate.val())
+						.replace('[ed]', elements.endDate.val())
+						.replace('[rn]', elements.referenceNumber.val())
+						.replace('[st]', elements.beginTime.val())
+						.replace('[et]', elements.endTime.val());
+
+		ajaxGet(url, null, function(data){
+			var dialog = elements.accessoriesDialog;
+			$.each(data, function(i, accessory) {
+				dialog.find('[accessory-quantity-id="' + accessory.id + '"]').html(accessory.quantity === null ? '&infin;' : accessory.quantity);
+			});
+		});
+
 		elements.accessoriesDialog.find('input:text').val('0');
 		elements.accessoriesDialog.find('tr[accessory-id]').show();
 

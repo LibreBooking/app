@@ -34,7 +34,12 @@ class FakeReservationViewRepository implements IReservationViewRepository
 
     public $_LastRange;
 
-    public function __construct()
+	/**
+	 * @var AccessoryReservation[]
+	 */
+	public $_AccessoryReservations = array();
+
+	public function __construct()
     {
         $this->_ReservationView = new ReservationView();
     }
@@ -78,6 +83,6 @@ class FakeReservationViewRepository implements IReservationViewRepository
 
     public function GetAccessoriesWithin(DateRange $dateRange)
     {
-        return array();
+        return $this->_AccessoryReservations;
     }
 }

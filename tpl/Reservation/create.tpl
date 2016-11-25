@@ -403,7 +403,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                                                value="0" size="3"/>
                                     {/if}
                                 </td>
-                                <td>{$accessory->GetQuantityAvailable()|default:'&infin;'}</td>
+                                <td accessory-quantity-id="{$accessory->GetId()}" accessory-quantity-available="{$accessory->GetQuantityAvailable()}">{$accessory->GetQuantityAvailable()|default:'&infin;'}</td>
                             </tr>
                         {/foreach}
                         </tbody>
@@ -484,7 +484,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
             groupAutocompleteUrl: "ajax/autocomplete.php?type={AutoCompleteType::Group}",
             changeUserAutocompleteUrl: "ajax/autocomplete.php?type={AutoCompleteType::MyUsers}",
             maxConcurrentUploads: '{$MaxUploadCount}',
-            guestLabel: '({translate key=Guest})'
+            guestLabel: '({translate key=Guest})',
+            accessoriesUrl: 'ajax/available_accessories.php?{QueryStringKeys::START_DATE}=[sd]&{QueryStringKeys::END_DATE}=[ed]&{QueryStringKeys::START_TIME}=[st]&{QueryStringKeys::END_TIME}=[et]&{QueryStringKeys::REFERENCE_NUMBER}=[rn]'
         };
 
         var recurOpts = {

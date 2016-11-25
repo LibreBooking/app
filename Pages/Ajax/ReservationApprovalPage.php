@@ -25,7 +25,6 @@ require_once(ROOT_DIR . 'Presenters/Reservation/ReservationApprovalPresenter.php
 interface IReservationApprovalPage extends IReservationSaveResultsView
 {
 	/**
-	 * @abstract
 	 * @return string
 	 */
 	public function GetReferenceNumber();

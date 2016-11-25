@@ -38,6 +38,7 @@ class QueryStringKeys
 	const EMAIL = 'e';
     const END = 'end';
 	const END_DATE = 'ed';
+	const END_TIME = 'et';
 	const FORMAT = 'format';
 	const GROUP_ID = 'gid';
 	const INVITATION_ACTION = 'ia';
@@ -73,6 +74,7 @@ class QueryStringKeys
     const SORT_FIELD = 'sort';
     const START = 'start';
 	const START_DATE = 'sd';
+	const START_TIME = 'st';
 	const START_DATES = 'sds';
     const SUBSCRIPTION_KEY = 'icskey';
     const TYPE = 'type';
