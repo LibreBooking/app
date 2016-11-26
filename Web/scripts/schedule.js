@@ -182,7 +182,7 @@ function Schedule(opts, resourceGroups) {
 			var year = $(this).attr('data-year');
 			var month = $(this).attr('data-month');
 			var day = $(this).attr('data-day');
-			ChangeDate(year, month, day)
+			ChangeDate(year, month, day);
 		});
 	};
 

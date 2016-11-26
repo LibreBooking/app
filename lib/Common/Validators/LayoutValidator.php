@@ -90,7 +90,7 @@ class LayoutValidator extends ValidatorBase implements IValidator
 					$this->isValid = false;
 				}
 
-				if ($firstDate->IsMidnight() && $lastDate->IsMidnight())
+				if (count($slots) == 0 && $slots[0]->BeginDate()->IsMidnight() && $slots[0]->EndDate()->IsMidnight())
 				{
 					Log::Debug('Both dates are midnight');
 					$this->isValid = true;

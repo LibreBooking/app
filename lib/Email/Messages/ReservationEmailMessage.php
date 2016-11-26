@@ -60,6 +60,7 @@ abstract class ReservationEmailMessage extends EmailMessage
 		$this->reservationSeries = $reservationSeries;
 		$this->timezone = $reservationOwner->Timezone();
 		$this->attributeRepository = $attributeRepository;
+		$this->primaryResource = $reservationSeries->Resource();
 	}
 
 	/**

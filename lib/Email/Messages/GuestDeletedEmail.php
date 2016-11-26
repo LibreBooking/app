@@ -43,7 +43,7 @@ class GuestDeletedEmail extends ReservationEmailMessage
 
 	public function Subject()
 	{
-		return $this->Translate('ParticipantDeletedSubject');
+		return $this->Translate('ParticipantDeletedSubjectWithResource', array($this->reservationOwner->FullName(), $this->primaryResource->GetName()));
 	}
 
 	public function From()

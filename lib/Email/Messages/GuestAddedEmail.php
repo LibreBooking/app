@@ -40,7 +40,7 @@ class GuestAddedEmail extends ReservationEmailMessage
 
 	public function Subject()
 	{
-		return $this->Translate('ParticipantAddedSubject');
+		return $this->Translate('ParticipantAddedSubjectWithResource', array($this->reservationOwner->FullName(), $this->primaryResource->GetName()));
 	}
 
 	public function From()
