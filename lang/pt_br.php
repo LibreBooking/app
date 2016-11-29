@@ -502,9 +502,8 @@ class pt_br extends en_us
 	$strings['AvailableUntil'] = 'Disponível até';
 	$strings['AvailableBeginningAt'] = 'Disponível a parit de';
 	$strings['RegisterANewAccount'] = 'Registro de uma Nova Conta';
-	$strings['InviteUserSubject'] = '%s convidou você para participar do sistema %s';
-
-
+	$strings['FindATime'] = 'Procure uma agenda';
+	$strings['Import'] = 'Importação';
     // End Strings
 
     // Install
@@ -671,6 +670,7 @@ class pt_br extends en_us
     $strings['ReservationStartingSoonSubject'] = 'A reserva para %s está chegando';
     $strings['ReservationEndingSoonSubject'] = 'A reserva para %s está chegando ao fim';
     $strings['UserAdded'] = 'A new user has been added';
+	$strings['InviteUserSubject'] = '%s convidou você para participar do sistema %s';
     // End Email Subjects
 
     // Create do pt_br language
