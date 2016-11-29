@@ -501,6 +501,9 @@ class pt_br extends en_us
 	$strings['UnavailableAllDay'] = 'Indisponivel todo o dia';
 	$strings['AvailableUntil'] = 'Disponível até';
 	$strings['AvailableBeginningAt'] = 'Disponível a parit de';
+	$strings['RegisterANewAccount'] = 'Registro de uma Nova Conta';
+	$strings['InviteUserSubject'] = '%s convidou você para participar do sistema %s';
+
 
     // End Strings
 
