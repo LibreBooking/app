@@ -504,6 +504,8 @@ class pt_br extends en_us
 	$strings['RegisterANewAccount'] = 'Registro de uma Nova Conta';
 	$strings['FindATime'] = 'Procure uma agenda';
 	$strings['Import'] = 'Importação';
+	$strings['SpecificDates'] = 'Mostrar datas específicas';
+	$strings['AllowParticipantsToJoin'] = 'Permitir aos participantes participação na reserva';
     // End Strings
 
     // Install
