@@ -41,7 +41,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 	{call name=displayGeneralReservedCondensed Slot=$Slot Href=$Href OwnershipClass='mine'}
 {/function}
 
-{function name=displayMyParticipatingMobile}
+{function name=displayMyParticipatingCondensed}
 	{call name=displayGeneralReservedCondensed Slot=$Slot Href=$Href OwnershipClass='participating'}
 {/function}
 

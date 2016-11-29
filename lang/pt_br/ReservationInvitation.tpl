@@ -17,19 +17,19 @@ You should have received a copy of the GNU General Public License
 along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 *}
 
-	Reservation Details:
+	Detalhes da Reserva:
 	<br/>
 	<br/>
 
-	Starting: {formatdate date=$StartDate key=reservation_email}<br/>
-	Ending: {formatdate date=$EndDate key=reservation_email}<br/>
-	Resource: {$ResourceName}<br/>
-	Title: {$Title}<br/>
-	Description: {$Description|nl2br}<br/>
+	Inicio: {formatdate date=$StartDate key=reservation_email}<br/>
+	Fim: {formatdate date=$EndDate key=reservation_email}<br/>
+	Recurso: {$ResourceName}<br/>
+	Título: {$Title}<br/>
+	Descrição: {$Description|nl2br}<br/>
 
 	{if count($RepeatDates) gt 0}
 		<br/>
-		The reservation occurs on the following dates:
+		A reserva ocorrerá nas seguintes datas:
 		<br/>
 	{/if}
 
@@ -46,7 +46,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 	Attending? <a href="{$ScriptUrl}/{$AcceptUrl}">Yes</a> <a href="{$ScriptUrl}/{$DeclineUrl}">No</a>
 	<br/>
 
-	<a href="{$ScriptUrl}/{$ReservationUrl}">View this reservation</a> |
-	<a href="{$ScriptUrl}/{$ICalUrl}">Add to Outlook</a> |
-	<a href="{$ScriptUrl}">Log in to Booked Scheduler</a>
+	<a href="{$ScriptUrl}/{$ReservationUrl}">Verifique esta reserva</a> |
+	<a href="{$ScriptUrl}/{$ICalUrl}">Adicionar ao Outlook</a> |
+	<a href="{$ScriptUrl}">Acessar o Booked Scheduler</a>
 

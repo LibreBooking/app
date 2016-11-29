@@ -16,32 +16,4 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 *}
-
-
-	Detalhes da Reserva:
-	<br/>
-	<br/>
-
-	Inicio: {formatdate date=$StartDate key=reservation_email}<br/>
-	Fim: {formatdate date=$EndDate key=reservation_email}<br/>
-	Recurso: {$ResourceName}<br/>
-
-	{if $ResourceImage}
-		<div class="resource-image"><img src="{$ScriptUrl}/{$ResourceImage}"/></div>
-	{/if}
-
-	Título: {$Title}<br/>
-	Descrição: {$Description|nl2br}<br/>
-
-	{if count($RepeatDates) gt 0}
-		<br/>
-		The following dates have been removed:
-		<br/>
-	{/if}
-
-	{foreach from=$RepeatDates item=date name=dates}
-		{formatdate date=$date}<br/>
-	{/foreach}
-
-	<a href="{$ScriptUrl}">Acessar o Booked Scheduler</a>
-
+{$FullName} convidou você para registrar uma conta no sistema de reservas {$AppTitle}. Por favor, <a href="{$RegisterUrl}">registre sua conta</a>.

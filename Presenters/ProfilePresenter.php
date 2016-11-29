@@ -194,7 +194,7 @@ class ProfilePresenter extends ActionPresenter
     private function GetAttributes($userId)
     {
         $allAttributes = array();
-        
+
         $attributes = $this->attributeService->GetAttributes(CustomAttributeCategory::USER, $userId);
         $asList = $attributes->GetAttributes($userId);
 
