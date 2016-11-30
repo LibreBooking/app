@@ -1,0 +1,13 @@
+table.reservations {
+	font-size:14px;
+}
+
+#schedule-actions, #calendar_toggle, #reservations-left, .change-date  {
+	display:none;
+}
+
+@media print {
+	a[href]:after {
+		content: "" !important;
+	}
+}
