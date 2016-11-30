@@ -18,6 +18,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 *}
 {if $authorized}
 <div class="res_popup_details" style="margin:0">
+
 	{capture "name"}
 	<div class="user">
 		{if $hideUserInfo || $hideDetails}
@@ -28,6 +29,24 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 	</div>
 	{/capture}
 	{$formatter->Add('name', $smarty.capture.name)}
+
+	{capture "email"}
+	<div class="email">
+		{if !$hideUserInfo && !$hideDetails}
+			{$email}
+		{/if}
+	</div>
+	{/capture}
+	{$formatter->Add('email', $smarty.capture.email)}
+
+	{capture "phone"}
+	<div class="phone">
+		{if !$hideUserInfo && !$hideDetails}
+			{$phone}
+		{/if}
+	</div>
+	{/capture}
+	{$formatter->Add('phone', $smarty.capture.phone)}
 
 	{capture "dates"}
         {assign var="key" value="res_popup"}

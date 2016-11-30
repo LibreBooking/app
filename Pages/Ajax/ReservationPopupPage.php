@@ -88,6 +88,16 @@ interface IReservationPopupPage
 	 * @param Attribute[] $attributes
 	 */
 	public function BindAttributes($attributes);
+
+	/**
+	 * @param string $emailAddress
+	 */
+	public function SetEmail($emailAddress);
+
+	/**
+	 * @param string $phone
+	 */
+	public function SetPhone($phone);
 }
 
 class PopupFormatter
@@ -124,6 +134,8 @@ class PopupFormatter
 		$label = str_replace('{participants}', $this->GetValue('participants'), $label);
 		$label = str_replace('{accessories}', $this->GetValue('accessories'), $label);
 		$label = str_replace('{description}', $this->GetValue('description'), $label);
+		$label = str_replace('{phone}', $this->GetValue('phone'), $label);
+		$label = str_replace('{email}', $this->GetValue('email'), $label);
 
 		if (strpos($label, '{attributes}') !== false)
 		{
@@ -234,39 +246,34 @@ class ReservationPopupPage extends Page implements IReservationPopupPage
 		$this->Set('endDate', $endDate);
 	}
 
-	/**
-	 * @param $accessories ReservationAccessory[]
-	 * @return mixed
-	 */
 	public function SetAccessories($accessories)
 	{
 		$this->Set('accessories', $accessories);
 	}
 
-	/**
-	 * @param bool $hideReservationDetails
-	 * @return void
-	 */
 	public function SetHideDetails($hideReservationDetails)
 	{
 		$this->Set('hideDetails', $hideReservationDetails);
 	}
 
-	/**
-	 * @param bool $hideUserInfo
-	 * @return void
-	 */
 	public function SetHideUser($hideUserInfo)
 	{
 		$this->Set('hideUserInfo', $hideUserInfo);
 	}
 
-	/**
-	 * @param Attribute[] $attributes
-	 */
 	public function BindAttributes($attributes)
 	{
 		$this->Set('attributes', $attributes);
+	}
+
+	public function SetEmail($emailAddress)
+	{
+		$this->Set('email', $emailAddress);
+	}
+
+	public function SetPhone($phone)
+	{
+		$this->Set('phone', $phone);
 	}
 }
 
@@ -343,6 +350,8 @@ class ReservationPopupPresenter
 		$endDate = $reservation->EndDate->ToTimezone($tz);
 
 		$this->_page->SetName($reservation->OwnerFirstName, $reservation->OwnerLastName);
+		$this->_page->SetEmail($reservation->OwnerEmailAddress);
+		$this->_page->SetPhone($reservation->OwnerPhone);
 		$this->_page->SetResources($reservation->Resources);
 		$this->_page->SetParticipants($reservation->Participants);
 		$this->_page->SetSummary($reservation->Description);

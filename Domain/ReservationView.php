@@ -57,6 +57,7 @@ class ReservationView
     public $OriginalEndDate;
     public $OwnerId;
     public $OwnerEmailAddress;
+    public $OwnerPhone;
     public $OwnerFirstName;
     public $OwnerLastName;
     public $Title;

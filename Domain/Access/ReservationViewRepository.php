@@ -133,6 +133,7 @@ class ReservationViewRepository implements IReservationViewRepository
 			$reservationView->OwnerFirstName = $row[ColumnNames::FIRST_NAME];
 			$reservationView->OwnerLastName = $row[ColumnNames::LAST_NAME];
 			$reservationView->OwnerEmailAddress = $row[ColumnNames::EMAIL];
+			$reservationView->OwnerPhone = $row[ColumnNames::PHONE_NUMBER];
 			$reservationView->StatusId = $row[ColumnNames::RESERVATION_STATUS];
 			$reservationView->DateCreated = Date::FromDatabase($row[ColumnNames::RESERVATION_CREATED]);
 			$reservationView->DateModified = Date::FromDatabase($row[ColumnNames::RESERVATION_MODIFIED]);
