@@ -187,7 +187,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 					{if count($ResourceAttributes) + count($ResourceTypeAttributes) > 5}
 						<div>
-							<input type="submit" value="{translate key=Filter}" class="button" {formname key=SUBMIT}/>
+							<input type="submit" value="{translate key=Filter}" class="btn btn-success btn-sm" {formname key=SUBMIT}/>
 						</div>
 					{/if}
 
