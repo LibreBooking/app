@@ -39,11 +39,11 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 	{if $RequiresApproval}
 		<br/>
-		One or more of the resources reserved require approval before usage.  This reservation will be pending until it is approved.
+		Um ou mais recursos necessitam de aprovação antes do seu uso. Essa reserva ficará pendente até que a mesma seja aprovada.
 	{/if}
 
 	<br/>
-	Attending? <a href="{$ScriptUrl}/{$AcceptUrl}">Yes</a> <a href="{$ScriptUrl}/{$DeclineUrl}">No</a>
+	Aceitar o convite? <a href="{$ScriptUrl}/{$AcceptUrl}">Sim</a> <a href="{$ScriptUrl}/{$DeclineUrl}">Não</a>
 	<br/>
 
 	<a href="{$ScriptUrl}/{$ReservationUrl}">Verifique esta reserva</a> |

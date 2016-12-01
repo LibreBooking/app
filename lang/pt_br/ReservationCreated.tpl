@@ -45,7 +45,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 	{if $RequiresApproval}
 		<br/>
-		One or more of the resources reserved require approval before usage.  This reservation will be pending until it is approved.
+		Um ou mais recursos necessitam de aprovação antes do seu uso. Essa reserva ficará pendente até que a mesma seja aprovada.
 	{/if}
 
 	<br/>

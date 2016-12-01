@@ -35,7 +35,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 	{if count($RepeatDates) gt 0}
 		<br/>
-		The following dates have been removed:
+		As seguintes datas foram removidas:
 		<br/>
 	{/if}
 
@@ -44,4 +44,3 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 	{/foreach}
 
 	<a href="{$ScriptUrl}">Acessar o Booked Scheduler</a>
-
