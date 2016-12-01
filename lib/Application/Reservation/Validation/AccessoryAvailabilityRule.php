@@ -16,6 +16,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 require_once(ROOT_DIR . 'Domain/Access/AccessoryRepository.php');
 require_once(ROOT_DIR . 'Domain/Access/ReservationRepository.php');
+require_once(ROOT_DIR . 'lib/Application/Reservation/AccessoryAggregation.php');
 
 class AccessoryAvailabilityRule implements IReservationValidationRule
 {
@@ -137,69 +138,6 @@ class AccessoryAvailabilityRule implements IReservationValidationRule
 	}
 }
 
-class AccessoryAggregation
-{
-	private $quantities = array();
-
-	/**
-	 * @var \DateRange
-	 */
-	private $duration;
-
-	/**
-	 * @var string[]
-	 */
-	private $addedReservations = array();
-
-	/**
-	 * @param array|AccessoryToCheck[] $accessories
-	 * @param DateRange $duration
-	 */
-	public function __construct($accessories, $duration)
-	{
-		foreach ($accessories as $a)
-		{
-			$this->quantities[$a->GetId()] = 0;
-		}
-
-		$this->duration = $duration;
-
-	}
-	/**
-	 * @param AccessoryReservation $accessoryReservation
-	 * @return void
-	 */
-	public function Add(AccessoryReservation $accessoryReservation)
-	{
-		if ($accessoryReservation->GetStartDate()->Equals($this->duration->GetEnd()) || $accessoryReservation->GetEndDate()->Equals($this->duration->GetBegin()))
-		{
-			return;
-		}
-
-		if (array_key_exists($accessoryReservation->GetReferenceNumber(), $this->addedReservations))
-		{
-			return;
-		}
-
-		$this->addedReservations[$accessoryReservation->GetReferenceNumber()] = true;
-
-		$accessoryId = $accessoryReservation->GetAccessoryId();
-		if (array_key_exists($accessoryId, $this->quantities))
-		{
-			$this->quantities[$accessoryId] += $accessoryReservation->QuantityReserved();
-		}
-	}
-
-	/**
-	 * @param int $accessoryId
-	 * @return int
-	 */
-	public function GetQuantity($accessoryId)
-	{
-		return $this->quantities[$accessoryId];
-	}
-
-}
 class AccessoryToCheck
 {
 	/**

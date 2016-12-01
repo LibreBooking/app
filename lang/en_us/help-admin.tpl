@@ -830,9 +830,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
         {literal}
             <p class="setting"><span>$conf['settings']['reservation.labels']['reservation.popup']</span>The format of
                 what to display in reservation popups.
-                Possible values are {name} {dates} {title} {resources} {participants} {accessories} {description}
-                {attributes}. Custom attributes can be
-                individually added using att with the attribute id. For example {att1}.
+                Possible values are {name} {dates} {title} {resources} {participants} {accessories} {description} {phone} {email}
+                {attributes}. Reservation custom attributes can be individually added using att with the attribute id. For example {att1}.
                 Default is all information.</p>
         {/literal}
 

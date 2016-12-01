@@ -618,6 +618,7 @@ class ReservationItemView implements IReservedItemView
 		$item->DateCreated = $r->DateCreated;
 		$item->ModifiedDate = $r->DateModified;
 		$item->OwnerEmailAddress = $r->OwnerEmailAddress;
+		$item->OwnerPhone = $r->OwnerPhone;
 
 		return $item;
 	}

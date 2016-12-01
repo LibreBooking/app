@@ -36,14 +36,12 @@ require_once(ROOT_DIR . 'Domain/ReservationAccessoryView.php');
 interface IReservationViewRepository
 {
 	/**
-	 * @abstract
 	 * @var $referenceNumber string
 	 * @return ReservationView
 	 */
 	public function GetReservationForEditing($referenceNumber);
 
 	/**
-	 * @abstract
 	 * @param Date $startDate
 	 * @param Date $endDate
 	 * @param int|null $userId
@@ -61,16 +59,14 @@ interface IReservationViewRepository
 			$resourceId = ReservationViewRepository::ALL_RESOURCES);
 
 	/**
-	 * @abstract
 	 * @param Date $startDate
 	 * @param Date $endDate
 	 * @param string $accessoryName
-	 * @return mixed
+	 * @return ReservationItemView[]
 	 */
 	public function GetAccessoryReservationList(Date $startDate, Date $endDate, $accessoryName);
 
 	/**
-	 * @abstract
 	 * @param int $pageNumber
 	 * @param int $pageSize
 	 * @param string $sortField
@@ -81,7 +77,6 @@ interface IReservationViewRepository
 	public function GetList($pageNumber, $pageSize, $sortField = null, $sortDirection = null, $filter = null);
 
 	/**
-	 * @abstract
 	 * @param DateRange $dateRange
 	 * @param int|null $scheduleId
 	 * @return BlackoutItemView[]
@@ -89,7 +84,6 @@ interface IReservationViewRepository
 	public function GetBlackoutsWithin(DateRange $dateRange, $scheduleId = ReservationViewRepository::ALL_SCHEDULES);
 
 	/**
-	 * @abstract
 	 * @param int $pageNumber
 	 * @param int $pageSize
 	 * @param null|string $sortField
@@ -100,7 +94,6 @@ interface IReservationViewRepository
 	public function GetBlackoutList($pageNumber, $pageSize, $sortField = null, $sortDirection = null, $filter = null);
 
 	/**
-	 * @abstract
 	 * @param DateRange $dateRange
 	 * @return array|AccessoryReservation[]
 	 */
@@ -140,6 +133,7 @@ class ReservationViewRepository implements IReservationViewRepository
 			$reservationView->OwnerFirstName = $row[ColumnNames::FIRST_NAME];
 			$reservationView->OwnerLastName = $row[ColumnNames::LAST_NAME];
 			$reservationView->OwnerEmailAddress = $row[ColumnNames::EMAIL];
+			$reservationView->OwnerPhone = $row[ColumnNames::PHONE_NUMBER];
 			$reservationView->StatusId = $row[ColumnNames::RESERVATION_STATUS];
 			$reservationView->DateCreated = Date::FromDatabase($row[ColumnNames::RESERVATION_CREATED]);
 			$reservationView->DateModified = Date::FromDatabase($row[ColumnNames::RESERVATION_MODIFIED]);

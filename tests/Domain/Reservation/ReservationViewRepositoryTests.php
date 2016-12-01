@@ -83,6 +83,7 @@ class ReservationViewRepositoryTests extends TestBase
         $email3 = 'e3';
 
         $email = 'owner@email.com';
+        $phone = '123-123-1234';
 
         $allowParticipation = 1;
         $checkin = Date::Now()->AddMinutes(1)->ToUtc();
@@ -127,6 +128,7 @@ class ReservationViewRepositoryTests extends TestBase
             ColumnNames::CHECKOUT_DATE => $checkout->ToDatabase(),
             ColumnNames::PREVIOUS_END_DATE => $previousEnd->ToDatabase(),
             ColumnNames::CREDIT_COUNT => 20,
+            ColumnNames::PHONE_NUMBER => $phone,
         );
 
         $resourceRows = array(
@@ -230,6 +232,7 @@ class ReservationViewRepositoryTests extends TestBase
         $expectedView->OwnerLastName = $ownerLast;
         $expectedView->StatusId = $statusId;
         $expectedView->OwnerEmailAddress = $email;
+        $expectedView->OwnerPhone = $phone;
         $expectedView->DateModified = Date::Now()->ToUtc();
         $expectedView->CheckinDate = $checkin;
         $expectedView->CheckoutDate = $checkout;
