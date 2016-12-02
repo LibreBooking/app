@@ -34,4 +34,5 @@ class ActiveDirectoryConfig
 	const ATTRIBUTE_MAPPING = 'attribute.mapping';
 	const REQUIRED_GROUPS = 'required.groups';
 	const SYNC_GROUPS = 'sync.groups';
+	const USE_SSO = 'use.sso';
 }

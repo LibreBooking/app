@@ -45,6 +45,7 @@ class ActiveDirectoryOptions
 		$this->SetOption('use_ssl', $this->GetConfig(ActiveDirectoryConfig::USE_SSL, new BooleanConverter()));
 		$this->SetOption('account_suffix', $this->GetConfig(ActiveDirectoryConfig::ACCOUNT_SUFFIX));
 		$this->SetOption('ldap_version', $this->GetConfig(ActiveDirectoryConfig::VERSION), new IntConverter());
+		$this->SetOption('sso', $this->GetConfig(ActiveDirectoryConfig::USE_SSO), new BooleanConverter());
 
 		return $this->_options;
 	}

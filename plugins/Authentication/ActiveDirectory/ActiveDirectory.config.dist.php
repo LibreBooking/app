@@ -31,3 +31,4 @@ $conf['settings']['database.auth.when.ldap.user.not.found'] = 'false';	// if lda
 $conf['settings']['attribute.mapping'] = 'sn=sn,givenname=givenname,mail=mail,telephonenumber=telephonenumber,physicaldeliveryofficename=physicaldeliveryofficename,title=title';	// mapping of required attributes to attribute names in your directory
 $conf['settings']['required.groups'] = '';	// Required groups (empty if not necessary) User only needs to belong to at least one listed (eg. Group1,Group2)
 $conf['settings']['sync.groups'] = 'false';	// Whether or not groups should be synced into Booked. When true then be sure that the attribute.mapping config value contains a correct map for groups
+$conf['settings']['use.sso'] = 'false';	// Whether or not to use single sign on
