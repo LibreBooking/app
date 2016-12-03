@@ -27,7 +27,10 @@ function GroupManagement(opts) {
 		groupAdminForm: $('#groupAdminForm'),
         groupCount: $('#groupCount'),
 
-		addForm: $('#addGroupForm')
+		addForm: $('#addGroupForm'),
+
+        checkAllResources: $('#checkAllResources'),
+        checkNoResources: $('#checkNoResources')
 	};
 
 	var allUserList = null;
@@ -111,6 +114,16 @@ function GroupManagement(opts) {
 		elements.groupList.delegate('.groupAdmin', 'click', function() {
 			changeGroupAdmin();
 		});
+
+        elements.checkAllResources.click(function(e){
+            e.preventDefault();
+            elements.permissionsDialog.find('input:checkbox').prop('checked', true);
+        });
+
+        elements.checkNoResources.click(function(e){
+            e.preventDefault();
+            elements.permissionsDialog.find('input:checkbox').prop('checked', false);
+        });
 
 		$(".save").click(function() {
 			$(this).closest('form').submit();

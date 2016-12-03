@@ -801,6 +801,10 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 						<div id="bulkUpdateErrors" class="error no-show">
 							{async_validator id="bulkAttributeValidator" key=""}
 						</div>
+                        <div>{translate key=Select}
+                        <a href="#" id="checkAllResources">{translate key=All}</a> |
+                        <a href="#" id="checkNoResources">{translate key=None}</a>
+                        </div>
 						<div id="bulkUpdateList"></div>
 						<div>
 							<div class="title">{translate key=Common}</div>

@@ -77,7 +77,10 @@ function ResourceManagement(opts) {
 		creditsDialog: $('#creditsDialog'),
 		creditsForm: $('#creditsForm'),
 		creditsPerSlot: $('#creditsPerSlot'),
-		peakCreditsPerSlot: $('#peakCreditsPerSlot')
+		peakCreditsPerSlot: $('#peakCreditsPerSlot'),
+
+        checkAllResources: $('#checkAllResources'),
+        checkNoResources: $('#checkNoResources')
 	};
 
 	var resources = {};
@@ -237,6 +240,16 @@ function ResourceManagement(opts) {
 				elements.creditsDialog.modal('show');
 			});
 		});
+
+        elements.checkAllResources.click(function(e){
+            e.preventDefault();
+            elements.bulkUpdateList.find('input:checkbox').prop('checked', true);
+        });
+
+        elements.checkNoResources.click(function(e){
+            e.preventDefault();
+            elements.bulkUpdateList.find('input:checkbox').prop('checked', false);
+        });
 
 		$(".save").click(function () {
 			$(this).closest('form').submit();

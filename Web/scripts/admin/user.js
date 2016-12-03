@@ -43,7 +43,10 @@ function UserManagement(opts) {
 
 		invitationDialog: $('#invitationDialog'),
 		invitationForm: $('#invitationForm'),
-		inviteEmails: $('#inviteEmails')
+		inviteEmails: $('#inviteEmails'),
+
+        checkAllResources: $('#checkAllResources'),
+        checkNoResources: $('#checkNoResources')
 	};
 
 	var users = {};
@@ -136,6 +139,16 @@ function UserManagement(opts) {
 
 			$(this).appendTo(elements.addedGroups);
 		});
+
+        elements.checkAllResources.click(function(e){
+            e.preventDefault();
+            elements.permissionsDialog.find('input:checkbox').prop('checked', true);
+        });
+
+        elements.checkNoResources.click(function(e){
+            e.preventDefault();
+            elements.permissionsDialog.find('input:checkbox').prop('checked', false);
+        });
 
 		$(".save").click(function () {
 			$(this).closest('form').submit();

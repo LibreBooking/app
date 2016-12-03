@@ -128,7 +128,10 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 							<h4 class="modal-title" id="permissionsDialogLabel">{translate key=Permissions}</h4>
 						</div>
 						<div class="modal-body">
-							{foreach from=$resources item=resource}
+                            {translate key=Select}
+                            <a href="#" id="checkAllResources">{translate key=All}</a> |
+                            <a href="#" id="checkNoResources">{translate key=None}</a>
+                            {foreach from=$resources item=resource}
 								<div class="checkbox">
 									<input id="resource{$resource->GetResourceId()}" {formname key=RESOURCE_ID  multi=true} class="form-control resourceId" type="checkbox" value="{$resource->GetResourceId()}">
 									<label for="resource{$resource->GetResourceId()}">{$resource->GetName()} </label>
