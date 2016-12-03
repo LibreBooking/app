@@ -32,6 +32,7 @@ function Reservation(opts) {
 
 		changeUserAutocomplete: $('#changeUserAutocomplete'),
 		userName: $('#userName'),
+        availableCreditsCount: $('#availableCreditsCount'),
 		userId: $('#userId'),
 
 		referenceNumber: $('#referenceNumber'),
@@ -826,7 +827,7 @@ function Reservation(opts) {
 		});
 
 		elements.changeUserAutocomplete.userAutoComplete(options.changeUserAutocompleteUrl, function (ui) {
-			changeUser.chooseUser(ui.item.value, ui.item.label);
+			changeUser.chooseUser(ui.item.value, ui.item.label, ui.item.data.CurrentCreditCount);
 		});
 
 		$('#promptForChangeUsers').click(function () {
@@ -834,14 +835,15 @@ function Reservation(opts) {
 		});
 
 		$('#changeUserDialog').delegate('.add', 'click', function () {
-			changeUser.chooseUser($(this).attr('userId'), $(this).text());
+			changeUser.chooseUser($(this).attr('userId'), $(this).text(), $(this).attr('availableCredits'));
 			$('#changeUserDialog').modal('hide');
 		});
 	};
 
-	changeUser.chooseUser = function (id, name) {
+	changeUser.chooseUser = function (id, name, availableCredits) {
 		elements.userName.text(name);
 		elements.userName.attr('data-userid', id);
+        elements.availableCreditsCount.text(availableCredits);
 		elements.userId.val(id).trigger('change');
 
 		participation.removeParticipant(_ownerId);
@@ -864,7 +866,7 @@ function Reservation(opts) {
 				url: options.changeUserAutocompleteUrl, dataType: 'json', async: false, success: function (data) {
 					allUserList = data;
 					$.map(allUserList, function (item) {
-						items.push('<div><a href="#" class="add" title="Add" userId="' + item.Id + '">' + item.DisplayName + '</a></div>');
+						items.push('<div><a href="#" class="add" title="Add" userId="' + item.Id + '" availableCredits="' + item.CurrentCreditCount + '">' + item.DisplayName + '</a></div>');
 					});
 
 					$('<div/>', {'class': 'no-style', html: items.join('')}).appendTo(listElement);

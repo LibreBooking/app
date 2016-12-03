@@ -18,7 +18,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 *}
 
 
-{extends file="Schedule/schedule.tpl"}
+{extends file="Schedule/{$ExtendViewPrefix}schedule.tpl"}
 
 {block name="legend"}{/block}
 

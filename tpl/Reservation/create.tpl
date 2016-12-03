@@ -67,6 +67,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                         <div class="form-group">
                             {if $ShowUserDetails && $ShowReservationDetails}
                                 <a href="#" id="userName" data-userid="{$UserId}">{$ReservationUserName}</a>
+
                             {else}
                                 {translate key=Private}
                             {/if}
@@ -96,6 +97,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                                     </div>
                                 </div>
                             {/if}
+                            <div id="availableCredits" {if !$CreditsEnabled}style="display:none"}{/if}>{translate key=AvailableCredits} <span id="availableCreditsCount">{$CurrentUserCredits}</span></div>
                         </div>
                     </div>
 

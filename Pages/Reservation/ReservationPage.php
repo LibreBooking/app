@@ -209,6 +209,8 @@ abstract class ReservationPage extends Page implements IReservationPage
 							 )
 		);
 
+        $this->Set('CreditsEnabled', Configuration::Instance()->GetSectionKey(ConfigSection::CREDITS, ConfigKeys::CREDITS_ENABLED, new BooleanConverter()));
+
 		$this->Display($this->GetTemplateName());
 	}
 
@@ -250,20 +252,13 @@ abstract class ReservationPage extends Page implements IReservationPage
 		$this->Set('EndDate', $endDate);
 	}
 
-	/**
-	 * @param UserDto $user
-	 * @return void
-	 */
 	public function SetReservationUser(UserDto $user)
 	{
 		$this->Set('ReservationUserName', $user->FullName());
 		$this->Set('UserId', $user->Id());
+        $this->Set('CurrentUserCredits', $user->CurrentCreditCount());
 	}
 
-	/**
-	 * @param $resource IBookableResource
-	 * @return void
-	 */
 	public function SetReservationResource($resource)
 	{
 		$this->Set('ResourceName', $resource->GetName());

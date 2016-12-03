@@ -59,7 +59,16 @@ class ViewSchedulePage extends SchedulePage
 		$this->Set('SlotLabelFactory', $viewReservations || $allowGuestBookings ? new SlotLabelFactory($user) : new NullSlotLabelFactory());
 		$this->Set('AllowGuestBooking', $allowGuestBookings);
 		$this->Set('CreateReservationPage', Pages::GUEST_RESERVATION);
-		$this->Display('Schedule/view-schedule.tpl');
+
+        if ($this->IsMobile && !$this->IsTablet)
+        {
+            $this->Set('ExtendViewPrefix', 'view-');
+            $this->Display('Schedule/schedule-mobile.tpl');
+        }
+        else
+        {
+            $this->Display('Schedule/view-schedule.tpl');
+        }
 	}
 
     public function ShowInaccessibleResources()
