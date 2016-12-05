@@ -130,9 +130,9 @@ class Server
 		return null;
 	}
 
-	private static function specialchars($val)
+	private static function specialchars(&$val)
 	{
-		return htmlspecialchars(trim($val));
+		$val = htmlspecialchars(trim($val));
 	}
 
 	/**
