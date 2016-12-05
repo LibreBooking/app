@@ -146,6 +146,12 @@ class Server
 		{
 			return htmlspecialchars(trim($value));
 		}
+		
+		if (is_array($value))
+		{
+			array_walk($value, array($this, 'specialchars'));
+			return $value;
+		}
 
 		return $value;
 	}
