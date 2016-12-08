@@ -130,9 +130,9 @@ class Server
 		return null;
 	}
 
-	private static function specialchars($val)
+	private static function specialchars(&$val)
 	{
-		return htmlspecialchars(trim($val));
+		$val = htmlspecialchars(trim($val));
 	}
 
 	/**
@@ -145,6 +145,12 @@ class Server
 		if (!empty($value) && !is_array($value))
 		{
 			return htmlspecialchars(trim($value));
+		}
+		
+		if (is_array($value))
+		{
+			array_walk($value, array($this, 'specialchars'));
+			return $value;
 		}
 
 		return $value;
