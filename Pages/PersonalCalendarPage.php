@@ -69,6 +69,11 @@ interface IPersonalCalendarPage extends IActionPage, ICommonCalendarPage
     public function BindCalendarType($calendarType);
 
     public function RenderSubscriptionDetails();
+
+    /**
+     * @return null|int
+     */
+    public function GetGroupId();
 }
 
 class PersonalCalendarPage extends ActionPage implements IPersonalCalendarPage
@@ -143,6 +148,11 @@ class PersonalCalendarPage extends ActionPage implements IPersonalCalendarPage
     {
         $calendarType = empty($calendarType) ? 'month' : $calendarType;
         $this->Set('CalendarType',$calendarType);
+    }
+
+    public function GetGroupId()
+    {
+        return $this->GetQuerystring(QueryStringKeys::GROUP_ID);
     }
 
 	/**

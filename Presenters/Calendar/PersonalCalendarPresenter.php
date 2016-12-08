@@ -102,8 +102,9 @@ class PersonalCalendarPresenter extends ActionPresenter
 		$selectedScheduleId = $this->page->GetScheduleId();
 		$selectedSchedule = $this->common->GetSelectedSchedule($schedules);
 		$selectedResourceId = $this->page->GetResourceId();
+        $selectedGroupId = $this->page->GetGroupId();
 
-		$resourceGroups = $this->resourceService->GetResourceGroups($selectedScheduleId, $userSession);
+        $resourceGroups = $this->resourceService->GetResourceGroups($selectedScheduleId, $userSession);
 
 		if (!empty($selectedGroupId))
 		{
@@ -160,8 +161,6 @@ class PersonalCalendarPresenter extends ActionPresenter
     {
         $userSession = ServiceLocator::GetServer()->GetUserSession();
 
-        $selectedSchedule = $this->common->GetSelectedSchedule(array());
-
         $selectedResourceId = $this->page->GetResourceId();
         $selectedScheduleId = $this->page->GetScheduleId();
 
@@ -188,7 +187,9 @@ class PersonalCalendarPresenter extends ActionPresenter
      */
     private function BindSubscriptionDetails($userSession)
     {
-        $details = $this->subscriptionService->ForUser($userSession->UserId);
+        $resourceId = $this->page->GetResourceId();
+        $scheduleId = $this->page->GetScheduleId();
+        $details = $this->subscriptionService->ForUser($userSession->UserId, $resourceId, $scheduleId);
         $this->page->BindSubscription($details);
     }
 }
