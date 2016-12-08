@@ -45,20 +45,6 @@ interface ICalendarSubscriptionService
     public function ForUser($userId, $resourceId = null, $scheduleId = null);
 
     /**
-     * @param int $userId
-     * @param int $resourceId
-     * @return CalendarSubscriptionDetails
-     */
-    public function ForUserAndResource($userId, $resourceId);
-
-    /**
-     * @param int $userId
-     * @param int $scheduleId
-     * @return CalendarSubscriptionDetails
-     */
-    public function ForUserAndSchedule($userId, $scheduleId);
-
-    /**
      * @param int $resourceId
      * @return CalendarSubscriptionDetails
      */
@@ -233,26 +219,6 @@ class CalendarSubscriptionService implements ICalendarSubscriptionService
         return new CalendarSubscriptionDetails(
             $user->GetIsCalendarSubscriptionAllowed(),
             new CalendarSubscriptionUrl($user->GetPublicId(), $schedulePublicId, $resourcePublicId));
-    }
-
-    public function ForUserAndResource($userId, $resourceId)
-    {
-        $user = $this->userRepository->LoadById($userId);
-        $resource = $this->resourceRepository->LoadById($resourceId);
-
-        return new CalendarSubscriptionDetails(
-            $user->GetIsCalendarSubscriptionAllowed(),
-            new CalendarSubscriptionUrl($user->GetPublicId(), null, $resource->GetPublicId()));
-    }
-
-    public function ForUserAndSchedule($userId, $scheduleId)
-    {
-        $user = $this->userRepository->LoadById($userId);
-        $schedule = $this->scheduleRepository->LoadById($scheduleId);
-
-        return new CalendarSubscriptionDetails(
-            $user->GetIsCalendarSubscriptionAllowed(),
-            new CalendarSubscriptionUrl($user->GetPublicId(), $schedule->GetPublicId(), null));
     }
 
     /**
