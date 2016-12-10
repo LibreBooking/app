@@ -154,8 +154,8 @@ class ICalImportPresenter extends ActionPresenter
 				$endts = date('Y-m-d H:i:s', $icalReader->iCalDateToUnixTimestamp($event['DTEND']));
 				$end = Date::Parse($endts, $this->GetTimezone($event, 'DTEND_array'));
 
-				$title = array_key_exists('SUMMARY', $event) ? $event['SUMMARY'] : '';
-				$description = array_key_exists('DESCRIPTION', $event) ? $event['DESCRIPTION'] : '';;
+				$title = array_key_exists('SUMMARY', $event) ? htmlspecialchars($event['SUMMARY']) : '';
+				$description = array_key_exists('DESCRIPTION', $event) ? htmlspecialchars($event['DESCRIPTION']) : '';;
 
 				$reservation = ReservationSeries::Create($user->Id(), $resource, $title, $description,
 														 new DateRange($start, $end), new RepeatNone(),
@@ -213,7 +213,8 @@ class ICalImportPresenter extends ActionPresenter
 
 		if ($user->Id() == null)
 		{
-			$user = $this->registration->Register($email, $email, '', '', Password::GenerateRandom(),
+			$encoded = htmlspecialchars($email);
+			$user = $this->registration->Register($encoded, $encoded, '', '', Password::GenerateRandom(),
 												  Configuration::Instance()->GetDefaultTimezone(),
 												  Configuration::Instance()->GetKey(ConfigKeys::LANGUAGE),
 												  Configuration::Instance()->GetKey(ConfigKeys::DEFAULT_HOMEPAGE));
@@ -234,6 +235,7 @@ class ICalImportPresenter extends ActionPresenter
 
 		if ($resource->GetId() == null)
 		{
+			$encoded = htmlspecialchars($resourceName);
 			$resource = BookableResource::CreateNew($resourceName, $this->GetDefaultScheduleId());
 			$id = $this->resourceRepository->Add($resource);
 			$resource = $this->resourceRepository->LoadById($id);

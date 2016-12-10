@@ -54,7 +54,7 @@ class UserImportCsvRow
 		$this->position = $this->valueOrDefault('position');
 		$this->timezone = $this->valueOrDefault('timezone');
 		$this->language = $this->valueOrDefault('language');
-		$this->groups = (!array_key_exists('groups', $this->indexes) || $indexes['groups'] === false) ? array() : array_map('trim', explode(',', $values[$indexes['groups']]));
+		$this->groups = (!array_key_exists('groups', $this->indexes) || $indexes['groups'] === false) ? array() : array_map('trim', explode(',', htmlspecialchars($values[$indexes['groups']])));
 	}
 
 	public function IsValid()
@@ -109,7 +109,7 @@ class UserImportCsvRow
 	 */
 	private function valueOrDefault($column)
 	{
-		return ($this->indexes[$column] === false || !array_key_exists($this->indexes[$column], $this->values)) ? '' : trim($this->values[$this->indexes[$column]]);
+		return ($this->indexes[$column] === false || !array_key_exists($this->indexes[$column], $this->values)) ? '' : htmlspecialchars(trim($this->values[$this->indexes[$column]]));
 	}
 }
 

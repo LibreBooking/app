@@ -201,7 +201,7 @@ class QuartzyImportPresenter extends ActionPresenter
 		if ($scheduleId == 0)
 		{
 			Log::Debug('QuartzyImport Schedule does not exist %s', $scheduleName);
-			$scheduleId = $this->scheduleRepository->Add(new Schedule(0, $scheduleName, false, 0, 7), $this->defaultScheduleId);
+			$scheduleId = $this->scheduleRepository->Add(new Schedule(0, htmlspecialchars($scheduleName), false, 0, 7), $this->defaultScheduleId);
 		}
 
 		$this->AddEquipment($scheduleId, $rootDir . '/' . $scheduleName);
@@ -267,7 +267,7 @@ class QuartzyImportPresenter extends ActionPresenter
 		if ($resourceId == 0)
 		{
 			$adminGroupId = $this->AddResourceAdmin($managedBy, $name);
-			$resource = new BookableResource(0, $name, $location, null, $url, null, null, true, false, true, null, null, null, $description, $scheduleId,
+			$resource = new BookableResource(0, htmlspecialchars($name), htmlspecialchars($location), null, $url, null, null, true, false, true, null, null, null, $description, $scheduleId,
 											 $adminGroupId);
 			if ($enabled != 'YES')
 			{
@@ -321,7 +321,7 @@ class QuartzyImportPresenter extends ActionPresenter
 
 		if ($adminGroup == null)
 		{
-			$adminGroup = new Group(0, $adminGroupName);
+			$adminGroup = new Group(0, htmlspecialchars($adminGroupName));
 			$adminGroup->ChangeRoles(array(RoleLevel::RESOURCE_ADMIN));
 			$id = $this->groupRepository->Add($adminGroup);
 			$adminGroup->WithId($id);
@@ -346,7 +346,7 @@ class QuartzyImportPresenter extends ActionPresenter
 		{
 			$enc = new PasswordEncryption();
 			$password = $enc->EncryptPassword('p@ssw0rd!');
-			$userId = $this->userRepository->Add(User::Create($firstName, $lastName, $email, $email, 'en_us',
+			$userId = $this->userRepository->Add(User::Create(htmlspecialchars($firstName), htmlspecialchars($lastName), htmlspecialchars($email), htmlspecialchars($email), 'en_us',
 															  Configuration::Instance()->GetDefaultTimezone(),
 															  $password->EncryptedPassword(), $password->Salt()));
 		}
@@ -377,7 +377,7 @@ class QuartzyImportPresenter extends ActionPresenter
 		}
 		$userId = $this->AddUser($email, $nameParts[0], $nameParts[1]);
 
-		$series = ReservationSeries::Create($userId, $resource, $name, $note, new DateRange($startDate, $endDate), new RepeatNone(),
+		$series = ReservationSeries::Create($userId, $resource, htmlspecialchars($name), htmlspecialchars($note), new DateRange($startDate, $endDate), new RepeatNone(),
 											ServiceLocator::GetServer()->GetUserSession());
 		$this->reservationRepository->Add($series);
 	}
