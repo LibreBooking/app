@@ -17,12 +17,11 @@ You should have received a copy of the GNU General Public License
 along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 *}
 
-
-Here is your temporary Booked Scheduler password: {$TemporaryPassword}
+Esta é sua senha temporária no Booked Scheduler: {$TemporaryPassword}
 
 <br/>
 
-Your old password will no longer work.
+Sua senha antiga não funcionará mais.
 
-Please <a href="{$ScriptUrl}">Log in to Booked Scheduler</a> and change your password as soon as possible.
+<a href="{$ScriptUrl}">Faça login no Booked Scheduler</a> e altere sua senha o mais rápido possível.
 

@@ -506,6 +506,7 @@ class pt_br extends en_us
 	$strings['Import'] = 'Importação';
 	$strings['SpecificDates'] = 'Mostrar datas específicas';
 	$strings['AllowParticipantsToJoin'] = 'Permitir aos participantes participação na reserva';
+	$strings['AccessoryMinQuantityErrorMessage'] = 'Você deve reservar pelo menos %s acessório %s';
     // End Strings
 
     // Install
