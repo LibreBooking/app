@@ -55,6 +55,7 @@ class ManageResourcesActions
 	const ActionChangeColor = 'changeColor';
 	const ActionChangeCredits = 'changeCredits';
 	const ActionPrintQR = 'printQR';
+	const ActionCopyResource = 'actionCopyResource';
 }
 
 class ManageResourcesPresenter extends ActionPresenter
@@ -142,6 +143,7 @@ class ManageResourcesPresenter extends ActionPresenter
 		$this->AddAction(ManageResourcesActions::ActionChangeColor, 'ChangeColor');
 		$this->AddAction(ManageResourcesActions::ActionChangeCredits, 'ChangeCredits');
 		$this->AddAction(ManageResourcesActions::ActionPrintQR, 'PrintQRCode');
+		$this->AddAction(ManageResourcesActions::ActionCopyResource, 'ActionCopyResource');
 	}
 
 	public function PageLoad()
@@ -788,6 +790,35 @@ class ManageResourcesPresenter extends ActionPresenter
         $resource = $this->resourceRepository->LoadById($resourceId);
 
         $this->page->ShowQRCode($url, $resource->GetName());
+    }
+
+    public function ActionCopyResource()
+    {
+        $sourceId = $this->page->GetResourceId();
+        $name = $this->page->GetResourceName();
+
+        $resource = $this->resourceRepository->LoadById($sourceId);
+        $resource->AsCopy($name);
+        $this->resourceRepository->Add($resource);
+        $this->resourceRepository->Update($resource);
+
+        $resourceId = $resource->GetResourceId();
+
+        foreach ($resource->GetResourceGroupIds() as $groupId)
+        {
+            $this->resourceRepository->AddResourceToGroup($resourceId, $groupId);
+        }
+
+        $groups = $this->resourceRepository->GetGroupsWithPermission($sourceId);
+        foreach ($groups->Results() as $group)
+        {
+            $this->resourceRepository->AddResourceGroupPermission($resourceId, $group->Id);
+        }
+        $users = $this->resourceRepository->GetUsersWithPermission($sourceId);
+        foreach ($users->Results() as $user)
+        {
+            $this->resourceRepository->AddResourceUserPermission($resourceId, $user->Id);
+        }
     }
 
 	protected function LoadValidators($action)

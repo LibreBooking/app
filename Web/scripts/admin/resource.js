@@ -80,7 +80,12 @@ function ResourceManagement(opts) {
 		peakCreditsPerSlot: $('#peakCreditsPerSlot'),
 
         checkAllResources: $('#checkAllResources'),
-        checkNoResources: $('#checkNoResources')
+        checkNoResources: $('#checkNoResources'),
+
+        copyDialog: $('#copyDialog'),
+        copyName: $('#copyResourceName'),
+        copyForm: $('#copyForm')
+        // copyResourceId: $('#copyResourceId')
 	};
 
 	var resources = {};
@@ -134,6 +139,13 @@ function ResourceManagement(opts) {
 			details.find('.renameButton').click(function (e) {
 				e.stopPropagation();
 				details.find('.resourceName').editable('toggle');
+			});
+
+			details.find('.copyButton').click(function (e) {
+				e.stopPropagation();
+                elements.copyName.val(getActiveResource().name + ' ' + options.copyText);
+                elements.copyDialog.modal('show');
+                elements.copyName.select().focus();
 			});
 
 			details.find('.changeScheduleButton').click(function (e) {
@@ -401,6 +413,7 @@ function ResourceManagement(opts) {
 		ConfigureAsyncForm(elements.resourceGroupForm, defaultSubmitCallback(elements.resourceGroupForm), onResourceGroupsSaved);
 		ConfigureAsyncForm(elements.colorForm, defaultSubmitCallback(elements.colorForm), function () {});
 		ConfigureAsyncForm(elements.creditsForm, defaultSubmitCallback(elements.creditsForm), onCreditsSaved, null, errorHandler);
+		ConfigureAsyncForm(elements.copyForm, defaultSubmitCallback(elements.copyForm));
 	};
 
 	ResourceManagement.prototype.add = function (resource) {

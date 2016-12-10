@@ -1154,4 +1154,13 @@ class BookableResource implements IBookableResource
 		$this->_peakCreditsPerSlot = $creditsPerSlot;
 	}
 
+	public function AsCopy($name)
+    {
+        $this->SetResourceId(null);
+        $this->SetName($name);
+        $this->DisableSubscription();
+        $this->SetImage(null);
+        $this->WithPublicId(null);
+    }
+
 }
