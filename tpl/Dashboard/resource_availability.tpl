@@ -62,15 +62,15 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
             <h5>{$s->GetName()}</h5>
             {foreach from=$Unavailable[$s->GetId()] item=i}
                 <div class="availabilityItem">
-                    <div class="resourceName">
+                    <div class="resourceName col-xs-12 col-sm-5">
                         <a href="#" resource-id="{$i->ResourceId()}"
                            class="resourceNameSelector">{$i->ResourceName()}</a>
                     </div>
-                    <div class="availability">
+                    <div class="availability col-xs-12 col-sm-4">
                         {translate key=AvailableBeginningAt} {format_date date=$i->ReservationEnds() timezone=$Timezone key=dashboard}
                     </div>
-                    <div class="reserveButton">
-                        <a class="btn btn-xs"
+                    <div class="reserveButton col-xs-12 col-sm-3">
+                        <a class="btn btn-xs col-xs-12"
                            href="{$Path}{Pages::RESERVATION}?{QueryStringKeys::RESOURCE_ID}={$i->ResourceId()}&{QueryStringKeys::START_DATE}={format_date date=$i->ReservationEnds() timezone=$Timezone key=url_full}">{translate key=Reserve}</a>
                     </div>
                 </div>
@@ -84,15 +84,15 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
             <h5>{$s->GetName()}</h5>
             {foreach from=$UnavailableAllDay[$s->GetId()] item=i}
                 <div class="availabilityItem">
-                    <div class="resourceName">
+                    <div class="resourceName col-xs-12 col-sm-5">
                         <a href="#" resource-id="{$i->ResourceId()}"
                            class="resourceNameSelector">{$i->ResourceName()}</a>
                     </div>
-                    <div class="availability">
+                    <div class="availability col-xs-12 col-sm-4">
                         Available At {format_date date=$i->ReservationEnds() timezone=$Timezone key=dashboard}
                     </div>
-                    <div class="reserveButton">
-                        <a class="btn btn-xs"
+                    <div class="reserveButton col-xs-12 col-sm-3">
+                        <a class="btn btn-xs col-xs-12"
                            href="{$Path}{Pages::RESERVATION}?{QueryStringKeys::RESOURCE_ID}={$i->ResourceId()}&{QueryStringKeys::START_DATE}={format_date date=$i->ReservationEnds() timezone=$Timezone key=url_full}">{translate key=Reserve}</a>
                     </div>
                 </div>
