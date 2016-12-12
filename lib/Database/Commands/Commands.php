@@ -2266,9 +2266,9 @@ class UpdateResourceCommand extends SqlCommand
 		$this->AddParameter(new Parameter(ParameterNames::RESOURCE_NOTES, $notes));
 		$this->AddParameter(new Parameter(ParameterNames::RESOURCE_MINDURATION, $minDuration->ToDatabase()));
 		$this->AddParameter(new Parameter(ParameterNames::RESOURCE_MAXDURATION, $maxDuration->ToDatabase()));
-		$this->AddParameter(new Parameter(ParameterNames::RESOURCE_AUTOASSIGN, $autoAssign));
+		$this->AddParameter(new Parameter(ParameterNames::RESOURCE_AUTOASSIGN, (int)$autoAssign));
 		$this->AddParameter(new Parameter(ParameterNames::RESOURCE_REQUIRES_APPROVAL, $requiresApproval));
-		$this->AddParameter(new Parameter(ParameterNames::RESOURCE_ALLOW_MULTIDAY, $allowMultiday));
+		$this->AddParameter(new Parameter(ParameterNames::RESOURCE_ALLOW_MULTIDAY, (int)$allowMultiday));
 		$this->AddParameter(new Parameter(ParameterNames::RESOURCE_MAX_PARTICIPANTS, $maxParticipants));
 		$this->AddParameter(new Parameter(ParameterNames::RESOURCE_MINNOTICE, $minNoticeTime->ToDatabase()));
 		$this->AddParameter(new Parameter(ParameterNames::RESOURCE_MAXNOTICE, $maxNoticeTime->ToDatabase()));
@@ -2283,7 +2283,7 @@ class UpdateResourceCommand extends SqlCommand
 		$this->AddParameter(new Parameter(ParameterNames::RESOURCE_STATUS_REASON_ID, $reasonId));
 		$this->AddParameter(new Parameter(ParameterNames::RESOURCE_BUFFER_TIME, $bufferTime->ToDatabase()));
 		$this->AddParameter(new Parameter(ParameterNames::COLOR, $color));
-		$this->AddParameter(new Parameter(ParameterNames::ENABLE_CHECK_IN, $checkinEnabled));
+		$this->AddParameter(new Parameter(ParameterNames::ENABLE_CHECK_IN, (int)$checkinEnabled));
 		$this->AddParameter(new Parameter(ParameterNames::AUTO_RELEASE_MINUTES, $autoReleaseMinutes));
 		$this->AddParameter(new Parameter(ParameterNames::RESOURCE_ALLOW_DISPLAY, (int)$isDisplayEnabled));
 		$this->AddParameter(new Parameter(ParameterNames::CREDIT_COUNT, $credits));
