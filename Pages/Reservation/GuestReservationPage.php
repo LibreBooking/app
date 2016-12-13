@@ -48,6 +48,7 @@ class GuestReservationPage extends NewReservationPage implements IGuestReservati
 		{
 			$this->presenter = $this->GetPresenter();
 			$this->presenter->PageLoad();
+			$this->Set('ReturnUrl', Pages::SCHEDULE);
 			$this->Display($this->GetTemplateName());
 		}
 		else {
