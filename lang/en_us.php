@@ -603,6 +603,7 @@ class en_us extends Language
 		$strings['Forward'] = 'Forward';
 		$strings['DateRange'] = 'Date Range';
 		$strings['Copy'] = 'Copy';
+		$strings['Detect'] = 'Detect';
         // End Strings
 
 		// Install
