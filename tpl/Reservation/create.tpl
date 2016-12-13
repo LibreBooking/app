@@ -226,7 +226,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                     <div class="col-xs-12 reservationTitle">
                         <div class="form-group has-feedback">
                             <label for="reservationTitle">{translate key="ReservationTitle"}</label>
-                            {textbox name="RESERVATION_TITLE" class="form-control" value="ReservationTitle" id="reservationTitle"}
+                            {textbox name="RESERVATION_TITLE" class="form-control" value="ReservationTitle" id="reservationTitle" maxlength="85"}
                             {*<i class="glyphicon glyphicon-asterisk form-control-feedback" data-bv-icon-for="reservationTitle"></i>*}
                         </div>
                     </div>
