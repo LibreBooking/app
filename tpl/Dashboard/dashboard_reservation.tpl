@@ -4,7 +4,7 @@
     <div class="col-sm-2 col-xs-12">{fullname first=$reservation->FirstName last=$reservation->LastName ignorePrivacy=$reservation->IsUserOwner($UserId)} {if !$reservation->IsUserOwner($UserId)}{html_image src="users.png" altKey=Participant}{/if}</div>
     <div class="col-sm-2 col-xs-6">{formatdate date=$reservation->StartDate->ToTimezone($Timezone) key=dashboard}</div>
     <div class="col-sm-2 col-xs-6">{formatdate date=$reservation->EndDate->ToTimezone($Timezone) key=dashboard}</div>
-    <div class="col-sm-{if $checkin}2{else}3{/if} col-xs-12">{$reservation->ResourceName}</div>
+    <div class="col-sm-{if $checkin}2{else}3{/if} col-xs-12">{$reservation->Resources|join:', '}</div>
     {if $checkin}
         <div class="col-sm-1 col-xs-12">
             <button type="button" class="btn btn-xs col-xs-12 btn-success btnCheckin" data-referencenumber="{$reservation->ReferenceNumber}">

@@ -74,8 +74,19 @@ class UpcomingReservationsPresenter
 		$thisWeeks = array();
 		$nextWeeks = array();
 
-		/* @var $reservation ReservationItemView */
+		$consolidated = array();
 		foreach ($reservations as $reservation)
+		{
+			if (!array_key_exists($reservation->ReferenceNumber, $consolidated))
+			{
+				$consolidated[$reservation->ReferenceNumber] = $reservation;
+			}
+
+			$consolidated[$reservation->ReferenceNumber]->Resources[] = $reservation->ResourceName;
+		}
+
+		/* @var $reservation ReservationItemView */
+		foreach ($consolidated as $reservation)
 		{
 			$start = $reservation->StartDate->ToTimezone($timezone);
 
@@ -97,7 +108,7 @@ class UpcomingReservationsPresenter
 			}
 		}
 
-		$this->control->SetTotal(count($reservations));
+		$this->control->SetTotal(count($consolidated));
 		$this->control->SetTimezone($timezone);
 		$this->control->SetUserId($user->UserId);
 
