@@ -46,11 +46,11 @@ abstract class EmailMessage implements IEmailMessage
 		$this->email->assign($var, $value);
 	}
 
-	protected function FetchTemplate($templateName)
+	protected function FetchTemplate($templateName, $includeHeaders = true)
 	{
-		$header = $this->email->fetch('Email/emailheader.tpl');
+		$header = $includeHeaders ? $this->email->fetch('Email/emailheader.tpl') : '';
 		$body = $this->email->FetchLocalized($templateName);
-		$footer = $this->email->fetch('Email/emailfooter.tpl');
+		$footer = $includeHeaders ? $this->email->fetch('Email/emailfooter.tpl') : '';
 
 		return $header . $body . $footer;
 	}

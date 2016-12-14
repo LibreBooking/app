@@ -86,7 +86,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 					<div class="modal-body">
 						<div class="form-group">
 							<label for="emailTo">{translate key=Email}</label>
-							<input id="emailTo" value="{$UserEmail}" class="form-control"/>
+							<input id="emailTo" {formname key=EMAIL} value="{$UserEmail}" class="form-control"/>
 						</div>
 						<div class="modal-footer">
 							<button type="button" class="btn btn-default cancel"

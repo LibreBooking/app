@@ -62,11 +62,16 @@ function GenerateReports(reportOptions) {
             window.open(url);
         });
 
+        elements.saveDialog.on('shown.bs.modal', function () {
+            $('#saveReportName').focus();
+        });
+
         $(document).on('click', '#btnSaveReportPrompt', function (e) {
             e.preventDefault();
-
+            e.stopPropagation();
             elements.saveDialog.find(':text').val('');
             elements.saveDialog.modal('show');
+
         });
 
         $(document).on('click', '#btnChart', function (e) {

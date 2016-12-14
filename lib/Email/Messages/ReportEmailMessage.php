@@ -42,8 +42,7 @@ class ReportEmailMessage extends EmailMessage
 
 		$this->Set('Definition', $definition);
 		$this->Set('Report', $report);
-		$contents = $this->FetchTemplate('Reports/custom-csv.tpl');
-
+		$contents = $this->FetchTemplate('Reports/custom-csv.tpl', false);
 
 		$name = $report->ReportName();
 		if (!empty($name))
