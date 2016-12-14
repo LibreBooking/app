@@ -343,7 +343,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 		var approvalOptions = {
 			responseType: 'json',
-			url: "{$Path}ajax/reservation_approve.php"
+			url: "{$Path}ajax/reservation_approve.php",
+			returnUrl: '{$ReturnUrl}'
 		};
 
 		var approval = new Approval(approvalOptions);

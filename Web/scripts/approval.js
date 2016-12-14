@@ -25,7 +25,14 @@ function Approval(opts)
 			data: {rn: referenceNumber, rs: options.responseType},
 			success: function (data)
 			{
-				window.location.reload();
+				if (options.returnUrl)
+				{
+					window.location = options.returnUrl;
+				}
+				else
+				{
+					window.location.reload();
+				}
 			}
 		});
 	}
