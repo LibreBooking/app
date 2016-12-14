@@ -34,7 +34,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
             {foreach from=$Available[$s->GetId()] item=i}
                 <div class="availabilityItem">
                     <div class="resourceName col-xs-12 col-sm-5">
-                        <a href="#" resource-id="{$i->ResourceId()}"
+						<i resource-id="{$i->ResourceId()}" class="resourceNameSelector fa fa-info-circle"></i>
+						<a href="{$Path}{Pages::RESERVATION}?{QueryStringKeys::RESOURCE_ID}={$i->ResourceId()}" resource-id="{$i->ResourceId()}"
                            class="resourceNameSelector">{$i->ResourceName()}</a>
                     </div>
                     <div class="availability col-xs-12 col-sm-4">
@@ -63,7 +64,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
             {foreach from=$Unavailable[$s->GetId()] item=i}
                 <div class="availabilityItem">
                     <div class="resourceName col-xs-12 col-sm-5">
-                        <a href="#" resource-id="{$i->ResourceId()}"
+                        <i resource-id="{$i->ResourceId()}" class="resourceNameSelector fa fa-info-circle"></i>
+						<a href="{$Path}{Pages::RESERVATION}?{QueryStringKeys::RESOURCE_ID}={$i->ResourceId()}" resource-id="{$i->ResourceId()}"
                            class="resourceNameSelector">{$i->ResourceName()}</a>
                     </div>
                     <div class="availability col-xs-12 col-sm-4">
@@ -85,7 +87,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
             {foreach from=$UnavailableAllDay[$s->GetId()] item=i}
                 <div class="availabilityItem">
                     <div class="resourceName col-xs-12 col-sm-5">
-                        <a href="#" resource-id="{$i->ResourceId()}"
+                        <i resource-id="{$i->ResourceId()}" class="resourceNameSelector fa fa-info-circle"></i>
+						<a href="{$Path}{Pages::RESERVATION}?{QueryStringKeys::RESOURCE_ID}={$i->ResourceId()}" resource-id="{$i->ResourceId()}"
                            class="resourceNameSelector">{$i->ResourceName()}</a>
                     </div>
                     <div class="availability col-xs-12 col-sm-4">

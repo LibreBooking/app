@@ -44,9 +44,6 @@ function Dashboard(opts) {
 
 		$('.resourceNameSelector').each(function () {
 			$(this).bindResourceDetails($(this).attr('resource-id'));
-			$(this).click(function (e) {
-				e.preventDefault();
-			});
 		});
 
 		var reservations = $(".reservation");
