@@ -189,9 +189,6 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                                 <select id="EndPeriod" {formname key=END_PERIOD}
                                         class="form-control  input-sm inline-block timeinput" title="End time">
                                     {foreach from=$EndPeriods item=period name=endPeriods}
-                                        {if $period->BeginDate()->IsMidnight()}
-                                            <option value="{$period->Begin()}"{$selected}>{$period->Label()}</option>
-                                        {/if}
                                         {if $period->IsReservable()}
                                             {assign var='selected' value=''}
                                             {if $period eq $SelectedEnd}
