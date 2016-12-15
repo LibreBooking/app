@@ -64,7 +64,7 @@
   .reservation {
     padding: 3px 0;
     border-bottom: 1px solid @light-gray;
-    margin:0 3px;
+    margin: 0 3px;
   }
 
   .reservation.hover {
@@ -86,6 +86,19 @@
   }
   .resourceName {
     text-overflow: ellipsis;
+    color: @color-secondary-2-3;
+    a {
+      color: @color-secondary-2-3;
+    }
+    .rounded(2px);
+    padding: 1px;
+    display: inline-block;
+    margin-right: 2px;
+    .fa:last-of-type {
+      margin-right: 2px;
+    }
+    background-color: @color-secondary-2-1;
+
   }
   .availability {
     text-overflow: ellipsis;
@@ -108,8 +121,8 @@
   }
 
   h5 {
-    margin:0;
+    margin: 0;
     font-weight: bold;
-    color:@mid-gray;
+    color: @mid-gray;
   }
 }
