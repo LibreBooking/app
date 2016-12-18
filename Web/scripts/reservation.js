@@ -615,7 +615,9 @@ function Reservation(opts) {
 					var items = [];
 					periodElement.empty();
 					$.map(data.periods, function (item) {
-						items.push('<option value="' + item.begin + '">' + item.label + '</option>')
+						if (item.isReservable) {
+                            items.push('<option value="' + item.begin + '">' + item.label + '</option>')
+                        }
 					});
 					var html = items.join('');
 					periodsCache[weekday] = html;
