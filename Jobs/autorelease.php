@@ -70,7 +70,7 @@ try
 			Log::Debug('Automatically releasing reservation. ReferenceNumber=%s, User=%s %s, Resource=%s',
 					   $reservationItemView->ReferenceNumber, $reservationItemView->OwnerFirstName, $reservationItemView->OwnerLastName, $reservationItemView->ResourceName);
 
-			$reservation = $reservationRepository->LoadById($reservationItemView->SeriesId);
+			$reservation = $reservationRepository->LoadByReferenceNumber($reservationItemView->ReferenceNumber);
 			$reservation->ApplyChangesTo(SeriesUpdateScope::ThisInstance);
 			$reservation->Delete($userSession);
 			$reservationRepository->Delete($reservation);
