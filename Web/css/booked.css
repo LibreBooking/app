@@ -513,6 +513,10 @@ input.mid-number {
   font-style: italic;
   color: #585754;
 }
+.form-control-feedback {
+  color: #e91e1e;
+  font-size: small;
+}
 .checkbox {
   padding-left: 20px;
 }
@@ -1159,6 +1163,12 @@ a.toggle-sidebar {
   text-align: right;
   color: #BCBCBC;
 }
+#scheduleListDropdown .caret {
+  margin-left: 0;
+  border-top: 8px dashed;
+  border-right: 8px solid transparent;
+  border-left: 8px solid transparent;
+}
 #page-resource-display-resource {
   margin-top: -40px;
 }
@@ -1309,7 +1319,8 @@ a.toggle-sidebar {
 .reservationReminders,
 .reservationAttachments,
 .customAttributes {
-  padding-top: 6px;
+  margin-top: -9px;
+  padding-top: 0px;
 }
 .reservationDeleteButtons {
   float: left;
@@ -1448,6 +1459,7 @@ ul.jqtree-tree .group-resource .jqtree-title {
 }
 .reminderInterval {
   width: auto;
+  padding: 0px;
 }
 a.add {
   color: #353432;
@@ -1512,6 +1524,9 @@ a.remove {
 }
 #page-view-reservation .participationAction {
   margin-bottom: 5px;
+}
+#page-reservation .form-control.timeinput.input-sm {
+  padding: 0px;
 }
 span.error {
   font-weight: bold;

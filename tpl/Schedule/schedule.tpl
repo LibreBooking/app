@@ -114,7 +114,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 				<span>{$ScheduleName}</span>
 				{if $Schedules|@count gt 1}
 					<div class="dropdown btn-group">
-						<a class="btn dropdown-toggle" data-toggle="dropdown" href="#"><span class="caret dropdown-toggle"></span></a>
+						<a class="btn dropdown-toggle" data-toggle="dropdown" href="#" id="scheduleListDropdown"><span class="caret dropdown-toggle"></span></a>
 						<ul class="dropdown-menu" role="menu">
 							{foreach from=$Schedules item=schedule}
 								<li><a href="#" class="schedule-id" data-scheduleid="{$schedule->GetId()}">{$schedule->GetName()}</a></li>
