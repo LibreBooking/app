@@ -43,7 +43,7 @@ class ManageConfigurationPresenter extends ActionPresenter
 	 */
 	private $configFilePath;
 
-	private $deletedSettings = array('password.pattern');
+	private $deletedSettings = array('password.pattern', 'allow.social.login');
 
 	private $configFilePathDist;
 

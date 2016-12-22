@@ -839,8 +839,11 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
             Tracking ID. If this is set then Google
             Analytics tracking code will be added to every page in Booked.</p>
 
-        <p class="setting"><span>$conf['settings']['authentication']['allow.social.login']</span>If users can log in to
-            Booked using Google and Facebook. Default is false.</p>
+        <p class="setting"><span>$conf['settings']['authentication']['allow.facebook.login']</span>If users can log in to
+            Booked using Facebook. Default is false.</p>
+
+        <p class="setting"><span>$conf['settings']['authentication']['allow.google.login']</span>If users can log in to
+            Booked using Google. Default is false.</p>
 
         <p class="setting"><span>$conf['settings']['credits']['enabled']</span>Whether or not credit functionality is
             enabled. Default is false.</p>
