@@ -62,6 +62,15 @@ class ExternalAuthLoginPresenter
 		$result = file_get_contents("http://www.social.twinkletoessoftware.com/$page?code=$code");
 		$profile = json_decode($result);
 
+		$requiredDomainValidator = new RequiredEmailDomainValidator($page->email);
+		$requiredDomainValidator->Validate();
+		if (!$requiredDomainValidator->IsValid())
+		{
+			Log::Debug('Social login with invalid domain. %s', $profile->email);
+			$this->page->ShowError(array(Resources::GetInstance()->GetString('InvalidEmailDomain')));
+			return;
+		}
+
 		Log::Debug('Social login successful. Email=%s', $profile->email);
 		$this->registration->Synchronize(new AuthenticatedUser($profile->email,
 															   $profile->email,

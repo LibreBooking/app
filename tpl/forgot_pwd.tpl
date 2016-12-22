@@ -21,7 +21,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 {if $Enabled}
 
 	{if $ShowResetEmailSent}
-		<div class="success">
+		<div class="alert alert-success">
 			{translate key=ForgotPasswordEmailSent}<br/>
 			<a href="{$Path}{Pages::LOGIN}">{translate key="LogIn"}</a>
 		</div>
