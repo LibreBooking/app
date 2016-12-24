@@ -674,7 +674,9 @@ class pt_br extends en_us
     $strings['ReservationEndingSoonSubject'] = 'A reserva para %s está chegando ao fim';
     $strings['UserAdded'] = 'A new user has been added';
 	$strings['InviteUserSubject'] = '%s convidou você para participar do sistema %s';
-    // End Email Subjects
+	$strings['ReservationCreatedSubjectWithResource'] = 'Reserva criada para %s';
+	$strings['ReservationDeletedSubjectWithResource'] = 'Reserva removida para %s';
+	// End Email Subjects
 
     // Create do pt_br language
     $strings['or'] = 'ou';
