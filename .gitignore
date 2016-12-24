@@ -15,3 +15,5 @@
 /lib/external/phpqrcode/cache/mask_5/*.dat
 /lib/external/phpqrcode/cache/mask_6/*.dat
 /lib/external/phpqrcode/cache/mask_7/*.dat
+/config/test.config.php
+/config/test.tenants.config.php
