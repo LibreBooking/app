@@ -4,6 +4,7 @@ function Reservation(opts) {
 	var elements = {
 		beginDate: $('#formattedBeginDate'),
 		endDate: $('#formattedEndDate'),
+		beginDateTextbox: $('#BeginDate'),
 		endDateTextbox: $('#EndDate'),
 
 		beginTime: $('#BeginPeriod'),
@@ -560,7 +561,7 @@ function Reservation(opts) {
 		elements.beginTime.data['beginTimePreviousVal'] = elements.beginTime.val();
 
 		elements.beginDate.change(function () {
-			PopulatePeriodDropDown(elements.beginDate, elements.beginTime);
+			PopulatePeriodDropDown(elements.beginDate, elements.beginTime, elements.beginDateTextbox);
 			AdjustEndDate();
 			DisplayDuration();
 			SelectRepeatWeekday();
@@ -569,7 +570,7 @@ function Reservation(opts) {
 		});
 
 		elements.endDate.change(function () {
-			PopulatePeriodDropDown(elements.endDate, elements.endTime);
+			PopulatePeriodDropDown(elements.endDate, elements.endTime, elements.endDateTextbox);
 			DisplayDuration();
 
 			elements.endDate.data['endPreviousVal'] = elements.endDate.val();
@@ -591,7 +592,7 @@ function Reservation(opts) {
 			DisplayDuration();
 		});
 
-		var PopulatePeriodDropDown = function (dateElement, periodElement) {
+		var PopulatePeriodDropDown = function (dateElement, periodElement, dateTextbox) {
 			var prevDate = new Date(dateElement.data['previousVal']);
 			var currDate = new Date(dateElement.val());
 			if (prevDate.getTime() == currDate.getTime())
@@ -607,7 +608,10 @@ function Reservation(opts) {
 			{
 				periodElement.empty();
 				periodElement.html(periodsCache[weekday]);
-				periodElement.val(selectedPeriod);
+				if (selectedPeriod)
+                {
+                    periodElement.val(selectedPeriod);
+                }
 				return;
 			}
 			$.ajax({
@@ -619,10 +623,20 @@ function Reservation(opts) {
                             items.push('<option value="' + item.begin + '">' + item.label + '</option>')
                         }
 					});
-					var html = items.join('');
-					periodsCache[weekday] = html;
-					periodElement.html(html);
-					periodElement.val(selectedPeriod);
+
+                    if (items.length == 0){
+                        var nextDate = moment(dateElement.val()).add(1, 'days').toDate();
+                        dateTextbox.datepicker("setDate", nextDate);
+                        dateElement.trigger('change');
+                    }
+                    else {
+                        var html = items.join('');
+                        periodsCache[weekday] = html;
+                        periodElement.html(html);
+                        if (selectedPeriod) {
+                            periodElement.val(selectedPeriod);
+                        }
+                    }
 				}, async: false
 			});
 		};

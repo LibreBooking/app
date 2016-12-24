@@ -44,6 +44,7 @@ class ReservationDateBinder implements IReservationComponentBinder
 		$startDate = ($requestedStartDate == null) ? $requestedDate : $requestedStartDate->ToTimezone($timezone);
 		$endDate = ($requestedEndDate == null) ? $requestedDate : $requestedEndDate->ToTimezone($timezone);
 
+
         if ($initializer->IsNew())
 		{
 			$resource = $initializer->PrimaryResource();
@@ -56,13 +57,10 @@ class ReservationDateBinder implements IReservationComponentBinder
 		}
 
 		$layout = $this->scheduleRepository->GetLayout($requestedScheduleId, new ReservationLayoutFactory($timezone));
-		$startPeriods = $layout->GetLayout($startDate);
-		if (count($startPeriods) > 1 && $startPeriods[0]->Begin()->Compare($startPeriods[1]->Begin()) > 0)
-		{
-			$period = array_shift($startPeriods);
-			$startPeriods[] = $period;
-		}
-		$endPeriods = $layout->GetLayout($endDate);
+
+        $startPeriods = $this->GetStartPeriods($layout, $startDate);
+        $endPeriods = $this->GetStartPeriods($layout, $endDate);
+//		$endPeriods = $layout->GetLayout($endDate);
 
 		$initializer->SetDates($startDate, $endDate, $startPeriods, $endPeriods);
 
@@ -71,6 +69,28 @@ class ReservationDateBinder implements IReservationComponentBinder
 																											new BooleanConverter());
 		$initializer->HideRecurrence($hideRecurrence);
 	}
+
+    /**
+     * @param IScheduleLayout $layout
+     * @param Date $startDate
+     * @param int $iteration
+     * @return SchedulePeriod[]
+     */
+    protected function GetStartPeriods($layout, &$startDate, $iteration = 0)
+    {
+        $startPeriods = $layout->GetLayout($startDate, true);
+        if (count($startPeriods) > 1 && $startPeriods[0]->Begin()->Compare($startPeriods[1]->Begin()) > 0) {
+            $period = array_shift($startPeriods);
+            $startPeriods[] = $period;
+        }
+
+        if (count($startPeriods) == 0 && $iteration < 7)
+        {
+            $startDate = $startDate->AddDays(1);
+            return $this->GetStartPeriods($layout, $startDate, ++$iteration);
+        }
+        return $startPeriods;
+    }
 }
 
 class ReservationUserBinder implements IReservationComponentBinder
