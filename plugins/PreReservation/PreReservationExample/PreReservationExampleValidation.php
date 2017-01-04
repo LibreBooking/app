@@ -43,10 +43,6 @@ class PreReservationExampleValidation implements IReservationValidationService
 		return $this->EvaluateCustomRule($series);
 	}
 
-	/**
-	 * @param ReservationSeries $series
-	 * @return bool
-	 */
 	private function EvaluateCustomRule($series)
 	{
 		Log::Debug('Evaluating custom pre reservation rule');

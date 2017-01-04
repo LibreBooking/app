@@ -63,4 +63,22 @@ class PreReservationExample implements IPreReservationFactory
     {
         return $this->factoryToDecorate->CreatePreApprovalService($userSession);
     }
+
+	/**
+	 * @param UserSession $userSession
+	 * @return IReservationValidationService
+	 */
+	public function CreatePreCheckinService(UserSession $userSession)
+	{
+		return $this->factoryToDecorate->CreatePreCheckinService($userSession);
+	}
+
+	/**
+	 * @param UserSession $userSession
+	 * @return IReservationValidationService
+	 */
+	public function CreatePreCheckoutService(UserSession $userSession)
+	{
+		return $this->factoryToDecorate->CreatePreCheckoutService($userSession);
+	}
 }
