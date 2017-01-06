@@ -52,6 +52,7 @@ class AvailableLanguages
             'ru_ru' => new AvailableLanguage('ru_ru', 'ru_ru.php', 'Русский'),
             'si_si' => new AvailableLanguage('si_si', 'si_si.php', 'Slovenščina'),
             'sv_sv' => new AvailableLanguage('sv_sv', 'sv_sv.php', 'Swedish'),
+			'vn_vn' => new AvailableLanguage('vn_vn', 'vn_vn.php', 'Tiếng Việt'),
             'zh_cn' => new AvailableLanguage('zh_cn', 'zh_cn.php', '简体中文'),
             'zh_tw' => new AvailableLanguage('zh_tw', 'zh_tw.php', '繁體中文'),
         );
