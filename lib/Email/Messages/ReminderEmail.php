@@ -46,7 +46,7 @@ abstract class ReminderEmail extends EmailMessage
 	{
 		$this->Set('StartDate', $this->reminder->StartDate()->ToTimezone($this->reminder->Timezone()));
 		$this->Set('EndDate', $this->reminder->EndDate()->ToTimezone($this->reminder->Timezone()));
-		$this->Set('ResourceName', $this->reminder->ResourceName());
+		$this->Set('ResourceName', $this->reminder->ResourceNames());
 		$this->Set('Title', $this->reminder->Title());
 		$this->Set('Description', $this->reminder->Description());
 		$this->Set('ReservationUrl', sprintf("%s?%s=%s", Pages::RESERVATION, QueryStringKeys::REFERENCE_NUMBER,
@@ -66,7 +66,7 @@ class ReminderStartEmail extends ReminderEmail
 	 */
 	public function Subject()
 	{
-		return $this->Translate('ReservationStartingSoonSubject', array($this->reminder->ResourceName()));
+		return $this->Translate('ReservationStartingSoonSubject', array($this->reminder->ResourceNames()));
 	}
 
 	protected function GetTemplateName()

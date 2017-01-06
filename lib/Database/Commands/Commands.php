@@ -1426,6 +1426,11 @@ class GetReminderNoticesCommand extends SqlCommand
 		$this->AddParameter(new Parameter(ParameterNames::CURRENT_DATE, $currentDate->ToDatabase()));
 		$this->AddParameter(new Parameter(ParameterNames::REMINDER_TYPE, $type));
 	}
+
+	public function ContainsGroupConcat()
+	{
+		return true;
+	}
 }
 
 class GetReservationAccessoriesCommand extends SqlCommand

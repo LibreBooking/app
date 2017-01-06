@@ -108,7 +108,7 @@ class ReminderRepository implements IReminderRepository
 
 	/**
 	 * @param Date $now
-	 * @param ReservationReminderType $reminderType
+	 * @param ReservationReminderType|int $reminderType
 	 * @return ReminderNotice[]|array
 	 */
 	public function GetReminderNotices(Date $now, $reminderType)

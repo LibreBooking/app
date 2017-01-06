@@ -293,6 +293,7 @@ class ColumnNames
 	const OWNER_POSITION = 'owner_position';
 	const GROUP_NAME_ALIAS = 'group_name';
 	const RESOURCE_NAME_ALIAS = 'resource_name';
+	const RESOURCE_NAMES = 'resource_names';
 	const SCHEDULE_NAME_ALIAS = 'schedule_name';
 	const PARTICIPANT_LIST = 'participant_list';
 	const INVITEE_LIST = 'invitee_list';

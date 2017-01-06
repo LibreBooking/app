@@ -27,7 +27,7 @@ class ReminderNotice
 	private $endDate;
 	private $title;
 	private $description;
-	private $resourceName;
+	private $resourceNames;
 	private $emailAddress;
 	private $firstName;
 	private $lastName;
@@ -75,9 +75,9 @@ class ReminderNotice
 		return $this->reservationId;
 	}
 
-	public function ResourceName()
+	public function ResourceNames()
 	{
-		return $this->resourceName;
+		return $this->resourceNames;
 	}
 
 	public function SeriesId()
@@ -113,7 +113,7 @@ class ReminderNotice
 	 * @param Date $endDate
 	 * @param string $title
 	 * @param string $description
-	 * @param string $resourceName
+	 * @param string $resourceNames
 	 * @param string $emailAddress
 	 * @param string $firstName
 	 * @param string $lastName
@@ -122,7 +122,7 @@ class ReminderNotice
 	 * @param string $language
 	 */
 	public function __construct($seriesId, $reservationId, $referenceNumber, Date $startDate, Date $endDate, $title,
-								$description, $resourceName, $emailAddress, $firstName, $lastName, $timezone,
+								$description, $resourceNames, $emailAddress, $firstName, $lastName, $timezone,
 								$reminder_minutes, $language)
 	{
 		$this->seriesId = $seriesId;
@@ -132,7 +132,7 @@ class ReminderNotice
 		$this->endDate = $endDate;
 		$this->title = $title;
 		$this->description = $description;
-		$this->resourceName = $resourceName;
+		$this->resourceNames = $resourceNames;
 		$this->emailAddress = $emailAddress;
 		$this->firstName = $firstName;
 		$this->lastName = $lastName;
@@ -154,7 +154,7 @@ class ReminderNotice
 		$endDate = Date::FromDatabase($row[ColumnNames::RESERVATION_END]);
 		$title = $row[ColumnNames::RESERVATION_TITLE];
 		$description = $row[ColumnNames::RESERVATION_DESCRIPTION];
-		$resourceName = $row[ColumnNames::RESOURCE_NAME_ALIAS];
+		$resourceNames = str_replace('!sep!', ', ', $row[ColumnNames::RESOURCE_NAMES]);
 		$emailAddress = $row[ColumnNames::EMAIL];
 		$firstName = $row[ColumnNames::FIRST_NAME];
 		$lastName = $row[ColumnNames::LAST_NAME];
@@ -164,7 +164,7 @@ class ReminderNotice
 
 		return new ReminderNotice($seriesId, $reservationId, $referenceNumber,
 								  $startDate, $endDate, $title, $description,
-								  $resourceName, $emailAddress, $firstName,
+								  $resourceNames, $emailAddress, $firstName,
 								  $lastName, $timezone, $reminder_minutes, $language);
 	}
 }
