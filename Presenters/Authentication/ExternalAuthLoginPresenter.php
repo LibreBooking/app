@@ -62,7 +62,7 @@ class ExternalAuthLoginPresenter
 		$result = file_get_contents("http://www.social.twinkletoessoftware.com/$page?code=$code");
 		$profile = json_decode($result);
 
-		$requiredDomainValidator = new RequiredEmailDomainValidator($page->email);
+		$requiredDomainValidator = new RequiredEmailDomainValidator($profile->email);
 		$requiredDomainValidator->Validate();
 		if (!$requiredDomainValidator->IsValid())
 		{
