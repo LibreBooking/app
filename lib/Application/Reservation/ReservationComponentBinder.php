@@ -60,7 +60,6 @@ class ReservationDateBinder implements IReservationComponentBinder
 
         $startPeriods = $this->GetStartPeriods($layout, $startDate);
         $endPeriods = $this->GetStartPeriods($layout, $endDate);
-//		$endPeriods = $layout->GetLayout($endDate);
 
 		$initializer->SetDates($startDate, $endDate, $startPeriods, $endPeriods);
 

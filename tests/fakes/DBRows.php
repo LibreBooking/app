@@ -67,7 +67,7 @@ class ReminderNoticeRow
 				ColumnNames::RESERVATION_END => $endDate,
 				ColumnNames::RESERVATION_TITLE => $title,
 				ColumnNames::RESERVATION_DESCRIPTION => $description,
-				ColumnNames::RESOURCE_NAME_ALIAS => $resourceName,
+				ColumnNames::RESOURCE_NAMES => $resourceName,
 				ColumnNames::EMAIL => $emailAddress,
 				ColumnNames::FIRST_NAME => $fname,
 				ColumnNames::LAST_NAME => $lname,

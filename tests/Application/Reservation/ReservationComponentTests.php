@@ -435,6 +435,7 @@ class ReservationComponentTests extends TestBase
 								   Date::Parse('2012-01-23 22:00', $timezone)),
 		);
 		$startPeriods = array($periods[1], $periods[0]);
+		$endPeriods = array($periods[1], $periods[0]);
 		$layout = $this->getMock('IScheduleLayout');
 
 		$this->scheduleRepository->expects($this->once())
@@ -450,9 +451,10 @@ class ReservationComponentTests extends TestBase
 
 		$this->initializer->expects($this->once())
 						  ->method('SetDates')
-						  ->with($this->equalTo($requestedDate), $this->equalTo($requestedDate),
+						  ->with($this->equalTo($requestedDate),
+								 $this->equalTo($requestedDate),
 								 $this->equalTo($startPeriods),
-								 $this->equalTo($periods));
+								 $this->equalTo($endPeriods));
 
 		$binder = new ReservationDateBinder($this->scheduleRepository);
 		$binder->Bind($this->initializer);
