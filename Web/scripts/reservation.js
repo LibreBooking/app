@@ -554,14 +554,16 @@ function Reservation(opts) {
 	}
 
 	function InitializeDateElements() {
-		var periodsCache = [];
+		var periodsCache = ['begin', 'end'];
+		periodsCache['begin'] = [];
+		periodsCache['end'] = [];
 
 		elements.beginDate.data['beginPreviousVal'] = elements.beginDate.val();
 		elements.endDate.data['endPreviousVal'] = elements.endDate.val();
 		elements.beginTime.data['beginTimePreviousVal'] = elements.beginTime.val();
 
 		elements.beginDate.change(function () {
-			PopulatePeriodDropDown(elements.beginDate, elements.beginTime, elements.beginDateTextbox);
+			PopulatePeriodDropDown(elements.beginDate, elements.beginTime, elements.beginDateTextbox, 'begin');
 			AdjustEndDate();
 			DisplayDuration();
 			SelectRepeatWeekday();
@@ -570,7 +572,7 @@ function Reservation(opts) {
 		});
 
 		elements.endDate.change(function () {
-			PopulatePeriodDropDown(elements.endDate, elements.endTime, elements.endDateTextbox);
+			PopulatePeriodDropDown(elements.endDate, elements.endTime, elements.endDateTextbox, 'end');
 			DisplayDuration();
 
 			elements.endDate.data['endPreviousVal'] = elements.endDate.val();
@@ -592,7 +594,7 @@ function Reservation(opts) {
 			DisplayDuration();
 		});
 
-		var PopulatePeriodDropDown = function (dateElement, periodElement, dateTextbox) {
+		var PopulatePeriodDropDown = function (dateElement, periodElement, dateTextbox, type) {
 			var prevDate = new Date(dateElement.data['previousVal']);
 			var currDate = new Date(dateElement.val());
 			if (prevDate.getTime() == currDate.getTime())
@@ -604,10 +606,10 @@ function Reservation(opts) {
 
 			var weekday = currDate.getDay();
 
-			if (periodsCache[weekday] != null)
+			if (periodsCache[type][weekday] != null)
 			{
 				periodElement.empty();
-				periodElement.html(periodsCache[weekday]);
+				periodElement.html(periodsCache[type][weekday]);
 				if (selectedPeriod)
                 {
                     periodElement.val(selectedPeriod);
@@ -620,7 +622,15 @@ function Reservation(opts) {
 					periodElement.empty();
 					$.map(data.periods, function (item) {
 						if (item.isReservable) {
-                            items.push('<option value="' + item.begin + '">' + item.label + '</option>')
+							if (type == 'begin')
+							{
+								items.push('<option value="' + item.begin + '">' + item.label + '</option>');
+							}
+							else
+							{
+								items.push('<option value="' + item.end + '">' + item.labelEnd + '</option>');
+
+							}
                         }
 					});
 
@@ -631,7 +641,7 @@ function Reservation(opts) {
                     }
                     else {
                         var html = items.join('');
-                        periodsCache[weekday] = html;
+                        periodsCache[type][weekday] = html;
                         periodElement.html(html);
                         if (selectedPeriod) {
                             periodElement.val(selectedPeriod);
