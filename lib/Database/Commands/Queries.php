@@ -309,8 +309,8 @@ class Queries
 
 	const GET_ALL_ACCESSORIES =
 			'SELECT a.*, c.num_resources,
-			(SELECT GROUP_CONCAT(CONCAT(ra.resource_id, ",", ra.minimum_quantity, ",", ra.maximum_quantity) SEPARATOR "!sep!")
-						FROM resource_accessories ra WHERE ra.accessory_id = a.accessory_id) as resource_accessory_list
+			(SELECT GROUP_CONCAT(CONCAT(ra.resource_id, ",", COALESCE(ra.minimum_quantity,""), ",",  COALESCE(ra.maximum_quantity,"")) SEPARATOR "!sep!")
+				FROM resource_accessories ra WHERE ra.accessory_id = a.accessory_id) as resource_accessory_list
  			FROM accessories a
 			LEFT JOIN (
 				SELECT accessory_id, COUNT(*) AS num_resources

@@ -42,7 +42,7 @@ class AccessoryResourceRuleTests extends TestBase
 		$this->rule = new AccessoryResourceRule($this->accessoryRepository);
 	}
 
-	public function testRuleIsValidIfAccessoryIsNotTiedToResource()
+	public function testRuleIsValidIfAccessoryIsNotTiedToAnyResources()
 	{
 		$accessory1 = new ReservationAccessory(1, 5);
 
@@ -111,7 +111,7 @@ class AccessoryResourceRuleTests extends TestBase
 
 		$result = $this->rule->Validate($reservation, null);
 
-		$this->assertTrue($result->IsValid());
+		$this->assertFalse($result->IsValid());
 	}
 
 	public function testRuleIsNotValidIfTiedToResource_AndQuantityMinimumIsNotMet()
@@ -169,5 +169,24 @@ class AccessoryResourceRuleTests extends TestBase
 		$result = $this->rule->Validate($reservation, null);
 
 		$this->assertTrue($result->IsValid(), $result->ErrorMessage());
+	}
+
+	public function testRuleIsNotValidIfAccessoryTiedToResources_ButNoneArePresent()
+	{
+		$resourceId = 1;
+		$accessoryId = 1;
+
+		$reservation = new TestReservationSeries();
+		$reservation->WithResource(new FakeBookableResource(10));
+		$reservation->AddResource(new FakeBookableResource(20));
+		$reservation->WithAccessory(new ReservationAccessory($accessoryId, 10));
+		$accessory = new Accessory(1, 'name1', null);
+		$accessory->AddResource($resourceId, null, null);
+
+		$this->accessoryRepository->AddAccessory($accessory);
+
+		$result = $this->rule->Validate($reservation, null);
+
+		$this->assertFalse($result->IsValid(), $result->ErrorMessage());
 	}
 }

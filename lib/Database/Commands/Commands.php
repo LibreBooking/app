@@ -1045,6 +1045,11 @@ class GetAllAccessoriesCommand extends SqlCommand
 	{
 		parent::__construct(Queries::GET_ALL_ACCESSORIES);
 	}
+
+	public function ContainsGroupConcat()
+	{
+		return true;
+	}
 }
 
 class GetAllAnnouncementsCommand extends SqlCommand

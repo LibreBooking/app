@@ -54,19 +54,7 @@ class AccessoryResourceRule implements IReservationValidationRule
 
 		$association = $this->GetResourcesAndRequiredAccessories($accessories);
 
-//		if ($accessoriesCannotBeBookedWithGivenResources())
-//		{
-//
-//		}
 		$bookedResourceIds = $reservationSeries->AllResourceIds();
-//		$missingAccessories = $association->GetAccessoriesMissingRequiredResources($bookedResourceIds, $bookedAccessories, $bookedResourceIds);
-//		if (!empty($missingAccessories))
-//		{
-//			foreach ($missingAccessories as $accessory)
-//			{
-//				$errors[] = $this->strings->GetString('AccessoryResourceAssociationErrorMessage', $accessory->GetName());
-//			}
-//		}
 
 		$badAccessories = $association->GetAccessoriesThatCannotBeBookedWithGivenResources($bookedAccessories, $bookedResourceIds);
 
@@ -127,7 +115,6 @@ class AccessoryResourceRule implements IReservationValidationRule
 class ResourceAccessoryAssociation
 {
 	private $resources = array();
-	private $requiredResources = array();
 
 	/** @var Accessory[] */
 	private $accessories = array();
@@ -139,44 +126,7 @@ class ResourceAccessoryAssociation
 	public function AddRelationship($resource, $accessory)
 	{
 		$this->resources[$resource->ResourceId][$accessory->GetId()] = $accessory;
-
-		if (!empty($resource->MinQuantity))
-		{
-			$this->requiredResources[$accessory->GetId()][] = $resource->ResourceId;
-		}
 	}
-
-//	/**
-//	 * @param int[] $resourceIds
-//	 * @param ReservationAccessory[] $bookedAccessories
-//	 * @param int[] $bookedResourceIds
-//	 * @return Accessory[]
-//	 */
-//	public function GetAccessoriesMissingRequiredResources($resourceIds, $bookedAccessories, $bookedResourceIds)
-//	{
-//		$accessories = array();
-//
-//		foreach ($this->requiredResources as $accessoryId => $requiredResourceIds)
-//		{
-//			if (!array_key_exists($accessoryId, $bookedAccessories))
-//			{
-//				// if this accessory isn't booked then we dont care if the resources are present
-//				continue;
-//			}
-//
-//			if (in_array($b))
-//
-//			$intersect = array_intersect($requiredResourceIds, $resourceIds);
-//
-//			if (count($intersect) != count($requiredResourceIds))
-//			{
-//				// this accessory can only be booked with specific resources
-//				$accessories[] = $this->accessories[$accessoryId];
-//			}
-//		}
-//
-//		return $accessories;
-//	}
 
 	/**
 	 * @param int $resourceId
@@ -216,7 +166,13 @@ class ResourceAccessoryAssociation
 		$bookedAccessoryIds = array();
 		foreach ($bookedAccessories as $accessory)
 		{
-			$bookedAccessoryIds[] = $accessory->AccessoryId;
+			$accessoryId = $accessory->AccessoryId;
+			$bookedAccessoryIds[] = $accessoryId;
+
+			if ($this->AccessoryNeedsARequiredResourceToBeBooked($accessoryId, $bookedResourceIds))
+			{
+				$badAccessories[] = $this->accessories[$accessoryId]->GetName();
+			}
 		}
 
 		foreach ($bookedResourceIds as $resourceId)
@@ -231,12 +187,24 @@ class ResourceAccessoryAssociation
 			{
 				if (!array_key_exists($accessoryId, $resourceAccessories))
 				{
-					$badAccessories = $this->accessories[$accessoryId]->GetName();
+					$badAccessories[] = $this->accessories[$accessoryId]->GetName();
 				}
 			}
 		}
 
 		return $badAccessories;
 
+	}
+
+	private function AccessoryNeedsARequiredResourceToBeBooked($accessoryId, $bookedResourceIds)
+	{
+		$accessory = $this->accessories[$accessoryId];
+		if ($accessory->IsTiedToResource())
+		{
+			Log::Debug('Checking required resources for accessory %s', $accessoryId);
+			$overlap = array_intersect($accessory->ResourceIds(), $bookedResourceIds);
+			return count($overlap) == 0;
+		}
+		return false;
 	}
 }
