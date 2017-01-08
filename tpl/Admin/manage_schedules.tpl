@@ -259,7 +259,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 											  name="{FormKeys::SLOTS_RESERVABLE}{$suffix}"></textarea>
 								</div>
 								<div class="col-xs-6">
-									<label for="blockedEdit{$suffix}">{translate key=BlockedTimeSlots}</label>
+									<label for="blockedEdit{$suffix}">{translate key=BlockedTimeSlots}</label> <a href="#" class="autofillBlocked" title="{translate key=Autofill}"><i class="fa fa-magic"></i></a>
 									<textarea class="blockedEdit form-control" id="blockedEdit{$suffix}" name="{FormKeys::SLOTS_BLOCKED}{$suffix}"></textarea>
 								</div>
 							</div>
@@ -318,10 +318,10 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 									<input type='number' min='0' step='15' value='30' id='quickLayoutConfig' size=5' title='Minutes' class='form-control'/>
 								{/capture}
 								{capture name="layoutStart" assign="layoutStart"}
-									<input type='text' value='08:00' id='quickLayoutStart' size='10' title='From time' class='form-control'/>
+									<input type='text' value='08:00' id='quickLayoutStart' size='10' title='From time' class='form-control' maxlength='5' />
 								{/capture}
 								{capture name="layoutEnd" assign="layoutEnd"}
-									<input type='text' value='18:00' id='quickLayoutEnd' size='10' title='End time' class='form-control'/>
+									<input type='text' value='18:00' id='quickLayoutEnd' size='10' title='End time' class='form-control' maxlength='5'/>
 								{/capture}
 								{translate key=QuickSlotCreation args="$layoutConfig,$layoutStart,$layoutEnd"}
 								<a href="#" id="createQuickLayout">{translate key=Create}</a>

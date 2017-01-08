@@ -148,6 +148,11 @@ function ScheduleManagement(opts) {
 			elements.addDialog.modal('show');
 		});
 
+		$('.autofillBlocked').click(function(e){
+			e.preventDefault();
+			autoFillBlocked();
+		});
+
 		wireUpPeakTimeToggles();
 
 		ConfigureAsyncForm(elements.changeLayoutForm, getSubmitCallback(options.changeLayoutAction));
@@ -215,6 +220,59 @@ function ScheduleManagement(opts) {
 		var hour = date.getHours() < 10 ? "0" + date.getHours() : date.getHours();
 		var minute = date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes();
 		return hour + ":" + minute;
+	};
+
+	var autoFillBlocked = function() {
+
+		function splitAndTrim(line) {
+			return _.map(_.split(line, '-'), _.trim);
+		}
+
+		var blocked = '';
+
+		var reservableText = _.trim($('.reservableEdit:visible', elements.layoutDialog).val());
+		var reservable = _.split(reservableText, "\n");
+		if (reservable.length === 0)
+		{
+			$('.blockedEdit:visible', elements.layoutDialog).val("00:00 - 00:00");
+			return;
+		}
+
+		var startIndex = 0;
+		if (!_.startsWith(reservable[0], '00:00') && !_.startsWith(reservable[0], '0:00'))
+		{
+			blocked += "00:00 - " + splitAndTrim(reservable)[0] + "\n";
+			startIndex = 1;
+		}
+
+		for (var i = startIndex; i < reservable.length; i++) {
+			var firstIteration = i === 0;
+			var lastIteration = i+1 === reservable.length;
+
+			if (_.isEmpty(_.trim(reservable[i])))
+			{
+				continue;
+			}
+
+			var current = splitAndTrim(reservable[i]);
+			var previous = null;
+			if (!firstIteration)
+			{
+				previous = splitAndTrim(reservable[i - 1]);
+			}
+
+			if (!firstIteration && !lastIteration && current[0] != previous[1])
+			{
+				blocked += previous[1] + " - " + current[0] + "\n";
+			}
+
+			if (lastIteration && current[1] != '00:00')
+			{
+				blocked += current[1] + ' - 00:00' + "\n";
+			}
+		}
+
+		$('.blockedEdit:visible', elements.layoutDialog).val(blocked);
 	};
 
 	var handleAddError = function (responseText) {

@@ -604,6 +604,7 @@ class en_us extends Language
 		$strings['DateRange'] = 'Date Range';
 		$strings['Copy'] = 'Copy';
 		$strings['Detect'] = 'Detect';
+		$strings['Autofill'] = 'Autofill';
         // End Strings
 
 		// Install

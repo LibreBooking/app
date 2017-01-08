@@ -34,7 +34,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		{jsfile src="js/jquery-2.1.1.min.js"}
 		{jsfile src="js/jquery-ui-1.10.4.custom.min.js"}
 		{jsfile src="bootstrap/js/bootstrap.min.js"}
-		{jsfile src="js/lodash.3.10.1.min.js"}
+		{jsfile src="js/lodash.4.6.13.min.js"}
 		{jsfile src="js/moment.min.js"}
 		{jsfile src="js/jquery.form-3.09.min.js"}
 		{jsfile src="js/jquery.blockUI-2.66.0.min.js"}
@@ -51,33 +51,33 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		{/if}
 	{else}
 		<script type="text/javascript"
-				src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+				src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 		<script type="text/javascript"
-				src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
+				src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
 		<script type="text/javascript"
-				src="//netdna.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+				src="https://netdna.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
 		<script type="text/javascript"
-				src="//cdnjs.cloudflare.com/ajax/libs/lodash.js/3.10.1/lodash.min.js"></script>
+				src="https://cdn.jsdelivr.net/lodash/4.16.3/lodash.min.js"></script>
 		<script type="text/javascript"
-				src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.13.0/moment.min.js"></script>
+				src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.13.0/moment.min.js"></script>
 		<script type="text/javascript"
-				src="//cdnjs.cloudflare.com/ajax/libs/jquery.form/3.50/jquery.form.min.js"></script>
+				src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/3.50/jquery.form.min.js"></script>
 		<script type="text/javascript"
-				src="//cdnjs.cloudflare.com/ajax/libs/jquery.blockUI/2.66.0-2013.10.09/jquery.blockUI.min.js"></script>
+				src="https://cdnjs.cloudflare.com/ajax/libs/jquery.blockUI/2.66.0-2013.10.09/jquery.blockUI.min.js"></script>
 	{if $Qtip}
 		<script type="text/javascript"
-				src="//cdn.jsdelivr.net/qtip2/2.2.0/jquery.qtip.min.js"></script>
+				src="https://cdn.jsdelivr.net/qtip2/2.2.0/jquery.qtip.min.js"></script>
 	{/if}
 	{if $Validator}
 		<script type="text/javascript"
-				src="//cdnjs.cloudflare.com/ajax/libs/jquery.bootstrapvalidator/0.5.3/js/bootstrapValidator.min.js"></script>
+				src="https://cdnjs.cloudflare.com/ajax/libs/jquery.bootstrapvalidator/0.5.3/js/bootstrapValidator.min.js"></script>
 	{/if}
 
 	{if $InlineEdit}
 		<script type="text/javascript"
-				src="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.1/bootstrap3-editable/js/bootstrap-editable.min.js"></script>
+				src="https://cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.1/bootstrap3-editable/js/bootstrap-editable.min.js"></script>
 		<script type="text/javascript"
-				src="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.1/inputs-ext/wysihtml5/wysihtml5.js"></script>
+				src="https://cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.1/inputs-ext/wysihtml5/wysihtml5.js"></script>
 		{jsfile src="js/wysihtml5/bootstrap3-wysihtml5.all.min.js"}
 	{/if}
 	{/if}
@@ -108,20 +108,20 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		{/if}
 
 	{else}
-		<link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.9.0/themes/smoothness/jquery-ui.css"
+		<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.9.0/themes/smoothness/jquery-ui.css"
 			  type="text/css"/>
-		<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css"
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css"
 			  type="text/css"/>
-		<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css"
+		<link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css"
 			  type="text/css"/>
-		<link rel="stylesheet" href="//cdn.jsdelivr.net/qtip2/2.2.0/jquery.qtip.min.css"
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/qtip2/2.2.0/jquery.qtip.min.css"
 			  type="text/css"/>
 		{if $Validator}
-			<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/jquery.bootstrapvalidator/0.5.3/css/bootstrapValidator.min.css"
+			<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery.bootstrapvalidator/0.5.3/css/bootstrapValidator.min.css"
 				  type="text/css"/>
 		{/if}
 		{if $InlineEdit}
-			<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.1/bootstrap3-editable/css/bootstrap-editable.css"
+			<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.1/bootstrap3-editable/css/bootstrap-editable.css"
 				  type="text/css"/>
 			{cssfile src="scripts/js/wysihtml5/bootstrap3-wysihtml5.min.css" rel="stylesheet"}
 		{/if}
