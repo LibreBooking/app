@@ -169,7 +169,7 @@ class Saml extends Authentication implements IAuthentication
 
 	public function AreCredentialsKnown()
 	{
-		return false;
+		return true;
 	}
 
 	private function SamlUserExists()
