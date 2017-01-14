@@ -56,7 +56,7 @@ extends {$ExtendViewPrefix}
 							<a href="{$href}" resourceId="{$resource->Id}"
 							   class="resourceNameSelector" {if $resource->HasColor()}style="color:{$resource->GetTextColor()}"{/if}>{$resource->Name}</a>
 						{else}
-							<span resourceId="{$resource->Id}" resourceId="{$resource->Id}" class="resourceNameSelector" {if $resource->HasColor()}style="color:{$resource->GetTextColor()}"{/if}>{$resource->Name}</span>
+							<span resourceId="{$resourceId}" resourceId="{$resourceId}" class="resourceNameSelector" {if $resource->HasColor()}style="color:{$resource->GetTextColor()}"{/if}>{$resource->Name}</span>
 						{/if}
 					</td>
 					{foreach from=$BoundDates item=date}
@@ -64,7 +64,7 @@ extends {$ExtendViewPrefix}
 						{assign var=href value="{Pages::RESERVATION}?rid={$resource->Id}&sid={$ScheduleId}&rd={formatdate date=$date key=url}"}
 						{foreach from=$slots item=slot}
 							{assign var=slotRef value="{$slot->BeginDate()->Format('YmdHis')}{$resourceId}"}
-							{displaySlot Slot=$slot Href="$href" AccessAllowed=$resource->CanAccess SlotRef=$slotRef}
+							{displaySlot Slot=$slot Href="$href" AccessAllowed=$resource->CanAccess SlotRef=$slotRef ResourceId=$resourceId}
 						{/foreach}
 					{/foreach}
 				</tr>

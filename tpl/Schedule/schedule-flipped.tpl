@@ -85,7 +85,7 @@ extends {$ExtendViewPrefix}
 				{foreach from=$slots item=slot name=slot_loop}
 					{assign var=slotRef value="{$slot->BeginDate()->Format('YmdHis')}{$resourceId}"}
 					{capture assign="slotContent"}
-						{displaySlot Slot=$slot Href="$href" AccessAllowed=$resource->CanAccess SlotRef=$slotRef spantype='row'}
+						{displaySlot Slot=$slot Href="$href" AccessAllowed=$resource->CanAccess SlotRef=$slotRef spantype='row' ResourceId=$resourceId}
 					{/capture}
 					if (!rows['#{$slot->BeginSlotId()}'])
 					{
