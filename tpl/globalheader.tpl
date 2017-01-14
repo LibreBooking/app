@@ -66,7 +66,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 				src="https://cdnjs.cloudflare.com/ajax/libs/jquery.blockUI/2.66.0-2013.10.09/jquery.blockUI.min.js"></script>
 	{if $Qtip}
 		<script type="text/javascript"
-				src="https://cdn.jsdelivr.net/qtip2/2.2.0/jquery.qtip.min.js"></script>
+				src="https://cdn.jsdelivr.net/qtip2/3.0.3/jquery.qtip.min.js"></script>
 	{/if}
 	{if $Validator}
 		<script type="text/javascript"
@@ -114,7 +114,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			  type="text/css"/>
 		<link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css"
 			  type="text/css"/>
-		<link rel="stylesheet" href="https://cdn.jsdelivr.net/qtip2/2.2.0/jquery.qtip.min.css"
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/qtip2/3.0.3/jquery.qtip.min.css"
 			  type="text/css"/>
 		{if $Validator}
 			<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery.bootstrapvalidator/0.5.3/css/bootstrapValidator.min.css"

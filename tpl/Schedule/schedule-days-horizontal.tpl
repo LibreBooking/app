@@ -17,7 +17,8 @@ You should have received a copy of the GNU General Public License
 along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 *}
 
-{extends file="Schedule/schedule.tpl"}
+extends {$ExtendViewPrefix}
+{extends file="Schedule/{$ExtendViewPrefix}schedule.tpl"}
 
 {block name="reservations"}
 	{assign var=TodaysDate value=Date::Now()}

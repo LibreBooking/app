@@ -65,7 +65,8 @@ class ReservationAttributesPage extends Page implements IReservationAttributesPa
 
 	public function PageLoad()
 	{
-		$this->presenter->PageLoad(ServiceLocator::GetServer()->GetUserSession());
+		$userSession = ServiceLocator::GetServer()->GetUserSession();
+		$this->presenter->PageLoad($userSession);
 		$this->Set('ReadOnly', BooleanConverter::ConvertValue($this->GetIsReadOnly()));
 		$this->Display('Ajax/reservation/reservation_attributes.tpl');
 	}

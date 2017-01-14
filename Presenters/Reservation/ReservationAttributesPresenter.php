@@ -66,6 +66,12 @@ class ReservationAttributesPresenter
 
 	public function PageLoad(UserSession $userSession)
 	{
+		$hideReservations = !Configuration::Instance()->GetSectionKey(ConfigSection::PRIVACY, ConfigKeys::PRIVACY_VIEW_RESERVATIONS, new BooleanConverter());
+		$hideDetails = Configuration::Instance()->GetSectionKey(ConfigSection::PRIVACY, ConfigKeys::PRIVACY_HIDE_RESERVATION_DETAILS, new BooleanConverter());
+		if ($hideReservations || $hideDetails && !$userSession->IsLoggedIn())
+		{
+			return;
+		}
 		$requestedUserId = $this->page->GetRequestedUserId();
 		$requestedReferenceNumber = $this->page->GetRequestedReferenceNumber();
 		$resourceIds = $this->page->GetRequestedResourceIds();

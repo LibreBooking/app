@@ -16,21 +16,18 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 *}
+
 {extends file="Schedule/schedule.tpl"}
 
-{block name="header"}
-	{include file='globalheader.tpl'}
-{/block}
-
-{block name="actions"}{/block}
-
 {block name="scripts-common"}
+
 	{jsfile src="js/jquery.qtip.min.js"}
 	{jsfile src="js/moment.min.js"}
 	{jsfile src="schedule.js"}
 	{jsfile src="resourcePopup.js"}
 	{jsfile src="js/tree.jquery.js"}
 	{jsfile src="js/jquery.cookie.js"}
+
 	<script type="text/javascript">
 
 		$(document).ready(function () {
@@ -46,11 +43,14 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			var schedule = new Schedule(scheduleOptions, {$ResourceGroupsAsJson});
 			{if $AllowGuestBooking}
 			schedule.init();
+			schedule.initUserDefaultSchedule(true);
 			{else}
 			schedule.initNavigation();
+			schedule.initRotateSchedule();
 			schedule.initReservations();
 			schedule.initResourceFilter();
 			schedule.initResources();
+			schedule.initUserDefaultSchedule(true);
 			{/if}
 		});
 	</script>

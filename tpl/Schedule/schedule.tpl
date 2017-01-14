@@ -316,12 +316,14 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 {/block}
 
 {block name="scripts-common"}
+
 	{jsfile src="js/moment.min.js"}
 	{jsfile src="schedule.js"}
 	{jsfile src="resourcePopup.js"}
 	{jsfile src="js/tree.jquery.js"}
 	{jsfile src="js/jquery.cookie.js"}
 	{jsfile src="ajax-helpers.js"}
+
 	<script type="text/javascript">
 
 		$(document).ready(function () {

@@ -79,6 +79,13 @@ table.reservations td {
   width: auto;
   min-width: 120px;
 }
+.reservations.condensed .reserved {
+  padding: 3px;
+  margin: 0 2px;
+  -webkit-border-radius: 2px;
+  -moz-border-radius: 2px;
+  border-radius: 2px;
+}
 td.resourcename {
   padding: 1px 3px;
   background-color: #EDEDED;

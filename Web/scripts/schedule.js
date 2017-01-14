@@ -186,8 +186,14 @@ function Schedule(opts, resourceGroups) {
 		});
 	};
 
-	this.initUserDefaultSchedule = function () {
+	this.initUserDefaultSchedule = function (anonymous) {
 		var makeDefaultButton = $('#make_default');
+		if (anonymous)
+		{
+			makeDefaultButton.hide();
+			return;
+		}
+
 		makeDefaultButton.show();
 
 		var defaultSetMessage = $('#defaultSetMessage');
@@ -195,12 +201,13 @@ function Schedule(opts, resourceGroups) {
 			e.preventDefault();
 			var scheduleId = $('#scheduleId').val();
 			var changeDefaultUrl = options.setDefaultScheduleUrl.replace("[scheduleId]", scheduleId);
-			$.ajax({
-				url: changeDefaultUrl, success: function (data) {
-					defaultSetMessage.show().delay(5000).fadeOut();
-				}
-			});
 
+
+				$.ajax({
+					url: changeDefaultUrl, success: function (data) {
+						defaultSetMessage.show().delay(5000).fadeOut();
+					}
+				});
 		});
 	};
 
@@ -296,18 +303,18 @@ function Schedule(opts, resourceGroups) {
 
 			qTipElement.qtip({
 				position: {
-					my: 'bottom left', at: 'top left', effect: false
+					my: 'bottom left', at: 'top left', effect: false,
+					viewport: $(window)
 				},
 
 				content: {
 					text: function (event, api) {
-						var refNum = $(this).attr('id');
 						$.ajax({url: options.summaryPopupUrl, data: {id: resid}})
 								.done(function (html) {
-									api.set('content.text', html)
+									api.set('content.text', html);
 								})
 								.fail(function (xhr, status, error) {
-									api.set('content.text', status + ': ' + error)
+									api.set('content.text', status + ': ' + error);
 								});
 
 						return 'Loading...';

@@ -262,8 +262,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 						{/block}
 					</div>
 				</div>
+				{/if}
 			</div>
-			{/if}
 			{if $ShowReservationDetails}
 				{if $Attachments|count > 0}
 					<div class="col-xs-12">

@@ -24,6 +24,13 @@ require_once(ROOT_DIR . 'lib/Application/Authorization/GuestPermissionServiceFac
 
 class ViewSchedulePage extends SchedulePage
 {
+
+	private $_styles = array(
+				ScheduleStyle::Wide => 'Schedule/schedule-days-horizontal.tpl',
+				ScheduleStyle::Tall => 'Schedule/schedule-flipped.tpl',
+				ScheduleStyle::CondensedWeek => 'Schedule/schedule-week-condensed.tpl',
+		);
+
 	public function __construct()
 	{
 		parent::__construct();
@@ -60,15 +67,29 @@ class ViewSchedulePage extends SchedulePage
 		$this->Set('AllowGuestBooking', $allowGuestBookings);
 		$this->Set('CreateReservationPage', Pages::GUEST_RESERVATION);
 
-        if ($this->IsMobile && !$this->IsTablet)
-        {
-            $this->Set('ExtendViewPrefix', 'view-');
-            $this->Display('Schedule/schedule-mobile.tpl');
-        }
-        else
-        {
-            $this->Display('Schedule/view-schedule.tpl');
-        }
+		$this->Set('ExtendViewPrefix', 'view-');
+		if ($this->IsMobile && !$this->IsTablet)
+		{
+			if ($this->ScheduleStyle == ScheduleStyle::Tall)
+			{
+				$this->Display('Schedule/schedule-flipped.tpl');
+			}
+			else
+			{
+				$this->Display('Schedule/schedule-mobile.tpl');
+			}
+		}
+		else
+		{
+			if (array_key_exists($this->ScheduleStyle, $this->_styles))
+			{
+				$this->Display($this->_styles[$this->ScheduleStyle]);
+			}
+			else
+			{
+				$this->Display('Schedule/view-schedule.tpl');
+			}
+		}
 	}
 
     public function ShowInaccessibleResources()
