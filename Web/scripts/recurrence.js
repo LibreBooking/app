@@ -137,14 +137,18 @@ function Recurrence(recurOptions, recurElements, prefix) {
 		if (options.repeatType) {
 			elements.repeatOptions.val(options.repeatType);
 			elements.repeatInterval.val(options.repeatInterval == '' ? 1 : options.repeatInterval);
+			ChangeRepeatOptions();
+
 			for (var i = 0; i < options.repeatWeekdays.length; i++) {
 				var id = '#' + prefix + 'repeatDay' + options.repeatWeekdays[i];
-				$(id).closest('label').button('toggle');
+				if (!$(id).is(':checked'))
+				{
+					$(id).closest('label').button('toggle');
+				}
 			}
 
 			$("#" + prefix + "repeatOnMonthlyDiv :radio[value='" + options.repeatMonthlyType + "']").prop('checked', true);
 
-			ChangeRepeatOptions();
 		}
 	}
 
