@@ -586,6 +586,7 @@ class ManageResourcesPresenter extends ActionPresenter
 		$allowMultiDay = $this->page->GetAllowMultiday();
 		$requiresApproval = $this->page->GetRequiresApproval();
 		$autoAssign = $this->page->GetAutoAssign();
+		$enableCheckin = $this->page->GetBulkEnableCheckin();
 		$allowSubscription = $this->page->GetAllowSubscriptions();
 
 		$resourceIds = $this->page->GetBulkUpdateResourceIds();
@@ -661,6 +662,10 @@ class ManageResourcesPresenter extends ActionPresenter
 				if ($this->ChangingDropDown($autoAssign))
 				{
 					$resource->SetAutoAssign($autoAssign);
+				}
+				if ($this->ChangingDropDown($enableCheckin))
+				{
+					$resource->SetCheckin($enableCheckin, $this->page->GetAutoReleaseMinutes());
 				}
 				if ($this->ChangingDropDown($allowSubscription))
 				{

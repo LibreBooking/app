@@ -325,6 +325,11 @@ interface IManageResourcesPage extends IUpdateResourcePage, IActionPage, IPageab
 	public function GetEnableCheckin();
 
 	/**
+	 * @return bool
+	 */
+	public function GetBulkEnableCheckin();
+
+	/**
 	 * @return string
 	 */
 	public function GetAutoReleaseMinutes();
@@ -853,6 +858,11 @@ class ManageResourcesPage extends ActionPage implements IManageResourcesPage
 	public function GetEnableCheckin()
 	{
 		return $this->GetCheckbox(FormKeys::ENABLE_CHECK_IN);
+	}
+
+	public function GetBulkEnableCheckin()
+	{
+		return $this->GetForm(FormKeys::ENABLE_CHECK_IN);
 	}
 
 	public function GetAutoReleaseMinutes()

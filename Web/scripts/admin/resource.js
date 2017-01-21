@@ -79,13 +79,13 @@ function ResourceManagement(opts) {
 		creditsPerSlot: $('#creditsPerSlot'),
 		peakCreditsPerSlot: $('#peakCreditsPerSlot'),
 
-        checkAllResources: $('#checkAllResources'),
-        checkNoResources: $('#checkNoResources'),
+		checkAllResources: $('#checkAllResources'),
+		checkNoResources: $('#checkNoResources'),
 
-        copyDialog: $('#copyDialog'),
-        copyName: $('#copyResourceName'),
-        copyForm: $('#copyForm')
-        // copyResourceId: $('#copyResourceId')
+		copyDialog: $('#copyDialog'),
+		copyName: $('#copyResourceName'),
+		copyForm: $('#copyForm')
+		// copyResourceId: $('#copyResourceId')
 	};
 
 	var resources = {};
@@ -143,9 +143,9 @@ function ResourceManagement(opts) {
 
 			details.find('.copyButton').click(function (e) {
 				e.stopPropagation();
-                elements.copyName.val(getActiveResource().name + ' ' + options.copyText);
-                elements.copyDialog.modal('show');
-                elements.copyName.select().focus();
+				elements.copyName.val(getActiveResource().name + ' ' + options.copyText);
+				elements.copyDialog.modal('show');
+				elements.copyName.select().focus();
 			});
 
 			details.find('.changeScheduleButton').click(function (e) {
@@ -253,15 +253,15 @@ function ResourceManagement(opts) {
 			});
 		});
 
-        elements.checkAllResources.click(function(e){
-            e.preventDefault();
-            elements.bulkUpdateList.find('input:checkbox').prop('checked', true);
-        });
+		elements.checkAllResources.click(function (e) {
+			e.preventDefault();
+			elements.bulkUpdateList.find('input:checkbox').prop('checked', true);
+		});
 
-        elements.checkNoResources.click(function(e){
-            e.preventDefault();
-            elements.bulkUpdateList.find('input:checkbox').prop('checked', false);
-        });
+		elements.checkNoResources.click(function (e) {
+			e.preventDefault();
+			elements.bulkUpdateList.find('input:checkbox').prop('checked', false);
+		});
 
 		$(".save").click(function () {
 			$(this).closest('form').submit();
@@ -289,9 +289,23 @@ function ResourceManagement(opts) {
 
 		elements.clearFilterButton.click(function (e) {
 			e.preventDefault();
-			elements.filterTable.find('input,select,textarea').val('')
+			elements.filterTable.find('input,select,textarea').val('');
 
 			filterResources();
+		});
+
+		wireUpCheckboxToggle(elements.bulkUpdateDialog);
+
+		$('#bulkEditEnableCheckIn').change(function () {
+			if ($(this).val() == '1')
+			{
+				$('#bulkUpdateAutoReleaseMinutesDiv').removeClass('no-show');
+			}
+
+			if ($(this).val() == '0')
+			{
+				$('#bulkUpdateAutoReleaseMinutesDiv').addClass('no-show');
+			}
 		});
 
 		elements.bulkUpdatePromptButton.click(function (e) {
@@ -304,8 +318,6 @@ function ResourceManagement(opts) {
 				items.push('<div class="checkbox checkbox-inline">' + '<input type="checkbox" id="' + checkId + '" name="resourceId[]" checked="checked" value="' + r.id + '" />' + '<label for="' + checkId + '">' + r.name + '</label>' + '</div>');
 			});
 			$('<div/>', {html: items.join('')}).appendTo(elements.bulkUpdateList);
-
-			wireUpCheckboxToggle(elements.bulkUpdateDialog);
 
 			$('#bulkUpdateDialog').modal('show');
 		});
@@ -411,7 +423,8 @@ function ResourceManagement(opts) {
 		ConfigureAsyncForm(elements.addGroupForm, defaultSubmitCallback(elements.addGroupForm), changeGroups, errorHandler);
 		ConfigureAsyncForm(elements.removeGroupForm, defaultSubmitCallback(elements.removeGroupForm), changeGroups, errorHandler);
 		ConfigureAsyncForm(elements.resourceGroupForm, defaultSubmitCallback(elements.resourceGroupForm), onResourceGroupsSaved);
-		ConfigureAsyncForm(elements.colorForm, defaultSubmitCallback(elements.colorForm), function () {});
+		ConfigureAsyncForm(elements.colorForm, defaultSubmitCallback(elements.colorForm), function () {
+		});
 		ConfigureAsyncForm(elements.creditsForm, defaultSubmitCallback(elements.creditsForm), onCreditsSaved, null, errorHandler);
 		ConfigureAsyncForm(elements.copyForm, defaultSubmitCallback(elements.copyForm));
 	};
