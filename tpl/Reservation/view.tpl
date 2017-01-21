@@ -87,12 +87,12 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 					</div>
 
 					<div class="col-xs-12">
-						<label>{translate key=ReservationLength}</label>
-
-						<div class="durationText">
-							<span id="durationDays">0</span> {translate key='days'},
-							<span id="durationHours">0</span> {translate key='hours'}
-						</div>
+                        <span class="like-label">{translate key=ReservationLength}</span>
+                        <div class="durationText">
+                            <span id="durationDays">0</span> {translate key=days}
+                            <span id="durationHours">0</span> {translate key=hours}
+                            <span id="durationMinutes">0</span> {translate key=minutes}
+                        </div>
 					</div>
 
 					<div class="col-xs-12">
