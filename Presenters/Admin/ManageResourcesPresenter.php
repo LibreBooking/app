@@ -361,18 +361,18 @@ class ManageResourcesPresenter extends ActionPresenter
 		}
 
 		$imageSize = getimagesize($uploadedImage->TemporaryName());
-        $bytesNeeded = $imageSize[0] * $imageSize[1] * 3;
-        $memoryLimit = ini_get('memory_limit');
-        $currentUsage = memory_get_usage();
-        $needed = ($bytesNeeded + $currentUsage)/1048576;
-        $limit = str_replace('M', '', $memoryLimit);
+		$bytesNeeded = $imageSize[0] * $imageSize[1] * 3;
+		$memoryLimit = ini_get('memory_limit');
+		$currentUsage = memory_get_usage();
+		$needed = ($bytesNeeded + $currentUsage) / 1048576;
+		$limit = str_replace('M', '', $memoryLimit);
 
-        if ($needed > $limit)
-        {
-            echo 'Image too big. Resize to a smaller size or reduce the resolution and try again.';
-            Log::Error("Uploaded image for %s is too big. Needed %s limit %s", $this->page->GetResourceId(), $needed, $limit);
-            die();
-        }
+		if ($needed > $limit)
+		{
+			echo 'Image too big. Resize to a smaller size or reduce the resolution and try again.';
+			Log::Error("Uploaded image for %s is too big. Needed %s limit %s", $this->page->GetResourceId(), $needed, $limit);
+			die();
+		}
 
 		$image = $this->imageFactory->Load($uploadedImage->TemporaryName());
 		$image->ResizeToWidth(300);
@@ -571,7 +571,7 @@ class ManageResourcesPresenter extends ActionPresenter
 
 		$statusId = $this->page->GetStatusId();
 		$reasonId = $this->page->GetStatusReasonId();
-		
+
 		// need to figure out difference between empty and unchanged
 		$minDuration = $this->page->GetMinimumDuration();
 		$minDurationNone = $this->page->GetMinimumDurationNone();
@@ -588,11 +588,13 @@ class ManageResourcesPresenter extends ActionPresenter
 		$autoAssign = $this->page->GetAutoAssign();
 		$enableCheckin = $this->page->GetBulkEnableCheckin();
 		$allowSubscription = $this->page->GetAllowSubscriptions();
+		$credits = $this->page->GetCredits();
+		$peakCredits = $this->page->GetPeakCredits();
 
 		$resourceIds = $this->page->GetBulkUpdateResourceIds();
 
 		$emptyDuration = 'dhm';
-				
+
 		foreach ($resourceIds as $resourceId)
 		{
 			try
@@ -677,6 +679,14 @@ class ManageResourcesPresenter extends ActionPresenter
 					{
 						$resource->DisableSubscription();
 					}
+				}
+				if (!empty($credits))
+				{
+					$resource->SetCreditsPerSlot($credits);
+				}
+				if (!empty($peakCredits))
+				{
+					$resource->SetPeakCreditsPerSlot($peakCredits);
 				}
 
 				/** @var AttributeValue $attribute */
@@ -779,52 +789,52 @@ class ManageResourcesPresenter extends ActionPresenter
 		$this->page->BindUpdatedResourceCredits($resource);
 	}
 
-    public function PrintQRCode()
-    {
-        $qrGenerator = new QRGenerator();
+	public function PrintQRCode()
+	{
+		$qrGenerator = new QRGenerator();
 
-        $resourceId = $this->page->GetResourceId();
+		$resourceId = $this->page->GetResourceId();
 
-        $imageUploadDir = new ImageUploadDirectory();
-        $imageName = "/resourceqr{$resourceId}.png";
-        $url = $imageUploadDir->GetPath() . $imageName;
-        $savePath = $imageUploadDir->GetDirectory() . $imageName;
+		$imageUploadDir = new ImageUploadDirectory();
+		$imageName = "/resourceqr{$resourceId}.png";
+		$url = $imageUploadDir->GetPath() . $imageName;
+		$savePath = $imageUploadDir->GetDirectory() . $imageName;
 
-        $qrPath = sprintf('%s/%s?%s=%s', Configuration::Instance()->GetScriptUrl(), Pages::RESERVATION, QueryStringKeys::RESOURCE_ID, $resourceId);
-        $qrGenerator->SavePng($qrPath, $savePath);
-        $resource = $this->resourceRepository->LoadById($resourceId);
+		$qrPath = sprintf('%s/%s?%s=%s', Configuration::Instance()->GetScriptUrl(), Pages::RESERVATION, QueryStringKeys::RESOURCE_ID, $resourceId);
+		$qrGenerator->SavePng($qrPath, $savePath);
+		$resource = $this->resourceRepository->LoadById($resourceId);
 
-        $this->page->ShowQRCode($url, $resource->GetName());
-    }
+		$this->page->ShowQRCode($url, $resource->GetName());
+	}
 
-    public function ActionCopyResource()
-    {
-        $sourceId = $this->page->GetResourceId();
-        $name = $this->page->GetResourceName();
+	public function ActionCopyResource()
+	{
+		$sourceId = $this->page->GetResourceId();
+		$name = $this->page->GetResourceName();
 
-        $resource = $this->resourceRepository->LoadById($sourceId);
-        $resource->AsCopy($name);
-        $this->resourceRepository->Add($resource);
-        $this->resourceRepository->Update($resource);
+		$resource = $this->resourceRepository->LoadById($sourceId);
+		$resource->AsCopy($name);
+		$this->resourceRepository->Add($resource);
+		$this->resourceRepository->Update($resource);
 
-        $resourceId = $resource->GetResourceId();
+		$resourceId = $resource->GetResourceId();
 
-        foreach ($resource->GetResourceGroupIds() as $groupId)
-        {
-            $this->resourceRepository->AddResourceToGroup($resourceId, $groupId);
-        }
+		foreach ($resource->GetResourceGroupIds() as $groupId)
+		{
+			$this->resourceRepository->AddResourceToGroup($resourceId, $groupId);
+		}
 
-        $groups = $this->resourceRepository->GetGroupsWithPermission($sourceId);
-        foreach ($groups->Results() as $group)
-        {
-            $this->resourceRepository->AddResourceGroupPermission($resourceId, $group->Id);
-        }
-        $users = $this->resourceRepository->GetUsersWithPermission($sourceId);
-        foreach ($users->Results() as $user)
-        {
-            $this->resourceRepository->AddResourceUserPermission($resourceId, $user->Id);
-        }
-    }
+		$groups = $this->resourceRepository->GetGroupsWithPermission($sourceId);
+		foreach ($groups->Results() as $group)
+		{
+			$this->resourceRepository->AddResourceGroupPermission($resourceId, $group->Id);
+		}
+		$users = $this->resourceRepository->GetUsersWithPermission($sourceId);
+		foreach ($users->Results() as $user)
+		{
+			$this->resourceRepository->AddResourceUserPermission($resourceId, $user->Id);
+		}
+	}
 
 	protected function LoadValidators($action)
 	{
@@ -832,8 +842,8 @@ class ManageResourcesPresenter extends ActionPresenter
 		{
 			$attributes = $this->GetInlineAttributeValue();
 			$this->page->RegisterValidator('attributeValidator', new AttributeValidatorInline($this->attributeService,
-																						CustomAttributeCategory::RESOURCE, $attributes,
-																						$this->page->GetResourceId(), true, true));
+																							  CustomAttributeCategory::RESOURCE, $attributes,
+																							  $this->page->GetResourceId(), true, true));
 		}
 		if ($action == ManageResourcesActions::ActionBulkUpdate)
 		{
@@ -849,17 +859,23 @@ class ManageResourcesPresenter extends ActionPresenter
 		{
 			$this->page->SetResourcesJson(array_map(array('AdminResourceJson', 'FromBookable'), $this->resourceRepository->GetResourceList()));
 		}
-		else if ($dataRequest == 'users')
+		else
 		{
-			$users = $this->resourceRepository->GetUsersWithPermission($this->page->GetResourceId());
-			$response = new UserResults($users->Results(), $users->PageInfo()->Total);
-			$this->page->SetJsonResponse($response);
-		}
-		else if ($dataRequest == 'groups')
-		{
-			$groups = $this->resourceRepository->GetGroupsWithPermission($this->page->GetResourceId());
-			$response = new GroupResults($groups->Results(), $groups->PageInfo()->Total);
-			$this->page->SetJsonResponse($response);
+			if ($dataRequest == 'users')
+			{
+				$users = $this->resourceRepository->GetUsersWithPermission($this->page->GetResourceId());
+				$response = new UserResults($users->Results(), $users->PageInfo()->Total);
+				$this->page->SetJsonResponse($response);
+			}
+			else
+			{
+				if ($dataRequest == 'groups')
+				{
+					$groups = $this->resourceRepository->GetGroupsWithPermission($this->page->GetResourceId());
+					$response = new GroupResults($groups->Results(), $groups->PageInfo()->Total);
+					$this->page->SetJsonResponse($response);
+				}
+			}
 		}
 	}
 
