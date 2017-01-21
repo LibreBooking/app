@@ -477,7 +477,8 @@ function Schedule(opts, resourceGroups) {
 				var node = event.node;
 				if (node.type != 'resource')
 				{
-					ChangeGroup(node.id);
+					$('#resourceGroups').find(':checkbox').attr('checked', false);
+					ChangeGroup(node);
 				}
 			}
 		});
@@ -498,12 +499,18 @@ function RemoveGroupId(url) {
 	return url.replace(/&*gid=\d+/i, "");
 }
 
-function ChangeGroup(groupId) {
+function ChangeGroup(node) {
+	var groupId = node.id;
 	var $resourceGroups = $('#resourceGroups');
 
-	$resourceGroups.find(':checkbox').attr('checked', false);
 	$resourceGroups.find('input[group-id="' + groupId + '"]').click();
-	//RedirectToSelf('gid', /gid=\d+/i, "gid=" + groupId, RemoveResourceId);
+
+	_.each(node.children, function(i) {
+		if (i.type == 'group')
+		{
+			ChangeGroup(i);
+		}
+	});
 }
 
 function AddSpecificDate(dateText, inst) {
