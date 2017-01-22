@@ -47,6 +47,11 @@ class Report_Filter
 	private $includeDeleted;
 
 	/**
+	 * @var int|null
+	 */
+	private $resourceTypeId;
+
+	/**
 	 * @param $resourceId int|null
 	 * @param $scheduleId int|null
 	 * @param $userId int|null
@@ -54,8 +59,9 @@ class Report_Filter
 	 * @param $accessoryId int|null
 	 * @param $participantId int|null
 	 * @param $includeDeleted bool
+	 * @param $resourceTypeId int|null
 	 */
-	public function __construct($resourceId, $scheduleId, $userId, $groupId, $accessoryId, $participantId, $includeDeleted)
+	public function __construct($resourceId, $scheduleId, $userId, $groupId, $accessoryId, $participantId, $includeDeleted, $resourceTypeId)
 	{
 		$this->resourceId = $resourceId;
 		$this->scheduleId = $scheduleId;
@@ -64,6 +70,7 @@ class Report_Filter
 		$this->accessoryId = $accessoryId;
 		$this->participantId = $participantId;
 		$this->includeDeleted = $includeDeleted;
+		$this->resourceTypeId = $resourceTypeId;
 	}
 
 	public function Add(ReportCommandBuilder $builder)
@@ -96,6 +103,10 @@ class Report_Filter
 		{
 			$builder->WithDeleted();
 		}
+		if (!empty($this->resourceTypeId))
+		{
+			$builder->WithResourceTypeId($this->resourceTypeId);
+		}
 	}
 
 	/**
@@ -104,6 +115,14 @@ class Report_Filter
 	public function ResourceId()
 	{
 		return $this->resourceId;
+	}
+
+	/**
+	 * @return int|null
+	 */
+	public function ResourceTypeId()
+	{
+		return $this->resourceTypeId;
 	}
 
 	/**

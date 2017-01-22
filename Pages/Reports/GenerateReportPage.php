@@ -1,21 +1,21 @@
 <?php
 /**
-Copyright 2012-2016 Nick Korbel
-
-This file is part of Booked Scheduler.
-
-Booked Scheduler is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-Booked Scheduler is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
+ * Copyright 2012-2016 Nick Korbel
+ *
+ * This file is part of Booked Scheduler.
+ *
+ * Booked Scheduler is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Booked Scheduler is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 require_once(ROOT_DIR . 'Pages/SecurePage.php');
@@ -59,6 +59,11 @@ interface IGenerateReportPage extends IDisplayableReportPage, IActionPage
 	 * @return int
 	 */
 	public function GetResourceId();
+
+	/**
+	 * @return int
+	 */
+	public function GetResourceTypeId();
 
 	/**
 	 * @return int
@@ -114,6 +119,11 @@ interface IGenerateReportPage extends IDisplayableReportPage, IActionPage
 	 * @return bool
 	 */
 	public function GetIncludeDeleted();
+
+	/**
+	 * @param ResourceType[] $resourceTypes
+	 */
+	public function BindResourceTypes($resourceTypes);
 }
 
 class GenerateReportPage extends ActionPage implements IGenerateReportPage
@@ -127,12 +137,12 @@ class GenerateReportPage extends ActionPage implements IGenerateReportPage
 	{
 		parent::__construct('Reports', 1);
 		$this->presenter = new GenerateReportPresenter(
-			$this,
-			ServiceLocator::GetServer()->GetUserSession(),
-			new ReportingService(new ReportingRepository()),
-			new ResourceRepository(),
-			new ScheduleRepository(),
-			new GroupRepository());
+				$this,
+				ServiceLocator::GetServer()->GetUserSession(),
+				new ReportingService(new ReportingRepository()),
+				new ResourceRepository(),
+				new ScheduleRepository(),
+				new GroupRepository());
 	}
 
 	/**
@@ -220,6 +230,14 @@ class GenerateReportPage extends ActionPage implements IGenerateReportPage
 	/**
 	 * @return int
 	 */
+	public function GetResourceTypeId()
+	{
+		return $this->GetValue(FormKeys::RESOURCE_TYPE_ID);
+	}
+
+	/**
+	 * @return int
+	 */
 	public function GetScheduleId()
 	{
 		return $this->GetValue(FormKeys::SCHEDULE_ID);
@@ -261,6 +279,14 @@ class GenerateReportPage extends ActionPage implements IGenerateReportPage
 	public function BindResources($resources)
 	{
 		$this->Set('Resources', $resources);
+	}
+
+	/**
+	 * @param ResourceType[] $resourceTypes
+	 */
+	public function BindResourceTypes($resourceTypes)
+	{
+		$this->Set('ResourceTypes', $resourceTypes);
 	}
 
 	/**

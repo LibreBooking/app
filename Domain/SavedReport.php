@@ -164,6 +164,14 @@ class SavedReport implements ISavedReport
 	}
 
 	/**
+	 * @return int
+	 */
+	public function ResourceTypeId()
+	{
+		return $this->filter->ResourceTypeId();
+	}
+
+	/**
 	 * @return int|null
 	 */
 	public function ScheduleId()
@@ -278,7 +286,7 @@ class ReportSerializer
 	 */
 	public static function Serialize(SavedReport $report)
 	{
-		$template = 'usage=%s;selection=%s;groupby=%s;range=%s;range_start=%s;range_end=%s;resourceid=%s;scheduleid=%s;userid=%s;groupid=%s;accessoryid=%s;participantid=%s;deleted=%s';
+		$template = 'usage=%s;selection=%s;groupby=%s;range=%s;range_start=%s;range_end=%s;resourceid=%s;scheduleid=%s;userid=%s;groupid=%s;accessoryid=%s;participantid=%s;deleted=%s;resourceTypeId=%s';
 
 		return sprintf($template,
 					   $report->Usage(),
@@ -293,7 +301,8 @@ class ReportSerializer
 					   $report->GroupId(),
 					   $report->AccessoryId(),
 					   $report->ParticipantId(),
-					   $report->IncludeDeleted());
+					   $report->IncludeDeleted(),
+					   $report->ResourceTypeId());
 	}
 
 	/**
@@ -406,7 +415,8 @@ class ReportSerializer
 		$accessoryId = isset($values['accessoryid']) ? $values['accessoryid'] : '';
 		$participantId = isset($values['participantid']) ? $values['participantid'] : '';
 		$deleted = isset($values['deleted']) ? intval($values['deleted']) : false;
+		$resourceTypeId = isset($values['resourceTypeId']) ? $values['resourceTypeId'] : '';
 
-		return new Report_Filter($resourceId, $scheduleId, $userId, $groupId, $accessoryId, $participantId, $deleted);
+		return new Report_Filter($resourceId, $scheduleId, $userId, $groupId, $accessoryId, $participantId, $deleted, $resourceTypeId);
 	}
 }

@@ -53,12 +53,13 @@ class ReportingServiceTests extends TestBase
 		$groupId = 4;
 		$accessoryId = 5;
 		$participantId = 6;
+		$resourceTypeId = 7;
 
 		$usage = new Report_Usage(Report_Usage::RESOURCES);
 		$selection = new Report_ResultSelection(Report_ResultSelection::FULL_LIST);
 		$groupBy = new Report_GroupBy(Report_GroupBy::GROUP);
 		$range = new Report_Range(Report_Range::DATE_RANGE, $start, $end, 'UTC');
-		$filter = new Report_Filter($resourceId, $scheduleId, $userId, $groupId, $accessoryId, $participantId, true);
+		$filter = new Report_Filter($resourceId, $scheduleId, $userId, $groupId, $accessoryId, $participantId, true, $resourceTypeId);
 
 		$commandBuilder = new ReportCommandBuilder();
 		$commandBuilder->SelectFullList()
@@ -70,6 +71,7 @@ class ReportingServiceTests extends TestBase
 				->WithScheduleId($scheduleId)
 				->WithGroupId($groupId)
 				->WithAccessoryId($accessoryId)
+				->WithResourceTypeId($resourceTypeId)
 				->WithDeleted()
 				->GroupByGroup();
 
@@ -104,7 +106,7 @@ class ReportingServiceTests extends TestBase
 		$selection = new Report_ResultSelection(Report_ResultSelection::COUNT);
 		$groupBy = new Report_GroupBy(Report_GroupBy::RESOURCE);
 		$range = new Report_Range(Report_Range::ALL_TIME, Date::Now(), Date::Now());
-		$filter = new Report_Filter(null, null, null, null, null, null, null);
+		$filter = new Report_Filter(null, null, null, null, null, null, null, null);
 
 		$savedReport = new SavedReport($reportName, $userId, $usage, $selection, $groupBy, $range, $filter);
 
