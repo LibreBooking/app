@@ -82,7 +82,11 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 </div>
 
 {block name=submitButtons}
-	<button type="button" class="btn btn-success" id="btnApprove">
+	<a href="{$SCRIPT_NAME}?{QueryStringKeys::REFERENCE_NUMBER}={$ReferenceNumber}&update=1&{QueryStringKeys::REDIRECT}={$ReturnUrl|escape:url}" class="btn btn-default" id="btnApprovalUpdate">
+		<span class=""></span>
+		{translate key='Update'}
+	</a>
+    <button type="button" class="btn btn-success" id="btnApprove">
 		<span class="glyphicon glyphicon-ok-circle"></span>
 		{translate key='Approve'}
 	</button>

@@ -174,7 +174,7 @@ class ExistingReservationPage extends ReservationPage implements IExistingReserv
 	{
 		$readOnly = $this->GetQuerystring(QueryStringKeys::READ_ONLY) == 1;
 
-		if (!$readOnly && $this->IsApprovable)
+		if (!$readOnly && $this->IsApprovable && !$this->UpdatingBeforeApproving())
 		{
 			return 'Reservation/approve.tpl';
 		}
@@ -184,6 +184,22 @@ class ExistingReservationPage extends ReservationPage implements IExistingReserv
 		}
 		return 'Reservation/view.tpl';
 	}
+
+    protected function UpdatingBeforeApproving()
+    {
+        $forceUpdate = $this->GetQuerystring('update');
+
+        return $forceUpdate == '1' && $this->IsApprovable;
+    }
+
+    protected function GetReturnUrl()
+    {
+        if ($this->UpdatingBeforeApproving())
+        {
+            return str_replace('&update=1', '', ServiceLocator::GetServer()->GetUrl());
+        }
+        return parent::GetReturnUrl();
+    }
 
 	protected function GetReservationAction()
 	{

@@ -328,6 +328,11 @@ abstract class ReservationPage extends Page implements IReservationPage
 
 	protected function GetReturnUrl()
 	{
+	    $redirect = $this->GetQuerystring(QueryStringKeys::REDIRECT);
+	    if (!empty($redirect))
+        {
+            return $redirect;
+        }
 		return $this->GetLastPage(Pages::SCHEDULE);
 	}
 

@@ -143,7 +143,6 @@ function Reservation(opts) {
             elements.deleteButtonPrompt.modal('hide');
         });
 
-
         InitializeDateElements();
 
 		WireUpActions();
