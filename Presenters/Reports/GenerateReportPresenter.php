@@ -84,6 +84,7 @@ class GenerateReportPresenter extends ActionPresenter
 	public function PageLoad()
 	{
 		$this->page->BindResources($this->resourceRepo->GetResourceList());
+		$this->page->BindResourceTypes($this->resourceRepo->GetResourceTypes());
 		$this->page->BindAccessories($this->resourceRepo->GetAccessoryList());
 		$this->page->BindSchedules($this->scheduleRepo->GetAll());
 		$this->page->BindGroups($this->groupRepo->GetList()->Results());
@@ -193,6 +194,7 @@ class GenerateReportPresenter extends ActionPresenter
 								 $this->page->GetGroupId(),
 								 $this->page->GetAccessoryId(),
 								 $this->page->GetParticipantId(),
-								 $this->page->GetIncludeDeleted());
+								 $this->page->GetIncludeDeleted(),
+								 $this->page->GetResourceTypeId());
 	}
 }

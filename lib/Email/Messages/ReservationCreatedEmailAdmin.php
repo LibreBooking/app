@@ -145,5 +145,7 @@ class ReservationCreatedEmailAdmin extends EmailMessage
 		{
 			$this->Set('CreatedBy', new FullName($bookedBy->FirstName, $bookedBy->LastName));
 		}
+
+		$this->Set('ReferenceNumber', $this->reservationSeries->CurrentInstance()->ReferenceNumber());
 	}
 }

@@ -53,7 +53,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 <p>Nicola Ruggero, Daniele Cordella, Marco Ponti (Italian)</p>
 <p>Olli Räisänen, Afaf Fafa (Finnish)</p>
 <p>Jakub Baláš, Leoš Jedlička (Czech)</p>
-<p>Maik Standtke, Sven de Vries (German)</p>
+<p>Maik Standtke, Sven de Vries, Jonas Endersch (German)</p>
 <p>Stephen Höglund (Swedish)</p>
 <p>Vladislav Zhivkov (Bulgarian)</p>
 <p>Bart Verheyde (Flemisch)</p>

@@ -145,6 +145,14 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 									</select>
 								</div>
 								<div class="form-group no-margin no-padding col-md-2">
+									<select class="form-control" {formname key=RESOURCE_TYPE_ID}>
+										<option value="">{translate key=AllResourceTypes}</option>
+										{foreach from=$ResourceTypes item=resourceType}
+											<option value="{$resourceType->Id()}">{$resourceType->Name()}</option>
+										{/foreach}
+									</select>
+								</div>
+								<div class="form-group no-margin no-padding col-md-2">
 									<select class="form-control" {formname key=ACCESSORY_ID} id="accessoryId">
 										<option value="">{translate key=AllAccessories}</option>
 										{foreach from=$Accessories item=accessory}
@@ -168,7 +176,9 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 										{/foreach}
 									</select>
 								</div>
-								<div class="form-group col-md-2">
+							</div>
+							<div class="col-md-11 col-md-offset-1">
+								<div class="form-group no-margin no-padding col-md-2">
 									<div id="user-filter-div">
 										<div class="">
 											<label class="control-label sr-only"
@@ -179,7 +189,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 										</div>
 									</div>
 								</div>
-								<div class="form-group col-md-2">
+								<div class="form-group no-margin no-padding col-md-2">
 									<div id="participant-filter-div">
 										<div class="form-group">
 											<label class="control-label sr-only"
@@ -195,98 +205,97 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 						</div>
 					</div>
 				</div>
-				<div class="panel-footer">
-					<input type="submit" value="{translate key=GetReport}" class="btn btn-primary btn-sm"
-						   id="btnCustomReport" asyncAction=""/>
-					<div class="checkbox inline-block">
-						<input type="checkbox" id="chkIncludeDeleted" {formname key=INCLUDE_DELETED}/>
-						<label for="chkIncludeDeleted">{translate key=IncludeDeleted}</label>
-					</div>
+			</div>
+			<div class="panel-footer">
+				<input type="submit" value="{translate key=GetReport}" class="btn btn-primary btn-sm"
+					   id="btnCustomReport" asyncAction=""/>
+				<div class="checkbox inline-block">
+					<input type="checkbox" id="chkIncludeDeleted" {formname key=INCLUDE_DELETED}/>
+					<label for="chkIncludeDeleted">{translate key=IncludeDeleted}</label>
 				</div>
 			</div>
-			{csrf_token}
-		</form>
 	</div>
+	{csrf_token}
+	</form>
+</div>
 
-	<div id="saveMessage" class="alert alert-success no-show">
-		<strong>{translate key=ReportSaved}</strong> <a
-				href="{$Path}reports/{Pages::REPORTS_SAVED}">{translate key=MySavedReports}</a>
-	</div>
+<div id="saveMessage" class="alert alert-success no-show">
+	<strong>{translate key=ReportSaved}</strong> <a
+			href="{$Path}reports/{Pages::REPORTS_SAVED}">{translate key=MySavedReports}</a>
+</div>
 
-	<div id="resultsDiv">
-	</div>
+<div id="resultsDiv">
+</div>
 
-	<div id="indicator" style="display:none; text-align: center;"><h3>{translate key=Working}
-		</h3>{html_image src="admin-ajax-indicator.gif"}</div>
+<div id="indicator" style="display:none; text-align: center;"><h3>{translate key=Working}
+	</h3>{html_image src="admin-ajax-indicator.gif"}</div>
 
-	{include file="Reports/chart.tpl"}
+{include file="Reports/chart.tpl"}
 
-	<div class="modal fade" id="saveDialog" tabindex="-1" role="dialog" aria-labelledby="saveDialogLabel"
-		 aria-hidden="true">
-		<div class="modal-dialog">
-			<form id="saveReportForm" method="post">
-				<div class="modal-content">
-					<div class="modal-header">
-						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-						<h4 class="modal-title" id="saveDialogLabel">{translate key=SaveThisReport}</h4>
-					</div>
-					<div class="modal-body">
-						<div class="form-group">
-							<label for="savereportname">{translate key=Name}</label>
-							<input type="text" id="saveReportName" {formname key=REPORT_NAME} class="form-control"
-								   placeholder="{translate key=NoTitleLabel}"/>
-						</div>
-					</div>
-					<div class="modal-footer">
-						<button type="button" class="btn btn-default cancel"
-								data-dismiss="modal">{translate key='Cancel'}</button>
-						<button type="button" id="btnSaveReport" class="btn btn-success"><span
-									class="glyphicon glyphicon-ok-circle"></span>
-							{translate key='SaveThisReport'}
-						</button>
-						{indicator}
+<div class="modal fade" id="saveDialog" tabindex="-1" role="dialog" aria-labelledby="saveDialogLabel"
+	 aria-hidden="true">
+	<div class="modal-dialog">
+		<form id="saveReportForm" method="post">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+					<h4 class="modal-title" id="saveDialogLabel">{translate key=SaveThisReport}</h4>
+				</div>
+				<div class="modal-body">
+					<div class="form-group">
+						<label for="savereportname">{translate key=Name}</label>
+						<input type="text" id="saveReportName" {formname key=REPORT_NAME} class="form-control"
+							   placeholder="{translate key=NoTitleLabel}"/>
 					</div>
 				</div>
-			</form>
-		</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default cancel"
+							data-dismiss="modal">{translate key='Cancel'}</button>
+					<button type="button" id="btnSaveReport" class="btn btn-success"><span
+								class="glyphicon glyphicon-ok-circle"></span>
+						{translate key='SaveThisReport'}
+					</button>
+					{indicator}
+				</div>
+			</div>
+		</form>
 	</div>
+</div>
 
-	{jsfile src="autocomplete.js"}
-	{jsfile src="ajax-helpers.js"}
-	{jsfile src="reports/generate-reports.js"}
-	{jsfile src="reports/common.js"}
-	{jsfile src="reports/chart.js"}
+{jsfile src="autocomplete.js"}
+{jsfile src="ajax-helpers.js"}
+{jsfile src="reports/generate-reports.js"}
+{jsfile src="reports/common.js"}
+{jsfile src="reports/chart.js"}
 
-	<script type="text/javascript">
-		$(document).ready(function () {
-			var reportOptions = {
-				userAutocompleteUrl: "{$Path}ajax/autocomplete.php?type={AutoCompleteType::User}",
-				groupAutocompleteUrl: "{$Path}ajax/autocomplete.php?type={AutoCompleteType::Group}",
-				customReportUrl: "{$smarty.server.SCRIPT_NAME}?{QueryStringKeys::ACTION}={ReportActions::Generate}",
-				printUrl: "{$smarty.server.SCRIPT_NAME}?{QueryStringKeys::ACTION}={ReportActions::PrintReport}&",
-				csvUrl: "{$smarty.server.SCRIPT_NAME}?{QueryStringKeys::ACTION}={ReportActions::Csv}&",
-				saveUrl: "{$smarty.server.SCRIPT_NAME}?{QueryStringKeys::ACTION}={ReportActions::Save}"
-			};
+<script type="text/javascript">
+	$(document).ready(function () {
+		var reportOptions = {
+			userAutocompleteUrl: "{$Path}ajax/autocomplete.php?type={AutoCompleteType::User}",
+			groupAutocompleteUrl: "{$Path}ajax/autocomplete.php?type={AutoCompleteType::Group}",
+			customReportUrl: "{$smarty.server.SCRIPT_NAME}?{QueryStringKeys::ACTION}={ReportActions::Generate}",
+			printUrl: "{$smarty.server.SCRIPT_NAME}?{QueryStringKeys::ACTION}={ReportActions::PrintReport}&",
+			csvUrl: "{$smarty.server.SCRIPT_NAME}?{QueryStringKeys::ACTION}={ReportActions::Csv}&",
+			saveUrl: "{$smarty.server.SCRIPT_NAME}?{QueryStringKeys::ACTION}={ReportActions::Save}"
+		};
 
-			var reports = new GenerateReports(reportOptions);
-			reports.init();
+		var reports = new GenerateReports(reportOptions);
+		reports.init();
 
-			var common = new ReportsCommon(
-					{
-						scriptUrl: '{$ScriptUrl}'
-					}
-			);
-			common.init();
+		var common = new ReportsCommon({
+			scriptUrl: '{$ScriptUrl}'
 		});
+		common.init();
+	});
 
-		$('#report-filter-panel').showHidePanel();
+	$('#report-filter-panel').showHidePanel();
 
 
-		$('#user-filter, #participant-filter').clearable();
-	</script>
+	$('#user-filter, #participant-filter').clearable();
+</script>
 
-	{control type="DatePickerSetupControl" ControlId="startDate" AltId="formattedBeginDate"}
-	{control type="DatePickerSetupControl" ControlId="endDate" AltId="formattedEndDate"}
+{control type="DatePickerSetupControl" ControlId="startDate" AltId="formattedBeginDate"}
+{control type="DatePickerSetupControl" ControlId="endDate" AltId="formattedEndDate"}
 
 </div>
 {include file='globalfooter.tpl'}

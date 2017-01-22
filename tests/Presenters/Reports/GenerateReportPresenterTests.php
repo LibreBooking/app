@@ -1,21 +1,21 @@
 <?php
 /**
-Copyright 2012-2016 Nick Korbel
-
-This file is part of Booked Scheduler.
-
-Booked Scheduler is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-Booked Scheduler is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
+ * Copyright 2012-2016 Nick Korbel
+ *
+ * This file is part of Booked Scheduler.
+ *
+ * Booked Scheduler is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Booked Scheduler is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 require_once(ROOT_DIR . 'Pages/Reports/GenerateReportPage.php');
@@ -47,7 +47,8 @@ class GenerateReportPresenterTests extends TestBase
 		$scheduleRepository = $this->getMock('IScheduleRepository');
 		$groupRepository = $this->getMock('IGroupViewRepository');
 
-		$this->presenter = new GenerateReportPresenter($this->page, $this->fakeUser, $this->reportingService, $resourceRepository, $scheduleRepository, $groupRepository);
+		$this->presenter = new GenerateReportPresenter($this->page, $this->fakeUser, $this->reportingService, $resourceRepository, $scheduleRepository,
+													   $groupRepository);
 	}
 
 	public function testRunsCustomReport()
@@ -62,12 +63,14 @@ class GenerateReportPresenterTests extends TestBase
 		$selection = new Report_ResultSelection($this->page->_ResultSelection);
 		$groupBy = new Report_GroupBy($this->page->_GroupBy);
 		$range = new Report_Range($this->page->_Range, $expectedStart, $expectedEnd, $this->fakeUser->Timezone);
-		$filter = new Report_Filter($this->page->_ResourceId, $this->page->_ScheduleId, $this->page->_UserId, $this->page->_GroupId, $this->page->_AccessoryId, $this->page->_ParticipantId, $this->page->_IncludeDeleted);
+		$filter = new Report_Filter($this->page->_ResourceId, $this->page->_ScheduleId, $this->page->_UserId, $this->page->_GroupId, $this->page->_AccessoryId,
+									$this->page->_ParticipantId, $this->page->_IncludeDeleted, $this->page->_ResourceTypeId);
 
 		$this->reportingService->expects($this->once())
-				->method('GenerateCustomReport')
-				->with($this->equalTo($usage), $this->equalTo($selection), $this->equalTo($groupBy), $this->equalTo($range), $this->equalTo($filter))
-				->will($this->returnValue($expectedReport));
+							   ->method('GenerateCustomReport')
+							   ->with($this->equalTo($usage), $this->equalTo($selection), $this->equalTo($groupBy), $this->equalTo($range),
+									  $this->equalTo($filter))
+							   ->will($this->returnValue($expectedReport));
 
 		$this->presenter->GenerateCustomReport();
 
@@ -88,11 +91,13 @@ class GenerateReportPresenterTests extends TestBase
 		$selection = new Report_ResultSelection($this->page->_ResultSelection);
 		$groupBy = new Report_GroupBy($this->page->_GroupBy);
 		$range = new Report_Range($this->page->_Range, $expectedStart, $expectedEnd, $this->fakeUser->Timezone);
-		$filter = new Report_Filter($this->page->_ResourceId, $this->page->_ScheduleId, $this->page->_UserId, $this->page->_GroupId, $this->page->_AccessoryId, $this->page->_ParticipantId, $this->page->_IncludeDeleted);
+		$filter = new Report_Filter($this->page->_ResourceId, $this->page->_ScheduleId, $this->page->_UserId, $this->page->_GroupId, $this->page->_AccessoryId,
+									$this->page->_ParticipantId, $this->page->_IncludeDeleted, $this->page->_ResourceTypeId);
 
 		$this->reportingService->expects($this->once())
-				->method('Save')
-				->with($this->equalTo($reportName), $this->equalTo($this->fakeUser->UserId), $this->equalTo($usage), $this->equalTo($selection), $this->equalTo($groupBy), $this->equalTo($range), $this->equalTo($filter));
+							   ->method('Save')
+							   ->with($this->equalTo($reportName), $this->equalTo($this->fakeUser->UserId), $this->equalTo($usage), $this->equalTo($selection),
+									  $this->equalTo($groupBy), $this->equalTo($range), $this->equalTo($filter));
 
 		$this->presenter->SaveReport();
 	}
@@ -111,6 +116,7 @@ class GenerateReportPresenterTests extends TestBase
 		$this->page->_GroupId = 50;
 		$this->page->_AccessoryId = 60;
 		$this->page->_ParticipantId = 70;
+		$this->page->_ResourceTypeId = 80;
 	}
 }
 
@@ -205,6 +211,8 @@ class FakeGenerateReportPage extends GenerateReportPage
 
 	public $_IncludeDeleted;
 
+	public $_ResourceTypeId;
+
 	public function GetResultSelection()
 	{
 		return $this->_ResultSelection;
@@ -233,6 +241,11 @@ class FakeGenerateReportPage extends GenerateReportPage
 	public function GetResourceId()
 	{
 		return $this->_ResourceId;
+	}
+
+	public function GetResourceTypeId()
+	{
+		return $this->_ResourceTypeId;
 	}
 
 	public function GetScheduleId()

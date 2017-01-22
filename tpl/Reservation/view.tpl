@@ -131,6 +131,12 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 								<span class="no-data">{translate key='None'}</span>
 							{/if}
 						</div>
+						<div class="col-xs-12">
+							<div class="form-group">
+								<label>{translate key=ReferenceNumber}</label>
+								{$ReferenceNumber}
+							</div>
+						</div>
 					{/if}
 				</div>
 

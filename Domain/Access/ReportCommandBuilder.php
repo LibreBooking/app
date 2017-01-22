@@ -85,6 +85,8 @@ class ReportCommandBuilder
 
 	const RESOURCE_ID_FRAGMENT = 'AND resources.resource_id = @resourceid';
 
+	const RESOURCE_TYPE_ID_FRAGMENT = 'AND resources.resource_type_id = @resource_type_id';
+
 	const ACCESSORY_ID_FRAGMENT = 'AND accessories.accessory_id = @accessoryid';
 
 	const USER_ID_FRAGMENT = 'AND owner.user_id = @userid';
@@ -170,6 +172,10 @@ class ReportCommandBuilder
 	 * @var null|int
 	 */
 	private $resourceId = null;
+	/**
+	 * @var null|int
+	 */
+	private $resourceTypeId = null;
 	/**
 	 * @var null|int
 	 */
@@ -287,6 +293,17 @@ class ReportCommandBuilder
 	{
 		$this->joinResources = true;
 		$this->resourceId = $resourceId;
+		return $this;
+	}
+
+	/**
+	 * @param int $resourceTypeId
+	 * @return ReportCommandBuilder
+	 */
+	public function WithResourceTypeId($resourceTypeId)
+	{
+		$this->joinResources = true;
+		$this->resourceTypeId = $resourceTypeId;
 		return $this;
 	}
 
@@ -543,6 +560,12 @@ class ReportCommandBuilder
 		{
 			$and->Append(self::RESOURCE_ID_FRAGMENT);
 			$this->AddParameter(new Parameter(ParameterNames::RESOURCE_ID, $this->resourceId));
+		}
+
+		if (!empty($this->resourceTypeId))
+		{
+			$and->Append(self::RESOURCE_TYPE_ID_FRAGMENT);
+			$this->AddParameter(new Parameter(ParameterNames::RESOURCE_TYPE_ID, $this->resourceTypeId));
 		}
 
 		if (!empty($this->accessoryId))
