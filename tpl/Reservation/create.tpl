@@ -235,6 +235,15 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 									  class="form-control">{$Description}</textarea>
 						</div>
 					</div>
+
+					{if !empty($ReferenceNumber)}
+					<div class="col-xs-12">
+						<div class="form-group">
+							<label>{translate key=ReferenceNumber}</label>
+							{$ReferenceNumber}
+						</div>
+					</div>
+					{/if}
 				</div>
 
 				<div class="{$participantCol}">
@@ -312,6 +321,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 				</div>
 			{/if}
 
+
 			<input type="hidden" {formname key=RESERVATION_ID} value="{$ReservationId}"/>
 			<input type="hidden" {formname key=REFERENCE_NUMBER} value="{$ReferenceNumber}" id="referenceNumber"/>
 			<input type="hidden" {formname key=RESERVATION_ACTION} value="{$ReservationAction}"/>
@@ -341,6 +351,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 				{block name='attachments'}
 				{/block}
 			{/if}
+
 
 			<div id="retrySubmitParams" class="no-show"></div>
 		</form>

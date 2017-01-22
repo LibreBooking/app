@@ -88,5 +88,8 @@ Description: {$Description|nl2br}
 {/if}
 
 <br/>
+Reference Number: {$ReferenceNumber}
+
+<br/>
 <br/>
 <a href="{$ScriptUrl}/{$ReservationUrl}">View this reservation</a> | <a href="{$ScriptUrl}">Log in to Booked Scheduler</a>

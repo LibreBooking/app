@@ -166,6 +166,7 @@ abstract class ReservationEmailMessage extends EmailMessage
         $this->PopulateIcsAttachment($currentInstance, $attributeValues);
 
 		$this->Set('AutoReleaseMinutes', $minimumAutoRelease);
+		$this->Set('ReferenceNumber', $this->reservationSeries->CurrentInstance()->ReferenceNumber());
 	}
 
 	private function GetFullImagePath($img)
