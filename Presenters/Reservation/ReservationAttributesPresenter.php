@@ -68,7 +68,7 @@ class ReservationAttributesPresenter
 	{
 		$hideReservations = !Configuration::Instance()->GetSectionKey(ConfigSection::PRIVACY, ConfigKeys::PRIVACY_VIEW_RESERVATIONS, new BooleanConverter());
 		$hideDetails = Configuration::Instance()->GetSectionKey(ConfigSection::PRIVACY, ConfigKeys::PRIVACY_HIDE_RESERVATION_DETAILS, new BooleanConverter());
-		if ($hideReservations || $hideDetails && !$userSession->IsLoggedIn())
+		if (($hideReservations || $hideDetails) && !$userSession->IsLoggedIn())
 		{
 			return;
 		}
