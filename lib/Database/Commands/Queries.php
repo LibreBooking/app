@@ -64,7 +64,7 @@ class Queries
 	const ADD_BLACKOUT_RESOURCE = 'INSERT INTO blackout_series_resources (blackout_series_id, resource_id) VALUES (@seriesid, @resourceid)';
 
 	const ADD_EMAIL_PREFERENCE =
-			'INSERT INTO user_email_preferences (user_id, event_category, event_type) VALUES (@userid, @event_category, @event_type)';
+			'INSERT IGNORE INTO user_email_preferences (user_id, event_category, event_type) VALUES (@userid, @event_category, @event_type)';
 
 	const ADD_BLACKOUT_SERIES =
 			'INSERT INTO blackout_series (date_created, title, owner_id, repeat_type, repeat_options) VALUES (@dateCreated, @title, @userid, @repeatType, @repeatOptions)';
@@ -73,10 +73,10 @@ class Queries
 			'INSERT INTO groups (name) VALUES (@groupname)';
 
 	const ADD_GROUP_RESOURCE_PERMISSION =
-			'INSERT INTO group_resource_permissions (group_id, resource_id) VALUES (@groupid, @resourceid)';
+			'INSERT IGNORE INTO group_resource_permissions (group_id, resource_id) VALUES (@groupid, @resourceid)';
 
 	const ADD_GROUP_ROLE =
-			'INSERT INTO group_roles (group_id, role_id) VALUES (@groupid, @roleid)';
+			'INSERT IGNORE INTO group_roles (group_id, role_id) VALUES (@groupid, @roleid)';
 
 	const ADJUST_USER_CREDITS = 'UPDATE users SET credit_count = credit_count - @credit_count WHERE user_id = @userid';
 
@@ -153,7 +153,7 @@ class Queries
 		VALUES (@userid, @groupid)';
 
 	const ADD_USER_RESOURCE_PERMISSION =
-			'INSERT INTO user_resource_permissions (user_id, resource_id)
+			'INSERT IGNORE INTO user_resource_permissions (user_id, resource_id)
 		VALUES (@userid, @resourceid)';
 
 	const ADD_USER_SESSION =
