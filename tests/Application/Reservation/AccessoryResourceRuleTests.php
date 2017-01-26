@@ -189,4 +189,23 @@ class AccessoryResourceRuleTests extends TestBase
 
 		$this->assertFalse($result->IsValid(), $result->ErrorMessage());
 	}
+
+	public function testRuleIsValidIfAccessoryNotTiedToResources()
+		{
+			$resourceId = 1;
+			$accessoryId = 1;
+
+			$reservation = new TestReservationSeries();
+			$reservation->WithResource(new FakeBookableResource($resourceId));
+			$reservation->WithAccessory(new ReservationAccessory($accessoryId, 10));
+			$accessory = new Accessory(1, 'name1', null);
+			$accessory2 = new Accessory(2, 'name1', null);
+			$accessory2->AddResource(10, null, 1);
+
+			$this->accessoryRepository->AddAccessory($accessory);
+
+			$result = $this->rule->Validate($reservation, null);
+
+			$this->assertTrue($result->IsValid());
+		}
 }

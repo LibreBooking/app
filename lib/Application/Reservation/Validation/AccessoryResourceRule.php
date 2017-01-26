@@ -175,23 +175,6 @@ class ResourceAccessoryAssociation
 			}
 		}
 
-		foreach ($bookedResourceIds as $resourceId)
-		{
-			if (!$this->ContainsResource($resourceId))
-			{
-				continue;
-			}
-			$resourceAccessories = $this->GetResourceAccessories($resourceId);
-
-			foreach ($bookedAccessoryIds as $accessoryId)
-			{
-				if (!array_key_exists($accessoryId, $resourceAccessories))
-				{
-					$badAccessories[] = $this->accessories[$accessoryId]->GetName();
-				}
-			}
-		}
-
 		return $badAccessories;
 
 	}
