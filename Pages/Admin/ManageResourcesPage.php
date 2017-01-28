@@ -90,12 +90,27 @@ interface IUpdateResourcePage
 	/**
 	 * @return string
 	 */
+	public function GetBulkAllowMultiday();
+
+	/**
+	 * @return string
+	 */
 	public function GetRequiresApproval();
 
 	/**
 	 * @return string
 	 */
+	public function GetBulkRequiresApproval();
+
+	/**
+	 * @return string
+	 */
 	public function GetAutoAssign();
+
+	/**
+	 * @return string
+	 */
+	public function GetBulkAutoAssign();
 
 	/**
 	 * @return string
@@ -346,7 +361,7 @@ interface IManageResourcesPage extends IUpdateResourcePage, IActionPage, IPageab
 
 	public function BindUpdatedResourceCredits(BookableResource $resource);
 
-    public function ShowQRCode($qrCodeImageUrl, $resourceName);
+	public function ShowQRCode($qrCodeImageUrl, $resourceName);
 }
 
 class ManageResourcesPage extends ActionPage implements IManageResourcesPage
@@ -886,13 +901,37 @@ class ManageResourcesPage extends ActionPage implements IManageResourcesPage
 		$this->Display('Admin/Resources/manage_resources_credits.tpl');
 	}
 
-    public function ShowQRCode($qrCodeImageUrl, $resourceName)
-    {
-        $this->Set('QRImageUrl', $qrCodeImageUrl);
-        $this->Set('ResourceName', $resourceName);
-        
-        $this->Display('Admin/Resources/show_resource_qr.tpl');
-    }
+	public function ShowQRCode($qrCodeImageUrl, $resourceName)
+	{
+		$this->Set('QRImageUrl', $qrCodeImageUrl);
+		$this->Set('ResourceName', $resourceName);
+
+		$this->Display('Admin/Resources/show_resource_qr.tpl');
+	}
+
+	/**
+	 * @return string
+	 */
+	public function GetBulkAllowMultiday()
+	{
+		return $this->GetForm(FormKeys::ALLOW_MULTIDAY);
+	}
+
+	/**
+	 * @return string
+	 */
+	public function GetBulkRequiresApproval()
+	{
+		return $this->GetForm(FormKeys::REQUIRES_APPROVAL);
+	}
+
+	/**
+	 * @return string
+	 */
+	public function GetBulkAutoAssign()
+	{
+		return $this->GetForm(FormKeys::AUTO_ASSIGN);
+	}
 }
 
 class ResourceFilterValues

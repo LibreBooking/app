@@ -1101,23 +1101,25 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 							</select>
 						</div>
 
-						<div class="title">{translate key=Credits}</div>
+						{if $CreditsEnabled}
+							<div class="title">{translate key=Credits}</div>
 
-						<div class="form-group">
-							{capture name="bulkEditCreditsPerSLot" assign="bulkEditCreditsPerSLot"}
-								<input type='number' min='0' step='1' id='bulkEditCreditsPerSlot'
-									   class='credits form-control inline' {formname key=CREDITS} />
-							{/capture}
-							{translate key='CreditUsagePerSlot' args=$bulkEditCreditsPerSLot}
-						</div>
+							<div class="form-group">
+								{capture name="bulkEditCreditsPerSLot" assign="bulkEditCreditsPerSLot"}
+									<input type='number' min='0' step='1' id='bulkEditCreditsPerSlot'
+										   class='credits form-control inline' {formname key=CREDITS} />
+								{/capture}
+								{translate key='CreditUsagePerSlot' args=$bulkEditCreditsPerSLot}
+							</div>
 
-						<div class="form-group">
-							{capture name="bulkEditPeakCreditsPerSlot" assign="bulkEditPeakCreditsPerSlot"}
-								<input type='number' min='0' step='1' id='bulkEditPeakCreditsPerSlot'
-									   class='credits form-control inline' {formname key=PEAK_CREDITS} />
-							{/capture}
-							{translate key='PeakCreditUsagePerSlot' args=$bulkEditPeakCreditsPerSlot}
-						</div>
+							<div class="form-group">
+								{capture name="bulkEditPeakCreditsPerSlot" assign="bulkEditPeakCreditsPerSlot"}
+									<input type='number' min='0' step='1' id='bulkEditPeakCreditsPerSlot'
+										   class='credits form-control inline' {formname key=PEAK_CREDITS} />
+								{/capture}
+								{translate key='PeakCreditUsagePerSlot' args=$bulkEditPeakCreditsPerSlot}
+							</div>
+						{/if}
 
 						<div class="title">{translate key=AdditionalAttributes}</div>
 						<div>

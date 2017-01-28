@@ -583,9 +583,9 @@ class ManageResourcesPresenter extends ActionPresenter
 		$minNoticeNone = $this->page->GetStartNoticeNone();
 		$maxNotice = $this->page->GetEndNoticeMinutes();
 		$maxNoticeNone = $this->page->GetEndNoticeNone();
-		$allowMultiDay = $this->page->GetAllowMultiday();
-		$requiresApproval = $this->page->GetRequiresApproval();
-		$autoAssign = $this->page->GetAutoAssign();
+		$allowMultiDay = $this->page->GetBulkAllowMultiday();
+		$requiresApproval = $this->page->GetBulkRequiresApproval();
+		$autoAssign = $this->page->GetBulkAutoAssign();
 		$enableCheckin = $this->page->GetBulkEnableCheckin();
 		$allowSubscription = $this->page->GetAllowSubscriptions();
 		$credits = $this->page->GetCredits();
