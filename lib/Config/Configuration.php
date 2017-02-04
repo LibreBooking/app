@@ -222,7 +222,7 @@ class ConfigurationFile implements IConfigurationFile
 			return $converter->Convert($value);
 		}
 
-		return $value;
+		return $value != null ? trim($value) : $value;
 	}
 
 

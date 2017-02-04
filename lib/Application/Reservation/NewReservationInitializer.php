@@ -34,6 +34,11 @@ class NewReservationInitializer extends ReservationInitializerBase
 	 */
 	private $scheduleRepository;
 
+	/**
+	 * @var IResourceRepository
+	 */
+	private $resourceRepository;
+
 	public function __construct(
 		INewReservationPage $page,
 		IReservationComponentBinder $userBinder,
@@ -59,6 +64,8 @@ class NewReservationInitializer extends ReservationInitializerBase
 	public function Initialize()
 	{
 		parent::Initialize();
+
+		$this->SetDefaultReminders();
 	}
 
 	protected function SetSelectedDates(Date $startDate, Date $endDate, $startPeriods, $endPeriods)
@@ -135,6 +142,41 @@ class NewReservationInitializer extends ReservationInitializerBase
 	public function IsNew()
 	{
 		return true;
+	}
+
+	private function SetDefaultReminders()
+	{
+		$start = $this->GetReminderPieces(Configuration::Instance()->GetSectionKey(ConfigSection::RESERVATION, ConfigKeys::RESERVATION_START_REMINDER));
+		$end = $this->GetReminderPieces(Configuration::Instance()->GetSectionKey(ConfigSection::RESERVATION, ConfigKeys::RESERVATION_END_REMINDER));
+
+		if ($start != null)
+		{
+			$this->page->SetStartReminder($start['value'], $start['interval']);
+		}
+
+		if ($start != null)
+		{
+			$this->page->SetEndReminder($end['value'], $end['interval']);
+		}
+
+	}
+
+	private function GetReminderPieces($reminder)
+	{
+		if (!empty($reminder))
+		{
+			$parts = explode(' ', strtolower($reminder));
+
+			if (count($parts) == 2)
+			{
+				$interval = trim($parts[1]);
+				$pieces['value'] = intval($parts[0]);
+				$pieces['interval'] = ($interval == 'minutes' || $interval == 'hours' || $interval == 'days') ? $interval : 'minutes';
+				return $pieces;
+			}
+		}
+
+		return null;
 	}
 }
 

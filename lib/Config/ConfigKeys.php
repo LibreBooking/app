@@ -65,6 +65,8 @@ class ConfigKeys
 	const RESERVATION_ALLOW_GUESTS = 'allow.guest.participation';
 	const RESERVATION_ALLOW_WAITLIST = 'allow.wait.list';
 	const RESERVATION_CHECKIN_MINUTES = 'checkin.minutes.prior';
+	const RESERVATION_START_REMINDER = 'default.start.reminder';
+	const RESERVATION_END_REMINDER = 'default.end.reminder';
 
     const IMAGE_UPLOAD_DIRECTORY = 'image.upload.directory';
     const IMAGE_UPLOAD_URL = 'image.upload.url';

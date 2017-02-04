@@ -160,13 +160,28 @@ class ReservationInitializationTests extends TestBase
 		$id = $this->scheduleRepository->_DefaultScheduleId;
 
 		$this->page->expects($this->once())
-						   ->method('GetRequestedScheduleId')
-						   ->will($this->returnValue(null));
+				   ->method('GetRequestedScheduleId')
+				   ->will($this->returnValue(null));
 
 		$this->page->expects($this->once())
-						   ->method('SetScheduleId')
-						   ->with($this->equalTo($id));
+				   ->method('SetScheduleId')
+				   ->with($this->equalTo($id));
 
+		$this->initializer->Initialize();
+	}
+
+	public function testBindsDefaultReminders()
+	{
+		$this->page->expects($this->once())
+				   ->method('SetStartReminder')
+				   ->with($this->equalTo('10'), $this->equalTo('minutes'));
+
+		$this->page->expects($this->once())
+				   ->method('SetEndReminder')
+				   ->with($this->equalTo('2'), $this->equalTo('days'));
+
+		$this->fakeConfig->SetSectionKey(ConfigSection::RESERVATION, ConfigKeys::RESERVATION_START_REMINDER, '10 minutes');
+		$this->fakeConfig->SetSectionKey(ConfigSection::RESERVATION, ConfigKeys::RESERVATION_END_REMINDER, '2 days');
 		$this->initializer->Initialize();
 	}
 }

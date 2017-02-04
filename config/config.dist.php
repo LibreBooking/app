@@ -81,6 +81,8 @@ $conf['settings']['reservation']['enable.reminders'] = 'false';				// if reminde
 $conf['settings']['reservation']['allow.guest.participation'] = 'false';
 $conf['settings']['reservation']['allow.wait.list'] = 'false';
 $conf['settings']['reservation']['checkin.minutes.prior'] = '5';
+$conf['settings']['reservation']['default.start.reminder'] = '';			// the default start reservation reminder. format is ## interval. for example, 10 minutes, 2 hours, 6 days.
+$conf['settings']['reservation']['default.end.reminder'] = '';				// the default end reservation reminder. format is ## interval. for example, 10 minutes, 2 hours, 6 days.
 /**
  * Email notification configuration
  */

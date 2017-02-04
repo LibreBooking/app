@@ -102,18 +102,6 @@ interface IExistingReservationPage extends IReservationPage
 	function SetCurrentUserInvited($amIInvited);
 
 	/**
-	 * @param int $reminderValue
-	 * @param ReservationReminderInterval $reminderInterval
-	 */
-	public function SetStartReminder($reminderValue, $reminderInterval);
-
-	/**
-	 * @param int $reminderValue
-	 * @param ReservationReminderInterval $reminderInterval
-	 */
-	public function SetEndReminder($reminderValue, $reminderInterval);
-
-	/**
 	 * @param bool $canAlterParticipation
 	 */
 	public function SetCanAlterParticipation($canAlterParticipation);
@@ -284,18 +272,6 @@ class ExistingReservationPage extends ReservationPage implements IExistingReserv
 	public function SetIsApprovable($canBeApproved)
 	{
 		$this->IsApprovable = $canBeApproved;
-	}
-
-	public function SetStartReminder($reminderValue, $reminderInterval)
-	{
-		$this->Set('ReminderTimeStart', $reminderValue);
-		$this->Set('ReminderIntervalStart', $reminderInterval);
-	}
-
-	public function SetEndReminder($reminderValue, $reminderInterval)
-	{
-		$this->Set('ReminderTimeEnd', $reminderValue);
-		$this->Set('ReminderIntervalEnd', $reminderInterval);
 	}
 
 	public function SetCanAlterParticipation($canAlterParticipation)

@@ -132,6 +132,19 @@ interface IReservationPage extends IPage
 	 * @param bool $allowParticipation
 	 */
 	function SetAllowParticipantsToJoin($allowParticipation);
+
+	/**
+	 * @param int $reminderValue
+	 * @param ReservationReminderInterval $reminderInterval
+	 */
+	public function SetStartReminder($reminderValue, $reminderInterval);
+
+	/**
+	 * @param int $reminderValue
+	 * @param ReservationReminderInterval $reminderInterval
+	 */
+	public function SetEndReminder($reminderValue, $reminderInterval);
+
 }
 
 abstract class ReservationPage extends Page implements IReservationPage
@@ -185,8 +198,7 @@ abstract class ReservationPage extends Page implements IReservationPage
 				   Configuration::Instance()->GetSectionKey(ConfigSection::RESERVATION, ConfigKeys::RESERVATION_ALLOW_GUESTS, new BooleanConverter()));
 		$remindersEnabled = Configuration::Instance()
 										 ->GetSectionKey(ConfigSection::RESERVATION, ConfigKeys::RESERVATION_REMINDERS_ENABLED, new BooleanConverter());
-		$emailEnabled = Configuration::Instance()->GetKey(ConfigKeys::ENABLE_EMAIL,
-														  new BooleanConverter());
+		$emailEnabled = Configuration::Instance()->GetKey(ConfigKeys::ENABLE_EMAIL, new BooleanConverter());
 		$this->Set('RemindersEnabled', $remindersEnabled && $emailEnabled);
 
 		$this->Set('RepeatEveryOptions', range(1, 20));
@@ -209,7 +221,7 @@ abstract class ReservationPage extends Page implements IReservationPage
 							 )
 		);
 
-        $this->Set('CreditsEnabled', Configuration::Instance()->GetSectionKey(ConfigSection::CREDITS, ConfigKeys::CREDITS_ENABLED, new BooleanConverter()));
+		$this->Set('CreditsEnabled', Configuration::Instance()->GetSectionKey(ConfigSection::CREDITS, ConfigKeys::CREDITS_ENABLED, new BooleanConverter()));
 
 		$this->Display($this->GetTemplateName());
 	}
@@ -256,7 +268,7 @@ abstract class ReservationPage extends Page implements IReservationPage
 	{
 		$this->Set('ReservationUserName', $user->FullName());
 		$this->Set('UserId', $user->Id());
-        $this->Set('CurrentUserCredits', $user->CurrentCreditCount());
+		$this->Set('CurrentUserCredits', $user->CurrentCreditCount());
 	}
 
 	public function SetReservationResource($resource)
@@ -328,11 +340,11 @@ abstract class ReservationPage extends Page implements IReservationPage
 
 	protected function GetReturnUrl()
 	{
-	    $redirect = $this->GetQuerystring(QueryStringKeys::REDIRECT);
-	    if (!empty($redirect))
-        {
-            return $redirect;
-        }
+		$redirect = $this->GetQuerystring(QueryStringKeys::REDIRECT);
+		if (!empty($redirect))
+		{
+			return $redirect;
+		}
 		return $this->GetLastPage(Pages::SCHEDULE);
 	}
 
@@ -347,5 +359,17 @@ abstract class ReservationPage extends Page implements IReservationPage
 																			   new AccessoryRepository()),
 				new ReservationAuthorization(AuthorizationServiceFactory::GetAuthorizationService())
 		);
+	}
+
+	public function SetStartReminder($reminderValue, $reminderInterval)
+	{
+		$this->Set('ReminderTimeStart', $reminderValue);
+		$this->Set('ReminderIntervalStart', $reminderInterval);
+	}
+
+	public function SetEndReminder($reminderValue, $reminderInterval)
+	{
+		$this->Set('ReminderTimeEnd', $reminderValue);
+		$this->Set('ReminderIntervalEnd', $reminderInterval);
 	}
 }
