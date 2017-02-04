@@ -288,7 +288,7 @@ class CustomAttribute
 	{
 		if ($this->UniquePerEntity())
 		{
-			return $this->EntityIds() == $entityId;
+			return in_array($entityId, $this->EntityIds());
 		}
 		return true;
 	}
