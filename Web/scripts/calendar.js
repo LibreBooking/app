@@ -64,6 +64,7 @@ function Calendar(opts) {
         $('#calendarFilter').on('change', function () {
             var sid = '';
             var rid = '';
+            var gid = getQueryStringValue('gid');
 
             if ($(this).find(':selected').hasClass('schedule')) {
                 sid = $(this).val().replace('s', '');
@@ -75,11 +76,12 @@ function Calendar(opts) {
 
             _options.eventsData.sid = sid;
             _options.eventsData.rid = rid;
-            _options.dayClickUrl = _options.dayClickUrlTemplate.replace('[sid]', sid).replace('[rid]', rid);
-            _options.reservationUrl = _options.reservationUrlTemplate.replace('[sid]', sid).replace('[rid]', rid);
+            _options.eventsData.gid = gid;
+            _options.dayClickUrl = _options.dayClickUrlTemplate.replace('[sid]', sid).replace('[rid]', rid).replace('[gid]', gid);
+            _options.reservationUrl = _options.reservationUrlTemplate.replace('[sid]', sid).replace('[rid]', rid).replace('[gid]', gid);
             _fullCalendar.fullCalendar('refetchEvents');
 
-            rebindSubscriptionData(rid, sid);
+            rebindSubscriptionData(rid, sid, gid);
         });
 
         $('#subscriptionContainer').on('click', '#turnOffSubscription', function (e) {
@@ -90,7 +92,7 @@ function Calendar(opts) {
                 },
                 null,
                 function () {
-                    return rebindSubscriptionData('', '')
+                    return rebindSubscriptionData('', '', '')
                 }
             );
         });
@@ -102,7 +104,7 @@ function Calendar(opts) {
                 },
                 null,
                 function () {
-                    return rebindSubscriptionData('', '')
+                    return rebindSubscriptionData('', '', '');
                 }
             );
         });
@@ -199,7 +201,7 @@ function Calendar(opts) {
 
             onCreateLi: function (node, $li) {
                 if (node.type == 'resource') {
-                    $li.addClass('group-resource')
+                    $li.addClass('group-resource');
                 }
             }
         });
@@ -253,8 +255,8 @@ function Calendar(opts) {
         openNewReservation();
     };
 
-    var rebindSubscriptionData = function (rid, sid) {
-        var url = _options.getSubscriptionUrl + '&rid=' + rid + '&sid=' + sid;
+    var rebindSubscriptionData = function (rid, sid, gid) {
+        var url = _options.getSubscriptionUrl + '&rid=' + rid + '&sid=' + sid + '&gid=' + gid;
         ajaxGet(url, function () {
         }, function (response) {
             $('#calendarSubscription').html(response);
@@ -279,6 +281,5 @@ function Calendar(opts) {
     var getUrlFormattedDate = function (d) {
         var month = d.month() + 1;
         return encodeURI(d.year() + "-" + month + "-" + d.date() + " " + d.hour() + ":" + d.minute());
-    }
-
+    };
 }

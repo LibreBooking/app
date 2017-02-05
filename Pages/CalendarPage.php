@@ -241,6 +241,7 @@ class CalendarPage extends ActionPage implements ICalendarPage
 	{
 		$this->Set('GroupName', $selectedGroup->name);
 		$this->Set('SelectedGroupNode', $selectedGroup->id);
+		$this->Set('GroupId', $selectedGroup->id);
 	}
 
     public function ProcessAction()

@@ -269,7 +269,7 @@ class AddPeakTimesCommand extends SqlCommand
 
 class AddQuotaCommand extends SqlCommand
 {
-	public function __construct($duration, $limit, $unit, $resourceId, $groupId, $scheduleId, $enforcedStartTime, $enforcedEndTime, $enforcedDays, $scope)
+	public function __construct($duration, $limit, $unit, $resourceId, $groupId, $scheduleIds, $enforcedStartTime, $enforcedEndTime, $enforcedDays, $scope)
 	{
 		parent::__construct(Queries::ADD_QUOTA);
 		$this->AddParameter(new Parameter(ParameterNames::QUOTA_DURATION, $duration));
@@ -277,7 +277,7 @@ class AddQuotaCommand extends SqlCommand
 		$this->AddParameter(new Parameter(ParameterNames::QUOTA_UNIT, $unit));
 		$this->AddParameter(new Parameter(ParameterNames::RESOURCE_ID, $resourceId));
 		$this->AddParameter(new Parameter(ParameterNames::GROUP_ID, $groupId));
-		$this->AddParameter(new Parameter(ParameterNames::SCHEDULE_ID, $scheduleId));
+		$this->AddParameter(new Parameter(ParameterNames::SCHEDULE_ID, $scheduleIds));
 		$this->AddParameter(new Parameter(ParameterNames::START_TIME, is_null($enforcedStartTime) ? null : $enforcedStartTime));
 		$this->AddParameter(new Parameter(ParameterNames::END_TIME, is_null($enforcedEndTime) ? null : $enforcedEndTime));
 		$this->AddParameter(new Parameter(ParameterNames::ENFORCED_DAYS, empty($enforcedDays) ? null : implode(',', $enforcedDays)));
@@ -292,7 +292,7 @@ class AddReservationSeriesCommand extends SqlCommand
 								$description,
 								$repeatType,
 								$repeatOptions,
-								$reservationTypeId,
+								$reservationTypeIds,
 								$statusId,
 								$ownerId,
 								$allowParticipation
@@ -305,7 +305,7 @@ class AddReservationSeriesCommand extends SqlCommand
 		$this->AddParameter(new Parameter(ParameterNames::DESCRIPTION, $description));
 		$this->AddParameter(new Parameter(ParameterNames::REPEAT_TYPE, $repeatType));
 		$this->AddParameter(new Parameter(ParameterNames::REPEAT_OPTIONS, $repeatOptions));
-		$this->AddParameter(new Parameter(ParameterNames::TYPE_ID, $reservationTypeId));
+		$this->AddParameter(new Parameter(ParameterNames::TYPE_ID, $reservationTypeIds));
 		$this->AddParameter(new Parameter(ParameterNames::STATUS_ID, $statusId));
 		$this->AddParameter(new Parameter(ParameterNames::USER_ID, $ownerId));
 		$this->AddParameter(new Parameter(ParameterNames::ALLOW_PARTICIPATION, (int)$allowParticipation));
@@ -524,7 +524,7 @@ class AddSavedReportCommand extends SqlCommand
 
 class AddScheduleCommand extends SqlCommand
 {
-	public function __construct($scheduleName, $isDefault, $weekdayStart, $daysVisible, $layoutId, $adminGroupId = null)
+	public function __construct($scheduleName, $isDefault, $weekdayStart, $daysVisible, $layoutId, $adminGroupIds = null)
 	{
 		parent::__construct(Queries::ADD_SCHEDULE);
 		$this->AddParameter(new Parameter(ParameterNames::SCHEDULE_NAME, $scheduleName));
@@ -532,7 +532,7 @@ class AddScheduleCommand extends SqlCommand
 		$this->AddParameter(new Parameter(ParameterNames::SCHEDULE_WEEKDAYSTART, $weekdayStart));
 		$this->AddParameter(new Parameter(ParameterNames::SCHEDULE_DAYSVISIBLE, $daysVisible));
 		$this->AddParameter(new Parameter(ParameterNames::LAYOUT_ID, $layoutId));
-		$this->AddParameter(new Parameter(ParameterNames::GROUP_ADMIN_ID, $adminGroupId));
+		$this->AddParameter(new Parameter(ParameterNames::GROUP_ADMIN_ID, $adminGroupIds));
 	}
 }
 
@@ -1405,7 +1405,7 @@ class GetFullGroupReservationListCommand extends GetFullReservationListCommand
 
 class GetReservationListCommand extends SqlCommand
 {
-	public function __construct(Date $startDate, Date $endDate, $userId, $userLevelId, $scheduleId, $resourceId)
+	public function __construct(Date $startDate, Date $endDate, $userId, $userLevelId, $scheduleId, $resourceIds)
 	{
 		parent::__construct(QueryBuilder::GET_RESERVATION_LIST());
 		$this->AddParameter(new Parameter(ParameterNames::START_DATE, $startDate->ToDatabase()));
@@ -1413,8 +1413,8 @@ class GetReservationListCommand extends SqlCommand
 		$this->AddParameter(new Parameter(ParameterNames::USER_ID, $userId));
 		$this->AddParameter(new Parameter(ParameterNames::RESERVATION_USER_LEVEL_ID, $userLevelId));
 		$this->AddParameter(new Parameter(ParameterNames::SCHEDULE_ID, $scheduleId));
-		$this->AddParameter(new Parameter(ParameterNames::RESOURCE_ID, $resourceId));
-		$this->AddParameter(new Parameter(ParameterNames::ALL_RESOURCES, (int)empty($resourceId)));
+		$this->AddParameter(new Parameter(ParameterNames::RESOURCE_ID, $resourceIds));
+		$this->AddParameter(new Parameter(ParameterNames::ALL_RESOURCES, (int)empty($resourceIds)));
 	}
 
 	public function ContainsGroupConcat()

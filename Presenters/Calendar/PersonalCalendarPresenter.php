@@ -108,11 +108,11 @@ class PersonalCalendarPresenter extends ActionPresenter
 
 		if (!empty($selectedGroupId))
 		{
-			$tempResources = array();
-			$resourceIds = $resourceGroups->GetResourceIds($selectedGroupId);
 			$selectedGroup = $resourceGroups->GetGroup($selectedGroupId);
 			$this->page->BindSelectedGroup($selectedGroup);
 
+			$tempResources = array();
+			$resourceIds = $resourceGroups->GetResourceIds($selectedGroupId);
 			foreach ($resources as $resource)
 			{
 				if (in_array($resource->GetId(), $resourceIds))
@@ -163,6 +163,13 @@ class PersonalCalendarPresenter extends ActionPresenter
 
         $selectedResourceId = $this->page->GetResourceId();
         $selectedScheduleId = $this->page->GetScheduleId();
+		$selectedGroupId = $this->page->GetGroupId();
+
+		if (!empty($selectedGroupId))
+		{
+			$resourceGroups = $this->resourceService->GetResourceGroups($selectedScheduleId, $userSession);
+			$selectedResourceId = $resourceGroups->GetResourceIds($selectedGroupId);
+		}
 
         $reservations = $this->reservationRepository->GetReservations($this->common->GetStartDate(), $this->common->GetEndDate()->AddDays(1), $userSession->UserId,
             ReservationUserLevel::ALL, $selectedScheduleId, $selectedResourceId);

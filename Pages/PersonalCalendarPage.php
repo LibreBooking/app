@@ -78,10 +78,6 @@ interface IPersonalCalendarPage extends IActionPage, ICommonCalendarPage
 
 class PersonalCalendarPage extends ActionPage implements IPersonalCalendarPage
 {
-	/**
-	 * @var string
-	 */
-	private $template;
 
 	/**
 	 * @var PersonalCalendarPresenter
@@ -230,6 +226,7 @@ class PersonalCalendarPage extends ActionPage implements IPersonalCalendarPage
 	{
 		$this->Set('GroupName', $selectedGroup->name);
 		$this->Set('SelectedGroupNode', $selectedGroup->id);
+		$this->Set('GroupId', $selectedGroup->id);
 	}
 
     public function BindEvents($reservationList)

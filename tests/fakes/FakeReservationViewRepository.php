@@ -50,12 +50,12 @@ class FakeReservationViewRepository implements IReservationViewRepository
     }
 
     public function GetReservations(
-        Date $startDate,
-        Date $endDate,
-        $userId = ReservationViewRepository::ALL_USERS,
-        $userLevel = ReservationUserLevel::OWNER,
-        $scheduleId = ReservationViewRepository::ALL_SCHEDULES,
-        $resourceId = ReservationViewRepository::ALL_RESOURCES)
+			Date $startDate,
+			Date $endDate,
+			$userId = ReservationViewRepository::ALL_USERS,
+			$userLevel = ReservationUserLevel::OWNER,
+			$scheduleId = ReservationViewRepository::ALL_SCHEDULES,
+			$resourceIds = ReservationViewRepository::ALL_RESOURCES)
     {
         $this->_LastRange = new DateRange($startDate, $endDate);
         return $this->_Reservations;

@@ -50,8 +50,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                 dayText: '{{translate key=Day}|escape:'javascript'}',
                 monthText: '{{translate key=Month}|escape:'javascript'}',
                 weekText: '{{translate key=Week}|escape:'javascript'}',
-                dayClickUrl: '{Pages::CALENDAR}?ct={CalendarTypes::Day}&sid={$ScheduleId|escape:'javascript'}&rid={$ResourceId|escape:'javascript'}',
-                dayClickUrlTemplate: '{Pages::CALENDAR}?ct={CalendarTypes::Day}&sid=[sid]&rid=[rid]',
+                dayClickUrl: '{Pages::CALENDAR}?ct={CalendarTypes::Day}&sid={$ScheduleId|escape:'javascript'}&rid={$ResourceId|escape:'javascript'}&gid={$GroupId|escape:'javascript'}',
+                dayClickUrlTemplate: '{Pages::CALENDAR}?ct={CalendarTypes::Day}&sid=[sid]&rid=[rid]&gid=[gid]',
                 dayNames: {js_array array=$DayNames},
                 dayNamesShort: {js_array array=$DayNamesShort},
                 monthNames: {js_array array=$MonthNames},
@@ -65,10 +65,11 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                 eventsUrl: '{Pages::CALENDAR}',
                 eventsData: {
                     dr: 'events',
-                    sid: '',
-                    rid: ''
+                    sid: '{$ScheduleId|escape:'javascript'}',
+                    rid: '{$ResourceId|escape:'javascript'}',
+                    gid: '{$GroupId|escape:'javascript'}'
                 },
-                getSubscriptionUrl: '{Pages::CALENDAR}?dr=subscription',
+                getSubscriptionUrl: '{Pages::CALENDAR}?dr=subscription'
             };
 
             var calendar = new Calendar(options);
