@@ -68,4 +68,24 @@ class GroupAdminGroupRepository extends GroupRepository
 
 		return Group::Null();
 	}
+
+	public function Add(Group $group)
+	{
+		$id = parent::Add($group);
+		$recalledGroup = parent::LoadById($id);
+
+		$groups = $this->userRepository->LoadGroups($this->userSession->UserId);
+		foreach ($groups as $userGroup)
+		{
+			if ($userGroup->IsGroupAdmin)
+			{
+				$recalledGroup->ChangeAdmin($userGroup->GroupId);
+				break;
+			}
+		}
+
+		parent::Update($recalledGroup);
+
+		return $id;
+	}
 }

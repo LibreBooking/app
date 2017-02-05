@@ -109,7 +109,7 @@ function ConfigureAsyncForm(formElement, urlCallback, successHandler, responseHa
 							}
 							else
 							{
-								validationSummary.find('ul').append($('<li/>', {text: responseText.Messages[errorId]}))
+								validationSummary.find('ul').empty().append($('<li/>', {text: responseText.Messages[errorId]}))
 							}
 						}
 						errorElement.removeClass('no-show');
