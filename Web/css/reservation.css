@@ -286,10 +286,53 @@ a.remove {
   font-size: 2em;
   font-weight: bold;
 }
+.accessoriesDiv {
+  float: right;
+}
+.participationText,
+.participationButtons {
+  display: inline;
+}
 @media only screen and (max-device-width: 480px) {
   .reservation-message {
     font-size: 1em;
     font-weight: bold;
+  }
+  .btnCreate,
+  .btnEdit {
+    width: 70%;
+    float: right;
+  }
+  .accessoriesDiv {
+    padding-top: 10px;
+    float: none;
+    clear: both;
+  }
+  .participationText,
+  .participationButtons {
+    width: 100%;
+    display: block;
+  }
+  .participationText input[type=text].user-search,
+  .participationButtons input[type=text].user-search {
+    width: 100%;
+  }
+  .participationButtons {
+    padding: 3px 0;
+  }
+  .participationButtons button {
+    line-height: 15px;
+  }
+  #reservationDetails {
+    padding-right: 0;
+  }
+  #reservationParticipation {
+    padding-right: 15px;
+  }
+}
+@media only screen and (min-device-width: 480px) {
+  .detailsBorder {
+    border-right: solid 1px #d5ded9;
   }
 }
 #custom-attributes-placeholder .form-group {

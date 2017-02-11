@@ -662,15 +662,18 @@ function Reservation(opts) {
 			participation.showAllGroupsToAdd(elements.participantGroupDialog);
 		});
 
-		elements.participantDialog.delegate('.add', 'click', function () {
+		elements.participantDialog.delegate('.add', 'click', function (e) {
+			e.preventDefault();
 			participation.addParticipant($(this).find('.name').text(), $(this).attr('user-id'));
 		});
 
-		elements.participantGroupDialog.delegate('.add', 'click', function () {
+		elements.participantGroupDialog.delegate('.add', 'click', function (e) {
+			e.preventDefault();
 			participation.addGroupParticipants($(this).attr('group-id'));
 		});
 
-		elements.participantList.delegate('.remove', 'click', function () {
+		elements.participantList.delegate('.remove', 'click', function (e) {
+			e.preventDefault();
 			var item = $(this).closest('.user');
 			var id = item.find('.id').val();
 			item.remove();
@@ -681,23 +684,28 @@ function Reservation(opts) {
 			participation.addParticipant(ui.item.label, ui.item.value);
 		});
 
-		elements.inviteeDialogPrompt.click(function () {
+		elements.inviteeDialogPrompt.click(function (e) {
+			e.preventDefault();
 			participation.showAllUsersToAdd(elements.inviteeDialog);
 		});
 
-		elements.inviteeGroupDialogPrompt.click(function () {
+		elements.inviteeGroupDialogPrompt.click(function (e) {
+			e.preventDefault();
 			participation.showAllGroupsToAdd(elements.inviteeGroupDialog);
 		});
 
-		elements.inviteeDialog.delegate('.add', 'click', function () {
+		elements.inviteeDialog.delegate('.add', 'click', function (e) {
+			e.preventDefault();
 			participation.addInvitee($(this).find('.name').text(), $(this).attr('user-id'));
 		});
 
-		elements.inviteeGroupDialog.delegate('.add', 'click', function () {
+		elements.inviteeGroupDialog.delegate('.add', 'click', function (e) {
+			e.preventDefault();
 			participation.addGroupInvitees($(this).attr('group-id'));
 		});
 
-		elements.inviteeList.delegate('.remove', 'click', function () {
+		elements.inviteeList.delegate('.remove', 'click', function (e) {
+			e.preventDefault();
 			var item = $(this).closest('.user');
 			var id = item.find('.id').val();
 			item.remove();
@@ -708,11 +716,13 @@ function Reservation(opts) {
 			participation.addInvitee(ui.item.label, ui.item.value);
 		});
 
-		elements.guestDialogPrompt.click(function () {
+		elements.guestDialogPrompt.click(function (e) {
+			e.preventDefault();
 			elements.inviteeGuestDialog.modal('show');
 		});
 
 		elements.addGuestButton.click(function (e) {
+			e.preventDefault();
 			var emails = elements.guestEmail.val().split(/[ ,]+/);
 			$.each(emails, function (i, email) {
 				if (validateEmail(email))

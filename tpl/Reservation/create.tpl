@@ -39,12 +39,13 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 				</div>
 
 				<div class="col-md-6 col-xs-12 col-top">
-					<div class="pull-right">
+					<div class="pull-right-lg">
 						<button type="button" class="btn btn-default" onclick="window.location='{$ReturnUrl}'">
-							{translate key='Cancel'}
+							<span class="hidden-xs">{translate key='Cancel'}</span>
+							<span class="visible-xs"><i class="fa fa-arrow-circle-left"></i></span>
 						</button>
 						{block name="submitButtons"}
-							<button type="button" class="btn btn-success save create">
+							<button type="button" class="btn btn-success save create btnCreate">
 								<span class="glyphicon glyphicon-ok-circle"></span>
 								{translate key='Create'}
 							</button>
@@ -62,7 +63,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 					{assign var="participantCol" value="col-xs-12 col-sm-6"}
 				{/if}
 
-				<div id="reservationDetails" class="{$detailsCol}">
+				<div id="reservationDetails" class="{$detailsCol} {if $ShowParticipation && $AllowParticipation && $ShowReservationDetails}detailsBorder{/if}">
 					<div class="col-xs-12">
 						<div class="form-group">
 							{if $ShowUserDetails && $ShowReservationDetails}
@@ -144,7 +145,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 									{/foreach}
 								</div>
 							</div>
-							<div class="pull-right">
+							<div class="accessoriesDiv">
 								{if $ShowReservationDetails && $AvailableAccessories|count > 0}
 									<label>{translate key="Accessories"}</label>
 									<a href="#" id="addAccessoriesPrompt"
@@ -330,13 +331,14 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 				   value="{SeriesUpdateScope::FullSeries}"/>
 
 			<div class="row">
-				<div class="reservationButtons col-m-6 col-m-offset-6 col-xs-12">
-					<div class="reservationSubmitButtons">
+				<div class="reservationButtons col-md-6 col-md-offset-6 col-xs-12">
+					<div class="pull-right-lg">
 						<button type="button" class="btn btn-default" onclick="window.location='{$ReturnUrl}'">
-							{translate key='Cancel'}
+							<span class="hidden-xs">{translate key='Cancel'}</span>
+							<span class="visible-xs"><i class="fa fa-arrow-circle-left"></i></span>
 						</button>
 						{block name="submitButtons"}
-							<button type="button" class="btn btn-success save create">
+							<button type="button" class="btn btn-success save create btnCreate">
 								<span class="glyphicon glyphicon-ok-circle"></span>
 								{translate key='Create'}
 							</button>

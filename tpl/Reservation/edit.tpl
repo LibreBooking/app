@@ -28,9 +28,10 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 {/block}
 
 {block name=submitButtons}
-	<div class="btn-group">
+	<div class="btn-group btnMore">
 		<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-			{translate key=More} <span class="caret"></span>
+			<span class="hidden-xs">{translate key=More} <span class="caret"></span></span>
+			<span class="visible-xs"><i class="fa fa-ellipsis-v"></i> <span class="caret"></span></span>
 		</button>
 		<ul class="dropdown-menu" role="menu">
 			<li>
@@ -106,7 +107,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			</div>
 		</div>
 	{else}
-		<button type="button" class="btn btn-success save update btnCreate">
+		<button type="button" class="btn btn-success save update btnEdit">
 			<span class="glyphicon glyphicon-ok-circle"></span>
 			{translate key='Update'}
 		</button>

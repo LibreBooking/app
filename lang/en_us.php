@@ -605,6 +605,7 @@ class en_us extends Language
 		$strings['Copy'] = 'Copy';
 		$strings['Detect'] = 'Detect';
 		$strings['Autofill'] = 'Autofill';
+		$strings['NameOrEmail'] = 'name or email';
         // End Strings
 
 		// Install
