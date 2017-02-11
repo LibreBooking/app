@@ -26,13 +26,12 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 	{/if}
 
 	<div class="col-md-offset-3 col-md-6 col-xs-12 ">
-		<div id="login-header" class="default-box-header">
-			<span class="sign-in">{translate key=SignIn}</span>
-
-		</div>
 		<form role="form" name="login" id="login" class="form-horizontal" method="post"
 			  action="{$smarty.server.SCRIPT_NAME}">
-			<div id="login-box" class="col-xs-12 default-box straight-top">
+			<div id="login-box" class="col-xs-12 default-box">
+				<div class="col-xs-12 login-icon">
+					{html_image src="$LogoUrl?2.6" alt="$Title"}
+				</div>
 				{if $ShowUsernamePrompt}
 					<div class="col-xs-12">
 						<div class="input-group margin-bottom-25">
@@ -57,18 +56,22 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 					</div>
 				{/if}
 
+				{if $ShowUsernamePrompt &&  $ShowPasswordPrompt}
 				<div class="col-xs-12">
 					<button type="submit" class="btn btn-large btn-primary  btn-block" name="{Actions::LOGIN}"
 							value="submit">{translate key='LogIn'}</button>
 					<input type="hidden" {formname key=RESUME} value="{$ResumeUrl}"/>
 				</div>
+				{/if}
 
+				{if $ShowUsernamePrompt &&  $ShowPasswordPrompt}
 				<div class="col-xs-12 {if $ShowRegisterLink}col-sm-6{/if}">
 					<div class="checkbox">
 						<input id="rememberMe" type="checkbox" {formname key=PERSIST_LOGIN}>
 						<label for="rememberMe">{translate key=RememberMe}</label>
 					</div>
 				</div>
+				{/if}
 
                 {if $ShowRegisterLink}
                     <div class="col-xs-12 col-sm-6 register">

@@ -144,6 +144,7 @@ class ConfigKeys
     const AUTHENTICATION_ALLOW_FACEBOOK = 'allow.facebook.login';
     const AUTHENTICATION_ALLOW_GOOGLE = 'allow.google.login';
 	const AUTHENTICATION_REQUIRED_EMAIL_DOMAINS = 'required.email.domains';
+	const AUTHENTICATION_HIDE_BOOKED_LOGIN_PROMPT = 'hide.booked.login.prompt';
 }
 
 class ConfigSection

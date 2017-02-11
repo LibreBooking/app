@@ -204,8 +204,12 @@ a:hover {
   padding-top: 40px;
 }
 #page-login .default-box {
-  background-color: #fcfcfc;
+  background-color: #f8f8f8;
   border: solid 1px #4c4854;
+}
+#page-login .default-box .login-icon {
+  text-align: center;
+  padding-bottom: 7px;
 }
 #page-login .register {
   text-align: right;

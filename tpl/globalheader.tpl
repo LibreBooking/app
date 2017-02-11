@@ -94,7 +94,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 	<!-- CSS -->
 	{if $UseLocalJquery}
 		{cssfile src="scripts/css/smoothness/jquery-ui-1.10.4.custom.min.css"}
-		{cssfile src="css/font-awesome-4.5.0/css/font-awesome.min.css" rel="stylesheet"}
+		{cssfile src="css/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet"}
 		{cssfile src="scripts/bootstrap/css/bootstrap.css" rel="stylesheet"}
 		{if $Qtip}
 			{cssfile src="css/jquery.qtip.min.css" rel="stylesheet"}
@@ -110,7 +110,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 	{else}
 		<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.9.0/themes/smoothness/jquery-ui.css"
 			  type="text/css"/>
-		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css"
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
 			  type="text/css"/>
 		<link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css"
 			  type="text/css"/>
@@ -171,7 +171,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 				<span class="icon-bar"></span>
 				<span class="icon-bar"></span>
 			</button>
-			<a class="navbar-brand" href="{$HomeUrl}">{html_image src="$LogoUrl?2.6" alt="Scheduler Logo - Home Link"}</a>
+			<a class="navbar-brand" href="{$HomeUrl}">{html_image src="$LogoUrl?2.6" alt="$Title"}</a>
 		</div>
 		<div class="collapse navbar-collapse" id="booked-navigation">
 			<ul class="nav navbar-nav">

@@ -854,6 +854,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		<p class="setting"><span>$conf['settings']['authentication']['allow.google.login']</span>If users can log in to
 			Booked using Google. Default is false.</p>
 
+		<p class="setting"><span>$conf['settings']['authentication']['hide.booked.login.prompt']</span>If the username and password fields should be hidden. Default is false.</p>
+
 		<p class="setting"><span>$conf['settings']['credits']['enabled']</span>Whether or not credit functionality is
 			enabled. Default is false.</p>
 	</div>

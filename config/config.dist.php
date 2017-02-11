@@ -192,6 +192,7 @@ $conf['settings']['google.analytics']['tracking.id'] = ''; // if set, Google Ana
 $conf['settings']['authentication']['allow.facebook.login'] = 'true';
 $conf['settings']['authentication']['allow.google.login'] = 'true';
 $conf['settings']['authentication']['required.email.domains'] = '';
+$conf['settings']['authentication']['hide.booked.login.prompt'] = 'false';
 /**
  * Credits functionality
  */

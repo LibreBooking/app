@@ -86,17 +86,21 @@ class LoginPresenter
 		}
 
 		$allowRegistration = Configuration::Instance()->GetKey(ConfigKeys::ALLOW_REGISTRATION, new BooleanConverter());
-		$allowAnonymousSchedule = Configuration::Instance()->GetSectionKey(ConfigSection::PRIVACY,  ConfigKeys::PRIVACY_VIEW_SCHEDULES,  new BooleanConverter());
-		$allowGuestBookings = Configuration::Instance()->GetSectionKey(ConfigSection::PRIVACY, ConfigKeys::PRIVACY_ALLOW_GUEST_BOOKING,  new BooleanConverter());
+		$allowAnonymousSchedule = Configuration::Instance()->GetSectionKey(ConfigSection::PRIVACY,  ConfigKeys::PRIVACY_VIEW_SCHEDULES, new BooleanConverter());
+		$allowGuestBookings = Configuration::Instance()->GetSectionKey(ConfigSection::PRIVACY, ConfigKeys::PRIVACY_ALLOW_GUEST_BOOKING, new BooleanConverter());
 		$this->_page->SetShowRegisterLink($allowRegistration);
 		$this->_page->SetShowScheduleLink($allowAnonymousSchedule || $allowGuestBookings);
 
-		$this->_page->ShowForgotPasswordPrompt(!Configuration::Instance()->GetKey(ConfigKeys::DISABLE_PASSWORD_RESET,
-																				  new BooleanConverter()) && $this->authentication->ShowForgotPasswordPrompt());
-		$this->_page->ShowPasswordPrompt($this->authentication->ShowPasswordPrompt());
+		$hideLogin = Configuration::Instance()->GetSectionKey(ConfigSection::AUTHENTICATION, ConfigKeys::AUTHENTICATION_HIDE_BOOKED_LOGIN_PROMPT, new BooleanConverter());
+
+		$this->_page->ShowForgotPasswordPrompt(!Configuration::Instance()->GetKey(ConfigKeys::DISABLE_PASSWORD_RESET, new BooleanConverter()) &&
+											   $this->authentication->ShowForgotPasswordPrompt() &&
+											   !$hideLogin);
+		$this->_page->ShowPasswordPrompt($this->authentication->ShowPasswordPrompt() && !$hideLogin);
 		$this->_page->ShowPersistLoginPrompt($this->authentication->ShowPersistLoginPrompt());
-		$this->_page->ShowUsernamePrompt($this->authentication->ShowUsernamePrompt());
-		$this->_page->SetRegistrationUrl($this->authentication->GetRegistrationUrl());
+
+		$this->_page->ShowUsernamePrompt($this->authentication->ShowUsernamePrompt() && !$hideLogin);
+		$this->_page->SetRegistrationUrl($this->authentication->GetRegistrationUrl() && !$hideLogin);
 		$this->_page->SetPasswordResetUrl($this->authentication->GetPasswordResetUrl());
 	}
 
