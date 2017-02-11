@@ -228,7 +228,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 						</div>
 					</div>
 
-					<div class="col-xs-12">
+					<div class="col-xs-12 reservationDescription">
 						<div class="form-group">
 							<label for="description">{translate key="ReservationDescription"}</label>
 							<textarea id="description" name="{FormKeys::DESCRIPTION}"

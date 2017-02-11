@@ -87,8 +87,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			{foreach from=$Resources item=resource name=resource_loop}
 				<tr>
 					{assign var=resourceId value=$resource->Id}
-					{assign var=href value="{Pages::RESERVATION}?rid={$resourceId}&sid={$ScheduleId}"}
-
+					{assign var=href value="{Pages::RESERVATION}?rid={$resourceId}&sid={$ScheduleId}&rd={formatdate date=$date key=url}"}
 					<td class="resourcename" {if $resource->HasColor()}style="background-color:{$resource->GetColor()}"{/if}>
 						{if $resource->CanAccess}
 							<i resourceId="{$resourceId}" class="resourceNameSelector fa fa-info-circle" {if $resource->HasColor()}style="color:{$resource->GetTextColor()}"{/if}></i>
@@ -109,7 +108,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 						</td>
 					{else}
 						{assign var=href value="{Pages::RESERVATION}?rid={$resource->Id}&sid={$ScheduleId}&rd={formatdate date=$date key=url}"}
-						<td class="reservable clickres slot" data-href="{$href}">
+						<td class="reservable clickres slot" data-href="{$href}" data-start="{$date->Format('Y-m-d H:i:s')|escape:url}"
+								data-resourceId="{$resourceId}">
 							&nbsp;
 							<input type="hidden" class="href" value="{$href}"/>
 						</td>
