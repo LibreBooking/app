@@ -23,6 +23,7 @@ require_once(ROOT_DIR . 'Presenters/ActionPresenter.php');
 require_once(ROOT_DIR . 'lib/Application/Authentication/namespace.php');
 require_once(ROOT_DIR . 'lib/Application/User/namespace.php');
 require_once(ROOT_DIR . 'lib/Application/Admin/UserImportCsv.php');
+require_once(ROOT_DIR . 'lib/Application/Admin/CsvImportResult.php');
 require_once(ROOT_DIR . 'lib/Email/Messages/InviteUserEmail.php');
 
 class ManageUsersActions
@@ -460,7 +461,7 @@ class ManageUsersPresenter extends ActionPresenter implements IManageUsersPresen
 
     public function ImportUsers()
     {
-		ini_set('max_execution_time', 300);
+		ini_set('max_execution_time', 600);
         $groupsList = $this->groupViewRepository->GetList();
         /** @var GroupItemView[] $groups */
         $groups = $groupsList->Results();
@@ -549,24 +550,4 @@ class ManageUsersPresenter extends ActionPresenter implements IManageUsersPresen
 			ServiceLocator::GetEmailService()->Send(new InviteUserEmail(trim($email), ServiceLocator::GetServer()->GetUserSession()));
 		}
 	}
-}
-
-
-class CsvImportResult
-{
-    public $importCount = 0;
-    public $skippedRows = array();
-    public $messages = array();
-
-    /**
-     * @param $imported int
-     * @param $skippedRows int[]
-     * @param $messages string|string[]
-     */
-    public function __construct($imported, $skippedRows, $messages)
-    {
-        $this->importCount = $imported;
-        $this->skippedRows = $skippedRows;
-        $this->messages = is_array($messages) ? $messages : array($messages);
-    }
 }

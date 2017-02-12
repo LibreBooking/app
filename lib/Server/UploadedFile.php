@@ -78,7 +78,7 @@ class UploadedFile
 		$content = fread($fp, filesize($tmpName));
 		fclose($fp);
 
-		return $content;
+		return trim($content);
 	}
 
 	public function IsError()

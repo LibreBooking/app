@@ -28,24 +28,37 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			</button>
 			<ul class="dropdown-menu" role="menu" aria-labelledby="moreResourceActions">
 
-				<li role="presentation"><a role="menuitem"
-										   href="{$Path}admin/manage_resource_groups.php">{translate key="ManageResourceGroups"}</a>
+				<li role="presentation">
+					<a role="menuitem" href="{$Path}admin/manage_resource_groups.php">{translate key="ManageResourceGroups"}</a>
 				</li>
-				<li role="presentation"><a role="menuitem"
-										   href="{$Path}admin/manage_resource_types.php">{translate key="ManageResourceTypes"}</a>
+				<li role="presentation">
+					<a role="menuitem" href="{$Path}admin/manage_resource_types.php">{translate key="ManageResourceTypes"}</a>
 				</li>
-				<li role="presentation"><a role="menuitem"
-										   href="{$Path}admin/manage_resource_status.php">{translate key="ManageResourceStatus"}</a>
+				<li role="presentation">
+					<a role="menuitem" href="{$Path}admin/manage_resource_status.php">{translate key="ManageResourceStatus"}</a>
 				</li>
 				<li role="presentation" class="divider"></li>
-				<li role="presentation"><a role="menuitem"
-										   href="#" class="add-resource" id="add-resource">{translate key="AddResource"}
-						<span class="fa fa-plus-circle icon add"></span></a>
+				<li role="presentation">
+					<a role="menuitem" href="#" class="import-resources" id="import-resources">
+						{translate key="ImportResources"}
+						<span class="fa fa-upload icon"></span>
+					</a>
+					<a role="menuitem" href="#" class="export-resources" id="export-resources">
+						{translate key="ExportResources"}
+						<span class="fa fa-download icon"></span>
+					</a>
+				</li>
+				<li role="presentation" class="divider"></li>
+				<li role="presentation">
+					<a role="menuitem" href="#" class="add-resource" id="add-resource">{translate key="AddResource"}
+						<span class="fa fa-plus-circle icon add"></span>
+					</a>
 				</li>
 				{if !empty($Resources)}
-				<li role="presentation"><a role="menuitem" href="#"
-										   id="bulkUpdatePromptButton">{translate key=BulkResourceUpdate}</a>
-					{/if}
+					<li role="presentation">
+						<a role="menuitem" href="#" id="bulkUpdatePromptButton">{translate key=BulkResourceUpdate}</a>
+					</li>
+				{/if}
 			</ul>
 		</div>
 
@@ -175,7 +188,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 								<a class="update copyButton" href="#" title="{translate key='Copy'}"><i
 											class="fa fa-copy"></i></a> |
 								<a class="update deleteButton" href="#" title="{translate key='Delete'}"><i
-											class="fa fa-trash icon icon-delete"></i></a>
+											class="fa fa-trash icon delete"></i></a>
 							</div>
 							<div>
 								{translate key='Status'}
@@ -674,7 +687,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 							<div class="checkbox">
 								<input type="checkbox" id="noStartNotice" class="noStartNotice"
 									   data-related-inputs="#startNoticeInputs"/>
-								<label for="noStartNotice">{translate key=ResourceMinLengthNone}</label>
+								<label for="noStartNotice">{translate key=ResourceMinNoticeNone}</label>
 							</div>
 							{capture name="txtStartNotice" assign="txtStartNotice"}
 								<input type='number' id='startNoticeDays' size='3' class='days form-control inline'
@@ -1103,7 +1116,6 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 						{if $CreditsEnabled}
 							<div class="title">{translate key=Credits}</div>
-
 							<div class="form-group">
 								{capture name="bulkEditCreditsPerSLot" assign="bulkEditCreditsPerSLot"}
 									<input type='number' min='0' step='1' id='bulkEditCreditsPerSlot'
@@ -1111,7 +1123,6 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 								{/capture}
 								{translate key='CreditUsagePerSlot' args=$bulkEditCreditsPerSLot}
 							</div>
-
 							<div class="form-group">
 								{capture name="bulkEditPeakCreditsPerSlot" assign="bulkEditPeakCreditsPerSlot"}
 									<input type='number' min='0' step='1' id='bulkEditPeakCreditsPerSlot'
@@ -1299,6 +1310,52 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			</div>
 		</form>
 	</div>
+
+	<div id="importDialog" class="modal" tabindex="-1" role="dialog" aria-labelledby="importModalLabel"
+         aria-hidden="true">
+        <form id="importForm" class="form" role="form" method="post" enctype="multipart/form-data"
+              ajaxAction="{ManageResourcesActions::ImportResources}">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title" id="importModalLabel">{translate key=Import}</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div id="importResults" class="validationSummary alert alert-danger no-show">
+                            <ul>
+                                {async_validator id="fileExtensionValidator" key=""}
+                            </ul>
+                        </div>
+                        <div id="importErrors" class="alert alert-danger no-show"></div>
+                        <div id="importResult" class="alert alert-success no-show">
+                            <span>{translate key=RowsImported}</span>
+
+                            <div id="importCount" class="inline bold">0</div>
+                            <span>{translate key=RowsSkipped}</span>
+
+                            <div id="importSkipped" class="inline bold">0</div>
+                            <a class="" href="{$smarty.server.SCRIPT_NAME}">{translate key=Done} <span
+                                        class="fa fa-refresh"></span></a>
+                        </div>
+                        <div class="margin-bottom-25">
+                            <input type="file" {formname key=RESOURCE_IMPORT_FILE} />
+                        </div>
+                        <div id="importInstructions" class="alert alert-info">
+                            <div class="note">{translate key=ResourceImportInstructions}</div>
+                            <a href="{$smarty.server.SCRIPT_NAME}?dr=template"
+                               target="_blank">{translate key=GetTemplate} <span class="fa fa-download"></span></a>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        {cancel_button}
+                        {add_button key=Import}
+                        {indicator}
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
 
 	{csrf_token}
 

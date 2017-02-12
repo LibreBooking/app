@@ -84,7 +84,11 @@ function ResourceManagement(opts) {
 
 		copyDialog: $('#copyDialog'),
 		copyName: $('#copyResourceName'),
-		copyForm: $('#copyForm')
+		copyForm: $('#copyForm'),
+
+		importDialog: $('#importDialog'),
+		importForm: $('#importForm'),
+		importTrigger: $('#import-resources')
 		// copyResourceId: $('#copyResourceId')
 	};
 
@@ -371,7 +375,8 @@ function ResourceManagement(opts) {
 		wireUpCheckboxToggle(elements.accessForm);
 		wireUpCheckboxToggle(elements.bulkUpdateForm);
 
-		elements.browseGroupDialog.delegate('.add', 'click', function () {
+		elements.browseGroupDialog.delegate('.add', 'click', function (e) {
+			e.preventDefault();
 			var link = $(this);
 			var groupId = link.siblings('.id').val();
 
@@ -380,13 +385,22 @@ function ResourceManagement(opts) {
 			link.find('img').attr('src', '../img/tick-white.png');
 		});
 
-		elements.resourceGroupList.delegate('.delete', 'click', function () {
+		elements.resourceGroupList.delegate('.delete', 'click', function (e) {
+			e.preventDefault();
 			var groupId = $(this).siblings('.id').val();
 			removeGroupPermission($(this), groupId);
 		});
 
-		elements.browseGroupsButton.click(function () {
+		elements.browseGroupsButton.click(function (e) {
+			e.preventDefault();
 			showAllGroupsToAdd();
+		});
+
+		elements.importTrigger.click(function(e) {
+			e.preventDefault();
+			$('#importErrors').empty().addClass('no-show');
+			$('#importResults').addClass('no-show');
+			elements.importDialog.modal('show');
 		});
 
 		var imageSaveErrorHandler = function (result) {
@@ -411,6 +425,25 @@ function ResourceManagement(opts) {
 			$("#globalError").html(result).show();
 		};
 
+		var importHandler = function (responseText, form) {
+			if (!responseText)
+			{
+				return;
+			}
+
+			$('#importCount').text(responseText.importCount);
+			$('#importSkipped').text(responseText.skippedRows.length > 0 ? responseText.skippedRows.join(',') : '0');
+			$('#importResult').removeClass('no-show');
+
+			var errors = $('#importErrors');
+			errors.empty();
+			if (responseText.messages && responseText.messages.length > 0)
+			{
+				var messages = responseText.messages.join('</li><li>');
+				errors.html('<div>' + messages + '</div>').removeClass('no-show');
+			}
+		};
+
 		ConfigureAsyncForm(elements.imageForm, defaultSubmitCallback(elements.imageForm), null, imageSaveErrorHandler);
 		ConfigureAsyncForm(elements.addForm, defaultSubmitCallback(elements.addForm), null, handleAddError);
 		ConfigureAsyncForm(elements.deleteForm, defaultSubmitCallback(elements.deleteForm));
@@ -423,10 +456,10 @@ function ResourceManagement(opts) {
 		ConfigureAsyncForm(elements.addGroupForm, defaultSubmitCallback(elements.addGroupForm), changeGroups, errorHandler);
 		ConfigureAsyncForm(elements.removeGroupForm, defaultSubmitCallback(elements.removeGroupForm), changeGroups, errorHandler);
 		ConfigureAsyncForm(elements.resourceGroupForm, defaultSubmitCallback(elements.resourceGroupForm), onResourceGroupsSaved);
-		ConfigureAsyncForm(elements.colorForm, defaultSubmitCallback(elements.colorForm), function () {
-		});
+		ConfigureAsyncForm(elements.colorForm, defaultSubmitCallback(elements.colorForm), function () { });
 		ConfigureAsyncForm(elements.creditsForm, defaultSubmitCallback(elements.creditsForm), onCreditsSaved, null, errorHandler);
 		ConfigureAsyncForm(elements.copyForm, defaultSubmitCallback(elements.copyForm));
+		ConfigureAsyncForm(elements.importForm, defaultSubmitCallback(elements.importForm), importHandler);
 	};
 
 	ResourceManagement.prototype.add = function (resource) {

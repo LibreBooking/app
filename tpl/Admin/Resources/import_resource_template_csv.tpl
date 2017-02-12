@@ -1,0 +1,1 @@
+name,status,schedule,resource type,sort order,location,contact,description,notes,resource administrator,color,resource groups,auto assign permissions,approval required,capacity{foreach from=$attributes item=attribute},{$attribute->Label()|escape:'quotes'}{/foreach}

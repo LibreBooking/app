@@ -362,6 +362,21 @@ interface IManageResourcesPage extends IUpdateResourcePage, IActionPage, IPageab
 	public function BindUpdatedResourceCredits(BookableResource $resource);
 
 	public function ShowQRCode($qrCodeImageUrl, $resourceName);
+
+	/**
+	 * @return UploadedFile
+	 */
+	public function GetImportFile();
+
+	/**
+	 * @param CustomAttribute[] $attributes
+	 */
+	public function ShowTemplateCSV($attributes);
+
+	/**
+	 * @param CsvImportResult $importResult
+	 */
+	public function SetImportResult($importResult);
 }
 
 class ManageResourcesPage extends ActionPage implements IManageResourcesPage
@@ -931,6 +946,22 @@ class ManageResourcesPage extends ActionPage implements IManageResourcesPage
 	public function GetBulkAutoAssign()
 	{
 		return $this->GetForm(FormKeys::AUTO_ASSIGN);
+	}
+
+	public function GetImportFile()
+	{
+		return $this->server->GetFile(FormKeys::RESOURCE_IMPORT_FILE);
+	}
+
+	public function ShowTemplateCSV($attributes)
+	{
+		$this->Set('attributes', $attributes);
+		$this->DisplayCsv('Admin/Resources/import_resource_template_csv.tpl', 'resources.csv');
+	}
+
+	public function SetImportResult($importResult)
+	{
+		$this->SetJsonResponse($importResult);
 	}
 }
 

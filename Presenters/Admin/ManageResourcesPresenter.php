@@ -23,6 +23,8 @@ require_once(ROOT_DIR . 'Domain/Access/namespace.php');
 require_once(ROOT_DIR . 'lib/Graphics/namespace.php');
 require_once(ROOT_DIR . 'Presenters/ActionPresenter.php');
 require_once(ROOT_DIR . 'lib/Application/Admin/ImageUploadDirectory.php');
+require_once(ROOT_DIR . 'lib/Application/Admin/ResourceImportCsv.php');
+require_once(ROOT_DIR . 'lib/Application/Admin/CsvImportResult.php');
 
 class ManageResourcesActions
 {
@@ -56,6 +58,7 @@ class ManageResourcesActions
 	const ActionChangeCredits = 'changeCredits';
 	const ActionPrintQR = 'printQR';
 	const ActionCopyResource = 'actionCopyResource';
+	const ImportResources = 'importResources';
 }
 
 class ManageResourcesPresenter extends ActionPresenter
@@ -144,6 +147,7 @@ class ManageResourcesPresenter extends ActionPresenter
 		$this->AddAction(ManageResourcesActions::ActionChangeCredits, 'ChangeCredits');
 		$this->AddAction(ManageResourcesActions::ActionPrintQR, 'PrintQRCode');
 		$this->AddAction(ManageResourcesActions::ActionCopyResource, 'ActionCopyResource');
+		$this->AddAction(ManageResourcesActions::ImportResources, 'ImportResource');
 	}
 
 	public function PageLoad()
@@ -836,6 +840,125 @@ class ManageResourcesPresenter extends ActionPresenter
 		}
 	}
 
+	public function ImportResource()
+	{
+		ini_set('max_execution_time', 600);
+		$groups = $this->groupRepository->GetGroupsByRole(RoleLevel::RESOURCE_ADMIN);
+		$groupsIndexed = array();
+		foreach ($groups as $group)
+		{
+			$groupsIndexed[strtolower($group->Name())] = $group->Id();
+		}
+
+		$resourceGroups = $this->resourceRepository->GetResourceGroups();
+		$resourceGroupsIndexed = array();
+		foreach ($resourceGroups->GetGroupList() as $group)
+		{
+			$resourceGroupsIndexed[strtolower($group->name)] = $group->id;
+		}
+
+		$attributes = $this->attributeService->GetByCategory(CustomAttributeCategory::RESOURCE);
+		$attributesIndexed = array();
+		foreach ($attributes as $attribute)
+		{
+			if (!$attribute->UniquePerEntity())
+			{
+				$attributesIndexed[strtolower($attribute->Label())] = $attribute->Id();
+			}
+		}
+
+		$defaultScheduleId = 0;
+		$schedules = $this->scheduleRepository->GetAll();
+		$schedulesIndexed = array();
+		foreach ($schedules as $schedule)
+		{
+			$schedulesIndexed[strtolower($schedule->GetName())] = $schedule->GetId();
+			if ($schedule->GetIsDefault())
+			{
+				$defaultScheduleId = $schedule->GetId();
+			}
+		}
+
+		$resourceTypes = $this->resourceRepository->GetResourceTypes();
+		$resourceTypesIndexed = array();
+		foreach ($resourceTypes as $resourceType)
+		{
+			$resourceTypesIndexed[strtolower($resourceType->Name())] = $resourceType->Id();
+		}
+
+		$resourceStatusesIndexed = array('available' => ResourceStatus::AVAILABLE, 'unavailable' => ResourceStatus::UNAVAILABLE, 'hidden' => ResourceStatus::HIDDEN);
+
+		$importFile = $this->page->GetImportFile();
+		$csv = new ResourceImportCsv($importFile, $attributesIndexed);
+
+		$importCount = 0;
+		$messages = array();
+
+		$rows = $csv->GetRows();
+
+		if (count($rows) == 0)
+		{
+			$this->page->SetImportResult(new CsvImportResult(0, array(), 'Empty file or missing header row'));
+			return;
+		}
+
+		for ($i = 0; $i < count($rows); $i++)
+		{
+
+			$row = $rows[$i];
+
+			try
+			{
+				$scheduleId = (empty($row->schedule) || !array_key_exists($row->schedule, $schedulesIndexed)) ? $defaultScheduleId : $schedulesIndexed[$row->schedule];
+				$resourceTypeId = (empty($row->resourceType) || !array_key_exists($row->resourceType, $resourceTypesIndexed)) ? null : $resourceTypesIndexed[$row->resourceType];
+				$adminGroupId = (empty($row->resourceAdministrator) || !array_key_exists($row->resourceAdministrator, $groupsIndexed)) ? null : $groupsIndexed[$row->resourceAdministrator];
+				$statusId = (empty($row->status) || !array_key_exists($row->status, $resourceStatusesIndexed)) ? ResourceStatus::AVAILABLE : $resourceStatusesIndexed[$row->status];
+
+				$resource = BookableResource::CreateNew($row->name, $scheduleId, ($row->autoAssign == 'true' || $row->autoAssign == '1'), intval($row->sortOrder));
+
+				$this->resourceRepository->Add($resource);
+
+				$resource->ChangeStatus($statusId);
+				$resource->SetResourceTypeId($resourceTypeId);
+				$resource->SetLocation($row->location);
+				$resource->SetContact($row->contact);
+				$resource->SetDescription($row->description);
+				$resource->SetNotes($row->notes);
+				$resource->SetAdminGroupId($adminGroupId);
+				$resource->SetColor($row->color);
+				$resource->SetRequiresApproval($row->approvalRequired == 'true' || $row->approvalRequired == '1');
+
+				foreach ($row->attributes as $label => $value)
+				{
+					if (array_key_exists($label, $attributesIndexed))
+					{
+						$id = $attributesIndexed[$label];
+						$resource->ChangeAttribute(new AttributeValue($id, $value));
+					}
+				}
+
+				$this->resourceRepository->Update($resource);
+
+				foreach ($row->resourceGroups as $groupName)
+				{
+					$groupName = strtolower($groupName);
+					if (array_key_exists($groupName, $resourceGroupsIndexed))
+					{
+						Log::Debug('Assigning resource %s to group %s', $row->name, $groupName);
+						$this->resourceRepository->AddResourceToGroup($resource->GetId(), $resourceGroupsIndexed[$groupName]);
+					}
+				}
+
+				$importCount++;
+			} catch (Exception $ex)
+			{
+				Log::Error('Error importing resources. %s', $ex);
+			}
+		}
+
+		$this->page->SetImportResult(new CsvImportResult($importCount, $csv->GetSkippedRowNumbers(), $messages));
+	}
+
 	protected function LoadValidators($action)
 	{
 		if ($action == ManageResourcesActions::ActionChangeAttribute)
@@ -851,32 +974,52 @@ class ManageResourcesPresenter extends ActionPresenter
 			$this->page->RegisterValidator('bulkAttributeValidator',
 										   new AttributeValidator($this->attributeService, CustomAttributeCategory::RESOURCE, $attributes, null, true, true));
 		}
+
+		if ($action == ManageResourcesActions::ImportResources)
+		{
+			$this->page->RegisterValidator('fileExtensionValidator', new FileExtensionValidator('csv', $this->page->GetImportFile()));
+		}
 	}
 
 	public function ProcessDataRequest($dataRequest)
 	{
-		if ($dataRequest == 'all')
+		switch ($dataRequest)
 		{
-			$this->page->SetResourcesJson(array_map(array('AdminResourceJson', 'FromBookable'), $this->resourceRepository->GetResourceList()));
-		}
-		else
-		{
-			if ($dataRequest == 'users')
+			case 'all' :
+			{
+				$this->page->SetResourcesJson(array_map(array('AdminResourceJson', 'FromBookable'), $this->resourceRepository->GetResourceList()));
+				break;
+			}
+			case 'users' :
 			{
 				$users = $this->resourceRepository->GetUsersWithPermission($this->page->GetResourceId());
 				$response = new UserResults($users->Results(), $users->PageInfo()->Total);
 				$this->page->SetJsonResponse($response);
+				break;
 			}
-			else
+			case 'groups':
 			{
-				if ($dataRequest == 'groups')
+				$groups = $this->resourceRepository->GetGroupsWithPermission($this->page->GetResourceId());
+				$response = new GroupResults($groups->Results(), $groups->PageInfo()->Total);
+				$this->page->SetJsonResponse($response);
+				break;
+			}
+			case 'template' :
+			{
+				$attributes = $this->attributeService->GetByCategory(CustomAttributeCategory::RESOURCE);
+				$importAttributes = array();
+				foreach ($attributes as $attribute)
 				{
-					$groups = $this->resourceRepository->GetGroupsWithPermission($this->page->GetResourceId());
-					$response = new GroupResults($groups->Results(), $groups->PageInfo()->Total);
-					$this->page->SetJsonResponse($response);
+					if (!$attribute->UniquePerEntity())
+					{
+						$importAttributes[] = $attribute;
+					}
 				}
+				$this->page->ShowTemplateCSV($importAttributes);
+				break;
 			}
 		}
+
 	}
 
 	private function ChangingDropDown($value)

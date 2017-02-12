@@ -527,7 +527,7 @@ class en_us extends Language
 		$strings['YouCanJoinThisReservation'] = 'You can join this reservation';
 		$strings['Import'] = 'Import';
 		$strings['GetTemplate'] = 'Get Template';
-		$strings['UserImportInstructions'] = 'File must be in CSV format. Username and email are required fields. Leaving other fields blank will set default values and \'password\' as the user\'s password. Use the supplied template as an example.';
+		$strings['UserImportInstructions'] = '<ul><li>File must be in CSV format.</li><li>Username and email are required fields.</li><li>Leaving other fields blank will set default values and \'password\' as the user\'s password.</li><li>Use the supplied template as an example.</li></ul>';
 		$strings['RowsImported'] = 'Rows Imported';
 		$strings['RowsSkipped'] = 'Rows Skipped';
 		$strings['Columns'] = 'Columns';
@@ -606,6 +606,9 @@ class en_us extends Language
 		$strings['Detect'] = 'Detect';
 		$strings['Autofill'] = 'Autofill';
 		$strings['NameOrEmail'] = 'name or email';
+		$strings['ImportResources'] = 'Import Resources';
+		$strings['ExportResources'] = 'Export Resources';
+		$strings['ResourceImportInstructions'] = '<ul><li>File must be in CSV format.</li><li>Name is required field. Leaving other fields blank will set default values.</li><li>Status options are \'Available\', \'Unavailable\' and \'Hidden\'.</li><li>Color should be the hex value (#ffffff).</li><li>Auto assign and approval columns can be true or false.</li><li>Attribute validity will not be enforced.</li><li>Comma separate multiple resource groups.</li><li>Use the supplied template as an example.</li></ul>';
         // End Strings
 
 		// Install
