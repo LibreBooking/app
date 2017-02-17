@@ -446,7 +446,11 @@ function ResourceManagement(opts) {
 
 		ConfigureAsyncForm(elements.imageForm, defaultSubmitCallback(elements.imageForm), null, imageSaveErrorHandler);
 		ConfigureAsyncForm(elements.addForm, defaultSubmitCallback(elements.addForm), null, handleAddError);
-		ConfigureAsyncForm(elements.deleteForm, defaultSubmitCallback(elements.deleteForm));
+		ConfigureAsyncForm(elements.deleteForm, defaultSubmitCallback(elements.deleteForm), function(result) {
+			var id = getActiveResourceId();
+			$('#resourceList').find('[data-resourceid="' + id + '"]').remove();
+			elements.deleteDialog.modal('hide');
+		});
 		ConfigureAsyncForm(elements.durationForm, defaultSubmitCallback(elements.durationForm), onDurationSaved, null, {onBeforeSerialize: combineIntervals});
 		ConfigureAsyncForm(elements.capacityForm, defaultSubmitCallback(elements.capacityForm), onCapacitySaved);
 		ConfigureAsyncForm(elements.accessForm, defaultSubmitCallback(elements.accessForm), onAccessSaved, null, {onBeforeSerialize: combineIntervals});
