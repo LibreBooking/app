@@ -617,6 +617,7 @@ class en_us extends Language
 		$strings['ResourceBufferTimeCsv'] = 'Buffer Time';
 		$strings['ResourceMinNoticeCsv'] = 'Reservation Minimum Notice';
 		$strings['ResourceMaxNoticeCsv'] = 'Reservation Maximum End';
+		$strings['Export'] = 'Export';
         // End Strings
 
 		// Install

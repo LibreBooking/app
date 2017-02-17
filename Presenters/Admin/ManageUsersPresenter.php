@@ -208,6 +208,8 @@ class ManageUsersPresenter extends ActionPresenter implements IManageUsersPresen
 
         $attributeList = $this->attributeService->GetByCategory(CustomAttributeCategory::USER);
         $this->page->BindAttributeList($attributeList);
+
+		$this->page->BindStatusDescriptions();
     }
 
     public function Deactivate()
@@ -317,6 +319,12 @@ class ManageUsersPresenter extends ActionPresenter implements IManageUsersPresen
         $this->manageUsersService->ChangeAttribute($this->page->GetUserId(), $this->GetInlineAttributeValue());
     }
 
+	public function ExportUsers()
+	{
+		$this->PageLoad();
+		$this->page->ShowExportCsv();
+	}
+
     public function ProcessDataRequest($dataRequest)
     {
         if ($dataRequest == 'permissions') {
@@ -332,6 +340,9 @@ class ManageUsersPresenter extends ActionPresenter implements IManageUsersPresen
         elseif ($dataRequest == 'template') {
             $this->page->ShowTemplateCSV();
         }
+		elseif ($dataRequest == 'export') {
+			$this->ExportUsers();
+		}
     }
 
     /**

@@ -49,6 +49,10 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                 <a href="#" id="import-users" class="add-link add-user">{translate key="Import"}
                     <span class="glyphicon glyphicon-import icon add"></span>
                 </a>
+
+                <a href="{$ExportUrl}" id="export-users" class="add-link add-user" target="_blank">{translate key="Export"}
+                    <span class="glyphicon glyphicon-export icon add"></span>
+                </a>
             </div>
         </div>
         <div class="clearfix"></div>
