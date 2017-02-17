@@ -377,6 +377,8 @@ interface IManageResourcesPage extends IUpdateResourcePage, IActionPage, IPageab
 	 * @param CsvImportResult $importResult
 	 */
 	public function SetImportResult($importResult);
+
+	public function ShowExportCsv();
 }
 
 class ManageResourcesPage extends ActionPage implements IManageResourcesPage
@@ -413,6 +415,10 @@ class ManageResourcesPage extends ActionPage implements IManageResourcesPage
 		);
 
 		$this->Set('CreditsEnabled', Configuration::Instance()->GetSectionKey(ConfigSection::CREDITS, ConfigKeys::CREDITS_ENABLED, new BooleanConverter()));
+
+		$url = $this->server->GetUrl();
+		$exportUrl = BookedStringHelper::Contains($url, '?') ? $url . '&dr=export' : $this->server->GetRequestUri() . '?dr=export';
+		$this->Set('ExportUrl', $exportUrl);
 	}
 
 	public function ProcessPageLoad()
@@ -962,6 +968,11 @@ class ManageResourcesPage extends ActionPage implements IManageResourcesPage
 	public function SetImportResult($importResult)
 	{
 		$this->SetJsonResponse($importResult);
+	}
+
+	public function ShowExportCsv()
+	{
+		$this->DisplayCsv('Admin/Resources/resources_csv.tpl', 'resources.csv');
 	}
 }
 

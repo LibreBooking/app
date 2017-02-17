@@ -41,11 +41,11 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 				<li role="presentation">
 					<a role="menuitem" href="#" class="import-resources" id="import-resources">
 						{translate key="ImportResources"}
-						<span class="fa fa-upload icon"></span>
+						<span class="glyphicon glyphicon-import"></span>
 					</a>
-					<a role="menuitem" href="#" class="export-resources" id="export-resources">
+					<a role="menuitem" href="{$ExportUrl}" class="export-resources" id="export-resources" target="_blank">
 						{translate key="ExportResources"}
-						<span class="fa fa-download icon"></span>
+						<span class="glyphicon glyphicon-export"></span>
 					</a>
 				</li>
 				<li role="presentation" class="divider"></li>
@@ -137,7 +137,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		</div>
 	</div>
 
-	{pagination pageInfo=$PageInfo showCount=false}
+	{pagination pageInfo=$PageInfo showCount=true}
 
 	<div id="globalError" class="error no-show"></div>
 
@@ -153,7 +153,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 				{assign var=id value=$resource->GetResourceId()}
 				<div class="resourceDetails" data-resourceId="{$id}">
 					<div class="col-xs-12 col-sm-5">
-						<input type="hidden" class="id" value="$id}"/>
+						<input type="hidden" class="id" value="{$id}"/>
 
 						<div class="col-sm-3 col-xs-6 resourceImage">
 							<div class="margin-bottom-25">

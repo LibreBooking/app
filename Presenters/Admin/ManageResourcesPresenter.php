@@ -859,6 +859,7 @@ class ManageResourcesPresenter extends ActionPresenter
 
 		$attributes = $this->attributeService->GetByCategory(CustomAttributeCategory::RESOURCE);
 		$attributesIndexed = array();
+		/** @var CustomAttribute $attribute */
 		foreach ($attributes as $attribute)
 		{
 			if (!$attribute->UniquePerEntity())
@@ -959,6 +960,12 @@ class ManageResourcesPresenter extends ActionPresenter
 		$this->page->SetImportResult(new CsvImportResult($importCount, $csv->GetSkippedRowNumbers(), $messages));
 	}
 
+	public function ExportResources()
+	{
+		$this->PageLoad();
+		$this->page->ShowExportCsv();
+	}
+
 	protected function LoadValidators($action)
 	{
 		if ($action == ManageResourcesActions::ActionChangeAttribute)
@@ -1017,6 +1024,10 @@ class ManageResourcesPresenter extends ActionPresenter
 				}
 				$this->page->ShowTemplateCSV($importAttributes);
 				break;
+			}
+			case 'export':
+			{
+				$this->ExportResources();
 			}
 		}
 

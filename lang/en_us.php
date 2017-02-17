@@ -609,6 +609,14 @@ class en_us extends Language
 		$strings['ImportResources'] = 'Import Resources';
 		$strings['ExportResources'] = 'Export Resources';
 		$strings['ResourceImportInstructions'] = '<ul><li>File must be in CSV format.</li><li>Name is required field. Leaving other fields blank will set default values.</li><li>Status options are \'Available\', \'Unavailable\' and \'Hidden\'.</li><li>Color should be the hex value (#ffffff).</li><li>Auto assign and approval columns can be true or false.</li><li>Attribute validity will not be enforced.</li><li>Comma separate multiple resource groups.</li><li>Use the supplied template as an example.</li></ul>';
+		$strings['AutoReleaseMinutes'] = 'Autorelease Minutes';
+		$strings['CreditsPeak'] = 'Credits (peak)';
+		$strings['CreditsOffPeak'] = 'Credits (off peak)';
+		$strings['ResourceMinLengthCsv'] = 'Reservation Minimum Length';
+		$strings['ResourceMaxLengthCsv'] = 'Reservation Maximum Length';
+		$strings['ResourceBufferTimeCsv'] = 'Buffer Time';
+		$strings['ResourceMinNoticeCsv'] = 'Reservation Minimum Notice';
+		$strings['ResourceMaxNoticeCsv'] = 'Reservation Maximum End';
         // End Strings
 
 		// Install
