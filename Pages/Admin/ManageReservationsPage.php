@@ -254,6 +254,8 @@ interface IManageReservationsPage extends IPageable, IActionPage
 	 * return string
 	 */
 	public function GetName();
+
+	public function ShowTemplateCSV();
 }
 
 class ManageReservationsPage extends ActionPage implements IManageReservationsPage
@@ -679,5 +681,10 @@ class ManageReservationsPage extends ActionPage implements IManageReservationsPa
 	public function GetValue()
 	{
 		return $this->GetForm(FormKeys::VALUE);
+	}
+
+	public function ShowTemplateCSV()
+	{
+		$this->DisplayCsv('Admin/Reservations/import_reservations_template_csv.tpl', 'reservations.csv');
 	}
 }

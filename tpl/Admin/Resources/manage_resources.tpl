@@ -43,6 +43,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 						{translate key="ImportResources"}
 						<span class="glyphicon glyphicon-import"></span>
 					</a>
+				</li>
+				<li role="presentation">
 					<a role="menuitem" href="{$ExportUrl}" class="export-resources" id="export-resources" target="_blank">
 						{translate key="ExportResources"}
 						<span class="glyphicon glyphicon-export"></span>

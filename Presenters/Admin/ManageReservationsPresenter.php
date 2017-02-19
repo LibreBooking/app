@@ -297,6 +297,12 @@ class ManageReservationsPresenter extends ActionPresenter
                 ServiceLocator::GetServer()->GetUserSession());
             $this->page->SetReservationJson($rv);
         }
+        else if ($dataRequest == 'import'){
+        	$this->ImportReservations();
+		}
+		else if ($dataRequest == 'template'){
+			$this->page->ShowTemplateCSV();
+		}
     }
 
     public function UpdateAttribute()
