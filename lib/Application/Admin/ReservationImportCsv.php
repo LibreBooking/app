@@ -18,23 +18,15 @@
  * You should have received a copy of the GNU General Public License
  * along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
  */
-class ResourceImportCsvRow
+
+class ReservationImportCsvRow
 {
-	public $name;
-	public $status;
-	public $schedule;
-	public $resourceType;
-	public $sortOrder = 0;
-	public $location;
-	public $contact;
+	public $email;
+	public $resourceNames = array();
+	public $title;
 	public $description;
-	public $notes;
-	public $resourceAdministrator;
-	public $color;
-	public $resourceGroups = array();
-	public $autoAssign = true;
-	public $approvalRequired = false;
-	public $capacity;
+	public $begin;
+	public $end;
 	public $attributes = array();
 
 	private $values = array();
@@ -50,22 +42,14 @@ class ResourceImportCsvRow
 		$this->values = $values;
 		$this->indexes = $indexes;
 
-		$this->name = $this->valueOrDefault('name');
-		$this->status = strtolower($this->valueOrDefault('status'));
-		$this->schedule = strtolower($this->valueOrDefault('schedule'));
-		$this->resourceType = strtolower($this->valueOrDefault('resourceType'));
-		$this->sortOrder = $this->valueOrDefault('sortOrder');
-		$this->location = $this->valueOrDefault('location');
-		$this->contact = $this->valueOrDefault('contact');
+		$this->email = strtolower($this->valueOrDefault('email'));
+		$this->resourceNames = (!array_key_exists('resourceNames', $this->indexes) || $indexes['resourceNames'] === false) ? array()
+						: array_map('trim', explode(',', htmlspecialchars($values[$indexes['resourceNames']])));
+		$this->title = $this->valueOrDefault('title');
 		$this->description = $this->valueOrDefault('description');
-		$this->notes = $this->valueOrDefault('notes');
-		$this->resourceAdministrator = strtolower($this->valueOrDefault('resourceAdministrator'));
-		$this->color = $this->valueOrDefault('color');
-		$this->resourceGroups = (!array_key_exists('resourceGroups', $this->indexes) || $indexes['resourceGroups'] === false) ? array()
-				: array_map('trim', explode(',', htmlspecialchars($values[$indexes['resourceGroups']])));
-		$this->autoAssign = strtolower($this->valueOrDefault('autoAssign'));
-		$this->approvalRequired = strtolower($this->valueOrDefault('approvalRequired'));
-		$this->capacity = $this->valueOrDefault('capacity');
+		$this->begin = $this->valueOrDefault('begin');
+		$this->end = $this->valueOrDefault('end');
+
 		foreach ($attributes as $label => $attribute)
 		{
 			$this->attributes[$label] = $this->valueOrDefault($label);
@@ -75,10 +59,10 @@ class ResourceImportCsvRow
 
 	public function IsValid()
 	{
-		$isValid = !empty($this->name);
+		$isValid = !empty($this->email) && !empty($this->resourceNames) && !empty($this->begin) && !empty($this->end);
 		if (!$isValid)
 		{
-			Log::Debug('Resource import row is not valid. Missing name');
+			Log::Debug('Reservation import row is not valid. Missing email, resource or dates');
 		}
 		return $isValid;
 	}
@@ -90,26 +74,17 @@ class ResourceImportCsvRow
 	 */
 	public static function GetHeaders($values, $attributes)
 	{
-		if (!in_array('name', $values) && !in_array('name', $values))
+		if (!in_array('email', $values) || !in_array('resource names', $values) || !in_array('begin', $values) || !in_array('end', $values))
 		{
 			return false;
 		}
 
-		$indexes['name'] = self::indexOrFalse('name', $values);
-		$indexes['status'] = self::indexOrFalse('status', $values);
-		$indexes['schedule'] = self::indexOrFalse('schedule', $values);
-		$indexes['resourceType'] = self::indexOrFalse('resource type', $values);
-		$indexes['sortOrder'] = self::indexOrFalse('sort order', $values);
-		$indexes['location'] = self::indexOrFalse('location', $values);
-		$indexes['contact'] = self::indexOrFalse('contact', $values);
+		$indexes['email'] = self::indexOrFalse('email', $values);
+		$indexes['resourceNames'] = self::indexOrFalse('resource names', $values);
+		$indexes['title'] = self::indexOrFalse('title', $values);
 		$indexes['description'] = self::indexOrFalse('description', $values);
-		$indexes['notes'] = self::indexOrFalse('notes', $values);
-		$indexes['resourceAdministrator'] = self::indexOrFalse('resource administrator', $values);
-		$indexes['color'] = self::indexOrFalse('color', $values);
-		$indexes['resourceGroups'] = self::indexOrFalse('resource groups', $values);
-		$indexes['autoAssign'] = self::indexOrFalse('auto assign permissions', $values);
-		$indexes['approvalRequired'] = self::indexOrFalse('approval required', $values);
-		$indexes['capacity'] = self::indexOrFalse('capacity', $values);
+		$indexes['begin'] = self::indexOrFalse('begin', $values);
+		$indexes['end'] = self::indexOrFalse('end', $values);
 
 		foreach ($attributes as $label => $attribute)
 		{
@@ -144,7 +119,7 @@ class ResourceImportCsvRow
 	}
 }
 
-class ResourceImportCsv
+class ReservationImportCsv
 {
 	/**
 	 * @var UploadedFile
@@ -172,7 +147,7 @@ class ResourceImportCsv
 	}
 
 	/**
-	 * @return ResourceImportCsvRow[]
+	 * @return ReservationImportCsvRow[]
 	 */
 	public function GetRows()
 	{
@@ -185,17 +160,17 @@ class ResourceImportCsv
 
 		if (count($csvRows) == 0)
 		{
-			Log::Debug('No rows in resource import file');
+			Log::Debug('No rows in reservation import file');
 			return $rows;
 		}
 
-		Log::Debug('%s rows in resource import file', count($csvRows));
+		Log::Debug('%s rows in reservation import file', count($csvRows));
 
-		$headers = ResourceImportCsvRow::GetHeaders(str_getcsv($csvRows[0]), $this->attributes);
+		$headers = ReservationImportCsvRow::GetHeaders(str_getcsv($csvRows[0]), $this->attributes);
 
 		if (!$headers)
 		{
-			Log::Debug('No headers in resource import file');
+			Log::Debug('No headers in reservation import file');
 			return $rows;
 		}
 
@@ -203,7 +178,7 @@ class ResourceImportCsv
 		{
 			$values = str_getcsv($csvRows[$i]);
 
-			$row = new ResourceImportCsvRow($values, $headers, $this->attributes);
+			$row = new ReservationImportCsvRow($values, $headers, $this->attributes);
 
 			if ($row->IsValid())
 			{
@@ -211,7 +186,7 @@ class ResourceImportCsv
 			}
 			else
 			{
-				Log::Error('Skipped import of resource row %s. Values %s', $i, print_r($values, true));
+				Log::Error('Skipped import of reservation row %s. Values %s', $i, print_r($values, true));
 				$this->skippedRowNumbers[] = $i;
 			}
 		}

@@ -20,7 +20,29 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 {include file='globalheader.tpl' Qtip=true InlineEdit=true}
 
 <div id="page-manage-reservations" class="admin-page">
-	<h1>{translate key=ManageReservations}</h1>
+	<div>
+		<div class="dropdown admin-header-more pull-right">
+			<button class="btn btn-default" type="button" id="moreReservationActions" data-toggle="dropdown">
+				<span class="glyphicon glyphicon-option-horizontal"></span>
+				<span class="caret"></span>
+			</button>
+			<ul class="dropdown-menu" role="menu" aria-labelledby="moreReservationActions">
+				{if $CanViewAdmin}
+				<li role="presentation">
+					<a role="menuitem" href="#" id="import-reservations" class="add-link">{translate key=Import}
+						<span class="glyphicon glyphicon-import"></span>
+					</a>
+				</li>
+				{/if}
+				<li role="presentation">
+					<a role="menuitem" href="{$CsvExportUrl}" download="{$CsvExportUrl}" class="add-link" target="_blank">{translate key=Export}
+						<span class="glyphicon glyphicon-export"></span>
+					</a>
+				</li>
+			</ul>
+		</div>
+		<h1>{translate key=ManageReservations}</h1>
+	</div>
 
 	<div class="panel panel-default filterTable" id="filter-reservations-panel">
 		<div class="panel-heading"><span class="glyphicon glyphicon-filter"></span> {translate key="Filter"} {showhide_icon}</div>
@@ -87,7 +109,6 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		</div>
 	</div>
 
-
 	<table class="table" id="reservationTable">
 		<thead>
 		<tr>
@@ -101,9 +122,9 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			<th>{translate key='Duration'}</th>
 			<th>{translate key='ReferenceNumber'}</th>
 			<th class="action">{translate key='Delete'}</th>
-            {if !$IsDesktop}
-                <th class="action">{translate key='Edit'}</th>
-            {/if}
+			{if !$IsDesktop}
+				<th class="action">{translate key='Edit'}</th>
+			{/if}
 			<th class="action">{translate key='Approve'}</th>
 		</tr>
 		</thead>
@@ -138,14 +159,14 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 				<td class="duration">{$reservation->GetDuration()->__toString()}</td>
 				<td class="referenceNumber">{$reservation->ReferenceNumber}</td>
 				<td class="action">
-                    <a href="#" class="update delete"><span class="fa fa-trash icon remove fa-1x"></span></a>
-                </td>
-                {if !$IsDesktop}
-                    <td class="action">
-                        <a href="#" class="update edit"><span class="fa fa-pencil icon fa-1x"></span></a>
-                    </td>
-                {/if}
-                <td class="action">
+					<a href="#" class="update delete"><span class="fa fa-trash icon remove fa-1x"></span></a>
+				</td>
+				{if !$IsDesktop}
+					<td class="action">
+						<a href="#" class="update edit"><span class="fa fa-pencil icon fa-1x"></span></a>
+					</td>
+				{/if}
+				<td class="action">
 					{if $reservation->RequiresApproval}
 						<a href="#" class="update approve"><span class="fa fa-check icon add"></span></a>
 					{else}
@@ -190,10 +211,6 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		</tbody>
 	</table>
 
-	<div id="csvExport">
-		<a href="{$CsvExportUrl}" download="{$CsvExportUrl}" class="btn btn-default btn-sm">{translate key=ExportToCSV}
-			<span class="glyphicon glyphicon-export"></span></a>
-	</div>
 	{pagination pageInfo=$PageInfo}
 
 	<div class="modal fade" id="deleteInstanceDialog" tabindex="-1" role="dialog"
@@ -255,7 +272,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 						<button type="button" class="btn btn-danger saveSeries btnUpdateFutureInstances" id="btnUpdateFutureInstances">
 							{translate key='FutureInstances'}
 						</button>
-                        {indicator}
+						{indicator}
 					</div>
 				</div>
 			</form>
@@ -282,6 +299,52 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		</div>
 	</div>
 
+	<div id="importReservationsDialog" class="modal" tabindex="-1" role="dialog" aria-labelledby="importReservationsModalLabel"
+		 aria-hidden="true">
+		<form id="importReservationsForm" class="form" role="form" method="post" enctype="multipart/form-data"
+			  ajaxAction="{ManageReservationsActions::Import}">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+						<h4 class="modal-title" id="importReservationsModalLabel">{translate key=Import}</h4>
+					</div>
+					<div class="modal-body">
+						<div id="importUserResults" class="validationSummary alert alert-danger no-show">
+							<ul>
+								{async_validator id="fileExtensionValidator" key=""}
+							</ul>
+						</div>
+						<div id="importErrors" class="alert alert-danger no-show"></div>
+						<div id="importResult" class="alert alert-success no-show">
+							<span>{translate key=RowsImported}</span>
+
+							<div id="importCount" class="inline bold">0</div>
+							<span>{translate key=RowsSkipped}</span>
+
+							<div id="importSkipped" class="inline bold">0</div>
+							<a class="" href="{$smarty.server.SCRIPT_NAME}">{translate key=Done} <span
+										class="fa fa-refresh"></span></a>
+						</div>
+						<div class="margin-bottom-25">
+							<input type="file" {formname key=RESERVATION_IMPORT_FILE} />
+						</div>
+						<div id="importInstructions" class="alert alert-info">
+							<div class="note">{translate key=ReservationImportInstructions}</div>
+							<a href="{$smarty.server.SCRIPT_NAME}?dr=template" download="{$smarty.server.SCRIPT_NAME}?dr=template"
+							   target="_blank">{translate key=GetTemplate} <span class="fa fa-download"></span></a>
+						</div>
+					</div>
+					<div class="modal-footer">
+						{cancel_button}
+						{add_button key=Import}
+						{indicator}
+					</div>
+				</div>
+			</div>
+		</form>
+	</div>
+
 	{jsfile src="ajax-helpers.js"}
 	{jsfile src="admin/reservations.js"}
 
@@ -304,10 +367,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 		function setUpPopovers() {
 			$('[rel="popover"]').popover({
-				container: 'body',
-				html: true,
-				placement: 'top',
-				content: function () {
+				container: 'body', html: true, placement: 'top', content: function () {
 					var popoverId = $(this).data('popover-content');
 					return $(popoverId).html();
 				}
@@ -336,8 +396,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			var updateUrl = '{$smarty.server.SCRIPT_NAME}?action=';
 
 			$('.inlineAttribute').editable({
-				url: updateUrl + '{ManageReservationsActions::UpdateAttribute}',
-				emptytext: '-'
+				url: updateUrl + '{ManageReservationsActions::UpdateAttribute}', emptytext: '-'
 			});
 		}
 
@@ -376,16 +435,14 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 			{foreach from=$reservations item=reservation}
 
-			reservationManagement.addReservation(
-					{
-						id: '{$reservation->ReservationId}',
-						referenceNumber: '{$reservation->ReferenceNumber}',
-						isRecurring: '{$reservation->IsRecurring}',
-						resourceStatusId: '{$reservation->ResourceStatusId}',
-						resourceStatusReasonId: '{$reservation->ResourceStatusReasonId}',
-						resourceId: '{$reservation->ResourceId}'
-					}
-			);
+			reservationManagement.addReservation({
+				id: '{$reservation->ReservationId}',
+				referenceNumber: '{$reservation->ReferenceNumber}',
+				isRecurring: '{$reservation->IsRecurring}',
+				resourceStatusId: '{$reservation->ResourceStatusId}',
+				resourceStatusReasonId: '{$reservation->ResourceStatusReasonId}',
+				resourceId: '{$reservation->ResourceId}'
+			});
 			{/foreach}
 
 			{foreach from=$StatusReasons item=reason}

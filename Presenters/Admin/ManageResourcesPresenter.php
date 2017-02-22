@@ -843,6 +843,33 @@ class ManageResourcesPresenter extends ActionPresenter
 	public function ImportResource()
 	{
 		ini_set('max_execution_time', 600);
+
+		$attributes = $this->attributeService->GetByCategory(CustomAttributeCategory::RESOURCE);
+		/** @var CustomAttribute[] $attributesIndexed */
+		$attributesIndexed = array();
+		/** @var CustomAttribute $attribute */
+		foreach ($attributes as $attribute)
+		{
+			if (!$attribute->UniquePerEntity())
+			{
+				$attributesIndexed[strtolower($attribute->Label())] = $attribute;
+			}
+		}
+
+		$importFile = $this->page->GetImportFile();
+		$csv = new ResourceImportCsv($importFile, $attributesIndexed);
+
+		$importCount = 0;
+		$messages = array();
+
+		$rows = $csv->GetRows();
+
+		if (count($rows) == 0)
+		{
+			$this->page->SetImportResult(new CsvImportResult(0, array(), 'Empty file or missing header row'));
+			return;
+		}
+
 		$groups = $this->groupRepository->GetGroupsByRole(RoleLevel::RESOURCE_ADMIN);
 		$groupsIndexed = array();
 		foreach ($groups as $group)
@@ -855,17 +882,6 @@ class ManageResourcesPresenter extends ActionPresenter
 		foreach ($resourceGroups->GetGroupList() as $group)
 		{
 			$resourceGroupsIndexed[strtolower($group->name)] = $group->id;
-		}
-
-		$attributes = $this->attributeService->GetByCategory(CustomAttributeCategory::RESOURCE);
-		$attributesIndexed = array();
-		/** @var CustomAttribute $attribute */
-		foreach ($attributes as $attribute)
-		{
-			if (!$attribute->UniquePerEntity())
-			{
-				$attributesIndexed[strtolower($attribute->Label())] = $attribute->Id();
-			}
 		}
 
 		$defaultScheduleId = 0;
@@ -889,20 +905,6 @@ class ManageResourcesPresenter extends ActionPresenter
 
 		$resourceStatusesIndexed = array('available' => ResourceStatus::AVAILABLE, 'unavailable' => ResourceStatus::UNAVAILABLE, 'hidden' => ResourceStatus::HIDDEN);
 
-		$importFile = $this->page->GetImportFile();
-		$csv = new ResourceImportCsv($importFile, $attributesIndexed);
-
-		$importCount = 0;
-		$messages = array();
-
-		$rows = $csv->GetRows();
-
-		if (count($rows) == 0)
-		{
-			$this->page->SetImportResult(new CsvImportResult(0, array(), 'Empty file or missing header row'));
-			return;
-		}
-
 		for ($i = 0; $i < count($rows); $i++)
 		{
 
@@ -910,12 +912,17 @@ class ManageResourcesPresenter extends ActionPresenter
 
 			try
 			{
-				$scheduleId = (empty($row->schedule) || !array_key_exists($row->schedule, $schedulesIndexed)) ? $defaultScheduleId : $schedulesIndexed[$row->schedule];
-				$resourceTypeId = (empty($row->resourceType) || !array_key_exists($row->resourceType, $resourceTypesIndexed)) ? null : $resourceTypesIndexed[$row->resourceType];
-				$adminGroupId = (empty($row->resourceAdministrator) || !array_key_exists($row->resourceAdministrator, $groupsIndexed)) ? null : $groupsIndexed[$row->resourceAdministrator];
-				$statusId = (empty($row->status) || !array_key_exists($row->status, $resourceStatusesIndexed)) ? ResourceStatus::AVAILABLE : $resourceStatusesIndexed[$row->status];
+				$scheduleId = (empty($row->schedule) || !array_key_exists($row->schedule,
+																		  $schedulesIndexed)) ? $defaultScheduleId : $schedulesIndexed[$row->schedule];
+				$resourceTypeId = (empty($row->resourceType) || !array_key_exists($row->resourceType,
+																				  $resourceTypesIndexed)) ? null : $resourceTypesIndexed[$row->resourceType];
+				$adminGroupId = (empty($row->resourceAdministrator) || !array_key_exists($row->resourceAdministrator,
+																						 $groupsIndexed)) ? null : $groupsIndexed[$row->resourceAdministrator];
+				$statusId = (empty($row->status) || !array_key_exists($row->status,
+																	  $resourceStatusesIndexed)) ? ResourceStatus::AVAILABLE : $resourceStatusesIndexed[$row->status];
 
-				$resource = BookableResource::CreateNew($row->name, $scheduleId, ($row->autoAssign == 'true' || $row->autoAssign == '1'), intval($row->sortOrder));
+				$resource = BookableResource::CreateNew($row->name, $scheduleId, ($row->autoAssign == 'true' || $row->autoAssign == '1'),
+														intval($row->sortOrder));
 
 				$this->resourceRepository->Add($resource);
 
@@ -931,10 +938,14 @@ class ManageResourcesPresenter extends ActionPresenter
 
 				foreach ($row->attributes as $label => $value)
 				{
+					if (empty($value))
+					{
+						continue;
+					}
 					if (array_key_exists($label, $attributesIndexed))
 					{
-						$id = $attributesIndexed[$label];
-						$resource->ChangeAttribute(new AttributeValue($id, $value));
+						$attribute = $attributesIndexed[$label];
+						$resource->ChangeAttribute(new AttributeValue($attribute->Id(), $value));
 					}
 				}
 
@@ -953,6 +964,7 @@ class ManageResourcesPresenter extends ActionPresenter
 				$importCount++;
 			} catch (Exception $ex)
 			{
+				$messages[] = 'Invalid data in row ' . $i;
 				Log::Error('Error importing resources. %s', $ex);
 			}
 		}

@@ -25,11 +25,11 @@ class FakeUser extends User
     public $_ResourceAdminResourceIds = array();
     public $_WantsEmail;
 
-    public function __construct($userId = null)
+    public function __construct($userId = null, $email = 'test@test.com')
 	{
 		$this->timezone = 'America/Chicago';
 		$this->language = 'en_us';
-		$this->emailAddress = 'test@test.com';
+		$this->emailAddress = $email;
 		$this->id = $userId;
 		$this->statusId = AccountStatus::ACTIVE;
 		$this->homepageId = Pages::CALENDAR;

@@ -36,7 +36,10 @@ function ReservationManagement(opts, approval) {
 
 		referenceNumberList: $(':hidden.referenceNumber'),
 		inlineUpdateErrors: $('#inlineUpdateErrors'),
-		inlineUpdateErrorDialog: $('#inlineUpdateErrorDialog')
+		inlineUpdateErrorDialog: $('#inlineUpdateErrorDialog'),
+
+		importReservationsForm: $('#importReservationsForm'),
+		importReservationsDialog: $('#importReservationsDialog')
 	};
 
 	var reservations = {};
@@ -147,6 +150,14 @@ function ReservationManagement(opts, approval) {
 			filterReservations();
 		});
 
+		$('#import-reservations').click(function (e) {
+			this.referenceNumber = '';
+			e.preventDefault();
+			$('#importErrors').empty().addClass('no-show');
+			$('#importResults').addClass('no-show');
+			elements.importReservationsDialog.modal('show');
+		});
+
 		var deleteReservationResponseHandler = function (response, form) {
 			form.find('.delResResponse').empty();
 			if (!response.deleted)
@@ -159,6 +170,25 @@ function ReservationManagement(opts, approval) {
 			}
 		};
 
+		var importHandler = function (responseText, form) {
+			if (!responseText)
+			{
+				return;
+			}
+
+			$('#importCount').text(responseText.importCount);
+			$('#importSkipped').text(responseText.skippedRows.length > 0 ? responseText.skippedRows.join(',') : '0');
+			$('#importResult').removeClass('no-show');
+
+			var errors = $('#importErrors');
+			errors.empty();
+			if (responseText.messages && responseText.messages.length > 0)
+			{
+				var messages = responseText.messages.join('</li><li>');
+				errors.html('<div>' + messages + '</div>').removeClass('no-show');
+			}
+		};
+
 		ConfigureAsyncForm(elements.deleteInstanceForm, getDeleteUrl, null, deleteReservationResponseHandler, {dataType: 'json'});
 		ConfigureAsyncForm(elements.deleteSeriesForm, getDeleteUrl, null, deleteReservationResponseHandler, {dataType: 'json'});
 		ConfigureAsyncForm(elements.statusForm, getUpdateStatusUrl, function () {
@@ -166,6 +196,9 @@ function ReservationManagement(opts, approval) {
 			// todo inline update
 			window.location.reload();
 		});
+
+		ConfigureAsyncForm(elements.importReservationsForm, defaultSubmitCallback(elements.importReservationsForm), importHandler);
+
 	};
 
 	ReservationManagement.prototype.addReservation = function (reservation) {

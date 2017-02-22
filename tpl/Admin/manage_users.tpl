@@ -22,30 +22,30 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 	<div>
 		<div class="dropdown admin-header-more pull-right">
-			<button class="btn btn-default" type="button" id="moreResourceActions" data-toggle="dropdown">
+			<button class="btn btn-default" type="button" id="moreUserActions" data-toggle="dropdown">
 				<span class="glyphicon glyphicon-option-horizontal"></span>
 				<span class="caret"></span>
 			</button>
-			<ul class="dropdown-menu" role="menu" aria-labelledby="moreResourceActions">
+			<ul class="dropdown-menu" role="menu" aria-labelledby="moreUserActions">
 				<li role="presentation">
 					<a role="menuitem" href="#" id="invite-users" class="add-link add-user">{translate key="InviteUsers"}
-						<span class="fa fa-send icon"></span>
+						<span class="fa fa-send"></span>
 					</a>
 				</li>
 				<li role="presentation">
 					<a role="menuitem" href="#" id="import-users" class="add-link add-user">{translate key="Import"}
-						<span class="glyphicon glyphicon-import icon"></span>
+						<span class="glyphicon glyphicon-import"></span>
 					</a>
 				</li>
 				<li role="presentation">
-					<a role="menuitem" href="{$ExportUrl}" id="export-users" class="add-link add-user" target="_blank">{translate key="Export"}
-						<span class="glyphicon glyphicon-export icon"></span>
+					<a role="menuitem" href="{$ExportUrl}" download="{$ExportUrl}" id="export-users" class="add-link add-user" target="_blank">{translate key="Export"}
+						<span class="glyphicon glyphicon-export"></span>
 					</a>
 				</li>
 				<li role="presentation" class="divider"></li>
 				<li role="presentation">
 					<a role="menuitem" href="#" id="add-user" class="add-link add-user">{translate key="AddUser"}
-						<span class="fa fa-plus-circle icon add"></span>
+						<span class="fa fa-plus-circle add icon"></span>
 					</a>
 				</li>
 
@@ -332,7 +332,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 						</div>
 						<div id="importInstructions" class="alert alert-info">
 							<div class="note">{translate key=UserImportInstructions}</div>
-							<a href="{$smarty.server.SCRIPT_NAME}?dr=template"
+							<a href="{$smarty.server.SCRIPT_NAME}?dr=template" download="{$smarty.server.SCRIPT_NAME}?dr=template"
 							   target="_blank">{translate key=GetTemplate} <span class="fa fa-download"></span></a>
 						</div>
 					</div>

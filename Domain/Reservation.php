@@ -225,7 +225,7 @@ class Reservation
 
 		if (empty($referenceNumber))
 		{
-			$this->SetReferenceNumber(str_replace('.', '', uniqid('', true)));
+			$this->SetReferenceNumber(ReferenceNumberGenerator::Generate());
 		}
 
 		$this->checkinDate = new NullDate();
@@ -725,5 +725,25 @@ class Reservation
 			return empty($this->creditsConsumed) ? 0 : $this->creditsConsumed;
 		}
 		return 0;
+	}
+}
+
+class ReferenceNumberGenerator
+{
+
+	/**
+	 * Just for testing
+	 * @var string
+	 */
+	public static $__referenceNumber = null;
+
+	public static function Generate()
+	{
+		if (self::$__referenceNumber == null)
+		{
+			return str_replace('.', '', uniqid('', true));
+		}
+
+		return self::$__referenceNumber;
 	}
 }

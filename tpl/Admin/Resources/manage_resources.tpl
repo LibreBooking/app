@@ -45,7 +45,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 					</a>
 				</li>
 				<li role="presentation">
-					<a role="menuitem" href="{$ExportUrl}" class="export-resources" id="export-resources" target="_blank">
+					<a role="menuitem" href="{$ExportUrl}" download="{$ExportUrl}" class="export-resources" id="export-resources" target="_blank">
 						{translate key="ExportResources"}
 						<span class="glyphicon glyphicon-export"></span>
 					</a>
@@ -1345,7 +1345,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                         </div>
                         <div id="importInstructions" class="alert alert-info">
                             <div class="note">{translate key=ResourceImportInstructions}</div>
-                            <a href="{$smarty.server.SCRIPT_NAME}?dr=template"
+                            <a href="{$smarty.server.SCRIPT_NAME}?dr=template" download="{$smarty.server.SCRIPT_NAME}?dr=template"
                                target="_blank">{translate key=GetTemplate} <span class="fa fa-download"></span></a>
                         </div>
                     </div>

@@ -255,7 +255,17 @@ interface IManageReservationsPage extends IPageable, IActionPage
 	 */
 	public function GetName();
 
-	public function ShowTemplateCSV();
+	/**
+	 * @param CustomAttribute[] $attributes
+	 */
+	public function ShowTemplateCSV($attributes);
+
+	/**
+	 * @return UploadedFile
+	 */
+	public function GetImportFile();
+
+	public function SetImportResult($importResult);
 }
 
 class ManageReservationsPage extends ActionPage implements IManageReservationsPage
@@ -683,8 +693,19 @@ class ManageReservationsPage extends ActionPage implements IManageReservationsPa
 		return $this->GetForm(FormKeys::VALUE);
 	}
 
-	public function ShowTemplateCSV()
+	public function ShowTemplateCSV($attributes)
 	{
+		$this->Set('Attributes', $attributes);
 		$this->DisplayCsv('Admin/Reservations/import_reservations_template_csv.tpl', 'reservations.csv');
+	}
+
+	public function GetImportFile()
+	{
+		return $this->server->GetFile(FormKeys::RESERVATION_IMPORT_FILE);
+	}
+
+	public function SetImportResult($importResult)
+	{
+		parent::SetJson($importResult);
 	}
 }

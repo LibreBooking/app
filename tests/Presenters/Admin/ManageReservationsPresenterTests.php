@@ -53,7 +53,7 @@ class ManageReservationsPresenterTests extends TestBase
 	private $attributeService;
 
 	/**
-	 * @var IUserPreferenceRepository|PHPUnit_Framework_MockObject_MockObject
+	 * @var IUserRepository|PHPUnit_Framework_MockObject_MockObject
 	 */
 	private $userRepository;
 
@@ -379,6 +379,64 @@ class ManageReservationsPresenterTests extends TestBase
 							  ->will($this->returnValue(array()));
 
 		$this->presenter->UpdateAttribute();
+	}
+
+	public function testImportsReservations()
+	{
+		ReferenceNumberGenerator::$__referenceNumber = 'test';
+		$this->fakeUser->IsAdmin = true;
+
+		$importFile = new FakeUploadedFile();
+		$importFile->Contents = "email,resource names,title,description,begin,end,att1,att2\n" .
+								"u@e.com,\"r1,r2\",title,description,1/2/17 8:30 am,1/2/17 9:30 am,a1value,a2value\n" .
+								"u2@e.com,r2,title2,description2,1/4/17 8:30 pm,1/4/17 22:00,,\n" .
+								"madeupuser,r2,title2,description2,1/4/17 8:30 pm,1/4/17 22:00,,\n" .
+								"u@e.com,makeupresource,title2,description2,1/4/17 8:30 pm,1/4/17 22:00,,\n" .
+								"u@e.com,r2,title2,description2,unparseabledate,1/4/17 22:00,,";
+
+		$attributes = array(new TestCustomAttribute(1,'att1'), new TestCustomAttribute(2,'att2'), new TestCustomAttribute(3,'att3'));
+
+		$resources = array(new FakeBookableResource(1, 'r1'), new FakeBookableResource(2, 'r2'));
+
+		$users = array(new FakeUser(1, 'u@e.com'), new FakeUser(2, 'u2@e.com'));
+
+		$res1 = ReservationSeries::Create(1, $resources[0], 'title', 'description', DateRange::Create('2017-1-2 8:30', '2017-1-2 9:30', $this->fakeUser->Timezone), new RepeatNone(), $this->fakeUser);
+		$res1->AddResource($resources[1]);
+		$res1->AddAttributeValue(new AttributeValue(1, 'a1value'));
+		$res1->AddAttributeValue(new AttributeValue(2, 'a2value'));
+
+		$res2 = ReservationSeries::Create(2, $resources[1], 'title2', 'description2', DateRange::Create('2017-1-4 20:30', '2017-1-4 22:00', $this->fakeUser->Timezone), new RepeatNone(), $this->fakeUser);
+
+		$this->page->expects($this->once())
+					->method('GetImportFile')
+					->will($this->returnValue($importFile));
+		
+		$this->attributeService->expects($this->once())
+					->method('GetByCategory')
+					->with($this->equalTo(CustomAttributeCategory::RESERVATION))
+					->will($this->returnValue($attributes));
+		
+		$this->resourceRepository->expects($this->once())
+					->method('GetResourceList')
+					->will($this->returnValue($resources));
+		
+		$this->userRepository->expects($this->once())
+					->method('GetAll')
+					->will($this->returnValue($users));
+		
+		$this->reservationsService->expects($this->at(0))
+					->method('UnsafeAdd')
+					->with($this->equalTo($res1));
+		
+		$this->reservationsService->expects($this->at(1))
+					->method('UnsafeAdd')
+					->with($this->equalTo($res2));
+		
+		$this->page->expects($this->once())
+					->method('SetImportResult')
+					->with($this->equalTo(new CsvImportResult(2, array(), array('Invalid data in row 3', 'Invalid data in row 4', 'Invalid data in row 5'))));
+
+		$this->presenter->ImportReservations();
 	}
 
 	/**
