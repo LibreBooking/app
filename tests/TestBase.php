@@ -64,6 +64,7 @@ class TestBase extends PHPUnit_Framework_TestCase
 	public function setup()
 	{
 		Date::_SetNow(Date::Now());
+		ReferenceNumberGenerator::$__referenceNumber = null;
 
 		$this->db = new FakeDatabase();
 		$this->fakeServer = new FakeServer();
