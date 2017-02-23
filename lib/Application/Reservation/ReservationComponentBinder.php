@@ -44,7 +44,6 @@ class ReservationDateBinder implements IReservationComponentBinder
 		$startDate = ($requestedStartDate == null) ? $requestedDate : $requestedStartDate->ToTimezone($timezone);
 		$endDate = ($requestedEndDate == null) ? $requestedDate : $requestedEndDate->ToTimezone($timezone);
 
-
         if ($initializer->IsNew())
 		{
 			$resource = $initializer->PrimaryResource();
@@ -72,23 +71,14 @@ class ReservationDateBinder implements IReservationComponentBinder
     /**
      * @param IScheduleLayout $layout
      * @param Date $startDate
-     * @param int $iteration
      * @return SchedulePeriod[]
      */
-    protected function GetStartPeriods($layout, &$startDate, $iteration = 0)
+    protected function GetStartPeriods($layout, &$startDate)
     {
         $startPeriods = $layout->GetLayout($startDate, true);
-        if (count($startPeriods) > 1 && $startPeriods[0]->Begin()->Compare($startPeriods[1]->Begin()) > 0) {
-            $period = array_shift($startPeriods);
-            $startPeriods[] = $period;
-        }
 
-        if (count($startPeriods) == 0 && $iteration < 7)
-        {
-            $startDate = $startDate->AddDays(1);
-            return $this->GetStartPeriods($layout, $startDate, ++$iteration);
-        }
-        return $startPeriods;
+        return $this->GetPeriods($startPeriods, $layout, $startDate);
+
     }
 
 	/**
@@ -104,9 +94,30 @@ class ReservationDateBinder implements IReservationComponentBinder
 		{
 			// no periods on the next day, return midnight to let the reservation end at the top of the hour
 			return array(new SchedulePeriod($endDate->SetTimeString('00:00'), $endDate->SetTimeString('00:00', true)));
-
 		}
-		return $this->GetStartPeriods($layout, $endDate);
+		return $this->GetPeriods($endPeriods, $layout, $endDate);
+	}
+
+	/**
+	 * @param SchedulePeriod[] $startPeriods
+	 * @param IScheduleLayout $layout
+	 * @param Date $startDate
+	 * @param int $iteration
+	 * @return array|SchedulePeriod[]
+	 */
+	private function GetPeriods($startPeriods, $layout, &$startDate, $iteration = 0)
+	{
+		if (count($startPeriods) > 1 && $startPeriods[0]->Begin()->Compare($startPeriods[1]->Begin()) > 0) {
+			$period = array_shift($startPeriods);
+			$startPeriods[] = $period;
+		}
+
+		if (count($startPeriods) == 0 && $iteration < 7)
+		{
+			$startDate = $startDate->AddDays(1);
+			return $this->GetPeriods($layout->GetLayout($startDate, true), $layout, $startDate, ++$iteration);
+		}
+		return $startPeriods;
 	}
 }
 

@@ -383,4 +383,22 @@ class FakeGuestReservationPage implements IGuestReservationPage
     {
         // TODO: Implement GetSortDirection() method.
     }
+
+	/**
+	 * @param int $reminderValue
+	 * @param ReservationReminderInterval $reminderInterval
+	 */
+	public function SetStartReminder($reminderValue, $reminderInterval)
+	{
+		// TODO: Implement SetStartReminder() method.
+	}
+
+	/**
+	 * @param int $reminderValue
+	 * @param ReservationReminderInterval $reminderInterval
+	 */
+	public function SetEndReminder($reminderValue, $reminderInterval)
+	{
+		// TODO: Implement SetEndReminder() method.
+	}
 }

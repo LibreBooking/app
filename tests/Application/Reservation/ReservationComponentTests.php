@@ -293,12 +293,12 @@ class ReservationComponentTests extends TestBase
 
 		$layout->expects($this->at(0))
 			   ->method('GetLayout')
-			   ->with($this->equalTo($startDate))
+			   ->with($this->equalTo($startDate), $this->equalTo(true))
 			   ->will($this->returnValue($startPeriods));
 
 		$layout->expects($this->at(1))
 			   ->method('GetLayout')
-			   ->with($this->equalTo($endDate))
+			   ->with($this->equalTo($endDate), $this->equalTo(true))
 			   ->will($this->returnValue($endPeriods));
 
 		$this->initializer->expects($this->once())
