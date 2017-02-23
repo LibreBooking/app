@@ -190,6 +190,8 @@ class TestHelperExistingReservationSeries extends ExistingReservationSeries
 	public $requiresNewSeries = false;
 	public $_creditsConsumed = 0;
 
+	public $_WasDeleted = false;
+
 	public function __construct()
 	{
 		parent::__construct();
@@ -235,5 +237,11 @@ class TestHelperExistingReservationSeries extends ExistingReservationSeries
 	public function GetCreditsConsumed()
 	{
 		return $this->_creditsConsumed;
+	}
+
+	public function Delete(UserSession $deletedBy)
+	{
+		$this->_WasDeleted = true;
+		parent::Delete($deletedBy);
 	}
 }

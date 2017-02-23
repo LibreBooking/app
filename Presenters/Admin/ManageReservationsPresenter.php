@@ -32,6 +32,7 @@ class ManageReservationsActions
 	const UpdateAttribute = 'updateAttribute';
 	const ChangeStatus = 'changeStatus';
 	const Import = 'Import';
+	const DeleteMultiple = 'DeleteMultiple';
 }
 
 class ManageReservationsPresenter extends ActionPresenter
@@ -86,6 +87,7 @@ class ManageReservationsPresenter extends ActionPresenter
 		$this->AddAction(ManageReservationsActions::UpdateAttribute, 'UpdateAttribute');
 		$this->AddAction(ManageReservationsActions::ChangeStatus, 'UpdateResourceStatus');
 		$this->AddAction(ManageReservationsActions::Import, 'ImportReservations');
+		$this->AddAction(ManageReservationsActions::DeleteMultiple, 'DeleteMultiple');
 	}
 
 	public function PageLoad($userTimezone)
@@ -477,6 +479,14 @@ class ManageReservationsPresenter extends ActionPresenter
 		}
 
 		$this->page->SetImportResult(new CsvImportResult($importCount, $csv->GetSkippedRowNumbers(), $messages));
+	}
+
+	public function DeleteMultiple()
+	{
+		$ids = $this->page->GetDeletedReservationIds();
+		foreach ($ids as $id){
+			$this->manageReservationsService->UnsafeDelete($id, ServiceLocator::GetServer()->GetUserSession());
+		}
 	}
 
 	protected function LoadValidators($action)

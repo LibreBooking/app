@@ -22,7 +22,7 @@ require_once ROOT_DIR . '/Domain/namespace.php';
 
 class TestReservationSeries extends ReservationSeries
 {
-    private $_scheduleId;
+	private $_scheduleId;
 
 	public function __construct()
 	{

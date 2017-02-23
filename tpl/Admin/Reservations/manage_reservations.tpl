@@ -28,11 +28,11 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			</button>
 			<ul class="dropdown-menu" role="menu" aria-labelledby="moreReservationActions">
 				{if $CanViewAdmin}
-				<li role="presentation">
-					<a role="menuitem" href="#" id="import-reservations" class="add-link">{translate key=Import}
-						<span class="glyphicon glyphicon-import"></span>
-					</a>
-				</li>
+					<li role="presentation">
+						<a role="menuitem" href="#" id="import-reservations" class="add-link">{translate key=Import}
+							<span class="glyphicon glyphicon-import"></span>
+						</a>
+					</li>
 				{/if}
 				<li role="presentation">
 					<a role="menuitem" href="{$CsvExportUrl}" download="{$CsvExportUrl}" class="add-link" target="_blank">{translate key=Export}
@@ -110,6 +110,12 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 	</div>
 
 	<table class="table" id="reservationTable">
+		{if $IsDesktop}
+			{assign var=colCount value=11}
+		{else}
+			{assign var=colCount value=12}
+		{/if}
+
 		<thead>
 		<tr>
 			<th class="id hidden">&nbsp;</th>
@@ -121,11 +127,17 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			<th>{sort_column key=EndDate field=ColumnNames::RESERVATION_END}</th>
 			<th>{translate key='Duration'}</th>
 			<th>{translate key='ReferenceNumber'}</th>
-			<th class="action">{translate key='Delete'}</th>
 			{if !$IsDesktop}
 				<th class="action">{translate key='Edit'}</th>
 			{/if}
 			<th class="action">{translate key='Approve'}</th>
+			<th class="action">{translate key='Delete'}</th>
+			<th class="action">
+				<div class="checkbox checkbox-single">
+					<input type="checkbox" id="delete-all" aria-label="{translate key=All}"/>
+					<label for="delete-all"></label>
+				</div>
+			</th>
 		</tr>
 		</thead>
 		<tbody>
@@ -134,8 +146,9 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			{if $reservation->RequiresApproval}
 				{assign var=rowCss value='pending'}
 			{/if}
+			{assign var=reservationId value=$reservation->ReservationId}
 			<tr class="{$rowCss} {if $IsDesktop}editable{/if}" data-seriesId="{$reservation->SeriesId}" data-refnum="{$reservation->ReferenceNumber}">
-				<td class="id hidden">{$reservation->ReservationId}</td>
+				<td class="id hidden">{$reservationId}</td>
 				<td class="user">{fullname first=$reservation->FirstName last=$reservation->LastName ignorePrivacy=true}</td>
 				<td class="resource">{$reservation->ResourceName}
 					{if $reservation->ResourceStatusId == ResourceStatus::AVAILABLE}
@@ -158,9 +171,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 				<td class="date">{formatdate date=$reservation->EndDate timezone=$Timezone key=short_reservation_date}</td>
 				<td class="duration">{$reservation->GetDuration()->__toString()}</td>
 				<td class="referenceNumber">{$reservation->ReferenceNumber}</td>
-				<td class="action">
-					<a href="#" class="update delete"><span class="fa fa-trash icon remove fa-1x"></span></a>
-				</td>
+
 				{if !$IsDesktop}
 					<td class="action">
 						<a href="#" class="update edit"><span class="fa fa-pencil icon fa-1x"></span></a>
@@ -173,9 +184,20 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 						-
 					{/if}
 				</td>
+				<td class="action">
+					<a href="#" class="update delete"><span class="fa fa-trash icon remove fa-1x"></span></a>
+				</td>
+				<td class="action no-edit">
+					<div class="checkbox checkbox-single">
+						<input {formname key=RESERVATION_ID multi=true}" class="delete-multiple" type="checkbox" id="delete{$reservationId}"
+						value="{$reservationId}"
+						aria-label="{translate key=Delete}"/>
+						<label for="delete{$reservationId}"></label>
+					</div>
+				</td>
 			</tr>
 			<tr class="{$rowCss}" data-seriesId="{$reservation->SeriesId}" data-refnum="{$reservation->ReferenceNumber}">
-				<td colspan="11">
+				<td colspan="{$colCount}">
 					<div class="reservation-list-dates">
 						<div>
 							<label>{translate key='Created'}</label> {formatdate date=$reservation->CreatedDate timezone=$Timezone key=short_datetime}
@@ -209,6 +231,12 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			</tr>
 		{/foreach}
 		</tbody>
+		<tfoot>
+		<tr>
+			<td colspan="{$colCount-1}"></td>
+			<td class="action"><a href="#" id="delete-selected" class="no-show">{translate key=Delete}</a></td>
+		</tr>
+		</tfoot>
 	</table>
 
 	{pagination pageInfo=$PageInfo}
@@ -277,6 +305,34 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 				</div>
 			</form>
 		</div>
+	</div>
+
+	<div id="deleteMultipleDialog" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="deleteMultipleModalLabel"
+		 aria-hidden="true">
+		<form id="deleteMultipleForm" method="post" ajaxAction="{ManageReservationsActions::DeleteMultiple}">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+						<h4 class="modal-title" id="deleteMultipleModalLabel">{translate key=Delete} (<span id="deleteMultipleCount"></span>)</h4>
+					</div>
+					<div class="modal-body">
+						<div class="alert alert-warning">
+							<div>{translate key=DeleteWarning}</div>
+
+							<div>{translate key=DeleteMultipleReservationsWarning}</div>
+						</div>
+
+					</div>
+					<div class="modal-footer">
+						{cancel_button}
+						{delete_button}
+						{indicator}
+					</div>
+					<div id="deleteMultiplePlaceHolder" class="no-show"></div>
+				</div>
+			</div>
+		</form>
 	</div>
 
 	<div id="inlineUpdateErrorDialog" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="inlineErrorLabel"

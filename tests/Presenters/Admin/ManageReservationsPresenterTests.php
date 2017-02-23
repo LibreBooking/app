@@ -439,6 +439,25 @@ class ManageReservationsPresenterTests extends TestBase
 		$this->presenter->ImportReservations();
 	}
 
+	public function testDeletesMultiple()
+	{
+		$ids = array(1,2);
+
+		$this->page->expects($this->once())
+					->method('GetDeletedReservationIds')
+					->will($this->returnValue($ids));
+		
+		$this->reservationsService->expects($this->at(0))
+					->method('UnsafeDelete')
+					->with($this->equalTo(1), $this->equalTo($this->fakeUser));
+
+		$this->reservationsService->expects($this->at(1))
+					->method('UnsafeDelete')
+					->with($this->equalTo(2), $this->equalTo($this->fakeUser));
+
+		$this->presenter->DeleteMultiple();
+	}
+
 	/**
 	 * @param Date $startDate
 	 * @param Date $endDate

@@ -175,7 +175,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 				</td>
 				<td class="action">
 					<div class="checkbox checkbox-single">
-						<input {formname key=USER_ID multi=true}" class="delete-multiple" type="checkbox" id="delete{$id}" value="{$id}" aria-label="{translate key=Delete}"/>
+						<input {formname key=USER_ID multi=true}" class="delete-multiple" type="checkbox" id="delete{$id}" value="{$id}"
+						aria-label="{translate key=Delete}"/>
 						<label for="delete{$id}"></label>
 					</div>
 				</td>
@@ -586,32 +587,32 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 	</div>
 
 	<div id="deleteMultipleDialog" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="deleteMultipleModalLabel"
-			 aria-hidden="true">
-			<form id="deleteMultipleUserForm" method="post" ajaxAction="{ManageUsersActions::DeleteMultipleUsers}">
-				<div class="modal-dialog">
-					<div class="modal-content">
-						<div class="modal-header">
-							<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-							<h4 class="modal-title" id="deleteMultipleModalLabel">{translate key=Delete} (<span id="deleteUserCount"></span>)</h4>
-						</div>
-						<div class="modal-body">
-							<div class="alert alert-warning">
-								<div>{translate key=DeleteWarning}</div>
-
-								<div>{translate key=DeleteMultipleUserWarning}</div>
-							</div>
-
-						</div>
-						<div class="modal-footer">
-							{cancel_button}
-							{delete_button}
-							{indicator}
-						</div>
-						<div id="deleteMultiplePlaceHolder" class="no-show"></div>
+		 aria-hidden="true">
+		<form id="deleteMultipleUserForm" method="post" ajaxAction="{ManageUsersActions::DeleteMultipleUsers}">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+						<h4 class="modal-title" id="deleteMultipleModalLabel">{translate key=Delete} (<span id="deleteUserCount"></span>)</h4>
 					</div>
+					<div class="modal-body">
+						<div class="alert alert-warning">
+							<div>{translate key=DeleteWarning}</div>
+
+							<div>{translate key=DeleteMultipleUserWarning}</div>
+						</div>
+
+					</div>
+					<div class="modal-footer">
+						{cancel_button}
+						{delete_button}
+						{indicator}
+					</div>
+					<div id="deleteMultiplePlaceHolder" class="no-show"></div>
 				</div>
-			</form>
-		</div>
+			</div>
+		</form>
+	</div>
 
 	<div id="groupsDialog" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="groupsModalLabel"
 		 aria-hidden="true">

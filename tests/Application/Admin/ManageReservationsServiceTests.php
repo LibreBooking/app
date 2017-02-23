@@ -47,6 +47,11 @@ class ManageReservationsServiceTests extends TestBase
 	 */
 	private $service;
 
+	/**
+	 * @var FakeReservationRepository
+	 */
+	private $reservationRepository;
+
 	public function setup()
 	{
 		parent::setup();
@@ -55,8 +60,9 @@ class ManageReservationsServiceTests extends TestBase
 		$this->reservationAuthorization = $this->getMock('IReservationAuthorization');
 		$this->reservationHandler = $this->getMock('IReservationHandler');
 		$this->persistenceService = $this->getMock('IUpdateReservationPersistenceService');
+		$this->reservationRepository = new FakeReservationRepository();
 
-		$this->service = new ManageReservationsService($this->reservationViewRepository, $this->reservationAuthorization, $this->reservationHandler, $this->persistenceService);
+		$this->service = new ManageReservationsService($this->reservationViewRepository, $this->reservationAuthorization, $this->reservationHandler, $this->persistenceService, $this->reservationRepository);
 	}
 
 	public function testLoadsFilteredResultsAndChecksAuthorizationAgainstPendingReservations()
@@ -122,5 +128,17 @@ class ManageReservationsServiceTests extends TestBase
 					->with($this->equalTo($reservation), $this->equalTo($resultCollector));
 
 		$result = $this->service->UpdateAttribute($referenceNumber, $id, $value, $user);
+	}
+	
+	public function testUnsafeDeleteDeletesInstance()
+	{
+		$id = 123;
+		$series = new TestHelperExistingReservationSeries();
+		$this->reservationRepository->_Series = $series;
+
+		$this->service->UnsafeDelete($id, $this->fakeUser);
+
+		$this->assertTrue($series->_WasDeleted);
+		$this->assertEquals($series, $this->reservationRepository->_LastDeleted);
 	}
 }

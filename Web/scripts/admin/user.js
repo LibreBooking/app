@@ -53,7 +53,7 @@ function UserManagement(opts) {
 		deleteMultipleUserForm: $('#deleteMultipleUserForm'),
 		deleteMultipleCheckboxes: $('.delete-multiple'),
 		deleteMultipleSelectAll: $('#delete-all'),
-		deleteUserCount: $('#deleteUserCount'),
+		deleteMultipleCount: $('#deleteMultipleCount'),
 		deleteMultiplePlaceHolder: $('#deleteMultiplePlaceHolder')
 	};
 
@@ -189,16 +189,18 @@ function UserManagement(opts) {
 
 		elements.deleteMultiplePrompt.click(function(e){
 			e.preventDefault();
-			var checkedUsers = elements.userList.find('.delete-multiple:checked');
-			elements.deleteUserCount.text(checkedUsers.length);
+			var checked = elements.userList.find('.delete-multiple:checked');
+			elements.deleteMultipleCount.text(checked.length);
 			elements.deleteMultiplePlaceHolder.empty();
-			elements.deleteMultiplePlaceHolder.append(checkedUsers.clone());
+			elements.deleteMultiplePlaceHolder.append(checked.clone());
 			elements.deleteMultipleDialog.modal('show');
 		});
 
 		elements.deleteMultipleSelectAll.click(function(e) {
 			e.stopPropagation();
-			elements.deleteMultipleCheckboxes.prop('checked', elements.deleteMultipleSelectAll.is(":checked"));
+			var isChecked = elements.deleteMultipleSelectAll.is(":checked");
+			elements.deleteMultipleCheckboxes.prop('checked', isChecked);
+			elements.deleteMultiplePrompt.toggleClass('no-show', !isChecked);
 		});
 
 		elements.deleteMultipleCheckboxes.click(function(e){

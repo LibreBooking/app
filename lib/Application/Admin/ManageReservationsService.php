@@ -55,6 +55,13 @@ interface IManageReservationsService
 	 * @param ReservationSeries $series
 	 */
 	public function UnsafeAdd(ReservationSeries $series);
+
+	/**
+	 * Deletes a reservation instance without any validation or notification
+	 * @param int $reservationId
+	 * @param UserSession $userSession
+	 */
+	public function UnsafeDelete($reservationId, $userSession);
 }
 
 class ManageReservationsService implements IManageReservationsService
@@ -138,6 +145,15 @@ class ManageReservationsService implements IManageReservationsService
 	public function UnsafeAdd(ReservationSeries $series)
 	{
 		$this->reservationRepository->Add($series);
+	}
+
+	public function UnsafeDelete($reservationId, $userSession)
+	{
+		$existingSeries = $this->reservationRepository->LoadById($reservationId);
+		$existingSeries->ApplyChangesTo(SeriesUpdateScope::ThisInstance);
+
+		$existingSeries->Delete($userSession);
+		$this->reservationRepository->Delete($existingSeries);
 	}
 }
 

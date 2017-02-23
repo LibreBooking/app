@@ -23,8 +23,16 @@ require_once(ROOT_DIR . 'Domain/Access/namespace.php');
 class FakeReservationRepository implements IReservationRepository
 {
 	public $_Reservations = array();
-    public $_LastAddedReservation;
-    public $_FirstAddedReservation;
+	public $_LastAddedReservation;
+	public $_FirstAddedReservation;
+	/**
+	 * @var ExistingReservationSeries
+	 */
+	public $_Series;
+	/**
+	 * @var ExistingReservationSeries
+	 */
+	public $_LastDeleted;
 
 	public function __construct()
 	{
@@ -62,8 +70,8 @@ class FakeReservationRepository implements IReservationRepository
 				ColumnNames::CHECKIN_DATE => null,
 				ColumnNames::CHECKOUT_DATE => null,
 				ColumnNames::PREVIOUS_END_DATE => null,
-                ColumnNames::ENABLE_CHECK_IN => null,
-                ColumnNames::AUTO_RELEASE_MINUTES => null,
+				ColumnNames::ENABLE_CHECK_IN => null,
+				ColumnNames::AUTO_RELEASE_MINUTES => null,
 				ColumnNames::CREDIT_COUNT => null,
 		);
 
@@ -146,116 +154,116 @@ class FakeReservationRepository implements IReservationRepository
 		);
 	}
 
-    /**
-     * Insert a new reservation
-     *
-     * @param ReservationSeries $reservation
-     * @return void
-     */
-    public function Add(ReservationSeries $reservation)
-    {
-        if ($this->_FirstAddedReservation == null)
-        {
-            $this->_FirstAddedReservation = $reservation;
-        }
-        $this->_LastAddedReservation = $reservation;
-    }
+	/**
+	 * Insert a new reservation
+	 *
+	 * @param ReservationSeries $reservation
+	 * @return void
+	 */
+	public function Add(ReservationSeries $reservation)
+	{
+		if ($this->_FirstAddedReservation == null)
+		{
+			$this->_FirstAddedReservation = $reservation;
+		}
+		$this->_LastAddedReservation = $reservation;
+	}
 
-    /**
-     * Return an existing reservation series
-     *
-     * @param int $reservationInstanceId
-     * @return ExistingReservationSeries or null if no reservation found
-     */
-    public function LoadById($reservationInstanceId)
-    {
-        // TODO: Implement LoadById() method.
-    }
+	/**
+	 * Return an existing reservation series
+	 *
+	 * @param int $reservationInstanceId
+	 * @return ExistingReservationSeries or null if no reservation found
+	 */
+	public function LoadById($reservationInstanceId)
+	{
+		return $this->_Series;
+	}
 
-    /**
-     * Return an existing reservation series
-     *
-     * @param string $referenceNumber
-     * @return ExistingReservationSeries or null if no reservation found
-     */
-    public function LoadByReferenceNumber($referenceNumber)
-    {
-        // TODO: Implement LoadByReferenceNumber() method.
-    }
+	/**
+	 * Return an existing reservation series
+	 *
+	 * @param string $referenceNumber
+	 * @return ExistingReservationSeries or null if no reservation found
+	 */
+	public function LoadByReferenceNumber($referenceNumber)
+	{
+		// TODO: Implement LoadByReferenceNumber() method.
+	}
 
-    /**
-     * Update an existing reservation
-     *
-     * @param ExistingReservationSeries $existingReservationSeries
-     * @return void
-     */
-    public function Update(ExistingReservationSeries $existingReservationSeries)
-    {
-        // TODO: Implement Update() method.
-    }
+	/**
+	 * Update an existing reservation
+	 *
+	 * @param ExistingReservationSeries $existingReservationSeries
+	 * @return void
+	 */
+	public function Update(ExistingReservationSeries $existingReservationSeries)
+	{
+		// TODO: Implement Update() method.
+	}
 
-    /**
-     * Delete all or part of an existing reservation
-     *
-     * @param ExistingReservationSeries $existingReservationSeries
-     * @return void
-     */
-    public function Delete(ExistingReservationSeries $existingReservationSeries)
-    {
-        // TODO: Implement Delete() method.
-    }
+	/**
+	 * Delete all or part of an existing reservation
+	 *
+	 * @param ExistingReservationSeries $existingReservationSeries
+	 * @return void
+	 */
+	public function Delete(ExistingReservationSeries $existingReservationSeries)
+	{
+		$this->_LastDeleted = $existingReservationSeries;
+	}
 
-    /**
-     * @param $attachmentFileId int
-     * @return ReservationAttachment
-     */
-    public function LoadReservationAttachment($attachmentFileId)
-    {
-        // TODO: Implement LoadReservationAttachment() method.
-    }
+	/**
+	 * @param $attachmentFileId int
+	 * @return ReservationAttachment
+	 */
+	public function LoadReservationAttachment($attachmentFileId)
+	{
+		// TODO: Implement LoadReservationAttachment() method.
+	}
 
-    /**
-     * @param $attachmentFile ReservationAttachment
-     * @return int
-     */
-    public function AddReservationAttachment(ReservationAttachment $attachmentFile)
-    {
-        // TODO: Implement AddReservationAttachment() method.
-    }
+	/**
+	 * @param $attachmentFile ReservationAttachment
+	 * @return int
+	 */
+	public function AddReservationAttachment(ReservationAttachment $attachmentFile)
+	{
+		// TODO: Implement AddReservationAttachment() method.
+	}
 
-    /**
-     * @return ReservationColorRule[]
-     */
-    public function GetReservationColorRules()
-    {
-        // TODO: Implement GetReservationColorRules() method.
-    }
+	/**
+	 * @return ReservationColorRule[]
+	 */
+	public function GetReservationColorRules()
+	{
+		// TODO: Implement GetReservationColorRules() method.
+	}
 
-    /**
-     * @param int $ruleId
-     * @return ReservationColorRule
-     */
-    public function GetReservationColorRule($ruleId)
-    {
-        // TODO: Implement GetReservationColorRule() method.
-    }
+	/**
+	 * @param int $ruleId
+	 * @return ReservationColorRule
+	 */
+	public function GetReservationColorRule($ruleId)
+	{
+		// TODO: Implement GetReservationColorRule() method.
+	}
 
-    /**
-     * @param ReservationColorRule $colorRule
-     * @return int
-     */
-    public function AddReservationColorRule(ReservationColorRule $colorRule)
-    {
-        // TODO: Implement AddReservationColorRule() method.
-    }
+	/**
+	 * @param ReservationColorRule $colorRule
+	 * @return int
+	 */
+	public function AddReservationColorRule(ReservationColorRule $colorRule)
+	{
+		// TODO: Implement AddReservationColorRule() method.
+	}
 
-    /**
-     * @param ReservationColorRule $colorRule
-     */
-    public function DeleteReservationColorRule(ReservationColorRule $colorRule)
-    {
-        // TODO: Implement DeleteReservationColorRule() method.
-    }
+	/**
+	 * @param ReservationColorRule $colorRule
+	 */
+	public function DeleteReservationColorRule(ReservationColorRule $colorRule)
+	{
+		// TODO: Implement DeleteReservationColorRule() method.
+	}
 }
 
 ?>

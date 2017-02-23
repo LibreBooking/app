@@ -266,6 +266,11 @@ interface IManageReservationsPage extends IPageable, IActionPage
 	public function GetImportFile();
 
 	public function SetImportResult($importResult);
+
+	/**
+	 * @return int[]
+	 */
+	public function GetDeletedReservationIds();
 }
 
 class ManageReservationsPage extends ActionPage implements IManageReservationsPage
@@ -707,5 +712,16 @@ class ManageReservationsPage extends ActionPage implements IManageReservationsPa
 	public function SetImportResult($importResult)
 	{
 		parent::SetJson($importResult);
+	}
+
+	public function GetDeletedReservationIds()
+	{
+		$ids = $this->GetForm(FormKeys::RESERVATION_ID);
+		if (!is_array($ids))
+		{
+			return array($ids);
+		}
+
+		return $ids;
 	}
 }

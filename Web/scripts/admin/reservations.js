@@ -39,7 +39,15 @@ function ReservationManagement(opts, approval) {
 		inlineUpdateErrorDialog: $('#inlineUpdateErrorDialog'),
 
 		importReservationsForm: $('#importReservationsForm'),
-		importReservationsDialog: $('#importReservationsDialog')
+		importReservationsDialog: $('#importReservationsDialog'),
+
+		deleteMultiplePrompt: $('#delete-selected'),
+		deleteMultipleDialog: $('#deleteMultipleDialog'),
+		deleteMultipleForm: $('#deleteMultipleForm'),
+		deleteMultipleCheckboxes: $('.delete-multiple'),
+		deleteMultipleSelectAll: $('#delete-all'),
+		deleteMultipleCount: $('#deleteMultipleCount'),
+		deleteMultiplePlaceHolder: $('#deleteMultiplePlaceHolder')
 	};
 
 	var reservations = {};
@@ -86,14 +94,24 @@ function ReservationManagement(opts, approval) {
 			setCurrentReservationInformation(td);
 		});
 
-		elements.reservationTable.delegate('tr.editable', 'click', function () {
+		elements.reservationTable.delegate('tr.editable', 'click', function (e) {
+			if ($(e.target).hasClass('action') || $(e.target).closest('td').hasClass('action'))
+			{
+				e.stopPropagation();
+				return;
+			}
 			$(this).addClass('clicked');
 			viewReservation($(this).attr('data-refnum'));
 		});
 
-        elements.reservationTable.delegate('.edit', 'click', function(){
-            viewReservation($(this).closest('tr').attr('data-refnum'));
-        });
+		elements.reservationTable.delegate('.edit', 'click', function () {
+			if ($(e.target).hasClass('action') || $(e.target).closest('td').hasClass('action'))
+			{
+				e.stopPropagation();
+				return;
+			}
+			viewReservation($(this).closest('tr').attr('data-refnum'));
+		});
 
 		elements.reservationTable.find('tr.editable').each(function () {
 			var seriesId = $(this).attr('data-seriesId');
@@ -108,14 +126,14 @@ function ReservationManagement(opts, approval) {
 		});
 
 		elements.reservationTable.delegate('.delete', 'click', function (e) {
-		    e.preventDefault();
-            e.stopPropagation();
+			e.preventDefault();
+			e.stopPropagation();
 			showDeleteReservation(getActiveReferenceNumber());
 		});
 
 		elements.reservationTable.delegate('.approve', 'click', function (e) {
-            e.preventDefault();
-            e.stopPropagation();
+			e.preventDefault();
+			e.stopPropagation();
 			approveReservation(getActiveReferenceNumber());
 		});
 
@@ -158,6 +176,30 @@ function ReservationManagement(opts, approval) {
 			elements.importReservationsDialog.modal('show');
 		});
 
+		elements.deleteMultiplePrompt.click(function (e) {
+			e.preventDefault();
+			var checked = elements.reservationTable.find('.delete-multiple:checked');
+			elements.deleteMultipleCount.text(checked.length);
+			elements.deleteMultiplePlaceHolder.empty();
+			elements.deleteMultiplePlaceHolder.append(checked.clone());
+			elements.deleteMultipleDialog.modal('show');
+		});
+
+		elements.deleteMultipleSelectAll.click(function (e) {
+			e.stopPropagation();
+			var isChecked = elements.deleteMultipleSelectAll.is(":checked");
+			elements.deleteMultipleCheckboxes.prop('checked', isChecked);
+			elements.deleteMultiplePrompt.toggleClass('no-show', !isChecked);
+		});
+
+		elements.deleteMultipleCheckboxes.click(function (e) {
+			e.stopPropagation();
+			var numberChecked = elements.reservationTable.find('.delete-multiple:checked').length;
+			var allSelected = numberChecked == elements.reservationTable.find('.delete-multiple').length;
+			elements.deleteMultipleSelectAll.prop('checked', allSelected);
+			elements.deleteMultiplePrompt.toggleClass('no-show', numberChecked == 0);
+		});
+
 		var deleteReservationResponseHandler = function (response, form) {
 			form.find('.delResResponse').empty();
 			if (!response.deleted)
@@ -198,6 +240,7 @@ function ReservationManagement(opts, approval) {
 		});
 
 		ConfigureAsyncForm(elements.importReservationsForm, defaultSubmitCallback(elements.importReservationsForm), importHandler);
+		ConfigureAsyncForm(elements.deleteMultipleForm, defaultSubmitCallback(elements.deleteMultipleForm));
 
 	};
 
@@ -209,9 +252,7 @@ function ReservationManagement(opts, approval) {
 		}
 
 		reservations[reservation.referenceNumber].resources[reservation.resourceId] = {
-			id: reservation.resourceId,
-			statusId: reservation.resourceStatusId,
-			descriptionId: reservation.resourceStatusReasonId
+			id: reservation.resourceId, statusId: reservation.resourceStatusId, descriptionId: reservation.resourceStatusReasonId
 		};
 
 	};
@@ -275,8 +316,7 @@ function ReservationManagement(opts, approval) {
 		{
 			$.each(reasons[statusId], function (i, v) {
 				reasonsElement.append($('<option>', {
-					value: v.id,
-					text: v.description
+					value: v.id, text: v.description
 				}));
 			});
 		}
@@ -300,17 +340,7 @@ function ReservationManagement(opts, approval) {
 			attributeString += '&' + $(attribute).attr('name') + '=' + $(attribute).val();
 		});
 
-		var filterQuery =
-				'sd=' + elements.startDate.val() +
-				'&ed=' + elements.endDate.val() +
-				'&sid=' + elements.scheduleId.val() +
-				'&rid=' + elements.resourceId.val() +
-				'&uid=' + elements.userId.val() +
-				'&un=' + elements.userFilter.val() +
-				'&rn=' + elements.referenceNumber.val() +
-				'&rsid=' + elements.statusId.val() +
-				'&rrsid=' + elements.resourceStatusIdFilter.val() +
-				'&rrsrid=' + reasonId;
+		var filterQuery = 'sd=' + elements.startDate.val() + '&ed=' + elements.endDate.val() + '&sid=' + elements.scheduleId.val() + '&rid=' + elements.resourceId.val() + '&uid=' + elements.userId.val() + '&un=' + elements.userFilter.val() + '&rn=' + elements.referenceNumber.val() + '&rsid=' + elements.statusId.val() + '&rrsid=' + elements.resourceStatusIdFilter.val() + '&rrsrid=' + reasonId;
 
 		window.location = document.location.pathname + '?' + encodeURI(filterQuery) + attributeString;
 	}
@@ -320,7 +350,7 @@ function ReservationManagement(opts, approval) {
 	}
 
 	function approveReservation(referenceNumber) {
-		$.blockUI({ message: $('#approveDiv')});
+		$.blockUI({message: $('#approveDiv')});
 		approval.Approve(referenceNumber);
 	}
 }
