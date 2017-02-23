@@ -40,6 +40,7 @@ class ManageUsersActions
     const ImportUsers = 'importUsers';
     const ChangeCredits = 'changeCredits';
     const InviteUsers = 'inviteUsers';
+    const DeleteMultipleUsers = 'deleteMultipleUsers';
 }
 
 interface IManageUsersPresenter
@@ -181,6 +182,7 @@ class ManageUsersPresenter extends ActionPresenter implements IManageUsersPresen
         $this->AddAction(ManageUsersActions::ImportUsers, 'ImportUsers');
         $this->AddAction(ManageUsersActions::ChangeCredits, 'ChangeCredits');
         $this->AddAction(ManageUsersActions::InviteUsers, 'InviteUsers');
+        $this->AddAction(ManageUsersActions::DeleteMultipleUsers, 'DeleteMultipleUsers');
     }
 
     public function PageLoad()
@@ -559,6 +561,16 @@ class ManageUsersPresenter extends ActionPresenter implements IManageUsersPresen
 		foreach ($emails as $email)
 		{
 			ServiceLocator::GetEmailService()->Send(new InviteUserEmail(trim($email), ServiceLocator::GetServer()->GetUserSession()));
+		}
+	}
+
+	public function DeleteMultipleUsers()
+	{
+		$ids = $this->page->GetDeletedUserIds();
+		foreach ($ids as $id)
+		{
+			Log::Debug('Deleting user %s', $id);
+			$this->manageUsersService->DeleteUser($id);
 		}
 	}
 }

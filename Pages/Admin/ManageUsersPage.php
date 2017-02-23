@@ -166,6 +166,11 @@ interface IManageUsersPage extends IPageable, IActionPage
 	public function ShowExportCsv();
 
 	public function BindStatusDescriptions();
+
+	/**
+	 * @return int[]
+	 */
+	public function GetDeletedUserIds();
 }
 
 class ManageUsersPage extends ActionPage implements IManageUsersPage
@@ -427,5 +432,16 @@ class ManageUsersPage extends ActionPage implements IManageUsersPage
 	public function ShowExportCsv()
 	{
 		$this->DisplayCsv('Admin/Users/users_csv.tpl', 'users.csv');
+	}
+
+	public function GetDeletedUserIds()
+	{
+		$ids = $this->GetForm(FormKeys::USER_ID);
+		if (!is_array($ids))
+		{
+			return array($ids);
+		}
+
+		return $ids;
 	}
 }

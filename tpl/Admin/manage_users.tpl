@@ -38,7 +38,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 					</a>
 				</li>
 				<li role="presentation">
-					<a role="menuitem" href="{$ExportUrl}" download="{$ExportUrl}" id="export-users" class="add-link add-user" target="_blank">{translate key="Export"}
+					<a role="menuitem" href="{$ExportUrl}" download="{$ExportUrl}" id="export-users" class="add-link add-user"
+					   target="_blank">{translate key="Export"}
 						<span class="glyphicon glyphicon-export"></span>
 					</a>
 				</li>
@@ -73,6 +74,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		<div class="clearfix"></div>
 	</form>
 
+	{assign var=colCount value=11}
 	<table class="table" id="userList">
 		<thead>
 		<tr>
@@ -87,11 +89,19 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			<th class="action">{sort_column key=Status field=ColumnNames::USER_STATUS}</th>
 			{if $CreditsEnabled}
 				<th class="action">{translate key=Credits}</th>
+				{assign var=colCount value=$colCount+1}
 			{/if}
 			{if $PerUserColors}
 				<th class="action">{translate key='Color'}</th>
+				{assign var=colCount value=$colCount+1}
 			{/if}
 			<th>{translate key='Actions'}</th>
+			<th class="action">
+				<div class="checkbox checkbox-single">
+					<input type="checkbox" id="delete-all" aria-label="{translate key=All}"/>
+					<label for="delete-all"></label>
+				</div>
+			</th>
 		</tr>
 		</thead>
 		<tbody>
@@ -159,7 +169,15 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 						</ul>
 					</div>
 					|
-					<a href="#" class="update delete"><span class="fa fa-trash icon remove"></span></a>
+					<div class="inline">
+						<a href="#" class="update delete"><span class="fa fa-trash icon remove"></span></a>
+					</div>
+				</td>
+				<td class="action">
+					<div class="checkbox checkbox-single">
+						<input {formname key=USER_ID multi=true}" class="delete-multiple" type="checkbox" id="delete{$id}" value="{$id}" aria-label="{translate key=Delete}"/>
+						<label for="delete{$id}"></label>
+					</div>
 				</td>
 			</tr>
 			{assign var=attributes value=$AttributeList}
@@ -174,6 +192,12 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			{/if}
 		{/foreach}
 		</tbody>
+		<tfoot>
+		<tr>
+			<td colspan="{$colCount-1}"></td>
+			<td class="action"><a href="#" id="delete-selected" class="no-show">{translate key=Delete}</a></td>
+		</tr>
+		</tfoot>
 	</table>
 
 	{pagination pageInfo=$PageInfo}
@@ -560,6 +584,34 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			</div>
 		</form>
 	</div>
+
+	<div id="deleteMultipleDialog" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="deleteMultipleModalLabel"
+			 aria-hidden="true">
+			<form id="deleteMultipleUserForm" method="post" ajaxAction="{ManageUsersActions::DeleteMultipleUsers}">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+							<h4 class="modal-title" id="deleteMultipleModalLabel">{translate key=Delete} (<span id="deleteUserCount"></span>)</h4>
+						</div>
+						<div class="modal-body">
+							<div class="alert alert-warning">
+								<div>{translate key=DeleteWarning}</div>
+
+								<div>{translate key=DeleteMultipleUserWarning}</div>
+							</div>
+
+						</div>
+						<div class="modal-footer">
+							{cancel_button}
+							{delete_button}
+							{indicator}
+						</div>
+						<div id="deleteMultiplePlaceHolder" class="no-show"></div>
+					</div>
+				</div>
+			</form>
+		</div>
 
 	<div id="groupsDialog" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="groupsModalLabel"
 		 aria-hidden="true">

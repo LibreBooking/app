@@ -1,21 +1,21 @@
 <?php
 /**
-Copyright 2011-2016 Nick Korbel
-
-This file is part of Booked Scheduler.
-
-Booked Scheduler is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-Booked Scheduler is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
+ * Copyright 2011-2016 Nick Korbel
+ *
+ * This file is part of Booked Scheduler.
+ *
+ * Booked Scheduler is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Booked Scheduler is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 require_once(ROOT_DIR . 'Presenters/Admin/ManageUsersPresenter.php');
@@ -181,8 +181,8 @@ class ManageUsersPresenterTests extends TestBase
 				->will($this->returnValue($groupList));
 
 		$this->page->expects($this->once())
-					->method('BindGroups')
-					->with($this->equalTo($groups));
+				   ->method('BindGroups')
+				   ->with($this->equalTo($groups));
 
 		$this->presenter->PageLoad();
 	}
@@ -215,30 +215,30 @@ class ManageUsersPresenterTests extends TestBase
 		$adminUser->_IsResourceAdmin = false;
 
 		$this->page->expects($this->atLeastOnce())
-				->method('GetUserId')
-				->will($this->returnValue($userId));
+				   ->method('GetUserId')
+				   ->will($this->returnValue($userId));
 
 		$this->page->expects($this->atLeastOnce())
-				->method('GetAllowedResourceIds')
-				->will($this->returnValue($submittedResourceIds));
-		
+				   ->method('GetAllowedResourceIds')
+				   ->will($this->returnValue($submittedResourceIds));
+
 		$this->resourceRepo->expects($this->once())
-					->method('GetResourceList')
-					->will($this->returnValue($resources));
+						   ->method('GetResourceList')
+						   ->will($this->returnValue($resources));
 
 		$this->userRepo->expects($this->at(0))
-				->method('LoadById')
-				->with($this->equalTo($adminUserId))
-				->will($this->returnValue($adminUser));
+					   ->method('LoadById')
+					   ->with($this->equalTo($adminUserId))
+					   ->will($this->returnValue($adminUser));
 
 		$this->userRepo->expects($this->at(1))
-				->method('LoadById')
-				->with($this->equalTo($userId))
-				->will($this->returnValue($user));
+					   ->method('LoadById')
+					   ->with($this->equalTo($userId))
+					   ->will($this->returnValue($user));
 
 		$this->userRepo->expects($this->once())
-				->method('Update')
-				->with($this->equalTo($user));
+					   ->method('Update')
+					   ->with($this->equalTo($user));
 
 		$this->presenter->ChangePermissions();
 
@@ -255,32 +255,32 @@ class ManageUsersPresenterTests extends TestBase
 		$userId = 123;
 
 		$this->page->expects($this->atLeastOnce())
-				->method('GetUserId')
-				->will($this->returnValue($userId));
+				   ->method('GetUserId')
+				   ->will($this->returnValue($userId));
 
 		$this->page->expects($this->once())
-				->method('GetPassword')
-				->will($this->returnValue($password));
+				   ->method('GetPassword')
+				   ->will($this->returnValue($password));
 
 		$this->encryption->expects($this->once())
-				->method('Salt')
-				->will($this->returnValue($salt));
+						 ->method('Salt')
+						 ->will($this->returnValue($salt));
 
 		$this->encryption->expects($this->once())
-				->method('Encrypt')
-				->with($this->equalTo($password), $this->equalTo($salt))
-				->will($this->returnValue($encrypted));
+						 ->method('Encrypt')
+						 ->with($this->equalTo($password), $this->equalTo($salt))
+						 ->will($this->returnValue($encrypted));
 
 		$user = new User();
 
 		$this->userRepo->expects($this->once())
-				->method('LoadById')
-				->with($this->equalTo($userId))
-				->will($this->returnValue($user));
+					   ->method('LoadById')
+					   ->with($this->equalTo($userId))
+					   ->will($this->returnValue($user));
 
 		$this->userRepo->expects($this->once())
-				->method('Update')
-				->with($this->equalTo($user));
+					   ->method('Update')
+					   ->with($this->equalTo($user));
 
 		$this->presenter->ResetPassword();
 
@@ -303,56 +303,56 @@ class ManageUsersPresenterTests extends TestBase
 		$user = new FakeUser($userId);
 
 		$this->page->expects($this->atLeastOnce())
-				->method('GetUserId')
-				->will($this->returnValue($userId));
+				   ->method('GetUserId')
+				   ->will($this->returnValue($userId));
 
 		$this->page->expects($this->once())
-				->method('GetFirstName')
-				->will($this->returnValue($fname));
+				   ->method('GetFirstName')
+				   ->will($this->returnValue($fname));
 
 		$this->page->expects($this->once())
-				->method('GetLastName')
-				->will($this->returnValue($lname));
+				   ->method('GetLastName')
+				   ->will($this->returnValue($lname));
 
 		$this->page->expects($this->once())
-				->method('GetUserName')
-				->will($this->returnValue($username));
+				   ->method('GetUserName')
+				   ->will($this->returnValue($username));
 
 		$this->page->expects($this->once())
-				->method('GetEmail')
-				->will($this->returnValue($email));
+				   ->method('GetEmail')
+				   ->will($this->returnValue($email));
 
 		$this->page->expects($this->once())
-				->method('GetTimezone')
-				->will($this->returnValue($timezone));
+				   ->method('GetTimezone')
+				   ->will($this->returnValue($timezone));
 
 		$this->page->expects($this->once())
-				->method('GetPhone')
-				->will($this->returnValue($phone));
+				   ->method('GetPhone')
+				   ->will($this->returnValue($phone));
 
 		$this->page->expects($this->once())
-				->method('GetOrganization')
-				->will($this->returnValue($organization));
+				   ->method('GetOrganization')
+				   ->will($this->returnValue($organization));
 
 		$this->page->expects($this->once())
-				->method('GetPosition')
-				->will($this->returnValue($position));
+				   ->method('GetPosition')
+				   ->will($this->returnValue($position));
 
 		$extraAttributes = array(
-			UserAttribute::Organization => $organization,
-			UserAttribute::Phone => $phone,
-			UserAttribute::Position => $position);
+				UserAttribute::Organization => $organization,
+				UserAttribute::Phone => $phone,
+				UserAttribute::Position => $position);
 
 		$this->manageUsersService->expects($this->once())
-				->method('UpdateUser')
-				->with($this->equalTo($userId),
-					   $this->equalTo($username),
-					   $this->equalTo($email),
-					   $this->equalTo($fname),
-					   $this->equalTo($lname),
-					   $this->equalTo($timezone),
-					   $this->equalTo($extraAttributes))
-				->will($this->returnValue($user));
+								 ->method('UpdateUser')
+								 ->with($this->equalTo($userId),
+										$this->equalTo($username),
+										$this->equalTo($email),
+										$this->equalTo($fname),
+										$this->equalTo($lname),
+										$this->equalTo($timezone),
+										$this->equalTo($extraAttributes))
+								 ->will($this->returnValue($user));
 
 		$this->presenter->UpdateUser();
 	}
@@ -361,14 +361,32 @@ class ManageUsersPresenterTests extends TestBase
 	{
 		$userId = 809;
 		$this->page->expects($this->once())
-				->method('GetUserId')
-				->will($this->returnValue($userId));
+				   ->method('GetUserId')
+				   ->will($this->returnValue($userId));
 
 		$this->manageUsersService->expects($this->once())
-				->method('DeleteUser')
-				->with($this->equalTo($userId));
+								 ->method('DeleteUser')
+								 ->with($this->equalTo($userId));
 
 		$this->presenter->DeleteUser();
+	}
+
+	public function testDeletesUsers()
+	{
+		$userIds = array(809, 909);
+		$this->page->expects($this->once())
+				   ->method('GetDeletedUserIds')
+				   ->will($this->returnValue($userIds));
+
+		$this->manageUsersService->expects($this->at(0))
+								 ->method('DeleteUser')
+								 ->with($this->equalTo(809));
+
+		$this->manageUsersService->expects($this->at(1))
+								 ->method('DeleteUser')
+								 ->with($this->equalTo(909));
+
+		$this->presenter->DeleteMultipleUsers();
 	}
 
 	public function testAddsUser()
@@ -396,28 +414,28 @@ class ManageUsersPresenterTests extends TestBase
 		$this->fakeConfig->SetKey(ConfigKeys::LANGUAGE, $lang);
 
 		$this->page->expects($this->once())
-				->method('GetFirstName')
-				->will($this->returnValue($fname));
+				   ->method('GetFirstName')
+				   ->will($this->returnValue($fname));
 
 		$this->page->expects($this->once())
-				->method('GetLastName')
-				->will($this->returnValue($lname));
+				   ->method('GetLastName')
+				   ->will($this->returnValue($lname));
 
 		$this->page->expects($this->once())
-				->method('GetUserName')
-				->will($this->returnValue($username));
+				   ->method('GetUserName')
+				   ->will($this->returnValue($username));
 
 		$this->page->expects($this->once())
-				->method('GetEmail')
-				->will($this->returnValue($email));
+				   ->method('GetEmail')
+				   ->will($this->returnValue($email));
 
 		$this->page->expects($this->once())
-				->method('GetTimezone')
-				->will($this->returnValue($timezone));
+				   ->method('GetTimezone')
+				   ->will($this->returnValue($timezone));
 
 		$this->page->expects($this->once())
-				->method('GetPassword')
-				->will($this->returnValue($password));
+				   ->method('GetPassword')
+				   ->will($this->returnValue($password));
 
 		$this->page
 				->expects($this->once())
@@ -430,27 +448,27 @@ class ManageUsersPresenterTests extends TestBase
 				->will($this->returnValue($groupId));
 
 		$this->manageUsersService->expects($this->once())
-				->method('AddUser')
-				->with($this->equalTo($username),
-					   $this->equalTo($email),
-					   $this->equalTo($fname),
-					   $this->equalTo($lname),
-					   $this->equalTo($password),
-					   $this->equalTo($timezone),
-					   $this->equalTo($lang),
-					   $this->equalTo(Pages::DEFAULT_HOMEPAGE_ID),
-					   $this->equalTo(array()),
-					   $this->equalTo(array(new AttributeValue($attributeId, $attributeValue))))
-				->will($this->returnValue($user));
+								 ->method('AddUser')
+								 ->with($this->equalTo($username),
+										$this->equalTo($email),
+										$this->equalTo($fname),
+										$this->equalTo($lname),
+										$this->equalTo($password),
+										$this->equalTo($timezone),
+										$this->equalTo($lang),
+										$this->equalTo(Pages::DEFAULT_HOMEPAGE_ID),
+										$this->equalTo(array()),
+										$this->equalTo(array(new AttributeValue($attributeId, $attributeValue))))
+								 ->will($this->returnValue($user));
 
 		$this->groupRepository->expects($this->once())
-				->method('LoadById')
-				->with($this->equalTo($groupId))
-				->will($this->returnValue($group));
+							  ->method('LoadById')
+							  ->with($this->equalTo($groupId))
+							  ->will($this->returnValue($group));
 
 		$this->groupRepository->expects($this->once())
-				->method('Update')
-				->with($this->equalTo($group));
+							  ->method('Update')
+							  ->with($this->equalTo($group));
 
 		$this->presenter->AddUser();
 	}
@@ -460,12 +478,12 @@ class ManageUsersPresenterTests extends TestBase
 		$users = array(new UserDto(1, 'f', 'l', 'e'));
 
 		$this->userRepo->expects($this->once())
-					->method('GetAll')
-					->will($this->returnValue($users));
+					   ->method('GetAll')
+					   ->will($this->returnValue($users));
 
 		$this->page->expects($this->once())
-					->method('SetJsonResponse')
-					->with($this->equalTo($users));
+				   ->method('SetJsonResponse')
+				   ->with($this->equalTo($users));
 
 		$this->presenter->ProcessDataRequest('all');
 	}
@@ -550,6 +568,6 @@ class ManageUsersPresenterTests extends TestBase
 		$skippedRowNumbers = $csv->GetSkippedRowNumbers();
 
 		$this->assertEquals(0, count($rows));
-		$this->assertEquals(array(1,2), $skippedRowNumbers);
+		$this->assertEquals(array(1, 2), $skippedRowNumbers);
 	}
 }

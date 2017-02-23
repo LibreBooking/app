@@ -46,7 +46,15 @@ function UserManagement(opts) {
 		inviteEmails: $('#inviteEmails'),
 
         checkAllResources: $('#checkAllResources'),
-        checkNoResources: $('#checkNoResources')
+        checkNoResources: $('#checkNoResources'),
+
+		deleteMultiplePrompt: $('#delete-selected'),
+		deleteMultipleDialog: $('#deleteMultipleDialog'),
+		deleteMultipleUserForm: $('#deleteMultipleUserForm'),
+		deleteMultipleCheckboxes: $('.delete-multiple'),
+		deleteMultipleSelectAll: $('#delete-all'),
+		deleteUserCount: $('#deleteUserCount'),
+		deleteMultiplePlaceHolder: $('#deleteMultiplePlaceHolder')
 	};
 
 	var users = {};
@@ -179,6 +187,28 @@ function UserManagement(opts) {
 			elements.importUsersDialog.modal('show');
 		});
 
+		elements.deleteMultiplePrompt.click(function(e){
+			e.preventDefault();
+			var checkedUsers = elements.userList.find('.delete-multiple:checked');
+			elements.deleteUserCount.text(checkedUsers.length);
+			elements.deleteMultiplePlaceHolder.empty();
+			elements.deleteMultiplePlaceHolder.append(checkedUsers.clone());
+			elements.deleteMultipleDialog.modal('show');
+		});
+
+		elements.deleteMultipleSelectAll.click(function(e) {
+			e.stopPropagation();
+			elements.deleteMultipleCheckboxes.prop('checked', elements.deleteMultipleSelectAll.is(":checked"));
+		});
+
+		elements.deleteMultipleCheckboxes.click(function(e){
+			e.stopPropagation();
+			var numberChecked = elements.userList.find('.delete-multiple:checked').length;
+			var allSelected = numberChecked == elements.userList.find('.delete-multiple').length;
+			elements.deleteMultipleSelectAll.prop('checked', allSelected);
+			elements.deleteMultiplePrompt.toggleClass('no-show', numberChecked == 0);
+		});
+
 		var hidePermissionsDialog = function () {
 			hideDialog(elements.permissionsDialog);
 		};
@@ -236,6 +266,7 @@ function UserManagement(opts) {
 		ConfigureAsyncForm(elements.addGroupForm, changeGroupUrlCallback(elements.addGroupForm), function(){});
 		ConfigureAsyncForm(elements.removeGroupForm, changeGroupUrlCallback(elements.removeGroupForm), function(){});
 		ConfigureAsyncForm(elements.invitationForm, defaultSubmitCallback(elements.invitationForm), inviteHandler);
+		ConfigureAsyncForm(elements.deleteMultipleUserForm, defaultSubmitCallback(elements.deleteMultipleUserForm));
 	};
 
 	UserManagement.prototype.addUser = function (user) {

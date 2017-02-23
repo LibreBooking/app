@@ -154,12 +154,12 @@ class ManageUsersService implements IManageUsersService
         $this->userRepository->Update($user);
 	}
 
-	public function DeleteUser($userId)
+	public function DeleteUser($userId, $notify = true)
 	{
 		$user = $this->userRepository->LoadById($userId);
 		$this->userRepository->DeleteById($userId);
 
-		if (Configuration::Instance()->GetKey(ConfigKeys::REGISTRATION_NOTIFY, new BooleanConverter()))
+		if ($notify && Configuration::Instance()->GetKey(ConfigKeys::REGISTRATION_NOTIFY, new BooleanConverter()))
 		{
 			$currentUser = ServiceLocator::GetServer()->GetUserSession();
 			$applicationAdmins = $this->userViewRepository->GetApplicationAdmins();
