@@ -631,6 +631,13 @@ function Reservation(opts) {
 
 							}
                         }
+                        else {
+							if (type == 'end' && moment(elements.beginDate.val()).add(1, 'days').isSame(elements.endDate.val()))
+							{
+								selectedPeriod = null;
+								items.push('<option value="' + item.begin + '" selected="selected">' + item.label + '</option>');
+							}
+						}
 					});
 
                     if (items.length == 0){

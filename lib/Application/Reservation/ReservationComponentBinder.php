@@ -59,7 +59,7 @@ class ReservationDateBinder implements IReservationComponentBinder
 		$layout = $this->scheduleRepository->GetLayout($requestedScheduleId, new ReservationLayoutFactory($timezone));
 
         $startPeriods = $this->GetStartPeriods($layout, $startDate);
-        $endPeriods = $this->GetStartPeriods($layout, $endDate);
+        $endPeriods = $this->GetEndPeriods($layout, $startDate, $endDate);
 
 		$initializer->SetDates($startDate, $endDate, $startPeriods, $endPeriods);
 
@@ -90,6 +90,24 @@ class ReservationDateBinder implements IReservationComponentBinder
         }
         return $startPeriods;
     }
+
+	/**
+	 * @param IScheduleLayout $layout
+	 * @param Date $startDate
+	 * @param Date $endDate
+	 * @return SchedulePeriod[]
+	 */
+	protected function GetEndPeriods($layout, $startDate, &$endDate)
+	{
+		$endPeriods = $layout->GetLayout($endDate, true);
+		if (count($endPeriods) == 0 && $startDate->AddDays(1)->Equals($endDate))
+		{
+			// no periods on the next day, return midnight to let the reservation end at the top of the hour
+			return array(new SchedulePeriod($endDate->SetTimeString('00:00'), $endDate->SetTimeString('00:00', true)));
+
+		}
+		return $this->GetStartPeriods($layout, $endDate);
+	}
 }
 
 class ReservationUserBinder implements IReservationComponentBinder
