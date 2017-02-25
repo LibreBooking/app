@@ -164,7 +164,18 @@ class SearchAvailabilityPresenter extends ActionPresenter
         }
 
         if ($range == 'daterange') {
-            return new DateRange(Date::Parse($this->page->GetRequestedStartDate(), $timezone), Date::Parse($this->page->GetRequestedEndDate(), $timezone));
+			$start = $this->page->GetRequestedStartDate();
+			$end = $this->page->GetRequestedEndDate();
+
+			if (empty($start))
+			{
+				$start = Date::Now()->ToDatabase();
+			}
+			if (empty($end))
+			{
+				$end = Date::Now()->AddDays(1)->ToDatabase();
+			}
+			return new DateRange(Date::Parse($start, $timezone), Date::Parse($end, $timezone));
         }
 
         return new DateRange($today->ToTimezone($timezone)->GetDate(), $today->AddDays(1)->ToTimezone($timezone)->GetDate());
