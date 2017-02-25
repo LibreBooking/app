@@ -19,7 +19,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 
 {if $attribute->AppliesToEntity($id)}
 	{assign var=attributeId value="inline{$attribute->Id()}{$id}"}
-	<div class="updateCustomAttribute">
+	<div class="updateCustomAttribute" style="margin-bottom:0px">
 		{assign var=datatype value='text'}
 		{if $attribute->Type() == CustomAttributeTypes::CHECKBOX}
 			{assign var=datatype value='checklist'}
@@ -31,7 +31,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 			{assign var=datatype value='combodate'}
 			{assign var=value value={formatdate date=$value key=fullcalendar}}
 		{/if}
-		<label>{$attribute->Label()}</label>
+		<h5 class="inline">{$attribute->Label()}</h5>
 		<span class="inlineAttribute"
 			  id="inline{$attributeId}"
 			  data-type="{$datatype}"

@@ -75,7 +75,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 	</form>
 
 	{assign var=colCount value=11}
-	<table class="table" id="userList">
+	<table class="table admin-panel" id="userList">
 		<thead>
 		<tr>
 			<th>{sort_column key=Name field=ColumnNames::LAST_NAME}</th>
@@ -184,7 +184,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			{assign var=attributes value=$AttributeList}
 			{if $attributes|count > 0}
 				<tr data-userId="{$id}">
-					<td colspan="{if $PerUserColors}11{else}10{/if}" class="{$rowCss} customAttributes" userId="{$id}">
+					<td colspan="{$colCount}" class="{$rowCss} customAttributes" userId="{$id}">
 						{foreach from=$AttributeList item=attribute}
 							{include file='Admin/InlineAttributeEdit.tpl' id=$id attribute=$attribute value=$user->GetAttributeValue($attribute->Id())}
 						{/foreach}

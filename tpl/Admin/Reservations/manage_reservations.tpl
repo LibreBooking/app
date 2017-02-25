@@ -109,7 +109,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		</div>
 	</div>
 
-	<table class="table" id="reservationTable">
+	<table class="table admin-panel" id="reservationTable">
 		{if $IsDesktop}
 			{assign var=colCount value=11}
 		{else}
