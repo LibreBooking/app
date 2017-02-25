@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright 2011-2016 Nick Korbel
+ * Copyright 2011-2017 Nick Korbel
  *
  * Translation: 2014 Nicola Ruggero <nicola@nxnt.org>, Daniele Cordella <kordan@mclink.it>
  *
