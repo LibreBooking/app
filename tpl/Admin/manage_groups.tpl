@@ -89,7 +89,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 					<h4 class="modal-title" id="membersDialogLabel">{translate key=GroupMembers}</h4>
 				</div>
-				<div class="modal-body">
+				<div class="modal-body scrollable-modal-content">
 					<div class="form-group">
 						<label for="userSearch">{translate key=AddUser}: <a href="#" id="browseUsers">{translate key=Browse}</a></label>
 						<input type="text" id="userSearch" class="form-control" size="40"/>
@@ -112,7 +112,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 					<h4 class="modal-title" id="browseUsersDialogLabel">{translate key=AllUsers}</h4>
 				</div>
-				<div class="modal-body">
+				<div class="modal-body scrollable-modal-content">
 					<div id="allUsersList"></div>
 				</div>
 			</div>
@@ -127,7 +127,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 							<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 							<h4 class="modal-title" id="permissionsDialogLabel">{translate key=Permissions}</h4>
 						</div>
-						<div class="modal-body">
+						<div class="modal-body scrollable-modal-content">
                             {translate key=Select}
                             <a href="#" id="checkAllResources">{translate key=All}</a> |
                             <a href="#" id="checkNoResources">{translate key=None}</a>

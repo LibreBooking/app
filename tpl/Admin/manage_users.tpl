@@ -382,7 +382,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 						<h4 class="modal-title" id="permissionsModalLabel">{translate key=Permissions}</h4>
 					</div>
-					<div class="modal-body">
+					<div class="modal-body scrollable-modal-content">
 						<div class="alert alert-warning">{translate key=UserPermissionInfo}</div>
 						{translate key=Select}
 						<a href="#" id="checkAllResources">{translate key=All}</a> |
@@ -622,7 +622,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 					<h4 class="modal-title" id="groupsModalLabel">{translate key=Groups}</h4>
 				</div>
-				<div class="modal-body">
+				<div class="modal-body scrollable-modal-content">
 
 					<div id="groupList" class="hidden">
 						{foreach from=$Groups item=group}

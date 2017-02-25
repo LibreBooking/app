@@ -148,7 +148,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 						<h4 class="modal-title" id="resourcesDialogLabel">{translate key=Resources}</h4>
 					</div>
-					<div class="modal-body">
+					<div class="modal-body scrollable-modal-content">
 						{foreach from=$resources item=resource}
 							{assign var="resourceId" value="{$resource->GetId()}"}
 							<div resource-id="{$resourceId}">

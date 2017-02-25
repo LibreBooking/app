@@ -81,7 +81,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 						<h4 class="modal-title" id="inviteeModalLabel">{translate key=InviteOthers}</h4>
 					</div>
-					<div class="modal-body">
+					<div class="modal-body scrollable-modal-content">
 					</div>
 					<div class="modal-footer">
 						<button type="button" class="btn btn-primary" data-dismiss="modal">{translate key='Done'}</button>
@@ -122,7 +122,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 						<h4 class="modal-title" id="inviteeGroupModalLabel">{translate key=InviteOthers}</h4>
 					</div>
-					<div class="modal-body">
+					<div class="modal-body scrollable-modal-content">
 					</div>
 					<div class="modal-footer">
 						<button type="button" class="btn btn-primary" data-dismiss="modal">{translate key='Done'}</button>
@@ -140,7 +140,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 					<h4 class="modal-title" id="participantModalLabel">{translate key=AddParticipants}</h4>
 				</div>
-				<div class="modal-body">
+				<div class="modal-body scrollable-modal-content">
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-primary" data-dismiss="modal">{translate key='Done'}</button>
@@ -156,7 +156,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 					<h4 class="modal-title" id="participantGroupModalLabel">{translate key=AddParticipants}</h4>
 				</div>
-				<div class="modal-body">
+				<div class="modal-body scrollable-modal-content">
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-primary" data-dismiss="modal">{translate key='Done'}</button>

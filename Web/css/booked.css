@@ -521,6 +521,10 @@ input.mid-number {
   color: #e91e1e;
   font-size: small;
 }
+.scrollable-modal-content {
+  max-height: 80vh;
+  overflow-y: scroll;
+}
 .checkbox {
   padding-left: 20px;
 }
@@ -1448,7 +1452,7 @@ a.toggle-sidebar {
   -webkit-border-radius: 2px;
   -moz-border-radius: 2px;
   border-radius: 2px;
-  margin-bottom: 5px;
+  margin: 2px 0 5px 0;
   background-color: #fff;
 }
 #participantList .user,

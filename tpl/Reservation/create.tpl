@@ -85,7 +85,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 												<h4 class="modal-title"
 													id="usersModalLabel">{translate key=ChangeUser}</h4>
 											</div>
-											<div class="modal-body">
+											<div class="modal-body scrollable-modal-content">
 											</div>
 											<div class="modal-footer">
 												<button type="button" class="btn btn-default"
@@ -367,7 +367,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 					<h4 class="modal-title" id="resourcesModalLabel">{translate key=AddResources}</h4>
 				</div>
-				<div class="modal-body">
+				<div class="modal-body scrollable-modal-content">
 					<div id="resourceGroups"></div>
 				</div>
 				<div class="modal-footer">
@@ -387,7 +387,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 					<h4 class="modal-title" id="accessoryModalLabel">{translate key=AddAccessories}</h4>
 				</div>
-				<div class="modal-body">
+				<div class="modal-body scrollable-modal-content">
 					<table class="table table-condensed">
 						<thead>
 						<tr>
