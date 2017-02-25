@@ -36,13 +36,14 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
         </div>
 
         <div>
-            <h4>{translate key="Logo"} (*.png, *.gif, *.jpg)</h4>
+            <h4>{translate key="Logo"} (*.png, *.gif, *.jpg - 50px height)</h4>
 
             <div>
                 <a href="{$ScriptUrl}/img/{$LogoUrl}" download="{$ScriptUrl}/img/{$LogoUrl}">{$LogoUrl}</a>
                 <a href="#" id="removeLogo">{translate key=Remove}</a>
             </div>
             <input type="file" {formname key=LOGO_FILE} class="pull-left"/>
+
             <a href="#" class="clearInput inline">{html_image src="cross-button.png"}</a>
 
         </div>
