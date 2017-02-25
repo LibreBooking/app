@@ -57,7 +57,7 @@ class AccountDeletedEmail extends EmailMessage
 	 */
 	function Subject()
 	{
-		return $this->Translate('UserDeleted', array($this->deletedUser->FullName(), $this->to->FullName()));
+		return $this->Translate('UserDeleted', array($this->deletedUser->FullName(), new FullName($this->userSession->FirstName, $this->userSession->LastName)));
 	}
 
 	/**
