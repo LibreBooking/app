@@ -22,6 +22,7 @@ require_once(ROOT_DIR . 'Pages/SecurePage.php');
 require_once(ROOT_DIR . 'Pages/ActionPage.php');
 require_once(ROOT_DIR . 'Pages/Reports/IDisplayableReportPage.php');
 require_once(ROOT_DIR . 'Presenters/Reports/SavedReportsPresenter.php');
+require_once(ROOT_DIR . 'Presenters/Reports/ReportCsvColumnView.php');
 
 interface ISavedReportsPage extends IDisplayableReportPage, IActionPage
 {
@@ -128,6 +129,7 @@ class SavedReportsPage extends ActionPage implements ISavedReportsPage
 
 	public function ShowCsv()
 	{
+		$this->Set('ReportCsvColumnView', new ReportCsvColumnView($this->GetVar('SelectedColumns')));
 		$this->DisplayCsv('Reports/custom-csv.tpl', 'report.csv');
 	}
 

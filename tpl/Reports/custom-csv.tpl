@@ -16,8 +16,8 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 *}
-{foreach from=$Definition->GetColumnHeaders() item=column}"{if $column->HasTitle()}{$column->Title()}{else}{translate key=$column->TitleKey()}{/if}",{/foreach}
+{foreach from=$Definition->GetColumnHeaders() item=column name=columnIterator}{if $ReportCsvColumnView->ShouldShowCol($column, $smarty.foreach.columnIterator.index)}"{if $column->HasTitle()}{$column->Title()}{else}{translate key=$column->TitleKey()}{/if}",{/if}{/foreach}
 
-{foreach from=$Report->GetData()->Rows() item=row}{foreach from=$Definition->GetRow($row) item=data}"{$data->Value()|escape}",{/foreach}
+{foreach from=$Report->GetData()->Rows() item=row}{foreach from=$Definition->GetRow($row) item=data name=dataIterator}{if $ReportCsvColumnView->ShouldShowCell($smarty.foreach.dataIterator.index)}"{$data->Value()|escape}",{/if}{/foreach}
 
 {/foreach}

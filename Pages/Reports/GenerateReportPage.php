@@ -22,6 +22,7 @@ require_once(ROOT_DIR . 'Pages/SecurePage.php');
 require_once(ROOT_DIR . 'Pages/Reports/IDisplayableReportPage.php');
 require_once(ROOT_DIR . 'Pages/Ajax/AutoCompletePage.php');
 require_once(ROOT_DIR . 'Presenters/Reports/GenerateReportPresenter.php');
+require_once(ROOT_DIR . 'Presenters/Reports/ReportCsvColumnView.php');
 
 interface IGenerateReportPage extends IDisplayableReportPage, IActionPage
 {
@@ -340,6 +341,7 @@ class GenerateReportPage extends ActionPage implements IGenerateReportPage
 
 	public function ShowCsv()
 	{
+		$this->Set('ReportCsvColumnView', new ReportCsvColumnView($this->GetVar('SelectedColumns')));
 		$this->DisplayCsv('Reports/custom-csv.tpl', 'report.csv');
 	}
 
