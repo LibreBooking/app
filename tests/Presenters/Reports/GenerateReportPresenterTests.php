@@ -37,6 +37,11 @@ class GenerateReportPresenterTests extends TestBase
 	 */
 	public $reportingService;
 
+	/**
+	 * @var FakeUserRepository
+	 */
+	public $userRepository;
+
 	public function setup()
 	{
 		parent::setup();
@@ -46,9 +51,15 @@ class GenerateReportPresenterTests extends TestBase
 		$resourceRepository = $this->getMock('IResourceRepository');
 		$scheduleRepository = $this->getMock('IScheduleRepository');
 		$groupRepository = $this->getMock('IGroupViewRepository');
+		$this->userRepository = new FakeUserRepository();
 
-		$this->presenter = new GenerateReportPresenter($this->page, $this->fakeUser, $this->reportingService, $resourceRepository, $scheduleRepository,
-													   $groupRepository);
+		$this->presenter = new GenerateReportPresenter($this->page,
+													   $this->fakeUser,
+													   $this->reportingService,
+													   $resourceRepository,
+													   $scheduleRepository,
+													   $groupRepository,
+													   $this->userRepository);
 	}
 
 	public function testRunsCustomReport()
@@ -72,9 +83,15 @@ class GenerateReportPresenterTests extends TestBase
 									  $this->equalTo($filter))
 							   ->will($this->returnValue($expectedReport));
 
+		$user = new FakeUser();
+		$savedReportColumns = 'savedreport';
+		$user->ChangePreference(UserPreferences::REPORT_COLUMNS, $savedReportColumns);
+		$this->userRepository->_User = $user;
+
 		$this->presenter->GenerateCustomReport();
 
 		$this->assertEquals($expectedReport, $this->page->_BoundReport);
+		$this->assertEquals($savedReportColumns, $this->page->_ReportColumns);
 	}
 
 	public function testSavesReport()
@@ -212,6 +229,10 @@ class FakeGenerateReportPage extends GenerateReportPage
 	public $_IncludeDeleted;
 
 	public $_ResourceTypeId;
+	/**
+	 * @var string
+	 */
+	public $_ReportColumns;
 
 	public function GetResultSelection()
 	{
@@ -268,9 +289,10 @@ class FakeGenerateReportPage extends GenerateReportPage
 		return $this->_GroupId;
 	}
 
-	public function BindReport(IReport $report, IReportDefinition $definition)
+	public function BindReport(IReport $report, IReportDefinition $definition, $selectedColumns)
 	{
 		$this->_BoundReport = $report;
+		$this->_ReportColumns = $selectedColumns;
 	}
 
 	public function GetUsage()
@@ -324,5 +346,3 @@ class FakeGenerateReportPage extends GenerateReportPage
 	}
 
 }
-
-?>

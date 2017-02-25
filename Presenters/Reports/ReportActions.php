@@ -26,5 +26,6 @@ class ReportActions
 	const Save = 'save';
 	const Email = 'email';
 	const Delete = 'delete';
+	const SaveColumns = 'saveColumns';
 }
 

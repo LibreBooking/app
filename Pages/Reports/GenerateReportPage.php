@@ -124,6 +124,11 @@ interface IGenerateReportPage extends IDisplayableReportPage, IActionPage
 	 * @param ResourceType[] $resourceTypes
 	 */
 	public function BindResourceTypes($resourceTypes);
+
+	/**
+	 * @return string
+	 */
+	public function GetSelectedColumns();
 }
 
 class GenerateReportPage extends ActionPage implements IGenerateReportPage
@@ -142,7 +147,8 @@ class GenerateReportPage extends ActionPage implements IGenerateReportPage
 				new ReportingService(new ReportingRepository()),
 				new ResourceRepository(),
 				new ScheduleRepository(),
-				new GroupRepository());
+				new GroupRepository(),
+				new UserRepository());
 	}
 
 	/**
@@ -267,10 +273,11 @@ class GenerateReportPage extends ActionPage implements IGenerateReportPage
 		return $this->GetValue(FormKeys::GROUP_ID);
 	}
 
-	public function BindReport(IReport $report, IReportDefinition $definition)
+	public function BindReport(IReport $report, IReportDefinition $definition, $selectedColumns)
 	{
 		$this->Set('Definition', $definition);
 		$this->Set('Report', $report);
+		$this->Set('SelectedColumns', $selectedColumns);
 	}
 
 	/**
@@ -363,6 +370,11 @@ class GenerateReportPage extends ActionPage implements IGenerateReportPage
 	{
 		$include = $this->GetValue(FormKeys::INCLUDE_DELETED);
 		return isset($include);
+	}
+
+	public function GetSelectedColumns()
+	{
+		return $this->GetForm(FormKeys::SELECTED_COLUMNS);
 	}
 }
 

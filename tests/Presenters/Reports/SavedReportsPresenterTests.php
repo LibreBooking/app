@@ -1,21 +1,21 @@
 <?php
 /**
-Copyright 2012-2016 Nick Korbel
-
-This file is part of Booked Scheduler.
-
-Booked Scheduler is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-Booked Scheduler is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
+ * Copyright 2012-2016 Nick Korbel
+ *
+ * This file is part of Booked Scheduler.
+ *
+ * Booked Scheduler is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Booked Scheduler is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 require_once(ROOT_DIR . 'Presenters/Reports/SavedReportsPresenter.php');
@@ -37,14 +37,20 @@ class SavedReportsPresenterTests extends TestBase
 	 */
 	public $service;
 
+	/**
+	 * @var FakeUserRepository
+	 */
+	public $userRepository;
+
 	public function setup()
 	{
 		parent::setup();
 
 		$this->page = new FakeSavedReportsPage();
 		$this->service = $this->getMock('IReportingService');
+		$this->userRepository = new FakeUserRepository();
 
-		$this->presenter = new SavedReportsPresenter($this->page, $this->fakeUser, $this->service);
+		$this->presenter = new SavedReportsPresenter($this->page, $this->fakeUser, $this->service, $this->userRepository);
 	}
 
 	public function testGetsAllSavedReportsForTheUser()
@@ -52,9 +58,9 @@ class SavedReportsPresenterTests extends TestBase
 		$savedReports = array(new FakeSavedReport());
 
 		$this->service->expects($this->once())
-				->method('GetSavedReports')
-				->with($this->equalTo($this->fakeUser->UserId))
-				->will($this->returnValue($savedReports));
+					  ->method('GetSavedReports')
+					  ->with($this->equalTo($this->fakeUser->UserId))
+					  ->will($this->returnValue($savedReports));
 
 		$this->presenter->PageLoad();
 
@@ -68,23 +74,29 @@ class SavedReportsPresenterTests extends TestBase
 		$report = new FakeReport();
 
 		$this->service->expects($this->once())
-				->method('GenerateSavedReport')
-				->with($this->equalTo($reportId), $this->equalTo($this->fakeUser->UserId))
-				->will($this->returnValue($report));
+					  ->method('GenerateSavedReport')
+					  ->with($this->equalTo($reportId), $this->equalTo($this->fakeUser->UserId))
+					  ->will($this->returnValue($report));
+
+		$user = new FakeUser();
+				$savedReportColumns = 'savedreport';
+				$user->ChangePreference(UserPreferences::REPORT_COLUMNS, $savedReportColumns);
+				$this->userRepository->_User = $user;
 
 		$this->presenter->GenerateReport();
 
 		$this->assertEquals($report, $this->page->_BoundReport);
 		$this->assertEquals(new ReportDefinition($report, $this->fakeUser->Timezone), $this->page->_BoundDefinition);
 		$this->assertTrue($this->page->_ResultsDisplayed);
+		$this->assertEquals($savedReportColumns, $this->page->_SelectedColumns);
 	}
 
 	public function testWhenReportIsNotFound()
 	{
 		$this->service->expects($this->once())
-				->method('GenerateSavedReport')
-				->with($this->anything(), $this->anything())
-				->will($this->returnValue(null));
+					  ->method('GenerateSavedReport')
+					  ->with($this->anything(), $this->anything())
+					  ->will($this->returnValue(null));
 
 		$this->presenter->GenerateReport();
 
@@ -103,13 +115,13 @@ class SavedReportsPresenterTests extends TestBase
 		$definition = new ReportDefinition($report, $this->fakeUser->Timezone);
 
 		$this->service->expects($this->once())
-				->method('GenerateSavedReport')
-				->with($this->equalTo($reportId), $this->equalTo($this->fakeUser->UserId))
-				->will($this->returnValue($report));
+					  ->method('GenerateSavedReport')
+					  ->with($this->equalTo($reportId), $this->equalTo($this->fakeUser->UserId))
+					  ->will($this->returnValue($report));
 
 		$this->service->expects($this->once())
-				->method('SendReport')
-				->with($this->equalTo($report), $this->equalTo($definition), $this->equalTo($emailAddress), $this->equalTo($this->fakeUser));
+					  ->method('SendReport')
+					  ->with($this->equalTo($report), $this->equalTo($definition), $this->equalTo($emailAddress), $this->equalTo($this->fakeUser));
 
 		$this->presenter->EmailReport();
 	}
@@ -120,8 +132,8 @@ class SavedReportsPresenterTests extends TestBase
 		$this->page->_ReportId = $reportId;
 
 		$this->service->expects($this->once())
-				->method('DeleteSavedReport')
-				->with($this->equalTo($reportId), $this->equalTo($this->fakeUser->UserId));
+					  ->method('DeleteSavedReport')
+					  ->with($this->equalTo($reportId), $this->equalTo($this->fakeUser->UserId));
 
 		$this->presenter->DeleteReport();
 	}
@@ -157,16 +169,18 @@ class FakeSavedReportsPage extends SavedReportsPage
 	 * @var string
 	 */
 	public $_EmailAddress;
+	public $_SelectedColumns;
 
 	public function BindReportList($reportList)
 	{
 		$this->_BoundReportList = $reportList;
 	}
 
-	public function BindReport(IReport $report, IReportDefinition $definition)
+	public function BindReport(IReport $report, IReportDefinition $definition, $selectedColumns)
 	{
 		$this->_BoundReport = $report;
 		$this->_BoundDefinition = $definition;
+		$this->_SelectedColumns = $selectedColumns;
 	}
 
 	public function DisplayError()
@@ -190,5 +204,3 @@ class FakeSavedReportsPage extends SavedReportsPage
 	}
 
 }
-
-?>

@@ -66,11 +66,12 @@ class CommonReportsPage extends ActionPage implements ICommonReportsPage
 		$this->Display('Reports/common-reports.tpl');
 	}
 
-	public function BindReport(IReport $report, IReportDefinition $definition)
+	public function BindReport(IReport $report, IReportDefinition $definition, $selectedColumns)
 	{
 		$this->Set('HideSave', true);
 		$this->Set('Definition', $definition);
 		$this->Set('Report', $report);
+		$this->Set('SelectedColumns', $selectedColumns);
 	}
 
 	public function ShowCsv()

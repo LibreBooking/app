@@ -806,6 +806,11 @@ class UserDto
     {
         return $this->CurrentCreditCount;
     }
+
+    public function GetPreference($preferenceName)
+	{
+    	return $this->Preferences[$preferenceName];
+	}
 }
 
 class NullUserDto extends UserDto

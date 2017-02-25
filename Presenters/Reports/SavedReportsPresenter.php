@@ -37,20 +37,26 @@ class SavedReportsPresenter extends ActionPresenter
 	 * @var ISavedReportsPage
 	 */
 	private $page;
+	/**
+	 * @var IUserRepository
+	 */
+	private $userRepository;
 
-	public function __construct(ISavedReportsPage $page, UserSession $user, IReportingService $service)
+	public function __construct(ISavedReportsPage $page, UserSession $user, IReportingService $service, IUserRepository $userRepository)
 	{
 		parent::__construct($page);
 
 		$this->service = $service;
 		$this->user = $user;
 		$this->page = $page;
+		$this->userRepository = $userRepository;
 
 		$this->AddAction(ReportActions::Generate, 'GenerateReport');
 		$this->AddAction(ReportActions::Email, 'EmailReport');
 		$this->AddAction(ReportActions::Csv, 'CreateCsv');
 		$this->AddAction(ReportActions::PrintReport, 'PrintReport');
 		$this->AddAction(ReportActions::Delete, 'DeleteReport');
+		$this->AddAction(ReportActions::SaveColumns, 'SaveColumns');
 	}
 
 	public function PageLoad()
@@ -81,8 +87,9 @@ class SavedReportsPresenter extends ActionPresenter
 		if ($report != null)
 		{
 			Log::Debug('Loading saved report for userId: %s, reportId %s', $userId, $reportId);
+			$user = $this->userRepository->LoadById($userId);
 
-			$this->page->BindReport($report, new ReportDefinition($report, $this->user->Timezone));
+			$this->page->BindReport($report, new ReportDefinition($report, $this->user->Timezone), $user->GetPreference(UserPreferences::REPORT_COLUMNS));
 			call_user_func($callback);
 		}
 		else
@@ -129,5 +136,12 @@ class SavedReportsPresenter extends ActionPresenter
 		Log::Debug('Deleting saved report. reportId: %s, userId: %s', $reportId, $userId);
 		$this->service->DeleteSavedReport($reportId, $userId);
 	}
+
+	public function SaveColumns()
+		{
+			$user = $this->userRepository->LoadById($this->user->UserId);
+			$user->ChangePreference(UserPreferences::REPORT_COLUMNS, $this->page->GetSelectedColumns());
+			$this->userRepository->Update($user);
+		}
 }
 

@@ -164,7 +164,8 @@ class ReportDefinition implements IReportDefinition
 				$formattedRow[] = new ReportCell($column->GetData($row[$key]),
 												 $column->GetChartData($row, $key),
 												 $column->GetChartColumnType(),
-												 $column->GetChartGroup());
+												 $column->GetChartGroup(),
+												 $column->Title());
 			}
 		}
 

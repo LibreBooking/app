@@ -228,6 +228,7 @@ class FormKeys
 	const SUBMIT = 'SUBMIT';
 	const SUMMARY = 'summary';
 	const SCHEDULE_ADMIN_GROUP_ID = 'adminGroupId';
+	const SELECTED_COLUMNS = 'SELECTED_COLUMNS';
 
 	const THISWEEK = 'THISWEEK';
 	const TIMEZONE = 'timezone';

@@ -26,6 +26,10 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		<a href="#" id="btnCsv"><span class="fa fa-download"></span> {translate key=ExportToCSV}</a> |
 		<a href="#" id="btnPrint"><span class="fa fa-print"></span> {translate key=Print}</a> |
 		<a href="#" id="btnCustomizeColumns"><span class="fa fa-filter"></span> {translate key=Columns}</a>
+
+		<form id="saveSelectedColumns" method="post" role="form" action="{$smarty.server.SCRIPT_NAME}?{QueryStringKeys::ACTION}={ReportActions::SaveColumns}">
+			<input {formname key=SELECTED_COLUMNS} id="selectedColumns" type="hidden" value="{$SelectedColumns}" />
+		</form>
 	</div>
 	<div id="customize-columns"></div>
 	<table width="100%" id="report-results" chart-type="{$Definition->GetChartType()}">

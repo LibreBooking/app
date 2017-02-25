@@ -21,6 +21,7 @@
 class UserPreferences
 {
 	const RESERVATION_COLOR = 'ReservationColor';
+	const REPORT_COLUMNS = 'ReportColumns';
 
 	private $preferences = array();
 	private $changed = array();

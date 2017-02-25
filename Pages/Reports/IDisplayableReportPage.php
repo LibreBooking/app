@@ -20,7 +20,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 interface IDisplayableReportPage
 {
-	public function BindReport(IReport $report, IReportDefinition $definition);
+	public function BindReport(IReport $report, IReportDefinition $definition, $selectedColumns);
 
 	public function DisplayError();
 

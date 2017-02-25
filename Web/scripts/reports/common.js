@@ -73,11 +73,16 @@ function ReportsCommon(opts) {
 				});
 			}
 
+			function saveSelectedCols(selectedColumns) {
+				$('#selectedColumns').val(selectedColumns);
+
+				ajaxPost($('#saveSelectedColumns'), null, null, function(){});
+			}
+
 			$(document).on('loaded', '#report-results', function (e) {
-				var cookieName = 'report-columns';
 				var separator = '!s!';
-				var cookie = readCookie(cookieName);
-				var savedCols = cookie ? cookie.split(separator) : [];
+				var selectedCols = $('#selectedColumns').val();
+				var savedCols = selectedCols ? selectedCols.split(separator) : [];
 				//initColumns(savedCols);
 
 				var items = [];
@@ -93,7 +98,6 @@ function ReportsCommon(opts) {
 
 				var btnCustomizeColumns = $('#btnCustomizeColumns');
 
-
 				customizeColumns.find(':checkbox').unbind('click');
 
 				customizeColumns.on('click', ':checkbox', function(e) {
@@ -102,7 +106,8 @@ function ReportsCommon(opts) {
 					var columnsToSave = $.map(customizeColumns.find(':checked'), function(checkbox){
 						return $(checkbox).val();
 					});
-					createCookie(cookieName, columnsToSave.join(separator), 30, opts.scriptUrl);
+
+					saveSelectedCols(columnsToSave.join(separator));
 				});
 
 				btnCustomizeColumns.unbind('click').on('click', function(e) {
@@ -116,5 +121,5 @@ function ReportsCommon(opts) {
 				$(this).closest('.dialog').dialog("close");
 			});
 		}
-	}
+	};
 }
