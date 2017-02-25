@@ -107,11 +107,11 @@ class SchedulesWebService
 		$permissionServiceFactory = new PermissionServiceFactory();
 		$scheduleRepository = new ScheduleRepository();
 		$userRepository = new UserRepository();
-		$resourceService = new ResourceService(new ResourceRepository(), $permissionServiceFactory->GetPermissionService(), new AttributeService(new AttributeRepository()), $userRepository);
+		$resourceService = new ResourceService(new ResourceRepository(), $permissionServiceFactory->GetPermissionService(), new AttributeService(new AttributeRepository()), $userRepository, new AccessoryRepository());
 		$builder = new ScheduleWebServicePageBuilder($startDate, $endDate, $resourceId);
 		$reservationService = new ReservationService(new ReservationViewRepository(), new ReservationListingFactory());
 		$dailyLayoutFactory = new DailyLayoutFactory();
-		$scheduleService = new ScheduleService($scheduleRepository, $resourceService);
+		$scheduleService = new ScheduleService($scheduleRepository, $resourceService, new DailyLayoutFactory());
 		$presenter = new SchedulePresenter($scheduleWebServiceView, $scheduleService, $resourceService, $builder, $reservationService, $dailyLayoutFactory);
 
 		$presenter->PageLoad($this->server->GetSession());
