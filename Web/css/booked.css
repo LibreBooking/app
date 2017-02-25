@@ -525,6 +525,9 @@ input.mid-number {
   max-height: 80vh;
   overflow-y: scroll;
 }
+.social-login {
+  text-align: center;
+}
 .checkbox {
   padding-left: 20px;
 }

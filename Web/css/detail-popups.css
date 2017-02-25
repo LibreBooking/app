@@ -525,6 +525,9 @@ input.mid-number {
   max-height: 80vh;
   overflow-y: scroll;
 }
+.social-login {
+  text-align: center;
+}
 #resourceDetailsPopup #userDetailsPopup {
   min-width: 300px;
   max-width: 1000px;
