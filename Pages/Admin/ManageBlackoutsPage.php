@@ -244,6 +244,11 @@ interface IManageBlackoutsPage extends IPageable, IActionPage, IRepeatOptionsCom
 	 * @param bool $wasFound
 	 */
 	public function SetWasBlackoutFound($wasFound);
+
+	/**
+	 * @return int[]
+	 */
+	public function GetDeletedBlackoutIds();
 }
 
 class ManageBlackoutsPage extends ActionPage implements IManageBlackoutsPage
@@ -698,6 +703,17 @@ class ManageBlackoutsPage extends ActionPage implements IManageBlackoutsPage
 	public function GetUpdateBlackoutId()
 	{
 		return $this->GetForm(FormKeys::BLACKOUT_INSTANCE_ID);
+	}
+
+	public function GetDeletedBlackoutIds()
+	{
+		$ids = $this->GetForm(FormKeys::BLACKOUT_INSTANCE_ID);
+		if (!is_array($ids))
+		{
+			return array($ids);
+		}
+
+		return $ids;
 	}
 }
 

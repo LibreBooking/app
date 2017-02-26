@@ -96,7 +96,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 				{assign var=colCount value=$colCount+1}
 			{/if}
 			<th>{translate key='Actions'}</th>
-			<th class="action">
+			<th class="action-delete">
 				<div class="checkbox checkbox-single">
 					<input type="checkbox" id="delete-all" aria-label="{translate key=All}"/>
 					<label for="delete-all"></label>
@@ -115,8 +115,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 				<td>{$user->Phone}</td>
 				<td>{$user->Organization}</td>
 				<td>{$user->Position}</td>
-				<td>{format_date date=$user->DateCreated key=short_datetime}</td>
-				<td>{format_date date=$user->LastLogin key=short_datetime}</td>
+				<td>{format_date date=$user->DateCreated key=short_datetime timezone=$Timezone}</td>
+				<td>{format_date date=$user->LastLogin key=short_datetime timezone=$Timezone}</td>
 				<td class="action"><a href="#" class="update changeStatus">{$statusDescriptions[$user->StatusId]}</a>
 					{indicator id="userStatusIndicator"}
 				</td>
@@ -173,7 +173,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 						<a href="#" class="update delete"><span class="fa fa-trash icon remove"></span></a>
 					</div>
 				</td>
-				<td class="action">
+				<td class="action-delete">
 					<div class="checkbox checkbox-single">
 						<input {formname key=USER_ID multi=true}" class="delete-multiple" type="checkbox" id="delete{$id}" value="{$id}"
 						aria-label="{translate key=Delete}"/>
@@ -196,7 +196,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		<tfoot>
 		<tr>
 			<td colspan="{$colCount-1}"></td>
-			<td class="action"><a href="#" id="delete-selected" class="no-show">{translate key=Delete}</a></td>
+			<td class="action-delete"><a href="#" id="delete-selected" class="no-show" title="{translate key=Delete}"><span class="fa fa-trash icon remove"></span></a></td>
 		</tr>
 		</tfoot>
 	</table>
@@ -593,7 +593,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 				<div class="modal-content">
 					<div class="modal-header">
 						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-						<h4 class="modal-title" id="deleteMultipleModalLabel">{translate key=Delete} (<span id="deleteUserCount"></span>)</h4>
+						<h4 class="modal-title" id="deleteMultipleModalLabel">{translate key=Delete} (<span id="deleteMultipleCount"></span>)</h4>
 					</div>
 					<div class="modal-body">
 						<div class="alert alert-warning">

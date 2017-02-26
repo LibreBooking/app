@@ -2040,6 +2040,11 @@ td.action {
   max-width: 100px;
   text-align: center;
 }
+th.action-delete,
+td.action-delete {
+  width: 22px;
+  text-align: center;
+}
 #adminFilterButtons {
   padding-top: 5px;
   margin-top: 15px;

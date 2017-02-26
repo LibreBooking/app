@@ -484,6 +484,7 @@ class ManageReservationsPresenter extends ActionPresenter
 	public function DeleteMultiple()
 	{
 		$ids = $this->page->GetDeletedReservationIds();
+		Log::Debug('Reservation multiple delete. Ids=%s', implode(',', $ids));
 		foreach ($ids as $id){
 			$this->manageReservationsService->UnsafeDelete($id, ServiceLocator::GetServer()->GetUserSession());
 		}
