@@ -32,8 +32,9 @@ class ReportEmailMessage extends EmailMessage
 	 * @param IReportDefinition $definition
 	 * @param string $toAddress
 	 * @param UserSession $reportUser
+	 * @param string $selectedColumns
 	 */
-	public function __construct($report, $definition, $toAddress, $reportUser)
+	public function __construct($report, $definition, $toAddress, $reportUser, $selectedColumns)
 	{
 		parent::__construct($reportUser->LanguageCode);
 
@@ -42,6 +43,7 @@ class ReportEmailMessage extends EmailMessage
 
 		$this->Set('Definition', $definition);
 		$this->Set('Report', $report);
+		$this->Set('ReportCsvColumnView', new ReportCsvColumnView($selectedColumns));
 		$contents = $this->FetchTemplate('Reports/custom-csv.tpl', false);
 
 		$name = $report->ReportName();

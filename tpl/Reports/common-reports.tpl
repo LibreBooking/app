@@ -110,6 +110,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 	{html_image src="admin-ajax-indicator.gif"}
 </div>
 
+{csrf_token}
+
 {include file="Reports/chart.tpl"}
 
 {jsfile src="ajax-helpers.js"}

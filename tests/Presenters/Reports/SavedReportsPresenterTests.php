@@ -121,7 +121,7 @@ class SavedReportsPresenterTests extends TestBase
 
 		$this->service->expects($this->once())
 					  ->method('SendReport')
-					  ->with($this->equalTo($report), $this->equalTo($definition), $this->equalTo($emailAddress), $this->equalTo($this->fakeUser));
+					  ->with($this->equalTo($report), $this->equalTo($definition), $this->equalTo($emailAddress), $this->equalTo($this->fakeUser), $this->anything());
 
 		$this->presenter->EmailReport();
 	}

@@ -164,9 +164,11 @@ class ReportingServiceTests extends TestBase
 		$to = 'email';
 		$user = $this->fakeUser;
 
-		$expectedMessage = new ReportEmailMessage($report, $def, $to, $user);
+		$cols = 'cols';
 
-		$this->rs->SendReport($report, $def, $to, $user);
+		$expectedMessage = new ReportEmailMessage($report, $def, $to, $user, $cols);
+
+		$this->rs->SendReport($report, $def, $to, $user, $cols);
 		$this->assertInstanceOf('ReportEmailMessage', $this->fakeEmailService->_LastMessage);
 	}
 

@@ -64,8 +64,9 @@ interface IReportingService
 	 * @param IReportDefinition $definition
 	 * @param string $toAddress
 	 * @param UserSession $reportUser
+	 * @param string $selectedColumns
 	 */
-	public function SendReport($report, $definition, $toAddress, $reportUser);
+	public function SendReport($report, $definition, $toAddress, $reportUser, $selectedColumns);
 
 	/**
 	 * @abstract
@@ -155,9 +156,9 @@ class ReportingService implements IReportingService
 		return new GeneratedSavedReport($savedReport, $report);
 	}
 
-	public function SendReport($report, $definition, $toAddress, $reportUser)
+	public function SendReport($report, $definition, $toAddress, $reportUser, $selectedColumns)
 	{
-		$message = new ReportEmailMessage($report, $definition, $toAddress, $reportUser);
+		$message = new ReportEmailMessage($report, $definition, $toAddress, $reportUser, $selectedColumns);
 		ServiceLocator::GetEmailService()->Send($message);
 	}
 

@@ -123,8 +123,9 @@ class SavedReportsPresenter extends ActionPresenter
 		if ($report != null)
 		{
 			Log::Debug('Loading saved report for userId: %s, reportId %s', $userId, $reportId);
+			$user = $this->userRepository->LoadById($userId);
 
-			$this->service->SendReport($report, new ReportDefinition($report, $this->user->Timezone), $this->page->GetEmailAddress(), $this->user);
+			$this->service->SendReport($report, new ReportDefinition($report, $this->user->Timezone), $this->page->GetEmailAddress(), $this->user, $user->GetPreference(UserPreferences::REPORT_COLUMNS));
 		}
 	}
 
