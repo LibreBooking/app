@@ -20,7 +20,15 @@ function BlackoutManagement(opts) {
 		deleteRecurringForm: $('#deleteRecurringForm'),
 		addBlackoutForm: $('#addBlackoutForm'),
 
-		referenceNumberList: $(':hidden.reservationId')
+		referenceNumberList: $(':hidden.reservationId'),
+
+		deleteMultiplePrompt: $('#delete-selected'),
+		deleteMultipleDialog: $('#deleteMultipleDialog'),
+		deleteMultipleForm: $('#deleteMultipleForm'),
+		deleteMultipleCheckboxes: $('.delete-multiple'),
+		deleteMultipleSelectAll: $('#delete-all'),
+		deleteMultipleCount: $('#deleteMultipleCount'),
+		deleteMultiplePlaceHolder: $('#deleteMultiplePlaceHolder')
 	};
 
 	var blackoutId;
@@ -52,8 +60,7 @@ function BlackoutManagement(opts) {
 			var id = tr.attr('data-blackout-id');
 
 			$.blockUI({
-				message: $('#update-box'),
-				css: {textAlign: 'left'}
+				message: $('#update-box'), css: {textAlign: 'left'}
 			});
 
 			var updateDiv = $('#update-contents');
@@ -65,8 +72,7 @@ function BlackoutManagement(opts) {
 				$('#update-spinner').hide();
 
 				ConfigureAsyncForm($('#editBlackoutForm'), getUpdateUrl, onAddSuccess, null, {
-					onBeforeSubmit: onBeforeAddSubmit,
-					target: '#result'
+					onBeforeSubmit: onBeforeAddSubmit, target: '#result'
 				});
 
 				wireUpUpdateButtons();
@@ -87,8 +93,8 @@ function BlackoutManagement(opts) {
 				});
 				wireUpTimePickers();
 
-                $('#update-box').removeClass('no-show');
-            });
+				$('#update-box').removeClass('no-show');
+			});
 		});
 
 		handleBlackoutApplicabilityChange();
@@ -125,18 +131,40 @@ function BlackoutManagement(opts) {
 			filterReservations();
 		});
 
+		elements.deleteMultiplePrompt.click(function (e) {
+			e.preventDefault();
+			var checked = elements.blackoutTable.find('.delete-multiple:checked');
+			elements.deleteMultipleCount.text(checked.length);
+			elements.deleteMultiplePlaceHolder.empty();
+			elements.deleteMultiplePlaceHolder.append(checked.clone());
+			elements.deleteMultipleDialog.modal('show');
+		});
+
+		elements.deleteMultipleSelectAll.click(function (e) {
+			e.stopPropagation();
+			var isChecked = elements.deleteMultipleSelectAll.is(":checked");
+			elements.deleteMultipleCheckboxes.prop('checked', isChecked);
+			elements.deleteMultiplePrompt.toggleClass('no-show', !isChecked);
+		});
+
+		elements.deleteMultipleCheckboxes.click(function (e) {
+			e.stopPropagation();
+			var numberChecked = elements.reservationTable.find('.delete-multiple:checked').length;
+			var allSelected = numberChecked == elements.reservationTable.find('.delete-multiple').length;
+			elements.deleteMultipleSelectAll.prop('checked', allSelected);
+			elements.deleteMultiplePrompt.toggleClass('no-show', numberChecked == 0);
+		});
+
 		ConfigureAsyncForm(elements.addBlackoutForm, getAddUrl, onAddSuccess, null, {
-			onBeforeSubmit: onBeforeAddSubmit,
-			target: '#result'
+			onBeforeSubmit: onBeforeAddSubmit, target: '#result'
 		});
 		ConfigureAsyncForm(elements.deleteForm, getDeleteUrl, onDeleteSuccess, null, {
-			onBeforeSubmit: onBeforeDeleteSubmit,
-			target: '#result'
+			onBeforeSubmit: onBeforeDeleteSubmit, target: '#result'
 		});
 		ConfigureAsyncForm(elements.deleteRecurringForm, getDeleteUrl, onDeleteSuccess, null, {
-			onBeforeSubmit: onBeforeDeleteSubmit,
-			target: '#result'
+			onBeforeSubmit: onBeforeDeleteSubmit, target: '#result'
 		});
+		ConfigureAsyncForm(elements.deleteMultipleForm);
 	};
 
 	function showDeleteBlackout() {
@@ -211,11 +239,7 @@ function BlackoutManagement(opts) {
 	}
 
 	function filterReservations() {
-		var filterQuery =
-				'sd=' + elements.startDate.val() +
-				'&ed=' + elements.endDate.val() +
-				'&sid=' + elements.scheduleId.val() +
-				'&rid=' + elements.resourceId.val();
+		var filterQuery = 'sd=' + elements.startDate.val() + '&ed=' + elements.endDate.val() + '&sid=' + elements.scheduleId.val() + '&rid=' + elements.resourceId.val();
 
 		window.location = document.location.pathname + '?' + encodeURI(filterQuery);
 	}

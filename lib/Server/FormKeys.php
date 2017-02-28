@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Copyright 2011-2016 Nick Korbel
+ * Copyright 2011-2017 Nick Korbel
  *
  * This file is part of Booked Scheduler is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -228,6 +228,7 @@ class FormKeys
 	const SUBMIT = 'SUBMIT';
 	const SUMMARY = 'summary';
 	const SCHEDULE_ADMIN_GROUP_ID = 'adminGroupId';
+	const SELECTED_COLUMNS = 'SELECTED_COLUMNS';
 
 	const THISWEEK = 'THISWEEK';
 	const TIMEZONE = 'timezone';

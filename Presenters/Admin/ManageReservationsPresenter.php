@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright 2011-2016 Nick Korbel
+ * Copyright 2011-2017 Nick Korbel
  *
  * This file is part of Booked Scheduler.
  *
@@ -484,6 +484,7 @@ class ManageReservationsPresenter extends ActionPresenter
 	public function DeleteMultiple()
 	{
 		$ids = $this->page->GetDeletedReservationIds();
+		Log::Debug('Reservation multiple delete. Ids=%s', implode(',', $ids));
 		foreach ($ids as $id){
 			$this->manageReservationsService->UnsafeDelete($id, ServiceLocator::GetServer()->GetUserSession());
 		}

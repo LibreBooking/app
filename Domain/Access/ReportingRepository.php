@@ -1,6 +1,6 @@
 <?php
 /**
-Copyright 2012-2016 Nick Korbel
+Copyright 2012-2017 Nick Korbel
 
 This file is part of Booked Scheduler.
 
@@ -25,27 +25,23 @@ require_once(ROOT_DIR . 'Domain/SavedReport.php');
 interface IReportingRepository
 {
 	/**
-	 * @abstract
 	 * @param ReportCommandBuilder $commandBuilder
 	 * @return array
 	 */
 	public function GetCustomReport(ReportCommandBuilder $commandBuilder);
 
 	/**
-	 * @abstract
 	 * @param SavedReport $savedReport
 	 */
 	public function SaveCustomReport(SavedReport $savedReport);
 
 	/**
-	 * @abstract
 	 * @param int $userId
 	 * @return array|SavedReport[]
 	 */
 	public function LoadSavedReportsForUser($userId);
 
 	/**
-	 * @abstract
 	 * @param int $reportId
 	 * @param int $userId
 	 * @return SavedReport
@@ -53,7 +49,6 @@ interface IReportingRepository
 	public function LoadSavedReportForUser($reportId, $userId);
 
 	/**
-	 * @abstract
 	 * @param int $reportId
 	 * @param int $userId
 	 */

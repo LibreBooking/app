@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright 2012-2016 Nick Korbel
+ * Copyright 2012-2017 Nick Korbel
  *
  * This file is part of Booked Scheduler.
  *
@@ -22,6 +22,7 @@ require_once(ROOT_DIR . 'Pages/SecurePage.php');
 require_once(ROOT_DIR . 'Pages/Reports/IDisplayableReportPage.php');
 require_once(ROOT_DIR . 'Pages/Ajax/AutoCompletePage.php');
 require_once(ROOT_DIR . 'Presenters/Reports/GenerateReportPresenter.php');
+require_once(ROOT_DIR . 'Presenters/Reports/ReportCsvColumnView.php');
 
 interface IGenerateReportPage extends IDisplayableReportPage, IActionPage
 {
@@ -124,6 +125,11 @@ interface IGenerateReportPage extends IDisplayableReportPage, IActionPage
 	 * @param ResourceType[] $resourceTypes
 	 */
 	public function BindResourceTypes($resourceTypes);
+
+	/**
+	 * @return string
+	 */
+	public function GetSelectedColumns();
 }
 
 class GenerateReportPage extends ActionPage implements IGenerateReportPage
@@ -142,7 +148,8 @@ class GenerateReportPage extends ActionPage implements IGenerateReportPage
 				new ReportingService(new ReportingRepository()),
 				new ResourceRepository(),
 				new ScheduleRepository(),
-				new GroupRepository());
+				new GroupRepository(),
+				new UserRepository());
 	}
 
 	/**
@@ -267,10 +274,11 @@ class GenerateReportPage extends ActionPage implements IGenerateReportPage
 		return $this->GetValue(FormKeys::GROUP_ID);
 	}
 
-	public function BindReport(IReport $report, IReportDefinition $definition)
+	public function BindReport(IReport $report, IReportDefinition $definition, $selectedColumns)
 	{
 		$this->Set('Definition', $definition);
 		$this->Set('Report', $report);
+		$this->Set('SelectedColumns', $selectedColumns);
 	}
 
 	/**
@@ -333,6 +341,7 @@ class GenerateReportPage extends ActionPage implements IGenerateReportPage
 
 	public function ShowCsv()
 	{
+		$this->Set('ReportCsvColumnView', new ReportCsvColumnView($this->GetVar('SelectedColumns')));
 		$this->DisplayCsv('Reports/custom-csv.tpl', 'report.csv');
 	}
 
@@ -363,6 +372,11 @@ class GenerateReportPage extends ActionPage implements IGenerateReportPage
 	{
 		$include = $this->GetValue(FormKeys::INCLUDE_DELETED);
 		return isset($include);
+	}
+
+	public function GetSelectedColumns()
+	{
+		return $this->GetForm(FormKeys::SELECTED_COLUMNS);
 	}
 }
 

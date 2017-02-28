@@ -1,6 +1,6 @@
 <?php
 /**
-Copyright 2012-2016 Nick Korbel
+Copyright 2012-2017 Nick Korbel
 
 This file is part of Booked Scheduler.
 
@@ -20,7 +20,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 interface IDisplayableReportPage
 {
-	public function BindReport(IReport $report, IReportDefinition $definition);
+	public function BindReport(IReport $report, IReportDefinition $definition, $selectedColumns);
 
 	public function DisplayError();
 

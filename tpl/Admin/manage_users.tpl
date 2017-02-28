@@ -1,5 +1,5 @@
 {*
-Copyright 2011-2016 Nick Korbel
+Copyright 2011-2017 Nick Korbel
 
 This file is part of Booked Scheduler.
 
@@ -75,7 +75,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 	</form>
 
 	{assign var=colCount value=11}
-	<table class="table" id="userList">
+	<table class="table admin-panel" id="userList">
 		<thead>
 		<tr>
 			<th>{sort_column key=Name field=ColumnNames::LAST_NAME}</th>
@@ -96,7 +96,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 				{assign var=colCount value=$colCount+1}
 			{/if}
 			<th>{translate key='Actions'}</th>
-			<th class="action">
+			<th class="action-delete">
 				<div class="checkbox checkbox-single">
 					<input type="checkbox" id="delete-all" aria-label="{translate key=All}"/>
 					<label for="delete-all"></label>
@@ -115,8 +115,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 				<td>{$user->Phone}</td>
 				<td>{$user->Organization}</td>
 				<td>{$user->Position}</td>
-				<td>{format_date date=$user->DateCreated key=short_datetime}</td>
-				<td>{format_date date=$user->LastLogin key=short_datetime}</td>
+				<td>{format_date date=$user->DateCreated key=short_datetime timezone=$Timezone}</td>
+				<td>{format_date date=$user->LastLogin key=short_datetime timezone=$Timezone}</td>
 				<td class="action"><a href="#" class="update changeStatus">{$statusDescriptions[$user->StatusId]}</a>
 					{indicator id="userStatusIndicator"}
 				</td>
@@ -173,7 +173,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 						<a href="#" class="update delete"><span class="fa fa-trash icon remove"></span></a>
 					</div>
 				</td>
-				<td class="action">
+				<td class="action-delete">
 					<div class="checkbox checkbox-single">
 						<input {formname key=USER_ID multi=true}" class="delete-multiple" type="checkbox" id="delete{$id}" value="{$id}"
 						aria-label="{translate key=Delete}"/>
@@ -184,7 +184,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			{assign var=attributes value=$AttributeList}
 			{if $attributes|count > 0}
 				<tr data-userId="{$id}">
-					<td colspan="{if $PerUserColors}11{else}10{/if}" class="{$rowCss} customAttributes" userId="{$id}">
+					<td colspan="{$colCount}" class="{$rowCss} customAttributes" userId="{$id}">
 						{foreach from=$AttributeList item=attribute}
 							{include file='Admin/InlineAttributeEdit.tpl' id=$id attribute=$attribute value=$user->GetAttributeValue($attribute->Id())}
 						{/foreach}
@@ -196,7 +196,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		<tfoot>
 		<tr>
 			<td colspan="{$colCount-1}"></td>
-			<td class="action"><a href="#" id="delete-selected" class="no-show">{translate key=Delete}</a></td>
+			<td class="action-delete"><a href="#" id="delete-selected" class="no-show" title="{translate key=Delete}"><span class="fa fa-trash icon remove"></span></a></td>
 		</tr>
 		</tfoot>
 	</table>
@@ -382,7 +382,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 						<h4 class="modal-title" id="permissionsModalLabel">{translate key=Permissions}</h4>
 					</div>
-					<div class="modal-body">
+					<div class="modal-body scrollable-modal-content">
 						<div class="alert alert-warning">{translate key=UserPermissionInfo}</div>
 						{translate key=Select}
 						<a href="#" id="checkAllResources">{translate key=All}</a> |
@@ -593,7 +593,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 				<div class="modal-content">
 					<div class="modal-header">
 						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-						<h4 class="modal-title" id="deleteMultipleModalLabel">{translate key=Delete} (<span id="deleteUserCount"></span>)</h4>
+						<h4 class="modal-title" id="deleteMultipleModalLabel">{translate key=Delete} (<span id="deleteMultipleCount"></span>)</h4>
 					</div>
 					<div class="modal-body">
 						<div class="alert alert-warning">
@@ -622,7 +622,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 					<h4 class="modal-title" id="groupsModalLabel">{translate key=Groups}</h4>
 				</div>
-				<div class="modal-body">
+				<div class="modal-body scrollable-modal-content">
 
 					<div id="groupList" class="hidden">
 						{foreach from=$Groups item=group}

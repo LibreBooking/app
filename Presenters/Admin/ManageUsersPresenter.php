@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright 2011-2016 Nick Korbel
+ * Copyright 2011-2017 Nick Korbel
  *
  * This file is part of Booked Scheduler.
  *
@@ -567,9 +567,9 @@ class ManageUsersPresenter extends ActionPresenter implements IManageUsersPresen
 	public function DeleteMultipleUsers()
 	{
 		$ids = $this->page->GetDeletedUserIds();
+		Log::Debug('User multiple delete. Ids=%s', implode(',', $ids));
 		foreach ($ids as $id)
 		{
-			Log::Debug('Deleting user %s', $id);
 			$this->manageUsersService->DeleteUser($id);
 		}
 	}

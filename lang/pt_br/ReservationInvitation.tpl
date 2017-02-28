@@ -1,5 +1,5 @@
 {*
-Copyright 2011-2016 Nick Korbel
+Copyright 2011-2017 Nick Korbel
 
 This file is part of Booked Scheduler.
 
@@ -24,12 +24,12 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 	Inicio: {formatdate date=$StartDate key=reservation_email}<br/>
 	Fim: {formatdate date=$EndDate key=reservation_email}<br/>
 	Recurso: {$ResourceName}<br/>
-	Título: {$Title}<br/>
-	Descrição: {$Description|nl2br}<br/>
+	Tï¿½tulo: {$Title}<br/>
+	Descriï¿½ï¿½o: {$Description|nl2br}<br/>
 
 	{if count($RepeatDates) gt 0}
 		<br/>
-		A reserva ocorrerá nas seguintes datas:
+		A reserva ocorrerï¿½ nas seguintes datas:
 		<br/>
 	{/if}
 
@@ -39,11 +39,11 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 	{if $RequiresApproval}
 		<br/>
-		Um ou mais recursos necessitam de aprovação antes do seu uso. Essa reserva ficará pendente até que a mesma seja aprovada.
+		Um ou mais recursos necessitam de aprovaï¿½ï¿½o antes do seu uso. Essa reserva ficarï¿½ pendente atï¿½ que a mesma seja aprovada.
 	{/if}
 
 	<br/>
-	Aceitar o convite? <a href="{$ScriptUrl}/{$AcceptUrl}">Sim</a> <a href="{$ScriptUrl}/{$DeclineUrl}">Não</a>
+	Aceitar o convite? <a href="{$ScriptUrl}/{$AcceptUrl}">Sim</a> <a href="{$ScriptUrl}/{$DeclineUrl}">Nï¿½o</a>
 	<br/>
 
 	<a href="{$ScriptUrl}/{$ReservationUrl}">Verifique esta reserva</a> |

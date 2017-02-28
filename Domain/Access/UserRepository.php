@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright 2011-2016 Nick Korbel
+ * Copyright 2011-2017 Nick Korbel
  *
  * This file is part of Booked Scheduler.
  *
@@ -806,6 +806,11 @@ class UserDto
     {
         return $this->CurrentCreditCount;
     }
+
+    public function GetPreference($preferenceName)
+	{
+    	return $this->Preferences[$preferenceName];
+	}
 }
 
 class NullUserDto extends UserDto

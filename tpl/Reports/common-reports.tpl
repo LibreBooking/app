@@ -1,5 +1,5 @@
 {*
-Copyright 2012-2016 Nick Korbel
+Copyright 2012-2017 Nick Korbel
 
 This file is part of Booked Scheduler.
 
@@ -109,6 +109,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 	<h3>{translate key=Working}</h3>
 	{html_image src="admin-ajax-indicator.gif"}
 </div>
+
+{csrf_token}
 
 {include file="Reports/chart.tpl"}
 

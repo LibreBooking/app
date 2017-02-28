@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright 2014-2016 Nick Korbel
+ * Copyright 2014-2017 Nick Korbel
  *
  * This file is part of Booked Scheduler.
  *
@@ -52,20 +52,28 @@ class Drupal extends Authentication implements IAuthentication
 		return $this->_registration;
 	}
 
-	private $drupalDir;
+	private $db;
+
+	private $allowed_roles;
 
 	/**
 	 * @param IAuthentication $authentication Authentication class to decorate
 	 */
 	public function __construct(IAuthentication $authentication)
 	{
-		require_once(dirname(__FILE__) . '/Drupal.config.php');
+		$drupal_config_path = dirname(__FILE__) . '/Drupal.config.php';
+		require_once($drupal_config_path);
 
-		Configuration::Instance()->Register(
-				dirname(__FILE__) . '/Drupal.config.php',
-				'DRUPAL');
+		$config = Configuration::Instance();
+		$config->Register($drupal_config_path, 'DRUPAL');
 
-		$this->drupalDir = Configuration::Instance()->File('DRUPAL')->GetKey('drupal.root.dir');
+		$drupalDir = $config->File('DRUPAL')->GetKey('drupal.root.dir');
+                require_once($drupalDir . '/sites/default/settings.php');
+
+                $this->db = $databases['default']['default'];
+
+                $drupalRoles = $config->File('DRUPAL')->GetKey('drupal.allowed_roles');
+                $this->allowed_roles = $drupalRoles ? explode(',', $drupalRoles) : [];
 
 		$this->authToDecorate = $authentication;
 	}
@@ -127,13 +135,7 @@ class Drupal extends Authentication implements IAuthentication
 	 */
 	private function GetDrupalAccount($username)
 	{
-		define(DRUPAL_ROOT, $this->drupalDir);
-		include_once(DRUPAL_ROOT . '/includes/bootstrap.inc');
-
-		drupal_bootstrap(DRUPAL_BOOTSTRAP_CONFIGURATION);
-		global $databases;
-
-		$db = $databases['default']['default'];
+	        $db = $this->db;
 
 		$dbname = $db['database'];
 		if (!empty($db['prefix']))
@@ -141,16 +143,31 @@ class Drupal extends Authentication implements IAuthentication
 			$dbname = "{$db['prefix']}$dbname";
 		}
 
-		$host = $db['host'];
-		if (!empty($db['port']))
-		{
-			$host .= ":{$db['port']}";
+		// $db['port'] should be passed as a separate argument, per http://php.net/manual/mysqli.construct.php
+		$drupalDb = new Database(new MySqlConnection($db['username'], $db['password'], $db['host'], $dbname));
+
+		$query = 'SELECT users_field_data.* FROM users_field_data WHERE name = @user OR mail = @user';
+		if ($nb_roles = count($this->allowed_roles)) {
+		        $query = 'SELECT users_field_data.* FROM users_field_data INNER JOIN user__roles ';
+		        $query .= 'ON user__roles.entity_id = users_field_data.uid WHERE (name = @user OR mail = @user) ';
+		        $query .= 'AND bundle = @bundle AND roles_target_id IN (';
+		        $delimiter = '';
+		        for ($i = 0; $i < $nb_roles; $i++) {
+		                $query .= $delimiter . '@role' . $i;
+		                $delimiter = ', ';
+		        }
+		        $query .= ')';
 		}
 
-		$drupalDb = new Database(new MySqlConnection($db['username'], $db['password'], $host, $dbname));
-
-		$command = new AdHocCommand('select * from users where name=@user or mail=@user');
+		$command = new AdHocCommand($query);
 		$command->AddParameter(new Parameter('@user', $username));
+		if ($nb_roles) {
+		        $command->AddParameter(new Parameter('@bundle', 'user'));
+		        $rid = 0;
+		        foreach ($this->allowed_roles as $role) {
+		                $command->AddParameter(new Parameter('@role' . $rid++, $role));
+		        }
+		}
 		$reader = $drupalDb->Query($command);
 
 		if ($row = $reader->GetRow())

@@ -521,6 +521,13 @@ input.mid-number {
   color: #e91e1e;
   font-size: small;
 }
+.scrollable-modal-content {
+  max-height: 80vh;
+  overflow-y: scroll;
+}
+.social-login {
+  text-align: center;
+}
 #resourceDetailsPopup #userDetailsPopup {
   min-width: 300px;
   max-width: 1000px;

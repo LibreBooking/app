@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright 2012-2016 Nick Korbel
+ * Copyright 2012-2017 Nick Korbel
  *
  * This file is part of Booked Scheduler.
  *
@@ -164,7 +164,8 @@ class ReportDefinition implements IReportDefinition
 				$formattedRow[] = new ReportCell($column->GetData($row[$key]),
 												 $column->GetChartData($row, $key),
 												 $column->GetChartColumnType(),
-												 $column->GetChartGroup());
+												 $column->GetChartGroup(),
+												 $column->Title());
 			}
 		}
 

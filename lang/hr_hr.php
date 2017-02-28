@@ -1,6 +1,6 @@
 <?php
 /**
-Copyright 2011-2016 Nick Korbel
+Copyright 2011-2017 Nick Korbel
 Croatian translation by t.davor@gmail.com
 This file is part of Booked Scheduler.
 

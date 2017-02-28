@@ -1,6 +1,6 @@
 <?php
 /**
-Copyright 2011-2016 Nick Korbel
+Copyright 2011-2017 Nick Korbel
 
 File ini adalah bagian dari phpShceduleIt.
 

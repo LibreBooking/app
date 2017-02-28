@@ -1,6 +1,6 @@
 <?php
 /**
-Copyright 2012-2016 Nick Korbel
+Copyright 2012-2017 Nick Korbel
 
 This file is part of Booked Scheduler.
 
@@ -34,23 +34,29 @@ class CommonReportsPresenter extends ActionPresenter
 	 */
 	private $user;
 	/**
-	 * @var ISavedReportsPage
+	 * @var ICommonReportsPage
 	 */
 	private $page;
+	/**
+	 * @var IUserRepository
+	 */
+	private $userRepository;
 
-	public function __construct(ICommonReportsPage $page, UserSession $user, IReportingService $service)
+	public function __construct(ICommonReportsPage $page, UserSession $user, IReportingService $service, IUserRepository $userRepository)
 	{
 		parent::__construct($page);
 
 		$this->service = $service;
 		$this->user = $user;
 		$this->page = $page;
+		$this->userRepository = $userRepository;
 
 		$this->AddAction(ReportActions::Generate, 'GenerateReport');
 		$this->AddAction(ReportActions::Email, 'EmailReport');
 		$this->AddAction(ReportActions::Csv, 'CreateCsv');
 		$this->AddAction(ReportActions::PrintReport, 'PrintReport');
 		$this->AddAction(ReportActions::Delete, 'DeleteReport');
+		$this->AddAction(ReportActions::SaveColumns, 'SaveColumns');
 	}
 
 	public function PageLoad()
@@ -80,8 +86,8 @@ class CommonReportsPresenter extends ActionPresenter
 		if ($report != null)
 		{
 			Log::Debug('Loading saved report for userId: %s, reportId %s', $userId, $reportId);
-
-			$this->page->BindReport($report, new ReportDefinition($report, $this->user->Timezone));
+			$user = $this->userRepository->LoadById($userId);
+			$this->page->BindReport($report, new ReportDefinition($report, $this->user->Timezone), $user->GetPreference(UserPreferences::REPORT_COLUMNS));
 			call_user_func($callback);
 		}
 		else
@@ -116,7 +122,8 @@ class CommonReportsPresenter extends ActionPresenter
 		{
 			Log::Debug('Loading saved report for userId: %s, reportId %s', $userId, $reportId);
 
-			$this->service->SendReport($report, new ReportDefinition($report, $this->user->Timezone), $this->page->GetEmailAddress(), $this->user);
+			$user = $this->userRepository->LoadById($userId);
+			$this->service->SendReport($report, new ReportDefinition($report, $this->user->Timezone), $this->page->GetEmailAddress(), $this->user, $user->GetPreference(UserPreferences::REPORT_COLUMNS));
 		}
 	}
 
@@ -127,6 +134,13 @@ class CommonReportsPresenter extends ActionPresenter
 
 		Log::Debug('Deleting saved report. reportId: %s, userId: %s', $reportId, $userId);
 		$this->service->DeleteSavedReport($reportId, $userId);
+	}
+
+	public function SaveColumns()
+	{
+		$user = $this->userRepository->LoadById($this->user->UserId);
+		$user->ChangePreference(UserPreferences::REPORT_COLUMNS, $this->page->GetSelectedColumns());
+		$this->userRepository->Update($user);
 	}
 }
 

@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright 2011-2016 Nick Korbel
+ * Copyright 2011-2017 Nick Korbel
  * Copyright 2012-2014 Moritz Schepp, IST Austria
  *
  * This file is part of Booked Scheduler is free software: you can redistribute it and/or modify

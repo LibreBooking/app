@@ -1,5 +1,5 @@
 {*
-Copyright 2011-2016 Nick Korbel
+Copyright 2011-2017 Nick Korbel
 
 This file is part of Booked Scheduler.
 
@@ -109,7 +109,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		</div>
 	</div>
 
-	<table class="table" id="reservationTable">
+	<table class="table admin-panel" id="reservationTable">
 		{if $IsDesktop}
 			{assign var=colCount value=11}
 		{else}
@@ -132,7 +132,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			{/if}
 			<th class="action">{translate key='Approve'}</th>
 			<th class="action">{translate key='Delete'}</th>
-			<th class="action">
+			<th class="action-delete">
 				<div class="checkbox checkbox-single">
 					<input type="checkbox" id="delete-all" aria-label="{translate key=All}"/>
 					<label for="delete-all"></label>
@@ -187,7 +187,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 				<td class="action">
 					<a href="#" class="update delete"><span class="fa fa-trash icon remove fa-1x"></span></a>
 				</td>
-				<td class="action no-edit">
+				<td class="action-delete no-edit">
 					<div class="checkbox checkbox-single">
 						<input {formname key=RESERVATION_ID multi=true}" class="delete-multiple" type="checkbox" id="delete{$reservationId}"
 						value="{$reservationId}"
@@ -234,7 +234,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		<tfoot>
 		<tr>
 			<td colspan="{$colCount-1}"></td>
-			<td class="action"><a href="#" id="delete-selected" class="no-show">{translate key=Delete}</a></td>
+			<td class="action-delete"><a href="#" id="delete-selected" class="no-show" title="{translate key=Delete}"><span class="fa fa-trash icon remove"></span></a></td>
 		</tr>
 		</tfoot>
 	</table>

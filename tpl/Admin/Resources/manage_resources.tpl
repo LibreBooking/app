@@ -1,5 +1,5 @@
 {*
-Copyright 2011-2016 Nick Korbel
+Copyright 2011-2017 Nick Korbel
 
 This file is part of Booked Scheduler.
 
@@ -1164,7 +1164,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 					<h4 class="modal-title" id="userPermissionDialogLabel">{translate key=Users}</h4>
 				</div>
-				<div class="modal-body">
+				<div class="modal-body scrollable-modal-content">
 					<div class="form-group">
 						<label for="userSearch">{translate key=AddUser}</label> <a href="#"
 																				   id="browseUsers">{translate key=Browse}</a>
@@ -1188,7 +1188,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 					<h4 class="modal-title" id="browseUsersDialogLabel">{translate key=AllUsers}</h4>
 				</div>
-				<div class="modal-body">
+				<div class="modal-body scrollable-modal-content">
 					<div id="allUsersList"></div>
 				</div>
 			</div>
@@ -1211,7 +1211,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 					<h4 class="modal-title" id="browseGroupsDialogLabel">{translate key=AllGroups}</h4>
 				</div>
-				<div class="modal-body">
+				<div class="modal-body scrollable-modal-content">
 					<div class="form-group">
 						<label for="groupSearch">{translate key=AddGroup}</label> <a href="#"
 																					 id="browseGroups">{translate key=AllGroups}</a>
@@ -1234,7 +1234,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 					<h4 class="modal-title" id="groupPermissionDialogLabel">{translate key=Groups}</h4>
 				</div>
-				<div class="modal-body">
+				<div class="modal-body scrollable-modal-content">
 					<div id="allGroupsList"></div>
 				</div>
 			</div>
@@ -1259,7 +1259,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 						<h4 class="modal-title" id="resourceGroupsModalLabel">{translate key=ResourceGroups}</h4>
 					</div>
-					<div class="modal-body">
+					<div class="modal-body scrollable-modal-content">
 						<div id="resourceGroups">{translate key=None}</div>
 					</div>
 					<div class="modal-footer">

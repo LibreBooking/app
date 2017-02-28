@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright 2016 Nick Korbel
+ * Copyright 2017 Nick Korbel
  *
  * This file is part of Booked Scheduler.
  *
@@ -57,7 +57,7 @@ class AccountDeletedEmail extends EmailMessage
 	 */
 	function Subject()
 	{
-		return $this->Translate('UserDeleted', array($this->deletedUser->FullName(), $this->to->FullName()));
+		return $this->Translate('UserDeleted', array($this->deletedUser->FullName(), new FullName($this->userSession->FirstName, $this->userSession->LastName)));
 	}
 
 	/**

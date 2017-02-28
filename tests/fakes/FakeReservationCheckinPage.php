@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright 2016 Nick Korbel
+ * Copyright 2017 Nick Korbel
  *
  * This file is part of phpScheduleIt.
  *

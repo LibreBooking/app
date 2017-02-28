@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright 2011-2016 Nick Korbel
+ * Copyright 2011-2017 Nick Korbel
  *
  * This file is part of Booked Scheduler.
  *
@@ -209,6 +209,140 @@ class QuotaTests extends TestBase
 		$exceeds = $quota->ExceedsQuota($series, $this->user, $this->schedule, $this->reservationViewRepository);
 
 		$this->assertTrue($exceeds);
+	}
+
+	public function testWhenTotalLimitIsExceededForWeekAndWeekStartOnMonday()
+	{
+		$tz = 'UTC';
+		$this->schedule->SetTimezone($tz);
+		$this->schedule->SetWeekdayStart(1);
+
+		$duration = new QuotaDurationWeek();
+		$limit = new QuotaLimitCount(2);
+
+		$quota = new Quota(1, $duration, $limit);
+
+		// week 02/20/2017 - 02/26/2017
+		$startDate = Date::Parse('2017-02-23 5:30', $tz);
+		$endDate = Date::Parse('2017-02-23 6:30', $tz);
+
+		$series = $this->GetHourLongReservation($startDate, $endDate);
+
+		$res1 = new ReservationItemView('', Date::Parse('2017-02-21 1:30', $tz), Date::Parse('2017-02-21 2:30',
+																							 $tz), '', $series->ResourceId(), 98712);
+		$res2 = new ReservationItemView('', Date::Parse('2017-02-26 1:30', $tz), Date::Parse('2017-02-26 2:30',
+																							 $tz), '', $series->ResourceId(), 98712);
+		$reservations = array($res1, $res2);
+
+		$startSearch = Date::Parse('2017-02-20 00:00', $tz);
+		$endSearch = Date::Parse('2017-02-27 00:00', $tz);
+
+		$this->ShouldSearchBy($startSearch, $endSearch, $series, $reservations);
+
+		$exceeds = $quota->ExceedsQuota($series, $this->user, $this->schedule, $this->reservationViewRepository);
+
+		$this->assertTrue($exceeds);
+	}
+
+	public function testWhenTotalLimitIsNotExceededForWeekAndWeekStartOnMonday()
+	{
+		$tz = 'UTC';
+		$this->schedule->SetTimezone($tz);
+		$this->schedule->SetWeekdayStart(1);
+
+		$duration = new QuotaDurationWeek();
+		$limit = new QuotaLimitCount(2);
+
+		$quota = new Quota(1, $duration, $limit);
+
+		// week 02/20/2017 - 02/26/2017
+		$startDate = Date::Parse('2017-02-23 5:30', $tz);
+		$endDate = Date::Parse('2017-02-23 6:30', $tz);
+
+		$series = $this->GetHourLongReservation($startDate, $endDate);
+
+		$res1 = new ReservationItemView('', Date::Parse('2017-02-19 1:30', $tz), Date::Parse('2017-02-19 2:30',
+																							 $tz), '', $series->ResourceId(), 98712);
+		$res2 = new ReservationItemView('', Date::Parse('2017-02-26 1:30', $tz), Date::Parse('2017-02-26 2:30',
+																							 $tz), '', $series->ResourceId(), 98712);
+		$reservations = array($res1, $res2);
+
+		$startSearch = Date::Parse('2017-02-20 00:00', $tz);
+		$endSearch = Date::Parse('2017-02-27 00:00', $tz);
+
+		$this->ShouldSearchBy($startSearch, $endSearch, $series, $reservations);
+
+		$exceeds = $quota->ExceedsQuota($series, $this->user, $this->schedule, $this->reservationViewRepository);
+
+		$this->assertFalse($exceeds);
+	}
+
+	public function testWhenTotalLimitIsExceededForWeekAndWeekStartOnToday()
+	{
+		$tz = 'UTC';
+		Date::_SetNow(Date::Parse('2017-02-21'), $tz);    // tuesday
+		$this->schedule->SetTimezone($tz);
+		$this->schedule->SetWeekdayStart(Schedule::Today);
+
+		$duration = new QuotaDurationWeek();
+		$limit = new QuotaLimitCount(2);
+
+		$quota = new Quota(1, $duration, $limit);
+
+		// week 02/21/2017 - 02/27/2017
+		$startDate = Date::Parse('2017-02-23 5:30', $tz);
+		$endDate = Date::Parse('2017-02-23 6:30', $tz);
+
+		$series = $this->GetHourLongReservation($startDate, $endDate);
+
+		$res1 = new ReservationItemView('', Date::Parse('2017-02-27 1:30', $tz), Date::Parse('2017-02-27 2:30',
+																							 $tz), '', $series->ResourceId(), 98712);
+		$res2 = new ReservationItemView('', Date::Parse('2017-02-26 1:30', $tz), Date::Parse('2017-02-26 2:30',
+																							 $tz), '', $series->ResourceId(), 98712);
+		$reservations = array($res1, $res2);
+
+		$startSearch = Date::Parse('2017-02-21 00:00', $tz);
+		$endSearch = Date::Parse('2017-02-28 00:00', $tz);
+
+		$this->ShouldSearchBy($startSearch, $endSearch, $series, $reservations);
+
+		$exceeds = $quota->ExceedsQuota($series, $this->user, $this->schedule, $this->reservationViewRepository);
+
+		$this->assertTrue($exceeds);
+	}
+
+	public function testWhenTotalLimitIsNotExceededForWeekAndWeekStartOnToday()
+	{
+		$tz = 'UTC';
+		Date::_SetNow(Date::Parse('2017-02-21'), $tz);    // tuesday
+		$this->schedule->SetTimezone($tz);
+		$this->schedule->SetWeekdayStart(Schedule::Today);
+
+		$duration = new QuotaDurationWeek();
+		$limit = new QuotaLimitCount(2);
+
+		$quota = new Quota(1, $duration, $limit);
+
+		// week 02/21/2017 - 02/27/2017
+		$startDate = Date::Parse('2017-02-23 5:30', $tz);
+		$endDate = Date::Parse('2017-02-23 6:30', $tz);
+
+		$series = $this->GetHourLongReservation($startDate, $endDate);
+
+		$res1 = new ReservationItemView('', Date::Parse('2017-02-28 1:30', $tz), Date::Parse('2017-02-28 2:30',
+																							 $tz), '', $series->ResourceId(), 98712);
+		$res2 = new ReservationItemView('', Date::Parse('2017-02-26 1:30', $tz), Date::Parse('2017-02-26 2:30',
+																							 $tz), '', $series->ResourceId(), 98712);
+		$reservations = array($res1, $res2);
+
+		$startSearch = Date::Parse('2017-02-21 00:00', $tz);
+		$endSearch = Date::Parse('2017-02-28 00:00', $tz);
+
+		$this->ShouldSearchBy($startSearch, $endSearch, $series, $reservations);
+
+		$exceeds = $quota->ExceedsQuota($series, $this->user, $this->schedule, $this->reservationViewRepository);
+
+		$this->assertFalse($exceeds);
 	}
 
 	public function testWhenTotalLimitIsNotExceededForWeek()

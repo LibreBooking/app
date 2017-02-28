@@ -1,5 +1,5 @@
 {*
-Copyright 2011-2016 Nick Korbel
+Copyright 2011-2017 Nick Korbel
 
 This file is part of Booked Scheduler.
 
@@ -150,12 +150,19 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			<th>{translate key=CreatedBy}</th>
 			<th>{translate key=Update}</th>
 			<th>{translate key=Delete}</th>
+			<th class="action-delete">
+				<div class="checkbox checkbox-single">
+					<input type="checkbox" id="delete-all" aria-label="{translate key=All}"/>
+					<label for="delete-all"></label>
+				</div>
+			</th>
 		</tr>
 		</thead>
 		<tbody>
 		{foreach from=$blackouts item=blackout}
 			{cycle values='row0,row1' assign=rowCss}
-			<tr class="{$rowCss} editable" data-blackout-id="{$blackout->InstanceId}">
+			{assign var=id value=$blackout->InstanceId}
+			<tr class="{$rowCss} editable" data-blackout-id="{$id}">
 				<td>{$blackout->ResourceName}</td>
 				<td class="date">{formatdate date=$blackout->StartDate timezone=$Timezone key=res_popup}</td>
 				<td class="date">{formatdate date=$blackout->EndDate timezone=$Timezone key=res_popup}</td>
@@ -171,9 +178,23 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 						<a href="#" class="update delete"><span class="fa fa-trash icon remove"></span></a>
 					</td>
 				{/if}
+				<td class="action-delete">
+					<div class="checkbox checkbox-single">
+						<input {formname key=BLACKOUT_INSTANCE_ID multi=true}" class="delete-multiple" type="checkbox" id="delete{$id}"
+						value="{$id}"
+						aria-label="{translate key=Delete}"/>
+						<label for="delete{$id}"></label>
+					</div>
+				</td>
 			</tr>
 		{/foreach}
 		</tbody>
+		<tfoot>
+		<tr>
+			<td colspan="7"></td>
+			<td class="action-delete"><a href="#" id="delete-selected" class="no-show" title="{translate key=Delete}"><span class="fa fa-trash icon remove"></span></a></td>
+		</tr>
+		</tfoot>
 	</table>
 
 	{pagination pageInfo=$PageInfo}
@@ -234,6 +255,32 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		</div>
 	</div>
 
+	<div id="deleteMultipleDialog" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="deleteMultipleModalLabel"
+		 aria-hidden="true">
+		<form id="deleteMultipleForm" method="post" action="{$smarty.server.SCRIPT_NAME}?action={ManageBlackoutsActions::DELETE_MULTIPLE}">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+						<h4 class="modal-title" id="deleteMultipleModalLabel">{translate key=Delete} (<span id="deleteMultipleCount"></span>)</h4>
+					</div>
+					<div class="modal-body">
+						<div class="alert alert-warning">
+							<div>{translate key=DeleteWarning}</div>
+						</div>
+
+					</div>
+					<div class="modal-footer">
+						{cancel_button}
+						{delete_button}
+						{indicator}
+					</div>
+					<div id="deleteMultiplePlaceHolder" class="no-show"></div>
+				</div>
+			</div>
+		</form>
+	</div>
+
 	{csrf_token}
 
 	{jsfile src="reservationPopup.js"}
@@ -272,10 +319,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			};
 
 			var recurElements = {
-				beginDate: $('#formattedAddStartDate'),
-				endDate: $('#formattedAddEndDate'),
-				beginTime: $('#addStartTime'),
-				endTime: $('#addEndTime')
+				beginDate: $('#formattedAddStartDate'), endDate: $('#formattedAddEndDate'), beginTime: $('#addStartTime'), endTime: $('#addEndTime')
 			};
 
 			var recurrence = new Recurrence(recurOpts, recurElements);

@@ -1,5 +1,5 @@
 {*
-Copyright 2011-2016 Nick Korbel
+Copyright 2011-2017 Nick Korbel
 
 This file is part of Booked Scheduler.
 
@@ -30,8 +30,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		<div class="resource-image"><img src="{$ScriptUrl}/{$ResourceImage}"/></div>
 	{/if}
 
-	Título: {$Title}<br/>
-	Descrição: {$Description|nl2br}<br/>
+	Tï¿½tulo: {$Title}<br/>
+	Descriï¿½ï¿½o: {$Description|nl2br}<br/>
 
 	{if count($RepeatDates) gt 0}
 		<br/>

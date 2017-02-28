@@ -1,6 +1,6 @@
 <?php
 /**
-Copyright 2012-2016 Nick Korbel
+Copyright 2012-2017 Nick Korbel
 
 This file is part of Booked Scheduler.
 
@@ -180,6 +180,7 @@ function RegisterSchedules(SlimServer $server, SlimWebServiceRegistry $registry)
 	$category = new SlimWebServiceRegistryCategory('Schedules');
 	$category->AddSecureGet('/', array($webService, 'GetSchedules'), WebServices::AllSchedules);
 	$category->AddSecureGet('/:scheduleId', array($webService, 'GetSchedule'), WebServices::GetSchedule);
+	$category->AddSecureGet('/:scheduleId/Slots', array($webService, 'GetSlots'), WebServices::GetScheduleSlots);
 	$registry->AddCategory($category);
 }
 
