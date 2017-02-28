@@ -80,6 +80,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 						   href="{$Path}{Pages::RESERVATION}?{QueryStringKeys::RESOURCE_ID}={$i->ResourceId()}&{QueryStringKeys::START_DATE}={format_date date=$i->ReservationEnds() timezone=$Timezone key=url_full}">{translate key=Reserve}</a>
 					</div>
 				</div>
+                <div class="clearfix"></div>
 				{foreachelse}
 				<div class="no-data">{translate key=None}</div>
 			{/foreach}
@@ -105,6 +106,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 						   href="{$Path}{Pages::RESERVATION}?{QueryStringKeys::RESOURCE_ID}={$i->ResourceId()}&{QueryStringKeys::START_DATE}={format_date date=$i->ReservationEnds() timezone=$Timezone key=url_full}">{translate key=Reserve}</a>
 					</div>
 				</div>
+                <div class="clearfix"></div>
 				{foreachelse}
 				<div class="no-data">{translate key=None}</div>
 			{/foreach}
