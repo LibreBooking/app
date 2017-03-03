@@ -46,6 +46,8 @@ function Calendar(opts) {
             }
         });
 
+      //  $('#calendar').fullCalendar('option', 'lang', 'fr');
+
         $('.fc-widget-content').hover(
             function () {
                 $(this).addClass('hover');
