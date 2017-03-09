@@ -22,61 +22,8 @@ require_once(ROOT_DIR . 'Pages/SecurePage.php');
 require_once(ROOT_DIR . 'Presenters/Calendar/PersonalCalendarPresenter.php');
 require_once(ROOT_DIR . 'lib/Application/Schedule/CalendarSubscriptionService.php');
 
-interface IPersonalCalendarPage extends IActionPage, ICommonCalendarPage
-{
-	public function BindSubscription(CalendarSubscriptionDetails $details);
 
-	public function SetDisplayDate($displayDate);
-
-	/**
-	 * @param CalendarFilters $filters
-	 * @return void
-	 */
-	public function BindFilters($filters);
-
-	/**
-	 * @return null|int
-	 */
-	public function GetScheduleId();
-
-	/**
-	 * @return null|int
-	 */
-	public function GetResourceId();
-
-	/**
-	 * @param $scheduleId null|int
-	 * @return void
-	 */
-	public function SetScheduleId($scheduleId);
-
-	/**
-	 * @param $resourceId null|int
-	 * @return void
-	 */
-	public function SetResourceId($resourceId);
-
-	/**
-	 * @param int $firstDay
-	 */
-	public function SetFirstDay($firstDay);
-
-	/**
-	 * @param ResourceGroup $selectedGroup
-	 */
-	public function BindSelectedGroup($selectedGroup);
-
-    public function BindCalendarType($calendarType);
-
-    public function RenderSubscriptionDetails();
-
-    /**
-     * @return null|int
-     */
-    public function GetGroupId();
-}
-
-class PersonalCalendarPage extends ActionPage implements IPersonalCalendarPage
+class PersonalCalendarPage extends ActionPage implements ICommonCalendarPage
 {
 
 	/**

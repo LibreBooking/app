@@ -21,74 +21,7 @@
 require_once(ROOT_DIR . 'Pages/SecurePage.php');
 require_once(ROOT_DIR . 'Presenters/Calendar/CalendarPresenter.php');
 
-interface ICalendarPage extends IActionPage, ICommonCalendarPage
-{
-
-    public function BindCalendarType($calendarType);
-
-    /**
-     * @param CalendarFilters $filters
-     * @return void
-     */
-    public function BindFilters($filters);
-
-    /**
-     * @param Date $displayDate
-     * @return void
-     */
-    public function SetDisplayDate($displayDate);
-
-    /**
-     * @return null|int
-     */
-    public function GetScheduleId();
-
-    /**
-     * @return null|int
-     */
-    public function GetResourceId();
-
-    /**
-     * @return null|int
-     */
-    public function GetGroupId();
-
-    /**
-     * @param $scheduleId null|int
-     * @return void
-     */
-    public function SetScheduleId($scheduleId);
-
-    /**
-     * @param $resourceId null|int
-     * @return void
-     */
-    public function SetResourceId($resourceId);
-
-    /**
-     * @param CalendarSubscriptionDetails $subscriptionDetails
-     */
-    public function BindSubscription($subscriptionDetails);
-
-    /**
-     * @param int $firstDay
-     */
-    public function SetFirstDay($firstDay);
-
-    /**
-     * @param ResourceGroup $selectedGroup
-     */
-    public function BindSelectedGroup($selectedGroup);
-
-    /**
-     * @param CalendarReservation[] $reservationList
-     */
-    public function BindEvents($reservationList);
-
-    public function RenderSubscriptionDetails();
-}
-
-class CalendarPage extends ActionPage implements ICalendarPage
+class CalendarPage extends ActionPage implements ICommonCalendarPage
 {
     /**
      * @var string
@@ -220,7 +153,7 @@ class CalendarPage extends ActionPage implements ICalendarPage
     /**
      * @param CalendarSubscriptionDetails $details
      */
-    public function BindSubscription($details)
+    public function BindSubscription(CalendarSubscriptionDetails $details)
     {
         $this->Set('IsSubscriptionAllowed', $details->IsAllowed());
         $this->Set('IsSubscriptionEnabled', $details->IsEnabled());

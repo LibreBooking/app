@@ -18,14 +18,26 @@
  * along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-interface ICommonCalendarPage
+interface ICommonCalendarPage extends IActionPage
 {
+    /**
+     * @return string
+     */
     public function GetDay();
 
+    /**
+     * @return string
+     */
     public function GetMonth();
 
+    /**
+     * @return string
+     */
     public function GetYear();
 
+    /**
+     * @return string
+     */
     public function GetCalendarType();
 
     /**
@@ -42,6 +54,63 @@ interface ICommonCalendarPage
      * @return string
      */
     public function GetEndDate();
+
+    /**
+     * @param ResourceGroup $selectedGroup
+     */
+    public function BindSelectedGroup($selectedGroup);
+
+    /**
+     * @param int $firstDay
+     */
+    public function SetFirstDay($firstDay);
+
+    /**
+     * @param CalendarSubscriptionDetails $subscriptionDetails
+     */
+    public function BindSubscription(CalendarSubscriptionDetails $subscriptionDetails);
+
+    /**
+     * @param Date $displayDate
+     */
+    public function SetDisplayDate($displayDate);
+
+    /**
+     * @param string $calendarType
+     */
+    public function BindCalendarType($calendarType);
+
+    /**
+     * @param CalendarFilters $filters
+     */
+    public function BindFilters($filters);
+
+    /**
+     * @return null|int
+     */
+    public function GetScheduleId();
+
+    /**
+     * @return null|int
+     */
+    public function GetResourceId();
+
+    /**
+     * @return null|int
+     */
+    public function GetGroupId();
+
+    /**
+     * @param $scheduleId null|int
+     */
+    public function SetScheduleId($scheduleId);
+
+    /**
+     * @param $resourceId null|int
+     */
+    public function SetResourceId($resourceId);
+
+    public function RenderSubscriptionDetails();
 }
 
 class CalendarCommon

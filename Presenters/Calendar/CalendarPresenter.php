@@ -30,7 +30,7 @@ require_once(ROOT_DIR . 'Presenters/Calendar/CalendarCommon.php');
 class CalendarPresenter extends ActionPresenter
 {
 	/**
-	 * @var ICalendarPage
+	 * @var ICommonCalendarPage
 	 */
 	private $page;
 
@@ -69,7 +69,7 @@ class CalendarPresenter extends ActionPresenter
      */
     private $userRepository;
 
-    public function __construct(ICalendarPage $page,
+    public function __construct(ICommonCalendarPage $page,
 								ICalendarFactory $calendarFactory,
 								IReservationViewRepository $reservationRepository,
 								IScheduleRepository $scheduleRepository,
