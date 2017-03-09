@@ -64,11 +64,17 @@ class CalendarPresenter extends ActionPresenter
      */
     private $common;
 
+    /**
+     * @var IUserRepository
+     */
+    private $userRepository;
+
     public function __construct(ICalendarPage $page,
 								ICalendarFactory $calendarFactory,
 								IReservationViewRepository $reservationRepository,
 								IScheduleRepository $scheduleRepository,
-								IResourceService $resourceService,
+                                IUserRepository $userRepository,
+                                IResourceService $resourceService,
 								ICalendarSubscriptionService $subscriptionService,
 								IPrivacyFilter $privacyFilter)
 	{
@@ -79,6 +85,7 @@ class CalendarPresenter extends ActionPresenter
 		$this->resourceService = $resourceService;
 		$this->subscriptionService = $subscriptionService;
 		$this->privacyFilter = $privacyFilter;
+        $this->userRepository = $userRepository;
         $this->common = new CalendarCommon($page, $reservationRepository, $scheduleRepository, $resourceService, $calendarFactory, $privacyFilter);
 	}
 
@@ -87,13 +94,29 @@ class CalendarPresenter extends ActionPresenter
         $resources = $this->common->GetAllResources($userSession);
 
         $schedules = $this->scheduleRepository->GetAll();
-		$selectedSchedule = $this->common->GetSelectedSchedule($schedules);
+        $selectedScheduleId = $this->page->GetScheduleId();
+        $selectedResourceId = $this->page->GetResourceId();
+        $selectedGroupId = $this->page->GetGroupId();
 
-        $selectedScheduleId = $selectedSchedule->GetId();
-		$selectedResourceId = $this->page->GetResourceId();
-		$selectedGroupId = $this->page->GetGroupId();
+        $user = $this->userRepository->LoadById($userSession->UserId);
+        $calendarPreference = UserCalendarFilter::Deserialize($user->GetPreference(UserPreferences::CALENDAR_FILTER));
 
-		$resourceGroups = $this->resourceService->GetResourceGroups($selectedScheduleId, $userSession);
+        if (empty($selectedScheduleId))
+        {
+            $selectedScheduleId = $calendarPreference->ScheduleId;
+        }
+        if (empty($selectedResourceId))
+        {
+            $selectedResourceId = $calendarPreference->ResourceId;
+        }
+        if (empty($selectedGroupId))
+        {
+            $selectedGroupId = $calendarPreference->GroupId;
+        }
+
+        $selectedSchedule = $this->common->GetSelectedSchedule($schedules, $selectedScheduleId);
+
+        $resourceGroups = $this->resourceService->GetResourceGroups($selectedScheduleId, $userSession);
 
 		if (!empty($selectedGroupId))
 		{
@@ -146,6 +169,11 @@ class CalendarPresenter extends ActionPresenter
             null, null, $selectedScheduleId,
             $selectedResourceId);
 
+        $user = $this->userRepository->LoadById($userSession->UserId);
+        $userCalendarFilter = new UserCalendarFilter($selectedResourceId, $selectedScheduleId, $selectedGroupId);
+        $user->ChangePreference(UserPreferences::CALENDAR_FILTER, $userCalendarFilter->Serialize());
+        $this->userRepository->Update($user);
+        
         $this->page->BindEvents(CalendarReservation::FromScheduleReservationList(
             $reservations,
             $resources,

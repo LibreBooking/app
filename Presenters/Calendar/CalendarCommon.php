@@ -89,9 +89,10 @@ class CalendarCommon
 
     /**
      * @param array|Schedule[] $schedules
+     * @param int $scheduleId
      * @return Schedule
      */
-    public function GetSelectedSchedule($schedules)
+    public function GetSelectedSchedule($schedules, $scheduleId)
     {
         if (empty($schedules))
         {
@@ -99,7 +100,6 @@ class CalendarCommon
         }
 
         $default = new NullSchedule();
-        $scheduleId = $this->page->GetScheduleId();
 
         /** @var $schedule Schedule */
         foreach ($schedules as $schedule)
@@ -133,5 +133,38 @@ class CalendarCommon
         $endDate = $this->page->GetEndDate();
 
         return Date::Parse($endDate, $timezone);
+    }
+}
+
+class UserCalendarFilter
+{
+    public $ResourceId;
+    public $ScheduleId;
+    public $GroupId;
+
+    public function __construct($resourceId, $scheduleId, $groupId)
+    {
+
+        $this->ResourceId = $resourceId;
+        $this->ScheduleId = $scheduleId;
+        $this->GroupId = $groupId;
+    }
+
+    /**
+     * @return string
+     */
+    public function Serialize()
+    {
+       return "{$this->ResourceId}|{$this->ScheduleId}|{$this->GroupId}";
+    }
+
+    /**
+     * @param string $string
+     * @return UserCalendarFilter
+     */
+    public static function Deserialize($string)
+    {
+        $parts = explode('|', $string);
+        return new UserCalendarFilter($parts[0], $parts[1], $parts[2]);
     }
 }

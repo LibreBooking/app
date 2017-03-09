@@ -100,9 +100,26 @@ class PersonalCalendarPresenter extends ActionPresenter
 		$resources = $this->resourceService->GetAllResources($showInaccessible, $userSession);
 
 		$selectedScheduleId = $this->page->GetScheduleId();
-		$selectedSchedule = $this->common->GetSelectedSchedule($schedules);
 		$selectedResourceId = $this->page->GetResourceId();
         $selectedGroupId = $this->page->GetGroupId();
+
+        $user = $this->userRepository->LoadById($userSession->UserId);
+        $calendarPreference = UserCalendarFilter::Deserialize($user->GetPreference(UserPreferences::CALENDAR_FILTER));
+
+        if (empty($selectedScheduleId))
+        {
+            $selectedScheduleId = $calendarPreference->ScheduleId;
+        }
+        if (empty($selectedResourceId))
+        {
+            $selectedResourceId = $calendarPreference->ResourceId;
+        }
+        if (empty($selectedGroupId))
+        {
+            $selectedGroupId = $calendarPreference->GroupId;
+        }
+
+        $selectedSchedule = $this->common->GetSelectedSchedule($schedules, $selectedScheduleId);
 
         $resourceGroups = $this->resourceService->GetResourceGroups($selectedScheduleId, $userSession);
 
@@ -173,6 +190,11 @@ class PersonalCalendarPresenter extends ActionPresenter
 
         $reservations = $this->reservationRepository->GetReservations($this->common->GetStartDate(), $this->common->GetEndDate()->AddDays(1), $userSession->UserId,
             ReservationUserLevel::ALL, $selectedScheduleId, $selectedResourceId);
+
+		$user = $this->userRepository->LoadById($userSession->UserId);
+		$userCalendarFilter = new UserCalendarFilter($selectedResourceId, $selectedScheduleId, $selectedGroupId);
+		$user->ChangePreference(UserPreferences::CALENDAR_FILTER, $userCalendarFilter->Serialize());
+        $this->userRepository->Update($user);
 
         $this->page->BindEvents(CalendarReservation::FromViewList($reservations, $userSession->Timezone, $userSession));
     }

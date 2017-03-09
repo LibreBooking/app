@@ -39,7 +39,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 				</div>
 
 				<div class="col-md-6 col-xs-12 col-top">
-					<div class="pull-right-lg">
+					<div class="pull-right-sm">
 						<button type="button" class="btn btn-default" onclick="window.location='{$ReturnUrl}'">
 							<span class="hidden-xs">{translate key='Cancel'}</span>
 							<span class="visible-xs"><i class="fa fa-arrow-circle-left"></i></span>
@@ -332,7 +332,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 			<div class="row">
 				<div class="reservationButtons col-md-6 col-md-offset-6 col-xs-12">
-					<div class="pull-right-lg">
+					<div class="pull-right-sm">
 						<button type="button" class="btn btn-default" onclick="window.location='{$ReturnUrl}'">
 							<span class="hidden-xs">{translate key='Cancel'}</span>
 							<span class="visible-xs"><i class="fa fa-arrow-circle-left"></i></span>

@@ -682,7 +682,8 @@ class SmartyPage extends Smarty
     public function IncludeJavascriptFile($params, &$smarty)
     {
         $versionNumber = Configuration::VERSION;
-        echo "<script type=\"text/javascript\" src=\"{$this->RootPath}scripts/{$params['src']}?v=$versionNumber\"></script>";
+        $async = isset($params['async']) ? ' async' : '';
+        echo "<script type=\"text/javascript\" src=\"{$this->RootPath}scripts/{$params['src']}?v=$versionNumber\"{$async}></script>";
     }
 
     public function IncludeCssFile($params, &$smarty)

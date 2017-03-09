@@ -248,8 +248,6 @@ function Calendar(opts) {
                 at: 'left top',
                 of: jsEvent
             });
-
-
         }
     };
 

@@ -22,8 +22,9 @@ class UserPreferences
 {
 	const RESERVATION_COLOR = 'ReservationColor';
 	const REPORT_COLUMNS = 'ReportColumns';
+    const CALENDAR_FILTER = 'CalendarFilter';
 
-	private $preferences = array();
+    private $preferences = array();
 	private $changed = array();
 	private $added = array();
 
