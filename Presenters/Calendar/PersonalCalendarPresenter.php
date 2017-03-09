@@ -30,42 +30,8 @@ class PersonalCalendarActions
     const ActionDisableSubscription = 'disable';
 }
 
-class PersonalCalendarPresenter extends ActionPresenter
+class PersonalCalendarPresenter extends CommonCalendarPresenter
 {
-    /**
-     * @var \ICommonCalendarPage
-     */
-    private $page;
-
-    /**
-     * @var \IReservationViewRepository
-     */
-    private $reservationRepository;
-
-    /**
-     * @var ICalendarSubscriptionService
-     */
-    private $subscriptionService;
-
-    /**
-     * @var IUserRepository
-     */
-    private $userRepository;
-
-    /**
-     * @var IResourceService
-     */
-    private $resourceService;
-
-    /**
-     * @var IScheduleRepository
-     */
-    private $scheduleRepository;
-
-    /**
-     * @var CalendarCommon
-     */
-    private $common;
 
     public function __construct(
         ICommonCalendarPage $page,
@@ -76,76 +42,17 @@ class PersonalCalendarPresenter extends ActionPresenter
         IResourceService $resourceService,
         IScheduleRepository $scheduleRepository)
     {
-        parent::__construct($page);
-
-        $this->page = $page;
-        $this->reservationRepository = $repository;
-        $this->subscriptionService = $subscriptionService;
-        $this->userRepository = $userRepository;
-        $this->resourceService = $resourceService;
-        $this->scheduleRepository = $scheduleRepository;
-        $this->common = new CalendarCommon($page, $repository, $scheduleRepository, $resourceService, $calendarFactory);
+        parent::__construct($page,
+            $calendarFactory,
+            $repository,
+            $scheduleRepository,
+            $userRepository,
+            $resourceService,
+            $subscriptionService,
+            new NullPrivacyFilter());
 
         $this->AddAction(PersonalCalendarActions::ActionEnableSubscription, 'EnableSubscription');
         $this->AddAction(PersonalCalendarActions::ActionDisableSubscription, 'DisableSubscription');
-    }
-
-    /**
-     * @param UserSession $userSession
-     */
-    public function PageLoad($userSession)
-    {
-        $schedules = $this->scheduleRepository->GetAll();
-        $showInaccessible = Configuration::Instance()->GetSectionKey(ConfigSection::SCHEDULE, ConfigKeys::SCHEDULE_SHOW_INACCESSIBLE_RESOURCES, new BooleanConverter());
-        $resources = $this->resourceService->GetAllResources($showInaccessible, $userSession);
-
-        $selectedScheduleId = $this->page->GetScheduleId();
-        $selectedResourceId = $this->page->GetResourceId();
-        $selectedGroupId = $this->page->GetGroupId();
-
-        $user = $this->userRepository->LoadById($userSession->UserId);
-        $calendarPreference = UserCalendarFilter::Deserialize($user->GetPreference(UserPreferences::CALENDAR_FILTER));
-
-        if (empty($selectedScheduleId)) {
-            $selectedScheduleId = $calendarPreference->ScheduleId;
-        }
-        if (empty($selectedResourceId)) {
-            $selectedResourceId = $calendarPreference->ResourceId;
-        }
-        if (empty($selectedGroupId) && empty($selectedResourceId)) {
-            $selectedGroupId = $calendarPreference->GroupId;
-        }
-
-        $selectedSchedule = $this->common->GetSelectedSchedule($schedules, $selectedScheduleId);
-
-        $resourceGroups = $this->resourceService->GetResourceGroups($selectedScheduleId, $userSession);
-
-        if (!empty($selectedGroupId)) {
-            $selectedGroup = $resourceGroups->GetGroup($selectedGroupId);
-            $this->page->BindSelectedGroup($selectedGroup);
-
-            $tempResources = array();
-            $resourceIds = $resourceGroups->GetResourceIds($selectedGroupId);
-            foreach ($resources as $resource) {
-                if (in_array($resource->GetId(), $resourceIds)) {
-                    $tempResources[] = $resource;
-                }
-            }
-
-            $resources = $tempResources;
-        }
-
-        $this->page->SetDisplayDate($this->common->GetStartDate());
-
-        $this->page->BindFilters(new CalendarFilters($schedules, $resources, $selectedScheduleId, $selectedResourceId, $resourceGroups));
-
-        $this->page->SetScheduleId($selectedScheduleId);
-        $this->page->SetResourceId($selectedResourceId);
-
-        $this->page->SetFirstDay($selectedSchedule->GetWeekdayStart());
-
-        $this->BindSubscriptionDetails($userSession);
-        $this->page->BindCalendarType($this->page->GetCalendarType());
     }
 
     public function EnableSubscription()
@@ -168,49 +75,17 @@ class PersonalCalendarPresenter extends ActionPresenter
         $this->userRepository->Update($user);
     }
 
-    private function BindCalendarEvents()
+    protected function BindSubscriptionDetails($userSession, $resourceId, $scheduleId)
     {
-        $userSession = ServiceLocator::GetServer()->GetUserSession();
-
-        $selectedResourceId = $this->page->GetResourceId();
-        $selectedScheduleId = $this->page->GetScheduleId();
-        $selectedGroupId = $this->page->GetGroupId();
-
-        if (!empty($selectedGroupId)) {
-            $resourceGroups = $this->resourceService->GetResourceGroups($selectedScheduleId, $userSession);
-            $selectedResourceId = $resourceGroups->GetResourceIds($selectedGroupId);
-        }
-
-        $reservations = $this->reservationRepository->GetReservations($this->common->GetStartDate(), $this->common->GetEndDate()->AddDays(1), $userSession->UserId,
-            ReservationUserLevel::ALL, $selectedScheduleId, $selectedResourceId);
-
-        $user = $this->userRepository->LoadById($userSession->UserId);
-        $userCalendarFilter = new UserCalendarFilter($selectedResourceId, $selectedScheduleId, $selectedGroupId);
-        $user->ChangePreference(UserPreferences::CALENDAR_FILTER, $userCalendarFilter->Serialize());
-        $this->userRepository->Update($user);
-
-        $this->page->BindEvents(CalendarReservation::FromViewList($reservations, $userSession->Timezone, $userSession));
-    }
-
-    public function ProcessDataRequest($dataRequest)
-    {
-        if ($dataRequest == 'events') {
-            $this->BindCalendarEvents();
-        }
-        else {
-            $this->BindSubscriptionDetails(ServiceLocator::GetServer()->GetUserSession());
-            $this->page->RenderSubscriptionDetails();
-        }
-    }
-
-    /**
-     * @param $userSession
-     */
-    private function BindSubscriptionDetails($userSession)
-    {
-        $resourceId = $this->page->GetResourceId();
-        $scheduleId = $this->page->GetScheduleId();
         $details = $this->subscriptionService->ForUser($userSession->UserId, $resourceId, $scheduleId);
         $this->page->BindSubscription($details);
+    }
+
+    protected function BindEvents($userSession, $selectedScheduleId, $selectedResourceId)
+    {
+        $reservations = $this->reservationRepository->GetReservations($this->GetStartDate(), $this->GetEndDate()->AddDays(1), $userSession->UserId,
+            ReservationUserLevel::ALL, $selectedScheduleId, $selectedResourceId);
+
+        $this->page->BindEvents(CalendarReservation::FromViewList($reservations, $userSession->Timezone, $userSession));
     }
 }
