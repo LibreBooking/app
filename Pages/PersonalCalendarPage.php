@@ -23,7 +23,7 @@ require_once(ROOT_DIR . 'Presenters/Calendar/PersonalCalendarPresenter.php');
 require_once(ROOT_DIR . 'lib/Application/Schedule/CalendarSubscriptionService.php');
 
 
-class PersonalCalendarPage extends ActionPage implements ICommonCalendarPage
+class PersonalCalendarPage extends CommonCalendarPage implements ICommonCalendarPage
 {
 
 	/**
@@ -67,139 +67,19 @@ class PersonalCalendarPage extends ActionPage implements ICommonCalendarPage
 		$this->Display('Calendar/mycalendar.tpl');
 	}
 
-	public function GetDay()
-	{
-		return $this->GetQuerystring(QueryStringKeys::DAY);
-	}
-
-	public function GetMonth()
-	{
-		return $this->GetQuerystring(QueryStringKeys::MONTH);
-	}
-
-	public function GetYear()
-	{
-		return $this->GetQuerystring(QueryStringKeys::YEAR);
-	}
-
-	public function GetCalendarType()
-	{
-		return $this->GetQuerystring(QueryStringKeys::CALENDAR_TYPE);
-	}
-
-    public function BindCalendarType($calendarType)
-    {
-        $calendarType = empty($calendarType) ? 'month' : $calendarType;
-        $this->Set('CalendarType',$calendarType);
-    }
-
-    public function GetGroupId()
-    {
-        return $this->GetQuerystring(QueryStringKeys::GROUP_ID);
-    }
-
-	/**
-	 * @param $displayDate Date
-	 * @return void
-	 */
-	public function SetDisplayDate($displayDate)
-	{
-		$this->Set('DisplayDate', $displayDate);
-
-		$months = Resources::GetInstance()->GetMonths('full');
-		$this->Set('MonthName', $months[$displayDate->Month() - 1]);
-		$this->Set('MonthNames', $months);
-		$this->Set('MonthNamesShort', Resources::GetInstance()->GetMonths('abbr'));
-
-		$days = Resources::GetInstance()->GetDays('full');
-		$this->Set('DayName', $days[$displayDate->Weekday()]);
-		$this->Set('DayNames', $days);
-		$this->Set('DayNamesShort', Resources::GetInstance()->GetDays('abbr'));
-	}
-
-	/**
-	 * @return void
-	 */
-	public function ProcessAction()
-	{
-		$this->presenter->ProcessAction();
-	}
-
-	public function ProcessDataRequest($dataRequest)
-	{
-		$this->presenter->ProcessDataRequest($dataRequest);
-	}
-
-	public function BindSubscription(CalendarSubscriptionDetails $details)
-	{
-		$this->Set('IsSubscriptionAllowed', $details->IsAllowed());
-		$this->Set('IsSubscriptionEnabled', $details->IsEnabled());
-		$this->Set('SubscriptionUrl', $details->Url());
-	}
-
-	public function BindFilters($filters)
-	{
-		$this->Set('filters', $filters);
-		$this->Set('IsAccessible', !$filters->IsEmpty());
-		$this->Set('ResourceGroupsAsJson', json_encode($filters->GetResourceGroupTree()->GetGroups(false)));;
-	}
-
-	public function GetScheduleId()
-	{
-		return $this->GetQuerystring(QueryStringKeys::SCHEDULE_ID);
-	}
-
-	public function GetResourceId()
-	{
-		return $this->GetQuerystring(QueryStringKeys::RESOURCE_ID);
-	}
-
-	public function SetScheduleId($scheduleId)
-	{
-		$this->Set('ScheduleId', $scheduleId);
-	}
-
-	public function SetResourceId($resourceId)
-	{
-		$this->Set('ResourceId', $resourceId);
-	}
-
-	public function SetFirstDay($firstDay)
-	{
-		$this->Set('FirstDay', $firstDay == Schedule::Today ? 0 : $firstDay);
-	}
-
-	public function BindSelectedGroup($selectedGroup)
-	{
-		$this->Set('GroupName', $selectedGroup->name);
-		$this->Set('SelectedGroupNode', $selectedGroup->id);
-		$this->Set('GroupId', $selectedGroup->id);
-	}
-
-    public function BindEvents($reservationList)
-    {
-        $events = array();
-        foreach ($reservationList as $r)
-        {
-            $events[] = $r->AsFullCalendarEvent();
-        }
-
-        $this->SetJson($events);
-    }
-
-    public function GetStartDate()
-    {
-        return $this->GetQuerystring(QueryStringKeys::START);
-    }
-
-    public function GetEndDate()
-    {
-        return $this->GetQuerystring(QueryStringKeys::END);
-    }
-
     public function RenderSubscriptionDetails()
     {
         $this->Display('Calendar/mycalendar.subscription.tpl');
+    }
+
+    public function ProcessAction()
+    {
+        $this->presenter->ProcessAction();
+    }
+
+    public function ProcessDataRequest($dataRequest)
+    {
+        $this->presenter->ProcessDataRequest($dataRequest);
     }
 }
 

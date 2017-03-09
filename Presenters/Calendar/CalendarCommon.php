@@ -113,6 +113,148 @@ interface ICommonCalendarPage extends IActionPage
     public function RenderSubscriptionDetails();
 }
 
+abstract class CommonCalendarPage extends ActionPage implements ICommonCalendarPage
+{
+
+    public function GetDay()
+    {
+        return $this->GetQuerystring(QueryStringKeys::DAY);
+    }
+
+    public function GetMonth()
+    {
+        return $this->GetQuerystring(QueryStringKeys::MONTH);
+    }
+
+    public function GetYear()
+    {
+        return $this->GetQuerystring(QueryStringKeys::YEAR);
+    }
+
+    public function GetCalendarType()
+    {
+        return $this->GetQuerystring(QueryStringKeys::CALENDAR_TYPE);
+    }
+
+    public function BindCalendarType($calendarType)
+    {
+        $calendarType = empty($calendarType) ? 'month' : $calendarType;
+        $this->Set('CalendarType', $calendarType);
+    }
+
+    /**
+     * @param Date $displayDate
+     * @return void
+     */
+    public function SetDisplayDate($displayDate)
+    {
+        $this->Set('DisplayDate', $displayDate);
+
+        $months = Resources::GetInstance()->GetMonths('full');
+        $this->Set('MonthName', $months[$displayDate->Month() - 1]);
+        $this->Set('MonthNames', $months);
+        $this->Set('MonthNamesShort', Resources::GetInstance()->GetMonths('abbr'));
+
+        $days = Resources::GetInstance()->GetDays('full');
+        $this->Set('DayName', $days[$displayDate->Weekday()]);
+        $this->Set('DayNames', $days);
+        $this->Set('DayNamesShort', Resources::GetInstance()->GetDays('abbr'));
+    }
+
+    /**
+     * @param CalendarFilters $filters
+     * @return void
+     */
+    public function BindFilters($filters)
+    {
+        $this->Set('filters', $filters);
+        $this->Set('IsAccessible', !$filters->IsEmpty());
+        $this->Set('ResourceGroupsAsJson', json_encode($filters->GetResourceGroupTree()->GetGroups(false)));;
+    }
+
+    public function GetScheduleId()
+    {
+        return $this->GetQuerystring(QueryStringKeys::SCHEDULE_ID);
+    }
+
+    public function GetResourceId()
+    {
+        return $this->GetQuerystring(QueryStringKeys::RESOURCE_ID);
+    }
+
+    public function GetGroupId()
+    {
+        return $this->GetQuerystring(QueryStringKeys::GROUP_ID);
+    }
+
+    /**
+     * @param $scheduleId null|int
+     * @return void
+     */
+    public function SetScheduleId($scheduleId)
+    {
+        $this->Set('ScheduleId', $scheduleId);
+    }
+
+    /**
+     * @param $resourceId null|int
+     * @return void
+     */
+    public function SetResourceId($resourceId)
+    {
+        $this->Set('ResourceId', $resourceId);
+    }
+
+    /**
+     * @param CalendarSubscriptionDetails $details
+     */
+    public function BindSubscription(CalendarSubscriptionDetails $details)
+    {
+        $this->Set('IsSubscriptionAllowed', $details->IsAllowed());
+        $this->Set('IsSubscriptionEnabled', $details->IsEnabled());
+        $this->Set('SubscriptionUrl', $details->Url());
+    }
+
+    /**
+     * @param int $firstDay
+     */
+    public function SetFirstDay($firstDay)
+    {
+        $this->Set('FirstDay', $firstDay == Schedule::Today ? 0 : $firstDay);
+    }
+
+    /**
+     * @param ResourceGroup $selectedGroup
+     */
+    public function BindSelectedGroup($selectedGroup)
+    {
+        $this->Set('GroupName', $selectedGroup->name);
+        $this->Set('SelectedGroupNode', $selectedGroup->id);
+        $this->Set('GroupId', $selectedGroup->id);
+    }
+
+    public function BindEvents($reservationList)
+    {
+        $events = array();
+        foreach ($reservationList as $r) {
+            $events[] = $r->AsFullCalendarEvent();
+        }
+
+        $this->SetJson($events);
+    }
+
+
+    public function GetStartDate()
+    {
+        return $this->GetQuerystring(QueryStringKeys::START);
+    }
+
+    public function GetEndDate()
+    {
+        return $this->GetQuerystring(QueryStringKeys::END);
+    }
+}
+
 class CalendarCommon
 {
     /**
