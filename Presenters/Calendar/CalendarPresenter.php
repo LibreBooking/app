@@ -109,7 +109,7 @@ class CalendarPresenter extends ActionPresenter
         {
             $selectedResourceId = $calendarPreference->ResourceId;
         }
-        if (empty($selectedGroupId))
+        if (empty($selectedGroupId) && empty($selectedResourceId))
         {
             $selectedGroupId = $calendarPreference->GroupId;
         }
@@ -173,7 +173,7 @@ class CalendarPresenter extends ActionPresenter
         $userCalendarFilter = new UserCalendarFilter($selectedResourceId, $selectedScheduleId, $selectedGroupId);
         $user->ChangePreference(UserPreferences::CALENDAR_FILTER, $userCalendarFilter->Serialize());
         $this->userRepository->Update($user);
-        
+
         $this->page->BindEvents(CalendarReservation::FromScheduleReservationList(
             $reservations,
             $resources,

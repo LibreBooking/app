@@ -114,7 +114,7 @@ class PersonalCalendarPresenter extends ActionPresenter
         {
             $selectedResourceId = $calendarPreference->ResourceId;
         }
-        if (empty($selectedGroupId))
+        if (empty($selectedGroupId) && empty($selectedResourceId))
         {
             $selectedGroupId = $calendarPreference->GroupId;
         }
