@@ -27,6 +27,12 @@ require_once(ROOT_DIR . 'lib/Application/Reservation/namespace.php');
 require_once(ROOT_DIR . 'Presenters/ActionPresenter.php');
 require_once(ROOT_DIR . 'Presenters/Calendar/CalendarFilters.php');
 
+class CalendarActions
+{
+    const ActionEnableSubscription = 'enable';
+    const ActionDisableSubscription = 'disable';
+}
+
 interface ICommonCalendarPage extends IActionPage
 {
     /**

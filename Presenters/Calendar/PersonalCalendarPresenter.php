@@ -24,15 +24,8 @@ require_once(ROOT_DIR . 'Presenters/ActionPresenter.php');
 require_once(ROOT_DIR . 'Presenters/Calendar/CalendarFilters.php');
 require_once(ROOT_DIR . 'Presenters/Calendar/CalendarCommon.php');
 
-class PersonalCalendarActions
-{
-    const ActionEnableSubscription = 'enable';
-    const ActionDisableSubscription = 'disable';
-}
-
 class PersonalCalendarPresenter extends CommonCalendarPresenter
 {
-
     public function __construct(
         ICommonCalendarPage $page,
         IReservationViewRepository $repository,
@@ -51,8 +44,8 @@ class PersonalCalendarPresenter extends CommonCalendarPresenter
             $subscriptionService,
             new NullPrivacyFilter());
 
-        $this->AddAction(PersonalCalendarActions::ActionEnableSubscription, 'EnableSubscription');
-        $this->AddAction(PersonalCalendarActions::ActionDisableSubscription, 'DisableSubscription');
+        $this->AddAction(CalendarActions::ActionEnableSubscription, 'EnableSubscription');
+        $this->AddAction(CalendarActions::ActionDisableSubscription, 'DisableSubscription');
     }
 
     public function EnableSubscription()
