@@ -1,7 +1,5 @@
 {*
-Copyright 2011-2016 Nick Korbel
-
-Translation: 2014 Nicola Ruggero <nicola@nxnt.org>
+Copyright 2011-2015 Nick Korbel
 
 This file is part of Booked Scheduler.
 
@@ -18,34 +16,36 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 *}
-
-
-	Dettagli prenotazione:
+	Broneeringu detailid:
 	<br/>
 	<br/>
 
-	Utente: {$UserName}<br/>
-	Inizio: {formatdate date=$StartDate key=reservation_email}<br/>
-	Fine: {formatdate date=$EndDate key=reservation_email}<br/>
+	Kasutaja: {$UserName}<br/>
+	{if !empty($CreatedBy)}
+		Broneerija: {$CreatedBy}
+		<br/>
+	{/if}
+	Algus: {formatdate date=$StartDate key=reservation_email}<br/>
+	Lõpp: {formatdate date=$EndDate key=reservation_email}<br/>
 	{if $ResourceNames|count > 1}
-		Risorse:<br/>
+		Väljakud:<br/>
 		{foreach from=$ResourceNames item=resourceName}
 			{$resourceName}<br/>
 		{/foreach}
 		{else}
-		Risorsa: {$ResourceName}<br/>
+		Väljak: {$ResourceName}<br/>
 	{/if}
 
 	{if $ResourceImage}
 		<div class="resource-image"><img src="{$ScriptUrl}/{$ResourceImage}"/></div>
 	{/if}
 
-	Note: {$Title}<br/>
-	Descrizione: {$Description|nl2br}<br/>
+	Pealkiri: {$Title}<br/>
+	Kirjeldus: {$Description|nl2br}
 
 	{if count($RepeatDates) gt 0}
 		<br/>
-		Le seguenti date sono state rimosse:
+		Broneering esineb järgneval kuupäeval:
 		<br/>
 	{/if}
 
@@ -54,13 +54,24 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 	{/foreach}
 
 	{if $Accessories|count > 0}
-		<br/>Accessori:<br/>
+		<br/>Accessories:<br/>
 		{foreach from=$Accessories item=accessory}
 			({$accessory->QuantityReserved}) {$accessory->Name}<br/>
 		{/foreach}
 	{/if}
 
-	<br/>
-	<br/>
-	<a href="{$ScriptUrl}">Accedi a Booked Scheduler</a>
+	{if $Attributes|count > 0}
+		<br/>
+		{foreach from=$Attributes item=attribute}
+			<div>{control type="AttributeControl" attribute=$attribute readonly=true}</div>
+		{/foreach}
+	{/if}
 
+	{if $RequiresApproval}
+		<br/>
+		One or more of the resources reserved require approval before usage.  Please ensure that this reservation request is approved or rejected.
+	{/if}
+
+	<br/>
+	<br/>
+	<a href="{$ScriptUrl}/{$ReservationUrl}">Vaata seda broneeringut</a> | <a href="{$ScriptUrl}">Logi sisse Rannahalli kalendrisse</a>

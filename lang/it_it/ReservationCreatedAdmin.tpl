@@ -1,5 +1,5 @@
 {*
-Copyright 2011-2017 Nick Korbel
+Copyright 2011-2016 Nick Korbel
 
 Translation: 2014 Nicola Ruggero <nicola@nxnt.org>
 
@@ -80,7 +80,8 @@ Descrizione: {$Description}<br/>
 
 {if $RequiresApproval}
 	<br/>
-	Una o più risorse in cui è stata inserita la prenotazione richiedono un'approvazione prima dell'utilizzo. Questa prenotazione rimarrà in sospeso fino all'approvazione.
+    (Debug message: ReservationCreatedAdmin.tpl)
+    E' stata inserita una nuova prenotazione. Rimarrà in sospeso fino all'approvazione.
 {/if}
 
 <br/>

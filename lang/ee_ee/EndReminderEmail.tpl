@@ -1,7 +1,5 @@
 {*
-Copyright 2011-2016 Nick Korbel, Paul Menchini
-
-Translation: 2014 Nicola Ruggero <nicola@nxnt.org>
+Copyright 2013-2016 Nick Korbel
 
 This file is part of Booked Scheduler.
 
@@ -18,17 +16,16 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 *}
-
-
-<p>{$To},</p>
-
-<p>Si è registrato un nuovo utente con le seguenti informazioni:<br/>
-Email: {$EmailAddress}<br/>
-Nome: {$FullName}<br/>
-Telefono: {$Phone}<br/>
-Area: {$Organization}<br/>
-Posizione: {$Position}</p>
-
-{if !empty($CreatedBy)}
-	Creato da: {$CreatedBy}
-{/if}
+Sinu broneering lõpeb varsti.<br/>
+Broneeringu detailid:
+	<br/>
+	<br/>
+	Algus: {formatdate date=$StartDate key=reservation_email}<br/>
+	Lõpp: {formatdate date=$EndDate key=reservation_email}<br/>
+	Väljak: {$ResourceName}<br/>
+	Pealkiri: {$Title}<br/>
+	Kirjeldus: {$Description|nl2br}
+<br/>
+<a href="{$ScriptUrl}/{$ReservationUrl}">Vaata seda broneeringut</a> |
+<a href="{$ScriptUrl}/{$ICalUrl}">Lisa kalendrisse</a> |
+<a href="{$ScriptUrl}">Logi sisse Rannahalli kalendrisse</a>

@@ -38,6 +38,7 @@ class AvailableLanguages
             'en_us' => new AvailableLanguage('en_us', 'en_us.php', 'English US'),
             'en_gb' => new AvailableLanguage('en_gb', 'en_gb.php', 'English GB'),
             'es' => new AvailableLanguage('es', 'es.php', 'Espa&ntilde;ol'),
+			'ee_ee' => new AvailableLanguage('ee_ee', 'ee_ee.php', 'Estonian'),
             'fi_fi' => new AvailableLanguage('fi_fi', 'fi_fi.php', 'Suomi'),
             'fr_fr' => new AvailableLanguage('fr_fr', 'fr_fr.php', 'Fran&ccedil;ais'),
             'hr_hr' => new AvailableLanguage('hr_hr', 'hr_hr.php', 'Hrvatski'),

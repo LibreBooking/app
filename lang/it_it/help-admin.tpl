@@ -1,7 +1,7 @@
 {*
-Copyright 2011-2017 Nick Korbel
+Copyright 2011-2016 Nick Korbel
 
-Translation: 2014 Daniele Cordella <kordan@mclink.it>
+Translation: 2017 Daniele Cordella <kordan@mclink.it>
 
 This file is part of Booked Scheduler.
 
@@ -36,7 +36,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 <p>Una casella con etichetta pu&ograve; essere apprire come in questo esempio: 10:25 - 16:50 Periodo 4</p>
 
-<p>Sotto la finestra di configurazione delle caselle c'&egrave; uno strumento per la creazione veloce delle stesse. Questo configura le caselle disponibili in un dato intervallo di tempo</p>
+<p>Sotto la finestra di configurazione delle caselle c'&egrave; uno strumento per la creazione veloce delle stesse. Questo configura le caselle disponibili in un dato intervallo di tempo.</p>
 
 <h3>Configurazione delle risorse</h3>
 
@@ -56,7 +56,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 <p>&Egrave; possibile impedire che le risorse vengano prenotate troppo lontano nel tempo impostando un limite temporale massimo. Per esempio, se sono le 10.30 di Lunedi e il tempo imostato come limite massimo di termine prenotazione &egrave; di 1 giorno, non &egrave; possibile eseguire prenotazioni per date successive alle 10.30 di Marted&igrave;. L'impostazione predefinita &egrave; "Nessun limite".</p>
 
-<p>&Egrave; possibile impostare una capienza per una risorsa. Ad esempio, per una sala conferenze &egrave; possibile definire il massimo numero di persone che pu&ograve; contenere. L'impostazione della capienza di una risorsa limita il numero massimo di partecipanti che possono essere coinvolti o invitati, escludendo l'organizzatore. L'impostazione predefinita &egrave; che le risorse hanno una capacit&agrave; illimitata.</p>
+<p>&Egrave; possibile impostare una capienza per una risorsa. Ad esempio, per una sala conferenze &egrave; possibile definire il massimo numero di persone che pu&ograve; contenere. L'impostazione della capienza di una risorsa limita il numero massimo di partecipanti che possono essere coinvolti o invitati escludendo l'organizzatore. L'impostazione predefinita &egrave; che le risorse hanno una capacit&agrave; illimitata.</p>
 
 <p>Gli amministratori dell'applicazione sono esentati dai vincoli di utilizzo.</p>
 
@@ -287,21 +287,21 @@ un lavoro cron in cPanel</a> &egrave; lineare sia adoperando la voce "Every mimu
 
 <p class="setting"><span>$conf['settings']['api']['enabled']</span>Se, o meno, le API di RESTful di Booked Scheduler devono essere abilitate. Ulteriori informazioni sui prerequisiti per l'utilizzo delle API sono rintracciabili nel file readme_installation.html file. Le opzioni sono: 'true' o 'false'.</p>
 
-<p class="setting"><span>$conf['settings']['recaptcha']['enabled']</span>If reCAPTCHA should be used instead of the built in captcha. Le opzioni sono: 'true' o 'false'.</p>
+<p class="setting"><span>$conf['settings']['recaptcha']['enabled']</span>Se, o meno, reCAPTCHA debba essere usato piuttosto che il captcha di booked. Le opzioni sono: 'true' o 'false'.</p>
 
-<p class="setting"><span>$conf['settings']['recaptcha']['public.key']</span>Your reCAPTCHA public key. Visit www.google.com/recaptcha to sign up.</p>
+<p class="setting"><span>$conf['settings']['recaptcha']['public.key']</span>La chiave pubblica del reCAPTCHA. Si crei un account su www.google.com/recaptcha per ottenere la chiave.</p>
 
-<p class="setting"><span>$conf['settings']['recaptcha']['private.key']</span>Your reCAPTCHA private key. Visit www.google.com/recaptcha to sign up.</p>
+<p class="setting"><span>$conf['settings']['recaptcha']['private.key']</span>La chiave privata del reCAPTCHA. Si crei un account su www.google.com/recaptcha per ottenere la chiave.</p>
 
-<p class="setting"><span>$config['settings']['email']['default.from.address']</span>The email address to use as the 'from' address when sending emails. If emails are bouncing or being marked as spam, set this to an email address with your domain name. For example, noreply@yourdomain.com. This will not change the 'from' name or the reply-to address.</p>
+<p class="setting"><span>$config['settings']['email']['default.from.address']</span>L'indirizzo di posta elettronica da usare come mittente delle email di booked. Se le mail di booked vengono categorizzate come spam si indichi in questo indirizzo di posta elettronica il proprio nome di dominio. Ad esempio: noreply@yourdomain.com. Questo non cambierà il campo nome "nome" o l'indirizzo "rispondi-a" delle mail.</p>
 
-<p class="setting"><span>$conf['settings']['reports']['allow.all.users']</span>If non-administrators can access usage reports. Il default &egrave;: "false".</p>
+<p class="setting"><span>$conf['settings']['reports']['allow.all.users']</span>Se, o meno, gli utenti non amministratori potranno accedere alla reportistica sull'utilizzo del prodotto. Il default &egrave;: "false".</p>
 
-<p class="setting"><span>$conf['settings']['password']['minimum.letters']</span>Minimum number of letters required for user passwords. Default is 6.</p>
+<p class="setting"><span>$conf['settings']['password']['minimum.letters']</span>Il minimo numero di lettere richieste per la password. Il default &egrave; 6.</p>
 
-<p class="setting"><span>$conf['settings']['password']['minimum.numbers']</span>Minimum number of numbers required for user passwords. Default is 0.</p>
+<p class="setting"><span>$conf['settings']['password']['minimum.numbers']</span>Il minimo numero di cifre richieste per la password. Il default &egrave; 0.</p>
 
-<p class="setting"><span>$conf['settings']['password']['upper.and.lower']</span>Whether user passwords require a combination of upper and lower case letters. Il default &egrave;: "false".</p>
+<p class="setting"><span>$conf['settings']['password']['upper.and.lower']</span>Se, o meno, la password utente richiede una combinazione di lettere in maiuscolo e minuscolo. Il default &egrave;: "false".</p>
 
 <h2>Plugins</h2>
 

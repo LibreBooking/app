@@ -65,6 +65,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 <p>Alenka Kavčič (Slovenian)</p>
 <p>Tage Jørgensen  (Danish)</p>
 <p>Tran Dai Nghia (Vietnamese)</p>
+<p>Karl Jaani (Estonian)</p>
 
 <h3>Thank you to the following projects and libraries</h3>
 
