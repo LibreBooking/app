@@ -613,13 +613,13 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			reservation details.
 			Default is false.</p>
 
-		<p class="setting"><span>$conf['settings']['privacy']['hide.user.details']</span>If non-adminstrators can view
+		<p class="setting"><span>$conf['settings']['privacy']['hide.user.details']</span>If non-administrators can view
 			personal
 			information about other users. Default is false.</p>
 
-		<p class="setting"><span>$conf['settings']['privacy']['hide.reservation.details']</span>If non-adminstrators can
+		<p class="setting"><span>$conf['settings']['privacy']['hide.reservation.details']</span>If non-administrators can
 			view reservation details.
-			Options are true, false, past, future. Default is false.</p>
+			Options are true, false, past, current, future. Default is false.</p>
 
 		<p class="setting"><span>$conf['settings']['reservation']['start.time.constraint']</span>When reservations can
 			be
