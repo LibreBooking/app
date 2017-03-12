@@ -118,6 +118,7 @@ class ManageConfigurationPresenter extends ActionPresenter
 		}
 
 		$this->PopulateHomepages();
+		$this->PopulatePlugins();
 	}
 
 	private function PopulateHomepages()
@@ -134,6 +135,41 @@ class ManageConfigurationPresenter extends ActionPresenter
 
 		$this->page->SetHomepages($homepageValues, $homepageOutput);
 	}
+
+    private function PopulatePlugins()
+    {
+        $plugins = array();
+        $dit = new RecursiveDirectoryIterator(ROOT_DIR . 'plugins');
+
+        /** @var $path SplFileInfo  */
+        foreach($dit as $path)
+        {
+            if ($path->isDir() && basename($path->getPathname()) != '.' && basename($path->getPathname()) != '..')
+            {
+                $plugins[basename($path->getPathname())] = array();
+                /** @var $plugin SplFileInfo  */
+                foreach (new RecursiveDirectoryIterator($path) as $plugin)
+                {
+                    if ($plugin->isDir() && basename($plugin->getPathname()) != '.' && basename($plugin->getPathname()) != '..')
+                    {
+                        $pluginCategory = basename($path->getPathname());
+                        if (!isset($plugins[$pluginCategory]) || empty($plugins[$pluginCategory]))
+                        {
+                            $plugins[$pluginCategory][] = '';
+                        }
+                        $plugins[$pluginCategory][] = basename($plugin->getPathname());
+                    }
+                }
+            }
+        }
+
+        $this->page->SetAuthenticationPluginValues($plugins['Authentication']);
+        $this->page->SetAuthorizationPluginValues($plugins['Authorization']);
+        $this->page->SetPermissionPluginValues($plugins['Permission']);
+        $this->page->SetPostRegistrationPluginValues($plugins['PostRegistration']);
+        $this->page->SetPreReservationPluginValues($plugins['PreReservation']);
+        $this->page->SetPostReservationPluginValues($plugins['PostReservation']);
+    }
 
 	public function Update()
 	{

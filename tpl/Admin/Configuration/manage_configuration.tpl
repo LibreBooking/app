@@ -61,6 +61,30 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                         <select id="{$name}" name="{$name}" class="form-control">
                             {html_options values=$HomepageValues output=$HomepageOutput selected=$setting->Value|strtolower}
                         </select>
+                    {elseif $setting->Key == ConfigKeys::PLUGIN_AUTHENTICATION}
+                        <select id="{$name}" name="{$name}" class="form-control">
+                            {html_options values=$AuthenticationPluginValues output=$AuthenticationPluginValues selected=$setting->Value}
+                        </select>
+                    {elseif $setting->Key == ConfigKeys::PLUGIN_AUTHORIZATION}
+                        <select id="{$name}" name="{$name}" class="form-control">
+                            {html_options values=$AuthorizationPluginValues output=$AuthorizationPluginValues selected=$setting->Value}
+                        </select>
+                    {elseif $setting->Key == ConfigKeys::PLUGIN_PERMISSION}
+                        <select id="{$name}" name="{$name}" class="form-control">
+                            {html_options values=$PermissionPluginValues output=$PermissionPluginValues selected=$setting->Value}
+                        </select>
+                    {elseif $setting->Key == ConfigKeys::PLUGIN_POSTREGISTRATION}
+                        <select id="{$name}" name="{$name}" class="form-control">
+                            {html_options values=$PostRegistrationPluginValues output=$PostRegistrationPluginValues selected=$setting->Value}
+                        </select>
+                    {elseif $setting->Key == ConfigKeys::PLUGIN_PRERESERVATION}
+                        <select id="{$name}" name="{$name}" class="form-control">
+                            {html_options values=$PreReservationPluginValues output=$PreReservationPluginValues selected=$setting->Value}
+                        </select>
+                    {elseif $setting->Key == ConfigKeys::PLUGIN_POSTRESERVATION}
+                        <select id="{$name}" name="{$name}" class="form-control">
+                            {html_options values=$PostReservationPluginValues output=$PostReservationPluginValues selected=$setting->Value}
+                        </select>
                     {elseif $setting->Type == ConfigSettingType::String}
                         <input id="{$name}" type="text" size="50" name="{$name}" value="{$setting->Value|escape}"
                                class="form-control"/>
@@ -100,7 +124,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
         {assign var=HelpUrl value="$ScriptUrl/help.php?ht=admin"}
         <h3>{translate key=ConfigurationUpdateHelp args=$HelpUrl}</h3>
-        <div id="updatedMessage" class="alert alert-success no-show">
+        <div id="updatedMessage" class="alert alert-success" style="display:none;">
             {translate key=ConfigurationUpdated}
         </div>
         <div id="configSettings">
