@@ -106,6 +106,11 @@ interface IManageConfigurationPage extends IActionPage
      * @param string[] $values
      */
     public function SetPostReservationPluginValues($values);
+
+    /**
+     * @return int
+     */
+    public function GetHomePageId();
 }
 
 class ManageConfigurationPage extends ActionPage implements IManageConfigurationPage
@@ -265,5 +270,10 @@ class ManageConfigurationPage extends ActionPage implements IManageConfiguration
     public function SetPostReservationPluginValues($values)
     {
         $this->Set('PostReservationPluginValues', $values);
+    }
+
+    public function GetHomePageId()
+    {
+       return $this->GetForm('homepage_id');
     }
 }

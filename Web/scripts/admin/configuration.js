@@ -2,7 +2,9 @@ function Configuration() {
 	var elements = {
 		form: $('#frmConfigSettings'),
 		configFileSelection: $('#cf'),
-		configFileForm: $('#frmConfigFile')
+		configFileForm: $('#frmConfigFile'),
+        updateHomepageForm: $('#updateHomepageForm'),
+        updateHomepageButton:$('#applyHomepage')
 	};
 
 	Configuration.prototype.init = function () {
@@ -12,14 +14,20 @@ function Configuration() {
 			elements.form.submit();
 		});
 
-
 		elements.configFileSelection.change(function(e){
 			elements.configFileForm.submit();
 		});
 
 		elements.form.bind('onValidationFailed', onValidationFailed);
 
+		elements.updateHomepageButton.click(function(e){
+		    e.preventDefault();
+		    $('#homepage_id').val($("#default__homepage").val());
+		    elements.updateHomepageForm.submit();
+        });
+
 		ConfigureAsyncForm(elements.form, defaultSubmitCallback, successHandler, null, {onBeforeSubmit: onBeforeAddSubmit});
+		ConfigureAsyncForm(elements.updateHomepageForm, defaultSubmitCallback, function(){}, function(){});
 	};
 
 	var defaultSubmitCallback = function (form) {

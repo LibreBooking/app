@@ -625,6 +625,7 @@ class en_us extends Language
         $strings['SelectUser'] = 'Select User';
         $strings['InviteUsers'] = 'Invite Users';
         $strings['InviteUsersLabel'] = 'Enter the email addresses of the people to invite';
+        $strings['ApplyToCurrentUsers'] = 'Apply to current users';
         // End Strings
 
 		// Install

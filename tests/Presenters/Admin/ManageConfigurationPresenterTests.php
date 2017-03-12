@@ -278,6 +278,62 @@ class FakeManageConfigurationPage extends FakeActionPageBase implements IManageC
     {
         // TODO: Implement ShowScriptUrlWarning() method.
     }
+
+    /**
+     * @param string[] $values
+     */
+    public function SetAuthenticationPluginValues($values)
+    {
+        // TODO: Implement SetAuthenticationPluginValues() method.
+    }
+
+    /**
+     * @param string[] $values
+     */
+    public function SetAuthorizationPluginValues($values)
+    {
+        // TODO: Implement SetAuthorizationPluginValues() method.
+    }
+
+    /**
+     * @param string[] $values
+     */
+    public function SetPermissionPluginValues($values)
+    {
+        // TODO: Implement SetPermissionPluginValues() method.
+    }
+
+    /**
+     * @param string[] $values
+     */
+    public function SetPostRegistrationPluginValues($values)
+    {
+        // TODO: Implement SetPostRegistrationPluginValues() method.
+    }
+
+    /**
+     * @param string[] $values
+     */
+    public function SetPreReservationPluginValues($values)
+    {
+        // TODO: Implement SetPreReservationPluginValues() method.
+    }
+
+    /**
+     * @param string[] $values
+     */
+    public function SetPostReservationPluginValues($values)
+    {
+        // TODO: Implement SetPostReservationPluginValues() method.
+    }
+
+    /**
+     * @return int
+     */
+    public function GetHomePageId()
+    {
+        // TODO: Implement GetHomePageId() method.
+    }
 }
 
 ?>

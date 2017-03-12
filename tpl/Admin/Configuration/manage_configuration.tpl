@@ -58,9 +58,9 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                             {object_html_options options=$Languages key='GetLanguageCode' label='GetDisplayName' selected=$setting->Value|strtolower}
                         </select>
                     {elseif $setting->Key == ConfigKeys::DEFAULT_HOMEPAGE}
-                        <select id="{$name}" name="{$name}" class="form-control">
+                        <select id="default__homepage" name="{$name}" class="form-control">
                             {html_options values=$HomepageValues output=$HomepageOutput selected=$setting->Value|strtolower}
-                        </select>
+                        </select> <a href="#" id="applyHomepage">{translate key=ApplyToCurrentUsers}</a>
                     {elseif $setting->Key == ConfigKeys::PLUGIN_AUTHENTICATION}
                         <select id="{$name}" name="{$name}" class="form-control">
                             {html_options values=$AuthenticationPluginValues output=$AuthenticationPluginValues selected=$setting->Value}
@@ -154,6 +154,13 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
             <input type="button" value="{translate key=Update}" class='btn btn-success save'/>
 
         </div>
+
+        <form id="updateHomepageForm"
+            method="post" ajaxAction="{ConfigActions::SetHomepage}"
+            action="{$smarty.server.SCRIPT_NAME}">
+            <input type="hidden" name="homepage_id" id="homepage_id" />
+        </form>
+
         {csrf_token}
         {jsfile src="ajax-helpers.js"}
         {jsfile src="js/jquery.form-3.09.min.js"}
