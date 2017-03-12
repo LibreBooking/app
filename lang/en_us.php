@@ -622,6 +622,9 @@ class en_us extends Language
 		$strings['DeleteMultipleUserWarning'] = 'Deleting these users will remove all of their current, future, and historical reservations. No emails will be sent.';
 		$strings['DeleteMultipleReservationsWarning'] = 'No emails will be sent.';
 		$strings['ErrorMovingReservation'] = 'Error Moving Reservation';
+        $strings['SelectUser'] = 'Select User';
+        $strings['InviteUsers'] = 'Invite Users';
+        $strings['InviteUsersLabel'] = 'Enter the email addresses of the people to invite';
         // End Strings
 
 		// Install
@@ -660,9 +663,7 @@ class en_us extends Language
 		$strings['ConfigureApplication'] = 'Configure Booked Scheduler';
 		$strings['ConfigUpdateSuccess'] = 'Your config file is now up to date!';
 		$strings['ConfigUpdateFailure'] = 'We could not automatically update your config file. Please overwrite the contents of config.php with the following:';
-		$strings['SelectUser'] = 'Select User';
-		$strings['InviteUsers'] = 'Invite Users';
-		$strings['InviteUsersLabel'] = 'Enter the email addresses of the people to invite';
+		$strings['ScriptUrlWarning'] = 'Your <em>script.url</em> setting may not be correct. It is currently <strong>%s</strong>, we think it should be <strong>%s</strong>';
 		// End Install
 
 		// Errors

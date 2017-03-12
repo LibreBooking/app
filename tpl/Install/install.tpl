@@ -21,6 +21,12 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 <div id="page-install">
 	<h1>{translate key=InstallApplication}</h1>
 
+    {if $ShowScriptUrlWarning}
+        <div class="alert alert-danger">
+            {translate key=ScriptUrlWarning args="$CurrentScriptUrl,$SuggestedScriptUrl"}
+        </div>
+    {/if}
+
 	<div>
 		<form class="register" method="post" action="{$smarty.server.SCRIPT_NAME}" role="form">
 

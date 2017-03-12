@@ -48,7 +48,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                     <h4 class="modal-title" id="errorModalLabel">{translate key=ErrorMovingReservation}</h4>
                 </div>
                 <div class="modal-body">
-                    <div class="alert alert-error">
+                    <div class="alert alert-danger">
                         <ul id="moveErrorsList"></ul>
                     </div>
                 </div>

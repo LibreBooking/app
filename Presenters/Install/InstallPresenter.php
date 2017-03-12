@@ -41,12 +41,10 @@ class InstallPresenter
 		$this->securityGuard = $securityGuard;
 	}
 
-	/**
-	 * Get and Set data to be process by template engine
-	 * @return void
-	 */
 	public function PageLoad()
 	{
+        $this->CheckIfScriptUrlMayBeWrong();
+
 		if ($this->page->RunningInstall())
 		{
 			$this->RunInstall();
@@ -166,4 +164,24 @@ class InstallPresenter
             $this->page->SetInstallPasswordMissing(false);
         }
 	}
+
+    private function CheckIfScriptUrlMayBeWrong()
+    {
+        $scriptUrl = Configuration::Instance()->GetScriptUrl();
+        $server = ServiceLocator::GetServer();
+        $currentUrl = $server->GetUrl();
+
+        $maybeWrong = !BookedStringHelper::Contains($scriptUrl, '/Web') && BookedStringHelper::Contains($currentUrl, '/Web') ;
+        if ($maybeWrong)
+        {
+            $parts = explode('/Web', $currentUrl);
+            $port = $server->GetHeader('SERVER_PORT');
+            $suggestedUrl = ($server->GetIsHttps() ? 'https://' : 'http://')
+                . $server->GetHeader('SERVER_NAME')
+                . ($port == '80' ? '' : $port)
+                . $parts[0]
+                . '/Web';
+            $this->page->ShowScriptUrlWarning($scriptUrl, $suggestedUrl);
+        }
+    }
 }

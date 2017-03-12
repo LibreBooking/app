@@ -24,39 +24,32 @@ require_once(ROOT_DIR . 'lib/Application/Admin/namespace.php');
 
 interface IInstallPage
 {
-
 	/**
-	 * @abstract
-	 * @param bool $isMissing
+     * @param bool $isMissing
 	 */
 	public function SetInstallPasswordMissing($isMissing);
 
 	/**
-	 * @abstract
 	 * @return string
 	 */
 	public function GetInstallPassword();
 
 	/**
-	 * @abstract
 	 * @param bool $showPasswordPrompt
 	 */
 	public function SetShowPasswordPrompt($showPasswordPrompt);
 
 	/**
-	 * @abstract
 	 * @param bool $showInvalidPassword
 	 */
 	public function SetShowInvalidPassword($showInvalidPassword);
 
 	/**
-	 * @abstract
 	 * @param bool $showDatabasePrompt
 	 */
 	public function SetShowDatabasePrompt($showDatabasePrompt);
 
 	/**
-	 * @abstract
 	 * @param string $dbname
 	 * @param string $dbuser
 	 * @param string $dbhost
@@ -64,56 +57,47 @@ interface IInstallPage
 	public function SetDatabaseConfig($dbname, $dbuser, $dbhost);
 
 	/**
-	 * @abstract
 	 * @return bool
 	 */
 	public function RunningInstall();
 
 	/**
-	 * @abstract
 	 * @return bool
 	 */
 	public function RunningUpgrade();
 
 	/**
-	 * @abstract
 	 * @return string
 	 */
 	public function GetInstallUser();
 
 	/**
-	 * @abstract
 	 * @return string
 	 */
 	public function GetInstallUserPassword();
 
 	/**
-	 * @abstract
 	 * @return bool
 	 */
 	public function GetShouldCreateDatabase();
 
 	/**
-	 * @abstract
 	 * @return bool
 	 */
 	public function GetShouldCreateUser();
 
 	/**
-	 * @abstract
 	 * @return bool
 	 */
 	public function GetShouldCreateSampleData();
 
 	/**
-	 * @abstract
 	 * @param $results array|InstallationResult[]
 	 * @return void
 	 */
 	public function SetInstallResults($results);
 
 	/**
-	 * @abstract
 	 * @param $results array|InstallationResult[]
 	 * @param $currentVersion string
 	 * @return void
@@ -121,39 +105,37 @@ interface IInstallPage
 	public function SetUpgradeResults($results, $currentVersion);
 
 	/**
-	 * @abstract
 	 * @param string $currentVersion
 	 */
 	public function SetCurrentVersion($currentVersion);
 
 	/**
-	 * @abstract
 	 * @param string $targetVersion
 	 */
 	public function SetTargetVersion($targetVersion);
 
 	/**
-	 * @abstract
 	 * @param bool $showUpgradeOptions
 	 */
 	public function ShowUpgradeOptions($showUpgradeOptions);
 
 	/**
-	 * @abstract
 	 * @param bool $showInstallOptions
 	 */
 	public function ShowInstallOptions($showInstallOptions);
 
 	/**
-	 * @abstract
 	 * @param $showUpToDateMessage
 	 */
 	public function ShowUpToDate($showUpToDateMessage);
+
+    /**
+     * @param string $currentScriptUrl
+     * @param string $suggestedScriptUrl
+     */
+    public function ShowScriptUrlWarning($currentScriptUrl, $suggestedScriptUrl);
 }
 
-/**
- * This class supports auto installation pages
- */
 class InstallPage extends Page implements IInstallPage
 {
 	/**
@@ -168,9 +150,6 @@ class InstallPage extends Page implements IInstallPage
 		$this->presenter = new InstallPresenter($this, new InstallSecurityGuard());
 	}
 
-	/**
-	 * Load data for page then display
-	 */
 	public function PageLoad()
 	{
 		$cacheDirectory = new TemplateCacheDirectory();
@@ -187,6 +166,13 @@ class InstallPage extends Page implements IInstallPage
 	{
 		$this->Set('InstallPasswordMissing', $isMissing);
 	}
+
+	public function ShowScriptUrlWarning($currentScriptUrl, $suggestedScriptUrl)
+    {
+        $this->Set('CurrentScriptUrl', $currentScriptUrl);
+        $this->Set('SuggestedScriptUrl', $suggestedScriptUrl);
+        $this->Set('ShowScriptUrlWarning', true);
+    }
 
 	public function GetInstallPassword()
 	{

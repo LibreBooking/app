@@ -70,6 +70,12 @@ interface IManageConfigurationPage extends IActionPage
 	 * @param string[] $homepageOutput
 	 */
 	public function SetHomepages($homepageValues, $homepageOutput);
+
+    /**
+     * @param string $scriptUrl
+     * @param string $suggestedUrl
+     */
+    public function ShowScriptUrlWarning($scriptUrl, $suggestedUrl);
 }
 
 class ManageConfigurationPage extends ActionPage implements IManageConfigurationPage
@@ -101,26 +107,16 @@ class ManageConfigurationPage extends ActionPage implements IManageConfiguration
 		$this->settingNames = new StringBuilder();
 	}
 
-	/**
-	 * @return void
-	 */
 	public function ProcessAction()
 	{
 		$this->presenter->ProcessAction();
 	}
 
-	/**
-	 * @param $dataRequest string
-	 * @return void
-	 */
 	public function ProcessDataRequest($dataRequest)
 	{
 		// no-op
 	}
 
-	/**
-	 * @return void
-	 */
 	public function ProcessPageLoad()
 	{
 		$this->Set('IsConfigFileWritable', true);
@@ -140,26 +136,17 @@ class ManageConfigurationPage extends ActionPage implements IManageConfiguration
 		$this->Set('IsPageEnabled', $isPageEnabled);
 	}
 
-	/**
-	 * @param bool $isFileWritable
-	 */
 	public function SetIsConfigFileWritable($isFileWritable)
 	{
 		$this->Set('IsConfigFileWritable', $isFileWritable);
 	}
 
-	/**
-	 * @param ConfigSetting $configSetting
-	 */
 	public function AddSetting(ConfigSetting $configSetting)
 	{
 		$this->settings[] = $configSetting;
 		$this->settingNames->Append($configSetting->Name . ',');
 	}
 
-	/**
-	 * @param ConfigSetting $configSetting
-	 */
 	public function AddSectionSetting(ConfigSetting $configSetting)
 	{
 		$this->sectionSettings[$configSetting->Section][] = $configSetting;
@@ -181,9 +168,6 @@ class ManageConfigurationPage extends ActionPage implements IManageConfiguration
 		$this->Set('TimezoneOutput', $timezoneOutput);
 	}
 
-	/**
-	 * @return array|ConfigSetting[]
-	 */
 	public function GetSubmittedSettings()
 	{
 		$settingNames = $this->GetRawForm('setting_names');
@@ -208,27 +192,25 @@ class ManageConfigurationPage extends ActionPage implements IManageConfiguration
 		$this->Set('HomepageOutput', $homepageOutput);
 	}
 
-	/**
-	 * @param ConfigFileOption[] $configFiles
-	 */
 	public function SetConfigFileOptions($configFiles)
 	{
 		$this->Set('ConfigFiles', $configFiles);
 	}
 
-	/**
-	 * @return string
-	 */
 	public function GetConfigFileToEdit()
 	{
 		return $this->GetQuerystring(QueryStringKeys::CONFIG_FILE);
 	}
 
-	/**
-	 * @param string $configFileName
-	 */
 	public function SetSelectedConfigFile($configFileName)
 	{
 		$this->Set('SelectedFile', $configFileName);
 	}
+
+    public function ShowScriptUrlWarning($currentScriptUrl, $suggestedScriptUrl)
+    {
+        $this->Set('CurrentScriptUrl', $currentScriptUrl);
+        $this->Set('SuggestedScriptUrl', $suggestedScriptUrl);
+        $this->Set('ShowScriptUrlWarning', true);
+    }
 }

@@ -72,6 +72,8 @@ class ManageConfigurationPresenter extends ActionPresenter
 			return;
 		}
 
+        $this->CheckIfScriptUrlMayBeWrong();
+
 		$configFiles = $this->GetConfigFiles();
 		$this->page->SetConfigFileOptions($configFiles);
 
@@ -273,6 +275,26 @@ class ManageConfigurationPresenter extends ActionPresenter
 		$configurator = new Configurator();
 		$configurator->Merge($this->configFilePath, $this->configFilePathDist);
 	}
+
+    private function CheckIfScriptUrlMayBeWrong()
+    {
+        $scriptUrl = Configuration::Instance()->GetScriptUrl();
+        $server = ServiceLocator::GetServer();
+        $currentUrl = $server->GetUrl();
+
+        $maybeWrong = !BookedStringHelper::Contains($scriptUrl, '/Web') && BookedStringHelper::Contains($currentUrl, '/Web') ;
+        if ($maybeWrong)
+        {
+            $parts = explode('/Web', $currentUrl);
+            $port = $server->GetHeader('SERVER_PORT');
+            $suggestedUrl = ($server->GetIsHttps() ? 'https://' : 'http://')
+                . $server->GetHeader('SERVER_NAME')
+                . ($port == '80' ? '' : $port)
+                . $parts[0]
+                . '/Web';
+            $this->page->ShowScriptUrlWarning($scriptUrl, $suggestedUrl);
+        }
+    }
 }
 
 class ConfigFileOption

@@ -23,6 +23,12 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
     <h1>{translate key=ManageConfiguration}</h1>
 
+    {if $ShowScriptUrlWarning}
+        <div class="alert alert-danger">
+            {translate key=ScriptUrlWarning args="$CurrentScriptUrl,$SuggestedScriptUrl"}
+        </div>
+    {/if}
+
     <form id="frmConfigFile" method="GET" action="{$SCRIPT_NAME}" role="form">
         <div class="form-group">
             <label for="cf">{translate key=File}</label>
