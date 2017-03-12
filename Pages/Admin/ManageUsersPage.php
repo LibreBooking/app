@@ -146,7 +146,10 @@ interface IManageUsersPage extends IPageable, IActionPage
 	 */
 	public function GetName();
 
-	public function ShowTemplateCSV();
+    /**
+     * @param CustomAttribute[] $attributes
+     */
+    public function ShowTemplateCSV($attributes);
 
 	/**
 	 * @return UploadedFile
@@ -409,8 +412,9 @@ class ManageUsersPage extends ActionPage implements IManageUsersPage
 	}
 
 
-	public function ShowTemplateCSV()
+	public function ShowTemplateCSV($attributes)
 	{
+        $this->Set('attributes', $attributes);
 		$this->DisplayCsv('Admin/Users/import_user_template_csv.tpl', 'users.csv');
 	}
 

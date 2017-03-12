@@ -340,7 +340,7 @@ class ManageUsersPresenter extends ActionPresenter implements IManageUsersPresen
             $this->page->SetJsonResponse($users);
         }
         elseif ($dataRequest == 'template') {
-            $this->page->ShowTemplateCSV();
+            $this->ShowTemplateCSV();
         }
 		elseif ($dataRequest == 'export') {
 			$this->ExportUsers();
@@ -475,6 +475,19 @@ class ManageUsersPresenter extends ActionPresenter implements IManageUsersPresen
     public function ImportUsers()
     {
 		ini_set('max_execution_time', 600);
+
+		$attributes = $this->attributeService->GetByCategory(CustomAttributeCategory::USER);
+        /** @var CustomAttribute[] $attributesIndexed */
+        $attributesIndexed = array();
+        /** @var CustomAttribute $attribute */
+        foreach ($attributes as $attribute)
+        {
+            if (!$attribute->UniquePerEntity())
+            {
+                $attributesIndexed[strtolower($attribute->Label())] = $attribute;
+            }
+        }
+
         $groupsList = $this->groupViewRepository->GetList();
         /** @var GroupItemView[] $groups */
         $groups = $groupsList->Results();
@@ -484,7 +497,7 @@ class ManageUsersPresenter extends ActionPresenter implements IManageUsersPresen
         }
 
         $importFile = $this->page->GetImportFile();
-        $csv = new UserImportCsv($importFile);
+        $csv = new UserImportCsv($importFile, $attributesIndexed);
 
         $importCount = 0;
         $messages = array();
@@ -542,6 +555,23 @@ class ManageUsersPresenter extends ActionPresenter implements IManageUsersPresen
 
                 if (count($userGroups) > 0) {
                     $user->ChangeGroups($userGroups);
+                }
+
+                foreach ($row->attributes as $label => $value)
+                {
+                    if (empty($value))
+                    {
+                        continue;
+                    }
+                    if (array_key_exists($label, $attributesIndexed))
+                    {
+                        $attribute = $attributesIndexed[$label];
+                        $user->ChangeCustomAttribute(new AttributeValue($attribute->Id(), $value));
+                    }
+                }
+
+                if (count($userGroups) > 0 || count($row->attributes) > 0)
+                {
                     $this->userRepository->Update($user);
                 }
 
@@ -573,4 +603,18 @@ class ManageUsersPresenter extends ActionPresenter implements IManageUsersPresen
 			$this->manageUsersService->DeleteUser($id);
 		}
 	}
+
+    private function ShowTemplateCSV()
+    {
+        $attributes = $this->attributeService->GetByCategory(CustomAttributeCategory::USER);
+        $importAttributes = array();
+        foreach ($attributes as $attribute)
+        {
+            if (!$attribute->UniquePerEntity())
+            {
+                $importAttributes[] = $attribute;
+            }
+        }
+        $this->page->ShowTemplateCSV($importAttributes);
+    }
 }
