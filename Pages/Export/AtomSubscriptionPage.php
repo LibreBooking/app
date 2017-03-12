@@ -56,9 +56,6 @@ class AtomSubscriptionPage extends Page implements ICalendarSubscriptionPage
 		return $this->GetQuerystring(QueryStringKeys::SUBSCRIPTION_KEY);
 	}
 
-	/**
-	 * @return string
-	 */
 	public function GetUserId()
 	{
 		return $this->GetQuerystring(QueryStringKeys::USER_ID);
@@ -103,42 +100,27 @@ class AtomSubscriptionPage extends Page implements ICalendarSubscriptionPage
 		$feed->genarateFeed();
 	}
 
-	/**
-	 * @param array|iCalendarReservationView[] $reservations
-	 */
 	public function SetReservations($reservations)
 	{
 		$this->reservations = $reservations;
 	}
 
-	/**
-	 * @return int
-	 */
 	public function GetScheduleId()
 	{
 		return $this->GetQuerystring(QueryStringKeys::SCHEDULE_ID);
 	}
 
-	/**
-	 * @return int
-	 */
 	public function GetResourceId()
 	{
 		return $this->GetQuerystring(QueryStringKeys::RESOURCE_ID);
 	}
 
-	/**
-	 * @return int
-	 */
 	public function GetAccessoryIds()
 	{
 		// no op
 	}
 
-	/**
-	 * @return string
-	 */
-	function GetResourceGroupId()
+    public function GetResourceGroupId()
 	{
 		return $this->GetQuerystring(QueryStringKeys::RESOURCE_GROUP_ID);
 	}
@@ -148,4 +130,14 @@ class AtomSubscriptionPage extends Page implements ICalendarSubscriptionPage
 		$factory = new SlotLabelFactory($user);
 		return $factory->Format($reservation->ReservationItemView, Configuration::Instance()->GetSectionKey(ConfigSection::RESERVATION_LABELS, ConfigKeys::RESERVATION_LABELS_RSS_DESCRIPTION));
 	}
+
+	public function GetPastNumberOfDays()
+    {
+        return $this->GetQuerystring(QueryStringKeys::SUBSCRIPTION_DAYS_PAST);
+    }
+
+    public function GetFutureNumberOfDays()
+    {
+        return $this->GetQuerystring(QueryStringKeys::SUBSCRIPTION_DAYS_FUTURE);
+    }
 }

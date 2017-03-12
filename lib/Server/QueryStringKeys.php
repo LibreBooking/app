@@ -77,6 +77,8 @@ class QueryStringKeys
 	const START_TIME = 'st';
 	const START_DATES = 'sds';
     const SUBSCRIPTION_KEY = 'icskey';
+    const SUBSCRIPTION_DAYS_PAST = 'pastDayCount';
+    const SUBSCRIPTION_DAYS_FUTURE = 'futureDayCount';
     const TYPE = 'type';
 	const USER_ID = 'uid';
 	const USER_NAME = 'un';

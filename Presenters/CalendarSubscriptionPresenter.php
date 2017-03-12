@@ -76,8 +76,14 @@ class CalendarSubscriptionPresenter
 		$accessoryIds = $this->page->GetAccessoryIds();
 		$resourceGroupId = $this->page->GetResourceGroupId();
 
-		$weekAgo = Date::Now()->AddDays(-7);
-		$nextYear = Date::Now()->AddDays(365);
+		$daysAgo = $this->page->GetPastNumberOfDays();
+		$daysAhead = $this->page->GetFutureNumberOfDays();
+
+		$daysAgo = empty($daysAgo) ? 7 : intval($daysAgo);
+        $daysAhead = empty($daysAhead) ? 365 : intval($daysAhead);
+
+		$weekAgo = Date::Now()->AddDays(-$daysAgo);
+		$nextYear = Date::Now()->AddDays($daysAhead);
 
 		$sid = null;
 		$rid = null;

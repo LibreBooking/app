@@ -204,8 +204,10 @@ class FakeCalendarSubscriptionPage implements ICalendarSubscriptionPage
 	public $UserId;
 
 	public $SubscriptionKey = "123";
+    public $PastDays;
+    public $FutureDays;
 
-	public function GetSubscriptionKey()
+    public function GetSubscriptionKey()
 	{
 		return $this->SubscriptionKey;
 	}
@@ -239,4 +241,14 @@ class FakeCalendarSubscriptionPage implements ICalendarSubscriptionPage
 	{
 		// TODO: Implement GetAccessoryIds() method.
 	}
+
+    public function GetPastNumberOfDays()
+    {
+       return $this->PastDays;
+    }
+
+    public function GetFutureNumberOfDays()
+    {
+        return $this->FutureDays;
+    }
 }

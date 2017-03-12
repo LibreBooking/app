@@ -156,14 +156,17 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
         configured a subscription key in the config file. To enable Schedule and Resource level calendar
         subscriptions, simply turn subscriptions on when managing the Schedule or Resource. To turn on personal calendar
         subscriptions, open Schedule -> My Calendar. On the right side of the page you will find a link to Allow or Turn
-        Off
-        calendar subscriptions.
+        Off calendar subscriptions.
     </p>
 
     <p> To subscribe to a Schedule calendar, open Schedule -> Resource Calendar and select the schedule you want. On the
         right side of the page, you will find a link to subscribe to the current calendar. Subscribing the a Resource
-        calendar follows the same steps. To subscribe to your personal calendar, open Scheudle -> My Calendar. On the
+        calendar follows the same steps. To subscribe to your personal calendar, open Schedule -> My Calendar. On the
         right side of the page, you will find a link to subscribe to the current calendar.</p>
+
+    <p>By default events for the past 7 days and future 365 days will be returned. This can be customized with the
+        following two query string parameters on the subscription URL. pastDayCount and futureDayCount will override the
+        past and future number of days loaded, respectively.</p>
 
     <h3>Calendar client (Outlook&reg;, iCal, Mozilla Lightning, Evolution)</h3>
 
