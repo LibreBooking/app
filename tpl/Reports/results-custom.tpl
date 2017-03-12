@@ -46,7 +46,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			<tr class="{$rowCss}">
 				{foreach from=$Definition->GetRow($row) item=cell}
 					<td chart-value="{$cell->ChartValue()}" chart-column-type="{$cell->GetChartColumnType()}"
-						chart-group="{$cell->GetChartGroup()}">{$cell->Value()|escape}</td>
+						chart-group="{$cell->GetChartGroup()}">{$cell->Value()}</td>
 				{/foreach}
 			</tr>
 		{/foreach}
