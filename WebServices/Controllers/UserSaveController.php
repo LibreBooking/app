@@ -18,8 +18,8 @@ You should have received a copy of the GNU General Public License
 along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-require_once(ROOT_DIR . 'WebServices/Requests/CreateUserRequest.php');
-require_once(ROOT_DIR . 'WebServices/Requests/UpdateUserRequest.php');
+require_once(ROOT_DIR . 'WebServices/Requests/User/CreateUserRequest.php');
+require_once(ROOT_DIR . 'WebServices/Requests/User/UpdateUserRequest.php');
 require_once(ROOT_DIR . 'WebServices/Validators/UserRequestValidator.php');
 require_once(ROOT_DIR . 'lib/Application/User/namespace.php');
 
@@ -33,7 +33,7 @@ interface IUserSaveController
 	public function Create($request, $session);
 
 	/**
-	 * @param $userId
+	 * @param int $userId
 	 * @param UpdateUserRequest $request
 	 * @param WebServiceUserSession $session
 	 * @return UserControllerResult
@@ -41,11 +41,19 @@ interface IUserSaveController
 	public function Update($userId, $request, $session);
 
 	/**
-	 * @param $userId
+	 * @param int $userId
 	 * @param WebServiceUserSession $session
 	 * @return UserControllerResult
 	 */
 	public function Delete($userId, $session);
+
+    /**
+     * @param int $userId
+     * @param string $password
+     * @param WebServiceUserSession $session
+     * @return UserControllerResult
+     */
+    public function UpdatePassword($userId, $password, $session);
 }
 
 class UserSaveController implements IUserSaveController
@@ -66,11 +74,6 @@ class UserSaveController implements IUserSaveController
 		$this->requestValidator = $requestValidator;
 	}
 
-	/**
-	 * @param CreateUserRequest $request
-	 * @param WebServiceUserSession $session
-	 * @return UserControllerResult
-	 */
 	public function Create($request, $session)
 	{
 		$errors = $this->requestValidator->ValidateCreateRequest($request);
@@ -98,12 +101,6 @@ class UserSaveController implements IUserSaveController
 		return new UserControllerResult($user->Id());
 	}
 
-	/**
-	 * @param int $userId
-	 * @param UpdateUserRequest $request
-	 * @param WebServiceUserSession $session
-	 * @return UserControllerResult
-	 */
 	public function Update($userId, $request, $session)
 	{
 		$errors = $this->requestValidator->ValidateUpdateRequest($userId, $request);
@@ -132,11 +129,6 @@ class UserSaveController implements IUserSaveController
 		return new UserControllerResult($userId);
 	}
 
-	/**
-	 * @param $userId
-	 * @param WebServiceUserSession $session
-	 * @return UserControllerResult
-	 */
 	public function Delete($userId, $session)
 	{
 		$userService = $this->serviceFactory->CreateAdmin();
@@ -144,6 +136,21 @@ class UserSaveController implements IUserSaveController
 
 		return new UserControllerResult($userId);
 	}
+
+    public function UpdatePassword($userId, $password, $session)
+    {
+        $errors = $this->requestValidator->ValidateUpdatePasswordRequest($userId, $password);
+
+        if (!empty($errors))
+        {
+            return new UserControllerResult(null, $errors);
+        }
+
+        $userService = $this->serviceFactory->CreateAdmin();
+        $userService->UpdatePassword($userId, $password);
+
+        return new UserControllerResult($userId);
+    }
 }
 
 class UserControllerResult

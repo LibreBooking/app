@@ -20,8 +20,9 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 require_once(ROOT_DIR . 'lib/WebService/namespace.php');
 require_once(ROOT_DIR . 'WebServices/Controllers/UserSaveController.php');
-require_once(ROOT_DIR . 'WebServices/Requests/CreateUserRequest.php');
-require_once(ROOT_DIR . 'WebServices/Requests/UpdateUserRequest.php');
+require_once(ROOT_DIR . 'WebServices/Requests/User/CreateUserRequest.php');
+require_once(ROOT_DIR . 'WebServices/Requests/User/UpdateUserRequest.php');
+require_once(ROOT_DIR . 'WebServices/Requests/User/UpdateUserPasswordRequest.php');
 require_once(ROOT_DIR . 'WebServices/Responses/UserCreatedResponse.php');
 require_once(ROOT_DIR . 'WebServices/Responses/UserUpdatedResponse.php');
 
@@ -138,5 +139,38 @@ class UsersWriteWebService
 										 RestResponse::BAD_REQUEST_CODE);
 		}
 	}
+
+    /**
+     * @name UpdatePassword
+     * @description Updates the password for an existing user
+     * @request UpdateUserPasswordRequest
+     * @response UserUpdatedResponse
+     * @param int $userId
+     * @return void
+     */
+    public function UpdatePassword($userId)
+    {
+        Log::Debug('UsersWriteWebService.UpdatePassword() User=%s', $this->server->GetSession()->UserId);
+
+        /** @var $request UpdateUserPasswordRequest */
+        $request = new UpdateUserPasswordRequest($this->server->GetRequest());
+
+        $result = $this->controller->UpdatePassword($userId, $request->password, $this->server->GetSession());
+
+        if ($result->WasSuccessful())
+        {
+            Log::Debug('UsersWriteWebService.UpdatePassword() - User password updated. UserId=%s',
+                $result->UserId());
+
+            $this->server->WriteResponse(new UserUpdatedResponse($this->server, $result->UserId()), RestResponse::OK_CODE);
+        }
+        else
+        {
+            Log::Debug('UsersWriteWebService.UpdatePassword() - User Password Update Failed.');
+
+            $this->server->WriteResponse(new FailedResponse($this->server, $result->Errors()),
+                RestResponse::BAD_REQUEST_CODE);
+        }
+    }
 }
 

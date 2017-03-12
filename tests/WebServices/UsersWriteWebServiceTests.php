@@ -159,6 +159,46 @@ class UsersWriteWebServiceTests extends TestBase
 		$this->assertEquals(new FailedResponse($this->server, $errors), $this->server->_LastResponse);
 		$this->assertEquals(RestResponse::BAD_REQUEST_CODE, $this->server->_LastResponseCode);
 	}
-}
 
-?>
+	public function testCanUpdatePassword()
+	{
+		$userId = '1';
+        $password = 'new password';
+
+        $this->server->_Request = new UpdateUserPasswordRequest();
+        $this->server->_Request->password = $password;
+
+		$controllerResult = new UserControllerResult($userId);
+
+		$this->controller->expects($this->once())
+				->method('UpdatePassword')
+				->with($this->equalTo($userId), $this->equalTo($password), $this->equalTo($this->server->GetSession()))
+				->will($this->returnValue($controllerResult));
+
+		$this->service->UpdatePassword($userId);
+
+		$this->assertEquals(new UserUpdatedResponse($this->server, $userId), $this->server->_LastResponse);
+	}
+
+	public function testFailedPasswordUpdate()
+	{
+		$userId = 123;
+        $password = 'new password';
+
+		$errors = array('error');
+		$controllerResult = new UserControllerResult(null, $errors);
+
+		$this->server->_Request = new UpdateUserPasswordRequest();
+		$this->server->_Request->password = $password;
+
+		$this->controller->expects($this->once())
+            ->method('UpdatePassword')
+            ->with($this->equalTo($userId), $this->equalTo($password), $this->equalTo($this->server->GetSession()))
+            ->will($this->returnValue($controllerResult));
+
+        $this->service->UpdatePassword($userId);
+
+		$this->assertEquals(new FailedResponse($this->server, $errors), $this->server->_LastResponse);
+		$this->assertEquals(RestResponse::BAD_REQUEST_CODE, $this->server->_LastResponseCode);
+	}
+}

@@ -27,6 +27,8 @@ class ApiHelpPage
 	        <head>
 	            <meta charset="utf-8"/>
 	            <title>Booked Scheduler API Documentation</title>
+	              <link rel="shortcut icon" href="../favicon.ico"/>
+                  <link rel="icon" href="../favicon.ico"/> 
 	            <style type="text/css">
 					body
 					{

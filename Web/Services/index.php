@@ -170,6 +170,7 @@ function RegisterUsers(SlimServer $server, SlimWebServiceRegistry $registry)
 	$category->AddSecureGet('/:userId', array($webService, 'GetUser'), WebServices::GetUser);
 	$category->AddAdminPost('/', array($writeWebService, 'Create'), WebServices::CreateUser);
 	$category->AddAdminPost('/:userId', array($writeWebService, 'Update'), WebServices::UpdateUser);
+	$category->AddAdminPost('/:userId/Password', array($writeWebService, 'UpdatePassword'), WebServices::UpdatePassword);
 	$category->AddAdminDelete('/:userId', array($writeWebService, 'Delete'), WebServices::DeleteUser);
 	$registry->AddCategory($category);
 }

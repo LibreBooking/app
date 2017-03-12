@@ -79,6 +79,12 @@ interface IManageUsersService
 	 * @param int[] $groupIds
 	 */
 	public function ChangeGroups($user, $groupIds);
+
+    /**
+     * @param int $userId
+     * @param string $password
+     */
+    public function UpdatePassword($userId, $password);
 }
 
 class ManageUsersService implements IManageUsersService
@@ -103,13 +109,22 @@ class ManageUsersService implements IManageUsersService
 	 */
 	private $userViewRepository;
 
-	public function __construct(IRegistration $registration, IUserRepository $userRepository, IGroupRepository $groupRepository,
-								IUserViewRepository $userViewRepository)
+    /**
+     * @var PasswordEncryption
+     */
+    private $passwordEncryption;
+
+    public function __construct(IRegistration $registration,
+                                IUserRepository $userRepository,
+                                IGroupRepository $groupRepository,
+								IUserViewRepository $userViewRepository,
+                                PasswordEncryption $passwordEncryption)
 	{
 		$this->registration = $registration;
 		$this->userRepository = $userRepository;
 		$this->groupRepository = $groupRepository;
 		$this->userViewRepository = $userViewRepository;
+		$this->passwordEncryption = $passwordEncryption;
 	}
 
 	public function AddUser(
@@ -229,4 +244,15 @@ class ManageUsersService implements IManageUsersService
 			}
 		}
 	}
+
+    public function UpdatePassword($userId, $password)
+    {
+       $user = $this->userRepository->LoadById($userId);
+
+       $encrypted = $this->passwordEncryption->EncryptPassword($password);
+
+       $user->ChangePassword($encrypted->EncryptedPassword(), $encrypted->Salt());
+
+       $this->userRepository->Update($user);
+    }
 }

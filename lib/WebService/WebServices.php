@@ -55,6 +55,7 @@ class WebServices
 	const UpdateCustomAttribute = 'update_custom_attribute';
 	const UpdateReservation = 'update_reservation';
 	const UpdateResource = 'update_resource';
+	const UpdatePassword = 'update_password';
 	const UpdateUser = 'update_user';
 	const GetStatuses = 'get_resource_statuses';
 	const GetStatusReasons = 'get_resource_status_reasons';

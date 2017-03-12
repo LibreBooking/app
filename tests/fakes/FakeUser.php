@@ -24,6 +24,8 @@ class FakeUser extends User
 	public $_IsResourceAdmin = true;
     public $_ResourceAdminResourceIds = array();
     public $_WantsEmail;
+    public $_Password;
+    public $_Salt;
 
     public function __construct($userId = null, $email = 'test@test.com')
 	{
@@ -83,5 +85,11 @@ class FakeUser extends User
 	public function WantsEventEmail(IDomainEvent $event)
     {
         return $this->_WantsEmail;
+    }
+
+    public function ChangePassword($encryptedPassword, $salt)
+    {
+       $this->_Password = $encryptedPassword;
+       $this->_Salt = $salt;
     }
 }

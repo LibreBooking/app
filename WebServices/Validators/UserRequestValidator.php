@@ -21,8 +21,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 require_once(ROOT_DIR . 'lib/Common/Validators/namespace.php');
 require_once(ROOT_DIR . 'lib/Application/Attributes/namespace.php');
 require_once(ROOT_DIR . 'WebServices/Validators/RequestRequiredValueValidator.php');
-require_once(ROOT_DIR . 'WebServices/Requests/CreateUserRequest.php');
-require_once(ROOT_DIR . 'WebServices/Requests/UpdateUserRequest.php');
+require_once(ROOT_DIR . 'WebServices/Requests/User/CreateUserRequest.php');
+require_once(ROOT_DIR . 'WebServices/Requests/User/UpdateUserRequest.php');
 
 interface IUserRequestValidator
 {
@@ -38,6 +38,13 @@ interface IUserRequestValidator
 	 * @return array|string[]
 	 */
 	public function ValidateUpdateRequest($userId, $updateRequest);
+
+    /**
+     * @param int $userId
+     * @param string $password
+     * @return string[]
+     */
+    public function ValidateUpdatePasswordRequest($userId, $password);
 }
 
 class UserRequestValidator implements IUserRequestValidator
@@ -58,10 +65,6 @@ class UserRequestValidator implements IUserRequestValidator
 		$this->userRepository = $userRepository;
 	}
 
-	/**
-	 * @param CreateUserRequest $createRequest
-	 * @return array|string[]
-	 */
 	public function ValidateCreateRequest($createRequest)
 	{
 		if (empty($createRequest))
@@ -77,11 +80,6 @@ class UserRequestValidator implements IUserRequestValidator
 		return $this->Validate($createRequest, $validators);
 	}
 
-	/**
-	 * @param int $userId
-	 * @param UpdateUserRequest $updateRequest
-	 * @return array|string[]
-	 */
 	public function ValidateUpdateRequest($userId, $updateRequest)
 	{
 		if (empty($updateRequest))
@@ -94,6 +92,20 @@ class UserRequestValidator implements IUserRequestValidator
 
 		return $this->Validate($updateRequest, $validators);
 	}
+
+
+    public function ValidateUpdatePasswordRequest($userId, $password)
+    {
+        $validator = new PasswordComplexityValidator($password);
+        $validator->Validate();
+
+        if (!$validator->IsValid())
+        {
+            return $validator->Messages();
+        }
+
+        return array();
+    }
 
 	/**
 	 * @param CreateUserRequest|UpdateUserRequest $request
@@ -132,5 +144,6 @@ class UserRequestValidator implements IUserRequestValidator
 		}
 		return $errors;
 	}
+
 }
 
