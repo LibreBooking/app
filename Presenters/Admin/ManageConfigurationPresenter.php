@@ -190,6 +190,10 @@ class ManageConfigurationPresenter extends ActionPresenter
 		{
 			return true;
 		}
+		if ($section == ConfigSection::ICS)
+        {
+            return $key == 'import' || $key == 'import.key';
+        }
 		if (in_array($key, $this->deletedSettings))
 		{
 			return true;
