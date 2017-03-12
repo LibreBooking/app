@@ -40,6 +40,32 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
     {jsfile src="ajax-helpers.js"}
     {jsfile src="js/tree.jquery.js"}
 
+    <div class="modal fade" id="moveErrorDialog" tabindex="-1" role="dialog" aria-labelledby="errorModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="errorModalLabel">{translate key=ErrorMovingReservation}</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="alert alert-error">
+                        <ul id="moveErrorsList"></ul>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    {ok_button id="moveErrorOk"}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <form id="moveReservationForm">
+        <input id="moveReferenceNumber" type="hidden" {formname key=REFERENCE_NUMBER} />
+        <input id="moveStartDate" type="hidden" {formname key=BEGIN_DATE} />
+        <input id="moveResourceId" type="hidden" {formname key=RESOURCE_ID} value="0" />
+        <input id="moveSourceResourceId" type="hidden" {formname key=ORIGINAL_RESOURCE_ID} value="0" />
+    </form>
+
     <script type="text/javascript">
         $(document).ready(function () {
 
@@ -72,6 +98,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                 getSubscriptionUrl: '{$pageUrl}?dr=subscription',
                 subscriptionEnableUrl: '{$pageUrl}?{QueryStringKeys::ACTION}={CalendarActions::ActionEnableSubscription}',
                 subscriptionDisableUrl: '{$pageUrl}?{QueryStringKeys::ACTION}={CalendarActions::ActionDisableSubscription}',
+                moveReservationUrl: "{$Path}ajax/reservation_move.php"
             };
 
             var calendar = new Calendar(options);

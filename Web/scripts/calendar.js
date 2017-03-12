@@ -4,7 +4,26 @@ function Calendar(opts) {
 
     var dayDialog = $('#dayDialog');
 
+    var elements = {
+        loadingIndicator: $('#loadingIndicator'),
+        moveReservationForm: $('#moveReservationForm'),
+        moveReferenceNumber: $('#moveReferenceNumber'),
+        moveStartDate: $('#moveStartDate'),
+        moveErrorOk: $('#moveErrorOk'),
+        moveErrorDialog: $('#moveErrorDialog'),
+        moveErrorsList: $('#moveErrorsList')
+    };
+
     Calendar.prototype.init = function () {
+
+        function showLoadingIndicator() {
+            elements.loadingIndicator.removeClass('no-show');
+        }
+
+        function hideLoadingIndicator() {
+            elements.loadingIndicator.addClass('no-show');
+        }
+
         _fullCalendar = $('#calendar').fullCalendar({
             header: {
                 left: 'prev,next,today',
@@ -18,7 +37,7 @@ function Calendar(opts) {
                 day: _options.dayText
             },
             allDaySlot: false,
-            editable: false,
+            editable: true,
             defaultView: _options.view,
             defaultDate: _options.defaultDate,
             eventSources: [{
@@ -38,11 +57,29 @@ function Calendar(opts) {
             firstDay: _options.firstDay,
             loading: function (isLoading) {
                 if (isLoading) {
-                    $('#loadingIndicator').removeClass('no-show');
+                    showLoadingIndicator();
                 }
                 else {
-                    $('#loadingIndicator').addClass('no-show');
+                    hideLoadingIndicator();
                 }
+            },
+            eventDrop: function(event, delta, revertFunc) {
+                var handleMoveResponse = function(result) {
+                    hideLoadingIndicator();
+                    if (result.errors.length > 0)
+                    {
+                        revertFunc();
+
+                        var messages = result.errors.join('</li><li>');
+                        messages = '<li>' + messages + '</li>';
+                        elements.moveErrorsList.empty().append(messages);
+                        elements.moveErrorDialog.modal('show');
+                    }
+                };
+
+                elements.moveReferenceNumber.val(event.id);
+                elements.moveStartDate.val(event.start.format('YYYY-MM-DD HH:mm'));
+                ajaxPost(elements.moveReservationForm, _options.moveReservationUrl, showLoadingIndicator, handleMoveResponse);
             }
         });
 
@@ -142,6 +179,11 @@ function Calendar(opts) {
                 resourceGroupsContainer.data('positionSet', true);
                 resourceGroupsContainer.show();
             }
+        })
+
+        elements.moveErrorOk.click(function(e) {
+            e.preventDefault();
+            elements.moveErrorDialog.modal('hide');
         })
     };
 

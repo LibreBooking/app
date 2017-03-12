@@ -312,8 +312,7 @@ class SchedulePage extends ActionPage implements ISchedulePage
 
 	public function ProcessDataRequest($dataRequest)
 	{
-		$this->_presenter->GetLayout(ServiceLocator::GetServer()
-												   ->GetUserSession());
+		$this->_presenter->GetLayout(ServiceLocator::GetServer()->GetUserSession());
 	}
 
 	public function GetScheduleId()

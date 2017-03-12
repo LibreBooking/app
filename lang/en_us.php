@@ -621,6 +621,7 @@ class en_us extends Language
 		$strings['Export'] = 'Export';
 		$strings['DeleteMultipleUserWarning'] = 'Deleting these users will remove all of their current, future, and historical reservations. No emails will be sent.';
 		$strings['DeleteMultipleReservationsWarning'] = 'No emails will be sent.';
+		$strings['ErrorMovingReservation'] = 'Error Moving Reservation';
         // End Strings
 
 		// Install

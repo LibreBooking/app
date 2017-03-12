@@ -169,6 +169,7 @@ class SmartyPage extends Smarty
         $this->registerPlugin('function', 'delete_button', array($this, 'DeleteButton'));
         $this->registerPlugin('function', 'reset_button', array($this, 'ResetButton'));
         $this->registerPlugin('function', 'filter_button', array($this, 'FilterButton'));
+        $this->registerPlugin('function', 'ok_button', array($this, 'OkButton'));
         $this->registerPlugin('function', 'showhide_icon', array($this, 'ShowHideIcon'));
         $this->registerPlugin('function', 'sort_column', array($this, 'SortColumn'));
 
@@ -779,6 +780,14 @@ class SmartyPage extends Smarty
         $key = isset($params['key']) ? $params['key'] : 'Filter';
         $class = isset($params['class']) ? $params['class'] : '';
         echo '<button type="button" class="btn btn-primary ' . $class . '" ' . $this->GetButtonAttributes($params) . '> <span class="glyphicon glyphicon-search"></span> ' . Resources::GetInstance()->GetString($key) . '</button>';
+    }
+
+    public function OkButton($params, &$smarty)
+    {
+        $key = isset($params['key']) ? $params['key'] : 'OK';
+        $class = isset($params['class']) ? $params['class'] : '';
+        echo '<button type="button" class="btn btn-success ' . $class . '" ' . $this->GetButtonAttributes($params) . '><span class="glyphicon glyphicon-ok-circle"></span> ' . Resources::GetInstance()
+                ->GetString($key) . '</span></button>';
     }
 
     public function ShowHideIcon($params, &$smarty)
