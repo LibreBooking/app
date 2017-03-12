@@ -18,6 +18,7 @@
  * You should have received a copy of the GNU General Public License
  * along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 class ReportCommandBuilder
 {
 	const REPORT_TEMPLATE = 'SELECT [SELECT_TOKEN]
@@ -81,17 +82,17 @@ class ReportCommandBuilder
 
 	const TIME_ORDER_BY_FRAGMENT = 'ORDER BY totalTime DESC';
 
-	const SCHEDULE_ID_FRAGMENT = 'AND schedules.schedule_id = @scheduleid';
+	const SCHEDULE_ID_FRAGMENT = 'AND schedules.schedule_id IN (@scheduleid)';
 
-	const RESOURCE_ID_FRAGMENT = 'AND resources.resource_id = @resourceid';
+	const RESOURCE_ID_FRAGMENT = 'AND resources.resource_id IN (@resourceid)';
 
-	const RESOURCE_TYPE_ID_FRAGMENT = 'AND resources.resource_type_id = @resource_type_id';
+	const RESOURCE_TYPE_ID_FRAGMENT = 'AND resources.resource_type_id IN (@resource_type_id)';
 
-	const ACCESSORY_ID_FRAGMENT = 'AND accessories.accessory_id = @accessoryid';
+	const ACCESSORY_ID_FRAGMENT = 'AND accessories.accessory_id IN (@accessoryid)';
 
 	const USER_ID_FRAGMENT = 'AND owner.user_id = @userid';
 
-	const GROUP_ID_FRAGMENT = 'AND ug.group_id = @groupid';
+	const GROUP_ID_FRAGMENT = 'AND ug.group_id IN (@groupid)';
 
 	const DATE_FRAGMENT = 'AND ((ri.start_date >= @startDate AND ri.start_date < @endDate) OR
 						(ri.end_date >= @startDate AND ri.end_date <= @endDate) OR
@@ -159,7 +160,7 @@ class ReportCommandBuilder
 	/**
 	 * @var null|int
 	 */
-	private $scheduleId = null;
+	private $scheduleIds = null;
 	/**
 	 * @var null|int
 	 */
@@ -171,19 +172,19 @@ class ReportCommandBuilder
 	/**
 	 * @var null|int
 	 */
-	private $resourceId = null;
+	private $resourceIds = null;
 	/**
 	 * @var null|int
 	 */
-	private $resourceTypeId = null;
+	private $resourceTypeIds = null;
 	/**
 	 * @var null|int
 	 */
-	private $accessoryId = null;
+	private $accessoryIds = null;
 	/**
 	 * @var null|int
 	 */
-	private $groupId = null;
+	private $groupIds = null;
 	/**
 	 * @var null|Date
 	 */
@@ -286,24 +287,24 @@ class ReportCommandBuilder
 	}
 
 	/**
-	 * @param int $resourceId
+	 * @param int[] $resourceIds
 	 * @return ReportCommandBuilder
 	 */
-	public function WithResourceId($resourceId)
+	public function WithResourceIds($resourceIds)
 	{
-		$this->joinResources = true;
-		$this->resourceId = $resourceId;
+		$this->joinResources = !empty($resourceIds);
+		$this->resourceIds = is_array($resourceIds) ? $resourceIds : array($resourceIds);
 		return $this;
 	}
 
 	/**
-	 * @param int $resourceTypeId
+	 * @param int[] $resourceTypeIds
 	 * @return ReportCommandBuilder
 	 */
-	public function WithResourceTypeId($resourceTypeId)
+	public function WithResourceTypeIds($resourceTypeIds)
 	{
-		$this->joinResources = true;
-		$this->resourceTypeId = $resourceTypeId;
+		$this->joinResources = !empty($resourceTypeIds);
+		$this->resourceTypeIds = is_array($resourceTypeIds) ? $resourceTypeIds : array($resourceTypeIds);
 		return $this;
 	}
 
@@ -329,35 +330,35 @@ class ReportCommandBuilder
 	}
 
 	/**
-	 * @param int $scheduleId
+	 * @param int[] $scheduleIds
 	 * @return ReportCommandBuilder
 	 */
-	public function WithScheduleId($scheduleId)
+	public function WithScheduleIds($scheduleIds)
 	{
-		$this->joinResources = true;
-		$this->scheduleId = $scheduleId;
+		$this->joinResources = !empty($scheduleIds);
+		$this->scheduleIds = is_array($scheduleIds) ? $scheduleIds : array($scheduleIds);
 		return $this;
 	}
 
 	/**
-	 * @param int $groupId
+	 * @param int[] $groupIds
 	 * @return ReportCommandBuilder
 	 */
-	public function WithGroupId($groupId)
+	public function WithGroupIds($groupIds)
 	{
 		$this->joinGroups = true;
-		$this->groupId = $groupId;
+		$this->groupIds = is_array($groupIds) ? $groupIds : array($groupIds);
 		return $this;
 	}
 
 	/**
-	 * @param int $accessoryId
+	 * @param int[] $accessoryIds
 	 * @return ReportCommandBuilder
 	 */
-	public function WithAccessoryId($accessoryId)
+	public function WithAccessoryIds($accessoryIds)
 	{
-		$this->joinAccessories = true;
-		$this->accessoryId = $accessoryId;
+		$this->joinAccessories = !empty($accessoryIds);
+		$this->accessoryIds = is_array($accessoryIds) ? $accessoryIds : array($accessoryIds);
 		return $this;
 	}
 
@@ -411,6 +412,7 @@ class ReportCommandBuilder
 	public function LimitedTo($limit)
 	{
 		$this->limit = $limit;
+		return $this;
 	}
 
 	/**
@@ -532,10 +534,10 @@ class ReportCommandBuilder
 	{
 		$and = new ReportQueryFragment();
 
-		if (!empty($this->scheduleId))
+		if (!empty($this->scheduleIds))
 		{
 			$and->Append(self::SCHEDULE_ID_FRAGMENT);
-			$this->AddParameter(new Parameter(ParameterNames::SCHEDULE_ID, $this->scheduleId));
+			$this->AddParameter(new Parameter(ParameterNames::SCHEDULE_ID, $this->scheduleIds));
 		}
 
 		if (!empty($this->userId))
@@ -550,28 +552,28 @@ class ReportCommandBuilder
 			$this->AddParameter(new Parameter(ParameterNames::PARTICIPANT_ID, $this->participantId));
 		}
 
-		if (!empty($this->groupId))
+		if (!empty($this->groupIds))
 		{
 			$and->Append(self::GROUP_ID_FRAGMENT);
-			$this->AddParameter(new Parameter(ParameterNames::GROUP_ID, $this->groupId));
+			$this->AddParameter(new Parameter(ParameterNames::GROUP_ID, $this->groupIds));
 		}
 
-		if (!empty($this->resourceId))
+		if (!empty($this->resourceIds))
 		{
 			$and->Append(self::RESOURCE_ID_FRAGMENT);
-			$this->AddParameter(new Parameter(ParameterNames::RESOURCE_ID, $this->resourceId));
+			$this->AddParameter(new Parameter(ParameterNames::RESOURCE_ID, $this->resourceIds));
 		}
 
-		if (!empty($this->resourceTypeId))
+		if (!empty($this->resourceTypeIds))
 		{
 			$and->Append(self::RESOURCE_TYPE_ID_FRAGMENT);
-			$this->AddParameter(new Parameter(ParameterNames::RESOURCE_TYPE_ID, $this->resourceTypeId));
+			$this->AddParameter(new Parameter(ParameterNames::RESOURCE_TYPE_ID, $this->resourceTypeIds));
 		}
 
-		if (!empty($this->accessoryId))
+		if (!empty($this->accessoryIds))
 		{
 			$and->Append(self::ACCESSORY_ID_FRAGMENT);
-			$this->AddParameter(new Parameter(ParameterNames::ACCESSORY_ID, $this->accessoryId));
+			$this->AddParameter(new Parameter(ParameterNames::ACCESSORY_ID, $this->accessoryIds));
 		}
 
 		if ($this->limitWithin)

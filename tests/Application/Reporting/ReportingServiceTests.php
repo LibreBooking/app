@@ -47,13 +47,13 @@ class ReportingServiceTests extends TestBase
 		$start = '2010-01-01';
 		$end = '2010-01-02';
 
-		$resourceId = 1;
-		$scheduleId = 2;
+		$resourceId = array(1);
+		$scheduleId = array(2);
 		$userId = 3;
-		$groupId = 4;
-		$accessoryId = 5;
+		$groupId = array(4);
+		$accessoryId = array(5);
 		$participantId = 6;
-		$resourceTypeId = 7;
+		$resourceTypeId = array(7);
 
 		$usage = new Report_Usage(Report_Usage::RESOURCES);
 		$selection = new Report_ResultSelection(Report_ResultSelection::FULL_LIST);
@@ -65,13 +65,13 @@ class ReportingServiceTests extends TestBase
 		$commandBuilder->SelectFullList()
 				->OfResources()
 				->Within(Date::Parse($start, 'UTC'), Date::Parse($end, 'UTC'))
-				->WithResourceId($resourceId)
+				->WithResourceIds($resourceId)
 				->WithUserId($userId)
 				->WithParticipantId($participantId)
-				->WithScheduleId($scheduleId)
-				->WithGroupId($groupId)
-				->WithAccessoryId($accessoryId)
-				->WithResourceTypeId($resourceTypeId)
+				->WithScheduleIds($scheduleId)
+				->WithGroupIds($groupId)
+				->WithAccessoryIds($accessoryId)
+				->WithResourceTypeIds($resourceTypeId)
 				->WithDeleted()
 				->GroupByGroup();
 

@@ -16,7 +16,8 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 *}
-{include file='globalheader.tpl' cssFiles="scripts/js/jqplot/jquery.jqplot.min.css"}
+
+{include file='globalheader.tpl' cssFiles="scripts/js/jqplot/jquery.jqplot.min.css" Select2=true}
 
 <div id="page-generate-report">
 	<div id="customReportInput-container">
@@ -137,40 +138,35 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 							<div class="col-md-1"><span class="">{translate key=FilterBy}</span></div>
 							<div class="col-md-11">
 								<div class="form-group no-margin no-padding col-md-2">
-									<select class="form-control" {formname key=RESOURCE_ID}>
-										<option value="">{translate key=AllResources}</option>
+									<select class="form-control" {formname key=RESOURCE_ID multi=true} multiple="multiple" id="resourceId">
 										{foreach from=$Resources item=resource}
 											<option value="{$resource->GetId()}">{$resource->GetName()}</option>
 										{/foreach}
 									</select>
 								</div>
 								<div class="form-group no-margin no-padding col-md-2">
-									<select class="form-control" {formname key=RESOURCE_TYPE_ID}>
-										<option value="">{translate key=AllResourceTypes}</option>
+									<select class="form-control" {formname key=RESOURCE_TYPE_ID multi=true} multiple="multiple" id="resourceTypeId">
 										{foreach from=$ResourceTypes item=resourceType}
 											<option value="{$resourceType->Id()}">{$resourceType->Name()}</option>
 										{/foreach}
 									</select>
 								</div>
 								<div class="form-group no-margin no-padding col-md-2">
-									<select class="form-control" {formname key=ACCESSORY_ID} id="accessoryId">
-										<option value="">{translate key=AllAccessories}</option>
+									<select class="form-control" {formname key=ACCESSORY_ID multi=true} multiple="multiple" id="accessoryId">
 										{foreach from=$Accessories item=accessory}
 											<option value="{$accessory->Id}">{$accessory->Name}</option>
 										{/foreach}
 									</select>
 								</div>
 								<div class="form-group no-margin no-padding col-md-2">
-									<select class="form-control" {formname key=SCHEDULE_ID}>
-										<option value="">{translate key=AllSchedules}</option>
+									<select class="form-control" {formname key=SCHEDULE_ID multi=true} multiple="multiple" id="scheduleId">
 										{foreach from=$Schedules item=schedule}
 											<option value="{$schedule->GetId()}">{$schedule->GetName()}</option>
 										{/foreach}
 									</select>
 								</div>
 								<div class="form-group no-margin no-padding col-md-2">
-									<select class="form-control" {formname key=GROUP_ID}>
-										<option value="">{translate key=AllGroups}</option>
+									<select class="form-control" {formname key=GROUP_ID multi=true} multiple="multiple" id="groupId">
 										{foreach from=$Groups item=group}
 											<option value="{$group->Id}">{$group->Name}</option>
 										{/foreach}
@@ -286,6 +282,22 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			scriptUrl: '{$ScriptUrl}'
 		});
 		common.init();
+
+        $('#resourceId').select2({
+            placeholder: '{translate key=AllResources}'
+        });
+        $('#resourceTypeId').select2({
+            placeholder: '{translate key=AllResourceTypes}'
+        });
+        $('#accessoryId').select2({
+            placeholder: '{translate key=AllAccessories}'
+        });
+        $('#scheduleId').select2({
+            placeholder: '{translate key=AllSchedules}'
+        });
+        $('#groupId').select2({
+            placeholder: '{translate key=AllGroups}'
+        });
 	});
 
 	$('#report-filter-panel').showHidePanel();

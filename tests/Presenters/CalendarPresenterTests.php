@@ -24,7 +24,7 @@ require_once(ROOT_DIR . 'Presenters/Calendar/CalendarPresenter.php');
 class CalendarPresenterTests extends TestBase
 {
 	/**
-	 * @var ICalendarPage|PHPUnit_Framework_MockObject_MockObject
+	 * @var ICommonCalendarPage|PHPUnit_Framework_MockObject_MockObject
 	 */
 	private $page;
 
@@ -48,6 +48,11 @@ class CalendarPresenterTests extends TestBase
 	 */
 	private $scheduleRepository;
 
+    /**
+     * @var FakeUserRepository
+     */
+	private $userRepository;
+
 	/**
 	 * @var IResourceService|PHPUnit_Framework_MockObject_MockObject
 	 */
@@ -67,9 +72,10 @@ class CalendarPresenterTests extends TestBase
 	{
 		parent::setup();
 
-		$this->page = $this->getMock('ICalendarPage');
+		$this->page = $this->getMock('ICommonCalendarPage');
 		$this->repository = $this->getMock('IReservationViewRepository');
 		$this->scheduleRepository = $this->getMock('IScheduleRepository');
+		$this->userRepository = new FakeUserRepository();
 		$this->calendarFactory = $this->getMock('ICalendarFactory');
 		$this->resourceService = $this->getMock('IResourceService');
 		$this->subscriptionService = $this->getMock('ICalendarSubscriptionService');
@@ -80,6 +86,7 @@ class CalendarPresenterTests extends TestBase
 			$this->calendarFactory,
 			$this->repository,
 			$this->scheduleRepository,
+            $this->userRepository,
 			$this->resourceService,
 			$this->subscriptionService,
 			$this->privacyFilter);

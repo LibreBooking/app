@@ -14,17 +14,18 @@
  * You should have received a copy of the GNU General Public License
  * along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 class Report_Filter
 {
 	/**
-	 * @var int|null
+	 * @var int[]|null
 	 */
-	private $resourceId;
+	private $resourceIds;
 
 	/**
-	 * @var int|null
+	 * @var int[]|null
 	 */
-	private $scheduleId;
+	private $scheduleIds;
 
 	/**
 	 * @var int|null
@@ -37,9 +38,14 @@ class Report_Filter
 	private $participantId;
 
 	/**
-	 * @var int|null
+	 * @var int[]|null
 	 */
-	private $groupId;
+	private $groupIds;
+
+    /**
+     * @var int[]|null
+     */
+	private $accessoryIds;
 
 	/**
 	 * @var bool
@@ -47,41 +53,67 @@ class Report_Filter
 	private $includeDeleted;
 
 	/**
-	 * @var int|null
+	 * @var int[]|null
 	 */
-	private $resourceTypeId;
+	private $resourceTypeIds;
 
 	/**
-	 * @param $resourceId int|null
-	 * @param $scheduleId int|null
+	 * @param $resourceIds int[]|null
+	 * @param $scheduleIds int[]|null
 	 * @param $userId int|null
-	 * @param $groupId int|null
-	 * @param $accessoryId int|null
+	 * @param $groupIds int[]|null
+	 * @param $accessoryIds int[]|null
 	 * @param $participantId int|null
 	 * @param $includeDeleted bool
-	 * @param $resourceTypeId int|null
+	 * @param $resourceTypeIds int[]|null
 	 */
-	public function __construct($resourceId, $scheduleId, $userId, $groupId, $accessoryId, $participantId, $includeDeleted, $resourceTypeId)
+	public function __construct($resourceIds, $scheduleIds, $userId, $groupIds, $accessoryIds, $participantId, $includeDeleted, $resourceTypeIds)
 	{
-		$this->resourceId = $resourceId;
-		$this->scheduleId = $scheduleId;
+	    $removeEmpty = function($value)
+        {
+            return !empty($value);
+        };
+
+	    if (!is_array($resourceIds))
+        {
+            $resourceIds = array($resourceIds);
+        }
+        if (!is_array($scheduleIds))
+        {
+            $scheduleIds = array($scheduleIds);
+        }
+        if (!is_array($groupIds))
+        {
+            $groupIds = array($groupIds);
+        }
+        if (!is_array($accessoryIds))
+        {
+            $accessoryIds = array($accessoryIds);
+        }
+        if (!is_array($resourceTypeIds))
+        {
+            $resourceTypeIds = array($resourceTypeIds);
+        }
+
+		$this->resourceIds = array_filter($resourceIds, $removeEmpty);
+		$this->scheduleIds = array_filter($scheduleIds, $removeEmpty);
 		$this->userId = $userId;
-		$this->groupId = $groupId;
-		$this->accessoryId = $accessoryId;
+		$this->groupIds = array_filter($groupIds, $removeEmpty);
+		$this->accessoryIds = array_filter($accessoryIds, $removeEmpty);
 		$this->participantId = $participantId;
 		$this->includeDeleted = $includeDeleted;
-		$this->resourceTypeId = $resourceTypeId;
+		$this->resourceTypeIds =array_filter($resourceTypeIds, $removeEmpty) ;
 	}
 
 	public function Add(ReportCommandBuilder $builder)
 	{
-		if (!empty($this->resourceId))
+		if (!empty($this->resourceIds))
 		{
-			$builder->WithResourceId($this->resourceId);
+			$builder->WithResourceIds($this->resourceIds);
 		}
-		if (!empty($this->scheduleId))
+		if (!empty($this->scheduleIds))
 		{
-			$builder->WithScheduleId($this->scheduleId);
+			$builder->WithScheduleIds($this->scheduleIds);
 		}
 		if (!empty($this->userId))
 		{
@@ -91,46 +123,46 @@ class Report_Filter
 		{
 			$builder->WithParticipantId($this->participantId);
 		}
-		if (!empty($this->groupId))
+		if (!empty($this->groupIds))
 		{
-			$builder->WithGroupId($this->groupId);
+			$builder->WithGroupIds($this->groupIds);
 		}
-		if (!empty($this->accessoryId))
+		if (!empty($this->accessoryIds))
 		{
-			$builder->WithAccessoryId($this->accessoryId);
+			$builder->WithAccessoryIds($this->accessoryIds);
 		}
 		if ($this->includeDeleted)
 		{
 			$builder->WithDeleted();
 		}
-		if (!empty($this->resourceTypeId))
+		if (!empty($this->resourceTypeIds))
 		{
-			$builder->WithResourceTypeId($this->resourceTypeId);
+			$builder->WithResourceTypeIds($this->resourceTypeIds);
 		}
 	}
 
 	/**
-	 * @return int|null
+	 * @return int[]|null
 	 */
-	public function ResourceId()
+	public function ResourceIds()
 	{
-		return $this->resourceId;
+		return $this->resourceIds;
 	}
 
 	/**
-	 * @return int|null
+	 * @return int[]|null
 	 */
-	public function ResourceTypeId()
+	public function ResourceTypeIds()
 	{
-		return $this->resourceTypeId;
+		return $this->resourceTypeIds;
 	}
 
 	/**
-	 * @return int|null
+	 * @return int[]|null
 	 */
-	public function ScheduleId()
+	public function ScheduleIds()
 	{
-		return $this->scheduleId;
+		return $this->scheduleIds;
 	}
 
 	/**
@@ -150,19 +182,19 @@ class Report_Filter
 	}
 
 	/**
-	 * @return int|null
+	 * @return int[]|null
 	 */
-	public function GroupId()
+	public function GroupIds()
 	{
-		return $this->groupId;
+		return $this->groupIds;
 	}
 
 	/**
-	 * @return int|null
+	 * @return int[]|null
 	 */
-	public function AccessoryId()
+	public function AccessoryIds()
 	{
-		return $this->accessoryId;
+		return $this->accessoryIds;
 	}
 
 	/**

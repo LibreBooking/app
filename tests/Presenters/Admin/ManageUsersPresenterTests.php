@@ -516,7 +516,7 @@ class ManageUsersPresenterTests extends TestBase
 	{
 		$file = new FakeUploadedFile();
 		$file->Contents = "email,username,password,first name,last name\ne1,u1,p1,f1,l1";
-		$csv = new UserImportCsv($file);
+		$csv = new UserImportCsv($file, array());
 
 		$rows = $csv->GetRows();
 		$this->assertEquals(1, count($rows));
@@ -539,7 +539,7 @@ class ManageUsersPresenterTests extends TestBase
 	{
 		$file = new FakeUploadedFile();
 		$file->Contents = "email,username,password,first name,last name\ne1,u1";
-		$csv = new UserImportCsv($file);
+		$csv = new UserImportCsv($file, array());
 
 		$rows = $csv->GetRows();
 		$this->assertEquals(1, count($rows));
@@ -562,7 +562,7 @@ class ManageUsersPresenterTests extends TestBase
 	{
 		$file = new FakeUploadedFile();
 		$file->Contents = "email,username,password,first name,last name\ne\ne";
-		$csv = new UserImportCsv($file);
+		$csv = new UserImportCsv($file, array());
 
 		$rows = $csv->GetRows();
 		$skippedRowNumbers = $csv->GetSkippedRowNumbers();

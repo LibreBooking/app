@@ -59,25 +59,25 @@ class ReportingRepositoryTests extends TestBase
 		$timezone = 'America/Chicago';
 		$startDate = Date::Parse($startRange, $timezone);
 		$endDate = Date::Parse($endRange, $timezone);
-		$resourceId = 1;
-		$scheduleId = 2;
+		$resourceIds = array(1,100);
+		$scheduleIds = array(2);
 		$userId = 3;
-		$groupId = 4;
-		$accessoryId = 5;
+		$groupIds = array(4,100);
+		$accessoryIds = array(5);
 		$participantId = 6;
-		$resourceTypeId = 7;
+		$resourceTypeIds = array(7,100);
 
 		$usage = new Report_Usage(Report_Usage::ACCESSORIES);
 		$selection = new Report_ResultSelection(Report_ResultSelection::COUNT);
 		$groupBy = new Report_GroupBy(Report_GroupBy::RESOURCE);
 		$range = new Report_Range(Report_Range::DATE_RANGE, $startRange, $endRange, $timezone);
-		$filter = new Report_Filter($resourceId, $scheduleId, $userId, $groupId, $accessoryId, $participantId, true, $resourceTypeId);
+		$filter = new Report_Filter($resourceIds, $scheduleIds, $userId, $groupIds, $accessoryIds, $participantId, true, $resourceTypeIds);
 
 		$report = new SavedReport($reportName, $ownerId, $usage, $selection, $groupBy, $range, $filter);
 
 		$this->repository->SaveCustomReport($report);
 
-		$serializedCriteria = "usage=ACCESSORIES;selection=COUNT;groupby=RESOURCE;range=DATE_RANGE;range_start={$startDate->ToDatabase()};range_end={$endDate->ToDatabase()};resourceid=$resourceId;scheduleid=$scheduleId;userid=$userId;groupid=$groupId;accessoryid=$accessoryId;participantid=$participantId;deleted=1;resourceTypeId=$resourceTypeId";
+		$serializedCriteria = "usage=ACCESSORIES;selection=COUNT;groupby=RESOURCE;range=DATE_RANGE;range_start={$startDate->ToDatabase()};range_end={$endDate->ToDatabase()};resourceid=1|100;scheduleid=2;userid=3;groupid=4|100;accessoryid=5;participantid=6;deleted=1;resourceTypeId=7|100";
 
 		$expectedCommand = new AddSavedReportCommand($reportName, $ownerId, $report->DateCreated(), $serializedCriteria);
 
@@ -96,7 +96,7 @@ class ReportingRepositoryTests extends TestBase
 					new Report_ResultSelection(Report_ResultSelection::COUNT),
 					new Report_GroupBy(Report_GroupBy::GROUP),
 					new Report_Range(Report_Range::DATE_RANGE, Date::Now()->ToUtc(), Date::Now()->ToUtc()),
-					new Report_Filter(12, 11, 896, 123, 45234, 111, false, 1891) );
+					new Report_Filter(array(12), array(11), 896, array(123), array(45234), 111, false, array(1891)) );
 		$expectedReport1->WithDateCreated($date->ToUtc());
 		$expectedReport1->WithId(1);
 
@@ -131,7 +131,7 @@ class ReportingRepositoryTests extends TestBase
 					new Report_ResultSelection(Report_ResultSelection::COUNT),
 					new Report_GroupBy(Report_GroupBy::GROUP),
 					new Report_Range(Report_Range::DATE_RANGE, Date::Now()->ToUtc(), Date::Now()->ToUtc()),
-					new Report_Filter(12, 11, 896, 123, 45234, 111, false, 1828) );
+					new Report_Filter(array(12), array(11), 896, array(123), array(45234), 111, false, array(1828)) );
 		$expectedReport1->WithDateCreated($date->ToUtc());
 		$expectedReport1->WithId($reportId);
 

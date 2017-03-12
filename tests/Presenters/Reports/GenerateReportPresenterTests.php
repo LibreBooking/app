@@ -259,17 +259,17 @@ class FakeGenerateReportPage extends GenerateReportPage
 		return $this->_RangeEnd;
 	}
 
-	public function GetResourceId()
+	public function GetResourceIds()
 	{
 		return $this->_ResourceId;
 	}
 
-	public function GetResourceTypeId()
+	public function GetResourceTypeIds()
 	{
 		return $this->_ResourceTypeId;
 	}
 
-	public function GetScheduleId()
+	public function GetScheduleIds()
 	{
 		return $this->_ScheduleId;
 	}
@@ -284,7 +284,7 @@ class FakeGenerateReportPage extends GenerateReportPage
 		return $this->_ParticipantId;
 	}
 
-	public function GetGroupId()
+	public function GetGroupIds()
 	{
 		return $this->_GroupId;
 	}
@@ -300,7 +300,7 @@ class FakeGenerateReportPage extends GenerateReportPage
 		return $this->_Usage;
 	}
 
-	public function GetAccessoryId()
+	public function GetAccessoryIds()
 	{
 		return $this->_AccessoryId;
 	}

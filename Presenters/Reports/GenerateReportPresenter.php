@@ -205,13 +205,13 @@ class GenerateReportPresenter extends ActionPresenter
 	 */
 	private function GetFilter()
 	{
-		return new Report_Filter($this->page->GetResourceId(),
-								 $this->page->GetScheduleId(),
+		return new Report_Filter($this->page->GetResourceIds(),
+								 $this->page->GetScheduleIds(),
 								 $this->page->GetUserId(),
-								 $this->page->GetGroupId(),
-								 $this->page->GetAccessoryId(),
+								 $this->page->GetGroupIds(),
+								 $this->page->GetAccessoryIds(),
 								 $this->page->GetParticipantId(),
 								 $this->page->GetIncludeDeleted(),
-								 $this->page->GetResourceTypeId());
+								 $this->page->GetResourceTypeIds());
 	}
 }

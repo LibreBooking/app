@@ -24,7 +24,7 @@ require_once(ROOT_DIR . 'Presenters/Calendar/PersonalCalendarPresenter.php');
 class PersonalCalendarPresenterTests extends TestBase
 {
 	/**
-	 * @var IPersonalCalendarPage|PHPUnit_Framework_MockObject_MockObject
+	 * @var ICommonCalendarPage|PHPUnit_Framework_MockObject_MockObject
 	 */
 	private $page;
 
@@ -67,7 +67,7 @@ class PersonalCalendarPresenterTests extends TestBase
 	{
 		parent::setup();
 
-		$this->page = $this->getMock('IPersonalCalendarPage');
+		$this->page = $this->getMock('ICommonCalendarPage');
 		$this->repository = $this->getMock('IReservationViewRepository');
 		$this->calendarFactory = $this->getMock('ICalendarFactory');
 		$this->subscriptionService = $this->getMock('ICalendarSubscriptionService');
@@ -75,8 +75,14 @@ class PersonalCalendarPresenterTests extends TestBase
 		$this->resourceService = $this->getMock('IResourceService');
 		$this->scheduleRepository = $this->getMock('IScheduleRepository');
 
-		$this->presenter = new PersonalCalendarPresenter($this->page, $this->repository, $this->calendarFactory, $this->subscriptionService,
-														 $this->userRepository, $this->resourceService, $this->scheduleRepository);
+		$this->presenter = new PersonalCalendarPresenter(
+		    $this->page,
+            $this->repository,
+            $this->calendarFactory,
+            $this->subscriptionService,
+            $this->userRepository,
+            $this->resourceService,
+            $this->scheduleRepository);
 	}
 
 	public function testBindsEmptyCalendarToPageWhenNoReservationsAreFound()

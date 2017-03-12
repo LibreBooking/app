@@ -124,7 +124,6 @@
 
     {csrf_token}
 
-
     {jsfile src="js/tree.jquery.js"}
     {jsfile src="js/jquery.cookie.js"}
     {jsfile src="ajax-helpers.js"}

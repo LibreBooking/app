@@ -55,12 +55,12 @@ class ReportCommandBuilderTests extends TestBase
 
 	public function testFilteredBySchedule()
 	{
-		$scheduleId = 123;
+		$scheduleId = array(123);
 
 		$builder = new ReportCommandBuilder();
 		$actual = $builder->SelectFullList()
 						  ->OfAccessories()
-						  ->WithScheduleId($scheduleId)
+						  ->WithScheduleIds($scheduleId)
 						  ->Build();
 
 		$this->assertContains(ReportCommandBuilder::RESERVATION_LIST_FRAGMENT, $actual->GetQuery());
@@ -73,12 +73,12 @@ class ReportCommandBuilderTests extends TestBase
 
 	public function testFilteredByAccessory()
 	{
-		$accessoryId = 123;
+		$accessoryId = array(123);
 
 		$builder = new ReportCommandBuilder();
 		$actual = $builder->SelectFullList()
 						  ->OfAccessories()
-						  ->WithAccessoryId($accessoryId)
+						  ->WithAccessoryIds($accessoryId)
 						  ->Build();
 
 		$this->assertContains(ReportCommandBuilder::RESERVATION_LIST_FRAGMENT, $actual->GetQuery());
@@ -124,12 +124,12 @@ class ReportCommandBuilderTests extends TestBase
 
 	public function testFilteredByGroup()
 	{
-		$groupId = 123;
+		$groupId = array(123);
 
 		$builder = new ReportCommandBuilder();
 		$actual = $builder->SelectFullList()
 						  ->OfAccessories()
-						  ->WithGroupId($groupId)
+						  ->WithGroupIds($groupId)
 						  ->Build();
 
 		$this->assertContains(ReportCommandBuilder::RESERVATION_LIST_FRAGMENT, $actual->GetQuery());
@@ -143,14 +143,14 @@ class ReportCommandBuilderTests extends TestBase
 
 	public function testFilteredByGroupAndSchedule()
 	{
-		$groupId = 123;
-		$scheduleId = 123;
+		$groupId = array(123);
+		$scheduleId = array(123);
 
 		$builder = new ReportCommandBuilder();
 		$actual = $builder->SelectFullList()
 						  ->OfAccessories()
-						  ->WithGroupId($groupId)
-						  ->WithScheduleId($scheduleId)
+						  ->WithGroupIds($groupId)
+						  ->WithScheduleIds($scheduleId)
 						  ->Build();
 
 		$this->assertContains(ReportCommandBuilder::RESERVATION_LIST_FRAGMENT, $actual->GetQuery());
@@ -167,11 +167,11 @@ class ReportCommandBuilderTests extends TestBase
 
 	public function testCountOfResourceIdGroupedByGroup()
 	{
-		$resourceId = 123;
+		$resourceId = array(123);
 
 		$builder = new ReportCommandBuilder();
 		$actual = $builder->SelectCount()
-						  ->WithResourceId($resourceId)
+						  ->WithResourceIds($resourceId)
 						  ->GroupByGroup()
 						  ->Build();
 
@@ -185,14 +185,14 @@ class ReportCommandBuilderTests extends TestBase
 
 	public function testFilteredByDateRange()
 	{
-		$resourceId = 123;
+		$resourceId = array(123);
 		$start = Date::Now();
 		$end = Date::Now();
 
 		$builder = new ReportCommandBuilder();
 		$actual = $builder->SelectFullList()
 						  ->OfResources()
-						  ->WithResourceId($resourceId)
+						  ->WithResourceIds($resourceId)
 						  ->Within($start, $end)
 						  ->Build();
 
@@ -259,12 +259,12 @@ class ReportCommandBuilderTests extends TestBase
 
 	public function testFilteredByResourceType()
 	{
-		$resourceTypeId = 123;
+		$resourceTypeId = array(123);
 
 		$builder = new ReportCommandBuilder();
 		$actual = $builder->SelectFullList()
 						  ->OfResources()
-						  ->WithResourceTypeId($resourceTypeId)
+						  ->WithResourceTypeIds($resourceTypeId)
 						  ->Build();
 
 		$this->assertContains(ReportCommandBuilder::RESOURCE_LIST_FRAGMENT, $actual->GetQuery());

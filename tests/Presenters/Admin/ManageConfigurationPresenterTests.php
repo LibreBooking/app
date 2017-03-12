@@ -269,6 +269,15 @@ class FakeManageConfigurationPage extends FakeActionPageBase implements IManageC
 	{
 		// TODO: Implement SetHomepages() method.
 	}
+
+    /**
+     * @param string $scriptUrl
+     * @param string $suggestedUrl
+     */
+    public function ShowScriptUrlWarning($scriptUrl, $suggestedUrl)
+    {
+        // TODO: Implement ShowScriptUrlWarning() method.
+    }
 }
 
 ?>
