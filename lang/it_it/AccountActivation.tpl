@@ -20,6 +20,6 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 *}
 
 
-{$FirstName},<br/>
+{$FirstName},<br />
 grazie per esserti registrato in Booked Scheduler. Attiva il tuo account facendo clic <a href="{$ActivationUrl}">qui</a>.
 

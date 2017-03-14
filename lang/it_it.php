@@ -254,7 +254,7 @@ class it_it extends en_us
 		$strings['FindGroup'] = 'Cerca gruppo';
 		$strings['Manage'] = 'Gestisci';
 		$strings['None'] = 'Nulla';
-		$strings['AddToOutlook'] = 'Aggiungi al calendario';
+		$strings['AddToOutlook'] = 'Aggiungi ad Outlook';
 		$strings['Done'] = 'Fatto';
 		$strings['RememberMe'] = 'Ricordami';
 		$strings['FirstTimeUser?'] = 'Nuovo utente?';
@@ -360,11 +360,11 @@ class it_it extends en_us
 		$strings['Restricted'] = 'Ristretto';
 		$strings['ViewAll'] = 'Vedi tutte';
 		$strings['MoveResourcesAndReservations'] = 'Sposta risorse e prenotazioni a';
-		$strings['TurnOffSubscription'] = 'Disabilita le sottoscrizioni del calendario';
-		$strings['TurnOnSubscription'] = 'Permetti sottoscrizioni a questo calendario';
-		$strings['SubscribeToCalendar'] = 'Iscriviti a questo calendario';
-		$strings['SubscriptionsAreDisabled'] = 'L\'amministratore ha disabilitato le sottoscrizioni calendario';
-		$strings['NoResourceAdministratorLabel'] = '(Nessun amministratore risorsa)';
+		$strings['TurnOffSubscription'] = 'Disabilita le sottoscrizione';
+		$strings['TurnOnSubscription'] = 'Abilita le sottoscrizione';
+		$strings['SubscribeToCalendar'] = 'Apri una sottoscrizione';
+		$strings['SubscriptionsAreDisabled'] = 'L\'amministratore ha disabilitato le sottoscrizioni';
+		$strings['NoResourceAdministratorLabel'] = '(Nessun amministratore della risorsa)';
 		$strings['WhoCanManageThisResource'] = 'Chi può gestire questa risorsa?';
 		$strings['ResourceAdministrator'] = 'Amministratore risorsa';
 		$strings['Private'] = 'Privato';
@@ -611,7 +611,7 @@ class it_it extends en_us
 		$strings['InstallApplication'] = 'Installa Booked Scheduler (solo MySQL)';
 		$strings['IncorrectInstallPassword'] = 'Attenzione, la password non è corretta.';
 		$strings['SetInstallPassword'] = 'È necessario impostare una password di installazione prima che l\'installazione possa essere eseguita.';
-		$strings['InstallPasswordInstructions'] = 'In %s si consiglia di scegliere %s una password sicura e, quindi, di riprovare.<br/>È possibile usare %s';
+		$strings['InstallPasswordInstructions'] = 'In %s si consiglia di scegliere %s una password sicura e, quindi, di riprovare.<br />È possibile usare %s';
 		$strings['NoUpgradeNeeded'] = 'Non è necessario alcun aggiornamento. L\'installazione cancella tutti i dati esistenti e installa una nuova copia di Booked Scheduler!';
 		$strings['ProvideInstallPassword'] = 'Si immetta la password di installazoine.';
 		$strings['InstallPasswordLocation'] = 'Quest\'ultima è definita nel file %s in %s.';

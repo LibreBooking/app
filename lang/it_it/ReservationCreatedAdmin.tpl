@@ -21,70 +21,69 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 
 Dettagli prenotazione:
-<br/>
-<br/>
+<br />
+<br />
 
-Utente: {$UserName}<br/>
+Utente: {$UserName}<br />
 {if !empty($CreatedBy)}
 	Creato da: {$CreatedBy}
-	<br/>
+	<br />
 {/if}
-Inizio: {formatdate date=$StartDate key=reservation_email}<br/>
-Fine: {formatdate date=$EndDate key=reservation_email}<br/>
+Inizio: {formatdate date=$StartDate key=reservation_email}<br />
+Fine: {formatdate date=$EndDate key=reservation_email}<br />
 {if $ResourceNames|count > 1}
 	Risorse:
-	<br/>
+	<br />
 	{foreach from=$ResourceNames item=resourceName}
 		{$resourceName}
-		<br/>
+		<br />
 	{/foreach}
 {else}
 	Risorsa: {$ResourceName}
-	<br/>
+	<br />
 {/if}
 
 {if $ResourceImage}
 	<div class="resource-image"><img src="{$ScriptUrl}/{$ResourceImage}"/></div>
 {/if}
 
-Note: {$Title}<br/>
-Descrizione: {$Description}<br/>
+Note: {$Title}<br />
+Descrizione: {$Description}<br />
 
 {if count($RepeatDates) gt 0}
-	<br/>
+	<br />
 	La prenotazione si ripete nelle seguenti date:
-	<br/>
+	<br />
 {/if}
 
 {foreach from=$RepeatDates item=date name=dates}
 	{formatdate date=$date}
-	<br/>
+	<br />
 {/foreach}
 
 {if $Accessories|count > 0}
-	<br/>
+	<br />
 	Accessori:
-	<br/>
+	<br />
 	{foreach from=$Accessories item=accessory}
 		({$accessory->QuantityReserved}) {$accessory->Name}
-		<br/>
+		<br />
 	{/foreach}
 {/if}
 
 {if $Attributes|count > 0}
-	<br/>
+	<br />
 	{foreach from=$Attributes item=attribute}
 		<div>{control type="AttributeControl" attribute=$attribute readonly=true}</div>
 	{/foreach}
 {/if}
 
 {if $RequiresApproval}
-	<br/>
-    (Debug message: ReservationCreatedAdmin.tpl)
+	<br />
     E' stata inserita una nuova prenotazione. Rimarrà in sospeso fino all'approvazione.
 {/if}
 
-<br/>
-<br/>
+<br />
+<br />
 <a href="{$ScriptUrl}/{$ReservationUrl}">Vedi questa prenotazione</a> | <a href="{$ScriptUrl}">Accedi a Booked Scheduler</a>
 

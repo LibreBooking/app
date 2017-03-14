@@ -77,11 +77,11 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 <p>Se una prenotazione &egrave; impostata come periodica, allora viene creata una serie di istanze. Dopo aver modificato e aggiornato la prenotazione verr&agrave; chiesto se le modifiche andranno applicate solo all'istanza corrente o a tutta la serie. Selezionando "Solo questa istanza", le altre istanze della serie non verranno modificate. Si potranno invece aggiornare tutte le istanze della serie ancora selezionando "Tutte le Istanze", o solo le istanze future (compresa quella selezionata) scegliendo "Istanze Future".</p>
 
-<p>Solo gli Amministratori dell'applicazione poessono aggiornare prenotazioni nel passato.</p>
+<p>Solo gli Amministratori dell'applicazione possono aggiornare prenotazioni nel passato.</p>
 
 <h2>Eliminare una prenotazione</h2>
 
-<p>Eliminando una prenotazione la si rimuove definitivamente dalla pianificazione. No sar&agrave; pi&ugrave; presente in Booked Scheduler</p>
+<p>Eliminando una prenotazione la si rimuove definitivamente dal calendario. Non sar&agrave; pi&ugrave; presente in Booked Scheduler</p>
 
 <h3>Cancellare una specifica istanza di una prenotazione periodica</h3>
 
@@ -91,19 +91,19 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 <h2>Aggiungere una prenotazione al calendario (Outlook&reg;, iCal, Mozilla Lightning, Evolution)</h2>
 
-<p>Nella finestra di creazione di una prenotazione &egrave; presente il bottone "Aggiungi ad Outlook". Se Outlook &egrave; installato sul proprio computer, si dovrebbe ricevere una richiesta di aggiungere una riunione al proprio calendario. Se non &egrave; installato, invece, il browser potrebbe proporre di scaricare il file .ics Questo &egrave; il formato standard per i calendari. &Egrave; possibile usare questo file per aggiungere l'appuntamento in qualsiasi applicazione che supporta il formato standard iCalendar.</p>
+<p>Nella pagina di una prenotazione all'interno del bottone "Altro" &egrave; presente la voce "Aggiungi ad Outlook". Se Outlook &egrave; installato sul proprio computer, si dovrebbe ricevere una richiesta di aggiungere una riunione al proprio calendario. Se non &egrave; installato, invece, il browser potrebbe proporre di scaricare il file .ics. Questo &egrave; il formato standard per i calendari. &Egrave; possibile usare questo file per aggiungere l'appuntamento in qualsiasi applicazione che supporta il formato standard iCalendar.</p>
 
-<p>Calendars can be published for Schedules, Resources and Users. For this feature to work, the administrator must have configured a subscription key in the config file. To enable Scheudle and Resource level calendar subscriptions, simply turn subscriptions on when managing the Schedule or Resource. To turn on personal calendar subcriptions, open Schedule -> My Calendar. On the right side of the page you will find a link to Allow or Turn Off calendar subscriptions.</p>
+<p>I calendari delle prenotazioni, delle risorse e degli utenti possono essere sottoscritti. Per ottenere questo &egrave; necessario che l'amministratore definisca una chiave di sottoscrizione nel file di configurazione. Per abilitare la sottoscrizione del calendario delle prenotazioni o delle risorse, è necessario abilitare la sottoscrizione al singolo calendario o risorsa dalla pagina di gestione corrispondente. Per abilitare, invece, la sottoscrizione al calendario personale si selezioni la voce "Calendario personale" dal men&ugrave; Calendario. In alto a destra nella pagina si trova il collegamento per avviare o interrompere una sottoscrizione al calendario.</p>
 
-<p> To subscribe to a Schedule calendar, open Schedule -> Resource Calendar and select the schedule you want. On the right side of the page, you will find a link to subscribe to the current calendar. Subscribing the a Resource calendar follows the same steps. To subscribe to your personal calendar, open Scheudle -> My Calendar. On the right side of the page, you will find a link to subscribe to the current calendar.</p>
+<p>Per aprire una sottoscrizione ad un calendario delle prenotazioni si selezioni la voce "Prenotazioni" dal men&ugrave; "Calendario" e si selezioni il calendario d'interesse. In alto a sinistra nella pagina si trova il collegamento per avviare o interrompere la sottoscrizione al calendario selezionato. Per aprire una sottoscrizione ad un calendario delle risorse si segua la stessa procedura. Per aprire una sottoscrizione ad un calendario personale si selezioni la voce "Calendario personale" dal men&ugrave; Calendario. In alto a destra nella pagina si trova il collegamento per aprire o interrompere una sottoscrizione al calendario corrente.</p>
 
-<h3>Calendar client (Outlook&reg;, iCal, Mozilla Lightning, Evolution)</h3>
+<h3>Calendari (Outlook&reg;, iCal, Mozilla Lightning, Evolution)</h3>
 
-<p>In most cases, simply clicking the Subscribe to this Calendar link will automatically set up the subscription in your calendar Client. For Outlook, if it does not automatically add, open the Calendar view, then right click My Calendars and choose Add Calendar -> From Internet. Paste in the URL printed under the Subscribe to this Calendar link in Booked Scheduler.</p>
+<p>Nella maggior parte dei casi la semplice selezione del link "Abilita la sottoscrizione" avvia una sottoscrizione attraverso il proprio client di calendario. Per Outlook, se questo non avviene automaticamente, si visualizzi il calendario e quindi con il tasto destro del mouse su "Il mio calendario" si selezioni "Aggiungi calendrio > Da internet". Si incolli in Outlook l'URL stampato sotto a "Abilita la sottoscrizione".</p>
 
-<h3>Google&reg; Calendar</h3>
+<h3>Calendario di Google&reg;</h3>
 
-<p>Open Google Calendar settings. Click the Calendars tab. Click Browse interesting calendars. Click add by URL. Paste in the URL printed under the Subscribe to this Calendar link in Booked Scheduler.</p>
+<p>Si aprano le preferenze del calendario di Google alla linguetta "Claendari" Si selezioni "Aggiungi tramite URL". Si incolli in Outlook l'URL stampato sotto a "Sottoscrivi questo calendario".</p>
 
 <h2>Quote</h2>
 
