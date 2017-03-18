@@ -81,7 +81,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 															  name="existingReservations"
 															  checked="checked"
 															  value="{ReservationConflictResolution::BookAround}"/>
-						<label for="notifyExisting">{translate key=BlackoutAroundConflicts}</label>
+						<label for="bookAround">{translate key=BlackoutAroundConflicts}</label>
 					</div>
 					<div class="radio">
 						<input {formname key=CONFLICT_ACTION} type="radio" id="notifyExisting"
