@@ -30,20 +30,17 @@ interface IReportDefinition
 	public function GetColumnHeaders();
 
 	/**
-	 * @abstract
 	 * @param array $row
 	 * @return ReportCell[]|array
 	 */
 	public function GetRow($row);
 
 	/**
-	 * @abstract
 	 * @return string
 	 */
 	public function GetTotal();
 
 	/**
-	 * @abstract
 	 * @return string|ChartType
 	 */
 	public function GetChartType();
@@ -97,6 +94,11 @@ class ReportDefinition implements IReportDefinition
 				ColumnNames::TOTAL => new ReportStringColumn('Total', ChartColumnDefinition::Total()),
 				ColumnNames::TOTAL_TIME => new ReportTimeColumn('Total', ChartColumnDefinition::Total()),
 		);
+
+		if (Configuration::Instance()->GetSectionKey(ConfigSection::CREDITS, ConfigKeys::CREDITS_ENABLED, new BooleanConverter()))
+		{
+			$orderedColumns[ColumnNames::CREDIT_COUNT] = new ReportStringColumn('Credits', ChartColumnDefinition::Null());
+		}
 
 		$reportColumns = $report->GetColumns();
 

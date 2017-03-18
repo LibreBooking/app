@@ -127,8 +127,13 @@ class ReservationRepository implements IReservationRepository
 
 			if ($creditsToDeduct != 0)
 			{
-				$adjustCreditsCommand = new AdjustUserCreditsCommand($reservationSeries->UserId(), $creditsToDeduct);
-				$database->Execute($adjustCreditsCommand);
+				try
+				{
+					$adjustCreditsCommand = new AdjustUserCreditsCommand($reservationSeries->UserId(), $creditsToDeduct);
+
+					$database->Execute($adjustCreditsCommand);
+				} catch (Exception $ex)
+				{}
 			}
 		}
 
@@ -204,8 +209,13 @@ class ReservationRepository implements IReservationRepository
 
 		if ($creditsToDeduct != 0)
 		{
-			$adjustCreditsCommand = new AdjustUserCreditsCommand($reservationSeries->UserId(), $creditsToDeduct);
-			$database->Execute($adjustCreditsCommand);
+			try
+			{
+				$adjustCreditsCommand = new AdjustUserCreditsCommand($reservationSeries->UserId(), $creditsToDeduct);
+				$database->Execute($adjustCreditsCommand);
+			} catch (Exception $ex)
+			{
+			}
 		}
 
 		return $reservationSeriesId;
@@ -220,8 +230,13 @@ class ReservationRepository implements IReservationRepository
 		{
 			Log::Debug('CREDITS - Reservation delete adjusting credits for user %s by %s', $existingReservationSeries->UserId(), $creditAdjustment);
 
-			$adjustCreditsCommand = new AdjustUserCreditsCommand($existingReservationSeries->UserId(), $creditAdjustment);
-			$database->Execute($adjustCreditsCommand);
+			try
+			{
+				$adjustCreditsCommand = new AdjustUserCreditsCommand($existingReservationSeries->UserId(), $creditAdjustment);
+				$database->Execute($adjustCreditsCommand);
+			} catch (Exception $ex)
+			{
+			}
 		}
 
 		$this->ExecuteEvents($existingReservationSeries);

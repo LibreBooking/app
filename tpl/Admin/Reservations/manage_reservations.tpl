@@ -110,12 +110,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 	</div>
 
 	<table class="table admin-panel" id="reservationTable">
-		{if $IsDesktop}
-			{assign var=colCount value=11}
-		{else}
-			{assign var=colCount value=12}
-		{/if}
-
+		{assign var=colCount value=11}
 		<thead>
 		<tr>
 			<th class="id hidden">&nbsp;</th>
@@ -127,8 +122,13 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			<th>{sort_column key=EndDate field=ColumnNames::RESERVATION_END}</th>
 			<th>{translate key='Duration'}</th>
 			<th>{translate key='ReferenceNumber'}</th>
+			{if $CreditsEnabled}
+				<th>{translate key='Credits'}</th>
+				{assign var=colCount value=$colCount+1}
+			{/if}
 			{if !$IsDesktop}
 				<th class="action">{translate key='Edit'}</th>
+				{assign var=colCount value=$colCount+1}
 			{/if}
 			<th class="action">{translate key='Approve'}</th>
 			<th class="action">{translate key='Delete'}</th>
@@ -171,7 +171,9 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 				<td class="date">{formatdate date=$reservation->EndDate timezone=$Timezone key=short_reservation_date}</td>
 				<td class="duration">{$reservation->GetDuration()->__toString()}</td>
 				<td class="referenceNumber">{$reservation->ReferenceNumber}</td>
-
+				{if $CreditsEnabled}
+					<td class="credits">{$reservation->CreditsConsumed}</td>
+				{/if}
 				{if !$IsDesktop}
 					<td class="action">
 						<a href="#" class="update edit"><span class="fa fa-pencil icon fa-1x"></span></a>
