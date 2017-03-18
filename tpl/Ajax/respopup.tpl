@@ -127,6 +127,12 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 	{/capture}
 	{$formatter->Add('attributes', $smarty.capture.attributes)}
 
+	{capture "pending"}
+		{if $requiresApproval}
+			<div class="pendingApproval">{translate key=PendingApproval}</div>
+		{/if}
+	{/capture}
+	{$formatter->Add('pending', $smarty.capture.pending)}
 	<!-- {$ReservationId} -->
 
 	{$formatter->Display()}

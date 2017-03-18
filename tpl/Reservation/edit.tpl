@@ -25,6 +25,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 {block name=reservationHeader}
 	{translate key="EditReservationHeading" args=''}
+	{if $RequiresApproval}<span class="pendingApproval">({translate key=PendingApproval}){/if}
 {/block}
 
 {block name=submitButtons}

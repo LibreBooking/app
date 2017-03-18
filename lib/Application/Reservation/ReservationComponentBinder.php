@@ -302,6 +302,7 @@ class ReservationDetailsBinder implements IReservationComponentBinder
 		$canBeEdited = $this->reservationAuthorization->CanEdit($this->reservationView, $currentUser);
 		$this->page->SetIsEditable($canBeEdited);
 		$this->page->SetIsApprovable($this->reservationAuthorization->CanApprove($this->reservationView, $currentUser));
+		$this->page->SetRequiresApproval($this->reservationView->RequiresApproval());
 
 		$this->page->SetAttachments($this->reservationView->Attachments);
 

@@ -64,21 +64,18 @@ interface IReservationPopupPage
 	function SetDates($startDate, $endDate);
 
 	/**
-	 * @abstract
 	 * @param $accessories ReservationAccessory[]
 	 * @return mixed
 	 */
 	public function SetAccessories($accessories);
 
 	/**
-	 * @abstract
 	 * @param bool $hideReservationDetails
 	 * @return void
 	 */
 	public function SetHideDetails($hideReservationDetails);
 
 	/**
-	 * @abstract
 	 * @param bool $hideUserInfo
 	 * @return void
 	 */
@@ -98,6 +95,11 @@ interface IReservationPopupPage
 	 * @param string $phone
 	 */
 	public function SetPhone($phone);
+
+	/**
+	 * @param bool $requiresApproval
+	 */
+	public function SetRequiresApproval($requiresApproval);
 }
 
 class PopupFormatter
@@ -125,7 +127,7 @@ class PopupFormatter
 
 		if (empty($label))
 		{
-			$label = "{name} {dates} {title} {resources} {participants} {accessories} {description} {attributes}";
+			$label = "{pending} {name} {dates} {title} {resources} {participants} {accessories} {description} {attributes}";
 		}
 		$label = str_replace('{name}', $this->GetValue('name'), $label);
 		$label = str_replace('{dates}', $this->GetValue('dates'), $label);
@@ -135,7 +137,7 @@ class PopupFormatter
 		$label = str_replace('{accessories}', $this->GetValue('accessories'), $label);
 		$label = str_replace('{description}', $this->GetValue('description'), $label);
 		$label = str_replace('{phone}', $this->GetValue('phone'), $label);
-		$label = str_replace('{email}', $this->GetValue('email'), $label);
+		$label = str_replace('{pending}', $this->GetValue('pending'), $label);
 
 		if (strpos($label, '{attributes}') !== false)
 		{
@@ -275,6 +277,11 @@ class ReservationPopupPage extends Page implements IReservationPopupPage
 	{
 		$this->Set('phone', $phone);
 	}
+
+	public function SetRequiresApproval($requiresApproval)
+	{
+		$this->Set('requiresApproval', $requiresApproval);
+	}
 }
 
 
@@ -357,6 +364,7 @@ class ReservationPopupPresenter
 		$this->_page->SetSummary($reservation->Description);
 		$this->_page->SetTitle($reservation->Title);
 		$this->_page->SetAccessories($reservation->Accessories);
+		$this->_page->SetRequiresApproval($reservation->RequiresApproval());
 
 		$this->_page->SetDates($startDate, $endDate);
 

@@ -130,6 +130,11 @@ interface IExistingReservationPage extends IReservationPage
 	 * @param string[] $invitedGuests
 	 */
 	public function SetInvitedGuests($invitedGuests);
+
+	/**
+	 * @param bool $requiresApproval
+	 */
+	public function SetRequiresApproval($requiresApproval);
 }
 
 class ExistingReservationPage extends ReservationPage implements IExistingReservationPage
@@ -294,20 +299,19 @@ class ExistingReservationPage extends ReservationPage implements IExistingReserv
 		$this->Set('AutoReleaseMinutes', $autoReleaseMinutes);
 	}
 
-	/**
-	 * @param string[] $participatingGuests
-	 */
 	public function SetParticipatingGuests($participatingGuests)
 	{
 		$this->Set('ParticipatingGuests', $participatingGuests);
 	}
 
-	/**
-	 * @param string[] $invitedGuests
-	 */
 	public function SetInvitedGuests($invitedGuests)
 	{
 		$this->Set('InvitedGuests', $invitedGuests);
+	}
+
+	public function SetRequiresApproval($requiresApproval)
+	{
+		$this->Set('RequiresApproval', $requiresApproval);
 	}
 }
 
