@@ -110,7 +110,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 						<div class="form-group">
 							<label for="editDescription">{translate key='Description'}</label><br/>
 							<textarea class="form-control" rows="1" {formname key=RESOURCE_TYPE_DESCRIPTION}
-									  id="resourceTypeDesc"></textarea>
+									  id="editDescription"></textarea>
 						</div>
 					</div>
 					<div class="modal-footer">
