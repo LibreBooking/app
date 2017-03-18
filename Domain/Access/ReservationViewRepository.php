@@ -441,6 +441,6 @@ class ReservationViewRepository implements IReservationViewRepository
 		}
 
 		$builder = array('BlackoutItemView', 'Populate');
-		return PageableDataStore::GetList($command, $builder, $pageNumber, $pageSize);
+		return PageableDataStore::GetList($command, $builder, $pageNumber, $pageSize, $sortField, $sortDirection);
 	}
 }
