@@ -37,7 +37,6 @@ function Calendar(opts) {
                 day: _options.dayText
             },
             allDaySlot: false,
-            editable: true,
             defaultView: _options.view,
             defaultDate: _options.defaultDate,
             eventSources: [{
@@ -82,8 +81,6 @@ function Calendar(opts) {
                 ajaxPost(elements.moveReservationForm, _options.moveReservationUrl, showLoadingIndicator, handleMoveResponse);
             }
         });
-
-      //  $('#calendar').fullCalendar('option', 'lang', 'fr');
 
         $('.fc-widget-content').hover(
             function () {

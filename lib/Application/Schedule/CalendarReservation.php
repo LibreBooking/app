@@ -14,6 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 class CalendarReservation
 {
     /**
@@ -96,7 +97,12 @@ class CalendarReservation
      */
     public $Class;
 
-    private function __construct(Date $startDate, Date $endDate, $resourceName, $referenceNumber)
+	/**
+	 * @var bool
+	 */
+	public $IsEditable;
+
+	private function __construct(Date $startDate, Date $endDate, $resourceName, $referenceNumber)
     {
         $this->StartDate = $startDate;
         $this->EndDate = $endDate;
@@ -154,6 +160,7 @@ class CalendarReservation
 
         $res->Color = $reservation->GetColor();
         $res->TextColor = $reservation->GetTextColor();
+        $res->IsEditable = $user->IsAdmin || $user->UserId == $reservation->OwnerId;
 
         $res->Class = self::GetClass($reservation);
 
@@ -207,6 +214,7 @@ class CalendarReservation
 
             $cr->Color = $reservation->GetColor();
             $cr->TextColor = $reservation->GetTextColor();
+			$cr->IsEditable = $userSession->IsAdmin || $userSession->UserId == $reservation->OwnerId;
 
             $cr->Class = self::GetClass($reservation);
 
@@ -248,7 +256,8 @@ class CalendarReservation
             'allDay' => false,
             'backgroundColor' => $this->Color,
             'textColor' => $this->TextColor,
-            'className' => $this->Class
+            'className' => $this->Class,
+			'startEditable' => $this->IsEditable
         );
     }
 }
