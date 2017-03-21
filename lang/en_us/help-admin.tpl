@@ -511,7 +511,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 		<p class="setting"><span>$conf['settings']['script.url']</span>The full public URL to the root of this instance
 			of
-			Booked Scheduler. This should be the Web directory which contains files like bookings.php and calendar.php.
+			Booked Scheduler. This should be the Web directory which contains files like schedule.php and calendar.php.
 			If this
 			value starts with //, then the protocol (http vs https) will be automatically detected.</p>
 
