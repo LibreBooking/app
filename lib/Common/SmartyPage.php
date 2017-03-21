@@ -584,7 +584,7 @@ class SmartyPage extends Smarty
 
     public function CreatePageLink($params, &$smarty)
     {
-        $url = $_SERVER['REQUEST_URI'];
+        $url = ServiceLocator::GetServer()->GetUrl();
         $page = $params['page'];
         $pageSize = $params['size'];
         $iscurrent = $params['iscurrent'];

@@ -226,11 +226,12 @@ class Server
 
 	public function GetUrl()
 	{
-		$url = $_SERVER['PHP_SELF'];
+		$url = $_SERVER['SCRIPT_NAME'];
 
 		if (isset($_SERVER['QUERY_STRING']))
 		{
-			$url .= '?' . $_SERVER['QUERY_STRING'];
+            $qs = http_build_query($_GET);
+			$url .= '?' . $qs;
 		}
 
 		return $url;
@@ -312,6 +313,7 @@ class Server
      */
     public function GetRequestUri()
     {
-        return $this->GetHeader('REQUEST_URI');
+        return $this->GetUrl();
+        //return $this->GetHeader('REQUEST_URI');
     }
 }
