@@ -70,7 +70,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
         $(document).ready(function () {
 
             var options = {
-                view: '{$CalendarType}',
+                view: '{$CalendarType|escape:javascript}',
                 defaultDate: moment('{$DisplayDate->Format('Y-m-d')}', 'YYYY-MM-DD'),
                 todayText: '{{translate key=Today}|escape:'javascript'}',
                 dayText: '{{translate key=Day}|escape:'javascript'}',
