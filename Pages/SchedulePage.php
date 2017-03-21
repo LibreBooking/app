@@ -322,7 +322,7 @@ class SchedulePage extends ActionPage implements ISchedulePage
 
 	public function SetScheduleId($scheduleId)
 	{
-		$this->Set('ScheduleId', $scheduleId);
+		$this->Set('ScheduleId', intval($scheduleId));
 	}
 
 	public function SetScheduleName($scheduleName)
@@ -472,10 +472,10 @@ class SchedulePage extends ActionPage implements ISchedulePage
 
 		if (!is_array($resourceIds))
 		{
-			return array($resourceIds);
+			return array(intval($resourceIds));
 		}
 
-		return $resourceIds;
+		return array_filter($resourceIds, 'intval');
 	}
 
 	public function SetResourceGroupTree(ResourceGroupTree $resourceGroupTree)
