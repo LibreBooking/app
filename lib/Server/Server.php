@@ -28,7 +28,7 @@ class Server
 
 	public function SetCookie(Cookie $cookie)
 	{
-		setcookie($cookie->Name, $cookie->Value, $cookie->Expiration, $cookie->Path);
+		setcookie($cookie->Name, $cookie->Value, $cookie->Expiration, $cookie->Path, null, null, true);
 	}
 
 	public function DeleteCookie(Cookie $cookie)
