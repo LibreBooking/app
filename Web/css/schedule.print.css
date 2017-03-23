@@ -2,7 +2,7 @@ table.reservations {
 	font-size:14px;
 }
 
-#schedule-actions, #calendar_toggle, #reservations-left, .change-date  {
+#schedule-actions, #calendar_toggle, #reservations-left, .change-date, #restore-sidebar {
 	display:none;
 }
 
