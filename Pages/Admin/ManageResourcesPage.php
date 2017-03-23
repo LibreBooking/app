@@ -732,8 +732,8 @@ class ManageResourcesPage extends ActionPage implements IManageResourcesPage
 		$this->Set('ResourceNameFilter', $values->ResourceNameFilter);
 		$this->Set('ScheduleIdFilter', $values->ScheduleIdFilter);
 		$this->Set('ResourceTypeFilter', $values->ResourceTypeFilter);
-		$this->Set('ResourceStatusFilterId', $values->ResourceStatusFilterId);
-		$this->Set('ResourceStatusReasonFilterId', $values->ResourceStatusReasonFilterId);
+		$this->Set('ResourceStatusFilterId', intval($values->ResourceStatusFilterId));
+		$this->Set('ResourceStatusReasonFilterId', intval($values->ResourceStatusReasonFilterId));
 		$this->Set('CapacityFilter', $values->CapacityFilter);
 		$this->Set('RequiresApprovalFilter', $values->RequiresApprovalFilter);
 		$this->Set('AutoPermissionFilter', $values->AutoPermissionFilter);

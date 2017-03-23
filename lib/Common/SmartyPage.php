@@ -750,7 +750,7 @@ class SmartyPage extends Smarty
         $key = isset($params['key']) ? $params['key'] : 'Update';
         $class = isset($params['class']) ? $params['class'] : '';
         echo '<button type="button" class="btn btn-success save ' . $class . '" ' . $this->GetButtonAttributes($params) . '><span class="glyphicon glyphicon-ok-circle"></span> ' . Resources::GetInstance()
-                ->GetString($key) . '</span></button>';
+                ->GetString($key) . '</button>';
     }
 
     public function AddButton($params, &$smarty)
@@ -758,14 +758,14 @@ class SmartyPage extends Smarty
         $key = isset($params['key']) ? $params['key'] : 'Add';
         $class = isset($params['class']) ? $params['class'] : '';
         echo '<button type="button" class="btn btn-success save ' . $class . '" ' . $this->GetButtonAttributes($params) . '><span class="glyphicon glyphicon-ok-circle"></span> ' . Resources::GetInstance()
-                ->GetString($key) . '</span></button>';
+                ->GetString($key) . '</button>';
     }
 
     public function DeleteButton($params, &$smarty)
     {
         $key = isset($params['key']) ? $params['key'] : 'Delete';
         $class = isset($params['class']) ? $params['class'] : '';
-        echo '<button type="button" class="btn btn-danger save ' . $class . '" ' . $this->GetButtonAttributes($params) . '><span class="glyphicon glyphicon-trash"></span> ' . Resources::GetInstance()->GetString($key) . '</span></button>';
+        echo '<button type="button" class="btn btn-danger save ' . $class . '" ' . $this->GetButtonAttributes($params) . '><span class="glyphicon glyphicon-trash"></span> ' . Resources::GetInstance()->GetString($key) . '</button>';
     }
 
     public function ResetButton($params, &$smarty)
@@ -787,7 +787,7 @@ class SmartyPage extends Smarty
         $key = isset($params['key']) ? $params['key'] : 'OK';
         $class = isset($params['class']) ? $params['class'] : '';
         echo '<button type="button" class="btn btn-success ' . $class . '" ' . $this->GetButtonAttributes($params) . '><span class="glyphicon glyphicon-ok-circle"></span> ' . Resources::GetInstance()
-                ->GetString($key) . '</span></button>';
+                ->GetString($key) . '</button>';
     }
 
     public function ShowHideIcon($params, &$smarty)

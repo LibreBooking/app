@@ -613,7 +613,7 @@ class ManageReservationsPage extends ActionPage implements IManageReservationsPa
 	 */
 	public function SetResourceStatusFilterId($statusId)
 	{
-		$this->Set('ResourceStatusFilterId', $statusId);
+		$this->Set('ResourceStatusFilterId', intval($statusId));
 	}
 
 	/**
@@ -621,7 +621,7 @@ class ManageReservationsPage extends ActionPage implements IManageReservationsPa
 	 */
 	public function SetResourceStatusReasonFilterId($reasonId)
 	{
-		$this->Set('ResourceStatusReasonFilterId', $reasonId);
+		$this->Set('ResourceStatusReasonFilterId', intval($reasonId));
 	}
 
 	/**
