@@ -197,7 +197,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 						{*<label>{translate key=Resource}</label>*}
 						<div id="resourceGroups"></div>
 					</div>
-					<div class="resettable">
+					<div id="resettable">
 						<div class="form-group">
 							<label for="maxCapactiy">{translate key=MinimumCapacity}</label>
 							<input type='number' min='0' id='maxCapactiy' size='5' maxlength='5'
@@ -222,7 +222,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 						{/foreach}
 
 						<div class="btn-submit">
-							<button type="submit" class="btn btn-success btn-sm" value="submit" {formname key=SUBMIT}>{translate key=Filter}</button>
+							<button type="submit" class="btn btn-success btn-sm" value="submit">{translate key=Filter}</button>
 						</div>
 						<div class="btn-clear">
 							<button id="show_all_resources" type="button" class="btn btn-default btn-xs">{translate key=ClearFilter}</button>
@@ -233,6 +233,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 					<input type="hidden" name="sid" value="{$ScheduleId}"/>
 					<input type="hidden" name="sds" value="{foreach from=$SpecificDates item=d}{$d->Format('Y-m-d')},{/foreach}"/>
 					<input type="hidden" name="sd" value="{$DisplayDates->GetBegin()->Format('Y-m-d')}"/>
+					<input type="hidden" {formname key=SUBMIT} value="true"/>
 				</form>
 			</div>
 		</div>
