@@ -213,6 +213,15 @@ class ReservationItemView implements IReservedItemView
 	 */
 	public $OwnerPosition;
 
+    /**
+     * @var string
+     */
+    public $OwnerLanguage;
+    /**
+     * @var string
+     */
+    public $OwnerTimezone;
+
 	/**
 	 * @var int
 	 */
@@ -559,6 +568,15 @@ class ReservationItemView implements IReservedItemView
 				}
 			}
 		}
+
+		if (isset($row[ColumnNames::LANGUAGE_CODE]))
+        {
+            $view->OwnerLanguage = $row[ColumnNames::LANGUAGE_CODE];
+        }
+        if (isset($row[ColumnNames::TIMEZONE_NAME]))
+        {
+            $view->OwnerTimezone = $row[ColumnNames::TIMEZONE_NAME];
+        }
 
 		$view->CheckinDate = Date::FromDatabase($row[ColumnNames::CHECKIN_DATE]);
 		$view->CheckoutDate = Date::FromDatabase($row[ColumnNames::CHECKOUT_DATE]);

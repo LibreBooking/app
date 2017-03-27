@@ -818,6 +818,7 @@ class en_us extends Language
 		$strings['ParticipantAddedSubjectWithResource'] = '%s Added You to a Reservation for %s';
 		$strings['ParticipantDeletedSubjectWithResource'] = '%s Removed a Reservation for %s';
 		$strings['InviteeAddedSubjectWithResource'] = '%s Invited You to a Reservation for %s';
+		$strings['MissedCheckinEmailSubject'] = 'Missed checkin for %s';
 		// End Email Subjects
 
 		$this->Strings = $strings;
