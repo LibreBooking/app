@@ -100,6 +100,11 @@ interface IReservationPopupPage
 	 * @param bool $requiresApproval
 	 */
 	public function SetRequiresApproval($requiresApproval);
+
+    /**
+     * @param DateDiff $duration
+     */
+    public function SetDuration($duration);
 }
 
 class PopupFormatter
@@ -127,7 +132,7 @@ class PopupFormatter
 
 		if (empty($label))
 		{
-			$label = "{pending} {name} {dates} {title} {resources} {participants} {accessories} {description} {attributes}";
+			$label = "{pending} {name} {dates} {duration} {title} {resources} {participants} {accessories} {description} {attributes}";
 		}
 		$label = str_replace('{name}', $this->GetValue('name'), $label);
 		$label = str_replace('{dates}', $this->GetValue('dates'), $label);
@@ -138,6 +143,7 @@ class PopupFormatter
 		$label = str_replace('{description}', $this->GetValue('description'), $label);
 		$label = str_replace('{phone}', $this->GetValue('phone'), $label);
 		$label = str_replace('{pending}', $this->GetValue('pending'), $label);
+		$label = str_replace('{duration}', $this->GetValue('duration'), $label);
 
 		if (strpos($label, '{attributes}') !== false)
 		{
@@ -282,6 +288,11 @@ class ReservationPopupPage extends Page implements IReservationPopupPage
 	{
 		$this->Set('requiresApproval', $requiresApproval);
 	}
+
+    public function SetDuration($duration)
+    {
+        $this->Set('duration', $duration);
+    }
 }
 
 
@@ -365,6 +376,8 @@ class ReservationPopupPresenter
 		$this->_page->SetTitle($reservation->Title);
 		$this->_page->SetAccessories($reservation->Accessories);
 		$this->_page->SetRequiresApproval($reservation->RequiresApproval());
+		$duration = $reservation->StartDate->GetDifference($reservation->EndDate);
+		$this->_page->SetDuration($duration);
 
 		$this->_page->SetDates($startDate, $endDate);
 

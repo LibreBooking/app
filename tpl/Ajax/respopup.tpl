@@ -133,6 +133,11 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		{/if}
 	{/capture}
 	{$formatter->Add('pending', $smarty.capture.pending)}
+
+    {capture "duration"}
+        <div class="duration">{$duration}</div>
+	{/capture}
+	{$formatter->Add('duration', $smarty.capture.duration)}
 	<!-- {$ReservationId} -->
 
 	{$formatter->Display()}
