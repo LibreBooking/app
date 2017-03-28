@@ -24,8 +24,8 @@
 
 This script must be executed every minute for to enable automatic release functionality
 
-* * * * * php /home/mydomain/public_html/booked/Jobs/autorelease.php
-* * * * * /path/to/php /home/mydomain/public_html/booked/Jobs/autorelease.php
+* * * * * php /home/mydomain/public_html/booked/Jobs/sendmissedcheckin.php
+* * * * * /path/to/php /home/mydomain/public_html/booked/Jobs/sendmissedcheckin.php
 
 */
 
@@ -41,9 +41,7 @@ JobCop::EnsureCommandLine();
 try
 {
     $emailEnabled = Configuration::Instance()->GetKey(ConfigKeys::ENABLE_EMAIL, new BooleanConverter());
-    $jobEnabled = Configuration::Instance()->GetSectionKey(ConfigSection::RESERVATION, ConfigKeys::RESERVATION_NOTIFY_MISSED_CHECKIN, new BooleanConverter());
-
-    if (!$emailEnabled || !$jobEnabled)
+    if (!$emailEnabled)
     {
         return;
     }

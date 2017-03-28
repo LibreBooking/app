@@ -451,7 +451,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
         <h3>Configuring Waitlist Notification Job</h3>
         <p>On Linux, a cron job can be used. The command to run is <span class="note">php</span> followed by the full
             path to
-            Booked Scheduler/Jobs/sendwaitlist.php. The full path to autorelease.php on this server is <span
+            Booked Scheduler/Jobs/sendwaitlist.php. The full path to sendwaitlist.php on this server is <span
                     class="note">{$WaitListPath}</span>
         </p>
 
@@ -472,6 +472,33 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
             the
             full path to Booked Scheduler\Jobs\sendwaitlist.php. For example, c:\PHP\php.exe -f
             c:\inetpub\wwwroot\Booked\Jobs\sendwaitlist.php</p>
+    </div>
+
+    <div>
+        <h3>Configuring Missed Checkin Notification Job</h3>
+        <p>On Linux, a cron job can be used. The command to run is <span class="note">php</span> followed by the full
+            path to
+            Booked Scheduler/Jobs/sendmissedcheckin.php. The full path to sendmissedcheckin.php on this server is <span
+                    class="note">{$MissedCheckinPath}</span>
+        </p>
+
+        <p>An example cron configuration might look like: <span class="note">* * * * * php -f {$MissedCheckinPath}</span>
+        </p>
+
+        <p>If you have access to cPanel through a hosting provider, <a
+                    href="http://docs.cpanel.net/twiki/bin/view/AllDocumentation/CpanelDocs/CronJobs" target="_blank">setting
+                up
+                a cron job in cPanel</a> is straightforward. Either select the Every Minute option from the Common
+            Settings menu,
+            or enter * for minute, hour, day, month and weekday.</p>
+
+        <p>On Windows, <a href="http://windows.microsoft.com/en-au/windows7/schedule-a-task" target="_blank">a scheduled
+                task
+                can be used</a>. The task must be configured to run once per minute.
+            The task to execute is php followed by
+            the
+            full path to Booked Scheduler\Jobs\sendmissedcheckin.php. For example, c:\PHP\php.exe -f
+            c:\inetpub\wwwroot\Booked\Jobs\sendmissedcheckin.php</p>
     </div>
 
     <div id="help-configuration">
@@ -667,9 +694,6 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
         <p class="setting"><span>$conf['settings']['reservation']['default.end.reminder']</span>The default end reminder
             for reservations. The format is #
             interval. For example, 10 minutes, 1 hours, 4 days. Default is empty.</p>
-
-        <p class="setting"><span>$conf['settings']['reservation']['notify.missed.checkin']</span>Whether or not an email
-            should be sent if a user misses the check in time for a reservation. Default is false.</p>
 
         <p class="setting"><span>$conf['settings']['reservation.notify']['resource.admin.add']</span>Whether or not to
             send an

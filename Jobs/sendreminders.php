@@ -41,6 +41,12 @@ JobCop::EnsureCommandLine();
 
 try
 {
+    $emailEnabled = Configuration::Instance()->GetKey(ConfigKeys::ENABLE_EMAIL, new BooleanConverter());
+    if (!$emailEnabled)
+    {
+        return;
+    }
+
 	$repository = new ReminderRepository();
 	$now = Date::Now();
 
