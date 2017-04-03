@@ -51,12 +51,12 @@ extends {$ExtendViewPrefix}
 				{assign var=resourceId value=$resource->Id}
 				{assign var=href value="{Pages::RESERVATION}?rid={$resource->Id}&sid={$ScheduleId}"}
 				<tr class="slots">
-					<td class="resourcename" {if $resource->HasColor()}style="background-color:{$resource->GetColor()}"{/if}>
+					<td class="resourcename" {if $resource->HasColor()}style="background-color:{$resource->GetColor()} !important"{/if}>
 						{if $resource->CanAccess}
 							<a href="{$href}" resourceId="{$resource->Id}"
-							   class="resourceNameSelector" {if $resource->HasColor()}style="color:{$resource->GetTextColor()}"{/if}>{$resource->Name}</a>
+							   class="resourceNameSelector" {if $resource->HasColor()}style="color:{$resource->GetTextColor()} !important"{/if}>{$resource->Name}</a>
 						{else}
-							<span resourceId="{$resourceId}" resourceId="{$resourceId}" class="resourceNameSelector" {if $resource->HasColor()}style="color:{$resource->GetTextColor()}"{/if}>{$resource->Name}</span>
+							<span resourceId="{$resourceId}" resourceId="{$resourceId}" class="resourceNameSelector" {if $resource->HasColor()}style="color:{$resource->GetTextColor()} !important"{/if}>{$resource->Name}</span>
 						{/if}
 					</td>
 					{foreach from=$BoundDates item=date}

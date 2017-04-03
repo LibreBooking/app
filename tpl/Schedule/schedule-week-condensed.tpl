@@ -29,7 +29,7 @@ extends {$ExtendViewPrefix}
 		{assign var=class value='pending'}
 	{/if}
 	{if $Slot->HasCustomColor()}
-		{assign var=color value='style="background-color:'|cat:$Slot->Color()|cat:';color:'|cat:$Slot->TextColor()|cat:';"'}
+		{assign var=color value='style="background-color:'|cat:$Slot->Color()|cat:' !important;color:'|cat:$Slot->TextColor()|cat:' !important;"'}
 	{/if}
 	<div class="reserved {$class} {$OwnershipClass} clickres"
 		resid="{$Slot->Id()}" {$color}
