@@ -58,45 +58,36 @@ class CustomReport implements IReport
 						$this->cols->AddAttribute(CustomAttributeCategory::RESERVATION, $attribute->Id(), $attribute->Label());
 					}
 				}
+				elseif ($columnName == ColumnNames::USER_ATTRIBUTE_LIST)
+				{
+					$attributes = $attributeRepository->GetByCategory(CustomAttributeCategory::USER);
+
+					foreach ($attributes as $attribute)
+					{
+						$this->cols->AddAttribute(CustomAttributeCategory::USER, $attribute->Id(), $attribute->Label());
+					}
+				}
+				elseif ($columnName == ColumnNames::RESOURCE_ATTRIBUTE_LIST)
+				{
+					$attributes = $attributeRepository->GetByCategory(CustomAttributeCategory::RESOURCE);
+
+					foreach ($attributes as $attribute)
+					{
+						$this->cols->AddAttribute(CustomAttributeCategory::RESOURCE, $attribute->Id(), $attribute->Label());
+					}
+				}
+				elseif ($columnName == ColumnNames::RESOURCE_TYPE_ATTRIBUTE_LIST)
+				{
+					$attributes = $attributeRepository->GetByCategory(CustomAttributeCategory::RESOURCE_TYPE);
+
+					foreach ($attributes as $attribute)
+					{
+						$this->cols->AddAttribute(CustomAttributeCategory::RESOURCE_TYPE, $attribute->Id(), $attribute->Label());
+					}
+				}
 				else
 				{
-					if ($columnName == ColumnNames::USER_ATTRIBUTE_LIST)
-					{
-						$attributes = $attributeRepository->GetByCategory(CustomAttributeCategory::USER);
-
-						foreach ($attributes as $attribute)
-						{
-							$this->cols->AddAttribute(CustomAttributeCategory::USER, $attribute->Id(), $attribute->Label());
-						}
-					}
-					else
-					{
-						if ($columnName == ColumnNames::RESOURCE_ATTRIBUTE_LIST)
-						{
-							$attributes = $attributeRepository->GetByCategory(CustomAttributeCategory::RESOURCE);
-
-							foreach ($attributes as $attribute)
-							{
-								$this->cols->AddAttribute(CustomAttributeCategory::RESOURCE, $attribute->Id(), $attribute->Label());
-							}
-						}
-						else
-						{
-							if ($columnName == ColumnNames::RESOURCE_TYPE_ATTRIBUTE_LIST)
-							{
-								$attributes = $attributeRepository->GetByCategory(CustomAttributeCategory::RESOURCE_TYPE);
-
-								foreach ($attributes as $attribute)
-								{
-									$this->cols->AddAttribute(CustomAttributeCategory::RESOURCE_TYPE, $attribute->Id(), $attribute->Label());
-								}
-							}
-							else
-							{
-								$this->cols->Add($columnName);
-							}
-						}
-					}
+					$this->cols->Add($columnName);
 				}
 			}
 		}
@@ -107,7 +98,8 @@ class CustomReport implements IReport
 	/**
 	 * @return IReportColumns
 	 */
-	public function GetColumns()
+	public
+	function GetColumns()
 	{
 		return $this->cols;
 	}
@@ -115,7 +107,8 @@ class CustomReport implements IReport
 	/**
 	 * @return IReportData
 	 */
-	public function GetData()
+	public
+	function GetData()
 	{
 		return $this->data;
 	}
@@ -123,7 +116,8 @@ class CustomReport implements IReport
 	/**
 	 * @return int
 	 */
-	public function ResultCount()
+	public
+	function ResultCount()
 	{
 		return $this->resultCount;
 	}
