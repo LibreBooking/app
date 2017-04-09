@@ -895,6 +895,13 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
             enabled. Default is false.</p>
     </div>
 
+    <h2>Available Label Tokens</h2>
+
+       <p>Available tokens for reservation labels
+           are {literal}{name}, {title}, {description}, {email}, {phone}, {organization}, {position}, {startdate}, {enddate} {resourcename} {participants} {invitees} {reservationAttributes}{/literal}
+           . Custom attributes can be added using att with the attribute id. For example {literal}{att1}{/literal}
+           Leave it blank for no label. Any combination of tokens can be used.</p>
+
     <h2>Plugins</h2>
 
     <p>The following components are currently pluggable:</p>
@@ -922,13 +929,6 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
     <p>To install a new plugin copy the folder to the proper plugin directory. Then
         change either $conf['settings']['plugins']['Authentication'], $conf['settings']['plugins']['Authorization'] or
         $conf['settings']['plugins']['Permission'] in config.php to the name of that folder.</p>
-
-    <h2>Available Label Tokens</h2>
-
-    <p>Available tokens for reservation labels
-        are {literal}{name}, {title}, {description}, {email}, {phone}, {organization}, {position}, {startdate}, {enddate} {resourcename} {participants} {invitees} {reservationAttributes}{/literal}
-        . Custom attributes can be added using att with the attribute id. For example {literal}{att1}{/literal}
-        Leave it blank for no label. Any combination of tokens can be used.</p>
 
     <h2>Active Directory Integration</h2>
 
