@@ -155,7 +155,10 @@ class ParticipationPresenter
 			}
 		}
 
-		$this->reservationRepository->Update($series);
+		if (empty($error))
+        {
+            $this->reservationRepository->Update($series);
+        }
 
 		return $error;
 	}
