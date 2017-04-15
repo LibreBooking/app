@@ -28,6 +28,7 @@ DESCRIPTION:{$reservation->Description|regex_replace:"/\r\n|\n|\r/m":"\n "}
 DTSTAMP:{formatdate date=$reservation->DateCreated key=ical}
 DTSTART:{formatdate date=$reservation->DateStart key=ical}
 DTEND:{formatdate date=$reservation->DateEnd key=ical}
+LAST-MODIFIED:{formatdate date=$reservation->LastModified key=ical}
 LOCATION:{$reservation->Location}
 ORGANIZER;CN={$reservation->Organizer}:MAILTO:{$reservation->OrganizerEmail}
 {if $reservation->RecurRule neq ''}
