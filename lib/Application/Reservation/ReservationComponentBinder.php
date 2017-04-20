@@ -214,6 +214,11 @@ class ReservationResourceBinder implements IReservationComponentBinder
 	{
 		$bindableResourceData = new BindableResourceData();
 
+		if (count($resources) > 0)
+        {
+            $bindableResourceData->SetReservationResource($resources[0]);
+        }
+
 		/** @var $resource ResourceDto */
 		foreach ($resources as $resource)
 		{
