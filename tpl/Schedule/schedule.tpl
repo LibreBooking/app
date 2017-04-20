@@ -342,7 +342,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 				selectedResources: [{','|implode:$ResourceIds}],
 				specificDates: [{foreach from=$SpecificDates item=d}'{$d->Format('Y-m-d')}',{/foreach}],
 				updateReservationUrl: "{$Path}ajax/reservation_move.php",
-                resourceCount: {$Resources|count}
+                lockTableHead: {$LockTableHead}
 			};
 
 			var schedule = new Schedule(scheduleOpts, {$ResourceGroupsAsJson});

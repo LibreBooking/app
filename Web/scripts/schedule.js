@@ -54,7 +54,7 @@ function Schedule(opts, resourceGroups) {
 			window.location = link + "&sd=" + sd + "&ed=" + ed;
 		});
 
-		if (opts.resourceCount > 7) {
+		if (opts.lockTableHead) {
             reservations.find('table.reservations').floatThead({
                 position: 'auto',
                 top: 50,

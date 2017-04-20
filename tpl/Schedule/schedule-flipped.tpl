@@ -22,7 +22,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 {block name="reservations"}
 
 {assign var=TodaysDate value=Date::Now()}
-    <table class="reservations" border="1" cellpadding="0" width="100%">
+
 		{capture name="resources"}
             <tr>
                 <td class="resourcename">&nbsp;</td>
@@ -43,6 +43,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		{/capture}
 
 		{foreach from=$BoundDates item=date}
+			<table class="reservations" border="1" cellpadding="0" width="100%">
+			<thead>
 			{assign var=ts value=$date->Timestamp()}
 			{$periods.$ts = $DailyLayout->GetPeriods($date)}
 			{if $periods[$ts]|count == 0}{continue}{*dont show if there are no slots*}{/if}
@@ -53,15 +55,18 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			{/if}
 			<td class="resdate" colspan="{$Resources|@count+1}">{formatdate date=$date key="schedule_daily"}</td></tr>
 			{$smarty.capture.resources}
-
+			</thead>
+			<tbody>
 			{foreach from=$periods.$ts item=period name=period_loop}
 				<tr class="slots" id="{$period->Id()}">
                     <td class="reslabel">{$period->Label($date)}</td>
                 </tr>
 			{/foreach}
+			</tbody>
 			{$smarty.capture.resources}
+			</table>
 		{/foreach}
-    </table>
+
 {/block}
 
 {block name="scripts-before"}
