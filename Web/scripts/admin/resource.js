@@ -289,7 +289,7 @@ function ResourceManagement(opts) {
 			populateReasonOptions(elements.statusOptionsFilter.val(), elements.statusReasonsFilter);
 		});
 
-		elements.filterButton.click(filterResources);
+		// elements.filterButton.click(filterResources);
 
 		elements.clearFilterButton.click(function (e) {
 			e.preventDefault();
