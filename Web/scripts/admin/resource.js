@@ -793,9 +793,9 @@ function ResourceManagement(opts) {
 		});
 	}
 
-	function filterResources() {
-		window.location = document.location.pathname + '?' + $('#filterForm').serialize();
-	}
+	// function filterResources() {
+	// 	window.location = document.location.pathname + '?' + $('#filterForm').serialize();
+	// }
 
 	var handleAddError = function (result) {
 		$('#addResourceResults').text(result).show();

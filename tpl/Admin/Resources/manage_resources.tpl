@@ -68,11 +68,12 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 	</div>
 
 	<div class="panel panel-default filterTable" id="filter-resources-panel">
+        <form id="filterForm" class="horizontal-list form-inline" role="form" method="get">
 		<div class="panel-heading"><span
 					class="glyphicon glyphicon-filter"></span> {translate key="Filter"} {showhide_icon}
 		</div>
 		<div class="panel-body">
-			<form id="filterForm" class="horizontal-list form-inline" role="form">
+
 				{assign var=groupClass value="col-xs-12 col-sm-4 col-md-3"}
 
 				<div class="form-group {$groupClass}">
@@ -131,12 +132,13 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 				{foreach from=$AttributeFilters item=attribute}
 					{control type="AttributeControl" attribute=$attribute searchmode=true class="customAttribute filter-customAttribute{$attribute->Id()} {$groupClass}"}
 				{/foreach}
-			</form>
+
 		</div>
 		<div class="panel-footer">
 			{filter_button id="filter" class="btn-sm"}
 			{reset_button id="clearFilter" class="btn-sm"}
 		</div>
+        </form>
 	</div>
 
 	{pagination pageInfo=$PageInfo showCount=true}

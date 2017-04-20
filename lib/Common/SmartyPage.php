@@ -779,7 +779,7 @@ class SmartyPage extends Smarty
     {
         $key = isset($params['key']) ? $params['key'] : 'Filter';
         $class = isset($params['class']) ? $params['class'] : '';
-        echo '<button type="button" class="btn btn-primary ' . $class . '" ' . $this->GetButtonAttributes($params) . '> <span class="glyphicon glyphicon-search"></span> ' . Resources::GetInstance()->GetString($key) . '</button>';
+        echo '<button type="search" class="btn btn-primary ' . $class . '" ' . $this->GetButtonAttributes($params) . '> <span class="glyphicon glyphicon-search"></span> ' . Resources::GetInstance()->GetString($key) . '</button>';
     }
 
     public function OkButton($params, &$smarty)
