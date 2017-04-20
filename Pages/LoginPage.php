@@ -140,7 +140,7 @@ class LoginPage extends Page implements ILoginPage
 
 	public function GetPersistLogin()
 	{
-		return $this->GetForm(FormKeys::PERSIST_LOGIN) == 'true';
+		return $this->GetCheckbox(FormKeys::PERSIST_LOGIN);
 	}
 
 	public function GetShowRegisterLink()

@@ -76,4 +76,9 @@ class AnnouncementEmail extends EmailMessage
         $this->Set('AnnouncementText', $this->announcement);
         return $this->FetchTemplate('AnnouncementEmail.tpl');
     }
+
+    public function From()
+	{
+		return new EmailAddress($this->sentBy->Email, new FullName($this->sentBy->FirstName, $this->sentBy->LastName));
+	}
 }
