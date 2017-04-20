@@ -28,6 +28,7 @@ class iCalendarReservationView
 	public $Location;
 	public $StartReminder;
 	public $EndReminder;
+	public $LastModified;
 	/**
 	 * @var ReservationItemView
 	 */
@@ -68,6 +69,7 @@ class iCalendarReservationView
 
 		$this->StartReminder = $res->StartReminder;
 		$this->EndReminder = $res->EndReminder;
+		$this->LastModified = $res->ModifiedDate;
 
 		if ($res->OwnerId == $currentUser->UserId)
 		{
