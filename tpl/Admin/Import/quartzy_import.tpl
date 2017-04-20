@@ -59,6 +59,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                         class="btn btn-success save"><i class="fa fa fa-upload"></i> {translate key=Import}</button>
                 {indicator}
             </div>
+            {csrf_token}
         </form>
     </div>
     <div>
@@ -73,7 +74,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
     </div>
 </div>
 
-{csrf_token}
+
 
 {jsfile src="ajax-helpers.js"}
 {jsfile src="js/jquery.form-3.09.min.js"}

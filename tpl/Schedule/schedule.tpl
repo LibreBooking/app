@@ -70,7 +70,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 {* End slot display formatting *}
 
 {block name="header"}
-	{include file='globalheader.tpl' Qtip=true cssFiles='scripts/css/jqtree.css' printCssFiles='css/schedule.print.css'}
+	{include file='globalheader.tpl' Qtip=true FloatThead=true cssFiles='scripts/css/jqtree.css' printCssFiles='css/schedule.print.css'}
 {/block}
 
 <div id="page-schedule">
@@ -252,7 +252,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 					{if $periods[$ts]|count == 0}{continue}{*dont show if there are no slots*}{/if}
 					<div style="position:relative;">
 						<table class="reservations" border="1" cellpadding="0" width="100%">
-							{if $date->DateEquals($TodaysDate)}
+							<thead>
+                            {if $date->DateEquals($TodaysDate)}
 							<tr class="today">
 								{else}
 							<tr>
@@ -262,6 +263,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 									<td class="reslabel" colspan="{$period->Span()}">{$period->Label($date)}</td>
 								{/foreach}
 							</tr>
+                            </thead>
+                            <tbody>
 							{foreach from=$Resources item=resource name=resource_loop}
 								{assign var=resourceId value=$resource->Id}
 								{assign var=slots value=$DailyLayout->GetLayout($date, $resourceId)}
@@ -284,6 +287,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 									{/foreach}
 								</tr>
 							{/foreach}
+                            </tbody>
 						</table>
 					</div>
 					{flush}
@@ -337,7 +341,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 				scriptUrl: '{$ScriptUrl}',
 				selectedResources: [{','|implode:$ResourceIds}],
 				specificDates: [{foreach from=$SpecificDates item=d}'{$d->Format('Y-m-d')}',{/foreach}],
-				updateReservationUrl: "{$Path}ajax/reservation_move.php"
+				updateReservationUrl: "{$Path}ajax/reservation_move.php",
+                resourceCount: {$Resources|count}
 			};
 
 			var schedule = new Schedule(scheduleOpts, {$ResourceGroupsAsJson});

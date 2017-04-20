@@ -87,6 +87,9 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
     {if $Timepicker}
         {jsfile src="js/jquery.timePicker.min.js"}
     {/if}
+    {if $FloatThead}
+        {jsfile src="js/jquery.floatThead.min.js"}
+    {/if}
     {jsfile src="js/jquery-ui-timepicker-addon.js"}
     {jsfile src="phpscheduleit.js"}
     <!-- End JavaScript -->

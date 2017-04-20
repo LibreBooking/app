@@ -937,3 +937,11 @@ class ResourceDto implements IBookableResource
         return $this->Color != '' && $this->Color != null;
     }
 }
+
+class NullResourceDto extends ResourceDto {
+
+    public function __construct()
+    {
+        parent::__construct(0, null, false, 0, new TimeInterval(0), null, null, null, null, false, false, false, null, null);
+    }
+}

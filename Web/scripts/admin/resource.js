@@ -289,7 +289,7 @@ function ResourceManagement(opts) {
 			populateReasonOptions(elements.statusOptionsFilter.val(), elements.statusReasonsFilter);
 		});
 
-		elements.filterButton.click(filterResources);
+		// elements.filterButton.click(filterResources);
 
 		elements.clearFilterButton.click(function (e) {
 			e.preventDefault();
@@ -793,9 +793,9 @@ function ResourceManagement(opts) {
 		});
 	}
 
-	function filterResources() {
-		window.location = document.location.pathname + '?' + $('#filterForm').serialize();
-	}
+	// function filterResources() {
+	// 	window.location = document.location.pathname + '?' + $('#filterForm').serialize();
+	// }
 
 	var handleAddError = function (result) {
 		$('#addResourceResults').text(result).show();

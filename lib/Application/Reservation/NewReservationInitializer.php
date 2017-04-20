@@ -199,7 +199,7 @@ class BindableResourceData
 
 	public function __construct()
 	{
-		$this->ReservationResource = new NullScheduleResource();
+		$this->ReservationResource = new NullResourceDto();
 		$this->AvailableResources = array();
 	}
 
