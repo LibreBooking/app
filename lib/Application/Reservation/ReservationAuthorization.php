@@ -62,6 +62,11 @@ class ReservationAuthorization implements IReservationAuthorization
 
 	public function CanEdit(ReservationView $reservationView, UserSession $currentUser)
 	{
+		if ($currentUser->IsAdmin)
+		{
+			return true;
+		}
+
 		$ongoingReservation = true;
 		$startTimeConstraint = Configuration::Instance()->GetSectionKey(ConfigSection::RESERVATION, ConfigKeys::RESERVATION_START_TIME_CONSTRAINT);
 
