@@ -50,19 +50,15 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 {/function}
 
 {function name=displayPastTimeMobile}
-	&nbsp;
 {/function}
 
 {function name=displayReservableMobile}
-	&nbsp;
 {/function}
 
 {function name=displayRestrictedMobile}
-	&nbsp;
 {/function}
 
 {function name=displayUnreservableMobile}
-	&nbsp;
 {/function}
 
 {function name=displaySlotMobile}
