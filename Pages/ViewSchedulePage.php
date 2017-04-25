@@ -67,7 +67,7 @@ class ViewSchedulePage extends SchedulePage
 		$this->Set('AllowGuestBooking', $allowGuestBookings);
 		$this->Set('CreateReservationPage', Pages::GUEST_RESERVATION);
 
-		$this->Set('ExtendViewPrefix', 'view-');
+		$this->Set('LoadViewOnly', true);
 		if ($this->IsMobile && !$this->IsTablet)
 		{
 			if ($this->ScheduleStyle == ScheduleStyle::Tall)
@@ -87,7 +87,7 @@ class ViewSchedulePage extends SchedulePage
 			}
 			else
 			{
-				$this->Display('Schedule/view-schedule.tpl');
+				$this->Display('Schedule/schedule.tpl');
 			}
 		}
 	}

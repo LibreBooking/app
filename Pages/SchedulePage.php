@@ -279,6 +279,7 @@ class SchedulePage extends ActionPage implements ISchedulePage
 		$this->Set('PopupMonths', $this->IsMobile ? 1 : 3);
 		$this->Set('CreateReservationPage', Pages::RESERVATION);
 		$this->Set('LockTableHead', (int)($this->ScheduleStyle == ScheduleStyle::Tall || (count($this->GetVar('Resources')) > 7 )));
+		$this->Set('LoadViewOnly', false);
 
 		if ($this->IsMobile && !$this->IsTablet)
 		{

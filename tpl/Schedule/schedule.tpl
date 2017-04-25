@@ -331,23 +331,50 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 	<script type="text/javascript">
 
-		$(document).ready(function () {
-			var scheduleOpts = {
-				reservationUrlTemplate: "{$Path}{Pages::RESERVATION}?{QueryStringKeys::REFERENCE_NUMBER}=[referenceNumber]",
-				summaryPopupUrl: "{$Path}ajax/respopup.php",
-				setDefaultScheduleUrl: "{$Path}{Pages::PROFILE}?action=changeDefaultSchedule&{QueryStringKeys::SCHEDULE_ID}=[scheduleId]",
-				cookieName: "{$CookieName}",
-				scheduleId: "{$ScheduleId|escape:'javascript'}",
-				scriptUrl: '{$ScriptUrl}',
-				selectedResources: [{','|implode:$ResourceIds}],
-				specificDates: [{foreach from=$SpecificDates item=d}'{$d->Format('Y-m-d')}',{/foreach}],
-				updateReservationUrl: "{$Path}ajax/reservation_move.php",
-                lockTableHead: {$LockTableHead}
-			};
+		{if $LoadViewOnly}
+			$(document).ready(function () {
+					var scheduleOptions = {
+						reservationUrlTemplate: "view-reservation.php?{QueryStringKeys::REFERENCE_NUMBER}=[referenceNumber]",
+						summaryPopupUrl: "ajax/respopup.php",
+						cookieName: "{$CookieName}",
+						scheduleId: "{$ScheduleId}",
+						scriptUrl: '{$ScriptUrl}',
+						selectedResources: [{','|implode:$ResourceIds}],
+						specificDates: [{foreach from=$SpecificDates item=d}'{$d->Format('Y-m-d')}',{/foreach}]
+					};
+					var schedule = new Schedule(scheduleOptions, {$ResourceGroupsAsJson});
+					{if $AllowGuestBooking}
+					schedule.init();
+					schedule.initUserDefaultSchedule(true);
+					{else}
+					schedule.initNavigation();
+					schedule.initRotateSchedule();
+					schedule.initReservations();
+					schedule.initResourceFilter();
+					schedule.initResources();
+					schedule.initUserDefaultSchedule(true);
+					{/if}
+				});
+		{else}
+			$(document).ready(function () {
+					var scheduleOpts = {
+						reservationUrlTemplate: "{$Path}{Pages::RESERVATION}?{QueryStringKeys::REFERENCE_NUMBER}=[referenceNumber]",
+						summaryPopupUrl: "{$Path}ajax/respopup.php",
+						setDefaultScheduleUrl: "{$Path}{Pages::PROFILE}?action=changeDefaultSchedule&{QueryStringKeys::SCHEDULE_ID}=[scheduleId]",
+						cookieName: "{$CookieName}",
+						scheduleId: "{$ScheduleId|escape:'javascript'}",
+						scriptUrl: '{$ScriptUrl}',
+						selectedResources: [{','|implode:$ResourceIds}],
+						specificDates: [{foreach from=$SpecificDates item=d}'{$d->Format('Y-m-d')}',{/foreach}],
+						updateReservationUrl: "{$Path}ajax/reservation_move.php",
+		                lockTableHead: {$LockTableHead}
+					};
 
-			var schedule = new Schedule(scheduleOpts, {$ResourceGroupsAsJson});
-			schedule.init();
-		});
+					var schedule = new Schedule(scheduleOpts, {$ResourceGroupsAsJson});
+					schedule.init();
+				});
+		{/if}
+
 	</script>
 {/block}
 
