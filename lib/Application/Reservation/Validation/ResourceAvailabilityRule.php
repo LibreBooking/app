@@ -146,10 +146,8 @@ class ResourceAvailabilityRule implements IReservationValidationRule
      */
     protected function IsInConflict(Reservation $instance, ReservationSeries $series, IReservedItemView $existingItem, $keyedResources)
     {
-
         if (array_key_exists($existingItem->GetResourceId(), $keyedResources)) {
-			Log::Debug('checking %s against %s result is %d', $existingItem->BufferedTimes(), $instance->Duration(), $existingItem->BufferedTimes()->Overlaps($instance->Duration()));
-            return $existingItem->BufferedTimes()->Overlaps($instance->Duration());
+			 return $existingItem->BufferedTimes()->Overlaps($instance->Duration());
         }
 
         return false;
