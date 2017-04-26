@@ -801,29 +801,6 @@ function Reservation(opts) {
 
 	function WireUpReservationFailed() {
 		$(document).on('loaded', '#reservation-failed', function (e) {
-			$('#retryToolTip').qtip({
-				position: {
-					my: 'bottom left', at: 'top left', effect: false
-				},
-
-				content: {
-					text: function (event, api) {
-						return $('#retryMessages').html();
-					}
-				},
-
-				show: {
-					delay: 300, effect: false
-				},
-
-				hide: {
-					fixed: true, delay: 500
-				},
-
-				style: {
-					classes: 'qtip-light qtip-bootstrap'
-				}
-			});
 
 			$('#btnRetry').on('click', function (e) {
 				e.preventDefault();

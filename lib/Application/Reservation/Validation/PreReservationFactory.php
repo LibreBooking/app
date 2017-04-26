@@ -158,6 +158,7 @@ class PreReservationFactory implements IPreReservationFactory
 	private function CreateAddService(ReservationValidationRuleProcessor $ruleProcessor, UserSession $userSession)
 	{
 		$ruleProcessor->PushRule(new AdminExcludedRule(new RequiresApprovalRule(PluginManager::Instance()->LoadAuthorization()), $userSession, $this->userRepository));
+		$ruleProcessor->PushRule(new ResourceAvailabilityRule(new ResourceAvailability($this->reservationRepository), $userSession->Timezone));
 		return new AddReservationValidationService($ruleProcessor);
 	}
 
@@ -167,6 +168,7 @@ class PreReservationFactory implements IPreReservationFactory
 		{
 			$ruleProcessor->PushRule(new AdminExcludedRule(new RequiresApprovalRule(PluginManager::Instance()->LoadAuthorization()), $userSession, $this->userRepository));
 			$ruleProcessor->PushRule(new AdminExcludedRule(new CurrentUserIsReservationUserRule($userSession), $userSession, $this->userRepository));
+			$ruleProcessor->PushRule(new ExistingResourceAvailabilityRule(new ResourceAvailability($this->reservationRepository), $userSession->Timezone));
 		}
 		return new UpdateReservationValidationService($ruleProcessor);
 	}
@@ -206,8 +208,6 @@ class PreReservationFactory implements IPreReservationFactory
 		$ruleProcessor->AddRule(new AdminExcludedRule(new CreditsRule($this->userRepository, $userSession), $userSession, $this->userRepository));
 		$ruleProcessor->AddRule(new AccessoryAvailabilityRule($this->reservationRepository, $this->accessoryRepository, $userSession->Timezone));
 		$ruleProcessor->AddRule(new AccessoryResourceRule($this->accessoryRepository));
-		$ruleProcessor->AddRule(new ResourceAvailabilityRule(new ResourceBlackoutAvailability($this->reservationRepository), $userSession->Timezone));
-		$ruleProcessor->AddRule(new ExistingResourceAvailabilityRule(new ResourceReservationAvailability($this->reservationRepository), $userSession->Timezone));
 
 		return $ruleProcessor;
 	}

@@ -25,9 +25,9 @@ interface IResourceAvailabilityStrategy
     public function GetItemsBetween(Date $startDate, Date $endDate, $resourceIds);
 }
 
-class ResourceReservationAvailability implements IResourceAvailabilityStrategy
+class ResourceAvailability implements IResourceAvailabilityStrategy
 {
-    /**
+	/**
      * @var IReservationViewRepository
      */
     protected $_repository;
@@ -39,25 +39,10 @@ class ResourceReservationAvailability implements IResourceAvailabilityStrategy
 
     public function GetItemsBetween(Date $startDate, Date $endDate, $resourceIds)
     {
-        return $this->_repository->GetReservations($startDate, $endDate, null, null, null, $resourceIds);
-    }
-}
+		$reservations = $this->_repository->GetReservations($startDate, $endDate, null, null, null, $resourceIds);
+        $blackouts = $this->_repository->GetBlackoutsWithin(new DateRange($startDate, $endDate));
 
-class ResourceBlackoutAvailability implements IResourceAvailabilityStrategy
-{
-    /**
-     * @var IReservationViewRepository
-     */
-    protected $_repository;
-
-    public function __construct(IReservationViewRepository $repository)
-    {
-        $this->_repository = $repository;
-    }
-
-    public function GetItemsBetween(Date $startDate, Date $endDate, $resourceIds)
-    {
-        return $this->_repository->GetBlackoutsWithin(new DateRange($startDate, $endDate));
+        return array_merge($reservations, $blackouts);
     }
 }
 
@@ -95,7 +80,7 @@ class ResourceAvailabilityRule implements IReservationValidationRule
 
         /** @var Reservation $reservation */
         foreach ($reservations as $reservation) {
-            Log::Debug("Checking for reservation conflicts, reference number %s", $reservation->ReferenceNumber());
+            Log::Debug("Checking for reservation conflicts, reference number %s on %s", $reservation->ReferenceNumber(), $reservation->StartDate());
 
             $startDate = $reservation->StartDate();
             $endDate = $reservation->EndDate();
@@ -120,13 +105,15 @@ class ResourceAvailabilityRule implements IReservationValidationRule
                 if ($this->IsInConflict($reservation, $reservationSeries, $existingItem, $keyedResources)) {
                     $skipped = false;
                     if ($shouldSkipConflicts) {
-                        Log::Debug("Skipping conflicting reservation. Reference number %s conflicts with existing %s with id %s",
-                            $reservation->ReferenceNumber(), get_class($existingItem), $existingItem->GetId());
+                        Log::Debug("Skipping conflicting reservation. Reference number %s conflicts with existing %s with id %s on %s",
+                            $reservation->ReferenceNumber(), get_class($existingItem), $existingItem->GetId(), $reservation->StartDate());
+
                         $skipped = $reservationSeries->RemoveInstance($reservation);
                     }
                     if (!$skipped) {
-                        Log::Debug("Reference number %s conflicts with existing %s with id %s",
-                            $reservation->ReferenceNumber(), get_class($existingItem), $existingItem->GetId());
+                        Log::Debug("Reference number %s conflicts with existing %s with id %s on %s",
+                            $reservation->ReferenceNumber(), get_class($existingItem), $existingItem->GetId(), $reservation->StartDate());
+
                         array_push($conflicts, $existingItem);
                     }
                 }
@@ -157,10 +144,11 @@ class ResourceAvailabilityRule implements IReservationValidationRule
      * @param BookableResource[] $keyedResources
      * @return bool
      */
-    protected function IsInConflict(Reservation $instance, ReservationSeries $series, IReservedItemView $existingItem,
-                                    $keyedResources)
+    protected function IsInConflict(Reservation $instance, ReservationSeries $series, IReservedItemView $existingItem, $keyedResources)
     {
+
         if (array_key_exists($existingItem->GetResourceId(), $keyedResources)) {
+			Log::Debug('checking %s against %s result is %d', $existingItem->BufferedTimes(), $instance->Duration(), $existingItem->BufferedTimes()->Overlaps($instance->Duration()));
             return $existingItem->BufferedTimes()->Overlaps($instance->Duration());
         }
 

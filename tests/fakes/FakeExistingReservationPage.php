@@ -430,4 +430,12 @@ class FakeExistingReservationPage extends FakePageBase implements IExistingReser
 	{
 		// TODO: Implement SetInvitedGuests() method.
 	}
+
+	/**
+	 * @param bool $requiresApproval
+	 */
+	public function SetRequiresApproval($requiresApproval)
+	{
+		// TODO: Implement SetRequiresApproval() method.
+	}
 }

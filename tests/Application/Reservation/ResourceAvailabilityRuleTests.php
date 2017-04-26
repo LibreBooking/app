@@ -330,37 +330,23 @@ class ResourceAvailabilityRuleTests extends TestBase
 
 		$repository = $this->getMock('IReservationViewRepository');
 
-		$strategy = new ResourceReservationAvailability($repository);
+		$strategy = new ResourceAvailability($repository);
 
-		$reservations = array();
+		$reservations = array('reservation');
 		$repository->expects($this->once())
 				   ->method('GetReservations')
 				   ->with($this->equalTo($startDate), $this->equalTo($endDate), $this->isNull(), $this->isNull(), $this->isNull(), $this->equalTo($resourceIds))
 				   ->will($this->returnValue($reservations));
 
-		$items = $strategy->GetItemsBetween($startDate, $endDate, $resourceIds);
-
-		$this->assertEquals($reservations, $items);
-	}
-
-	public function testBlackoutStrategyChecksBlackouts()
-	{
-		$startDate = Date::Now();
-		$endDate = Date::Now();
-
-		$repository = $this->getMock('IReservationViewRepository');
-
-		$strategy = new ResourceBlackoutAvailability($repository);
-
-		$blackouts = array();
+		$blackouts = array('blackout');
 		$repository->expects($this->once())
 				   ->method('GetBlackoutsWithin')
 				   ->with($this->equalTo(new DateRange($startDate, $endDate)))
 				   ->will($this->returnValue($blackouts));
 
-		$items = $strategy->GetItemsBetween($startDate, $endDate, array());
+		$items = $strategy->GetItemsBetween($startDate, $endDate, $resourceIds);
 
-		$this->assertEquals($blackouts, $items);
+		$this->assertEquals(array_merge($reservations, $blackouts), $items);
 	}
 
 	public function testCanRetryIfThereAreConflictsThatCanBeSkipped()
