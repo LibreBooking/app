@@ -150,7 +150,6 @@ function Reservation(opts) {
 		WireUpSaveDialog();
 		DisplayDuration();
 		WireUpAttachments();
-		WireUpReservationFailed();
 		InitializeAutoRelease();
 
 		elements.userId.change(function () {
@@ -472,6 +471,15 @@ function Reservation(opts) {
 
         $('#btnWaitList').unbind().click(function () {
 			JoinWaitList();
+		});
+
+		$('#btnRetry').unbind().click(function (e) {
+			e.preventDefault();
+			var retryParams = $('#retryParams');
+			$('#retrySubmitParams').empty().append(retryParams.find('input'));
+			retryParams.empty();
+			//CloseSaveDialog();
+			$('#form-reservation').submit();
 		});
 
 		$('#creatingNotification').hide();
@@ -796,20 +804,6 @@ function Reservation(opts) {
 			e.preventDefault();
 			$(this).closest('.attachment-item').remove();
 			enableCorrectButtons();
-		});
-	}
-
-	function WireUpReservationFailed() {
-		$(document).on('loaded', '#reservation-failed', function (e) {
-
-			$('#btnRetry').on('click', function (e) {
-				e.preventDefault();
-				var retryParams = $('#retryParams');
-				$('#retrySubmitParams').empty().append(retryParams.find('input'));
-				retryParams.empty();
-				CloseSaveDialog();
-				$('#form-reservation').submit();
-			});
 		});
 	}
 
