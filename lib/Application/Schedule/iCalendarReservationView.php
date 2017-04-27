@@ -69,7 +69,7 @@ class iCalendarReservationView
 
 		$this->StartReminder = $res->StartReminder;
 		$this->EndReminder = $res->EndReminder;
-		$this->LastModified = $res->ModifiedDate;
+		$this->LastModified = $res->ModifiedDate == null ? $res->DateCreated : $res->ModifiedDate;
 
 		if ($res->OwnerId == $currentUser->UserId)
 		{
