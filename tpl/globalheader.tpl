@@ -152,7 +152,9 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
             {cssfile src=$cssFile}
         {/foreach}
     {/if}
-    {cssfile src=$CssUrl}
+    {if $CssUrl neq ''}
+		{cssfile src=$CssUrl}
+	{/if}
     {if $CssExtensionFile neq ''}
         {cssfile src=$CssExtensionFile}
     {/if}
