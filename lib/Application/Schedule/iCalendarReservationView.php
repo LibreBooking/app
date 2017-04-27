@@ -29,6 +29,8 @@ class iCalendarReservationView
 	public $StartReminder;
 	public $EndReminder;
 	public $LastModified;
+	public $IsPending;
+
 	/**
 	 * @var ReservationItemView
 	 */
@@ -70,6 +72,7 @@ class iCalendarReservationView
 		$this->StartReminder = $res->StartReminder;
 		$this->EndReminder = $res->EndReminder;
 		$this->LastModified = $res->ModifiedDate == null ? $res->DateCreated : $res->ModifiedDate;
+		$this->IsPending = $res->RequiresApproval;
 
 		if ($res->OwnerId == $currentUser->UserId)
 		{

@@ -31,6 +31,7 @@ DTEND:{formatdate date=$reservation->DateEnd key=ical}
 LAST-MODIFIED:{formatdate date=$reservation->LastModified key=ical}
 LOCATION:{$reservation->Location}
 ORGANIZER;CN={$reservation->Organizer}:MAILTO:{$reservation->OrganizerEmail}
+STATUS:{if $reservation->IsPending}TENTATIVE{else}CONFIRMED{/if}
 {if $reservation->RecurRule neq ''}
 RRULE:{$reservation->RecurRule}
 {/if}
@@ -39,8 +40,6 @@ UID:{$reservation->ReferenceNumber}&{$UID}
 SEQUENCE:0
 URL:{$reservation->ReservationUrl}
 X-MICROSOFT-CDO-BUSYSTATUS:BUSY
-END:VEVENT
-{/foreach}
 {if $reservation->StartReminder != null}
 BEGIN:VALARM
 TRIGGER;RELATED=START:-PT{$reservation->StartReminder->MinutesPrior()}M
@@ -55,4 +54,6 @@ ACTION:DISPLAY
 DESCRIPTION:{$reservation->Summary}
 END:VALARM
 {/if}
+END:VEVENT
+{/foreach}
 END:VCALENDAR
