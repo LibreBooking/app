@@ -1,6 +1,9 @@
 RewriteEngine On
 # Set RewriteBase if your physical path is different from the URL. For example, if using an alias
-#RewriteBase /test
+
+# Uncomment the following two lines to force HTTPS
+#RewriteCond %{HTTPS} off
+#RewriteRule .* https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 
 RewriteRule ^Web - [L,NC]
 RewriteCond %{REQUEST_FILENAME} !-d
