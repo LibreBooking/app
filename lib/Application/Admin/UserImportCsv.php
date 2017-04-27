@@ -122,7 +122,19 @@ class UserImportCsvRow
 	 */
 	private function valueOrDefault($column)
 	{
-		return ($this->indexes[$column] === false || !array_key_exists($this->indexes[$column], $this->values)) ? '' : htmlspecialchars(trim($this->values[$this->indexes[$column]]));
+		return ($this->indexes[$column] === false || !array_key_exists($this->indexes[$column], $this->values)) ? '' : $this->tryToGetEscapedValue($this->values[$this->indexes[$column]]);
+	}
+
+	private function tryToGetEscapedValue($v)
+	{
+		$value = htmlspecialchars(trim($v));
+		if (!$value)
+		{
+			// htmlspecialchars freaked out and couldnt encode
+			return trim($v);
+		}
+
+		return $value;
 	}
 }
 
@@ -186,6 +198,10 @@ class UserImportCsv
 			$values = str_getcsv($csvRows[$i]);
 
 			$row = new UserImportCsvRow($values, $headers, $this->attributes);
+
+			Log::Debug(var_export($row, true));
+   			die();
+
 
 			if ($row->IsValid())
 			{
