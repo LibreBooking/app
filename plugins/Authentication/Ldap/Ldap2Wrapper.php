@@ -51,7 +51,8 @@ class Ldap2Wrapper
 		Log::Debug('Trying to connect to LDAP');
 
 		$this->ldap = Net_LDAP2::connect($this->options->Ldap2Config());
-		if (PEAR::isError($this->ldap))
+		$p = new Pear();
+		if ($p->isError($this->ldap))
 		{
 			$message = 'Could not connect to LDAP server. Check your settings in Ldap.config.php : ' . $this->ldap->getMessage();
 			Log::Error($message);
@@ -93,7 +94,8 @@ class Ldap2Wrapper
 			return true;
 		}
 
-		if (Net_LDAP2::isError($result))
+		$l = new Net_LDAP2();
+		if ($l->isError($result))
 		{
 			$message = 'Could not authenticate user against ldap %s: ' . $result->getMessage();
 			Log::Error($message, $username);
@@ -114,10 +116,11 @@ class Ldap2Wrapper
 
 		$filter = Net_LDAP2_Filter::create($uidAttribute, 'equals', $username);
 
+		$l = new Net_LDAP2();
 		if ($configFilter)
 		{
 			$configFilter = Net_LDAP2_Filter::parse($configFilter);
-			if (Net_LDAP2::isError($configFilter))
+			if ($l->isError($configFilter))
 			{
 				$message = 'Could not parse search filter %s: ' . $configFilter->getMessage();
 				Log::Error($message, $username);
@@ -133,7 +136,7 @@ class Ldap2Wrapper
 		Log::Debug('Searching ldap for user %s', $username);
 		$searchResult = $this->ldap->search(null, $filter, $options);
 
-		if (Net_LDAP2::isError($searchResult))
+		if ($l->isError($searchResult))
 		{
 			$message = 'Could not search ldap for user %s: ' . $searchResult->getMessage();
 			Log::Error($message, $username);
@@ -161,7 +164,7 @@ class Ldap2Wrapper
 				Log::Debug('LDAP - Required Group: %s', $requiredGroup);
 				$group_filter = Net_LDAP2_Filter::create('uniquemember', 'equals', $currentResult->dn());
 				$group_searchResult = $this->ldap->search($requiredGroup, $group_filter, null);
-				if (Net_LDAP2::isError($group_searchResult) && !empty($requiredGroup))
+				if ($l->isError($group_searchResult) && !empty($requiredGroup))
 				{
 					$message = 'Could not match Required Group %s: ' . $group_searchResult->getMessage();
 					Log::Error($message, $username);
