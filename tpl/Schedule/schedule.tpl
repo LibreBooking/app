@@ -100,7 +100,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 					<a href="#" class="schedule-style hidden-sm hidden-xs" id="schedule_week"
 					   schedule-display="{ScheduleStyle::CondensedWeek}">{html_image src="table-week.png" altKey="CondensedWeekScheduleDisplay"}</a>
 					<div>
-						{if $SubscriptionUrl != null}
+						{if $SubscriptionUrl != null && $ShowSubscription}
 							{html_image src="feed.png"}
 							<a target="_blank" href="{$SubscriptionUrl->GetAtomUrl()}">Atom</a>
 							|
