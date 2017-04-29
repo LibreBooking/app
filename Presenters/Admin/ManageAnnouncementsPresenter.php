@@ -99,6 +99,8 @@ class ManageAnnouncementsPresenter extends ActionPresenter
     {
         $user = ServiceLocator::GetServer()->GetUserSession();
         $text = $this->page->GetText();
+		$text = str_replace('&lt;script&gt;', '', $text);
+		$text = str_replace('&lt;/script&gt;', '', $text);
         $start = Date::Parse($this->page->GetStart(), $user->Timezone);
         $end = Date::Parse($this->page->GetEnd(), $user->Timezone);
         $priority = $this->page->GetPriority();
