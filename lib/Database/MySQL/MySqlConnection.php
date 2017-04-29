@@ -71,7 +71,7 @@ class MySqlConnection implements IDbConnection
 
 	public function Query(ISqlCommand $sqlCommand)
 	{
-		mysqli_set_charset($this->_db, Resources::GetInstance()->Charset);
+//		mysqli_set_charset($this->_db, Resources::GetInstance()->Charset);
 		$mysqlCommand = new MySqlCommandAdapter($sqlCommand, $this->_db);
 
 		if (Log::DebugEnabled())
@@ -100,7 +100,7 @@ class MySqlConnection implements IDbConnection
 
 	public function Execute(ISqlCommand $sqlCommand)
 	{
-		mysqli_set_charset($this->_db, Resources::GetInstance()->Charset);
+//		mysqli_set_charset($this->_db, Resources::GetInstance()->Charset);
 		$mysqlCommand = new MySqlCommandAdapter($sqlCommand, $this->_db);
 
 		if (Log::DebugEnabled())

@@ -198,7 +198,7 @@ class UserImportCsv
 			$values = str_getcsv($csvRows[$i]);
 
 			$row = new UserImportCsvRow($values, $headers, $this->attributes);
-			
+
 			if ($row->IsValid())
 			{
 				$rows[] = $row;
