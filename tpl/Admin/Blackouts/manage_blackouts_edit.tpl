@@ -34,7 +34,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			<label for="updateEndDate">{translate key=EndDate}</label>
 			<input type="text" id="updateEndDate" class="form-control dateinput inline-block " size="10"
 				   value="{formatdate date=$BlackoutEndDate}"/>
-			<input {formname key=END_DATE} type="hidden" id="formattedAddEndDate"
+			<input {formname key=END_DATE} type="hidden" id="formattedUpdateEndDate"
 										   value="{formatdate date=$BlackoutEndDate key=system}"/>
 			<input {formname key=END_TIME} type="text" id="updateEndTime"
 										   class="form-control dateinput inline-block timepicker"
