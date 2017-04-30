@@ -53,11 +53,11 @@ class AvailableAccessoriesPresenterTests extends TestBase
 
 		$this->presenter = new AvailableAccessoriesPresenter($this->page, $this->accessoryRepo, $this->reservationRepo, $this->fakeUser);
 	}
-	
+
 	public function testGetsAvailableQuantityWhenNotTheSameReservation()
 	{
 		$duration = $this->page->GetDuration();
-		$this->accessoryRepo->_AllAccessories = array( new Accessory(1, '', 10), new Accessory(2, '', 4), new Accessory(3, '', null) );
+		$this->accessoryRepo->_AllAccessories = array(new Accessory(1, '', 10), new Accessory(2, '', 4), new Accessory(3, '', null));
 
 		$this->reservationRepo->_AccessoryReservations = array(
 				new AccessoryReservation('r1', $duration->GetBegin(), $duration->GetEnd(), 1, 2),
@@ -77,7 +77,7 @@ class AvailableAccessoriesPresenterTests extends TestBase
 	public function testGetsAvailableQuantityWhenTheSameReservation()
 	{
 		$duration = $this->page->GetDuration();
-		$this->accessoryRepo->_AllAccessories = array( new Accessory(1, '', 10), new Accessory(2, '', 4), new Accessory(3, '', null) );
+		$this->accessoryRepo->_AllAccessories = array(new Accessory(1, '', 10), new Accessory(2, '', 4), new Accessory(3, '', null));
 
 		$this->reservationRepo->_AccessoryReservations = array(
 				new AccessoryReservation('r1', $duration->GetBegin(), $duration->GetEnd(), 1, 2),
@@ -93,6 +93,39 @@ class AvailableAccessoriesPresenterTests extends TestBase
 		$bound = $this->page->_BoundAvailability;
 
 		$this->assertEquals(array(new AccessoryAvailability(1, 8), new AccessoryAvailability(2, 2), new AccessoryAvailability(3, null)), $bound);
+	}
+
+	public function testWhenReservationSpansMultipleDays()
+	{
+		$this->accessoryRepo->_AllAccessories = array(new Accessory(1, '', 10));
+
+		$this->reservationRepo->_AccessoryReservations = array(
+				new AccessoryReservation('r1', Date::Parse('2016-11-23 12:00', 'UTC'), Date::Parse('2016-11-23 12:30', 'UTC'), 1, 5),
+				new AccessoryReservation('r2', Date::Parse('2016-11-24 12:00', 'UTC'), Date::Parse('2016-11-24 12:30', 'UTC'), 1, 5),
+		);
+
+		$this->presenter->PageLoad();
+
+		$bound = $this->page->_BoundAvailability;
+
+		$this->assertEquals(array(new AccessoryAvailability(1, 5)), $bound);
+	}
+	
+	public function testWhenAccessoryReservationSpansMultipleDays()
+	{
+		$this->page->_StartDate = '2016-11-24';
+		$this->accessoryRepo->_AllAccessories = array(new Accessory(1, '', 10));
+
+		$this->reservationRepo->_AccessoryReservations = array(
+				new AccessoryReservation('r1', Date::Parse('2016-11-23 12:00', 'UTC'), Date::Parse('2016-11-24 12:30', 'UTC'), 1, 5),
+				new AccessoryReservation('r2', Date::Parse('2016-11-24 12:00', 'UTC'), Date::Parse('2016-11-24 12:30', 'UTC'), 1, 4),
+		);
+
+		$this->presenter->PageLoad();
+
+		$bound = $this->page->_BoundAvailability;
+
+		$this->assertEquals(array(new AccessoryAvailability(1, 1)), $bound);
 	}
 }
 

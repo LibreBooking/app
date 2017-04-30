@@ -75,7 +75,7 @@ class AvailableAccessoriesPresenter
 			if ($available != null)
 			{
 				$reserved = $aggregation->GetQuantity($id);
-				$realAvailability[] = new AccessoryAvailability($id, $available - $reserved);
+				$realAvailability[] = new AccessoryAvailability($id, max(0,$available - $reserved));
 			}
 			else
 			{

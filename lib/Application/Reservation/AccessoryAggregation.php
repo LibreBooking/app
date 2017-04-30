@@ -40,15 +40,19 @@ class AccessoryAggregation
 	{
 		foreach ($accessories as $a)
 		{
-			$this->quantities[$a->GetId()] = 0;
+			/** @var Date $date */
+			foreach ($duration->Dates() as $date)
+			{
+				$this->quantities[$a->GetId()][$date->GetDate()->Timestamp()] = 0;
+			}
 		}
 
 		$this->duration = $duration;
 
 	}
+
 	/**
 	 * @param AccessoryReservation $accessoryReservation
-	 * @return void
 	 */
 	public function Add(AccessoryReservation $accessoryReservation)
 	{
@@ -70,7 +74,16 @@ class AccessoryAggregation
 
 		if (array_key_exists($accessoryId, $this->quantities))
 		{
-			$this->quantities[$accessoryId] += $accessoryReservation->QuantityReserved();
+			/** @var Date $date */
+			foreach ($accessoryReservation->GetDuration()->Dates() as $date)
+			{
+				$dateKey = $date->GetDate()->Timestamp();
+				if (!array_key_exists($dateKey, $this->quantities[$accessoryId]))
+				{
+					$this->quantities[$accessoryId][$dateKey] = 0;
+				}
+				$this->quantities[$accessoryId][$dateKey] += $accessoryReservation->QuantityReserved();
+			}
 		}
 	}
 
@@ -80,6 +93,15 @@ class AccessoryAggregation
 	 */
 	public function GetQuantity($accessoryId)
 	{
-		return $this->quantities[$accessoryId];
+		$quantity = 0;
+
+		foreach ($this->quantities[$accessoryId] as $date => $q)
+		{
+			if ($q > $quantity)
+			{
+				$quantity = $q;
+			}
+		}
+		return $quantity;
 	}
 }
