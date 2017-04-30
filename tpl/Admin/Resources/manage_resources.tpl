@@ -793,7 +793,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 				</div>
 
 				<div class="form-group no-show newStatusReason">
-					<label>Reason text
+					<label>{translate key=ReasonText}
 						<a href="#" class="pull-right addStatusReason"><span
 									class="addStatusIcon fa fa-list-alt icon add"></span></a>
 						<input type="text"

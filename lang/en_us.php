@@ -626,6 +626,8 @@ class en_us extends Language
         $strings['InviteUsers'] = 'Invite Users';
         $strings['InviteUsersLabel'] = 'Enter the email addresses of the people to invite';
         $strings['ApplyToCurrentUsers'] = 'Apply to current users';
+        $strings['ReasonText'] = 'Reason text';
+        $strings['NoAvailableMatchingTimes'] = 'There are no available times that match your search';
         // End Strings
 
 		// Install
