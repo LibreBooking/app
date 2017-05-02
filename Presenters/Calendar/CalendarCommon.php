@@ -349,7 +349,10 @@ abstract class CommonCalendarPresenter extends ActionPresenter
 
         $selectedSchedule = $this->GetSelectedSchedule($schedules, $selectedScheduleId);
 
-        $resourceGroups = $this->resourceService->GetResourceGroups($selectedScheduleId, $userSession);
+        $resourceGroups = $this->resourceService->GetResourceGroups(null, $userSession);
+
+		Log::Debug('%s', var_export($resourceGroups, true));
+
 
         if (!empty($selectedGroupId)) {
             $tempResources = array();
@@ -417,6 +420,7 @@ abstract class CommonCalendarPresenter extends ActionPresenter
     {
         $showInaccessible = Configuration::Instance()->GetSectionKey(ConfigSection::SCHEDULE, ConfigKeys::SCHEDULE_SHOW_INACCESSIBLE_RESOURCES, new BooleanConverter());
         $resources = $this->resourceService->GetAllResources($showInaccessible, $userSession);
+
         return $resources;
     }
 

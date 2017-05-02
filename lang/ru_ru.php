@@ -1,7 +1,7 @@
 <?php
 /**
 Copyright 2011-2015 Nick Korbel
-
+Translation: 2016 Neklyudov Dmitriy <neodim5@mail.ru>
 This file is part of Booked Scheduler.
 
 Booked Scheduler is free software: you can redistribute it and/or modify
@@ -36,12 +36,25 @@ class ru_ru extends en_us
 
 		$dates['general_date'] = 'd.m.Y';
 		$dates['general_datetime'] = 'd.m.Y H:i:s';
+
+		$dates['short_datetime'] = 'n/j/y g:i A';
 		$dates['schedule_daily'] = 'l, d.m.Y';
 		$dates['reservation_email'] = 'd.m.Y H:i';
+
+		$dates['res_popup'] = 'D, n/d g:i A';
+
 		$dates['res_popup'] = 'd.m.Y H:i';
+
+		$dates['short_reservation_date'] = 'n/j/y g:i A';
+
 		$dates['dashboard'] = 'l, d.m.Y H:i';
 		$dates['period_time'] = 'H:i';
+
+		$dates['mobile_reservation_date'] = 'n/j g:i A';
+
 		$dates['general_date_js'] = 'dd.mm.yy';
+		$dates['general_time_js'] = 'h:mm tt';
+		$dates['momentjs_datetime'] = 'M/D/YY h:mm A';
 		$dates['calendar_time'] = 'HH:mm';
 		$dates['calendar_dates'] = 'd.M.';
 
@@ -63,7 +76,7 @@ class ru_ru extends en_us
 		$strings['Edit'] = 'Редактировать';
 		$strings['Change'] = 'Изменить';
 		$strings['Rename'] = 'Переименовать';
-		$strings['Remove'] = 'Переместить';
+		$strings['Remove'] = 'Очистить';
 		$strings['Delete'] = 'Удалить';
 		$strings['Update'] = 'Обновление';
 		$strings['Cancel'] = 'Отменить';
@@ -146,7 +159,7 @@ class ru_ru extends en_us
 		$strings['BringOnline'] = 'Откл. автономный режим';
 		$strings['AddImage'] = 'Добавить изображение';
 		$strings['NoImage'] = 'Нет добавленых изображений';
-		$strings['Move'] = 'Переместить';
+		$strings['Move'] = 'Очистить';
 		$strings['AppearsOn'] = 'оявляется на %s';
 		$strings['Location'] = 'Место';
 		$strings['NoLocationLabel'] = '(не выбрано место)';
@@ -205,6 +218,7 @@ class ru_ru extends en_us
 		$strings['CancelParticipation'] = 'Отказаться';
 		$strings['Attending'] = 'Принять';
 		$strings['QuotaConfiguration'] = 'В %s для %s пользователи %s ограничены %s %s на %s';
+		$strings['QuotaEnforcement'] = 'Enforced %s %s';
 		$strings['reservations'] = 'бронирования';
 		$strings['reservation'] = 'бронирование';
 		$strings['ChangeCalendar'] = 'Сменить Календарь';
@@ -324,7 +338,7 @@ class ru_ru extends en_us
 		$strings['AllReservations'] = 'Все Забронированные';
 		$strings['PendingReservations'] = 'Ожидающие Бронирования';
 		$strings['Approving'] = 'Утверждения';
-		$strings['MoveToSchedule'] = 'Перепестит в Планировщик';
+		$strings['MoveToSchedule'] = 'Переместить в Планировщик';
 		$strings['DeleteResourceWarning'] = 'Удаление этого ресурса будут удалены все связанные с ним данные, и связи с ним';
 		$strings['DeleteResourceWarningReservations'] = 'Все прошлые, нынешние и будущие Бронирования, связанные с ним';
 		$strings['DeleteResourceWarningPermissions'] = 'Все назначенные разрешение';
@@ -376,11 +390,11 @@ class ru_ru extends en_us
 		$strings['DisplayLabel'] = 'Показать ярлыки';
 		$strings['Type'] = 'Тип';
 		$strings['Required'] = 'Обязательный';
-		$strings['ValidationExpression'] = 'Validation Expression';
+		$strings['ValidationExpression'] = 'Проверка выражения';
 		$strings['PossibleValues'] = 'Возможные значения';
-		$strings['SingleLineTextbox'] = 'Single Line Textbox';
-		$strings['MultiLineTextbox'] = 'Multiple Line Textbox';
-		$strings['Checkbox'] = 'Checkbox';
+		$strings['SingleLineTextbox'] = 'Текстовое поле одной строкой';
+		$strings['MultiLineTextbox'] = 'Множество текстовых полей';
+		$strings['Checkbox'] = 'Галочка';
 		$strings['SelectList'] = 'Выбор списка';
 		$strings['CommaSeparated'] = 'разделенные запятой';
 		$strings['Category'] = 'Категория';
@@ -496,25 +510,140 @@ class ru_ru extends en_us
 		$strings['BulkResourceUpdate'] = 'Массовое обновление Помещений';
 		$strings['Unchanged'] = 'без изменений';
 		$strings['Common'] = 'Общий';
+		$strings['AdminOnly'] = 'Только администратор';
 		$strings['AdvancedFilter'] = 'Расширенный фильтр';
+		$strings['MinimumQuantity'] = 'Минимальное количество';
+		$strings['MaximumQuantity'] = 'Максимальное количество';
+		$strings['ChangeLanguage'] = 'Изменить язык';
+		$strings['AddRule'] = 'Добавить правило';
+		$strings['Attribute'] = 'Атрибут';
+		$strings['RequiredValue'] = 'Требуемое значение';
+		$strings['ReservationCustomRuleAdd'] = 'Если %s , тогда цвет бронирования будет';
+		$strings['AddReservationColorRule'] = 'Добавить правило окраса бронирования';
+		$strings['LimitAttributeScope'] = 'Сбор по конкретным случаям';
+		$strings['CollectFor'] = 'Собрать для';
+		$strings['SignIn'] = 'Войти в систему';
 		$strings['AllParticipants'] = 'Все участники';
+		$strings['RegisterANewAccount'] = 'Регистрация новой учетной записи';
+		$strings['Dates'] = 'Даты';
+		$strings['More'] = 'Больше';
 		$strings['ResourceAvailability'] = 'Доступные помещения';
 		$strings['UnavailableAllDay'] = 'В течение всего дня';
 		$strings['AvailableUntil'] = 'Доступно до';
 		$strings['AvailableBeginningAt'] = 'Доступно начиная с';
-		$strings['AllowParticipantsToJoin'] = 'Разрешить участникам присоединиться';
+		$strings['AllResourceTypes'] = 'Все типы помещений';
+		$strings['AllResourceStatuses'] = 'Все статусы помещений';
+		$strings['AllowParticipantsToJoin'] = 'Разрешить участникам присоединяться';
+		$strings['Join'] = 'Присоединиться';
+		$strings['YouAreAParticipant'] = 'Вы участник этого бронирования';
+		$strings['YouAreInvited'] = 'Вы приглашены на это мероприятие';
+		$strings['YouCanJoinThisReservation'] = 'Вы можете присоединиться к этому мероприятию';
+
 		$strings['JoinThisReservation'] = 'Присоединиться к этому мероприятию';
 		$strings['Import'] = 'Импорт';
 		$strings['GetTemplate'] = 'Получить шаблон';
-		$strings['UserImportInstructions'] = 'Файл должен быть в формате CSV. Имя пользователя и адрес электронной почты, обязательны для заполнения. Оставив другие поля пустыми будут установлены значения по умолчанию и \'password\' в качестве пароля пользователя. Используйте прилагаемый шаблон в качестве примера.';
+		$strings['UserImportInstructions'] = '<ul><li>Файл должен быть в формате CSV.</li><li>Имя пользователя и адрес электронной почты являются обязательными.</li><li>Атрибут периода действия не будет применяться.</li><li>Leaving other fields blank will set default values and \'password\' as the user\'s password.</li><li>Use the supplied template as an example.</li></ul> Файл должен быть в формате CSV. !!!Имя пользователя и адрес электронной почты, обязательны для заполнения. Оставив другие поля пустыми будут установлены значения по умолчанию и \'password\' в качестве пароля пользователя. Используйте прилагаемый шаблон в качестве примера.';
+
 		$strings['RowsImported'] = 'Строки импортированы';
 		$strings['RowsSkipped'] = 'Строки пропущенны';
+		$strings['Columns'] = 'Столбцы';
+		$strings['Reserve'] = 'Бронировать';
+		$strings['AllDay'] = 'Весь день';
+		$strings['Everyday'] = 'Каждый день';
+		$strings['IncludingCompletedReservations'] = 'Включая завершенные бронирования';
+		$strings['NotCountingCompletedReservations'] = 'Не считая завершенные бронирования';
+		$strings['RetrySkipConflicts'] = 'Пропустить противоречивые бронирования';
+		$strings['Retry'] = 'Повторить';
+		$strings['RemoveExistingPermissions'] = 'Удалить существующие разрешения?';
+		$strings['Continue'] = 'Продолжить';
+		$strings['WeNeedYourEmailAddress'] = 'Нам нужен ваш адрес электронной почты для бронирования.';
+		$strings['ResourceColor'] = 'Цвет помещения';
 		$strings['DateTime'] = 'Дата Время';
+		$strings['AutoReleaseNotification'] = 'Автоматически освобождается, если не подтвержден в течение %s минут';
+		$strings['RequiresCheckInNotification'] = 'Требуется регистрация in/out';
+		$strings['NoCheckInRequiredNotification'] = 'Не требует проверки in/out';
+		$strings['RequiresApproval'] = 'Требуется одобрение';
+		$strings['CheckingIn'] = 'Записывание';
+		$strings['CheckingOut'] = 'Выписывание';
+		$strings['CheckIn'] = 'Записаться';
+		$strings['CheckOut'] = 'Выписаться';
+		$strings['ReleasedIn'] = 'Выпущено в';
+		$strings['CheckedInSuccess'] = 'Вы записались';
+		$strings['CheckedOutSuccess'] = 'Вы выписались';
+		$strings['CheckInFailed'] = 'Вы не можете записаться';
+		$strings['CheckOutFailed'] = 'Вы не можете быть выписаны';
+		$strings['CheckInTime'] = 'Время записи';
+		$strings['CheckOutTime'] = 'Время выписки';
+		$strings['OriginalEndDate'] = 'Original End';
+		$strings['SpecificDates'] = 'Показать конкретные даты';
+		$strings['Users'] = 'Пользователи';
+		$strings['Guest'] = 'Гость';
+		$strings['ResourceDisplayPrompt'] = 'Помещения для отображения';
+		$strings['Credits'] = 'Кредиты';
+		$strings['AvailableCredits'] = 'Доступные кредиты';
+		$strings['CreditUsagePerSlot'] = 'Требуется %s кредитов за слот (от максимума)';
+		$strings['PeakCreditUsagePerSlot'] = 'Требуется %s кредитов на слот (максимум)';
+		$strings['CreditsRule'] = 'У вас недостаточно кредитов. Необходимые кредиты: %s. Кредиты на счете: %s';
+		$strings['PeakTimes'] = 'Часы пик';
+		$strings['AllYear'] = 'Весь год';
+		$strings['MoreOptions'] = 'Больше вариантов';
 		$strings['SendAsEmail'] = 'Отправить на Email';
+		$strings['UsersInGroups'] = 'Пользователи в группах';
+		$strings['UsersWithAccessToResources'] = 'Пользователи с доступом к помещениям';
+		$strings['AnnouncementSubject'] = 'Новое объявление было опубликовано %s';
+		$strings['AnnouncementEmailNotice'] = 'пользователям будет отослано обяъвление по электронной почте';
+		$strings['Day'] = 'День';
+		$strings['NotifyWhenAvailable'] = 'Уведомить меня, если есть';
+		$strings['AddingToWaitlist'] = 'Добавление вас в список ожидания';
+		$strings['WaitlistRequestAdded'] = 'Вы получите уведомление, если это время станет доступным';
+		$strings['PrintQRCode'] = 'Печать QR-кода';
+		$strings['FindATime'] = 'Найти Время';
+		$strings['AnyResource'] = 'Любой Помещение';
+		$strings['ThisWeek'] = 'Этой Неделя';
+		$strings['Hours'] = 'Часы';
+		$strings['Minutes'] = 'Минуты';
+        $strings['ImportICS'] = 'Импортировать из ICS';
+        $strings['ImportQuartzy'] = 'Импортировать из Quartzy';
 		$strings['IncludeDeleted'] = 'Включить удаленные';
 		$strings['Deleted'] = 'Удалённые';
 		$strings['OnlyIcs'] = 'Только * .ics файлы могут быть загружены.';
 		$strings['IcsLocationsAsResources'] = 'Места будут импортированы в качестве ресурсов.';
+        $strings['IcsMissingOrganizer'] = 'Любому событию, с отсутствующим организатором, организатором будет назначен текущий пользователь.';
+        $strings['IcsWarning'] = 'Правила бронирования не будут применяться - возможны конфликты, дубликаты и т. д.';
+		$strings['BlackoutAroundConflicts'] = 'Блокировка из-за противоречивых бронирований';
+		$strings['DuplicateReservation'] = 'Дублировать';
+		$strings['UnavailableNow'] = 'Недоступно Сейчас';
+		$strings['ReserveLater'] = 'Зарезервировать Позже';
+		$strings['CollectedFor'] = 'Собрано Для';
+		$strings['IncludeDeleted'] = 'Включая удаленные бронирования';
+		$strings['Deleted'] = 'Удалено';
+		$strings['Back'] = 'Назад';
+		$strings['Forward'] = 'Вперед';
+		$strings['DateRange'] = 'Диапазон Дат';
+		$strings['Copy'] = 'Копировать';
+		$strings['Detect'] = 'Обнаружение';
+		$strings['Autofill'] = 'Автозаполнение';
+		$strings['NameOrEmail'] = 'имя или email';
+		$strings['ImportResources'] = 'Импорт Помещений';
+		$strings['ExportResources'] = 'Экспорт Помещений';
+		$strings['ResourceImportInstructions'] = '<ul><li>Файл должен быть в формате CSV.</li><li>Укажите имя. Если оставить остальные поля пустыми, будут установлены значения по умолчанию.</li><li>Возможные значения: \'Доступен\', \'Недоступен\' and \'Скрыт\'.</li><li>Цвет должен быть шестнадцатеричным значением. ex) #ffffff.</li><li>Столбцы автоматического назначения и утверждения могут быть истинными или ложными.</li><li>Атрибут периода действия не будет применяться.</li><li>Запятые разделяют несколько групп ресурсов.</li><li>В качестве примера используйте прилагаемый шаблон.</li></ul>';
+		$strings['ReservationImportInstructions'] = '<ul><li>Файл должен быть в формате CSV.</li><li>Эл.Почта, имена помещений, начало и конец - обязательные поля.</li><li>Для начала и конца требуется полное время. Рекомендуемый формат: YYYY-mm-dd HH:mm (2017-12-31 20:30).</li><li>Правила, конфликты и действительные временные интервалы не будут проверяться.</li><li>Уведомления не будут отправляться.</li><li>трибут периода действия не будет применяться.</li><li>Запятые разделяют имена нескольких ресурсов.</li><li>В качестве примера используйте прилагаемый шаблон.</li></ul>';
+		$strings['AutoReleaseMinutes'] = 'Минуты автозагрузки';
+		$strings['CreditsPeak'] = 'Кредиты (максимальный)';
+		$strings['CreditsOffPeak'] = 'Кредиты (вне пика)';
+		$strings['ResourceMinLengthCsv'] = 'Минимальная длина бронирования';
+		$strings['ResourceMaxLengthCsv'] = 'Максимальная длина бронирования';
+		$strings['ResourceBufferTimeCsv'] = 'Buffer Time';
+		$strings['ResourceMinNoticeCsv'] = 'Reservation Minimum Notice';
+		$strings['ResourceMaxNoticeCsv'] = 'Reservation Maximum End';
+		$strings['Export'] = 'Экспорт';
+		$strings['DeleteMultipleUserWarning'] = 'При удалении этих пользователей будут удалены все их текущие, будущие и исторические бронирования. Никакие электронные письма не будут отправлены.';
+		$strings['DeleteMultipleReservationsWarning'] = 'Никакие электронные письма не будут отправлены.';
+		$strings['ErrorMovingReservation'] = 'Ошибка при перемещении Бронирования';
+        $strings['SelectUser'] = 'Выберите пользователя';
+        $strings['InviteUsers'] = 'Пригласить пользователей';
+        $strings['InviteUsersLabel'] = 'Введите адреса электронной почты приглашенных лиц.';
+        $strings['ApplyToCurrentUsers'] = 'Применить к текущим пользователям';
 		$strings['IcsMissingOrganizer'] = 'Любое событие отсутствует организатор будет иметь владельца, установленный для текущего пользователя.';
 		$strings['IcsWarning'] = 'Правила бронирования не будут применяться - конфликты, дубликатами и т.д. возможны';
 		// End Strings
@@ -589,9 +718,18 @@ class ru_ru extends en_us
 		$strings['PasswordError'] = 'Пароль должен содержать по меньшей мере %s букв и по крайней мере %s чисел.';
 		$strings['PasswordErrorRequirements'] = 'Пароль должен содержать комбинацию, по меньшей мере, %s верхние и строчные буквы и %s чисел.';
 		$strings['NoReservationAccess'] = 'Вы не можете изменить это бронирование.';
+		$strings['PasswordControlledExternallyError'] = 'Ваш пароль контролируется внешней системой и не может быть обновлен здесь.';
+		$strings['AccessoryResourceRequiredErrorMessage'] = 'Доп. оборудование %s можно заказать только с помещениями %s';
+		$strings['AccessoryMinQuantityErrorMessage'] = 'Вы должны заказать %s доп.оборудование %s';
+		$strings['AccessoryMaxQuantityErrorMessage'] = 'Вы не можете заказать больше %s доп.оборудование %s';
+		$strings['AccessoryResourceAssociationErrorMessage'] = 'доп.оборудование \'%s\' не могут быть забронированы с запрошенными помещениями';
+
 		$strings['PasswordControlledExternallyError'] = 'Ваш пароль управляется внешней системой и не могут быть обновлены здесь.';
 		$strings['NoResources'] = 'Вы не добавили источники.';
 		$strings['ParticipationNotAllowed'] = 'Вы не можете присоединиться к этому бронированию.';
+		$strings['ReservationCannotBeCheckedInTo'] = 'Это резервирование невозможно проверить в.';
+		$strings['ReservationCannotBeCheckedOutFrom'] = 'Эту бронь нельзя оформить.';
+		$strings['InvalidEmailDomain'] = 'Этот адрес электронной почты не из разрешенного домена';
 		$strings['InsecureRequestError'] = 'Небезопасной запрос. Если вы будете продолжать видеть эту ошибку, пожалуйста, снова войти в систему и повторите запрос.';
 		$strings['RemoveExistingPermissions'] = 'Удалить существующие разрешения?';
 		// End Errors
@@ -652,6 +790,7 @@ class ru_ru extends en_us
 		$strings['ManageResourceGroups'] = 'Группы помещений';
 		$strings['ManageResourceTypes'] = 'Типы Помещений';
 		$strings['ManageResourceStatus'] = 'Статус Помещений';
+		$strings['ReservationColors'] = 'Цвет бронирования';
 		$strings['ImportICS'] = 'Импорт ICS File';
 		$strings['ImportQuartzy'] = 'Импорт Quartzy File';
 		// End Page Titles
@@ -686,12 +825,30 @@ class ru_ru extends en_us
 		$strings['ParticipantAddedSubject'] = 'Уведомление о участие в Мероприятии';
 		$strings['ParticipantDeletedSubject'] = 'Бронирование удалено';
 		$strings['InviteeAddedSubject'] = 'Приглашение на мероприятие';
+		$strings['ResetPasswordRequest'] = 'Password Reset Request';
+
 		$strings['ResetPassword'] = 'Запрос на сброс пароля';
 		$strings['ActivateYourAccount'] = 'Актирируйте свой аккаунт';
 		$strings['ReportSubject'] = 'Ваш запрошенный отёт (%s)';
 		$strings['ReservationStartingSoonSubject'] = 'Мероприятие %s скоро начнется';
 		$strings['ReservationEndingSoonSubject'] = 'Мероприятие %s скоро закончится';
 		$strings['UserAdded'] = 'Добавлен новый пользователь';
+		$strings['GuestAccountCreatedSubject'] = 'Информация о вашем аккаунте';
+		$strings['InviteUserSubject'] = '%s приглашает вас присоединиться к %s';
+
+		$strings['ReservationApprovedSubjectWithResource'] = 'Бронирование было одобрено для %s';
+		$strings['ReservationCreatedSubjectWithResource'] = 'Бронирование Создано для %s';
+		$strings['ReservationUpdatedSubjectWithResource'] = 'Бронирование Обновлено для: %s';
+		$strings['ReservationDeletedSubjectWithResource'] = 'Бронирование удалено для %s';
+		$strings['ReservationCreatedAdminSubjectWithResource'] = 'Уведомление: Бронирование создано для %s';
+		$strings['ReservationUpdatedAdminSubjectWithResource'] = 'Уведомление: Бронирование обновлено для %s';
+		$strings['ReservationDeleteAdminSubjectWithResource'] = 'Уведомление: бронирование удалено для %s';
+		$strings['ReservationApprovalAdminSubjectWithResource'] = 'Уведомление: резервирование для %s требует вашего утверждения';
+		$strings['ParticipantAddedSubjectWithResource'] = '%s Добавлен в бронирование для %s';
+		$strings['ParticipantDeletedSubjectWithResource'] = '%s Удалено бронирование для %s';
+		$strings['InviteeAddedSubjectWithResource'] = '%s Пригласил вас на мнроприятие для %s';
+		$strings['MissedCheckinEmailSubject'] = 'Не прошли регистрацию %s';
+
 		$strings['UserDeleted'] = 'Аккаунт Пользователя %s был удален %s';
 		$strings['AnnouncementSubject'] = 'Новое объявление было опубликовано %s';
 		// End Email Subjects

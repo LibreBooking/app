@@ -280,6 +280,7 @@ class SchedulePage extends ActionPage implements ISchedulePage
 		$this->Set('CreateReservationPage', Pages::RESERVATION);
 		$this->Set('LockTableHead', (int)($this->ScheduleStyle == ScheduleStyle::Tall || (count($this->GetVar('Resources')) > 7 )));
 		$this->Set('LoadViewOnly', false);
+		$this->Set('ShowSubscription', true);
 
 		if ($this->IsMobile && !$this->IsTablet)
 		{

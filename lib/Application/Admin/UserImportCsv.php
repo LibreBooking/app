@@ -199,10 +199,6 @@ class UserImportCsv
 
 			$row = new UserImportCsvRow($values, $headers, $this->attributes);
 
-			Log::Debug(var_export($row, true));
-   			die();
-
-
 			if ($row->IsValid())
 			{
 				$rows[] = $row;

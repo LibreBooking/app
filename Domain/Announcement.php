@@ -86,6 +86,8 @@ class Announcement
     public function __construct($id, $text, Date $start, Date $end, $priority, $groupIds, $resourceIds)
     {
         $this->Id = $id;
+		$text = str_replace('&lt;script&gt;', '', $text);
+		$text = str_replace('&lt;/script&gt;', '', $text);
         $this->Text = $text;
         $this->Start = $start;
         $this->End = $end;
