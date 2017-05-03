@@ -83,7 +83,13 @@ class AutoCompletePage extends SecurePage
 		$users = array();
 
 		$r = new UserRepository();
-		$results = $r->GetList(1, PageInfo::All, null, null, $filter, AccountStatus::ACTIVE)->Results();
+		$currentUser = ServiceLocator::GetServer()->GetUserSession();
+        $status = AccountStatus::ACTIVE;
+		if ($currentUser->IsAdmin || $currentUser->IsGroupAdmin)
+        {
+            $status = AccountStatus::ALL;
+        }
+		$results = $r->GetList(1, PageInfo::All, null, null, $filter, $status)->Results();
 
 		/** @var $result UserItemView */
 		foreach($results as $result)
