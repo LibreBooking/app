@@ -233,10 +233,10 @@ class ja_jp extends en_us
         $strings['NotSignedIn'] = 'サインインしていません';
         $strings['ReservationTitle'] = '件名';
         $strings['ReservationDescription'] = '説明';
-        $strings['ResourceList'] = 'リソース一覧';
+        $strings['ResourceList'] = 'リソース・リスト';
         $strings['Accessories'] = '備品';
-        $strings['ParticipantList'] = '出席者一覧';
-        $strings['InvitationList'] = '招待者一覧';
+        $strings['ParticipantList'] = '出席者リスト';
+        $strings['InvitationList'] = '招待者リスト';
         $strings['AccessoryName'] = '備品名称';
         $strings['QuantityAvailable'] = '数量';
         $strings['Resources'] = 'リソース';
@@ -294,7 +294,7 @@ class ja_jp extends en_us
         $strings['ChangeUser'] = 'ユーザーを変更';
         $strings['MoreResources'] = '別のリソースも一緒に予約する';
         $strings['ReservationLength'] = '予約時間';
-        $strings['ParticipantList'] = '出席者一覧';
+        $strings['ParticipantList'] = '出席者リスト';
         $strings['AddParticipants'] = '出席者追加';
         $strings['InviteOthers'] = '招待する';
         $strings['AddResources'] = 'リソースを追加する';
@@ -516,9 +516,6 @@ class ja_jp extends en_us
         $strings['MoreOptions'] = '検索オプション';
         $strings['DateRange'] = '期間を指定';
         $strings['Dates'] = '日付';
-        $strings['CheckInTime'] = 'チェックイン';
-        $strings['CheckOutTime'] = 'チェックアウト';
-        $strings['OriginalEndDate'] = '予約作成時の終了予定';
         $strings['AllResourceStatuses'] = '全てのリソースの状態';
         $strings['AllResourceTypes'] = '全てのリソースのタイプ';
         $strings['BlackoutAroundConflicts'] = '衝突した予約はブラックアウトさせる';
@@ -533,6 +530,22 @@ class ja_jp extends en_us
         $strings['PrintQRCode'] = 'QRコードを印刷';
         $strings['AvailableUntil'] = '次の時間まで利用可能 … ';
         $strings['AvailableBeginningAt'] = '次の時間から利用可能 … ';
+        $strings['RequiresApproval'] = '承認が必要';
+        $strings['CheckingIn'] = 'チェックインしています';
+        $strings['CheckingOut'] = 'チェックアウトしています';
+        $strings['CheckIn'] = 'チェックイン';
+        $strings['CheckOut'] = 'チェックアウト';
+        $strings['ReleasedIn'] = '予約解除まで';
+        $strings['CheckedInSuccess'] = 'チェックイン済';
+        $strings['CheckedOutSuccess'] = 'チェックアウト済';
+        $strings['CheckInFailed'] = 'あなたはチェックインできません';
+        $strings['CheckOutFailed'] = 'あなたはチェックアウトできません';
+        $strings['CheckInTime'] = 'チェックイン時刻';
+        $strings['CheckOutTime'] = 'チェックアウト時刻';
+        $strings['OriginalEndDate'] = '終了予定時刻';
+        $strings['SpecificDates'] = '選択した日付を表示';
+        $strings['More'] = '操作メニュー';
+        $strings['DuplicateReservation'] = 'コピーして新規登録';
 
         // End Strings
 
@@ -573,6 +586,16 @@ class ja_jp extends en_us
         $strings['ConfigUpdateSuccess'] = '設定ファイルは更新されました！';
         $strings['ConfigUpdateFailure'] = '設定ファイルを自動で更新できませんでした。config.php を下記の内容で上書きしてください。';
         $strings['SelectUser'] = 'ユーザーの選択';
+        $strings['AllowParticipantsToJoin'] = '招待者以外の参加を許可';
+        $strings['Join'] = '参加';
+        $strings['YouAreAParticipant'] = 'あなたはこの予約の参加者です。';
+        $strings['YouAreInvited'] = 'あなたはこの予約に招待されています。';
+        $strings['YouCanJoinThisReservation'] = 'あなたはこの予約に参加できます。';
+        $strings['Import'] = 'ファイル入力';
+        $strings['Export'] = 'ファイル出力';
+        $strings['Users'] = 'ユーザー';
+        $strings['Guest'] = '部外の招待者';
+
         // End Install
 
         // Errors
