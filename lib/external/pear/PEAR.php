@@ -588,17 +588,17 @@ class PEAR
         return true;
     }
 
-    /**
-     * Only here for backwards compatibility.
-     * E.g. Archive_Tar calls $this->PEAR() in its constructor.
-     *
-     * @param string $error_class Which class to use for error objects,
-     *                            defaults to PEAR_Error.
-     */
-    public function PEAR($error_class = null)
-    {
-        self::__construct($error_class);
-    }
+//    /**
+//     * Only here for backwards compatibility.
+//     * E.g. Archive_Tar calls $this->PEAR() in its constructor.
+//     *
+//     * @param string $error_class Which class to use for error objects,
+//     *                            defaults to PEAR_Error.
+//     */
+//    public function PEAR($error_class = null)
+//    {
+//        self::__construct($error_class);
+//    }
 
     /**
      * Constructor.  Registers this object in
@@ -834,24 +834,24 @@ class PEAR_Error
     var $userinfo             = '';
     var $backtrace            = null;
 
-    /**
-     * Only here for backwards compatibility.
-     *
-     * Class "Cache_Error" still uses it, among others.
-     *
-     * @param string $message Message
-     * @param int $code Error code
-     * @param int $mode Error mode
-     * @param mixed $options See __construct()
-     * @param string $userinfo Additional user/debug info
-     */
-    public function PEAR_Error(
-        $message = 'unknown error', $code = null, $mode = null,
-        $options = null, $userinfo = null
-    )
-    {
-        self::__construct($message, $code, $mode, $options, $userinfo);
-    }
+//    /**
+//     * Only here for backwards compatibility.
+//     *
+//     * Class "Cache_Error" still uses it, among others.
+//     *
+//     * @param string $message Message
+//     * @param int $code Error code
+//     * @param int $mode Error mode
+//     * @param mixed $options See __construct()
+//     * @param string $userinfo Additional user/debug info
+//     */
+//    public function PEAR_Error(
+//        $message = 'unknown error', $code = null, $mode = null,
+//        $options = null, $userinfo = null
+//    )
+//    {
+//        self::__construct($message, $code, $mode, $options, $userinfo);
+//    }
 
     /**
      * PEAR_Error constructor

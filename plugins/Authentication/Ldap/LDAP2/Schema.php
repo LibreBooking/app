@@ -11,7 +11,7 @@
 * @author    Benedikt Hallinger <beni@php.net>
 * @copyright 2009 Jan Wagner, Benedikt Hallinger
 * @license   http://www.gnu.org/licenses/lgpl-3.0.txt LGPLv3
-* @version   SVN: $Id: Schema.php 296515 2010-03-22 14:46:41Z beni $
+* @version   SVN: $Id$
 * @link      http://pear.php.net/package/Net_LDAP2/
 * @todo see the comment at the end of the file
 */
@@ -19,7 +19,7 @@
 /**
 * Includes
 */
-require_once ROOT_DIR . 'lib/external/pear/PEAR.php';
+require_once 'PEAR.php';
 
 /**
 * Syntax definitions
@@ -109,9 +109,9 @@ class Net_LDAP2_Schema extends PEAR
     *
     * @access protected
     */
-    protected function __construct()
+    public function __construct()
     {
-        $this->PEAR('Net_LDAP2_Error'); // default error class
+        parent::__construct('Net_LDAP2_Error'); // default error class
     }
 
     /**
@@ -123,7 +123,7 @@ class Net_LDAP2_Schema extends PEAR
     * @access public
     * @return Net_LDAP2_Schema|NET_LDAP2_Error
     */
-    public function fetch($ldap, $dn = null)
+    public static function fetch($ldap, $dn = null)
     {
         if (!$ldap instanceof Net_LDAP2) {
             return PEAR::raiseError("Unable to fetch Schema: Parameter \$ldap must be a Net_LDAP2 object!");
@@ -342,13 +342,13 @@ class Net_LDAP2_Schema extends PEAR
                         $schema_entry['type'] = $type;
 
                         // save a ref in $_oids
-                        $this->_oids[$schema_entry['oid']] =&$schema_entry;
+                        $this->_oids[$schema_entry['oid']] = &$schema_entry;
 
                         // save refs for all names in type map
                         $names = $schema_entry['aliases'];
                         array_push($names, $schema_entry['name']);
                         foreach ($names as $name) {
-                            $this->{$type_var}[strtolower($name)] =&$schema_entry;
+                            $this->{$type_var}[strtolower($name)] = &$schema_entry;
                         }
                     }
                 }

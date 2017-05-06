@@ -13,23 +13,23 @@
 * @author    Benedikt Hallinger <beni@php.net>
 * @copyright 2003-2007 Tarjej Huse, Jan Wagner, Del Elson, Benedikt Hallinger
 * @license   http://www.gnu.org/licenses/lgpl-3.0.txt LGPLv3
-* @version   SVN: $Id: LDAP2.php 318473 2011-10-27 13:39:13Z beni $
+* @version   SVN: $Id$
 * @link      http://pear.php.net/package/Net_LDAP2/
 */
 
 /**
 * Package includes.
 */
-require_once ROOT_DIR . 'lib/external/pear/PEAR.php';
-require_once ROOT_DIR . 'plugins/Authentication/Ldap/LDAP2/RootDSE.php';
-require_once ROOT_DIR . 'plugins/Authentication/Ldap/LDAP2/Schema.php';
-require_once ROOT_DIR . 'plugins/Authentication/Ldap/LDAP2/Entry.php';
-require_once ROOT_DIR . 'plugins/Authentication/Ldap/LDAP2/Search.php';
-require_once ROOT_DIR . 'plugins/Authentication/Ldap/LDAP2/Util.php';
-require_once ROOT_DIR . 'plugins/Authentication/Ldap/LDAP2/Filter.php';
-require_once ROOT_DIR . 'plugins/Authentication/Ldap/LDAP2/LDIF.php';
-require_once ROOT_DIR . 'plugins/Authentication/Ldap/LDAP2/SchemaCache.interface.php';
-require_once ROOT_DIR . 'plugins/Authentication/Ldap/LDAP2/SimpleFileSchemaCache.php';
+require_once 'PEAR.php';
+require_once 'LDAP2/RootDSE.php';
+require_once 'LDAP2/Schema.php';
+require_once 'LDAP2/Entry.php';
+require_once 'LDAP2/Search.php';
+require_once 'LDAP2/Util.php';
+require_once 'LDAP2/Filter.php';
+require_once 'LDAP2/LDIF.php';
+require_once 'LDAP2/SchemaCache.interface.php';
+require_once 'LDAP2/SimpleFileSchemaCache.php';
 
 /**
 *  Error constants for errors that are not LDAP errors.
@@ -39,7 +39,7 @@ define('NET_LDAP2_ERROR', 1000);
 /**
 * Net_LDAP2 Version
 */
-define('NET_LDAP2_VERSION', '2.0.10');
+define('NET_LDAP2_VERSION', '2.1.0');
 
 /**
 * Net_LDAP2 - manipulate LDAP servers the right way!
@@ -192,7 +192,7 @@ class Net_LDAP2 extends PEAR
     * @access public
     * @return Net_LDAP2_Error|Net_LDAP2   Net_LDAP2_Error or Net_LDAP2 object
     */
-    public static function &connect($config = array())
+    public static function connect($config = array())
     {
         $ldap_check = self::checkLDAPExtension();
         if (self::iserror($ldap_check)) {
@@ -229,7 +229,7 @@ class Net_LDAP2 extends PEAR
     */
     public function __construct($config = array())
     {
-        $this->PEAR('Net_LDAP2_Error');
+        parent::__construct('Net_LDAP2_Error');
         $this->setConfig($config);
     }
 
@@ -430,11 +430,7 @@ class Net_LDAP2 extends PEAR
             $this->_config['host'] = $host;
 
             // Attempt a connection.
-			if (!isset($this->_config['port'])) {
-			      $this->_link = @ldap_connect($host);
-			} else {
-			      $this->_link = @ldap_connect($host, $this->_config['port']);
-			}
+            $this->_link = @ldap_connect($host, $this->_config['port']);
             if (false === $this->_link) {
                 $current_error = PEAR::raiseError('Could not connect to ' .
                     $host . ':' . $this->_config['port']);
@@ -669,7 +665,7 @@ class Net_LDAP2 extends PEAR
     public function start_tls()
     {
         $args = func_get_args();
-        return call_user_func_array(array( &$this, 'startTLS' ), $args);
+        return call_user_func_array(array( $this, 'startTLS' ), $args);
     }
 
     /**
@@ -712,11 +708,11 @@ class Net_LDAP2 extends PEAR
     * This also links the entry to the connection used for the add,
     * if it was a fresh entry ({@link Net_LDAP2_Entry::createFresh()})
     *
-    * @param Net_LDAP2_Entry &$entry Net_LDAP2_Entry
+    * @param Net_LDAP2_Entry $entry Net_LDAP2_Entry
     *
     * @return Net_LDAP2_Error|true    Net_LDAP2_Error object or true
     */
-    public function add(&$entry)
+    public function add($entry)
     {
         if (!$entry instanceof Net_LDAP2_Entry) {
             return PEAR::raiseError('Parameter to Net_LDAP2::add() must be a Net_LDAP2_Entry object.');
@@ -1287,7 +1283,7 @@ class Net_LDAP2 extends PEAR
     * @return Net_LDAP2_Entry|Net_LDAP2_Error    Reference to a Net_LDAP2_Entry object or Net_LDAP2_Error object
     * @todo Maybe check against the shema should be done to be sure the attribute type exists
     */
-    public function &getEntry($dn, $attr = array())
+    public function getEntry($dn, $attr = array())
     {
         if (!is_array($attr)) {
             $attr = array($attr);
@@ -1331,7 +1327,7 @@ class Net_LDAP2 extends PEAR
         if (is_string($entry)) {
             $entry_o = $this->getEntry($entry);
         } else {
-            $entry_o =& $entry;
+            $entry_o = $entry;
         }
         if (!$entry_o instanceof Net_LDAP2_Entry) {
             return PEAR::raiseError('Parameter $entry is expected to be a Net_LDAP2_Entry object! (If DN was passed, conversion failed)');
@@ -1378,12 +1374,12 @@ class Net_LDAP2 extends PEAR
     * Please note that only attributes you have
     * selected will be copied.
     *
-    * @param Net_LDAP2_Entry &$entry Entry object
+    * @param Net_LDAP2_Entry $entry Entry object
     * @param string          $newdn  New FQF-DN of the entry
     *
     * @return Net_LDAP2_Error|Net_LDAP2_Entry Error Message or reference to the copied entry
     */
-    public function &copy(&$entry, $newdn)
+    public function copy($entry, $newdn)
     {
         if (!$entry instanceof Net_LDAP2_Entry) {
             return PEAR::raiseError('Parameter $entry is expected to be a Net_LDAP2_Entry object!');
@@ -1495,7 +1491,7 @@ class Net_LDAP2 extends PEAR
     * @access public
     * @return Net_LDAP2_Error|Net_LDAP2_RootDSE Net_LDAP2_Error or Net_LDAP2_RootDSE object
     */
-    public function &rootDse($attrs = null)
+    public function rootDse($attrs = null)
     {
         if ($attrs !== null && !is_array($attrs)) {
             return PEAR::raiseError('Parameter $attr is expected to be an array!');
@@ -1506,7 +1502,7 @@ class Net_LDAP2 extends PEAR
         // see if we need to fetch a fresh object, or if we already
         // requested this object with the same attributes
         if (true || !array_key_exists($attrs_signature, $this->_rootDSE_cache)) {
-            $rootdse =& Net_LDAP2_RootDSE::fetch($this, $attrs);
+            $rootdse = Net_LDAP2_RootDSE::fetch($this, $attrs);
             if ($rootdse instanceof Net_LDAP2_Error) {
                 return $rootdse;
             }
@@ -1524,10 +1520,10 @@ class Net_LDAP2 extends PEAR
     * @see rootDse()
     * @return Net_LDAP2_Error|Net_LDAP2_RootDSE
     */
-    public function &root_dse()
+    public function root_dse()
     {
         $args = func_get_args();
-        return call_user_func_array(array(&$this, 'rootDse'), $args);
+        return call_user_func_array(array($this, 'rootDse'), $args);
     }
 
     /**
@@ -1538,7 +1534,7 @@ class Net_LDAP2 extends PEAR
     * @access public
     * @return Net_LDAP2_Schema|Net_LDAP2_Error  Net_LDAP2_Schema or Net_LDAP2_Error object
     */
-    public function &schema($dn = null)
+    public function schema($dn = null)
     {
         // Schema caching by Knut-Olav Hoven
         // If a schema caching object is registered, we use that to fetch
@@ -1641,7 +1637,7 @@ class Net_LDAP2 extends PEAR
     }
 
     /**
-    * Encodes given attributes to UTF8 if needed by schema
+    * Encodes given attributes from ISO-8859-1 to UTF-8 if needed by schema
     *
     * This function takes attributes in an array and then checks against the schema if they need
     * UTF8 encoding. If that is so, they will be encoded. An encoded array will be returned and
@@ -1662,7 +1658,7 @@ class Net_LDAP2 extends PEAR
     }
 
     /**
-    * Decodes the given attribute values if needed by schema
+    * Decodes the given attribute values from UTF-8 to ISO-8859-1 if needed by schema
     *
     * $attributes is expected to be an array with keys describing
     * the attribute names and the values as the value of this attribute:
@@ -1680,7 +1676,7 @@ class Net_LDAP2 extends PEAR
     }
 
     /**
-    * Encodes or decodes attribute values if needed
+    * Encodes or decodes UTF-8/ISO-8859-1 attribute values if needed by schema
     *
     * @param array $attributes Array of attributes
     * @param array $function   Function to apply to attribute values
@@ -1713,7 +1709,10 @@ class Net_LDAP2 extends PEAR
                         continue;
                     }
 
-                    if (false !== strpos($attr['syntax'], '1.3.6.1.4.1.1466.115.121.1.15')) {
+                    // Encoding is needed if this is a DIR_STR. We assume also
+                    // needed encoding in case the schema contains no syntax
+                    // information (he does not need to, see rfc2252, 4.2)
+                    if (!array_key_exists('syntax', $attr) || false !== strpos($attr['syntax'], '1.3.6.1.4.1.1466.115.121.1.15')) {
                         $encode = true;
                     } else {
                         $encode = false;
@@ -1747,7 +1746,7 @@ class Net_LDAP2 extends PEAR
     * @access public
     * @return resource LDAP link
     */
-    public function &getLink()
+    public function getLink()
     {
         if ($this->_config['auto_reconnect']) {
             while (true) {
@@ -1793,9 +1792,9 @@ class Net_LDAP2_Error extends PEAR_Error
                          $level = E_USER_NOTICE, $debuginfo = null)
     {
         if (is_int($code)) {
-            $this->PEAR_Error($message . ': ' . Net_LDAP2::errorMessage($code), $code, $mode, $level, $debuginfo);
+            parent::__construct($message . ': ' . Net_LDAP2::errorMessage($code), $code, $mode, $level, $debuginfo);
         } else {
-            $this->PEAR_Error("$message: $code", NET_LDAP2_ERROR, $mode, $level, $debuginfo);
+            parent::__construct("$message: $code", NET_LDAP2_ERROR, $mode, $level, $debuginfo);
         }
     }
 }
