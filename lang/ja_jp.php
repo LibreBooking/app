@@ -37,20 +37,20 @@ class ja_jp extends en_us
         $dates['general_date'] = 'Y/m/d';
         $dates['general_datetime'] = 'Y/m/d H:i:s';
         $dates['schedule_daily'] = 'Y/m/d (l)';
-        $dates['reservation_email'] = 'Y/m/d @ g:i A (e)';
-        $dates['res_popup'] = 'Y/m/d g:i A';
-        $dates['dashboard'] = 'Y/m/d (l) g:i A';
-        $dates['period_time'] = "g:i A";
+        $dates['reservation_email'] = 'Y/m/d @ G:i (e)';
+        $dates['res_popup'] = 'Y/m/d G:i';
+        $dates['dashboard'] = 'Y/m/d (l) G:i';
+        $dates['period_time'] = "G:i";
         $dates['general_date_js'] = "yy/mm/dd";
-        $dates['calendar_time'] = 'h:mmt';
+        $dates['calendar_time'] = 'HH:mm';
         $dates['calendar_dates'] = 'm/d';
 
-        $dates['short_datetime'] = 'Y/m/d g:i A';
-        $dates['res_popup_time'] = 'g:i A';
-        $dates['short_reservation_date'] = 'Y/m/d g:i A';
-        $dates['mobile_reservation_date'] = 'm/d g:i A';
-        $dates['general_time_js'] = 'h:mm tt';
-        $dates['momentjs_datetime'] = 'y/m/d h:mm A';
+        $dates['short_datetime'] = 'Y/m/d G:i';
+        $dates['res_popup_time'] = 'G:i';
+        $dates['short_reservation_date'] = 'Y/m/d G:i';
+        $dates['mobile_reservation_date'] = 'm/d G:i';
+        $dates['general_time_js'] = 'HH:mm';
+        $dates['momentjs_datetime'] = 'y/m/d HH:mm';
 
 
         $this->Dates = $dates;
@@ -491,7 +491,7 @@ class ja_jp extends en_us
         $strings['UniquePerInstance'] = '個別に識別';
         $strings['AddResourceType'] = 'リソースタイプを追加';
         $strings['NoResourceTypeLabel'] = '(リソースタイプ無し)';
-        $strings['ClearFilter'] = 'フィルタをリセット';
+        $strings['ClearFilter'] = 'フィルターをリセット';
         $strings['MinimumCapacity'] = '最低限度';
         $strings['Color'] = '色';
         $strings['Available'] = 'あり';
@@ -546,6 +546,7 @@ class ja_jp extends en_us
         $strings['SpecificDates'] = '選択した日付を表示';
         $strings['More'] = '操作メニュー';
         $strings['DuplicateReservation'] = 'コピーして新規登録';
+        $strings['NameOrEmail'] = '名前またはメールアドレス';
 
         // End Strings
 
