@@ -328,9 +328,9 @@ class DatabaseCommandTests extends PHPUnit_Framework_TestCase
         $expected = 'SELECT u.*,
 			ORDER BY something that shouldnt change
 			FROM users u
-			WHERE (whatever = whatever else) ORDER BY @sort_params';
+			WHERE (whatever = whatever else) ORDER BY @sort_params desc';
 
         $this->assertEquals($expected, $command->GetQuery());
-        $this->assertEquals(new ParameterRaw('@sort_params', 'email desc'), $command->Parameters->Items(0));
+        $this->assertEquals(new ParameterRaw('@sort_params', 'email'), $command->Parameters->Items(0));
     }
 }

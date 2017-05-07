@@ -493,7 +493,7 @@ class ManageUsersPresenterTests extends TestBase
 	{
 		$file = new FakeUploadedFile();
 		$file->Contents = "username,email,first name,last name,password,phone,organization,position,timezone,language,groups\nu1,e1,f1,l1,p1,ph1,o1,po1,t1,l1,g1";
-		$csv = new UserImportCsv($file);
+		$csv = new UserImportCsv($file, array());
 
 		$rows = $csv->GetRows();
 		$this->assertEquals(1, count($rows));
