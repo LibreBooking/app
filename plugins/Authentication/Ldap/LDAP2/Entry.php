@@ -12,15 +12,15 @@
 * @author    Benedikt Hallinger <beni@php.net>
 * @copyright 2009 Tarjej Huse, Jan Wagner, Benedikt Hallinger
 * @license   http://www.gnu.org/licenses/lgpl-3.0.txt LGPLv3
-* @version   SVN: $Id: Entry.php 307580 2011-01-19 12:32:05Z beni $
+* @version   SVN: $Id$
 * @link      http://pear.php.net/package/Net_LDAP2/
 */
 
 /**
 * Includes
 */
-require_once ROOT_DIR . 'lib/external/pear/PEAR.php';
-require_once ROOT_DIR . 'plugins/Authentication/Ldap/LDAP2/Util.php';
+require_once 'PEAR.php';
+require_once 'Util.php';
 
 /**
 * Object representation of a directory entry
@@ -140,26 +140,26 @@ class Net_LDAP2_Entry extends PEAR
     * You should not call this method manually! Use {@link Net_LDAP2_Entry::createFresh()}
     * or {@link Net_LDAP2_Entry::createConnected()} instead!
     *
-    * @param Net_LDAP2|ressource|array &$ldap Net_LDAP2 object, ldap-link ressource or array of attributes
+    * @param Net_LDAP2|ressource|array $ldap Net_LDAP2 object, ldap-link ressource or array of attributes
     * @param string|ressource          $entry Either a DN or a LDAP-Entry ressource
     *
     * @access protected
     * @return none
     */
-    protected function __construct(&$ldap, $entry = null)
+    public function __construct($ldap, $entry = null)
     {
-        $this->PEAR('Net_LDAP2_Error');
+        parent::__construct('Net_LDAP2_Error');
 
         // set up entry resource or DN
         if (is_resource($entry)) {
-            $this->_entry = &$entry;
+            $this->_entry = $entry;
         } else {
             $this->_dn = $entry;
         }
 
         // set up LDAP link
         if ($ldap instanceof Net_LDAP2) {
-            $this->_ldap = &$ldap;
+            $this->_ldap = $ldap;
             $this->_link = $ldap->getLink();
         } elseif (is_resource($ldap)) {
             $this->_link = $ldap;
@@ -309,7 +309,7 @@ class Net_LDAP2_Entry extends PEAR
     public function dn($dn = null)
     {
         if (false == is_null($dn)) {
-            if (is_null($this->_dn)) {
+            if (is_null($this->_dn) ) {
                 $this->_dn = $dn;
             } else {
                 $this->_newdn = $dn;
@@ -357,7 +357,7 @@ class Net_LDAP2_Entry extends PEAR
         if (is_null($attributes) && is_resource($this->_entry) && is_resource($this->_link)) {
             // fetch schema
             if ($this->_ldap instanceof Net_LDAP2) {
-                $schema =& $this->_ldap->schema();
+                $schema = $this->_ldap->schema();
             }
             // fetch attributes
             $attributes = array();
@@ -439,13 +439,14 @@ class Net_LDAP2_Entry extends PEAR
     * The first parameter is the name of the attribute
     * The second parameter influences the way the value is returned:
     * 'single':  only the first value is returned as string
-    * 'all':     all values including the value count are returned in an array
+    * 'all':     all values are returned in an array
     * 'default': in all other cases an attribute value with a single value is
     *            returned as string, if it has multiple values it is returned
-    *            as an array (without value count)
+    *            as an array
     *
     * If the attribute is not set at this entry (no value or not defined in
-    * schema), an empty string is returned.
+    * schema), "false" is returned when $option is 'single', an empty string if
+    * 'default', and an empty array when 'all'.
     *
     * You may use Net_LDAP2_Schema->checkAttribute() to see if the attribute
     * is defined for the objectClasses of this entry.
@@ -454,24 +455,42 @@ class Net_LDAP2_Entry extends PEAR
     * @param string  $option       Option
     *
     * @access public
-    * @return string|array|PEAR_Error string, array or PEAR_Error
+    * @return string|array
     */
     public function getValue($attr, $option = null)
     {
         $attr = $this->getAttrName($attr);
 
-        // If the attribute is not set at the entry, return an empty value.
-        // Users should do schema checks if they want to know if an attribute is
-        // valid for an entrys OCLs.
+        // return depending on set $options
         if (!array_key_exists($attr, $this->_attributes)) {
-            $value = array('');
-        } else {
-            $value = $this->_attributes[$attr];
-        }
+            // attribute not set
+            switch ($option) {
+                case 'single':
+                    $value = false;
+                break;
+                case 'all':
+                    $value = array();
+                break;
+                default:
+                    $value = '';
+            }
 
-        // format the attribute values depending on $option
-        if ($option == "single" || (count($value) == 1 && $option != 'all')) {
-            $value = array_shift($value);
+        } else {
+            // attribute present
+            switch ($option) {
+                case 'single':
+                    $value = $this->_attributes[$attr][0];
+                break;
+                case 'all':
+                    $value = $this->_attributes[$attr];
+                break;
+                default:
+                    $value = $this->_attributes[$attr];
+                    if (count($value) == 1) {
+                        $value = array_shift($value);
+                    }
+            }
+            
         }
 
         return $value;
@@ -486,7 +505,7 @@ class Net_LDAP2_Entry extends PEAR
     public function get_value()
     {
         $args = func_get_args();
-        return call_user_func_array(array( &$this, 'getValue' ), $args);
+        return call_user_func_array(array( $this, 'getValue' ), $args);
     }
 
     /**
@@ -541,31 +560,31 @@ class Net_LDAP2_Entry extends PEAR
         }
         if ($this->isNew()) {
             $this->setAttributes($attr);
-        } else {
-            foreach ($attr as $k => $v) {
-                $k = $this->getAttrName($k);
-                if (false == is_array($v)) {
-                    // Do not add empty values
-                    if ($v == null) {
-                        continue;
-                    } else {
-                        $v = array($v);
-                    }
-                }
-                // add new values to existing attribute or add new attribute
-                if ($this->exists($k)) {
-                    $this->_attributes[$k] = array_unique(array_merge($this->_attributes[$k], $v));
-                } else {
-                    $this->_map[strtolower($k)] = $k;
-                    $this->_attributes[$k]      = $v;
-                }
-                // save changes for update()
-                if (empty($this->_changes["add"][$k])) {
-                    $this->_changes["add"][$k] = array();
-                }
-                $this->_changes["add"][$k] = array_unique(array_merge($this->_changes["add"][$k], $v));
-            }
         }
+        foreach ($attr as $k => $v) {
+            $k = $this->getAttrName($k);
+            if (false == is_array($v)) {
+                // Do not add empty values
+                if ($v == null) {
+                    continue;
+                } else {
+                    $v = array($v);
+                }
+            }
+            // add new values to existing attribute or add new attribute
+            if ($this->exists($k)) {
+                $this->_attributes[$k] = array_unique(array_merge($this->_attributes[$k], $v));
+            } else {
+                $this->_map[strtolower($k)] = $k;
+                $this->_attributes[$k]      = $v;
+            }
+            // save changes for update()
+            if (!isset($this->_changes["add"][$k])) {
+                $this->_changes["add"][$k] = array();
+            }
+            $this->_changes["add"][$k] = array_unique(array_merge($this->_changes["add"][$k], $v));
+        }
+
         $return = true;
         return $return;
     }
@@ -742,7 +761,7 @@ class Net_LDAP2_Entry extends PEAR
         }
 
         // ensure we have a valid LDAP object
-        $ldap =& $this->getLDAP();
+        $ldap = $this->getLDAP();
         if (!$ldap instanceof Net_LDAP2) {
             return PEAR::raiseError("The entries LDAP object is not valid");
         }
@@ -774,6 +793,14 @@ class Net_LDAP2_Entry extends PEAR
             $this->_changes['replace'] = array();
             $this->_original           = $this->_attributes;
 
+            // In case the "new" entry was moved after creation, we must
+            // adjust the internal DNs as the entry was already created
+            // with the most current DN.
+            if (false == is_null($this->_newdn)) {
+                $this->_dn    = $this->_newdn;
+                $this->_newdn = null;
+            }
+
             $return = true;
             return $return;
         }
@@ -799,7 +826,8 @@ class Net_LDAP2_Entry extends PEAR
             $parent = Net_LDAP2_Util::canonical_dn($parent);
 
             // rename/move
-            if (false == @ldap_rename($link, $this->_dn, $child, $parent, true)) {
+            if (false == @ldap_rename($link, $this->_dn, $child, $parent, false)) {
+
                 return PEAR::raiseError("Entry not renamed: " .
                                         @ldap_error($link), @ldap_errno($link));
             }
@@ -809,51 +837,55 @@ class Net_LDAP2_Entry extends PEAR
         }
 
         /*
-        * Carry out modifications to the entry
+        * Retrieve a entry that has all attributes we need so that the list of changes to build is created accurately
         */
+        $fullEntry = $ldap->getEntry( $this->dn() );
+        if ( Net_LDAP2::isError($fullEntry) ) {
+            return PEAR::raiseError("Could not retrieve a full set of attributes to reconcile changes with");
+        }
+        $modifications = array();
+
         // ADD
         foreach ($this->_changes["add"] as $attr => $value) {
-            // if attribute exists, add new values
-            if ($this->exists($attr)) {
-                if (false === @ldap_mod_add($link, $this->dn(), array($attr => $value))) {
-                    return PEAR::raiseError("Could not add new values to attribute $attr: " .
-                                            @ldap_error($link), @ldap_errno($link));
-                }
-            } else {
-                // new attribute
-                if (false === @ldap_modify($link, $this->dn(), array($attr => $value))) {
-                    return PEAR::raiseError("Could not add new attribute $attr: " .
-                                            @ldap_error($link), @ldap_errno($link));
-                }
-            }
-            // all went well here, I guess
-            unset($this->_changes["add"][$attr]);
+            // if attribute exists, we need to combine old and new values
+            if ($fullEntry->exists($attr)) {
+                $currentValue = $fullEntry->getValue($attr, "all");
+                $value = array_merge( $currentValue, $value );
+            } 
+            
+            $modifications[$attr] = $value;
         }
 
         // DELETE
         foreach ($this->_changes["delete"] as $attr => $value) {
             // In LDAPv3 you need to specify the old values for deleting
             if (is_null($value) && $ldap->getLDAPVersion() === 3) {
-                $value = $this->_original[$attr];
+                $value = $fullEntry->getValue($attr);
             }
-            if (false === @ldap_mod_del($link, $this->dn(), array($attr => $value))) {
-                return PEAR::raiseError("Could not delete attribute $attr: " .
-                                        @ldap_error($link), @ldap_errno($link));
+            if (!is_array($value)) {
+                $value = array($value);
             }
-            unset($this->_changes["delete"][$attr]);
+            
+            // Find out what is missing from $value and exclude it
+            $currentValue = isset($modifications[$attr]) ? $modifications[$attr] : $fullEntry->getValue($attr, "all");
+            $modifications[$attr] = array_values( array_diff( $currentValue, $value ) );
         }
 
         // REPLACE
         foreach ($this->_changes["replace"] as $attr => $value) {
-            if (false === @ldap_modify($link, $this->dn(), array($attr => $value))) {
-                return PEAR::raiseError("Could not replace attribute $attr values: " .
-                                        @ldap_error($link), @ldap_errno($link));
-            }
-            unset($this->_changes["replace"][$attr]);
+            $modifications[$attr] = $value;
         }
 
-        // all went well, so _original (server) becomes _attributes (local copy)
-        $this->_original = $this->_attributes;
+        // COMMIT
+        if (false === @ldap_modify($link, $this->dn(), $modifications)) {
+            return PEAR::raiseError("Could not modify the entry: " . @ldap_error($link), @ldap_errno($link));
+        }
+
+        // all went well, so _original (server) becomes _attributes (local copy), reset _changes too...
+        $this->_changes['add']     = array();
+        $this->_changes['delete']  = array();
+        $this->_changes['replace'] = array();
+        $this->_original           = $this->_attributes;
 
         $return = true;
         return $return;
@@ -882,7 +914,7 @@ class Net_LDAP2_Entry extends PEAR
     * @access public
     * @return Net_LDAP2|Net_LDAP2_Error   Reference to the Net_LDAP2 Object (the connection) or Net_LDAP2_Error
     */
-    public function &getLDAP()
+    public function getLDAP()
     {
         if (!$this->_ldap instanceof Net_LDAP2) {
             $err = new PEAR_Error('LDAP is not a valid Net_LDAP2 object');
@@ -898,17 +930,17 @@ class Net_LDAP2_Entry extends PEAR
     * After setting a Net_LDAP2 object, calling update() will use that object for
     * updating directory contents. Use this to dynamicly switch directorys.
     *
-    * @param Net_LDAP2 &$ldap Net_LDAP2 object that this entry should be connected to
+    * @param Net_LDAP2 $ldap Net_LDAP2 object that this entry should be connected to
     *
     * @access public
     * @return true|Net_LDAP2_Error
     */
-    public function setLDAP(&$ldap)
+    public function setLDAP($ldap)
     {
         if (!$ldap instanceof Net_LDAP2) {
             return PEAR::raiseError("LDAP is not a valid Net_LDAP2 object");
         } else {
-            $this->_ldap =& $ldap;
+            $this->_ldap = $ldap;
             return true;
         }
     }
@@ -949,7 +981,7 @@ class Net_LDAP2_Entry extends PEAR
     *
     * Usage example:
     * <code>
-    * $result = $entry->preg_match('/089(\d+)/', 'telephoneNumber', &$matches);
+    * $result = $entry->preg_match('/089(\d+)/', 'telephoneNumber', $matches);
     * if ( $result === true ){
     *     echo "First match: ".$matches[0][1];   // Match of value 1, content of first bracket
     * } else {
@@ -978,11 +1010,6 @@ class Net_LDAP2_Entry extends PEAR
 
         // fetch attribute values
         $attr = $this->getValue($attr_name, 'all');
-        if (Net_LDAP2::isError($attr)) {
-            return $attr;
-        } else {
-            unset($attr['count']);
-        }
 
         // perform preg_match() on all values
         $match = false;
@@ -1005,7 +1032,7 @@ class Net_LDAP2_Entry extends PEAR
     public function preg_match()
     {
         $args = func_get_args();
-        return call_user_func_array(array( &$this, 'pregMatch' ), $args);
+        return call_user_func_array(array( $this, 'pregMatch' ), $args);
     }
 
     /**

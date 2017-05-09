@@ -136,7 +136,7 @@ class CalendarPresenterTests extends TestBase
 		$this->resourceService
 				->expects($this->atLeastOnce())
 				->method('GetResourceGroups')
-				->with($this->equalTo($defaultScheduleId), $this->equalTo($this->fakeUser))
+				->with($this->isNull(), $this->equalTo($this->fakeUser))
 				->will($this->returnValue(new ResourceGroupTree()));
 
 		$this->page
@@ -154,7 +154,6 @@ class CalendarPresenterTests extends TestBase
 				->expects($this->atLeastOnce())
 				->method('GetCalendarType')
 				->will($this->returnValue($calendarType));
-
 
 		$this->page
 				->expects($this->atLeastOnce())

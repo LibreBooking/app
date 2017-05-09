@@ -154,6 +154,11 @@ class PersonalCalendarPresenterTests extends TestBase
 				->method('SetFirstDay')
 				->with($this->equalTo($schedules[1]->GetWeekdayStart()));
 
+		$this->userRepository->expects($this->once())
+					->method('LoadById')
+					->with($this->equalTo($this->fakeUser->UserId))
+					->will($this->returnValue(new FakeUser()));
+
 		$calendarFilters = new CalendarFilters($schedules, $resources, $defaultScheduleId, null, $resourceGroupTree);
 		$this->page->expects($this->atLeastOnce())->method('BindFilters')->with($this->equalTo($calendarFilters));
 

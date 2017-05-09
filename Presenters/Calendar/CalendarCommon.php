@@ -518,6 +518,9 @@ class UserCalendarFilter
     public static function Deserialize($string)
     {
         $parts = explode('|', $string);
-        return new UserCalendarFilter($parts[0], $parts[1], $parts[2]);
+		$resourceId = isset($parts[0]) ? $parts[0] : null;
+		$scheduleId = isset($parts[1]) ? $parts[1] : null;
+		$groupId = isset($parts[2]) ? $parts[2] : null;
+		return new UserCalendarFilter($resourceId, $scheduleId, $groupId);
     }
 }

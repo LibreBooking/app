@@ -17,7 +17,8 @@
 //
 // $Id: Config.php,v 1.22 2006/12/22 00:35:34 aashley Exp $
 
-define('PEAR_ROOT', ROOT_DIR . 'lib/external/pear/');
+@define('PEAR_ROOT', ROOT_DIR . 'lib/external/pear/');
+set_include_path(PEAR_ROOT . PATH_SEPARATOR . get_include_path());
 
 require_once(PEAR_ROOT . 'PEAR.php');
 require_once(PEAR_ROOT . 'Config/Container.php');
