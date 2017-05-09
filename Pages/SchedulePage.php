@@ -570,6 +570,7 @@ class DisplaySlotFactory
 			}
 			else
 			{
+
 				return "displayReserved$functionSuffix";
 			}
 		}

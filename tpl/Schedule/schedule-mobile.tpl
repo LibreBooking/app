@@ -59,6 +59,11 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 {/function}
 
 {function name=displayUnreservableMobile}
+    <div class="unreservable"
+         resid="{$Slot->Id()}" {$color}
+         id="{$Slot->Id()}|{$Slot->Date()->Format('Ymd')}"><i class="fa fa-info-circle"></i>
+        {formatdate date=$Slot->BeginDate() key=period_time} - {formatdate date=$Slot->EndDate() key=period_time}
+        {$Slot->Label($SlotLabelFactory)|escapequotes}</div>
 {/function}
 
 {function name=displaySlotMobile}
