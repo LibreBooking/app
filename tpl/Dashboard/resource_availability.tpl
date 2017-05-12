@@ -99,7 +99,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 						</div>
 					</div>
 					<div class="availability col-xs-12 col-sm-4">
-						Available At {format_date date=$i->ReservationEnds() timezone=$Timezone key=dashboard}
+                        {translate key=AvailableAt} {format_date date=$i->ReservationEnds() timezone=$Timezone key=dashboard}
 					</div>
 					<div class="reserveButton col-xs-12 col-sm-3">
 						<a class="btn btn-xs col-xs-12"

@@ -530,6 +530,7 @@ class ja_jp extends en_us
         $strings['PrintQRCode'] = 'QRコードを印刷';
         $strings['AvailableUntil'] = '次の時間まで利用可能 … ';
         $strings['AvailableBeginningAt'] = '次の時間から利用可能 … ';
+        $strings['AvailableAt'] = '次の時間に利用可能 … ';
         $strings['RequiresApproval'] = '承認が必要';
         $strings['CheckingIn'] = 'チェックインしています';
         $strings['CheckingOut'] = 'チェックアウトしています';

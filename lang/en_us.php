@@ -518,6 +518,7 @@ class en_us extends Language
 		$strings['UnavailableAllDay'] = 'Unavailable All Day';
 		$strings['AvailableUntil'] = 'Available Until';
 		$strings['AvailableBeginningAt'] = 'Available Beginning At';
+        $strings['AvailableAt'] = 'Available At';
 		$strings['AllResourceTypes'] = 'All Resource Types';
 		$strings['AllResourceStatuses'] = 'All Resource Statuses';
 		$strings['AllowParticipantsToJoin'] = 'Allow Participants To Join';
