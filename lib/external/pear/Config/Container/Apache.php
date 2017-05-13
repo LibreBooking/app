@@ -15,7 +15,7 @@
 // | Author: Bertrand Mansion <bmansion@mamasam.com>                      |
 // +----------------------------------------------------------------------+
 //
-// $Id: Apache.php,v 1.11 2005/12/24 02:34:39 aashley Exp $
+// $Id: Apache.php 203595 2005-12-24 02:34:39Z aashley $
 
 /**
 * Simple config parser for apache httpd.conf files

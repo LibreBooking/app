@@ -15,7 +15,7 @@
 // | Authors: Bertrand Mansion <bmansion@mamasam.com>                     |
 // +----------------------------------------------------------------------+
 //
-// $Id: PHPArray.php,v 1.32 2007/06/12 05:24:19 aashley Exp $
+// $Id: PHPArray.php 306488 2010-12-20 08:45:09Z cweiske $
 
 /**
 * Config parser for common PHP configuration array
@@ -112,7 +112,12 @@ class Config_Container_PHPArray {
                     break;
                 default:
                     if (is_array($value)) {
-                        if ($this->options['duplicateDirectives'] == true && is_integer(key($value))) {
+                        if ($this->options['duplicateDirectives'] == true
+                            //speed (first/one key is numeric)
+                            && is_integer(key($value))
+                            //accuracy (all keys are numeric)
+                            && 1 == count(array_unique(array_map('is_numeric', array_keys($value))))
+                        ) {
                             foreach ($value as $nestedValue) {
                                 if (is_array($nestedValue)) {
                                     $section =& $container->createSection($key);
@@ -171,6 +176,8 @@ class Config_Container_PHPArray {
                     $string .= $obj->content;
                 } elseif (is_bool($obj->content)) {
                     $string .= ($obj->content) ? 'true' : 'false';
+                } elseif ($obj->content === null) {
+                    $string .= 'null';
                 }
                 $string .= ";\n";
                 $string .= $attrString;

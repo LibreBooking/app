@@ -15,7 +15,7 @@
 // | Author: Bertrand Mansion <bmansion@mamasam.com>                      |
 // +----------------------------------------------------------------------+
 //
-// $Id: GenericConf.php,v 1.7 2005/12/24 02:24:30 aashley Exp $
+// $Id: GenericConf.php 306537 2010-12-21 08:09:34Z cweiske $
 
 /**
 * Config parser for  generic .conf files like
@@ -78,9 +78,9 @@ class Config_Container_GenericConf {
         foreach ($lines as $line) {
             $n++;
             if (!preg_match('/^\s*'.$this->options['comment'].'/', $line) && 
-                 preg_match('/^\s*(.*)\s+'.$this->options['newline'].'\s*$/', $line, $match)) {
+                 preg_match('/^\s*(.*)'.$this->options['newline'].'\s*$/', $line, $match)) {
                 // directive on more than one line
-                $lastline .= $match[1].' ';
+                $lastline .= $match[1];
                 continue;
             }
             if ($lastline != '') {
@@ -93,7 +93,7 @@ class Config_Container_GenericConf {
             } elseif (preg_match('/^\s*$/', $line)) {
                 // a blank line
                 $currentSection->createBlank();
-            } elseif (preg_match('/^\s*(\w+)'.$this->options['equals'].'\s*((.*?)|)\s*$/', $line, $match)) {
+            } elseif (preg_match('/^\s*([\w-]+)\s*'.$this->options['equals'].'\s*((.*?)|)\s*$/', $line, $match)) {
                 // a directive
                 $currentSection->createDirective($match[1], $match[2]);
             } else {
