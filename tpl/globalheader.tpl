@@ -196,7 +196,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                                 <li id="navNotification">
                                     <a href="{$Path}{Pages::NOTIFICATION_PREFERENCES}">{translate key="NotificationPreferences"}</a>
                                 </li>
-                                {if $ShowParticipation}
+                                {if $ShowParticipation && $AllowParticipation}
                                     <li id="navInvitations"><a
                                                 href="{$Path}{Pages::PARTICIPATION}">{translate key="OpenInvitations"}</a>
                                     </li>
