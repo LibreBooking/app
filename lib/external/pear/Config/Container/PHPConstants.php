@@ -41,7 +41,7 @@ class Config_Container_PHPConstants extends Config_Container
      *
      * @access public
      */
-    function Config_Container_PHPConstants($options = array())
+    function __construct($options = array())
     {
         $this->options = array_merge($this->options, $options);
     } // end constructor

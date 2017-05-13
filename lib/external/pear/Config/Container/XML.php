@@ -81,7 +81,7 @@ class Config_Container_XML extends XML_Parser
     *                               useAttr     : whether to use the attributes
     *                               isFile      : whether the given content is a file or an XML string
     */
-    function Config_Container_XML($options = array())
+    function __construct($options = array())
     {
         foreach ($options as $key => $value) {
             $this->options[$key] = $value;

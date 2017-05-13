@@ -42,7 +42,7 @@ class Config_Container_IniFile
      *
      * @access public
      */
-    function Config_Container_IniFile($options = array())
+    function __construct($options = array())
     {
         $this->options = $options;
     } // end constructor
