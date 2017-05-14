@@ -17,18 +17,21 @@
 //
 // $Id: Config.php 306597 2010-12-24 05:11:09Z aharvey $
 
-require_once('PEAR.php');
-require_once('Config/Container.php');
+@define('PEAR_ROOT', ROOT_DIR . 'lib/external/pear/');
+set_include_path(PEAR_ROOT . PATH_SEPARATOR . get_include_path());
 
-$GLOBALS['CONFIG_TYPES'] = 
+require_once(PEAR_ROOT . 'PEAR.php');
+require_once(PEAR_ROOT . 'Config/Container.php');
+
+$GLOBALS['CONFIG_TYPES'] =
         array(
-            'apache'        => array('Config/Container/Apache.php', 'Config_Container_Apache'),
-            'genericconf'   => array('Config/Container/GenericConf.php', 'Config_Container_GenericConf'),
-            'inifile'       => array('Config/Container/IniFile.php', 'Config_Container_IniFile'),
-            'inicommented'  => array('Config/Container/IniCommented.php', 'Config_Container_IniCommented'),
-            'phparray'      => array('Config/Container/PHPArray.php', 'Config_Container_PHPArray'),
-						'phpconstants'	=> array('Config/Container/PHPConstants.php', 'Config_Container_PHPConstants'),
-            'xml'           => array('Config/Container/XML.php', 'Config_Container_XML')
+            'apache'        => array(PEAR_ROOT . 'Config/Container/Apache.php', 'Config_Container_Apache'),
+            'genericconf'   => array(PEAR_ROOT . 'Config/Container/GenericConf.php', 'Config_Container_GenericConf'),
+            'inifile'       => array(PEAR_ROOT . 'Config/Container/IniFile.php', 'Config_Container_IniFile'),
+            'inicommented'  => array(PEAR_ROOT . 'Config/Container/IniCommented.php', 'Config_Container_IniCommented'),
+            'phparray'      => array(PEAR_ROOT . 'Config/Container/PHPArray.php', 'Config_Container_PHPArray'),
+			'phpconstants'	=> array(PEAR_ROOT . 'Config/Container/PHPConstants.php', 'Config_Container_PHPConstants'),
+            'xml'           => array(PEAR_ROOT . 'Config/Container/XML.php', 'Config_Container_XML')
             );
 
 /**
