@@ -138,7 +138,7 @@ class ja_jp extends en_us
         $strings['EditReservationHeading'] = '予約の変更 %s';
         $strings['ViewReservationHeading'] = '予約の表示 %s';
         $strings['ReservationErrors'] = '予約の変更';
-        $strings['Create'] = '作成';
+        $strings['Create'] = '予約する';
         $strings['ThisInstance'] = 'この回だけ';
         $strings['AllInstances'] = 'すべての回';
         $strings['FutureInstances'] = 'この回から先';
@@ -513,7 +513,7 @@ class ja_jp extends en_us
         $strings['ThisWeek'] = '今週';
         $strings['Hours'] = '時間';
         $strings['Minutes'] = '分';
-        $strings['MoreOptions'] = '検索オプション';
+        $strings['MoreOptions'] = '追加オプション';
         $strings['DateRange'] = '期間を指定';
         $strings['Dates'] = '日付';
         $strings['AllResourceStatuses'] = '全てのリソースの状態';
@@ -530,6 +530,7 @@ class ja_jp extends en_us
         $strings['PrintQRCode'] = 'QRコードを印刷';
         $strings['AvailableUntil'] = '次の時間まで利用可能 … ';
         $strings['AvailableBeginningAt'] = '次の時間から利用可能 … ';
+        $strings['AvailableAt'] = '次の時間に利用可能 … ';
         $strings['RequiresApproval'] = '承認が必要';
         $strings['CheckingIn'] = 'チェックインしています';
         $strings['CheckingOut'] = 'チェックアウトしています';
@@ -547,6 +548,21 @@ class ja_jp extends en_us
         $strings['More'] = '操作メニュー';
         $strings['DuplicateReservation'] = 'コピーして新規登録';
         $strings['NameOrEmail'] = '名前またはメールアドレス';
+        $strings['InviteUsers'] = '招待する';
+        $strings['SendAsEmail'] = 'メールも送信する';
+        $strings['UsersInGroups'] = 'グループに所属するユーザー';
+        $strings['UsersWithAccessToResources'] = 'リソースを利用するユーザー';
+        $strings['CollectedFor'] = '取得対象';
+        $strings['AdminOnly'] = '管理者のみ';
+        $strings['LimitAttributeScope'] = '特定の場合のみ取得';
+        $strings['CollectFor'] = '次の予約時：';
+        $strings['Attribute'] = '属性';
+        $strings['AddRule'] = '条件を追加';
+        $strings['RequiredValue'] = '条件値';
+        $strings['ReservationCustomRuleAdd'] = '条件値： %s 予約の色：';
+        $strings['AddReservationColorRule'] = '予約の背景色を変更';
+        $strings['ImportICS'] = 'ICS インポート';
+        $strings['ImportQuartzy'] = 'Quartzy インポート';
 
         // End Strings
 
@@ -592,8 +608,8 @@ class ja_jp extends en_us
         $strings['YouAreAParticipant'] = 'あなたはこの予約の参加者です。';
         $strings['YouAreInvited'] = 'あなたはこの予約に招待されています。';
         $strings['YouCanJoinThisReservation'] = 'あなたはこの予約に参加できます。';
-        $strings['Import'] = 'ファイル入力';
-        $strings['Export'] = 'ファイル出力';
+        $strings['Import'] = 'データ入力';
+        $strings['Export'] = 'データ出力';
         $strings['Users'] = 'ユーザー';
         $strings['Guest'] = '部外の招待者';
 
@@ -604,8 +620,8 @@ class ja_jp extends en_us
         $strings['ReservationFailed'] = '予約出来ませんでした';
         $strings['MinNoticeError'] = 'このリソースでは早めの予約が必要です。 今から予約できるのは %s 以降のぶんです。';
         $strings['MaxNoticeError'] = '指定時刻まで時間があるため、このリソースは予約できません。今できるのは %s までの予約です。';
-        $strings['MinDurationError'] = '一こまの予約は少なくとも %s 以上にしてください。';
-        $strings['MaxDurationError'] = '一こまの予約は %s を超えないようにしてください。';
+        $strings['MinDurationError'] = '予約は少なくとも %s 以上にしてください。';
+        $strings['MaxDurationError'] = '予約は %s を超えないようにしてください。';
         $strings['ConflictingAccessoryDates'] = '備品が希望数に足りません:';
         $strings['NoResourcePermission'] = 'リソースを使用する権限がありません';
         $strings['ConflictingReservationDates'] = '次の日時で予約がぶつかっています:';
@@ -617,7 +633,7 @@ class ja_jp extends en_us
         $strings['CustomAttributeRequired'] = '%s は必須項目です';
         $strings['CustomAttributeInvalid'] = '%s の指定値が無効です';
         $strings['AttachmentLoadingError'] = '指定されたファイルが読み込めませんでした。';
-        $strings['InvalidAttachmentExtension'] = 'アップロード出来るファイルの種類は以下のものだけです: %s';
+        $strings['InvalidAttachmentExtension'] = '次の形式のファイルを選択してください: %s';
         $strings['InvalidStartSlot'] = '予約の始まり日時が無効です。';
         $strings['InvalidEndSlot'] = '予約の終わり日時が無効です。';
         $strings['MaxParticipantsError'] = '%s の定員は %s までです。';
@@ -688,6 +704,7 @@ class ja_jp extends en_us
         $strings['ManageResourceGroups'] = 'リソースグループ';
         $strings['ManageResourceTypes'] = 'リソースタイプ';
         $strings['ManageResourceStatus'] = 'リソースの状態';
+        $strings['ReservationColors'] = '予約の背景色';
         // End Page Titles
 
         // Day representations
