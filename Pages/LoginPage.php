@@ -96,6 +96,11 @@ interface ILoginPage extends IPage, ILoginBasePage
 	 * @param $url string
 	 */
 	public function SetPasswordResetUrl($url);
+
+    /**
+     * @return string
+     */
+    public function GetCaptcha();
 }
 
 class LoginPage extends Page implements ILoginPage
@@ -120,6 +125,7 @@ class LoginPage extends Page implements ILoginPage
 		$this->Set('Protocol', $parts[0]);
 		$this->Set('ScriptUrlNoProtocol', $parts[1]);
 		$this->Set('GoogleState', strtr(base64_encode("resume=$scriptUrl/external-auth.php%3Ftype%3Dgoogle"), '+/=', '-_,'));
+		$this->Set('EnableCaptcha', Configuration::Instance()->GetSectionKey(ConfigSection::AUTHENTICATION, ConfigKeys::AUTHENTICATION_CAPTCHA_ON_LOGIN, new BooleanConverter()));
 	}
 
 	public function PageLoad()
@@ -162,6 +168,11 @@ class LoginPage extends Page implements ILoginPage
 	{
 		$this->Set('UseLogonName', $value);
 	}
+
+    public function GetCaptcha()
+    {
+        return $this->GetForm(FormKeys::CAPTCHA);
+    }
 
 	public function SetResumeUrl($value)
 	{

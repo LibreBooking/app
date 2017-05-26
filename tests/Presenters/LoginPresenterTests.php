@@ -40,12 +40,18 @@ class LoginPresenterTests extends TestBase
 	 */
 	private $presenter;
 
-	public function setup()
+    /**
+     * @var ICaptchaService
+     */
+    private $captchaService;
+
+    public function setup()
 	{
 		parent::setup();
 
 		$this->auth = new FakeWebAuthentication();
 		$this->page = new FakeLoginPage();
+		$this->captchaService = $this->getMock('ICaptchaService');
 
 		$this->page->_EmailAddress = 'nkorbel@bookedscheduler.com';
 		$this->page->_Password = 'somepassword';
@@ -53,7 +59,7 @@ class LoginPresenterTests extends TestBase
 
 		$this->fakeServer->SetSession(SessionKeys::USER_SESSION, new UserSession(1));
 
-		$this->presenter = new LoginPresenter($this->page, $this->auth);
+		$this->presenter = new LoginPresenter($this->page, $this->auth, $this->captchaService);
 	}
 
 	public function teardown()
@@ -339,4 +345,12 @@ class FakeLoginPage extends FakePageBase implements ILoginPage
 	{
 		// TODO: Implement SetPasswordResetUrl() method.
 	}
+
+    /**
+     * @return string
+     */
+    public function GetCaptcha()
+    {
+        // TODO: Implement GetCaptcha() method.
+    }
 }
