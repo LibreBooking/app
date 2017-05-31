@@ -309,6 +309,14 @@ class DateRange
 			}
 		}
 	}
+
+    /**
+     * @return bool
+     */
+	public function IsSameDate()
+    {
+        return $this->_begin->DateEquals($this->_end);
+    }
 }
 
 class NullDateRange extends DateRange

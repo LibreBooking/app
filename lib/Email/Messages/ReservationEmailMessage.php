@@ -115,9 +115,11 @@ abstract class ReservationEmailMessage extends EmailMessage
 			foreach ($this->reservationSeries->Instances() as $repeated)
 			{
 				$repeatDates[] = $repeated->StartDate()->ToTimezone($this->timezone);
+				$repeatRanges[] = $repeated->Duration()->ToTimezone($this->timezone);
 			}
 		}
 		$this->Set('RepeatDates', $repeatDates);
+		$this->Set('RepeatRanges', $repeatRanges);
 		$this->Set('RequiresApproval', $this->reservationSeries->RequiresApproval());
 		$this->Set('ReservationUrl', sprintf("%s?%s=%s", Pages::RESERVATION, QueryStringKeys::REFERENCE_NUMBER, $currentInstance->ReferenceNumber()));
 		$icalUrl = sprintf("export/%s?%s=%s", Pages::CALENDAR_EXPORT, QueryStringKeys::REFERENCE_NUMBER, $currentInstance->ReferenceNumber());

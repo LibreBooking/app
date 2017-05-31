@@ -46,15 +46,16 @@ Ending: {formatdate date=$EndDate key=reservation_email}<br/>
 Title: {$Title}<br/>
 Description: {$Description|nl2br}
 
-{if count($RepeatDates) gt 0}
-	<br/>
-	The reservation occurs on the following dates:
-	<br/>
+{if count($RepeatRanges) gt 0}
+    <br/>
+    The reservation occurs on the following dates:
+    <br/>
 {/if}
 
-{foreach from=$RepeatDates item=date name=dates}
-	{formatdate date=$date}
-	<br/>
+{foreach from=$RepeatRanges item=date name=dates}
+    {formatdate date=$date->GetBegin()}
+    {if !$date->IsSameDate()} - {formatdate date=$date->GetEnd()}{/if}
+    <br/>
 {/foreach}
 
 {if $Accessories|count > 0}
