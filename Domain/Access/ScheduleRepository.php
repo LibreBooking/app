@@ -26,7 +26,6 @@ require_once(ROOT_DIR . 'lib/Database/Commands/namespace.php');
 interface IScheduleRepository
 {
 	/**
-	 * Gets all schedules
 	 * @return array|Schedule[]
 	 */
 	public function GetAll();
@@ -38,7 +37,6 @@ interface IScheduleRepository
 	public function LoadById($scheduleId);
 
 	/**
-	 * @abstract
 	 * @param string $publicId
 	 * @return Schedule
 	 */

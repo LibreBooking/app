@@ -252,6 +252,23 @@ class ManageScheduleService
 
 		return $layout;
 	}
+
+    /**
+     * @return BookableResource[] resources indexed by scheduleId
+     */
+    public function GetResources()
+    {
+        $resources = array();
+
+        $all = $this->resourceRepository->GetResourceList();
+        /** @var BookableResource $resource */
+        foreach ($all as $resource)
+        {
+            $resources[$resource->GetScheduleId()][] = $resource;
+        }
+
+        return $resources;
+    }
 }
 
 class ManageSchedulesPresenter extends ActionPresenter
@@ -298,6 +315,7 @@ class ManageSchedulesPresenter extends ActionPresenter
 		$schedules = $results->Results();
 
 		$sourceSchedules = $this->manageSchedulesService->GetSourceSchedules();
+		$resources = $this->manageSchedulesService->GetResources();
 
 		$layouts = array();
 		/* @var $schedule Schedule */
@@ -311,6 +329,7 @@ class ManageSchedulesPresenter extends ActionPresenter
 
 		$this->page->BindSchedules($schedules, $layouts, $sourceSchedules);
 		$this->page->BindPageInfo($results->PageInfo());
+		$this->page->BindResources($resources);
 		$this->PopulateTimezones();
 
 	}
