@@ -13,6 +13,7 @@ function ScheduleManagement(opts) {
 		deleteForm: $('#deleteForm'),
 
 		addForm: $('#addScheduleForm'),
+        addName: $('#addName'),
 
 		reservableEdit: $('#reservableEdit'),
 		blockedEdit: $('#blockedEdit'),
@@ -148,7 +149,11 @@ function ScheduleManagement(opts) {
 			elements.addDialog.modal('show');
 		});
 
-		$('.autofillBlocked').click(function(e){
+        elements.addDialog.on('shown.bs.modal', function () {
+            elements.addName.focus();
+        });
+
+        $('.autofillBlocked').click(function(e){
 			e.preventDefault();
 			autoFillBlocked();
 		});

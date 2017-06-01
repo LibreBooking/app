@@ -209,7 +209,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                     </div>
                     <div class="modal-footer">
                         {cancel_button}
-                        {add_button}
+                        {add_button submit=true}
                         {indicator}
                     </div>
                 </div>
