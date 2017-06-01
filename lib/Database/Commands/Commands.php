@@ -688,6 +688,15 @@ class DeleteAttributeValuesCommand extends SqlCommand
     }
 }
 
+class DeleteAttributeColorRulesCommand extends SqlCommand
+{
+    public function __construct($attributeId)
+    {
+        parent::__construct(Queries::DELETE_ATTRIBUTE_COLOR_RULES);
+        $this->AddParameter(new Parameter(ParameterNames::ATTRIBUTE_ID, $attributeId));
+    }
+}
+
 class DeleteAccountActivationCommand extends SqlCommand
 {
     public function __construct($activationCode)
