@@ -25,6 +25,12 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		</div>
 	{/if}
 
+    {if $EnableCaptcha}
+        {validation_group class="alert alert-danger"}
+        {validator id="captcha" key="CaptchaMustMatch"}
+        {/validation_group}
+    {/if}
+
 	<div class="col-md-offset-3 col-md-6 col-xs-12 ">
 		<form role="form" name="login" id="login" class="form-horizontal" method="post"
 			  action="{$smarty.server.SCRIPT_NAME}">
@@ -55,6 +61,16 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 						</div>
 					</div>
 				{/if}
+
+                {if $EnableCaptcha}
+                    <div class="col-xs-12">
+                        <div class="margin-bottom-25">
+                        {control type="CaptchaControl"}
+                        </div>
+                    </div>
+                {else}
+                    <input type="hidden" {formname key=CAPTCHA} value=""/>
+                {/if}
 
 				{if $ShowUsernamePrompt &&  $ShowPasswordPrompt}
 				<div class="col-xs-12">

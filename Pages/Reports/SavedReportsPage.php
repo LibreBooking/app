@@ -145,7 +145,8 @@ class SavedReportsPage extends ActionPage implements ISavedReportsPage
 
 	public function PrintReport()
 	{
-		$this->Display('Reports/print-custom-report.tpl');
+        $this->Set('ReportCsvColumnView', new ReportCsvColumnView($this->GetVar('SelectedColumns')));
+        $this->Display('Reports/print-custom-report.tpl');
 	}
 
 	public function GetReportId()

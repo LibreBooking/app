@@ -34,15 +34,23 @@ class LoginPresenter
 	 */
 	private $authentication = null;
 
-	/**
-	 * Construct page type and authentication method
-	 * @param ILoginPage $page passed by reference
-	 * @param IWebAuthentication $authentication default to null
-	 */
-	public function __construct(ILoginPage &$page, $authentication = null)
+    /**
+     * @var ICaptchaService
+     */
+    private $captchaService;
+
+    /**
+     * @param ILoginPage $page
+     * @param IWebAuthentication $authentication
+     * @param ICaptchaService $captchaService
+     */
+	public function __construct(ILoginPage &$page, $authentication = null, $captchaService = null)
 	{
 		$this->_page = & $page;
 		$this->SetAuthentication($authentication);
+        $this->SetCaptchaService($captchaService);
+
+        $this->LoadValidators();
 	}
 
 	/**
@@ -60,7 +68,20 @@ class LoginPresenter
 		}
 	}
 
-	public function PageLoad()
+    private function SetCaptchaService($captchaService)
+    {
+        if (is_null($captchaService))
+        {
+            $this->captchaService = CaptchaService::Create();
+        }
+        else
+        {
+            $this->captchaService = $captchaService;
+        }
+    }
+
+
+    public function PageLoad()
 	{
 		if ($this->authentication->IsLoggedIn())
 		{
@@ -106,6 +127,11 @@ class LoginPresenter
 
 	public function Login()
 	{
+	    if (!$this->_page->IsValid())
+        {
+            return;
+        }
+
 		$id = $this->_page->GetEmailAddress();
 
 		if ($this->authentication->Validate($id, $this->_page->GetPassword()))
@@ -187,4 +213,11 @@ class LoginPresenter
 		$this->_page->SetSelectedLanguage(strtolower($languageCode));
 		$resources->SetLanguage($languageCode);
 	}
+
+    protected function LoadValidators()
+    {
+        if (Configuration::Instance()->GetSectionKey(ConfigSection::AUTHENTICATION, ConfigKeys::AUTHENTICATION_CAPTCHA_ON_LOGIN, new BooleanConverter())) {
+            $this->_page->RegisterValidator('captcha', new CaptchaValidator($this->_page->GetCaptcha(), $this->captchaService));
+        }
+    }
 }

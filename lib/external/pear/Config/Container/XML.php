@@ -15,7 +15,7 @@
 // | Author: Bertrand Mansion <bmansion@mamasam.com>                      |
 // +----------------------------------------------------------------------+
 //
-// $Id: XML.php,v 1.15 2005/12/24 02:24:30 aashley Exp $
+// $Id: XML.php 203592 2005-12-24 02:24:30Z aashley $
 
 require_once('XML/Parser.php');
 require_once('XML/Util.php');
@@ -81,7 +81,7 @@ class Config_Container_XML extends XML_Parser
     *                               useAttr     : whether to use the attributes
     *                               isFile      : whether the given content is a file or an XML string
     */
-    function Config_Container_XML($options = array())
+    function __construct($options = array())
     {
         foreach ($options as $key => $value) {
             $this->options[$key] = $value;

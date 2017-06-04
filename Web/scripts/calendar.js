@@ -290,7 +290,7 @@ function Calendar(opts) {
         }
     };
 
-    var handleTimeClick = function () {
+    var handleTimeClick = function (e) {
         openNewReservation();
     };
 

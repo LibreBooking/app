@@ -114,7 +114,8 @@ class CommonReportsPage extends ActionPage implements ICommonReportsPage
 
 	public function PrintReport()
 	{
-		$this->Display('Reports/print-custom-report.tpl');
+        $this->Set('ReportCsvColumnView', new ReportCsvColumnView($this->GetVar('SelectedColumns')));
+        $this->Display('Reports/print-custom-report.tpl');
 	}
 
 	/**
