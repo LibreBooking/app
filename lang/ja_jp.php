@@ -138,7 +138,7 @@ class ja_jp extends en_us
         $strings['EditReservationHeading'] = '予約の変更 %s';
         $strings['ViewReservationHeading'] = '予約の表示 %s';
         $strings['ReservationErrors'] = '予約の変更';
-        $strings['Create'] = '予約する';
+        $strings['Create'] = '登録する';
         $strings['ThisInstance'] = 'この回だけ';
         $strings['AllInstances'] = 'すべての回';
         $strings['FutureInstances'] = 'この回から先';
