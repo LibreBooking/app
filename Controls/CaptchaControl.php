@@ -42,10 +42,11 @@ class CaptchaControl extends Control
 		Log::Debug('CaptchaControl using Recaptcha');
 		require_once(ROOT_DIR . 'lib/external/recaptcha/recaptchalib.php');
 
-		$isHttps = ServiceLocator::GetServer()->GetIsHttps();
+        $publicKey = Configuration::Instance()->GetSectionKey(ConfigSection::RECAPTCHA,ConfigKeys::RECAPTCHA_PUBLIC_KEY);
 
-		$response = recaptcha_get_html(Configuration::Instance()->GetSectionKey(ConfigSection::RECAPTCHA,
-																				ConfigKeys::RECAPTCHA_PUBLIC_KEY), null, $isHttps);
+        $response = '<script src=\'https://www.google.com/recaptcha/api.js\'></script>';
+        $response .='<div class="g-recaptcha" data-sitekey="' . $publicKey . '"></div>';
+
 		echo $response;
 	}
 

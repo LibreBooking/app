@@ -198,5 +198,7 @@ class AttributeRepository implements IAttributeRepository
 					  ->Execute(new DeleteAttributeCommand($attributeId));
 		ServiceLocator::GetDatabase()
 					  ->Execute(new DeleteAttributeValuesCommand($attributeId));
+		ServiceLocator::GetDatabase()
+					  ->Execute(new DeleteAttributeColorRulesCommand($attributeId));
 	}
 }

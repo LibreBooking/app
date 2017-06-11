@@ -84,7 +84,7 @@ class en_us extends Language
 		$strings['UniqueEmailRequired'] = 'That email address is already registered.';
 		$strings['UniqueUsernameRequired'] = 'That user name is already registered.';
 		$strings['UserNameRequired'] = 'User name is required.';
-		$strings['CaptchaMustMatch'] = 'Please enter the letters from security image exactly as shown.';
+		$strings['CaptchaMustMatch'] = 'Captcha is required.';
 		$strings['Today'] = 'Today';
 		$strings['Week'] = 'Week';
 		$strings['Month'] = 'Month';
