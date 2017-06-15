@@ -28,7 +28,7 @@ class ReportCsvColumnView
 	/**
 	 * @var int[]
 	 */
-	private $skippedIterations;
+	private $skippedIterations = array();
 
 	/**
 	 * @var bool
