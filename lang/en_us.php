@@ -629,6 +629,7 @@ class en_us extends Language
         $strings['ApplyToCurrentUsers'] = 'Apply to current users';
         $strings['ReasonText'] = 'Reason text';
         $strings['NoAvailableMatchingTimes'] = 'There are no available times that match your search';
+        $strings['Schedules'] = 'Schedules';
         // End Strings
 
 		// Install
@@ -768,6 +769,7 @@ class en_us extends Language
 		$strings['ManageResourceTypes'] = 'Resource Types';
 		$strings['ManageResourceStatus'] = 'Resource Statuses';
 		$strings['ReservationColors'] = 'Reservation Colors';
+		$strings['SearchReservations'] = 'Search Reservations';
 		// End Page Titles
 
 		// Day representations

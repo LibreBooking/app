@@ -21,11 +21,15 @@
 
 class FakeScheduleService implements IScheduleService
 {
-
     public $_DailyLayout;
 
+	/**
+	 * @var Schedule[]
+	 */
+	public $_AllSchedules = array();
 
-    public function __construct()
+
+	public function __construct()
     {
         $this->_DailyLayout = new FakeDailyLayout();
     }
@@ -36,7 +40,7 @@ class FakeScheduleService implements IScheduleService
      */
     public function GetAll($includeInaccessible = true, UserSession $session = null)
     {
-        // TODO: Implement GetAll() method.
+       return $this->_AllSchedules;
     }
 
     /**

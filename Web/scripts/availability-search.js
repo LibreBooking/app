@@ -44,7 +44,7 @@ function AvailabilitySearch(options) {
                 elements.beginDate.val('').attr('disabled', 'disabled');
                 elements.endDate.val('').attr('disabled', 'disabled');
         }
-        })
+        });
     };
 
     var showSearchResults = function (data) {

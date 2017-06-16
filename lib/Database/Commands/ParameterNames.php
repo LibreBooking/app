@@ -34,6 +34,7 @@ class ParameterNames
 	const ACTIVATION_CODE = '@activation_code';
 
 	const ALL_RESOURCES = '@all_resources';
+	const ALL_SCHEDULES = '@all_schedules';
 	const ALLOW_CALENDAR_SUBSCRIPTION = '@allow_calendar_subscription';
 	const ALLOW_PARTICIPATION = '@allow_participation';
 

@@ -18,6 +18,7 @@
  * You should have received a copy of the GNU General Public License
  * along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 class FakeReservationViewRepository implements IReservationViewRepository
 {
     public $_ReservationView;
@@ -39,9 +40,17 @@ class FakeReservationViewRepository implements IReservationViewRepository
 	 */
 	public $_AccessoryReservations = array();
 
+	public $_Filter;
+
+	/**
+	 * @var PageableData
+	 */
+	public $_FilterResults;
+
 	public function __construct()
     {
         $this->_ReservationView = new ReservationView();
+        $this->_FilterResults= new PageableData();
     }
 
     public function GetReservationForEditing($referenceNumber)
@@ -54,7 +63,7 @@ class FakeReservationViewRepository implements IReservationViewRepository
 			Date $endDate,
 			$userId = ReservationViewRepository::ALL_USERS,
 			$userLevel = ReservationUserLevel::OWNER,
-			$scheduleId = ReservationViewRepository::ALL_SCHEDULES,
+			$scheduleIds = ReservationViewRepository::ALL_SCHEDULES,
 			$resourceIds = ReservationViewRepository::ALL_RESOURCES)
     {
         $this->_LastRange = new DateRange($startDate, $endDate);
@@ -68,7 +77,8 @@ class FakeReservationViewRepository implements IReservationViewRepository
 
     public function GetList($pageNumber, $pageSize, $sortField = null, $sortDirection = null, $filter = null)
     {
-        return new PageableData();
+    	$this->_Filter = $filter;
+        return $this->_FilterResults;
     }
 
     public function GetBlackoutsWithin(DateRange $dateRange, $scheduleId = ReservationViewRepository::ALL_SCHEDULES)

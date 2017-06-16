@@ -46,7 +46,7 @@ interface IReservationViewRepository
 	 * @param Date $endDate
 	 * @param int|null $userId
 	 * @param int|ReservationUserLevel|null $userLevel
-	 * @param int|null $scheduleId
+	 * @param int|int[]|null $scheduleIds
 	 * @param int|int[]|null $resourceIds
 	 * @return ReservationItemView[]
 	 */
@@ -55,7 +55,7 @@ interface IReservationViewRepository
 			Date $endDate,
 			$userId = ReservationViewRepository::ALL_USERS,
 			$userLevel = ReservationUserLevel::OWNER,
-			$scheduleId = ReservationViewRepository::ALL_SCHEDULES,
+			$scheduleIds = ReservationViewRepository::ALL_SCHEDULES,
 			$resourceIds = ReservationViewRepository::ALL_RESOURCES);
 
 	/**
@@ -169,7 +169,7 @@ class ReservationViewRepository implements IReservationViewRepository
 			Date $endDate,
 			$userId = self::ALL_USERS,
 			$userLevel = ReservationUserLevel::OWNER,
-			$scheduleId = self::ALL_SCHEDULES,
+			$scheduleIds = self::ALL_SCHEDULES,
 			$resourceIds = self::ALL_RESOURCES)
 	{
 		if (empty($userId))
@@ -180,27 +180,33 @@ class ReservationViewRepository implements IReservationViewRepository
 		{
 			$userLevel = ReservationUserLevel::OWNER;
 		}
-		if (empty($scheduleId))
+		if (empty($scheduleIds))
 		{
-			$scheduleId = self::ALL_SCHEDULES;
+			$scheduleIds = self::ALL_SCHEDULES;
 		}
 		if (empty($resourceIds))
 		{
 			$resourceIds = self::ALL_RESOURCES;
 		}
-
 		if ($resourceIds == self::ALL_RESOURCES)
 		{
 			$resourceIds = null;
+		}
+		if ($scheduleIds == self::ALL_SCHEDULES)
+		{
+			$scheduleIds = null;
 		}
 
 		if (!empty($resourceIds) && $resourceIds != ReservationViewRepository::ALL_RESOURCES && !is_array($resourceIds))
 		{
 			$resourceIds = array($resourceIds);
 		}
+		if (!empty($scheduleIds) && $scheduleIds != ReservationViewRepository::ALL_SCHEDULES && !is_array($scheduleIds))
+		{
+			$scheduleIds = array($scheduleIds);
+		}
 
-		$getReservations = new GetReservationListCommand($startDate, $endDate, $userId, $userLevel, $scheduleId,
-														 $resourceIds);
+		$getReservations = new GetReservationListCommand($startDate, $endDate, $userId, $userLevel, $scheduleIds, $resourceIds);
 
 		$result = ServiceLocator::GetDatabase()->Query($getReservations);
 

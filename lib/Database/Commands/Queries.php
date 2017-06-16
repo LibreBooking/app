@@ -20,6 +20,7 @@
  * You should have received a copy of the GNU General Public License
  * along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 class Queries
 {
 	private function __construct()
@@ -1190,7 +1191,7 @@ class QueryBuilder
 		return self::Build(self::$SELECT_LIST_FRAGMENT, null, 'AND ' . self::$DATE_FRAGMENT . ' AND
 					(@userid = -1 OR ru.user_id = @userid) AND
 					(@levelid = 0 OR ru.reservation_user_level = @levelid) AND
-					(@scheduleid = -1 OR resources.schedule_id = @scheduleid) AND
+					(@all_schedules = 1 OR resources.schedule_id IN (@scheduleid)) AND
 					(@all_resources = 1 OR rr.resource_id IN (@resourceid))');
 	}
 
