@@ -54,7 +54,7 @@ class GuestAccountCreationEmail extends EmailMessage
 	 */
 	public function Subject()
 	{
-		return $this->Translate('GuestAccountCreatedSubject');
+		return $this->Translate('GuestAccountCreatedSubject', array(Configuration::Instance()->GetKey(ConfigKeys::APP_TITLE)));
 	}
 
 	/**

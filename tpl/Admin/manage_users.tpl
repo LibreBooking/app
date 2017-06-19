@@ -316,6 +316,10 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 						{/if}
 					</div>
 					<div class="modal-footer">
+                        <div class="checkbox inline">
+                            <input type="checkbox" id="sendAddEmail" checked="checked" {formname key=SEND_AS_EMAIL} />
+                            <label for="sendAddEmail">{translate key=NotifyUser}</label>
+                        </div>
 						{cancel_button}
 						{add_button}
 						{indicator}

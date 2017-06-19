@@ -25,6 +25,7 @@ require_once(ROOT_DIR . 'lib/Application/User/namespace.php');
 require_once(ROOT_DIR . 'lib/Application/Admin/UserImportCsv.php');
 require_once(ROOT_DIR . 'lib/Application/Admin/CsvImportResult.php');
 require_once(ROOT_DIR . 'lib/Email/Messages/InviteUserEmail.php');
+require_once(ROOT_DIR . 'lib/Email/Messages/AccountCreationForUserEmail.php');
 
 class ManageUsersActions
 {
@@ -252,6 +253,10 @@ class ManageUsersPresenter extends ActionPresenter implements IManageUsersPresen
             $group = $this->groupRepository->LoadById($groupId);
             $group->AddUser($userId);
             $this->groupRepository->Update($group);
+        }
+
+        if ($this->page->SendEmailNotification()) {
+            ServiceLocator::GetEmailService()->Send(new AccountCreationForUserEmail($user, $this->page->GetPassword(), ServiceLocator::GetServer()->GetUserSession()));
         }
     }
 

@@ -286,7 +286,7 @@ abstract class Page implements IPage
 
 	/**
 	 * @param string $var
-	 * @return null|string
+	 * @return bool
 	 */
 	protected function GetCheckbox($var)
 	{

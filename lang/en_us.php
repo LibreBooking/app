@@ -630,6 +630,7 @@ class en_us extends Language
         $strings['ReasonText'] = 'Reason text';
         $strings['NoAvailableMatchingTimes'] = 'There are no available times that match your search';
         $strings['Schedules'] = 'Schedules';
+        $strings['NotifyUser'] = 'Notify User';
         // End Strings
 
 		// Install
@@ -809,7 +810,8 @@ class en_us extends Language
 		$strings['ReservationEndingSoonSubject'] = 'Reservation for %s is ending soon';
 		$strings['UserAdded'] = 'A new user has been added';
 		$strings['UserDeleted'] = 'User account for %s was deleted by %s';
-		$strings['GuestAccountCreatedSubject'] = 'Your account details';
+		$strings['GuestAccountCreatedSubject'] = 'Your %s account details';
+		$strings['AccountCreatedSubject'] = 'Your %s account details';
 		$strings['InviteUserSubject'] = '%s has invited you to join %s';
 
 		$strings['ReservationApprovedSubjectWithResource'] = 'Reservation Has Been Approved for %s';

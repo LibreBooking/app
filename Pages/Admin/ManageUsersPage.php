@@ -174,6 +174,11 @@ interface IManageUsersPage extends IPageable, IActionPage
 	 * @return int[]
 	 */
 	public function GetDeletedUserIds();
+
+    /**
+     * @return bool
+     */
+    public function SendEmailNotification();
 }
 
 class ManageUsersPage extends ActionPage implements IManageUsersPage
@@ -448,4 +453,9 @@ class ManageUsersPage extends ActionPage implements IManageUsersPage
 
 		return $ids;
 	}
+
+    public function SendEmailNotification()
+    {
+        return $this->GetCheckbox(FormKeys::SEND_AS_EMAIL);
+    }
 }
