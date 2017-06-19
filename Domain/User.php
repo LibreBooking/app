@@ -877,11 +877,20 @@ class User
 		$this->defaultScheduleId = $scheduleId;
 	}
 
+    /**
+     * @param $groupId int|int[]
+     * @return bool
+     */
 	public function IsGroupAdminFor($groupId)
 	{
+	    if (!is_array($groupId))
+        {
+            $groupId = array($groupId);
+        }
+
 		foreach ($this->groupsICanAdminister as $group)
 		{
-			if ($group->GroupId == $groupId)
+			if (in_array($group->GroupId, $groupId))
 			{
 				return true;
 			}

@@ -180,11 +180,11 @@ class SearchAvailabilityPresenter extends ActionPresenter
 
 			if (empty($start))
 			{
-				$start = Date::Now()->ToTimezone($timezone)->ToDatabase();
+				$start = Date::Now()->ToTimezone($timezone);
 			}
 			if (empty($end))
 			{
-				$end = Date::Now()->ToTimezone($timezone)->AddDays(1)->ToDatabase();
+				$end = Date::Now()->ToTimezone($timezone)->AddDays(1);
 			}
 			return new DateRange(Date::Parse($start, $timezone), Date::Parse($end, $timezone));
 		}

@@ -53,7 +53,7 @@ class AutoCompletePage extends SecurePage
 
 		Log::Debug("AutoComplete for type: $type not defined");
 
-		return '';
+		return array();
 	}
 
 	public function GetType()
@@ -80,10 +80,12 @@ class AutoCompletePage extends SecurePage
 		$filter->_Or(new SqlFilterLike(ColumnNames::LAST_NAME, $term));
 		$filter->_Or(new SqlFilterLike(ColumnNames::EMAIL, $term));
 
-		$users = array();
+
 
 		$r = new UserRepository();
 		$currentUser = ServiceLocator::GetServer()->GetUserSession();
+		$user = $r->LoadById($currentUser->UserId);
+
         $status = AccountStatus::ACTIVE;
 		if ($currentUser->IsAdmin || $currentUser->IsGroupAdmin)
         {
@@ -91,10 +93,15 @@ class AutoCompletePage extends SecurePage
         }
 		$results = $r->GetList(1, PageInfo::All, null, null, $filter, $status)->Results();
 
+        $hideUserDetails = Configuration::Instance()->GetSectionKey(ConfigSection::PRIVACY, ConfigKeys::PRIVACY_HIDE_USER_DETAILS, new BooleanConverter());
+		$users = array();
 		/** @var $result UserItemView */
 		foreach($results as $result)
 		{
-			$users[] = new AutocompleteUser($result->Id, $result->First, $result->Last, $result->Email, $result->Username, $result->CurrentCreditCount);
+		    if (!$hideUserDetails || $result->Id == $currentUser->UserId || $user->IsGroupAdminFor($result->GroupIds))
+            {
+                $users[] = new AutocompleteUser($result->Id, $result->First, $result->Last, $result->Email, $result->Username, $result->CurrentCreditCount);
+            }
 		}
 
 		return $users;

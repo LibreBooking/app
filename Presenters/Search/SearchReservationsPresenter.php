@@ -125,11 +125,11 @@ class SearchReservationsPresenter extends ActionPresenter
 
 			if (empty($start))
 			{
-				$start = Date::Now()->ToTimezone($timezone)->ToDatabase();
+				$start = Date::Now()->ToTimezone($timezone)->AddMonths(-1);
 			}
 			if (empty($end))
 			{
-				$end = Date::Now()->ToTimezone($timezone)->AddDays(1)->ToDatabase();
+				$end = Date::Now()->ToTimezone($timezone)->AddMonths(1);
 			}
 			return new DateRange(Date::Parse($start, $timezone), Date::Parse($end, $timezone));
 		}
@@ -210,6 +210,12 @@ class ReservationsSearchFilter
 		{
 			$filter->_And(new SqlFilterEquals(new SqlFilterColumn(TableNames::USERS, ColumnNames::USER_ID), $userId));
 		}
+		else {
+		    if (Configuration::Instance()->GetSectionKey(ConfigSection::PRIVACY, ConfigKeys::PRIVACY_HIDE_RESERVATION_DETAILS, new BooleanConverter()))
+            {
+                $filter->_And(new SqlFilterEquals(new SqlFilterColumn(TableNames::USERS, ColumnNames::USER_ID), ServiceLocator::GetServer()->GetUserSession()->UserId));
+            }
+        }
 
 		if ($surroundFilter != null || $startFilter != null || $endFilter != null)
 		{

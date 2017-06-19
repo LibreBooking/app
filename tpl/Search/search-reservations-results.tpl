@@ -40,7 +40,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		{/if}
 		{assign var=reservationId value=$reservation->ReservationId}
 		<tr class="{$rowCss} editable" data-seriesId="{$reservation->SeriesId}" data-refnum="{$reservation->ReferenceNumber}">
-			<td class="user">{fullname first=$reservation->FirstName last=$reservation->LastName}</td>
+			<td class="user">{fullname first=$reservation->FirstName last=$reservation->LastName ignorePrivacy=($reservation->OwnerId==$UserId)}</td>
 			<td class="resource">{$reservation->ResourceName}</td>
 			<td class="title">{$reservation->Title}</td>
 			<td class="description">{$reservation->Description}</td>

@@ -52,6 +52,7 @@ class Pages
 	const RESERVATION_FILE = 'reservation-file.php';
 	const REGISTRATION = 'register.php';
 	const SCHEDULE = 'schedule.php';
+	const SEARCH_RESERVATIONS = 'search-reservations.php';
 
 	private static $_pages = array(
 		1 => array('url' => Pages::DASHBOARD, 'name' => 'MyDashboard'),

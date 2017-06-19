@@ -808,9 +808,9 @@ class UserDto
     }
 
     public function GetPreference($preferenceName)
-	{
-    	return $this->Preferences[$preferenceName];
-	}
+    {
+        return $this->Preferences[$preferenceName];
+    }
 }
 
 class NullUserDto extends UserDto
@@ -857,7 +857,15 @@ class UserItemView
      */
     public $Preferences;
 
+    /**
+     * @var int
+     */
     public $CurrentCreditCount;
+
+    /**
+     * @var int[]
+     */
+    public $GroupIds = array();
 
     public function __construct()
     {
@@ -907,6 +915,9 @@ class UserItemView
 
         $user->CurrentCreditCount = isset($row[ColumnNames::CREDIT_COUNT]) ? $row[ColumnNames::CREDIT_COUNT] : '';
 
+        if (isset($row[ColumnNames::GROUP_IDS])) {
+            $user->GroupIds = explode('!sep!', $row[ColumnNames::GROUP_IDS]);
+        }
 
         return $user;
     }

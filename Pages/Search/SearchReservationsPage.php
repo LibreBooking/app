@@ -216,5 +216,6 @@ class SearchReservationsPage extends ActionPage implements ISearchReservationsPa
 	{
 		return $this->GetForm(FormKeys::REFERENCE_NUMBER);
 	}
+
 }
 

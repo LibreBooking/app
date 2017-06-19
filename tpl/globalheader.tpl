@@ -214,8 +214,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                                 <li id="navResourceCalendar"><a
                                             href="{$Path}{Pages::CALENDAR}">{translate key="ResourceCalendar"}</a></li>
                                 <!--<li class="menuitem"><a href="#">{translate key="Current Status"}</a></li>-->
-                                <li id="navFindATime"><a href="{$Path}{Pages::OPENINGS}">{translate key="FindATime"}</a>
-                                </li>
+                                <li id="navFindATime"><a href="{$Path}{Pages::OPENINGS}">{translate key="FindATime"}</a></li>
+                                <li id="navFindATime"><a href="{$Path}{Pages::SEARCH_RESERVATIONS}">{translate key="SearchReservations"}</a></li>
                             </ul>
                         </li>
                         {if $CanViewAdmin}
