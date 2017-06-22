@@ -50,9 +50,8 @@ class RequiredEmailDomainValidator extends ValidatorBase implements IValidator
 			{
 				return;
 			}
-
-			$this->isValid = false;
-			break;
 		}
+
+		$this->isValid = false;
 	}
 }
