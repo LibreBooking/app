@@ -54,13 +54,45 @@ function Schedule(opts, resourceGroups) {
 			window.location = link + "&sd=" + sd + "&ed=" + ed;
 		});
 
-		if (opts.lockTableHead) {
-            reservations.find('table.reservations').floatThead({
-                position: 'auto',
-                top: 50,
-                zIndex: 998
-            });
-        }
+		if (opts.lockTableHead)
+		{
+			var reservationTables = reservations.find('table.reservations');
+			reservationTables.floatThead({
+				position: 'auto', top: 50, zIndex: 998
+			});
+
+			var onPrinting = function () {
+				reservationTables.floatThead('destroy');
+			};
+
+			var onScreen = function () {
+				reservationTables.floatThead({
+					position: 'auto', top: 50, zIndex: 998
+				});
+			};
+
+			//WebKit print detection
+			if (window.matchMedia)
+			{
+				var mediaQueryList = window.matchMedia('print');
+				mediaQueryList.addListener(function (mql) {
+					if (mql.matches)
+					{
+						onPrinting();
+					}
+					else
+					{
+						onScreen();
+					}
+				});
+			}
+
+			//IE print detection
+			window.onbeforeprint = onPrinting;
+			window.onafterprint = onScreen;
+
+			onScreen();
+		}
 
 		this.initResources();
 		this.initNavigation();
@@ -211,11 +243,11 @@ function Schedule(opts, resourceGroups) {
 			var changeDefaultUrl = options.setDefaultScheduleUrl.replace("[scheduleId]", scheduleId);
 
 
-				$.ajax({
-					url: changeDefaultUrl, success: function (data) {
-						defaultSetMessage.show().delay(5000).fadeOut();
-					}
-				});
+			$.ajax({
+				url: changeDefaultUrl, success: function (data) {
+					defaultSetMessage.show().delay(5000).fadeOut();
+				}
+			});
 		});
 	};
 
@@ -311,8 +343,7 @@ function Schedule(opts, resourceGroups) {
 
 			qTipElement.qtip({
 				position: {
-					my: 'bottom left', at: 'top left', effect: false,
-					viewport: $(window)
+					my: 'bottom left', at: 'top left', effect: false, viewport: $(window)
 				},
 
 				content: {
@@ -360,10 +391,7 @@ function Schedule(opts, resourceGroups) {
 		};
 
 		reservationsElement.selectable({
-			filter: 'td.reservable',
-			cancel: 'td.reserved',
-			distance: 20,
-			start: function (event, ui) {
+			filter: 'td.reservable', cancel: 'td.reserved', distance: 20, start: function (event, ui) {
 				startHref = '';
 			}, selecting: function (event, ui) {
 				select($(ui.selecting));
@@ -513,7 +541,7 @@ function ChangeGroup(node) {
 
 	$resourceGroups.find('input[group-id="' + groupId + '"]').click();
 
-	_.each(node.children, function(i) {
+	_.each(node.children, function (i) {
 		if (i.type == 'group')
 		{
 			ChangeGroup(i);
