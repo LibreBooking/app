@@ -54,7 +54,8 @@ function Schedule(opts, resourceGroups) {
 			window.location = link + "&sd=" + sd + "&ed=" + ed;
 		});
 
-		if (opts.lockTableHead)
+		var isOldIE = (navigator.userAgent.indexOf('MSIE')!==-1 || navigator.appVersion.indexOf('Trident/') > 0);
+		if (opts.lockTableHead && !isOldIE) {
 		{
 			var reservationTables = reservations.find('table.reservations');
 			reservationTables.floatThead({
