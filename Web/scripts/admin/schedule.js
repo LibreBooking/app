@@ -115,7 +115,9 @@ function ScheduleManagement(opts) {
 			elements.deletePeakTimes.val('1');
 		});
 
-		$(".save").click(function () {
+		$(".save").click(function (e) {
+			e.preventDefault();
+			e.stopPropagation();
 			$(this).closest('form').submit();
 		});
 
