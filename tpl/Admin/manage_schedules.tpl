@@ -48,7 +48,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
                         <div>
 					<span class="title scheduleName" data-type="text" data-pk="{$id}"
-                          data-name="{FormKeys::SCHEDULE_NAME}">{$schedule->GetName()|escape}</span>
+                          data-name="{FormKeys::SCHEDULE_NAME}">{$schedule->GetName()}</span>
                             <a class="update renameButton" href="#"><span class="fa fa-pencil-square-o"></span></a>
                         </div>
 

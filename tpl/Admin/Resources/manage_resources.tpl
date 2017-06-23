@@ -186,7 +186,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 						<div class="col-sm-9 col-xs-6">
 							<div>
 							<span class="title resourceName" data-type="text" data-pk="{$id}"
-								  data-name="{FormKeys::RESOURCE_NAME}">{$resource->GetName()|escape}</span>
+								  data-name="{FormKeys::RESOURCE_NAME}">{$resource->GetName()}</span>
 								<a class="update renameButton" href="#" title="{translate key='Rename'}"><i
 											class="fa fa-pencil-square-o"></i></a> |
 								<a class="update copyButton" href="#" title="{translate key='Copy'}"><i

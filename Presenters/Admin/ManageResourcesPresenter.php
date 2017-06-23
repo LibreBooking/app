@@ -935,6 +935,7 @@ class ManageResourcesPresenter extends ActionPresenter
 				$resource->SetAdminGroupId($adminGroupId);
 				$resource->SetColor($row->color);
 				$resource->SetRequiresApproval($row->approvalRequired == 'true' || $row->approvalRequired == '1');
+				$resource->SetMaxParticipants($row->capacity);
 
 				foreach ($row->attributes as $label => $value)
 				{
