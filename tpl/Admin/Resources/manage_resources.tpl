@@ -947,6 +947,24 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 							</div>
 						</div>
 
+                        <div class="title">{translate key=Capacity}</div>
+                        <div>
+                            <div class="form-group">
+                                <div class="checkbox">
+                                    <input type="checkbox" id="bulkEditUnlimitedCapacity" class="unlimitedCapacity"
+                                           data-related-inputs="#bulkEditMaxCapacityInputs" {formname key=MAX_PARTICIPANTS_UNLIMITED}/>
+                                    <label for="bulkEditUnlimitedCapacity">{translate key=ResourceCapacityNone}</label>
+                                </div>
+                                <div id='bulkEditMaxCapacityInputs'>
+                                    {capture name="txtBulkEditMaxCapacity" assign="txtBulkEditMaxCapacity"}
+                                        <input type='number' id='bulkEditMaxCapacity' class='form-control inline mid-number' min='0'
+                                               max='9999' size='5' {formname key=MAX_PARTICIPANTS} />
+                                    {/capture}
+                                    {translate key='ResourceCapacity' args=$txtBulkEditMaxCapacity}
+                                </div>
+                            </div>
+                        </div>
+
 						<div class="title">{translate key=Duration}</div>
 						<div>
 							<div class="form-group">

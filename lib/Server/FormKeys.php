@@ -128,6 +128,7 @@ class FormKeys
 	const MAX_DURATION = 'maxDuration';
 	const MAX_DURATION_NONE = 'maxDurationNone';
 	const MAX_PARTICIPANTS = 'maxParticipants';
+	const MAX_PARTICIPANTS_UNLIMITED = 'maxParticipantsUnlimited';
 	const MIN_NOTICE = 'minNotice';
 	const MIN_NOTICE_NONE = 'minNoticeNone';
 	const MAX_NOTICE = 'maxNotice';

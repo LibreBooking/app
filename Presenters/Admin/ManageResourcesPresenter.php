@@ -594,6 +594,8 @@ class ManageResourcesPresenter extends ActionPresenter
 		$allowSubscription = $this->page->GetAllowSubscriptions();
 		$credits = $this->page->GetCredits();
 		$peakCredits = $this->page->GetPeakCredits();
+		$maxCapacity = $this->page->GetMaxParticipants();
+		$unlimitedCapacity = $this->page->GetMaxParticipantsUnlimited();
 
 		$resourceIds = $this->page->GetBulkUpdateResourceIds();
 
@@ -692,6 +694,15 @@ class ManageResourcesPresenter extends ActionPresenter
 				{
 					$resource->SetPeakCreditsPerSlot($peakCredits);
 				}
+
+				if ($unlimitedCapacity)
+                {
+                    $resource->SetMaxParticipants(null);
+                }
+				if (!$unlimitedCapacity && $maxCapacity != '')
+                {
+                    $resource->SetMaxParticipants($maxCapacity);
+                }
 
 				/** @var AttributeValue $attribute */
 				foreach ($this->GetAttributeValues() as $attribute)

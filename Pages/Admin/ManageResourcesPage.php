@@ -379,6 +379,11 @@ interface IManageResourcesPage extends IUpdateResourcePage, IActionPage, IPageab
 	public function SetImportResult($importResult);
 
 	public function ShowExportCsv();
+
+    /**
+     * @return bool
+     */
+    public function GetMaxParticipantsUnlimited();
 }
 
 class ManageResourcesPage extends ActionPage implements IManageResourcesPage
@@ -974,6 +979,11 @@ class ManageResourcesPage extends ActionPage implements IManageResourcesPage
 	{
 		$this->DisplayCsv('Admin/Resources/resources_csv.tpl', 'resources.csv');
 	}
+
+    public function GetMaxParticipantsUnlimited()
+    {
+        return $this->GetCheckbox(FormKeys::MAX_PARTICIPANTS_UNLIMITED);
+    }
 }
 
 class ResourceFilterValues
