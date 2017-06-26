@@ -612,6 +612,10 @@ class ja_jp extends en_us
         $strings['Export'] = 'データ出力';
         $strings['Users'] = 'ユーザー';
         $strings['Guest'] = '部外の招待者';
+        $strings['SearchReservations'] = '予約の検索';
+        $strings['Schedules'] = 'スケジュール';
+        $strings['AllParticipants'] = '全ての参加者';
+        $strings['IncludeDeleted'] = '削除された予約を含む';
 
         // End Install
 
