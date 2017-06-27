@@ -35,7 +35,9 @@ STATUS:{if $reservation->IsPending}TENTATIVE{else}CONFIRMED{/if}
 {if $reservation->RecurRule neq ''}
 RRULE:{$reservation->RecurRule}
 {/if}
+
 SUMMARY:{$reservation->Summary}
+
 UID:{$reservation->ReferenceNumber}&{$UID}
 SEQUENCE:0
 URL:{$reservation->ReservationUrl}
@@ -44,7 +46,7 @@ X-MICROSOFT-CDO-BUSYSTATUS:BUSY
 BEGIN:VALARM
 TRIGGER;RELATED=START:-PT{$reservation->StartReminder->MinutesPrior()}M
 ACTION:DISPLAY
-DESCRIPTION:{$reservation->Summary}
+DESCRIPTION:{$reservation->Description}
 END:VALARM
 {/if}
 {if $reservation->EndReminder != null}

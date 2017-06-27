@@ -58,13 +58,13 @@ class iCalendarReservationView
 		$this->DateCreated = $res->DateCreated;
 		$this->DateEnd = $res->EndDate;
 		$this->DateStart = $res->StartDate;
-		$this->Description = $canViewDetails ? $res->Description : $privateNotice;
+		$this->Description =  $canViewDetails ? $factory->Format($res, $summaryFormat) : $privateNotice;
 		$fullName = new FullName($res->OwnerFirstName, $res->OwnerLastName);
 		$this->Organizer = $canViewUser ? $fullName->__toString() : $privateNotice;
 		$this->OrganizerEmail = $canViewUser ? $res->OwnerEmailAddress : $privateNotice;
 		$this->RecurRule = $this->CreateRecurRule($res);
 		$this->ReferenceNumber = $res->ReferenceNumber;
-		$this->Summary = $canViewDetails ? $factory->Format($res, $summaryFormat) : $privateNotice;
+		$this->Summary = $canViewDetails ? $res->Title : $privateNotice;
 		$this->ReservationUrl = sprintf("%s/%s?%s=%s", Configuration::Instance()->GetScriptUrl(), Pages::RESERVATION, QueryStringKeys::REFERENCE_NUMBER,
 										$res->ReferenceNumber);
 		$this->Location = $res->ResourceName;
