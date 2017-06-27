@@ -37,7 +37,6 @@ RRULE:{$reservation->RecurRule}
 {/if}
 
 SUMMARY:{$reservation->Summary}
-
 UID:{$reservation->ReferenceNumber}&{$UID}
 SEQUENCE:0
 URL:{$reservation->ReservationUrl}

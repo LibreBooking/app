@@ -48,8 +48,6 @@ class CalendarSubscriptionUrl
 	public function GetWebcalUrl()
 	{
 		$scriptUrl = $this->url->ToString();
-		$scriptUrl = str_replace('https', 'webcal', $scriptUrl);
-	    $scriptUrl = str_replace('http', 'webcal', $scriptUrl);
 		return str_replace(self::PAGE_TOKEN,  Pages::CALENDAR_SUBSCRIBE, $scriptUrl);
 	}
 
