@@ -208,6 +208,11 @@ interface ISchedulePage extends IActionPage
 	 */
 	public function SetSpecificDates($specificDates);
 
+    /**
+     * @return bool
+     */
+    public function FilterCleared();
+
 }
 
 class ScheduleStyle
@@ -552,6 +557,11 @@ class SchedulePage extends ActionPage implements ISchedulePage
 	{
 		return $user->Timezone;
 	}
+
+    public function FilterCleared()
+    {
+       return $this->GetQuerystring('clearFilter') == '1';
+    }
 }
 
 class DisplaySlotFactory

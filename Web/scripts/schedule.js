@@ -484,7 +484,7 @@ function Schedule(opts, resourceGroups) {
 
 			groupDiv.tree('selectNode', null);
 
-			eraseCookie('resource_filter' + scheduleId.val(), opts.scriptUrl);
+			$('#clearFilter').val('1');
 			$('#resettable').find('input, select').val('');
 			$(this).closest('form').submit();
 		});

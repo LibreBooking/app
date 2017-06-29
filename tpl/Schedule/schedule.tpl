@@ -234,6 +234,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 					<input type="hidden" name="sds" value="{foreach from=$SpecificDates item=d}{$d->Format('Y-m-d')},{/foreach}"/>
 					<input type="hidden" name="sd" value="{$DisplayDates->GetBegin()->Format('Y-m-d')}"/>
 					<input type="hidden" {formname key=SUBMIT} value="true"/>
+					<input type="hidden" name="clearFilter" id="clearFilter" value="0"/>
 				</form>
 			</div>
 		</div>
