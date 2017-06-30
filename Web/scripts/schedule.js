@@ -54,48 +54,48 @@ function Schedule(opts, resourceGroups) {
 			window.location = link + "&sd=" + sd + "&ed=" + ed;
 		});
 
-		var isOldIE = (navigator.userAgent.indexOf('MSIE') !== -1 || navigator.appVersion.indexOf('Trident/') > 0);
-		if (opts.lockTableHead && !isOldIE)
-		{
-			{
-				var reservationTables = reservations.find('table.reservations');
-				reservationTables.floatThead({
-					position: 'auto', top: 50, zIndex: 998
-				});
-
-				var onPrinting = function () {
-					reservationTables.floatThead('destroy');
-				};
-
-				var onScreen = function () {
-					reservationTables.floatThead({
-						position: 'auto', top: 50, zIndex: 998
-					});
-				};
-
-				//WebKit print detection
-				if (window.matchMedia)
-				{
-					var mediaQueryList = window.matchMedia('print');
-					mediaQueryList.addListener(function (mql) {
-						if (mql.matches)
-						{
-							onPrinting();
-						}
-						else
-						{
-							onScreen();
-						}
-					});
-				}
-
-				//IE print detection
-				window.onbeforeprint = onPrinting;
-				window.onafterprint = onScreen;
-
-				onScreen();
-			}
-		}
+		// var isOldIE = (navigator.userAgent.indexOf('MSIE') !== -1 || navigator.appVersion.indexOf('Trident/') > 0);
+		// if (opts.lockTableHead && !isOldIE)
+		// {
+		// 	{
+		// 		var reservationTables = reservations.find('table.reservations');
+		// 		reservationTables.floatThead({
+		// 			position: 'auto', top: 50, zIndex: 998
+		// 		});
+		//
+		// 		var onPrinting = function () {
+		// 			reservationTables.floatThead('destroy');
+		// 		};
+		//
+		// 		var onScreen = function () {
+		// 			reservationTables.floatThead({
+		// 				position: 'auto', top: 50, zIndex: 998
+		// 			});
+		// 		};
+		//
+		// 		//WebKit print detection
+		// 		if (window.matchMedia)
+		// 		{
+		// 			var mediaQueryList = window.matchMedia('print');
+		// 			mediaQueryList.addListener(function (mql) {
+		// 				if (mql.matches)
+		// 				{
+		// 					onPrinting();
+		// 				}
+		// 				else
+		// 				{
+		// 					onScreen();
+		// 				}
+		// 			});
+		// 		}
+		//
+		// 		//IE print detection
+		// 		window.onbeforeprint = onPrinting;
+		// 		window.onafterprint = onScreen;
+		//
+		// 		onScreen();
+		// 	}
+		// }
 
 		this.initResources();
 		this.initNavigation();
