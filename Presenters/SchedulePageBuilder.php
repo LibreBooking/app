@@ -382,12 +382,18 @@ class SchedulePageBuilder implements ISchedulePageBuilder
 		$filter = new ScheduleResourceFilter();
 		if ($page->FilterSubmitted())
 		{
-			$filter = new ScheduleResourceFilter($scheduleId,
-												 $page->GetResourceTypeId(),
-												 $page->GetMaxParticipants(),
-												 $this->AsAttributeValues($page->GetResourceAttributes()),
-												 $this->AsAttributeValues($page->GetResourceTypeAttributes()),
-												 $page->GetResourceIds());
+		    if ($page->FilterCleared())
+            {
+                $filter = new ScheduleResourceFilter();
+            }
+            else {
+                $filter = new ScheduleResourceFilter($scheduleId,
+                    $page->GetResourceTypeId(),
+                    $page->GetMaxParticipants(),
+                    $this->AsAttributeValues($page->GetResourceAttributes()),
+                    $this->AsAttributeValues($page->GetResourceTypeAttributes()),
+                    $page->GetResourceIds());
+                    }
 		}
 		else
 		{
