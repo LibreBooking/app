@@ -24,7 +24,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 				{assign var="detailsCol" value="col-xs-12"}
 				{assign var="participantCol" value="col-xs-12"}
 
-				{if $ShowParticipation && $AllowParticipation}
+				{if $ShowParticipation && $AllowParticipation && $ShowReservationDetails}
 					{assign var="detailsCol" value="col-xs-12 col-sm-6"}
 					{assign var="participantCol" value="col-xs-12 col-sm-6"}
 				{/if}
@@ -32,7 +32,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 				<div id="reservationDetails" class="{$detailsCol}">
 					<div class="col-xs-12">
 						<label>{translate key='User'}</label>
-						{if $ShowUserDetails}
+						{if $ShowUserDetails && $ShowReservationDetails}
 							<a href="#" class="bindableUser" data-userid="{$UserId}">{$ReservationUserName}</a>
 							<input id="userId" type="hidden" value="{$UserId}"/>
 						{else}
@@ -50,6 +50,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 							{/foreach}
 						</div>
 						<div class="pull-right">
+                            {if $ShowReservationDetails}
 							<label>{translate key='Accessories'}</label>
 							{foreach from=$Accessories item=accessory name=accessoryLoop}
 								<span class="badge quantity">{$accessory->QuantityReserved}</span>
@@ -59,6 +60,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 									{$accessory->Name},
 								{/if}
 							{/foreach}
+                            {/if}
 						</div>
 					</div>
 
@@ -140,7 +142,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 					{/if}
 				</div>
 
-				{if $ShowParticipation}
+                {if $ShowParticipation && $AllowParticipation && $ShowReservationDetails}
 					<div class="{$participantCol}">
 						<div id="reservationParticipation">
 							<div id="participationAction" class="participationAction">
