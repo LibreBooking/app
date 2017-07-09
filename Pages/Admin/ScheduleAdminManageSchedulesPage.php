@@ -72,5 +72,19 @@ class ScheduleAdminManageScheduleService extends ManageScheduleService
 	{
 		return $this->scheduleRepo->GetAll();
 	}
+
+	public function GetResources()
+    {
+        $resources = array();
+
+        $all = $this->adminResourceRepo->GetResourceList();
+        /** @var BookableResource $resource */
+        foreach ($all as $resource)
+        {
+            $resources[$resource->GetScheduleId()][] = $resource;
+        }
+
+        return $resources;
+    }
 }
 
