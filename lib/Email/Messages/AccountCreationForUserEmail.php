@@ -64,13 +64,13 @@ class AccountCreationForUserEmail extends EmailMessage
     {
         $this->Set('FullName', $this->user->FullName());
         $this->Set('EmailAddress', $this->user->EmailAddress());
-        $this->Set('Phone', $this->user->GetAttribute('Phone'));
-        $this->Set('Organization', $this->user->GetAttribute('Organization'));
-        $this->Set('Position', $this->user->GetAttribute('Position'));
+        $this->Set('Phone', $this->user->GetAttribute(UserAttribute::Phone));
+        $this->Set('Organization', $this->user->GetAttribute(UserAttribute::Organization));
+        $this->Set('Position', $this->user->GetAttribute(UserAttribute::Position));
         $this->Set('Password', $this->password);
         $this->Set('AppTitle', Configuration::Instance()->GetKey(ConfigKeys::APP_TITLE));
         $this->Set('ScriptUrl', Configuration::Instance()->GetScriptUrl());
-
+		$this->Set('CreatedBy', '');
         if ($this->userSession != null && $this->userSession->UserId != $this->user->Id()) {
             $this->Set('CreatedBy', new FullName($this->userSession->FirstName, $this->userSession->LastName));
         }
