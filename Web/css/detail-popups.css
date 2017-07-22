@@ -539,6 +539,9 @@ span.searchclear {
   cursor: pointer;
   color: #ccc;
 }
+img.logo {
+  max-height: 50px;
+}
 #resourceDetailsPopup #userDetailsPopup {
   min-width: 300px;
   max-width: 1000px;
