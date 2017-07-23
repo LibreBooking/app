@@ -119,7 +119,7 @@ class ja_jp extends en_us
         $strings['Weekly'] = '週ごと';
         $strings['Monthly'] = '月ごと';
         $strings['Yearly'] = '年ごと';
-        $strings['RepeatPrompt'] = '繰り返し';
+        $strings['RepeatPrompt'] = '繰り返し単位';
         $strings['hours'] = '時間';
         $strings['days'] = '日ごと';
         $strings['weeks'] = '週ごと';
@@ -131,7 +131,7 @@ class ja_jp extends en_us
         $strings['year'] = '年';
         $strings['repeatDayOfMonth'] = '同じ日付';
         $strings['repeatDayOfWeek'] = '同じ曜日';
-        $strings['RepeatUntilPrompt'] = 'まで';
+        $strings['RepeatUntilPrompt'] = '繰り返し終了';
         $strings['RepeatEveryPrompt'] = ' ';
         $strings['RepeatDaysPrompt'] = ' ';
         $strings['CreateReservationHeading'] = '予約の作成';
@@ -491,7 +491,7 @@ class ja_jp extends en_us
         $strings['UniquePerInstance'] = '個別に識別';
         $strings['AddResourceType'] = 'リソースタイプを追加';
         $strings['NoResourceTypeLabel'] = '(リソースタイプ無し)';
-        $strings['ClearFilter'] = 'フィルターをリセット';
+        $strings['ClearFilter'] = 'リセット';
         $strings['MinimumCapacity'] = '最少利用人数';
         $strings['Color'] = '色';
         $strings['Available'] = 'あり';
