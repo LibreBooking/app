@@ -209,11 +209,16 @@ class CalendarSubscriptionService implements ICalendarSubscriptionService
 
         if (!empty($scheduleId)) {
             $schedule = $this->scheduleRepository->LoadById($scheduleId);
-            $schedulePublicId = $schedule->GetPublicId();
+            if ($schedule != null)
+            {
+                $schedulePublicId = $schedule->GetPublicId();
+            }
         }
         if (!empty($resourceId)) {
             $resource = $this->resourceRepository->LoadById($resourceId);
-            $resourcePublicId = $resource->GetPublicId();
+            if ($resource != null) {
+                $resourcePublicId = $resource->GetPublicId();
+            }
         }
 
         return new CalendarSubscriptionDetails(
