@@ -99,7 +99,7 @@ class ReservationCheckinPage extends Page implements IReservationCheckinPage
 
 	public function SetErrors($errors)
 	{
-        // no-op
+        $this->Set('Errors', $errors);
 	}
 
 	public function SetWarnings($warnings)
