@@ -33,7 +33,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			    height: 100%;
 			}
 
-			div.resource-image
+			div.resource-image img
 			{
 			    padding-bottom:25px;
 			    max-height:200px;
