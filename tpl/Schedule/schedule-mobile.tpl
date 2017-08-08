@@ -88,13 +88,13 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 				<tr>
 					{assign var=resourceId value=$resource->Id}
 					{assign var=href value="{Pages::RESERVATION}?rid={$resourceId}&sid={$ScheduleId}&rd={formatdate date=$date key=url}"}
-					<td class="resourcename" {if $resource->HasColor()}style="background-color:{$resource->GetColor()}"{/if}>
+					<td class="resourcename" {if $resource->HasColor()}style="background-color:{$resource->GetColor()} !important"{/if}>
 						{if $resource->CanAccess}
-							<i resourceId="{$resourceId}" class="resourceNameSelector fa fa-info-circle" {if $resource->HasColor()}style="color:{$resource->GetTextColor()}"{/if}></i>
-							<a href="{$href}" resourceId="{$resourceId}" {if $resource->HasColor()}style="color:{$resource->GetTextColor()}"{/if}>{$resource->Name}</a>
+							<i resourceId="{$resourceId}" class="resourceNameSelector fa fa-info-circle" {if $resource->HasColor()}style="color:{$resource->GetTextColor()} !important"{/if}></i>
+							<a href="{$href}" resourceId="{$resourceId}" {if $resource->HasColor()}style="color:{$resource->GetTextColor()} !important"{/if}>{$resource->Name}</a>
 						{else}
-							<i resourceId="{$resourceId}" class="resourceNameSelector fa fa-info-circle" {if $resource->HasColor()}style="color:{$resource->GetTextColor()}"{/if}></i>
-							<span {if $resource->HasColor()}style="color:{$resource->GetTextColor()}"{/if}>{$resource->Name}</span>
+							<i resourceId="{$resourceId}" class="resourceNameSelector fa fa-info-circle" {if $resource->HasColor()}style="color:{$resource->GetTextColor()} !important"{/if}></i>
+							<span {if $resource->HasColor()}style="color:{$resource->GetTextColor()} !important"{/if}>{$resource->Name}</span>
 						{/if}
 					</td>
 
