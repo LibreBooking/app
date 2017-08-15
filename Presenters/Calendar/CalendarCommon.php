@@ -348,6 +348,10 @@ abstract class CommonCalendarPresenter extends ActionPresenter
         }
 
         $selectedSchedule = $this->GetSelectedSchedule($schedules, $selectedScheduleId);
+        if ($selectedSchedule->GetId() == 0)
+		{
+			$selectedScheduleId = null;
+		}
 
         $resourceGroups = $this->resourceService->GetResourceGroups(null, $userSession);
 
