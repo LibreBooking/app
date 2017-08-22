@@ -331,9 +331,11 @@ class ReservationDetailsBinder implements IReservationComponentBinder
 		$this->page->SetCheckInRequired(false);
 		$this->page->SetCheckOutRequired(false);
 		$this->page->SetAutoReleaseMinutes(null);
-		$this->SetCheckinRequired();
-		$this->SetCheckoutRequired();
-		$this->SetAutoReleaseMinutes();
+		if ($canBeEdited) {
+            $this->SetCheckinRequired();
+            $this->SetCheckoutRequired();
+            $this->SetAutoReleaseMinutes();
+        }
 	}
 
 	private function IsCurrentUserParticipating($currentUserId)
@@ -364,7 +366,7 @@ class ReservationDetailsBinder implements IReservationComponentBinder
 
 	private function SetCheckinRequired()
 	{
-	    $this->page->SetCheckInRequired($this->reservationView->IsCheckinAvailable());
+	    $this->page->SetCheckInRequired( $this->reservationView->IsCheckinAvailable());
 	}
 
 	private function SetCheckoutRequired()
