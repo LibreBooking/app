@@ -63,7 +63,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 						{assign var=href value="{Pages::RESERVATION}?rid={$resource->Id}&sid={$ScheduleId}&rd={formatdate date=$date key=url}"}
 						{foreach from=$slots item=slot}
 							{assign var=slotRef value="{$slot->BeginDate()->Format('YmdHis')}{$resourceId}"}
-							{displaySlot Slot=$slot Href="$href" AccessAllowed=$resource->CanAccess SlotRef=$slotRef ResourceId=$resourceId}
+							{call displaySlot Slot=$slot Href="$href" AccessAllowed=$resource->CanAccess SlotRef=$slotRef ResourceId=$resourceId}
 						{/foreach}
 					{/foreach}
 				</tr>

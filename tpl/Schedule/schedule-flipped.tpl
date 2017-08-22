@@ -86,7 +86,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 				{foreach from=$slots item=slot name=slot_loop}
 					{assign var=slotRef value="{$slot->BeginDate()->Format('YmdHis')}{$resourceId}"}
 					{capture assign="slotContent"}
-						{displaySlot Slot=$slot Href="$href" AccessAllowed=$resource->CanAccess SlotRef=$slotRef spantype='row' ResourceId=$resourceId}
+						{call displaySlot Slot=$slot Href="$href" AccessAllowed=$resource->CanAccess SlotRef=$slotRef spantype='row' ResourceId=$resourceId}
 					{/capture}
 					if (!rows['#{$slot->BeginSlotId()}'])
 					{
