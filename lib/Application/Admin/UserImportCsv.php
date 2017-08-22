@@ -80,7 +80,9 @@ class UserImportCsvRow
      */
 	public static function GetHeaders($values, $attributes)
 	{
-		if (!in_array('email', $values) && !in_array('username', $values))
+        $values = array_map('strtolower', $values);
+
+        if (!in_array('email', $values) && !in_array('username', $values))
 		{
 			return false;
 		}
@@ -99,6 +101,7 @@ class UserImportCsvRow
 
         foreach ($attributes as $label => $attribute)
         {
+            $label = strtolower($label);
             $escapedLabel = str_replace('\'', '\\\\', $label);
             $indexes[$label] = self::indexOrFalse($escapedLabel, $values);
         }
