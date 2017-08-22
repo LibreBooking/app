@@ -90,10 +90,10 @@ class Shibboleth extends Authentication {
     }
 
     /*
-     * @override Authentication::Logout()
+     * @override Authentication::AreCredentialsKnown()
     */
     public function AreCredentialsKnown () {
-        return false;
+        return true;
     }
 
     /*
