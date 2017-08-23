@@ -381,7 +381,8 @@ class ManageResourcesPresenter extends ActionPresenter
 		$image = $this->imageFactory->Load($uploadedImage->TemporaryName());
 		$image->ResizeToWidth(300);
 
-		$fileName = "resource{$this->page->GetResourceId()}.$fileType";
+		$time = time();
+		$fileName = "resource{$this->page->GetResourceId()}{$time}.$fileType";
 		$imageUploadDirectory = Configuration::Instance()->GetKey(ConfigKeys::IMAGE_UPLOAD_DIRECTORY);
 
 		$path = '';
