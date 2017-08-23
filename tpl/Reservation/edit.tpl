@@ -70,10 +70,10 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 	</div>
 
 	{if $CheckInRequired}
-		<button type="button" class="btn btn-warning btnCheckin"><i class="fa fa-sign-in"></i> {translate key=CheckIn}<span class="autoReleaseButtonMessage" data-autorelease-minutes="{$AutoReleaseMinutes}"> - {translate key=ReleasedIn} <span class="autoReleaseMinutes"></span> {translate key=minutes}</span></button>
+		<button type="button" id="btnCheckin" class="btn btn-warning btnCheckin"><i class="fa fa-sign-in"></i> {translate key=CheckIn}<span class="autoReleaseButtonMessage" data-autorelease-minutes="{$AutoReleaseMinutes}"> - {translate key=ReleasedIn} <span class="autoReleaseMinutes"></span> {translate key=minutes}</span></button>
 	{/if}
 	{if $CheckOutRequired}
-		<button type="button" class="btn btn-warning btnCheckout"><i class="fa fa-sign-out"></i> {translate key=CheckOut}</button>
+		<button type="button" id="btnCheckout" class="btn btn-warning btnCheckout"><i class="fa fa-sign-out"></i> {translate key=CheckOut}</button>
 	{/if}
 	{if $IsRecurring}
 		<button type="button" class="btn btn-success update prompt">

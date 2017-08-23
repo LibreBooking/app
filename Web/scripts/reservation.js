@@ -823,7 +823,7 @@ function Reservation(opts) {
 					if (releaseMinutesText <= 0)
 					{
 						clearInterval(interval);
-                        window.location = options.returnUrl;
+                        $('#btnCheckin').addClass('no-show');
                     }
 				};
 
