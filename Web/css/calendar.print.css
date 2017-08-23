@@ -1,0 +1,9 @@
+@media print {
+    a[href]:after {
+        content: "" !important;
+    }
+}
+
+#filter, #subscriptionContainer {
+    display:none;
+}
