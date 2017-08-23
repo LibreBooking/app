@@ -25,7 +25,7 @@ class FakeSmarty extends Smarty
 	public $_LastVar;
 	public $_Value;
 
-	public function getTemplateVars($varname = null, $_ptr = null, $search_parents = true)
+	public function getTemplateVars($varname = null, Smarty_Internal_Data $_ptr = null, $search_parents = true)
 	{
 		$this->_LastVar = $varname;
 

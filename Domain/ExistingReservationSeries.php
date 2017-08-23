@@ -184,17 +184,25 @@ class ExistingReservationSeries extends ReservationSeries
 		$this->attachmentIds[$fileId] = $extension;
 	}
 
-	/**
-	 * @internal
-	 * @return bool
-	 */
 	public function RemoveInstance(Reservation $reservation)
 	{
-		$removed = parent::RemoveInstance($reservation);
+	    $toRemove = $reservation;
 
-		$this->AddEvent(new InstanceRemovedEvent($reservation, $this));
-		$this->_deleteRequestIds[] = $reservation->ReservationId();
+	    foreach ($this->_Instances() as $instance)
+        {
+            if ($instance->ReferenceNumber() == $reservation->ReferenceNumber() ||
+                ($instance->StartDate()->Equals($reservation->StartDate()) && $instance->EndDate()->Equals($reservation->EndDate())))
+            {
+                $toRemove = $instance;
+                break;
+            }
+        }
+		$removed = parent::RemoveInstance($toRemove);
 
+		if ($removed) {
+            $this->AddEvent(new InstanceRemovedEvent($toRemove, $this));
+            $this->_deleteRequestIds[] = $toRemove->ReservationId();
+        }
 		return $removed;
 	}
 
