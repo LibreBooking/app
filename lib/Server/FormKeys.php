@@ -242,6 +242,7 @@ class FormKeys
 	const USERNAME = 'username';
 	const USER_IMPORT_FILE = 'USER_IMPORT_FILE';
 	const USING_SINGLE_LAYOUT = 'USING_SINGLE_LAYOUT';
+	const UPDATE_ON_IMPORT = 'UPDATE_ON_IMPORT';
 
 	const VALUE = 'value';
 

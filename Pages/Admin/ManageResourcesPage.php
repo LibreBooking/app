@@ -384,6 +384,11 @@ interface IManageResourcesPage extends IUpdateResourcePage, IActionPage, IPageab
      * @return bool
      */
     public function GetMaxParticipantsUnlimited();
+
+    /**
+     * @return bool
+     */
+    public function GetUpdateOnImport();
 }
 
 class ManageResourcesPage extends ActionPage implements IManageResourcesPage
@@ -983,6 +988,11 @@ class ManageResourcesPage extends ActionPage implements IManageResourcesPage
     public function GetMaxParticipantsUnlimited()
     {
         return $this->GetCheckbox(FormKeys::MAX_PARTICIPANTS_UNLIMITED);
+    }
+
+    public function GetUpdateOnImport()
+    {
+        return $this->GetCheckbox(FormKeys::UPDATE_ON_IMPORT);
     }
 }
 
