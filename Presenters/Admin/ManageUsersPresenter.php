@@ -234,6 +234,11 @@ class ManageUsersPresenter extends ActionPresenter implements IManageUsersPresen
     public function AddUser()
     {
         $defaultHomePageId = Configuration::Instance()->GetKey(ConfigKeys::DEFAULT_HOMEPAGE, new IntConverter());
+        $extraAttributes = array(
+            UserAttribute::Organization => $this->page->GetOrganization(),
+            UserAttribute::Phone => $this->page->GetPhone(),
+            UserAttribute::Position => $this->page->GetPosition());
+
         $user = $this->manageUsersService->AddUser(
             $this->page->GetUserName(),
             $this->page->GetEmail(),
@@ -243,7 +248,7 @@ class ManageUsersPresenter extends ActionPresenter implements IManageUsersPresen
             $this->page->GetTimezone(),
             Configuration::Instance()->GetKey(ConfigKeys::LANGUAGE),
             empty($defaultHomePageId) ? Pages::DEFAULT_HOMEPAGE_ID : $defaultHomePageId,
-            array(),
+            $extraAttributes,
             $this->GetAttributeValues());
 
         $userId = $user->Id();
