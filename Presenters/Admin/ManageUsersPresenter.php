@@ -481,7 +481,9 @@ class ManageUsersPresenter extends ActionPresenter implements IManageUsersPresen
     {
 		ini_set('max_execution_time', 600);
 
-		$attributes = $this->attributeService->GetByCategory(CustomAttributeCategory::USER);
+        $shouldUpdate = $this->page->GetUpdateOnImport();
+
+        $attributes = $this->attributeService->GetByCategory(CustomAttributeCategory::USER);
         /** @var CustomAttribute[] $attributesIndexed */
         $attributesIndexed = array();
         /** @var CustomAttribute $attribute */
@@ -522,33 +524,55 @@ class ManageUsersPresenter extends ActionPresenter implements IManageUsersPresen
                 $uniqueUsernameValidator = new UniqueUserNameValidator($this->userRepository, $row->username);
 
                 $emailValidator->Validate();
-                $uniqueEmailValidator->Validate();
-                $uniqueUsernameValidator->Validate();
-
                 if (!$emailValidator->IsValid()) {
                     $evMsgs = $emailValidator->Messages();
                     $messages[] = $evMsgs[0] . " ({$row->email})";
                     continue;
                 }
-                if (!$uniqueEmailValidator->IsValid()) {
-                    $uevMsgs = $uniqueEmailValidator->Messages();
-                    $messages[] = $uevMsgs[0] . " ({$row->email})";
-                    continue;
-                }
-                if (!$uniqueUsernameValidator->IsValid()) {
-                    $uuvMsgs = $uniqueUsernameValidator->Messages();
-                    $messages[] = $uuvMsgs[0] . " ({$row->username})";
-                    continue;
+
+                if (!$shouldUpdate) {
+                    $uniqueEmailValidator->Validate();
+                    $uniqueUsernameValidator->Validate();
+
+                    if (!$uniqueEmailValidator->IsValid()) {
+                        $uevMsgs = $uniqueEmailValidator->Messages();
+                        $messages[] = $uevMsgs[0] . " ({$row->email})";
+                        continue;
+                    }
+                    if (!$uniqueUsernameValidator->IsValid()) {
+                        $uuvMsgs = $uniqueUsernameValidator->Messages();
+                        $messages[] = $uuvMsgs[0] . " ({$row->username})";
+                        continue;
+                    }
                 }
 
                 $timezone = empty($row->timezone) ? Configuration::Instance()->GetKey(ConfigKeys::DEFAULT_TIMEZONE) : $row->timezone;
                 $password = empty($row->password) ? 'password' : $row->password;
                 $language = empty($row->language) ? 'en_us' : $row->language;
 
-                $user = $this->manageUsersService->AddUser($row->username, $row->email, $row->firstName, $row->lastName, $password, $timezone, $language,
-                    Configuration::Instance()->GetKey(ConfigKeys::DEFAULT_HOMEPAGE),
-                    array(UserAttribute::Phone => $row->phone, UserAttribute::Organization => $row->organization, UserAttribute::Position => $row->position),
-                    array());
+                if ($shouldUpdate)
+                {
+                    $user = $this->manageUsersService->LoadUser($row->email);
+                    if ($user->Id() == null)
+                    {
+                        $shouldUpdate = false;
+                    }
+                    else{
+                        $user->ChangeName($row->firstName, $row->lastName);
+                        $password = $this->passwordEncryption->EncryptPassword($row->password);
+                        $user->ChangePassword($password->EncryptedPassword(), $password->Salt());
+                        $user->ChangeTimezone($timezone);
+                        $user->ChangeAttributes($row->phone, $row->organization, $row->position);
+//                        $this->manageUsersService->UpdateUser($user->Id(), $user->Username(), $user->EmailAddress(), $row->firstName, $row->lastName, $timezone, array(UserAttribute::Phone => $row->phone, UserAttribute::Organization => $row->organization, UserAttribute::Position => $row->position));
+                    }
+
+                }
+                if (!$shouldUpdate) {
+                    $user = $this->manageUsersService->AddUser($row->username, $row->email, $row->firstName, $row->lastName, $password, $timezone, $language,
+                        Configuration::Instance()->GetKey(ConfigKeys::DEFAULT_HOMEPAGE),
+                        array(UserAttribute::Phone => $row->phone, UserAttribute::Organization => $row->organization, UserAttribute::Position => $row->position),
+                        array());
+                }
 
                 $userGroups = array();
                 foreach ($row->groups as $groupName) {
@@ -575,7 +599,7 @@ class ManageUsersPresenter extends ActionPresenter implements IManageUsersPresen
                     }
                 }
 
-                if (count($userGroups) > 0 || count($row->attributes) > 0)
+                if (count($userGroups) > 0 || count($row->attributes) > 0 || $shouldUpdate)
                 {
                     $this->userRepository->Update($user);
                 }

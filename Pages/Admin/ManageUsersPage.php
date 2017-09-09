@@ -179,6 +179,11 @@ interface IManageUsersPage extends IPageable, IActionPage
      * @return bool
      */
     public function SendEmailNotification();
+
+    /**
+     * @return bool
+     */
+    public function GetUpdateOnImport();
 }
 
 class ManageUsersPage extends ActionPage implements IManageUsersPage
@@ -457,5 +462,10 @@ class ManageUsersPage extends ActionPage implements IManageUsersPage
     public function SendEmailNotification()
     {
         return $this->GetCheckbox(FormKeys::SEND_AS_EMAIL);
+    }
+
+    public function GetUpdateOnImport()
+    {
+        return $this->GetCheckbox(FormKeys::UPDATE_ON_IMPORT);
     }
 }

@@ -1363,7 +1363,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                             <input type="file" {formname key=RESOURCE_IMPORT_FILE} />
                             <div class="checkbox">
                                 <input type="checkbox" id="updateOnImport" {formname key=UPDATE_ON_IMPORT}/>
-                                <label for="updateOnImport">Update existing resources if name already exists</label>
+                                <label for="updateOnImport">{translate key=UpdateResourcesOnImport}</label>
                             </div>
                         </div>
                         <div id="importInstructions" class="alert alert-info">

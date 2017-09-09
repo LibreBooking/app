@@ -353,11 +353,14 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 							<span>{translate key=RowsSkipped}</span>
 
 							<div id="importSkipped" class="inline bold">0</div>
-							<a class="" href="{$smarty.server.SCRIPT_NAME}">{translate key=Done} <span
-										class="fa fa-refresh"></span></a>
+							<a class="" href="{$smarty.server.SCRIPT_NAME}">{translate key=Done}</a>
 						</div>
 						<div class="margin-bottom-25">
 							<input type="file" {formname key=USER_IMPORT_FILE} />
+                            <div class="checkbox">
+                                <input type="checkbox" id="updateOnImport" {formname key=UPDATE_ON_IMPORT}/>
+                                <label for="updateOnImport">{translate key=UpdateUsersOnImport}</label>
+                            </div>
 						</div>
 						<div id="importInstructions" class="alert alert-info">
 							<div class="note">{translate key=UserImportInstructions}</div>

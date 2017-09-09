@@ -85,6 +85,12 @@ interface IManageUsersService
      * @param string $password
      */
     public function UpdatePassword($userId, $password);
+
+    /**
+     * @param string $email
+     * @return User
+     */
+    public function LoadUser($email);
 }
 
 class ManageUsersService implements IManageUsersService
@@ -254,5 +260,10 @@ class ManageUsersService implements IManageUsersService
        $user->ChangePassword($encrypted->EncryptedPassword(), $encrypted->Salt());
 
        $this->userRepository->Update($user);
+    }
+
+    public function LoadUser($email)
+    {
+       return $this->userRepository->LoadByUsername($email);
     }
 }

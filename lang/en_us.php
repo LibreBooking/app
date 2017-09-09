@@ -631,6 +631,8 @@ class en_us extends Language
         $strings['NoAvailableMatchingTimes'] = 'There are no available times that match your search';
         $strings['Schedules'] = 'Schedules';
         $strings['NotifyUser'] = 'Notify User';
+        $strings['UpdateUsersOnImport'] = 'Update existing user if email already exists';
+        $strings['UpdateResourcesOnImport'] = 'Update existing resources if name already exists';
         // End Strings
 
 		// Install
