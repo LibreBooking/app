@@ -563,7 +563,6 @@ class ManageUsersPresenter extends ActionPresenter implements IManageUsersPresen
                         $user->ChangePassword($password->EncryptedPassword(), $password->Salt());
                         $user->ChangeTimezone($timezone);
                         $user->ChangeAttributes($row->phone, $row->organization, $row->position);
-//                        $this->manageUsersService->UpdateUser($user->Id(), $user->Username(), $user->EmailAddress(), $row->firstName, $row->lastName, $timezone, array(UserAttribute::Phone => $row->phone, UserAttribute::Organization => $row->organization, UserAttribute::Position => $row->position));
                     }
 
                 }

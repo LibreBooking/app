@@ -165,7 +165,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 					{*<span class="reservationResourceStatusReason">{$StatusReasons[$reservation->ResourceStatusReasonId]->Description()}</span>*}
 					{*{/if}*}
 				</td>
-				<td class="title">{$reservation->Title}</td>
+				<td class="reservationTitle">{$reservation->Title}</td>
 				<td class="description">{$reservation->Description}</td>
 				<td class="date">{formatdate date=$reservation->StartDate timezone=$Timezone key=short_reservation_date}</td>
 				<td class="date">{formatdate date=$reservation->EndDate timezone=$Timezone key=short_reservation_date}</td>
