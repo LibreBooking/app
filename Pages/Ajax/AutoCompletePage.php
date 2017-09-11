@@ -80,8 +80,6 @@ class AutoCompletePage extends SecurePage
 		$filter->_Or(new SqlFilterLike(ColumnNames::LAST_NAME, $term));
 		$filter->_Or(new SqlFilterLike(ColumnNames::EMAIL, $term));
 
-
-
 		$r = new UserRepository();
 		$currentUser = ServiceLocator::GetServer()->GetUserSession();
 		$user = $r->LoadById($currentUser->UserId);
@@ -98,7 +96,7 @@ class AutoCompletePage extends SecurePage
 		/** @var $result UserItemView */
 		foreach($results as $result)
 		{
-		    if (!$hideUserDetails || $result->Id == $currentUser->UserId || $user->IsGroupAdminFor($result->GroupIds))
+		    if (!$hideUserDetails || $result->Id == $currentUser->UserId || $user->IsGroupAdminFor($result->GroupIds) || $currentUser->IsAdmin)
             {
                 $users[] = new AutocompleteUser($result->Id, $result->First, $result->Last, $result->Email, $result->Username, $result->CurrentCreditCount);
             }
