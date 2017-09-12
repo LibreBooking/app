@@ -912,6 +912,13 @@ input[type="radio"] .styled:checked + label::after {
   cursor: pointer;
   background-color: #F0F0F0;
 }
+.upcomingReservationsDashboard .reservation.pending {
+  background-color: #ffb540;
+}
+.upcomingReservationsDashboard .reservation.pending.hover,
+.upcomingReservationsDashboard .reservation.pending.clicked {
+  background-color: #ffc973;
+}
 .availabilityDashboard .header {
   font-size: 1.2em;
   font-weight: bold;
