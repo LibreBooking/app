@@ -181,6 +181,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 	{csrf_token}
 
+    {include file="javascript-includes.tpl"}
 	{jsfile src="ajax-helpers.js"}
 	{jsfile src="admin/accessory.js"}
 	{jsfile src="js/jquery.form-3.09.min.js"}

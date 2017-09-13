@@ -282,6 +282,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 	</div>
 
 	{csrf_token}
+    {include file="javascript-includes.tpl" Timepicker=true}
 
 	{jsfile src="reservationPopup.js"}
 	{jsfile src="ajax-helpers.js"}

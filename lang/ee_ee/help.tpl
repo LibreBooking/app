@@ -39,3 +39,6 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 </p>
 
 <h3>NB! Internetis saab broneerida aega, mille alguseni on jäänud rohkem kui 24h. Kui tahate varasemat aega broneerida, siis helistage 55663493.</h3>
+
+{include file="javascript-includes.tpl"}
+{include file="globalfooter.tpl"}

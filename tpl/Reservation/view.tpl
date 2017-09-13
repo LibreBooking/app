@@ -323,10 +323,10 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 	</div>
 </div>
 
+{include file="javascript-includes.tpl" Qtip=true}
 {jsfile src="participation.js"}
 {jsfile src="approval.js"}
 {jsfile src="js/jquery.autogrow.js"}
-{jsfile src="js/moment.min.js"}
 {jsfile src="resourcePopup.js"}
 {jsfile src="userPopup.js"}
 {jsfile src="date-helper.js"}

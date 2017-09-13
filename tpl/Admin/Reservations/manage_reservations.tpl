@@ -403,6 +403,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		</form>
 	</div>
 
+    {include file="javascript-includes.tpl" Qtip=true InlineEdit=true}
 	{jsfile src="ajax-helpers.js"}
 	{jsfile src="admin/reservations.js"}
 

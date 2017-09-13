@@ -38,6 +38,8 @@ Done!
 
 <div id="errorMessage" class="error" style="display:none;">There was an error running the migration. See details below.</div>
 <div id="errorContents" style="width:100%; display:none;"></div>
+
+{include file="javascript-includes.tpl"}
 <div>
 	{if $StartMigration}
 		<script type="text/javascript">

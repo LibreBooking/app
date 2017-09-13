@@ -20,4 +20,5 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 <div id='activation-body'>
 	<h2 align="center">{translate key=AccountActivationError}</h2>
 </div>
+{include file="javascript-includes.tpl"}
 {include file='globalfooter.tpl'}

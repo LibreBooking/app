@@ -111,5 +111,5 @@ Booked Scheduler</h1>
 <p>Administrator memiliki kemampuan untuk mengkonfigurasi peraturan kuota berdasarkan bervariasi kriteria. Jika reservasi Anda melebihi kuota, Anda akan mendapat pesan dan reservasi akan ditolak.</p>
 
 </div>
-
+{include file="javascript-includes.tpl"}
 {include file='globalfooter.tpl'}

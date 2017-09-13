@@ -6,4 +6,5 @@
     <a href="quartzy_import.php" class="btn btn-default">{translate key=ImportQuartzy}</a>
 </div>
 
+{include file="javascript-includes.tpl"}
 {include file='globalfooter.tpl'}

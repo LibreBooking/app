@@ -186,5 +186,5 @@ Booked Scheduler の「カレンダーを購読する」リンクの下に表示
 この制限に違反するような予約には警告が表示され、受理されません。</p>
 
 </div>
-
+{include file="javascript-includes.tpl"}
 {include file='globalfooter.tpl'}

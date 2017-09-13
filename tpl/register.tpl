@@ -206,6 +206,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
         </form>
     </div>
 
+    {include file="javascript-includes.tpl" Validator=true}
+
     {jsfile src="js/jstz.min.js"}
     {jsfile src="ajax-helpers.js"}
     {jsfile src="registration.js"}

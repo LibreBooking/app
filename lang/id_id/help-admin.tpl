@@ -293,5 +293,5 @@ bersamaan dengan Booked Scheduler. Jika tidak, lihat
 <p>Untuk memasang plugin baru, salin folder ke direktori Authentication, Authorization dan Permission. kemudian ubah $conf['settings']['plugins']['Authentication'], $conf['settings']['plugins']['Authorization'] atau $conf['settings']['plugins']['Permission'] pada config.php ke nama folder tersebut.</p>
 
 </div>
-
+{include file="javascript-includes.tpl"}
 {include file='globalfooter.tpl'}

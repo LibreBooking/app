@@ -110,5 +110,5 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 <p>Gli amministratori possono configurare le regole di quota, basandosi su diversi criteri. Se una prenotazione v&igrave;ola una quota, si ricever&agrave; una comunicazione per posta elettronica e la prenotazione verr&agrave; rifiutata.</p>
 
 </div>
-
+{include file="javascript-includes.tpl"}
 {include file='globalfooter.tpl'}

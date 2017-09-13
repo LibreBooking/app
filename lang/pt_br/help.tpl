@@ -528,5 +528,5 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 {include file="support-and-credits.tpl"}
 </div>
-
+{include file="javascript-includes.tpl"}
 {include file='globalfooter.tpl'}

@@ -527,5 +527,5 @@ att ändra information om bokningen. Genom att klicka på
 
 {include file="support-and-credits.tpl"}
 </div>
-
+{include file="javascript-includes.tpl"}
 {include file='globalfooter.tpl'}

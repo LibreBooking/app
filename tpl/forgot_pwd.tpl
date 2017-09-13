@@ -50,4 +50,5 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 <div class="error">Disabled</div>
 {/if}
 
+{include file="javascript-includes.tpl"}
 {include file='globalfooter.tpl'}

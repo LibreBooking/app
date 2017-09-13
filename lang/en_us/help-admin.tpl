@@ -1096,5 +1096,5 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 </div>
 
-
+{include file="javascript-includes.tpl"}
 {include file='globalfooter.tpl'}

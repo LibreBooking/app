@@ -28,5 +28,5 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 	<a href="{$ScriptUrl}" class="btn btn-default col-xs-12">{translate key=Login}</a>
 </div>
 
-
+{include file="javascript-includes.tpl"}
 {include file='globalfooter.tpl'}

@@ -1,6 +1,5 @@
 {include file='globalheader.tpl' Select2=true}
 
-
 <div class="page-search-availability">
 
     <form role="form" name="searchForm" id="searchForm" method="post"
@@ -124,6 +123,7 @@
 
     {csrf_token}
 
+    {include file="javascript-includes.tpl" Select2=true}
     {jsfile src="js/tree.jquery.js"}
     {jsfile src="js/jquery.cookie.js"}
     {jsfile src="ajax-helpers.js"}

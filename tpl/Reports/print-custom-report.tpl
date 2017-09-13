@@ -21,6 +21,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 <head>
 	<title>{if $TitleKey neq ''}{translate key=$TitleKey args=$TitleArgs}{else}{$Title}{/if}</title>
 	<meta http-equiv="Content-Type" content="text/html; charset={$Charset}"/>
+    {jsfile src="js/jquery-2.1.1.min.js"}
 </head>
 <body>
 {translate key=Created}: {format_date date=Date::Now() key=general_datetime}

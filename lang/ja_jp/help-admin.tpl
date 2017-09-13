@@ -418,5 +418,5 @@ LDAPの場合は、/plugins/Authentication/Ldap/Ldap.config.dist を/plugins/Aut
 </p>
 
 </div>
-
+{include file="javascript-includes.tpl"}
 {include file='globalfooter.tpl'}

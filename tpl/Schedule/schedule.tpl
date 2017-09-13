@@ -317,6 +317,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 	{csrf_token}
 </form>
 
+{include file="javascript-includes.tpl" Qtip=true FloatThead=true}
+
 {block name="scripts-before"}
 
 {/block}

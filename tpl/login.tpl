@@ -148,6 +148,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 {setfocus key='EMAIL'}
 
+{include file="javascript-includes.tpl"}
+
 <script type="text/javascript">
 	var url = 'index.php?{QueryStringKeys::LANGUAGE}=';
 	$(document).ready(function () {

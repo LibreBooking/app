@@ -33,13 +33,6 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
         <a href="#" id="dayDialogCancel">{html_image src="slash.png"}{translate key=Cancel}</a>
     </div>
 
-    {csrf_token}
-
-    {jsfile src="reservationPopup.js"}
-    {jsfile src="calendar.js"}
-    {jsfile src="ajax-helpers.js"}
-    {jsfile src="js/tree.jquery.js"}
-
     <div class="modal fade" id="moveErrorDialog" tabindex="-1" role="dialog" aria-labelledby="errorModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -65,6 +58,14 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
         <input id="moveResourceId" type="hidden" {formname key=RESOURCE_ID} value="0" />
         <input id="moveSourceResourceId" type="hidden" {formname key=ORIGINAL_RESOURCE_ID} value="0" />
     </form>
+
+    {csrf_token}
+
+    {include file="javascript-includes.tpl" Select2=true Qtip=true Fullcalendar=true}
+    {jsfile src="reservationPopup.js"}
+    {jsfile src="calendar.js"}
+    {jsfile src="ajax-helpers.js"}
+    {jsfile src="js/tree.jquery.js"}
 
     <script type="text/javascript">
         $(document).ready(function () {

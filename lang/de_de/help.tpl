@@ -230,5 +230,5 @@ wird verweigert.
 </p>
 
 </div>
-
+{include file="javascript-includes.tpl"}
 {include file='globalfooter.tpl'}

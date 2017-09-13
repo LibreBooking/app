@@ -25,6 +25,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		{/foreach}
 	</div>
 
+    {include file="javascript-includes.tpl" Qtip=true}
+
 	{jsfile src="dashboard.js"}
 	{jsfile src="resourcePopup.js"}
 	{jsfile src="ajax-helpers.js"}

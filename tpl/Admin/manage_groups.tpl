@@ -264,6 +264,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 	{csrf_token}
 
+    {include file="javascript-includes.tpl"}
+
 	{jsfile src="ajax-helpers.js"}
 	{jsfile src="autocomplete.js"}
 	{jsfile src="admin/group.js"}

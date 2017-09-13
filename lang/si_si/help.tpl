@@ -158,5 +158,5 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
     (kršila katerokoli pravilo), vas sistem o tem obvesti, rezervacija pa je zavrnjena.</p>
 
 </div>
-
+{include file="javascript-includes.tpl"}
 {include file='globalfooter.tpl'}

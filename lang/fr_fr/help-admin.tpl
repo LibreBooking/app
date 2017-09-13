@@ -290,5 +290,5 @@ $conf['settings']['plugins']['Authentication'] ou $conf['settings']['plugins']['
 	$conf['settings']['plugins']['Permission']</p>
 
 </div>
-
+{include file="javascript-includes.tpl"}
 {include file='globalfooter.tpl'}

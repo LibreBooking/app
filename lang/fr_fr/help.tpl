@@ -190,5 +190,5 @@ Pour Outlook, si cela ne fonctionne pas, ajouter manuellement un calendrier dans
    réservation va à l'encontre de ces règles, vous serez prévenu et celle-ci sera refusée.</p>
 
 </div>
-
+{include file="javascript-includes.tpl"}
 {include file='globalfooter.tpl'}

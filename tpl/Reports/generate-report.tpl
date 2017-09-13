@@ -258,6 +258,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 	</div>
 </div>
 
+{include file="javascript-includes.tpl" Select2=true}
 {jsfile src="autocomplete.js"}
 {jsfile src="ajax-helpers.js"}
 {jsfile src="reports/generate-reports.js"}

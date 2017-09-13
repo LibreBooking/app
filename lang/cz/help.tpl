@@ -175,5 +175,5 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 	would violate any quota, you will be notified and the reservation will be denied.</p>
 
 </div>
-
+{include file="javascript-includes.tpl"}
 {include file='globalfooter.tpl'}

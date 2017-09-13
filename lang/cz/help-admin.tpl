@@ -465,5 +465,5 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 	$conf['settings']['plugins']['Permission'] in config.php to the name of that folder.</p>
 
 </div>
-
+{include file="javascript-includes.tpl"}
 {include file='globalfooter.tpl'}

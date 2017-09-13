@@ -330,5 +330,5 @@ un lavoro cron in cPanel</a> &egrave; lineare sia adoperando la voce "Every mimu
 <p>I codici disponibili per le etichette delle prenotazioni sono: {literal}{name}, {title}, {description}, {email}, {phone}, {organization}, {position}, {startdate}, {enddate} {resourcename} {participants} {invitees}{/literal}. Gli attributi personalizzati possono essere aggiunti usando "att" seguito dall'ID dell'attributo. Per esempio: {literal}{att1}{/literal}. Si omettano i codici se non si desiderano le etichette. Una qualunque combinazione di codici è ammessa.</p>
 
 </div>
-
+{include file="javascript-includes.tpl"}
 {include file='globalfooter.tpl'}

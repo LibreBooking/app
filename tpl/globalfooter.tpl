@@ -41,5 +41,6 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			  ga('send', 'pageview');
 			</script>
 	{/if}
+
 	</body>
 </html>

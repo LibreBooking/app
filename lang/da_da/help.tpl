@@ -389,7 +389,7 @@ Kun Application Administratorer kan opdatere reservationer bagud.
 
 <p class="setting">
     <span>$conf['settings']['name.format']</span>Vis format for fornavn og efternavn.<BR />
-    Standard er {literal} "{første} {sidste} '{/ literal}.
+    Standard er {literal} "{første} {sidste} '{/literal}.
 </p>
 
 <p class="setting">
@@ -617,5 +617,5 @@ Kun Application Administratorer kan opdatere reservationer bagud.
 </p>
 
 </div>
-
+{include file="javascript-includes.tpl"}
 {include file='globalfooter.tpl'}

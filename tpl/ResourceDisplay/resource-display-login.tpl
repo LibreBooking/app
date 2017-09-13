@@ -75,6 +75,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 	{indicator id="waitIndicator"}
 </div>
 
+{include file="javascript-includes.tpl"}
 {jsfile src="resourceDisplay.js"}
 {jsfile src="ajax-helpers.js"}
 

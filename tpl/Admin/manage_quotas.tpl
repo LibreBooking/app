@@ -253,7 +253,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 	</div>
 
 	{csrf_token}
-	{jsfile src="ajax-helpers.js"}
+    {include file="javascript-includes.tpl" Timepicker=true}
+    {jsfile src="ajax-helpers.js"}
 	{jsfile src="admin/quota.js"}
 	{jsfile src="js/jquery.form-3.09.min.js"}
 

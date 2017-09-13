@@ -19,7 +19,6 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 {include file='globalheader.tpl'}
 
-
 <div id="page-import-ics" class="admin-page">
     <h1>{translate key=ImportQuartzy}</h1>
 
@@ -75,7 +74,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 </div>
 
 
-
+{include file="javascript-includes.tpl"}
 {jsfile src="ajax-helpers.js"}
 {jsfile src="js/jquery.form-3.09.min.js"}
 

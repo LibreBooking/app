@@ -204,6 +204,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 	</div>
 	{setfocus key='FIRST_NAME'}
 
+    {include file="javascript-includes.tpl" Validator=true}
 	{jsfile src="ajax-helpers.js"}
 	{jsfile src="profile.js"}
 

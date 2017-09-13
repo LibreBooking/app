@@ -81,6 +81,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
         {html_image src="reservation_submitting.gif"}
     </div>
 
+    {include file="javascript-includes.tpl"}
+
     {jsfile src="ajax-helpers.js"}
     {jsfile src="js/jquery.form-3.09.min.js"}
     {jsfile src="js/ajaxfileupload.js"}
@@ -90,32 +92,6 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
         $('document').ready(function () {
 
             $('#elementForm').bindAjaxSubmit($('#saveButton'), $('#successMessage'), $('#wait-box'));
-//
-//            function successHandler(response)
-//            {
-//                hideModal();
-//                $('#successMessage').show().delay(5000).fadeOut();
-//            }
-//
-//            function hideModal()
-//            {
-//                $('#wait-box').hide();
-//                $.unblockUI();
-//            }
-//
-//            function showModal(formData, jqForm, opts)
-//            {
-//                $('#successMessage').hide();
-//
-//                $.blockUI({ message: $('#' +  $('#wait-box').attr('id'))});
-//                $('#wait-box').show();
-//
-//                return true;
-//            }
-//
-//            ConfigureUploadForm($('#saveButton'), function(){
-//                return $('#elementForm').attr('action');
-//            }, showModal, successHandler, null);
 
             $('.clearInput').click(function (e) {
                 e.preventDefault();

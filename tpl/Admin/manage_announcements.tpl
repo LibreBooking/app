@@ -212,6 +212,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		</div>
 	</div>
 
+    {include file="javascript-includes.tpl" Select2=true}
 	{control type="DatePickerSetupControl" ControlId="BeginDate" AltId="formattedBeginDate"}
 	{control type="DatePickerSetupControl" ControlId="EndDate" AltId="formattedEndDate"}
 	{control type="DatePickerSetupControl" ControlId="editBegin" AltId="formattedEditBegin"}

@@ -163,6 +163,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 	</div>
 
 	{csrf_token}
+    {include file="javascript-includes.tpl"}
 	{jsfile src="ajax-helpers.js"}
 	{jsfile src="admin/resource-status.js"}
 	{jsfile src="js/jquery.form-3.09.min.js"}

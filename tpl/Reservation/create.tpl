@@ -456,6 +456,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 </div>
 
+{include file="javascript-includes.tpl" Qtip=true}
+
 {control type="DatePickerSetupControl" ControlId="BeginDate" AltId="formattedBeginDate" DefaultDate=$StartDate}
 {control type="DatePickerSetupControl" ControlId="EndDate" AltId="formattedEndDate" DefaultDate=$EndDate}
 {control type="DatePickerSetupControl" ControlId="EndRepeat" AltId="formattedEndRepeat" DefaultDate=$RepeatTerminationDate}

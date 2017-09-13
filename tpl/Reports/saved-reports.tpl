@@ -27,7 +27,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		<div class="panel-body no-padding">
 			{if $ReportList|count == 0}
 				<h2 class="no-data" style="text-align: center;">{translate key=NoSavedReports}</h2>
-				<a href="{$Path}reports/{Pages::REPORTS_GENERATE}">{translate key=GenerateReport}</a>
+                <div style="text-align:center;"><a href="{$Path}reports/{Pages::REPORTS_GENERATE}">{translate key=GenerateReport}</a></div>
 			{else}
 				<div id="report-list">
 					<table class="table">
@@ -187,7 +187,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		</div>
 	</div>
 	*}
-
+    {include file="javascript-includes.tpl"}
 	{jsfile src="ajax-helpers.js"}
 	{jsfile src="reports/saved-reports.js"}
 	{jsfile src="reports/chart.js"}

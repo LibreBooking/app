@@ -47,15 +47,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 	</div>
 	{setfocus key='EMAIL'}
 
+    {include file="javascript-includes.tpl"}
 	{jsfile src="ajax-helpers.js"}
-
-	<script type="text/javascript">
-
-		$(document).ready(function ()
-		{
-
-		});
-	</script>
 
 	<div id="wait-box" class="wait-box">
 		<h3>{translate key=Working}</h3>
