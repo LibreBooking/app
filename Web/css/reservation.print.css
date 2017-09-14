@@ -1,3 +1,7 @@
 #page-reservation {
 	font-size: 12pt;
 }
+
+#page-reservation .col-top {
+    display:none;
+}
