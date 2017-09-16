@@ -515,4 +515,9 @@ class ScheduleWebServiceView implements ISchedulePage
     {
         return null;
     }
+
+    public function FilterCleared()
+    {
+       return false;
+    }
 }

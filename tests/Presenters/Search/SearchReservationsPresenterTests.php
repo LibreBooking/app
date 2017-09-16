@@ -113,7 +113,7 @@ class FakeSearchReservationsPage extends SearchReservationsPage
 	{
 	}
 
-	public function ShowReservations($reservations)
+	public function ShowReservations($reservations, $timezone)
 	{
 		$this->_Reservations = $reservations;
 	}

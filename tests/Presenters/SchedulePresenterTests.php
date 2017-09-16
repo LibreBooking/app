@@ -1242,4 +1242,12 @@ class FakeSchedulePage implements ISchedulePage
     {
         // TODO: Implement GetSortDirection() method.
     }
+
+    /**
+     * @return bool
+     */
+    public function FilterCleared()
+    {
+        // TODO: Implement FilterCleared() method.
+    }
 }
