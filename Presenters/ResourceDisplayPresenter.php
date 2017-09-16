@@ -162,11 +162,17 @@ class ResourceDisplayPresenter extends ActionPresenter
         $schedule = $this->scheduleRepository->LoadById($scheduleId);
         $timezone = $schedule->GetTimezone();
 
-        $now = Date::Now();
-        $today = new DateRange($now->GetDate()->ToUtc(), $now->AddDays(1)->GetDate()->ToUtc());
+        $now = Date::Now()->ToTimezone($timezone);
 
         $layout = $this->scheduleRepository->GetLayout($scheduleId, new ScheduleLayoutFactory($timezone));
-        $reservations = $this->reservationService->GetReservations($today, null, $timezone, $resource->GetResourceId());
+        $slots = $layout->GetLayout($now, true);
+        if ($slots[count($slots)-1]->EndDate()->LessThanOrEqual($now))
+        {
+            $now = $now->AddDays(1)->GetDate();
+        }
+
+        $reservationSearchRange = new DateRange($now->GetDate()->ToUtc(), $now->AddDays(1)->GetDate()->ToUtc());
+        $reservations = $this->reservationService->GetReservations($reservationSearchRange, null, $timezone, $resource->GetResourceId());
 
         $attributes = $this->attributeService->GetReservationAttributes(ServiceLocator::GetServer()->GetUserSession(),
             new ReservationView(), 0, array($resource->GetResourceId()));
@@ -186,7 +192,7 @@ class ResourceDisplayPresenter extends ActionPresenter
 
         $dailyLayout = $this->dailyLayoutFactory->Create($reservations, $layout);
 
-        $this->page->DisplayAvailability($dailyLayout, $now->ToTimezone($timezone));
+        $this->page->DisplayAvailability($dailyLayout, $now);
     }
 
     public function Reserve()

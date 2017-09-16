@@ -41,7 +41,7 @@ interface IDailyLayout
 
     /**
      * @param Date $displayDate
-     * @return mixed
+     * @return SchedulePeriod[]
      */
     function GetPeriods(Date $displayDate);
 

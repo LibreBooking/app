@@ -168,6 +168,7 @@ class ResourceDisplayPresenterTests extends TestBase
         $schedule->SetTimezone($timezone);
         $this->scheduleRepository->_Schedule = $schedule;
         $this->scheduleRepository->_Layout = new ScheduleLayout($timezone);
+        $this->scheduleRepository->_Layout->AppendPeriod(Time::Parse('22:00', $timezone), Time::Parse('22:30', $timezone));
         $this->attributeService->_ReservationAttributes = array();
 
         $this->presenter->reservationHandler = $this->reservationHandler;
@@ -191,6 +192,33 @@ class ResourceDisplayPresenterTests extends TestBase
         $this->presenter->DisplayResource('whatever');
 
         $this->assertTrue($this->page->_DisplayNotEnabledMessage);
+    }
+    
+    public function testWhenTheLastSlotIsAlreadyPast_GoToTomorrow()
+    {
+        Date::_SetNow(new Date('2016-03-07 18:28', 'UTC'));
+        $scheduleId = 123;
+        $timezone = 'America/Chicago';
+
+        $publicId = 'publicId';
+        $resource = new FakeBookableResource(1);
+        $resource->EnableDisplay();
+        $resource->SetScheduleId($scheduleId);
+        $this->resourceRepository->_Resource = $resource;
+        $schedule = new FakeSchedule($scheduleId);
+        $schedule->SetTimezone($timezone);
+        $this->scheduleRepository->_Schedule = $schedule;
+        $this->scheduleRepository->_Layout = new ScheduleLayout($timezone);
+        $this->scheduleRepository->_Layout->AppendPeriod(Time::Parse('10:00', $timezone), Time::Parse('10:30', $timezone));
+        $this->attributeService->_ReservationAttributes = array();
+
+        $this->presenter->reservationHandler = $this->reservationHandler;
+        $this->presenter->DisplayResource($publicId);
+        $expectedDate = DateRange::Create('2016-03-08', '2016-03-09', 'UTC');
+
+        $this->assertEquals(new DailyLayout($this->reservationService->_ReservationListing,
+            $this->scheduleRepository->_Layout), $this->page->_DailyLayout);
+        $this->assertEquals($expectedDate, $this->reservationService->_LastDateRange);
     }
 
     public function testWhenBookingSucceeds()
