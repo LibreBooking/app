@@ -1,3 +1,4 @@
+BEGIN:VCALENDAR
 {*
 Copyright 2011-2017 Nick Korbel
 
@@ -16,7 +17,6 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 *}
-BEGIN:VCALENDAR
 VERSION:2.0
 METHOD:REQUEST
 PRODID:-//BookedScheduler//NONSGML {$bookedVersion}//EN
