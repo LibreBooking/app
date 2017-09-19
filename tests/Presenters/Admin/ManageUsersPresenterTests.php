@@ -457,7 +457,10 @@ class ManageUsersPresenterTests extends TestBase
 										$this->equalTo($timezone),
 										$this->equalTo($lang),
 										$this->equalTo(Pages::DEFAULT_HOMEPAGE_ID),
-										$this->equalTo(array()),
+										$this->equalTo( array(
+                                            UserAttribute::Organization => null,
+                                            UserAttribute::Phone => null,
+                                            UserAttribute::Position => null)),
 										$this->equalTo(array(new AttributeValue($attributeId, $attributeValue))))
 								 ->will($this->returnValue($user));
 

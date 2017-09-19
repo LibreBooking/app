@@ -156,6 +156,7 @@ class ResourceDisplayPresenterTests extends TestBase
     public function testDisplaysReservationsIfResourceAllowsDisplay()
     {
         Date::_SetNow(new Date('2016-03-07 11:28', 'UTC'));
+        $now = Date::Now();
         $scheduleId = 123;
         $timezone = 'America/Chicago';
 
@@ -173,7 +174,7 @@ class ResourceDisplayPresenterTests extends TestBase
 
         $this->presenter->reservationHandler = $this->reservationHandler;
         $this->presenter->DisplayResource($publicId);
-        $expectedDate = DateRange::Create('2016-03-07', '2016-03-08', 'UTC');
+        $expectedDate = DateRange::Create($now->ToTimezone($timezone)->GetDate()->ToUtc(), $now->ToTimezone($timezone)->GetDate()->AddDays(1)->ToUtc(), 'UTC');
 
         $this->assertEquals(new DailyLayout($this->reservationService->_ReservationListing,
             $this->scheduleRepository->_Layout), $this->page->_DailyLayout);
@@ -197,6 +198,7 @@ class ResourceDisplayPresenterTests extends TestBase
     public function testWhenTheLastSlotIsAlreadyPast_GoToTomorrow()
     {
         Date::_SetNow(new Date('2016-03-07 18:28', 'UTC'));
+        $now = Date::Now();
         $scheduleId = 123;
         $timezone = 'America/Chicago';
 
@@ -214,7 +216,7 @@ class ResourceDisplayPresenterTests extends TestBase
 
         $this->presenter->reservationHandler = $this->reservationHandler;
         $this->presenter->DisplayResource($publicId);
-        $expectedDate = DateRange::Create('2016-03-08', '2016-03-09', 'UTC');
+        $expectedDate = DateRange::Create($now->ToTimezone($timezone)->GetDate()->AddDays(1)->ToUtc(), $now->ToTimezone($timezone)->GetDate()->AddDays(2)->ToUtc(), 'UTC');
 
         $this->assertEquals(new DailyLayout($this->reservationService->_ReservationListing,
             $this->scheduleRepository->_Layout), $this->page->_DailyLayout);
