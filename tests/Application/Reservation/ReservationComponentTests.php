@@ -678,6 +678,10 @@ class ReservationComponentTests extends TestBase
 						  ->method('CurrentUser')
 						  ->will($this->returnValue($this->fakeUser));
 
+        $this->reservationAuthorization->expects($this->once())
+            ->method('CanEdit')
+            ->will($this->returnValue(true));
+
 		$this->reservationDetailsBinder = new ReservationDetailsBinder($this->reservationAuthorization, $page,
 																	   $this->reservationView, $this->privacyFilter);
 		$this->reservationDetailsBinder->Bind($this->initializer);
@@ -774,7 +778,11 @@ class ReservationComponentTests extends TestBase
 						  ->method('CurrentUser')
 						  ->will($this->returnValue($this->fakeUser));
 
-		$this->reservationDetailsBinder = new ReservationDetailsBinder($this->reservationAuthorization, $page,
+        $this->reservationAuthorization->expects($this->once())
+            ->method('CanEdit')
+            ->will($this->returnValue(true));
+
+        $this->reservationDetailsBinder = new ReservationDetailsBinder($this->reservationAuthorization, $page,
 																	   $this->reservationView, $this->privacyFilter);
 		$this->reservationDetailsBinder->Bind($this->initializer);
 
@@ -890,7 +898,11 @@ class ReservationComponentTests extends TestBase
 						  ->method('CurrentUser')
 						  ->will($this->returnValue($this->fakeUser));
 
-		$this->reservationDetailsBinder = new ReservationDetailsBinder($this->reservationAuthorization, $page,
+        $this->reservationAuthorization->expects($this->once())
+            ->method('CanEdit')
+            ->will($this->returnValue(true));
+
+        $this->reservationDetailsBinder = new ReservationDetailsBinder($this->reservationAuthorization, $page,
 																	   $this->reservationView, $this->privacyFilter);
 		$this->reservationDetailsBinder->Bind($this->initializer);
 

@@ -56,7 +56,9 @@ class DailyReservationSummary
 			$this->_first = $item;
 		}
 
-		$this->_count++;
-		$this->_reservations[] = $item;
+		if ($item->IsReservation()) {
+            $this->_count++;
+        }
+        $this->_reservations[] = $item;
 	}
 }

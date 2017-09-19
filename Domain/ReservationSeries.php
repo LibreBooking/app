@@ -348,7 +348,7 @@ class ReservationSeries
 	{
 		if ($reservation == $this->CurrentInstance())
 		{
-			return false; // never remove the current instance
+			return false; // never remove the current instance, we need it for validations and notifications
 		}
 
 		$instanceKey = $this->GetNewKey($reservation);

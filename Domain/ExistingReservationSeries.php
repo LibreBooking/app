@@ -199,11 +199,13 @@ class ExistingReservationSeries extends ReservationSeries
         }
 		$removed = parent::RemoveInstance($toRemove);
 
-		if ($removed) {
+//		if ($removed) {
             $this->AddEvent(new InstanceRemovedEvent($toRemove, $this));
             $this->_deleteRequestIds[] = $toRemove->ReservationId();
-        }
-		return $removed;
+            $this->RemoveEvent(new InstanceAddedEvent($toRemove, $this));
+
+//        }
+		return true;
 	}
 
 	public function RequiresNewSeries()
@@ -472,6 +474,17 @@ class ExistingReservationSeries extends ReservationSeries
 	{
 		$this->events[] = $event;
 	}
+
+	public function RemoveEvent(SeriesEvent $event)
+    {
+        foreach ($this->events as $i => $e)
+        {
+           if ($event == $e)
+           {
+               unset($this->events[$i]);
+           }
+        }
+    }
 
 	public function IsMarkedForDelete($reservationId)
 	{

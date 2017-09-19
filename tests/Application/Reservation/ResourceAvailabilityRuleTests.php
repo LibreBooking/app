@@ -423,4 +423,42 @@ class ResourceAvailabilityRuleTests extends TestBase
 		$this->assertTrue($result->IsValid(), 'should have skipped conflicts');
 		$this->assertEquals(1, count($reservation->Instances()));
 	}
+
+    public function testSkipsCorrectDatesWhenUpdatingExisting()
+    {
+        $this->fakeUser->Timezone = 'UTC';
+        Date::_SetNow(Date::Parse('2010-04-01', 'UTC'));
+        $startDate = Date::Parse('2010-04-09 06:00', 'UTC');
+        $endDate = Date::Parse('2010-04-09 08:00', 'UTC');
+
+        $reservation = new ExistingReservationSeries();
+        $reservation->UpdateBookedBy($this->fakeUser);
+        $reservation->ApplyChangesTo(SeriesUpdateScope::FullSeries);
+        $reservation->WithCurrentInstance(new TestReservation('not conflict', new DateRange($startDate, $endDate)));
+        $reservation->WithPrimaryResource(new FakeBookableResource(100));
+        $reservation->WithRepeatOptions(new RepeatDaily(1, Date::Parse('2010-04-10', 'UTC')));
+        $reservation->UpdateDuration(new DateRange($startDate, $endDate));
+        $reservation->Repeats(new RepeatDaily(1, Date::Parse('2010-04-12', 'UTC')));
+
+        $startConflict1 = Date::Parse('2010-04-10 06:00', 'UTC');
+        $endConflict1 = Date::Parse('2010-04-10 08:00', 'UTC');
+
+        $reservations = array(
+            new TestReservationItemView(2, $startConflict1, $endConflict1, 100),
+        );
+
+        $strategy = $this->getMock('IResourceAvailabilityStrategy');
+
+        $strategy->expects($this->atLeastOnce())
+            ->method('GetItemsBetween')
+            ->will($this->returnValue($reservations));
+
+        $rule = new ResourceAvailabilityRule($strategy, 'UTC');
+        $result = $rule->Validate($reservation, array(new ReservationRetryParameter('skipconflicts', true)));
+
+        $this->assertTrue($result->IsValid(), 'should have skipped conflicts');
+        $this->assertEquals(3, count($reservation->Instances()));
+        $events = $reservation->GetEvents();
+        $this->assertEquals(3, count($events), 'we shouldnt have the insert for the conflict');
+    }
 }

@@ -110,6 +110,7 @@ abstract class ReservationEmailMessage extends EmailMessage
 		$this->Set('Description', $this->reservationSeries->Description());
 
 		$repeatDates = array();
+		$repeatRanges = array();
 		if ($this->reservationSeries->IsRecurring())
 		{
 			foreach ($this->reservationSeries->Instances() as $repeated)
