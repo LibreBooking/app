@@ -254,7 +254,7 @@ class th_th extends en_us
 		$strings['QuickSlotCreation'] = 'สร้างช่วงเวลาทุก ๆ %s นาที ระหว่าง %s และ %s';
 		$strings['ApplyUpdatesTo'] = 'นำการอัพเดทไปใช้กับ';
 		$strings['CancelParticipation'] = 'ยกเลิกการเข้าร่วม';
-		$strings['Attending'] = 'Attending';
+		$strings['Attending'] = 'ผู้เข้าร่วม';
 		$strings['QuotaConfiguration'] = 'บน %s สำหรับ %s ผู้ใช้ใน %s ถูกจำกัดไว้ที่ %s %s ต่อ %s';
 		$strings['QuotaEnforcement'] = 'บังคับใช้กับ %s %s';
 		$strings['reservations'] = 'การจอง';
@@ -537,7 +537,7 @@ class th_th extends en_us
 		$strings['Color'] = 'สี';
 		$strings['Available'] = 'ว่าง';
 		$strings['Unavailable'] = 'ไม่ว่าง';
-		$strings['Hidden'] = 'Hidden';
+		$strings['Hidden'] = 'ซ่อน';
 		$strings['ResourceStatus'] = 'สถานะทรัพยากร';
 		$strings['CurrentStatus'] = 'สถานะปัจจุบัน';
 		$strings['AllReservationResources'] = 'การจองทรัพยากรทั้งหมด';
@@ -651,6 +651,35 @@ class th_th extends en_us
 		$strings['Forward'] = 'ไปข้างหน้า';
 		$strings['DateRange'] = 'ช่วงวัน';
 		$strings['Copy'] = 'คัดลอก';
+		$strings['Detect'] = 'ตรวจพบ';
+		$strings['Autofill'] = 'ป้อนอัตโนมัติ';
+		$strings['NameOrEmail'] = 'ชื่อ หรือ อีเมล';
+		$strings['ImportResources'] = 'นำเข้าทรัพยากร';
+		$strings['ExportResources'] = 'ส่งออกทรัพยากร';
+		$strings['ResourceImportInstructions'] = '</ul></li>ไฟล์ต้องอยู่ในรูปแบบ CSV </li> <li> ต้องระบุชื่อ ปล่อยให้ฟิลด์อื่นว่างไว้จะตั้งค่าเริ่มต้น </ li> <li> ตัวเลือกสถานะคือ \'ว่าง\', \'ไม่ว่าง\' และ \'ซ่อน\' </li> <li> สีควรเป็นค่า hex เช่น #ffffff</li> <li> การมอบหมายและการอนุมัติจะต้องเป็น true หรือ false </li> <li>ความถูกต้องของแอตทริบิวต์จะไม่ถูกบังคับใช้</li><li>ใช้คอมม่าแยกกลุ่มทรัพยากรแต่ละกลุ่ม</li> <li> ใช้เทมเพลตที่ให้มาเป็นตัวอย่าง </li> </ul>';
+		$strings['ReservationImportInstructions'] = '<ul><li>ไฟล์ต้องอยู่ในรูปแบบ CSV </li><li>จำเป็นต้องมีชื่ออีเมล, ชื่อทรัพยากร, เวลาเริ่มต้นและสิ้นสุด </li><li>เวลาเริ่มต้นและสิ้นสุดต้องใช้วันที่แบบเต็ม รูปแบบที่แนะนำคือ YYYY-mm-dd HH: mm (2017-12-31 20:30) </li><li> กฎ ข้อขัดแย้งและช่วงเวลาที่ถูกต้องจะไม่ได้รับการตรวจสอบ</li><li>การแจ้งเตือน จะไม่ส่งออกไป</li><li> ความถูกต้องของแอตทริบิวต์จะไม่ถูกบังคับใช้ </li> <li> คั่นด้วยเครื่องหมายคอมม่าหากมีหลายชื่อทรัพยากร</li><li> ใช้เทมเพลตที่ให้มาเป็นตัวอย่าง </li></ul>';
+		$strings['AutoReleaseMinutes'] = 'ระยะเวลาในการคืนสถานะห้องให้ว่าง';
+		$strings['CreditsPeak'] = 'เครดิต (ช่วงหนาแน่น)';
+		$strings['CreditsOffPeak'] = 'เครดิต (ช่วงปกติ)';
+		$strings['ResourceMinLengthCsv'] = 'เวลาสั้นที่สุดที่สามารถจองได้';
+		$strings['ResourceMaxLengthCsv'] = 'เวลาในการจองสูงสุด';
+		$strings['ResourceBufferTimeCsv'] = 'ช่วงกั้นเวลาระหว่างการจอง';
+		$strings['ResourceMinNoticeCsv'] = 'ประกาศขั้นต่ำสำหรับการจอง';
+		$strings['ResourceMaxNoticeCsv'] = 'การจองสูงสุด';
+		$strings['Export'] = 'ส่งออก';
+		$strings['DeleteMultipleUserWarning'] = 'การลบผู้ใช้เหล่านี้จะเป็นการลบการจองปัจจุบันในอนาคตและประวัติทั้งหมดของพวกเขา โดยไม่มีการส่งอีเมล';
+		$strings['DeleteMultipleReservationsWarning'] = 'ไม่มีอีเมลที่จะถูกส่ง';
+		$strings['ErrorMovingReservation'] = 'ผิดพลาดในการย้ายการจอง';
+        $strings['SelectUser'] = 'เลือกผุ้ใช้';
+        $strings['InviteUsers'] = 'เชิญผู้ใช้';
+        $strings['InviteUsersLabel'] = 'ป้อนที่อยู่อีเมลคนที่คุณต้องการเชิญ';
+        $strings['ApplyToCurrentUsers'] = 'นำไปใช้กับผู้ใช้ปัจจุบัน';
+        $strings['ReasonText'] = 'ข้อความเหตุผล';
+        $strings['NoAvailableMatchingTimes'] = 'ไม่มีช่วงเวลาว่างที่ตรงกับคุณค้นหา';
+        $strings['Schedules'] = 'ตารางการจอง';
+        $strings['NotifyUser'] = 'เตือนผู้ใช้';
+		
+		
         // End Strings
 
 		// Install
@@ -792,6 +821,7 @@ class th_th extends en_us
 		$strings['ManageResourceTypes'] = 'ชนิดของทรัพยากร';
 		$strings['ManageResourceStatus'] = 'สถานะของทรัพยากร';
 		$strings['ReservationColors'] = 'สีในการจอง';
+			$strings['SearchReservations'] = 'ค้นหาการจอง';
 		// End Page Titles
 
 		// Day representations
