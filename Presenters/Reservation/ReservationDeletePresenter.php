@@ -75,8 +75,7 @@ class ReservationDeletePresenter implements IReservationDeletePresenter
 		$referenceNumber = $this->page->GetReferenceNumber();
 		$existingSeries = $this->persistenceService->LoadByReferenceNumber($referenceNumber);
 		$existingSeries->ApplyChangesTo($this->page->GetSeriesUpdateScope());
-
-		$existingSeries->Delete($this->userSession);
+		$existingSeries->Delete($this->userSession, $this->page->GetReason());
 
 		return $existingSeries;
 	}

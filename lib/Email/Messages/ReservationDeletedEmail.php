@@ -26,6 +26,14 @@ class ReservationDeletedEmail extends ReservationEmailMessage
         return $this->Translate('ReservationDeletedSubjectWithResource', array($this->primaryResource->GetName()));
     }
 
+    public function PopulateTemplate()
+    {
+        if (method_exists($this->reservationSeries, 'GetDeleteReason')) {
+            $this->Set('DeleteReason', $this->reservationSeries->GetDeleteReason());
+        }
+        parent::PopulateTemplate();
+    }
+
     protected function GetTemplateName()
     {
        return 'ReservationDeleted.tpl';

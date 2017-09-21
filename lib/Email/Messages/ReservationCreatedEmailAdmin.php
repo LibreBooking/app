@@ -22,27 +22,27 @@ class ReservationCreatedEmailAdmin extends EmailMessage
     /**
      * @var UserDto
      */
-    private $adminDto;
+    protected $adminDto;
 
     /**
      * @var User
      */
-    private $reservationOwner;
+    protected $reservationOwner;
 
     /**
      * @var ReservationSeries
      */
-    private $reservationSeries;
+    protected $reservationSeries;
 
     /**
      * @var IResource
      */
-    private $resource;
+    protected $resource;
 
     /**
      * @var IAttributeRepository
      */
-    private $attributeRepository;
+    protected $attributeRepository;
 
     /**
      * @param UserDto $adminDto
@@ -102,7 +102,7 @@ class ReservationCreatedEmailAdmin extends EmailMessage
         return 'ReservationCreatedAdmin.tpl';
     }
 
-    private function PopulateTemplate()
+    protected function PopulateTemplate()
     {
         $this->Set('UserName', $this->reservationOwner->FullName());
 

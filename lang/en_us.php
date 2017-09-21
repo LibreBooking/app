@@ -633,6 +633,7 @@ class en_us extends Language
         $strings['NotifyUser'] = 'Notify User';
         $strings['UpdateUsersOnImport'] = 'Update existing user if email already exists';
         $strings['UpdateResourcesOnImport'] = 'Update existing resources if name already exists';
+        $strings['Reject'] = 'Reject';
         // End Strings
 
 		// Install

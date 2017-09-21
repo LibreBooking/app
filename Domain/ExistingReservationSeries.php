@@ -58,7 +58,12 @@ class ExistingReservationSeries extends ReservationSeries
 	 */
 	protected $attachmentIds = array();
 
-	public function __construct()
+    /**
+     * @var string
+     */
+    private $_deleteReason;
+
+    public function __construct()
 	{
 		parent::__construct();
 		$this->ApplyChangesTo(SeriesUpdateScope::FullSeries);
@@ -345,11 +350,13 @@ class ExistingReservationSeries extends ReservationSeries
 
 	/**
 	 * @param UserSession $deletedBy
+     * @param string $reason
 	 * @return void
 	 */
-	public function Delete(UserSession $deletedBy)
+	public function Delete(UserSession $deletedBy, $reason = null)
 	{
 		$this->_bookedBy = $deletedBy;
+		$this->_deleteReason = $reason;
 
 		if (!$this->AppliesToAllInstances())
 		{
@@ -842,4 +849,9 @@ class ExistingReservationSeries extends ReservationSeries
 
 		return $consumed;
 	}
+
+	public function GetDeleteReason()
+    {
+        return $this->_deleteReason;
+    }
 }

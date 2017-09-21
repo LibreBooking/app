@@ -88,6 +88,14 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 						<h4 class="modal-title" id="updateButtonsLabel">{translate key=ApplyUpdatesTo}</h4>
 					</div>
 					<div class="modal-body">
+					    <div id="deleteRecurringButtons" class="no-show margin-bottom-15">
+                            <div>{translate key=DeleteReminderWarning}</div>
+                            <div>
+                            <label for="deleteReasonRecurring">{translate key=Reason} ({translate key=Optional})</label>
+                            <textarea id="deleteReasonRecurring" class="form-control"></textarea>
+                            </div>
+                        </div>
+
 						<button type="button" class="btn btn-success save btnUpdateThisInstance">
 							<span class="fa fa-check"></span>
 							{translate key='ThisInstance'}
@@ -122,6 +130,10 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                 </div>
                 <div class="modal-body">
                     <div>{translate key=DeleteReminderWarning}</div>
+                    <div>
+                        <label for="deleteReason">{translate key=Reason} ({translate key=Optional})</label>
+                        <textarea id="deleteReason" class="form-control"></textarea>
+                    </div>
                  </div>
                 <div class="modal-footer">
                 {cancel_button id="cancelDelete" class="cancel"}

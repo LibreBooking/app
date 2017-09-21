@@ -939,6 +939,14 @@ class ReservationDeleteRequestResponseFacade implements IReservationDeletePage
 	{
 		// no-op
 	}
+
+    /**
+     * @return string
+     */
+    public function GetReason()
+    {
+        return '';
+    }
 }
 
 class ReservationApprovalRequestResponseFacade implements IReservationApprovalPage

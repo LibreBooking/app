@@ -40,7 +40,8 @@ Ending: {formatdate date=$EndDate key=reservation_email}<br/>
 {/if}
 
 Title: {$Title}<br/>
-Description: {$Description|nl2br}
+Description: {$Description|nl2br}<br/>
+Delete Reason: {$DeleteReason|nl2br}<br/>
 
 {if count($RepeatRanges) gt 0}
     <br/>
@@ -64,6 +65,5 @@ Description: {$Description|nl2br}
     {/foreach}
 {/if}
 
-<br/>
 <br/>
 <a href="{$ScriptUrl}">Log in to Booked Scheduler</a>

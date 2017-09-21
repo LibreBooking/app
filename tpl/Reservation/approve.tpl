@@ -44,42 +44,73 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			</li>
 			<li class="divider"></li>
 			<li>
-				<a href="#" class="delete {if $IsRecurring}prompt{else}save{/if}">
+				<a href="#" class="{if $IsRecurring}delete prompt{else}triggerDeletePrompt delete prompt-single{/if}">
 					<span class="fa fa-remove remove icon"></span>
-					{translate key='Delete'}
+					{translate key='Reject'}
 				</a>
 			</li>
 		</ul>
 	</div>
-{/block}
 
-<div class="modal fade" id="updateButtons" tabindex="-1" role="dialog" aria-labelledby="updateButtonsLabel" aria-hidden="true">
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-				<h4 class="modal-title" id="updateButtonsLabel">{translate key=ApplyUpdatesTo}</h4>
-			</div>
-			<div class="modal-body">
-				<button type="button" class="btn btn-success save btnUpdateThisInstance">
-					<span class="fa fa-check"></span>
-					{translate key='ThisInstance'}
-				</button>
-				<button type="button" class="btn btn-success save btnUpdateAllInstances">
-					<span class="fa fa-check-square"></span>
-					{translate key='AllInstances'}
-				</button>
-				<button type="button" class="btn btn-success save btnUpdateFutureInstances">
-					<span class="fa fa-check-square-o"></span>
-					{translate key='FutureInstances'}
-				</button>
-				<button type="button" class="btn btn-default">
-					{translate key='Cancel'}
-				</button>
-			</div>
-		</div>
-	</div>
-</div>
+
+    <div id="deleteButtonPrompt" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="updateButtonsLabel">{translate key=Reject}</h4>
+                </div>
+                <div class="modal-body">
+                    <div>{translate key=DeleteReminderWarning}</div>
+                    <div>
+                        <label for="deleteReason">{translate key=Reason} ({translate key=Optional})</label>
+                        <textarea id="deleteReason" class="form-control"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    {cancel_button id="cancelDelete" class="cancel"}
+                    {delete_button id="confirmDelete" class="delete save" key=Reject}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="updateButtons" tabindex="-1" role="dialog" aria-labelledby="updateButtonsLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="updateButtonsLabel">{translate key=ApplyUpdatesTo}</h4>
+                </div>
+                <div class="modal-body">
+                    <div id="deleteRecurringButtons" class="no-show margin-bottom-15">
+                        <div>{translate key=DeleteReminderWarning}</div>
+                        <div>
+                            <label for="deleteReasonRecurring">{translate key=Reason} ({translate key=Optional})</label>
+                            <textarea id="deleteReasonRecurring" class="form-control"></textarea>
+                        </div>
+                    </div>
+                    <button type="button" class="btn btn-success save btnUpdateThisInstance">
+                        <span class="fa fa-check"></span>
+                        {translate key='ThisInstance'}
+                    </button>
+                    <button type="button" class="btn btn-success save btnUpdateAllInstances">
+                        <span class="fa fa-check-square"></span>
+                        {translate key='AllInstances'}
+                    </button>
+                    <button type="button" class="btn btn-success save btnUpdateFutureInstances">
+                        <span class="fa fa-check-square-o"></span>
+                        {translate key='FutureInstances'}
+                    </button>
+                    <button type="button" class="btn btn-default">
+                        {translate key='Cancel'}
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{/block}
 
 {block name=submitButtons}
 	<a href="{$SCRIPT_NAME}?{QueryStringKeys::REFERENCE_NUMBER}={$ReferenceNumber}&update=1&{QueryStringKeys::REDIRECT}={$ReturnUrl|escape:url}" class="btn btn-default" id="btnApprovalUpdate">

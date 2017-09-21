@@ -51,7 +51,8 @@ function Reservation(opts) {
 		reservationAttachments: $('#reservationAttachments'),
 
         deleteButtonPrompt: $('#deleteButtonPrompt'),
-		additionalResources: $('#additionalResources')
+		additionalResources: $('#additionalResources'),
+        deleteRecurringButtons: $('#deleteRecurringButtons')
 	};
 
 	var participation = {};
@@ -159,7 +160,15 @@ function Reservation(opts) {
 		LoadCustomAttributes();
 	};
 
-	// pre-submit callback 
+    function SetDeleteReason() {
+        var reason = $("#deleteReason").val();
+        if (_.isEmpty(reason)) {
+            reason = $('#deleteReasonRecurring').val();
+        }
+        $('#hdnDeleteReason').val(reason);
+    }
+
+// pre-submit callback
 	Reservation.prototype.preSubmit = function (formData, jqForm, options) {
 		$.blockUI({message: $('#wait-box')});
 
@@ -507,11 +516,15 @@ function Reservation(opts) {
 		});
 
 		$('.update').click(function () {
+            SetDeleteReason();
+            elements.deleteRecurringButtons.addClass('no-show');
 			$('form').attr("action", options.updateUrl);
 		});
 
 		$('.delete').click(function () {
-			$('form').attr("action", options.deleteUrl);
+            SetDeleteReason();
+            elements.deleteRecurringButtons.removeClass('no-show');
+            $('form').attr("action", options.deleteUrl);
 		});
 
 		$('.btnCheckin').click(function () {

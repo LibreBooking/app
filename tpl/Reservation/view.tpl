@@ -318,7 +318,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			<input type="hidden" {formname key=RESERVATION_ACTION} value="{$ReservationAction}"/>
 			<input type="hidden" {formname key=SERIES_UPDATE_SCOPE} id="hdnSeriesUpdateScope"
 				   value="{SeriesUpdateScope::FullSeries}"/>
-			{csrf_token}
+            <input type="hidden" {formname key=DELETE_REASON} value="" id="hdnDeleteReason"/>
+            {csrf_token}
 		</form>
 	</div>
 </div>

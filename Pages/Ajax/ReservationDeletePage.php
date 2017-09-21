@@ -33,6 +33,11 @@ interface IReservationDeletePage extends IReservationSaveResultsView
 	 * @return SeriesUpdateScope|string
 	 */
 	public function GetSeriesUpdateScope();
+
+    /**
+     * @return string
+     */
+    public function GetReason();
 }
 
 class ReservationDeletePage extends SecurePage implements IReservationDeletePage
@@ -103,44 +108,34 @@ class ReservationDeletePage extends SecurePage implements IReservationDeletePage
 		return $this->GetForm(FormKeys::SERIES_UPDATE_SCOPE);
 	}
 
-	/**
-	 * @param array|string[] $messages
-	 */
 	public function SetRetryMessages($messages)
 	{
 		// no-op
 	}
 
-	/**
-	 * @param bool $canBeRetried
-	 */
 	public function SetCanBeRetried($canBeRetried)
 	{
 		// no-op
 	}
 
-	/**
-	 * @param ReservationRetryParameter[] $retryParameters
-	 */
 	public function SetRetryParameters($retryParameters)
 	{
 		// no-op
 	}
 
-	/**
-	 * @return ReservationRetryParameter[]
-	 */
 	public function GetRetryParameters()
 	{
 		// no-op
 	}
 
-    /**
-     * @param bool $canJoinWaitlist
-     */
     public function SetCanJoinWaitList($canJoinWaitlist)
     {
         // no-op
+    }
+
+    public function GetReason()
+    {
+       return $this->GetForm(FormKeys::DELETE_REASON);
     }
 }
 

@@ -79,6 +79,7 @@ class ReservationDeletePresenterTests extends TestBase
 	{
 		$referenceNumber = '109809';
 		$seriesUpdateScope = SeriesUpdateScope::ThisInstance;
+		$reason = 'reason';
 
 		$expectedSeries = $this->getMock('ExistingReservationSeries');
 
@@ -90,6 +91,10 @@ class ReservationDeletePresenterTests extends TestBase
 			->method('GetSeriesUpdateScope')
 			->will($this->returnValue($seriesUpdateScope));
 
+        $this->page->expects($this->once())
+            ->method('GetReason')
+            ->will($this->returnValue($reason));
+
 		$this->persistenceService->expects($this->once())
 			->method('LoadByReferenceNumber')
 			->with($this->equalTo($referenceNumber))
@@ -97,7 +102,7 @@ class ReservationDeletePresenterTests extends TestBase
 
 		$expectedSeries->expects($this->once())
 			->method('Delete')
-			->with($this->user);
+			->with($this->equalTo($this->user), $this->equalTo($reason));
 
 		$expectedSeries->expects($this->once())
 			->method('ApplyChangesTo')

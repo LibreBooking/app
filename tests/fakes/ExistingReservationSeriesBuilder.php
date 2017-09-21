@@ -192,7 +192,9 @@ class TestHelperExistingReservationSeries extends ExistingReservationSeries
 
 	public $_WasDeleted = false;
 
-	public function __construct()
+    public $_DeleteReason;
+
+    public function __construct()
 	{
 		parent::__construct();
 	    $this->WithPrimaryResource(new FakeBookableResource(2));
@@ -239,9 +241,10 @@ class TestHelperExistingReservationSeries extends ExistingReservationSeries
 		return $this->_creditsConsumed;
 	}
 
-	public function Delete(UserSession $deletedBy)
+	public function Delete(UserSession $deletedBy, $reason = '')
 	{
 		$this->_WasDeleted = true;
+		$this->_DeleteReason = $reason;
 		parent::Delete($deletedBy);
 	}
 }

@@ -326,6 +326,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			<input type="hidden" {formname key=RESERVATION_ID} value="{$ReservationId}"/>
 			<input type="hidden" {formname key=REFERENCE_NUMBER} value="{$ReferenceNumber}" id="referenceNumber"/>
 			<input type="hidden" {formname key=RESERVATION_ACTION} value="{$ReservationAction}"/>
+			<input type="hidden" {formname key=DELETE_REASON} value="" id="hdnDeleteReason"/>
 
 			<input type="hidden" {formname key=SERIES_UPDATE_SCOPE} id="hdnSeriesUpdateScope"
 				   value="{SeriesUpdateScope::FullSeries}"/>
