@@ -19,12 +19,12 @@
         {jsfile src="js/wysihtml5/bootstrap3-wysihtml5.all.min.js"}
     {/if}
 {else}
-    <script type="text/javascript"
-            src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-    <script type="text/javascript"
-            src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
-    <script type="text/javascript"
-            src="https://netdna.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+    {*<script type="text/javascript"*}
+            {*src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>*}
+    {*<script type="text/javascript"*}
+            {*src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>*}
+    {*<script type="text/javascript"*}
+            {*src="https://netdna.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>*}
     <script type="text/javascript"
             src="https://cdn.jsdelivr.net/lodash/4.16.3/lodash.min.js"></script>
     <script type="text/javascript"
