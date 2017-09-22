@@ -81,3 +81,4 @@ require_once(ROOT_DIR . 'tests/fakes/FakeScheduleLayout.php');
 require_once(ROOT_DIR . 'tests/fakes/FakeReservationWaitlistRepository.php');
 require_once(ROOT_DIR . 'tests/fakes/FakeDailyLayout.php');
 require_once(ROOT_DIR . 'tests/fakes/FakeScheduleService.php');
+require_once(ROOT_DIR . 'tests/fakes/FakeResourceAvailabilityStrategy.php');

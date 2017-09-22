@@ -285,7 +285,8 @@ function Reservation(opts) {
 						.replace('[ed]', elements.endDate.val())
 						.replace('[rn]', elements.referenceNumber.val())
 						.replace('[st]', elements.beginTime.val())
-						.replace('[et]', elements.endTime.val());
+						.replace('[et]', elements.endTime.val())
+						.replace('[rn]', elements.referenceNumber.val());
 
 		ajaxGet(url, null, function(data){
 			var dialog = elements.accessoriesDialog;
@@ -330,6 +331,22 @@ function Reservation(opts) {
 	};
 
 	var AddResources = function () {
+
+		var url = options.resourcesUrl
+								.replace('[sd]', elements.beginDate.val())
+								.replace('[ed]', elements.endDate.val())
+								.replace('[rn]', elements.referenceNumber.val())
+								.replace('[st]', elements.beginTime.val())
+								.replace('[et]', elements.endTime.val())
+								.replace('[rn]', elements.referenceNumber.val());
+
+		ajaxGet(url, null, function(data){
+			var dialog = elements.resourceGroupsDialog;
+			$.each(data, function(i, unavailableResourceId) {
+				// dialog.find('[accessory-quantity-id="' + accessory.id + '"]').html(accessory.quantity === null ? '&infin;' : accessory.quantity);
+			});
+		});
+
 		var displayDiv = elements.additionalResources;
 		displayDiv.empty();
 

@@ -17,6 +17,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 class TestReservationItemView extends ReservationItemView
 {
 	/**
@@ -25,7 +26,7 @@ class TestReservationItemView extends ReservationItemView
 	 * @param Date $endDate
 	 * @param int $resourceId
 	 */
-	public function __construct($id, Date $startDate, Date $endDate, $resourceId = 1)
+	public function __construct($id, Date $startDate, Date $endDate, $resourceId = 1, $referenceNumber = null)
 	{
 		parent::__construct();
 
@@ -35,6 +36,7 @@ class TestReservationItemView extends ReservationItemView
 		$this->ResourceId = $resourceId;
 		$this->Date = new DateRange($startDate, $endDate);
 		$this->RepeatType = RepeatType::None;
+		$this->ReferenceNumber = $referenceNumber;
 	}
 
 	public function WithSeriesId($seriesId)
@@ -63,4 +65,3 @@ class TestBlackoutItemView extends BlackoutItemView
 	}
 
 }
-?>
