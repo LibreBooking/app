@@ -372,6 +372,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 					<div id="resourceGroups"></div>
 				</div>
 				<div class="modal-footer">
+					<div id="checking-availability" class="pull-left">{translate key=CheckingAvailability} <i class="fa fa-spinner fa-spin" aria-hidden="true"></i></div>
 					<button type="button" class="btn btn-default btnClearAddResources"
 							data-dismiss="modal">{translate key='Cancel'}</button>
 					<button type="button" class="btn btn-primary btnConfirmAddResources">{translate key='Done'}</button>

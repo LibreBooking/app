@@ -367,6 +367,10 @@ a.remove {
 .autoReleaseButtonMessage {
   display: none;
 }
+.unavailableResource {
+  text-decoration: line-through;
+  color: #aa3939;
+}
 #availableCreditsCount {
   font-weight: bold;
 }

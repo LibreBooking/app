@@ -81,20 +81,24 @@ function Reservation(opts) {
 
 		scheduleId = $('#scheduleId').val();
 
-		elements.accessoriesPrompt.click(function () {
+		elements.accessoriesPrompt.click(function (e) {
+			e.preventDefault();
 			ShowAccessoriesPrompt();
 		});
 
-		elements.accessoriesConfirm.click(function () {
+		elements.accessoriesConfirm.click(function (e) {
+			e.preventDefault();
 			AddAccessories();
 			elements.accessoriesDialog.modal('hide');
 		});
 
-		elements.accessoriesCancel.click(function () {
+		elements.accessoriesCancel.click(function (e) {
+			e.preventDefault();
 			elements.accessoriesDialog.modal('hide');
 		});
 
-		elements.printButton.click(function () {
+		elements.printButton.click(function (e) {
+			e.preventDefault();
 			window.print();
 		});
 
@@ -331,22 +335,6 @@ function Reservation(opts) {
 	};
 
 	var AddResources = function () {
-
-		var url = options.resourcesUrl
-								.replace('[sd]', elements.beginDate.val())
-								.replace('[ed]', elements.endDate.val())
-								.replace('[rn]', elements.referenceNumber.val())
-								.replace('[st]', elements.beginTime.val())
-								.replace('[et]', elements.endTime.val())
-								.replace('[rn]', elements.referenceNumber.val());
-
-		ajaxGet(url, null, function(data){
-			var dialog = elements.resourceGroupsDialog;
-			$.each(data, function(i, unavailableResourceId) {
-				// dialog.find('[accessory-quantity-id="' + accessory.id + '"]').html(accessory.quantity === null ? '&infin;' : accessory.quantity);
-			});
-		});
-
 		var displayDiv = elements.additionalResources;
 		displayDiv.empty();
 
@@ -400,6 +388,27 @@ function Reservation(opts) {
 	};
 
 	var InitializeAdditionalResources = function () {
+
+		var url = options.resourcesUrl
+								.replace('[sd]', elements.beginDate.val())
+								.replace('[ed]', elements.endDate.val())
+								.replace('[rn]', elements.referenceNumber.val())
+								.replace('[st]', elements.beginTime.val())
+								.replace('[et]', elements.endTime.val())
+								.replace('[rn]', elements.referenceNumber.val());
+
+		var dialog = elements.resourceGroupsDialog;
+		dialog.find('[resource-id]').parent().removeClass('unavailableResource');
+
+		dialog.find('#checking-availability').removeClass('no-show');
+
+		ajaxGet(url, null, function(data){
+			$.each(data, function(i, unavailableResourceId) {
+				dialog.find('[resource-id="' + unavailableResourceId + '"]').parent().addClass('unavailableResource');
+			});
+			dialog.find('#checking-availability').addClass('no-show');
+		});
+
 		elements.groupDiv.find('input[type=checkbox]').prop('checked', false);
 		$.each($('.resourceId'), function (idx, val) {
 			var resourceCheckboxes = elements.groupDiv.find('[resource-id="' + $(val).val() + '"]');
