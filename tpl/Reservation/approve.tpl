@@ -31,6 +31,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
 			{translate key=More} <span class="caret"></span>
 		</button>
+
 		<ul class="dropdown-menu" role="menu">
 			<li>
 				{assign var=icsUrl value="{$Path}export/{Pages::CALENDAR_EXPORT}?{QueryStringKeys::REFERENCE_NUMBER}={$ReferenceNumber}"}
@@ -42,16 +43,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 					<span class="fa fa-print"></span>
 					{translate key='Print'}</a>
 			</li>
-			<li class="divider"></li>
-			<li>
-				<a href="#" class="{if $IsRecurring}delete prompt{else}triggerDeletePrompt delete prompt-single{/if}">
-					<span class="fa fa-remove remove icon"></span>
-					{translate key='Reject'}
-				</a>
-			</li>
 		</ul>
 	</div>
-
 
     <div id="deleteButtonPrompt" class="modal fade">
         <div class="modal-dialog">
@@ -117,6 +110,10 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		<span class=""></span>
 		{translate key='Update'}
 	</a>
+    <button type="button" class="btn btn-danger {if $IsRecurring}delete prompt{else}triggerDeletePrompt delete prompt-single{/if}">
+        <span class="fa fa-remove"></span>
+        {translate key='Reject'}
+    </button>
     <button type="button" class="btn btn-success" id="btnApprove">
 		<span class="glyphicon glyphicon-ok-circle"></span>
 		{translate key='Approve'}
