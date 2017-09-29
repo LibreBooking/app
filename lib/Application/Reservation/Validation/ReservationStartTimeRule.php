@@ -18,6 +18,11 @@ require_once(ROOT_DIR . 'Domain/Values/ReservationStartTimeConstraint.php');
 
 class ReservationStartTimeRule implements IReservationValidationRule
 {
+    /**
+     * @var IScheduleRepository
+     */
+    private $scheduleRepository;
+
     public function __construct(IScheduleRepository $scheduleRepository)
     {
         $this->scheduleRepository = $scheduleRepository;

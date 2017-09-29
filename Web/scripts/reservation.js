@@ -398,13 +398,19 @@ function Reservation(opts) {
 								.replace('[rn]', elements.referenceNumber.val());
 
 		var dialog = elements.resourceGroupsDialog;
-		dialog.find('[resource-id]').parent().removeClass('unavailableResource');
+        var allCheckboxes = dialog.find('[resource-id]');
+        allCheckboxes.prop('disabled', false);
+        allCheckboxes.parent().removeClass('unavailableResource');
 
 		dialog.find('#checking-availability').removeClass('no-show');
 
 		ajaxGet(url, null, function(data){
 			$.each(data, function(i, unavailableResourceId) {
-				dialog.find('[resource-id="' + unavailableResourceId + '"]').parent().addClass('unavailableResource');
+                var checkbox = dialog.find('[resource-id="' + unavailableResourceId + '"]');
+                checkbox.prop('checked', false);
+                checkbox.trigger('checked');
+                checkbox.prop('disabled', true);
+                checkbox.parent().addClass('unavailableResource');
 			});
 			dialog.find('#checking-availability').addClass('no-show');
 		});
@@ -426,8 +432,11 @@ function Reservation(opts) {
 		{
 			// if this is a group, check/uncheck all nested subitems
 			$.each(checkbox.closest('li').find('ul').find('input[type=checkbox]'), function (i, v) {
-				$(v).prop('checked', isChecked);
-				handleAdditionalResourceChecked($(v));
+				if ($(v).is(':enabled'))
+                {
+                    $(v).prop('checked', isChecked);
+                    handleAdditionalResourceChecked($(v));
+                }
 			});
 		}
 		else
