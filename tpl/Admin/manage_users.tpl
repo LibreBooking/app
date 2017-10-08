@@ -284,21 +284,21 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                         </div>
                         <div class="col-sm-12 col-md-6">
                             <div class="form-group">
-                                <label for="phone">{translate key="Phone"}</label>
-                                <input type="text" {formname key="PHONE"} class="form-control" id="phone"/>
+                                <label for="addPhone">{translate key="Phone"}</label>
+                                <input type="text" {formname key="PHONE"} class="form-control" id="addPhone"/>
                             </div>
                         </div>
                         <div class="col-sm-12 col-md-6">
                             <div class="form-group">
                                 <label for="organization">{translate key="Organization"}</label>
                                 <input type="text" {formname key="ORGANIZATION"} class="form-control"
-                                       id="organization"/>
+                                       id="addOrganization"/>
                             </div>
                         </div>
                         <div class="col-sm-12 col-md-6">
                             <div class="form-group">
                                 <label for="position">{translate key="Position"}</label>
-                                <input type="text" {formname key="POSITION"} class="form-control" id="position"/>
+                                <input type="text" {formname key="POSITION"} class="form-control" id="addPosition"/>
                             </div>
                         </div>
                         <div class="col-sm-12 col-md-6">
