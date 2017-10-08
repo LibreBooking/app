@@ -95,7 +95,7 @@ class ViewSchedulePage extends SchedulePage
 
     public function ShowInaccessibleResources()
     {
-        return true;
+        return Configuration::Instance()->GetSectionKey(ConfigSection::PRIVACY, ConfigKeys::SCHEDULE_SHOW_INACCESSIBLE_RESOURCES, new BooleanConverter());
     }
 
 	protected function GetShouldAutoLogout()
