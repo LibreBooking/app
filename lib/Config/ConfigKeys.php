@@ -37,6 +37,7 @@ class ConfigKeys
     const REGISTRATION_REQUIRE_ACTIVATION = 'registration.require.email.activation';
     const REGISTRATION_AUTO_SUBSCRIBE_EMAIL = 'registration.auto.subscribe.email';
 	const REGISTRATION_NOTIFY = 'registration.notify.admin';
+    const CUSTOM_JS_FILE = 'custom.js.file';
 
     const VERSION = 'version';
 

@@ -90,7 +90,8 @@ abstract class Page implements IPage
 		$this->smarty->assign('ShouldLogout', $this->GetShouldAutoLogout());
 		$this->smarty->assign('CssExtensionFile', Configuration::Instance()->GetKey(ConfigKeys::CSS_EXTENSION_FILE));
 		$this->smarty->assign('UseLocalJquery', Configuration::Instance()->GetKey(ConfigKeys::USE_LOCAL_JQUERY, new BooleanConverter()));
-		$this->smarty->assign('EnableConfigurationPage',
+        $this->smarty->assign('CustomJs', Configuration::Instance()->GetKey(ConfigKeys::CUSTOM_JS_FILE));
+        $this->smarty->assign('EnableConfigurationPage',
 							  Configuration::Instance()->GetSectionKey(ConfigSection::PAGES, ConfigKeys::PAGES_ENABLE_CONFIGURATION, new BooleanConverter()));
 		$this->smarty->assign('ShowParticipation', !Configuration::Instance()
 																 ->GetSectionKey(ConfigSection::RESERVATION, ConfigKeys::RESERVATION_PREVENT_PARTICIPATION,

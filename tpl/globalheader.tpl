@@ -92,6 +92,9 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
     {/if}
     {jsfile src="js/jquery-ui-timepicker-addon.js"}
     {jsfile src="phpscheduleit.js"}
+    {if $CustomJs}
+        {jsfile src=$CustomJs}
+    {/if}
     <!-- End JavaScript -->
 
     <!-- CSS -->
