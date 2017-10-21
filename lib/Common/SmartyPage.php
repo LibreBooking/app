@@ -749,8 +749,12 @@ class SmartyPage extends Smarty
     {
         $key = isset($params['key']) ? $params['key'] : 'Update';
         $class = isset($params['class']) ? $params['class'] : '';
-        echo '<button type="button" class="btn btn-success save ' . $class . '" ' . $this->GetButtonAttributes($params) . '><span class="glyphicon glyphicon-ok-circle"></span> ' . Resources::GetInstance()
+        $type = isset($params['submit']) ? 'submit' : 'button';
+
+        echo '<button type="' . $type . '" class="btn btn-success save ' . $class . '" ' . $this->GetButtonAttributes($params) . '><span class="glyphicon glyphicon-ok-circle"></span> ' . Resources::GetInstance()
                 ->GetString($key) . '</button>';
+
+
     }
 
     public function AddButton($params, &$smarty)
@@ -821,8 +825,7 @@ class SmartyPage extends Smarty
 
             $sortDirection = $currentDirection == 'asc' ? 'desc' : 'asc';
             $indicator = "<i class=\"fa fa-sort-desc\"></i>";
-            if ($currentDirection == 'asc')
-            {
+            if ($currentDirection == 'asc') {
                 $indicator = "<i class=\"fa fa-sort-asc\"></i>";
             }
         }

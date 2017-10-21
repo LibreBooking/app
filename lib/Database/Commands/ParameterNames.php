@@ -20,8 +20,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 class ParameterNames
 {
-
-	private function __construct()
+    private function __construct()
 	{
 	}
 
@@ -74,6 +73,8 @@ class ParameterNames
 	const CURRENT_SERIES_ID = '@currentSeriesId';
 	const COLOR_RULE_ID = '@reservation_color_rule_id';
 	const CREDIT_COUNT = '@credit_count';
+	const CREDIT_COST = '@credit_cost';
+	const CREDIT_CURRENCY = '@credit_currency';
 
 	const DATE_CREATED = '@dateCreated';
 	const DATE_MODIFIED = '@dateModified';
@@ -94,7 +95,10 @@ class ParameterNames
 	const FILE_EXTENSION = '@file_extension';
 	const FIRST_NAME = '@fname';
 
-	const GROUP_ID = '@groupid';
+    const GATEWAY_TYPE = '@gateway_type';
+    const GATEWAY_SETTING_NAME = '@setting_name';
+    const GATEWAY_SETTING_VALUE = '@setting_value';
+    const GROUP_ID = '@groupid';
 	const GROUP_NAME = '@groupname';
 	const GROUP_ADMIN_ID = '@admin_group_id';
 

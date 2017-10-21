@@ -193,6 +193,15 @@ $conf['settings']['authentication']['required.email.domains'] = '';
 $conf['settings']['authentication']['hide.booked.login.prompt'] = 'false';
 $conf['settings']['authentication']['captcha.on.login'] = 'false';
 /**
- * Credits functionality
+ * Credits
  */
 $conf['settings']['credits']['enabled'] = 'false';
+$conf['settings']['credits']['allow.purchase'] = 'false';
+/**
+ * Payments
+ */
+$conf['settings']['payments']['paypal.enabled'] = 'false';
+$conf['settings']['payments']['paypal.client.id'] = '';
+$conf['settings']['payments']['paypal.secret'] = '';
+$conf['settings']['payments']['paypal.environment'] = 'sandbox';
+$conf['settings']['payments']['stripe.enabled'] = 'false';

@@ -778,7 +778,7 @@ class User
 	private $_removedAttributeValues = array();
 
 	/**
-	 * @var int
+	 * @var float
 	 */
 	private $credits;
 

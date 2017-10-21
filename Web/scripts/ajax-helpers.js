@@ -190,7 +190,7 @@ function ConfigureUploadForm(buttonElement, urlCallback, preSubmitCallback, succ
 function BeforeFormSubmit(formData, jqForm, opts) {
 	var isValid = true;
 	$(jqForm).find('.required').each(function (index, ele) {
-		if ($(ele).is(':visible') && $(ele).val() == '')
+		if ($(ele).is(':visible') && $(ele).val() == '' && $(ele).attr('disabled')!='disabled' )
 		{
 			isValid = false;
 			$(ele).closest('.form-group').addClass('has-error');

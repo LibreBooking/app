@@ -132,6 +132,8 @@ class ReservationRepository implements IReservationRepository
 					$adjustCreditsCommand = new AdjustUserCreditsCommand($reservationSeries->UserId(), $creditsToDeduct);
 
 					$database->Execute($adjustCreditsCommand);
+
+					// TODO: Add credit transaction log
 				} catch (Exception $ex)
 				{}
 			}

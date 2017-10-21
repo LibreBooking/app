@@ -635,6 +635,16 @@ class en_us extends Language
         $strings['UpdateResourcesOnImport'] = 'Update existing resources if name already exists';
         $strings['Reject'] = 'Reject';
         $strings['CheckingAvailability'] = 'Checking availability';
+        $strings['CreditPurchaseNotEnabled'] = 'You have not enabled the ability to purchase credits';
+        $strings['CreditsCost'] = 'Each credit costs';
+        $strings['Currency'] = 'Currency';
+        $strings['PayPalClientId'] = 'Client ID';
+        $strings['PayPalSecret'] = 'Secret';
+        $strings['PayPalEnvironment'] = 'Environment';
+        $strings['Sandbox'] = 'Sandbox';
+        $strings['Live'] = 'Live';
+        $strings['StripePublishableKey'] = 'Publishable key';
+        $strings['StripeSecretKey'] = 'Secret key';
         // End Strings
 
 		// Install
@@ -775,6 +785,7 @@ class en_us extends Language
 		$strings['ManageResourceStatus'] = 'Resource Statuses';
 		$strings['ReservationColors'] = 'Reservation Colors';
 		$strings['SearchReservations'] = 'Search Reservations';
+		$strings['ManagePayments'] = 'Payments';
 		// End Page Titles
 
 		// Day representations

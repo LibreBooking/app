@@ -235,6 +235,16 @@ class AddLayoutTimeCommand extends SqlCommand
     }
 }
 
+class AddPaymentGatewaySettingCommand extends SqlCommand
+{
+    public function __construct($gatewayType, $settingName, $settingValue)
+    {
+        parent::__construct(Queries::ADD_PAYMENT_GATEWAY_SETTING);
+        $this->AddParameter(new Parameter(ParameterNames::GATEWAY_TYPE, $gatewayType));
+        $this->AddParameter(new Parameter(ParameterNames::GATEWAY_SETTING_NAME, $settingName));
+        $this->AddParameter(new Parameter(ParameterNames::GATEWAY_SETTING_VALUE, $settingValue));
+    }
+}
 
 class AddPeakTimesCommand extends SqlCommand
 {
@@ -778,6 +788,18 @@ class DeleteOrphanLayoutsCommand extends SqlCommand
     public function __construct()
     {
         parent::__construct(Queries::DELETE_ORPHAN_LAYOUTS);
+    }
+}
+
+class DeletePaymentGatewaySettingsCommand extends SqlCommand
+{
+    /**
+     * @param string $gatewayType
+     */
+    public function __construct($gatewayType)
+    {
+        parent::__construct(Queries::DELETE_PAYMENT_GATEWAY_SETTINGS);
+        $this->AddParameter(new Parameter(ParameterNames::GATEWAY_TYPE, $gatewayType));
     }
 }
 
@@ -1328,6 +1350,23 @@ class GetLayoutCommand extends SqlCommand
     {
         parent::__construct(Queries::GET_SCHEDULE_TIME_BLOCK_GROUPS);
         $this->AddParameter(new Parameter(ParameterNames::SCHEDULE_ID, $scheduleId));
+    }
+}
+
+class GetPaymentConfigurationCommand extends SqlCommand
+{
+    public function __construct()
+    {
+        parent::__construct(Queries::GET_PAYMENT_CONFIGURATION);
+    }
+}
+
+class GetPaymentGatewaySettingsCommand extends SqlCommand
+{
+    public function __construct($gatewayType)
+    {
+        parent::__construct(Queries::GET_PAYMENT_GATEWAY_SETTINGS);
+        $this->AddParameter(new Parameter(ParameterNames::GATEWAY_TYPE, $gatewayType));
     }
 }
 
@@ -2178,6 +2217,16 @@ class UpdateLoginDataCommand extends SqlCommand
         $this->AddParameter(new Parameter(ParameterNames::LAST_LOGIN, $lastLoginTime));
         $this->AddParameter(new Parameter(ParameterNames::LANGUAGE, $language));
         $this->AddParameter(new Parameter(ParameterNames::USER_ID, $userId));
+    }
+}
+
+class UpdatePaymentConfigurationCommand extends SqlCommand
+{
+    public function __construct($creditCost, $creditCurrency)
+    {
+        parent::__construct(Queries::UPDATE_PAYMENT_CONFIGURATION);
+        $this->AddParameter(new Parameter(ParameterNames::CREDIT_COST, $creditCost));
+        $this->AddParameter(new Parameter(ParameterNames::CREDIT_CURRENCY, $creditCurrency));
     }
 }
 

@@ -18,6 +18,7 @@
  * You should have received a copy of the GNU General Public License
  * along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 class ColumnNames
 {
 	private function __construct()
@@ -280,6 +281,15 @@ class ColumnNames
 
     // RESERVATION_WAITLIST_REQUEST_ID //
     const RESERVATION_WAITLIST_REQUEST_ID = 'reservation_waitlist_request_id';
+
+    // PAYMENT CONFIGURATION //
+    const CREDIT_COST = 'credit_cost';
+    const CREDIT_CURRENCY = 'credit_currency';
+
+    // PAYMENT GATEWAYS
+    const GATEWAY_TYPE = 'gateway_type';
+    const GATEWAY_SETTING_NAME = 'setting_name';
+    const GATEWAY_SETTING_VALUE = 'setting_value';
 
 	// dynamic
 	const TOTAL = 'total';

@@ -17,7 +17,7 @@
 
 class FormKeys
 {
-	private function __construct()
+    private function __construct()
 	{
 	}
 
@@ -71,7 +71,9 @@ class FormKeys
 	const CONFLICT_ACTION = 'conflictAction';
 	const CONTACT_INFO = 'contactInfo';
 	const CREDITS = 'CREDITS';
-	const CSS_FILE = 'CSS_FILE';
+    const CREDIT_COST = 'CREDIT_COST';
+    const CREDIT_CURRENCY = 'CREDIT_CURRENCY';
+    const CSS_FILE = 'CSS_FILE';
 	const CSRF_TOKEN = 'CSRF_TOKEN';
 	const CURRENT_PASSWORD = 'currentPassword';
 
@@ -146,6 +148,10 @@ class FormKeys
 	const PARTICIPANT_ID = 'PARTICIPANT_ID';
 	const PASSWORD = 'password';
 	const PASSWORD_CONFIRM = 'passwordConfirm';
+    const PAYPAL_ENABLED = 'ENABLE_PAYPAL';
+	const PAYPAL_CLIENT_ID = 'PAYPAL_CLIENT_ID';
+	const PAYPAL_SECRET = 'PAYPAL_SECRET';
+	const PAYPAL_ENVIRONMENT = 'PAYPAL_ENVIRONMENT';
 	const PEAK_ALL_DAY = 'PEAK_ALL_DAY';
 	const PEAK_ALL_YEAR = 'PEAK_ALL_YEAR';
 	const PEAK_EVERY_DAY = 'PEAK_EVERY_DAY';
@@ -227,6 +233,9 @@ class FormKeys
 	const SLOTS_BLOCKED = 'blockedSlots';
 	const SLOTS_RESERVABLE = 'reservableSlots';
 	const STATUS_ID = 'STATUS_ID';
+    const STRIPE_ENABLED = 'ENABLE_STRIPE';
+	const STRIPE_PUBLISHABLE_KEY = 'STRIPE_PUBLISHABLE_KEY';
+	const STRIPE_SECRET_KEY = 'STRIPE_SECRET_KEY';
 	const SUBMIT = 'SUBMIT';
 	const SUMMARY = 'summary';
 	const SCHEDULE_ADMIN_GROUP_ID = 'adminGroupId';

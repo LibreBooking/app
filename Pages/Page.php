@@ -77,11 +77,9 @@ abstract class Page implements IPage
 		$this->smarty->assign('CanViewGroupAdmin', $userSession->IsGroupAdmin);
 		$this->smarty->assign('CanViewResourceAdmin', $userSession->IsResourceAdmin);
 		$this->smarty->assign('CanViewScheduleAdmin', $userSession->IsScheduleAdmin);
-		$this->smarty->assign('CanViewResponsibilities',
-							  !$userSession->IsAdmin && ($userSession->IsGroupAdmin || $userSession->IsResourceAdmin || $userSession->IsScheduleAdmin));
+		$this->smarty->assign('CanViewResponsibilities', !$userSession->IsAdmin && ($userSession->IsGroupAdmin || $userSession->IsResourceAdmin || $userSession->IsScheduleAdmin));
 		$allowAllUsersToReports = Configuration::Instance()->GetSectionKey(ConfigSection::REPORTS, ConfigKeys::REPORTS_ALLOW_ALL, new BooleanConverter());
-		$this->smarty->assign('CanViewReports',
-				($allowAllUsersToReports || $userSession->IsAdmin || $userSession->IsGroupAdmin || $userSession->IsResourceAdmin || $userSession->IsScheduleAdmin));
+		$this->smarty->assign('CanViewReports', ($allowAllUsersToReports || $userSession->IsAdmin || $userSession->IsGroupAdmin || $userSession->IsResourceAdmin || $userSession->IsScheduleAdmin));
 		$timeout = Configuration::Instance()->GetKey(ConfigKeys::INACTIVITY_TIMEOUT);
 		if (!empty($timeout))
 		{
@@ -90,11 +88,9 @@ abstract class Page implements IPage
 		$this->smarty->assign('ShouldLogout', $this->GetShouldAutoLogout());
 		$this->smarty->assign('CssExtensionFile', Configuration::Instance()->GetKey(ConfigKeys::CSS_EXTENSION_FILE));
 		$this->smarty->assign('UseLocalJquery', Configuration::Instance()->GetKey(ConfigKeys::USE_LOCAL_JQUERY, new BooleanConverter()));
-		$this->smarty->assign('EnableConfigurationPage',
-							  Configuration::Instance()->GetSectionKey(ConfigSection::PAGES, ConfigKeys::PAGES_ENABLE_CONFIGURATION, new BooleanConverter()));
-		$this->smarty->assign('ShowParticipation', !Configuration::Instance()
-																 ->GetSectionKey(ConfigSection::RESERVATION, ConfigKeys::RESERVATION_PREVENT_PARTICIPATION,
-																				 new BooleanConverter()));
+		$this->smarty->assign('EnableConfigurationPage',  Configuration::Instance()->GetSectionKey(ConfigSection::PAGES, ConfigKeys::PAGES_ENABLE_CONFIGURATION, new BooleanConverter()));
+		$this->smarty->assign('ShowParticipation', !Configuration::Instance()->GetSectionKey(ConfigSection::RESERVATION, ConfigKeys::RESERVATION_PREVENT_PARTICIPATION, new BooleanConverter()));
+		$this->smarty->assign('CreditsEnabled', Configuration::Instance()->GetSectionKey(ConfigSection::CREDITS, ConfigKeys::CREDITS_ENABLED, new BooleanConverter()));
 
 		$this->smarty->assign('LogoUrl', 'booked.png');
 		if (file_exists($this->path . 'img/custom-logo.png'))
