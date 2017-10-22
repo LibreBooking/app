@@ -645,6 +645,8 @@ class en_us extends Language
         $strings['Live'] = 'Live';
         $strings['StripePublishableKey'] = 'Publishable key';
         $strings['StripeSecretKey'] = 'Secret key';
+        $strings['CreditsUpdated'] = 'Credit cost has been updated';
+        $strings['GatewaysUpdated'] = 'Payment gateways have been updated';
         // End Strings
 
 		// Install

@@ -23,8 +23,11 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
     <h1>{translate key=ManagePayments}</h1>
 
-    <div id="updatedCreditsMessage" class="alert alert-success" style="display:none">
-        Credits updated
+    <div id="updatedCreditsMessage" class="alert alert-success" style="display:none;">
+        {translate key=CreditsUpdated}
+    </div>
+    <div id="updatedGatewayMessage" class="alert alert-success" style="display:none;">
+        {translate key=GatewaysUpdated}
     </div>
 
     {if !$PaymentsEnabled}

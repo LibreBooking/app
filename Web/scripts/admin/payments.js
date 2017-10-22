@@ -36,11 +36,9 @@ function Payments() {
     {
         if (paypalEnabled) {
             $('#paypalEnabled').click();
-            // $('#paypalEnabled').trigger('click');
         }
         if (stripeEnabled) {
             $('#stripeEnabled').click();
-            // $('#stripeEnabled').trigger('click');
         }
     };
 
