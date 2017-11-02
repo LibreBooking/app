@@ -17,13 +17,13 @@ You should have received a copy of the GNU General Public License
 along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 *}
 {include file='globalheader.tpl'}
-<h1>Booked Scheduler Help</h1>
+<h1>{$AppTitle} Help</h1>
 
 <div id="help">
     <h2>Registration</h2>
 
     <p>
-        Registration is required in order to use Booked Scheduler if you administrator has enabled it. After your
+        Registration is required in order to use {$AppTitle} if you administrator has enabled it. After your
         account
         has been registered
         you will be able to log in and access any resources that you have permission to.
@@ -134,7 +134,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
     <h2>Deleting a Reservation</h2>
 
     <p>Deleting a reservation completely removes it from the schedule. It will no longer be visible anywhere in
-        Booked Scheduler</p>
+        {$AppTitle}</p>
 
     <h3>Deleting Specific Instances From a Series</h3>
 
@@ -174,13 +174,13 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
         your calendar Client. For Outlook, if it does not automatically add, open the Calendar view, then right click My
         Calendars and choose
         Add Calendar -> From Internet. Paste in the URL printed under the Subscribe to this Calendar link in
-        Booked Scheduler.</p>
+        {$AppTitle}.</p>
 
     <h3>Google&reg; Calendar</h3>
 
     <p>Open Google Calendar settings. Click the Calendars tab. Click Browse interesting calendars. Click add by URL.
         Paste
-        in the URL printed under the Subscribe to this Calendar link in Booked Scheduler.</p>
+        in the URL printed under the Subscribe to this Calendar link in {$AppTitle}.</p>
 
     <h2>Quotas</h2>
 
@@ -194,7 +194,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
     <h2>Reservation Tablet View</h2>
 
-    <p>Booked provides a tablet-friendly view of a resource's current availability. To launch this view,
+    <p>{$AppTitle} provides a tablet-friendly view of a resource's current availability. To launch this view,
         open {$ScriptUrl}/resource-display.php then choose the resource to display. From this view users can view the
         current availability, check in to their reservation, and book new reservations.</p>
 
