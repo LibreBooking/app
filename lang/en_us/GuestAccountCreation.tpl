@@ -17,7 +17,7 @@ You should have received a copy of the GNU General Public License
 along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 *}
 
-<p>You have created a new Booked account with the following information:<br/>
+<p>You have created a new {$AppTitle} account with the following information:<br/>
 Email: {$EmailAddress}<br/>
 Password: {$Password}<br/>
 
