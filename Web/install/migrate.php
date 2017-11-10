@@ -565,7 +565,7 @@ class MigrationPresenter
 			{
 				continue;
 			}
-			$newId = $accessoryRepo->Add(new Accessory(null, $row['name'], $row['number_available']));
+			$newId = $accessoryRepo->Add(new Accessory(null, $row['name'], max(0,$row['number_available'])));
 
 			$currentDatabase->Execute(new AdHocCommand("update accessories set legacyid = \"{$row['resourceid']}\" where accessory_id = $newId"));
 
