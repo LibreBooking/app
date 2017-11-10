@@ -24,7 +24,30 @@ require_once(ROOT_DIR . 'Pages/SecurePage.php');
 
 interface IUserCreditsPage extends IPage, IActionPage
 {
+    /**
+     * @param int $credits
+     */
     public function SetCurrentCredits($credits);
+
+    /**
+     * @param bool $enabled
+     * @param string $clientId
+     * @param string $environment
+     */
+    public function SetPayPalSettings($enabled, $clientId, $environment);
+
+    /**
+     * @param string $enabled
+     * @param string $publishableKey
+     */
+    public function SetStripeSettings($enabled, $publishableKey);
+
+    /**
+     * @return string
+     */
+    public function GetPaymentResult();
+
+    public function SetPayPalPaymentResult();
 }
 
 class UserCreditsPage extends ActionPage implements IUserCreditsPage
@@ -38,10 +61,8 @@ class UserCreditsPage extends ActionPage implements IUserCreditsPage
     {
         parent::__construct('Credits');
         $this->Set('AllowPurchasingCredits', Configuration::Instance()->GetSectionKey(ConfigSection::CREDITS, ConfigKeys::CREDITS_ALLOW_PURCHASE, new BooleanConverter()));
-        $this->Set('PayPalEnvironment', Configuration::Instance()->GetSectionKey(ConfigSection::PAYMENTS, ConfigKeys::PAYPAL_ENVIRONMENT));
-        $this->Set('PayPalClientId', Configuration::Instance()->GetSectionKey(ConfigSection::PAYMENTS, ConfigKeys::PAYPAL_CLIENT_ID));
 
-        $this->presenter = new UserCreditsPresenter($this, new UserRepository());
+        $this->presenter = new UserCreditsPresenter($this, new UserRepository(), new PaymentRepository());
     }
 
     public function ProcessAction()
@@ -57,11 +78,34 @@ class UserCreditsPage extends ActionPage implements IUserCreditsPage
     public function ProcessPageLoad()
     {
         $this->presenter->PageLoad(ServiceLocator::GetServer()->GetUserSession());
-        $this->Display('Credits/user-credits.tpl');
+        $this->Display('Credits/user_credits.tpl');
     }
 
     public function SetCurrentCredits($credits)
     {
         $this->Set('CurrentCredits', $credits);
+    }
+
+    public function SetPayPalSettings($enabled, $clientId, $environment)
+    {
+       $this->Set('PayPalEnabled', $enabled);
+       $this->Set('PayPalClientId', $clientId);
+       $this->Set('PayPalEnvironment', $environment);
+    }
+
+    public function SetStripeSettings($enabled, $publishableKey)
+    {
+        $this->Set('StripeEnabled', $enabled);
+        $this->Set('StripePublishableKey', $publishableKey);
+    }
+
+    public function GetPaymentResult()
+    {
+       return $this->GetForm(FormKeys::PAYMENT_RESPONSE_DATA);
+    }
+
+    public function SetPayPalPaymentResult()
+    {
+        $this->SetJson("foo");
     }
 }

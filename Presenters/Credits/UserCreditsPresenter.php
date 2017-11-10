@@ -30,30 +30,50 @@ class UserCreditsPresenter extends ActionPresenter
      * @var IUserCreditsPage
      */
     private $page;
-
     /**
      * @var IUserRepository
      */
     private $userRepository;
+    /**
+     * @var IPaymentRepository
+     */
+    private $paymentRepository;
 
-    public function __construct(IUserCreditsPage $page, IUserRepository $userRepository)
+    public function __construct(IUserCreditsPage $page, IUserRepository $userRepository, IPaymentRepository $paymentRepository)
     {
         parent::__construct($page);
 
         $this->page = $page;
         $this->userRepository = $userRepository;
+        $this->paymentRepository = $paymentRepository;
 
-//        $this->AddAction(ProfileActions::Update, 'UpdateProfile');
-
+        $this->AddAction('executePayPalPayment', 'ExecutePayPalPayment');
+        $this->AddAction('createPayPalPayment', 'CreatePayPalPayment');
     }
 
     public function PageLoad(UserSession $userSession)
     {
         $user = $this->userRepository->LoadById($userSession->UserId);
         $this->page->SetCurrentCredits($user->GetCurrentCredits());
+
+        $paypal = $this->paymentRepository->GetPayPalGateway();
+        $stripe = $this->paymentRepository->GetStripeGateway();
+
+        $this->page->SetPayPalSettings($paypal->IsEnabled(), $paypal->ClientId(), $paypal->Environment());
+        $this->page->SetStripeSettings($stripe->IsEnabled(), $stripe->PublishableKey());
     }
 
-    public function ProcessAction()
+    public function CreatePayPalPayment()
     {
+        $gateway = $this->paymentRepository->GetPayPalGateway();
+        $gateway->CreatePayment();
+        $this->page->SetPayPalPaymentResult();
     }
+
+    public function SavePaypalResult()
+    {
+//        $gateway = new PayPalGateway();
+//        $this->paymentRepository->SavePayPalPaymentResult(PayPalPaymentResult::FromJsonString($this->page->GetPaymentResult()));
+    }
+
 }

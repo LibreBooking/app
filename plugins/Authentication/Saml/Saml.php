@@ -150,7 +150,7 @@ class Saml extends Authentication implements IAuthentication
 	public function Login($username, $loginContext)
 	{
 		$this->username = $username;
-		if ($this->username == null)
+		if (empty($this->username))
 		{
 			$this->username = $this->user->GetUserName();
 		}

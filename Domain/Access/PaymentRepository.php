@@ -20,6 +20,7 @@
 
 require_once(ROOT_DIR . 'Domain/CreditCost.php');
 require_once(ROOT_DIR . 'Domain/PaymentGateway.php');
+require_once(ROOT_DIR . 'Domain/Values/PayPalPaymentResult.php');
 require_once(ROOT_DIR . 'lib/Database/namespace.php');
 require_once(ROOT_DIR . 'lib/Database/Commands/namespace.php');
 
@@ -54,6 +55,11 @@ interface IPaymentRepository
      * @return StripeGateway
      */
     public function GetStripeGateway();
+
+    /**
+     * @param PayPalPaymentResult $result
+     */
+    public function SavePayPalPaymentResult(PayPalPaymentResult $result);
 }
 
 class PaymentRepository implements IPaymentRepository
@@ -86,8 +92,10 @@ class PaymentRepository implements IPaymentRepository
     private function UpdateGateway(IPaymentGateway $gateway)
     {
         ServiceLocator::GetDatabase()->Execute(new DeletePaymentGatewaySettingsCommand($gateway->GetGatewayType()));
-        foreach ($gateway->Settings() as $gatewaySetting) {
-            ServiceLocator::GetDatabase()->Execute(new AddPaymentGatewaySettingCommand($gateway->GetGatewayType(), $gatewaySetting->Name(), $gatewaySetting->Value()));
+        if ($gateway->IsEnabled()) {
+            foreach ($gateway->Settings() as $gatewaySetting) {
+                ServiceLocator::GetDatabase()->Execute(new AddPaymentGatewaySettingCommand($gateway->GetGatewayType(), $gatewaySetting->Name(), $gatewaySetting->Value()));
+            }
         }
     }
 
@@ -136,5 +144,10 @@ class PaymentRepository implements IPaymentRepository
         }
 
         return StripeGateway::Create($publishableKey, $secretKey);
+    }
+
+    public function SavePayPalPaymentResult(PayPalPaymentResult $result)
+    {
+        // TODO: Implement SavePayPalPaymentResult() method.
     }
 }
