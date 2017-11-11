@@ -17,7 +17,7 @@ You should have received a copy of the GNU General Public License
 along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 *}
 {include file='globalheader.tpl'}
-<h1>Booked Scheduler Administration</h1>
+<h1>{$AppTitle} Administration</h1>
 
 <div id="help">
     <h2>Administration</h2>
@@ -30,7 +30,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
         <h3>Setting up Schedules</h3>
 
         <p>
-            When installing Booked Scheduler a default schedule will be created with out of the box settings. From the
+            When installing {$AppTitle} a default schedule will be created with out of the box settings. From the
             Schedules menu option you can view and edit attributes of the current schedules.
         </p>
 
@@ -76,7 +76,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
             configuration of a resource.
         </p>
 
-        <p>Resources in Booked Scheduler can be anything you want to make bookable, such as rooms or equipment. Every
+        <p>Resources in {$AppTitle} can be anything you want to make bookable, such as rooms or equipment. Every
             resource
             must be assigned to a schedule in order for it to be bookable. The resource will inherit whatever layout the
             schedule uses.</p>
@@ -195,8 +195,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
     <div id="help-quotas">
         <h3>Setting up Quotas</h3>
 
-        <p>Quotas restrict reservations from being booked based on a configurable limit. The quota system in Booked
-            Scheduler is
+        <p>Quotas restrict reservations from being booked based on a configurable limit. The quota system in {$AppTitle} is
             very flexible, allowing you to build limits based on reservation length and number reservations.</p>
 
         <p>Quota limits &quot;stack&quot;. For example, if a quota exists limiting a resource to 5 hours per day and
@@ -218,7 +217,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
     <div id="help-announcements">
         <h3>Setting up Announcements</h3>
 
-        <p>Announcements are a very simple way to display notifications to Booked Scheduler users.</p>
+        <p>Announcements are a very simple way to display notifications to {$AppTitle} users.</p>
 
         <p>From the Announcements menu item
             you can view and manage the announcements that are displayed on users dashboards. An announcement can be
@@ -235,7 +234,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
     <div id="help-groups">
         <h3>Setting up Groups</h3>
 
-        <p>Groups in Booked Scheduler organize users, control resource access permissions and define roles within the
+        <p>Groups in {$AppTitle} organize users, control resource access permissions and define roles within the
             application. Setting resource permissions for a group will grant access to all members of that group. Users
             can individually be granted additional
             resource permission.</p>
@@ -298,7 +297,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
             resource
             access permissions of individual users, assign users to groups, deactivate or delete accounts, reset user
             passwords, and edit user details.
-            You can also add new users to Booked Scheduler, which is especially useful if self-registration is turned
+            You can also add new users to {$AppTitle}, which is especially useful if self-registration is turned
             off.</p>
 
         <h3>Reservation Colors</h3>
@@ -312,7 +311,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
     <div id="help-attributes">
         <h3>Custom Attributes</h3>
 
-        <p>Custom Attributes are a powerful extension point in Booked. You can add additional attributes to
+        <p>Custom Attributes are a powerful extension point in {$AppTitle}. You can add additional attributes to
             Reservations, Resources, Resource Types and
             Users.</p>
 
@@ -345,7 +344,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
         <p>Private attributes are only shown to the reservation owner and those users who have administrative privileges
             over that reservation.</p>
 
-        <p>Custom attributes are available to plugins and can be used to extend the functionality of Booked.</p>
+        <p>Custom attributes are available to plugins and can be used to extend the functionality of {$AppTitle}.</p>
     </div>
 
     <div id="help-blackouts">
@@ -362,7 +361,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
         <p>Reports are accessible to all application, group, resource and schedule administrators. When the currently
             logged in
-            user has access to reporting features, they will see a Reports navigation item. Booked Scheduler comes with
+            user has access to reporting features, they will see a Reports navigation item. {$AppTitle} comes with
             a set of
             Common Reports which can be viewed as a list of results, a chart, exported to CSV and printed. In addition,
             ad-hoc
@@ -392,11 +391,11 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
             feature to function, $conf['settings']['enable.email'] and
             $conf['settings']['reservation']['enable.reminders'] must
             both be set to true. Also, a scheduled task must be configured on your server to execute
-            /Booked Scheduler/Jobs/sendreminders.php</p>
+            /{$AppTitle}/Jobs/sendreminders.php</p>
 
         <p>On Linux, a cron job can be used. The command to run is <span class="note">php</span> followed by the full
             path to
-            Booked Scheduler/Jobs/sendreminders.php. The full path to sendreminders.php on this server is <span
+            {$AppTitle}/Jobs/sendreminders.php. The full path to sendreminders.php on this server is <span
                     class="note">{$RemindersPath}</span>
         </p>
 
@@ -415,7 +414,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                 can be used</a>. The task must be configured to run at a frequent interval - at least every 5 minutes.
             The task to execute is php followed by
             the
-            full path to Booked Scheduler\Jobs\sendreminders.php. For example, c:\PHP\php.exe -f
+            full path to {$AppTitle}\Jobs\sendreminders.php. For example, c:\PHP\php.exe -f
             c:\inetpub\wwwroot\Booked\Jobs\sendreminders.php</p>
 
     </div>
@@ -424,7 +423,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
         <h3>Configuring Autorelease Job</h3>
         <p>On Linux, a cron job can be used. The command to run is <span class="note">php</span> followed by the full
             path to
-            Booked Scheduler/Jobs/autorelease.php. The full path to autorelease.php on this server is <span
+            {$AppTitle}/Jobs/autorelease.php. The full path to autorelease.php on this server is <span
                     class="note">{$AutoReleasePath}</span>
         </p>
 
@@ -443,7 +442,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                 can be used</a>. The task must be configured to run at a frequent interval - at least every 5 minutes.
             The task to execute is php followed by
             the
-            full path to Booked Scheduler\Jobs\autorelease.php. For example, c:\PHP\php.exe -f
+            full path to {$AppTitle}\Jobs\autorelease.php. For example, c:\PHP\php.exe -f
             c:\inetpub\wwwroot\Booked\Jobs\autorelease.php</p>
     </div>
 
@@ -451,7 +450,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
         <h3>Configuring Waitlist Notification Job</h3>
         <p>On Linux, a cron job can be used. The command to run is <span class="note">php</span> followed by the full
             path to
-            Booked Scheduler/Jobs/sendwaitlist.php. The full path to sendwaitlist.php on this server is <span
+            {$AppTitle}/Jobs/sendwaitlist.php. The full path to sendwaitlist.php on this server is <span
                     class="note">{$WaitListPath}</span>
         </p>
 
@@ -470,7 +469,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                 can be used</a>. The task must be configured to run at a frequent interval - at least every 5 minutes.
             The task to execute is php followed by
             the
-            full path to Booked Scheduler\Jobs\sendwaitlist.php. For example, c:\PHP\php.exe -f
+            full path to {$AppTitle}\Jobs\sendwaitlist.php. For example, c:\PHP\php.exe -f
             c:\inetpub\wwwroot\Booked\Jobs\sendwaitlist.php</p>
     </div>
 
@@ -478,7 +477,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
         <h3>Configuring Missed Checkin Notification Job</h3>
         <p>On Linux, a cron job can be used. The command to run is <span class="note">php</span> followed by the full
             path to
-            Booked Scheduler/Jobs/sendmissedcheckin.php. The full path to sendmissedcheckin.php on this server is <span
+            {$AppTitle}/Jobs/sendmissedcheckin.php. The full path to sendmissedcheckin.php on this server is <span
                     class="note">{$MissedCheckinPath}</span>
         </p>
 
@@ -497,7 +496,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                 can be used</a>. The task must be configured to run once per minute.
             The task to execute is php followed by
             the
-            full path to Booked Scheduler\Jobs\sendmissedcheckin.php. For example, c:\PHP\php.exe -f
+            full path to {$AppTitle}\Jobs\sendmissedcheckin.php. For example, c:\PHP\php.exe -f
             c:\inetpub\wwwroot\Booked\Jobs\sendmissedcheckin.php</p>
     </div>
 
@@ -528,24 +527,24 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
         </p>
 
         <p class="setting"><span>$conf['settings']['enable.email']</span>Whether or not any emails are sent out of
-            Booked Scheduler
+            {$AppTitle}
         </p>
 
         <p class="setting"><span>$conf['settings']['default.language']</span>Default language for all users. This can be
             any
             language in the
-            Booked Scheduler lang directory</p>
+            {$AppTitle} lang directory</p>
 
         <p class="setting"><span>$conf['settings']['script.url']</span>The full public URL to the root of this instance
             of
-            Booked Scheduler. This should be the Web directory which contains files like schedule.php and calendar.php.
+            {$AppTitle}. This should be the Web directory which contains files like schedule.php and calendar.php.
             If this
             value starts with //, then the protocol (http vs https) will be automatically detected.</p>
 
         <p class="setting"><span>$conf['settings']['image.upload.directory']</span>The physical directory to store
             images.
             This directory will need to be writable (755 suggested). This can be the full directory or relative to the
-            Booked Scheduler root directory.</p>
+            {$AppTitle} root directory.</p>
 
         <p class="setting"><span>$conf['settings']['image.upload.url']</span>The URL where uploaded
             images can be viewed from. This can be the full URL or relative to $conf['settings']['script.url'].
@@ -587,7 +586,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
             file to
             include. This can be used to override the default style with adjustments or a full theme. Leave this blank
             if you
-            are not extending the style of Booked Scheduler.</p>
+            are not extending the style of {$AppTitle}.</p>
 
         <p class="setting"><span>$conf['settings']['disable.password.reset']</span>If the password reset functionality
             should be
@@ -741,7 +740,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
             attach files to reservations. Default is false.</p>
 
         <p class="setting"><span>$conf['settings']['uploads']['reservation.attachment.path']</span>The full or relative
-            filesystem path (relative to the root of your Booked Scheduler directory) to store reservation attachments.
+            filesystem path (relative to the root of your {$AppTitle} directory) to store reservation attachments.
             This
             directory must be writable by PHP (755 suggested). Default is uploads/reservation</p>
 
@@ -758,7 +757,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
         <p class="setting"><span>$conf['settings']['database']['hostspec']</span>Database host URL or named pipe</p>
 
-        <p class="setting"><span>$conf['settings']['database']['name']</span>Name of Booked Scheduler database</p>
+        <p class="setting"><span>$conf['settings']['database']['name']</span>Name of {$AppTitle} database</p>
 
         <p class="setting"><span>$conf['settings']['phpmailer']['mailer']</span>PHP email library. Options are mail,
             smtp,
@@ -812,7 +811,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
             management page
             should be available to application administrators. Options are true or false.</p>
 
-        <p class="setting"><span>$conf['settings']['api']['enabled']</span>If the Booked Scheduler's RESTful API should
+        <p class="setting"><span>$conf['settings']['api']['enabled']</span>If the {$AppTitle}'s RESTful API should
             be enabled.
             See more about prerequisites for using the API in the readme_installation.html file. Options are true or
             false.</p>
@@ -879,14 +878,14 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
         <p class="setting"><span>$conf['settings']['google.analytics']['tracking.id']</span>Your Google Analytics
             Tracking ID. If this is set then Google
-            Analytics tracking code will be added to every page in Booked.</p>
+            Analytics tracking code will be added to every page in {$AppTitle}.</p>
 
         <p class="setting"><span>$conf['settings']['authentication']['allow.facebook.login']</span>If users can log in
             to
-            Booked using Facebook. Default is false.</p>
+            {$AppTitle} using Facebook. Default is false.</p>
 
         <p class="setting"><span>$conf['settings']['authentication']['allow.google.login']</span>If users can log in to
-            Booked using Google. Default is false.</p>
+            {$AppTitle} using Google. Default is false.</p>
 
         <p class="setting"><span>$conf['settings']['authentication']['hide.booked.login.prompt']</span>If the username
             and password fields should be hidden. Default is false.</p>
@@ -932,7 +931,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
     <h2>Active Directory Integration</h2>
 
-    <p>Booked can authenticate your users against Active Directory. To enable this, first set <span class="setting">$conf['settings']['plugins']['Authentication'] = 'ActiveDirectory';</span>
+    <p>{$AppTitle} can authenticate your users against Active Directory. To enable this, first set <span class="setting">$conf['settings']['plugins']['Authentication'] = 'ActiveDirectory';</span>
     </p>
 
     <p>Next, open Application Management - Customization - Application Configuration and choose the
@@ -964,7 +963,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
         @uidauthent.domain.com.</p>
 
     <p class="setting"><span>$conf['settings']['database.auth.when.ldap.user.not.found']</span>If Active Directory auth
-        fails, authenticate against Booked
+        fails, authenticate against {$AppTitle}
         Scheduler database</p>
 
     <p class="setting"><span>$conf['settings']['attribute.mapping']</span>Mapping of required attributes to attribute
@@ -974,9 +973,9 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
         The user only needs to belong to at least
         one listed. Blank for no restriction. ex) Group1,Group2</p>
 
-    <p class="setting"><span>$conf['settings']['sync.groups']</span>Whether or not to sync group membership into Booked.
+    <p class="setting"><span>$conf['settings']['sync.groups']</span>Whether or not to sync group membership into {$AppTitle}.
         The Active Directory groups must first
-        be created in Booked. Anything that doesn't exist in Booked will be skipped.</p>
+        be created in {$AppTitle}. Anything that doesn't exist in {$AppTitle} will be skipped.</p>
 
     <p>More info for ActiveDirectory configuration can be found at <a
                 href="http://adldap.sourceforge.net/wiki/doku.php?id=documentation_configuration">http://adldap.sourceforge.net/wiki/doku.php?id=documentation_configuration</a>
@@ -984,7 +983,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
     <h2>LDAP Integration</h2>
 
-    <p>Booked can authenticate your users against LDAP. To enable this, first set <span
+    <p>{$AppTitle} can authenticate your users against LDAP. To enable this, first set <span
                 class="setting">$conf['settings']['plugins']['Authentication'] = 'Ldap';</span></p>
 
     <p>Next, open Application Management - Customization - Application Configuration and choose the Authentication-Ldap
@@ -1018,8 +1017,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
         one listed. Blank for no restriction. ex) Group1,Group2</p>
 
     <p class="setting"><span>$conf['settings']['database.auth.when.ldap.user.not.found']</span>If Active Directory auth
-        fails, authenticate against Booked
-        Scheduler database</p>
+        fails, authenticate against {$AppTitle} database</p>
 
     <p class="setting"><span>$conf['settings']['ldap.debug.enabled']</span>If detailed LDAP logs should be enabled.</p>
 
@@ -1035,7 +1033,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
     <h2>CAS Integration</h2>
 
-    <p>Booked can authenticate your users against CAS. To enable this, first set <span
+    <p>{$AppTitle} can authenticate your users against CAS. To enable this, first set <span
                 class="setting">$conf['settings']['plugins']['Authentication'] = 'CAS';</span></p>
 
     <p>Next, open Application Management - Customization - Application Configuration and choose the Authentication-CAS
@@ -1055,7 +1053,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
     <p class="setting"><span>$conf['settings']['email.suffix']</span>Email suffix to use when storing CAS user account.
         ex) Email addresses will be saved to
-        Booked Scheduler as username@yourdomain.com</p>
+        {$AppTitle} as username@yourdomain.com</p>
 
     <p class="setting"><span>$conf['settings']['cas_logout_servers']</span>Comma separated list of servers to use for
         logout. Leave blank to not use cas logout
@@ -1078,7 +1076,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
     <h2>WordPress Integration</h2>
 
-    <p>Booked can authenticate your users against a WordPress site running on the same server as Booked. To enable this,
+    <p>{$AppTitle} can authenticate your users against a WordPress site running on the same server as {$AppTitle}. To enable this,
         first set <span class="setting">$conf['settings']['plugins']['Authentication'] = 'WordPress';</span>
     </p>
 
@@ -1086,11 +1084,11 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
         Authentication-WordPress file.</p>
 
     <p class="setting"><span>$conf['settings']['wp_includes.directory']</span>The full path to your wp-includes
-        directory or path relative to Booked Scheduler
+        directory or path relative to {$AppTitle}
         root.</p>
 
     <p class="setting"><span>$conf['settings']['database.auth.when.wp.user.not.found']</span>If WordPress auth fails,
-        authenticate against Booked Scheduler
+        authenticate against {$AppTitle}
         database.</p>
 
 

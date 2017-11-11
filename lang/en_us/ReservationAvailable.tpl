@@ -21,4 +21,4 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 <br/>
 <br/>
 <a href="{$ScriptUrl}/{$ReservationUrl}">Book now</a> |
-<a href="{$ScriptUrl}">Log in to Booked Scheduler</a>
+<a href="{$ScriptUrl}">Log in to {$AppTitle}</a>

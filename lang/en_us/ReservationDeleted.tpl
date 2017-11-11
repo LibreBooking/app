@@ -66,4 +66,4 @@ Delete Reason: {$DeleteReason|nl2br}<br/>
 {/if}
 
 <br/>
-<a href="{$ScriptUrl}">Log in to Booked Scheduler</a>
+<a href="{$ScriptUrl}">Log in to {$AppTitle}</a>
