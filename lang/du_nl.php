@@ -34,6 +34,7 @@ class du_nl extends en_us
 
 		$dates['general_date'] = 'd/m/Y';
 		$dates['general_datetime'] = 'd/m/Y H:i:s';
+        $dates['short_datetime'] = 'n/j/y H:i';
 		$dates['schedule_daily'] = 'l, d/m/Y';
 		$dates['reservation_email'] = 'd/m/Y @ H:i (e)';
 		$dates['res_popup'] = 'd/m/Y H:i';
@@ -41,7 +42,7 @@ class du_nl extends en_us
 		$dates['short_reservation_date'] = 'n/j/y H:i';
 		$dates['dashboard'] = 'l, d/m/Y H:i';
 		$dates['period_time'] = "H:i";
-		$dates['mobile_reservation_date'] = 'n/j g:i A';
+		$dates['mobile_reservation_date'] = 'n/j H:i';
 		$dates['general_date_js'] = "dd/mm/yy";
 		$dates['general_time_js'] = 'H:mm tt';
 		$dates['momentjs_datetime'] = 'M/D/YY H:mm';
