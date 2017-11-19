@@ -87,5 +87,13 @@ class Url
         return $this->url;
     }
 
+    /**
+     * @return Url
+     */
+    public function Copy()
+    {
+        return new Url($this->ToString());
+    }
+
 }
 

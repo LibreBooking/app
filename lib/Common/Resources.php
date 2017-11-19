@@ -271,6 +271,8 @@ class Resources implements IResourceLocalization
 			$this->HtmlLang = $this->_lang->HtmlLang;
 			$this->TextDirection = $this->_lang->TextDirection;
 
+			setlocale(LC_ALL, $this->CurrentLanguage);
+
 			return true;
 		}
 

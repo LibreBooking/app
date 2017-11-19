@@ -21,5 +21,5 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 define('ROOT_DIR', '../');
 require_once(ROOT_DIR . 'Pages/Credits/UserCreditsPage.php');
 
-$page = new UserCreditsPage();
+$page = new SecurePageDecorator(new UserCreditsPage());
 $page->PageLoad();

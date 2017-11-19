@@ -19,6 +19,7 @@
  */
 
 require ROOT_DIR . 'lib/external/PayPal/autoload.php';
+
 use PayPal\Api\Amount;
 use PayPal\Api\Details;
 use PayPal\Api\Item;
@@ -27,6 +28,9 @@ use PayPal\Api\Payer;
 use PayPal\Api\Payment;
 use PayPal\Api\RedirectUrls;
 use PayPal\Api\Transaction;
+use PayPal\Rest\ApiContext;
+use PayPal\Auth\OAuthTokenCredential;
+use PayPal\Api\PaymentExecution;
 
 class PaymentGateways
 {
@@ -95,6 +99,9 @@ class PayPalGateway implements IPaymentGateway
     const CLIENT_ID = 'client_id';
     const SECRET = 'secret';
     const ENVIRONMENT = 'environment';
+    const ACTION_PAYMENT = 'payment';
+    const ACTION_CANCEL = 'cancel';
+    const ACTION_EXECUTE = 'execute';
 
     /**
      * @var bool
@@ -184,6 +191,110 @@ class PayPalGateway implements IPaymentGateway
         return $this->environment;
     }
 
+    /**
+     * @param CreditCartSession $cart
+     * @param string $returnUrl
+     * @param string $cancelUrl
+     * @return \PayPal\Api\Payment
+     */
+    public function CreatePayment(CreditCartSession $cart, $returnUrl, $cancelUrl)
+    {
+        $resources = Resources::GetInstance();
+        $payer = new Payer();
+        $payer->setPaymentMethod("paypal");
+
+        $item1 = new Item();
+        $item1->setName($resources->GetString('Credits'))
+            ->setCurrency($cart->Currency)
+            ->setQuantity($cart->Quantity)
+            ->setSku($resources->GetString('Credits'))
+            ->setPrice($cart->CostPerCredit);
+
+        $itemList = new ItemList();
+        $itemList->setItems(array($item1));
+
+        $details = new Details();
+        $details->setShipping(0)
+            ->setTax(0)
+            ->setSubtotal($cart->Total());
+
+        $amount = new Amount();
+        $amount->setCurrency($cart->Currency)
+            ->setTotal($cart->Total())
+            ->setDetails($details);
+
+        $transaction = new Transaction();
+        $transaction->setAmount($amount)
+            ->setItemList($itemList)
+            ->setDescription($resources->GetString('CreditPurchase'))
+            ->setInvoiceNumber($cart->Id());
+
+        $redirectUrls = new RedirectUrls();
+        $redirectUrls->setReturnUrl($returnUrl)
+            ->setCancelUrl($cancelUrl);
+
+        $payment = new Payment();
+        $payment->setIntent("sale")
+            ->setPayer($payer)
+            ->setRedirectUrls($redirectUrls)
+            ->setTransactions(array($transaction));
+
+        $apiContext = new ApiContext(new OAuthTokenCredential($this->ClientId(), $this->Secret()));
+
+        try {
+            Log::Debug('PayPal CreatePayment CartId/invoice number: %s, Total: %s', $cart->Id(), $cart->Total());
+            
+            $payment->create($apiContext);
+        } catch (PayPal\Exception\PayPalConnectionException $ex) {
+            Log::Error('PayPal CreatePayment error details. Json: %s, Code: %s, Data: %s, CartId/invoice number: %s, Total: %s, Error: %s', $payment->toJSON(), $ex->getCode(), $ex->getData(), $cart->Id(), $cart->Total(), $ex);
+        } catch (Exception $ex) {
+            Log::Error('Error creating PayPal payment. CartId/invoice number: %s, Total: %s, Error: %s', $cart->Id(), $cart->Total(), $ex);
+        }
+        return json_decode($payment->toJSON());
+    }
+
+    /**
+     * @param CreditCartSession $cart
+     * @param string $paymentId
+     * @param string $payerId
+     * @return \PayPal\Api\Payment
+     */
+    public function ExecutePayment(CreditCartSession $cart, $paymentId, $payerId)
+    {
+        $apiContext = new ApiContext(new OAuthTokenCredential($this->ClientId(), $this->Secret()));
+
+        $payment = Payment::get($paymentId, $apiContext);
+        $execution = new PaymentExecution();
+        $execution->setPayerId($payerId);
+
+        $transaction = new Transaction();
+        $amount = new Amount();
+        $details = new Details();
+
+        $details->setShipping(0)
+            ->setTax(0)
+            ->setSubtotal($cart->Total());
+
+        $amount->setCurrency($cart->Currency);
+        $amount->setTotal($cart->Total());
+        $amount->setDetails($details);
+        $transaction->setAmount($amount);
+
+        $execution->addTransaction($transaction);
+
+        try {
+            Log::Debug('PayPal ExecutePayment CartId/invoice number %s, Total %s, PaymentId: %s, PayerId: %s', $cart->Id(), $cart->Total(), $paymentId, $payerId);
+
+            $result = $payment->execute($execution, $apiContext);
+            $payment = Payment::get($paymentId, $apiContext);
+        } catch (PayPal\Exception\PayPalConnectionException $ex) {
+            Log::Error('PayPal ExecutePayment error details. Json: %s, Code: %s, Data: %s, CartId/invoice number: %s, PaymentId: %s, PayerId: %s, Total %s, Error %s', $payment->toJSON(), $ex->getCode(), $ex->getData(), $cart->Id(), $paymentId, $payerId, $cart->Total(), $ex);
+        } catch (Exception $ex) {
+            Log::Error('Error executing PayPal payment. CartId/invoice number: %s, PaymentId: %s, PayerId: %s, Total %s, Error %s', $cart->Id(), $paymentId, $payerId, $cart->Total(), $ex);
+        }
+
+        return json_decode($payment->toJSON());
+    }
 }
 
 class StripeGateway implements IPaymentGateway

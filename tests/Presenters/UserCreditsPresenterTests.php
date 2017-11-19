@@ -49,22 +49,16 @@ class UserCreditsPresenterTests extends TestBase
         $this->presenter = new UserCreditsPresenter($this->page, $this->userRepository, $this->paymentRepository);
     }
 
-    public function testPageLoadsWithCurrentCredits()
+    public function testPageLoad()
     {
         $currentCredits = 10.5;
         $this->userRepository->_User = new FakeUser();
         $this->userRepository->_User->WithCredits($currentCredits);
-        $this->paymentRepository->_PayPal = new PayPalGateway(true, 'client', 'secret', 'live');
-        $this->paymentRepository->_Stripe = new StripeGateway(true, 'publish', 'secret');
+        $this->paymentRepository->_CreditCost = new CreditCost('10.11');
 
         $this->presenter->PageLoad($this->fakeUser);
 
         $this->assertEquals($currentCredits, $this->page->_CurrentCredits);
-        $this->assertEquals(true, $this->page->_PayPalEnabled);
-        $this->assertEquals('client', $this->page->_PayPalClientId);
-        $this->assertEquals('live', $this->page->_PayPalEnvironment);
-        $this->assertEquals(true, $this->page->_StripeEnabled);
-        $this->assertEquals('publish', $this->page->_StripePublishableKey);
     }
 
     public function testCreatesPayPalPayment()
@@ -72,45 +66,26 @@ class UserCreditsPresenterTests extends TestBase
         $this->fakeServer->SetSession(SessionKeys::CREDIT_CART, new CreditCart());
         $this->presenter->CreatePayPalPayment();
     }
-//    public function testSavesPayPalResult()
-//    {
-//        $this->page->_PaymentResult = "{\"id\":\"PAY-1WW82131WF352133WLH4QOUQ\",\"intent\":\"sale\",\"state\":\"approved\",\"cart\":\"5FD72329MG139642M\",\"create_time\":\"2017-10-31T23:29:38Z\",\"payer\":{\"payment_method\":\"paypal\",\"status\":\"VERIFIED\",\"payer_info\":{\"email\":\"lqqkout13-buyer@aol.com\",\"first_name\":\"test\",\"middle_name\":\"test\",\"last_name\":\"buyer\",\"payer_id\":\"3GTAL5H4LTHV6\",\"country_code\":\"US\",\"shipping_address\":{\"recipient_name\":\"test buyer\",\"line1\":\"1 Main St\",\"city\":\"San Jose\",\"state\":\"CA\",\"postal_code\":\"95131\",\"country_code\":\"US\"}}},\"transactions\":[{\"amount\":{\"total\":\"1.00\",\"currency\":\"USD\",\"details\":{}},\"item_list\":{},\"related_resources\":[{\"sale\":{\"id\":\"57031264LU207192J\",\"state\":\"completed\",\"payment_mode\":\"INSTANT_TRANSFER\",\"protection_eligibility\":\"ELIGIBLE\",\"parent_payment\":\"PAY-1WW82131WF352133WLH4QOUQ\",\"create_time\":\"2017-10-31T23:29:38Z\",\"update_time\":\"2017-10-31T23:29:38Z\",\"amount\":{\"total\":\"1.00\",\"currency\":\"USD\",\"details\":{\"subtotal\":\"1.00\"}}}}]}]}";
-//        $this->presenter->SavePaypalResult();
-//
-//        $this->assertEquals(PayPalPaymentResult::FromJsonString($this->page->_PaymentResult), $this->paymentRepository->_LastSavedPayPalResult);
-//    }
 }
 
 class FakeUserCreditsPage extends UserCreditsPage
 {
     public $_CurrentCredits;
-    public $_PayPalEnabled;
-    public $_PayPalClientId;
-    public $_PayPalEnvironment;
-    public $_StripeEnabled;
-    public $_StripePublishableKey;
     public $_PaymentResult;
+    public $_CreditCost;
 
     public function SetCurrentCredits($credits)
     {
         $this->_CurrentCredits = $credits;
     }
 
-    public function SetPayPalSettings($enabled, $clientId, $environment)
-    {
-        $this->_PayPalEnabled = $enabled;
-        $this->_PayPalClientId = $clientId;
-        $this->_PayPalEnvironment = $environment;
-    }
-
-    public function SetStripeSettings($enabled, $publishableKey)
-    {
-        $this->_StripeEnabled = $enabled;
-        $this->_StripePublishableKey = $publishableKey;
-    }
-
     public function GetPaymentResult()
     {
         return $this->_PaymentResult;
+    }
+
+    public function SetCreditCost(CreditCost $cost)
+    {
+        $this->_CreditCost = $cost;
     }
 }

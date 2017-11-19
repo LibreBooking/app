@@ -54,4 +54,34 @@ class CreditCost
     {
         return $this->currency;
     }
+
+    /**
+     * @param float|null $amount
+     * @return string
+     */
+    public function FormatCurrency($amount = null)
+    {
+        $toFormat = $amount == null ? $this->Cost() : $amount;
+        $fmt = new NumberFormatter(Resources::GetInstance()->CurrentLanguage, NumberFormatter::CURRENCY);
+        return $fmt->formatCurrency($toFormat, $this->Currency());
+    }
+
+    /**
+     * @param float $quantity
+     * @return float
+     */
+    public function GetTotal($quantity)
+    {
+        return $this->Cost() * $quantity;
+    }
+
+    /**
+     * @param float $quantity
+     * @return string
+     */
+    public function GetFormattedTotal($quantity)
+    {
+        $total = $this->GetTotal($quantity);
+        return $this->FormatCurrency($total);
+    }
 }

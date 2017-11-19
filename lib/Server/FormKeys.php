@@ -75,6 +75,7 @@ class FormKeys
     const CREDIT_CURRENCY = 'CREDIT_CURRENCY';
     const CSS_FILE = 'CSS_FILE';
 	const CSRF_TOKEN = 'CSRF_TOKEN';
+	const CREDIT_QUANTITY = 'CREDIT_QUANTITY';
 	const CURRENT_PASSWORD = 'currentPassword';
 
 	const DAY = 'DAY';

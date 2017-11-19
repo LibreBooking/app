@@ -19,35 +19,29 @@
  */
 
 require_once(ROOT_DIR . 'Presenters/Credits/UserCreditsPresenter.php');
-
 require_once(ROOT_DIR . 'Pages/SecurePage.php');
 
 interface IUserCreditsPage extends IPage, IActionPage
 {
     /**
-     * @param int $credits
+     * @param float $credits
      */
     public function SetCurrentCredits($credits);
 
     /**
-     * @param bool $enabled
-     * @param string $clientId
-     * @param string $environment
+     * @param CreditCost $cost
      */
-    public function SetPayPalSettings($enabled, $clientId, $environment);
+    public function SetCreditCost(CreditCost $cost);
 
     /**
-     * @param string $enabled
-     * @param string $publishableKey
+     * @return float
      */
-    public function SetStripeSettings($enabled, $publishableKey);
+    public function GetQuantity();
 
     /**
-     * @return string
+     * @param string $formattedTotal
      */
-    public function GetPaymentResult();
-
-    public function SetPayPalPaymentResult();
+    public function SetTotalCost($formattedTotal);
 }
 
 class UserCreditsPage extends ActionPage implements IUserCreditsPage
@@ -67,12 +61,12 @@ class UserCreditsPage extends ActionPage implements IUserCreditsPage
 
     public function ProcessAction()
     {
-       $this->presenter->ProcessAction();
+        $this->presenter->ProcessAction();
     }
 
     public function ProcessDataRequest($dataRequest)
     {
-        // no-op
+        $this->presenter->ProcessDataRequest($dataRequest);
     }
 
     public function ProcessPageLoad()
@@ -86,26 +80,18 @@ class UserCreditsPage extends ActionPage implements IUserCreditsPage
         $this->Set('CurrentCredits', $credits);
     }
 
-    public function SetPayPalSettings($enabled, $clientId, $environment)
+    public function SetCreditCost(CreditCost $cost)
     {
-       $this->Set('PayPalEnabled', $enabled);
-       $this->Set('PayPalClientId', $clientId);
-       $this->Set('PayPalEnvironment', $environment);
+        $this->Set('CreditCost', $cost->FormatCurrency());
     }
 
-    public function SetStripeSettings($enabled, $publishableKey)
+    public function GetQuantity()
     {
-        $this->Set('StripeEnabled', $enabled);
-        $this->Set('StripePublishableKey', $publishableKey);
+       return $this->GetQuerystring(QueryStringKeys::QUANTITY);
     }
 
-    public function GetPaymentResult()
+    public function SetTotalCost($formattedTotal)
     {
-       return $this->GetForm(FormKeys::PAYMENT_RESPONSE_DATA);
-    }
-
-    public function SetPayPalPaymentResult()
-    {
-        $this->SetJson("foo");
+        $this->SetJson($formattedTotal);
     }
 }

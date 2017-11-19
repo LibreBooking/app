@@ -46,9 +46,6 @@ class UserCreditsPresenter extends ActionPresenter
         $this->page = $page;
         $this->userRepository = $userRepository;
         $this->paymentRepository = $paymentRepository;
-
-        $this->AddAction('executePayPalPayment', 'ExecutePayPalPayment');
-        $this->AddAction('createPayPalPayment', 'CreatePayPalPayment');
     }
 
     public function PageLoad(UserSession $userSession)
@@ -56,24 +53,17 @@ class UserCreditsPresenter extends ActionPresenter
         $user = $this->userRepository->LoadById($userSession->UserId);
         $this->page->SetCurrentCredits($user->GetCurrentCredits());
 
-        $paypal = $this->paymentRepository->GetPayPalGateway();
-        $stripe = $this->paymentRepository->GetStripeGateway();
+        $cost = $this->paymentRepository->GetCreditCost();
 
-        $this->page->SetPayPalSettings($paypal->IsEnabled(), $paypal->ClientId(), $paypal->Environment());
-        $this->page->SetStripeSettings($stripe->IsEnabled(), $stripe->PublishableKey());
+        $this->page->SetCreditCost($cost);
     }
 
-    public function CreatePayPalPayment()
+    public function ProcessDataRequest($dataRequest)
     {
-        $gateway = $this->paymentRepository->GetPayPalGateway();
-        $gateway->CreatePayment();
-        $this->page->SetPayPalPaymentResult();
-    }
+        $quantity = $this->page->GetQuantity();
+        $cost = $this->paymentRepository->GetCreditCost();
 
-    public function SavePaypalResult()
-    {
-//        $gateway = new PayPalGateway();
-//        $this->paymentRepository->SavePayPalPaymentResult(PayPalPaymentResult::FromJsonString($this->page->GetPaymentResult()));
+        $this->page->SetTotalCost($cost->GetFormattedTotal($quantity));
     }
 
 }

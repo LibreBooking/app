@@ -1,65 +1,39 @@
 {include file='globalheader.tpl'}
-<script src="https://www.paypalobjects.com/api/checkout.js"></script>
 
-<div id="currentCredits">
+<div id="userCreditsPage">
+
+    <h1>{$CurrentCredits}</h1>
+
+    {if $AllowPurchasingCredits}
+        <div>Buy more credits</div>
+        {translate key=EachCreditCosts} {$CreditCost}
+        <div>
+            <form role="form" name="purchaseCreditsForm" id="purchaseCreditsForm" method="post" action="checkout.php">
+                {translate key=Quantity} <input id="quantity" {formname key=CREDIT_QUANTITY} type="number"
+                                                class="form-control inline-block" min="1"
+                                                style="width:100px" value="1"/>
+                <button type="submit" class="btn btn-default">{translate key=Checkout}</button>
+                {csrf_token}
+            </form>
+
+        </div>
+        <div>
+            {translate key=Total} <span id="totalCost">{$CreditCost}</span>
+        </div>
+    {/if}
+
+    {include file="javascript-includes.tpl"}
+    {jsfile src="ajax-helpers.js"}
 
 </div>
-<h1>{$CurrentCredits}</h1>
 
-
-{if $AllowPurchasingCredits && ($PayPalEnabled || $StripeEnabled)}Buy more credits{/if}
-
-<div id="paypal-button"></div>
-
-{include file="javascript-includes.tpl"}
-{jsfile src="ajax-helpers.js"}
-
-<form id="responseData">
-    <input id="paymentResponseData" type="hidden" {formname key=PAYMENT_RESPONSE_DATA} />
-</form>
-
-<script>
-    {if $PayPalEnabled}
-
-    var CREATE_PAYMENT_URL = '{$smarty.server.SCRIPT_NAME}?action=createPayPalPayment';
-    var EXECUTE_PAYMENT_URL = '{$smarty.server.SCRIPT_NAME}?action=executePayPalPayment';
-
-    ajaxPost($('#payment'), CREATE_PAYMENT_URL);
-
-    paypal.Button.render({
-        env: '{$PayPalEnvironment}',
-        commit: true,
-
-        payment: function () {
-            return paypal.request.post(CREATE_PAYMENT_URL, {
-                CSRF_TOKEN: $('#csrf_token').val()
-            }).then(function (res) {
-                return res.paymentID;
+<script type="text/javascript">
+    $(function () {
+        $('#quantity').on('change', function (e) {
+            ajaxGet('{$smarty.server.SCRIPT_NAME}?dr=calcQuantity&quantity=' + $('#quantity').val(), null, function(data) {
+                $('#totalCost').text(data);
             });
-        },
-
-        onAuthorize: function (data) {
-            return paypal.request.post(EXECUTE_PAYMENT_URL, {
-                paymentID: data.paymentID,
-                payerID: data.payerID,
-                CSRF_TOKEN: $('#csrf_token').val()
-            }).then(function () {
-
-                // The payment is complete!
-                // You can now show a confirmation message to the customer
-            });
-        },
-
-        onError: function (err) {
-            // Show an error page here, when an error occurs
-        }
-
-    }, '#paypal-button');
-
-    {/if}
+        });
+    });
 </script>
-
-{csrf_token}
-
-
 {include file='globalfooter.tpl'}

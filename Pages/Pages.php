@@ -27,6 +27,7 @@ class Pages
 	const CALENDAR_EXPORT = 'ical.php';
 	const CALENDAR_SUBSCRIBE = 'ical-subscribe.php';
 	const CALENDAR_SUBSCRIBE_ATOM = 'atom-subscribe.php';
+	const CHECKOUT = 'checkout.php';
 	const CREDITS = 'credits.php';
 	const DASHBOARD = 'dashboard.php';
 	const DISPLAY_RESOURCE = 'resource-display.php';

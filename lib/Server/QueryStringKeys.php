@@ -49,8 +49,10 @@ class QueryStringKeys
 	const NODE_ID = 'nid';
     const PAGE = 'page';
 	const PAGE_SIZE = 'pageSize';
+	const PAYPAL_ACTION = 'paypalaction';
 	const PERIOD_ID = 'pid';
 	const PREVIOUS_ID = 'pid';
+	const QUANTITY = 'quantity';
 	const QUOTA_ID = 'qid';
 	const READ_ONLY = 'ro';
 	const REDIRECT = 'redirect';

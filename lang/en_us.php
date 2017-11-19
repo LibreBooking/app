@@ -647,6 +647,11 @@ class en_us extends Language
         $strings['StripeSecretKey'] = 'Secret key';
         $strings['CreditsUpdated'] = 'Credit cost has been updated';
         $strings['GatewaysUpdated'] = 'Payment gateways have been updated';
+        $strings['OrderSummary'] = 'Order Summary';
+        $strings['EachCreditCosts'] = 'Each credit costs';
+        $strings['Checkout'] = 'Checkout';
+        $strings['Quantity'] = 'Quantity';
+        $strings['CreditPurchase'] = 'Credit Purchase';
         // End Strings
 
 		// Install
