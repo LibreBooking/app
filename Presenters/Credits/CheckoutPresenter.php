@@ -37,12 +37,18 @@ class CheckoutPresenter extends ActionPresenter
      */
     private $paymentRepository;
 
-    public function __construct(ICheckoutPage $page, IPaymentRepository $paymentRepository)
+    /**
+     * @var IUserRepository
+     */
+    private $userRepository;
+
+    public function __construct(ICheckoutPage $page, IPaymentRepository $paymentRepository, IUserRepository $userRepository)
     {
         parent::__construct($page);
 
         $this->page = $page;
         $this->paymentRepository = $paymentRepository;
+        $this->userRepository = $userRepository;
 
         $this->AddAction('executePayPalPayment', 'ExecutePayPalPayment');
         $this->AddAction('createPayPalPayment', 'CreatePayPalPayment');
@@ -57,11 +63,18 @@ class CheckoutPresenter extends ActionPresenter
         $stripe = $this->paymentRepository->GetStripeGateway();
 
         $total = $cost->GetTotal($creditQuantity);
-        $this->page->SetTotals($total, $cost, $creditQuantity);
-        $this->page->SetPayPalSettings($paypal->IsEnabled(), $paypal->ClientId(), $paypal->Environment());
-        $this->page->SetStripeSettings($stripe->IsEnabled(), $stripe->PublishableKey());
 
-        ServiceLocator::GetServer()->SetSession(SessionKeys::CREDIT_CART, new CreditCartSession($creditQuantity, $cost->Cost(), $cost->Currency()));
+        if ($creditQuantity == 0)
+        {
+            $this->page->SetEmptyCart(true);
+        }
+        else {
+            $this->page->SetTotals($total, $cost, $creditQuantity);
+            $this->page->SetPayPalSettings($paypal->IsEnabled(), $paypal->ClientId(), $paypal->Environment());
+            $this->page->SetStripeSettings($stripe->IsEnabled(), $stripe->PublishableKey());
+
+            ServiceLocator::GetServer()->SetSession(SessionKeys::CREDIT_CART, new CreditCartSession($creditQuantity, $cost->Cost(), $cost->Currency()));
+        }
     }
 
     public function CreatePayPalPayment()
@@ -81,8 +94,18 @@ class CheckoutPresenter extends ActionPresenter
     {
         $gateway = $this->paymentRepository->GetPayPalGateway();
 
+        /** @var $cart CreditCartSession */
         $cart = ServiceLocator::GetServer()->GetSession(SessionKeys::CREDIT_CART);
         $payment = $gateway->ExecutePayment($cart, $this->page->GetPaymentId(), $this->page->GetPayerId());
+
+        if ($payment->state == "approved")
+        {
+            $user = $this->userRepository->LoadById(ServiceLocator::GetServer()->GetUserSession()->UserId);
+            $user->AddCredits($cart->Quantity);
+            $this->userRepository->Update($user);
+            ServiceLocator::GetServer()->SetSession(SessionKeys::CREDIT_CART, null);
+
+        }
 
         $this->page->SetPayPalPayment($payment);
     }

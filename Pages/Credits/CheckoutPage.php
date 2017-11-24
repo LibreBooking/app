@@ -59,6 +59,11 @@ interface ICheckoutPage extends IActionPage
      * @return string
      */
     public function GetPayerId();
+
+    /**
+     * @param bool $isEmpty
+     */
+    public function SetEmptyCart($isEmpty);
 }
 
 class CheckoutPage extends ActionPage implements ICheckoutPage
@@ -73,7 +78,7 @@ class CheckoutPage extends ActionPage implements ICheckoutPage
         parent::__construct('Checkout');
         $this->Set('AllowPurchasingCredits', Configuration::Instance()->GetSectionKey(ConfigSection::CREDITS, ConfigKeys::CREDITS_ALLOW_PURCHASE, new BooleanConverter()));
 
-        $this->presenter = new CheckoutPresenter($this, new PaymentRepository());
+        $this->presenter = new CheckoutPresenter($this, new PaymentRepository(), new UserRepository());
     }
 
     public function ProcessAction()
@@ -132,5 +137,10 @@ class CheckoutPage extends ActionPage implements ICheckoutPage
     public function GetPayerId()
     {
         return $this->GetForm('payerID');
+    }
+
+    public function SetEmptyCart($isEmpty)
+    {
+       $this->Set('IsCartEmpty', $isEmpty);
     }
 }

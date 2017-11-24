@@ -954,6 +954,11 @@ class User
 	{
 		$this->credits = $credits;
 	}
+
+	public function AddCredits($credits)
+    {
+        $this->credits = intval($this->credits) + intval($credits);
+    }
 }
 
 class NullUser extends User

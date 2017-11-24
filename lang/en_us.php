@@ -652,6 +652,12 @@ class en_us extends Language
         $strings['Checkout'] = 'Checkout';
         $strings['Quantity'] = 'Quantity';
         $strings['CreditPurchase'] = 'Credit Purchase';
+        $strings['EmptyCart'] = 'Your cart is empty.';
+        $strings['BuyCredits'] = 'Buy Credits';
+        $strings['CreditsPurchased'] = 'credits purchased.';
+        $strings['ViewYourCredits'] = 'View your credits';
+        $strings['TryAgain'] = 'Try Again';
+        $strings['PurchaseFailed'] = 'We had trouble processing your payment.';
         // End Strings
 
 		// Install

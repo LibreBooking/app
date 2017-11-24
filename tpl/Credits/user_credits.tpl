@@ -1,6 +1,6 @@
 {include file='globalheader.tpl'}
 
-<div id="userCreditsPage">
+<div id="page-user-credits">
 
     <h1>{$CurrentCredits}</h1>
 

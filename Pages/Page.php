@@ -244,7 +244,7 @@ abstract class Page implements IPage
 		}
 		$token = $this->GetForm(FormKeys::CSRF_TOKEN);
 		$session = $this->server->GetUserSession();
-		if ($_SERVER['REQUEST_METHOD'] == 'POST' && (empty($token) || $token != $session->CSRFToken))
+		if ($this->IsPost() && (empty($token) || $token != $session->CSRFToken))
 		{
 			Log::Error('Possible CSRF attack. Submitted token=%s, Expected token=%s', $token, $session->CSRFToken);
 			http_response_code(500);
@@ -421,4 +421,9 @@ abstract class Page implements IPage
 			header('Content-Security-Policy: ' . $config->GetSectionKey(ConfigSection::SECURITY, ConfigKeys::SECURITY_CONTENT_SECURITY_POLICY));
 		}
 	}
+
+    protected function IsPost()
+    {
+        return $_SERVER['REQUEST_METHOD'] == 'POST';
+    }
 }

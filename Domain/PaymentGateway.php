@@ -243,13 +243,19 @@ class PayPalGateway implements IPaymentGateway
 
         try {
             Log::Debug('PayPal CreatePayment CartId/invoice number: %s, Total: %s', $cart->Id(), $cart->Total());
-            
+
             $payment->create($apiContext);
         } catch (PayPal\Exception\PayPalConnectionException $ex) {
             Log::Error('PayPal CreatePayment error details. Json: %s, Code: %s, Data: %s, CartId/invoice number: %s, Total: %s, Error: %s', $payment->toJSON(), $ex->getCode(), $ex->getData(), $cart->Id(), $cart->Total(), $ex);
         } catch (Exception $ex) {
             Log::Error('Error creating PayPal payment. CartId/invoice number: %s, Total: %s, Error: %s', $cart->Id(), $cart->Total(), $ex);
         }
+
+        if (Log::DebugEnabled())
+        {
+            Log::Debug("CreatePayment response: %s", $payment->toJSON());
+        }
+
         return json_decode($payment->toJSON());
     }
 
@@ -291,6 +297,11 @@ class PayPalGateway implements IPaymentGateway
             Log::Error('PayPal ExecutePayment error details. Json: %s, Code: %s, Data: %s, CartId/invoice number: %s, PaymentId: %s, PayerId: %s, Total %s, Error %s', $payment->toJSON(), $ex->getCode(), $ex->getData(), $cart->Id(), $paymentId, $payerId, $cart->Total(), $ex);
         } catch (Exception $ex) {
             Log::Error('Error executing PayPal payment. CartId/invoice number: %s, PaymentId: %s, PayerId: %s, Total %s, Error %s', $cart->Id(), $paymentId, $payerId, $cart->Total(), $ex);
+        }
+
+        if (Log::DebugEnabled())
+        {
+            Log::Debug("ExecutePayment response: %s", $payment->toJSON());
         }
 
         return json_decode($payment->toJSON());

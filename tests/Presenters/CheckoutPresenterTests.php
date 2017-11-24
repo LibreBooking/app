@@ -31,6 +31,10 @@ class CheckoutPresenterTests extends TestBase
      */
     private $paymentRepository;
     /**
+     * @var FakeUserRepository
+     */
+    private $userRepository;
+    /**
      * @var CheckoutPresenter
      */
     private $presenter;
@@ -41,7 +45,8 @@ class CheckoutPresenterTests extends TestBase
 
         $this->page = new FakeCheckoutPage();
         $this->paymentRepository = new FakePaymentRepository();
-        $this->presenter = new CheckoutPresenter($this->page, $this->paymentRepository);
+        $this->userRepository = new FakeUserRepository();
+        $this->presenter = new CheckoutPresenter($this->page, $this->paymentRepository, $this->userRepository);
     }
 
     public function testPageLoadCreatesCartAndPresentsPaymentOptions()
@@ -57,7 +62,10 @@ class CheckoutPresenterTests extends TestBase
         $this->assertEquals(50, $this->page->_Total);
         $this->assertEquals($cost, $this->page->_CreditCost);
         $this->assertEquals(10, $this->page->_NumberOfCreditsBeingPurchased);
-        $this->assertEquals(new CreditCartSession(10, 5, 'USD'), $this->fakeServer->GetSession(SessionKeys::CREDIT_CART));
+        $expectedCart = new CreditCartSession(10, 5, 'USD');
+        $actualCart = $this->fakeServer->GetSession(SessionKeys::CREDIT_CART);
+        $expectedCart->Id = $actualCart->Id = null;
+        $this->assertEquals($expectedCart, $actualCart);
         $this->assertEquals(true, $this->page->_PayPalEnabled);
         $this->assertEquals('client', $this->page->_PayPalClientId);
         $this->assertEquals('live', $this->page->_PayPalEnvironment);
@@ -86,6 +94,8 @@ class CheckoutPresenterTests extends TestBase
         $creditCartSession = new CreditCartSession(5, 10, 'USD');
         $this->fakeServer->SetSession(SessionKeys::CREDIT_CART, $creditCartSession);
 
+        $this->userRepository->_User->WithCredits(10);
+
         $paymentId = "12323";
         $payerId = "23jksdlkf";
 
@@ -94,6 +104,7 @@ class CheckoutPresenterTests extends TestBase
 
         $gateway = new FakePayPalGateway();
         $this->paymentRepository->_PayPal = $gateway;
+        $gateway->_Payment->state = "approved";
 
         $this->presenter->ExecutePayPalPayment();
 
@@ -101,6 +112,8 @@ class CheckoutPresenterTests extends TestBase
         $this->assertEquals($gateway->_Payment, $this->page->_PayPalPayment);
         $this->assertEquals($paymentId, $gateway->_PaymentId);
         $this->assertEquals($payerId, $gateway->_PayerId);
+        $this->assertNull($this->fakeServer->GetSession(SessionKeys::CREDIT_CART));
+        $this->assertEquals(15, $this->userRepository->_UpdatedUser->GetCurrentCredits());
     }
 }
 
