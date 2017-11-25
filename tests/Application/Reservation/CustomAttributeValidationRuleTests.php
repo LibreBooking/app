@@ -98,7 +98,7 @@ class CustomAttributeValidationRuleTests extends TestBase
 
 		$this->attributeService->expects($this->once())
 				->method('Validate')
-				->with($this->equalTo(CustomAttributeCategory::RESERVATION), $this->equalTo($this->reservation->AttributeValues()), $this->isNull(), $this->isFalse(), $this->isFalse())
+				->with($this->equalTo(CustomAttributeCategory::RESERVATION), $this->equalTo($this->reservation->AttributeValues()), $this->equalTo(array()), $this->isFalse(), $this->isFalse())
 				->will($this->returnValue($validationResult));
 
 		$userAttribute = new FakeCustomAttribute();
@@ -118,7 +118,7 @@ class CustomAttributeValidationRuleTests extends TestBase
 
 		$this->attributeService->expects($this->once())
 				->method('Validate')
-				->with($this->equalTo(CustomAttributeCategory::RESERVATION), $this->equalTo($this->reservation->AttributeValues()), $this->isNull(), $this->isFalse(), $this->isFalse())
+				->with($this->equalTo(CustomAttributeCategory::RESERVATION), $this->equalTo($this->reservation->AttributeValues()), $this->equalTo(array()), $this->isFalse(), $this->isFalse())
 				->will($this->returnValue($validationResult));
 
 		$result = $this->rule->Validate($this->reservation, null);
@@ -133,7 +133,7 @@ class CustomAttributeValidationRuleTests extends TestBase
 
 		$this->attributeService->expects($this->once())
 				->method('Validate')
-				->with($this->equalTo(CustomAttributeCategory::RESERVATION), $this->equalTo($this->reservation->AttributeValues()), $this->isNull(), $this->isFalse(), $this->isTrue())
+				->with($this->equalTo(CustomAttributeCategory::RESERVATION), $this->equalTo($this->reservation->AttributeValues()), $this->equalTo(array()), $this->isFalse(), $this->isTrue())
 				->will($this->returnValue($validationResult));
 
 		$result = $this->rule->Validate($this->reservation, null);

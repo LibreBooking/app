@@ -60,12 +60,6 @@ class UserCreditsPresenterTests extends TestBase
 
         $this->assertEquals($currentCredits, $this->page->_CurrentCredits);
     }
-
-    public function testCreatesPayPalPayment()
-    {
-        $this->fakeServer->SetSession(SessionKeys::CREDIT_CART, new CreditCart());
-        $this->presenter->CreatePayPalPayment();
-    }
 }
 
 class FakeUserCreditsPage extends UserCreditsPage
