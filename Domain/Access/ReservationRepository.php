@@ -129,7 +129,7 @@ class ReservationRepository implements IReservationRepository
 			{
 				try
 				{
-					$adjustCreditsCommand = new AdjustUserCreditsCommand($reservationSeries->UserId(), $creditsToDeduct);
+					$adjustCreditsCommand = new AdjustUserCreditsCommand($reservationSeries->UserId(), $creditsToDeduct, Resources::GetInstance()->GetString('ReservationUpdatedLog', $reservationSeries->CurrentInstance()->ReferenceNumber()));
 
 					$database->Execute($adjustCreditsCommand);
 
@@ -213,7 +213,7 @@ class ReservationRepository implements IReservationRepository
 		{
 			try
 			{
-				$adjustCreditsCommand = new AdjustUserCreditsCommand($reservationSeries->UserId(), $creditsToDeduct);
+				$adjustCreditsCommand = new AdjustUserCreditsCommand($reservationSeries->UserId(), $creditsToDeduct, Resources::GetInstance()->GetString('ReservationCreatedLog', $reservationSeries->CurrentInstance()->ReferenceNumber()));
 				$database->Execute($adjustCreditsCommand);
 			} catch (Exception $ex)
 			{
@@ -234,7 +234,7 @@ class ReservationRepository implements IReservationRepository
 
 			try
 			{
-				$adjustCreditsCommand = new AdjustUserCreditsCommand($existingReservationSeries->UserId(), $creditAdjustment);
+				$adjustCreditsCommand = new AdjustUserCreditsCommand($existingReservationSeries->UserId(), $creditAdjustment, Resources::GetInstance()->GetString('ReservationDeletedLog', $existingReservationSeries->CurrentInstance()->ReferenceNumber()));
 				$database->Execute($adjustCreditsCommand);
 			} catch (Exception $ex)
 			{

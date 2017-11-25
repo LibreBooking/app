@@ -462,7 +462,7 @@ class ManageUsersPresenter extends ActionPresenter implements IManageUsersPresen
         Log::Debug('Changing credit count for userId: %s to %s', $userId, $creditCount);
 
         $user = $this->userRepository->LoadById($userId);
-        $user->ChangeCurrentCredits($creditCount);
+        $user->ChangeCurrentCredits($creditCount, Resources::GetInstance()->GetString('CreditsUpdatedLog', array(ServiceLocator::GetServer()->GetUserSession())));
         $this->userRepository->Update($user);
     }
 

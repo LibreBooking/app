@@ -528,7 +528,7 @@ class ReservationRepositoryTests extends TestBase
 
 		$this->repository->Update($existingReservation);
 
-		$this->assertEquals(new AdjustUserCreditsCommand($userId, 2), $this->db->_Commands[1], 'was taking 10, required 12');
+		$this->assertEquals(new AdjustUserCreditsCommand($userId, 2, 'ReservationUpdatedLog'.$existingReservation->CurrentInstance()->ReferenceNumber()), $this->db->_Commands[1], 'was taking 10, required 12');
 	}
 
 	public function testWhenCreditsConsumedDecreases()
@@ -556,7 +556,7 @@ class ReservationRepositoryTests extends TestBase
 
 		$this->repository->Update($existingReservation);
 
-		$this->assertEquals(new AdjustUserCreditsCommand($userId, -2), $this->db->_Commands[1], 'was taking 10, required 12');
+		$this->assertEquals(new AdjustUserCreditsCommand($userId, -2, 'ReservationUpdatedLog'.$existingReservation->CurrentInstance()->ReferenceNumber()), $this->db->_Commands[1], 'was taking 10, required 12');
 	}
 
 	public function testDoesNotDeductCreditsForPastInstances()
@@ -787,7 +787,7 @@ class ReservationRepositoryTests extends TestBase
 		$this->repository->Delete($series);
 
 		$deleteSeriesCommand = new DeleteSeriesCommand($series->SeriesId(), Date::Now());
-		$adjustCreditsCommand = new AdjustUserCreditsCommand($series->UserId(), -10);
+		$adjustCreditsCommand = new AdjustUserCreditsCommand($series->UserId(), -10, 'ReservationDeletedLog'.$series->CurrentInstance()->ReferenceNumber());
 
 		$this->assertEquals(2, count($this->db->_Commands));
 		$this->assertTrue(in_array($deleteSeriesCommand, $this->db->_Commands));

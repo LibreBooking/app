@@ -501,6 +501,11 @@ class UserRepository implements IUserRepository, IAccountActivationRepository
         foreach ($user->GetAddedGroups() as $added) {
             $db->Execute(new AddUserGroupCommand($user->Id(), $added->GroupId));
         }
+
+        if ($user->HaveCreditsChanged())
+        {
+            $db->Execute(new LogCreditActivityCommand($user->Id(), $user->GetOriginalCredits(), $user->GetCurrentCredits(), $user->GetCreditsNote()));
+        }
     }
 
     public function DeleteById($userId)

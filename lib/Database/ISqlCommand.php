@@ -39,4 +39,9 @@ interface ISqlCommand
 	 * @return bool
 	 */
 	public function ContainsGroupConcat();
+
+	/**
+     * @return bool
+     */
+	public function IsMultiQuery();
 }

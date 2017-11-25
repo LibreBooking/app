@@ -84,6 +84,11 @@ class SqlCommand implements ISqlCommand
 	{
 		return false;
 	}
+
+	public function IsMultiQuery()
+    {
+        return false;
+    }
 }
 
 class AdHocCommand extends SqlCommand

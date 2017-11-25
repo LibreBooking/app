@@ -608,6 +608,21 @@ class UserRepositoryTests extends TestBase
 		$this->assertEquals($expectedId, $actualId);
 	}
 
+	public function testLogsCreditChanges()
+	{
+        $user = new User();
+        $user->WithId(1);
+        $user->WithCredits(10);
+        $user->ChangeCurrentCredits(5, 'message');
+
+        $repo = new UserRepository();
+        $repo->Update($user);
+
+        $command = new LogCreditActivityCommand(1, 10, 5, 'message');
+
+        $this->assertTrue($this->db->ContainsCommand($command));
+	}
+
 	private function GetUserRow($userId = 1,
 								$first = 'first',
 								$last = 'last',

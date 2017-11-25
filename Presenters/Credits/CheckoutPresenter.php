@@ -101,13 +101,11 @@ class CheckoutPresenter extends ActionPresenter
         if ($payment->state == "approved")
         {
             $user = $this->userRepository->LoadById(ServiceLocator::GetServer()->GetUserSession()->UserId);
-            $user->AddCredits($cart->Quantity);
+            $user->AddCredits($cart->Quantity, Resources::GetInstance()->GetString('NoteCreditsPurchased'));
             $this->userRepository->Update($user);
             ServiceLocator::GetServer()->SetSession(SessionKeys::CREDIT_CART, null);
-
         }
 
         $this->page->SetPayPalPayment($payment);
     }
-
 }

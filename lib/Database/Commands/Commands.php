@@ -204,11 +204,18 @@ class AddGroupRoleCommand extends SqlCommand
 
 class AdjustUserCreditsCommand extends SqlCommand
 {
-    public function __construct($userId, $creditsToDeduct)
+    public function __construct($userId, $creditsToDeduct, $note)
     {
         parent::__construct(Queries::ADJUST_USER_CREDITS);
         $this->AddParameter(new Parameter(ParameterNames::USER_ID, $userId));
         $this->AddParameter(new Parameter(ParameterNames::CREDIT_COUNT, $creditsToDeduct));
+        $this->AddParameter(new Parameter(ParameterNames::CREDIT_NOTE, $note));
+        $this->AddParameter(new Parameter(ParameterNames::DATE_CREATED, Date::Now()->ToDatabase()));
+    }
+
+    public function IsMultiQuery()
+    {
+        return true;
     }
 }
 
@@ -1822,6 +1829,19 @@ class GetVersionCommand extends SqlCommand
     public function __construct()
     {
         parent::__construct(Queries::GET_VERSION);
+    }
+}
+
+class LogCreditActivityCommand extends SqlCommand
+{
+    public function __construct($userId, $originalCredits, $currentCredits, $note)
+    {
+        parent::__construct(Queries::LOG_CREDIT_ACTIVITY_COMMAND);
+        $this->AddParameter(new Parameter(ParameterNames::USER_ID, $userId));
+        $this->AddParameter(new Parameter(ParameterNames::ORIGNINAL_CREDIT_COUNT, $originalCredits));
+        $this->AddParameter(new Parameter(ParameterNames::CREDIT_COUNT, $currentCredits));
+        $this->AddParameter(new Parameter(ParameterNames::CREDIT_NOTE, $note));
+        $this->AddParameter(new Parameter(ParameterNames::DATE_CREATED, Date::Now()->ToDatabase()));
     }
 }
 

@@ -658,6 +658,11 @@ class en_us extends Language
         $strings['ViewYourCredits'] = 'View your credits';
         $strings['TryAgain'] = 'Try Again';
         $strings['PurchaseFailed'] = 'We had trouble processing your payment.';
+        $strings['NoteCreditsPurchased'] = 'Credits purchased';
+        $strings['CreditsUpdatedLog'] = 'Credits updated by %s';
+        $strings['ReservationCreatedLog'] = 'Reservation created. Reference number %s';
+        $strings['ReservationUpdatedLog'] = 'Reservation updated. Reference number %s';
+        $strings['ReservationDeletedLog'] = 'Reservation deleted. Reference number %s';
         // End Strings
 
 		// Install

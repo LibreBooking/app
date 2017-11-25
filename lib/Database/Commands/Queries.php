@@ -79,7 +79,10 @@ class Queries
 	const ADD_GROUP_ROLE =
 			'INSERT IGNORE INTO group_roles (group_id, role_id) VALUES (@groupid, @roleid)';
 
-	const ADJUST_USER_CREDITS = 'UPDATE users SET credit_count = credit_count - @credit_count WHERE user_id = @userid';
+	const ADJUST_USER_CREDITS =
+        'INSERT INTO credit_log (user_id, original_credit_count, credit_count, credit_note, date_created) 
+            SELECT user_id, credit_count, credit_count - @credit_count, @credit_note, @dateCreated FROM users WHERE user_id = @userid;
+          UPDATE users SET credit_count = credit_count - @credit_count WHERE user_id = @userid';
 
 	const ADD_LAYOUT =
 			'INSERT INTO layouts (timezone) VALUES (@timezone)';
@@ -289,6 +292,10 @@ class Queries
 
 	const DELETE_USER_SESSION =
 			'DELETE	FROM user_session WHERE session_token = @session_token';
+
+	const LOG_CREDIT_ACTIVITY_COMMAND =
+        'INSERT INTO credit_log (user_id, original_credit_count, credit_count, credit_note, date_created)
+            VALUES (@userid, @original_credit_count, @credit_count, @credit_note, @dateCreated)';
 
 	const LOGIN_USER =
 			'SELECT * FROM users WHERE (username = @username OR email = @username)';

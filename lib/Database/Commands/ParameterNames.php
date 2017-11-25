@@ -75,6 +75,7 @@ class ParameterNames
 	const CREDIT_COUNT = '@credit_count';
 	const CREDIT_COST = '@credit_cost';
 	const CREDIT_CURRENCY = '@credit_currency';
+	const CREDIT_NOTE = '@credit_note';
 
 	const DATE_CREATED = '@dateCreated';
 	const DATE_MODIFIED = '@dateModified';
@@ -111,6 +112,7 @@ class ParameterNames
 	const NAME = '@name';
 
 	const ORGANIZATION = '@organization';
+	const ORIGNINAL_CREDIT_COUNT = '@original_credit_count';
 
 	const PASSWORD = '@password';
 	const PARTICIPANT_ID = '@participant_id';
