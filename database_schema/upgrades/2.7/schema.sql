@@ -35,3 +35,16 @@ CREATE TABLE `credit_log` (
 )
   ENGINE = InnoDB
   DEFAULT CHARACTER SET utf8;
+
+DROP TABLE IF EXISTS `payment_transaction_log`;
+CREATE TABLE `payment_transaction_log` (
+  `payment_transaction_log_id`  INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `user_id`  MEDIUMINT(8) UNSIGNED NOT NULL,
+  `original_credit_count`  DECIMAL(7, 2),
+  `credit_count`  DECIMAL(7, 2),
+  `credit_note` VARCHAR(1000),
+  `date_created` DATETIME NOT NULL,
+  PRIMARY KEY (`credit_log_id`)
+)
+  ENGINE = InnoDB
+  DEFAULT CHARACTER SET utf8;

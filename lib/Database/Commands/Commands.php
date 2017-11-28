@@ -1028,6 +1028,11 @@ class GetAttributesByCategoryCommand extends SqlCommand
         parent::__construct(Queries::GET_ATTRIBUTES_BASE_QUERY . Queries::GET_ATTRIBUTES_BY_CATEGORY_WHERE);
         $this->AddParameter(new Parameter(ParameterNames::ATTRIBUTE_CATEGORY, $attributeCategoryId));
     }
+
+    public function ContainsGroupConcat()
+    {
+        return true;
+    }
 }
 
 class GetAttributeByIdCommand extends SqlCommand
@@ -1036,6 +1041,11 @@ class GetAttributeByIdCommand extends SqlCommand
     {
         parent::__construct(Queries::GET_ATTRIBUTES_BASE_QUERY . Queries::GET_ATTRIBUTE_BY_ID_WHERE);
         $this->AddParameter(new Parameter(ParameterNames::ATTRIBUTE_ID, $attributeId));
+    }
+
+    public function ContainsGroupConcat()
+    {
+        return true;
     }
 }
 

@@ -458,7 +458,7 @@ class Queries
 	const GET_ATTRIBUTES_BASE_QUERY = 'SELECT a.*,
 				(SELECT GROUP_CONCAT(e.entity_id SEPARATOR "!sep!")
 							FROM custom_attribute_entities e WHERE e.custom_attribute_id = a.custom_attribute_id ORDER BY e.entity_id) as entity_ids,
-				CASE
+				(CASE
 				WHEN a.attribute_category = 2 THEN (SELECT GROUP_CONCAT(CONCAT(u.fname, " ", u.lname) SEPARATOR "!sep!")
 													FROM users u INNER JOIN custom_attribute_entities e
 													WHERE e.custom_attribute_id = a.custom_attribute_id AND u.user_id = e.entity_id ORDER BY e.entity_id)
@@ -469,13 +469,13 @@ class Queries
 													FROM resource_types rt INNER JOIN custom_attribute_entities e
 													WHERE e.custom_attribute_id = a.custom_attribute_id AND rt.resource_type_id = e.entity_id ORDER BY e.entity_id)
 				ELSE null
-				END as entity_descriptions,
-				CASE
+				END) as entity_descriptions,
+				(CASE
 				WHEN a.secondary_category = 2 THEN (SELECT GROUP_CONCAT(CONCAT( fname, " ", lname ) SEPARATOR  "!sep!" ) FROM users WHERE FIND_IN_SET( user_id, a.secondary_entity_ids ))
 				WHEN a.secondary_category = 4 THEN (SELECT GROUP_CONCAT(name SEPARATOR  "!sep!" ) FROM resources WHERE FIND_IN_SET( resource_id, a.secondary_entity_ids ))
 				WHEN a.secondary_category = 5 THEN (SELECT GROUP_CONCAT(resource_type_name SEPARATOR  "!sep!" ) FROM resource_types WHERE FIND_IN_SET( resource_type_id, a.secondary_entity_ids ))
 				ELSE null
-				END as secondary_entity_descriptions
+				END) as secondary_entity_descriptions
 				FROM custom_attributes a';
 
 	const GET_ATTRIBUTES_BY_CATEGORY_WHERE = ' WHERE a.attribute_category = @attribute_category ORDER BY a.sort_order, a.display_label';
