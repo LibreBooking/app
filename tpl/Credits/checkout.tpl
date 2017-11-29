@@ -11,8 +11,10 @@
                 <div>{$CreditQuantity}</div>
                 <div>{$CreditCost}</div>
                 <div>{$Total}</div>
+
+                <div id="paypal-button"></div>
+
             </div>
-            <div id="paypal-button"></div>
         {else}
             <div class="alert alert-danger">
                 {translate key=EmptyCart} <a href="{$ScriptUrl}/{Pages::CREDITS}">{translate key=BuyCredits}</a>

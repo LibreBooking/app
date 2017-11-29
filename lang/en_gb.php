@@ -52,6 +52,7 @@ class en_gb extends en_us
 		$dates['calendar_dates'] = 'd M';
 
         $this->Dates = $dates;
+        return $this->Dates;
     }
 
     protected function _LoadStrings()
