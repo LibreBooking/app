@@ -542,7 +542,7 @@ class Quota implements IQuota
 			{
 				return;
 			}
-			$newStart = $dateRange->GetBegin()->LessThan($enforcedStart) ? $dateRange->GetBegin() : $enforcedStart;
+			$newStart = $dateRange->GetBegin()->GreaterThan($enforcedStart) ? $dateRange->GetBegin() : $enforcedStart;
 			$newEnd = $dateRange->GetEnd()->LessThan($enforcedEnd) ? $dateRange->GetEnd() : $enforcedEnd;
 			$dateRange = new DateRange($newStart, $newEnd);
 
