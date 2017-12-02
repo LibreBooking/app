@@ -253,6 +253,40 @@ class AddPaymentGatewaySettingCommand extends SqlCommand
     }
 }
 
+class AddPaymentTransactionLogCommand extends SqlCommand
+{
+    /**
+     * @param string $userId
+     * @param string $status
+     * @param string $invoiceNumber
+     * @param int $transactionId
+     * @param float $totalAmount
+     * @param float $transactionFee
+     * @param float $currency
+     * @param string $transactionHref
+     * @param string $refundHref
+     * @param Date $dateCreated
+     * @param string $gatewayDateCreated
+     * @param string $gatewayResponse
+     */
+    public function __construct($userId, $status, $invoiceNumber, $transactionId, $totalAmount, $transactionFee, $currency, $transactionHref, $refundHref, $dateCreated, $gatewayDateCreated, $gatewayResponse)
+    {
+        parent::__construct(Queries::ADD_PAYMENT_TRANSACTION_LOG);
+        $this->AddParameter(new Parameter(ParameterNames::USER_ID, $userId));
+        $this->AddParameter(new Parameter(ParameterNames::PAYMENT_STATUS, $status));
+        $this->AddParameter(new Parameter(ParameterNames::PAYMENT_INVOICE_NUMBER, $invoiceNumber));
+        $this->AddParameter(new Parameter(ParameterNames::PAYMENT_TRANSACTION_ID, $transactionId));
+        $this->AddParameter(new Parameter(ParameterNames::PAYMENT_TOTAL, $totalAmount));
+        $this->AddParameter(new Parameter(ParameterNames::PAYMENT_TRANSACTION_FEE, $transactionFee));
+        $this->AddParameter(new Parameter(ParameterNames::PAYMENT_CURRENCY, $currency));
+        $this->AddParameter(new Parameter(ParameterNames::PAYMENT_TRANSACTION_HREF, $transactionHref));
+        $this->AddParameter(new Parameter(ParameterNames::PAYMENT_REFUND_HREF, $refundHref));
+        $this->AddParameter(new Parameter(ParameterNames::PAYMENT_DATE_CREATED, $dateCreated->ToDatabase()));
+        $this->AddParameter(new Parameter(ParameterNames::PAYMENT_GATEWAY_DATE_CREATED, $gatewayDateCreated));
+        $this->AddParameter(new Parameter(ParameterNames::PAYMENT_GATEWAY_RESPONSE, $gatewayResponse));
+    }
+}
+
 class AddPeakTimesCommand extends SqlCommand
 {
     /**

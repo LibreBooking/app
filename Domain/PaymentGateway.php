@@ -94,6 +94,33 @@ interface IPaymentGateway
     public function Settings();
 }
 
+interface IPaymentTransactionLogger
+{
+    /**
+     * @param string $userId
+     * @param string $status
+     * @param string $invoiceNumber
+     * @param int $transactionId
+     * @param float $totalAmount
+     * @param float $transactionFee
+     * @param float $currency
+     * @param string $transactionHref
+     * @param string $refundHref
+     * @param Date $dateCreated
+     * @param string $gatewayDateCreated
+     * @param string $gatewayResponse
+     */
+    public function Log($userId, $status, $invoiceNumber, $transactionId, $totalAmount, $transactionFee, $currency, $transactionHref, $refundHref, $dateCreated, $gatewayDateCreated, $gatewayResponse);
+}
+
+class PaymentTransactionLogger implements IPaymentTransactionLogger
+{
+    public function Log($userId, $status, $invoiceNumber, $transactionId, $totalAmount, $transactionFee, $currency, $transactionHref, $refundHref, $dateCreated, $gatewayDateCreated, $gatewayResponse)
+    {
+        ServiceLocator::GetDatabase()->Execute(new AddPaymentTransactionLogCommand($userId, $status, $invoiceNumber, $transactionId, $totalAmount, $transactionFee, $currency, $transactionHref, $refundHref, $dateCreated, $gatewayDateCreated, $gatewayResponse));
+    }
+}
+
 class PayPalGateway implements IPaymentGateway
 {
     const CLIENT_ID = 'client_id';
@@ -195,7 +222,7 @@ class PayPalGateway implements IPaymentGateway
      * @param CreditCartSession $cart
      * @param string $returnUrl
      * @param string $cancelUrl
-     * @return \PayPal\Api\Payment
+     * @return Payment
      */
     public function CreatePayment(CreditCartSession $cart, $returnUrl, $cancelUrl)
     {
@@ -251,8 +278,7 @@ class PayPalGateway implements IPaymentGateway
             Log::Error('Error creating PayPal payment. CartId/invoice number: %s, Total: %s, Error: %s', $cart->Id(), $cart->Total(), $ex);
         }
 
-        if (Log::DebugEnabled())
-        {
+        if (Log::DebugEnabled()) {
             Log::Debug("CreatePayment response: %s", $payment->toJSON());
         }
 
@@ -263,9 +289,10 @@ class PayPalGateway implements IPaymentGateway
      * @param CreditCartSession $cart
      * @param string $paymentId
      * @param string $payerId
-     * @return \PayPal\Api\Payment
+     * @param IPaymentTransactionLogger $logger
+     * @return Payment
      */
-    public function ExecutePayment(CreditCartSession $cart, $paymentId, $payerId)
+    public function ExecutePayment(CreditCartSession $cart, $paymentId, $payerId, IPaymentTransactionLogger $logger)
     {
         $apiContext = new ApiContext(new OAuthTokenCredential($this->ClientId(), $this->Secret()));
 
@@ -293,14 +320,29 @@ class PayPalGateway implements IPaymentGateway
 
             $result = $payment->execute($execution, $apiContext);
             $payment = Payment::get($paymentId, $apiContext);
+
+            $paypalTransaction = $payment->getTransactions()[0];
+            $sale = $paypalTransaction->getRelatedResources()[0]->getSale();
+            $logger->Log($cart->UserId,
+                $payment->getState(),
+                $paypalTransaction->getInvoiceNumber(),
+                $sale->getId(),
+                $sale->getAmount()->getTotal(),
+                $sale->getTransactionFee()->getValue(),
+                $sale->getAmount()->getCurrency(),
+                $sale->getLink('self'),
+                $sale->getLink('refund'),
+                Date::Now(),
+                $sale->getCreateTime(),
+                $payment->toJSON());
+
         } catch (PayPal\Exception\PayPalConnectionException $ex) {
             Log::Error('PayPal ExecutePayment error details. Json: %s, Code: %s, Data: %s, CartId/invoice number: %s, PaymentId: %s, PayerId: %s, Total %s, Error %s', $payment->toJSON(), $ex->getCode(), $ex->getData(), $cart->Id(), $paymentId, $payerId, $cart->Total(), $ex);
         } catch (Exception $ex) {
             Log::Error('Error executing PayPal payment. CartId/invoice number: %s, PaymentId: %s, PayerId: %s, Total %s, Error %s', $cart->Id(), $paymentId, $payerId, $cart->Total(), $ex);
         }
 
-        if (Log::DebugEnabled())
-        {
+        if (Log::DebugEnabled()) {
             Log::Debug("ExecutePayment response: %s", $payment->toJSON());
         }
 

@@ -4,8 +4,8 @@
 
     <h1>{$CurrentCredits}</h1>
 
-    {if $AllowPurchasingCredits}
-        <div>Buy more credits</div>
+    {if $AllowPurchasingCredits && $IsCreditCostSet}
+        <div>{translate key=BuyMoreCredits}</div>
         {translate key=EachCreditCosts} {$CreditCost}
         <div>
             <form role="form" name="purchaseCreditsForm" id="purchaseCreditsForm" method="post" action="checkout.php">

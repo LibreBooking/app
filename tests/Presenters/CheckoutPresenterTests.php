@@ -38,6 +38,10 @@ class CheckoutPresenterTests extends TestBase
      * @var CheckoutPresenter
      */
     private $presenter;
+    /**
+     * @var FakePaymentTransactionLogger
+     */
+    private $paymentLogger;
 
     public function setup()
     {
@@ -46,7 +50,8 @@ class CheckoutPresenterTests extends TestBase
         $this->page = new FakeCheckoutPage();
         $this->paymentRepository = new FakePaymentRepository();
         $this->userRepository = new FakeUserRepository();
-        $this->presenter = new CheckoutPresenter($this->page, $this->paymentRepository, $this->userRepository);
+        $this->paymentLogger = new FakePaymentTransactionLogger();
+        $this->presenter = new CheckoutPresenter($this->page, $this->paymentRepository, $this->userRepository, $this->paymentLogger);
     }
 
     public function testPageLoadCreatesCartAndPresentsPaymentOptions()
@@ -62,7 +67,7 @@ class CheckoutPresenterTests extends TestBase
         $this->assertEquals(50, $this->page->_Total);
         $this->assertEquals($cost, $this->page->_CreditCost);
         $this->assertEquals(10, $this->page->_NumberOfCreditsBeingPurchased);
-        $expectedCart = new CreditCartSession(10, 5, 'USD');
+        $expectedCart = new CreditCartSession(10, 5, 'USD', $this->fakeUser->UserId);
         $actualCart = $this->fakeServer->GetSession(SessionKeys::CREDIT_CART);
         $expectedCart->Id = $actualCart->Id = null;
         $this->assertEquals($expectedCart, $actualCart);
@@ -75,7 +80,7 @@ class CheckoutPresenterTests extends TestBase
 
     public function testCreatesPayPalPayment()
     {
-        $creditCartSession = new CreditCartSession(5, 10, 'USD');
+        $creditCartSession = new CreditCartSession(5, 10, 'USD', $this->fakeUser->UserId);
         $this->fakeServer->SetSession(SessionKeys::CREDIT_CART, $creditCartSession);
 
         $gateway = new FakePayPalGateway();
@@ -91,7 +96,7 @@ class CheckoutPresenterTests extends TestBase
 
     public function testExecutesPayPalPayment()
     {
-        $creditCartSession = new CreditCartSession(5, 10, 'USD');
+        $creditCartSession = new CreditCartSession(5, 10, 'USD', $this->fakeUser->UserId);
         $this->fakeServer->SetSession(SessionKeys::CREDIT_CART, $creditCartSession);
 
         $this->userRepository->_User->WithCredits(10);

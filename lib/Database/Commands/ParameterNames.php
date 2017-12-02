@@ -116,6 +116,17 @@ class ParameterNames
 
 	const PASSWORD = '@password';
 	const PARTICIPANT_ID = '@participant_id';
+	const PAYMENT_STATUS = '@status';
+	const PAYMENT_INVOICE_NUMBER = '@invoice_number';
+	const PAYMENT_TRANSACTION_ID = '@transaction_id';
+	const PAYMENT_TOTAL = '@total_amount';
+	const PAYMENT_TRANSACTION_FEE = '@transaction_fee';
+	const PAYMENT_CURRENCY = '@currency';
+	const PAYMENT_TRANSACTION_HREF = '@transaction_href';
+	const PAYMENT_REFUND_HREF = '@refund_href';
+	const PAYMENT_DATE_CREATED = '@date_created';
+	const PAYMENT_GATEWAY_DATE_CREATED = '@gateway_date_created';
+	const PAYMENT_GATEWAY_RESPONSE = '@payment_response';
 	const PEAK_CREDIT_COUNT = '@peak_credit_count';
 	const PEAK_TIMES_ALL_DAY = '@all_day';
 	const PEAK_TIMES_START_TIME = '@start_time';

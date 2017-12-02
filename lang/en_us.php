@@ -663,6 +663,7 @@ class en_us extends Language
         $strings['ReservationCreatedLog'] = 'Reservation created. Reference number %s';
         $strings['ReservationUpdatedLog'] = 'Reservation updated. Reference number %s';
         $strings['ReservationDeletedLog'] = 'Reservation deleted. Reference number %s';
+        $strings['BuyMoreCredits'] = 'Buy more credits';
         // End Strings
 
 		// Install

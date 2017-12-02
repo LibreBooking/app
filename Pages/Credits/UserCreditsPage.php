@@ -83,6 +83,7 @@ class UserCreditsPage extends ActionPage implements IUserCreditsPage
     public function SetCreditCost(CreditCost $cost)
     {
         $this->Set('CreditCost', $cost->FormatCurrency());
+        $this->Set('IsCreditCostSet', $cost->Cost() > 0);
     }
 
     public function GetQuantity()

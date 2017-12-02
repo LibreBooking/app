@@ -98,6 +98,10 @@ class Queries
 	const ADD_PAYMENT_GATEWAY_SETTING = 'INSERT INTO payment_gateway_settings (gateway_type, setting_name, setting_value) 
                                       VALUES (@gateway_type, @setting_name, @setting_value)';
 
+	const ADD_PAYMENT_TRANSACTION_LOG =
+        'INSERT INTO payment_transaction_log(user_id, status, invoice_number, transaction_id, subtotal_amount, tax_amount, total_amount, transaction_fee, currency, transaction_href, refund_href, date_created, gateway_date_created, payment_response) 
+          VALUES (@userid, @status, @invoice_number, @transaction_id, @total_amount, 0, @total_amount, @transaction_fee, @currency, @transaction_href, @refund_href, @date_created, @gateway_date_created, @payment_response)';
+
 	const ADD_PEAK_TIMES =
 			'INSERT INTO peak_times (schedule_id, all_day, start_time, end_time, every_day, peak_days, all_year, begin_month, begin_day, end_month, end_day)
 			VALUES (@scheduleid, @all_day, @start_time, @end_time, @every_day, @peak_days, @all_year, @begin_month, @begin_day, @end_month, @end_day)';

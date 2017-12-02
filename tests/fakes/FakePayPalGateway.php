@@ -42,7 +42,7 @@ class FakePayPalGateway extends PayPalGateway
         return $this->_Payment;
     }
 
-    public function ExecutePayment(CreditCartSession $cart, $paymentId, $payerId)
+    public function ExecutePayment(CreditCartSession $cart, $paymentId, $payerId, IPaymentTransactionLogger $logger)
     {
         $this->_PaymentCreatedCart = $cart;
         $this->_PaymentId = $paymentId;

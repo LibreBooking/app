@@ -31,7 +31,7 @@
 
         <div class="no-show" id="error">
             <div class="alert alert-danger">
-                <div{translate key=PurchaseFailed}</div>
+                <div>{translate key=PurchaseFailed}</div>
                 <div><a href="{$ScriptUrl}/{Pages::CREDITS}">{translate key=TryAgain}</a></div>
             </div>
         </div>
@@ -69,7 +69,9 @@
                         if (data.state != "approved") {
                             $('#error').removeClass('no-show');
                         }
-                        $('#success').removeClass('no-show');
+                        else {
+                            $('#success').removeClass('no-show');
+                        }
                     });
                 },
 

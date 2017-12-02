@@ -24,19 +24,21 @@ class CreditCartSession
     public $CostPerCredit;
     public $Currency;
     public $Id;
+    public $UserId;
 
     /**
      * @param float $creditQuantity
      * @param float $costPerCredit
      * @param string $currency
+     * @param int $userId
      */
-    public function __construct($creditQuantity, $costPerCredit, $currency = 'USD')
+    public function __construct($creditQuantity, $costPerCredit, $currency, $userId)
     {
         $this->Quantity = $creditQuantity;
         $this->CostPerCredit = $costPerCredit;
         $this->Currency = $currency;
         $this->Id = uniqid();
-
+        $this->UserId = $userId;
     }
 
     /**

@@ -41,20 +41,25 @@ class CheckoutPresenter extends ActionPresenter
      * @var IUserRepository
      */
     private $userRepository;
+    /**
+     * @var IPaymentTransactionLogger
+     */
+    private $paymentLogger;
 
-    public function __construct(ICheckoutPage $page, IPaymentRepository $paymentRepository, IUserRepository $userRepository)
+    public function __construct(ICheckoutPage $page, IPaymentRepository $paymentRepository, IUserRepository $userRepository, IPaymentTransactionLogger $paymentLogger)
     {
         parent::__construct($page);
 
         $this->page = $page;
         $this->paymentRepository = $paymentRepository;
         $this->userRepository = $userRepository;
+        $this->paymentLogger = $paymentLogger;
 
         $this->AddAction('executePayPalPayment', 'ExecutePayPalPayment');
         $this->AddAction('createPayPalPayment', 'CreatePayPalPayment');
     }
 
-    public function PageLoad($userSession)
+    public function PageLoad(UserSession $userSession)
     {
         $creditQuantity = floatval($this->page->GetCreditQuantity());
 
@@ -73,7 +78,7 @@ class CheckoutPresenter extends ActionPresenter
             $this->page->SetPayPalSettings($paypal->IsEnabled(), $paypal->ClientId(), $paypal->Environment());
             $this->page->SetStripeSettings($stripe->IsEnabled(), $stripe->PublishableKey());
 
-            ServiceLocator::GetServer()->SetSession(SessionKeys::CREDIT_CART, new CreditCartSession($creditQuantity, $cost->Cost(), $cost->Currency()));
+            ServiceLocator::GetServer()->SetSession(SessionKeys::CREDIT_CART, new CreditCartSession($creditQuantity, $cost->Cost(), $cost->Currency(), $userSession->UserId));
         }
     }
 
@@ -96,7 +101,7 @@ class CheckoutPresenter extends ActionPresenter
 
         /** @var $cart CreditCartSession */
         $cart = ServiceLocator::GetServer()->GetSession(SessionKeys::CREDIT_CART);
-        $payment = $gateway->ExecutePayment($cart, $this->page->GetPaymentId(), $this->page->GetPayerId());
+        $payment = $gateway->ExecutePayment($cart, $this->page->GetPaymentId(), $this->page->GetPayerId(), $this->paymentLogger);
 
         if ($payment->state == "approved")
         {

@@ -78,7 +78,7 @@ class CheckoutPage extends ActionPage implements ICheckoutPage
         parent::__construct('Checkout');
         $this->Set('AllowPurchasingCredits', Configuration::Instance()->GetSectionKey(ConfigSection::CREDITS, ConfigKeys::CREDITS_ALLOW_PURCHASE, new BooleanConverter()));
 
-        $this->presenter = new CheckoutPresenter($this, new PaymentRepository(), new UserRepository());
+        $this->presenter = new CheckoutPresenter($this, new PaymentRepository(), new UserRepository(), new PaymentTransactionLogger());
     }
 
     public function ProcessAction()
