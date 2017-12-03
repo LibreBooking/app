@@ -303,3 +303,11 @@ function ClearAsyncErrors(element) {
 function HtmlDecode(encoded) {
 	return $('<textarea/>').html(encoded).val();
 }
+
+function ajaxPagination(element, callback){
+    element.find('a.page').on('click', function(e){
+        e.preventDefault();
+        var a = $(e.target);
+        callback(a.data('page'), a.data('page-size'));
+    });
+}

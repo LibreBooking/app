@@ -2473,3 +2473,6 @@ ul.jqtree-tree .jqtree-toggler {
 .page-search-availability span.hours-minutes {
   min-width: 120px;
 }
+#page-user-credits .cost {
+  font-weight: bold;
+}

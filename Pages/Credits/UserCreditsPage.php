@@ -19,6 +19,7 @@
  */
 
 require_once(ROOT_DIR . 'Presenters/Credits/UserCreditsPresenter.php');
+require_once(ROOT_DIR . 'Pages/IPageable.php');
 require_once(ROOT_DIR . 'Pages/SecurePage.php');
 
 interface IUserCreditsPage extends IPage, IActionPage
@@ -42,6 +43,21 @@ interface IUserCreditsPage extends IPage, IActionPage
      * @param string $formattedTotal
      */
     public function SetTotalCost($formattedTotal);
+
+    /**
+     * @return string
+     */
+    public function GetPageNumber();
+
+    /**
+     * @return string
+     */
+    public function GetPageSize();
+
+    /**
+     * @param PageableData|CreditLogView[] $creditLog
+     */
+    public function BindCreditLog($creditLog);
 }
 
 class UserCreditsPage extends ActionPage implements IUserCreditsPage
@@ -50,13 +66,19 @@ class UserCreditsPage extends ActionPage implements IUserCreditsPage
      * @var UserCreditsPresenter
      */
     private $presenter;
+    /**
+     * @var PageablePage
+     */
+    private $pageable;
 
     public function __construct()
     {
         parent::__construct('Credits');
         $this->Set('AllowPurchasingCredits', Configuration::Instance()->GetSectionKey(ConfigSection::CREDITS, ConfigKeys::CREDITS_ALLOW_PURCHASE, new BooleanConverter()));
 
-        $this->presenter = new UserCreditsPresenter($this, new UserRepository(), new PaymentRepository());
+        $this->pageable = new PageablePage($this);
+
+        $this->presenter = new UserCreditsPresenter($this, new UserRepository(), new PaymentRepository(), new CreditRepository());
     }
 
     public function ProcessAction()
@@ -66,7 +88,7 @@ class UserCreditsPage extends ActionPage implements IUserCreditsPage
 
     public function ProcessDataRequest($dataRequest)
     {
-        $this->presenter->ProcessDataRequest($dataRequest);
+        $this->presenter->ProcessDataRequest($dataRequest, ServiceLocator::GetServer()->GetUserSession());
     }
 
     public function ProcessPageLoad()
@@ -88,11 +110,28 @@ class UserCreditsPage extends ActionPage implements IUserCreditsPage
 
     public function GetQuantity()
     {
-       return $this->GetQuerystring(QueryStringKeys::QUANTITY);
+        return $this->GetQuerystring(QueryStringKeys::QUANTITY);
     }
 
     public function SetTotalCost($formattedTotal)
     {
         $this->SetJson($formattedTotal);
+    }
+
+    public function GetPageNumber()
+    {
+        return $this->pageable->GetPageNumber();
+    }
+
+    public function GetPageSize()
+    {
+        return $this->pageable->GetPageSize();
+    }
+
+    public function BindCreditLog($creditLog)
+    {
+        $this->Set('CreditLog', $creditLog->Results());
+        $this->Set('PageInfo', $creditLog->PageInfo());
+        $this->Display('Credits/credit_log.tpl');
     }
 }

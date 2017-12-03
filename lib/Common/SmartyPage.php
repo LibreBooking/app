@@ -595,7 +595,7 @@ class SmartyPage extends Smarty
 
         $class = $iscurrent ? "page current" : "page";
 
-        return sprintf('<a class="%s" href="%s">%s</a>', $class, $newUrl, $text);
+        return sprintf('<a class="%s" href="%s" data-page="%s" data-page-size="%s">%s</a>', $class, $newUrl, $page, $pageSize, $text);
     }
 
     function ReplaceQueryString($url, $key, $value)

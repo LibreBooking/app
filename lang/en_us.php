@@ -663,7 +663,16 @@ class en_us extends Language
         $strings['ReservationCreatedLog'] = 'Reservation created. Reference number %s';
         $strings['ReservationUpdatedLog'] = 'Reservation updated. Reference number %s';
         $strings['ReservationDeletedLog'] = 'Reservation deleted. Reference number %s';
-        $strings['BuyMoreCredits'] = 'Buy more credits';
+        $strings['BuyMoreCredits'] = 'Buy More Credits';
+        $strings['Transactions'] = 'Transactions';
+        $strings['Cost'] = 'Cost';
+        $strings['PaymentGateways'] = 'Payment Gateways';
+        $strings['CreditHistory'] = 'Credit History';
+        $strings['TransactionHistory'] = 'Transaction History';
+        $strings['Date'] = 'Date';
+        $strings['Note'] = 'Note';
+        $strings['CreditsBefore'] = 'Credits Before';
+        $strings['CreditsAfter'] = 'Credits After';
         // End Strings
 
 		// Install

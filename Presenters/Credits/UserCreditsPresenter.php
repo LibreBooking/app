@@ -38,14 +38,22 @@ class UserCreditsPresenter extends ActionPresenter
      * @var IPaymentRepository
      */
     private $paymentRepository;
+    /**
+     * @var ICreditRepository
+     */
+    private $creditRepository;
 
-    public function __construct(IUserCreditsPage $page, IUserRepository $userRepository, IPaymentRepository $paymentRepository)
+    public function __construct(IUserCreditsPage $page,
+                                IUserRepository $userRepository,
+                                IPaymentRepository $paymentRepository,
+                                ICreditRepository $creditRepository)
     {
         parent::__construct($page);
 
         $this->page = $page;
         $this->userRepository = $userRepository;
         $this->paymentRepository = $paymentRepository;
+        $this->creditRepository = $creditRepository;
     }
 
     public function PageLoad(UserSession $userSession)
@@ -58,12 +66,29 @@ class UserCreditsPresenter extends ActionPresenter
         $this->page->SetCreditCost($cost);
     }
 
-    public function ProcessDataRequest($dataRequest)
+    /**
+     * @param string $dataRequest
+     * @param UserSession $userSession
+     */
+    public function ProcessDataRequest($dataRequest, $userSession)
     {
-        $quantity = $this->page->GetQuantity();
-        $cost = $this->paymentRepository->GetCreditCost();
+        if ($dataRequest == 'creditLog') {
+            $this->GetCreditLog($userSession);
+        }
+        else {
+            $quantity = $this->page->GetQuantity();
+            $cost = $this->paymentRepository->GetCreditCost();
+            $this->page->SetTotalCost($cost->GetFormattedTotal($quantity));
+        }
+    }
 
-        $this->page->SetTotalCost($cost->GetFormattedTotal($quantity));
+    public function GetCreditLog(UserSession $userSession)
+    {
+        $page = $this->page->GetPageNumber();
+        $size = $this->page->GetPageSize();
+        $creditLog = $this->creditRepository->GetList($page, $size, $userSession->UserId);
+
+        $this->page->BindCreditLog($creditLog);
     }
 
 }

@@ -38,13 +38,13 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
     {else}
         <ul class="nav nav-tabs" role="tablist">
             <li class="nav-item active">
-                <a class="nav-link active" data-toggle="tab" href="#transactions" role="tab">Transactions</a>
+                <a class="nav-link active" data-toggle="tab" href="#transactions" role="tab">{translate key=Transactions}</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" data-toggle="tab" href="#cost" role="tab">Cost</a>
+                <a class="nav-link" data-toggle="tab" href="#cost" role="tab">{translate key=Cost}</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" data-toggle="tab" href="#gateways" role="tab">Payment Gateways</a>
+                <a class="nav-link" data-toggle="tab" href="#gateways" role="tab">{translate key=PaymentGateways}</a>
             </li>
         </ul>
         <div class="tab-content">

@@ -355,6 +355,11 @@ class Queries
                 INNER JOIN roles ON roles.role_id = gr.role_id AND roles.role_level = @role_level
               )';
 
+	const GET_ALL_CREDIT_LOGS = 'SELECT cl.*, u.fname, u.lname, u.email FROM credit_log cl 
+            LEFT JOIN users u ON cl.user_id = u.user_id 
+            WHERE (@userid = -1 or cl.user_id = @userid)
+            ORDER BY cl.date_created DESC';
+
 	const GET_ALL_GROUPS =
 			'SELECT g.*, admin_group.name as admin_group_name
 		FROM groups g

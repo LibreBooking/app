@@ -38,6 +38,10 @@ class UserCreditsPresenterTests extends TestBase
      * @var UserCreditsPresenter
      */
     private $presenter;
+    /**
+     * @var FakeCreditRepository
+     */
+    private $creditRepository;
 
     public function setup()
     {
@@ -46,7 +50,12 @@ class UserCreditsPresenterTests extends TestBase
         $this->page = new FakeUserCreditsPage();
         $this->userRepository = new FakeUserRepository();
         $this->paymentRepository = new FakePaymentRepository();
-        $this->presenter = new UserCreditsPresenter($this->page, $this->userRepository, $this->paymentRepository);
+        $this->creditRepository = new FakeCreditRepository();
+
+        $this->presenter = new UserCreditsPresenter($this->page,
+            $this->userRepository,
+            $this->paymentRepository,
+            $this->creditRepository);
     }
 
     public function testPageLoad()
@@ -60,6 +69,26 @@ class UserCreditsPresenterTests extends TestBase
 
         $this->assertEquals($currentCredits, $this->page->_CurrentCredits);
     }
+
+    public function testGetCreditLog()
+    {
+        $this->page->_CurrentPage = 10;
+        $this->page->_PageSize = 50;
+
+        $this->creditRepository->_UserCredits = new PageableData(array(new CreditLogView(Date::Now(), 'note', 10, 15)));
+
+        $this->presenter->GetCreditLog($this->fakeUser);
+
+        $this->assertEquals($this->creditRepository->_UserCredits, $this->page->_CreditLog);
+        $this->assertEquals(10, $this->creditRepository->_LastPage);
+        $this->assertEquals(50, $this->creditRepository->_LastPageSize);
+        $this->assertEquals($this->fakeUser->UserId, $this->creditRepository->_LastUserId);
+    }
+
+    public function testGetTransactionLog()
+    {
+        die('to implement');
+    }
 }
 
 class FakeUserCreditsPage extends UserCreditsPage
@@ -67,6 +96,9 @@ class FakeUserCreditsPage extends UserCreditsPage
     public $_CurrentCredits;
     public $_PaymentResult;
     public $_CreditCost;
+    public $_CurrentPage;
+    public $_PageSize;
+    public $_CreditLog;
 
     public function SetCurrentCredits($credits)
     {
@@ -81,5 +113,20 @@ class FakeUserCreditsPage extends UserCreditsPage
     public function SetCreditCost(CreditCost $cost)
     {
         $this->_CreditCost = $cost;
+    }
+
+    public function GetPageNumber()
+    {
+        return $this->_CurrentPage;
+    }
+
+    public function GetPageSize()
+    {
+        return $this->_PageSize;
+    }
+
+    public function BindCreditLog($creditLog)
+    {
+        $this->_CreditLog = $creditLog;
     }
 }

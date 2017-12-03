@@ -1153,6 +1153,15 @@ class GetAllApplicationAdminsCommand extends SqlCommand
     }
 }
 
+class GetAllCreditLogsCommand extends SqlCommand
+{
+    public function __construct($userId)
+    {
+        parent::__construct(Queries::GET_ALL_CREDIT_LOGS);
+        $this->AddParameter(new Parameter(ParameterNames::USER_ID, $userId));
+    }
+}
+
 class GetAllGroupsCommand extends SqlCommand
 {
     public function __construct()
