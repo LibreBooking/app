@@ -20,7 +20,9 @@
 function UserCredits(opts) {
     var elements = {
         creditLog: $('#credit-log-content'),
-        creditLogIndicator: $('#creditLogIndicator')
+        creditLogIndicator: $('#creditLogIndicator'),
+        transactionLog: $('#transaction-log-content'),
+        transactionLogIndicator: $('#transactionLogIndicator')
     };
 
     UserCredits.prototype.init = function () {
@@ -31,18 +33,31 @@ function UserCredits(opts) {
         });
 
         loadCreditLog(0, 0);
+        loadTransactionLog(0, 0);
     };
 
-    function loadCreditLog(page, pageSize)
-    {
+    function loadCreditLog(page, pageSize) {
         elements.creditLogIndicator.removeClass('no-show');
 
         ajaxGet(opts.creditLogUrl.replace('[page]', page).replace('[pageSize]', pageSize), null, function (data) {
             elements.creditLogIndicator.addClass('no-show');
             elements.creditLog.html(data);
 
-           ajaxPagination(elements.creditLog, function(page, size, sort) {
+            ajaxPagination(elements.creditLog, function (page, size) {
                 loadCreditLog(page, size);
+            });
+        });
+    }
+
+    function loadTransactionLog(page, pageSize) {
+        elements.transactionLogIndicator.removeClass('no-show');
+
+        ajaxGet(opts.transactionLogUrl.replace('[page]', page).replace('[pageSize]', pageSize), null, function (data) {
+            elements.transactionLogIndicator.addClass('no-show');
+            elements.transactionLog.html(data);
+
+            ajaxPagination(elements.transactionLog, function (page, size) {
+                loadTransactionLog(page, size);
             });
         });
     }

@@ -269,7 +269,7 @@ class AddPaymentTransactionLogCommand extends SqlCommand
      * @param string $gatewayDateCreated
      * @param string $gatewayResponse
      */
-    public function __construct($userId, $status, $invoiceNumber, $transactionId, $totalAmount, $transactionFee, $currency, $transactionHref, $refundHref, $dateCreated, $gatewayDateCreated, $gatewayResponse)
+    public function __construct($userId, $status, $invoiceNumber, $transactionId, $totalAmount, $transactionFee, $currency, $transactionHref, $refundHref, $dateCreated, $gatewayDateCreated, $gatewayName, $gatewayResponse)
     {
         parent::__construct(Queries::ADD_PAYMENT_TRANSACTION_LOG);
         $this->AddParameter(new Parameter(ParameterNames::USER_ID, $userId));
@@ -283,6 +283,7 @@ class AddPaymentTransactionLogCommand extends SqlCommand
         $this->AddParameter(new Parameter(ParameterNames::PAYMENT_REFUND_HREF, $refundHref));
         $this->AddParameter(new Parameter(ParameterNames::PAYMENT_DATE_CREATED, $dateCreated->ToDatabase()));
         $this->AddParameter(new Parameter(ParameterNames::PAYMENT_GATEWAY_DATE_CREATED, $gatewayDateCreated));
+        $this->AddParameter(new Parameter(ParameterNames::PAYMENT_GATEWAY_NAME, $gatewayName));
         $this->AddParameter(new Parameter(ParameterNames::PAYMENT_GATEWAY_RESPONSE, $gatewayResponse));
     }
 }
@@ -1294,6 +1295,15 @@ class GetAllResourceTypesCommand extends SqlCommand
     public function __construct()
     {
         parent::__construct(Queries::GET_ALL_RESOURCE_TYPES);
+    }
+}
+
+class GetAllTransactionLogsCommand extends SqlCommand
+{
+    public function __construct($userId)
+    {
+        parent::__construct(Queries::GET_ALL_TRANSACTION_LOGS);
+        $this->AddParameter(new Parameter(ParameterNames::USER_ID, $userId));
     }
 }
 

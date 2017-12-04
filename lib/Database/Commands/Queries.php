@@ -99,8 +99,8 @@ class Queries
                                       VALUES (@gateway_type, @setting_name, @setting_value)';
 
 	const ADD_PAYMENT_TRANSACTION_LOG =
-        'INSERT INTO payment_transaction_log(user_id, status, invoice_number, transaction_id, subtotal_amount, tax_amount, total_amount, transaction_fee, currency, transaction_href, refund_href, date_created, gateway_date_created, payment_response) 
-          VALUES (@userid, @status, @invoice_number, @transaction_id, @total_amount, 0, @total_amount, @transaction_fee, @currency, @transaction_href, @refund_href, @date_created, @gateway_date_created, @payment_response)';
+        'INSERT INTO payment_transaction_log(user_id, status, invoice_number, transaction_id, subtotal_amount, tax_amount, total_amount, transaction_fee, currency, transaction_href, refund_href, date_created, gateway_date_created, gateway_name, payment_response) 
+          VALUES (@userid, @status, @invoice_number, @transaction_id, @total_amount, 0, @total_amount, @transaction_fee, @currency, @transaction_href, @refund_href, @date_created, @gateway_date_created, @gateway_name, @payment_response)';
 
 	const ADD_PEAK_TIMES =
 			'INSERT INTO peak_times (schedule_id, all_day, start_time, end_time, every_day, peak_days, all_year, begin_month, begin_day, end_month, end_day)
@@ -443,6 +443,10 @@ class Queries
 							FROM custom_attribute_values cav INNER JOIN custom_attribute_entities cae on cav.custom_attribute_id = cae.custom_attribute_id
 							WHERE cav.entity_id = r.resource_type_id AND cav.attribute_category = 5) as attribute_list
 							FROM resource_types r';
+
+	const GET_ALL_TRANSACTION_LOGS = 'SELECT ptl.*, u.fname, u.lname, u.email FROM payment_transaction_log ptl
+            LEFT JOIN users u ON ptl.user_id = u.user_id WHERE (@userid = -1 OR ptl.user_id = @userid)
+            ORDER BY date_created DESC';
 
 	const GET_ALL_SAVED_REPORTS = 'SELECT * FROM saved_reports WHERE user_id = @userid ORDER BY report_name, date_created';
 

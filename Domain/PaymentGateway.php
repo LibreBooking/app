@@ -34,8 +34,8 @@ use PayPal\Api\PaymentExecution;
 
 class PaymentGateways
 {
-    const PAYPAL = 'paypal';
-    const STRIPE = 'stripe';
+    const PAYPAL = 'PayPal';
+    const STRIPE = 'Stripe';
 }
 
 class PaymentGatewaySetting
@@ -108,16 +108,17 @@ interface IPaymentTransactionLogger
      * @param string $refundHref
      * @param Date $dateCreated
      * @param string $gatewayDateCreated
+     * @param string $gatewayName
      * @param string $gatewayResponse
      */
-    public function Log($userId, $status, $invoiceNumber, $transactionId, $totalAmount, $transactionFee, $currency, $transactionHref, $refundHref, $dateCreated, $gatewayDateCreated, $gatewayResponse);
+    public function Log($userId, $status, $invoiceNumber, $transactionId, $totalAmount, $transactionFee, $currency, $transactionHref, $refundHref, $dateCreated, $gatewayDateCreated, $gatewayName, $gatewayResponse);
 }
 
 class PaymentTransactionLogger implements IPaymentTransactionLogger
 {
-    public function Log($userId, $status, $invoiceNumber, $transactionId, $totalAmount, $transactionFee, $currency, $transactionHref, $refundHref, $dateCreated, $gatewayDateCreated, $gatewayResponse)
+    public function Log($userId, $status, $invoiceNumber, $transactionId, $totalAmount, $transactionFee, $currency, $transactionHref, $refundHref, $dateCreated, $gatewayDateCreated, $gatewayName, $gatewayResponse)
     {
-        ServiceLocator::GetDatabase()->Execute(new AddPaymentTransactionLogCommand($userId, $status, $invoiceNumber, $transactionId, $totalAmount, $transactionFee, $currency, $transactionHref, $refundHref, $dateCreated, $gatewayDateCreated, $gatewayResponse));
+        ServiceLocator::GetDatabase()->Execute(new AddPaymentTransactionLogCommand($userId, $status, $invoiceNumber, $transactionId, $totalAmount, $transactionFee, $currency, $transactionHref, $refundHref, $dateCreated, $gatewayDateCreated, $gatewayName, $gatewayResponse));
     }
 }
 
@@ -334,6 +335,7 @@ class PayPalGateway implements IPaymentGateway
                 $sale->getLink('refund'),
                 Date::Now(),
                 $sale->getCreateTime(),
+                $this->GetGatewayType(),
                 $payment->toJSON());
 
         } catch (PayPal\Exception\PayPalConnectionException $ex) {

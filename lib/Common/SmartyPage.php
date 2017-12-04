@@ -172,6 +172,7 @@ class SmartyPage extends Smarty
         $this->registerPlugin('function', 'ok_button', array($this, 'OkButton'));
         $this->registerPlugin('function', 'showhide_icon', array($this, 'ShowHideIcon'));
         $this->registerPlugin('function', 'sort_column', array($this, 'SortColumn'));
+        $this->registerPlugin('function', 'formatcurrency', array($this, 'FormatCurrency'));
 
         /**
          * PageValidators
@@ -847,4 +848,11 @@ class SmartyPage extends Smarty
         echo '<a href="' . $url . '">' . $this->Resources->GetString($params['key']) . ' ' . $indicator . '</a>';
     }
 
+    public function FormatCurrency($params, &$smarty)
+    {
+        $amount = $params['amount'];
+        $currency = $params['currency'];
+        $fmt = new NumberFormatter($this->Resources->CurrentLanguage, NumberFormatter::CURRENCY);
+        echo $fmt->formatCurrency($amount, $currency);
+    }
 }

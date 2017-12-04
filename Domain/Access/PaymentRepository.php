@@ -21,6 +21,7 @@
 require_once(ROOT_DIR . 'Domain/CreditCost.php');
 require_once(ROOT_DIR . 'Domain/PaymentGateway.php');
 require_once(ROOT_DIR . 'Domain/Values/PayPalPaymentResult.php');
+require_once(ROOT_DIR . 'Domain/Values/TransactionLogView.php');
 require_once(ROOT_DIR . 'lib/Database/namespace.php');
 require_once(ROOT_DIR . 'lib/Database/Commands/namespace.php');
 
@@ -57,9 +58,15 @@ interface IPaymentRepository
     public function GetStripeGateway();
 
     /**
-     * @param PayPalPaymentResult $result
+     * @param int $pageNumber
+     * @param int $pageSize
+     * @param int $userId
+     * @param string $sortField
+     * @param string $sortDirection
+     * @param ISqlFilter $filter
+     * @return PageableData|TransactionLogView[]
      */
-    public function SavePayPalPaymentResult(PayPalPaymentResult $result);
+    public function GetList($pageNumber, $pageSize, $userId = -1, $sortField = null, $sortDirection = null, $filter = null);
 }
 
 class PaymentRepository implements IPaymentRepository
@@ -146,8 +153,25 @@ class PaymentRepository implements IPaymentRepository
         return StripeGateway::Create($publishableKey, $secretKey);
     }
 
-    public function SavePayPalPaymentResult(PayPalPaymentResult $result)
+    /**
+     * @param int $pageNumber
+     * @param int $pageSize
+     * @param int $userId
+     * @param string $sortField
+     * @param string $sortDirection
+     * @param ISqlFilter $filter
+     * @return PageableData|TransactionLogView[]
+     */
+    public function GetList($pageNumber, $pageSize, $userId = -1, $sortField = null, $sortDirection = null, $filter = null)
     {
-        // TODO: Implement SavePayPalPaymentResult() method.
+        $command = new GetAllTransactionLogsCommand($userId);
+
+        if ($filter != null)
+        {
+            $command = new FilterCommand($command, $filter);
+        }
+
+        $builder = array('TransactionLogView', 'Populate');
+        return PageableDataStore::GetList($command, $builder, $pageNumber, $pageSize, $sortField, $sortDirection);
     }
 }

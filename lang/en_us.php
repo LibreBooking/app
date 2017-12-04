@@ -673,6 +673,11 @@ class en_us extends Language
         $strings['Note'] = 'Note';
         $strings['CreditsBefore'] = 'Credits Before';
         $strings['CreditsAfter'] = 'Credits After';
+        $strings['TransactionFee'] = 'Transaction Fee';
+        $strings['InvoiceNumber'] = 'Invoice Number';
+        $strings['TransactionId'] = 'Transaction ID';
+        $strings['Gateway'] = 'Gateway';
+        $strings['GatewayTransactionDate'] = 'Gateway Transaction Date';
         // End Strings
 
 		// Install

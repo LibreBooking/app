@@ -75,6 +75,9 @@ class UserCreditsPresenter extends ActionPresenter
         if ($dataRequest == 'creditLog') {
             $this->GetCreditLog($userSession);
         }
+        elseif ($dataRequest == 'transactionLog') {
+            $this->GetTransactionLog($userSession);
+        }
         else {
             $quantity = $this->page->GetQuantity();
             $cost = $this->paymentRepository->GetCreditCost();
@@ -91,4 +94,12 @@ class UserCreditsPresenter extends ActionPresenter
         $this->page->BindCreditLog($creditLog);
     }
 
+    public function GetTransactionLog(UserSession $userSession)
+    {
+        $page = $this->page->GetPageNumber();
+        $size = $this->page->GetPageSize();
+        $creditLog = $this->paymentRepository->GetList($page, $size, $userSession->UserId);
+
+        $this->page->BindTransactionLog($creditLog);
+    }
 }

@@ -288,10 +288,22 @@ class ColumnNames
     const CREDIT_COST = 'credit_cost';
     const CREDIT_CURRENCY = 'credit_currency';
 
-    // PAYMENT GATEWAYS
+    // PAYMENT GATEWAYS //
     const GATEWAY_TYPE = 'gateway_type';
     const GATEWAY_SETTING_NAME = 'setting_name';
     const GATEWAY_SETTING_VALUE = 'setting_value';
+
+    // PAYMENT TRANSACTION LOG //
+    const TRANSACTION_LOG_STATUS = 'status';
+    const TRANSACTION_LOG_INVOICE = 'invoice_number';
+    const TRANSACTION_LOG_TRANSACTION_ID = 'transaction_id';
+    const TRANSACTION_LOG_TOTAL = 'total_amount';
+    const TRANSACTION_LOG_FEE = 'transaction_fee';
+    const TRANSACTION_LOG_CURRENCY = 'currency';
+    const TRANSACTION_LOG_TRANSACTION_HREF = 'transaction_href';
+    const TRANSACTION_LOG_REFUND_HREF = 'refund_href';
+    const TRANSACTION_LOG_GATEWAY_NAME = 'gateway_name';
+    const TRANSACTION_LOG_GATEWAY_DATE = 'gateway_date_created';
 
 	// dynamic
 	const TOTAL = 'total';

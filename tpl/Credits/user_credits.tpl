@@ -63,6 +63,10 @@
                 </div>
 
                 <div class="tab-pane" id="transaction-log" role="tabpanel">
+                    {indicator id=transactionLogIndicator}
+                    <div id="transaction-log-content">
+
+                    </div>
                 </div>
             {/if}
         </div>
@@ -79,7 +83,8 @@
 
         var opts = {
             calcQuantityUrl: '{$smarty.server.SCRIPT_NAME}?dr=calcQuantity&quantity=',
-            creditLogUrl: '{$smarty.server.SCRIPT_NAME}?dr=creditLog&page=[page]&pageSize=[pageSize]'
+            creditLogUrl: '{$smarty.server.SCRIPT_NAME}?dr=creditLog&page=[page]&pageSize=[pageSize]',
+            transactionLogUrl: '{$smarty.server.SCRIPT_NAME}?dr=transactionLog&page=[page]&pageSize=[pageSize]'
         };
 
         var userCredits = new UserCredits(opts);

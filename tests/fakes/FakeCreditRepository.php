@@ -23,7 +23,7 @@ require_once (ROOT_DIR . 'Domain/Access/CreditRepository.php');
 class FakeCreditRepository implements ICreditRepository
 {
     /**
-     * @var CreditLogView[]
+     * @var PageableData
      */
     public $_UserCredits;
     public $_LastPage;

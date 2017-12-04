@@ -49,6 +49,14 @@ class FakePaymentRepository implements IPaymentRepository
      */
     public $_LastSavedPayPalResult;
 
+    /**
+     * @var PageablePage
+     */
+    public $_TransactionLog;
+    public $_LastPage;
+    public $_LastPageSize;
+    public $_LastUserId;
+
     public function __construct()
     {
         $this->_PayPal = new PayPalGateway(false, null, null, null);
@@ -89,5 +97,14 @@ class FakePaymentRepository implements IPaymentRepository
     public function SavePayPalPaymentResult(PayPalPaymentResult $result)
     {
         $this->_LastSavedPayPalResult;
+    }
+
+    public function GetList($pageNumber, $pageSize, $userId = -1, $sortField = null, $sortDirection = null, $filter = null)
+    {
+        $this->_LastPage = $pageNumber;
+        $this->_LastPageSize = $pageSize;
+        $this->_LastUserId = $userId;
+
+        return $this->_TransactionLog;
     }
 }

@@ -58,6 +58,11 @@ interface IUserCreditsPage extends IPage, IActionPage
      * @param PageableData|CreditLogView[] $creditLog
      */
     public function BindCreditLog($creditLog);
+
+    /**
+     * @param PageableData|TransactionLogView[] $creditLog
+     */
+    public function BindTransactionLog($transactionLog);
 }
 
 class UserCreditsPage extends ActionPage implements IUserCreditsPage
@@ -133,5 +138,12 @@ class UserCreditsPage extends ActionPage implements IUserCreditsPage
         $this->Set('CreditLog', $creditLog->Results());
         $this->Set('PageInfo', $creditLog->PageInfo());
         $this->Display('Credits/credit_log.tpl');
+    }
+
+    public function BindTransactionLog($transactionLog)
+    {
+        $this->Set('TransactionLog', $transactionLog->Results());
+        $this->Set('PageInfo', $transactionLog->PageInfo());
+        $this->Display('Credits/transaction_log.tpl');
     }
 }

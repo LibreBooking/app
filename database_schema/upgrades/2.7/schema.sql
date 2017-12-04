@@ -51,6 +51,7 @@ CREATE TABLE `payment_transaction_log` (
   `transaction_href` VARCHAR(500) NOT NULL,
   `refund_href` VARCHAR(500) NOT NULL,
   `date_created` DATETIME NOT NULL,
+  `gateway_name` VARCHAR(100) NOT NULL,
   `gateway_date_created` VARCHAR(25) NOT NULL,
   `payment_response` TEXT,
   PRIMARY KEY (`payment_transaction_log_id`)

@@ -87,7 +87,29 @@ class UserCreditsPresenterTests extends TestBase
 
     public function testGetTransactionLog()
     {
-        die('to implement');
+        $this->page->_CurrentPage = 10;
+        $this->page->_PageSize = 50;
+
+        $this->paymentRepository->_TransactionLog = new PageableData(array(
+            new TransactionLogView(
+                Date::Now(),
+                'status',
+                'invoice',
+                'txid',
+                10.6,
+                .33,
+                'USD',
+                'selfref',
+                'refundref',
+                'gatewaydate')
+        ));
+
+        $this->presenter->GetTransactionLog($this->fakeUser);
+
+        $this->assertEquals($this->paymentRepository->_TransactionLog, $this->page->_TransactionLog);
+        $this->assertEquals(10, $this->paymentRepository->_LastPage);
+        $this->assertEquals(50, $this->paymentRepository->_LastPageSize);
+        $this->assertEquals($this->fakeUser->UserId, $this->paymentRepository->_LastUserId);
     }
 }
 
@@ -99,6 +121,7 @@ class FakeUserCreditsPage extends UserCreditsPage
     public $_CurrentPage;
     public $_PageSize;
     public $_CreditLog;
+    public $_TransactionLog;
 
     public function SetCurrentCredits($credits)
     {
@@ -128,5 +151,10 @@ class FakeUserCreditsPage extends UserCreditsPage
     public function BindCreditLog($creditLog)
     {
         $this->_CreditLog = $creditLog;
+    }
+
+    public function BindTransactionLog($transactionLog)
+    {
+        $this->_TransactionLog = $transactionLog;
     }
 }
