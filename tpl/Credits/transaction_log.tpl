@@ -1,5 +1,6 @@
-<table class="table" id="transaction-log-list">
-    <thead>
+<div style="overflow-x:auto;">
+    <table class="table" id="transaction-log-list">
+        <thead>
         <tr>
             <th>{translate key=Date}</th>
             <th>{translate key=Status}</th>
@@ -10,8 +11,8 @@
             <th>{translate key=Gateway}</th>
             <th>{translate key=GatewayTransactionDate}</th>
         </tr>
-    </thead>
-    <tbody>
+        </thead>
+        <tbody>
         {foreach from=$TransactionLog item=log}
             {cycle values='row0,row1' assign=rowCss}
             <tr class="{$rowCss}">
@@ -25,7 +26,7 @@
                 <td>{$log->GatewayTransactionDate}</td>
             </tr>
         {/foreach}
-    </tbody>
-</table>
-
+        </tbody>
+    </table>
+</div>
 {pagination pageInfo=$PageInfo}
