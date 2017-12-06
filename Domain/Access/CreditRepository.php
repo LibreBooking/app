@@ -19,6 +19,7 @@
  */
 
 require_once (ROOT_DIR . 'Domain/Values/CreditLogView.php');
+require_once (ROOT_DIR . 'Domain/Access/PageableDataStore.php');
 
 interface ICreditRepository
 {

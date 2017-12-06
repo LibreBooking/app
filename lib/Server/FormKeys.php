@@ -173,6 +173,8 @@ class FormKeys
 	const QUOTA_SCOPE= 'QUOTA_SCOPE';
 
 	const REFERENCE_NUMBER = 'referenceNumber';
+	const REFUND_AMOUNT = 'REFUND_AMOUNT';
+	const REFUND_TRANSACTION_ID = 'REFUND_TRANSACTION_ID';
 	const REMOVED_FILE_IDS = 'removeFile';
 	const REPEAT_OPTIONS = 'repeatOptions';
 	const REPEAT_EVERY = 'repeatEvery';

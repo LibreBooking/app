@@ -18,8 +18,14 @@
  * along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+require_once(ROOT_DIR . 'Domain/Values/FullName.php');
+
 class TransactionLogView
 {
+    /**
+     * @var int
+     */
+    public $Id;
     /**
      * @var Date
      */
@@ -68,8 +74,12 @@ class TransactionLogView
      * @var string
      */
     public $UserFullName;
+    /**
+     * @var int
+     */
+    public $UserId;
 
-    public function __construct($transactionDate, $status, $invoiceNumber, $transactionId, $total, $fee, $currency, $transactionHref, $refundHref, $gatewayTransactionDate, $gatewayName, $userFullName = '')
+    public function __construct($transactionDate, $status, $invoiceNumber, $transactionId, $total, $fee, $currency, $transactionHref, $refundHref, $gatewayTransactionDate, $gatewayName, $userId, $userFullName = '')
     {
         $this->TransactionDate = $transactionDate;
         $this->Status = $status;
@@ -82,6 +92,7 @@ class TransactionLogView
         $this->RefundHref = $refundHref;
         $this->GatewayName = $gatewayName;
         $this->GatewayTransactionDate = $gatewayTransactionDate;
+        $this->UserId = $userId;
         $this->UserFullName = $userFullName;
     }
 
@@ -89,15 +100,16 @@ class TransactionLogView
      * @param array $row
      * @return TransactionLogView
      */
-    public function Populate($row)
+    public static function Populate($row)
     {
         $userName = '';
         if (isset($row[ColumnNames::FIRST_NAME]))
         {
             $userName = new FullName($row[ColumnNames::FIRST_NAME], $row[ColumnNames::LAST_NAME]);
+            $userName = $userName->__toString();
         }
 
-        return new TransactionLogView(
+        $v = new TransactionLogView(
             Date::FromDatabase($row[ColumnNames::DATE_CREATED]),
             $row[ColumnNames::TRANSACTION_LOG_STATUS],
             $row[ColumnNames::TRANSACTION_LOG_INVOICE],
@@ -109,6 +121,10 @@ class TransactionLogView
             $row[ColumnNames::TRANSACTION_LOG_REFUND_HREF],
             $row[ColumnNames::TRANSACTION_LOG_GATEWAY_DATE],
             $row[ColumnNames::TRANSACTION_LOG_GATEWAY_NAME],
-            $userName->__toString());
+            $row[ColumnNames::USER_ID],
+            $userName);
+        $v->Id = $row[ColumnNames::TRANSACTION_LOG_ID];
+
+        return $v;
     }
 }

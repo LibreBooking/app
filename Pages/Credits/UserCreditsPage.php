@@ -60,7 +60,7 @@ interface IUserCreditsPage extends IPage, IActionPage
     public function BindCreditLog($creditLog);
 
     /**
-     * @param PageableData|TransactionLogView[] $creditLog
+     * @param PageableData|TransactionLogView[] $transactionLog
      */
     public function BindTransactionLog($transactionLog);
 }

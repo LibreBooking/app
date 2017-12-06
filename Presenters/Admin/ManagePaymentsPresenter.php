@@ -26,6 +26,7 @@ class ManagePaymentsActions
 {
     const UPDATE_CREDIT_COST = 'updateCreditCost';
     const UPDATE_PAYMENT_GATEWAYS = 'updatePaymentGateways';
+    const ISSUE_REFUND = 'issueRefund';
 }
 
 class ManagePaymentsPresenter extends ActionPresenter
@@ -38,15 +39,21 @@ class ManagePaymentsPresenter extends ActionPresenter
      * @var IPaymentRepository
      */
     private $paymentRepository;
+    /**
+     * @var IPaymentTransactionLogger
+     */
+    private $paymentLogger;
 
-    public function __construct(IManagePaymentsPage $page, IPaymentRepository $paymentRepository)
+    public function __construct(IManagePaymentsPage $page, IPaymentRepository $paymentRepository, IPaymentTransactionLogger $logger)
     {
         parent::__construct($page);
         $this->page = $page;
         $this->paymentRepository = $paymentRepository;
+        $this->paymentLogger = $logger;
 
         $this->AddAction(ManagePaymentsActions::UPDATE_CREDIT_COST, 'UpdateCreditCost');
         $this->AddAction(ManagePaymentsActions::UPDATE_PAYMENT_GATEWAYS, 'UpdatePaymentGateways');
+        $this->AddAction(ManagePaymentsActions::ISSUE_REFUND, 'IssueRefund');
     }
 
     public function PageLoad()
@@ -63,7 +70,7 @@ class ManagePaymentsPresenter extends ActionPresenter
 
     public function UpdateCreditCost()
     {
-        $cost = max(0,floatval($this->page->GetCreditCost()));
+        $cost = max(0, floatval($this->page->GetCreditCost()));
         $currency = $this->page->GetCreditCurrency();
 
         Log::Debug('Updating credit cost. %s, %s', $cost, $currency);
@@ -79,5 +86,50 @@ class ManagePaymentsPresenter extends ActionPresenter
 
         $this->paymentRepository->UpdatePayPalGateway($paypalGateway);
         $this->paymentRepository->UpdateStripeGateway($stripeGateway);
+    }
+
+    public function ProcessDataRequest($dataRequest, $userSession)
+    {
+        if ($dataRequest == 'transactionLog') {
+            $this->GetTransactionLog();
+        }
+        else {
+            $this->GetTransactionDetails();
+        }
+    }
+
+    public function GetTransactionLog()
+    {
+        $page = $this->page->GetPageNumber();
+        $size = $this->page->GetPageSize();
+        $log = $this->paymentRepository->GetList($page, $size);
+
+        $this->page->BindTransactionLog($log);
+    }
+
+    public function GetTransactionDetails()
+    {
+        $id = $this->page->GetTransactionLogId();
+        $transactionLogView = $this->paymentRepository->GetTransactionLogView($id);
+        if ($transactionLogView != null) {
+            $this->page->BindTransactionLogView($transactionLogView);
+        }
+    }
+
+    public function IssueRefund()
+    {
+        $id = $this->page->GetRefundTransactionLogId();
+        $amount = $this->page->GetRefundAmount();
+        $transactionLogView = $this->paymentRepository->GetTransactionLogView($id);
+
+        if ($transactionLogView->GatewayName == PaymentGateways::PAYPAL) {
+            $gateway = $this->paymentRepository->GetPayPalGateway();
+            $refund = $gateway->Refund($transactionLogView, $amount, $this->paymentLogger);
+
+            $this->page->BindRefundIssued($refund->state == 'completed');
+        }
+        else{
+            $this->paymentRepository->GetStripeGateway();
+        }
     }
 }

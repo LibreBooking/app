@@ -1,8 +1,17 @@
-function Payments() {
+function Payments(opts) {
     var elements = {
         updateCreditsForm: $('#updateCreditsForm'),
-        updateGatewayForm: $('#updateGatewayForm')
+        updateGatewayForm: $('#updateGatewayForm'),
+        transactionLog: $('#transaction-log-content'),
+        transactionLogIndicator: $('#transactionLogIndicator'),
+        refundDialog: $('#refundDialog'),
+        issueRefundForm: $('#issueRefundForm'),
+        refundId: $('#refundId'),
+        refundAmount: $('#refundAmount')
     };
+
+    var lastPage = 0;
+    var lastPageSize = 0;
 
     Payments.prototype.init = function () {
 
@@ -22,18 +31,37 @@ function Payments() {
             }
         });
 
+        elements.transactionLog.on('click', '.refund', function (e) {
+            var element = $(e.target);
+            var id = element.data('id');
+            ajaxGet(opts.transactionDetailsUrl.replace('[id]', id), null, function(data){
+                var amount = data.Total;
+                elements.refundAmount.prop('max', amount);
+                elements.refundAmount.val(amount);
+                elements.refundId.val(id);
+                elements.refundDialog.modal('show');
+            });
+        });
+
+        loadTransactionLog(0, 0);
+
         ConfigureAsyncForm(elements.updateCreditsForm, defaultSubmitCallback, function () {
-            showMessage('updatedCreditsMessage')
+            showMessage('updatedCreditsMessage');
         }, function () {
         });
         ConfigureAsyncForm(elements.updateGatewayForm, defaultSubmitCallback, function () {
-            showMessage('updatedGatewayMessage')
+            showMessage('updatedGatewayMessage');
+        }, function () {
+        });
+        ConfigureAsyncForm(elements.issueRefundForm, defaultSubmitCallback, function () {
+            showMessage('refundIssuedMessage');
+            elements.refundDialog.modal('hide');
+            loadTransactionLog(0, 0);
         }, function () {
         });
     };
 
-    Payments.prototype.initGateways = function(paypalEnabled, stripeEnabled)
-    {
+    Payments.prototype.initGateways = function (paypalEnabled, stripeEnabled) {
         if (paypalEnabled) {
             $('#paypalEnabled').click();
         }
@@ -41,6 +69,22 @@ function Payments() {
             $('#stripeEnabled').click();
         }
     };
+
+    function loadTransactionLog(page, pageSize) {
+        lastPage = page;
+        lastPageSize = pageSize;
+
+        elements.transactionLogIndicator.removeClass('no-show');
+
+        ajaxGet(opts.transactionLogUrl.replace('[page]', page).replace('[pageSize]', pageSize), null, function (data) {
+            elements.transactionLogIndicator.addClass('no-show');
+            elements.transactionLog.html(data);
+
+            ajaxPagination(elements.transactionLog, function (page, size) {
+                loadTransactionLog(page, size);
+            });
+        });
+    }
 
     var defaultSubmitCallback = function (form) {
         return form.attr('action') + "?action=" + form.attr('ajaxAction');

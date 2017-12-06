@@ -89,17 +89,17 @@ class UserCreditsPresenter extends ActionPresenter
     {
         $page = $this->page->GetPageNumber();
         $size = $this->page->GetPageSize();
-        $creditLog = $this->creditRepository->GetList($page, $size, $userSession->UserId);
+        $log = $this->creditRepository->GetList($page, $size, $userSession->UserId);
 
-        $this->page->BindCreditLog($creditLog);
+        $this->page->BindCreditLog($log);
     }
 
     public function GetTransactionLog(UserSession $userSession)
     {
         $page = $this->page->GetPageNumber();
         $size = $this->page->GetPageSize();
-        $creditLog = $this->paymentRepository->GetList($page, $size, $userSession->UserId);
+        $log = $this->paymentRepository->GetList($page, $size, $userSession->UserId);
 
-        $this->page->BindTransactionLog($creditLog);
+        $this->page->BindTransactionLog($log);
     }
 }

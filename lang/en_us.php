@@ -678,6 +678,10 @@ class en_us extends Language
         $strings['TransactionId'] = 'Transaction ID';
         $strings['Gateway'] = 'Gateway';
         $strings['GatewayTransactionDate'] = 'Gateway Transaction Date';
+        $strings['Refund'] = 'Refund';
+        $strings['IssueRefund'] = 'Issue Refund';
+        $strings['RefundIssued'] = 'Refund Issued Successfully';
+        $strings['RefundAmount'] = 'Refund Amount';
         // End Strings
 
 		// Install

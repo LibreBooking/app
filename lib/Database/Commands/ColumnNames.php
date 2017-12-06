@@ -294,6 +294,7 @@ class ColumnNames
     const GATEWAY_SETTING_VALUE = 'setting_value';
 
     // PAYMENT TRANSACTION LOG //
+    const TRANSACTION_LOG_ID = 'payment_transaction_log_id';
     const TRANSACTION_LOG_STATUS = 'status';
     const TRANSACTION_LOG_INVOICE = 'invoice_number';
     const TRANSACTION_LOG_TRANSACTION_ID = 'transaction_id';

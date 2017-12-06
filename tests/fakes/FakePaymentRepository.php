@@ -37,7 +37,7 @@ class FakePaymentRepository implements IPaymentRepository
      */
     public $_LastStripe;
     /**
-     * @var PayPalGateway
+     * @var FakePayPalGateway
      */
     public $_PayPal;
     /**
@@ -52,14 +52,16 @@ class FakePaymentRepository implements IPaymentRepository
     /**
      * @var PageablePage
      */
-    public $_TransactionLog;
+    public $_TransactionLogs;
     public $_LastPage;
     public $_LastPageSize;
     public $_LastUserId;
+    public $_TransactionLogView;
+    public $_LastTransactionLogId;
 
     public function __construct()
     {
-        $this->_PayPal = new PayPalGateway(false, null, null, null);
+        $this->_PayPal = new FakePayPalGateway();
         $this->_Stripe = new StripeGateway(false, null, null);
         $this->_CreditCost = new CreditCost();
     }
@@ -105,6 +107,12 @@ class FakePaymentRepository implements IPaymentRepository
         $this->_LastPageSize = $pageSize;
         $this->_LastUserId = $userId;
 
-        return $this->_TransactionLog;
+        return $this->_TransactionLogs;
+    }
+
+    public function GetTransactionLogView($transactionLogId)
+    {
+        $this->_LastTransactionLogId = $transactionLogId;
+        return $this->_TransactionLogView;
     }
 }

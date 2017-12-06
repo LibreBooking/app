@@ -28,10 +28,15 @@ class FakePayPalGateway extends PayPalGateway
     public $_CancelUrl;
     public $_PaymentId;
     public $_PayerId;
+    public $_Refund;
+    public $_LastTransactionView;
+    public $_LastRefundAmount;
 
     public function __construct()
     {
         $this->_Payment = new \PayPal\Api\Payment();
+        $this->_Refund = new \PayPal\Api\DetailedRefund();
+        parent::__construct(true, null, null, null);
     }
 
     public function CreatePayment(CreditCartSession $cart, $returnUrl, $cancelUrl)
@@ -48,6 +53,13 @@ class FakePayPalGateway extends PayPalGateway
         $this->_PaymentId = $paymentId;
         $this->_PayerId = $payerId;
         return $this->_Payment;
+    }
+
+    public function Refund(TransactionLogView $log, $amount, IPaymentTransactionLogger $logger)
+    {
+        $this->_LastTransactionView = $log;
+        $this->_LastRefundAmount = $amount;
+        return $this->_Refund;
     }
 
 }

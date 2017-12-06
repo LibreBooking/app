@@ -800,6 +800,9 @@ class Queries
 			r.status_id <> 0
 		ORDER BY COALESCE(r.sort_order,0), r.name';
 
+	const GET_TRANSACTION_LOG =
+            'SELECT * FROM payment_transaction_log WHERE payment_transaction_log_id = @payment_transaction_log_id';
+
 	const GET_USERID_BY_ACTIVATION_CODE =
 			'SELECT a.user_id FROM account_activation a
 			INNER JOIN users u ON u.user_id = a.user_id

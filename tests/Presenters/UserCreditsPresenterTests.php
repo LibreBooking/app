@@ -90,7 +90,7 @@ class UserCreditsPresenterTests extends TestBase
         $this->page->_CurrentPage = 10;
         $this->page->_PageSize = 50;
 
-        $this->paymentRepository->_TransactionLog = new PageableData(array(
+        $this->paymentRepository->_TransactionLogs = new PageableData(array(
             new TransactionLogView(
                 Date::Now(),
                 'status',
@@ -101,12 +101,13 @@ class UserCreditsPresenterTests extends TestBase
                 'USD',
                 'selfref',
                 'refundref',
-                'gatewaydate')
+                'gatewaydate',
+                'PayPal')
         ));
 
         $this->presenter->GetTransactionLog($this->fakeUser);
 
-        $this->assertEquals($this->paymentRepository->_TransactionLog, $this->page->_TransactionLog);
+        $this->assertEquals($this->paymentRepository->_TransactionLogs, $this->page->_TransactionLog);
         $this->assertEquals(10, $this->paymentRepository->_LastPage);
         $this->assertEquals(50, $this->paymentRepository->_LastPageSize);
         $this->assertEquals($this->fakeUser->UserId, $this->paymentRepository->_LastUserId);

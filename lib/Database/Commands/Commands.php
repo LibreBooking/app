@@ -1803,6 +1803,15 @@ class GetScheduleResourcesCommand extends SqlCommand
     }
 }
 
+class GetTransactionLogCommand extends SqlCommand
+{
+    public function __construct($id)
+    {
+        parent::__construct(Queries::GET_TRANSACTION_LOG);
+        $this->AddParameter(new Parameter(ParameterNames::PAYMENT_TRANSACTION_LOG_ID, $id));
+    }
+}
+
 class GetUserIdByActivationCodeCommand extends SqlCommand
 {
     public function __construct($activationCode)

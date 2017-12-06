@@ -41,7 +41,7 @@ class ManagePaymentsPresenterTests extends TestBase
 
         $this->page = new FakeManagePaymentsPage();
         $this->paymentRepository = new FakePaymentRepository();
-        $this->presenter = new ManagePaymentsPresenter($this->page, $this->paymentRepository);
+        $this->presenter = new ManagePaymentsPresenter($this->page, $this->paymentRepository, new FakePaymentTransactionLogger());
     }
 
     public function testPageLoadSetsCurrentCreditValues()
@@ -102,6 +102,71 @@ class ManagePaymentsPresenterTests extends TestBase
         $this->assertEquals($paypalGateway, $this->paymentRepository->_LastPayPal);
         $this->assertEquals($stripeGateway, $this->paymentRepository->_LastStripe);
     }
+
+    public function testGetTransactionLog()
+    {
+        $this->page->_CurrentPage = 10;
+        $this->page->_PageSize = 50;
+
+        $this->paymentRepository->_TransactionLogs = new PageableData(array(
+            $this->GetTransactionLogView()
+        ));
+
+        $this->presenter->GetTransactionLog();
+
+        $this->assertEquals($this->paymentRepository->_TransactionLogs, $this->page->_TransactionLog);
+        $this->assertEquals(10, $this->paymentRepository->_LastPage);
+        $this->assertEquals(50, $this->paymentRepository->_LastPageSize);
+        $this->assertEquals(-1, $this->paymentRepository->_LastUserId);
+    }
+
+    public function testGetsTransactionDetails()
+    {
+        $this->page->_TransactionLogId = 10;
+        $this->paymentRepository->_TransactionLogView = $this->GetTransactionLogView();
+
+        $this->presenter->GetTransactionDetails();
+
+        $this->assertEquals($this->paymentRepository->_TransactionLogs, $this->page->_TransactionLog);
+        $this->assertEquals(10, $this->paymentRepository->_LastTransactionLogId);
+        $this->assertEquals($this->paymentRepository->_TransactionLogView, $this->page->_TransactionLogView);
+    }
+
+    public function testIssuesPayPalRefund()
+    {
+        $this->page->_RefundTransactionLogId = 10;
+        $this->page->_RefundAmount = 100;
+        $this->paymentRepository->_TransactionLogView = $this->GetTransactionLogView();
+
+        $gateway = $this->paymentRepository->_PayPal;
+        $gateway->_Refund->state = "completed";
+
+        $this->presenter->IssueRefund();
+
+        $this->assertEquals($this->paymentRepository->_TransactionLogView, $gateway->_LastTransactionView);
+        $this->assertEquals(100, $gateway->_LastRefundAmount);
+        $this->assertEquals(true, $this->page->_RefundIssued);
+    }
+
+    /**
+     * @return TransactionLogView
+     */
+    private function GetTransactionLogView($amount = 10.6, $fee = .33, $gateway = 'PayPal')
+    {
+        return new TransactionLogView(
+            Date::Now(),
+            'status',
+            'invoice',
+            'txid',
+            $amount,
+            $fee,
+            'USD',
+            'selfref',
+            'refundref',
+            'gatewaydate',
+            $gateway,
+            100);
+    }
 }
 
 class FakeManagePaymentsPage extends ManagePaymentsPage
@@ -115,6 +180,14 @@ class FakeManagePaymentsPage extends ManagePaymentsPage
     public $_StripeEnabled;
     public $_StripePublishableKey;
     public $_StripeSecretKey;
+    public $_CurrentPage;
+    public $_PageSize;
+    public $_TransactionLog;
+    public $_TransactionLogId;
+    public $_TransactionLogView;
+    public $_RefundAmount;
+    public $_RefundIssued;
+    public $_RefundTransactionLogId;
 
     public function __construct()
     {
@@ -185,5 +258,45 @@ class FakeManagePaymentsPage extends ManagePaymentsPage
         $this->_StripeEnabled = $enabled;
         $this->_StripePublishableKey = $publishableKey;
         $this->_StripeSecretKey = $secretKey;
+    }
+
+    public function GetPageNumber()
+    {
+        return $this->_CurrentPage;
+    }
+
+    public function GetPageSize()
+    {
+        return $this->_PageSize;
+    }
+
+    public function BindTransactionLog($transactionLog)
+    {
+        $this->_TransactionLog = $transactionLog;
+    }
+
+    public function GetTransactionLogId()
+    {
+        return $this->_TransactionLogId;
+    }
+
+    public function GetRefundTransactionLogId()
+    {
+        return $this->_RefundTransactionLogId;
+    }
+
+    public function GetRefundAmount()
+    {
+        return $this->_RefundAmount;
+    }
+
+    public function BindTransactionLogView(TransactionLogView $transactionLogView)
+    {
+        $this->_TransactionLogView = $transactionLogView;
+    }
+
+    public function BindRefundIssued($wasIssued)
+    {
+        $this->_RefundIssued = $wasIssued;
     }
 }

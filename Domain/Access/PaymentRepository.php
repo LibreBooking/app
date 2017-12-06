@@ -22,6 +22,7 @@ require_once(ROOT_DIR . 'Domain/CreditCost.php');
 require_once(ROOT_DIR . 'Domain/PaymentGateway.php');
 require_once(ROOT_DIR . 'Domain/Values/PayPalPaymentResult.php');
 require_once(ROOT_DIR . 'Domain/Values/TransactionLogView.php');
+require_once(ROOT_DIR . 'Domain/Access/PageableDataStore.php');
 require_once(ROOT_DIR . 'lib/Database/namespace.php');
 require_once(ROOT_DIR . 'lib/Database/Commands/namespace.php');
 
@@ -67,6 +68,12 @@ interface IPaymentRepository
      * @return PageableData|TransactionLogView[]
      */
     public function GetList($pageNumber, $pageSize, $userId = -1, $sortField = null, $sortDirection = null, $filter = null);
+
+    /**
+     * @param int $transactionLogId
+     * @return TransactionLogView
+     */
+    public function GetTransactionLogView($transactionLogId);
 }
 
 class PaymentRepository implements IPaymentRepository
@@ -113,18 +120,14 @@ class PaymentRepository implements IPaymentRepository
         $environment = null;
 
         $reader = ServiceLocator::GetDatabase()->Query(new GetPaymentGatewaySettingsCommand(PaymentGateways::PAYPAL));
-        while ($row = $reader->GetRow())
-        {
-            if ($row[ColumnNames::GATEWAY_SETTING_NAME] == PayPalGateway::CLIENT_ID)
-            {
+        while ($row = $reader->GetRow()) {
+            if ($row[ColumnNames::GATEWAY_SETTING_NAME] == PayPalGateway::CLIENT_ID) {
                 $clientId = $row[ColumnNames::GATEWAY_SETTING_VALUE];
             }
-            elseif ($row[ColumnNames::GATEWAY_SETTING_NAME] == PayPalGateway::SECRET)
-            {
+            elseif ($row[ColumnNames::GATEWAY_SETTING_NAME] == PayPalGateway::SECRET) {
                 $secret = $row[ColumnNames::GATEWAY_SETTING_VALUE];
             }
-            elseif ($row[ColumnNames::GATEWAY_SETTING_NAME] == PayPalGateway::ENVIRONMENT)
-            {
+            elseif ($row[ColumnNames::GATEWAY_SETTING_NAME] == PayPalGateway::ENVIRONMENT) {
                 $environment = $row[ColumnNames::GATEWAY_SETTING_VALUE];
             }
         }
@@ -138,14 +141,11 @@ class PaymentRepository implements IPaymentRepository
         $secretKey = null;
 
         $reader = ServiceLocator::GetDatabase()->Query(new GetPaymentGatewaySettingsCommand(PaymentGateways::STRIPE));
-        while ($row = $reader->GetRow())
-        {
-            if ($row[ColumnNames::GATEWAY_SETTING_NAME] == StripeGateway::PUBLISHABLE_KEY)
-            {
+        while ($row = $reader->GetRow()) {
+            if ($row[ColumnNames::GATEWAY_SETTING_NAME] == StripeGateway::PUBLISHABLE_KEY) {
                 $publishableKey = $row[ColumnNames::GATEWAY_SETTING_VALUE];
             }
-            elseif ($row[ColumnNames::GATEWAY_SETTING_NAME] == StripeGateway::SECRET_KEY)
-            {
+            elseif ($row[ColumnNames::GATEWAY_SETTING_NAME] == StripeGateway::SECRET_KEY) {
                 $secretKey = $row[ColumnNames::GATEWAY_SETTING_VALUE];
             }
         }
@@ -166,12 +166,27 @@ class PaymentRepository implements IPaymentRepository
     {
         $command = new GetAllTransactionLogsCommand($userId);
 
-        if ($filter != null)
-        {
+        if ($filter != null) {
             $command = new FilterCommand($command, $filter);
         }
 
         $builder = array('TransactionLogView', 'Populate');
         return PageableDataStore::GetList($command, $builder, $pageNumber, $pageSize, $sortField, $sortDirection);
+    }
+
+    /**
+     * @param int $transactionLogId
+     * @return TransactionLogView
+     */
+    public function GetTransactionLogView($transactionLogId)
+    {
+        $command = new GetTransactionLogCommand($transactionLogId);
+        $reader = ServiceLocator::GetDatabase()->Query($command);
+        if ($row = $reader->GetRow())
+        {
+            return TransactionLogView::Populate($row);
+        }
+
+        return null;
     }
 }

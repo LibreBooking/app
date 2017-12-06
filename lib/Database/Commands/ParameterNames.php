@@ -118,6 +118,7 @@ class ParameterNames
 	const PARTICIPANT_ID = '@participant_id';
 	const PAYMENT_STATUS = '@status';
 	const PAYMENT_INVOICE_NUMBER = '@invoice_number';
+	const PAYMENT_TRANSACTION_LOG_ID = '@payment_transaction_log_id';
 	const PAYMENT_TRANSACTION_ID = '@transaction_id';
 	const PAYMENT_TOTAL = '@total_amount';
 	const PAYMENT_TRANSACTION_FEE = '@transaction_fee';

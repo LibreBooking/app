@@ -31,6 +31,9 @@ use PayPal\Api\Transaction;
 use PayPal\Rest\ApiContext;
 use PayPal\Auth\OAuthTokenCredential;
 use PayPal\Api\PaymentExecution;
+use PayPal\Api\Refund;
+use PayPal\Api\RefundRequest;
+use PayPal\Api\Sale;
 
 class PaymentGateways
 {
@@ -349,6 +352,58 @@ class PayPalGateway implements IPaymentGateway
         }
 
         return json_decode($payment->toJSON());
+    }
+
+    /**
+     * @param TransactionLogView $log
+     * @param float $amount
+     * @param IPaymentTransactionLogger $logger
+     * @return \PayPal\Api\DetailedRefund
+     */
+    public function Refund(TransactionLogView $log, $amount, IPaymentTransactionLogger $logger)
+    {
+        $details = new Details();
+        $details->setFee($log->Fee);
+
+        $amt = new Amount();
+        $amt->setCurrency($log->Currency)
+            ->setTotal($amount)
+            ->setDetails($details);
+        $refundRequest = new RefundRequest();
+        $refundRequest->setAmount($amt);
+        $sale = new Sale();
+        $sale->setId($log->TransactionId);
+        try {
+            $apiContext = new ApiContext(new OAuthTokenCredential($this->ClientId(), $this->Secret()));
+
+            $refundedSale = $sale->refundSale($refundRequest, $apiContext);
+
+            $logger->Log($log->UserId,
+                $refundedSale->getState(),
+                $refundedSale->getInvoiceNumber(),
+                $refundedSale->getSaleId(),
+                $refundedSale->getAmount()->getTotal(),
+                $refundedSale->getRefundFromTransactionFee()->getValue(),
+                $refundedSale->getAmount()->getCurrency(),
+                $refundedSale->getLink('self'),
+                '',
+                Date::Now(),
+                $refundedSale->getCreateTime(),
+                $this->GetGatewayType(),
+                $refundedSale->toJSON());
+        } catch (PayPal\Exception\PayPalConnectionException $ex) {
+            $refundedSale = new \PayPal\Api\RefundDetail();
+            Log::Error('Error refunding PayPal payment. TransactionId %s, Total %s, Error %s', $log->TransactionId, $amount, $ex);
+        }
+        catch (Exception $ex) {
+            $refundedSale = new \PayPal\Api\RefundDetail();
+            Log::Error('Error refunding PayPal payment. TransactionId %s, Total %s, Error %s', $log->TransactionId, $amount, $ex);
+        }
+
+        if (Log::DebugEnabled()) {
+            Log::Debug("Refund response: %s", $refundedSale->toJSON());
+        }
+        return json_decode($refundedSale->toJSON());
     }
 }
 

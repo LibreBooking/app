@@ -29,6 +29,9 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
     <div id="updatedGatewayMessage" class="alert alert-success" style="display:none;">
         {translate key=GatewaysUpdated}
     </div>
+    <div id="refundIssuedMessage" class="alert alert-success" style="display:none;">
+        {translate key=RefundIssued}
+    </div>
 
     {if !$PaymentsEnabled}
         <div class="error alert alert-danger">
@@ -38,7 +41,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
     {else}
         <ul class="nav nav-tabs" role="tablist">
             <li class="nav-item active">
-                <a class="nav-link active" data-toggle="tab" href="#transactions" role="tab">{translate key=Transactions}</a>
+                <a class="nav-link active" data-toggle="tab" href="#transactions"
+                   role="tab">{translate key=Transactions}</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" data-toggle="tab" href="#cost" role="tab">{translate key=Cost}</a>
@@ -49,7 +53,10 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
         </ul>
         <div class="tab-content">
             <div class="tab-pane active" id="transactions" role="tabpanel">
-                transactions
+                {indicator id=transactionLogIndicator}
+                <div id="transaction-log-content">
+
+                </div>
             </div>
 
             <div class="tab-pane" id="cost" role="tabpanel">
@@ -82,7 +89,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                         <div class="payment-gateway-title">PayPal</div>
                         <div class="form-group">
                             <label class="switch">
-                                <input id="paypalEnabled" type="checkbox" value="1" {formname key=PAYPAL_ENABLED} class="toggleDisabled" data-target="paypal-toggle">
+                                <input id="paypalEnabled" type="checkbox" value="1" {formname key=PAYPAL_ENABLED}
+                                       class="toggleDisabled" data-target="paypal-toggle">
                                 <span class="slider round"></span>
                             </label>
                         </div>
@@ -102,8 +110,10 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                             <label for="paypalEnvironment">{translate key=PayPalEnvironment} </label>
                             <select id="paypalEnvironment" class="form-control paypal-toggle"
                                     disabled="disabled" {formname key=PAYPAL_ENVIRONMENT}>
-                                <option value="live" {if $PayPalEnvironment =='live'}selected="selected"{/if}>{translate key=Live}</option>
-                                <option value="sandbox" {if $PayPalEnvironment =='sandbox'}selected="selected"{/if}>{translate key=Sandbox}</option>
+                                <option value="live"
+                                        {if $PayPalEnvironment =='live'}selected="selected"{/if}>{translate key=Live}</option>
+                                <option value="sandbox"
+                                        {if $PayPalEnvironment =='sandbox'}selected="selected"{/if}>{translate key=Sandbox}</option>
                             </select>
 
                         </div>
@@ -113,14 +123,17 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                         <div class="payment-gateway-title">Stripe</div>
                         <div class="form-group">
                             <label class="switch">
-                                <input id="stripeEnabled" type="checkbox" value="1" {formname key=STRIPE_ENABLED} class="toggleDisabled" data-target="stripe-toggle">
+                                <input id="stripeEnabled" type="checkbox" value="1" {formname key=STRIPE_ENABLED}
+                                       class="toggleDisabled" data-target="stripe-toggle">
                                 <span class="slider round"></span>
                             </label>
                         </div>
                         <div class="form-group">
                             <label for="stripePublishKey">{translate key=StripePublishableKey}</label>
-                            <input type="text" id="stripePublishKey" class="form-control stripe-toggle required" required
-                                   disabled="disabled" {formname key=STRIPE_PUBLISHABLE_KEY} value="{$StripePublishableKey}"/>
+                            <input type="text" id="stripePublishKey" class="form-control stripe-toggle required"
+                                   required
+                                   disabled="disabled" {formname key=STRIPE_PUBLISHABLE_KEY}
+                                   value="{$StripePublishableKey}"/>
 
                         </div>
                         <div class="form-group">
@@ -131,38 +144,71 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                         </div>
                     </div>
                     <div class="col-xs-12">
-                    {update_button submit=true class="col-xs-12"}
-                    {indicator}
+                        {update_button submit=true class="col-xs-12"}
+                        {indicator}
                     </div>
                 </form>
             </div>
         </div>
     {/if}
 
-    {csrf_token}
-    {indicator id="indicator"}
+    <div class="modal fade" id="refundDialog" tabindex="-1" role="dialog" aria-labelledby="refundDialogLabel"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <form role="form" name="issueRefundForm" id="issueRefundForm" method="post"
+                  ajaxAction="issueRefund"
+                  action="{$smarty.server.SCRIPT_NAME}" class="form-vertical">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title" id="refundDialogLabel">{translate key=IssueRefund}</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="refundAmount">{translate key='RefundAmount'}</label>
+                            <input type="number" id="refundAmount" min="0" class="form-control" {formname key=REFUND_AMOUNT}/>
+                            <input type="hidden" id="refundId" {formname key=REFUND_TRANSACTION_ID} />
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        {cancel_button}
+                        {update_button submit=true key=IssueRefund}
+                        {indicator}
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
 
-    {include file="javascript-includes.tpl"}
-    {jsfile src="ajax-helpers.js"}
-    {jsfile src="admin/payments.js"}
+        {csrf_token}
+        {indicator id="indicator"}
 
-    <script type="text/javascript">
-        $(function () {
-            var payments = new Payments();
-            payments.init();
-            payments.initGateways({$PayPalEnabled}, {$StripeEnabled});
+        {include file="javascript-includes.tpl"}
+        {jsfile src="ajax-helpers.js"}
+        {jsfile src="admin/payments.js"}
 
-            var url = document.location.toString();
-            if (url.match('#')) {
-                $('.nav-tabs a[href="#' + url.split('#')[1] + '"]').tab('show');
-            }
+        <script type="text/javascript">
+            $(function () {
+                var opts = {
+                    transactionLogUrl: '{$smarty.server.SCRIPT_NAME}?dr=transactionLog&page=[page]&pageSize=[pageSize]',
+                    transactionDetailsUrl: '{$smarty.server.SCRIPT_NAME}?dr=transactionDetails&id=[id]',
+                };
 
-            $('.nav-tabs a').on('shown.bs.tab', function (e) {
-                window.location.hash = e.target.hash;
-            })
-        });
-    </script>
+                var payments = new Payments(opts);
+                payments.init();
+                payments.initGateways({$PayPalEnabled}, {$StripeEnabled});
 
-</div>
+                var url = document.location.toString();
+                if (url.match('#')) {
+                    $('.nav-tabs a[href="#' + url.split('#')[1] + '"]').tab('show');
+                }
+
+                $('.nav-tabs a').on('shown.bs.tab', function (e) {
+                    window.location.hash = e.target.hash;
+                })
+            });
+        </script>
+
+    </div>
 
 {include file='globalfooter.tpl'}

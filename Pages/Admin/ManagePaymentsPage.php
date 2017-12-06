@@ -19,12 +19,12 @@
  */
 
 require_once(ROOT_DIR . 'Pages/Admin/AdminPage.php');
+require_once(ROOT_DIR . 'Pages/IPageable.php');
 require_once(ROOT_DIR . 'Presenters/Admin/ManagePaymentsPresenter.php');
 require_once(ROOT_DIR . 'Domain/Access/PaymentRepository.php');
 
 interface IManagePaymentsPage extends IActionPage
 {
-
     /**
      * @return string
      */
@@ -90,6 +90,46 @@ interface IManagePaymentsPage extends IActionPage
      * @param string $secretKey
      */
     public function SetStripeSettings($enabled, $publishableKey, $secretKey);
+
+    /**
+     * @return string
+     */
+    public function GetPageNumber();
+
+    /**
+     * @return string
+     */
+    public function GetPageSize();
+
+    /**
+     * @param PageableData|TransactionLogView[] $transactionLog
+     */
+    public function BindTransactionLog($transactionLog);
+
+    /**
+     * @return int
+     */
+    public function GetTransactionLogId();
+
+    /**
+     * @return int
+     */
+    public function GetRefundTransactionLogId();
+
+    /**
+     * @return float
+     */
+    public function GetRefundAmount();
+
+    /**
+     * @param TransactionLogView $transactionLogView
+     */
+    public function BindTransactionLogView(TransactionLogView $transactionLogView);
+
+    /**
+     * @param int $wasIssued
+     */
+    public function BindRefundIssued($wasIssued);
 }
 
 class ManagePaymentsPage extends ActionPage implements IManagePaymentsPage
@@ -98,12 +138,17 @@ class ManagePaymentsPage extends ActionPage implements IManagePaymentsPage
      * @var ManagePaymentsPresenter
      */
     private $presenter;
+    /**
+     * @var PageablePage
+     */
+    private $pageable;
 
     public function __construct()
     {
         parent::__construct('ManagePayments', 1);
         $paymentRepository = new PaymentRepository();
-        $this->presenter = new ManagePaymentsPresenter($this, $paymentRepository);
+        $this->presenter = new ManagePaymentsPresenter($this, $paymentRepository, new PaymentTransactionLogger());
+        $this->pageable = new PageablePage($this);
     }
 
     public function ProcessAction()
@@ -113,7 +158,7 @@ class ManagePaymentsPage extends ActionPage implements IManagePaymentsPage
 
     public function ProcessDataRequest($dataRequest)
     {
-        //$this->presenter->ProcessDataRequest();
+        $this->presenter->ProcessDataRequest($dataRequest, ServiceLocator::GetServer()->GetUserSession());
     }
 
     public function ProcessPageLoad()
@@ -189,5 +234,47 @@ class ManagePaymentsPage extends ActionPage implements IManagePaymentsPage
         $this->Set('StripeEnabled', (int)$enabled);
         $this->Set('StripePublishableKey', $publishableKey);
         $this->Set('StripeSecretKey', $secretKey);
+    }
+
+    public function BindTransactionLog($transactionLog)
+    {
+        $this->Set('TransactionLog', $transactionLog->Results());
+        $this->Set('PageInfo', $transactionLog->PageInfo());
+        $this->Display('Admin/Payments/transaction_log.tpl');
+    }
+
+    public function GetPageNumber()
+    {
+        return $this->pageable->GetPageNumber();
+    }
+
+    public function GetPageSize()
+    {
+        return $this->pageable->GetPageSize();
+    }
+
+    public function GetTransactionLogId()
+    {
+        return intval($this->GetQuerystring(QueryStringKeys::TRANSACTION_LOG_ID));
+    }
+
+    public function GetRefundTransactionLogId()
+    {
+        return intval($this->GetForm(FormKeys::REFUND_TRANSACTION_ID));
+    }
+
+    public function GetRefundAmount()
+    {
+       return floatval($this->GetForm(FormKeys::REFUND_AMOUNT));
+    }
+
+    public function BindTransactionLogView(TransactionLogView $transactionLogView)
+    {
+        $this->SetJson($transactionLogView);
+    }
+
+    public function BindRefundIssued($wasIssued)
+    {
+        $this->SetJson($wasIssued);
     }
 }
