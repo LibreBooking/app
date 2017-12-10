@@ -262,7 +262,7 @@ class AddPaymentTransactionLogCommand extends SqlCommand
      * @param int $transactionId
      * @param float $totalAmount
      * @param float $transactionFee
-     * @param float $currency
+     * @param string $currency
      * @param string $transactionHref
      * @param string $refundHref
      * @param Date $dateCreated
@@ -335,6 +335,36 @@ class AddQuotaCommand extends SqlCommand
         $this->AddParameter(new Parameter(ParameterNames::END_TIME, is_null($enforcedEndTime) ? null : $enforcedEndTime));
         $this->AddParameter(new Parameter(ParameterNames::ENFORCED_DAYS, empty($enforcedDays) ? null : implode(',', $enforcedDays)));
         $this->AddParameter(new Parameter(ParameterNames::QUOTA_SCOPE, $scope));
+    }
+}
+
+class AddRefundTransactionLogCommand extends SqlCommand
+{
+    /**
+     * @param string $paymentTransactionLogId
+     * @param string $status
+     * @param int $transactionId
+     * @param float $totalRefundAmount
+     * @param float $paymentRefundAmount
+     * @param float $feeRefundAmount
+     * @param string $transactionHref
+     * @param Date $dateCreated
+     * @param string $gatewayDateCreated
+     * @param string $refundResponse
+     */
+    public function __construct($paymentTransactionLogId, $status, $transactionId, $totalRefundAmount, $paymentRefundAmount, $feeRefundAmount, $transactionHref, $dateCreated, $gatewayDateCreated, $refundResponse)
+    {
+        parent::__construct(Queries::ADD_REFUND_TRANSACTION_LOG);
+        $this->AddParameter(new Parameter(ParameterNames::PAYMENT_TRANSACTION_LOG_ID, $paymentTransactionLogId));
+        $this->AddParameter(new Parameter(ParameterNames::REFUND_STATUS, $status));
+        $this->AddParameter(new Parameter(ParameterNames::REFUND_TRANSACTION_ID, $transactionId));
+        $this->AddParameter(new Parameter(ParameterNames::REFUND_TOTAL_AMOUNT, $totalRefundAmount));
+        $this->AddParameter(new Parameter(ParameterNames::REFUND_PAYMENT_AMOUNT, $paymentRefundAmount));
+        $this->AddParameter(new Parameter(ParameterNames::REFUND_FEE_AMOUNT, $feeRefundAmount));
+        $this->AddParameter(new Parameter(ParameterNames::REFUND_TRANSACTION_HREF, $transactionHref));
+        $this->AddParameter(new Parameter(ParameterNames::REFUND_DATE_CREATED, $dateCreated->ToDatabase()));
+        $this->AddParameter(new Parameter(ParameterNames::REFUND_GATEWAY_DATE_CREATED, $gatewayDateCreated));
+        $this->AddParameter(new Parameter(ParameterNames::REFUND_GATEWAY_RESPONSE, $refundResponse));
     }
 }
 

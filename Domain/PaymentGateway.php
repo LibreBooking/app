@@ -106,7 +106,7 @@ interface IPaymentTransactionLogger
      * @param int $transactionId
      * @param float $totalAmount
      * @param float $transactionFee
-     * @param float $currency
+     * @param string $currency
      * @param string $transactionHref
      * @param string $refundHref
      * @param Date $dateCreated
@@ -114,14 +114,33 @@ interface IPaymentTransactionLogger
      * @param string $gatewayName
      * @param string $gatewayResponse
      */
-    public function Log($userId, $status, $invoiceNumber, $transactionId, $totalAmount, $transactionFee, $currency, $transactionHref, $refundHref, $dateCreated, $gatewayDateCreated, $gatewayName, $gatewayResponse);
+    public function LogPayment($userId, $status, $invoiceNumber, $transactionId, $totalAmount, $transactionFee, $currency, $transactionHref, $refundHref, $dateCreated, $gatewayDateCreated, $gatewayName, $gatewayResponse);
+
+    /**
+     * @param string $paymentTransactionLogId
+     * @param string $status
+     * @param int $transactionId
+     * @param float $totalRefundAmount
+     * @param float $paymentRefundAmount
+     * @param float $feeRefundAmount
+     * @param string $transactionHref
+     * @param Date $dateCreated
+     * @param string $gatewayDateCreated
+     * @param string $refundResponse
+     */
+    public function LogRefund($paymentTransactionLogId, $status, $transactionId, $totalRefundAmount, $paymentRefundAmount, $feeRefundAmount, $transactionHref, $dateCreated, $gatewayDateCreated, $refundResponse);
 }
 
 class PaymentTransactionLogger implements IPaymentTransactionLogger
 {
-    public function Log($userId, $status, $invoiceNumber, $transactionId, $totalAmount, $transactionFee, $currency, $transactionHref, $refundHref, $dateCreated, $gatewayDateCreated, $gatewayName, $gatewayResponse)
+    public function LogPayment($userId, $status, $invoiceNumber, $transactionId, $totalAmount, $transactionFee, $currency, $transactionHref, $refundHref, $dateCreated, $gatewayDateCreated, $gatewayName, $gatewayResponse)
     {
         ServiceLocator::GetDatabase()->Execute(new AddPaymentTransactionLogCommand($userId, $status, $invoiceNumber, $transactionId, $totalAmount, $transactionFee, $currency, $transactionHref, $refundHref, $dateCreated, $gatewayDateCreated, $gatewayName, $gatewayResponse));
+    }
+
+    public function LogRefund($paymentTransactionLogId, $status, $transactionId, $totalRefundAmount, $paymentRefundAmount, $feeRefundAmount, $transactionHref, $dateCreated, $gatewayDateCreated, $refundResponse)
+    {
+        ServiceLocator::GetDatabase()->Execute(new AddRefundTransactionLogCommand($paymentTransactionLogId, $status, $transactionId, $totalRefundAmount, $paymentRefundAmount, $feeRefundAmount, $transactionHref, $dateCreated, $gatewayDateCreated, $refundResponse));
     }
 }
 
@@ -327,7 +346,7 @@ class PayPalGateway implements IPaymentGateway
 
             $paypalTransaction = $payment->getTransactions()[0];
             $sale = $paypalTransaction->getRelatedResources()[0]->getSale();
-            $logger->Log($cart->UserId,
+            $logger->LogPayment($cart->UserId,
                 $payment->getState(),
                 $paypalTransaction->getInvoiceNumber(),
                 $sale->getId(),
@@ -378,18 +397,15 @@ class PayPalGateway implements IPaymentGateway
 
             $refundedSale = $sale->refundSale($refundRequest, $apiContext);
 
-            $logger->Log($log->UserId,
+            $logger->LogRefund($log->Id,
                 $refundedSale->getState(),
-                $refundedSale->getInvoiceNumber(),
                 $refundedSale->getSaleId(),
                 $refundedSale->getAmount()->getTotal(),
+                $refundedSale->getRefundFromReceivedAmount()->getValue(),
                 $refundedSale->getRefundFromTransactionFee()->getValue(),
-                $refundedSale->getAmount()->getCurrency(),
                 $refundedSale->getLink('self'),
-                '',
                 Date::Now(),
                 $refundedSale->getCreateTime(),
-                $this->GetGatewayType(),
                 $refundedSale->toJSON());
         } catch (PayPal\Exception\PayPalConnectionException $ex) {
             $refundedSale = new \PayPal\Api\RefundDetail();

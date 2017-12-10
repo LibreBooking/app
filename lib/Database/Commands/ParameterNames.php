@@ -154,6 +154,16 @@ class ParameterNames
 	const QUOTA_SCOPE = '@scope';
 	const QUOTA_UNIT = '@unit';
 
+	const REFUND_STATUS = '@status';
+	const REFUND_TRANSACTION_ID = '@transaction_id';
+	const REFUND_TOTAL_AMOUNT = '@total_refund_amount';
+	const REFUND_PAYMENT_AMOUNT = '@payment_refund_amount';
+	const REFUND_FEE_AMOUNT = '@fee_refund_amount';
+	const REFUND_TRANSACTION_HREF = '@transaction_href';
+	const REFUND_DATE_CREATED = '@date_created';
+	const REFUND_GATEWAY_DATE_CREATED = '@gateway_date_created';
+	const REFUND_GATEWAY_RESPONSE = '@refund_response';
+
 	const REMINDER_ID = '@reminder_id';
 	const REMINDER_USER_ID = '@user_id';
 	const REMINDER_SENDTIME = '@sendtime';

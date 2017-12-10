@@ -35,7 +35,7 @@ function Payments(opts) {
             var element = $(e.target);
             var id = element.data('id');
             ajaxGet(opts.transactionDetailsUrl.replace('[id]', id), null, function(data){
-                var amount = data.Total;
+                var amount = data.Total - data.AmountRefunded;
                 elements.refundAmount.prop('max', amount);
                 elements.refundAmount.val(amount);
                 elements.refundId.val(id);

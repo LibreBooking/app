@@ -305,6 +305,7 @@ class ColumnNames
     const TRANSACTION_LOG_REFUND_HREF = 'refund_href';
     const TRANSACTION_LOG_GATEWAY_NAME = 'gateway_name';
     const TRANSACTION_LOG_GATEWAY_DATE = 'gateway_date_created';
+    const TRANSACTION_LOG_REFUND_AMOUNT = 'refund_amount';
 
 	// dynamic
 	const TOTAL = 'total';

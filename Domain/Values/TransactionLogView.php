@@ -78,6 +78,10 @@ class TransactionLogView
      * @var int
      */
     public $UserId;
+    /**
+     * @var float
+     */
+    public $AmountRefunded = 0;
 
     public function __construct($transactionDate, $status, $invoiceNumber, $transactionId, $total, $fee, $currency, $transactionHref, $refundHref, $gatewayTransactionDate, $gatewayName, $userId, $userFullName = '')
     {
@@ -124,6 +128,7 @@ class TransactionLogView
             $row[ColumnNames::USER_ID],
             $userName);
         $v->Id = $row[ColumnNames::TRANSACTION_LOG_ID];
+        $v->AmountRefunded = floatval($row[ColumnNames::TRANSACTION_LOG_REFUND_AMOUNT]);
 
         return $v;
     }

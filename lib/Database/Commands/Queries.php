@@ -106,7 +106,11 @@ class Queries
 			'INSERT INTO peak_times (schedule_id, all_day, start_time, end_time, every_day, peak_days, all_year, begin_month, begin_day, end_month, end_day)
 			VALUES (@scheduleid, @all_day, @start_time, @end_time, @every_day, @peak_days, @all_year, @begin_month, @begin_day, @end_month, @end_day)';
 
-	const ADD_REMINDER =
+    const ADD_REFUND_TRANSACTION_LOG =
+        'INSERT INTO refund_transaction_log(payment_transaction_log_id, status, transaction_id, total_refund_amount, payment_refund_amount, fee_refund_amount, transaction_href, date_created, gateway_date_created, refund_response) 
+          VALUES (@payment_transaction_log_id, @status, @transaction_id, @total_refund_amount, @payment_refund_amount, @fee_refund_amount, @transaction_href, @date_created, @gateway_date_created, @refund_response)';
+
+    const ADD_REMINDER =
 			'INSERT INTO reminders (user_id, address, message, sendtime, refnumber)
 			VALUES (@user_id, @address, @message, @sendtime, @refnumber)';
 
@@ -444,8 +448,12 @@ class Queries
 							WHERE cav.entity_id = r.resource_type_id AND cav.attribute_category = 5) as attribute_list
 							FROM resource_types r';
 
-	const GET_ALL_TRANSACTION_LOGS = 'SELECT ptl.*, u.fname, u.lname, u.email FROM payment_transaction_log ptl
-            LEFT JOIN users u ON ptl.user_id = u.user_id WHERE (@userid = -1 OR ptl.user_id = @userid)
+	const GET_ALL_TRANSACTION_LOGS = 'SELECT ptl.*, u.fname, u.lname, u.email, SUM(total_refund_amount) as refund_amount
+            FROM payment_transaction_log ptl
+            LEFT JOIN refund_transaction_log refunds on ptl.payment_transaction_log_id = refunds.payment_transaction_log_id
+            LEFT JOIN users u ON ptl.user_id = u.user_id 
+            WHERE (@userid = -1 OR ptl.user_id = @userid)
+            GROUP BY refunds.payment_transaction_log_id
             ORDER BY date_created DESC';
 
 	const GET_ALL_SAVED_REPORTS = 'SELECT * FROM saved_reports WHERE user_id = @userid ORDER BY report_name, date_created';
@@ -801,7 +809,11 @@ class Queries
 		ORDER BY COALESCE(r.sort_order,0), r.name';
 
 	const GET_TRANSACTION_LOG =
-            'SELECT * FROM payment_transaction_log WHERE payment_transaction_log_id = @payment_transaction_log_id';
+            'SELECT ptl.*, SUM(total_refund_amount) as refund_amount
+        FROM payment_transaction_log ptl
+        LEFT JOIN refund_transaction_log refunds on ptl.payment_transaction_log_id = refunds.payment_transaction_log_id
+        WHERE ptl.payment_transaction_log_id = @payment_transaction_log_id
+        GROUP BY refunds.payment_transaction_log_id';
 
 	const GET_USERID_BY_ACTIVATION_CODE =
 			'SELECT a.user_id FROM account_activation a

@@ -6,7 +6,7 @@ class FakePaymentTransactionLogger implements IPaymentTransactionLogger
 {
     public $_PaymentLogged = false;
 
-    public function Log($userId, $status, $invoiceNumber, $transactionId, $totalAmount, $transactionFee, $currency, $transactionHref, $refundHref, $dateCreated, $gatewayDateCreated, $gatewayName, $gatewayResponse)
+    public function LogPayment($userId, $status, $invoiceNumber, $transactionId, $totalAmount, $transactionFee, $currency, $transactionHref, $refundHref, $dateCreated, $gatewayDateCreated, $gatewayName, $gatewayResponse)
     {
         $this->_PaymentLogged = true;
     }

@@ -54,7 +54,30 @@ CREATE TABLE `payment_transaction_log` (
   `gateway_name` VARCHAR(100) NOT NULL,
   `gateway_date_created` VARCHAR(25) NOT NULL,
   `payment_response` TEXT,
-  PRIMARY KEY (`payment_transaction_log_id`)
+  PRIMARY KEY (`payment_transaction_log_id`),
+  KEY `user_id` (`user_id`),
+  KEY `invoice_number` (`invoice_number`)
+)
+  ENGINE = InnoDB
+  DEFAULT CHARACTER SET utf8;
+
+DROP TABLE IF EXISTS `refund_transaction_log`;
+CREATE TABLE `refund_transaction_log` (
+  `refund_transaction_log_id`  INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `payment_transaction_log_id`  INT(10) UNSIGNED NOT NULL,
+  `status` VARCHAR(255) NOT NULL,
+  `transaction_id` VARCHAR(50),
+  `total_refund_amount`  DECIMAL(7, 2) NOT NULL,
+  `payment_refund_amount`  DECIMAL(7, 2),
+  `fee_refund_amount`  DECIMAL(7, 2),
+  `transaction_href` VARCHAR(500) NOT NULL,
+  `date_created` DATETIME NOT NULL,
+  `gateway_date_created` VARCHAR(25) NOT NULL,
+  `refund_response` TEXT,
+  PRIMARY KEY (`refund_transaction_log_id`),
+  FOREIGN KEY (`payment_transaction_log_id`)
+  REFERENCES payment_transaction_log (`payment_transaction_log_id`)
+  ON DELETE CASCADE
 )
   ENGINE = InnoDB
   DEFAULT CHARACTER SET utf8;

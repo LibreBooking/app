@@ -682,6 +682,8 @@ class en_us extends Language
         $strings['IssueRefund'] = 'Issue Refund';
         $strings['RefundIssued'] = 'Refund Issued Successfully';
         $strings['RefundAmount'] = 'Refund Amount';
+        $strings['AmountRefunded'] = 'Refunded';
+        $strings['FullyRefunded'] = 'Fully Refunded';
         // End Strings
 
 		// Install
