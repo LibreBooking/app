@@ -120,6 +120,27 @@ class CheckoutPresenterTests extends TestBase
         $this->assertNull($this->fakeServer->GetSession(SessionKeys::CREDIT_CART));
         $this->assertEquals(15, $this->userRepository->_UpdatedUser->GetCurrentCredits());
     }
+
+    public function testExecutesStripePayment()
+    {
+        $creditCartSession = new CreditCartSession(5, 10, 'USD', $this->fakeUser->UserId);
+        $this->fakeServer->SetSession(SessionKeys::CREDIT_CART, $creditCartSession);
+
+        $this->userRepository->_User->WithCredits(10);
+
+        $this->page->_StripeToken = '123';
+        $gateway = new FakeStripeGateway();
+        $this->paymentRepository->_Stripe = $gateway;
+        $gateway->_ChargeResponse = true;
+
+        $this->presenter->ExecuteStripePayment();
+
+        $this->assertEquals(true, $this->page->_StripePaymentResult);
+        $this->assertEquals('123', $gateway->_Token);
+        $this->assertEquals($this->fakeUser->Email, $gateway->_Email);
+        $this->assertNull($this->fakeServer->GetSession(SessionKeys::CREDIT_CART));
+        $this->assertEquals(15, $this->userRepository->_UpdatedUser->GetCurrentCredits());
+    }
 }
 
 class FakeCheckoutPage extends CheckoutPage
@@ -136,6 +157,8 @@ class FakeCheckoutPage extends CheckoutPage
     public $_PayPalPayment;
     public $_PaymentId;
     public $_PayerId;
+    public $_StripeToken;
+    public $_StripePaymentResult;
 
     public function GetCreditQuantity()
     {
@@ -175,5 +198,15 @@ class FakeCheckoutPage extends CheckoutPage
     public function GetPayerId()
     {
         return $this->_PayerId;
+    }
+
+    public function GetStripeToken()
+    {
+        return $this->_StripeToken;
+    }
+
+    public function SetStripeResult($result)
+    {
+        $this->_StripePaymentResult = $result;
     }
 }

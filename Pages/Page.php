@@ -309,7 +309,7 @@ abstract class Page implements IPage
 	}
 
 	/**
-	 * @param string $objectToSerialize
+	 * @param mixed $objectToSerialize
 	 * @param string|null $error
 	 * @return void
 	 */

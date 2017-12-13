@@ -590,6 +590,17 @@ input:checked + .slider:before {
 .slider.round:before {
   border-radius: 50%;
 }
+.centered-line-text {
+  width: 100%;
+  text-align: center;
+  border-bottom: 1px solid #BCBCBC;
+  line-height: 0.1em;
+  margin: 10px 0 20px;
+}
+.centered-line-text span {
+  background: #fff;
+  padding: 0 10px;
+}
 #resourceDetailsPopup #userDetailsPopup {
   min-width: 300px;
   max-width: 1000px;

@@ -590,6 +590,17 @@ input:checked + .slider:before {
 .slider.round:before {
   border-radius: 50%;
 }
+.centered-line-text {
+  width: 100%;
+  text-align: center;
+  border-bottom: 1px solid #BCBCBC;
+  line-height: 0.1em;
+  margin: 10px 0 20px;
+}
+.centered-line-text span {
+  background: #fff;
+  padding: 0 10px;
+}
 .checkbox {
   padding-left: 20px;
 }
@@ -2475,4 +2486,12 @@ ul.jqtree-tree .jqtree-toggler {
 }
 #page-user-credits .cost {
   font-weight: bold;
+}
+#page-checkout .total {
+  font-weight: bold;
+  font-size: 1.1em;
+  border-top: solid 1px #D5DED9;
+}
+#page-checkout .checkout-buttons {
+  margin-top: 25px;
 }

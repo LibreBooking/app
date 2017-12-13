@@ -25,17 +25,6 @@ class Source extends ApiResource
      * @param array|null $params
      * @param array|string|null $opts
      *
-     * @return Collection of Sources
-     */
-    public static function all($params = null, $opts = null)
-    {
-        return self::_all($params, $opts);
-    }
-
-    /**
-     * @param array|null $params
-     * @param array|string|null $opts
-     *
      * @return Source The created Source.
      */
     public static function create($params = null, $opts = null)
@@ -116,7 +105,22 @@ class Source extends ApiResource
      * @param array|null $params
      * @param array|string|null $options
      *
-     * @return BankAccount The verified bank account.
+     * @return Collection The list of source transactions.
+     */
+    public function sourceTransactions($params = null, $options = null)
+    {
+        $url = $this->instanceUrl() . '/source_transactions';
+        list($response, $opts) = $this->_request('get', $url, $params, $options);
+        $obj = Util\Util::convertToStripeObject($response, $opts);
+        $obj->setLastResponse($response);
+        return $obj;
+    }
+
+    /**
+     * @param array|null $params
+     * @param array|string|null $options
+     *
+     * @return Source The verified source.
      */
     public function verify($params = null, $options = null)
     {

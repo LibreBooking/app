@@ -64,6 +64,16 @@ interface ICheckoutPage extends IActionPage
      * @param bool $isEmpty
      */
     public function SetEmptyCart($isEmpty);
+
+    /**
+     * @return string
+     */
+    public function GetStripeToken();
+
+    /**
+     * @param bool $result
+     */
+    public function SetStripeResult($result);
 }
 
 class CheckoutPage extends ActionPage implements ICheckoutPage
@@ -95,6 +105,7 @@ class CheckoutPage extends ActionPage implements ICheckoutPage
     {
         $this->EnforceCSRFCheck();
 
+        $this->Set('Email', ServiceLocator::GetServer()->GetUserSession()->Email);
         $this->presenter->PageLoad(ServiceLocator::GetServer()->GetUserSession());
         $this->Display('Credits/checkout.tpl');
     }
@@ -122,6 +133,8 @@ class CheckoutPage extends ActionPage implements ICheckoutPage
         $this->Set('Total', $cost->FormatCurrency($total));
         $this->Set('CreditCost', $cost->FormatCurrency());
         $this->Set('CreditQuantity', $creditQuantity);
+        $this->Set('Currency', $cost->Currency());
+        $this->Set('TotalUnformatted', $cost->GetTotal($creditQuantity));
     }
 
     public function SetPayPalPayment($payment)
@@ -131,7 +144,7 @@ class CheckoutPage extends ActionPage implements ICheckoutPage
 
     public function GetPaymentId()
     {
-       return $this->GetForm('paymentID');
+        return $this->GetForm('paymentID');
     }
 
     public function GetPayerId()
@@ -141,6 +154,16 @@ class CheckoutPage extends ActionPage implements ICheckoutPage
 
     public function SetEmptyCart($isEmpty)
     {
-       $this->Set('IsCartEmpty', $isEmpty);
+        $this->Set('IsCartEmpty', $isEmpty);
+    }
+
+    public function GetStripeToken()
+    {
+        return $this->GetForm(FormKeys::STRIPE_TOKEN);
+    }
+
+    public function SetStripeResult($result)
+    {
+        $this->SetJson(array('result'=>$result));
     }
 }

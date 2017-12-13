@@ -10,4 +10,9 @@ class FakePaymentTransactionLogger implements IPaymentTransactionLogger
     {
         $this->_PaymentLogged = true;
     }
+
+    public function LogRefund($paymentTransactionLogId, $status, $transactionId, $totalRefundAmount, $paymentRefundAmount, $feeRefundAmount, $transactionHref, $dateCreated, $gatewayDateCreated, $refundResponse)
+    {
+        // TODO: Implement LogRefund() method.
+    }
 }

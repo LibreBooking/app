@@ -4,7 +4,7 @@
 
     <div class="default-box">
         <div>
-            <h1 class="inline-block" style="width:100%">Your Credits
+            <h1 class="inline-block" style="width:100%">{translate key=YourCredits}
                 <div class="inline-block pull-right">{$CurrentCredits}</div>
             </h1>
         </div>

@@ -647,7 +647,7 @@ class en_us extends Language
         $strings['StripeSecretKey'] = 'Secret key';
         $strings['CreditsUpdated'] = 'Credit cost has been updated';
         $strings['GatewaysUpdated'] = 'Payment gateways have been updated';
-        $strings['OrderSummary'] = 'Order Summary';
+        $strings['PurchaseSummary'] = 'Purchase Summary';
         $strings['EachCreditCosts'] = 'Each credit costs';
         $strings['Checkout'] = 'Checkout';
         $strings['Quantity'] = 'Quantity';
@@ -684,6 +684,9 @@ class en_us extends Language
         $strings['RefundAmount'] = 'Refund Amount';
         $strings['AmountRefunded'] = 'Refunded';
         $strings['FullyRefunded'] = 'Fully Refunded';
+        $strings['YourCredits'] = 'Your Credits';
+        $strings['PayWithCard'] = 'Pay with Card';
+        $strings['or'] = 'or';
         // End Strings
 
 		// Install

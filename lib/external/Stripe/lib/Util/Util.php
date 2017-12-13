@@ -65,11 +65,19 @@ abstract class Util
     public static function convertToStripeObject($resp, $opts)
     {
         $types = array(
+            // data structures
+            'list' => 'Stripe\\Collection',
+
+            // business objects
             'account' => 'Stripe\\Account',
             'alipay_account' => 'Stripe\\AlipayAccount',
             'apple_pay_domain' => 'Stripe\\ApplePayDomain',
-            'bank_account' => 'Stripe\\BankAccount',
+            'application_fee' => 'Stripe\\ApplicationFee',
+            'balance' => 'Stripe\\Balance',
             'balance_transaction' => 'Stripe\\BalanceTransaction',
+            'bank_account' => 'Stripe\\BankAccount',
+            'bitcoin_receiver' => 'Stripe\\BitcoinReceiver',
+            'bitcoin_transaction' => 'Stripe\\BitcoinTransaction',
             'card' => 'Stripe\\Card',
             'charge' => 'Stripe\\Charge',
             'country_spec' => 'Stripe\\CountrySpec',
@@ -77,15 +85,13 @@ abstract class Util
             'customer' => 'Stripe\\Customer',
             'dispute' => 'Stripe\\Dispute',
             'ephemeral_key' => 'Stripe\\EphemeralKey',
-            'list' => 'Stripe\\Collection',
-            'login_link' => 'Stripe\\LoginLink',
+            'event' => 'Stripe\\Event',
+            'exchange_rate' => 'Stripe\\ExchangeRate',
+            'fee_refund' => 'Stripe\\ApplicationFeeRefund',
+            'file_upload' => 'Stripe\\FileUpload',
             'invoice' => 'Stripe\\Invoice',
             'invoiceitem' => 'Stripe\\InvoiceItem',
-            'event' => 'Stripe\\Event',
-            'file_upload' => 'Stripe\\FileUpload',
-            'token' => 'Stripe\\Token',
-            'transfer' => 'Stripe\\Transfer',
-            'transfer_reversal' => 'Stripe\\TransferReversal',
+            'login_link' => 'Stripe\\LoginLink',
             'order' => 'Stripe\\Order',
             'order_return' => 'Stripe\\OrderReturn',
             'payout' => 'Stripe\\Payout',
@@ -96,12 +102,13 @@ abstract class Util
             'refund' => 'Stripe\\Refund',
             'sku' => 'Stripe\\SKU',
             'source' => 'Stripe\\Source',
+            'source_transaction' => 'Stripe\\SourceTransaction',
             'subscription' => 'Stripe\\Subscription',
             'subscription_item' => 'Stripe\\SubscriptionItem',
             'three_d_secure' => 'Stripe\\ThreeDSecure',
-            'fee_refund' => 'Stripe\\ApplicationFeeRefund',
-            'bitcoin_receiver' => 'Stripe\\BitcoinReceiver',
-            'bitcoin_transaction' => 'Stripe\\BitcoinTransaction',
+            'token' => 'Stripe\\Token',
+            'transfer' => 'Stripe\\Transfer',
+            'transfer_reversal' => 'Stripe\\TransferReversal',
         );
         if (self::isList($resp)) {
             $mapped = array();

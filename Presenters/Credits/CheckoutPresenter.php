@@ -57,6 +57,7 @@ class CheckoutPresenter extends ActionPresenter
 
         $this->AddAction('executePayPalPayment', 'ExecutePayPalPayment');
         $this->AddAction('createPayPalPayment', 'CreatePayPalPayment');
+        $this->AddAction('executeStripePayment', 'ExecuteStripePayment');
     }
 
     public function PageLoad(UserSession $userSession)
@@ -112,5 +113,27 @@ class CheckoutPresenter extends ActionPresenter
         }
 
         $this->page->SetPayPalPayment($payment);
+    }
+
+    public function ExecuteStripePayment()
+    {
+        $token = $this->page->GetStripeToken();
+        $userSession = ServiceLocator::GetServer()->GetUserSession();
+
+        $gateway = $this->paymentRepository->GetStripeGateway();
+
+        /** @var $cart CreditCartSession */
+        $cart = ServiceLocator::GetServer()->GetSession(SessionKeys::CREDIT_CART);
+        $result = $gateway->Charge($cart, $userSession->Email, $token, $this->paymentLogger);
+
+        if ($result == true)
+        {
+            $user = $this->userRepository->LoadById($userSession->UserId);
+            $user->AddCredits($cart->Quantity, Resources::GetInstance()->GetString('NoteCreditsPurchased'));
+            $this->userRepository->Update($user);
+            ServiceLocator::GetServer()->SetSession(SessionKeys::CREDIT_CART, null);
+        }
+
+        $this->page->SetStripeResult($result);
     }
 }

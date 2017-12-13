@@ -19,6 +19,7 @@
  */
 
 require ROOT_DIR . 'lib/external/PayPal/autoload.php';
+require ROOT_DIR . 'lib/external/Stripe/init.php';
 
 use PayPal\Api\Amount;
 use PayPal\Api\Details;
@@ -410,8 +411,7 @@ class PayPalGateway implements IPaymentGateway
         } catch (PayPal\Exception\PayPalConnectionException $ex) {
             $refundedSale = new \PayPal\Api\RefundDetail();
             Log::Error('Error refunding PayPal payment. TransactionId %s, Total %s, Error %s', $log->TransactionId, $amount, $ex);
-        }
-        catch (Exception $ex) {
+        } catch (Exception $ex) {
             $refundedSale = new \PayPal\Api\RefundDetail();
             Log::Error('Error refunding PayPal payment. TransactionId %s, Total %s, Error %s', $log->TransactionId, $amount, $ex);
         }
@@ -498,5 +498,59 @@ class StripeGateway implements IPaymentGateway
     public function SecretKey()
     {
         return $this->secretKey;
+    }
+
+    /**
+     * @param CreditCartSession $cart
+     * @param string $email
+     * @param string $token
+     * @param IPaymentTransactionLogger $logger
+     * @return bool
+     */
+    public function Charge(CreditCartSession $cart, $email, $token, IPaymentTransactionLogger $logger)
+    {
+        try {
+            \Stripe\Stripe::setApiKey($this->SecretKey());
+
+            $customer = \Stripe\Customer::create(array(
+                'email' => $email,
+                'source' => $token
+            ));
+
+            $charge = \Stripe\Charge::create(array(
+                'customer' => $customer->id,
+                'amount' => $cart->Total() * 100,
+                'currency' => $cart->Currency,
+                'description' => Resources::GetInstance()->GetString('Credits'),
+                'expand' =>array('balance_transaction')
+            ));
+
+            if (Log::DebugEnabled())
+            {
+                Log::Debug('Stripe charge response %s', json_encode($charge));
+            }
+
+            //$logger->LogPayment($cart->UserId, $charge->status, $charge->invoice, $charge->id, $charge->amount, );
+            return $charge->status == 'succeeded';
+        } catch (\Stripe\Error\Card $ex) {
+            // Declined
+            $body = $ex->getJsonBody();
+            $err = $body['error'];
+            Log::Debug('Stripe charge failed http status %s, type %s, code %s, param %s, message %s', $ex->getHttpStatus(), $err['type'], $err['code'], $err['param'], $err['message']);
+        } catch (\Stripe\Error\RateLimit $ex) {
+            Log::Error('Stripe - too many requests. %s', $ex);
+        } catch (\Stripe\Error\InvalidRequest $ex) {
+            Log::Error('Stripe - invalid request. %s', $ex);
+        } catch (\Stripe\Error\Authentication $ex) {
+            Log::Error('Stripe - authentication error. %s', $ex);
+        } catch (\Stripe\Error\ApiConnection $ex) {
+            Log::Error('Stripe - connection failure. %s', $ex);
+        } catch (\Stripe\Error\Base $ex) {
+            Log::Error('Stripe - error. %s', $ex);
+        } catch (Exception $ex) {
+            Log::Error('Stripe - internal error. %s', $ex);
+        }
+
+        return false;
     }
 }
