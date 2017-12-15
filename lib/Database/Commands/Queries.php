@@ -453,7 +453,7 @@ class Queries
             LEFT JOIN refund_transaction_log refunds on ptl.payment_transaction_log_id = refunds.payment_transaction_log_id
             LEFT JOIN users u ON ptl.user_id = u.user_id 
             WHERE (@userid = -1 OR ptl.user_id = @userid)
-            GROUP BY refunds.payment_transaction_log_id
+            GROUP BY ptl.payment_transaction_log_id
             ORDER BY date_created DESC';
 
 	const GET_ALL_SAVED_REPORTS = 'SELECT * FROM saved_reports WHERE user_id = @userid ORDER BY report_name, date_created';
@@ -813,7 +813,7 @@ class Queries
         FROM payment_transaction_log ptl
         LEFT JOIN refund_transaction_log refunds on ptl.payment_transaction_log_id = refunds.payment_transaction_log_id
         WHERE ptl.payment_transaction_log_id = @payment_transaction_log_id
-        GROUP BY refunds.payment_transaction_log_id';
+        GROUP BY ptl.payment_transaction_log_id';
 
 	const GET_USERID_BY_ACTIVATION_CODE =
 			'SELECT a.user_id FROM account_activation a

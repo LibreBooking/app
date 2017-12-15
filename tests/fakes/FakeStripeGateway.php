@@ -41,4 +41,11 @@ class FakeStripeGateway extends StripeGateway
 
         return $this->_ChargeResponse;
     }
+
+    public function Refund(TransactionLogView $log, $amount, IPaymentTransactionLogger $logger)
+    {
+        $this->_LastTransactionView = $log;
+        $this->_LastRefundAmount = $amount;
+        return $this->_Refunded;
+    }
 }

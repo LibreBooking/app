@@ -440,6 +440,18 @@ class StripeGateway implements IPaymentGateway
      * @var string
      */
     private $secretKey;
+    /**
+     * @var TransactionLogView
+     */
+    public $_LastTransactionView;
+    /**
+     * @var bool
+     */
+    public $_Refunded;
+    /**
+     * @var float
+     */
+    public $_LastRefundAmount;
 
     /**
      * @param bool $enabled
@@ -522,21 +534,20 @@ class StripeGateway implements IPaymentGateway
                 'amount' => $cart->Total() * 100,
                 'currency' => $cart->Currency,
                 'description' => Resources::GetInstance()->GetString('Credits'),
-                'expand' =>array('balance_transaction')
+                'expand' => array('balance_transaction')
             ));
 
-            if (Log::DebugEnabled())
-            {
+            if (Log::DebugEnabled()) {
                 Log::Debug('Stripe charge response %s', json_encode($charge));
             }
 
-            //$logger->LogPayment($cart->UserId, $charge->status, $charge->invoice, $charge->id, $charge->amount, );
+            $logger->LogPayment($cart->UserId, $charge->status, $charge->invoice, $charge->id, $charge->amount / 100, $charge->balance_transaction->fee / 100, $cart->Currency, null, null, Date::Now(), $charge->created, $this->GetGatewayType(), json_encode($charge));
             return $charge->status == 'succeeded';
         } catch (\Stripe\Error\Card $ex) {
             // Declined
             $body = $ex->getJsonBody();
             $err = $body['error'];
-            Log::Debug('Stripe charge failed http status %s, type %s, code %s, param %s, message %s', $ex->getHttpStatus(), $err['type'], $err['code'], $err['param'], $err['message']);
+            Log::Debug('Stripe charge failed. http status %s, type %s, code %s, param %s, message %s', $ex->getHttpStatus(), $err['type'], $err['code'], $err['param'], $err['message']);
         } catch (\Stripe\Error\RateLimit $ex) {
             Log::Error('Stripe - too many requests. %s', $ex);
         } catch (\Stripe\Error\InvalidRequest $ex) {
@@ -549,6 +560,51 @@ class StripeGateway implements IPaymentGateway
             Log::Error('Stripe - error. %s', $ex);
         } catch (Exception $ex) {
             Log::Error('Stripe - internal error. %s', $ex);
+        }
+
+        return false;
+    }
+
+    /**
+     * @param TransactionLogView $log
+     * @param float $amount
+     * @param IPaymentTransactionLogger $logger
+     * @return bool
+     */
+    public function Refund(TransactionLogView $log, $amount, IPaymentTransactionLogger $logger)
+    {
+        try {
+            \Stripe\Stripe::setApiKey($this->SecretKey());
+            $refund = \Stripe\Refund::create(array(
+                'charge' => $log->TransactionId,
+                'amount' => $amount * 100,
+                'expand' => array('balance_transaction')
+            ));
+
+            if (Log::DebugEnabled()) {
+                Log::Debug('Stripe refund response %s', json_encode($refund));
+            }
+
+            $logger->LogRefund($log->Id, $refund->status, $refund->id, $refund->amount/100, $refund->amount/100, $refund->balance_transaction->fee/100, null, Date::Now(), $refund->created, json_encode($refund));
+
+            return $refund->status == 'succeeded';
+        } catch (\Stripe\Error\Card $ex) {
+            // Declined
+            $body = $ex->getJsonBody();
+            $err = $body['error'];
+            Log::Debug('Stripe refund  failed. http status %s, type %s, code %s, param %s, message %s', $ex->getHttpStatus(), $err['type'], $err['code'], $err['param'], $err['message']);
+        } catch (\Stripe\Error\RateLimit $ex) {
+            Log::Error('Stripe refund - too many requests. %s', $ex);
+        } catch (\Stripe\Error\InvalidRequest $ex) {
+            Log::Error('Stripe refund - invalid request. %s', $ex);
+        } catch (\Stripe\Error\Authentication $ex) {
+            Log::Error('Stripe refund - authentication error. %s', $ex);
+        } catch (\Stripe\Error\ApiConnection $ex) {
+            Log::Error('Stripe refund - connection failure. %s', $ex);
+        } catch (\Stripe\Error\Base $ex) {
+            Log::Error('Stripe - error. %s', $ex);
+        } catch (Exception $ex) {
+            Log::Error('Stripe refund - internal error. %s', $ex);
         }
 
         return false;

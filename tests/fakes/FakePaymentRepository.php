@@ -62,7 +62,7 @@ class FakePaymentRepository implements IPaymentRepository
     public function __construct()
     {
         $this->_PayPal = new FakePayPalGateway();
-        $this->_Stripe = new StripeGateway(false, null, null);
+        $this->_Stripe = new FakeStripeGateway();
         $this->_CreditCost = new CreditCost();
     }
 

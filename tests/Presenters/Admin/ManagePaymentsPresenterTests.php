@@ -148,6 +148,22 @@ class ManagePaymentsPresenterTests extends TestBase
         $this->assertEquals(true, $this->page->_RefundIssued);
     }
 
+    public function testIssuesStripeRefund()
+    {
+        $this->page->_RefundTransactionLogId = 10;
+        $this->page->_RefundAmount = 100;
+        $this->paymentRepository->_TransactionLogView = $this->GetTransactionLogView(10.6, .33, PaymentGateways::STRIPE);
+
+        $gateway = $this->paymentRepository->_Stripe;
+        $gateway->_Refunded = true;
+
+        $this->presenter->IssueRefund();
+
+        $this->assertEquals($this->paymentRepository->_TransactionLogView, $gateway->_LastTransactionView);
+        $this->assertEquals(100, $gateway->_LastRefundAmount);
+        $this->assertEquals(true, $this->page->_RefundIssued);
+    }
+
     /**
      * @return TransactionLogView
      */

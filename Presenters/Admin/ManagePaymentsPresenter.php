@@ -129,7 +129,11 @@ class ManagePaymentsPresenter extends ActionPresenter
             $this->page->BindRefundIssued($refund->state == 'completed');
         }
         else{
-            $this->paymentRepository->GetStripeGateway();
+            $gateway = $this->paymentRepository->GetStripeGateway();
+
+            $refunded = $gateway->Refund($transactionLogView, $amount, $this->paymentLogger);
+
+            $this->page->BindRefundIssued($refunded);
         }
     }
 }
