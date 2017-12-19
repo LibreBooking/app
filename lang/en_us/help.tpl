@@ -37,8 +37,6 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
         resources that you have permission to.
     </p>
 
-    <h3>Express</h3>
-
     <p>
         On the Bookings page, find the resource, date and time you'd like to book. Clicking on the time slot will allow
         you change the details of the reservation. Clicking the
@@ -48,7 +46,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
     <p>Any changes made to a reservation will not take effect until you save the reservation.</p>
 
-    <p>Only Application Administrators can create reservations in the past.</p>
+    <p>By default, only Application Administrators can create reservations in the past.</p>
 
     <h3>Find A Time</h3>
     <p>
@@ -141,6 +139,15 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
     <p>Similar to updating a reservation, when deleting you can select which instances you want to delete.</p>
 
     <p>Only Application Administrators can delete reservations in the past.</p>
+
+    <h2>Credits</h2>
+
+    <p>Credits give administrators control over resource usage. A resource may be configured to consume a certain number of
+    credits per slot. If you don't have enough credits, you will not be allowed to complete a booking. You can view your
+    credit usage in the Credits section of My Account</p>
+
+    <p>Optionally, your administrator may allow you to purchase credits. You can purchase credits in the Credits section of My
+    Account. In this section you can also view your purchase history.</p>
 
     <h2>Adding a Reservation to Calendar (Outlook&reg;, iCal, Mozilla Lightning, Evolution)</h2>
 

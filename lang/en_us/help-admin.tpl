@@ -388,7 +388,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
         <p>Credits allow control over a user's usage. Credits must first be enabled in the application configuration
             before they can be managed. The setting is $conf['settings']['credits']['enabled'] Once enabled, administrators will have the ability to set the credit redemption
-            rates for peak and off peak times. Peak times are defined per schedule.</p>
+            rates for peak and off peak times. Peak times are defined per schedule in the Schedule section of Application Management.</p>
 
         <p>If a reservation would bring a user over their credit limit, the reservation will be rejected. Administrators
             can manage user credits when managing user details.</p>
