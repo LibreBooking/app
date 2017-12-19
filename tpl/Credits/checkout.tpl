@@ -65,7 +65,7 @@
             <div class="no-show" id="success">
                 <div class="alert alert-success">
                     <div>{translate key=Success}</div>
-                    <div>{$CreditQuantity} {translate key=CreditsPurchased}</div>
+                    <div><em>{$CreditQuantity}</em> {translate key=CreditsPurchased}</div>
                     <div><a href="{$ScriptUrl}/{Pages::CREDITS}">{translate key=ViewYourCredits}</a></div>
                 </div>
             </div>

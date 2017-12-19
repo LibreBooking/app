@@ -72,7 +72,9 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                             <label for="creditCurrency" class="inline-block no-show">{translate key=Currency}</label>
                             <select id="creditCurrency" {formname key=CREDIT_CURRENCY} class="form-control inline-block"
                                     style="width:auto;">
-                                <option value="USD">USD</option>
+                                {foreach from=$Currencies item=c}
+                                    <option value="{$c->IsoCode()}">{$c->IsoCode()}</option>
+                                {/foreach}
                             </select>
                             {update_button submit=true}
                             {indicator id="updateCreditsIndicator"}

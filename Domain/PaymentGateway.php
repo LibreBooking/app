@@ -529,10 +529,12 @@ class StripeGateway implements IPaymentGateway
                 'source' => $token
             ));
 
+            $currency = new \Booked\Currency($cart->Currency);
+
             $charge = \Stripe\Charge::create(array(
                 'customer' => $customer->id,
-                'amount' => $cart->Total() * 100,
-                'currency' => $cart->Currency,
+                'amount' => $currency->ToStripe($cart->Total()),
+                'currency' => strtolower($cart->Currency),
                 'description' => Resources::GetInstance()->GetString('Credits'),
                 'expand' => array('balance_transaction')
             ));
@@ -541,7 +543,7 @@ class StripeGateway implements IPaymentGateway
                 Log::Debug('Stripe charge response %s', json_encode($charge));
             }
 
-            $logger->LogPayment($cart->UserId, $charge->status, $charge->invoice, $charge->id, $charge->amount / 100, $charge->balance_transaction->fee / 100, $cart->Currency, null, null, Date::Now(), $charge->created, $this->GetGatewayType(), json_encode($charge));
+            $logger->LogPayment($cart->UserId, $charge->status, $charge->invoice, $charge->id, $currency->FromStripe($charge->amount), $currency->FromStripe($charge->balance_transaction->fee), $cart->Currency, null, null, Date::Now(), $charge->created, $this->GetGatewayType(), json_encode($charge));
             return $charge->status == 'succeeded';
         } catch (\Stripe\Error\Card $ex) {
             // Declined
@@ -574,10 +576,12 @@ class StripeGateway implements IPaymentGateway
     public function Refund(TransactionLogView $log, $amount, IPaymentTransactionLogger $logger)
     {
         try {
+            $currency = new \Booked\Currency($log->Currency);
+
             \Stripe\Stripe::setApiKey($this->SecretKey());
             $refund = \Stripe\Refund::create(array(
                 'charge' => $log->TransactionId,
-                'amount' => $amount * 100,
+                'amount' => $currency->ToStripe($amount),
                 'expand' => array('balance_transaction')
             ));
 
@@ -585,7 +589,7 @@ class StripeGateway implements IPaymentGateway
                 Log::Debug('Stripe refund response %s', json_encode($refund));
             }
 
-            $logger->LogRefund($log->Id, $refund->status, $refund->id, $refund->amount/100, $refund->amount/100, $refund->balance_transaction->fee/100, null, Date::Now(), $refund->created, json_encode($refund));
+            $logger->LogRefund($log->Id, $refund->status, $refund->id, $currency->FromStripe($refund->amount), $currency->FromStripe($refund->amount), $currency->FromStripe($refund->balance_transaction->fee), null, Date::Now(), $refund->created, json_encode($refund));
 
             return $refund->status == 'succeeded';
         } catch (\Stripe\Error\Card $ex) {

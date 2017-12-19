@@ -18,6 +18,9 @@
  * along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+require_once (ROOT_DIR . 'Domain/Values/Currency.php');
+use Booked\Currency;
+
 class CreditCost
 {
     /**
@@ -62,8 +65,8 @@ class CreditCost
     public function FormatCurrency($amount = null)
     {
         $toFormat = $amount == null ? $this->Cost() : $amount;
-        $fmt = new NumberFormatter(Resources::GetInstance()->CurrentLanguage, NumberFormatter::CURRENCY);
-        return $fmt->formatCurrency($toFormat, $this->Currency());
+        $currency = new Currency($this->Currency());
+        return $currency->Format($toFormat);
     }
 
     /**

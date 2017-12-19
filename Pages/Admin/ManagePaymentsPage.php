@@ -22,6 +22,7 @@ require_once(ROOT_DIR . 'Pages/Admin/AdminPage.php');
 require_once(ROOT_DIR . 'Pages/IPageable.php');
 require_once(ROOT_DIR . 'Presenters/Admin/ManagePaymentsPresenter.php');
 require_once(ROOT_DIR . 'Domain/Access/PaymentRepository.php');
+require_once(ROOT_DIR . 'Domain/Values/Currency.php');
 
 interface IManagePaymentsPage extends IActionPage
 {
@@ -165,6 +166,7 @@ class ManagePaymentsPage extends ActionPage implements IManagePaymentsPage
     {
         $paymentsEnabled = Configuration::Instance()->GetSectionKey(ConfigSection::CREDITS, ConfigKeys::CREDITS_ALLOW_PURCHASE, new BooleanConverter());
 
+        $this->Set('Currencies', \Booked\Currency::Currencies());
         $this->Set('PaymentsEnabled', $paymentsEnabled);
         $this->presenter->PageLoad();
         $this->Display('Admin/Payments/manage_payments.tpl');
