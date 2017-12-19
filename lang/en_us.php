@@ -536,7 +536,7 @@ class en_us extends Language
 		$strings['AllDay'] = 'All Day';
 		$strings['Everyday'] = 'Everyday';
 		$strings['IncludingCompletedReservations'] = 'Including Completed Reservations';
-		$strings['NotCountingCompletedReservations'] = 'Not Counting Completed Reservations';
+		$strings['NotCountingCompletedReservations'] = 'Not Including Completed Reservations';
 		$strings['RetrySkipConflicts'] = 'Skip conflicting reservations';
 		$strings['Retry'] = 'Retry';
 		$strings['RemoveExistingPermissions'] = 'Remove existing permissions?';

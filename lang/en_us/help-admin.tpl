@@ -16,11 +16,11 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 *}
+
 {include file='globalheader.tpl'}
 <h1>{$AppTitle} Administration</h1>
 
 <div id="help">
-    <h2>Administration</h2>
 
     <p>If you are in a group with the Application Administrator role assigned then you will see the Application
         Management menu item. All
@@ -30,7 +30,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
         <h3>Setting up Schedules</h3>
 
         <p>
-            When installing {$AppTitle} a default schedule will be created with out of the box settings. From the
+            When installing             a default schedule will be created with out of the box settings. From the
             Schedules menu option you can view and edit attributes of the current schedules.
         </p>
 
@@ -76,7 +76,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
             configuration of a resource.
         </p>
 
-        <p>Resources in {$AppTitle} can be anything you want to make bookable, such as rooms or equipment. Every
+        <p>Resources in             can be anything you want to make bookable, such as rooms or equipment. Every
             resource
             must be assigned to a schedule in order for it to be bookable. The resource will inherit whatever layout the
             schedule uses.</p>
@@ -195,7 +195,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
     <div id="help-quotas">
         <h3>Setting up Quotas</h3>
 
-        <p>Quotas restrict reservations from being booked based on a configurable limit. The quota system in {$AppTitle} is
+        <p>Quotas restrict reservations from being booked based on a configurable limit. The quota system in             is
             very flexible, allowing you to build limits based on reservation length and number reservations.</p>
 
         <p>Quota limits &quot;stack&quot;. For example, if a quota exists limiting a resource to 5 hours per day and
@@ -207,6 +207,9 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
         <p>Quotas applied to a group are enforced for each user in the group individually. It does not apply to the
             group's aggregated reservations.</p>
 
+        <p>If you choose to not include past reservations in the quota rules, the quota rule will only include current and
+            future reservations in it's calculation.</p>
+
         <p>It is important to remember that quota limits are enforced based on the schedule's timezone. For example, a
             daily limit would begin and end at
             midnight of the schedule's timezone; not the user's timezone.</p>
@@ -217,7 +220,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
     <div id="help-announcements">
         <h3>Setting up Announcements</h3>
 
-        <p>Announcements are a very simple way to display notifications to {$AppTitle} users.</p>
+        <p>Announcements are a very simple way to display notifications to             users.</p>
 
         <p>From the Announcements menu item
             you can view and manage the announcements that are displayed on users dashboards. An announcement can be
@@ -225,6 +228,10 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
             with an optional start and end date. An optional priority level is also available, which sorts announcements
             from 1
             to 10.</p>
+
+        <p>Announcements can be restricted to users in certain groups by setting a list of groups for the announcement. You can
+            also restrict announcements to users who have permission to specific resources.
+        </p>
 
         <p>HTML is allowed within the announcement text. This allows you to embed links or images from anywhere on the
             web.</p>
@@ -234,7 +241,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
     <div id="help-groups">
         <h3>Setting up Groups</h3>
 
-        <p>Groups in {$AppTitle} organize users, control resource access permissions and define roles within the
+        <p>Groups in             organize users, control resource access permissions and define roles within the
             application. Setting resource permissions for a group will grant access to all members of that group. Users
             can individually be granted additional
             resource permission.</p>
@@ -243,25 +250,29 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
         <p>Roles give a group of users the authorization to perform certain actions.</p>
 
-        <p>Application Administrator: Users that belong to a group that is given the Application Administrator role are
+        <p><em>Application Administrator:</em> Users that belong to a group that is given the Application Administrator
+            role are
             open to
             full administrative privileges. This role has nearly zero restrictions on what resources can be booked. It
             can
             manage all aspects of the application.</p>
 
-        <p>Group Administrator: Users that belong to a group that is given the Group Administrator role are able to
+        <p><em>Group Administrator:</em> Users that belong to a group that is given the Group Administrator role are
+            able to
             manage
             their groups and reserve on behalf of and manage users within that group. A group administrator must first
             be assigned the Group Administrator role.
             This group will then be available in the Group Administrators list.</p>
 
-        <p>Resource Administrator: Users that belong to a group that is given the Resource Administrators role have the
+        <p><em>Resource Administrator:</em> Users that belong to a group that is given the Resource Administrators role
+            have the
             same capabilities as Application
             Administrators for any resource which the group is assigned to. They can change resource details, black out
             times, manage and approve
             reservations.</p>
 
-        <p>Schedule Administrator: Users that belong to a group that is given the Schedule Administrators role have the
+        <p><em>Schedule Administrator:</em> Users that belong to a group that is given the Schedule Administrators role
+            have the
             same capabilities as Application
             Administrators for any resource that is on a schedule which the group is assigned to. They can change
             schedule details, black out times, manage and
@@ -297,7 +308,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
             resource
             access permissions of individual users, assign users to groups, deactivate or delete accounts, reset user
             passwords, and edit user details.
-            You can also add new users to {$AppTitle}, which is especially useful if self-registration is turned
+            You can also add new users to            , which is especially useful if self-registration is turned
             off.</p>
 
         <h3>Reservation Colors</h3>
@@ -311,7 +322,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
     <div id="help-attributes">
         <h3>Custom Attributes</h3>
 
-        <p>Custom Attributes are a powerful extension point in {$AppTitle}. You can add additional attributes to
+        <p>Custom Attributes are a powerful extension point in            . You can add additional attributes to
             Reservations, Resources, Resource Types and
             Users.</p>
 
@@ -344,7 +355,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
         <p>Private attributes are only shown to the reservation owner and those users who have administrative privileges
             over that reservation.</p>
 
-        <p>Custom attributes are available to plugins and can be used to extend the functionality of {$AppTitle}.</p>
+        <p>Custom attributes are available to plugins and can be used to extend the functionality of            .</p>
     </div>
 
     <div id="help-blackouts">
@@ -361,7 +372,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
         <p>Reports are accessible to all application, group, resource and schedule administrators. When the currently
             logged in
-            user has access to reporting features, they will see a Reports navigation item. {$AppTitle} comes with
+            user has access to reporting features, they will see a Reports navigation item.             comes with
             a set of
             Common Reports which can be viewed as a list of results, a chart, exported to CSV and printed. In addition,
             ad-hoc
@@ -376,11 +387,37 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
         <h3>Credits</h3>
 
         <p>Credits allow control over a user's usage. Credits must first be enabled in the application configuration
-            before they can be managed. Once enabled, administrators will have the ability to set the credit redemption
+            before they can be managed. The setting is $conf['settings']['credits']['enabled'] Once enabled, administrators will have the ability to set the credit redemption
             rates for peak and off peak times. Peak times are defined per schedule.</p>
 
         <p>If a reservation would bring a user over their credit limit, the reservation will be rejected. Administrators
             can manage user credits when managing user details.</p>
+    </div>
+
+    <div id="help-payments">
+        <h3>Payments</h3>
+
+        <p>To charge for reservation usage, users can purchase credits. This can be enabled by setting $conf['settings']['credits']['allow.purchase'] to true.
+        From the Payments section of Application Management administrators are able to set the cost per credit, configure payment gateways, and view purchase transaction history.</p>
+
+        <p>Booked supports two payment gateways: Stripe and PayPal. At least one must be enabled in order to allow purchasing credits.</p>
+
+        <p><em>Configuring Stripe</em></p>
+
+        <p>Within the Payments management screen, click the Payment Gateways tab and enable Stripe. Booked integrates with Stripe
+            using <a href="https://stripe.com/checkout">Stripe Checkout</a>, which requires use of the Stripe API. First create a <a href="https://www.stripe.com/">Stripe</a> account if you do not already have one. On the Stripe API screen, copy your <a href="https://stripe.com/docs/dashboard#api-keys">Stripe API keys</a>
+         into the Booked Stripe gateway settings and save the payment gateway configuration. Use the test API keys if you want to simulate purchasing credits.
+            Use the live API keys to charge users and collect payments.
+        </p>
+
+        <p><em>Configuring PayPal</em></p>
+        <p>Within the Payments management screen, click the Payment Gateways tab and enable PayPal. Booked integrates with PayPal
+            using <a href="https://developer.paypal.com/docs/integration/direct/express-checkout/integration-jsv4/">Express Checkout</a>, which requires use of the PayPal API.
+            First create a <a href="https://www.paypal.com/">PayPal</a> account if you do not already have one and navigate to <a href="https://developer.paypal.com">PayPal Developer</a>
+            In the REST API apps section, create a new app. In the App details section you will have access to both Sandbox and Live API credentials.
+            Copy your PayPal app credentials into the Booked PayPal gateway settings and save the payment configuration. Use the Sandbox credentials
+            if you want to simulate purchasing credits. Use the Live credentials to charge users and collect payments.
+        </p>
     </div>
 
     <div id="help-reminders">
@@ -481,7 +518,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                     class="note">{$MissedCheckinPath}</span>
         </p>
 
-        <p>An example cron configuration might look like: <span class="note">* * * * * php -f {$MissedCheckinPath}</span>
+        <p>An example cron configuration might look like: <span
+                    class="note">* * * * * php -f {$MissedCheckinPath}</span>
         </p>
 
         <p>If you have access to cPanel through a hosting provider, <a
@@ -580,7 +618,9 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
         <p class="setting"><span>$conf['settings']['name.format']</span>Display format for first name and last name.
             Default
-            is {literal}'{first} {last}'{/literal}.</p>
+            is {literal}
+            '{first} {last}'
+            {/literal}.</p>
 
         <p class="setting"><span>$conf['settings']['css.extension.file']</span>Full or relative URL to an additional CSS
             file to
@@ -869,7 +909,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
         {literal}
             <p class="setting"><span>$conf['settings']['reservation.labels']['reservation.popup']</span>The format of
                 what to display in reservation popups.
-                Possible values are {name} {dates} {duration} {title} {resources} {participants} {accessories} {description}
+                Possible values are {name} {dates} {duration} {title} {resources} {participants} {accessories}
+                {description}
                 {phone} {email}
                 {attributes} {pending}. Reservation custom attributes can be individually added using att with the
                 attribute id. For example {att1}.
@@ -892,14 +933,16 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
         <p class="setting"><span>$conf['settings']['credits']['enabled']</span>Whether or not credit functionality is
             enabled. Default is false.</p>
+
+        <p class="setting"><span>$conf['settings']['credits']['allow.purchase']</span>Whether or not users can purchase credits. Credits must be enabled for this functionality to work. Default is false.</p>
     </div>
 
     <h2>Available Label Tokens</h2>
 
-       <p>Available tokens for reservation labels
-           are {literal}{name}, {title}, {description}, {email}, {phone}, {organization}, {position}, {startdate}, {enddate} {resourcename} {participants} {invitees} {reservationAttributes}{/literal}
-           . Custom attributes can be added using att with the attribute id. For example {literal}{att1}{/literal}
-           Leave it blank for no label. Any combination of tokens can be used.</p>
+    <p>Available tokens for reservation labels
+        are {literal} {name}, {title}, {description}, {email}, {phone}, {organization}, {position}, {startdate}, {enddate} {resourcename} {participants} {invitees} {reservationAttributes}{/literal}
+        . Custom attributes can be added using att with the attribute id. For example {literal}{att1}{/literal}
+        Leave it blank for no label. Any combination of tokens can be used.</p>
 
     <h2>Plugins</h2>
 
@@ -931,7 +974,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
     <h2>Active Directory Integration</h2>
 
-    <p>{$AppTitle} can authenticate your users against Active Directory. To enable this, first set <span class="setting">$conf['settings']['plugins']['Authentication'] = 'ActiveDirectory';</span>
+    <p>{$AppTitle} can authenticate your users against Active Directory. To enable this, first set <span
+                class="setting">$conf['settings']['plugins']['Authentication'] = 'ActiveDirectory';</span>
     </p>
 
     <p>Next, open Application Management - Customization - Application Configuration and choose the
@@ -973,7 +1017,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
         The user only needs to belong to at least
         one listed. Blank for no restriction. ex) Group1,Group2</p>
 
-    <p class="setting"><span>$conf['settings']['sync.groups']</span>Whether or not to sync group membership into {$AppTitle}.
+    <p class="setting"><span>$conf['settings']['sync.groups']</span>Whether or not to sync group membership
+        into {$AppTitle}.
         The Active Directory groups must first
         be created in {$AppTitle}. Anything that doesn't exist in {$AppTitle} will be skipped.</p>
 
@@ -1076,7 +1121,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
     <h2>WordPress Integration</h2>
 
-    <p>{$AppTitle} can authenticate your users against a WordPress site running on the same server as {$AppTitle}. To enable this,
+    <p>{$AppTitle} can authenticate your users against a WordPress site running on the same server as {$AppTitle}. To
+        enable this,
         first set <span class="setting">$conf['settings']['plugins']['Authentication'] = 'WordPress';</span>
     </p>
 
