@@ -52,7 +52,9 @@ function Reservation(opts) {
 
         deleteButtonPrompt: $('#deleteButtonPrompt'),
 		additionalResources: $('#additionalResources'),
-        deleteRecurringButtons: $('#deleteRecurringButtons')
+        deleteRecurringButtons: $('#deleteRecurringButtons'),
+
+        reservationForm: $('#form-reservation')
 	};
 
 	var participation = {};
@@ -246,6 +248,12 @@ function Reservation(opts) {
 		attributesPlaceholder.load(url);
 	}
 
+	function CalculateCredits() {
+        ajaxPost(elements.reservationForm, opts.creditsUrl, null, function (data) {
+            console.log(data);
+        });
+    }
+
 	function GetSelectedResourceIds() {
 		var resourceIds = [parseInt($('#primaryResourceId').val())];
 		elements.additionalResources.find('.resourceId').each(function (i, element) {
@@ -257,6 +265,7 @@ function Reservation(opts) {
 
 	function onResourcesChanged() {
 		LoadCustomAttributes();
+		CalculateCredits();
 	}
 
 	function GetDisallowedAccessoryIds() {
@@ -523,7 +532,7 @@ function Reservation(opts) {
 			$('#retrySubmitParams').empty().append(retryParams.find('input'));
 			retryParams.empty();
 			//CloseSaveDialog();
-			$('#form-reservation').submit();
+			elements.reservationForm.submit();
 		});
 
 		$('#creatingNotification').hide();
@@ -539,7 +548,7 @@ function Reservation(opts) {
         $('#creatingNotification').show();
         $('#joiningWaitingList').removeClass('no-show');
 
-        ajaxPost($('#form-reservation'), opts.waitlistUrl, null, function (data) {
+        ajaxPost(elements.reservationForm, opts.waitlistUrl, null, function (data) {
             $('#result').html(data);
             ShowReservationAjaxResponse();
         });
@@ -567,7 +576,7 @@ function Reservation(opts) {
 			$('#checkingInMessage').removeClass('no-show');
 			$.blockUI({message: $('#wait-box')});
 
-			ajaxPost($('#form-reservation'), opts.checkinUrl, null, function (data) {
+			ajaxPost(elements.reservationForm, opts.checkinUrl, null, function (data) {
 				$('#result').html(data);
 				ShowReservationAjaxResponse();
 			});
@@ -578,7 +587,7 @@ function Reservation(opts) {
 			$('#checkingOutMessage').removeClass('no-show');
 			$.blockUI({message: $('#wait-box')});
 
-			ajaxPost($('#form-reservation'), opts.checkoutUrl, null, function (data) {
+			ajaxPost(elements.reservationForm, opts.checkoutUrl, null, function (data) {
 				$('#result').html(data);
 				ShowReservationAjaxResponse();
 			});
@@ -597,7 +606,7 @@ function Reservation(opts) {
 
 	var WireUpSaveDialog = function () {
 		$('.save').click(function () {
-			$('#form-reservation').submit();
+			elements.reservationForm.submit();
 		});
 	};
 

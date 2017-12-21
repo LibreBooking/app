@@ -289,6 +289,7 @@ class ReservationSavePage extends SecurePage implements IReservationSavePage
 
 	public function GetRepeatOptions()
 	{
+	    //TODO: Needed?
 		return $this->_presenter->GetRepeatOptions();
 	}
 
