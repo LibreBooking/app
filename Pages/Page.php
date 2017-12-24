@@ -64,6 +64,7 @@ abstract class Page implements IPage
 		$appTitle = Configuration::Instance()->GetKey(ConfigKeys::APP_TITLE);
 		$pageTile = $resources->GetString($titleKey);
 		$this->smarty->assign('Title', (empty($appTitle) ? 'Booked' : $appTitle) . (empty($pageTile) ? '' : ' - ' . $pageTile));
+		$this->smarty->assign('AppTitle', (empty($appTitle) ? 'Booked' : $appTitle));
 		$this->smarty->assign('CalendarJSFile', $resources->CalendarLanguageFile);
 
 		$this->smarty->assign('LoggedIn', $userSession->IsLoggedIn());

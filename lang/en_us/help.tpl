@@ -172,7 +172,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
         calendar follows the same steps. To subscribe to your personal calendar, open Schedule -> My Calendar. On the
         right side of the page, you will find a link to subscribe to the current calendar.</p>
 
-    <p>By default events for the past 7 days and future 365 days will be returned. This can be customized with the
+    <p>By default events for the next 30 will be returned. This can be customized with the
         following two query string parameters on the subscription URL. pastDayCount and futureDayCount will override the
         past and future number of days loaded, respectively.</p>
 
