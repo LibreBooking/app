@@ -419,8 +419,5 @@ class RepeatOptionsTests extends TestBase
 		/** @var $dates DateRange[] */
 		$dates = $repeat->GetDates($firstFriday);
 		$this->assertEquals(1, $dates[3]->GetBegin()->Day());
-
-
 	}
 }
-?>

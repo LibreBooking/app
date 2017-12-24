@@ -188,7 +188,7 @@ class FakeReservationRepository implements IReservationRepository
 	 */
 	public function LoadByReferenceNumber($referenceNumber)
 	{
-		// TODO: Implement LoadByReferenceNumber() method.
+		return $this->_Series;
 	}
 
 	/**

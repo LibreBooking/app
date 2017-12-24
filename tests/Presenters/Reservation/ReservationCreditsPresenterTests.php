@@ -30,125 +30,231 @@ class ReservationCreditsPresenterTests extends TestBase
      * @var ReservationCreditsPresenter
      */
     private $presenter;
+    /**
+     * @var FakeReservationRepository
+     */
+    private $reservationRepository;
+    /**
+     * @var FakeScheduleRepository
+     */
+    private $scheduleRepository;
+    /**
+     * @var FakeResourceRepository
+     */
+    private $resourceRepository;
 
     public function setup()
     {
         parent::setup();
 
         $this->page = new FakeReservationCreditsPage();
-        $this->presenter = new ReservationCreditsPresenter($this->page, $this->repository);
+        $this->reservationRepository = new FakeReservationRepository();
+        $this->scheduleRepository = new FakeScheduleRepository();
+        $this->resourceRepository = new FakeResourceRepository();
+
+        $this->presenter = new ReservationCreditsPresenter($this->page,
+            $this->reservationRepository,
+            $this->scheduleRepository,
+            $this->resourceRepository);
+
+        $this->fakeConfig->SetSectionKey(ConfigSection::CREDITS, ConfigKeys::CREDITS_ENABLED, 'true');
     }
 
     public function testReturnsNumberOfCreditsConsumedForNewReservation()
     {
-        $this->
+        $scheduleId = 100;
+        $resource1 = new FakeBookableResource(1);
+        $resource1->SetCreditsPerSlot(1);
+        $resource1->SetScheduleId($scheduleId);
+        $resource2 = new FakeBookableResource(2);
+        $resource2->SetCreditsPerSlot(1);
+        $resource2->SetScheduleId($scheduleId);
+
+        $fakeScheduleLayout = new FakeScheduleLayout();
+        $this->scheduleRepository->_Layout = $fakeScheduleLayout;
+        $fakeScheduleLayout->_SlotCount = new SlotCount(5, 0);
+
+        $this->page->_ResourceId = 1;
+        $this->page->_ResourceIds = [2];
+
+        $this->resourceRepository->_ResourceList[1] = $resource1;
+        $this->resourceRepository->_ResourceList[2] = $resource2;
+
         $this->presenter->PageLoad($this->fakeUser);
 
-        $this->assertEquals(10, $this->page->_CreditsConsumed);
+        $this->assertEquals(10, $this->page->_CreditsRequired, 'two resources for 5 slots');
     }
-    
+
     public function testReturnsNumberOfCreditsConsumedForExistingReservation()
     {
-        
+        $scheduleId = 100;
+        $resource1 = new FakeBookableResource(1);
+        $resource1->SetCreditsPerSlot(1);
+        $resource1->SetScheduleId($scheduleId);
+        $resource2 = new FakeBookableResource(2);
+        $resource2->SetCreditsPerSlot(1);
+        $resource2->SetScheduleId($scheduleId);
+
+        $builder = new ExistingReservationSeriesBuilder();
+        $series = $builder->Build();
+        $this->reservationRepository->_Series = $series;
+
+        $fakeScheduleLayout = new FakeScheduleLayout();
+        $this->scheduleRepository->_Layout = $fakeScheduleLayout;
+        $fakeScheduleLayout->_SlotCount = new SlotCount(5, 0);
+
+        $this->page->_ResourceId = 1;
+        $this->page->_ResourceIds = [2];
+        $this->page->_ReferenceNumber = '123';
+
+        $this->resourceRepository->_ResourceList[1] = $resource1;
+        $this->resourceRepository->_ResourceList[2] = $resource2;
+
+        $this->presenter->PageLoad($this->fakeUser);
+
+        $this->assertEquals(10, $this->page->_CreditsRequired, 'two resources for 5 slots');
     }
 }
 
 class FakeReservationCreditsPage implements IReservationCreditsPage
 {
-
     /**
-     * @return string
+     * @var int
      */
+    public $_CreditsRequired;
+    /**
+     * @var int
+     */
+    public $_ResourceId;
+    /**
+     * @var string
+     */
+    public $_RepeatType;
+    /**
+     * @var string
+     */
+    public $_RepeatInterval;
+    /**
+     * @var int[]|null
+     */
+    public $_RepeatWeekdays = [];
+    /**
+     * @var string
+     */
+    public $_RepeatMonthlyType;
+    /**
+     * @var string
+     */
+    public $_RepeatTerminationDate;
+    /**
+     * @var int
+     */
+    public $_UserId;
+    /**
+     * @var string
+     */
+    public $_StartDate;
+    /**
+     * @var string
+     */
+    public $_EndDate;
+    /**
+     * @var string
+     */
+    public $_StartTime;
+    /**
+     * @var string
+     */
+    public $_EndTime;
+    /**
+     * @var int[]|null
+     */
+    public $_ResourceIds;
+    /**
+     * @var string
+     */
+    public $_ReferenceNumber;
+
+    public function __construct()
+    {
+        $start = Date::Now()->AddHours(1);
+        $end = $start->AddHours(1);
+
+        $this->_ResourceId = 1;
+        $this->_UserId = 2;
+        $this->_StartDate = $start->Format('Y-m-d');
+        $this->_EndDate = $end->Format('Y-m-d');
+        $this->_StartTime = $start->Format('H:i');
+        $this->_EndDate = $end->Format('H:i');
+    }
+
     public function GetRepeatType()
     {
-        // TODO: Implement GetRepeatType() method.
+        return $this->_RepeatType;
     }
 
-    /**
-     * @return string|null
-     */
     public function GetRepeatInterval()
     {
-        // TODO: Implement GetRepeatInterval() method.
+        return $this->_RepeatInterval;
     }
 
-    /**
-     * @return int[]|null
-     */
     public function GetRepeatWeekdays()
     {
-        // TODO: Implement GetRepeatWeekdays() method.
+        return $this->_RepeatWeekdays;
     }
 
-    /**
-     * @return string|null
-     */
     public function GetRepeatMonthlyType()
     {
-        // TODO: Implement GetRepeatMonthlyType() method.
+        return $this->_RepeatMonthlyType;
     }
 
-    /**
-     * @return string|null
-     */
     public function GetRepeatTerminationDate()
     {
-        // TODO: Implement GetRepeatTerminationDate() method.
+        return $this->_RepeatTerminationDate;
     }
 
-    /**
-     * @return int
-     */
     public function GetUserId()
     {
-        // TODO: Implement GetUserId() method.
+        return $this->_UserId;
     }
 
-    /**
-     * @return int
-     */
     public function GetResourceId()
     {
-        // TODO: Implement GetResourceId() method.
+        return $this->_ResourceId;
     }
 
-    /**
-     * @return string
-     */
     public function GetStartDate()
     {
-        // TODO: Implement GetStartDate() method.
+        return $this->_StartDate;
     }
 
-    /**
-     * @return string
-     */
     public function GetEndDate()
     {
-        // TODO: Implement GetEndDate() method.
+        return $this->_EndDate;
     }
 
-    /**
-     * @return string
-     */
     public function GetStartTime()
     {
-        // TODO: Implement GetStartTime() method.
+        return $this->_StartTime;
     }
 
-    /**
-     * @return string
-     */
     public function GetEndTime()
     {
-        // TODO: Implement GetEndTime() method.
+        return $this->_EndTime;
     }
 
-    /**
-     * @return int[]
-     */
     public function GetResources()
     {
-        // TODO: Implement GetResources() method.
+        return $this->_ResourceIds;
+    }
+
+    public function GetReferenceNumber()
+    {
+        return $this->_ReferenceNumber;
+    }
+
+    public function SetCreditRequired($creditsRequired)
+    {
+       $this->_CreditsRequired = $creditsRequired;
     }
 }

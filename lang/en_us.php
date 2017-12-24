@@ -687,6 +687,7 @@ class en_us extends Language
         $strings['YourCredits'] = 'Your Credits';
         $strings['PayWithCard'] = 'Pay with Card';
         $strings['or'] = 'or';
+        $strings['CreditsRequired'] = 'Credits Required';
         // End Strings
 
 		// Install

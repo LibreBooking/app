@@ -26,6 +26,7 @@ class FakeUser extends User
     public $_WantsEmail;
     public $_Password;
     public $_Salt;
+    public $_CurrentCredits;
 
     public function __construct($userId = null, $email = 'test@test.com')
 	{
@@ -91,5 +92,10 @@ class FakeUser extends User
     {
        $this->_Password = $encryptedPassword;
        $this->_Salt = $salt;
+    }
+
+    public function GetCurrentCredits()
+    {
+        return $this->_CurrentCredits;
     }
 }

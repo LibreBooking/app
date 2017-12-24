@@ -31,17 +31,129 @@ class ReservationCreditsPresenter
     /**
      * @var IReservationViewRepository
      */
-    private $reservationViewRepository;
+    private $reservationRepository;
+    /**
+     * @var IScheduleRepository
+     */
+    private $scheduleRepository;
+    /**
+     * @var IResourceRepository
+     */
+    private $resourceRepository;
 
     public function __construct(IReservationCreditsPage $page,
                                 IReservationRepository $reservationRepository,
-                                IScheduleRepository $scheduleRepository)
+                                IScheduleRepository $scheduleRepository,
+                                IResourceRepository $resourceRepository)
     {
         $this->page = $page;
-        $this->reservationViewRepository = $reservationRepository;
+        $this->reservationRepository = $reservationRepository;
+        $this->scheduleRepository = $scheduleRepository;
+        $this->resourceRepository = $resourceRepository;
     }
 
     public function PageLoad(UserSession $userSession)
     {
+        if (!Configuration::Instance()->GetSectionKey(ConfigSection::CREDITS, ConfigKeys::CREDITS_ENABLED, new BooleanConverter()))
+        {
+            $this->page->SetCreditRequired(0);
+            return;
+        }
+
+        $reservation = $this->GetReservation($userSession);
+        $layout = $this->scheduleRepository->GetLayout($reservation->ScheduleId(), new ScheduleLayoutFactory($userSession->Timezone));
+        $reservation->CalculateCredits($layout);
+        $creditsRequired = $reservation->GetCreditsRequired();
+        $this->page->SetCreditRequired($creditsRequired);
+    }
+
+    private function GetReservation(UserSession $userSession)
+    {
+        $referenceNumber = $this->page->GetReferenceNumber();
+
+        if (empty($referenceNumber)) {
+            $userId = $this->page->GetUserId();
+            $primaryResourceId = $this->page->GetResourceId();
+            $resource = $this->resourceRepository->LoadById($primaryResourceId);
+            $roFactory = new RepeatOptionsFactory();
+            $repeatOptions = $roFactory->CreateFromComposite($this->page, $userSession->Timezone);
+            $duration = $this->GetReservationDuration($userSession);
+
+            $reservationSeries = ReservationSeries::Create($userId, $resource, null, null, $duration, $repeatOptions, $userSession);
+//
+//            echo json_encode($reservationSeries->Instances());
+//            die();
+            $resourceIds = $this->GetAdditionalResourceIds();
+            foreach ($resourceIds as $resourceId) {
+                if ($primaryResourceId != $resourceId) {
+                    $reservationSeries->AddResource($this->resourceRepository->LoadById($resourceId));
+                }
+            }
+
+            return $reservationSeries;
+        }
+        else {
+            $referenceNumber = $this->page->GetReferenceNumber();
+            $existingSeries = $this->reservationRepository->LoadByReferenceNumber($referenceNumber);
+
+            $resourceId = $this->page->GetResourceId();
+            $resourceIds = $this->GetAdditionalResourceIds();
+
+            if (empty($resourceId)) {
+                // the first additional resource will become the primary if the primary is removed
+                $resourceId = array_shift($additionalResourceIds);
+            }
+
+            $resource = $this->resourceRepository->LoadById($resourceId);
+            $existingSeries->Update(
+                $this->page->GetUserId(),
+                $resource,
+                null,
+                null,
+                $userSession);
+
+            $existingSeries->UpdateDuration($this->GetReservationDuration($userSession));
+            $roFactory = new RepeatOptionsFactory();
+
+            $existingSeries->Repeats($roFactory->CreateFromComposite($this->page, $userSession->Timezone));
+
+            $additionalResources = array();
+            foreach ($resourceIds as $additionalResourceId) {
+                if ($additionalResourceId != $resourceId) {
+                    $additionalResources[] = $this->resourceRepository->LoadById($additionalResourceId);
+                }
+            }
+
+            $existingSeries->ChangeResources($additionalResources);
+
+            return $existingSeries;
+        }
+    }
+
+    /**
+     * @param UserSession $userSession
+     * @return DateRange
+     */
+    private function GetReservationDuration(UserSession $userSession)
+    {
+        $startDate = $this->page->GetStartDate();
+        $startTime = $this->page->GetStartTime();
+        $endDate = $this->page->GetEndDate();
+        $endTime = $this->page->GetEndTime();
+
+        $timezone = $userSession->Timezone;
+        return DateRange::Create($startDate . ' ' . $startTime, $endDate . ' ' . $endTime, $timezone);
+    }
+
+    /**
+     * @return array|int[]
+     */
+    private function GetAdditionalResourceIds()
+    {
+        $resourceIds = $this->page->GetResources();
+        if (empty($resourceIds)) {
+            $resourceIds = [];
+        }
+        return $resourceIds;
     }
 }

@@ -1769,8 +1769,12 @@ a.remove {
   text-decoration: line-through;
   color: #AA3939;
 }
-#availableCreditsCount {
+#availableCreditsCount,
+#requiredCreditsCount {
   font-weight: bold;
+}
+#requiredCreditsCount.insufficient-credits {
+  color: #AA3939;
 }
 #page-view-reservation .participationAction {
   margin-bottom: 5px;

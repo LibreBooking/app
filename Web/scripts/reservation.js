@@ -34,6 +34,7 @@ function Reservation(opts) {
 		changeUserAutocomplete: $('#changeUserAutocomplete'),
 		userName: $('#userName'),
         availableCreditsCount: $('#availableCreditsCount'),
+        requiredCreditsCount: $('#requiredCreditsCount'),
 		userId: $('#userId'),
 
 		referenceNumber: $('#referenceNumber'),
@@ -156,7 +157,8 @@ function Reservation(opts) {
 		WireUpButtonPrompt();
 		WireUpSaveDialog();
 		DisplayDuration();
-		WireUpAttachments();
+        CalculateCredits();
+        WireUpAttachments();
 		InitializeAutoRelease();
 
 		elements.userId.change(function () {
@@ -174,7 +176,6 @@ function Reservation(opts) {
         $('#hdnDeleteReason').val(reason);
     }
 
-// pre-submit callback
 	Reservation.prototype.preSubmit = function (formData, jqForm, options) {
 		$.blockUI({message: $('#wait-box')});
 
@@ -186,7 +187,6 @@ function Reservation(opts) {
 		return true;
 	};
 
-	// post-submit callback 
 	Reservation.prototype.showResponse = function (responseText, statusText, xhr, $form) {
 		ShowReservationAjaxResponse();
 	};
@@ -236,6 +236,10 @@ function Reservation(opts) {
 		});
 	};
 
+	Reservation.prototype.repeatOptionsChanged = function() {
+	    CalculateCredits();
+    };
+
 	function LoadCustomAttributes() {
 		var attributesPlaceholder = $('#custom-attributes-placeholder');
 		attributesPlaceholder.html('<span class="fa fa-spinner fa-spin fa-2x"/>');
@@ -249,9 +253,19 @@ function Reservation(opts) {
 	}
 
 	function CalculateCredits() {
-        ajaxPost(elements.reservationForm, opts.creditsUrl, null, function (data) {
-            console.log(data);
-        });
+	    if (options.creditsEnabled) {
+            elements.requiredCreditsCount.removeClass('insufficient-credits');
+	        elements.requiredCreditsCount.html('<span class="fa fa-spin fa-spinner"></span>');
+	        var availableCredits = parseInt(elements.availableCreditsCount.text());
+            ajaxPost(elements.reservationForm, opts.creditsUrl, null, function (data) {
+
+                elements.requiredCreditsCount.text(data.creditsRequired);
+                if (availableCredits < data.creditsRequired)
+                {
+                    elements.requiredCreditsCount.addClass('insufficient-credits');
+                }
+            });
+        }
     }
 
 	function GetSelectedResourceIds() {
@@ -638,24 +652,25 @@ function Reservation(opts) {
 		elements.endDate.change(function () {
 			PopulatePeriodDropDown(elements.endDate, elements.endTime, elements.endDateTextbox, 'end');
 			DisplayDuration();
-
+            CalculateCredits();
 			elements.endDate.data['endPreviousVal'] = elements.endDate.val();
-		});
+        });
 
 		elements.beginTime.change(function () {
 			var diff = dateHelper.GetTimeDifference(elements.beginTime.data['beginTimePreviousVal'], elements.beginTime.val());
 
 			var newTime = dateHelper.AddTimeDiff(diff, elements.endTime.val());
 
-			//console.log(newTime);
 			elements.endTime.val(newTime);
 			elements.beginTime.data['beginTimePreviousVal'] = elements.beginTime.val();
 
 			DisplayDuration();
+            CalculateCredits();
 		});
 
 		elements.endTime.change(function () {
 			DisplayDuration();
+            CalculateCredits();
 		});
 
 		var PopulatePeriodDropDown = function (dateElement, periodElement, dateTextbox, type) {
@@ -924,7 +939,8 @@ function Reservation(opts) {
 
 		_ownerId = id;
 		$('#changeUsers').hide();
-	};
+        CalculateCredits();
+    };
 
 	changeUser.showAll = function () {
 		var allUserList;

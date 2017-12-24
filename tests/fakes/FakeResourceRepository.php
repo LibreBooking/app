@@ -56,6 +56,10 @@ class FakeResourceRepository implements IResourceRepository
 	 */
 	public function LoadById($resourceId)
 	{
+	    if (isset($this->_ResourceList[$resourceId]))
+        {
+            return $this->_ResourceList[$resourceId];
+        }
 		return $this->_Resource;
 	}
 

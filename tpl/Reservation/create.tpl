@@ -97,8 +97,10 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 									</div>
 								</div>
 							{/if}
-							<div id="availableCredits" {if !$CreditsEnabled}style="display:none" }{/if}>{translate key=AvailableCredits} <span
-										id="availableCreditsCount">{$CurrentUserCredits}</span></div>
+							<div id="availableCredits" {if !$CreditsEnabled}style="display:none" }{/if}>
+                                {translate key=AvailableCredits} <span id="availableCreditsCount">{$CurrentUserCredits}</span> |
+                                {translate key=CreditsRequired} <span id="requiredCreditsCount"><span class="fa fa-spin fa-spinner"></span></span>
+                            </div>
 						</div>
 					</div>
 
@@ -502,7 +504,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			guestLabel: '({translate key=Guest})',
 			accessoriesUrl: 'ajax/available_accessories.php?{QueryStringKeys::START_DATE}=[sd]&{QueryStringKeys::END_DATE}=[ed]&{QueryStringKeys::START_TIME}=[st]&{QueryStringKeys::END_TIME}=[et]&{QueryStringKeys::REFERENCE_NUMBER}=[rn]',
 			resourcesUrl: 'ajax/unavailable_resources.php?{QueryStringKeys::START_DATE}=[sd]&{QueryStringKeys::END_DATE}=[ed]&{QueryStringKeys::START_TIME}=[st]&{QueryStringKeys::END_TIME}=[et]&{QueryStringKeys::REFERENCE_NUMBER}=[rn]',
-            creditsUrl: 'ajax/reservation_credits.php'
+            creditsUrl: 'ajax/reservation_credits.php',
+            creditsEnabled: '{$CreditsEnabled}'
 		};
 
 		var reminderOpts = {
@@ -549,6 +552,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 		var recurrence = new Recurrence(recurOpts);
 		recurrence.init();
+
+		recurrence.onChange(reservation.repeatOptionsChanged);
 
 		var ajaxOptions = {
 			target: '#result', // target element(s) to be updated with server response

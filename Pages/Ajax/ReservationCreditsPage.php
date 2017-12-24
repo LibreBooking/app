@@ -56,6 +56,16 @@ interface IReservationCreditsPage extends IRepeatOptionsComposite
      * @return int[]
      */
     public function GetResources();
+
+    /**
+     * @return string
+     */
+    public function GetReferenceNumber();
+
+    /**
+     * @param int $creditsRequired
+     */
+    public function SetCreditRequired($creditsRequired);
 }
 
 class ReservationCreditsPage extends Page implements IReservationCreditsPage
@@ -69,7 +79,10 @@ class ReservationCreditsPage extends Page implements IReservationCreditsPage
 	{
 		parent::__construct();
 
-		$this->presenter = new ReservationCreditsPresenter($this, new ReservationViewRepository());
+		$this->presenter = new ReservationCreditsPresenter($this,
+            new ReservationRepository(),
+            new ScheduleRepository(),
+            new ResourceRepository());
 	}
 
 	public function PageLoad()
@@ -192,5 +205,15 @@ class ReservationCreditsPage extends Page implements IReservationCreditsPage
     public function GetRepeatTerminationDate()
     {
         return $this->GetForm(FormKeys::END_REPEAT_DATE);
+    }
+
+    public function GetReferenceNumber()
+    {
+       return $this->GetForm(FormKeys::REFERENCE_NUMBER);
+    }
+
+    public function SetCreditRequired($creditsRequired)
+    {
+        $this->SetJson(array('creditsRequired' => $creditsRequired));
     }
 }

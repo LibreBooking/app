@@ -182,7 +182,6 @@ class ExistingReservationSeriesBuilder
 
 		return $this->series;
 	}
-
 }
 
 class TestHelperExistingReservationSeries extends ExistingReservationSeries
