@@ -395,7 +395,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
     </div>
 
     <div id="help-payments">
-        <h3>Payments</h3>
+        <h3>Paying for Reservation Usage</h3>
 
         <p>To charge for reservation usage, users can purchase credits. This can be enabled by setting $conf['settings']['credits']['allow.purchase'] to true.
         From the Payments section of Application Management administrators are able to set the cost per credit, configure payment gateways, and view purchase transaction history.</p>

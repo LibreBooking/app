@@ -146,8 +146,9 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
     credits per slot. If you don't have enough credits, you will not be allowed to complete a booking. You can view your
     credit usage in the Credits section of My Account</p>
 
-    <p>Optionally, your administrator may allow you to purchase credits. You can purchase credits in the Credits section of My
-    Account. In this section you can also view your purchase history.</p>
+    <h2>Paying for Reservation Usage</h2>
+    <p>Reservations can be paid for using credits. If you do not have enough credits to complete a reservation, you can purchase credits in the Credits section of My
+    Account. You can also view your purchase history and credit usage history in the Credits section of My Account.</p>
 
     <h2>Adding a Reservation to Calendar (Outlook&reg;, iCal, Mozilla Lightning, Evolution)</h2>
 
