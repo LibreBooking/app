@@ -99,6 +99,7 @@ class Resources implements IResourceLocalization
 		$this->systemDateKeys['ical'] = 'Ymd\THis\Z';
 		$this->systemDateKeys['system'] = 'Y-m-d';
 		$this->systemDateKeys['fullcalendar'] = 'Y-m-d H:i';
+		$this->systemDateKeys['google'] = 'Ymd\\THi00\\Z';
 
 		$this->LoadAvailableLanguages();
 	}

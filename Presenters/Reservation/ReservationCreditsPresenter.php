@@ -80,9 +80,7 @@ class ReservationCreditsPresenter
             $duration = $this->GetReservationDuration($userSession);
 
             $reservationSeries = ReservationSeries::Create($userId, $resource, null, null, $duration, $repeatOptions, $userSession);
-//
-//            echo json_encode($reservationSeries->Instances());
-//            die();
+
             $resourceIds = $this->GetAdditionalResourceIds();
             foreach ($resourceIds as $resourceId) {
                 if ($primaryResourceId != $resourceId) {

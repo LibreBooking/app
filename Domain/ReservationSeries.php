@@ -662,6 +662,18 @@ class ReservationSeries
 
 	public function CalculateCredits(IScheduleLayout $layout)
 	{
+	    $credits = 0;
+	    foreach ($this->AllResources() as $resource)
+        {
+            $credits += ($resource->GetCreditsPerSlot() + $resource->GetPeakCreditsPerSlot());
+        }
+
+        if ($credits == 0)
+        {
+            $this->creditsRequired = 0;
+            return;
+        }
+
 		$this->TotalSlots($layout);
 		$creditsRequired = 0;
 		foreach ($this->Instances() as $instance)
@@ -672,7 +684,7 @@ class ReservationSeries
 		$this->creditsRequired = $creditsRequired;
 	}
 
-	public function TotalSlots(IScheduleLayout $layout)
+	private function TotalSlots(IScheduleLayout $layout)
 	{
 		$slots = 0;
 		foreach ($this->Instances() as $instance)

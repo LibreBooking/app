@@ -250,6 +250,11 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 							<a href="{$icsUrl}" download="{$icsUrl}" class="btn btn-default">
 								<span class="fa fa-calendar"></span>
 								{translate key=AddToOutlook}</a>
+
+                            <a href="http://www.google.com/calendar/event?action=TEMPLATE&text={$ReservationTitle|escape:'url'}&dates={formatdate date=$StartDate->ToUtc() key=google}/{formatdate date=$EndDate->ToUtc() key=google}&ctz={$StartDate->Timezone()}&details={$Description|escape:'url'}&location={$Resource->Name|escape:'url'}&trp=false&sprop=&sprop=name:" target="_blank" rel="nofollow" class="btn btn-default">
+                                <span class="fa fa-google"></span>
+                                {translate key=AddToGoogleCalendar}</a>
+
 							<button type="button" class="btnPrint btn btn-default">
 								<span class="fa fa-print"></span>
 								{translate key='Print'}</button>

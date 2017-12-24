@@ -688,6 +688,7 @@ class en_us extends Language
         $strings['PayWithCard'] = 'Pay with Card';
         $strings['or'] = 'or';
         $strings['CreditsRequired'] = 'Credits Required';
+        $strings['AddToGoogleCalendar'] = 'Add to Google';
         // End Strings
 
 		// Install
