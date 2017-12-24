@@ -468,7 +468,7 @@ class User
         $user->attributes[UserAttribute::Position] = $row[ColumnNames::POSITION];
         $user->attributes[UserAttribute::Organization] = $row[ColumnNames::ORGANIZATION];
 
-        $user->isApplicationAdmin = Configuration::Instance()->GetKey(ConfigKeys::ADMIN_EMAIL) == $row[ColumnNames::EMAIL];
+        $user->isApplicationAdmin = Configuration::Instance()->IsAdminEmail($row[ColumnNames::EMAIL]);
 
         return $user;
     }

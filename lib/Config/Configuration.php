@@ -63,6 +63,17 @@ interface IConfigurationFile
 	 * @return string
 	 */
 	public function GetDefaultTimezone();
+
+    /**
+     * @param $emailAddress
+     * @return bool
+     */
+    public function IsAdminEmail($emailAddress);
+
+    /**
+     * @return string
+     */
+    public function GetAdminEmail();
 }
 
 class Configuration implements IConfiguration
@@ -165,6 +176,16 @@ class Configuration implements IConfiguration
 
 		return $tz;
 	}
+
+    public function IsAdminEmail($emailAddress)
+    {
+       return $this->File(self::DEFAULT_CONFIG_ID)->IsAdminEmail($emailAddress);
+    }
+
+    public function GetAdminEmail()
+    {
+        return $this->File(self::DEFAULT_CONFIG_ID)->GetAdminEmail();
+    }
 }
 
 class ConfigurationFile implements IConfigurationFile
@@ -236,4 +257,36 @@ class ConfigurationFile implements IConfigurationFile
 
 		return $tz;
 	}
+
+    /**
+     * @return string[]
+     */
+    private function GetAllAdminEmails()
+    {
+        $adminEmail = Configuration::Instance()->GetKey(ConfigKeys::ADMIN_EMAIL);
+        return array_map('trim', preg_split('/[\s,;]+/', $adminEmail));
+    }
+
+    public function IsAdminEmail($emailAddress)
+    {
+        $adminEmails = $this->GetAllAdminEmails();
+
+        foreach ($adminEmails as $email)
+        {
+            if( strtolower($emailAddress) == strtolower($email))
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * @return string
+     */
+    public function GetAdminEmail()
+    {
+        $adminEmails = $this->GetAllAdminEmails();
+        return $adminEmails[0];
+    }
 }

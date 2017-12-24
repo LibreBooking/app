@@ -40,7 +40,7 @@ class AccountCreationEmail extends EmailMessage
 	 */
 	function To()
 	{
-		return new EmailAddress(Configuration::Instance()->GetKey(ConfigKeys::ADMIN_EMAIL),
+		return new EmailAddress(Configuration::Instance()->GetAdminEmail(),
 								Configuration::Instance()->GetKey(ConfigKeys::APP_TITLE));
 	}
 

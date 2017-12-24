@@ -93,9 +93,4 @@ class FakeUser extends User
        $this->_Password = $encryptedPassword;
        $this->_Salt = $salt;
     }
-
-    public function GetCurrentCredits()
-    {
-        return $this->_CurrentCredits;
-    }
 }

@@ -147,7 +147,7 @@ class AuthorizationService implements IAuthorizationService
      */
     public function IsApplicationAdministrator(User $user)
     {
-        if (strtolower($user->EmailAddress()) == strtolower(Configuration::Instance()->GetKey(ConfigKeys::ADMIN_EMAIL)))
+        if (Configuration::Instance()->IsAdminEmail($user->EmailAddress()))
         {
             return true;
         }

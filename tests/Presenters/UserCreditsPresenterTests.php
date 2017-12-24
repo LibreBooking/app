@@ -102,7 +102,8 @@ class UserCreditsPresenterTests extends TestBase
                 'selfref',
                 'refundref',
                 'gatewaydate',
-                'PayPal')
+                'PayPal',
+                10)
         ));
 
         $this->presenter->GetTransactionLog($this->fakeUser);

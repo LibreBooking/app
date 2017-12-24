@@ -83,8 +83,8 @@ class CalendarSubscriptionPresenterTests extends TestBase
 		$scheduleId = 999;
 		$schedule = new FakeSchedule($scheduleId);
 
-		$weekAgo = Date::Now()->AddDays(-7);
-		$nextYear = Date::Now()->AddDays(365);
+		$weekAgo = Date::Now()->AddDays(0);
+		$nextYear = Date::Now()->AddDays(30);
 
 		$this->page->ScheduleId = $publicId;
 
@@ -111,8 +111,8 @@ class CalendarSubscriptionPresenterTests extends TestBase
 		$resourceId = 999;
 		$resource = new FakeBookableResource($resourceId);
 
-		$weekAgo = Date::Now()->AddDays(-7);
-		$nextYear = Date::Now()->AddDays(365);
+		$weekAgo = Date::Now()->AddDays(0);
+		$nextYear = Date::Now()->AddDays(30);
 
 		$this->page->ResourceId = $publicId;
 
@@ -139,8 +139,8 @@ class CalendarSubscriptionPresenterTests extends TestBase
 		$userId = 999;
 		$user = new FakeUser($userId);
 
-		$weekAgo = Date::Now()->AddDays(-7);
-		$nextYear = Date::Now()->AddDays(365);
+		$weekAgo = Date::Now()->AddDays(0);
+		$nextYear = Date::Now()->AddDays(30);
 
 		$this->page->UserId = $publicId;
 
@@ -169,8 +169,8 @@ class CalendarSubscriptionPresenterTests extends TestBase
 
 		$resourceIds = array(2);
 
-		$weekAgo = Date::Now()->AddDays(-7);
-		$nextYear = Date::Now()->AddDays(365);
+		$weekAgo = Date::Now()->AddDays(0);
+		$nextYear = Date::Now()->AddDays(30);
 
 		$this->page->ResourceGroupId = $publicId;
 

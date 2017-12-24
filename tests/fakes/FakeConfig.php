@@ -54,11 +54,16 @@ class FakeConfig extends Configuration implements IConfiguration
 	}
 }
 
-class FakeConfigFile implements IConfigurationFile
+class FakeConfigFile extends ConfigurationFile implements IConfigurationFile
 {
 	public $_values = array();
 	public $_sections = array();
 	public $_ScriptUrl = '';
+
+    public function __construct()
+    {
+        parent::__construct(array(Configuration::SETTINGS => array()));
+    }
 
 	public function GetKey($keyName, $converter = null)
 	{
