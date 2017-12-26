@@ -40,23 +40,28 @@ class ReservationCreditsPresenter
      * @var IResourceRepository
      */
     private $resourceRepository;
+    /**
+     * @var IPaymentRepository
+     */
+    private $paymentRepository;
 
     public function __construct(IReservationCreditsPage $page,
                                 IReservationRepository $reservationRepository,
                                 IScheduleRepository $scheduleRepository,
-                                IResourceRepository $resourceRepository)
+                                IResourceRepository $resourceRepository,
+                                IPaymentRepository $paymentRepository)
     {
         $this->page = $page;
         $this->reservationRepository = $reservationRepository;
         $this->scheduleRepository = $scheduleRepository;
         $this->resourceRepository = $resourceRepository;
+        $this->paymentRepository = $paymentRepository;
     }
 
     public function PageLoad(UserSession $userSession)
     {
-        if (!Configuration::Instance()->GetSectionKey(ConfigSection::CREDITS, ConfigKeys::CREDITS_ENABLED, new BooleanConverter()))
-        {
-            $this->page->SetCreditRequired(0);
+        if (!Configuration::Instance()->GetSectionKey(ConfigSection::CREDITS, ConfigKeys::CREDITS_ENABLED, new BooleanConverter())) {
+            $this->page->SetCreditRequired(0, null);
             return;
         }
 
@@ -64,7 +69,14 @@ class ReservationCreditsPresenter
         $layout = $this->scheduleRepository->GetLayout($reservation->ScheduleId(), new ScheduleLayoutFactory($userSession->Timezone));
         $reservation->CalculateCredits($layout);
         $creditsRequired = $reservation->GetCreditsRequired();
-        $this->page->SetCreditRequired($creditsRequired);
+
+        $cost = '';
+        if (Configuration::Instance()->GetSectionKey(ConfigSection::CREDITS, ConfigKeys::CREDITS_ALLOW_PURCHASE, new BooleanConverter())) {
+            $creditCost = $this->paymentRepository->GetCreditCost();
+            $cost = $creditCost->GetFormattedTotal($creditsRequired);
+//            die('req '  . $creditsRequired . 'cost'. ($creditsRequired * $creditCost->Cost()));
+        }
+        $this->page->SetCreditRequired($creditsRequired, $cost);
     }
 
     private function GetReservation(UserSession $userSession)

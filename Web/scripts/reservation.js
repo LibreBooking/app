@@ -35,6 +35,7 @@ function Reservation(opts) {
 		userName: $('#userName'),
         availableCreditsCount: $('#availableCreditsCount'),
         requiredCreditsCount: $('#requiredCreditsCount'),
+        creditCost: $('#creditCost'),
 		userId: $('#userId'),
 
 		referenceNumber: $('#referenceNumber'),
@@ -255,14 +256,17 @@ function Reservation(opts) {
 	function CalculateCredits() {
 	    if (options.creditsEnabled) {
             elements.requiredCreditsCount.removeClass('insufficient-credits');
+            elements.creditCost.removeClass('insufficient-credits');
 	        elements.requiredCreditsCount.html('<span class="fa fa-spin fa-spinner"></span>');
 	        var availableCredits = parseInt(elements.availableCreditsCount.text());
             ajaxPost(elements.reservationForm, opts.creditsUrl, null, function (data) {
 
                 elements.requiredCreditsCount.text(data.creditsRequired);
+                elements.creditCost.text('(' + data.cost + ')');
                 if (availableCredits < data.creditsRequired)
                 {
                     elements.requiredCreditsCount.addClass('insufficient-credits');
+                    elements.creditCost.addClass('insufficient-credits');
                 }
             });
         }

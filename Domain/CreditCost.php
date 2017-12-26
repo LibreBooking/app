@@ -64,7 +64,7 @@ class CreditCost
      */
     public function FormatCurrency($amount = null)
     {
-        $toFormat = $amount == null ? $this->Cost() : $amount;
+        $toFormat = is_null($amount) ? $this->Cost() : $amount;
         $currency = new Currency($this->Currency());
         return $currency->Format($toFormat);
     }

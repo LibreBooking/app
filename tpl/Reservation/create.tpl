@@ -98,8 +98,11 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 								</div>
 							{/if}
 							<div id="availableCredits" {if !$CreditsEnabled}style="display:none" }{/if}>
-                                {translate key=AvailableCredits} <span id="availableCreditsCount">{$CurrentUserCredits}</span> |
-                                {translate key=CreditsRequired} <span id="requiredCreditsCount"><span class="fa fa-spin fa-spinner"></span></span>
+                                {translate key=AvailableCredits}
+                                <span id="availableCreditsCount">{$CurrentUserCredits}</span> |
+                                {translate key=CreditsRequired}
+                                <span id="requiredCreditsCount"><span class="fa fa-spin fa-spinner"></span></span>
+                                <span id="creditCost"></span>
                             </div>
 						</div>
 					</div>

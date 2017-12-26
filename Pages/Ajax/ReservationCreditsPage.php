@@ -64,8 +64,9 @@ interface IReservationCreditsPage extends IRepeatOptionsComposite
 
     /**
      * @param int $creditsRequired
+     * @param string $cost
      */
-    public function SetCreditRequired($creditsRequired);
+    public function SetCreditRequired($creditsRequired, $cost);
 }
 
 class ReservationCreditsPage extends Page implements IReservationCreditsPage
@@ -82,7 +83,8 @@ class ReservationCreditsPage extends Page implements IReservationCreditsPage
 		$this->presenter = new ReservationCreditsPresenter($this,
             new ReservationRepository(),
             new ScheduleRepository(),
-            new ResourceRepository());
+            new ResourceRepository(),
+            new PaymentRepository());
 	}
 
 	public function PageLoad()
@@ -212,8 +214,8 @@ class ReservationCreditsPage extends Page implements IReservationCreditsPage
        return $this->GetForm(FormKeys::REFERENCE_NUMBER);
     }
 
-    public function SetCreditRequired($creditsRequired)
+    public function SetCreditRequired($creditsRequired, $cost)
     {
-        $this->SetJson(array('creditsRequired' => $creditsRequired));
+        $this->SetJson(array('creditsRequired' => $creditsRequired, 'cost' => $cost));
     }
 }

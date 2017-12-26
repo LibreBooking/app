@@ -1770,10 +1770,12 @@ a.remove {
   color: #AA3939;
 }
 #availableCreditsCount,
-#requiredCreditsCount {
+#requiredCreditsCount,
+#creditCost {
   font-weight: bold;
 }
-#requiredCreditsCount.insufficient-credits {
+#requiredCreditsCount.insufficient-credits,
+#creditCost.insufficient-credits {
   color: #AA3939;
 }
 #page-view-reservation .participationAction {

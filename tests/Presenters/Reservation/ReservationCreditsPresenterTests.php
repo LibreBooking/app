@@ -42,6 +42,10 @@ class ReservationCreditsPresenterTests extends TestBase
      * @var FakeResourceRepository
      */
     private $resourceRepository;
+    /**
+     * @var FakePaymentRepository
+     */
+    private $paymentRepository;
 
     public function setup()
     {
@@ -51,13 +55,16 @@ class ReservationCreditsPresenterTests extends TestBase
         $this->reservationRepository = new FakeReservationRepository();
         $this->scheduleRepository = new FakeScheduleRepository();
         $this->resourceRepository = new FakeResourceRepository();
+        $this->paymentRepository = new FakePaymentRepository();
 
         $this->presenter = new ReservationCreditsPresenter($this->page,
             $this->reservationRepository,
             $this->scheduleRepository,
-            $this->resourceRepository);
+            $this->resourceRepository,
+            $this->paymentRepository);
 
         $this->fakeConfig->SetSectionKey(ConfigSection::CREDITS, ConfigKeys::CREDITS_ENABLED, 'true');
+        $this->fakeConfig->SetSectionKey(ConfigSection::CREDITS, ConfigKeys::CREDITS_ALLOW_PURCHASE, 'true');
     }
 
     public function testReturnsNumberOfCreditsConsumedForNewReservation()
@@ -74,6 +81,10 @@ class ReservationCreditsPresenterTests extends TestBase
         $this->scheduleRepository->_Layout = $fakeScheduleLayout;
         $fakeScheduleLayout->_SlotCount = new SlotCount(5, 0);
 
+        $expectedCost = Booked\Currency::Create('USD')->Format(150);
+
+        $this->paymentRepository->_CreditCost = new CreditCost(15, 'USD');
+
         $this->page->_ResourceId = 1;
         $this->page->_ResourceIds = [2];
 
@@ -82,7 +93,8 @@ class ReservationCreditsPresenterTests extends TestBase
 
         $this->presenter->PageLoad($this->fakeUser);
 
-        $this->assertEquals(10, $this->page->_CreditsRequired, 'two resources for 5 slots');
+        $this->assertEquals(10, $this->page->_CreditsRequired, '2 resources for 5 slots');
+        $this->assertEquals($expectedCost, $this->page->_CreditCost, '15 * 10');
     }
 
     public function testReturnsNumberOfCreditsConsumedForExistingReservation()
@@ -174,6 +186,10 @@ class FakeReservationCreditsPage implements IReservationCreditsPage
      * @var string
      */
     public $_ReferenceNumber;
+    /**
+     * @var string
+     */
+    public $_CreditCost;
 
     public function __construct()
     {
@@ -185,7 +201,7 @@ class FakeReservationCreditsPage implements IReservationCreditsPage
         $this->_StartDate = $start->Format('Y-m-d');
         $this->_EndDate = $end->Format('Y-m-d');
         $this->_StartTime = $start->Format('H:i');
-        $this->_EndDate = $end->Format('H:i');
+        $this->_EndTime = $end->Format('H:i');
     }
 
     public function GetRepeatType()
@@ -253,8 +269,9 @@ class FakeReservationCreditsPage implements IReservationCreditsPage
         return $this->_ReferenceNumber;
     }
 
-    public function SetCreditRequired($creditsRequired)
+    public function SetCreditRequired($creditsRequired, $cost)
     {
        $this->_CreditsRequired = $creditsRequired;
+       $this->_CreditCost = $cost;
     }
 }
