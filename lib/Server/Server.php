@@ -56,7 +56,9 @@ class Server
             $seconds = Configuration::Instance()->GetKey(ConfigKeys::INACTIVITY_TIMEOUT) * 60;
 			ini_set('session.gc_maxlifetime', $seconds);
 			session_set_cookie_params($seconds, $path);
-			@session_start();
+            @session_unset();
+            @session_destroy();
+            @session_start();
 		}
 
 		$_SESSION[self::sessionId][$name] = $value;
@@ -68,7 +70,11 @@ class Server
 		{
 			$parts = parse_url(Configuration::Instance()->GetScriptUrl());
 			$path = isset($parts['path']) ? $parts['path'] : '';
-			session_set_cookie_params(0, $path);
+            $seconds = Configuration::Instance()->GetKey(ConfigKeys::INACTIVITY_TIMEOUT) * 60;
+            ini_set('session.gc_maxlifetime', $seconds);
+            session_set_cookie_params($seconds, $path);
+            @session_unset();
+            @session_destroy();
 			@session_start();
 		}
 		if (isset($_SESSION[self::sessionId][$name]))
