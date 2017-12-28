@@ -689,6 +689,8 @@ class en_us extends Language
         $strings['or'] = 'or';
         $strings['CreditsRequired'] = 'Credits Required';
         $strings['AddToGoogleCalendar'] = 'Add to Google';
+        $strings['Image'] = 'Image';
+        $strings['ChooseOrDropFile'] = 'Choose a file or drag it here';
         // End Strings
 
 		// Install

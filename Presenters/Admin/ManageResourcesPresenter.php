@@ -212,7 +212,9 @@ class ManageResourcesPresenter extends ActionPresenter
 
         $resource = BookableResource::CreateNew($name, $scheduleId, $autoAssign);
         $resource->SetAdminGroupId($resourceAdminGroupId);
-        $this->resourceRepository->Add($resource);
+        $resourceId = $this->resourceRepository->Add($resource);
+
+        $this->ChangeResourceImage($resourceId);
     }
 
     public function ChangeDuration()
@@ -283,7 +285,9 @@ class ManageResourcesPresenter extends ActionPresenter
 
     public function Delete()
     {
-        $resource = $this->resourceRepository->LoadById($this->page->GetResourceId());
+        $resourceId = $this->page->GetResourceId();
+        $this->SaveResourceImage(null, $resourceId);
+        $resource = $this->resourceRepository->LoadById($resourceId);
         $this->resourceRepository->Delete($resource);
     }
 
@@ -337,8 +341,12 @@ class ManageResourcesPresenter extends ActionPresenter
 
     public function ChangeImage()
     {
-        Log::Debug("Changing resource image for resource id %s", $this->page->GetResourceId());
+       $this->ChangeResourceImage($this->page->GetResourceId());
+    }
 
+    private function ChangeResourceImage($resourceId)
+    {
+        Log::Debug("Changing resource image for resource id %s", $resourceId);
         $uploadedImage = $this->page->GetUploadedImage();
 
         if ($uploadedImage == null) {
@@ -346,6 +354,7 @@ class ManageResourcesPresenter extends ActionPresenter
         }
 
         if ($uploadedImage->IsError()) {
+            Log::Error('Error with uploaded image for resource id %s. %s', $resourceId, $uploadedImage->Error());
             die("Image error: " . $uploadedImage->Error());
         }
 
@@ -354,6 +363,7 @@ class ManageResourcesPresenter extends ActionPresenter
         $supportedTypes = array('jpeg', 'gif', 'png', 'jpg');
 
         if (!in_array($fileType, $supportedTypes)) {
+            Log::Error('Invalid image type for resource id %s, filetype %s', $resourceId, $fileType);
             die("Invalid image type: $fileType");
         }
 
@@ -366,7 +376,7 @@ class ManageResourcesPresenter extends ActionPresenter
 
         if ($needed > $limit) {
             echo 'Image too big. Resize to a smaller size or reduce the resolution and try again.';
-            Log::Error("Uploaded image for %s is too big. Needed %s limit %s", $this->page->GetResourceId(), $needed, $limit);
+            Log::Error("Uploaded image for %s is too big. Needed %s limit %s", $resourceId, $needed, $limit);
             die();
         }
 
@@ -374,7 +384,7 @@ class ManageResourcesPresenter extends ActionPresenter
         $image->ResizeToWidth(300);
 
         $time = time();
-        $fileName = "resource{$this->page->GetResourceId()}{$time}.$fileType";
+        $fileName = "resource{$resourceId}{$time}.$fileType";
         $imageUploadDirectory = Configuration::Instance()->GetKey(ConfigKeys::IMAGE_UPLOAD_DIRECTORY);
 
         $path = '';
@@ -393,12 +403,13 @@ class ManageResourcesPresenter extends ActionPresenter
 
         $image->Save($path);
 
-        $this->SaveResourceImage($fileName);
+        $this->SaveResourceImage($fileName, $resourceId);
+
     }
 
     public function RemoveImage()
     {
-        $this->SaveResourceImage(null);
+        $this->SaveResourceImage(null, $this->page->GetResourceId());
     }
 
     public function ChangeStatus()
@@ -518,9 +529,9 @@ class ManageResourcesPresenter extends ActionPresenter
         return $attributes;
     }
 
-    private function SaveResourceImage($fileName)
+    private function SaveResourceImage($fileName, $resourceId)
     {
-        $resource = $this->resourceRepository->LoadById($this->page->GetResourceId());
+        $resource = $this->resourceRepository->LoadById($resourceId);
 
         $resource->SetImage($fileName);
 

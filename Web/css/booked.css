@@ -601,6 +601,44 @@ input:checked + .slider:before {
   background: #fff;
   padding: 0 10px;
 }
+.dropzone {
+  position: relative;
+  border: 2px dotted #BCBCBC;
+  border-radius: 20px;
+  height: 75px;
+  text-align: center;
+  width: 100%;
+}
+.dropzone.hover {
+  border: 2px solid #585754;
+}
+.dropzone.dropped {
+  border: 2px solid #353432;
+}
+.dropzone div {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}
+.dropzone img {
+  border-radius: 2px;
+  vertical-align: middle;
+  max-width: 95%;
+  max-height: 95%;
+}
+.dropzone [type="file"] {
+  cursor: pointer;
+  position: absolute;
+  opacity: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+}
 .checkbox {
   padding-left: 20px;
 }

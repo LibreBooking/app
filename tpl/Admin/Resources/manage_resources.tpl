@@ -422,7 +422,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 	<div id="add-resource-dialog" class="modal" tabindex="-1" role="dialog" aria-labelledby="addResourceModalLabel"
 		 aria-hidden="true">
 		<form id="addResourceForm" class="form" role="form" method="post"
-			  ajaxAction="{ManageResourcesActions::ActionAdd}">
+			  ajaxAction="{ManageResourcesActions::ActionAdd}"  enctype="multipart/form-data">
 			<div class="modal-dialog">
 				<div class="modal-content">
 					<div class="modal-header">
@@ -465,7 +465,17 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 								{/foreach}
 							</select>
 						</div>
-					</div>
+                        <label for="resourceImageAdd">{translate key=Image}</label>
+                        <div class="dropzone" id="addResourceImage">
+                            <div>
+                                <span class="fa fa-image fa-3x"></span><br/>
+                                {translate key=ChooseOrDropFile}
+                            </div>
+                            <input id="resourceImageAdd" type="file" {formname key=RESOURCE_IMAGE}
+                                   accept="image/*;capture=camera" />
+                        </div>
+                        <div class="note">.gif, .jpg, or .png</div>
+                    </div>
 					<div class="modal-footer">
 						{cancel_button}
 						{add_button}
@@ -489,9 +499,15 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 						<h4 class="modal-title" id="imageModalLabel">{translate key=AddImage}</h4>
 					</div>
 					<div class="modal-body">
-						<label for="resourceImage" class="off-screen">Image file</label>
-						<input id="resourceImage" type="file" class="text" size="60" {formname key=RESOURCE_IMAGE}
-							   accept="image/*;capture=camera"/>
+                        <label for="resourceImage" class="off-screen">{translate key=Image}</label>
+                        <div class="dropzone" id="changeResourceImage">
+                            <div>
+                                <span class="fa fa-image fa-3x"></span><br/>
+                                {translate key=ChooseOrDropFile}
+                            </div>
+                            <input id="resourceImage" type="file" {formname key=RESOURCE_IMAGE}
+                                   accept="image/*;capture=camera" />
+                        </div>
 
 						<div class="note">.gif, .jpg, or .png</div>
 					</div>
@@ -1389,6 +1405,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 	{jsfile src="autocomplete.js"}
 	{jsfile src="js/tree.jquery.js"}
 	{jsfile src="admin/resource.js"}
+	{jsfile src="dropzone.js"}
 
 	<script type="text/javascript">
 
@@ -1508,6 +1525,9 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			setUpPopovers();
 			hidePopoversWhenClickAway();
 			setUpEditables();
+
+            dropzone($("#addResourceImage"));
+            dropzone($("#changeResourceImage"));
 
 			var actions = {
 				enableSubscription: '{ManageResourcesActions::ActionEnableSubscription}',
