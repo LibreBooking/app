@@ -132,9 +132,10 @@ class PopupFormatter
 
 		if (empty($label))
 		{
-			$label = "{pending} {name} {dates} {duration} {title} {resources} {participants} {accessories} {description} {attributes}";
+			$label = "{pending} {name} {email} {dates} {duration} {title} {resources} {participants} {accessories} {description} {attributes}";
 		}
 		$label = str_replace('{name}', $this->GetValue('name'), $label);
+		$label = str_replace('{email}', $this->GetValue('email'), $label);
 		$label = str_replace('{dates}', $this->GetValue('dates'), $label);
 		$label = str_replace('{title}', $this->GetValue('title'), $label);
 		$label = str_replace('{resources}', $this->GetValue('resources'), $label);

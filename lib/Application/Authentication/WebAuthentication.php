@@ -148,6 +148,7 @@ class WebAuthentication implements IWebAuthentication
 
 			if ($valid)
 			{
+			    $loginContext->GetData()->Persist = true;
 				$this->Login($validEmail, $loginContext);
 			}
 		}
