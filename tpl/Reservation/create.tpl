@@ -119,50 +119,6 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 						</div>
 					</div>
 
-					<div class="col-xs-12" id="reservation-resources">
-						<div class="form-group">
-							<div class="pull-left">
-								<div>
-									<label>{translate key="Resources"}</label>
-									{if $ShowAdditionalResources}
-										<a id="btnAddResources" href="#"
-										   class="small-action" data-toggle="modal"
-										   data-target="#dialogResourceGroups">{translate key=Change} <span
-													class="fa fa-plus-square"></span></a>
-									{/if}
-								</div>
-
-								<div id="primaryResourceContainer" class="inline">
-									<input type="hidden" id="scheduleId" {formname key=SCHEDULE_ID}
-										   value="{$ScheduleId}"/>
-									<input class="resourceId" type="hidden"
-										   id="primaryResourceId" {formname key=RESOURCE_ID} value="{$ResourceId}"/>
-									{displayResource resource=$Resource}
-								</div>
-
-								<div id="additionalResources">
-									{foreach from=$AvailableResources item=resource}
-										{if is_array($AdditionalResourceIds) && in_array($resource->Id, $AdditionalResourceIds)}
-											<input class="resourceId" type="hidden"
-												   name="{FormKeys::ADDITIONAL_RESOURCES}[]" value="{$resource->Id}"/>
-											{displayResource resource=$resource}
-										{/if}
-									{/foreach}
-								</div>
-							</div>
-							<div class="accessoriesDiv">
-								{if $ShowReservationDetails && $AvailableAccessories|count > 0}
-									<label>{translate key="Accessories"}</label>
-									<a href="#" id="addAccessoriesPrompt"
-									   class="small-action" data-toggle="modal"
-									   data-target="#dialogAddAccessories">{translate key='Add'} <span
-												class="fa fa-plus-square"></span></a>
-									<div id="accessories"></div>
-								{/if}
-							</div>
-						</div>
-					</div>
-
 					<div class="col-xs-12 reservationDates">
 						<div class="col-md-6 no-padding-left">
 							<div class="form-group no-margin-bottom">
@@ -211,7 +167,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 					<div class="col-xs-12 reservationLength">
 						<div class="form-group">
-							<span class="like-label">{translate key=ReservationLength}</span>
+							{*<span class="like-label">{translate key=ReservationLength}</span>*}
 							<div class="durationText">
 								<span id="durationDays">0</span> {translate key=days}
 								<span id="durationHours">0</span> {translate key=hours}
@@ -225,6 +181,50 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 							{control type="RecurrenceControl" RepeatTerminationDate=$RepeatTerminationDate}
 						</div>
 					{/if}
+
+                    <div class="col-xs-12 reservationResources" id="reservation-resources">
+                        <div class="form-group">
+                            <div class="pull-left">
+                                <div>
+                                    <label>{translate key="Resources"}</label>
+                                    {if $ShowAdditionalResources}
+                                        <a id="btnAddResources" href="#"
+                                           class="small-action" data-toggle="modal"
+                                           data-target="#dialogResourceGroups">{translate key=Change} <span
+                                                    class="fa fa-plus-square"></span></a>
+                                    {/if}
+                                </div>
+
+                                <div id="primaryResourceContainer" class="inline">
+                                    <input type="hidden" id="scheduleId" {formname key=SCHEDULE_ID}
+                                           value="{$ScheduleId}"/>
+                                    <input class="resourceId" type="hidden"
+                                           id="primaryResourceId" {formname key=RESOURCE_ID} value="{$ResourceId}"/>
+                                    {displayResource resource=$Resource}
+                                </div>
+
+                                <div id="additionalResources">
+                                    {foreach from=$AvailableResources item=resource}
+                                        {if is_array($AdditionalResourceIds) && in_array($resource->Id, $AdditionalResourceIds)}
+                                            <input class="resourceId" type="hidden"
+                                                   name="{FormKeys::ADDITIONAL_RESOURCES}[]" value="{$resource->Id}"/>
+                                            {displayResource resource=$resource}
+                                        {/if}
+                                    {/foreach}
+                                </div>
+                            </div>
+                            <div class="accessoriesDiv">
+                                {if $ShowReservationDetails && $AvailableAccessories|count > 0}
+                                    <label>{translate key="Accessories"}</label>
+                                    <a href="#" id="addAccessoriesPrompt"
+                                       class="small-action" data-toggle="modal"
+                                       data-target="#dialogAddAccessories">{translate key='Add'} <span
+                                                class="fa fa-plus-square"></span></a>
+                                    <div id="accessories"></div>
+                                {/if}
+                            </div>
+                        </div>
+                    </div>
 
 					<div class="col-xs-12 reservationTitle">
 						<div class="form-group has-feedback">

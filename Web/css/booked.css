@@ -1656,8 +1656,9 @@ ul.jqtree-tree .group-resource .jqtree-title {
   display: inline-block;
 }
 .reservationDates,
-.reservationTitle {
-  padding-top: 8px;
+.reservationTitle,
+.reservationResources {
+  padding-top: 12px;
 }
 .reservationLength .form-group {
   margin: 5px 0;

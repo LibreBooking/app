@@ -41,30 +41,6 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 					</div>
 
 					<div class="col-xs-12">
-						<div class="pull-left">
-							<label>{translate key='Resources'}</label> {$ResourceName}
-							{foreach from=$AvailableResources item=resource}
-								{if is_array($AdditionalResourceIds) && in_array($resource->Id, $AdditionalResourceIds)}
-									,{$resource->Name}
-								{/if}
-							{/foreach}
-						</div>
-						<div class="pull-right">
-                            {if $ShowReservationDetails}
-							<label>{translate key='Accessories'}</label>
-							{foreach from=$Accessories item=accessory name=accessoryLoop}
-								<span class="badge quantity">{$accessory->QuantityReserved}</span>
-								{if $smarty.foreach.accessoryLoop.last}
-									{$accessory->Name}
-								{else}
-									{$accessory->Name},
-								{/if}
-							{/foreach}
-                            {/if}
-						</div>
-					</div>
-
-					<div class="col-xs-12">
 						<div class="col-md-6 no-padding-left">
 							<label>{translate key='BeginDate'}</label> {formatdate date=$StartDate}
 							<input type="hidden" id="formattedBeginDate"
@@ -89,7 +65,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 					</div>
 
 					<div class="col-xs-12">
-                        <span class="like-label">{translate key=ReservationLength}</span>
+                        {*<span class="like-label">{translate key=ReservationLength}</span>*}
                         <div class="durationText">
                             <span id="durationDays">0</span> {translate key=days}
                             <span id="durationHours">0</span> {translate key=hours}
@@ -114,6 +90,30 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 							</div>
 						{/if}
 					</div>
+
+                    <div class="col-xs-12">
+                        <div class="pull-left">
+                            <label>{translate key='Resources'}</label> {$ResourceName}
+                            {foreach from=$AvailableResources item=resource}
+                                {if is_array($AdditionalResourceIds) && in_array($resource->Id, $AdditionalResourceIds)}
+                                    ,{$resource->Name}
+                                {/if}
+                            {/foreach}
+                        </div>
+                        <div class="pull-right">
+                            {if $ShowReservationDetails}
+                                <label>{translate key='Accessories'}</label>
+                                {foreach from=$Accessories item=accessory name=accessoryLoop}
+                                    <span class="badge quantity">{$accessory->QuantityReserved}</span>
+                                    {if $smarty.foreach.accessoryLoop.last}
+                                        {$accessory->Name}
+                                    {else}
+                                        {$accessory->Name},
+                                    {/if}
+                                {/foreach}
+                            {/if}
+                        </div>
+                    </div>
 
 					{if $ShowReservationDetails}
 						<div class="col-xs-12">
