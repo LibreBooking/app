@@ -179,10 +179,13 @@ class LoginPage extends Page implements ILoginPage
 		$this->Set('ResumeUrl', $value);
 	}
 
-	public function GetResumeUrl()
-	{
-		return $this->GetForm(FormKeys::RESUME);
-	}
+  public function GetResumeUrl()
+  {
+    if ($this->GetForm(FormKeys::RESUME) == false)
+      return $this->GetQuerystring(QueryStringKeys::REDIRECT);
+    else
+      return $this->GetForm(FormKeys::RESUME);
+  }
 
 	public function DisplayWelcome()
 	{
