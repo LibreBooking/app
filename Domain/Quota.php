@@ -528,7 +528,7 @@ class Quota implements IQuota
 
 	private function _add(DateRange $dateRange)
 	{
-		if (!$this->EnforcedEveryDay() && !$this->EnforcedOnWeekday($dateRange->GetBegin()->Weekday()))
+	    if (!$this->EnforcedEveryDay() && !$this->EnforcedOnWeekday($dateRange->GetBegin()->Weekday()))
 		{
 			return;
 		}
