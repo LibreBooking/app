@@ -171,6 +171,9 @@ class Queries
 			'INSERT IGNORE INTO user_resource_permissions (user_id, resource_id)
 		VALUES (@userid, @resourceid)';
 
+	const ADD_USER_TO_DEFAULT_GROUPS =
+        'INSERT IGNORE INTO user_groups (user_id, group_id) SELECT @userid, group_id FROM groups WHERE isdefault=1';
+
 	const ADD_USER_SESSION =
 			'INSERT INTO user_session (user_id, last_modified, session_token, user_session_value)
 		VALUES (@userid, @dateModified, @session_token, @user_session_value)';

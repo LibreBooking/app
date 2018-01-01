@@ -421,6 +421,8 @@ class UserRepository implements IUserRepository, IAccountActivationRepository
             }
         }
 
+        $db->Execute(new AddUserToDefaultGroupsCommand($id));
+
         return $id;
     }
 

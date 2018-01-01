@@ -640,6 +640,15 @@ class AddUserResourcePermission extends SqlCommand
     }
 }
 
+class AddUserToDefaultGroupsCommand extends SqlCommand
+{
+    public function __construct($userId)
+    {
+        parent::__construct(Queries::ADD_USER_TO_DEFAULT_GROUPS);
+        $this->AddParameter(new Parameter(ParameterNames::USER_ID, $userId));
+    }
+}
+
 class AddUserSessionCommand extends SqlCommand
 {
     public function __construct($userId, $token, Date $insertTime, $serializedSession)
