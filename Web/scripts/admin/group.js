@@ -13,7 +13,7 @@ function GroupManagement(opts) {
 		allUsersList: $('#allUsersList'),
 		permissionsDialog: $('#permissionsDialog'),
 		deleteDialog: $('#deleteDialog'),
-		renameDialog: $('#renameDialog'),
+		editDialog: $('#editDialog'),
 		browseUserDialog: $('#allUsers'),
 		rolesDialog: $('#rolesDialog'),
 		groupAdminDialog: $('#groupAdminDialog'),
@@ -21,7 +21,7 @@ function GroupManagement(opts) {
 		permissionsForm: $('#permissionsForm'),
 		addUserForm: $('#addUserForm'),
 		removeUserForm: $('#removeUserForm'),
-		renameGroupForm: $('#renameGroupForm'),
+		editGroupForm: $('#editGroupForm'),
 		deleteGroupForm: $('#deleteGroupForm'),
 		rolesForm: $('#rolesForm'),
 		groupAdminForm: $('#groupAdminForm'),
@@ -30,7 +30,10 @@ function GroupManagement(opts) {
 		addForm: $('#addGroupForm'),
 
         checkAllResources: $('#checkAllResources'),
-        checkNoResources: $('#checkNoResources')
+        checkNoResources: $('#checkNoResources'),
+
+        editGroupName: $('#editGroupName'),
+        editGroupIsDefault: $('#editGroupIsDefault')
 	};
 
 	var allUserList = null;
@@ -43,7 +46,7 @@ function GroupManagement(opts) {
 		});
 
 		elements.groupList.delegate('.rename', 'click', function() {
-			renameGroup();
+			editGroup();
 		});
 
 		elements.groupList.delegate('.permissions', 'click', function() {
@@ -148,7 +151,7 @@ function GroupManagement(opts) {
 		ConfigureAsyncForm(elements.addUserForm, getSubmitCallback(options.actions.addUser), changeMembers, error);
 		ConfigureAsyncForm(elements.removeUserForm, getSubmitCallback(options.actions.removeUser), changeMembers, error);
 		ConfigureAsyncForm(elements.permissionsForm, getSubmitCallback(options.actions.permissions), hidePermissionsDialog, error);
-		ConfigureAsyncForm(elements.renameGroupForm, getSubmitCallback(options.actions.renameGroup), null, error);
+		ConfigureAsyncForm(elements.editGroupForm, getSubmitCallback(options.actions.updateGroup), null, error);
 		ConfigureAsyncForm(elements.deleteGroupForm, getSubmitCallback(options.actions.deleteGroup), null, error);
 		ConfigureAsyncForm(elements.addForm, getSubmitCallback(options.actions.addGroup), null, error);
 		ConfigureAsyncForm(elements.rolesForm, getSubmitCallback(options.actions.roles), null, error);
@@ -202,8 +205,11 @@ function GroupManagement(opts) {
 		return elements.activeId.val();
 	}
 
-	var renameGroup = function() {
-		elements.renameDialog.modal('show');
+	var editGroup = function() {
+        var activeRow = elements.groupList.find('[data-group-id="' + getActiveId() + '"]');
+        elements.editGroupName.val(activeRow.find('.dataGroupName').text());
+        elements.editGroupIsDefault.prop('checked', activeRow.data('group-default') == '1');
+		elements.editDialog.modal('show');
 	};
 
 	var changeMembers = function() {
@@ -229,8 +235,6 @@ function GroupManagement(opts) {
 	};
 
 	var addUserToGroup = function(userId) {
-
-
 		$('#addUserId').val(userId);
 		elements.addUserForm.submit();
 	};

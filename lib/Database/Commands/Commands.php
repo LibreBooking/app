@@ -175,10 +175,11 @@ class AddEmailPreferenceCommand extends SqlCommand
 
 class AddGroupCommand extends SqlCommand
 {
-    public function __construct($groupName)
+    public function __construct($groupName, $isDefault)
     {
         parent::__construct(Queries::ADD_GROUP);
         $this->AddParameter(new Parameter(ParameterNames::GROUP_NAME, $groupName));
+        $this->AddParameter(new Parameter(ParameterNames::GROUP_ISDEFAULT, intval($isDefault)));
     }
 }
 
@@ -2322,12 +2323,13 @@ class UpdateBlackoutInstanceCommand extends SqlCommand
 
 class UpdateGroupCommand extends SqlCommand
 {
-    public function __construct($groupId, $groupName, $adminGroupId)
+    public function __construct($groupId, $groupName, $adminGroupId, $isDefault)
     {
         parent::__construct(Queries::UPDATE_GROUP);
         $this->AddParameter(new Parameter(ParameterNames::GROUP_ID, $groupId));
         $this->AddParameter(new Parameter(ParameterNames::GROUP_NAME, $groupName));
         $this->AddParameter(new Parameter(ParameterNames::GROUP_ADMIN_ID, $adminGroupId));
+        $this->AddParameter(new Parameter(ParameterNames::GROUP_ISDEFAULT, intval($isDefault)));
     }
 }
 

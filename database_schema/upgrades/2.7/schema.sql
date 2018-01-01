@@ -81,3 +81,7 @@ CREATE TABLE `refund_transaction_log` (
 )
   ENGINE = InnoDB
   DEFAULT CHARACTER SET utf8;
+
+ALTER TABLE `groups`
+  ADD COLUMN `isdefault` TINYINT(1) UNSIGNED NOT NULL DEFAULT 0;
+ALTER TABLE `groups` ADD INDEX(`isdefault`);

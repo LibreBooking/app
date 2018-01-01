@@ -102,6 +102,7 @@ class ParameterNames
     const GROUP_ID = '@groupid';
 	const GROUP_NAME = '@groupname';
 	const GROUP_ADMIN_ID = '@admin_group_id';
+	const GROUP_ISDEFAULT = '@isdefault';
 
 	const HOMEPAGE_ID = '@homepageid';
 

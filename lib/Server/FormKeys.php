@@ -116,6 +116,7 @@ class FormKeys
     const ICS_IMPORT_FILE = 'ICS_IMPORT_FILE';
     const INCLUDE_DELETED = 'INCLUDE_DELETED';
     const INVITED_EMAILS = 'INVITED_EMAILS';
+    const IS_DEFAULT = 'IS_DEFAULT';
 
 	const LANGUAGE = 'language';
 	const LAST_NAME = 'lname';

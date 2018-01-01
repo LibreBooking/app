@@ -71,7 +71,7 @@ class Queries
 			'INSERT INTO blackout_series (date_created, title, owner_id, repeat_type, repeat_options) VALUES (@dateCreated, @title, @userid, @repeatType, @repeatOptions)';
 
 	const ADD_GROUP =
-			'INSERT INTO groups (name) VALUES (@groupname)';
+			'INSERT INTO groups (name, isdefault) VALUES (@groupname, @isdefault)';
 
 	const ADD_GROUP_RESOURCE_PERMISSION =
 			'INSERT IGNORE INTO group_resource_permissions (group_id, resource_id) VALUES (@groupid, @resourceid)';
@@ -1031,7 +1031,7 @@ class Queries
 
 	const UPDATE_GROUP =
 			'UPDATE groups
-		SET name = @groupname, admin_group_id = @admin_group_id
+		SET name = @groupname, admin_group_id = @admin_group_id, isdefault = @isdefault
 		WHERE group_id = @groupid';
 
 	const UPDATE_LOGINDATA = 'UPDATE users SET lastlogin = @lastlogin, language = @language WHERE user_id = @userid';

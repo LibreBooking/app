@@ -694,6 +694,8 @@ class en_us extends Language
         $strings['SlackBookResource'] = 'Book %s now';
         $strings['SlackBookNow'] = 'Book Now';
         $strings['SlackNotFound'] = 'We could not find a resource with that name. Book Now to start a new reservation.';
+        $strings['AutomaticallyAddToGroup'] = 'Automatically add new users to this group';
+        $strings['GroupAutomaticallyAdd'] = 'Auto Add';
         // End Strings
 
 		// Install

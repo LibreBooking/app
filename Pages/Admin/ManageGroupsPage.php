@@ -26,94 +26,82 @@ require_once(ROOT_DIR . 'Domain/Access/namespace.php');
 interface IManageGroupsPage extends IActionPage
 {
 	/**
-	 * @abstract
 	 * @return int
 	 */
 	public function GetGroupId();
 
 	/**
-	 * @abstract
 	 * @param $groups GroupItemView[]|array
-	 * @return void
 	 */
 	public function BindGroups($groups);
 
 	/**
-	 * @abstract
 	 * @param PageInfo $pageInfo
-	 * @return void
 	 */
 	public function BindPageInfo(PageInfo $pageInfo);
 
 	/**
-	 * @abstract
 	 * @return int
 	 */
 	public function GetPageNumber();
 
 	/**
-	 * @abstract
 	 * @return int
 	 */
 	public function GetPageSize();
 
 	/**
-	 * @abstract
 	 * @param $response string
-	 * @return void
 	 */
 	public function SetJsonResponse($response);
 
 	/**
-	 * @abstract
 	 * @return int
 	 */
 	public function GetUserId();
 
 	/**
-	 * @abstract
 	 * @param $resources array|BookableResource[]
 	 * @return void
 	 */
 	public function BindResources($resources);
 
 	/**
-	 * @abstract
 	 * @param $roles array|RoleDto[]
 	 * @return void
 	 */
 	public function BindRoles($roles);
 
 	/**
-	 * @abstract
 	 * @return int[]|array
 	 */
 	public function GetAllowedResourceIds();
 
 	/**
-	 * @abstract
 	 * @return string
 	 */
 	public function GetGroupName();
 
 	/**
-	 * @abstract
 	 * @return int[]|array
 	 */
 	public function GetRoleIds();
 
 	/**
-	 * @abstract
 	 * @param $adminGroups GroupItemView[]|array
 	 * @return void
 	 */
 	public function BindAdminGroups($adminGroups);
 
 	/**
-	 * @abstract
 	 * @return int
 	 */
 	public function GetAdminGroupId();
+
+    /**
+     * @return bool
+     */
+    public function AutomaticallyAddToGroup();
 }
 
 class ManageGroupsPage extends ActionPage implements IManageGroupsPage
@@ -213,38 +201,29 @@ class ManageGroupsPage extends ActionPage implements IManageGroupsPage
 		$this->Set('Roles', $roles);
 	}
 
-	/**
-	 * @return int[]|array
-	 */
 	public function GetRoleIds()
 	{
 		return $this->GetForm(FormKeys::ROLE_ID);
 	}
 
-	/**
-	 * @param $adminGroups GroupItemView[]|array
-	 * @return void
-	 */
 	public function BindAdminGroups($adminGroups)
 	{
 		$this->Set('AdminGroups', $adminGroups);
 	}
 
-	/**
-	 * @return int
-	 */
 	public function GetAdminGroupId()
 	{
 		return $this->GetForm(FormKeys::GROUP_ADMIN);
 	}
 
-	/**
-	 * @param $dataRequest string
-	 * @return void
-	 */
 	public function ProcessDataRequest($dataRequest)
 	{
 		$this->presenter->ProcessDataRequest();
 	}
+
+    public function AutomaticallyAddToGroup()
+    {
+       return $this->GetCheckbox(FormKeys::IS_DEFAULT);
+    }
 }
 

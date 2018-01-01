@@ -72,6 +72,7 @@ class ColumnNames
 	const GROUP_NAME = 'name';
 	const GROUP_ADMIN_GROUP_ID = 'admin_group_id';
 	const GROUP_ADMIN_GROUP_NAME = 'admin_group_name';
+	const GROUP_ISDEFAULT = 'isdefault';
 
 	// RESOURCE_GROUPS //
 	const RESOURCE_GROUP_ID = 'resource_group_id';
