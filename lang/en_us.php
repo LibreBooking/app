@@ -691,6 +691,9 @@ class en_us extends Language
         $strings['AddToGoogleCalendar'] = 'Add to Google';
         $strings['Image'] = 'Image';
         $strings['ChooseOrDropFile'] = 'Choose a file or drag it here';
+        $strings['SlackBookResource'] = 'Book %s now';
+        $strings['SlackBookNow'] = 'Book Now';
+        $strings['SlackNotFound'] = 'We could not find a resource with that name. Book Now to start a new reservation.';
         // End Strings
 
 		// Install

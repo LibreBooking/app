@@ -312,11 +312,13 @@ abstract class Page implements IPage
 	/**
 	 * @param mixed $objectToSerialize
 	 * @param string|null $error
+     * @param int|null $httpResponseCode
 	 * @return void
 	 */
-	protected function SetJson($objectToSerialize, $error = null)
+	protected function SetJson($objectToSerialize, $error = null, $httpResponseCode = 200)
 	{
 		header('Content-type: application/json');
+        http_response_code(empty($httpResponseCode)? 200 : $httpResponseCode);
 
 		if (empty($error))
 		{

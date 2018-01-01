@@ -22,6 +22,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 class FakeConfig extends Configuration implements IConfiguration
 {
 	public $_RegisteredFiles = array();
+    public $_ScriptUrl = '';
 
 	public function Register($configFile, $configId, $overwrite = false)
 	{
@@ -52,6 +53,11 @@ class FakeConfig extends Configuration implements IConfiguration
 	{
 		$this->SetKey(ConfigKeys::DEFAULT_TIMEZONE, $timezone);
 	}
+
+    public function GetScriptUrl()
+    {
+        return $this->_ScriptUrl;
+    }
 }
 
 class FakeConfigFile extends ConfigurationFile implements IConfigurationFile

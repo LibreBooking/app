@@ -149,9 +149,7 @@ class ConfigKeys
 	const AUTHENTICATION_HIDE_BOOKED_LOGIN_PROMPT = 'hide.booked.login.prompt';
 	const AUTHENTICATION_CAPTCHA_ON_LOGIN = 'captcha.on.login';
 
-	const PAYPAL_ENVIRONMENT = 'paypal.environment';
-	const PAYPAL_CLIENT_ID = 'paypal.client.id';
-	const PAYPAL_SECRET = 'paypal.secret';
+	const SLACK_TOKEN = 'token';
 }
 
 class ConfigSection
@@ -177,4 +175,5 @@ class ConfigSection
 	const USERS = 'users';
     const GOOGLE_ANALYTICS = 'google.analytics';
     const PAYMENTS = 'payments';
+    const SLACK = 'slack';
 }

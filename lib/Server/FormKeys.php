@@ -245,6 +245,9 @@ class FormKeys
 	const SUMMARY = 'summary';
 	const SCHEDULE_ADMIN_GROUP_ID = 'adminGroupId';
 	const SELECTED_COLUMNS = 'SELECTED_COLUMNS';
+	const SLACK_COMMAND = 'command';
+	const SLACK_TEXT = 'text';
+	const SLACK_TOKEN = 'token';
 
 	const THISWEEK = 'THISWEEK';
 	const TIMEZONE = 'timezone';

@@ -420,6 +420,18 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
         </p>
     </div>
 
+    <div id="slack-integration">
+        <h3>Slack Integration</h3>
+        <p>You can begin a Booked reservation request directly from Slack. You will need to <a href="https://api.slack.com/slack-apps#creating_apps" target="_blank">create a Slack App</a> in your
+        Slack workspace for this integration to work.</p>
+
+        <p>When creating your App, choose <em>Slash Commands</em> in the <em>Add features and functionality</em> section. Give your command
+            a name you will remember - we recommend <em>/book</em>. Set the <em>Request URL</em> to {$ScriptUrl}/integrate/slack.php and the <em>Usage Hint</em> to resource-name</p>
+
+        <p>You can then use <em>/book resource-name</em> from Slack to begin a reservation request, substitutiing resource-name for an actual resource.
+        Providing no resource-name will being a standard booking.</p>
+    </div>
+
     <div id="help-reminders">
         <h3>Reservation Reminders</h3>
 
@@ -935,6 +947,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
             enabled. Default is false.</p>
 
         <p class="setting"><span>$conf['settings']['credits']['allow.purchase']</span>Whether or not users can purchase credits. Credits must be enabled for this functionality to work. Default is false.</p>
+
+        <p class="setting"><span>$conf['settings']['slack']['token']</span>Slack Verification Token. If this is not set, Slack slash commands will not work..</p>
     </div>
 
     <h2>Available Label Tokens</h2>
