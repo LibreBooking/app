@@ -35,6 +35,7 @@ class ManageReservationsActions
     const Import = 'Import';
     const DeleteMultiple = 'DeleteMultiple';
     const UpdateTermsOfService = 'termsOfService';
+    const DeleteTermsOfService = 'deleteTerms';
 }
 
 class ManageReservationsPresenter extends ActionPresenter
@@ -98,6 +99,7 @@ class ManageReservationsPresenter extends ActionPresenter
         $this->AddAction(ManageReservationsActions::Import, 'ImportReservations');
         $this->AddAction(ManageReservationsActions::DeleteMultiple, 'DeleteMultiple');
         $this->AddAction(ManageReservationsActions::UpdateTermsOfService, 'UpdateTermsOfService');
+        $this->AddAction(ManageReservationsActions::DeleteTermsOfService, 'DeleteTermsOfService');
     }
 
     public function PageLoad($userTimezone)
@@ -326,7 +328,17 @@ class ManageReservationsPresenter extends ActionPresenter
         elseif ($dataRequest == 'tos') {
             $terms = $this->termsOfServiceRepository->Load();
 
-            $this->page->BindTerms(array('text' => $terms->Text(), 'url' => $terms->Url(), 'filename' => $terms->FileName(), 'applicability' => $terms->Applicability()));
+            if ($terms != null) {
+                $this->page->BindTerms(
+                    array(
+                        'text' => $terms->Text(),
+                        'url' => $terms->Url(),
+                        'filename' => $terms->FileName(),
+                        'applicability' => $terms->Applicability()));
+            }
+            else {
+                $this->page->BindTerms(null);
+            }
         }
 
     }
@@ -490,6 +502,12 @@ class ManageReservationsPresenter extends ActionPresenter
 
         $terms = TermsOfService::Create($termsText, $termsUrl, $filename, $this->page->GetTermsApplicability());
         $this->termsOfServiceRepository->Add($terms);
+    }
+
+    public function DeleteTermsOfService()
+    {
+        Log::Debug('Deleting terms of service');
+        $this->termsOfServiceRepository->Delete();
     }
 
     protected function LoadValidators($action)

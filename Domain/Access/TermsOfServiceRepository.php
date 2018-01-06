@@ -32,13 +32,18 @@ interface ITermsOfServiceRepository
      * @return TermsOfService|null
      */
     public function Load();
+
+    /**
+     * @return void
+     */
+    public function Delete();
 }
 
 class TermsOfServiceRepository implements ITermsOfServiceRepository
 {
     public function Add(TermsOfService $terms)
     {
-        ServiceLocator::GetDatabase()->ExecuteInsert(new DeleteTermsOfServiceCommand());
+        $this->Delete();
         return ServiceLocator::GetDatabase()->ExecuteInsert(new AddTermsOfServiceCommand($terms->Text(), $terms->Url(), $terms->FileName(), $terms->Applicability()));
     }
 
@@ -52,5 +57,10 @@ class TermsOfServiceRepository implements ITermsOfServiceRepository
         }
 
         return null;
+    }
+
+    public function Delete()
+    {
+        ServiceLocator::GetDatabase()->Execute(new DeleteTermsOfServiceCommand());
     }
 }

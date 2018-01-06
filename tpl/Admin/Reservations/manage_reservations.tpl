@@ -487,6 +487,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                     </div>
                     <div class="modal-footer">
                         {cancel_button}
+                        {delete_button id='deleteTerms' class='no-show'}
                         {update_button submit=true}
                         {indicator}
                     </div>
@@ -575,7 +576,9 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 				deleteUrl: '{$Path}ajax/reservation_delete.php?{QueryStringKeys::RESPONSE_TYPE}=json',
 				resourceStatusUrl: '{$smarty.server.SCRIPT_NAME}?{QueryStringKeys::ACTION}=changeStatus',
 				submitUrl: '{$smarty.server.SCRIPT_NAME}',
-                termsOfServiceUrl: '{$smarty.server.SCRIPT_NAME}?dr=tos'
+                termsOfServiceUrl: '{$smarty.server.SCRIPT_NAME}?dr=tos',
+                updateTermsOfServiceAction: 'termsOfService',
+                deleteTermsOfServiceAction: 'deleteTerms'
 			};
 
 			var approvalOpts = {
