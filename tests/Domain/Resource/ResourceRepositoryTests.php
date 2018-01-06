@@ -571,8 +571,8 @@ class ResourceRepositoryTests extends TestBase
 		$resourceId = 123;
 
 		$rows = array(
-				array(ColumnNames::GROUP_ID => 1, ColumnNames::GROUP_NAME => 'g1'),
-				array(ColumnNames::GROUP_ID => 2, ColumnNames::GROUP_NAME => 'g2'),
+				array(ColumnNames::GROUP_ID => 1, ColumnNames::GROUP_NAME => 'g1', ColumnNames::GROUP_ISDEFAULT => 0),
+				array(ColumnNames::GROUP_ID => 2, ColumnNames::GROUP_NAME => 'g2', ColumnNames::GROUP_ISDEFAULT => 0),
 		);
 		$this->db->SetRows($rows);
 

@@ -401,4 +401,12 @@ class FakeGuestReservationPage implements IGuestReservationPage
 	{
 		// TODO: Implement SetEndReminder() method.
 	}
+
+    /**
+     * @param TermsOfService $termsOfService
+     */
+    public function SetTerms($termsOfService)
+    {
+        // TODO: Implement SetTerms() method.
+    }
 }

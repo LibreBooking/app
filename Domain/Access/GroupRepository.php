@@ -331,7 +331,7 @@ class GroupItemView
         return $this->IsDefault;
     }
 
-    public function __construct($groupId, $groupName, $adminGroupName = null, $isDefault)
+    public function __construct($groupId, $groupName, $adminGroupName = null, $isDefault = 0)
 	{
 		$this->Id = $groupId;
 		$this->Name = $groupName;

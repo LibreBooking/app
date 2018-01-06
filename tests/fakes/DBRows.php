@@ -449,12 +449,13 @@ class GroupItemRow
 		return $this->rows;
 	}
 
-	public function With($groupId, $groupName, $groupAdminName = 'group admin')
+	public function With($groupId, $groupName, $groupAdminName = 'group admin', $isDefault = 0)
 	{
 		$this->rows[] = array(
 				ColumnNames::GROUP_ID => $groupId,
 				ColumnNames::GROUP_NAME => $groupName,
-				ColumnNames::GROUP_ADMIN_GROUP_NAME => $groupAdminName
+				ColumnNames::GROUP_ADMIN_GROUP_NAME => $groupAdminName,
+                ColumnNames::GROUP_ISDEFAULT => $isDefault,
 		);
 
 		return $this;

@@ -219,7 +219,7 @@ abstract class Page implements IPage
 
     /**
      * @param string $var
-     * @param string $value
+     * @param string|object|array $value
      * @return void
      */
     public function Set($var, $value)

@@ -259,6 +259,7 @@ class FormKeys
 	const TOS_TEXT = 'TOS_TEXT';
 	const TOS_URL = 'TOS_URL';
 	const TOS_UPLOAD = 'TOS_UPLOAD';
+	const TOS_ACKNOWLEDGEMENT = 'TOS_ACKNOWLEDGEMENT';
 
 	const UNIT = 'unit';
 	const UNIT_COST = 'unitCost';

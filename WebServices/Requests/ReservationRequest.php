@@ -82,8 +82,12 @@ class ReservationRequest
 	 * @var ReservationRetryParameterRequestResponse[]
 	 */
 	public $retryParameters;
+    /**
+     * @var bool
+     */
+    public $termsAccepted;
 
-	public static function Example()
+    public static function Example()
 	{
 		$date = Date::Now()->ToIso();
 		$request = new ReservationRequest();
@@ -104,6 +108,7 @@ class ReservationRequest
 		$request->startReminder = ReminderRequestResponse::Example();
 		$request->allowParticipation = true;
 		$request->retryParameters = array(ReservationRetryParameterRequestResponse::Example());
+		$request->termsAccepted = true;
 
 		return $request;
 	}

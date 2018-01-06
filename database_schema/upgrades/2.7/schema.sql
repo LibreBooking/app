@@ -98,3 +98,6 @@ CREATE TABLE `terms_of_service` (
 )
   ENGINE = InnoDB
   DEFAULT CHARACTER SET utf8;
+
+ALTER TABLE `reservation_series`
+  ADD COLUMN `terms_date_accepted` DATETIME;

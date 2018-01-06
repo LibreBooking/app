@@ -775,6 +775,14 @@ class ReservationRequestResponseFacade implements IReservationSavePage
 	{
 		$this->_canJoinWaitlist = $canJoinWaitlist;
 	}
+
+    /**
+     * @return bool
+     */
+    public function GetTermsOfServiceAcknowledgement()
+    {
+        return $this->request->termsAccepted == true;
+    }
 }
 
 class ReservationUpdateRequestResponseFacade extends ReservationRequestResponseFacade implements IReservationUpdatePage

@@ -379,10 +379,15 @@ class AddReservationSeriesCommand extends SqlCommand
                                 $reservationTypeIds,
                                 $statusId,
                                 $ownerId,
-                                $allowParticipation
+                                $allowParticipation,
+                                $termsAcceptanceDate
     )
     {
         parent::__construct(Queries::ADD_RESERVATION_SERIES);
+
+        if ($termsAcceptanceDate == null) {
+            $termsAcceptanceDate = new NullDate();
+        }
 
         $this->AddParameter(new Parameter(ParameterNames::DATE_CREATED, $dateCreated->ToDatabase()));
         $this->AddParameter(new Parameter(ParameterNames::TITLE, $title));
@@ -393,6 +398,7 @@ class AddReservationSeriesCommand extends SqlCommand
         $this->AddParameter(new Parameter(ParameterNames::STATUS_ID, $statusId));
         $this->AddParameter(new Parameter(ParameterNames::USER_ID, $ownerId));
         $this->AddParameter(new Parameter(ParameterNames::ALLOW_PARTICIPATION, (int)$allowParticipation));
+        $this->AddParameter(new Parameter(ParameterNames::TERMS_ACCEPTANCE_DATE, $termsAcceptanceDate->ToDatabase()));
     }
 }
 

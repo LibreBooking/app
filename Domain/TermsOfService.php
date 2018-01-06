@@ -96,4 +96,62 @@ class TermsOfService
     {
         return $this->applicability;
     }
+
+    /**
+     * @return bool
+     */
+    public function AppliesToReservation()
+    {
+        return $this->Applicability() == self::RESERVATION;
+    }
+
+    /**
+     * @return bool
+     */
+    public function AppliesToRegistration()
+    {
+        return $this->Applicability() == self::REGISTRATION;
+    }
+
+    /**
+     * @return string
+     */
+    public function DisplayUrl() {
+        $scriptUrl = Configuration::Instance()->GetScriptUrl();
+
+        if ($this->IsText())
+        {
+            return $scriptUrl . '/tos.php';
+        }
+        if ($this->IsUrl())
+        {
+            return $this->termsUrl;
+        }
+
+        return $scriptUrl . "/uploads/tos/{$this->filename}";
+    }
+
+    /**
+     * @return bool
+     */
+    public function IsText()
+    {
+        return !empty($this->termsText);
+    }
+
+    /**
+     * @return bool
+     */
+    public function IsUrl()
+    {
+        return !empty($this->termsUrl);
+    }
+
+    /**
+     * @return bool
+     */
+    public function IsFile()
+    {
+        return !empty($this->filename);
+    }
 }

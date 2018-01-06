@@ -704,6 +704,8 @@ class en_us extends Language
         $strings['UponReservation'] = 'Upon Reservation';
         $strings['UponRegistration'] = 'Upon Registration';
         $strings['ViewTerms'] = 'View Terms of Service';
+        $strings['IAccept'] = 'I Accept';
+        $strings['TheTermsOfService'] = 'the Terms of Service';
         // End Strings
 
 		// Install
@@ -786,6 +788,7 @@ class en_us extends Language
 		$strings['ReservationCannotBeCheckedInTo'] = 'This reservation cannot be checked in to.';
 		$strings['ReservationCannotBeCheckedOutFrom'] = 'This reservation cannot be checked out from.';
 		$strings['InvalidEmailDomain'] = 'That email address is not from an allowed domain';
+		$strings['TermsOfServiceError'] = 'You must accept the Terms of Service';
 		// End Errors
 
 		// Page Titles

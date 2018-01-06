@@ -159,6 +159,7 @@ class PreReservationFactory implements IPreReservationFactory
 	{
 		$ruleProcessor->PushRule(new AdminExcludedRule(new RequiresApprovalRule(PluginManager::Instance()->LoadAuthorization()), $userSession, $this->userRepository));
 		$ruleProcessor->PushRule(new ResourceAvailabilityRule(new ResourceAvailability($this->reservationRepository), $userSession->Timezone));
+		$ruleProcessor->PushRule(new TermsOfServiceRule(new TermsOfServiceRepository()));
 		return new AddReservationValidationService($ruleProcessor);
 	}
 

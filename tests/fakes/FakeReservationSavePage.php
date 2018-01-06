@@ -298,6 +298,14 @@ class FakeReservationSavePage implements IReservationSavePage
     {
         $this->canJoinWaitlist = $canJoinWaitlist;
     }
+
+    /**
+     * @return bool
+     */
+    public function GetTermsOfServiceAcknowledgement()
+    {
+        // TODO: Implement GetTermsOfServiceAcknowledgement() method.
+    }
 }
 
 class FakeAccessoryFormElement extends AccessoryFormElement

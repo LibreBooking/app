@@ -244,6 +244,7 @@ class ParameterNames
 	const TERMS_FILENAME = '@terms_file';
 	const TERMS_APPLICABILITY = '@applicability';
 	const TITLE = '@title';
+	const TERMS_ACCEPTANCE_DATE = '@terms_date_accepted';
 
 	const USER_ID = '@userid';
 	const USER_ROLE_ID = '@user_roleid';

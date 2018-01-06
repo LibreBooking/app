@@ -19,7 +19,6 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 
 {if $Attributes|count > 0}
     <div class="customAttributes">
-        <span>{translate key=AdditionalAttributes}</span>
         <div class="row">
             {foreach from=$Attributes item=attribute name=attributes}
                 {if $smarty.foreach.attributes.index % 3 == 0}

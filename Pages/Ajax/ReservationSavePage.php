@@ -148,6 +148,11 @@ interface IReservationSavePage extends IReservationSaveResultsView, IRepeatOptio
 	 * @return string[]
 	 */
 	public function GetInvitedGuests();
+
+    /**
+     * @return bool
+     */
+    public function GetTermsOfServiceAcknowledgement();
 }
 
 class ReservationSavePage extends SecurePage implements IReservationSavePage
@@ -525,6 +530,11 @@ class ReservationSavePage extends SecurePage implements IReservationSavePage
     public function SetCanJoinWaitList($canJoinWaitlist)
     {
         $this->Set('CanJoinWaitList', $canJoinWaitlist);
+    }
+
+    public function GetTermsOfServiceAcknowledgement()
+    {
+        return $this->GetCheckbox(FormKeys::TOS_ACKNOWLEDGEMENT);
     }
 }
 
