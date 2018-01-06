@@ -163,6 +163,10 @@ class Queries
 			'INSERT INTO schedules (name, isdefault, weekdaystart, daysvisible, layout_id, admin_group_id)
 		VALUES (@scheduleName, @scheduleIsDefault, @scheduleWeekdayStart, @scheduleDaysVisible, @layoutid, @admin_group_id)';
 
+	const ADD_TERMS_OF_SERVICE =
+        'INSERT INTO terms_of_service (terms_text, terms_url, terms_file, applicability, date_created) 
+      VALUES (@terms_text, @terms_url, @terms_file, @applicability, @dateCreated)';
+
 	const ADD_USER_GROUP =
 			'INSERT INTO user_groups (user_id, group_id)
 		VALUES (@userid, @groupid)';
@@ -293,6 +297,8 @@ class Queries
 		    SET status_id = @statusid,
 			last_modified = @dateModified
 		  WHERE series_id = @seriesid';
+
+	const DELETE_TERMS_OF_SERVICE = 'DELETE FROM terms_of_service';
 
 	const DELETE_USER = 'DELETE FROM users	WHERE user_id = @userid';
 

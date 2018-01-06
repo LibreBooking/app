@@ -620,6 +620,19 @@ class AddScheduleCommand extends SqlCommand
     }
 }
 
+class AddTermsOfServiceCommand extends SqlCommand
+{
+    public function __construct($termsText, $termsUrl, $filename, $applicability)
+    {
+        parent::__construct(Queries::ADD_TERMS_OF_SERVICE);
+        $this->AddParameter(new Parameter(ParameterNames::DATE_CREATED, Date::Now()->ToDatabase()));
+        $this->AddParameter(new Parameter(ParameterNames::TERMS_TEXT, $termsText));
+        $this->AddParameter(new Parameter(ParameterNames::TERMS_URL, $termsUrl));
+        $this->AddParameter(new Parameter(ParameterNames::TERMS_FILENAME, $filename));
+        $this->AddParameter(new Parameter(ParameterNames::TERMS_APPLICABILITY, $applicability));
+    }
+}
+
 class AddUserGroupCommand extends SqlCommand
 {
     public function __construct($userId, $groupId)
@@ -1020,6 +1033,14 @@ class DeleteSeriesCommand extends SqlCommand
         $this->AddParameter(new Parameter(ParameterNames::SERIES_ID, $seriesId));
         $this->AddParameter(new Parameter(ParameterNames::DATE_MODIFIED, $dateModified->ToDatabase()));
         $this->AddParameter(new Parameter(ParameterNames::STATUS_ID, ReservationStatus::Deleted));
+    }
+}
+
+class DeleteTermsOfServiceCommand extends SqlCommand
+{
+    public function __construct()
+    {
+        parent::__construct(Queries::DELETE_TERMS_OF_SERVICE);
     }
 }
 

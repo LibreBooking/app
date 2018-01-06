@@ -696,6 +696,13 @@ class en_us extends Language
         $strings['SlackNotFound'] = 'We could not find a resource with that name. Book Now to start a new reservation.';
         $strings['AutomaticallyAddToGroup'] = 'Automatically add new users to this group';
         $strings['GroupAutomaticallyAdd'] = 'Auto Add';
+        $strings['TermsOfService'] = 'Terms of Service';
+        $strings['EnterTermsManually'] = 'Enter Terms Manually';
+        $strings['LinkToTerms'] = 'Link to Terms';
+        $strings['UploadTerms'] = 'Upload Terms';
+        $strings['RequireTermsOfServiceAcknowledgement'] = 'Require Terms of Service Acknowledgement';
+        $strings['UponReservation'] = 'Upon Reservation';
+        $strings['UponRegistration'] = 'Upon Registration';
         // End Strings
 
 		// Install

@@ -46,8 +46,8 @@ class FileSystem implements IFileSystem
 {
 	public function Add($path, $fileName, $fileContents)
 	{
-		$fullName = $path. $fileName;
-		Log::Debug('Saving file to $s',$fullName );
+		$fullName = $path . $fileName;
+		Log::Debug('Saving file to %s', $fullName);
 
 		if (file_put_contents($fullName, $fileContents) === false)
 		{

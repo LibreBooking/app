@@ -85,3 +85,16 @@ CREATE TABLE `refund_transaction_log` (
 ALTER TABLE `groups`
   ADD COLUMN `isdefault` TINYINT(1) UNSIGNED NOT NULL DEFAULT 0;
 ALTER TABLE `groups` ADD INDEX(`isdefault`);
+
+DROP TABLE IF EXISTS `terms_of_service`;
+CREATE TABLE `terms_of_service` (
+  `terms_of_service_id`  INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `terms_text` TEXT,
+  `terms_url` VARCHAR(255),
+  `terms_file` VARCHAR(50),
+  `applicability` VARCHAR(50),
+  `date_created` DATETIME NOT NULL,
+  PRIMARY KEY (`terms_of_service_id`)
+)
+  ENGINE = InnoDB
+  DEFAULT CHARACTER SET utf8;

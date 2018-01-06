@@ -29,9 +29,9 @@ function dropzone(element)
                 element.find('div').html($img);
             };
         } else {
-            var ext = file.name.split('.').pop();
+            // var ext = file.name.split('.').pop();
 
-            element.find('div').html(ext);
+            element.find('div').html(file.name);
         }
     });
 }

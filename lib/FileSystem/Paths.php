@@ -57,4 +57,15 @@ class Paths
 		}
 		return $uploadDir;
 	}
+
+    /**
+     * Filesystem directory for storing terms of service file. Always contains trailing slash
+     *
+     * @static
+     * @return string
+     */
+	public static function Terms()
+    {
+        return ROOT_DIR . 'Web/uploads/tos/';
+    }
 }

@@ -47,7 +47,11 @@ function ReservationManagement(opts, approval) {
 		deleteMultipleCheckboxes: $('.delete-multiple'),
 		deleteMultipleSelectAll: $('#delete-all'),
 		deleteMultipleCount: $('#deleteMultipleCount'),
-		deleteMultiplePlaceHolder: $('#deleteMultiplePlaceHolder')
+		deleteMultiplePlaceHolder: $('#deleteMultiplePlaceHolder'),
+
+        addTermsOfService: $('#addTermsOfService'),
+        termsOfServiceDialog: $('#termsOfServiceDialog'),
+        termsOfServiceForm: $('#termsOfServiceForm')
 	};
 
 	var reservations = {};
@@ -200,6 +204,17 @@ function ReservationManagement(opts, approval) {
 			elements.deleteMultiplePrompt.toggleClass('no-show', numberChecked == 0);
 		});
 
+		elements.addTermsOfService.click(function(e) {
+		    e.preventDefault();
+		    elements.termsOfServiceDialog.modal('show');
+        });
+
+		elements.termsOfServiceDialog.find('.toggle').click(function(e){
+            elements.termsOfServiceDialog.find('.tos-div').addClass('no-show');
+		    var radio = $(e.target);
+		    $('#' + radio.data('ref')).removeClass('no-show');
+        });
+
 		var deleteReservationResponseHandler = function (response, form) {
 			form.find('.delResResponse').empty();
 			if (!response.deleted)
@@ -241,7 +256,7 @@ function ReservationManagement(opts, approval) {
 
 		ConfigureAsyncForm(elements.importReservationsForm, defaultSubmitCallback(elements.importReservationsForm), importHandler);
 		ConfigureAsyncForm(elements.deleteMultipleForm, defaultSubmitCallback(elements.deleteMultipleForm));
-
+		ConfigureAsyncForm(elements.termsOfServiceForm, defaultSubmitCallback(elements.termsOfServiceForm), function(){ elements.termsOfServiceDialog.modal('hide') });
 	};
 
 	ReservationManagement.prototype.addReservation = function (reservation) {

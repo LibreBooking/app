@@ -109,6 +109,7 @@ class ParameterNames
 	const LAST_LOGIN = '@lastlogin';
 	const LAST_NAME = '@lname';
 	const LAYOUT_ID = '@layoutid';
+    const LANGUAGE = '@language';
 
 	const NAME = '@name';
 
@@ -235,10 +236,15 @@ class ParameterNames
 	const START_DATE = '@startDate';
 	const START_TIME = '@startTime';
 	const STATUS_ID = '@statusid';
+
 	const TIMEZONE_NAME = '@timezone';
 	const TYPE_ID = '@typeid';
-	const LANGUAGE = '@language';
+	const TERMS_TEXT = '@terms_text';
+	const TERMS_URL = '@terms_url';
+	const TERMS_FILENAME = '@terms_file';
+	const TERMS_APPLICABILITY = '@applicability';
 	const TITLE = '@title';
+
 	const USER_ID = '@userid';
 	const USER_ROLE_ID = '@user_roleid';
 	const USER_STATUS_ID = '@user_statusid';
