@@ -5,7 +5,6 @@
 /plugins/Authentication/ActiveDirectory/ActiveDirectory.config.php
 /plugins/Authentication/Ldap/Ldap.config.php
 /plugins/Authentication/Drupal/Drupal.config.php
-/Web/uploads
 /lib/external/phpqrcode/cache/*.dat
 /lib/external/phpqrcode/cache/mask_0/*.dat
 /lib/external/phpqrcode/cache/mask_1/*.dat
@@ -17,3 +16,4 @@
 /lib/external/phpqrcode/cache/mask_7/*.dat
 /config/test.config.php
 /config/test.tenants.config.php
+/Web/uploads/tos/tos.pdf

@@ -1,6 +1,8 @@
 // Credit: https://codepen.io/jaysalvat/pen/agLyf //
 function dropzone(element)
 {
+    var originalDivContent = null;
+
     element.on('dragover', function() {
         $(this).addClass('hover');
     });
@@ -11,6 +13,16 @@ function dropzone(element)
 
     element.find('input').on('change', function(e) {
         var file = this.files[0];
+
+        if (originalDivContent == null)
+        {
+            originalDivContent = element.find('div').html();
+        }
+        if (!file)
+        {
+            element.find('div').html(originalDivContent);
+            return;
+        }
 
         element.removeClass('hover');
 
@@ -29,8 +41,6 @@ function dropzone(element)
                 element.find('div').html($img);
             };
         } else {
-            // var ext = file.name.split('.').pop();
-
             element.find('div').html(file.name);
         }
     });

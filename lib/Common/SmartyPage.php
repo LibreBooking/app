@@ -751,11 +751,10 @@ class SmartyPage extends Smarty
         $key = isset($params['key']) ? $params['key'] : 'Update';
         $class = isset($params['class']) ? $params['class'] : '';
         $type = isset($params['submit']) ? 'submit' : 'button';
+        $save = $type == 'submit' ? '' : ' save ';
 
-        echo '<button type="' . $type . '" class="btn btn-success save ' . $class . '" ' . $this->GetButtonAttributes($params) . '><span class="glyphicon glyphicon-ok-circle"></span> ' . Resources::GetInstance()
+        echo '<button type="' . $type . '" class="btn btn-success' . $save . $class . '" ' . $this->GetButtonAttributes($params) . '><span class="glyphicon glyphicon-ok-circle"></span> ' . Resources::GetInstance()
                 ->GetString($key) . '</button>';
-
-
     }
 
     public function AddButton($params, &$smarty)

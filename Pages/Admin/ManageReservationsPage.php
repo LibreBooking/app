@@ -296,6 +296,11 @@ interface IManageReservationsPage extends IPageable, IActionPage
      * @return string
      */
     public function GetTermsSource();
+
+    /**
+     * @param object $terms
+     */
+    public function BindTerms($terms);
 }
 
 class ManageReservationsPage extends ActionPage implements IManageReservationsPage
@@ -767,11 +772,16 @@ class ManageReservationsPage extends ActionPage implements IManageReservationsPa
 
     public function GetTermsApplicability()
     {
-        return $this->GetForm(FormKeys::TOS_LOCATION);
+        return $this->GetForm(FormKeys::TOS_APPLICABILITY);
     }
 
     public function GetTermsSource()
     {
         return $this->GetForm(FormKeys::TOS_METHOD);
+    }
+
+    public function BindTerms($terms)
+    {
+        $this->SetJson($terms);
     }
 }

@@ -308,6 +308,13 @@ class ColumnNames
     const TRANSACTION_LOG_GATEWAY_DATE = 'gateway_date_created';
     const TRANSACTION_LOG_REFUND_AMOUNT = 'refund_amount';
 
+    // TERMS OF SERVICE //
+    const TERMS_ID = 'terms_of_service_id';
+    const TERMS_TEXT = 'terms_text';
+    const TERMS_URL = 'terms_url';
+    const TERMS_FILE = 'terms_file';
+    const TERMS_APPLICABILITY = 'applicability';
+
 	// dynamic
 	const TOTAL = 'total';
 	const TOTAL_TIME = 'totalTime';

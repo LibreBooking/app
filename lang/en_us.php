@@ -703,6 +703,7 @@ class en_us extends Language
         $strings['RequireTermsOfServiceAcknowledgement'] = 'Require Terms of Service Acknowledgement';
         $strings['UponReservation'] = 'Upon Reservation';
         $strings['UponRegistration'] = 'Upon Registration';
+        $strings['ViewTerms'] = 'View Terms of Service';
         // End Strings
 
 		// Install

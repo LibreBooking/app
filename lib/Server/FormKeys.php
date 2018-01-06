@@ -255,7 +255,7 @@ class FormKeys
 	const TODAY = 'TODAY';
 	const TOMMOROW = 'TOMMOROW';
 	const TOS_METHOD = 'TOS_METHOD';
-	const TOS_LOCATION = 'TOS_LOCATION';
+	const TOS_APPLICABILITY = 'TOS_APPLICABILITY';
 	const TOS_TEXT = 'TOS_TEXT';
 	const TOS_URL = 'TOS_URL';
 	const TOS_UPLOAD = 'TOS_UPLOAD';

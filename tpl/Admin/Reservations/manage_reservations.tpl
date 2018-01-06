@@ -424,19 +424,19 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                         <div>
                             <div class="radio inline-block">
                                 <input type="radio" {formname key=TOS_METHOD} value="manual"
-                                       id="tos_manual"
+                                       id="tos_manual_radio"
                                        checked="checked" data-ref="tos_manual_div" class="toggle">
-                                <label for="tos_manual">{translate key=EnterTermsManually}</label>
+                                <label for="tos_manual_radio">{translate key=EnterTermsManually}</label>
                             </div>
                             <div class="radio inline-block">
                                 <input type="radio" {formname key=TOS_METHOD} value="url"
-                                       id="tos_url" data-ref="tos_url_div" class="toggle">
-                                <label for="tos_url">{translate key=LinkToTerms}</label>
+                                       id="tos_url_radio" data-ref="tos_url_div" class="toggle">
+                                <label for="tos_url_radio">{translate key=LinkToTerms}</label>
                             </div>
                             <div class="radio inline-block">
                                 <input type="radio" {formname key=TOS_METHOD} value="upload"
-                                       id="tos_upload" data-ref="tos_upload_div" class="toggle">
-                                <label for="tos_upload">{translate key=UploadTerms}</label>
+                                       id="tos_upload_radio" data-ref="tos_upload_div" class="toggle">
+                                <label for="tos_upload_radio">{translate key=UploadTerms}</label>
                             </div>
                         </div>
                         <div id="tos_manual_div" class="tos-div">
@@ -456,24 +456,29 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                             <label for="tos-upload">{translate key=TermsOfService} PDF</label>
                             <div class="dropzone" id="termsOfServiceUpload">
                                 <div>
-                                    <span class="fa fa-upload fa-3x"></span><br/>
+                                    <span class="fa fa-file-pdf-o fa-3x"></span><br/>
                                     {translate key=ChooseOrDropFile}
                                 </div>
                                 <input id="tos-upload" type="file" {formname key=TOS_UPLOAD}
                                        accept="application/pdf" />
+                            </div>
+                            <div id="tos-upload-link" class="no-show">
+                                <a href="{$ScriptUrl}/uploads/tos/tos.pdf" target="_blank">
+                                    <span class="fa fa-file-pdf-o"></span> {translate key=ViewTerms}
+                                </a>
                             </div>
                         </div>
                         <div>
                             <div>{translate key=RequireTermsOfServiceAcknowledgement}</div>
                             <div>
                                 <div class="radio inline-block">
-                                    <input type="radio" {formname key=TOS_LOCATION} value="{TermsOfService::RESERVATION}"
+                                    <input type="radio" {formname key=TOS_APPLICABILITY} value="{TermsOfService::RESERVATION}"
                                            id="tos_reservation"
                                            checked="checked">
                                     <label for="tos_reservation">{translate key=UponReservation}</label>
                                 </div>
                                 <div class="radio inline-block">
-                                    <input type="radio" {formname key=TOS_LOCATION} value="{TermsOfService::REGISTRATION}"
+                                    <input type="radio" {formname key=TOS_APPLICABILITY} value="{TermsOfService::REGISTRATION}"
                                            id="tos_registration">
                                     <label for="tos_registration">{translate key=UponRegistration}</label>
                                 </div>
@@ -569,7 +574,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 				actions: actions,
 				deleteUrl: '{$Path}ajax/reservation_delete.php?{QueryStringKeys::RESPONSE_TYPE}=json',
 				resourceStatusUrl: '{$smarty.server.SCRIPT_NAME}?{QueryStringKeys::ACTION}=changeStatus',
-				submitUrl: '{$smarty.server.SCRIPT_NAME}'
+				submitUrl: '{$smarty.server.SCRIPT_NAME}',
+                termsOfServiceUrl: '{$smarty.server.SCRIPT_NAME}?dr=tos'
 			};
 
 			var approvalOpts = {

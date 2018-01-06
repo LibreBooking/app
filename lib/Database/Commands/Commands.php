@@ -1873,6 +1873,14 @@ class GetTransactionLogCommand extends SqlCommand
     }
 }
 
+class GetTermsOfServiceCommand extends SqlCommand
+{
+    public function __construct()
+    {
+        parent::__construct(Queries::GET_TERMS_OF_SERVICE);
+    }
+}
+
 class GetUserIdByActivationCodeCommand extends SqlCommand
 {
     public function __construct($activationCode)

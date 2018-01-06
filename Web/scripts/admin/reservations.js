@@ -51,7 +51,10 @@ function ReservationManagement(opts, approval) {
 
         addTermsOfService: $('#addTermsOfService'),
         termsOfServiceDialog: $('#termsOfServiceDialog'),
-        termsOfServiceForm: $('#termsOfServiceForm')
+        termsOfServiceForm: $('#termsOfServiceForm'),
+        termsOfServiceText: $('#tos-manual'),
+        termsOfServiceUrl: $('#tos-url'),
+        termsOfServiceFile: $('#tos-upload-link')
 	};
 
 	var reservations = {};
@@ -206,6 +209,7 @@ function ReservationManagement(opts, approval) {
 
 		elements.addTermsOfService.click(function(e) {
 		    e.preventDefault();
+		    loadExistingTermsOfService();
 		    elements.termsOfServiceDialog.modal('show');
         });
 
@@ -256,7 +260,12 @@ function ReservationManagement(opts, approval) {
 
 		ConfigureAsyncForm(elements.importReservationsForm, defaultSubmitCallback(elements.importReservationsForm), importHandler);
 		ConfigureAsyncForm(elements.deleteMultipleForm, defaultSubmitCallback(elements.deleteMultipleForm));
-		ConfigureAsyncForm(elements.termsOfServiceForm, defaultSubmitCallback(elements.termsOfServiceForm), function(){ elements.termsOfServiceDialog.modal('hide') });
+		ConfigureAsyncForm(elements.termsOfServiceForm, defaultSubmitCallback(elements.termsOfServiceForm), function() {
+            var control = $("#tos-upload");
+            control.val('').replaceWith( control = control.clone( true ) ); // 'reset' file upload
+            control.trigger('change');
+		    elements.termsOfServiceDialog.modal('hide');
+		});
 	};
 
 	ReservationManagement.prototype.addReservation = function (reservation) {
@@ -368,4 +377,39 @@ function ReservationManagement(opts, approval) {
 		$.blockUI({message: $('#approveDiv')});
 		approval.Approve(referenceNumber);
 	}
+
+	function loadExistingTermsOfService() {
+	    ajaxGet(options.termsOfServiceUrl, null, function(data){
+            var text = data.text;
+            var url = data.url;
+            var filename = data.filename;
+            var applicability = data.applicability;
+
+            elements.termsOfServiceFile.addClass('no-show');
+
+            if (text != null && text != '')
+            {
+                $('#tos_manual_radio').click();
+                elements.termsOfServiceText.val(text);
+            }
+            if (url != null && url != '')
+            {
+                $('#tos_url_radio').click();
+                elements.termsOfServiceUrl.val(url);
+            }
+            if (filename != null && filename != '')
+            {
+                $('#tos_upload_radio').click();
+                elements.termsOfServiceFile.removeClass('no-show');
+            }
+
+            if (applicability == 'RESERVATION')
+            {
+                $('#tos_reservation').click();
+            }
+            else {
+                $('#tos_registration').click();
+            }
+        });
+    }
 }

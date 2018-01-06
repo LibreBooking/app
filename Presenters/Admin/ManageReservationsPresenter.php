@@ -313,18 +313,22 @@ class ManageReservationsPresenter extends ActionPresenter
                 ServiceLocator::GetServer()->GetUserSession());
             $this->page->SetReservationJson($rv);
         }
-        else {
-            if ($dataRequest == 'template') {
-                $attributes = $this->attributeService->GetByCategory(CustomAttributeCategory::RESERVATION);
-                $importAttributes = array();
-                foreach ($attributes as $attribute) {
-                    if (!$attribute->HasSecondaryEntities()) {
-                        $importAttributes[] = $attribute;
-                    }
+        elseif ($dataRequest == 'template') {
+            $attributes = $this->attributeService->GetByCategory(CustomAttributeCategory::RESERVATION);
+            $importAttributes = array();
+            foreach ($attributes as $attribute) {
+                if (!$attribute->HasSecondaryEntities()) {
+                    $importAttributes[] = $attribute;
                 }
-                $this->page->ShowTemplateCSV($importAttributes);
             }
+            $this->page->ShowTemplateCSV($importAttributes);
         }
+        elseif ($dataRequest == 'tos') {
+            $terms = $this->termsOfServiceRepository->Load();
+
+            $this->page->BindTerms(array('text' => $terms->Text(), 'url' => $terms->Url(), 'filename' => $terms->FileName(), 'applicability' => $terms->Applicability()));
+        }
+
     }
 
     public function UpdateAttribute()

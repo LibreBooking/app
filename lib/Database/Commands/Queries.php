@@ -824,6 +824,8 @@ class Queries
         WHERE ptl.payment_transaction_log_id = @payment_transaction_log_id
         GROUP BY ptl.payment_transaction_log_id';
 
+	const GET_TERMS_OF_SERVICE = 'SELECT * FROM terms_of_service';
+
 	const GET_USERID_BY_ACTIVATION_CODE =
 			'SELECT a.user_id FROM account_activation a
 			INNER JOIN users u ON u.user_id = a.user_id
