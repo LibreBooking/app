@@ -219,7 +219,7 @@ class RegisterPresenterTests extends TestBase
 		$this->assertEquals($this->timezone, $this->fakeReg->_Timezone);
 		$this->assertEquals(intval($this->homepageId), $this->fakeReg->_HomepageId);
 		$this->assertEquals($expectedAttributeValues, $this->fakeReg->_AttributeValues);
-		$this->assertEquals(Date::Now(), $this->fakeReg->_TermsAccepted);
+		$this->assertEquals(true, $this->fakeReg->_TermsAccepted);
 
 		$this->assertEquals($additionalFields['phone'], $this->fakeReg->_AdditionalFields['phone']);
 
