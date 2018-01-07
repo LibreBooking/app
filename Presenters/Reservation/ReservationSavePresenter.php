@@ -160,7 +160,7 @@ class ReservationSavePresenter implements IReservationSavePresenter
 			$reservationSeries->CalculateCredits($layout);
 		}
 
-		$reservationSeries->AcknowledgeTerms($this->page->GetTermsOfServiceAcknowledgement());
+		$reservationSeries->AcceptTerms($this->page->GetTermsOfServiceAcknowledgement());
 
 		return $reservationSeries;
 	}

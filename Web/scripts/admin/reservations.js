@@ -388,7 +388,7 @@ function ReservationManagement(opts, approval) {
             var url = data.url;
             var filename = data.filename;
             var applicability = data.applicability;
-            
+
             if (text != null && text != '') {
                 $('#tos_manual_radio').click();
                 elements.deleteTerms.removeClass('no-show');

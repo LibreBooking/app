@@ -381,11 +381,11 @@ class ReservationSeries
     }
 
     /**
-     * @param bool $acknowledged
+     * @param bool $accepted
      */
-    public function AcknowledgeTerms($acknowledged)
+    public function AcceptTerms($accepted)
     {
-        if ($acknowledged) {
+        if ($accepted) {
             $this->termsAcceptanceDate = Date::Now();
         }
     }

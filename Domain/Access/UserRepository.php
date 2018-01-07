@@ -394,7 +394,7 @@ class UserRepository implements IUserRepository, IAccountActivationRepository
             $user->Homepage(), $user->GetAttribute(UserAttribute::Phone),
             $user->GetAttribute(UserAttribute::Organization),
             $user->GetAttribute(UserAttribute::Position), $user->StatusId(), $user->GetPublicId(),
-            $user->GetDefaultScheduleId()));
+            $user->GetDefaultScheduleId(), $user->TermsAcceptanceDate()));
 
         $user->WithId($id);
 

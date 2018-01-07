@@ -951,9 +951,9 @@ class Queries
 
 	const REGISTER_USER =
 			'INSERT INTO
-			users (email, password, fname, lname, phone, organization, position, username, salt, timezone, language, homepageid, status_id, date_created, public_id, default_schedule_id)
+			users (email, password, fname, lname, phone, organization, position, username, salt, timezone, language, homepageid, status_id, date_created, public_id, default_schedule_id, terms_date_accepted)
 		VALUES
-			(@email, @password, @fname, @lname, @phone, @organization, @position, @username, @salt, @timezone, @language, @homepageid, @user_statusid, @dateCreated, @publicid, @scheduleid)';
+			(@email, @password, @fname, @lname, @phone, @organization, @position, @username, @salt, @timezone, @language, @homepageid, @user_statusid, @dateCreated, @publicid, @scheduleid, @terms_date_accepted)';
 
 	const REMOVE_ATTRIBUTE_ENTITY =
 			'DELETE FROM custom_attribute_entities WHERE custom_attribute_id = @custom_attribute_id AND entity_id = @entity_id';

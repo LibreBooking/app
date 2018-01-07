@@ -69,7 +69,7 @@ class Registration implements IRegistration
 	}
 
 	public function Register($username, $email, $firstName, $lastName, $password, $timezone, $language,
-							 $homepageId, $additionalFields = array(), $attributeValues = array(), $groups = null)
+							 $homepageId, $additionalFields = array(), $attributeValues = array(), $groups = null, $acceptTerms = false)
 	{
 		$homepageId = empty($homepageId) ? Pages::DEFAULT_HOMEPAGE_ID : $homepageId;
 		$encryptedPassword = $this->passwordEncryption->EncryptPassword($password);
@@ -85,8 +85,10 @@ class Registration implements IRegistration
 		{
 			$user = User::Create($firstName, $lastName, $email, $username, $language, $timezone, $encryptedPassword->EncryptedPassword(), $encryptedPassword->Salt(), $homepageId);
 		}
+
 		$user->ChangeAttributes($attributes->Get(UserAttribute::Phone), $attributes->Get(UserAttribute::Organization), $attributes->Get(UserAttribute::Position));
 		$user->ChangeCustomAttributes($attributeValues);
+		$user->AcceptTerms($acceptTerms);
 
 		if ($groups != null)
 		{

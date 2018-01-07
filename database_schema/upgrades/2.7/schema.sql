@@ -101,3 +101,6 @@ CREATE TABLE `terms_of_service` (
 
 ALTER TABLE `reservation_series`
   ADD COLUMN `terms_date_accepted` DATETIME;
+
+ALTER TABLE `users`
+  ADD COLUMN `terms_date_accepted` DATETIME;

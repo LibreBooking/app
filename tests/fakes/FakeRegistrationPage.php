@@ -45,7 +45,16 @@ class FakeRegistrationPage extends FakePageBase implements IRegistrationPage
 	 */
 	public $_AttributeValues = array();
 
-	public function __construct()
+    /**
+     * @var bool
+     */
+    public $_Acknowledged;
+    /**
+     * @var TermsOfService
+     */
+    public $_Terms;
+
+    public function __construct()
 	{
 		$this->_AttributeValues = array(new AttributeFormElement(1,2));
 	}
@@ -240,5 +249,12 @@ class FakeRegistrationPage extends FakePageBase implements IRegistrationPage
 		$this->_RedirectDestination = $url;
 	}
 
+    public function GetTermsOfServiceAcknowledgement()
+    {
+        return $this->_Acknowledged;
+    }
+    public function SetTerms($terms)
+    {
+        $this->_Terms = $terms;
+    }
 }
-?>

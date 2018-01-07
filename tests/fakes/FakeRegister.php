@@ -39,8 +39,10 @@ class FakeRegistration implements IRegistration
 	 */
 	public $_LastSynchronizedUser;
 	public $_RegisteredUser;
+    public $_TermsAccepted;
+    public $_Groups = array();
 
-	public function __construct()
+    public function __construct()
 	{
 		$this->_RegisteredUser = new FakeUser(1);
 	}
@@ -49,7 +51,7 @@ class FakeRegistration implements IRegistration
 	 */
 	public $_AttributeValues = array();
 
-	public function Register($login, $email, $firstName, $lastName, $password, $timezone, $language, $homepageId, $additionalFields = array(), $attributes = array())
+	public function Register($login, $email, $firstName, $lastName, $password, $timezone, $language, $homepageId, $additionalFields = array(), $attributes = array(), $groups = array(), $acceptTerms = false)
 	{
 		$this->_RegisterCalled = true;
 		$this->_Login = $login;
@@ -61,6 +63,8 @@ class FakeRegistration implements IRegistration
 		$this->_HomepageId = $homepageId;
 		$this->_AdditionalFields = $additionalFields;
 		$this->_AttributeValues = $attributes;
+		$this->_Groups = $groups;
+		$this->_TermsAccepted = $acceptTerms;
 
 		return $this->_RegisteredUser;
 	}

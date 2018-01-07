@@ -31,3 +31,4 @@ require_once(ROOT_DIR . 'lib/Common/Validators/FileUploadValidator.php');
 require_once(ROOT_DIR . 'lib/Common/Validators/PasswordComplexityValidator.php');
 require_once(ROOT_DIR . 'lib/Common/Validators/FileExtensionValidator.php');
 require_once(ROOT_DIR . 'lib/Common/Validators/RequiredEmailDomainValidator.php');
+require_once(ROOT_DIR . 'lib/Common/Validators/TermsOfServiceValidator.php');

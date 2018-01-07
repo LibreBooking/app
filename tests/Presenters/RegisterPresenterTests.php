@@ -55,6 +55,11 @@ class RegisterPresenterTests extends TestBase
 	 */
 	private $attributeService;
 
+	/**
+	 * @var ITermsOfServiceRepository
+	 */
+	private $termsOfServiceRepository;
+
 	private $login = 'testlogin';
 	private $email = 'test@test.com';
 	private $fname = 'First';
@@ -64,6 +69,7 @@ class RegisterPresenterTests extends TestBase
 	private $confirm = 'password';
 	private $timezone = 'US/Eastern';
 	private $homepageId = '1';
+	private $acknowledgedTerms = true;
 
 	public function setup()
 	{
@@ -74,8 +80,15 @@ class RegisterPresenterTests extends TestBase
         $this->fakeAuth = new FakeAuth();
         $this->captcha = $this->getMock('ICaptchaService');
         $this->attributeService = $this->getMock('IAttributeService');
+        $this->termsOfServiceRepository = new FakeTermsOfServiceRepository();
 
-		$this->presenter = new RegistrationPresenter($this->page, $this->fakeReg, $this->fakeAuth, $this->captcha, $this->attributeService);
+		$this->presenter = new RegistrationPresenter(
+		    $this->page,
+            $this->fakeReg,
+            $this->fakeAuth,
+            $this->captcha,
+            $this->attributeService,
+            $this->termsOfServiceRepository);
 	}
 
 	public function teardown()
@@ -206,12 +219,13 @@ class RegisterPresenterTests extends TestBase
 		$this->assertEquals($this->timezone, $this->fakeReg->_Timezone);
 		$this->assertEquals(intval($this->homepageId), $this->fakeReg->_HomepageId);
 		$this->assertEquals($expectedAttributeValues, $this->fakeReg->_AttributeValues);
+		$this->assertEquals(Date::Now(), $this->fakeReg->_TermsAccepted);
 
 		$this->assertEquals($additionalFields['phone'], $this->fakeReg->_AdditionalFields['phone']);
 
 		$v = $this->page->_Validators;
 
-		$this->assertEquals(11, count($v));
+		$this->assertEquals(12, count($v));
 		$this->assertEquals($v['fname'], new RequiredValidator($this->fname));
 		$this->assertEquals($v['lname'], new RequiredValidator($this->lname));
 		$this->assertEquals($v['username'], new RequiredValidator($this->login));
@@ -222,6 +236,7 @@ class RegisterPresenterTests extends TestBase
 		$this->assertEquals($v['uniqueusername'], new UniqueUserNameValidator(new UserRepository(), $this->login));
 		$this->assertEquals($v['additionalattributes'], new AttributeValidator($this->attributeService, CustomAttributeCategory::USER, $expectedAttributeValues));
 		$this->assertEquals($v['requiredEmailDomain'], new RequiredEmailDomainValidator($this->email));
+		$this->assertEquals($v['termsOfService'], new TermsOfServiceValidator($this->termsOfServiceRepository, $this->acknowledgedTerms));
 	}
 
     public function testDoesNotRegisterIfPageIsNotValid()
@@ -293,6 +308,6 @@ class RegisterPresenterTests extends TestBase
 		$this->page->SetPasswordConfirm($this->confirm);
 		$this->page->SetTimezone($this->timezone);
 		$this->page->SetHomepage($this->homepageId);
+		$this->page->_Acknowledged = $this->acknowledgedTerms;
 	}
 }
-?>

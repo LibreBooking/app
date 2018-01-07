@@ -87,3 +87,4 @@ require_once(ROOT_DIR . 'tests/fakes/FakePayPalGateway.php');
 require_once(ROOT_DIR . 'tests/fakes/FakePaymentTransactionLogger.php');
 require_once(ROOT_DIR . 'tests/fakes/FakeCreditRepository.php');
 require_once(ROOT_DIR . 'tests/fakes/FakeStripeGateway.php');
+require_once(ROOT_DIR . 'tests/fakes/FakeTermsOfServiceRepository.php');

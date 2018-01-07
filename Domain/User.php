@@ -948,6 +948,29 @@ class User
     {
         return $this->credits != $this->originalCredits;
     }
+
+    /**
+     * @var Date|null
+     */
+    protected $termsAcceptanceDate;
+
+    /**
+     * @return Date|null
+     */
+    public function TermsAcceptanceDate()
+    {
+        return $this->termsAcceptanceDate;
+    }
+
+    /**
+     * @param bool $accepted
+     */
+    public function AcceptTerms($accepted)
+    {
+        if ($accepted) {
+            $this->termsAcceptanceDate = Date::Now();
+        }
+    }
 }
 
 class NullUser extends User

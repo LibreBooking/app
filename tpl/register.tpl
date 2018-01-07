@@ -53,9 +53,9 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                     {async_validator id="captcha" key="CaptchaMustMatch"}
                     {async_validator id="additionalattributes" key=""}
                     {async_validator id="requiredEmailDomain" key="InvalidEmailDomain"}
+                    {async_validator id="termsOfService" key="TermsOfServiceError"}
                 </ul>
             </div>
-
 
             <div class="row">
                 <div class="col-xs-12 col-sm-6">
@@ -137,7 +137,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                     <label class="reg" for="timezoneDropDown">{translate key="Timezone"}</label>
 
                     <div class="input-group">
-                        <span class="input-group-addon"><a href="#" id="detectTimezone" title="{translate key=Detect}"><i class="fa fa-clock-o"></i></a></span>
+                        <span class="input-group-addon"><a href="#" id="detectTimezone"
+                                                           title="{translate key=Detect}"><i class="fa fa-clock-o"></i></a></span>
                         <select {formname key='TIMEZONE'} class="form-control" id="timezoneDropDown">
                             {html_options values=$TimezoneValues output=$TimezoneOutput selected=$Timezone}
                         </select>
@@ -192,11 +193,29 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
             {/if}
 
             {if $EnableCaptcha}
-                <div class="form-group">
-                    {control type="CaptchaControl"}
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="form-group">
+                            {control type="CaptchaControl"}
+                        </div>
+                    </div>
                 </div>
             {else}
                 <input type="hidden" {formname key=CAPTCHA} value=""/>
+            {/if}
+
+            {if $Terms != null}
+                <div class="row" id="termsAndConditions">
+                    <div class="col-xs-12">
+                        <div class="checkbox">
+                            <input type="checkbox"
+                                   id="termsAndConditionsAcknowledgement" {formname key=TOS_ACKNOWLEDGEMENT}/>
+                            <label for="termsAndConditionsAcknowledgement">{translate key=IAccept}</label>
+                            <a href="{$Terms->DisplayUrl()}" style="vertical-align: middle"
+                               target="_blank">{translate key=TheTermsOfService}</a>
+                        </div>
+                    </div>
+                </div>
             {/if}
 
             <div>

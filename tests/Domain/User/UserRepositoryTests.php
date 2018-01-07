@@ -428,6 +428,8 @@ class UserRepositoryTests extends TestBase
 
 	public function testAddsUser()
 	{
+	    Date::_SetNow(Date::Now());
+
 		$expectedId = 999;
 		$firstName = 'f';
 		$lastName = 'l';
@@ -451,6 +453,7 @@ class UserRepositoryTests extends TestBase
 		$user->ChangeEmailPreference(new ReservationApprovedEvent(), true);
 		$user->EnablePublicProfile();
 		$user->ChangeDefaultSchedule($scheduleId);
+		$user->AcceptTerms(true);
 		$publicId = $user->GetPublicId();
 
 		$this->db->_ExpectedInsertId = $expectedId;
@@ -459,7 +462,7 @@ class UserRepositoryTests extends TestBase
 
 		$command = new RegisterUserCommand($userName, $emailAddress, $firstName, $lastName, $password, $passwordSalt,
 										   $timezone, $language, Pages::DEFAULT_HOMEPAGE_ID, $phone, $organization, $position, AccountStatus::ACTIVE,
-										   $publicId, $scheduleId);
+										   $publicId, $scheduleId, Date::Now());
 
 		$addAttr1Command = new AddAttributeValueCommand($attr1->AttributeId, $attr1->Value, $expectedId, CustomAttributeCategory::USER);
 		$addAttr2Command = new AddAttributeValueCommand($attr2->AttributeId, $attr2->Value, $expectedId, CustomAttributeCategory::USER);

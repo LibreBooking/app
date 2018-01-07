@@ -2057,9 +2057,11 @@ class RegisterMiniUserCommand extends SqlCommand
 class RegisterUserCommand extends SqlCommand
 {
     public function __construct($username, $email, $fname, $lname, $password, $salt, $timezone, $language, $homepageId,
-                                $phone, $organization, $position, $userStatusId, $publicId, $scheduleId)
+                                $phone, $organization, $position, $userStatusId, $publicId, $scheduleId, $termsAcceptedDate)
     {
         parent::__construct(Queries::REGISTER_USER);
+
+        $termsAcceptedDate = $termsAcceptedDate == null ? new NullDate() : $termsAcceptedDate;
 
         $this->AddParameter(new Parameter(ParameterNames::USERNAME, $username));
         $this->AddParameter(new Parameter(ParameterNames::EMAIL_ADDRESS, $email));
@@ -2074,10 +2076,10 @@ class RegisterUserCommand extends SqlCommand
         $this->AddParameter(new Parameter(ParameterNames::ORGANIZATION, $organization));
         $this->AddParameter(new Parameter(ParameterNames::POSITION, $position));
         $this->AddParameter(new Parameter(ParameterNames::USER_STATUS_ID, $userStatusId));
-        $this->AddParameter(new Parameter(ParameterNames::DATE_CREATED, Date::Now()
-            ->ToDatabase()));
+        $this->AddParameter(new Parameter(ParameterNames::DATE_CREATED, Date::Now()->ToDatabase()));
         $this->AddParameter(new Parameter(ParameterNames::PUBLIC_ID, $publicId));
         $this->AddParameter(new Parameter(ParameterNames::SCHEDULE_ID, $scheduleId));
+        $this->AddParameter(new Parameter(ParameterNames::TERMS_ACCEPTANCE_DATE, $termsAcceptedDate->ToDatabase()));
     }
 }
 
