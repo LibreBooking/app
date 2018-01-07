@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Copyright 2011-2017 Nick Korbel
+ * Copyright 2011-2018 Nick Korbel
  * Copyright 2012-2014, Moritz Schepp, IST Austria
  * Copyright 2012-2014, Alois Schloegl, IST Austria
  *

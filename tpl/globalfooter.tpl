@@ -1,5 +1,5 @@
 {*
-Copyright 2011-2017 Nick Korbel
+Copyright 2011-2018 Nick Korbel
 
 This file is part of Booked Scheduler.
 
@@ -20,7 +20,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 	</div><!-- close main-->
 
 	<footer class="footer navbar">
-		&copy; 2017 <a href="http://www.twinkletoessoftware.com">Twinkle Toes Software</a> <br/><a href="http://www.bookedscheduler.com">Booked Scheduler v{$Version}</a>
+		&copy; 2018 <a href="http://www.twinkletoessoftware.com">Twinkle Toes Software</a> <br/><a href="http://www.bookedscheduler.com">Booked Scheduler v{$Version}</a>
 	</footer>
 
 	<script type="text/javascript">

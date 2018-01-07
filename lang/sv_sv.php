@@ -1,6 +1,6 @@
 <?php
 /**
-Copyright 2011-2017 Nick Korbel, Boris Vatin
+Copyright 2011-2018 Nick Korbel, Boris Vatin
 
 This file is part of Booked Scheduler.
 
