@@ -480,6 +480,17 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
             </p>
         </div>
 
+        <div id="help-tablet-view">
+        <h2>Reservation Tablet View</h2>
+
+        <p>{$AppTitle} provides a tablet-friendly view of a resource's current availability. To launch this view,
+            open {$ScriptUrl}/resource-display.php then choose the resource to display. From here users can
+            view the
+            current availability, check in to their reservation, and book new reservations. A good use of this
+        feature is mounting a tablet next to a resource to show real-time availability and allow on the spot reservations.</p>
+
+        </div>
+
         <div id="help-slack-integration">
             <h2>Slack Integration</h2>
             <p>You can begin a Booked reservation request directly from Slack. You will need to <a

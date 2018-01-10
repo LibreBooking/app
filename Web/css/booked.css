@@ -640,7 +640,9 @@ input:checked + .slider:before {
   width: 100%;
 }
 #page-help-admin h2,
-#page-help-admin h3 {
+#page-help-admin h3,
+#page-help h2,
+#page-help h3 {
   padding-top: 50px;
   margin-top: -50px;
 }
