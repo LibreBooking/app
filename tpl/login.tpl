@@ -31,6 +31,14 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
         {/validation_group}
     {/if}
 
+    {if $Announcements|count > 0}
+        <div id="announcements" class="col-sm-8 col-sm-offset-2 col-xs-12">
+        {foreach from=$Announcements item=each}
+            <div class="announcement">{$each->Text()|html_entity_decode|url2link|nl2br}</div>
+        {/foreach}
+        </div>
+    {/if}
+
 	<div class="col-md-offset-3 col-md-6 col-xs-12 ">
 		<form role="form" name="login" id="login" class="form-horizontal" method="post"
 			  action="{$smarty.server.SCRIPT_NAME}">

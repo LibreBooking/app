@@ -39,8 +39,8 @@ class Queries
 			'INSERT INTO account_activation (user_id, activation_code, date_created) VALUES (@userid, @activation_code, @dateCreated)';
 
 	const ADD_ANNOUNCEMENT =
-			'INSERT INTO announcements (announcement_text, priority, start_date, end_date)
-		VALUES (@text, @priority, @startDate, @endDate)';
+			'INSERT INTO announcements (announcement_text, priority, start_date, end_date, display_page)
+		VALUES (@text, @priority, @startDate, @endDate, @display_page)';
 
 	const ADD_ANNOUNCEMENT_GROUP = 'INSERT INTO announcement_groups (announcementid, group_id) VALUES (@announcementid, @groupid)';
 
@@ -569,7 +569,7 @@ class Queries
 			(SELECT GROUP_CONCAT(ag.group_id) FROM announcement_groups ag WHERE ag.announcementid = a.announcementid) as group_ids,
 			(SELECT GROUP_CONCAT(ar.resource_id) FROM announcement_resources ar WHERE ar.announcementid = a.announcementid) as resource_ids
 			FROM announcements a
-		WHERE (start_date <= @current_date AND end_date >= @current_date) OR (end_date IS NULL)
+		WHERE (start_date <= @current_date AND end_date >= @current_date) OR (end_date IS NULL) AND (@display_page = -1 OR @display_page = display_page)
 		ORDER BY priority, start_date, end_date';
 
 	const GET_GROUP_BY_ID =

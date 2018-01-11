@@ -56,13 +56,14 @@ class AddAccountActivationCommand extends SqlCommand
 
 class AddAnnouncementCommand extends SqlCommand
 {
-    public function __construct($text, Date $start, Date $end, $priority)
+    public function __construct($text, Date $start, Date $end, $priority, $displayPage)
     {
         parent::__construct(Queries::ADD_ANNOUNCEMENT);
         $this->AddParameter(new Parameter(ParameterNames::ANNOUNCEMENT_TEXT, $text));
         $this->AddParameter(new Parameter(ParameterNames::START_DATE, $start->ToDatabase()));
         $this->AddParameter(new Parameter(ParameterNames::END_DATE, $end->ToDatabase()));
         $this->AddParameter(new Parameter(ParameterNames::ANNOUNCEMENT_PRIORITY, $priority));
+        $this->AddParameter(new Parameter(ParameterNames::ANNOUNCEMENT_DISPLAY_PAGE, $displayPage));
     }
 }
 
@@ -1456,10 +1457,11 @@ class GetBlackoutResourcesCommand extends SqlCommand
 
 class GetDashboardAnnouncementsCommand extends SqlCommand
 {
-    public function __construct(Date $currentDate)
+    public function __construct(Date $currentDate, $displayPage)
     {
         parent::__construct(Queries::GET_DASHBOARD_ANNOUNCEMENTS);
         $this->AddParameter(new Parameter(ParameterNames::CURRENT_DATE, $currentDate->ToDatabase()));
+        $this->AddParameter(new Parameter(ParameterNames::ANNOUNCEMENT_DISPLAY_PAGE, $displayPage));
     }
 }
 

@@ -20,8 +20,13 @@ function AnnouncementManagement(opts) {
 		editPriority: $('#editPriority'),
 		editUserGroups: $('#editUserGroups'),
 		editResourceGroups: $('#editResourceGroups'),
+        editUserGroupsDiv: $('#editUserGroupsDiv'),
+        editResourceGroupsDiv: $('#editResourceGroupsDiv'),
 
-		emailCount: $('#emailCount')
+		emailCount: $('#emailCount'),
+
+        displayPage: $('#addPage'),
+        moreOptions: $('#moreOptions')
 	};
 
 	var announcements = new Object();
@@ -42,6 +47,16 @@ function AnnouncementManagement(opts) {
 		elements.announcementList.delegate('.delete', 'click', function () {
 			deleteAnnouncement();
 		});
+
+		elements.displayPage.change(function(e){
+		    if ($(this).val() == '5')
+            {
+                elements.moreOptions.hide();
+            }
+            else {
+                elements.moreOptions.show();
+            }
+        });
 
 		$(".save").click(function () {
 			$(this).closest('form').submit();
@@ -83,15 +98,26 @@ function AnnouncementManagement(opts) {
 		elements.editEnd.trigger('change');
 		elements.editPriority.val(announcement.priority);
 
-		elements.editUserGroups.val($.map(announcement.groupIds, function(i){
-			return i + "";
-		}));
-		elements.editUserGroups.trigger('change');
+		if (announcement.displayPage == 5)
+        {
+            elements.editUserGroupsDiv.hide();
+            elements.editResourceGroupsDiv.hide();
+        }
+        else
+        {
+            elements.editUserGroupsDiv.show();
+            elements.editResourceGroupsDiv.show();
 
-		elements.editResourceGroups.val($.map(announcement.resourceIds, function(i){
-			return i + "";
-		}));
-		elements.editResourceGroups.trigger('change');
+            elements.editUserGroups.val($.map(announcement.groupIds, function(i){
+                return i + "";
+            }));
+            elements.editUserGroups.trigger('change');
+
+            elements.editResourceGroups.val($.map(announcement.resourceIds, function(i){
+                return i + "";
+            }));
+            elements.editResourceGroups.trigger('change');
+        }
 
 		elements.editDialog.modal('show');
 	};
@@ -113,7 +139,7 @@ function AnnouncementManagement(opts) {
 		return announcements[getActiveId()];
 	};
 
-	AnnouncementManagement.prototype.addAnnouncement = function (id, text, start, end, priority, groupIds, resourceIds) {
-		announcements[id] = {id: id, text: text, start: start, end: end, priority: priority, groupIds: groupIds, resourceIds: resourceIds};
+	AnnouncementManagement.prototype.addAnnouncement = function (id, text, start, end, priority, groupIds, resourceIds, displayPage) {
+		announcements[id] = {id: id, text: text, start: start, end: end, priority: priority, groupIds: groupIds, resourceIds: resourceIds, displayPage: displayPage};
 	};
 }

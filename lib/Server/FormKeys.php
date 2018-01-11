@@ -83,6 +83,7 @@ class FormKeys
 	const DESCRIPTION = 'reservationDescription';
 	const DURATION = 'duration';
 	const DELETE_REASON = 'DELETE_REASON';
+	const DISPLAY_PAGE = 'DISPLAY_PAGE';
 
 	const EMAIL = 'email';
 	const END_DATE = 'endDate';

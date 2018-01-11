@@ -104,3 +104,7 @@ ALTER TABLE `reservation_series`
 
 ALTER TABLE `users`
   ADD COLUMN `terms_date_accepted` DATETIME;
+
+ALTER TABLE `announcements`
+  ADD COLUMN `display_page` TINYINT(1) UNSIGNED NOT NULL DEFAULT 1;
+ALTER TABLE `announcements` ADD INDEX(`display_page`);

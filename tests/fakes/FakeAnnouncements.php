@@ -41,6 +41,7 @@ class FakeAnnouncementRepository implements IAnnouncementRepository
                 ColumnNames::ANNOUNCEMENT_PRIORITY => null,
                 ColumnNames::GROUP_IDS => null,
                 ColumnNames::RESOURCE_IDS => null,
+                ColumnNames::ANNOUNCEMENT_DISPLAY_PAGE => 1,
             ),
             array(
                 ColumnNames::ANNOUNCEMENT_ID => 1,
@@ -49,7 +50,8 @@ class FakeAnnouncementRepository implements IAnnouncementRepository
                 ColumnNames::ANNOUNCEMENT_END => null,
                 ColumnNames::ANNOUNCEMENT_PRIORITY => null,
                 ColumnNames::GROUP_IDS => null,
-                ColumnNames::RESOURCE_IDS => null
+                ColumnNames::RESOURCE_IDS => null,
+                ColumnNames::ANNOUNCEMENT_DISPLAY_PAGE => 1,
             ),
             array(
                 ColumnNames::ANNOUNCEMENT_ID => 1,
@@ -58,12 +60,13 @@ class FakeAnnouncementRepository implements IAnnouncementRepository
                 ColumnNames::ANNOUNCEMENT_END => null,
                 ColumnNames::ANNOUNCEMENT_PRIORITY => null,
                 ColumnNames::GROUP_IDS => null,
-                ColumnNames::RESOURCE_IDS => null
+                ColumnNames::RESOURCE_IDS => null,
+                ColumnNames::ANNOUNCEMENT_DISPLAY_PAGE => 1,
             ),
         );
     }
 
-    public function GetFuture()
+    public function GetFuture($displayPage = -1)
     {
         $this->_GetFutureCalled = true;
         return $this->_ExpectedAnnouncements;

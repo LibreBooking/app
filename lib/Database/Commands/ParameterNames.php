@@ -40,6 +40,7 @@ class ParameterNames
 	const ANNOUNCEMENT_ID = '@announcementid';
 	const ANNOUNCEMENT_TEXT = '@text';
 	const ANNOUNCEMENT_PRIORITY = '@priority';
+	const ANNOUNCEMENT_DISPLAY_PAGE = '@display_page';
 
 	const ATTRIBUTE_ID = '@custom_attribute_id';
 	const ATTRIBUTE_ADMIN_ONLY = '@admin_only';

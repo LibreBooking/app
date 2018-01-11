@@ -184,6 +184,7 @@ class FakeWebAuthentication implements IWebAuthentication
 	public $_ShowForgotPasswordPrompt = false;
 	public $_LogoutCalled = false;
 	public $_IsLoggedIn = false;
+	public $_AreCredentialsKnown = false;
 
 	public function Validate($username, $password)
 	{
@@ -216,7 +217,7 @@ class FakeWebAuthentication implements IWebAuthentication
 
 	public function AreCredentialsKnown()
 	{
-		return true;
+		return $this->_AreCredentialsKnown;
 	}
 
 	public function HandleLoginFailure(ILoginPage $loginPage)

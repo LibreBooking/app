@@ -26,50 +26,61 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			<div class="panel-heading">{translate key="AddAnnouncement"} {showhide_icon}</div>
 			<div class="panel-body add-contents">
 				<div id="addResults" class="error no-show"></div>
-				<div class="form-group has-feedback">
-					<label for="addAnnouncement">{translate key='Announcement'}</label>
-					<textarea class="form-control required" rows="1" {formname key=ANNOUNCEMENT_TEXT} id="addAnnouncement"></textarea>
-					<i class="glyphicon glyphicon-asterisk form-control-feedback" data-bv-icon-for="addAnnouncement"></i>
+                <div>
+				<div class="form-group col-xs-12">
+					<label for="addAnnouncement">{translate key='Announcement'} <i class="glyphicon glyphicon-asterisk form-control-feedback"></i></label>
+                    <textarea class="form-control required" rows="1" style="width:100%" {formname key=ANNOUNCEMENT_TEXT} id="addAnnouncement"></textarea>
 				</div>
-				<div class="form-group">
+                </div>
+				<div class="form-group col-xs-3">
 					<label for="BeginDate">{translate key='BeginDate'}</label>
 					<input type="text" id="BeginDate" class="form-control" {formname key=ANNOUNCEMENT_START} />
 					<input type="hidden" id="formattedBeginDate" {formname key=ANNOUNCEMENT_START} />
 				</div>
-				<div class="form-group">
+				<div class="form-group col-xs-3">
 					<label for="EndDate">{translate key='EndDate'}</label>
 					<input type="text" id="EndDate" class="form-control" {formname key=ANNOUNCEMENT_END} />
 					<input type="hidden" id="formattedEndDate" {formname key=ANNOUNCEMENT_END} />
 				</div>
-				<div class="form-group">
+				<div class="form-group col-xs-3">
 					<label for="addPriority">{translate key='Priority'}</label>
 					<input type="number" min="0" step="1" class="form-control" {formname key=ANNOUNCEMENT_PRIORITY} id="addPriority" />
 				</div>
-				<div><a href="#" data-toggle="collapse" data-target="#advancedAnnouncementOptions">{translate key=MoreOptions} &raquo;</a></div>
-				<div id="advancedAnnouncementOptions" class="collapse">
-					<div class="form-group col-xs-12 col-md-6">
-						<label for="announcementGroups" class="no-show">{translate key=UsersInGroups}</label>
-						<select id="announcementGroups" class="form-control" multiple="multiple" style="width:100%" {formname key=FormKeys::GROUP_ID multi=true}>
-							{foreach from=$Groups item=group}
-								<option value="{$group->Id}">{$group->Name}</option>
-							{/foreach}
-						</select>
-					</div>
-					<div class="form-group col-xs-12 col-md-6">
-						<label for="resourceGroups" class="no-show">{translate key=UsersWithAccessToResources}</label>
-						<select id="resourceGroups" class="form-control" multiple="multiple" style="width:100%" {formname key=RESOURCE_ID multi=true}>
-							{foreach from=$Resources item=resource}
-								<option value="{$resource->GetId()}">{$resource->GetName()}</option>
-							{/foreach}
-						</select>
-					</div>
-					<div class="form-group col-xs-12">
-						<div class="checkbox no-padding-left">
-							<input type="checkbox" id="sendAsEmail" {formname key=FormKeys::SEND_AS_EMAIL} />
-							<label for="sendAsEmail">{translate key=SendAsEmail}</label>
-						</div>
-					</div>
+                <div class="form-group col-xs-3">
+					<label for="addPage">{translate key='DisplayPage'}</label>
+					<select id="addPage" class="form-control" {formname key=DISPLAY_PAGE}>
+                        <option value="1">{translate key=Dashboard}</option>
+                        <option value="5">{translate key=Login}</option>
+                    </select>
 				</div>
+				<div id="moreOptions">
+                    <a href="#" class="btn btn-link" data-toggle="collapse" data-target="#advancedAnnouncementOptions">{translate key=MoreOptions} &raquo;</a>
+                    <div id="advancedAnnouncementOptions" class="collapse">
+                        <div class="form-group col-xs-12 col-md-6">
+                            <label for="announcementGroups" class="no-show">{translate key=UsersInGroups}</label>
+                            <select id="announcementGroups" class="form-control" multiple="multiple" style="width:100%" {formname key=FormKeys::GROUP_ID multi=true}>
+                                {foreach from=$Groups item=group}
+                                    <option value="{$group->Id}">{$group->Name}</option>
+                                {/foreach}
+                            </select>
+                        </div>
+                        <div class="form-group col-xs-12 col-md-6">
+                            <label for="resourceGroups" class="no-show">{translate key=UsersWithAccessToResources}</label>
+                            <select id="resourceGroups" class="form-control" multiple="multiple" style="width:100%" {formname key=RESOURCE_ID multi=true}>
+                                {foreach from=$Resources item=resource}
+                                    <option value="{$resource->GetId()}">{$resource->GetName()}</option>
+                                {/foreach}
+                            </select>
+                        </div>
+                        <div class="form-group col-xs-12">
+                            <div class="checkbox no-padding-left">
+                                <input type="checkbox" id="sendAsEmail" {formname key=FormKeys::SEND_AS_EMAIL} />
+                                <label for="sendAsEmail">{translate key=SendAsEmail}</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
 			</div>
 			<div class="panel-footer">
 			 	{add_button class="btn-sm"}
@@ -88,6 +99,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			<th>{sort_column key=EndDate field=ColumnNames::ANNOUNCEMENT_END}</th>
 			<th>{translate key='Groups'}</th>
 			<th>{translate key='Resources'}</th>
+			<th>{translate key='DisplayPage'}</th>
 			<th class="action">{translate key='Actions'}</th>
 		</tr>
 		</thead>
@@ -101,10 +113,13 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 				<td class="announcementEnd">{formatdate date=$announcement->End()->ToTimezone($timezone)}</td>
 				<td class="announcementGroups">{foreach from=$announcement->GroupIds() item=groupId}{$Groups[$groupId]->Name} {/foreach}</td>
 				<td class="announcementResources">{foreach from=$announcement->ResourceIds() item=resourceId}{$Resources[$resourceId]->GetName()} {/foreach}</td>
+				<td class="announcementDisplayPage">{translate key={Pages::NameFromId($announcement->DisplayPage())}}</td>
 				<td class="action announcementActions">
 					<a href="#" title="{translate key=Edit}" class="update edit"><span class="fa fa-pencil-square-o icon"></a> |
-					<a href="#" title="{translate key=Email}" class="update sendEmail"><span class="fa fa-envelope-o icon"></a> |
-					<a href="#" title="{translate key=Delete}" class="update delete"><span class="fa fa-trash icon remove"></span></a>
+					{if $announcement->CanEmail()}
+                    <a href="#" title="{translate key=Email}" class="update sendEmail"><span class="fa fa-envelope-o icon"></a> |
+                    {/if}
+                    <a href="#" title="{translate key=Delete}" class="update delete"><span class="fa fa-trash icon remove"></span></a>
 				</td>
 			</tr>
 		{/foreach}
@@ -164,7 +179,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 							<label for="editPriority">{translate key='Priority'}</label> <br/>
 							<input type="number" min="0" step="1" id="editPriority" class="form-control" {formname key=ANNOUNCEMENT_PRIORITY} />
 						</div>
-						<div class="form-group">
+						<div class="form-group" id="editUserGroupsDiv">
 							<label for="editUserGroups" class="no-show">{translate key=UsersInGroups}</label>
 							<select id="editUserGroups" class="form-control" multiple="multiple" style="width:100%" {formname key=FormKeys::GROUP_ID multi=true}>
 								{foreach from=$Groups item=group}
@@ -172,7 +187,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 								{/foreach}
 							</select>
 						</div>
-						<div class="form-group">
+						<div class="form-group" id="editResourceGroupsDiv">
 							<label for="editResourceGroups" class="no-show">{translate key=UsersWithAccessToResources}</label>
 							<select id="editResourceGroups" class="form-control" multiple="multiple" style="width:100%" {formname key=RESOURCE_ID multi=true}>
 								{foreach from=$Resources item=resource}
@@ -252,7 +267,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 					'{formatdate date=$announcement->End()->ToTimezone($timezone)}',
 					'{$announcement->Priority()}',
 					[{foreach from=$announcement->GroupIds() item=id}{$id},{/foreach}],
-					[{foreach from=$announcement->ResourceIds() item=id}{$id},{/foreach}]
+					[{foreach from=$announcement->ResourceIds() item=id}{$id},{/foreach}],
+                    {$announcement->DisplayPage()}
 			);
 			{/foreach}
 

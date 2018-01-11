@@ -40,15 +40,22 @@ class LoginPresenter
     private $captchaService;
 
     /**
+     * @var IAnnouncementRepository
+     */
+    private $announcementRepository;
+
+    /**
      * @param ILoginPage $page
      * @param IWebAuthentication $authentication
      * @param ICaptchaService $captchaService
+     * @param IAnnouncementRepository $announcementRepository
      */
-	public function __construct(ILoginPage &$page, $authentication = null, $captchaService = null)
+	public function __construct(ILoginPage &$page, $authentication = null, $captchaService = null, $announcementRepository = null)
 	{
 		$this->_page = & $page;
 		$this->SetAuthentication($authentication);
         $this->SetCaptchaService($captchaService);
+        $this->SetAnnouncementRepository($announcementRepository);
 
         $this->LoadValidators();
 	}
@@ -68,6 +75,9 @@ class LoginPresenter
 		}
 	}
 
+    /**
+     * @param ICaptchaService $captchaService
+     */
     private function SetCaptchaService($captchaService)
     {
         if (is_null($captchaService))
@@ -80,12 +90,27 @@ class LoginPresenter
         }
     }
 
+    /**
+     * @param IAnnouncementRepository $announcementRepository
+     */
+    private function SetAnnouncementRepository($announcementRepository)
+    {
+        if (is_null($announcementRepository))
+        {
+            $this->announcementRepository = new AnnouncementRepository();
+        }
+        else
+        {
+            $this->announcementRepository = $announcementRepository;
+        }
+    }
 
     public function PageLoad()
 	{
 		if ($this->authentication->IsLoggedIn())
 		{
 			$this->_Redirect();
+			return;
 		}
 
 		$this->SetSelectedLanguage();
@@ -93,6 +118,7 @@ class LoginPresenter
 		if ($this->authentication->AreCredentialsKnown())
 		{
 			$this->Login();
+			return;
 		}
 
 		$server = ServiceLocator::GetServer();
@@ -103,6 +129,7 @@ class LoginPresenter
 			if ($this->authentication->CookieLogin($loginCookie, new WebLoginContext(new LoginData(true))))
 			{
 				$this->_Redirect();
+				return;
 			}
 		}
 
@@ -123,6 +150,7 @@ class LoginPresenter
 		$this->_page->ShowUsernamePrompt($this->authentication->ShowUsernamePrompt() && !$hideLogin);
 		$this->_page->SetRegistrationUrl($this->authentication->GetRegistrationUrl() && !$hideLogin);
 		$this->_page->SetPasswordResetUrl($this->authentication->GetPasswordResetUrl());
+		$this->_page->SetAnnouncements($this->announcementRepository->GetFuture(Pages::ID_LOGIN));
 	}
 
 	public function Login()

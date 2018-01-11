@@ -66,6 +66,7 @@ class ColumnNames
 	const ANNOUNCEMENT_START = 'start_date';
 	const ANNOUNCEMENT_END = 'end_date';
 	const ANNOUNCEMENT_TEXT = 'announcement_text';
+	const ANNOUNCEMENT_DISPLAY_PAGE = 'display_page';
 
 	// GROUPS //
 	const GROUP_ID = 'group_id';

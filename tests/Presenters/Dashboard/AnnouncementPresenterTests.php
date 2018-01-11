@@ -62,8 +62,9 @@ class AnnouncementPresenterTests extends TestBase
 	public function testShowsAllAnnouncements()
 	{
 		$now = Date::Now();
+        $displayPage = 1;
 
-		$announcement = new Announcement(1, 'text', $now, $now, 1, array(), array());
+		$announcement = new Announcement(1, 'text', $now, $now, 1, array(), array(), $displayPage);
 		$this->announcements->_ExpectedAnnouncements = array($announcement);
 
 		$this->presenter->PageLoad();

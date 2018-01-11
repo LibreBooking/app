@@ -706,6 +706,7 @@ class en_us extends Language
         $strings['ViewTerms'] = 'View Terms of Service';
         $strings['IAccept'] = 'I Accept';
         $strings['TheTermsOfService'] = 'the Terms of Service';
+        $strings['DisplayPage'] = 'Display Page';
         // End Strings
 
 		// Install
