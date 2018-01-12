@@ -32,21 +32,21 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                     <textarea class="form-control required" rows="1" style="width:100%" {formname key=ANNOUNCEMENT_TEXT} id="addAnnouncement"></textarea>
 				</div>
                 </div>
-				<div class="form-group col-xs-3">
+				<div class="form-group col-sm-3 col-xs-6">
 					<label for="BeginDate">{translate key='BeginDate'}</label>
 					<input type="text" id="BeginDate" class="form-control" {formname key=ANNOUNCEMENT_START} />
 					<input type="hidden" id="formattedBeginDate" {formname key=ANNOUNCEMENT_START} />
 				</div>
-				<div class="form-group col-xs-3">
+				<div class="form-group col-sm-3 col-xs-6">
 					<label for="EndDate">{translate key='EndDate'}</label>
 					<input type="text" id="EndDate" class="form-control" {formname key=ANNOUNCEMENT_END} />
 					<input type="hidden" id="formattedEndDate" {formname key=ANNOUNCEMENT_END} />
 				</div>
-				<div class="form-group col-xs-3">
+				<div class="form-group col-sm-3 col-xs-6">
 					<label for="addPriority">{translate key='Priority'}</label>
 					<input type="number" min="0" step="1" class="form-control" {formname key=ANNOUNCEMENT_PRIORITY} id="addPriority" />
 				</div>
-                <div class="form-group col-xs-3">
+                <div class="form-group col-sm-3 col-xs-6">
 					<label for="addPage">{translate key='DisplayPage'}</label>
 					<select id="addPage" class="form-control" {formname key=DISPLAY_PAGE}>
                         <option value="1">{translate key=Dashboard}</option>
