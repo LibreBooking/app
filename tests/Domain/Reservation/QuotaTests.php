@@ -277,6 +277,37 @@ class QuotaTests extends TestBase
 		$this->assertFalse($exceeds);
 	}
 
+    public function testWhenTotalLimitIsExceededForWeekAndWeekStartOnThursday()
+    {
+        $tz = 'UTC';
+        $this->schedule->SetTimezone($tz);
+        $this->schedule->SetWeekdayStart(4);
+
+        $duration = new QuotaDurationWeek();
+        $limit = new QuotaLimitCount(2);
+
+        $quota = new Quota(1, $duration, $limit);
+
+        // week 01/11/2018 - 01/18/2018
+        $startDate = Date::Parse('2018-01-15 5:30', $tz);
+        $endDate = Date::Parse('2018-01-15 6:30', $tz);
+
+        $series = $this->GetHourLongReservation($startDate, $endDate);
+
+        $res1 = new ReservationItemView('', Date::Parse('2018-01-11 1:30', $tz), Date::Parse('2018-01-11 2:30', $tz), '', $series->ResourceId(), 98712);
+        $res2 = new ReservationItemView('', Date::Parse('2018-01-12 1:30', $tz), Date::Parse('2018-01-12 2:30', $tz), '', $series->ResourceId(), 98712);
+        $reservations = array($res1, $res2);
+
+        $startSearch = Date::Parse('2018-01-11 00:00', $tz);
+        $endSearch = Date::Parse('2018-01-18 00:00', $tz);
+
+        $this->ShouldSearchBy($startSearch, $endSearch, $series, $reservations);
+
+        $exceeds = $quota->ExceedsQuota($series, $this->user, $this->schedule, $this->reservationViewRepository);
+
+        $this->assertTrue($exceeds);
+    }
+
 	public function testWhenTotalLimitIsExceededForWeekAndWeekStartOnToday()
 	{
 		$tz = 'UTC';

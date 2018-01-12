@@ -712,13 +712,22 @@ class QuotaDurationWeek extends QuotaDuration
 	{
 		$dates = $this->GetFirstAndLastReservationDates($reservationSeries);
 
-		$startDate = $dates[0]->ToTimezone($timezone);
-		$daysFromWeekStart = $startDate->Weekday() - $firstWeekday;
-		$startDate = $startDate->AddDays(-$daysFromWeekStart)->GetDate();
+		$startDate = $dates[0]->ToTimezone($timezone)->GetDate();
+        $selectedWeekday = $startDate->Weekday();
+        $adjustedDays = ($firstWeekday - $selectedWeekday);
+        if ($selectedWeekday < $firstWeekday)
+        {
+            $adjustedDays = $adjustedDays - 7;
+        }
+        $startDate = $startDate->AddDays($adjustedDays);
 
-		$endDate = $dates[1]->ToTimezone($timezone);
-		$daysFromWeekEnd = 7 - $endDate->Weekday() + $firstWeekday;
-		$endDate = $endDate->AddDays($daysFromWeekEnd)->GetDate();
+        $endDate = $dates[1]->ToTimezone($timezone);
+        $daysFromWeekEnd = 7 - $endDate->Weekday() + $firstWeekday;
+        if ($daysFromWeekEnd > 7)
+        {
+            $daysFromWeekEnd = $daysFromWeekEnd -7;
+        }
+        $endDate = $endDate->AddDays($daysFromWeekEnd)->GetDate();
 
 		return new QuotaSearchDates($startDate, $endDate);
 	}
