@@ -234,6 +234,11 @@ class CalendarSubscriptionService implements ICalendarSubscriptionService
     {
         $resource = $this->resourceRepository->LoadById($resourceId);
 
+        if ($resource == null)
+        {
+            return new CalendarSubscriptionDetails(false);
+        }
+
         return new CalendarSubscriptionDetails(
             $resource->GetIsCalendarSubscriptionAllowed(),
             new CalendarSubscriptionUrl(null, null, $resource->GetPublicId()));
@@ -246,6 +251,11 @@ class CalendarSubscriptionService implements ICalendarSubscriptionService
     public function ForSchedule($scheduleId)
     {
         $schedule = $this->scheduleRepository->LoadById($scheduleId);
+
+        if ($schedule == null)
+        {
+            return new CalendarSubscriptionDetails(false);
+        }
 
         return new CalendarSubscriptionDetails(
             $schedule->GetIsCalendarSubscriptionAllowed(),

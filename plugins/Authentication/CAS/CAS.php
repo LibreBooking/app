@@ -94,6 +94,8 @@ class CAS extends Authentication implements IAuthentication
 		$isAuth = phpCAS::isAuthenticated();
 		Log::Debug('CAS is auth ok: %s', $isAuth);
 		$username = phpCAS::getUser();
+		$attributes = phpCAS::getAttributes();
+		Log::Debug('cas attributes %s', var_export($attributes, true));
 		$this->Synchronize($username);
 
 		return $this->authToDecorate->Login($username, $loginContext);
