@@ -203,7 +203,9 @@ class ParameterNames
 	const RESOURCE_MAXNOTICE = '@max_notice_time';
 	const RESOURCE_MINDURATION = '@min_duration';
 	const RESOURCE_MININCREMENT = '@min_increment';
-	const RESOURCE_MINNOTICE = '@min_notice_time';
+	const RESOURCE_MINNOTICE_ADD = '@min_notice_time_add';
+	const RESOURCE_MINNOTICE_UPDATE = '@min_notice_time_update';
+	const RESOURCE_MINNOTICE_DELETE = '@min_notice_time_delete';
 	const RESOURCE_NAME = '@resource_name';
 	const RESOURCE_NOTES = '@resource_notes';
 	const RESOURCE_REQUIRES_APPROVAL = '@requires_approval';

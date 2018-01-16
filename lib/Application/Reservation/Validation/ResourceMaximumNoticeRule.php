@@ -14,9 +14,20 @@
  * You should have received a copy of the GNU General Public License
  * along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 class ResourceMaximumNoticeRule implements IReservationValidationRule
 {
-	/**
+    /**
+     * @var UserSession
+     */
+    private $userSession;
+
+    public function __construct(UserSession $userSession)
+    {
+        $this->userSession = $userSession;
+    }
+
+    /**
 	 * @see IReservationValidationRule::Validate()
 	 *
 	 * @param ReservationSeries $reservationSeries
@@ -40,7 +51,7 @@ class ResourceMaximumNoticeRule implements IReservationValidationRule
 				{
 					if ($instance->StartDate()->GreaterThan($maxStartDate))
 					{
-						return new ReservationRuleResult(false, $r->GetString("MaxNoticeError", $maxStartDate->Format($r->GeneralDateTimeFormat())));
+						return new ReservationRuleResult(false, $r->GetString("MaxNoticeError", $maxStartDate->ToTimezone($this->userSession->Timezone)->Format($r->GeneralDateTimeFormat())));
 					}
 				}
 			}

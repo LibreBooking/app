@@ -564,7 +564,9 @@ function ResourceManagement(opts) {
 	var showAccessPrompt = function (e) {
 		var resource = getActiveResource();
 
-		setDaysHoursMinutes('#startNotice', resource.startNotice, $('#noStartNotice'));
+		setDaysHoursMinutes('#startNoticeAdd', resource.startNoticeAdd, $('#noStartNoticeAdd'));
+		setDaysHoursMinutes('#startNoticeUpdate', resource.startNoticeUpdate, $('#noStartNoticeUpdate'));
+		setDaysHoursMinutes('#startNoticeDelete', resource.startNoticeDelete, $('#noStartNoticeDelete'));
 		setDaysHoursMinutes('#endNotice', resource.endNotice, $('#noEndNotice'));
 
 		$('#requiresApproval').prop('checked', resource.requiresApproval && resource.requiresApproval == "1");
@@ -752,10 +754,15 @@ function ResourceManagement(opts) {
 	}
 
 	function setDaysHoursMinutes(elementPrefix, interval, attributeCheckbox) {
-		$(elementPrefix + 'Days').val(interval.days);
-		$(elementPrefix + 'Hours').val(interval.hours);
-		$(elementPrefix + 'Minutes').val(interval.minutes);
-		showHideConfiguration(interval.value, $(elementPrefix), attributeCheckbox);
+		if (!interval) {
+            interval = {days:null, hours:null, minutes:null, value:null};
+        }
+            $(elementPrefix + 'Days').val(interval.days);
+            $(elementPrefix + 'Hours').val(interval.hours);
+            $(elementPrefix + 'Minutes').val(interval.minutes);
+
+        showHideConfiguration(interval.value, $(elementPrefix), attributeCheckbox);
+
 	}
 
 	function showHideConfiguration(attributeValue, attributeDisplayElement, attributeCheckbox) {

@@ -93,11 +93,11 @@ class ParticipationPresenter
 
 		if ($invitationAction == InvitationAction::Join || $invitationAction == InvitationAction::CancelInstance)
 		{
-			$rules = array(new ReservationStartTimeRule(new ScheduleRepository()), new ResourceMinimumNoticeCurrentInstanceRule(), new ResourceMaximumNoticeCurrentInstanceRule());
+			$rules = array(new ReservationStartTimeRule(new ScheduleRepository()), new ResourceMinimumNoticeCurrentInstanceRuleUpdate(), new ResourceMaximumNoticeCurrentInstanceRule());
 		}
 		else
 		{
-			$rules = array(new ReservationStartTimeRule(new ScheduleRepository()), new ResourceMinimumNoticeRule(), new ResourceMaximumNoticeRule());
+			$rules = array(new ReservationStartTimeRule(new ScheduleRepository()), new ResourceMinimumNoticeRuleAdd(), new ResourceMaximumNoticeRule());
 		}
 
 		/** @var IReservationValidationRule $rule */

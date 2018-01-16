@@ -799,6 +799,16 @@ class NullDate extends Date
 	{
 		return -1;
 	}
+
+	public function LessThan(Date $end)
+    {
+        return false;
+    }
+
+    public function GreaterThan(Date $end)
+    {
+        return false;
+    }
 }
 
 class DateDiff

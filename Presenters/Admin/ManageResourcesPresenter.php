@@ -261,7 +261,9 @@ class ManageResourcesPresenter extends ActionPresenter
         $requiresApproval = $this->page->GetRequiresApproval();
         $autoAssign = $this->page->GetAutoAssign();
         $clearAllPermissions = $this->page->GetAutoAssignClear();
-        $minNotice = $this->page->GetStartNoticeMinutes();
+        $minNoticeAdd = $this->page->GetStartNoticeMinutesAdd();
+        $minNoticeUpdate = $this->page->GetStartNoticeMinutesUpdate();
+        $minNoticeDelete = $this->page->GetStartNoticeMinutesDelete();
         $maxNotice = $this->page->GetEndNoticeMinutes();
         $enableCheckin = $this->page->GetEnableCheckin();
         $autoReleaseMinutes = $this->page->GetAutoReleaseMinutes();
@@ -271,12 +273,14 @@ class ManageResourcesPresenter extends ActionPresenter
         $resource->SetRequiresApproval($requiresApproval);
         $resource->SetAutoAssign($autoAssign);
         $resource->SetClearAllPermissions($clearAllPermissions);
-        $resource->SetMinNotice($minNotice);
+        $resource->SetMinNoticeAdd($minNoticeAdd);
+        $resource->SetMinNoticeUpdate($minNoticeUpdate);
+        $resource->SetMinNoticeDelete($minNoticeDelete);
         $resource->SetMaxNotice($maxNotice);
         $resource->SetCheckin($enableCheckin, $autoReleaseMinutes);
 
-        Log::Debug('Updating resource id=%s, requiresApproval=%s, autoAssign=%s, minNotice=%s, maxNotice=%s',
-            $resourceId, $requiresApproval, $autoAssign, $minNotice, $maxNotice);
+        Log::Debug('Updating resource id=%s, requiresApproval=%s, autoAssign=%s, minNoticeAdd=%s, minNoticeUpdate=%s, minNoticeDelete=%s, maxNotice=%s',
+            $resourceId, $requiresApproval, $autoAssign, $minNoticeAdd, $minNoticeUpdate, $minNoticeDelete, $maxNotice);
 
         $this->resourceRepository->Update($resource);
 
@@ -578,8 +582,12 @@ class ManageResourcesPresenter extends ActionPresenter
         $maxDurationNone = $this->page->GetMaximumDurationNone();
         $bufferTime = $this->page->GetBufferTime();
         $bufferTimeNone = $this->page->GetBufferTimeNone();
-        $minNotice = $this->page->GetStartNoticeMinutes();
-        $minNoticeNone = $this->page->GetStartNoticeNone();
+        $minNoticeAdd = $this->page->GetStartNoticeMinutesAdd();
+        $minNoticeNoneAdd = $this->page->GetStartNoticeNoneAdd();
+        $minNoticeUpdate = $this->page->GetStartNoticeMinutesUpdate();
+        $minNoticeNoneUpdate = $this->page->GetStartNoticeNoneUpdate();
+        $minNoticeDelete = $this->page->GetStartNoticeMinutesDelete();
+        $minNoticeNoneDelete = $this->page->GetStartNoticeNoneDelete();
         $maxNotice = $this->page->GetEndNoticeMinutes();
         $maxNoticeNone = $this->page->GetEndNoticeNone();
         $allowMultiDay = $this->page->GetBulkAllowMultiday();
@@ -633,8 +641,14 @@ class ManageResourcesPresenter extends ActionPresenter
                 if (!$bufferTimeNone && $bufferTime != $emptyDuration) {
                     $resource->SetBufferTime($bufferTime);
                 }
-                if (!$minNoticeNone && $minNotice != $emptyDuration) {
-                    $resource->SetMinNotice($minNotice);
+                if (!$minNoticeNoneAdd && $minNoticeAdd != $emptyDuration) {
+                    $resource->SetMinNoticeAdd($minNoticeAdd);
+                }
+                if (!$minNoticeNoneUpdate && $minNoticeUpdate != $emptyDuration) {
+                    $resource->SetMinNoticeUpdate($minNoticeUpdate);
+                }
+                if (!$minNoticeNoneDelete && $minNoticeDelete != $emptyDuration) {
+                    $resource->SetMinNoticeDelete($minNoticeDelete);
                 }
                 if (!$maxNoticeNone && $maxNotice != $emptyDuration) {
                     $resource->SetMaxNotice($maxNotice);

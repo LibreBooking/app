@@ -17,15 +17,37 @@ You should have received a copy of the GNU General Public License
 along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 *}
 
-<div class="startNotice"
-	 data-value="{$resource->GetMinNotice()}"
-	 data-days="{$resource->GetMinNotice()->Days()}"
-	 data-hours="{$resource->GetMinNotice()->Hours()}"
-	 data-minutes="{$resource->GetMinNotice()->Minutes()}">
-	{if $resource->HasMinNotice()}
-		{translate key='ResourceMinNotice' args=$resource->GetMinNotice()}
+<div class="startNoticeAdd"
+	 data-value="{$resource->GetMinNoticeAdd()}"
+	 data-days="{$resource->GetMinNoticeAdd()->Days()}"
+	 data-hours="{$resource->GetMinNoticeAdd()->Hours()}"
+	 data-minutes="{$resource->GetMinNoticeAdd()->Minutes()}">
+	{if $resource->HasMinNoticeAdd()}
+		{translate key='ResourceMinNotice' args=$resource->GetMinNoticeAdd()}
 	{else}
 		{translate key='ResourceMinNoticeNone'}
+	{/if}
+</div>
+<div class="startNoticeUpdate"
+	 data-value="{$resource->GetMinNoticeUpdate()}"
+	 data-days="{$resource->GetMinNoticeUpdate()->Days()}"
+	 data-hours="{$resource->GetMinNoticeUpdate()->Hours()}"
+	 data-minutes="{$resource->GetMinNoticeUpdate()->Minutes()}">
+	{if $resource->HasMinNoticeUpdate()}
+		{translate key='ResourceMinNoticeUpdate' args=$resource->GetMinNoticeUpdate()}
+	{else}
+		{translate key='ResourceMinNoticeNoneUpdate'}
+	{/if}
+</div>
+<div class="startNoticeDelete"
+	 data-value="{$resource->GetMinNoticeDelete()}"
+	 data-days="{$resource->GetMinNoticeDelete()->Days()}"
+	 data-hours="{$resource->GetMinNoticeDelete()->Hours()}"
+	 data-minutes="{$resource->GetMinNoticeDelete()->Minutes()}">
+	{if $resource->HasMinNoticeDelete()}
+		{translate key='ResourceMinNoticeDelete' args=$resource->GetMinNoticeDelete()}
+	{else}
+		{translate key='ResourceMinNoticeNoneDelete'}
 	{/if}
 </div>
 <div class="endNotice"

@@ -175,6 +175,10 @@ class en_us extends Language
 		$strings['ResourcePermissionNotAutoGranted'] = 'Permission is not automatically granted';
 		$strings['ResourceMinNotice'] = 'Reservations must be made at least %s prior to start time';
 		$strings['ResourceMinNoticeNone'] = 'Reservations can be made up until the current time';
+		$strings['ResourceMinNoticeUpdate'] = 'Reservations must be updated at least %s prior to start time';
+		$strings['ResourceMinNoticeNoneUpdate'] = 'Reservations can be updated up until the current time';
+		$strings['ResourceMinNoticeDelete'] = 'Reservations must be deleted at least %s prior to start time';
+		$strings['ResourceMinNoticeNoneDelete'] = 'Reservations can be deleted up until the current time';
 		$strings['ResourceMaxNotice'] = 'Reservations must not end more than %s from the current time';
 		$strings['ResourceMaxNoticeNone'] = 'Reservations can end at any point in the future';
 		$strings['ResourceBufferTime'] = 'There must be %s between reservations';
@@ -751,7 +755,8 @@ class en_us extends Language
 		// Errors
 		$strings['LoginError'] = 'We could not match your username or password';
 		$strings['ReservationFailed'] = 'Your reservation could not be made';
-		$strings['MinNoticeError'] = 'This reservation requires advance notice.  The earliest date and time that can be reserved is %s.';
+		$strings['MinNoticeError'] = 'This reservation requires advance notice. The earliest date and time that can be reserved is %s.';
+		$strings['MinNoticeErrorUpdate'] = 'Changes to this reservation require advance notice. Reservations before %s are not allowed to be changed.';
 		$strings['MaxNoticeError'] = 'This reservation cannot be made this far in the future.  The latest date and time that can be reserved is %s.';
 		$strings['MinDurationError'] = 'This reservation must last at least %s.';
 		$strings['MaxDurationError'] = 'This reservation cannot last longer than %s.';

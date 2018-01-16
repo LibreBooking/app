@@ -532,7 +532,7 @@ class AddResourceCommand extends SqlCommand
                                 $location = null, $contact_info = null, $description = null, $notes = null,
                                 $status_id = 1, $min_duration = null, $min_increment = null, $max_duration = null,
                                 $unit_cost = null, $requires_approval = 0, $allow_multiday = 1,
-                                $max_participants = null, $min_notice_time = null, $max_notice_time = null)
+                                $max_participants = null, $min_notice_time_add = null, $max_notice_time = null)
     {
         parent::__construct(Queries::ADD_RESOURCE);
 
@@ -551,7 +551,7 @@ class AddResourceCommand extends SqlCommand
         $this->AddParameter(new Parameter(ParameterNames::RESOURCE_REQUIRES_APPROVAL, $requires_approval));
         $this->AddParameter(new Parameter(ParameterNames::RESOURCE_ALLOW_MULTIDAY, $allow_multiday));
         $this->AddParameter(new Parameter(ParameterNames::RESOURCE_MAX_PARTICIPANTS, $max_participants));
-        $this->AddParameter(new Parameter(ParameterNames::RESOURCE_MINNOTICE, $min_notice_time));
+        $this->AddParameter(new Parameter(ParameterNames::RESOURCE_MINNOTICE_ADD, $min_notice_time_add));
         $this->AddParameter(new Parameter(ParameterNames::RESOURCE_MAXNOTICE, $max_notice_time));
         $this->AddParameter(new Parameter(ParameterNames::GROUP_ADMIN_ID, $admin_group_id));
     }
@@ -2478,7 +2478,7 @@ class UpdateResourceCommand extends SqlCommand
                                 $requiresApproval,
                                 $allowMultiday,
                                 $maxParticipants,
-                                TimeInterval $minNoticeTime,
+                                TimeInterval $minNoticeTimeAdd,
                                 TimeInterval $maxNoticeTime,
                                 $description,
                                 $imageName,
@@ -2496,7 +2496,9 @@ class UpdateResourceCommand extends SqlCommand
                                 $autoReleaseMinutes,
                                 $isDisplayEnabled,
                                 $credits,
-                                $peakCredits)
+                                $peakCredits,
+                                TimeInterval $minNoticeTimeUpdate,
+                                TimeInterval $minNoticeTimeDelete)
     {
         parent::__construct(Queries::UPDATE_RESOURCE);
 
@@ -2512,7 +2514,7 @@ class UpdateResourceCommand extends SqlCommand
         $this->AddParameter(new Parameter(ParameterNames::RESOURCE_REQUIRES_APPROVAL, $requiresApproval));
         $this->AddParameter(new Parameter(ParameterNames::RESOURCE_ALLOW_MULTIDAY, (int)$allowMultiday));
         $this->AddParameter(new Parameter(ParameterNames::RESOURCE_MAX_PARTICIPANTS, $maxParticipants));
-        $this->AddParameter(new Parameter(ParameterNames::RESOURCE_MINNOTICE, $minNoticeTime->ToDatabase()));
+        $this->AddParameter(new Parameter(ParameterNames::RESOURCE_MINNOTICE_ADD, $minNoticeTimeAdd->ToDatabase()));
         $this->AddParameter(new Parameter(ParameterNames::RESOURCE_MAXNOTICE, $maxNoticeTime->ToDatabase()));
         $this->AddParameter(new Parameter(ParameterNames::RESOURCE_IMAGE_NAME, $imageName));
         $this->AddParameter(new Parameter(ParameterNames::SCHEDULE_ID, $scheduleId));
@@ -2530,7 +2532,8 @@ class UpdateResourceCommand extends SqlCommand
         $this->AddParameter(new Parameter(ParameterNames::RESOURCE_ALLOW_DISPLAY, (int)$isDisplayEnabled));
         $this->AddParameter(new Parameter(ParameterNames::CREDIT_COUNT, $credits));
         $this->AddParameter(new Parameter(ParameterNames::PEAK_CREDIT_COUNT, $peakCredits));
-
+        $this->AddParameter(new Parameter(ParameterNames::RESOURCE_MINNOTICE_UPDATE, $minNoticeTimeUpdate->ToDatabase()));
+        $this->AddParameter(new Parameter(ParameterNames::RESOURCE_MINNOTICE_DELETE, $minNoticeTimeDelete->ToDatabase()));
     }
 }
 

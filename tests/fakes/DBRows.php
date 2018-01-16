@@ -177,23 +177,25 @@ class ReservationResourceRow
 	}
 
 	public function __construct($seriesId,
-								$resourceName = null,
-								$location = null,
-								$contact = null,
-								$notes = null,
-								$minLength = null,
-								$maxLength = null,
-								$autoAssign = null,
-								$requiresApproval = null,
-								$allowMultiDay = null,
-								$maxParticipants = null,
-								$minNotice = null,
-								$maxNotice = null,
-								$scheduleId = null,
-								$statusId = ResourceStatus::AVAILABLE,
-								$color = null,
-								$creditCount = null,
-								$peakCreditCount = null
+                                $resourceName = null,
+                                $location = null,
+                                $contact = null,
+                                $notes = null,
+                                $minLength = null,
+                                $maxLength = null,
+                                $autoAssign = null,
+                                $requiresApproval = null,
+                                $allowMultiDay = null,
+                                $maxParticipants = null,
+                                $minNoticeAdd = null,
+                                $maxNotice = null,
+                                $scheduleId = null,
+                                $statusId = ResourceStatus::AVAILABLE,
+                                $color = null,
+                                $creditCount = null,
+                                $peakCreditCount = null,
+                                $minNoticeUpdate = null,
+                                $minNoticeDelete = null
 	)
 	{
 		$this->seriesId = $seriesId;
@@ -207,7 +209,7 @@ class ReservationResourceRow
 		$this->requiresApproval = $requiresApproval;
 		$this->allowMultiDay = $allowMultiDay;
 		$this->maxParticipants = $maxParticipants;
-		$this->minNotice = $minNotice;
+		$this->minNoticeAdd = $minNoticeAdd;
 		$this->maxNotice = $maxNotice;
 		$this->scheduleId = $scheduleId;
 		$this->description = null;
@@ -215,7 +217,10 @@ class ReservationResourceRow
 		$this->color = $color;
 		$this->creditCount = $creditCount;
 		$this->peakCreditCount = $peakCreditCount;
-	}
+		$this->minNoticeUpdate = $minNoticeUpdate;
+        $this->minNoticeDelete = $minNoticeDelete;
+
+    }
 
 	public function WithPrimary($resourceId)
 	{
@@ -246,7 +251,7 @@ class ReservationResourceRow
 				ColumnNames::RESOURCE_REQUIRES_APPROVAL => $this->requiresApproval,
 				ColumnNames::RESOURCE_ALLOW_MULTIDAY => $this->allowMultiDay,
 				ColumnNames::RESOURCE_MAX_PARTICIPANTS => $this->maxParticipants,
-				ColumnNames::RESOURCE_MINNOTICE => $this->minNotice,
+				ColumnNames::RESOURCE_MINNOTICE_ADD => $this->minNoticeAdd,
 				ColumnNames::RESOURCE_MAXNOTICE => $this->maxNotice,
 				ColumnNames::SCHEDULE_ID => $this->scheduleId,
 				ColumnNames::RESOURCE_STATUS_ID => $this->statusId,
@@ -262,6 +267,8 @@ class ReservationResourceRow
 				ColumnNames::RESERVATION_COLOR => $this->color,
 				ColumnNames::CREDIT_COUNT => $this->creditCount,
 				ColumnNames::PEAK_CREDIT_COUNT => $this->peakCreditCount,
+				ColumnNames::RESOURCE_MINNOTICE_UPDATE => $this->minNoticeUpdate,
+				ColumnNames::RESOURCE_MINNOTICE_DELETE => $this->minNoticeDelete,
 		);
 	}
 }

@@ -227,7 +227,7 @@ class ResourceRepository implements IResourceRepository
 				$resource->GetRequiresApproval(),
 				$resource->GetAllowMultiday(),
 				$resource->GetMaxParticipants(),
-				$resource->GetMinNotice(),
+				$resource->GetMinNoticeAdd(),
 				$resource->GetMaxNotice(),
 				$resource->GetDescription(),
 				$resource->GetImage(),
@@ -245,7 +245,9 @@ class ResourceRepository implements IResourceRepository
 				$resource->GetAutoReleaseMinutes(),
 				$resource->GetIsDisplayEnabled(),
 				$resource->GetCreditsPerSlot(),
-				$resource->GetPeakCreditsPerSlot()
+				$resource->GetPeakCreditsPerSlot(),
+                $resource->GetMinNoticeUpdate(),
+                $resource->GetMinNoticeDelete()
 		);
 
 		$db->Execute($updateResourceCommand);

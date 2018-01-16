@@ -108,3 +108,13 @@ ALTER TABLE `users`
 ALTER TABLE `announcements`
   ADD COLUMN `display_page` TINYINT(1) UNSIGNED NOT NULL DEFAULT 1;
 ALTER TABLE `announcements` ADD INDEX(`display_page`);
+
+ALTER TABLE `resources` CHANGE COLUMN `min_notice_time` `min_notice_time_add` INT;
+
+ALTER TABLE `resources`
+  ADD COLUMN `min_notice_time_update` INT;
+
+ALTER TABLE `resources`
+  ADD COLUMN `min_notice_time_delete` INT;
+
+UPDATE resources SET min_notice_time_update = min_notice_time_add, min_notice_time_delete = min_notice_time_add;

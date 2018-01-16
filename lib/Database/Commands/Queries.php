@@ -996,11 +996,11 @@ class Queries
 			'INSERT INTO
 			resources (name, location, contact_info, description, notes, status_id, min_duration, min_increment,
 					   max_duration, unit_cost, autoassign, requires_approval, allow_multiday_reservations,
-					   max_participants, min_notice_time, max_notice_time, schedule_id, admin_group_id)
+					   max_participants, min_notice_time_add, max_notice_time, schedule_id, admin_group_id)
 		VALUES
 			(@resource_name, @location, @contact_info, @description, @resource_notes, @status_id, @min_duration, @min_increment,
 			 @max_duration, @unit_cost, @autoassign, @requires_approval, @allow_multiday_reservations,
-		     @max_participants, @min_notice_time, @max_notice_time, @scheduleid, @admin_group_id)';
+		     @max_participants, @min_notice_time_add, @max_notice_time, @scheduleid, @admin_group_id)';
 
 	const ADD_RESOURCE_GROUP = 'INSERT INTO resource_groups (resource_group_name, parent_id) VALUES (@groupname, @resourcegroupid)';
 
@@ -1098,7 +1098,9 @@ class Queries
 			requires_approval = @requires_approval,
 			allow_multiday_reservations = @allow_multiday_reservations,
 			max_participants = @max_participants,
-			min_notice_time = @min_notice_time,
+			min_notice_time_add = @min_notice_time_add,
+			min_notice_time_update = @min_notice_time_update,
+			min_notice_time_delete = @min_notice_time_delete,
 			max_notice_time = @max_notice_time,
 			image_name = @imageName,
 			schedule_id = @scheduleid,

@@ -138,7 +138,9 @@ class ColumnNames
 	const RESOURCE_REQUIRES_APPROVAL = 'requires_approval';
 	const RESOURCE_ALLOW_MULTIDAY = 'allow_multiday_reservations';
 	const RESOURCE_MAX_PARTICIPANTS = 'max_participants';
-	const RESOURCE_MINNOTICE = 'min_notice_time';
+	const RESOURCE_MINNOTICE_ADD = 'min_notice_time_add';
+	const RESOURCE_MINNOTICE_UPDATE = 'min_notice_time_update';
+	const RESOURCE_MINNOTICE_DELETE = 'min_notice_time_delete';
 	const RESOURCE_MAXNOTICE = 'max_notice_time';
 	const RESOURCE_IMAGE_NAME = 'image_name';
 	const RESOURCE_STATUS_ID = 'status_id';

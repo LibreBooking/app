@@ -135,8 +135,12 @@ class FormKeys
 	const MAX_DURATION_NONE = 'maxDurationNone';
 	const MAX_PARTICIPANTS = 'maxParticipants';
 	const MAX_PARTICIPANTS_UNLIMITED = 'maxParticipantsUnlimited';
-	const MIN_NOTICE = 'minNotice';
-	const MIN_NOTICE_NONE = 'minNoticeNone';
+	const MIN_NOTICE_ADD = 'minNoticeAdd';
+	const MIN_NOTICE_UPDATE = 'minNoticeUpdate';
+	const MIN_NOTICE_DELETE = 'minNoticeDelete';
+	const MIN_NOTICE_NONE_ADD = 'minNoticeNoneAdd';
+	const MIN_NOTICE_NONE_UPDATE = 'minNoticeNoneUpdate';
+	const MIN_NOTICE_NONE_DELETE = 'minNoticeNoneDelete';
 	const MAX_NOTICE = 'maxNotice';
 	const MAX_NOTICE_NONE = 'maxNoticeNone';
 

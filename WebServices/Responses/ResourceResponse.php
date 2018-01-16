@@ -65,7 +65,7 @@ class ResourceResponse extends RestResponse
 		$this->maxLength = $resource->GetMaxLength()->__toString();
 		$this->minLength = $resource->GetMinLength()->__toString();
 		$this->maxNotice = $resource->GetMaxNotice()->__toString();
-		$this->minNotice = $resource->GetMinNotice()->__toString();
+		$this->minNotice = $resource->GetMinNoticeAdd()->__toString();
 		$this->requiresApproval = $resource->GetRequiresApproval();
 		$this->allowMultiday = $resource->GetAllowMultiday();
 		$this->maxParticipants = $resource->GetMaxParticipants();
