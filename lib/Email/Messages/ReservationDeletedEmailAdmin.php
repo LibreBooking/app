@@ -20,7 +20,7 @@ class ReservationDeletedEmailAdmin extends ReservationCreatedEmailAdmin
 {
     public function Subject()
     {
-        return $this->Translate('ReservationDeleteAdminSubject');
+        return $this->Translate('ReservationDeleteAdminSubjectWithResource', array($this->resource->GetName()));
     }
 
     public function PopulateTemplate()

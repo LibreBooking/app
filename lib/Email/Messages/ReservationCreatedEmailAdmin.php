@@ -45,6 +45,11 @@ class ReservationCreatedEmailAdmin extends EmailMessage
     protected $attributeRepository;
 
     /**
+     * @var string
+     */
+    protected $timezone;
+
+    /**
      * @param UserDto $adminDto
      * @param User $reservationOwner
      * @param ReservationSeries $reservationSeries
@@ -85,7 +90,7 @@ class ReservationCreatedEmailAdmin extends EmailMessage
      */
     public function Subject()
     {
-        return $this->Translate('ReservationCreatedAdminSubject');
+        return $this->Translate('ReservationCreatedAdminSubjectWithResource', array($this->resource->GetName()));
     }
 
     /**
