@@ -15,33 +15,20 @@
  * along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-class ResourceMinimumNoticeRuleUpdate extends ResourceMinimumNoticeRuleAdd
+class ResourceMinimumNoticeRuleDelete extends ResourceMinimumNoticeRuleAdd
 {
     protected function EnforceMinimumNotice($resource)
     {
-        return $resource->HasMinNoticeUpdate();
+        return $resource->HasMinNoticeDelete();
     }
 
     protected function GetMinimumNotice($resource)
     {
-        return $resource->GetMinNoticeUpdate();
+        return $resource->GetMinNoticeDelete();
     }
 
     protected function GetErrorKey()
     {
-        return 'MinNoticeErrorUpdate';
+        return 'MinNoticeErrorDelete';
     }
-
-    protected function ViolatesMinStartRule($instance, $minStartDate)
-    {
-        return $instance->PreviousStartDate()->LessThan($minStartDate) || $instance->StartDate()->LessThan($minStartDate);
-    }
-}
-
-class ResourceMinimumNoticeCurrentInstanceRuleUpdate extends ResourceMinimumNoticeRuleUpdate
-{
-	protected function GetInstances($reservationSeries)
-	{
-		return array($reservationSeries->CurrentInstance());
-	}
 }

@@ -186,4 +186,45 @@ class ResourceMinimumNoticeRuleTests extends TestBase
 
         $this->assertTrue($result->IsValid());
 	}
+
+    public function testMinNoticeIsCheckedAgainstEachReservationInstanceForEachResourceWhenDeleting()
+    {
+        $resource1 = new FakeBookableResource(1, "1");
+        $resource1->SetMinNoticeAdd(null);
+
+        $resource2 = new FakeBookableResource(2, "2");
+        $resource2->SetMinNoticeAdd("25h00m");
+
+        $reservation = new TestReservationSeries();
+
+        $duration = new DateRange(Date::Now(), Date::Now());
+        $tooSoon = Date::Now()->AddDays(1);
+        $reservation->WithDuration($duration);
+        $reservation->WithRepeatOptions(new RepeatDaily(1, $tooSoon));
+        $reservation->WithResource($resource1);
+        $reservation->AddResource($resource2);
+
+        $rule = new ResourceMinimumNoticeRuleDelete($this->fakeUser);
+        $result = $rule->Validate($reservation, null);
+
+        $this->assertFalse($result->IsValid());
+    }
+
+    public function testOkIfLatestInstanceIsBeforeTheMinimumNoticeTimeWhenDeleting()
+    {
+        $resource = new FakeBookableResource(1, "2");
+        $resource->SetMinNoticeAdd("1h00m");
+
+        $reservation = new TestReservationSeries();
+        $reservation->WithResource($resource);
+
+        $duration = new DateRange(Date::Now()->AddDays(1), Date::Now()->AddDays(1));
+        $reservation->WithDuration($duration);
+
+        $rule = new ResourceMinimumNoticeRuleDelete($this->fakeUser);
+        $result = $rule->Validate($reservation, null);
+
+        $this->assertTrue($result->IsValid());
+    }
+
 }

@@ -88,7 +88,7 @@ class ResourceMinimumNoticeRuleAdd implements IReservationValidationRule
      */
     protected function GetErrorKey()
     {
-        return "MinNoticeError";
+        return 'MinNoticeError';
     }
 
     /**

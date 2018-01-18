@@ -178,7 +178,7 @@ class PreReservationFactory implements IPreReservationFactory
 
 	private function CreateDeleteService(ReservationValidationRuleProcessor $ruleProcessor, UserSession $userSession)
 	{
-        $ruleProcessor->AddRule(new AdminExcludedRule(new ResourceMinimumNoticeRuleUpdate($userSession), $userSession, $this->userRepository));
+        $ruleProcessor->AddRule(new AdminExcludedRule(new ResourceMinimumNoticeRuleDelete($userSession), $userSession, $this->userRepository));
         $ruleProcessor->AddRule(new AdminExcludedRule(new CurrentUserIsReservationUserRule($userSession), $userSession, $this->userRepository));
 		return new DeleteReservationValidationService($ruleProcessor);
 	}

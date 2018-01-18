@@ -36,7 +36,7 @@ require_once(ROOT_DIR . 'lib/Application/Reservation/Validation/ReservationValid
 require_once(ROOT_DIR . 'lib/Application/Reservation/Validation/ReservationValidationResult.php');
 require_once(ROOT_DIR . 'lib/Application/Reservation/Validation/ResourceMinimumNoticeRuleAdd.php');
 require_once(ROOT_DIR . 'lib/Application/Reservation/Validation/ResourceMinimumNoticeRuleUpdate.php');
-//require_once(ROOT_DIR . 'lib/Application/Reservation/Validation/ResourceMinimumNoticeRuleDelete.php');
+require_once(ROOT_DIR . 'lib/Application/Reservation/Validation/ResourceMinimumNoticeRuleDelete.php');
 require_once(ROOT_DIR . 'lib/Application/Reservation/Validation/ResourceMaximumNoticeRule.php');
 require_once(ROOT_DIR . 'lib/Application/Reservation/Validation/ResourceMinimumDurationRule.php');
 require_once(ROOT_DIR . 'lib/Application/Reservation/Validation/ResourceMaximumDurationRule.php');
