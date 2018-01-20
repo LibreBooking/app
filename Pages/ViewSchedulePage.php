@@ -64,7 +64,8 @@ class ViewSchedulePage extends SchedulePage
 
 		$this->Set('DisplaySlotFactory', new DisplaySlotFactory());
 		$this->Set('SlotLabelFactory', $viewReservations || $allowGuestBookings ? new SlotLabelFactory($user) : new NullSlotLabelFactory());
-		$this->Set('AllowGuestBooking', $allowGuestBookings);
+        $this->Set('PopupMonths', $this->IsMobile ? 1 : 3);
+        $this->Set('AllowGuestBooking', $allowGuestBookings);
 		$this->Set('CreateReservationPage', Pages::GUEST_RESERVATION);
 		$this->Set('LoadViewOnly', true);
 		$this->Set('ShowSubscription', !Configuration::Instance()->GetSectionKey(ConfigSection::ICS, ConfigKeys::ICS_REQUIRE_LOGIN, new BooleanConverter()));

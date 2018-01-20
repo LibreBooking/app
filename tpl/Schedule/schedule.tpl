@@ -87,7 +87,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 	</div>
 
 	{block name="schedule_control"}
-		<div class="row-fluid">
+		<div class="row">
 			<div id="schedule-actions" class="col-md-3">
 				{block name="actions"}
 					<a href="#" id="make_default" style="display:none;">{html_image src="star_boxed_full.png" altKey="MakeDefaultSchedule"}</a>
@@ -136,7 +136,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			</div>
 
 			{capture name="date_navigation"}
-				<div class="row-fluid">
+				<div class="row">
 				<div class="schedule-dates col-lg-3 col-md-12">
 					{assign var=TodaysDate value=Date::Now()}
 					<a href="#" class="change-date btn-link btn-success" data-year="{$TodaysDate->Year()}" data-month="{$TodaysDate->Month()}" data-day="{$TodaysDate->Day()}" alt="{translate key=Today}"><i class="fa fa-home"></i></a>
@@ -162,7 +162,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 	{/block}
 
 	{block name="legend"}
-		<div class="hidden-xs row-fluid col-sm-12 schedule-legend">
+		<div class="hidden-xs row col-sm-12 schedule-legend">
 			<div class="center">
 				<div class="legend reservable">{translate key=Reservable}</div>
 				<div class="legend unreservable">{translate key=Unreservable}</div>
@@ -178,7 +178,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		</div>
 	{/block}
 
-	<div class="row-fluid">
+	<div class="row">
 		<div id="reservations-left" class="col-md-2 col-sm-12 default-box">
 			<div class="reservations-left-header">{translate key=ResourceFilter}
 				<a href="#" class="pull-right toggle-sidebar" title="Hide Reservation Filter"><i class="glyphicon glyphicon-remove"></i></a>
@@ -303,7 +303,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 	<div class="clearfix">&nbsp;</div>
 	<input type="hidden" value="{$ScheduleId}" id="scheduleId"/>
 
-	<div class="row-fluid no-margin">
+	<div class="row no-margin">
 		<div class="col-xs-9 visible-md visible-lg">&nbsp;</div>
 		{$smarty.capture.date_navigation}
 	</div>
