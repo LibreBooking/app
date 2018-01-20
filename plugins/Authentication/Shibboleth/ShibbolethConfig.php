@@ -37,4 +37,9 @@ interface ShibbolethConfig {
      * @var string
      */
     const PHONE = 'shibboleth.phone';
+
+    /**
+     * @var string
+     */
+    const ORGANIZATION = 'shibboleth.organization';
 }
