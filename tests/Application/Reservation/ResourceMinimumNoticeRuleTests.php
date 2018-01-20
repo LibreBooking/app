@@ -190,10 +190,10 @@ class ResourceMinimumNoticeRuleTests extends TestBase
     public function testMinNoticeIsCheckedAgainstEachReservationInstanceForEachResourceWhenDeleting()
     {
         $resource1 = new FakeBookableResource(1, "1");
-        $resource1->SetMinNoticeAdd(null);
+        $resource1->SetMinNoticeDelete(null);
 
         $resource2 = new FakeBookableResource(2, "2");
-        $resource2->SetMinNoticeAdd("25h00m");
+        $resource2->SetMinNoticeDelete("25h00m");
 
         $reservation = new TestReservationSeries();
 

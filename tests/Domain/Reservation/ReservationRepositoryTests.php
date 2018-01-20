@@ -501,6 +501,7 @@ class ReservationRepositoryTests extends TestBase
 
     public function testWhenCreditsConsumedIncreases()
     {
+        Date::_SetNow(new Date('2018-01-20 3:00', 'UTC'));
         $layout = new FakeScheduleLayout();
         $layout->_SlotCount = new SlotCount(2, 2);
         $userId = 10;
@@ -529,6 +530,7 @@ class ReservationRepositoryTests extends TestBase
 
     public function testWhenCreditsConsumedDecreases()
     {
+        Date::_SetNow(new Date('2018-01-20 3:00', 'UTC'));
         $layout = new FakeScheduleLayout();
         $layout->_SlotCount = new SlotCount(2, 2);
         $userId = 10;
