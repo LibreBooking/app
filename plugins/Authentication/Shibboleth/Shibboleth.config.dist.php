@@ -18,3 +18,5 @@ $conf['settings']['shibboleth.firstname'] = 'givenName';
 $conf['settings']['shibboleth.lastname'] = 'sn';
 // the key of the external user's phone number. optional.
 $conf['settings']['shibboleth.phone'] = 'telephone';
+// the key of the external user's organization. optional.
+$conf['settings']['shibboleth.organization'] = 'ou';
