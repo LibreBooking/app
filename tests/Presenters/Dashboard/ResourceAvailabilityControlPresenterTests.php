@@ -79,6 +79,7 @@ class ResourceAvailabilityControlPresenterTests extends TestBase
 
 	public function testSetsResourceAvailability()
 	{
+	    Date::_SetNow(Date::Parse('2017-01-20 4:00', 'UTC'));
 	    $this->PopulateSchedules();
 		$this->PopulateResources();
 		$this->PopulateReservations();
