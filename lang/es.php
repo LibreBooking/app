@@ -49,6 +49,8 @@ class es extends en_us
 		$dates['calendar_dates'] = 'd/M';
 
 		$this->Dates = $dates;
+		
+		return $this->Dates;
     }
 
     protected function _LoadStrings()
@@ -760,6 +762,9 @@ class es extends en_us
 		
 				
 		$this->Strings = $strings;
+		
+		return $this->Strings;
+
     }
 
     protected function _LoadDays()
@@ -781,6 +786,8 @@ class es extends en_us
 		$days['letter'] = array('D', 'L', 'M', 'X', 'J', 'V', 'S');
 
 		$this->Days = $days;
+		
+		return $this->Days;
     }
 
     protected function _LoadMonths()
@@ -798,11 +805,14 @@ class es extends en_us
 		$months['abbr'] = array('Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic');
 
 		$this->Months = $months;
+
+		return $this->Months;			
     }
 
     protected function _LoadLetters()
     {
 		$this->Letters = array('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'Ñ', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z');
+		return $this->Letters;   
     }
 
     protected function _GetHtmlLangCode()
