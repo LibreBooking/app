@@ -50,7 +50,7 @@ class ResourceMaximumNoticeRuleTests extends TestBase
 		$reservation->WithResource($resource1);
 		$reservation->AddResource($resource2);
 
-		$rule = new ResourceMaximumNoticeRule();
+		$rule = new ResourceMaximumNoticeRule($this->fakeUser);
 		$result = $rule->Validate($reservation, null);
 
 		$this->assertFalse($result->IsValid());
@@ -67,10 +67,9 @@ class ResourceMaximumNoticeRuleTests extends TestBase
 		$duration = new DateRange(Date::Now(), Date::Now());
 		$reservation->WithDuration($duration);
 
-		$rule = new ResourceMaximumNoticeRule();
+		$rule = new ResourceMaximumNoticeRule($this->fakeUser);
 		$result = $rule->Validate($reservation, null);
 
 		$this->assertTrue($result->IsValid());
 	}
 }
-?>

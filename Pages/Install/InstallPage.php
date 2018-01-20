@@ -155,7 +155,7 @@ class InstallPage extends Page implements IInstallPage
 		$cacheDirectory = new TemplateCacheDirectory();
 		$cacheDirectory->Flush();
 
-		$this->Set('SuggestedInstallPassword', uniqid());
+		$this->Set('SuggestedInstallPassword', BookedStringHelper::Random());
 		$this->Set('ConfigSetting', '$conf[\'settings\'][\'install.password\']');
 		$this->Set('ConfigPath', '/config/config.php');
 		$this->presenter->PageLoad();

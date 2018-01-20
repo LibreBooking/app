@@ -37,7 +37,7 @@ class CreditCartSession
         $this->Quantity = $creditQuantity;
         $this->CostPerCredit = $costPerCredit;
         $this->Currency = $currency;
-        $this->Id = uniqid();
+        $this->Id = BookedStringHelper::Random();
         $this->UserId = $userId;
     }
 

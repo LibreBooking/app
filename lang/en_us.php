@@ -714,7 +714,7 @@ class en_us extends Language
         // End Strings
 
 		// Install
-		$strings['InstallApplication'] = 'Install Booked Scheduler (MySQL only)';
+		$strings['InstallApplication'] = 'Install Booked Scheduler';
 		$strings['IncorrectInstallPassword'] = 'Sorry, that password was incorrect.';
 		$strings['SetInstallPassword'] = 'You must set an install password before the installation can be run.';
 		$strings['InstallPasswordInstructions'] = 'In %s please set %s to a password which is random and difficult to guess, then return to this page.<br/>You can use %s';

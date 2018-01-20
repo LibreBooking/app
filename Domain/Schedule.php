@@ -165,7 +165,7 @@ class Schedule implements ISchedule
     {
         $this->SetIsCalendarSubscriptionAllowed(true);
         if (empty($this->_publicId)) {
-            $this->SetPublicId(uniqid());
+            $this->SetPublicId(BookedStringHelper::Random(20));
         }
     }
 

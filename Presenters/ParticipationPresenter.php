@@ -84,7 +84,9 @@ class ParticipationPresenter
 	 */
 	private function HandleInvitationAction($invitationAction)
 	{
-		$referenceNumber = $this->page->GetInvitationReferenceNumber();
+        $user = ServiceLocator::GetServer()->GetUserSession();
+
+        $referenceNumber = $this->page->GetInvitationReferenceNumber();
 		$userId = $this->page->GetUserId();
 
 		Log::Debug('Invitation action %s for user %s and reference number %s', $invitationAction, $userId, $referenceNumber);
@@ -93,11 +95,11 @@ class ParticipationPresenter
 
 		if ($invitationAction == InvitationAction::Join || $invitationAction == InvitationAction::CancelInstance)
 		{
-			$rules = array(new ReservationStartTimeRule(new ScheduleRepository()), new ResourceMinimumNoticeCurrentInstanceRuleUpdate(), new ResourceMaximumNoticeCurrentInstanceRule());
+			$rules = array(new ReservationStartTimeRule(new ScheduleRepository()), new ResourceMinimumNoticeCurrentInstanceRuleUpdate($user), new ResourceMaximumNoticeCurrentInstanceRule($user));
 		}
 		else
 		{
-			$rules = array(new ReservationStartTimeRule(new ScheduleRepository()), new ResourceMinimumNoticeRuleAdd(), new ResourceMaximumNoticeRule());
+			$rules = array(new ReservationStartTimeRule(new ScheduleRepository()), new ResourceMinimumNoticeRuleAdd($user), new ResourceMaximumNoticeRule($user));
 		}
 
 		/** @var IReservationValidationRule $rule */

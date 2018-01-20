@@ -1262,7 +1262,7 @@ class BookableResource implements IBookableResource
     {
         $this->SetIsCalendarSubscriptionAllowed(true);
         if (empty($this->_publicId)) {
-            $this->SetPublicId(uniqid());
+            $this->SetPublicId(BookedStringHelper::Random(20));
         }
     }
 
@@ -1275,7 +1275,7 @@ class BookableResource implements IBookableResource
     {
         $this->SetIsDisplayEnabled(true);
         if (empty($this->_publicId)) {
-            $this->SetPublicId(uniqid());
+            $this->SetPublicId(BookedStringHelper::Random(20));
         }
     }
 

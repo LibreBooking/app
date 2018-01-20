@@ -226,7 +226,7 @@ class User
     public function EnablePublicProfile()
     {
         if (empty($this->publicId)) {
-            $this->SetPublicId(uniqid());
+            $this->SetPublicId(BookedStringHelper::Random(20));
         }
     }
 
