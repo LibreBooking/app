@@ -2,6 +2,11 @@
 	font-size: 12pt;
 }
 
-#page-reservation .col-top {
+#page-reservation .col-top,
+#page-reservation .reservationButtons {
+    display:none;
+}
+
+#page-view-reservation .buttons {
     display:none;
 }

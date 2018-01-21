@@ -16,7 +16,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 *}
-{include file='globalheader.tpl' TitleKey='ViewReservationHeading' Qtip=true}
+{include file='globalheader.tpl' TitleKey='ViewReservationHeading' Qtip=true printCssFiles='css/reservation.print.css'}
 <div id="page-view-reservation">
 	<div id="reservation-box" class="readonly">
 		<div id="reservationFormDiv">
@@ -239,7 +239,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 				</div>
 
 				{if $ShowReservationDetails}
-				<div class="col-xs-12">
+				<div class="col-xs-12 buttons">
 					<div class="pull-right">
 						<button type="button" class="btn btn-default" onclick="window.location='{$ReturnUrl}'">
 							{translate key='Cancel'}
