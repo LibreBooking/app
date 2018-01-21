@@ -796,6 +796,7 @@ class en_us extends Language
 		$strings['ReservationCannotBeCheckedOutFrom'] = 'This reservation cannot be checked out from.';
 		$strings['InvalidEmailDomain'] = 'That email address is not from an allowed domain';
 		$strings['TermsOfServiceError'] = 'You must accept the Terms of Service';
+		$strings['UserNotFound'] = 'That user could not be found';
 		// End Errors
 
 		// Page Titles

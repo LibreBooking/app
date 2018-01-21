@@ -127,6 +127,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 						<span class="propertyValue inlineUpdate changeCredits"
                               data-type="number" data-pk="{$id}" data-value="{$user->CurrentCreditCount}"
                               data-name="{FormKeys::CREDITS}">{$user->CurrentCreditCount}</span>
+                        <a href="credit_log.php?{QueryStringKeys::USER_ID}={$id}" title="{translate key=CreditHistory}"><span class="fa fa-list"></span></a>
                     </td>
                 {/if}
                 {if $PerUserColors}
