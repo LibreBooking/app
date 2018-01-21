@@ -1,7 +1,7 @@
 <?php
 /**
  * PHP LDAP CLASS FOR MANIPULATING ACTIVE DIRECTORY 
- * Version 4.0.2
+ * Version 4.0.4
  * 
  * PHP Version 5 with SSL and LDAP support
  * 
@@ -9,7 +9,7 @@
  *   email: scott@wiggumworld.com, adldap@richardhyland.com
  *   http://adldap.sourceforge.net/
  * 
- * Copyright (c) 2006-2011 Scott Barnett, Richard Hyland
+ * Copyright (c) 2006-2012 Scott Barnett, Richard Hyland
  * 
  * We'd appreciate any improvements or additions to be submitted back
  * to benefit the entire community :)
@@ -28,10 +28,10 @@
  * @package adLDAP
  * @subpackage Groups
  * @author Scott Barnett, Richard Hyland
- * @copyright (c) 2006-2011 Scott Barnett, Richard Hyland
+ * @copyright (c) 2006-2012 Scott Barnett, Richard Hyland
  * @license http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html LGPLv2.1
  * @revision $Revision: 97 $
- * @version 4.0.2
+ * @version 4.0.4
  * @link http://adldap.sourceforge.net/
  */
 require_once(dirname(__FILE__) . '/../adLDAP.php');
@@ -182,6 +182,25 @@ class adLDAPGroups {
             return false; 
         }
         return true;
+    }
+    
+    /**
+    * Delete a group account 
+    * 
+    * @param string $group The group to delete (please be careful here!) 
+    * 
+    * @return array 
+    */
+    public function delete($group) {
+        if (!$this->adldap->getLdapBind()){ return false; }
+        if ($group === null){ return "Missing compulsory field [group]"; }
+        
+        $groupInfo = $this->info($group, array("*"));
+        $dn = $groupInfo[0]['distinguishedname'][0]; 
+        $result = $this->adldap->folder()->delete($dn); 
+        if ($result !== true) { 
+            return false; 
+        } return true;   
     }
 
     /**
@@ -370,11 +389,14 @@ class adLDAPGroups {
                 }
                 continue;  
              } 
+             else if ($entries['count'] == 0) {   
+                continue; 
+             } 
 
-             if ($entries[0]['samaccountname'][0] === NULL && $entries[0]['distinguishedname'][0] !== NULL) {
+             if ((!isset($entries[0]['samaccountname'][0]) || $entries[0]['samaccountname'][0] === NULL) && $entries[0]['distinguishedname'][0] !== NULL) {
                  $userArray[] = $entries[0]['distinguishedname'][0];
              }
-             elseif ($entries[0]['samaccountname'][0] !== NULL) {
+             else if ($entries[0]['samaccountname'][0] !== NULL) {
                 $userArray[] = $entries[0]['samaccountname'][0];
              }
         }
@@ -439,23 +461,31 @@ class adLDAPGroups {
     {
         if ($group === NULL) { return false; }
 
-        $retGroups = array();          
-        
-        $groups = $this->info($group, array("memberof"));
-        if (isset($groups[0]["memberof"]) && is_array($groups[0]["memberof"])) {
-            $groups = $groups[0]["memberof"];
-
-            if ($groups) {
-                $groupNames = $this->adldap->utilities()->niceNames($groups);
-                $retGroups = array_merge($retGroups, $groupNames); //final groups to return
-                
-                foreach ($groupNames as $id => $groupName){
-                    $childGroups = $this->recursiveGroups($groupName);
-                    $retGroups = array_merge($retGroups, $childGroups);
+        $stack = array(); 
+        $processed = array(); 
+        $retGroups = array(); 
+     
+        array_push($stack, $group); // Initial Group to Start with 
+        while (count($stack) > 0) {
+            $parent = array_pop($stack);
+            array_push($processed, $parent);
+            
+            $info = $this->info($parent, array("memberof"));
+            
+            if (isset($info[0]["memberof"]) && is_array($info[0]["memberof"])) {
+                $groups = $info[0]["memberof"]; 
+                if ($groups) {
+                    $groupNames = $this->adldap->utilities()->niceNames($groups);  
+                    $retGroups = array_merge($retGroups, $groupNames); //final groups to return
+                    foreach ($groupNames as $id => $groupName) { 
+                        if (!in_array($groupName, $processed)) {
+                            array_push($stack, $groupName);
+                        }
+                    }
                 }
             }
         }
-
+        
         return $retGroups;
     }
     
@@ -547,12 +577,12 @@ class adLDAPGroups {
     * 
     * @param string $gid Group ID
     * @param string $usersid User's Object SID
-    * @return string
+    * @return mixed
     */
     public function getPrimaryGroup($gid, $usersid)
     {
         if ($gid === NULL || $usersid === NULL) { return false; }
-        $r = false;
+        $sr = false;
 
         $gsid = substr_replace($usersid, pack('V',$gid), strlen($usersid)-4,4);
         $filter = '(objectsid=' . $this->adldap->utilities()->getTextSID($gsid).')';
@@ -560,7 +590,10 @@ class adLDAPGroups {
         $sr = ldap_search($this->adldap->getLdapConnection(), $this->adldap->getBaseDn(), $filter, $fields);
         $entries = ldap_get_entries($this->adldap->getLdapConnection(), $sr);
 
-        return $entries[0]['distinguishedname'][0];
+        if (isset($entries[0]['distinguishedname'][0])) {
+            return $entries[0]['distinguishedname'][0];
+        }
+        return false;
      }
      
      /**
@@ -577,7 +610,8 @@ class adLDAPGroups {
     */
     public function cn($gid){    
         if ($gid === NULL) { return false; }
-        $r = false;
+        $sr = false;
+        $r = '';
         
         $filter = "(&(objectCategory=group)(samaccounttype=" . adLDAP::ADLDAP_SECURITY_GLOBAL_GROUP . "))";
         $fields = array("primarygrouptoken", "samaccountname", "distinguishedname");

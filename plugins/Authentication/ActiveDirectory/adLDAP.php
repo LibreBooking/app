@@ -1,7 +1,7 @@
 <?php
 /**
  * PHP LDAP CLASS FOR MANIPULATING ACTIVE DIRECTORY 
- * Version 4.0.3
+ * Version 4.0.4
  * 
  * PHP Version 5 with SSL and LDAP support
  * 
@@ -9,7 +9,7 @@
  *   email: scott@wiggumworld.com, adldap@richardhyland.com
  *   http://adldap.sourceforge.net/
  * 
- * Copyright (c) 2006-2011 Scott Barnett, Richard Hyland
+ * Copyright (c) 2006-2012 Scott Barnett, Richard Hyland
  * 
  * We'd appreciate any improvements or additions to be submitted back
  * to benefit the entire community :)
@@ -27,10 +27,10 @@
  * @category ToolsAndUtilities
  * @package adLDAP
  * @author Scott Barnett, Richard Hyland
- * @copyright (c) 2006-2011 Scott Barnett, Richard Hyland
+ * @copyright (c) 2006-2012 Scott Barnett, Richard Hyland
  * @license http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html LGPLv2.1
- * @revision $Revision: 151 $
- * @version 4.0.3
+ * @revision $Revision: 169 $
+ * @version 4.0.4
  * @link http://adldap.sourceforge.net/
  */
 
@@ -571,10 +571,9 @@ class adLDAP {
     * @throws Exception - if unable to bind to Domain Controller
     * @return bool
     */
-    function __construct($options = array()) 
-    {
+    function __construct($options = array()) {
         // You can specifically overide any of the default configuration options setup above
-        if (count($options)>0){
+        if (count($options) > 0) {
             if (array_key_exists("account_suffix",$options)){ $this->accountSuffix = $options["account_suffix"]; }
             if (array_key_exists("base_dn",$options)){ $this->baseDn = $options["base_dn"]; }
             if (array_key_exists("domain_controllers",$options)){ 
@@ -590,7 +589,7 @@ class adLDAP {
             if (array_key_exists("use_tls",$options)){ $this->useTLS = $options["use_tls"]; }
             if (array_key_exists("recursive_groups",$options)){ $this->recursiveGroups = $options["recursive_groups"]; }
             if (array_key_exists("ad_port",$options)){ $this->setPort($options["ad_port"]); } 
-            if (array_key_exists("sso",$options)){ 
+            if (array_key_exists("sso",$options)) { 
                 $this->setUseSSO($options["sso"]);
                 if (!$this->ldapSaslSupported()) {
                     $this->setUseSSO(false);
@@ -612,7 +611,7 @@ class adLDAP {
     * 
     * @return void
     */
-    function __destruct(){ 
+    function __destruct() { 
         $this->close(); 
     }
 
@@ -677,7 +676,9 @@ class adLDAP {
     * @return void
     */
     public function close() {
-        ldap_close($this->ldapConnection);
+        if ($this->ldapConnection) {
+            @ldap_close($this->ldapConnection);
+        }
     }
     
     /**
@@ -719,7 +720,7 @@ class adLDAP {
                 // This should never happen in theory
                 throw new adLDAPException('Rebind to Active Directory failed. AD said: ' . $this->getLastError());
             } 
-        }
+        } 
         
         return $ret;
     }
