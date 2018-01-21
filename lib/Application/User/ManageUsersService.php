@@ -177,12 +177,19 @@ class ManageUsersService implements IManageUsersService
 
 	public function DeleteUser($userId, $notify = true)
 	{
+        $currentUser = ServiceLocator::GetServer()->GetUserSession();
+	    if ($currentUser->UserId == $userId)
+        {
+            // don't delete own account
+            return;
+        }
+
 		$user = $this->userRepository->LoadById($userId);
 		$this->userRepository->DeleteById($userId);
 
 		if ($notify && Configuration::Instance()->GetKey(ConfigKeys::REGISTRATION_NOTIFY, new BooleanConverter()))
 		{
-			$currentUser = ServiceLocator::GetServer()->GetUserSession();
+
 			$applicationAdmins = $this->userViewRepository->GetApplicationAdmins();
 			$groupAdmins = $this->userViewRepository->GetGroupAdmins($userId);
 
