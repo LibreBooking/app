@@ -181,7 +181,7 @@ $conf['settings']['security']['security.strict-transport'] = 'true';
 $conf['settings']['security']['security.x-frame'] = 'deny';
 $conf['settings']['security']['security.x-xss'] = '1; mode=block';
 $conf['settings']['security']['security.x-content-type'] = 'nosniff';
-$conf['settings']['security']['security.content-security-policy'] = "default-src 'self'"; // Requires careful tuning (know what your doing)
+$conf['settings']['security']['security.content-security-policy'] = ""; // Requires careful tuning (know what your doing)
 /**
  * Google Analytics settings
  */
