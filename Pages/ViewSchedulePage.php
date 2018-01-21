@@ -68,7 +68,7 @@ class ViewSchedulePage extends SchedulePage
         $this->Set('AllowGuestBooking', $allowGuestBookings);
 		$this->Set('CreateReservationPage', Pages::GUEST_RESERVATION);
 		$this->Set('LoadViewOnly', true);
-		$this->Set('ShowSubscription', !Configuration::Instance()->GetSectionKey(ConfigSection::ICS, ConfigKeys::ICS_REQUIRE_LOGIN, new BooleanConverter()));
+		$this->Set('ShowSubscription', true);
 
 		if ($this->IsMobile && !$this->IsTablet)
 		{

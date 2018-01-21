@@ -58,7 +58,6 @@ $conf['settings']['schedule']['hide.blocked.periods'] = 'false';    	// if block
 /**
  * ical integration configuration
  */
-$conf['settings']['ics']['require.login'] = 'true';             // recommended, if the user must be logged in to access ics files
 $conf['settings']['ics']['subscription.key'] = '';              // must be set to allow webcal subscriptions
 /**
  * Privacy configuration

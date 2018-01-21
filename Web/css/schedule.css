@@ -80,12 +80,20 @@ table.reservations td {
   min-width: 120px;
 }
 .reservations.condensed .reserved,
-.reservations.condensed .unreservable {
+.reservations.condensed .unreservable,
+.reservations.condensed div.reservable {
   padding: 3px;
-  margin: 0 2px;
+  margin: 2px;
   -webkit-border-radius: 2px;
   -moz-border-radius: 2px;
   border-radius: 2px;
+  cursor: pointer;
+}
+.reservations.condensed div.reservable {
+  border: dashed 1px #585754;
+  color: #585754;
+  line-height: 30px;
+  background-color: #BCBCBC;
 }
 td.resourcename {
   padding: 1px 3px;

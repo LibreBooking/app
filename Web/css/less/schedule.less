@@ -25,11 +25,20 @@ table.reservations td {
     min-width: 120px;
   }
 
-  .reserved, .unreservable {
+  .reserved, .unreservable, div.reservable {
     padding: 3px;
-    margin: 0 2px;
+    margin: 2px;
     .rounded(2px);
+    cursor: pointer;
   }
+
+  div.reservable {
+    border: dashed 1px @dark-gray;
+    color: @dark-gray;
+    line-height:30px;
+    background-color: @mid-gray;
+  }
+
 }
 
 td.resourcename {

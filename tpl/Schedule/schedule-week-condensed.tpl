@@ -50,19 +50,16 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 {/function}
 
 {function name=displayPastTimeCondensed}
-	&nbsp;
 {/function}
 
 {function name=displayReservableCondensed}
-	&nbsp;
 {/function}
 
 {function name=displayRestrictedCondensed}
-	&nbsp;
 {/function}
 
 {function name=displayUnreservableCondensed}
-	&nbsp;<div class="unreservable"
+	<div class="unreservable"
                resid="{$Slot->Id()}" {$color}
                id="{$Slot->Id()}|{$Slot->Date()->Format('Ymd')}">
     {formatdate date=$Slot->BeginDate() key=period_time} - {formatdate date=$Slot->EndDate() key=period_time}
@@ -96,8 +93,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 				<tr class="slots">
 					<td class="resourcename" {if $resource->HasColor()}style="background-color:{$resource->GetColor()} !important{/if}>
 						{if $resource->CanAccess}
-							<a href="{$href}" resourceId="{$resourceId}"
-							   class="resourceNameSelector" {if $resource->HasColor()}style="color:{$resource->GetTextColor()} !important"{/if}>{$resource->Name}</a>
+							<a href="{$href}" resourceId="{$resourceId}" class="resourceNameSelector" {if $resource->HasColor()}style="color:{$resource->GetTextColor()} !important"{/if}>{$resource->Name}</a>
 						{else}
 							<span resourceId="{$resource->Id}" resourceId="{$resource->Id}" class="resourceNameSelector" {if $resource->HasColor()}style="color:{$resource->GetTextColor()} !important"{/if}>{$resource->Name}</span>
 						{/if}
@@ -110,17 +106,22 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 						{assign var=slots value=$DailyLayout->GetLayout($date, $resourceId)}
 						{assign var=summary value=$DailyLayout->GetSummary($date, $resourceId)}
 						{if $summary->NumberOfReservations() > 0}
-							<td class="reservable clickres slot" ref="{$href}&rd={formatdate date=$date key=url}" data-href="{$href}" data-start="{$date->Format('Y-m-d H:i:s')|escape:url}" data-end="{$date->Format('Y-m-d H:i:s')|escape:url}">
-								<input type="hidden" class="href" value="{$href}"/>
+							<td style="vertical-align: top;">
+								<div class="reservable clickres" ref="{$href}&rd={formatdate date=$date key=url}" data-href="{$href}" data-start="{$date->Format('Y-m-d H:i:s')|escape:url}" data-end="{$date->Format('Y-m-d H:i:s')|escape:url}">
+                                    <i class="fa fa-plus-circle"></i> {translate key=CreateReservation}
+                                    <input type="hidden" class="href" value="{$href}"/>
+								</div>
 								{foreach from=$slots item=slot}
 									{call name=displaySlotCondensed Slot=$slot Href="$href" AccessAllowed=$resource->CanAccess}
 								{/foreach}
 							</td>
 						{else}
 							{assign var=href value="{Pages::RESERVATION}?rid={$resource->Id}&sid={$ScheduleId}&rd={formatdate date=$date key=url}"}
-							<td class="reservable clickres slot" ref="{$href}" data-href="{$href}" data-start="{$date->Format('Y-m-d H:i:s')|escape:url}" data-end="{$date->Format('Y-m-d H:i:s')|escape:url}">
-								&nbsp;
-								<input type="hidden" class="href" value="{$href}"/>
+							<td style="vertical-align: top;">
+								<div class="reservable clickres" ref="{$href}&rd={formatdate date=$date key=url}" data-href="{$href}" data-start="{$date->Format('Y-m-d H:i:s')|escape:url}" data-end="{$date->Format('Y-m-d H:i:s')|escape:url}">
+                                    <i class="fa fa-plus-circle"></i> {translate key=CreateReservation}
+                                    <input type="hidden" class="href" value="{$href}"/>
+								</div>
 							</td>
 						{/if}
 					{/foreach}

@@ -792,12 +792,6 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                 be
                 hidden on the bookings page. Default is false.</p>
 
-            <p class="setting"><span>$conf['settings']['ics']['require.login']</span>If users should be required to log
-                in
-                to add a
-                reservation to
-                Outlook.</p>
-
             <p class="setting"><span>$conf['settings']['ics']['subscription.key']</span>If you want to allow calendar
                 subscriptions,
                 set this to a difficult to guess value. If nothing is set then calendar subscriptions will be disabled.

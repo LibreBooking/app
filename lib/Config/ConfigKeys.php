@@ -79,7 +79,6 @@ class ConfigKeys
     const INSTALLATION_PASSWORD = 'install.password';
 
     const ICS_SUBSCRIPTION_KEY = 'subscription.key';
-    const ICS_REQUIRE_LOGIN = 'require.login';
 
     const PRIVACY_HIDE_USER_DETAILS = 'hide.user.details';
     const PRIVACY_HIDE_RESERVATION_DETAILS = 'hide.reservation.details';
