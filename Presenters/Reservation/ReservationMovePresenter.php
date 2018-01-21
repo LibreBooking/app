@@ -77,7 +77,6 @@ class ReservationMovePresenter
 
 		$newDuration = new DateRange($newStart, $currentDuration->GetEnd()->ApplyDifference($difference));
 		$existingSeries->UpdateDuration($newDuration);
-
 		$this->AdjustResource($existingSeries);
 
 		$this->handler->Handle($existingSeries, $this->page);

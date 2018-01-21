@@ -451,7 +451,9 @@ function Schedule(opts, resourceGroups) {
 			}
 			else if (event.type === 'drop')
 			{
-				$(event.target).addClass('dropped');
+			    var droppedCell = $(event.target);
+                droppedCell.addClass('dropped');
+                droppedCell.html('<i class="fa fa-spin fa-spinner" aria-hidden="true"></i>');
 
 				var targetResourceId = targetSlot.attr('data-resourceId');
 				var startDate = decodeURIComponent(targetSlot.attr('data-start'));
@@ -467,8 +469,10 @@ function Schedule(opts, resourceGroups) {
 					}
 					else
 					{
-						$(event.target).removeClass('dropped');
-						return false;
+                        droppedCell.removeClass('dropped');
+                        droppedCell.html('');
+
+                        return false;
 					}
 				});
 			}

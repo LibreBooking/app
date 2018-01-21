@@ -215,7 +215,8 @@ class ExistingReservationSeries extends ReservationSeries
 
 	public function RequiresNewSeries()
 	{
-		return $this->seriesUpdateStrategy->RequiresNewSeries();
+		return ($this->RepeatOptions()->RepeatType() != RepeatType::None)
+            && $this->seriesUpdateStrategy->RequiresNewSeries();
 	}
 
 	/**
