@@ -1,5 +1,8 @@
 # noinspection SqlNoDataSourceInspectionForFile
 
+ALTER TABLE `users` CHANGE `credit_count` `credit_count` DECIMAL(7,2) NULL DEFAULT '0';
+UPDATE users SET credit_count = 0 WHERE credit_count IS NULL;
+
 ALTER TABLE `resources`
   CHANGE COLUMN `sort_order` `sort_order` SMALLINT UNSIGNED;
 

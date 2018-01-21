@@ -74,7 +74,6 @@ class ReservationCreditsPresenter
         if (Configuration::Instance()->GetSectionKey(ConfigSection::CREDITS, ConfigKeys::CREDITS_ALLOW_PURCHASE, new BooleanConverter())) {
             $creditCost = $this->paymentRepository->GetCreditCost();
             $cost = $creditCost->GetFormattedTotal($creditsRequired);
-//            die('req '  . $creditsRequired . 'cost'. ($creditsRequired * $creditCost->Cost()));
         }
         $this->page->SetCreditRequired($creditsRequired, $cost);
     }

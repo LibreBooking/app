@@ -81,8 +81,8 @@ class Queries
 
 	const ADJUST_USER_CREDITS =
         'INSERT INTO credit_log (user_id, original_credit_count, credit_count, credit_note, date_created) 
-            SELECT user_id, credit_count, credit_count - @credit_count, @credit_note, @dateCreated FROM users WHERE user_id = @userid;
-          UPDATE users SET credit_count = credit_count - @credit_count WHERE user_id = @userid';
+            SELECT user_id, credit_count, COALESCE(credit_count,0) - @credit_count, @credit_note, @dateCreated FROM users WHERE user_id = @userid;
+          UPDATE users SET credit_count = COALESCE(credit_count,0) - @credit_count WHERE user_id = @userid';
 
 	const ADD_LAYOUT =
 			'INSERT INTO layouts (timezone) VALUES (@timezone)';

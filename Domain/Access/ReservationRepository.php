@@ -124,8 +124,6 @@ class ReservationRepository implements IReservationRepository
                     $adjustCreditsCommand = new AdjustUserCreditsCommand($reservationSeries->UserId(), $creditsToDeduct, Resources::GetInstance()->GetString('ReservationUpdatedLog', $reservationSeries->CurrentInstance()->ReferenceNumber()));
 
                     $database->Execute($adjustCreditsCommand);
-
-                    // TODO: Add credit transaction log
                 } catch (Exception $ex) {
                 }
             }

@@ -180,8 +180,9 @@ class AutocompleteUser
 	public $Email;
 	public $UserName;
 	public $CurrentCreditCount;
+    public $DisplayName;
 
-	public function __construct($userId, $firstName, $lastName, $email, $userName, $currentCreditCount = null)
+    public function __construct($userId, $firstName, $lastName, $email, $userName, $currentCreditCount = null)
 	{
 		$full = new FullName($firstName, $lastName);
 		$this->Id = $userId;
@@ -191,7 +192,7 @@ class AutocompleteUser
 		$this->Email = $email;
 		$this->UserName = $userName;
 		$this->DisplayName = "{$full} ($email)";
-        $this->CurrentCreditCount = $currentCreditCount;
+        $this->CurrentCreditCount = floatval($currentCreditCount);
 	}
 }
 
