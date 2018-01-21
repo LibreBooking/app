@@ -97,6 +97,35 @@ class ReservationListingTests extends TestBase
 		$this->assertTrue(in_array(new BlackoutListItem($blackout2), $date2Items));
 	}
 
+	public function testReservationWithBufferSpanningMultipleDaysIsReturnedOnAllOfThem()
+	{
+	    $tz = "America/Chicago";
+		$builder = new ReservationItemViewBuilder();
+		$res = $builder->WithStartDate(Date::Parse('2018-01-22 23:00', $tz))->WithEndDate(Date::Parse('2018-01-23 00:00', $tz))->Build();
+        $res->WithBufferTime(3600);
+        $res->ResourceId = 1;
+		$reservationListing = new ReservationListing($tz);
+
+		$reservationListing->Add($res);
+
+		$onDate1 = $reservationListing->OnDate(Date::Parse('2018-01-22', $tz));
+		$onDate2 = $reservationListing->OnDate(Date::Parse('2018-01-23', $tz));
+
+		$this->assertEquals(1, $onDate1->Count());
+		$this->assertEquals(1, $onDate2->Count());
+
+		$this->assertEquals(1, $reservationListing->ForResource(1)->Count());
+		$this->assertEquals(1, $onDate1->ForResource(1)->Count());
+
+		$this->assertEquals(1, count($reservationListing->OnDateForResource(Date::Parse('2018-01-22', $tz), 1)));
+
+		$date1Items = $onDate1->Reservations();
+		$this->assertTrue(in_array(new ReservationListItem($res), $date1Items));
+
+		$date2Items = $onDate2->Reservations();
+        $this->assertTrue(in_array(new ReservationListItem($res), $date2Items));
+    }
+
 	public function testReservationListItemCreatesReservationSlot()
 	{
 		$view = new TestReservationItemView(1, Date::Parse('2011-11-22 04:34'), Date::Parse('2011-11-23 14:43'), 123);

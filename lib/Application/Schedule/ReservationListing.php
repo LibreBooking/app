@@ -61,8 +61,8 @@ class ReservationListing implements IMutableReservationListing
 
 	protected function AddItem(ReservationListItem $item)
 	{
-		$currentDate = $item->StartDate()->ToTimezone($this->timezone);
-		$lastDate = $item->EndDate()->ToTimezone($this->timezone);
+		$currentDate = $item->BufferedStartDate()->ToTimezone($this->timezone);
+		$lastDate = $item->BufferedEndDate()->ToTimezone($this->timezone);
 
 		if ($currentDate->GreaterThan($lastDate))
 		{

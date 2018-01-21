@@ -88,3 +88,4 @@ require_once(ROOT_DIR . 'tests/fakes/FakePaymentTransactionLogger.php');
 require_once(ROOT_DIR . 'tests/fakes/FakeCreditRepository.php');
 require_once(ROOT_DIR . 'tests/fakes/FakeStripeGateway.php');
 require_once(ROOT_DIR . 'tests/fakes/FakeTermsOfServiceRepository.php');
+require_once(ROOT_DIR . 'tests/fakes/ReservationItemViewBuilder.php');
