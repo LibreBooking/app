@@ -1182,8 +1182,8 @@ class Queries
 			'UPDATE users
 		SET
 			email = COALESCE(@email, email),
-			password = @password,
-			salt = @salt,
+			password = COALESCE(@password, password),
+			salt = COALESCE(@salt, salt),
 			fname = COALESCE(@fname, fname),
 			lname = COALESCE(@lname, lname),
 			phone = COALESCE(@phone, phone),

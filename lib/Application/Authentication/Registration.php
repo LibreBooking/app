@@ -129,7 +129,7 @@ class Registration implements IRegistration
 		return !empty($userId);
 	}
 
-	public function Synchronize(AuthenticatedUser $user, $insertOnly = false)
+	public function Synchronize(AuthenticatedUser $user, $insertOnly = false, $overwritePassword = true)
 	{
 		if ($this->UserExists($user->UserName(), $user->Email()))
 		{
@@ -138,8 +138,15 @@ class Registration implements IRegistration
 				return;
 			}
 
-			$encryptedPassword = $this->passwordEncryption->EncryptPassword($user->Password());
-			$command = new UpdateUserFromLdapCommand($user->UserName(), $user->Email(), $user->FirstName(), $user->LastName(), $encryptedPassword->EncryptedPassword(), $encryptedPassword->Salt(), $user->Phone(), $user->Organization(), $user->Title());
+			$password = null;
+			$salt = null;
+
+			if ($overwritePassword) {
+                $encryptedPassword = $this->passwordEncryption->EncryptPassword($user->Password());
+                $password = $encryptedPassword->EncryptedPassword();
+                $salt = $encryptedPassword->Salt();
+            }
+			$command = new UpdateUserFromLdapCommand($user->UserName(), $user->Email(), $user->FirstName(), $user->LastName(), $password, $salt, $user->Phone(), $user->Organization(), $user->Title());
 			ServiceLocator::GetDatabase()->Execute($command);
 
 			if ($user->GetGroups() != null)

@@ -40,11 +40,12 @@ interface IRegistration
 	 */
 	public function UserExists($loginName, $emailAddress);
 
-	/**
-	 * Add or update a user who has already been authenticated
-	 * @param AuthenticatedUser $user
-	 * @param bool $insertOnly
-	 * @return void
-	 */
-	public function Synchronize(AuthenticatedUser $user, $insertOnly = false);
+    /**
+     * Add or update a user who has already been authenticated
+     * @param AuthenticatedUser $user
+     * @param bool $insertOnly
+     * @param bool $overwritePassword
+     * @return void
+     */
+	public function Synchronize(AuthenticatedUser $user, $insertOnly = false, $overwritePassword = true);
 }
