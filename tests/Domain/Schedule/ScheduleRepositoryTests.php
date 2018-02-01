@@ -60,6 +60,7 @@ class ScheduleRepositoryTests extends TestBase
 					$item[ColumnNames::TIMEZONE_NAME]
 			);
 			$schedule->SetAdminGroupId($item[ColumnNames::SCHEDULE_ADMIN_GROUP_ID]);
+			$schedule->SetAvailability(Date::FromDatabase($item[ColumnNames::SCHEDULE_AVAILABLE_START_DATE]), Date::FromDatabase($item[ColumnNames::SCHEDULE_AVAILABLE_END_DATE]));
 			$expected[] = $schedule;
 		}
 

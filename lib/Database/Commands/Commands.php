@@ -2578,7 +2578,9 @@ class UpdateScheduleCommand extends SqlCommand
                                 $daysVisible,
                                 $subscriptionEnabled,
                                 $publicId,
-                                $adminGroupId)
+                                $adminGroupId,
+                                Date $availabilityBegin,
+                                Date $availabilityEnd)
     {
         parent::__construct(Queries::UPDATE_SCHEDULE);
 
@@ -2590,6 +2592,8 @@ class UpdateScheduleCommand extends SqlCommand
         $this->AddParameter(new Parameter(ParameterNames::ALLOW_CALENDAR_SUBSCRIPTION, (int)$subscriptionEnabled));
         $this->AddParameter(new Parameter(ParameterNames::PUBLIC_ID, $publicId));
         $this->AddParameter(new Parameter(ParameterNames::GROUP_ADMIN_ID, $adminGroupId));
+        $this->AddParameter(new Parameter(ParameterNames::SCHEDULE_AVAILABILITY_BEGIN, $availabilityBegin->ToDatabase()));
+        $this->AddParameter(new Parameter(ParameterNames::SCHEDULE_AVAILABILITY_END, $availabilityEnd->ToDatabase()));
     }
 }
 

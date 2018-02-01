@@ -83,6 +83,14 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                                 {include file="Admin/Schedules/manage_peak_times.tpl" Layout=$Layouts[$id] Months=$Months DayNames=$DayNames}
                             </div>
                         {/if}
+
+                        <div>
+                            <span>{translate key=Availability}</span>
+                            <a class="update changeAvailability" href="#"><span class="fa fa-pencil-square-o"></span></a>
+                            <div class="availabilityPlaceHolder">
+                                {include file="Admin/Schedules/manage_availability.tpl" schedule=$schedule timezone=$Timezone}
+                            </div>
+                        </div>
                     </div>
 
                     <div class="layout col-xs-12 col-sm-6">
@@ -505,6 +513,47 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
         </form>
     </div>
 
+    <div id="availabilityDialog" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="availabilityDialogLabel"
+         aria-hidden="true">
+        <form id="availabilityForm" method="post">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title" id="availabilityDialogLabel">{translate key=Availability}</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <div class="checkbox">
+                                <input type="checkbox" id="availableAllYear" {formname key=AVAILABLE_ALL_YEAR} />
+                                <label for="availableAllYear">{translate key=AvailableAllYear}</label>
+                            </div>
+                            <div id="availableDates">
+                                {translate key=AvailableBetween}
+                                <input type="text" id="availabilityStartDate"
+                                       class="form-control input-sm inline-block dateinput" />
+                                <input type="hidden" id="formattedBeginDate" {formname key=AVAILABLE_BEGIN_DATE} />
+                                -
+                                <input type="text" id="availabilityEndDate"
+                                       class="form-control input-sm inline-block dateinput" />
+                                <input type="hidden" id="formattedEndDate" {formname key=AVAILABLE_END_DATE} />
+                            </div>
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="modal-footer">
+                        {cancel_button}
+                        {update_button}
+                        {indicator}
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    {control type="DatePickerSetupControl" ControlId="availabilityStartDate" AltId="formattedBeginDate" DefaultDate=$StartDate}
+    {control type="DatePickerSetupControl" ControlId="availabilityEndDate" AltId="formattedEndDate" DefaultDate=$EndDate}
+
     {csrf_token}
     {include file="javascript-includes.tpl" InlineEdit=true}
     {jsfile src="ajax-helpers.js"}
@@ -574,6 +623,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                 peakTimesAction: '{ManageSchedules::ActionChangePeakTimes}',
                 makeDefaultAction: '{ManageSchedules::ActionMakeDefault}',
                 deleteAction: '{ManageSchedules::ActionDelete}',
+                availabilityAction: '{ManageSchedules::ActionChangeAvailability}',
                 enableSubscriptionAction: '{ManageSchedules::ActionEnableSubscription}',
                 disableSubscriptionAction: '{ManageSchedules::ActionDisableSubscription}'
             };

@@ -1136,7 +1136,9 @@ class Queries
 			daysvisible = @scheduleDaysVisible,
 			allow_calendar_subscription = @allow_calendar_subscription,
 			public_id = @publicid,
-			admin_group_id = @admin_group_id
+			admin_group_id = @admin_group_id,
+			start_date = @start_date,
+			end_date = @end_date
 		WHERE
 			schedule_id = @scheduleid';
 

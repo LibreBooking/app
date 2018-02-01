@@ -234,6 +234,8 @@ class ParameterNames
 	const SCHEDULE_ISDEFAULT = '@scheduleIsDefault';
 	const SCHEDULE_WEEKDAYSTART = '@scheduleWeekdayStart';
 	const SCHEDULE_DAYSVISIBLE = '@scheduleDaysVisible';
+	const SCHEDULE_AVAILABILITY_BEGIN = '@start_date';
+	const SCHEDULE_AVAILABILITY_END = '@end_date';
 	const SERIES_ID = '@seriesid';
 	const SESSION_TOKEN = '@session_token';
 	const START_DATE = '@startDate';

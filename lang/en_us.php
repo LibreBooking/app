@@ -37,7 +37,7 @@ class en_us extends Language
 		$dates['general_date'] = 'm/d/Y';
 		$dates['general_datetime'] = 'm/d/Y g:i:s A';
 		$dates['short_datetime'] = 'n/j/y g:i A';
-		$dates['schedule_daily'] = 'l, m/d/Y';
+		$dates['schedule_daily'] = 'l, n/d/Y';
 		$dates['reservation_email'] = 'm/d/Y @ g:i A (e)';
 		$dates['res_popup'] = 'D, n/d g:i A';
 		$dates['res_popup_time'] = 'g:i A';
@@ -711,6 +711,9 @@ class en_us extends Language
         $strings['IAccept'] = 'I Accept';
         $strings['TheTermsOfService'] = 'the Terms of Service';
         $strings['DisplayPage'] = 'Display Page';
+        $strings['AvailableAllYear'] = 'Available All Year';
+        $strings['Availability'] = 'Availability';
+        $strings['AvailableBetween'] = 'Available Between';
         // End Strings
 
 		// Install

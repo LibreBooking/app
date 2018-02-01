@@ -809,6 +809,11 @@ class NullDate extends Date
     {
         return false;
     }
+
+    public function Timestamp()
+    {
+        return 0;
+    }
 }
 
 class DateDiff

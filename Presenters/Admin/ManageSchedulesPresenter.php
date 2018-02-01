@@ -26,232 +26,229 @@ require_once(ROOT_DIR . 'lib/Common/Validators/namespace.php');
 
 class ManageSchedules
 {
-	const ActionAdd = 'add';
-	const ActionChangeLayout = 'changeLayout';
-	const ActionChangeStartDay = 'startDay';
-	const ActionChangeDaysVisible = 'daysVisible';
-	const ActionMakeDefault = 'makeDefault';
-	const ActionRename = 'rename';
-	const ActionDelete = 'delete';
-	const ActionEnableSubscription = 'enableSubscription';
-	const ActionDisableSubscription = 'disableSubscription';
-	const ChangeAdminGroup = 'changeAdminGroup';
-	const ActionChangePeakTimes = 'ActionChangePeakTimes';
+    const ActionAdd = 'add';
+    const ActionChangeLayout = 'changeLayout';
+    const ActionChangeStartDay = 'startDay';
+    const ActionChangeDaysVisible = 'daysVisible';
+    const ActionMakeDefault = 'makeDefault';
+    const ActionRename = 'rename';
+    const ActionDelete = 'delete';
+    const ActionEnableSubscription = 'enableSubscription';
+    const ActionDisableSubscription = 'disableSubscription';
+    const ChangeAdminGroup = 'changeAdminGroup';
+    const ActionChangePeakTimes = 'ActionChangePeakTimes';
+    const ActionChangeAvailability = 'ActionChangeAvailability';
 }
 
 class ManageScheduleService
 {
-	/**
-	 * @var IScheduleRepository
-	 */
-	private $scheduleRepository;
+    /**
+     * @var IScheduleRepository
+     */
+    private $scheduleRepository;
 
-	/**
-	 * @var IResourceRepository
-	 */
-	private $resourceRepository;
+    /**
+     * @var IResourceRepository
+     */
+    private $resourceRepository;
 
-	/**
-	 * @var array|Schedule[]
-	 */
-	private $_all;
+    /**
+     * @var array|Schedule[]
+     */
+    private $_all;
 
-	public function __construct(IScheduleRepository $scheduleRepository, IResourceRepository $resourceRepository)
-	{
-		$this->scheduleRepository = $scheduleRepository;
-		$this->resourceRepository = $resourceRepository;
-	}
+    public function __construct(IScheduleRepository $scheduleRepository, IResourceRepository $resourceRepository)
+    {
+        $this->scheduleRepository = $scheduleRepository;
+        $this->resourceRepository = $resourceRepository;
+    }
 
-	/**
-	 * @return array|Schedule[]
-	 */
-	public function GetAll()
-	{
-		if (is_null($this->_all))
-		{
-			$this->_all = $this->scheduleRepository->GetAll();
-		}
-		return $this->_all;
-	}
+    /**
+     * @return array|Schedule[]
+     */
+    public function GetAll()
+    {
+        if (is_null($this->_all)) {
+            $this->_all = $this->scheduleRepository->GetAll();
+        }
+        return $this->_all;
+    }
 
-	/**
-	 * @return array|Schedule[]
-	 */
-	public function GetSourceSchedules()
-	{
-		return $this->GetAll();
-	}
+    /**
+     * @return array|Schedule[]
+     */
+    public function GetSourceSchedules()
+    {
+        return $this->GetAll();
+    }
 
-	/**
-	 * @param Schedule $schedule
-	 * @return IScheduleLayout
-	 */
-	public function GetLayout($schedule)
-	{
-		return $this->scheduleRepository->GetLayout($schedule->GetId(),
-													new ScheduleLayoutFactory($schedule->GetTimezone()));
-	}
+    /**
+     * @param Schedule $schedule
+     * @return IScheduleLayout
+     */
+    public function GetLayout($schedule)
+    {
+        return $this->scheduleRepository->GetLayout($schedule->GetId(),
+            new ScheduleLayoutFactory($schedule->GetTimezone()));
+    }
 
-	/**
-	 * @param string $name
-	 * @param int $daysVisible
-	 * @param int $startDay
-	 * @param int $copyLayoutFromScheduleId
-	 */
-	public function Add($name, $daysVisible, $startDay, $copyLayoutFromScheduleId)
-	{
-		$schedule = new Schedule(null, $name, false, $startDay, $daysVisible);
-		$this->scheduleRepository->Add($schedule, $copyLayoutFromScheduleId);
-	}
+    /**
+     * @param string $name
+     * @param int $daysVisible
+     * @param int $startDay
+     * @param int $copyLayoutFromScheduleId
+     */
+    public function Add($name, $daysVisible, $startDay, $copyLayoutFromScheduleId)
+    {
+        $schedule = new Schedule(null, $name, false, $startDay, $daysVisible);
+        $this->scheduleRepository->Add($schedule, $copyLayoutFromScheduleId);
+    }
 
-	/**
-	 * @param int $scheduleId
-	 * @param string $name
-	 */
-	public function Rename($scheduleId, $name)
-	{
-		$schedule = $this->scheduleRepository->LoadById($scheduleId);
-		$schedule->SetName($name);
-		$this->scheduleRepository->Update($schedule);
-	}
+    /**
+     * @param int $scheduleId
+     * @param string $name
+     */
+    public function Rename($scheduleId, $name)
+    {
+        $schedule = $this->scheduleRepository->LoadById($scheduleId);
+        $schedule->SetName($name);
+        $this->scheduleRepository->Update($schedule);
+    }
 
-	/**
-	 * @param int $scheduleId
-	 * @param int|null $startDay
-	 * @param int|null $daysVisible
-	 */
-	public function ChangeSettings($scheduleId, $startDay, $daysVisible)
-	{
-		Log::Debug('Changing scheduleId %s, WeekdayStart: %s, DaysVisible %s', $scheduleId, $startDay, $daysVisible);
-		$schedule = $this->scheduleRepository->LoadById($scheduleId);
-		if (!is_null($startDay))
-		{
-			$schedule->SetWeekdayStart($startDay);
-		}
+    /**
+     * @param int $scheduleId
+     * @param int|null $startDay
+     * @param int|null $daysVisible
+     */
+    public function ChangeSettings($scheduleId, $startDay, $daysVisible)
+    {
+        Log::Debug('Changing scheduleId %s, WeekdayStart: %s, DaysVisible %s', $scheduleId, $startDay, $daysVisible);
+        $schedule = $this->scheduleRepository->LoadById($scheduleId);
+        if (!is_null($startDay)) {
+            $schedule->SetWeekdayStart($startDay);
+        }
 
-		if (!is_null($daysVisible))
-		{
-			$schedule->SetDaysVisible($daysVisible);
-		}
+        if (!is_null($daysVisible)) {
+            $schedule->SetDaysVisible($daysVisible);
+        }
 
-		$this->scheduleRepository->Update($schedule);
-	}
+        $this->scheduleRepository->Update($schedule);
+    }
 
-	/**
-	 * @param int $scheduleId
-	 * @param string $timezone
-	 * @param string $reservableSlots
-	 * @param string $blockedSlots
-	 */
-	public function ChangeLayout($scheduleId, $timezone, $reservableSlots, $blockedSlots)
-	{
-		$layout = ScheduleLayout::Parse($timezone, $reservableSlots, $blockedSlots);
-		$this->scheduleRepository->AddScheduleLayout($scheduleId, $layout);
-	}
+    /**
+     * @param int $scheduleId
+     * @param string $timezone
+     * @param string $reservableSlots
+     * @param string $blockedSlots
+     */
+    public function ChangeLayout($scheduleId, $timezone, $reservableSlots, $blockedSlots)
+    {
+        $layout = ScheduleLayout::Parse($timezone, $reservableSlots, $blockedSlots);
+        $this->scheduleRepository->AddScheduleLayout($scheduleId, $layout);
+    }
 
-	/**
-	 * @param int $scheduleId
-	 * @param string $timezone
-	 * @param string[] $reservableSlots
-	 * @param string[] $blockedSlots
-	 */
-	public function ChangeDailyLayout($scheduleId, $timezone, $reservableSlots, $blockedSlots)
-	{
-		$layout = ScheduleLayout::ParseDaily($timezone, $reservableSlots, $blockedSlots);
-		$this->scheduleRepository->AddScheduleLayout($scheduleId, $layout);
-	}
+    /**
+     * @param int $scheduleId
+     * @param string $timezone
+     * @param string[] $reservableSlots
+     * @param string[] $blockedSlots
+     */
+    public function ChangeDailyLayout($scheduleId, $timezone, $reservableSlots, $blockedSlots)
+    {
+        $layout = ScheduleLayout::ParseDaily($timezone, $reservableSlots, $blockedSlots);
+        $this->scheduleRepository->AddScheduleLayout($scheduleId, $layout);
+    }
 
-	/**
-	 * @param int $scheduleId
-	 */
-	public function MakeDefault($scheduleId)
-	{
-		$schedule = $this->scheduleRepository->LoadById($scheduleId);
-		$schedule->SetIsDefault(true);
+    /**
+     * @param int $scheduleId
+     */
+    public function MakeDefault($scheduleId)
+    {
+        $schedule = $this->scheduleRepository->LoadById($scheduleId);
+        $schedule->SetIsDefault(true);
 
-		$this->scheduleRepository->Update($schedule);
-	}
+        $this->scheduleRepository->Update($schedule);
+    }
 
-	/**
-	 * @param int $scheduleId
-	 * @param int $moveResourcesToThisScheduleId
-	 */
-	public function Delete($scheduleId, $moveResourcesToThisScheduleId)
-	{
-		$resources = $this->resourceRepository->GetScheduleResources($scheduleId);
-		foreach ($resources as $resource)
-		{
-			$resource->SetScheduleId($moveResourcesToThisScheduleId);
-			$this->resourceRepository->Update($resource);
-		}
+    /**
+     * @param int $scheduleId
+     * @param int $moveResourcesToThisScheduleId
+     */
+    public function Delete($scheduleId, $moveResourcesToThisScheduleId)
+    {
+        $resources = $this->resourceRepository->GetScheduleResources($scheduleId);
+        foreach ($resources as $resource) {
+            $resource->SetScheduleId($moveResourcesToThisScheduleId);
+            $this->resourceRepository->Update($resource);
+        }
 
-		$schedule = $this->scheduleRepository->LoadById($scheduleId);
-		$this->scheduleRepository->Delete($schedule);
-	}
+        $schedule = $this->scheduleRepository->LoadById($scheduleId);
+        $this->scheduleRepository->Delete($schedule);
+    }
 
-	/**
-	 * @param int $scheduleId
-	 */
-	public function EnableSubscription($scheduleId)
-	{
-		$schedule = $this->scheduleRepository->LoadById($scheduleId);
-		$schedule->EnableSubscription();
-		$this->scheduleRepository->Update($schedule);
-	}
+    /**
+     * @param int $scheduleId
+     */
+    public function EnableSubscription($scheduleId)
+    {
+        $schedule = $this->scheduleRepository->LoadById($scheduleId);
+        $schedule->EnableSubscription();
+        $this->scheduleRepository->Update($schedule);
+    }
 
-	/**
-	 * @param int $scheduleId
-	 */
-	public function DisableSubscription($scheduleId)
-	{
-		$schedule = $this->scheduleRepository->LoadById($scheduleId);
-		$schedule->DisableSubscription();
-		$this->scheduleRepository->Update($schedule);
-	}
+    /**
+     * @param int $scheduleId
+     */
+    public function DisableSubscription($scheduleId)
+    {
+        $schedule = $this->scheduleRepository->LoadById($scheduleId);
+        $schedule->DisableSubscription();
+        $this->scheduleRepository->Update($schedule);
+    }
 
-	/**
-	 * @param int $scheduleId
-	 * @param int $adminGroupId
-	 */
-	public function ChangeAdminGroup($scheduleId, $adminGroupId)
-	{
-		$schedule = $this->scheduleRepository->LoadById($scheduleId);
-		$schedule->SetAdminGroupId($adminGroupId);
-		$this->scheduleRepository->Update($schedule);
-	}
+    /**
+     * @param int $scheduleId
+     * @param int $adminGroupId
+     */
+    public function ChangeAdminGroup($scheduleId, $adminGroupId)
+    {
+        $schedule = $this->scheduleRepository->LoadById($scheduleId);
+        $schedule->SetAdminGroupId($adminGroupId);
+        $this->scheduleRepository->Update($schedule);
+    }
 
-	/**
-	 * @param int $pageNumber
-	 * @param int $pageSize
-	 * @return PageableData|BookableResource[]
-	 */
-	public function GetList($pageNumber, $pageSize)
-	{
-		return $this->scheduleRepository->GetList($pageNumber, $pageSize);
-	}
+    /**
+     * @param int $pageNumber
+     * @param int $pageSize
+     * @return PageableData|BookableResource[]
+     */
+    public function GetList($pageNumber, $pageSize)
+    {
+        return $this->scheduleRepository->GetList($pageNumber, $pageSize);
+    }
 
-	/**
-	 * @param int $scheduleId
-	 * @param PeakTimes $peakTimes
-	 * @return IScheduleLayout
-	 */
-	public function ChangePeakTimes($scheduleId, PeakTimes $peakTimes)
-	{
-		$layout = $this->scheduleRepository->GetLayout($scheduleId, new ScheduleLayoutFactory(null));
-		$layout->ChangePeakTimes($peakTimes);
-		$this->scheduleRepository->UpdatePeakTimes($scheduleId, $layout);
+    /**
+     * @param int $scheduleId
+     * @param PeakTimes $peakTimes
+     * @return IScheduleLayout
+     */
+    public function ChangePeakTimes($scheduleId, PeakTimes $peakTimes)
+    {
+        $layout = $this->scheduleRepository->GetLayout($scheduleId, new ScheduleLayoutFactory(null));
+        $layout->ChangePeakTimes($peakTimes);
+        $this->scheduleRepository->UpdatePeakTimes($scheduleId, $layout);
 
-		return $layout;
-	}
+        return $layout;
+    }
 
-	public function DeletePeakTimes($scheduleId)
-	{
-		$layout = $this->scheduleRepository->GetLayout($scheduleId, new ScheduleLayoutFactory(null));
-		$layout->RemovePeakTimes();
-		$this->scheduleRepository->UpdatePeakTimes($scheduleId, $layout);
+    public function DeletePeakTimes($scheduleId)
+    {
+        $layout = $this->scheduleRepository->GetLayout($scheduleId, new ScheduleLayoutFactory(null));
+        $layout->RemovePeakTimes();
+        $this->scheduleRepository->UpdatePeakTimes($scheduleId, $layout);
 
-		return $layout;
-	}
+        return $layout;
+    }
 
     /**
      * @return BookableResource[] resources indexed by scheduleId
@@ -262,239 +259,276 @@ class ManageScheduleService
 
         $all = $this->resourceRepository->GetResourceList();
         /** @var BookableResource $resource */
-        foreach ($all as $resource)
-        {
+        foreach ($all as $resource) {
             $resources[$resource->GetScheduleId()][] = $resource;
         }
 
         return $resources;
     }
+
+    /**
+     * @param int $scheduleId
+     * @return Schedule
+     */
+    public function DeleteAvailability($scheduleId)
+    {
+        $schedule = $this->scheduleRepository->LoadById($scheduleId);
+        $schedule->SetAvailableAllYear();
+        $this->scheduleRepository->Update($schedule);
+
+        return $schedule;
+    }
+
+    /**
+     * @param int $scheduleId
+     * @param Date $start
+     * @param Date $end
+     * @return Schedule
+     */
+    public function UpdateAvailability($scheduleId, $start, $end)
+    {
+        $schedule = $this->scheduleRepository->LoadById($scheduleId);
+        $schedule->SetAvailability($start, $end);
+        $this->scheduleRepository->Update($schedule);
+
+        return $schedule;
+    }
 }
 
 class ManageSchedulesPresenter extends ActionPresenter
 {
-	/**
-	 * @var IManageSchedulesPage
-	 */
-	private $page;
+    /**
+     * @var IManageSchedulesPage
+     */
+    private $page;
 
-	/**
-	 * @var ManageScheduleService
-	 */
-	private $manageSchedulesService;
+    /**
+     * @var ManageScheduleService
+     */
+    private $manageSchedulesService;
 
-	/**
-	 * @var IGroupViewRepository
-	 */
-	private $groupViewRepository;
+    /**
+     * @var IGroupViewRepository
+     */
+    private $groupViewRepository;
 
-	public function __construct(IManageSchedulesPage $page, ManageScheduleService $manageSchedulesService,
-								IGroupViewRepository $groupViewRepository)
-	{
-		parent::__construct($page);
-		$this->page = $page;
-		$this->manageSchedulesService = $manageSchedulesService;
-		$this->groupViewRepository = $groupViewRepository;
+    public function __construct(IManageSchedulesPage $page, ManageScheduleService $manageSchedulesService,
+                                IGroupViewRepository $groupViewRepository)
+    {
+        parent::__construct($page);
+        $this->page = $page;
+        $this->manageSchedulesService = $manageSchedulesService;
+        $this->groupViewRepository = $groupViewRepository;
 
-		$this->AddAction(ManageSchedules::ActionAdd, 'Add');
-		$this->AddAction(ManageSchedules::ActionChangeLayout, 'ChangeLayout');
-		$this->AddAction(ManageSchedules::ActionChangeStartDay, 'ChangeStartDay');
-		$this->AddAction(ManageSchedules::ActionChangeDaysVisible, 'ChangeDaysVisible');
-		$this->AddAction(ManageSchedules::ActionMakeDefault, 'MakeDefault');
-		$this->AddAction(ManageSchedules::ActionRename, 'Rename');
-		$this->AddAction(ManageSchedules::ActionDelete, 'Delete');
-		$this->AddAction(ManageSchedules::ActionEnableSubscription, 'EnableSubscription');
-		$this->AddAction(ManageSchedules::ActionDisableSubscription, 'DisableSubscription');
-		$this->AddAction(ManageSchedules::ChangeAdminGroup, 'ChangeAdminGroup');
-		$this->AddAction(ManageSchedules::ActionChangePeakTimes, 'ChangePeakTimes');
-	}
+        $this->AddAction(ManageSchedules::ActionAdd, 'Add');
+        $this->AddAction(ManageSchedules::ActionChangeLayout, 'ChangeLayout');
+        $this->AddAction(ManageSchedules::ActionChangeStartDay, 'ChangeStartDay');
+        $this->AddAction(ManageSchedules::ActionChangeDaysVisible, 'ChangeDaysVisible');
+        $this->AddAction(ManageSchedules::ActionMakeDefault, 'MakeDefault');
+        $this->AddAction(ManageSchedules::ActionRename, 'Rename');
+        $this->AddAction(ManageSchedules::ActionDelete, 'Delete');
+        $this->AddAction(ManageSchedules::ActionEnableSubscription, 'EnableSubscription');
+        $this->AddAction(ManageSchedules::ActionDisableSubscription, 'DisableSubscription');
+        $this->AddAction(ManageSchedules::ChangeAdminGroup, 'ChangeAdminGroup');
+        $this->AddAction(ManageSchedules::ActionChangePeakTimes, 'ChangePeakTimes');
+        $this->AddAction(ManageSchedules::ActionChangeAvailability, 'ChangeAvailability');
+    }
 
-	public function PageLoad()
-	{
-		$results = $this->manageSchedulesService->GetList($this->page->GetPageNumber(), $this->page->GetPageSize());
-		$schedules = $results->Results();
+    public function PageLoad()
+    {
+        $results = $this->manageSchedulesService->GetList($this->page->GetPageNumber(), $this->page->GetPageSize());
+        $schedules = $results->Results();
 
-		$sourceSchedules = $this->manageSchedulesService->GetSourceSchedules();
-		$resources = $this->manageSchedulesService->GetResources();
+        $sourceSchedules = $this->manageSchedulesService->GetSourceSchedules();
+        $resources = $this->manageSchedulesService->GetResources();
 
-		$layouts = array();
-		/* @var $schedule Schedule */
-		foreach ($schedules as $schedule)
-		{
-			$layout = $this->manageSchedulesService->GetLayout($schedule);
-			$layouts[$schedule->GetId()] = $layout;
-		}
+        $layouts = array();
+        /* @var $schedule Schedule */
+        foreach ($schedules as $schedule) {
+            $layout = $this->manageSchedulesService->GetLayout($schedule);
+            $layouts[$schedule->GetId()] = $layout;
+        }
 
-		$this->page->BindGroups($this->groupViewRepository->GetGroupsByRole(RoleLevel::SCHEDULE_ADMIN));
+        $this->page->BindGroups($this->groupViewRepository->GetGroupsByRole(RoleLevel::SCHEDULE_ADMIN));
 
-		$this->page->BindSchedules($schedules, $layouts, $sourceSchedules);
-		$this->page->BindPageInfo($results->PageInfo());
-		$this->page->BindResources($resources);
-		$this->PopulateTimezones();
+        $this->page->BindSchedules($schedules, $layouts, $sourceSchedules);
+        $this->page->BindPageInfo($results->PageInfo());
+        $this->page->BindResources($resources);
+        $this->PopulateTimezones();
 
-	}
+    }
 
-	private function PopulateTimezones()
-	{
-		$timezoneValues = array();
-		$timezoneOutput = array();
+    private function PopulateTimezones()
+    {
+        $timezoneValues = array();
+        $timezoneOutput = array();
 
-		foreach ($GLOBALS['APP_TIMEZONES'] as $timezone)
-		{
-			$timezoneValues[] = $timezone;
-			$timezoneOutput[] = $timezone;
-		}
+        foreach ($GLOBALS['APP_TIMEZONES'] as $timezone) {
+            $timezoneValues[] = $timezone;
+            $timezoneOutput[] = $timezone;
+        }
 
-		$this->page->SetTimezones($timezoneValues, $timezoneOutput);
-	}
+        $this->page->SetTimezones($timezoneValues, $timezoneOutput);
+    }
 
-	/**
-	 * @internal should only be used for testing
-	 */
-	public function Add()
-	{
-		$copyLayoutFromScheduleId = $this->page->GetSourceScheduleId();
-		$name = $this->page->GetScheduleName();
-		$weekdayStart = $this->page->GetStartDay();
-		$daysVisible = $this->page->GetDaysVisible();
+    /**
+     * @internal should only be used for testing
+     */
+    public function Add()
+    {
+        $copyLayoutFromScheduleId = $this->page->GetSourceScheduleId();
+        $name = $this->page->GetScheduleName();
+        $weekdayStart = $this->page->GetStartDay();
+        $daysVisible = $this->page->GetDaysVisible();
 
-		Log::Debug('Adding schedule with name %s', $name);
+        Log::Debug('Adding schedule with name %s', $name);
 
-		$this->manageSchedulesService->Add($name, $daysVisible, $weekdayStart, $copyLayoutFromScheduleId);
-	}
+        $this->manageSchedulesService->Add($name, $daysVisible, $weekdayStart, $copyLayoutFromScheduleId);
+    }
 
-	/**
-	 * @internal should only be used for testing
-	 */
-	public function Rename()
-	{
-		$this->manageSchedulesService->Rename($this->page->GetScheduleId(), $this->page->GetValue());
-	}
+    /**
+     * @internal should only be used for testing
+     */
+    public function Rename()
+    {
+        $this->manageSchedulesService->Rename($this->page->GetScheduleId(), $this->page->GetValue());
+    }
 
-	/**
-	 * @internal should only be used for testing
-	 */
-	public function ChangeStartDay()
-	{
-		$this->manageSchedulesService->ChangeSettings($this->page->GetScheduleId(), $this->page->GetValue(), null);
-	}
+    /**
+     * @internal should only be used for testing
+     */
+    public function ChangeStartDay()
+    {
+        $this->manageSchedulesService->ChangeSettings($this->page->GetScheduleId(), $this->page->GetValue(), null);
+    }
 
-	/**
-	 * @internal should only be used for testing
-	 */
-	public function ChangeDaysVisible()
-	{
-		$this->manageSchedulesService->ChangeSettings($this->page->GetScheduleId(), null, $this->page->GetValue());
-	}
+    /**
+     * @internal should only be used for testing
+     */
+    public function ChangeDaysVisible()
+    {
+        $this->manageSchedulesService->ChangeSettings($this->page->GetScheduleId(), null, $this->page->GetValue());
+    }
 
-	/**
-	 * @internal should only be used for testing
-	 */
-	public function ChangeLayout()
-	{
-		$scheduleId = $this->page->GetScheduleId();
-		$timezone = $this->page->GetLayoutTimezone();
-		$usingSingleLayout = $this->page->GetUsingSingleLayout();
+    /**
+     * @internal should only be used for testing
+     */
+    public function ChangeLayout()
+    {
+        $scheduleId = $this->page->GetScheduleId();
+        $timezone = $this->page->GetLayoutTimezone();
+        $usingSingleLayout = $this->page->GetUsingSingleLayout();
 
-		Log::Debug('Changing layout for scheduleId=%s. timezone=%s, usingSingleLayout=%s', $scheduleId, $timezone,
-				   $usingSingleLayout);
-		if ($usingSingleLayout)
-		{
-			$reservableSlots = $this->page->GetReservableSlots();
-			$blockedSlots = $this->page->GetBlockedSlots();
-			$this->manageSchedulesService->ChangeLayout($scheduleId, $timezone, $reservableSlots, $blockedSlots);
-		}
-		else
-		{
-			$reservableSlots = $this->page->GetDailyReservableSlots();
-			$blockedSlots = $this->page->GetDailyBlockedSlots();
-			$this->manageSchedulesService->ChangeDailyLayout($scheduleId, $timezone, $reservableSlots, $blockedSlots);
-		}
-	}
+        Log::Debug('Changing layout for scheduleId=%s. timezone=%s, usingSingleLayout=%s', $scheduleId, $timezone,
+            $usingSingleLayout);
+        if ($usingSingleLayout) {
+            $reservableSlots = $this->page->GetReservableSlots();
+            $blockedSlots = $this->page->GetBlockedSlots();
+            $this->manageSchedulesService->ChangeLayout($scheduleId, $timezone, $reservableSlots, $blockedSlots);
+        }
+        else {
+            $reservableSlots = $this->page->GetDailyReservableSlots();
+            $blockedSlots = $this->page->GetDailyBlockedSlots();
+            $this->manageSchedulesService->ChangeDailyLayout($scheduleId, $timezone, $reservableSlots, $blockedSlots);
+        }
+    }
 
-	/**
-	 * @internal should only be used for testing
-	 */
-	public function ChangeAdminGroup()
-	{
-		$this->manageSchedulesService->ChangeAdminGroup($this->page->GetScheduleId(), $this->page->GetValue());
-	}
+    /**
+     * @internal should only be used for testing
+     */
+    public function ChangeAdminGroup()
+    {
+        $this->manageSchedulesService->ChangeAdminGroup($this->page->GetScheduleId(), $this->page->GetValue());
+    }
 
-	/**
-	 * @internal should only be used for testing
-	 */
-	public function MakeDefault()
-	{
-		$this->manageSchedulesService->MakeDefault($this->page->GetScheduleId());
-	}
+    /**
+     * @internal should only be used for testing
+     */
+    public function MakeDefault()
+    {
+        $this->manageSchedulesService->MakeDefault($this->page->GetScheduleId());
+    }
 
-	/**
-	 * @internal should only be used for testing
-	 */
-	public function Delete()
-	{
-		$this->manageSchedulesService->Delete($this->page->GetScheduleId(), $this->page->GetTargetScheduleId());
-	}
+    /**
+     * @internal should only be used for testing
+     */
+    public function Delete()
+    {
+        $this->manageSchedulesService->Delete($this->page->GetScheduleId(), $this->page->GetTargetScheduleId());
+    }
 
-	public function EnableSubscription()
-	{
-		$this->manageSchedulesService->EnableSubscription($this->page->GetScheduleId());
-	}
+    public function EnableSubscription()
+    {
+        $this->manageSchedulesService->EnableSubscription($this->page->GetScheduleId());
+    }
 
-	public function DisableSubscription()
-	{
-		$this->manageSchedulesService->DisableSubscription($this->page->GetScheduleId());
-	}
+    public function DisableSubscription()
+    {
+        $this->manageSchedulesService->DisableSubscription($this->page->GetScheduleId());
+    }
 
-	public function ChangePeakTimes()
-	{
-		$scheduleId = $this->page->GetScheduleId();
-		$deletePeak = $this->page->GetDeletePeakTimes();
+    public function ChangePeakTimes()
+    {
+        $scheduleId = $this->page->GetScheduleId();
+        $deletePeak = $this->page->GetDeletePeakTimes();
 
-		if ($deletePeak)
-		{
-			$layout = $this->manageSchedulesService->DeletePeakTimes($scheduleId);
-		}
-		else
-		{
-			$allDay = $this->page->GetPeakAllDay();
-			$beginTime = $this->page->GetPeakBeginTime();
-			$endTime = $this->page->GetPeakEndTime();
+        if ($deletePeak) {
+            $layout = $this->manageSchedulesService->DeletePeakTimes($scheduleId);
+        }
+        else {
+            $allDay = $this->page->GetPeakAllDay();
+            $beginTime = $this->page->GetPeakBeginTime();
+            $endTime = $this->page->GetPeakEndTime();
 
-			$everyDay = $this->page->GetPeakEveryDay();
-			$peakDays = $this->page->GetPeakWeekdays();
+            $everyDay = $this->page->GetPeakEveryDay();
+            $peakDays = $this->page->GetPeakWeekdays();
 
-			$allYear = $this->page->GetPeakAllYear();
-			$beginDay = $this->page->GetPeakBeginDay();
-			$beginMonth = $this->page->GetPeakBeginMonth();
-			$endDay = $this->page->GetPeakEndDay();
-			$endMonth = $this->page->GetPeakEndDMonth();
+            $allYear = $this->page->GetPeakAllYear();
+            $beginDay = $this->page->GetPeakBeginDay();
+            $beginMonth = $this->page->GetPeakBeginMonth();
+            $endDay = $this->page->GetPeakEndDay();
+            $endMonth = $this->page->GetPeakEndDMonth();
 
+            $peakTimes = new PeakTimes($allDay, $beginTime, $endTime, $everyDay, $peakDays, $allYear, $beginDay, $beginMonth, $endDay, $endMonth);
+            $layout = $this->manageSchedulesService->ChangePeakTimes($scheduleId, $peakTimes);
+        }
+        $this->page->DisplayPeakTimes($layout);
+    }
 
-			$peakTimes = new PeakTimes($allDay, $beginTime, $endTime, $everyDay, $peakDays, $allYear, $beginDay, $beginMonth, $endDay, $endMonth);
-			$layout = $this->manageSchedulesService->ChangePeakTimes($scheduleId, $peakTimes);
-		}
-		$this->page->DisplayPeakTimes($layout);
-	}
+    public function ChangeAvailability()
+    {
+        $availableAllYear = $this->page->GetAvailableAllYear();
+        $start = $this->page->GetAvailabilityBegin();
+        $end = $this->page->GetAvailabilityEnd();
+        $scheduleId = $this->page->GetScheduleId();
+        $timezone = ServiceLocator::GetServer()->GetUserSession()->Timezone;
 
-	protected function LoadValidators($action)
-	{
-		if ($action == ManageSchedules::ActionChangeLayout)
-		{
-			$validateSingle = $this->page->GetUsingSingleLayout();
-			if ($validateSingle)
-			{
-				$reservableSlots = $this->page->GetReservableSlots();
-				$blockedSlots = $this->page->GetBlockedSlots();
-			}
-			else
-			{
-				$reservableSlots = $this->page->GetDailyReservableSlots();
-				$blockedSlots = $this->page->GetDailyBlockedSlots();
-			}
-			$this->page->RegisterValidator('layoutValidator',
-										   new LayoutValidator($reservableSlots, $blockedSlots, $validateSingle));
-		}
-	}
+        if ($availableAllYear || empty($start) || empty($end)) {
+            $schedule = $this->manageSchedulesService->DeleteAvailability($scheduleId);
+        }
+        else {
+            $schedule = $this->manageSchedulesService->UpdateAvailability($scheduleId, Date::Parse($start, $timezone), Date::Parse($end, $timezone));
+        }
+
+        $this->page->DisplayAvailability($schedule, $timezone);
+
+    }
+
+    protected function LoadValidators($action)
+    {
+        if ($action == ManageSchedules::ActionChangeLayout) {
+            $validateSingle = $this->page->GetUsingSingleLayout();
+            if ($validateSingle) {
+                $reservableSlots = $this->page->GetReservableSlots();
+                $blockedSlots = $this->page->GetBlockedSlots();
+            }
+            else {
+                $reservableSlots = $this->page->GetDailyReservableSlots();
+                $blockedSlots = $this->page->GetDailyBlockedSlots();
+            }
+            $this->page->RegisterValidator('layoutValidator',
+                new LayoutValidator($reservableSlots, $blockedSlots, $validateSingle));
+        }
+    }
 
 }

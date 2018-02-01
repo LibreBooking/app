@@ -121,3 +121,6 @@ ALTER TABLE `resources`
   ADD COLUMN `min_notice_time_delete` INT;
 
 UPDATE resources SET min_notice_time_update = min_notice_time_add, min_notice_time_delete = min_notice_time_add;
+
+ALTER TABLE `schedules` ADD COLUMN `start_date` DATETIME;
+ALTER TABLE `schedules` ADD COLUMN `end_date` DATETIME;

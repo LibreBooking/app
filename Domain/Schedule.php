@@ -55,6 +55,8 @@ class Schedule implements ISchedule
     protected $_isCalendarSubscriptionAllowed = false;
     protected $_publicId;
     protected $_adminGroupId;
+    protected $_availabilityBegin;
+    protected $_availabilityEnd;
 
     const Today = 100;
 
@@ -74,6 +76,8 @@ class Schedule implements ISchedule
         $this->_daysVisible = $daysVisible;
         $this->_timezone = $timezone;
         $this->_layoutId = $layoutId;
+        $this->_availabilityBegin = new NullDate();
+        $this->_availabilityEnd = new NullDate();
     }
 
     public function GetId()
@@ -198,6 +202,51 @@ class Schedule implements ISchedule
         return !empty($this->_adminGroupId);
     }
 
+    public function SetAvailableAllYear()
+    {
+        $this->_availabilityBegin = new NullDate();
+        $this->_availabilityEnd = new NullDate();
+    }
+
+    public function SetAvailability(Date $start, Date $end)
+    {
+        $this->_availabilityBegin = $start;
+        $this->_availabilityEnd = $end;
+    }
+
+    /**
+     * @return Date
+     */
+    public function GetAvailabilityBegin()
+    {
+        if ($this->_availabilityBegin == null) {
+            return new NullDate();
+        }
+
+        return $this->_availabilityBegin;
+    }
+
+    /**
+     * @return Date
+     */
+    public function GetAvailabilityEnd()
+    {
+        if ($this->_availabilityEnd == null) {
+            return new NullDate();
+        }
+
+        return $this->_availabilityEnd;
+
+    }
+
+    /**
+     * @return bool
+     */
+    public function HasAvailability()
+    {
+        return $this->GetAvailabilityBegin()->ToString() != '' && $this->GetAvailabilityEnd()->ToString() != '';
+    }
+
     /**
      * @static
      * @return Schedule
@@ -225,6 +274,7 @@ class Schedule implements ISchedule
         $schedule->WithSubscription($row[ColumnNames::ALLOW_CALENDAR_SUBSCRIPTION]);
         $schedule->WithPublicId($row[ColumnNames::PUBLIC_ID]);
         $schedule->SetAdminGroupId($row[ColumnNames::SCHEDULE_ADMIN_GROUP_ID]);
+        $schedule->SetAvailability(Date::FromDatabase($row[ColumnNames::SCHEDULE_AVAILABLE_START_DATE]), Date::FromDatabase($row[ColumnNames::SCHEDULE_AVAILABLE_END_DATE]));
 
         return $schedule;
     }
