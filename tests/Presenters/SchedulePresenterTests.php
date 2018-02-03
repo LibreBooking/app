@@ -720,6 +720,48 @@ class SchedulePresenterTests extends TestBase
 		$builder->BindDisplayDates($page, new DateRange($start, $end), $schedule);
 	}
 
+	public function testIfCurrentDateIsBeforeAvailability_ShowFirstAvailableMessage()
+	{
+		$tz = 'America/Chicago';
+		$start = Date::Parse('2011-04-04', $tz);
+		$end = Date::Parse('2011-04-13', $tz);
+
+		$session = new UserSession(1);
+		$session->Timezone = $tz;
+
+		$schedule = new Schedule(1, null, true, 1, 10);
+		$schedule->SetAvailability($end->AddDays(20), $end->AddDays(30));
+
+		$page = new FakeSchedulePage();
+
+		$builder = new SchedulePageBuilder();
+		$builder->BindDisplayDates($page, new DateRange($start, $end), $schedule);
+
+		$this->assertEquals($page->_ScheduleAvailability, $schedule->GetAvailability());
+		$this->assertTrue($page->_ScheduleTooEarly);
+	}
+
+	public function testIfCurrentDateIsAfterAvailability_ShowNoLongerAvailableMessage()
+	{
+		$tz = 'America/Chicago';
+		$start = Date::Parse('2011-04-04', $tz);
+		$end = Date::Parse('2011-04-13', $tz);
+
+		$session = new UserSession(1);
+		$session->Timezone = $tz;
+
+		$schedule = new Schedule(1, null, true, 1, 10);
+		$schedule->SetAvailability($start->AddDays(-30), $start->AddDays(-20));
+
+		$page = new FakeSchedulePage();
+
+		$builder = new SchedulePageBuilder();
+		$builder->BindDisplayDates($page, new DateRange($start, $end), $schedule);
+
+		$this->assertEquals($page->_ScheduleAvailability, $schedule->GetAvailability());
+		$this->assertTrue($page->_ScheduleTooLate);
+	}
+
 	public function testShowsSevenDaysIfWeAreShowingFullWeek()
 	{
 		$timezone = 'America/Chicago';
@@ -880,8 +922,11 @@ class FakeSchedulePage implements ISchedulePage
 	public $_ResourceTypeAttributes = array();
 	public $_ResourceIds = array();
 	public $_SelectedDates = array();
+    public $_ScheduleAvailability;
+    public $_ScheduleTooEarly;
+    public $_ScheduleTooLate;
 
-	public function TakingAction()
+    public function TakingAction()
 	{
 		// TODO: Implement TakingAction() method.
 	}
@@ -1175,79 +1220,51 @@ class FakeSchedulePage implements ISchedulePage
 		return $this->_ResourceTypeAttributes;
 	}
 
-	/**
-	 * @param ScheduleResourceFilter $resourceFilter
-	 */
 	public function SetFilter($resourceFilter)
 	{
-		// TODO: Implement SetFilter() method.
 	}
 
-	/**
-	 * @param CalendarSubscriptionUrl $subscriptionUrl
-	 */
 	public function SetSubscriptionUrl(CalendarSubscriptionUrl $subscriptionUrl)
 	{
-		// TODO: Implement SetSubscriptionUrl() method.
 	}
 
-	/**
-	 * @param bool $shouldShow
-	 */
 	public function ShowPermissionError($shouldShow)
 	{
-		// TODO: Implement ShowPermissionError() method.
 	}
 
-	/**
-	 * @param UserSession $user
-	 * @param Schedule $schedule
-	 * @return string
-	 */
 	public function GetDisplayTimezone(UserSession $user, Schedule $schedule)
 	{
-		// TODO: Implement GetDisplayTimezone() method.
 	}
 
-	/**
-	 * @return int
-	 */
 	public function GetResourceId()
 	{
-		// TODO: Implement GetResourceId() method.
 	}
 
-	/**
-	 * @return Date[]
-	 */
 	public function GetSelectedDates()
 	{
 		return $this->_SelectedDates;
 	}
 
-	/**
-	 * @param Date[] $specificDates
-	 */
 	public function SetSpecificDates($specificDates)
 	{
-		// TODO: Implement SetSpecificDates() method.
 	}
 
     public function GetSortField()
     {
-        // TODO: Implement GetSortField() method.
     }
 
     public function GetSortDirection()
     {
-        // TODO: Implement GetSortDirection() method.
     }
 
-    /**
-     * @return bool
-     */
     public function FilterCleared()
     {
-        // TODO: Implement FilterCleared() method.
+    }
+
+    public function BindScheduleAvailability($availability, $tooEarly)
+    {
+        $this->_ScheduleAvailability = $availability;
+        $this->_ScheduleTooEarly = $tooEarly;
+        $this->_ScheduleTooLate = !$tooEarly;
     }
 }

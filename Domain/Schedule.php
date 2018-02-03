@@ -41,6 +41,21 @@ interface ISchedule
     public function GetPublicId();
 
     public function GetAdminGroupId();
+
+    /**
+     * @return Date
+     */
+    public function GetAvailabilityBegin();
+
+    /**
+     * @return Date
+     */
+    public function GetAvailabilityEnd();
+
+    /**
+     * @return DateRange
+     */
+    public function GetAvailability();
 }
 
 class Schedule implements ISchedule
@@ -236,7 +251,14 @@ class Schedule implements ISchedule
         }
 
         return $this->_availabilityEnd;
+    }
 
+    /**
+     * @return DateRange
+     */
+    public function GetAvailability()
+    {
+        return new DateRange($this->GetAvailabilityBegin(), $this->GetAvailabilityEnd());
     }
 
     /**

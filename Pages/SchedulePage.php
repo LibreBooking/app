@@ -213,6 +213,11 @@ interface ISchedulePage extends IActionPage
      */
     public function FilterCleared();
 
+    /**
+     * @param DateRange $availability
+     * @param bool $tooEarly
+     */
+    public function BindScheduleAvailability($availability, $tooEarly);
 }
 
 class ScheduleStyle
@@ -561,6 +566,15 @@ class SchedulePage extends ActionPage implements ISchedulePage
     public function FilterCleared()
     {
        return $this->GetQuerystring('clearFilter') == '1';
+    }
+
+    public function BindScheduleAvailability($availability, $tooEarly)
+    {
+        $this->Set('ScheduleAvailabilityEarly', $tooEarly);
+        $this->Set('ScheduleAvailabilityLate', !$tooEarly);
+        $this->Set('ScheduleAvailabilityStart', $availability->GetBegin());
+        $this->Set('ScheduleAvailabilityEnd', $availability->GetEnd());
+        $this->Set('HideSchedule', true);
     }
 }
 
