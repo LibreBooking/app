@@ -171,5 +171,3 @@ class SchedulesWebServiceTests extends TestBase
 		$this->assertEquals(array(new SchedulePeriodResponse($periods7[0])), $response->periods[$date7->Weekday()]);
 	}
 }
-
-?>

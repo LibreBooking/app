@@ -26,5 +26,6 @@ class FakeSchedule extends Schedule
     {
         parent::__construct($id, $name, $isDefault, $weekdayStart, $daysVisible);
         $this->_timezone = 'America/Chicago';
+        $this->SetAvailability(new Date('2018-01-01', $this->_timezone), new Date('2018-02-02', $this->_timezone));
     }
 }

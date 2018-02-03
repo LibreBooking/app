@@ -22,6 +22,11 @@ require_once(ROOT_DIR . 'WebServices/Responses/ScheduleItemResponse.php');
 
 class SchedulesResponse extends RestResponse
 {
+    /**
+     * @var ScheduleItemResponse[]
+     */
+    public $schedules = array();
+
 	/**
 	 * @param IRestServer $server
 	 * @param array|Schedule[] $schedules

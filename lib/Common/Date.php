@@ -814,6 +814,11 @@ class NullDate extends Date
     {
         return 0;
     }
+
+    public function ToIso()
+    {
+        return '';
+    }
 }
 
 class DateDiff
