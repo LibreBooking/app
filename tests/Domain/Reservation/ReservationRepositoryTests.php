@@ -997,7 +997,7 @@ class ReservationRepositoryTests extends TestBase
         $deleteAccessories = $this->db->GetCommandsOfType('RemoveReservationAccessoryCommand');
 
         $this->assertTrue($this->db->ContainsCommand(new AddReservationUserCommand($instance->ReservationId(), $newUserId, ReservationUserLevel::OWNER)));
-        $this->assertEquals(count($series->AdditionalResources()) + 1, count($addResources), "dont want to double add");
+        $this->assertEquals(count($series->AdditionalResources()), count($addResources), "dont want to double add");
         $this->assertEquals(count($series->Accessories()), count($addAccessories));
         $this->assertEquals(0, count($deleteResources));
         $this->assertEquals(0, count($deleteAccessories));

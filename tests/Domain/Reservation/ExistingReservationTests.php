@@ -70,8 +70,6 @@ class ExistingReservationTests extends TestBase
 
         // remove all future events
         $seriesBranchedEvent = new SeriesBranchedEvent($series);
-        $this->assertTrue($series->RequiresNewSeries(),
-            "should require new series if this instance in a series is altered");
         $this->assertEquals(1, count($events));
         $this->assertEquals($seriesBranchedEvent, $events[0], "should have been branched");
         $this->assertEquals(new RepeatNone(), $series->RepeatOptions(),
