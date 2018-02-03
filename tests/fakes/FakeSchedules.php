@@ -63,14 +63,14 @@ class FakeScheduleRepository implements IScheduleRepository
 
     public static function Initialize()
     {
-        self::$Schedule1 = new Schedule(1, "schedule 1", true, '09:00', '20:00', 0, 1, 5);
+        self::$Schedule1 = new Schedule(1, "schedule 1", true, '09:00', '20:00', 0, 1);
     }
 
     public function GetRows()
     {
         return array(
             self::GetRow($this->_DefaultScheduleId, 'schedule 1', 1, $this->_DefaultDayStart, $this->_DefaultDaysVisible, 'America/Chicago', null, false, null, null, '2018-01-01', '2019-01-1'),
-            self::GetRow(2, 'schedule 1', 0, 0, 5, 'America/Chicago'),
+            self::GetRow(2, 'schedule 2', 0, 0, 5, 'America/Chicago'),
         );
     }
 
@@ -89,6 +89,7 @@ class FakeScheduleRepository implements IScheduleRepository
                 $item[ColumnNames::TIMEZONE_NAME]
             );
             $schedule->SetAdminGroupId($item[ColumnNames::SCHEDULE_ADMIN_GROUP_ID]);
+            $schedule->SetAvailability(Date::FromDatabase($item[ColumnNames::SCHEDULE_AVAILABLE_START_DATE]), Date::FromDatabase($item[ColumnNames::SCHEDULE_AVAILABLE_END_DATE]));
             $expected[] = $schedule;
         }
 

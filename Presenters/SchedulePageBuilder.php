@@ -216,22 +216,20 @@ class SchedulePageBuilder implements ISchedulePageBuilder
 
 	public function BindDisplayDates(ISchedulePage $page, DateRange $dateRange, ISchedule $schedule)
 	{
-        if ($dateRange->GetEnd()->LessThan($schedule->GetAvailabilityBegin()))
-        {
-            $page->BindScheduleAvailability($schedule->GetAvailability(), true);
-        }
-        elseif ($dateRange->GetBegin()->GreaterThan($schedule->GetAvailabilityEnd()))
-        {
-            $page->BindScheduleAvailability($schedule->GetAvailability(), false);
-        }
+	    if ($schedule->HasAvailability()) {
+            if ($dateRange->GetEnd()->LessThan($schedule->GetAvailabilityBegin())) {
+                $page->BindScheduleAvailability($schedule->GetAvailability(), true);
+            }
+            elseif ($dateRange->GetBegin()->GreaterThan($schedule->GetAvailabilityEnd())) {
+                $page->BindScheduleAvailability($schedule->GetAvailability(), false);
+            }
 
-        if ($dateRange->GetBegin()->LessThan($schedule->GetAvailabilityBegin()))
-        {
-            $dateRange = new DateRange($schedule->GetAvailabilityBegin(), $dateRange->GetEnd());
-        }
-        if ($dateRange->GetEnd()->GreaterThan($schedule->GetAvailabilityEnd()))
-        {
-            $dateRange = new DateRange($dateRange->GetBegin(), $schedule->GetAvailabilityEnd());
+            if ($dateRange->GetBegin()->LessThan($schedule->GetAvailabilityBegin())) {
+                $dateRange = new DateRange($schedule->GetAvailabilityBegin(), $dateRange->GetEnd());
+            }
+            if ($dateRange->GetEnd()->GreaterThan($schedule->GetAvailabilityEnd())) {
+                $dateRange = new DateRange($dateRange->GetBegin(), $schedule->GetAvailabilityEnd());
+            }
         }
 
         $scheduleLength = $schedule->GetDaysVisible();

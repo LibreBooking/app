@@ -306,6 +306,8 @@ class ScheduleRepositoryTests extends TestBase
 		$daysVisible = 3;
 		$subscriptionEnabled = true;
 		$adminGroupId = 123;
+        $begin = Date::Now();
+        $end = Date::Now()->AddDays(1);
 
 		$schedule = new Schedule($id,
 								 $name,
@@ -316,10 +318,11 @@ class ScheduleRepositoryTests extends TestBase
 		$schedule->EnableSubscription();
 		$publicId = $schedule->GetPublicId();
 		$schedule->SetAdminGroupId($adminGroupId);
+		$schedule->SetAvailability($begin, $end);
 
 		$this->scheduleRepository->Update($schedule);
 
-		$this->assertEquals(new UpdateScheduleCommand($id, $name, $isDefault, $weekdayStart, $daysVisible, $subscriptionEnabled, $publicId, $adminGroupId),
+		$this->assertEquals(new UpdateScheduleCommand($id, $name, $isDefault, $weekdayStart, $daysVisible, $subscriptionEnabled, $publicId, $adminGroupId, $begin, $end),
 							$this->db->_LastCommand);
 	}
 

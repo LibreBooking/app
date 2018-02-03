@@ -56,6 +56,11 @@ interface ISchedule
      * @return DateRange
      */
     public function GetAvailability();
+
+    /**
+     * @return bool
+     */
+    public function HasAvailability();
 }
 
 class Schedule implements ISchedule

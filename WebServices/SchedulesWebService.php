@@ -220,10 +220,22 @@ class ScheduleWebServiceView implements ISchedulePage
 	 */
 	private $resources;
 
-
+    /**
+     * @var int
+     */
     private $resourceId;
 
+    /**
+     * @var Date
+     */
     private $startDate;
+
+    /**
+     * @var DateRange
+     */
+    private $availability;
+
+    private $available = true;
 
     public function __construct($scheduleId, $startDate, $resourceId)
 	{
@@ -519,5 +531,11 @@ class ScheduleWebServiceView implements ISchedulePage
     public function FilterCleared()
     {
        return false;
+    }
+
+    public function BindScheduleAvailability($availability, $tooEarly)
+    {
+        $this->availability = $availability;
+        $this->available = false;
     }
 }
