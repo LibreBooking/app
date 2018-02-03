@@ -762,16 +762,16 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
             {foreach from=$users item=user}
             var user = {
                 id: {$user->Id},
-                first: '{$user->First|escape:"quotes"}',
-                last: '{$user->Last|escape:"quotes"}',
+                first: '{$user->First|escape:"javascript"}',
+                last: '{$user->Last|escape:"javascript"}',
                 isActive: '{$user->IsActive()}',
-                username: '{$user->Username|escape:"quotes"}',
-                email: '{$user->Email|escape:"quotes"}',
+                username: '{$user->Username|escape:"javascript"}',
+                email: '{$user->Email|escape:"javascript"}',
                 timezone: '{$user->Timezone}',
-                phone: '{$user->Phone|escape:"quotes"}',
-                organization: '{$user->Organization|escape:"quotes"}',
-                position: '{$user->Position|escape:"quotes"}',
-                reservationColor: '{$user->ReservationColor|escape:"quotes"}'
+                phone: '{$user->Phone|escape:"javascript"}',
+                organization: '{$user->Organization|escape:"javascript"}',
+                position: '{$user->Position|escape:"javascript"}',
+                reservationColor: '{$user->ReservationColor|escape:"javascript"}'
             };
             userManagement.addUser(user);
             {/foreach}
