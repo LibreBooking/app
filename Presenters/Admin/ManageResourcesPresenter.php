@@ -466,6 +466,7 @@ class ManageResourcesPresenter extends ActionPresenter
 
         $resource = $this->resourceRepository->LoadById($resourceId);
         $resource->EnableSubscription();
+        Configuration::Instance()->EnableSubscription();
         $this->resourceRepository->Update($resource);
     }
 

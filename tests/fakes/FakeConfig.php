@@ -58,6 +58,10 @@ class FakeConfig extends Configuration implements IConfiguration
     {
         return $this->_ScriptUrl;
     }
+
+    public function EnableSubscription()
+    {
+    }
 }
 
 class FakeConfigFile extends ConfigurationFile implements IConfigurationFile
@@ -129,4 +133,8 @@ class FakeConfigFile extends ConfigurationFile implements IConfigurationFile
 	{
 		return 'UTC';
 	}
+
+    public function EnableSubscription()
+    {
+    }
 }

@@ -193,6 +193,7 @@ class ManageScheduleService
     {
         $schedule = $this->scheduleRepository->LoadById($scheduleId);
         $schedule->EnableSubscription();
+        Configuration::Instance()->EnableSubscription();
         $this->scheduleRepository->Update($schedule);
     }
 

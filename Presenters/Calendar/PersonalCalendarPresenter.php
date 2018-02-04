@@ -55,6 +55,7 @@ class PersonalCalendarPresenter extends CommonCalendarPresenter
 
         $user = $this->userRepository->LoadById($userId);
         $user->EnableSubscription();
+        Configuration::Instance()->EnableSubscription();
         $this->userRepository->Update($user);
     }
 

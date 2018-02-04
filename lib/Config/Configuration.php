@@ -74,6 +74,8 @@ interface IConfigurationFile
      * @return string
      */
     public function GetAdminEmail();
+
+    public function EnableSubscription();
 }
 
 class Configuration implements IConfiguration
@@ -186,6 +188,11 @@ class Configuration implements IConfiguration
     {
         return $this->File(self::DEFAULT_CONFIG_ID)->GetAdminEmail();
     }
+
+    public function EnableSubscription()
+    {
+        $this->File(self::DEFAULT_CONFIG_ID)->EnableSubscription();
+    }
 }
 
 class ConfigurationFile implements IConfigurationFile
@@ -288,5 +295,25 @@ class ConfigurationFile implements IConfigurationFile
     {
         $adminEmails = $this->GetAllAdminEmails();
         return $adminEmails[0];
+    }
+
+    public function EnableSubscription()
+    {
+        $icsKey = $this->GetSectionKey(ConfigSection::ICS, ConfigKeys::ICS_SUBSCRIPTION_KEY);
+        if (!empty($icsKey))
+        {
+            return;
+        }
+
+        $configFile = ROOT_DIR . 'config/config.php';
+
+        if (file_exists($configFile))
+        {
+            $newKey = '$conf[\'settings\'][\'ics\'][\'subscription.key\'] = \'' . BookedStringHelper::Random(20) . '\';';
+            $str = file_get_contents($configFile);
+            $str = str_replace('$conf[\'settings\'][\'ics\'][\'subscription.key\'] = \'\';', $newKey , $str);
+            file_put_contents($configFile, $str);
+            Configuration::SetInstance(null);
+        }
     }
 }
