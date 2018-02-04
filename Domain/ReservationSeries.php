@@ -195,6 +195,28 @@ class ReservationSeries
 	}
 
 	/**
+	 * @return Reservation[]
+	 */
+	public function SortedInstances()
+	{
+		$instances = $this->Instances();
+
+        uasort($instances, array($this, 'SortReservations'));
+
+        return $instances;
+	}
+
+    /**
+     * @param Reservation $r1
+     * @param Reservation $r2
+     * @return int
+     */
+	protected function SortReservations(Reservation $r1, Reservation $r2)
+    {
+        return $r1->StartDate()->Compare($r2->StartDate());
+    }
+
+	/**
 	 * @var array|ReservationAccessory[]
 	 */
 	protected $_accessories = array();

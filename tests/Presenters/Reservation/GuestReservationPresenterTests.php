@@ -129,17 +129,14 @@ class FakeGuestReservationPage implements IGuestReservationPage
 
 	public function PageLoad()
 	{
-		// TODO: Implement PageLoad() method.
 	}
 
 	public function Redirect($url)
 	{
-		// TODO: Implement Redirect() method.
 	}
 
 	public function RedirectToError($errorMessageId = ErrorMessages::UNKNOWN_ERROR, $lastPage = '')
 	{
-		// TODO: Implement RedirectToError() method.
 	}
 
 	public function IsPostBack()
@@ -154,22 +151,17 @@ class FakeGuestReservationPage implements IGuestReservationPage
 
 	public function GetLastPage()
 	{
-		// TODO: Implement GetLastPage() method.
 	}
 
 	public function RegisterValidator($validatorId, $validator)
-	{
-		// TODO: Implement RegisterValidator() method.
-	}
+    {
+    }
 
 	public function EnforceCSRFCheck()
-	{
-		// TODO: Implement EnforceCSRFCheck() method.
-	}
+	{}
 
 	public function GetRequestedResourceId()
 	{
-		// TODO: Implement GetRequestedResourceId() method.
 	}
 
 	public function GetRequestedScheduleId()
@@ -177,236 +169,123 @@ class FakeGuestReservationPage implements IGuestReservationPage
 		return $this->_ScheduleId;
 	}
 
-	/**
-	 * @return Date
-	 */
 	public function GetReservationDate()
 	{
-		// TODO: Implement GetReservationDate() method.
 	}
 
-	/**
-	 * @return Date
-	 */
 	public function GetStartDate()
 	{
-		// TODO: Implement GetStartDate() method.
 	}
 
-	/**
-	 * @return Date
-	 */
 	public function GetEndDate()
 	{
-		// TODO: Implement GetEndDate() method.
 	}
 
-	/**
-	 * Set the schedule period items to be used when presenting reservations
-	 * @param $startPeriods array|SchedulePeriod[]
-	 * @param $endPeriods array|SchedulePeriod[]
-	 */
 	public function BindPeriods($startPeriods, $endPeriods)
 	{
-		// TODO: Implement BindPeriods() method.
 	}
 
-	/**
-	 * Set the resources that can be reserved by this user
-	 * @param $resources array|ResourceDto[]
-	 */
 	public function BindAvailableResources($resources)
 	{
-		// TODO: Implement BindAvailableResources() method.
 	}
 
-	/**
-	 * @param $accessories Accessory[]
-	 */
 	public function BindAvailableAccessories($accessories)
 	{
-		// TODO: Implement BindAvailableAccessories() method.
 	}
 
-	/**
-	 * @param $groups ResourceGroupTree
-	 */
 	public function BindResourceGroups($groups)
 	{
-		// TODO: Implement BindResourceGroups() method.
 	}
 
-	/**
-	 * @param SchedulePeriod $selectedStart
-	 * @param Date $startDate
-	 */
 	public function SetSelectedStart(SchedulePeriod $selectedStart, Date $startDate)
 	{
-		// TODO: Implement SetSelectedStart() method.
 	}
 
-	/**
-	 * @param SchedulePeriod $selectedEnd
-	 * @param Date $endDate
-	 */
 	public function SetSelectedEnd(SchedulePeriod $selectedEnd, Date $endDate)
 	{
-		// TODO: Implement SetSelectedEnd() method.
 	}
 
-	/**
-	 * @param $repeatTerminationDate Date
-	 */
 	public function SetRepeatTerminationDate($repeatTerminationDate)
 	{
-		// TODO: Implement SetRepeatTerminationDate() method.
 	}
 
-	/**
-	 * @param UserDto $user
-	 */
 	public function SetReservationUser(UserDto $user)
 	{
-		// TODO: Implement SetReservationUser() method.
 	}
 
-	/**
-	 * @param IResource $resource
-	 */
 	public function SetReservationResource($resource)
 	{
-		// TODO: Implement SetReservationResource() method.
 	}
 
-	/**
-	 * @param int $scheduleId
-	 */
 	public function SetScheduleId($scheduleId)
 	{
-		// TODO: Implement SetScheduleId() method.
 	}
 
-	/**
-	 * @param ReservationUserView[] $participants
-	 */
 	public function SetParticipants($participants)
 	{
-		// TODO: Implement SetParticipants() method.
 	}
 
-	/**
-	 * @param ReservationUserView[] $invitees
-	 */
 	public function SetInvitees($invitees)
 	{
-		// TODO: Implement SetInvitees() method.
 	}
 
-	/**
-	 * @param $accessories ReservationAccessory[]|array
-	 */
 	public function SetAccessories($accessories)
 	{
-		// TODO: Implement SetAccessories() method.
 	}
 
-	/**
-	 * @param $attachments ReservationAttachmentView[]|array
-	 */
 	public function SetAttachments($attachments)
 	{
-		// TODO: Implement SetAttachments() method.
 	}
 
-	/**
-	 * @param $canChangeUser
-	 */
 	public function SetCanChangeUser($canChangeUser)
 	{
-		// TODO: Implement SetCanChangeUser() method.
 	}
 
-	/**
-	 * @param bool $canShowAdditionalResources
-	 */
 	public function ShowAdditionalResources($canShowAdditionalResources)
 	{
-		// TODO: Implement ShowAdditionalResources() method.
 	}
 
-	/**
-	 * @param bool $canShowUserDetails
-	 */
 	public function ShowUserDetails($canShowUserDetails)
 	{
-		// TODO: Implement ShowUserDetails() method.
 	}
 
-	/**
-	 * @param bool $shouldShow
-	 */
 	public function SetShowParticipation($shouldShow)
 	{
-		// TODO: Implement SetShowParticipation() method.
 	}
 
-	/**
-	 * @param bool $showReservationDetails
-	 */
 	public function ShowReservationDetails($showReservationDetails)
 	{
-		// TODO: Implement ShowReservationDetails() method.
 	}
 
-	/**
-	 * @param bool $isHidden
-	 */
 	public function HideRecurrence($isHidden)
 	{
-		// TODO: Implement HideRecurrence() method.
 	}
 
-	/**
-	 * @param bool $allowParticipation
-	 */
 	function SetAllowParticipantsToJoin($allowParticipation)
 	{
-		// TODO: Implement SetAllowParticipantsToJoin() method.
 	}
 
     public function GetSortField()
     {
-        // TODO: Implement GetSortField() method.
     }
 
     public function GetSortDirection()
     {
-        // TODO: Implement GetSortDirection() method.
     }
 
-	/**
-	 * @param int $reminderValue
-	 * @param ReservationReminderInterval $reminderInterval
-	 */
 	public function SetStartReminder($reminderValue, $reminderInterval)
 	{
-		// TODO: Implement SetStartReminder() method.
 	}
 
-	/**
-	 * @param int $reminderValue
-	 * @param ReservationReminderInterval $reminderInterval
-	 */
 	public function SetEndReminder($reminderValue, $reminderInterval)
 	{
-		// TODO: Implement SetEndReminder() method.
 	}
 
-    /**
-     * @param TermsOfService $termsOfService
-     */
     public function SetTerms($termsOfService)
     {
-        // TODO: Implement SetTerms() method.
+    }
+
+    public function SetAvailability(DateRange $availability)
+    {
     }
 }

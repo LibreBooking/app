@@ -66,7 +66,14 @@ class ReservationDateBinder implements IReservationComponentBinder
 																											ConfigKeys::RESERVATION_PREVENT_RECURRENCE,
 																											new BooleanConverter());
 		$initializer->HideRecurrence($hideRecurrence);
-	}
+
+        $schedule = $this->scheduleRepository->LoadById($requestedScheduleId);
+        if ($schedule->HasAvailability())
+        {
+            $initializer->SetAvailability($schedule->GetAvailability());
+        }
+
+    }
 
     /**
      * @param IScheduleLayout $layout

@@ -48,9 +48,6 @@ class DateRange
 	 */
 	public function __construct(Date $begin, Date $end, $timezone = null)
 	{
-		$this->_begin = $begin;
-		$this->_end = $end;
-
 		if (empty($timezone))
 		{
 			$this->_timezone = $begin->Timezone();
@@ -58,9 +55,21 @@ class DateRange
 		else
 		{
 			$this->_timezone = $timezone;
+			if ($begin->Timezone() != $timezone)
+            {
+                $begin = $begin->ToTimezone($timezone);
+            }
+            if ($end->Timezone() != $timezone)
+            {
+                $end = $end->ToTimezone($timezone);
+            }
 		}
 
-		$this->weekdays = 0;
+        $this->_begin = $begin;
+        $this->_end = $end;
+
+
+        $this->weekdays = 0;
 		$this->weekends = 0;
 	}
 
@@ -316,6 +325,14 @@ class DateRange
 	public function IsSameDate()
     {
         return $this->_begin->DateEquals($this->_end);
+    }
+
+    /**
+     * @return string
+     */
+    public function Timezone()
+    {
+        return $this->_begin->Timezone();
     }
 }
 

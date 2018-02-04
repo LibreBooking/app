@@ -145,6 +145,10 @@ interface IReservationPage extends IPage
 	 */
 	public function SetEndReminder($reminderValue, $reminderInterval);
 
+    /**
+     * @param DateRange $availability
+     */
+    public function SetAvailability(DateRange $availability);
 }
 
 abstract class ReservationPage extends Page implements IReservationPage
@@ -368,4 +372,10 @@ abstract class ReservationPage extends Page implements IReservationPage
 		$this->Set('ReminderTimeEnd', $reminderValue);
 		$this->Set('ReminderIntervalEnd', $reminderInterval);
 	}
+
+    public function SetAvailability(DateRange $availability)
+    {
+        $this->Set('AvailabilityStart', $availability->GetBegin());
+        $this->Set('AvailabilityEnd', $availability->GetEnd());
+    }
 }

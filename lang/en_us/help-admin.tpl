@@ -98,6 +98,11 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
             <p>Schedule Administrators have the same capabilities as Application Administrators for any resource that is on
                 a schedule which the group is assigned
                 to. They can change schedule details, black out times, manage and approve reservations.</p>
+
+            <h3>Schedule Availability</h3>
+            <p>If a schedule should only be available for a limited period of time, such as a season or semester, you can
+                set the schedule availability. No reservations will be allowed outside of the availability date range.
+            </p>
         </div>
 
         <div id="help-resources">

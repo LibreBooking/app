@@ -100,7 +100,6 @@ interface IReservationComponentInitializer
 	public function SetShowParticipation($shouldShow);
 
 	/**
-	 * @abstract
 	 * @param $showReservationDetails bool
 	 */
 	public function ShowReservationDetails($showReservationDetails);
@@ -131,20 +130,17 @@ interface IReservationComponentInitializer
 	public function SetReservationResource($resource);
 
 	/**
-	 * @abstract
 	 * @param $attribute CustomAttribute
 	 * @param $value mixed
 	 */
 	public function AddAttribute($attribute, $value);
 
 	/**
-	 * @abstract
 	 * @param ErrorMessages|int $errorMessageId
 	 */
 	public function RedirectToError($errorMessageId);
 
 	/**
-	 * @abstract
 	 * @param bool $isHidden
 	 */
 	public function HideRecurrence($isHidden);
@@ -153,6 +149,11 @@ interface IReservationComponentInitializer
 	 * @return bool
 	 */
 	public function IsNew();
+
+    /**
+     * @param DateRange $availability
+     */
+    public function SetAvailability(DateRange $availability);
 }
 
 abstract class ReservationInitializerBase implements IReservationInitializer, IReservationComponentInitializer
@@ -430,6 +431,11 @@ abstract class ReservationInitializerBase implements IReservationInitializer, IR
 	public function HideRecurrence($isHidden)
 	{
 		$this->basePage->HideRecurrence($isHidden);
+	}
+
+	public function SetAvailability(DateRange $availability)
+	{
+		$this->basePage->SetAvailability($availability);
 	}
 
 	public function IsNew()

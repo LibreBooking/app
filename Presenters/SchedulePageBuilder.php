@@ -225,10 +225,10 @@ class SchedulePageBuilder implements ISchedulePageBuilder
             }
 
             if ($dateRange->GetBegin()->LessThan($schedule->GetAvailabilityBegin())) {
-                $dateRange = new DateRange($schedule->GetAvailabilityBegin(), $dateRange->GetEnd());
+                $dateRange = new DateRange($schedule->GetAvailabilityBegin(), $dateRange->GetEnd(), $dateRange->Timezone());
             }
             if ($dateRange->GetEnd()->GreaterThan($schedule->GetAvailabilityEnd())) {
-                $dateRange = new DateRange($dateRange->GetBegin(), $schedule->GetAvailabilityEnd());
+                $dateRange = new DateRange($dateRange->GetBegin(), $schedule->GetAvailabilityEnd(), $dateRange->Timezone());
             }
         }
 

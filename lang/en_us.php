@@ -800,6 +800,7 @@ class en_us extends Language
 		$strings['InvalidEmailDomain'] = 'That email address is not from an allowed domain';
 		$strings['TermsOfServiceError'] = 'You must accept the Terms of Service';
 		$strings['UserNotFound'] = 'That user could not be found';
+		$strings['ScheduleAvailabilityError'] = 'This schedule is available between %s and %s';
 		// End Errors
 
 		// Page Titles

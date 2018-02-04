@@ -64,3 +64,4 @@ require_once(ROOT_DIR . 'lib/Application/Reservation/Validation/ReservationCanBe
 require_once(ROOT_DIR . 'lib/Application/Reservation/Validation/CreditsRule.php');
 require_once(ROOT_DIR . 'lib/Application/Reservation/Validation/AnonymousResourceExcludedRule.php');
 require_once(ROOT_DIR . 'lib/Application/Reservation/Validation/TermsOfServiceRule.php');
+require_once(ROOT_DIR . 'lib/Application/Reservation/Validation/ScheduleAvailabilityRule.php');
