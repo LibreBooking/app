@@ -103,6 +103,12 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
             <p>If a schedule should only be available for a limited period of time, such as a season or semester, you can
                 set the schedule availability. No reservations will be allowed outside of the availability date range.
             </p>
+
+            <h3>Multiple Bookings at the Same Time</h3>
+            <p>If you want a resource to be able to be booked by multiple people at the same time, you can configure
+                the schedule to allow multiple reservations concurrently. This setting applies to all resources on a schedule
+                This will no longer allow anyone to access the Schedule view for this schedule.
+            </p>
         </div>
 
         <div id="help-resources">

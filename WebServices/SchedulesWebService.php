@@ -235,7 +235,15 @@ class ScheduleWebServiceView implements ISchedulePage
      */
     private $availability;
 
+    /**
+     * @var bool
+     */
     private $available = true;
+
+    /**
+     * @var bool
+     */
+    private $allowConcurrentReservations;
 
     public function __construct($scheduleId, $startDate, $resourceId)
 	{
@@ -537,5 +545,10 @@ class ScheduleWebServiceView implements ISchedulePage
     {
         $this->availability = $availability;
         $this->available = false;
+    }
+
+    public function SetAllowConcurrent($allowConcurrentReservations)
+    {
+        $this->allowConcurrentReservations = $allowConcurrentReservations;
     }
 }

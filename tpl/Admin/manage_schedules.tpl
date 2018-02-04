@@ -81,8 +81,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                         </div>
 
                         <div class="concurrentContainer">
-                            <span class="allowConcurrentYes {if !$schedule->GetAllowConcurrentReservations()}no-show{/if}">Resources can be booked by more than one person at a time</span>
-                            <span class="allowConcurrentNo {if $schedule->GetAllowConcurrentReservations()}no-show{/if}">Resources cannot be booked by more than one person at a time</span>
+                            <span class="allowConcurrentYes {if !$schedule->GetAllowConcurrentReservations()}no-show{/if}">{translate key=ConcurrentYes}</span>
+                            <span class="allowConcurrentNo {if $schedule->GetAllowConcurrentReservations()}no-show{/if}">{translate key=ConcurrentNo}</span>
                             <a class="update toggleConcurrent" href="#" data-allow="{$schedule->GetAllowConcurrentReservations()|intval}">{translate key=Change}</a>
                         </div>
 

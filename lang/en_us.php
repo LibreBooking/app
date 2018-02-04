@@ -714,6 +714,10 @@ class en_us extends Language
         $strings['AvailableAllYear'] = 'All Year';
         $strings['Availability'] = 'Availability';
         $strings['AvailableBetween'] = 'Available Between';
+        $strings['ConcurrentYes'] = 'Resources can be booked by more than one person at a time';
+        $strings['ConcurrentNo'] = 'Resources cannot be booked by more than one person at a time';
+        $strings['ScheduleAvailabilityEarly'] = ' This schedule is not yet available. It is available';
+        $strings['ScheduleAvailabilityLate'] = 'This schedule is no longer available. It was available';
         // End Strings
 
 		// Install

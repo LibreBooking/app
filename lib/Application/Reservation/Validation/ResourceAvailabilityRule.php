@@ -29,14 +29,25 @@ class ResourceAvailabilityRule implements IReservationValidationRule
      */
     protected $timezone;
 
-    public function __construct(IResourceAvailabilityStrategy $strategy, $timezone)
+    /**
+     * @var IScheduleRepository
+     */
+    protected $scheduleRepository;
+
+    public function __construct(IResourceAvailabilityStrategy $strategy, $timezone, IScheduleRepository $scheduleRepository)
     {
         $this->strategy = $strategy;
         $this->timezone = $timezone;
+        $this->scheduleRepository = $scheduleRepository;
     }
 
     public function Validate($reservationSeries, $retryParameters = null)
     {
+        $schedule = $this->scheduleRepository->LoadById($reservationSeries->ScheduleId());
+        if ($schedule->GetAllowConcurrentReservations())
+        {
+            return new ReservationRuleResult();
+        }
         $shouldSkipConflicts = ReservationRetryParameter::GetValue('skipconflicts', $retryParameters, new BooleanConverter()) == true;
         $conflicts = array();
 

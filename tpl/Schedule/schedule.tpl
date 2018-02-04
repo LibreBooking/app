@@ -179,8 +179,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
         {if $ScheduleAvailabilityEarly}
             <div class="alert alert-warning center">
                 <strong>
-                    This schedule is not yet available.
-                    It is available
+                    {translate key=ScheduleAvailabilityEarly}
                     <a href="#" class="change-date" data-year="{$ScheduleAvailabilityStart->Year()}"
                        data-month="{$ScheduleAvailabilityStart->Month()}"
                        data-day="{$ScheduleAvailabilityStart->Day()}">
@@ -198,8 +197,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
         {if $ScheduleAvailabilityLate}
             <div class="alert alert-warning center">
                 <strong>
-                    This schedule is no longer available.
-                    It was available
+                    {translate key=ScheduleAvailabilityLate}
                     <a href="#" class="change-date" data-year="{$ScheduleAvailabilityStart->Year()}"
                        data-month="{$ScheduleAvailabilityStart->Month()}"
                        data-day="{$ScheduleAvailabilityStart->Day()}">
@@ -210,6 +208,14 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                        data-day="{$ScheduleAvailabilityEnd->Day()}">
                         {format_date date=$ScheduleAvailabilityEnd timezone=$timezone}
                     </a>
+                </strong>
+            </div>
+        {/if}
+
+        {if $AllowConcurrentReservations}
+            <div class="alert alert-warning center">
+                <strong>
+                    <a href="{Pages::CALENDAR}?sid={$ScheduleId}">{format_date date=$ScheduleAvailabilityStart timezone=$timezone}This schedule can only be viewed from the calendar view</a>
                 </strong>
             </div>
         {/if}

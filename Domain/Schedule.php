@@ -61,6 +61,11 @@ interface ISchedule
      * @return bool
      */
     public function HasAvailability();
+
+    /**
+     * @return bool
+     */
+    public function GetAllowConcurrentReservations();
 }
 
 class Schedule implements ISchedule
@@ -284,9 +289,6 @@ class Schedule implements ISchedule
         $this->_allowConcurrent = (bool)$allowConcurrent;
     }
 
-    /**
-     * @return bool
-     */
     public function GetAllowConcurrentReservations()
     {
         return $this->_allowConcurrent;
