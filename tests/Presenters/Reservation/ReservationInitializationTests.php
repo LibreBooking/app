@@ -167,7 +167,7 @@ class ReservationInitializationTests extends TestBase
             $this->scheduleRepository,
             $this->resourceRepository,
             $this->termsRepository);
-        $initializer->SetDates($startDate, $endDate, $periods, $periods);
+        $initializer->SetDates($startDate, $endDate, $periods, $periods, 0);
     }
 
     public function testWhenNoScheduleIsPassed_UseDefaultScheduleId()

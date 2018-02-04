@@ -102,11 +102,6 @@ class ReservationComponentTests extends TestBase
 
 	}
 
-	public function teardown()
-	{
-		parent::teardown();
-	}
-
 	public function testBindsUserData()
 	{
 		$userDto = new UserDto($this->userId, 'f', 'l', 'email');
@@ -462,6 +457,11 @@ class ReservationComponentTests extends TestBase
 								 ->with($this->equalTo($scheduleId),
 										$this->equalTo(new ReservationLayoutFactory($timezone)))
 								 ->will($this->returnValue($layout));
+
+        $this->scheduleRepository->expects($this->once())
+            ->method('LoadById')
+            ->with($this->equalTo($scheduleId))
+            ->will($this->returnValue(new FakeSchedule()));
 
 		$layout->expects($this->any())
 			   ->method('GetLayout')

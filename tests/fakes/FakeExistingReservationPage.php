@@ -248,4 +248,8 @@ class FakeExistingReservationPage extends FakePageBase implements IExistingReser
     public function SetAvailability(DateRange $availability)
     {
     }
+
+    public function SetFirstWeekday($weekday)
+    {
+    }
 }

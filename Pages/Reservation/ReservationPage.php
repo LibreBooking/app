@@ -149,6 +149,11 @@ interface IReservationPage extends IPage
      * @param DateRange $availability
      */
     public function SetAvailability(DateRange $availability);
+
+    /**
+     * @param int $weekday
+     */
+    public function SetFirstWeekday($weekday);
 }
 
 abstract class ReservationPage extends Page implements IReservationPage
@@ -378,4 +383,10 @@ abstract class ReservationPage extends Page implements IReservationPage
         $this->Set('AvailabilityStart', $availability->GetBegin());
         $this->Set('AvailabilityEnd', $availability->GetEnd());
     }
+
+    public function SetFirstWeekday($weekday)
+    {
+        $this->Set('FirstWeekday', $weekday);
+    }
+
 }

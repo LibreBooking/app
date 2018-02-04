@@ -286,6 +286,9 @@ class FakeGuestReservationPage implements IGuestReservationPage
     }
 
     public function SetAvailability(DateRange $availability)
+    {}
+
+    public function SetFirstWeekday($weekday)
     {
     }
 }
