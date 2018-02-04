@@ -124,6 +124,8 @@ UPDATE resources SET min_notice_time_update = min_notice_time_add, min_notice_ti
 
 ALTER TABLE `schedules` ADD COLUMN `start_date` DATETIME;
 ALTER TABLE `schedules` ADD COLUMN `end_date` DATETIME;
+ALTER TABLE `schedules` ADD COLUMN `allow_concurrent_bookings` TINYINT(1) UNSIGNED NOT NULL DEFAULT 0;;
+
 
 ALTER TABLE `reservation_series`
   CHANGE COLUMN `title` `title` VARCHAR(300);

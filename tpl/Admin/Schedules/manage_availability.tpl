@@ -21,6 +21,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
      data-start-date="{formatdate date=$schedule->GetAvailabilityBegin() timezone=$timezone key=general_date}"
      data-end-date="{formatdate date=$schedule->GetAvailabilityEnd() timezone=$timezone key=general_date}">
 </div>
+
+{translate key=Available}
 <span class="propertyValue">
 {if $schedule->HasAvailability()}
     {formatdate date=$schedule->GetAvailabilityBegin() timezone=$timezone key=schedule_daily} - {formatdate date=$schedule->GetAvailabilityEnd() timezone=$timezone key=schedule_daily}

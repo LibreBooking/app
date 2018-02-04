@@ -38,6 +38,7 @@ class ManageSchedules
     const ChangeAdminGroup = 'changeAdminGroup';
     const ActionChangePeakTimes = 'ActionChangePeakTimes';
     const ActionChangeAvailability = 'ActionChangeAvailability';
+    const ActionToggleConcurrentReservations = 'ToggleConcurrentReservations';
 }
 
 class ManageScheduleService
@@ -288,11 +289,25 @@ class ManageScheduleService
      */
     public function UpdateAvailability($scheduleId, $start, $end)
     {
+        Log::Debug('Updating schedule availability. schedule %s, start %s, end %s', $scheduleId, $start, $end);
         $schedule = $this->scheduleRepository->LoadById($scheduleId);
         $schedule->SetAvailability($start, $end);
         $this->scheduleRepository->Update($schedule);
 
         return $schedule;
+    }
+
+    public function ToggleConcurrentReservations($scheduleId)
+    {
+        Log::Debug('Toggling concurrent reservations. schedule %s', $scheduleId);
+
+        $schedule = $this->scheduleRepository->LoadById($scheduleId);
+        $allow = $schedule->GetAllowConcurrentReservations();
+
+        $schedule->SetAllowConcurrentReservations(!$allow);
+
+        $this->scheduleRepository->Update($schedule);
+
     }
 }
 
@@ -333,6 +348,7 @@ class ManageSchedulesPresenter extends ActionPresenter
         $this->AddAction(ManageSchedules::ChangeAdminGroup, 'ChangeAdminGroup');
         $this->AddAction(ManageSchedules::ActionChangePeakTimes, 'ChangePeakTimes');
         $this->AddAction(ManageSchedules::ActionChangeAvailability, 'ChangeAvailability');
+        $this->AddAction(ManageSchedules::ActionToggleConcurrentReservations, 'ToggleConcurrentReservations');
     }
 
     public function PageLoad()
@@ -512,7 +528,12 @@ class ManageSchedulesPresenter extends ActionPresenter
         }
 
         $this->page->DisplayAvailability($schedule, $timezone);
+    }
 
+    public function ToggleConcurrentReservations()
+    {
+        $scheduleId = $this->page->GetScheduleId();
+        $this->manageSchedulesService->ToggleConcurrentReservations($scheduleId);
     }
 
     protected function LoadValidators($action)

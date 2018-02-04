@@ -77,6 +77,7 @@ class Schedule implements ISchedule
     protected $_adminGroupId;
     protected $_availabilityBegin;
     protected $_availabilityEnd;
+    protected $_allowConcurrent = false;
 
     const Today = 100;
 
@@ -98,6 +99,7 @@ class Schedule implements ISchedule
         $this->_layoutId = $layoutId;
         $this->_availabilityBegin = new NullDate();
         $this->_availabilityEnd = new NullDate();
+        $this->_allowConcurrent = false;
     }
 
     public function GetId()
@@ -275,6 +277,22 @@ class Schedule implements ISchedule
     }
 
     /**
+     * @param bool $allowConcurrent
+     */
+    public function SetAllowConcurrentReservations($allowConcurrent)
+    {
+        $this->_allowConcurrent = (bool)$allowConcurrent;
+    }
+
+    /**
+     * @return bool
+     */
+    public function GetAllowConcurrentReservations()
+    {
+        return $this->_allowConcurrent;
+    }
+
+    /**
      * @static
      * @return Schedule
      */
@@ -302,6 +320,7 @@ class Schedule implements ISchedule
         $schedule->WithPublicId($row[ColumnNames::PUBLIC_ID]);
         $schedule->SetAdminGroupId($row[ColumnNames::SCHEDULE_ADMIN_GROUP_ID]);
         $schedule->SetAvailability(Date::FromDatabase($row[ColumnNames::SCHEDULE_AVAILABLE_START_DATE]), Date::FromDatabase($row[ColumnNames::SCHEDULE_AVAILABLE_END_DATE]));
+        $schedule->SetAllowConcurrentReservations($row[ColumnNames::SCHEDULE_ALLOW_CONCURRENT_RESERVATIONS]);
 
         return $schedule;
     }

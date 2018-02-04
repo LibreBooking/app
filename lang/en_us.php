@@ -711,7 +711,7 @@ class en_us extends Language
         $strings['IAccept'] = 'I Accept';
         $strings['TheTermsOfService'] = 'the Terms of Service';
         $strings['DisplayPage'] = 'Display Page';
-        $strings['AvailableAllYear'] = 'Available All Year';
+        $strings['AvailableAllYear'] = 'All Year';
         $strings['Availability'] = 'Availability';
         $strings['AvailableBetween'] = 'Available Between';
         // End Strings

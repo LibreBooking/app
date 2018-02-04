@@ -213,7 +213,8 @@ class ScheduleRepository implements IScheduleRepository
             $schedule->GetPublicId(),
             $schedule->GetAdminGroupId(),
             $schedule->GetAvailabilityBegin(),
-            $schedule->GetAvailabilityEnd()));
+            $schedule->GetAvailabilityEnd(),
+            $schedule->GetAllowConcurrentReservations()));
 
         if ($schedule->GetIsDefault()) {
             ServiceLocator::GetDatabase()->Execute(new SetDefaultScheduleCommand($schedule->GetId()));

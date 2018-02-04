@@ -64,6 +64,28 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                             {/if}
                         </div>
 
+                        {if $CreditsEnabled}
+                            <span>{translate key=PeakTimes}</span>
+                            <a class="update changePeakTimes" href="#"><span class="fa fa-pencil-square-o"></span></a>
+                            <div class="peakPlaceHolder">
+                                {include file="Admin/Schedules/manage_peak_times.tpl" Layout=$Layouts[$id] Months=$Months DayNames=$DayNames}
+                            </div>
+                        {/if}
+
+                        <div>
+                            <div class="availabilityPlaceHolder inline-block">
+                                {include file="Admin/Schedules/manage_availability.tpl" schedule=$schedule timezone=$Timezone}
+                            </div>
+                            <a class="update changeAvailability inline-block" href="#"><span
+                                        class="fa fa-pencil-square-o"></span></a>
+                        </div>
+
+                        <div class="concurrentContainer">
+                            <span class="allowConcurrentYes {if !$schedule->GetAllowConcurrentReservations()}no-show{/if}">Resources can be booked by more than one person at a time</span>
+                            <span class="allowConcurrentNo {if $schedule->GetAllowConcurrentReservations()}no-show{/if}">Resources cannot be booked by more than one person at a time</span>
+                            <a class="update toggleConcurrent" href="#" data-allow="{$schedule->GetAllowConcurrentReservations()|intval}">{translate key=Change}</a>
+                        </div>
+
                         <div>{translate key=Resources}
                             <span class="propertyValue">
                             {if array_key_exists($id, $Resources)}
@@ -76,21 +98,6 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                             </span>
                         </div>
 
-                        {if $CreditsEnabled}
-                            <span>{translate key=PeakTimes}</span>
-                            <a class="update changePeakTimes" href="#"><span class="fa fa-pencil-square-o"></span></a>
-                            <div class="peakPlaceHolder">
-                                {include file="Admin/Schedules/manage_peak_times.tpl" Layout=$Layouts[$id] Months=$Months DayNames=$DayNames}
-                            </div>
-                        {/if}
-
-                        <div>
-                            <span>{translate key=Availability}</span>
-                            <a class="update changeAvailability" href="#"><span class="fa fa-pencil-square-o"></span></a>
-                            <div class="availabilityPlaceHolder">
-                                {include file="Admin/Schedules/manage_availability.tpl" schedule=$schedule timezone=$Timezone}
-                            </div>
-                        </div>
                     </div>
 
                     <div class="layout col-xs-12 col-sm-6">
@@ -513,7 +520,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
         </form>
     </div>
 
-    <div id="availabilityDialog" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="availabilityDialogLabel"
+    <div id="availabilityDialog" class="modal fade" tabindex="-1" role="dialog"
+         aria-labelledby="availabilityDialogLabel"
          aria-hidden="true">
         <form id="availabilityForm" method="post">
             <div class="modal-dialog">
@@ -531,11 +539,11 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                             <div id="availableDates">
                                 {translate key=AvailableBetween}
                                 <input type="text" id="availabilityStartDate"
-                                       class="form-control input-sm inline-block dateinput" />
+                                       class="form-control input-sm inline-block dateinput"/>
                                 <input type="hidden" id="formattedBeginDate" {formname key=AVAILABLE_BEGIN_DATE} />
                                 -
                                 <input type="text" id="availabilityEndDate"
-                                       class="form-control input-sm inline-block dateinput" />
+                                       class="form-control input-sm inline-block dateinput"/>
                                 <input type="hidden" id="formattedEndDate" {formname key=AVAILABLE_END_DATE} />
                             </div>
                         </div>
@@ -550,6 +558,9 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
             </div>
         </form>
     </div>
+
+    <form id="concurrentForm" method="post">
+    </form>
 
     {control type="DatePickerSetupControl" ControlId="availabilityStartDate" AltId="formattedBeginDate" DefaultDate=$StartDate}
     {control type="DatePickerSetupControl" ControlId="availabilityEndDate" AltId="formattedEndDate" DefaultDate=$EndDate}
@@ -625,7 +636,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                 deleteAction: '{ManageSchedules::ActionDelete}',
                 availabilityAction: '{ManageSchedules::ActionChangeAvailability}',
                 enableSubscriptionAction: '{ManageSchedules::ActionEnableSubscription}',
-                disableSubscriptionAction: '{ManageSchedules::ActionDisableSubscription}'
+                disableSubscriptionAction: '{ManageSchedules::ActionDisableSubscription}',
+                toggleConcurrentReservations: '{ManageSchedules::ActionToggleConcurrentReservations}'
             };
 
             var scheduleManagement = new ScheduleManagement(opts);

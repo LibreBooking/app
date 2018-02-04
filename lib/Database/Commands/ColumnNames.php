@@ -168,6 +168,7 @@ class ColumnNames
 	const SCHEDULE_ADMIN_GROUP_ID_ALIAS = 's_admin_group_id';
 	const SCHEDULE_AVAILABLE_START_DATE = 'start_date';
 	const SCHEDULE_AVAILABLE_END_DATE = 'end_date';
+	const SCHEDULE_ALLOW_CONCURRENT_RESERVATIONS = 'allow_concurrent_bookings';
 
 	// EMAIL PREFERENCES //
 	const EVENT_CATEGORY = 'event_category';

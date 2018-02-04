@@ -2580,7 +2580,8 @@ class UpdateScheduleCommand extends SqlCommand
                                 $publicId,
                                 $adminGroupId,
                                 Date $availabilityBegin,
-                                Date $availabilityEnd)
+                                Date $availabilityEnd,
+                                $allowConcurrentReservations)
     {
         parent::__construct(Queries::UPDATE_SCHEDULE);
 
@@ -2594,6 +2595,7 @@ class UpdateScheduleCommand extends SqlCommand
         $this->AddParameter(new Parameter(ParameterNames::GROUP_ADMIN_ID, $adminGroupId));
         $this->AddParameter(new Parameter(ParameterNames::SCHEDULE_AVAILABILITY_BEGIN, $availabilityBegin->ToDatabase()));
         $this->AddParameter(new Parameter(ParameterNames::SCHEDULE_AVAILABILITY_END, $availabilityEnd->ToDatabase()));
+        $this->AddParameter(new Parameter(ParameterNames::SCHEDULE_ALLOW_CONCURRENT_RESERVATIONS, (int)$allowConcurrentReservations));
     }
 }
 

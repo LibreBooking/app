@@ -47,7 +47,9 @@ function ScheduleManagement(opts) {
         availableEndDateTextbox: $('#availabilityEndDate'),
         availableEndDate: $('#formattedEndDate'),
         availableAllYear: $('#availableAllYear'),
-        availabilityForm: $('#availabilityForm')
+        availabilityForm: $('#availabilityForm'),
+
+        concurrentForm: $('#concurrentForm')
 	};
 
 	ScheduleManagement.prototype.init = function () {
@@ -121,6 +123,13 @@ function ScheduleManagement(opts) {
 				e.preventDefault();
 				showAvailabilityDialog(getActiveScheduleId());
 			});
+
+			details.find('.toggleConcurrent').click(function(e) {
+			    e.preventDefault();
+                var toggle = $(e.target);
+                var container = toggle.parent('.concurrentContainer');
+                toggleConcurrentReservations(getActiveScheduleId(), toggle, container);
+            });
 		});
 
 		elements.deletePeakTimesButton.click(function(e) {
@@ -192,6 +201,7 @@ function ScheduleManagement(opts) {
 		ConfigureAsyncForm(elements.deleteForm, getSubmitCallback(options.deleteAction));
 		ConfigureAsyncForm(elements.peakTimesForm, getSubmitCallback(options.peakTimesAction), refreshPeakTimes);
 		ConfigureAsyncForm(elements.availabilityForm, getSubmitCallback(options.availabilityAction), refreshAvailability);
+		ConfigureAsyncForm(elements.concurrentForm, getSubmitCallback(options.toggleConcurrentReservations), function(){}, function(){});
 	};
 
 	var getSubmitCallback = function (action) {
@@ -517,4 +527,19 @@ function ScheduleManagement(opts) {
         elements.availabilityDialog.modal('hide');
     };
 
+    var toggleConcurrentReservations = function(scheduleId, toggle, container) {
+        var allow = toggle.data('allow') == 1;
+        if (allow)
+        {
+            container.find('.allowConcurrentYes').addClass('no-show');
+            container.find('.allowConcurrentNo').removeClass('no-show');
+        }
+        else {
+            container.find('.allowConcurrentYes').removeClass('no-show');
+            container.find('.allowConcurrentNo').addClass('no-show');
+        }
+        elements.concurrentForm.submit();
+
+        toggle.data('allow', allow ? '0' : '1');
+    };
 }
