@@ -158,6 +158,10 @@ class ReservationInitializationTests extends TestBase
             ->method('SetRepeatTerminationDate')
             ->with($this->equalTo($endDate));
 
+        $page->expects($this->once())
+            ->method('SetFirstWeekday')
+            ->with($this->equalTo(0));
+
         $initializer = new NewReservationInitializer(
             $page,
             $binder,
