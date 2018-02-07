@@ -42,7 +42,8 @@ class PersonalCalendarPresenter extends CommonCalendarPresenter
             $userRepository,
             $resourceService,
             $subscriptionService,
-            new NullPrivacyFilter());
+            new NullPrivacyFilter(),
+            new SlotLabelFactory());
 
         $this->AddAction(CalendarActions::ActionEnableSubscription, 'EnableSubscription');
         $this->AddAction(CalendarActions::ActionDisableSubscription, 'DisableSubscription');

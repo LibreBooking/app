@@ -864,6 +864,7 @@ class en_us extends Language
 		$strings['ReservationColors'] = 'Reservation Colors';
 		$strings['SearchReservations'] = 'Search Reservations';
 		$strings['ManagePayments'] = 'Payments';
+		$strings['ViewCalendar'] = 'View Calendar';
 		// End Page Titles
 
 		// Day representations

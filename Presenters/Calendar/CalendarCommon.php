@@ -306,6 +306,11 @@ abstract class CommonCalendarPresenter extends ActionPresenter
      */
     protected $userRepository;
 
+    /**
+     * @var SlotLabelFactory
+     */
+    protected $slotLabelFactory;
+
     public function __construct(ICommonCalendarPage $page,
                                 ICalendarFactory $calendarFactory,
                                 IReservationViewRepository $reservationRepository,
@@ -313,7 +318,8 @@ abstract class CommonCalendarPresenter extends ActionPresenter
                                 IUserRepository $userRepository,
                                 IResourceService $resourceService,
                                 ICalendarSubscriptionService $subscriptionService,
-                                IPrivacyFilter $privacyFilter)
+                                IPrivacyFilter $privacyFilter,
+                                SlotLabelFactory $factory)
     {
         parent::__construct($page);
         $this->page = $page;
@@ -323,6 +329,7 @@ abstract class CommonCalendarPresenter extends ActionPresenter
         $this->subscriptionService = $subscriptionService;
         $this->privacyFilter = $privacyFilter;
         $this->userRepository = $userRepository;
+        $this->slotLabelFactory = $factory;
     }
 
     public function PageLoad($userSession)
@@ -354,9 +361,6 @@ abstract class CommonCalendarPresenter extends ActionPresenter
 		}
 
         $resourceGroups = $this->resourceService->GetResourceGroups(null, $userSession);
-
-		Log::Debug('%s', var_export($resourceGroups, true));
-
 
         if (!empty($selectedGroupId)) {
             $tempResources = array();
@@ -391,7 +395,6 @@ abstract class CommonCalendarPresenter extends ActionPresenter
     {
         $userSession = ServiceLocator::GetServer()->GetUserSession();
 
-
         $selectedResourceId = $this->page->GetResourceId();
         $selectedScheduleId = $this->page->GetScheduleId();
         $selectedGroupId = $this->page->GetGroupId();
@@ -401,11 +404,12 @@ abstract class CommonCalendarPresenter extends ActionPresenter
             $selectedResourceId = $resourceGroups->GetResourceIds($selectedGroupId);
         }
 
-        $user = $this->userRepository->LoadById($userSession->UserId);
-        $userCalendarFilter = new UserCalendarFilter($selectedResourceId, $selectedScheduleId, $selectedGroupId);
-        $user->ChangePreference(UserPreferences::CALENDAR_FILTER, $userCalendarFilter->Serialize());
-        $this->userRepository->Update($user);
-
+        if ($userSession->UserId != 0) {
+            $user = $this->userRepository->LoadById($userSession->UserId);
+            $userCalendarFilter = new UserCalendarFilter($selectedResourceId, $selectedScheduleId, $selectedGroupId);
+            $user->ChangePreference(UserPreferences::CALENDAR_FILTER, $userCalendarFilter->Serialize());
+            $this->userRepository->Update($user);
+        }
         $this->BindEvents($userSession, $selectedScheduleId, $selectedResourceId);
     }
 

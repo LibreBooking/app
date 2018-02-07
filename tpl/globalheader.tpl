@@ -304,6 +304,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                                         class="caret"></b></a>
                             <ul class="dropdown-menu">
                                 <li id="navViewSchedule"><a href="view-schedule.php">{translate key='ViewSchedule'}</a></li>
+                                <li id="navViewCalendar"><a href="view-calendar.php">{translate key='ViewCalendar'}</a></li>
                             </ul>
                         </li>
                     {/if}

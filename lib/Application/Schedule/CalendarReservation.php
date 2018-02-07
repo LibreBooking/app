@@ -14,6 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 class CalendarReservation
 {
 	/**
@@ -136,15 +137,19 @@ class CalendarReservation
 		return $results;
 	}
 
-	/**
-	 * @param $reservation ReservationItemView
-	 * @param $timezone string
-	 * @param $user UserSession
-	 * @return CalendarReservation
-	 */
-	public static function FromView($reservation, $timezone, $user)
+    /**
+     * @param $reservation ReservationItemView
+     * @param $timezone string
+     * @param $user UserSession
+     * @param $factory SlotLabelFactory|null
+     * @return CalendarReservation
+     */
+	public static function FromView($reservation, $timezone, $user, $factory = null)
 	{
-		$factory = new SlotLabelFactory($user);
+		if ($factory == null)
+        {
+            $factory = new SlotLabelFactory($user);
+        }
 		$start = $reservation->StartDate->ToTimezone($timezone);
 		$end = $reservation->EndDate->ToTimezone($timezone);
 		$resourceName = $reservation->ResourceName;
@@ -173,18 +178,23 @@ class CalendarReservation
 		return $res;
 	}
 
-	/**
-	 * @static
-	 * @param array|ReservationItemView[] $reservations
-	 * @param array|ResourceDto[] $resources
-	 * @param UserSession $userSession
-	 * @param bool $groupSeriesByResource
-	 * @return CalendarReservation[]
-	 */
-	public static function FromScheduleReservationList($reservations, $resources, UserSession $userSession, $groupSeriesByResource = false)
+    /**
+     * @static
+     * @param array|ReservationItemView[] $reservations
+     * @param array|ResourceDto[] $resources
+     * @param UserSession $userSession
+     * @param bool $groupSeriesByResource
+     * @param SlotLabelFactory|null $factory
+     * @return CalendarReservation[]
+     */
+	public static function FromScheduleReservationList($reservations, $resources, UserSession $userSession, $groupSeriesByResource = false, $factory = null)
 	{
+        if ($factory == null)
+        {
+            $factory = new SlotLabelFactory($userSession);
+        }
+
 		$knownSeries = array();
-		$factory = new SlotLabelFactory($userSession);
 
 		$resourceMap = array();
 		/** @var $resource ResourceDto */

@@ -28,7 +28,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
     <div id="calendar"></div>
 
     <div id="dayDialog" class="default-box-shadow">
-        <a href="#" id="dayDialogCreate">{html_image src="tick.png"}{translate key=CreateReservation}</a>
+        {if !$HideCreate}<a href="#" id="dayDialogCreate">{html_image src="tick.png"}{translate key=CreateReservation}</a>{/if}
         <a href="#" id="dayDialogView">{html_image src="search.png"}{translate key=ViewDay}</a>
         <a href="#" id="dayDialogCancel">{html_image src="slash.png"}{translate key=Cancel}</a>
     </div>
@@ -86,8 +86,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                 timeFormat: '{$TimeFormat}',
                 dayMonth: '{$DateFormat}',
                 firstDay: {$FirstDay},
-                reservationUrl: '{Pages::RESERVATION}?sid={$ScheduleId|escape:'javascript'}&rid={$ResourceId|escape:'javascript'}',
-                reservationUrlTemplate: '{Pages::RESERVATION}?sid=[sid]&rid=[rid]',
+                reservationUrl: '{$CreateReservationPage}?sid={$ScheduleId|escape:'javascript'}&rid={$ResourceId|escape:'javascript'}',
+                reservationUrlTemplate: '{$CreateReservationPage}?sid=[sid]&rid=[rid]',
                 reservable: true,
                 eventsUrl: '{$pageUrl}',
                 eventsData: {

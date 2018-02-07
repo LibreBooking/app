@@ -89,7 +89,8 @@ class CalendarPresenterTests extends TestBase
             $this->userRepository,
 			$this->resourceService,
 			$this->subscriptionService,
-			$this->privacyFilter);
+			$this->privacyFilter,
+            new SlotLabelFactory());
 	}
 
 	public function testBindsDefaultScheduleByMonthWhenNothingSelected()
