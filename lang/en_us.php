@@ -515,7 +515,7 @@ class en_us extends Language
 		$strings['CollectFor'] = 'Collect For';
 		$strings['SignIn'] = 'Sign In';
 		$strings['AllParticipants'] = 'All Participants';
-		$strings['RegisterANewAccount'] = 'Register A New Account';
+		$strings['RegisterANewAccount'] = 'Register a New Account';
 		$strings['Dates'] = 'Dates';
 		$strings['More'] = 'More';
 		$strings['ResourceAvailability'] = 'Resource Availability';
