@@ -563,6 +563,7 @@ class Reservation
 		}
 
 		$this->addedParticipants[] = $userId;
+		$this->_participantIds[] = $userId;
 
 		return true;
 	}
@@ -624,6 +625,8 @@ class Reservation
 		if (in_array($participantId, $this->_participantIds))
 		{
 			$this->removedParticipants[] = $participantId;
+			$index = array_search($participantId, $this->_participantIds);
+			array_splice($this->_participantIds, $index, 1);
 			return true;
 		}
 

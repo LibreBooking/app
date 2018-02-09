@@ -10,7 +10,9 @@ function Participation(opts)
 	};
 
 	Participation.prototype.initReservation = function() {
-		elements.invitationAction.click(function() {
+		elements.invitationAction.click(function(e) {
+			e.preventDefault();
+			e.stopPropagation();
 			elements.indicator.show();
 			RespondToInvitation($(this).val(), elements.referenceNumber.val(), $(this));
 		});

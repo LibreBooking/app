@@ -93,6 +93,11 @@ class AuthenticationWebService
 		Log::Debug('WebService SignOut for userId %s and sessionToken %s', $userId, $sessionToken);
 
 		$this->authentication->Logout($userId, $sessionToken);
+		$r = new RestResponse();
+		$r->signedOut = true;
+		$this->server->WriteResponse($r);
 	}
+
+
 }
 

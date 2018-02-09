@@ -1057,11 +1057,11 @@ class ExistingReservationTests extends TestBase
         $series->UpdateBookedBy($this->fakeUser);
         $series->ApplyChangesTo(SeriesUpdateScope::FullSeries);
         $series->Repeats(new RepeatDaily(1, Date::Parse('2017-08-16')));
-
+        
         $series->RemoveInstance($reservations[2]);
 
         $instances = $series->Instances();
 
-        $this->assertEquals(5, count($instances));
+        $this->assertEquals(6, count($instances));
     }
 }

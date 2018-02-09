@@ -180,7 +180,6 @@ class ParticipationPresenter
 			foreach ($series->Instances() as $instance)
 			{
 				$numberOfParticipants = count($instance->Participants()) + count($instance->ParticipatingGuests());
-
 				if ($numberOfParticipants > $resource->GetMaxParticipants())
 				{
 					return Resources::GetInstance()->GetString('MaxParticipantsError', array($resource->GetName(), $resource->GetMaxParticipants()));
