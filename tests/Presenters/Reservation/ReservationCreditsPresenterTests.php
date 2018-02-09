@@ -99,6 +99,7 @@ class ReservationCreditsPresenterTests extends TestBase
 
     public function testReturnsNumberOfCreditsConsumedForExistingReservation()
     {
+    	$pageDate = Date::Now()->AddDays(1);
         $scheduleId = 100;
         $resource1 = new FakeBookableResource(1);
         $resource1->SetCreditsPerSlot(1);
@@ -116,8 +117,12 @@ class ReservationCreditsPresenterTests extends TestBase
         $fakeScheduleLayout->_SlotCount = new SlotCount(5, 0);
 
         $this->page->_ResourceId = 1;
-        $this->page->_ResourceIds = [2];
+        $this->page->_ResourceIds = array(2);
         $this->page->_ReferenceNumber = '123';
+        $this->page->_StartDate = $pageDate->Format('Y-m-d');
+        $this->page->_StartTime = '01:00';
+        $this->page->_EndDate = $pageDate->Format('Y-m-d');
+        $this->page->_EndTime = '02:00';
 
         $this->resourceRepository->_ResourceList[1] = $resource1;
         $this->resourceRepository->_ResourceList[2] = $resource2;

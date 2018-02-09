@@ -52,7 +52,7 @@ class ExistingReservationSeriesBuilder
 	{
 		$series = new ExistingReservationSeries();
 
-		$this->currentInstance = new Reservation($series, new DateRange(Date::Now(), Date::Now()));
+		$this->currentInstance = new Reservation($series, new DateRange(Date::Now()->AddMinutes(30), Date::Now()->AddMinutes(60)));
 		$this->repeatOptions = new RepeatNone();
 		$this->instances = array();
 		$this->events = array();

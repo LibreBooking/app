@@ -100,7 +100,7 @@ class Schedule implements ISchedule
         $this->_isDefault = $isDefault;
         $this->_weekdayStart = $weekdayStart;
         $this->_daysVisible = $daysVisible;
-        $this->_timezone = $timezone;
+        $this->_timezone = empty($timezone) ? Configuration::Instance()->GetDefaultTimezone() : $timezone;
         $this->_layoutId = $layoutId;
         $this->_availabilityBegin = new NullDate();
         $this->_availabilityEnd = new NullDate();
@@ -237,8 +237,8 @@ class Schedule implements ISchedule
 
     public function SetAvailability(Date $start, Date $end)
     {
-        $this->_availabilityBegin = $start;
-        $this->_availabilityEnd = $end;
+        $this->_availabilityBegin = $start->ToTimezone($this->_timezone);
+        $this->_availabilityEnd = $end->ToTimezone($this->_timezone);
     }
 
     /**
