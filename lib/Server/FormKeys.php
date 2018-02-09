@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Copyright 2011-2017 Nick Korbel
+ * Copyright 2011-2018 Nick Korbel
  *
  * This file is part of Booked Scheduler is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,7 +17,7 @@
 
 class FormKeys
 {
-	private function __construct()
+    private function __construct()
 	{
 	}
 
@@ -58,6 +58,9 @@ class FormKeys
 	const AUTO_ASSIGN_CLEAR = 'AUTO_ASSIGN_CLEAR';
 	const AUTO_RELEASE_MINUTES = 'AUTO_RELEASE_MINUTES';
 	const AVAILABILITY_RANGE = 'AVAILABILITY_RANGE';
+	const AVAILABLE_ALL_YEAR = 'AVAILABLE_ALL_YEAR';
+	const AVAILABLE_BEGIN_DATE = 'AVAILABLE_BEGIN_DATE';
+	const AVAILABLE_END_DATE = 'AVAILABLE_END_DATE';
 
 	const BEGIN_DATE = 'beginDate';
 	const BEGIN_PERIOD = 'beginPeriod';
@@ -71,8 +74,11 @@ class FormKeys
 	const CONFLICT_ACTION = 'conflictAction';
 	const CONTACT_INFO = 'contactInfo';
 	const CREDITS = 'CREDITS';
-	const CSS_FILE = 'CSS_FILE';
+    const CREDIT_COST = 'CREDIT_COST';
+    const CREDIT_CURRENCY = 'CREDIT_CURRENCY';
+    const CSS_FILE = 'CSS_FILE';
 	const CSRF_TOKEN = 'CSRF_TOKEN';
+	const CREDIT_QUANTITY = 'CREDIT_QUANTITY';
 	const CURRENT_PASSWORD = 'currentPassword';
 
 	const DAY = 'DAY';
@@ -80,6 +86,7 @@ class FormKeys
 	const DESCRIPTION = 'reservationDescription';
 	const DURATION = 'duration';
 	const DELETE_REASON = 'DELETE_REASON';
+	const DISPLAY_PAGE = 'DISPLAY_PAGE';
 
 	const EMAIL = 'email';
 	const END_DATE = 'endDate';
@@ -113,6 +120,7 @@ class FormKeys
     const ICS_IMPORT_FILE = 'ICS_IMPORT_FILE';
     const INCLUDE_DELETED = 'INCLUDE_DELETED';
     const INVITED_EMAILS = 'INVITED_EMAILS';
+    const IS_DEFAULT = 'IS_DEFAULT';
 
 	const LANGUAGE = 'language';
 	const LAST_NAME = 'lname';
@@ -130,8 +138,12 @@ class FormKeys
 	const MAX_DURATION_NONE = 'maxDurationNone';
 	const MAX_PARTICIPANTS = 'maxParticipants';
 	const MAX_PARTICIPANTS_UNLIMITED = 'maxParticipantsUnlimited';
-	const MIN_NOTICE = 'minNotice';
-	const MIN_NOTICE_NONE = 'minNoticeNone';
+	const MIN_NOTICE_ADD = 'minNoticeAdd';
+	const MIN_NOTICE_UPDATE = 'minNoticeUpdate';
+	const MIN_NOTICE_DELETE = 'minNoticeDelete';
+	const MIN_NOTICE_NONE_ADD = 'minNoticeNoneAdd';
+	const MIN_NOTICE_NONE_UPDATE = 'minNoticeNoneUpdate';
+	const MIN_NOTICE_NONE_DELETE = 'minNoticeNoneDelete';
 	const MAX_NOTICE = 'maxNotice';
 	const MAX_NOTICE_NONE = 'maxNoticeNone';
 
@@ -146,6 +158,11 @@ class FormKeys
 	const PARTICIPANT_ID = 'PARTICIPANT_ID';
 	const PASSWORD = 'password';
 	const PASSWORD_CONFIRM = 'passwordConfirm';
+    const PAYPAL_ENABLED = 'ENABLE_PAYPAL';
+	const PAYPAL_CLIENT_ID = 'PAYPAL_CLIENT_ID';
+	const PAYPAL_SECRET = 'PAYPAL_SECRET';
+	const PAYPAL_ENVIRONMENT = 'PAYPAL_ENVIRONMENT';
+	const PAYMENT_RESPONSE_DATA = 'PAYMENT_RESPONSE_DATA';
 	const PEAK_ALL_DAY = 'PEAK_ALL_DAY';
 	const PEAK_ALL_YEAR = 'PEAK_ALL_YEAR';
 	const PEAK_EVERY_DAY = 'PEAK_EVERY_DAY';
@@ -165,6 +182,8 @@ class FormKeys
 	const QUOTA_SCOPE= 'QUOTA_SCOPE';
 
 	const REFERENCE_NUMBER = 'referenceNumber';
+	const REFUND_AMOUNT = 'REFUND_AMOUNT';
+	const REFUND_TRANSACTION_ID = 'REFUND_TRANSACTION_ID';
 	const REMOVED_FILE_IDS = 'removeFile';
 	const REPEAT_OPTIONS = 'repeatOptions';
 	const REPEAT_EVERY = 'repeatEvery';
@@ -227,15 +246,28 @@ class FormKeys
 	const SLOTS_BLOCKED = 'blockedSlots';
 	const SLOTS_RESERVABLE = 'reservableSlots';
 	const STATUS_ID = 'STATUS_ID';
+    const STRIPE_ENABLED = 'ENABLE_STRIPE';
+	const STRIPE_PUBLISHABLE_KEY = 'STRIPE_PUBLISHABLE_KEY';
+	const STRIPE_SECRET_KEY = 'STRIPE_SECRET_KEY';
+	const STRIPE_TOKEN = 'STRIPE_TOKEN';
 	const SUBMIT = 'SUBMIT';
 	const SUMMARY = 'summary';
 	const SCHEDULE_ADMIN_GROUP_ID = 'adminGroupId';
 	const SELECTED_COLUMNS = 'SELECTED_COLUMNS';
+	const SLACK_COMMAND = 'command';
+	const SLACK_TEXT = 'text';
+	const SLACK_TOKEN = 'token';
 
 	const THISWEEK = 'THISWEEK';
 	const TIMEZONE = 'timezone';
 	const TODAY = 'TODAY';
 	const TOMMOROW = 'TOMMOROW';
+	const TOS_METHOD = 'TOS_METHOD';
+	const TOS_APPLICABILITY = 'TOS_APPLICABILITY';
+	const TOS_TEXT = 'TOS_TEXT';
+	const TOS_URL = 'TOS_URL';
+	const TOS_UPLOAD = 'TOS_UPLOAD';
+	const TOS_ACKNOWLEDGEMENT = 'TOS_ACKNOWLEDGEMENT';
 
 	const UNIT = 'unit';
 	const UNIT_COST = 'unitCost';

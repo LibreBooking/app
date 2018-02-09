@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright 2012-2017 Nick Korbel
+ * Copyright 2012-2018 Nick Korbel
  *
  * This file is part of Booked Scheduler.
  *
@@ -297,6 +297,14 @@ class FakeReservationSavePage implements IReservationSavePage
     public function SetCanJoinWaitList($canJoinWaitlist)
     {
         $this->canJoinWaitlist = $canJoinWaitlist;
+    }
+
+    /**
+     * @return bool
+     */
+    public function GetTermsOfServiceAcknowledgement()
+    {
+        // TODO: Implement GetTermsOfServiceAcknowledgement() method.
     }
 }
 

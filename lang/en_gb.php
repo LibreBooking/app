@@ -1,6 +1,6 @@
 <?php
 /**
-Copyright 2011-2017 Nick Korbel
+Copyright 2011-2018 Nick Korbel
 
 This file is part of Booked Scheduler.
 
@@ -52,6 +52,7 @@ class en_gb extends en_us
 		$dates['calendar_dates'] = 'd M';
 
         $this->Dates = $dates;
+        return $this->Dates;
     }
 
     protected function _LoadStrings()

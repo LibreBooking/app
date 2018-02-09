@@ -1,7 +1,7 @@
 <?php
 /**
  * PHP LDAP CLASS FOR MANIPULATING ACTIVE DIRECTORY 
- * Version 4.0.3
+ * Version 4.0.4
  * 
  * PHP Version 5 with SSL and LDAP support
  * 
@@ -9,7 +9,7 @@
  *   email: scott@wiggumworld.com, adldap@richardhyland.com
  *   http://adldap.sourceforge.net/
  * 
- * Copyright (c) 2006-2011 Scott Barnett, Richard Hyland
+ * Copyright (c) 2006-2012 Scott Barnett, Richard Hyland
  * 
  * We'd appreciate any improvements or additions to be submitted back
  * to benefit the entire community :)
@@ -28,10 +28,10 @@
  * @package adLDAP
  * @subpackage User
  * @author Scott Barnett, Richard Hyland
- * @copyright (c) 2006-2011 Scott Barnett, Richard Hyland
+ * @copyright (c) 2006-2012 Scott Barnett, Richard Hyland
  * @license http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html LGPLv2.1
  * @revision $Revision: 97 $
- * @version 4.0.3
+ * @version 4.0.4
  * @link http://adldap.sourceforge.net/
  */
 require_once(dirname(__FILE__) . '/../adLDAP.php');
@@ -614,7 +614,7 @@ class adLDAPUsers {
             $searchParams = "(" . $searchField . "=" . $searchFilter . ")";
         }                           
         $filter = "(&(objectClass=user)(samaccounttype=" . adLDAP::ADLDAP_NORMAL_ACCOUNT .")(objectCategory=person)" . $searchParams . ")";
-        $fields=array("samaccountname","displayname");
+        $fields = array("samaccountname","displayname");
         $sr = ldap_search($this->adldap->getLdapConnection(), $this->adldap->getBaseDn(), $filter, $fields);
         $entries = ldap_get_entries($this->adldap->getLdapConnection(), $sr);
 
@@ -673,11 +673,10 @@ class adLDAPUsers {
     public function getLastLogon($username) {
         if (!$this->adldap->getLdapBind()) { return false; }
         if ($username === null) { return "Missing compulsory field [username]"; }
-        $userInfo = $this->info($username, array("lastLogon"));
-        $lastLogon = adLDAPUtils::convertWindowsTimeToUnixTime($userInfo[0]['lastlogon'][0]);
+        $userInfo = $this->info($username, array("lastLogonTimestamp"));
+        $lastLogon = adLDAPUtils::convertWindowsTimeToUnixTime($userInfo[0]['lastLogonTimestamp'][0]);
         return $lastLogon;
     }
-    
     
 }
 ?>

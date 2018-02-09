@@ -1,7 +1,7 @@
 <?php
 /**
  * PHP LDAP CLASS FOR MANIPULATING ACTIVE DIRECTORY 
- * Version 4.0.3
+ * Version 4.0.4
  * 
  * PHP Version 5 with SSL and LDAP support
  * 
@@ -9,7 +9,7 @@
  *   email: scott@wiggumworld.com, adldap@richardhyland.com
  *   http://adldap.sourceforge.net/
  * 
- * Copyright (c) 2006-2011 Scott Barnett, Richard Hyland
+ * Copyright (c) 2006-2012 Scott Barnett, Richard Hyland
  * 
  * We'd appreciate any improvements or additions to be submitted back
  * to benefit the entire community :)
@@ -28,10 +28,10 @@
  * @package adLDAP
  * @subpackage Folders
  * @author Scott Barnett, Richard Hyland
- * @copyright (c) 2006-2011 Scott Barnett, Richard Hyland
+ * @copyright (c) 2006-2012 Scott Barnett, Richard Hyland
  * @license http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html LGPLv2.1
  * @revision $Revision: 97 $
- * @version 4.0.3
+ * @version 4.0.4
  * @link http://adldap.sourceforge.net/
  */
 require_once(dirname(__FILE__) . '/../adLDAP.php');
@@ -70,10 +70,10 @@ class adLDAPFolders {
     * Returns a folder listing for a specific OU
     * See http://adldap.sourceforge.net/wiki/doku.php?id=api_folder_functions
     * 
-    * @param array $folder_name An array to the OU you wish to list. 
+    * @param array $folderName An array to the OU you wish to list. 
     *                           If set to NULL will list the root, strongly recommended to set 
     *                           $recursive to false in that instance!
-    * @param string $dn_type The type of record to list.  This can be ADLDAP_FOLDER or ADLDAP_CONTAINER.
+    * @param string $dnType The type of record to list.  This can be ADLDAP_FOLDER or ADLDAP_CONTAINER.
     * @param bool $recursive Recursively search sub folders
     * @param bool $type Specify a type of object to search for
     * @return array
@@ -165,8 +165,8 @@ class adLDAPFolders {
             $containers = "OU=" . implode(",OU=", $attributes["container"]) . ",";
         }
 
-        $container = "OU=" . implode(",OU=", $attributes["container"]);
-        $result = ldap_add($this->adldap->getLdapConnection(), "OU=" . $add["ou"] . ", " . $containers . $this->adldap->getBaseDn(), $add);
+        $containers = "OU=" . implode(",OU=", $attributes["container"]);
+        $result = ldap_add($this->adldap->getLdapConnection(), "OU=" . $add["OU"] . ", " . $containers . $this->adldap->getBaseDn(), $add);
         if ($result != true) { 
             return false; 
         }

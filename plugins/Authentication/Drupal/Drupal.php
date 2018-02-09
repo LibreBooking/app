@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright 2014-2017 Nick Korbel
+ * Copyright 2014-2018 Nick Korbel
  *
  * This file is part of Booked Scheduler.
  *
@@ -97,7 +97,7 @@ class Drupal extends Authentication implements IAuthentication
 			return false;
 		}
 
-		Log::Debug('DRUPAL: User was found. user=%s, Drupal username=%s, Drupal email=%s, Booked admin email=%s', $username, $account->name, $account->mail, Configuration::Instance()->GetKey(ConfigKeys::ADMIN_EMAIL));
+		Log::Debug('DRUPAL: User was found. user=%s, Drupal username=%s, Drupal email=%s, Booked admin email=%s', $username, $account->name, $account->mail, Configuration::Instance()->GetAdminEmail());
 		return true;
 	}
 

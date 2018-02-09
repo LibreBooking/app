@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Copyright 2011-2017 Nick Korbel
+ * Copyright 2011-2018 Nick Korbel
  *
  * This file is part of Booked Scheduler.
  *
@@ -428,6 +428,8 @@ class UserRepositoryTests extends TestBase
 
 	public function testAddsUser()
 	{
+	    Date::_SetNow(Date::Now());
+
 		$expectedId = 999;
 		$firstName = 'f';
 		$lastName = 'l';
@@ -451,6 +453,7 @@ class UserRepositoryTests extends TestBase
 		$user->ChangeEmailPreference(new ReservationApprovedEvent(), true);
 		$user->EnablePublicProfile();
 		$user->ChangeDefaultSchedule($scheduleId);
+		$user->AcceptTerms(true);
 		$publicId = $user->GetPublicId();
 
 		$this->db->_ExpectedInsertId = $expectedId;
@@ -459,7 +462,7 @@ class UserRepositoryTests extends TestBase
 
 		$command = new RegisterUserCommand($userName, $emailAddress, $firstName, $lastName, $password, $passwordSalt,
 										   $timezone, $language, Pages::DEFAULT_HOMEPAGE_ID, $phone, $organization, $position, AccountStatus::ACTIVE,
-										   $publicId, $scheduleId);
+										   $publicId, $scheduleId, Date::Now());
 
 		$addAttr1Command = new AddAttributeValueCommand($attr1->AttributeId, $attr1->Value, $expectedId, CustomAttributeCategory::USER);
 		$addAttr2Command = new AddAttributeValueCommand($attr2->AttributeId, $attr2->Value, $expectedId, CustomAttributeCategory::USER);
@@ -606,6 +609,21 @@ class UserRepositoryTests extends TestBase
 		$actualId = $repo->UserExists($email, $userName);
 
 		$this->assertEquals($expectedId, $actualId);
+	}
+
+	public function testLogsCreditChanges()
+	{
+        $user = new User();
+        $user->WithId(1);
+        $user->WithCredits(10);
+        $user->ChangeCurrentCredits(5, 'message');
+
+        $repo = new UserRepository();
+        $repo->Update($user);
+
+        $command = new LogCreditActivityCommand(1, 10, 5, 'message');
+
+        $this->assertTrue($this->db->ContainsCommand($command));
 	}
 
 	private function GetUserRow($userId = 1,

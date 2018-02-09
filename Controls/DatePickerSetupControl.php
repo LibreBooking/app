@@ -1,6 +1,6 @@
 <?php
 /**
-Copyright 2011-2017 Nick Korbel
+Copyright 2011-2018 Nick Korbel
 
 This file is part of Booked Scheduler.
 
@@ -58,6 +58,8 @@ class DatePickerSetupControl extends Control
 		$this->Set('DayNames', $this->GetJsDayNames('full'));
 		$this->Set('MonthNames', $this->GetJsMonthNames('full'));
 		$this->Set('MonthNamesShort', $this->GetJsMonthNames('abbr'));
+		$this->SetDefault('MinDate', null);
+		$this->SetDefault('MaxDate', null);
 
 		$this->Display('Controls/DatePickerSetup.tpl');
 	}

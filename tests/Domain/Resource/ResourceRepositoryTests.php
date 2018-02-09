@@ -1,6 +1,6 @@
 <?php
 /**
-Copyright 2011-2017 Nick Korbel
+Copyright 2011-2018 Nick Korbel
 
 This file is part of Booked Scheduler.
 
@@ -79,7 +79,7 @@ class ResourceRepositoryTests extends TestBase
 		$requiresApproval = 0;
 		$allowMultiday = 1;
 		$maxParticipants = 100;
-		$minNotice = 11111;
+		$minNoticeAdd = 11111;
 		$maxNotice = 22222;
 		$description = "description";
 		$scheduleId = 19819;
@@ -95,6 +95,8 @@ class ResourceRepositoryTests extends TestBase
 		$autoReleaseMinutes = 40;
 		$credits = 100;
 		$peakCredits = 200;
+        $minNoticeUpdate = 19291;
+        $minNoticeDelete = 9919;
 
 		$resource = new BookableResource($id,
 										 $name,
@@ -107,7 +109,7 @@ class ResourceRepositoryTests extends TestBase
 										 $requiresApproval,
 										 $allowMultiday,
 										 $maxParticipants,
-										 $minNotice,
+										 $minNoticeAdd,
 										 $maxNotice,
 										 $description,
 										 $scheduleId);
@@ -122,6 +124,8 @@ class ResourceRepositoryTests extends TestBase
 		$resource->SetCheckin($enableCheckin, $autoReleaseMinutes);
 		$resource->SetCreditsPerSlot($credits);
 		$resource->SetPeakCreditsPerSlot($peakCredits);
+		$resource->SetMinNoticeUpdate($minNoticeUpdate);
+		$resource->SetMinNoticeDelete($minNoticeDelete);
 
 		$publicId = $resource->GetPublicId();
 
@@ -139,7 +143,7 @@ class ResourceRepositoryTests extends TestBase
 			$requiresApproval,
 			$allowMultiday,
 			$maxParticipants,
-			new TimeInterval($minNotice),
+			new TimeInterval($minNoticeAdd),
 			new TimeInterval($maxNotice),
 			$description,
 			$imageName,
@@ -157,7 +161,9 @@ class ResourceRepositoryTests extends TestBase
 			$autoReleaseMinutes,
 			false,
 			$credits,
-			$peakCredits
+			$peakCredits,
+            new TimeInterval($minNoticeUpdate),
+            new TimeInterval($minNoticeDelete)
 		);
 
 		$actualUpdateResourceCommand = $this->db->_Commands[0];
@@ -571,8 +577,8 @@ class ResourceRepositoryTests extends TestBase
 		$resourceId = 123;
 
 		$rows = array(
-				array(ColumnNames::GROUP_ID => 1, ColumnNames::GROUP_NAME => 'g1'),
-				array(ColumnNames::GROUP_ID => 2, ColumnNames::GROUP_NAME => 'g2'),
+				array(ColumnNames::GROUP_ID => 1, ColumnNames::GROUP_NAME => 'g1', ColumnNames::GROUP_ISDEFAULT => 0),
+				array(ColumnNames::GROUP_ID => 2, ColumnNames::GROUP_NAME => 'g2', ColumnNames::GROUP_ISDEFAULT => 0),
 		);
 		$this->db->SetRows($rows);
 

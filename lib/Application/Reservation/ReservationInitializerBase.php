@@ -1,6 +1,6 @@
 <?php
 /**
-Copyright 2011-2017 Nick Korbel
+Copyright 2011-2018 Nick Korbel
 
 This file is part of Booked Scheduler is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -64,10 +64,11 @@ interface IReservationComponentInitializer
 	/**
 	 * @param Date $startDate
 	 * @param Date $endDate
-	 * @param $startPeriods array|SchedulePeriod[]
-	 * @param $endPeriods array|SchedulePeriod[]
+	 * @param array|SchedulePeriod[] $startPeriods
+     * @param array|SchedulePeriod[] $endPeriods
+     * @param int $firstWeekday
 	 */
-	public function SetDates(Date $startDate, Date $endDate, $startPeriods, $endPeriods);
+	public function SetDates(Date $startDate, Date $endDate, $startPeriods, $endPeriods, $firstWeekday);
 
 	/**
 	 * @return UserSession
@@ -100,7 +101,6 @@ interface IReservationComponentInitializer
 	public function SetShowParticipation($shouldShow);
 
 	/**
-	 * @abstract
 	 * @param $showReservationDetails bool
 	 */
 	public function ShowReservationDetails($showReservationDetails);
@@ -131,20 +131,17 @@ interface IReservationComponentInitializer
 	public function SetReservationResource($resource);
 
 	/**
-	 * @abstract
 	 * @param $attribute CustomAttribute
 	 * @param $value mixed
 	 */
 	public function AddAttribute($attribute, $value);
 
 	/**
-	 * @abstract
 	 * @param ErrorMessages|int $errorMessageId
 	 */
 	public function RedirectToError($errorMessageId);
 
 	/**
-	 * @abstract
 	 * @param bool $isHidden
 	 */
 	public function HideRecurrence($isHidden);
@@ -153,6 +150,11 @@ interface IReservationComponentInitializer
 	 * @return bool
 	 */
 	public function IsNew();
+
+    /**
+     * @param DateRange $availability
+     */
+    public function SetAvailability(DateRange $availability);
 }
 
 abstract class ReservationInitializerBase implements IReservationInitializer, IReservationComponentInitializer
@@ -316,10 +318,17 @@ abstract class ReservationInitializerBase implements IReservationInitializer, IR
 		return $periods[$lastIndex];
 	}
 
-	public function SetDates(Date $startDate, Date $endDate, $startPeriods, $endPeriods)
+	public function SetDates(Date $startDate, Date $endDate, $startPeriods, $endPeriods, $firstWeekday)
 	{
 		$this->basePage->BindPeriods($startPeriods, $endPeriods);
 		$this->SetSelectedDates($startDate, $endDate, $startPeriods, $endPeriods);
+		if ($firstWeekday == Schedule::Today)
+        {
+            $this->basePage->SetFirstWeekday(Date::Now()->ToTimezone($startDate->Timezone())->Weekday());
+        }
+        else{
+		    $this->basePage->SetFirstWeekday($firstWeekday);
+        }
 	}
 
 	/**
@@ -430,6 +439,11 @@ abstract class ReservationInitializerBase implements IReservationInitializer, IR
 	public function HideRecurrence($isHidden)
 	{
 		$this->basePage->HideRecurrence($isHidden);
+	}
+
+	public function SetAvailability(DateRange $availability)
+	{
+		$this->basePage->SetAvailability($availability);
 	}
 
 	public function IsNew()

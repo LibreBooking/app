@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 {*
-Copyright 2011-2017 Nick Korbel
+Copyright 2011-2018 Nick Korbel
 
 This file is part of Booked Scheduler.
 
@@ -34,21 +34,6 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
         {jsfile src="js/jquery-2.1.1.min.js"}
         {jsfile src="js/jquery-ui-1.10.4.custom.min.js"}
         {jsfile src="bootstrap/js/bootstrap.min.js"}
-        {*{jsfile src="js/lodash.4.6.13.min.js"}*}
-        {*{jsfile src="js/moment.min.js"}*}
-        {*{jsfile src="js/jquery.form-3.09.min.js"}*}
-        {*{jsfile src="js/jquery.blockUI-2.66.0.min.js"}*}
-        {*{if $Qtip}*}
-            {*{jsfile src="js/jquery.qtip.min.js"}*}
-        {*{/if}*}
-        {*{if $Validator}*}
-            {*{jsfile src="js/bootstrapvalidator/bootstrapValidator.min.js"}*}
-        {*{/if}*}
-        {*{if $InlineEdit}*}
-            {*{jsfile src="js/x-editable/js/bootstrap-editable.min.js"}*}
-            {*{jsfile src="js/x-editable/wysihtml5/wysihtml5.js"}*}
-            {*{jsfile src="js/wysihtml5/bootstrap3-wysihtml5.all.min.js"}*}
-        {*{/if}*}
     {else}
         <script type="text/javascript"
                 src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
@@ -56,30 +41,6 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                 src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
         <script type="text/javascript"
                 src="https://netdna.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
-        {*<script type="text/javascript"*}
-                {*src="https://cdn.jsdelivr.net/lodash/4.16.3/lodash.min.js"></script>*}
-        {*<script type="text/javascript"*}
-                {*src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.13.0/moment.min.js"></script>*}
-        {*<script type="text/javascript"*}
-                {*src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/3.50/jquery.form.min.js"></script>*}
-        {*<script type="text/javascript"*}
-                {*src="https://cdnjs.cloudflare.com/ajax/libs/jquery.blockUI/2.66.0-2013.10.09/jquery.blockUI.min.js"></script>*}
-        {*{if $Qtip}*}
-            {*<script type="text/javascript"*}
-                    {*src="https://cdn.jsdelivr.net/qtip2/3.0.3/jquery.qtip.min.js"></script>*}
-        {*{/if}*}
-        {*{if $Validator}*}
-            {*<script type="text/javascript"*}
-                    {*src="https://cdnjs.cloudflare.com/ajax/libs/jquery.bootstrapvalidator/0.5.3/js/bootstrapValidator.min.js"></script>*}
-        {*{/if}*}
-
-        {*{if $InlineEdit}*}
-            {*<script type="text/javascript"*}
-                    {*src="https://cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.1/bootstrap3-editable/js/bootstrap-editable.min.js"></script>*}
-            {*<script type="text/javascript"*}
-                    {*src="https://cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.1/inputs-ext/wysihtml5/wysihtml5.js"></script>*}
-            {*{jsfile src="js/wysihtml5/bootstrap3-wysihtml5.all.min.js"}*}
-        {*{/if}*}
     {/if}
 
     <!-- End JavaScript -->
@@ -132,8 +93,6 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
     {if $Fullcalendar}
         {cssfile src="scripts/css/fullcalendar.min.css"}
         <link rel='stylesheet' type='text/css' href='scripts/css/fullcalendar.print.css' media='print'/>
-        {*{jsfile src="js/fullcalendar.js"}*}
-        {*{jsfile src="js/fullcalendarLang/$HtmlLang.js"}*}
     {/if}
     {cssfile src="scripts/css/jquery-ui-timepicker-addon.css"}
     {cssfile src="booked.css"}
@@ -188,8 +147,13 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                                     <a href="{$Path}{Pages::NOTIFICATION_PREFERENCES}">{translate key="NotificationPreferences"}</a>
                                 </li>
                                 {if $ShowParticipation && $AllowParticipation}
-                                    <li id="navInvitations"><a
-                                                href="{$Path}{Pages::PARTICIPATION}">{translate key="OpenInvitations"}</a>
+                                    <li id="navInvitations">
+                                        <a href="{$Path}{Pages::PARTICIPATION}">{translate key="OpenInvitations"}</a>
+                                    </li>
+                                {/if}
+                                {if $CreditsEnabled}
+                                    <li id="navUserCredits">
+                                        <a href="{$Path}{Pages::CREDITS}">{translate key="Credits"}</a>
                                     </li>
                                 {/if}
                             </ul>
@@ -244,6 +208,9 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
                                     <li id="navManageAnnouncements"><a
                                                 href="{$Path}admin/manage_announcements.php">{translate key="ManageAnnouncements"}</a>
+                                    </li>
+                                    <li id="navManagePayments"><a
+                                                href="{$Path}admin/manage_payments.php">{translate key="ManagePayments"}</a>
                                     </li>
                                     <li class="divider"></li>
                                     {*<li class="dropdown-header">{translate key=Customization}</li>*}
@@ -337,6 +304,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                                         class="caret"></b></a>
                             <ul class="dropdown-menu">
                                 <li id="navViewSchedule"><a href="view-schedule.php">{translate key='ViewSchedule'}</a></li>
+                                <li id="navViewCalendar"><a href="view-calendar.php">{translate key='ViewCalendar'}</a></li>
                             </ul>
                         </li>
                     {/if}

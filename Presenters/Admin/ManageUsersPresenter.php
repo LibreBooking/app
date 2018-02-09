@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright 2011-2017 Nick Korbel
+ * Copyright 2011-2018 Nick Korbel
  *
  * This file is part of Booked Scheduler.
  *
@@ -462,7 +462,7 @@ class ManageUsersPresenter extends ActionPresenter implements IManageUsersPresen
         Log::Debug('Changing credit count for userId: %s to %s', $userId, $creditCount);
 
         $user = $this->userRepository->LoadById($userId);
-        $user->ChangeCurrentCredits($creditCount);
+        $user->ChangeCurrentCredits($creditCount, Resources::GetInstance()->GetString('CreditsUpdatedLog', array(ServiceLocator::GetServer()->GetUserSession())));
         $this->userRepository->Update($user);
     }
 

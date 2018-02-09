@@ -1,6 +1,6 @@
 <?php
 /**
-Copyright 2012-2017 Nick Korbel
+Copyright 2012-2018 Nick Korbel
 
 This file is part of Booked Scheduler.
 
@@ -76,7 +76,7 @@ class ConfigurePage extends Page implements IConfgurePage
 
 	public function PageLoad()
 	{
-		$this->Set('SuggestedInstallPassword', uniqid());
+		$this->Set('SuggestedInstallPassword', BookedStringHelper::Random());
 		$this->Set('ConfigSetting', '$conf[\'settings\'][\'install.password\']');
 		$this->Set('ConfigPath', '/config/config.php');
 		$this->presenter->PageLoad();

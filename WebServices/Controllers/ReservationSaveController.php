@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright 2012-2017 Nick Korbel
+ * Copyright 2012-2018 Nick Korbel
  *
  * This file is part of Booked Scheduler.
  *
@@ -775,6 +775,14 @@ class ReservationRequestResponseFacade implements IReservationSavePage
 	{
 		$this->_canJoinWaitlist = $canJoinWaitlist;
 	}
+
+    /**
+     * @return bool
+     */
+    public function GetTermsOfServiceAcknowledgement()
+    {
+        return $this->request->termsAccepted == true;
+    }
 }
 
 class ReservationUpdateRequestResponseFacade extends ReservationRequestResponseFacade implements IReservationUpdatePage

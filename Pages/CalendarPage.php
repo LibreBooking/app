@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright 2011-2017 Nick Korbel
+ * Copyright 2011-2018 Nick Korbel
  *
  * This file is part of Booked Scheduler.
  *
@@ -23,7 +23,7 @@ require_once(ROOT_DIR . 'Presenters/Calendar/CalendarPresenter.php');
 
 class CalendarPage extends CommonCalendarPage implements ICommonCalendarPage
 {
-    private $presenter;
+    protected $presenter;
 
     public function __construct()
     {
@@ -42,7 +42,8 @@ class CalendarPage extends CommonCalendarPage implements ICommonCalendarPage
             new UserRepository(),
             $resourceService,
             $subscriptionService,
-            $privacyFilter);
+            $privacyFilter,
+            new SlotLabelFactory());
     }
 
     public function ProcessPageLoad()
@@ -54,7 +55,12 @@ class CalendarPage extends CommonCalendarPage implements ICommonCalendarPage
         $this->Set('Today', Date::Now()->ToTimezone($user->Timezone));
         $this->Set('TimeFormat', Resources::GetInstance()->GetDateFormat('calendar_time'));
         $this->Set('DateFormat', Resources::GetInstance()->GetDateFormat('calendar_dates'));
+        $this->Set('CreateReservationPage', Pages::RESERVATION);
+        $this->DisplayPage();
+    }
 
+    protected function DisplayPage()
+    {
         $this->Display('Calendar/calendar.tpl');
     }
 

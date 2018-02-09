@@ -1,6 +1,6 @@
 <?php
 /**
-Copyright 2011-2017 Nick Korbel
+Copyright 2011-2018 Nick Korbel
 
 This file is part of Booked Scheduler.
 
@@ -174,10 +174,11 @@ class DatabaseCommandTests extends PHPUnit_Framework_TestCase
 	function testGetDashboardAnnouncementsCommand()
 	{
 		$now = new Date();
+        $displayPage = 1;
 
-		$command = new GetDashboardAnnouncementsCommand($now);
+		$command = new GetDashboardAnnouncementsCommand($now, $displayPage);
 		$this->assertEquals(Queries::GET_DASHBOARD_ANNOUNCEMENTS, $command->GetQuery());
-		$this->assertEquals(1, $command->Parameters->Count());
+		$this->assertEquals(2, $command->Parameters->Count());
 		$this->assertEquals(new Parameter(ParameterNames::CURRENT_DATE, $now->ToDatabase()), $command->Parameters->Items(0));
 	}
 

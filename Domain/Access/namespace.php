@@ -1,6 +1,6 @@
 <?php
 /**
-Copyright 2011-2017 Nick Korbel
+Copyright 2011-2018 Nick Korbel
 
 This file is part of Booked Scheduler.
 
@@ -42,3 +42,6 @@ require_once(ROOT_DIR . 'Domain/Access/ReminderRepository.php');
 require_once(ROOT_DIR . 'Domain/Access/UserPreferenceRepository.php');
 require_once(ROOT_DIR . 'Domain/Access/AttributeFilter.php');
 require_once(ROOT_DIR . 'Domain/Access/ReservationWaitlistRepository.php');
+require_once(ROOT_DIR . 'Domain/Access/PaymentRepository.php');
+require_once(ROOT_DIR . 'Domain/Access/CreditRepository.php');
+require_once(ROOT_DIR . 'Domain/Access/TermsOfServiceRepository.php');

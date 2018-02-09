@@ -1,5 +1,5 @@
 {*
-Copyright 2017 Nick Korbel
+Copyright 2017-2018 Nick Korbel
 
 This file is part of phpScheduleIt.
 

@@ -1,6 +1,6 @@
 <?php
 /**
-Copyright 2011-2017 Nick Korbel
+Copyright 2011-2018 Nick Korbel
 
 This file is part of Booked Scheduler.
 
@@ -55,7 +55,7 @@ class ResourceDetailsPage extends Page implements IResourceDetailsPage
 
         $this->Set('maxParticipants', $resource->GetMaxParticipants());
         $this->Set('maximumNotice', $resource->GetMaxNotice());
-        $this->Set('minimumNotice', $resource->GetMinNotice());
+        $this->Set('minimumNotice', $resource->GetMinNoticeAdd());
         $this->Set('requiresApproval', $resource->GetRequiresApproval());
         $this->Set('autoAssign', $resource->GetAutoAssign());
         $this->Set('color', $resource->GetColor());

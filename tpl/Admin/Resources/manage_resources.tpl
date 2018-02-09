@@ -1,5 +1,5 @@
 {*
-Copyright 2011-2017 Nick Korbel
+Copyright 2011-2018 Nick Korbel
 
 This file is part of Booked Scheduler.
 
@@ -339,7 +339,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 					</div>
 
 					<div class="col-xs-12 col-sm-7">
-						<div class="col-xs-6">
+						<div class="col-sm-6 col-xs-12">
 							<h5 class="inline">{translate key=Duration}</h5>
 							<a href="#" class="inline update changeDuration">
 								<span class="fa fa-pencil-square-o"></span>
@@ -348,9 +348,32 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 							<div class="durationPlaceHolder">
 								{include file="Admin/Resources/manage_resources_duration.tpl" resource=$resource}
 							</div>
+
+                            {if $CreditsEnabled}
+                               <div>
+                                    <h5 class="inline">{translate key='Credits'}</h5>
+                                    <a href="#" class="inline update changeCredits">
+                                        <span class="fa fa-pencil-square-o"></span>
+                                    </a>
+                                    <div class="creditsPlaceHolder">
+                                        {include file="Admin/Resources/manage_resources_credits.tpl" resource=$resource}
+                                    </div>
+                               </div>
+                            {/if}
+
+                            <div>
+                                <h5 class="inline">{translate key='Capacity'}</h5>
+                                <a href="#" class="inline update changeCapacity">
+                                    <span class="fa fa-pencil-square-o"></span>
+                                </a>
+
+                                <div class="capacityPlaceHolder">
+                                    {include file="Admin/Resources/manage_resources_capacity.tpl" resource=$resource}
+                                </div>
+                            </div>
 						</div>
 
-						<div class="col-xs-6">
+						<div class="col-sm-6 col-xs-12">
 							<h5 class="inline">{translate key=Access}</h5>
 							<a href="#" class="inline update changeAccess">
 								<span class="fa fa-pencil-square-o"></span>
@@ -361,24 +384,13 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 							</div>
 						</div>
 
-						<div class="col-xs-6">
-							<h5 class="inline">{translate key='Capacity'}</h5>
-							<a href="#" class="inline update changeCapacity">
-								<span class="fa fa-pencil-square-o"></span>
-							</a>
-
-							<div class="capacityPlaceHolder">
-								{include file="Admin/Resources/manage_resources_capacity.tpl" resource=$resource}
-							</div>
-						</div>
-
-						<div class="col-xs-6">
+						<div class="col-sm-6 col-xs-12">
 							<h5>{translate key='Permissions'}</h5>
 							<a href="#" class="update changeUsers">{translate key=Users}</a> |
 							<a href="#" class="update changeGroups">{translate key=Groups}</a>
 						</div>
 
-						<div class="col-xs-6">
+						<div class="col-sm-6 col-xs-12">
 							<h5 class="inline">{translate key='ResourceGroups'}</h5>
 							<a href="#" class="inline update changeResourceGroups">
 								<span class="fa fa-pencil-square-o"></span>
@@ -387,18 +399,6 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 							<div class="resourceGroupsPlaceHolder">
 								{include file="Admin/Resources/manage_resources_groups.tpl" resource=$resource}
 							</div>
-						</div>
-
-						<div class="col-xs-6">
-							{if $CreditsEnabled}
-								<h5 class="inline">{translate key='Credits'}</h5>
-								<a href="#" class="inline update changeCredits">
-									<span class="fa fa-pencil-square-o"></span>
-								</a>
-								<div class="creditsPlaceHolder">
-									{include file="Admin/Resources/manage_resources_credits.tpl" resource=$resource}
-								</div>
-							{/if}
 						</div>
 
 					</div>
@@ -422,7 +422,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 	<div id="add-resource-dialog" class="modal" tabindex="-1" role="dialog" aria-labelledby="addResourceModalLabel"
 		 aria-hidden="true">
 		<form id="addResourceForm" class="form" role="form" method="post"
-			  ajaxAction="{ManageResourcesActions::ActionAdd}">
+			  ajaxAction="{ManageResourcesActions::ActionAdd}"  enctype="multipart/form-data">
 			<div class="modal-dialog">
 				<div class="modal-content">
 					<div class="modal-header">
@@ -465,7 +465,17 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 								{/foreach}
 							</select>
 						</div>
-					</div>
+                        <label for="resourceImageAdd">{translate key=Image}</label>
+                        <div class="dropzone" id="addResourceImage">
+                            <div>
+                                <span class="fa fa-image fa-3x"></span><br/>
+                                {translate key=ChooseOrDropFile}
+                            </div>
+                            <input id="resourceImageAdd" type="file" {formname key=RESOURCE_IMAGE}
+                                   accept="image/*;capture=camera" />
+                        </div>
+                        <div class="note">.gif, .jpg, or .png</div>
+                    </div>
 					<div class="modal-footer">
 						{cancel_button}
 						{add_button}
@@ -489,9 +499,15 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 						<h4 class="modal-title" id="imageModalLabel">{translate key=AddImage}</h4>
 					</div>
 					<div class="modal-body">
-						<label for="resourceImage" class="off-screen">Image file</label>
-						<input id="resourceImage" type="file" class="text" size="60" {formname key=RESOURCE_IMAGE}
-							   accept="image/*;capture=camera"/>
+                        <label for="resourceImage" class="off-screen">{translate key=Image}</label>
+                        <div class="dropzone" id="changeResourceImage">
+                            <div>
+                                <span class="fa fa-image fa-3x"></span><br/>
+                                {translate key=ChooseOrDropFile}
+                            </div>
+                            <input id="resourceImage" type="file" {formname key=RESOURCE_IMAGE}
+                                   accept="image/*;capture=camera" />
+                        </div>
 
 						<div class="note">.gif, .jpg, or .png</div>
 					</div>
@@ -687,27 +703,75 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 						<h4 class="modal-title" id="accessModalLabel">{translate key=Access}</h4>
 					</div>
 					<div class="modal-body">
-						<div class="editStartNotice">
+						<div class="editStartNoticeAdd">
 							<div class="checkbox">
-								<input type="checkbox" id="noStartNotice" class="noStartNotice"
-									   data-related-inputs="#startNoticeInputs"/>
-								<label for="noStartNotice">{translate key=ResourceMinNoticeNone}</label>
+								<input type="checkbox" id="noStartNoticeAdd" class="noStartNoticeAdd"
+									   data-related-inputs="#startNoticeInputsAdd"/>
+								<label for="noStartNoticeAdd">{translate key=ResourceMinNoticeNone}</label>
 							</div>
-							{capture name="txtStartNotice" assign="txtStartNotice"}
-								<input type='number' id='startNoticeDays' size='3' class='days form-control inline'
+							{capture name="txtStartNoticeAdd" assign="txtStartNoticeAdd"}
+								<input type='number' id='startNoticeAddDays' size='3' class='days form-control inline'
 									   maxlength='3'
 									   title='Days' max='999' min='0' placeholder='{translate key=days}'/>
-								<input type='number' id='startNoticeHours' size='2' class='hours form-control inline'
+								<input type='number' id='startNoticeAddHours' size='2' class='hours form-control inline'
 									   maxlength='2' max='99' min='0'
 									   title='Hours' placeholder='{translate key=hours}'/>
-								<input type='number' id='startNoticeMinutes' size='2'
+								<input type='number' id='startNoticeAddMinutes' size='2'
 									   class='minutes form-control inline'
 									   maxlength='2' max='99' min='0' title='Minutes'
 									   placeholder='{translate key=minutes}'/>
-								<input type='hidden' id='startNotice' class='interval' {formname key=MIN_NOTICE} />
+								<input type='hidden' id='startNoticeAdd' class='interval' {formname key=MIN_NOTICE_ADD} />
 							{/capture}
-							<div id='startNoticeInputs'>
-								{translate key='ResourceMinNotice' args=$txtStartNotice}
+							<div id='startNoticeInputsAdd'>
+								{translate key='ResourceMinNotice' args=$txtStartNoticeAdd}
+							</div>
+						</div>
+
+                        <div class="editStartNoticeUpdate">
+							<div class="checkbox">
+								<input type="checkbox" id="noStartNoticeUpdate" class="noStartNoticeUpdate"
+									   data-related-inputs="#startNoticeInputsUpdate"/>
+								<label for="noStartNoticeUpdate">{translate key=ResourceMinNoticeNoneUpdate}</label>
+							</div>
+							{capture name="txtStartNoticeUpdate" assign="txtStartNoticeUpdate"}
+								<input type='number' id='startNoticeUpdateDays' size='3' class='days form-control inline'
+									   maxlength='3'
+									   title='Days' max='999' min='0' placeholder='{translate key=days}'/>
+								<input type='number' id='startNoticeUpdateHours' size='2' class='hours form-control inline'
+									   maxlength='2' max='99' min='0'
+									   title='Hours' placeholder='{translate key=hours}'/>
+								<input type='number' id='startNoticeUpdateMinutes' size='2'
+									   class='minutes form-control inline'
+									   maxlength='2' max='99' min='0' title='Minutes'
+									   placeholder='{translate key=minutes}'/>
+								<input type='hidden' id='startNoticeUpdate' class='interval' {formname key=MIN_NOTICE_UPDATE} />
+							{/capture}
+							<div id='startNoticeInputsUpdate'>
+								{translate key='ResourceMinNoticeUpdate' args=$txtStartNoticeUpdate}
+							</div>
+						</div>
+
+                        <div class="editStartNoticeDelete">
+							<div class="checkbox">
+								<input type="checkbox" id="noStartNoticeDelete" class="noStartNoticeDelete"
+									   data-related-inputs="#startNoticeInputsDelete"/>
+								<label for="noStartNoticeDelete">{translate key=ResourceMinNoticeNoneDelete}</label>
+							</div>
+							{capture name="txtStartNoticeDelete" assign="txtStartNoticeDelete"}
+								<input type='number' id='startNoticeDeleteDays' size='3' class='days form-control inline'
+									   maxlength='3'
+									   title='Days' max='999' min='0' placeholder='{translate key=days}'/>
+								<input type='number' id='startNoticeDeleteHours' size='2' class='hours form-control inline'
+									   maxlength='2' max='99' min='0'
+									   title='Hours' placeholder='{translate key=hours}'/>
+								<input type='number' id='startNoticeDeleteMinutes' size='2'
+									   class='minutes form-control inline'
+									   maxlength='2' max='99' min='0' title='Minutes'
+									   placeholder='{translate key=minutes}'/>
+								<input type='hidden' id='startNoticeDelete' class='interval' {formname key=MIN_NOTICE_DELETE} />
+							{/capture}
+							<div id='startNoticeInputsDelete'>
+								{translate key='ResourceMinNoticeDelete' args=$txtStartNoticeDelete}
 							</div>
 						</div>
 
@@ -732,6 +796,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 								{translate key='ResourceMaxNotice' args=$txtEndNotice}
 							</div>
 						</div>
+
 						<div class="editRequiresApproval">
 							<div class="checkbox">
 								<input type="checkbox" {formname key=REQUIRES_APPROVAL} id="requiresApproval"/>
@@ -976,13 +1041,13 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 								</div>
 
 								{capture name="txtMinDuration" assign="txtMinDuration"}
-									<input type='text' id='bulkEditMinDurationDays' size='3' class='days form-control inline'
-										   maxlength='3' placeholder='{translate key=days}'/>
-									<input type='text' id='bulkEditMinDurationHours' size='2' class='hours form-control inline'
-										   maxlength='2' placeholder='{translate key=hours}'/>
-									<input type='text' id='bulkEditMinDurationMinutes' size='2'
+									<input type='number' id='bulkEditMinDurationDays' size='3' class='days form-control inline'
+										   maxlength='3' min='0' max='999' placeholder='{translate key=days}'/>
+									<input type='number' id='bulkEditMinDurationHours' size='2' class='hours form-control inline'
+										   maxlength='2' min='0' max='99' placeholder='{translate key=hours}'/>
+									<input type='number' id='bulkEditMinDurationMinutes' size='2'
 										   class='minutes form-control inline'
-										   maxlength='2' placeholder='{translate key=minutes}'/>
+										   maxlength='2' min='0' max='99' placeholder='{translate key=minutes}'/>
 									<input type='hidden' id='bulkEditMinDuration'
 										   class='interval' {formname key=MIN_DURATION} />
 								{/capture}
@@ -997,15 +1062,15 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 								</div>
 
 								{capture name="txtMaxDuration" assign="txtMaxDuration"}
-									<input type='text' id='bulkEditMaxDurationDays' size='3'
+									<input type='number' id='bulkEditMaxDurationDays' size='3'
 										   class='days form-control inline'
-										   maxlength='3' placeholder='{translate key=days}'/>
-									<input type='text' id='bulkEditMaxDurationHours' size='2'
+										   maxlength='3' min='0' max='999' placeholder='{translate key=days}'/>
+									<input type='number' id='bulkEditMaxDurationHours' size='2'
 										   class='hours form-control inline'
-										   maxlength='2' placeholder='{translate key=hours}'/>
-									<input type='text' id='bulkEditMaxDurationMinutes' size='2'
+										   maxlength='2' min='0' max='99' placeholder='{translate key=hours}'/>
+									<input type='number' id='bulkEditMaxDurationMinutes' size='2'
 										   class='minutes form-control inline'
-										   maxlength='2' placeholder='{translate key=minutes}'/>
+										   maxlength='2' min='0' max='99' placeholder='{translate key=minutes}'/>
 									<input type='hidden' id='bulkEditMaxDuration'
 										   class='interval' {formname key=MAX_DURATION} />
 								{/capture}
@@ -1021,13 +1086,13 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 								</div>
 
 								{capture name="txtBufferTime" assign="txtBufferTime"}
-									<input type='text' id='bulkEditBufferTimeDays' size='3' class='days form-control inline'
-										   maxlength='3' placeholder='{translate key=days}'/>
-									<input type='text' id='bulkEditBufferTimeHours' size='2' class='hours form-control inline'
-										   maxlength='2' placeholder='{translate key=hours}'/>
-									<input type='text' id='bulkEditBufferTimeMinutes' size='2'
+									<input type='number' id='bulkEditBufferTimeDays' size='3' class='days form-control inline'
+										   maxlength='3' min='0' max='999' placeholder='{translate key=days}'/>
+									<input type='number' id='bulkEditBufferTimeHours' size='2' class='hours form-control inline'
+										   maxlength='2' min='0' max='99' placeholder='{translate key=hours}'/>
+									<input type='number' id='bulkEditBufferTimeMinutes' size='2'
 										   class='minutes form-control inline'
-										   maxlength='2' placeholder='{translate key=minutes}'/>
+										   maxlength='2' min='0' max='99' placeholder='{translate key=minutes}'/>
 									<input type='hidden' id='bulkEditBufferTime'
 										   class='interval' {formname key=BUFFER_TIME} />
 								{/capture}
@@ -1040,30 +1105,76 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 						<div class="title">{translate key=Access}</div>
 						<div>
+
 							<div class="form-group">
 								<div class="checkbox">
-									<input type="checkbox" id="bulkEditNoStartNotice"
-										   value="1" {formname key=MIN_NOTICE_NONE}
-										   data-related-inputs="#bulkStartNoticeInputs"/>
-									<label for="bulkEditNoStartNotice">{translate key=ResourceMinNoticeNone}</label>
+									<input type="checkbox" id="bulkEditNoStartNoticeAdd"
+										   value="1" {formname key=MIN_NOTICE_NONE_ADD}
+										   data-related-inputs="#bulkStartNoticeInputsAdd"/>
+									<label for="bulkEditNoStartNoticeAdd">{translate key=ResourceMinNoticeNone}</label>
 								</div>
-
-
-								{capture name="txtStartNotice" assign="txtStartNotice"}
-									<input type='text' id='bulkEditStartNoticeDays' size='3' class='days form-control inline'
-										   maxlength='3' placeholder='{translate key=days}'/>
-									<input type='text' id='bulkEditStartNoticeHours' size='2' class='hours form-control inline'
-										   maxlength='2' placeholder='{translate key=hours}'/>
-									<input type='text' id='bulkEditStartNoticeMinutes' size='2'
+								{capture name="txtStartNoticeAdd" assign="txtStartNoticeAdd"}
+									<input type='number' id='bulkEditStartNoticeAddDays' size='3' class='days form-control inline'
+										   maxlength='3' min='0' max='999' placeholder='{translate key=days}'/>
+									<input type='number' id='bulkEditStartNoticeAddHours' size='2' class='hours form-control inline'
+										   maxlength='2' min='0' max='99' placeholder='{translate key=hours}'/>
+									<input type='number' id='bulkEditStartNoticeAddMinutes' size='2'
 										   class='minutes form-control inline'
-										   maxlength='2' placeholder='{translate key=minutes}'/>
-									<input type='hidden' id='bulkEditStartNotice'
-										   class='interval' {formname key=MIN_NOTICE} />
+										   maxlength='2' min='0' max='99' placeholder='{translate key=minutes}'/>
+									<input type='hidden' id='bulkEditStartNoticeAdd'
+										   class='interval' {formname key=MIN_NOTICE_ADD} />
 								{/capture}
-								<div id='bulkStartNoticeInputs'>
-									{translate key='ResourceMinNotice' args=$txtStartNotice}
+								<div id='bulkStartNoticeInputsAdd'>
+									{translate key='ResourceMinNotice' args=$txtStartNoticeAdd}
 								</div>
 							</div>
+
+                            <div class="form-group">
+								<div class="checkbox">
+									<input type="checkbox" id="bulkEditNoStartNoticeUpdate"
+										   value="1" {formname key=MIN_NOTICE_NONE_UPDATE}
+										   data-related-inputs="#bulkStartNoticeInputsUpdate"/>
+									<label for="bulkEditNoStartNoticeUpdate">{translate key=ResourceMinNoticeNoneUpdate}</label>
+								</div>
+								{capture name="txtStartNoticeUpdate" assign="txtStartNoticeUpdate"}
+									<input type='number' id='bulkEditStartNoticeUpdateDays' size='3' class='days form-control inline'
+										   maxlength='3' min='0' max='999' placeholder='{translate key=days}'/>
+									<input type='number' id='bulkEditStartNoticeUpdateHours' size='2' class='hours form-control inline'
+										   maxlength='2' min='0' max='99' placeholder='{translate key=hours}'/>
+									<input type='number' id='bulkEditStartNoticeUpdateMinutes' size='2'
+										   class='minutes form-control inline'
+										   maxlength='2' min='0' max='99' placeholder='{translate key=minutes}'/>
+									<input type='hidden' id='bulkEditStartNoticeUpdate'
+										   class='interval' {formname key=MIN_NOTICE_UPDATE} />
+								{/capture}
+								<div id='bulkStartNoticeInputsUpdate'>
+									{translate key='ResourceMinNoticeUpdate' args=$txtStartNoticeUpdate}
+								</div>
+							</div>
+
+                            <div class="form-group">
+								<div class="checkbox">
+									<input type="checkbox" id="bulkEditNoStartNoticeDelete"
+										   value="1" {formname key=MIN_NOTICE_NONE_DELETE}
+										   data-related-inputs="#bulkStartNoticeInputsDelete"/>
+									<label for="bulkEditNoStartNoticeDelete">{translate key=ResourceMinNoticeNoneDelete}</label>
+								</div>
+								{capture name="txtStartNoticeDelete" assign="txtStartNoticeDelete"}
+									<input type='number' id='bulkEditStartNoticeDeleteDays' size='3' class='days form-control inline'
+										   maxlength='3' min='0' max='999' placeholder='{translate key=days}'/>
+									<input type='number' id='bulkEditStartNoticeDeleteHours' size='2' class='hours form-control inline'
+										   maxlength='2' min='0' max='99' placeholder='{translate key=hours}'/>
+									<input type='number' id='bulkEditStartNoticeDeleteMinutes' size='2'
+										   class='minutes form-control inline'
+										   maxlength='2' min='0' max='99' placeholder='{translate key=minutes}'/>
+									<input type='hidden' id='bulkEditStartNoticeDelete'
+										   class='interval' {formname key=MIN_NOTICE_DELETE} />
+								{/capture}
+								<div id='bulkStartNoticeInputsDelete'>
+									{translate key='ResourceMinNoticeDelete' args=$txtStartNoticeDelete}
+								</div>
+							</div>
+
 							<div class="form-group">
 								<div class="checkbox">
 									<input type="checkbox" id="bulkEditNoEndNotice"
@@ -1389,6 +1500,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 	{jsfile src="autocomplete.js"}
 	{jsfile src="js/tree.jquery.js"}
 	{jsfile src="admin/resource.js"}
+	{jsfile src="dropzone.js"}
 
 	<script type="text/javascript">
 
@@ -1509,6 +1621,9 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			hidePopoversWhenClickAway();
 			setUpEditables();
 
+            dropzone($("#addResourceImage"));
+            dropzone($("#changeResourceImage"));
+
 			var actions = {
 				enableSubscription: '{ManageResourcesActions::ActionEnableSubscription}',
 				disableSubscription: '{ManageResourcesActions::ActionDisableSubscription}',
@@ -1575,12 +1690,30 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			};
 			{/if}
 
-			{if $resource->HasMinNotice()}
-			resource.startNotice = {
-				value: '{$resource->GetMinNotice()}',
-				days: '{$resource->GetMinNotice()->Days()}',
-				hours: '{$resource->GetMinNotice()->Hours()}',
-				minutes: '{$resource->GetMinNotice()->Minutes()}'
+			{if $resource->HasMinNoticeAdd()}
+			resource.startNoticeAdd = {
+				value: '{$resource->GetMinNoticeAdd()}',
+				days: '{$resource->GetMinNoticeAdd()->Days()}',
+				hours: '{$resource->GetMinNoticeAdd()->Hours()}',
+				minutes: '{$resource->GetMinNoticeAdd()->Minutes()}'
+			};
+			{/if}
+
+            {if $resource->HasMinNoticeUpdate()}
+			resource.startNoticeUpdate = {
+				value: '{$resource->GetMinNoticeUpdate()}',
+				days: '{$resource->GetMinNoticeUpdate()->Days()}',
+				hours: '{$resource->GetMinNoticeUpdate()->Hours()}',
+				minutes: '{$resource->GetMinNoticeUpdate()->Minutes()}'
+			};
+			{/if}
+
+            {if $resource->HasMinNoticeDelete()}
+			resource.startNoticeDelete = {
+				value: '{$resource->GetMinNoticeDelete()}',
+				days: '{$resource->GetMinNoticeDelete()->Days()}',
+				hours: '{$resource->GetMinNoticeDelete()->Hours()}',
+				minutes: '{$resource->GetMinNoticeDelete()->Minutes()}'
 			};
 			{/if}
 

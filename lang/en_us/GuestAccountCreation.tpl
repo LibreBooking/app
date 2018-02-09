@@ -1,5 +1,5 @@
 {*
-Copyright 2011-2017 Nick Korbel, Paul Menchini
+Copyright 2011-2018 Nick Korbel, Paul Menchini
 
 This file is part of Booked Scheduler.
 
@@ -17,7 +17,7 @@ You should have received a copy of the GNU General Public License
 along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 *}
 
-<p>You have created a new Booked account with the following information:<br/>
+<p>You have created a new {$AppTitle} account with the following information:<br/>
 Email: {$EmailAddress}<br/>
 Password: {$Password}<br/>
 

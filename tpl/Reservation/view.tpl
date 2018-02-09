@@ -1,5 +1,5 @@
 {*
-Copyright 2011-2017 Nick Korbel
+Copyright 2011-2018 Nick Korbel
 
 This file is part of Booked Scheduler.
 
@@ -16,7 +16,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 *}
-{include file='globalheader.tpl' TitleKey='ViewReservationHeading' Qtip=true}
+{include file='globalheader.tpl' TitleKey='ViewReservationHeading' Qtip=true printCssFiles='css/reservation.print.css'}
 <div id="page-view-reservation">
 	<div id="reservation-box" class="readonly">
 		<div id="reservationFormDiv">
@@ -38,30 +38,6 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 						{else}
 							{translate key=Private}
 						{/if}
-					</div>
-
-					<div class="col-xs-12">
-						<div class="pull-left">
-							<label>{translate key='Resources'}</label> {$ResourceName}
-							{foreach from=$AvailableResources item=resource}
-								{if is_array($AdditionalResourceIds) && in_array($resource->Id, $AdditionalResourceIds)}
-									,{$resource->Name}
-								{/if}
-							{/foreach}
-						</div>
-						<div class="pull-right">
-                            {if $ShowReservationDetails}
-							<label>{translate key='Accessories'}</label>
-							{foreach from=$Accessories item=accessory name=accessoryLoop}
-								<span class="badge quantity">{$accessory->QuantityReserved}</span>
-								{if $smarty.foreach.accessoryLoop.last}
-									{$accessory->Name}
-								{else}
-									{$accessory->Name},
-								{/if}
-							{/foreach}
-                            {/if}
-						</div>
 					</div>
 
 					<div class="col-xs-12">
@@ -89,7 +65,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 					</div>
 
 					<div class="col-xs-12">
-                        <span class="like-label">{translate key=ReservationLength}</span>
+                        {*<span class="like-label">{translate key=ReservationLength}</span>*}
                         <div class="durationText">
                             <span id="durationDays">0</span> {translate key=days}
                             <span id="durationHours">0</span> {translate key=hours}
@@ -114,6 +90,30 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 							</div>
 						{/if}
 					</div>
+
+                    <div class="col-xs-12">
+                        <div class="pull-left">
+                            <label>{translate key='Resources'}</label> {$ResourceName}
+                            {foreach from=$AvailableResources item=resource}
+                                {if is_array($AdditionalResourceIds) && in_array($resource->Id, $AdditionalResourceIds)}
+                                    ,{$resource->Name}
+                                {/if}
+                            {/foreach}
+                        </div>
+                        <div class="pull-right">
+                            {if $ShowReservationDetails}
+                                <label>{translate key='Accessories'}</label>
+                                {foreach from=$Accessories item=accessory name=accessoryLoop}
+                                    <span class="badge quantity">{$accessory->QuantityReserved}</span>
+                                    {if $smarty.foreach.accessoryLoop.last}
+                                        {$accessory->Name}
+                                    {else}
+                                        {$accessory->Name},
+                                    {/if}
+                                {/foreach}
+                            {/if}
+                        </div>
+                    </div>
 
 					{if $ShowReservationDetails}
 						<div class="col-xs-12">
@@ -239,7 +239,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 				</div>
 
 				{if $ShowReservationDetails}
-				<div class="col-xs-12">
+				<div class="col-xs-12 buttons">
 					<div class="pull-right">
 						<button type="button" class="btn btn-default" onclick="window.location='{$ReturnUrl}'">
 							{translate key='Cancel'}
@@ -250,6 +250,11 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 							<a href="{$icsUrl}" download="{$icsUrl}" class="btn btn-default">
 								<span class="fa fa-calendar"></span>
 								{translate key=AddToOutlook}</a>
+
+                            <a href="http://www.google.com/calendar/event?action=TEMPLATE&text={$ReservationTitle|escape:'url'}&dates={formatdate date=$StartDate->ToUtc() key=google}/{formatdate date=$EndDate->ToUtc() key=google}&ctz={$StartDate->Timezone()}&details={$Description|escape:'url'}&location={$Resource->Name|escape:'url'}&trp=false&sprop=&sprop=name:" target="_blank" rel="nofollow" class="btn btn-default">
+                                <span class="fa fa-google"></span>
+                                {translate key=AddToGoogleCalendar}</a>
+
 							<button type="button" class="btnPrint btn btn-default">
 								<span class="fa fa-print"></span>
 								{translate key='Print'}</button>

@@ -1,6 +1,6 @@
 <?php
 /**
-Copyright 2011-2017 Nick Korbel
+Copyright 2011-2018 Nick Korbel
 
 This file is part of Booked Scheduler.
 
@@ -175,8 +175,9 @@ class AttributeService implements IAttributeService
 		$attributes = $this->attributeRepository->GetByCategory($category);
 		foreach ($attributes as $attribute)
 		{
-			if ( ($attribute->UniquePerEntity() && count(array_intersect($entityIds, $attribute->EntityIds())) == 0) ||
-					($attribute->HasSecondaryEntities() && !in_array($attribute->SecondaryEntityIds(), $entityIds)) )
+			if (!empty($entityIds) &&
+                (($attribute->UniquePerEntity() && count(array_intersect($entityIds, $attribute->EntityIds())) == 0) ||
+                ($attribute->HasSecondaryEntities() && count(array_intersect($entityIds, $attribute->SecondaryEntityIds())) == 0)))
 			{
 				continue;
 			}

@@ -1,6 +1,6 @@
 <?php
 /**
-Copyright 2012-2017 Nick Korbel
+Copyright 2012-2018 Nick Korbel
 
 This file is part of Booked Scheduler.
 
@@ -85,6 +85,14 @@ class Url
     public function __toString()
     {
         return $this->url;
+    }
+
+    /**
+     * @return Url
+     */
+    public function Copy()
+    {
+        return new Url($this->ToString());
     }
 
 }

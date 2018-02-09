@@ -1,6 +1,6 @@
 <?php
 /**
-Copyright 2017 Nick Korbel
+Copyright 2017-2018 Nick Korbel
 
 This file is part of Booked Scheduler.
 
@@ -20,9 +20,20 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 class FakeUserRepository implements IUserRepository
 {
+    /**
+     * @var FakeUser
+     */
 	public $_User;
+    /**
+     * @var FakeUser
+     */
+    public $_UpdatedUser;
+    /**
+     * @var FakeUser
+     */
+    public $_AddedUser;
 
-	public function __construct()
+    public function __construct()
 	{
 		$this->_User = new FakeUser(123);
 	}
@@ -59,7 +70,7 @@ class FakeUserRepository implements IUserRepository
 	 */
 	function Update(User $user)
 	{
-		// TODO: Implement Update() method.
+		$this->_UpdatedUser = $user;
 	}
 
 	/**
@@ -68,8 +79,9 @@ class FakeUserRepository implements IUserRepository
 	 */
 	function Add(User $user)
 	{
-		// TODO: Implement Add() method.
-	}
+        $this->_AddedUser = $user;
+
+    }
 
 	/**
 	 * @param $userId int

@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright 2011-2017 Nick Korbel
+ * Copyright 2011-2018 Nick Korbel
  *
  * This file is part of Booked Scheduler.
  *
@@ -189,23 +189,10 @@ class SchedulePresenterTests extends TestBase
 		$activeName = 'super active';
 		$weekdayStart = 4;
 
-		$schedule = $this->getMock('ISchedule');
+		$schedule = new FakeSchedule($activeId, $activeName, true, $weekdayStart);
+		$schedule->SetAllowConcurrentReservations(true);
+
 		$page = $this->getMock('ISchedulePage');
-
-		$schedule
-				->expects($this->once())
-				->method('GetId')
-				->will($this->returnValue($activeId));
-
-		$schedule
-				->expects($this->once())
-				->method('GetName')
-				->will($this->returnValue($activeName));
-
-		$schedule
-				->expects($this->once())
-				->method('GetWeekdayStart')
-				->will($this->returnValue($weekdayStart));
 
 		$page
 				->expects($this->once())
@@ -237,6 +224,11 @@ class SchedulePresenterTests extends TestBase
 				->expects($this->once())
 				->method('SetScheduleStyle')
 				->with($this->equalTo(ScheduleStyle::Tall));
+
+		$page
+				->expects($this->once())
+				->method('SetAllowConcurrent')
+				->with($this->equalTo($schedule->GetAllowConcurrentReservations()));
 
 		$pageBuilder = new SchedulePageBuilder();
 		$pageBuilder->BindSchedules($page, $this->schedules, $schedule);
@@ -720,6 +712,48 @@ class SchedulePresenterTests extends TestBase
 		$builder->BindDisplayDates($page, new DateRange($start, $end), $schedule);
 	}
 
+	public function testIfCurrentDateIsBeforeAvailability_ShowFirstAvailableMessage()
+	{
+		$tz = 'America/Chicago';
+		$start = Date::Parse('2011-04-04', $tz);
+		$end = Date::Parse('2011-04-13', $tz);
+
+		$session = new UserSession(1);
+		$session->Timezone = $tz;
+
+		$schedule = new Schedule(1, null, true, 1, 10);
+		$schedule->SetAvailability($end->AddDays(20), $end->AddDays(30));
+
+		$page = new FakeSchedulePage();
+
+		$builder = new SchedulePageBuilder();
+		$builder->BindDisplayDates($page, new DateRange($start, $end), $schedule);
+
+		$this->assertEquals($page->_ScheduleAvailability, $schedule->GetAvailability());
+		$this->assertTrue($page->_ScheduleTooEarly);
+	}
+
+	public function testIfCurrentDateIsAfterAvailability_ShowNoLongerAvailableMessage()
+	{
+		$tz = 'America/Chicago';
+		$start = Date::Parse('2011-04-04', $tz);
+		$end = Date::Parse('2011-04-13', $tz);
+
+		$session = new UserSession(1);
+		$session->Timezone = $tz;
+
+		$schedule = new Schedule(1, null, true, 1, 10);
+		$schedule->SetAvailability($start->AddDays(-30), $start->AddDays(-20));
+
+		$page = new FakeSchedulePage();
+
+		$builder = new SchedulePageBuilder();
+		$builder->BindDisplayDates($page, new DateRange($start, $end), $schedule);
+
+		$this->assertEquals($page->_ScheduleAvailability, $schedule->GetAvailability());
+		$this->assertTrue($page->_ScheduleTooLate);
+	}
+
 	public function testShowsSevenDaysIfWeAreShowingFullWeek()
 	{
 		$timezone = 'America/Chicago';
@@ -880,65 +914,56 @@ class FakeSchedulePage implements ISchedulePage
 	public $_ResourceTypeAttributes = array();
 	public $_ResourceIds = array();
 	public $_SelectedDates = array();
+    public $_ScheduleAvailability;
+    public $_ScheduleTooEarly;
+    public $_ScheduleTooLate;
 
-	public function TakingAction()
+    public function TakingAction()
 	{
-		// TODO: Implement TakingAction() method.
 	}
 
 	public function GetAction()
 	{
-		// TODO: Implement GetAction() method.
 	}
 
 	public function RequestingData()
 	{
-		// TODO: Implement RequestingData() method.
 	}
 
 	public function GetDataRequest()
 	{
-		// TODO: Implement GetDataRequest() method.
 	}
 
 	public function PageLoad()
 	{
-		// TODO: Implement PageLoad() method.
 	}
 
 	public function Redirect($url)
 	{
-		// TODO: Implement Redirect() method.
 	}
 
 	public function RedirectToError($errorMessageId = ErrorMessages::UNKNOWN_ERROR, $lastPage = '')
 	{
-		// TODO: Implement RedirectToError() method.
 	}
 
 	public function IsPostBack()
 	{
-		// TODO: Implement IsPostBack() method.
 	}
 
 	public function IsValid()
 	{
-		// TODO: Implement IsValid() method.
 	}
 
 	public function GetLastPage()
 	{
-		// TODO: Implement GetLastPage() method.
 	}
 
 	public function RegisterValidator($validatorId, $validator)
 	{
-		// TODO: Implement RegisterValidator() method.
 	}
 
 	public function EnforceCSRFCheck()
 	{
-		// TODO: Implement EnforceCSRFCheck() method.
 	}
 
 	/**
@@ -948,7 +973,6 @@ class FakeSchedulePage implements ISchedulePage
 	 */
 	public function SetSchedules($schedules)
 	{
-		// TODO: Implement SetSchedules() method.
 	}
 
 	/**
@@ -958,7 +982,6 @@ class FakeSchedulePage implements ISchedulePage
 	 */
 	public function SetResources($resources)
 	{
-		// TODO: Implement SetResources() method.
 	}
 
 	/**
@@ -968,7 +991,6 @@ class FakeSchedulePage implements ISchedulePage
 	 */
 	public function SetDailyLayout($dailyLayout)
 	{
-		// TODO: Implement SetDailyLayout() method.
 	}
 
 	/**
@@ -977,7 +999,6 @@ class FakeSchedulePage implements ISchedulePage
 	 */
 	public function GetScheduleId()
 	{
-		// TODO: Implement GetScheduleId() method.
 	}
 
 	/**
@@ -985,7 +1006,6 @@ class FakeSchedulePage implements ISchedulePage
 	 */
 	public function SetScheduleId($scheduleId)
 	{
-		// TODO: Implement SetScheduleId() method.
 	}
 
 	/**
@@ -993,7 +1013,6 @@ class FakeSchedulePage implements ISchedulePage
 	 */
 	public function SetScheduleName($scheduleName)
 	{
-		// TODO: Implement SetScheduleName() method.
 	}
 
 	/**
@@ -1001,7 +1020,6 @@ class FakeSchedulePage implements ISchedulePage
 	 */
 	public function SetFirstWeekday($firstWeekday)
 	{
-		// TODO: Implement SetFirstWeekday() method.
 	}
 
 	/**
@@ -1011,7 +1029,6 @@ class FakeSchedulePage implements ISchedulePage
 	 */
 	public function SetDisplayDates($dates)
 	{
-		// TODO: Implement SetDisplayDates() method.
 	}
 
 	/**
@@ -1020,7 +1037,6 @@ class FakeSchedulePage implements ISchedulePage
 	 */
 	public function SetPreviousNextDates($previousDate, $nextDate)
 	{
-		// TODO: Implement SetPreviousNextDates() method.
 	}
 
 	/**
@@ -1028,14 +1044,12 @@ class FakeSchedulePage implements ISchedulePage
 	 */
 	public function GetSelectedDate()
 	{
-		// TODO: Implement GetSelectedDate() method.
 	}
 
 	/**
 	 */
 	public function ShowInaccessibleResources()
 	{
-		// TODO: Implement ShowInaccessibleResources() method.
 	}
 
 	/**
@@ -1043,7 +1057,6 @@ class FakeSchedulePage implements ISchedulePage
 	 */
 	public function ShowFullWeekToggle($showShowFullWeekToggle)
 	{
-		// TODO: Implement ShowFullWeekToggle() method.
 	}
 
 	/**
@@ -1051,7 +1064,6 @@ class FakeSchedulePage implements ISchedulePage
 	 */
 	public function GetShowFullWeek()
 	{
-		// TODO: Implement GetShowFullWeek() method.
 	}
 
 	/**
@@ -1059,7 +1071,6 @@ class FakeSchedulePage implements ISchedulePage
 	 */
 	public function SetLayoutResponse($layoutResponse)
 	{
-		// TODO: Implement SetLayoutResponse() method.
 	}
 
 	/**
@@ -1067,7 +1078,6 @@ class FakeSchedulePage implements ISchedulePage
 	 */
 	public function GetLayoutDate()
 	{
-		// TODO: Implement GetLayoutDate() method.
 	}
 
 	/**
@@ -1076,7 +1086,6 @@ class FakeSchedulePage implements ISchedulePage
 	 */
 	public function GetScheduleStyle($scheduleId)
 	{
-		// TODO: Implement GetScheduleStyle() method.
 	}
 
 	/**
@@ -1084,7 +1093,6 @@ class FakeSchedulePage implements ISchedulePage
 	 */
 	public function SetScheduleStyle($direction)
 	{
-		// TODO: Implement SetScheduleStyle() method.
 	}
 
 	/**
@@ -1092,7 +1100,6 @@ class FakeSchedulePage implements ISchedulePage
 	 */
 	public function GetGroupId()
 	{
-		// TODO: Implement GetGroupId() method.
 	}
 
 	/**
@@ -1108,7 +1115,6 @@ class FakeSchedulePage implements ISchedulePage
 	 */
 	public function SetResourceGroupTree(ResourceGroupTree $resourceGroupTree)
 	{
-		// TODO: Implement SetResourceGroupTree() method.
 	}
 
 	/**
@@ -1116,7 +1122,6 @@ class FakeSchedulePage implements ISchedulePage
 	 */
 	public function SetResourceTypes($resourceTypes)
 	{
-		// TODO: Implement SetResourceTypes() method.
 	}
 
 	/**
@@ -1124,7 +1129,6 @@ class FakeSchedulePage implements ISchedulePage
 	 */
 	public function SetResourceCustomAttributes($attributes)
 	{
-		// TODO: Implement SetResourceCustomAttributes() method.
 	}
 
 	/**
@@ -1132,7 +1136,6 @@ class FakeSchedulePage implements ISchedulePage
 	 */
 	public function SetResourceTypeCustomAttributes($attributes)
 	{
-		// TODO: Implement SetResourceTypeCustomAttributes() method.
 	}
 
 	/**
@@ -1175,79 +1178,55 @@ class FakeSchedulePage implements ISchedulePage
 		return $this->_ResourceTypeAttributes;
 	}
 
-	/**
-	 * @param ScheduleResourceFilter $resourceFilter
-	 */
 	public function SetFilter($resourceFilter)
 	{
-		// TODO: Implement SetFilter() method.
 	}
 
-	/**
-	 * @param CalendarSubscriptionUrl $subscriptionUrl
-	 */
 	public function SetSubscriptionUrl(CalendarSubscriptionUrl $subscriptionUrl)
 	{
-		// TODO: Implement SetSubscriptionUrl() method.
 	}
 
-	/**
-	 * @param bool $shouldShow
-	 */
 	public function ShowPermissionError($shouldShow)
 	{
-		// TODO: Implement ShowPermissionError() method.
 	}
 
-	/**
-	 * @param UserSession $user
-	 * @param Schedule $schedule
-	 * @return string
-	 */
 	public function GetDisplayTimezone(UserSession $user, Schedule $schedule)
 	{
-		// TODO: Implement GetDisplayTimezone() method.
 	}
 
-	/**
-	 * @return int
-	 */
 	public function GetResourceId()
 	{
-		// TODO: Implement GetResourceId() method.
 	}
 
-	/**
-	 * @return Date[]
-	 */
 	public function GetSelectedDates()
 	{
 		return $this->_SelectedDates;
 	}
 
-	/**
-	 * @param Date[] $specificDates
-	 */
 	public function SetSpecificDates($specificDates)
 	{
-		// TODO: Implement SetSpecificDates() method.
 	}
 
     public function GetSortField()
     {
-        // TODO: Implement GetSortField() method.
     }
 
     public function GetSortDirection()
     {
-        // TODO: Implement GetSortDirection() method.
     }
 
-    /**
-     * @return bool
-     */
     public function FilterCleared()
     {
-        // TODO: Implement FilterCleared() method.
+    }
+
+    public function BindScheduleAvailability($availability, $tooEarly)
+    {
+        $this->_ScheduleAvailability = $availability;
+        $this->_ScheduleTooEarly = $tooEarly;
+        $this->_ScheduleTooLate = !$tooEarly;
+    }
+
+    public function SetAllowConcurrent($allowConcurrentReservations)
+    {
     }
 }

@@ -1,6 +1,6 @@
 <?php
 /**
-Copyright 2011-2017 Nick Korbel
+Copyright 2011-2018 Nick Korbel
 
 This file is part of Booked Scheduler.
 
@@ -40,4 +40,5 @@ require_once(ROOT_DIR . 'Domain/RepeatOptions.php');
 require_once(ROOT_DIR . 'Domain/User.php');
 require_once(ROOT_DIR . 'Domain/Group.php');
 require_once(ROOT_DIR . 'Domain/Quota.php');
+require_once(ROOT_DIR . 'Domain/ReservationAttachment.php');
 require_once(ROOT_DIR . 'Domain/ReservationAttachment.php');

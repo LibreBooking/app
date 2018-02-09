@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright 2011-2017 Nick Korbel
+ * Copyright 2011-2018 Nick Korbel
  *
  * This file is part of Booked Scheduler.
  *
@@ -227,7 +227,7 @@ class ResourceRepository implements IResourceRepository
 				$resource->GetRequiresApproval(),
 				$resource->GetAllowMultiday(),
 				$resource->GetMaxParticipants(),
-				$resource->GetMinNotice(),
+				$resource->GetMinNoticeAdd(),
 				$resource->GetMaxNotice(),
 				$resource->GetDescription(),
 				$resource->GetImage(),
@@ -245,7 +245,9 @@ class ResourceRepository implements IResourceRepository
 				$resource->GetAutoReleaseMinutes(),
 				$resource->GetIsDisplayEnabled(),
 				$resource->GetCreditsPerSlot(),
-				$resource->GetPeakCreditsPerSlot()
+				$resource->GetPeakCreditsPerSlot(),
+                $resource->GetMinNoticeUpdate(),
+                $resource->GetMinNoticeDelete()
 		);
 
 		$db->Execute($updateResourceCommand);

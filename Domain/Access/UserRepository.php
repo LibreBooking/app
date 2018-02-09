@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright 2011-2017 Nick Korbel
+ * Copyright 2011-2018 Nick Korbel
  *
  * This file is part of Booked Scheduler.
  *
@@ -394,7 +394,7 @@ class UserRepository implements IUserRepository, IAccountActivationRepository
             $user->Homepage(), $user->GetAttribute(UserAttribute::Phone),
             $user->GetAttribute(UserAttribute::Organization),
             $user->GetAttribute(UserAttribute::Position), $user->StatusId(), $user->GetPublicId(),
-            $user->GetDefaultScheduleId()));
+            $user->GetDefaultScheduleId(), $user->TermsAcceptanceDate()));
 
         $user->WithId($id);
 
@@ -420,6 +420,8 @@ class UserRepository implements IUserRepository, IAccountActivationRepository
                 $db->Execute(new AddUserResourcePermission($id, $resourceId));
             }
         }
+
+        $db->Execute(new AddUserToDefaultGroupsCommand($id));
 
         return $id;
     }
@@ -500,6 +502,11 @@ class UserRepository implements IUserRepository, IAccountActivationRepository
 
         foreach ($user->GetAddedGroups() as $added) {
             $db->Execute(new AddUserGroupCommand($user->Id(), $added->GroupId));
+        }
+
+        if ($user->HaveCreditsChanged())
+        {
+            $db->Execute(new LogCreditActivityCommand($user->Id(), $user->GetOriginalCredits(), $user->GetCurrentCredits(), $user->GetCreditsNote()));
         }
     }
 

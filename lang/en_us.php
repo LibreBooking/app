@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright 2011-2017 Nick Korbel
+ * Copyright 2011-2018 Nick Korbel
  *
  * This file is part of Booked Scheduler.
  *
@@ -37,7 +37,7 @@ class en_us extends Language
 		$dates['general_date'] = 'm/d/Y';
 		$dates['general_datetime'] = 'm/d/Y g:i:s A';
 		$dates['short_datetime'] = 'n/j/y g:i A';
-		$dates['schedule_daily'] = 'l, m/d/Y';
+		$dates['schedule_daily'] = 'l, n/j/y';
 		$dates['reservation_email'] = 'm/d/Y @ g:i A (e)';
 		$dates['res_popup'] = 'D, n/d g:i A';
 		$dates['res_popup_time'] = 'g:i A';
@@ -175,6 +175,10 @@ class en_us extends Language
 		$strings['ResourcePermissionNotAutoGranted'] = 'Permission is not automatically granted';
 		$strings['ResourceMinNotice'] = 'Reservations must be made at least %s prior to start time';
 		$strings['ResourceMinNoticeNone'] = 'Reservations can be made up until the current time';
+		$strings['ResourceMinNoticeUpdate'] = 'Reservations must be updated at least %s prior to start time';
+		$strings['ResourceMinNoticeNoneUpdate'] = 'Reservations can be updated up until the current time';
+		$strings['ResourceMinNoticeDelete'] = 'Reservations must be deleted at least %s prior to start time';
+		$strings['ResourceMinNoticeNoneDelete'] = 'Reservations can be deleted up until the current time';
 		$strings['ResourceMaxNotice'] = 'Reservations must not end more than %s from the current time';
 		$strings['ResourceMaxNoticeNone'] = 'Reservations can end at any point in the future';
 		$strings['ResourceBufferTime'] = 'There must be %s between reservations';
@@ -511,7 +515,7 @@ class en_us extends Language
 		$strings['CollectFor'] = 'Collect For';
 		$strings['SignIn'] = 'Sign In';
 		$strings['AllParticipants'] = 'All Participants';
-		$strings['RegisterANewAccount'] = 'Register A New Account';
+		$strings['RegisterANewAccount'] = 'Register a New Account';
 		$strings['Dates'] = 'Dates';
 		$strings['More'] = 'More';
 		$strings['ResourceAvailability'] = 'Resource Availability';
@@ -536,7 +540,7 @@ class en_us extends Language
 		$strings['AllDay'] = 'All Day';
 		$strings['Everyday'] = 'Everyday';
 		$strings['IncludingCompletedReservations'] = 'Including Completed Reservations';
-		$strings['NotCountingCompletedReservations'] = 'Not Counting Completed Reservations';
+		$strings['NotCountingCompletedReservations'] = 'Not Including Completed Reservations';
 		$strings['RetrySkipConflicts'] = 'Skip conflicting reservations';
 		$strings['Retry'] = 'Retry';
 		$strings['RemoveExistingPermissions'] = 'Remove existing permissions?';
@@ -635,10 +639,89 @@ class en_us extends Language
         $strings['UpdateResourcesOnImport'] = 'Update existing resources if name already exists';
         $strings['Reject'] = 'Reject';
         $strings['CheckingAvailability'] = 'Checking availability';
+        $strings['CreditPurchaseNotEnabled'] = 'You have not enabled the ability to purchase credits';
+        $strings['CreditsCost'] = 'Each credit costs';
+        $strings['Currency'] = 'Currency';
+        $strings['PayPalClientId'] = 'Client ID';
+        $strings['PayPalSecret'] = 'Secret';
+        $strings['PayPalEnvironment'] = 'Environment';
+        $strings['Sandbox'] = 'Sandbox';
+        $strings['Live'] = 'Live';
+        $strings['StripePublishableKey'] = 'Publishable key';
+        $strings['StripeSecretKey'] = 'Secret key';
+        $strings['CreditsUpdated'] = 'Credit cost has been updated';
+        $strings['GatewaysUpdated'] = 'Payment gateways have been updated';
+        $strings['PurchaseSummary'] = 'Purchase Summary';
+        $strings['EachCreditCosts'] = 'Each credit costs';
+        $strings['Checkout'] = 'Checkout';
+        $strings['Quantity'] = 'Quantity';
+        $strings['CreditPurchase'] = 'Credit Purchase';
+        $strings['EmptyCart'] = 'Your cart is empty.';
+        $strings['BuyCredits'] = 'Buy Credits';
+        $strings['CreditsPurchased'] = 'credits purchased.';
+        $strings['ViewYourCredits'] = 'View your credits';
+        $strings['TryAgain'] = 'Try Again';
+        $strings['PurchaseFailed'] = 'We had trouble processing your payment.';
+        $strings['NoteCreditsPurchased'] = 'Credits purchased';
+        $strings['CreditsUpdatedLog'] = 'Credits updated by %s';
+        $strings['ReservationCreatedLog'] = 'Reservation created. Reference number %s';
+        $strings['ReservationUpdatedLog'] = 'Reservation updated. Reference number %s';
+        $strings['ReservationDeletedLog'] = 'Reservation deleted. Reference number %s';
+        $strings['BuyMoreCredits'] = 'Buy More Credits';
+        $strings['Transactions'] = 'Transactions';
+        $strings['Cost'] = 'Cost';
+        $strings['PaymentGateways'] = 'Payment Gateways';
+        $strings['CreditHistory'] = 'Credit History';
+        $strings['TransactionHistory'] = 'Transaction History';
+        $strings['Date'] = 'Date';
+        $strings['Note'] = 'Note';
+        $strings['CreditsBefore'] = 'Credits Before';
+        $strings['CreditsAfter'] = 'Credits After';
+        $strings['TransactionFee'] = 'Transaction Fee';
+        $strings['InvoiceNumber'] = 'Invoice Number';
+        $strings['TransactionId'] = 'Transaction ID';
+        $strings['Gateway'] = 'Gateway';
+        $strings['GatewayTransactionDate'] = 'Gateway Transaction Date';
+        $strings['Refund'] = 'Refund';
+        $strings['IssueRefund'] = 'Issue Refund';
+        $strings['RefundIssued'] = 'Refund Issued Successfully';
+        $strings['RefundAmount'] = 'Refund Amount';
+        $strings['AmountRefunded'] = 'Refunded';
+        $strings['FullyRefunded'] = 'Fully Refunded';
+        $strings['YourCredits'] = 'Your Credits';
+        $strings['PayWithCard'] = 'Pay with Card';
+        $strings['or'] = 'or';
+        $strings['CreditsRequired'] = 'Credits Required';
+        $strings['AddToGoogleCalendar'] = 'Add to Google';
+        $strings['Image'] = 'Image';
+        $strings['ChooseOrDropFile'] = 'Choose a file or drag it here';
+        $strings['SlackBookResource'] = 'Book %s now';
+        $strings['SlackBookNow'] = 'Book Now';
+        $strings['SlackNotFound'] = 'We could not find a resource with that name. Book Now to start a new reservation.';
+        $strings['AutomaticallyAddToGroup'] = 'Automatically add new users to this group';
+        $strings['GroupAutomaticallyAdd'] = 'Auto Add';
+        $strings['TermsOfService'] = 'Terms of Service';
+        $strings['EnterTermsManually'] = 'Enter Terms Manually';
+        $strings['LinkToTerms'] = 'Link to Terms';
+        $strings['UploadTerms'] = 'Upload Terms';
+        $strings['RequireTermsOfServiceAcknowledgement'] = 'Require Terms of Service Acknowledgement';
+        $strings['UponReservation'] = 'Upon Reservation';
+        $strings['UponRegistration'] = 'Upon Registration';
+        $strings['ViewTerms'] = 'View Terms of Service';
+        $strings['IAccept'] = 'I Accept';
+        $strings['TheTermsOfService'] = 'the Terms of Service';
+        $strings['DisplayPage'] = 'Display Page';
+        $strings['AvailableAllYear'] = 'All Year';
+        $strings['Availability'] = 'Availability';
+        $strings['AvailableBetween'] = 'Available Between';
+        $strings['ConcurrentYes'] = 'Resources can be booked by more than one person at a time';
+        $strings['ConcurrentNo'] = 'Resources cannot be booked by more than one person at a time';
+        $strings['ScheduleAvailabilityEarly'] = ' This schedule is not yet available. It is available';
+        $strings['ScheduleAvailabilityLate'] = 'This schedule is no longer available. It was available';
         // End Strings
 
 		// Install
-		$strings['InstallApplication'] = 'Install Booked Scheduler (MySQL only)';
+		$strings['InstallApplication'] = 'Install Booked Scheduler';
 		$strings['IncorrectInstallPassword'] = 'Sorry, that password was incorrect.';
 		$strings['SetInstallPassword'] = 'You must set an install password before the installation can be run.';
 		$strings['InstallPasswordInstructions'] = 'In %s please set %s to a password which is random and difficult to guess, then return to this page.<br/>You can use %s';
@@ -679,7 +762,9 @@ class en_us extends Language
 		// Errors
 		$strings['LoginError'] = 'We could not match your username or password';
 		$strings['ReservationFailed'] = 'Your reservation could not be made';
-		$strings['MinNoticeError'] = 'This reservation requires advance notice.  The earliest date and time that can be reserved is %s.';
+		$strings['MinNoticeError'] = 'This reservation requires advance notice. The earliest date and time that can be reserved is %s.';
+		$strings['MinNoticeErrorUpdate'] = 'Changing this reservation requires advance notice. Reservations before %s are not allowed to be changed.';
+		$strings['MinNoticeErrorDelete'] = 'Deleting this reservation requires advance notice. Reservations before %s are not allowed to be deleted.';
 		$strings['MaxNoticeError'] = 'This reservation cannot be made this far in the future.  The latest date and time that can be reserved is %s.';
 		$strings['MinDurationError'] = 'This reservation must last at least %s.';
 		$strings['MaxDurationError'] = 'This reservation cannot last longer than %s.';
@@ -717,6 +802,9 @@ class en_us extends Language
 		$strings['ReservationCannotBeCheckedInTo'] = 'This reservation cannot be checked in to.';
 		$strings['ReservationCannotBeCheckedOutFrom'] = 'This reservation cannot be checked out from.';
 		$strings['InvalidEmailDomain'] = 'That email address is not from an allowed domain';
+		$strings['TermsOfServiceError'] = 'You must accept the Terms of Service';
+		$strings['UserNotFound'] = 'That user could not be found';
+		$strings['ScheduleAvailabilityError'] = 'This schedule is available between %s and %s';
 		// End Errors
 
 		// Page Titles
@@ -775,6 +863,8 @@ class en_us extends Language
 		$strings['ManageResourceStatus'] = 'Resource Statuses';
 		$strings['ReservationColors'] = 'Reservation Colors';
 		$strings['SearchReservations'] = 'Search Reservations';
+		$strings['ManagePayments'] = 'Payments';
+		$strings['ViewCalendar'] = 'View Calendar';
 		// End Page Titles
 
 		// Day representations

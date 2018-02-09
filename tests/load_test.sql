@@ -27,7 +27,7 @@ REPLACE INTO `time_blocks` (`block_id`, `label`, `end_label`, `availability_code
 REPLACE INTO `schedules` (`schedule_id`, `name`, `isdefault`, `weekdaystart`, `daysvisible`, `layout_id`, `legacyid`) VALUES
 (1, 'Default', 1, 0, 7, 1, NULL);
 
-REPLACE INTO `resources` (`resource_id`, `name`, `location`, `contact_info`, `description`, `notes`, `isactive`, `min_duration`, `min_increment`, `max_duration`, `unit_cost`, `autoassign`, `requires_approval`, `allow_multiday_reservations`, `max_participants`, `min_notice_time`, `max_notice_time`, `image_name`, `schedule_id`, `legacyid`) VALUES
+REPLACE INTO `resources` (`resource_id`, `name`, `location`, `contact_info`, `description`, `notes`, `isactive`, `min_duration`, `min_increment`, `max_duration`, `unit_cost`, `autoassign`, `requires_approval`, `allow_multiday_reservations`, `max_participants`, `min_notice_time_add`, `max_notice_time`, `image_name`, `schedule_id`, `legacyid`) VALUES
 (1, 'Conference Room 1', NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, 1, 0, 1, NULL, NULL, NULL, 'resource1.jpg', 1, NULL),
 (2, 'Conference Room 2', NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, 1, 0, 1, NULL, NULL, NULL, 'resource2.jpg', 1, NULL);
 

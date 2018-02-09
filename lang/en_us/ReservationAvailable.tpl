@@ -1,5 +1,5 @@
 {*
-Copyright 2011-2017 Nick Korbel
+Copyright 2011-2018 Nick Korbel
 
 This file is part of Booked Scheduler.
 
@@ -21,4 +21,4 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 <br/>
 <br/>
 <a href="{$ScriptUrl}/{$ReservationUrl}">Book now</a> |
-<a href="{$ScriptUrl}">Log in to Booked Scheduler</a>
+<a href="{$ScriptUrl}">Log in to {$AppTitle}</a>

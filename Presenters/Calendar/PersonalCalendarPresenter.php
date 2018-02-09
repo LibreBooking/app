@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright 2011-2017 Nick Korbel
+ * Copyright 2011-2018 Nick Korbel
  *
  * This file is part of Booked Scheduler.
  *
@@ -42,7 +42,8 @@ class PersonalCalendarPresenter extends CommonCalendarPresenter
             $userRepository,
             $resourceService,
             $subscriptionService,
-            new NullPrivacyFilter());
+            new NullPrivacyFilter(),
+            new SlotLabelFactory());
 
         $this->AddAction(CalendarActions::ActionEnableSubscription, 'EnableSubscription');
         $this->AddAction(CalendarActions::ActionDisableSubscription, 'DisableSubscription');
@@ -55,6 +56,7 @@ class PersonalCalendarPresenter extends CommonCalendarPresenter
 
         $user = $this->userRepository->LoadById($userId);
         $user->EnableSubscription();
+        Configuration::Instance()->EnableSubscription();
         $this->userRepository->Update($user);
     }
 

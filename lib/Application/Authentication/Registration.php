@@ -1,6 +1,6 @@
 <?php
 /**
-Copyright 2011-2017 Nick Korbel
+Copyright 2011-2018 Nick Korbel
 
 This file is part of Booked Scheduler is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -69,7 +69,7 @@ class Registration implements IRegistration
 	}
 
 	public function Register($username, $email, $firstName, $lastName, $password, $timezone, $language,
-							 $homepageId, $additionalFields = array(), $attributeValues = array(), $groups = null)
+							 $homepageId, $additionalFields = array(), $attributeValues = array(), $groups = null, $acceptTerms = false)
 	{
 		$homepageId = empty($homepageId) ? Pages::DEFAULT_HOMEPAGE_ID : $homepageId;
 		$encryptedPassword = $this->passwordEncryption->EncryptPassword($password);
@@ -85,8 +85,10 @@ class Registration implements IRegistration
 		{
 			$user = User::Create($firstName, $lastName, $email, $username, $language, $timezone, $encryptedPassword->EncryptedPassword(), $encryptedPassword->Salt(), $homepageId);
 		}
+
 		$user->ChangeAttributes($attributes->Get(UserAttribute::Phone), $attributes->Get(UserAttribute::Organization), $attributes->Get(UserAttribute::Position));
 		$user->ChangeCustomAttributes($attributeValues);
+		$user->AcceptTerms($acceptTerms);
 
 		if ($groups != null)
 		{
@@ -127,7 +129,7 @@ class Registration implements IRegistration
 		return !empty($userId);
 	}
 
-	public function Synchronize(AuthenticatedUser $user, $insertOnly = false)
+	public function Synchronize(AuthenticatedUser $user, $insertOnly = false, $overwritePassword = true)
 	{
 		if ($this->UserExists($user->UserName(), $user->Email()))
 		{
@@ -136,8 +138,15 @@ class Registration implements IRegistration
 				return;
 			}
 
-			$encryptedPassword = $this->passwordEncryption->EncryptPassword($user->Password());
-			$command = new UpdateUserFromLdapCommand($user->UserName(), $user->Email(), $user->FirstName(), $user->LastName(), $encryptedPassword->EncryptedPassword(), $encryptedPassword->Salt(), $user->Phone(), $user->Organization(), $user->Title());
+			$password = null;
+			$salt = null;
+
+			if ($overwritePassword) {
+                $encryptedPassword = $this->passwordEncryption->EncryptPassword($user->Password());
+                $password = $encryptedPassword->EncryptedPassword();
+                $salt = $encryptedPassword->Salt();
+            }
+			$command = new UpdateUserFromLdapCommand($user->UserName(), $user->Email(), $user->FirstName(), $user->LastName(), $password, $salt, $user->Phone(), $user->Organization(), $user->Title());
 			ServiceLocator::GetDatabase()->Execute($command);
 
 			if ($user->GetGroups() != null)

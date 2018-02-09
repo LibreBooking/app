@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright 2011-2017 Nick Korbel
+ * Copyright 2011-2018 Nick Korbel
  *
  * This file is part of Booked Scheduler.
  *
@@ -56,13 +56,14 @@ class AddAccountActivationCommand extends SqlCommand
 
 class AddAnnouncementCommand extends SqlCommand
 {
-    public function __construct($text, Date $start, Date $end, $priority)
+    public function __construct($text, Date $start, Date $end, $priority, $displayPage)
     {
         parent::__construct(Queries::ADD_ANNOUNCEMENT);
         $this->AddParameter(new Parameter(ParameterNames::ANNOUNCEMENT_TEXT, $text));
         $this->AddParameter(new Parameter(ParameterNames::START_DATE, $start->ToDatabase()));
         $this->AddParameter(new Parameter(ParameterNames::END_DATE, $end->ToDatabase()));
         $this->AddParameter(new Parameter(ParameterNames::ANNOUNCEMENT_PRIORITY, $priority));
+        $this->AddParameter(new Parameter(ParameterNames::ANNOUNCEMENT_DISPLAY_PAGE, $displayPage));
     }
 }
 
@@ -175,10 +176,11 @@ class AddEmailPreferenceCommand extends SqlCommand
 
 class AddGroupCommand extends SqlCommand
 {
-    public function __construct($groupName)
+    public function __construct($groupName, $isDefault)
     {
         parent::__construct(Queries::ADD_GROUP);
         $this->AddParameter(new Parameter(ParameterNames::GROUP_NAME, $groupName));
+        $this->AddParameter(new Parameter(ParameterNames::GROUP_ISDEFAULT, intval($isDefault)));
     }
 }
 
@@ -204,11 +206,18 @@ class AddGroupRoleCommand extends SqlCommand
 
 class AdjustUserCreditsCommand extends SqlCommand
 {
-    public function __construct($userId, $creditsToDeduct)
+    public function __construct($userId, $creditsToDeduct, $note)
     {
         parent::__construct(Queries::ADJUST_USER_CREDITS);
         $this->AddParameter(new Parameter(ParameterNames::USER_ID, $userId));
         $this->AddParameter(new Parameter(ParameterNames::CREDIT_COUNT, $creditsToDeduct));
+        $this->AddParameter(new Parameter(ParameterNames::CREDIT_NOTE, $note));
+        $this->AddParameter(new Parameter(ParameterNames::DATE_CREATED, Date::Now()->ToDatabase()));
+    }
+
+    public function IsMultiQuery()
+    {
+        return true;
     }
 }
 
@@ -235,6 +244,51 @@ class AddLayoutTimeCommand extends SqlCommand
     }
 }
 
+class AddPaymentGatewaySettingCommand extends SqlCommand
+{
+    public function __construct($gatewayType, $settingName, $settingValue)
+    {
+        parent::__construct(Queries::ADD_PAYMENT_GATEWAY_SETTING);
+        $this->AddParameter(new Parameter(ParameterNames::GATEWAY_TYPE, $gatewayType));
+        $this->AddParameter(new Parameter(ParameterNames::GATEWAY_SETTING_NAME, $settingName));
+        $this->AddParameter(new Parameter(ParameterNames::GATEWAY_SETTING_VALUE, $settingValue));
+    }
+}
+
+class AddPaymentTransactionLogCommand extends SqlCommand
+{
+    /**
+     * @param string $userId
+     * @param string $status
+     * @param string $invoiceNumber
+     * @param int $transactionId
+     * @param float $totalAmount
+     * @param float $transactionFee
+     * @param string $currency
+     * @param string $transactionHref
+     * @param string $refundHref
+     * @param Date $dateCreated
+     * @param string $gatewayDateCreated
+     * @param string $gatewayResponse
+     */
+    public function __construct($userId, $status, $invoiceNumber, $transactionId, $totalAmount, $transactionFee, $currency, $transactionHref, $refundHref, $dateCreated, $gatewayDateCreated, $gatewayName, $gatewayResponse)
+    {
+        parent::__construct(Queries::ADD_PAYMENT_TRANSACTION_LOG);
+        $this->AddParameter(new Parameter(ParameterNames::USER_ID, $userId));
+        $this->AddParameter(new Parameter(ParameterNames::PAYMENT_STATUS, $status));
+        $this->AddParameter(new Parameter(ParameterNames::PAYMENT_INVOICE_NUMBER, $invoiceNumber));
+        $this->AddParameter(new Parameter(ParameterNames::PAYMENT_TRANSACTION_ID, $transactionId));
+        $this->AddParameter(new Parameter(ParameterNames::PAYMENT_TOTAL, $totalAmount));
+        $this->AddParameter(new Parameter(ParameterNames::PAYMENT_TRANSACTION_FEE, $transactionFee));
+        $this->AddParameter(new Parameter(ParameterNames::PAYMENT_CURRENCY, $currency));
+        $this->AddParameter(new Parameter(ParameterNames::PAYMENT_TRANSACTION_HREF, $transactionHref));
+        $this->AddParameter(new Parameter(ParameterNames::PAYMENT_REFUND_HREF, $refundHref));
+        $this->AddParameter(new Parameter(ParameterNames::PAYMENT_DATE_CREATED, $dateCreated->ToDatabase()));
+        $this->AddParameter(new Parameter(ParameterNames::PAYMENT_GATEWAY_DATE_CREATED, $gatewayDateCreated));
+        $this->AddParameter(new Parameter(ParameterNames::PAYMENT_GATEWAY_NAME, $gatewayName));
+        $this->AddParameter(new Parameter(ParameterNames::PAYMENT_GATEWAY_RESPONSE, $gatewayResponse));
+    }
+}
 
 class AddPeakTimesCommand extends SqlCommand
 {
@@ -286,6 +340,36 @@ class AddQuotaCommand extends SqlCommand
     }
 }
 
+class AddRefundTransactionLogCommand extends SqlCommand
+{
+    /**
+     * @param string $paymentTransactionLogId
+     * @param string $status
+     * @param int $transactionId
+     * @param float $totalRefundAmount
+     * @param float $paymentRefundAmount
+     * @param float $feeRefundAmount
+     * @param string $transactionHref
+     * @param Date $dateCreated
+     * @param string $gatewayDateCreated
+     * @param string $refundResponse
+     */
+    public function __construct($paymentTransactionLogId, $status, $transactionId, $totalRefundAmount, $paymentRefundAmount, $feeRefundAmount, $transactionHref, $dateCreated, $gatewayDateCreated, $refundResponse)
+    {
+        parent::__construct(Queries::ADD_REFUND_TRANSACTION_LOG);
+        $this->AddParameter(new Parameter(ParameterNames::PAYMENT_TRANSACTION_LOG_ID, $paymentTransactionLogId));
+        $this->AddParameter(new Parameter(ParameterNames::REFUND_STATUS, $status));
+        $this->AddParameter(new Parameter(ParameterNames::REFUND_TRANSACTION_ID, $transactionId));
+        $this->AddParameter(new Parameter(ParameterNames::REFUND_TOTAL_AMOUNT, $totalRefundAmount));
+        $this->AddParameter(new Parameter(ParameterNames::REFUND_PAYMENT_AMOUNT, $paymentRefundAmount));
+        $this->AddParameter(new Parameter(ParameterNames::REFUND_FEE_AMOUNT, $feeRefundAmount));
+        $this->AddParameter(new Parameter(ParameterNames::REFUND_TRANSACTION_HREF, $transactionHref));
+        $this->AddParameter(new Parameter(ParameterNames::REFUND_DATE_CREATED, $dateCreated->ToDatabase()));
+        $this->AddParameter(new Parameter(ParameterNames::REFUND_GATEWAY_DATE_CREATED, $gatewayDateCreated));
+        $this->AddParameter(new Parameter(ParameterNames::REFUND_GATEWAY_RESPONSE, $refundResponse));
+    }
+}
+
 class AddReservationSeriesCommand extends SqlCommand
 {
     public function __construct(Date $dateCreated,
@@ -296,10 +380,15 @@ class AddReservationSeriesCommand extends SqlCommand
                                 $reservationTypeIds,
                                 $statusId,
                                 $ownerId,
-                                $allowParticipation
+                                $allowParticipation,
+                                $termsAcceptanceDate
     )
     {
         parent::__construct(Queries::ADD_RESERVATION_SERIES);
+
+        if ($termsAcceptanceDate == null) {
+            $termsAcceptanceDate = new NullDate();
+        }
 
         $this->AddParameter(new Parameter(ParameterNames::DATE_CREATED, $dateCreated->ToDatabase()));
         $this->AddParameter(new Parameter(ParameterNames::TITLE, $title));
@@ -310,6 +399,7 @@ class AddReservationSeriesCommand extends SqlCommand
         $this->AddParameter(new Parameter(ParameterNames::STATUS_ID, $statusId));
         $this->AddParameter(new Parameter(ParameterNames::USER_ID, $ownerId));
         $this->AddParameter(new Parameter(ParameterNames::ALLOW_PARTICIPATION, (int)$allowParticipation));
+        $this->AddParameter(new Parameter(ParameterNames::TERMS_ACCEPTANCE_DATE, $termsAcceptanceDate->ToDatabase()));
     }
 }
 
@@ -442,7 +532,7 @@ class AddResourceCommand extends SqlCommand
                                 $location = null, $contact_info = null, $description = null, $notes = null,
                                 $status_id = 1, $min_duration = null, $min_increment = null, $max_duration = null,
                                 $unit_cost = null, $requires_approval = 0, $allow_multiday = 1,
-                                $max_participants = null, $min_notice_time = null, $max_notice_time = null)
+                                $max_participants = null, $min_notice_time_add = null, $max_notice_time = null)
     {
         parent::__construct(Queries::ADD_RESOURCE);
 
@@ -461,7 +551,7 @@ class AddResourceCommand extends SqlCommand
         $this->AddParameter(new Parameter(ParameterNames::RESOURCE_REQUIRES_APPROVAL, $requires_approval));
         $this->AddParameter(new Parameter(ParameterNames::RESOURCE_ALLOW_MULTIDAY, $allow_multiday));
         $this->AddParameter(new Parameter(ParameterNames::RESOURCE_MAX_PARTICIPANTS, $max_participants));
-        $this->AddParameter(new Parameter(ParameterNames::RESOURCE_MINNOTICE, $min_notice_time));
+        $this->AddParameter(new Parameter(ParameterNames::RESOURCE_MINNOTICE_ADD, $min_notice_time_add));
         $this->AddParameter(new Parameter(ParameterNames::RESOURCE_MAXNOTICE, $max_notice_time));
         $this->AddParameter(new Parameter(ParameterNames::GROUP_ADMIN_ID, $admin_group_id));
     }
@@ -537,6 +627,19 @@ class AddScheduleCommand extends SqlCommand
     }
 }
 
+class AddTermsOfServiceCommand extends SqlCommand
+{
+    public function __construct($termsText, $termsUrl, $filename, $applicability)
+    {
+        parent::__construct(Queries::ADD_TERMS_OF_SERVICE);
+        $this->AddParameter(new Parameter(ParameterNames::DATE_CREATED, Date::Now()->ToDatabase()));
+        $this->AddParameter(new Parameter(ParameterNames::TERMS_TEXT, $termsText));
+        $this->AddParameter(new Parameter(ParameterNames::TERMS_URL, $termsUrl));
+        $this->AddParameter(new Parameter(ParameterNames::TERMS_FILENAME, $filename));
+        $this->AddParameter(new Parameter(ParameterNames::TERMS_APPLICABILITY, $applicability));
+    }
+}
+
 class AddUserGroupCommand extends SqlCommand
 {
     public function __construct($userId, $groupId)
@@ -554,6 +657,15 @@ class AddUserResourcePermission extends SqlCommand
         parent::__construct(Queries::ADD_USER_RESOURCE_PERMISSION);
         $this->AddParameter(new Parameter(ParameterNames::USER_ID, $userId));
         $this->AddParameter(new Parameter(ParameterNames::RESOURCE_ID, $resourceId));
+    }
+}
+
+class AddUserToDefaultGroupsCommand extends SqlCommand
+{
+    public function __construct($userId)
+    {
+        parent::__construct(Queries::ADD_USER_TO_DEFAULT_GROUPS);
+        $this->AddParameter(new Parameter(ParameterNames::USER_ID, $userId));
     }
 }
 
@@ -781,6 +893,18 @@ class DeleteOrphanLayoutsCommand extends SqlCommand
     }
 }
 
+class DeletePaymentGatewaySettingsCommand extends SqlCommand
+{
+    /**
+     * @param string $gatewayType
+     */
+    public function __construct($gatewayType)
+    {
+        parent::__construct(Queries::DELETE_PAYMENT_GATEWAY_SETTINGS);
+        $this->AddParameter(new Parameter(ParameterNames::GATEWAY_TYPE, $gatewayType));
+    }
+}
+
 class DeletePeakTimesCommand extends SqlCommand
 {
     public function __construct($scheduleId)
@@ -919,6 +1043,14 @@ class DeleteSeriesCommand extends SqlCommand
     }
 }
 
+class DeleteTermsOfServiceCommand extends SqlCommand
+{
+    public function __construct()
+    {
+        parent::__construct(Queries::DELETE_TERMS_OF_SERVICE);
+    }
+}
+
 class DeleteUserCommand extends SqlCommand
 {
     public function __construct($userId)
@@ -999,6 +1131,11 @@ class GetAttributesByCategoryCommand extends SqlCommand
         parent::__construct(Queries::GET_ATTRIBUTES_BASE_QUERY . Queries::GET_ATTRIBUTES_BY_CATEGORY_WHERE);
         $this->AddParameter(new Parameter(ParameterNames::ATTRIBUTE_CATEGORY, $attributeCategoryId));
     }
+
+    public function ContainsGroupConcat()
+    {
+        return true;
+    }
 }
 
 class GetAttributeByIdCommand extends SqlCommand
@@ -1007,6 +1144,11 @@ class GetAttributeByIdCommand extends SqlCommand
     {
         parent::__construct(Queries::GET_ATTRIBUTES_BASE_QUERY . Queries::GET_ATTRIBUTE_BY_ID_WHERE);
         $this->AddParameter(new Parameter(ParameterNames::ATTRIBUTE_ID, $attributeId));
+    }
+
+    public function ContainsGroupConcat()
+    {
+        return true;
     }
 }
 
@@ -1077,6 +1219,15 @@ class GetAllApplicationAdminsCommand extends SqlCommand
         parent::__construct(Queries::GET_ALL_APPLICATION_ADMINS);
         $this->AddParameter(new Parameter(ParameterNames::USER_STATUS_ID, AccountStatus::ACTIVE));
         $this->AddParameter(new Parameter(ParameterNames::ROLE_LEVEL, RoleLevel::APPLICATION_ADMIN));
+    }
+}
+
+class GetAllCreditLogsCommand extends SqlCommand
+{
+    public function __construct($userId)
+    {
+        parent::__construct(Queries::GET_ALL_CREDIT_LOGS);
+        $this->AddParameter(new Parameter(ParameterNames::USER_ID, $userId));
     }
 }
 
@@ -1215,6 +1366,15 @@ class GetAllResourceTypesCommand extends SqlCommand
     }
 }
 
+class GetAllTransactionLogsCommand extends SqlCommand
+{
+    public function __construct($userId)
+    {
+        parent::__construct(Queries::GET_ALL_TRANSACTION_LOGS);
+        $this->AddParameter(new Parameter(ParameterNames::USER_ID, $userId));
+    }
+}
+
 class GetAllSavedReportsForUserCommand extends SqlCommand
 {
     public function __construct($userId)
@@ -1297,10 +1457,11 @@ class GetBlackoutResourcesCommand extends SqlCommand
 
 class GetDashboardAnnouncementsCommand extends SqlCommand
 {
-    public function __construct(Date $currentDate)
+    public function __construct(Date $currentDate, $displayPage)
     {
         parent::__construct(Queries::GET_DASHBOARD_ANNOUNCEMENTS);
         $this->AddParameter(new Parameter(ParameterNames::CURRENT_DATE, $currentDate->ToDatabase()));
+        $this->AddParameter(new Parameter(ParameterNames::ANNOUNCEMENT_DISPLAY_PAGE, $displayPage));
     }
 }
 
@@ -1328,6 +1489,23 @@ class GetLayoutCommand extends SqlCommand
     {
         parent::__construct(Queries::GET_SCHEDULE_TIME_BLOCK_GROUPS);
         $this->AddParameter(new Parameter(ParameterNames::SCHEDULE_ID, $scheduleId));
+    }
+}
+
+class GetPaymentConfigurationCommand extends SqlCommand
+{
+    public function __construct()
+    {
+        parent::__construct(Queries::GET_PAYMENT_CONFIGURATION);
+    }
+}
+
+class GetPaymentGatewaySettingsCommand extends SqlCommand
+{
+    public function __construct($gatewayType)
+    {
+        parent::__construct(Queries::GET_PAYMENT_GATEWAY_SETTINGS);
+        $this->AddParameter(new Parameter(ParameterNames::GATEWAY_TYPE, $gatewayType));
     }
 }
 
@@ -1694,6 +1872,23 @@ class GetScheduleResourcesCommand extends SqlCommand
     }
 }
 
+class GetTransactionLogCommand extends SqlCommand
+{
+    public function __construct($id)
+    {
+        parent::__construct(Queries::GET_TRANSACTION_LOG);
+        $this->AddParameter(new Parameter(ParameterNames::PAYMENT_TRANSACTION_LOG_ID, $id));
+    }
+}
+
+class GetTermsOfServiceCommand extends SqlCommand
+{
+    public function __construct()
+    {
+        parent::__construct(Queries::GET_TERMS_OF_SERVICE);
+    }
+}
+
 class GetUserIdByActivationCodeCommand extends SqlCommand
 {
     public function __construct($activationCode)
@@ -1786,6 +1981,19 @@ class GetVersionCommand extends SqlCommand
     }
 }
 
+class LogCreditActivityCommand extends SqlCommand
+{
+    public function __construct($userId, $originalCredits, $currentCredits, $note)
+    {
+        parent::__construct(Queries::LOG_CREDIT_ACTIVITY_COMMAND);
+        $this->AddParameter(new Parameter(ParameterNames::USER_ID, $userId));
+        $this->AddParameter(new Parameter(ParameterNames::ORIGNINAL_CREDIT_COUNT, $originalCredits));
+        $this->AddParameter(new Parameter(ParameterNames::CREDIT_COUNT, $currentCredits));
+        $this->AddParameter(new Parameter(ParameterNames::CREDIT_NOTE, $note));
+        $this->AddParameter(new Parameter(ParameterNames::DATE_CREATED, Date::Now()->ToDatabase()));
+    }
+}
+
 class LoginCommand extends SqlCommand
 {
     public function __construct($username)
@@ -1851,9 +2059,11 @@ class RegisterMiniUserCommand extends SqlCommand
 class RegisterUserCommand extends SqlCommand
 {
     public function __construct($username, $email, $fname, $lname, $password, $salt, $timezone, $language, $homepageId,
-                                $phone, $organization, $position, $userStatusId, $publicId, $scheduleId)
+                                $phone, $organization, $position, $userStatusId, $publicId, $scheduleId, $termsAcceptedDate)
     {
         parent::__construct(Queries::REGISTER_USER);
+
+        $termsAcceptedDate = $termsAcceptedDate == null ? new NullDate() : $termsAcceptedDate;
 
         $this->AddParameter(new Parameter(ParameterNames::USERNAME, $username));
         $this->AddParameter(new Parameter(ParameterNames::EMAIL_ADDRESS, $email));
@@ -1868,10 +2078,10 @@ class RegisterUserCommand extends SqlCommand
         $this->AddParameter(new Parameter(ParameterNames::ORGANIZATION, $organization));
         $this->AddParameter(new Parameter(ParameterNames::POSITION, $position));
         $this->AddParameter(new Parameter(ParameterNames::USER_STATUS_ID, $userStatusId));
-        $this->AddParameter(new Parameter(ParameterNames::DATE_CREATED, Date::Now()
-            ->ToDatabase()));
+        $this->AddParameter(new Parameter(ParameterNames::DATE_CREATED, Date::Now()->ToDatabase()));
         $this->AddParameter(new Parameter(ParameterNames::PUBLIC_ID, $publicId));
         $this->AddParameter(new Parameter(ParameterNames::SCHEDULE_ID, $scheduleId));
+        $this->AddParameter(new Parameter(ParameterNames::TERMS_ACCEPTANCE_DATE, $termsAcceptedDate->ToDatabase()));
     }
 }
 
@@ -2161,12 +2371,13 @@ class UpdateBlackoutInstanceCommand extends SqlCommand
 
 class UpdateGroupCommand extends SqlCommand
 {
-    public function __construct($groupId, $groupName, $adminGroupId)
+    public function __construct($groupId, $groupName, $adminGroupId, $isDefault)
     {
         parent::__construct(Queries::UPDATE_GROUP);
         $this->AddParameter(new Parameter(ParameterNames::GROUP_ID, $groupId));
         $this->AddParameter(new Parameter(ParameterNames::GROUP_NAME, $groupName));
         $this->AddParameter(new Parameter(ParameterNames::GROUP_ADMIN_ID, $adminGroupId));
+        $this->AddParameter(new Parameter(ParameterNames::GROUP_ISDEFAULT, intval($isDefault)));
     }
 }
 
@@ -2178,6 +2389,16 @@ class UpdateLoginDataCommand extends SqlCommand
         $this->AddParameter(new Parameter(ParameterNames::LAST_LOGIN, $lastLoginTime));
         $this->AddParameter(new Parameter(ParameterNames::LANGUAGE, $language));
         $this->AddParameter(new Parameter(ParameterNames::USER_ID, $userId));
+    }
+}
+
+class UpdatePaymentConfigurationCommand extends SqlCommand
+{
+    public function __construct($creditCost, $creditCurrency)
+    {
+        parent::__construct(Queries::UPDATE_PAYMENT_CONFIGURATION);
+        $this->AddParameter(new Parameter(ParameterNames::CREDIT_COST, $creditCost));
+        $this->AddParameter(new Parameter(ParameterNames::CREDIT_CURRENCY, $creditCurrency));
     }
 }
 
@@ -2257,7 +2478,7 @@ class UpdateResourceCommand extends SqlCommand
                                 $requiresApproval,
                                 $allowMultiday,
                                 $maxParticipants,
-                                TimeInterval $minNoticeTime,
+                                TimeInterval $minNoticeTimeAdd,
                                 TimeInterval $maxNoticeTime,
                                 $description,
                                 $imageName,
@@ -2275,7 +2496,9 @@ class UpdateResourceCommand extends SqlCommand
                                 $autoReleaseMinutes,
                                 $isDisplayEnabled,
                                 $credits,
-                                $peakCredits)
+                                $peakCredits,
+                                TimeInterval $minNoticeTimeUpdate,
+                                TimeInterval $minNoticeTimeDelete)
     {
         parent::__construct(Queries::UPDATE_RESOURCE);
 
@@ -2291,7 +2514,7 @@ class UpdateResourceCommand extends SqlCommand
         $this->AddParameter(new Parameter(ParameterNames::RESOURCE_REQUIRES_APPROVAL, $requiresApproval));
         $this->AddParameter(new Parameter(ParameterNames::RESOURCE_ALLOW_MULTIDAY, (int)$allowMultiday));
         $this->AddParameter(new Parameter(ParameterNames::RESOURCE_MAX_PARTICIPANTS, $maxParticipants));
-        $this->AddParameter(new Parameter(ParameterNames::RESOURCE_MINNOTICE, $minNoticeTime->ToDatabase()));
+        $this->AddParameter(new Parameter(ParameterNames::RESOURCE_MINNOTICE_ADD, $minNoticeTimeAdd->ToDatabase()));
         $this->AddParameter(new Parameter(ParameterNames::RESOURCE_MAXNOTICE, $maxNoticeTime->ToDatabase()));
         $this->AddParameter(new Parameter(ParameterNames::RESOURCE_IMAGE_NAME, $imageName));
         $this->AddParameter(new Parameter(ParameterNames::SCHEDULE_ID, $scheduleId));
@@ -2309,7 +2532,8 @@ class UpdateResourceCommand extends SqlCommand
         $this->AddParameter(new Parameter(ParameterNames::RESOURCE_ALLOW_DISPLAY, (int)$isDisplayEnabled));
         $this->AddParameter(new Parameter(ParameterNames::CREDIT_COUNT, $credits));
         $this->AddParameter(new Parameter(ParameterNames::PEAK_CREDIT_COUNT, $peakCredits));
-
+        $this->AddParameter(new Parameter(ParameterNames::RESOURCE_MINNOTICE_UPDATE, $minNoticeTimeUpdate->ToDatabase()));
+        $this->AddParameter(new Parameter(ParameterNames::RESOURCE_MINNOTICE_DELETE, $minNoticeTimeDelete->ToDatabase()));
     }
 }
 
@@ -2354,7 +2578,10 @@ class UpdateScheduleCommand extends SqlCommand
                                 $daysVisible,
                                 $subscriptionEnabled,
                                 $publicId,
-                                $adminGroupId)
+                                $adminGroupId,
+                                Date $availabilityBegin,
+                                Date $availabilityEnd,
+                                $allowConcurrentReservations)
     {
         parent::__construct(Queries::UPDATE_SCHEDULE);
 
@@ -2366,6 +2593,9 @@ class UpdateScheduleCommand extends SqlCommand
         $this->AddParameter(new Parameter(ParameterNames::ALLOW_CALENDAR_SUBSCRIPTION, (int)$subscriptionEnabled));
         $this->AddParameter(new Parameter(ParameterNames::PUBLIC_ID, $publicId));
         $this->AddParameter(new Parameter(ParameterNames::GROUP_ADMIN_ID, $adminGroupId));
+        $this->AddParameter(new Parameter(ParameterNames::SCHEDULE_AVAILABILITY_BEGIN, $availabilityBegin->ToDatabase()));
+        $this->AddParameter(new Parameter(ParameterNames::SCHEDULE_AVAILABILITY_END, $availabilityEnd->ToDatabase()));
+        $this->AddParameter(new Parameter(ParameterNames::SCHEDULE_ALLOW_CONCURRENT_RESERVATIONS, (int)$allowConcurrentReservations));
     }
 }
 

@@ -1,6 +1,6 @@
 <?php
 /**
-Copyright 2011-2017 Nick Korbel
+Copyright 2011-2018 Nick Korbel
 
 This file is part of Booked Scheduler.
 
@@ -46,7 +46,7 @@ class AnnouncementPresenter
 
 	private function PopulateAnnouncements()
 	{
-		$announcements = $this->_announcements->GetFuture();
+		$announcements = $this->_announcements->GetFuture(Pages::ID_DASHBOARD);
 		$user = ServiceLocator::GetServer()->GetUserSession();
 
 		$userAnnouncement = array();

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Copyright 2012-2017 Nick Korbel
+ * Copyright 2012-2018 Nick Korbel
  *
  * This file is part of Booked Scheduler.
  *
@@ -18,6 +18,7 @@
  * You should have received a copy of the GNU General Public License
  * along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 class ColumnNames
 {
 	private function __construct()
@@ -65,12 +66,14 @@ class ColumnNames
 	const ANNOUNCEMENT_START = 'start_date';
 	const ANNOUNCEMENT_END = 'end_date';
 	const ANNOUNCEMENT_TEXT = 'announcement_text';
+	const ANNOUNCEMENT_DISPLAY_PAGE = 'display_page';
 
 	// GROUPS //
 	const GROUP_ID = 'group_id';
 	const GROUP_NAME = 'name';
 	const GROUP_ADMIN_GROUP_ID = 'admin_group_id';
 	const GROUP_ADMIN_GROUP_NAME = 'admin_group_name';
+	const GROUP_ISDEFAULT = 'isdefault';
 
 	// RESOURCE_GROUPS //
 	const RESOURCE_GROUP_ID = 'resource_group_id';
@@ -135,7 +138,9 @@ class ColumnNames
 	const RESOURCE_REQUIRES_APPROVAL = 'requires_approval';
 	const RESOURCE_ALLOW_MULTIDAY = 'allow_multiday_reservations';
 	const RESOURCE_MAX_PARTICIPANTS = 'max_participants';
-	const RESOURCE_MINNOTICE = 'min_notice_time';
+	const RESOURCE_MINNOTICE_ADD = 'min_notice_time_add';
+	const RESOURCE_MINNOTICE_UPDATE = 'min_notice_time_update';
+	const RESOURCE_MINNOTICE_DELETE = 'min_notice_time_delete';
 	const RESOURCE_MAXNOTICE = 'max_notice_time';
 	const RESOURCE_IMAGE_NAME = 'image_name';
 	const RESOURCE_STATUS_ID = 'status_id';
@@ -161,6 +166,9 @@ class ColumnNames
 	const LAYOUT_ID = 'layout_id';
 	const SCHEDULE_ADMIN_GROUP_ID = 'admin_group_id';
 	const SCHEDULE_ADMIN_GROUP_ID_ALIAS = 's_admin_group_id';
+	const SCHEDULE_AVAILABLE_START_DATE = 'start_date';
+	const SCHEDULE_AVAILABLE_END_DATE = 'end_date';
+	const SCHEDULE_ALLOW_CONCURRENT_RESERVATIONS = 'allow_concurrent_bookings';
 
 	// EMAIL PREFERENCES //
 	const EVENT_CATEGORY = 'event_category';
@@ -264,6 +272,8 @@ class ColumnNames
 	// CURRENT_CREDITS //
 	const CREDIT_COUNT = 'credit_count';
 	const PEAK_CREDIT_COUNT = 'peak_credit_count';
+	const CREDIT_NOTE = 'credit_note';
+	const ORIGINAL_CREDIT_COUNT = 'original_credit_count';
 
 	// PEAK TIMES //
 	const PEAK_TIMES_ID = 'peak_times_id';
@@ -280,6 +290,36 @@ class ColumnNames
 
     // RESERVATION_WAITLIST_REQUEST_ID //
     const RESERVATION_WAITLIST_REQUEST_ID = 'reservation_waitlist_request_id';
+
+    // PAYMENT CONFIGURATION //
+    const CREDIT_COST = 'credit_cost';
+    const CREDIT_CURRENCY = 'credit_currency';
+
+    // PAYMENT GATEWAYS //
+    const GATEWAY_TYPE = 'gateway_type';
+    const GATEWAY_SETTING_NAME = 'setting_name';
+    const GATEWAY_SETTING_VALUE = 'setting_value';
+
+    // PAYMENT TRANSACTION LOG //
+    const TRANSACTION_LOG_ID = 'payment_transaction_log_id';
+    const TRANSACTION_LOG_STATUS = 'status';
+    const TRANSACTION_LOG_INVOICE = 'invoice_number';
+    const TRANSACTION_LOG_TRANSACTION_ID = 'transaction_id';
+    const TRANSACTION_LOG_TOTAL = 'total_amount';
+    const TRANSACTION_LOG_FEE = 'transaction_fee';
+    const TRANSACTION_LOG_CURRENCY = 'currency';
+    const TRANSACTION_LOG_TRANSACTION_HREF = 'transaction_href';
+    const TRANSACTION_LOG_REFUND_HREF = 'refund_href';
+    const TRANSACTION_LOG_GATEWAY_NAME = 'gateway_name';
+    const TRANSACTION_LOG_GATEWAY_DATE = 'gateway_date_created';
+    const TRANSACTION_LOG_REFUND_AMOUNT = 'refund_amount';
+
+    // TERMS OF SERVICE //
+    const TERMS_ID = 'terms_of_service_id';
+    const TERMS_TEXT = 'terms_text';
+    const TERMS_URL = 'terms_url';
+    const TERMS_FILE = 'terms_file';
+    const TERMS_APPLICABILITY = 'applicability';
 
 	// dynamic
 	const TOTAL = 'total';

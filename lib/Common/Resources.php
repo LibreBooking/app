@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright 2011-2017 Nick Korbel
+ * Copyright 2011-2018 Nick Korbel
  *
  * This file is part of Booked Scheduler is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -99,6 +99,7 @@ class Resources implements IResourceLocalization
 		$this->systemDateKeys['ical'] = 'Ymd\THis\Z';
 		$this->systemDateKeys['system'] = 'Y-m-d';
 		$this->systemDateKeys['fullcalendar'] = 'Y-m-d H:i';
+		$this->systemDateKeys['google'] = 'Ymd\\THi00\\Z';
 
 		$this->LoadAvailableLanguages();
 	}
@@ -270,6 +271,8 @@ class Resources implements IResourceLocalization
 			$this->Charset = $this->_lang->Charset;
 			$this->HtmlLang = $this->_lang->HtmlLang;
 			$this->TextDirection = $this->_lang->TextDirection;
+
+			setlocale(LC_ALL, $this->CurrentLanguage);
 
 			return true;
 		}

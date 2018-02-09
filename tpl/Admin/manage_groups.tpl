@@ -1,5 +1,5 @@
 {*
-Copyright 2011-2017 Nick Korbel
+Copyright 2011-2018 Nick Korbel
 
 This file is part of Booked Scheduler.
 
@@ -31,6 +31,12 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 					<input {formname key=GROUP_NAME} type="text" id="addGroupName" required class="form-control required"/>
 					<i class="glyphicon glyphicon-asterisk form-control-feedback" data-bv-icon-for="addGroupName"></i>
 				</div>
+                <div class="form-group">
+                    <div class="checkbox">
+                        <input type="checkbox" id="addGroupIsDefault" {formname key=IS_DEFAULT} />
+                        <label for="addGroupIsDefault">{translate key=AutomaticallyAddToGroup}</label>
+                    </div>
+                </div>
 			</div>
 			<div class="panel-footer">
 				{add_button class="btn-sm"}
@@ -55,20 +61,22 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 				<th>{translate key='GroupRoles'}</th>
 			{/if}
 			<th>{translate key='GroupAdmin'}</th>
+			<th>{translate key='GroupAutomaticallyAdd'}</th>
 			<th class="action">{translate key='Actions'}</th>
 		</tr>
 		</thead>
 		<tbody>
 		{foreach from=$groups item=group}
 			{cycle values='row0,row1' assign=rowCss}
-			<tr class="{$rowCss}" data-group-id="{$group->Id}">
-				<td>{$group->Name}</td>
+			<tr class="{$rowCss}" data-group-id="{$group->Id}" data-group-default="{$group->IsDefault}">
+				<td class="dataGroupName">{$group->Name}</td>
 				<td><a href="#" class="update members">{translate key='Manage'}</a></td>
 				<td><a href="#" class="update permissions">{translate key='Change'}</a></td>
 				{if $CanChangeRoles}
 					<td><a href="#" class="update roles">{translate key='Change'}</a></td>
 				{/if}
 				<td><a href="#" class="update groupAdmin">{$group->AdminGroupName|default:$chooseText}</a></td>
+                <td>{if $group->IsDefault}<span class="fa fa-check-circle-o"></span>{else}<span class="fa fa-circle-o"></span>{/if}</td>
 				<td class="action">
 					<a href="#" class="update rename"><span class="fa fa-pencil-square-o icon"></a> |
 					<a href="#" class="update delete"><span class="fa fa-trash icon remove"></span></a>
@@ -180,20 +188,26 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		</div>
 	</div>
 
-	<div class="modal fade" id="renameDialog" tabindex="-1" role="dialog" aria-labelledby="deleteDialogLabel" aria-hidden="true">
+	<div class="modal fade" id="editDialog" tabindex="-1" role="dialog" aria-labelledby="editDialogLabel" aria-hidden="true">
 		<div class="modal-dialog">
-			<form id="renameGroupForm" method="post">
+			<form id="editGroupForm" method="post">
 				<div class="modal-content">
 					<div class="modal-header">
 						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-						<h4 class="modal-title" id="deleteDialogLabel">{translate key=Rename}</h4>
+						<h4 class="modal-title" id="editDialogLabel">{translate key=Update}</h4>
 					</div>
 					<div class="modal-body">
 						<div class="form-group has-feedback">
-							<label for="groupName">{translate key=Name}</label>
-							<input type="text" id="groupName" class="form-control required" required {formname key=GROUP_NAME} />
+							<label for="editGroupName">{translate key=Name}</label>
+							<input type="text" id="editGroupName" class="form-control required" required {formname key=GROUP_NAME} />
 							<i class="glyphicon glyphicon-asterisk form-control-feedback" data-bv-icon-for="groupName"></i>
 						</div>
+                        <div class="form-group">
+                            <div class="checkbox">
+                                <input type="checkbox" id="editGroupIsDefault" {formname key=IS_DEFAULT} />
+                                <label for="editGroupIsDefault">{translate key=AutomaticallyAddToGroup}</label>
+                            </div>
+                        </div>
 					</div>
 					<div class="modal-footer">
 						{cancel_button}
@@ -282,7 +296,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 				removeUser: '{ManageGroupsActions::RemoveUser}',
 				addUser: '{ManageGroupsActions::AddUser}',
 				addGroup: '{ManageGroupsActions::AddGroup}',
-				renameGroup: '{ManageGroupsActions::RenameGroup}',
+                updateGroup: '{ManageGroupsActions::UpdateGroup}',
 				deleteGroup: '{ManageGroupsActions::DeleteGroup}',
 				roles: '{ManageGroupsActions::Roles}',
 				groupAdmin: '{ManageGroupsActions::GroupAdmin}'

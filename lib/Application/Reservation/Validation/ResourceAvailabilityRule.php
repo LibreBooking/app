@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Copyright 2011-2017 Nick Korbel
+ * Copyright 2011-2018 Nick Korbel
  *
  * This file is part of Booked Scheduler is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,14 +29,25 @@ class ResourceAvailabilityRule implements IReservationValidationRule
      */
     protected $timezone;
 
-    public function __construct(IResourceAvailabilityStrategy $strategy, $timezone)
+    /**
+     * @var IScheduleRepository
+     */
+    protected $scheduleRepository;
+
+    public function __construct(IResourceAvailabilityStrategy $strategy, $timezone, IScheduleRepository $scheduleRepository)
     {
         $this->strategy = $strategy;
         $this->timezone = $timezone;
+        $this->scheduleRepository = $scheduleRepository;
     }
 
     public function Validate($reservationSeries, $retryParameters = null)
     {
+        $schedule = $this->scheduleRepository->LoadById($reservationSeries->ScheduleId());
+        if ($schedule->GetAllowConcurrentReservations())
+        {
+            return new ReservationRuleResult();
+        }
         $shouldSkipConflicts = ReservationRetryParameter::GetValue('skipconflicts', $retryParameters, new BooleanConverter()) == true;
         $conflicts = array();
 

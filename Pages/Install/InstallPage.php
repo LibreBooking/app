@@ -1,6 +1,6 @@
 <?php
 /**
-Copyright 2011-2017 Nick Korbel
+Copyright 2011-2018 Nick Korbel
 
 This file is part of Booked Scheduler.
 
@@ -155,7 +155,7 @@ class InstallPage extends Page implements IInstallPage
 		$cacheDirectory = new TemplateCacheDirectory();
 		$cacheDirectory->Flush();
 
-		$this->Set('SuggestedInstallPassword', uniqid());
+		$this->Set('SuggestedInstallPassword', BookedStringHelper::Random());
 		$this->Set('ConfigSetting', '$conf[\'settings\'][\'install.password\']');
 		$this->Set('ConfigPath', '/config/config.php');
 		$this->presenter->PageLoad();

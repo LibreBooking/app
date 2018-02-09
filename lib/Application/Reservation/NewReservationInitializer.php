@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright 2011-2017 Nick Korbel
+ * Copyright 2011-2018 Nick Korbel
  *
  * This file is part of Booked Scheduler is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,206 +19,212 @@ require_once(ROOT_DIR . 'lib/Application/Reservation/ReservationInitializerBase.
 
 class NewReservationInitializer extends ReservationInitializerBase
 {
-	/**
-	 * @var INewReservationPage
-	 */
-	private $page;
+    /**
+     * @var INewReservationPage
+     */
+    private $page;
 
-	/**
-	 * @var int
-	 */
-	private $scheduleId;
+    /**
+     * @var int
+     */
+    private $scheduleId;
 
-	/**
-	 * @var IScheduleRepository
-	 */
-	private $scheduleRepository;
+    /**
+     * @var IScheduleRepository
+     */
+    private $scheduleRepository;
 
-	/**
-	 * @var IResourceRepository
-	 */
-	private $resourceRepository;
+    /**
+     * @var IResourceRepository
+     */
+    private $resourceRepository;
 
-	public function __construct(
-		INewReservationPage $page,
-		IReservationComponentBinder $userBinder,
-		IReservationComponentBinder $dateBinder,
-		IReservationComponentBinder $resourceBinder,
-		UserSession $userSession,
-		IScheduleRepository $scheduleRepository,
-		IResourceRepository $resourceRepository
-		)
-	{
-		$this->page = $page;
-		$this->scheduleRepository = $scheduleRepository;
-		$this->resourceRepository = $resourceRepository;
+    /**
+     * @var ITermsOfServiceRepository
+     */
+    private $termsRepository;
 
-		parent::__construct(
-				$page,
-				$userBinder,
-				$dateBinder,
-				$resourceBinder,
-				$userSession);
-	}
+    public function __construct(
+        INewReservationPage $page,
+        IReservationComponentBinder $userBinder,
+        IReservationComponentBinder $dateBinder,
+        IReservationComponentBinder $resourceBinder,
+        UserSession $userSession,
+        IScheduleRepository $scheduleRepository,
+        IResourceRepository $resourceRepository,
+        ITermsOfServiceRepository $termsOfServiceRepository
+    )
+    {
+        $this->page = $page;
+        $this->scheduleRepository = $scheduleRepository;
+        $this->resourceRepository = $resourceRepository;
+        $this->termsRepository = $termsOfServiceRepository;
 
-	public function Initialize()
-	{
-		parent::Initialize();
+        parent::__construct(
+            $page,
+            $userBinder,
+            $dateBinder,
+            $resourceBinder,
+            $userSession);
+    }
 
-		$this->SetDefaultReminders();
-	}
+    public function Initialize()
+    {
+        parent::Initialize();
 
-	protected function SetSelectedDates(Date $startDate, Date $endDate, $startPeriods, $endPeriods)
-	{
-		parent::SetSelectedDates($startDate, $endDate, $startPeriods, $endPeriods);
-		$this->basePage->SetRepeatTerminationDate($endDate);
-	}
+        $this->SetDefaultReminders();
+        $this->SetTermsOfService();
+    }
 
-	public function GetOwnerId()
-	{
-		return ServiceLocator::GetServer()->GetUserSession()->UserId;
-	}
+    protected function SetSelectedDates(Date $startDate, Date $endDate, $startPeriods, $endPeriods)
+    {
+        parent::SetSelectedDates($startDate, $endDate, $startPeriods, $endPeriods);
+        $this->basePage->SetRepeatTerminationDate($endDate);
+    }
 
-	public function GetResourceId()
-	{
-		return $this->page->GetRequestedResourceId();
-	}
+    public function GetOwnerId()
+    {
+        return ServiceLocator::GetServer()->GetUserSession()->UserId;
+    }
 
-	public function GetScheduleId()
-	{
-		if (!empty($this->scheduleId))
-		{
-			return $this->scheduleId;
-		}
+    public function GetResourceId()
+    {
+        return $this->page->GetRequestedResourceId();
+    }
 
-		$this->scheduleId = $this->page->GetRequestedScheduleId();
+    public function GetScheduleId()
+    {
+        if (!empty($this->scheduleId)) {
+            return $this->scheduleId;
+        }
 
-		if (empty($this->scheduleId))
-		{
-			$requestedResourceId = $this->page->GetRequestedResourceId();
-			if (!empty($requestedResourceId))
-			{
-				$resource = $this->resourceRepository->LoadById($requestedResourceId);
-				$this->scheduleId = $resource->GetScheduleId();
-			}
-			else
-			{
-				$schedules = $this->scheduleRepository->GetAll();
+        $this->scheduleId = $this->page->GetRequestedScheduleId();
 
-				foreach ($schedules as $s)
-				{
-					if ($s->GetIsDefault())
-					{
-						$this->scheduleId = $s->GetId();
-						break;
-					}
-				}
-			}
-		}
+        if (empty($this->scheduleId)) {
+            $requestedResourceId = $this->page->GetRequestedResourceId();
+            if (!empty($requestedResourceId)) {
+                $resource = $this->resourceRepository->LoadById($requestedResourceId);
+                $this->scheduleId = $resource->GetScheduleId();
+            }
+            else {
+                $schedules = $this->scheduleRepository->GetAll();
 
-		return $this->scheduleId;
-	}
+                foreach ($schedules as $s) {
+                    if ($s->GetIsDefault()) {
+                        $this->scheduleId = $s->GetId();
+                        break;
+                    }
+                }
+            }
+        }
 
-	public function GetReservationDate()
-	{
-		return $this->page->GetReservationDate();
-	}
+        return $this->scheduleId;
+    }
 
-	public function GetStartDate()
-	{
-		return $this->page->GetStartDate();
-	}
+    public function GetReservationDate()
+    {
+        return $this->page->GetReservationDate();
+    }
 
-	public function GetEndDate()
-	{
-		return $this->page->GetEndDate();
-	}
+    public function GetStartDate()
+    {
+        return $this->page->GetStartDate();
+    }
 
-	public function GetTimezone()
-	{
-		return ServiceLocator::GetServer()->GetUserSession()->Timezone;
-	}
+    public function GetEndDate()
+    {
+        return $this->page->GetEndDate();
+    }
 
-	public function IsNew()
-	{
-		return true;
-	}
+    public function GetTimezone()
+    {
+        return ServiceLocator::GetServer()->GetUserSession()->Timezone;
+    }
 
-	private function SetDefaultReminders()
-	{
-		$start = $this->GetReminderPieces(Configuration::Instance()->GetSectionKey(ConfigSection::RESERVATION, ConfigKeys::RESERVATION_START_REMINDER));
-		$end = $this->GetReminderPieces(Configuration::Instance()->GetSectionKey(ConfigSection::RESERVATION, ConfigKeys::RESERVATION_END_REMINDER));
+    public function IsNew()
+    {
+        return true;
+    }
 
-		if ($start != null)
-		{
-			$this->page->SetStartReminder($start['value'], $start['interval']);
-		}
+    private function SetDefaultReminders()
+    {
+        $start = $this->GetReminderPieces(Configuration::Instance()->GetSectionKey(ConfigSection::RESERVATION, ConfigKeys::RESERVATION_START_REMINDER));
+        $end = $this->GetReminderPieces(Configuration::Instance()->GetSectionKey(ConfigSection::RESERVATION, ConfigKeys::RESERVATION_END_REMINDER));
 
-		if ($start != null)
-		{
-			$this->page->SetEndReminder($end['value'], $end['interval']);
-		}
+        if ($start != null) {
+            $this->page->SetStartReminder($start['value'], $start['interval']);
+        }
 
-	}
+        if ($start != null) {
+            $this->page->SetEndReminder($end['value'], $end['interval']);
+        }
 
-	private function GetReminderPieces($reminder)
-	{
-		if (!empty($reminder))
-		{
-			$parts = explode(' ', strtolower($reminder));
+    }
 
-			if (count($parts) == 2)
-			{
-				$interval = trim($parts[1]);
-				$pieces['value'] = intval($parts[0]);
-				$pieces['interval'] = ($interval == 'minutes' || $interval == 'hours' || $interval == 'days') ? $interval : 'minutes';
-				return $pieces;
-			}
-		}
+    private function GetReminderPieces($reminder)
+    {
+        if (!empty($reminder)) {
+            $parts = explode(' ', strtolower($reminder));
 
-		return null;
-	}
+            if (count($parts) == 2) {
+                $interval = trim($parts[1]);
+                $pieces['value'] = intval($parts[0]);
+                $pieces['interval'] = ($interval == 'minutes' || $interval == 'hours' || $interval == 'days') ? $interval : 'minutes';
+                return $pieces;
+            }
+        }
+
+        return null;
+    }
+
+    private function SetTermsOfService()
+    {
+        $termsOfService = $this->termsRepository->Load();
+        if ($termsOfService != null && $termsOfService->AppliesToReservation()) {
+            $this->page->SetTerms($termsOfService);
+        }
+    }
 }
 
 class BindableResourceData
 {
-	/**
-	 * @var ResourceDto
-	 */
-	public $ReservationResource;
+    /**
+     * @var ResourceDto
+     */
+    public $ReservationResource;
 
-	/**
-	 * @var array|ResourceDto[]
-	 */
-	public $AvailableResources;
+    /**
+     * @var array|ResourceDto[]
+     */
+    public $AvailableResources;
 
-	/**
-	 * @var int
-	 */
-	public $NumberAccessible = 0;
+    /**
+     * @var int
+     */
+    public $NumberAccessible = 0;
 
-	public function __construct()
-	{
-		$this->ReservationResource = new NullResourceDto();
-		$this->AvailableResources = array();
-	}
+    public function __construct()
+    {
+        $this->ReservationResource = new NullResourceDto();
+        $this->AvailableResources = array();
+    }
 
-	/**
-	 * @param $resource ResourceDto
-	 * @return void
-	 */
-	public function SetReservationResource($resource)
-	{
-		$this->ReservationResource = $resource;
-	}
+    /**
+     * @param $resource ResourceDto
+     * @return void
+     */
+    public function SetReservationResource($resource)
+    {
+        $this->ReservationResource = $resource;
+    }
 
-	/**
-	 * @param $resource ResourceDto
-	 * @return void
-	 */
-	public function AddAvailableResource($resource)
-	{
-		$this->NumberAccessible++;
-		$this->AvailableResources[] = $resource;
-	}
+    /**
+     * @param $resource ResourceDto
+     * @return void
+     */
+    public function AddAvailableResource($resource)
+    {
+        $this->NumberAccessible++;
+        $this->AvailableResources[] = $resource;
+    }
 }

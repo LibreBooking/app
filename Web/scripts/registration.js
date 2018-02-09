@@ -76,9 +76,9 @@ function Registration()
 			captchaImg.attr('src', src);
 			$('#captchaValue').val('');
 		}
-		else if(typeof Recaptcha != "undefined")
+		else if(window.grecaptcha)
 		{
-			Recaptcha.reload();
+            grecaptcha.reset();
 		}
 	}
 }

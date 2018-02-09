@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Copyright 2011-2017 Nick Korbel
+ * Copyright 2011-2018 Nick Korbel
  * Copyright 2012-2014, Moritz Schepp, IST Austria
  * Copyright 2012-2014, Alois Schloegl, IST Austria
  *
@@ -39,8 +39,8 @@ class Queries
 			'INSERT INTO account_activation (user_id, activation_code, date_created) VALUES (@userid, @activation_code, @dateCreated)';
 
 	const ADD_ANNOUNCEMENT =
-			'INSERT INTO announcements (announcement_text, priority, start_date, end_date)
-		VALUES (@text, @priority, @startDate, @endDate)';
+			'INSERT INTO announcements (announcement_text, priority, start_date, end_date, display_page)
+		VALUES (@text, @priority, @startDate, @endDate, @display_page)';
 
 	const ADD_ANNOUNCEMENT_GROUP = 'INSERT INTO announcement_groups (announcementid, group_id) VALUES (@announcementid, @groupid)';
 
@@ -71,7 +71,7 @@ class Queries
 			'INSERT INTO blackout_series (date_created, title, owner_id, repeat_type, repeat_options) VALUES (@dateCreated, @title, @userid, @repeatType, @repeatOptions)';
 
 	const ADD_GROUP =
-			'INSERT INTO groups (name) VALUES (@groupname)';
+			'INSERT INTO groups (name, isdefault) VALUES (@groupname, @isdefault)';
 
 	const ADD_GROUP_RESOURCE_PERMISSION =
 			'INSERT IGNORE INTO group_resource_permissions (group_id, resource_id) VALUES (@groupid, @resourceid)';
@@ -79,7 +79,10 @@ class Queries
 	const ADD_GROUP_ROLE =
 			'INSERT IGNORE INTO group_roles (group_id, role_id) VALUES (@groupid, @roleid)';
 
-	const ADJUST_USER_CREDITS = 'UPDATE users SET credit_count = credit_count - @credit_count WHERE user_id = @userid';
+	const ADJUST_USER_CREDITS =
+        'INSERT INTO credit_log (user_id, original_credit_count, credit_count, credit_note, date_created) 
+            SELECT user_id, credit_count, COALESCE(credit_count,0) - @credit_count, @credit_note, @dateCreated FROM users WHERE user_id = @userid;
+          UPDATE users SET credit_count = COALESCE(credit_count,0) - @credit_count WHERE user_id = @userid';
 
 	const ADD_LAYOUT =
 			'INSERT INTO layouts (timezone) VALUES (@timezone)';
@@ -92,11 +95,22 @@ class Queries
 			'INSERT INTO quotas (quota_limit, unit, duration, resource_id, group_id, schedule_id, enforced_time_start, enforced_time_end, enforced_days, scope)
 			VALUES (@limit, @unit, @duration, @resourceid, @groupid, @scheduleid, @startTime, @endTime, @enforcedDays, @scope)';
 
+	const ADD_PAYMENT_GATEWAY_SETTING = 'INSERT INTO payment_gateway_settings (gateway_type, setting_name, setting_value) 
+                                      VALUES (@gateway_type, @setting_name, @setting_value)';
+
+	const ADD_PAYMENT_TRANSACTION_LOG =
+        'INSERT INTO payment_transaction_log(user_id, status, invoice_number, transaction_id, subtotal_amount, tax_amount, total_amount, transaction_fee, currency, transaction_href, refund_href, date_created, gateway_date_created, gateway_name, payment_response) 
+          VALUES (@userid, @status, @invoice_number, @transaction_id, @total_amount, 0, @total_amount, @transaction_fee, @currency, @transaction_href, @refund_href, @date_created, @gateway_date_created, @gateway_name, @payment_response)';
+
 	const ADD_PEAK_TIMES =
 			'INSERT INTO peak_times (schedule_id, all_day, start_time, end_time, every_day, peak_days, all_year, begin_month, begin_day, end_month, end_day)
 			VALUES (@scheduleid, @all_day, @start_time, @end_time, @every_day, @peak_days, @all_year, @begin_month, @begin_day, @end_month, @end_day)';
 
-	const ADD_REMINDER =
+    const ADD_REFUND_TRANSACTION_LOG =
+        'INSERT INTO refund_transaction_log(payment_transaction_log_id, status, transaction_id, total_refund_amount, payment_refund_amount, fee_refund_amount, transaction_href, date_created, gateway_date_created, refund_response) 
+          VALUES (@payment_transaction_log_id, @status, @transaction_id, @total_refund_amount, @payment_refund_amount, @fee_refund_amount, @transaction_href, @date_created, @gateway_date_created, @refund_response)';
+
+    const ADD_REMINDER =
 			'INSERT INTO reminders (user_id, address, message, sendtime, refnumber)
 			VALUES (@user_id, @address, @message, @sendtime, @refnumber)';
 
@@ -126,8 +140,8 @@ class Queries
 
 	const ADD_RESERVATION_SERIES =
 			'INSERT INTO
-        reservation_series (date_created, title, description, allow_participation, allow_anon_participation, repeat_type, repeat_options, type_id, status_id, owner_id)
-		VALUES (@dateCreated, @title, @description, @allow_participation, false, @repeatType, @repeatOptions, @typeid, @statusid, @userid)';
+        reservation_series (date_created, title, description, allow_participation, allow_anon_participation, repeat_type, repeat_options, type_id, status_id, owner_id, terms_date_accepted)
+		VALUES (@dateCreated, @title, @description, @allow_participation, false, @repeatType, @repeatOptions, @typeid, @statusid, @userid, @terms_date_accepted)';
 
 	const ADD_RESERVATION_GUEST =
 			'INSERT INTO reservation_guests (reservation_instance_id, email, reservation_user_level)
@@ -149,6 +163,10 @@ class Queries
 			'INSERT INTO schedules (name, isdefault, weekdaystart, daysvisible, layout_id, admin_group_id)
 		VALUES (@scheduleName, @scheduleIsDefault, @scheduleWeekdayStart, @scheduleDaysVisible, @layoutid, @admin_group_id)';
 
+	const ADD_TERMS_OF_SERVICE =
+        'INSERT INTO terms_of_service (terms_text, terms_url, terms_file, applicability, date_created) 
+      VALUES (@terms_text, @terms_url, @terms_file, @applicability, @dateCreated)';
+
 	const ADD_USER_GROUP =
 			'INSERT INTO user_groups (user_id, group_id)
 		VALUES (@userid, @groupid)';
@@ -156,6 +174,9 @@ class Queries
 	const ADD_USER_RESOURCE_PERMISSION =
 			'INSERT IGNORE INTO user_resource_permissions (user_id, resource_id)
 		VALUES (@userid, @resourceid)';
+
+	const ADD_USER_TO_DEFAULT_GROUPS =
+        'INSERT IGNORE INTO user_groups (user_id, group_id) SELECT @userid, group_id FROM groups WHERE isdefault=1';
 
 	const ADD_USER_SESSION =
 			'INSERT INTO user_session (user_id, last_modified, session_token, user_session_value)
@@ -243,6 +264,8 @@ class Queries
 
 	const DELETE_ORPHAN_LAYOUTS = 'DELETE l.* FROM layouts l LEFT JOIN schedules s ON l.layout_id = s.layout_id WHERE s.layout_id IS NULL';
 
+	const DELETE_PAYMENT_GATEWAY_SETTINGS = 'DELETE FROM payment_gateway_settings WHERE gateway_type = @gateway_type';
+
 	const DELETE_PEAK_TIMES = 'DELETE FROM peak_times WHERE schedule_id = @scheduleid';
 
 	const DELETE_QUOTA = 'DELETE	FROM quotas	WHERE quota_id = @quotaid';
@@ -275,6 +298,8 @@ class Queries
 			last_modified = @dateModified
 		  WHERE series_id = @seriesid';
 
+	const DELETE_TERMS_OF_SERVICE = 'DELETE FROM terms_of_service';
+
 	const DELETE_USER = 'DELETE FROM users	WHERE user_id = @userid';
 
 	const DELETE_USER_GROUP = 'DELETE FROM user_groups WHERE user_id = @userid AND group_id = @groupid';
@@ -284,6 +309,10 @@ class Queries
 
 	const DELETE_USER_SESSION =
 			'DELETE	FROM user_session WHERE session_token = @session_token';
+
+	const LOG_CREDIT_ACTIVITY_COMMAND =
+        'INSERT INTO credit_log (user_id, original_credit_count, credit_count, credit_note, date_created)
+            VALUES (@userid, @original_credit_count, @credit_count, @credit_note, @dateCreated)';
 
 	const LOGIN_USER =
 			'SELECT * FROM users WHERE (username = @username OR email = @username)';
@@ -338,6 +367,11 @@ class Queries
                 INNER JOIN group_roles gr ON g.group_id = gr.group_id
                 INNER JOIN roles ON roles.role_id = gr.role_id AND roles.role_level = @role_level
               )';
+
+	const GET_ALL_CREDIT_LOGS = 'SELECT cl.*, u.fname, u.lname, u.email FROM credit_log cl 
+            LEFT JOIN users u ON cl.user_id = u.user_id 
+            WHERE (@userid = -1 or cl.user_id = @userid)
+            ORDER BY cl.date_created DESC';
 
 	const GET_ALL_GROUPS =
 			'SELECT g.*, admin_group.name as admin_group_name
@@ -423,6 +457,14 @@ class Queries
 							WHERE cav.entity_id = r.resource_type_id AND cav.attribute_category = 5) as attribute_list
 							FROM resource_types r';
 
+	const GET_ALL_TRANSACTION_LOGS = 'SELECT ptl.*, u.fname, u.lname, u.email, SUM(total_refund_amount) as refund_amount
+            FROM payment_transaction_log ptl
+            LEFT JOIN refund_transaction_log refunds on ptl.payment_transaction_log_id = refunds.payment_transaction_log_id
+            LEFT JOIN users u ON ptl.user_id = u.user_id 
+            WHERE (@userid = -1 OR ptl.user_id = @userid)
+            GROUP BY ptl.payment_transaction_log_id
+            ORDER BY date_created DESC';
+
 	const GET_ALL_SAVED_REPORTS = 'SELECT * FROM saved_reports WHERE user_id = @userid ORDER BY report_name, date_created';
 
 	const GET_ALL_SCHEDULES = 'SELECT s.*, l.timezone FROM schedules s INNER JOIN layouts l ON s.layout_id = l.layout_id ORDER BY s.name';
@@ -446,7 +488,7 @@ class Queries
 	const GET_ATTRIBUTES_BASE_QUERY = 'SELECT a.*,
 				(SELECT GROUP_CONCAT(e.entity_id SEPARATOR "!sep!")
 							FROM custom_attribute_entities e WHERE e.custom_attribute_id = a.custom_attribute_id ORDER BY e.entity_id) as entity_ids,
-				CASE
+				(CASE
 				WHEN a.attribute_category = 2 THEN (SELECT GROUP_CONCAT(CONCAT(u.fname, " ", u.lname) SEPARATOR "!sep!")
 													FROM users u INNER JOIN custom_attribute_entities e
 													WHERE e.custom_attribute_id = a.custom_attribute_id AND u.user_id = e.entity_id ORDER BY e.entity_id)
@@ -457,13 +499,13 @@ class Queries
 													FROM resource_types rt INNER JOIN custom_attribute_entities e
 													WHERE e.custom_attribute_id = a.custom_attribute_id AND rt.resource_type_id = e.entity_id ORDER BY e.entity_id)
 				ELSE null
-				END as entity_descriptions,
-				CASE
+				END) as entity_descriptions,
+				(CASE
 				WHEN a.secondary_category = 2 THEN (SELECT GROUP_CONCAT(CONCAT( fname, " ", lname ) SEPARATOR  "!sep!" ) FROM users WHERE FIND_IN_SET( user_id, a.secondary_entity_ids ))
 				WHEN a.secondary_category = 4 THEN (SELECT GROUP_CONCAT(name SEPARATOR  "!sep!" ) FROM resources WHERE FIND_IN_SET( resource_id, a.secondary_entity_ids ))
 				WHEN a.secondary_category = 5 THEN (SELECT GROUP_CONCAT(resource_type_name SEPARATOR  "!sep!" ) FROM resource_types WHERE FIND_IN_SET( resource_type_id, a.secondary_entity_ids ))
 				ELSE null
-				END as secondary_entity_descriptions
+				END) as secondary_entity_descriptions
 				FROM custom_attributes a';
 
 	const GET_ATTRIBUTES_BY_CATEGORY_WHERE = ' WHERE a.attribute_category = @attribute_category ORDER BY a.sort_order, a.display_label';
@@ -527,7 +569,7 @@ class Queries
 			(SELECT GROUP_CONCAT(ag.group_id) FROM announcement_groups ag WHERE ag.announcementid = a.announcementid) as group_ids,
 			(SELECT GROUP_CONCAT(ar.resource_id) FROM announcement_resources ar WHERE ar.announcementid = a.announcementid) as resource_ids
 			FROM announcements a
-		WHERE (start_date <= @current_date AND end_date >= @current_date) OR (end_date IS NULL)
+		WHERE (start_date <= @current_date AND end_date >= @current_date) OR (end_date IS NULL) AND (@display_page = -1 OR @display_page = display_page)
 		ORDER BY priority, start_date, end_date';
 
 	const GET_GROUP_BY_ID =
@@ -752,6 +794,10 @@ class Queries
 
 	const GET_PEAK_TIMES = 'SELECT * FROM peak_times WHERE schedule_id = @scheduleid';
 
+	const GET_PAYMENT_CONFIGURATION = 'SELECT * FROM payment_configuration';
+
+	const GET_PAYMENT_GATEWAY_SETTINGS = 'SELECT * FROM payment_gateway_settings WHERE gateway_type = @gateway_type';
+
 	const GET_SAVED_REPORT = 'SELECT * FROM saved_reports WHERE saved_report_id = @report_id AND user_id = @userid';
 
 	const GET_SCHEDULE_BY_ID =
@@ -770,6 +816,15 @@ class Queries
 		WHERE (-1 = @scheduleid OR r.schedule_id = @scheduleid) AND
 			r.status_id <> 0
 		ORDER BY COALESCE(r.sort_order,0), r.name';
+
+	const GET_TRANSACTION_LOG =
+            'SELECT ptl.*, SUM(total_refund_amount) as refund_amount
+        FROM payment_transaction_log ptl
+        LEFT JOIN refund_transaction_log refunds on ptl.payment_transaction_log_id = refunds.payment_transaction_log_id
+        WHERE ptl.payment_transaction_log_id = @payment_transaction_log_id
+        GROUP BY ptl.payment_transaction_log_id';
+
+	const GET_TERMS_OF_SERVICE = 'SELECT * FROM terms_of_service';
 
 	const GET_USERID_BY_ACTIVATION_CODE =
 			'SELECT a.user_id FROM account_activation a
@@ -896,9 +951,9 @@ class Queries
 
 	const REGISTER_USER =
 			'INSERT INTO
-			users (email, password, fname, lname, phone, organization, position, username, salt, timezone, language, homepageid, status_id, date_created, public_id, default_schedule_id)
+			users (email, password, fname, lname, phone, organization, position, username, salt, timezone, language, homepageid, status_id, date_created, public_id, default_schedule_id, terms_date_accepted)
 		VALUES
-			(@email, @password, @fname, @lname, @phone, @organization, @position, @username, @salt, @timezone, @language, @homepageid, @user_statusid, @dateCreated, @publicid, @scheduleid)';
+			(@email, @password, @fname, @lname, @phone, @organization, @position, @username, @salt, @timezone, @language, @homepageid, @user_statusid, @dateCreated, @publicid, @scheduleid, @terms_date_accepted)';
 
 	const REMOVE_ATTRIBUTE_ENTITY =
 			'DELETE FROM custom_attribute_entities WHERE custom_attribute_id = @custom_attribute_id AND entity_id = @entity_id';
@@ -941,11 +996,11 @@ class Queries
 			'INSERT INTO
 			resources (name, location, contact_info, description, notes, status_id, min_duration, min_increment,
 					   max_duration, unit_cost, autoassign, requires_approval, allow_multiday_reservations,
-					   max_participants, min_notice_time, max_notice_time, schedule_id, admin_group_id)
+					   max_participants, min_notice_time_add, max_notice_time, schedule_id, admin_group_id)
 		VALUES
 			(@resource_name, @location, @contact_info, @description, @resource_notes, @status_id, @min_duration, @min_increment,
 			 @max_duration, @unit_cost, @autoassign, @requires_approval, @allow_multiday_reservations,
-		     @max_participants, @min_notice_time, @max_notice_time, @scheduleid, @admin_group_id)';
+		     @max_participants, @min_notice_time_add, @max_notice_time, @scheduleid, @admin_group_id)';
 
 	const ADD_RESOURCE_GROUP = 'INSERT INTO resource_groups (resource_group_name, parent_id) VALUES (@groupname, @resourcegroupid)';
 
@@ -987,14 +1042,12 @@ class Queries
 
 	const UPDATE_GROUP =
 			'UPDATE groups
-		SET name = @groupname, admin_group_id = @admin_group_id
+		SET name = @groupname, admin_group_id = @admin_group_id, isdefault = @isdefault
 		WHERE group_id = @groupid';
 
-	const UPDATE_LOGINDATA =
-			'UPDATE users
-		SET lastlogin = @lastlogin,
-		language = @language
-		WHERE user_id = @userid';
+	const UPDATE_LOGINDATA = 'UPDATE users SET lastlogin = @lastlogin, language = @language WHERE user_id = @userid';
+
+	const UPDATE_PAYMENT_CONFIGURATION = 'UPDATE payment_configuration SET credit_cost = @credit_cost, credit_currency = @credit_currency';
 
 	const UPDATE_FUTURE_RESERVATION_INSTANCES =
 			'UPDATE reservation_instances
@@ -1045,7 +1098,9 @@ class Queries
 			requires_approval = @requires_approval,
 			allow_multiday_reservations = @allow_multiday_reservations,
 			max_participants = @max_participants,
-			min_notice_time = @min_notice_time,
+			min_notice_time_add = @min_notice_time_add,
+			min_notice_time_update = @min_notice_time_update,
+			min_notice_time_delete = @min_notice_time_delete,
 			max_notice_time = @max_notice_time,
 			image_name = @imageName,
 			schedule_id = @scheduleid,
@@ -1081,7 +1136,10 @@ class Queries
 			daysvisible = @scheduleDaysVisible,
 			allow_calendar_subscription = @allow_calendar_subscription,
 			public_id = @publicid,
-			admin_group_id = @admin_group_id
+			admin_group_id = @admin_group_id,
+			start_date = @start_date,
+			end_date = @end_date,
+			allow_concurrent_bookings = @allow_concurrent_bookings
 		WHERE
 			schedule_id = @scheduleid';
 
@@ -1127,8 +1185,8 @@ class Queries
 			'UPDATE users
 		SET
 			email = COALESCE(@email, email),
-			password = @password,
-			salt = @salt,
+			password = COALESCE(@password, password),
+			salt = COALESCE(@salt, salt),
 			fname = COALESCE(@fname, fname),
 			lname = COALESCE(@lname, lname),
 			phone = COALESCE(@phone, phone),

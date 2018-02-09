@@ -39,7 +39,17 @@ function ScheduleManagement(opts) {
 		peakAllDay: $('#peakAllDay'),
 		peakTimes: $('#peakTimes'),
 		deletePeakTimesButton: $('#deletePeakBtn'),
-		deletePeakTimes: $('#deletePeakTimes')
+		deletePeakTimes: $('#deletePeakTimes'),
+
+        availabilityDialog: $('#availabilityDialog'),
+        availableStartDateTextbox: $('#availabilityStartDate'),
+        availableStartDate: $('#formattedBeginDate'),
+        availableEndDateTextbox: $('#availabilityEndDate'),
+        availableEndDate: $('#formattedEndDate'),
+        availableAllYear: $('#availableAllYear'),
+        availabilityForm: $('#availabilityForm'),
+
+        concurrentForm: $('#concurrentForm')
 	};
 
 	ScheduleManagement.prototype.init = function () {
@@ -108,12 +118,36 @@ function ScheduleManagement(opts) {
 				e.preventDefault();
 				showPeakTimesDialog(getActiveScheduleId());
 			});
+
+			details.find('.changeAvailability').click(function (e) {
+				e.preventDefault();
+				showAvailabilityDialog(getActiveScheduleId());
+			});
+
+			details.find('.toggleConcurrent').click(function(e) {
+			    e.preventDefault();
+                var toggle = $(e.target);
+                var container = toggle.parent('.concurrentContainer');
+                toggleConcurrentReservations(getActiveScheduleId(), toggle, container);
+            });
 		});
 
 		elements.deletePeakTimesButton.click(function(e) {
 			e.preventDefault();
 			elements.deletePeakTimes.val('1');
 		});
+
+		elements.availableAllYear.on('click', function(e) {
+		    if ($(e.target).is(':checked'))
+            {
+                elements.availableStartDateTextbox.prop('disabled', true);
+                elements.availableEndDateTextbox.prop('disabled', true);
+            }
+            else {
+                elements.availableStartDateTextbox.prop('disabled', false);
+                elements.availableEndDateTextbox.prop('disabled', false);
+            }
+        });
 
 		$(".save").click(function (e) {
 			e.preventDefault();
@@ -166,6 +200,8 @@ function ScheduleManagement(opts) {
 		ConfigureAsyncForm(elements.addForm, getSubmitCallback(options.addAction), null, handleAddError);
 		ConfigureAsyncForm(elements.deleteForm, getSubmitCallback(options.deleteAction));
 		ConfigureAsyncForm(elements.peakTimesForm, getSubmitCallback(options.peakTimesAction), refreshPeakTimes);
+		ConfigureAsyncForm(elements.availabilityForm, getSubmitCallback(options.availabilityAction), refreshAvailability);
+		ConfigureAsyncForm(elements.concurrentForm, getSubmitCallback(options.toggleConcurrentReservations), function(){}, function(){});
 	};
 
 	var getSubmitCallback = function (action) {
@@ -464,4 +500,46 @@ function ScheduleManagement(opts) {
 			peakOnAllDayChanged();
 		});
 	};
+
+    var showAvailabilityDialog = function(scheduleId) {
+        var placeholder = $('[data-schedule-id=' + scheduleId + ']').find('.availabilityPlaceHolder');
+        var dates = placeholder.find('.availableDates');
+
+        var hasAvailability = dates.data('has-availability') == '1';
+
+        // elements.availableAllYear.prop('checked', !hasAvailability);
+        elements.availableStartDateTextbox.datepicker("setDate", dates.data('start-date'));
+        elements.availableStartDate.trigger('change');
+
+        elements.availableEndDateTextbox.datepicker("setDate", dates.data('end-date'));
+        elements.availableEndDate.trigger('change');
+
+        if (!hasAvailability)
+        {
+            elements.availableAllYear.trigger('click');
+        }
+
+        elements.availabilityDialog.modal('show');
+    };
+
+    var refreshAvailability = function (resultHtml) {
+        $('[data-schedule-id=' + getActiveScheduleId() + ']').find('.availabilityPlaceHolder').html(resultHtml);
+        elements.availabilityDialog.modal('hide');
+    };
+
+    var toggleConcurrentReservations = function(scheduleId, toggle, container) {
+        var allow = toggle.data('allow') == 1;
+        if (allow)
+        {
+            container.find('.allowConcurrentYes').addClass('no-show');
+            container.find('.allowConcurrentNo').removeClass('no-show');
+        }
+        else {
+            container.find('.allowConcurrentYes').removeClass('no-show');
+            container.find('.allowConcurrentNo').addClass('no-show');
+        }
+        elements.concurrentForm.submit();
+
+        toggle.data('allow', allow ? '0' : '1');
+    };
 }

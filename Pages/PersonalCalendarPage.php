@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright 2011-2017 Nick Korbel
+ * Copyright 2011-2018 Nick Korbel
  *
  * This file is part of Booked Scheduler.
  *
@@ -61,8 +61,9 @@ class PersonalCalendarPage extends CommonCalendarPage implements ICommonCalendar
 		$this->Set('Today', Date::Now()->ToTimezone($user->Timezone));
 		$this->Set('TimeFormat', Resources::GetInstance()->GetDateFormat('calendar_time'));
 		$this->Set('DateFormat', Resources::GetInstance()->GetDateFormat('calendar_dates'));
+        $this->Set('CreateReservationPage', Pages::RESERVATION);
 
-		$this->Display('Calendar/mycalendar.tpl');
+        $this->Display('Calendar/mycalendar.tpl');
 	}
 
     public function RenderSubscriptionDetails()

@@ -1,6 +1,6 @@
 <?php
 /**
-Copyright 2012-2017 Nick Korbel
+Copyright 2012-2018 Nick Korbel
 
 This file is part of Booked Scheduler.
 
@@ -27,6 +27,10 @@ class ScheduleResponse extends RestResponse
 	public $timezone;
 	public $weekdayStart;
 	public $icsUrl;
+	public $availabilityStart;
+	public $availabilityEnd;
+	public $allowConcurrentReservations;
+
 	/**
 	 * @var array|SchedulePeriodResponse[]
 	 */
@@ -40,6 +44,9 @@ class ScheduleResponse extends RestResponse
 		$this->name = $schedule->GetName();
 		$this->timezone = $schedule->GetTimezone();
 		$this->weekdayStart = $schedule->GetWeekdayStart();
+		$this->availabilityStart = $schedule->GetAvailabilityBegin()->ToIso();
+		$this->availabilityEnd = $schedule->GetAvailabilityEnd()->ToIso();
+		$this->allowConcurrentReservations = $schedule->GetAllowConcurrentReservations();
 
 		if ($schedule->GetIsCalendarSubscriptionAllowed())
 		{
@@ -94,6 +101,9 @@ class ExampleScheduleResponse extends ScheduleResponse
 		$this->timezone = 'timezone_name';
 		$this->weekdayStart = 0;
 		$this->icsUrl = 'webcal://url/to/calendar';
+		$this->availabilityStart = Date::Now()->ToIso();
+		$this->availabilityEnd = Date::Now()->ToIso();
+		$this->allowConcurrentReservations = true;
 
 		foreach (DayOfWeek::Days() as $day)
 		{

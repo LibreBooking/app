@@ -150,7 +150,7 @@ class Saml extends Authentication implements IAuthentication
 	public function Login($username, $loginContext)
 	{
 		$this->username = $username;
-		if ($this->username == null)
+		if (empty($this->username))
 		{
 			$this->username = $this->user->GetUserName();
 		}
@@ -214,6 +214,40 @@ class Saml extends Authentication implements IAuthentication
 	{
 		return true;
 	}
-}
 
-?>
+
+    public function AllowUsernameChange()
+    {
+        return false;
+    }
+
+    public function AllowEmailAddressChange()
+    {
+        return false;
+    }
+
+    public function AllowPasswordChange()
+    {
+        return false;
+    }
+
+    public function AllowNameChange()
+    {
+        return false;
+    }
+
+    public function AllowPhoneChange()
+    {
+        return false;
+    }
+
+    public function AllowOrganizationChange()
+    {
+        return false;
+    }
+
+    public function AllowPositionChange()
+    {
+        return false;
+    }
+}

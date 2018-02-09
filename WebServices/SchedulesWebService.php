@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright 2012-2017 Nick Korbel
+ * Copyright 2012-2018 Nick Korbel
  *
  * This file is part of Booked Scheduler.
  *
@@ -220,10 +220,30 @@ class ScheduleWebServiceView implements ISchedulePage
 	 */
 	private $resources;
 
-
+    /**
+     * @var int
+     */
     private $resourceId;
 
+    /**
+     * @var Date
+     */
     private $startDate;
+
+    /**
+     * @var DateRange
+     */
+    private $availability;
+
+    /**
+     * @var bool
+     */
+    private $available = true;
+
+    /**
+     * @var bool
+     */
+    private $allowConcurrentReservations;
 
     public function __construct($scheduleId, $startDate, $resourceId)
 	{
@@ -519,5 +539,16 @@ class ScheduleWebServiceView implements ISchedulePage
     public function FilterCleared()
     {
        return false;
+    }
+
+    public function BindScheduleAvailability($availability, $tooEarly)
+    {
+        $this->availability = $availability;
+        $this->available = false;
+    }
+
+    public function SetAllowConcurrent($allowConcurrentReservations)
+    {
+        $this->allowConcurrentReservations = $allowConcurrentReservations;
     }
 }

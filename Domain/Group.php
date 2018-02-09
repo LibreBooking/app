@@ -1,6 +1,6 @@
 <?php
 /**
-Copyright 2011-2017 Nick Korbel
+Copyright 2011-2018 Nick Korbel
 
 This file is part of Booked Scheduler.
 
@@ -23,6 +23,7 @@ class Group
 	private $id;
 	private $name;
 	private $adminGroupId;
+	private $isDefault = 0;
 
 	private $addedUsers = array();
 	private $removedUsers = array();
@@ -53,11 +54,13 @@ class Group
 	/**
 	 * @param $id int
 	 * @param $name string
+     * @param $isDefault int
 	 */
-	public function __construct($id, $name)
+	public function __construct($id, $name, $isDefault = 0)
 	{
 		$this->id = $id;
 		$this->name = $name;
+		$this->isDefault = intval($isDefault);
 	}
 
 	/**
@@ -84,6 +87,14 @@ class Group
 		return $this->adminGroupId;
 	}
 
+    /**
+     * @return int
+     */
+	public function IsDefault()
+    {
+        return intval($this->isDefault);
+    }
+
 	/**
 	 * @param $groupName string
 	 * @return void
@@ -92,6 +103,14 @@ class Group
 	{
 		$this->name = $groupName;
 	}
+
+    /**
+     * @param int $isDefault
+     */
+	public function ChangeDefault($isDefault)
+    {
+        $this->isDefault = $isDefault;
+    }
 
 	/**
 	 * @param $userId int

@@ -189,8 +189,8 @@ ul.jqtree-tree .group-resource .jqtree-title {
   display: inline-block;
 }
 
-.reservationDates, .reservationTitle {
-  padding-top: 8px;
+.reservationDates, .reservationTitle, .reservationResources {
+  padding-top: 12px;
 }
 
 .reservationLength .form-group {
@@ -209,7 +209,7 @@ ul.jqtree-tree .group-resource .jqtree-title {
 .reservationHeader h3 {
   margin: 0;
   .pendingApproval {
-    color:#ffb540;
+    color: #ffb540;
   }
 }
 
@@ -303,7 +303,7 @@ a.remove {
   }
 
   .participationText, .participationButtons {
-    width:100%;
+    width: 100%;
     display: block;
     input[type=text].user-search {
       width: 100%;
@@ -311,19 +311,19 @@ a.remove {
   }
 
   .participationButtons {
-    padding:3px 0;
+    padding: 3px 0;
     button {
       //height:30px;
-      line-height:15px;
+      line-height: 15px;
     }
   }
 
   #reservationDetails {
-    padding-right:0;
+    padding-right: 0;
   }
 
   #reservationParticipation {
-    padding-right:15px;
+    padding-right: 15px;
   }
 
 }
@@ -381,8 +381,12 @@ a.remove {
   color: @muted-red;
 }
 
-#availableCreditsCount {
+#availableCreditsCount, #requiredCreditsCount, #creditCost {
   font-weight: bold;
+}
+
+#requiredCreditsCount.insufficient-credits, #creditCost.insufficient-credits {
+  color: @muted-red;
 }
 
 #page-view-reservation {

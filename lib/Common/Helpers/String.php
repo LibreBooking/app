@@ -1,6 +1,6 @@
 <?php
 /**
-Copyright 2011-2017 Nick Korbel
+Copyright 2011-2018 Nick Korbel
 
 This file is part of Booked Scheduler is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -13,6 +13,8 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 */
+
+require_once(ROOT_DIR . 'lib/external/random/random.php');
 
 class BookedStringHelper
 {
@@ -55,4 +57,19 @@ class BookedStringHelper
 	{
 		return strpos($haystack, $needle) !== false;
 	}
+
+    /**
+     * @return string
+     */
+	public static function Random($length = 50)
+    {
+        try {
+            $string = random_bytes(intval($length/2));
+            $string = bin2hex($string);
+        } catch (Exception $e) {
+            $string = uniqid(rand(), true);
+            Log::Error('Could not generate web service session token. %s', $e);
+        }
+        return $string;
+    }
 }

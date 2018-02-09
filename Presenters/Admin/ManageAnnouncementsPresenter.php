@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright 2011-2017 Nick Korbel
+ * Copyright 2011-2018 Nick Korbel
  *
  * This file is part of Booked Scheduler.
  *
@@ -107,10 +107,11 @@ class ManageAnnouncementsPresenter extends ActionPresenter
         $groupIds = $this->page->GetGroups();
         $resourceIds = $this->page->GetResources();
         $sendAsEmail = $this->page->GetSendAsEmail();
+        $displayPage = $this->page->GetDisplayPage();
 
         Log::Debug('Adding new Announcement');
 
-        $announcement = Announcement::Create($text, $start, $end, $priority, $groupIds, $resourceIds);
+        $announcement = Announcement::Create($text, $start, $end, $priority, $groupIds, $resourceIds, $displayPage);
         $this->announcementRepository->Add($announcement);
 
         if ($sendAsEmail) {
@@ -127,6 +128,8 @@ class ManageAnnouncementsPresenter extends ActionPresenter
         $start = Date::Parse($this->page->GetStart(), $user->Timezone);
         $end = Date::Parse($this->page->GetEnd(), $user->Timezone);
         $priority = $this->page->GetPriority();
+        $groupIds = $this->page->GetGroups();
+        $resourceIds = $this->page->GetResources();
 
         Log::Debug('Changing Announcement with id %s', $id);
 
@@ -134,6 +137,8 @@ class ManageAnnouncementsPresenter extends ActionPresenter
         $announcement->SetText($text);
         $announcement->SetDates($start, $end);
         $announcement->SetPriority($priority);
+        $announcement->SetGroups($groupIds);
+        $announcement->SetResources($resourceIds);
 
         $this->announcementRepository->Update($announcement);
     }

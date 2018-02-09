@@ -34,6 +34,8 @@ function Reservation(opts) {
 		changeUserAutocomplete: $('#changeUserAutocomplete'),
 		userName: $('#userName'),
         availableCreditsCount: $('#availableCreditsCount'),
+        requiredCreditsCount: $('#requiredCreditsCount'),
+        creditCost: $('#creditCost'),
 		userId: $('#userId'),
 
 		referenceNumber: $('#referenceNumber'),
@@ -52,7 +54,9 @@ function Reservation(opts) {
 
         deleteButtonPrompt: $('#deleteButtonPrompt'),
 		additionalResources: $('#additionalResources'),
-        deleteRecurringButtons: $('#deleteRecurringButtons')
+        deleteRecurringButtons: $('#deleteRecurringButtons'),
+
+        reservationForm: $('#form-reservation')
 	};
 
 	var participation = {};
@@ -154,7 +158,8 @@ function Reservation(opts) {
 		WireUpButtonPrompt();
 		WireUpSaveDialog();
 		DisplayDuration();
-		WireUpAttachments();
+        CalculateCredits();
+        WireUpAttachments();
 		InitializeAutoRelease();
 
 		elements.userId.change(function () {
@@ -172,7 +177,6 @@ function Reservation(opts) {
         $('#hdnDeleteReason').val(reason);
     }
 
-// pre-submit callback
 	Reservation.prototype.preSubmit = function (formData, jqForm, options) {
 		$.blockUI({message: $('#wait-box')});
 
@@ -184,7 +188,6 @@ function Reservation(opts) {
 		return true;
 	};
 
-	// post-submit callback 
 	Reservation.prototype.showResponse = function (responseText, statusText, xhr, $form) {
 		ShowReservationAjaxResponse();
 	};
@@ -234,6 +237,10 @@ function Reservation(opts) {
 		});
 	};
 
+	Reservation.prototype.repeatOptionsChanged = function() {
+	    CalculateCredits();
+    };
+
 	function LoadCustomAttributes() {
 		var attributesPlaceholder = $('#custom-attributes-placeholder');
 		attributesPlaceholder.html('<span class="fa fa-spinner fa-spin fa-2x"/>');
@@ -246,6 +253,25 @@ function Reservation(opts) {
 		attributesPlaceholder.load(url);
 	}
 
+	function CalculateCredits() {
+	    if (options.creditsEnabled) {
+            elements.requiredCreditsCount.removeClass('insufficient-credits');
+            elements.creditCost.removeClass('insufficient-credits');
+	        elements.requiredCreditsCount.html('<span class="fa fa-spin fa-spinner"></span>');
+	        var availableCredits = parseInt(elements.availableCreditsCount.text());
+            ajaxPost(elements.reservationForm, opts.creditsUrl, null, function (data) {
+
+                elements.requiredCreditsCount.text(data.creditsRequired);
+                elements.creditCost.text('(' + data.cost + ')');
+                if (availableCredits < data.creditsRequired)
+                {
+                    elements.requiredCreditsCount.addClass('insufficient-credits');
+                    elements.creditCost.addClass('insufficient-credits');
+                }
+            });
+        }
+    }
+
 	function GetSelectedResourceIds() {
 		var resourceIds = [parseInt($('#primaryResourceId').val())];
 		elements.additionalResources.find('.resourceId').each(function (i, element) {
@@ -257,6 +283,7 @@ function Reservation(opts) {
 
 	function onResourcesChanged() {
 		LoadCustomAttributes();
+		CalculateCredits();
 	}
 
 	function GetDisallowedAccessoryIds() {
@@ -373,7 +400,7 @@ function Reservation(opts) {
 					primaryResourceContainer.find('.resourceName').remove();
 					displayDiv = primaryResourceContainer;
 				}
-				displayDiv.append('<div class="resourceName" style="background-color:' + color + '; color:' + textColor + ';">' + '<span class="resourceDetails">' + checkedResourceName + '</span> ' + '<input class="resourceId" type="hidden" name="additionalResources[]" value="' + checkedResourceId + '"/>' + (requiresApproval ? ' <i class="fa fa-lock" data-tooltip="approval"></i> ' : '') + (requiresCheckin ? ' <i class="fa fa-sign-in" data-tooltip="checkin"></i> ' : '') + (!_.isEmpty(autoReleaseMinutes) ? ' <i class="fa fa-clock-o" data-tooltip="autorelease" data-autorelease="' + autoReleaseMinutes + '"></i> ' : '') + '</div>');
+				displayDiv.append('<div class="resourceName" style="background-color:' + color + '; color:' + textColor + ';">' + '<span class="resourceDetails" data-resourceId="' + checkedResourceId + '">' + checkedResourceName + '</span> ' + '<input class="resourceId" type="hidden" name="additionalResources[]" value="' + checkedResourceId + '"/>' + (requiresApproval ? ' <i class="fa fa-lock" data-tooltip="approval"></i> ' : '') + (requiresCheckin ? ' <i class="fa fa-sign-in" data-tooltip="checkin"></i> ' : '') + (!_.isEmpty(autoReleaseMinutes) ? ' <i class="fa fa-clock-o" data-tooltip="autorelease" data-autorelease="' + autoReleaseMinutes + '"></i> ' : '') + '</div>');
 			});
 		}
 
@@ -523,7 +550,7 @@ function Reservation(opts) {
 			$('#retrySubmitParams').empty().append(retryParams.find('input'));
 			retryParams.empty();
 			//CloseSaveDialog();
-			$('#form-reservation').submit();
+			elements.reservationForm.submit();
 		});
 
 		$('#creatingNotification').hide();
@@ -539,7 +566,7 @@ function Reservation(opts) {
         $('#creatingNotification').show();
         $('#joiningWaitingList').removeClass('no-show');
 
-        ajaxPost($('#form-reservation'), opts.waitlistUrl, null, function (data) {
+        ajaxPost(elements.reservationForm, opts.waitlistUrl, null, function (data) {
             $('#result').html(data);
             ShowReservationAjaxResponse();
         });
@@ -567,7 +594,7 @@ function Reservation(opts) {
 			$('#checkingInMessage').removeClass('no-show');
 			$.blockUI({message: $('#wait-box')});
 
-			ajaxPost($('#form-reservation'), opts.checkinUrl, null, function (data) {
+			ajaxPost(elements.reservationForm, opts.checkinUrl, null, function (data) {
 				$('#result').html(data);
 				ShowReservationAjaxResponse();
 			});
@@ -578,7 +605,7 @@ function Reservation(opts) {
 			$('#checkingOutMessage').removeClass('no-show');
 			$.blockUI({message: $('#wait-box')});
 
-			ajaxPost($('#form-reservation'), opts.checkoutUrl, null, function (data) {
+			ajaxPost(elements.reservationForm, opts.checkoutUrl, null, function (data) {
 				$('#result').html(data);
 				ShowReservationAjaxResponse();
 			});
@@ -597,7 +624,7 @@ function Reservation(opts) {
 
 	var WireUpSaveDialog = function () {
 		$('.save').click(function () {
-			$('#form-reservation').submit();
+			elements.reservationForm.submit();
 		});
 	};
 
@@ -629,24 +656,25 @@ function Reservation(opts) {
 		elements.endDate.change(function () {
 			PopulatePeriodDropDown(elements.endDate, elements.endTime, elements.endDateTextbox, 'end');
 			DisplayDuration();
-
+            CalculateCredits();
 			elements.endDate.data['endPreviousVal'] = elements.endDate.val();
-		});
+        });
 
 		elements.beginTime.change(function () {
 			var diff = dateHelper.GetTimeDifference(elements.beginTime.data['beginTimePreviousVal'], elements.beginTime.val());
 
 			var newTime = dateHelper.AddTimeDiff(diff, elements.endTime.val());
 
-			//console.log(newTime);
 			elements.endTime.val(newTime);
 			elements.beginTime.data['beginTimePreviousVal'] = elements.beginTime.val();
 
 			DisplayDuration();
+            CalculateCredits();
 		});
 
 		elements.endTime.change(function () {
 			DisplayDuration();
+            CalculateCredits();
 		});
 
 		var PopulatePeriodDropDown = function (dateElement, periodElement, dateTextbox, type) {
@@ -687,13 +715,14 @@ function Reservation(opts) {
 
 							}
                         }
-                        else {
-							if (type == 'end' && moment(elements.beginDate.val()).add(1, 'days').isSame(elements.endDate.val()))
-							{
-								selectedPeriod = null;
-								items.push('<option value="' + item.begin + '" selected="selected">' + item.label + '</option>');
-							}
-						}
+                        // removed for bug #305
+                        // else {
+						// 	if (type == 'end' && moment(elements.beginDate.val()).add(1, 'days').isSame(elements.endDate.val()))
+						// 	{
+						// 		selectedPeriod = null;
+						// 		items.push('<option value="' + item.begin + '" selected="selected">' + item.label + '</option>');
+						// 	}
+						// }
 					});
 
                     if (items.length == 0){
@@ -915,7 +944,8 @@ function Reservation(opts) {
 
 		_ownerId = id;
 		$('#changeUsers').hide();
-	};
+        CalculateCredits();
+    };
 
 	changeUser.showAll = function () {
 		var allUserList;

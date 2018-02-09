@@ -1,6 +1,6 @@
 <?php
 /**
-Copyright 2011-2017 Nick Korbel
+Copyright 2011-2018 Nick Korbel
 
 This file is part of Booked Scheduler.
 
@@ -746,65 +746,5 @@ class ScheduleReservationListTests extends TestBase
 		$this->assertTrue($slots[4]->Begin()->Equals(Time::Parse('2:00', $tz)));
 		$this->assertTrue($slots[4]->End()->Equals(Time::Parse('6:00', $tz)));
 		$this->assertInstanceOf('BufferSlot', $slots[0]);
-	}
-}
-
-class ReservationItemViewBuilder
-{
-	public $reservationId;
-	public $startDate;
-	public $endDate;
-	public $summary;
-	public $resourceId;
-	public $userId;
-	public $firstName;
-	public $lastName;
-	public $referenceNumber;
-
-	public function __construct()
-	{
-		$this->reservationId = 1;
-		$this->startDate = Date::Now();
-		$this->endDate = Date::Now();
-		$this->summary = 'summary';
-		$this->resourceId = 10;
-		$this->userId = 100;
-		$this->firstName = 'first';
-		$this->lastName = 'last';
-		$this->referenceNumber = 'referenceNumber';
-	}
-
-	public function WithStartDate(Date $startDate)
-	{
-		$this->startDate = $startDate;
-		return $this;
-	}
-
-	public function WithEndDate(Date $endDate)
-	{
-		$this->endDate = $endDate;
-		return $this;
-	}
-
-	/**
-	 * @return ReservationItemView
-	 */
-	public function Build()
-	{
-		return new ReservationItemView(
-			$this->referenceNumber,
-			$this->startDate,
-			$this->endDate,
-			null,
-			$this->resourceId,
-			$this->reservationId,
-			null,
-			null,
-			$this->summary,
-			null,
-			$this->firstName,
-			$this->lastName,
-			$this->userId
-		);
 	}
 }

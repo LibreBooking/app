@@ -1,6 +1,6 @@
 <?php
 /**
-Copyright 2011-2017 Nick Korbel
+Copyright 2011-2018 Nick Korbel
 
 This file is part of Booked Scheduler.
 
@@ -33,7 +33,6 @@ class CalendarPresenter extends CommonCalendarPresenter
      * @param UserSession $userSession
      * @param int $selectedScheduleId
      * @param int $selectedResourceId
-     * @return ReservationItemView[]
      */
     protected function BindEvents($userSession, $selectedScheduleId, $selectedResourceId)
     {
@@ -51,7 +50,8 @@ class CalendarPresenter extends CommonCalendarPresenter
             $reservations,
             $resources,
             $userSession,
-            $this->privacyFilter));
+            $this->privacyFilter,
+            $this->slotLabelFactory));
     }
 
     protected function BindSubscriptionDetails($userSession, $selectedResourceId, $selectedScheduleId)

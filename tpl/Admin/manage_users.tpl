@@ -1,5 +1,5 @@
 {*
-Copyright 2011-2017 Nick Korbel
+Copyright 2011-2018 Nick Korbel
 
 This file is part of Booked Scheduler.
 
@@ -127,6 +127,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 						<span class="propertyValue inlineUpdate changeCredits"
                               data-type="number" data-pk="{$id}" data-value="{$user->CurrentCreditCount}"
                               data-name="{FormKeys::CREDITS}">{$user->CurrentCreditCount}</span>
+                        <a href="credit_log.php?{QueryStringKeys::USER_ID}={$id}" title="{translate key=CreditHistory}"><span class="fa fa-list"></span></a>
                     </td>
                 {/if}
                 {if $PerUserColors}
@@ -761,16 +762,16 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
             {foreach from=$users item=user}
             var user = {
                 id: {$user->Id},
-                first: '{$user->First|escape:"quotes"}',
-                last: '{$user->Last|escape:"quotes"}',
+                first: '{$user->First|escape:"javascript"}',
+                last: '{$user->Last|escape:"javascript"}',
                 isActive: '{$user->IsActive()}',
-                username: '{$user->Username|escape:"quotes"}',
-                email: '{$user->Email|escape:"quotes"}',
+                username: '{$user->Username|escape:"javascript"}',
+                email: '{$user->Email|escape:"javascript"}',
                 timezone: '{$user->Timezone}',
-                phone: '{$user->Phone|escape:"quotes"}',
-                organization: '{$user->Organization|escape:"quotes"}',
-                position: '{$user->Position|escape:"quotes"}',
-                reservationColor: '{$user->ReservationColor|escape:"quotes"}'
+                phone: '{$user->Phone|escape:"javascript"}',
+                organization: '{$user->Organization|escape:"javascript"}',
+                position: '{$user->Position|escape:"javascript"}',
+                reservationColor: '{$user->ReservationColor|escape:"javascript"}'
             };
             userManagement.addUser(user);
             {/foreach}

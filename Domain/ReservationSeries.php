@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright 2011-2017 Nick Korbel
+ * Copyright 2011-2018 Nick Korbel
  *
  * This file is part of Booked Scheduler.
  *
@@ -195,6 +195,28 @@ class ReservationSeries
 	}
 
 	/**
+	 * @return Reservation[]
+	 */
+	public function SortedInstances()
+	{
+		$instances = $this->Instances();
+
+        uasort($instances, array($this, 'SortReservations'));
+
+        return $instances;
+	}
+
+    /**
+     * @param Reservation $r1
+     * @param Reservation $r2
+     * @return int
+     */
+	protected function SortReservations(Reservation $r1, Reservation $r2)
+    {
+        return $r1->StartDate()->Compare($r2->StartDate());
+    }
+
+	/**
 	 * @var array|ReservationAccessory[]
 	 */
 	protected $_accessories = array();
@@ -297,9 +319,10 @@ class ReservationSeries
 		$this->AddNewCurrentInstance($reservationDate);
 	}
 
-	/**
-	 * @param IRepeatOptions $repeatOptions
-	 */
+    /**
+     * @param IRepeatOptions $repeatOptions
+     * @throws Exception
+     */
 	protected function Repeats(IRepeatOptions $repeatOptions)
 	{
 		$this->repeatOptions = $repeatOptions;
@@ -340,10 +363,11 @@ class ReservationSeries
 		return $max->TotalSeconds() > 0 ? $max : null;
 	}
 
-	/**
+    /**
      * @param Reservation $reservation
-	 * @return bool
-	 */
+     * @return bool
+     * @throws Exception
+     */
 	public function RemoveInstance(Reservation $reservation)
 	{
 		if ($reservation == $this->CurrentInstance())
@@ -357,7 +381,38 @@ class ReservationSeries
 		return true;
 	}
 
-	/**
+    /**
+     * @return bool
+     */
+    public function HasAcceptedTerms()
+    {
+        return $this->termsAcceptanceDate != null;
+    }
+
+    /**
+     * @var Date|null
+     */
+    protected $termsAcceptanceDate;
+
+    /**
+     * @return Date|null
+     */
+    public function TermsAcceptanceDate()
+    {
+        return $this->termsAcceptanceDate;
+    }
+
+    /**
+     * @param bool $accepted
+     */
+    public function AcceptTerms($accepted)
+    {
+        if ($accepted) {
+            $this->termsAcceptanceDate = Date::Now();
+        }
+    }
+
+    /**
 	 * @param DateRange $reservationDate
 	 * @return bool
 	 */
@@ -455,9 +510,10 @@ class ReservationSeries
 		return $this->instances[$referenceNumber];
 	}
 
-	/**
-	 * @return Reservation
-	 */
+    /**
+     * @return Reservation
+     * @throws Exception
+     */
 	public function CurrentInstance()
 	{
 		$instance = $this->GetInstance($this->GetCurrentKey());
@@ -542,10 +598,11 @@ class ReservationSeries
 		return $this->currentInstanceKey;
 	}
 
-	/**
-	 * @param Reservation $instance
-	 * @return bool
-	 */
+    /**
+     * @param Reservation $instance
+     * @return bool
+     * @throws Exception
+     */
 	protected function IsCurrent(Reservation $instance)
 	{
 		return $instance->ReferenceNumber() == $this->CurrentInstance()->ReferenceNumber();
@@ -662,6 +719,18 @@ class ReservationSeries
 
 	public function CalculateCredits(IScheduleLayout $layout)
 	{
+	    $credits = 0;
+	    foreach ($this->AllResources() as $resource)
+        {
+            $credits += ($resource->GetCreditsPerSlot() + $resource->GetPeakCreditsPerSlot());
+        }
+
+        if ($credits == 0)
+        {
+            $this->creditsRequired = 0;
+            return;
+        }
+
 		$this->TotalSlots($layout);
 		$creditsRequired = 0;
 		foreach ($this->Instances() as $instance)
@@ -672,7 +741,7 @@ class ReservationSeries
 		$this->creditsRequired = $creditsRequired;
 	}
 
-	public function TotalSlots(IScheduleLayout $layout)
+	private function TotalSlots(IScheduleLayout $layout)
 	{
 		$slots = 0;
 		foreach ($this->Instances() as $instance)
@@ -690,7 +759,7 @@ class ReservationSeries
 			if ($startDate->DateEquals($endDate))
 			{
 				$count = $layout->GetSlotCount($startDate, $endDate, $startDate);
-				Log::Debug('SLOT COUNT op %s peak %s', $count->OffPeak, $count->Peak);
+				Log::Debug('Slot count off peak %s, peak %s', $count->OffPeak, $count->Peak);
 				$instanceSlots += $count->OffPeak;
 				$peakSlots += $count->Peak;
 			}

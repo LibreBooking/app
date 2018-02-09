@@ -1,6 +1,6 @@
 <?php
 /**
-Copyright 2011-2017 Nick Korbel
+Copyright 2011-2018 Nick Korbel
 
 This file is part of Booked Scheduler is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -21,6 +21,7 @@ class ConfigKeys
     const ADMIN_EMAIL_NAME = 'admin.email.name';
     const ALLOW_REGISTRATION = 'allow.self.registration';
 	const CREDITS_ENABLED = 'enabled';
+	const CREDITS_ALLOW_PURCHASE = 'allow.purchase';
 	const CSS_EXTENSION_FILE = 'css.extension.file';
 	const DEFAULT_HOMEPAGE = 'default.homepage';
     const DEFAULT_PAGE_SIZE = 'default.page.size';
@@ -78,7 +79,6 @@ class ConfigKeys
     const INSTALLATION_PASSWORD = 'install.password';
 
     const ICS_SUBSCRIPTION_KEY = 'subscription.key';
-    const ICS_REQUIRE_LOGIN = 'require.login';
 
     const PRIVACY_HIDE_USER_DETAILS = 'hide.user.details';
     const PRIVACY_HIDE_RESERVATION_DETAILS = 'hide.reservation.details';
@@ -147,6 +147,8 @@ class ConfigKeys
 	const AUTHENTICATION_REQUIRED_EMAIL_DOMAINS = 'required.email.domains';
 	const AUTHENTICATION_HIDE_BOOKED_LOGIN_PROMPT = 'hide.booked.login.prompt';
 	const AUTHENTICATION_CAPTCHA_ON_LOGIN = 'captcha.on.login';
+
+	const SLACK_TOKEN = 'token';
 }
 
 class ConfigSection
@@ -171,4 +173,6 @@ class ConfigSection
 	const RECAPTCHA = 'recaptcha';
 	const USERS = 'users';
     const GOOGLE_ANALYTICS = 'google.analytics';
+    const PAYMENTS = 'payments';
+    const SLACK = 'slack';
 }

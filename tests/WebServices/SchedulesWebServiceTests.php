@@ -1,6 +1,6 @@
 <?php
 /**
-Copyright 2012-2017 Nick Korbel
+Copyright 2012-2018 Nick Korbel
 
 This file is part of Booked Scheduler.
 
@@ -171,5 +171,3 @@ class SchedulesWebServiceTests extends TestBase
 		$this->assertEquals(array(new SchedulePeriodResponse($periods7[0])), $response->periods[$date7->Weekday()]);
 	}
 }
-
-?>

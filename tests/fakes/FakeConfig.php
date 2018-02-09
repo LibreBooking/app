@@ -1,6 +1,6 @@
 <?php
 /**
-Copyright 2011-2017 Nick Korbel
+Copyright 2011-2018 Nick Korbel
 
 This file is part of Booked Scheduler.
 
@@ -22,6 +22,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 class FakeConfig extends Configuration implements IConfiguration
 {
 	public $_RegisteredFiles = array();
+    public $_ScriptUrl = '';
 
 	public function Register($configFile, $configId, $overwrite = false)
 	{
@@ -52,13 +53,27 @@ class FakeConfig extends Configuration implements IConfiguration
 	{
 		$this->SetKey(ConfigKeys::DEFAULT_TIMEZONE, $timezone);
 	}
+
+    public function GetScriptUrl()
+    {
+        return $this->_ScriptUrl;
+    }
+
+    public function EnableSubscription()
+    {
+    }
 }
 
-class FakeConfigFile implements IConfigurationFile
+class FakeConfigFile extends ConfigurationFile implements IConfigurationFile
 {
 	public $_values = array();
 	public $_sections = array();
 	public $_ScriptUrl = '';
+
+    public function __construct()
+    {
+        parent::__construct(array(Configuration::SETTINGS => array()));
+    }
 
 	public function GetKey($keyName, $converter = null)
 	{
@@ -118,4 +133,8 @@ class FakeConfigFile implements IConfigurationFile
 	{
 		return 'UTC';
 	}
+
+    public function EnableSubscription()
+    {
+    }
 }

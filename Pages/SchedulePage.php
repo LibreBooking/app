@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright 2011-2017 Nick Korbel
+ * Copyright 2011-2018 Nick Korbel
  *
  * This file is part of Booked Scheduler.
  *
@@ -24,28 +24,21 @@ require_once(ROOT_DIR . 'Presenters/SchedulePresenter.php');
 interface ISchedulePage extends IActionPage
 {
 	/**
-	 * Bind schedules to the page
-	 *
 	 * @param array|Schedule[] $schedules
 	 */
 	public function SetSchedules($schedules);
 
 	/**
-	 * Bind resources to the page
-	 *
 	 * @param array|ResourceDto[] $resources
 	 */
 	public function SetResources($resources);
 
 	/**
-	 * Bind layout to the page for daily time slot layouts
-	 *
 	 * @param IDailyLayout $dailyLayout
 	 */
 	public function SetDailyLayout($dailyLayout);
 
 	/**
-	 * Returns the currently selected scheduleId
 	 * @return int
 	 */
 	public function GetScheduleId();
@@ -66,8 +59,6 @@ interface ISchedulePage extends IActionPage
 	public function SetFirstWeekday($firstWeekday);
 
 	/**
-	 * Sets the dates to be displayed for the schedule, adjusted for timezone if necessary
-	 *
 	 * @param DateRange $dates
 	 */
 	public function SetDisplayDates($dates);
@@ -88,19 +79,14 @@ interface ISchedulePage extends IActionPage
 	 */
 	public function GetSelectedDates();
 
-	/**
-	 * @abstract
-	 */
 	public function ShowInaccessibleResources();
 
 	/**
-	 * @abstract
 	 * @param bool $showShowFullWeekToggle
 	 */
 	public function ShowFullWeekToggle($showShowFullWeekToggle);
 
 	/**
-	 * @abstract
 	 * @return bool
 	 */
 	public function GetShowFullWeek();
@@ -213,6 +199,16 @@ interface ISchedulePage extends IActionPage
      */
     public function FilterCleared();
 
+    /**
+     * @param DateRange $availability
+     * @param bool $tooEarly
+     */
+    public function BindScheduleAvailability($availability, $tooEarly);
+
+    /**
+     * @param bool $allowConcurrentReservations
+     */
+    public function SetAllowConcurrent($allowConcurrentReservations);
 }
 
 class ScheduleStyle
@@ -561,6 +557,22 @@ class SchedulePage extends ActionPage implements ISchedulePage
     public function FilterCleared()
     {
        return $this->GetQuerystring('clearFilter') == '1';
+    }
+
+    public function BindScheduleAvailability($availability, $tooEarly)
+    {
+        $this->Set('ScheduleAvailabilityEarly', $tooEarly);
+        $this->Set('ScheduleAvailabilityLate', !$tooEarly);
+        $this->Set('ScheduleAvailabilityStart', $availability->GetBegin());
+        $this->Set('ScheduleAvailabilityEnd', $availability->GetEnd());
+        $this->Set('HideSchedule', true);
+    }
+
+    public function SetAllowConcurrent($allowConcurrentReservations)
+    {
+        $this->Set('AllowConcurrentReservations', $allowConcurrentReservations);
+        $hide = $this->GetVar('HideSchedule');
+        $this->Set('HideSchedule', $hide || $allowConcurrentReservations);
     }
 }
 

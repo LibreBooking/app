@@ -1,6 +1,6 @@
 <?php
 /**
-Copyright 2012-2017 Nick Korbel
+Copyright 2012-2018 Nick Korbel
 
 This file is part of Booked Scheduler.
 
@@ -32,7 +32,9 @@ class ResourceResponse extends RestResponse
 	public $requiresApproval;
 	public $allowMultiday;
 	public $maxParticipants;
-	public $minNotice;
+	public $minNoticeAdd;
+	public $minNoticeUpdate;
+	public $minNoticeDelete;
 	public $maxNotice;
 	public $description;
 	public $scheduleId;
@@ -65,7 +67,9 @@ class ResourceResponse extends RestResponse
 		$this->maxLength = $resource->GetMaxLength()->__toString();
 		$this->minLength = $resource->GetMinLength()->__toString();
 		$this->maxNotice = $resource->GetMaxNotice()->__toString();
-		$this->minNotice = $resource->GetMinNotice()->__toString();
+		$this->minNoticeAdd = $resource->GetMinNoticeAdd()->__toString();
+		$this->minNoticeUpdate = $resource->GetMinNoticeUpdate()->__toString();
+		$this->minNoticeDelete = $resource->GetMinNoticeDelete()->__toString();
 		$this->requiresApproval = $resource->GetRequiresApproval();
 		$this->allowMultiday = $resource->GetAllowMultiday();
 		$this->maxParticipants = $resource->GetMaxParticipants();
@@ -120,7 +124,9 @@ class ExampleResourceResponse extends ResourceResponse
 		$this->maxLength = $length;
 		$this->minLength = $length;
 		$this->maxNotice = $length;
-		$this->minNotice = $length;
+		$this->minNoticeAdd= $length;
+		$this->minNoticeUpdate = $length;
+		$this->minNoticeDelete = $length;
 		$this->requiresApproval = true;
 		$this->allowMultiday = true;
 		$this->maxParticipants = 10;

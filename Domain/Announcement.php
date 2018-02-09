@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Copyright 2011-2017 Nick Korbel
+ * Copyright 2011-2018 Nick Korbel
  *
  * This file is part of Booked Scheduler.
  *
@@ -26,6 +26,9 @@ class Announcement
     private $Start;
     private $End;
     private $Priority;
+    private $GroupIds = [];
+    private $ResourceIds = [];
+    private $DisplayPage;
 
     /**
      * @return int
@@ -83,17 +86,26 @@ class Announcement
         return empty($this->ResourceIds) ? array() : $this->ResourceIds;
     }
 
-    public function __construct($id, $text, Date $start, Date $end, $priority, $groupIds, $resourceIds)
+    /**
+     * @return int
+     */
+    public function DisplayPage()
+    {
+        return $this->DisplayPage;
+    }
+
+    public function __construct($id, $text, Date $start, Date $end, $priority, $groupIds, $resourceIds, $displayPage)
     {
         $this->Id = $id;
-		$text = str_replace('&lt;script&gt;', '', $text);
-		$text = str_replace('&lt;/script&gt;', '', $text);
+        $text = str_replace('&lt;script&gt;', '', $text);
+        $text = str_replace('&lt;/script&gt;', '', $text);
         $this->Text = $text;
         $this->Start = $start;
         $this->End = $end;
         $this->Priority = $priority;
         $this->GroupIds = $groupIds;
         $this->ResourceIds = $resourceIds;
+        $this->DisplayPage = $displayPage;
     }
 
     public static function FromRow($row)
@@ -108,7 +120,8 @@ class Announcement
             Date::FromDatabase($row[ColumnNames::ANNOUNCEMENT_END]),
             $row[ColumnNames::ANNOUNCEMENT_PRIORITY],
             empty($groupIds) ? array() : explode(',', $groupIds),
-            empty($resourceIds) ? array() : explode(',', $resourceIds)
+            empty($resourceIds) ? array() : explode(',', $resourceIds),
+            $row[ColumnNames::ANNOUNCEMENT_DISPLAY_PAGE]
         );
     }
 
@@ -120,14 +133,15 @@ class Announcement
      * @param int $priority
      * @param int[] $groupIds
      * @param int[] $resourceIds
+     * @param int $displayPage
      * @return Announcement
      */
-    public static function Create($text, Date $start, Date $end, $priority, $groupIds, $resourceIds)
+    public static function Create($text, Date $start, Date $end, $priority, $groupIds, $resourceIds, $displayPage)
     {
         if (empty($priority)) {
             $priority = null;
         }
-        return new Announcement(null, $text, $start, $end, $priority, $groupIds, $resourceIds);
+        return new Announcement(null, $text, $start, $end, $priority, $groupIds, $resourceIds, $displayPage);
     }
 
     /**
@@ -157,6 +171,22 @@ class Announcement
     }
 
     /**
+     * @param int[] $groupIds
+     */
+    public function SetGroups($groupIds)
+    {
+        $this->GroupIds = $groupIds;
+    }
+
+    /**
+     * @param int[] $resourceIds
+     */
+    public function SetResources($resourceIds)
+    {
+        $this->ResourceIds = $resourceIds;
+    }
+
+    /**
      * @param UserSession $user
      * @param IPermissionService $permissionService
      * @return bool
@@ -169,25 +199,29 @@ class Announcement
         $allowedForGroup = empty($groupIds);
         $allowedForResource = empty($resourceIds);
 
-        foreach ($this->ResourceIds() as $resourceId)
-        {
-            if ($permissionService->CanAccessResource(new AnnouncementResource($resourceId), $user))
-            {
+        foreach ($this->ResourceIds() as $resourceId) {
+            if ($permissionService->CanAccessResource(new AnnouncementResource($resourceId), $user)) {
                 $allowedForResource = true;
                 break;
             }
         }
 
-        foreach ($this->GroupIds() as $groupId)
-        {
-            if (in_array($groupId, $user->Groups))
-            {
+        foreach ($this->GroupIds() as $groupId) {
+            if (in_array($groupId, $user->Groups)) {
                 $allowedForGroup = true;
                 break;
             }
         }
 
         return $allowedForGroup && $allowedForResource;
+    }
+
+    /**
+     * @return bool
+     */
+    public function CanEmail()
+    {
+        return $this->DisplayPage() == 1;
     }
 }
 

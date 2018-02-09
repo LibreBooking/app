@@ -40,6 +40,13 @@ class ShibbolethUser {
      */
     private $_phone;
 
+
+    /**
+     * The user's organization.
+     * @var string
+     */
+    private $_organization;
+
     /**
      * Constructor.
      * Populates the object's members with given values.
@@ -54,6 +61,7 @@ class ShibbolethUser {
         $this->_lastname = $this->GetValue($values, $config[ShibbolethConfig::LASTNAME]);
         $this->_email = $this->GetValue($values, $config[ShibbolethConfig::EMAIL]);
         $this->_phone = $this->GetValue($values, $config[ShibbolethConfig::PHONE]);
+        $this->_organization = $this->GetValue($values, $config[ShibbolethConfig::ORGANIZATION]);
     }
 
     /**
@@ -94,6 +102,14 @@ class ShibbolethUser {
      */
     public function GetPhone () {
         return $this->_phone;
+    }
+
+    /**
+     * Retrieves the user's organization.
+     * @return string|null
+     */
+    public function GetOrganization () {
+        return $this->_organization;
     }
 
     /**

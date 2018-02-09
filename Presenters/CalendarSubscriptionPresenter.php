@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright 2012-2017 Nick Korbel
+ * Copyright 2012-2018 Nick Korbel
  * Copyright 2012-2014 Alois Schloegl
  *
  * This file is part of Booked Scheduler.
@@ -79,8 +79,8 @@ class CalendarSubscriptionPresenter
 		$daysAgo = $this->page->GetPastNumberOfDays();
 		$daysAhead = $this->page->GetFutureNumberOfDays();
 
-		$daysAgo = empty($daysAgo) ? 7 : intval($daysAgo);
-        $daysAhead = empty($daysAhead) ? 365 : intval($daysAhead);
+		$daysAgo = empty($daysAgo) ? 0 : intval($daysAgo);
+        $daysAhead = empty($daysAhead) ? 30 : intval($daysAhead);
 
 		$weekAgo = Date::Now()->AddDays(-$daysAgo);
 		$nextYear = Date::Now()->AddDays($daysAhead);

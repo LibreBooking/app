@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright 2011-2017 Nick Korbel
+ * Copyright 2011-2018 Nick Korbel
  *
  * This file is part of Booked Scheduler.
  *
@@ -212,7 +212,9 @@ class ManageResourcesPresenter extends ActionPresenter
 
         $resource = BookableResource::CreateNew($name, $scheduleId, $autoAssign);
         $resource->SetAdminGroupId($resourceAdminGroupId);
-        $this->resourceRepository->Add($resource);
+        $resourceId = $this->resourceRepository->Add($resource);
+
+        $this->ChangeResourceImage($resourceId);
     }
 
     public function ChangeDuration()
@@ -259,7 +261,9 @@ class ManageResourcesPresenter extends ActionPresenter
         $requiresApproval = $this->page->GetRequiresApproval();
         $autoAssign = $this->page->GetAutoAssign();
         $clearAllPermissions = $this->page->GetAutoAssignClear();
-        $minNotice = $this->page->GetStartNoticeMinutes();
+        $minNoticeAdd = $this->page->GetStartNoticeMinutesAdd();
+        $minNoticeUpdate = $this->page->GetStartNoticeMinutesUpdate();
+        $minNoticeDelete = $this->page->GetStartNoticeMinutesDelete();
         $maxNotice = $this->page->GetEndNoticeMinutes();
         $enableCheckin = $this->page->GetEnableCheckin();
         $autoReleaseMinutes = $this->page->GetAutoReleaseMinutes();
@@ -269,12 +273,14 @@ class ManageResourcesPresenter extends ActionPresenter
         $resource->SetRequiresApproval($requiresApproval);
         $resource->SetAutoAssign($autoAssign);
         $resource->SetClearAllPermissions($clearAllPermissions);
-        $resource->SetMinNotice($minNotice);
+        $resource->SetMinNoticeAdd($minNoticeAdd);
+        $resource->SetMinNoticeUpdate($minNoticeUpdate);
+        $resource->SetMinNoticeDelete($minNoticeDelete);
         $resource->SetMaxNotice($maxNotice);
         $resource->SetCheckin($enableCheckin, $autoReleaseMinutes);
 
-        Log::Debug('Updating resource id=%s, requiresApproval=%s, autoAssign=%s, minNotice=%s, maxNotice=%s',
-            $resourceId, $requiresApproval, $autoAssign, $minNotice, $maxNotice);
+        Log::Debug('Updating resource id=%s, requiresApproval=%s, autoAssign=%s, minNoticeAdd=%s, minNoticeUpdate=%s, minNoticeDelete=%s, maxNotice=%s',
+            $resourceId, $requiresApproval, $autoAssign, $minNoticeAdd, $minNoticeUpdate, $minNoticeDelete, $maxNotice);
 
         $this->resourceRepository->Update($resource);
 
@@ -283,7 +289,9 @@ class ManageResourcesPresenter extends ActionPresenter
 
     public function Delete()
     {
-        $resource = $this->resourceRepository->LoadById($this->page->GetResourceId());
+        $resourceId = $this->page->GetResourceId();
+        $this->SaveResourceImage(null, $resourceId);
+        $resource = $this->resourceRepository->LoadById($resourceId);
         $this->resourceRepository->Delete($resource);
     }
 
@@ -337,8 +345,12 @@ class ManageResourcesPresenter extends ActionPresenter
 
     public function ChangeImage()
     {
-        Log::Debug("Changing resource image for resource id %s", $this->page->GetResourceId());
+       $this->ChangeResourceImage($this->page->GetResourceId());
+    }
 
+    private function ChangeResourceImage($resourceId)
+    {
+        Log::Debug("Changing resource image for resource id %s", $resourceId);
         $uploadedImage = $this->page->GetUploadedImage();
 
         if ($uploadedImage == null) {
@@ -346,6 +358,7 @@ class ManageResourcesPresenter extends ActionPresenter
         }
 
         if ($uploadedImage->IsError()) {
+            Log::Error('Error with uploaded image for resource id %s. %s', $resourceId, $uploadedImage->Error());
             die("Image error: " . $uploadedImage->Error());
         }
 
@@ -354,6 +367,7 @@ class ManageResourcesPresenter extends ActionPresenter
         $supportedTypes = array('jpeg', 'gif', 'png', 'jpg');
 
         if (!in_array($fileType, $supportedTypes)) {
+            Log::Error('Invalid image type for resource id %s, filetype %s', $resourceId, $fileType);
             die("Invalid image type: $fileType");
         }
 
@@ -366,7 +380,7 @@ class ManageResourcesPresenter extends ActionPresenter
 
         if ($needed > $limit) {
             echo 'Image too big. Resize to a smaller size or reduce the resolution and try again.';
-            Log::Error("Uploaded image for %s is too big. Needed %s limit %s", $this->page->GetResourceId(), $needed, $limit);
+            Log::Error("Uploaded image for %s is too big. Needed %s limit %s", $resourceId, $needed, $limit);
             die();
         }
 
@@ -374,7 +388,7 @@ class ManageResourcesPresenter extends ActionPresenter
         $image->ResizeToWidth(300);
 
         $time = time();
-        $fileName = "resource{$this->page->GetResourceId()}{$time}.$fileType";
+        $fileName = "resource{$resourceId}{$time}.$fileType";
         $imageUploadDirectory = Configuration::Instance()->GetKey(ConfigKeys::IMAGE_UPLOAD_DIRECTORY);
 
         $path = '';
@@ -393,12 +407,13 @@ class ManageResourcesPresenter extends ActionPresenter
 
         $image->Save($path);
 
-        $this->SaveResourceImage($fileName);
+        $this->SaveResourceImage($fileName, $resourceId);
+
     }
 
     public function RemoveImage()
     {
-        $this->SaveResourceImage(null);
+        $this->SaveResourceImage(null, $this->page->GetResourceId());
     }
 
     public function ChangeStatus()
@@ -451,6 +466,7 @@ class ManageResourcesPresenter extends ActionPresenter
 
         $resource = $this->resourceRepository->LoadById($resourceId);
         $resource->EnableSubscription();
+        Configuration::Instance()->EnableSubscription();
         $this->resourceRepository->Update($resource);
     }
 
@@ -518,9 +534,9 @@ class ManageResourcesPresenter extends ActionPresenter
         return $attributes;
     }
 
-    private function SaveResourceImage($fileName)
+    private function SaveResourceImage($fileName, $resourceId)
     {
-        $resource = $this->resourceRepository->LoadById($this->page->GetResourceId());
+        $resource = $this->resourceRepository->LoadById($resourceId);
 
         $resource->SetImage($fileName);
 
@@ -567,8 +583,12 @@ class ManageResourcesPresenter extends ActionPresenter
         $maxDurationNone = $this->page->GetMaximumDurationNone();
         $bufferTime = $this->page->GetBufferTime();
         $bufferTimeNone = $this->page->GetBufferTimeNone();
-        $minNotice = $this->page->GetStartNoticeMinutes();
-        $minNoticeNone = $this->page->GetStartNoticeNone();
+        $minNoticeAdd = $this->page->GetStartNoticeMinutesAdd();
+        $minNoticeNoneAdd = $this->page->GetStartNoticeNoneAdd();
+        $minNoticeUpdate = $this->page->GetStartNoticeMinutesUpdate();
+        $minNoticeNoneUpdate = $this->page->GetStartNoticeNoneUpdate();
+        $minNoticeDelete = $this->page->GetStartNoticeMinutesDelete();
+        $minNoticeNoneDelete = $this->page->GetStartNoticeNoneDelete();
         $maxNotice = $this->page->GetEndNoticeMinutes();
         $maxNoticeNone = $this->page->GetEndNoticeNone();
         $allowMultiDay = $this->page->GetBulkAllowMultiday();
@@ -622,8 +642,14 @@ class ManageResourcesPresenter extends ActionPresenter
                 if (!$bufferTimeNone && $bufferTime != $emptyDuration) {
                     $resource->SetBufferTime($bufferTime);
                 }
-                if (!$minNoticeNone && $minNotice != $emptyDuration) {
-                    $resource->SetMinNotice($minNotice);
+                if (!$minNoticeNoneAdd && $minNoticeAdd != $emptyDuration) {
+                    $resource->SetMinNoticeAdd($minNoticeAdd);
+                }
+                if (!$minNoticeNoneUpdate && $minNoticeUpdate != $emptyDuration) {
+                    $resource->SetMinNoticeUpdate($minNoticeUpdate);
+                }
+                if (!$minNoticeNoneDelete && $minNoticeDelete != $emptyDuration) {
+                    $resource->SetMinNoticeDelete($minNoticeDelete);
                 }
                 if (!$maxNoticeNone && $maxNotice != $emptyDuration) {
                     $resource->SetMaxNotice($maxNotice);

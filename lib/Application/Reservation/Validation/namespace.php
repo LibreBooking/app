@@ -1,6 +1,6 @@
 <?php
 /**
-Copyright 2011-2017 Nick Korbel
+Copyright 2011-2018 Nick Korbel
 
 This file is part of Booked Scheduler is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -34,7 +34,9 @@ require_once(ROOT_DIR . 'lib/Application/Reservation/Validation/PermissionValida
 require_once(ROOT_DIR . 'lib/Application/Reservation/Validation/ReservationRuleResult.php');
 require_once(ROOT_DIR . 'lib/Application/Reservation/Validation/ReservationValidationFactory.php');
 require_once(ROOT_DIR . 'lib/Application/Reservation/Validation/ReservationValidationResult.php');
-require_once(ROOT_DIR . 'lib/Application/Reservation/Validation/ResourceMinimumNoticeRule.php');
+require_once(ROOT_DIR . 'lib/Application/Reservation/Validation/ResourceMinimumNoticeRuleAdd.php');
+require_once(ROOT_DIR . 'lib/Application/Reservation/Validation/ResourceMinimumNoticeRuleUpdate.php');
+require_once(ROOT_DIR . 'lib/Application/Reservation/Validation/ResourceMinimumNoticeRuleDelete.php');
 require_once(ROOT_DIR . 'lib/Application/Reservation/Validation/ResourceMaximumNoticeRule.php');
 require_once(ROOT_DIR . 'lib/Application/Reservation/Validation/ResourceMinimumDurationRule.php');
 require_once(ROOT_DIR . 'lib/Application/Reservation/Validation/ResourceMaximumDurationRule.php');
@@ -61,3 +63,5 @@ require_once(ROOT_DIR . 'lib/Application/Reservation/Validation/ReservationCanBe
 require_once(ROOT_DIR . 'lib/Application/Reservation/Validation/ReservationCanBeCheckedOutRule.php');
 require_once(ROOT_DIR . 'lib/Application/Reservation/Validation/CreditsRule.php');
 require_once(ROOT_DIR . 'lib/Application/Reservation/Validation/AnonymousResourceExcludedRule.php');
+require_once(ROOT_DIR . 'lib/Application/Reservation/Validation/TermsOfServiceRule.php');
+require_once(ROOT_DIR . 'lib/Application/Reservation/Validation/ScheduleAvailabilityRule.php');

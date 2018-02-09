@@ -1,5 +1,5 @@
 {*
-Copyright 2011-2017 Nick Korbel
+Copyright 2011-2018 Nick Korbel
 
 This file is part of Booked Scheduler.
 
@@ -39,6 +39,14 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 						<span class="glyphicon glyphicon-export"></span>
 					</a>
 				</li>
+                {if $CanViewAdmin}
+                    <li role="separator" class="divider"></li>
+                    <li role="presentation">
+                        <a role="menuitem" href="#" id="addTermsOfService" class="add-link">{translate key=TermsOfService}
+                            <span class="glyphicon glyphicon-book"></span>
+                        </a>
+                    </li>
+                {/if}
 			</ul>
 		</div>
 		<h1>{translate key=ManageReservations}</h1>
@@ -403,6 +411,91 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		</form>
 	</div>
 
+    <div class="modal fade" id="termsOfServiceDialog" tabindex="-1" role="dialog"
+         aria-labelledby="termsOfServiceDialogLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <form id="termsOfServiceForm" method="post" ajaxAction="termsOfService" enctype="multipart/form-data">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title" id="termsOfServiceDialogLabel">{translate key=TermsOfService}</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div>
+                            <div class="radio inline-block">
+                                <input type="radio" {formname key=TOS_METHOD} value="manual"
+                                       id="tos_manual_radio"
+                                       checked="checked" data-ref="tos_manual_div" class="toggle">
+                                <label for="tos_manual_radio">{translate key=EnterTermsManually}</label>
+                            </div>
+                            <div class="radio inline-block">
+                                <input type="radio" {formname key=TOS_METHOD} value="url"
+                                       id="tos_url_radio" data-ref="tos_url_div" class="toggle">
+                                <label for="tos_url_radio">{translate key=LinkToTerms}</label>
+                            </div>
+                            <div class="radio inline-block">
+                                <input type="radio" {formname key=TOS_METHOD} value="upload"
+                                       id="tos_upload_radio" data-ref="tos_upload_div" class="toggle">
+                                <label for="tos_upload_radio">{translate key=UploadTerms}</label>
+                            </div>
+                        </div>
+                        <div id="tos_manual_div" class="tos-div">
+                            <div class="form-group">
+                                <label for="tos-manual">{translate key=TermsOfService}</label>
+                                <textarea id="tos-manual" class="form-control" style="width:100%" rows="10" {formname key=TOS_TEXT}></textarea>
+                            </div>
+                        </div>
+                        <div id="tos_url_div" class="tos-div no-show">
+                            <div class="form-group">
+                                <label for="tos-url">{translate key=LinkToTerms}</label>
+                                <input type="url" id="tos-url" class="form-control"
+                                       placeholder="http://www.example.com/tos.html" {formname key=TOS_URL} maxlength="255" />
+                            </div>
+                        </div>
+                        <div id="tos_upload_div" class="tos-div no-show margin-bottom-15">
+                            <label for="tos-upload">{translate key=TermsOfService} PDF</label>
+                            <div class="dropzone" id="termsOfServiceUpload">
+                                <div>
+                                    <span class="fa fa-file-pdf-o fa-3x"></span><br/>
+                                    {translate key=ChooseOrDropFile}
+                                </div>
+                                <input id="tos-upload" type="file" {formname key=TOS_UPLOAD}
+                                       accept="application/pdf" />
+                            </div>
+                            <div id="tos-upload-link" class="no-show">
+                                <a href="{$ScriptUrl}/uploads/tos/tos.pdf" target="_blank">
+                                    <span class="fa fa-file-pdf-o"></span> {translate key=ViewTerms}
+                                </a>
+                            </div>
+                        </div>
+                        <div>
+                            <div>{translate key=RequireTermsOfServiceAcknowledgement}</div>
+                            <div>
+                                <div class="radio inline-block">
+                                    <input type="radio" {formname key=TOS_APPLICABILITY} value="{TermsOfService::RESERVATION}"
+                                           id="tos_reservation"
+                                           checked="checked">
+                                    <label for="tos_reservation">{translate key=UponReservation}</label>
+                                </div>
+                                <div class="radio inline-block">
+                                    <input type="radio" {formname key=TOS_APPLICABILITY} value="{TermsOfService::REGISTRATION}"
+                                           id="tos_registration">
+                                    <label for="tos_registration">{translate key=UponRegistration}</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        {cancel_button}
+                        {delete_button id='deleteTerms' class='no-show'}
+                        {update_button submit=true}
+                        {indicator}
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
     {include file="javascript-includes.tpl" Qtip=true InlineEdit=true}
 	{jsfile src="ajax-helpers.js"}
 	{jsfile src="admin/reservations.js"}
@@ -410,8 +503,9 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 	{jsfile src="autocomplete.js"}
 	{jsfile src="reservationPopup.js"}
 	{jsfile src="approval.js"}
+    {jsfile src="dropzone.js"}
 
-	<script type="text/javascript">
+    <script type="text/javascript">
 
 		function hidePopoversWhenClickAway() {
 			$('body').on('click', function (e) {
@@ -464,6 +558,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			setUpPopovers();
 			hidePopoversWhenClickAway();
 			setUpEditables();
+            dropzone($("#termsOfServiceUpload"));
 
 			var updateScope = {};
 			updateScope['btnUpdateThisInstance'] = '{SeriesUpdateScope::ThisInstance}';
@@ -480,7 +575,10 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 				actions: actions,
 				deleteUrl: '{$Path}ajax/reservation_delete.php?{QueryStringKeys::RESPONSE_TYPE}=json',
 				resourceStatusUrl: '{$smarty.server.SCRIPT_NAME}?{QueryStringKeys::ACTION}=changeStatus',
-				submitUrl: '{$smarty.server.SCRIPT_NAME}'
+				submitUrl: '{$smarty.server.SCRIPT_NAME}',
+                termsOfServiceUrl: '{$smarty.server.SCRIPT_NAME}?dr=tos',
+                updateTermsOfServiceAction: 'termsOfService',
+                deleteTermsOfServiceAction: 'deleteTerms'
 			};
 
 			var approvalOpts = {

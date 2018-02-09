@@ -190,7 +190,7 @@ function ConfigureUploadForm(buttonElement, urlCallback, preSubmitCallback, succ
 function BeforeFormSubmit(formData, jqForm, opts) {
 	var isValid = true;
 	$(jqForm).find('.required').each(function (index, ele) {
-		if ($(ele).is(':visible') && $(ele).val() == '')
+		if ($(ele).is(':visible') && $(ele).val() == '' && $(ele).attr('disabled')!='disabled' )
 		{
 			isValid = false;
 			$(ele).closest('.form-group').addClass('has-error');
@@ -302,4 +302,12 @@ function ClearAsyncErrors(element) {
 
 function HtmlDecode(encoded) {
 	return $('<textarea/>').html(encoded).val();
+}
+
+function ajaxPagination(element, callback){
+    element.find('a.page').on('click', function(e){
+        e.preventDefault();
+        var a = $(e.target);
+        callback(a.data('page'), a.data('page-size'));
+    });
 }

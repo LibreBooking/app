@@ -516,3 +516,6 @@ td.update {
 #page-manage-resource-groups #groupName {
   width: 80%;
 }
+#page-manage-payments .tab-content {
+  padding-top: 15px;
+}

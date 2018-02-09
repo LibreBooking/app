@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright 2011-2017 Nick Korbel
+ * Copyright 2011-2018 Nick Korbel
  *
  * This file is part of Booked Scheduler.
  *
@@ -67,7 +67,7 @@ class AdLdapWrapper implements IActiveDirectory
 					Log::Debug('ActiveDirectory - Connection failed to host %s. Reason %s', $host,
 							   $this->ldap->getLastError());
 				}
-			} catch (adLDAPException $ex)
+			} catch (Exception $ex)
 			{
 				Log::Error($ex);
 				throw($ex);

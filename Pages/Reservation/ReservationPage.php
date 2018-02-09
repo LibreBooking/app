@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright 2011-2017 Nick Korbel
+ * Copyright 2011-2018 Nick Korbel
  *
  * This file is part of Booked Scheduler.
  *
@@ -145,6 +145,15 @@ interface IReservationPage extends IPage
 	 */
 	public function SetEndReminder($reminderValue, $reminderInterval);
 
+    /**
+     * @param DateRange $availability
+     */
+    public function SetAvailability(DateRange $availability);
+
+    /**
+     * @param int $weekday
+     */
+    public function SetFirstWeekday($weekday);
 }
 
 abstract class ReservationPage extends Page implements IReservationPage
@@ -190,14 +199,10 @@ abstract class ReservationPage extends Page implements IReservationPage
 		$this->Set('ReservationAction', $this->GetReservationAction());
 		$this->Set('MaxUploadSize', UploadedFile::GetMaxSize());
 		$this->Set('MaxUploadCount', UploadedFile::GetMaxUploadCount());
-		$this->Set('UploadsEnabled',
-				   Configuration::Instance()->GetSectionKey(ConfigSection::UPLOADS, ConfigKeys::UPLOAD_ENABLE_RESERVATION_ATTACHMENTS, new BooleanConverter()));
-		$this->Set('AllowParticipation', !Configuration::Instance()->GetSectionKey(ConfigSection::RESERVATION, ConfigKeys::RESERVATION_PREVENT_PARTICIPATION,
-																				   new BooleanConverter()));
-		$this->Set('AllowGuestParticipation',
-				   Configuration::Instance()->GetSectionKey(ConfigSection::RESERVATION, ConfigKeys::RESERVATION_ALLOW_GUESTS, new BooleanConverter()));
-		$remindersEnabled = Configuration::Instance()
-										 ->GetSectionKey(ConfigSection::RESERVATION, ConfigKeys::RESERVATION_REMINDERS_ENABLED, new BooleanConverter());
+		$this->Set('UploadsEnabled', Configuration::Instance()->GetSectionKey(ConfigSection::UPLOADS, ConfigKeys::UPLOAD_ENABLE_RESERVATION_ATTACHMENTS, new BooleanConverter()));
+		$this->Set('AllowParticipation', !Configuration::Instance()->GetSectionKey(ConfigSection::RESERVATION, ConfigKeys::RESERVATION_PREVENT_PARTICIPATION,  new BooleanConverter()));
+		$this->Set('AllowGuestParticipation', Configuration::Instance()->GetSectionKey(ConfigSection::RESERVATION, ConfigKeys::RESERVATION_ALLOW_GUESTS, new BooleanConverter()));
+		$remindersEnabled = Configuration::Instance()->GetSectionKey(ConfigSection::RESERVATION, ConfigKeys::RESERVATION_REMINDERS_ENABLED, new BooleanConverter());
 		$emailEnabled = Configuration::Instance()->GetKey(ConfigKeys::ENABLE_EMAIL, new BooleanConverter());
 		$this->Set('RemindersEnabled', $remindersEnabled && $emailEnabled);
 
@@ -372,4 +377,16 @@ abstract class ReservationPage extends Page implements IReservationPage
 		$this->Set('ReminderTimeEnd', $reminderValue);
 		$this->Set('ReminderIntervalEnd', $reminderInterval);
 	}
+
+    public function SetAvailability(DateRange $availability)
+    {
+        $this->Set('AvailabilityStart', $availability->GetBegin());
+        $this->Set('AvailabilityEnd', $availability->GetEnd());
+    }
+
+    public function SetFirstWeekday($weekday)
+    {
+        $this->Set('FirstWeekday', $weekday);
+    }
+
 }

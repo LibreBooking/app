@@ -1,6 +1,6 @@
 <?php
 /**
-Copyright 2011-2017 Nick Korbel
+Copyright 2011-2018 Nick Korbel
 
 This file is part of Booked Scheduler.
 
@@ -45,6 +45,11 @@ class LoginPresenterTests extends TestBase
      */
     private $captchaService;
 
+    /**
+     * @var FakeAnnouncementRepository
+     */
+    private $announcementRepository;
+
     public function setup()
 	{
 		parent::setup();
@@ -52,6 +57,7 @@ class LoginPresenterTests extends TestBase
 		$this->auth = new FakeWebAuthentication();
 		$this->page = new FakeLoginPage();
 		$this->captchaService = $this->getMock('ICaptchaService');
+		$this->announcementRepository = new FakeAnnouncementRepository();
 
 		$this->page->_EmailAddress = 'nkorbel@bookedscheduler.com';
 		$this->page->_Password = 'somepassword';
@@ -59,7 +65,7 @@ class LoginPresenterTests extends TestBase
 
 		$this->fakeServer->SetSession(SessionKeys::USER_SESSION, new UserSession(1));
 
-		$this->presenter = new LoginPresenter($this->page, $this->auth, $this->captchaService);
+		$this->presenter = new LoginPresenter($this->page, $this->auth, $this->captchaService, $this->announcementRepository);
 	}
 
 	public function teardown()
@@ -202,6 +208,16 @@ class LoginPresenterTests extends TestBase
 		$this->assertEquals($logoutUrl, $this->page->_LastRedirect);
 		$this->assertTrue($this->auth->_LogoutCalled);
 	}
+	
+	public function testLoadsAnnouncements()
+	{
+        $announcements = array(new Announcement(1, 'text', new NullDate(), new NullDate(), 0, array(), array(), Pages::ID_LOGIN));
+        $this->announcementRepository->_ExpectedAnnouncements = $announcements;
+
+        $this->presenter->PageLoad();
+
+	    $this->assertEquals($announcements, $this->page->_Announcements);
+	}
 }
 
 class FakeLoginPage extends FakePageBase implements ILoginPage
@@ -224,6 +240,7 @@ class FakeLoginPage extends FakePageBase implements ILoginPage
 	public $_ShowPersistLoginPrompt = false;
 	public $_ShowForgotPasswordPrompt = false;
 	public $_ShowScheduleLink = false;
+	public $_Announcements;
 
 	public function PageLoad()
 	{
@@ -330,27 +347,23 @@ class FakeLoginPage extends FakePageBase implements ILoginPage
 		$this->_ShowScheduleLink = $shouldShow;
 	}
 
-	/**
-	 * @param $url string
-	 */
 	public function SetRegistrationUrl($url)
 	{
 		// TODO: Implement SetRegistrationUrl() method.
 	}
 
-	/**
-	 * @param $url string
-	 */
 	public function SetPasswordResetUrl($url)
 	{
 		// TODO: Implement SetPasswordResetUrl() method.
 	}
 
-    /**
-     * @return string
-     */
     public function GetCaptcha()
     {
         // TODO: Implement GetCaptcha() method.
+    }
+
+    public function SetAnnouncements($announcements)
+    {
+        $this->_Announcements = $announcements;
     }
 }

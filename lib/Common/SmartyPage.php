@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright 2011-2017 Nick Korbel
+ * Copyright 2011-2018 Nick Korbel
  *
  * This file is part of Booked Scheduler is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -172,6 +172,7 @@ class SmartyPage extends Smarty
         $this->registerPlugin('function', 'ok_button', array($this, 'OkButton'));
         $this->registerPlugin('function', 'showhide_icon', array($this, 'ShowHideIcon'));
         $this->registerPlugin('function', 'sort_column', array($this, 'SortColumn'));
+        $this->registerPlugin('function', 'formatcurrency', array($this, 'FormatCurrency'));
 
         /**
          * PageValidators
@@ -595,7 +596,7 @@ class SmartyPage extends Smarty
 
         $class = $iscurrent ? "page current" : "page";
 
-        return sprintf('<a class="%s" href="%s">%s</a>', $class, $newUrl, $text);
+        return sprintf('<a class="%s" href="%s" data-page="%s" data-page-size="%s">%s</a>', $class, $newUrl, $page, $pageSize, $text);
     }
 
     function ReplaceQueryString($url, $key, $value)
@@ -749,7 +750,10 @@ class SmartyPage extends Smarty
     {
         $key = isset($params['key']) ? $params['key'] : 'Update';
         $class = isset($params['class']) ? $params['class'] : '';
-        echo '<button type="button" class="btn btn-success save ' . $class . '" ' . $this->GetButtonAttributes($params) . '><span class="glyphicon glyphicon-ok-circle"></span> ' . Resources::GetInstance()
+        $type = isset($params['submit']) ? 'submit' : 'button';
+        $save = $type == 'submit' ? '' : ' save ';
+
+        echo '<button type="' . $type . '" class="btn btn-success' . $save . $class . '" ' . $this->GetButtonAttributes($params) . '><span class="glyphicon glyphicon-ok-circle"></span> ' . Resources::GetInstance()
                 ->GetString($key) . '</button>';
     }
 
@@ -821,8 +825,7 @@ class SmartyPage extends Smarty
 
             $sortDirection = $currentDirection == 'asc' ? 'desc' : 'asc';
             $indicator = "<i class=\"fa fa-sort-desc\"></i>";
-            if ($currentDirection == 'asc')
-            {
+            if ($currentDirection == 'asc') {
                 $indicator = "<i class=\"fa fa-sort-asc\"></i>";
             }
         }
@@ -844,4 +847,11 @@ class SmartyPage extends Smarty
         echo '<a href="' . $url . '">' . $this->Resources->GetString($params['key']) . ' ' . $indicator . '</a>';
     }
 
+    public function FormatCurrency($params, &$smarty)
+    {
+        $amount = $params['amount'];
+        $currency = $params['currency'];
+        $fmt = new NumberFormatter($this->Resources->CurrentLanguage, NumberFormatter::CURRENCY);
+        echo $fmt->formatCurrency($amount, $currency);
+    }
 }

@@ -1,5 +1,5 @@
 {*
-Copyright 2011-2017 Nick Korbel
+Copyright 2011-2018 Nick Korbel
 
 Denne fil er en del af Booked Scheduler.
 Booked Scheduler is free software: you can redistribute it and/or modify

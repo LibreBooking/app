@@ -1,6 +1,6 @@
 <?php
 /**
-Copyright 2011-2017 Nick Korbel
+Copyright 2011-2018 Nick Korbel
 
 This file is part of Booked Scheduler.
 
@@ -83,6 +83,11 @@ interface IManageAnnouncementsPage extends IActionPage
 	 * @param int $number
 	 */
 	public function BindNumberOfUsersToBeSent($number);
+
+    /**
+     * @return int
+     */
+    public function GetDisplayPage();
 }
 
 class ManageAnnouncementsPage extends ActionPage implements IManageAnnouncementsPage
@@ -200,4 +205,9 @@ class ManageAnnouncementsPage extends ActionPage implements IManageAnnouncements
 
 		return isset($send);
 	}
+
+    public function GetDisplayPage()
+    {
+        return $this->GetForm(FormKeys::DISPLAY_PAGE);
+    }
 }

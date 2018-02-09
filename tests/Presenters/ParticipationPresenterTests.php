@@ -1,6 +1,6 @@
 <?php
 /**
-Copyright 2011-2017 Nick Korbel
+Copyright 2011-2018 Nick Korbel
 
 This file is part of Booked Scheduler.
 
@@ -55,8 +55,8 @@ class ParticipationPresenterTests extends TestBase
 		$this->reservationRepo = $this->getMock('IReservationRepository');
 		$this->reservationViewRepo = $this->getMock('IReservationViewRepository');
 		$this->scheduleRepository = $this->getMock('IScheduleRepository');
-		$rules = array(new ReservationStartTimeRule($this->scheduleRepository), new ResourceMinimumNoticeRule(), new ResourceMaximumNoticeRule());
-		$this->presenter = new ParticipationPresenter($this->page, $this->reservationRepo, $this->reservationViewRepo, $rules);
+		$rules = array(new ReservationStartTimeRule($this->scheduleRepository), new ResourceMinimumNoticeRuleAdd($this->fakeUser), new ResourceMaximumNoticeRule($this->fakeUser));
+		$this->presenter = new ParticipationPresenter($this->page, $this->reservationRepo, $this->reservationViewRepo);
 	}
 
 	public function teardown()

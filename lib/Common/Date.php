@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright 2011-2017 Nick Korbel
+ * Copyright 2011-2018 Nick Korbel
  * Copyright 2012-2014 Trustees of Columbia University in the City of New York
  *
  * This file is part of Booked Scheduler is free software: you can redistribute it and/or modify
@@ -799,6 +799,26 @@ class NullDate extends Date
 	{
 		return -1;
 	}
+
+	public function LessThan(Date $end)
+    {
+        return false;
+    }
+
+    public function GreaterThan(Date $end)
+    {
+        return false;
+    }
+
+    public function Timestamp()
+    {
+        return 0;
+    }
+
+    public function ToIso()
+    {
+        return '';
+    }
 }
 
 class DateDiff

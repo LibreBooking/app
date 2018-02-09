@@ -1,6 +1,6 @@
 <?php
 /**
-Copyright 2011-2017 Nick Korbel
+Copyright 2011-2018 Nick Korbel
 
 This file is part of Booked Scheduler is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -20,6 +20,6 @@ class ReservationUpdatedEmailAdmin extends ReservationCreatedEmailAdmin
 {
 	public function Subject()
 	{
-		return $this->Translate('ReservationUpdatedAdminSubject');
+        return $this->Translate('ReservationApprovalAdminSubjectWithResource', array($this->resource->GetName()));
 	}
 }

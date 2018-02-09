@@ -1,6 +1,6 @@
 <?php
 /**
-Copyright 2011-2017 Nick Korbel
+Copyright 2011-2018 Nick Korbel
 
 This file is part of Booked Scheduler is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -49,8 +49,10 @@ class QueryStringKeys
 	const NODE_ID = 'nid';
     const PAGE = 'page';
 	const PAGE_SIZE = 'pageSize';
+	const PAYPAL_ACTION = 'paypalaction';
 	const PERIOD_ID = 'pid';
 	const PREVIOUS_ID = 'pid';
+	const QUANTITY = 'quantity';
 	const QUOTA_ID = 'qid';
 	const READ_ONLY = 'ro';
 	const REDIRECT = 'redirect';
@@ -79,6 +81,7 @@ class QueryStringKeys
     const SUBSCRIPTION_KEY = 'icskey';
     const SUBSCRIPTION_DAYS_PAST = 'pastDayCount';
     const SUBSCRIPTION_DAYS_FUTURE = 'futureDayCount';
+    const TRANSACTION_LOG_ID = 'id';
     const TYPE = 'type';
 	const USER_ID = 'uid';
 	const USER_NAME = 'un';

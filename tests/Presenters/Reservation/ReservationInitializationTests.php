@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright 2011-2017 Nick Korbel
+ * Copyright 2011-2018 Nick Korbel
  *
  * This file is part of Booked Scheduler.
  *
@@ -26,162 +26,181 @@ require_once(ROOT_DIR . 'lib/Application/Reservation/NewReservationInitializer.p
 
 class ReservationInitializationTests extends TestBase
 {
-	/**
-	 * @var IReservationComponentBinder|PHPUnit_Framework_MockObject_MockObject
-	 */
-	private $userBinder;
+    /**
+     * @var IReservationComponentBinder|PHPUnit_Framework_MockObject_MockObject
+     */
+    private $userBinder;
 
-	/**
-	 * @var IReservationComponentBinder|PHPUnit_Framework_MockObject_MockObject
-	 */
-	private $dateBinder;
+    /**
+     * @var IReservationComponentBinder|PHPUnit_Framework_MockObject_MockObject
+     */
+    private $dateBinder;
 
-	/**
-	 * @var IReservationComponentBinder|PHPUnit_Framework_MockObject_MockObject
-	 */
-	private $resourceBinder;
+    /**
+     * @var IReservationComponentBinder|PHPUnit_Framework_MockObject_MockObject
+     */
+    private $resourceBinder;
 
-	/**
-	 * @var INewReservationPage|PHPUnit_Framework_MockObject_MockObject
-	 */
-	private $page;
+    /**
+     * @var INewReservationPage|PHPUnit_Framework_MockObject_MockObject
+     */
+    private $page;
 
-	/**
-	 * @var NewReservationInitializer|PHPUnit_Framework_MockObject_MockObject
-	 */
-	private $initializer;
+    /**
+     * @var NewReservationInitializer|PHPUnit_Framework_MockObject_MockObject
+     */
+    private $initializer;
 
-	/**
-	 * @var FakeScheduleRepository
-	 */
-	private $scheduleRepository;
+    /**
+     * @var FakeScheduleRepository
+     */
+    private $scheduleRepository;
 
-	/**
-	 * @var IResourceRepository
-	 */
-	private $resourceRepository;
+    /**
+     * @var IResourceRepository
+     */
+    private $resourceRepository;
 
-	public function setup()
-	{
-		parent::setup();
+    /**
+     * @var ITermsOfServiceRepository
+     */
+    private $termsRepository;
 
-		$this->userBinder = $this->getMock('IReservationComponentBinder');
-		$this->dateBinder = $this->getMock('IReservationComponentBinder');
-		$this->resourceBinder = $this->getMock('IReservationComponentBinder');
-		$this->page = $this->getMock('INewReservationPage');
+    public function setup()
+    {
+        parent::setup();
 
-		$this->scheduleRepository = new FakeScheduleRepository();
-		$this->resourceRepository = $this->getMock('IResourceRepository');
-		$this->initializer = new NewReservationInitializer($this->page,
-														   $this->userBinder,
-														   $this->dateBinder,
-														   $this->resourceBinder,
-														   $this->fakeUser,
-														   $this->scheduleRepository,
-														   $this->resourceRepository);
-	}
+        $this->userBinder = $this->getMock('IReservationComponentBinder');
+        $this->dateBinder = $this->getMock('IReservationComponentBinder');
+        $this->resourceBinder = $this->getMock('IReservationComponentBinder');
+        $this->page = $this->getMock('INewReservationPage');
+        $this->scheduleRepository = new FakeScheduleRepository();
+        $this->resourceRepository = $this->getMock('IResourceRepository');
+        $this->termsRepository = $this->getMock('ITermsOfServiceRepository');
 
-	public function teardown()
-	{
-		parent::teardown();
-	}
+        $this->initializer = new NewReservationInitializer($this->page,
+            $this->userBinder,
+            $this->dateBinder,
+            $this->resourceBinder,
+            $this->fakeUser,
+            $this->scheduleRepository,
+            $this->resourceRepository,
+            $this->termsRepository);
+    }
 
-	public function testInitializesReservationData()
-	{
-		$scheduleId = 1;
+    public function teardown()
+    {
+        parent::teardown();
+    }
 
-		$this->page->expects($this->once())
-				   ->method('GetRequestedScheduleId')
-				   ->will($this->returnValue($scheduleId));
+    public function testInitializesReservationData()
+    {
+        $scheduleId = 1;
 
-		$this->page->expects($this->once())
-				   ->method('SetScheduleId')
-				   ->with($this->equalTo($scheduleId));
+        $this->page->expects($this->once())
+            ->method('GetRequestedScheduleId')
+            ->will($this->returnValue($scheduleId));
 
-		$this->userBinder->expects($this->once())
-						 ->method('Bind')
-						 ->with($this->equalTo($this->initializer));
+        $this->page->expects($this->once())
+            ->method('SetScheduleId')
+            ->with($this->equalTo($scheduleId));
 
-		$this->dateBinder->expects($this->once())
-						 ->method('Bind')
-						 ->with($this->equalTo($this->initializer));
+        $this->userBinder->expects($this->once())
+            ->method('Bind')
+            ->with($this->equalTo($this->initializer));
 
-		$this->resourceBinder->expects($this->once())
-							 ->method('Bind')
-							 ->with($this->equalTo($this->initializer));
+        $this->dateBinder->expects($this->once())
+            ->method('Bind')
+            ->with($this->equalTo($this->initializer));
 
-		$this->initializer->Initialize();
-	}
+        $this->resourceBinder->expects($this->once())
+            ->method('Bind')
+            ->with($this->equalTo($this->initializer));
 
-	public function testBindsToClosestPeriod()
-	{
-		$page = $this->getMock('INewReservationPage');
-		$binder = $this->getMock('IReservationComponentBinder');
+        $this->initializer->Initialize();
+    }
 
-		$timezone = $this->fakeUser->Timezone;
+    public function testBindsToClosestPeriod()
+    {
+        $page = $this->getMock('INewReservationPage');
+        $binder = $this->getMock('IReservationComponentBinder');
 
-		$dateString = Date::Now()->AddDays(1)->SetTimeString('02:55:22')->Format('Y-m-d H:i:s');
-		$endDateString = Date::Now()->AddDays(1)->SetTimeString('4:55:22')->Format('Y-m-d H:i:s');
-		$dateInUserTimezone = Date::Parse($dateString, $timezone);
+        $timezone = $this->fakeUser->Timezone;
 
-		$startDate = Date::Parse($dateString, $timezone);
-		$endDate = Date::Parse($endDateString, $timezone);
+        $dateString = Date::Now()->AddDays(1)->SetTimeString('02:55:22')->Format('Y-m-d H:i:s');
+        $endDateString = Date::Now()->AddDays(1)->SetTimeString('4:55:22')->Format('Y-m-d H:i:s');
+        $dateInUserTimezone = Date::Parse($dateString, $timezone);
 
-		$expectedStartPeriod = new SchedulePeriod($dateInUserTimezone->SetTime(new Time(3, 30, 0)), $dateInUserTimezone->SetTime(new Time(4, 30, 0)));
-		$expectedEndPeriod = new SchedulePeriod($dateInUserTimezone->SetTime(new Time(4, 30, 0)), $dateInUserTimezone->SetTime(new Time(7, 30, 0)));
-		$periods = array(
-				new SchedulePeriod($dateInUserTimezone->SetTime(new Time(1, 0, 0)), $dateInUserTimezone->SetTime(new Time(2, 0, 0))),
-				new SchedulePeriod($dateInUserTimezone->SetTime(new Time(2, 0, 0)), $dateInUserTimezone->SetTime(new Time(3, 0, 0))),
-				new NonSchedulePeriod($dateInUserTimezone->SetTime(new Time(3, 0, 0)), $dateInUserTimezone->SetTime(new Time(3, 30, 0))),
-				$expectedStartPeriod,
-				$expectedEndPeriod,
-				new SchedulePeriod($dateInUserTimezone->SetTime(new Time(7, 30, 0)), $dateInUserTimezone->SetTime(new Time(17, 30, 0))),
-				new SchedulePeriod($dateInUserTimezone->SetTime(new Time(17, 30, 0)), $dateInUserTimezone->SetTime(new Time(0, 0, 0))),
-		);
+        $startDate = Date::Parse($dateString, $timezone);
+        $endDate = Date::Parse($endDateString, $timezone);
 
-		$page->expects($this->once())
-			 ->method('SetSelectedStart')
-			 ->with($this->equalTo($expectedStartPeriod), $this->equalTo($startDate));
+        $expectedStartPeriod = new SchedulePeriod($dateInUserTimezone->SetTime(new Time(3, 30, 0)), $dateInUserTimezone->SetTime(new Time(4, 30, 0)));
+        $expectedEndPeriod = new SchedulePeriod($dateInUserTimezone->SetTime(new Time(4, 30, 0)), $dateInUserTimezone->SetTime(new Time(7, 30, 0)));
+        $periods = array(
+            new SchedulePeriod($dateInUserTimezone->SetTime(new Time(1, 0, 0)), $dateInUserTimezone->SetTime(new Time(2, 0, 0))),
+            new SchedulePeriod($dateInUserTimezone->SetTime(new Time(2, 0, 0)), $dateInUserTimezone->SetTime(new Time(3, 0, 0))),
+            new NonSchedulePeriod($dateInUserTimezone->SetTime(new Time(3, 0, 0)), $dateInUserTimezone->SetTime(new Time(3, 30, 0))),
+            $expectedStartPeriod,
+            $expectedEndPeriod,
+            new SchedulePeriod($dateInUserTimezone->SetTime(new Time(7, 30, 0)), $dateInUserTimezone->SetTime(new Time(17, 30, 0))),
+            new SchedulePeriod($dateInUserTimezone->SetTime(new Time(17, 30, 0)), $dateInUserTimezone->SetTime(new Time(0, 0, 0))),
+        );
 
-		$page->expects($this->once())
-			 ->method('SetSelectedEnd')
-			 ->with($this->equalTo($expectedEndPeriod), $this->equalTo($endDate));
+        $page->expects($this->once())
+            ->method('SetSelectedStart')
+            ->with($this->equalTo($expectedStartPeriod), $this->equalTo($startDate));
 
-		$page->expects($this->once())
-			 ->method('SetRepeatTerminationDate')
-			 ->with($this->equalTo($endDate));
+        $page->expects($this->once())
+            ->method('SetSelectedEnd')
+            ->with($this->equalTo($expectedEndPeriod), $this->equalTo($endDate));
 
-		$initializer = new NewReservationInitializer($page, $binder, $binder, $binder, $this->fakeUser, $this->scheduleRepository, $this->resourceRepository);
-		$initializer->SetDates($startDate, $endDate, $periods, $periods);
-	}
+        $page->expects($this->once())
+            ->method('SetRepeatTerminationDate')
+            ->with($this->equalTo($endDate));
 
-	public function testWhenNoScheduleIsPassed_UseDefaultScheduleId()
-	{
-		$id = $this->scheduleRepository->_DefaultScheduleId;
+        $page->expects($this->once())
+            ->method('SetFirstWeekday')
+            ->with($this->equalTo(0));
 
-		$this->page->expects($this->once())
-				   ->method('GetRequestedScheduleId')
-				   ->will($this->returnValue(null));
+        $initializer = new NewReservationInitializer(
+            $page,
+            $binder,
+            $binder,
+            $binder,
+            $this->fakeUser,
+            $this->scheduleRepository,
+            $this->resourceRepository,
+            $this->termsRepository);
+        $initializer->SetDates($startDate, $endDate, $periods, $periods, 0);
+    }
 
-		$this->page->expects($this->once())
-				   ->method('SetScheduleId')
-				   ->with($this->equalTo($id));
+    public function testWhenNoScheduleIsPassed_UseDefaultScheduleId()
+    {
+        $id = $this->scheduleRepository->_DefaultScheduleId;
 
-		$this->initializer->Initialize();
-	}
+        $this->page->expects($this->once())
+            ->method('GetRequestedScheduleId')
+            ->will($this->returnValue(null));
 
-	public function testBindsDefaultReminders()
-	{
-		$this->page->expects($this->once())
-				   ->method('SetStartReminder')
-				   ->with($this->equalTo('10'), $this->equalTo('minutes'));
+        $this->page->expects($this->once())
+            ->method('SetScheduleId')
+            ->with($this->equalTo($id));
 
-		$this->page->expects($this->once())
-				   ->method('SetEndReminder')
-				   ->with($this->equalTo('2'), $this->equalTo('days'));
+        $this->initializer->Initialize();
+    }
 
-		$this->fakeConfig->SetSectionKey(ConfigSection::RESERVATION, ConfigKeys::RESERVATION_START_REMINDER, '10 minutes');
-		$this->fakeConfig->SetSectionKey(ConfigSection::RESERVATION, ConfigKeys::RESERVATION_END_REMINDER, '2 days');
-		$this->initializer->Initialize();
-	}
+    public function testBindsDefaultReminders()
+    {
+        $this->page->expects($this->once())
+            ->method('SetStartReminder')
+            ->with($this->equalTo('10'), $this->equalTo('minutes'));
+
+        $this->page->expects($this->once())
+            ->method('SetEndReminder')
+            ->with($this->equalTo('2'), $this->equalTo('days'));
+
+        $this->fakeConfig->SetSectionKey(ConfigSection::RESERVATION, ConfigKeys::RESERVATION_START_REMINDER, '10 minutes');
+        $this->fakeConfig->SetSectionKey(ConfigSection::RESERVATION, ConfigKeys::RESERVATION_END_REMINDER, '2 days');
+        $this->initializer->Initialize();
+    }
 }

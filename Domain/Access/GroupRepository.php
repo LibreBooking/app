@@ -1,6 +1,6 @@
 <?php
 /**
-Copyright 2011-2017 Nick Korbel
+Copyright 2011-2018 Nick Korbel
 
 This file is part of Booked Scheduler.
 
@@ -151,7 +151,7 @@ class GroupRepository implements IGroupRepository, IGroupViewRepository
 		$reader = $db->Query(new GetGroupByIdCommand($groupId));
 		if ($row = $reader->GetRow())
 		{
-			$group = new Group($row[ColumnNames::GROUP_ID], $row[ColumnNames::GROUP_NAME]);
+			$group = new Group($row[ColumnNames::GROUP_ID], $row[ColumnNames::GROUP_NAME], $row[ColumnNames::GROUP_ISDEFAULT]);
 			$group->WithGroupAdmin($row[ColumnNames::GROUP_ADMIN_GROUP_ID]);
 		}
 		$reader->Free();
@@ -220,7 +220,7 @@ class GroupRepository implements IGroupRepository, IGroupViewRepository
 			$db->Execute(new AddGroupRoleCommand($groupId, $roleId));
 		}
 
-		$db->Execute(new UpdateGroupCommand($groupId, $group->Name(), $group->AdminGroupId()));
+		$db->Execute(new UpdateGroupCommand($groupId, $group->Name(), $group->AdminGroupId(), $group->IsDefault()));
 
 		$this->_cache->Add($groupId, $group);
 	}
@@ -234,7 +234,7 @@ class GroupRepository implements IGroupRepository, IGroupViewRepository
 
 	public function Add(Group $group)
 	{
-		$groupId = ServiceLocator::GetDatabase()->ExecuteInsert(new AddGroupCommand($group->Name()));
+		$groupId = ServiceLocator::GetDatabase()->ExecuteInsert(new AddGroupCommand($group->Name(), $group->IsDefault()));
 		$group->WithId($groupId);
 
 		return $groupId;
@@ -283,11 +283,11 @@ class GroupUserView
 
 class GroupItemView
 {
-	public static function Create($row)
+    public static function Create($row)
 	{
 		$adminName = isset($row[ColumnNames::GROUP_ADMIN_GROUP_NAME]) ? $row[ColumnNames::GROUP_ADMIN_GROUP_NAME] : null;
-
-		return new GroupItemView($row[ColumnNames::GROUP_ID], $row[ColumnNames::GROUP_NAME], $adminName);
+        $isDefault = intval($row[ColumnNames::GROUP_ISDEFAULT]);
+		return new GroupItemView($row[ColumnNames::GROUP_ID], $row[ColumnNames::GROUP_NAME], $adminName, $isDefault);
 	}
 
 	/**
@@ -321,11 +321,22 @@ class GroupItemView
 	 */
 	public $AdminGroupName;
 
-	public function __construct($groupId, $groupName, $adminGroupName = null)
+    /**
+     * @var int
+     */
+    public $IsDefault;
+
+    public function IsDefault()
+    {
+        return $this->IsDefault;
+    }
+
+    public function __construct($groupId, $groupName, $adminGroupName = null, $isDefault = 0)
 	{
 		$this->Id = $groupId;
 		$this->Name = $groupName;
 		$this->AdminGroupName = $adminGroupName;
+		$this->IsDefault = $isDefault;
 	}
 }
 

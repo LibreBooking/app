@@ -1,6 +1,6 @@
 <?php
 /**
-Copyright 2011-2017 Nick Korbel
+Copyright 2011-2018 Nick Korbel
 
 This file is part of Booked Scheduler.
 
@@ -58,7 +58,6 @@ $conf['settings']['schedule']['hide.blocked.periods'] = 'false';    	// if block
 /**
  * ical integration configuration
  */
-$conf['settings']['ics']['require.login'] = 'true';             // recommended, if the user must be logged in to access ics files
 $conf['settings']['ics']['subscription.key'] = '';              // must be set to allow webcal subscriptions
 /**
  * Privacy configuration
@@ -181,7 +180,7 @@ $conf['settings']['security']['security.strict-transport'] = 'true';
 $conf['settings']['security']['security.x-frame'] = 'deny';
 $conf['settings']['security']['security.x-xss'] = '1; mode=block';
 $conf['settings']['security']['security.x-content-type'] = 'nosniff';
-$conf['settings']['security']['security.content-security-policy'] = "default-src 'self'"; // Requires careful tuning (know what your doing)
+$conf['settings']['security']['security.content-security-policy'] = ""; // Requires careful tuning (know what your doing)
 /**
  * Google Analytics settings
  */
@@ -193,6 +192,11 @@ $conf['settings']['authentication']['required.email.domains'] = '';
 $conf['settings']['authentication']['hide.booked.login.prompt'] = 'false';
 $conf['settings']['authentication']['captcha.on.login'] = 'false';
 /**
- * Credits functionality
+ * Credits
  */
 $conf['settings']['credits']['enabled'] = 'false';
+$conf['settings']['credits']['allow.purchase'] = 'false';
+/**
+ * Slack integration
+ */
+$conf['settings']['slack']['token'] = '';

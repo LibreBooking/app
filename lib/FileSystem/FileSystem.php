@@ -1,6 +1,6 @@
 <?php
 /**
-Copyright 2012-2017 Nick Korbel
+Copyright 2012-2018 Nick Korbel
 
 This file is part of Booked Scheduler is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -46,8 +46,8 @@ class FileSystem implements IFileSystem
 {
 	public function Add($path, $fileName, $fileContents)
 	{
-		$fullName = $path. $fileName;
-		Log::Debug('Saving file to $s',$fullName );
+		$fullName = $path . $fileName;
+		Log::Debug('Saving file to %s', $fullName);
 
 		if (file_put_contents($fullName, $fileContents) === false)
 		{

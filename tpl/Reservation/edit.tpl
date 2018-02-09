@@ -1,5 +1,5 @@
 {*
-Copyright 2011-2017 Nick Korbel
+Copyright 2011-2018 Nick Korbel
 
 This file is part of Booked Scheduler.
 
@@ -41,6 +41,11 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 					<span class="fa fa-calendar"></span>
 					{translate key=AddToOutlook}</a>
 			</li>
+			<li>
+			    <a href="http://www.google.com/calendar/event?action=TEMPLATE&text={$ReservationTitle|escape:'url'}&dates={formatdate date=$StartDate->ToUtc() key=google}/{formatdate date=$EndDate->ToUtc() key=google}&ctz={$StartDate->Timezone()}&details={$Description|escape:'url'}&location={$Resource->Name|escape:'url'}&trp=false&sprop=&sprop=name:" target="_blank" rel="nofollow">
+			    <span class="fa fa-google"></span>
+			    {translate key=AddToGoogleCalendar}</a>
+            </li>
 			<li>
 				<a href="#" class="btnPrint">
 					<span class="fa fa-print"></span>

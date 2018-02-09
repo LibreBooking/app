@@ -67,7 +67,7 @@ body {
 body {
   padding-bottom: 40px;
   padding-top: 70px;
-  background-color: #f2f2f2;
+  background-color: #fbfbfb;
 }
 .adjust-nav-bar-static {
   margin-top: -70px;
@@ -202,6 +202,18 @@ a:hover {
   height: 100%;
   margin-top: -20px;
   padding-top: 40px;
+}
+#page-login #announcements .announcement {
+  border: solid 1px #669999;
+  background-color: #CFE4E4;
+  -webkit-border-radius: 2px;
+  -moz-border-radius: 2px;
+  border-radius: 2px;
+  -webkit-box-shadow: 0px 0px 3px 0px #E9E9E9;
+  -moz-box-shadow: 0px 0px 3px 0px #E9E9E9;
+  box-shadow: 0px 0px 3px 0px #E9E9E9;
+  padding: 5px;
+  margin-bottom: 20px;
 }
 #page-login .default-box {
   background-color: #f8f8f8;
@@ -541,6 +553,110 @@ span.searchclear {
 }
 img.logo {
   max-height: 50px;
+}
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+}
+.switch input {
+  display: none;
+}
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+input:checked + .slider {
+  background-color: #53577F;
+}
+input:focus + .slider {
+  box-shadow: 0 0 1px #53577F;
+}
+input:checked + .slider:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
+}
+.slider.round {
+  border-radius: 34px;
+}
+.slider.round:before {
+  border-radius: 50%;
+}
+.centered-line-text {
+  width: 100%;
+  text-align: center;
+  border-bottom: 1px solid #BCBCBC;
+  line-height: 0.1em;
+  margin: 10px 0 20px;
+}
+.centered-line-text span {
+  background: #fff;
+  padding: 0 10px;
+}
+.dropzone {
+  position: relative;
+  border: 2px dotted #BCBCBC;
+  border-radius: 20px;
+  height: 75px;
+  text-align: center;
+  width: 100%;
+}
+.dropzone.hover {
+  border: 2px solid #585754;
+}
+.dropzone.dropped {
+  border: 2px solid #353432;
+}
+.dropzone div {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}
+.dropzone img {
+  border-radius: 2px;
+  vertical-align: middle;
+  max-width: 95%;
+  max-height: 95%;
+}
+.dropzone [type="file"] {
+  cursor: pointer;
+  position: absolute;
+  opacity: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+}
+#page-help-admin h2,
+#page-help-admin h3,
+#page-help h2,
+#page-help h3 {
+  padding-top: 50px;
+  margin-top: -50px;
 }
 .checkbox {
   padding-left: 20px;
@@ -981,12 +1097,20 @@ table.reservations td {
   min-width: 120px;
 }
 .reservations.condensed .reserved,
-.reservations.condensed .unreservable {
+.reservations.condensed .unreservable,
+.reservations.condensed div.reservable {
   padding: 3px;
-  margin: 0 2px;
+  margin: 2px;
   -webkit-border-radius: 2px;
   -moz-border-radius: 2px;
   border-radius: 2px;
+  cursor: pointer;
+}
+.reservations.condensed div.reservable {
+  border: dashed 1px #585754;
+  color: #585754;
+  line-height: 30px;
+  background-color: #BCBCBC;
 }
 td.resourcename {
   padding: 1px 3px;
@@ -1559,8 +1683,9 @@ ul.jqtree-tree .group-resource .jqtree-title {
   display: inline-block;
 }
 .reservationDates,
-.reservationTitle {
-  padding-top: 8px;
+.reservationTitle,
+.reservationResources {
+  padding-top: 12px;
 }
 .reservationLength .form-group {
   margin: 5px 0;
@@ -1710,8 +1835,14 @@ a.remove {
   text-decoration: line-through;
   color: #AA3939;
 }
-#availableCreditsCount {
+#availableCreditsCount,
+#requiredCreditsCount,
+#creditCost {
   font-weight: bold;
+}
+#requiredCreditsCount.insufficient-credits,
+#creditCost.insufficient-credits {
+  color: #AA3939;
 }
 #page-view-reservation .participationAction {
   margin-bottom: 5px;
@@ -2218,6 +2349,9 @@ td.update {
 #page-manage-resource-groups #groupName {
   width: 80%;
 }
+#page-manage-payments .tab-content {
+  padding-top: 15px;
+}
 #install-page input {
   width: 250px;
 }
@@ -2421,4 +2555,15 @@ ul.jqtree-tree .jqtree-toggler {
 }
 .page-search-availability span.hours-minutes {
   min-width: 120px;
+}
+#page-user-credits .cost {
+  font-weight: bold;
+}
+#page-checkout .total {
+  font-weight: bold;
+  font-size: 1.1em;
+  border-top: solid 1px #D5DED9;
+}
+#page-checkout .checkout-buttons {
+  margin-top: 25px;
 }

@@ -1,6 +1,6 @@
 <?php
 /**
-Copyright 2012-2017 Nick Korbel
+Copyright 2012-2018 Nick Korbel
 
 This file is part of Booked Scheduler is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -56,17 +56,23 @@ class ReservationDateBinder implements IReservationComponentBinder
 		}
 
 		$layout = $this->scheduleRepository->GetLayout($requestedScheduleId, new ReservationLayoutFactory($timezone));
+        $schedule = $this->scheduleRepository->LoadById($requestedScheduleId);
 
         $startPeriods = $this->GetStartPeriods($layout, $startDate);
         $endPeriods = $this->GetEndPeriods($layout, $startDate, $endDate);
 
-		$initializer->SetDates($startDate, $endDate, $startPeriods, $endPeriods);
+		$initializer->SetDates($startDate, $endDate, $startPeriods, $endPeriods, $schedule->GetWeekdayStart());
 
 		$hideRecurrence = !$initializer->CurrentUser()->IsAdmin && Configuration::Instance()->GetSectionKey(ConfigSection::RESERVATION,
 																											ConfigKeys::RESERVATION_PREVENT_RECURRENCE,
 																											new BooleanConverter());
 		$initializer->HideRecurrence($hideRecurrence);
-	}
+
+        if ($schedule->HasAvailability())
+        {
+            $initializer->SetAvailability($schedule->GetAvailability());
+        }
+    }
 
     /**
      * @param IScheduleLayout $layout
@@ -216,14 +222,14 @@ class ReservationResourceBinder implements IReservationComponentBinder
 
 		if (count($resources) > 0)
         {
-            $bindableResourceData->SetReservationResource($resources[0]);
+            $bindableResourceData->SetReservationResource(reset($resources));
         }
 
 		/** @var $resource ResourceDto */
 		foreach ($resources as $resource)
 		{
 			$bindableResourceData->AddAvailableResource($resource);
-			if ($resource->Id == $requestedResourceId)
+			if ($resource->Id == $requestedResourceId && $resource->GetStatusId() == ResourceStatus::AVAILABLE)
 			{
 				$bindableResourceData->SetReservationResource($resource);
 			}

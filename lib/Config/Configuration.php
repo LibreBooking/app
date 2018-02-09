@@ -1,6 +1,6 @@
 <?php
 /**
-Copyright 2011-2017 Nick Korbel
+Copyright 2011-2018 Nick Korbel
 
 This file is part of Booked Scheduler.
 
@@ -63,6 +63,19 @@ interface IConfigurationFile
 	 * @return string
 	 */
 	public function GetDefaultTimezone();
+
+    /**
+     * @param $emailAddress
+     * @return bool
+     */
+    public function IsAdminEmail($emailAddress);
+
+    /**
+     * @return string
+     */
+    public function GetAdminEmail();
+
+    public function EnableSubscription();
 }
 
 class Configuration implements IConfiguration
@@ -165,6 +178,21 @@ class Configuration implements IConfiguration
 
 		return $tz;
 	}
+
+    public function IsAdminEmail($emailAddress)
+    {
+       return $this->File(self::DEFAULT_CONFIG_ID)->IsAdminEmail($emailAddress);
+    }
+
+    public function GetAdminEmail()
+    {
+        return $this->File(self::DEFAULT_CONFIG_ID)->GetAdminEmail();
+    }
+
+    public function EnableSubscription()
+    {
+        $this->File(self::DEFAULT_CONFIG_ID)->EnableSubscription();
+    }
 }
 
 class ConfigurationFile implements IConfigurationFile
@@ -236,4 +264,56 @@ class ConfigurationFile implements IConfigurationFile
 
 		return $tz;
 	}
+
+    /**
+     * @return string[]
+     */
+    private function GetAllAdminEmails()
+    {
+        $adminEmail = Configuration::Instance()->GetKey(ConfigKeys::ADMIN_EMAIL);
+        return array_map('trim', preg_split('/[\s,;]+/', $adminEmail));
+    }
+
+    public function IsAdminEmail($emailAddress)
+    {
+        $adminEmails = $this->GetAllAdminEmails();
+
+        foreach ($adminEmails as $email)
+        {
+            if( strtolower($emailAddress) == strtolower($email))
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * @return string
+     */
+    public function GetAdminEmail()
+    {
+        $adminEmails = $this->GetAllAdminEmails();
+        return $adminEmails[0];
+    }
+
+    public function EnableSubscription()
+    {
+        $icsKey = $this->GetSectionKey(ConfigSection::ICS, ConfigKeys::ICS_SUBSCRIPTION_KEY);
+        if (!empty($icsKey))
+        {
+            return;
+        }
+
+        $configFile = ROOT_DIR . 'config/config.php';
+
+        if (file_exists($configFile))
+        {
+            $newKey = '$conf[\'settings\'][\'ics\'][\'subscription.key\'] = \'' . BookedStringHelper::Random(20) . '\';';
+            $str = file_get_contents($configFile);
+            $str = str_replace('$conf[\'settings\'][\'ics\'][\'subscription.key\'] = \'\';', $newKey , $str);
+            file_put_contents($configFile, $str);
+            Configuration::SetInstance(null);
+        }
+    }
 }

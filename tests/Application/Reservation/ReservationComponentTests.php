@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright 2012-2017 Nick Korbel
+ * Copyright 2012-2018 Nick Korbel
  *
  * This file is part of Booked Scheduler.
  *
@@ -100,11 +100,6 @@ class ReservationComponentTests extends TestBase
 		$this->reservationDetailsBinder = new ReservationDetailsBinder($this->reservationAuthorization, $this->page,
 																	   $this->reservationView, $this->privacyFilter);
 
-	}
-
-	public function teardown()
-	{
-		parent::teardown();
 	}
 
 	public function testBindsUserData()
@@ -236,7 +231,7 @@ class ReservationComponentTests extends TestBase
 						  ->method('RedirectToError')
 						  ->with($this->equalTo(ErrorMessages::INSUFFICIENT_PERMISSIONS));
 
-		$binder = new ReservationResourceBinder($this->resourceService, $this->userRepository);
+		$binder = new ReservationResourceBinder($this->resourceService);
 		$binder->Bind($this->initializer);
 	}
 
@@ -250,6 +245,12 @@ class ReservationComponentTests extends TestBase
 
 		$startDate = Date::Parse($dateString, $timezone);
 		$endDate = Date::Parse($endDateString, $timezone);
+
+        $availabilityStart = Date::Now()->AddDays(-23);
+        $availabilityEnd = Date::Now()->AddDays(23);
+
+		$schedule = new FakeSchedule();
+		$schedule->SetAvailability($availabilityStart, $availabilityEnd);
 
 		$resourceDto = new TestResourceDto(1, 'resource', true, $scheduleId, null);
 
@@ -291,6 +292,11 @@ class ReservationComponentTests extends TestBase
 										$this->equalTo(new ReservationLayoutFactory($timezone)))
 								 ->will($this->returnValue($layout));
 
+        $this->scheduleRepository->expects($this->once())
+            ->method('LoadById')
+            ->with($this->equalTo($scheduleId))
+            ->will($this->returnValue($schedule));
+
 		$layout->expects($this->at(0))
 			   ->method('GetLayout')
 			   ->with($this->equalTo($startDate), $this->equalTo(true))
@@ -305,6 +311,10 @@ class ReservationComponentTests extends TestBase
 						  ->method('SetDates')
 						  ->with($this->equalTo($startDate), $this->equalTo($endDate), $this->equalTo($startPeriods),
 								 $this->equalTo($endPeriods));
+
+        $this->initializer->expects($this->once())
+            ->method('SetAvailability')
+            ->with($this->equalTo($schedule->GetAvailability()));
 
 		$this->initializer->expects($this->once())
 						  ->method('HideRecurrence')
@@ -366,6 +376,10 @@ class ReservationComponentTests extends TestBase
 								 ->with($this->equalTo($scheduleId),
 										$this->equalTo(new ReservationLayoutFactory($timezone)))
 								 ->will($this->returnValue($layout));
+        $this->scheduleRepository->expects($this->once())
+            ->method('LoadById')
+            ->with($this->equalTo($scheduleId))
+            ->will($this->returnValue(new FakeSchedule()));
 
 		$layout->expects($this->at(0))
 			   ->method('GetLayout')
@@ -443,6 +457,11 @@ class ReservationComponentTests extends TestBase
 								 ->with($this->equalTo($scheduleId),
 										$this->equalTo(new ReservationLayoutFactory($timezone)))
 								 ->will($this->returnValue($layout));
+
+        $this->scheduleRepository->expects($this->once())
+            ->method('LoadById')
+            ->with($this->equalTo($scheduleId))
+            ->will($this->returnValue(new FakeSchedule()));
 
 		$layout->expects($this->any())
 			   ->method('GetLayout')

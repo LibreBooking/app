@@ -1,6 +1,6 @@
 <?php
 /**
-Copyright 2011-2017 Nick Korbel
+Copyright 2011-2018 Nick Korbel
 
 This file is part of Booked Scheduler is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -61,8 +61,8 @@ class ReservationListing implements IMutableReservationListing
 
 	protected function AddItem(ReservationListItem $item)
 	{
-		$currentDate = $item->StartDate()->ToTimezone($this->timezone);
-		$lastDate = $item->EndDate()->ToTimezone($this->timezone);
+		$currentDate = $item->BufferedStartDate()->ToTimezone($this->timezone);
+		$lastDate = $item->BufferedEndDate()->ToTimezone($this->timezone);
 
 		if ($currentDate->GreaterThan($lastDate))
 		{

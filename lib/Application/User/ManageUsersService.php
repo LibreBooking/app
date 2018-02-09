@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright 2013-2017 Nick Korbel
+ * Copyright 2013-2018 Nick Korbel
  *
  * This file is part of Booked Scheduler is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -177,12 +177,19 @@ class ManageUsersService implements IManageUsersService
 
 	public function DeleteUser($userId, $notify = true)
 	{
+        $currentUser = ServiceLocator::GetServer()->GetUserSession();
+	    if ($currentUser->UserId == $userId)
+        {
+            // don't delete own account
+            return;
+        }
+
 		$user = $this->userRepository->LoadById($userId);
 		$this->userRepository->DeleteById($userId);
 
 		if ($notify && Configuration::Instance()->GetKey(ConfigKeys::REGISTRATION_NOTIFY, new BooleanConverter()))
 		{
-			$currentUser = ServiceLocator::GetServer()->GetUserSession();
+
 			$applicationAdmins = $this->userViewRepository->GetApplicationAdmins();
 			$groupAdmins = $this->userViewRepository->GetGroupAdmins($userId);
 

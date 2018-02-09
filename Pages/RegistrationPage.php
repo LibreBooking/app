@@ -1,6 +1,6 @@
 <?php
 /**
-Copyright 2011-2017 Nick Korbel
+Copyright 2011-2018 Nick Korbel
 
 This file is part of Booked Scheduler.
 
@@ -56,18 +56,26 @@ interface IRegistrationPage extends IPage, IActionPage
 	public function GetCaptcha();
 
 	/**
-	 * @abstract
 	 * @param $attributeValues array|Attribute[]
 	 */
 	public function SetAttributes($attributeValues);
 
 	/**
-	 * @abstract
 	 * @return AttributeFormElement[]
 	 */
 	public function GetAttributes();
 
 	public function RedirectPage($url);
+
+    /**
+     * @return bool
+     */
+    public function GetTermsOfServiceAcknowledgement();
+
+    /**
+     * @param TermsOfService $terms
+     */
+    public function SetTerms($terms);
 }
 
 class RegistrationPage extends ActionPage implements IRegistrationPage
@@ -260,4 +268,14 @@ class RegistrationPage extends ActionPage implements IRegistrationPage
 	{
 		return false;
 	}
+
+    public function GetTermsOfServiceAcknowledgement()
+    {
+        return $this->GetCheckbox(FormKeys::TOS_ACKNOWLEDGEMENT);
+    }
+
+    public function SetTerms($terms)
+    {
+       $this->Set('Terms', $terms);
+    }
 }

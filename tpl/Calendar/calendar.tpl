@@ -1,5 +1,5 @@
 {*
-Copyright 2011-2017 Nick Korbel
+Copyright 2011-2018 Nick Korbel
 
 This file is part of Booked Scheduler.
 
@@ -17,7 +17,9 @@ You should have received a copy of the GNU General Public License
 along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 *}
 
+{if $pageUrl == null}
 {assign var=pageUrl value={Pages::CALENDAR}}
+{/if}
 {assign var=pageIdSuffix value="calendar"}
 {assign var=subscriptionTpl value="calendar.subscription.tpl"}
 {include file="Calendar/calendar-page-base.tpl"}

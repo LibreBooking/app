@@ -1,5 +1,5 @@
 {*
-Copyright 2011-2017 Nick Korbel
+Copyright 2011-2018 Nick Korbel
 
 This file is part of Booked Scheduler.
 
@@ -17,7 +17,11 @@ You should have received a copy of the GNU General Public License
 along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 *}
 <div id="resourceDetailsPopup">
-    <h4{if !empty($color)} style="background-color:{$color};color:{$textColor};padding:5px 3px;"{/if}>{$resourceName}</h4>
+    {assign var=h4Style value=""}
+    {if !empty($color)}
+        {assign var=h4Style value=" style=\"background-color:{$color};color:{$textColor};padding:5px 3px;\""}
+    {/if}
+    <h4 {$h4Style}>{$resourceName}</h4>
     <a href="#" class="visible-sm hideResourceDetailsPopup">{translate key=Close}</a>
 
     {if $imageUrl neq ''}

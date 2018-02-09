@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Copyright 2011-2017 Nick Korbel
+ * Copyright 2011-2018 Nick Korbel
  *
  * This file is part of Booked Scheduler.
  *
@@ -122,6 +122,7 @@ class SchedulePageBuilder implements ISchedulePageBuilder
 		{
 			$page->SetSubscriptionUrl(new CalendarSubscriptionUrl(null, $currentSchedule->GetPublicId(), null));
 		}
+		$page->SetAllowConcurrent($currentSchedule->GetAllowConcurrentReservations());
 	}
 
 	/**
@@ -216,7 +217,23 @@ class SchedulePageBuilder implements ISchedulePageBuilder
 
 	public function BindDisplayDates(ISchedulePage $page, DateRange $dateRange, ISchedule $schedule)
 	{
-		$scheduleLength = $schedule->GetDaysVisible();
+	    if ($schedule->HasAvailability()) {
+            if ($dateRange->GetEnd()->LessThan($schedule->GetAvailabilityBegin())) {
+                $page->BindScheduleAvailability($schedule->GetAvailability(), true);
+            }
+            elseif ($dateRange->GetBegin()->GreaterThan($schedule->GetAvailabilityEnd())) {
+                $page->BindScheduleAvailability($schedule->GetAvailability(), false);
+            }
+
+            if ($dateRange->GetBegin()->LessThan($schedule->GetAvailabilityBegin())) {
+                $dateRange = new DateRange($schedule->GetAvailabilityBegin(), $dateRange->GetEnd(), $dateRange->Timezone());
+            }
+            if ($dateRange->GetEnd()->GreaterThan($schedule->GetAvailabilityEnd())) {
+                $dateRange = new DateRange($dateRange->GetBegin(), $schedule->GetAvailabilityEnd(), $dateRange->Timezone());
+            }
+        }
+
+        $scheduleLength = $schedule->GetDaysVisible();
 		if ($page->GetShowFullWeek())
 		{
 			$scheduleLength = 7;
@@ -241,6 +258,8 @@ class SchedulePageBuilder implements ISchedulePageBuilder
 
 		$page->SetPreviousNextDates($startDate->AddDays(-$prevAdjustment), $startDate->AddDays($adjustment));
 		$page->ShowFullWeekToggle($scheduleLength < 7);
+
+
 	}
 
 	public function BindSpecificDates(UserSession $user, ISchedulePage $page, $dates, ISchedule $schedule)

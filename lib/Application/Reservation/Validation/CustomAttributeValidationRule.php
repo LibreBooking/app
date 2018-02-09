@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Copyright 2011-2017 Nick Korbel
+ * Copyright 2011-2018 Nick Korbel
  *
  * This file is part of Booked Scheduler.
  *
@@ -46,7 +46,7 @@ class CustomAttributeValidationRule implements IReservationValidationRule
 		$isResourceAdmin = $bookedBy->IsResourceAdminForOneOf($reservationSeries->AllResources());
 		$isAdminUser = $bookedBy->IsAdminFor($user) || $isResourceAdmin;
 
-		$result = $this->attributeService->Validate(CustomAttributeCategory::RESERVATION, $reservationSeries->AttributeValues(), null, false, $isAdminUser);
+		$result = $this->attributeService->Validate(CustomAttributeCategory::RESERVATION, $reservationSeries->AttributeValues(), array(), false, $isAdminUser);
 
 		$isValid = $result->IsValid();
 
@@ -56,14 +56,14 @@ class CustomAttributeValidationRule implements IReservationValidationRule
 			foreach ($result->InvalidAttributes() as $invalidAttribute)
 			{
 				$secondaryCategory = $invalidAttribute->Attribute->SecondaryCategory();
-				$secondaryEntityId = $invalidAttribute->Attribute->SecondaryEntityIds();
+				$secondaryEntityIds = $invalidAttribute->Attribute->SecondaryEntityIds();
 
-				if ($secondaryCategory == CustomAttributeCategory::USER && $secondaryEntityId != $reservationSeries->UserId())
+				if ($secondaryCategory == CustomAttributeCategory::USER && !in_array($reservationSeries->UserId(), $secondaryEntityIds))
 				{
 					// the attribute applies to a different user
 					continue;
 				}
-				if ($secondaryCategory == CustomAttributeCategory::RESOURCE && !in_array($secondaryEntityId, $reservationSeries->AllResourceIds()))
+				if ($secondaryCategory == CustomAttributeCategory::RESOURCE && count(array_intersect($secondaryEntityIds, $reservationSeries->AllResourceIds())) == 0)
 				{
 					// the attribute is not for a resource that is being booked
 					continue;
@@ -78,7 +78,7 @@ class CustomAttributeValidationRule implements IReservationValidationRule
 							// don't keep checking if we already know it applies to this resource type
 							break;
 						}
-						if ($resource->GetResourceTypeId() == $secondaryEntityId)
+						if ($resource->GetResourceTypeId() == $secondaryEntityIds)
 						{
 							$appliesToResourceType = true;
 						}

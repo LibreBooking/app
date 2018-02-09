@@ -1,6 +1,6 @@
 <?php
 /**
-Copyright 2011-2017 Nick Korbel
+Copyright 2011-2018 Nick Korbel
 
 This file is part of Booked Scheduler.
 
@@ -142,6 +142,6 @@ class ExistingReservationInitializerTests extends TestBase
 			$binder,
 			$reservationView,
 			$this->fakeUser);
-		$initializer->SetDates($anything, $anything, $periods, $periods);
+		$initializer->SetDates($anything, $anything, $periods, $periods, 0);
 	}
 }

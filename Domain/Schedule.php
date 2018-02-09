@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright 2011-2017 Nick Korbel
+ * Copyright 2011-2018 Nick Korbel
  *
  * This file is part of Booked Scheduler.
  *
@@ -41,6 +41,31 @@ interface ISchedule
     public function GetPublicId();
 
     public function GetAdminGroupId();
+
+    /**
+     * @return Date
+     */
+    public function GetAvailabilityBegin();
+
+    /**
+     * @return Date
+     */
+    public function GetAvailabilityEnd();
+
+    /**
+     * @return DateRange
+     */
+    public function GetAvailability();
+
+    /**
+     * @return bool
+     */
+    public function HasAvailability();
+
+    /**
+     * @return bool
+     */
+    public function GetAllowConcurrentReservations();
 }
 
 class Schedule implements ISchedule
@@ -55,6 +80,9 @@ class Schedule implements ISchedule
     protected $_isCalendarSubscriptionAllowed = false;
     protected $_publicId;
     protected $_adminGroupId;
+    protected $_availabilityBegin;
+    protected $_availabilityEnd;
+    protected $_allowConcurrent = false;
 
     const Today = 100;
 
@@ -74,6 +102,9 @@ class Schedule implements ISchedule
         $this->_daysVisible = $daysVisible;
         $this->_timezone = $timezone;
         $this->_layoutId = $layoutId;
+        $this->_availabilityBegin = new NullDate();
+        $this->_availabilityEnd = new NullDate();
+        $this->_allowConcurrent = false;
     }
 
     public function GetId()
@@ -165,7 +196,7 @@ class Schedule implements ISchedule
     {
         $this->SetIsCalendarSubscriptionAllowed(true);
         if (empty($this->_publicId)) {
-            $this->SetPublicId(uniqid());
+            $this->SetPublicId(BookedStringHelper::Random(20));
         }
     }
 
@@ -198,6 +229,71 @@ class Schedule implements ISchedule
         return !empty($this->_adminGroupId);
     }
 
+    public function SetAvailableAllYear()
+    {
+        $this->_availabilityBegin = new NullDate();
+        $this->_availabilityEnd = new NullDate();
+    }
+
+    public function SetAvailability(Date $start, Date $end)
+    {
+        $this->_availabilityBegin = $start;
+        $this->_availabilityEnd = $end;
+    }
+
+    /**
+     * @return Date
+     */
+    public function GetAvailabilityBegin()
+    {
+        if ($this->_availabilityBegin == null) {
+            return new NullDate();
+        }
+
+        return $this->_availabilityBegin;
+    }
+
+    /**
+     * @return Date
+     */
+    public function GetAvailabilityEnd()
+    {
+        if ($this->_availabilityEnd == null) {
+            return new NullDate();
+        }
+
+        return $this->_availabilityEnd;
+    }
+
+    /**
+     * @return DateRange
+     */
+    public function GetAvailability()
+    {
+        return new DateRange($this->GetAvailabilityBegin(), $this->GetAvailabilityEnd());
+    }
+
+    /**
+     * @return bool
+     */
+    public function HasAvailability()
+    {
+        return $this->GetAvailabilityBegin()->ToString() != '' && $this->GetAvailabilityEnd()->ToString() != '';
+    }
+
+    /**
+     * @param bool $allowConcurrent
+     */
+    public function SetAllowConcurrentReservations($allowConcurrent)
+    {
+        $this->_allowConcurrent = (bool)$allowConcurrent;
+    }
+
+    public function GetAllowConcurrentReservations()
+    {
+        return $this->_allowConcurrent;
+    }
+
     /**
      * @static
      * @return Schedule
@@ -225,6 +321,8 @@ class Schedule implements ISchedule
         $schedule->WithSubscription($row[ColumnNames::ALLOW_CALENDAR_SUBSCRIPTION]);
         $schedule->WithPublicId($row[ColumnNames::PUBLIC_ID]);
         $schedule->SetAdminGroupId($row[ColumnNames::SCHEDULE_ADMIN_GROUP_ID]);
+        $schedule->SetAvailability(Date::FromDatabase($row[ColumnNames::SCHEDULE_AVAILABLE_START_DATE]), Date::FromDatabase($row[ColumnNames::SCHEDULE_AVAILABLE_END_DATE]));
+        $schedule->SetAllowConcurrentReservations($row[ColumnNames::SCHEDULE_ALLOW_CONCURRENT_RESERVATIONS]);
 
         return $schedule;
     }

@@ -2,7 +2,7 @@
 Modified by Alenka Kavčič (alenka.kavcic@fri.uni-lj.si), UL FRI, August 2015
 Translated and adapted for Slovenian language
 
-Copyright 2011-2017 Nick Korbel
+Copyright 2011-2018 Nick Korbel
 
 This file is part of Booked Scheduler.
 

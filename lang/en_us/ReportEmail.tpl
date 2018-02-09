@@ -1,5 +1,5 @@
 {*
-Copyright 2012-2017 Nick Korbel
+Copyright 2012-2018 Nick Korbel
 
 This file is part of Booked Scheduler.
 
@@ -16,6 +16,6 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 *}
-Your report from Booked Scheduler is attached.<br/><br/>
+Your report from {$AppTitle} is attached.<br/><br/>
 
-<a href="{$ScriptUrl}">Log in to Booked Scheduler</a>
+<a href="{$ScriptUrl}">Log in to {$AppTitle}</a>

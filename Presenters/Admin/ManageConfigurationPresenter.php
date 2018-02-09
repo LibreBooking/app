@@ -49,7 +49,7 @@ class ManageConfigurationPresenter extends ActionPresenter
     /**
      * @var string[]
      */
-    private $deletedSettings = array('password.pattern', 'allow.social.login');
+    private $deletedSettings = array('password.pattern', 'allow.social.login', 'require.login');
 
     /**
      * @var string

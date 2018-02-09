@@ -1,6 +1,6 @@
 <?php
 /**
-Copyright 2011-2017 Nick Korbel
+Copyright 2011-2018 Nick Korbel
 
 This file is part of Booked Scheduler.
 
@@ -89,7 +89,8 @@ class CalendarPresenterTests extends TestBase
             $this->userRepository,
 			$this->resourceService,
 			$this->subscriptionService,
-			$this->privacyFilter);
+			$this->privacyFilter,
+            new SlotLabelFactory());
 	}
 
 	public function testBindsDefaultScheduleByMonthWhenNothingSelected()

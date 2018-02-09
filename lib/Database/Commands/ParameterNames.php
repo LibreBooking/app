@@ -1,6 +1,6 @@
 <?php
 /**
-Copyright 2012-2017 Nick Korbel
+Copyright 2012-2018 Nick Korbel
 
 This file is part of Booked Scheduler.
 
@@ -20,8 +20,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 class ParameterNames
 {
-
-	private function __construct()
+    private function __construct()
 	{
 	}
 
@@ -41,6 +40,7 @@ class ParameterNames
 	const ANNOUNCEMENT_ID = '@announcementid';
 	const ANNOUNCEMENT_TEXT = '@text';
 	const ANNOUNCEMENT_PRIORITY = '@priority';
+	const ANNOUNCEMENT_DISPLAY_PAGE = '@display_page';
 
 	const ATTRIBUTE_ID = '@custom_attribute_id';
 	const ATTRIBUTE_ADMIN_ONLY = '@admin_only';
@@ -74,6 +74,9 @@ class ParameterNames
 	const CURRENT_SERIES_ID = '@currentSeriesId';
 	const COLOR_RULE_ID = '@reservation_color_rule_id';
 	const CREDIT_COUNT = '@credit_count';
+	const CREDIT_COST = '@credit_cost';
+	const CREDIT_CURRENCY = '@credit_currency';
+	const CREDIT_NOTE = '@credit_note';
 
 	const DATE_CREATED = '@dateCreated';
 	const DATE_MODIFIED = '@dateModified';
@@ -94,22 +97,41 @@ class ParameterNames
 	const FILE_EXTENSION = '@file_extension';
 	const FIRST_NAME = '@fname';
 
-	const GROUP_ID = '@groupid';
+    const GATEWAY_TYPE = '@gateway_type';
+    const GATEWAY_SETTING_NAME = '@setting_name';
+    const GATEWAY_SETTING_VALUE = '@setting_value';
+    const GROUP_ID = '@groupid';
 	const GROUP_NAME = '@groupname';
 	const GROUP_ADMIN_ID = '@admin_group_id';
+	const GROUP_ISDEFAULT = '@isdefault';
 
 	const HOMEPAGE_ID = '@homepageid';
 
 	const LAST_LOGIN = '@lastlogin';
 	const LAST_NAME = '@lname';
 	const LAYOUT_ID = '@layoutid';
+    const LANGUAGE = '@language';
 
 	const NAME = '@name';
 
 	const ORGANIZATION = '@organization';
+	const ORIGNINAL_CREDIT_COUNT = '@original_credit_count';
 
 	const PASSWORD = '@password';
 	const PARTICIPANT_ID = '@participant_id';
+	const PAYMENT_STATUS = '@status';
+	const PAYMENT_INVOICE_NUMBER = '@invoice_number';
+	const PAYMENT_TRANSACTION_LOG_ID = '@payment_transaction_log_id';
+	const PAYMENT_TRANSACTION_ID = '@transaction_id';
+	const PAYMENT_TOTAL = '@total_amount';
+	const PAYMENT_TRANSACTION_FEE = '@transaction_fee';
+	const PAYMENT_CURRENCY = '@currency';
+	const PAYMENT_TRANSACTION_HREF = '@transaction_href';
+	const PAYMENT_REFUND_HREF = '@refund_href';
+	const PAYMENT_DATE_CREATED = '@date_created';
+	const PAYMENT_GATEWAY_DATE_CREATED = '@gateway_date_created';
+	const PAYMENT_GATEWAY_NAME = '@gateway_name';
+	const PAYMENT_GATEWAY_RESPONSE = '@payment_response';
 	const PEAK_CREDIT_COUNT = '@peak_credit_count';
 	const PEAK_TIMES_ALL_DAY = '@all_day';
 	const PEAK_TIMES_START_TIME = '@start_time';
@@ -134,6 +156,16 @@ class ParameterNames
 	const QUOTA_LIMIT = '@limit';
 	const QUOTA_SCOPE = '@scope';
 	const QUOTA_UNIT = '@unit';
+
+	const REFUND_STATUS = '@status';
+	const REFUND_TRANSACTION_ID = '@transaction_id';
+	const REFUND_TOTAL_AMOUNT = '@total_refund_amount';
+	const REFUND_PAYMENT_AMOUNT = '@payment_refund_amount';
+	const REFUND_FEE_AMOUNT = '@fee_refund_amount';
+	const REFUND_TRANSACTION_HREF = '@transaction_href';
+	const REFUND_DATE_CREATED = '@date_created';
+	const REFUND_GATEWAY_DATE_CREATED = '@gateway_date_created';
+	const REFUND_GATEWAY_RESPONSE = '@refund_response';
 
 	const REMINDER_ID = '@reminder_id';
 	const REMINDER_USER_ID = '@user_id';
@@ -171,7 +203,9 @@ class ParameterNames
 	const RESOURCE_MAXNOTICE = '@max_notice_time';
 	const RESOURCE_MINDURATION = '@min_duration';
 	const RESOURCE_MININCREMENT = '@min_increment';
-	const RESOURCE_MINNOTICE = '@min_notice_time';
+	const RESOURCE_MINNOTICE_ADD = '@min_notice_time_add';
+	const RESOURCE_MINNOTICE_UPDATE = '@min_notice_time_update';
+	const RESOURCE_MINNOTICE_DELETE = '@min_notice_time_delete';
 	const RESOURCE_NAME = '@resource_name';
 	const RESOURCE_NOTES = '@resource_notes';
 	const RESOURCE_REQUIRES_APPROVAL = '@requires_approval';
@@ -200,15 +234,24 @@ class ParameterNames
 	const SCHEDULE_ISDEFAULT = '@scheduleIsDefault';
 	const SCHEDULE_WEEKDAYSTART = '@scheduleWeekdayStart';
 	const SCHEDULE_DAYSVISIBLE = '@scheduleDaysVisible';
+	const SCHEDULE_AVAILABILITY_BEGIN = '@start_date';
+	const SCHEDULE_AVAILABILITY_END = '@end_date';
+	const SCHEDULE_ALLOW_CONCURRENT_RESERVATIONS = '@allow_concurrent_bookings';
 	const SERIES_ID = '@seriesid';
 	const SESSION_TOKEN = '@session_token';
 	const START_DATE = '@startDate';
 	const START_TIME = '@startTime';
 	const STATUS_ID = '@statusid';
+
 	const TIMEZONE_NAME = '@timezone';
 	const TYPE_ID = '@typeid';
-	const LANGUAGE = '@language';
+	const TERMS_TEXT = '@terms_text';
+	const TERMS_URL = '@terms_url';
+	const TERMS_FILENAME = '@terms_file';
+	const TERMS_APPLICABILITY = '@applicability';
 	const TITLE = '@title';
+	const TERMS_ACCEPTANCE_DATE = '@terms_date_accepted';
+
 	const USER_ID = '@userid';
 	const USER_ROLE_ID = '@user_roleid';
 	const USER_STATUS_ID = '@user_statusid';

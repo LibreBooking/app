@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright 2011-2017 Nick Korbel
+ * Copyright 2011-2018 Nick Korbel
  *
  * This file is part of Booked Scheduler.
  *
@@ -84,7 +84,9 @@ class ParticipationPresenter
 	 */
 	private function HandleInvitationAction($invitationAction)
 	{
-		$referenceNumber = $this->page->GetInvitationReferenceNumber();
+        $user = ServiceLocator::GetServer()->GetUserSession();
+
+        $referenceNumber = $this->page->GetInvitationReferenceNumber();
 		$userId = $this->page->GetUserId();
 
 		Log::Debug('Invitation action %s for user %s and reference number %s', $invitationAction, $userId, $referenceNumber);
@@ -93,11 +95,11 @@ class ParticipationPresenter
 
 		if ($invitationAction == InvitationAction::Join || $invitationAction == InvitationAction::CancelInstance)
 		{
-			$rules = array(new ReservationStartTimeRule(new ScheduleRepository()), new ResourceMinimumNoticeCurrentInstanceRule(), new ResourceMaximumNoticeCurrentInstanceRule());
+			$rules = array(new ReservationStartTimeRule(new ScheduleRepository()), new ResourceMinimumNoticeCurrentInstanceRuleUpdate($user), new ResourceMaximumNoticeCurrentInstanceRule($user));
 		}
 		else
 		{
-			$rules = array(new ReservationStartTimeRule(new ScheduleRepository()), new ResourceMinimumNoticeRule(), new ResourceMaximumNoticeRule());
+			$rules = array(new ReservationStartTimeRule(new ScheduleRepository()), new ResourceMinimumNoticeRuleAdd($user), new ResourceMaximumNoticeRule($user));
 		}
 
 		/** @var IReservationValidationRule $rule */

@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright 2011-2017 Nick Korbel
+ * Copyright 2011-2018 Nick Korbel
  *
  * This file is part of Booked Scheduler.
  *
@@ -82,8 +82,8 @@ class he extends en_us
 		$strings['Change'] = 'לשנות';
 		$strings['Rename'] = 'שם אחר';
 		$strings['Remove'] = 'להסיר';
-		$strings['Delete'] = 'למחוק את ההזמנה';
-		$strings['Update'] = 'לעדכן את ההזמנה';
+		$strings['Delete'] = 'למחוק';
+		$strings['Update'] = 'לעדכן';
 		$strings['Cancel'] = 'לבטל שינויים';
 		$strings['Add'] = 'להוסיף';
 		$strings['Name'] = 'שם';
@@ -115,6 +115,8 @@ class he extends en_us
 		$strings['Announcements'] = 'הודעות';
 		$strings['NoUpcomingReservations'] = 'אין לך הזמנות עתידיות';
 		$strings['UpcomingReservations'] = 'הזמנות עתידיות';
+		$strings['AllNoUpcomingReservations'] = 'אין הזמנות עתידיות ב-%s הימים הבאים';
+		$strings['AllUpcomingReservations'] = 'כל ההזמנות העתידיות';
 		$strings['ShowHide'] = 'להציג/להסתיר';
 		$strings['Error'] = 'שגיאה';
 		$strings['ReturnToPreviousPage'] = 'חזרה לדף הקודם';
@@ -146,7 +148,7 @@ class he extends en_us
 		$strings['EditReservationHeading'] = 'עריכת הזמנה %s';
 		$strings['ViewReservationHeading'] = 'צפייה בהזמנה %s';
 		$strings['ReservationErrors'] = 'לשנות הזמנה';
-		$strings['Create'] = 'ליצור';
+		$strings['Create'] = 'יצירת הזמנה';
 		$strings['ThisInstance'] = 'מקרה זה בלבד';
 		$strings['AllInstances'] = 'כל מקרים';
 		$strings['FutureInstances'] = 'מקרים עתידיים';
@@ -166,7 +168,7 @@ class he extends en_us
 		$strings['Move'] = 'להזיז';
 		$strings['AppearsOn'] = 'מופיע ב- %s';
 		$strings['Location'] = 'מקום';
-		$strings['NoLocationLabel'] = '(חקום לא נקבע)';
+		$strings['NoLocationLabel'] = '(מקום לא נקבע)';
 		$strings['Contact'] = 'איש קשר';
 		$strings['NoContactLabel'] = '(אין איש קשר)';
 		$strings['Description'] = 'תאור';
@@ -209,6 +211,7 @@ class he extends en_us
 		$strings['Reservations'] = 'הזמנות';
 		$strings['Groups'] = 'קבוצות';
 		$strings['ResetPassword'] = 'איפוס סיסמה';
+		$strings['Users'] = 'משתמשים';
 		$strings['AllUsers'] = 'כל משתמשים';
 		$strings['AllGroups'] = 'כל קבוצות';
 		$strings['AllSchedules'] = 'כל הלוחות';
@@ -218,9 +221,10 @@ class he extends en_us
 		$strings['ApplyUpdatesTo'] = 'ליישם עדכונים ל-';
 		$strings['CancelParticipation'] = 'בטל השתתפות';
 		$strings['Attending'] = 'משתתף';
-		$strings['QuotaConfiguration'] = 'ב-%s ל-%s משתמשים ב-%s הם מוגבלים
-ל-%s %s ל%s';
+		$strings['QuotaConfiguration'] = 'קיימת הגבלה ב%s ל%s משתמשים ב%s מוגבלים ל%s %s ל%s';
+		$strings['QuotaEnforcement'] = 'נאכף %s %s';
 		$strings['reservations'] = 'הזמנות';
+		$strings['reservation'] = 'הזמנה';
 		$strings['ChangeCalendar'] = 'לשנות לוח שבועי';
 		$strings['AddQuota'] = 'להוסיף מכסה';
 		$strings['FindUser'] = 'לאתר משתמש';
@@ -266,15 +270,14 @@ class he extends en_us
 		$strings['FindGroup'] = 'לאתר קבוצנ';
 		$strings['Manage'] = 'ניהול';
 		$strings['None'] = 'כלום';
-		$strings['AddToOutlook'] = 'להוסיף ללוח-זמן';
+		$strings['AddToOutlook'] = 'להוסיף ללוח השנה';
 		$strings['Done'] = 'בוצע';
 		$strings['RememberMe'] = 'לזכור אותי';
 		$strings['FirstTimeUser?'] = '?משתמש חדש';
 		$strings['CreateAnAccount'] = 'ליצור חשבון';
 		$strings['ViewSchedule'] = 'צפייה בלוח';
 		$strings['ForgotMyPassword'] = 'שכחתי את הסיסמה שלי';
-		$strings['YouWillBeEmailedANewPassword'] = 'תישלח אליך בדואר אלקטרוני
-סיסמה חדשה, מחוללת באופן אוטומטי';
+		$strings['YouWillBeEmailedANewPassword'] = 'תישלח אליך בדואר אלקטרוני סיסמה חדשה, מחוללת באופן אוטומטי';
 		$strings['Close'] = 'לסגור';
 		$strings['ExportToCSV'] = 'ייצוא ל-CSV';
 		$strings['OK'] = 'OK';
@@ -296,7 +299,8 @@ class he extends en_us
 		$strings['ReservationCreated'] = '!ההזמנה שלך נוצרה בהצלחה';
 		$strings['ReservationUpdated'] = '!ההזמנה שלך עודכנה בהצלחה';
 		$strings['ReservationRemoved'] = '!ההזמנה שלך בוטלה';
-		$strings['YourReferenceNumber'] = ' %s מספר אשמכתא שלך הוא:';
+		$strings['ReservationRequiresApproval'] = 'אחד או יותר מהחדרים שהזמנת דורשים אישור לפני השימוש.  הזמנה זו תשאר בהמתנה עד לאישורה.';
+		$strings['YourReferenceNumber'] = ' %s מספר האסמכתא שלך הוא:';
 		$strings['UpdatingReservation'] = 'מעדכן הזמנה';
 		$strings['ChangeUser'] = 'שלשנות משתמש';
 		$strings['MoreResources'] = 'חדרים נוספים';
@@ -323,6 +327,8 @@ class he extends en_us
 		$strings['CreatedBy'] = 'נוצר על-ידי:';
 		$strings['BlackoutCreated'] = 'נוצרה חסימה!';
 		$strings['BlackoutNotCreated'] = 'לא ניתן ליצור חסימה!';
+		$strings['BlackoutUpdated'] = 'חסימה עודכנה';
+		$strings['BlackoutNotUpdated'] = 'החסימה לא עודכנה';
 		$strings['BlackoutConflicts'] = 'יש זמני חסימה סותרים';
 		$strings['ReservationConflicts'] = 'יש הזמנות סותרות';
 		$strings['UsersInGroup'] = 'משתמשים בקבוצה זו';
@@ -407,8 +413,7 @@ class he extends en_us
 		$strings['False'] = 'לא נכון';
 		$strings['ForgotPasswordEmailSent'] = 'נשלחה הודעה לכתובת מייל הרשומה, עם הוראות לאיפוס סיסמה שלך';
 		$strings['ActivationEmailSent'] = ' בקרוב תקבל הודעה מייל להפעלה.';
-		$strings['AccountActivationError'] = 'מצטער, לא יכלנו להפעיל את החשבון
-שלך.';
+		$strings['AccountActivationError'] = 'מצטער, לא יכלנו להפעיל את החשבון שלך.';
 		$strings['Attachments'] = 'צרופות';
 		$strings['AttachFile'] = 'לצרף קובץ';
 		$strings['Maximum'] = 'מקסימום';
@@ -445,7 +450,212 @@ class he extends en_us
 		$strings['ResourceUsageReservationCount'] = 'שימוש בחדר - לפי מספר הזמנות';
 		$strings['Top20UsersTimeBooked'] = '20 משתמשים הכי פעילים - לפי זמן מוזמן';
 		$strings['Top20UsersReservationCount'] = '20 משתמשים הכי פעילים - לפי מספר הזמנות';
-		// End Strings
+		$strings['ConfigurationUpdated'] = 'קובץ ההגדרות עודכן';
+		$strings['ConfigurationUiNotEnabled'] = 'אין אפשרות לגשת לעמוד זה מכיוון שהפרמטר $conf[\'settings\'][\'pages\'][\'enable.configuration\'] מוגדר כ false או חסר.';
+		$strings['ConfigurationFileNotWritable'] = 'קובץ ההגדרות אינו ניתן לכתיבה. אנא בדקו את הרשאות הקובץ ובדקו שוב.';
+		$strings['ConfigurationUpdateHelp'] = 'קראו בפרק ה-Configuration של <a target=_blank href=%s>קובץ העזרה</a> לתיעוד נוסף על הגדרות אלו.';
+		$strings['GeneralConfigSettings'] = 'הגדרות';
+		$strings['UseSameLayoutForAllDays'] = 'השתמשו בעיצוב זהה עבור כל הימים';
+		$strings['LayoutVariesByDay'] = 'עיצוב משתנה לפי יום';
+		$strings['ManageReminders'] = 'תזכורות';
+		$strings['ReminderUser'] = 'שם משתמש ';
+		$strings['ReminderMessage'] = 'הודעה';
+		$strings['ReminderAddress'] = 'כתובות';
+		$strings['ReminderSendtime'] = 'זמן שליחה';
+		$strings['ReminderRefNumber'] = 'Reservation Reference Number';
+		$strings['ReminderSendtimeDate'] = 'Date of Reminder';
+		$strings['ReminderSendtimeTime'] = 'Time of Reminder (HH:MM)';
+		$strings['ReminderSendtimeAMPM'] = 'AM / PM';
+		$strings['AddReminder'] = 'הוספת תזכורת';
+        $strings['DeleteReminderWarning'] = 'Are you sure you want to delete this?';
+        $strings['NoReminders'] = 'אין תזכורות קרורובת.';
+		$strings['Reminders'] = 'תזכורות';
+		$strings['SendReminder'] = 'שליחת תזכורת';
+		$strings['minutes'] = 'דקות';
+		$strings['hours'] = 'שעות';
+		$strings['days'] = 'ימים';
+		$strings['ReminderBeforeStart'] = 'לפני שעת התחלה';
+		$strings['ReminderBeforeEnd'] = 'לפני שעת סיום';
+		$strings['Logo'] = 'לוגו';
+		$strings['CssFile'] = 'קובץ CSS';
+		$strings['ThemeUploadSuccess'] = 'Your changes have been saved. Refresh the page for changes to take effect.';
+		$strings['MakeDefaultSchedule'] = 'Make this my default schedule';
+		$strings['DefaultScheduleSet'] = 'This is now your default schedule';
+		$strings['FlipSchedule'] = 'Flip the schedule layout';
+		$strings['Next'] = 'הבא';
+		$strings['Success'] = 'הצלחה';
+		$strings['Participant'] = 'משתתף';
+		$strings['ResourceFilter'] = 'סינון חדרים';
+		$strings['ResourceGroups'] = 'קבוצות חדרים';
+		$strings['AddNewGroup'] = 'הוספת קבוצה';
+		$strings['Quit'] = 'יציאה';
+		$strings['AddGroup'] = 'הוספת קבוצה';
+		$strings['StandardScheduleDisplay'] = 'Use the standard schedule display';
+		$strings['TallScheduleDisplay'] = 'Use the tall schedule display';
+		$strings['WideScheduleDisplay'] = 'Use the wide schedule display';
+		$strings['CondensedWeekScheduleDisplay'] = 'Use condensed week schedule display';
+		$strings['ResourceGroupHelp1'] = 'Drag and drop resource groups to reorganize.';
+		$strings['ResourceGroupHelp2'] = 'Right click a resource group name for additional actions.';
+		$strings['ResourceGroupHelp3'] = 'Drag and drop resources to add them to groups.';
+		$strings['ResourceGroupWarning'] = 'If using resource groups, each resource must be assigned to at least one group. Unassigned resources will not be able to be reserved.';
+		$strings['ResourceType'] = 'סוג חדר';
+		$strings['AppliesTo'] = 'משפיע על';
+		$strings['UniquePerInstance'] = 'ייחודי למופע';
+		$strings['AddResourceType'] = 'הוספת סוג חדר';
+		$strings['NoResourceTypeLabel'] = '(no resource type set)';
+		$strings['ClearFilter'] = 'ניקוי הטופס';
+		$strings['MinimumCapacity'] = 'מספר אנשים מינימלי';
+		$strings['Color'] = 'Color';
+		$strings['Available'] = 'זמין';
+		$strings['Unavailable'] = 'לא זמין';
+		$strings['Hidden'] = 'מוסתר';
+		$strings['ResourceStatus'] = 'סטטוס חדר';
+		$strings['CurrentStatus'] = 'סטטוס נוכחי';
+		$strings['AllReservationResources'] = 'כל החדרים בהזמנה';
+		$strings['File'] = 'קובץ';
+		$strings['BulkResourceUpdate'] = 'עדכון חדרים בבת אחת';
+		$strings['Unchanged'] = 'ללא שינוי';
+		$strings['Common'] = 'Common';
+		$strings['AdminOnly'] = 'Is Admin Only';
+		$strings['AdvancedFilter'] = 'סינון מתקדם';
+		$strings['MinimumQuantity'] = 'כמות מינימלחת';
+		$strings['MaximumQuantity'] = 'כמות מקסימלית';
+		$strings['ChangeLanguage'] = 'שינוי שפה';
+		$strings['AddRule'] = 'הוספת כלל';
+		$strings['Attribute'] = 'מאפיין';
+		$strings['RequiredValue'] = 'ערך נדרש';
+		$strings['ReservationCustomRuleAdd'] = 'If %s then the reservation color will be';
+		$strings['AddReservationColorRule'] = 'Add Reservation Color Rule';
+		$strings['LimitAttributeScope'] = 'Collect In Specific Cases';
+		$strings['CollectFor'] = 'Collect For';
+		$strings['SignIn'] = 'Sign In';
+		$strings['AllParticipants'] = 'All Participants';
+		$strings['RegisterANewAccount'] = 'Register A New Account';
+		$strings['Dates'] = 'תאריכים';
+		$strings['More'] = 'עוד';
+		$strings['ResourceAvailability'] = 'זמינות החדרים';
+		$strings['UnavailableAllDay'] = 'לא זמין כל היום';
+		$strings['AvailableUntil'] = 'זמין עד';
+		$strings['AvailableBeginningAt'] = 'זמין החל מ';
+        $strings['AvailableAt'] = 'זמין ב';
+		$strings['AllResourceTypes'] = 'כל סוגי החדרים';
+		$strings['AllResourceStatuses'] = 'כל סטטוסי החדרים';
+		$strings['AllowParticipantsToJoin'] = 'אפשרו למשתתפים להצטרף';
+		$strings['Join'] = 'הצטרפו';
+		$strings['YouAreAParticipant'] = 'You are a participant of this reservation';
+		$strings['YouAreInvited'] = 'You are invited to this reservation';
+		$strings['YouCanJoinThisReservation'] = 'You can join this reservation';
+		$strings['Import'] = 'ייבוא';
+		$strings['GetTemplate'] = 'Get Template';
+		$strings['UserImportInstructions'] = '<ul><li>File must be in CSV format.</li><li>Username and email are required fields.</li><li>Attribute validity will not be enforced.</li><li>Leaving other fields blank will set default values and \'password\' as the user\'s password.</li><li>Use the supplied template as an example.</li></ul>';
+		$strings['RowsImported'] = 'Rows Imported';
+		$strings['RowsSkipped'] = 'Rows Skipped';
+		$strings['Columns'] = 'טורים';
+		$strings['Reserve'] = 'הזמן';
+		$strings['AllDay'] = 'כל יום';
+		$strings['Everyday'] = 'בכל הימים';
+		$strings['IncludingCompletedReservations'] = 'וכולל הזמנות שהושלמו';
+		$strings['NotCountingCompletedReservations'] = 'ללא התחשבות בהזמנות שמולאו';
+		$strings['RetrySkipConflicts'] = 'דילוג על הזמנות מתנגשות';
+		$strings['Retry'] = 'לנסות מחדש';
+		$strings['RemoveExistingPermissions'] = 'Remove existing permissions?';
+		$strings['Continue'] = 'Continue';
+		$strings['WeNeedYourEmailAddress'] = 'יש צורך בכתובת האימייל שלך לביצוע ההזמנה';
+		$strings['ResourceColor'] = 'צבע החדר';
+		$strings['DateTime'] = 'Date Time';
+		$strings['AutoReleaseNotification'] = 'Automatically released if not checked in within %s minutes';
+		$strings['RequiresCheckInNotification'] = 'Requires check in/out';
+		$strings['NoCheckInRequiredNotification'] = 'Does not require check in/out';
+		$strings['RequiresApproval'] = 'Requires Approval';
+		$strings['CheckingIn'] = 'Checking In';
+		$strings['CheckingOut'] = 'Checking Out';
+		$strings['CheckIn'] = 'Check In';
+		$strings['CheckOut'] = 'Check Out';
+		$strings['ReleasedIn'] = 'משתחרר בעוד';
+		$strings['CheckedInSuccess'] = 'You are checked in';
+		$strings['CheckedOutSuccess'] = 'You are checked out';
+		$strings['CheckInFailed'] = 'You could not be checked in';
+		$strings['CheckOutFailed'] = 'You could not be checked out';
+		$strings['CheckInTime'] = 'Check In Time';
+		$strings['CheckOutTime'] = 'Check Out Time';
+		$strings['OriginalEndDate'] = 'Original End';
+		$strings['SpecificDates'] = 'הראה תאריכים ספציפיים';
+		$strings['Users'] = 'משתמשים';
+		$strings['Guest'] = 'אורח';
+		$strings['ResourceDisplayPrompt'] = 'Resource to Display';
+		$strings['Credits'] = 'Credits';
+		$strings['AvailableCredits'] = 'Available Credits';
+		$strings['CreditUsagePerSlot'] = 'Requires %s credits per slot (off peak)';
+		$strings['PeakCreditUsagePerSlot'] = 'Requires %s credits per slot (peak)';
+		$strings['CreditsRule'] = 'You do not have enough credits. Credits required: %s. Credits in account: %s';
+		$strings['PeakTimes'] = 'זמני שיא';
+		$strings['AllYear'] = 'כל השנה';
+		$strings['MoreOptions'] = 'אפשרויות נוספות';
+		$strings['SendAsEmail'] = 'שליחה באימייל';
+		$strings['UsersInGroups'] = 'משתמשים בקבוצות';
+		$strings['UsersWithAccessToResources'] = 'משתמשים עם גישה לחדרים';
+		$strings['AnnouncementSubject'] = 'הודעה חדשה פורסמה ב-%s';
+		$strings['AnnouncementEmailNotice'] = 'משתמשים יקבלו הודעה זו באימייל';
+		$strings['Day'] = 'יום';
+		$strings['NotifyWhenAvailable'] = 'הודיעו לי כשיתפנה החדר';
+		$strings['AddingToWaitlist'] = 'התווספת לרשימת ההמתנה';
+		$strings['WaitlistRequestAdded'] = 'הודעה תשלח אליך אם זמן זה יתפנה';
+		$strings['PrintQRCode'] = 'הדפסת קוד QR';
+		$strings['FindATime'] = 'מציאת חדר פנוי';
+		$strings['AnyResource'] = 'כל החדרים';
+		$strings['ThisWeek'] = 'השבוע';
+		$strings['Hours'] = 'שעות';
+		$strings['Minutes'] = 'דקות';
+        $strings['ImportICS'] = 'יבוא מ-ICS';
+        $strings['ImportQuartzy'] = 'יבוא מ-Quartzy';
+        $strings['OnlyIcs'] = 'ניתן להעלות רק קבצי *.ics.';
+        $strings['IcsLocationsAsResources'] = 'Locations will be imported as resources.';
+        $strings['IcsMissingOrganizer'] = 'Any event missing an organizer will have the owner set to the current user.';
+        $strings['IcsWarning'] = 'Reservation rules will not be enforced - conflicts, duplicates, etc are possible.';
+		$strings['BlackoutAroundConflicts'] = 'Blackout around conflicting reservations';
+		$strings['DuplicateReservation'] = 'שכפול הזמנה';
+		$strings['UnavailableNow'] = 'לא זמין כעת';
+		$strings['ReserveLater'] = 'להזמין אחר כך';
+		$strings['CollectedFor'] = 'נאסף עבור';
+		$strings['IncludeDeleted'] = 'כולל הזמנות שנמחקו';
+		$strings['Deleted'] = 'נמחק';
+		$strings['Back'] = 'אחורה';
+		$strings['Forward'] = 'קדימה';
+		$strings['DateRange'] = 'טווח תאריכים';
+		$strings['Copy'] = 'העתק';
+		$strings['Detect'] = 'זיהוי';
+		$strings['Autofill'] = 'מילוי אוטומטי';
+		$strings['NameOrEmail'] = 'שם או אימייל';
+		$strings['ImportResources'] = 'ייבוא חדרים';
+		$strings['ExportResources'] = 'ייצוא חדרים';
+		$strings['ResourceImportInstructions'] = '<ul><li>File must be in CSV format with UTF-8 encoding.</li><li>Name is required field. Leaving other fields blank will set default values.</li><li>Status options are \'Available\', \'Unavailable\' and \'Hidden\'.</li><li>Color should be the hex value. ex) #ffffff.</li><li>Auto assign and approval columns can be true or false.</li><li>Attribute validity will not be enforced.</li><li>Comma separate multiple resource groups.</li><li>Use the supplied template as an example.</li></ul>';
+		$strings['ReservationImportInstructions'] = '<ul><li>File must be in CSV format with UTF-8 encoding.</li><li>Email, resource names, begin, and end are required fields.</li><li>Begin and end require full date time. Recommended format is YYYY-mm-dd HH:mm (2017-12-31 20:30).</li><li>Rules, conflicts, and valid time slots will not be checked.</li><li>Notifications will not be sent.</li><li>Attribute validity will not be enforced.</li><li>Comma separate multiple resource names.</li><li>Use the supplied template as an example.</li></ul>';
+		$strings['AutoReleaseMinutes'] = 'Autorelease Minutes';
+		$strings['CreditsPeak'] = 'Credits (peak)';
+		$strings['CreditsOffPeak'] = 'Credits (off peak)';
+		$strings['ResourceMinLengthCsv'] = 'Reservation Minimum Length';
+		$strings['ResourceMaxLengthCsv'] = 'Reservation Maximum Length';
+		$strings['ResourceBufferTimeCsv'] = 'זמן חציצה';
+		$strings['ResourceMinNoticeCsv'] = 'Reservation Minimum Notice';
+		$strings['ResourceMaxNoticeCsv'] = 'Reservation Maximum End';
+		$strings['Export'] = 'Export';
+		$strings['DeleteMultipleUserWarning'] = 'Deleting these users will remove all of their current, future, and historical reservations. No emails will be sent.';
+		$strings['DeleteMultipleReservationsWarning'] = 'No emails will be sent.';
+		$strings['ErrorMovingReservation'] = 'Error Moving Reservation';
+        $strings['SelectUser'] = 'Select User';
+        $strings['InviteUsers'] = 'Invite Users';
+        $strings['InviteUsersLabel'] = 'Enter the email addresses of the people to invite';
+        $strings['ApplyToCurrentUsers'] = 'Apply to current users';
+        $strings['ReasonText'] = 'Reason text';
+        $strings['NoAvailableMatchingTimes'] = 'There are no available times that match your search';
+        $strings['Schedules'] = 'Schedules';
+        $strings['NotifyUser'] = 'Notify User';
+        $strings['UpdateUsersOnImport'] = 'Update existing user if email already exists';
+        $strings['UpdateResourcesOnImport'] = 'Update existing resources if name already exists';
+        $strings['Reject'] = 'Reject';
+        $strings['CheckingAvailability'] = 'Checking availability';
+        // End Strings
+		
 
 		// Errors
 		$strings['LoginError'] = 'לא הצלחנו לוודא שם או סיסמה שלך';
@@ -459,14 +669,12 @@ class he extends en_us
 		$strings['ConflictingReservationDates'] = 'כבר קיימת הזמנה לחדר זה באותו מועד:';
 		$strings['StartDateBeforeEndDateRule'] = 'תאריך/שעת התחלה חייב להיות לפני תאריך/שעת סיום';
 		$strings['StartIsInPast'] = 'תאריך/שעת התחלה לא יכול להיות בעבר';
-		$strings['EmailDisabled'] = 'מנהל המערכת ביטל הודעות באמצעות דואר
-אלקטרוני';
+		$strings['EmailDisabled'] = 'מנהל המערכת ביטל הודעות באמצעות דואר אלקטרוני';
 		$strings['ValidLayoutRequired'] = 'יש לשבץ כל 24 שעות היממא, החל ומסיים בחצות הלילה.';
 		$strings['CustomAttributeErrors'] = 'יש בעיות עם המאפיינים הנוספים שהגדרת:';
 		$strings['CustomAttributeRequired'] = '%s הוא שדה חובה';
 		$strings['CustomAttributeInvalid'] = 'הערך שניתן עבור %s אינו תקין';
-		$strings['AttachmentLoadingError'] = 'מצטער - הייתה תקלה בהאעלת הקובץ
-המבוקש.';
+		$strings['AttachmentLoadingError'] = 'מצטער - הייתה תקלה בהאעלת הקובץ המבוקש.';
 		$strings['InvalidAttachmentExtension'] = 'ניתן להעלות קבצים מסוג: %s בלבד';
 		// End Errors
 
@@ -482,16 +690,16 @@ class he extends en_us
 		$strings['ManageAccessories'] = 'אביזרים';
 		$strings['ManageUsers'] = 'משתמשים';
 		$strings['ManageGroups'] = 'קבוצות';
-		$strings['ManageQuotas'] = 'מכסים';
+		$strings['ManageQuotas'] = 'מכסות';
 		$strings['ManageBlackouts'] = 'זמנים חסומים';
-		$strings['MyDashboard'] = 'My Dashboard';
+		$strings['MyDashboard'] = 'עמוד ההזמנות שלי';
 		$strings['ServerSettings'] = 'כוונון שרת';
-		$strings['Dashboard'] = 'Dashboard';
+		$strings['Dashboard'] = 'ההזמנות שלי';
 		$strings['Help'] = 'עזרה';
 		$strings['Administration'] = 'ניהול';
 		$strings['About'] = 'על';
 		$strings['Bookings'] = 'הזמנות';
-		$strings['Schedule'] = 'לוח שבועי';
+		$strings['Schedule'] = 'הזמנות וחדרים';
 		$strings['Reservations'] = 'הזמנות';
 		$strings['Account'] = 'חשבון';
 		$strings['EditProfile'] = 'לערוך פריפיל שלי';
@@ -506,7 +714,7 @@ class he extends en_us
 		$strings['Profile'] = 'פרופיל';
 		$strings['ApplicationManagement'] = 'ניהול יישום';
 		$strings['ForgotPassword'] = 'שכחתי סיסמה';
-		$strings['NotificationPreferences'] = 'עדיפויות יידוע';
+		$strings['NotificationPreferences'] = 'העדפות - הודעות';
 		$strings['ManageAnnouncements'] = 'הודעות';
 		$strings['Responsibilities'] = 'אחריויות';
 		$strings['GroupReservations'] = 'הזמנות קבוצה';
@@ -521,6 +729,13 @@ class he extends en_us
 		$strings['CommonReports'] = 'דוחות שכיחים';
 		$strings['ViewDay'] = 'הצג יום';
 		$strings['Group'] = 'קבוצה';
+		$strings['ManageConfiguration'] = 'הגדרות המערכת';
+		$strings['LookAndFeel'] = 'עיצוב ומראה';
+		$strings['ManageResourceGroups'] = 'קבוצות חדרים';
+		$strings['ManageResourceTypes'] = 'סוגי חדרים';
+		$strings['ManageResourceStatus'] = 'סטטוסי חדרים';
+		$strings['ReservationColors'] = 'צבעי הזמנות';
+		$strings['SearchReservations'] = 'חיפוש בהזמנות';
 		// End Page Titles
 
 		// Day representations

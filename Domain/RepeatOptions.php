@@ -1,6 +1,6 @@
 <?php
 /**
-Copyright 2011-2017 Nick Korbel
+Copyright 2011-2018 Nick Korbel
 
 This file is part of Booked Scheduler.
 
@@ -44,31 +44,26 @@ interface IRepeatOptions
 interface IRepeatOptionsComposite
 {
 	/**
-	 * @abstract
 	 * @return string
 	 */
 	public function GetRepeatType();
 
 	/**
-	 * @abstract
 	 * @return string|null
 	 */
 	public function GetRepeatInterval();
 
 	/**
-	 * @abstract
 	 * @return int[]|null
 	 */
 	public function GetRepeatWeekdays();
 
 	/**
-	 * @abstract
 	 * @return string|null
 	 */
 	public function GetRepeatMonthlyType();
 
 	/**
-	 * @abstract
 	 * @return string|null
 	 */
 	public function GetRepeatTerminationDate();

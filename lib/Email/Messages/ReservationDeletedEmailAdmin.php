@@ -1,6 +1,6 @@
 <?php
 /**
-Copyright 2012-2017 Nick Korbel
+Copyright 2012-2018 Nick Korbel
 
 This file is part of Booked Scheduler is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -20,7 +20,7 @@ class ReservationDeletedEmailAdmin extends ReservationCreatedEmailAdmin
 {
     public function Subject()
     {
-        return $this->Translate('ReservationDeleteAdminSubject');
+        return $this->Translate('ReservationDeleteAdminSubjectWithResource', array($this->resource->GetName()));
     }
 
     public function PopulateTemplate()

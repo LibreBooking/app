@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright 2011-2017 Nick Korbel
+ * Copyright 2011-2018 Nick Korbel
  *
  * This file is part of Booked Scheduler.
  *
@@ -31,7 +31,7 @@ class ManageGroupsActions
     const RemoveUser = 'removeUser';
     const AddUser = 'addUser';
     const AddGroup = 'addGroup';
-    const RenameGroup = 'renameGroup';
+    const UpdateGroup = 'updateGroup';
     const DeleteGroup = 'deleteGroup';
     const Roles = 'roles';
     const GroupAdmin = 'groupAdmin';
@@ -71,7 +71,7 @@ class ManageGroupsPresenter extends ActionPresenter
         $this->AddAction(ManageGroupsActions::RemoveUser, 'RemoveUser');
         $this->AddAction(ManageGroupsActions::Permissions, 'ChangePermissions');
         $this->AddAction(ManageGroupsActions::AddGroup, 'AddGroup');
-        $this->AddAction(ManageGroupsActions::RenameGroup, 'RenameGroup');
+        $this->AddAction(ManageGroupsActions::UpdateGroup, 'UpdateGroup');
         $this->AddAction(ManageGroupsActions::DeleteGroup, 'DeleteGroup');
         $this->AddAction(ManageGroupsActions::Roles, 'ChangeRoles');
         $this->AddAction(ManageGroupsActions::GroupAdmin, 'ChangeGroupAdmin');
@@ -183,20 +183,23 @@ class ManageGroupsPresenter extends ActionPresenter
     protected function AddGroup()
     {
         $groupName = $this->page->GetGroupName();
-        Log::Debug('Adding new group with name: %s', $groupName);
+        $isDefault = $this->page->AutomaticallyAddToGroup();
+        Log::Debug('Adding new group with name: %s, isdefault: %s', $groupName, $isDefault);
 
-        $group = new Group(0, $groupName);
+        $group = new Group(0, $groupName, $isDefault);
         $this->groupRepository->Add($group);
     }
 
-    protected function RenameGroup()
+    protected function UpdateGroup()
     {
         $groupId = $this->page->GetGroupId();
         $groupName = $this->page->GetGroupName();
+        $isDefault = $this->page->AutomaticallyAddToGroup();
         Log::Debug('Renaming group id: %s to: %s', $groupId, $groupName);
 
         $group = $this->groupRepository->LoadById($groupId);
         $group->Rename($groupName);
+        $group->ChangeDefault($isDefault);
 
         $this->groupRepository->Update($group);
     }
