@@ -1,47 +1,60 @@
 // Credit: https://codepen.io/jaysalvat/pen/agLyf //
-function dropzone(element)
-{
-    var originalDivContent = null;
+function dropzone(element, opts) {
+	var options = $.extend({
+		autoSubmit: false
+	}, opts);
 
-    element.on('dragover', function() {
-        $(this).addClass('hover');
-    });
+	var originalDivContent = null;
 
-    element.on('dragleave', function() {
-        $(this).removeClass('hover');
-    });
+	element.on('dragover', function () {
+		$(this).addClass('hover');
+	});
 
-    element.find('input').on('change', function(e) {
-        var file = this.files[0];
+	element.on('dragleave', function () {
+		$(this).removeClass('hover');
+	});
 
-        if (originalDivContent == null)
-        {
-            originalDivContent = element.find('div').html();
-        }
-        if (!file)
-        {
-            element.find('div').html(originalDivContent);
-            return;
-        }
+	element.find('input').on('change', function (e) {
+		var file = this.files[0];
 
-        element.removeClass('hover');
+		if (originalDivContent == null)
+		{
+			originalDivContent = element.find('div').html();
+		}
+		if (!file)
+		{
+			element.find('div').html(originalDivContent);
+			return;
+		}
 
-        element.addClass('dropped');
-        element.find('img').remove();
+		element.removeClass('hover');
 
-        if ((/^image\/(gif|png|jpeg)$/i).test(file.type)) {
-            var reader = new FileReader(file);
+		element.addClass('dropped');
+		element.find('img').remove();
 
-            reader.readAsDataURL(file);
+		if ((/^image\/(gif|png|jpeg)$/i).test(file.type))
+		{
+			var reader = new FileReader(file);
 
-            reader.onload = function(e) {
-                var data = e.target.result,
-                    $img = $('<img />').attr('src', data).fadeIn();
+			reader.readAsDataURL(file);
 
-                element.find('div').html($img);
-            };
-        } else {
-            element.find('div').html(file.name);
-        }
-    });
+			reader.onload = function (e) {
+				var data = e.target.result, $img = $('<img />').attr('src', data).fadeIn();
+
+				element.find('div').html($img);
+
+				if (options.autoSubmit)
+				{
+					element.closest('form').submit();
+					setTimeout(function () { // Delay for Chrome
+						element.find('div').html(originalDivContent);
+					}, 700);
+				}
+			};
+		}
+		else
+		{
+			element.find('div').html(file.name);
+		}
+	});
 }

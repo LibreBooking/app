@@ -272,6 +272,12 @@ class ResourceRepository implements IResourceRepository
 		{
 			$db->Execute(new AutoAssignClearResourcePermissionsCommand($resource->GetId()));
 		}
+		$db->Execute(new DeleteResourceImagesCommand($resource->GetId()));
+
+		foreach($resource->GetImages() as $image)
+		{
+			$db->Execute(new AddResourceImageCommand($resource->GetId(), $image));
+		}
 
 		$this->_cache->Add($resource->GetId(), $resource);
 	}

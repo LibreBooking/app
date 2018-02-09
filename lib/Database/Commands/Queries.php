@@ -284,6 +284,8 @@ class Queries
 		INNER JOIN reservation_resources rs ON s.series_id = rs.series_id
 		WHERE rs.resource_id = @resourceid';
 
+	const DELETE_RESOURCE_IMAGES = 'DELETE FROM resource_images WHERE resource_id = @resourceid';
+
 	const DELETE_RESOURCE_STATUS_REASON_COMMAND = 'DELETE FROM resource_status_reasons WHERE resource_status_reason_id = @resource_status_reason_id';
 
 	const DELETE_RESOURCE_TYPE_COMMAND = 'DELETE FROM resource_types WHERE resource_type_id = @resource_type_id';
@@ -422,7 +424,8 @@ class Queries
 			'SELECT r.*, s.admin_group_id as s_admin_group_id,
 		(SELECT GROUP_CONCAT(CONCAT(cav.custom_attribute_id, \'=\', cav.attribute_value) SEPARATOR "!sep!")
 						FROM custom_attribute_values cav WHERE cav.entity_id = r.resource_id AND cav.attribute_category = 4) as attribute_list,
-		(SELECT GROUP_CONCAT(rga.resource_group_id SEPARATOR "!sep!") FROM resource_group_assignment rga WHERE rga.resource_id = r.resource_id) AS group_list
+		(SELECT GROUP_CONCAT(rga.resource_group_id SEPARATOR "!sep!") FROM resource_group_assignment rga WHERE rga.resource_id = r.resource_id) AS group_list,
+		(SELECT GROUP_CONCAT(ri.image_name SEPARATOR "!sep!") FROM resource_images ri WHERE ri.resource_id = r.resource_id) AS image_list
 		FROM resources r
 		INNER JOIN schedules s ON r.schedule_id = s.schedule_id
 		ORDER BY COALESCE(r.sort_order,0), r.name';
@@ -618,19 +621,22 @@ class Queries
 			WHERE r.contact_info = @contact_info';
 
 	const GET_RESOURCE_BY_ID =
-			'SELECT r.*, s.admin_group_id as s_admin_group_id
+			'SELECT r.*, s.admin_group_id as s_admin_group_id,
+				(SELECT GROUP_CONCAT( ri.image_name SEPARATOR  "!sep!" ) FROM resource_images ri WHERE ri.resource_id = r.resource_id) AS image_list
 			FROM resources r
 			INNER JOIN schedules s ON r.schedule_id = s.schedule_id
 			WHERE r.resource_id = @resourceid';
 
 	const GET_RESOURCE_BY_PUBLIC_ID =
-			'SELECT r.*, s.admin_group_id as s_admin_group_id
+			'SELECT r.*, s.admin_group_id as s_admin_group_id,
+				(SELECT GROUP_CONCAT( ri.image_name SEPARATOR  "!sep!" ) FROM resource_images ri WHERE ri.resource_id = r.resource_id) AS image_list
 			FROM resources r
 			INNER JOIN  schedules s ON r.schedule_id = s.schedule_id
 			WHERE r.public_id = @publicid';
 
     const GET_RESOURCE_BY_NAME =
-        'SELECT r.*, s.admin_group_id as s_admin_group_id
+        'SELECT r.*, s.admin_group_id as s_admin_group_id,
+				(SELECT GROUP_CONCAT( ri.image_name SEPARATOR  "!sep!" ) FROM resource_images ri WHERE ri.resource_id = r.resource_id) AS image_list
 			FROM resources r
 			INNER JOIN  schedules s ON r.schedule_id = s.schedule_id
 			WHERE r.name = @resource_name';
@@ -1011,6 +1017,8 @@ class Queries
 			VALUES (@resourcegroupid, @resourceid)';
 
 	const ADD_RESOURCE_TYPE = 'INSERT INTO resource_types (resource_type_name, resource_type_description) VALUES (@resource_type_name, @resource_type_description)';
+
+	const ADD_RESOURCE_IMAGE = 'INSERT INTO resource_images (resource_id, image_name) VALUES (@resourceid, @imageName)';
 
 	const ADD_USER_PREFERENCE = 'INSERT INTO user_preferences (user_id, name, value) VALUES (@userid, @name, @value)';
 

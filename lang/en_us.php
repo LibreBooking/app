@@ -718,6 +718,7 @@ class en_us extends Language
         $strings['ConcurrentNo'] = 'Resources cannot be booked by more than one person at a time';
         $strings['ScheduleAvailabilityEarly'] = ' This schedule is not yet available. It is available';
         $strings['ScheduleAvailabilityLate'] = 'This schedule is no longer available. It was available';
+        $strings['ResourceImages'] = 'Resource Images';
         // End Strings
 
 		// Install

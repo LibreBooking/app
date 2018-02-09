@@ -626,7 +626,10 @@ class Reservation
 		{
 			$this->removedParticipants[] = $participantId;
 			$index = array_search($participantId, $this->_participantIds);
-			array_splice($this->_participantIds, $index, 1);
+			if ($index !== false)
+			{
+				array_splice($this->_participantIds, $index, 1);
+			}
 			return true;
 		}
 

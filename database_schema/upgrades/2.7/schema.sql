@@ -129,3 +129,16 @@ ALTER TABLE `schedules` ADD COLUMN `allow_concurrent_bookings` TINYINT(1) UNSIGN
 
 ALTER TABLE `reservation_series`
   CHANGE COLUMN `title` `title` VARCHAR(300);
+
+DROP TABLE IF EXISTS `resource_images`;
+CREATE TABLE `resource_images` (
+  `resource_image_id` SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `resource_id` SMALLINT UNSIGNED NOT NULL,
+  `image_name` VARCHAR(50),
+  PRIMARY KEY (`resource_image_id`),
+  FOREIGN KEY (`resource_id`)
+ 	REFERENCES resources (`resource_id`)
+ 	ON UPDATE CASCADE ON DELETE CASCADE
+)
+  ENGINE = InnoDB
+  DEFAULT CHARACTER SET utf8;

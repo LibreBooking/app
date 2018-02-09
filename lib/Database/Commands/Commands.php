@@ -600,6 +600,16 @@ class AddResourceTypeCommand extends SqlCommand
         $this->AddParameter(new Parameter(ParameterNames::RESOURCE_TYPE_DESCRIPTION, $description));
     }
 }
+class AddResourceImageCommand extends SqlCommand
+{
+    public function __construct($resourceId, $image)
+    {
+        parent::__construct(Queries::ADD_RESOURCE_IMAGE);
+
+        $this->AddParameter(new Parameter(ParameterNames::RESOURCE_ID, $resourceId));
+        $this->AddParameter(new Parameter(ParameterNames::RESOURCE_IMAGE_NAME, $image));
+    }
+}
 
 class AddSavedReportCommand extends SqlCommand
 {
@@ -991,6 +1001,15 @@ class DeleteResourceReservationsCommand extends SqlCommand
     public function __construct($resourceId)
     {
         parent::__construct(Queries::DELETE_RESOURCE_RESERVATIONS_COMMAND);
+        $this->AddParameter(new Parameter(ParameterNames::RESOURCE_ID, $resourceId));
+    }
+}
+
+class DeleteResourceImagesCommand extends SqlCommand
+{
+    public function __construct($resourceId)
+    {
+        parent::__construct(Queries::DELETE_RESOURCE_IMAGES);
         $this->AddParameter(new Parameter(ParameterNames::RESOURCE_ID, $resourceId));
     }
 }

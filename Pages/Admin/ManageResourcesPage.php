@@ -409,6 +409,16 @@ interface IManageResourcesPage extends IUpdateResourcePage, IActionPage, IPageab
      * @return bool
      */
     public function GetUpdateOnImport();
+
+	/**
+	 * @param BookableResource $resource
+	 */
+	public function BindResourceImages(BookableResource $resource);
+
+	/**
+	 * @return string
+	 */
+	public function GetImageName();
 }
 
 class ManageResourcesPage extends ActionPage implements IManageResourcesPage
@@ -1035,6 +1045,26 @@ class ManageResourcesPage extends ActionPage implements IManageResourcesPage
     {
         return $this->GetCheckbox(FormKeys::UPDATE_ON_IMPORT);
     }
+
+	public function BindResourceImages(BookableResource $resource)
+	{
+		$response = array('image' => null, 'images' => array());
+
+		if ($resource->HasImage())
+		{
+			$response = array('image' => $this->smarty->GetResourceImage(array('image' => $resource->GetImage()), $this->smarty), 'images' => array());
+		}
+		foreach ($resource->GetImages() as $image)
+		{
+			$response['images'][] = $this->smarty->GetResourceImage(array('image' => $image), $this->smarty);
+		}
+		$this->SetJsonResponse($response);
+	}
+
+	public function GetImageName()
+	{
+		return $this->GetForm(FormKeys::RESOURCE_IMAGE);
+	}
 }
 
 class ResourceFilterValues

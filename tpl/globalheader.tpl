@@ -94,6 +94,10 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
         {cssfile src="scripts/css/fullcalendar.min.css"}
         <link rel='stylesheet' type='text/css' href='scripts/css/fullcalendar.print.css' media='print'/>
     {/if}
+    {if $Owl}
+        {cssfile src="scripts/js/owl-2.2.1/assets/owl.carousel.min.css"}
+        {cssfile src="scripts/js/owl-2.2.1/assets/owl.theme.default.css"}
+    {/if}
     {cssfile src="scripts/css/jquery-ui-timepicker-addon.css"}
     {cssfile src="booked.css"}
     {if $cssFiles neq ''}

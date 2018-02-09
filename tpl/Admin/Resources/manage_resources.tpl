@@ -17,7 +17,7 @@ You should have received a copy of the GNU General Public License
 along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 *}
 
-{include file='globalheader.tpl' InlineEdit=true}
+{include file='globalheader.tpl' InlineEdit=true Owl=true}
 
 <div id="page-manage-resources" class="admin-page">
 	<div>
@@ -162,13 +162,18 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 						<div class="col-sm-3 col-xs-6 resourceImage">
 							<div class="margin-bottom-25">
 								{if $resource->HasImage()}
-									<img src="{resource_image image=$resource->GetImage()}" alt="Resource Image"
-										 class="image"/>
+								<div class="owl-carousel owl-theme">
+									<div class="item">
+										<img src="{resource_image image=$resource->GetImage()}" alt="Resource Image" class="image"/>
+									</div>
+									{foreach from=$resource->GetImages() item=image}
+										<div class="item">
+											<img src="{resource_image image=$image}" alt="Resource Image" class="image"/>
+										</div>
+									{/foreach}
+								</div>
 									<br/>
 									<a class="update imageButton" href="#">{translate key='Change'}</a>
-									|
-									<a class="update removeImageButton" href="#">{translate key='Remove'}</a>
-									{indicator id=removeImageIndicator}
 								{else}
 									<div class="noImage"><span class="fa fa-image"></span></div>
 									<a class="update imageButton" href="#">{translate key='AddImage'}</a>
@@ -490,37 +495,50 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 	<div id="imageDialog" class="modal" tabindex="-1" role="dialog" aria-labelledby="imageModalLabel"
 		 aria-hidden="true">
-		<form id="imageForm" method="post" enctype="multipart/form-data"
-			  ajaxAction="{ManageResourcesActions::ActionChangeImage}">
+		<form id="imageForm" method="post" enctype="multipart/form-data" ajaxAction="{ManageResourcesActions::ActionChangeImage}">
 			<div class="modal-dialog">
 				<div class="modal-content">
 					<div class="modal-header">
 						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-						<h4 class="modal-title" id="imageModalLabel">{translate key=AddImage}</h4>
+						<h4 class="modal-title" id="imageModalLabel">{translate key=ResourceImages}</h4>
 					</div>
 					<div class="modal-body">
-                        <label for="resourceImage" class="off-screen">{translate key=Image}</label>
+
+						<div id="resource-images">
+
+						</div>
+						<div class="clearfix">&nbsp;</div>
+
+                        <label for="resourceImage" class="off-screen no-show">{translate key=Image}</label>
                         <div class="dropzone" id="changeResourceImage">
-                            <div>
+                            <div class="dropzone-empty">
                                 <span class="fa fa-image fa-3x"></span><br/>
                                 {translate key=ChooseOrDropFile}
                             </div>
+							<div class="dropzone-preview"></div>
                             <input id="resourceImage" type="file" {formname key=RESOURCE_IMAGE}
                                    accept="image/*;capture=camera" />
                         </div>
 
-						<div class="note">.gif, .jpg, or .png</div>
+						<div class="note">.gif, .jpg, .png</div>
 					</div>
 
 					<div class="modal-footer">
-						{cancel_button}
-						{update_button}
+						{cancel_button key=Done}
 						{indicator}
 					</div>
 				</div>
 			</div>
 		</form>
 	</div>
+
+	<form id="removeImageForm" method="post"  ajaxAction="{ManageResourcesActions::ActionRemoveImage}">
+		<input type="hidden" id="removeImageName" {formname key=RESOURCE_IMAGE} />
+	</form>
+
+	<form id="defaultImageForm" method="post"  ajaxAction="{ManageResourcesActions::ActionDefaultImage}">
+		<input type="hidden" id="defaultImageName" {formname key=RESOURCE_IMAGE} />
+	</form>
 
 	<div id="copyDialog" class="modal" tabindex="-1" role="dialog" aria-labelledby="copyModalLabel"
 		 aria-hidden="true">
@@ -1495,7 +1513,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 	{csrf_token}
 
-    {include file="javascript-includes.tpl" InlineEdit=true}
+    {include file="javascript-includes.tpl" InlineEdit=true Owl=true}
 	{jsfile src="ajax-helpers.js"}
 	{jsfile src="autocomplete.js"}
 	{jsfile src="js/tree.jquery.js"}
@@ -1622,12 +1640,13 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			setUpEditables();
 
             dropzone($("#addResourceImage"));
-            dropzone($("#changeResourceImage"));
+            dropzone($("#changeResourceImage"), {
+				autoSubmit: true
+            });
 
 			var actions = {
 				enableSubscription: '{ManageResourcesActions::ActionEnableSubscription}',
-				disableSubscription: '{ManageResourcesActions::ActionDisableSubscription}',
-				removeImage: '{ManageResourcesActions::ActionRemoveImage}'
+				disableSubscription: '{ManageResourcesActions::ActionDisableSubscription}'
 			};
 
 			var opts = {
@@ -1735,7 +1754,17 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			};
 			{/if}
 
-			resource.resourceGroupIds = [{$resource->GetResourceGroupIds()|join:','}]
+			resource.image = null;
+			{if ($resource->HasImage())}
+				resource.image = '{resource_image image=$resource->GetImage()}';
+			{/if}
+
+			resource.images = [];
+			{foreach from=$resource->GetImages() item=image}
+				resource.images.push('{resource_image image=$image}');
+			{/foreach}
+
+			resource.resourceGroupIds = [{$resource->GetResourceGroupIds()|join:','}];
 
 			resourceManagement.add(resource);
 			{/foreach}
@@ -1749,6 +1778,10 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			resourceManagement.addResourceGroups({$ResourceGroups});
 
 			$('#filter-resources-panel').showHidePanel();
+
+			$(".owl-carousel").owlCarousel({
+				items:1
+			});
 		});
 
 	</script>

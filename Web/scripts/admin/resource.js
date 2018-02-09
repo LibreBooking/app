@@ -12,6 +12,8 @@ function ResourceManagement(opts) {
 		accessDialog: $('#accessDialog'),
 
 		imageForm: $('#imageForm'),
+		removeImageForm: $('#removeImageForm'),
+		defaultImageForm: $('#defaultImageForm'),
 		deleteForm: $('#deleteForm'),
 		durationForm: $('#durationForm'),
 		capacityForm: $('#capacityForm'),
@@ -88,8 +90,9 @@ function ResourceManagement(opts) {
 
 		importDialog: $('#importDialog'),
 		importForm: $('#importForm'),
-		importTrigger: $('#import-resources')
-		// copyResourceId: $('#copyResourceId')
+		importTrigger: $('#import-resources'),
+		removeImageName: $('#removeImageName'),
+		defaultImageName: $('#defaultImageName')
 	};
 
 	var resources = {};
@@ -122,10 +125,6 @@ function ResourceManagement(opts) {
 
 			details.find('.imageButton').click(function (e) {
 				showChangeImage(e);
-			});
-
-			details.find('.removeImageButton').click(function (e) {
-				PerformAsyncAction($(this), getSubmitCallback(options.actions.removeImage), $('#removeImageIndicator'));
 			});
 
 			var subscriptionCallback = function () {
@@ -289,8 +288,6 @@ function ResourceManagement(opts) {
 			populateReasonOptions(elements.statusOptionsFilter.val(), elements.statusReasonsFilter);
 		});
 
-		// elements.filterButton.click(filterResources);
-
 		elements.clearFilterButton.click(function (e) {
 			e.preventDefault();
 			elements.filterTable.find('input,select,textarea').val('');
@@ -396,11 +393,29 @@ function ResourceManagement(opts) {
 			showAllGroupsToAdd();
 		});
 
-		elements.importTrigger.click(function(e) {
+		elements.importTrigger.click(function (e) {
 			e.preventDefault();
 			$('#importErrors').empty().addClass('no-show');
 			$('#importResults').addClass('no-show');
 			elements.importDialog.modal('show');
+		});
+
+		elements.imageDialog.delegate('.defaultImage', 'click', function (e) {
+			e.preventDefault();
+			var image = $(e.target).closest('.resource-image').attr('id');
+			elements.defaultImageName.val(image);
+			elements.defaultImageForm.submit();
+		});
+
+		elements.imageDialog.delegate('.deleteImage', 'click', function (e) {
+			e.preventDefault();
+			var image = $(e.target).closest('.resource-image').attr('id');
+			elements.removeImageName.val(image);
+			elements.removeImageForm.submit();
+		});
+
+		elements.imageDialog.on('hidden.bs.modal', function () {
+			window.location.reload();
 		});
 
 		var imageSaveErrorHandler = function (result) {
@@ -444,9 +459,20 @@ function ResourceManagement(opts) {
 			}
 		};
 
-		ConfigureAsyncForm(elements.imageForm, defaultSubmitCallback(elements.imageForm), null, imageSaveErrorHandler);
+		ConfigureAsyncForm(elements.imageForm, defaultSubmitCallback(elements.imageForm), function (data) {
+			onImagesUpdated(data);
+		}, imageSaveErrorHandler);
+
+		ConfigureAsyncForm(elements.removeImageForm, defaultSubmitCallback(elements.removeImageForm), function (data) {
+			onImagesUpdated(data);
+		});
+
+		ConfigureAsyncForm(elements.defaultImageForm, defaultSubmitCallback(elements.defaultImageForm), function (data) {
+			onImagesUpdated(data);
+		});
+
 		ConfigureAsyncForm(elements.addForm, defaultSubmitCallback(elements.addForm), null, handleAddError);
-		ConfigureAsyncForm(elements.deleteForm, defaultSubmitCallback(elements.deleteForm), function(result) {
+		ConfigureAsyncForm(elements.deleteForm, defaultSubmitCallback(elements.deleteForm), function (result) {
 			var id = getActiveResourceId();
 			$('#resourceList').find('[data-resourceid="' + id + '"]').remove();
 			elements.deleteDialog.modal('hide');
@@ -460,7 +486,8 @@ function ResourceManagement(opts) {
 		ConfigureAsyncForm(elements.addGroupForm, defaultSubmitCallback(elements.addGroupForm), changeGroups, errorHandler);
 		ConfigureAsyncForm(elements.removeGroupForm, defaultSubmitCallback(elements.removeGroupForm), changeGroups, errorHandler);
 		ConfigureAsyncForm(elements.resourceGroupForm, defaultSubmitCallback(elements.resourceGroupForm), onResourceGroupsSaved);
-		ConfigureAsyncForm(elements.colorForm, defaultSubmitCallback(elements.colorForm), function () { });
+		ConfigureAsyncForm(elements.colorForm, defaultSubmitCallback(elements.colorForm), function () {
+		});
 		ConfigureAsyncForm(elements.creditsForm, defaultSubmitCallback(elements.creditsForm), onCreditsSaved, null, errorHandler);
 		ConfigureAsyncForm(elements.copyForm, defaultSubmitCallback(elements.copyForm));
 		ConfigureAsyncForm(elements.importForm, defaultSubmitCallback(elements.importForm), importHandler);
@@ -529,8 +556,36 @@ function ResourceManagement(opts) {
 		return getResource(getActiveResourceId());
 	};
 
+	var refreshResourceImages = function (resource) {
+		var imageContainer = $('#resource-images');
+		imageContainer.empty();
+
+		var imageContents = function (image, isDefault) {
+			imageContainer.append('<div class="resource-image col-xs-4" id="' + image + '"><img src="' + image + '"/><div class="center">' + (isDefault ? 'Default' : '<a href="#" class="defaultImage">Default</a>') + ' | <a href="#" class="deleteImage"><span class="fa fa-trash"></span> Remove</a></div></div>');
+		};
+
+		if (resource.image)
+		{
+			imageContents(resource.image, true);
+		}
+
+		for (var i = 0; i < resource.images.length; i++)
+		{
+			imageContents(resource.images[i]);
+		}
+	};
+
 	var showChangeImage = function (e) {
+		e.preventDefault();
+		var resource = getActiveResource();
+		refreshResourceImages(resource);
 		elements.imageDialog.modal("show");
+	};
+
+	var onImagesUpdated = function (resource) {
+		refreshResourceImages(resource);
+		getActiveResource().image = resource.image;
+		getActiveResource().images = resource.images;
 	};
 
 	var showResourceAdmin = function (e) {
@@ -754,14 +809,15 @@ function ResourceManagement(opts) {
 	}
 
 	function setDaysHoursMinutes(elementPrefix, interval, attributeCheckbox) {
-		if (!interval) {
-            interval = {days:null, hours:null, minutes:null, value:null};
-        }
-            $(elementPrefix + 'Days').val(interval.days);
-            $(elementPrefix + 'Hours').val(interval.hours);
-            $(elementPrefix + 'Minutes').val(interval.minutes);
+		if (!interval)
+		{
+			interval = {days: null, hours: null, minutes: null, value: null};
+		}
+		$(elementPrefix + 'Days').val(interval.days);
+		$(elementPrefix + 'Hours').val(interval.hours);
+		$(elementPrefix + 'Minutes').val(interval.minutes);
 
-        showHideConfiguration(interval.value, $(elementPrefix), attributeCheckbox);
+		showHideConfiguration(interval.value, $(elementPrefix), attributeCheckbox);
 
 	}
 

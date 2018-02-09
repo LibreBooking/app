@@ -65,5 +65,8 @@
     {jsfile src="js/fullcalendarLang/$HtmlLang.js"}
     {/if}
 {/if}
+{if $Owl}
+    {jsfile src="js/owl-2.2.1/owl.carousel.min.js"}
+{/if}
 {jsfile src="js/jquery-ui-timepicker-addon.js"}
 {jsfile src="phpscheduleit.js"}

@@ -2308,6 +2308,9 @@ td.update {
 #enforce-hours-times span {
   margin-top: 10px;
 }
+#resource-images .resource-image img {
+  width: 100%;
+}
 .admin-page input,
 #page-manage-blackouts input,
 #page-manage-reservations input,

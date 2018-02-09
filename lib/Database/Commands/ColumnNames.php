@@ -153,6 +153,7 @@ class ColumnNames
 	const ENABLE_CHECK_IN = 'enable_check_in';
 	const AUTO_RELEASE_MINUTES = 'auto_release_minutes';
 	const RESOURCE_ALLOW_DISPLAY = 'allow_display';
+	const RESOURCE_IMAGE_LIST = 'image_list';
 
 	// RESERVATION RESOURCES
 	const RESOURCE_LEVEL_ID = 'resource_level_id';
