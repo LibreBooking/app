@@ -68,7 +68,8 @@ class ResourceDetailsPage extends Page implements IResourceDetailsPage
 
         if ($resource->HasImage())
         {
-            $this->Set('imageUrl', Configuration::Instance()->GetKey(ConfigKeys::IMAGE_UPLOAD_URL) . '/' . $resource->GetImage() );
+            $this->Set('imageUrl', $resource->GetImage() );
+            $this->Set('images', $resource->GetImages() );
         }
     }
 

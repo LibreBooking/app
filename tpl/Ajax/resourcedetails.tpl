@@ -21,15 +21,29 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
     {if !empty($color)}
         {assign var=h4Style value=" style=\"background-color:{$color};color:{$textColor};padding:5px 3px;\""}
     {/if}
-    <h4 {$h4Style}>{$resourceName}</h4>
-    <a href="#" class="visible-sm hideResourceDetailsPopup">{translate key=Close}</a>
+    <div>
+        <h4 {$h4Style}>{$resourceName}</h4>
+        <a href="#" class="visible-sm hideResourceDetailsPopup">{translate key=Close}</a>
+    </div>
+    {assign var=class value='col-xs-6'}
 
     {if $imageUrl neq ''}
-        <div class="resourceImage">
-            <img src="{$imageUrl}" alt="{$resourceName|escape}"/>
+        {assign var=class value='col-xs-5'}
+
+        <div class="resourceImage col-xs-2">
+            <div class="owl-carousel owl-theme">
+                <div class="item">
+                    <img src="{resource_image image=$imageUrl}" alt="{$resourceName|escape}" class="image" />
+                </div>
+                {foreach from=$images item=image}
+                    <div class="item">
+                        <img src="{resource_image image=$image}" alt="{$resourceName|escape}" class="image" />
+                    </div>
+                {/foreach}
+            </div>
         </div>
     {/if}
-    <div class="description">
+    <div class="description {$class}">
         <span class="bold">{translate key=Description}</span>
         {if $description neq ''}
             {$description|html_entity_decode|url2link|nl2br}
@@ -79,7 +93,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
             {/foreach}
         {/if}
     </div>
-    <div class="attributes">
+    <div class="attributes {$class}">
         <div>
             {if $minimumDuration neq ''}
                 {translate key='ResourceMinLength' args=$minimumDuration}

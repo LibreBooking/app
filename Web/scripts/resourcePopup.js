@@ -18,106 +18,106 @@
  */
 
 $.fn.bindResourceDetails = function (resourceId, options) {
-	var opts = $.extend({preventClick: false, position:'left top'}, options);
+    var opts = $.extend({preventClick: false, position: 'left bottom'}, options);
 
-	$(this).removeAttr('resource-details-bound');
-	bindResourceDetails($(this));
+    var owl;
 
-	function getDiv() {
-		if ($('#resourceDetailsDiv').length <= 0)
-		{
-			return $('<div id="resourceDetailsDiv"/>').appendTo('body');
-		}
-		else
-		{
-			return $('#resourceDetailsDiv');
-		}
-	}
+    $(this).removeAttr('resource-details-bound');
+    bindResourceDetails($(this));
 
-	function hideDiv() {
-		var tag = getDiv();
-		var timeoutId = setTimeout(function () {
-			tag.hide();
-		}, 500);
-		tag.data('timeoutId', timeoutId);
-	}
+    function getDiv() {
+        if ($('#resourceDetailsDiv').length <= 0) {
+            return $('<div id="resourceDetailsDiv"/>').appendTo('body');
+        }
+        else {
+            return $('#resourceDetailsDiv');
+        }
+    }
 
-	function bindResourceDetails(resourceNameElement) {
-		if (resourceNameElement.attr('resource-details-bound') === '1')
-		{
-			return;
-		}
+    function hideDiv() {
+        var tag = getDiv();
+        var timeoutId = setTimeout(function () {
+            tag.hide();
+        }, 500);
+        tag.data('timeoutId', timeoutId);
+    }
 
-		if (opts.preventClick)
-		{
-			resourceNameElement.click(function (e) {
-				e.preventDefault();
-			});
-		}
+    function bindResourceDetails(resourceNameElement) {
+        if (resourceNameElement.attr('resource-details-bound') === '1') {
+            return;
+        }
 
-		var tag = getDiv();
+        if (opts.preventClick) {
+            resourceNameElement.click(function (e) {
+                e.preventDefault();
+            });
+        }
 
-		tag.mouseenter(function () {
-			clearTimeout(tag.data('timeoutId'));
-		}).mouseleave(function () {
-			hideDiv();
-		});
+        var tag = getDiv();
 
-		var hoverTimer;
+        tag.mouseenter(function () {
+            clearTimeout(tag.data('timeoutId'));
+        }).mouseleave(function () {
+            hideDiv();
+        });
 
-		resourceNameElement.mouseenter(function () {
-			if (hoverTimer)
-			{
-				clearTimeout(hoverTimer);
-				hoverTimer = null;
-			}
+        var hoverTimer;
 
-			hoverTimer = setTimeout(function () {
+        resourceNameElement.mouseenter(function () {
+            if (hoverTimer) {
+                clearTimeout(hoverTimer);
+                hoverTimer = null;
+            }
 
-				var tag = getDiv();
-				clearTimeout(tag.data('timeoutId'));
+            hoverTimer = setTimeout(function () {
 
-				var data = tag.data('resourcePopup' + resourceId);
-				if (data != null)
-				{
-					showData(data);
-				}
-				else
-				{
-					$.ajax({
-						url: 'ajax/resource_details.php?rid=' + resourceId,
-						type: 'GET',
-						cache: true,
-						beforeSend: function () {
-							tag.html('Loading...').show();
-							tag.position({my: 'left bottom', at: opts.position, of: resourceNameElement});
-						},
-						error: tag.html('Error loading resource data!').show(),
-						success: function (data, textStatus, jqXHR) {
-							tag.data('resourcePopup' + resourceId, data);
-							showData(data);
-						}
-					});
-				}
+                var tag = getDiv();
+                clearTimeout(tag.data('timeoutId'));
 
-				function showData(data) {
-					tag.html(data).show();
-					tag.find('.hideResourceDetailsPopup').click(function (e) {
-						e.preventDefault();
-						hideDiv();
-					});
-					tag.position({my: 'left bottom', at: opts.position, of: resourceNameElement});
-				}
-			}, 500);
-		}).mouseleave(function () {
-			if (hoverTimer)
-			{
-				clearTimeout(hoverTimer);
-				hoverTimer = null;
-			}
-			hideDiv();
-		});
+                var data = tag.data('resourcePopup' + resourceId);
+                if (data != null) {
+                    showData(data);
+                }
+                else {
+                    $.ajax({
+                        url: 'ajax/resource_details.php?rid=' + resourceId,
+                        type: 'GET',
+                        cache: true,
+                        beforeSend: function () {
+                            tag.html('Loading...').show();
+                            tag.position({my: 'left top', at: opts.position, of: resourceNameElement});
+                        },
+                        error: tag.html('Error loading resource data!').show(),
+                        success: function (data, textStatus, jqXHR) {
+                            tag.data('resourcePopup' + resourceId, data);
+                            showData(data);
+                        }
+                    });
+                }
 
-		resourceNameElement.attr('resource-details-bound', '1');
-	}
+                function showData(data) {
+                    tag.html(data).show();
+                    tag.find('.hideResourceDetailsPopup').click(function (e) {
+                        e.preventDefault();
+                        hideDiv();
+                    });
+                    tag.position({my: 'left top', at: opts.position, of: resourceNameElement});
+                    if (typeof '' !== "owlCarousel") {
+                        owl = $(".owl-carousel");
+                        owl.owlCarousel({
+                            items: 1
+                        });
+                    }
+                }
+            }, 500);
+        }).mouseleave(function () {
+            if (hoverTimer) {
+                clearTimeout(hoverTimer);
+                hoverTimer = null;
+            }
+            hideDiv();
+        });
+
+        resourceNameElement.attr('resource-details-bound', '1');
+    }
 };
