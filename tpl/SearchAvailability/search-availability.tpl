@@ -1,4 +1,4 @@
-{include file='globalheader.tpl' Select2=true}
+{include file='globalheader.tpl' Select2=true Owl=true}
 
 <div class="page-search-availability">
 
@@ -123,7 +123,7 @@
 
     {csrf_token}
 
-    {include file="javascript-includes.tpl" Select2=true}
+    {include file="javascript-includes.tpl" Select2=true Owl=true}
     {jsfile src="js/tree.jquery.js"}
     {jsfile src="js/jquery.cookie.js"}
     {jsfile src="ajax-helpers.js"}
