@@ -141,6 +141,10 @@ class Log
 	{
 		try
 		{
+            if (!self::GetInstance()->sqlLogger->isDebugEnabled())
+            {
+                return;
+            }
 			$args = func_get_args();
 			$log = vsprintf(array_shift($args), array_values($args));
 			$log = '[User='.ServiceLocator::GetServer()->GetUserSession() . '] ' . $log;
