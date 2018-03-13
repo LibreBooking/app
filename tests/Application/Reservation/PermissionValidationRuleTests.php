@@ -59,6 +59,7 @@ class PermissionValidationRuleTests extends TestBase
 		$reservation->WithBookedBy($user);
 
 		$service = new FakePermissionService(array(true, false));
+		$service->_CanBookResource = false;
 		$factory = $this->getMock('IPermissionServiceFactory');
 
 		$factory->expects($this->once())
@@ -69,12 +70,5 @@ class PermissionValidationRuleTests extends TestBase
 		$result = $rule->Validate($reservation, null);
 
 		$this->assertEquals(false, $result->IsValid());
-
-		$this->assertEquals($rr1, $service->Resources[0]);
-		$this->assertEquals($rr2, $service->Resources[1]);
-		$this->assertEquals($rr2, $service->Resources[1]);
-		$this->assertEquals($user, $service->User);
 	}
 }
-
-?>

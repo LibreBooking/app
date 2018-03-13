@@ -1378,6 +1378,11 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                 Navigate to Application Management &gt; Application Configuration and select Saml from the dropdown at the top left.
                 Set the full path to SimpleSAMLphp base directory and log directory.
                 Finally, map your SAML attributes to the corresponding {$AppTitle} attributes.</p>
+
+            <p>The default session management for SimpleSAMLphp will not work when running on the same server as Booked (session mismatch exceptions
+                described here - <a href="https://simplesamlphp.org/docs/development/simplesamlphp-nostate">https://simplesamlphp.org/docs/development/simplesamlphp-nostate</a>). We suggest using the sqlite session storage option - <a href="https://simplesamlphp.org/docs/stable/simplesamlphp-maintenance#section_2_3">https://simplesamlphp.org/docs/stable/simplesamlphp-maintenance#section_2_3</a></p>
+
+            <p>It is important to make sure registration.require.email.activation is set to false in Application Configuration</p>
         </div>
 
         <div id="help-wordpress">

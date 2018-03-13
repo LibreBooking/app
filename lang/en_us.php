@@ -719,6 +719,8 @@ class en_us extends Language
         $strings['ScheduleAvailabilityEarly'] = ' This schedule is not yet available. It is available';
         $strings['ScheduleAvailabilityLate'] = 'This schedule is no longer available. It was available';
         $strings['ResourceImages'] = 'Resource Images';
+        $strings['FullAccess'] = 'Full Access';
+        $strings['ViewOnly'] = 'View Only';
         // End Strings
 
 		// Install

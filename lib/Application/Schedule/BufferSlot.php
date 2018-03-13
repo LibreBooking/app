@@ -216,4 +216,9 @@ class BufferSlot implements IReservationSlot
     {
         return null;
     }
+
+    public function OwnerId()
+    {
+        return null;
+    }
 }

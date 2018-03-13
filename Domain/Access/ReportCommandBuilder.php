@@ -282,7 +282,7 @@ class ReportCommandBuilder
 	{
 		$this->limitWithin = true;
 		$this->startDate = $start;
-		$this->endDate = $end;
+		$this->endDate = $end->AddDays(1);
 		return $this;
 	}
 

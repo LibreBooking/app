@@ -26,7 +26,7 @@ class FakeGroup extends Group
 		$this->Rename($name);
 		$this->WithGroupAdmin(999);
 		$this->WithUser(1);
-		$this->WithPermission(2);
+		$this->WithFullPermission(2);
 		$this->WithRole(RoleLevel::APPLICATION_ADMIN);
 	}
 }

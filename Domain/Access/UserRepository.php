@@ -938,3 +938,27 @@ class UserItemView
         return $this->Attributes->Get($attributeId);
     }
 }
+
+class UserPermissionItemView extends UserItemView
+{
+    public $PermissionType;
+
+    public function PermissionType()
+    {
+        return $this->PermissionType;
+    }
+
+    public static function Create($row)
+    {
+        $item = UserItemView::Create($row);
+        $me = new UserPermissionItemView();
+
+        foreach (get_object_vars($item) as $key => $value) {
+            $me->$key = $value;
+        }
+
+        $me->PermissionType = $row[ColumnNames::PERMISSION_TYPE];
+
+        return $me;
+    }
+}

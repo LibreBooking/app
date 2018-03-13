@@ -136,15 +136,23 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 							<h4 class="modal-title" id="permissionsDialogLabel">{translate key=Permissions}</h4>
 						</div>
 						<div class="modal-body scrollable-modal-content">
-                            {translate key=Select}
-                            <a href="#" id="checkAllResources">{translate key=All}</a> |
-                            <a href="#" id="checkNoResources">{translate key=None}</a>
+                            <a href="#" id="checkNoResources">{translate key=None}</a> |
+                            <a href="#" id="checkAllResourcesFull">{translate key=FullAccess}</a> |
+                            <a href="#" id="checkAllResourcesView">{translate key=ViewOnly}</a>
+
                             {foreach from=$resources item=resource}
-								<div class="checkbox">
-									<input id="resource{$resource->GetResourceId()}" {formname key=RESOURCE_ID  multi=true} class="form-control resourceId" type="checkbox" value="{$resource->GetResourceId()}">
-									<label for="resource{$resource->GetResourceId()}">{$resource->GetName()} </label>
-								</div>
-							{/foreach}
+                                {cycle values='row0,row1' assign=rowCss}
+                                {assign var=rid value=$resource->GetResourceId()}
+                                <div class="{$rowCss} permissionRow form-group">
+                                    <label for="permission_{$rid}" class="inline-block">{$resource->GetName()}</label>
+                                    <select class="pull-right form-control input-sm resourceId inline-block" style="width:auto;" {formname key=RESOURCE_ID multi=true} id="permission_{$rid}">
+                                        <option value="{$rid}_none" class="none">{translate key=None}</option>
+                                        <option value="{$rid}_0" class="full">{translate key=FullAccess}</option>
+                                        <option value="{$rid}_1" class="view">{translate key=ViewOnly}</option>
+                                    </select>
+                                    <div class="clearfix"></div>
+                                </div>
+                            {/foreach}
 						</div>
 						<div class="modal-footer">
 							{cancel_button}

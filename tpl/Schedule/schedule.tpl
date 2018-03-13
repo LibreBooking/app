@@ -35,6 +35,10 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
     {call name=displayGeneralReserved Slot=$Slot Href=$Href SlotRef=$SlotRef OwnershipClass='mine' Draggable=true ResourceId=$ResourceId}
 {/function}
 
+{function name=displayAdminReserved}
+    {call name=displayGeneralReserved Slot=$Slot Href=$Href SlotRef=$SlotRef OwnershipClass='admin' Draggable=true ResourceId=$ResourceId}
+{/function}
+
 {function name=displayMyParticipating}
     {call name=displayGeneralReserved Slot=$Slot Href=$Href SlotRef=$SlotRef OwnershipClass='participating' ResourceId=$ResourceId}
 {/function}

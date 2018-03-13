@@ -37,8 +37,8 @@ class ResourcePermissionStoreTests extends TestBase
 		$r3 = new ScheduleResource($rid3, 'resource 3');
 		$r4 = new ScheduleResource($rid4, 'resource 4');
 
-		$g1 = new ScheduleGroup(100, array($r1, $r3));
-		$g2 = new ScheduleGroup(200, array($r1, $r4, $r3));
+		$g1 = new ScheduleGroup(100, array($r1, $r3), array());
+		$g2 = new ScheduleGroup(200, array($r1, $r4, $r3), array());
 		$groups = array($g1, $g2);
 
 		$user = $this->getMock('IScheduleUser');
@@ -56,7 +56,7 @@ class ResourcePermissionStoreTests extends TestBase
 
 		$rps = new ResourcePermissionStore($userRepository);
 
-		$permittedResources = $rps->GetPermittedResources($userId);
+		$permittedResources = $rps->GetAllResources($userId);
 
 		$this->assertEquals(4, count($permittedResources));
 		$this->assertContains($rid1, $permittedResources);

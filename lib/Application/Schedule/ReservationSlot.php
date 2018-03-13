@@ -253,4 +253,9 @@ class ReservationSlot implements IReservationSlot
 	{
 		return $this->_reservation->CollidesWith($date);
 	}
+
+    public function OwnerId()
+    {
+        return $this->_reservation->UserId;
+    }
 }

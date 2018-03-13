@@ -1367,7 +1367,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 						<input type="text" id="groupSearch" class="form-control" size="60"/>
 					</div>
 
-					<h4><span id="totalGroups"></span> {translate key=Groups}</h4>
+
 
 					<div id="resourceGroupList"></div>
 				</div>
@@ -1392,6 +1392,11 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 	<form id="removeGroupForm" method="post" ajaxAction="{ManageResourcesActions::ActionRemoveGroupPermission}">
 		<input type="hidden" id="removeGroupId" {formname key=GROUP_ID} />
+	</form>
+
+    <form id="changeGroupForm" method="post" ajaxAction="{ManageResourcesActions::ActionChangeGroupPermission}">
+		<input type="hidden" id="changeGroupId" {formname key=GROUP_ID} />
+		<input type="hidden" id="changeGroupType" {formname key=PERMISSION_TYPE} />
 	</form>
 
 	<form id="addGroupForm" method="post" ajaxAction="{ManageResourcesActions::ActionAddGroupPermission}">

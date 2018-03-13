@@ -65,6 +65,7 @@ function ResourceManagement(opts) {
 
 		resourceGroupDialog: $('#resourceGroupDialog'),
 		resourceGroupForm: $('#resourceGroupForm'),
+        changeGroupForm: $('#changeGroupForm'),
 		groupDiv: $('#resourceGroups'),
 		autoAssign: $('#autoAssign'),
 		removeAllPermissions: $('#autoAssignRemoveAllPermissions'),
@@ -371,21 +372,35 @@ function ResourceManagement(opts) {
 		wireUpCheckboxToggle(elements.capacityForm);
 		wireUpCheckboxToggle(elements.accessForm);
 		wireUpCheckboxToggle(elements.bulkUpdateForm);
+        //
+		// elements.browseGroupDialog.delegate('.add', 'click', function (e) {
+		// 	e.preventDefault();
+		// 	var link = $(this);
+		// 	var groupId = link.siblings('.id').val();
+        //
+		// 	addGroupPermission(groupId);
+        //
+		// 	link.find('img').attr('src', '../img/tick-white.png');
+		// });
 
-		elements.browseGroupDialog.delegate('.add', 'click', function (e) {
+		// elements.resourceGroupList.delegate('.delete', 'click', function (e) {
+		// 	e.preventDefault();
+		// 	var groupId = $(this).data('group-id');
+		// 	removeGroupPermission($(this), groupId);
+		// });
+
+        elements.resourceGroupList.delegate('.change-permission-type', 'change', function (e) {
 			e.preventDefault();
-			var link = $(this);
-			var groupId = link.siblings('.id').val();
-
-			addGroupPermission(groupId);
-
-			link.find('img').attr('src', '../img/tick-white.png');
+			var groupId = $(this).data('group-id');
+			var type = $(this).val();
+			changeGroupPermission($(this), groupId, type);
 		});
 
-		elements.resourceGroupList.delegate('.delete', 'click', function (e) {
+        elements.allGroupsList.delegate('.change-permission-type', 'change', function (e) {
 			e.preventDefault();
-			var groupId = $(this).siblings('.id').val();
-			removeGroupPermission($(this), groupId);
+			var groupId = $(this).data('group-id');
+			var type = $(this).val();
+			changeGroupPermission($(this), groupId, type);
 		});
 
 		elements.browseGroupsButton.click(function (e) {
@@ -485,6 +500,7 @@ function ResourceManagement(opts) {
 		ConfigureAsyncForm(elements.removeUserForm, defaultSubmitCallback(elements.removeUserForm), changeUsers, errorHandler);
 		ConfigureAsyncForm(elements.addGroupForm, defaultSubmitCallback(elements.addGroupForm), changeGroups, errorHandler);
 		ConfigureAsyncForm(elements.removeGroupForm, defaultSubmitCallback(elements.removeGroupForm), changeGroups, errorHandler);
+		ConfigureAsyncForm(elements.changeGroupForm, defaultSubmitCallback(elements.changeGroupForm), changeGroups, errorHandler);
 		ConfigureAsyncForm(elements.resourceGroupForm, defaultSubmitCallback(elements.resourceGroupForm), onResourceGroupsSaved);
 		ConfigureAsyncForm(elements.colorForm, defaultSubmitCallback(elements.colorForm), function () {
 		});
@@ -934,24 +950,10 @@ function ResourceManagement(opts) {
 
 	var changeGroups = function () {
 		var resourceId = getActiveResourceId();
-		$.getJSON(opts.permissionsUrl + '?dr=groups', {rid: resourceId}, function (data) {
-			var items = [];
-			var groups = [];
-
-			$('#totalGroups').text(data.Total);
-			if (data.Groups != null)
-			{
-				$.map(data.Groups, function (item) {
-					items.push('<div><a href="#" class="delete"><img src="../img/cross-button.png" /></a> ' + item.Name + '<input type="hidden" class="id" value="' + item.Id + '"/></div>');
-					groups[item.Id] = item.Id;
-				});
-			}
-
-			elements.resourceGroupList.empty();
-			elements.resourceGroupList.data('groupIds', groups);
-
-			$('<div/>', {'class': '', html: items.join('')}).appendTo(elements.resourceGroupList);
-		});
+		$.get(opts.permissionsUrl + '?dr=groups', {rid: resourceId}, function (data) {
+            elements.resourceGroupList.html(data);
+            $('.group-permission-spinner').addClass('no-show');
+        });
 	};
 
 	var addGroupPermission = function (group) {
@@ -959,42 +961,21 @@ function ResourceManagement(opts) {
 		elements.addGroupForm.submit();
 	};
 
-	var removeGroupPermission = function (element, groupId) {
-		$('#removeGroupId').val(groupId);
-		elements.removeGroupForm.submit();
-	};
-
-	var allGroupList;
+    var changeGroupPermission = function (element, groupId, type) {
+        $('.group-permission-spinner').removeClass('no-show');
+        $('#changeGroupId').val(groupId);
+        $('#changeGroupType').val(type);
+        elements.changeGroupForm.submit();
+    };
 
 	var showAllGroupsToAdd = function () {
 		elements.groupDialog.modal('hide');
 		elements.allGroupsList.empty();
 
-		if (allGroupList == null)
-		{
-			$.ajax({
-				url: options.groupAutocompleteUrl, dataType: 'json', async: false, success: function (data) {
-					allGroupList = data;
-				}
-			});
-		}
-
-		var items = [];
-		if (allGroupList != null)
-		{
-			$.map(allGroupList, function (item) {
-				if (elements.resourceGroupList.data('groupIds')[item.Id] == undefined)
-				{
-					items.push('<div><a href="#" class="add"><img src="../img/plus-button.png" alt="Add" /></a> ' + item.Name + '<input type="hidden" class="id" value="' + item.Id + '"/></div>');
-				}
-				else
-				{
-					items.push('<div><img src="../img/tick-white.png" /> <span>' + item.Name + '</span></div>');
-				}
-			});
-		}
-
-		$('<div/>', {'class': '', html: items.join('')}).appendTo(elements.allGroupsList);
+        var resourceId = getActiveResourceId();
+        $.get(opts.permissionsUrl + '?dr=groupsAll', {rid: resourceId}, function (data) {
+            elements.allGroupsList.html(data);
+        });
 
 		elements.browseGroupDialog.modal('show');
 	};

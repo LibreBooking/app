@@ -186,11 +186,12 @@ class AddGroupCommand extends SqlCommand
 
 class AddGroupResourcePermission extends SqlCommand
 {
-    public function __construct($groupId, $resourceId)
+    public function __construct($groupId, $resourceId, $permissionType)
     {
         parent::__construct(Queries::ADD_GROUP_RESOURCE_PERMISSION);
         $this->AddParameter(new Parameter(ParameterNames::GROUP_ID, $groupId));
         $this->AddParameter(new Parameter(ParameterNames::RESOURCE_ID, $resourceId));
+        $this->AddParameter(new Parameter(ParameterNames::PERMISSION_TYPE, $permissionType));
     }
 }
 

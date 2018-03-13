@@ -38,8 +38,10 @@ class FakePermissionService implements IPermissionService
 	public $ReturnValues = array();
 
 	private $_invocationCount = 0;
+    public $_CanBookResource = false;
+    public $_CanViewResource = false;
 
-	/**
+    /**
 	 * @param $returnValues array|bool[]
 	 */
 	public function __construct($returnValues = array())
@@ -54,6 +56,16 @@ class FakePermissionService implements IPermissionService
 
 		return $this->ReturnValues[$this->_invocationCount++];
 	}
+
+    public function CanBookResource(IPermissibleResource $resource, UserSession $user)
+    {
+        return $this->_CanBookResource;
+    }
+
+    public function CanViewResource(IPermissibleResource $resource, UserSession $user)
+    {
+        return $this->_CanViewResource;
+    }
 }
 
 class FakePermissionServiceFactory implements IPermissionServiceFactory
@@ -72,4 +84,3 @@ class FakePermissionServiceFactory implements IPermissionServiceFactory
 		return ($this->service == null) ? new FakePermissionService() : $this->service;
 	}
 }
-?>

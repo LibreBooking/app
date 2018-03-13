@@ -213,4 +213,14 @@ class FakeResourceRepository implements IResourceRepository
 	{
 		// TODO: Implement GetUsersWithPermissionsIncludingGroups() method.
 	}
+
+    /**
+     * @param int $resourceId
+     * @param int $groupId
+     * @param int $type
+     */
+    public function ChangeResourceGroupPermission($resourceId, $groupId, $type)
+    {
+        // TODO: Implement ChangeResourceGroupPermission() method.
+    }
 }

@@ -19,11 +19,23 @@ require_once(ROOT_DIR . 'Domain/Access/namespace.php');
 
 interface IResourcePermissionStore
 {
-	/**
-	 * @param $userId int
-	 * @return array[]int
-	 */
-	function GetPermittedResources($userId);
+    /**
+     * @param $userId int
+     * @return array[]int
+     */
+    function GetAllResources($userId);
+
+    /**
+     * @param $userId int
+     * @return array[]int
+     */
+    function GetBookableResources($userId);
+
+    /**
+     * @param $userId int
+     * @return array[]int
+     */
+    function GetViewOnlyResources($userId);
 }
 
 class ResourcePermissionStore implements IResourcePermissionStore
@@ -41,7 +53,7 @@ class ResourcePermissionStore implements IResourcePermissionStore
 		$this->_scheduleUserRepository = $scheduleUserRepository;
 	}
 
-	public function GetPermittedResources($userId)
+	public function GetAllResources($userId)
 	{
 		$permittedResourceIds = array();
 
@@ -55,4 +67,36 @@ class ResourcePermissionStore implements IResourcePermissionStore
 
 		return $permittedResourceIds;
 	}
+
+    public function GetBookableResources($userId)
+    {
+        $resourceIds = array();
+
+        $user = $this->_scheduleUserRepository->GetUser($userId);
+
+        $resources = $user->GetBookableResources();
+
+        foreach ($resources as $resource)
+        {
+            $resourceIds[] = $resource->Id();
+        }
+
+        return $resourceIds;
+    }
+
+    public function GetViewOnlyResources($userId)
+    {
+        $resourceIds = array();
+
+        $user = $this->_scheduleUserRepository->GetUser($userId);
+
+        $resources = $user->GetViewOnlyResources();
+
+        foreach ($resources as $resource)
+        {
+            $resourceIds[] = $resource->Id();
+        }
+
+        return $resourceIds;
+    }
 }

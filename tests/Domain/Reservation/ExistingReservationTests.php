@@ -1060,6 +1060,6 @@ class ExistingReservationTests extends TestBase
 
         $instances = $series->Instances();
 
-        $this->assertEquals(6, count($instances));
+        $this->assertEquals(5, count($instances));
     }
 }

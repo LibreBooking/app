@@ -223,4 +223,9 @@ class EmptyReservationSlot implements IReservationSlot
 	{
 		return '';
 	}
+
+    public function OwnerId()
+    {
+        return null;
+    }
 }

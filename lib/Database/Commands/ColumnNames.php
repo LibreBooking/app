@@ -154,6 +154,7 @@ class ColumnNames
 	const AUTO_RELEASE_MINUTES = 'auto_release_minutes';
 	const RESOURCE_ALLOW_DISPLAY = 'allow_display';
 	const RESOURCE_IMAGE_LIST = 'image_list';
+    const PERMISSION_TYPE = 'permission_type';
 
 	// RESERVATION RESOURCES
 	const RESOURCE_LEVEL_ID = 'resource_level_id';

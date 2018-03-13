@@ -225,4 +225,9 @@ class BlackoutSlot implements IReservationSlot
 	{
 		return '';
 	}
+
+    public function OwnerId()
+    {
+        return null;
+    }
 }

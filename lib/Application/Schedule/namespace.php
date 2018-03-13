@@ -41,3 +41,4 @@ require_once(ROOT_DIR . 'lib/Application/Schedule/ScheduleLayoutSerializable.php
 require_once(ROOT_DIR . 'lib/Application/Schedule/DailyReservationSummary.php');
 require_once(ROOT_DIR . 'lib/Application/Schedule/ScheduleResourceFilter.php');
 require_once(ROOT_DIR . 'lib/Application/Schedule/ScheduleService.php');
+require_once(ROOT_DIR . 'lib/Application/Schedule/SchedulePermissionService.php');

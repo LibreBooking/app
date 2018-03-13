@@ -130,7 +130,7 @@ class ReportingRepositoryTests extends TestBase
 		$expectedReport1 = new SavedReport($reportName, $userId, new Report_Usage(Report_Usage::ACCESSORIES),
 					new Report_ResultSelection(Report_ResultSelection::COUNT),
 					new Report_GroupBy(Report_GroupBy::GROUP),
-					new Report_Range(Report_Range::DATE_RANGE, Date::Now()->ToUtc(), Date::Now()->ToUtc()),
+					new Report_Range(Report_Range::DATE_RANGE, Date::Now()->ToUtc(), Date::Now()->AddDays(1)->ToUtc()),
 					new Report_Filter(array(12), array(11), 896, array(123), array(45234), 111, false, array(1828)) );
 		$expectedReport1->WithDateCreated($date->ToUtc());
 		$expectedReport1->WithId($reportId);

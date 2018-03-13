@@ -564,12 +564,22 @@ class ResourceRepositoryTests extends TestBase
 
 		$userRows = new UserRow();
 		$userRows->With(1)->With(2);
-		$this->db->SetRows($userRows->Rows());
+		$rows = $userRows->Rows();
+		$rows[0][ColumnNames::PERMISSION_TYPE] = ResourcePermissionType::Full;
+		$rows[1][ColumnNames::PERMISSION_TYPE] = ResourcePermissionType::View;
+
+		$this->db->SetRows($rows);
 
 		$list = $this->repository->GetUsersWithPermission($resourceId);
+		/** @var UserPermissionItemView[] $results */
+		$results = $list->Results();
 
 		$this->assertTrue($this->db->ContainsCommand(new GetResourceUserPermissionCommand($resourceId, AccountStatus::ACTIVE)));
 		$this->assertEquals(2, $list->PageInfo()->Total);
+		$this->assertEquals(1, $results[0]->Id);
+		$this->assertEquals(ResourcePermissionType::Full, $results[0]->PermissionType);
+		$this->assertEquals(2, $results[1]->Id);
+		$this->assertEquals(ResourcePermissionType::View, $results[1]->PermissionType);
 	}
 
 	public function testGetsGroupsWithPermission()
@@ -577,15 +587,23 @@ class ResourceRepositoryTests extends TestBase
 		$resourceId = 123;
 
 		$rows = array(
-				array(ColumnNames::GROUP_ID => 1, ColumnNames::GROUP_NAME => 'g1', ColumnNames::GROUP_ISDEFAULT => 0),
-				array(ColumnNames::GROUP_ID => 2, ColumnNames::GROUP_NAME => 'g2', ColumnNames::GROUP_ISDEFAULT => 0),
+				array(ColumnNames::GROUP_ID => 1, ColumnNames::GROUP_NAME => 'g1', ColumnNames::GROUP_ISDEFAULT => 0, ColumnNames::PERMISSION_TYPE => ResourcePermissionType::Full),
+				array(ColumnNames::GROUP_ID => 2, ColumnNames::GROUP_NAME => 'g2', ColumnNames::GROUP_ISDEFAULT => 0, ColumnNames::PERMISSION_TYPE => ResourcePermissionType::View),
 		);
 		$this->db->SetRows($rows);
 
+        $g1 = new GroupPermissionItemView(1, 'g1');
+        $g1->PermissionType = ResourcePermissionType::Full;
+        $g2 = new GroupPermissionItemView(2, 'g2');
+        $g2->PermissionType = ResourcePermissionType::View;
+
 		$list = $this->repository->GetGroupsWithPermission($resourceId);
+		$results = $list->Results();
 
 		$this->assertTrue($this->db->ContainsCommand(new GetResourceGroupPermissionCommand($resourceId)));
 		$this->assertEquals(2, $list->PageInfo()->Total);
+		$this->assertEquals($g1, $results[0]);
+		$this->assertEquals($g2, $results[1]);
 	}
 }
 

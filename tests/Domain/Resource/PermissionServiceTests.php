@@ -32,10 +32,10 @@ class PermissionServiceTests extends TestBase
 		$resourceIdList = array(3, 1, 4);
 
 		$store = $this->getMock('IResourcePermissionStore');
-		$ps = new PermissionService($store, $userId);
+		$ps = new PermissionService($store);
 
 		$store->expects($this->once())
-			->method('GetPermittedResources')
+			->method('GetAllResources')
 			->with($this->equalTo($userId))
 			->will($this->returnValue($resourceIdList));
 
@@ -54,10 +54,10 @@ class PermissionServiceTests extends TestBase
 		$resourceIdList = array(3, 1, 4);
 
 		$store = $this->getMock('IResourcePermissionStore');
-		$ps = new PermissionService($store, $userId);
+		$ps = new PermissionService($store);
 
 		$store->expects($this->once())
-			->method('GetPermittedResources')
+			->method('GetAllResources')
 			->with($this->equalTo($userId))
 			->will($this->returnValue($resourceIdList));
 

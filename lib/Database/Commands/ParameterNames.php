@@ -150,6 +150,7 @@ class ParameterNames
 	const POSITION = '@position';
 	const PREVIOUS_END_DATE = '@previous_end_date';
 	const PUBLIC_ID = '@publicid';
+    const PERMISSION_TYPE = '@permission_type';
 
 	const QUOTA_DURATION = '@duration';
 	const QUOTA_ID = '@quotaid';

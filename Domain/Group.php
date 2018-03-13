@@ -33,6 +33,9 @@ class Group
 	private $removedPermissions = array();
 	private $addedPermissions = array();
 	private $allowedResourceIds = array();
+    private $viewableResourceIds = array();
+    private $removedViewPermissions = array();
+    private $addedViewPermissions = array();
 
 	private $rolesChanged = false;
 
@@ -223,11 +226,21 @@ class Group
 	 * @param int $allowedResourceId
 	 * @return void
 	 */
-	public function WithPermission($allowedResourceId)
+	public function WithFullPermission($allowedResourceId)
 	{
 		$this->permissionsChanged = false;
 		$this->allowedResourceIds[] = $allowedResourceId;
 	}
+
+    /**
+     * @param int $viewableResourceId
+     * @return void
+     */
+    public function WithViewablePermission($viewableResourceId)
+    {
+        $this->permissionsChanged = false;
+        $this->viewableResourceIds[] = $viewableResourceId;
+    }
 
 	/**
 	 * @param $role int
@@ -239,11 +252,31 @@ class Group
 		$this->roleIds[] = $role;
 	}
 
+    /**
+     * @param int[] $viewableResourceIds
+     * @return void
+     */
+    public function ChangeViewPermissions($viewableResourceIds = array())
+    {
+        $diff = new ArrayDiff($this->viewableResourceIds, $viewableResourceIds);
+        $removed = $diff->GetRemovedFromArray1();
+        $added = $diff->GetAddedToArray1();
+
+        if ($diff->AreDifferent())
+        {
+            $this->permissionsChanged = true;
+            $this->removedViewPermissions = $removed;
+            $this->addedViewPermissions = $added;
+
+            $this->viewableResourceIds = $viewableResourceIds;
+        }
+    }
+
 	/**
 	 * @param int[] $allowedResourceIds
 	 * @return void
 	 */
-	public function ChangePermissions($allowedResourceIds = array())
+	public function ChangeAllowedPermissions($allowedResourceIds = array())
 	{
 		$diff = new ArrayDiff($this->allowedResourceIds, $allowedResourceIds);
 		$removed = $diff->GetRemovedFromArray1();
@@ -265,7 +298,7 @@ class Group
 	 */
 	public function RemovedPermissions()
 	{
-		return $this->removedPermissions;
+        return array_merge($this->removedPermissions, $this->removedViewPermissions);
 	}
 
 	/**
@@ -284,6 +317,23 @@ class Group
 	{
 		return $this->allowedResourceIds;
 	}
+
+    /**
+     * @internal
+     * @return int[]|array of resourceIds
+     */
+    public function AddedViewPermissions()
+    {
+        return $this->addedViewPermissions;
+    }
+
+    /**
+     * @return array|int[]
+     */
+    public function AllowedViewResourceIds()
+    {
+        return $this->viewableResourceIds;
+    }
 
 	/**
 	 * @return array|int[]

@@ -47,7 +47,7 @@ class Report_Range
 	{
 		$this->range = $range;
 		$this->start = empty($startString) ? Date::Min() : Date::Parse($startString, $timezone);
-		$this->end = empty($endString) ? Date::Max() : Date::Parse($endString, $timezone)->AddDays(1);
+		$this->end = empty($endString) ? Date::Max() : Date::Parse($endString, $timezone);
 
 		$now = Date::Now()->ToTimezone($timezone);
 		if ($this->range == self::CURRENT_MONTH)

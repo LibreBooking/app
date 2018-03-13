@@ -60,6 +60,7 @@ class ManageResourcesActions
 	const ActionPrintQR = 'printQR';
 	const ActionCopyResource = 'actionCopyResource';
 	const ImportResources = 'importResources';
+	const ActionChangeGroupPermission = 'changeGroupPermission';
 }
 
 class ManageResourcesPresenter extends ActionPresenter
@@ -150,6 +151,7 @@ class ManageResourcesPresenter extends ActionPresenter
 		$this->AddAction(ManageResourcesActions::ActionPrintQR, 'PrintQRCode');
 		$this->AddAction(ManageResourcesActions::ActionCopyResource, 'ActionCopyResource');
 		$this->AddAction(ManageResourcesActions::ImportResources, 'ImportResource');
+		$this->AddAction(ManageResourcesActions::ActionChangeGroupPermission, 'ChangeGroupPermission');
 	}
 
 	public function PageLoad()
@@ -815,6 +817,15 @@ class ManageResourcesPresenter extends ActionPresenter
 		$this->resourceRepository->RemoveResourceGroupPermission($resourceId, $groupId);
 	}
 
+	public function ChangeGroupPermission()
+	{
+		$groupId = $this->page->GetPermissionGroupId();
+		$type = $this->page->GetPermissionType();
+		$resourceId = $this->page->GetResourceId();
+
+		$this->resourceRepository->ChangeResourceGroupPermission($resourceId, $groupId, $type);
+	}
+
 	public function ChangeResourceGroups()
 	{
 		$resourceId = $this->page->GetResourceId();
@@ -1112,8 +1123,34 @@ class ManageResourcesPresenter extends ActionPresenter
 			case 'groups':
 			{
 				$groups = $this->resourceRepository->GetGroupsWithPermission($this->page->GetResourceId());
-				$response = new GroupResults($groups->Results(), $groups->PageInfo()->Total);
-				$this->page->SetJsonResponse($response);
+				$this->page->BindGroupPermissions($groups->Results());
+				break;
+			}
+			case 'groupsAll':
+			{
+				$groups = $this->resourceRepository->GetGroupsWithPermission($this->page->GetResourceId());
+                /** @var GroupPermissionItemView[] $groups */
+                $groups = $groups->Results();
+				$allGroups = $this->groupRepository->GetList();
+				$allGroups = $allGroups->Results();
+
+				$idsWithPermissions = [];
+                foreach ($groups as $permission)
+                {
+                    $idsWithPermissions[$permission->Id] = true;
+                }
+
+                /** @var GroupItemView $group */
+                foreach ($allGroups as $group)
+                {
+                    $found = array_key_exists($group->Id(), $idsWithPermissions);
+
+                    if (!$found)
+                    {
+                        $groups[] = new GroupPermissionItemView($group->Id(), $group->Name());
+                    }
+                }
+				$this->page->BindGroupPermissions($groups);
 				break;
 			}
 			case 'template' :

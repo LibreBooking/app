@@ -24,6 +24,7 @@ class GroupResponse extends RestResponse
 	public $name;
 	public $adminGroup;
 	public $permissions = array();
+    public $viewPermissions = array();
 	public $users = array();
 	public $roles = array();
 
@@ -37,6 +38,11 @@ class GroupResponse extends RestResponse
 		{
 			$this->permissions[] = $server->GetServiceUrl(WebServices::GetResource, array(WebServiceParams::ResourceId => $resourceId));
 		}
+
+        foreach ($group->AllowedViewResourceIds() as $resourceId)
+        {
+            $this->viewPermissions[] = $server->GetServiceUrl(WebServices::GetResource, array(WebServiceParams::ResourceId => $resourceId));
+        }
 
 		foreach ($group->UserIds() as $userId)
 		{
@@ -63,6 +69,7 @@ class ExampleGroupResponse extends GroupResponse
 		$this->name = 'group name';
 		$this->adminGroup = 'http://url/to/group';
 		$this->permissions = array('http://url/to/resource');
+        $this->viewPermissions = array('http://url/to/resource');
 		$this->users = array('http://url/to/user');
 		$this->roles = array(1,2);
 	}

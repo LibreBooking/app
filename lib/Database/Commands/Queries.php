@@ -73,10 +73,11 @@ class Queries
 	const ADD_GROUP =
 			'INSERT INTO groups (name, isdefault) VALUES (@groupname, @isdefault)';
 
-	const ADD_GROUP_RESOURCE_PERMISSION =
-			'INSERT IGNORE INTO group_resource_permissions (group_id, resource_id) VALUES (@groupid, @resourceid)';
+    const ADD_GROUP_RESOURCE_PERMISSION =
+        'INSERT INTO group_resource_permissions (group_id, resource_id, permission_type) 
+			VALUES (@groupid, @resourceid, @permission_type)';
 
-	const ADD_GROUP_ROLE =
+    const ADD_GROUP_ROLE =
 			'INSERT IGNORE INTO group_roles (group_id, role_id) VALUES (@groupid, @roleid)';
 
 	const ADJUST_USER_CREDITS =
@@ -863,7 +864,7 @@ class Queries
 
 	const GET_USER_GROUP_RESOURCE_PERMISSIONS =
 			'SELECT
-			grp.group_id, r.resource_id, r.name
+			grp.group_id, r.resource_id, r.name, grp.permission_type
 		FROM
 			group_resource_permissions grp, resources r, user_groups ug
 		WHERE
@@ -901,7 +902,7 @@ class Queries
 	const GET_VERSION = 'SELECT * FROM dbversion order by version_number desc limit 0,1';
 
 	const GET_RESOURCE_GROUP_PERMISSION = 'SELECT
-				g.*
+				g.*, grp.permission_type
 			FROM
 				group_resource_permissions grp, resources r, groups g
 			WHERE
@@ -914,7 +915,7 @@ class Queries
 			WHERE
 				r.resource_id = @resourceid AND r.resource_id = urp.resource_id AND u.user_id = urp.user_id AND u.status_id = @user_statusid';
 
-	const GET_RESOURCE_USER_GROUP_PERMISSION = 'SELECT u.*
+	const GET_RESOURCE_USER_GROUP_PERMISSION = 'SELECT u.*, urp.permission_type
 			FROM
 				user_resource_permissions urp, resources r, users u
 			WHERE

@@ -18,6 +18,7 @@ You should have received a copy of the GNU General Public License
 along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+require_once(ROOT_DIR . 'Domain/Values/ResourcePermissionType.php');
 
 interface IScheduleUserRepository
 {
@@ -66,20 +67,26 @@ class ScheduleUserRepository implements IScheduleUserRepository
 			$group_id = $row[ColumnNames::GROUP_ID];
 			$resourceId = $row[ColumnNames::RESOURCE_ID];
 			$resourceName = $row[ColumnNames::RESOURCE_NAME];
+            $permissionType = $row[ColumnNames::PERMISSION_TYPE];
 
-			$groupList[$group_id][] = array($resourceId, $resourceName);
+			$groupList[$group_id][] = array($resourceId, $resourceName, $permissionType);
 		}
 
 		$groups = array();
-		foreach($groupList as $group_id => $resourceList)
-		{
-			$resources = array();
-			foreach($resourceList as $resourceItem)
-			{
-				$resources[] = new ScheduleResource($resourceItem[0], $resourceItem[1]);
-			}
-			$groups[] = new ScheduleGroup($group_id, $resources);
-		}
+        foreach ($groupList as $group_id => $resourceList) {
+            $resources = array();
+            $viewOnly = array();
+            foreach ($resourceList as $resourceItem) {
+                $permissionType = $resourceItem[2];
+                if ($permissionType == ResourcePermissionType::View) {
+                    $viewOnly[] = new ScheduleResource($resourceItem[0], $resourceItem[1]);
+                }
+                else{
+                    $resources[] = new ScheduleResource($resourceItem[0], $resourceItem[1]);
+                }
+            }
+            $groups[] = new ScheduleGroup($group_id, $resources, $viewOnly);
+        }
 
 		return $groups;
 	}
@@ -118,6 +125,18 @@ interface IScheduleUser
 	 * @return array|ScheduleResource[]
 	 */
 	public function GetAllResources();
+
+    /**
+     * The resources that the user or any of their groups has bookable permission to
+     * @return array|ScheduleResource[]
+     */
+    public function GetBookableResources();
+
+    /**
+     * The resources that the user or any of their groups has view permission to
+     * @return array|ScheduleResource[]
+     */
+    public function GetViewOnlyResources();
 
 	/**
 	 * The resources that the user or any of their groups has admin access to
@@ -167,62 +186,115 @@ class ScheduleUser implements IScheduleUser
 		return $this->_adminResources;
 	}
 
-	public function GetAllResources()
-	{
-		$resources = array();
+    public function GetAllResources()
+    {
+        $resources = array();
 
-		foreach($this->GetResources() as $resource)
-		{
-			$resources[] = $resource;
-		}
+        foreach ($this->GetResources() as $resource) {
+            $resources[] = $resource;
+        }
 
-		foreach($this->GetGroupPermissions() as $group)
-		{
-			foreach ($group->GetResources() as $resource)
-			{
-				$resources[] = $resource;
-			}
-		}
+        foreach ($this->GetGroupPermissions() as $group) {
+            foreach ($group->GetAllResources() as $resource) {
+                $resources[] = $resource;
+            }
+        }
 
-		foreach ($this->GetAdminResources() as $resource)
-		{
-			$resources[] = $resource;
-		}
+        foreach ($this->GetAdminResources() as $resource) {
+            $resources[] = $resource;
+        }
 
-		return array_unique($resources);
-	}
+        return array_unique($resources);
+    }
+
+    public function GetBookableResources()
+    {
+        $resources = array();
+
+        foreach ($this->GetResources() as $resource) {
+            $resources[] = $resource;
+        }
+
+        foreach ($this->GetGroupPermissions() as $group) {
+            foreach ($group->GetBookableResources() as $resource) {
+                $resources[] = $resource;
+            }
+        }
+
+        foreach ($this->GetAdminResources() as $resource) {
+            $resources[] = $resource;
+        }
+
+        return array_unique($resources);
+    }
+
+    public function GetViewOnlyResources()
+    {
+        $resources = array();
+
+        foreach ($this->GetGroupPermissions() as $group)
+        {
+            foreach ($group->GetViewOnlyResources() as $resource)
+            {
+                $resources[] = $resource;
+            }
+        }
+
+        return array_unique($resources);
+    }
 }
 
 class ScheduleGroup
 {
-	private $_groupId;
-	private $_resources;
+    private $group_id;
+    private $bookableResources;
+    private $viewOnlyResources;
+    private $allResources;
 
-	/**
-	 * @param int $group_id
-	 * @param array|ScheduleResource[] $resources
-	 */
-	public function __construct($group_id, $resources)
-	{
-		$this->_groupId = $group_id;
-		$this->_resources = $resources;
-	}
+    /**
+     * @param int $group_id
+     * @param ScheduleResource[] $bookableResources
+     * @param ScheduleResource[] $viewOnlyResources
+     */
+    public function __construct($group_id, $bookableResources, $viewOnlyResources)
+    {
+        $this->group_id = $group_id;
+        $this->bookableResources = $bookableResources;
+        $this->viewOnlyResources = $viewOnlyResources;
+        $this->allResources = array_merge($bookableResources, $viewOnlyResources);
+    }
 
-	/**
-	 * @return int
-	 */
-	public function Id()
-	{
-		return $this->_groupId;
-	}
+    /**
+     * @return int
+     */
+    public function Id()
+    {
+        return $this->group_id;
+    }
 
-	/**
-	 * @return array|ScheduleResource[]
-	 */
-	function GetResources()
-	{
-		return $this->_resources;
-	}
+    /**
+     * @return array|ScheduleResource[]
+     */
+    public function GetAllResources()
+    {
+        return $this->allResources;
+    }
+
+    /**
+     * @return array|ScheduleResource[]
+     */
+    public function GetBookableResources()
+    {
+        return $this->bookableResources;
+    }
+
+    /**
+     * @return array|ScheduleResource[]
+     */
+    public function GetViewOnlyResources()
+    {
+        return $this->viewOnlyResources;
+    }
 }
 
 class ScheduleResource

@@ -18,6 +18,8 @@ You should have received a copy of the GNU General Public License
 along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+require_once(ROOT_DIR . 'Domain/Values/ResourcePermissionType.php');
+
 interface IGroupRepository
 {
 	/**
@@ -166,7 +168,12 @@ class GroupRepository implements IGroupRepository, IGroupViewRepository
 		$reader = $db->Query(new GetAllGroupPermissionsCommand($groupId));
 		while ($row = $reader->GetRow())
 		{
-			$group->WithPermission($row[ColumnNames::RESOURCE_ID]);
+            if ($row[ColumnNames::PERMISSION_TYPE] == ResourcePermissionType::Full) {
+                $group->WithFullPermission($row[ColumnNames::RESOURCE_ID]);
+            }
+            else {
+                $group->WithViewablePermission($row[ColumnNames::RESOURCE_ID]);
+            }
 		}
 		$reader->Free();
 
@@ -205,10 +212,15 @@ class GroupRepository implements IGroupRepository, IGroupViewRepository
 			$db->Execute(new DeleteGroupResourcePermission($groupId, $resourceId));
 		}
 
-		foreach ($group->AddedPermissions() as $resourceId)
-		{
-			$db->Execute(new AddGroupResourcePermission($groupId, $resourceId));
-		}
+        foreach ($group->AddedPermissions() as $resourceId)
+        {
+            $db->Execute(new AddGroupResourcePermission($group->Id(), $resourceId, ResourcePermissionType::Full));
+        }
+
+        foreach ($group->AddedViewPermissions() as $resourceId)
+        {
+            $db->Execute(new AddGroupResourcePermission($group->Id(), $resourceId, ResourcePermissionType::View));
+        }
 
 		foreach ($group->RemovedRoles() as $roleId)
 		{
@@ -338,6 +350,30 @@ class GroupItemView
 		$this->AdminGroupName = $adminGroupName;
 		$this->IsDefault = $isDefault;
 	}
+}
+
+class GroupPermissionItemView extends GroupItemView
+{
+    public $PermissionType;
+
+    public function __construct($groupId, $groupName, $adminGroupName = null, $isDefault = 0)
+    {
+        parent::__construct($groupId, $groupName, $adminGroupName, $isDefault);
+        $this->PermissionType = ResourcePermissionType::None;
+    }
+
+    public function PermissionType()
+    {
+        return $this->PermissionType;
+    }
+
+    public static function Create($row)
+    {
+        $item = GroupItemView::Create($row);
+        $me = new GroupPermissionItemView($item->Id, $item->Name, $item->AdminGroupName, $item->IsDefault);
+        $me->PermissionType = $row[ColumnNames::PERMISSION_TYPE];
+        return $me;
+    }
 }
 
 class RoleDto

@@ -574,7 +574,7 @@ class ResourceRepository implements IResourceRepository
 			$command = new FilterCommand($command, $filter);
 		}
 
-		$builder = array('UserItemView', 'Create');
+		$builder = array('UserPermissionItemView', 'Create');
 		return PageableDataStore::GetList($command, $builder, $pageNumber, $pageSize);
 	}
 
@@ -587,7 +587,7 @@ class ResourceRepository implements IResourceRepository
 			$command = new FilterCommand($command, $filter);
 		}
 
-		$builder = array('GroupItemView', 'Create');
+		$builder = array('GroupPermissionItemView', 'Create');
 		return PageableDataStore::GetList($command, $builder, $pageNumber, $pageSize);
 	}
 
@@ -602,7 +602,7 @@ class ResourceRepository implements IResourceRepository
 			$command = new FilterCommand($command, $filter);
 		}
 
-		$builder = array('UserItemView', 'Create');
+		$builder = array('UserPermissionItemView', 'Create');
 		return PageableDataStore::GetList($command, $builder, $pageNumber, $pageSize);
 	}
 
@@ -618,12 +618,21 @@ class ResourceRepository implements IResourceRepository
 
 	public function AddResourceGroupPermission($resourceId, $groupId)
 	{
-		ServiceLocator::GetDatabase()->Execute(new AddGroupResourcePermission($groupId, $resourceId));
+		ServiceLocator::GetDatabase()->Execute(new AddGroupResourcePermission($groupId, $resourceId, ResourcePermissionType::Full));
 	}
 
 	public function RemoveResourceGroupPermission($resourceId, $groupId)
 	{
 		ServiceLocator::GetDatabase()->Execute(new DeleteGroupResourcePermission($groupId, $resourceId));
+	}
+
+	public function ChangeResourceGroupPermission($resourceId, $groupId, $type)
+	{
+		ServiceLocator::GetDatabase()->Execute(new DeleteGroupResourcePermission($groupId, $resourceId));
+		if ($type != ResourcePermissionType::None)
+        {
+            ServiceLocator::GetDatabase()->Execute(new AddGroupResourcePermission($groupId, $resourceId, $type));
+        }
 	}
 }
 

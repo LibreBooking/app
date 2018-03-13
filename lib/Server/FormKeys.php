@@ -178,6 +178,7 @@ class FormKeys
 	const PHONE = 'phone';
 	const POSITION = 'position';
 	const PK = 'pk';
+	const PERMISSION_TYPE = 'PERMISSION_TYPE';
 
 	const QUOTA_SCOPE= 'QUOTA_SCOPE';
 

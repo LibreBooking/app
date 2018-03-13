@@ -103,12 +103,32 @@ class ManageGroupsPresenter extends ActionPresenter
     public function ChangePermissions()
     {
         $group = $this->groupRepository->LoadById($this->page->GetGroupId());
-        $allowedResources = array();
+        $resources = array();
+        $allowed = array();
+        $view = array();
 
         if (is_array($this->page->GetAllowedResourceIds())) {
-            $allowedResources = $this->page->GetAllowedResourceIds();
+            $resources = $this->page->GetAllowedResourceIds();
         }
-        $group->ChangePermissions($allowedResources);
+
+        foreach ($resources as $resource)
+        {
+            $split = explode('_', $resource);
+            $resourceId = $split[0];
+            $permissionType = $split[1];
+
+            if ($permissionType === ResourcePermissionType::Full . '')
+            {
+                $allowed[] = $resourceId;
+            }
+            else if ($permissionType === ResourcePermissionType::View . '')
+            {
+                $view[] = $resourceId;
+            }
+        }
+
+        $group->ChangeViewPermissions($view);
+        $group->ChangeAllowedPermissions($allowed);
         $this->groupRepository->Update($group);
     }
 
@@ -153,7 +173,7 @@ class ManageGroupsPresenter extends ActionPresenter
     public function GetGroupResourcePermissions()
     {
         $group = $this->groupRepository->LoadById($this->page->GetGroupId());
-        return $group->AllowedResourceIds();
+        return array('full' => $group->AllowedResourceIds(), 'view' => $group->AllowedViewResourceIds());
     }
 
     protected function AddUser()

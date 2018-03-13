@@ -302,6 +302,11 @@ interface IManageResourcesPage extends IUpdateResourcePage, IActionPage, IPageab
     public function GetPermissionGroupId();
 
     /**
+     * @return int
+     */
+    public function GetPermissionType();
+
+    /**
      * @return string
      */
     public function GetValue();
@@ -410,15 +415,25 @@ interface IManageResourcesPage extends IUpdateResourcePage, IActionPage, IPageab
      */
     public function GetUpdateOnImport();
 
-	/**
-	 * @param BookableResource $resource
-	 */
-	public function BindResourceImages(BookableResource $resource);
+    /**
+     * @param BookableResource $resource
+     */
+    public function BindResourceImages(BookableResource $resource);
 
-	/**
-	 * @return string
-	 */
-	public function GetImageName();
+    /**
+     * @return string
+     */
+    public function GetImageName();
+
+    /**
+     * @param GroupPermissionItemView[] $groups
+     */
+    public function BindGroupPermissions($groups);
+
+    /**
+     * @param UserPermissionItemView[]|PageableData $users
+     */
+    public function BindUserPermissions($users);
 }
 
 class ManageResourcesPage extends ActionPage implements IManageResourcesPage
@@ -927,6 +942,11 @@ class ManageResourcesPage extends ActionPage implements IManageResourcesPage
         return $this->GetForm(FormKeys::GROUP_ID);
     }
 
+    public function GetPermissionType()
+    {
+        return $this->GetForm(FormKeys::PERMISSION_TYPE);
+    }
+
     /**
      * @param ResourceGroupTree $resourceGroups
      */
@@ -1046,25 +1066,34 @@ class ManageResourcesPage extends ActionPage implements IManageResourcesPage
         return $this->GetCheckbox(FormKeys::UPDATE_ON_IMPORT);
     }
 
-	public function BindResourceImages(BookableResource $resource)
-	{
-		$response = array('image' => null, 'images' => array());
+    public function BindResourceImages(BookableResource $resource)
+    {
+        $response = array('image' => null, 'images' => array());
 
-		if ($resource->HasImage())
-		{
-			$response = array('image' => $this->smarty->GetResourceImage(array('image' => $resource->GetImage()), $this->smarty), 'images' => array());
-		}
-		foreach ($resource->GetImages() as $image)
-		{
-			$response['images'][] = $this->smarty->GetResourceImage(array('image' => $image), $this->smarty);
-		}
-		$this->SetJsonResponse($response);
-	}
+        if ($resource->HasImage()) {
+            $response = array('image' => $this->smarty->GetResourceImage(array('image' => $resource->GetImage()), $this->smarty), 'images' => array());
+        }
+        foreach ($resource->GetImages() as $image) {
+            $response['images'][] = $this->smarty->GetResourceImage(array('image' => $image), $this->smarty);
+        }
+        $this->SetJsonResponse($response);
+    }
 
-	public function GetImageName()
-	{
-		return $this->GetForm(FormKeys::RESOURCE_IMAGE);
-	}
+    public function GetImageName()
+    {
+        return $this->GetForm(FormKeys::RESOURCE_IMAGE);
+    }
+
+    public function BindGroupPermissions($groups)
+    {
+        $this->Set('Groups', $groups);
+        $this->Display('Admin/Resources/manage_resources_group_permissions.tpl');
+    }
+
+    public function BindUserPermissions($users)
+    {
+        // TODO: Implement BindUserPermissions() method.
+    }
 }
 
 class ResourceFilterValues

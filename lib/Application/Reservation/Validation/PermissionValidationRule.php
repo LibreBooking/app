@@ -44,7 +44,7 @@ class PermissionValidationRule implements IReservationValidationRule
 
 		foreach ($resourceIds as $resourceId)
 		{
-			if (!$permissionService->CanAccessResource(new ReservationResource($resourceId), $reservationSeries->BookedBy()))
+			if (!$permissionService->CanBookResource(new ReservationResource($resourceId), $reservationSeries->BookedBy()))
 			{
 				return new ReservationRuleResult(false, Resources::GetInstance()->GetString('NoResourcePermission'));
 			}

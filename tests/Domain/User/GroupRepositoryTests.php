@@ -192,14 +192,14 @@ class GroupRepositoryTests extends TestBase
         $groupId = 9298;
 
         $group = new Group($groupId, '');
-        $group->WithPermission($resource1);
+        $group->WithFullPermission($resource1);
 
-        $group->ChangePermissions(array($resource2));
+        $group->ChangeAllowedPermissions(array($resource2));
 
         $this->repository->Update($group);
 
         $removeCommand1 = new DeleteGroupResourcePermission($groupId, $resource1);
-        $addGroup = new AddGroupResourcePermission($groupId, $resource2);
+        $addGroup = new AddGroupResourcePermission($groupId, $resource2, ResourcePermissionType::Full);
 
         $this->assertTrue($this->db->ContainsCommand($removeCommand1));
         $this->assertTrue($this->db->ContainsCommand($addGroup));
