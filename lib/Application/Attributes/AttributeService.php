@@ -231,6 +231,13 @@ class AttributeService implements IAttributeService
 		{
 			$requestedUserId = $reservationView->OwnerId;
 		}
+		if (empty($requestedResourceIds ))
+        {
+            foreach ($reservationView->Resources as $resource)
+            {
+                $requestedResourceIds[] = $resource->Id();
+            }
+        }
 
 		$attributes = array();
 		$customAttributes = $this->GetByCategory(CustomAttributeCategory::RESERVATION);
