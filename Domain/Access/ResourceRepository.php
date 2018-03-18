@@ -606,32 +606,21 @@ class ResourceRepository implements IResourceRepository
 		return PageableDataStore::GetList($command, $builder, $pageNumber, $pageSize);
 	}
 
-	public function AddResourceUserPermission($resourceId, $userId)
-	{
-		ServiceLocator::GetDatabase()->Execute(new AddUserResourcePermission($userId, $resourceId));
-	}
-
-	public function RemoveResourceUserPermission($resourceId, $userId)
-	{
-		ServiceLocator::GetDatabase()->Execute(new DeleteUserResourcePermission($userId, $resourceId));
-	}
-
-	public function AddResourceGroupPermission($resourceId, $groupId)
-	{
-		ServiceLocator::GetDatabase()->Execute(new AddGroupResourcePermission($groupId, $resourceId, ResourcePermissionType::Full));
-	}
-
-	public function RemoveResourceGroupPermission($resourceId, $groupId)
-	{
-		ServiceLocator::GetDatabase()->Execute(new DeleteGroupResourcePermission($groupId, $resourceId));
-	}
-
 	public function ChangeResourceGroupPermission($resourceId, $groupId, $type)
 	{
 		ServiceLocator::GetDatabase()->Execute(new DeleteGroupResourcePermission($groupId, $resourceId));
 		if ($type != ResourcePermissionType::None)
         {
             ServiceLocator::GetDatabase()->Execute(new AddGroupResourcePermission($groupId, $resourceId, $type));
+        }
+	}
+
+	public function ChangeResourceUserPermission($resourceId, $userId, $type)
+	{
+		ServiceLocator::GetDatabase()->Execute(new DeleteUserResourcePermission($userId, $resourceId));
+		if ($type != ResourcePermissionType::None)
+        {
+            ServiceLocator::GetDatabase()->Execute(new AddUserResourcePermission($userId, $resourceId, $type));
         }
 	}
 }
@@ -695,6 +684,7 @@ class ResourceDto implements IBookableResource
 	 * @param int $id
 	 * @param string $name
 	 * @param bool $canAccess
+	 * @param bool $canBook
 	 * @param int $scheduleId
 	 * @param TimeInterval $minLength
 	 * @param int|null $resourceTypeId
@@ -710,6 +700,7 @@ class ResourceDto implements IBookableResource
 	public function __construct($id,
 								$name,
 								$canAccess,
+								$canBook,
 								$scheduleId,
 								$minLength,
 								$resourceTypeId,
@@ -726,6 +717,7 @@ class ResourceDto implements IBookableResource
 		$this->Id = $id;
 		$this->Name = $name;
 		$this->CanAccess = $canAccess;
+		$this->CanBook = $canBook;
 		$this->ScheduleId = $scheduleId;
 		$this->MinimumLength = $minLength;
 		$this->ResourceTypeId = $resourceTypeId;
@@ -759,6 +751,11 @@ class ResourceDto implements IBookableResource
 	 * @var bool
 	 */
 	public $CanAccess;
+
+	/**
+	 * @var bool
+	 */
+	public $CanBook;
 
 	/**
 	 * @var null|int
@@ -959,6 +956,6 @@ class NullResourceDto extends ResourceDto {
 
     public function __construct()
     {
-        parent::__construct(0, null, false, 0, new TimeInterval(0), null, null, null, null, false, false, false, null, null);
+        parent::__construct(0, null, false, false, 0, new TimeInterval(0), null, null, null, null, false, false, false, null, null);
     }
 }

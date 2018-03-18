@@ -18,6 +18,7 @@
  * You should have received a copy of the GNU General Public License
  * along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 interface ISchedulePageBuilder
 {
 	/**
@@ -359,20 +360,6 @@ class SchedulePageBuilder implements ISchedulePageBuilder
 
 		return null;
 	}
-//
-//	public function GetResourceIds($scheduleId, ISchedulePage $page)
-//	{
-//
-//
-//		$resourceIds = $page->GetResourceIds();
-//
-//		if (!empty($resourceIds))
-//		{
-//			return $resourceIds;
-//		}
-//
-//		return array();
-//	}
 
 	private function getTreeCookie($scheduleId)
 	{

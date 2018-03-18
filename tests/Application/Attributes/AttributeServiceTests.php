@@ -164,7 +164,7 @@ class AttributeServiceTests extends TestBase
 
 		$resource1 = new TestResourceDto($resourceId1);
 		$resource2 = new TestResourceDto($resourceId2);
-		$resource3 = new TestResourceDto($resourceId3, null, true, null, null, $resourceTypeId1);
+		$resource3 = new TestResourceDto($resourceId3, null, true, true, 1, null, $resourceTypeId1);
 
 		$this->resourceService->_AllResources = array($resource1, $resource3);
 

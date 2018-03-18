@@ -64,5 +64,35 @@ class ResourcePermissionStoreTests extends TestBase
 		$this->assertContains($rid3, $permittedResources);
 		$this->assertContains($rid4, $permittedResources);
 	}
+
+	public function testGetsFullPermissions()
+	{
+        $userFull = new ScheduleResource(1, 'user full');
+        $userView = new ScheduleResource(2, 'user view');
+        $groupFull = new ScheduleResource(3, 'group full');
+        $groupView = new ScheduleResource(4, 'group view');
+        $groupAdmin = new ScheduleResource(5, 'group admin');
+
+        $full = array($userFull);
+        $view = array($userView);
+        $groupPermissions = array(new ScheduleGroup(1, array($groupFull), array($groupView)));
+        $groupAdminPermissions = array($groupAdmin);
+        $userId = 1;
+	    $user = new ScheduleUser($userId, $full, $view, $groupPermissions, $groupAdminPermissions);
+
+	    $userRepository = $this->getMock('IScheduleUserRepository');
+        $userRepository->expects($this->any())
+            ->method('GetUser')
+            ->will($this->returnValue($user));
+
+        $rps = new ResourcePermissionStore($userRepository);
+
+        $bookable = $rps->GetBookableResources($userId);
+        $view = $rps->GetViewOnlyResources($userId);
+        $all = $rps->GetAllResources($userId);
+
+        $this->assertEquals(array($userView->Id(), $groupView->Id()), $view);
+        $this->assertEquals(array($userFull->Id(), $groupFull->Id(), $groupAdmin->Id()), $bookable);
+        $this->assertEquals(5, count($all));
+    }
 }
-?>

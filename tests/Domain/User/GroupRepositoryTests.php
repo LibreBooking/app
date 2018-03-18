@@ -188,21 +188,30 @@ class GroupRepositoryTests extends TestBase
     {
         $resource1 = 100;
         $resource2 = 200;
+        $resource3 = 300;
 
         $groupId = 9298;
 
         $group = new Group($groupId, '');
         $group->WithFullPermission($resource1);
-
+        $group->WithFullPermission($resource3);
+        $group->WithViewablePermission($resource2);
         $group->ChangeAllowedPermissions(array($resource2));
+        $group->ChangeViewPermissions(array($resource1));
 
         $this->repository->Update($group);
 
         $removeCommand1 = new DeleteGroupResourcePermission($groupId, $resource1);
-        $addGroup = new AddGroupResourcePermission($groupId, $resource2, ResourcePermissionType::Full);
+        $removeCommand2 = new DeleteGroupResourcePermission($groupId, $resource2);
+        $removeCommand3 = new DeleteGroupResourcePermission($groupId, $resource3);
+        $addGroup1 = new AddGroupResourcePermission($groupId, $resource2, ResourcePermissionType::Full);
+        $addGroup2 = new AddGroupResourcePermission($groupId, $resource1, ResourcePermissionType::View);
 
         $this->assertTrue($this->db->ContainsCommand($removeCommand1));
-        $this->assertTrue($this->db->ContainsCommand($addGroup));
+        $this->assertTrue($this->db->ContainsCommand($removeCommand2));
+        $this->assertTrue($this->db->ContainsCommand($removeCommand3));
+        $this->assertTrue($this->db->ContainsCommand($addGroup1));
+        $this->assertTrue($this->db->ContainsCommand($addGroup2));
     }
 
     public function testUpdateSavesNewGroupNameAndAdminId()

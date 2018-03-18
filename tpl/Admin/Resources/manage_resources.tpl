@@ -391,8 +391,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 						<div class="col-sm-6 col-xs-12">
 							<h5>{translate key='Permissions'}</h5>
-							<a href="#" class="update changeUsers">{translate key=Users}</a> |
-							<a href="#" class="update changeGroups">{translate key=Groups}</a>
+							<a href="#" class="update changeUserPermission">{translate key=Users}</a> |
+							<a href="#" class="update changeGroupPermissions">{translate key=Groups}</a>
 						</div>
 
 						<div class="col-sm-6 col-xs-12">
@@ -1315,14 +1315,10 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 				</div>
 				<div class="modal-body scrollable-modal-content">
 					<div class="form-group">
-						<label for="userSearch">{translate key=AddUser}</label> <a href="#"
-																				   id="browseUsers">{translate key=Browse}</a>
+						<label for="userSearch">{translate key=AddUser}</label>
+                        <a href="#" id="browseUsers">{translate key=Browse}</a>
 						<input type="text" id="userSearch" class="form-control" size="60"/>
-
 					</div>
-
-					<h4><span id="totalUsers"></span> {translate key=Users}</h4>
-
 					<div id="resourceUserList"></div>
 				</div>
 			</div>
@@ -1344,12 +1340,9 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		</div>
 	</div>
 
-	<form id="removeUserForm" method="post" ajaxAction="{ManageResourcesActions::ActionRemoveUserPermission}">
-		<input type="hidden" id="removeUserId" {formname key=USER_ID} />
-	</form>
-
-	<form id="addUserForm" method="post" ajaxAction="{ManageResourcesActions::ActionAddUserPermission}">
-		<input type="hidden" id="addUserId" {formname key=USER_ID} />
+	<form id="changeUserForm" method="post" ajaxAction="{ManageResourcesActions::ActionChangeUserPermission}">
+		<input type="hidden" id="changeUserId" {formname key=USER_ID} />
+        <input type="hidden" id="changeUserType" {formname key=PERMISSION_TYPE} />
 	</form>
 
 	<div id="groupDialog" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="browseGroupsDialogLabel"
@@ -1362,12 +1355,10 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 				</div>
 				<div class="modal-body scrollable-modal-content">
 					<div class="form-group">
-						<label for="groupSearch">{translate key=AddGroup}</label> <a href="#"
-																					 id="browseGroups">{translate key=AllGroups}</a>
+						<label for="groupSearch">{translate key=AddGroup}</label>
+                        <a href="#" id="browseGroups">{translate key=AllGroups}</a>
 						<input type="text" id="groupSearch" class="form-control" size="60"/>
 					</div>
-
-
 
 					<div id="resourceGroupList"></div>
 				</div>
@@ -1390,17 +1381,9 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		</div>
 	</div>
 
-	<form id="removeGroupForm" method="post" ajaxAction="{ManageResourcesActions::ActionRemoveGroupPermission}">
-		<input type="hidden" id="removeGroupId" {formname key=GROUP_ID} />
-	</form>
-
     <form id="changeGroupForm" method="post" ajaxAction="{ManageResourcesActions::ActionChangeGroupPermission}">
 		<input type="hidden" id="changeGroupId" {formname key=GROUP_ID} />
 		<input type="hidden" id="changeGroupType" {formname key=PERMISSION_TYPE} />
-	</form>
-
-	<form id="addGroupForm" method="post" ajaxAction="{ManageResourcesActions::ActionAddGroupPermission}">
-		<input type="hidden" id="addGroupId" {formname key=GROUP_ID} />
 	</form>
 
 	<div class="modal fade" id="resourceGroupDialog" tabindex="-1" role="dialog"

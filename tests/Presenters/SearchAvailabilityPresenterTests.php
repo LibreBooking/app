@@ -58,7 +58,7 @@ class SearchAvailabilityPresenterTests extends TestBase
         $this->presenter = new SearchAvailabilityPresenter($this->page,
             $this->fakeUser, $this->resourceService, $this->reservationService, $this->scheduleService);
 
-        $this->resourceService->_AllResources = array(new TestResourceDto(1, '', true, 1), new TestResourceDto(3, '', true, 2));
+        $this->resourceService->_AllResources = array(new TestResourceDto(1, '', true, true, 1), new TestResourceDto(3, '', true, true, 2));
     }
 
     public function testWhenNoResourcesSelected()

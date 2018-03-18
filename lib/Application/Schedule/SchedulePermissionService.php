@@ -37,7 +37,7 @@ class SchedulePermissionService implements IPermissionService
      */
     public function CanAccessResource(IPermissibleResource $resource, UserSession $user)
     {
-        return $this->permissionService->CanBookResource($resource, $user);
+        return $this->permissionService->CanAccessResource($resource, $user);
     }
 
     /**

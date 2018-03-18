@@ -26,6 +26,7 @@ class TestResourceDto extends ResourceDto
 	public function __construct($id = 1,
 								$name = 'testresourcedto',
 								$canAccess = true,
+								$canBook = true,
 								$scheduleId = 1,
 								$minLength = null,
 								$resourceTypeId = null,
@@ -38,7 +39,7 @@ class TestResourceDto extends ResourceDto
 								$autoReleaseMinutes = null,
 								$color = null)
 	{
-		parent::__construct($id, $name, $canAccess, $scheduleId, ($minLength == null ? TimeInterval::None() : $minLength), $resourceTypeId, $adminGroupId,
+		parent::__construct($id, $name, $canAccess, $canBook, $scheduleId, ($minLength == null ? TimeInterval::None() : $minLength), $resourceTypeId, $adminGroupId,
 							$scheduleAdminGroupId, $statusId, $requiresApproval, $isCheckInEnabled, $isAutoReleased, $autoReleaseMinutes, $color);
 	}
 }

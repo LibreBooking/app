@@ -344,7 +344,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                                         <tr class="slots">
                                             <td class="resourcename"
                                                 {if $resource->HasColor()}style="background-color:{$resource->GetColor()} !important"{/if}>
-                                                {if $resource->CanAccess && $DailyLayout->IsDateReservable($date)}
+                                                {if $resource->CanBook && $DailyLayout->IsDateReservable($date)}
                                                     <a href="{$href}" resourceId="{$resource->Id}"
                                                        class="resourceNameSelector"
                                                        {if $resource->HasColor()}style="color:{$resource->GetTextColor()} !important"{/if}>{$resource->Name}</a>
@@ -356,7 +356,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                                             </td>
                                             {foreach from=$slots item=slot}
                                                 {assign var=slotRef value="{$slot->BeginDate()->Format('YmdHis')}{$resourceId}"}
-                                                {displaySlot Slot=$slot Href="$href" AccessAllowed=$resource->CanAccess SlotRef=$slotRef ResourceId=$resourceId}
+                                                {displaySlot Slot=$slot Href="$href" AccessAllowed=$resource->CanBook SlotRef=$slotRef ResourceId=$resourceId}
                                             {/foreach}
                                         </tr>
                                     {/foreach}

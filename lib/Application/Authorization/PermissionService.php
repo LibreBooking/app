@@ -78,7 +78,7 @@ class PermissionService implements IPermissionService
 			$this->_allowedResourceIds = $this->_store->GetAllResources($user->UserId);
 		}
 
-		return in_array($resource->GetResourceId(), $this->_allowedResourceIds);
+        return in_array($resource->GetResourceId(), $this->_allowedResourceIds);
 	}
 
     /**

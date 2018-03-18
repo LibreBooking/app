@@ -1092,7 +1092,8 @@ class ManageResourcesPage extends ActionPage implements IManageResourcesPage
 
     public function BindUserPermissions($users)
     {
-        // TODO: Implement BindUserPermissions() method.
+        $this->Set('Users', $users);
+        $this->Display('Admin/Resources/manage_resources_user_permissions.tpl');
     }
 }
 

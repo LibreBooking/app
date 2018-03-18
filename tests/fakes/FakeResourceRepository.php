@@ -189,38 +189,18 @@ class FakeResourceRepository implements IResourceRepository
 		// TODO: Implement GetGroupsWithPermission() method.
 	}
 
-	public function AddResourceUserPermission($resourceId, $userId)
-	{
-		// TODO: Implement AddResourceUserPermission() method.
-	}
-
-	public function RemoveResourceUserPermission($resourceId, $userId)
-	{
-		// TODO: Implement RemoveResourceUserPermission() method.
-	}
-
-	public function AddResourceGroupPermission($resourceId, $groupId)
-	{
-		// TODO: Implement AddResourceGroupPermission() method.
-	}
-
-	public function RemoveResourceGroupPermission($resourceId, $groupId)
-	{
-		// TODO: Implement RemoveResourceGroupPermission() method.
-	}
-
 	public function GetUsersWithPermissionsIncludingGroups($resourceId, $pageNumber = null, $pageSize = null, $filter = null, $accountStatus = AccountStatus::ACTIVE)
 	{
 		// TODO: Implement GetUsersWithPermissionsIncludingGroups() method.
 	}
 
-    /**
-     * @param int $resourceId
-     * @param int $groupId
-     * @param int $type
-     */
     public function ChangeResourceGroupPermission($resourceId, $groupId, $type)
     {
         // TODO: Implement ChangeResourceGroupPermission() method.
+    }
+
+    public function ChangeResourceUserPermission($resourceId, $userId, $type)
+    {
+        // TODO: Implement ChangeResourceUserPermission() method.
     }
 }

@@ -80,7 +80,7 @@ class ResourceGroupTree
 	{
 		if (array_key_exists($assignment->group_id, $this->references))
 		{
-			$this->resources[$assignment->resource_id] = new ResourceDto($assignment->resource_id, $assignment->resource_name, true,
+			$this->resources[$assignment->resource_id] = new ResourceDto($assignment->resource_id, $assignment->resource_name, true, true,
 																		 $assignment->GetScheduleId(), $assignment->GetMinimumLength(),
 																		 $assignment->GetResourceTypeId(), $assignment->GetAdminGroupId(),
 																		 $assignment->GetScheduleAdminGroupId(), $assignment->GetStatusId(),

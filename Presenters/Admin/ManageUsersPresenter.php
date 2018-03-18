@@ -54,7 +54,7 @@ interface IManageUsersPresenter
 class ManageUsersPresenter extends ActionPresenter implements IManageUsersPresenter
 {
     /**
-     * @var \IManageUsersPage
+     * @var IManageUsersPage
      */
     private $page;
 
@@ -94,7 +94,7 @@ class ManageUsersPresenter extends ActionPresenter implements IManageUsersPresen
     private $groupViewRepository;
 
     /**
-     * @param \IGroupRepository $groupRepository
+     * @param IGroupRepository $groupRepository
      */
     public function SetGroupRepository($groupRepository)
     {
@@ -102,7 +102,7 @@ class ManageUsersPresenter extends ActionPresenter implements IManageUsersPresen
     }
 
     /**
-     * @param \IGroupViewRepository $groupViewRepository
+     * @param IGroupViewRepository $groupViewRepository
      */
     public function SetGroupViewRepository($groupViewRepository)
     {
@@ -110,7 +110,7 @@ class ManageUsersPresenter extends ActionPresenter implements IManageUsersPresen
     }
 
     /**
-     * @param \IAttributeService $attributeService
+     * @param IAttributeService $attributeService
      */
     public function SetAttributeService($attributeService)
     {
@@ -118,7 +118,7 @@ class ManageUsersPresenter extends ActionPresenter implements IManageUsersPresen
     }
 
     /**
-     * @param \IManageUsersService $manageUsersService
+     * @param IManageUsersService $manageUsersService
      */
     public function SetManageUsersService($manageUsersService)
     {
@@ -126,7 +126,7 @@ class ManageUsersPresenter extends ActionPresenter implements IManageUsersPresen
     }
 
     /**
-     * @param \ResourceRepository $resourceRepository
+     * @param ResourceRepository $resourceRepository
      */
     public function SetResourceRepository($resourceRepository)
     {
@@ -134,7 +134,7 @@ class ManageUsersPresenter extends ActionPresenter implements IManageUsersPresen
     }
 
     /**
-     * @param \UserRepository $userRepository
+     * @param UserRepository $userRepository
      */
     public function SetUserRepository($userRepository)
     {
@@ -293,8 +293,8 @@ class ManageUsersPresenter extends ActionPresenter implements IManageUsersPresen
 
     public function ChangePermissions()
     {
-        $user = $this->userRepository->LoadById(ServiceLocator::GetServer()->GetUserSession()->UserId);
-        $resources = $this->GetResourcesThatCurrentUserCanAdminister($user);
+        $currentUser = $this->userRepository->LoadById(ServiceLocator::GetServer()->GetUserSession()->UserId);
+        $resources = $this->GetResourcesThatCurrentUserCanAdminister($currentUser);
 
         $acceptableResourceIds = array();
 
@@ -309,10 +309,29 @@ class ManageUsersPresenter extends ActionPresenter implements IManageUsersPresen
             $allowedResources = $this->page->GetAllowedResourceIds();
         }
 
-        $currentResources = $user->AllowedResourceIds();
+        $allowed = [];
+        $view = [];
+        foreach ($allowedResources as $resource)
+        {
+            $split = explode('_', $resource);
+            $resourceId = $split[0];
+            $permissionType = $split[1];
+
+            if ($permissionType === ResourcePermissionType::Full . '')
+            {
+                $allowed[] = $resourceId;
+            }
+            else if ($permissionType === ResourcePermissionType::View . '')
+            {
+                $view[] = $resourceId;
+            }
+        }
+
+        $currentResources = $user->GetAllowedResourceIds();
         $toRemainUnchanged = array_diff($currentResources, $acceptableResourceIds);
 
-        $user->ChangePermissions(array_merge($toRemainUnchanged, $allowedResources));
+        $user->ChangeAllowedPermissions(array_merge($toRemainUnchanged, $allowed));
+        $user->ChangeViewPermissions(array_merge($toRemainUnchanged, $view));
         $this->userRepository->Update($user);
     }
 
@@ -363,7 +382,8 @@ class ManageUsersPresenter extends ActionPresenter implements IManageUsersPresen
     public function GetUserResourcePermissions()
     {
         $user = $this->userRepository->LoadById($this->page->GetUserId());
-        return $user->AllowedResourceIds();
+        return array('full' => $user->GetAllowedResourceIds(), 'view' => $user->GetAllowedViewResourceIds());
+
     }
 
     /**

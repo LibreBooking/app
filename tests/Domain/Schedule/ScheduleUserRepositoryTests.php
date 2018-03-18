@@ -67,7 +67,6 @@ class ScheduleUserRepositoryTests extends TestBase
 		$this->assertTrue($this->db->ContainsCommand($userPermissionsCommand));
 		$this->assertTrue($this->db->ContainsCommand($groupPermissionsCommand));
 
-		$this->assertEquals(count($userResourceRoles), count($user->GetResources()));
 		$this->assertEquals(6, count($user->GetAllResources()), 'excludes the dupes');
 	}
 
@@ -85,20 +84,32 @@ class ScheduleUserRepositoryTests extends TestBase
 		$rid4 = 4;
 		$r3 = new ScheduleResource($rid3, 'resource 3');
 		$r4 = new ScheduleResource($rid4, 'resource 4');
+        $r5 = new ScheduleResource(5, 'resource 5');
+        $r6 = new ScheduleResource(6, 'resource 6');
 
-		$g1 = new ScheduleGroup(100, array($r1, $r3), array());
-		$g2 = new ScheduleGroup(200, array($r1, $r4, $r3), array());
+		$g1 = new ScheduleGroup(100, array($r1, $r3), array($r5));
+		$g2 = new ScheduleGroup(200, array($r1, $r4, $r3), array($r6));
 		$groupPermissions = array($g1, $g2);
 
-		$user = new ScheduleUser($userId, $resources, $groupPermissions, array());
+        $view = array($r5);
+
+		$user = new ScheduleUser($userId, $resources, $view, $groupPermissions, array());
 
 		$permittedResources = $user->GetAllResources();
 
-		$this->assertEquals(4, count($permittedResources));
+		$this->assertEquals(6, count($permittedResources));
 		$this->assertContains($r1, $permittedResources);
 		$this->assertContains($r2, $permittedResources);
 		$this->assertContains($r3, $permittedResources);
 		$this->assertContains($r4, $permittedResources);
-	}
+		$this->assertContains($r5, $permittedResources);
+		$this->assertContains($r6, $permittedResources);
+
+		$bookable = $user->GetBookableResources();
+        $this->assertEquals(4, count($bookable));
+        
+        $viewable = $user->GetViewOnlyResources();
+        $this->assertEquals(2, count($viewable));
+
+    }
 }
-?>

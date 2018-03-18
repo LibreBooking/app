@@ -143,8 +143,12 @@ CREATE TABLE `resource_images` (
   ENGINE = InnoDB
   DEFAULT CHARACTER SET utf8;
 
-ALTER TABLE group_resource_permissions ADD COLUMN permission_type TINYINT UNSIGNED NOT NULL DEFAULT 0;
-ALTER TABLE group_resource_permissions DROP PRIMARY KEY, ADD PRIMARY KEY(group_id, resource_id);
+ALTER TABLE `group_resource_permissions` ADD COLUMN `permission_type` TINYINT UNSIGNED NOT NULL DEFAULT 0;
+ALTER TABLE `group_resource_permissions` DROP PRIMARY KEY, ADD PRIMARY KEY(`group_id`, `resource_id`);
+ALTER TABLE `group_resource_permissions` ADD INDEX(`group_id`);
+ALTER TABLE `group_resource_permissions` ADD INDEX(`resource_id`);
 
-ALTER TABLE user_resource_permissions ADD COLUMN permission_type TINYINT UNSIGNED NOT NULL DEFAULT 0;
-ALTER TABLE user_resource_permissions DROP PRIMARY KEY, ADD PRIMARY KEY(user_id, resource_id);
+ALTER TABLE `user_resource_permissions` ADD COLUMN `permission_type` TINYINT UNSIGNED NOT NULL DEFAULT 0;
+ALTER TABLE `user_resource_permissions` DROP PRIMARY KEY, ADD PRIMARY KEY(`user_id`, `resource_id`);
+ALTER TABLE `user_resource_permissions` ADD INDEX(`user_id`);
+ALTER TABLE `user_resource_permissions` ADD INDEX(`resource_id`);

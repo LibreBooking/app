@@ -36,4 +36,9 @@ class ResourcePermissionFilter implements IResourceFilter
 	{
 		return $this->permissionService->CanAccessResource($resource, $this->user);
 	}
+
+	public function CanBook($resource)
+	{
+		return $this->permissionService->CanBookResource($resource, $this->user);
+	}
 }

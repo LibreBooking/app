@@ -173,8 +173,8 @@ class Queries
 		VALUES (@userid, @groupid)';
 
 	const ADD_USER_RESOURCE_PERMISSION =
-			'INSERT IGNORE INTO user_resource_permissions (user_id, resource_id)
-		VALUES (@userid, @resourceid)';
+			'INSERT IGNORE INTO user_resource_permissions (user_id, resource_id, permission_type)
+		VALUES (@userid, @resourceid, @permission_type)';
 
 	const ADD_USER_TO_DEFAULT_GROUPS =
         'INSERT IGNORE INTO user_groups (user_id, group_id) SELECT @userid, group_id FROM groups WHERE isdefault=1';
@@ -856,7 +856,7 @@ class Queries
 
 	const GET_USER_RESOURCE_PERMISSIONS =
 			'SELECT
-			urp.user_id, r.resource_id, r.name
+			urp.user_id, urp.permission_type, r.resource_id, r.name
 		FROM
 			user_resource_permissions urp, resources r
 		WHERE
@@ -909,7 +909,7 @@ class Queries
 				r.resource_id = @resourceid AND r.resource_id = grp.resource_id AND g.group_id = grp.group_id';
 
 	const GET_RESOURCE_USER_PERMISSION = 'SELECT
-				u.*
+				u.*, urp.permission_type
 			FROM
 				user_resource_permissions urp, resources r, users u
 			WHERE

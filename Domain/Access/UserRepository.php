@@ -323,7 +323,8 @@ class UserRepository implements IUserRepository, IAccountActivationRepository
 
             $user = User::FromRow($row);
             $user->WithEmailPreferences($emailPreferences);
-            $user->WithPermissions($permissions);
+            $user->WithAllowedPermissions($permissions['full']);
+            $user->WithViewablePermission($permissions['view']);
             $user->WithGroups($groups);
             $user->WithCredits($row[ColumnNames::CREDIT_COUNT]);
             $this->LoadAttributes($userId, $user);
@@ -416,8 +417,17 @@ class UserRepository implements IUserRepository, IAccountActivationRepository
 
         $addedPermissions = $user->GetAddedPermissions();
         if (!empty($addedPermissions)) {
-            foreach ($addedPermissions as $resourceId) {
-                $db->Execute(new AddUserResourcePermission($id, $resourceId));
+            foreach ($addedPermissions as $resourceId)
+            {
+                $db->Execute(new AddUserResourcePermission($id, $resourceId, ResourcePermissionType::Full));
+            }
+        }
+
+        $addedPermissions = $user->GetAddedViewPermissions();
+        if (!empty($addedPermissions)) {
+            foreach ($addedPermissions as $resourceId)
+            {
+                $db->Execute(new AddUserResourcePermission($id, $resourceId, ResourcePermissionType::View));
             }
         }
 
@@ -460,7 +470,12 @@ class UserRepository implements IUserRepository, IAccountActivationRepository
 
         $addedPermissions = $user->GetAddedPermissions();
         foreach ($addedPermissions as $resourceId) {
-            $db->Execute(new AddUserResourcePermission($userId, $resourceId));
+            $db->Execute(new AddUserResourcePermission($userId, $resourceId, ResourcePermissionType::Full));
+        }
+
+        $addedPermissions = $user->GetAddedViewPermissions();
+        foreach ($addedPermissions as $resourceId) {
+            $db->Execute(new AddUserResourcePermission($userId, $resourceId, ResourcePermissionType::View));
         }
 
         if ($user->HaveAttributesChanged()) {
@@ -586,13 +601,19 @@ class UserRepository implements IUserRepository, IAccountActivationRepository
 
     private function LoadPermissions($userId)
     {
-        $allowedResourceIds = array();
+        $allowedResourceIds['full'] = array();
+        $allowedResourceIds['view'] = array();
 
         $command = new GetUserPermissionsCommand($userId);
         $reader = ServiceLocator::GetDatabase()->Query($command);
 
         while ($row = $reader->GetRow()) {
-            $allowedResourceIds[] = $row[ColumnNames::RESOURCE_ID];
+            if ($row[ColumnNames::PERMISSION_TYPE] == ResourcePermissionType::Full) {
+                $allowedResourceIds['full'][] = $row[ColumnNames::RESOURCE_ID];
+            }
+            else {
+                $allowedResourceIds['view'][] = $row[ColumnNames::RESOURCE_ID];
+            }
         }
 
         $reader->Free();
@@ -942,6 +963,12 @@ class UserItemView
 class UserPermissionItemView extends UserItemView
 {
     public $PermissionType;
+
+    public function __construct()
+    {
+        parent::__construct();
+        $this->PermissionType = ResourcePermissionType::None;
+    }
 
     public function PermissionType()
     {

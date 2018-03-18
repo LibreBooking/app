@@ -47,8 +47,7 @@ function ResourceManagement(opts) {
 
 		userSearch: $('#userSearch'),
 		userDialog: $('#userDialog'),
-		addUserForm: $('#addUserForm'),
-		removeUserForm: $('#removeUserForm'),
+		changeUserForm: $('#changeUserForm'),
 		browseUserDialog: $('#allUsers'),
 		browseUsersButton: $('#browseUsers'),
 		resourceUserList: $('#resourceUserList'),
@@ -56,8 +55,6 @@ function ResourceManagement(opts) {
 
 		groupSearch: $('#groupSearch'),
 		groupDialog: $('#groupDialog'),
-		addGroupForm: $('#addGroupForm'),
-		removeGroupForm: $('#removeGroupForm'),
 		browseGroupDialog: $('#allGroups'),
 		browseGroupsButton: $('#browseGroups'),
 		resourceGroupList: $('#resourceGroupList'),
@@ -221,13 +218,13 @@ function ResourceManagement(opts) {
 				showAccessPrompt(e);
 			});
 
-			details.find('.changeUsers').click(function (e) {
-				changeUsers();
+			details.find('.changeUserPermission').click(function (e) {
+				changeUserPermissions();
 				elements.userDialog.modal('show');
 			});
 
-			details.find('.changeGroups').click(function (e) {
-				changeGroups();
+			details.find('.changeGroupPermissions').click(function (e) {
+				changeGroupPermissions();
 				elements.groupDialog.modal('show');
 			});
 
@@ -325,32 +322,53 @@ function ResourceManagement(opts) {
 		});
 
 		elements.userSearch.userAutoComplete(options.userAutocompleteUrl, function (ui) {
-			addUserPermission(ui.item.value);
+			changeUserPermission(ui.item.value, '1');
 			elements.userSearch.val('');
 		});
 
 		elements.groupSearch.groupAutoComplete(options.groupAutocompleteUrl, function (ui) {
-			addGroupPermission(ui.item.value);
+			changeGroupPermission(ui.item.value, '1');
 			elements.groupSearch.val('');
 		});
 
-		elements.browseUserDialog.delegate('.add', 'click', function () {
-			var link = $(this);
-			var userId = link.siblings('.id').val();
-
-			addUserPermission(userId);
-
-			link.find('img').attr('src', '../img/tick-white.png');
-		});
-
-		elements.resourceUserList.delegate('.delete', 'click', function () {
-			var userId = $(this).siblings('.id').val();
-			removeUserPermission($(this), userId);
-		});
-
-		elements.browseUsersButton.click(function () {
+		elements.browseUsersButton.click(function (e) {
+            e.preventDefault();
 			showAllUsersToAdd();
 		});
+
+        elements.resourceUserList.delegate('.change-permission-type', 'change', function (e) {
+            e.preventDefault();
+            var userId = $(this).data('user-id');
+            var type = $(this).val();
+            changeUserPermission(userId, type);
+        });
+
+        elements.allUsersList.delegate('.change-permission-type', 'change', function (e) {
+            e.preventDefault();
+            var userId = $(this).data('user-id');
+            var type = $(this).val();
+            changeUserPermission(userId, type);
+        });
+
+        elements.browseGroupsButton.click(function (e) {
+            e.preventDefault();
+            showAllGroupsToAdd();
+        });
+
+        elements.resourceGroupList.delegate('.change-permission-type', 'change', function (e) {
+            e.preventDefault();
+            var groupId = $(this).data('group-id');
+            var type = $(this).val();
+            changeGroupPermission(groupId, type);
+        });
+
+        elements.allGroupsList.delegate('.change-permission-type', 'change', function (e) {
+            e.preventDefault();
+            var groupId = $(this).data('group-id');
+            var type = $(this).val();
+            changeGroupPermission(groupId, type);
+        });
+
 
 		elements.autoAssign.on('click', function () {
 			elements.removeAllPermissions.find('input').prop('checked', false);
@@ -372,41 +390,6 @@ function ResourceManagement(opts) {
 		wireUpCheckboxToggle(elements.capacityForm);
 		wireUpCheckboxToggle(elements.accessForm);
 		wireUpCheckboxToggle(elements.bulkUpdateForm);
-        //
-		// elements.browseGroupDialog.delegate('.add', 'click', function (e) {
-		// 	e.preventDefault();
-		// 	var link = $(this);
-		// 	var groupId = link.siblings('.id').val();
-        //
-		// 	addGroupPermission(groupId);
-        //
-		// 	link.find('img').attr('src', '../img/tick-white.png');
-		// });
-
-		// elements.resourceGroupList.delegate('.delete', 'click', function (e) {
-		// 	e.preventDefault();
-		// 	var groupId = $(this).data('group-id');
-		// 	removeGroupPermission($(this), groupId);
-		// });
-
-        elements.resourceGroupList.delegate('.change-permission-type', 'change', function (e) {
-			e.preventDefault();
-			var groupId = $(this).data('group-id');
-			var type = $(this).val();
-			changeGroupPermission($(this), groupId, type);
-		});
-
-        elements.allGroupsList.delegate('.change-permission-type', 'change', function (e) {
-			e.preventDefault();
-			var groupId = $(this).data('group-id');
-			var type = $(this).val();
-			changeGroupPermission($(this), groupId, type);
-		});
-
-		elements.browseGroupsButton.click(function (e) {
-			e.preventDefault();
-			showAllGroupsToAdd();
-		});
 
 		elements.importTrigger.click(function (e) {
 			e.preventDefault();
@@ -496,11 +479,8 @@ function ResourceManagement(opts) {
 		ConfigureAsyncForm(elements.capacityForm, defaultSubmitCallback(elements.capacityForm), onCapacitySaved);
 		ConfigureAsyncForm(elements.accessForm, defaultSubmitCallback(elements.accessForm), onAccessSaved, null, {onBeforeSerialize: combineIntervals});
 		ConfigureAsyncForm(elements.bulkUpdateForm, defaultSubmitCallback(elements.bulkUpdateForm), null, bulkUpdateErrorHandler, {onBeforeSerialize: combineIntervals});
-		ConfigureAsyncForm(elements.addUserForm, defaultSubmitCallback(elements.addUserForm), changeUsers, errorHandler);
-		ConfigureAsyncForm(elements.removeUserForm, defaultSubmitCallback(elements.removeUserForm), changeUsers, errorHandler);
-		ConfigureAsyncForm(elements.addGroupForm, defaultSubmitCallback(elements.addGroupForm), changeGroups, errorHandler);
-		ConfigureAsyncForm(elements.removeGroupForm, defaultSubmitCallback(elements.removeGroupForm), changeGroups, errorHandler);
-		ConfigureAsyncForm(elements.changeGroupForm, defaultSubmitCallback(elements.changeGroupForm), changeGroups, errorHandler);
+		ConfigureAsyncForm(elements.changeUserForm, defaultSubmitCallback(elements.changeUserForm), changeUserPermissions, errorHandler);
+		ConfigureAsyncForm(elements.changeGroupForm, defaultSubmitCallback(elements.changeGroupForm), changeGroupPermissions, errorHandler);
 		ConfigureAsyncForm(elements.resourceGroupForm, defaultSubmitCallback(elements.resourceGroupForm), onResourceGroupsSaved);
 		ConfigureAsyncForm(elements.colorForm, defaultSubmitCallback(elements.colorForm), function () {
 		});
@@ -872,83 +852,38 @@ function ResourceManagement(opts) {
 		});
 	}
 
-	// function filterResources() {
-	// 	window.location = document.location.pathname + '?' + $('#filterForm').serialize();
-	// }
-
 	var handleAddError = function (result) {
 		$('#addResourceResults').text(result).show();
 	};
 
-	var changeUsers = function () {
+	var changeUserPermissions = function () {
 		var resourceId = getActiveResourceId();
-		$.getJSON(opts.permissionsUrl + '?dr=users', {rid: resourceId}, function (data) {
-			var items = [];
-			var userIds = [];
-
-			$('#totalUsers').text(data.Total);
-			if (data.Users != null)
-			{
-				$.map(data.Users, function (item) {
-					items.push('<div><a href="#" class="delete"><img src="../img/cross-button.png" /></a> ' + item.DisplayName + '<input type="hidden" class="id" value="' + item.Id + '"/></div>');
-					userIds[item.Id] = item.Id;
-				});
-			}
-
-			elements.resourceUserList.empty();
-			elements.resourceUserList.data('userIds', userIds);
-
-			$('<div/>', {'class': '', html: items.join('')}).appendTo(elements.resourceUserList);
-
+		$.get(opts.permissionsUrl + '?dr=users', {rid: resourceId}, function (data) {
+			elements.resourceUserList.html(data);
+            $('.user-permission-spinner').addClass('no-show');
 		});
 	};
 
-	var addUserPermission = function (userId) {
-		$('#addUserId').val(userId);
-		elements.addUserForm.submit();
+	var changeUserPermission = function (userId, type) {
+        $('.user-permission-spinner').removeClass('no-show');
+	    $('#changeUserId').val(userId);
+		$('#changeUserType').val(type);
+		elements.changeUserForm.submit();
 	};
-
-	var removeUserPermission = function (element, userId) {
-		$('#removeUserId').val(userId);
-		elements.removeUserForm.submit();
-	};
-
-	var allUserList;
 
 	var showAllUsersToAdd = function () {
 		elements.userDialog.modal('hide');
 		elements.allUsersList.empty();
 
-		if (allUserList == null)
-		{
-			$.ajax({
-				url: options.userAutocompleteUrl, dataType: 'json', async: false, success: function (data) {
-					allUserList = data;
-				}
-			});
-		}
-
-		var items = [];
-		if (allUserList != null)
-		{
-			$.map(allUserList, function (item) {
-				if (elements.resourceUserList.data('userIds')[item.Id] == undefined)
-				{
-					items.push('<div><a href="#" class="add"><img src="../img/plus-button.png" alt="Add" /></a> ' + item.DisplayName + '<input type="hidden" class="id" value="' + item.Id + '"/></div>');
-				}
-				else
-				{
-					items.push('<div><img src="../img/tick-white.png" /> <span>' + item.DisplayName + '</span></div>');
-				}
-			});
-		}
-
-		$('<div/>', {'class': '', html: items.join('')}).appendTo(elements.allUsersList);
+        var resourceId = getActiveResourceId();
+        $.get(opts.permissionsUrl + '?dr=usersAll', {rid: resourceId}, function (data) {
+            elements.allUsersList.html(data);
+        });
 
 		elements.browseUserDialog.modal('show');
 	};
 
-	var changeGroups = function () {
+	var changeGroupPermissions = function () {
 		var resourceId = getActiveResourceId();
 		$.get(opts.permissionsUrl + '?dr=groups', {rid: resourceId}, function (data) {
             elements.resourceGroupList.html(data);
@@ -956,12 +891,7 @@ function ResourceManagement(opts) {
         });
 	};
 
-	var addGroupPermission = function (group) {
-		$('#addGroupId').val(group);
-		elements.addGroupForm.submit();
-	};
-
-    var changeGroupPermission = function (element, groupId, type) {
+    var changeGroupPermission = function (groupId, type) {
         $('.group-permission-spinner').removeClass('no-show');
         $('#changeGroupId').val(groupId);
         $('#changeGroupType').val(type);

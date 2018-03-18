@@ -61,7 +61,7 @@ class SearchReservationsPresenterTests extends TestBase
 														   $this->resourceService,
 														   $this->scheduleService);
 
-		$this->resourceService->_AllResources = array(new TestResourceDto(1, '', true, 1), new TestResourceDto(3, '', true, 2));
+		$this->resourceService->_AllResources = array(new TestResourceDto(1, '', true, true, 1), new TestResourceDto(3, '', true, true, 2));
 		$this->scheduleService->_AllSchedules = array(new FakeSchedule(1, 'schedule', true, 1));
 	}
 

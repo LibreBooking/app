@@ -50,10 +50,7 @@ class ManageResourcesActions
 	const ActionChangeCapacity = 'changeCapacity';
 	const ActionChangeAccess = 'changeAccess';
 	const ActionChangeAttribute = 'changeAttribute';
-	const ActionAddUserPermission = 'addUserPermission';
-	const ActionRemoveUserPermission = 'removeUserPermission';
-	const ActionAddGroupPermission = 'addGroupPermission';
-	const ActionRemoveGroupPermission = 'removeGroupPermission';
+	const ActionChangeUserPermission = 'changeUserPermission';
 	const ActionChangeResourceGroups = 'changeResourceGroups';
 	const ActionChangeColor = 'changeColor';
 	const ActionChangeCredits = 'changeCredits';
@@ -141,10 +138,6 @@ class ManageResourcesPresenter extends ActionPresenter
 		$this->AddAction(ManageResourcesActions::ActionChangeCapacity, 'ChangeCapacity');
 		$this->AddAction(ManageResourcesActions::ActionChangeAccess, 'ChangeAccess');
 		$this->AddAction(ManageResourcesActions::ActionChangeAttribute, 'ChangeAttribute');
-		$this->AddAction(ManageResourcesActions::ActionAddUserPermission, 'AddUserPermission');
-		$this->AddAction(ManageResourcesActions::ActionRemoveUserPermission, 'RemoveUserPermission');
-		$this->AddAction(ManageResourcesActions::ActionAddGroupPermission, 'AddGroupPermission');
-		$this->AddAction(ManageResourcesActions::ActionRemoveGroupPermission, 'RemoveGroupPermission');
 		$this->AddAction(ManageResourcesActions::ActionChangeResourceGroups, 'ChangeResourceGroups');
 		$this->AddAction(ManageResourcesActions::ActionChangeColor, 'ChangeColor');
 		$this->AddAction(ManageResourcesActions::ActionChangeCredits, 'ChangeCredits');
@@ -152,6 +145,7 @@ class ManageResourcesPresenter extends ActionPresenter
 		$this->AddAction(ManageResourcesActions::ActionCopyResource, 'ActionCopyResource');
 		$this->AddAction(ManageResourcesActions::ImportResources, 'ImportResource');
 		$this->AddAction(ManageResourcesActions::ActionChangeGroupPermission, 'ChangeGroupPermission');
+		$this->AddAction(ManageResourcesActions::ActionChangeUserPermission, 'ChangeUserPermission');
 	}
 
 	public function PageLoad()
@@ -785,37 +779,14 @@ class ManageResourcesPresenter extends ActionPresenter
 		}
 	}
 
-	public function AddUserPermission()
-	{
-		$userId = $this->page->GetPermissionUserId();
-		$resourceId = $this->page->GetResourceId();
+    public function ChangeUserPermission()
+    {
+        $userId = $this->page->GetPermissionUserId();
+        $type = $this->page->GetPermissionType();
+        $resourceId = $this->page->GetResourceId();
 
-		$this->resourceRepository->AddResourceUserPermission($resourceId, $userId);
-	}
-
-	public function RemoveUserPermission()
-	{
-		$userId = $this->page->GetPermissionUserId();
-		$resourceId = $this->page->GetResourceId();
-
-		$this->resourceRepository->RemoveResourceUserPermission($resourceId, $userId);
-	}
-
-	public function AddGroupPermission()
-	{
-		$groupId = $this->page->GetPermissionGroupId();
-		$resourceId = $this->page->GetResourceId();
-
-		$this->resourceRepository->AddResourceGroupPermission($resourceId, $groupId);
-	}
-
-	public function RemoveGroupPermission()
-	{
-		$groupId = $this->page->GetPermissionGroupId();
-		$resourceId = $this->page->GetResourceId();
-
-		$this->resourceRepository->RemoveResourceGroupPermission($resourceId, $groupId);
-	}
+        $this->resourceRepository->ChangeResourceUserPermission($resourceId, $userId, $type);
+    }
 
 	public function ChangeGroupPermission()
 	{
@@ -913,14 +884,18 @@ class ManageResourcesPresenter extends ActionPresenter
 		}
 
 		$groups = $this->resourceRepository->GetGroupsWithPermission($sourceId);
-		foreach ($groups->Results() as $group)
+
+        /** @var GroupPermissionItemView $group */
+        foreach ($groups->Results() as $group)
 		{
-			$this->resourceRepository->AddResourceGroupPermission($resourceId, $group->Id);
+			$this->resourceRepository->ChangeResourceGroupPermission($resourceId, $group->Id(), $group->PermissionType());
 		}
+
 		$users = $this->resourceRepository->GetUsersWithPermission($sourceId);
-		foreach ($users->Results() as $user)
+        /** @var UserPermissionItemView $user */
+        foreach ($users->Results() as $user)
 		{
-			$this->resourceRepository->AddResourceUserPermission($resourceId, $user->Id);
+			$this->resourceRepository->ChangeResourceUserPermission($resourceId, $user->Id, $user->PermissionType());
 		}
 	}
 
@@ -1116,8 +1091,37 @@ class ManageResourcesPresenter extends ActionPresenter
 			case 'users' :
 			{
 				$users = $this->resourceRepository->GetUsersWithPermission($this->page->GetResourceId());
-				$response = new UserResults($users->Results(), $users->PageInfo()->Total);
-				$this->page->SetJsonResponse($response);
+				$this->page->BindUserPermissions($users->Results());
+				break;
+			}
+			case 'usersAll' :
+			{
+			    $userRepository = new UserRepository();
+				$users = $this->resourceRepository->GetUsersWithPermission($this->page->GetResourceId());
+				$users = $users->Results();
+				$allUsers = $userRepository->GetList(null, 1000);
+				$allUsers = $allUsers->Results();
+
+                $idsWithPermissions = [];
+                foreach ($users as $permission)
+                {
+                    $idsWithPermissions[$permission->Id] = true;
+                }
+                /** @var UserItemView $user */
+                foreach ($allUsers as $user)
+                {
+                    $found = array_key_exists($user->Id, $idsWithPermissions);
+
+                    if (!$found)
+                    {
+                        $u = new UserPermissionItemView();
+                        $u->Id = $user->Id;
+                        $u->First = $user->First;
+                        $u->Last = $user->Last;
+                        $users[] = $u;
+                    }
+                }
+                $this->page->BindUserPermissions($users);
 				break;
 			}
 			case 'groups':
@@ -1131,7 +1135,7 @@ class ManageResourcesPresenter extends ActionPresenter
 				$groups = $this->resourceRepository->GetGroupsWithPermission($this->page->GetResourceId());
                 /** @var GroupPermissionItemView[] $groups */
                 $groups = $groups->Results();
-				$allGroups = $this->groupRepository->GetList();
+				$allGroups = $this->groupRepository->GetList(null, 1000);
 				$allGroups = $allGroups->Results();
 
 				$idsWithPermissions = [];
@@ -1141,13 +1145,13 @@ class ManageResourcesPresenter extends ActionPresenter
                 }
 
                 /** @var GroupItemView $group */
-                foreach ($allGroups as $group)
+                foreach ($allGroups as $user)
                 {
-                    $found = array_key_exists($group->Id(), $idsWithPermissions);
+                    $found = array_key_exists($user->Id(), $idsWithPermissions);
 
                     if (!$found)
                     {
-                        $groups[] = new GroupPermissionItemView($group->Id(), $group->Name());
+                        $groups[] = new GroupPermissionItemView($user->Id(), $user->Name());
                     }
                 }
 				$this->page->BindGroupPermissions($groups);

@@ -107,7 +107,7 @@ class UserRepositoryTests extends TestBase
 
 		$this->assertEquals($row[ColumnNames::FIRST_NAME], $user->FirstName());
 		$this->assertTrue($user->WantsEventEmail(new ReservationCreatedEvent()));
-		$this->assertContains($permissionsRows[1][ColumnNames::RESOURCE_ID], $user->AllowedResourceIds());
+		$this->assertContains($permissionsRows[1][ColumnNames::RESOURCE_ID], $user->GetAllowedResourceIds());
 		$this->assertEquals($row[ColumnNames::PHONE_NUMBER], $user->GetAttribute(UserAttribute::Phone));
 
 		$row1 = $groupsRows[0];
@@ -320,26 +320,36 @@ class UserRepositoryTests extends TestBase
 		$userId = 987;
 		$user = new User();
 		$user->WithId($userId);
-		$user->WithPermissions(array(1, 2, 3, 5));
-		$user->ChangePermissions(array(2, 3, 4, 6));
+		$user->WithAllowedPermissions(array(1, 2, 3, 5));
+		$user->ChangeAllowedPermissions(array(2, 3, 4, 6));
+        $user->WithViewablePermission(array(7, 8, 9));
+		$user->ChangeViewPermissions(array(7, 5, 10));
 
 		$deletePermissionsCommand1 = new DeleteUserResourcePermission($userId, 1);
 		$deletePermissionsCommand2 = new DeleteUserResourcePermission($userId, 5);
-		$addPermissionsCommand1 = new AddUserResourcePermission($userId, 4);
-		$addPermissionsCommand2 = new AddUserResourcePermission($userId, 6);
+		$deletePermissionsCommand3 = new DeleteUserResourcePermission($userId, 8);
+		$deletePermissionsCommand4 = new DeleteUserResourcePermission($userId, 9);
+		$addPermissionsCommand1 = new AddUserResourcePermission($userId, 4, ResourcePermissionType::Full);
+		$addPermissionsCommand2 = new AddUserResourcePermission($userId, 6, ResourcePermissionType::Full);
+		$addPermissionsCommand3 = new AddUserResourcePermission($userId, 5, ResourcePermissionType::View);
+		$addPermissionsCommand4 = new AddUserResourcePermission($userId, 10, ResourcePermissionType::View);
 
 		$repo = new UserRepository();
 		$repo->Update($user);
 
 		$deleteCommands = $this->db->GetCommandsOfType('DeleteUserResourcePermission');
 		$insertCommands = $this->db->GetCommandsOfType('AddUserResourcePermission');
-		$this->assertEquals(2, count($deleteCommands));
-		$this->assertEquals(2, count($insertCommands));
+		$this->assertEquals(4, count($deleteCommands));
+		$this->assertEquals(4, count($insertCommands));
 
 		$this->assertTrue($this->db->ContainsCommand($deletePermissionsCommand1));
 		$this->assertTrue($this->db->ContainsCommand($deletePermissionsCommand2));
+		$this->assertTrue($this->db->ContainsCommand($deletePermissionsCommand3));
+		$this->assertTrue($this->db->ContainsCommand($deletePermissionsCommand4));
 		$this->assertTrue($this->db->ContainsCommand($addPermissionsCommand1));
 		$this->assertTrue($this->db->ContainsCommand($addPermissionsCommand2));
+		$this->assertTrue($this->db->ContainsCommand($addPermissionsCommand3));
+		$this->assertTrue($this->db->ContainsCommand($addPermissionsCommand4));
 	}
 
 	public function testUpdatesAttributesIfTheyHaveChanged()
@@ -680,9 +690,9 @@ class UserRepositoryTests extends TestBase
 	private function GetPermissionsRows()
 	{
 		return array(
-				array(ColumnNames::RESOURCE_ID => 1),
-				array(ColumnNames::RESOURCE_ID => 2),
-				array(ColumnNames::RESOURCE_ID => 3),
+				array(ColumnNames::RESOURCE_ID => 1, ColumnNames::PERMISSION_TYPE => ResourcePermissionType::Full),
+				array(ColumnNames::RESOURCE_ID => 2, ColumnNames::PERMISSION_TYPE => ResourcePermissionType::Full),
+				array(ColumnNames::RESOURCE_ID => 3, ColumnNames::PERMISSION_TYPE => ResourcePermissionType::Full),
 		);
 	}
 

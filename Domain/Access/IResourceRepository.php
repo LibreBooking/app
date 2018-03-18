@@ -213,26 +213,9 @@ interface IResourceRepository
 	/**
 	 * @param int $resourceId
 	 * @param int $userId
+     * @param int $type
 	 */
-	public function AddResourceUserPermission($resourceId, $userId);
-
-	/**
-	 * @param int $resourceId
-	 * @param int $userId
-	 */
-	public function RemoveResourceUserPermission($resourceId, $userId);
-
-	/**
-	 * @param int $resourceId
-	 * @param int $groupId
-	 */
-	public function AddResourceGroupPermission($resourceId, $groupId);
-
-	/**
-	 * @param int $resourceId
-	 * @param int $groupId
-	 */
-	public function RemoveResourceGroupPermission($resourceId, $groupId);
+	public function ChangeResourceUserPermission($resourceId, $userId, $type);
 
 	/**
 	 * @param int $resourceId

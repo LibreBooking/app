@@ -45,7 +45,8 @@ function UserManagement(opts) {
 		invitationForm: $('#invitationForm'),
 		inviteEmails: $('#inviteEmails'),
 
-        checkAllResources: $('#checkAllResources'),
+        checkAllResourcesFull: $('#checkAllResourcesFull'),
+        checkAllResourcesView: $('#checkAllResourcesView'),
         checkNoResources: $('#checkNoResources'),
 
 		deleteMultiplePrompt: $('#delete-selected'),
@@ -104,7 +105,6 @@ function UserManagement(opts) {
 		});
 
 		elements.userList.delegate('.changeAttribute', 'click', function (e) {
-			//e.preventDefault();
 			e.stopPropagation();
 			$(e.target).closest('.updateCustomAttribute').find('.inlineAttribute').editable('toggle');
 		});
@@ -148,14 +148,19 @@ function UserManagement(opts) {
 			$(this).appendTo(elements.addedGroups);
 		});
 
-        elements.checkAllResources.click(function(e){
+        elements.checkAllResourcesFull.click(function(e){
             e.preventDefault();
-            elements.permissionsDialog.find('input:checkbox').prop('checked', true);
+            elements.permissionsDialog.find('.full').prop('selected', true)
+        });
+
+        elements.checkAllResourcesView.click(function(e){
+            e.preventDefault();
+            elements.permissionsDialog.find('.view').prop('selected', true)
         });
 
         elements.checkNoResources.click(function(e){
             e.preventDefault();
-            elements.permissionsDialog.find('input:checkbox').prop('checked', false);
+            elements.permissionsDialog.find('.none').prop('selected', true)
         });
 
 		$(".save").click(function () {
@@ -361,14 +366,19 @@ function UserManagement(opts) {
 	var changePermissions = function () {
 		var user = getActiveUser();
 		var data = {dr: 'permissions', uid: user.id};
-		$.get(opts.permissionsUrl, data, function (resourceIds) {
-			elements.permissionsForm.find(':checkbox').prop('checked', false);
-			$.each(resourceIds, function (index, value) {
-				elements.permissionsForm.find(':checkbox[value="' + value + '"]').prop('checked', true);
-			});
+        $.get(opts.permissionsUrl, data, function(permissions) {
+            elements.permissionsForm.find('.none').prop('selected', true);
 
-			elements.permissionsDialog.modal('show');
-		});
+            $.each(permissions.full, function(index, value) {
+                elements.permissionsForm.find('#permission_' + value).val(value + '_0');
+            });
+
+            $.each(permissions.view, function(index, value) {
+                elements.permissionsForm.find('#permission_' + value).val(value + '_1');
+            });
+
+            elements.permissionsDialog.modal('show');
+        });
 	};
 
 	var changeColor = function () {

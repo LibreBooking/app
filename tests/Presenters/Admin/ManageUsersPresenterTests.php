@@ -208,7 +208,7 @@ class ManageUsersPresenterTests extends TestBase
 		$adminUserId = $this->fakeUser->UserId;
 
 		$user = new FakeUser();
-		$user->WithPermissions(array_merge($resourcesThatShouldRemainUnchanged, $currentResourceIds));
+		$user->WithAllowedPermissions(array_merge($resourcesThatShouldRemainUnchanged, $currentResourceIds));
 
 		$adminUser = new FakeUser();
 		$adminUser->_ResourceAdminResourceIds = $allowedResourceIds;
@@ -242,7 +242,7 @@ class ManageUsersPresenterTests extends TestBase
 
 		$this->presenter->ChangePermissions();
 
-		$actual = $user->AllowedResourceIds();
+		$actual = $user->GetAllowedResourceIds();
 		$this->assertEquals(sort($expectedResourceIds), sort($actual));
 
 	}

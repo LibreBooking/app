@@ -246,7 +246,6 @@ function GroupManagement(opts) {
 	};
 
 	var removeUserFromGroup = function(element, userId) {
-
         $('#removeUserId').val(userId);
 		elements.removeUserForm.submit();
 	};

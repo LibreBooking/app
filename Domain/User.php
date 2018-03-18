@@ -290,11 +290,18 @@ class User
     private $permissionsChanged = false;
     private $removedPermissions = array();
     private $addedPermissions = array();
+    private $removedViewPermissions = array();
+    private $addedViewPermissions = array();
 
     /**
-     * @var array
+     * @var int[]
      */
     protected $allowedResourceIds = array();
+
+    /**
+     * @var int[]
+     */
+    protected $viewableResourceIds = array();
 
     /**
      * @var string
@@ -317,13 +324,21 @@ class User
     private $isScheduleAdmin = false;
 
     /**
-     * @param array|int[] $allowedResourceIds
-     * @return void
+     * @param int[] $allowedResourceIds
      */
-    public function WithPermissions($allowedResourceIds = array())
+    public function WithAllowedPermissions($allowedResourceIds = array())
     {
         $this->permissionsChanged = false;
         $this->allowedResourceIds = $allowedResourceIds;
+    }
+
+    /**
+     * @param int[] $viewableResourceIds
+     */
+    public function WithViewablePermission($viewableResourceIds = array())
+    {
+        $this->permissionsChanged = false;
+        $this->viewableResourceIds = $viewableResourceIds;
     }
 
     public function WithPreferences(UserPreferences $preferences)
@@ -332,8 +347,7 @@ class User
     }
 
     /**
-     * @param array|UserGroup[] $groups
-     * @return void
+     * @param UserGroup[] $groups
      */
     public function WithGroups($groups = array())
     {
@@ -356,14 +370,17 @@ class User
     }
 
     /**
-     * @param array|UserGroup[] $ownedGroups
+     * @param UserGroup[] $ownedGroups
      */
     public function WithOwnedGroups($ownedGroups = array())
     {
         $this->groupsICanAdminister = $ownedGroups;
     }
 
-    public function ChangePermissions($allowedResourceIds = array())
+    /**
+     * @param int[] $allowedResourceIds
+     */
+    public function ChangeAllowedPermissions($allowedResourceIds = array())
     {
         $removed = array_diff($this->allowedResourceIds, $allowedResourceIds);
         $added = array_diff($allowedResourceIds, $this->allowedResourceIds);
@@ -378,17 +395,70 @@ class User
     }
 
     /**
-     * @return array
+     * @param int[] $viewableResourceIds
      */
-    public function AllowedResourceIds()
+    public function ChangeViewPermissions($viewableResourceIds = array())
+    {
+        $diff = new ArrayDiff($this->viewableResourceIds, $viewableResourceIds);
+        $removed = $diff->GetRemovedFromArray1();
+        $added = $diff->GetAddedToArray1();
+
+        if ($diff->AreDifferent())
+        {
+            $this->permissionsChanged = true;
+            $this->removedViewPermissions = $removed;
+            $this->addedViewPermissions = $added;
+
+            $this->viewableResourceIds = $viewableResourceIds;
+        }
+    }
+
+    /**
+     * @return int[]
+     */
+    public function GetAllowedResourceIds()
     {
         return $this->allowedResourceIds;
     }
 
     /**
      * @internal
+     * @return int[]
+     */
+    public function GetAddedPermissions()
+    {
+        return $this->addedPermissions;
+    }
+
+    /**
+     * @internal
+     * @return int[]
+     */
+    public function GetAddedViewPermissions()
+    {
+        return $this->addedViewPermissions;
+    }
+
+    /**
+     * @internal
+     * @return int[]
+     */
+    public function GetRemovedPermissions()
+    {
+        return array_merge($this->removedPermissions, $this->removedViewPermissions);
+    }
+
+    /**
+     * @return int[]
+     */
+    public function GetAllowedViewResourceIds()
+    {
+        return $this->viewableResourceIds;
+    }
+
+    /**
+     * @internal
      * @param IEmailPreferences $emailPreferences
-     * @return void
      */
     public function WithEmailPreferences(IEmailPreferences $emailPreferences)
     {
@@ -521,24 +591,6 @@ class User
     public function WithLastLogin($loginTime)
     {
         $this->lastLogin = $loginTime;
-    }
-
-    /**
-     * @internal
-     * @return array
-     */
-    public function GetAddedPermissions()
-    {
-        return $this->addedPermissions;
-    }
-
-    /**
-     * @internal
-     * @return array
-     */
-    public function GetRemovedPermissions()
-    {
-        return $this->removedPermissions;
     }
 
     /**

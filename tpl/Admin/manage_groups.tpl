@@ -128,41 +128,41 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 	</div>
 
 	<div class="modal fade" id="permissionsDialog" tabindex="-1" role="dialog" aria-labelledby="permissionsDialogLabel" aria-hidden="true">
-			<div class="modal-dialog">
-				<form id="permissionsForm" method="post">
-					<div class="modal-content">
-						<div class="modal-header">
-							<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-							<h4 class="modal-title" id="permissionsDialogLabel">{translate key=Permissions}</h4>
-						</div>
-						<div class="modal-body scrollable-modal-content">
-                            <a href="#" id="checkNoResources">{translate key=None}</a> |
-                            <a href="#" id="checkAllResourcesFull">{translate key=FullAccess}</a> |
-                            <a href="#" id="checkAllResourcesView">{translate key=ViewOnly}</a>
+        <div class="modal-dialog">
+            <form id="permissionsForm" method="post">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title" id="permissionsDialogLabel">{translate key=Permissions}</h4>
+                    </div>
+                    <div class="modal-body scrollable-modal-content">
+                        <a href="#" id="checkNoResources">{translate key=None}</a> |
+                        <a href="#" id="checkAllResourcesFull">{translate key=FullAccess}</a> |
+                        <a href="#" id="checkAllResourcesView">{translate key=ViewOnly}</a>
 
-                            {foreach from=$resources item=resource}
-                                {cycle values='row0,row1' assign=rowCss}
-                                {assign var=rid value=$resource->GetResourceId()}
-                                <div class="{$rowCss} permissionRow form-group">
-                                    <label for="permission_{$rid}" class="inline-block">{$resource->GetName()}</label>
-                                    <select class="pull-right form-control input-sm resourceId inline-block" style="width:auto;" {formname key=RESOURCE_ID multi=true} id="permission_{$rid}">
-                                        <option value="{$rid}_none" class="none">{translate key=None}</option>
-                                        <option value="{$rid}_0" class="full">{translate key=FullAccess}</option>
-                                        <option value="{$rid}_1" class="view">{translate key=ViewOnly}</option>
-                                    </select>
-                                    <div class="clearfix"></div>
-                                </div>
-                            {/foreach}
-						</div>
-						<div class="modal-footer">
-							{cancel_button}
-							{update_button}
-							{indicator}
-						</div>
-					</div>
-				</form>
-			</div>
-		</div>
+                        {foreach from=$resources item=resource}
+                            {cycle values='row0,row1' assign=rowCss}
+                            {assign var=rid value=$resource->GetResourceId()}
+                            <div class="{$rowCss} permissionRow form-group">
+                                <label for="permission_{$rid}" class="inline-block">{$resource->GetName()}</label>
+                                <select class="pull-right form-control input-sm resourceId inline-block" style="width:auto;" {formname key=RESOURCE_ID multi=true} id="permission_{$rid}">
+                                    <option value="{$rid}_none" class="none">{translate key=None}</option>
+                                    <option value="{$rid}_0" class="full">{translate key=FullAccess}</option>
+                                    <option value="{$rid}_1" class="view">{translate key=ViewOnly}</option>
+                                </select>
+                                <div class="clearfix"></div>
+                            </div>
+                        {/foreach}
+                    </div>
+                    <div class="modal-footer">
+                        {cancel_button}
+                        {update_button}
+                        {indicator}
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
 
 	<form id="removeUserForm" method="post">
 		<input type="hidden" id="removeUserId" {formname key=USER_ID} />
