@@ -569,7 +569,8 @@ class UserRepository implements IUserRepository, IAccountActivationRepository
      */
     public function GetApplicationAdmins()
     {
-        $command = new GetAllApplicationAdminsCommand();
+        $adminEmails = Configuration::Instance()->GetAllAdminEmails();
+        $command = new GetAllApplicationAdminsCommand($adminEmails);
         $reader = ServiceLocator::GetDatabase()->Query($command);
         $users = array();
 

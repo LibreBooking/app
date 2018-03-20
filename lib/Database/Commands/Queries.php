@@ -363,13 +363,14 @@ class Queries
 	const GET_ALL_APPLICATION_ADMINS = 'SELECT *
             FROM users
             WHERE status_id = @user_statusid AND
-            user_id IN (
+            (user_id IN (
                 SELECT user_id
                 FROM user_groups ug
                 INNER JOIN groups g ON ug.group_id = g.group_id
                 INNER JOIN group_roles gr ON g.group_id = gr.group_id
                 INNER JOIN roles ON roles.role_id = gr.role_id AND roles.role_level = @role_level
-              )';
+              ) OR email IN (@email))
+              GROUP BY user_id';
 
 	const GET_ALL_CREDIT_LOGS = 'SELECT cl.*, u.fname, u.lname, u.email FROM credit_log cl 
             LEFT JOIN users u ON cl.user_id = u.user_id 

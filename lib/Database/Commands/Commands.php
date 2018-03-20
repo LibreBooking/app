@@ -1235,11 +1235,12 @@ class GetAllAnnouncementsCommand extends SqlCommand
 
 class GetAllApplicationAdminsCommand extends SqlCommand
 {
-    public function __construct()
+    public function __construct($adminEmails)
     {
         parent::__construct(Queries::GET_ALL_APPLICATION_ADMINS);
         $this->AddParameter(new Parameter(ParameterNames::USER_STATUS_ID, AccountStatus::ACTIVE));
         $this->AddParameter(new Parameter(ParameterNames::ROLE_LEVEL, RoleLevel::APPLICATION_ADMIN));
+        $this->AddParameter(new Parameter(ParameterNames::EMAIL_ADDRESS, $adminEmails));
     }
 }
 
