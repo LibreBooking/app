@@ -1004,11 +1004,11 @@ class Queries
 			'INSERT INTO
 			resources (name, location, contact_info, description, notes, status_id, min_duration, min_increment,
 					   max_duration, unit_cost, autoassign, requires_approval, allow_multiday_reservations,
-					   max_participants, min_notice_time_add, max_notice_time, schedule_id, admin_group_id)
+					   max_participants, min_notice_time_add, max_notice_time, schedule_id, admin_group_id, date_created)
 		VALUES
 			(@resource_name, @location, @contact_info, @description, @resource_notes, @status_id, @min_duration, @min_increment,
 			 @max_duration, @unit_cost, @autoassign, @requires_approval, @allow_multiday_reservations,
-		     @max_participants, @min_notice_time_add, @max_notice_time, @scheduleid, @admin_group_id)';
+		     @max_participants, @min_notice_time_add, @max_notice_time, @scheduleid, @admin_group_id, @dateCreated)';
 
 	const ADD_RESOURCE_GROUP = 'INSERT INTO resource_groups (resource_group_name, parent_id) VALUES (@groupname, @resourcegroupid)';
 
@@ -1127,7 +1127,8 @@ class Queries
 			auto_release_minutes = @auto_release_minutes,
 			allow_display = @allow_display,
 			credit_count = @credit_count,
-			peak_credit_count = @peak_credit_count
+			peak_credit_count = @peak_credit_count,
+			last_modified = @dateModified
 		WHERE
 			resource_id = @resourceid';
 

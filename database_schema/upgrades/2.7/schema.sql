@@ -110,7 +110,8 @@ ALTER TABLE `users`
 
 ALTER TABLE `announcements`
   ADD COLUMN `display_page` TINYINT(1) UNSIGNED NOT NULL DEFAULT 1;
-ALTER TABLE `announcements` ADD INDEX(`display_page`);
+ALTER TABLE `announcements` ADD INDEX announcement_search (`start_date`, `last_date`, `display_page`);
+
 
 ALTER TABLE `resources` CHANGE COLUMN `min_notice_time` `min_notice_time_add` INT;
 
@@ -152,3 +153,7 @@ ALTER TABLE `user_resource_permissions` ADD COLUMN `permission_type` TINYINT UNS
 ALTER TABLE `user_resource_permissions` DROP PRIMARY KEY, ADD PRIMARY KEY(`user_id`, `resource_id`);
 ALTER TABLE `user_resource_permissions` ADD INDEX(`user_id`);
 ALTER TABLE `user_resource_permissions` ADD INDEX(`resource_id`);
+
+ALTER TABLE `resources` ADD COLUMN `date_created` DATETIME;
+ALTER TABLE `resources` ADD COLUMN `last_modified` DATETIME;
+
