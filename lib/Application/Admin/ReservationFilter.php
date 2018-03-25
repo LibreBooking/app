@@ -124,29 +124,29 @@ class ReservationFilter
 		$endFilter = null;
 
 		if (!empty($this->startDate) && !empty($this->endDate)) {
-			$surroundFilter = new SqlFilterLessThan(new SqlRepeatingFilterColumn(null, ColumnNames::RESERVATION_START, 1), $this->startDate->ToDatabase(), true);
-			$surroundFilter->_And(new SqlFilterGreaterThan(new SqlRepeatingFilterColumn(null, ColumnNames::RESERVATION_END, 1), $this->endDate->AddDays(1)->ToDatabase(), true));
+			$surroundFilter = new SqlFilterLessThan(new SqlRepeatingFilterColumn(TableNames::RESERVATION_INSTANCES_ALIAS, ColumnNames::RESERVATION_START, 1), $this->startDate->ToDatabase(), true);
+			$surroundFilter->_And(new SqlFilterGreaterThan(new SqlRepeatingFilterColumn(TableNames::RESERVATION_INSTANCES_ALIAS, ColumnNames::RESERVATION_END, 1), $this->endDate->AddDays(1)->ToDatabase(), true));
 		}
 		if (!empty($this->startDate)) {
-			$startFilter = new SqlFilterGreaterThan(new SqlRepeatingFilterColumn(null, ColumnNames::RESERVATION_START, 2), $this->startDate->ToDatabase(), true);
-			$endFilter = new SqlFilterGreaterThan(new SqlRepeatingFilterColumn(null, ColumnNames::RESERVATION_END, 2), $this->startDate->ToDatabase(), true);
+			$startFilter = new SqlFilterGreaterThan(new SqlRepeatingFilterColumn(TableNames::RESERVATION_INSTANCES_ALIAS, ColumnNames::RESERVATION_START, 2), $this->startDate->ToDatabase(), true);
+			$endFilter = new SqlFilterGreaterThan(new SqlRepeatingFilterColumn(TableNames::RESERVATION_INSTANCES_ALIAS, ColumnNames::RESERVATION_END, 2), $this->startDate->ToDatabase(), true);
 		}
 		if (!empty($this->endDate)) {
 			if ($startFilter == null)
 			{
-				$startFilter = new SqlFilterLessThan(new SqlRepeatingFilterColumn(null, ColumnNames::RESERVATION_START, 3), $this->endDate->AddDays(1)->ToDatabase(), true);
+				$startFilter = new SqlFilterLessThan(new SqlRepeatingFilterColumn(TableNames::RESERVATION_INSTANCES_ALIAS, ColumnNames::RESERVATION_START, 3), $this->endDate->AddDays(1)->ToDatabase(), true);
 			}
 			else
 			{
-				$startFilter->_And(new SqlFilterLessThan(new SqlRepeatingFilterColumn(null, ColumnNames::RESERVATION_START, 4), $this->endDate->AddDays(1)->ToDatabase(), true));
+				$startFilter->_And(new SqlFilterLessThan(new SqlRepeatingFilterColumn(TableNames::RESERVATION_INSTANCES_ALIAS, ColumnNames::RESERVATION_START, 4), $this->endDate->AddDays(1)->ToDatabase(), true));
 			}
 			if ($endFilter == null)
 			{
-				$endFilter = new SqlFilterLessThan(new SqlRepeatingFilterColumn(null, ColumnNames::RESERVATION_END, 3), $this->endDate->AddDays(1)->ToDatabase(), true);
+				$endFilter = new SqlFilterLessThan(new SqlRepeatingFilterColumn(TableNames::RESERVATION_INSTANCES_ALIAS, ColumnNames::RESERVATION_END, 3), $this->endDate->AddDays(1)->ToDatabase(), true);
 			}
 			else
 			{
-				$endFilter->_And(new SqlFilterLessThan(new SqlRepeatingFilterColumn(null, ColumnNames::RESERVATION_END, 4), $this->endDate->AddDays(1)->ToDatabase(), true));
+				$endFilter->_And(new SqlFilterLessThan(new SqlRepeatingFilterColumn(TableNames::RESERVATION_INSTANCES_ALIAS, ColumnNames::RESERVATION_END, 4), $this->endDate->AddDays(1)->ToDatabase(), true));
 			}
 		}
 		if (!empty($this->referenceNumber)) {

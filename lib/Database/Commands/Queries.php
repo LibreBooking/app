@@ -680,26 +680,6 @@ class Queries
 			reference_number = @referenceNumber AND
 			rs.status_id <> 2';
 
-//	const GET_RESERVATION_LIST_TEMPLATE =
-//			'SELECT
-//				[SELECT_TOKEN]
-//			FROM reservation_instances ri
-//			INNER JOIN reservation_series rs ON rs.series_id = ri.series_id
-//			INNER JOIN reservation_users ru ON ru.reservation_instance_id = ri.reservation_instance_id
-//			INNER JOIN users ON users.user_id = rs.owner_id
-//			INNER JOIN users owner ON owner.user_id = rs.owner_id
-//			INNER JOIN reservation_resources rr ON rs.series_id = rr.series_id
-//			INNER JOIN resources ON rr.resource_id = resources.resource_id
-//			INNER JOIN schedules ON resources.schedule_id = schedules.schedule_id
-//			LEFT JOIN reservation_users participants ON participants.reservation_instance_id = ri.reservation_instance_id AND participants.reservation_user_level = 2
-//			LEFT JOIN reservation_users invitees ON invitees.reservation_instance_id = ri.reservation_instance_id AND invitees.reservation_user_level = 3
-//			LEFT JOIN custom_attribute_values cav ON cav.entity_id = ri.series_id AND cav.attribute_category = 1
-//			[JOIN_TOKEN]
-//			WHERE rs.status_id <> 2
-//			[AND_TOKEN]
-//			GROUP BY ri.reservation_instance_id, rr.resource_id, ri.series_id
-//			ORDER BY ri.start_date ASC';
-
 	const GET_RESERVATION_LIST_TEMPLATE =
 			'SELECT
 				[SELECT_TOKEN]
@@ -716,7 +696,7 @@ class Queries
 			[JOIN_TOKEN]
 			WHERE rs.status_id <> 2
 			[AND_TOKEN]
-			GROUP BY ri.reservation_instance_id, rr.resource_id, ri.series_id
+			GROUP BY ri.reservation_instance_id, ri.series_id, rr.resource_id
 			ORDER BY ri.start_date ASC';
 
 	const GET_RESERVATION_ACCESSORIES =
