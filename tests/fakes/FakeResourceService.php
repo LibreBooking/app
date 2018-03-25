@@ -50,13 +50,7 @@ class FakeResourceService implements IResourceService
 		return $this->_ScheduleResources;
 	}
 
-	/**
-	 * Gets resource list
-	 * @param bool $includeInaccessibleResources
-	 * @param UserSession $user
-	 * @return array|ResourceDto[]
-	 */
-	public function GetAllResources($includeInaccessibleResources, UserSession $user, $filter = null)
+	public function GetAllResources($includeInaccessibleResources, UserSession $user, $filter = null, $pageNumber = null, $pageSize = null)
 	{
 	    $this->_LastFilter = $filter;
 		return $this->_AllResources;

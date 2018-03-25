@@ -29,14 +29,16 @@ interface IResourceService
 	 */
 	public function GetScheduleResources($scheduleId, $includeInaccessibleResources, UserSession $user, $filter = null);
 
-	/**
-	 * Gets resource list
-	 * @param bool $includeInaccessibleResources
-	 * @param UserSession $user
+    /**
+     * Gets resource list
+     * @param bool $includeInaccessibleResources
+     * @param UserSession $user
      * @param ScheduleResourceFilter|null $filter
-	 * @return array|ResourceDto[]
-	 */
-	public function GetAllResources($includeInaccessibleResources, UserSession $user, $filter = null);
+     * @param null $pageNumber
+     * @param null $pageSize
+     * @return array|ResourceDto[]
+     */
+	public function GetAllResources($includeInaccessibleResources, UserSession $user, $filter = null, $pageNumber = null, $pageSize = null);
 
 	/**
 	 * @return Accessory[]
@@ -130,15 +132,21 @@ class ResourceService implements IResourceService
 		return $this->Filter($resources, $user, $includeInaccessibleResources, $resourceIds);
 	}
 
-	public function GetAllResources($includeInaccessibleResources, UserSession $user, $filter = null)
+	public function GetAllResources($includeInaccessibleResources, UserSession $user, $filter = null, $pageNumber = null, $pageSize = null)
 	{
         if ($filter == null)
         {
             $filter = new ScheduleResourceFilter();
         }
 
-		$resources = $this->_resourceRepository->GetResourceList();
-
+        if ($pageNumber != null || $pageSize != null)
+        {
+            $resources = $this->_resourceRepository->GetList($pageNumber, $pageSize);
+            $resources = $resources->Results();
+        }
+        else {
+            $resources = $this->_resourceRepository->GetResourceList();
+        }
         $resourceIds = $filter->FilterResources($resources, $this->_resourceRepository, $this->_attributeService);
 
         return $this->Filter($resources, $user, $includeInaccessibleResources, $resourceIds);

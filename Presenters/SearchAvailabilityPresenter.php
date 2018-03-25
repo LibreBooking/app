@@ -76,7 +76,7 @@ class SearchAvailabilityPresenter extends ActionPresenter
 		$openings = array();
 		$dateRange = $this->GetSearchRange();
 		$requestedLength = $this->GetRequestedLength();
-		$resources = $this->resourceService->GetAllResources(false, $this->user, $this->GetFilter());
+		$resources = $this->resourceService->GetAllResources(false, $this->user, $this->GetFilter(), null, 100);
 
 		/** @var ResourceDto $resource */
 		foreach ($resources as $resource)
