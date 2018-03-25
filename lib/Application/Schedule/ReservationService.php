@@ -34,14 +34,26 @@ class ReservationService implements IReservationService
 
 	public function GetReservations(DateRange $dateRangeUtc, $scheduleId, $targetTimezone, $resourceIds = null)
 	{
+	    $filterResourcesInCode = $resourceIds != null && count($resourceIds) > 100;
+	    if ($filterResourcesInCode)
+        {
+            $resourceKeys = array_combine($resourceIds, $resourceIds);
+        }
 		$reservationListing = $this->_coordinatorFactory->CreateReservationListing($targetTimezone);
 
-		$reservations = $this->_repository->GetReservations($dateRangeUtc->GetBegin(), $dateRangeUtc->GetEnd(), null, null, $scheduleId, $resourceIds);
+		$reservations = $this->_repository->GetReservations($dateRangeUtc->GetBegin(), $dateRangeUtc->GetEnd(), null, null, $scheduleId, ($filterResourcesInCode ? array() : $resourceIds));
 		Log::Debug("Found %s reservations for schedule %s between %s and %s", count($reservations), $scheduleId, $dateRangeUtc->GetBegin(), $dateRangeUtc->GetEnd());
 
 		foreach ($reservations as $reservation)
 		{
-			$reservationListing->Add($reservation);
+		    if ($filterResourcesInCode && array_key_exists($reservation->ResourceId, $resourceKeys))
+            {
+                $reservationListing->Add($reservation);
+            }
+            else
+            {
+                $reservationListing->Add($reservation);
+            }
 		}
 
 		$blackouts = $this->_repository->GetBlackoutsWithin($dateRangeUtc, $scheduleId);

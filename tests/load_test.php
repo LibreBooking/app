@@ -28,9 +28,9 @@ echo "<h1>Booked Scheduler Data Load</h1>";
 $stopWatch = new StopWatch();
 $stopWatch->Start();
 
-$numberOfResources = 10;
-$numberOfUsers = 1000;
-$numberOfReservations = 5000;
+$numberOfResources = 1000;
+$numberOfUsers = 10000;
+$numberOfReservations = 500000;
 $numberOfAccessories = 20;
 
 $users = array();

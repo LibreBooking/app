@@ -110,8 +110,10 @@ ALTER TABLE `users`
 
 ALTER TABLE `announcements`
   ADD COLUMN `display_page` TINYINT(1) UNSIGNED NOT NULL DEFAULT 1;
-ALTER TABLE `announcements` ADD INDEX announcement_search (`start_date`, `last_date`, `display_page`);
-
+#ALTER TABLE `announcements` ADD INDEX announcement_search (`start_date`, `end_date`, `display_page`);
+ALTER TABLE `announcements` ADD INDEX (`start_date`);
+ALTER TABLE `announcements` ADD INDEX (`end_date`);
+ALTER TABLE `announcements` ADD INDEX (`display_page`);
 
 ALTER TABLE `resources` CHANGE COLUMN `min_notice_time` `min_notice_time_add` INT;
 
@@ -125,7 +127,7 @@ UPDATE resources SET min_notice_time_update = min_notice_time_add, min_notice_ti
 
 ALTER TABLE `schedules` ADD COLUMN `start_date` DATETIME;
 ALTER TABLE `schedules` ADD COLUMN `end_date` DATETIME;
-ALTER TABLE `schedules` ADD COLUMN `allow_concurrent_bookings` TINYINT(1) UNSIGNED NOT NULL DEFAULT 0;;
+ALTER TABLE `schedules` ADD COLUMN `allow_concurrent_bookings` TINYINT(1) UNSIGNED NOT NULL DEFAULT 0;
 
 
 ALTER TABLE `reservation_series`
@@ -157,3 +159,8 @@ ALTER TABLE `user_resource_permissions` ADD INDEX(`resource_id`);
 ALTER TABLE `resources` ADD COLUMN `date_created` DATETIME;
 ALTER TABLE `resources` ADD COLUMN `last_modified` DATETIME;
 
+ALTER TABLE `custom_attribute_values` DROP INDEX `entity_category`;
+ALTER TABLE `custom_attribute_values` DROP INDEX `entity_attribute`;
+ALTER TABLE `custom_attribute_values` ADD INDEX(`entity_id`);
+ALTER TABLE `custom_attribute_values` ADD INDEX(`attribute_category`);
+ALTER TABLE `reservation_reminders` ADD INDEX(`reminder_type`);
