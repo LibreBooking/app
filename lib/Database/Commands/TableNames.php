@@ -31,4 +31,5 @@ class TableNames
     const SCHEDULES_ALIAS = 's';
     const USERS = 'users';
     const USERS_ALIAS = 'u';
+    const RESERVATION_INSTANCES_ALIAS = 'ri';
 }
