@@ -32,4 +32,5 @@ class TableNames
     const USERS = 'users';
     const USERS_ALIAS = 'u';
     const RESERVATION_INSTANCES_ALIAS = 'ri';
+    const BLACKOUT_INSTANCES_ALIAS = 'bi';
 }

@@ -41,11 +41,11 @@ class BlackoutFilter
 
 		if (!empty($this->startDate))
 		{
-			$filter->_And(new SqlFilterGreaterThan(ColumnNames::RESERVATION_START, $this->startDate->ToDatabase()));
+			$filter->_And(new SqlFilterGreaterThan(new SqlFilterColumn(TableNames::BLACKOUT_INSTANCES_ALIAS, ColumnNames::RESERVATION_START), $this->startDate->ToDatabase()));
 		}
 		if (!empty($this->endDate))
 		{
-			$filter->_And(new SqlFilterLessThan(ColumnNames::RESERVATION_END, $this->endDate->ToDatabase()));
+			$filter->_And(new SqlFilterLessThan(new SqlFilterColumn(TableNames::BLACKOUT_INSTANCES_ALIAS, ColumnNames::RESERVATION_END), $this->endDate->ToDatabase()));
 		}
 		if (!empty($this->scheduleId))
 		{

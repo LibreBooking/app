@@ -721,6 +721,7 @@ class en_us extends Language
         $strings['ResourceImages'] = 'Resource Images';
         $strings['FullAccess'] = 'Full Access';
         $strings['ViewOnly'] = 'View Only';
+        $strings['Purge'] = 'Purge';
         // End Strings
 
 		// Install
@@ -868,6 +869,7 @@ class en_us extends Language
 		$strings['SearchReservations'] = 'Search Reservations';
 		$strings['ManagePayments'] = 'Payments';
 		$strings['ViewCalendar'] = 'View Calendar';
+		$strings['DataCleanup'] = 'Data Cleanup';
 		// End Page Titles
 
 		// Day representations

@@ -284,6 +284,8 @@ class ReservationViewRepository implements IReservationViewRepository
 
 			$reservationView->Resources[] = $rrv;
 		}
+
+        $result->Free();
 	}
 
 	private function SetParticipants(ReservationView $reservationView)
@@ -327,7 +329,9 @@ class ReservationViewRepository implements IReservationViewRepository
 																		   $row[ColumnNames::ACCESSORY_NAME],
 																		   $row[ColumnNames::ACCESSORY_QUANTITY]);
 		}
-	}
+
+        $result->Free();
+    }
 
 	private function SetAttributes(ReservationView $reservationView)
 	{
@@ -342,7 +346,9 @@ class ReservationViewRepository implements IReservationViewRepository
 															  $row[ColumnNames::ATTRIBUTE_VALUE],
 															  $row[ColumnNames::ATTRIBUTE_LABEL]));
 		}
-	}
+
+        $result->Free();
+    }
 
 	private function SetAttachments(ReservationView $reservationView)
 	{
@@ -356,7 +362,9 @@ class ReservationViewRepository implements IReservationViewRepository
 																		  $row[ColumnNames::SERIES_ID],
 																		  $row[ColumnNames::FILE_NAME]));
 		}
-	}
+
+        $result->Free();
+    }
 
 	private function SetReminders(ReservationView $reservationView)
 	{
@@ -373,7 +381,9 @@ class ReservationViewRepository implements IReservationViewRepository
 				$reservationView->EndReminder = new ReservationReminderView($row[ColumnNames::REMINDER_MINUTES_PRIOR]);
 			}
 		}
-	}
+
+        $result->Free();
+    }
 
 	private function SetGuests(ReservationView $reservationView)
 	{
@@ -396,6 +406,8 @@ class ReservationViewRepository implements IReservationViewRepository
 				$reservationView->InvitedGuests[] = $email;
 			}
 		}
+
+        $result->Free();
 	}
 
 	public function GetAccessoriesWithin(DateRange $dateRange)

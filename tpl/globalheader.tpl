@@ -213,26 +213,13 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                                     <li id="navManageAnnouncements"><a
                                                 href="{$Path}admin/manage_announcements.php">{translate key="ManageAnnouncements"}</a>
                                     </li>
+                                    <li class="divider"></li>
                                     <li id="navManagePayments"><a
                                                 href="{$Path}admin/manage_payments.php">{translate key="ManagePayments"}</a>
                                     </li>
-                                    <li class="divider"></li>
                                     {*<li class="dropdown-header">{translate key=Customization}</li>*}
                                     <li id="navManageAttributes"><a
                                                 href="{$Path}admin/manage_attributes.php">{translate key="CustomAttributes"}</a>
-                                    </li>
-                                    {if $EnableConfigurationPage}
-                                        <li id="navManageConfiguration"><a
-                                                    href="{$Path}admin/manage_configuration.php">{translate key="ManageConfiguration"}</a>
-                                        </li>
-                                    {/if}
-                                    <li id="navLookAndFeel"><a
-                                                href="{$Path}admin/manage_theme.php">{translate key="LookAndFeel"}</a>
-                                    </li>
-                                    <li id="navImport"><a href="{$Path}admin/import.php">{translate key="Import"}</a>
-                                    </li>
-                                    <li id="navServerSettings"><a
-                                                href="{$Path}admin/server_settings.php">{translate key="ServerSettings"}</a>
                                     </li>
                                 </ul>
                             </li>
@@ -309,6 +296,30 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                             <ul class="dropdown-menu">
                                 <li id="navViewSchedule"><a href="view-schedule.php">{translate key='ViewSchedule'}</a></li>
                                 <li id="navViewCalendar"><a href="view-calendar.php">{translate key='ViewCalendar'}</a></li>
+                            </ul>
+                        </li>
+                    {/if}
+                    {if $CanViewAdmin}
+                        <li class="dropdown" id="navHelpDropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="fa fa-cog"></span><b
+                                        class="caret"></b></a>
+                            <ul class="dropdown-menu">
+                                {if $EnableConfigurationPage}
+                                    <li id="navManageConfiguration"><a
+                                                href="{$Path}admin/manage_configuration.php">{translate key="ManageConfiguration"}</a>
+                                    </li>
+                                {/if}
+                                <li id="navLookAndFeel"><a
+                                            href="{$Path}admin/manage_theme.php">{translate key="LookAndFeel"}</a>
+                                </li>
+                                <li id="navImport"><a href="{$Path}admin/import.php">{translate key="Import"}</a>
+                                </li>
+                                <li id="navServerSettings"><a
+                                            href="{$Path}admin/server_settings.php">{translate key="ServerSettings"}</a>
+                                </li>
+                                <li id="navDataCleanup"><a
+                                            href="{$Path}admin/data_cleanup.php">{translate key="DataCleanup"}</a>
+                                </li>
                             </ul>
                         </li>
                     {/if}
