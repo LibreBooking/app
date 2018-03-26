@@ -4,9 +4,9 @@
     <h1>{translate key=DataCleanup}</h1>
 
     <div class="well">
-        <div class="badge">{$ReservationCount} reservations</div>
+        <div class="badge">{$ReservationCount} {translate key=Reservations}</div>
         <div class="form-group">
-            <label for="reservationDeleteDate">Delete reservations before</label>
+            <label for="reservationDeleteDate">{translate key=DeleteReservationsBefore}</label>
             <input type="text" id="reservationDeleteDate" class="form-control input-sm inline-block dateinput"
                    value="{formatdate date=$DeleteDate}"/>
             <input type="hidden" id="formattedReservationDeleteDate" value="{formatdate date=$DeleteDate key=system}"/>
@@ -15,7 +15,7 @@
     </div>
 
     <div class="well">
-        <div class="badge">{$DeletedReservationCount} deleted reservations</div>
+        <div class="badge">{$DeletedReservationCount} {translate key=DeletedReservations}</div>
         <div class="form-group">
 
         </div>
@@ -23,10 +23,10 @@
     </div>
 
     <div class="well">
-        <div class="badge">{$BlackoutsCount} blackouts</div>
+        <div class="badge">{$BlackoutsCount} {translate key=ManageBlackouts}</div>
 
         <div class="form-group">
-            <label for="blackoutDeleteDate"> Delete blackouts before</label>
+            <label for="blackoutDeleteDate">{translate key=DeleteBlackoutsBefore}</label>
             <input type="text" id="blackoutDeleteDate" class="form-control input-sm inline-block dateinput"
                    value="{formatdate date=$DeleteDate}"/>
             <input type="hidden" id="formattedBlackoutDeleteDate" value="{formatdate date=$DeleteDate key=system}"/>
@@ -37,10 +37,10 @@
     </div>
 
     <div class="well">
-        <div class="badge">{$UserCount} users</div>
+        <div class="badge">{$UserCount} {translate key=Users}</div>
 
         <div class="form-group">
-            <label for="userDeleteDate">Permanently delete users who have not logged in since</label>
+            <label for="userDeleteDate">{translate key=PermanentlyDeleteUsers}</label>
             <input type="text" id="userDeleteDate" class="form-control input-sm inline-block dateinput"
                    value="{formatdate date=$DeleteDate}"/>
             <input type="hidden" id="formattedUserDeleteDate" value="{formatdate date=$DeleteDate key=system}"/>
@@ -63,7 +63,7 @@
                         <div class="alert alert-warning">
                             <div>{translate key=DeleteWarning}</div>
                             <div>
-                                <strong><span id="deleteReservationCount"></span></strong> reservations will be deleted
+                                <strong><span id="deleteReservationCount"></span></strong> {translate key=ReservationsWillBeDeleted}
                             </div>
                             <input type="hidden" {formname key=BEGIN_DATE} id="formDeleteReservationDate" />
                         </div>
@@ -91,7 +91,7 @@
                         <div class="alert alert-warning">
                             <div>{translate key=DeleteWarning}</div>
                             <div>
-                                <strong>{$DeletedReservationCount}</strong> reservations will be purged
+                                <strong>{$DeletedReservationCount}</strong> {translate key=ReservationsWillBePurged}
                             </div>
                         </div>
                     </div>
@@ -118,7 +118,7 @@
                         <div class="alert alert-warning">
                             <div>{translate key=DeleteWarning}</div>
                             <div>
-                                <strong><span id="deleteBlackoutCount"></span></strong> blackouts will be deleted
+                                <strong><span id="deleteBlackoutCount"></span></strong> {translate key=BlackoutsWillBeDeleted}
                             </div>
                             <input type="hidden" {formname key=BEGIN_DATE} id="formDeleteBlackoutDate" />
                         </div>
@@ -146,7 +146,7 @@
                         <div class="alert alert-warning">
                             <div>{translate key=DeleteWarning}</div>
                             <div>
-                                <strong><span id="deleteUserCount"></span></strong> users will be deleted
+                                <strong><span id="deleteUserCount"></span></strong> {translate key=UsersWillBeDeleted}
                             </div>
                         </div>
                         <input type="hidden" {formname key=BEGIN_DATE} id="formDeleteUserDate" />

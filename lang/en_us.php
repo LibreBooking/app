@@ -722,6 +722,14 @@ class en_us extends Language
         $strings['FullAccess'] = 'Full Access';
         $strings['ViewOnly'] = 'View Only';
         $strings['Purge'] = 'Purge';
+        $strings['UsersWillBeDeleted'] = 'users will be deleted';
+        $strings['BlackoutsWillBeDeleted'] = 'blackout times will be deleted';
+        $strings['ReservationsWillBePurged'] = 'reservations will be purged';
+        $strings['ReservationsWillBeDeleted'] = 'reservations will be deleted';
+        $strings['PermanentlyDeleteUsers'] = 'Permanently delete users who have not logged in since';
+        $strings['DeleteBlackoutsBefore'] = 'Delete blackout times before';
+        $strings['DeletedReservations'] = 'Deleted Reservations';
+        $strings['DeleteReservationsBefore'] = 'Delete reservations before';
         // End Strings
 
 		// Install
