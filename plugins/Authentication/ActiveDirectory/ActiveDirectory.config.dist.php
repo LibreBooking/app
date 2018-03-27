@@ -32,3 +32,5 @@ $conf['settings']['attribute.mapping'] = 'sn=sn,givenname=givenname,mail=mail,te
 $conf['settings']['required.groups'] = '';	// Required groups (empty if not necessary) User only needs to belong to at least one listed (eg. Group1,Group2)
 $conf['settings']['sync.groups'] = 'false';	// Whether or not groups should be synced into Booked. When true then be sure that the attribute.mapping config value contains a correct map for groups
 $conf['settings']['use.sso'] = 'false';	// Whether or not to use single sign on
+$conf['settings']['prevent.clean.username'] = 'false';	// If the username is an email address or contains the domain, clean it
+?>

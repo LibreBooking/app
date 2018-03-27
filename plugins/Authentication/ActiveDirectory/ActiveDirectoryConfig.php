@@ -35,4 +35,5 @@ class ActiveDirectoryConfig
 	const REQUIRED_GROUPS = 'required.groups';
 	const SYNC_GROUPS = 'sync.groups';
 	const USE_SSO = 'use.sso';
+    const PREVENT_CLEAN_USERNAME = 'prevent.clean.username';
 }

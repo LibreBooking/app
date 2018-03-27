@@ -213,6 +213,11 @@ class Ldap extends Authentication implements IAuthentication
 
 	private function CleanUsername($username)
 	{
+	    if (!$this->options->CleanUsername())
+        {
+            return $username;
+        }
+
 		if (BookedStringHelper::Contains($username, '@'))
 		{
 			Log::Debug('LDAP - Username %s appears to be an email address. Cleaning...', $username);

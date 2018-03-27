@@ -141,4 +141,13 @@ class ActiveDirectoryOptions
 		$groupList = $this->GetConfig(ActiveDirectoryConfig::REQUIRED_GROUPS);
 		return explode(',', strtolower($groupList));
 	}
+
+    /**
+     * @return bool
+     */
+    public function CleanUsername()
+    {
+        $converter = new BooleanConverter();
+        return !$converter->Convert($this->_options[ActiveDirectoryConfig::PREVENT_CLEAN_USERNAME]);
+    }
 }

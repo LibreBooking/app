@@ -35,4 +35,5 @@ class LdapConfig
 	const USER_ID_ATTRIBUTE = 'user.id.attribute';
 	const REQUIRED_GROUP = 'required.group';
 	const SYNC_GROUPS = 'sync.groups';
+	const PREVENT_CLEAN_USERNAME = 'prevent.clean.username';
 }
