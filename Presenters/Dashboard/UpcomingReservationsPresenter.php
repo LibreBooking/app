@@ -64,7 +64,7 @@ class UpcomingReservationsPresenter
 		$dayOfWeek = $today->Weekday();
 
 		$lastDate = $now->AddDays(13-$dayOfWeek-1);
-		$reservations = $this->repository->GetReservations($now, $lastDate, $this->searchUserId, $this->searchUserLevel);
+        $consolidated = $this->repository->GetReservations($now, $lastDate, $this->searchUserId, $this->searchUserLevel, null, null, true);
 		$tomorrow = $today->AddDays(1);
 
 		$startOfNextWeek = $today->AddDays(7-$dayOfWeek);
@@ -73,17 +73,6 @@ class UpcomingReservationsPresenter
 		$tomorrows = array();
 		$thisWeeks = array();
 		$nextWeeks = array();
-
-		$consolidated = array();
-		foreach ($reservations as $reservation)
-		{
-			if (!array_key_exists($reservation->ReferenceNumber, $consolidated))
-			{
-				$consolidated[$reservation->ReferenceNumber] = $reservation;
-			}
-
-			$consolidated[$reservation->ReferenceNumber]->Resources[] = $reservation->ResourceName;
-		}
 
 		/* @var $reservation ReservationItemView */
 		foreach ($consolidated as $reservation)

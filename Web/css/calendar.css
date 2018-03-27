@@ -79,6 +79,9 @@
 .fc-agenda-allday {
   display: none;
 }
+.fc-day-grid-event .fc-content {
+  white-space: normal !important;
+}
 .select2-results .schedule {
   font-weight: bold;
 }

@@ -348,8 +348,7 @@ class ReservationViewRepositoryTests extends TestBase
 
         $reservationCommand = new GetReservationListCommand($startDate, $endDate, $userId, ReservationUserLevel::OWNER, array($scheduleId), array($resourceId));
         $reservationColorsCommand = new GetReservationColorRulesCommand();
-        $reservations = $this->repository->GetReservations($startDate, $endDate, $userId, null, $scheduleId,
-            $resourceId);
+        $reservations = $this->repository->GetReservations($startDate, $endDate, $userId, null, $scheduleId, $resourceId);
 
         $this->assertEquals($reservationCommand, $this->db->_Commands[0]);
         $this->assertEquals($reservationColorsCommand, $this->db->_Commands[1]);
@@ -359,6 +358,24 @@ class ReservationViewRepositoryTests extends TestBase
         $expectedItem1 = ReservationItemView::Populate($rows[0]);
 
         $this->assertEquals($expectedItem1, $reservations[0]);
+    }
+
+    public function testConsolidatesReservationsByReferenceNumber()
+    {
+        $refNum = "ref1";
+
+        $rows[] = $this->GetReservationListRow($refNum, "1", Date::Now(), Date::Now(), 1, 1, 1, null, null, 1, null, null, null);
+        $rows[] = $this->GetReservationListRow($refNum, "2", Date::Now(), Date::Now(), 2, 1, 1, null, null, 1, null, null, null);
+
+        $this->db->SetRows($rows);
+
+        $reservations = $this->repository->GetReservations(Date::Now(), Date::Now(), -1, -1, -1, -1, true);
+
+        $this->assertEquals(1, count($reservations));
+
+        $expected = ReservationItemView::Populate($rows[0]);
+        $expected->ResourceNames = array("1", "2");
+        $this->assertEquals($expected, $reservations[0]);
     }
 
     public function testReturnsNullObjectIfNothingFound()

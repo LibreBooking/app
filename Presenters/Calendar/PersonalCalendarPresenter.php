@@ -79,7 +79,7 @@ class PersonalCalendarPresenter extends CommonCalendarPresenter
     protected function BindEvents($userSession, $selectedScheduleId, $selectedResourceId)
     {
         $reservations = $this->reservationRepository->GetReservations($this->GetStartDate(), $this->GetEndDate()->AddDays(1), $userSession->UserId,
-            ReservationUserLevel::ALL, $selectedScheduleId, $selectedResourceId);
+            ReservationUserLevel::ALL, $selectedScheduleId, $selectedResourceId, true);
 
         $this->page->BindEvents(CalendarReservation::FromViewList($reservations, $userSession->Timezone, $userSession));
     }

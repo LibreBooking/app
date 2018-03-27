@@ -191,7 +191,7 @@ class ActiveDirectory extends Authentication implements IAuthentication
         {
             return $username;
         }
-        
+
 		if (BookedStringHelper::Contains($username, '@'))
 		{
 			Log::Debug('ActiveDirectory - Username %s appears to be an email address. Cleaning...', $username);

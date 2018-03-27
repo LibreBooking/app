@@ -142,7 +142,8 @@
 		else
 		{
 			$this->addElement('link','',array('href'=>$link));
-			$this->addElement('id', FeedWriter::uuid($link,'urn:uuid:'));
+			$writer = new FeedWriter();
+			$this->addElement('id', $writer->uuid($link,'urn:uuid:'));
 		} 
 		
 	}

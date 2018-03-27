@@ -86,14 +86,6 @@ class AtomSubscriptionPage extends Page implements ICalendarSubscriptionPage
 			$item->setDate($reservation->DateCreated->Timestamp());
 			$item->setDescription($this->FormatReservationDescription($reservation, ServiceLocator::GetServer()->GetUserSession()));
 
-//			sprintf('<div><span>Start</span> %s</div>
-//										  <div><span>End</span> %s</div>
-//										  <div><span>Organizer</span> %s</div>
-//										  <div><span>Description</span> %s</div>',
-//										  $reservation->DateStart->ToString(),
-//										  $reservation->DateEnd->ToString(),
-//										  $reservation->Organizer,
-//										  $reservation->Description));
 			$feed->addItem($item);
 		}
 

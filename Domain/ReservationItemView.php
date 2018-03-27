@@ -334,7 +334,12 @@ class ReservationItemView implements IReservedItemView
 	/**
 	 * @var string[]
 	 */
-	public $InvitedGuests;
+	public $InvitedGuests = array();
+
+    /**
+     * @var string[]
+     */
+    public $ResourceNames = array();
 
 	/**
 	 * @var int|null
@@ -343,7 +348,7 @@ class ReservationItemView implements IReservedItemView
 
 	private $ownerGroupIds = array();
 
-	/**
+    /**
 	 * @param $referenceNumber string
 	 * @param $startDate Date
 	 * @param $endDate Date
@@ -392,6 +397,7 @@ class ReservationItemView implements IReservedItemView
 		$this->StartDate = $startDate;
 		$this->EndDate = $endDate;
 		$this->ResourceName = $resourceName;
+		$this->ResourceNames[] = $resourceName;
 		$this->ResourceId = $resourceId;
 		$this->ReservationId = $reservationId;
 		$this->Title = $title;
@@ -594,7 +600,6 @@ class ReservationItemView implements IReservedItemView
 	 */
 	public static function FromReservationView(ReservationView $r)
 	{
-
 		$item = new ReservationItemView($r->ReferenceNumber,
 										$r->StartDate,
 										$r->EndDate,

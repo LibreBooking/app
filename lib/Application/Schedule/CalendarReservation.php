@@ -152,7 +152,7 @@ class CalendarReservation
         }
 		$start = $reservation->StartDate->ToTimezone($timezone);
 		$end = $reservation->EndDate->ToTimezone($timezone);
-		$resourceName = $reservation->ResourceName;
+		$resourceName = implode(', ', $reservation->ResourceNames);
 		$referenceNumber = $reservation->ReferenceNumber;
 
 		$res = new CalendarReservation($start, $end, $resourceName, $referenceNumber);
