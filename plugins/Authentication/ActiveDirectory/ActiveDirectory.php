@@ -48,11 +48,6 @@ class ActiveDirectory extends Authentication implements IAuthentication
 	private $_registration;
 
 	/**
-	 * @var IGroupViewRepository
-	 */
-	private $_groupRepository;
-
-	/**
 	 * @var ActiveDirectoryUser
 	 */
 	private $user = null;
@@ -75,21 +70,6 @@ class ActiveDirectory extends Authentication implements IAuthentication
 		}
 
 		return $this->_registration;
-	}
-
-	public function SetGroupRepository(IGroupViewRepository $groupRepository)
-	{
-		$this->_groupRepository = $groupRepository;
-	}
-
-	private function GetGroupRepository()
-	{
-		if ($this->_groupRepository == null)
-		{
-			$this->_groupRepository = new GroupRepository();
-		}
-
-		return $this->_groupRepository;
 	}
 
 	/**
@@ -189,29 +169,6 @@ class ActiveDirectory extends Authentication implements IAuthentication
 	{
 		$registration = $this->GetRegistration();
 
-		$userGroups = $this->user->GetGroups();
-		$groupsToSync = null;
-		if ($userGroups != null)
-		{
-			$lowercaseGroups = array_map('strtolower', $userGroups);
-
-			$groupsToSync = array();
-			$groups = $this->GetGroupRepository()->GetList()->Results();
-			/** @var GroupItemView $group */
-			foreach ($groups as $group)
-			{
-				if (in_array(strtolower($group->Name()), $lowercaseGroups))
-				{
-					Log::Debug('ActiveDirectory: Syncing group %s for user %s', $group->Name(), $username);
-					$groupsToSync[] = new UserGroup($group->Id(), $group->Name());
-				}
-				else
-				{
-					Log::Debug('ActiveDirectory: User $s is not part of group %s, sync skipped', $group->Name(), $username);
-				}
-			}
-		}
-
 		$registration->Synchronize(
 				new AuthenticatedUser(
 						$username,
@@ -224,7 +181,7 @@ class ActiveDirectory extends Authentication implements IAuthentication
 						$this->user->GetPhone(),
 						$this->user->GetInstitution(),
 						$this->user->GetTitle(),
-						$groupsToSync)
+                        $this->user->GetGroups())
 		);
 	}
 

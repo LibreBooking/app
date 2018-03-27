@@ -191,7 +191,8 @@ class Saml extends Authentication implements IAuthentication
 				Configuration::Instance()->GetKey(ConfigKeys::LANGUAGE),
 				Configuration::Instance()->GetDefaultTimezone(),
 				$this->user->GetPhone(), $this->user->GetInstitution(),
-				$this->user->GetTitle())
+				$this->user->GetTitle(),
+                $this->user->GetGroups())
 		);
 	}
 

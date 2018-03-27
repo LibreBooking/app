@@ -34,6 +34,5 @@ class LdapConfig
 	const ATTRIBUTE_MAPPING = 'attribute.mapping';
 	const USER_ID_ATTRIBUTE = 'user.id.attribute';
 	const REQUIRED_GROUP = 'required.group';
+	const SYNC_GROUPS = 'sync.groups';
 }
-
-?>

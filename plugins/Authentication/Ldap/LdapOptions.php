@@ -147,6 +147,9 @@ class LdapOptions
           return $this->_options[LdapConfig::FILTER];
      }
 
-}
+    public function SyncGroups()
+    {
+        return $this->_options[LdapConfig::SYNC_GROUPS];
+    }
 
-?>
+}

@@ -86,9 +86,8 @@ class Ldap2Wrapper
         {
             Log::Debug('Authentication was successful');
 
-
-            // PopulateUser should be splitted into two functions: one for the anonymous bind that takes the pieces from the config
-            // and another one that has to be runned after that the user authenticated with his own dn
+            // PopulateUser should be split into two functions: one for the anonymous bind that takes the pieces from the config
+            // and another one that has to be run after that the user authenticated with his own dn
             return $this->PopulateUser($username, $filter, $password);
         }
 
@@ -128,10 +127,12 @@ class Ldap2Wrapper
         }
 
         $attributes = $this->options->Attributes();
-        if (!empty($requiredGroup))
+        $loadGroups = !empty($requiredGroup) || $this->options->SyncGroups();
+        if ($loadGroups)
         {
             $attributes[] = 'memberof';
         }
+
         Log::Error('LDAP - Loading user attributes: %s', implode(', ', $attributes));
 
         $options = array('attributes' => $attributes);
@@ -157,21 +158,23 @@ class Ldap2Wrapper
                 return false;
             }
 
-            Log::Error('Found user %s', $username);
+            if ($loadGroups)
+            {
+                $userGroups = $currentResult->getValue('memberof');
+                $userGroups = array_map('trim', $userGroups);
+                $userGroups = array_map('strtolower', $userGroups);
+            }
 
-            $requiredGroup = $this->options->GetRequiredGroup();
+            Log::Error('Found user %s', $username);
 
             if (!empty($requiredGroup))
             {
                 Log::Error('LDAP - Required Group: %s', $requiredGroup);
-                $userGroups = $currentResult->getValue('memberof');
 
-                $userGroups = array_map('trim', $userGroups);
-                $userGroups = array_map('strtolower', $userGroups);
                 if (in_array(strtolower(trim($requiredGroup)), $userGroups))
                 {
                     Log::Debug('Matched Required Group %s', $requiredGroup);
-                    $this->user = new LdapUser($currentResult, $this->options->AttributeMapping());
+                    $this->user = new LdapUser($currentResult, $this->options->AttributeMapping(), $userGroups);
                     return true;
                 }
                 else {
@@ -183,7 +186,7 @@ class Ldap2Wrapper
             else
             {
                 /** @var Net_LDAP2_Entry $entry */
-                $this->user = new LdapUser($currentResult, $this->options->AttributeMapping());
+                $this->user = new LdapUser($currentResult, $this->options->AttributeMapping(), $userGroups);
                 return true;
             }
         }

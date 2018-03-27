@@ -67,7 +67,7 @@ class AuthenticatedUser
 	private $title;
 
 	/**
-	 * @var UserGroup[]|null
+	 * @var string[]|null
 	 */
 	private $groups = null;
 
@@ -82,7 +82,7 @@ class AuthenticatedUser
 	 * @param string $phone
 	 * @param string $organization
 	 * @param string $title
-	 * @param UserGroup[]|null $groups
+	 * @param string[]|null $groups
 	 */
 	public function __construct($username, $email, $fname, $lname, $password, $languageCode, $timezoneName, $phone, $organization, $title, $groups = null)
 	{
@@ -191,7 +191,7 @@ class AuthenticatedUser
 	}
 
 	/**
-	 * @return UserGroup[]|null
+	 * @return string[]|null
 	 */
 	public function GetGroups()
 	{

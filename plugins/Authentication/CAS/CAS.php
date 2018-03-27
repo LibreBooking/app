@@ -89,8 +89,7 @@ class CAS extends Authentication implements IAuthentication
         Log::Debug('CAS is auth ok: %s', $isAuth);
         $username = phpCAS::getUser();
         $attributes = phpCAS::getAttributes();
-        Log::Debug('cas attributes %s', var_export($attributes, true));
-        $this->Synchronize($username);
+        $this->Synchronize($username, $attributes);
 
         return $this->authToDecorate->Login($username, $loginContext);
     }
@@ -170,22 +169,58 @@ class CAS extends Authentication implements IAuthentication
         return false;
     }
 
-    private function Synchronize($username)
+    private function Synchronize($username, $attributes)
     {
         $registration = $this->GetRegistration();
 
         $registration->Synchronize(
             new AuthenticatedUser(
                 $username,
-                $username . $this->options->EmailSuffix(),
-                $username,
-                $username,
-                uniqid(),
+                $this->getAttribute($username, $attributes, 'email'),
+                $this->getAttribute($username, $attributes, 'givenName'),
+                $this->getAttribute($username, $attributes, 'surName'),
+                BookedStringHelper::Random(12),
                 Configuration::Instance()->GetKey(ConfigKeys::LANGUAGE),
                 Configuration::Instance()->GetDefaultTimezone(),
                 null,
                 null,
-                null), true
+                null,
+                $this->getGroups($attributes)), true
         );
+    }
+
+    private function getAttribute($username, $attributes, $key)
+    {
+        $attributeMapping = $this->options->AttributeMapping();
+        if (array_key_exists($key, $attributeMapping))
+        {
+            $mappedName = $attributeMapping[$key];
+            if (array_key_exists($mappedName, $attributes))
+            {
+                return $attributes[$mappedName];
+            }
+        }
+
+        return $username;
+    }
+
+    private function getGroups($attributes)
+    {
+        $attributeMapping = $this->options->AttributeMapping();
+        if (array_key_exists('groups', $attributeMapping))
+        {
+            $mappedName = $attributeMapping['groups'];
+            if (array_key_exists($mappedName, $attributes))
+            {
+                $userGroups = $attributes[$mappedName];
+                if (!is_array($userGroups))
+                {
+                    return array($userGroups);
+                }
+                return $userGroups;
+            }
+        }
+
+        return null;
     }
 }

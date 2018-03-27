@@ -33,6 +33,5 @@ class CASConfig
     const CAS_DEBUG_ENABLED = 'cas.debug.enabled';
     const EMAIL_SUFFIX = 'email.suffix';
     const DEBUG_FILE = 'cas.debug.file';
+    const ATTRIBUTE_MAPPING = 'cas.attribute.mapping';
 }
-
-?>

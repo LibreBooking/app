@@ -517,7 +517,7 @@ class UserRepositoryTests extends TestBase
 	{
 		$repo = new UserRepository();
 
-		$command = new GetAllApplicationAdminsCommand();
+		$command = new GetAllApplicationAdminsCommand($this->fakeConfig->GetAllAdminEmails());
 		$userRows = array
 		(
 				$this->GetUserRow(1, 'admin', 'guy', 'email'),

@@ -89,7 +89,7 @@ class ActiveDirectoryUser
 	}
 
 	/**
-	 * @return array|null
+	 * @return string[]|null
 	 */
 	public function GetGroups()
 	{
@@ -123,5 +123,4 @@ class ActiveDirectoryUser
 
 		return $value;
 	}
-
 }

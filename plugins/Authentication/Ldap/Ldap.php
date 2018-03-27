@@ -18,6 +18,8 @@
  * along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+@define('LDAP_OPT_DIAGNOSTIC_MESSAGE', 0x0032);
+@putenv('LDAPTLS_REQCERT=never');
 require_once(ROOT_DIR . 'lib/Application/Authentication/namespace.php');
 require_once(ROOT_DIR . 'plugins/Authentication/Ldap/namespace.php');
 
@@ -204,7 +206,8 @@ class Ldap extends Authentication implements IAuthentication
 						Configuration::Instance()->GetKey(ConfigKeys::LANGUAGE),
 						Configuration::Instance()->GetDefaultTimezone(),
 						$this->user->GetPhone(), $this->user->GetInstitution(),
-						$this->user->GetTitle())
+						$this->user->GetTitle(),
+                        $this->user->GetGroups())
 		);
 	}
 

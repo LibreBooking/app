@@ -110,8 +110,25 @@ class CASOptions
 	{
 		return $this->GetConfig(CASConfig::EMAIL_SUFFIX);
 	}
+    public function AttributeMapping()
+    {
+        $attributes = array(
+            'surName' => 'sn',
+            'givenName' => 'givenname',
+            'email' => 'mail',
+            'groups' => 'Role');
+        $configValue = $this->GetConfig(ActiveDirectoryConfig::ATTRIBUTE_MAPPING);
 
+        if (!empty($configValue))
+        {
+            $attributePairs = explode(',', $configValue);
+            foreach ($attributePairs as $attributePair)
+            {
+                $pair = explode('=', trim($attributePair));
+                $attributes[trim($pair[0])] = trim($pair[1]);
+            }
+        }
 
+        return $attributes;
+    }
 }
-
-?>

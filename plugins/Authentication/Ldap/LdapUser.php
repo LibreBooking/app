@@ -28,12 +28,14 @@ class LdapUser
 	private $title;
 	private $dn;
 	private $mapping;
+    private $groups;
 
-	/**
-	 * @param $entry Net_LDAP2_Entry
-	 * @param $mapping string[]|array
-	 */
-	public function __construct($entry, $mapping)
+    /**
+     * @param $entry Net_LDAP2_Entry
+     * @param $mapping string[]|array
+     * @param $userGroups string[]
+     */
+	public function __construct($entry, $mapping, $userGroups = array())
 	{
 		$this->mapping = $mapping;
 		$this->fname = $this->Get($entry, 'givenname');
@@ -43,6 +45,7 @@ class LdapUser
 		$this->institution = $this->Get($entry, 'physicaldeliveryofficename');
 		$this->title = $this->Get($entry, 'title');
 		$this->dn = $entry->dn();
+		$this->groups = $userGroups;
 	}
 
 	public function GetFirstName()
@@ -80,6 +83,11 @@ class LdapUser
 		return $this->dn;
 	}
 
+	public function GetGroups()
+    {
+        return $this->groups;
+    }
+
 	/**
 	 * @param Net_LDAP2_Entry $entry
 	 * @param string $field
@@ -102,5 +110,3 @@ class LdapUser
 		return $value;
 	}
 }
-
-?>

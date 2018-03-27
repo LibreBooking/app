@@ -181,8 +181,8 @@ class ActiveDirectoryTests extends TestBase
             $timezone,
 			$this->ldapUser->GetPhone(),
 			$this->ldapUser->GetInstitution(),
-			$this->ldapUser->GetTitle());
-
+			$this->ldapUser->GetTitle(),
+            array('group1', 'group2', 'group3'));
 
 		$auth = new ActiveDirectory($this->fakeAuth, $this->fakeLdap, $this->fakeLdapOptions);
 		$auth->SetRegistration($this->fakeRegistration);
@@ -193,23 +193,6 @@ class ActiveDirectoryTests extends TestBase
 		$this->assertTrue($this->fakeRegistration->_SynchronizeCalled);
 		$this->assertEquals($expectedUser, $this->fakeRegistration->_LastSynchronizedUser);
 		$this->assertEquals($this->loginContext, $this->fakeAuth->_LastLoginContext);
-	}
-
-	public function testSyncsGroups()
-	{
-		$this->fakeLdapOptions->_SyncGroups = true;
-		$auth = new ActiveDirectory($this->fakeAuth, $this->fakeLdap, $this->fakeLdapOptions);
-		$auth->SetRegistration($this->fakeRegistration);
-		$auth->SetGroupRepository($this->fakeGroupRepository);
-
-		$this->fakeGroupRepository->_AddGroup(new GroupItemView(1, 'Group1'));
-		$this->fakeGroupRepository->_AddGroup(new GroupItemView(3, 'Group3'));
-		$this->fakeGroupRepository->_AddGroup(new GroupItemView(4, 'Group4'));
-
-		$auth->Validate($this->username, $this->password);
-		$auth->Login($this->username, $this->loginContext);
-
-		$this->assertEquals(array(new UserGroup(1, 'Group1'), new UserGroup(3,'Group3')), $this->fakeRegistration->_LastSynchronizedUser->GetGroups());
 	}
 
 	public function testDoesNotSyncIfUserWasNotFoundInLdap()

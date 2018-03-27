@@ -33,6 +33,8 @@ class FakeUserRepository implements IUserRepository
      */
     public $_AddedUser;
 
+    public $_Exists = true;
+
     public function __construct()
 	{
 		$this->_User = new FakeUser(123);
@@ -167,7 +169,7 @@ class FakeUserRepository implements IUserRepository
 	 */
 	public function UserExists($emailAddress, $userName)
 	{
-		// TODO: Implement UserExists() method.
+		return $this->_Exists;
 	}
 
 	/**

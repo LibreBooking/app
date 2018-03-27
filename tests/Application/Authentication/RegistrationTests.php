@@ -37,6 +37,11 @@ class RegistrationTests extends TestBase
      */
     private $userRepository;
 
+    /**
+     * @var FakeGroupViewRepository
+     */
+    private $groupRepository;
+
     private $login = 'testlogin';
     private $email = 'test@test.com';
     private $fname = 'First';
@@ -58,9 +63,10 @@ class RegistrationTests extends TestBase
         parent::setup();
 
         $this->userRepository = $this->getMock('IUserRepository');
+        $this->groupRepository = new FakeGroupViewRepository();
 
         $this->fakeEncryption = new FakePasswordEncryption();
-        $this->registration = new Registration($this->fakeEncryption, $this->userRepository);
+        $this->registration = new Registration($this->fakeEncryption, $this->userRepository, null, null, $this->groupRepository);
 
         $this->additionalFields = array('phone' => $this->phone, 'organization' => $this->organization, 'position' => $this->position);
         $this->attributes = array(new AttributeValue(1, 1));
@@ -255,13 +261,16 @@ class RegistrationTests extends TestBase
         $salt = $this->fakeEncryption->_Salt;
         $groups = array(new UserGroup(1, '1'), new UserGroup(2, '2'));
 
+        $this->groupRepository->_AddGroup(new GroupItemView(1,'1'));
+        $this->groupRepository->_AddGroup(new GroupItemView(2, '2'));
+
         $updatedUser = new User();
         $updatedUser->ChangeGroups($groups);
 
         $this->userRepository->expects($this->once())
             ->method('UserExists')
             ->with($this->equalTo($email), $this->equalTo($username))
-            ->will($this->returnValue($userId));
+            ->will($this->returnValue(true));
 
         $this->userRepository->expects($this->once())
             ->method('LoadByUsername')
@@ -273,7 +282,7 @@ class RegistrationTests extends TestBase
             ->with($this->equalTo($updatedUser))
             ->will($this->returnValue($updatedUser));
 
-        $user = new AuthenticatedUser($username, $email, $fname, $lname, 'password', 'en_US', 'UTC', $phone, $inst, $title, $groups);
+        $user = new AuthenticatedUser($username, $email, $fname, $lname, 'password', 'en_US', 'UTC', $phone, $inst, $title, array('1', '2'));
         $expectedCommand = new UpdateUserFromLdapCommand($username, $email, $fname, $lname, $encryptedPassword, $salt, $phone, $inst, $title);
 
         $this->registration->Synchronize($user);
@@ -293,7 +302,10 @@ class RegistrationTests extends TestBase
         $langCode = 'en_US';
         $timezone = 'UTC';
 
-        $groups = array(new UserGroup(1, 'group1'), new UserGroup(2, 'g2'));
+        $groups = array('group1', 'g2');
+
+        $this->groupRepository->_AddGroup(new GroupItemView(1, 'group1'));
+        $this->groupRepository->_AddGroup(new GroupItemView(2, 'g2'));
 
         $encryptedPassword = $this->fakeEncryption->_Encrypted;
         $salt = $this->fakeEncryption->_Salt;
@@ -311,7 +323,7 @@ class RegistrationTests extends TestBase
             Pages::DEFAULT_HOMEPAGE_ID);
 
         $expectedUser->ChangeAttributes($phone, $inst, $title);
-        $expectedUser->WithGroups($groups);
+        $expectedUser->WithGroups(array(new UserGroup(1, 'group1'), new UserGroup(2, 'g2')));
 
         $this->userRepository->expects($this->once())
             ->method('UserExists')
@@ -343,5 +355,29 @@ class RegistrationTests extends TestBase
         $this->assertNull($user->LastName(), "needs to be null to make sure we do not clear values in the database");
         $this->assertNull($user->Phone(), "needs to be null to make sure we do not clear values in the database");
         $this->assertEquals($email, $user->Email());
+    }
+
+    public function testSyncsGroups()
+    {
+        $userRepository = new FakeUserRepository();
+        $userRepository->_Exists = false;
+
+        $username = 'un';
+        $email = 'e';
+
+        $user = new AuthenticatedUser($username, $email, '', '', 'password', '', '', '', '', '', array('Group1', 'Group2', 'Group3'));
+
+        $this->groupRepository->_AddGroup(new GroupItemView(1, 'Group1'));
+        $this->groupRepository->_AddGroup(new GroupItemView(3, 'Group3'));
+        $this->groupRepository->_AddGroup(new GroupItemView(4, 'Group4'));
+
+        $registration = new Registration($this->fakeEncryption, $userRepository, null, null, $this->groupRepository);
+
+        $registration->Synchronize($user);
+
+        $userGroups = $userRepository->_AddedUser->Groups();
+        $this->assertEquals(2, count($userGroups));
+        $this->assertEquals(new UserGroup(1, 'Group1'), $userGroups[0]);
+        $this->assertEquals(new UserGroup(3, 'Group3'), $userGroups[1]);
     }
 }
