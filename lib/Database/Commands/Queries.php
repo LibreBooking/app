@@ -569,6 +569,13 @@ class Queries
 		WHERE rr.blackout_series_id = @blackout_series_id
 		ORDER BY r.name';
 
+	const GET_CUSTOM_LAYOUT = 'SELECT l.timezone, ctb.* 
+        FROM layouts l 
+        INNER JOIN custom_time_blocks ctb ON l.layout_id = ctb.layout_id
+        INNER JOIN schedules s ON s.layout_id = l.layout_id
+        WHERE ctb.start_time >= @startDate AND ctb.end_time <= @endDate
+        ORDER BY ctb.start_time';
+
 	const GET_DASHBOARD_ANNOUNCEMENTS =
 			'SELECT a.*, 
 			(SELECT GROUP_CONCAT(ag.group_id) FROM announcement_groups ag WHERE ag.announcementid = a.announcementid) as group_ids,
@@ -769,14 +776,13 @@ class Queries
 			tb.end_time,
 			tb.availability_code,
 			tb.day_of_week,
-			l.timezone
+			l.timezone,
+			l.layout_type
 		FROM
-			time_blocks tb,
-			layouts l,
-			schedules s
+		layouts l 
+		INNER JOIN schedules s ON l.layout_id = s.layout_id
+		LEFT JOIN time_blocks tb ON tb.layout_id = l.layout_id
 		WHERE
-			l.layout_id = s.layout_id  AND
-			tb.layout_id = l.layout_id AND
 			s.schedule_id = @scheduleid
 		ORDER BY tb.start_time';
 

@@ -86,6 +86,7 @@ class ColumnNames
 	const BLOCK_LABEL_END = 'end_label';
 	const BLOCK_CODE = 'availability_code';
 	const BLOCK_TIMEZONE = 'timezone';
+	const LAYOUT_TYPE = 'layout_type';
 
 	// TIME BLOCK USES //
 	const BLOCK_START = 'start_time';

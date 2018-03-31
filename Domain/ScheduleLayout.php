@@ -62,6 +62,11 @@ interface IScheduleLayout extends ILayoutTimezone, IDailyScheduleLayout
 	public function ChangePeakTimes(PeakTimes $peakTimes);
 
 	public function RemovePeakTimes();
+
+    /**
+     * @return bool
+     */
+    public function FitsToHours();
 }
 
 interface ILayoutCreation extends ILayoutTimezone, IDailyScheduleLayout
@@ -97,6 +102,9 @@ interface ILayoutCreation extends ILayoutTimezone, IDailyScheduleLayout
 
 class ScheduleLayout implements IScheduleLayout, ILayoutCreation
 {
+    const Custom = 1;
+    const Standard = 0;
+
 	/**
 	 * @var PeakTimes
 	 */
@@ -124,7 +132,7 @@ class ScheduleLayout implements IScheduleLayout, ILayoutCreation
 	 */
 	private $usingDailyLayouts = false;
 
-	/**
+    /**
 	 * @var string
 	 */
 	private $layoutTimezone;
@@ -134,7 +142,7 @@ class ScheduleLayout implements IScheduleLayout, ILayoutCreation
 	 */
 	private $startTimes = array();
 
-	/**
+    /**
 	 * @param string $targetTimezone target timezone of layout
 	 */
 	public function __construct($targetTimezone = null)
@@ -660,6 +668,11 @@ class ScheduleLayout implements IScheduleLayout, ILayoutCreation
 	{
 		$this->peakTimes = null;
 	}
+
+    public function FitsToHours()
+    {
+        return true;
+    }
 }
 
 class SlotCount
@@ -1057,6 +1070,9 @@ class LayoutPeriod
 
 class PeriodList
 {
+    /**
+     * @var SchedulePeriod[]
+     */
 	private $items = array();
 	private $_addedStarts = array();
 	private $_addedTimes = array();
@@ -1072,6 +1088,9 @@ class PeriodList
 		$this->items[] = $period;
 	}
 
+    /**
+     * @return SchedulePeriod[]
+     */
 	public function GetItems()
 	{
 		return $this->items;
@@ -1105,4 +1124,140 @@ class ReservationLayout extends ScheduleLayout implements IScheduleLayout
 	{
 		return false;
 	}
+}
+
+class CustomScheduleLayout extends ScheduleLayout implements IScheduleLayout
+{
+    /**
+     * @var IScheduleRepository
+     */
+    private $repository;
+
+    /**
+     * @var int
+     */
+    private $scheduleId;
+
+    /**
+     * @var SchedulePeriod[]
+     */
+    private $cache = array();
+
+    /**
+     * @param string $targetTimezone
+     * @param int $scheduleId
+     * @param IScheduleRepository $repository
+     */
+    public function __construct($targetTimezone, $scheduleId, IScheduleRepository $repository)
+    {
+        $this->repository = $repository;
+        $this->scheduleId = $scheduleId;
+        parent::__construct($targetTimezone);
+    }
+
+    public function GetLayout(Date $layoutDate, $hideBlockedPeriods = false)
+    {
+        if ($this->IsCached($layoutDate))
+        {
+            $allPeriods = $this->GetCached($layoutDate);
+        }
+        else
+        {
+            $periods = $this->repository->GetCustomLayoutPeriods($layoutDate, $this->scheduleId);
+            if (count($periods) == 0)
+            {
+                return array();
+            }
+
+            $allPeriods = [];
+            if (!$hideBlockedPeriods)
+            {
+                $previous = $layoutDate->GetDate();
+                foreach ($periods as $period)
+                {
+                    if (!$period->BeginDate()->Equals($previous) && !$period->EndDate()->IsMidnight())
+                    {
+                        $allPeriods[] = new NonSchedulePeriod($previous, $period->BeginDate());
+                    }
+                    $allPeriods[] = $period;
+                    $previous = $period->EndDate();
+                }
+
+                $lastPeriod = $periods[count($periods) - 1];
+                if (!$lastPeriod->EndDate()->IsMidnight())
+                {
+                    $allPeriods[] = new NonSchedulePeriod($lastPeriod->EndDate(), $lastPeriod->EndDate()->AddDays(1)->GetDate());
+                }
+            }
+            else
+            {
+                $allPeriods = $periods;
+            }
+
+            $this->cache[$this->GetCacheKey($layoutDate)] = $allPeriods;
+        }
+
+        return $allPeriods;
+    }
+
+    public function FitsToHours()
+    {
+        return false;
+    }
+
+    /**
+     * @param Date $layoutDate
+     * @return bool
+     */
+    private function IsCached($layoutDate)
+    {
+        return array_key_exists($this->GetCacheKey($layoutDate), $this->cache);
+    }
+
+    /**
+     * @param Date $layoutDate
+     * @return SchedulePeriod[]
+     */
+    private function GetCached($layoutDate)
+    {
+        return $this->cache[$this->GetCacheKey($layoutDate)];
+    }
+
+    /**
+     * @param Date $layoutDate
+     * @return int
+     */
+    private function GetCacheKey(Date $layoutDate)
+    {
+        return $layoutDate->GetDate()->Timestamp();
+    }
+
+    public function GetPeriod(Date $date)
+    {
+        $layout = $this->GetLayout($date);
+        foreach ($layout as $period)
+        {
+            if ($period->BeginDate()->Equals($date))
+            {
+                return $period;
+            }
+        }
+
+        return null;
+    }
+
+    public function GetSlotCount(Date $startDate, Date $endDate, Date $testDate)
+    {
+        return 1;
+    }
+
+    public function AppendPeriod(Time $startTime, Time $endTime, $label = null, $dayOfWeek = null)
+    {
+
+    }
+
+    public function AppendBlockedPeriod(Time $startTime, Time $endTime, $label = null, $dayOfWeek = null)
+    {
+
+    }
 }

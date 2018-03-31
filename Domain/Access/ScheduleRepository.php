@@ -73,6 +73,13 @@ interface IScheduleRepository
     public function AddScheduleLayout($scheduleId, ILayoutCreation $layout);
 
     /**
+     * @param Date $periodDate
+     * @param int $scheduleId
+     * @return SchedulePeriod[]
+     */
+    public function GetCustomLayoutPeriods(Date $periodDate, $scheduleId);
+
+    /**
      * @param int $pageNumber
      * @param int $pageSize
      * @param string|null $sortField
@@ -95,6 +102,13 @@ interface ILayoutFactory
      * @return IScheduleLayout
      */
     public function CreateLayout();
+
+    /**
+     * @param IScheduleRepository $repository
+     * @param int $scheduleId
+     * @return IScheduleLayout
+     */
+    public function CreateCustomLayout(IScheduleRepository $repository, $scheduleId);
 }
 
 class ScheduleLayoutFactory implements ILayoutFactory
@@ -109,12 +123,14 @@ class ScheduleLayoutFactory implements ILayoutFactory
         $this->_targetTimezone = $targetTimezone;
     }
 
-    /**
-     * @see ILayoutFactory::CreateLayout()
-     */
     public function CreateLayout()
     {
         return new ScheduleLayout($this->_targetTimezone);
+    }
+
+    public function CreateCustomLayout(IScheduleRepository $repository, $scheduleId)
+    {
+        return new CustomScheduleLayout($this->_targetTimezone, $scheduleId, $repository);
     }
 }
 
@@ -130,12 +146,14 @@ class ReservationLayoutFactory implements ILayoutFactory
         $this->_targetTimezone = $targetTimezone;
     }
 
-    /**
-     * @see ILayoutFactory::CreateLayout()
-     */
     public function CreateLayout()
     {
         return new ReservationLayout($this->_targetTimezone);
+    }
+
+    public function CreateCustomLayout(IScheduleRepository $repository, $scheduleId)
+    {
+        return new CustomScheduleLayout($this->_targetTimezone, $scheduleId, $repository);
     }
 }
 
@@ -244,14 +262,22 @@ class ScheduleRepository implements IScheduleRepository
 
     public function GetLayout($scheduleId, ILayoutFactory $layoutFactory)
     {
-        /**
-         * @var $layout ScheduleLayout
-         */
-        $layout = $layoutFactory->CreateLayout();
-
         $reader = ServiceLocator::GetDatabase()->Query(new GetLayoutCommand($scheduleId));
 
+        /** @var ScheduleLayout $layout */
+        $layout = null;
+
         while ($row = $reader->GetRow()) {
+
+            if ($layout == null) {
+                if ($row[ColumnNames::LAYOUT_TYPE] == 1) {
+                    $layout = $layoutFactory->CreateCustomLayout($this, $scheduleId);
+                }
+                else {
+                    $layout = $layoutFactory->CreateLayout();
+                }
+            }
+
             $timezone = $row[ColumnNames::BLOCK_TIMEZONE];
             $start = Time::Parse($row[ColumnNames::BLOCK_START], $timezone);
             $end = Time::Parse($row[ColumnNames::BLOCK_END], $timezone);
@@ -266,7 +292,6 @@ class ScheduleRepository implements IScheduleRepository
                 $layout->AppendBlockedPeriod($start, $end, $label, $dayOfWeek);
             }
         }
-
         $reader->Free();
 
         $reader = ServiceLocator::GetDatabase()->Query(new GetPeakTimesCommand($scheduleId));
@@ -275,6 +300,26 @@ class ScheduleRepository implements IScheduleRepository
         }
 
         return $layout;
+    }
+
+    public function GetCustomLayoutPeriods(Date $date, $scheduleId)
+    {
+        $command = new GetCustomLayoutCommand($date, $scheduleId);
+        $reader = ServiceLocator::GetDatabase()->Query($command);
+
+        $periods = array();
+
+        while ($row = $reader->GetRow()) {
+            $timezone = $row[ColumnNames::BLOCK_TIMEZONE];
+            $start = Date::FromDatabase($row[ColumnNames::BLOCK_START])->ToTimezone($timezone);
+            $end = Date::FromDatabase($row[ColumnNames::BLOCK_END])->ToTimezone($timezone);
+
+            $periods[] = new SchedulePeriod($start, $end);
+        }
+
+        $reader->Free();
+
+        return $periods;
     }
 
     public function AddScheduleLayout($scheduleId, ILayoutCreation $layout)

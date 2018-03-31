@@ -153,13 +153,12 @@ class DailyLayout implements IDailyLayout
 
         $periods = $this->_scheduleLayout->GetLayout($displayDate, $hideBlocked);
 
-        if (!$fitToHours) {
+        if (!$fitToHours || !$this->_scheduleLayout->FitsToHours()) {
             return $periods;
         }
 
         /** @var $periodsToReturn SpanablePeriod[] */
         $periodsToReturn = array();
-        $tempPeriod = $periods[0];
         for ($i = 0; $i < count($periods); $i++) {
             $span = 1;
             $currentPeriod = $periods[$i];
@@ -180,7 +179,6 @@ class DailyLayout implements IDailyLayout
                 }
             }
             $periodsToReturn[] = new SpanablePeriod($currentPeriod, $span);
-
         }
 
         return $periodsToReturn;

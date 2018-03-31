@@ -1478,6 +1478,17 @@ class GetBlackoutResourcesCommand extends SqlCommand
     }
 }
 
+class GetCustomLayoutCommand extends SqlCommand
+{
+    public function __construct(Date $date, $scheduleId)
+    {
+        parent::__construct(Queries::GET_CUSTOM_LAYOUT);
+        $this->AddParameter(new Parameter(ParameterNames::SCHEDULE_ID, $scheduleId));
+        $this->AddParameter(new Parameter(ParameterNames::START_DATE, $date->ToDatabase()));
+        $this->AddParameter(new Parameter(ParameterNames::END_DATE, $date->AddDays(1)->ToDatabase()));
+    }
+}
+
 class GetDashboardAnnouncementsCommand extends SqlCommand
 {
     public function __construct(Date $currentDate, $displayPage)

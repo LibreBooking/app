@@ -48,7 +48,9 @@ class FakeScheduleRepository implements IScheduleRepository
     /**
      * @var Schedule[]
      */
-    public $_Schedules;
+    public $_Schedules = [];
+
+    public $_CustomLayouts = [];
 
     public function __construct()
     {
@@ -215,5 +217,19 @@ class FakeScheduleRepository implements IScheduleRepository
     public function UpdatePeakTimes($scheduleId, ScheduleLayout $layout)
     {
         // TODO: Implement UpdatePeakTimes() method.
+    }
+
+    public function GetCustomLayoutPeriods(Date $date, $scheduleId)
+    {
+        return $this->_CustomLayouts[$date->Timestamp()];
+    }
+
+    /**
+     * @param Date $date
+     * @param SchedulePeriod[] $periods
+     */
+    public function _AddCustomLayout($date, $periods)
+    {
+        $this->_CustomLayouts[$date->Timestamp()] = $periods;
     }
 }

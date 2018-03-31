@@ -164,3 +164,18 @@ ALTER TABLE `custom_attribute_values` DROP INDEX `entity_attribute`;
 ALTER TABLE `custom_attribute_values` ADD INDEX(`entity_id`);
 ALTER TABLE `custom_attribute_values` ADD INDEX(`attribute_category`);
 ALTER TABLE `reservation_reminders` ADD INDEX(`reminder_type`);
+
+ALTER TABLE `layouts` ADD COLUMN `layout_type` TINYINT UNSIGNED NOT NULL DEFAULT 0;
+DROP TABLE IF EXISTS `custom_time_blocks`;
+CREATE TABLE `custom_time_blocks` (
+  `custom_time_block_id` SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `start_time` DATETIME NOT NULL,
+  `end_time` DATETIME NOT NULL,
+  `layout_id` MEDIUMINT UNSIGNED NOT NULL,
+  PRIMARY KEY (`custom_time_block_id`),
+  FOREIGN KEY (`layout_id`)
+ 	REFERENCES layouts (`layout_id`)
+ 	ON UPDATE CASCADE ON DELETE CASCADE
+)
+  ENGINE = InnoDB
+  DEFAULT CHARACTER SET utf8;

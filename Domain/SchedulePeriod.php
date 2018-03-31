@@ -87,8 +87,7 @@ class SchedulePeriod
 	{
 		if (empty($this->_label))
 		{
-			$format = Resources::GetInstance()
-					  ->GetDateFormat('period_time');
+			$format = Resources::GetInstance()->GetDateFormat('period_time');
 
 			if (isset($dateOverride) && !$this->_begin->DateEquals($dateOverride))
 			{
@@ -106,8 +105,7 @@ class SchedulePeriod
 	{
 		if (empty($this->_label))
 		{
-			$format = Resources::GetInstance()
-					  ->GetDateFormat('period_time');
+			$format = Resources::GetInstance()->GetDateFormat('period_time');
 
 			return $this->_end->Format($format);
 		}
