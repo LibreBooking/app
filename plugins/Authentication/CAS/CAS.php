@@ -185,7 +185,7 @@ class CAS extends Authentication implements IAuthentication
                 null,
                 null,
                 null,
-                $this->getGroups($attributes)), true
+                $this->getGroups($attributes))
         );
     }
 
