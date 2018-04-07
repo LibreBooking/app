@@ -291,4 +291,17 @@ class FakeGuestReservationPage implements IGuestReservationPage
     public function SetFirstWeekday($weekday)
     {
     }
+
+    public function MakeUnavailable()
+    {
+        // TODO: Implement MakeUnavailable() method.
+    }
+
+    /**
+     * @return true
+     */
+    public function IsUnavailable()
+    {
+        // TODO: Implement IsUnavailable() method.
+    }
 }

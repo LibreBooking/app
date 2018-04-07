@@ -181,13 +181,14 @@ class CalendarReservation
     /**
      * @static
      * @param array|ReservationItemView[] $reservations
+     * @param array|BlackoutItemView[] $blackouts
      * @param array|ResourceDto[] $resources
      * @param UserSession $userSession
      * @param bool $groupSeriesByResource
      * @param SlotLabelFactory|null $factory
      * @return CalendarReservation[]
      */
-	public static function FromScheduleReservationList($reservations, $resources, UserSession $userSession, $groupSeriesByResource = false, $factory = null)
+	public static function FromScheduleReservationList($reservations, $blackouts, $resources, UserSession $userSession, $groupSeriesByResource = false, $factory = null)
 	{
         if ($factory == null)
         {
@@ -232,7 +233,6 @@ class CalendarReservation
 			$cr->OwnerLast = $reservation->LastName;
 			$cr->DisplayTitle = $factory->Format($reservation, Configuration::Instance()->GetSectionKey(ConfigSection::RESERVATION_LABELS,
 																										ConfigKeys::RESERVATION_LABELS_RESOURCE_CALENDAR));
-
 			$color = $reservation->GetColor();
 			if (!empty($color))
 			{
@@ -246,6 +246,25 @@ class CalendarReservation
 
 			$res[] = $cr;
 		}
+
+		foreach ($blackouts as $blackout)
+        {
+            if (!array_key_exists($blackout->ResourceId, $resourceMap))
+            {
+                continue;
+            }
+
+            $timezone = $userSession->Timezone;
+            $start = $blackout->StartDate->ToTimezone($timezone);
+            $end = $blackout->EndDate->ToTimezone($timezone);
+
+            $cr = new CalendarReservation($start, $end, $resourceMap[$blackout->ResourceId], null);
+            $cr->Title = $blackout->Title;
+            $cr->DisplayTitle =$blackout->Title;
+            $cr->IsEditable = false;
+            $cr->Class = 'unreservable';
+            $res[] = $cr;
+        }
 
 		return $res;
 	}
@@ -281,7 +300,7 @@ class CalendarReservation
 				'title' => $this->DisplayTitle,
 				'start' => $this->StartDate->Format($dateFormat),
 				'end' => $this->EndDate->Format($dateFormat),
-				'url' => sprintf('%s?rn=%s', Pages::RESERVATION, $this->ReferenceNumber),
+				'url' => !empty($this->ReferenceNumber) ? sprintf('%s?rn=%s', Pages::RESERVATION, $this->ReferenceNumber) : '',
 				'allDay' => false,
 				'backgroundColor' => $this->Color,
 				'textColor' => $this->TextColor,

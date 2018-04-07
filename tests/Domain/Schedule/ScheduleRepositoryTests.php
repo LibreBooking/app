@@ -357,6 +357,10 @@ class ScheduleRepositoryTests extends TestBase
             ->method('UsesDailyLayouts')
             ->will($this->returnValue(false));
 
+        $layout->expects($this->any())
+            ->method('GetType')
+            ->will($this->returnValue(ScheduleLayout::Standard));
+
         $layout->expects($this->once())
             ->method('Timezone')
             ->will($this->returnValue($timezone));
@@ -375,7 +379,7 @@ class ScheduleRepositoryTests extends TestBase
         $actualInsertBlock2 = $this->db->_Commands[2];
         $actualInsertScheduleBlock = $this->db->_Commands[3];
 
-        $expectedInsertBlockGroup = new AddLayoutCommand($timezone);
+        $expectedInsertBlockGroup = new AddLayoutCommand($timezone, ScheduleLayout::Standard);
         $expectedInsertBlockGroup1 = new AddLayoutTimeCommand($layoutId, $start1, $end1, PeriodTypes::RESERVABLE, $label1);
         $expectedInsertBlockGroup2 = new AddLayoutTimeCommand($layoutId, $start2, $end2, PeriodTypes::NONRESERVABLE, null);
         $expectedUpdateScheduleLayout = new UpdateScheduleLayoutCommand($scheduleId, $layoutId);
@@ -412,12 +416,16 @@ class ScheduleRepositoryTests extends TestBase
             ->method('UsesDailyLayouts')
             ->will($this->returnValue(true));
 
+        $layout->expects($this->any())
+            ->method('GetType')
+            ->will($this->returnValue(ScheduleLayout::Standard));
+
         $layout->expects($this->once())
             ->method('Timezone')
             ->will($this->returnValue($timezone));
 
         foreach (DayOfWeek::Days() as $day) {
-            $layout->expects($this->at($day + 2))
+            $layout->expects($this->at($day + 3))
                 ->method('GetSlots')
                 ->with($this->equalTo($day))
                 ->will($this->returnValue($slots));
@@ -427,7 +435,7 @@ class ScheduleRepositoryTests extends TestBase
 
         $this->scheduleRepository->AddScheduleLayout($scheduleId, $layout);
 
-        $expectedInsertBlockGroup = new AddLayoutCommand($timezone);
+        $expectedInsertBlockGroup = new AddLayoutCommand($timezone, ScheduleLayout::Standard);
         $expectedUpdateScheduleLayout = new UpdateScheduleLayoutCommand($scheduleId, $layoutId);
 
         $this->assertTrue($this->db->ContainsCommand($expectedInsertBlockGroup));

@@ -45,7 +45,9 @@ function Calendar(opts) {
                 data: _options.eventsData
             }],
             eventRender: function (event, element, view) {
-                element.attachReservationPopup(event.id);
+                if (!_.isEmpty(event.id)) {
+                    element.attachReservationPopup(event.id);
+                }
             },
             dayClick: dayClick,
             dayNames: _options.dayNames,

@@ -82,7 +82,7 @@ class FakeReservationViewRepository implements IReservationViewRepository
         return $this->_FilterResults;
     }
 
-    public function GetBlackoutsWithin(DateRange $dateRange, $scheduleId = ReservationViewRepository::ALL_SCHEDULES)
+    public function GetBlackoutsWithin(DateRange $dateRange, $scheduleId = ReservationViewRepository::ALL_SCHEDULES, $resourceId = ReservationViewRepository::ALL_RESOURCES)
     {
         return $this->_Blackouts;
     }

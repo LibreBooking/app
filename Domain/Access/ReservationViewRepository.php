@@ -81,9 +81,10 @@ interface IReservationViewRepository
     /**
      * @param DateRange $dateRange
      * @param int|null $scheduleId
+     * @param int|null $resourceId
      * @return BlackoutItemView[]
      */
-    public function GetBlackoutsWithin(DateRange $dateRange, $scheduleId = ReservationViewRepository::ALL_SCHEDULES);
+    public function GetBlackoutsWithin(DateRange $dateRange, $scheduleId = ReservationViewRepository::ALL_SCHEDULES, $resourceId = ReservationViewRepository::ALL_RESOURCES);
 
     /**
      * @param int $pageNumber
@@ -231,8 +232,7 @@ class ReservationViewRepository implements IReservationViewRepository
 
         $result->Free();
 
-        if ($consolidateByReferenceNumber)
-        {
+        if ($consolidateByReferenceNumber) {
             return array_values($reservations);
         }
         return $reservations;
@@ -426,9 +426,17 @@ class ReservationViewRepository implements IReservationViewRepository
         return $accessories;
     }
 
-    public function GetBlackoutsWithin(DateRange $dateRange, $scheduleId = ReservationViewRepository::ALL_SCHEDULES)
+    public function GetBlackoutsWithin(DateRange $dateRange, $scheduleId = ReservationViewRepository::ALL_SCHEDULES, $resourceId = ReservationViewRepository::ALL_RESOURCES)
     {
-        $getBlackoutsCommand = new GetBlackoutListCommand($dateRange->GetBegin(), $dateRange->GetEnd(), $scheduleId);
+        if (empty($scheduleId)) {
+            $scheduleId = ReservationViewRepository::ALL_SCHEDULES;
+        }
+
+        if (empty($resourceId)) {
+            $resourceId = ReservationViewRepository::ALL_RESOURCES;
+        }
+
+        $getBlackoutsCommand = new GetBlackoutListCommand($dateRange->GetBegin(), $dateRange->GetEnd(), $scheduleId, $resourceId);
 
         $result = ServiceLocator::GetDatabase()->Query($getBlackoutsCommand);
 

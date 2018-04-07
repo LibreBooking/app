@@ -232,4 +232,34 @@ class FakeScheduleRepository implements IScheduleRepository
     {
         $this->_CustomLayouts[$date->Timestamp()] = $periods;
     }
+
+    /**
+     * @param Date $start
+     * @param Date $end
+     * @param int $scheduleId
+     * @return SchedulePeriod[]
+     */
+    public function GetCustomLayoutPeriodsInRange(Date $start, Date $end, $scheduleId)
+    {
+        // TODO: Implement GetCustomLayoutPeriodsInRange() method.
+    }
+
+    /**
+     * @param int $scheduleId
+     * @param Date $start
+     * @param Date $end
+     */
+    public function AddCustomLayoutPeriod($scheduleId, Date $start, Date $end)
+    {
+        // TODO: Implement AddCustomLayoutPeriod() method.
+    }
+
+    /**
+     * @param int $scheduleId
+     * @param Date $start
+     */
+    public function DeleteCustomLayoutPeriod($scheduleId, Date $start)
+    {
+        // TODO: Implement DeleteCustomLayoutPeriod() method.
+    }
 }

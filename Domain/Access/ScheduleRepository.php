@@ -368,10 +368,11 @@ class ScheduleRepository implements IScheduleRepository
         $db = ServiceLocator::GetDatabase();
         $timezone = $layout->Timezone();
 
-        $addLayoutCommand = new AddLayoutCommand($timezone, $layout->GetType());
+        $layoutType = $layout->GetType();
+        $addLayoutCommand = new AddLayoutCommand($timezone, $layoutType);
         $layoutId = $db->ExecuteInsert($addLayoutCommand);
 
-        if ($layout->GetType() == ScheduleLayout::Standard) {
+        if ($layoutType == ScheduleLayout::Standard) {
             $days = array(null);
             if ($layout->UsesDailyLayouts()) {
                 $days = DayOfWeek::Days();

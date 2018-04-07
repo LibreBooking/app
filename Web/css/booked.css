@@ -2389,6 +2389,9 @@ td.update {
 #calendar a:visited {
   color: #fff;
 }
+.unreservable.fc-event {
+  border: none;
+}
 ul.jqtree-tree li.jqtree-selected > .jqtree-element,
 ul.jqtree-tree li.jqtree-selected > .jqtree-element:hover {
   background: none;

@@ -46,8 +46,14 @@ class CalendarPresenter extends CommonCalendarPresenter
             $selectedScheduleId,
             $selectedResourceId);
 
+        $blackouts = $this->reservationRepository->GetBlackoutsWithin(
+            new DateRange($this->GetStartDate(), $this->GetEndDate()->AddDays(1)),
+            $selectedScheduleId,
+            $selectedResourceId);
+
         $this->page->BindEvents(CalendarReservation::FromScheduleReservationList(
             $reservations,
+            $blackouts,
             $resources,
             $userSession,
             $this->privacyFilter,
