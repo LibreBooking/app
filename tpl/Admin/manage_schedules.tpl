@@ -16,7 +16,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 *}
-{include file='globalheader.tpl' InlineEdit=true}
+{include file='globalheader.tpl' InlineEdit=true Fullcalendar=true}
 
 <div id="page-manage-schedules" class="admin-page">
 
@@ -83,7 +83,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                         <div class="concurrentContainer">
                             <span class="allowConcurrentYes {if !$schedule->GetAllowConcurrentReservations()}no-show{/if}">{translate key=ConcurrentYes}</span>
                             <span class="allowConcurrentNo {if $schedule->GetAllowConcurrentReservations()}no-show{/if}">{translate key=ConcurrentNo}</span>
-                            <a class="update toggleConcurrent" href="#" data-allow="{$schedule->GetAllowConcurrentReservations()|intval}">{translate key=Change}</a>
+                            <a class="update toggleConcurrent" href="#"
+                               data-allow="{$schedule->GetAllowConcurrentReservations()|intval}">{translate key=Change}</a>
                         </div>
 
                         <div>{translate key=Resources}
@@ -115,20 +116,15 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                             {/foreach}
                         {/function}
 
-                        {translate key=ScheduleLayout args=$schedule->GetTimezone()}:<br/>
+                        <div>
+                            {translate key=ScheduleLayout args=$schedule->GetTimezone()}
+                            <a class="update changeLayoutButton" href="#" title="{translate key=ChangeLayout}"><span
+                                        class="fa fa-pencil-square-o"
+                                        data-layout-type="{$Layouts[$id]->GetType()}"></span></a>
+                        </div>
                         <input type="hidden" class="timezone" value="{$schedule->GetTimezone()}"/>
 
-                        {if !$Layouts[$id]->UsesDailyLayouts()}
-                            <input type="hidden" class="usesDailyLayouts" value="false"/>
-                            {translate key=ReservableTimeSlots}
-                            <div class="reservableSlots" id="reservableSlots" ref="reservableEdit">
-                                {display_periods showReservable=true day=null}
-                            </div>
-                            {translate key=BlockedTimeSlots}
-                            <div class="blockedSlots" id="blockedSlots" ref="blockedEdit">
-                                {display_periods showReservable=false day=null}
-                            </div>
-                        {else}
+                        {if $Layouts[$id]->UsesDailyLayouts()}
                             <input type="hidden" class="usesDailyLayouts" value="true"/>
                             {translate key=LayoutVariesByDay} -
                             <a href="#" class="showAllDailyLayouts">{translate key=ShowHide}</a>
@@ -144,6 +140,31 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                                     </div>
                                 {/foreach}
                             </div>
+                            <div class="margin-top-25"><strong>{translate key=ThisScheduleUsesAStandardLayout}</strong>
+                            </div>
+                            <div><a href="#" class="update switchLayout"
+                                    data-switch-to="{ScheduleLayout::Custom}">{translate key=SwitchToACustomLayout}</a>
+                            </div>
+                        {elseif $Layouts[$id]->UsesCustomLayout()}
+                            <div><strong>{translate key=ThisScheduleUsesACustomLayout}</strong></div>
+                            <div><a href="#" class="update switchLayout"
+                                    data-switch-to="{ScheduleLayout::Standard}">{translate key=SwitchToAStandardLayout}</a>
+                            </div>
+                        {else}
+                            <input type="hidden" class="usesDailyLayouts" value="false"/>
+                            {translate key=ReservableTimeSlots}
+                            <div class="reservableSlots" id="reservableSlots" ref="reservableEdit">
+                                {display_periods showReservable=true day=null}
+                            </div>
+                            {translate key=BlockedTimeSlots}
+                            <div class="blockedSlots" id="blockedSlots" ref="blockedEdit">
+                                {display_periods showReservable=false day=null}
+                            </div>
+                            <div class="margin-top-25"><strong>{translate key=ThisScheduleUsesAStandardLayout}</strong>
+                            </div>
+                            <div><a href="#" class="update switchLayout"
+                                    data-switch-to="{ScheduleLayout::Custom}">{translate key=SwitchToACustomLayout}</a>
+                            </div>
                         {/if}
                     </div>
                     <div class="actions col-xs-12">
@@ -158,14 +179,13 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                             <a class="update deleteScheduleButton" href="#">{translate key=Delete}</a>
                             |
                         {/if}
-                        <a class="update changeLayoutButton" href="#">{translate key=ChangeLayout}</a> |
                         {if $schedule->GetIsCalendarSubscriptionAllowed()}
                             <a class="update disableSubscription"
                                href="#">{translate key=TurnOffSubscription}</a>
+                            |
                         {else}
                             <a class="update enableSubscription" href="#">{translate key=TurnOnSubscription}</a>
                         {/if}
-
                         {if $schedule->GetIsCalendarSubscriptionAllowed()}
                             {html_image src="feed.png"}
                             <a target="_blank" href="{$schedule->GetSubscriptionUrl()->GetAtomUrl()}">Atom</a>
@@ -559,14 +579,80 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
         </form>
     </div>
 
+    <div id="switchLayoutDialog" class="modal fade" tabindex="-1" role="dialog"
+         aria-labelledby="switchLayoutDialogLabel"
+         aria-hidden="true">
+        <form id="switchLayoutForm" method="post">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title" id="switchLayoutDialogLabel">{translate key=ChangeLayout}</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="alert alert-warning">
+                            {translate key=SwitchLayoutWarning}
+                        </div>
+                        <input type="hidden" id="switchLayoutTypeId" {formname key=LAYOUT_TYPE} />
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="modal-footer">
+                        {cancel_button}
+                        {update_button submit=true}
+                        {indicator}
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <div id="customLayoutDialog" class="modal fade" tabindex="-1" role="dialog"
+         aria-labelledby="customLayoutDialogLabel"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="customLayoutDialogLabel">{translate key=ChangeLayout}</h4>
+                </div>
+                <div class="modal-body">
+                    <div id="calendar"></div>
+                </div>
+                {*<div class="modal-footer">*}
+                {*{cancel_button}*}
+                {*{update_button submit=true}*}
+                {*{indicator}*}
+                {*</div>*}
+            </div>
+        </div>
+    </div>
+
     <form id="concurrentForm" method="post">
     </form>
+
+    <form id="layoutSlotForm" method="post">
+        <input type="hidden" id="slotStartDate" {formname key=BEGIN_DATE} />
+        <input type="hidden" id="slotEndDate" {formname key=END_DATE} />
+        <input type="hidden" id="slotId" {formname key=LAYOUT_PERIOD_ID} />
+    </form>
+
+    <div id="deleteCustomLayoutDialog" class="default-box-shadow">
+        <form id="deleteCustomTimeSlotForm" method="post">
+            <input type="hidden" id="deleteSlotStartDate" {formname key=BEGIN_DATE} />
+            <input type="hidden" id="deleteSlotEndDate" {formname key=END_DATE} />
+            <div>{translate key=DeleteThisTimeSlot}</div>
+            <div>
+                {cancel_button id=cancelDeleteSlot}
+                {delete_button id=deleteSlot}
+            </div>
+        </form>
+    </div>
 
     {control type="DatePickerSetupControl" ControlId="availabilityStartDate" AltId="formattedBeginDate" DefaultDate=$StartDate}
     {control type="DatePickerSetupControl" ControlId="availabilityEndDate" AltId="formattedEndDate" DefaultDate=$EndDate}
 
     {csrf_token}
-    {include file="javascript-includes.tpl" InlineEdit=true}
+    {include file="javascript-includes.tpl" InlineEdit=true Fullcalendar=true}
     {jsfile src="ajax-helpers.js"}
     {jsfile src="admin/schedule.js"}
     {jsfile src="js/jquery.form-3.09.min.js"}
@@ -637,7 +723,21 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                 availabilityAction: '{ManageSchedules::ActionChangeAvailability}',
                 enableSubscriptionAction: '{ManageSchedules::ActionEnableSubscription}',
                 disableSubscriptionAction: '{ManageSchedules::ActionDisableSubscription}',
-                toggleConcurrentReservations: '{ManageSchedules::ActionToggleConcurrentReservations}'
+                toggleConcurrentReservations: '{ManageSchedules::ActionToggleConcurrentReservations}',
+                switchLayout: '{ManageSchedules::ActionSwitchLayoutType}',
+                addLayoutSlot: '{ManageSchedules::ActionAddLayoutSlot}',
+                updateLayoutSlot: '{ManageSchedules::ActionUpdateLayoutSlot}',
+                deleteLayoutSlot: '{ManageSchedules::ActionDeleteLayoutSlot}',
+                calendarOptions: {
+                    buttonText: {
+                        today: '{{translate key=Today}|escape:'javascript'}',
+                        month: '{{translate key=Month}|escape:'javascript'}',
+                        week: '{{translate key=Week}|escape:'javascript'}',
+                        day: '{{translate key=Day}|escape:'javascript'}'
+                    },
+                    defaultDate: moment('{Date::Now()->ToTimezone({$Timezone})->Format('Y-m-d')}', 'YYYY-MM-DD'),
+                    eventsUrl: '{$smarty.server.SCRIPT_NAME}'
+                }
             };
 
             var scheduleManagement = new ScheduleManagement(opts);
@@ -646,6 +746,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
             $('.timepicker').timepicker({
                 timeFormat: '{$TimeFormat}'
             });
+
+
         });
 
     </script>

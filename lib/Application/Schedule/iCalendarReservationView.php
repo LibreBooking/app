@@ -14,6 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 class iCalendarReservationView
 {
 	public $DateCreated;

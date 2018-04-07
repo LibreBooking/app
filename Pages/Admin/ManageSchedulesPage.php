@@ -194,6 +194,51 @@ interface IManageSchedulesPage extends IUpdateSchedulePage, IActionPage, IPageab
      * @param string $timezone
      */
     public function DisplayAvailability($schedule, $timezone);
+
+    /**
+     * @return int
+     */
+    public function GetLayoutType();
+
+    /**
+     * @return string
+     */
+    public function GetLayoutStart();
+
+    /**
+     * @return string
+     */
+    public function GetLayoutEnd();
+
+    /**
+     * @param array $events
+     */
+    public function BindEvents($events);
+
+    /**
+     * @return string
+     */
+    public function GetSlotStart();
+
+    /**
+     * @return string
+     */
+    public function GetSlotEnd();
+
+    /**
+     * @return string
+     */
+    public function GetCustomLayoutStartRange();
+
+    /**
+     * @return string
+     */
+    public function GetCustomLayoutEndRange();
+
+    /**
+     * @return string
+     */
+    public function GetSlotId();
 }
 
 class ManageSchedulesPage extends ActionPage implements IManageSchedulesPage
@@ -331,7 +376,7 @@ class ManageSchedulesPage extends ActionPage implements IManageSchedulesPage
 
     public function ProcessDataRequest($dataRequest)
     {
-        // no-op
+        $this->_presenter->ProcessDataRequest($dataRequest);
     }
 
     /**
@@ -511,5 +556,50 @@ class ManageSchedulesPage extends ActionPage implements IManageSchedulesPage
         $this->Set('schedule', $schedule);
         $this->Set('timezone', $timezone);
         $this->Display('Admin/Schedules/manage_availability.tpl');
+    }
+
+    public function GetLayoutType()
+    {
+        return $this->GetForm(FormKeys::LAYOUT_TYPE);
+    }
+
+    public function GetLayoutStart()
+    {
+        return $this->GetQuerystring(QueryStringKeys::START_DATE);
+    }
+
+    public function GetLayoutEnd()
+    {
+        return $this->GetQuerystring(QueryStringKeys::END_DATE);
+    }
+
+    public function GetSlotStart()
+    {
+        return $this->GetForm(FormKeys::BEGIN_DATE);
+    }
+
+    public function GetSlotEnd()
+    {
+        return $this->GetForm(FormKeys::END_DATE);
+    }
+
+    public function BindEvents($events)
+    {
+        $this->SetJson($events);
+    }
+
+    public function GetCustomLayoutStartRange()
+    {
+        return $this->GetQuerystring(QueryStringKeys::START);
+    }
+
+    public function GetCustomLayoutEndRange()
+    {
+        return $this->GetQuerystring(QueryStringKeys::END);
+    }
+
+    public function GetSlotId()
+    {
+        return $this->GetForm(FormKeys::LAYOUT_PERIOD_ID);
     }
 }

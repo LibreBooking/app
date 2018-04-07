@@ -21,6 +21,7 @@ class ErrorMessages
 	const MISSING_RESOURCE = 2;
 	const MISSING_SCHEDULE = 3;
 	const RESERVATION_NOT_FOUND = 4;
+	const RESERVATION_NOT_AVAILABLE = 5;
 
 	private $_resourceKeys = array();
 	private static $_instance;
@@ -31,6 +32,7 @@ class ErrorMessages
 		$this->SetKey(ErrorMessages::MISSING_RESOURCE, 'MissingReservationResourceError');
 		$this->SetKey(ErrorMessages::MISSING_SCHEDULE, 'MissingReservationScheduleError');
 		$this->SetKey(ErrorMessages::RESERVATION_NOT_FOUND, 'ReservationNotFoundError');
+		$this->SetKey(ErrorMessages::RESERVATION_NOT_AVAILABLE, 'ReservationNotAvailable');
 	}
 
     /**

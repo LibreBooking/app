@@ -730,6 +730,12 @@ class en_us extends Language
         $strings['DeleteBlackoutsBefore'] = 'Delete blackout times before';
         $strings['DeletedReservations'] = 'Deleted Reservations';
         $strings['DeleteReservationsBefore'] = 'Delete reservations before';
+        $strings['SwitchToACustomLayout'] = 'Switch to a custom layout';
+        $strings['SwitchToAStandardLayout'] = 'Switch to a standard layout';
+        $strings['ThisScheduleUsesACustomLayout'] = 'This schedule uses a custom layout';
+        $strings['ThisScheduleUsesAStandardLayout'] = 'This schedule uses a standard layout';
+        $strings['SwitchLayoutWarning'] = 'Are you sure that you want to change the layout type? This will remove all existing slots.';
+        $strings['DeleteThisTimeSlot'] = 'Delete this time slot?';
         // End Strings
 
 		// Install
@@ -817,6 +823,8 @@ class en_us extends Language
 		$strings['TermsOfServiceError'] = 'You must accept the Terms of Service';
 		$strings['UserNotFound'] = 'That user could not be found';
 		$strings['ScheduleAvailabilityError'] = 'This schedule is available between %s and %s';
+		$strings['ReservationNotFoundError'] = 'Reservation not found';
+		$strings['ReservationNotAvailable'] = 'Reservation not available';
 		// End Errors
 
 		// Page Titles

@@ -2411,14 +2411,17 @@ ul.jqtree-tree .jqtree-toggler {
   font-size: 1.5em;
   font-weight: bold;
 }
-#dayDialog {
+#dayDialog,
+#deleteCustomLayoutDialog {
   display: none;
+  background-color: #F9F9F9;
   border-color: #BCBCBC;
   position: absolute;
   z-index: 2;
   padding: 12px;
 }
-#dayDialog a {
+#dayDialog a,
+#deleteCustomLayoutDialog a {
   padding: 0 5px;
 }
 .fc-day {

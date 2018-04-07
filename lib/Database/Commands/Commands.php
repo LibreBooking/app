@@ -224,10 +224,11 @@ class AdjustUserCreditsCommand extends SqlCommand
 
 class AddLayoutCommand extends SqlCommand
 {
-    public function __construct($timezone)
+    public function __construct($timezone, $layoutType)
     {
         parent::__construct(Queries::ADD_LAYOUT);
         $this->AddParameter(new Parameter(ParameterNames::TIMEZONE_NAME, $timezone));
+        $this->AddParameter(new Parameter(ParameterNames::LAYOUT_TYPE, $layoutType));
     }
 }
 
@@ -242,6 +243,17 @@ class AddLayoutTimeCommand extends SqlCommand
         $this->AddParameter(new Parameter(ParameterNames::PERIOD_AVAILABILITY_TYPE, $periodType));
         $this->AddParameter(new Parameter(ParameterNames::PERIOD_LABEL, $label));
         $this->AddParameter(new Parameter(ParameterNames::PERIOD_DAY_OF_WEEK, $dayOfWeek));
+    }
+}
+
+class AddCustomLayoutPeriodCommand extends SqlCommand
+{
+    public function __construct($scheduleId, Date $start, Date $end)
+    {
+        parent::__construct(Queries::ADD_CUSTOM_LAYOUT_SLOT);
+        $this->AddParameter(new Parameter(ParameterNames::START_TIME, $start->ToDatabase()));
+        $this->AddParameter(new Parameter(ParameterNames::END_TIME, $end->ToDatabase()));
+        $this->AddParameter(new Parameter(ParameterNames::SCHEDULE_ID, $scheduleId));
     }
 }
 
@@ -855,6 +867,16 @@ class DeleteBlackoutSeriesCommand extends SqlCommand
     {
         parent::__construct(Queries::DELETE_BLACKOUT_SERIES);
         $this->AddParameter(new Parameter(ParameterNames::BLACKOUT_INSTANCE_ID, $instanceId));
+    }
+}
+
+class DeleteCustomLayoutPeriodCommand extends SqlCommand
+{
+    public function __construct($scheduleId, Date $start)
+    {
+        parent::__construct(Queries::DELETE_CUSTOM_LAYOUT_PERIOD);
+        $this->AddParameter(new Parameter(ParameterNames::SCHEDULE_ID, $scheduleId));
+        $this->AddParameter(new Parameter(ParameterNames::START_TIME, $start->ToDatabase()));
     }
 }
 
@@ -1486,6 +1508,17 @@ class GetCustomLayoutCommand extends SqlCommand
         $this->AddParameter(new Parameter(ParameterNames::SCHEDULE_ID, $scheduleId));
         $this->AddParameter(new Parameter(ParameterNames::START_DATE, $date->ToDatabase()));
         $this->AddParameter(new Parameter(ParameterNames::END_DATE, $date->AddDays(1)->ToDatabase()));
+    }
+}
+
+class GetCustomLayoutRangeCommand extends SqlCommand
+{
+    public function __construct(Date $start, Date $end, $scheduleId)
+    {
+        parent::__construct(Queries::GET_CUSTOM_LAYOUT);
+        $this->AddParameter(new Parameter(ParameterNames::SCHEDULE_ID, $scheduleId));
+        $this->AddParameter(new Parameter(ParameterNames::START_DATE, $start->ToDatabase()));
+        $this->AddParameter(new Parameter(ParameterNames::END_DATE, $end->AddDays(1)->GetDate()->ToDatabase()));
     }
 }
 

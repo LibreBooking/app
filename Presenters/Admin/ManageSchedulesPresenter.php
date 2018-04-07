@@ -39,6 +39,10 @@ class ManageSchedules
     const ActionChangePeakTimes = 'ActionChangePeakTimes';
     const ActionChangeAvailability = 'ActionChangeAvailability';
     const ActionToggleConcurrentReservations = 'ToggleConcurrentReservations';
+    const ActionSwitchLayoutType = 'ActionSwitchLayoutType';
+    const ActionAddLayoutSlot = 'addLayoutSlot';
+    const ActionUpdateLayoutSlot = 'updateLayoutSlot';
+    const ActionDeleteLayoutSlot = 'deleteLayoutSlot';
 }
 
 class ManageScheduleService
@@ -89,8 +93,7 @@ class ManageScheduleService
      */
     public function GetLayout($schedule)
     {
-        return $this->scheduleRepository->GetLayout($schedule->GetId(),
-            new ScheduleLayoutFactory($schedule->GetTimezone()));
+        return $this->scheduleRepository->GetLayout($schedule->GetId(), new ScheduleLayoutFactory($schedule->GetTimezone()));
     }
 
     /**
@@ -307,7 +310,92 @@ class ManageScheduleService
         $schedule->SetAllowConcurrentReservations(!$allow);
 
         $this->scheduleRepository->Update($schedule);
+    }
 
+    /**
+     * @param int $scheduleId
+     * @param int $layoutType
+     */
+    public function SwitchLayoutType($scheduleId, $layoutType)
+    {
+        $schedule = $this->scheduleRepository->LoadById($scheduleId);
+        $targetTimezone = $schedule->GetTimezone();
+        if ($layoutType == ScheduleLayout::Standard) {
+            $layout = new ScheduleLayout($targetTimezone);
+            $layout->AppendPeriod(Time::Parse('00:00', $targetTimezone), Time::Parse('00:00', $targetTimezone));
+            $this->scheduleRepository->AddScheduleLayout($scheduleId, $layout);
+        }
+        else {
+            $this->scheduleRepository->AddScheduleLayout($scheduleId, new CustomScheduleLayout($targetTimezone, $scheduleId, $this->scheduleRepository));
+        }
+    }
+
+    public function GetCustomLayoutPeriods($start, $end, $scheduleId)
+    {
+        return $this->scheduleRepository->GetCustomLayoutPeriodsInRange($start, $end, $scheduleId);
+    }
+
+    /**
+     * @param int $scheduleId
+     * @param Date $start
+     * @param Date $end
+     */
+    public function AddCustomLayoutPeriod($scheduleId, $start, $end)
+    {
+        $overlappingPeriod = $this->CustomLayoutPeriodOverlaps($scheduleId, $start, $end);
+        if ($overlappingPeriod == null) {
+            $this->scheduleRepository->AddCustomLayoutPeriod($scheduleId, $start, $end);
+        }
+    }
+
+    /**
+     * @param int $scheduleId
+     * @param Date $start
+     * @param Date $end
+     * @param Date $originalStart
+     */
+    public function UpdateCustomLayoutPeriod($scheduleId, $start, $end, $originalStart)
+    {
+        $overlappingPeriod = $this->CustomLayoutPeriodOverlaps($scheduleId, $start, $end);
+        if ($overlappingPeriod != null) {
+
+            if ($overlappingPeriod->BeginDate()->Equals($originalStart))
+            {
+                $this->scheduleRepository->DeleteCustomLayoutPeriod($scheduleId, $originalStart);
+                $this->scheduleRepository->AddCustomLayoutPeriod($scheduleId, $start, $end);
+            }
+        }
+        else {
+            $this->scheduleRepository->AddCustomLayoutPeriod($scheduleId, $start, $end);
+        }
+    }
+
+    /**
+     * @param int $scheduleId
+     * @param Date $start
+     * @param Date $end
+     */
+    public function DeleteCustomLayoutPeriod($scheduleId, $start, $end)
+    {
+        $this->scheduleRepository->DeleteCustomLayoutPeriod($scheduleId, $start);
+    }
+
+    /**
+     * @param int $scheduleId
+     * @param Date $start
+     * @param Date $end
+     * @return SchedulePeriod|null
+     */
+    private function CustomLayoutPeriodOverlaps($scheduleId, Date $start, Date $end)
+    {
+        $overlaps = null;
+        $periods = $this->scheduleRepository->GetCustomLayoutPeriodsInRange($start, $end, $scheduleId);
+        foreach ($periods as $period) {
+            if ($start->LessThanOrEqual($period->BeginDate()) && $end->GreaterThanOrEqual($period->BeginDate())) {
+                $overlaps = $period;
+            }
+        }
+        return $overlaps;
     }
 }
 
@@ -349,6 +437,10 @@ class ManageSchedulesPresenter extends ActionPresenter
         $this->AddAction(ManageSchedules::ActionChangePeakTimes, 'ChangePeakTimes');
         $this->AddAction(ManageSchedules::ActionChangeAvailability, 'ChangeAvailability');
         $this->AddAction(ManageSchedules::ActionToggleConcurrentReservations, 'ToggleConcurrentReservations');
+        $this->AddAction(ManageSchedules::ActionSwitchLayoutType, 'SwitchLayoutType');
+        $this->AddAction(ManageSchedules::ActionAddLayoutSlot, 'AddLayoutSlot');
+        $this->AddAction(ManageSchedules::ActionUpdateLayoutSlot, 'UpdateLayoutSlot');
+        $this->AddAction(ManageSchedules::ActionDeleteLayoutSlot, 'DeleteLayoutSlot');
     }
 
     public function PageLoad()
@@ -534,6 +626,73 @@ class ManageSchedulesPresenter extends ActionPresenter
     {
         $scheduleId = $this->page->GetScheduleId();
         $this->manageSchedulesService->ToggleConcurrentReservations($scheduleId);
+    }
+
+    public function SwitchLayoutType()
+    {
+        $scheduleId = $this->page->GetScheduleId();
+        $layoutType = $this->page->GetLayoutType();
+        $this->manageSchedulesService->SwitchLayoutType($scheduleId, $layoutType);
+    }
+
+    public function ProcessDataRequest($dataRequest)
+    {
+        if ($dataRequest == 'events') {
+            $timezone = ServiceLocator::GetServer()->GetUserSession()->Timezone;
+            $start = Date::Parse($this->page->GetCustomLayoutStartRange(), $timezone);
+            $end = Date::Parse($this->page->GetCustomLayoutEndRange(), $timezone);
+            $scheduleId = $this->page->GetScheduleId();
+
+            $periods = $this->manageSchedulesService->GetCustomLayoutPeriods($start, $end, $scheduleId);
+
+            $events = array();
+            $dateFormat = Resources::GetInstance()->GetDateFormat('fullcalendar');
+            foreach ($periods as $period) {
+                $events[] = array(
+                    'id' => $period->BeginDate()->Format(Date::SHORT_FORMAT),
+                    'start' => $period->BeginDate()->Format($dateFormat),
+                    'end' => $period->EndDate()->Format($dateFormat),
+                    'allDay' => false,
+                    'startEditable' => true
+                );
+            }
+
+            $this->page->BindEvents($events);
+        }
+    }
+
+    public function AddLayoutSlot()
+    {
+        $timezone = ServiceLocator::GetServer()->GetUserSession()->Timezone;
+        $start = Date::Parse($this->page->GetSlotStart(), $timezone);
+        $end = Date::Parse($this->page->GetSlotEnd(), $timezone);
+        $scheduleId = $this->page->GetScheduleId();
+
+        Log::Debug('Adding custom layout slot. Start %s, End %s, Schedule %s', $start, $end, $scheduleId);
+        $this->manageSchedulesService->AddCustomLayoutPeriod($scheduleId, $start, $end);
+    }
+
+    public function UpdateLayoutSlot()
+    {
+        $timezone = ServiceLocator::GetServer()->GetUserSession()->Timezone;
+        $start = Date::Parse($this->page->GetSlotStart(), $timezone);
+        $end = Date::Parse($this->page->GetSlotEnd(), $timezone);
+        $originalStart = Date::Parse($this->page->GetSlotId(), $timezone);
+        $scheduleId = $this->page->GetScheduleId();
+
+        Log::Debug('Updating custom layout slot. Start %s, End %s, Schedule %s', $start, $end, $scheduleId);
+        $this->manageSchedulesService->UpdateCustomLayoutPeriod($scheduleId, $start, $end, $originalStart);
+    }
+
+    public function DeleteLayoutSlot()
+    {
+        $timezone = ServiceLocator::GetServer()->GetUserSession()->Timezone;
+        $start = Date::Parse($this->page->GetSlotStart(), $timezone);
+        $end = Date::Parse($this->page->GetSlotEnd(), $timezone);
+        $scheduleId = $this->page->GetScheduleId();
+
+        Log::Debug('Deleting custom layout slot. Start %s, End %s, Schedule %s', $start, $end, $scheduleId);
+        $this->manageSchedulesService->DeleteCustomLayoutPeriod($scheduleId, $start, $end);
     }
 
     protected function LoadValidators($action)

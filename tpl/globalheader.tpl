@@ -92,7 +92,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
     {/if}
     {if $Fullcalendar}
         {cssfile src="scripts/css/fullcalendar.min.css"}
-        <link rel='stylesheet' type='text/css' href='scripts/css/fullcalendar.print.css' media='print'/>
+        <link rel='stylesheet' type='text/css' href='{$Path}/scripts/css/fullcalendar.print.css' media='print'/>
     {/if}
     {if $Owl}
         {cssfile src="scripts/js/owl-2.2.1/assets/owl.carousel.min.css"}

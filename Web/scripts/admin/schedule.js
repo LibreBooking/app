@@ -1,45 +1,45 @@
 function ScheduleManagement(opts) {
-	var options = opts;
+    var options = opts;
 
-	var elements = {
-		activeId: $('#activeId'),
+    var elements = {
+        activeId: $('#activeId'),
 
-		layoutDialog: $('#changeLayoutDialog'),
-		deleteDialog: $('#deleteDialog'),
-		addDialog: $('#addDialog'),
+        layoutDialog: $('#changeLayoutDialog'),
+        deleteDialog: $('#deleteDialog'),
+        addDialog: $('#addDialog'),
 
-		changeLayoutForm: $('#changeLayoutForm'),
-		placeholderForm: $('#placeholderForm'),
-		deleteForm: $('#deleteForm'),
+        changeLayoutForm: $('#changeLayoutForm'),
+        placeholderForm: $('#placeholderForm'),
+        deleteForm: $('#deleteForm'),
 
-		addForm: $('#addScheduleForm'),
+        addForm: $('#addScheduleForm'),
         addName: $('#addName'),
 
-		reservableEdit: $('#reservableEdit'),
-		blockedEdit: $('#blockedEdit'),
-		layoutTimezone: $('#layoutTimezone'),
-		quickLayoutConfig: $('#quickLayoutConfig'),
-		quickLayoutStart: $('#quickLayoutStart'),
-		quickLayoutEnd: $('#quickLayoutEnd'),
-		createQuickLayout: $('#createQuickLayout'),
+        reservableEdit: $('#reservableEdit'),
+        blockedEdit: $('#blockedEdit'),
+        layoutTimezone: $('#layoutTimezone'),
+        quickLayoutConfig: $('#quickLayoutConfig'),
+        quickLayoutStart: $('#quickLayoutStart'),
+        quickLayoutEnd: $('#quickLayoutEnd'),
+        createQuickLayout: $('#createQuickLayout'),
 
-		daysVisible: $('#daysVisible'),
-		dayOfWeek: $('#dayOfWeek'),
-		deleteDestinationScheduleId: $('#targetScheduleId'),
-		usesSingleLayout: $('#usesSingleLayout'),
+        daysVisible: $('#daysVisible'),
+        dayOfWeek: $('#dayOfWeek'),
+        deleteDestinationScheduleId: $('#targetScheduleId'),
+        usesSingleLayout: $('#usesSingleLayout'),
 
-		addScheduleButton: $('#add-schedule'),
+        addScheduleButton: $('#add-schedule'),
 
-		peakTimesDialog: $('#peakTimesDialog'),
-		peakTimesForm: $('#peakTimesForm'),
-		peakEveryDay: $('#peakEveryDay'),
-		peakDayList: $('#peakDayList'),
-		peakAllYear: $('#peakAllYear'),
-		peakDateRange: $('#peakDateRange'),
-		peakAllDay: $('#peakAllDay'),
-		peakTimes: $('#peakTimes'),
-		deletePeakTimesButton: $('#deletePeakBtn'),
-		deletePeakTimes: $('#deletePeakTimes'),
+        peakTimesDialog: $('#peakTimesDialog'),
+        peakTimesForm: $('#peakTimesForm'),
+        peakEveryDay: $('#peakEveryDay'),
+        peakDayList: $('#peakDayList'),
+        peakAllYear: $('#peakAllYear'),
+        peakDateRange: $('#peakDateRange'),
+        peakAllDay: $('#peakAllDay'),
+        peakTimes: $('#peakTimes'),
+        deletePeakTimesButton: $('#deletePeakBtn'),
+        deletePeakTimes: $('#deletePeakTimes'),
 
         availabilityDialog: $('#availabilityDialog'),
         availableStartDateTextbox: $('#availabilityStartDate'),
@@ -49,97 +49,122 @@ function ScheduleManagement(opts) {
         availableAllYear: $('#availableAllYear'),
         availabilityForm: $('#availabilityForm'),
 
-        concurrentForm: $('#concurrentForm')
-	};
+        concurrentForm: $('#concurrentForm'),
 
-	ScheduleManagement.prototype.init = function () {
-		$('.scheduleDetails').each(function () {
-			var details = $(this);
-			var id = details.find(':hidden.id').val();
-			var reservable = details.find('.reservableSlots');
-			var blocked = details.find('.blockedSlots');
-			var timezone = details.find('.timezone');
-			var daysVisible = details.find('.daysVisible');
-			var dayOfWeek = details.find('.dayOfWeek');
-			var usesDailyLayouts = details.find('.usesDailyLayouts');
+        switchLayoutButton: $('.switchLayout'),
+        switchLayoutForm: $('#switchLayoutForm'),
+        switchLayoutDialog: $('#switchLayoutDialog'),
 
-			details.find('a.update').click(function () {
-				setActiveScheduleId(id);
-			});
+        layoutSlotForm: $('#layoutSlotForm'),
+        slotStartDate: $('#slotStartDate'),
+        slotEndDate: $('#slotEndDate'),
+        slotId: $('#slotId'),
+        deleteCustomLayoutDialog: $('#deleteCustomLayoutDialog'),
+        deleteSlotStartDate: $('#deleteSlotStartDate'),
+        deleteSlotEndDate: $('#deleteSlotEndDate'),
+        cancelDeleteSlot: $('#cancelDeleteSlot'),
+        deleteCustomTimeSlotForm: $('#deleteCustomTimeSlotForm'),
+        deleteSlot: $('#deleteSlot')
+    };
 
-			details.find('.renameButton').click(function (e) {
-				e.stopPropagation();
-				details.find('.scheduleName').editable('toggle');
-			});
+    ScheduleManagement.prototype.init = function () {
+        $('.scheduleDetails').each(function () {
+            var details = $(this);
+            var id = details.find(':hidden.id').val();
+            var reservable = details.find('.reservableSlots');
+            var blocked = details.find('.blockedSlots');
+            var timezone = details.find('.timezone');
+            var daysVisible = details.find('.daysVisible');
+            var dayOfWeek = details.find('.dayOfWeek');
+            var usesDailyLayouts = details.find('.usesDailyLayouts');
 
-			details.find('.dayName').click(function (e) {
-				e.stopPropagation();
-				$(this).editable('toggle');
-			});
+            details.find('a.update').click(function () {
+                setActiveScheduleId(id);
+            });
 
-			details.find('.daysVisible').click(function (e) {
-				e.stopPropagation();
-				$(this).editable('toggle');
-			});
+            details.find('.renameButton').click(function (e) {
+                e.stopPropagation();
+                details.find('.scheduleName').editable('toggle');
+            });
 
-			details.find('.changeScheduleAdmin').click(function (e) {
-				e.stopPropagation();
-				details.find('.scheduleAdmin').editable('toggle');
-			});
+            details.find('.dayName').click(function (e) {
+                e.stopPropagation();
+                $(this).editable('toggle');
+            });
 
-			details.find('.changeLayoutButton').click(function (e) {
-				showChangeLayout(e, reservable, blocked, timezone, (usesDailyLayouts.val() == 'false'));
-				return false;
-			});
+            details.find('.daysVisible').click(function (e) {
+                e.stopPropagation();
+                $(this).editable('toggle');
+            });
 
-			details.find('.makeDefaultButton').click(function (e) {
-				PerformAsyncAction($(this), getSubmitCallback(options.makeDefaultAction), $('#action-indicator'));
-			});
+            details.find('.changeScheduleAdmin').click(function (e) {
+                e.stopPropagation();
+                details.find('.scheduleAdmin').editable('toggle');
+            });
 
-			details.find('.enableSubscription').click(function (e) {
-				PerformAsyncAction($(this), getSubmitCallback(options.enableSubscriptionAction), $('#action-indicator'));
-			});
+            details.find('.changeLayoutButton').click(function (e) {
+                if ($(e.target).data('layout-type') == 0) {
+                    showChangeLayout(e, reservable, blocked, timezone, (usesDailyLayouts.val() == 'false'));
+                }
+                else {
+                    showChangeCustomLayout(id);
+                }
+                return false;
+            });
 
-			details.find('.disableSubscription').click(function (e) {
-				PerformAsyncAction($(this), getSubmitCallback(options.disableSubscriptionAction), $('#action-indicator'));
-			});
+            details.find('.makeDefaultButton').click(function (e) {
+                PerformAsyncAction($(this), getSubmitCallback(options.makeDefaultAction), $('#action-indicator'));
+            });
 
-			details.find('.deleteScheduleButton').click(function (e) {
-				showDeleteDialog(e);
-				return false;
-			});
+            details.find('.enableSubscription').click(function (e) {
+                PerformAsyncAction($(this), getSubmitCallback(options.enableSubscriptionAction), $('#action-indicator'));
+            });
 
-			details.find('.showAllDailyLayouts').click(function (e) {
-				e.preventDefault();
-				$(this).next('.allDailyLayouts').toggle();
-			});
+            details.find('.disableSubscription').click(function (e) {
+                PerformAsyncAction($(this), getSubmitCallback(options.disableSubscriptionAction), $('#action-indicator'));
+            });
 
-			details.find('.changePeakTimes').click(function (e) {
-				e.preventDefault();
-				showPeakTimesDialog(getActiveScheduleId());
-			});
+            details.find('.deleteScheduleButton').click(function (e) {
+                showDeleteDialog(e);
+                return false;
+            });
 
-			details.find('.changeAvailability').click(function (e) {
-				e.preventDefault();
-				showAvailabilityDialog(getActiveScheduleId());
-			});
+            details.find('.showAllDailyLayouts').click(function (e) {
+                e.preventDefault();
+                $(this).next('.allDailyLayouts').toggle();
+            });
 
-			details.find('.toggleConcurrent').click(function(e) {
-			    e.preventDefault();
+            details.find('.changePeakTimes').click(function (e) {
+                e.preventDefault();
+                showPeakTimesDialog(getActiveScheduleId());
+            });
+
+            details.find('.changeAvailability').click(function (e) {
+                e.preventDefault();
+                showAvailabilityDialog(getActiveScheduleId());
+            });
+
+            details.find('.toggleConcurrent').click(function (e) {
+                e.preventDefault();
                 var toggle = $(e.target);
                 var container = toggle.parent('.concurrentContainer');
                 toggleConcurrentReservations(getActiveScheduleId(), toggle, container);
             });
-		});
 
-		elements.deletePeakTimesButton.click(function(e) {
-			e.preventDefault();
-			elements.deletePeakTimes.val('1');
-		});
+            details.find('.switchLayout').click(function (e) {
+                e.preventDefault();
+                $('#switchLayoutTypeId').val($(e.target).data('switch-to'));
+                elements.switchLayoutDialog.modal('show');
+            });
+        });
 
-		elements.availableAllYear.on('click', function(e) {
-		    if ($(e.target).is(':checked'))
-            {
+        elements.deletePeakTimesButton.click(function (e) {
+            e.preventDefault();
+            elements.deletePeakTimes.val('1');
+        });
+
+        elements.availableAllYear.on('click', function (e) {
+            if ($(e.target).is(':checked')) {
                 elements.availableStartDateTextbox.prop('disabled', true);
                 elements.availableEndDateTextbox.prop('disabled', true);
             }
@@ -149,359 +174,343 @@ function ScheduleManagement(opts) {
             }
         });
 
-		$(".save").click(function (e) {
-			e.preventDefault();
-			e.stopPropagation();
-			$(this).closest('form').submit();
-		});
+        $(".save").click(function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            $(this).closest('form').submit();
+        });
 
-		$(".cancel").click(function () {
-			$(this).closest('.dialog').dialog("close");
-		});
+        $(".cancel").click(function () {
+            $(this).closest('.dialog').dialog("close");
+        });
 
-		elements.quickLayoutConfig.change(function () {
-			createQuickLayout();
-		});
+        elements.quickLayoutConfig.change(function () {
+            createQuickLayout();
+        });
 
-		elements.quickLayoutStart.change(function () {
-			createQuickLayout();
-		});
+        elements.quickLayoutStart.change(function () {
+            createQuickLayout();
+        });
 
-		elements.quickLayoutEnd.change(function () {
-			createQuickLayout();
-		});
+        elements.quickLayoutEnd.change(function () {
+            createQuickLayout();
+        });
 
-		elements.createQuickLayout.click(function (e) {
-			e.preventDefault();
-			createQuickLayout();
-		});
+        elements.createQuickLayout.click(function (e) {
+            e.preventDefault();
+            createQuickLayout();
+        });
 
-		elements.usesSingleLayout.change(function () {
-			toggleLayoutChange($(this).is(':checked'));
-		});
+        elements.usesSingleLayout.change(function () {
+            toggleLayoutChange($(this).is(':checked'));
+        });
 
-		elements.addScheduleButton.click(function (e) {
-			e.preventDefault();
-			elements.addDialog.modal('show');
-		});
+        elements.addScheduleButton.click(function (e) {
+            e.preventDefault();
+            elements.addDialog.modal('show');
+        });
 
         elements.addDialog.on('shown.bs.modal', function () {
             elements.addName.focus();
         });
 
-        $('.autofillBlocked').click(function(e){
-			e.preventDefault();
-			autoFillBlocked();
-		});
+        elements.cancelDeleteSlot.click(function(e) {
+            elements.deleteCustomLayoutDialog.hide();
+        });
 
-		wireUpPeakTimeToggles();
+        $('.autofillBlocked').click(function (e) {
+            e.preventDefault();
+            autoFillBlocked();
+        });
 
-		ConfigureAsyncForm(elements.changeLayoutForm, getSubmitCallback(options.changeLayoutAction));
-		ConfigureAsyncForm(elements.addForm, getSubmitCallback(options.addAction), null, handleAddError);
-		ConfigureAsyncForm(elements.deleteForm, getSubmitCallback(options.deleteAction));
-		ConfigureAsyncForm(elements.peakTimesForm, getSubmitCallback(options.peakTimesAction), refreshPeakTimes);
-		ConfigureAsyncForm(elements.availabilityForm, getSubmitCallback(options.availabilityAction), refreshAvailability);
-		ConfigureAsyncForm(elements.concurrentForm, getSubmitCallback(options.toggleConcurrentReservations), function(){}, function(){});
-	};
+        wireUpPeakTimeToggles();
 
-	var getSubmitCallback = function (action) {
-		return function () {
-			return options.submitUrl + "?sid=" + elements.activeId.val() + "&action=" + action;
-		};
-	};
+        ConfigureAsyncForm(elements.changeLayoutForm, getSubmitCallback(options.changeLayoutAction));
+        ConfigureAsyncForm(elements.addForm, getSubmitCallback(options.addAction), null, handleAddError);
+        ConfigureAsyncForm(elements.deleteForm, getSubmitCallback(options.deleteAction));
+        ConfigureAsyncForm(elements.peakTimesForm, getSubmitCallback(options.peakTimesAction), refreshPeakTimes);
+        ConfigureAsyncForm(elements.availabilityForm, getSubmitCallback(options.availabilityAction), refreshAvailability);
+        ConfigureAsyncForm(elements.concurrentForm, getSubmitCallback(options.toggleConcurrentReservations), function () {
+        }, function () {
+        });
+        ConfigureAsyncForm(elements.switchLayoutForm, getSubmitCallback(options.switchLayout));
+        ConfigureAsyncForm(elements.deleteCustomTimeSlotForm, getSubmitCallback(options.deleteLayoutSlot), afterDeleteSlot);
+    };
 
-	var createQuickLayout = function () {
-		var intervalMinutes = elements.quickLayoutConfig.val();
-		var startTime = elements.quickLayoutStart.val();
-		var endTime = elements.quickLayoutEnd.val();
+    var getSubmitCallback = function (action) {
+        return function () {
+            return options.submitUrl + "?sid=" + elements.activeId.val() + "&action=" + action;
+        };
+    };
 
-		if (intervalMinutes != '' && startTime != '' && endTime != '')
-		{
-			var layout = '';
-			var blocked = '';
+    var createQuickLayout = function () {
+        var intervalMinutes = elements.quickLayoutConfig.val();
+        var startTime = elements.quickLayoutStart.val();
+        var endTime = elements.quickLayoutEnd.val();
 
-			if (startTime != '00:00')
-			{
-				blocked += '00:00 - ' + startTime + "\n";
-			}
+        if (intervalMinutes != '' && startTime != '' && endTime != '') {
+            var layout = '';
+            var blocked = '';
 
-			if (endTime != '00:00')
-			{
-				blocked += endTime + ' - 00:00';
-			}
+            if (startTime != '00:00') {
+                blocked += '00:00 - ' + startTime + "\n";
+            }
 
-			var startTimes = startTime.split(":");
-			var endTimes = endTime.split(":");
+            if (endTime != '00:00') {
+                blocked += endTime + ' - 00:00';
+            }
 
-			var currentTime = new Date();
-			currentTime.setHours(startTimes[0]);
-			currentTime.setMinutes(startTimes[1]);
+            var startTimes = startTime.split(":");
+            var endTimes = endTime.split(":");
 
-			var endDateTime = new Date();
-			endDateTime.setHours(endTimes[0]);
-			endDateTime.setMinutes(endTimes[1]);
+            var currentTime = new Date();
+            currentTime.setHours(startTimes[0]);
+            currentTime.setMinutes(startTimes[1]);
 
-			var nextTime = new Date(currentTime);
+            var endDateTime = new Date();
+            endDateTime.setHours(endTimes[0]);
+            endDateTime.setMinutes(endTimes[1]);
 
-			var intervalMilliseconds = 60 * 1000 * intervalMinutes;
-			while (currentTime.getTime() < endDateTime.getTime())
-			{
-				nextTime.setTime(nextTime.getTime() + intervalMilliseconds);
+            var nextTime = new Date(currentTime);
 
-				layout += getFormattedTime(currentTime) + ' - ';
-				layout += getFormattedTime(nextTime) + '\n';
+            var intervalMilliseconds = 60 * 1000 * intervalMinutes;
+            while (currentTime.getTime() < endDateTime.getTime()) {
+                nextTime.setTime(nextTime.getTime() + intervalMilliseconds);
 
-				currentTime.setTime(currentTime.getTime() + intervalMilliseconds);
-			}
+                layout += getFormattedTime(currentTime) + ' - ';
+                layout += getFormattedTime(nextTime) + '\n';
 
-			$('.reservableEdit:visible', elements.layoutDialog).val(layout);
-			$('.blockedEdit:visible', elements.layoutDialog).val(blocked);
-		}
-	};
+                currentTime.setTime(currentTime.getTime() + intervalMilliseconds);
+            }
 
-	var getFormattedTime = function (date) {
-		var hour = date.getHours() < 10 ? "0" + date.getHours() : date.getHours();
-		var minute = date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes();
-		return hour + ":" + minute;
-	};
+            $('.reservableEdit:visible', elements.layoutDialog).val(layout);
+            $('.blockedEdit:visible', elements.layoutDialog).val(blocked);
+        }
+    };
 
-	var autoFillBlocked = function() {
+    var getFormattedTime = function (date) {
+        var hour = date.getHours() < 10 ? "0" + date.getHours() : date.getHours();
+        var minute = date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes();
+        return hour + ":" + minute;
+    };
 
-		function splitAndTrim(line) {
-			return _.map(_.split(line, '-'), _.trim);
-		}
+    var autoFillBlocked = function () {
 
-		var blocked = '';
+        function splitAndTrim(line) {
+            return _.map(_.split(line, '-'), _.trim);
+        }
 
-		var reservableText = _.trim($('.reservableEdit:visible', elements.layoutDialog).val());
-		var reservable = _.split(reservableText, "\n");
-		if (reservable.length === 0)
-		{
-			$('.blockedEdit:visible', elements.layoutDialog).val("00:00 - 00:00");
-			return;
-		}
+        var blocked = '';
 
-		var startIndex = 0;
-		if (!_.startsWith(reservable[0], '00:00') && !_.startsWith(reservable[0], '0:00'))
-		{
-			blocked += "00:00 - " + splitAndTrim(reservable)[0] + "\n";
-			startIndex = 1;
-		}
+        var reservableText = _.trim($('.reservableEdit:visible', elements.layoutDialog).val());
+        var reservable = _.split(reservableText, "\n");
+        if (reservable.length === 0) {
+            $('.blockedEdit:visible', elements.layoutDialog).val("00:00 - 00:00");
+            return;
+        }
 
-		for (var i = startIndex; i < reservable.length; i++) {
-			var firstIteration = i === 0;
-			var lastIteration = i+1 === reservable.length;
+        var startIndex = 0;
+        if (!_.startsWith(reservable[0], '00:00') && !_.startsWith(reservable[0], '0:00')) {
+            blocked += "00:00 - " + splitAndTrim(reservable)[0] + "\n";
+            startIndex = 1;
+        }
 
-			if (_.isEmpty(_.trim(reservable[i])))
-			{
-				continue;
-			}
+        for (var i = startIndex; i < reservable.length; i++) {
+            var firstIteration = i === 0;
+            var lastIteration = i + 1 === reservable.length;
 
-			var current = splitAndTrim(reservable[i]);
-			var previous = null;
-			if (!firstIteration)
-			{
-				previous = splitAndTrim(reservable[i - 1]);
-			}
+            if (_.isEmpty(_.trim(reservable[i]))) {
+                continue;
+            }
 
-			if (!firstIteration && !lastIteration && current[0] != previous[1])
-			{
-				blocked += previous[1] + " - " + current[0] + "\n";
-			}
+            var current = splitAndTrim(reservable[i]);
+            var previous = null;
+            if (!firstIteration) {
+                previous = splitAndTrim(reservable[i - 1]);
+            }
 
-			if (lastIteration && current[1] != '00:00')
-			{
-				blocked += current[1] + ' - 00:00' + "\n";
-			}
-		}
+            if (!firstIteration && !lastIteration && current[0] != previous[1]) {
+                blocked += previous[1] + " - " + current[0] + "\n";
+            }
 
-		$('.blockedEdit:visible', elements.layoutDialog).val(blocked);
-	};
+            if (lastIteration && current[1] != '00:00') {
+                blocked += current[1] + ' - 00:00' + "\n";
+            }
+        }
 
-	var handleAddError = function (responseText) {
-		$('#addScheduleResults').text(responseText);
-		$('#addScheduleResults').show();
-	};
+        $('.blockedEdit:visible', elements.layoutDialog).val(blocked);
+    };
 
-	var setActiveScheduleId = function (scheduleId) {
-		elements.activeId.val(scheduleId);
-	};
+    var handleAddError = function (responseText) {
+        $('#addScheduleResults').text(responseText);
+        $('#addScheduleResults').show();
+    };
 
-	var getActiveScheduleId = function () {
-		return elements.activeId.val();
-	};
+    var setActiveScheduleId = function (scheduleId) {
+        elements.activeId.val(scheduleId);
+    };
 
-	var showChangeLayout = function (e, reservableDiv, blockedDiv, timezone, usesSingleLayout) {
-		elements.changeLayoutForm.find('.validationSummary ').addClass('no-show');
-	    $.each(reservableDiv, function (index, val) {
-			var slots = reformatTimeSlots($(val));
-			$('#' + $(val).attr('ref')).val(slots);
-		});
+    var getActiveScheduleId = function () {
+        return elements.activeId.val();
+    };
 
-		$.each(blockedDiv, function (index, val) {
-			var slots = reformatTimeSlots($(val));
-			$('#' + $(val).attr('ref')).val(slots);
-		});
+    var showChangeLayout = function (e, reservableDiv, blockedDiv, timezone, usesSingleLayout) {
+        elements.changeLayoutForm.find('.validationSummary ').addClass('no-show');
+        $.each(reservableDiv, function (index, val) {
+            var slots = reformatTimeSlots($(val));
+            $('#' + $(val).attr('ref')).val(slots);
+        });
 
-		elements.layoutTimezone.val(timezone.val());
-		elements.usesSingleLayout.prop('checked', false);
+        $.each(blockedDiv, function (index, val) {
+            var slots = reformatTimeSlots($(val));
+            $('#' + $(val).attr('ref')).val(slots);
+        });
 
-		if (usesSingleLayout)
-		{
-			elements.usesSingleLayout.prop('checked', true);
-		}
-		elements.usesSingleLayout.trigger('change');
+        elements.layoutTimezone.val(timezone.val());
+        elements.usesSingleLayout.prop('checked', false);
 
-		elements.layoutDialog.modal("show");
-	};
+        if (usesSingleLayout) {
+            elements.usesSingleLayout.prop('checked', true);
+        }
+        elements.usesSingleLayout.trigger('change');
 
-	var toggleLayoutChange = function (useSingleLayout) {
-		if (useSingleLayout)
-		{
-			$('#dailySlots').hide();
-			$('#staticSlots').show();
-		}
-		else
-		{
-			$('#staticSlots').hide();
-			$('#dailySlots').show();
-		}
-	};
+        elements.layoutDialog.modal("show");
+    };
 
-	var showDeleteDialog = function (e) {
-		var scheduleId = getActiveScheduleId();
-		elements.deleteDestinationScheduleId.children().removeAttr('disabled');
-		elements.deleteDestinationScheduleId.children('option[value="' + scheduleId + '"]').attr('disabled', 'disabled');
-		elements.deleteDestinationScheduleId.val('');
+    var toggleLayoutChange = function (useSingleLayout) {
+        if (useSingleLayout) {
+            $('#dailySlots').hide();
+            $('#staticSlots').show();
+        }
+        else {
+            $('#staticSlots').hide();
+            $('#dailySlots').show();
+        }
+    };
 
-		elements.deleteDialog.modal('show');
-	};
+    var showDeleteDialog = function (e) {
+        var scheduleId = getActiveScheduleId();
+        elements.deleteDestinationScheduleId.children().removeAttr('disabled');
+        elements.deleteDestinationScheduleId.children('option[value="' + scheduleId + '"]').attr('disabled', 'disabled');
+        elements.deleteDestinationScheduleId.val('');
 
-	var reformatTimeSlots = function (div) {
-		var text = $.trim(div.text());
-		text = text.replace(/\s\s+/g, ' ');
-		text = text.replace(/\s*,\s*/g, '\n');
-		return text;
-	};
+        elements.deleteDialog.modal('show');
+    };
 
-	var showPeakTimesDialog = function (scheduleId) {
-		var peakPlaceHolder = $('[data-schedule-id=' + scheduleId + ']').find('.peakPlaceHolder');
+    var reformatTimeSlots = function (div) {
+        var text = $.trim(div.text());
+        text = text.replace(/\s\s+/g, ' ');
+        text = text.replace(/\s*,\s*/g, '\n');
+        return text;
+    };
 
-		var times = peakPlaceHolder.find('.peakTimes');
-		var days = peakPlaceHolder.find('.peakDays');
-		var months = peakPlaceHolder.find('.peakMonths');
+    var showPeakTimesDialog = function (scheduleId) {
+        var peakPlaceHolder = $('[data-schedule-id=' + scheduleId + ']').find('.peakPlaceHolder');
 
-		if (times.length > 0)
-		{
-			var allDay = times.data('all-day');
-			var startTime = times.data('start-time');
-			var endTime = times.data('end-time');
+        var times = peakPlaceHolder.find('.peakTimes');
+        var days = peakPlaceHolder.find('.peakDays');
+        var months = peakPlaceHolder.find('.peakMonths');
 
-			var everyday = days.data('everyday');
-			var days = days.data('weekdays').split(",");
+        if (times.length > 0) {
+            var allDay = times.data('all-day');
+            var startTime = times.data('start-time');
+            var endTime = times.data('end-time');
 
-			var allYear = months.data('all-year');
-			var beginMonth = months.data('begin-month');
-			var beginDay = months.data('begin-day');
-			var endMonth = months.data('end-month');
-			var endDay = months.data('end-day');
+            var everyday = days.data('everyday');
+            var days = days.data('weekdays').split(",");
 
-			if (allDay == 1)
-			{
-				elements.peakAllDay.prop('checked', true);
-			}
-			else
-			{
-				elements.peakAllDay.prop('checked', false);
-				$('#peakStartTime').val(startTime);
-				$('#peakEndTime').val(endTime);
-			}
+            var allYear = months.data('all-year');
+            var beginMonth = months.data('begin-month');
+            var beginDay = months.data('begin-day');
+            var endMonth = months.data('end-month');
+            var endDay = months.data('end-day');
 
-			elements.peakEveryDay.attr('checked', everyday == 1);
+            if (allDay == 1) {
+                elements.peakAllDay.prop('checked', true);
+            }
+            else {
+                elements.peakAllDay.prop('checked', false);
+                $('#peakStartTime').val(startTime);
+                $('#peakEndTime').val(endTime);
+            }
 
-			_.each($('#peakDayList').find(':checked'), function (e) {
-				$(e).closest('label').button('toggle');
-			});
+            elements.peakEveryDay.attr('checked', everyday == 1);
 
-			_.each(days, function (day) {
-				$('#peakDay' + day).closest('label').button('toggle');
-			});
+            _.each($('#peakDayList').find(':checked'), function (e) {
+                $(e).closest('label').button('toggle');
+            });
 
-			if (allYear == 1)
-			{
-				elements.peakAllYear.prop('checked', true);
-			}
-			else
-			{
-				elements.peakAllYear.prop('checked', false);
-				$('#peakBeginMonth').val(beginMonth);
-				$('#peakBeginDay').val(beginDay);
-				$('#peakEndMonth').val(endMonth);
-				$('#peakEndDay').val(endDay);
-			}
+            _.each(days, function (day) {
+                $('#peakDay' + day).closest('label').button('toggle');
+            });
 
-			peakOnAllDayChanged();
-			peakOnEveryDayChanged();
-			peakOnAllYearChanged();
-		}
+            if (allYear == 1) {
+                elements.peakAllYear.prop('checked', true);
+            }
+            else {
+                elements.peakAllYear.prop('checked', false);
+                $('#peakBeginMonth').val(beginMonth);
+                $('#peakBeginDay').val(beginDay);
+                $('#peakEndMonth').val(endMonth);
+                $('#peakEndDay').val(endDay);
+            }
 
-		elements.deletePeakTimes.val('');
-		elements.peakTimesDialog.modal('show');
-	};
+            peakOnAllDayChanged();
+            peakOnEveryDayChanged();
+            peakOnAllYearChanged();
+        }
 
-	var peakOnEveryDayChanged = function () {
-		if ((elements.peakEveryDay).is(':checked'))
-		{
-			elements.peakDayList.addClass('no-show');
-		}
-		else
-		{
-			elements.peakDayList.removeClass('no-show');
-		}
-	};
+        elements.deletePeakTimes.val('');
+        elements.peakTimesDialog.modal('show');
+    };
 
-	var peakOnAllYearChanged = function () {
-		if ((elements.peakAllYear).is(':checked'))
-		{
-			elements.peakDateRange.addClass('no-show');
-		}
-		else
-		{
-			elements.peakDateRange.removeClass('no-show');
-		}
-	};
+    var peakOnEveryDayChanged = function () {
+        if ((elements.peakEveryDay).is(':checked')) {
+            elements.peakDayList.addClass('no-show');
+        }
+        else {
+            elements.peakDayList.removeClass('no-show');
+        }
+    };
 
-	var peakOnAllDayChanged = function () {
-		if ((elements.peakAllDay).is(':checked'))
-		{
-			elements.peakTimes.addClass('no-show');
-		}
-		else
-		{
-			elements.peakTimes.removeClass('no-show');
-		}
-	};
+    var peakOnAllYearChanged = function () {
+        if ((elements.peakAllYear).is(':checked')) {
+            elements.peakDateRange.addClass('no-show');
+        }
+        else {
+            elements.peakDateRange.removeClass('no-show');
+        }
+    };
 
-	var refreshPeakTimes = function (resultHtml) {
-		$('[data-schedule-id=' + getActiveScheduleId() + ']').find('.peakPlaceHolder').html(resultHtml);
-		elements.peakTimesDialog.modal('hide');
-	};
+    var peakOnAllDayChanged = function () {
+        if ((elements.peakAllDay).is(':checked')) {
+            elements.peakTimes.addClass('no-show');
+        }
+        else {
+            elements.peakTimes.removeClass('no-show');
+        }
+    };
 
-	var wireUpPeakTimeToggles = function () {
-		elements.peakEveryDay.on('click', function (e) {
-			peakOnEveryDayChanged();
-		});
+    var refreshPeakTimes = function (resultHtml) {
+        $('[data-schedule-id=' + getActiveScheduleId() + ']').find('.peakPlaceHolder').html(resultHtml);
+        elements.peakTimesDialog.modal('hide');
+    };
 
-		elements.peakAllYear.on('click', function (e) {
-			peakOnAllYearChanged();
-		});
+    var wireUpPeakTimeToggles = function () {
+        elements.peakEveryDay.on('click', function (e) {
+            peakOnEveryDayChanged();
+        });
 
-		elements.peakAllDay.on('click', function (e) {
-			peakOnAllDayChanged();
-		});
-	};
+        elements.peakAllYear.on('click', function (e) {
+            peakOnAllYearChanged();
+        });
 
-    var showAvailabilityDialog = function(scheduleId) {
+        elements.peakAllDay.on('click', function (e) {
+            peakOnAllDayChanged();
+        });
+    };
+
+    var showAvailabilityDialog = function (scheduleId) {
         var placeholder = $('[data-schedule-id=' + scheduleId + ']').find('.availabilityPlaceHolder');
         var dates = placeholder.find('.availableDates');
 
@@ -514,8 +523,7 @@ function ScheduleManagement(opts) {
         elements.availableEndDateTextbox.datepicker("setDate", dates.data('end-date'));
         elements.availableEndDate.trigger('change');
 
-        if (!hasAvailability)
-        {
+        if (!hasAvailability) {
             elements.availableAllYear.trigger('click');
         }
 
@@ -527,10 +535,9 @@ function ScheduleManagement(opts) {
         elements.availabilityDialog.modal('hide');
     };
 
-    var toggleConcurrentReservations = function(scheduleId, toggle, container) {
+    var toggleConcurrentReservations = function (scheduleId, toggle, container) {
         var allow = toggle.data('allow') == 1;
-        if (allow)
-        {
+        if (allow) {
             container.find('.allowConcurrentYes').addClass('no-show');
             container.find('.allowConcurrentNo').removeClass('no-show');
         }
@@ -542,4 +549,95 @@ function ScheduleManagement(opts) {
 
         toggle.data('allow', allow ? '0' : '1');
     };
+
+    var _fullCalendar = null;
+    var showChangeCustomLayout = function (scheduleId) {
+        var customLayoutScheduleId = scheduleId;
+
+        function updateEvent(event) {
+            elements.slotStartDate.val(event.start.format('YYYY-MM-DD HH:mm'));
+            elements.slotEndDate.val(event.end.format('YYYY-MM-DD HH:mm'));
+            elements.slotId.val(event.id);
+            ajaxPost(elements.layoutSlotForm,
+                options.submitUrl + '?action=' + options.updateLayoutSlot + '&sid=' + getActiveScheduleId(),
+                null,
+                function (data) {
+                    _fullCalendar.fullCalendar('refetchEvents');
+                }
+            );
+        }
+
+        $('#customLayoutDialog').on('shown.bs.modal', function () {
+            if (_fullCalendar != null) {
+                _fullCalendar.fullCalendar('destroy');
+            }
+            var calendar = $('#calendar');
+            _fullCalendar = calendar.fullCalendar({
+                header: {
+                    left: 'prev,next,today',
+                    center: 'title',
+                    right: 'month,agendaWeek,agendaDay'
+                },
+                buttonText: opts.calendarOptions.buttonText,
+                allDaySlot: false,
+                defaultDate: opts.calendarOptions.defaultDate,
+                defaultView: 'month',
+                eventSources: [{
+                    url: opts.calendarOptions.eventsUrl,
+                    type: 'GET',
+                    data: {
+                        dr: 'events',
+                        sid: scheduleId
+                    }
+                }],
+                dayClick: function (date, jsEvent, view) {
+                    if (view.name == 'month') {
+                        calendar.fullCalendar('changeView', 'agendaDay');
+                        calendar.fullCalendar('gotoDate', date);
+                    }
+                },
+                selectable: true,
+                selectHelper: true,
+                editable: true,
+                droppable: true,
+                eventOverlap: false,
+                select: function (start, end, jsEvent, view) {
+                    if (view.name != 'month')
+                    {
+                        elements.slotStartDate.val(start.format('YYYY-MM-DD HH:mm'));
+                        elements.slotEndDate.val(end.format('YYYY-MM-DD HH:mm'));
+                        ajaxPost(elements.layoutSlotForm,
+                            options.submitUrl + '?action=' + options.addLayoutSlot + '&sid=' + getActiveScheduleId(),
+                            null,
+                            function() {_fullCalendar.fullCalendar('refetchEvents');}
+                            );
+                    }
+                },
+                eventClick: function (event, jsEvent, view) {
+                    elements.deleteSlotStartDate.val(event.start.format('YYYY-MM-DD HH:mm'));
+                    elements.deleteSlotEndDate.val(event.end.format('YYYY-MM-DD HH:mm'));
+                    elements.deleteCustomLayoutDialog.zIndex(calendar.zIndex()+1);
+                    elements.deleteCustomLayoutDialog.show();
+                    elements.deleteCustomLayoutDialog.position({
+                        my: 'left bottom',
+                        at: 'left top',
+                        of: jsEvent
+                    });
+                },
+                eventDrop: function (event, delta, revertFunc) {
+                    updateEvent(event);
+                },
+                eventResize: function (event, delta, revertFunc, jsEvent, ui, view) {
+                    updateEvent(event);
+                }
+            });
+        });
+
+        $('#customLayoutDialog').modal('show');
+    };
+
+    function afterDeleteSlot() {
+        elements.deleteCustomLayoutDialog.hide();
+        _fullCalendar.fullCalendar('refetchEvents');
+    }
 }

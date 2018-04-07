@@ -320,7 +320,11 @@ abstract class ReservationInitializerBase implements IReservationInitializer, IR
 
 	public function SetDates(Date $startDate, Date $endDate, $startPeriods, $endPeriods, $firstWeekday)
 	{
-		$this->basePage->BindPeriods($startPeriods, $endPeriods);
+	    if (count($startPeriods) == 0 || count($endPeriods) == 0) {
+            $this->basePage->MakeUnavailable();
+            return;
+        }
+        $this->basePage->BindPeriods($startPeriods, $endPeriods);
 		$this->SetSelectedDates($startDate, $endDate, $startPeriods, $endPeriods);
 		if ($firstWeekday == Schedule::Today)
         {

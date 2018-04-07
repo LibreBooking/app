@@ -154,11 +154,19 @@ interface IReservationPage extends IPage
      * @param int $weekday
      */
     public function SetFirstWeekday($weekday);
+
+    public function MakeUnavailable();
+
+    /**
+     * @return true
+     */
+    public function IsUnavailable();
 }
 
 abstract class ReservationPage extends Page implements IReservationPage
 {
 	protected $presenter;
+	protected $available = true;
 
 	/**
 	 * @var PermissionServiceFactory
@@ -389,4 +397,13 @@ abstract class ReservationPage extends Page implements IReservationPage
         $this->Set('FirstWeekday', $weekday);
     }
 
+    public function MakeUnavailable()
+    {
+        $this->available = false;
+    }
+
+    public function IsUnavailable()
+    {
+        return $this->available;
+    }
 }

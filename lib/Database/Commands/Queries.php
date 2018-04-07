@@ -86,11 +86,15 @@ class Queries
           UPDATE users SET credit_count = COALESCE(credit_count,0) - @credit_count WHERE user_id = @userid';
 
 	const ADD_LAYOUT =
-			'INSERT INTO layouts (timezone) VALUES (@timezone)';
+			'INSERT INTO layouts (timezone, layout_type) VALUES (@timezone, @layout_type)';
 
 	const ADD_LAYOUT_TIME =
 			'INSERT INTO time_blocks (layout_id, start_time, end_time, availability_code, label, day_of_week)
 		VALUES (@layoutid, @startTime, @endTime, @periodType, @label, @day_of_week)';
+
+	const ADD_CUSTOM_LAYOUT_SLOT =
+			'INSERT INTO custom_time_blocks (start_time, end_time, layout_id)
+		VALUES (@startTime, @endTime, (select layout_id from schedules where schedule_id = @scheduleid))';
 
 	const ADD_QUOTA =
 			'INSERT INTO quotas (quota_limit, unit, duration, resource_id, group_id, schedule_id, enforced_time_start, enforced_time_end, enforced_days, scope)
@@ -249,6 +253,10 @@ class Queries
 	const DELETE_BLACKOUT_SERIES = 'DELETE blackout_series FROM blackout_series
 		INNER JOIN blackout_instances ON blackout_series.blackout_series_id = blackout_instances.blackout_series_id
 		WHERE blackout_instance_id = @blackout_instance_id';
+
+	const DELETE_CUSTOM_LAYOUT_PERIOD = 'DELETE FROM custom_time_blocks 
+      WHERE start_time = @startTime AND 
+        layout_id = (select layout_id from schedules where schedule_id = @scheduleid)';
 
 	const DELETE_BLACKOUT_INSTANCE = 'DELETE FROM blackout_instances WHERE blackout_instance_id = @blackout_instance_id';
 

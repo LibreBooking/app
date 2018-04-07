@@ -111,6 +111,7 @@ class ParameterNames
 	const LAST_NAME = '@lname';
 	const LAYOUT_ID = '@layoutid';
     const LANGUAGE = '@language';
+    const LAYOUT_TYPE = '@layout_type';
 
 	const NAME = '@name';
 

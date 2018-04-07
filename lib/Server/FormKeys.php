@@ -128,6 +128,8 @@ class FormKeys
 	const LOCATION = 'location';
 	const LOGIN = 'login';
 	const LOGO_FILE = 'LOGO_FILE';
+	const LAYOUT_TYPE = 'LAYOUT_TYPE';
+	const LAYOUT_PERIOD_ID = 'LAYOUT_PERIOD_ID';
 
 	const MIN_DURATION = 'minDuration';
 	const MIN_DURATION_NONE = 'minDurationNone';

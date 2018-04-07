@@ -176,7 +176,7 @@ function Calendar(opts) {
                 resourceGroupsContainer.data('positionSet', true);
                 resourceGroupsContainer.show();
             }
-        })
+        });
 
         elements.moveErrorOk.click(function(e) {
             e.preventDefault();
