@@ -759,10 +759,10 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                     recommended to set this to
                     true, as long as tpl_c is writable</p>
 
-                <p class="setting"><span>$conf['settings']['use.local.jquery']</span>Whether or not a local version of
-                    jQuery
+                <p class="setting"><span>$conf['settings']['use.local.js.libs']</span>Whether or not a local version of
+                    javascript libraries
                     files
-                    should be used. If set to false, the files will be served from the Google CDN. It is recommended to
+                    should be used. If set to false, the files will be served from a CDN. It is recommended to
                     set
                     this
                     to

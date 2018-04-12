@@ -37,7 +37,7 @@ $conf['settings']['script.url'] = 'http://localhost/Web';   	// public URL to th
 $conf['settings']['image.upload.directory'] = 'Web/uploads/images'; // full or relative path to where images will be stored
 $conf['settings']['image.upload.url'] = 'uploads/images';       // full or relative path to show uploaded images from
 $conf['settings']['cache.templates'] = 'true';                  // true recommended, caching template files helps web pages render faster
-$conf['settings']['use.local.jquery'] = 'false';                // false recommended, delivers jQuery from Google CDN, uses less bandwidth
+$conf['settings']['use.local.js.libs'] = 'false';                // false recommended, delivers jQuery from Google CDN, uses less bandwidth
 $conf['settings']['registration.captcha.enabled'] = 'true';     // recommended. unless using recaptcha this requires php_gd2 enabled in php.ini
 $conf['settings']['registration.require.email.activation'] = 'false';		// requires enable.email = true
 $conf['settings']['registration.auto.subscribe.email'] = 'false';			// requires enable.email = true

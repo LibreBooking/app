@@ -31,14 +31,18 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
     <link rel="icon" href="{$Path}favicon.ico"/>
     <!-- JavaScript -->
     {if $UseLocalJquery}
-        {jsfile src="js/jquery-2.1.1.min.js"}
-        {jsfile src="js/jquery-ui-1.10.4.custom.min.js"}
+        {jsfile src="js/jquery-3.3.1.min.js"}
+        {jsfile src="js/jquery-ui.1.12.1.custom.min.js"}
         {jsfile src="bootstrap/js/bootstrap.min.js"}
     {else}
-        <script type="text/javascript"
-                src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-        <script type="text/javascript"
-                src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
+        <script
+                src="https://code.jquery.com/jquery-3.3.1.min.js"
+                integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+                crossorigin="anonymous"></script>
+        <script
+                src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"
+                integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU="
+                crossorigin="anonymous"></script>
         <script type="text/javascript"
                 src="https://netdna.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
     {/if}
@@ -47,7 +51,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
     <!-- CSS -->
     {if $UseLocalJquery}
-        {cssfile src="scripts/css/smoothness/jquery-ui-1.10.4.custom.min.css"}
+        {cssfile src="scripts/css/smoothness/jquery-ui.1.12.1.custom.min.css"}
         {cssfile src="css/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet"}
         {cssfile src="scripts/bootstrap/css/bootstrap.css" rel="stylesheet"}
         {if $Qtip}
@@ -63,7 +67,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
     {else}
         <link rel="stylesheet"
-              href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.9.0/themes/smoothness/jquery-ui.css"
+              href="https://code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css"
               type="text/css"/>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
               type="text/css"/>
