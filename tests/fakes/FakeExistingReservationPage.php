@@ -149,7 +149,7 @@ class FakeExistingReservationPage extends FakePageBase implements IExistingReser
 	{
 	}
 
-	public function BindPeriods($startPeriods, $endPeriods)
+	public function BindPeriods($startPeriods, $endPeriods, $lockPeriods)
 	{
 	}
 

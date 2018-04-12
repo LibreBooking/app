@@ -61,11 +61,12 @@ class ReservationDateBinder implements IReservationComponentBinder
         $startPeriods = $this->GetStartPeriods($layout, $startDate);
         $endPeriods = $this->GetEndPeriods($layout, $startDate, $endDate);
 
-		$initializer->SetDates($startDate, $endDate, $startPeriods, $endPeriods, $schedule->GetWeekdayStart());
+		$initializer->SetDates($startDate, $endDate, $startPeriods, $endPeriods, $schedule->GetWeekdayStart(), $layout->UsesCustomLayout());
 
-		$hideRecurrence = !$initializer->CurrentUser()->IsAdmin && Configuration::Instance()->GetSectionKey(ConfigSection::RESERVATION,
-																											ConfigKeys::RESERVATION_PREVENT_RECURRENCE,
-																											new BooleanConverter());
+		$hideRecurrence = (!$initializer->CurrentUser()->IsAdmin &&
+            Configuration::Instance()->GetSectionKey(ConfigSection::RESERVATION, ConfigKeys::RESERVATION_PREVENT_RECURRENCE, new BooleanConverter())
+            || $layout->UsesCustomLayout());
+
 		$initializer->HideRecurrence($hideRecurrence);
 
         if ($schedule->HasAvailability())

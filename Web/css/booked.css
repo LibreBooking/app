@@ -2392,6 +2392,11 @@ td.update {
 .unreservable.fc-event {
   border: none;
 }
+.reservable.fc-event {
+  border: solid 1px #585754;
+  background-color: #F9F9F9;
+  color: #333 !important;
+}
 ul.jqtree-tree li.jqtree-selected > .jqtree-element,
 ul.jqtree-tree li.jqtree-selected > .jqtree-element:hover {
   background: none;

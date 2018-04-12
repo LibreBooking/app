@@ -27,6 +27,8 @@ class FakeScheduleLayout implements IScheduleLayout
 	 */
 	public $_SlotCount;
 
+	public $_Layout = array();
+
 	public function __construct()
 	{
 		$this->_SlotCount = new SlotCount(1, 2);
@@ -52,7 +54,7 @@ class FakeScheduleLayout implements IScheduleLayout
 	 */
 	public function GetLayout(Date $layoutDate, $hideBlockedPeriods = false)
 	{
-		// TODO: Implement GetLayout() method.
+		return $this->_Layout;
 	}
 
 	/**

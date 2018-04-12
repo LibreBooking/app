@@ -181,7 +181,7 @@ class FakeGuestReservationPage implements IGuestReservationPage
 	{
 	}
 
-	public function BindPeriods($startPeriods, $endPeriods)
+	public function BindPeriods($startPeriods, $endPeriods, $lockPeriods)
 	{
 	}
 

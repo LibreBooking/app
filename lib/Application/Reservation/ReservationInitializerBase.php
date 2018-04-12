@@ -67,8 +67,9 @@ interface IReservationComponentInitializer
 	 * @param array|SchedulePeriod[] $startPeriods
      * @param array|SchedulePeriod[] $endPeriods
      * @param int $firstWeekday
+     * @parma bool $lockDates
 	 */
-	public function SetDates(Date $startDate, Date $endDate, $startPeriods, $endPeriods, $firstWeekday);
+	public function SetDates(Date $startDate, Date $endDate, $startPeriods, $endPeriods, $firstWeekday, $lockDates = false);
 
 	/**
 	 * @return UserSession
@@ -318,13 +319,13 @@ abstract class ReservationInitializerBase implements IReservationInitializer, IR
 		return $periods[$lastIndex];
 	}
 
-	public function SetDates(Date $startDate, Date $endDate, $startPeriods, $endPeriods, $firstWeekday)
+	public function SetDates(Date $startDate, Date $endDate, $startPeriods, $endPeriods, $firstWeekday, $lockDates = false)
 	{
 	    if (count($startPeriods) == 0 || count($endPeriods) == 0) {
             $this->basePage->MakeUnavailable();
             return;
         }
-        $this->basePage->BindPeriods($startPeriods, $endPeriods);
+        $this->basePage->BindPeriods($startPeriods, $endPeriods, $lockDates);
 		$this->SetSelectedDates($startDate, $endDate, $startPeriods, $endPeriods);
 		if ($firstWeekday == Schedule::Today)
         {

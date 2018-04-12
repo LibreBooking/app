@@ -125,46 +125,49 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                         <div class="col-md-6 no-padding-left">
                             <div class="form-group no-margin-bottom">
                                 <label for="BeginDate" class="reservationDate">{translate key='BeginDate'}</label>
-                                <input type="text" id="BeginDate" class="form-control input-sm inline-block dateinput"
-                                       value="{formatdate date=$StartDate}"/>
+                                <input type="text" id="BeginDate" class="form-control input-sm inline-block dateinput{if $LockPeriods} no-show{/if}"
+                                       value="{formatdate date=$StartDate}" />
                                 <input type="hidden" id="formattedBeginDate" {formname key=BEGIN_DATE}
                                        value="{formatdate date=$StartDate key=system}"/>
                                 <select id="BeginPeriod" {formname key=BEGIN_PERIOD}
-                                        class="form-control input-sm inline-block timeinput" title="Begin time">
+                                        class="form-control input-sm inline-block timeinput{if $LockPeriods} no-show{/if}" title="Begin time">
                                     {foreach from=$StartPeriods item=period}
                                         {if $period->IsReservable()}
                                             {assign var='selected' value=''}
                                             {if $period eq $SelectedStart}
                                                 {assign var='selected' value=' selected="selected"'}
+                                                {assign var='startPeriod' value=$period}
                                             {/if}
                                             <option value="{$period->Begin()}"{$selected}>{$period->Label()}</option>
                                         {/if}
                                     {/foreach}
                                 </select>
+                                {if $LockPeriods}{formatdate date=$StartDate} {$startPeriod->Label()}{/if}
                             </div>
                         </div>
                         <div class="col-md-6 no-padding-left">
                             <div class="form-group no-margin-bottom">
                                 <label for="EndDate" class="reservationDate">{translate key='EndDate'}</label>
-                                <input type="text" id="EndDate" class="form-control input-sm inline-block dateinput"
+                                <input type="text" id="EndDate" class="form-control input-sm inline-block dateinput{if $LockPeriods} no-show{/if}"
                                        value="{formatdate date=$EndDate}"/>
                                 <input type="hidden" id="formattedEndDate" {formname key=END_DATE}
                                        value="{formatdate date=$EndDate key=system}"/>
                                 <select id="EndPeriod" {formname key=END_PERIOD}
-                                        class="form-control  input-sm inline-block timeinput" title="End time">
+                                        class="form-control  input-sm inline-block timeinput{if $LockPeriods} no-show{/if}" title="End time">
                                     {foreach from=$EndPeriods item=period name=endPeriods}
                                         {if $period->IsReservable()}
                                             {assign var='selected' value=''}
                                             {if $period eq $SelectedEnd}
                                                 {assign var='selected' value=' selected="selected"'}
+                                                {assign var='endPeriod' value=$period}
                                             {/if}
                                             <option value="{$period->End()}"{$selected}>{$period->LabelEnd()}</option>
                                         {/if}
                                     {/foreach}
                                 </select>
+                                {if $LockPeriods}{formatdate date=$EndDate} {$endPeriod->LabelEnd()}{/if}
                             </div>
                         </div>
-
                     </div>
 
                     <div class="col-xs-12 reservationLength">

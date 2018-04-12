@@ -139,7 +139,7 @@ class ScheduleLayoutFactory implements ILayoutFactory
     /**
      * @param string $targetTimezone target timezone of layout
      */
-    public function __construct($targetTimezone)
+    public function __construct($targetTimezone = null)
     {
         $this->_targetTimezone = $targetTimezone;
     }

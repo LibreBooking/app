@@ -24,14 +24,13 @@ require_once(ROOT_DIR . 'Presenters/Reservation/ReservationPresenter.php');
 interface IReservationPage extends IPage
 {
 	/**
-	 * Set the schedule period items to be used when presenting reservations
 	 * @param $startPeriods array|SchedulePeriod[]
 	 * @param $endPeriods array|SchedulePeriod[]
+     * @parma $lockDates bool
 	 */
-	public function BindPeriods($startPeriods, $endPeriods);
+	public function BindPeriods($startPeriods, $endPeriods, $lockPeriods);
 
 	/**
-	 * Set the resources that can be reserved by this user
 	 * @param $resources array|ResourceDto[]
 	 */
 	public function BindAvailableResources($resources);
@@ -239,10 +238,11 @@ abstract class ReservationPage extends Page implements IReservationPage
 		$this->Display($this->GetTemplateName());
 	}
 
-	public function BindPeriods($startPeriods, $endPeriods)
+	public function BindPeriods($startPeriods, $endPeriods, $lockPeriods)
 	{
 		$this->Set('StartPeriods', $startPeriods);
 		$this->Set('EndPeriods', $endPeriods);
+		$this->Set('LockPeriods', $lockPeriods);
 	}
 
 	public function BindAvailableResources($resources)
@@ -404,6 +404,6 @@ abstract class ReservationPage extends Page implements IReservationPage
 
     public function IsUnavailable()
     {
-        return $this->available;
+        return !$this->available;
     }
 }

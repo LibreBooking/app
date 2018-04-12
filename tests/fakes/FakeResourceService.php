@@ -97,4 +97,13 @@ class FakeResourceService implements IResourceService
 	{
 		// TODO: Implement GetResourceTypeAttributes() method.
 	}
+
+    /**
+     * @param int $resourceId
+     * @return BookableResource
+     */
+    public function GetResource($resourceId)
+    {
+        // TODO: Implement GetResource() method.
+    }
 }

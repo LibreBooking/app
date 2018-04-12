@@ -184,8 +184,9 @@ class CalendarPresenterTests extends TestBase
         $reservations = array($res1, $res2);
         $blackouts = array($b1, $b2);
         $resources = array($r1);
+        $availableSlots = array();
 
-        $actualReservations = CalendarReservation::FromScheduleReservationList($reservations, $blackouts, $resources, $this->fakeUser);
+        $actualReservations = CalendarReservation::FromScheduleReservationList($reservations, $blackouts, $availableSlots, $resources, $this->fakeUser);
 
         $this->assertEquals(2, count($actualReservations));
     }
@@ -211,18 +212,20 @@ class CalendarPresenterTests extends TestBase
         $blackouts = array();
         $resources = array(new FakeBookableResource(1, '1'), new FakeBookableResource(2, '2'));
 
-        $calendarReservations = CalendarReservation::FromScheduleReservationList($reservations, $blackouts, $resources, $this->fakeUser, true);
+        $calendarReservations = CalendarReservation::FromScheduleReservationList($reservations, $blackouts, array(), $resources, $this->fakeUser, true);
 
         $this->assertEquals(2, count($calendarReservations));
     }
 
-    public function testBindsReservationsAndBlackouts()
+    public function testBindsReservationsAndBlackoutsAndAvailableSlots()
     {
         $resourceId = 1;
         $scheduleId = 2;
         $resources = array();
         $reservations = array();
         $blackouts = array();
+        $layout = new FakeScheduleLayout();
+        $layout->_Layout[] = array(new SchedulePeriod(Date::Now(), Date::Now()->AddHours(1)));
 
         $this->page
             ->expects($this->atLeastOnce())
@@ -244,6 +247,10 @@ class CalendarPresenterTests extends TestBase
             ->expects($this->atLeastOnce())
             ->method('GetBlackoutsWithin')
             ->will($this->returnValue($blackouts));
+        $this->scheduleRepository
+            ->expects($this->atLeastOnce())
+            ->method('GetLayout')
+            ->will($this->returnValue($layout));
 
         $this->presenter->ProcessDataRequest('events');
 
