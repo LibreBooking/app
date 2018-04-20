@@ -1187,19 +1187,17 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                     reservation label on the Resource Calendar page. Available tokens are listed in the Available Label
                     Tokens
                     section.</p>
-                {literal}
                     <p class="setting"><span>$conf['settings']['reservation.labels']['reservation.popup']</span>The
                         format
                         of
                         what to display in reservation popups.
-                        Possible values are {name} {dates} {duration} {title} {resources} {participants} {accessories}
-                        {description}
-                        {phone} {email}
-                        {attributes} {pending}. Reservation custom attributes can be individually added using att with
+                        Possible values are {ldelim}name{rdelim} {ldelim}dates} {ldelim}duration{rdelim} {ldelim}title{rdelim} {ldelim}resources{rdelim} {ldelim}participants{rdelim} {ldelim}accessories{rdelim}
+                        {ldelim}description{rdelim}
+                        {ldelim}phone{rdelim} {ldelim}email{rdelim}
+                        {ldelim}attributes{rdelim} {ldelim}pending{rdelim}. Reservation custom attributes can be individually added using att with
                         the
-                        attribute id. For example {att1}.
+                        attribute id. For example {ldelim}att1{rdelim}.
                         Default is all information.</p>
-                {/literal}
 
                 <p class="setting"><span>$conf['settings']['google.analytics']['tracking.id']</span>Your Google
                     Analytics
@@ -1242,11 +1240,11 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                 <p>Available tokens for reservation labels
                     are
 
-                    {name}, {title}, {description}, {email}, {phone}, {organization}, {position}, {startdate}, {enddate} {resourcename} {participants} {invitees} {reservationAttributes}
+                    {ldelim}name{rdelim}, {ldelim}title{rdelim}, {ldelim}description{rdelim}, {ldelim}email{rdelim}, {ldelim}phone{rdelim}, {ldelim}organization{rdelim}, {ldelim}position{rdelim}, {ldelim}startdate{rdelim}, {ldelim}enddate{rdelim} {ldelim}resourcename{rdelim} {ldelim}participants{rdelim} {ldelim}invitees{rdelim} {ldelim}reservationAttributes{rdelim}
 
                     . Custom attributes can be added using att with the attribute id. For example
 
-                    {att1}
+                    {ldelim}att1{rdelim}
 
                     Leave it blank for no label. Any combination of tokens can be used.</p>
                 </p>

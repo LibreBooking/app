@@ -33,7 +33,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
             <h2>Registration</h2>
 
             <p>
-                Registration is required in order to use {$AppTitle}. After your
+                Registration is required in order to use            . After your
                 account
                 has been registered
                 you will be able to log in and access any resources that you have permission to.
@@ -160,7 +160,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
             <p>Reservations can be paid for using credits. If you do not have enough credits to complete a reservation, you can purchase credits in the Credits section of My
                 Account. You can also view your purchase history and credit usage history in the Credits section of My Account.</p>
 
-            <h2 data-toc-text="Add to Calendar">Adding a Reservation to Calendar (Outlook&reg;, iCal, Mozilla Lightning, Evolution)</h2>
+            <h2 data-toc-text="Add to Calendar">Adding a Reservation to Calendar (Outlook&reg;, iCal, Mozilla Lightning,
+                Evolution)</h2>
 
             <p>When viewing or updating a reservation you will see a button to Add to Outlook. If Outlook is installed on your
                 computer then you should be asked to add the meeting. If it is not installed you will be prompted to download an
@@ -172,7 +173,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
             <p>Calendars can be published for Schedules, Resources and Users. For this feature to work, the administrator must
                 have
                 configured a subscription key in the config file. To enable Schedule and Resource level calendar
-                subscriptions, simply turn subscriptions on when managing the Schedule or Resource. To turn on personal calendar
+                subscriptions, simply allow public visiblity when managing the Schedule or Resource. To turn on personal calendar
                 subscriptions, open Schedule -> My Calendar. On the right side of the page you will find a link to Allow or Turn
                 Off calendar subscriptions.
             </p>
@@ -200,6 +201,64 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                 Paste
                 in the URL printed under the Subscribe to this Calendar link in            .</p>
 
+            <h3>Embedding a Calendar Externally</h3>
+            <p>It is simple to include a view of a Booked calendar in an external website. Copy and paste the following
+                JavaScript
+                reference to your website
+                <code>
+                    &lt;script async src=&quot;{$ScriptUrl}/scripts/embed-calendar.js&quot; crossorigin=&quot;anonymous&quot;&gt;&lt;/script&gt;
+                </code>
+            </p>
+
+            <p>The following querystring arguments are accepted to customize the embedded view:</p>
+
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Possible Values</th>
+                    <th>Default</th>
+                    <th>Details</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>type</td>
+                    <td>agenda, week, month</td>
+                    <td>agenda</td>
+                    <td>Controls the view that is shown</td>
+                </tr>
+                <tr>
+                    <td>format</td>
+                    <td>date, title, user, resource</td>
+                    <td>date</td>
+                    <td>Controls the information shown in the reservation box. Multiple options can be passed. For example, to show date and title request date,title</td>
+                </tr>
+                <tr>
+                    <td>d</td>
+                    <td>Any digit between 1 and 30</td>
+                    <td>7</td>
+                    <td>Limits the number of days shown for the agenda view</td>
+                </tr>
+                <tr>
+                    <td>sid</td>
+                    <td>Any schedule public ID</td>
+                    <td>All schedules</td>
+                    <td>Limits the reservations shown to a specific schedule</td>
+                </tr>
+                <tr>
+                    <td>rid</td>
+                    <td>Any resource public ID</td>
+                    <td>All resources</td>
+                    <td>Limits the reservations shown to a specific resource</td>
+                </tr>
+                </tbody>
+            </table>
+
+            <p><strong>Only calendars and resources that have been marked as public will be shown.</strong> If
+                reservations
+                are missing from a schedule or resource, it is likely that public visibility has not been turned on.</p>
+
             <h2>Quotas</h2>
 
             <p>Administrators have the ability to configure quota rules based on a variety of criteria. If your reservation
@@ -209,7 +268,6 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
             <p>If a time is not available you can sign up to be notified if it becomes available. This option will be shown
                 after a reservation attempt is made.</p>
-
 
 
         </div>
@@ -228,7 +286,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
         $('body').scrollspy({
             target: navSelector,
-            offset:50
+            offset: 50
         });
     });
 </script>

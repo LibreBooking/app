@@ -90,7 +90,6 @@ class EmbeddedCalendarPresenter
             $schedule = $this->scheduleRepository->LoadByPublicId($schedulePublicId);
             if ($schedule->GetIsCalendarSubscriptionAllowed()) {
                 return $schedule;
-
             }
         }
         return null;

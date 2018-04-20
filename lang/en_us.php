@@ -367,8 +367,8 @@ class en_us extends Language
 		$strings['Restricted'] = 'Restricted';
 		$strings['ViewAll'] = 'View All';
 		$strings['MoveResourcesAndReservations'] = 'Move resources and reservations to';
-		$strings['TurnOffSubscription'] = 'Turn Off Calendar Subscriptions';
-		$strings['TurnOnSubscription'] = 'Allow Subscriptions to this Calendar';
+		$strings['TurnOffSubscription'] = 'Hide from public';
+		$strings['TurnOnSubscription'] = 'Show to public (RSS, iCalendar)';
 		$strings['SubscribeToCalendar'] = 'Subscribe to this Calendar';
 		$strings['SubscriptionsAreDisabled'] = 'The administrator has disabled calendar subscriptions';
 		$strings['NoResourceAdministratorLabel'] = '(No Resource Administrator)';
