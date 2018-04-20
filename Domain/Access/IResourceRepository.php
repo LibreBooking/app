@@ -224,4 +224,9 @@ interface IResourceRepository
 	 */
 	public function ChangeResourceGroupPermission($resourceId, $groupId, $type);
 
+    /**
+     * @return array all public resource ids in key value id=>publicid
+     */
+    public function GetPublicResourceIds();
+
 }

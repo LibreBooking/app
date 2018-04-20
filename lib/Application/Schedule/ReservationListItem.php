@@ -145,6 +145,45 @@ class ReservationListItem
 
 		return $range->Contains($date, false);
 	}
+
+	public function GetColor()
+    {
+        return $this->item->GetColor();
+    }
+
+    public function GetTextColor()
+    {
+        return $this->item->GetTextColor();
+    }
+
+    public function GetBorderColor()
+    {
+        return $this->item->GetBorderColor();
+    }
+
+    /**
+     * @return string
+     */
+    public function GetTitle()
+    {
+        return $this->item->GetTitle();
+    }
+
+    /**
+     * @return string
+     */
+    public function GetResourceName()
+    {
+        return $this->item->GetResourceName();
+    }
+
+    /**
+     * @return string
+     */
+    public function GetUserName()
+    {
+        return $this->item->GetUserName();
+    }
 }
 
 class BufferItem extends ReservationListItem

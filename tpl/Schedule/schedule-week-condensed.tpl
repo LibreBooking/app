@@ -28,7 +28,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		{assign var=class value='pending'}
 	{/if}
 	{if $Slot->HasCustomColor()}
-		{assign var=color value='style="background-color:'|cat:$Slot->Color()|cat:' !important;color:'|cat:$Slot->TextColor()|cat:' !important;"'}
+		{assign var=color value='style="background-color:'|cat:$Slot->Color()|cat:' !important;color:'|cat:$Slot->TextColor()|cat:' !important;border-color:'|cat:$Slot->BorderColor()|cat:' !important;"'}
 	{/if}
 	<div class="reserved {$class} {$OwnershipClass} clickres"
 		resid="{$Slot->Id()}" {$color}

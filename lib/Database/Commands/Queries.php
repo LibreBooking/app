@@ -651,6 +651,8 @@ class Queries
 			INNER JOIN  schedules s ON r.schedule_id = s.schedule_id
 			WHERE r.public_id = @publicid';
 
+	const GET_RESOURCES_PUBLIC = 'SELECT * FROM resources WHERE allow_calendar_subscription = 1 AND public_id IS NOT NULL';
+
     const GET_RESOURCE_BY_NAME =
         'SELECT r.*, s.admin_group_id as s_admin_group_id,
 				(SELECT GROUP_CONCAT( ri.image_name SEPARATOR  "!sep!" ) FROM resource_images ri WHERE ri.resource_id = r.resource_id) AS image_list
@@ -818,6 +820,8 @@ class Queries
 		WHERE (-1 = @scheduleid OR r.schedule_id = @scheduleid) AND
 			r.status_id <> 0
 		ORDER BY COALESCE(r.sort_order,0), r.name';
+
+	const GET_SCHEDULES_PUBLIC = 'SELECT * FROM schedules WHERE allow_calendar_subscription = 1 AND public_id IS NOT NULL';
 
 	const GET_TRANSACTION_LOG =
             'SELECT ptl.*, SUM(total_refund_amount) as refund_amount

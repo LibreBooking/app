@@ -115,6 +115,11 @@ interface IScheduleRepository
      * @param Date $start
      */
     public function DeleteCustomLayoutPeriod($scheduleId, Date $start);
+
+    /**
+     * @return array all public schedule ids in key value id=>publicid
+     */
+    public function GetPublicScheduleIds();
 }
 
 interface ILayoutFactory
@@ -436,5 +441,19 @@ class ScheduleRepository implements IScheduleRepository
     public function DeleteCustomLayoutPeriod($scheduleId, Date $start)
     {
         ServiceLocator::GetDatabase()->Execute(new DeleteCustomLayoutPeriodCommand($scheduleId, $start));
+    }
+
+    public function GetPublicScheduleIds()
+    {
+        $ids = array();
+        $command = new GetSchedulesPublicCommand();
+        $reader = ServiceLocator::GetDatabase()->Query($command);
+        while ($row = $reader->GetRow()) {
+            $ids[$row[ColumnNames::SCHEDULE_ID]] = $row[ColumnNames::PUBLIC_ID];
+        }
+
+        $reader->Free();
+
+        return $ids;
     }
 }

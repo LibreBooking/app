@@ -18,4 +18,15 @@
  * along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-echo 'hey man';
+header('Access-Control-Allow-Credentials: true');
+
+define('ROOT_DIR', '../../');
+
+require_once(ROOT_DIR . 'Pages/Export/EmbeddedCalendarPage.php');
+
+
+//if (Configuration::Instance()->GetSectionKey('ics', 'require.login', new BooleanConverter()))
+{
+    $page = new EmbeddedCalendarPage();
+    $page->PageLoad();
+}

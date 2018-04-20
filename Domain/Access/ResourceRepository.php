@@ -623,6 +623,20 @@ class ResourceRepository implements IResourceRepository
             ServiceLocator::GetDatabase()->Execute(new AddUserResourcePermission($userId, $resourceId, $type));
         }
 	}
+
+    public function GetPublicResourceIds()
+    {
+        $ids = array();
+        $command = new GetResourcesPublicCommand();
+        $reader = ServiceLocator::GetDatabase()->Query($command);
+        while ($row = $reader->GetRow()) {
+            $ids[$row[ColumnNames::RESOURCE_ID]] = $row[ColumnNames::PUBLIC_ID];
+        }
+
+        $reader->Free();
+
+        return $ids;
+    }
 }
 
 class AccessoryDto

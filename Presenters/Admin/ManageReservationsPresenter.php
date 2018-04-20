@@ -455,7 +455,7 @@ class ManageReservationsPresenter extends ActionPresenter
                     $importCount++;
                 }
                 else {
-                    $messages[] = 'Invalid data in row ' . $rowNum;
+                    $messages[] = 'Invalid data in row ' . $rowNum. '. Ensure the user and resource in this row exist.';
                 }
             } catch (Exception $ex) {
                 $messages[] = 'Invalid data in row ' . $rowNum;

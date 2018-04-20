@@ -50,6 +50,9 @@ class en_us extends Language
 		$dates['momentjs_datetime'] = 'M/D/YY h:mm A';
 		$dates['calendar_time'] = 'h:mmt';
 		$dates['calendar_dates'] = 'M d';
+		$dates['embedded_date'] = 'D d';
+		$dates['embedded_time'] = 'g:i A';
+		$dates['embedded_datetime'] = 'n/j g:i A';
 
 		$this->Dates = $dates;
 
@@ -736,6 +739,8 @@ class en_us extends Language
         $strings['ThisScheduleUsesAStandardLayout'] = 'This schedule uses a standard layout';
         $strings['SwitchLayoutWarning'] = 'Are you sure that you want to change the layout type? This will remove all existing slots.';
         $strings['DeleteThisTimeSlot'] = 'Delete this time slot?';
+        $strings['Refresh'] = 'Refresh';
+        $strings['ViewReservation'] = 'View Reservation';
         // End Strings
 
 		// Install

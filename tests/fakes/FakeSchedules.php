@@ -51,6 +51,7 @@ class FakeScheduleRepository implements IScheduleRepository
     public $_Schedules = [];
 
     public $_CustomLayouts = [];
+    public $_PublicScheduleIds = [];
 
     public function __construct()
     {
@@ -158,7 +159,7 @@ class FakeScheduleRepository implements IScheduleRepository
      */
     public function LoadByPublicId($publicId)
     {
-        // TODO: Implement LoadByPublicId() method.
+        return $this->_Schedule;
     }
 
     /**
@@ -261,5 +262,10 @@ class FakeScheduleRepository implements IScheduleRepository
     public function DeleteCustomLayoutPeriod($scheduleId, Date $start)
     {
         // TODO: Implement DeleteCustomLayoutPeriod() method.
+    }
+
+    public function GetPublicScheduleIds()
+    {
+        return $this->_PublicScheduleIds;
     }
 }

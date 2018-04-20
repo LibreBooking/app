@@ -70,6 +70,31 @@ interface IReservedItemView
 	 * @return DateRange
 	 */
 	public function BufferedTimes();
+
+    /**
+     * @return null|string
+     */
+    public function GetColor();
+
+    /**
+     * @return string
+     */
+    public function GetTextColor();
+
+    /**
+     * @return string
+     */
+    public function GetBorderColor();
+
+    /**
+     * @return string
+     */
+    public function GetTitle();
+
+    /**
+     * @return string
+     */
+    public function GetUserName();
 }
 
 class ReservationItemView implements IReservedItemView
@@ -909,6 +934,31 @@ class ReservationItemView implements IReservedItemView
 
 		return '';
 	}
+
+	/**
+	 * @return string
+	 */
+	public function GetBorderColor()
+	{
+		$color = $this->GetColor();
+		if (!empty($color))
+		{
+			$contrastingColor = new AdjustedColor($color, 50);
+			return $contrastingColor->__toString();
+		}
+
+		return '';
+	}
+
+    public function GetTitle()
+    {
+        return $this->Title;
+    }
+
+    public function GetUserName()
+    {
+        return new FullName($this->FirstName, $this->LastName);
+    }
 }
 
 class BlackoutItemView implements IReservedItemView
@@ -1139,4 +1189,29 @@ class BlackoutItemView implements IReservedItemView
 	{
 		return $this->BufferedTimes()->Contains($date, false);
 	}
+
+    public function GetColor()
+    {
+       return '';
+    }
+
+    public function GetTextColor()
+    {
+        return '';
+    }
+
+    public function GetBorderColor()
+    {
+        return '';
+    }
+
+    public function GetTitle()
+    {
+        return $this->Title;
+    }
+
+    public function GetUserName()
+    {
+        return new FullName($this->FirstName, $this->LastName);
+    }
 }

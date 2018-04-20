@@ -1858,6 +1858,14 @@ class GetResourceByPublicIdCommand extends SqlCommand
     }
 }
 
+class GetResourcesPublicCommand extends SqlCommand
+{
+    public function __construct()
+    {
+        parent::__construct(Queries::GET_RESOURCES_PUBLIC);
+    }
+}
+
 class GetResourceByNameCommand extends SqlCommand
 {
     public function __construct($resourceName)
@@ -1937,6 +1945,14 @@ class GetScheduleResourcesCommand extends SqlCommand
     {
         parent::__construct(Queries::GET_SCHEDULE_RESOURCES);
         $this->AddParameter(new Parameter(ParameterNames::SCHEDULE_ID, $scheduleId));
+    }
+}
+
+class GetSchedulesPublicCommand extends SqlCommand
+{
+    public function __construct()
+    {
+        parent::__construct(Queries::GET_SCHEDULES_PUBLIC);
     }
 }
 

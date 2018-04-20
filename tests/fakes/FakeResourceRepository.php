@@ -39,6 +39,8 @@ class FakeResourceRepository implements IResourceRepository
 
     public $_NamedResources = array();
 
+    public $_PublicResourceIds = array();
+
 	public function GetScheduleResources($scheduleId)
 	{
 		// TODO: Implement GetScheduleResources() method.
@@ -202,5 +204,10 @@ class FakeResourceRepository implements IResourceRepository
     public function ChangeResourceUserPermission($resourceId, $userId, $type)
     {
         // TODO: Implement ChangeResourceUserPermission() method.
+    }
+
+    public function GetPublicResourceIds()
+    {
+       return $this->_PublicResourceIds;
     }
 }

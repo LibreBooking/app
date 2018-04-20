@@ -47,7 +47,17 @@ class FakeReservationViewRepository implements IReservationViewRepository
 	 */
 	public $_FilterResults;
 
-	public function __construct()
+    /**
+     * @var int
+     */
+    public $_LastScheduleIds;
+
+    /**
+     * @var int
+     */
+    public $_LastResourceIds;
+
+    public function __construct()
     {
         $this->_ReservationView = new ReservationView();
         $this->_FilterResults= new PageableData();
@@ -67,6 +77,8 @@ class FakeReservationViewRepository implements IReservationViewRepository
 			$resourceIds = ReservationViewRepository::ALL_RESOURCES,
             $consolidateByReferenceNumber = false)
     {
+        $this->_LastScheduleIds = $scheduleIds;
+        $this->_LastResourceIds = $resourceIds;
         $this->_LastRange = new DateRange($startDate, $endDate);
         return $this->_Reservations;
     }

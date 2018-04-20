@@ -239,6 +239,10 @@ class CalendarPresenterTests extends TestBase
             ->expects($this->atLeastOnce())
             ->method('GetAllResources')
             ->will($this->returnValue($resources));
+        $this->resourceService
+            ->expects($this->atLeastOnce())
+            ->method('GetResource')
+            ->will($this->returnValue(new FakeBookableResource(1)));
         $this->repository
             ->expects($this->atLeastOnce())
             ->method('GetReservations')
