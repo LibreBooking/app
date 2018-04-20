@@ -45,7 +45,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                                    title="{translate key=ViewReservation}"
                                    {if !empty($color)}style="background-color:{$r->GetColor()} !important;color:{$r->GetTextColor()} !important;border-color:{$r->GetBorderColor()} !important"
                                    }{/if}>
-                                    {$TitleFormatter->Format($r, $r->StartDate())}
+                                    {$TitleFormatter->Format($r, $date)}
                                 </a>
                             </div>
                             {foreachelse}&nbsp;
