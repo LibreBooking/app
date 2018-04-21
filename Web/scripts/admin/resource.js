@@ -97,15 +97,7 @@ function ResourceManagement(opts) {
 	var reasons = [];
 
 	function initializeResourceUI(id, details) {
-		var resource = getResource(id);
-		if (resource.allowSubscription == 1)
-		{
-			details.find('.disableSubscription').removeClass('hide');
-		}
-		else
-		{
-			details.find('.enableSubscription').removeClass('hide');
-		}
+		// no-op
 	}
 
 	ResourceManagement.prototype.init = function () {
@@ -125,17 +117,9 @@ function ResourceManagement(opts) {
 				showChangeImage(e);
 			});
 
-			var subscriptionCallback = function () {
-				details.find('.subscriptionButton').toggleClass('hide');
+			var subscriptionCallback = function (data) {
+				details.find('.publicSettingsPlaceHolder').html(data);
 			};
-
-			details.find('.enableSubscription').click(function (e) {
-				PerformAsyncAction($(this), getSubmitCallback(options.actions.enableSubscription), $('#subscriptionIndicator'), subscriptionCallback);
-			});
-
-			details.find('.disableSubscription').click(function (e) {
-				PerformAsyncAction($(this), getSubmitCallback(options.actions.disableSubscription), $('#subscriptionIndicator'), subscriptionCallback);
-			});
 
 			details.find('.renameButton').click(function (e) {
 				e.stopPropagation();
@@ -252,6 +236,16 @@ function ResourceManagement(opts) {
 				elements.peakCreditsPerSlot.val(resource.peakCredits);
 				elements.creditsDialog.modal('show');
 			});
+
+            details.delegate('.enableSubscription', 'click', function (e) {
+                e.preventDefault();
+                PerformAsyncAction($(this), getSubmitCallback(options.actions.enableSubscription), $('#subscriptionIndicator'), subscriptionCallback);
+            });
+
+            details.delegate('.disableSubscription', 'click', function (e) {
+                e.preventDefault();
+                PerformAsyncAction($(this), getSubmitCallback(options.actions.disableSubscription), $('#subscriptionIndicator'), subscriptionCallback);
+            });
 		});
 
 		elements.checkAllResources.click(function (e) {

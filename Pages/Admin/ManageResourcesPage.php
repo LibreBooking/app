@@ -434,6 +434,11 @@ interface IManageResourcesPage extends IUpdateResourcePage, IActionPage, IPageab
      * @param UserPermissionItemView[]|PageableData $users
      */
     public function BindUserPermissions($users);
+
+    /**
+     * @param BookableResource $resource
+     */
+    public function DisplayPublicSettings($resource);
 }
 
 class ManageResourcesPage extends ActionPage implements IManageResourcesPage
@@ -1094,6 +1099,12 @@ class ManageResourcesPage extends ActionPage implements IManageResourcesPage
     {
         $this->Set('Users', $users);
         $this->Display('Admin/Resources/manage_resources_user_permissions.tpl');
+    }
+
+    public function DisplayPublicSettings($resource)
+    {
+       $this->Set('resource', $resource);
+       $this->Display('Admin/Resources/manage_resources_public.tpl');
     }
 }
 

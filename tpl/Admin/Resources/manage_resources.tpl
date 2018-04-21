@@ -330,13 +330,6 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 								{/if}
 							</div>
 							<div>
-								<a class="update disableSubscription hide subscriptionButton"
-								   href="#">{translate key=TurnOffSubscription}</a>
-								<a class="update enableSubscription hide subscriptionButton"
-								   href="#">{translate key=TurnOnSubscription}</a>
-								{indicator id=subscriptionIndicator}
-							</div>
-							<div>
 								<a href="{$smarty.server.SCRIPT_NAME}?action={ManageResourcesActions::ActionPrintQR}&rid={$id}"
 								   target="_blank">{translate key=PrintQRCode} <i class="fa fa-qrcode"></i></a>
 							</div>
@@ -404,7 +397,17 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 							<div class="resourceGroupsPlaceHolder">
 								{include file="Admin/Resources/manage_resources_groups.tpl" resource=$resource}
 							</div>
+                            <div class="clearfix">&nbsp;</div>
 						</div>
+
+                        <div class="col-sm-6 col-xs-12">
+                            <h5 class="inline">{translate key='Public'}</h5>
+                            <div class="publicSettingsPlaceHolder">
+                                {include file="Admin/Resources/manage_resources_public.tpl" resource=$resource}
+                            </div>
+                        </div>
+
+                        <div class="col-sm-6 col-xs-12">&nbsp;</div>
 
 					</div>
 

@@ -436,10 +436,6 @@ h1 .label {
 .inline {
   display: inline;
 }
-.resourceDetails {
-  text-decoration: none;
-  cursor: pointer;
-}
 .resourceImage img.image {
   width: 100%;
 }

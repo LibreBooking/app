@@ -99,6 +99,13 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                             </span>
                         </div>
 
+                        {if $schedule->GetIsCalendarSubscriptionAllowed()}
+                        <div>
+                            <span>{translate key=PublicId}</span>
+                            <span class="propertyValue">{$schedule->GetPublicId()}</span>
+                        </div>
+                        {/if}
+
                     </div>
 
                     <div class="layout col-xs-12 col-sm-6">

@@ -436,10 +436,6 @@ h1 .label {
 .inline {
   display: inline;
 }
-.resourceDetails {
-  text-decoration: none;
-  cursor: pointer;
-}
 .resourceImage img.image {
   width: 100%;
 }
@@ -1843,6 +1839,10 @@ a.remove {
 }
 #page-reservation .form-control.timeinput.input-sm {
   padding: 0px;
+}
+#page-reservation .resourceDetails {
+  text-decoration: none;
+  cursor: pointer;
 }
 span.error {
   font-weight: bold;

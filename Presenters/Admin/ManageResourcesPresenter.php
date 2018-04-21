@@ -495,6 +495,8 @@ class ManageResourcesPresenter extends ActionPresenter
 		$resource->EnableSubscription();
 		Configuration::Instance()->EnableSubscription();
 		$this->resourceRepository->Update($resource);
+
+		$this->page->DisplayPublicSettings($resource);
 	}
 
 	public function DisableSubscription()
@@ -505,7 +507,9 @@ class ManageResourcesPresenter extends ActionPresenter
 		$resource = $this->resourceRepository->LoadById($resourceId);
 		$resource->DisableSubscription();
 		$this->resourceRepository->Update($resource);
-	}
+
+        $this->page->DisplayPublicSettings($resource);
+    }
 
 	public function ChangeAttribute()
 	{

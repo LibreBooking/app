@@ -1354,6 +1354,11 @@ class BookableResource implements IBookableResource
 		$this->SetIsCalendarSubscriptionAllowed(false);
 	}
 
+    public function GetSubscriptionUrl()
+    {
+        return new CalendarSubscriptionUrl(null, null, $this->GetPublicId());
+    }
+
 	public function EnableDisplay()
 	{
 		$this->SetIsDisplayEnabled(true);

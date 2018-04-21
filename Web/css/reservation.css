@@ -375,3 +375,7 @@ a.remove {
 #page-reservation .form-control.timeinput.input-sm {
   padding: 0px;
 }
+#page-reservation .resourceDetails {
+  text-decoration: none;
+  cursor: pointer;
+}

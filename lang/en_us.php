@@ -741,6 +741,8 @@ class en_us extends Language
         $strings['DeleteThisTimeSlot'] = 'Delete this time slot?';
         $strings['Refresh'] = 'Refresh';
         $strings['ViewReservation'] = 'View Reservation';
+        $strings['PublicId'] = 'Public Id';
+        $strings['Public'] = 'Public';
         // End Strings
 
 		// Install
