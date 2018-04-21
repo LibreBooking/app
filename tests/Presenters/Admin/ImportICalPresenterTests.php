@@ -394,7 +394,7 @@ class FakeICalImportPage implements IICalImportPage
 		// TODO: Implement IsValid() method.
 	}
 
-	public function GetLastPage()
+	public function GetLastPage($defaultPage = '')
 	{
 		// TODO: Implement GetLastPage() method.
 	}

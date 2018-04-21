@@ -149,7 +149,7 @@ class FakeGuestReservationPage implements IGuestReservationPage
 		return true;
 	}
 
-	public function GetLastPage()
+	public function GetLastPage($defaultPage = '')
 	{
 	}
 

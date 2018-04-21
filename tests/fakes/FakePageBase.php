@@ -62,7 +62,7 @@ class FakePageBase implements IPage
 		$this->_InlineEditValidators[$validatorId] = $validator;
 	}
 
-	public function GetLastPage()
+	public function GetLastPage($defaultPage = '')
 	{
 		return $this->_LastPage;
 	}

@@ -137,7 +137,7 @@ class FakeExistingReservationPage extends FakePageBase implements IExistingReser
 	{
 	}
 
-	public function GetLastPage()
+	public function GetLastPage($defaultPage = '')
 	{
 	}
 

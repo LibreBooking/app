@@ -30,7 +30,7 @@ interface IPage {
 
     public function IsValid();
 
-    public function GetLastPage();
+    public function GetLastPage($defaultPage = '');
 
     public function RegisterValidator($validatorId, $validator);
 

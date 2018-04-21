@@ -954,7 +954,7 @@ class FakeSchedulePage implements ISchedulePage
 	{
 	}
 
-	public function GetLastPage()
+	public function GetLastPage($defaultPage = '')
 	{
 	}
 

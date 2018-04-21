@@ -478,7 +478,7 @@ class ScheduleWebServiceView implements ISchedulePage
 		return true;
 	}
 
-	public function GetLastPage()
+	public function GetLastPage($defaultPage = '')
 	{
 		return null;
 	}
