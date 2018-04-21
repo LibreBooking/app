@@ -21,7 +21,7 @@
 
 class ColumnNames
 {
-	private function __construct()
+    private function __construct()
 	{
 	}
 
@@ -354,8 +354,9 @@ class ColumnNames
 	const GROUP_IDS = 'group_ids';
 	const RESOURCE_IDS = 'resource_ids';
 	const GUEST_LIST = 'guest_list';
+    const USER_GROUP_LIST = 'user_group_list';
 
-	// shared
+    // shared
 	const ALLOW_CALENDAR_SUBSCRIPTION = 'allow_calendar_subscription';
 	const PUBLIC_ID = 'public_id';
 

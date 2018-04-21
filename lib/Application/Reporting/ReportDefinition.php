@@ -83,6 +83,7 @@ class ReportDefinition implements IReportDefinition
 				ColumnNames::OWNER_FIRST_NAME => new ReportStringColumn('FirstName', ChartColumnDefinition::Label(ColumnNames::OWNER_USER_ID)),
 				ColumnNames::OWNER_LAST_NAME => new ReportStringColumn('LastName', ChartColumnDefinition::Label(ColumnNames::OWNER_USER_ID)),
 				ColumnNames::EMAIL => new ReportStringColumn('Email', ChartColumnDefinition::Label(ColumnNames::OWNER_USER_ID)),
+				ColumnNames::USER_GROUP_LIST => new ReportStringColumn('Groups', ChartColumnDefinition::Null()),
 				ColumnNames::GROUP_NAME_ALIAS => new ReportStringColumn('Group', ChartColumnDefinition::Label(ColumnNames::GROUP_ID)),
 				ColumnNames::SCHEDULE_NAME_ALIAS => new ReportStringColumn('Schedule', ChartColumnDefinition::Label(ColumnNames::SCHEDULE_ID)),
 				ColumnNames::RESERVATION_CREATED => new ReportDateColumn('Created', $timezone, $dateFormat, ChartColumnDefinition::Null()),
