@@ -441,7 +441,7 @@ class ManageReservationsPresenterTests extends TestBase
 
         $this->page->expects($this->once())
             ->method('SetImportResult')
-            ->with($this->equalTo(new CsvImportResult(2, array(), array('Invalid data in row 3', 'Invalid data in row 4', 'Invalid data in row 5'))));
+            ->with($this->equalTo(new CsvImportResult(2, array(), array('Invalid data in row 3. Ensure the user and resource in this row exist.', 'Invalid data in row 4. Ensure the user and resource in this row exist.', 'Invalid data in row 5'))));
 
         $this->presenter->ImportReservations();
     }
