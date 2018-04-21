@@ -863,7 +863,7 @@ class ManageResourcesPresenter extends ActionPresenter
 		$url = $imageUploadDir->GetPath() . $imageName;
 		$savePath = $imageUploadDir->GetDirectory() . $imageName;
 
-		$qrPath = sprintf('%s/%s?%s=%s', Configuration::Instance()->GetScriptUrl(), Pages::RESERVATION, QueryStringKeys::RESOURCE_ID, $resourceId);
+		$qrPath = sprintf('%s/%s?%s=%s', Configuration::Instance()->GetScriptUrl(), Pages::RESOURCE_QR_ROUTER, QueryStringKeys::RESOURCE_ID, $resourceId);
 		$qrGenerator->SavePng($qrPath, $savePath);
 		$resource = $this->resourceRepository->LoadById($resourceId);
 

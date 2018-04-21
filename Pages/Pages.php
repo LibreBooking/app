@@ -55,6 +55,7 @@ class Pages
     const REPORTS_COMMON = 'common-reports.php';
     const RESERVATION = 'reservation.php';
     const RESERVATION_FILE = 'reservation-file.php';
+    const RESOURCE_QR_ROUTER = 'resource-qr-router.php';
     const REGISTRATION = 'register.php';
     const SCHEDULE = 'schedule.php';
     const SEARCH_RESERVATIONS = 'search-reservations.php';
