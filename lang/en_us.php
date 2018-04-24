@@ -743,6 +743,7 @@ class en_us extends Language
         $strings['ViewReservation'] = 'View Reservation';
         $strings['PublicId'] = 'Public Id';
         $strings['Public'] = 'Public';
+        $strings['AtomFeedTitle'] = '%s Reservations';
         // End Strings
 
 		// Install

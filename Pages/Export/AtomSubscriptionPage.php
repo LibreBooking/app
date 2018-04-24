@@ -70,7 +70,7 @@ class AtomSubscriptionPage extends Page implements ICalendarSubscriptionPage
 
 		$feed = new FeedWriter(ATOM);
 		$title = $config->GetKey(ConfigKeys::APP_TITLE);
-		$feed->setTitle("$title Reservations");
+		$feed->setTitle(Resources::GetInstance()->GetString('AtomFeedTitle', array($title)));
 		$url = $config->GetScriptUrl();
 		$feed->setLink($url);
 
