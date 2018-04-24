@@ -32,6 +32,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
     <!-- JavaScript -->
     {if $UseLocalJquery}
         {jsfile src="js/jquery-3.3.1.min.js"}
+        {jsfile src="js/jquery-migrate-3.0.1.min.js"}
         {jsfile src="js/jquery-ui.1.12.1.custom.min.js"}
         {jsfile src="bootstrap/js/bootstrap.min.js"}
     {else}
@@ -39,6 +40,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                 src="https://code.jquery.com/jquery-3.3.1.min.js"
                 integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
                 crossorigin="anonymous"></script>
+        <script src="https://code.jquery.com/jquery-migrate-3.0.1.min.js"></script>
         <script
                 src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"
                 integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU="
@@ -154,7 +156,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                                 <li id="navNotification">
                                     <a href="{$Path}{Pages::NOTIFICATION_PREFERENCES}">{translate key="NotificationPreferences"}</a>
                                 </li>
-                                {if $ShowParticipation && $AllowParticipation}
+                                {if $ShowParticipation}
                                     <li id="navInvitations">
                                         <a href="{$Path}{Pages::PARTICIPATION}">{translate key="OpenInvitations"}</a>
                                     </li>

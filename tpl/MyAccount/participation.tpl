@@ -16,7 +16,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 *}
-{include file='globalheader.tpl' cssFiles='css/participation.css'}
+{include file='globalheader.tpl' cssFiles='css/participation.css' Qtip=true}
 
 <div class="page-participation">
 	{if !empty($result)}
@@ -41,9 +41,9 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 							- {formatdate date=$reservation->EndDate->ToTimezone($Timezone) key=dashboard}</a></h3>
 					<input type="hidden" value="{$referenceNumber}" class="referenceNumber"/>
 					<button value="{InvitationAction::Accept}"
-							class="button participationAction">{html_image src="ticket-plus.png"} {translate key="Accept"}</button>
+							class="btn btn-success participationAction"><i class="fa fa-check-circle"></i> {translate key="Accept"}</button>
 					<button value="{InvitationAction::Decline}"
-							class="button participationAction">{html_image src="ticket-minus.png"} {translate key="Decline"}</button>
+							class="btn btn-default participationAction"><i class="fa fa-times-circle"></i> {translate key="Decline"}</button>
 				</li>
 				{foreachelse}
 				<li class="no-data"><p class="text-muted">{translate key='None'}</p></li>
@@ -57,7 +57,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 	{html_image src="admin-ajax-indicator.gif" id="indicator" style="display:none;"}
 
-    {include file="javascript-includes.tpl"}
+    {include file="javascript-includes.tpl" Qtip=true}
 	{jsfile src="reservationPopup.js"}
 	{jsfile src="participation.js"}
 
