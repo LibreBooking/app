@@ -157,7 +157,7 @@ interface IReservationPage extends IPage
     public function MakeUnavailable();
 
     /**
-     * @return true
+     * @return bool
      */
     public function IsUnavailable();
 }
@@ -234,6 +234,12 @@ abstract class ReservationPage extends Page implements IReservationPage
 		);
 
 		$this->Set('CreditsEnabled', Configuration::Instance()->GetSectionKey(ConfigSection::CREDITS, ConfigKeys::CREDITS_ENABLED, new BooleanConverter()));
+
+        if ($this->IsUnavailable())
+        {
+            $this->RedirectToError(ErrorMessages::RESERVATION_NOT_AVAILABLE);
+            return;
+        }
 
 		$this->Display($this->GetTemplateName());
 	}

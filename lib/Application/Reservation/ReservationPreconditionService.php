@@ -21,11 +21,6 @@ class NewReservationPreconditionService implements INewReservationPreconditionSe
 {
 	public function CheckAll(INewReservationPage $page, UserSession $user)
 	{
-	    if ($page->IsUnavailable())
-        {
-            $page->RedirectToError(ErrorMessages::RESERVATION_NOT_AVAILABLE);
-            return;
-        }
 	}
 }
 
