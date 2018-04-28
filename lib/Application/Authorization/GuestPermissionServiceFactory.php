@@ -28,6 +28,26 @@ class GuestPermissionService implements IPermissionService
 	{
 		return true;
 	}
+
+    /**
+     * @param IPermissibleResource $resource
+     * @param UserSession $user
+     * @return bool
+     */
+    public function CanBookResource(IPermissibleResource $resource, UserSession $user)
+    {
+        return false;
+    }
+
+    /**
+     * @param IPermissibleResource $resource
+     * @param UserSession $user
+     * @return bool
+     */
+    public function CanViewResource(IPermissibleResource $resource, UserSession $user)
+    {
+        return true;
+    }
 }
 
 class GuestPermissionServiceFactory implements IPermissionServiceFactory

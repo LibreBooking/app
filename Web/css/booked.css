@@ -110,7 +110,7 @@ a:hover {
   -webkit-border-radius: 5px;
   -moz-border-radius: 5px;
   border-radius: 5px;
-  border: solid 1px #4c4854;
+  border: solid 1px #99988e;
   background-color: #fcfcfc;
 }
 .default-box h1 {
@@ -152,7 +152,7 @@ a:hover {
   -webkit-border-radius: 5px;
   -moz-border-radius: 5px;
   border-radius: 5px;
-  border: solid 1px #4c4854;
+  border: solid 1px #99988e;
   background-color: #fcfcfc;
   -webkit-box-shadow: 0px 0px 3px 0px #E9E9E9;
   -moz-box-shadow: 0px 0px 3px 0px #E9E9E9;
@@ -178,7 +178,7 @@ a:hover {
   font-size: 1.3em;
   font-weight: bold;
   color: #fff;
-  border: solid 1px #4c4854;
+  border: solid 1px #99988e;
   -webkit-border-top-right-radius: 5px;
   -webkit-border-bottom-right-radius: 0;
   -webkit-border-bottom-left-radius: 0;
@@ -204,20 +204,20 @@ a:hover {
   padding-top: 40px;
 }
 #page-login #announcements .announcement {
-  border: solid 1px #669999;
-  background-color: #CFE4E4;
+  border: solid 1px #99988e;
+  background-color: #fff;
   -webkit-border-radius: 2px;
   -moz-border-radius: 2px;
   border-radius: 2px;
-  -webkit-box-shadow: 0px 0px 3px 0px #E9E9E9;
-  -moz-box-shadow: 0px 0px 3px 0px #E9E9E9;
-  box-shadow: 0px 0px 3px 0px #E9E9E9;
+  -webkit-box-shadow: 0px 0px 5px 1px #BCBCBC;
+  -moz-box-shadow: 0px 0px 5px 1px #BCBCBC;
+  box-shadow: 0px 0px 5px 1px #BCBCBC;
   padding: 5px;
   margin-bottom: 20px;
 }
 #page-login .default-box {
   background-color: #f8f8f8;
-  border: solid 1px #4c4854;
+  border: solid 1px #99988e;
 }
 #page-login .default-box .login-icon {
   text-align: center;

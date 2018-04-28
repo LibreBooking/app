@@ -179,3 +179,5 @@ CREATE TABLE `custom_time_blocks` (
 )
   ENGINE = InnoDB
   DEFAULT CHARACTER SET utf8;
+
+ALTER TABLE `schedules` ADD COLUMN `default_layout` TINYINT NOT NULL DEFAULT 0;
