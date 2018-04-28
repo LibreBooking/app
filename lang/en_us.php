@@ -833,6 +833,8 @@ class en_us extends Language
 		$strings['ScheduleAvailabilityError'] = 'This schedule is available between %s and %s';
 		$strings['ReservationNotFoundError'] = 'Reservation not found';
 		$strings['ReservationNotAvailable'] = 'Reservation not available';
+		$strings['TitleRequiredRule'] = 'Reservation title is required';
+		$strings['DescriptionRequiredRule'] = 'Reservation description is required';
 		// End Errors
 
 		// Page Titles

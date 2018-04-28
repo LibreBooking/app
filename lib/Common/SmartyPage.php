@@ -442,6 +442,14 @@ class SmartyPage extends Smarty
 		{
 			$type = 'text';
 		}
+        if (isset($params['required']) && $params['required'] == true)
+        {
+            $required = true;
+        }
+        else
+        {
+            $required = false;
+        }
 
 		$id = null;
 		if (isset($params['id']))
@@ -454,7 +462,7 @@ class SmartyPage extends Smarty
 			$params['placeholder'] = $this->Resources->GetString($params['placeholderkey']);
 		}
 
-		$knownAttributes = array('value', 'type', 'name', 'placeholderkey');
+		$knownAttributes = array('value', 'type', 'name', 'placeholderkey', 'required');
 		$attributes = $this->AppendAttributes($params, $knownAttributes);
 
 		if ($type == 'password')
@@ -463,7 +471,7 @@ class SmartyPage extends Smarty
 		}
 		else
 		{
-			$textbox = new SmartyTextbox($params['name'], $type, $id, $value, $attributes, $smarty);
+			$textbox = new SmartyTextbox($params['name'], $type, $id, $value, $attributes, $required, $smarty);
 		}
 
 		return $textbox->Html();

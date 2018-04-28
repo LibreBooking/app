@@ -92,7 +92,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
                 <h3>Custom Layouts</h3>
                 <p>You can create a fully customized schedule layout by switching to the custom layout option. This will let you
-                set specific times on specific dates to be reservable. Switching to a custom layout will remove all standard layout slots.</p>
+                    set specific times on specific dates to be reservable. Switching to a custom layout will remove all standard layout slots.</p>
 
                 <h3>Schedule Administrators</h3>
 
@@ -945,6 +945,14 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                     for reservations. The format is #
                     interval. For example, 10 minutes, 1 hours, 4 days. Default is empty.</p>
 
+                <p class="setting"><span>$conf['settings']['reservation']['title.required']</span>Whether or not the
+                    title of a reservation
+                    is required when creating or updating reservations. Default is false.</p>
+
+                <p class="setting"><span>$conf['settings']['reservation']['description.required']</span>Whether or not the
+                    description of a reservation
+                    is required when creating or updating reservations. Default is false.</p>
+
                 <p class="setting"><span>$conf['settings']['reservation.notify']['resource.admin.add']</span>Whether or
                     not
                     to
@@ -1187,17 +1195,19 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                     reservation label on the Resource Calendar page. Available tokens are listed in the Available Label
                     Tokens
                     section.</p>
-                    <p class="setting"><span>$conf['settings']['reservation.labels']['reservation.popup']</span>The
-                        format
-                        of
-                        what to display in reservation popups.
-                        Possible values are {ldelim}name{rdelim} {ldelim}dates} {ldelim}duration{rdelim} {ldelim}title{rdelim} {ldelim}resources{rdelim} {ldelim}participants{rdelim} {ldelim}accessories{rdelim}
-                        {ldelim}description{rdelim}
-                        {ldelim}phone{rdelim} {ldelim}email{rdelim}
-                        {ldelim}attributes{rdelim} {ldelim}pending{rdelim}. Reservation custom attributes can be individually added using att with
-                        the
-                        attribute id. For example {ldelim}att1{rdelim}.
-                        Default is all information.</p>
+                <p class="setting"><span>$conf['settings']['reservation.labels']['reservation.popup']</span>The
+                    format
+                    of
+                    what to display in reservation popups.
+                    Possible values are {ldelim}name{rdelim} {ldelim}dates} {ldelim}duration{rdelim} {ldelim}
+                    title{rdelim} {ldelim}resources{rdelim} {ldelim}participants{rdelim} {ldelim}accessories{rdelim}
+                    {ldelim}description{rdelim}
+                    {ldelim}phone{rdelim} {ldelim}email{rdelim}
+                    {ldelim}attributes{rdelim} {ldelim}pending{rdelim}. Reservation custom attributes can be
+                    individually added using att with
+                    the
+                    attribute id. For example {ldelim}att1{rdelim}.
+                    Default is all information.</p>
 
                 <p class="setting"><span>$conf['settings']['google.analytics']['tracking.id']</span>Your Google
                     Analytics

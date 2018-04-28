@@ -233,6 +233,9 @@ abstract class ReservationPage extends Page implements IReservationPage
 							 )
 		);
 
+		$this->Set('TitleRequired', Configuration::Instance()->GetSectionKey(ConfigSection::RESERVATION, ConfigKeys::RESERVATION_TITLE_REQUIRED, new BooleanConverter()));
+		$this->Set('DescriptionRequired', Configuration::Instance()->GetSectionKey(ConfigSection::RESERVATION, ConfigKeys::RESERVATION_TITLE_REQUIRED, new BooleanConverter()));
+
 		$this->Set('CreditsEnabled', Configuration::Instance()->GetSectionKey(ConfigSection::CREDITS, ConfigKeys::CREDITS_ENABLED, new BooleanConverter()));
 
         if ($this->IsUnavailable())

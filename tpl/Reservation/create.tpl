@@ -234,16 +234,19 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                     <div class="col-xs-12 reservationTitle">
                         <div class="form-group has-feedback">
                             <label for="reservationTitle">{translate key="ReservationTitle"}</label>
-                            {textbox name="RESERVATION_TITLE" class="form-control" value="ReservationTitle" id="reservationTitle" maxlength="300"}
-                            {*<i class="glyphicon glyphicon-asterisk form-control-feedback" data-bv-icon-for="reservationTitle"></i>*}
+                            {textbox name="RESERVATION_TITLE" class="form-control" value="ReservationTitle" id="reservationTitle" maxlength="300" required=$TitleRequired}
+                            {if $TitleRequired}<i class="glyphicon glyphicon-asterisk form-control-feedback" data-bv-icon-for="reservationTitle"></i>{/if}
                         </div>
                     </div>
 
                     <div class="col-xs-12 reservationDescription">
-                        <div class="form-group">
-                            <label for="description">{translate key="ReservationDescription"}</label>
+                        <div class="form-group has-feedback">
+                            <label for="description">{translate key="ReservationDescription"}
+                            </label>
                             <textarea id="description" name="{FormKeys::DESCRIPTION}"
-                                      class="form-control">{$Description}</textarea>
+                                      class="form-control" {if $DescriptionRequired}required="required"{/if}>{$Description}</textarea>
+                            {if $DescriptionRequired}<i class="glyphicon glyphicon-asterisk form-control-feedback" data-bv-icon-for="description"></i>{/if}
+
                         </div>
                     </div>
 
