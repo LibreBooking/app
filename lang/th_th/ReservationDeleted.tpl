@@ -41,6 +41,8 @@ Ending: {formatdate date=$EndDate key=reservation_email}<br/>
 
 Title: {$Title}<br/>
 Description: {$Description|nl2br}
+{$DeleteReason|nl2br}<br/>
+
 
 {if count($RepeatRanges) gt 0}
     <br/>

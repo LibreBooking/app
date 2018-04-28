@@ -17,46 +17,55 @@ You should have received a copy of the GNU General Public License
 along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 *}
 
- 
-	Detalji o rezervaciji:
-	<br/>
-	<br/>
 
-	Korisnik: {$UserName}<br/>
-	Pocetak: {formatdate date=$StartDate key=reservation_email}<br/>
-	Kraj: {formatdate date=$EndDate key=reservation_email}<br/>
-	{if $ResourceNames|count > 1}
-		Tereni:<br/>
-		{foreach from=$ResourceNames item=resourceName}
-			{$resourceName}<br/>
-		{/foreach}
-		{else}
-		Tereni: {$ResourceName}<br/>
-	{/if}
+Detalji o rezervaciji:
+<br/>
+<br/>
 
-	{if $ResourceImage}
-		<div class="resource-image"><img src="{$ScriptUrl}/{$ResourceImage}"/></div>
-	{/if}
+Korisnik: {$UserName}<br/>
+Pocetak: {formatdate date=$StartDate key=reservation_email}<br/>
+Kraj: {formatdate date=$EndDate key=reservation_email}<br/>
+{if $ResourceNames|count > 1}
+    Tereni:
+    <br/>
+    {foreach from=$ResourceNames item=resourceName}
+        {$resourceName}
+        <br/>
+    {/foreach}
+{else}
+    Tereni: {$ResourceName}
+    <br/>
+{/if}
 
-	Naziv: {$Title}<br/>
-	Opis: {$Description|nl2br}<br/>
+{if $ResourceImage}
+    <div class="resource-image"><img src="{$ScriptUrl}/{$ResourceImage}"/></div>
+{/if}
 
-	{if count($RepeatDates) gt 0}
-		<br/>
-		Navedeni datumi su obrisani:
-		<br/>
-	{/if}
+Naziv: {$Title}<br/>
+Opis: {$Description|nl2br}<br/>
+{$DeleteReason|nl2br}<br/>
 
-	{foreach from=$RepeatDates item=date name=dates}
-		{formatdate date=$date}<br/>
-	{/foreach}
 
-	{if $Accessories|count > 0}
-		<br/>Dodatno:<br/>
-		{foreach from=$Accessories item=accessory}
-			({$accessory->QuantityReserved}) {$accessory->Name}<br/>
-		{/foreach}
-	{/if}
-	<br/>
-	<a href="{$ScriptUrl}">Ulogiraj se</a>
+{if count($RepeatDates) gt 0}
+    <br/>
+    Navedeni datumi su obrisani:
+    <br/>
+{/if}
+
+{foreach from=$RepeatDates item=date name=dates}
+    {formatdate date=$date}
+    <br/>
+{/foreach}
+
+{if $Accessories|count > 0}
+    <br/>
+    Dodatno:
+    <br/>
+    {foreach from=$Accessories item=accessory}
+        ({$accessory->QuantityReserved}) {$accessory->Name}
+        <br/>
+    {/foreach}
+{/if}
+<br/>
+<a href="{$ScriptUrl}">Ulogiraj se</a>
 

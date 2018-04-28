@@ -17,46 +17,55 @@ You should have received a copy of the GNU General Public License
 along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 *}
 
-	
-	Reservierungsdetails:
-	<br/>
-	<br/>
 
-	Benutzer: {$UserName}
-	Beginn: {formatdate date=$StartDate key=reservation_email}<br/>
-	Ende: {formatdate date=$EndDate key=reservation_email}<br/>
-	{if $ResourceNames|count > 1}
-		Ressourcen:<br/>
-		{foreach from=$ResourceNames item=resourceName}
-			{$resourceName}<br/>
-		{/foreach}
-		{else}
-		Ressource: {$ResourceName}<br/>
-	{/if}
+Reservierungsdetails:
+<br/>
+<br/>
 
-	{if $ResourceImage}
-		<div class="resource-image"><img src="{$ScriptUrl}/{$ResourceImage}"/></div>
-	{/if}
+Benutzer: {$UserName}
+Beginn: {formatdate date=$StartDate key=reservation_email}<br/>
+Ende: {formatdate date=$EndDate key=reservation_email}<br/>
+{if $ResourceNames|count > 1}
+    Ressourcen:
+    <br/>
+    {foreach from=$ResourceNames item=resourceName}
+        {$resourceName}
+        <br/>
+    {/foreach}
+{else}
+    Ressource: {$ResourceName}
+    <br/>
+{/if}
 
-	Titel: {$Title}<br/>
-	Beschreibung: {$Description|nl2br}<br/>
-	
-	{if count($RepeatDates) gt 0}
-		<br/>
-		Die folgenden Reservierungen wurden entfernt:
-		<br/>
-	{/if}
-	
-	{foreach from=$RepeatDates item=date name=dates}
-		{formatdate date=$date}<br/>
-	{/foreach}
+{if $ResourceImage}
+    <div class="resource-image"><img src="{$ScriptUrl}/{$ResourceImage}"/></div>
+{/if}
 
-	{if $Accessories|count > 0}
-		<br/>Zubehör:<br/>
-		{foreach from=$Accessories item=accessory}
-			({$accessory->QuantityReserved}) {$accessory->Name}<br/>
-		{/foreach}
-	{/if}
-	<br/>
-	<a href="{$ScriptUrl}">Anmelden bei Booked Scheduler</a>
+Titel: {$Title}<br/>
+Beschreibung: {$Description|nl2br}<br/>
+{$DeleteReason|nl2br}<br/>
+
+
+{if count($RepeatDates) gt 0}
+    <br/>
+    Die folgenden Reservierungen wurden entfernt:
+    <br/>
+{/if}
+
+{foreach from=$RepeatDates item=date name=dates}
+    {formatdate date=$date}
+    <br/>
+{/foreach}
+
+{if $Accessories|count > 0}
+    <br/>
+    Zubehör:
+    <br/>
+    {foreach from=$Accessories item=accessory}
+        ({$accessory->QuantityReserved}) {$accessory->Name}
+        <br/>
+    {/foreach}
+{/if}
+<br/>
+<a href="{$ScriptUrl}">Anmelden bei Booked Scheduler</a>
 	

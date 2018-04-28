@@ -800,7 +800,7 @@ class en_us extends Language
 		$strings['StartDateBeforeEndDateRule'] = 'The start date and time must be before the end date and time.';
 		$strings['StartIsInPast'] = 'The start date and time cannot be in the past.';
 		$strings['EmailDisabled'] = 'The administrator has disabled email notifications.';
-		$strings['ValidLayoutRequired'] = 'Slots must be provided for all 24 hours of the day beginning and ending at 12:00 AM.';
+		$strings['ValidLayoutRequired'] = 'Slots must be provided for all 24 hours of the day beginning and ending at 00:00.';
 		$strings['CustomAttributeErrors'] = 'There are problems with the additional attributes you provided:';
 		$strings['CustomAttributeRequired'] = '%s is a required field.';
 		$strings['CustomAttributeInvalid'] = 'The value provided for %s is invalid.';

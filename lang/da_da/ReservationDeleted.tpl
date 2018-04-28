@@ -14,30 +14,33 @@ alBooked SchedulercheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 *}
 
 
-	Reservationsdetaljer:
-	<br/>
-	<br/>
+Reservationsdetaljer:
+<br/>
+<br/>
 
-	Reservationen starter: {formatdate date=$StartDate key=reservation_email}<br/>
-	Reservationen slutter: {formatdate date=$EndDate key=reservation_email}<br/>
-	Reservation: {$ResourceName}<br/>
+Reservationen starter: {formatdate date=$StartDate key=reservation_email}<br/>
+Reservationen slutter: {formatdate date=$EndDate key=reservation_email}<br/>
+Reservation: {$ResourceName}<br/>
 
-	{if $ResourceImage}
-		<div class="resource-image"><img src="{$ScriptUrl}/{$ResourceImage}"/></div>
-	{/if}
+{if $ResourceImage}
+    <div class="resource-image"><img src="{$ScriptUrl}/{$ResourceImage}"/></div>
+{/if}
 
-	Titel: {$Title}<br/>
-	Beskrivelse: {$Description|nl2br}<br/>
+Titel: {$Title}<br/>
+Beskrivelse: {$Description|nl2br}<br/>
+{$DeleteReason|nl2br}<br/>
 
-	{if count($RepeatDates) gt 0}
-		<br/>
-		Følgende reservationer blev fortrudt:
-		<br/>
-	{/if}
 
-	{foreach from=$RepeatDates item=date name=dates}
-		{formatdate date=$date}<br/>
-	{/foreach}
+{if count($RepeatDates) gt 0}
+    <br/>
+    Følgende reservationer blev fortrudt:
+    <br/>
+{/if}
 
-	<a href="{$ScriptUrl}">Log ind i Bookning</a>
+{foreach from=$RepeatDates item=date name=dates}
+    {formatdate date=$date}
+    <br/>
+{/foreach}
+
+<a href="{$ScriptUrl}">Log ind i Bookning</a>
 

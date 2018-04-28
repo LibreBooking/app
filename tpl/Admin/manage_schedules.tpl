@@ -326,7 +326,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                                 <div class="col-xs-6">
                                     <label for="blockedEdit{$suffix}">{translate key=BlockedTimeSlots}</label> <a
                                             href="#" class="autofillBlocked" title="{translate key=Autofill}"><i
-                                                class="fa fa-magic"></i></a>
+                                                class="fa fa-magic"></i> {translate key=Autofill}</a>
                                     <textarea class="blockedEdit form-control" id="blockedEdit{$suffix}"
                                               name="{FormKeys::SLOTS_BLOCKED}{$suffix}"></textarea>
                                 </div>

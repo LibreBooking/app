@@ -41,6 +41,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 预约名称: {$Title}<br/>
 预约说明: {$Description|nl2br}
+{$DeleteReason|nl2br}<br/>
 
 {if count($RepeatRanges) gt 0}
     <br/>

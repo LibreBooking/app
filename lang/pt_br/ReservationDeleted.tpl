@@ -32,6 +32,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 	T�tulo: {$Title}<br/>
 	Descri��o: {$Description|nl2br}<br/>
+{$DeleteReason|nl2br}<br/>
 
 	{if count($RepeatDates) gt 0}
 		<br/>

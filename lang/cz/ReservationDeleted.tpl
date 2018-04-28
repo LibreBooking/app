@@ -38,6 +38,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 	Nadpis: {$Title}<br/>
 	Popis: {$Description|nl2br}<br/>
+{$DeleteReason|nl2br}<br/>
+
 	
 	
 	{if count($RepeatDates) gt 0}
