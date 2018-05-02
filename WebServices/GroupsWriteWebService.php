@@ -91,7 +91,7 @@ class GroupsWriteWebService
 
 		if ($result->WasSuccessful())
 		{
-			Log::Debug('GroupsWriteWebService.Update() - Attribute Updated. GroupId=%s', $result->GroupId());
+			Log::Debug('GroupsWriteWebService.Update() - Group Updated. GroupId=%s', $result->GroupId());
 
 			$this->server->WriteResponse(new GroupUpdatedResponse($this->server, $result->GroupId()), RestResponse::CREATED_CODE);
 		}
@@ -129,4 +129,35 @@ class GroupsWriteWebService
 			$this->server->WriteResponse(new FailedResponse($this->server, $result->Errors()), RestResponse::BAD_REQUEST_CODE);
 		}
 	}
+
+    /**
+     * @name ChangeGroupRoles
+     * @description Updates the roles for an existing group
+     * roleIds : 1 (Group Administrator), 2 (Application Administrator), 3 (Resource Administrator), 4 (Schedule Administrator)
+     * @response GroupUpdatedResponse
+     * @param int $groupId
+     * @return void
+     */
+	public function Roles($groupId)
+    {
+        /** @var $request GroupRolesRequest */
+        $request = $this->server->GetRequest();
+
+        Log::Debug('GroupsWriteWebService.Roles() User=%s, GroupId=%s, Request=%s', $this->server->GetSession()->UserId, $groupId, json_encode($request));
+
+        $result = $this->controller->ChangeRoles($groupId, $request, $this->server->GetSession());
+
+        if ($result->WasSuccessful())
+        {
+            Log::Debug('GroupsWriteWebService.Roles() - Group Updated. GroupId=%s', $result->GroupId());
+
+            $this->server->WriteResponse(new GroupUpdatedResponse($this->server, $result->GroupId()), RestResponse::CREATED_CODE);
+        }
+        else
+        {
+            Log::Debug('GroupsWriteWebService.Roles() - Update Failed.');
+
+            $this->server->WriteResponse(new FailedResponse($this->server, $result->Errors()), RestResponse::BAD_REQUEST_CODE);
+        }
+    }
 }

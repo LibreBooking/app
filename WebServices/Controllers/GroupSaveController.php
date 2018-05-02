@@ -44,6 +44,14 @@ interface IGroupSaveController
 	 * @return GroupControllerResult
 	 */
 	public function Delete($groupId, $session);
+
+    /**
+     * @param int $groupId
+     * @param GroupRolesRequest $request
+     * @param WebServiceUserSession $session
+     * @return GroupControllerResult
+     */
+    public function ChangeRoles($groupId, $request, $session);
 }
 
 class GroupControllerResult
@@ -182,6 +190,21 @@ class GroupSaveController implements IGroupSaveController
     {
         return new ManageGroupsPresenter($page, $this->groupRepository, $this->resourceRepository);
     }
+
+    /**
+     * @param int $groupId
+     * @param GroupRolesRequest $request
+     * @param WebServiceUserSession $session
+     * @return GroupControllerResult
+     */
+    public function ChangeRoles($groupId, $request, $session)
+    {
+        $presenter = $this->GetPresenter(new UpdateGroupRolesFacade($request, $groupId));
+
+        $presenter->ChangeRoles();
+
+        return new GroupControllerResult($groupId, null);
+    }
 }
 
 abstract class GroupControllerPageFacade implements IManageGroupsPage
@@ -305,5 +328,36 @@ class CreateGroupFacade extends GroupControllerPageFacade
     public function AutomaticallyAddToGroup()
     {
         return $this->request->isDefault;
+    }
+}
+
+class UpdateGroupRolesFacade extends GroupControllerPageFacade
+{
+    /**
+     * @var GroupRolesRequest
+     */
+    private $request;
+    private $id;
+
+    /**
+     * @param GroupRolesRequest $request
+     * @param int|null $id
+     */
+    public function __construct($request, $id = null)
+    {
+        $this->request = $request;
+        $this->id = $id;
+    }
+
+    public function GetGroupId()
+    {
+        return $this->id;
+    }
+
+    public function GetRoleIds()
+    {
+        $roles = $this->request->roleIds;
+
+        return empty($roles) ? [] : $roles;
     }
 }

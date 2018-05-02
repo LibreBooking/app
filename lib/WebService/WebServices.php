@@ -60,6 +60,7 @@ class WebServices
 	const UpdatePassword = 'update_password';
 	const UpdateUser = 'update_user';
 	const UpdateGroup = 'update_group';
+	const UpdateGroupRoles = 'update_group_roles';
 	const GetStatuses = 'get_resource_statuses';
 	const GetStatusReasons = 'get_resource_status_reasons';
 }
