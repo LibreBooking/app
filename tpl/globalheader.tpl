@@ -220,9 +220,11 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                                                 href="{$Path}admin/manage_announcements.php">{translate key="ManageAnnouncements"}</a>
                                     </li>
                                     <li class="divider"></li>
+                                    {if $PaymentsEnabled}
                                     <li id="navManagePayments"><a
                                                 href="{$Path}admin/manage_payments.php">{translate key="ManagePayments"}</a>
                                     </li>
+                                    {/if}
                                     {*<li class="dropdown-header">{translate key=Customization}</li>*}
                                     <li id="navManageAttributes"><a
                                                 href="{$Path}admin/manage_attributes.php">{translate key="CustomAttributes"}</a>
