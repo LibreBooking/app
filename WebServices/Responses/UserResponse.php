@@ -84,7 +84,7 @@ class UserResponse extends RestResponse
 
 		foreach ($user->Groups() as $group)
 		{
-			$this->groups[] = new GroupItemResponse($server, $group->GroupId, $group->GroupName);
+			$this->groups[] = new UserGroupItemResponse($server, $group->GroupId, $group->GroupName);
 		}
 
 		if ($user->GetIsCalendarSubscriptionAllowed())
@@ -98,6 +98,41 @@ class UserResponse extends RestResponse
 	{
 		return new ExampleUserResponse();
 	}
+}
+
+class UserGroupItemResponse extends RestResponse
+{
+    /**
+     * @var int
+     */
+    public $id;
+
+    /**
+     * @var string
+     */
+    public $name;
+
+    /**
+     * @var bool
+     */
+    public $isDefault;
+
+    /**
+     * @var int[]
+     */
+    public $roleIds;
+
+    public function __construct(IRestServer $server, $id, $name)
+    {
+        $this->id = $id;
+        $this->name = $name();
+        $this->AddService($server, WebServices::GetGroup, array(WebServiceParams::GroupId => $id));
+    }
+
+    public static function Example()
+    {
+        return new ExampleUserGroupItemResponse();
+    }
 }
 
 class ExampleUserResponse extends UserResponse
@@ -120,9 +155,18 @@ class ExampleUserResponse extends UserResponse
 		$this->icsUrl = 'webcal://url/to/calendar';
 		$this->customAttributes = array(CustomAttributeResponse::Example());
 		$this->permissions = array(ResourceItemResponse::Example());
-		$this->groups = array(GroupItemResponse::Example());
+		$this->groups = array(UserGroupItemResponse::Example());
 		$this->defaultScheduleId = 1;
 		$this->currentCredits = '2.50';
 		$this->reservationColor = '#000000';
 	}
+}
+
+class ExampleUserGroupItemResponse extends UserGroupItemResponse
+{
+    public function __construct()
+    {
+        $this->id = 1;
+        $this->name = 'group name';
+    }
 }

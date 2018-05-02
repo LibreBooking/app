@@ -27,12 +27,16 @@ class GroupResponse extends RestResponse
     public $viewPermissions = array();
 	public $users = array();
 	public $roles = array();
+	public $isDefault = false;
 
 	public function __construct(IRestServer $server, Group $group)
 	{
 		$this->id = $group->Id();
 		$this->name = $group->Name();
-		$this->adminGroup = $server->GetServiceUrl(WebServices::GetGroup, array(WebServiceParams::GroupId => $group->AdminGroupId()));
+		$adminId =  $group->AdminGroupId();
+		if (!empty($adminId)) {
+            $this->adminGroup = $server->GetServiceUrl(WebServices::GetGroup, array(WebServiceParams::GroupId => $group->AdminGroupId()));
+        }
 
 		foreach ($group->AllowedResourceIds() as $resourceId)
 		{
@@ -53,6 +57,8 @@ class GroupResponse extends RestResponse
 		{
 			$this->roles[] = $roleId;
 		}
+
+		$this->isDefault = (bool)$group->IsDefault();
 	}
 
 	public static function Example()
@@ -72,6 +78,7 @@ class ExampleGroupResponse extends GroupResponse
         $this->viewPermissions = array('http://url/to/resource');
 		$this->users = array('http://url/to/user');
 		$this->roles = array(1,2);
+		$this->isDefault = true;
 	}
 }
 

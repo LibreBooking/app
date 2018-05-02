@@ -35,7 +35,7 @@ class GroupsResponse extends RestResponse
 	{
 		foreach($groups as $group)
 		{
-			$this->groups[] = new GroupItemResponse($server, $group->Id, $group->Name);
+			$this->groups[] = new GroupItemResponse($server, $group);
 		}
 	}
 
