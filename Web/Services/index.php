@@ -204,6 +204,7 @@ function RegisterGroups(SlimServer $server, SlimWebServiceRegistry $registry)
     $category->AddAdminPost('/', array($writeWebService, 'Create'), WebServices::CreateGroup);
     $category->AddAdminPost('/:groupId', array($writeWebService, 'Update'), WebServices::UpdateGroup);
     $category->AddAdminPost('/:groupId/Roles', array($writeWebService, 'Roles'), WebServices::UpdateGroupRoles);
+    $category->AddAdminPost('/:groupId/Permissions', array($writeWebService, 'Permissions'), WebServices::UpdateGroupPermissions);
     $category->AddAdminDelete('/:groupId', array($writeWebService, 'Delete'), WebServices::DeleteGroup);
 
     $registry->AddCategory($category);

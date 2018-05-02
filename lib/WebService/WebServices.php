@@ -61,6 +61,7 @@ class WebServices
 	const UpdateUser = 'update_user';
 	const UpdateGroup = 'update_group';
 	const UpdateGroupRoles = 'update_group_roles';
+	const UpdateGroupPermissions = 'update_group_permissions';
 	const GetStatuses = 'get_resource_statuses';
 	const GetStatusReasons = 'get_resource_status_reasons';
 }
