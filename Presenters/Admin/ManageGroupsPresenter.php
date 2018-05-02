@@ -201,6 +201,18 @@ class ManageGroupsPresenter extends ActionPresenter
         $this->groupRepository->Update($group);
     }
 
+    public function ChangeUsers()
+    {
+        $groupId = $this->page->GetGroupId();
+        $userIds = $this->page->GetUserIds();
+
+        Log::Debug('Changing group users: groupId: %s', $groupId);
+
+        $group = $this->groupRepository->LoadById($groupId);
+        $group->ChangeUsers($userIds);
+        $this->groupRepository->Update($group);
+    }
+
     public function AddGroup()
     {
         $groupName = $this->page->GetGroupName();

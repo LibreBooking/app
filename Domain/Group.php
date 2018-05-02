@@ -139,7 +139,26 @@ class Group
 		}
 	}
 
-	/**
+    /**
+     * @param $userIds int[]|array
+     * @return void
+     */
+    public function ChangeUsers($userIds)
+    {
+        $diff = new ArrayDiff($this->users, $userIds);
+        $removed = $diff->GetRemovedFromArray1();
+        $added = $diff->GetAddedToArray1();
+
+        if ($diff->AreDifferent())
+        {
+            $this->removedUsers = $removed;
+            $this->addedUsers = $added;
+
+            $this->users = $userIds;
+        }
+    }
+
+    /**
 	 * @internal
 	 * @return int[] array of userIds
 	 */

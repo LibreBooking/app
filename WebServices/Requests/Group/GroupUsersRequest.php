@@ -20,32 +20,26 @@
 
 require_once(ROOT_DIR . 'lib/WebService/JsonRequest.php');
 
-class GroupPermissionsRequest extends JsonRequest
+class GroupUsersRequest extends JsonRequest
 {
     /**
      * @var int[]|null
      */
-    public $permissions;
+    public $userIds;
 
     /**
-     * @var int[]|null
-     */
-    public $viewPermissions;
-
-    /**
-     * @return ExampleGroupPermissionsRequest
+     * @return ExampleGroupUsersRequest
      */
     public static function Example()
     {
-        return new ExampleGroupPermissionsRequest();
+        return new ExampleGroupUsersRequest();
     }
 }
 
-class ExampleGroupPermissionsRequest extends GroupPermissionsRequest
+class ExampleGroupUsersRequest extends GroupUsersRequest
 {
     public function __construct()
     {
-        $this->permissions = [4, 5, 6];
-        $this->viewPermissions = [1, 2, 3];
+        $this->userIds = [4, 5, 6];
     }
 }

@@ -60,6 +60,14 @@ interface IGroupSaveController
      * @return GroupControllerResult
      */
     public function ChangePermissions($groupId, $request, $session);
+
+    /**
+     * @param int $groupId
+     * @param GroupUsersRequest $request
+     * @param WebServiceUserSession $session
+     * @return GroupControllerResult
+     */
+    public function ChangeUsers($groupId, $request, $session);
 }
 
 class GroupControllerResult
@@ -224,6 +232,21 @@ class GroupSaveController implements IGroupSaveController
 
         return new GroupControllerResult($groupId, null);
     }
+
+    /**
+     * @param int $groupId
+     * @param GroupUsersRequest $request
+     * @param WebServiceUserSession $session
+     * @return GroupControllerResult
+     */
+    public function ChangeUsers($groupId, $request, $session)
+    {
+        $presenter = $this->GetPresenter(new UpdateGroupUsersFacade($request, $groupId));
+
+        $presenter->ChangeUsers();
+
+        return new GroupControllerResult($groupId, null);
+    }
 }
 
 abstract class GroupControllerPageFacade implements IManageGroupsPage
@@ -343,6 +366,10 @@ abstract class GroupControllerPageFacade implements IManageGroupsPage
     public function AutomaticallyAddToGroup()
     {
     }
+
+    public function GetUserIds()
+    {
+    }
 }
 
 class CreateGroupFacade extends GroupControllerPageFacade
@@ -436,8 +463,8 @@ class UpdateGroupPermissionsFacade extends GroupControllerPageFacade
     public function GetAllowedResourceIds()
     {
         $ids = array();
-        $full = $this->request->fullAccessResourceIds;
-        $view = $this->request->readOnlyResourceIds;
+        $full = $this->request->permissions;
+        $view = $this->request->viewPermissions;
 
         if (!empty($full)) {
             foreach ($full as $id) {
@@ -452,5 +479,36 @@ class UpdateGroupPermissionsFacade extends GroupControllerPageFacade
         }
 
         return $ids;
+    }
+}
+
+class UpdateGroupUsersFacade extends GroupControllerPageFacade
+{
+    /**
+     * @var GroupUsersRequest
+     */
+    private $request;
+    private $id;
+
+    /**
+     * @param GroupUsersRequest $request
+     * @param int|null $id
+     */
+    public function __construct($request, $id = null)
+    {
+        $this->request = $request;
+        $this->id = $id;
+    }
+
+    public function GetGroupId()
+    {
+        return $this->id;
+    }
+
+    public function GetUserIds()
+    {
+        $ids = $this->request->userIds;
+
+        return empty($ids) ? [] : $ids;
     }
 }

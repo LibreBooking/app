@@ -190,4 +190,34 @@ class GroupsWriteWebService
             $this->server->WriteResponse(new FailedResponse($this->server, $result->Errors()), RestResponse::BAD_REQUEST_CODE);
         }
     }
+
+    /**
+     * @name ChangeGroupUsers
+     * @description Updates the permissions for an existing group
+     * @response GroupUpdatedResponse
+     * @param int $groupId
+     * @return void
+     */
+	public function Users($groupId)
+    {
+        /** @var $request GroupUsersRequest */
+        $request = $this->server->GetRequest();
+
+        Log::Debug('GroupsWriteWebService.Users() User=%s, GroupId=%s, Request=%s', $this->server->GetSession()->UserId, $groupId, json_encode($request));
+
+        $result = $this->controller->ChangeUsers($groupId, $request, $this->server->GetSession());
+
+        if ($result->WasSuccessful())
+        {
+            Log::Debug('GroupsWriteWebService.Users() - Group Updated. GroupId=%s', $result->GroupId());
+
+            $this->server->WriteResponse(new GroupUpdatedResponse($this->server, $result->GroupId()), RestResponse::CREATED_CODE);
+        }
+        else
+        {
+            Log::Debug('GroupsWriteWebService.Users() - Update Failed.');
+
+            $this->server->WriteResponse(new FailedResponse($this->server, $result->Errors()), RestResponse::BAD_REQUEST_CODE);
+        }
+    }
 }
