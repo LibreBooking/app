@@ -72,6 +72,9 @@ class ApiHelpPage
 						color:blue;
 					}
 
+                    .secure, .admin {
+                        color:#ff0000;
+                    }
 	            </style>
 	        </head>
 	        <body>
@@ -161,11 +164,11 @@ EOT;
 
 		if ($endpoint->IsSecure())
 		{
-			echo '<h4>This service is secure and requires authentication</h4>';
+			echo '<h4 class="secure">This service is secure and requires authentication</h4>';
 		}
 		if ($endpoint->IsLimitedToAdmin())
 		{
-			echo '<h4>This service is only available to application administrators</h4>';
+			echo '<h4 class="admin">This service is only available to application administrators</h4>';
 		}
 
 		echo '<h4>Response</h4>';
