@@ -109,6 +109,9 @@ class AttributeSaveController implements IAttributeSaveController
 
 		$attribute = CustomAttribute::Create($request->label, $request->type, $request->categoryId, $request->regex . '', (int)$request->required,
 											 $this->GetPossibleValues($request), $request->sortOrder, $request->appliesToIds, $request->adminOnly);
+
+		$attribute->WithSecondaryEntities($request->secondaryCategoryId, $request->secondaryEntityIds);
+
 		$attribute->WithIsPrivate($request->isPrivate);
 
 		$attributeId = $this->repository->Add($attribute);
@@ -136,7 +139,9 @@ class AttributeSaveController implements IAttributeSaveController
 
 		$attribute = new CustomAttribute($attributeId, $request->label, $request->type, $request->categoryId, $request->regex, $request->required,
 										 $request->possibleValues, $request->sortOrder, $request->appliesToIds, $request->adminOnly);
-		$attribute->WithIsPrivate($request->isPrivate);
+
+        $attribute->WithSecondaryEntities($request->secondaryCategoryId, $request->secondaryEntityIds);
+        $attribute->WithIsPrivate($request->isPrivate);
 
 		$this->repository->Update($attribute);
 

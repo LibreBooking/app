@@ -18,6 +18,7 @@
  * You should have received a copy of the GNU General Public License
  * along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 class CustomAttributeTypes
 {
 	const SINGLE_LINE_TEXTBOX = 1;
@@ -315,7 +316,7 @@ class CustomAttribute
 		$this->category = $category;
 		$this->SetRegex($regex);
 		$this->required = $required;
-		$this->entityIds = is_array($entityIds) ? $entityIds : array($entityIds);
+		$this->entityIds = is_array($entityIds) && $category != CustomAttributeCategory::RESERVATION ? $entityIds : array($entityIds);
 		$this->adminOnly = $adminOnly;
 		$this->SetSortOrder($sortOrder);
 		$this->SetPossibleValues($possibleValues);
@@ -496,6 +497,11 @@ class CustomAttribute
 	 */
 	public function WithSecondaryEntities($category, $entityIds, $entityDescriptions = null)
 	{
+	    if ($this->category != CustomAttributeCategory::RESERVATION)
+        {
+            return;
+        }
+
 		if (!empty($category) && !empty($entityIds))
 		{
 			$this->secondaryCategory = $category;
