@@ -128,7 +128,7 @@ class ManageAttributesPresenterTests extends TestBase
 		$this->page->_secondaryEntityIds = $secondaryEntityIds;
 		$this->page->_isPrivate = $isPrivate;
 
-		$expectedAttribute = CustomAttribute::Create('', CustomAttributeTypes::CHECKBOX, CustomAttributeCategory::USER, null, false, null, $sortOrder, $entityIds, $adminOnly);
+		$expectedAttribute = CustomAttribute::Create('', CustomAttributeTypes::CHECKBOX, CustomAttributeCategory::RESERVATION, null, false, null, $sortOrder, $entityIds, $adminOnly);
 
 		$this->attributeRepository->expects($this->once())
 				->method('LoadById')
@@ -146,7 +146,7 @@ class ManageAttributesPresenterTests extends TestBase
 		$this->assertEquals($required, $expectedAttribute->Required());
 		$this->assertEquals($possibleValues, $expectedAttribute->PossibleValues());
 		$this->assertEquals($sortOrder, $expectedAttribute->SortOrder());
-		$this->assertEquals($entityIds, $expectedAttribute->EntityIds());
+		$this->assertEquals(array(), $expectedAttribute->EntityIds(), 'cannot set entityids for reservation');
 		$this->assertEquals($adminOnly, $expectedAttribute->AdminOnly());
 		$this->assertEquals($secondaryEntityIds, $expectedAttribute->SecondaryEntityIds());
 		$this->assertEquals(CustomAttributeCategory::USER, $expectedAttribute->SecondaryCategory());

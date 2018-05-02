@@ -316,7 +316,9 @@ class CustomAttribute
 		$this->category = $category;
 		$this->SetRegex($regex);
 		$this->required = $required;
-		$this->entityIds = is_array($entityIds) && $category != CustomAttributeCategory::RESERVATION ? $entityIds : array($entityIds);
+		if ($category != CustomAttributeCategory::RESERVATION) {
+            $this->entityIds = is_array($entityIds) ? $entityIds : ($entityIds);
+        }
 		$this->adminOnly = $adminOnly;
 		$this->SetSortOrder($sortOrder);
 		$this->SetPossibleValues($possibleValues);
@@ -446,17 +448,19 @@ class CustomAttribute
 		$this->SetRegex($regex);
 		$this->required = $required;
 
-		$entityIds = is_array($entityIds) ? $entityIds : array($entityIds);
-		$removed = array_diff($this->entityIds, $entityIds);
-		$added = array_diff($entityIds, $this->entityIds);
+		if ($this->category != CustomAttributeCategory::RESERVATION) {
 
-		if (!empty($removed) || !empty($added))
-		{
-			$this->removedEntityIds = $removed;
-			$this->addedEntityIds = $added;
-		}
+            $entityIds = is_array($entityIds) ? $entityIds : array($entityIds);
+            $removed = array_diff($this->entityIds, $entityIds);
+            $added = array_diff($entityIds, $this->entityIds);
 
-		$this->entityIds = $entityIds;
+            if (!empty($removed) || !empty($added)) {
+                $this->removedEntityIds = $removed;
+                $this->addedEntityIds = $added;
+            }
+
+            $this->entityIds = $entityIds;
+        }
 
 		$this->adminOnly = $adminOnly;
 		$this->SetPossibleValues($possibleValues);

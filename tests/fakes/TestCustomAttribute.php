@@ -56,6 +56,7 @@ class FakeCustomAttribute extends CustomAttribute
 		$this->_IsRequiredSatisfied = $isRequiredOk;
 		$this->_IsConstraintSatisfied = $isRegexOk;
 		$this->adminOnly = $adminOnly;
+		$this->category = CustomAttributeCategory::RESERVATION;
 	}
 
 	public function SatisfiesRequired($value)

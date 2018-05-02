@@ -314,6 +314,7 @@ class ScheduleRepositoryTests extends TestBase
         $begin = Date::Now();
         $end = Date::Now()->AddDays(1);
         $allowConcurrent = true;
+        $style = ScheduleStyle::CondensedWeek;
 
         $schedule = new Schedule($id,
             $name,
@@ -326,10 +327,11 @@ class ScheduleRepositoryTests extends TestBase
         $schedule->SetAdminGroupId($adminGroupId);
         $schedule->SetAvailability($begin, $end);
         $schedule->SetAllowConcurrentReservations($allowConcurrent);
+        $schedule->SetDefaultStyle($style);
 
         $this->scheduleRepository->Update($schedule);
 
-        $this->assertEquals(new UpdateScheduleCommand($id, $name, $isDefault, $weekdayStart, $daysVisible, $subscriptionEnabled, $publicId, $adminGroupId, $begin, $end, $allowConcurrent),
+        $this->assertEquals(new UpdateScheduleCommand($id, $name, $isDefault, $weekdayStart, $daysVisible, $subscriptionEnabled, $publicId, $adminGroupId, $begin, $end, $allowConcurrent, $style),
             $this->db->_LastCommand);
     }
 

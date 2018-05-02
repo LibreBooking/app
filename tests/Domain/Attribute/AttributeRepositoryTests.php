@@ -63,7 +63,6 @@ class AttributeRepositoryTests extends TestBase
 		$this->repository->Add($attribute);
 		$this->assertTrue($this->db->ContainsCommand(new AddAttributeCommand($label, $type, $category, $regex, $required, $possibleValues, $sortOrder,
 																			 $adminOnly, $secondaryCategory, array($secondaryEntityId), $isPrivate)));
-		$this->assertTrue($this->db->ContainsCommand(new AddAttributeEntityCommand($this->db->_ExpectedInsertId, $entityId)));
 	}
 
 	public function testLoadsAttributeById()
