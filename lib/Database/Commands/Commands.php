@@ -614,6 +614,7 @@ class AddResourceTypeCommand extends SqlCommand
         $this->AddParameter(new Parameter(ParameterNames::RESOURCE_TYPE_DESCRIPTION, $description));
     }
 }
+
 class AddResourceImageCommand extends SqlCommand
 {
     public function __construct($resourceId, $image)
@@ -2666,7 +2667,8 @@ class UpdateScheduleCommand extends SqlCommand
                                 $adminGroupId,
                                 Date $availabilityBegin,
                                 Date $availabilityEnd,
-                                $allowConcurrentReservations)
+                                $allowConcurrentReservations,
+                                $defaultStyle)
     {
         parent::__construct(Queries::UPDATE_SCHEDULE);
 
@@ -2681,6 +2683,7 @@ class UpdateScheduleCommand extends SqlCommand
         $this->AddParameter(new Parameter(ParameterNames::SCHEDULE_AVAILABILITY_BEGIN, $availabilityBegin->ToDatabase()));
         $this->AddParameter(new Parameter(ParameterNames::SCHEDULE_AVAILABILITY_END, $availabilityEnd->ToDatabase()));
         $this->AddParameter(new Parameter(ParameterNames::SCHEDULE_ALLOW_CONCURRENT_RESERVATIONS, (int)$allowConcurrentReservations));
+        $this->AddParameter(new Parameter(ParameterNames::SCHEDULE_DEFAULT_STYLE, (int)$defaultStyle));
     }
 }
 

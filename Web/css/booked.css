@@ -1108,7 +1108,10 @@ table.reservations td {
   border: dashed 1px #585754;
   color: #585754;
   line-height: 30px;
-  background-color: #BCBCBC;
+  background-color: #fff !important;
+}
+.reservations.condensed div.reservable:hover {
+  background-color: #E9E9E9 !important;
 }
 td.resourcename {
   padding: 1px 3px;

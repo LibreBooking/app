@@ -211,14 +211,6 @@ interface ISchedulePage extends IActionPage
     public function SetAllowConcurrent($allowConcurrentReservations);
 }
 
-class ScheduleStyle
-{
-    const Wide = 'Wide';
-    const Tall = 'Tall';
-    const Standard = 'Standard';
-    const CondensedWeek = 'CondensedWeek';
-}
-
 class SchedulePage extends ActionPage implements ISchedulePage
 {
     protected $ScheduleStyle = ScheduleStyle::Standard;
@@ -434,19 +426,18 @@ class SchedulePage extends ActionPage implements ISchedulePage
 
     public function GetScheduleStyle($scheduleId)
     {
-        $cookie = $this->server->GetCookie("schedule-direction-$scheduleId");
+        $cookie = $this->server->GetCookie("schedule-style-$scheduleId");
         if ($cookie != null) {
             return $cookie;
         }
 
-        return ScheduleStyle::Standard;
+        return null;
     }
 
     public function SetScheduleStyle($direction)
     {
         $this->ScheduleStyle = $direction;
-        $this->Set('CookieName', 'schedule-direction-' . $this->GetVar('ScheduleId'));
-        $this->Set('CookieValue', $direction);
+        $this->Set('CookieName', 'schedule-style-' . $this->GetVar('ScheduleId'));
     }
 
     /**

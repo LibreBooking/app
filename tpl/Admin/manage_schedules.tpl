@@ -64,14 +64,6 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                             {/if}
                         </div>
 
-                        {if $CreditsEnabled}
-                            <span>{translate key=PeakTimes}</span>
-                            <a class="update changePeakTimes" href="#"><span class="fa fa-pencil-square-o"></span></a>
-                            <div class="peakPlaceHolder">
-                                {include file="Admin/Schedules/manage_peak_times.tpl" Layout=$Layouts[$id] Months=$Months DayNames=$DayNames}
-                            </div>
-                        {/if}
-
                         <div>
                             <div class="availabilityPlaceHolder inline-block">
                                 {include file="Admin/Schedules/manage_availability.tpl" schedule=$schedule timezone=$Timezone}
@@ -86,6 +78,22 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                             <a class="update toggleConcurrent" href="#"
                                data-allow="{$schedule->GetAllowConcurrentReservations()|intval}">{translate key=Change}</a>
                         </div>
+
+                        <div>
+                            {translate key=DefaultStyle}
+                            <span class="propertyValue defaultScheduleStyle inlineUpdate" data-type="select"
+                                  data-pk="{$id}"
+                                  data-name="{FormKeys::SCHEDULE_DEFAULT_STYLE}"
+                                  data-value="{$schedule->GetDefaultStyle()}">{$StyleNames[$schedule->GetDefaultStyle()]}</span>
+                        </div>
+
+                        {if $CreditsEnabled}
+                            <span>{translate key=PeakTimes}</span>
+                            <a class="update changePeakTimes" href="#"><span class="fa fa-pencil-square-o"></span></a>
+                            <div class="peakPlaceHolder">
+                                {include file="Admin/Schedules/manage_peak_times.tpl" Layout=$Layouts[$id] Months=$Months DayNames=$DayNames}
+                            </div>
+                        {/if}
 
                         <div>{translate key=Resources}
                             <span class="propertyValue">
@@ -625,11 +633,6 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                 <div class="modal-body">
                     <div id="calendar"></div>
                 </div>
-                {*<div class="modal-footer">*}
-                {*{cancel_button}*}
-                {*{update_button submit=true}*}
-                {*{indicator}*}
-                {*</div>*}
             </div>
         </div>
     </div>
@@ -701,11 +704,22 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                 ]
             });
 
+            $('.defaultScheduleStyle').editable({
+                url: updateUrl + '{ManageSchedules::ActionChangeDefaultStyle}',
+                source: [
+                    {foreach from=$StyleNames item="styleName" key="styleIndex"}
+                    {
+                        value:'{$styleIndex}', text:'{$styleName|escape:'javascript'}'
+                    },
+                    {/foreach}
+                ]
+            });
+
             $('.scheduleAdmin').editable({
                 url: updateUrl + '{ManageSchedules::ChangeAdminGroup}',
                 emptytext: '{{translate key=None}|escape:'javascript'}',
                 source: [{
-                    value: '0', text: ''
+                    value: '0', text: '{{translate key=None}|escape:'javascript'}'
                 },
                     {foreach from=$AdminGroups item=group}
                     {

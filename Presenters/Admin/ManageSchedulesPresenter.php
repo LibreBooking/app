@@ -43,6 +43,7 @@ class ManageSchedules
     const ActionAddLayoutSlot = 'addLayoutSlot';
     const ActionUpdateLayoutSlot = 'updateLayoutSlot';
     const ActionDeleteLayoutSlot = 'deleteLayoutSlot';
+    const ActionChangeDefaultStyle = 'changeDefaultStyle';
 }
 
 class ManageScheduleService
@@ -397,6 +398,13 @@ class ManageScheduleService
         }
         return $overlaps;
     }
+
+    public function ChangeDefaultStyle($scheduleId, $defaultStyle)
+    {
+        $schedule = $this->scheduleRepository->LoadById($scheduleId);
+        $schedule->SetDefaultStyle($defaultStyle);
+        $this->scheduleRepository->Update($schedule);
+    }
 }
 
 class ManageSchedulesPresenter extends ActionPresenter
@@ -416,7 +424,8 @@ class ManageSchedulesPresenter extends ActionPresenter
      */
     private $groupViewRepository;
 
-    public function __construct(IManageSchedulesPage $page, ManageScheduleService $manageSchedulesService,
+    public function __construct(IManageSchedulesPage $page,
+                                ManageScheduleService $manageSchedulesService,
                                 IGroupViewRepository $groupViewRepository)
     {
         parent::__construct($page);
@@ -441,6 +450,7 @@ class ManageSchedulesPresenter extends ActionPresenter
         $this->AddAction(ManageSchedules::ActionAddLayoutSlot, 'AddLayoutSlot');
         $this->AddAction(ManageSchedules::ActionUpdateLayoutSlot, 'UpdateLayoutSlot');
         $this->AddAction(ManageSchedules::ActionDeleteLayoutSlot, 'DeleteLayoutSlot');
+        $this->AddAction(ManageSchedules::ActionChangeDefaultStyle, 'ChangeDefaultStyle');
     }
 
     public function PageLoad()
@@ -693,6 +703,16 @@ class ManageSchedulesPresenter extends ActionPresenter
 
         Log::Debug('Deleting custom layout slot. Start %s, End %s, Schedule %s', $start, $end, $scheduleId);
         $this->manageSchedulesService->DeleteCustomLayoutPeriod($scheduleId, $start, $end);
+    }
+
+    public function ChangeDefaultStyle()
+    {
+        $scheduleId = $this->page->GetScheduleId();
+        $style = $this->page->GetValue();
+
+        Log::Debug('Changing default style. Schedule %s, Style %s', $scheduleId, $style);
+
+        $this->manageSchedulesService->ChangeDefaultStyle($scheduleId, $style);
     }
 
     protected function LoadValidators($action)

@@ -66,6 +66,11 @@ interface ISchedule
      * @return bool
      */
     public function GetAllowConcurrentReservations();
+
+    /**
+     * @return int
+     */
+    public function GetDefaultStyle();
 }
 
 class Schedule implements ISchedule
@@ -83,6 +88,7 @@ class Schedule implements ISchedule
     protected $_availabilityBegin;
     protected $_availabilityEnd;
     protected $_allowConcurrent = false;
+    protected $_defaultStyle;
 
     const Today = 100;
 
@@ -105,6 +111,7 @@ class Schedule implements ISchedule
         $this->_availabilityBegin = new NullDate();
         $this->_availabilityEnd = new NullDate();
         $this->_allowConcurrent = false;
+        $this->_defaultStyle = ScheduleStyle::Standard;
     }
 
     public function GetId()
@@ -289,9 +296,28 @@ class Schedule implements ISchedule
         $this->_allowConcurrent = (bool)$allowConcurrent;
     }
 
+    /**
+     * @return bool
+     */
     public function GetAllowConcurrentReservations()
     {
         return $this->_allowConcurrent;
+    }
+
+    /**
+     * @return int|ScheduleStyle
+     */
+    public function GetDefaultStyle()
+    {
+        return $this->_defaultStyle;
+    }
+
+    /**
+     * @param $defaultDisplay int|ScheduleStyle
+     */
+    public function SetDefaultStyle($defaultDisplay)
+    {
+        $this->_defaultStyle = $defaultDisplay;
     }
 
     /**
@@ -323,7 +349,7 @@ class Schedule implements ISchedule
         $schedule->SetAdminGroupId($row[ColumnNames::SCHEDULE_ADMIN_GROUP_ID]);
         $schedule->SetAvailability(Date::FromDatabase($row[ColumnNames::SCHEDULE_AVAILABLE_START_DATE]), Date::FromDatabase($row[ColumnNames::SCHEDULE_AVAILABLE_END_DATE]));
         $schedule->SetAllowConcurrentReservations($row[ColumnNames::SCHEDULE_ALLOW_CONCURRENT_RESERVATIONS]);
-
+        $schedule->SetDefaultStyle($row[ColumnNames::SCHEDULE_DEFAULT_STYLE]);
         return $schedule;
     }
 
@@ -357,4 +383,13 @@ class NullSchedule extends Schedule
     {
         parent::__construct(0, null, false, 0, 7);
     }
+}
+
+
+class ScheduleStyle
+{
+    const Standard = 0;
+    const Wide = 1;
+    const Tall = 2;
+    const CondensedWeek = 3;
 }

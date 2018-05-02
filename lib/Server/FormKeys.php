@@ -241,6 +241,7 @@ class FormKeys
 	const SCHEDULE_NAME = 'scheduleName';
 	const SCHEDULE_WEEKDAY_START = 'scheduleWeekdayStart';
 	const SCHEDULE_DAYS_VISIBLE = 'scheduleDaysVisible';
+	const SCHEDULE_DEFAULT_STYLE = 'SCHEDULE_DEFAULT_STYLE';
 	const SEND_AS_EMAIL = 'SEND_AS_EMAIL';
 	const SERIES_UPDATE_SCOPE = 'seriesUpdateScope';
 	const START_REMINDER_ENABLED = 'START_REMINDER_ENABLED';

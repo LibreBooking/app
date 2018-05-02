@@ -107,7 +107,7 @@ class SchedulePageBuilder implements ISchedulePageBuilder
 {
 	/**
 	 * @param ISchedulePage $page
-	 * @param array [int]ISchedule $schedules
+	 * @param ISchedule[] $schedules
 	 * @param ISchedule $currentSchedule
 	 */
 	public function BindSchedules(ISchedulePage $page, $schedules, $currentSchedule)
@@ -118,7 +118,7 @@ class SchedulePageBuilder implements ISchedulePageBuilder
 		$page->SetScheduleName($currentSchedule->GetName());
 		$page->SetFirstWeekday($currentSchedule->GetWeekdayStart());
 		$style = $page->GetScheduleStyle($scheduleId);
-		$page->SetScheduleStyle($style);
+		$page->SetScheduleStyle(empty($style) ? $currentSchedule->GetDefaultStyle() : $style);
 		if ($currentSchedule->GetIsCalendarSubscriptionAllowed())
 		{
 			$page->SetSubscriptionUrl(new CalendarSubscriptionUrl(null, $currentSchedule->GetPublicId(), null));

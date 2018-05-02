@@ -1148,7 +1148,8 @@ class Queries
 			admin_group_id = @admin_group_id,
 			start_date = @start_date,
 			end_date = @end_date,
-			allow_concurrent_bookings = @allow_concurrent_bookings
+			allow_concurrent_bookings = @allow_concurrent_bookings,
+			default_layout = @default_layout
 		WHERE
 			schedule_id = @scheduleid';
 

@@ -239,6 +239,7 @@ class ParameterNames
 	const SCHEDULE_AVAILABILITY_BEGIN = '@start_date';
 	const SCHEDULE_AVAILABILITY_END = '@end_date';
 	const SCHEDULE_ALLOW_CONCURRENT_RESERVATIONS = '@allow_concurrent_bookings';
+	const SCHEDULE_DEFAULT_STYLE = '@default_layout';
 	const SERIES_ID = '@seriesid';
 	const SESSION_TOKEN = '@session_token';
 	const START_DATE = '@startDate';

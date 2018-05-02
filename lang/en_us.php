@@ -744,6 +744,10 @@ class en_us extends Language
         $strings['PublicId'] = 'Public Id';
         $strings['Public'] = 'Public';
         $strings['AtomFeedTitle'] = '%s Reservations';
+        $strings['DefaultStyle'] = 'Default Style';
+        $strings['Standard'] = 'Standard';
+        $strings['Wide'] = 'Wide';
+        $strings['Tall'] = 'Tall';
         // End Strings
 
 		// Install

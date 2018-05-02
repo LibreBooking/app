@@ -151,6 +151,11 @@ function ScheduleManagement(opts) {
                 toggleConcurrentReservations(getActiveScheduleId(), toggle, container);
             });
 
+            details.find('.defaultScheduleStyle').click(function (e) {
+                e.stopPropagation();
+                $(this).editable('toggle');
+            });
+
             details.find('.switchLayout').click(function (e) {
                 e.preventDefault();
                 $('#switchLayoutTypeId').val($(e.target).data('switch-to'));

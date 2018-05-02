@@ -239,6 +239,11 @@ interface IManageSchedulesPage extends IUpdateSchedulePage, IActionPage, IPageab
      * @return string
      */
     public function GetSlotId();
+
+    /**
+     * @return int
+     */
+    public function GetDefaultStyle();
 }
 
 class ManageSchedulesPage extends ActionPage implements IManageSchedulesPage
@@ -264,12 +269,19 @@ class ManageSchedulesPage extends ActionPage implements IManageSchedulesPage
     {
         $this->_presenter->PageLoad();
 
-        $this->Set('DayNames', Resources::GetInstance()->GetDays('full'));
+        $resources = Resources::GetInstance();
+        $this->Set('DayNames', $resources->GetDays('full'));
         $this->Set('Today', Resources::GetInstance()->GetString('Today'));
         $this->Set('TimeFormat', Resources::GetInstance()->GetDateFormat('general_time_js'));
         $this->Set('DefaultDate', Date::Now()->SetTimeString('08:00'));
         $this->Set('Months', Resources::GetInstance()->GetMonths('full'));
         $this->Set('DayList', range(1, 31));
+        $this->Set('StyleNames', array(
+            ScheduleStyle::Standard => $resources->GetString('Standard'),
+            ScheduleStyle::Wide => $resources->GetString('Wide'),
+            ScheduleStyle::Tall => $resources->GetString('Tall'),
+            ScheduleStyle::CondensedWeek => $resources->GetString('Week'),
+            ));
         $this->Display('Admin/manage_schedules.tpl');
     }
 
@@ -601,5 +613,10 @@ class ManageSchedulesPage extends ActionPage implements IManageSchedulesPage
     public function GetSlotId()
     {
         return $this->GetForm(FormKeys::LAYOUT_PERIOD_ID);
+    }
+
+    public function GetDefaultStyle()
+    {
+       return $this->GetForm(FormKeys::SCHEDULE_DEFAULT_STYLE);
     }
 }
