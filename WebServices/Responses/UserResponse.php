@@ -20,7 +20,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 require_once(ROOT_DIR . 'WebServices/Responses/CustomAttributes/CustomAttributeResponse.php');
 require_once(ROOT_DIR . 'WebServices/Responses/ResourceItemResponse.php');
-require_once(ROOT_DIR . 'WebServices/Responses/GroupItemResponse.php');
+require_once(ROOT_DIR . 'WebServices/Responses/Group/GroupItemResponse.php');
 
 class UserResponse extends RestResponse
 {

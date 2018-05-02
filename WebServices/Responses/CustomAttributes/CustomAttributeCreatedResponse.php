@@ -28,8 +28,8 @@ class CustomAttributeCreatedResponse extends RestResponse
 		$this->message = 'The attribute was created';
 		$this->attributeId = $attributeId;
 		$this->AddService($server, WebServices::GetCustomAttribute, array(WebServiceParams::AttributeId => $attributeId));
-		$this->AddService($server, WebServices::UpdateCustomAttribute, array(WebServiceParams::ReferenceNumber => $attributeId));
-		$this->AddService($server, WebServices::DeleteCustomAttribute, array(WebServiceParams::ReferenceNumber => $attributeId));
+		$this->AddService($server, WebServices::UpdateCustomAttribute, array(WebServiceParams::AttributeId => $attributeId));
+		$this->AddService($server, WebServices::DeleteCustomAttribute, array(WebServiceParams::AttributeId => $attributeId));
 	}
 
 	public static function Example()
@@ -47,7 +47,7 @@ class CustomAttributeUpdatedResponse extends RestResponse
 		$this->message = 'The attribute was updated';
 		$this->attributeId = $attributeId;
 		$this->AddService($server, WebServices::GetCustomAttribute, array(WebServiceParams::AttributeId => $attributeId));
-		$this->AddService($server, WebServices::UpdateCustomAttribute, array(WebServiceParams::ReferenceNumber => $attributeId));
+		$this->AddService($server, WebServices::UpdateCustomAttribute, array(WebServiceParams::AttributeId => $attributeId));
 	}
 
 	public static function Example()

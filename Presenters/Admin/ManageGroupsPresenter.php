@@ -21,6 +21,7 @@
 require_once(ROOT_DIR . 'Domain/Access/namespace.php');
 require_once(ROOT_DIR . 'Presenters/ActionPresenter.php');
 require_once(ROOT_DIR . 'lib/Application/Authentication/namespace.php');
+require_once(ROOT_DIR . 'Pages/Admin/ManageGroupsPage.php');
 
 class ManageGroupsActions
 {
@@ -176,7 +177,7 @@ class ManageGroupsPresenter extends ActionPresenter
         return array('full' => $group->AllowedResourceIds(), 'view' => $group->AllowedViewResourceIds());
     }
 
-    protected function AddUser()
+    public function AddUser()
     {
         $groupId = $this->page->GetGroupId();
         $userId = $this->page->GetUserId();
@@ -188,7 +189,7 @@ class ManageGroupsPresenter extends ActionPresenter
         $this->groupRepository->Update($group);
     }
 
-    protected function RemoveUser()
+    public function RemoveUser()
     {
         $groupId = $this->page->GetGroupId();
         $userId = $this->page->GetUserId();
@@ -200,17 +201,17 @@ class ManageGroupsPresenter extends ActionPresenter
         $this->groupRepository->Update($group);
     }
 
-    protected function AddGroup()
+    public function AddGroup()
     {
         $groupName = $this->page->GetGroupName();
         $isDefault = $this->page->AutomaticallyAddToGroup();
         Log::Debug('Adding new group with name: %s, isdefault: %s', $groupName, $isDefault);
 
         $group = new Group(0, $groupName, $isDefault);
-        $this->groupRepository->Add($group);
+        return $this->groupRepository->Add($group);
     }
 
-    protected function UpdateGroup()
+    public function UpdateGroup()
     {
         $groupId = $this->page->GetGroupId();
         $groupName = $this->page->GetGroupName();
@@ -224,7 +225,7 @@ class ManageGroupsPresenter extends ActionPresenter
         $this->groupRepository->Update($group);
     }
 
-    protected function DeleteGroup()
+    public function DeleteGroup()
     {
         $groupId = $this->page->GetGroupId();
 
@@ -234,7 +235,7 @@ class ManageGroupsPresenter extends ActionPresenter
         $this->groupRepository->Remove($group);
     }
 
-    protected function ChangeGroupAdmin()
+    public function ChangeGroupAdmin()
     {
         $groupId = $this->page->GetGroupId();
         $adminGroupId = $this->page->GetAdminGroupId();
@@ -251,7 +252,7 @@ class ManageGroupsPresenter extends ActionPresenter
     /**
      * @return array|int[]
      */
-    protected function GetGroupRoles()
+    public function GetGroupRoles()
     {
         $groupId = $this->page->GetGroupId();
         $group = $this->groupRepository->LoadById($groupId);

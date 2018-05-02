@@ -35,10 +35,12 @@ class WebServices
 	const CreateReservation = 'create_reservation';
 	const CreateResource = 'create_resource';
 	const CreateUser = 'create_user';
+	const CreateGroup = 'create_group';
 	const DeleteCustomAttribute = 'delete_custom_attribute';
 	const DeleteReservation = 'delete_reservation';
 	const DeleteResource = 'delete_resource';
 	const DeleteUser = 'delete_user';
+	const DeleteGroup = 'delete_group';
 	const Login = 'login';
 	const Logout = 'logout';
 	const GetAccessory = 'get_accessory';
@@ -57,6 +59,7 @@ class WebServices
 	const UpdateResource = 'update_resource';
 	const UpdatePassword = 'update_password';
 	const UpdateUser = 'update_user';
+	const UpdateGroup = 'update_group';
 	const GetStatuses = 'get_resource_statuses';
 	const GetStatusReasons = 'get_resource_status_reasons';
 }
