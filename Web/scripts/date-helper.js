@@ -25,7 +25,7 @@ var dateHelper = function ()
 	{
 		var difference = end.getTime() - begin.getTime();
         var duration = moment.duration(difference);
-		return {RoundedHours: duration.hours(), RoundedDays: duration.days(), RoundedMinutes: duration.minutes()};
+		return {RoundedHours: duration.hours(), RoundedDays: Math.floor(duration.asDays()), RoundedMinutes: duration.minutes()};
 	};
 
 	var parse = function(time)

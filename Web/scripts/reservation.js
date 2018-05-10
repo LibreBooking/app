@@ -74,8 +74,8 @@ function Reservation(opts) {
 
     Reservation.prototype.init = function (ownerId, startDateString, endDateString) {
         _ownerId = ownerId;
-        _startDate = moment(startDateString);
-        _endDate = moment(endDateString);
+        _startDate = moment(startDateString, "YYYY-MM-DD");
+        _endDate = moment(endDateString, "YYYY-MM-DD");
         participation.addedUsers.push(ownerId);
 
         $('#dialogResourceGroups').on('show.bs.modal', function (e) {
@@ -629,20 +629,28 @@ function Reservation(opts) {
         elements.endDate.data['endPreviousVal'] = elements.endDate.val();
         elements.beginTime.data['beginTimePreviousVal'] = elements.beginTime.val();
 
-        elements.beginDate.change(function () {
+        function BeginDateChanged() {
             PopulatePeriodDropDown(elements.beginDate, elements.beginTime, elements.beginDateTextbox, 'begin');
             AdjustEndDate();
             DisplayDuration();
             SelectRepeatWeekday();
 
             elements.beginDate.data['beginPreviousVal'] = elements.beginDate.val();
-        });
+        }
 
-        elements.endDate.change(function () {
+        function EndDateChanged() {
             PopulatePeriodDropDown(elements.endDate, elements.endTime, elements.endDateTextbox, 'end');
             DisplayDuration();
             CalculateCredits();
             elements.endDate.data['endPreviousVal'] = elements.endDate.val();
+        }
+
+        elements.beginDate.change(function () {
+            BeginDateChanged();
+        });
+
+        elements.endDate.change(function () {
+            EndDateChanged();
         });
 
         elements.beginTime.change(function () {
@@ -662,8 +670,15 @@ function Reservation(opts) {
             CalculateCredits();
         });
 
+        elements.beginDateTextbox.change(function(e){
+            BeginDateChanged();
+        });
+        elements.endDateTextbox.change(function(e){
+            EndDateChanged();
+        });
+
         var previousDateEndsAtMidnight = function (scheduleId, date) {
-            var currDate = moment(date);
+            var currDate = moment(date, "YYYY-MM-DD");
             currDate.subtract(1, 'days');
             var weekday = currDate.day();
 
@@ -676,7 +691,7 @@ function Reservation(opts) {
         };
 
         var getLayoutItems = function (scheduleId, date) {
-            var currDate = moment(date);
+            var currDate = moment(date, "YYYY-MM-DD");
             var weekday = currDate.day();
 
             if (layoutCache[weekday] != null) {
