@@ -78,7 +78,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 {* End slot display formatting *}
 
 {block name="header"}
-    {include file='globalheader.tpl' Qtip=true FloatThead=true cssFiles='scripts/css/jqtree.css' printCssFiles='css/schedule.print.css'}
+    {include file='globalheader.tpl' Qtip=true FloatThead=true Select2=true cssFiles='scripts/css/jqtree.css' printCssFiles='css/schedule.print.css'}
 {/block}
 
 <div id="page-schedule">
@@ -123,19 +123,25 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                 {/if}
 
                 <div id="schedule-title" class="schedule_title {$titleWidth} col-xs-12">
-                    <span>{$ScheduleName}</span>
-                    {if $Schedules|@count gt 1}
-                        <div class="dropdown btn-group">
-                            <a class="btn dropdown-toggle" data-toggle="dropdown" href="#"
-                               id="scheduleListDropdown"><span class="caret dropdown-toggle"></span></a>
-                            <ul class="dropdown-menu" role="menu">
-                                {foreach from=$Schedules item=schedule}
-                                    <li><a href="#" class="schedule-id"
-                                           data-scheduleid="{$schedule->GetId()}">{$schedule->GetName()}</a></li>
-                                {/foreach}
-                            </ul>
-                        </div>
-                    {/if}
+                    <label for="schedules" class="no-show">Schedule</label>
+                    <select id="schedules">
+                        {foreach from=$Schedules item=schedule}
+                            <option value="{$schedule->GetId()}" {if $schedule->GetId() == $ScheduleId}selected="selected"{/if}>{$schedule->GetName()}</option>
+                        {/foreach}
+                    </select>
+                    {*<span>{$ScheduleName}</span>*}
+                    {*{if $Schedules|@count gt 1}*}
+                        {*<div class="dropdown btn-group">*}
+                            {*<a class="btn dropdown-toggle" data-toggle="dropdown" href="#"*}
+                               {*id="scheduleListDropdown"><span class="caret dropdown-toggle"></span></a>*}
+                            {*<ul class="dropdown-menu" role="menu">*}
+                                {*{foreach from=$Schedules item=schedule}*}
+                                    {*<li><a href="#" class="schedule-id"*}
+                                           {*data-scheduleid="{$schedule->GetId()}">{$schedule->GetName()}</a></li>*}
+                                {*{/foreach}*}
+                            {*</ul>*}
+                        {*</div>*}
+                    {*{/if}*}
                     <a href="#" id="calendar_toggle" title="{translate key=ShowHideNavigation}">
                         <span class="glyphicon glyphicon-calendar"></span>
                     </a>
@@ -389,7 +395,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
     {csrf_token}
 </form>
 
-{include file="javascript-includes.tpl" Qtip=true FloatThead=true}
+{include file="javascript-includes.tpl" Qtip=true FloatThead=true Select2=true}
 
 {block name="scripts-before"}
 
@@ -449,6 +455,10 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
         });
         {/if}
 
+        $('#schedules').select2({
+            width:'auto'
+            {*placeholder: '{translate key=Resources}'*}
+        });
     </script>
 {/block}
 

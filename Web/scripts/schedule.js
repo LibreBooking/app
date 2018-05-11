@@ -209,9 +209,9 @@ function Schedule(opts, resourceGroups) {
 			});
 		}
 
-		$('#schedule-title').find('.schedule-id').on('click', function (e) {
-			e.preventDefault();
-			var scheduleId = $(this).attr('data-scheduleid');
+		$('#schedules').on('change', function (e) {
+			// e.preventDefault();
+			var scheduleId = $(this).val();
 
 			RedirectToSelf("sid", /sid=\d+/i, "sid=" + scheduleId, function (url) {
 				var x = RemoveGroupId(url);
