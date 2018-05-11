@@ -21,7 +21,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 require_once(ROOT_DIR . 'Domain/Access/namespace.php' );
 require_once(ROOT_DIR . 'Pages/SecurePage.php');
 
-class AutoCompletePage extends SecurePage
+class AutoCompletePage extends Page
 {
 	private $listMethods = array();
 
@@ -32,6 +32,7 @@ class AutoCompletePage extends SecurePage
 	    $this->listMethods[AutoCompleteType::User] = 'GetUsers';
 	    $this->listMethods[AutoCompleteType::MyUsers] = 'GetMyUsers';
 	    $this->listMethods[AutoCompleteType::Group] = 'GetGroups';
+	    $this->listMethods[AutoCompleteType::Organization] = 'GetOrganizations';
 	}
 
 	public function PageLoad()
@@ -169,6 +170,24 @@ class AutoCompletePage extends SecurePage
 
 		return array_values($users);
 	}
+
+	private function GetOrganizations($term) {
+
+        $filter = new SqlFilterLike(ColumnNames::ORGANIZATION, $term);
+
+        $r = new UserRepository();
+        $results = $r->GetList(1, PageInfo::All, null, null, $filter)->Results();
+
+        $organizations = array();
+        /** @var $result UserItemView */
+        foreach($results as $result)
+        {
+
+            $organizations[] = $result->Organization;
+        }
+
+        return $organizations;
+    }
 }
 
 class AutocompleteUser
@@ -201,4 +220,5 @@ class AutoCompleteType
 	const User = 'user';
 	const Group = 'group';
 	const MyUsers = 'myUsers';
+	const Organization = 'organization';
 }

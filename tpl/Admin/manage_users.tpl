@@ -752,6 +752,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
             var userOptions = {
                 userAutocompleteUrl: "../ajax/autocomplete.php?type={AutoCompleteType::MyUsers}",
+                orgAutoCompleteUrl: "../ajax/autocomplete.php?type={AutoCompleteType::Organization}",
                 groupsUrl: '{$smarty.server.SCRIPT_NAME}',
                 groupManagementUrl: '{$ManageGroupsUrl}',
                 permissionsUrl: '{$smarty.server.SCRIPT_NAME}',

@@ -263,6 +263,9 @@ function UserManagement(opts) {
 			elements.invitationDialog.modal('hide');
 		};
 
+		$('#addOrganization').orgAutoComplete(options.orgAutoCompleteUrl);
+		$('#organization').orgAutoComplete(options.orgAutoCompleteUrl);
+
 		ConfigureAsyncForm(elements.permissionsForm, defaultSubmitCallback(elements.permissionsForm), hidePermissionsDialog, error);
 		ConfigureAsyncForm(elements.passwordForm, defaultSubmitCallback(elements.passwordForm), hidePasswordDialog, error);
 		ConfigureAsyncForm(elements.userForm, defaultSubmitCallback(elements.userForm), hideDialogCallback(elements.userDialog));

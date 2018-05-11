@@ -19,6 +19,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 require_once(ROOT_DIR . 'Pages/ActionPage.php');
+require_once(ROOT_DIR . 'Pages/Ajax/AutoCompletePage.php');
 require_once(ROOT_DIR . 'Presenters/RegistrationPresenter.php');
 require_once(ROOT_DIR . 'config/timezones.php');
 require_once(ROOT_DIR . 'lib/Application/Authentication/namespace.php');

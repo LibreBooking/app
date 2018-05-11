@@ -148,9 +148,9 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 				<div class="col-xs-12 col-sm-6">
 					<div class="form-group">
-						<label class="reg" for="organization">{translate key="Organization"}</label>
+						<label class="reg" for="txtOrganization">{translate key="Organization"}</label>
 						{if $AllowOrganizationChange}
-							{textbox name="ORGANIZATION" class="input" value="Organization" size="20"}
+							{textbox name="ORGANIZATION" class="input" value="Organization" size="20" id="txtOrganization"}
 						{else}
 							<span>{$Organization}</span>
 							<input type="hidden" {formname key=ORGANIZATION} value="{$Organization}"/>
@@ -162,9 +162,9 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			<div class="row">
 				<div class="col-xs-12 col-sm-6">
 					<div class="form-group">
-						<label class="reg" for="position">{translate key="Position"}</label>
+						<label class="reg" for="txtPosition">{translate key="Position"}</label>
 						{if $AllowPositionChange}
-							{textbox name="POSITION" class="input" value="Position" size="20"}
+							{textbox name="POSITION" class="input" value="Position" size="20" id="txtPosition"}
 						{else}
 							<span>{$Position}</span>
 							<input type="hidden" {formname key=POSITION} value="{$Position}"/>
@@ -206,6 +206,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
     {include file="javascript-includes.tpl" Validator=true}
 	{jsfile src="ajax-helpers.js"}
+	{jsfile src="autocomplete.js"}
 	{jsfile src="profile.js"}
 
 	<script type="text/javascript">
@@ -237,6 +238,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 					});
 
 			profileForm.bootstrapValidator();
+
+			$('#txtOrganization').orgAutoComplete("ajax/autocomplete.php?type={AutoCompleteType::Organization}");
 		});
 	</script>
 

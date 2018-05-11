@@ -156,8 +156,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
                 <div class="col-xs-12 col-sm-6" id="organization">
                     <div class="form-group">
-                        <label class="reg" for="organization">{translate key="Organization"}</label>
-                        {textbox name="ORGANIZATION" class="input" value="Organization" size="20"}
+                        <label class="reg" for="txtOrganization">{translate key="Organization"}</label>
+                        {textbox name="ORGANIZATION" class="input" value="Organization" size="20" id="txtOrganization"}
                     </div>
                 </div>
             </div>
@@ -165,8 +165,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
             <div class="row">
                 <div class="col-xs-12 col-sm-6" id="position">
                     <div class="form-group">
-                        <label class="reg" for="position">{translate key="Position"}</label>
-                        {textbox name="POSITION" class="input" value="Position" size="20"}
+                        <label class="reg" for="txtPosition">{translate key="Position"}</label>
+                        {textbox name="POSITION" class="input" value="Position" size="20" id="txtPosition"}
                     </div>
                 </div>
 
@@ -229,6 +229,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
     {jsfile src="js/jstz.min.js"}
     {jsfile src="ajax-helpers.js"}
+    {jsfile src="autocomplete.js"}
     {jsfile src="registration.js"}
 
     <script type="text/javascript">
@@ -263,9 +264,11 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                     e.preventDefault();
                 });
 
-            $frmRegister.bootstrapValidator()
-        })
-        ;
+            $frmRegister.bootstrapValidator();
+
+            $('#txtOrganization').orgAutoComplete("ajax/autocomplete.php?type={AutoCompleteType::Organization}");
+
+        });
     </script>
 
     <div id="colorbox">
