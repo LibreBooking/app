@@ -357,18 +357,18 @@ class ManageScheduleService
      */
     public function UpdateCustomLayoutPeriod($scheduleId, $start, $end, $originalStart)
     {
-        $overlappingPeriod = $this->CustomLayoutPeriodOverlaps($scheduleId, $start, $end);
-        if ($overlappingPeriod != null) {
-
-            if ($overlappingPeriod->BeginDate()->Equals($originalStart))
-            {
+//        $overlappingPeriod = $this->CustomLayoutPeriodOverlaps($scheduleId, $start, $end);
+//        if ($overlappingPeriod != null) {
+//
+//            if ($overlappingPeriod->BeginDate()->Equals($originalStart))
+//            {
                 $this->scheduleRepository->DeleteCustomLayoutPeriod($scheduleId, $originalStart);
                 $this->scheduleRepository->AddCustomLayoutPeriod($scheduleId, $start, $end);
-            }
-        }
-        else {
-            $this->scheduleRepository->AddCustomLayoutPeriod($scheduleId, $start, $end);
-        }
+//            }
+//        }
+//        else {
+//            $this->scheduleRepository->AddCustomLayoutPeriod($scheduleId, $start, $end);
+//        }
     }
 
     /**
@@ -663,7 +663,7 @@ class ManageSchedulesPresenter extends ActionPresenter
                     'start' => $period->BeginDate()->Format($dateFormat),
                     'end' => $period->EndDate()->Format($dateFormat),
                     'allDay' => false,
-                    'startEditable' => true
+                    'startEditable' => true,
                 );
             }
 

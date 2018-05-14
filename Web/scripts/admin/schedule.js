@@ -621,7 +621,6 @@ function ScheduleManagement(opts) {
                 eventClick: function (event, jsEvent, view) {
                     elements.deleteSlotStartDate.val(event.start.format('YYYY-MM-DD HH:mm'));
                     elements.deleteSlotEndDate.val(event.end.format('YYYY-MM-DD HH:mm'));
-                    elements.deleteCustomLayoutDialog.zIndex(calendar.zIndex()+1);
                     elements.deleteCustomLayoutDialog.show();
                     elements.deleteCustomLayoutDialog.position({
                         my: 'left bottom',

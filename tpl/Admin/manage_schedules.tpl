@@ -646,7 +646,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
         <input type="hidden" id="slotId" {formname key=LAYOUT_PERIOD_ID} />
     </form>
 
-    <div id="deleteCustomLayoutDialog" class="default-box-shadow">
+    <div id="deleteCustomLayoutDialog" style="z-index:10000;" class="default-box-shadow">
         <form id="deleteCustomTimeSlotForm" method="post">
             <input type="hidden" id="deleteSlotStartDate" {formname key=BEGIN_DATE} />
             <input type="hidden" id="deleteSlotEndDate" {formname key=END_DATE} />
