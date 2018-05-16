@@ -53,9 +53,12 @@ class CalendarPresenter extends CommonCalendarPresenter
             $selectedResourceId);
 
         $availableSlots = array();
-        if (!empty($selectedResourceId)) {
-            $resource = $this->resourceService->GetResource($selectedResourceId);
-            $selectedScheduleId = $resource->GetScheduleId();
+        if (!empty($selectedResourceId) || !empty($selectedScheduleId)) {
+
+            if (!empty($selectedResourceId)) {
+                $resources = $this->resourceService->GetResource($selectedResourceId);
+                $selectedScheduleId = $resources->GetScheduleId();
+            }
 
             $scheduleLayout = $this->scheduleRepository->GetLayout($selectedScheduleId, new ScheduleLayoutFactory());
             if ($scheduleLayout->UsesCustomLayout()) {
@@ -63,7 +66,7 @@ class CalendarPresenter extends CommonCalendarPresenter
                     $slots = $scheduleLayout->GetLayout($date, true);
                     foreach ($slots as $slot) {
                         if (!$this->OverlapsAnyReservation($slot, $reservations) && !$this->OverlapsAnyBlackout($slot, $blackouts)) {
-                            $availableSlots[] = new ReservableCalendarSlot($slot, $selectedResourceId);
+                            $availableSlots[] = new ReservableCalendarSlot($slot, $selectedResourceId, $selectedScheduleId);
                         }
                     }
                 }

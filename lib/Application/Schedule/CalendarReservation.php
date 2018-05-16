@@ -107,6 +107,11 @@ class CalendarReservation
      */
     public $IsEditable;
 
+    /**
+     * @var int
+     */
+    public $ScheduleId;
+
     private function __construct(Date $startDate, Date $endDate, $resourceName, $referenceNumber)
     {
         $this->StartDate = $startDate;
@@ -267,6 +272,7 @@ class CalendarReservation
             $cr->IsEditable = false;
             $cr->Class = 'reservable';
             $cr->ResourceId = $period->ResourceId;
+            $cr->ScheduleId = $period->ScheduleId;
             $res[] = $cr;
         }
 
@@ -324,6 +330,11 @@ class CalendarReservation
             return  sprintf('%s?rid=%s&sd=%s&ed=%s', Pages::RESERVATION, $this->ResourceId, $this->StartDate->Format($format), $this->EndDate->Format($format));
         }
 
+        if (!empty($this->ScheduleId)) {
+            $format = Resources::GetInstance()->GetDateFormat('url');
+            return  sprintf('%s?sid=%s&sd=%s&ed=%s', Pages::RESERVATION, $this->ScheduleId, $this->StartDate->Format($format), $this->EndDate->Format($format));
+        }
+
         return '';
     }
 }
@@ -340,10 +351,16 @@ class ReservableCalendarSlot
      */
     public $ResourceId;
 
-    public function __construct(SchedulePeriod $period, $resourceId)
+    /**
+     * @var int
+     */
+    public $ScheduleId;
+
+    public function __construct(SchedulePeriod $period, $resourceId, $scheduleId)
     {
         $this->Period = $period;
         $this->ResourceId = $resourceId;
+        $this->ScheduleId = $scheduleId;
     }
 
     public function BeginDate()
