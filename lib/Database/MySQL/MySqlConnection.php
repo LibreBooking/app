@@ -160,4 +160,8 @@ class MySqlLimitCommand extends SqlCommand
 		return $this->baseCommand->GetQuery() . sprintf(" LIMIT %s OFFSET %s",  $this->limit, $this->offset);
 	}
 
+    public function ContainsGroupConcat()
+    {
+        return $this->baseCommand->ContainsGroupConcat();
+    }
 }

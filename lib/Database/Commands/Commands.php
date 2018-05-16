@@ -1623,6 +1623,11 @@ class GetFullReservationListCommand extends SqlCommand
         parent::__construct(QueryBuilder::GET_RESERVATION_LIST_FULL());
         $this->AddParameter(new Parameter(ParameterNames::RESERVATION_USER_LEVEL_ID, ReservationUserLevel::OWNER));
     }
+
+    public function ContainsGroupConcat()
+    {
+        return true;
+    }
 }
 
 class GetReservationsByAccessoryNameCommand extends SqlCommand
