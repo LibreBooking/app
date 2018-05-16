@@ -241,4 +241,9 @@ class FilterCommand extends SqlCommand
 
 		return $query;
 	}
+
+	public function ContainsGroupConcat()
+    {
+        return $this->baseCommand->ContainsGroupConcat();
+    }
 }
