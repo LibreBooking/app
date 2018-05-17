@@ -94,6 +94,14 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 					<input id="referenceNumber" type="text" class="form-control" value="{$ReferenceNumber}"
 						   placeholder="{translate key=ReferenceNumber}"/>
 				</div>
+                <div class="form-group filter-title {$groupClass}">
+					<input id="reservationTitle" type="text" class="form-control" value="{$ReservationTitle}"
+						   placeholder="{translate key=Title}"/>
+				</div>
+                <div class="form-group filter-title {$groupClass}">
+					<input id="reservationDescription" type="text" class="form-control" value="{$ReservationDescription}"
+						   placeholder="{translate key=Description}"/>
+				</div>
 				<div class="form-group filter-resourceStatus {$groupClass}">
 					<select id="resourceStatusIdFilter" class="form-control">
 						<option value="">{translate key=AllResourceStatuses}</option>

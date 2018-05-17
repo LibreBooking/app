@@ -69,6 +69,8 @@ class QueryStringKeys
 	const RESOURCE_TYPE_ID = 'rtid';
 	const RESERVATION_RESOURCE_STATUS_ID = 'rrsid';
 	const RESERVATION_RESOURCE_REASON_ID = 'rrsrid';
+	const RESERVATION_TITLE = 'rtitle';
+	const RESERVATION_DESCRIPTION = 'rdesc';
 	const SCHEDULE_ID = 'sid';
 	const SHOW_FULL_WEEK = 'sfw';
 	const SOURCE_REFERENCE_NUMBER = 'srn';

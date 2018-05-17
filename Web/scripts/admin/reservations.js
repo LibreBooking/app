@@ -14,6 +14,8 @@ function ReservationManagement(opts, approval) {
         updateScope: $('#hdnSeriesUpdateScope'),
         resourceStatusIdFilter: $('#resourceStatusIdFilter'),
         resourceReasonIdFilter: $('#resourceReasonIdFilter'),
+        title: $('#reservationTitle'),
+        description: $('#reservationDescription'),
 
         deleteInstanceDialog: $('#deleteInstanceDialog'),
         deleteSeriesDialog: $('#deleteSeriesDialog'),
@@ -356,7 +358,7 @@ function ReservationManagement(opts, approval) {
             attributeString += '&' + $(attribute).attr('name') + '=' + $(attribute).val();
         });
 
-        var filterQuery = 'sd=' + elements.startDate.val() + '&ed=' + elements.endDate.val() + '&sid=' + elements.scheduleId.val() + '&rid=' + elements.resourceId.val() + '&uid=' + elements.userId.val() + '&un=' + elements.userFilter.val() + '&rn=' + elements.referenceNumber.val() + '&rsid=' + elements.statusId.val() + '&rrsid=' + elements.resourceStatusIdFilter.val() + '&rrsrid=' + reasonId;
+        var filterQuery = 'sd=' + elements.startDate.val() + '&ed=' + elements.endDate.val() + '&sid=' + elements.scheduleId.val() + '&rid=' + elements.resourceId.val() + '&uid=' + elements.userId.val() + '&un=' + elements.userFilter.val() + '&rn=' + elements.referenceNumber.val() + '&rsid=' + elements.statusId.val() + '&rrsid=' + elements.resourceStatusIdFilter.val() + '&rrsrid=' + reasonId + '&rtitle=' + elements.title.val() + '&rdesc=' + elements.description.val();
 
         window.location = document.location.pathname + '?' + encodeURI(filterQuery) + attributeString;
     }

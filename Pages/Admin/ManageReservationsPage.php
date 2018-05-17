@@ -152,6 +152,16 @@ interface IManageReservationsPage extends IPageable, IActionPage
     public function GetResourceStatusReasonFilterId();
 
     /**
+     * @return string
+     */
+    public function GetResourceFilterTitle();
+
+    /**
+     * @return string
+     */
+    public function GetResourceFilterDescription();
+
+    /**
      * @param $reservationStatusId int
      */
     public function SetReservationStatusId($reservationStatusId);
@@ -301,6 +311,16 @@ interface IManageReservationsPage extends IPageable, IActionPage
      * @param object $terms
      */
     public function BindTerms($terms);
+
+    /**
+     * @param string $title
+     */
+    public function SetReservationTitle($title);
+
+    /**
+     * @param string $description
+     */
+    public function SetReservationDescription($description);
 }
 
 class ManageReservationsPage extends ActionPage implements IManageReservationsPage
@@ -367,109 +387,66 @@ class ManageReservationsPage extends ActionPage implements IManageReservationsPa
         $this->Set('reservations', $reservations);
     }
 
-
     public function FilterButtonPressed()
     {
         return count($_GET) > 0;
     }
 
-    /**
-     * @return string
-     */
     public function GetStartDate()
     {
         return $this->server->GetQuerystring(QueryStringKeys::START_DATE);
     }
 
-    /**
-     * @return string
-     */
     public function GetEndDate()
     {
         return $this->server->GetQuerystring(QueryStringKeys::END_DATE);
     }
 
-    /**
-     * @param Date $date
-     * @return void
-     */
     public function SetStartDate($date)
     {
         $this->Set('StartDate', $date);
     }
 
-    /**
-     * @param Date $date
-     * @return void
-     */
     public function SetEndDate($date)
     {
         $this->Set('EndDate', $date);
     }
 
-    /**
-     * @return int
-     */
     public function GetUserId()
     {
         return $this->GetQuerystring(QueryStringKeys::USER_ID);
     }
 
-    /**
-     * @return string
-     */
     public function GetUserName()
     {
         return $this->GetQuerystring(QueryStringKeys::USER_NAME);
     }
 
-    /**
-     * @return int
-     */
     public function GetScheduleId()
     {
         return $this->GetQuerystring(QueryStringKeys::SCHEDULE_ID);
     }
 
-    /**
-     * @return int
-     */
     public function GetResourceId()
     {
         return $this->GetQuerystring(QueryStringKeys::RESOURCE_ID);
     }
 
-    /**
-     * @param int $userId
-     * @return void
-     */
     public function SetUserId($userId)
     {
         $this->Set('UserIdFilter', $userId);
     }
 
-    /**
-     * @param string $userName
-     * @return void
-     */
     public function SetUserName($userName)
     {
         $this->Set('UserNameFilter', $userName);
     }
 
-    /**
-     * @param int $scheduleId
-     * @return void
-     */
     public function SetScheduleId($scheduleId)
     {
         $this->Set('ScheduleId', $scheduleId);
     }
 
-    /**
-     * @param int $resourceId
-     * @return void
-     */
     public function SetResourceId($resourceId)
     {
         $this->Set('ResourceId', $resourceId);
@@ -485,9 +462,6 @@ class ManageReservationsPage extends ActionPage implements IManageReservationsPa
         $this->Set('Resources', $resources);
     }
 
-    /**
-     * @return string
-     */
     public function GetReferenceNumber()
     {
         $rn = $this->GetQuerystring(QueryStringKeys::REFERENCE_NUMBER);
@@ -499,175 +473,120 @@ class ManageReservationsPage extends ActionPage implements IManageReservationsPa
         return $rn;
     }
 
-    /**
-     * @param string $referenceNumber
-     * @return void
-     */
     public function SetReferenceNumber($referenceNumber)
     {
         $this->Set('ReferenceNumber', $referenceNumber);
     }
 
-    /**
-     * @return int
-     */
     function GetPageNumber()
     {
         return $this->pageablePage->GetPageNumber();
     }
 
-    /**
-     * @return int
-     */
     function GetPageSize()
     {
         return $this->pageablePage->GetPageSize();
     }
 
-    /**
-     * @param PageInfo $pageInfo
-     * @return void
-     */
     function BindPageInfo(PageInfo $pageInfo)
     {
         $this->pageablePage->BindPageInfo($pageInfo);
     }
 
-    /**
-     * @return string
-     */
     public function GetDeleteReferenceNumber()
     {
         return $this->GetQuerystring(QueryStringKeys::REFERENCE_NUMBER);
     }
 
-    /**
-     * @return string
-     */
     public function GetDeleteScope()
     {
         return $this->GetForm(FormKeys::SERIES_UPDATE_SCOPE);
     }
 
-    /**
-     * @return int
-     */
     public function GetReservationStatusId()
     {
         return $this->GetQuerystring(QueryStringKeys::RESERVATION_STATUS_ID);
     }
 
-    /**
-     * @param $reservationStatusId int
-     * @return void
-     */
     public function SetReservationStatusId($reservationStatusId)
     {
         $this->Set('ReservationStatusId', $reservationStatusId);
     }
 
-    /**
-     * @return string
-     */
     public function GetApproveReferenceNumber()
     {
         return $this->GetQuerystring(QueryStringKeys::REFERENCE_NUMBER);
     }
 
-    /**
-     * @return string
-     */
     public function GetFormat()
     {
         return $this->GetQuerystring(QueryStringKeys::FORMAT);
     }
 
-    /**
-     * @param $attributeList IEntityAttributeList
-     */
     public function SetAttributes($attributeList)
     {
         $this->Set('AttributeList', $attributeList);
     }
 
-    /**
-     * @param $statusReasons ResourceStatusReason[]
-     */
     public function BindResourceStatuses($statusReasons)
     {
         $this->Set('StatusReasons', $statusReasons);
     }
 
-    /**
-     * @return int
-     */
     public function GetResourceStatus()
     {
         return $this->GetForm(FormKeys::RESOURCE_STATUS_ID);
     }
 
-    /**
-     * @return int
-     */
     public function GetResourceStatusReason()
     {
         return $this->GetForm(FormKeys::RESOURCE_STATUS_REASON_ID);
     }
 
-    /**
-     * @return string
-     */
     public function GetResourceStatusReferenceNumber()
     {
         return $this->GetForm(FormKeys::REFERENCE_NUMBER);
     }
 
-    /**
-     * @return string
-     */
     public function GetUpdateScope()
     {
         return $this->GetForm(FormKeys::RESOURCE_STATUS_UPDATE_SCOPE);
     }
 
-    /**
-     * @return int
-     */
     public function GetUpdateResourceId()
     {
         return $this->GetForm(FormKeys::RESOURCE_ID);
     }
 
-    /**
-     * @param int $statusId
-     */
     public function SetResourceStatusFilterId($statusId)
     {
         $this->Set('ResourceStatusFilterId', $statusId != '' ? intval($statusId) : '');
     }
 
-    /**
-     * @param int $reasonId
-     */
     public function SetResourceStatusReasonFilterId($reasonId)
     {
         $this->Set('ResourceStatusReasonFilterId', $reasonId != '' ? intval($reasonId) : '');
     }
 
-    /**
-     * @return int
-     */
     public function GetResourceStatusFilterId()
     {
         return $this->GetQuerystring(QueryStringKeys::RESERVATION_RESOURCE_STATUS_ID);
     }
 
-    /**
-     * @return int
-     */
     public function GetResourceStatusReasonFilterId()
     {
         return $this->GetQuerystring(QueryStringKeys::RESERVATION_RESOURCE_REASON_ID);
+    }
+
+    public function GetResourceFilterTitle()
+    {
+        return $this->GetQuerystring(QueryStringKeys::RESERVATION_TITLE);
+
+    }
+
+    public function GetResourceFilterDescription()
+    {
+        return $this->GetQuerystring(QueryStringKeys::RESERVATION_DESCRIPTION);
     }
 
     public function SetCanUpdateResourceStatus($canUpdate)
@@ -711,9 +630,6 @@ class ManageReservationsPage extends ActionPage implements IManageReservationsPa
         return $this->GetForm(FormKeys::ATTRIBUTE_VALUE);
     }
 
-    /**
-     * @param string[] $errors
-     */
     public function BindAttributeUpdateErrors($errors)
     {
         $this->SetJson(null, $errors);
@@ -783,5 +699,15 @@ class ManageReservationsPage extends ActionPage implements IManageReservationsPa
     public function BindTerms($terms)
     {
         $this->SetJson($terms);
+    }
+
+    public function SetReservationTitle($title)
+    {
+        $this->Set('ReservationTitle', $title);
+    }
+
+    public function SetReservationDescription($description)
+    {
+        $this->Set('ReservationDescription', $description);
     }
 }

@@ -132,6 +132,8 @@ class ManageReservationsPresenter extends ActionPresenter
         $referenceNumber = $this->page->GetReferenceNumber();
         $resourceStatusId = $this->page->GetResourceStatusFilterId();
         $resourceReasonId = $this->page->GetResourceStatusReasonFilterId();
+        $title = $this->page->GetResourceFilterTitle();
+        $description = $this->page->GetResourceFilterDescription();
 
         if (!$this->page->FilterButtonPressed()) {
             // Get filter settings from db
@@ -143,6 +145,8 @@ class ManageReservationsPresenter extends ActionPresenter
             $reservationStatusId = $filterPreferences->GetFilterReservationStatusId();
             $resourceStatusId = $filterPreferences->GetFilterResourceStatusId();
             $resourceReasonId = $filterPreferences->GetFilterResourceReasonId();
+            $title = $filterPreferences->GetFilterTitle();
+            $description = $filterPreferences->GetFilterDescription();
             $filters = $filterPreferences->GetFilterCustomAttributes();
         }
         else {
@@ -165,6 +169,8 @@ class ManageReservationsPresenter extends ActionPresenter
             $filterPreferences->SetFilterReservationStatusId($reservationStatusId);
             $filterPreferences->SetFilterResourceStatusId($resourceStatusId);
             $filterPreferences->SetFilterResourceReasonId($resourceReasonId);
+            $filterPreferences->SetFilterTitle($title);
+            $filterPreferences->SetFilterDescription($description);
             $filterPreferences->SetFilterCustomAttributes($filters);
 
             $filterPreferences->Update();
@@ -193,9 +199,11 @@ class ManageReservationsPresenter extends ActionPresenter
         $this->page->SetResourceStatusReasonFilterId($resourceReasonId);
         $this->page->SetAttributeFilters($attributeFilters);
         $this->page->SetReservationAttributes($reservationAttributes);
+        $this->page->SetReservationTitle($title);
+        $this->page->SetReservationDescription($description);
 
         $filter = new ReservationFilter($startDate, $endDate, $referenceNumber, $scheduleId, $resourceId, $userId,
-            $reservationStatusId, $resourceStatusId, $resourceReasonId, $attributeFilters);
+            $reservationStatusId, $resourceStatusId, $resourceReasonId, $attributeFilters, $title, $description);
 
         $reservations = $this->manageReservationsService->LoadFiltered($this->page->GetPageNumber(),
             $this->page->GetPageSize(),
@@ -455,7 +463,7 @@ class ManageReservationsPresenter extends ActionPresenter
                     $importCount++;
                 }
                 else {
-                    $messages[] = 'Invalid data in row ' . $rowNum. '. Ensure the user and resource in this row exist.';
+                    $messages[] = 'Invalid data in row ' . $rowNum . '. Ensure the user and resource in this row exist.';
                 }
             } catch (Exception $ex) {
                 $messages[] = 'Invalid data in row ' . $rowNum;
@@ -533,6 +541,8 @@ class ReservationFilterPreferences
     private $FilterResourceStatusId = '';
     private $FilterResourceReasonId = '';
     private $FilterCustomAttributes = '';
+    private $FilterTitle = '';
+    private $FilterDescription = '';
 
     /**
      * @var User
@@ -599,6 +609,16 @@ class ReservationFilterPreferences
         return $this->FilterResourceReasonId;
     }
 
+    public function GetFilterTitle()
+    {
+        return $this->FilterTitle;
+    }
+
+    public function GetFilterDescription()
+    {
+        return $this->FilterDescription;
+    }
+
     public function SetFilterStartDateDelta($FilterStartDateDelta)
     {
         $this->FilterStartDateDelta = $FilterStartDateDelta;
@@ -661,6 +681,16 @@ class ReservationFilterPreferences
         $this->FilterResourceReasonId = $reasonId;
     }
 
+    public function SetFilterTitle($title)
+    {
+        $this->FilterTitle = $title;
+    }
+
+    public function SetFilterDescription($description)
+    {
+        $this->FilterDescription = $description;
+    }
+
     /**
      * @return array
      */
@@ -692,6 +722,8 @@ class ReservationFilterPreferences
         'FilterResourceStatusId' => '',
         'FilterResourceReasonId' => '',
         'FilterCustomAttributes' => '',
+        'FilterTitle' => '',
+        'FilterDescription' => ''
     );
 
 
