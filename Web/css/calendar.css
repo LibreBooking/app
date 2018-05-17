@@ -115,7 +115,8 @@ ul.jqtree-tree .jqtree-toggler {
   font-weight: bold;
 }
 #dayDialog,
-#deleteCustomLayoutDialog {
+#deleteCustomLayoutDialog,
+#confirmCreateSlotDialog {
   display: none;
   background-color: #F9F9F9;
   border-color: #BCBCBC;
@@ -124,7 +125,8 @@ ul.jqtree-tree .jqtree-toggler {
   padding: 12px;
 }
 #dayDialog a,
-#deleteCustomLayoutDialog a {
+#deleteCustomLayoutDialog a,
+#confirmCreateSlotDialog a {
   padding: 0 5px;
 }
 .fc-day {

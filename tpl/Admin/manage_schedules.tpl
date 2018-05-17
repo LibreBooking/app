@@ -658,6 +658,11 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
         </form>
     </div>
 
+    <div id="confirmCreateSlotDialog" class="default-box-shadow" style="z-index:10000;">
+        {cancel_button id="cancelCreateSlot"}
+        {add_button id="confirmCreateOK"}
+    </div>
+
     {control type="DatePickerSetupControl" ControlId="availabilityStartDate" AltId="formattedBeginDate" DefaultDate=$StartDate}
     {control type="DatePickerSetupControl" ControlId="availabilityEndDate" AltId="formattedEndDate" DefaultDate=$EndDate}
 

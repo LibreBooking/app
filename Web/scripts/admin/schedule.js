@@ -64,7 +64,9 @@ function ScheduleManagement(opts) {
         deleteSlotEndDate: $('#deleteSlotEndDate'),
         cancelDeleteSlot: $('#cancelDeleteSlot'),
         deleteCustomTimeSlotForm: $('#deleteCustomTimeSlotForm'),
-        deleteSlot: $('#deleteSlot')
+        deleteSlot: $('#deleteSlot'),
+        confirmCreateSlotDialog: $('#confirmCreateSlotDialog'),
+        cancelCreateSlot: $('#cancelCreateSlot')
     };
 
     ScheduleManagement.prototype.init = function () {
@@ -221,6 +223,10 @@ function ScheduleManagement(opts) {
 
         elements.cancelDeleteSlot.click(function(e) {
             elements.deleteCustomLayoutDialog.hide();
+        });
+
+        elements.cancelCreateSlot.click(function (e) {
+            elements.confirmCreateSlotDialog.hide();
         });
 
         $('.autofillBlocked').click(function (e) {
@@ -609,13 +615,24 @@ function ScheduleManagement(opts) {
                 select: function (start, end, jsEvent, view) {
                     if (view.name != 'month')
                     {
-                        elements.slotStartDate.val(start.format('YYYY-MM-DD HH:mm'));
-                        elements.slotEndDate.val(end.format('YYYY-MM-DD HH:mm'));
-                        ajaxPost(elements.layoutSlotForm,
-                            options.submitUrl + '?action=' + options.addLayoutSlot + '&sid=' + getActiveScheduleId(),
-                            null,
-                            function() {_fullCalendar.fullCalendar('refetchEvents');}
+                        elements.confirmCreateSlotDialog.show();
+                        elements.confirmCreateSlotDialog.position({
+                            my: 'left bottom',
+                            at: 'left top',
+                            of: jsEvent
+                        });
+                        $('#confirmCreateOK').click(function (e) {
+                            elements.slotStartDate.val(start.format('YYYY-MM-DD HH:mm'));
+                            elements.slotEndDate.val(end.format('YYYY-MM-DD HH:mm'));
+                            ajaxPost(elements.layoutSlotForm,
+                                options.submitUrl + '?action=' + options.addLayoutSlot + '&sid=' + getActiveScheduleId(),
+                                null,
+                                function () {
+                                    _fullCalendar.fullCalendar('refetchEvents');
+                                    elements.confirmCreateSlotDialog.hide();
+                                }
                             );
+                        });
                     }
                 },
                 eventClick: function (event, jsEvent, view) {

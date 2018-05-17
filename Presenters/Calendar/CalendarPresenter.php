@@ -65,7 +65,7 @@ class CalendarPresenter extends CommonCalendarPresenter
                 foreach ($dateRange->Dates() as $date) {
                     $slots = $scheduleLayout->GetLayout($date, true);
                     foreach ($slots as $slot) {
-                        if (!$this->OverlapsAnyReservation($slot, $reservations) && !$this->OverlapsAnyBlackout($slot, $blackouts)) {
+                        if (!$slot->EndDate()->LessThanOrEqual(Date::Now()) && !$this->OverlapsAnyReservation($slot, $reservations) && !$this->OverlapsAnyBlackout($slot, $blackouts)) {
                             $availableSlots[] = new ReservableCalendarSlot($slot, $selectedResourceId, $selectedScheduleId);
                         }
                     }

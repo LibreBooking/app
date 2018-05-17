@@ -70,11 +70,6 @@
 			  checkreturn="true"
 			  dir="${mysql.bin}"/>
 
-		<echo message="Application data file: ${sql.file.data}"/>
-		<exec command="mysql --user=${mysql.username} --password=${mysql.password} --host=${mysql.server} ${mysql.database} &lt; ${application.startdir}/${sql.file.data}"
-			  checkreturn="true"
-			  dir="${mysql.bin}"/>
-
 	</target>
 
 	<target name="upgrade.db" depends="custom.tasks">
@@ -90,6 +85,11 @@
 		<upgradedb username="${mysql.username}" password="${mysql.password}"
 				   host="${mysql.server}" database="${mysql.database}"
 				   schemadir="${application.startdir}/database_schema"/>
+
+        <echo message="Application data file: ${sql.file.data}"/>
+        <exec command="mysql --user=${mysql.username} --password=${mysql.password} --host=${mysql.server} ${mysql.database} &lt; ${application.startdir}/${sql.file.data}"
+              checkreturn="true"
+              dir="${mysql.bin}"/>
 
 		<echo message="Test data file: ${sql.file.test.data}"/>
 		<exec command="mysql --user=${mysql.username} --password=${mysql.password} --host=${mysql.server} ${mysql.database} &lt; ${application.startdir}/${sql.file.test.data}"
