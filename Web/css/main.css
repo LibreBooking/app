@@ -650,6 +650,9 @@ input:checked + .slider:before {
   height: 100%;
   width: 100%;
 }
+label.customAttribute {
+  display: block;
+}
 #page-help-admin h2,
 #page-help-admin h3,
 #page-help h2,
