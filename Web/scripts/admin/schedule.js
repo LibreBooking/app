@@ -565,6 +565,8 @@ function ScheduleManagement(opts) {
     var showChangeCustomLayout = function (scheduleId) {
         var customLayoutScheduleId = scheduleId;
 
+        $('#customLayoutDialog').unbind();
+
         function updateEvent(event) {
             elements.slotStartDate.val(event.start.format('YYYY-MM-DD HH:mm'));
             elements.slotEndDate.val(event.end.format('YYYY-MM-DD HH:mm'));
