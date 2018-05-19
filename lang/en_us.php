@@ -754,6 +754,8 @@ class en_us extends Language
         $strings['UpdateEmailTemplateSuccess'] = 'Updated email template';
         $strings['UpdateEmailTemplateFailure'] = 'Could not update email template. Check to make sure the directory is writable.';
         $strings['BulkResourceDelete'] = 'Bulk Resource Delete';
+        $strings['NewVersion'] = 'New version!';
+        $strings['WhatsNew'] = 'Whats New?';
         // End Strings
 
 		// Install

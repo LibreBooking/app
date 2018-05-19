@@ -137,6 +137,8 @@ abstract class Page implements IPage
         $this->Set('IsTablet', $this->IsTablet);
         $this->Set('IsDesktop', $this->IsDesktop);
         $this->Set('GoogleAnalyticsTrackingId', Configuration::Instance()->GetSectionKey(ConfigSection::GOOGLE_ANALYTICS, ConfigKeys::GOOGLE_ANALYTICS_TRACKING_ID));
+        $this->Set('ShowNewVersion', $this->ShouldShowNewVersion());
+
     }
 
     protected function SetTitle($title)
@@ -421,8 +423,7 @@ abstract class Page implements IPage
     private function SetSecurityHeaders()
     {
         $config = Configuration::Instance();
-        if ($config->GetSectionKey(ConfigSection::SECURITY, ConfigKeys::SECURITY_HEADERS, new BooleanConverter()))
-        {
+        if ($config->GetSectionKey(ConfigSection::SECURITY, ConfigKeys::SECURITY_HEADERS, new BooleanConverter())) {
             header('Strict-Transport-Security: ' . $config->GetSectionKey(ConfigSection::SECURITY, ConfigKeys::SECURITY_STRICT_TRANSPORT));
             header('X-Frame-Options: ' . $config->GetSectionKey(ConfigSection::SECURITY, ConfigKeys::SECURITY_X_FRAME));
             header('X-Xss: ' . $config->GetSectionKey(ConfigSection::SECURITY, ConfigKeys::SECURITY_X_XSS));
@@ -434,5 +435,37 @@ abstract class Page implements IPage
     protected function IsPost()
     {
         return $_SERVER['REQUEST_METHOD'] == 'POST';
+    }
+
+    private function ShouldShowNewVersion()
+    {
+        if (!$this->server->GetUserSession()->IsAdmin) {
+            return false;
+        }
+
+        $newVersion = $this->server->GetCookie('new_version');
+        if (empty($newVersion)) {
+            $cookie = sprintf('v=%s,fs=%s', Configuration::VERSION, Date::Now()->Timestamp());
+            $this->server->SetCookie(new Cookie('new_version', $cookie));
+            return true;
+        }
+
+        $parts = explode(',', $newVersion);
+        $versionParts = explode('=', $parts[0]);
+        $firstShownParts = explode('=', $parts[1]);
+
+        if ($versionParts[1] != Configuration::VERSION)
+        {
+            $cookie = sprintf('v=%s,fs=%s', Configuration::VERSION, Date::Now()->Timestamp());
+            $this->server->SetCookie(new Cookie('new_version', $cookie));
+            return true;
+        }
+
+        if (Date::Now()->AddDays(-7)->Timestamp() > $firstShownParts[1])
+        {
+            return false;
+        }
+
+        return true;
     }
 }

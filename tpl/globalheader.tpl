@@ -113,8 +113,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
         {/foreach}
     {/if}
     {if $CssUrl neq ''}
-		{cssfile src=$CssUrl}
-	{/if}
+        {cssfile src=$CssUrl}
+    {/if}
     {if $CssExtensionFile neq ''}
         {cssfile src=$CssExtensionFile}
     {/if}
@@ -140,7 +140,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="{$HomeUrl}">{html_image src="$LogoUrl?{$Version}" alt="$Title" class="logo"}</a>
+                <a class="navbar-brand"
+                   href="{$HomeUrl}">{html_image src="$LogoUrl?{$Version}" alt="$Title" class="logo"}</a>
             </div>
             <div class="collapse navbar-collapse" id="booked-navigation">
                 <ul class="nav navbar-nav">
@@ -179,8 +180,11 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                                 <li id="navResourceCalendar"><a
                                             href="{$Path}{Pages::CALENDAR}">{translate key="ResourceCalendar"}</a></li>
                                 <!--<li class="menuitem"><a href="#">{translate key="Current Status"}</a></li>-->
-                                <li id="navFindATime"><a href="{$Path}{Pages::OPENINGS}">{translate key="FindATime"}</a></li>
-                                <li id="navFindATime"><a href="{$Path}{Pages::SEARCH_RESERVATIONS}">{translate key="SearchReservations"}</a></li>
+                                <li id="navFindATime"><a href="{$Path}{Pages::OPENINGS}">{translate key="FindATime"}</a>
+                                </li>
+                                <li id="navFindATime"><a
+                                            href="{$Path}{Pages::SEARCH_RESERVATIONS}">{translate key="SearchReservations"}</a>
+                                </li>
                             </ul>
                         </li>
                         {if $CanViewAdmin}
@@ -221,9 +225,9 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                                     </li>
                                     <li class="divider"></li>
                                     {if $PaymentsEnabled}
-                                    <li id="navManagePayments"><a
-                                                href="{$Path}admin/manage_payments.php">{translate key="ManagePayments"}</a>
-                                    </li>
+                                        <li id="navManagePayments"><a
+                                                    href="{$Path}admin/manage_payments.php">{translate key="ManagePayments"}</a>
+                                        </li>
                                     {/if}
                                     {*<li class="dropdown-header">{translate key=Customization}</li>*}
                                     <li id="navManageAttributes"><a
@@ -302,15 +306,21 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">{translate key="Schedule"} <b
                                         class="caret"></b></a>
                             <ul class="dropdown-menu">
-                                <li id="navViewSchedule"><a href="view-schedule.php">{translate key='ViewSchedule'}</a></li>
-                                <li id="navViewCalendar"><a href="view-calendar.php">{translate key='ViewCalendar'}</a></li>
+                                <li id="navViewSchedule"><a href="view-schedule.php">{translate key='ViewSchedule'}</a>
+                                </li>
+                                <li id="navViewCalendar"><a href="view-calendar.php">{translate key='ViewCalendar'}</a>
+                                </li>
                             </ul>
                         </li>
                     {/if}
                     {if $CanViewAdmin}
                         <li class="dropdown" id="navHelpDropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="fa fa-cog"></span><b
-                                        class="caret"></b></a>
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                <span class="fa fa-cog"></span>
+                                {if $ShowNewVersion}<span class="badge badge-new-version new-version"
+                                                          id="newVersionBadge">{translate key=NewVersion}</span>{/if}
+                                <b class="caret"></b>
+                            </a>
                             <ul class="dropdown-menu">
                                 {if $EnableConfigurationPage}
                                     <li id="navManageConfiguration"><a
@@ -331,6 +341,12 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                                 <li id="navDataCleanup"><a
                                             href="{$Path}admin/data_cleanup.php">{translate key="DataCleanup"}</a>
                                 </li>
+                                {if $ShowNewVersion}
+                                    <li class="divider new-version"></li>
+                                    <li id="navNewVersion" class="new-version">
+                                        <a href="https://www.bookedscheduler.com/whatsnew">{translate key=WhatsNew}</a>
+                                    </li>
+                                {/if}
                             </ul>
                         </li>
                     {/if}
@@ -340,7 +356,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                         <ul class="dropdown-menu">
                             <li id="navHelp"><a href="{$Path}help.php">{translate key=Help}</a></li>
                             {if $CanViewAdmin}
-                                <li id="navHelpAdmin"><a href="{$Path}help.php?ht=admin">{translate key=Administration}</a></li>{/if}
+                                <li id="navHelpAdmin"><a
+                                        href="{$Path}help.php?ht=admin">{translate key=Administration}</a></li>{/if}
                             <li id="navAbout"><a href="{$Path}help.php?ht=about">{translate key=About}</a></li>
                         </ul>
                     </li>

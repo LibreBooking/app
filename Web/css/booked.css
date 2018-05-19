@@ -653,6 +653,9 @@ input:checked + .slider:before {
 label.customAttribute {
   display: block;
 }
+.badge-new-version {
+  background-color: #88CC88;
+}
 #page-help-admin h2,
 #page-help-admin h3,
 #page-help h2,
