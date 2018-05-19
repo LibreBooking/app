@@ -30,8 +30,10 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
             <ul>
                 {async_validator id="logoFileExt"}
                 {async_validator id="cssFileExt"}
+                {async_validator id="faviconFileExt"}
                 {async_validator id="logoFile"}
                 {async_validator id="cssFile"}
+                {async_validator id="faviconFile"}
             </ul>
         </div>
 
@@ -45,8 +47,20 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
             <input type="file" {formname key=LOGO_FILE} class="pull-left"/>
 
             <a href="#" class="clearInput inline">{html_image src="cross-button.png"}</a>
-
         </div>
+
+        <div>
+            <h4>Favicon (*.ico, *.png, *.gif, *.jpg - 32px x 32px or 16px x 16px)</h4>
+
+            <div>
+                <a href="{$ScriptUrl}/{$FaviconUrl}" download="{$ScriptUrl}/img/{$FaviconUrl}">{$FaviconUrl}</a>
+                <a href="#" id="removeFavicon">{translate key=Remove}</a>
+            </div>
+            <input type="file" {formname key=FAVICON_FILE} class="pull-left"/>
+
+            <a href="#" class="clearInput inline">{html_image src="cross-button.png"}</a>
+        </div>
+
         <div>
             <div>
                 <h4>{translate key="CssFile"} (*.css)</h4>
@@ -103,6 +117,14 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
                 PerformAsyncAction($(this), function () {
                     return '{$smarty.server.SCRIPT_NAME}?action=removeLogo';
+                });
+            });
+
+            $('#removeFavicon').click(function (e) {
+                e.preventDefault();
+
+                PerformAsyncAction($(this), function () {
+                    return '{$smarty.server.SCRIPT_NAME}?action=removeFavicon';
                 });
             });
         });

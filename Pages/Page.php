@@ -109,6 +109,20 @@ abstract class Page implements IPage
             $this->smarty->assign('CssUrl', 'custom-style.css');
         }
 
+        $this->smarty->assign('FaviconUrl', 'favicon.ico');
+        if (file_exists($this->path . 'custom-favicon.png')) {
+            $this->smarty->assign('FaviconUrl', 'custom-favicon.png');
+        }
+        if (file_exists($this->path . 'img/custom-favicon.gif')) {
+            $this->smarty->assign('FaviconUrl', 'custom-favicon.gif');
+        }
+        if (file_exists($this->path . 'img/custom-favicon.jpg')) {
+            $this->smarty->assign('FaviconUrl', 'custom-favicon.jpg');
+        }
+        if (file_exists($this->path . 'img/custom-favicon.ico')) {
+            $this->smarty->assign('FaviconUrl', 'custom-favicon.ico');
+        }
+
         $logoUrl = Configuration::Instance()->GetKey(ConfigKeys::HOME_URL);
         if (empty($logoUrl)) {
             $logoUrl = $this->path . Pages::UrlFromId($userSession->HomepageId);

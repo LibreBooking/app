@@ -27,8 +27,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
         <!--meta http-equiv="REFRESH"
 			  content="{$SessionTimeoutSeconds};URL={$Path}logout.php?{QueryStringKeys::REDIRECT}={$smarty.server.REQUEST_URI|urlencode}"-->
     {/if}
-    <link rel="shortcut icon" href="{$Path}favicon.ico"/>
-    <link rel="icon" href="{$Path}favicon.ico"/>
+    <link rel="shortcut icon" href="{$Path}{$FaviconUrl}"/>
+    <link rel="icon" href="{$Path}{$FaviconUrl}"/>
     <!-- JavaScript -->
     {if $UseLocalJquery}
         {jsfile src="js/jquery-3.3.1.min.js"}

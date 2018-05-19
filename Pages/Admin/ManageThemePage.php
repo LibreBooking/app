@@ -23,7 +23,9 @@ require_once(ROOT_DIR . 'Presenters/Admin/ManageThemePresenter.php');
 
 class ManageThemePage extends ActionPage
 {
-	public function __construct()
+    private $presenter;
+
+    public function __construct()
 	{
 		parent::__construct('LookAndFeel', 1);
 
@@ -69,6 +71,14 @@ class ManageThemePage extends ActionPage
 	public function GetCssFile()
 	{
 		return $this->server->GetFile(FormKeys::CSS_FILE);
+	}
+
+	/**
+	 * @return null|UploadedFile
+	 */
+	public function GetFaviconFile()
+	{
+		return $this->server->GetFile(FormKeys::FAVICON_FILE);
 	}
 }
 

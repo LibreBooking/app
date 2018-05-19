@@ -102,6 +102,7 @@ class FormKeys
 	const ENABLE_AUTO_RELEASE = 'ENABLE_AUTO_RELEASE';
 
 	const FIRST_NAME = 'fname';
+	const FAVICON_FILE = 'FAVICON_FILE';
 
 	const GROUP = 'group';
 	const GROUP_ID = 'group_id';
