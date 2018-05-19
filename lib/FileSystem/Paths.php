@@ -68,4 +68,16 @@ class Paths
     {
         return ROOT_DIR . 'Web/uploads/tos/';
     }
+
+    /**
+     * Filesystem directory for storing terms of email templates for given language. Always contains trailing slash
+     *
+     * @static
+     * @param $language string
+     * @return string
+     */
+    public static function EmailTemplates($language)
+    {
+        return dirname(__FILE__) . '/' .ROOT_DIR . "lang/$language/";
+    }
 }

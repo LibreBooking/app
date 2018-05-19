@@ -456,7 +456,7 @@ class ReservationRepository implements IReservationRepository
         $attachmentFile->WithFileId($id);
 
         $fileSystem = ServiceLocator::GetFileSystem();
-        $fileSystem->Add($fileSystem->GetReservationAttachmentsPath(), "$id.$extension", $attachmentFile->FileContents());
+        $fileSystem->Save($fileSystem->GetReservationAttachmentsPath(), "$id.$extension", $attachmentFile->FileContents());
 
         return $id;
     }

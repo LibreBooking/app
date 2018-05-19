@@ -52,7 +52,6 @@
             {delete_button id='deleteUsers'}
 
         </div>
-
     </div>
 
     <div class="modal fade" id="deleteReservationsDialog" tabindex="-1" role="dialog"

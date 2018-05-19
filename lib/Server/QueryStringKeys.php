@@ -83,6 +83,7 @@ class QueryStringKeys
     const SUBSCRIPTION_KEY = 'icskey';
     const SUBSCRIPTION_DAYS_PAST = 'pastDayCount';
     const SUBSCRIPTION_DAYS_FUTURE = 'futureDayCount';
+    const EMAIL_TEMPLATE_NAME = 'tn';
     const TRANSACTION_LOG_ID = 'id';
     const TYPE = 'type';
 	const USER_ID = 'uid';

@@ -748,6 +748,11 @@ class en_us extends Language
         $strings['Standard'] = 'Standard';
         $strings['Wide'] = 'Wide';
         $strings['Tall'] = 'Tall';
+        $strings['EmailTemplate'] = 'Email Template';
+        $strings['SelectEmailTemplate'] = 'Select Email Template';
+        $strings['ReloadOriginalContents'] = 'Reload Original Contents';
+        $strings['UpdateEmailTemplateSuccess'] = 'Updated email template';
+        $strings['UpdateEmailTemplateFailure'] = 'Could not update email template. Check to make sure the directory is writable.';
         // End Strings
 
 		// Install
