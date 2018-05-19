@@ -90,7 +90,14 @@ function ResourceManagement(opts) {
 		importForm: $('#importForm'),
 		importTrigger: $('#import-resources'),
 		removeImageName: $('#removeImageName'),
-		defaultImageName: $('#defaultImageName')
+		defaultImageName: $('#defaultImageName'),
+
+        bulkDeletePromptButton: $('#bulkDeletePromptButton'),
+        bulkDeleteDialog: $('#bulkDeleteDialog'),
+        bulkDeleteList: $('#bulkDeleteList'),
+        bulkDeleteForm: $('#bulkDeleteForm'),
+        checkAllDeleteResources: $('#checkAllDeleteResources'),
+        checkNoDeleteResources: $('#checkNoDeleteResources')
 	};
 
 	var resources = {};
@@ -258,6 +265,16 @@ function ResourceManagement(opts) {
 			elements.bulkUpdateList.find('input:checkbox').prop('checked', false);
 		});
 
+		elements.checkAllDeleteResources.click(function (e) {
+			e.preventDefault();
+			elements.bulkDeleteList.find('input:checkbox').prop('checked', true);
+		});
+
+		elements.checkNoDeleteResources.click(function (e) {
+			e.preventDefault();
+			elements.bulkDeleteList.find('input:checkbox').prop('checked', false);
+		});
+
 		$(".save").click(function () {
 			$(this).closest('form').submit();
 		});
@@ -313,6 +330,20 @@ function ResourceManagement(opts) {
 			$('<div/>', {html: items.join('')}).appendTo(elements.bulkUpdateList);
 
 			$('#bulkUpdateDialog').modal('show');
+		});
+
+		elements.bulkDeletePromptButton.click(function (e) {
+			e.preventDefault();
+
+			var items = [];
+			elements.bulkDeleteList.empty();
+			$.each(resources, function (i, r) {
+				var checkId = 'bulk' + r.id;
+				items.push('<div class="checkbox checkbox-inline">' + '<input type="checkbox" id="' + checkId + '" name="resourceId[]" checked="checked" value="' + r.id + '" />' + '<label for="' + checkId + '">' + r.name + '</label>' + '</div>');
+			});
+			$('<div/>', {html: items.join('')}).appendTo(elements.bulkDeleteList);
+
+			$('#bulkDeleteDialog').modal('show');
 		});
 
 		elements.userSearch.userAutoComplete(options.userAutocompleteUrl, function (ui) {
@@ -481,6 +512,7 @@ function ResourceManagement(opts) {
 		ConfigureAsyncForm(elements.creditsForm, defaultSubmitCallback(elements.creditsForm), onCreditsSaved, null, errorHandler);
 		ConfigureAsyncForm(elements.copyForm, defaultSubmitCallback(elements.copyForm));
 		ConfigureAsyncForm(elements.importForm, defaultSubmitCallback(elements.importForm), importHandler);
+        ConfigureAsyncForm(elements.bulkDeleteForm, defaultSubmitCallback(elements.bulkDeleteForm));
 	};
 
 	ResourceManagement.prototype.add = function (resource) {

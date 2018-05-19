@@ -61,6 +61,11 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 						<a role="menuitem" href="#" id="bulkUpdatePromptButton">{translate key=BulkResourceUpdate}</a>
 					</li>
 				{/if}
+                {if !empty($Resources)}
+					<li role="presentation">
+						<a role="menuitem" href="#" id="bulkDeletePromptButton">{translate key=BulkResourceDelete}</a>
+					</li>
+				{/if}
 			</ul>
 		</div>
 
@@ -1307,6 +1312,46 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			{csrf_token}
 		</form>
 	</div>
+
+    <div id="bulkDeleteDialog" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="bulkDeleteLabel"
+         aria-hidden="true">
+        <form id="bulkDeleteForm" method="post" ajaxAction="{ManageResourcesActions::ActionBulkDelete}"
+              class="form-vertical"
+              role="form">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title" id="bulkDeleteLabel">{translate key=BulkResourceDelete}</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="alert alert-warning">
+                            <div>{translate key=DeleteWarning}</div>
+                            {translate key=DeleteResourceWarning}:
+                            <ul>
+                                <li>{translate key=DeleteResourceWarningReservations}</li>
+                                <li>{translate key=DeleteResourceWarningPermissions}</li>
+                            </ul>
+
+                            {translate key=DeleteResourceWarningReassign}
+                        </div>
+
+                        <div>{translate key=Select}
+                            <a href="#" id="checkAllDeleteResources">{translate key=All}</a> |
+                            <a href="#" id="checkNoDeleteResources">{translate key=None}</a>
+                        </div>
+                        <div id="bulkDeleteList"></div>
+                    </div>
+                    <div class="modal-footer">
+                        {cancel_button}
+                        {delete_button}
+                        {indicator}
+                    </div>
+                </div>
+            </div>
+            {csrf_token}
+        </form>
+    </div>
 
 	<div id="userDialog" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="userPermissionDialogLabel"
 		 aria-hidden="true">
