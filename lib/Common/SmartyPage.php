@@ -132,12 +132,20 @@ class SmartyPage extends Smarty
 
 		if (file_exists($localizedPath . '/' . $templateName))
 		{
+		    $path = $localizedPath;
 			$this->AddTemplateDirectory($localizedPath);
 		}
 		else
 		{
+		    $path = $defaultPath;
 			$this->AddTemplateDirectory($defaultPath);
 		}
+
+        $customTemplateName = str_replace('.tpl', '-custom.tpl', $templateName);
+        if (file_exists($path . '/' . $customTemplateName))
+        {
+            $templateName = $customTemplateName;
+        }
 
 		return $this->fetch($templateName);
 	}

@@ -45,11 +45,11 @@
             </div>
 
             <div id="updateSuccess" class="alert alert-success col-xs-12" style="display:none;">
-                {translate key=UpdateEmailTemplateSuccess}
+                <span class="glyphicon glyphicon-ok-sign"></span> {translate key=UpdateEmailTemplateSuccess}
             </div>
 
             <div id="updateFailed" class="alert alert-warning col-xs-12" style="display:none;">
-                {translate key=UpdateEmailTemplateFailed}
+                <span class="glyphicon glyphicon-alert"></span> {translate key=UpdateEmailTemplateFailed}
             </div>
         </div>
 
