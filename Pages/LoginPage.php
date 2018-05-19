@@ -186,7 +186,8 @@ class LoginPage extends Page implements ILoginPage
 
     public function GetResumeUrl()
     {
-        if ($this->GetForm(FormKeys::RESUME) == false) {
+        $resumeUrl = $this->GetForm(FormKeys::RESUME);
+        if (empty($resumeUrl)) {
             return $this->GetQuerystring(QueryStringKeys::REDIRECT);
         }
         else {
