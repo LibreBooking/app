@@ -120,7 +120,7 @@ class AutoCompletePage extends Page
 	private function GetMyUsers($term)
 	{
 		$userSession = ServiceLocator::GetServer()->GetUserSession();
-		if ($userSession->IsAdmin)
+		if ($userSession->IsAdmin || $userSession->IsResourceAdmin || $userSession->IsScheduleAdmin)
 		{
 			return $this->GetUsers($term);
 		}
