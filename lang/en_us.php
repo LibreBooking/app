@@ -900,6 +900,7 @@ class en_us extends Language
 		$strings['ManagePayments'] = 'Payments';
 		$strings['ViewCalendar'] = 'View Calendar';
 		$strings['DataCleanup'] = 'Data Cleanup';
+		$strings['ManageEmailTemplates'] = 'Manage Email Templates';
 		// End Page Titles
 
 		// Day representations

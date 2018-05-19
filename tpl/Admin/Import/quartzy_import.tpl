@@ -19,56 +19,61 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 {include file='globalheader.tpl'}
 
-<div id="page-import-ics" class="admin-page">
-    <h1>{translate key=ImportQuartzy}</h1>
+<div id="page-import-quartzy" class="admin-page">
 
-    <div class="margin-bottom-25">
+    <div class="default-box col-xs-12 col-sm-8 col-sm-offset-2">
+        <h1>{translate key=ImportQuartzy}</h1>
 
-        <div id="importErrors" class="error hidden"></div>
-        <div id="importResult" class="hidden">
-            <span>{translate key=RowsImported}</span>
+        <div class="margin-bottom-25">
 
-            <div id="importCount" class="inline bold"></div>
-            <span>{translate key=RowsSkipped}</span>
+            <div id="importErrors" class="error hidden"></div>
+            <div id="importResult" class="hidden">
+                <span>{translate key=RowsImported}</span>
 
-            <div id="importSkipped" class="inline bold"></div>
-            <a href="{$smarty.server.SCRIPT_NAME}">{translate key=Done}</a>
+                <div id="importCount" class="inline bold"></div>
+                <span>{translate key=RowsSkipped}</span>
+
+                <div id="importSkipped" class="inline bold"></div>
+                <a href="{$smarty.server.SCRIPT_NAME}">{translate key=Done}</a>
+            </div>
+
+            <form id="quartzyImportForm" method="post" enctype="multipart/form-data" ajaxAction="importQuartzy">
+                <div class="validationSummary alert alert-danger no-show">
+                    <ul>
+                        {async_validator id="fileExtensionValidator" key=""}
+                        {async_validator id="importQuartzyValidator" key=""}
+                    </ul>
+                </div>
+
+                <div>
+                    <input type="file" name="quartzyFile"/>
+                </div>
+
+                <div>
+                    <label for="includeBookings">Include Bookings</label>
+                    <input type="checkbox" id="includeBookings" name="includeBookings"/>
+                    <span>(this can take up to 20 minutes)</span>
+                </div>
+
+                <div class="admin-update-buttons">
+                    <button id="btnUpload" type="button"
+                            class="btn btn-success save"><i class="fa fa fa-upload"></i> {translate key=Import}</button>
+                    {indicator}
+                </div>
+                {csrf_token}
+            </form>
         </div>
-
-        <form id="quartzyImportForm" method="post" enctype="multipart/form-data" ajaxAction="importQuartzy">
-            <div class="validationSummary alert alert-danger no-show">
-                <ul>
-                    {async_validator id="fileExtensionValidator" key=""}
-                    {async_validator id="importQuartzyValidator" key=""}
-                </ul>
+        <div>
+            <div class="alert alert-info">
+                <div class="note">Export your Quartzy data <a
+                            href="https://support.quartzy.com/hc/en-us/articles/214823208"
+                            target="_new">following these instructions</a></div>
+                <div class="note">Users will imported with the password <strong>p@ssw0rd!</strong></div>
             </div>
-
-            <div>
-                <input type="file" name="quartzyFile"/>
+            <div class="alert alert-warning">Please do not make any changes to the Quartzy export file. Your data cannot
+                be
+                imported if this file is altered in any way.
             </div>
-
-            <div>
-                <label for="includeBookings">Include Bookings</label>
-                <input type="checkbox" id="includeBookings" name="includeBookings"/>
-                <span>(this can take up to 20 minutes)</span>
-            </div>
-
-            <div class="admin-update-buttons">
-                <button id="btnUpload" type="button"
-                        class="btn btn-success save"><i class="fa fa fa-upload"></i> {translate key=Import}</button>
-                {indicator}
-            </div>
-            {csrf_token}
-        </form>
-    </div>
-    <div>
-        <div class="alert alert-info">
-            <div class="note">Export your Quartzy data <a href="https://support.quartzy.com/hc/en-us/articles/214823208"
-                                                          target="_new">following these instructions</a></div>
-            <div class="note">Users will imported with the password <strong>p@ssw0rd!</strong></div>
-        </div>
-        <div class="alert alert-warning">Please do not make any changes to the Quartzy export file. Your data cannot be
-            imported if this file is altered in any way.
         </div>
     </div>
 </div>

@@ -317,6 +317,9 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                                                 href="{$Path}admin/manage_configuration.php">{translate key="ManageConfiguration"}</a>
                                     </li>
                                 {/if}
+                                <li id="navEmailTemplates"><a
+                                            href="{$Path}admin/manage_email_templates.php">{translate key="ManageEmailTemplates"}</a>
+                                </li>
                                 <li id="navLookAndFeel"><a
                                             href="{$Path}admin/manage_theme.php">{translate key="LookAndFeel"}</a>
                                 </li>

@@ -18,77 +18,81 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 *}
 {include file='globalheader.tpl' }
 
-<div id="page-manage-accessories" class="admin-page">
-    <h1>{translate key=LookAndFeel}</h1>
+<div id="page-change-theme" class="admin-page">
+    <div class="default-box col-xs-12 col-sm-8 col-sm-offset-2">
 
-    <div id="successMessage" class="alert alert-success hidden">
-        {translate key=ThemeUploadSuccess}
+        <h1>{translate key=LookAndFeel}</h1>
+
+        <div id="successMessage" class="alert alert-success hidden">
+            {translate key=ThemeUploadSuccess}
+        </div>
+
+        <form id="elementForm" action="{$smarty.server.SCRIPT_NAME}" ajaxAction="update" method="post"
+              enctype="multipart/form-data">
+            <div class="validationSummary alert alert-danger no-show" id="validationErrors">
+                <ul>
+                    {async_validator id="logoFileExt"}
+                    {async_validator id="cssFileExt"}
+                    {async_validator id="faviconFileExt"}
+                    {async_validator id="logoFile"}
+                    {async_validator id="cssFile"}
+                    {async_validator id="faviconFile"}
+                </ul>
+            </div>
+
+            <div>
+                <h4>{translate key="Logo"} (*.png, *.gif, *.jpg - 50px height)</h4>
+
+                <div>
+                    <a href="{$ScriptUrl}/img/{$LogoUrl}" download="{$ScriptUrl}/img/{$LogoUrl}">{$LogoUrl}</a>
+                    <a href="#" id="removeLogo">{translate key=Remove}</a>
+                </div>
+                <input type="file" {formname key=LOGO_FILE} class="pull-left"/>
+
+                <a href="#" class="clearInput inline">{html_image src="cross-button.png"}</a>
+            </div>
+
+            <div>
+                <h4>Favicon (*.ico, *.png, *.gif, *.jpg - 32px x 32px or 16px x 16px)</h4>
+
+                <div>
+                    <a href="{$ScriptUrl}/{$FaviconUrl}" download="{$ScriptUrl}/img/{$FaviconUrl}">{$FaviconUrl}</a>
+                    <a href="#" id="removeFavicon">{translate key=Remove}</a>
+                </div>
+                <input type="file" {formname key=FAVICON_FILE} class="pull-left"/>
+
+                <a href="#" class="clearInput inline">{html_image src="cross-button.png"}</a>
+            </div>
+
+            <div>
+                <div>
+                    <h4>{translate key="CssFile"} (*.css)</h4>
+
+                    <a href="{$ScriptUrl}/css/{$CssUrl}" download="{$ScriptUrl}/css/{$CssUrl}">{$CssUrl}</a>
+                </div>
+                <input type="file" {formname key=CSS_FILE} class="pull-left"/>
+                <a href="#" class="clearInput">{html_image src="cross-button.png"}</a>
+            </div>
+
+            <div>
+                <div>
+                    <h4>{translate key="ReservationColors"}</h4>
+
+                    <a href="manage_reservation_colors.php">{translate key=Manage}</a>
+                </div>
+            </div>
+
+            <div class="clearfix"></div>
+
+            <button type="button" class="btn btn-success update margin-top-25" name="{Actions::SAVE}" id="saveButton">
+                {translate key='Update'}
+            </button>
+
+            {csrf_token}
+
+        </form>
+
     </div>
-
-    <form id="elementForm" action="{$smarty.server.SCRIPT_NAME}" ajaxAction="update" method="post" enctype="multipart/form-data">
-        <div class="validationSummary alert alert-danger no-show" id="validationErrors">
-            <ul>
-                {async_validator id="logoFileExt"}
-                {async_validator id="cssFileExt"}
-                {async_validator id="faviconFileExt"}
-                {async_validator id="logoFile"}
-                {async_validator id="cssFile"}
-                {async_validator id="faviconFile"}
-            </ul>
-        </div>
-
-        <div>
-            <h4>{translate key="Logo"} (*.png, *.gif, *.jpg - 50px height)</h4>
-
-            <div>
-                <a href="{$ScriptUrl}/img/{$LogoUrl}" download="{$ScriptUrl}/img/{$LogoUrl}">{$LogoUrl}</a>
-                <a href="#" id="removeLogo">{translate key=Remove}</a>
-            </div>
-            <input type="file" {formname key=LOGO_FILE} class="pull-left"/>
-
-            <a href="#" class="clearInput inline">{html_image src="cross-button.png"}</a>
-        </div>
-
-        <div>
-            <h4>Favicon (*.ico, *.png, *.gif, *.jpg - 32px x 32px or 16px x 16px)</h4>
-
-            <div>
-                <a href="{$ScriptUrl}/{$FaviconUrl}" download="{$ScriptUrl}/img/{$FaviconUrl}">{$FaviconUrl}</a>
-                <a href="#" id="removeFavicon">{translate key=Remove}</a>
-            </div>
-            <input type="file" {formname key=FAVICON_FILE} class="pull-left"/>
-
-            <a href="#" class="clearInput inline">{html_image src="cross-button.png"}</a>
-        </div>
-
-        <div>
-            <div>
-                <h4>{translate key="CssFile"} (*.css)</h4>
-
-                <a href="{$ScriptUrl}/css/{$CssUrl}" download="{$ScriptUrl}/css/{$CssUrl}">{$CssUrl}</a>
-            </div>
-            <input type="file" {formname key=CSS_FILE} class="pull-left"/>
-            <a href="#" class="clearInput">{html_image src="cross-button.png"}</a>
-        </div>
-
-        <div>
-            <div>
-                <h4>{translate key="ReservationColors"}</h4>
-
-                <a href="manage_reservation_colors.php">{translate key=Manage}</a>
-            </div>
-        </div>
-
-        <div class="clearfix"></div>
-
-        <button type="button" class="btn btn-success update margin-top-25" name="{Actions::SAVE}" id="saveButton">
-            {translate key='Update'}
-        </button>
-
-        {csrf_token}
-
-    </form>
-
 
     <div id="wait-box" class="wait-box">
         <h3>{translate key=Working}</h3>

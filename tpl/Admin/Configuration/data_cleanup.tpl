@@ -1,52 +1,57 @@
 {include file='globalheader.tpl' }
 
 <div id="page-data-cleanup" class="admin-page">
-    <h1>{translate key=DataCleanup}</h1>
 
-    <div class="well">
-        <div class="badge">{$ReservationCount} {translate key=Reservations}</div>
-        <div class="form-group">
-            <label for="reservationDeleteDate">{translate key=DeleteReservationsBefore}</label>
-            <input type="text" id="reservationDeleteDate" class="form-control input-sm inline-block dateinput"
-                   value="{formatdate date=$DeleteDate}"/>
-            <input type="hidden" id="formattedReservationDeleteDate" value="{formatdate date=$DeleteDate key=system}"/>
-        </div>
-        {delete_button id='deleteReservations'}
-    </div>
+    <div class="default-box col-xs-12 col-sm-8 col-sm-offset-2">
+        <h1>{translate key=DataCleanup}</h1>
 
-    <div class="well">
-        <div class="badge">{$DeletedReservationCount} {translate key=DeletedReservations}</div>
-        <div class="form-group">
-
-        </div>
-        {delete_button id='purgeReservations' key=Purge}
-    </div>
-
-    <div class="well">
-        <div class="badge">{$BlackoutsCount} {translate key=ManageBlackouts}</div>
-
-        <div class="form-group">
-            <label for="blackoutDeleteDate">{translate key=DeleteBlackoutsBefore}</label>
-            <input type="text" id="blackoutDeleteDate" class="form-control input-sm inline-block dateinput"
-                   value="{formatdate date=$DeleteDate}"/>
-            <input type="hidden" id="formattedBlackoutDeleteDate" value="{formatdate date=$DeleteDate key=system}"/>
+        <div class="well">
+            <div class="badge">{$ReservationCount} {translate key=Reservations}</div>
+            <div class="form-group">
+                <label for="reservationDeleteDate">{translate key=DeleteReservationsBefore}</label>
+                <input type="text" id="reservationDeleteDate" class="form-control input-sm inline-block dateinput"
+                       value="{formatdate date=$DeleteDate}"/>
+                <input type="hidden" id="formattedReservationDeleteDate"
+                       value="{formatdate date=$DeleteDate key=system}"/>
+            </div>
+            {delete_button id='deleteReservations'}
         </div>
 
-        {delete_button id='deleteBlackouts'}
+        <div class="well">
+            <div class="badge">{$DeletedReservationCount} {translate key=DeletedReservations}</div>
+            <div class="form-group">
 
-    </div>
-
-    <div class="well">
-        <div class="badge">{$UserCount} {translate key=Users}</div>
-
-        <div class="form-group">
-            <label for="userDeleteDate">{translate key=PermanentlyDeleteUsers}</label>
-            <input type="text" id="userDeleteDate" class="form-control input-sm inline-block dateinput"
-                   value="{formatdate date=$DeleteDate}"/>
-            <input type="hidden" id="formattedUserDeleteDate" value="{formatdate date=$DeleteDate key=system}"/>
+            </div>
+            {delete_button id='purgeReservations' key=Purge}
         </div>
 
-        {delete_button id='deleteUsers'}
+        <div class="well">
+            <div class="badge">{$BlackoutsCount} {translate key=ManageBlackouts}</div>
+
+            <div class="form-group">
+                <label for="blackoutDeleteDate">{translate key=DeleteBlackoutsBefore}</label>
+                <input type="text" id="blackoutDeleteDate" class="form-control input-sm inline-block dateinput"
+                       value="{formatdate date=$DeleteDate}"/>
+                <input type="hidden" id="formattedBlackoutDeleteDate" value="{formatdate date=$DeleteDate key=system}"/>
+            </div>
+
+            {delete_button id='deleteBlackouts'}
+
+        </div>
+
+        <div class="well">
+            <div class="badge">{$UserCount} {translate key=Users}</div>
+
+            <div class="form-group">
+                <label for="userDeleteDate">{translate key=PermanentlyDeleteUsers}</label>
+                <input type="text" id="userDeleteDate" class="form-control input-sm inline-block dateinput"
+                       value="{formatdate date=$DeleteDate}"/>
+                <input type="hidden" id="formattedUserDeleteDate" value="{formatdate date=$DeleteDate key=system}"/>
+            </div>
+
+            {delete_button id='deleteUsers'}
+
+        </div>
 
     </div>
 
@@ -63,9 +68,10 @@
                         <div class="alert alert-warning">
                             <div>{translate key=DeleteWarning}</div>
                             <div>
-                                <strong><span id="deleteReservationCount"></span></strong> {translate key=ReservationsWillBeDeleted}
+                                <strong><span
+                                            id="deleteReservationCount"></span></strong> {translate key=ReservationsWillBeDeleted}
                             </div>
-                            <input type="hidden" {formname key=BEGIN_DATE} id="formDeleteReservationDate" />
+                            <input type="hidden" {formname key=BEGIN_DATE} id="formDeleteReservationDate"/>
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -118,9 +124,10 @@
                         <div class="alert alert-warning">
                             <div>{translate key=DeleteWarning}</div>
                             <div>
-                                <strong><span id="deleteBlackoutCount"></span></strong> {translate key=BlackoutsWillBeDeleted}
+                                <strong><span
+                                            id="deleteBlackoutCount"></span></strong> {translate key=BlackoutsWillBeDeleted}
                             </div>
-                            <input type="hidden" {formname key=BEGIN_DATE} id="formDeleteBlackoutDate" />
+                            <input type="hidden" {formname key=BEGIN_DATE} id="formDeleteBlackoutDate"/>
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -149,7 +156,7 @@
                                 <strong><span id="deleteUserCount"></span></strong> {translate key=UsersWillBeDeleted}
                             </div>
                         </div>
-                        <input type="hidden" {formname key=BEGIN_DATE} id="formDeleteUserDate" />
+                        <input type="hidden" {formname key=BEGIN_DATE} id="formDeleteUserDate"/>
 
                     </div>
                     <div class="modal-footer">
@@ -176,7 +183,7 @@
     $(document).ready(function () {
         $('#deleteReservations').click(function (e) {
             $('#formDeleteReservationDate').val($('#formattedReservationDeleteDate').val());
-            ajaxGet('{$smarty.server.SCRIPT_NAME}?dr=getReservationCount&date=' + $('#formattedReservationDeleteDate').val(), null, function(data){
+            ajaxGet('{$smarty.server.SCRIPT_NAME}?dr=getReservationCount&date=' + $('#formattedReservationDeleteDate').val(), null, function (data) {
                 $('#deleteReservationCount').text(data.count);
                 $('#deleteReservationsDialog').modal('show');
             })
@@ -188,7 +195,7 @@
 
         $('#deleteBlackouts').click(function (e) {
             $('#formDeleteBlackoutDate').val($('#formattedBlackoutDeleteDate').val());
-            ajaxGet('{$smarty.server.SCRIPT_NAME}?dr=getBlackoutCount&date=' + $('#formattedBlackoutDeleteDate').val(), null, function(data){
+            ajaxGet('{$smarty.server.SCRIPT_NAME}?dr=getBlackoutCount&date=' + $('#formattedBlackoutDeleteDate').val(), null, function (data) {
                 $('#deleteBlackoutCount').text(data.count);
                 $('#deleteBlackoutDialog').modal('show');
             })
@@ -196,7 +203,7 @@
 
         $('#deleteUsers').click(function (e) {
             $('#formDeleteUserDate').val($('#formattedUserDeleteDate').val());
-            ajaxGet('{$smarty.server.SCRIPT_NAME}?dr=getUserCount&date=' + $('#formattedUserDeleteDate').val(), null, function(data){
+            ajaxGet('{$smarty.server.SCRIPT_NAME}?dr=getUserCount&date=' + $('#formattedUserDeleteDate').val(), null, function (data) {
                 $('#deleteUserCount').text(data.count);
                 $('#deleteUsersDialog').modal('show');
             })
