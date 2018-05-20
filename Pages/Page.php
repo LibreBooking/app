@@ -461,7 +461,7 @@ abstract class Page implements IPage
             return true;
         }
 
-        if (Date::Now()->AddDays(-7)->Timestamp() > $firstShownParts[1])
+        if (Date::Now()->AddDays(-3)->Timestamp() > $firstShownParts[1])
         {
             return false;
         }
