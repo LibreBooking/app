@@ -21,7 +21,7 @@ class DailyReservationSummary
 	 */
 	private $_first = null;
 
-	private $_count = 0;
+	private $_reservationCount = 0;
 
 	/**
 	 * @var ReservationListItem[]
@@ -33,8 +33,16 @@ class DailyReservationSummary
 	 */
 	public function NumberOfReservations()
 	{
-		return $this->_count;
+		return $this->_reservationCount;
 	}
+
+    /**
+     * @return int
+     */
+	public function NumberOfItems()
+    {
+        return count($this->_reservations);
+    }
 
 	/**
 	 * @return ReservationListItem
@@ -57,7 +65,7 @@ class DailyReservationSummary
 		}
 
 		if ($item->IsReservation()) {
-            $this->_count++;
+            $this->_reservationCount++;
         }
         $this->_reservations[] = $item;
 	}

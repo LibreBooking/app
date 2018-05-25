@@ -581,7 +581,7 @@ class Queries
         FROM layouts l 
         INNER JOIN custom_time_blocks ctb ON l.layout_id = ctb.layout_id
         INNER JOIN schedules s ON s.layout_id = l.layout_id
-        WHERE ctb.start_time >= @startDate AND ctb.end_time <= @endDate
+        WHERE ctb.start_time >= @startDate AND ctb.end_time <= @endDate AND s.schedule_id = @scheduleid
         ORDER BY ctb.start_time';
 
 	const GET_DASHBOARD_ANNOUNCEMENTS =

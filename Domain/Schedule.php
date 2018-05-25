@@ -89,6 +89,7 @@ class Schedule implements ISchedule
     protected $_availabilityEnd;
     protected $_allowConcurrent = false;
     protected $_defaultStyle;
+    protected $_layoutType;
 
     const Today = 100;
 
@@ -112,6 +113,7 @@ class Schedule implements ISchedule
         $this->_availabilityEnd = new NullDate();
         $this->_allowConcurrent = false;
         $this->_defaultStyle = ScheduleStyle::Standard;
+        $this->_layoutType = ScheduleLayout::Standard;
     }
 
     public function GetId()
@@ -350,6 +352,7 @@ class Schedule implements ISchedule
         $schedule->SetAvailability(Date::FromDatabase($row[ColumnNames::SCHEDULE_AVAILABLE_START_DATE]), Date::FromDatabase($row[ColumnNames::SCHEDULE_AVAILABLE_END_DATE]));
         $schedule->SetAllowConcurrentReservations($row[ColumnNames::SCHEDULE_ALLOW_CONCURRENT_RESERVATIONS]);
         $schedule->SetDefaultStyle($row[ColumnNames::SCHEDULE_DEFAULT_STYLE]);
+        $schedule->SetLayoutType($row[ColumnNames::LAYOUT_TYPE]);
         return $schedule;
     }
 
@@ -374,6 +377,21 @@ class Schedule implements ISchedule
     public function GetSubscriptionUrl()
     {
         return new CalendarSubscriptionUrl(null, $this->GetPublicId(), null);
+    }
+
+    public function SetLayoutType($layoutType)
+    {
+        $this->_layoutType = $layoutType;
+    }
+
+    public function GetLayoutType()
+    {
+        return $this->_layoutType;
+    }
+
+    public function HasCustomLayout()
+    {
+        return $this->_layoutType == ScheduleLayout::Custom;
     }
 }
 

@@ -105,7 +105,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 						{assign var=href value="{Pages::RESERVATION}?rid={$resourceId}&sid={$ScheduleId}"}
 						{assign var=slots value=$DailyLayout->GetLayout($date, $resourceId)}
 						{assign var=summary value=$DailyLayout->GetSummary($date, $resourceId)}
-						{if $summary->NumberOfReservations() > 0}
+						{if $summary->NumberOfItems() > 0}
 							<td style="vertical-align: top;">
 								<div class="reservable clickres" ref="{$href}&rd={formatdate date=$date key=url}" data-href="{$href}" data-start="{$date->Format('Y-m-d H:i:s')|escape:url}" data-end="{$date->Format('Y-m-d H:i:s')|escape:url}">
                                     <i class="fa fa-plus-circle"></i> {translate key=CreateReservation}

@@ -272,7 +272,7 @@ class ScheduleRepository implements IScheduleRepository
 
         $db = ServiceLocator::GetDatabase();
 
-        return $db->ExecuteInsert(new AddScheduleCommand(
+        $scheduleId = $db->ExecuteInsert(new AddScheduleCommand(
             $schedule->GetName(),
             $schedule->GetIsDefault(),
             $schedule->GetWeekdayStart(),
@@ -280,6 +280,14 @@ class ScheduleRepository implements IScheduleRepository
             $source->GetLayoutId(),
             $schedule->GetAdminGroupId()
         ));
+
+        if ($source->HasCustomLayout())
+        {
+            $layout = $this->GetLayout($scheduleId, new ScheduleLayoutFactory($source->GetTimezone()));
+            $this->AddScheduleLayout($scheduleId, $layout);
+        }
+
+        return $scheduleId;
     }
 
     public function Delete(Schedule $schedule)
