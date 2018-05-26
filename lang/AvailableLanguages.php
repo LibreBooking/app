@@ -53,6 +53,7 @@ class AvailableLanguages
             'pt_br' => new AvailableLanguage('pt_br', 'pt_br.php', 'Portugu&ecirc;s Brasileiro'),
             'ru_ru' => new AvailableLanguage('ru_ru', 'ru_ru.php', 'Русский'),
             'si_si' => new AvailableLanguage('si_si', 'si_si.php', 'Slovenščina'),
+            'ro_ro' => new AvailableLanguage('ro_ro', 'ro_ro.php', 'Romanian'),
             'th_th' => new AvailableLanguage('th_th', 'th_th.php', 'Thai'),
             'tr_tr' => new AvailableLanguage('tr_tr', 'tr_tr.php', 'Türkçe'),
             'sv_sv' => new AvailableLanguage('sv_sv', 'sv_sv.php', 'Swedish'),
