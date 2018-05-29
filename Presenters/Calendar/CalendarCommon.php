@@ -217,7 +217,8 @@ abstract class CommonCalendarPage extends ActionPage implements ICommonCalendarP
      */
     public function SetResourceId($resourceId)
     {
-        $this->Set('ResourceId', $resourceId);
+        $resourceId = intval($resourceId);
+        $this->Set('ResourceId', empty($resourceId) ? '' : $resourceId);
     }
 
     /**
