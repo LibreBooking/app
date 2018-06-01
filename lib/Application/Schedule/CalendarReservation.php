@@ -326,12 +326,12 @@ class CalendarReservation
         }
 
         if (!empty($this->ResourceId)) {
-            $format = Resources::GetInstance()->GetDateFormat('url');
+            $format = Resources::GetInstance()->GetDateFormat('url_full');
             return  sprintf('%s?rid=%s&sd=%s&ed=%s', Pages::RESERVATION, $this->ResourceId, $this->StartDate->Format($format), $this->EndDate->Format($format));
         }
 
         if (!empty($this->ScheduleId)) {
-            $format = Resources::GetInstance()->GetDateFormat('url');
+            $format = Resources::GetInstance()->GetDateFormat('url_full');
             return  sprintf('%s?sid=%s&sd=%s&ed=%s', Pages::RESERVATION, $this->ScheduleId, $this->StartDate->Format($format), $this->EndDate->Format($format));
         }
 
