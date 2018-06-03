@@ -248,7 +248,7 @@ class ManageUsersPage extends ActionPage implements IManageUsersPage
 
 	protected function RenderTemplate()
 	{
-		$this->Display('Admin/manage_users.tpl');
+		$this->Display('Admin/Users/manage_users.tpl');
 	}
 
 	public function BindPageInfo(PageInfo $pageInfo)
