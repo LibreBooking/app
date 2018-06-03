@@ -832,7 +832,7 @@ class SmartyPage extends Smarty
 	public function UpdateButton($params, &$smarty)
 	{
 		$key = isset($params['key']) ? $params['key'] : 'Update';
-		$class = isset($params['class']) ? $params['class'] : '';
+		$class = isset($params['class']) ? ' ' . $params['class'] . ' ' : '';
 		$type = isset($params['submit']) ? 'submit' : 'button';
 		$save = $type == 'submit' ? '' : ' save ';
 
@@ -873,7 +873,7 @@ class SmartyPage extends Smarty
 	{
 		$key = isset($params['key']) ? $params['key'] : 'Reset';
 		$class = isset($params['class']) ? $params['class'] : '';
-		echo '<button type="reset" class="btn btn-default ' . $class . '"" ' . $this->GetButtonAttributes($params) . '>' . Resources::GetInstance()
+		echo '<button type="reset" class="btn btn-default ' . $class . '" ' . $this->GetButtonAttributes($params) . '>' . Resources::GetInstance()
 																																	->GetString($key) . '</button>';
 	}
 
