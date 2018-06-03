@@ -681,7 +681,8 @@ class DeleteSeriesEventCommand extends EventCommand
 
     public function Execute(Database $database)
     {
-        $database->Execute(new DeleteSeriesCommand($this->series->SeriesId(), Date::Now(), $this->series->BookedBy()->UserId));
+        $deletedBy = $this->series->BookedBy();
+        $database->Execute(new DeleteSeriesCommand($this->series->SeriesId(), Date::Now(), !empty($deletedBy) ? $deletedBy->UserId : null));
     }
 }
 

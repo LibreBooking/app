@@ -17,7 +17,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 interface IReservationPersistenceService
 {
 	/**
-	 * @param ReservationSeries $reservation
+	 * @param ReservationSeries|ExistingReservationSeries $reservation
 	 */
 	function Persist($reservation);
 }

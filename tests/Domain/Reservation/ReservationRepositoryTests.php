@@ -110,7 +110,8 @@ class ReservationRepositoryTests extends TestBase
             ReservationStatus::Created,
             $userId,
             $allowParticipation,
-            null);
+            null,
+            $userSession->UserId);
 
         $insertReservation = new AddReservationCommand(
             $startUtc,
@@ -476,7 +477,8 @@ class ReservationRepositoryTests extends TestBase
         $builder = new ExistingReservationSeriesBuilder();
         $existingReservation = $builder->Build();
 
-        $existingReservation->Update($userId, $existingReservation->Resource(), $title, $description, new FakeUserSession());
+        $updatedBy = new FakeUserSession();
+        $existingReservation->Update($userId, $existingReservation->Resource(), $title, $description, $updatedBy);
         $existingReservation->AllowParticipation($allowParticipation);
 
         $repeatOptions = $existingReservation->RepeatOptions();
@@ -494,7 +496,8 @@ class ReservationRepositoryTests extends TestBase
             Date::Now(),
             $existingReservation->StatusId(),
             $userId,
-            $allowParticipation);
+            $allowParticipation,
+            $updatedBy->UserId);
         $this->assertEquals(1, count($this->db->_Commands));
         $this->assertEquals($updateSeriesCommand, $this->db->_Commands[0]);
     }
@@ -632,7 +635,8 @@ class ReservationRepositoryTests extends TestBase
         $builder->WithCurrentInstance($currentReservation);
 
         $existingReservation = $builder->BuildTestVersion();
-        $existingReservation->Update($userId, new FakeBookableResource($resourceId), $title, $description, new FakeUserSession());
+        $updatedBy = new FakeUserSession();
+        $existingReservation->Update($userId, new FakeBookableResource($resourceId), $title, $description, $updatedBy);
         $existingReservation->AllowParticipation($allowParticipation);
 
         $this->db->_ExpectedInsertId = $seriesId;
@@ -649,7 +653,8 @@ class ReservationRepositoryTests extends TestBase
             ReservationStatus::Created,
             $userId,
             $allowParticipation,
-            null);
+            null,
+            $updatedBy->UserId);
 
         $updateReservationCommand = $this->GetUpdateReservationCommand($seriesId, $currentReservation);
 
@@ -689,7 +694,8 @@ class ReservationRepositoryTests extends TestBase
         $builder->WithCurrentInstance($currentInstance);
 
         $existingReservation = $builder->BuildTestVersion();
-        $existingReservation->Update($userId, new FakeBookableResource($resourceId), $title, $description, new FakeUserSession());
+        $updatedBy = new FakeUserSession();
+        $existingReservation->Update($userId, new FakeBookableResource($resourceId), $title, $description, $updatedBy);
         $existingReservation->AllowParticipation($allowParticipation);
 
         $expectedRepeat = $existingReservation->RepeatOptions();
@@ -710,7 +716,8 @@ class ReservationRepositoryTests extends TestBase
             ReservationStatus::Created,
             $userId,
             $allowParticipation,
-            null);
+            null,
+            $updatedBy->UserId);
 
         $updateReservationCommand1 = $this->GetUpdateReservationCommand($newSeriesId, $existingInstance1);
         $updateReservationCommand2 = $this->GetUpdateReservationCommand($newSeriesId, $existingInstance2);
@@ -774,19 +781,20 @@ class ReservationRepositoryTests extends TestBase
 
     public function testDeleteSeries()
     {
+        $deletedBy = new FakeUserSession(100);
         $seriesId = 981;
         $eventSeries = new ExistingReservationSeries();
         $eventSeries->WithId($seriesId);
 
         $builder = new ExistingReservationSeriesBuilder();
-        $builder->WithEvent(new SeriesDeletedEvent($eventSeries));
         $series = $builder->BuildTestVersion();
         $series->TestSetCreditsConsumed(10);
         $series->WithId($seriesId);
+        $series->Delete($deletedBy);
 
         $this->repository->Delete($series);
 
-        $deleteSeriesCommand = new DeleteSeriesCommand($series->SeriesId(), Date::Now());
+        $deleteSeriesCommand = new DeleteSeriesCommand($series->SeriesId(), Date::Now(), $deletedBy->UserId);
         $adjustCreditsCommand = new AdjustUserCreditsCommand($series->UserId(), -10, 'ReservationDeletedLog' . $series->CurrentInstance()->ReferenceNumber());
 
         $this->assertEquals(2, count($this->db->_Commands));
