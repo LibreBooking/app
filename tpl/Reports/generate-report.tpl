@@ -201,18 +201,18 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 						</div>
 					</div>
 				</div>
+                <div class="panel-footer">
+                    <input type="submit" value="{translate key=GetReport}" class="btn btn-primary btn-sm"
+                           id="btnCustomReport" asyncAction=""/>
+                    <div class="checkbox inline-block">
+                        <input type="checkbox" id="chkIncludeDeleted" {formname key=INCLUDE_DELETED}/>
+                        <label for="chkIncludeDeleted">{translate key=IncludeDeleted}</label>
+                    </div>
+                </div>
 			</div>
-			<div class="panel-footer">
-				<input type="submit" value="{translate key=GetReport}" class="btn btn-primary btn-sm"
-					   id="btnCustomReport" asyncAction=""/>
-				<div class="checkbox inline-block">
-					<input type="checkbox" id="chkIncludeDeleted" {formname key=INCLUDE_DELETED}/>
-					<label for="chkIncludeDeleted">{translate key=IncludeDeleted}</label>
-				</div>
-			</div>
+            {csrf_token}
+        </form>
 	</div>
-	{csrf_token}
-	</form>
 </div>
 
 <div id="saveMessage" class="alert alert-success no-show">

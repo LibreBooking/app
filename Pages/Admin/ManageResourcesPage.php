@@ -464,7 +464,7 @@ class ManageResourcesPage extends ActionPage implements IManageResourcesPage
 
         $this->pageablePage = new PageablePage($this);
         $this->Set('YesNoOptions',
-            array('' => '-',
+            array(
                 '1' => Resources::GetInstance()->GetString('Yes'),
                 '0' => Resources::GetInstance()->GetString('No'))
         );
@@ -805,8 +805,8 @@ class ManageResourcesPage extends ActionPage implements IManageResourcesPage
         $this->Set('ResourceNameFilter', $values->ResourceNameFilter);
         $this->Set('ScheduleIdFilter', $values->ScheduleIdFilter);
         $this->Set('ResourceTypeFilter', $values->ResourceTypeFilter);
-        $this->Set('ResourceStatusFilterId', intval($values->ResourceStatusFilterId));
-        $this->Set('ResourceStatusReasonFilterId', intval($values->ResourceStatusReasonFilterId));
+        $this->Set('ResourceStatusFilterId', $values->ResourceStatusFilterId == '' ? '' : intval($values->ResourceStatusFilterId));
+        $this->Set('ResourceStatusReasonFilterId', $values->ResourceStatusReasonFilterId  == '' ? '' : intval($values->ResourceStatusReasonFilterId));
         $this->Set('CapacityFilter', $values->CapacityFilter);
         $this->Set('RequiresApprovalFilter', $values->RequiresApprovalFilter);
         $this->Set('AutoPermissionFilter', $values->AutoPermissionFilter);

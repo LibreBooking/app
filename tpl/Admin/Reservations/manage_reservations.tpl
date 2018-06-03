@@ -61,7 +61,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		<div class="panel-heading"><span class="glyphicon glyphicon-filter"></span> {translate key="Filter"} {showhide_icon}</div>
 		<div class="panel-body">
 			{assign var=groupClass value="col-xs-12 col-sm-4 col-md-3"}
-			<form id="filterForm" class="form-inline" role="form">
+			<form id="filterForm" role="form">
 				<div class="form-group filter-dates {$groupClass}">
 					<input id="startDate" type="text" class="form-control dateinput inline"
 						   value="{formatdate date=$StartDate}"/>
@@ -70,12 +70,13 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 					<input id="endDate" type="text" class="form-control dateinput inline"
 						   value="{formatdate date=$EndDate}"/>
 					<input id="formattedEndDate" type="hidden" value="{formatdate date=$EndDate key=system}"/>
-				</div>
+                </div>
 				<div class="form-group filter-user {$groupClass}">
 					<input id="userFilter" type="text" class="form-control" value="{$UserNameFilter}"
 						   placeholder="{translate key=User}"/>
 					<input id="userId" type="hidden" value="{$UserIdFilter}"/>
-				</div>
+                    <span class="searchclear glyphicon glyphicon-remove-circle" ref="userFilter,userId"></span>
+                </div>
 				<div class="form-group filter-schedule {$groupClass}">
 					<select id="scheduleId" class="form-control">
 						<option value="">{translate key=AllSchedules}</option>
@@ -98,15 +99,18 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 				<div class="form-group filter-referenceNumber {$groupClass}">
 					<input id="referenceNumber" type="text" class="form-control" value="{$ReferenceNumber}"
 						   placeholder="{translate key=ReferenceNumber}"/>
-				</div>
+                    <span class="searchclear glyphicon glyphicon-remove-circle" ref="referenceNumber"></span>
+                </div>
                 <div class="form-group filter-title {$groupClass}">
 					<input id="reservationTitle" type="text" class="form-control" value="{$ReservationTitle}"
 						   placeholder="{translate key=Title}"/>
-				</div>
+                    <span class="searchclear glyphicon glyphicon-remove-circle" ref="reservationTitle"></span>
+                </div>
                 <div class="form-group filter-title {$groupClass}">
 					<input id="reservationDescription" type="text" class="form-control" value="{$ReservationDescription}"
 						   placeholder="{translate key=Description}"/>
-				</div>
+                    <span class="searchclear glyphicon glyphicon-remove-circle" ref="reservationDescription"></span>
+                </div>
 				<div class="form-group filter-resourceStatus {$groupClass}">
 					<select id="resourceStatusIdFilter" class="form-control">
 						<option value="">{translate key=AllResourceStatuses}</option>
@@ -509,7 +513,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
         </div>
     </div>
 
-    {include file="javascript-includes.tpl" Qtip=true InlineEdit=true}
+    {include file="javascript-includes.tpl" Qtip=true InlineEdit=true Clear=true}
 	{jsfile src="ajax-helpers.js"}
 	{jsfile src="admin/reservations.js"}
 

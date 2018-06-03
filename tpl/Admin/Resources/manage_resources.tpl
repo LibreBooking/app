@@ -73,7 +73,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 	</div>
 
 	<div class="panel panel-default filterTable" id="filter-resources-panel">
-        <form id="filterForm" class="horizontal-list form-inline" role="form" method="get">
+        <form id="filterForm" class="horizontal-list" role="form" method="get">
 		<div class="panel-heading"><span
 					class="glyphicon glyphicon-filter"></span> {translate key="Filter"} {showhide_icon}
 		</div>
@@ -84,7 +84,9 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 				<div class="form-group {$groupClass}">
 					<input type="text" id="filterResourceName" class="form-control" {formname key=RESOURCE_NAME}
 						   value="{$ResourceNameFilter}" placeholder="{translate key=Name}"/>
-				</div>
+                    <span class="searchclear glyphicon glyphicon-remove-circle" ref="filterResourceName"></span>
+
+                </div>
 				<div class="form-group {$groupClass}">
 					<select id="filterScheduleId" {formname key=SCHEDULE_ID} class="form-control">
 						<option value="">{translate key=AllSchedules}</option>
@@ -99,38 +101,37 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 					</select>
 				</div>
 				<div class="form-group {$groupClass}">
-					<select id="resourceStatusIdFilter" class="form-control" {formname key=RESOURCE_STATUS_ID}>
+					<select id="resourceStatusIdFilter" style="width:auto;" class="form-control inline" {formname key=RESOURCE_STATUS_ID}>
 						<option value="">{translate key=AllResourceStatuses}</option>
 						<option value="{ResourceStatus::AVAILABLE}">{translate key=Available}</option>
 						<option value="{ResourceStatus::UNAVAILABLE}">{translate key=Unavailable}</option>
 						<option value="{ResourceStatus::HIDDEN}">{translate key=Hidden}</option>
 					</select>
-					<select id="resourceReasonIdFilter" class="form-control" {formname key=RESOURCE_STATUS_REASON_ID}>
+					<select id="resourceReasonIdFilter" style="width:auto;" class="form-control inline" {formname key=RESOURCE_STATUS_REASON_ID}>
 						<option value="">-</option>
 					</select>
 				</div>
 				<div class="form-group {$groupClass}">
-					<input type="text" id="filterCapacity" class="form-control" {formname key=MAX_PARTICIPANTS}
+					<input type="number" min="0" id="filterCapacity" class="form-control" {formname key=MAX_PARTICIPANTS}
 						   value="{$CapacityFilter}" placeholder="{translate key=MinimumCapacity}"/>
-				</div>
+                    <span class="searchclear glyphicon glyphicon-remove-circle" ref="filterCapacity"></span>
+                </div>
 				<div class="form-group {$groupClass}">
-					<label class="control-label"
-						   for="filterRequiresApproval">{translate key='ResourceRequiresApproval'}</label>
-					<select id="filterRequiresApproval" class="form-control" {formname key=REQUIRES_APPROVAL}>
+					<select id="filterRequiresApproval" class="form-control" {formname key=REQUIRES_APPROVAL} title="{translate key='ResourceRequiresApproval'}">
+                        <option value="">{translate key='ResourceRequiresApproval'}</option>
 						{html_options options=$YesNoOptions selected=$RequiresApprovalFilter}
 					</select>
 				</div>
 				<div class="form-group {$groupClass}">
-					<label class="control-label"
-						   for="filterAutoAssign">{translate key='ResourcePermissionAutoGranted'}</label>
-					<select id="filterAutoAssign" class="form-control" {formname key=AUTO_ASSIGN}>
-						{html_options options=$YesNoOptions selected=$AutoPermissionFilter}
+					<select id="filterAutoAssign" class="form-control" {formname key=AUTO_ASSIGN} title="{translate key='ResourcePermissionAutoGranted'}">
+						<option value="">{translate key='ResourcePermissionAutoGranted'}</option>
+                        {html_options options=$YesNoOptions selected=$AutoPermissionFilter}
 					</select>
 				</div>
 				<div class="form-group {$groupClass}">
-					<label class="control-label" for="filterAllowMultiDay">{translate key=ResourceAllowMultiDay}</label>
-					<select id="filterAllowMultiDay" class="form-control" {formname key=ALLOW_MULTIDAY}>
-						{html_options options=$YesNoOptions selected=$AllowMultiDayFilter}
+					<select id="filterAllowMultiDay" class="form-control" {formname key=ALLOW_MULTIDAY} title="{translate key=ResourceAllowMultiDay}">
+						<option value="">{translate key=ResourceAllowMultiDay}</option>
+                        {html_options options=$YesNoOptions selected=$AllowMultiDayFilter}
 					</select>
 				</div>
 				<div class="clearfix"></div>
@@ -1549,7 +1550,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 	{csrf_token}
 
-    {include file="javascript-includes.tpl" InlineEdit=true Owl=true}
+    {include file="javascript-includes.tpl" InlineEdit=true Owl=true Clear=true}
 	{jsfile src="ajax-helpers.js"}
 	{jsfile src="autocomplete.js"}
 	{jsfile src="js/tree.jquery.js"}

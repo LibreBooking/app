@@ -55,6 +55,7 @@
 {/if}
 {if $Timepicker}
     {jsfile src="js/jquery.timePicker.min.js"}
+    {jsfile src="js/jquery-ui-timepicker-addon.js"}
 {/if}
 {if $FloatThead}
     {jsfile src="js/jquery.floatThead.min.js"}
@@ -68,5 +69,7 @@
 {if $Owl}
     {jsfile src="js/owl-2.2.1/owl.carousel.min.js"}
 {/if}
-{jsfile src="js/jquery-ui-timepicker-addon.js"}
+{if $Clear}
+    {jsfile src="search-clear.js"}
+{/if}
 {jsfile src="phpscheduleit.js"}

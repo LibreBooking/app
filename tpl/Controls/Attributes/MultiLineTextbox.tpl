@@ -25,5 +25,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 	{if $attribute->Required() && !$searchmode}
 	<i class="glyphicon glyphicon-asterisk form-control-feedback" data-bv-icon-for="{$attributeId}"></i>
 	{/if}
+    {if $searchmode}
+        <span class="searchclear searchclear-label glyphicon glyphicon-remove-circle" ref="{$attributeId}"></span>
+    {/if}
 {/if}
 </div>
