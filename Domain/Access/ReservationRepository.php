@@ -102,11 +102,16 @@ class ReservationRepository implements IReservationRepository
         else {
             Log::Debug('Updating existing series (seriesId: %s)', $reservationSeries->SeriesId());
 
-            $updateSeries = new UpdateReservationSeriesCommand($reservationSeries->SeriesId(), $reservationSeries->Title(), $reservationSeries->Description(),
+            $updateSeries = new UpdateReservationSeriesCommand($reservationSeries->SeriesId(),
+                $reservationSeries->Title(),
+                $reservationSeries->Description(),
                 $reservationSeries->RepeatOptions()->RepeatType(),
-                $reservationSeries->RepeatOptions()->ConfigurationString(), Date::Now(),
-                $reservationSeries->StatusId(), $reservationSeries->UserId(),
-                $reservationSeries->GetAllowParticipation());
+                $reservationSeries->RepeatOptions()->ConfigurationString(),
+                Date::Now(),
+                $reservationSeries->StatusId(),
+                $reservationSeries->UserId(),
+                $reservationSeries->GetAllowParticipation(),
+                $reservationSeries->BookedBy()->UserId);
 
             $database->Execute($updateSeries);
 
@@ -140,13 +145,17 @@ class ReservationRepository implements IReservationRepository
     {
         $database = ServiceLocator::GetDatabase();
 
-        $insertReservationSeries = new AddReservationSeriesCommand(Date::Now(), $reservationSeries->Title(), $reservationSeries->Description(),
+        $insertReservationSeries = new AddReservationSeriesCommand(Date::Now(),
+            $reservationSeries->Title(),
+            $reservationSeries->Description(),
             $reservationSeries->RepeatOptions()->RepeatType(),
             $reservationSeries->RepeatOptions()->ConfigurationString(),
             ReservationTypes::Reservation,
-            $reservationSeries->StatusId(), $reservationSeries->UserId(),
+            $reservationSeries->StatusId(),
+            $reservationSeries->UserId(),
             $reservationSeries->GetAllowParticipation(),
-            $reservationSeries->TermsAcceptanceDate());
+            $reservationSeries->TermsAcceptanceDate(),
+            $reservationSeries->BookedBy()->UserId);
 
         $reservationSeriesId = $database->ExecuteInsert($insertReservationSeries);
 
@@ -672,7 +681,7 @@ class DeleteSeriesEventCommand extends EventCommand
 
     public function Execute(Database $database)
     {
-        $database->Execute(new DeleteSeriesCommand($this->series->SeriesId(), Date::Now()));
+        $database->Execute(new DeleteSeriesCommand($this->series->SeriesId(), Date::Now(), $this->series->BookedBy()->UserId));
     }
 }
 

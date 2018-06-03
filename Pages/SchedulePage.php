@@ -579,7 +579,7 @@ class DisplaySlotFactory
             }
             elseif ($this->IsAdminFor($slot))
             {
-                return 'displayAdminReserved';
+                return "displayAdminReserved$functionSuffix";
             }
             elseif ($this->AmIParticipating($slot)) {
                 return "displayMyParticipating$functionSuffix";

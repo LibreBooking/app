@@ -145,8 +145,8 @@ class Queries
 
 	const ADD_RESERVATION_SERIES =
 			'INSERT INTO
-        reservation_series (date_created, title, description, allow_participation, allow_anon_participation, repeat_type, repeat_options, type_id, status_id, owner_id, terms_date_accepted)
-		VALUES (@dateCreated, @title, @description, @allow_participation, false, @repeatType, @repeatOptions, @typeid, @statusid, @userid, @terms_date_accepted)';
+        reservation_series (date_created, title, description, allow_participation, allow_anon_participation, repeat_type, repeat_options, type_id, status_id, owner_id, terms_date_accepted, last_action_by)
+		VALUES (@dateCreated, @title, @description, @allow_participation, false, @repeatType, @repeatOptions, @typeid, @statusid, @userid, @terms_date_accepted, @last_action_by)';
 
 	const ADD_RESERVATION_GUEST =
 			'INSERT INTO reservation_guests (reservation_instance_id, email, reservation_user_level)
@@ -306,7 +306,8 @@ class Queries
 	const DELETE_SERIES =
 			'UPDATE reservation_series
 		    SET status_id = @statusid,
-			last_modified = @dateModified
+			last_modified = @dateModified,
+			last_action_by = @last_action_by
 		  WHERE series_id = @seriesid';
 
 	const DELETE_TERMS_OF_SERVICE = 'DELETE FROM terms_of_service';
@@ -1088,7 +1089,8 @@ class Queries
 			repeat_options = @repeatOptions,
 			status_id = @statusid,
 			owner_id = @userid,
-			allow_participation = @allow_participation
+			allow_participation = @allow_participation,
+			last_action_by = @last_action_by
 		WHERE
 			series_id = @seriesid';
 

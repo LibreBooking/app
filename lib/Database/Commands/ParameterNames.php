@@ -112,11 +112,12 @@ class ParameterNames
 	const LAYOUT_ID = '@layoutid';
     const LANGUAGE = '@language';
     const LAYOUT_TYPE = '@layout_type';
+    const LAST_ACTION_BY = '@last_action_by';
 
 	const NAME = '@name';
 
 	const ORGANIZATION = '@organization';
-	const ORIGNINAL_CREDIT_COUNT = '@original_credit_count';
+	const ORIGINAL_CREDIT_COUNT = '@original_credit_count';
 
 	const PASSWORD = '@password';
 	const PARTICIPANT_ID = '@participant_id';

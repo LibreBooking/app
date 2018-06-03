@@ -394,7 +394,8 @@ class AddReservationSeriesCommand extends SqlCommand
                                 $statusId,
                                 $ownerId,
                                 $allowParticipation,
-                                $termsAcceptanceDate
+                                $termsAcceptanceDate,
+                                $lastActionBy
     )
     {
         parent::__construct(Queries::ADD_RESERVATION_SERIES);
@@ -413,6 +414,7 @@ class AddReservationSeriesCommand extends SqlCommand
         $this->AddParameter(new Parameter(ParameterNames::USER_ID, $ownerId));
         $this->AddParameter(new Parameter(ParameterNames::ALLOW_PARTICIPATION, (int)$allowParticipation));
         $this->AddParameter(new Parameter(ParameterNames::TERMS_ACCEPTANCE_DATE, $termsAcceptanceDate->ToDatabase()));
+        $this->AddParameter(new Parameter(ParameterNames::LAST_ACTION_BY, $lastActionBy));
     }
 }
 
@@ -1079,12 +1081,13 @@ class DeleteScheduleCommand extends SqlCommand
 
 class DeleteSeriesCommand extends SqlCommand
 {
-    public function __construct($seriesId, Date $dateModified)
+    public function __construct($seriesId, Date $dateModified, $lastActionBy)
     {
         parent::__construct(Queries::DELETE_SERIES);
         $this->AddParameter(new Parameter(ParameterNames::SERIES_ID, $seriesId));
         $this->AddParameter(new Parameter(ParameterNames::DATE_MODIFIED, $dateModified->ToDatabase()));
         $this->AddParameter(new Parameter(ParameterNames::STATUS_ID, ReservationStatus::Deleted));
+        $this->AddParameter(new Parameter(ParameterNames::LAST_ACTION_BY, $lastActionBy));
     }
 }
 
@@ -2077,7 +2080,7 @@ class LogCreditActivityCommand extends SqlCommand
     {
         parent::__construct(Queries::LOG_CREDIT_ACTIVITY_COMMAND);
         $this->AddParameter(new Parameter(ParameterNames::USER_ID, $userId));
-        $this->AddParameter(new Parameter(ParameterNames::ORIGNINAL_CREDIT_COUNT, $originalCredits));
+        $this->AddParameter(new Parameter(ParameterNames::ORIGINAL_CREDIT_COUNT, $originalCredits));
         $this->AddParameter(new Parameter(ParameterNames::CREDIT_COUNT, $currentCredits));
         $this->AddParameter(new Parameter(ParameterNames::CREDIT_NOTE, $note));
         $this->AddParameter(new Parameter(ParameterNames::DATE_CREATED, Date::Now()->ToDatabase()));
@@ -2538,7 +2541,8 @@ class UpdateReservationSeriesCommand extends SqlCommand
                                 Date $dateModified,
                                 $statusId,
                                 $ownerId,
-                                $allowParticipation
+                                $allowParticipation,
+                                $lastActionBy
     )
     {
         parent::__construct(Queries::UPDATE_RESERVATION_SERIES);
@@ -2552,6 +2556,7 @@ class UpdateReservationSeriesCommand extends SqlCommand
         $this->AddParameter(new Parameter(ParameterNames::STATUS_ID, $statusId));
         $this->AddParameter(new Parameter(ParameterNames::USER_ID, $ownerId));
         $this->AddParameter(new Parameter(ParameterNames::ALLOW_PARTICIPATION, (int)$allowParticipation));
+        $this->AddParameter(new Parameter(ParameterNames::LAST_ACTION_BY, $lastActionBy));
     }
 }
 
