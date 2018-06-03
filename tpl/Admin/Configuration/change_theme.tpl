@@ -74,14 +74,6 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                 <a href="#" class="clearInput">{html_image src="cross-button.png"}</a>
             </div>
 
-            <div>
-                <div>
-                    <h4>{translate key="ReservationColors"}</h4>
-
-                    <a href="manage_reservation_colors.php">{translate key=Manage}</a>
-                </div>
-            </div>
-
             <div class="clearfix"></div>
 
             <button type="button" class="btn btn-success update margin-top-25" name="{Actions::SAVE}" id="saveButton">

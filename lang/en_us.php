@@ -304,7 +304,7 @@ class en_us extends Language
 		$strings['QuantityRequested'] = 'Quantity Requested';
 		$strings['CreatingReservation'] = 'Creating Reservation';
 		$strings['UpdatingReservation'] = 'Updating Reservation';
-		$strings['DeleteWarning'] = 'This action is permanent and irrecoverable!';
+		$strings['DeleteWarning'] = 'This action is permanent and cannot be undone!';
 		$strings['DeleteAccessoryWarning'] = 'Deleting this accessory will remove it from all reservations.';
 		$strings['AddAccessory'] = 'Add Accessory';
 		$strings['AddBlackout'] = 'Add Blackout';
@@ -512,7 +512,7 @@ class en_us extends Language
 		$strings['AddRule'] = 'Add Rule';
 		$strings['Attribute'] = 'Attribute';
 		$strings['RequiredValue'] = 'Required Value';
-		$strings['ReservationCustomRuleAdd'] = 'If %s then the reservation color will be';
+		$strings['ReservationCustomRuleAdd'] = 'Use this color when the reservation attribute is set to the following value';
 		$strings['AddReservationColorRule'] = 'Add Reservation Color Rule';
 		$strings['LimitAttributeScope'] = 'Collect In Specific Cases';
 		$strings['CollectFor'] = 'Collect For';

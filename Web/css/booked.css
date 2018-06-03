@@ -2355,6 +2355,9 @@ td.update {
 #page-manage-payments .tab-content {
   padding-top: 15px;
 }
+#page-manage-reservation-colors label.customAttribute {
+  display: inline;
+}
 #install-page input {
   width: 250px;
 }

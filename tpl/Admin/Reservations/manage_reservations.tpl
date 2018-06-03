@@ -46,6 +46,11 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                             <span class="glyphicon glyphicon-book"></span>
                         </a>
                     </li>
+                    <li role="presentation">
+                        <a role="menuitem" href="manage_reservation_colors.php" id="addTermsOfService" class="add-link">{translate key=ReservationColors}
+                            <span class="fa fa-paint-brush"></span>
+                        </a>
+                    </li>
                 {/if}
 			</ul>
 		</div>
