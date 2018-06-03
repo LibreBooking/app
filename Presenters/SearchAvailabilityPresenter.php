@@ -21,6 +21,7 @@
 
 require_once(ROOT_DIR . 'Presenters/ActionPresenter.php');
 require_once(ROOT_DIR . 'Pages/SearchAvailabilityPage.php');
+require_once(ROOT_DIR . 'Presenters/Reservation/ReservationPresenterFactory.php');
 
 class SearchAvailabilityPresenter extends ActionPresenter
 {
@@ -77,6 +78,10 @@ class SearchAvailabilityPresenter extends ActionPresenter
 		$dateRange = $this->GetSearchRange();
 		$requestedLength = $this->GetRequestedLength();
 		$resources = $this->resourceService->GetAllResources(false, $this->user, $this->GetFilter(), null, 100);
+        $roFactory = new RepeatOptionsFactory();
+
+        $repeatOptions = $roFactory->CreateFromComposite($this->page, $this->user->Timezone);
+        $repeatDates = $repeatOptions->GetDates($dateRange);
 
 		/** @var ResourceDto $resource */
 		foreach ($resources as $resource)
@@ -99,7 +104,9 @@ class SearchAvailabilityPresenter extends ActionPresenter
 
 					if ($opening != null)
 					{
-						$openings[] = $opening;
+					    if ($this->AllDaysAreOpen($opening, $repeatDates, $resource, $requestedLength)) {
+                            $openings[] = $opening;
+                        }
 					}
 				}
 			}
@@ -231,6 +238,54 @@ class SearchAvailabilityPresenter extends ActionPresenter
 		}
 		return $vals;
 	}
+
+    /**
+     * @param AvailableOpeningView $availableOpening
+     * @param DateRange[] $repeatDates
+     * @param ResourceDto $resource
+     * @param DateDiff $requestedLength
+     * @return bool
+     */
+    private function AllDaysAreOpen(AvailableOpeningView $availableOpening, $repeatDates, ResourceDto $resource, $requestedLength)
+    {
+        if (empty($repeatDates))
+        {
+            return true;
+        }
+
+        $targetTimezone = $this->user->Timezone;
+        $resourceId = $resource->GetResourceId();
+        $scheduleId = $resource->GetScheduleId();
+
+        foreach ($repeatDates as $dateRange) {
+            $reservations = $this->reservationService->GetReservations($dateRange, $scheduleId, $targetTimezone, $resourceId);
+            $layout = $this->scheduleService->GetDailyLayout($scheduleId, new ScheduleLayoutFactory($targetTimezone), $reservations);
+            $foundMatch = false;
+
+            foreach ($dateRange->Dates() as $date) {
+                $slots = $layout->GetLayout($date, $resourceId);
+
+                /** @var IReservationSlot $slot */
+                for ($i = 0; $i < count($slots); $i++) {
+                    if ($slots[$i]->Begin()->Equals($availableOpening->Start()->GetTime())) {
+                        $opening = $this->GetSlot($i, $i, $slots, $requestedLength, $resource);
+                        if ($opening != null)
+                        {
+                            $foundMatch = true;
+                        }
+                    }
+                }
+
+                if (!$foundMatch)
+                {
+                    return false;
+                }
+            }
+        }
+
+        return true;
+
+    }
 }
 
 class AvailableOpeningView

@@ -150,6 +150,110 @@ class SearchAvailabilityPresenterTests extends TestBase
         $expectedSearchRange = new DateRange(Date::Parse('2016-07-03', $this->fakeUser->Timezone), Date::Parse('2016-07-09', $this->fakeUser->Timezone));
         $this->assertEquals($expectedSearchRange, $this->reservationService->_LastDateRange);
     }
+    
+    public function testWhenNotAllRepeatingDatesAreOpen()
+    {
+        $date = Date::Now()->AddDays(1)->ToTimezone($this->fakeUser->Timezone)->GetDate();
+        $terminationDate = $date->AddDays(2);
+
+        $this->page->_Resources = array();
+        $this->page->_Hours = 1;
+        $this->page->_Minutes = 0;
+        $this->page->_Range = 'tomorrow';
+        $this->page->_RepeatType = RepeatType::Daily;
+        $this->page->_RepeatInterval = 1;
+        $this->page->_RepeatTerminationDate = $terminationDate->Format('Y-m-d');
+
+        $resourceId = 1;
+
+        $resource = new TestResourceDto($resourceId);
+        $this->resourceService->_AllResources = array($resource);
+
+        $openDay1 = $this->GetEmpty($date, '00:00', '00:00');
+        $openDay2 = $this->GetEmpty($date->AddDays(1), '00:00', '00:00');
+        $bookedDay3 = $this->GetReservation($date->AddDays(2), '00:00', '10:00');
+        $openDay3 = $this->GetEmpty($date->AddDays(2), '10:00', '00:00');
+
+        $dailyLayout = new FakeDailyLayout();
+        $dailyLayout->_SetLayout($date, $resourceId, array($openDay1));
+        $dailyLayout->_SetLayout($date->AddDays(1), $resourceId, array($openDay2));
+        $dailyLayout->_SetLayout($date->AddDays(2), $resourceId, array($bookedDay3, $openDay3));
+        $this->scheduleService->_DailyLayout = $dailyLayout;
+
+        $this->presenter->SearchAvailability();
+
+        $this->assertEquals(0, count($this->page->_Openings));
+    }
+
+    public function testWhenAllRepeatingDatesAreOpen()
+    {
+        $date = Date::Now()->AddDays(1)->ToTimezone($this->fakeUser->Timezone)->GetDate();
+        $date2 = $date->AddDays(1);
+        $date3 = $date->AddDays(2);
+        $terminationDate = $date->AddDays(2);
+
+        $this->page->_Resources = array();
+        $this->page->_Hours = 1;
+        $this->page->_Minutes = 0;
+        $this->page->_Range = 'tomorrow';
+        $this->page->_RepeatType = RepeatType::Daily;
+        $this->page->_RepeatInterval = 1;
+        $this->page->_RepeatTerminationDate = $terminationDate->Format('Y-m-d');
+
+        $resourceId = 1;
+
+        $resource = new TestResourceDto($resourceId);
+        $this->resourceService->_AllResources = array($resource);
+
+        $tooShort1 = $this->GetEmpty($date, '00:00', '00:15');
+        $tooShort1a = $this->GetEmpty($date, '00:15', '00:30');
+        $oneHour1 = $this->GetEmpty($date, '00:30', '01:00');
+        $oneHour2 = $this->GetEmpty($date, '01:00', '02:30');
+        $reservation1 = $this->GetReservation($date, '02:30', '12:30');
+        $reservation2 = $this->GetReservation($date, '12:30', '16:00');
+        $twoHours1 = $this->GetEmpty($date, '16:00', '18:00');
+        $reservation3 = $this->GetReservation($date, '18:30', '19:30');
+        $tooShort2 = $this->GetEmpty($date, '19:30', '20:00');
+        $blackout1 = $this->GetBlackout($date, '20:00', '21:00');
+        $blackout2 = $this->GetBlackout($date, '21:00', '22:00');
+        $twoHours2 = $this->GetEmpty($date, '22:00', '00:00');
+        $openDay2 = $this->GetEmpty($date2, '00:00', '00:30');
+        $openDay2a = $this->GetEmpty($date2, '00:30', '01:00');
+        $openDay2b = $this->GetEmpty($date2, '01:00', '01:30');
+        $openDay2c = $this->GetEmpty($date2, '01:30', '02:30');
+        $openDay3 = $this->GetEmpty($date3, '00:00', '01:00');
+        $openDay3a = $this->GetEmpty($date3, '01:00', '00:00');
+
+        $reservations = array(
+            $tooShort1,
+            $tooShort1a,
+            $oneHour1,
+            $oneHour2,
+            $reservation1,
+            $reservation2,
+            $twoHours1,
+            $reservation3,
+            $tooShort2,
+            $blackout1,
+            $blackout2,
+            $twoHours2,
+        );
+        $dailyLayout = new FakeDailyLayout();
+        $dailyLayout->_SetLayout($date, $resourceId, $reservations);
+        $dailyLayout->_SetLayout($date2, $resourceId, array($openDay2, $openDay2a, $openDay2b, $openDay2c));
+        $dailyLayout->_SetLayout($date3, $resourceId, array($openDay3, $openDay3a));
+        $this->scheduleService->_DailyLayout = $dailyLayout;
+
+        $this->presenter->SearchAvailability();
+
+        $expectedOpenings = array(
+            new AvailableOpeningView($resource, $tooShort1->BeginDate(), $oneHour1->EndDate()),
+            new AvailableOpeningView($resource, $oneHour2->BeginDate(), $oneHour2->EndDate()),
+        );
+
+        $this->assertEquals(count($expectedOpenings), count($this->page->_Openings));
+        $this->assertEquals($expectedOpenings, $this->page->_Openings);
+    }
 
     /**
      * @param Date $date
@@ -179,7 +283,7 @@ class SearchAvailabilityPresenterTests extends TestBase
      * @param Date $date
      * @param string $start
      * @param string $end
-     * @return ReservationSlot
+     * @return ReservationSlot|BlackoutSlot
      */
     private function GetBlackout(Date $date, $start, $end)
     {
@@ -213,6 +317,28 @@ class FakeSearchAvailabilityPage extends SearchAvailabilityPage
      */
     public $_Range;
 
+    /**
+     * @var string
+     */
+    public $_RepeatType = RepeatType::None;
+
+    /**
+     * @var int
+     */
+    public $_RepeatInterval = 1;
+
+    /**
+     * @var int[]
+     */
+    public $_RepeatDays = [];
+
+    /**
+     * @var string
+     */
+    public $_RepeatMonthlyType = RepeatMonthlyType::DayOfMonth;
+
+    public $_RepeatTerminationDate;
+
     public function SetResources($resources)
     {
     }
@@ -239,5 +365,30 @@ class FakeSearchAvailabilityPage extends SearchAvailabilityPage
     public function GetRequestedRange()
     {
         return $this->_Range;
+    }
+
+    public function GetRepeatType()
+    {
+        return $this->_RepeatType;
+    }
+
+    public function GetRepeatInterval()
+    {
+        return $this->_RepeatInterval;
+    }
+
+    public function GetRepeatWeekdays()
+    {
+       return $this->_RepeatDays;
+    }
+
+    public function GetRepeatMonthlyType()
+    {
+        return $this->_RepeatMonthlyType;
+    }
+
+    public function GetRepeatTerminationDate()
+    {
+        return $this->_RepeatTerminationDate;
     }
 }

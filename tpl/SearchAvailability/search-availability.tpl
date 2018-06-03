@@ -4,13 +4,13 @@
 
     <form role="form" name="searchForm" id="searchForm" method="post"
           action="{$smarty.server.SCRIPT_NAME}?action=search">
-        <div class="form-group col-xs-12 col-sm-3">
+        <div class="form-group col-xs-12 col-sm-2">
             <div class="checkbox">
                 <input type="checkbox" id="anyResource" checked="checked"/>
                 <label for="anyResource">{translate key=AnyResource}</label>
             </div>
         </div>
-        <div class="form-group col-xs-12 col-sm-9">
+        <div class="form-group col-xs-12 col-sm-10">
             <label for="resourceGroups" class="no-show">{translate key=Resources}</label>
             <select id="resourceGroups" class="form-control" multiple="multiple" {formname key=RESOURCE_ID multi=true}
                     disabled="disabled">
@@ -22,7 +22,7 @@
 
         <div class="clearfix"></div>
 
-        <div class="form-group col-xs-12 col-sm-3">
+        <div class="form-group col-xs-12 col-sm-2">
             <div class="input-group margin-bottom-15">
                 <input type="number" min="0" step="1" value="0" class="form-control hours-minutes"
                        id="hours" {formname key=HOURS}" />
@@ -35,7 +35,7 @@
             </div>
         </div>
 
-        <div class="form-group col-xs-12 col-sm-9">
+        <div class="form-group col-xs-12 col-sm-5">
             <div class="btn-group margin-bottom-15" data-toggle="buttons">
                 <label class="btn btn-default active">
                     <input type="radio" id="today" checked="checked"
@@ -58,7 +58,7 @@
                     <i class="fa fa-calendar"></i><span class="hidden-xs"> {translate key=DateRange}</span>
                 </label>
             </div>
-            <div class="">
+            <div>
                 <input type="text" id="beginDate" class="form-control inline dateinput"
                        placeholder="{translate key=BeginDate}" disabled="disabled"/>
                 <input type="hidden" id="formattedBeginDate" {formname key=BEGIN_DATE} />
@@ -66,10 +66,16 @@
                 <input type="text" id="endDate" class="form-control inline dateinput"
                        placeholder="{translate key=EndDate}" disabled="disabled"/>
                 <input type="hidden" id="formattedEndDate" {formname key=END_DATE} />
-                <a href="#" data-toggle="collapse" data-target="#advancedSearchOptions">{translate key=MoreOptions}</a>
             </div>
             <div class="clearfix"></div>
 
+        </div>
+        <div class="form-group col-xs-12 col-sm-5">
+            {control type="RecurrenceControl"}
+        </div>
+
+        <div class="form-group col-xs-12">
+            <a href="#" data-toggle="collapse" data-target="#advancedSearchOptions">{translate key=MoreOptions}</a>
         </div>
 
         <div class="clearfix"></div>
@@ -129,13 +135,27 @@
     {jsfile src="ajax-helpers.js"}
     {jsfile src="availability-search.js"}
     {jsfile src="resourcePopup.js"}
+    {jsfile src="date-helper.js"}
+    {jsfile src="recurrence.js"}
 
     {control type="DatePickerSetupControl" ControlId="beginDate" AltId="formattedBeginDate" DefaultDate=$StartDate}
     {control type="DatePickerSetupControl" ControlId="endDate" AltId="formattedEndDate" DefaultDate=$StartDate}
+    {control type="DatePickerSetupControl" ControlId="EndRepeat" AltId="formattedEndRepeat" DefaultDate=$StartDate}
 
     <script type="text/javascript">
 
         $(document).ready(function () {
+
+            var recurOpts = {
+                repeatType: '',
+                repeatInterval: '',
+                repeatMonthlyType: '',
+                repeatWeekdays: []
+            };
+
+            var recurrence = new Recurrence(recurOpts);
+            recurrence.init();
+
             var opts = {
                 reservationUrlTemplate: "{$Path}{Pages::RESERVATION}?{QueryStringKeys::RESOURCE_ID}=[rid]&{QueryStringKeys::START_DATE}=[sd]&{QueryStringKeys::END_DATE}=[ed]"
             };

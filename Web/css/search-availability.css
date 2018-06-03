@@ -80,6 +80,12 @@
     margin: 5px 0;
   }
 }
+.page-search-availability input.hours-minutes {
+  min-width: 75px;
+}
 .page-search-availability span.hours-minutes {
   min-width: 120px;
+}
+.page-search-availability #repeatDiv label {
+  min-width: 50px;
 }
