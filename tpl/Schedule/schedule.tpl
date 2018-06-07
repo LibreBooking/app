@@ -269,14 +269,14 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                                 <div id="resourceGroups"></div>
                             </div>
                             <div id="resettable">
-                                <div class="form-group">
+                                <div class="form-group col-xs-12">
                                     <label for="maxCapactiy">{translate key=MinimumCapacity}</label>
                                     <input type='number' min='0' id='maxCapactiy' size='5' maxlength='5'
                                            class="form-control input-sm" {formname key=MAX_PARTICIPANTS}
                                            value="{$MaxParticipantsFilter}"/>
                                 </div>
 
-                                <div class="form-group">
+                                <div class="form-group col-xs-12">
                                     <label for="resourceType">{translate key=ResourceType}</label>
                                     <select id="resourceType" {formname key=RESOURCE_TYPE_ID} {formname key=RESOURCE_TYPE_ID}
                                             class="form-control input-sm">
@@ -286,11 +286,11 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                                 </div>
 
                                 {foreach from=$ResourceAttributes item=attribute}
-                                    {control type="AttributeControl" attribute=$attribute align='vertical' searchmode=true namePrefix='r' inputClass="input-sm"}
+                                    {control type="AttributeControl" attribute=$attribute align='vertical' searchmode=true namePrefix='r' inputClass="input-sm" class="customAttribute col-xs-12"}
                                 {/foreach}
 
                                 {foreach from=$ResourceTypeAttributes item=attribute}
-                                    {control type="AttributeControl" attribute=$attribute align='vertical' searchmode=true namePrefix='rt' inputClass="input-sm"}
+                                    {control type="AttributeControl" attribute=$attribute align='vertical' searchmode=true namePrefix='rt' inputClass="input-sm" class="customAttribute col-xs-12"}
                                 {/foreach}
 
                                 <div class="btn-submit">

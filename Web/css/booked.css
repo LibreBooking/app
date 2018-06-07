@@ -1294,6 +1294,9 @@ div.legend {
 #reservations-left {
   padding: 0;
 }
+#reservations-left .searchclear {
+  top: 0;
+}
 .reservations-left-header {
   border-bottom: solid 1px #E9E9E9;
   font-weight: bold;
