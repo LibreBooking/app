@@ -36,7 +36,7 @@ class AccountActivation implements IAccountActivation
 
 	public function Notify(User $user)
 	{
-		$activationCode = BookedStringHelper::Random();
+		$activationCode = BookedStringHelper::Random(30);
 
 		$this->activationRepository->AddActivation($user, $activationCode);
 
