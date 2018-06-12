@@ -123,7 +123,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 				{/if}
 				{if $AllowFacebookLogin}
 					<div class="{$socialClass} social-login" id="socialLoginFacebook">
-						<a href="http://www.social.twinkletoessoftware.com/fblogin.php?protocol={$Protocol}&resume={$ScriptUrlNoProtocol}/external-auth.php%3Ftype%3Dfb">
+						<a href="http://www.social.twinkletoessoftware.com/fblogin.php?protocol={$Protocol}&resume={$ScriptUrlNoProtocol}/external-auth.php%3Ftype%3Dfb%26redirect%3D{$ResumeUrl}">
 							<img style="max-height:42px" src="img/external/btn_facebook_login.png" alt="Sign in with Facebook"/>
 						</a>
 					</div>

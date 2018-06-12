@@ -43,7 +43,7 @@ class ExternalAuthLoginPage extends Page implements ILoginBasePage
 	 */
 	public function GetResumeUrl()
 	{
-		return null;
+        return $this->GetQuerystring(QueryStringKeys::REDIRECT);
 	}
 
 	/**
