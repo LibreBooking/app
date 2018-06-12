@@ -21,7 +21,7 @@
 require_once('Language.php');
 require_once('en_us.php');
 
-class du_nl extends en_us
+class du_nl extends en_gb
 {
 	public function __construct()
 	{
