@@ -79,11 +79,11 @@ class Installer
             $results[] = $this->ExecuteScript($hostname, $database_name, $this->user, $this->password, $create_user);
         }
 
-        $results[] = $this->ExecuteScript($hostname, $database_name, $this->user, $this->password, $populate_data);
-
         $upgradeResults = $this->Upgrade();
 
-		/**
+        $results[] = $this->ExecuteScript($hostname, $database_name, $this->user, $this->password, $populate_data);
+
+        /**
 		 * Populate sample data given in /Booked Scheduler/database_schema/sample-data-utf8.sql
 		 */
 		if ($should_create_sample_data)
