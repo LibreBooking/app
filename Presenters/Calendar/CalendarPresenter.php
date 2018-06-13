@@ -56,8 +56,8 @@ class CalendarPresenter extends CommonCalendarPresenter
         if (!empty($selectedResourceId) || !empty($selectedScheduleId)) {
 
             if (!empty($selectedResourceId)) {
-                $resources = $this->resourceService->GetResource($selectedResourceId);
-                $selectedScheduleId = $resources->GetScheduleId();
+                $resources = [$this->resourceService->GetResource($selectedResourceId)];
+                $selectedScheduleId = $resources[0]->GetScheduleId();
             }
 
             $scheduleLayout = $this->scheduleRepository->GetLayout($selectedScheduleId, new ScheduleLayoutFactory());
