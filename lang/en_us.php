@@ -756,6 +756,7 @@ class en_us extends Language
         $strings['BulkResourceDelete'] = 'Bulk Resource Delete';
         $strings['NewVersion'] = 'New version!';
         $strings['WhatsNew'] = 'Whats New?';
+        $strings['OnlyViewedCalendar'] = 'This schedule can only be viewed from the calendar view';
         // End Strings
 
 		// Install

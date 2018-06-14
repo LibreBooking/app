@@ -225,7 +225,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
         {if $AllowConcurrentReservations}
             <div class="alert alert-warning center">
                 <strong>
-                    <a href="{Pages::CALENDAR}?sid={$ScheduleId}">{format_date date=$ScheduleAvailabilityStart timezone=$timezone}This schedule can only be viewed from the calendar view</a>
+                    <a href="{Pages::CALENDAR}?sid={$ScheduleId}">{format_date date=$ScheduleAvailabilityStart timezone=$timezone}{translate key=OnlyViewedCalendar}</a>
                 </strong>
             </div>
         {/if}
