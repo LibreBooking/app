@@ -25,6 +25,8 @@ require_once(ROOT_DIR . 'lib/Application/Authorization/GuestPermissionServiceFac
 class ViewSchedulePage extends SchedulePage
 {
 
+    private $userRepository;
+
 	private $_styles = array(
 				ScheduleStyle::Wide => 'Schedule/schedule-days-horizontal.tpl',
 				ScheduleStyle::Tall => 'Schedule/schedule-flipped.tpl',
@@ -35,12 +37,12 @@ class ViewSchedulePage extends SchedulePage
 	{
 		parent::__construct();
 		$scheduleRepository = new ScheduleRepository();
-		$userRepository = new UserRepository();
+		$this->userRepository = new UserRepository();
 		$resourceService = new ResourceService(
 				new ResourceRepository(),
 				new GuestPermissionService(),
 				new AttributeService(new AttributeRepository()),
-				$userRepository,
+				$this->userRepository,
 				new AccessoryRepository());
 		$pageBuilder = new SchedulePageBuilder();
 		$reservationService = new ReservationService(new ReservationViewRepository(), new ReservationListingFactory());
@@ -62,7 +64,7 @@ class ViewSchedulePage extends SchedulePage
 		$viewReservations = Configuration::Instance()->GetSectionKey(ConfigSection::PRIVACY, ConfigKeys::PRIVACY_VIEW_RESERVATIONS, new BooleanConverter());
 		$allowGuestBookings = Configuration::Instance()->GetSectionKey(ConfigSection::PRIVACY, ConfigKeys::PRIVACY_ALLOW_GUEST_BOOKING,  new BooleanConverter());
 
-		$this->Set('DisplaySlotFactory', new DisplaySlotFactory());
+		$this->Set('DisplaySlotFactory', new DisplaySlotFactory(new AuthorizationService($this->userRepository)));
 		$this->Set('SlotLabelFactory', $viewReservations || $allowGuestBookings ? new SlotLabelFactory($user) : new NullSlotLabelFactory());
         $this->Set('PopupMonths', $this->IsMobile ? 1 : 3);
         $this->Set('AllowGuestBooking', $allowGuestBookings);

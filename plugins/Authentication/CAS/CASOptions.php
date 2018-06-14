@@ -117,7 +117,7 @@ class CASOptions
             'givenName' => 'givenname',
             'email' => 'mail',
             'groups' => 'Role');
-        $configValue = $this->GetConfig(ActiveDirectoryConfig::ATTRIBUTE_MAPPING);
+        $configValue = $this->GetConfig(CASConfig::ATTRIBUTE_MAPPING);
 
         if (!empty($configValue))
         {

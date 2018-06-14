@@ -310,8 +310,10 @@ function Schedule(opts, resourceGroups) {
 	this.initReservations = function () {
 		var reservations = $('#reservations');
 
-		this.makeSlotsSelectable(reservations);
-		this.makeReservationsMoveable(reservations);
+		if (options.disableSelectable != '1') {
+            this.makeSlotsSelectable(reservations);
+            this.makeReservationsMoveable(reservations);
+        }
 
 		$('.reserved', reservations).each(function () {
 			var resid = $(this).attr('resid');

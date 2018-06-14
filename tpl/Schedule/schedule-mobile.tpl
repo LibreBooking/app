@@ -17,6 +17,7 @@ You should have received a copy of the GNU General Public License
 along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 *}
 
+{assign var=disableSelectable value=true}
 {extends file="Schedule/schedule.tpl"}
 
 {block name="legend"}{/block}
@@ -35,6 +36,10 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		id="{$Slot->Id()}|{$Slot->Date()->Format('Ymd')}"><i class="fa fa-info-circle"></i>
 		{formatdate date=$Slot->BeginDate() key=period_time} - {formatdate date=$Slot->EndDate() key=period_time}
 		{$Slot->Label($SlotLabelFactory)|escapequotes}</div>
+{/function}
+
+{function name=displayAdminReservedMobile}
+    {call name=displayGeneralReservedMobile Slot=$Slot Href=$Href OwnershipClass='admin'}
 {/function}
 
 {function name=displayMyReservedMobile}

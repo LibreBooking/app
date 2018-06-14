@@ -420,7 +420,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                 scheduleId: "{$ScheduleId}",
                 scriptUrl: '{$ScriptUrl}',
                 selectedResources: [{','|implode:$ResourceIds}],
-                specificDates: [{foreach from=$SpecificDates item=d}'{$d->Format('Y-m-d')}',{/foreach}]
+                specificDates: [{foreach from=$SpecificDates item=d}'{$d->Format('Y-m-d')}',{/foreach}],
+                disableSelectable: '{$disableSelectable}'
             };
             var schedule = new Schedule(scheduleOptions, {$ResourceGroupsAsJson});
             {if $AllowGuestBooking}
@@ -447,7 +448,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                 selectedResources: [{','|implode:$ResourceIds}],
                 specificDates: [{foreach from=$SpecificDates item=d}'{$d->Format('Y-m-d')}',{/foreach}],
                 updateReservationUrl: "{$Path}ajax/reservation_move.php",
-                lockTableHead: {$LockTableHead}
+                lockTableHead: {$LockTableHead},
+                disableSelectable: '{$disableSelectable}'
             };
 
             var schedule = new Schedule(scheduleOpts, {$ResourceGroupsAsJson});
