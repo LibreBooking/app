@@ -501,10 +501,11 @@ class ManageReservationsPresenter extends ActionPresenter
         }
         else {
             $file = $this->page->GetTermsUpload();
+
             if ($file != null && $file->Extension() == 'pdf') {
                 $filename = 'tos.pdf';
-                $fileSystem = new FileSystem();
-                $fileSystem->Add(Paths::Terms(), $filename, $file->Contents());
+                $fileSystem = new \Booked\FileSystem();
+                $fileSystem->Save(Paths::Terms(), $filename, $file->Contents());
             }
         }
 
