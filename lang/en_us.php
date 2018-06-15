@@ -624,7 +624,9 @@ class en_us extends Language
 		$strings['ResourceMinLengthCsv'] = 'Reservation Minimum Length';
 		$strings['ResourceMaxLengthCsv'] = 'Reservation Maximum Length';
 		$strings['ResourceBufferTimeCsv'] = 'Buffer Time';
-		$strings['ResourceMinNoticeCsv'] = 'Reservation Minimum Notice';
+		$strings['ResourceMinNoticeAddCsv'] = 'Reservation Add Minimum Notice';
+		$strings['ResourceMinNoticeUpdateCsv'] = 'Reservation Update Minimum Notice';
+		$strings['ResourceMinNoticeDeleteCsv'] = 'Reservation Delete Minimum Notice';
 		$strings['ResourceMaxNoticeCsv'] = 'Reservation Maximum End';
 		$strings['Export'] = 'Export';
 		$strings['DeleteMultipleUserWarning'] = 'Deleting these users will remove all of their current, future, and historical reservations. No emails will be sent.';
