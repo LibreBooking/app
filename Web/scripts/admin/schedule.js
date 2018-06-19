@@ -580,6 +580,7 @@ function ScheduleManagement(opts) {
             );
         }
 
+        $('#customLayoutDialog').unbind('shown.bs.modal');
         $('#customLayoutDialog').on('shown.bs.modal', function () {
             if (_fullCalendar != null) {
                 _fullCalendar.fullCalendar('destroy');
