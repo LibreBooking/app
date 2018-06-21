@@ -19,7 +19,7 @@
  */
 
 require_once('Language.php');
-require_once('en_us.php');
+require_once('en_gb.php');
 
 class du_nl extends en_gb
 {
