@@ -329,7 +329,7 @@ abstract class ReservationInitializerBase implements IReservationInitializer, IR
 		$this->SetSelectedDates($startDate, $endDate, $startPeriods, $endPeriods);
 		if ($firstWeekday == Schedule::Today)
         {
-            $this->basePage->SetFirstWeekday(Date::Now()->ToTimezone($startDate->Timezone())->Weekday());
+            $this->basePage->SetFirstWeekday(0);
         }
         else{
 		    $this->basePage->SetFirstWeekday($firstWeekday);
