@@ -241,7 +241,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 						<button type="button" class="btn btn-default cancel"
 								data-dismiss="modal">{translate key='Cancel'}</button>
 
-						<button type="button" class="btn btn-danger save btnUpdateAllInstances">
+						<button type="button" class="btn btn-danger save btnUpdateThisInstance">
 							<span class="fa fa-remove"></span> {translate key='ThisInstance'}</button>
 
 						<button type="button" class="btn btn-danger save btnUpdateAllInstances">
