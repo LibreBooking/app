@@ -105,13 +105,6 @@
 		<tstamp/>
 
 		<property name="zip.file.name" value="${zipdirectory}/${packagename}.zip"/>
-		<!--<if>-->
-			<!--<contains string="${project.basedir}" substring="development"/>-->
-			<!--<then>-->
-				<!--<echo message="Packaging pre-release version"/>-->
-				<!--<property name="zip.file.name" value="${zipdirectory}/${packagename}${DSTAMP}.zip" override="true"/>-->
-			<!--</then>-->
-		<!--</if>-->
 
 		<zip destfile="${zip.file.name}">
 			<fileset dir="${staging}">
@@ -131,21 +124,6 @@
 		<delete dir="${staging}" failonerror="false"/>
 	</target>
 
-	<target name="create.demo" depends="stage.files">
-		<delete dir="${demo.dir}" failonerror="false"/>
-		<mkdir dir="${demo.dir}"/>
-		<copy todir="${demo.dir}" includeemptydirs="true">
-			<fileset dir="${stagingdir}">
-				<include name="**/*"/>
-			</fileset>
-		</copy>
-
-		<delete file="C:/work/demo/reload.v2.sql" failonerror="false"/>
-		<append destFile="C:/work/demo/reload.v2.sql">
-			<filelist dir="${demo.dir}/database_schema" files="create-schema.sql,create-data.sql,sample-data-utf8.sql"/>
-		</append>
-	</target>
-
 	<target name="stage.files">
 		<delete dir="${staging}" failonerror="false"/>
 		<mkdir dir="${staging}"/>
@@ -161,8 +139,8 @@
 				<exclude name="build.xml"/>
 				<exclude name="**/tests/**"/>
 				<exclude name="**/docs/**"/>
-				<exclude name="tpl_c/*.php"/>
-				<exclude name=".*/**"/>
+				<exclude name="tpl_c/*.*"/>
+				<exclude name=".git*/**"/>
 				<exclude name=".idea"/>
 				<exclude name=".idea/**"/>
 				<exclude name=".settings/**"/>
@@ -179,6 +157,7 @@
 				<exclude name="**/*.config.php"/>
 				<exclude name="config/log4php.config.xml"/>
 				<include name="**/qrconfig.php" />
+				<include name="**/.htaccess"/>
 			</fileset>
 		</copy>
 
@@ -199,9 +178,6 @@
 		<combinedbfiles schemadir="${stagingdir}/database_schema"
 						schemaFile="${stagingdir}/${sql.file.create.schema}"
 						dataFile="${stagingdir}/${sql.file.data}"/>
-	</target>
-
-	<target name="minify" description="minify javascript and css files">
 	</target>
 
 	<target name="custom.tasks">

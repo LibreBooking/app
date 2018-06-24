@@ -12,7 +12,7 @@ lib/config
 lib/config/**
 tpl_c/**
 database_schema/**
-.*
+**/.git*
 _excludes.txt
 .settings
 .idea
