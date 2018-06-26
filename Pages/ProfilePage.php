@@ -92,8 +92,7 @@ class ProfilePage extends ActionPage implements IProfilePage
 		parent::__construct('EditProfile');
 		$this->presenter = new ProfilePresenter($this,
 												new UserRepository(),
-												new AttributeService(new AttributeRepository()),
-												new ScheduleRepository());
+												new AttributeService(new AttributeRepository()));
 	}
 
 	public function ProcessPageLoad()
