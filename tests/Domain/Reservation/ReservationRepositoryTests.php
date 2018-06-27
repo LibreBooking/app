@@ -986,12 +986,13 @@ class ReservationRepositoryTests extends TestBase
         $accessory = new ReservationAccessory(9292, 4);
 
         $builder = new ExistingReservationSeriesBuilder();
+        $builder->WithRepeatOptions(new RepeatNone());
         $series = $builder->Build();
         $instance = new Reservation($series, new TestDateRange(), 123123);
         $series->WithCurrentInstance($instance);
         $series->WithOwner($oldOwnerId);
 
-        $series->ApplyChangesTo(SeriesUpdateScope::ThisInstance);
+        $series->ApplyChangesTo(SeriesUpdateScope::FullSeries);
 
         $series->Update($newUserId, $series->Resource(), '', '', $this->fakeUser);
         $series->ChangeResources(array($resource));

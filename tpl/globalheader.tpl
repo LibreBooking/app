@@ -34,6 +34,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
         {jsfile src="js/jquery-3.3.1.min.js"}
         {jsfile src="js/jquery-migrate-3.0.1.min.js"}
         {jsfile src="js/jquery-ui.1.12.1.custom.min.js"}
+        {jsfile src="js/jquery-ui-timepicker-addon"}
         {jsfile src="bootstrap/js/bootstrap.min.js"}
     {else}
         <script
