@@ -58,10 +58,10 @@ try
 
 		$latestStartDate = Date::Now()->SubtractMinutes($autoReleaseMinutes)->ToDatabase();
 
-		$reservationsThatShouldHaveBeenCheckedIn = new SqlFilterFreeForm(sprintf("%s.%s = %s AND %s IS NULL AND %s < '%s'",
+		$reservationsThatShouldHaveBeenCheckedIn = new SqlFilterFreeForm(sprintf("%s.%s = %s AND %s IS NULL AND %s.%s < '%s'",
 																				 TableNames::RESOURCES, ColumnNames::RESOURCE_ID, $resource->GetId(),
 																				 ColumnNames::CHECKIN_DATE,
-																				 ColumnNames::RESERVATION_START, $latestStartDate));
+																				 TableNames::RESERVATION_INSTANCES_ALIAS, ColumnNames::RESERVATION_START, $latestStartDate));
 		$reservationItemViews = $reservationViewRepository->GetList(null, null, null, null, $reservationsThatShouldHaveBeenCheckedIn)->Results();
 
 		/** @var ReservationItemView $reservationItemView */

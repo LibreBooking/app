@@ -34,7 +34,6 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
         {jsfile src="js/jquery-3.3.1.min.js"}
         {jsfile src="js/jquery-migrate-3.0.1.min.js"}
         {jsfile src="js/jquery-ui.1.12.1.custom.min.js"}
-        {jsfile src="js/jquery-ui-timepicker-addon"}
         {jsfile src="bootstrap/js/bootstrap.min.js"}
     {else}
         <script
@@ -105,6 +104,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
         {cssfile src="scripts/js/owl-2.2.1/assets/owl.carousel.min.css"}
         {cssfile src="scripts/js/owl-2.2.1/assets/owl.theme.default.css"}
     {/if}
+
+    {jsfile src="js/jquery-ui-timepicker-addon.js"}
     {cssfile src="scripts/css/jquery-ui-timepicker-addon.css"}
     {cssfile src="booked.css"}
     {if $cssFiles neq ''}
