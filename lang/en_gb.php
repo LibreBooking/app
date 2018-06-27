@@ -60,19 +60,6 @@ class en_gb extends en_us
         parent::_LoadStrings();
 
         // change defaults here
-    }
-
-    protected function _LoadDays()
-    {
-        parent::_LoadDays();
-
-        // change defaults here
-    }
-
-    protected function _LoadMonths()
-    {
-        parent:: _LoadMonths();
-
-        // change defaults here
+        return $this->Strings;
     }
 }
