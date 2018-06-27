@@ -16,7 +16,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 *}
-{include file='globalheader.tpl' InlineEdit=true Fullcalendar=true}
+{include file='globalheader.tpl' InlineEdit=true Fullcalendar=true Timepicker=true}
 
 <div id="page-manage-schedules" class="admin-page">
 
@@ -667,7 +667,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
     {control type="DatePickerSetupControl" ControlId="availabilityEndDate" AltId="formattedEndDate" DefaultDate=$EndDate}
 
     {csrf_token}
-    {include file="javascript-includes.tpl" InlineEdit=true Fullcalendar=true}
+    {include file="javascript-includes.tpl" InlineEdit=true Fullcalendar=true Timepicker=true}
     {jsfile src="ajax-helpers.js"}
     {jsfile src="admin/schedule.js"}
     {jsfile src="js/jquery.form-3.09.min.js"}

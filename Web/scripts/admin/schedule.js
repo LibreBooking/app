@@ -624,6 +624,7 @@ function ScheduleManagement(opts) {
                             at: 'left top',
                             of: jsEvent
                         });
+                        $('#confirmCreateOK').unbind('click');
                         $('#confirmCreateOK').click(function (e) {
                             elements.slotStartDate.val(start.format('YYYY-MM-DD HH:mm'));
                             elements.slotEndDate.val(end.format('YYYY-MM-DD HH:mm'));

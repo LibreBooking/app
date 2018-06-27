@@ -582,7 +582,7 @@ class ReportCommandBuilder
 		{
 			$and->Append(self::DATE_FRAGMENT);
 			$this->AddParameter(new Parameter(ParameterNames::START_DATE, $this->startDate->ToDatabase()));
-			$this->AddParameter(new Parameter(ParameterNames::END_DATE, $this->endDate->ToDatabase()));
+			$this->AddParameter(new Parameter(ParameterNames::END_DATE, $this->endDate->AddDays(1)->ToDatabase()));
 		}
 
 		return $and;

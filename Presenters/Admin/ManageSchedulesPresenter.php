@@ -392,7 +392,7 @@ class ManageScheduleService
         $overlaps = null;
         $periods = $this->scheduleRepository->GetCustomLayoutPeriodsInRange($start, $end, $scheduleId);
         foreach ($periods as $period) {
-            if ($start->LessThanOrEqual($period->BeginDate()) && $end->GreaterThanOrEqual($period->BeginDate())) {
+            if ($start->LessThanOrEqual($period->BeginDate()) && $end->GreaterThan($period->BeginDate())) {
                 $overlaps = $period;
             }
         }

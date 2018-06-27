@@ -47,23 +47,24 @@ class Report_Range
 	{
 		$this->range = $range;
 		$this->start = empty($startString) ? Date::Min() : Date::Parse($startString, $timezone);
-		$this->end = empty($endString) ? Date::Max() : Date::Parse($endString, $timezone)->AddDays(1);
+		$this->end = empty($endString) ? Date::Max() : Date::Parse($endString, $timezone);
+        $userTimezone = ServiceLocator::GetServer()->GetUserSession()->Timezone;
 
-		$now = Date::Now()->ToTimezone($timezone);
+		$now = Date::Now()->ToTimezone($userTimezone);
 		if ($this->range == self::CURRENT_MONTH)
 		{
-			$this->start = Date::Create($now->Year(), $now->Month(), 1, 0, 0, 0, $timezone);
-			$this->end = $this->start->AddMonths(1);
+            $this->start = Date::Create($now->Year(), $now->Month(), 1, 0, 0, 0, $userTimezone);
+			$this->end = $this->start->AddMonths(1)->AddDays(-1);
 		}
 		if ($this->range == self::CURRENT_WEEK)
 		{
 			$this->start = $now->GetDate()->AddDays(-$now->Weekday());
-			$this->end = $this->Start()->AddDays(8);
+			$this->end = $this->Start()->AddDays(6);
 		}
 		if ($this->range == self::TODAY)
 		{
-			$this->start = Date::Create($now->Year(), $now->Month(), $now->Day(), 0, 0, 0, $timezone);
-			$this->end = $this->start->AddDays(1);
+			$this->start = Date::Create($now->Year(), $now->Month(), $now->Day(), 0, 0, 0, $userTimezone);
+			$this->end = $this->start;
 		}
 	}
 
