@@ -18,6 +18,7 @@
  * You should have received a copy of the GNU General Public License
  * along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 class CustomAttributeValidationRule implements IReservationValidationRule
 {
 	/**
@@ -78,7 +79,7 @@ class CustomAttributeValidationRule implements IReservationValidationRule
 							// don't keep checking if we already know it applies to this resource type
 							break;
 						}
-						if ($resource->GetResourceTypeId() == $secondaryEntityIds)
+						if (in_array($resource->GetResourceTypeId(),$secondaryEntityIds))
 						{
 							$appliesToResourceType = true;
 						}
