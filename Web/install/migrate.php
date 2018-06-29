@@ -848,7 +848,7 @@ class MigrationPresenter
                     }
                 }
 
-                $currentUser = new UserSession($row['memberid']);
+                $currentUser = new UserSession($mappedUserId);
                 $currentUser->Timezone = Configuration::Instance()->GetDefaultTimezone();
                 $mappedResource = new MigrateBookableResource($mappedResourceId);
 
