@@ -670,6 +670,7 @@ class MigrationPresenter
                 $row['position'],
                 AccountStatus::ACTIVE,
                 null,
+                null,
                 null);
 
             $newId = ServiceLocator::GetDatabase()->ExecuteInsert($registerCommand);
