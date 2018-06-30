@@ -21,41 +21,15 @@
  */
 
 require_once('Language.php');
-require_once('en_us.php');
+require_once('en_gb.php');
 
-class it_it extends en_us
+class it_it extends en_gb
 {
 	public function __construct()
 	{
 		parent::__construct();
 	}
 
-	/**
-	 * @return array
-	 */
-	protected function _LoadDates()
-	{
-		$dates = parent::_LoadDates();
-
-		$dates['general_date'] = 'd/m/Y';
-		$dates['general_datetime'] = 'd/m/Y H:i:s';
-		$dates['short_datetime'] = 'j/n/y H:i';
-		$dates['schedule_daily'] = 'l, d/m/Y';
-		$dates['reservation_email'] = 'd/m/Y @ H:i (e)';
-		$dates['res_popup'] = 'd/m/Y H:i ';
-		$dates['res_popup_time'] = 'D, d/n H:i';
-		$dates['short_reservation_date'] = 'j/n/y H:i';
-		$dates['dashboard'] = 'l, d/m/Y H:i';
-		$dates['period_time'] = "H:i";
-		$dates['mobile_reservation_date'] = 'j/n H:i';
-		$dates['general_date_js'] = "dd/mm/yy";
-		$dates['general_time_js'] = 'h:mm tt';
-		$dates['momentjs_datetime'] = 'D/M/YY h:mm A';
-		$dates['calendar_time'] = 'HH:mm';
-		$dates['calendar_dates'] = 'd/M';
-
-		$this->Dates = $dates;
-	}
 	/**
 	 * @return array
 	 */

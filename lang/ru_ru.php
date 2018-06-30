@@ -17,50 +17,15 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
  */
-require_once('Language.php');
-require_once('en_us.php');
 
-class ru_ru extends en_us
+require_once('Language.php');
+require_once('en_gb.php');
+
+class ru_ru extends en_gb
 {
 	public function __construct()
 	{
 		parent::__construct();
-	}
-
-	/**
-	 * @return array
-	 */
-	protected function _LoadDates()
-	{
-		$dates = array();
-
-		$dates['general_date'] = 'd.m.Y';
-		$dates['general_datetime'] = 'd.m.Y H:i:s';
-
-		$dates['short_datetime'] = 'n/j/y g:i A';
-		$dates['schedule_daily'] = 'l, d.m.Y';
-		$dates['reservation_email'] = 'd.m.Y H:i';
-
-		$dates['res_popup'] = 'D, n/d g:i A';
-
-		$dates['res_popup'] = 'd.m.Y H:i';
-
-		$dates['short_reservation_date'] = 'n/j/y g:i A';
-
-		$dates['dashboard'] = 'l, d.m.Y H:i';
-		$dates['period_time'] = 'H:i';
-
-		$dates['mobile_reservation_date'] = 'n/j g:i A';
-
-		$dates['general_date_js'] = 'dd.mm.yy';
-		$dates['general_time_js'] = 'h:mm tt';
-		$dates['momentjs_datetime'] = 'M/D/YY h:mm A';
-		$dates['calendar_time'] = 'HH:mm';
-		$dates['calendar_dates'] = 'd.M.';
-
-		$this->Dates = $dates;
-
-		return $this->Dates;
 	}
 
 	/**

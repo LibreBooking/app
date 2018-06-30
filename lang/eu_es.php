@@ -19,36 +19,13 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 require_once('Language.php');
-require_once('en_us.php');
+require_once('en_gb.php');
 
-class eu_es extends en_us
+class eu_es extends en_gb
 {
     public function __construct()
     {
 		parent::__construct();
-    }
-
-    protected function _LoadDates()
-    {
-		$dates = parent::_LoadDates();
-
-		$dates['general_date'] = 'Y/m/d';
-		$dates['general_datetime'] = 'Y/m/d H:i:s';
-		$dates['short_datetime'] = 'y/n/j g:i A';
-		$dates['schedule_daily'] = 'l, Y/m/d';
-		$dates['reservation_email'] = 'Y/m/d @ g:i A (e)';
-		$dates['res_popup'] = 'Y/m/d g:i A';
-		$dates['short_reservation_date'] = 'y/n/j g:i A';
-		$dates['dashboard'] = 'd/m/Y g:i A';
-		$dates['period_time'] = "g:i A";
-		$dates['mobile_reservation_date'] = 'n/j g:i A';
-		$dates['general_date_js'] = "yy/mm/dd";
-		$dates['general_time_js'] = 'h:mm tt';
-		$dates['momentjs_datetime'] = 'YY/M/D h:mm A';
-		$dates['calendar_time'] = 'h:mmt';
-		$dates['calendar_dates'] = 'M/d';
-
-		$this->Dates = $dates;
     }
 
     protected function _LoadStrings()

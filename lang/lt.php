@@ -19,36 +19,13 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 require_once('Language.php');
-require_once('en_us.php');
+require_once('en_gb.php');
 
-class lt extends en_us
+class lt extends en_gb
 {
 	public function __construct()
 	{
 		parent::__construct();
-	}
-
-	/**
-	 * @return array
-	 */
-	protected function _LoadDates()
-	{
-		$dates = parent::_LoadDates();
-
-		$dates['general_date'] = 'Y.m.d';
-		$dates['general_datetime'] = 'Y.m.d H:i:s';
-		$dates['schedule_daily'] = 'Y.m.d, l';
-		$dates['reservation_email'] = 'Y.m.d @ H:i (e)';
-		$dates['res_popup'] = 'Y.m.d H:i';
-		$dates['dashboard'] = 'Y.m.d H:i, l';
-		$dates['period_time'] = 'H:i';
-		$dates['general_date_js'] = 'yy.mm.dd';
-		$dates['calendar_time'] = 'h:mmt';
-		$dates['calendar_dates'] = 'F d';
-
-		$this->Dates = $dates;
-
-		return $this->Dates;
 	}
 
 	/**

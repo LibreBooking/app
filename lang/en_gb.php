@@ -54,12 +54,4 @@ class en_gb extends en_us
         $this->Dates = $dates;
         return $this->Dates;
     }
-
-    protected function _LoadStrings()
-    {
-        parent::_LoadStrings();
-
-        // change defaults here
-        return $this->Strings;
-    }
 }

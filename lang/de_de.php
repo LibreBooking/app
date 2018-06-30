@@ -26,29 +26,6 @@ class de_de extends en_gb
     /**
      * @return array
      */
-    protected function _LoadDates()
-    {
-        $dates = parent::_LoadDates();
-
-        $dates['general_date'] = 'd.m.Y';
-        $dates['general_datetime'] = 'd.m.Y H:i:s';
-        $dates['schedule_daily'] = 'l, d.m.Y';
-        $dates['reservation_email'] = 'd.m.Y @ H:i (e)';
-        $dates['res_popup'] = 'd.m.Y H:i';
-        $dates['dashboard'] = 'l, d.m.Y H:i';
-        $dates['period_time'] = 'H:i';
-        $dates['general_date_js'] = 'dd.mm.yy';
-        $dates['calendar_time'] = 'H:mm';
-        $dates['calendar_dates'] = 'd.M';
-
-        $this->Dates = $dates;
-
-        return $this->Dates;
-    }
-
-    /**
-     * @return array
-     */
     protected function _LoadStrings()
     {
         $strings = parent::_LoadStrings();

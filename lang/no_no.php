@@ -17,38 +17,15 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 require_once('Language.php');
 require_once('en_gb.php');
 
-class no_no extends en_us
-
+class no_no extends en_gb
 {
 	public function __construct()
 	{
 		parent::__construct();
-	}
-
-	/**
-	 * @return array
-	 */
-	protected function _LoadDates()
-	{
-		$dates = parent::_LoadDates();
-
-		$dates['general_date'] = 'm/d/Y';
-		$dates['general_datetime'] = 'm/d/Y H:i:s';
-		$dates['schedule_daily'] = 'l, m/d/Y';
-		$dates['reservation_email'] = 'm/d/Y @ g:i A (e)';
-		$dates['res_popup'] = 'm/d/Y g:i A';
-		$dates['dashboard'] = 'l, m/d/Y g:i A';
-		$dates['period_time'] = 'g:i A';
-		$dates['general_date_js'] = 'mm/dd/yy';
-		$dates['calendar_time'] = 'h:mmt';
-		$dates['calendar_dates'] = 'M/d';
-
-		$this->Dates = $dates;
-
-		return $this->Dates;
 	}
 
 	/**

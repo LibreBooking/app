@@ -18,7 +18,7 @@
  * along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-require_once('en_us.php');
+require_once('en_gb.php');
 
 class cz extends en_us
 {
@@ -30,32 +30,9 @@ class cz extends en_us
 	/**
 	 * @return array
 	 */
-	protected function _LoadDates()
-	{
-		$dates = parent::_LoadDates();
-
-		$dates['general_date'] = 'd.m.Y';
-		$dates['general_datetime'] = 'd.m.Y H:i:s';
-		$dates['schedule_daily'] = 'l, d.m.Y';
-		$dates['reservation_email'] = 'd.m.Y H:i';
-		$dates['res_popup'] = 'd.m.Y H:i';
-		$dates['dashboard'] = 'l, d.m.Y H:i';
-		$dates['period_time'] = 'H:i';
-		$dates['general_date_js'] = 'dd.mm.yy';
-		$dates['calendar_time'] = 'HH:mm';
-		$dates['calendar_dates'] = 'd.M.';
-
-		$this->Dates = $dates;
-
-		return $this->Dates;
-	}
-
-	/**
-	 * @return array
-	 */
 	protected function _LoadStrings()
 	{
-		$strings = array();
+		$strings = parent::_LoadStrings();
 
 		$strings['FirstName'] = 'Jméno';
 		$strings['LastName'] = 'Příjmení';
