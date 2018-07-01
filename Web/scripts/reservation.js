@@ -74,8 +74,8 @@ function Reservation(opts) {
 
     Reservation.prototype.init = function (ownerId, startDateString, endDateString) {
         _ownerId = ownerId;
-        _startDate = moment(startDateString, "YYYY-MM-DD");
-        _endDate = moment(endDateString, "YYYY-MM-DD");
+        _startDate = moment(startDateString, "YYYY-MM-DD HH:mm");
+        _endDate = moment(endDateString, "YYYY-MM-DD HH:mm");
         participation.addedUsers.push(ownerId);
 
         $('#dialogResourceGroups').on('show.bs.modal', function (e) {
@@ -924,7 +924,7 @@ function Reservation(opts) {
 
                     if (releaseMinutesText <= 0) {
                         clearInterval(interval);
-                        $('#btnCheckin').addClass('no-show');
+                        $('.btnCheckin').addClass('no-show');
                     }
                 };
 
