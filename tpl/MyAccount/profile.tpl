@@ -59,7 +59,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 						<label class="reg" for="login">{translate key="Username"}</label>
 						{if $AllowUsernameChange}
 							{textbox name="USERNAME" value="Username" required="required"
-							data-bv-notempty="true"
+							data-bv-notempty="true" autofocus="autofocus"
 							data-bv-notempty-message="{translate key=UserNameRequired}"}
 						{else}
 							<span>{$Username}</span>

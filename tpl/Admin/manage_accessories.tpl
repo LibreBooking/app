@@ -28,7 +28,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 				<div class="col-xs-5">
 					<div class="form-group has-feedback">
 						<label for="accessoryName">{translate key=AccessoryName}</label>
-						<input {formname key=ACCESSORY_NAME} type="text" id="accessoryName" required class="form-control required"/>
+						<input {formname key=ACCESSORY_NAME} type="text" autofocus id="accessoryName" required class="form-control required"/>
 						<i class="glyphicon glyphicon-asterisk form-control-feedback" data-bv-icon-for="accessoryName"></i>
 					</div>
 				</div>
@@ -115,7 +115,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 					<div class="modal-body">
 						<div class="form-group has-feedback col-xs-12">
 							<label for="editName">{translate key=AccessoryName}</label>
-							<input id="editName" type="text" class="form-control required" maxlength="85" {formname key=ACCESSORY_NAME} />
+							<input id="editName" type="text" class="form-control required" autofocus maxlength="85" {formname key=ACCESSORY_NAME} />
 						</div>
 						<div class="form-group col-xs-4">
 							<label for="editQuantity">{translate key='QuantityAvailable'}</label>
