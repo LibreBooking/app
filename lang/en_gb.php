@@ -46,7 +46,7 @@ class en_gb extends en_us
 		$dates['res_popup_time'] = 'D, d/n H:i';
 		$dates['short_reservation_date'] = 'j/n/y H:i';
 		$dates['mobile_reservation_date'] = 'j/n H:i';
-		$dates['general_time_js'] = 'h:mm tt';
+		$dates['general_time_js'] = 'H:i';
 		$dates['momentjs_datetime'] = 'D/M/YY h:mm A';
 		$dates['calendar_time'] = 'h:mmt';
 		$dates['calendar_dates'] = 'd M';
