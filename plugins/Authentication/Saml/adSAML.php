@@ -126,5 +126,8 @@ class adSAML {
       return $this->userAttributes;
     }
 
+    public function Logout()
+    {
+        $this->authSimple->logout();
+    }
 }
-?>

@@ -164,6 +164,7 @@ class Saml extends Authentication implements IAuthentication
 
 	public function Logout(UserSession $user)
 	{
+	    $this->saml->Logout();
 		$this->authToDecorate->Logout($user);
 	}
 

@@ -66,5 +66,9 @@ class AdSamlWrapper implements ISaml
                   $this->options->AdSamlOptions());
 	}
 
+    public function Logout()
+    {
+        $this->saml->Logout();
+    }
+
 }
-?>
