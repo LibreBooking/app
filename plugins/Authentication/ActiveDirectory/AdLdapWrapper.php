@@ -124,7 +124,7 @@ class AdLdapWrapper implements IActiveDirectory
 		$entries = $this->ldap->user()->infoCollection($username, $attributes);
 
 		/** @var adLDAPUserCollection $entries */
-		if ($entries && count($entries) > 0)
+		if ($entries && is_a($entries, 'adLDAPUserCollection'))
 		{
 			$groups = null;
 			if ($this->options->SyncGroups())
