@@ -97,7 +97,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                 {assign var=resourceId value=$resource->Id}
                 {assign var=href value="{Pages::RESERVATION}?rid={$resourceId}&sid={$ScheduleId}"}
                 <tr class="slots">
-                    <td class="resourcename" {if $resource->HasColor()}style="background-color:{$resource->GetColor()} !important{/if}>
+                    <td class="resourcename" {if $resource->HasColor()}style="background-color:{$resource->GetColor()} !important"{/if}>
                         {if $resource->CanAccess}
                             <a href="{$href}" resourceId="{$resourceId}" class="resourceNameSelector" {if $resource->HasColor()}style="color:{$resource->GetTextColor()} !important"{/if}>{$resource->Name}</a>
                         {else}
