@@ -44,10 +44,11 @@ class en_us extends Language
 		$dates['short_reservation_date'] = 'n/j/y g:i A';
 		$dates['dashboard'] = 'D, n/d g:i A';
 		$dates['period_time'] = 'g:i A';
+		$dates['timepicker'] = 'h:i a';
 		$dates['mobile_reservation_date'] = 'n/j g:i A';
 		$dates['general_date_js'] = 'mm/dd/yy';
-		$dates['general_time_js'] = 'h:i a';
-		$dates['momentjs_datetime'] = 'M/D/YY h:mm A';
+        $dates['general_time_js'] = 'h:mm tt';
+        $dates['momentjs_datetime'] = 'M/D/YY h:mm A';
 		$dates['calendar_time'] = 'h:mmt';
 		$dates['calendar_dates'] = 'M d';
 		$dates['embedded_date'] = 'D d';
@@ -759,6 +760,8 @@ class en_us extends Language
         $strings['NewVersion'] = 'New version!';
         $strings['WhatsNew'] = 'Whats New?';
         $strings['OnlyViewedCalendar'] = 'This schedule can only be viewed from the calendar view';
+        $strings['Grid'] = 'Grid';
+        $strings['List'] = 'List';
         // End Strings
 
 		// Install

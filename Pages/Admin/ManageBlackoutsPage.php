@@ -290,7 +290,7 @@ class ManageBlackoutsPage extends ActionPage implements IManageBlackoutsPage
 		$this->Set('Timezone', $userTimezone);
 		$this->Set('AddStartDate', Date::Now()->ToTimezone($userTimezone));
 		$this->Set('AddEndDate', Date::Now()->ToTimezone($userTimezone));
-		$this->Set('TimeFormat', Resources::GetInstance()->GetDateFormat('general_time_js'));
+		$this->Set('TimeFormat', Resources::GetInstance()->GetDateFormat('timepicker'));
 		$this->presenter->PageLoad($userTimezone);
 	}
 
