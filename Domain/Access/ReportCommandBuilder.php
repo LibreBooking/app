@@ -61,7 +61,7 @@ class ReportCommandBuilder
 
 	const ACCESSORY_LIST_FRAGMENT = 'accessories.accessory_name, accessories.accessory_id, ar.quantity';
 
-	const USER_LIST_FRAGMENT = 'owner.fname as owner_fname, owner.lname as owner_lname, owner.email as email, CONCAT(owner.fname, \' \', owner.lname) as owner_name, owner.user_id as owner_id';
+	const USER_LIST_FRAGMENT = 'owner.fname as owner_fname, owner.lname as owner_lname, owner.email as email, CONCAT(owner.fname, \' \', owner.lname) as owner_name, owner.user_id as owner_id, owner.organization as organization';
 
 	const GROUP_LIST_FRAGMENT = 'groups.name as group_name, groups.group_id';
 
