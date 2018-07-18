@@ -20,6 +20,6 @@ class ReservationUpdatedEmailAdmin extends ReservationCreatedEmailAdmin
 {
 	public function Subject()
 	{
-        return $this->Translate('ReservationApprovalAdminSubjectWithResource', array($this->resource->GetName()));
+        return $this->Translate('ReservationUpdatedAdminSubjectWithResource', array($this->resource->GetName()));
 	}
 }
