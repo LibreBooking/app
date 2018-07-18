@@ -348,7 +348,7 @@ function Reservation(opts) {
             elements.accessoriesList.find('p [accessoryId=' + id + ']').remove();
             return;
         }
-        var x = 'accessory-id=' + id + ',quantity=' + quantity + ',name=' + encodeURIComponent(name);
+        var x = 'accessory!-!id=' + id + ',quantity=' + quantity + ',name=' + encodeURIComponent(name);
 
         elements.accessoriesList.append('<div accessoryId="' + id + '"><span class="badge quantity">' + quantity + '</span> ' + name + '<input type="hidden" name="' + options.accessoryListInputId + '" value="' + x + '"/></div>');
     };

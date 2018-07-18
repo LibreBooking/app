@@ -542,11 +542,12 @@ class AccessoryFormElement
 {
 	public $Id;
 	public $Quantity;
+	public $Name;
 
 	public function __construct($formValue)
 	{
 		$idAndQuantity = $formValue;
-		$y = explode('-', $idAndQuantity);
+		$y = explode('!-!', $idAndQuantity);
 		$params = explode(',', $y[1]);
 		$id = explode('=', $params[0]);
 		$quantity = explode('=', $params[1]);
@@ -559,7 +560,7 @@ class AccessoryFormElement
 
 	public static function Create($id, $quantity)
 	{
-		$element = new AccessoryFormElement("accessory-id=$id,quantity=$quantity,name=");
+		$element = new AccessoryFormElement("accessory!-!id=$id,quantity=$quantity,name=");
 		return $element;
 	}
 }
