@@ -490,6 +490,10 @@ function Reservation(opts) {
     };
 
     var SelectRepeatWeekday = function () {
+        if (elements.referenceNumber.val() != '')
+        {
+            return;
+        }
         $('#repeatOnWeeklyDiv').find(':checkbox').each(function (i, v) {
             $(v).parent().removeClass('active');
             $(v).prop('checked', false);

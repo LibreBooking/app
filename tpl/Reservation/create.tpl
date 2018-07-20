@@ -571,7 +571,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
             repeatType: '{$RepeatType}',
             repeatInterval: '{$RepeatInterval}',
             repeatMonthlyType: '{$RepeatMonthlyType}',
-            repeatWeekdays: [{foreach from=$RepeatWeekdays item=day}{$day}, {/foreach}]
+            repeatWeekdays: [{foreach from=$RepeatWeekdays item=day}{$day}, {/foreach}],
+            autoSetTerminationDate: $('#referenceNumber').val() != ''
         };
 
         var recurrence = new Recurrence(recurOpts);

@@ -38,7 +38,7 @@ function Recurrence(recurOptions, recurElements, prefix) {
     var elements = $.extend(e, recurElements);
 
     var repeatToggled = false;
-    var terminationDateSetManually = false;
+    var terminationDateSetManually = recurOptions.autoSetTerminationDate || false;
     var changeCallback = null;
 
     this.init = function () {
