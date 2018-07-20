@@ -906,7 +906,7 @@ class ReservationItemView implements IReservedItemView
 					if ($rule->IsSatisfiedBy($this))
 					{
 						$this->_color = "{$rule->Color}";
-						break;
+//						break;
 					}
 				}
 			}
