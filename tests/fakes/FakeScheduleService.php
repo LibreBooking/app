@@ -23,16 +23,19 @@ class FakeScheduleService implements IScheduleService
 {
     public $_DailyLayout;
 
-	/**
-	 * @var Schedule[]
-	 */
-	public $_AllSchedules = array();
+    /**
+     * @var Schedule[]
+     */
+    public $_AllSchedules = array();
+
+    public $_Layout;
 
 
-	public function __construct()
+    public function __construct()
     {
         $this->_DailyLayout = new FakeDailyLayout();
     }
+
     /**
      * @param bool $includeInaccessible
      * @param UserSession $session
@@ -40,7 +43,7 @@ class FakeScheduleService implements IScheduleService
      */
     public function GetAll($includeInaccessible = true, UserSession $session = null)
     {
-       return $this->_AllSchedules;
+        return $this->_AllSchedules;
     }
 
     /**
@@ -50,7 +53,7 @@ class FakeScheduleService implements IScheduleService
      */
     public function GetLayout($scheduleId, ILayoutFactory $layoutFactory)
     {
-        // TODO: Implement GetLayout() method.
+        return $this->_Layout;
     }
 
     /**
@@ -61,6 +64,6 @@ class FakeScheduleService implements IScheduleService
      */
     public function GetDailyLayout($scheduleId, ILayoutFactory $layoutFactory, $reservationListing)
     {
-       return $this->_DailyLayout;
+        return $this->_DailyLayout;
     }
 }

@@ -129,7 +129,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
     {/if}
     <!-- End CSS -->
 </head>
-<body>
+<body {if $HideNavBar == true}style="padding-top:0;"{/if}>
 
 {if $HideNavBar == false}
     <nav class="navbar navbar-default {if $IsDesktop}navbar-fixed-top{else}navbar-static-top adjust-nav-bar-static{/if}"

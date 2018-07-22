@@ -29,14 +29,20 @@ class FakeScheduleLayout implements IScheduleLayout
 
 	public $_Layout = array();
 
-	public function __construct()
+    /**
+     * @var string
+     */
+    public $_Timezone;
+
+    public function __construct()
 	{
 		$this->_SlotCount = new SlotCount(1, 2);
+		$this->_Timezone = 'America/Chicago';
 	}
 
 	public function Timezone()
 	{
-		// TODO: Implement Timezone() method.
+		return $this->_Timezone;
 	}
 
 	/**

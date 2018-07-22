@@ -1,48 +1,48 @@
 <?php
 /**
-Copyright 2011-2018 Nick Korbel
-
-This file is part of Booked Scheduler is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
+ * Copyright 2011-2018 Nick Korbel
+ *
+ * This file is part of Booked Scheduler is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 interface IRoleService
 {
-	/**
-	 * @abstract
-	 * @param User $user
-	 * @return bool
-	 */
-	public function IsApplicationAdministrator(User $user);
+    /**
+     * @abstract
+     * @param User $user
+     * @return bool
+     */
+    public function IsApplicationAdministrator(User $user);
 
-	/**
-	 * @abstract
-	 * @param User $user
-	 * @return bool
-	 */
-	public function IsResourceAdministrator(User $user);
+    /**
+     * @abstract
+     * @param User $user
+     * @return bool
+     */
+    public function IsResourceAdministrator(User $user);
 
-	/**
-	 * @abstract
-	 * @param User $user
-	 * @return bool
-	 */
-	public function IsGroupAdministrator(User $user);
+    /**
+     * @abstract
+     * @param User $user
+     * @return bool
+     */
+    public function IsGroupAdministrator(User $user);
 
-	/**
-	 * @abstract
-	 * @param User $user
-	 * @return bool
-	 */
-	public function IsScheduleAdministrator(User $user);
+    /**
+     * @abstract
+     * @param User $user
+     * @return bool
+     */
+    public function IsScheduleAdministrator(User $user);
 
     /**
      * @param UserSession $userSession
@@ -54,28 +54,28 @@ interface IRoleService
 
 interface IAuthorizationService extends IRoleService
 {
-	/**
-	 * @abstract
-	 * @param UserSession $reserver user who is requesting access to perform action
-	 * @return bool
-	 */
-	public function CanReserveForOthers(UserSession $reserver);
+    /**
+     * @abstract
+     * @param UserSession $reserver user who is requesting access to perform action
+     * @return bool
+     */
+    public function CanReserveForOthers(UserSession $reserver);
 
-	/**
-	 * @abstract
-	 * @param UserSession $reserver user who is requesting access to perform action
-	 * @param int $reserveForId user to reserve for
-	 * @return bool
-	 */
-	public function CanReserveFor(UserSession $reserver, $reserveForId);
+    /**
+     * @abstract
+     * @param UserSession $reserver user who is requesting access to perform action
+     * @param int $reserveForId user to reserve for
+     * @return bool
+     */
+    public function CanReserveFor(UserSession $reserver, $reserveForId);
 
-	/**
-	 * @abstract
-	 * @param UserSession $approver user who is requesting access to perform action
-	 * @param int $approveForId user to approve for
-	 * @return bool
-	 */
-	public function CanApproveFor(UserSession $approver, $approveForId);
+    /**
+     * @abstract
+     * @param UserSession $approver user who is requesting access to perform action
+     * @param int $approveForId user to approve for
+     * @return bool
+     */
+    public function CanApproveFor(UserSession $approver, $approveForId);
 
     /**
      * @param UserSession $user
@@ -95,51 +95,50 @@ interface IAuthorizationService extends IRoleService
 
 class AuthorizationService implements IAuthorizationService
 {
-	/**
-	 * @var IUserRepository
-	 */
-	private $userRepository;
+    /**
+     * @var IUserRepository
+     */
+    private $userRepository;
 
-	public function __construct(IUserRepository $userRepository)
-	{
-		$this->userRepository = $userRepository;
-	}
+    public function __construct(IUserRepository $userRepository)
+    {
+        $this->userRepository = $userRepository;
+    }
 
-	/**
-	 * @param UserSession $reserver user who is requesting access to perform action
-	 * @return bool
-	 */
-	public function CanReserveForOthers(UserSession $reserver)
-	{
-		if ($reserver->IsAdmin)
-		{
-			return true;
-		}
+    /**
+     * @param UserSession $reserver user who is requesting access to perform action
+     * @return bool
+     */
+    public function CanReserveForOthers(UserSession $reserver)
+    {
+        if ($reserver->IsAdmin) {
+            return true;
+        }
 
-		$user = $this->userRepository->LoadById($reserver->UserId);
+        $user = $this->userRepository->LoadById($reserver->UserId);
 
-		return $user->IsGroupAdmin();
-	}
+        return $user->IsGroupAdmin();
+    }
 
-	/**
-	 * @param UserSession $reserver user who is requesting access to perform action
-	 * @param int $reserveForId user to reserve for
-	 * @return bool
-	 */
-	public function CanReserveFor(UserSession $reserver, $reserveForId)
-	{
-		return $this->IsAdminFor($reserver, $reserveForId);
-	}
+    /**
+     * @param UserSession $reserver user who is requesting access to perform action
+     * @param int $reserveForId user to reserve for
+     * @return bool
+     */
+    public function CanReserveFor(UserSession $reserver, $reserveForId)
+    {
+        return $this->IsAdminFor($reserver, $reserveForId);
+    }
 
-	/**
-	 * @param UserSession $approver user who is requesting access to perform action
-	 * @param int $approveForId user to approve for
-	 * @return bool
-	 */
-	public function CanApproveFor(UserSession $approver, $approveForId)
-	{
-		return $this->IsAdminFor($approver, $approveForId);
-	}
+    /**
+     * @param UserSession $approver user who is requesting access to perform action
+     * @param int $approveForId user to approve for
+     * @return bool
+     */
+    public function CanApproveFor(UserSession $approver, $approveForId)
+    {
+        return $this->IsAdminFor($approver, $approveForId);
+    }
 
     /**
      * @param User $user
@@ -147,8 +146,7 @@ class AuthorizationService implements IAuthorizationService
      */
     public function IsApplicationAdministrator(User $user)
     {
-        if (Configuration::Instance()->IsAdminEmail($user->EmailAddress()))
-        {
+        if (Configuration::Instance()->IsAdminEmail($user->EmailAddress())) {
             return true;
         }
 
@@ -173,7 +171,7 @@ class AuthorizationService implements IAuthorizationService
         return $user->IsInRole(RoleLevel::GROUP_ADMIN);
     }
 
-	/**
+    /**
      * @param User $user
      * @return bool
      */
@@ -182,29 +180,27 @@ class AuthorizationService implements IAuthorizationService
         return $user->IsInRole(RoleLevel::SCHEDULE_ADMIN);
     }
 
-	/**
-	 * @param UserSession $userSession
-	 * @param int $otherUserId
-	 * @return bool
-	 */
-	public function IsAdminFor(UserSession $userSession, $otherUserId)
-	{
-		if ($userSession->IsAdmin)
-		{
-			return true;
-		}
+    /**
+     * @param UserSession $userSession
+     * @param int $otherUserId
+     * @return bool
+     */
+    public function IsAdminFor(UserSession $userSession, $otherUserId)
+    {
+        if ($userSession->IsAdmin) {
+            return true;
+        }
 
-        if (!$userSession->IsGroupAdmin)
-        {
+        if (!$userSession->IsGroupAdmin) {
             // dont even bother checking if the user isnt a group admin
             return false;
         }
 
-		$user1 = $this->userRepository->LoadById($userSession->UserId);
-		$user2 = $this->userRepository->LoadById($otherUserId);
+        $user1 = $this->userRepository->LoadById($userSession->UserId);
+        $user2 = $this->userRepository->LoadById($otherUserId);
 
-		return $user1->IsAdminFor($user2);
-	}
+        return $user1->IsAdminFor($user2);
+    }
 
     /**
      * @param UserSession $userSession
@@ -213,13 +209,11 @@ class AuthorizationService implements IAuthorizationService
      */
     public function CanEditForResource(UserSession $userSession, IResource $resource)
     {
-        if ($userSession->IsAdmin)
-        {
+        if ($userSession->IsAdmin) {
             return true;
         }
 
-        if (!$userSession->IsResourceAdmin && !$userSession->IsScheduleAdmin)
-        {
+        if (!$userSession->IsResourceAdmin && !$userSession->IsScheduleAdmin) {
             return false;
         }
 
@@ -235,18 +229,70 @@ class AuthorizationService implements IAuthorizationService
      */
     public function CanApproveForResource(UserSession $userSession, IResource $resource)
     {
-        if ($userSession->IsAdmin)
-        {
+        if ($userSession->IsAdmin) {
             return true;
         }
 
-        if (!$userSession->IsResourceAdmin)
-        {
+        if (!$userSession->IsResourceAdmin) {
             return false;
         }
 
         $user = $this->userRepository->LoadById($userSession->UserId);
 
         return $user->IsResourceAdminFor($resource);
+    }
+}
+
+class GuestAuthorizationService implements IAuthorizationService
+{
+
+    public function IsApplicationAdministrator(User $user)
+    {
+        return false;
+    }
+
+    public function IsResourceAdministrator(User $user)
+    {
+        return false;
+    }
+
+    public function IsGroupAdministrator(User $user)
+    {
+        return false;
+    }
+
+    public function IsScheduleAdministrator(User $user)
+    {
+        return false;
+    }
+
+    public function IsAdminFor(UserSession $userSession, $otherUserId)
+    {
+        return false;
+    }
+
+    public function CanReserveForOthers(UserSession $reserver)
+    {
+        return false;
+    }
+
+    public function CanReserveFor(UserSession $reserver, $reserveForId)
+    {
+        return false;
+    }
+
+    public function CanApproveFor(UserSession $approver, $approveForId)
+    {
+        return false;
+    }
+
+    public function CanEditForResource(UserSession $user, IResource $resource)
+    {
+        return false;
+    }
+
+    public function CanApproveForResource(UserSession $user, IResource $resource)
+    {
+        return false;
     }
 }

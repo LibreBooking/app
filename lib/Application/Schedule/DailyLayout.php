@@ -51,6 +51,11 @@ interface IDailyLayout
      * @return DailyReservationSummary
      */
     function GetSummary(Date $date, $resourceId);
+
+    /**
+     * @return string
+     */
+    public function Timezone();
 }
 
 class DailyLayout implements IDailyLayout
@@ -73,6 +78,11 @@ class DailyLayout implements IDailyLayout
     {
         $this->_reservationListing = $listing;
         $this->_scheduleLayout = $layout;
+    }
+
+    public function Timezone()
+    {
+        return $this->_scheduleLayout->Timezone();
     }
 
     public function GetLayout(Date $date, $resourceId)

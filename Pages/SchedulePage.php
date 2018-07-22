@@ -274,7 +274,8 @@ class SchedulePage extends ActionPage implements ISchedulePage
         }
 
         $this->Set('SlotLabelFactory', new SlotLabelFactory($user));
-        $this->Set('DisplaySlotFactory', new DisplaySlotFactory(new AuthorizationService($this->userRepository)));        $this->Set('PopupMonths', $this->IsMobile ? 1 : 3);
+        $this->Set('DisplaySlotFactory', new DisplaySlotFactory(new AuthorizationService($this->userRepository)));
+        $this->Set('PopupMonths', $this->IsMobile ? 1 : 3);
         $this->Set('CreateReservationPage', Pages::RESERVATION);
         $this->Set('LockTableHead', (int)($this->ScheduleStyle == ScheduleStyle::Tall || (count($this->GetVar('Resources')) > 7)));
         $this->Set('LoadViewOnly', false);
@@ -559,78 +560,3 @@ class SchedulePage extends ActionPage implements ISchedulePage
     }
 }
 
-class DisplaySlotFactory
-{
-    /**
-     * @var IAuthorizationService
-     */
-    private $authorizationService;
-
-    public function __construct(IAuthorizationService $authorizationService)
-    {
-        $this->authorizationService = $authorizationService;
-    }
-
-    public function GetFunction(IReservationSlot $slot, $accessAllowed = false, $functionSuffix = '')
-    {
-        if ($slot->IsReserved()) {
-            if ($this->IsMyReservation($slot)) {
-                return "displayMyReserved$functionSuffix";
-            }
-            elseif ($this->IsAdminFor($slot))
-            {
-                return "displayAdminReserved$functionSuffix";
-            }
-            elseif ($this->AmIParticipating($slot)) {
-                return "displayMyParticipating$functionSuffix";
-            }
-            else {
-
-                return "displayReserved$functionSuffix";
-            }
-        }
-        else {
-            if (!$accessAllowed) {
-                return "displayRestricted$functionSuffix";
-            }
-            else {
-                if ($slot->IsPastDate(Date::Now()) && !$this->UserHasAdminRights()) {
-                    return "displayPastTime$functionSuffix";
-                }
-                else {
-                    if ($slot->IsReservable()) {
-                        return "displayReservable$functionSuffix";
-                    }
-                    else {
-                        return "displayUnreservable$functionSuffix";
-                    }
-                }
-            }
-        }
-
-        return null;
-    }
-
-    private function UserHasAdminRights()
-    {
-        return ServiceLocator::GetServer()->GetUserSession()->IsAdmin;
-    }
-
-    private function IsMyReservation(IReservationSlot $slot)
-    {
-        $mySession = ServiceLocator::GetServer()->GetUserSession();
-        return $slot->IsOwnedBy($mySession);
-    }
-
-    private function IsAdminFor(IReservationSlot $slot)
-    {
-        $mySession = ServiceLocator::GetServer()->GetUserSession();
-        return $this->authorizationService->CanReserveFor($mySession, $slot->OwnerId());
-    }
-
-    private function AmIParticipating(IReservationSlot $slot)
-    {
-        $mySession = ServiceLocator::GetServer()->GetUserSession();
-        return $slot->IsParticipating($mySession);
-    }
-}

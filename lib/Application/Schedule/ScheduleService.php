@@ -107,6 +107,10 @@ class ScheduleService implements IScheduleService
     public function GetDailyLayout($scheduleId, ILayoutFactory $layoutFactory, $reservationListing)
     {
         return $this->dailyLayoutFactory->Create($reservationListing, $this->GetLayout($scheduleId, $layoutFactory));
+    }
 
+    public function GetSchedule($scheduleId)
+    {
+        return $this->scheduleRepository->LoadById($scheduleId);
     }
 }
