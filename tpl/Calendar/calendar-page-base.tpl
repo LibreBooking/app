@@ -99,7 +99,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                 getSubscriptionUrl: '{$pageUrl}?dr=subscription',
                 subscriptionEnableUrl: '{$pageUrl}?{QueryStringKeys::ACTION}={CalendarActions::ActionEnableSubscription}',
                 subscriptionDisableUrl: '{$pageUrl}?{QueryStringKeys::ACTION}={CalendarActions::ActionDisableSubscription}',
-                moveReservationUrl: "{$Path}ajax/reservation_move.php"
+                moveReservationUrl: "{$Path}ajax/reservation_move.php",
+                returnTo: '{$pageUrl}'
             };
 
             var calendar = new Calendar(options);

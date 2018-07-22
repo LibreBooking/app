@@ -521,7 +521,7 @@ function Reservation(opts) {
         $('.blockUI').css('cursor', 'default');
 
         $('#btnSaveSuccessful').unbind().click(function (e) {
-            window.location = options.returnUrl;
+            window.location = options.returnUrl.replace(/&amp;/g, '&');
         });
 
         $('#btnSaveFailed').unbind().click(function () {

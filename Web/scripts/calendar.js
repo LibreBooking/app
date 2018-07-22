@@ -292,7 +292,7 @@ function Calendar(opts) {
         }
     };
 
-    var handleTimeClick = function (e) {
+    var handleTimeClick = function () {
         openNewReservation();
     };
 
@@ -313,8 +313,17 @@ function Calendar(opts) {
     };
 
     var openNewReservation = function () {
+        var view = _fullCalendar.fullCalendar('getView');
         var end = dateVar.add(30, 'minutes');
-        var url = _options.reservationUrl + "&sd=" + getUrlFormattedDate(dateVar) + "&ed=" + getUrlFormattedDate(end);
+        var year = dateVar.year();
+        var month = dateVar.month() + 1;
+        var day = dateVar.date();
+
+        var url = _options.reservationUrl +
+            "&sd=" + getUrlFormattedDate(dateVar) +
+            "&ed=" + getUrlFormattedDate(end) +
+            "&redirect=" + _options.returnTo + encodeURIComponent('?ct=' + view.name + '&start=' + year + '-' + month + '-' + day)
+        ;
 
         window.location = url;
     };
