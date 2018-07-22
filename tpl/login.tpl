@@ -116,14 +116,14 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 				{if $AllowGoogleLogin}
 					<div class="{$socialClass} social-login" id="socialLoginGoogle">
-						<a href="https://accounts.google.com/o/oauth2/v2/auth?scope=email%20profile&state={$GoogleState}&redirect_uri=http://www.social.twinkletoessoftware.com/googleresume.php&response_type=code&client_id=531675809673-3sfvrchh6svd9bfl7m55dao8n4s6cqpc.apps.googleusercontent.com">
+						<a href="https://accounts.google.com/o/oauth2/v2/auth?scope=email%20profile&state={$GoogleState}&redirect_uri=https://www.social.twinkletoessoftware.com/googleresume.php&response_type=code&client_id=531675809673-3sfvrchh6svd9bfl7m55dao8n4s6cqpc.apps.googleusercontent.com">
 							<img src="img/external/btn_google_signin_dark_normal_web.png" alt="Sign in with Google"/>
 						</a>
 					</div>
 				{/if}
 				{if $AllowFacebookLogin}
 					<div class="{$socialClass} social-login" id="socialLoginFacebook">
-						<a href="http://www.social.twinkletoessoftware.com/fblogin.php?protocol={$Protocol}&resume={$ScriptUrlNoProtocol}/external-auth.php%3Ftype%3Dfb%26redirect%3D{$ResumeUrl}">
+						<a href="https://www.social.twinkletoessoftware.com/fblogin.php?protocol={$Protocol}&resume={$ScriptUrlNoProtocol}/external-auth.php%3Ftype%3Dfb%26redirect%3D{$ResumeUrl}">
 							<img style="max-height:42px" src="img/external/btn_facebook_login.png" alt="Sign in with Facebook"/>
 						</a>
 					</div>
