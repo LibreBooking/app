@@ -57,6 +57,13 @@ table.reservations {
 table.reservations.mobile {
   table-layout: fixed;
 }
+table.reservations.mobile div.reservable {
+  border: dashed 1px #585754;
+  color: #585754;
+  line-height: 20px;
+  background-color: #fff !important;
+  padding-left: 3px;
+}
 table.reservations td {
   border: solid #36648B 1px;
   height: 30px;
