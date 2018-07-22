@@ -2604,3 +2604,20 @@ ul.jqtree-tree .jqtree-toggler {
   border-bottom: solid 1px #E9E9E9;
   padding-bottom: 1px;
 }
+#page-monitor-display div.reserved {
+  -webkit-border-radius: 2px;
+  -moz-border-radius: 2px;
+  border-radius: 2px;
+  margin-bottom: 3px;
+  padding: 2px;
+}
+#page-monitor-display .monitor-display-date {
+  font-weight: bold;
+  font-size: 1.2em;
+  color: #353432;
+}
+#page-monitor-display .monitor-display-resource-name {
+  font-weight: bold;
+  font-size: 1.1em;
+  color: #585754;
+}

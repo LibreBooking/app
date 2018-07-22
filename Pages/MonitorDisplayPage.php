@@ -62,8 +62,9 @@ interface IMonitorDisplayPage extends IPage, IActionPage
      * @param DateRange $range
      * @param IDailyLayout $layout
      * @param ResourceDto[] $resources
+     * @param int $format
      */
-    public function RebindSchedule(DateRange $range, IDailyLayout $layout, $resources);
+    public function RebindSchedule(DateRange $range, IDailyLayout $layout, $resources, $format);
 
 }
 
@@ -118,12 +119,13 @@ class MonitorDisplayPage extends ActionPage implements IMonitorDisplayPage
         $this->SetJson($resources);
     }
 
-    public function RebindSchedule(DateRange $range, IDailyLayout $layout, $resources)
+    public function RebindSchedule(DateRange $range, IDailyLayout $layout, $resources, $format)
     {
         $this->Set('DisplaySlotFactory', new DisplaySlotFactory(new GuestAuthorizationService()));
         $this->Set('BoundDates', $range->Dates());
         $this->Set('DailyLayout', $layout);
         $this->Set('Resources', $resources);
+        $this->Set('Format', $format);
         $this->Display('MonitorDisplay/monitor-display-schedule.tpl');
     }
 

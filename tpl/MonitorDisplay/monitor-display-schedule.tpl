@@ -50,13 +50,31 @@
         class="unreservable slot">{$Slot->Label($SlotLabelFactory)|escape}</td>
 {/function}
 
-{function name=displaySlot}
-    {call name=$DisplaySlotFactory->GetFunction($Slot, $AccessAllowed) Slot=$Slot Href=$Href SlotRef=$SlotRef ResourceId=$ResourceId}
-{/function}
-
-{function name=displaySlot}
-    {call name=$DisplaySlotFactory->GetFunction($Slot, $AccessAllowed) Slot=$Slot Href=$Href SlotRef=$SlotRef ResourceId=$ResourceId}
-{/function}
-
 <h1 id="scheduleName" class="center"></h1>
-{include file="Schedule/schedule-reservations-grid.tpl" }
+
+{if $Format == 1}
+    {include file="Schedule/schedule-reservations-grid.tpl"}
+{else}
+    {assign var=TodaysDate value=Date::Now()}
+    {foreach from=$BoundDates item=date}
+        <div class="monitor-display-date">{formatdate date=$date}</div>
+        {foreach from=$Resources item=resource name=resource_loop}
+            {if $resource->HasColor()}style="color:{$resource->GetTextColor()} !important;background-color:{$resource->GetColor()} !important;"{/if}
+            <div class="monitor-display-resource-name">{$resource->Name}</div>
+            {assign var=slots value=$DailyLayout->GetLayout($date, $resource->Id)}
+            {foreach from=$slots item=slot}
+                {if $slot->IsReserved()}
+                <div class="reserved" style="{$style}">
+                    {formatdate date=$slot->BeginDate() key=period_time} -
+                    {assign var=slotformat value=period_time}
+                    {if !$slot->BeginDate()->DateEquals($slot->EndDate())}
+                        {assign var=slotformat value=short_reservation_date}
+                    {/if}
+                    {formatdate date=$slot->EndDate() key=$slotformat}
+                    {$slot->Label($SlotLabelFactory)|escapequotes}
+                </div>
+                {/if}
+            {/foreach}
+        {/foreach}
+    {/foreach}
+{/if}

@@ -117,6 +117,6 @@ class MonitorDisplayPresenter extends ActionPresenter
         $reservations = $this->reservationService->GetReservations(new DateRange($startDate, $endDate->AddDays(1)), $scheduleId, $timezone);
 
         $dailyLayout = $this->scheduleService->GetDailyLayout($scheduleId, $this->layoutFactory, $reservations);
-        $this->page->RebindSchedule(new DateRange($startDate, $endDate), $dailyLayout, $resources);
+        $this->page->RebindSchedule(new DateRange($startDate, $endDate), $dailyLayout, $resources, $this->page->GetFormat());
     }
 }

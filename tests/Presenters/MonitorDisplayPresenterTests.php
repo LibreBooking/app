@@ -97,12 +97,14 @@ class MonitorDisplayPresenterTests extends TestBase
         $this->scheduleService->_DailyLayout = new FakeDailyLayout();
         $this->scheduleService->_DailyLayout->_Timezone = $timezone;
 
-        $range = new DateRange(Date::Now()->ToTimezone($timezone)->GetDate(), Date::Now()->ToTimezone($timezone)->GetDate()->AddDays(5));
+        $now = Date::Now()->ToTimezone($timezone);
+        $pageRange = new DateRange($now->GetDate(), $now->GetDate()->AddDays(5));
+        $searchRange = new DateRange($now->GetDate(), $now->GetDate()->AddDays(6));
 
         $this->presenter->ProcessDataRequest('schedule');
 
-        $this->assertEquals($range, $this->reservationService->_LastDateRange);
-        $this->assertEquals($range, $this->page->_DateRange);
+        $this->assertEquals($searchRange, $this->reservationService->_LastDateRange);
+        $this->assertEquals($pageRange, $this->page->_DateRange);
         $this->assertEquals($this->scheduleService->_DailyLayout, $this->page->_DailyLayout);
         $this->assertEquals($this->resourceService->_ScheduleResources, $this->page->_Resources);
     }
@@ -170,7 +172,7 @@ class TestMonitorDisplayPage extends MonitorDisplayPage
         $this->_ReBoundResources = $resources;
     }
 
-    public function RebindSchedule(DateRange $range, IDailyLayout $layout, $resources)
+    public function RebindSchedule(DateRange $range, IDailyLayout $layout, $resources, $format)
     {
        $this->_DateRange = $range;
        $this->_DailyLayout = $layout;
