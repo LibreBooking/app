@@ -90,8 +90,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
         {/if}
     {/if}
     {if $Select2}
-        {cssfile src="scripts/css/select2/select2.min.css"}
-        {cssfile src="scripts/css/select2/select2-bootstrap.min.css"}
+        {cssfile src="scripts/css/select2/select2-4.0.5.min.css"}
+        {*{cssfile src="scripts/css/select2/select2-bootstrap.min.css"}*}
     {/if}
     {if $Timepicker}
         {cssfile src="scripts/css/timePicker.css" rel="stylesheet"}

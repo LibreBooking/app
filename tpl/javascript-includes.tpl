@@ -51,7 +51,7 @@
     {/if}
 {/if}
 {if $Select2}
-    {jsfile src="js/select2.min.js"}
+    {jsfile src="js/select2-4.0.5.min.js"}
 {/if}
 {if $Timepicker}
     {jsfile src="js/jquery.timePicker.min.js"}

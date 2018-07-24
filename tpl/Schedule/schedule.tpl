@@ -124,24 +124,11 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
                 <div id="schedule-title" class="schedule_title {$titleWidth} col-xs-12">
                     <label for="schedules" class="no-show">Schedule</label>
-                    <select id="schedules">
+                    <select id="schedules" class="form-control" style="width:auto;">
                         {foreach from=$Schedules item=schedule}
                             <option value="{$schedule->GetId()}" {if $schedule->GetId() == $ScheduleId}selected="selected"{/if}>{$schedule->GetName()}</option>
                         {/foreach}
                     </select>
-                    {*<span>{$ScheduleName}</span>*}
-                    {*{if $Schedules|@count gt 1}*}
-                        {*<div class="dropdown btn-group">*}
-                            {*<a class="btn dropdown-toggle" data-toggle="dropdown" href="#"*}
-                               {*id="scheduleListDropdown"><span class="caret dropdown-toggle"></span></a>*}
-                            {*<ul class="dropdown-menu" role="menu">*}
-                                {*{foreach from=$Schedules item=schedule}*}
-                                    {*<li><a href="#" class="schedule-id"*}
-                                           {*data-scheduleid="{$schedule->GetId()}">{$schedule->GetName()}</a></li>*}
-                                {*{/foreach}*}
-                            {*</ul>*}
-                        {*</div>*}
-                    {*{/if}*}
                     <a href="#" id="calendar_toggle" title="{translate key=ShowHideNavigation}">
                         <span class="glyphicon glyphicon-calendar"></span>
                     </a>
@@ -323,55 +310,6 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                     </div>
                     {block name="reservations"}
                         {include file="Schedule/schedule-reservations-grid.tpl" }
-                        {*{assign var=TodaysDate value=Date::Now()}*}
-                        {*{foreach from=$BoundDates item=date}*}
-                            {*{assign var=ts value=$date->Timestamp()}*}
-                            {*{$periods.$ts = $DailyLayout->GetPeriods($date, true)}*}
-                            {*{if $periods[$ts]|count == 0}{continue}*}{*dont show if there are no slots*}{*{/if}*}
-                            {*<div style="position:relative;">*}
-                                {*<table class="reservations" border="1" cellpadding="0" width="100%">*}
-                                    {*<thead>*}
-                                    {*{if $date->DateEquals($TodaysDate)}*}
-                                    {*<tr class="today">*}
-                                        {*{else}*}
-                                    {*<tr>*}
-                                        {*{/if}*}
-                                        {*<td class="resdate">{formatdate date=$date key="schedule_daily"}</td>*}
-                                        {*{foreach from=$periods.$ts item=period}*}
-                                            {*<td class="reslabel"*}
-                                                {*colspan="{$period->Span()}">{$period->Label($date)}</td>*}
-                                        {*{/foreach}*}
-                                    {*</tr>*}
-                                    {*</thead>*}
-                                    {*<tbody>*}
-                                    {*{foreach from=$Resources item=resource name=resource_loop}*}
-                                        {*{assign var=resourceId value=$resource->Id}*}
-                                        {*{assign var=slots value=$DailyLayout->GetLayout($date, $resourceId)}*}
-                                        {*{assign var=href value="{$CreateReservationPage}?rid={$resource->Id}&sid={$ScheduleId}&rd={formatdate date=$date key=url}"}*}
-                                        {*<tr class="slots">*}
-                                            {*<td class="resourcename"*}
-                                                {*{if $resource->HasColor()}style="background-color:{$resource->GetColor()} !important"{/if}>*}
-                                                {*{if $resource->CanAccess && $DailyLayout->IsDateReservable($date)}*}
-                                                    {*<a href="{$href}" resourceId="{$resource->Id}"*}
-                                                       {*class="resourceNameSelector"*}
-                                                       {*{if $resource->HasColor()}style="color:{$resource->GetTextColor()} !important"{/if}>{$resource->Name}</a>*}
-                                                {*{else}*}
-                                                    {*<span resourceId="{$resource->Id}" resourceId="{$resource->Id}"*}
-                                                          {*class="resourceNameSelector"*}
-                                                          {*{if $resource->HasColor()}style="color:{$resource->GetTextColor()} !important"{/if}>{$resource->Name}</span>*}
-                                                {*{/if}*}
-                                            {*</td>*}
-                                            {*{foreach from=$slots item=slot}*}
-                                                {*{assign var=slotRef value="{$slot->BeginDate()->Format('YmdHis')}{$resourceId}"}*}
-                                                {*{displaySlot Slot=$slot Href="$href" AccessAllowed=$resource->CanAccess SlotRef=$slotRef ResourceId=$resourceId}*}
-                                            {*{/foreach}*}
-                                        {*</tr>*}
-                                    {*{/foreach}*}
-                                    {*</tbody>*}
-                                {*</table>*}
-                            {*</div>*}
-                            {*{flush}*}
-                        {*{/foreach}*}
                     {/block}
                 </div>
             </div>
@@ -459,8 +397,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
         {/if}
 
         $('#schedules').select2({
-            width: 'auto',
-            dropdownAutoWidth : true
+            width: 'resolve',
+            // dropdownAutoWidth : true
             {*placeholder: '{translate key=Resources}'*}
         });
     </script>
