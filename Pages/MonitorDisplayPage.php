@@ -86,16 +86,21 @@ class MonitorDisplayPage extends ActionPage implements IMonitorDisplayPage
             new ScheduleLayoutFactory());
 
         $this->Set('PopupMonths', $this->IsMobile ? 1 : 3);
+        $this->Set('Enabled', $this->IsEnabled());
     }
 
     public function ProcessAction()
     {
-        $this->presenter->ProcessAction();
+        if ($this->IsEnabled()) {
+            $this->presenter->ProcessAction();
+        }
     }
 
     public function ProcessDataRequest($dataRequest)
     {
-        $this->presenter->ProcessDataRequest($dataRequest);
+        if ($this->IsEnabled()) {
+            $this->presenter->ProcessDataRequest($dataRequest);
+        }
     }
 
     public function ProcessPageLoad()
@@ -152,5 +157,13 @@ class MonitorDisplayPage extends ActionPage implements IMonitorDisplayPage
     public function GetFormat()
     {
         return $this->GetQuerystring(QueryStringKeys::FORMAT);
+    }
+
+    /**
+     * @return mixed|string
+     */
+    private function IsEnabled()
+    {
+        return Configuration::Instance()->GetSectionKey(ConfigSection::PRIVACY, ConfigKeys::PRIVACY_VIEW_SCHEDULES, new BooleanConverter());
     }
 }

@@ -524,6 +524,17 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
             </div>
 
+            <div id="help-monitor-view">
+                <h2>Reservation Monitor View</h2>
+
+                <p>{$AppTitle} provides a monitor-friendly view of a schedule's current availability. To launch this
+                    view,
+                    open {$ScriptUrl}/monitor-display.php then configure the reservations to display. A good use of this
+                    feature is mounting a large monitor in a public area to show real-time availability of resources
+                    reservations. The privacy configuration setting for view.schedules must be set to true for this functionality.</p>
+
+            </div>
+
             <div id="help-slack-integration">
                 <h2>Slack Integration</h2>
                 <p>You can begin a Booked reservation request directly from Slack. You will need to <a

@@ -20,6 +20,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 {include file='globalheader.tpl' HideNavBar=true}
 
 <div id="page-monitor-display">
+    {if $Enabled}
     <div id="monitor-display-configuration">
         <a href="#" data-toggle="collapse" data-target="#configuration-options"
            title="{translate key=ChangeConfiguration}"><i class="fa fa-cog"></i></a>
@@ -80,6 +81,9 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
     <div id="monitor-display-schedule">
 
     </div>
+    {else}
+        <div class="alert alert-danger">To enable the monitor display, set view.schedules to true in your application configuration</div>
+    {/if}
 </div>
 
 
@@ -96,7 +100,6 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
         });
         monitorDisplay.init();
     });
-    // auto-refresh every 1 min
 </script>
 
 {include file='globalfooter.tpl'}
