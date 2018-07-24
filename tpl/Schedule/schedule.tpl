@@ -397,9 +397,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
         {/if}
 
         $('#schedules').select2({
-            width: 'resolve',
-            // dropdownAutoWidth : true
-            {*placeholder: '{translate key=Resources}'*}
+            width: 'resolve'
         });
     </script>
 {/block}
