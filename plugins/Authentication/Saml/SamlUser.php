@@ -94,6 +94,7 @@ class SamlUser
 
     public function GetGroups()
     {
+        return array();
     }
 
 	/**

@@ -53,6 +53,10 @@ class SamlOptions
 		return $this->_options;
 	}
 
+	public function ReturnTo()
+    {
+        return $this->GetConfig(SamlConfig::RETURN_TO);
+    }
 
 	private function SetOption($key, $value)
 	{
@@ -68,8 +72,4 @@ class SamlOptions
 	{
 		return Configuration::Instance()->File(SamlConfig::CONFIG_ID)->GetKey($keyName, $converter);
 	}
-
-
-
 }
-?>
