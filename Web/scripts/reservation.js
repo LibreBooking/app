@@ -259,7 +259,9 @@ function Reservation(opts) {
             ajaxPost(elements.reservationForm, opts.creditsUrl, null, function (data) {
 
                 elements.requiredCreditsCount.text(data.creditsRequired);
-                elements.creditCost.text('(' + data.cost + ')');
+                if (data.cost != '') {
+                    elements.creditCost.text('(' + data.cost + ')');
+                }
                 if (availableCredits < data.creditsRequired) {
                     elements.requiredCreditsCount.addClass('insufficient-credits');
                     elements.creditCost.addClass('insufficient-credits');
