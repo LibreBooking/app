@@ -149,7 +149,7 @@ class ReservationDeleteJsonPage extends ReservationDeletePage implements IReserv
 	public function PageLoad()
 	{
 		$reservation = $this->presenter->BuildReservation();
-		$this->presenter->HandleReservation($reservation);
+        $this->presenter->HandleReservation($reservation);
 	}
 
 	/**

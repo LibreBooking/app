@@ -87,6 +87,6 @@ class ReservationDeletePresenter implements IReservationDeletePresenter
 	{
 		Log::Debug("Deleting reservation %s", $reservationSeries->CurrentInstance()->ReferenceNumber());
 
-		$this->handler->Handle($reservationSeries, $this->page);
+        $this->handler->Handle($reservationSeries, $this->page);
 	}
 }

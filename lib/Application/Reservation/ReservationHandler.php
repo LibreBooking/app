@@ -31,11 +31,11 @@ require_once(ROOT_DIR . 'lib/Application/Reservation/Notification/namespace.php'
 interface IReservationHandler
 {
 	/**
-	 * @param ReservationSeries $reservationSeries
+     * @param ReservationSeries|ExistingReservationSeries $reservationSeries
 	 * @param IReservationSaveResultsView $view
 	 * @return bool if the reservation was handled or not
 	 */
-	public function Handle(ReservationSeries $reservationSeries, IReservationSaveResultsView $view);
+	public function Handle($reservationSeries, IReservationSaveResultsView $view);
 }
 
 class ReservationHandler implements IReservationHandler
@@ -89,14 +89,14 @@ class ReservationHandler implements IReservationHandler
 	}
 
 	/**
-	 * @param ReservationSeries $reservationSeries
+	 * @param ReservationSeries|ExistingReservationSeries $reservationSeries
 	 * @param IReservationSaveResultsView $view
 	 * @return bool if the reservation was handled or not
 	 * @throws Exception
 	 */
-	public function Handle(ReservationSeries $reservationSeries, IReservationSaveResultsView $view)
+	public function Handle($reservationSeries, IReservationSaveResultsView $view)
 	{
-		if (Log::DebugEnabled())
+        if (Log::DebugEnabled())
 		{
 			Log::Debug('submitted retry params %s', var_export($view->GetRetryParameters(), true));
 		}
@@ -115,7 +115,7 @@ class ReservationHandler implements IReservationHandler
 				throw($ex);
 			}
 
-			$this->notificationService->Notify($reservationSeries);
+            $this->notificationService->Notify($reservationSeries);
 
 			$view->SetSaveSuccessfulMessage($result);
 		}
