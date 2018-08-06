@@ -81,7 +81,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 					<label class="btn btn-default btn-sm active">
 						<input type="radio" {formname key=REPEAT_MONTHLY_TYPE}
 							   value="{RepeatMonthlyType::DayOfMonth}"
-							   id="{$prefix}repeatMonthDay"/>
+							   id="{$prefix}repeatMonthDay" checked="checked"/>
 						{translate key="repeatDayOfMonth"}
 					</label>
 					<label class="btn btn-default btn-sm">

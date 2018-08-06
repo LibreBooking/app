@@ -162,25 +162,31 @@ class RepeatOptionsTests extends TestBase
 	public function testMonthlyRepeatDayOfMonthWhenDayIsNotInAllMonths()
 	{
 		$timezone = 'EST';
-		$reservationStart = Date::Parse('2010-03-31 08:30', $timezone);
-		$reservationEnd = Date::Parse('2010-03-31 10:30', $timezone);
+		$reservationStart = Date::Parse('2018-01-31 08:30', $timezone);
+		$reservationEnd = Date::Parse('2018-01-31 10:30', $timezone);
 		$duration = new DateRange($reservationStart, $reservationEnd);
 
 		$interval = 1;
-		$terminiationDate = Date::Parse('2010-10-01', $timezone);
+		$terminiationDate = Date::Parse('2018-12-31', $timezone);
 
 		$repeatOptions = new RepeatDayOfMonth($interval, $terminiationDate);
 		$repeatedDates = $repeatOptions->GetDates($duration);
 
-		$totalDates = 3;
-		$firstDate = DateRange::Create('2010-05-31 08:30', '2010-05-31 10:30', $timezone);
-		$secondDate = DateRange::Create('2010-07-31 08:30', '2010-07-31 10:30', $timezone);
-		$lastDate = DateRange::Create('2010-08-31 08:30', '2010-08-31 10:30', $timezone);
+		$totalDates = 6;
+		$date1 = DateRange::Create('2018-03-31 08:30', '2018-03-31 10:30', $timezone);
+        $date2 = DateRange::Create('2018-05-31 08:30', '2018-05-31 10:30', $timezone);
+        $date3 = DateRange::Create('2018-07-31 08:30', '2018-07-31 10:30', $timezone);
+        $date4 = DateRange::Create('2018-08-31 08:30', '2018-08-31 10:30', $timezone);
+        $date5 = DateRange::Create('2018-10-31 08:30', '2018-10-31 10:30', $timezone);
+        $date6 = DateRange::Create('2018-12-31 08:30', '2018-12-31 10:30', $timezone);
 
 		$this->assertEquals($totalDates, count($repeatedDates));
-		$this->assertTrue($firstDate->Equals($repeatedDates[0]), $firstDate->ToString() . ' ' . $repeatedDates[0]->ToString());
-		$this->assertTrue($secondDate->Equals($repeatedDates[1]), $secondDate->ToString() . ' ' . $repeatedDates[1]->ToString());
-		$this->assertTrue($lastDate->Equals($repeatedDates[$totalDates-1]), $lastDate->ToString() . ' ' . $repeatedDates[$totalDates-1]->ToString());
+		$this->assertTrue($date1->Equals($repeatedDates[0]), $date1->ToString() . ' ' . $repeatedDates[0]->ToString());
+		$this->assertTrue($date2->Equals($repeatedDates[1]), $date2->ToString() . ' ' . $repeatedDates[1]->ToString());
+		$this->assertTrue($date3->Equals($repeatedDates[2]), $date3->ToString() . ' ' . $repeatedDates[2]->ToString());
+		$this->assertTrue($date4->Equals($repeatedDates[3]), $date4->ToString() . ' ' . $repeatedDates[3]->ToString());
+		$this->assertTrue($date5->Equals($repeatedDates[4]), $date5->ToString() . ' ' . $repeatedDates[4]->ToString());
+		$this->assertTrue($date6->Equals($repeatedDates[5]), $date6->ToString() . ' ' . $repeatedDates[5]->ToString());
 	}
 
 	public function testMonthlyRepeatDayOfWeekWhenWeekIsInAllMonths()
