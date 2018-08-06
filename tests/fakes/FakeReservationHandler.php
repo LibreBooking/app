@@ -38,7 +38,7 @@ class FakeReservationHandler implements IReservationHandler
 	 */
 	public $_Errors = array();
 
-	public function Handle(ReservationSeries $reservationSeries, IReservationSaveResultsView $view)
+	public function Handle($reservationSeries, IReservationSaveResultsView $view)
 	{
 		$this->_LastSeries = $reservationSeries;
 		$view->SetErrors($this->_Errors);
