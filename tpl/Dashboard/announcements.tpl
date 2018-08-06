@@ -22,7 +22,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		<div class="pull-right">
 			<a href="#" title="{translate key=ShowHide} {translate key="Announcements"}">
 				<i class="glyphicon"></i>
-			</a>
+                <span class="no-show">Expand/Collapse</span>
+            </a>
 		</div>
 		<div class="clearfix"></div>
 	</div>

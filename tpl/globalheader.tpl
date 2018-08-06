@@ -318,6 +318,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                     {if $CanViewAdmin}
                         <li class="dropdown" id="navHelpDropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                <span class="no-show">Configuration</span>
                                 <span class="fa fa-cog"></span>
                                 {if $ShowNewVersion}<span class="badge badge-new-version new-version"
                                                           id="newVersionBadge">{translate key=NewVersion}</span>{/if}

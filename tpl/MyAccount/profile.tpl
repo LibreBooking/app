@@ -56,7 +56,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			<div class="row">
 				<div class="col-xs-12 col-sm-6">
 					<div class="form-group">
-						<label class="reg" for="login">{translate key="Username"}</label>
+						<label class="reg" for="username">{translate key="Username"}</label>
 						{if $AllowUsernameChange}
 							{textbox name="USERNAME" value="Username" required="required"
 							data-bv-notempty="true" autofocus="autofocus"
