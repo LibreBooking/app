@@ -25,6 +25,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			<button class="btn btn-default" type="button" id="moreReservationActions" data-toggle="dropdown">
 				<span class="glyphicon glyphicon-option-horizontal"></span>
 				<span class="caret"></span>
+                <span class="no-show">Expand</span>
 			</button>
 			<ul class="dropdown-menu" role="menu" aria-labelledby="moreReservationActions">
 				{if $CanViewAdmin}
@@ -63,56 +64,66 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			{assign var=groupClass value="col-xs-12 col-sm-4 col-md-3"}
 			<form id="filterForm" role="form">
 				<div class="form-group filter-dates {$groupClass}">
+                    <label for="startDate" class="no-show">{translate key=StartDate}</label>
 					<input id="startDate" type="text" class="form-control dateinput inline"
 						   value="{formatdate date=$StartDate}"/>
 					<input id="formattedStartDate" type="hidden" value="{formatdate date=$StartDate key=system}"/>
 					-
-					<input id="endDate" type="text" class="form-control dateinput inline"
+                    <label for="endDate" class="no-show">{translate key=StartDate}</label>
+                    <input id="endDate" type="text" class="form-control dateinput inline"
 						   value="{formatdate date=$EndDate}"/>
 					<input id="formattedEndDate" type="hidden" value="{formatdate date=$EndDate key=system}"/>
                 </div>
 				<div class="form-group filter-user {$groupClass}">
-					<input id="userFilter" type="text" class="form-control" value="{$UserNameFilter}"
+                    <label for="userFilter" class="no-show">{translate key=User}</label>
+                    <input id="userFilter" type="text" class="form-control" value="{$UserNameFilter}"
 						   placeholder="{translate key=User}"/>
 					<input id="userId" type="hidden" value="{$UserIdFilter}"/>
                     <span class="searchclear glyphicon glyphicon-remove-circle" ref="userFilter,userId"></span>
                 </div>
 				<div class="form-group filter-schedule {$groupClass}">
-					<select id="scheduleId" class="form-control">
+                    <label for="scheduleId" class="no-show">{translate key=Schedule}</label>
+                    <select id="scheduleId" class="form-control">
 						<option value="">{translate key=AllSchedules}</option>
 						{object_html_options options=$Schedules key='GetId' label="GetName" selected=$ScheduleId}
 					</select>
 				</div>
 				<div class="form-group filter-resource {$groupClass}">
-					<select id="resourceId" class="form-control">
+                    <label for="resourceId" class="no-show">{translate key=Resource}</label>
+                    <select id="resourceId" class="form-control">
 						<option value="">{translate key=AllResources}</option>
 						{object_html_options options=$Resources key='GetId' label="GetName" selected=$ResourceId}
 					</select>
 				</div>
 				<div class="form-group filter-status {$groupClass}">
-					<select id="statusId" class="form-control">
+                    <label for="statusId" class="no-show">{translate key=Status}</label>
+                    <select id="statusId" class="form-control">
 						<option value="">{translate key=AllReservations}</option>
 						<option value="{ReservationStatus::Pending}"
 								{if $ReservationStatusId eq ReservationStatus::Pending}selected="selected"{/if}>{translate key=PendingReservations}</option>
 					</select>
 				</div>
 				<div class="form-group filter-referenceNumber {$groupClass}">
-					<input id="referenceNumber" type="text" class="form-control" value="{$ReferenceNumber}"
+                    <label for="referenceNumber" class="no-show">{translate key=ReferenceNumber}</label>
+                    <input id="referenceNumber" type="text" class="form-control" value="{$ReferenceNumber}"
 						   placeholder="{translate key=ReferenceNumber}"/>
                     <span class="searchclear glyphicon glyphicon-remove-circle" ref="referenceNumber"></span>
                 </div>
                 <div class="form-group filter-title {$groupClass}">
-					<input id="reservationTitle" type="text" class="form-control" value="{$ReservationTitle}"
+                    <label for="reservationTitle" class="no-show">{translate key=Title}</label>
+                    <input id="reservationTitle" type="text" class="form-control" value="{$ReservationTitle}"
 						   placeholder="{translate key=Title}"/>
                     <span class="searchclear glyphicon glyphicon-remove-circle" ref="reservationTitle"></span>
                 </div>
                 <div class="form-group filter-title {$groupClass}">
-					<input id="reservationDescription" type="text" class="form-control" value="{$ReservationDescription}"
+                    <label for="reservationDescription" class="no-show">{translate key=ReservationDescription}</label>
+                    <input id="reservationDescription" type="text" class="form-control" value="{$ReservationDescription}"
 						   placeholder="{translate key=Description}"/>
                     <span class="searchclear glyphicon glyphicon-remove-circle" ref="reservationDescription"></span>
                 </div>
 				<div class="form-group filter-resourceStatus {$groupClass}">
-					<select id="resourceStatusIdFilter" class="form-control">
+                    <label for="resourceStatusIdFilter" class="no-show">{translate key=ResourceStatus}</label>
+                    <select id="resourceStatusIdFilter" class="form-control">
 						<option value="">{translate key=AllResourceStatuses}</option>
 						<option value="{ResourceStatus::AVAILABLE}">{translate key=Available}</option>
 						<option value="{ResourceStatus::UNAVAILABLE}">{translate key=Unavailable}</option>
@@ -120,7 +131,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 					</select>
 				</div>
 				<div class="form-group filter-resourceStatusReason {$groupClass}">
-					<select id="resourceReasonIdFilter" class="form-control"></select>
+                    <label for="resourceReasonIdFilter" class="no-show">{translate key=Reason}</label>
+                    <select id="resourceReasonIdFilter" class="form-control"></select>
 				</div>
 				<div class="clearfix"></div>
 				{foreach from=$AttributeFilters item=attribute}
@@ -138,7 +150,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		{assign var=colCount value=11}
 		<thead>
 		<tr>
-			<th class="id hidden">&nbsp;</th>
+			<th class="id hidden">ID</th>
 			<th>{sort_column key=User field=ColumnNames::OWNER_LAST_NAME}</th>
 			<th>{sort_column key=Resource field=ColumnNames::RESOURCE_NAME}</th>
 			<th>{sort_column key=Title field=ColumnNames::RESERVATION_TITLE}</th>
@@ -160,7 +172,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			<th class="action-delete">
 				<div class="checkbox checkbox-single">
 					<input type="checkbox" id="delete-all" aria-label="{translate key=All}"/>
-					<label for="delete-all"></label>
+					<label for="delete-all" class="no-show">{translate key=All}</label>
 				</div>
 			</th>
 		</tr>
@@ -212,14 +224,18 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 					{/if}
 				</td>
 				<td class="action">
-					<a href="#" class="update delete"><span class="fa fa-trash icon remove fa-1x"></span></a>
+					<a href="#" class="update delete">
+                        <span class="fa fa-trash icon remove fa-1x"></span>
+                        <span class="no-show">{translate key=Delete}</span>
+                    </a>
 				</td>
 				<td class="action-delete no-edit">
 					<div class="checkbox checkbox-single">
+                        <label class="no-show" for="delete{$reservationId}">{translate key=Delete}</label>
 						<input {formname key=RESERVATION_ID multi=true}" class="delete-multiple" type="checkbox" id="delete{$reservationId}"
 						value="{$reservationId}"
 						aria-label="{translate key=Delete}"/>
-						<label for="delete{$reservationId}"></label>
+						<label for="delete{$reservationId}" class="no-show">{translate key=Delete}</label>
 					</div>
 				</td>
 			</tr>
@@ -261,7 +277,12 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		<tfoot>
 		<tr>
 			<td colspan="{$colCount-1}"></td>
-			<td class="action-delete"><a href="#" id="delete-selected" class="no-show" title="{translate key=Delete}"><span class="fa fa-trash icon remove"></span></a></td>
+			<td class="action-delete">
+                <a href="#" id="delete-selected" class="no-show" title="{translate key=Delete}">
+                    <span class="fa fa-trash icon remove"></span>
+                    <span class="no-show">{translate key=Delete}</span>
+                </a>
+            </td>
 		</tr>
 		</tfoot>
 	</table>
@@ -410,7 +431,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 										class="fa fa-refresh"></span></a>
 						</div>
 						<div class="margin-bottom-25">
-							<input type="file" {formname key=RESERVATION_IMPORT_FILE} />
+                            <label for="reservationImportFile" class="no-show">{translate key=File}</label>
+							<input type="file" {formname key=RESERVATION_IMPORT_FILE} id="reservationImportFile" />
 						</div>
 						<div id="importInstructions" class="alert alert-info">
 							<div class="note">{translate key=ReservationImportInstructions}</div>

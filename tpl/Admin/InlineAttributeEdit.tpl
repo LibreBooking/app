@@ -31,7 +31,8 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 			{assign var=datatype value='combodate'}
 			{assign var=value value={formatdate date=$value key=fullcalendar}}
 		{/if}
-		<h5 class="inline">{$attribute->Label()}</h5> <a class="update changeAttribute" href="#"><span class="fa fa-pencil-square-o"></span></a>
+		<h5 class="inline">{$attribute->Label()}</h5>
+        <a class="update changeAttribute" href="#"><span class="fa fa-pencil-square-o"></span><span class="no-show">{translate key=Edit}</span></a>
 		<span class="inlineAttribute"
 			  id="inline{$attributeId}"
 			  data-type="{$datatype}"

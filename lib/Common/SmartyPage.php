@@ -896,7 +896,7 @@ class SmartyPage extends Smarty
 	public function ShowHideIcon($params, &$smarty)
 	{
 		$class = isset($params['class']) ? $params['class'] : '';
-		echo '<a href="#"><span class="icon black show-hide glyphicon ' . $class . '"></span></a>';
+		echo '<a href="#"><span class="icon black show-hide glyphicon ' . $class . '"></span><span class="no-show">Show/Hide</span></a>';
 	}
 
 	public function SortColumn($params, &$smarty)
