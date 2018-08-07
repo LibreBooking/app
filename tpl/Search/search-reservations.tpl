@@ -25,7 +25,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
           action="{$smarty.server.SCRIPT_NAME}?action=search">
 
         <div class="form-group col-sm-4">
-            <label for="user" class="no-show">{translate key=User}</label>
+            <label for="userFilter" class="no-show">{translate key=User}</label>
             <input id="userFilter" type="search" class="form-control" value="{$UserNameFilter}"
                    placeholder="{translate key=User}"/>
             <span class="searchclear glyphicon glyphicon-remove-circle" ref="userFilter,userId"></span>
@@ -101,11 +101,13 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                 </label>
             </div>
 
+            <label for="beginDate" class="no-show">{translate key=BeginDate}</label>
             <input type="text" id="beginDate" class="form-control inline dateinput"
                    placeholder="{translate key=BeginDate}"/>
             <input type="hidden" id="formattedBeginDate" {formname key=BEGIN_DATE}
                    value="{formatdate date=$BeginDate key=system}"/>
             -
+            <label for="endDate" class="no-show">{translate key=EndDate}</label>
             <input type="text" id="endDate" class="form-control inline dateinput"
                    placeholder="{translate key=EndDate}"/>
             <input type="hidden" id="formattedEndDate" {formname key=END_DATE}

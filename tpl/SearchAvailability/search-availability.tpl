@@ -24,11 +24,13 @@
 
         <div class="form-group col-xs-12 col-sm-2">
             <div class="input-group margin-bottom-15">
+                <label for="hours" class="no-show">{translate key=Hours}</label>
                 <input type="number" min="0" step="1" value="0" class="form-control hours-minutes"
                        id="hours" {formname key=HOURS}" />
                 <span class="input-group-addon hours-minutes">{translate key=Hours}</span>
             </div>
             <div class="input-group">
+                <label for="minutes" class="no-show">{translate key=Minutes}</label>
                 <input type="number" min="0" step="30" value="30" class="form-control hours-minutes"
                        id="minutes" {formname key=MINUTES}"/>
                 <span class="input-group-addon hours-minutes">{translate key=Minutes}</span>
@@ -59,10 +61,12 @@
                 </label>
             </div>
             <div>
+                <label for="beginDate" class="no-show">{translate key=BeginDate}</label>
                 <input type="text" id="beginDate" class="form-control inline dateinput"
                        placeholder="{translate key=BeginDate}" disabled="disabled"/>
                 <input type="hidden" id="formattedBeginDate" {formname key=BEGIN_DATE} />
                 -
+                <label for="endDate" class="no-show">{translate key=EndDate}</label>
                 <input type="text" id="endDate" class="form-control inline dateinput"
                        placeholder="{translate key=EndDate}" disabled="disabled"/>
                 <input type="hidden" id="formattedEndDate" {formname key=END_DATE} />

@@ -131,6 +131,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                     </select>
                     <a href="#" id="calendar_toggle" title="{translate key=ShowHideNavigation}">
                         <span class="glyphicon glyphicon-calendar"></span>
+                        <span class="no-show">{translate key=ShowHideNavigation}</span>
                     </a>
                     <div id="individualDates">
                         <div class="checkbox inline">
@@ -138,7 +139,9 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                             <label for='multidateselect'>{translate key=SpecificDates}</label>
                         </div>
                         <a class="btn btn-default btn-sm" href="#" id="individualDatesGo"><i
-                                    class="fa fa-angle-double-right"></i></a>
+                                    class="fa fa-angle-double-right"></i>
+                        <span class="no-show">{translate key=SpecificDates}</span>
+                        </a>
                     </div>
                     <div id="individualDatesList"></div>
                 </div>
@@ -149,7 +152,9 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                             {assign var=TodaysDate value=Date::Now()}
                             <a href="#" class="change-date btn-link btn-success" data-year="{$TodaysDate->Year()}"
                                data-month="{$TodaysDate->Month()}" data-day="{$TodaysDate->Day()}"
-                               alt="{translate key=Today}"><i class="fa fa-home"></i></a>
+                               alt="{translate key=Today}"><i class="fa fa-home"></i>
+                                <span class="no-show">{translate key=Today}</span>
+                            </a>
                             {assign var=FirstDate value=$DisplayDates->GetBegin()}
                             {assign var=LastDate value=$DisplayDates->GetEnd()->AddDays(-1)}
                             <a href="#" class="change-date" data-year="{$PreviousDate->Year()}"
@@ -238,7 +243,9 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                 <div id="reservations-left" class="col-md-2 col-sm-12 default-box">
                     <div class="reservations-left-header">{translate key=ResourceFilter}
                         <a href="#" class="pull-right toggle-sidebar" title="Hide Reservation Filter"><i
-                                    class="glyphicon glyphicon-remove"></i></a>
+                                    class="glyphicon glyphicon-remove"></i>
+                        <span class="no-show">Hide Reservation Filter</span>
+                        </a>
                     </div>
 
                     <div class="reservations-left-content">
