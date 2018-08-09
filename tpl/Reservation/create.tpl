@@ -111,6 +111,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
                     <div class="col-xs-12" id="changeUsers">
                         <div class="form-group">
+                            <label for="changeUserAutocomplete" class="no-show">{translate key=User}</label>
                             <input type="text" id="changeUserAutocomplete"
                                    class="form-control inline-block user-search"/>
                             |
@@ -284,30 +285,33 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                             <div class="checkbox">
                                 <input type="checkbox" id="startReminderEnabled"
                                        class="reminderEnabled" {formname key=START_REMINDER_ENABLED}/>
-                                <label for="startReminderEnabled">
+                                    <label for="startReminderTime" class="no-show">Start Reminder Time</label>
+                                    <label for="startReminderInterval" class="no-show">Start Reminder Interval</label>
                                     <input type="number" min="0" max="999" size="3" maxlength="3" value="15"
-                                           class="reminderTime form-control input-sm inline-block" {formname key=START_REMINDER_TIME}/>
-                                    <select class="reminderInterval form-control input-sm inline-block" {formname key=START_REMINDER_INTERVAL}>
+                                           class="reminderTime form-control input-sm inline-block" {formname key=START_REMINDER_TIME} id="startReminderTime"/>
+                                    <select class="reminderInterval form-control input-sm inline-block" {formname key=START_REMINDER_INTERVAL} id="startReminderInterval">
                                         <option value="{ReservationReminderInterval::Minutes}">{translate key=minutes}</option>
                                         <option value="{ReservationReminderInterval::Hours}">{translate key=hours}</option>
                                         <option value="{ReservationReminderInterval::Days}">{translate key=days}</option>
                                     </select>
-                                    <span class="reminderLabel">{translate key=ReminderBeforeStart}</span></label>
+                                    <span class="reminderLabel">{translate key=ReminderBeforeStart}</span>
                             </div>
                         </div>
                         <div id="reminderOptionsEnd">
                             <div class="checkbox">
                                 <input type="checkbox" id="endReminderEnabled"
                                        class="reminderEnabled" {formname key=END_REMINDER_ENABLED}/>
-                                <label for="endReminderEnabled">
+                                <label for="endReminderEnabled" class="no-show">translate key=ReminderBeforeEnd}</label>
+                                    <label for="endReminderTime" class="no-show">End Reminder Time</label>
+                                    <label for="endReminderInterval" class="no-show">End Reminder Interval</label>
                                     <input type="number" min="0" max="999" size="3" maxlength="3" value="15"
-                                           class="reminderTime form-control input-sm inline-block" {formname key=END_REMINDER_TIME}/>
-                                    <select class="reminderInterval form-control input-sm inline-block" {formname key=END_REMINDER_INTERVAL}>
+                                           class="reminderTime form-control input-sm inline-block" {formname key=END_REMINDER_TIME} id="endReminderTime"/>
+                                    <select class="reminderInterval form-control input-sm inline-block" {formname key=END_REMINDER_INTERVAL} id="endReminderInterval">
                                         <option value="{ReservationReminderInterval::Minutes}">{translate key=minutes}</option>
                                         <option value="{ReservationReminderInterval::Hours}">{translate key=hours}</option>
                                         <option value="{ReservationReminderInterval::Days}">{translate key=days}</option>
                                     </select>
-                                    <span class="reminderLabel">{translate key=ReminderBeforeEnd}</span></label>
+                                    <span class="reminderLabel">{translate key=ReminderBeforeEnd}</span>
                             </div>
 
                         </div>
@@ -326,9 +330,10 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
                         <div id="reservationAttachments">
                             <div class="attachment-item">
-                                <input type="file" {formname key=RESERVATION_FILE multi=true} />
+                                <label for="reservationUploadFile">Reservation Upload File</label>
+                                <input type="file" {formname key=RESERVATION_FILE multi=true} id="reservationUploadFile" />
                                 <a class="add-attachment" href="#">{translate key=Add} <i class="fa fa-plus-square"></i></a>
-                                <a class="remove-attachment" href="#"><i class="fa fa-minus-square"></i></a>
+                                <a class="remove-attachment" href="#"><span class="no-show">{translate key=Delete}</span><i class="fa fa-minus-square"></i></a>
                             </div>
                         </div>
                     </div>
@@ -431,13 +436,18 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                                     <input type="hidden" class="id" value="{$accessory->GetId()}"/>
                                     <input type="hidden" class="resource-ids"
                                            value="{','|implode:$accessory->ResourceIds()}"/>
+                                    <label for="accessory{$accessory->GetId()}" class="no-show">{$accessory->GetName()}</label>
                                     {if $accessory->GetQuantityAvailable() == 1}
-                                        <input type="checkbox" name="accessory{$accessory->GetId()}" value="1"
+                                        <input type="checkbox"
+                                               name="accessory{$accessory->GetId()}"
+                                               id="accessory{$accessory->GetId()}"
+                                               value="1"
                                                size="3"/>
                                     {else}
                                         <input type="number" min="0" max="999"
                                                class="form-control input-sm accessory-quantity"
                                                name="accessory{$accessory->GetId()}"
+                                               id="accessory{$accessory->GetId()}"
                                                value="0" size="3"/>
                                     {/if}
                                 </td>

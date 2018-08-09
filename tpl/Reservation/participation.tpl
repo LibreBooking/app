@@ -104,7 +104,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 								<input id="txtGuestEmail" type="email" class="form-control"/>
 							</div>
 							<div class="col-xs-2">
-								<button id="btnAddGuest" class="btn btn-link" type="button"><i class="fa fa-user-plus icon add"></i></button>
+								<button id="btnAddGuest" class="btn btn-link" type="button"><span class="no-show">{translate key='Guest'}</span><i class="fa fa-user-plus icon add"></i></button>
 							</div>
 						</div>
 					</div>
