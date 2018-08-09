@@ -23,6 +23,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
     <div>
         <div class="dropdown admin-header-more pull-right">
             <button class="btn btn-default" type="button" id="moreUserActions" data-toggle="dropdown">
+                <span class="no-show">More</span>
                 <span class="glyphicon glyphicon-option-horizontal"></span>
                 <span class="caret"></span>
             </button>
@@ -101,7 +102,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
             <th class="action-delete">
                 <div class="checkbox checkbox-single">
                     <input type="checkbox" id="delete-all" aria-label="{translate key=All}"/>
-                    <label for="delete-all"></label>
+                    <label for="delete-all">{translate key=All}</label>
                 </div>
             </th>
         </tr>
@@ -127,7 +128,10 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 						<span class="propertyValue inlineUpdate changeCredits"
                               data-type="number" data-pk="{$id}" data-value="{$user->CurrentCreditCount}"
                               data-name="{FormKeys::CREDITS}">{$user->CurrentCreditCount}</span>
-                        <a href="credit_log.php?{QueryStringKeys::USER_ID}={$id}" title="{translate key=CreditHistory}"><span class="fa fa-list"></span></a>
+                        <a href="credit_log.php?{QueryStringKeys::USER_ID}={$id}" title="{translate key=CreditHistory}">
+                            <span class="no-color">{translate key=CreditHistory}</span>
+                            <span class="fa fa-list"></span>
+                        </a>
                     </td>
                 {/if}
                 {if $PerUserColors}
@@ -143,13 +147,14 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
                 <td>
                     <div class="btn-group">
-                        <button type="button" class="btn btn-sm btn-default update edit"><span
-                                    class="fa fa-pencil-square-o"></button>
+                        <button type="button" class="btn btn-sm btn-default update edit">
+                            <span class="no-show">{translate key=Update}</span>
+                            <span class="fa fa-pencil-square-o"></button>
                         <button type="button" class="btn btn-sm btn-default dropdown-toggle" data-toggle="dropdown">
                             <span class="caret"></span>
                             <span class="sr-only">{translate key=More}</span>
                         </button>
-                        <ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="moreActions{$id}">
+                        <ul class="dropdown-menu dropdown-menu-right" role="menu">
                             <li role="presentation"><a role="menuitem"
                                                        href="#" class="update edit">{translate key="Edit"}</a>
                             </li>
@@ -174,15 +179,18 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                     </div>
                     |
                     <div class="inline">
-                        <a href="#" class="update delete"><span class="fa fa-trash icon remove"></span></a>
+                        <a href="#" class="update delete">
+                            <span class="no-show">{translate key=Delete}</span>
+                            <span class="fa fa-trash icon remove"></span>
+                        </a>
                     </div>
                 </td>
                 <td class="action-delete">
                     <div class="checkbox checkbox-single">
-                        <input {formname key=USER_ID multi=true}" class="delete-multiple" type="checkbox"
-                        id="delete{$id}" value="{$id}"
-                        aria-label="{translate key=Delete}"/>
-                        <label for="delete{$id}"></label>
+                        <input {formname key=USER_ID multi=true} class="delete-multiple" type="checkbox"
+                                                                 id="delete{$id}" value="{$id}"
+                                                                 aria-label="{translate key=Delete}"/>
+                        <label for="delete{$id}">{translate key=Delete}</label>
                     </div>
                 </td>
             </tr>
@@ -201,9 +209,12 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
         <tfoot>
         <tr>
             <td colspan="{$colCount-1}"></td>
-            <td class="action-delete"><a href="#" id="delete-selected" class="no-show"
-                                         title="{translate key=Delete}"><span
-                            class="fa fa-trash icon remove"></span></a></td>
+            <td class="action-delete">
+                <a href="#" id="delete-selected" class="no-show" title="{translate key=Delete}">
+                    <span class="no-show">{translate key=Delete}</span>
+                    <span class="fa fa-trash icon remove"></span>
+                </a>
+            </td>
         </tr>
         </tfoot>
     </table>
@@ -291,14 +302,14 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                         </div>
                         <div class="col-sm-12 col-md-6">
                             <div class="form-group">
-                                <label for="organization">{translate key="Organization"}</label>
+                                <label for="addOrganization">{translate key="Organization"}</label>
                                 <input type="text" {formname key="ORGANIZATION"} class="form-control"
                                        id="addOrganization"/>
                             </div>
                         </div>
                         <div class="col-sm-12 col-md-6">
                             <div class="form-group">
-                                <label for="position">{translate key="Position"}</label>
+                                <label for="addPosition">{translate key="Position"}</label>
                                 <input type="text" {formname key="POSITION"} class="form-control" id="addPosition"/>
                             </div>
                         </div>
@@ -376,7 +387,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                             <a class="" href="{$smarty.server.SCRIPT_NAME}">{translate key=Done}</a>
                         </div>
                         <div class="margin-bottom-25">
-                            <input type="file" {formname key=USER_IMPORT_FILE} />
+                            <input type="file" {formname key=USER_IMPORT_FILE} id="userImportFile"/>
+                            <label for="userImportFile" class="no-show">User Import File</label>
                             <div class="checkbox">
                                 <input type="checkbox" id="updateOnImport" {formname key=UPDATE_ON_IMPORT}/>
                                 <label for="updateOnImport">{translate key=UpdateUsersOnImport}</label>
@@ -422,7 +434,9 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                             {assign var=rid value=$resource->GetResourceId()}
                             <div class="{$rowCss} permissionRow form-group">
                                 <label for="permission_{$rid}" class="inline-block">{$resource->GetName()}</label>
-                                <select class="pull-right form-control input-sm resourceId inline-block" style="width:auto;" {formname key=RESOURCE_ID multi=true} id="permission_{$rid}">
+                                <select class="pull-right form-control input-sm resourceId inline-block"
+                                        style="width:auto;" {formname key=RESOURCE_ID multi=true}
+                                        id="permission_{$rid}">
                                     <option value="{$rid}_none" class="none">{translate key=None}</option>
                                     <option value="{$rid}_0" class="full">{translate key=FullAccess}</option>
                                     <option value="{$rid}_1" class="view">{translate key=ViewOnly}</option>
@@ -452,7 +466,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                     </div>
                     <div class="modal-body">
                         <div class="form-group has-feedback">
-                            <label>{translate key=Password}</label>
+                            <label for="password">{translate key=Password}</label>
                             {textbox type="password" name="PASSWORD" class="required" value=""}
                         </div>
                     </div>
@@ -663,7 +677,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
                     <div id="groupList" class="hidden">
                         {foreach from=$Groups item=group}
-                            <div class="group-item" groupId="{$group->Id}"><a href="#">&nbsp;</a>
+                            <div class="group-item" groupId="{$group->Id}">
+                                <a href="#"><span class="no-show">{$group->Name}</span>&nbsp;</a>
                                 <span>{$group->Name}</span>
                             </div>
                         {/foreach}
@@ -703,6 +718,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                     <div class="modal-body">
                         <div class="input-group">
                             <span class="input-group-addon">#</span>
+                            <label for="reservationColor" class="no-show">Reservation Color</label>
                             <input type="text" {formname key=RESERVATION_COLOR} id="reservationColor" maxlength="6"
                                    class="form-control" placeholder="FFFFFF">
                         </div>

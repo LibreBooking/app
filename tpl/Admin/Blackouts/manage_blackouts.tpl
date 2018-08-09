@@ -35,6 +35,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 					<input {formname key=BEGIN_TIME} type="text" id="addStartTime"
 													 class="form-control dateinput inline-block timepicker"
 													 value="{format_date format='h:00 A' date=now}" title="Start time"/>
+                    <label for="addStartTime" class="no-show">Start Time</label>
 				</div>
 				<div class="form-group col-xs-6">
 					<label for="addEndDate">{translate key=EndDate}</label>
@@ -46,7 +47,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 												   class="form-control dateinput inline-block timepicker"
 												   value="{format_date format='h:00 A' date=Date::Now()->AddHours(1)}"
 												   title="End time"/>
-				</div>
+                    <label for="addEndTime" class="no-show">Start Time</label>
+                </div>
 				<div class="form-group col-xs-12">
 					<label for="addResourceId">{translate key=Resource}</label>
 					<select {formname key=RESOURCE_ID} class="form-control" id="addResourceId">
@@ -58,7 +60,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 							<input {formname key=BLACKOUT_APPLY_TO_SCHEDULE} type="checkbox" id="allResources"/>
 							<label for="allResources" style="">{translate key=AllResourcesOn} </label>
 						</div>
-						<select {formname key=SCHEDULE_ID} id="addScheduleId" class="form-control" disabled="disabled"
+                        <label for="addScheduleId" class="no-show">{translate key=Schedule} </label>
+                        <select {formname key=SCHEDULE_ID} id="addScheduleId" class="form-control" disabled="disabled"
 														   title="Schedule">
 							{object_html_options options=$Schedules key='GetId' label="GetName" selected=$ScheduleId}
 						</select>
@@ -119,15 +122,22 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 					<input id="endDate" type="text" class="form-control dateinput inline-block"
 						   value="{formatdate date=$EndDate}" placeholder="{translate key=EndDate}"/>
 					<input id="formattedEndDate" type="hidden" value="{formatdate date=$EndDate key=system}"/>
-				</div>
+                    <label for="startDate" class="no-show">{translate key=StartDate}</label>
+                    <label for="endDate" class="no-show">{translate key=EndDate}</label>
+
+                </div>
 				<div class="form-group col-xs-4">
-					<select id="scheduleId" class="form-control col-xs-12">
+                    <label for="scheduleId" class="no-show">{translate key=Schedule} </label>
+
+                    <select id="scheduleId" class="form-control col-xs-12">
 						<option value="">{translate key=AllSchedules}</option>
 						{object_html_options options=$Schedules key='GetId' label="GetName" selected=$ScheduleId}
 					</select>
 				</div>
 				<div class="form-group col-xs-4">
-					<select id="resourceId" class="form-control col-xs-12">
+                    <label for="resourceId" class="no-show">{translate key=Resource} </label>
+
+                    <select id="resourceId" class="form-control col-xs-12">
 						<option value="">{translate key=AllResources}</option>
 						{object_html_options options=$Resources key='GetId' label="GetName" selected=$ResourceId}
 					</select>
@@ -153,7 +163,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			<th class="action-delete">
 				<div class="checkbox checkbox-single">
 					<input type="checkbox" id="delete-all" aria-label="{translate key=All}"/>
-					<label for="delete-all"></label>
+					<label for="delete-all" class="no-show">All</label>
 				</div>
 			</th>
 		</tr>
@@ -180,10 +190,10 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 				{/if}
 				<td class="action-delete">
 					<div class="checkbox checkbox-single">
-						<input {formname key=BLACKOUT_INSTANCE_ID multi=true}" class="delete-multiple" type="checkbox" id="delete{$id}"
+						<input {formname key=BLACKOUT_INSTANCE_ID multi=true} class="delete-multiple" type="checkbox" id="delete{$id}"
 						value="{$id}"
 						aria-label="{translate key=Delete}"/>
-						<label for="delete{$id}"></label>
+						<label for="delete{$id}" class="no-show">Delete</label>
 					</div>
 				</td>
 			</tr>
@@ -192,7 +202,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		<tfoot>
 		<tr>
 			<td colspan="7"></td>
-			<td class="action-delete"><a href="#" id="delete-selected" class="no-show" title="{translate key=Delete}"><span class="fa fa-trash icon remove"></span></a></td>
+			<td class="action-delete"><a href="#" id="delete-selected" class="no-show" title="{translate key=Delete}">{translate key=Delete}<span class="fa fa-trash icon remove"></span></a></td>
 		</tr>
 		</tfoot>
 	</table>

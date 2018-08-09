@@ -24,7 +24,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		<form role="form" id="customReportInput">
 			<div class="panel panel-default" id="report-filter-panel">
 				<div class="panel-heading">
-					{translate key=GenerateReport} <a href="#"><span class="icon black show-hide glyphicon"></span></a>
+					{translate key=GenerateReport} <a href="#"><span class="no-show">Collapse</span><span class="icon black show-hide glyphicon"></span></a>
 				</div>
 				<div class="panel-body no-padding">
 					<div id="custom-report-input">
@@ -127,9 +127,11 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 									<input type="radio" {formname key=REPORT_RANGE} value="{Report_Range::DATE_RANGE}"
 										   id="range_within"/>
 									<label for="range_within" style="width:auto;">{translate key=Between}</label>
+                                    <label for="startDate" class="no-show">{translate key=StartDate}</label>
 									<input type="input" class="form-control dateinput inline" id="startDate"/> -
 									<input type="hidden" id="formattedBeginDate" {formname key=REPORT_START}/>
-									<input type="input" class="form-control dateinput inline" id="endDate"/>
+                                    <label for="endDate" class="no-show">{translate key=EndDate}</label>
+                                    <input type="input" class="form-control dateinput inline" id="endDate"/>
 									<input type="hidden" id="formattedEndDate" {formname key=REPORT_END} />
 								</div>
 							</div>
@@ -138,35 +140,40 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 							<div class="col-md-1"><span class="">{translate key=FilterBy}</span></div>
 							<div class="col-md-11">
 								<div class="form-group no-margin no-padding col-md-2">
-									<select class="form-control" {formname key=RESOURCE_ID multi=true} multiple="multiple" id="resourceId">
+                                    <label for="resourceId" class="no-show">{translate key=Resource}</label>
+                                    <select class="form-control" {formname key=RESOURCE_ID multi=true} multiple="multiple" id="resourceId">
 										{foreach from=$Resources item=resource}
 											<option value="{$resource->GetId()}">{$resource->GetName()}</option>
 										{/foreach}
 									</select>
 								</div>
 								<div class="form-group no-margin no-padding col-md-2">
-									<select class="form-control" {formname key=RESOURCE_TYPE_ID multi=true} multiple="multiple" id="resourceTypeId">
+                                    <label for="resourceTypeId" class="no-show">{translate key=ResourceType}</label>
+                                    <select class="form-control" {formname key=RESOURCE_TYPE_ID multi=true} multiple="multiple" id="resourceTypeId">
 										{foreach from=$ResourceTypes item=resourceType}
 											<option value="{$resourceType->Id()}">{$resourceType->Name()}</option>
 										{/foreach}
 									</select>
 								</div>
 								<div class="form-group no-margin no-padding col-md-2">
-									<select class="form-control" {formname key=ACCESSORY_ID multi=true} multiple="multiple" id="accessoryId">
+                                    <label for="accessoryId" class="no-show">{translate key=Accessory}</label>
+                                    <select class="form-control" {formname key=ACCESSORY_ID multi=true} multiple="multiple" id="accessoryId">
 										{foreach from=$Accessories item=accessory}
 											<option value="{$accessory->Id}">{$accessory->Name}</option>
 										{/foreach}
 									</select>
 								</div>
 								<div class="form-group no-margin no-padding col-md-2">
-									<select class="form-control" {formname key=SCHEDULE_ID multi=true} multiple="multiple" id="scheduleId">
+                                    <label for="scheduleId" class="no-show">{translate key=Schedule}</label>
+                                    <select class="form-control" {formname key=SCHEDULE_ID multi=true} multiple="multiple" id="scheduleId">
 										{foreach from=$Schedules item=schedule}
 											<option value="{$schedule->GetId()}">{$schedule->GetName()}</option>
 										{/foreach}
 									</select>
 								</div>
 								<div class="form-group no-margin no-padding col-md-2">
-									<select class="form-control" {formname key=GROUP_ID multi=true} multiple="multiple" id="groupId">
+                                    <label for="groupId" class="no-show">{translate key=Group}</label>
+                                    <select class="form-control" {formname key=GROUP_ID multi=true} multiple="multiple" id="groupId">
 										{foreach from=$Groups item=group}
 											<option value="{$group->Id}">{$group->Name}</option>
 										{/foreach}
@@ -178,7 +185,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 									<div id="user-filter-div">
 										<div class="">
 											<label class="control-label sr-only"
-												   for="inputSuccess2">{translate key=AllUsers}</label>
+												   for="user-filter">{translate key=AllUsers}</label>
 											<input id="user-filter" type="text" class="form-control"
 												   placeholder="{translate key=AllUsers}"/>
 											<input id="user_id" class="filter-id" type="hidden" {formname key=USER_ID}/>
@@ -189,7 +196,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 									<div id="participant-filter-div">
 										<div class="form-group">
 											<label class="control-label sr-only"
-												   for="inputSuccess2">{translate key=AllParticipants}</label>
+												   for="participant-filter">{translate key=AllParticipants}</label>
 											<input id="participant-filter" type="text" class="form-control"
 												   placeholder="{translate key=AllParticipants}"/>
 											<input id="participant_id" class="filter-id"
@@ -239,7 +246,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 				</div>
 				<div class="modal-body">
 					<div class="form-group">
-						<label for="savereportname">{translate key=Name}</label>
+						<label for="saveReportName">{translate key=Name}</label>
 						<input type="text" id="saveReportName" {formname key=REPORT_NAME} class="form-control"
 							   placeholder="{translate key=NoTitleLabel}"/>
 					</div>

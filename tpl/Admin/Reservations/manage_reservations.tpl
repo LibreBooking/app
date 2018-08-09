@@ -235,7 +235,6 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 						<input {formname key=RESERVATION_ID multi=true}" class="delete-multiple" type="checkbox" id="delete{$reservationId}"
 						value="{$reservationId}"
 						aria-label="{translate key=Delete}"/>
-						<label for="delete{$reservationId}" class="no-show">{translate key=Delete}</label>
 					</div>
 				</td>
 			</tr>

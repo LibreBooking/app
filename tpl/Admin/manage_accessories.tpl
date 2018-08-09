@@ -70,8 +70,12 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 					   class="update resources">{if $accessory->AssociatedResources == 0}{translate key=All}{else}{$accessory->AssociatedResources}{/if}</a>
 				</td>
 				<td class="action">
-					<a href="#" class="update edit"><span class="fa fa-pencil-square-o icon"></a> |
-					<a href="#" class="update delete"><span class="fa fa-trash icon remove"></span></a>
+					<a href="#" class="update edit"><span class="no-show"></span>
+                        <span class="no-show">{translate key=Edit}</span>
+                        <span class="fa fa-pencil-square-o icon"></a> |
+					<a href="#" class="update delete">
+                        <span class="no-show">{translate key=Delete}</span>
+                        <span class="fa fa-trash icon remove"></span></a>
 				</td>
 			</tr>
 		{/foreach}

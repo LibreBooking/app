@@ -49,7 +49,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                         <div>
 					<span class="title scheduleName" data-type="text" data-pk="{$id}"
                           data-name="{FormKeys::SCHEDULE_NAME}">{$schedule->GetName()}</span>
-                            <a class="update renameButton" href="#"><span class="fa fa-pencil-square-o"></span></a>
+                            <a class="update renameButton" href="#"><span class="no-show">{translate key=Rename}</span><span class="fa fa-pencil-square-o"></span></a>
                         </div>
 
                         <div>{translate key="LayoutDescription" args="{$smarty.capture.dayName}, {$smarty.capture.daysVisible}"}</div>
@@ -59,8 +59,10 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                                   data-type="select" data-pk="{$id}" data-value="{$schedule->GetAdminGroupId()}"
                                   data-name="{FormKeys::SCHEDULE_ADMIN_GROUP_ID}">{$GroupLookup[$schedule->GetAdminGroupId()]->Name}</span>
                             {if $AdminGroups|count > 0}
-                                <a class="update changeScheduleAdmin" href="#"><span
-                                            class="fa fa-pencil-square-o"></span></a>
+                                <a class="update changeScheduleAdmin" href="#">
+                                    <span class="no-show">{translate key='ScheduleAdministrator'}</span>
+                                    <span class="fa fa-pencil-square-o"></span
+                                </a>
                             {/if}
                         </div>
 
@@ -68,8 +70,10 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                             <div class="availabilityPlaceHolder inline-block">
                                 {include file="Admin/Schedules/manage_availability.tpl" schedule=$schedule timezone=$Timezone}
                             </div>
-                            <a class="update changeAvailability inline-block" href="#"><span
-                                        class="fa fa-pencil-square-o"></span></a>
+                            <a class="update changeAvailability inline-block" href="#">
+                                <span class="no-show">Change Availability</span>
+                                <span class="fa fa-pencil-square-o"></span>
+                            </a>
                         </div>
 
                         <div class="concurrentContainer">
@@ -89,7 +93,10 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
                         {if $CreditsEnabled}
                             <span>{translate key=PeakTimes}</span>
-                            <a class="update changePeakTimes" href="#"><span class="fa fa-pencil-square-o"></span></a>
+                            <a class="update changePeakTimes" href="#">
+                                <span class="no-show">{translate key=PeakTimes}</span>
+                                <span class="fa fa-pencil-square-o"></span>
+                            </a>
                             <div class="peakPlaceHolder">
                                 {include file="Admin/Schedules/manage_peak_times.tpl" Layout=$Layouts[$id] Months=$Months DayNames=$DayNames}
                             </div>
@@ -133,9 +140,11 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
                         <div>
                             {translate key=ScheduleLayout args=$schedule->GetTimezone()}
-                            <a class="update changeLayoutButton" href="#" title="{translate key=ChangeLayout}"><span
-                                        class="fa fa-pencil-square-o"
-                                        data-layout-type="{$Layouts[$id]->GetType()}"></span></a>
+                            <a class="update changeLayoutButton" href="#" title="{translate key=ChangeLayout}">
+                                <span class="fa fa-pencil-square-o"
+                                        data-layout-type="{$Layouts[$id]->GetType()}"></span>
+                                <span class="no-show">{translate key=ChangeLayout}</span>
+                            </a>
                         </div>
                         <input type="hidden" class="timezone" value="{$schedule->GetTimezone()}"/>
 
@@ -448,6 +457,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                             </div>
                             <div id="peakTimes">
                                 {translate key=Between}
+                                <label for="peakStartTime" class="no-show">Peak Begin Time</label>
+                                <label for="peakEndTime" class="no-show">Peak End Time</label>
                                 <input type="text" id="peakStartTime"
                                        class="form-control input-sm inline-block timeinput timepicker"
                                        value="{formatdate date=$DefaultDate format='h:i A'}" {formname key=PEAK_BEGIN_TIME}/>
@@ -513,6 +524,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                                     </select>
                                 </div>
                                 <div class="col-xs-2">
+                                    <label for="peakBeginDay" class="no-show">Peak Begin Day</label>
                                     <select id="peakBeginDay"
                                             class="form-control input-sm" {formname key=PEAK_BEGIN_DAY}>
                                         {foreach from=$DayList item=day}
@@ -532,6 +544,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                                     </select>
                                 </div>
                                 <div class="col-xs-2">
+                                    <label for="peakEndDay" class="no-show">Peak End Day</label>
                                     <select id="peakEndDay" class="form-control input-sm" {formname key=PEAK_END_DAY}>
                                         {foreach from=$DayList item=day}
                                             <option value="{$day}">{$day}</option>
@@ -573,6 +586,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                             </div>
                             <div id="availableDates">
                                 {translate key=AvailableBetween}
+                                <label for="availabilityStartDate" class="no-show">Available Start Date</label>
+                                <label for="availabilityEndDate" class="no-show">Available End Date</label>
                                 <input type="text" id="availabilityStartDate"
                                        class="form-control input-sm inline-block dateinput"/>
                                 <input type="hidden" id="formattedBeginDate" {formname key=AVAILABLE_BEGIN_DATE} />

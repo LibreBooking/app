@@ -81,6 +81,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
                         <div id='attributeFillIn' class='inline-block'></div>
                         <div id="color" class="inline-block">
+                            <label for="reservationColor" class="no-show">Reservation Color</label>
                             <input type="color" {formname key="RESERVATION_COLOR"} class="form-control required"
                                    id="reservationColor" maxlength="6"/>
                         </div>

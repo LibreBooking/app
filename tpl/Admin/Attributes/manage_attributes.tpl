@@ -113,6 +113,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 								</div>
 							</div>
 							<div class="attributeSecondary no-show form-group">
+                                <label for="attributeSecondaryCategory" class="no-show">{translate key=Category}</label>
 								<select class="secondaryAttributeCategory form-control" {formname key=ATTRIBUTE_SECONDARY_CATEGORY}
 										id="attributeSecondaryCategory">
 									<option value="{CustomAttributeCategory::USER}">{translate key=User}</option>
@@ -219,7 +220,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 							</div>
 
 							<div class="form-group attributeSecondary no-show">
-								<select class="secondaryAttributeCategory form-control" {formname key=ATTRIBUTE_SECONDARY_CATEGORY}
+                                <label for="editAttributeSecondaryCategory" class="no-show">{translate key=Category}</label>
+                                <select class="secondaryAttributeCategory form-control" {formname key=ATTRIBUTE_SECONDARY_CATEGORY}
 										id="editAttributeSecondaryCategory">
 									<option value="{CustomAttributeCategory::USER}">{translate key=User}</option>
 									<option value="{CustomAttributeCategory::RESOURCE}">{translate key=Resource}</option>
