@@ -46,7 +46,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                 </div>
 
                 <div>
-                    <input type="file" name="quartzyFile"/>
+                    <label for="importFile" class="no-show">Import File</label>
+                    <input type="file" name="quartzyFile" id="importFile"/>
                 </div>
 
                 <div>

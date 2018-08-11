@@ -44,7 +44,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                     </ul>
                 </div>
                 <div>
-                    <input type="file" {formname key=ICS_IMPORT_FILE} />
+                    <label for="importFile" class="no-show">Import File</label>
+                    <input type="file" {formname key=ICS_IMPORT_FILE} id="importFile" />
                 </div>
 
                 <div class="admin-update-buttons">

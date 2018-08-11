@@ -47,9 +47,10 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                     <a href="{$ScriptUrl}/img/{$LogoUrl}" download="{$ScriptUrl}/img/{$LogoUrl}">{$LogoUrl}</a>
                     <a href="#" id="removeLogo">{translate key=Remove}</a>
                 </div>
-                <input type="file" {formname key=LOGO_FILE} class="pull-left"/>
+                <label for="logoFile" class="no-show">Logo File</label>
+                <input type="file" {formname key=LOGO_FILE} class="pull-left" id="logoFile"/>
 
-                <a href="#" class="clearInput inline">{html_image src="cross-button.png"}</a>
+                <a href="#" class="clearInput inline"><span class="no-show">{translate key=Delete}</span>{html_image src="cross-button.png"}</a>
             </div>
 
             <div>
@@ -59,9 +60,10 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                     <a href="{$ScriptUrl}/{$FaviconUrl}" download="{$ScriptUrl}/img/{$FaviconUrl}">{$FaviconUrl}</a>
                     <a href="#" id="removeFavicon">{translate key=Remove}</a>
                 </div>
-                <input type="file" {formname key=FAVICON_FILE} class="pull-left"/>
+                <label for="faviconFile" class="no-show">Favicon File</label>
+                <input type="file" {formname key=FAVICON_FILE} class="pull-left" id="faviconFile"/>
 
-                <a href="#" class="clearInput inline">{html_image src="cross-button.png"}</a>
+                <a href="#" class="clearInput inline"><span class="no-show">{translate key=Delete}</span>{html_image src="cross-button.png"}</a>
             </div>
 
             <div>
@@ -70,8 +72,9 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
                     <a href="{$ScriptUrl}/css/{$CssUrl}" download="{$ScriptUrl}/css/{$CssUrl}">{$CssUrl}</a>
                 </div>
-                <input type="file" {formname key=CSS_FILE} class="pull-left"/>
-                <a href="#" class="clearInput">{html_image src="cross-button.png"}</a>
+                <label for="cssFile" class="no-show">CSS File</label>
+                <input type="file" {formname key=CSS_FILE} class="pull-left" id="cssFile"/>
+                <a href="#" class="clearInput"><span class="no-show">{translate key=Delete}</span>{html_image src="cross-button.png"}</a>
             </div>
 
             <div class="clearfix"></div>

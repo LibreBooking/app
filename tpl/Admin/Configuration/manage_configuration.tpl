@@ -58,6 +58,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                             {object_html_options options=$Languages key='GetLanguageCode' label='GetDisplayName' selected=$setting->Value|strtolower}
                         </select>
                     {elseif $setting->Key == ConfigKeys::DEFAULT_HOMEPAGE}
+                        <label for="default__homepage" class="no-show">Homepage</label>
                         <select id="default__homepage" name="{$name}" class="form-control">
                             {html_options values=$HomepageValues output=$HomepageOutput selected=$setting->Value|strtolower}
                         </select> <a href="#" id="applyHomepage">{translate key=ApplyToCurrentUsers}</a>
