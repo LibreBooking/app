@@ -87,6 +87,7 @@ function AttributeManagement(opts) {
 			currentAttributeEntities.secondaryEntityIds = [];
 			$('span.error', elements.addDialog).remove();
 			elements.addCategory.val(elements.attributeCategory.val());
+            elements.attributeType.trigger('change');
 			elements.limitScope.prop('checked', false);
 			showRelevantCategoryOptions();
 			elements.appliesTo.text(options.allText);
@@ -95,7 +96,7 @@ function AttributeManagement(opts) {
 			elements.addDialog.modal('show');
 		});
 
-		elements.attributeType.change(function () {
+		elements.attributeType.on('change', function () {
 			showRelevantAttributeOptions($(this).val(), elements.addDialog);
 		});
 
