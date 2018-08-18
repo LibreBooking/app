@@ -215,6 +215,9 @@ a:hover {
   padding: 5px;
   margin-bottom: 20px;
 }
+#page-login .login-icon img {
+  max-width: 100%;
+}
 #page-login .default-box {
   background-color: #f8f8f8;
   border: solid 1px #99988e;
