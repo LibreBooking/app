@@ -39,12 +39,12 @@ class DisplaySlotFactory
             if ($this->IsMyReservation($slot)) {
                 return "displayMyReserved$functionSuffix";
             }
-            elseif ($this->IsAdminFor($slot))
-            {
-                return "displayAdminReserved$functionSuffix";
-            }
             elseif ($this->AmIParticipating($slot)) {
                 return "displayMyParticipating$functionSuffix";
+            }
+			elseif ($this->IsAdminFor($slot))
+            {
+                return "displayAdminReserved$functionSuffix";
             }
             else {
 

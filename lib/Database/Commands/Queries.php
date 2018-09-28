@@ -921,10 +921,11 @@ class Queries
 			WHERE
 				r.resource_id = @resourceid AND r.resource_id = urp.resource_id AND u.user_id = urp.user_id AND u.status_id = @user_statusid
 		UNION 
-			SELECT u.* 
+			SELECT u.*, grp.permission_type
 			FROM users u 
 			INNER JOIN user_groups ug on u.user_id = ug.user_id 
-			WHERE group_id IN (
+			INNER JOIN group_resource_permissions grp on ug.group_id = grp.group_id
+			WHERE ug.group_id IN (
 				SELECT
 					g.group_id
 				FROM

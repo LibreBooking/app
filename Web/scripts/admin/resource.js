@@ -719,14 +719,18 @@ function ResourceManagement(opts) {
 		resourceDiv.find('.accessPlaceHolder').html(resultHtml);
 
 		var result = resourceDiv.find('.accessPlaceHolder');
-		var startNotice = result.find('.startNotice');
+		var startNoticeAdd = result.find('.startNoticeAdd');
+		var startNoticeUpdate = result.find('.startNoticeUpdate');
+		var startNoticeDelete = result.find('.startNoticeDelete');
 		var endNotice = result.find('.endNotice');
 		var requiresApproval = result.find('.requiresApproval');
 		var autoAssign = result.find('.autoAssign');
 		var enableCheckin = result.find('.enableCheckin');
 		var autoRelease = result.find('.autoRelease');
 
-		setDuration(startNotice, resource.startNotice);
+		setDuration(startNoticeAdd, resource.startNoticeAdd);
+		setDuration(startNoticeUpdate, resource.startNoticeUpdate);
+		setDuration(startNoticeDelete, resource.startNoticeDelete);
 		setDuration(endNotice, resource.endNotice);
 		resource.requiresApproval = requiresApproval.attr('data-value');
 		resource.autoAssign = autoAssign.attr('data-value');
