@@ -265,6 +265,11 @@ class SeriesUpdateScope_Full extends SeriesUpdateScopeBase
 
 	public function ShouldInstanceBeRemoved($series, $instance)
 	{
+	    if ($series->CurrentInstance()->ReferenceNumber() == $instance->ReferenceNumber())
+        {
+            return false;
+        }
+
 		if ($this->hasSameConfiguration)
 		{
 			$newEndDate = $series->RepeatOptions()->TerminationDate();

@@ -53,6 +53,10 @@ class TestReservation extends Reservation
 			$this->SetReservationDate(new TestDateRange());
 		}
 
+		if ($reservationId == null)
+        {
+            $reservationId = uniqid();
+        }
 		$this->SetReservationId($reservationId);
 	}
 

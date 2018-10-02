@@ -26,7 +26,7 @@ error_reporting(E_ALL & ~E_NOTICE & ~E_STRICT);
  * Application configuration
  */
 $conf['settings']['app.title'] = 'Booked Scheduler';			// application title
-$conf['settings']['default.timezone'] = 'America/Chicago';      // look up here http://php.net/manual/en/timezones.php
+$conf['settings']['default.timezone'] = 'America/New_York';      // look up here http://php.net/manual/en/timezones.php
 $conf['settings']['allow.self.registration'] = 'true';         	// if users can register themselves
 $conf['settings']['admin.email'] = 'admin@example.com';         // email address of admin user
 $conf['settings']['admin.email.name'] = 'Booked Administrator';	// name to be used in From: field when sending automatic emails

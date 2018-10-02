@@ -1055,11 +1055,54 @@ class ExistingReservationTests extends TestBase
         $series->UpdateBookedBy($this->fakeUser);
         $series->ApplyChangesTo(SeriesUpdateScope::FullSeries);
         $series->Repeats(new RepeatDaily(1, Date::Parse('2017-08-16')));
-        
+
         $series->RemoveInstance($reservations[2]);
 
         $instances = $series->Instances();
 
         $this->assertEquals(5, count($instances));
+    }
+
+    public function testChangingRepeatOfAPastEvent()
+    {
+        $admin = $this->fakeUser;
+        $admin->IsAdmin = true;
+        $this->fakeConfig->SetSectionKey(ConfigSection::RESERVATION, ConfigKeys::RESERVATION_START_TIME_CONSTRAINT, 'future');
+        $tz = 'America/Chicago';
+        Date::_SetNow(Date::Parse('2018-10-01 22:00', $tz));
+
+        $builder = new ExistingReservationSeriesBuilder();
+        $originalRange = DateRange::Create('2018-10-01 12:00', '2018-10-01 13:00', $tz);
+        $reservation = $builder
+            ->WithCurrentInstance(new TestReservation(1, $originalRange))
+            ->WithRepeatOptions(new RepeatWeekly(1, Date::Parse('2018-10-29', $tz), array(DayOfWeek::MONDAY)))
+            ->WithInstance(new TestReservation(2, $originalRange->AddDays(7)))
+            ->WithInstance(new TestReservation(3, $originalRange->AddDays(14)))
+            ->WithInstance(new TestReservation(4, $originalRange->AddDays(21)))
+            ->WithInstance(new TestReservation(5, $originalRange->AddDays(28)))
+            ->WithPrimaryResource(new FakeBookableResource(1))
+            ->Build();
+
+        $reservation->UpdateBookedBy($admin);
+        $reservation->UpdateDuration($originalRange->AddDays(1));
+        $reservation->Repeats(new RepeatWeekly(1, Date::Parse('2018-10-30', $tz), array(DayOfWeek::TUESDAY)));
+
+        $instances = $reservation->Instances();
+
+        $events = $reservation->GetEvents();
+
+        $removedReferenceNumbers = [];
+        foreach ($events as $e)
+        {
+            if (is_a($e, 'InstanceRemovedEvent'))
+            {
+                /** @var InstanceRemovedEvent $e */
+                $removedReferenceNumbers[] = $e->Instance()->ReferenceNumber();
+            }
+        }
+
+        $this->assertFalse(in_array(1, $removedReferenceNumbers));
+
+
     }
 }
