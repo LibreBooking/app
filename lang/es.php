@@ -551,7 +551,12 @@ class es extends en_gb
 		$strings['UsersWithAccessToResources'] = 'Usuarios con acceso a recursos';
 		$strings['AnnouncementSubject'] = '%s ha publicado un nuevo anuncio';
 		$strings['AnnouncementEmailNotice'] = 'los usuarios recibirán este anuncio por correo';
-		// End Strings
+        $strings['FindATime'] = 'Buscar un horario';
+        $strings['SearchReservations'] = 'Buscar reservas';
+        $strings['Schedules'] = 'Horarios';
+        $strings['ThisWeek'] = 'Esta semana';
+        $strings['DateRange'] = 'Rango de fechas';
+        // End Strings
 
 		// Install
 		$strings['InstallApplication'] = 'Instalar Booked Scheduler (solo MySQL)';
