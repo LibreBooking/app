@@ -762,6 +762,7 @@ class en_us extends Language
         $strings['OnlyViewedCalendar'] = 'This schedule can only be viewed from the calendar view';
         $strings['Grid'] = 'Grid';
         $strings['List'] = 'List';
+        $strings['NoReservationsFound'] = 'No Reservations Found';
         // End Strings
 
 		// Install

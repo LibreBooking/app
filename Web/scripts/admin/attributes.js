@@ -86,6 +86,7 @@ function AttributeManagement(opts) {
 			currentAttributeEntities.entityIds = [];
 			currentAttributeEntities.secondaryEntityIds = [];
 			$('span.error', elements.addDialog).remove();
+			elements.addDialog.find(':text, :input[type="number"]').val('');
 			elements.addCategory.val(elements.attributeCategory.val());
             elements.attributeType.trigger('change');
 			elements.limitScope.prop('checked', false);

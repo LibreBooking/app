@@ -202,6 +202,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                 in the URL printed under the Subscribe to this Calendar link in            .</p>
 
             <h3>Embedding a Calendar Externally</h3>
+            <p class="note">This requires CORS to be enabled on your server. You can add the following to your Apache htaccess file <code>Header Set Access-Control-Allow-Origin "*"</code></p>
             <p>It is simple to include a view of a Booked calendar in an external website. Copy and paste the following
                 JavaScript
                 reference to your website
