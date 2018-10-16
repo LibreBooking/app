@@ -17,9 +17,11 @@
 namespace Booked {
 
     require_once(ROOT_DIR . 'lib/Common/namespace.php');
+    require_once(ROOT_DIR . 'lib/Application/Admin/namespace.php');
 
     use Log;
     use Paths;
+    use TemplateCacheDirectory;
 
     interface IFileSystem
     {
@@ -59,6 +61,11 @@ namespace Booked {
          * @return bool
          */
         public function Exists($fullPath);
+
+        /**
+         * @return void
+         */
+        public function FlushSmartyCache();
 
     }
 
@@ -112,6 +119,12 @@ namespace Booked {
         public function Exists($fullPath)
         {
             return file_exists($fullPath);
+        }
+
+        public function FlushSmartyCache()
+        {
+            $cacheDir = new TemplateCacheDirectory();
+            $cacheDir->Flush();
         }
     }
 }

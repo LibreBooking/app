@@ -99,4 +99,9 @@ class FakeFileSystem implements \Booked\IFileSystem
     {
         return is_array($this->_Exists) ? $this->_Exists[$fullPath] : $this->_Exists;
     }
+
+    public function FlushSmartyCache()
+    {
+        // TODO: Implement FlushSmartyCache() method.
+    }
 }

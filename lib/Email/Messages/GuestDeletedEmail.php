@@ -16,7 +16,7 @@
 
 require_once(ROOT_DIR . 'lib/Email/Messages/ReservationEmailMessage.php');
 
-class GuestDeletedEmail extends ReservationEmailMessage
+class GuestDeletedEmail extends ReservationDeletedEmail
 {
 	/**
 	 * @var User

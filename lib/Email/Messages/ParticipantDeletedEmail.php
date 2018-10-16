@@ -16,7 +16,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 require_once(ROOT_DIR . 'lib/Email/Messages/ReservationEmailMessage.php');
 
-class ParticipantDeletedEmail extends ReservationEmailMessage
+class ParticipantDeletedEmail extends ReservationDeletedEmail
 {
 	/**
 	 * @var User
