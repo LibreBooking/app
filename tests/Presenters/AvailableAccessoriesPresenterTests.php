@@ -108,7 +108,7 @@ class AvailableAccessoriesPresenterTests extends TestBase
 
 		$bound = $this->page->_BoundAvailability;
 
-		$this->assertEquals(array(new AccessoryAvailability(1, 5)), $bound);
+		$this->assertEquals(array(new AccessoryAvailability(1, 0)), $bound);
 	}
 	
 	public function testWhenAccessoryReservationSpansMultipleDays()
@@ -127,6 +127,26 @@ class AvailableAccessoriesPresenterTests extends TestBase
 
 		$this->assertEquals(array(new AccessoryAvailability(1, 1)), $bound);
 	}
+
+    public function testWhenNewReservationOverlapsNonOverlappingReservations()
+    {
+        $this->page->_StartDate = '2018-10-16';
+        $this->page->_StartTime = '09:30';
+        $this->page->_EndDate = '2018-10-16';
+        $this->page->_EndTime = '11:00';
+        $this->accessoryRepo->_AllAccessories = array(new Accessory(1, '', 2));
+
+        $this->reservationRepo->_AccessoryReservations = array(
+            new AccessoryReservation('r1', Date::Parse('2018-10-16 10:00', 'UTC'), Date::Parse('2018-10-16 10:30', 'UTC'), 1, 1),
+            new AccessoryReservation('r2', Date::Parse('2018-10-16 10:30', 'UTC'), Date::Parse('2018-10-16 11:00', 'UTC'), 1, 1),
+        );
+
+        $this->presenter->PageLoad();
+
+        $bound = $this->page->_BoundAvailability;
+
+        $this->assertEquals(array(new AccessoryAvailability(1, 0)), $bound);
+    }
 }
 
 class FakeAvailableAccessoriesPage implements IAvailableAccessoriesPage

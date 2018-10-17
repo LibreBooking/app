@@ -36,6 +36,8 @@ class AccessoryAggregation
 	 */
 	private $addedReservations = array();
 
+	private $accessoryQuantity = array();
+
 	/**
 	 * @param array|AccessoryToCheck[] $accessories
 	 * @param DateRange $duration
@@ -71,17 +73,27 @@ class AccessoryAggregation
 
 		$this->addedReservations[$key] = true;
 
-		if (array_key_exists($accessoryId, $this->knownAccessoryIds))
-		{
-            if ($this->ConflictsWithOtherReservations($accessoryReservation))
-            {
-                $this->AddQuantityToExistingTrackers($accessoryReservation);
-            }
-            else
-            {
-                $this->StartNewQuantityTracker($accessoryReservation);
-            }
-		}
+		if (array_key_exists($accessoryId, $this->accessoryQuantity))
+        {
+            $this->accessoryQuantity[$accessoryId] += $accessoryReservation->QuantityReserved();
+
+        }
+        else {
+            $this->accessoryQuantity[$accessoryId] = $accessoryReservation->QuantityReserved();
+
+        }
+//
+//		if (array_key_exists($accessoryId, $this->knownAccessoryIds))
+//		{
+//            if ($this->ConflictsWithOtherReservations($accessoryReservation))
+//            {
+//                $this->AddQuantityToExistingTrackers($accessoryReservation);
+//            }
+//            else
+//            {
+//                $this->StartNewQuantityTracker($accessoryReservation);
+//            }
+//		}
 	}
 
 	/**
@@ -90,6 +102,13 @@ class AccessoryAggregation
 	 */
 	public function GetQuantity($accessoryId)
 	{
+
+	    if (array_key_exists($accessoryId, $this->accessoryQuantity))
+        {
+            return $this->accessoryQuantity[$accessoryId];
+        }
+        return 0;
+
 		$quantity = 0;
 
 		foreach ($this->trackers as $tracker)
@@ -161,6 +180,13 @@ class AccessoryAggregationTracker
             {
                 return true;
             }
+
+            Log::Debug('Does not overlap %s. Start %s End %s, Accessory start %s end %s',
+                $reservation->GetAccessoryId(),
+                $r->GetDuration()->GetBegin()->ToTimezone('America/Chicago'),
+                $r->GetDuration()->GetEnd()->ToTimezone('America/Chicago'),
+                $reservation->GetStartDate()->ToTimezone('America/Chicago'),
+                $reservation->GetEndDate()->ToTimezone('America/Chicago'));
         }
 
         return false;
