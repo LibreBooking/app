@@ -21,10 +21,6 @@
 class AccessoryAggregation
 {
 	private $knownAccessoryIds = array();
-    /**
-     * @var AccessoryAggregationTracker[]
-     */
-	private $trackers = array();
 
 	/**
 	 * @var \DateRange
@@ -82,18 +78,6 @@ class AccessoryAggregation
             $this->accessoryQuantity[$accessoryId] = $accessoryReservation->QuantityReserved();
 
         }
-//
-//		if (array_key_exists($accessoryId, $this->knownAccessoryIds))
-//		{
-//            if ($this->ConflictsWithOtherReservations($accessoryReservation))
-//            {
-//                $this->AddQuantityToExistingTrackers($accessoryReservation);
-//            }
-//            else
-//            {
-//                $this->StartNewQuantityTracker($accessoryReservation);
-//            }
-//		}
 	}
 
 	/**
@@ -108,108 +92,5 @@ class AccessoryAggregation
             return $this->accessoryQuantity[$accessoryId];
         }
         return 0;
-
-		$quantity = 0;
-
-		foreach ($this->trackers as $tracker)
-		{
-            $q = $tracker->GetQuantity($accessoryId);
-            if ($q > $quantity)
-			{
-				$quantity = $q;
-			}
-		}
-		return $quantity;
 	}
-
-    private function ConflictsWithOtherReservations(AccessoryReservation $reservation)
-    {
-        foreach ($this->trackers as $tracker)
-        {
-            if ($tracker->Overlaps($reservation))
-            {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    private function AddQuantityToExistingTrackers(AccessoryReservation $accessoryReservation)
-    {
-        foreach ($this->trackers as $tracker)
-        {
-            if ($tracker->Overlaps($accessoryReservation))
-            {
-                $tracker->Add($accessoryReservation);
-            }
-        }
-    }
-
-    private function StartNewQuantityTracker(AccessoryReservation $accessoryReservation)
-    {
-        $this->trackers[] = new AccessoryAggregationTracker($accessoryReservation);
-    }
-}
-
-class AccessoryAggregationTracker
-{
-    /** @var AccessoryReservation[] */
-    private $reservations = array();
-    /**
-     * @var int
-     */
-    private $accessoryId;
-
-    public function __construct(AccessoryReservation $accessoryReservation)
-    {
-        $this->reservations[] = $accessoryReservation;
-        $this->accessoryId = $accessoryReservation->GetAccessoryId();
-    }
-
-    public function Overlaps(AccessoryReservation $reservation)
-    {
-        if ($reservation->GetAccessoryId() != $this->accessoryId)
-        {
-            return false;
-        }
-
-        foreach ($this->reservations as $r)
-        {
-            if ($reservation->GetDuration()->Overlaps($r->GetDuration()))
-            {
-                return true;
-            }
-
-            Log::Debug('Does not overlap %s. Start %s End %s, Accessory start %s end %s',
-                $reservation->GetAccessoryId(),
-                $r->GetDuration()->GetBegin()->ToTimezone('America/Chicago'),
-                $r->GetDuration()->GetEnd()->ToTimezone('America/Chicago'),
-                $reservation->GetStartDate()->ToTimezone('America/Chicago'),
-                $reservation->GetEndDate()->ToTimezone('America/Chicago'));
-        }
-
-        return false;
-    }
-
-    public function Add(AccessoryReservation $accessoryReservation)
-    {
-        $this->reservations[] = $accessoryReservation;
-    }
-
-    public function GetQuantity($accessoryId)
-    {
-        if ($this->accessoryId != $accessoryId)
-        {
-            return 0;
-
-        }
-        $quantity = 0;
-        foreach($this->reservations as $reservation)
-        {
-            $quantity += $reservation->QuantityReserved();
-        }
-
-        return $quantity;
-    }
 }
