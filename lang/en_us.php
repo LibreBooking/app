@@ -763,6 +763,7 @@ class en_us extends Language
         $strings['Grid'] = 'Grid';
         $strings['List'] = 'List';
         $strings['NoReservationsFound'] = 'No Reservations Found';
+        $strings['EmailReservation'] = 'Email Reservation';
         // End Strings
 
 		// Install
@@ -971,6 +972,7 @@ class en_us extends Language
 		$strings['ParticipantDeletedSubjectWithResource'] = '%s Removed a Reservation for %s';
 		$strings['InviteeAddedSubjectWithResource'] = '%s Invited You to a Reservation for %s';
 		$strings['MissedCheckinEmailSubject'] = 'Missed checkin for %s';
+		$strings['ReservationShareSubject'] = '%s Shared a Reservation for %s';
 		// End Email Subjects
 
 		$this->Strings = $strings;

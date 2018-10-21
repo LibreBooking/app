@@ -89,7 +89,7 @@ class iCalendarReservationView
 	{
 		if (is_a($res, 'ReservationItemView'))
 		{
-			// don't populate the recurrance rule when a list of reservation is being exported
+			// don't populate the recurrence rule when a list of reservation is being exported
 			return null;
 		}
 		### !!!  THIS DOES NOT WORK BECAUSE EXCEPTIONS TO RECURRENCE RULES ARE NOT PROPERLY HANDLED !!!

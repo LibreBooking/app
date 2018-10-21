@@ -146,6 +146,17 @@ class ExistingReservationSeriesBuilder
 
 		return $this;
 	}
+
+	/**
+	 * @param BookableResource[] $resources
+	 * @return ExistingReservationSeriesBuilder
+	 */
+	public function WithResources($resources)
+	{
+		$this->resources = $resources;
+
+		return $this;
+	}
 	/**
 	 * @return ExistingReservationSeries
 	 */

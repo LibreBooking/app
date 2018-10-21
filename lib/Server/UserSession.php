@@ -86,6 +86,11 @@ class UserSession
 	{
 		return "{$this->FirstName} {$this->LastName} ({$this->Email})";
 	}
+
+    public function FullName()
+    {
+        return new FullName($this->FirstName, $this->LastName);
+    }
 }
 
 class NullUserSession extends UserSession

@@ -212,7 +212,7 @@ class ManageUsersPresenter extends ActionPresenter implements IManageUsersPresen
         $attributeList = $this->attributeService->GetByCategory(CustomAttributeCategory::USER);
         $this->page->BindAttributeList($attributeList);
 
-		$this->page->BindStatusDescriptions();
+        $this->page->BindStatusDescriptions();
     }
 
     public function Deactivate()
@@ -311,19 +311,18 @@ class ManageUsersPresenter extends ActionPresenter implements IManageUsersPresen
 
         $allowed = [];
         $view = [];
-        foreach ($allowedResources as $resource)
-        {
+        foreach ($allowedResources as $resource) {
             $split = explode('_', $resource);
             $resourceId = $split[0];
             $permissionType = $split[1];
 
-            if ($permissionType === ResourcePermissionType::Full . '')
-            {
+            if ($permissionType === ResourcePermissionType::Full . '') {
                 $allowed[] = $resourceId;
             }
-            else if ($permissionType === ResourcePermissionType::View . '')
-            {
-                $view[] = $resourceId;
+            else {
+                if ($permissionType === ResourcePermissionType::View . '') {
+                    $view[] = $resourceId;
+                }
             }
         }
 
@@ -350,11 +349,11 @@ class ManageUsersPresenter extends ActionPresenter implements IManageUsersPresen
         $this->manageUsersService->ChangeAttribute($this->page->GetUserId(), $this->GetInlineAttributeValue());
     }
 
-	public function ExportUsers()
-	{
-		$this->PageLoad();
-		$this->page->ShowExportCsv();
-	}
+    public function ExportUsers()
+    {
+        $this->PageLoad();
+        $this->page->ShowExportCsv();
+    }
 
     public function ProcessDataRequest($dataRequest)
     {
@@ -371,9 +370,9 @@ class ManageUsersPresenter extends ActionPresenter implements IManageUsersPresen
         elseif ($dataRequest == 'template') {
             $this->ShowTemplateCSV();
         }
-		elseif ($dataRequest == 'export') {
-			$this->ExportUsers();
-		}
+        elseif ($dataRequest == 'export') {
+            $this->ExportUsers();
+        }
     }
 
     /**
@@ -504,7 +503,7 @@ class ManageUsersPresenter extends ActionPresenter implements IManageUsersPresen
 
     public function ImportUsers()
     {
-		ini_set('max_execution_time', 600);
+        ini_set('max_execution_time', 600);
 
         $shouldUpdate = $this->page->GetUpdateOnImport();
 
@@ -512,10 +511,8 @@ class ManageUsersPresenter extends ActionPresenter implements IManageUsersPresen
         /** @var CustomAttribute[] $attributesIndexed */
         $attributesIndexed = array();
         /** @var CustomAttribute $attribute */
-        foreach ($attributes as $attribute)
-        {
-            if (!$attribute->UniquePerEntity())
-            {
+        foreach ($attributes as $attribute) {
+            if (!$attribute->UniquePerEntity()) {
                 $attributesIndexed[strtolower($attribute->Label())] = $attribute;
             }
         }
@@ -574,20 +571,25 @@ class ManageUsersPresenter extends ActionPresenter implements IManageUsersPresen
                 $timezone = empty($row->timezone) ? Configuration::Instance()->GetKey(ConfigKeys::DEFAULT_TIMEZONE) : $row->timezone;
                 $password = empty($row->password) ? 'password' : $row->password;
                 $language = empty($row->language) ? 'en_us' : $row->language;
+                $status = empty($row->status) ? AccountStatus::ACTIVE : $this->DetermineStatus($row->status);
 
-                if ($shouldUpdate)
-                {
+                if ($shouldUpdate) {
                     $user = $this->manageUsersService->LoadUser($row->email);
-                    if ($user->Id() == null)
-                    {
+                    if ($user->Id() == null) {
                         $shouldUpdate = false;
                     }
-                    else{
+                    else {
                         $user->ChangeName($row->firstName, $row->lastName);
                         $password = $this->passwordEncryption->EncryptPassword($row->password);
                         $user->ChangePassword($password->EncryptedPassword(), $password->Salt());
                         $user->ChangeTimezone($timezone);
                         $user->ChangeAttributes($row->phone, $row->organization, $row->position);
+                        if ($status == AccountStatus::ACTIVE) {
+                            $user->Activate();
+                        }
+                        else {
+                            $user->Deactivate();
+                        }
                     }
 
                 }
@@ -610,21 +612,17 @@ class ManageUsersPresenter extends ActionPresenter implements IManageUsersPresen
                     $user->ChangeGroups($userGroups);
                 }
 
-                foreach ($row->attributes as $label => $value)
-                {
-                    if (empty($value))
-                    {
+                foreach ($row->attributes as $label => $value) {
+                    if (empty($value)) {
                         continue;
                     }
-                    if (array_key_exists($label, $attributesIndexed))
-                    {
+                    if (array_key_exists($label, $attributesIndexed)) {
                         $attribute = $attributesIndexed[$label];
                         $user->ChangeCustomAttribute(new AttributeValue($attribute->Id(), $value));
                     }
                 }
 
-                if (count($userGroups) > 0 || count($row->attributes) > 0 || $shouldUpdate)
-                {
+                if (count($userGroups) > 0 || count($row->attributes) > 0 || $shouldUpdate) {
                     $this->userRepository->Update($user);
                 }
 
@@ -638,36 +636,42 @@ class ManageUsersPresenter extends ActionPresenter implements IManageUsersPresen
     }
 
     public function InviteUsers()
-	{
-		$emailList = $this->page->GetInvitedEmails();
-		$emails = preg_split('/[,;\s\n]+/', $emailList);
-		foreach ($emails as $email)
-		{
-			ServiceLocator::GetEmailService()->Send(new InviteUserEmail(trim($email), ServiceLocator::GetServer()->GetUserSession()));
-		}
-	}
+    {
+        $emailList = $this->page->GetInvitedEmails();
+        $emails = preg_split('/[,;\s\n]+/', $emailList);
+        foreach ($emails as $email) {
+            ServiceLocator::GetEmailService()->Send(new InviteUserEmail(trim($email), ServiceLocator::GetServer()->GetUserSession()));
+        }
+    }
 
-	public function DeleteMultipleUsers()
-	{
-		$ids = $this->page->GetDeletedUserIds();
-		Log::Debug('User multiple delete. Ids=%s', implode(',', $ids));
-		foreach ($ids as $id)
-		{
-			$this->manageUsersService->DeleteUser($id);
-		}
-	}
+    public function DeleteMultipleUsers()
+    {
+        $ids = $this->page->GetDeletedUserIds();
+        Log::Debug('User multiple delete. Ids=%s', implode(',', $ids));
+        foreach ($ids as $id) {
+            $this->manageUsersService->DeleteUser($id);
+        }
+    }
 
     private function ShowTemplateCSV()
     {
         $attributes = $this->attributeService->GetByCategory(CustomAttributeCategory::USER);
         $importAttributes = array();
-        foreach ($attributes as $attribute)
-        {
-            if (!$attribute->UniquePerEntity())
-            {
+        foreach ($attributes as $attribute) {
+            if (!$attribute->UniquePerEntity()) {
                 $importAttributes[] = $attribute;
             }
         }
         $this->page->ShowTemplateCSV($importAttributes);
+    }
+
+    private function DetermineStatus($status)
+    {
+        if ($status == AccountStatus::INACTIVE || strtolower($status) == 'inactive')
+        {
+            return AccountStatus::INACTIVE;
+        }
+
+        return AccountStatus::ACTIVE;
     }
 }

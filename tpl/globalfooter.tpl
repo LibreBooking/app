@@ -27,6 +27,10 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		init();
 		$.blockUI.defaults.css.border = 'none';
 		$.blockUI.defaults.css.top = '25%';
+
+        $('.modal').on('shown.bs.modal', function() {
+            $(this).find('[autofocus]').focus();
+        });
 	</script>
 
 	{if !empty($GoogleAnalyticsTrackingId)}

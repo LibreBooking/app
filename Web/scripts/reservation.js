@@ -56,7 +56,15 @@ function Reservation(opts) {
         additionalResources: $('#additionalResources'),
         deleteRecurringButtons: $('#deleteRecurringButtons'),
 
-        reservationForm: $('#form-reservation')
+        reservationForm: $('#form-reservation'),
+
+        emailReservationPrompt: $('#emailReservationPrompt'),
+        sendReservationButton: $('#btnSendReservation'),
+        btnSendEmail: $('.btnSendEmail'),
+        emailUserAutocomplete: $('#emailUserAutocomplete'),
+        emailReservationList: $('#emailReservationList'),
+        emailForm: $('#emailReservationForm'),
+        sendEmailButton: $('#btnSendReservation')
     };
 
     var participation = {};
@@ -77,6 +85,8 @@ function Reservation(opts) {
         _startDate = moment(startDateString, "YYYY-MM-DD HH:mm");
         _endDate = moment(endDateString, "YYYY-MM-DD HH:mm");
         participation.addedUsers.push(ownerId);
+
+        SetUpAdHocEmail();
 
         $('#dialogResourceGroups').on('show.bs.modal', function (e) {
             InitializeAdditionalResources();
@@ -190,6 +200,62 @@ function Reservation(opts) {
     Reservation.prototype.showResponse = function (responseText, statusText, xhr, $form) {
         ShowReservationAjaxResponse();
     };
+
+    function SetUpAdHocEmail() {
+
+        function AddUserToEmail(display, val) {
+            var existing = elements.emailReservationList.find(':input[value="' + val + '"]');
+            if (existing.length != 0) {
+                return;
+            }
+            var div = $('<div class="emailAddress"/>');
+            div.append($('<span class="fa fa-remove icon remove"></span> <span>' + display + '</span>'));
+            div.append($('<input type="hidden" name="email[]" value="' + val + '"/>'));
+            elements.emailReservationList.append(div);
+            elements.emailUserAutocomplete.val('');
+        }
+
+        elements.btnSendEmail.click(function (e) {
+            e.preventDefault();
+            elements.emailUserAutocomplete.val('');
+            elements.emailReservationList.empty();
+            elements.emailReservationPrompt.modal('show');
+        });
+
+        elements.emailUserAutocomplete.keyup(function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            var email = elements.emailUserAutocomplete.val();
+            if (e.keyCode == 13 && validateEmail(email)) {
+                AddUserToEmail(email, email);
+            }
+
+            return false;
+        });
+
+        elements.emailReservationList.delegate('.remove', 'click', function (e) {
+            $(e.target).closest('.emailAddress').remove();
+        });
+
+        elements.emailUserAutocomplete.userAutoComplete(options.userAutocompleteUrl, function (ui) {
+            AddUserToEmail(ui.item.label, ui.item.data.Email);
+        });
+
+        elements.sendEmailButton.click(function(e){
+            e.preventDefault();
+            elements.emailForm.submit();
+        });
+
+        ConfigureAsyncForm(elements.emailForm,
+            function () {
+                return options.emailUrl;
+            },
+            function (data) {
+                elements.emailReservationPrompt.modal('hide');
+            }
+        );
+    }
+
 
     var AddAccessories = function () {
         elements.accessoriesList.empty();
@@ -306,7 +372,6 @@ function Reservation(opts) {
     }
 
     var ShowAccessoriesPrompt = function () {
-
         var url = options.accessoriesUrl
             .replace('[sd]', elements.beginDate.val())
             .replace('[ed]', elements.endDate.val())
@@ -492,8 +557,7 @@ function Reservation(opts) {
     };
 
     var SelectRepeatWeekday = function () {
-        if (elements.referenceNumber.val() != '')
-        {
+        if (elements.referenceNumber.val() != '') {
             return;
         }
         $('#repeatOnWeeklyDiv').find(':checkbox').each(function (i, v) {
@@ -676,10 +740,10 @@ function Reservation(opts) {
             CalculateCredits();
         });
 
-        elements.beginDateTextbox.change(function(e){
+        elements.beginDateTextbox.change(function (e) {
             BeginDateChanged();
         });
-        elements.endDateTextbox.change(function(e){
+        elements.endDateTextbox.change(function (e) {
             EndDateChanged();
         });
 
@@ -735,8 +799,7 @@ function Reservation(opts) {
                 if (selectedPeriod) {
                     periodElement.val(selectedPeriod);
                 }
-                if (_.isEmpty(periodElement.val()))
-                {
+                if (_.isEmpty(periodElement.val())) {
                     periodElement.prop("selectedIndex", 0);
                 }
                 return;
@@ -775,8 +838,7 @@ function Reservation(opts) {
                 if (selectedPeriod) {
                     periodElement.val(selectedPeriod);
                 }
-                if (_.isEmpty(periodElement.val()))
-                {
+                if (_.isEmpty(periodElement.val())) {
                     periodElement.prop("selectedIndex", 0);
                 }
             }

@@ -670,6 +670,9 @@ label.customAttribute {
   padding-top: 50px;
   margin-top: -50px;
 }
+input[type=search]::-webkit-search-cancel-button {
+  -webkit-appearance: searchfield-cancel-button;
+}
 #resourceDetailsPopup #userDetailsPopup {
   min-width: 300px;
   max-width: 1000px;

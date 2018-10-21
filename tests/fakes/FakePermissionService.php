@@ -39,6 +39,9 @@ class FakePermissionService implements IPermissionService
 
 	private $_invocationCount = 0;
     public $_CanBookResource = false;
+    /**
+     * @var bool|bool[]
+     */
     public $_CanViewResource = false;
 
     /**
@@ -64,6 +67,10 @@ class FakePermissionService implements IPermissionService
 
     public function CanViewResource(IPermissibleResource $resource, UserSession $user)
     {
+        if (is_array($this->_CanViewResource))
+        {
+            return $this->_CanViewResource[$resource->GetResourceId()];
+        }
         return $this->_CanViewResource;
     }
 }
