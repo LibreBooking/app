@@ -109,6 +109,7 @@ ul.jqtree-tree .jqtree-toggler {
   border: solid 1px #999;
   z-index: 200;
   position: absolute;
+  overflow: scroll;
 }
 .groupName {
   font-size: 1.5em;
