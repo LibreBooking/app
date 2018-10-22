@@ -11,4 +11,4 @@ RewriteCond %{REQUEST_FILENAME} !-f
 RewriteRule ^(.*)$ Web/$1 [QSA,L]
 
 #Header Set Access-Control-Allow-Origin "*"
-php_value max_input_vars 10000
+#php_value max_input_vars 10000
