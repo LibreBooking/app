@@ -69,7 +69,7 @@ class CalendarSubscriptionPage extends Page implements ICalendarSubscriptionPage
         header("Content-Disposition: inline; filename=calendar.ics");
 
         $display = new CalendarExportDisplay();
-        echo $display->Render($this->reservations);
+        echo preg_replace('~\R~u',"\r\n", $display->Render($this->reservations));
     }
 
     public function SetReservations($reservations)

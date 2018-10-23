@@ -47,7 +47,7 @@ class CalendarExportDisplay extends Page
 		$this->Set('UID', parse_url($url, PHP_URL_HOST));
 		$this->Set('Reservations', $reservations);
 
-		return $this->smarty->fetch('Export/ical.tpl');
+		return preg_replace('~\R~u',"\r\n", $this->smarty->fetch('Export/ical.tpl'));
 	}
 
 	public function PageLoad()
