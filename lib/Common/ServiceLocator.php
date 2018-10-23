@@ -86,8 +86,8 @@ class ServiceLocator
         {
             if (Configuration::Instance()->GetKey(ConfigKeys::ENABLE_EMAIL, new BooleanConverter()))
             {
-//                self::$_emailService = new EmailService();
-                self::$_emailService = new EmailLogger();
+                self::$_emailService = new EmailService();
+//                self::$_emailService = new EmailLogger();
             }
             else
             {
