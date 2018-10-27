@@ -62,13 +62,16 @@ interface IManageGroupsPage extends IActionPage
 
     /**
      * @param $resources array|BookableResource[]
-     * @return void
      */
     public function BindResources($resources);
 
     /**
+     * @param $schedules Schedule[]
+     */
+    public function BindSchedules($schedules);
+
+    /**
      * @param $roles array|RoleDto[]
-     * @return void
      */
     public function BindRoles($roles);
 
@@ -89,7 +92,6 @@ interface IManageGroupsPage extends IActionPage
 
     /**
      * @param $adminGroups GroupItemView[]|array
-     * @return void
      */
     public function BindAdminGroups($adminGroups);
 
@@ -103,7 +105,25 @@ interface IManageGroupsPage extends IActionPage
      */
     public function AutomaticallyAddToGroup();
 
+    /**
+     * @return int[]
+     */
     public function GetUserIds();
+
+    /**
+     * @return int[]
+     */
+    public function GetGroupAdminIds();
+
+    /**
+     * @return int[]
+     */
+    public function GetResourceAdminIds();
+
+    /**
+     * @return int[]
+     */
+    public function GetScheduleAdminIds();
 }
 
 class ManageGroupsPage extends ActionPage implements IManageGroupsPage
@@ -122,7 +142,7 @@ class ManageGroupsPage extends ActionPage implements IManageGroupsPage
     public function __construct()
     {
         parent::__construct('ManageGroups', 1);
-        $this->presenter = new ManageGroupsPresenter($this, new GroupRepository(), new ResourceRepository());
+        $this->presenter = new ManageGroupsPresenter($this, new GroupRepository(), new ResourceRepository(), new ScheduleRepository());
 
         $this->pageable = new PageablePage($this);
     }
@@ -160,9 +180,6 @@ class ManageGroupsPage extends ActionPage implements IManageGroupsPage
         $this->presenter->ProcessAction();
     }
 
-    /**
-     * @return int
-     */
     public function GetGroupId()
     {
         $groupId = $this->GetForm(FormKeys::GROUP_ID);
@@ -230,6 +247,26 @@ class ManageGroupsPage extends ActionPage implements IManageGroupsPage
     public function GetUserIds()
     {
         return [];
+    }
+
+    public function BindSchedules($schedules)
+    {
+        $this->Set('Schedules', $schedules);
+    }
+
+    public function GetGroupAdminIds()
+    {
+        return $this->GetForm(FormKeys::GROUP_ID);
+    }
+
+    public function GetResourceAdminIds()
+    {
+        return $this->GetForm(FormKeys::RESOURCE_ID);
+    }
+
+    public function GetScheduleAdminIds()
+    {
+        return $this->GetForm(FormKeys::SCHEDULE_ID);
     }
 }
 

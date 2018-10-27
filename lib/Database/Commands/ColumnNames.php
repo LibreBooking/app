@@ -356,6 +356,7 @@ class ColumnNames
 	const RESOURCE_IDS = 'resource_ids';
 	const GUEST_LIST = 'guest_list';
     const USER_GROUP_LIST = 'user_group_list';
+    const GROUP_ROLE_LIST = 'group_role_list';
 
     // shared
 	const ALLOW_CALENDAR_SUBSCRIPTION = 'allow_calendar_subscription';

@@ -387,13 +387,15 @@ class Queries
             ORDER BY cl.date_created DESC';
 
 	const GET_ALL_GROUPS =
-			'SELECT g.*, admin_group.name as admin_group_name
+			'SELECT g.*, admin_group.name as admin_group_name,
+			(SELECT GROUP_CONCAT(gr.role_id) FROM group_roles gr WHERE gr.group_id = g.group_id) as group_role_list
 		FROM groups g
 		LEFT JOIN groups admin_group ON g.admin_group_id = admin_group.group_id
 		ORDER BY g.name';
 
 	const GET_ALL_GROUPS_BY_ROLE =
-			'SELECT g.*
+			'SELECT g.*,
+			(SELECT GROUP_CONCAT(gr.role_id) FROM group_roles gr WHERE gr.group_id = g.group_id) as group_role_list
 		FROM groups g
 		INNER JOIN group_roles gr ON g.group_id = gr.group_id
 		INNER JOIN roles r ON r.role_id = gr.role_id

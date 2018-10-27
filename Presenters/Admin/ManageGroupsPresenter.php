@@ -36,6 +36,9 @@ class ManageGroupsActions
     const DeleteGroup = 'deleteGroup';
     const Roles = 'roles';
     const GroupAdmin = 'groupAdmin';
+    const AdminGroups = 'adminGroups';
+    const ResourceGroups = 'resourceGroups';
+    const ScheduleGroups = 'scheduleGroups';
 }
 
 class ManageGroupsPresenter extends ActionPresenter
@@ -54,19 +57,28 @@ class ManageGroupsPresenter extends ActionPresenter
      * @var ResourceRepository
      */
     private $resourceRepository;
+    /**
+     * @var ScheduleRepository
+     */
+    private $scheduleRepository;
 
     /**
      * @param IManageGroupsPage $page
      * @param GroupRepository $groupRepository
      * @param ResourceRepository $resourceRepository
+     * @param ScheduleRepository $scheduleRepository
      */
-    public function __construct(IManageGroupsPage $page, GroupRepository $groupRepository, ResourceRepository $resourceRepository)
+    public function __construct(IManageGroupsPage $page,
+                                GroupRepository $groupRepository,
+                                ResourceRepository $resourceRepository,
+                                ScheduleRepository $scheduleRepository)
     {
         parent::__construct($page);
 
         $this->page = $page;
         $this->groupRepository = $groupRepository;
         $this->resourceRepository = $resourceRepository;
+        $this->scheduleRepository = $scheduleRepository;
 
         $this->AddAction(ManageGroupsActions::AddUser, 'AddUser');
         $this->AddAction(ManageGroupsActions::RemoveUser, 'RemoveUser');
@@ -76,6 +88,9 @@ class ManageGroupsPresenter extends ActionPresenter
         $this->AddAction(ManageGroupsActions::DeleteGroup, 'DeleteGroup');
         $this->AddAction(ManageGroupsActions::Roles, 'ChangeRoles');
         $this->AddAction(ManageGroupsActions::GroupAdmin, 'ChangeGroupAdmin');
+        $this->AddAction(ManageGroupsActions::AdminGroups, 'ChangeAdminGroups');
+        $this->AddAction(ManageGroupsActions::ResourceGroups, 'ChangeResourceGroups');
+        $this->AddAction(ManageGroupsActions::ScheduleGroups, 'ChangeScheduleGroups');
     }
 
     public function PageLoad()
@@ -91,6 +106,7 @@ class ManageGroupsPresenter extends ActionPresenter
         $this->page->BindPageInfo($groupList->PageInfo());
 
         $this->page->BindResources($this->resourceRepository->GetResourceList());
+        $this->page->BindSchedules($this->scheduleRepository->GetAll());
 
         $this->page->BindRoles(array(
             new RoleDto(1, 'Group Admin', RoleLevel::GROUP_ADMIN),
@@ -112,19 +128,18 @@ class ManageGroupsPresenter extends ActionPresenter
             $resources = $this->page->GetAllowedResourceIds();
         }
 
-        foreach ($resources as $resource)
-        {
+        foreach ($resources as $resource) {
             $split = explode('_', $resource);
             $resourceId = $split[0];
             $permissionType = $split[1];
 
-            if ($permissionType === ResourcePermissionType::Full . '')
-            {
+            if ($permissionType === ResourcePermissionType::Full . '') {
                 $allowed[] = $resourceId;
             }
-            else if ($permissionType === ResourcePermissionType::View . '')
-            {
-                $view[] = $resourceId;
+            else {
+                if ($permissionType === ResourcePermissionType::View . '') {
+                    $view[] = $resourceId;
+                }
             }
         }
 
@@ -162,6 +177,15 @@ class ManageGroupsPresenter extends ActionPresenter
                 break;
             case 'roles' :
                 $response = $this->GetGroupRoles();
+                break;
+            case ManageGroupsActions::AdminGroups :
+                $response = $this->GetAdminGroups();
+                break;
+            case ManageGroupsActions::ResourceGroups :
+                $response = $this->GetResourceAdminGroups();
+                break;
+            case ManageGroupsActions::ScheduleGroups :
+                $response = $this->GetScheduleAdminGroups();
                 break;
         }
 
@@ -272,6 +296,93 @@ class ManageGroupsPresenter extends ActionPresenter
         $ids = $group->RoleIds();
 
         return $ids;
+    }
+
+    public function GetAdminGroups()
+    {
+        $groupId = $this->page->GetGroupId();
+
+        $result = $this->groupRepository->GetList(null, null, null, null, new SqlFilterEquals(new SqlFilterColumn(TableNames::GROUPS_ALIAS, ColumnNames::GROUP_ADMIN_GROUP_ID), $groupId));
+        $ids = array();
+        /** @var GroupItemView $group */
+        foreach ($result->Results() as $group)
+        {
+            $ids[] = $group->Id();
+        }
+
+        return $ids;
+    }
+
+    public function GetResourceAdminGroups()
+    {
+        $groupId = $this->page->GetGroupId();
+
+        $result = $this->resourceRepository->GetList(null, null, null, null, new SqlFilterEquals(new SqlFilterColumn(TableNames::RESOURCES_ALIAS, ColumnNames::RESOURCE_ADMIN_GROUP_ID), $groupId));
+        $ids = array();
+        /** @var BookableResource $resource */
+        foreach ($result->Results() as $resource)
+        {
+            $ids[] = $resource->GetId();
+        }
+
+        return $ids;
+    }
+
+    public function GetScheduleAdminGroups()
+    {
+        $groupId = $this->page->GetGroupId();
+
+        $result = $this->scheduleRepository->GetList(null, null, null, null, new SqlFilterEquals(new SqlFilterColumn(TableNames::SCHEDULES_ALIAS, ColumnNames::SCHEDULE_ADMIN_GROUP_ID), $groupId));
+        $ids = array();
+        /** @var Schedule $schedule */
+        foreach ($result->Results() as $schedule)
+        {
+            $ids[] = $schedule->GetId();
+        }
+
+        return $ids;
+    }
+
+    public function ChangeAdminGroups()
+    {
+        $groupId = $this->page->GetGroupId();
+        $groupIds = $this->page->GetGroupAdminIds();
+        Log::Debug('Changing group admins. Setting group admin id to %s for %s', $groupId, var_export($groupIds, true));
+
+        foreach ($groupIds as $id)
+        {
+            $group = $this->groupRepository->LoadById($id);
+            $group->ChangeAdmin($groupId);
+            $this->groupRepository->Update($group);
+        }
+    }
+
+    public function ChangeResourceGroups()
+    {
+        $groupId = $this->page->GetGroupId();
+        $resourceIds = $this->page->GetResourceAdminIds();
+        Log::Debug('Changing resource admins. Setting group admin id to %s for %s', $groupId, var_export($resourceIds, true));
+
+        foreach ($resourceIds as $id)
+        {
+            $resource = $this->resourceRepository->LoadById($id);
+            $resource->SetAdminGroupId($groupId);
+            $this->resourceRepository->Update($resource);
+        }
+    }
+
+    public function ChangeScheduleGroups()
+    {
+        $groupId = $this->page->GetGroupId();
+        $scheduleIds = $this->page->GetScheduleAdminIds();
+        Log::Debug('Changing schedule admins. Setting group admin id to %s for %s', $groupId, var_export($scheduleIds, true));
+
+        foreach ($scheduleIds as $id)
+        {
+            $schedule = $this->scheduleRepository->LoadById($id);
+            $schedule->SetAdminGroupId($groupId);
+            $this->scheduleRepository->Update($schedule);
+        }
     }
 }
 

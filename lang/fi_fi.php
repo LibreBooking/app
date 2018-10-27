@@ -19,7 +19,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 require_once('Language.php');
-require_once('en_gbs.php');
+require_once('en_gb.php');
 
 class fi_fi extends en_gb
 {

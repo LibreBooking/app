@@ -855,6 +855,7 @@ class en_us extends Language
 		$strings['ReservationNotAvailable'] = 'Reservation not available';
 		$strings['TitleRequiredRule'] = 'Reservation title is required';
 		$strings['DescriptionRequiredRule'] = 'Reservation description is required';
+		$strings['WhatCanThisGroupManage'] = 'What can this group manage?';
 		// End Errors
 
 		// Page Titles
