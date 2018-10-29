@@ -26,7 +26,7 @@
             <div class="input-group margin-bottom-15">
                 <label for="hours" class="no-show">{translate key=Hours}</label>
                 <input type="number" min="0" step="1" value="0" class="form-control hours-minutes"
-                       id="hours" {formname key=HOURS}" />
+                       id="hours" {formname key=HOURS}" autofocus="autofocus" />
                 <span class="input-group-addon hours-minutes">{translate key=Hours}</span>
             </div>
             <div class="input-group">
