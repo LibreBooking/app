@@ -176,6 +176,10 @@ function Reservation(opts) {
         });
 
         LoadCustomAttributes();
+
+        elements.accessoriesDialog.on('shown.bs.modal', function() {
+            $(this).find('input[type="number"]').first().focus();
+        });
     };
 
     function SetDeleteReason() {
@@ -1005,8 +1009,9 @@ function Reservation(opts) {
 
     changeUser.init = function () {
         $('#showChangeUsers').click(function (e) {
-            $('#changeUsers').toggle();
             e.preventDefault();
+            $('#changeUsers').toggle();
+            elements.changeUserAutocomplete.focus();
         });
 
         elements.changeUserAutocomplete.userAutoComplete(options.changeUserAutocompleteUrl, function (ui) {

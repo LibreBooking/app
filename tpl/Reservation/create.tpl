@@ -627,6 +627,10 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
             }
         });
     });
+
+    $('.modal').on('shown.bs.modal', function() {
+        $(this).find('[autofocus]').focus();
+    });
 </script>
 
 {include file='globalfooter.tpl'}
