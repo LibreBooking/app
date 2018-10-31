@@ -169,7 +169,7 @@ class ManageGroupsPresenter extends ActionPresenter
         $request = $this->page->GetDataRequest();
         switch ($request) {
             case 'groupMembers' :
-                $users = $this->groupRepository->GetUsersInGroup($this->page->GetGroupId(), 1, 100);
+                $users = $this->groupRepository->GetUsersInGroup($this->page->GetGroupId(), 1);
                 $response = new UserGroupResults($users->Results(), $users->PageInfo()->Total);
                 break;
             case 'permissions' :
