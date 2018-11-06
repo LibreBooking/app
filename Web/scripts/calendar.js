@@ -56,6 +56,11 @@ function Calendar(opts) {
             monthNamesShort: _options.monthNamesShort,
             timeFormat: _options.timeFormat,
             firstDay: _options.firstDay,
+            views: {
+                agendaDay: {slotLabelFormat: _options.timeFormat},
+                agendaWeek: {slotLabelFormat: _options.timeFormat}
+            },
+            slotLabelFormat: _options.timeFormat,
             loading: function (isLoading) {
                 if (isLoading) {
                     showLoadingIndicator();
