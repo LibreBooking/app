@@ -74,11 +74,11 @@ class FakeDailyLayout implements IDailyLayout
     /**
      * @param Date $date
      * @param int $resourceId
-     * @param IReservationSlot[] $reservations
+     * @param IReservationSlot[] $reservationSlots
      */
-    public function _SetLayout(Date $date, $resourceId, $reservations)
+    public function _SetLayout(Date $date, $resourceId, $reservationSlots)
     {
-        $this->_Layouts[$date->GetDate()->Timestamp() . $resourceId] = $reservations;
+        $this->_Layouts[$date->GetDate()->Timestamp() . $resourceId] = $reservationSlots;
     }
 
     public function Timezone()

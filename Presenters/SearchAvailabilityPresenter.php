@@ -87,6 +87,7 @@ class SearchAvailabilityPresenter extends ActionPresenter
 
         $repeatOptions = $roFactory->CreateFromComposite($this->page, $this->user->Timezone);
         $repeatDates = $repeatOptions->GetDates($dateRange);
+        $searchingForMoreThan24Hours = $requestedLength->TotalSeconds() > 86400;
 
         /** @var ResourceDto $resource */
         foreach ($resources as $resource) {
@@ -97,15 +98,38 @@ class SearchAvailabilityPresenter extends ActionPresenter
             $layout = $this->GetLayout($dateRange, $scheduleId, $targetTimezone, $resourceId);
 
             foreach ($dateRange->Dates() as $date) {
-                $slots = $layout->GetLayout($date, $resourceId);
 
-                /** @var IReservationSlot $slot */
-                for ($i = 0; $i < count($slots); $i++) {
-                    $opening = $this->GetSlot($i, $i, $slots, $requestedLength, $resource);
+                if ($searchingForMoreThan24Hours) {
+                    $endDate = $date->ApplyDifference($requestedLength);
+                    if ($endDate->LessThanOrEqual($dateRange->GetEnd())) {
 
-                    if ($opening != null) {
-                        if ($this->AllDaysAreOpen($opening, $repeatDates, $resource, $requestedLength)) {
-                            $openings[] = $opening;
+                        $slotRange = new DateRange($date, $endDate);
+                        $slots = [];
+                        foreach ($slotRange->Dates() as $slotDate)
+                        {
+                            $slots = array_merge($slots, $layout->GetLayout($slotDate, $resourceId));
+                        }
+
+                        /** @var IReservationSlot $slot */
+                        for ($i = 0; $i < count($slots); $i++) {
+                            $opening = $this->GetSlot($i, $i, $slots, $requestedLength, $resource);
+
+                            if ($opening != null) {
+                               $openings[] = $opening;
+                            }
+                        }
+                    }
+                }
+                else {
+                    $slots = $layout->GetLayout($date, $resourceId);
+                    /** @var IReservationSlot $slot */
+                    for ($i = 0; $i < count($slots); $i++) {
+                        $opening = $this->GetSlot($i, $i, $slots, $requestedLength, $resource);
+
+                        if ($opening != null) {
+                            if ($this->AllDaysAreOpen($opening, $repeatDates, $resource, $requestedLength)) {
+                                $openings[] = $opening;
+                            }
                         }
                     }
                 }
@@ -127,7 +151,7 @@ class SearchAvailabilityPresenter extends ActionPresenter
      */
     private function GetSlot($startIndex, $currentIndex, $slots, $requestedLength, $resource)
     {
-        if ($currentIndex > count($slots)) {
+        if ($currentIndex >= count($slots)) {
             return null;
         }
 
@@ -141,7 +165,6 @@ class SearchAvailabilityPresenter extends ActionPresenter
         $length = DateDiff::BetweenDates($startSlot->BeginDate(), $currentSlot->EndDate());
         if ($length->GreaterThanOrEqual($requestedLength)) {
             return new AvailableOpeningView($resource, $startSlot->BeginDate(), $currentSlot->EndDate());
-
         }
 
         return $this->GetSlot($startIndex, $currentIndex + 1, $slots, $requestedLength, $resource);

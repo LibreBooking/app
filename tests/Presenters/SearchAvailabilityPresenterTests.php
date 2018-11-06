@@ -150,7 +150,52 @@ class SearchAvailabilityPresenterTests extends TestBase
         $expectedSearchRange = new DateRange(Date::Parse('2016-07-03', $this->fakeUser->Timezone), Date::Parse('2016-07-09', $this->fakeUser->Timezone));
         $this->assertEquals($expectedSearchRange, $this->reservationService->_LastDateRange);
     }
-    
+
+    public function testWhenLengthIsLongerThan24Hours()
+    {
+        $resourceId = 1;
+
+        $tz = $this->fakeUser->Timezone;
+
+        $resource = new TestResourceDto($resourceId);
+        $this->resourceService->_AllResources = array($resource);
+
+        Date::_SetNow(Date::Parse('2016-07-03 00:00', $tz));
+        $this->page->_Range = 'thisweek';
+        $this->page->_Hours = 36;
+
+        $slotsToday = array();
+        $slotsTomorrow = array();
+        for ($hour = 0; $hour < 24; $hour++)
+        {
+            $end = $hour+1;
+            $slotsToday[] = $this->GetEmpty(Date::Now()->GetDate(), ($hour == 0 ? '00:00' : "$hour:00"), "$end:00");
+        }
+        for ($hour = 0; $hour < 24; $hour++)
+        {
+            $end = $hour+1;
+            $slotsTomorrow[] = $this->GetEmpty(Date::Now()->GetDate()->AddDays(1), ($hour == 0 ? '00:00' : "$hour:00"), "$end:00");
+        }
+
+        $dailyLayout = new FakeDailyLayout();
+        $dailyLayout->_SetLayout(Date::Parse('2016-07-03', $tz), $resourceId, $slotsToday);
+        $dailyLayout->_SetLayout(Date::Parse('2016-07-04', $tz), $resourceId, $slotsTomorrow);
+        $dailyLayout->_SetLayout(Date::Parse('2016-07-05', $tz), $resourceId, array());
+        $dailyLayout->_SetLayout(Date::Parse('2016-07-06', $tz), $resourceId, array());
+        $dailyLayout->_SetLayout(Date::Parse('2016-07-07', $tz), $resourceId, array());
+        $dailyLayout->_SetLayout(Date::Parse('2016-07-08', $tz), $resourceId, array());
+        $dailyLayout->_SetLayout(Date::Parse('2016-07-09', $tz), $resourceId, array());
+        $this->scheduleService->_DailyLayout = $dailyLayout;
+
+        $this->presenter->SearchAvailability();
+
+        $this->assertEquals(13, count($this->page->_Openings));
+        $this->assertEquals(Date::Parse('2016-07-03 00:00', $tz), $this->page->_Openings[0]->Start());
+        $this->assertEquals(Date::Parse('2016-07-04 12:00', $tz), $this->page->_Openings[0]->End());
+        $this->assertEquals(Date::Parse('2016-07-03 12:00', $tz), $this->page->_Openings[12]->Start());
+        $this->assertEquals(Date::Parse('2016-07-05 00:00', $tz), $this->page->_Openings[12]->End());
+    }
+
     public function testWhenNotAllRepeatingDatesAreOpen()
     {
         $date = Date::Now()->AddDays(1)->ToTimezone($this->fakeUser->Timezone)->GetDate();
@@ -300,6 +345,9 @@ class FakeSearchAvailabilityPage extends SearchAvailabilityPage
      */
     public $_Resources = array();
 
+    /**
+     * @var AvailableOpeningView[]
+     */
     public $_Openings;
 
     /**

@@ -997,6 +997,15 @@ class DateDiff
 
 	/**
 	 * @param DateDiff $diff
+	 * @return DateDiff
+	 */
+	public function Subtract(DateDiff $diff)
+	{
+		return new DateDiff($this->seconds - $diff->seconds);
+	}
+
+	/**
+	 * @param DateDiff $diff
 	 * @return bool
 	 */
 	public function GreaterThan(DateDiff $diff)
