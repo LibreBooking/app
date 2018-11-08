@@ -89,6 +89,7 @@ class ReservationEmailPresenterTests extends TestBase
     {
         $reservation = new TestHelperExistingReservationSeries();
         $reservation->WithOwner($this->fakeUser->UserId);
+        $reservation->WithCurrentInstance(new TestReservation());
 
         $this->page->_EmailAddresses = array('email1', 'email2');
         $this->reservationRepository->_Series = $reservation;
@@ -107,6 +108,7 @@ class ReservationEmailPresenterTests extends TestBase
     {
         $reservation = new TestHelperExistingReservationSeries();
         $reservation->WithOwner(999);
+        $reservation->WithCurrentInstance(new TestReservation());
 
         $this->permissionService->_CanViewResource[2] = true;
         $this->permissionService->_CanViewResource[3] = true;
@@ -128,6 +130,7 @@ class ReservationEmailPresenterTests extends TestBase
     {
         $reservation = new TestHelperExistingReservationSeries();
         $reservation->WithOwner(999);
+        $reservation->WithCurrentInstance(new TestReservation());
 
         $this->permissionService->_CanViewResource[2] = false;
         $this->permissionService->_CanViewResource[3] = false;

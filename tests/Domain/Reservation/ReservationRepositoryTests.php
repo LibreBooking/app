@@ -585,7 +585,7 @@ class ReservationRepositoryTests extends TestBase
 
         $this->repository->Update($existingReservation);
 
-        $this->assertEquals(1, count($this->db->_Commands));
+        $this->assertTrue(count($this->db->GetCommandsOfType('AdjustUserCreditsCommand')) == 0);
     }
 
     public function testDoesNotDeductCreditsForWhenNoChangeInCredits()
@@ -613,7 +613,7 @@ class ReservationRepositoryTests extends TestBase
 
         $this->repository->Update($existingReservation);
 
-        $this->assertEquals(1, count($this->db->_Commands));
+        $this->assertTrue(count($this->db->GetCommandsOfType('AdjustUserCreditsCommand')) == 0);
     }
 
     public function testBranchedSingleInstance()
@@ -694,6 +694,7 @@ class ReservationRepositoryTests extends TestBase
         $builder->WithCurrentInstance($currentInstance);
 
         $existingReservation = $builder->BuildTestVersion();
+        $existingReservation->WithOwner($userId);
         $updatedBy = new FakeUserSession();
         $existingReservation->Update($userId, new FakeBookableResource($resourceId), $title, $description, $updatedBy);
         $existingReservation->AllowParticipation($allowParticipation);

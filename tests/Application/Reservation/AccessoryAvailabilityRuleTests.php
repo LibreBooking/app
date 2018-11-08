@@ -215,6 +215,6 @@ class AccessoryAvailabilityRuleTests extends TestBase
 
         $result = $this->rule->Validate($reservation, null);
 
-        $this->assertTrue($result->IsValid());
+        $this->assertFalse($result->IsValid());
     }
 }

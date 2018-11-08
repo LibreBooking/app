@@ -161,7 +161,7 @@ class ReservationUpdatePresenterTests extends TestBase
 		$fakeScheduleLayout = new FakeScheduleLayout();
 		$fakeScheduleLayout->_SlotCount = new SlotCount(1, 2);
 		$this->scheduleRepository->_Layout = $fakeScheduleLayout;
-		$expectedCredits = 162;
+		$expectedCredits = 168;
 
 		$existingSeries = $this->presenter->BuildReservation();
 
@@ -193,7 +193,7 @@ class ReservationUpdatePresenterTests extends TestBase
 		$this->assertEquals(ReservationReminder::None(), $existingSeries->GetEndReminder());
 		$this->assertEquals($participatingGuests, $existingSeries->CurrentInstance()->AddedParticipatingGuests());
 		$this->assertEquals($invitedGuests, $existingSeries->CurrentInstance()->AddedInvitedGuests());
-		$this->assertEquals($expectedCredits, $existingSeries->GetCreditsRequired());
+		$this->assertEquals($expectedCredits, $existingSeries->GetCreditsRequired(), '3 credits, 28 instances, 2 resources');
 	}
 
 	public function testUsesFirstAdditionalResourceIfPrimaryIsRemoved()

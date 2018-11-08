@@ -162,6 +162,7 @@ class ExistingReservationSeriesBuilder
 	 */
 	public function Build()
 	{
+        $this->series->UpdateBookedBy($this->bookedBy);
         $this->series->WithId($this->id);
 		$this->series->WithCurrentInstance($this->currentInstance);
 		$this->series->WithRepeatOptions($this->repeatOptions);
@@ -177,7 +178,9 @@ class ExistingReservationSeriesBuilder
 		}
 
 		$this->series->WithPrimaryResource($this->resource);
-		$this->series->Update(1, $this->resource, 'title', 'description', $this->bookedBy);
+		$this->series->WithTitle('title');
+		$this->series->WithDescription('description');
+//		$this->series->Update(1, $this->resource, 'title', 'description', $this->bookedBy);
 
 		return $this->series;
 	}
