@@ -66,8 +66,13 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		{/if}
 	</div>
 
-	<form id="form-checkin" method="post" action="ajax/reservation_checkin.php?action={ReservationAction::Checkin}">
+	<form id="form-checkin" method="post">
 		<input type="hidden" id="referenceNumber" {formname key=REFERENCE_NUMBER} />
 		{csrf_token}
 	</form>
+
+    {*<form id="form-checkout" method="post" action="ajax/reservation_checkin.php?action={ReservationAction::Checkout}">*}
+		{*<input type="hidden" id="referenceNumber" {formname key=REFERENCE_NUMBER} />*}
+		{*{csrf_token}*}
+	{*</form>*}
 </div>

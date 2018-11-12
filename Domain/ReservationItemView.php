@@ -859,6 +859,18 @@ class ReservationItemView implements IReservedItemView
 				$this->IsCheckInEnabled);
 	}
 
+	public function RequiresCheckOut()
+	{
+        if ($this->StartDate->LessThan(Date::Now()) &&
+            $this->CheckoutDate->ToString() == '' &&
+            $this->CheckinDate->ToString() != '')
+        {
+            return $this->IsCheckinEnabled();
+        }
+
+        return false;
+	}
+
 	/**
 	 * @var null|string
 	 */

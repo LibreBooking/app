@@ -373,7 +373,7 @@ class ReservationDetailsBinder implements IReservationComponentBinder
 
 	private function SetCheckinRequired()
 	{
-	    $this->page->SetCheckInRequired( $this->reservationView->IsCheckinAvailable());
+	    $this->page->SetCheckInRequired($this->reservationView->IsCheckinAvailable());
 	}
 
 	private function SetCheckoutRequired()

@@ -111,6 +111,22 @@ function Dashboard(opts) {
 			var refNum = $(this).attr('data-referencenumber');
 			$('#referenceNumber').val(refNum);
 
+			ajaxPost(form, $(this).data('url'), null, function (data) {
+				$('button[data-referencenumber="' + refNum + '"]').addClass('no-show');
+			});
+		});
+
+		$('.btnCheckout').click(function (e) {
+			e.preventDefault();
+			e.stopPropagation();
+			var button = $(this);
+			button.attr('disabled', 'disabled');
+			button.find('i').removeClass('fa-sign-in').addClass('fa-spinner');
+
+			var form = $('#form-checkout');
+			var refNum = $(this).attr('data-referencenumber');
+			$('#referenceNumber').val(refNum);
+
 			ajaxPost(form, null, null, function (data) {
 				$('button[data-referencenumber="' + refNum + '"]').addClass('no-show');
 			});
