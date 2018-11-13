@@ -79,8 +79,15 @@ class CalendarSubscriptionPresenter
 		$daysAgo = $this->page->GetPastNumberOfDays();
 		$daysAhead = $this->page->GetFutureNumberOfDays();
 
-		$daysAgo = empty($daysAgo) ? 0 : intval($daysAgo);
-        $daysAhead = empty($daysAhead) ? 30 : intval($daysAhead);
+        $pastDays = Configuration::Instance()->GetSectionKey(ConfigSection::ICS, ConfigKeys::ICS_PAST_DAYS, new IntConverter());
+        $futureDays = Configuration::Instance()->GetSectionKey(ConfigSection::ICS, ConfigKeys::ICS_FUTURE_DAYS, new IntConverter());
+        if ($futureDays == 0)
+        {
+            $futureDays = 30;
+        }
+
+        $daysAgo = empty($daysAgo) ? $pastDays : intval($daysAgo);
+        $daysAhead = empty($daysAhead) ? $futureDays : intval($daysAhead);
 
 		$weekAgo = Date::Now()->AddDays(-$daysAgo);
 		$nextYear = Date::Now()->AddDays($daysAhead);
