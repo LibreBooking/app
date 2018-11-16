@@ -1456,7 +1456,7 @@ a.toggle-sidebar {
   border-left: 8px solid transparent;
 }
 #page-resource-display-resource {
-  margin-top: -40px;
+  margin-top: 10px;
 }
 #page-resource-display-resource table.reservations td {
   font-size: 1.1em;
