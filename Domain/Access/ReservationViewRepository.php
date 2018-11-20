@@ -81,10 +81,10 @@ interface IReservationViewRepository
     /**
      * @param DateRange $dateRange
      * @param int|null $scheduleId
-     * @param int|null $resourceId
+     * @param int|int[]|null $resourceIds
      * @return BlackoutItemView[]
      */
-    public function GetBlackoutsWithin(DateRange $dateRange, $scheduleId = ReservationViewRepository::ALL_SCHEDULES, $resourceId = ReservationViewRepository::ALL_RESOURCES);
+    public function GetBlackoutsWithin(DateRange $dateRange, $scheduleId = ReservationViewRepository::ALL_SCHEDULES, $resourceIds = ReservationViewRepository::ALL_RESOURCES);
 
     /**
      * @param int $pageNumber
@@ -426,17 +426,23 @@ class ReservationViewRepository implements IReservationViewRepository
         return $accessories;
     }
 
-    public function GetBlackoutsWithin(DateRange $dateRange, $scheduleId = ReservationViewRepository::ALL_SCHEDULES, $resourceId = ReservationViewRepository::ALL_RESOURCES)
+    public function GetBlackoutsWithin(DateRange $dateRange, $scheduleId = ReservationViewRepository::ALL_SCHEDULES, $resourceIds = ReservationViewRepository::ALL_RESOURCES)
     {
         if (empty($scheduleId)) {
             $scheduleId = ReservationViewRepository::ALL_SCHEDULES;
         }
 
-        if (empty($resourceId)) {
-            $resourceId = ReservationViewRepository::ALL_RESOURCES;
+        if (empty($resourceIds)) {
+            $resourceIds = self::ALL_RESOURCES;
+        }
+        if ($resourceIds == self::ALL_RESOURCES) {
+            $resourceIds = null;
+        }
+        if (!empty($resourceIds) && $resourceIds != ReservationViewRepository::ALL_RESOURCES && !is_array($resourceIds)) {
+            $resourceIds = array($resourceIds);
         }
 
-        $getBlackoutsCommand = new GetBlackoutListCommand($dateRange->GetBegin(), $dateRange->GetEnd(), $scheduleId, $resourceId);
+        $getBlackoutsCommand = new GetBlackoutListCommand($dateRange->GetBegin(), $dateRange->GetEnd(), $scheduleId, $resourceIds);
 
         $result = ServiceLocator::GetDatabase()->Query($getBlackoutsCommand);
 

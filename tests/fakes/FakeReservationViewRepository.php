@@ -57,6 +57,13 @@ class FakeReservationViewRepository implements IReservationViewRepository
      */
     public $_LastResourceIds;
 
+    /**
+     * @var ReservationItemView[]
+     */
+    public $_ReservationsIteration = array();
+
+    private $_Iteration = 0;
+
     public function __construct()
     {
         $this->_ReservationView = new ReservationView();
@@ -80,6 +87,11 @@ class FakeReservationViewRepository implements IReservationViewRepository
         $this->_LastScheduleIds = $scheduleIds;
         $this->_LastResourceIds = $resourceIds;
         $this->_LastRange = new DateRange($startDate, $endDate);
+
+        if (!empty($this->_ReservationsIteration)) {
+            return $this->_ReservationsIteration[$this->_Iteration++];
+        }
+
         return $this->_Reservations;
     }
 

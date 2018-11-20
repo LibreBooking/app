@@ -553,7 +553,7 @@ class Queries
 				OR
 				(bi.start_date <= @startDate AND bi.end_date >= @endDate)
 			) AND
-			(@scheduleid = -1 OR r.schedule_id = @scheduleid) AND (@resourceid = -1 OR r.resource_id = @resourceid)
+			(@scheduleid = -1 OR r.schedule_id = @scheduleid) AND (@all_resources = 1 OR r.resource_id IN(@resourceid))
 		ORDER BY bi.start_date ASC';
 
 	const GET_BLACKOUT_LIST_FULL =

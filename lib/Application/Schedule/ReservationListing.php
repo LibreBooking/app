@@ -16,7 +16,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 class ReservationListing implements IMutableReservationListing
 {
-	/**
+    /**
 	 * @param string $targetTimezone
 	 */
 	public function __construct($targetTimezone)
@@ -49,7 +49,7 @@ class ReservationListing implements IMutableReservationListing
 	 */
 	protected $_reservationsByDateAndResource = array();
 
-	public function Add($reservation)
+    public function Add($reservation)
 	{
 		$this->AddItem(new ReservationListItem($reservation));
 	}

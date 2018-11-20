@@ -64,7 +64,11 @@ function Reservation(opts) {
         emailUserAutocomplete: $('#emailUserAutocomplete'),
         emailReservationList: $('#emailReservationList'),
         emailForm: $('#emailReservationForm'),
-        sendEmailButton: $('#btnSendReservation')
+        sendEmailButton: $('#btnSendReservation'),
+
+        btnViewAvailability: $('#btnViewAvailability'),
+        userAvailabilityBox: $('#user-availability-box'),
+        reservationBox: $('#reservation-box')
     };
 
     var participation = {};
@@ -170,6 +174,7 @@ function Reservation(opts) {
         CalculateCredits();
         WireUpAttachments();
         InitializeAutoRelease();
+        InitializeAvailabilityView();
 
         elements.userId.change(function () {
             LoadCustomAttributes();
@@ -259,7 +264,6 @@ function Reservation(opts) {
             }
         );
     }
-
 
     var AddAccessories = function () {
         elements.accessoriesList.empty();
@@ -1007,6 +1011,50 @@ function Reservation(opts) {
         }
     }
 
+    function ShowAvailabilityView()
+    {
+        elements.reservationBox.addClass('no-show');
+
+        elements.userAvailabilityBox.html('<span class="fa fa-spin fa-spinner"></span>').removeClass('no-show');
+
+        var url = opts.availabilityUrl;
+        var resourceIds = GetSelectedResourceIds();
+        var userId = elements.userId.val();
+
+        _.each(elements.participantList.find('.id'), function(e) {
+            url += '&pid[]=' + $(e).val();
+        });
+
+        _.each(elements.inviteeList.find('.id'), function(e) {
+            url += '&iid[]=' + $(e).val();
+        });
+
+        _.each(resourceIds, function (n) {
+            url += '&rid[]=' + n;
+        });
+        url += '&uid=' + userId;
+        url += '&sd=' + elements.beginDate.val();
+        url += '&ed=' + elements.endDate.val();
+        url += '&st=' + elements.beginTime.val();
+        url += '&et=' + elements.endTime.val();
+
+        ajaxGet(url, null, function(view) {
+            elements.userAvailabilityBox.html(view).removeClass('no-show');
+        });
+    }
+
+    function InitializeAvailabilityView() {
+        elements.btnViewAvailability.on('click', function(e) {
+            e.preventDefault();
+            ShowAvailabilityView();
+        });
+
+        elements.userAvailabilityBox.on('click', '#btnHideAvailability', function(e){
+            e.preventDefault();
+            elements.userAvailabilityBox.addClass('no-show');
+            elements.reservationBox.removeClass('no-show');
+        });
+    }
     changeUser.init = function () {
         $('#showChangeUsers').click(function (e) {
             e.preventDefault();

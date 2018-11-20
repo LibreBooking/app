@@ -48,6 +48,7 @@ class en_us extends Language
 		$dates['mobile_reservation_date'] = 'n/j g:i A';
 		$dates['general_date_js'] = 'mm/dd/yy';
         $dates['general_time_js'] = 'h:mm tt';
+        $dates['timepicker_js'] = 'h:i a';
         $dates['momentjs_datetime'] = 'M/D/YY h:mm A';
 		$dates['calendar_time'] = 'h:mmt';
 		$dates['calendar_dates'] = 'M d';

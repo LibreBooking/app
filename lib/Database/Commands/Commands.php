@@ -1460,13 +1460,14 @@ class GetAllUsersByStatusCommand extends SqlCommand
 
 class GetBlackoutListCommand extends SqlCommand
 {
-    public function __construct(Date $startDate, Date $endDate, $scheduleId, $resourceId)
+    public function __construct(Date $startDate, Date $endDate, $scheduleId, $resourceIds)
     {
         parent::__construct(Queries::GET_BLACKOUT_LIST);
         $this->AddParameter(new Parameter(ParameterNames::START_DATE, $startDate->ToDatabase()));
         $this->AddParameter(new Parameter(ParameterNames::END_DATE, $endDate->ToDatabase()));
         $this->AddParameter(new Parameter(ParameterNames::SCHEDULE_ID, $scheduleId));
-        $this->AddParameter(new Parameter(ParameterNames::RESOURCE_ID, $resourceId));
+        $this->AddParameter(new Parameter(ParameterNames::RESOURCE_ID, $resourceIds));
+        $this->AddParameter(new Parameter(ParameterNames::ALL_RESOURCES, (int)empty($resourceIds)));
     }
 }
 

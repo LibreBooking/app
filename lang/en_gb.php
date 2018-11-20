@@ -48,6 +48,7 @@ class en_gb extends en_us
 		$dates['short_reservation_date'] = 'j/n/y H:i';
 		$dates['mobile_reservation_date'] = 'j/n H:i';
         $dates['general_time_js'] = 'H:mm';
+        $dates['timepicker_js'] = 'H:i';
         $dates['momentjs_datetime'] = 'D/M/YY H:mm';
 		$dates['calendar_time'] = 'H:mm';
 		$dates['calendar_dates'] = 'd M';

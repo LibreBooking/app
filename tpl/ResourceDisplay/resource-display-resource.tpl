@@ -28,7 +28,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
     <table class="reservations">
         <thead>
         <tr>
-            {foreach from=$DailyLayout->GetPeriods($Today) item=period}
+            {foreach from=$DailyLayout->GetPeriods($Today, true) item=period}
                 <td class="reslabel" colspan="{$period->Span()}">{$period->Label($Today)}</td>
             {/foreach}
         </tr>

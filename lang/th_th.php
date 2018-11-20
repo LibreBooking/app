@@ -61,7 +61,6 @@ class th_th extends en_gb
 		$dates['period_time'] = 'H:i';
 		$dates['mobile_reservation_date'] = 'd/m/'.(date('Y')+543).' H:i';
 		$dates['general_date_js'] = 'dd/mm/'.(date('Y')+543);
-		$dates['general_time_js'] = 'h:mm tt';
 		$dates['momentjs_datetime'] = 'D/M/'.(date('Y')+543).' h:mm A';
 		$dates['calendar_time'] = 'h:mmt';
 		$dates['calendar_dates'] = 'd/M/'.(date('Y')+543);

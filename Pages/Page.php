@@ -309,11 +309,27 @@ abstract class Page implements IPage
 
     /**
      * @param string $key
-     * @return null|string
+     * @param bool $forceArray
+     * @return null|string|array
      */
-    protected function GetQuerystring($key)
+    protected function GetQuerystring($key, $forceArray = false)
     {
-        return $this->server->GetQuerystring($key);
+        $val = $this->server->GetQuerystring($key);
+        if (!$forceArray)
+        {
+            return $val;
+        }
+
+        if (empty($val))
+        {
+            return array();
+        }
+        if (!is_array($val))
+        {
+            return array($val);
+        }
+
+        return $val;
     }
 
     /**

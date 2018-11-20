@@ -40,6 +40,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
                 <div class="col-md-6 col-xs-12 col-top">
                     <div class="pull-right-sm">
+                        <a href="#" id="btnViewAvailability">View Availability</a>
                         <button type="button" class="btn btn-default" onclick="window.location='{$ReturnUrl}'">
                             <span class="hidden-xs">{translate key='Cancel'}</span>
                             <span class="visible-xs"><i class="fa fa-arrow-circle-left"></i></span>
@@ -490,6 +491,10 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
         <div id="result"></div>
     </div>
 
+    <div id="user-availability-box">
+
+    </div>
+
 </div>
 
 {block name=extras}{/block}
@@ -542,7 +547,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
             resourcesUrl: 'ajax/unavailable_resources.php?{QueryStringKeys::START_DATE}=[sd]&{QueryStringKeys::END_DATE}=[ed]&{QueryStringKeys::START_TIME}=[st]&{QueryStringKeys::END_TIME}=[et]&{QueryStringKeys::REFERENCE_NUMBER}=[rn]',
             creditsUrl: 'ajax/reservation_credits.php',
             creditsEnabled: '{$CreditsEnabled}',
-            emailUrl: 'ajax/reservation_email.php?{QueryStringKeys::REFERENCE_NUMBER}={$ReferenceNumber}'
+            emailUrl: 'ajax/reservation_email.php?{QueryStringKeys::REFERENCE_NUMBER}={$ReferenceNumber}',
+            availabilityUrl: 'ajax/availability.php?{QueryStringKeys::SCHEDULE_ID}={$ScheduleId}'
         };
 
         var reminderOpts = {

@@ -404,6 +404,38 @@ class CreateGroupFacade extends GroupControllerPageFacade
     {
         return $this->request->isDefault;
     }
+
+    /**
+     * @param $schedules Schedule[]
+     */
+    public function BindSchedules($schedules)
+    {
+        // TODO: Implement BindSchedules() method.
+    }
+
+    /**
+     * @return int[]
+     */
+    public function GetGroupAdminIds()
+    {
+        // TODO: Implement GetGroupAdminIds() method.
+    }
+
+    /**
+     * @return int[]
+     */
+    public function GetResourceAdminIds()
+    {
+        // TODO: Implement GetResourceAdminIds() method.
+    }
+
+    /**
+     * @return int[]
+     */
+    public function GetScheduleAdminIds()
+    {
+        // TODO: Implement GetScheduleAdminIds() method.
+    }
 }
 
 class UpdateGroupRolesFacade extends GroupControllerPageFacade
@@ -434,6 +466,38 @@ class UpdateGroupRolesFacade extends GroupControllerPageFacade
         $roles = $this->request->roleIds;
 
         return empty($roles) ? [] : $roles;
+    }
+
+    /**
+     * @param $schedules Schedule[]
+     */
+    public function BindSchedules($schedules)
+    {
+        // TODO: Implement BindSchedules() method.
+    }
+
+    /**
+     * @return int[]
+     */
+    public function GetGroupAdminIds()
+    {
+        // TODO: Implement GetGroupAdminIds() method.
+    }
+
+    /**
+     * @return int[]
+     */
+    public function GetResourceAdminIds()
+    {
+        // TODO: Implement GetResourceAdminIds() method.
+    }
+
+    /**
+     * @return int[]
+     */
+    public function GetScheduleAdminIds()
+    {
+        // TODO: Implement GetScheduleAdminIds() method.
     }
 }
 
@@ -480,6 +544,38 @@ class UpdateGroupPermissionsFacade extends GroupControllerPageFacade
 
         return $ids;
     }
+
+    /**
+     * @param $schedules Schedule[]
+     */
+    public function BindSchedules($schedules)
+    {
+        // TODO: Implement BindSchedules() method.
+    }
+
+    /**
+     * @return int[]
+     */
+    public function GetGroupAdminIds()
+    {
+        // TODO: Implement GetGroupAdminIds() method.
+    }
+
+    /**
+     * @return int[]
+     */
+    public function GetResourceAdminIds()
+    {
+        // TODO: Implement GetResourceAdminIds() method.
+    }
+
+    /**
+     * @return int[]
+     */
+    public function GetScheduleAdminIds()
+    {
+        // TODO: Implement GetScheduleAdminIds() method.
+    }
 }
 
 class UpdateGroupUsersFacade extends GroupControllerPageFacade
@@ -510,5 +606,37 @@ class UpdateGroupUsersFacade extends GroupControllerPageFacade
         $ids = $this->request->userIds;
 
         return empty($ids) ? [] : $ids;
+    }
+
+    /**
+     * @param $schedules Schedule[]
+     */
+    public function BindSchedules($schedules)
+    {
+        // TODO: Implement BindSchedules() method.
+    }
+
+    /**
+     * @return int[]
+     */
+    public function GetGroupAdminIds()
+    {
+        // TODO: Implement GetGroupAdminIds() method.
+    }
+
+    /**
+     * @return int[]
+     */
+    public function GetResourceAdminIds()
+    {
+        // TODO: Implement GetResourceAdminIds() method.
+    }
+
+    /**
+     * @return int[]
+     */
+    public function GetScheduleAdminIds()
+    {
+        // TODO: Implement GetScheduleAdminIds() method.
     }
 }

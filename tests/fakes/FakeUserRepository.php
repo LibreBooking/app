@@ -35,6 +35,15 @@ class FakeUserRepository implements IUserRepository
 
     public $_Exists = true;
 
+    /**
+     * @var UserDto
+     */
+    public $_UserDto;
+    /**
+     * @var UserDto[]
+     */
+    public $_UserDtos;
+
     public function __construct()
 	{
 		$this->_User = new FakeUser(123);
@@ -100,7 +109,12 @@ class FakeUserRepository implements IUserRepository
 	 */
 	function GetById($userId)
 	{
-		// TODO: Implement GetById() method.
+		if ($this->_UserDto != null)
+        {
+            return $this->_UserDto;
+        }
+
+        return $this->_UserDtos[$userId];
 	}
 
 	/**
