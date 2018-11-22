@@ -182,7 +182,7 @@ function Reservation(opts) {
 
         LoadCustomAttributes();
 
-        elements.accessoriesDialog.on('shown.bs.modal', function() {
+        elements.accessoriesDialog.on('shown.bs.modal', function () {
             $(this).find('input[type="number"]').first().focus();
         });
     };
@@ -250,7 +250,7 @@ function Reservation(opts) {
             AddUserToEmail(ui.item.label, ui.item.data.Email);
         });
 
-        elements.sendEmailButton.click(function(e){
+        elements.sendEmailButton.click(function (e) {
             e.preventDefault();
             elements.emailForm.submit();
         });
@@ -1011,8 +1011,7 @@ function Reservation(opts) {
         }
     }
 
-    function ShowAvailabilityView()
-    {
+    function ShowAvailabilityView() {
         elements.reservationBox.addClass('no-show');
 
         elements.userAvailabilityBox.html('<span class="fa fa-spin fa-spinner"></span>').removeClass('no-show');
@@ -1021,11 +1020,11 @@ function Reservation(opts) {
         var resourceIds = GetSelectedResourceIds();
         var userId = elements.userId.val();
 
-        _.each(elements.participantList.find('.id'), function(e) {
+        _.each(elements.participantList.find('.id'), function (e) {
             url += '&pid[]=' + $(e).val();
         });
 
-        _.each(elements.inviteeList.find('.id'), function(e) {
+        _.each(elements.inviteeList.find('.id'), function (e) {
             url += '&iid[]=' + $(e).val();
         });
 
@@ -1038,23 +1037,84 @@ function Reservation(opts) {
         url += '&st=' + elements.beginTime.val();
         url += '&et=' + elements.endTime.val();
 
-        ajaxGet(url, null, function(view) {
+        ajaxGet(url, null, function (view) {
             elements.userAvailabilityBox.html(view).removeClass('no-show');
+            HighlightAvailability();
+        });
+    }
+
+    function HighlightAvailability() {
+
+        elements.userAvailabilityBox.find('.availability-highlighter').remove();
+
+        var asMinutes = function (e) {
+            var hoursMinutes = e.split(':');
+            return parseInt(hoursMinutes[0]) * 60 + parseInt(hoursMinutes[1]);
+        };
+
+        var dateAsInt = function (d) {
+            return parseInt(d.split('-').join(''))
+        };
+
+        var reservationTables = $('table.reservations');
+        _.each(reservationTables, function (t) {
+            var table = $(t);
+
+            var startMinutes = asMinutes(elements.beginTime.val());
+            var endMinutes = asMinutes(elements.endTime.val());
+
+            var startCol;
+            var endCol;
+            var cols = table.find('thead > tr > td[data-start]');
+            _.each(cols, function (c) {
+                var col = $(c);
+
+                if (col.data('start') <= startMinutes) {
+                    startCol = col;
+                }
+                if (col.data('end') <= endMinutes) {
+                    endCol = col;
+                }
+            });
+
+            if (dateAsInt(elements.beginDate.val()) < dateAsInt(table.data('date'))) {
+                startCol = $(cols[0]);
+            }
+            if (dateAsInt(elements.endDate.val())  > dateAsInt(table.data('date'))) {
+                endCol = $(cols[cols.length - 1]);
+            }
+
+            var highlighter = $('<div class="availability-highlighter">&nbsp;</div>');
+            elements.userAvailabilityBox.append(highlighter);
+            highlighter.height(table.height() + 1);
+            highlighter.width(endCol.offset().left - startCol.offset().left + 2 + endCol.width() +  parseInt(startCol.css('padding-left')));
+            highlighter.offset(
+                {
+                    top: table.offset().top,
+                    left: startCol.offset().left // + parseInt(startCol.css('padding-left'))
+                }
+            );
         });
     }
 
     function InitializeAvailabilityView() {
-        elements.btnViewAvailability.on('click', function(e) {
+        elements.btnViewAvailability.on('click', function (e) {
             e.preventDefault();
+            elements.userAvailabilityBox.find('.availability-highlighter').remove();
             ShowAvailabilityView();
         });
 
-        elements.userAvailabilityBox.on('click', '#btnHideAvailability', function(e){
+        elements.userAvailabilityBox.on('click', '#btnHideAvailability', function (e) {
             e.preventDefault();
+            elements.userAvailabilityBox.find('.availability-highlighter').remove();
             elements.userAvailabilityBox.addClass('no-show');
             elements.reservationBox.removeClass('no-show');
         });
+
+        var throttledHighlight = _.debounce(HighlightAvailability, 100);
+        $(window).resize(throttledHighlight);
     }
+
     changeUser.init = function () {
         $('#showChangeUsers').click(function (e) {
             e.preventDefault();

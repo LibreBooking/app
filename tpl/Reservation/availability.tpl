@@ -46,19 +46,21 @@
     {call name=$DisplaySlotFactory->GetFunction($Slot, true) Slot=$Slot ResourceId=$ResourceId}
 {/function}
 
-<a href="#" id="btnHideAvailability">Reservation Details</a>
+{*<div id="availability-highlighter"></div>*}
+
+<a href="#" id="btnHideAvailability" class="pull-right"><i class="fa fa-arrow-circle-left"></i> Reservation Details</a>
 {* End slot display formatting *}
 {assign var=TodaysDate value=Date::Now()}
 {foreach from=$BoundDates item=date}
     {assign var=ts value=$date->Timestamp()}
-    {$periods.$ts = $DailyLayout->GetPeriods($date, true)}
+    {$periods.$ts = $DailyLayout->GetPeriods($date)}
     <div>
-        <table class="reservations" border="1" cellpadding="0" width="100%">
+        <table id="reservations-{formatdate date=$date format='Y-m-d'}" data-date="{formatdate date=$date format='Y-m-d'}" class="reservations" border="1" cellpadding="0" width="100%">
             <thead>
             <tr>
                 <td class="resdate">{formatdate date=$date key="schedule_daily"}</td>
                 {foreach from=$periods.$ts item=period}
-                    <td class="reslabel" colspan="{$period->Span()}">{$period->Label($date)}</td>
+                    <td class="reslabel" colspan="{$period->Span()}" data-start="{$period->Begin()->Hour()*60+$period->Begin()->Minute()}" data-end="{$period->End()->Hour()*60+$period->End()->Minute()}">{$period->Label($date)}</td>
                 {/foreach}
             </tr>
             </thead>

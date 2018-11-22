@@ -369,6 +369,11 @@ a.remove {
 #creditCost.insufficient-credits {
   color: #AA3939;
 }
+.availability-highlighter {
+  position: absolute;
+  background-color: rebeccapurple;
+  opacity: .25;
+}
 #page-view-reservation .participationAction {
   margin-bottom: 5px;
 }

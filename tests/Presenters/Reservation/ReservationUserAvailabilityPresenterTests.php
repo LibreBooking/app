@@ -152,7 +152,6 @@ class ReservationUserAvailabilityPresenterTests extends TestBase
         $this->assertEquals($expectedParticipants, $this->page->_Participants);
         $this->assertEquals($expectedResources, $this->page->_Resources);
         $this->assertEquals($expectedUser, $this->page->_User);
-        $this->assertEquals($scheduleLayout, $this->page->_ScheduleLayout);
         $this->assertEquals($expectedLayout, $this->page->_Layout);
     }
 
@@ -164,11 +163,6 @@ class ReservationUserAvailabilityPresenterTests extends TestBase
 
 class FakeReservationUserAvailabilityPage extends ReservationUserAvailabilityPage
 {
-    /**
-     * @var SchedulePeriod[]
-     */
-    public $_ScheduleLayout;
-
     /**
      * @var int
      */

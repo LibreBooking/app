@@ -40,7 +40,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
                 <div class="col-md-6 col-xs-12 col-top">
                     <div class="pull-right-sm">
-                        <a href="#" id="btnViewAvailability">View Availability</a>
+                        <a href="#" id="btnViewAvailability"><i class="fa fa-calendar"></i> View Availability</a>
                         <button type="button" class="btn btn-default" onclick="window.location='{$ReturnUrl}'">
                             <span class="hidden-xs">{translate key='Cancel'}</span>
                             <span class="visible-xs"><i class="fa fa-arrow-circle-left"></i></span>
