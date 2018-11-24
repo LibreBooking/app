@@ -209,7 +209,7 @@ class ResourceDisplayPresenter extends ActionPresenter
         $resource = $this->resourceRepository->LoadById($resourceId);
 
         $resultCollector = new ReservationResultCollector();
-        $series = ReservationSeries::Create($userSession->UserId, $resource, '', '', $date, new RepeatNone(), $userSession);
+        $series = ReservationSeries::Create($userSession->UserId, $resource, Resources::GetInstance()->GetString('AdHocMeeting'), Resources::GetInstance()->GetString('AdHocMeeting'), $date, new RepeatNone(), $userSession);
 
         $attributes = $this->page->GetAttributes();
         foreach ($attributes as $attribute)
