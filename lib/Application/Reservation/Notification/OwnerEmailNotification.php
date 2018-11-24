@@ -26,12 +26,12 @@ abstract class OwnerEmailNotification implements IReservationNotification
 	/**
 	 * @var IUserRepository
 	 */
-	private $_userRepo;
+	protected $_userRepo;
 
 	/**
 	 * @var IAttributeRepository
 	 */
-	private $_attributeRepo;
+    protected $_attributeRepo;
 
 	/**
 	 * @param IUserRepository $userRepo
@@ -52,7 +52,7 @@ abstract class OwnerEmailNotification implements IReservationNotification
 		$owner = $this->_userRepo->LoadById($reservation->UserId());
 		if ($this->ShouldSend($owner))
 		{
-			$message = $this->GetMessage($owner, $reservation, $this->_attributeRepo);
+			$message = $this->GetMessage($owner, $reservation, $this->_attributeRepo, $this->_userRepo);
 			ServiceLocator::GetEmailService()->Send($message);
 		}
 		else
@@ -72,9 +72,10 @@ abstract class OwnerEmailNotification implements IReservationNotification
 	 * @param User $owner
 	 * @param ReservationSeries|ExistingReservationSeries $reservation
 	 * @param IAttributeRepository $attributeRepo
+     * @param IUserRepository $userRepository
 	 * @return EmailMessage
 	 */
-	protected abstract function GetMessage(User $owner, $reservation, IAttributeRepository $attributeRepo);
+	protected abstract function GetMessage(User $owner, $reservation, IAttributeRepository $attributeRepo, IUserRepository $userRepository);
 }
 
 class OwnerEmailCreatedNotification extends OwnerEmailNotification
@@ -84,9 +85,9 @@ class OwnerEmailCreatedNotification extends OwnerEmailNotification
 		return $owner->WantsEventEmail(new ReservationCreatedEvent());
 	}
 
-	protected function GetMessage(User $owner, $reservation, IAttributeRepository $attributeRepository)
+	protected function GetMessage(User $owner, $reservation, IAttributeRepository $attributeRepository, IUserRepository $userRepository)
 	{
-		return new ReservationCreatedEmail($owner, $reservation, null, $attributeRepository);
+		return new ReservationCreatedEmail($owner, $reservation, null, $attributeRepository, $userRepository);
 	}
 }
 
@@ -97,9 +98,9 @@ class OwnerEmailUpdatedNotification extends OwnerEmailNotification
 		return $owner->WantsEventEmail(new ReservationUpdatedEvent());
 	}
 
-	protected function GetMessage(User $owner, $reservation, IAttributeRepository $attributeRepository)
+	protected function GetMessage(User $owner, $reservation, IAttributeRepository $attributeRepository, IUserRepository $userRepository)
 	{
-		return new ReservationUpdatedEmail($owner, $reservation, null, $attributeRepository);
+		return new ReservationUpdatedEmail($owner, $reservation, null, $attributeRepository, $userRepository);
 	}
 }
 
@@ -114,9 +115,9 @@ class OwnerEmailApprovedNotification extends OwnerEmailNotification
 		return $owner->WantsEventEmail(new ReservationApprovedEvent());
 	}
 
-	protected function GetMessage(User $owner, $reservation, IAttributeRepository $attributeRepository)
+	protected function GetMessage(User $owner, $reservation, IAttributeRepository $attributeRepository, IUserRepository $userRepository)
 	{
-		return new ReservationApprovedEmail($owner, $reservation, null, $attributeRepository);
+		return new ReservationApprovedEmail($owner, $reservation, null, $attributeRepository, $userRepository);
 	}
 }
 
@@ -131,8 +132,8 @@ class OwnerEmailDeletedNotification extends OwnerEmailNotification
         return $owner->WantsEventEmail(new ReservationDeletedEvent());
     }
 
-    protected function GetMessage(User $owner, $reservation, IAttributeRepository $attributeRepository)
+    protected function GetMessage(User $owner, $reservation, IAttributeRepository $attributeRepository, IUserRepository $userRepository)
     {
-        return new ReservationDeletedEmail($owner, $reservation, null, $attributeRepository);
+        return new ReservationDeletedEmail($owner, $reservation, null, $attributeRepository, $userRepository);
     }
 }

@@ -24,17 +24,17 @@ abstract class AdminEmailNotification implements IReservationNotification
 	/**
 	 * @var IUserRepository
 	 */
-	private $userRepo;
+	protected $userRepo;
 
 	/**
 	 * @var IUserViewRepository
 	 */
-	private $userViewRepo;
+    protected $userViewRepo;
 
 	/**
 	 * @var IAttributeRepository
 	 */
-	protected $attributeRepository;
+    protected $attributeRepository;
 
 	/**
 	 * @param IUserRepository $userRepo
@@ -99,9 +99,13 @@ abstract class AdminEmailNotification implements IReservationNotification
 		}
 	}
 
-	/**
-	 * @return IEmailMessage
-	 */
+    /**
+     * @param UserDto $admin
+     * @param User $owner
+     * @param ReservationSeries $reservationSeries
+     * @param BookableResource $resource
+     * @return IEmailMessage
+     */
 	protected abstract function GetMessage($admin, $owner, $reservationSeries, $resource);
 
 	/**
@@ -127,7 +131,7 @@ class AdminEmailCreatedNotification extends AdminEmailNotification
 {
 	protected function GetMessage($admin, $owner, $reservationSeries, $resource)
 	{
-		return new ReservationCreatedEmailAdmin($admin, $owner, $reservationSeries, $resource, $this->attributeRepository);
+		return new ReservationCreatedEmailAdmin($admin, $owner, $reservationSeries, $resource, $this->attributeRepository, $this->userRepo);
 	}
 
 	protected function SendForResourceAdmins(ReservationSeries $reservationSeries)
@@ -156,7 +160,7 @@ class AdminEmailUpdatedNotification extends AdminEmailNotification
 {
 	protected function GetMessage($admin, $owner, $reservationSeries, $resource)
 	{
-		return new ReservationUpdatedEmailAdmin($admin, $owner, $reservationSeries, $resource, $this->attributeRepository);
+		return new ReservationUpdatedEmailAdmin($admin, $owner, $reservationSeries, $resource, $this->attributeRepository, $this->userRepo);
 	}
 
 	protected function SendForResourceAdmins(ReservationSeries $reservationSeries)
@@ -186,7 +190,7 @@ class AdminEmailDeletedNotification extends AdminEmailNotification
 {
 	protected function GetMessage($admin, $owner, $reservationSeries, $resource)
 	{
-		return new ReservationDeletedEmailAdmin($admin, $owner, $reservationSeries, $resource, $this->attributeRepository);
+		return new ReservationDeletedEmailAdmin($admin, $owner, $reservationSeries, $resource, $this->attributeRepository, $this->userRepo);
 	}
 
 	protected function SendForResourceAdmins(ReservationSeries $reservationSeries)
@@ -216,7 +220,7 @@ class AdminEmailApprovalNotification extends AdminEmailNotification
 {
 	protected function GetMessage($admin, $owner, $reservationSeries, $resource)
 	{
-		return new ReservationRequiresApprovalEmailAdmin($admin, $owner, $reservationSeries, $resource, $this->attributeRepository);
+		return new ReservationRequiresApprovalEmailAdmin($admin, $owner, $reservationSeries, $resource, $this->attributeRepository, $this->userRepo);
 	}
 
 	protected function SendForResourceAdmins(ReservationSeries $reservationSeries)

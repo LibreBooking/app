@@ -45,7 +45,7 @@ class GuestDeletedEmailNotification implements IReservationNotification
         foreach ($instance->UnchangedParticipatingGuests() as $email)
         {
             $guest = $this->userRepository->LoadByUsername($email);
-            $message = new GuestDeletedEmail($owner, $guest, $reservationSeries, $this->attributeRepository);
+            $message = new GuestDeletedEmail($owner, $guest, $reservationSeries, $this->attributeRepository, $this->userRepository);
             ServiceLocator::GetEmailService()->Send($message);
         }
     }

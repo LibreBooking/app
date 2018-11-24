@@ -276,12 +276,16 @@ class UserRepository implements IUserRepository, IAccountActivationRepository
      */
     public function GetById($userId)
     {
+        if ($this->_cache->Exists($userId.'dto'))
+        {
+            return $this->_cache->Get($userId.'dto');
+        }
         $command = new GetUserByIdCommand($userId);
 
         $reader = ServiceLocator::GetDatabase()->Query($command);
 
         if ($row = $reader->GetRow()) {
-            return new UserDto($row[ColumnNames::USER_ID],
+            $user = new UserDto($row[ColumnNames::USER_ID],
                 $row[ColumnNames::FIRST_NAME],
                 $row[ColumnNames::LAST_NAME],
                 $row[ColumnNames::EMAIL],
@@ -289,6 +293,10 @@ class UserRepository implements IUserRepository, IAccountActivationRepository
                 $row[ColumnNames::LANGUAGE_CODE],
                 null,
                 $row[ColumnNames::CREDIT_COUNT]);
+
+             $this->_cache->Add($userId.'dto', $user);
+
+             return $user;
         }
 
         return null;

@@ -46,7 +46,7 @@ class ParticipantDeletedEmailNotification implements IReservationNotification
         {
             $participant = $this->userRepository->LoadById($userId);
 
-            $message = new ParticipantDeletedEmail($owner, $participant, $reservationSeries, $this->attributeRepository);
+            $message = new ParticipantDeletedEmail($owner, $participant, $reservationSeries, $this->attributeRepository, $this->userRepository);
             ServiceLocator::GetEmailService()->Send($message);
         }
     }

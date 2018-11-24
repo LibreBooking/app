@@ -48,7 +48,16 @@ abstract class ReservationEmailMessage extends EmailMessage
 	 */
 	protected $attributeRepository;
 
-	public function __construct(User $reservationOwner, ReservationSeries $reservationSeries, $language = null, IAttributeRepository $attributeRepository)
+    /**
+     * @var IUserRepository
+     */
+	protected $userRepository;
+
+	public function __construct(User $reservationOwner,
+                                ReservationSeries $reservationSeries,
+                                $language,
+                                IAttributeRepository $attributeRepository,
+                                IUserRepository $userRepository)
 	{
 		if (empty($language))
 		{
@@ -61,7 +70,8 @@ abstract class ReservationEmailMessage extends EmailMessage
 		$this->timezone = $reservationOwner->Timezone();
 		$this->attributeRepository = $attributeRepository;
 		$this->primaryResource = $reservationSeries->Resource();
-	}
+        $this->userRepository = $userRepository;
+    }
 
 	/**
 	 * @abstract
@@ -169,7 +179,23 @@ abstract class ReservationEmailMessage extends EmailMessage
         $this->PopulateIcsAttachment($currentInstance, $attributeValues);
 
 		$this->Set('AutoReleaseMinutes', $minimumAutoRelease);
-		$this->Set('ReferenceNumber', $this->reservationSeries->CurrentInstance()->ReferenceNumber());
+		$this->Set('ReferenceNumber', $currentInstance->ReferenceNumber());
+
+        $participants = array();
+		foreach($currentInstance->Participants() as $id)
+        {
+            $participants[] = $this->userRepository->GetById($id);
+        }
+        $this->Set('Participants', $participants);
+		$this->Set('ParticipatingGuests', $currentInstance->ParticipatingGuests());
+
+		$invitees = array();
+        foreach($currentInstance->Invitees() as $id)
+        {
+            $invitees[] = $this->userRepository->GetById($id);
+        }
+        $this->Set('Invitees', $invitees);
+        $this->Set('InvitedGuests', $currentInstance->InvitedGuests());
 	}
 
 	private function GetFullImagePath($img)

@@ -370,7 +370,15 @@ class Reservation
 		$this->unchangedParticipatingGuests[] = $guest;
 	}
 
-	/**
+    /**
+     * @return array|int[]
+     */
+    public function Invitees()
+    {
+        return $this->_inviteeIds;
+    }
+
+    /**
 	 * @return array|int[]
 	 */
 	public function AddedInvitees()
@@ -518,6 +526,14 @@ class Reservation
 	{
 		return $this->_participatingGuests;
 	}
+
+    /**
+     * @return string[]
+     */
+    public function InvitedGuests()
+    {
+        return $this->_invitedGuests;
+    }
 
 	/**
 	 * @return bool

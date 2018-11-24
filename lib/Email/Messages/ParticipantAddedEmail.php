@@ -23,9 +23,10 @@ class ParticipantAddedEmail extends ReservationEmailMessage
 	 */
 	private $participant;
 
-	public function __construct(User $reservationOwner, User $participant, ReservationSeries $reservationSeries, IAttributeRepository $attributeRepository)
+	public function __construct(User $reservationOwner, User $participant, ReservationSeries $reservationSeries,
+                                IAttributeRepository $attributeRepository, IUserRepository $userRepository)
 	{
-		parent::__construct($reservationOwner, $reservationSeries, $participant->Language(), $attributeRepository);
+		parent::__construct($reservationOwner, $reservationSeries, $participant->Language(), $attributeRepository, $userRepository);
 
 		$this->reservationOwner = $reservationOwner;
 		$this->reservationSeries = $reservationSeries;

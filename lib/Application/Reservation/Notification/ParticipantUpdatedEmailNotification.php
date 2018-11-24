@@ -50,7 +50,7 @@ class ParticipantUpdatedEmailNotification extends ParticipantAddedEmailNotificat
 			{
 				$participant = $this->userRepository->LoadById($userId);
 
-				$message = new ParticipantUpdatedEmail($owner, $participant, $reservationSeries, $this->attributeRepository);
+				$message = new ParticipantUpdatedEmail($owner, $participant, $reservationSeries, $this->attributeRepository, $this->userRepository);
 				ServiceLocator::GetEmailService()->Send($message);
 			}
 
@@ -58,7 +58,7 @@ class ParticipantUpdatedEmailNotification extends ParticipantAddedEmailNotificat
 			{
 				$participant = $this->userRepository->LoadById($userId);
 
-				$message = new ParticipantDeletedEmail($owner, $participant, $reservationSeries, $this->attributeRepository);
+				$message = new ParticipantDeletedEmail($owner, $participant, $reservationSeries, $this->attributeRepository, $this->userRepository);
 				ServiceLocator::GetEmailService()->Send($message);
 			}
 		}

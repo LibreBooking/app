@@ -62,7 +62,7 @@ class GuestEmailNotificationTests extends TestBase
 
 		$this->assertEquals(2, count($this->fakeEmailService->_Messages));
 		// create it just to make sure it doesnt blow up
-		$lastExpectedMessage = new GuestAddedEmail($owner, $guest2, $series, $attributeRepo);
+		$lastExpectedMessage = new GuestAddedEmail($owner, $guest2, $series, $attributeRepo, $userRepo);
 		$this->assertInstanceOf('GuestAddedEmail', $this->fakeEmailService->_LastMessage);
 		$this->assertEquals($guest2, $this->fakeEmailService->_LastMessage->To()[0]->Address());
 	}

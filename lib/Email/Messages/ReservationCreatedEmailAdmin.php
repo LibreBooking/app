@@ -48,6 +48,10 @@ class ReservationCreatedEmailAdmin extends EmailMessage
      * @var string
      */
     protected $timezone;
+    /**
+     * @var IUserRepository
+     */
+    private $userRepository;
 
     /**
      * @param UserDto $adminDto
@@ -55,9 +59,9 @@ class ReservationCreatedEmailAdmin extends EmailMessage
      * @param ReservationSeries $reservationSeries
      * @param IResource $primaryResource
      * @param IAttributeRepository $attributeRepository
+     * @param IUserRepository $userRepository
      */
-    public function __construct(UserDto $adminDto, User $reservationOwner, ReservationSeries $reservationSeries, IResource $primaryResource,
-                                IAttributeRepository $attributeRepository)
+    public function __construct(UserDto $adminDto, User $reservationOwner, ReservationSeries $reservationSeries, IResource $primaryResource, IAttributeRepository $attributeRepository, IUserRepository $userRepository)
     {
         parent::__construct($adminDto->Language());
 
@@ -67,6 +71,7 @@ class ReservationCreatedEmailAdmin extends EmailMessage
         $this->resource = $primaryResource;
         $this->attributeRepository = $attributeRepository;
         $this->timezone = $adminDto->Timezone();
+        $this->userRepository = $userRepository;
     }
 
     /**

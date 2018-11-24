@@ -23,9 +23,9 @@ class ReservationShareEmail extends ReservationEmailMessage
      */
 	private $email;
 
-	public function __construct(User $reservationOwner, $emailToShare, ReservationSeries $reservationSeries, IAttributeRepository $attributeRepository)
+	public function __construct(User $reservationOwner, $emailToShare, ReservationSeries $reservationSeries, IAttributeRepository $attributeRepository, IUserRepository $userRepository)
 	{
-		parent::__construct($reservationOwner, $reservationSeries, $reservationOwner->Language(), $attributeRepository);
+		parent::__construct($reservationOwner, $reservationSeries, $reservationOwner->Language(), $attributeRepository, $userRepository);
 
 		$this->reservationOwner = $reservationOwner;
 		$this->reservationSeries = $reservationSeries;

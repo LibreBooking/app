@@ -56,7 +56,7 @@ class OwnerEmailNotificationTests extends TestBase
 		$notification = new OwnerEmailCreatedNotification($userRepo, $attributeRepo);
 		$notification->Notify($reservation);
 
-		$expectedMessage = new ReservationCreatedEmail($user, $reservation, null, $attributeRepo);
+		$expectedMessage = new ReservationCreatedEmail($user, $reservation, null, $attributeRepo, $userRepo);
 
 		$lastMessage = $this->fakeEmailService->_LastMessage;
         $body = $lastMessage->Body();
@@ -85,7 +85,7 @@ class OwnerEmailNotificationTests extends TestBase
 		$notification = new OwnerEmailUpdatedNotification($userRepo, $attributeRepo);
 		$notification->Notify($reservation);
 
-		$expectedMessage = new ReservationUpdatedEmail($user, $reservation, null, $attributeRepo);
+		$expectedMessage = new ReservationUpdatedEmail($user, $reservation, null, $attributeRepo, $userRepo);
 
 		$lastMessage = $this->fakeEmailService->_LastMessage;
 		$this->assertInstanceOf('ReservationUpdatedEmail', $lastMessage);
@@ -111,7 +111,7 @@ class OwnerEmailNotificationTests extends TestBase
         $notification = new OwnerEmailDeletedNotification($userRepo, $attributeRepo);
         $notification->Notify($reservation);
 
-        $expectedMessage = new ReservationDeletedEmail($user, $reservation, null, $attributeRepo);
+        $expectedMessage = new ReservationDeletedEmail($user, $reservation, null, $attributeRepo, $userRepo);
 
         $lastMessage = $this->fakeEmailService->_LastMessage;
         $this->assertInstanceOf('ReservationDeletedEmail', $lastMessage);

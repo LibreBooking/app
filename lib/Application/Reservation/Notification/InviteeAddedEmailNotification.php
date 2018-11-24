@@ -51,7 +51,7 @@ class InviteeAddedEmailNotification implements IReservationNotification
 
 			$invitee = $this->userRepository->LoadById($userId);
 
-			$message = new InviteeAddedEmail($owner, $invitee, $reservationSeries, $this->attributeRepository);
+			$message = new InviteeAddedEmail($owner, $invitee, $reservationSeries, $this->attributeRepository, $this->userRepository);
 			ServiceLocator::GetEmailService()->Send($message);
 		}
 	}

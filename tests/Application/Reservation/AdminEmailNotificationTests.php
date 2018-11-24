@@ -88,8 +88,8 @@ class AdminEmailNotificationTests extends TestBase
 		$notification = new AdminEmailCreatedNotification($userRepo, $userRepo, $attributeRepo);
 		$notification->Notify($reservation);
 
-		$expectedMessage1 = new ReservationCreatedEmailAdmin($admin1, $owner, $reservation, $resource, $attributeRepo);
-		$expectedMessage2 = new ReservationCreatedEmailAdmin($admin2, $owner, $reservation, $resource, $attributeRepo);
+		$expectedMessage1 = new ReservationCreatedEmailAdmin($admin1, $owner, $reservation, $resource, $attributeRepo, $userRepo);
+		$expectedMessage2 = new ReservationCreatedEmailAdmin($admin2, $owner, $reservation, $resource, $attributeRepo, $userRepo);
 
 		$this->assertEquals(6, count($this->fakeEmailService->_Messages));
 
@@ -148,8 +148,8 @@ class AdminEmailNotificationTests extends TestBase
 		$notification = new AdminEmailUpdatedNotification($userRepo, $userRepo, $attributeRepo);
 		$notification->Notify($reservation);
 
-		$expectedMessage1 = new ReservationUpdatedEmailAdmin($admin1, $owner, $reservation, $resource, $attributeRepo);
-		$expectedMessage2 = new ReservationUpdatedEmailAdmin($admin2, $owner, $reservation, $resource, $attributeRepo);
+		$expectedMessage1 = new ReservationUpdatedEmailAdmin($admin1, $owner, $reservation, $resource, $attributeRepo, $userRepo);
+		$expectedMessage2 = new ReservationUpdatedEmailAdmin($admin2, $owner, $reservation, $resource, $attributeRepo, $userRepo);
 
 		$this->assertEquals(6, count($this->fakeEmailService->_Messages), "send one per person, no duplicates");
 
@@ -209,8 +209,8 @@ class AdminEmailNotificationTests extends TestBase
 		$notification = new AdminEmailApprovalNotification($userRepo, $userRepo, $attributeRepo);
 		$notification->Notify($reservation);
 
-		$expectedMessage1 = new ReservationRequiresApprovalEmailAdmin($admin1, $owner, $reservation, $resource, $attributeRepo);
-		$expectedMessage2 = new ReservationRequiresApprovalEmailAdmin($admin2, $owner, $reservation, $resource, $attributeRepo);
+		$expectedMessage1 = new ReservationRequiresApprovalEmailAdmin($admin1, $owner, $reservation, $resource, $attributeRepo, $userRepo);
+		$expectedMessage2 = new ReservationRequiresApprovalEmailAdmin($admin2, $owner, $reservation, $resource, $attributeRepo, $userRepo);
 
 		$this->assertEquals(6, count($this->fakeEmailService->_Messages));
 
@@ -295,8 +295,8 @@ class AdminEmailNotificationTests extends TestBase
 		$notification = new AdminEmailApprovalNotification($userRepo, $userRepo, $attributeRepo);
 		$notification->Notify($reservation);
 
-		$expectedMessage1 = new ReservationRequiresApprovalEmailAdmin($admin1, $owner, $reservation, $resource, $attributeRepo);
-		$expectedMessage2 = new ReservationRequiresApprovalEmailAdmin($admin2, $owner, $reservation, $resource, $attributeRepo);
+		$expectedMessage1 = new ReservationRequiresApprovalEmailAdmin($admin1, $owner, $reservation, $resource, $attributeRepo, $userRepo);
+		$expectedMessage2 = new ReservationRequiresApprovalEmailAdmin($admin2, $owner, $reservation, $resource, $attributeRepo, $userRepo);
 
 		$this->assertEquals(6, count($this->fakeEmailService->_Messages), "send one per person, no duplicates");
 
@@ -355,7 +355,7 @@ class AdminEmailNotificationTests extends TestBase
 		$notification = new AdminEmailDeletedNotification($userRepo, $userRepo, $attributeRepo);
 		$notification->Notify($reservation);
 
-		$expectedMessage1 = new ReservationDeletedEmailAdmin($admin1, $owner, $reservation, $resource, $attributeRepo);
+		$expectedMessage1 = new ReservationDeletedEmailAdmin($admin1, $owner, $reservation, $resource, $attributeRepo, $userRepo);
 
 		$this->assertEquals(6, count($this->fakeEmailService->_Messages), "send one per person, no duplicates");
 

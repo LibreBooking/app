@@ -71,7 +71,7 @@ class InvitationEmailNotificationTests extends TestBase
 		$notification->Notify($series);
 
 		$this->assertEquals(2, count($this->fakeEmailService->_Messages));
-		$lastExpectedMessage = new InviteeAddedEmail($owner, $invitee2, $series, $attributeRepo);
+		$lastExpectedMessage = new InviteeAddedEmail($owner, $invitee2, $series, $attributeRepo, $userRepo);
         $this->assertInstanceOf('InviteeAddedEmail', $this->fakeEmailService->_LastMessage);
 //		$this->assertEquals($lastExpectedMessage, $this->fakeEmailService->_LastMessage);
 

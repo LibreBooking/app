@@ -46,7 +46,7 @@ class ParticipantAddedEmailNotification implements IReservationNotification
 		{
 			$participant = $this->userRepository->LoadById($userId);
 
-			$message = new ParticipantAddedEmail($owner, $participant, $reservationSeries, $this->attributeRepository);
+			$message = new ParticipantAddedEmail($owner, $participant, $reservationSeries, $this->attributeRepository, $this->userRepository);
 			ServiceLocator::GetEmailService()->Send($message);
 		}
 	}

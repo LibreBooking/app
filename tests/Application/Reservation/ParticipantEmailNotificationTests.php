@@ -71,7 +71,7 @@ class ParticipantEmailNotificationTests extends TestBase
 		$notification->Notify($series);
 
 		$this->assertEquals(2, count($this->fakeEmailService->_Messages));
-		$lastExpectedMessage = new ParticipantAddedEmail($owner, $participant2, $series, $attributeRepo);
+		$lastExpectedMessage = new ParticipantAddedEmail($owner, $participant2, $series, $attributeRepo, $userRepo);
 		$this->assertInstanceOf('ParticipantAddedEmail', $this->fakeEmailService->_LastMessage);
 //		$this->assertEquals($lastExpectedMessage, $this->fakeEmailService->_LastMessage);
 	}
@@ -115,7 +115,7 @@ class ParticipantEmailNotificationTests extends TestBase
 		$notification->Notify($series);
 
 		$this->assertEquals(2, count($this->fakeEmailService->_Messages));
-		$lastExpectedMessage = new ParticipantAddedEmail($owner, $participant2, $series, $attributeRepo);
+		$lastExpectedMessage = new ParticipantAddedEmail($owner, $participant2, $series, $attributeRepo, $userRepo);
 		$this->assertInstanceOf('ParticipantDeletedEmail', $this->fakeEmailService->_LastMessage);
 		//		$this->assertEquals($lastExpectedMessage, $this->fakeEmailService->_LastMessage);
 	}

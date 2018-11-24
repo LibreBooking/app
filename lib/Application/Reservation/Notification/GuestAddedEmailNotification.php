@@ -49,13 +49,13 @@ class GuestAddedEmailNotification implements IReservationNotification
 
 		foreach ($instance->AddedInvitedGuests() as $guestEmail)
 		{
-			$message = new GuestAddedEmail($owner, $guestEmail, $reservationSeries, $this->attributeRepository);
+			$message = new GuestAddedEmail($owner, $guestEmail, $reservationSeries, $this->attributeRepository, $this->userRepository);
 			ServiceLocator::GetEmailService()->Send($message);
 		}
 
 		foreach ($instance->AddedParticipatingGuests() as $guestEmail)
 		{
-			$message = new GuestAddedEmail($owner, $guestEmail, $reservationSeries, $this->attributeRepository);
+			$message = new GuestAddedEmail($owner, $guestEmail, $reservationSeries, $this->attributeRepository, $this->userRepository);
 			ServiceLocator::GetEmailService()->Send($message);
 		}
 	}

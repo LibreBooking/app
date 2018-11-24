@@ -58,6 +58,38 @@ Description: {$Description|nl2br}
     <br/>
 {/foreach}
 
+{if $Participants|count >0}
+    <br/>
+    Participants:
+    {foreach from=$Participants item=user}
+        {$user->FullName()}
+        <br/>
+    {/foreach}
+{/if}
+
+{if $ParticipatingGuests|count >0}
+    {foreach from=$ParticipatingGuests item=email}
+        {$email}
+        <br/>
+    {/foreach}
+{/if}
+
+{if $Invitees|count >0}
+    <br/>
+    Invitees:
+    {foreach from=$Invitees item=user}
+        {$user->FullName()}
+        <br/>
+    {/foreach}
+{/if}
+
+{if $InvitedGuests|count >0}
+    {foreach from=$InvitedGuests item=email}
+        {$email}
+        <br/>
+    {/foreach}
+{/if}
+
 {if $Accessories|count > 0}
 	<br/>
 	Accessories:
