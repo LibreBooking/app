@@ -197,7 +197,7 @@ function RegisterGroups(SlimServer $server, SlimWebServiceRegistry $registry)
 {
     $groupRepository = new GroupRepository();
     $webService = new GroupsWebService($server, $groupRepository, $groupRepository);
-    $writeWebService = new GroupsWriteWebService($server, new GroupSaveController($groupRepository, new ResourceRepository()));
+    $writeWebService = new GroupsWriteWebService($server, new GroupSaveController($groupRepository, new ResourceRepository(), new ScheduleRepository()));
     $category = new SlimWebServiceRegistryCategory('Groups');
     $category->AddSecureGet('/', array($webService, 'GetGroups'), WebServices::AllGroups);
     $category->AddSecureGet('/:groupId', array($webService, 'GetGroup'), WebServices::GetGroup);

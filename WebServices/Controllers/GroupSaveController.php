@@ -117,11 +117,16 @@ class GroupSaveController implements IGroupSaveController
      * @var ResourceRepository
      */
     private $resourceRepository;
+    /**
+     * @var IScheduleRepository
+     */
+    private $scheduleRepository;
 
-    public function __construct(GroupRepository $groupRepository, ResourceRepository $resourceRepository)
+    public function __construct(GroupRepository $groupRepository, ResourceRepository $resourceRepository, IScheduleRepository $scheduleRepository)
     {
         $this->groupRepository = $groupRepository;
         $this->resourceRepository = $resourceRepository;
+        $this->scheduleRepository = $scheduleRepository;
     }
 
     /**
@@ -200,7 +205,7 @@ class GroupSaveController implements IGroupSaveController
 
     private function GetPresenter($page)
     {
-        return new ManageGroupsPresenter($page, $this->groupRepository, $this->resourceRepository);
+        return new ManageGroupsPresenter($page, $this->groupRepository, $this->resourceRepository, $this->scheduleRepository);
     }
 
     /**
