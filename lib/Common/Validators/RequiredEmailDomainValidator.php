@@ -39,13 +39,13 @@ class RequiredEmailDomainValidator extends ValidatorBase implements IValidator
 			return;
 		}
 
-		$allDomains = explode(',', $domains);
-
+		$allDomains = preg_split('/[\,\s;]/', $domains);
+		
 		$trimmed = trim($this->value);
 
 		foreach ($allDomains as $d)
 		{
-			$d = str_replace('@', '', $d);
+			$d = str_replace('@', '', trim($d));
 			if (BookedStringHelper::EndsWith($trimmed, '@' . $d))
 			{
 				return;
