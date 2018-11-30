@@ -211,7 +211,8 @@ class ResourceDisplayPage extends ActionPage implements IResourceDisplayPage, IR
         $this->Set('Today', $today);
         $this->Set('DailyLayout', $dailyLayout);
         $this->Set('SlotLabelFactory', new SlotLabelFactory(new NullUserSession()));
-        $this->Display('ResourceDisplay/resource-display-resource.tpl');
+//        $this->Display('ResourceDisplay/resource-display-resource.tpl');
+        $this->Display('ResourceDisplay/resource-display-resource-new.tpl');
     }
 
     public function SetIsAvailableNow($availableNow)

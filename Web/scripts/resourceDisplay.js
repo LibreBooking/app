@@ -77,6 +77,10 @@ function ResourceDisplay(opts) {
 		function refreshResource() {
 			ajaxGet(url, null, function (data) {
 				$('#placeholder').html(data);
+
+				var padding = parseInt($('body').css('padding-bottom'));
+				$('#resource-display').height($('body').height());
+
 				var formReserve = $('#formReserve');
 				formReserve.unbind('submit');
 				formReserve.unbind('onValidationFailed');

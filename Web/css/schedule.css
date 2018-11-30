@@ -375,48 +375,9 @@ a.toggle-sidebar {
   display: inline-block;
   padding-right: 5px;
 }
-.resource-display-available,
-.resource-display-unavailable,
-.resource-display-checkin {
-  background-color: #88CC88;
-  border: solid 1px #76c476;
-  line-height: 70px;
-  text-align: center;
-  font-size: 3em;
-  color: #fff;
-  -webkit-border-radius: 6px;
-  -moz-border-radius: 6px;
-  border-radius: 6px;
-  margin-top: 30px;
-  cursor: pointer;
-  font-weight: bold;
-}
-.resource-display-unavailable {
-  background-color: #AA3939;
-  border: solid 1px #973333;
-}
-.resource-display-name,
-.resource-display-date {
-  font-size: 2.5em;
-  font-weight: bold;
-  color: #585754;
-}
-.resource-display-date {
-  text-align: right;
-  color: #BCBCBC;
-}
 #scheduleListDropdown .caret {
   margin-left: 0;
   border-top: 8px dashed;
   border-right: 8px solid transparent;
   border-left: 8px solid transparent;
-}
-#page-resource-display-resource {
-  margin-top: 10px;
-}
-#page-resource-display-resource table.reservations td {
-  font-size: 1.1em;
-}
-#page-resource-display-resource table.reservations tbody td {
-  height: 60px;
 }

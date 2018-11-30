@@ -192,7 +192,17 @@ class ResourceDisplayPresenter extends ActionPresenter
 
         $dailyLayout = $this->dailyLayoutFactory->Create($reservations, $layout);
 
+        $slots = $dailyLayout->GetLayout($now, $resource->GetId());
+        foreach($slots as $slot)
+        {
+            if ($slot->IsReservable() && $slot->CollidesWith($now))
+            {
+                $available = true;
+            }
+        }
+
         $this->page->DisplayAvailability($dailyLayout, $now);
+//        $this->page->DisplayNewAvailability($dailyLayout, $now, $availableUntil);
     }
 
     public function Reserve()

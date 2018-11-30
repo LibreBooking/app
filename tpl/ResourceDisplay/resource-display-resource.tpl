@@ -51,6 +51,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
                     {assign var="class" value="reservable"}
                     {if $slot->IsPastDate(Date::Now())}
                         {assign var="class" value="pasttime"}
+                        {assign var=AvailableNow value=false}
                     {/if}
                 {else}
                     {if $slot->CollidesWith($Today)}
@@ -93,16 +94,16 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
                 <div class="input-group input-group-lg">
                     <span class="input-group-addon" id="email-addon"><span class="glyphicon glyphicon-envelope"></span></span>
                     <input id="emailAddress" type="email" class="form-control" placeholder="{translate key=Email}"
-                           aria-describedby="email-addon" required="required" {formname key=EMAIL}>
+                           aria-describedby="email-addon" required="required" {formname key=EMAIL} />
                 </div>
             </div>
-            <div class="clearfix"></div>
+            <div class="clearfix">&nbsp;</div>
             <div class="margin-top-25">
                 <div class="col-xs-6">
                     <div class="input-group input-group-lg has-feedback">
 				<span class="input-group-addon" id="starttime-addon"><span
                             class="glyphicon glyphicon-time"></span></span>
-                        <select class="form-control" aria-describedby="starttime-addon"
+                        <select title="Begin" class="form-control" aria-describedby="starttime-addon"
                                 id="beginPeriod" {formname key=BEGIN_PERIOD}>
                             {foreach from=$slots item=slot}
                                 {if $slot->IsReservable() && !$slot->IsPastDate($Today)}
@@ -116,7 +117,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
                     <div class="input-group input-group-lg">
 				<span class="input-group-addon" id="endtime-addon"><span
                             class="glyphicon glyphicon-time"></span></span>
-                        <select class="form-control input-lg" aria-describedby="endtime-addon"
+                        <select title="End" class="form-control input-lg" aria-describedby="endtime-addon"
                                 id="endPeriod" {formname key=END_PERIOD}>
                             {foreach from=$slots item=slot}
                                 {if $slot->IsReservable() && !$slot->IsPastDate($Today)}
@@ -143,7 +144,6 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
                     {/foreach}
                     {if $Attributes|count % 2 == 1}
                         <div class="col-xs-6">&nbsp;</div>
-                        </div>
                     {/if}
                 </div>
             {/if}
@@ -156,18 +156,14 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 {/if}
 
 {if $AvailableNow}
-<div class="col-xs-12">
-    <div class="resource-display-available reservePrompt"
-         data-next-time="{formatdate date=$NextAvailable key=url_full}">
-        {translate key=Available} - {translate key=Reserve}
-    </div>
-</div>
-{else}
-{if $CheckInRequired}
-<div class="col-xs-6">
-    {else}
     <div class="col-xs-12">
-        {/if}
+        <div class="resource-display-available reservePrompt"
+             data-next-time="{formatdate date=$NextAvailable key=url_full}">
+            {translate key=Available} - {translate key=Reserve}
+        </div>
+    </div>
+{else}
+    <div class="col-xs-12">
         {if $NextAvailable != false}
         <div class="resource-display-unavailable reservePrompt"
              data-next-time="{formatdate date=$NextAvailable key=url_full}">
@@ -179,7 +175,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
         </div>
 
         {if $CheckInRequired}
-            <div class="col-xs-6">
+            <div class="col-xs-12">
                 <form role="form" method="post" id="formCheckin"
                       action="ajax/reservation_checkin.php?action={ReservationAction::Checkin}">
                     {csrf_token}
@@ -192,4 +188,11 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
                 </form>
             </div>
         {/if}
-        {/if}
+    </div>
+{/if}
+
+<style type="text/css">
+    body {
+        /*background-color: red;*/
+    }
+</style>

@@ -40,7 +40,7 @@ class RequiredEmailDomainValidator extends ValidatorBase implements IValidator
 		}
 
 		$allDomains = preg_split('/[\,\s;]/', $domains);
-		
+
 		$trimmed = trim($this->value);
 
 		foreach ($allDomains as $d)
