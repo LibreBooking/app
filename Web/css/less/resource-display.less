@@ -45,8 +45,6 @@
   color: @lightest-gray;
 }
 
-
-
 .resource-display-date {
   text-align: right;
   color: @mid-gray;
@@ -123,14 +121,14 @@
       font-size: 1.1em;
     }
     tbody td {
-      height: 20px;
+      height: 26px;
     }
 
     margin-bottom:15px;
   }
 
   #reservation-box-wrapper {
-    position:relative;
+    position:absolute;
     width:100%;
     height: 100%;
     text-align:center;
@@ -144,14 +142,13 @@
     position: absolute;
     z-index:2;
     margin: 0 auto;
+    left: 5%;
     width:90%;
     border: solid 2px @dark-gray;
     background-color: #fff;
     .rounded();
-    top:30%;
     padding:16px;
-    opacity: 1;
-    filter: alpha(opacity=100);
+    display:none;
   }
 
   .action-reserve {
@@ -159,7 +156,7 @@
     line-height:50px;
     border: solid 1px @primary-green;
     text-align:center;
-    background-color:@light-gray;
+    background-color: lighten( @primary-green, 30%);
     .rounded(4px);
     text-transform: uppercase;
   }

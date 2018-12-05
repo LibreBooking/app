@@ -56,7 +56,6 @@ function ResourceDisplay(opts) {
     ResourceDisplay.prototype.initDisplay = function (opts) {
 
         var url = opts.url;
-        var checkinUrl = opts.checkinUrl;
 
         refreshResource();
 
@@ -73,8 +72,8 @@ function ResourceDisplay(opts) {
         });
 
         elements.placeholder.on('click', '#reservePopup', function (e) {
-            showPopup();
             pauseRefresh();
+            showPopup();
         });
 
         elements.placeholder.on('click', '#reserveCancel', function (e) {
@@ -83,16 +82,16 @@ function ResourceDisplay(opts) {
             refreshResource();
         });
 
-        elements.placeholder.on('submit', '#formReserve', function(e){
+        elements.placeholder.on('submit', '#formReserve', function (e) {
             e.preventDefault();
             e.stopPropagation();
 
-            var beforeReserve = function() {
+            var beforeReserve = function () {
                 $('#validationErrors').addClass('no-show');
                 showWait();
             };
 
-            var afterReserve = function(data) {
+            var afterReserve = function (data) {
                 var validationErrors = $('#validationErrors');
                 if (data.success) {
                     validationErrors.find('ul').empty().addClass('no-show');
@@ -112,22 +111,22 @@ function ResourceDisplay(opts) {
             ajaxPost($('#formReserve'), null, beforeReserve, afterReserve);
         });
 
-        elements.placeholder.on('click', '.slot', function(e) {
+        elements.placeholder.on('click', '.slot', function (e) {
             var slot = $(e.target);
             var begin = $('#beginPeriod');
             begin.val(slot.data('begin'));
             begin.trigger('change');
         });
 
-        elements.placeholder.on('click', '#checkin', function(e) {
+        elements.placeholder.on('click', '#checkin', function (e) {
             e.preventDefault();
             e.stopPropagation();
 
-            var beforeCheckin = function() {
+            var beforeCheckin = function () {
                 showWait();
             };
 
-            var afterCheckin = function() {
+            var afterCheckin = function () {
                 refreshResource();
                 hideWait();
             };
@@ -138,8 +137,14 @@ function ResourceDisplay(opts) {
         var beginIndex = 0;
 
         function showPopup() {
-            elements.reservationPopup = $('#reservation-box-wrapper');
-            elements.reservationPopup.show();
+            $('#reservation-box-wrapper').show();
+            var reservationBox = $('#reservation-box');
+            reservationBox.show();
+            var offsetFromTop = ($('body').height() - reservationBox.height()) / 2;
+            reservationBox.css(
+                {top: offsetFromTop + 'px'}
+            );
+
             $('#emailAddress').focus();
         }
 
@@ -148,7 +153,8 @@ function ResourceDisplay(opts) {
         }
 
         function hidePopup() {
-            elements.reservationPopup.hide();
+            $('#reservation-box').hide();
+            $('#reservation-box-wrapper').hide();
         }
 
         function resumeRefresh() {
@@ -160,23 +166,12 @@ function ResourceDisplay(opts) {
                 return;
             }
             ajaxGet(url, null, function (data) {
+                if (!_refreshEnabled) {
+                    return;
+                }
                 elements.placeholder.html(data);
 
-                // var padding = parseInt($('body').css('padding-bottom'));
                 $('#resource-display').height($('body').height());
-
-                // elements.reservationForm = $('#formReserve');
-                // elements.reservationForm.unbind('submit');
-                // elements.reservationForm.unbind('onValidationFailed');
-                // elements.reservationForm.bind('onValidationFailed', function () {
-                //     hideWait();
-                //     $('.reserveResults').addClass('no-show');
-                // });
-                //
-                // ConfigureAsyncForm(elements.reservationForm, function () {
-                //     return elements.reservationForm.attr('action');
-                // }, afterReserve, null, {onBeforeSubmit: showWait});
-
 
                 var formCheckin = $('#formCheckin');
                 formCheckin.unbind('submit');
@@ -206,21 +201,6 @@ function ResourceDisplay(opts) {
                     beginIndex = newIndex;
                 })
             });
-
-            // function afterReserve(data) {
-            //     var validationErrors = $('#validationErrors');
-            //     if (data.success) {
-            //         validationErrors.find('ul').empty().addClass('no-show');
-            //         refreshResource();
-            //     }
-            //     else {
-            //         validationErrors.find('ul').empty().html($.map(data.errors, function (item) {
-            //             return "<li>" + item + "</li>";
-            //         }));
-            //         validationErrors.removeClass('no-show');
-            //     }
-            //     hideWait();
-            // }
 
             function beforeCheckin() {
                 $('#referenceNumber').val($('td[data-checkin="1"]').attr('data-refnum'));

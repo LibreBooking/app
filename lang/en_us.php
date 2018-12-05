@@ -766,6 +766,7 @@ class en_us extends Language
         $strings['NoReservationsFound'] = 'No Reservations Found';
         $strings['EmailReservation'] = 'Email Reservation';
         $strings['AdHocMeeting'] = 'Ad hoc Meeting';
+        $strings['NextReservation'] = 'Next Reservation';
         // End Strings
 
 		// Install

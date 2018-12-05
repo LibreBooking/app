@@ -230,6 +230,7 @@ class ResourceDisplayPage extends ActionPage implements IResourceDisplayPage, IR
     {
         $this->Set('TimeFormat', Resources::GetInstance()->GetDateFormat('period_time'));
         $this->Set('Today', $today);
+        $this->Set('Now', Date::Now());
         $this->Set('DailyLayout', $dailyLayout);
         $this->Set('SlotLabelFactory', new SlotLabelFactory(new NullUserSession()));
         $this->Set('CurrentReservation', $current);
@@ -238,8 +239,7 @@ class ResourceDisplayPage extends ActionPage implements IResourceDisplayPage, IR
         $this->Set('RequiresCheckin', $requiresCheckin);
         $this->Set('CheckinReferenceNumber', $checkinReferenceNumber);
         $this->Set('NoTitle', Resources::GetInstance()->GetString('NoTitleLabel'));
-//        $this->Display('ResourceDisplay/resource-display-resource.tpl');
-        $this->Display('ResourceDisplay/resource-display-resource-new.tpl');
+        $this->Display('ResourceDisplay/resource-display-resource.tpl');
     }
 
     public function SetIsAvailableNow($availableNow)
