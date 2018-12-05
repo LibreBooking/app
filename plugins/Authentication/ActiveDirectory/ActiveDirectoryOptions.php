@@ -147,7 +147,6 @@ class ActiveDirectoryOptions
      */
     public function CleanUsername()
     {
-        $converter = new BooleanConverter();
-        return !$converter->Convert($this->_options[ActiveDirectoryConfig::PREVENT_CLEAN_USERNAME]);
+        return !$this->GetConfig(ActiveDirectoryConfig::PREVENT_CLEAN_USERNAME, new BooleanConverter());
     }
 }

@@ -20,6 +20,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 class TestReservationItemView extends ReservationItemView
 {
+    public $_RequiresCheckin = false;
+
 	/**
 	 * @param null|string $id
 	 * @param Date $startDate
@@ -44,6 +46,11 @@ class TestReservationItemView extends ReservationItemView
 		$this->SeriesId = $seriesId;
 		return $this;
 	}
+
+    public function RequiresCheckin()
+    {
+        return $this->_RequiresCheckin;
+    }
 }
 
 class TestBlackoutItemView extends BlackoutItemView

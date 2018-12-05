@@ -184,6 +184,11 @@ class ReservationListItem
     {
         return $this->item->GetUserName();
     }
+
+    public function RequiresCheckin()
+    {
+        return $this->item->RequiresCheckin();
+    }
 }
 
 class BufferItem extends ReservationListItem

@@ -148,7 +148,7 @@ class LdapOptions
      */
     public function Filter()
     {
-        return $this->_options[LdapConfig::FILTER];
+        return $this->GetConfig(LdapConfig::FILTER);
     }
 
     /**
@@ -156,7 +156,7 @@ class LdapOptions
      */
     public function SyncGroups()
     {
-        return $this->_options[LdapConfig::SYNC_GROUPS];
+        return $this->GetConfig(LdapConfig::SYNC_GROUPS, new BooleanConverter());
     }
 
     /**
@@ -164,8 +164,6 @@ class LdapOptions
      */
     public function CleanUsername()
     {
-        $converter = new BooleanConverter();
-        return !$converter->Convert($this->_options[LdapConfig::PREVENT_CLEAN_USERNAME]);
+        return !$this->GetConfig(LdapConfig::PREVENT_CLEAN_USERNAME, new BooleanConverter());
     }
-
 }

@@ -27,8 +27,9 @@ class ReservationCanBeCheckedInRule implements IReservationValidationRule
 		$atLeastOneReservationRequiresCheckIn = false;
 		$checkinMinutes = Configuration::Instance()->GetSectionKey(ConfigSection::RESERVATION, ConfigKeys::RESERVATION_CHECKIN_MINUTES, new IntConverter());
 
-		$tooEarly = Date::Now()->LessThan($reservationSeries->CurrentInstance()->StartDate()->AddMinutes(-$checkinMinutes));
-		$tooLate = Date::Now()->GreaterThanOrEqual($reservationSeries->CurrentInstance()->EndDate());
+        $reservation = $reservationSeries->CurrentInstance();
+        $tooEarly = Date::Now()->LessThan($reservation->StartDate()->AddMinutes(-$checkinMinutes));
+		$tooLate = Date::Now()->GreaterThanOrEqual($reservation->EndDate());
 
 		foreach ($reservationSeries->AllResources() as $resource)
 		{
@@ -37,8 +38,10 @@ class ReservationCanBeCheckedInRule implements IReservationValidationRule
 				$atLeastOneReservationRequiresCheckIn = true;
 			}
 
-			if ($this->PastCheckinTime($resource, $reservationSeries) || $tooEarly || $tooLate)
+            $pastCheckinTime = $this->PastCheckinTime($resource, $reservationSeries);
+            if ($pastCheckinTime || $tooEarly || $tooLate)
 			{
+			    Log::Debug('Reservation %s cannot be checked in to. Past checkin time: %s, Too early: %s, Past end: %s', $reservation->ReferenceNumber(), $pastCheckinTime, $tooEarly, $tooLate);
 				$isOk = false;
 				break;
 			}

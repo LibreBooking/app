@@ -1,34 +1,62 @@
+{function name=displayReservation}
+    <div class="resource-display-reservation">
+        {format_date date=$reservation->StartDate() key=res_popup_time timezone=$Timezone}
+        - {format_date date=$reservation->EndDate() key=res_popup_time timezone=$Timezone}
+        | {$reservation->GetUserName()}
+        <div class="title">{$reservation->GetTitle()|default:$NoTitle}</div>
+    </div>
+{/function}
+
 <div id="resource-display" class="resource-display">
     <div class="col-xs-7 left-panel">
-        <div class="resource-display-name">Conference Room 1</div>
-        {* unavailable
-        <div class="resource-display-unavailable">Unavailable</div>*}
-        {*<div class="resource-display-reservation">6:00 AM - 12:00 PM | Nick Korbel*}
-        {*<div class="title">Some title of reservation here</div>*}
-        {*</div>*}
+        <div class="resource-display-name">{$ResourceName}</div>
 
-        {* available *}
-        <div class="resource-display-available">Available</div>
+        <div class="resource-display-current">
+            {if $AvailableNow}
+                <div class="resource-display-available">Available</div>
+            {else}
+                <div class="resource-display-unavailable">Unavailable</div>
+            {/if}
+
+            {if $CurrentReservation != null}
+                {call name=displayReservation reservation=$CurrentReservation}
+            {/if}
+        </div>
 
         <div class="left-panel-bottom">
             <div class="resource-display-heading">Next Reservation</div>
-            {* next reservation *}
-            {* <div class="resource-display-reservation">12:00 PM - 4:00 PM | Someone Else*}
-            {*<div class="title">Another title</div>*}
-            {*</div>*}
-            {* requires checkin *}
-            {* <div class="resource-display-action">Check In</div>*}
-            {* available *}
-            <div class="resource-display-reservation">None</div>
-            <div class="resource-display-action"><i class="fa fa-plus"></i> Reserve</div>
+            {if $NextReservation != null}
+                {call name=displayReservation reservation=$NextReservation}
+            {else}
+                <div class="resource-display-reservation">None</div>
+            {/if}
+
+            {if $RequiresCheckin}
+            <form role="form" method="post" id="formCheckin" action="{$smarty.server.SCRIPT_NAME}?action=checkin" class="inline-block">
+                <input type="hidden" {formname key=REFERENCE_NUMBER} value="{$CheckinReferenceNumber}"/>
+                <div class="resource-display-action" id="checkin"><i class="fa fa-check"></i> Check In</div>
+            </form>
+            {/if}
+            <div class="resource-display-action" id="reservePopup"><i class="fa fa-plus"></i> Reserve</div>
         </div>
     </div>
     <div class="col-xs-5 right-panel">
-        <div class="time">7:31 AM</div>
-        <div class="date">Tuesday, November 27</div>
+        <div class="time">{formatdate date=$Today key=period_time timezone=$Timezone}</div>
+        <div class="date">{formatdate date=$Today key=schedule_daily timezone=$Timezone}</div>
         <div class="upcoming-reservations">
             <div class="resource-display-heading">Upcoming Reservations</div>
-            <div class="resource-display-none">None</div>
+            {if $UpcomingReservations|count > 0}
+                {foreach from=$UpcomingReservations item=r name=upcoming}
+                    <div class="resource-display-upcoming">
+                        {call name=displayReservation reservation=$r}
+                    </div>
+                    {if !$smarty.foreach.upcoming.last}
+                        <hr class="upcoming-separator"/>
+                    {/if}
+                {/foreach}
+            {else}
+                <div class="resource-display-none">None</div>
+            {/if}
         </div>
     </div>
 
@@ -43,91 +71,42 @@
                             </ul>
                         </div>
 
-                        <div id="reserveResults" class="no-show">
-                        </div>
+                        {*<div id="reserveResults" class="no-show">*}
+                        {*</div>*}
 
                         <div>
-                            {* schedule *}
                             <table class="reservations">
                                 <thead>
                                 <tr>
-                                    <td class="reslabel" colspan="2">12:00 AM</td>
-                                    <td class="reslabel" colspan="2">1:00 AM</td>
-                                    <td class="reslabel" colspan="2">2:00 AM</td>
-                                    <td class="reslabel" colspan="2">3:00 AM</td>
-                                    <td class="reslabel" colspan="2">4:00 AM</td>
-                                    <td class="reslabel" colspan="2">5:00 AM</td>
-                                    <td class="reslabel" colspan="2">6:00 AM</td>
-                                    <td class="reslabel" colspan="2">7:00 AM</td>
-                                    <td class="reslabel" colspan="2">8:00 AM</td>
-                                    <td class="reslabel" colspan="2">9:00 AM</td>
-                                    <td class="reslabel" colspan="2">10:00 AM</td>
-                                    <td class="reslabel" colspan="2">11:00 AM</td>
-                                    <td class="reslabel" colspan="2">12:00 PM</td>
-                                    <td class="reslabel" colspan="2">1:00 PM</td>
-                                    <td class="reslabel" colspan="2">2:00 PM</td>
-                                    <td class="reslabel" colspan="2">3:00 PM</td>
-                                    <td class="reslabel" colspan="2">4:00 PM</td>
-                                    <td class="reslabel" colspan="2">5:00 PM</td>
-                                    <td class="reslabel" colspan="2">6:00 PM</td>
-                                    <td class="reslabel" colspan="2">7:00 PM</td>
-                                    <td class="reslabel" colspan="2">8:00 PM</td>
-                                    <td class="reslabel" colspan="2">9:00 PM</td>
-                                    <td class="reslabel" colspan="2">10:00 PM</td>
-                                    <td class="reslabel" colspan="2">11:00 PM</td>
+                                    {foreach from=$DailyLayout->GetPeriods($Today, true) item=period}
+                                        <td class="reslabel" colspan="{$period->Span()}">{$period->Label($Today)}</td>
+                                    {/foreach}
                                 </tr>
                                 </thead>
                                 <tbody>
                                 <tr>
-                                    <td colspan="1" class="slot pasttime" data-refnum="" data-checkin="">&nbsp;</td>
-                                    <td colspan="1" class="slot pasttime" data-refnum="" data-checkin="">&nbsp;</td>
-                                    <td colspan="1" class="slot pasttime" data-refnum="" data-checkin="">&nbsp;</td>
-                                    <td colspan="1" class="slot pasttime" data-refnum="" data-checkin="">&nbsp;</td>
-                                    <td colspan="1" class="slot pasttime" data-refnum="" data-checkin="">&nbsp;</td>
-                                    <td colspan="1" class="slot pasttime" data-refnum="" data-checkin="">&nbsp;</td>
-                                    <td colspan="1" class="slot pasttime" data-refnum="" data-checkin="">&nbsp;</td>
-                                    <td colspan="1" class="slot pasttime" data-refnum="" data-checkin="">&nbsp;</td>
-                                    <td colspan="1" class="slot pasttime" data-refnum="" data-checkin="">&nbsp;</td>
-                                    <td colspan="1" class="slot pasttime" data-refnum="" data-checkin="">&nbsp;</td>
-                                    <td colspan="1" class="slot pasttime" data-refnum="" data-checkin="">&nbsp;</td>
-                                    <td colspan="1" class="slot pasttime" data-refnum="" data-checkin="">&nbsp;</td>
-                                    <td colspan="1" class="slot pasttime" data-refnum="" data-checkin="">&nbsp;</td>
-                                    <td colspan="1" class="slot pasttime" data-refnum="" data-checkin="">&nbsp;</td>
-                                    <td colspan="1" class="slot pasttime" data-refnum="" data-checkin="">&nbsp;</td>
-                                    <td colspan="1" class="slot pasttime" data-refnum="" data-checkin="">&nbsp;</td>
-                                    <td colspan="1" class="slot reservable" data-refnum="" data-checkin="">&nbsp;</td>
-                                    <td colspan="1" class="slot reservable" data-refnum="" data-checkin="">&nbsp;</td>
-                                    <td colspan="1" class="slot reservable" data-refnum="" data-checkin="">&nbsp;</td>
-                                    <td colspan="1" class="slot reservable" data-refnum="" data-checkin="">&nbsp;</td>
-                                    <td colspan="1" class="slot reservable" data-refnum="" data-checkin="">&nbsp;</td>
-                                    <td colspan="1" class="slot reservable" data-refnum="" data-checkin="">&nbsp;</td>
-                                    <td colspan="1" class="slot reservable" data-refnum="" data-checkin="">&nbsp;</td>
-                                    <td colspan="1" class="slot reservable" data-refnum="" data-checkin="">&nbsp;</td>
-                                    <td colspan="1" class="slot reservable" data-refnum="" data-checkin="">&nbsp;</td>
-                                    <td colspan="1" class="slot reservable" data-refnum="" data-checkin="">&nbsp;</td>
-                                    <td colspan="1" class="slot reservable" data-refnum="" data-checkin="">&nbsp;</td>
-                                    <td colspan="1" class="slot reservable" data-refnum="" data-checkin="">&nbsp;</td>
-                                    <td colspan="1" class="slot reservable" data-refnum="" data-checkin="">&nbsp;</td>
-                                    <td colspan="1" class="slot reservable" data-refnum="" data-checkin="">&nbsp;</td>
-                                    <td colspan="1" class="slot reservable" data-refnum="" data-checkin="">&nbsp;</td>
-                                    <td colspan="1" class="slot reservable" data-refnum="" data-checkin="">&nbsp;</td>
-                                    <td colspan="1" class="slot reservable" data-refnum="" data-checkin="">&nbsp;</td>
-                                    <td colspan="1" class="slot reservable" data-refnum="" data-checkin="">&nbsp;</td>
-                                    <td colspan="1" class="slot reservable" data-refnum="" data-checkin="">&nbsp;</td>
-                                    <td colspan="1" class="slot reservable" data-refnum="" data-checkin="">&nbsp;</td>
-                                    <td colspan="1" class="slot reservable" data-refnum="" data-checkin="">&nbsp;</td>
-                                    <td colspan="1" class="slot reservable" data-refnum="" data-checkin="">&nbsp;</td>
-                                    <td colspan="1" class="slot reservable" data-refnum="" data-checkin="">&nbsp;</td>
-                                    <td colspan="1" class="slot reservable" data-refnum="" data-checkin="">&nbsp;</td>
-                                    <td colspan="1" class="slot reservable" data-refnum="" data-checkin="">&nbsp;</td>
-                                    <td colspan="1" class="slot reservable" data-refnum="" data-checkin="">&nbsp;</td>
-                                    <td colspan="1" class="slot reservable" data-refnum="" data-checkin="">&nbsp;</td>
-                                    <td colspan="1" class="slot reservable" data-refnum="" data-checkin="">&nbsp;</td>
-                                    <td colspan="1" class="slot reservable" data-refnum="" data-checkin="">&nbsp;</td>
-                                    <td colspan="1" class="slot reservable" data-refnum="" data-checkin="">&nbsp;</td>
-                                    <td colspan="1" class="slot reservable" data-refnum="" data-checkin="">&nbsp;</td>
-                                    <td colspan="1" class="slot reservable" data-refnum="" data-checkin="">&nbsp;</td>
-
+                                    {assign var=slots value=$DailyLayout->GetLayout($Today, $ResourceId)}
+                                    {foreach from=$slots item=slot}
+                                        {assign var="referenceNumber" value=""}
+                                        {if $slot->IsReserved()}
+                                            {assign var="class" value="reserved"}
+                                            {assign var="referenceNumber" value=$slot->Reservation()->ReferenceNumber}
+                                        {elseif $slot->IsReservable()}
+                                            {assign var="class" value="reservable"}
+                                            {if $slot->IsPastDate(Date::Now())}
+                                                {assign var="class" value="pasttime"}
+                                            {/if}
+                                        {else}
+                                            {assign var="class" value="unreservable"}
+                                        {/if}
+                                        {if $slot->HasCustomColor()}
+                                            {assign var=color value='style="background-color:'|cat:$slot->Color()|cat:';color:'|cat:$slot->TextColor()|cat:';"'}
+                                        {/if}
+                                        <td colspan="{$slot->PeriodSpan()}" {$color} data-begin="{$slot->Begin()}"
+                                            data-end="{$slot->End()}"
+                                            class="slot {$class}"
+                                            data-refnum="{$referenceNumber}">{$slot->Label($SlotLabelFactory)|escape|default:'&nbsp;'}</td>
+                                    {/foreach}
                                 </tr>
                                 </tbody>
                             </table>
@@ -145,8 +124,9 @@
                 <div class="row margin-top-25">
                     <div class="col-xs-6">
                         <div class="input-group input-group-lg has-feedback">
-				<span class="input-group-addon" id="starttime-addon"><span
-                            class="glyphicon glyphicon-time"></span></span>
+                            <span class="input-group-addon" id="starttime-addon">
+                                <span class="glyphicon glyphicon-time"></span>
+                            </span>
                             <select title="Begin" class="form-control" aria-describedby="starttime-addon"
                                     id="beginPeriod" {formname key=BEGIN_PERIOD}>
                                 {foreach from=$slots item=slot}
@@ -159,8 +139,8 @@
                     </div>
                     <div class="col-xs-6">
                         <div class="input-group input-group-lg">
-				<span class="input-group-addon" id="endtime-addon"><span
-                            class="glyphicon glyphicon-time"></span></span>
+				            <span class="input-group-addon" id="endtime-addon"><span
+                                        class="glyphicon glyphicon-time"></span></span>
                             <select title="End" class="form-control input-lg" aria-describedby="endtime-addon"
                                     id="endPeriod" {formname key=END_PERIOD}>
                                 {foreach from=$slots item=slot}
@@ -197,7 +177,7 @@
                 <div class="row margin-top-25">
                     <div class="col-xs-12">
                         <input type="submit" class="action-reserve col-xs-12" value="Reserve"/>
-                        <a href="#" class="action-cancel">Cancel</a>
+                        <a href="#" class="action-cancel" id="reserveCancel">Cancel</a>
                     </div>
                 </div>
 

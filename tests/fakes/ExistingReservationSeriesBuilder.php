@@ -206,6 +206,8 @@ class TestHelperExistingReservationSeries extends ExistingReservationSeries
 	public $_WasDeleted = false;
 
     public $_DeleteReason;
+    public $_WasCheckedIn = false;
+    public $_CheckedInBy;
 
     public function __construct()
 	{
@@ -260,4 +262,10 @@ class TestHelperExistingReservationSeries extends ExistingReservationSeries
 		$this->_DeleteReason = $reason;
 		parent::Delete($deletedBy);
 	}
+
+	public function Checkin(UserSession $checkedInBy)
+    {
+       $this->_WasCheckedIn = true;
+       $this->_CheckedInBy = $checkedInBy;
+    }
 }

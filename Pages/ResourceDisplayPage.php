@@ -59,7 +59,16 @@ interface IResourceDisplayPage extends IPage, IActionPage
 
     public function BindResource(BookableResource $resource);
 
-    public function DisplayAvailability(IDailyLayout $dailyLayout, Date $today);
+    /**
+     * @param IDailyLayout $dailyLayout
+     * @param Date $today
+     * @param ReservationListItem|null $current
+     * @param ReservationListItem|null $next
+     * @param ReservationListItem[] $upcoming
+     * @param bool $requiresCheckin
+     * @param string $checkinReferenceNumber
+     */
+    public function DisplayAvailability(IDailyLayout $dailyLayout, Date $today, $current, $next, $upcoming, $requiresCheckin, $checkinReferenceNumber);
 
     /**
      * @param bool $availableNow
@@ -92,6 +101,12 @@ interface IResourceDisplayPage extends IPage, IActionPage
     public function SetReservationSaveResults($success, $resultCollector);
 
     /**
+     * @param bool $success
+     * @param ReservationResultCollector $resultCollector
+     */
+    public function SetReservationCheckinResults($success, $resultCollector);
+
+    /**
      * @param Schedule $schedule
      */
     public function BindSchedule(Schedule $schedule);
@@ -105,6 +120,11 @@ interface IResourceDisplayPage extends IPage, IActionPage
      * @return AttributeFormElement[]|array
      */
     public function GetAttributes();
+
+    /**
+     * @return string
+     */
+    public function GetReferenceNumber();
 }
 
 class ResourceDisplayPage extends ActionPage implements IResourceDisplayPage, IRequestedResourcePage
@@ -130,7 +150,8 @@ class ResourceDisplayPage extends ActionPage implements IResourceDisplayPage, IR
                     new UserRepository(),
                     new GuestRegistrationNotificationStrategy(),
                     new GuestReservationPermissionStrategy($this))),
-            new AttributeService(new AttributeRepository()));
+            new AttributeService(new AttributeRepository()),
+            new ReservationRepository());
     }
 
     public function ProcessAction()
@@ -205,12 +226,18 @@ class ResourceDisplayPage extends ActionPage implements IResourceDisplayPage, IR
         $this->Set('ResourceId', $resource->GetId());
     }
 
-    public function DisplayAvailability(IDailyLayout $dailyLayout, Date $today)
+    public function DisplayAvailability(IDailyLayout $dailyLayout, Date $today, $current, $next, $upcoming, $requiresCheckin, $checkinReferenceNumber)
     {
         $this->Set('TimeFormat', Resources::GetInstance()->GetDateFormat('period_time'));
         $this->Set('Today', $today);
         $this->Set('DailyLayout', $dailyLayout);
         $this->Set('SlotLabelFactory', new SlotLabelFactory(new NullUserSession()));
+        $this->Set('CurrentReservation', $current);
+        $this->Set('NextReservation', $next);
+        $this->Set('UpcomingReservations', $upcoming);
+        $this->Set('RequiresCheckin', $requiresCheckin);
+        $this->Set('CheckinReferenceNumber', $checkinReferenceNumber);
+        $this->Set('NoTitle', Resources::GetInstance()->GetString('NoTitleLabel'));
 //        $this->Display('ResourceDisplay/resource-display-resource.tpl');
         $this->Display('ResourceDisplay/resource-display-resource-new.tpl');
     }
@@ -251,6 +278,11 @@ class ResourceDisplayPage extends ActionPage implements IResourceDisplayPage, IR
         $this->SetJson(array('success' => $success, 'errors' => $resultCollector->Errors));
     }
 
+    public function SetReservationCheckinResults($success, $resultCollector)
+    {
+        $this->SetJson(array('success' => $success, 'errors' => $resultCollector->Errors));
+    }
+
     public function GetRequestedResourceId()
     {
         return $this->GetResourceId();
@@ -275,5 +307,10 @@ class ResourceDisplayPage extends ActionPage implements IResourceDisplayPage, IR
     public function GetAttributes()
     {
         return AttributeFormParser::GetAttributes($this->GetForm(FormKeys::ATTRIBUTE_PREFIX));
+    }
+
+    public function GetReferenceNumber()
+    {
+        return $this->GetForm(FormKeys::REFERENCE_NUMBER);
     }
 }

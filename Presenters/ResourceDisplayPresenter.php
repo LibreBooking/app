@@ -37,9 +37,8 @@ class ResourceDisplayPresenter extends ActionPresenter
      * @var IResourceRepository
      */
     private $resourceRepository;
-
     /**
-     * @var IReservationViewRepository
+     * @var IReservationService
      */
     private $reservationService;
     /**
@@ -67,12 +66,22 @@ class ResourceDisplayPresenter extends ActionPresenter
     /**
      * @var IReservationHandler
      */
-    public $reservationHandler;
+    public $reservationCreateHandler;
+
+    /**
+     * @var IReservationHandler
+     */
+    public $reservationCheckinHandler;
 
     /**
      * @var IAttributeService
      */
     private $attributeService;
+
+    /**
+     * @var IReservationRepository
+     */
+    private $reservationRepository;
 
     public function __construct(IResourceDisplayPage $page,
                                 IResourceRepository $resourceRepository,
@@ -82,7 +91,8 @@ class ResourceDisplayPresenter extends ActionPresenter
                                 IScheduleRepository $scheduleRepository,
                                 IDailyLayoutFactory $dailyLayoutFactory,
                                 IGuestUserService $guestUserService,
-                                IAttributeService $attributeService)
+                                IAttributeService $attributeService,
+                                IReservationRepository $reservationRepository)
     {
         parent::__construct($page);
         $this->page = $page;
@@ -94,10 +104,12 @@ class ResourceDisplayPresenter extends ActionPresenter
         $this->dailyLayoutFactory = $dailyLayoutFactory;
         $this->guestUserService = $guestUserService;
         $this->attributeService = $attributeService;
+        $this->reservationRepository = $reservationRepository;
 
         parent::AddAction('login', 'Login');
         parent::AddAction('activate', 'Activate');
         parent::AddAction('reserve', 'Reserve');
+        parent::AddAction('checkin', 'Checkin');
     }
 
     public function PageLoad()
@@ -166,8 +178,7 @@ class ResourceDisplayPresenter extends ActionPresenter
 
         $layout = $this->scheduleRepository->GetLayout($scheduleId, new ScheduleLayoutFactory($timezone));
         $slots = $layout->GetLayout($now, true);
-        if ($slots[count($slots)-1]->EndDate()->LessThanOrEqual($now))
-        {
+        if ($slots[count($slots) - 1]->EndDate()->LessThanOrEqual($now)) {
             $now = $now->AddDays(1)->GetDate();
         }
 
@@ -179,10 +190,8 @@ class ResourceDisplayPresenter extends ActionPresenter
 
         $requiredAttributes = array();
         /** @var Attribute $attribute */
-        foreach ($attributes as $attribute)
-        {
-            if ($attribute->Required())
-            {
+        foreach ($attributes as $attribute) {
+            if ($attribute->Required()) {
                 $requiredAttributes[] = $attribute;
             }
         }
@@ -192,17 +201,40 @@ class ResourceDisplayPresenter extends ActionPresenter
 
         $dailyLayout = $this->dailyLayoutFactory->Create($reservations, $layout);
 
-        $slots = $dailyLayout->GetLayout($now, $resource->GetId());
-        foreach($slots as $slot)
-        {
-            if ($slot->IsReservable() && $slot->CollidesWith($now))
-            {
-                $available = true;
+        $reservationList = $reservations->OnDateForResource($now, $resource->GetId());
+
+        /** @var ReservationListItem $next */
+        $next = null;
+
+        /** @var ReservationListItem[] $upcoming */
+        $upcoming = [];
+
+        $current = null;
+        $requiresCheckin = false;
+        $checkinReferenceNumber = '';
+
+        /** @var ReservationListItem $r */
+        foreach ($reservationList as $r) {
+            if (($next == null || $r->StartDate()->LessThan($next->StartDate())) && $r->StartDate()->GreaterThan($now)) {
+                $next = $r;
+            }
+
+            if ($r->RequiresCheckin()) {
+                $requiresCheckin = true;
+                $checkinReferenceNumber = $r->ReferenceNumber();
+            }
+
+            if ($r->CollidesWith($now)) {
+                $current = $r;
+            }
+
+            if ($r->StartDate()->GreaterThan($now)) {
+                $upcoming[] = $r;
             }
         }
 
-        $this->page->DisplayAvailability($dailyLayout, $now);
-//        $this->page->DisplayNewAvailability($dailyLayout, $now, $availableUntil);
+        $this->page->SetIsAvailableNow($current == null);
+        $this->page->DisplayAvailability($dailyLayout, $now, $current, $next, $upcoming, $requiresCheckin, $checkinReferenceNumber);
     }
 
     public function Reserve()
@@ -222,14 +254,27 @@ class ResourceDisplayPresenter extends ActionPresenter
         $series = ReservationSeries::Create($userSession->UserId, $resource, Resources::GetInstance()->GetString('AdHocMeeting'), Resources::GetInstance()->GetString('AdHocMeeting'), $date, new RepeatNone(), $userSession);
 
         $attributes = $this->page->GetAttributes();
-        foreach ($attributes as $attribute)
-        {
+        foreach ($attributes as $attribute) {
             $series->AddAttributeValue(new AttributeValue($attribute->Id, $attribute->Value));
         }
 
         $success = $this->GetHandler($userSession)->Handle($series, $resultCollector);
 
         $this->page->SetReservationSaveResults($success, $resultCollector);
+    }
+
+    public function Checkin()
+    {
+        $resultCollector = new ReservationResultCollector();
+        $series = $this->reservationRepository->LoadByReferenceNumber($this->page->GetReferenceNumber());
+
+        $userSession = new NullUserSession();
+        $handler = $this->GetCheckinHandler($userSession);
+
+        $series->Checkin($userSession);
+        $success = $handler->Handle($series, $resultCollector);
+
+        $this->page->SetReservationCheckinResults($success, $resultCollector);
     }
 
     public function ProcessDataRequest($dataRequest)
@@ -250,15 +295,23 @@ class ResourceDisplayPresenter extends ActionPresenter
 
     private function GetHandler($userSession)
     {
-        if ($this->reservationHandler == null) {
+        if ($this->reservationCreateHandler == null) {
             return ReservationHandler::Create(ReservationAction::Create,
-                new AddReservationPersistenceService(new ReservationRepository()),
+                new AddReservationPersistenceService($this->reservationRepository),
                 $userSession);
         }
 
-        return $this->reservationHandler;
+        return $this->reservationCreateHandler;
     }
 
+    private function GetCheckinHandler($userSession)
+    {
+        if ($this->reservationCheckinHandler == null) {
+            return ReservationHandler::Create(ReservationAction::Checkin, new UpdateReservationPersistenceService($this->reservationRepository), $userSession);
+        }
+
+        return $this->reservationCheckinHandler;
+    }
 }
 
 class ReservationResultCollector implements IReservationSaveResultsView

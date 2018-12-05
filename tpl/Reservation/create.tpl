@@ -280,12 +280,13 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                 <div class="row col-xs-12">
                     <div class="col-xs-12 reservationReminders">
                         <div>
-                            <label for="startReminderEnabled">{translate key=SendReminder}</label>
+                            <label>{translate key=SendReminder}</label>
                         </div>
                         <div id="reminderOptionsStart">
                             <div class="checkbox">
                                 <input type="checkbox" id="startReminderEnabled"
                                        class="reminderEnabled" {formname key=START_REMINDER_ENABLED}/>
+                                    <label for="startReminderEnabled" style="min-width:0;"></label>
                                     <label for="startReminderTime" class="no-show">Start Reminder Time</label>
                                     <label for="startReminderInterval" class="no-show">Start Reminder Interval</label>
                                     <input type="number" min="0" max="999" size="3" maxlength="3" value="15"
@@ -295,6 +296,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                                         <option value="{ReservationReminderInterval::Hours}">{translate key=hours}</option>
                                         <option value="{ReservationReminderInterval::Days}">{translate key=days}</option>
                                     </select>
+
                                     <span class="reminderLabel">{translate key=ReminderBeforeStart}</span>
                             </div>
                         </div>
@@ -302,7 +304,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                             <div class="checkbox">
                                 <input type="checkbox" id="endReminderEnabled"
                                        class="reminderEnabled" {formname key=END_REMINDER_ENABLED}/>
-                                <label for="endReminderEnabled" class="no-show">translate key=ReminderBeforeEnd}</label>
+                                <label for="endReminderEnabled" style="min-width:0;"></label>
                                     <label for="endReminderTime" class="no-show">End Reminder Time</label>
                                     <label for="endReminderInterval" class="no-show">End Reminder Interval</label>
                                     <input type="number" min="0" max="999" size="3" maxlength="3" value="15"

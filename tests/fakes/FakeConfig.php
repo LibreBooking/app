@@ -62,6 +62,12 @@ class FakeConfig extends Configuration implements IConfiguration
     public function EnableSubscription()
     {
     }
+
+    public function File($configId)
+    {
+        return $this->_configs[$configId];
+    }
+
 }
 
 class FakeConfigFile extends ConfigurationFile implements IConfigurationFile

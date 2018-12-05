@@ -23,98 +23,109 @@ require_once(ROOT_DIR . 'lib/Application/Schedule/namespace.php');
 
 class FakeReservationService implements IReservationService
 {
-	/**
-	 * @var FakeReservationListing
-	 */
-	public $_ReservationListing;
+    /**
+     * @var FakeReservationListing
+     */
+    public $_ReservationListing;
 
-	/**
-	 * @var DateRange
-	 */
-	public $_LastDateRange;
+    /**
+     * @var DateRange
+     */
+    public $_LastDateRange;
 
-	/**
-	 * @var int
-	 */
-	public $_LastScheduleId;
+    /**
+     * @var int
+     */
+    public $_LastScheduleId;
 
-	/**
-	 * @var string
-	 */
-	public $_LastTimezone;
+    /**
+     * @var string
+     */
+    public $_LastTimezone;
 
-	/**
-	 * @var int
-	 */
-	public $_LastResourceId;
+    /**
+     * @var int
+     */
+    public $_LastResourceId;
 
-	public function __construct()
-	{
-		$this->_ReservationListing = new FakeReservationListing();
-	}
+    /**
+     * @var ExistingReservationSeries
+     */
+    public $_Reservation;
 
-	/**
-	 * @param DateRange $dateRangeUtc range of dates to search against in UTC
-	 * @param int $scheduleId
-	 * @param string $targetTimezone timezone to convert the results to
-	 * @param null|int $resourceIds
-	 * @return IReservationListing
-	 */
-	function GetReservations(DateRange $dateRangeUtc, $scheduleId, $targetTimezone, $resourceIds = null)
-	{
-		$this->_LastDateRange = $dateRangeUtc;
-		$this->_LastScheduleId = $scheduleId;
-		$this->_LastTimezone = $targetTimezone;
-		$this->_LastResourceId = $resourceIds;
+    public function __construct()
+    {
+        $this->_ReservationListing = new FakeReservationListing();
+    }
 
-		return $this->_ReservationListing;
-	}
+    /**
+     * @param DateRange $dateRangeUtc range of dates to search against in UTC
+     * @param int $scheduleId
+     * @param string $targetTimezone timezone to convert the results to
+     * @param null|int $resourceIds
+     * @return IReservationListing
+     */
+    function GetReservations(DateRange $dateRangeUtc, $scheduleId, $targetTimezone, $resourceIds = null)
+    {
+        $this->_LastDateRange = $dateRangeUtc;
+        $this->_LastScheduleId = $scheduleId;
+        $this->_LastTimezone = $targetTimezone;
+        $this->_LastResourceId = $resourceIds;
+
+        return $this->_ReservationListing;
+    }
 }
 
 class FakeReservationListing implements IReservationListing
 {
 
-	/**
-	 * @return int
-	 */
-	public function Count()
-	{
-		// TODO: Implement Count() method.
-	}
+    /**
+     * @var array|ReservationListItem[]
 
-	/**
-	 * @return array|ReservationListItem[]
-	 */
-	public function Reservations()
-	{
-		// TODO: Implement Reservations() method.
-	}
+     */
+    public $_Reservations = array();
 
-	/**
-	 * @param Date $date
-	 * @return IReservationListing
-	 */
-	public function OnDate($date)
-	{
-		// TODO: Implement OnDate() method.
-	}
+    /**
+     * @return int
+     */
+    public function Count()
+    {
+        return count($this->_Reservations);
+    }
 
-	/**
-	 * @param int $resourceId
-	 * @return IReservationListing
-	 */
-	public function ForResource($resourceId)
-	{
-		// TODO: Implement ForResource() method.
-	}
+    /**
+     * @return array|ReservationListItem[]
+     */
+    public function Reservations()
+    {
+        return $this->_Reservations;
+    }
 
-	/**
-	 * @param Date $date
-	 * @param int $resourceId
-	 * @return array|ReservationListItem[]
-	 */
-	public function OnDateForResource(Date $date, $resourceId)
-	{
-		// TODO: Implement OnDateForResource() method.
-	}
+    /**
+     * @param Date $date
+     * @return IReservationListing
+     */
+    public function OnDate($date)
+    {
+        return $this;
+    }
+
+    /**
+     * @param int $resourceId
+     * @return IReservationListing
+     */
+    public function ForResource($resourceId)
+    {
+        return $this;
+    }
+
+    /**
+     * @param Date $date
+     * @param int $resourceId
+     * @return array|ReservationListItem[]
+     */
+    public function OnDateForResource(Date $date, $resourceId)
+    {
+        return $this->_Reservations;
+    }
 }
