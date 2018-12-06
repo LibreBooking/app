@@ -336,7 +336,7 @@ class AttributeService implements IAttributeService
 			foreach ($resources as $resource)
 			{
 				$this->allowedResources[$resource->GetId()] = $resource;
-				}
+			}
 		}
 
 		return $this->allowedResources;

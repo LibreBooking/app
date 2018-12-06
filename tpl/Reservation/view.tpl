@@ -94,11 +94,15 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                     <div class="col-xs-12">
                         <div class="pull-left">
                             <label>{translate key='Resources'}</label> {$ResourceName}
+                            <input id="primaryResourceId" type="hidden" value="{$ResourceId}" />
+                            <div id="additionalResources">
                             {foreach from=$AvailableResources item=resource}
                                 {if is_array($AdditionalResourceIds) && in_array($resource->Id, $AdditionalResourceIds)}
                                     ,{$resource->Name}
+                                    <input class="resourceId" type="hidden" value="{$resource->Id}"/>
                                 {/if}
                             {/foreach}
+                            </div>
                         </div>
                         <div class="pull-right">
                             {if $ShowReservationDetails}
