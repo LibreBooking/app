@@ -48,6 +48,8 @@ class QueryStringKeys
     const LAYOUT_DATE = 'ld';
     const MESSAGE_ID = 'mid';
     const MONTH = 'm';
+    const MISSED_CHECKIN = 'in';
+    const MISSED_CHECKOUT = 'out';
     const NODE_ID = 'nid';
     const PAGE = 'page';
     const PAGE_SIZE = 'pageSize';

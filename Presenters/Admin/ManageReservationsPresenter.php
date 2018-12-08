@@ -134,6 +134,8 @@ class ManageReservationsPresenter extends ActionPresenter
         $resourceReasonId = $this->page->GetResourceStatusReasonFilterId();
         $title = $this->page->GetResourceFilterTitle();
         $description = $this->page->GetResourceFilterDescription();
+        $missedCheckin = $this->page->GetMissedCheckin();
+        $missedCheckout = $this->page->GetMissedCheckout();
 
         if (!$this->page->FilterButtonPressed()) {
             // Get filter settings from db
@@ -147,6 +149,8 @@ class ManageReservationsPresenter extends ActionPresenter
             $resourceReasonId = $filterPreferences->GetFilterResourceReasonId();
             $title = $filterPreferences->GetFilterTitle();
             $description = $filterPreferences->GetFilterDescription();
+            $missedCheckin = $filterPreferences->GetMissedCheckin();
+            $missedCheckout = $filterPreferences->GetMissedCheckout();
             $filters = $filterPreferences->GetFilterCustomAttributes();
         }
         else {
@@ -171,6 +175,8 @@ class ManageReservationsPresenter extends ActionPresenter
             $filterPreferences->SetFilterResourceReasonId($resourceReasonId);
             $filterPreferences->SetFilterTitle($title);
             $filterPreferences->SetFilterDescription($description);
+            $filterPreferences->SetFilterMissedCheckin($missedCheckin);
+            $filterPreferences->SetFilterMissedCheckout($missedCheckout);
             $filterPreferences->SetFilterCustomAttributes($filters);
 
             $filterPreferences->Update();
@@ -201,9 +207,12 @@ class ManageReservationsPresenter extends ActionPresenter
         $this->page->SetReservationAttributes($reservationAttributes);
         $this->page->SetReservationTitle($title);
         $this->page->SetReservationDescription($description);
+        $this->page->SetMissedCheckin($missedCheckin);
+        $this->page->SetMissedCheckout($missedCheckout);
 
         $filter = new ReservationFilter($startDate, $endDate, $referenceNumber, $scheduleId, $resourceId, $userId,
-            $reservationStatusId, $resourceStatusId, $resourceReasonId, $attributeFilters, $title, $description);
+            $reservationStatusId, $resourceStatusId, $resourceReasonId, $attributeFilters, $title, $description,
+            $missedCheckin, $missedCheckout);
 
         $reservations = $this->manageReservationsService->LoadFiltered($this->page->GetPageNumber(),
             $this->page->GetPageSize(),
@@ -544,6 +553,8 @@ class ReservationFilterPreferences
     private $FilterCustomAttributes = '';
     private $FilterTitle = '';
     private $FilterDescription = '';
+    private $FilterMissedCheckin = 0;
+    private $FilterMissedCheckout = 0;
 
     /**
      * @var User
@@ -620,6 +631,16 @@ class ReservationFilterPreferences
         return $this->FilterDescription;
     }
 
+    public function GetMissedCheckin()
+    {
+        return $this->FilterMissedCheckin;
+    }
+
+    public function GetMissedCheckout()
+    {
+        return $this->FilterMissedCheckout;
+    }
+
     public function SetFilterStartDateDelta($FilterStartDateDelta)
     {
         $this->FilterStartDateDelta = $FilterStartDateDelta;
@@ -692,6 +713,16 @@ class ReservationFilterPreferences
         $this->FilterDescription = $description;
     }
 
+    public function SetFilterMissedCheckin($missed)
+    {
+        $this->FilterMissedCheckin = intval($missed);
+    }
+
+    public function SetFilterMissedCheckout($missed)
+    {
+        $this->FilterMissedCheckout = intval($missed);
+    }
+
     /**
      * @return array
      */
@@ -724,7 +755,9 @@ class ReservationFilterPreferences
         'FilterResourceReasonId' => '',
         'FilterCustomAttributes' => '',
         'FilterTitle' => '',
-        'FilterDescription' => ''
+        'FilterDescription' => '',
+        'FilterMissedCheckin' => 0,
+        'FilterMissedCheckout' => 0,
     );
 
 

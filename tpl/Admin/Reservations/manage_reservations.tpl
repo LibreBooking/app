@@ -134,6 +134,18 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                     <label for="resourceReasonIdFilter" class="no-show">{translate key=Reason}</label>
                     <select id="resourceReasonIdFilter" class="form-control"></select>
 				</div>
+                <div class="form-group filter-checkin {$groupClass}">
+                    <div class="checkbox">
+                        <input type="checkbox" id="missedCheckin" {if $MissedCheckin}checked="checked"{/if} />
+                        <label for="missedCheckin">{translate key=MissedCheckin}</label>
+                    </div>
+                </div>
+                <div class="form-group filter-checkout {$groupClass}">
+                    <div class="checkbox">
+                        <input type="checkbox" id="missedCheckout" {if $MissedCheckout}checked="checked"{/if} />
+                        <label for="missedCheckout">{translate key=MissedCheckout}</label>
+                    </div>
+                </div>
 				<div class="clearfix"></div>
 				{foreach from=$AttributeFilters item=attribute}
 					{control type="AttributeControl" attribute=$attribute searchmode=true class="customAttribute filter-customAttribute{$attribute->Id()} {$groupClass}"}

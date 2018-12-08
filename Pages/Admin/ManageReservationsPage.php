@@ -321,6 +321,26 @@ interface IManageReservationsPage extends IPageable, IActionPage
      * @param string $description
      */
     public function SetReservationDescription($description);
+
+    /**
+     * @return bool
+     */
+    public function GetMissedCheckin();
+
+    /**
+     * @return bool
+     */
+    public function GetMissedCheckout();
+
+    /**
+     * @param bool $missedCheckin
+     */
+    public function SetMissedCheckin($missedCheckin);
+
+    /**
+     * @param bool $missedCheckout
+     */
+    public function SetMissedCheckout($missedCheckout);
 }
 
 class ManageReservationsPage extends ActionPage implements IManageReservationsPage
@@ -709,5 +729,25 @@ class ManageReservationsPage extends ActionPage implements IManageReservationsPa
     public function SetReservationDescription($description)
     {
         $this->Set('ReservationDescription', $description);
+    }
+
+    public function GetMissedCheckin()
+    {
+        return (bool)$this->GetQuerystring(QueryStringKeys::MISSED_CHECKIN);
+    }
+
+    public function GetMissedCheckout()
+    {
+        return (bool)$this->GetQuerystring(QueryStringKeys::MISSED_CHECKOUT);
+    }
+
+    public function SetMissedCheckin($missedCheckin)
+    {
+        $this->Set('MissedCheckin', (bool)$missedCheckin);
+    }
+
+    public function SetMissedCheckout($missedCheckout)
+    {
+        $this->Set('MissedCheckout', (bool)$missedCheckout);
     }
 }

@@ -16,6 +16,8 @@ function ReservationManagement(opts, approval) {
         resourceReasonIdFilter: $('#resourceReasonIdFilter'),
         title: $('#reservationTitle'),
         description: $('#reservationDescription'),
+        missedCheckin: $('#missedCheckin'),
+        missedCheckout: $('#missedCheckout'),
 
         deleteInstanceDialog: $('#deleteInstanceDialog'),
         deleteSeriesDialog: $('#deleteSeriesDialog'),
@@ -172,9 +174,9 @@ function ReservationManagement(opts, approval) {
         elements.filterButton.click(filterReservations);
         elements.clearFilterButton.click(function (e) {
             e.preventDefault();
-            elements.filterTable.find('input,select,textarea').val('')
-
-            filterReservations();
+            elements.filterTable.find('input,select,textarea').val('');
+            elements.filterTable.find('checkbox').prop('checked', false);
+            ;
         });
 
         $('#import-reservations').click(function (e) {
@@ -358,7 +360,11 @@ function ReservationManagement(opts, approval) {
             attributeString += '&' + $(attribute).attr('name') + '=' + $(attribute).val();
         });
 
-        var filterQuery = 'sd=' + elements.startDate.val() + '&ed=' + elements.endDate.val() + '&sid=' + elements.scheduleId.val() + '&rid=' + elements.resourceId.val() + '&uid=' + elements.userId.val() + '&un=' + elements.userFilter.val() + '&rn=' + elements.referenceNumber.val() + '&rsid=' + elements.statusId.val() + '&rrsid=' + elements.resourceStatusIdFilter.val() + '&rrsrid=' + reasonId + '&rtitle=' + elements.title.val() + '&rdesc=' + elements.description.val();
+        var toInt = function (boolVal) {
+            return boolVal ? 1 : 0;
+        };
+
+        var filterQuery = 'sd=' + elements.startDate.val() + '&ed=' + elements.endDate.val() + '&sid=' + elements.scheduleId.val() + '&rid=' + elements.resourceId.val() + '&uid=' + elements.userId.val() + '&un=' + elements.userFilter.val() + '&rn=' + elements.referenceNumber.val() + '&rsid=' + elements.statusId.val() + '&rrsid=' + elements.resourceStatusIdFilter.val() + '&rrsrid=' + reasonId + '&rtitle=' + elements.title.val() + '&rdesc=' + elements.description.val() + '&in=' + toInt(elements.missedCheckin.is(':checked')) + '&out=' + toInt(elements.missedCheckout.is(':checked'));
 
         window.location = document.location.pathname + '?' + encodeURI(filterQuery) + attributeString;
     }
@@ -379,8 +385,7 @@ function ReservationManagement(opts, approval) {
             elements.deleteTerms.addClass('no-show');
             elements.termsOfServiceForm.attr('ajaxAction', options.updateTermsOfServiceAction);
 
-            if (data == null)
-            {
+            if (data == null) {
                 elements.termsOfServiceText.val('');
                 elements.termsOfServiceUrl.val('');
                 return;

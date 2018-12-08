@@ -78,6 +78,14 @@ class ReservationFilter
      * @var null|string
      */
     private $description;
+    /**
+     * @var bool
+     */
+    private $missedCheckin = false;
+    /**
+     * @var bool
+     */
+    private $missedCheckout = false;
 
     /**
      * @param Date $startDate
@@ -92,6 +100,8 @@ class ReservationFilter
      * @param Attribute[] $attributes
      * @param string $title
      * @param string $description
+     * @param bool $missedCheckin
+     * @param bool $missedCheckout
      */
     public function __construct($startDate = null,
                                 $endDate = null,
@@ -104,7 +114,9 @@ class ReservationFilter
                                 $resourceStatusReasonId = null,
                                 $attributes = null,
                                 $title = null,
-                                $description = null)
+                                $description = null,
+                                $missedCheckin = false,
+                                $missedCheckout = false)
     {
         $this->startDate = $startDate;
         $this->endDate = $endDate;
@@ -118,6 +130,8 @@ class ReservationFilter
         $this->attributes = $attributes;
         $this->title = $title;
         $this->description = $description;
+        $this->missedCheckin = $missedCheckin;
+        $this->missedCheckout = $missedCheckout;
     }
 
     /**
@@ -192,6 +206,16 @@ class ReservationFilter
         }
         if (!empty($this->description)) {
             $filter->_And(new SqlFilterLike(new SqlFilterColumn(TableNames::RESERVATION_SERIES_ALIAS, ColumnNames::RESERVATION_DESCRIPTION), $this->description));
+        }
+        $requiresCheckIn = new SqlFilterEquals(new SqlFilterColumn(TableNames::RESOURCES, ColumnNames::ENABLE_CHECK_IN), 1);
+        if ($this->missedCheckin) {
+            $filter->_And($requiresCheckIn->_And(
+                new SqlFilterEquals(new SqlFilterColumn(TableNames::RESERVATION_INSTANCES_ALIAS, ColumnNames::CHECKIN_DATE), null))->_Or(new SqlFilterGreaterThanColumn(new SqlFilterColumn(TableNames::RESERVATION_INSTANCES_ALIAS, ColumnNames::CHECKIN_DATE), new SqlFilterColumn(TableNames::RESERVATION_INSTANCES_ALIAS, ColumnNames::RESERVATION_START)))
+            );
+        }
+        if ($this->missedCheckout) {
+            $filter->_And($requiresCheckIn->_And(
+                new SqlFilterEquals(new SqlFilterColumn(TableNames::RESERVATION_INSTANCES_ALIAS, ColumnNames::CHECKOUT_DATE), null))->_Or(new SqlFilterLessThanColumn(new SqlFilterColumn(TableNames::RESERVATION_INSTANCES_ALIAS, ColumnNames::CHECKOUT_DATE), new SqlFilterColumn(TableNames::RESERVATION_INSTANCES_ALIAS, ColumnNames::RESERVATION_END))));
         }
 
         if ($surroundFilter != null || $startFilter != null || $endFilter != null) {
