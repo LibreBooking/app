@@ -154,7 +154,7 @@ class ExistingReservationPage extends ReservationPage implements IExistingReserv
 
 	protected function GetPresenter()
 	{
-		$preconditionService = new EditReservationPreconditionService($this->permissionServiceFactory);
+		$preconditionService = new EditReservationPreconditionService();
 		$reservationViewRepository = new ReservationViewRepository();
 
 		return new EditReservationPresenter($this,
@@ -313,6 +313,11 @@ class ExistingReservationPage extends ReservationPage implements IExistingReserv
 	{
 		$this->Set('RequiresApproval', $requiresApproval);
 	}
+
+    public function SetTermsAccepted($accepted)
+    {
+        $this->Set('TermsAccepted', $accepted);
+    }
 }
 
 class DuplicateReservationPage extends ExistingReservationPage
@@ -349,4 +354,9 @@ class DuplicateReservationPage extends ExistingReservationPage
 	{
 		return urldecode($this->GetQuerystring(QueryStringKeys::REDIRECT));
 	}
+
+    public function SetTermsAccepted($accepted)
+    {
+        $this->Set('TermsAccepted', false);
+    }
 }

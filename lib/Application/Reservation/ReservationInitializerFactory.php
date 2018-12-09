@@ -76,7 +76,8 @@ class ReservationInitializerFactory implements IReservationInitializerFactory
             new ReservationDetailsBinder($this->reservationAuthorization, $page, $reservationView,
                 new PrivacyFilter($this->reservationAuthorization)),
             $reservationView,
-            ServiceLocator::GetServer()->GetUserSession()
+            ServiceLocator::GetServer()->GetUserSession(),
+            new TermsOfServiceRepository()
         );
     }
 }

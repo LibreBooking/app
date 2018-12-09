@@ -39,11 +39,6 @@ class NewReservationInitializer extends ReservationInitializerBase
      */
     private $resourceRepository;
 
-    /**
-     * @var ITermsOfServiceRepository
-     */
-    private $termsRepository;
-
     public function __construct(
         INewReservationPage $page,
         IReservationComponentBinder $userBinder,
@@ -58,14 +53,14 @@ class NewReservationInitializer extends ReservationInitializerBase
         $this->page = $page;
         $this->scheduleRepository = $scheduleRepository;
         $this->resourceRepository = $resourceRepository;
-        $this->termsRepository = $termsOfServiceRepository;
 
         parent::__construct(
             $page,
             $userBinder,
             $dateBinder,
             $resourceBinder,
-            $userSession);
+            $userSession,
+            $termsOfServiceRepository);
     }
 
     public function Initialize()
@@ -73,7 +68,6 @@ class NewReservationInitializer extends ReservationInitializerBase
         parent::Initialize();
 
         $this->SetDefaultReminders();
-        $this->SetTermsOfService();
     }
 
     protected function SetSelectedDates(Date $startDate, Date $endDate, $startPeriods, $endPeriods)
@@ -175,14 +169,6 @@ class NewReservationInitializer extends ReservationInitializerBase
         }
 
         return null;
-    }
-
-    private function SetTermsOfService()
-    {
-        $termsOfService = $this->termsRepository->Load();
-        if ($termsOfService != null && $termsOfService->AppliesToReservation()) {
-            $this->page->SetTerms($termsOfService);
-        }
     }
 }
 

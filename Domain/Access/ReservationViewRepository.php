@@ -153,6 +153,8 @@ class ReservationViewRepository implements IReservationViewRepository
             $reservationView->CheckoutDate = Date::FromDatabase($row[ColumnNames::CHECKOUT_DATE]);
             $reservationView->OriginalEndDate = Date::FromDatabase($row[ColumnNames::PREVIOUS_END_DATE]);
             $reservationView->CreditsConsumed = $row[ColumnNames::CREDIT_COUNT];
+            $reservationView->TermsAcceptanceDate = Date::FromDatabase($row[ColumnNames::RESERVATION_TERMS_ACCEPTANCE_DATE]);
+            $reservationView->HasAcceptedTerms = $reservationView->TermsAcceptanceDate->ToString() != '';
 
             $this->SetResources($reservationView);
             $this->SetParticipants($reservationView);

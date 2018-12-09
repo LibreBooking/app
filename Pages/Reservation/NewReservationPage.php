@@ -46,11 +46,6 @@ interface INewReservationPage extends IReservationPage, IRequestedResourcePage
      * @return Date
      */
     public function GetEndDate();
-
-    /**
-     * @param TermsOfService $termsOfService
-     */
-    public function SetTerms($termsOfService);
 }
 
 class NewReservationPage extends ReservationPage implements INewReservationPage
@@ -125,8 +120,8 @@ class NewReservationPage extends ReservationPage implements INewReservationPage
         return new Date($dateTimeString, $timezone);
     }
 
-    public function SetTerms($termsOfService)
+    public function SetTermsAccepted($accepted)
     {
-        $this->Set('Terms', $termsOfService);
+        $this->Set('TermsAccepted', false);
     }
 }

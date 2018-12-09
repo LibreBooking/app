@@ -343,6 +343,8 @@ class ReservationDetailsBinder implements IReservationComponentBinder
             $this->SetCheckoutRequired();
             $this->SetAutoReleaseMinutes();
         }
+
+        $this->page->SetTermsAccepted($this->reservationView->HasAcceptedTerms);
 	}
 
 	private function IsCurrentUserParticipating($currentUserId)

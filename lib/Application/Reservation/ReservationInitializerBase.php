@@ -199,21 +199,27 @@ abstract class ReservationInitializerBase implements IReservationInitializer, IR
 	 * @var array|Attribute[]
 	 */
 	private $customAttributes = array();
+    /**
+     * @var ITermsOfServiceRepository
+     */
+    protected $termsRepository;
 
-	/**
-	 * @param $page IReservationPage
-	 * @param $userBinder IReservationComponentBinder
-	 * @param $dateBinder IReservationComponentBinder
-	 * @param $resourceBinder IReservationComponentBinder
-	 * @param $userSession UserSession
-	 */
+    /**
+     * @param $page IReservationPage
+     * @param $userBinder IReservationComponentBinder
+     * @param $dateBinder IReservationComponentBinder
+     * @param $resourceBinder IReservationComponentBinder
+     * @param $userSession UserSession
+     * @param ITermsOfServiceRepository $termsOfServiceRepository
+     */
 	public function __construct(
 		$page,
 		IReservationComponentBinder $userBinder,
 		IReservationComponentBinder $dateBinder,
 		IReservationComponentBinder $resourceBinder,
-		UserSession $userSession
-	)
+		UserSession $userSession,
+        ITermsOfServiceRepository $termsOfServiceRepository
+    )
 	{
 		$this->basePage = $page;
 		$this->userBinder = $userBinder;
@@ -221,7 +227,8 @@ abstract class ReservationInitializerBase implements IReservationInitializer, IR
 		$this->resourceBinder = $resourceBinder;
 		$this->currentUser = $userSession;
 		$this->currentUserId = $this->currentUser->UserId;
-	}
+        $this->termsRepository = $termsOfServiceRepository;
+    }
 
 	public function Initialize()
 	{
@@ -231,7 +238,8 @@ abstract class ReservationInitializerBase implements IReservationInitializer, IR
 		$this->BindResourceAndAccessories();
 		$this->BindDates();
 		$this->BindUser();
-	}
+        $this->SetTermsOfService();
+    }
 
 	protected function BindUser()
 	{
@@ -455,4 +463,13 @@ abstract class ReservationInitializerBase implements IReservationInitializer, IR
 	{
 		return true;
 	}
+
+
+    private function SetTermsOfService()
+    {
+        $termsOfService = $this->termsRepository->Load();
+        if ($termsOfService != null && $termsOfService->AppliesToReservation()) {
+            $this->basePage->SetTerms($termsOfService);
+        }
+    }
 }

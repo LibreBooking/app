@@ -147,6 +147,16 @@ class ReservationView
      */
     public $CreditsConsumed;
 
+    /**
+     * @var bool
+     */
+    public $HasAcceptedTerms = false;
+
+    /**
+     * @var Date|null
+     */
+    public $TermsAcceptanceDate;
+
     public function __construct()
     {
         $this->CheckinDate = new NullDate();

@@ -111,6 +111,7 @@ class ColumnNames
 	const SERIES_ID = 'series_id';
 	const RESERVATION_OWNER = 'owner_id';
 	const RESERVATION_ALLOW_PARTICIPATION = 'allow_participation';
+	const RESERVATION_TERMS_ACCEPTANCE_DATE = 'terms_date_accepted';
 
 	// RESERVATION_INSTANCE //
 	const RESERVATION_INSTANCE_ID = 'reservation_instance_id';

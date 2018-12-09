@@ -160,6 +160,16 @@ interface IReservationPage extends IPage
      * @return bool
      */
     public function IsUnavailable();
+
+    /**
+     * @param TermsOfService $termsOfService
+     */
+    public function SetTerms($termsOfService);
+
+    /**
+     * @param bool $accepted
+     */
+    public function SetTermsAccepted($accepted);
 }
 
 abstract class ReservationPage extends Page implements IReservationPage
@@ -414,5 +424,10 @@ abstract class ReservationPage extends Page implements IReservationPage
     public function IsUnavailable()
     {
         return !$this->available;
+    }
+
+    public function SetTerms($termsOfService)
+    {
+        $this->Set('Terms', $termsOfService);
     }
 }
