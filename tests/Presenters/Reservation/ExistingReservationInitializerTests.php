@@ -55,7 +55,7 @@ class ExistingReservationInitializerTests extends TestBase
 		$dateBinder = $this->getMock('IReservationComponentBinder');
 		$resourceBinder = $this->getMock('IReservationComponentBinder');
 		$reservationBinder = $this->getMock('IReservationComponentBinder');
-		$attributeBinder = $this->getMock('IReservationComponentBinder');
+        $termsRepository = new FakeTermsOfServiceRepository();
 		$page = $this->getMock('IExistingReservationPage');
 
 		$reservationView = new ReservationView();
@@ -67,7 +67,8 @@ class ExistingReservationInitializerTests extends TestBase
 			$resourceBinder,
 			$reservationBinder,
 			$reservationView,
-			$this->fakeUser);
+			$this->fakeUser,
+            $termsRepository);
 
 		$reservationView->ScheduleId = $scheduleId;
 
@@ -141,7 +142,9 @@ class ExistingReservationInitializerTests extends TestBase
 			$binder,
 			$binder,
 			$reservationView,
-			$this->fakeUser);
+			$this->fakeUser,
+            new FakeTermsOfServiceRepository()
+        );
 		$initializer->SetDates($anything, $anything, $periods, $periods, 0);
 	}
 }

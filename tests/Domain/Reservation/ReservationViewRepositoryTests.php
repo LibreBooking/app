@@ -129,6 +129,7 @@ class ReservationViewRepositoryTests extends TestBase
             ColumnNames::PREVIOUS_END_DATE => $previousEnd->ToDatabase(),
             ColumnNames::CREDIT_COUNT => 20,
             ColumnNames::PHONE_NUMBER => $phone,
+            ColumnNames::RESERVATION_TERMS_ACCEPTANCE_DATE => null
         );
 
         $resourceRows = array(
@@ -275,6 +276,7 @@ class ReservationViewRepositoryTests extends TestBase
         $expectedView->ParticipatingGuests = array('p1@email.com');
         $expectedView->InvitedGuests = array('i1@email.com');
         $expectedView->CreditsConsumed = 20;
+        $expectedView->TermsAcceptanceDate = NullDate::Instance();
 
         $this->assertEquals($expectedView, $reservationView);
     }

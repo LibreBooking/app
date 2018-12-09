@@ -297,11 +297,13 @@ class FakeGuestReservationPage implements IGuestReservationPage
         // TODO: Implement MakeUnavailable() method.
     }
 
-    /**
-     * @return true
-     */
     public function IsUnavailable()
     {
         // TODO: Implement IsUnavailable() method.
+    }
+
+    public function SetTermsAccepted($accepted)
+    {
+        // TODO: Implement SetTermsAccepted() method.
     }
 }
