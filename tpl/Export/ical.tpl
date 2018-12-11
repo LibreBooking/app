@@ -37,5 +37,6 @@ ACTION:DISPLAY
 DESCRIPTION:{$reservation->Summary}
 END:VALARM
 {/if}
-END:VEVENT{/foreach}
+END:VEVENT
+{/foreach}
 END:VCALENDAR
