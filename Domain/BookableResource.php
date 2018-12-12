@@ -1692,7 +1692,6 @@ class BookableResource implements IBookableResource
 	 */
 	public function SetCreditsPerSlot($creditsPerSlot)
 	{
-		Log::Debug('set cps to ' . $creditsPerSlot);
 		$this->_creditsPerSlot = $creditsPerSlot;
 	}
 

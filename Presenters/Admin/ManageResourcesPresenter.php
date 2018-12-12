@@ -965,6 +965,16 @@ class ManageResourcesPresenter extends ActionPresenter
                 $resource->SetColor($row->color);
                 $resource->SetRequiresApproval($row->approvalRequired == 'true' || $row->approvalRequired == '1');
                 $resource->SetMaxParticipants($row->capacity);
+                $resource->SetMinLength($row->minLength);
+                $resource->SetMaxLength($row->maxLength);
+                $resource->SetBufferTime($row->buffer);
+                $resource->SetAllowMultiday($row->crossDay);
+                $resource->SetMinNoticeAdd($row->addNotice);
+                $resource->SetMinNoticeUpdate($row->updateNotice);
+                $resource->SetMinNoticeDelete($row->deleteNotice);
+                $resource->SetCheckin($row->checkIn, $row->autoreleaseMinutes);
+                $resource->SetCreditsPerSlot($row->credits);
+                $resource->SetPeakCreditsPerSlot($row->creditsPeak);
 
                 foreach ($row->attributes as $label => $value) {
                     if (empty($value)) {

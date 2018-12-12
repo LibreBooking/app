@@ -18,6 +18,7 @@
  * You should have received a copy of the GNU General Public License
  * along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 class ResourceImportCsvRow
 {
 	public $name;
@@ -35,12 +36,23 @@ class ResourceImportCsvRow
 	public $autoAssign = true;
 	public $approvalRequired = false;
 	public $capacity;
+    public $minLength;
+    public $maxLength;
+    public $buffer;
+    public $crossDay = false;
+    public $addNotice;
+    public $updateNotice;
+    public $deleteNotice;
+    public $checkIn = false;
+    public $autoreleaseMinutes;
+    public $credits;
+    public $creditsPeak;
 	public $attributes = array();
 
 	private $values = array();
 	private $indexes = array();
 
-	/**
+    /**
 	 * @param $values array
 	 * @param $indexes array
 	 * @param $attributes CustomAttribute[]
@@ -66,11 +78,22 @@ class ResourceImportCsvRow
 		$this->autoAssign = strtolower($this->valueOrDefault('autoAssign'));
 		$this->approvalRequired = strtolower($this->valueOrDefault('approvalRequired'));
 		$this->capacity = $this->valueOrDefault('capacity');
-		foreach ($attributes as $label => $attribute)
+        $this->minLength = $this->valueOrDefault('minLength');
+        $this->maxLength = $this->valueOrDefault('maxLength');
+        $this->buffer = $this->valueOrDefault('buffer');
+        $this->crossDay = $this->valueOrDefault('crossDay');
+        $this->addNotice = $this->valueOrDefault('addNotice');
+        $this->updateNotice = $this->valueOrDefault('updateNotice');
+        $this->deleteNotice = $this->valueOrDefault('deleteNotice');
+        $this->checkIn = $this->valueOrDefault('checkIn');
+        $this->autoreleaseMinutes = $this->valueOrDefault('autoreleaseMinutes');
+        $this->credits = $this->valueOrDefault('credits');
+        $this->creditsPeak = $this->valueOrDefault('creditsPeak');
+
+        foreach ($attributes as $label => $attribute)
 		{
 			$this->attributes[$label] = $this->valueOrDefault($label);
 		}
-
 	}
 
 	public function IsValid()
@@ -90,7 +113,8 @@ class ResourceImportCsvRow
 	 */
 	public static function GetHeaders($values, $attributes)
 	{
-		if (!in_array('name', $values) && !in_array('name', $values))
+        $values = array_map('strtolower', $values);
+        if (!in_array('name', $values) && !in_array('name', $values))
 		{
 			return false;
 		}
@@ -105,11 +129,22 @@ class ResourceImportCsvRow
 		$indexes['description'] = self::indexOrFalse('description', $values);
 		$indexes['notes'] = self::indexOrFalse('notes', $values);
 		$indexes['resourceAdministrator'] = self::indexOrFalse('resource administrator', $values);
-		$indexes['color'] = self::indexOrFalse('color', $values);
+		$indexes['color'] = self::indexOrFalse('resource color', $values);
 		$indexes['resourceGroups'] = self::indexOrFalse('resource groups', $values);
-		$indexes['autoAssign'] = self::indexOrFalse('auto assign permissions', $values);
-		$indexes['approvalRequired'] = self::indexOrFalse('approval required', $values);
+		$indexes['autoAssign'] = self::indexOrFalse('permission is automatically granted', $values);
+		$indexes['approvalRequired'] = self::indexOrFalse('reservations must be approved', $values);
 		$indexes['capacity'] = self::indexOrFalse('capacity', $values);
+		$indexes['minLength'] = self::indexOrFalse('reservation minimum length', $values);
+		$indexes['maxLength'] = self::indexOrFalse('reservation maximum length', $values);
+		$indexes['buffer'] = self::indexOrFalse('buffer time', $values);
+		$indexes['crossDay'] = self::indexOrFalse('reservations can be made across days', $values);
+		$indexes['addNotice'] = self::indexOrFalse('reservation add minimum notice', $values);
+		$indexes['updateNotice'] = self::indexOrFalse('reservation update minimum notice', $values);
+		$indexes['deleteNotice'] = self::indexOrFalse('reservation delete minimum notice', $values);
+		$indexes['checkIn'] = self::indexOrFalse('requires check in/out', $values);
+		$indexes['autoreleaseMinutes'] = self::indexOrFalse('autorelease minutes', $values);
+		$indexes['credits'] = self::indexOrFalse('credits (off peak)', $values);
+		$indexes['creditsPeak'] = self::indexOrFalse('credits (peak)', $values);
 
 		foreach ($attributes as $label => $attribute)
 		{
@@ -195,7 +230,11 @@ class ResourceImportCsv
 
 		if (!$headers)
 		{
-			Log::Debug('No headers in resource import file');
+			Log::Debug('No headers in resource import file.');
+			if (count($csvRows) > 0)
+            {
+                Log::Debug('Header row: %s', var_export(str_getcsv($csvRows[0]), true));
+            }
 			return $rows;
 		}
 
