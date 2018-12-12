@@ -78,7 +78,7 @@ class ReservationConflictDelete extends ReservationConflictResolution
 	{
 		$reservation = $this->repository->LoadById($existingReservation->GetId());
 		$reservation->ApplyChangesTo(SeriesUpdateScope::ThisInstance);
-		$reservation->Delete(ServiceLocator::GetServer()->GetUserSession());
+		$reservation->Delete(ServiceLocator::GetServer()->GetUserSession(), 'Deleting conflicting reservation');
 		$this->repository->Delete($reservation);
 
 		return true;
