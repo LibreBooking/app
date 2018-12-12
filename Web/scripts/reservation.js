@@ -580,6 +580,7 @@ function Reservation(opts) {
     };
 
     var ChangeUpdateScope = function (updateScopeValue) {
+        SetDeleteReason();
         $('#hdnSeriesUpdateScope').val(updateScopeValue);
     };
 
