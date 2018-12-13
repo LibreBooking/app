@@ -33,6 +33,8 @@ class UserImportCsvRow
 	public $groups = array();
     public $attributes = array();
     public $status = 1;
+    public $credits;
+    public $color;
 
 	private $values = array();
 	private $indexes = array();
@@ -58,6 +60,8 @@ class UserImportCsvRow
 		$this->timezone = $this->valueOrDefault('timezone');
 		$this->language = $this->valueOrDefault('language');
 		$this->status = $this->valueOrDefault('status');
+		$this->credits = $this->valueOrDefault('credits');
+		$this->color = $this->valueOrDefault('color');
 		$this->groups = (!array_key_exists('groups', $this->indexes) || $indexes['groups'] === false) ? array() : array_map('trim', explode(',', htmlspecialchars($values[$indexes['groups']])));
         foreach ($attributes as $label => $attribute)
         {
@@ -101,6 +105,8 @@ class UserImportCsvRow
 		$indexes['language'] = self::indexOrFalse('language', $values);
 		$indexes['groups'] = self::indexOrFalse('groups', $values);
 		$indexes['status'] = self::indexOrFalse('status', $values);
+		$indexes['credits'] = self::indexOrFalse('credits', $values);
+		$indexes['color'] = self::indexOrFalse('color', $values);
 
         foreach ($attributes as $label => $attribute)
         {

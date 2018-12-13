@@ -612,6 +612,16 @@ class ManageUsersPresenter extends ActionPresenter implements IManageUsersPresen
                     $user->ChangeGroups($userGroups);
                 }
 
+                if ($row->credits != null)
+                {
+                    $user->ChangeCurrentCredits($row->credits);
+                }
+
+                if ($row->color != null)
+                {
+                    $user->ChangePreference(UserPreferences::RESERVATION_COLOR, $row->color);
+                }
+
                 foreach ($row->attributes as $label => $value) {
                     if (empty($value)) {
                         continue;
