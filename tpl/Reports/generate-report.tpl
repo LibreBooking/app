@@ -28,7 +28,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 				</div>
 				<div class="panel-body no-padding">
 					<div id="custom-report-input">
-						<div class="input-set" id="selectDiv">
+						<div class="row input-set" id="selectDiv">
 							<div class="col-md-1"><span>{translate key=Select}</span></div>
 							<div class="col-md-11 radio">
 								<div class="col-md-1">
@@ -43,16 +43,22 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 										   id="results_time"/>
 									<label for="results_time">{translate key=TotalTime}</label>
 								</div>
-								<div class="col-md-10">
+								<div class="col-md-1">
 									<input type="radio" {formname key=REPORT_RESULTS}
 										   value="{Report_ResultSelection::COUNT}"
 										   id="results_count"/>
 									<label for="results_count">{translate key=Count}</label>
 								</div>
+                                <div class="col-md-9">
+									<input type="radio" {formname key=REPORT_RESULTS}
+										   value="{Report_ResultSelection::UTILIZATION}"
+										   id="results_utilization"/>
+									<label for="results_utilization">{translate key=Utilization}</label>
+								</div>
 							</div>
 						</div>
 
-						<div class="input-set select-toggle" id="listOfDiv">
+						<div class="row input-set select-toggle" id="listOfDiv">
 							<div class="col-md-1"><span>{translate key=Usage}</span></div>
 							<div class="col-md-11 radio">
 								<div class="col-md-1">
@@ -69,7 +75,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 							</div>
 						</div>
 
-						<div class="input-set select-toggle" id="aggregateDiv" style="display:none;">
+						<div class="row input-set select-toggle" id="aggregateDiv" style="display:none;">
 							<div class="col-md-1"><span class="">{translate key=AggregateBy}</span></div>
 							<div class="col-md-11 radio">
 								<div class="col-md-1">
@@ -79,12 +85,12 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 								</div>
 								<div class="col-md-1">
 									<input type="radio" {formname key=REPORT_GROUPBY} value="{Report_GroupBy::RESOURCE}"
-										   id="groupby_resource"/>
+										   id="groupby_resource" class="utilization-eligible"/>
 									<label for="groupby_resource">{translate key=Resource}</label>
 								</div>
 								<div class="col-md-1">
 									<input type="radio" {formname key=REPORT_GROUPBY} value="{Report_GroupBy::SCHEDULE}"
-										   id="groupby_schedule"/>
+										   id="groupby_schedule" class="utilization-eligible"/>
 									<label for="groupby_schedule">{translate key=Schedule}</label>
 								</div>
 								<div class="col-md-1">
@@ -99,18 +105,13 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 								</div>
 							</div>
 						</div>
-						<div class="input-set form-group-sm" id="rangeDiv">
+						<div class="row input-set form-group-sm" id="rangeDiv">
 							<div class="col-md-1"><span class="">{translate key=Range}</span></div>
 							<div class="col-md-11 radio">
-								<div class="col-md-1">
-									<input type="radio" {formname key=REPORT_RANGE} value="{Report_Range::ALL_TIME}"
-										   id="range_all"
-										   checked="checked"/>
-									<label for="range_all">{translate key=AllTime}</label>
-								</div>
 								<div class="col-md-2">
 									<input type="radio" {formname key=REPORT_RANGE}
-										   value="{Report_Range::CURRENT_MONTH}" id="current_month"/>
+										   value="{Report_Range::CURRENT_MONTH}" id="current_month"
+                                           checked="checked"/>
 									<label for="current_month">{translate key=CurrentMonth}</label>
 								</div>
 								<div class="col-md-2">
@@ -123,6 +124,11 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 										   id="today"/>
 									<label for="today" style="width:auto;">{translate key=Today}</label>
 								</div>
+                                <div class="col-md-1">
+                                    <input type="radio" {formname key=REPORT_RANGE} value="{Report_Range::ALL_TIME}"
+                                           id="range_all"/>
+                                    <label for="range_all">{translate key=AllTime}</label>
+                                </div>
 								<div class="col-md-6">
 									<input type="radio" {formname key=REPORT_RANGE} value="{Report_Range::DATE_RANGE}"
 										   id="range_within"/>
@@ -136,7 +142,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 								</div>
 							</div>
 						</div>
-						<div class="input-set form-group-sm">
+						<div class="row input-set form-group-sm">
 							<div class="col-md-1"><span class="">{translate key=FilterBy}</span></div>
 							<div class="col-md-11">
 								<div class="form-group no-margin no-padding col-md-2">

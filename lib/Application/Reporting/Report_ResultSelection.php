@@ -19,6 +19,7 @@ class Report_ResultSelection
 	const COUNT = 'COUNT';
 	const TIME = 'TIME';
 	const FULL_LIST = 'LIST';
+	const UTILIZATION = 'UTILIZATION';
 
 	/**
 	 * @var Report_ResultSelection|string

@@ -426,7 +426,7 @@ class en_us extends Language
 		$strings['FilterBy'] = 'Filter By';
 		$strings['Select'] = 'Select';
 		$strings['List'] = 'List';
-		$strings['TotalTime'] = 'Total Time';
+		$strings['TotalTime'] = 'Time';
 		$strings['Count'] = 'Count';
 		$strings['Usage'] = 'Usage';
 		$strings['AggregateBy'] = 'Aggregate By';
@@ -769,6 +769,7 @@ class en_us extends Language
         $strings['NextReservation'] = 'Next Reservation';
         $strings['MissedCheckin'] = 'Missed Checkin';
         $strings['MissedCheckout'] = 'Missed Checkout';
+        $strings['Utilization'] = 'Utilization';
         // End Strings
 
 		// Install
