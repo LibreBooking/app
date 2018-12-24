@@ -48,6 +48,10 @@ class Report_ResultSelection
 		{
 			$builder->SelectTime();
 		}
+		if ($this->selection == self::UTILIZATION)
+        {
+            $builder->SelectDuration()->IncludingBlackouts()->OfResources();
+        }
 	}
 
 	/**

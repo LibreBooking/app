@@ -27,12 +27,22 @@ class FakeScheduleLayout implements IScheduleLayout
 	 */
 	public $_SlotCount;
 
+    /**
+     * @var SchedulePeriod[]
+     */
 	public $_Layout = array();
 
     /**
      * @var string
      */
     public $_Timezone;
+
+    public $_UsesDailyLayouts = false;
+
+    /**
+     * @var SchedulePeriod[]
+     */
+    public $_DailyLayout = array();
 
     public function __construct()
 	{
@@ -50,7 +60,7 @@ class FakeScheduleLayout implements IScheduleLayout
 	 */
 	public function UsesDailyLayouts()
 	{
-		// TODO: Implement UsesDailyLayouts() method.
+		return $this->_UsesDailyLayouts;
 	}
 
 	/**
@@ -60,8 +70,21 @@ class FakeScheduleLayout implements IScheduleLayout
 	 */
 	public function GetLayout(Date $layoutDate, $hideBlockedPeriods = false)
 	{
+	    if (!empty($this->_DailyLayout)){
+	        return $this->_DailyLayout[$layoutDate->Timestamp()];
+        }
+
 		return $this->_Layout;
 	}
+
+    /**
+     * @param Date $date
+     * @param SchedulePeriod[] $layout
+     */
+	public function _AddDailyLayout(Date $date, $layout)
+    {
+        $this->_DailyLayout[$date->Timestamp()] = $layout;
+    }
 
 	/**
 	 * @param Date $date

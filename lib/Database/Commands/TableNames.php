@@ -33,4 +33,10 @@ class TableNames
     const USERS_ALIAS = 'u';
     const RESERVATION_INSTANCES_ALIAS = 'ri';
     const BLACKOUT_INSTANCES_ALIAS = 'bi';
+    const RESERVATION_INSTANCES = 'reservation_instances';
+    const BLACKOUT_INSTANCES = 'blackout_instances';
+    const RESERVATION_SERIES = 'reservation_series';
+    const BLACKOUT_SERIES = 'blackout_series';
+    const RESERVATION_RESOURCES = 'reservation_resources';
+    const BLACKOUT_SERIES_RESOURCES = 'blackout_series_resources';
 }

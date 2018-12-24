@@ -112,6 +112,7 @@ class ColumnNames
 	const RESERVATION_OWNER = 'owner_id';
 	const RESERVATION_ALLOW_PARTICIPATION = 'allow_participation';
 	const RESERVATION_TERMS_ACCEPTANCE_DATE = 'terms_date_accepted';
+	const RESERVATION_SERIES_ID = 'series_id';
 
 	// RESERVATION_INSTANCE //
 	const RESERVATION_INSTANCE_ID = 'reservation_instance_id';
@@ -358,6 +359,9 @@ class ColumnNames
 	const GUEST_LIST = 'guest_list';
     const USER_GROUP_LIST = 'user_group_list';
     const GROUP_ROLE_LIST = 'group_role_list';
+    const UTILIZATION_TYPE = 'utilization_type';
+    const DATE = 'date';
+    const UTILIZATION = 'utilization';
 
     // shared
 	const ALLOW_CALENDAR_SUBSCRIPTION = 'allow_calendar_subscription';

@@ -105,4 +105,22 @@ class Report_Range
 	{
 		return new Report_Range(Report_Range::ALL_TIME, Date::Min(), Date::Max());
 	}
+
+    /**
+     * @return Date[]
+     */
+    public function Dates()
+    {
+        $range = new DateRange($this->Start(), $this->End());
+        return $range->Dates();
+    }
+
+    /**
+     * @param string $range
+     * @return bool
+     */
+    public function Equals($range)
+    {
+        return $range == $this->range;
+    }
 }

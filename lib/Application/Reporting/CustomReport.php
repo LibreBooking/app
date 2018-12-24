@@ -98,8 +98,7 @@ class CustomReport implements IReport
 	/**
 	 * @return IReportColumns
 	 */
-	public
-	function GetColumns()
+	public function GetColumns()
 	{
 		return $this->cols;
 	}
@@ -107,8 +106,7 @@ class CustomReport implements IReport
 	/**
 	 * @return IReportData
 	 */
-	public
-	function GetData()
+	public function GetData()
 	{
 		return $this->data;
 	}
@@ -116,8 +114,7 @@ class CustomReport implements IReport
 	/**
 	 * @return int
 	 */
-	public
-	function ResultCount()
+	public function ResultCount()
 	{
 		return $this->resultCount;
 	}

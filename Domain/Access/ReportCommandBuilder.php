@@ -22,6 +22,7 @@
 class ReportCommandBuilder
 {
 	const REPORT_TEMPLATE = 'SELECT [SELECT_TOKEN]
+				,1 as utilization_type
 				FROM reservation_instances ri
 				INNER JOIN reservation_series rs ON rs.series_id = ri.series_id
 				INNER JOIN users owner ON owner.user_id = rs.owner_id
@@ -54,6 +55,8 @@ class ReportCommandBuilder
 	const COUNT_FRAGMENT = 'COUNT(1) as total';
 
 	const TOTAL_TIME_FRAGMENT = 'SUM( UNIX_TIMESTAMP(LEAST(ri.end_date, @endDate)) - UNIX_TIMESTAMP(GREATEST(ri.start_date, @startDate)) ) AS totalTime';
+
+	const DURATION_FRAGMENT = 'ri.start_date, ri.end_date';
 
 	const RESOURCE_LIST_FRAGMENT = 'resources.name as resource_name, resources.resource_id';
 
@@ -120,6 +123,10 @@ class ReportCommandBuilder
 	 * @var bool
 	 */
 	private $time = false;
+    /**
+     * @var bool
+     */
+	private $duration = false;
 	/**
 	 * @var bool
 	 */
@@ -136,6 +143,10 @@ class ReportCommandBuilder
 	 * @var bool
 	 */
 	private $joinAccessories = false;
+    /**
+     * @var bool
+     */
+	private $joinBlackouts = false;
 	/**
 	 * @var bool
 	 */
@@ -258,6 +269,15 @@ class ReportCommandBuilder
 	/**
 	 * @return ReportCommandBuilder
 	 */
+	public function SelectDuration()
+	{
+		$this->duration = true;
+		return $this;
+	}
+
+	/**
+	 * @return ReportCommandBuilder
+	 */
 	public function OfResources()
 	{
 		$this->joinResources = true;
@@ -274,6 +294,15 @@ class ReportCommandBuilder
 		$this->listAccessories = true;
 		return $this;
 	}
+
+    /**
+     * @return ReportCommandBuilder
+     */
+    public function IncludingBlackouts()
+    {
+        $this->joinBlackouts = true;
+        return $this;
+    }
 
 	/**
 	 * @param Date $start
@@ -440,6 +469,17 @@ class ReportCommandBuilder
 		$sql = str_replace('[LIMIT_TOKEN]', $this->GetLimit(), $sql);
 		$sql = str_replace('[STATUS_TOKEN]', $this->GetStatusFilter(), $sql);
 
+        if ($this->joinBlackouts)
+        {
+            $blackoutsSql = str_replace('1 as utilization_type', '2 as utilization_type', $sql);
+            $blackoutsSql = str_replace(TableNames::RESERVATION_INSTANCES, TableNames::BLACKOUT_INSTANCES, $blackoutsSql);
+            $blackoutsSql = str_replace(TableNames::RESERVATION_SERIES, TableNames::BLACKOUT_SERIES, $blackoutsSql);
+            $blackoutsSql = str_replace(TableNames::RESERVATION_RESOURCES, TableNames::BLACKOUT_SERIES_RESOURCES, $blackoutsSql);
+            $blackoutsSql = str_replace(ColumnNames::RESERVATION_SERIES_ID, ColumnNames::BLACKOUT_SERIES_ID, $blackoutsSql);
+            $blackoutsSql = str_replace($this->GetStatusFilter(), '', $blackoutsSql);
+            $sql = "($sql) UNION ($blackoutsSql)";
+        }
+
 		$query = new AdHocCommand($sql, true);
 		foreach ($this->parameters as $parameter)
 		{
@@ -470,6 +510,14 @@ class ReportCommandBuilder
 		{
 			$selectSql->Append(self::TOTAL_TIME_FRAGMENT);
 		}
+
+		if ($this->duration)
+        {
+            // TODO NEED TO GET BLACKOUTS
+            $selectSql->Append(self::DURATION_FRAGMENT);
+            $selectSql->AppendSelect(self::RESOURCE_LIST_FRAGMENT);
+            $selectSql->AppendSelect(self::SCHEDULE_LIST_FRAGMENT);
+        }
 
 		if ($this->listResources && ($this->fullList || $this->groupByResource))
 		{
@@ -627,7 +675,7 @@ class ReportCommandBuilder
 	private function GetOrderBy()
 	{
 		$orderBy = new ReportQueryFragment();
-		if ($this->fullList)
+		if ($this->fullList || $this->duration)
 		{
 			$orderBy->Append(self::ORDER_BY_FRAGMENT);
 		}
