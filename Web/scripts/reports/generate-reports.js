@@ -73,14 +73,14 @@ function GenerateReports(reportOptions) {
             elements.saveDialog.modal('show');
 
         });
-
-        $(document).on('click', '#btnChart', function (e) {
-            e.preventDefault();
-
-            var chart = new Chart();
-            chart.generate();
-            $('#report-results').hide();
-        });
+        //
+        // $(document).on('click', '#btnChart', function (e) {
+        //     e.preventDefault();
+        //
+        //     var chart = new Chart(opts.chartOpts);
+        //     chart.generate();
+        //     $('#report-results').hide();
+        // });
 
         $('.save').on('click', function () {
             $(this).closest('form').submit();

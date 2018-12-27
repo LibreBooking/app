@@ -286,14 +286,20 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			customReportUrl: "{$smarty.server.SCRIPT_NAME}?{QueryStringKeys::ACTION}={ReportActions::Generate}",
 			printUrl: "{$smarty.server.SCRIPT_NAME}?{QueryStringKeys::ACTION}={ReportActions::PrintReport}&",
 			csvUrl: "{$smarty.server.SCRIPT_NAME}?{QueryStringKeys::ACTION}={ReportActions::Csv}&",
-			saveUrl: "{$smarty.server.SCRIPT_NAME}?{QueryStringKeys::ACTION}={ReportActions::Save}"
+			saveUrl: "{$smarty.server.SCRIPT_NAME}?{QueryStringKeys::ACTION}={ReportActions::Save}",
+            chartOpts: {
+                dateAxisFormat: '%m/%d'
+            }
 		};
 
 		var reports = new GenerateReports(reportOptions);
 		reports.init();
 
 		var common = new ReportsCommon({
-			scriptUrl: '{$ScriptUrl}'
+			scriptUrl: '{$ScriptUrl}',
+            chartOpts: {
+                dateAxisFormat: '%m/%d'
+            }
 		});
 		common.init();
 

@@ -65,15 +65,14 @@ class ReportDefinition implements IReportDefinition
 
 	public function __construct(IReport $report, $timezone)
 	{
-		$dateFormat = Resources::GetInstance()->ShortDateTimeFormat();
+		$dateTimeFormat = Resources::GetInstance()->ShortDateTimeFormat();
+		$dateFormat = Resources::GetInstance()->GeneralDateFormat();
 		$orderedColumns = array(
-				ColumnNames::ACCESSORY_NAME => new ReportStringColumn('Accessory',
-																	  ChartColumnDefinition::Label(ColumnNames::ACCESSORY_ID, ChartGroup::Accessory)),
-				ColumnNames::RESOURCE_NAME_ALIAS => new ReportStringColumn('Resource',
-																		   ChartColumnDefinition::Label(ColumnNames::RESOURCE_ID, ChartGroup::Resource)),
+				ColumnNames::ACCESSORY_NAME => new ReportStringColumn('Accessory', ChartColumnDefinition::Label(ColumnNames::ACCESSORY_ID, ChartGroup::Accessory)),
+				ColumnNames::RESOURCE_NAME_ALIAS => new ReportStringColumn('Resource', ChartColumnDefinition::Label(ColumnNames::RESOURCE_ID, ChartGroup::Resource)),
 				ColumnNames::QUANTITY => new ReportStringColumn('QuantityReserved', ChartColumnDefinition::Total()),
-				ColumnNames::RESERVATION_START => new ReportDateColumn('BeginDate', $timezone, $dateFormat, ChartColumnDefinition::Date()),
-				ColumnNames::RESERVATION_END => new ReportDateColumn('EndDate', $timezone, $dateFormat, ChartColumnDefinition::Null()),
+				ColumnNames::RESERVATION_START => new ReportDateColumn('BeginDate', $timezone, $dateTimeFormat, ChartColumnDefinition::Date()),
+				ColumnNames::RESERVATION_END => new ReportDateColumn('EndDate', $timezone, $dateTimeFormat, ChartColumnDefinition::Null()),
 				ColumnNames::DURATION_ALIAS => new ReportTimeColumn('Duration', ChartColumnDefinition::Null(), false),
 				ColumnNames::RESERVATION_TITLE => new ReportStringColumn('Title', ChartColumnDefinition::Null()),
 				ColumnNames::RESERVATION_DESCRIPTION => new ReportStringColumn('Description', ChartColumnDefinition::Null()),
@@ -86,14 +85,16 @@ class ReportDefinition implements IReportDefinition
 				ColumnNames::USER_GROUP_LIST => new ReportStringColumn('Groups', ChartColumnDefinition::Null()),
 				ColumnNames::GROUP_NAME_ALIAS => new ReportStringColumn('Group', ChartColumnDefinition::Label(ColumnNames::GROUP_ID)),
 				ColumnNames::SCHEDULE_NAME_ALIAS => new ReportStringColumn('Schedule', ChartColumnDefinition::Label(ColumnNames::SCHEDULE_ID)),
-				ColumnNames::RESERVATION_CREATED => new ReportDateColumn('Created', $timezone, $dateFormat, ChartColumnDefinition::Null()),
-				ColumnNames::RESERVATION_MODIFIED => new ReportDateColumn('LastModified', $timezone, $dateFormat, ChartColumnDefinition::Null()),
+				ColumnNames::RESERVATION_CREATED => new ReportDateColumn('Created', $timezone, $dateTimeFormat, ChartColumnDefinition::Null()),
+				ColumnNames::RESERVATION_MODIFIED => new ReportDateColumn('LastModified', $timezone, $dateTimeFormat, ChartColumnDefinition::Null()),
 				ColumnNames::RESERVATION_STATUS => new ReportStatusColumn('Status', ChartColumnDefinition::Null()),
-				ColumnNames::CHECKIN_DATE => new ReportDateColumn('CheckInTime', $timezone, $dateFormat, ChartColumnDefinition::Null()),
-				ColumnNames::CHECKOUT_DATE => new ReportDateColumn('CheckOutTime', $timezone, $dateFormat, ChartColumnDefinition::Null()),
-				ColumnNames::PREVIOUS_END_DATE => new ReportDateColumn('OriginalEndDate', $timezone, $dateFormat, ChartColumnDefinition::Null()),
+				ColumnNames::CHECKIN_DATE => new ReportDateColumn('CheckInTime', $timezone, $dateTimeFormat, ChartColumnDefinition::Null()),
+				ColumnNames::CHECKOUT_DATE => new ReportDateColumn('CheckOutTime', $timezone, $dateTimeFormat, ChartColumnDefinition::Null()),
+				ColumnNames::PREVIOUS_END_DATE => new ReportDateColumn('OriginalEndDate', $timezone, $dateTimeFormat, ChartColumnDefinition::Null()),
 				ColumnNames::TOTAL => new ReportStringColumn('Total', ChartColumnDefinition::Total()),
 				ColumnNames::TOTAL_TIME => new ReportTimeColumn('Total', ChartColumnDefinition::Total()),
+				ColumnNames::DATE => new ReportDateColumn('Date', $timezone, $dateFormat, ChartColumnDefinition::Date()),
+				ColumnNames::UTILIZATION => new ReportStringColumn('Utilization', ChartColumnDefinition::Total()),
 		);
 
 		if (Configuration::Instance()->GetSectionKey(ConfigSection::CREDITS, ConfigKeys::CREDITS_ENABLED, new BooleanConverter()))

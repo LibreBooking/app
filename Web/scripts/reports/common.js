@@ -20,11 +20,10 @@
 function ReportsCommon(opts) {
 	return {
 		init: function () {
-
 			$(document).on('click', '#btnChart', function (e) {
 				e.preventDefault();
 
-				var chart = new Chart();
+				var chart = new Chart(opts.chartOpts);
 				chart.generate();
 				$('#report-results').hide();
 			});

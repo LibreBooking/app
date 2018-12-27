@@ -231,13 +231,27 @@ class ReportDateColumn extends ReportColumn
 
 	public function GetData($data)
 	{
-		return Date::FromDatabase($data)->ToTimezone($this->timezone)->Format($this->format);
+	    if (is_a($data, 'Date'))
+        {
+            $date = $data;
+        }
+        else{
+	        $date = Date::FromDatabase($data);
+        }
+		return $date->ToTimezone($this->timezone)->Format($this->format);
 	}
 
 	public function GetChartData($row, $key)
 	{
+        if (is_a($row[$key], 'Date'))
+        {
+            $date = $row[$key];
+        }
+        else{
+            $date = Date::FromDatabase($row[$key]);
+        }
 		$format = Resources::GetInstance()->GetDateFormat(ResourceKeys::DATE_GENERAL);
-		return Date::FromDatabase($row[$key])->ToTimezone($this->timezone)->GetDate()->Format($format);
+		return $date->ToTimezone($this->timezone)->GetDate()->ToIso();
 	}
 }
 

@@ -111,7 +111,7 @@ class Report_Range
      */
     public function Dates()
     {
-        $range = new DateRange($this->Start(), $this->End());
+        $range = new DateRange($this->Start(), $this->End()->AddDays(1));
         return $range->Dates();
     }
 

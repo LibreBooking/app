@@ -46,6 +46,7 @@ class Report_RangeTests extends TestBase
 
 		$this->isTrue(Date::Parse('2011-07-01', 'America/Chicago')->Equals($range->Start()));
 		$this->isTrue(Date::Parse('2011-08-01', 'America/Chicago')->Equals($range->End()));
+		$this->assertEquals(31, count($range->Dates()));
 	}
 
 	public function testGetsCurrentWeek()

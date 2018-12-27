@@ -177,8 +177,6 @@ class ReportingServiceTests extends TestBase
     {
         $r1 = 1;
         $s1 = 100;
-        $r2 = 2;
-        $s2 = 200;
 
         $tz = 'America/New_York';
 
@@ -226,20 +224,22 @@ class ReportingServiceTests extends TestBase
 
         $format = Resources::GetInstance()->GetDateFormat('general_date');
 
-        $availableHoursThursday = 12;
-        $blackoutHoursThursday = 2;
-        $reservedHoursThursday = 6;
-
-        $availableHoursFriday = 19;
-        $blackoutHoursFriday = 0;
-        $reservedHoursFriday = 19;
-
-        $availableHoursSaturday = 14;
-        $blackoutHoursSaturday = 0;
-        $reservedHoursSaturday = 6;
+        /**
+         * $availableHoursThursday = 12;
+         * $blackoutHoursThursday = 2;
+         * $reservedHoursThursday = 6;
+         *
+         * $availableHoursFriday = 19;
+         * $blackoutHoursFriday = 0;
+         * $reservedHoursFriday = 19;
+         *
+         * $availableHoursSaturday = 14;
+         * $blackoutHoursSaturday = 0;
+         * $reservedHoursSaturday = 6;
+         **/
 
         $this->assertEquals($thursday->Format($format), $data[0][ColumnNames::DATE]);
-        $this->assertEquals(6/10, $data[0][ColumnNames::UTILIZATION], "6/10");
+        $this->assertEquals(6 / 10, $data[0][ColumnNames::UTILIZATION], "6/10");
         $this->assertEquals('r1', $data[0][ColumnNames::RESOURCE_NAME]);
         $this->assertEquals($s1, $data[0][ColumnNames::SCHEDULE_ID]);
         $this->assertEquals($r1, $data[0][ColumnNames::RESOURCE_ID]);
@@ -248,7 +248,7 @@ class ReportingServiceTests extends TestBase
         $this->assertEquals(1, $data[1][ColumnNames::UTILIZATION], "19/19");
 
         $this->assertEquals($saturday->Format($format), $data[2][ColumnNames::DATE]);
-        $this->assertEquals(6/14, $data[2][ColumnNames::UTILIZATION], "6/14");
+        $this->assertEquals(6 / 14, $data[2][ColumnNames::UTILIZATION], "6/14");
 
         $this->assertEquals($sunday->Format($format), $data[3][ColumnNames::DATE]);
         $this->assertEquals(0, $data[3][ColumnNames::UTILIZATION]);
@@ -256,12 +256,120 @@ class ReportingServiceTests extends TestBase
 
     public function testGetsUtilizationReport_SameLayoutPerDay()
     {
+        $r1 = 1;
+        $s1 = 100;
 
+        $tz = 'America/New_York';
+
+        $thursday = Date::Parse('2018-12-20', $tz);
+        $friday = Date::Parse('2018-12-21', $tz);
+        $saturday = Date::Parse('2018-12-22', $tz);
+        $sunday = Date::Parse('2018-12-23', $tz);
+
+        $slots = $this->HourlyBetween(6, 18, $thursday);
+
+        $layout = new FakeScheduleLayout();
+        $layout->_Timezone = $tz;
+        $layout->_UsesDailyLayouts = false;
+        $layout->_Layout = $slots;
+
+        $this->scheduleRepository->_Layout = $layout;
+
+        $data = array(
+            $this->GetUtilizationRow($r1, $s1, $thursday->SetTimeString('12:00'), $saturday->SetTimeString('12:00'), 1, 'r1'),
+            $this->GetUtilizationRow($r1, $s1, $thursday->SetTimeString('06:00'), $thursday->SetTimeString('08:00'), 2, 'r1'),
+            $this->GetUtilizationRow($r1, $s1, $saturday->SetTimeString('13:00'), $saturday->SetTimeString('15:00'), 1, 'r1'),
+            $this->GetUtilizationRow($r1, $s1, $sunday->SetTimeString('13:00'), $sunday->SetTimeString('15:00'), 2, 'r1'),
+        );
+
+        $this->reportingRepository->_CustomReportData = $data;
+
+        $report = $this->rs->GenerateCustomReport(new Report_Usage(Report_Usage::RESOURCES), new Report_ResultSelection(Report_ResultSelection::UTILIZATION), new Report_GroupBy(Report_GroupBy::NONE), Report_Range::AllTime(), new Report_Filter(null, null, null, null, null, null, false, null));
+
+        $data = $report->GetData()->Rows();
+
+        $format = Resources::GetInstance()->GetDateFormat('general_date');
+
+        /**
+         * availableHours = 12;
+         * $blackoutHoursThursday = 2;
+         * $reservedHoursThursday = 6;
+         * $reservedHoursSaturday = 8;
+         **/
+
+        $this->assertEquals($thursday->Format($format), $data[0][ColumnNames::DATE]);
+        $this->assertEquals(60, $data[0][ColumnNames::UTILIZATION], '6/10');
+        $this->assertEquals('r1', $data[0][ColumnNames::RESOURCE_NAME_ALIAS]);
+        $this->assertEquals($s1, $data[0][ColumnNames::SCHEDULE_ID]);
+        $this->assertEquals($r1, $data[0][ColumnNames::RESOURCE_ID]);
+
+        $this->assertEquals($friday->Format($format), $data[1][ColumnNames::DATE]);
+        $this->assertEquals(100, $data[1][ColumnNames::UTILIZATION]);
+
+        $this->assertEquals($saturday->Format($format), $data[2][ColumnNames::DATE]);
+        $this->assertEquals(67, $data[2][ColumnNames::UTILIZATION], '8/12');
+
+        $this->assertEquals($sunday->Format($format), $data[3][ColumnNames::DATE]);
+        $this->assertEquals(0, $data[3][ColumnNames::UTILIZATION]);
     }
 
     public function testGetsUtilizationReport_CustomLayout()
     {
+        $r1 = 1;
+        $s1 = 100;
 
+        $tz = 'America/New_York';
+
+        $thursday = Date::Parse('2018-12-20', $tz);
+        $friday = Date::Parse('2018-12-21', $tz);
+        $saturday = Date::Parse('2018-12-22', $tz);
+        $sunday = Date::Parse('2018-12-23', $tz);
+
+        $slots = $this->HourlyBetween(6, 18, $thursday);
+
+        $layout = new CustomScheduleLayout();
+        $layout->_Timezone = $tz;
+        $layout->_UsesDailyLayouts = false;
+        $layout->_Layout = $slots;
+
+        $this->scheduleRepository->_Layout = $layout;
+
+        $data = array(
+            $this->GetUtilizationRow($r1, $s1, $thursday->SetTimeString('12:00'), $saturday->SetTimeString('12:00'), 1, 'r1'),
+            $this->GetUtilizationRow($r1, $s1, $thursday->SetTimeString('06:00'), $thursday->SetTimeString('08:00'), 2, 'r1'),
+            $this->GetUtilizationRow($r1, $s1, $saturday->SetTimeString('13:00'), $saturday->SetTimeString('15:00'), 1, 'r1'),
+            $this->GetUtilizationRow($r1, $s1, $sunday->SetTimeString('13:00'), $sunday->SetTimeString('15:00'), 2, 'r1'),
+        );
+
+        $this->reportingRepository->_CustomReportData = $data;
+
+        $report = $this->rs->GenerateCustomReport(new Report_Usage(Report_Usage::RESOURCES), new Report_ResultSelection(Report_ResultSelection::UTILIZATION), new Report_GroupBy(Report_GroupBy::NONE), Report_Range::AllTime(), new Report_Filter(null, null, null, null, null, null, false, null));
+
+        $data = $report->GetData()->Rows();
+
+        $format = Resources::GetInstance()->GetDateFormat('general_date');
+
+        /**
+         * availableHours = 12;
+         * $blackoutHoursThursday = 2;
+         * $reservedHoursThursday = 6;
+         * $reservedHoursSaturday = 8;
+         **/
+
+        $this->assertEquals($thursday->Format($format), $data[0][ColumnNames::DATE]);
+        $this->assertEquals(60, $data[0][ColumnNames::UTILIZATION], "6/10");
+        $this->assertEquals('r1', $data[0][ColumnNames::RESOURCE_NAME]);
+        $this->assertEquals($s1, $data[0][ColumnNames::SCHEDULE_ID]);
+        $this->assertEquals($r1, $data[0][ColumnNames::RESOURCE_ID]);
+
+        $this->assertEquals($friday->Format($format), $data[1][ColumnNames::DATE]);
+        $this->assertEquals(100, $data[1][ColumnNames::UTILIZATION]);
+
+        $this->assertEquals($saturday->Format($format), $data[2][ColumnNames::DATE]);
+        $this->assertEquals(75, $data[2][ColumnNames::UTILIZATION], "8/12");
+
+        $this->assertEquals($sunday->Format($format), $data[3][ColumnNames::DATE]);
+        $this->assertEquals(0, $data[3][ColumnNames::UTILIZATION]);
     }
 
     /**
@@ -278,7 +386,7 @@ class ReportingServiceTests extends TestBase
         return array(
             ColumnNames::SCHEDULE_ID => $scheduleId,
             ColumnNames::RESOURCE_ID => $resourceId,
-            ColumnNames::RESOURCE_NAME => $resourceName,
+            ColumnNames::RESOURCE_NAME_ALIAS => $resourceName,
             ColumnNames::RESERVATION_START => $start->ToDatabase(),
             ColumnNames::RESERVATION_END => $end->ToDatabase(),
             ColumnNames::UTILIZATION_TYPE => $type,
