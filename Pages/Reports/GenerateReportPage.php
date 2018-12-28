@@ -165,6 +165,7 @@ class GenerateReportPage extends ActionPage implements IGenerateReportPage
 	public function ProcessPageLoad()
 	{
 		$this->presenter->PageLoad();
+		$this->Set('DateAxisFormat', Resources::GetInstance()->GetDateFormat('report_date'));
 		$this->Display('Reports/generate-report.tpl');
 	}
 

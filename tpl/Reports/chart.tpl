@@ -32,15 +32,3 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 {jsfile src="js/jqplot/plugins/jqplot.canvasTextRenderer.min.js"}
 {jsfile src="js/jqplot/plugins/jqplot.pointLabels.min.js"}
 {jsfile src="js/jqplot/plugins/jqplot.dateAxisRenderer.min.js"}
-
-<script type="text/javascript">
-	// $(document).ready(function () {
-	// 	$(document).on('loaded', '#report-no-data, #report-results', function () {
-            // var dateAxisFormat = '%m/%d';
-			// var chart = new Chart({
-             //    dateAxisFormat: dateAxisFormat
-            // });
-			// chart.clear();
-		// });
-	// });
-</script>

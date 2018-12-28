@@ -24,13 +24,13 @@ function CannedReports(reportOptions) {
 			window.open(url);
 		});
 
-		$(document).on('click', '#btnChart', function(e) {
-			e.preventDefault();
-
-			var chart = new Chart();
-			chart.generate();
-			$('#report-results').hide();
-		});
+		// $(document).on('click', '#btnChart', function(e) {
+		// 	e.preventDefault();
+        //
+		// 	var chart = new Chart();
+		// 	chart.generate();
+		// 	$('#report-results').hide();
+		// });
 
 		$('.cancel').click(function (e) {
 			e.preventDefault();

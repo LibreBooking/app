@@ -110,7 +110,8 @@ class SavedReportsPage extends ActionPage implements ISavedReportsPage
 							 )
 		);
 
-		$this->presenter->PageLoad();
+        $this->Set('DateAxisFormat', Resources::GetInstance()->GetDateFormat('report_date'));
+        $this->presenter->PageLoad();
 		$this->Display('Reports/saved-reports.tpl');
 	}
 

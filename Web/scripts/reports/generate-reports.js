@@ -13,10 +13,11 @@ function GenerateReports(reportOptions) {
         $('#selectDiv input').click(function () {
             $('div.select-toggle').hide();
 
-            if ($(this).attr('id') == 'results_list') {
+            var selectedItem = $(this).attr('id');
+            if (selectedItem == 'results_list') {
                 $('#listOfDiv').show();
             }
-            else {
+            else if (selectedItem != 'results_utilization'){
                 $('#aggregateDiv').show();
             }
         });
@@ -73,14 +74,6 @@ function GenerateReports(reportOptions) {
             elements.saveDialog.modal('show');
 
         });
-        //
-        // $(document).on('click', '#btnChart', function (e) {
-        //     e.preventDefault();
-        //
-        //     var chart = new Chart(opts.chartOpts);
-        //     chart.generate();
-        //     $('#report-results').hide();
-        // });
 
         $('.save').on('click', function () {
             $(this).closest('form').submit();

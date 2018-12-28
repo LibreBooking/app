@@ -33,6 +33,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 	</div>
 	<div id="customize-columns"></div>
 	<table width="100%" id="report-results" chart-type="{$Definition->GetChartType()}">
+        <thead>
 		<tr>
 			{foreach from=$Definition->GetColumnHeaders() item=column}
 				{capture name="columnTitle"}{if $column->HasTitle()}{$column->Title()}{else}{translate key=$column->TitleKey()}{/if}{/capture}
@@ -41,6 +42,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 				</th>
 			{/foreach}
 		</tr>
+        </thead>
+        <tbody>
 		{foreach from=$Report->GetData()->Rows() item=row}
 			{cycle values=',alt' assign=rowCss}
 			<tr class="{$rowCss}">
@@ -50,6 +53,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 				{/foreach}
 			</tr>
 		{/foreach}
+        </tbody>
 	</table>
 	<h4>{$Report->ResultCount()} {translate key=Rows}
 		{if $Definition->GetTotal() != ''}

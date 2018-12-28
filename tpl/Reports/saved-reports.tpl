@@ -208,7 +208,10 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 			var common = new ReportsCommon(
 					{
-						scriptUrl: '{$ScriptUrl}'
+						scriptUrl: '{$ScriptUrl}',
+                        chartOpts: {
+                            dateAxisFormat: '{$DateAxisFormat}'
+                        }
 					}
 			);
 			common.init();

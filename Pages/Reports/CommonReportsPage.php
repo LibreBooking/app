@@ -85,7 +85,8 @@ class CommonReportsPage extends ActionPage implements ICommonReportsPage
 	 */
 	public function ProcessPageLoad()
 	{
-		$this->Display('Reports/common-reports.tpl');
+        $this->Set('DateAxisFormat', Resources::GetInstance()->GetDateFormat('report_date'));
+        $this->Display('Reports/common-reports.tpl');
 	}
 
 	public function BindReport(IReport $report, IReportDefinition $definition, $selectedColumns)

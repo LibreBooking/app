@@ -43,12 +43,12 @@ function Chart(options) {
 		});
 
         var plot = $.jqplot('chartdiv', series.GetData(), {
-			// axesDefaults:{
-			// 	tickRenderer:$.jqplot.CanvasAxisTickRenderer,
-			// 	tickOptions:{
-			// 		fontSize:'10pt'
-			// 	}
-			// },
+			axesDefaults:{
+				tickRenderer:$.jqplot.CanvasAxisTickRenderer,
+				// tickOptions:{
+				// 	fontSize:'10pt'
+				// }
+			},
 			seriesDefaults:{
 				renderer:series.GetGraphRenderer(),
 				rendererOptions:{ fillToZero:true },
@@ -69,11 +69,21 @@ function Chart(options) {
 					// min:series.GetXAxisMin()
 				},
 				yaxis:{
-					pad:1.05,
-					tickOptions:{ formatString:'%d', formatter:series.GetTickFormatter()},
+					// pad:1.05,
+					tickOptions:{ formatString:series.GetYAxisFormatString(), formatter:series.GetTickFormatter()},
 					min:0
 				}
-			}
+			},
+            highlighter: {
+                // sizeAdjust: 10,
+                tooltipLocation: 'n',
+                tooltipAxes: 'y',
+                // tooltipFormatString: '%.2f',
+                useAxesFormatters: false
+            },
+            cursor: {
+                show: true
+            }
 		});
 		plot.replot({resetAxes:true});
 		chartIndicator.hide();
@@ -114,6 +124,10 @@ function Chart(options) {
 		this.GetXAxisMin = function () {
 			return '';
 		};
+
+		this.GetYAxisFormatString = function() {
+            return '%d';
+        };
 
 		this.GetLegendOptions = function () {
 			return {

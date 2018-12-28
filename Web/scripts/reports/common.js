@@ -79,6 +79,7 @@ function ReportsCommon(opts) {
 			}
 
 			$(document).on('loaded', '#report-results', function (e) {
+                $('#chartdiv').empty();
 				var separator = '!s!';
 				var selectedCols = $('#selectedColumns').val();
 				var savedCols = selectedCols ? selectedCols.split(separator) : [];

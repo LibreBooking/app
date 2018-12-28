@@ -55,6 +55,7 @@ class en_us extends Language
 		$dates['embedded_date'] = 'D d';
 		$dates['embedded_time'] = 'g:i A';
 		$dates['embedded_datetime'] = 'n/j g:i A';
+		$dates['report_date'] = '%m/%d';
 
 		$this->Dates = $dates;
 

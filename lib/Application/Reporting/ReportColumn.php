@@ -51,8 +51,9 @@ class ReportCell
 	 * @var ChartType|string|null
 	 */
 	private $chartColumnType;
+    private $chartGroup;
 
-	/**
+    /**
 	 * @param string $value
 	 * @param string|null $chartValue
 	 * @param ChartColumnType|string|null $chartColumnType
@@ -250,7 +251,7 @@ class ReportDateColumn extends ReportColumn
         else{
             $date = Date::FromDatabase($row[$key]);
         }
-		$format = Resources::GetInstance()->GetDateFormat(ResourceKeys::DATE_GENERAL);
+//		$format = Resources::GetInstance()->GetDateFormat(ResourceKeys::DATE_GENERAL);
 		return $date->ToTimezone($this->timezone)->GetDate()->ToIso();
 	}
 }
@@ -270,4 +271,22 @@ class ReportTimeColumn extends ReportColumn
 		$interval = new TimeInterval($data);
 		return $interval->ToString($this->includeTotalHours);
 	}
+}
+
+class ReportUtilizationColumn extends ReportColumn
+{
+	public function __construct($titleKey, ChartColumnDefinition $chartColumnDefinition)
+	{
+		parent::__construct($titleKey, $chartColumnDefinition);
+	}
+
+    public function GetData($data)
+    {
+       return "$data%";
+    }
+
+    public function GetChartData($row, $key)
+    {
+        return $row[$key];
+    }
 }

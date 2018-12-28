@@ -52,6 +52,7 @@ class en_gb extends en_us
         $dates['momentjs_datetime'] = 'D/M/YY H:mm';
 		$dates['calendar_time'] = 'H:mm';
 		$dates['calendar_dates'] = 'd M';
+        $dates['report_date'] = '%d/%m';
 
         $this->Dates = $dates;
         return $this->Dates;
