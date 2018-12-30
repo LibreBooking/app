@@ -131,7 +131,7 @@ class ReportDefinitionTests extends TestBase
 		$systemFormat = Resources::GetInstance()->GeneralDateFormat();
 
 		$this->assertEquals(Date::FromDatabase($date)->ToTimezone($timezone)->Format($format), $row[1]->Value());
-		$this->assertEquals(Date::FromDatabase($date)->ToTimezone($timezone)->Format($systemFormat), $row[1]->ChartValue());
+		$this->assertEquals(Date::FromDatabase($date)->ToTimezone($timezone)->GetDate()->ToIso(), $row[1]->ChartValue());
 		$this->assertEquals(ChartColumnType::Date, $row[1]->GetChartColumnType());
 		$this->assertNull($row[1]->GetChartGroup());
 

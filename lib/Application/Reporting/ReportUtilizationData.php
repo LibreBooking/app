@@ -30,6 +30,11 @@ class ReportUtilizationData
     private $weekdayAvailability = array();
 
     /**
+     * @var ReportDailyAvailability[]
+     */
+    private $customAvailability = array();
+
+    /**
      * @var array
      */
     private $data;
@@ -89,8 +94,6 @@ class ReportUtilizationData
                 $latest = $end;
             }
 
-            $this->CacheTotalAvailability($start, $layout, $scheduleId);
-
             if ($type == 1) {
                 $this->AddReservation($start, $end, $resourceId, $scheduleId);
             }
@@ -143,31 +146,57 @@ class ReportUtilizationData
     private function CacheTotalAvailability($date, $layout, $scheduleId)
     {
         $key = $date->Weekday() . $scheduleId;
-        if (!array_key_exists($key, $this->weekdayAvailability)) {
-            $seconds = 0;
-            $first = null;
-            $last = null;
-            $periods = $layout->GetLayout($date->GetDate());
-
-            foreach ($periods as $period) {
-                if ($period->IsReservable()) {
-                    if ($first == null) {
-                        $first = $period;
-                    }
-                    $last = $period;
-                    $seconds += DateDiff::BetweenDates($period->BeginDate(), $period->EndDate())->TotalSeconds();
-                }
-            }
-
-            if ($first == null) {
-                $first = $periods[0];
-            }
-            if ($last == null) {
-                $last = $periods[count($periods)-1];
-            }
-
-            $this->weekdayAvailability[$key] = new ReportDailyAvailability($seconds, $first->Begin(), $last->End());
+        if (array_key_exists($key, $this->weekdayAvailability)) {
+            return;
         }
+        $seconds = 0;
+        $first = null;
+        $last = null;
+        $periods = $layout->GetLayout($date->GetDate());
+
+        foreach ($periods as $period) {
+            if ($period->IsReservable()) {
+                if ($first == null) {
+                    $first = $period;
+                }
+                $last = $period;
+                $seconds += DateDiff::BetweenDates($period->BeginDate(), $period->EndDate())->TotalSeconds();
+            }
+        }
+
+        if ($first == null) {
+            $first = $periods[0];
+        }
+        if ($last == null) {
+            $last = $periods[count($periods) - 1];
+        }
+
+        $this->weekdayAvailability[$key] = new ReportDailyAvailability($seconds, $first->Begin(), $last->End());
+    }
+
+    /**
+     * @param Date $date
+     * @param IScheduleLayout $layout
+     * @param int $scheduleId
+     */
+    private function CacheCustomAvailability($date, $layout, $scheduleId)
+    {
+        $key = $date->Timestamp() . $scheduleId;
+
+        if (array_key_exists($key, $this->customAvailability)) {
+            return;
+        }
+
+        $total = 0;
+        $periods = $layout->GetLayout($date);
+        $endOfDay = new Time(0, 0, 0, $layout->Timezone());
+        foreach ($periods as $period) {
+            if ($period->IsReservable()) {
+                $total += DateDiff::BetweenDates($period->BeginDate(), $period->EndDate())->TotalSeconds();
+            }
+        }
+
+        $this->customAvailability[$key] = new ReportDailyAvailability($total, $endOfDay, $endOfDay);
     }
 
     /**
@@ -177,7 +206,13 @@ class ReportUtilizationData
      */
     private function GetTotalAvailability($date, $scheduleId)
     {
-        $this->CacheTotalAvailability($date, $this->GetLayout($scheduleId), $scheduleId);
+        $layout = $this->GetLayout($scheduleId);
+        if ($layout->UsesCustomLayout()) {
+            $this->CacheCustomAvailability($date, $layout, $scheduleId);
+            return $this->customAvailability[$date->Timestamp() . $scheduleId];
+        }
+
+        $this->CacheTotalAvailability($date, $layout, $scheduleId);
 
         $key = $date->Weekday() . $scheduleId;
 
@@ -309,7 +344,11 @@ class ReportUtilizationData
         $available = $this->GetTotalAvailability($date, $scheduleId);
         $unavailable = $this->GetUnavailable($date, $resourceId);
 
-        return 100*(round($total / ($available->TotalSeconds() - $unavailable), 2));
+        $availableSeconds = $available->TotalSeconds() - $unavailable;
+        if ($availableSeconds == 0) {
+            return 0;
+        }
+        return 100 * (round($total / $availableSeconds, 2));
     }
 }
 
