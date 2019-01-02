@@ -1,5 +1,5 @@
 {*
-Copyright 2011-2018 Nick Korbel
+Copyright 2011-2019 Nick Korbel
 
 File ini adalah bagian dari Booked Scheduler.
 

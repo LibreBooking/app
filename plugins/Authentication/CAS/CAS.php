@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright 2011-2018 Nick Korbel
+ * Copyright 2011-2019 Nick Korbel
  * Copyright 2013-2014 Bart Verheyde
  * Copyright 2013-2014 Bryan Green
  *

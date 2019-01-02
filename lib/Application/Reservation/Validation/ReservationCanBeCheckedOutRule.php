@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Copyright 2017-2018 Nick Korbel
+ * Copyright 2017-2019 Nick Korbel
  *
  * This file is part of Booked Scheduler is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
