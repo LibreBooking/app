@@ -1073,7 +1073,11 @@ function Reservation(opts) {
                 if (col.data('start') <= startMinutes) {
                     startCol = col;
                 }
-                if (col.data('end') <= endMinutes) {
+                var end = col.data('end');
+                if (end == 0) {
+                    end = 1440;
+                }
+                if (end <= endMinutes) {
                     endCol = col;
                 }
             });
