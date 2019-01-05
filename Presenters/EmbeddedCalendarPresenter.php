@@ -135,7 +135,7 @@ class EmbeddedCalendarPresenter
      */
     private function GetReservations($scheduleId, $resourceId, $allSchedules, $allResources, $startDate, $endDate, $timezone)
     {
-        $listing = new ReservationListing($timezone);
+        $listing = new ReservationListing($timezone, new DateRange($startDate, $endDate->AddDays(1)));
         $allReservations = $this->reservationViewRepository->GetReservations($startDate, $endDate->AddDays(1), null, null, $scheduleId, $resourceId, true);
 
         foreach ($allReservations as $r) {

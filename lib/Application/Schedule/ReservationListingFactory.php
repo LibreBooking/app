@@ -19,15 +19,16 @@ interface IReservationListingFactory
 {
 	/**
 	 * @param string $targetTimezone
-	 * @return IMutableReservationListing
+     * @param DateRange|null $acceptableDateRange
+     * @return IMutableReservationListing
 	 */
-	function CreateReservationListing($targetTimezone);
+	function CreateReservationListing($targetTimezone, $acceptableDateRange = null);
 }
 
 class ReservationListingFactory implements IReservationListingFactory
 {
-	public function CreateReservationListing($targetTimezone)
+	public function CreateReservationListing($targetTimezone, $acceptableDateRange = null)
 	{
-		return new ReservationListing($targetTimezone);
+		return new ReservationListing($targetTimezone, $acceptableDateRange);
 	}
 }

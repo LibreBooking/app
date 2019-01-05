@@ -78,7 +78,7 @@ class ReservationUserAvailabilityPresenter
         $end = $dates->GetEnd()->GetDate()->AddDays(1);
         $scheduleLayout = $this->scheduleRepository->GetLayout($scheduleId, new ScheduleLayoutFactory($userSession->Timezone));
 
-        $reservationListing = new ReservationListing($userSession->Timezone);
+        $reservationListing = new ReservationListing($userSession->Timezone, $dates);
 
         $resourceReservations = $this->reservationViewRepository->GetReservations($start, $end, null, null, null, $resourceIds);
         $this->AddReservations($reservationListing, $resourceReservations);

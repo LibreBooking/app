@@ -18,16 +18,34 @@ class ReservationListing implements IMutableReservationListing
 {
     /**
 	 * @param string $targetTimezone
+     * @param DateRange|null $acceptableDateRange
 	 */
-	public function __construct($targetTimezone)
+	public function __construct($targetTimezone, $acceptableDateRange = null)
 	{
 		$this->timezone = $targetTimezone;
+		$this->min = Date::Min();
+		$this->max = Date::Max();
+        if ($acceptableDateRange != null)
+        {
+            $this->min = $acceptableDateRange->GetBegin();
+            $this->max = $acceptableDateRange->GetEnd()->AddDays(1);
+        }
 	}
 
 	/**
 	 * @var string
 	 */
 	protected $timezone;
+
+    /**
+     * @var Date
+     */
+	protected $min;
+
+    /**
+     * @var Date
+     */
+	protected $max;
 
 	/**
 	 * @var array|ReservationItemView[]
@@ -76,7 +94,7 @@ class ReservationListing implements IMutableReservationListing
 		}
 		else
 		{
-			while ($currentDate->LessThan($lastDate) && !$currentDate->DateEquals($lastDate))
+			while ($currentDate->LessThan($lastDate) && !$currentDate->DateEquals($lastDate) && $currentDate->LessThan($this->max))
 			{
 				$this->AddOnDate($item, $currentDate);
 				$currentDate = $currentDate->AddDays(1);
@@ -93,6 +111,11 @@ class ReservationListing implements IMutableReservationListing
 
 	protected function AddOnDate(ReservationListItem $item, Date $date)
 	{
+        if ($item->BufferedStartDate()->GreaterThan($this->max) || $item->BufferedEndDate()->LessThan($this->min))
+        {
+            return;
+        }
+
 //		Log::Debug('Adding id %s on %s', $item->Id(), $date);
 		$this->_reservationsByDate[$date->Format('Ymd')][] = $item;
 		$this->_reservationsByDateAndResource[$date->Format('Ymd') . '|' . $item->ResourceId()][] = $item;
@@ -110,11 +133,12 @@ class ReservationListing implements IMutableReservationListing
 
 	/**
 	 * @param array|ReservationListItem[] $reservations
+     * @param DateRange|null $acceptableDateRange
 	 * @return ReservationListing
 	 */
-	private function Create($reservations)
+	private function Create($reservations, $acceptableDateRange = null)
 	{
-		$reservationListing = new ReservationListing($this->timezone);
+		$reservationListing = new ReservationListing($this->timezone, $acceptableDateRange);
 
 		if ($reservations != null)
 		{
@@ -141,17 +165,17 @@ class ReservationListing implements IMutableReservationListing
         {
             $reservations = $this->_reservationsByDate[$key];
         }
-        return $this->Create($reservations);
+        return $this->Create($reservations, new DateRange($this->min, $this->max));
 	}
 
 	public function ForResource($resourceId)
 	{
 		if (array_key_exists($resourceId, $this->_reservationByResource))
 		{
-			return $this->Create($this->_reservationByResource[$resourceId]);
+			return $this->Create($this->_reservationByResource[$resourceId], new DateRange($this->min, $this->max));
 		}
 
-		return new ReservationListing($this->timezone);
+		return new ReservationListing($this->timezone, new DateRange($this->min, $this->max));
 	}
 
 	public function OnDateForResource(Date $date, $resourceId)
