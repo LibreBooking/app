@@ -83,6 +83,11 @@ class ResourceDisplayPresenter extends ActionPresenter
      */
     private $reservationRepository;
 
+    /**
+     * @var ITermsOfServiceRepository
+     */
+    private $termsOfServiceRepository;
+
     public function __construct(IResourceDisplayPage $page,
                                 IResourceRepository $resourceRepository,
                                 IReservationService $reservationService,
@@ -92,7 +97,8 @@ class ResourceDisplayPresenter extends ActionPresenter
                                 IDailyLayoutFactory $dailyLayoutFactory,
                                 IGuestUserService $guestUserService,
                                 IAttributeService $attributeService,
-                                IReservationRepository $reservationRepository)
+                                IReservationRepository $reservationRepository,
+                                ITermsOfServiceRepository $termsOfServiceRepository)
     {
         parent::__construct($page);
         $this->page = $page;
@@ -105,6 +111,7 @@ class ResourceDisplayPresenter extends ActionPresenter
         $this->guestUserService = $guestUserService;
         $this->attributeService = $attributeService;
         $this->reservationRepository = $reservationRepository;
+        $this->termsOfServiceRepository = $termsOfServiceRepository;
 
         parent::AddAction('login', 'Login');
         parent::AddAction('activate', 'Activate');
@@ -233,6 +240,7 @@ class ResourceDisplayPresenter extends ActionPresenter
             }
         }
 
+        $this->SetTermsOfService();
         $this->page->SetIsAvailableNow($current == null);
         $this->page->DisplayAvailability($dailyLayout, $now, $current, $next, $upcoming, $requiresCheckin, $checkinReferenceNumber);
     }
@@ -252,6 +260,8 @@ class ResourceDisplayPresenter extends ActionPresenter
 
         $resultCollector = new ReservationResultCollector();
         $series = ReservationSeries::Create($userSession->UserId, $resource, Resources::GetInstance()->GetString('AdHocMeeting'), Resources::GetInstance()->GetString('AdHocMeeting'), $date, new RepeatNone(), $userSession);
+
+        $series->AcceptTerms($this->page->GetTermsOfServiceAcknowledgement());
 
         $attributes = $this->page->GetAttributes();
         foreach ($attributes as $attribute) {
@@ -311,6 +321,14 @@ class ResourceDisplayPresenter extends ActionPresenter
         }
 
         return $this->reservationCheckinHandler;
+    }
+
+    private function SetTermsOfService()
+    {
+        $termsOfService = $this->termsOfServiceRepository->Load();
+        if ($termsOfService != null && $termsOfService->AppliesToReservation()) {
+            $this->page->SetTerms($termsOfService);
+        }
     }
 }
 

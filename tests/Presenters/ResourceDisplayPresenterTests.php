@@ -88,6 +88,11 @@ class ResourceDisplayPresenterTests extends TestBase
      */
     private $reservationRepository;
 
+    /**
+     * @var FakeTermsOfServiceRepository
+     */
+    private $termsOfServiceRepository;
+
     public function setup()
     {
         parent::setup();
@@ -104,6 +109,7 @@ class ResourceDisplayPresenterTests extends TestBase
         $this->reservationCheckinHandler = new FakeReservationHandler();
         $this->attributeService = new FakeAttributeService();
         $this->reservationRepository = new FakeReservationRepository();
+        $this->termsOfServiceRepository = new FakeTermsOfServiceRepository();
 
         $this->presenter = new ResourceDisplayPresenter($this->page,
             $this->resourceRepository,
@@ -114,7 +120,8 @@ class ResourceDisplayPresenterTests extends TestBase
             $this->dailyLayoutFactory,
             $this->guestUserService,
             $this->attributeService,
-            $this->reservationRepository);
+            $this->reservationRepository,
+            $this->termsOfServiceRepository);
     }
 
     public function testShowsLoginIfNotLoggedInAndNoResource()
@@ -458,6 +465,7 @@ class TestResourceDisplayPage extends FakePageBase implements IResourceDisplayPa
     public $_CurrentReservation;
     public $_RequiresCheckIn = false;
     public $_CheckinReferenceNumber;
+    public $_TermsOfService;
 
     public function TakingAction()
     {
@@ -604,5 +612,10 @@ class TestResourceDisplayPage extends FakePageBase implements IResourceDisplayPa
     public function GetReferenceNumber()
     {
         return $this->_CheckinReferenceNumber;
+    }
+
+    public function SetTerms($termsOfService)
+    {
+        $this->_TermsOfService = $termsOfService;
     }
 }

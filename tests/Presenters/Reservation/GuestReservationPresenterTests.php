@@ -23,247 +23,248 @@ require_once(ROOT_DIR . 'Presenters/Reservation/GuestReservationPresenter.php');
 
 class GuestReservationPresenterTests extends TestBase
 {
-	/**
-	 * @var FakeGuestReservationPage
-	 */
-	private $page;
-	/**
-	 * @var GuestReservationPresenter
-	 */
-	private $presenter;
+    /**
+     * @var FakeGuestReservationPage
+     */
+    private $page;
+    /**
+     * @var GuestReservationPresenter
+     */
+    private $presenter;
 
-	/**
-	 * @var IReservationInitializerFactory
-	 */
-	private $factory;
+    /**
+     * @var IReservationInitializerFactory
+     */
+    private $factory;
 
-	/**
-	 * @var INewReservationPreconditionService
-	 */
-	private $preconditionService;
-	/**
-	 * @var FakeRegistration
-	 */
-	private $registration;
-	/**
-	 * @var IReservationInitializer
-	 */
-	private $initializer;
-	/**
-	 * @var FakeWebAuthentication
-	 */
-	private $authentication;
+    /**
+     * @var INewReservationPreconditionService
+     */
+    private $preconditionService;
+    /**
+     * @var FakeRegistration
+     */
+    private $registration;
+    /**
+     * @var IReservationInitializer
+     */
+    private $initializer;
+    /**
+     * @var FakeWebAuthentication
+     */
+    private $authentication;
 
-	public function setup()
-	{
-		$this->page = new FakeGuestReservationPage();
-		$this->registration = new FakeRegistration();
-		$this->factory = $this->getMock('IReservationInitializerFactory');
-		$this->preconditionService = $this->getMock('INewReservationPreconditionService');
-		$this->initializer = $this->getMock('IReservationInitializer');
-		$this->authentication = new FakeWebAuthentication();
+    public function setup()
+    {
+        $this->page = new FakeGuestReservationPage();
+        $this->registration = new FakeRegistration();
+        $this->factory = $this->getMock('IReservationInitializerFactory');
+        $this->preconditionService = $this->getMock('INewReservationPreconditionService');
+        $this->initializer = $this->getMock('IReservationInitializer');
+        $this->authentication = new FakeWebAuthentication();
 
-		$this->factory->expects($this->any())
-					->method('GetNewInitializer')
-					->with($this->anything())
-					->will($this->returnValue($this->initializer));
+        $this->factory->expects($this->any())
+            ->method('GetNewInitializer')
+            ->with($this->anything())
+            ->will($this->returnValue($this->initializer));
 
-		$this->presenter = new GuestReservationPresenter($this->page,
-														 $this->registration,
-														 $this->authentication,
-														 $this->factory,
-														 $this->preconditionService);
-		parent::setup();
-	}
+        $this->presenter = new GuestReservationPresenter($this->page,
+            $this->registration,
+            $this->authentication,
+            $this->factory,
+            $this->preconditionService);
+        parent::setup();
+    }
 
-	public function testRegistersAGuestAccount()
-	{
-		$this->page->_GuestInformationCollected = false;
-		$this->page->_Email = 'email@address.com';
-		$this->page->_CreatingAccount = true;
+    public function testRegistersAGuestAccount()
+    {
+        $this->page->_GuestInformationCollected = false;
+        $this->page->_Email = 'email@address.com';
+        $this->page->_CreatingAccount = true;
 
-		$this->initializer->expects($this->once())
-					->method('Initialize');
+        $this->initializer->expects($this->once())
+            ->method('Initialize');
 
-		$this->presenter->PageLoad();
+        $this->presenter->PageLoad();
 
-		$this->assertEquals($this->page->_Email, $this->registration->_Email);
-		$this->assertTrue($this->registration->_RegisterCalled);
-		$this->assertEquals($this->authentication->_LastLogin, $this->page->_Email);
-	}
+        $this->assertEquals($this->page->_Email, $this->registration->_Email);
+        $this->assertTrue($this->registration->_RegisterCalled);
+        $this->assertEquals($this->authentication->_LastLogin, $this->page->_Email);
+    }
 
-	public function testPermissionStrategyAddsPermissionForAllScheduleResources()
-	{
-		$this->page->_ScheduleId = 455;
-		$strategy = new GuestReservationPermissionStrategy($this->page);
+    public function testPermissionStrategyAddsPermissionForAllScheduleResources()
+    {
+        $this->page->_ScheduleId = 455;
+        $strategy = new GuestReservationPermissionStrategy($this->page);
 
-		$user = new FakeUser(123);
+        $user = new FakeUser(123);
 
-		$strategy->AddAccount($user);
+        $strategy->AddAccount($user);
 
-		$this->assertTrue($this->db->ContainsCommand(new AutoAssignGuestPermissionsCommand($user->Id(), $this->page->_ScheduleId)));
-	}
+        $this->assertTrue($this->db->ContainsCommand(new AutoAssignGuestPermissionsCommand($user->Id(), $this->page->_ScheduleId)));
+    }
 }
 
 class FakeGuestReservationPage implements IGuestReservationPage
 {
-	public $_GuestInformationCollected = false;
-	public $_Email;
-	public $_CreatingAccount = false;
-	public $_ScheduleId;
+    public $_GuestInformationCollected = false;
+    public $_Email;
+    public $_CreatingAccount = false;
+    public $_ScheduleId;
 
-	public function GuestInformationCollected()
-	{
-		return $this->_GuestInformationCollected;
-	}
+    public function GuestInformationCollected()
+    {
+        return $this->_GuestInformationCollected;
+    }
 
-	public function GetEmail()
-	{
-		return $this->_Email;
-	}
+    public function GetEmail()
+    {
+        return $this->_Email;
+    }
 
-	public function IsCreatingAccount()
-	{
-		return $this->_CreatingAccount;
-	}
+    public function IsCreatingAccount()
+    {
+        return $this->_CreatingAccount;
+    }
 
-	public function PageLoad()
-	{
-	}
-
-	public function Redirect($url)
-	{
-	}
-
-	public function RedirectToError($errorMessageId = ErrorMessages::UNKNOWN_ERROR, $lastPage = '')
-	{
-	}
-
-	public function IsPostBack()
-	{
-		return true;
-	}
-
-	public function IsValid()
-	{
-		return true;
-	}
-
-	public function GetLastPage($defaultPage = '')
-	{
-	}
-
-	public function RegisterValidator($validatorId, $validator)
+    public function PageLoad()
     {
     }
 
-	public function EnforceCSRFCheck()
-	{}
+    public function Redirect($url)
+    {
+    }
 
-	public function GetRequestedResourceId()
-	{
-	}
+    public function RedirectToError($errorMessageId = ErrorMessages::UNKNOWN_ERROR, $lastPage = '')
+    {
+    }
 
-	public function GetRequestedScheduleId()
-	{
-		return $this->_ScheduleId;
-	}
+    public function IsPostBack()
+    {
+        return true;
+    }
 
-	public function GetReservationDate()
-	{
-	}
+    public function IsValid()
+    {
+        return true;
+    }
 
-	public function GetStartDate()
-	{
-	}
+    public function GetLastPage($defaultPage = '')
+    {
+    }
 
-	public function GetEndDate()
-	{
-	}
+    public function RegisterValidator($validatorId, $validator)
+    {
+    }
 
-	public function BindPeriods($startPeriods, $endPeriods, $lockPeriods)
-	{
-	}
+    public function EnforceCSRFCheck()
+    {
+    }
 
-	public function BindAvailableResources($resources)
-	{
-	}
+    public function GetRequestedResourceId()
+    {
+    }
 
-	public function BindAvailableAccessories($accessories)
-	{
-	}
+    public function GetRequestedScheduleId()
+    {
+        return $this->_ScheduleId;
+    }
 
-	public function BindResourceGroups($groups)
-	{
-	}
+    public function GetReservationDate()
+    {
+    }
 
-	public function SetSelectedStart(SchedulePeriod $selectedStart, Date $startDate)
-	{
-	}
+    public function GetStartDate()
+    {
+    }
 
-	public function SetSelectedEnd(SchedulePeriod $selectedEnd, Date $endDate)
-	{
-	}
+    public function GetEndDate()
+    {
+    }
 
-	public function SetRepeatTerminationDate($repeatTerminationDate)
-	{
-	}
+    public function BindPeriods($startPeriods, $endPeriods, $lockPeriods)
+    {
+    }
 
-	public function SetReservationUser(UserDto $user)
-	{
-	}
+    public function BindAvailableResources($resources)
+    {
+    }
 
-	public function SetReservationResource($resource)
-	{
-	}
+    public function BindAvailableAccessories($accessories)
+    {
+    }
 
-	public function SetScheduleId($scheduleId)
-	{
-	}
+    public function BindResourceGroups($groups)
+    {
+    }
 
-	public function SetParticipants($participants)
-	{
-	}
+    public function SetSelectedStart(SchedulePeriod $selectedStart, Date $startDate)
+    {
+    }
 
-	public function SetInvitees($invitees)
-	{
-	}
+    public function SetSelectedEnd(SchedulePeriod $selectedEnd, Date $endDate)
+    {
+    }
 
-	public function SetAccessories($accessories)
-	{
-	}
+    public function SetRepeatTerminationDate($repeatTerminationDate)
+    {
+    }
 
-	public function SetAttachments($attachments)
-	{
-	}
+    public function SetReservationUser(UserDto $user)
+    {
+    }
 
-	public function SetCanChangeUser($canChangeUser)
-	{
-	}
+    public function SetReservationResource($resource)
+    {
+    }
 
-	public function ShowAdditionalResources($canShowAdditionalResources)
-	{
-	}
+    public function SetScheduleId($scheduleId)
+    {
+    }
 
-	public function ShowUserDetails($canShowUserDetails)
-	{
-	}
+    public function SetParticipants($participants)
+    {
+    }
 
-	public function SetShowParticipation($shouldShow)
-	{
-	}
+    public function SetInvitees($invitees)
+    {
+    }
 
-	public function ShowReservationDetails($showReservationDetails)
-	{
-	}
+    public function SetAccessories($accessories)
+    {
+    }
 
-	public function HideRecurrence($isHidden)
-	{
-	}
+    public function SetAttachments($attachments)
+    {
+    }
 
-	function SetAllowParticipantsToJoin($allowParticipation)
-	{
-	}
+    public function SetCanChangeUser($canChangeUser)
+    {
+    }
+
+    public function ShowAdditionalResources($canShowAdditionalResources)
+    {
+    }
+
+    public function ShowUserDetails($canShowUserDetails)
+    {
+    }
+
+    public function SetShowParticipation($shouldShow)
+    {
+    }
+
+    public function ShowReservationDetails($showReservationDetails)
+    {
+    }
+
+    public function HideRecurrence($isHidden)
+    {
+    }
+
+    function SetAllowParticipantsToJoin($allowParticipation)
+    {
+    }
 
     public function GetSortField()
     {
@@ -273,20 +274,21 @@ class FakeGuestReservationPage implements IGuestReservationPage
     {
     }
 
-	public function SetStartReminder($reminderValue, $reminderInterval)
-	{
-	}
+    public function SetStartReminder($reminderValue, $reminderInterval)
+    {
+    }
 
-	public function SetEndReminder($reminderValue, $reminderInterval)
-	{
-	}
+    public function SetEndReminder($reminderValue, $reminderInterval)
+    {
+    }
 
     public function SetTerms($termsOfService)
     {
     }
 
     public function SetAvailability(DateRange $availability)
-    {}
+    {
+    }
 
     public function SetFirstWeekday($weekday)
     {
@@ -305,5 +307,10 @@ class FakeGuestReservationPage implements IGuestReservationPage
     public function SetTermsAccepted($accepted)
     {
         // TODO: Implement SetTermsAccepted() method.
+    }
+
+    public function GetTermsOfServiceAcknowledgement()
+    {
+        return true;
     }
 }

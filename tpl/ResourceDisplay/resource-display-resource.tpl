@@ -35,10 +35,12 @@
                 <form role="form" method="post" id="formCheckin" action="{$smarty.server.SCRIPT_NAME}?action=checkin"
                       class="inline-block">
                     <input type="hidden" {formname key=REFERENCE_NUMBER} value="{$CheckinReferenceNumber}"/>
-                    <div class="resource-display-action" id="checkin"><i class="fa fa-check"></i> {translate key=CheckIn}</div>
+                    <div class="resource-display-action" id="checkin"><i
+                                class="fa fa-check"></i> {translate key=CheckIn}</div>
                 </form>
             {/if}
-            <div class="resource-display-action" id="reservePopup"><i class="fa fa-plus"></i> {translate key=Reserve}</div>
+            <div class="resource-display-action" id="reservePopup"><i class="fa fa-plus"></i> {translate key=Reserve}
+            </div>
         </div>
     </div>
     <div class="col-xs-5 right-panel">
@@ -151,25 +153,37 @@
                 </div>
             </div>
 
-            {if $Attributes|count > 0}
-                <div class="row margin-top-25">
-                    <div class="customAttributes col-xs-12">
-                        {foreach from=$Attributes item=attribute name=attributeEach}
-                            {if $smarty.foreach.attributeEach.index % 2 == 0}
-                                <div class="row">
-                            {/if}
-                            <div class="customAttribute col-xs-6">
-                                {control type="AttributeControl" attribute=$attribute}
-                            </div>
-                            {if $smarty.foreach.attributeEach.index % 2 ==1}
-                                </div>
-                            {/if}
-                        {/foreach}
-                        {if $Attributes|count % 2 == 1}
-                            <div class="col-xs-6">&nbsp;</div>
-                        {/if}
-                    </div>
+            {if $Terms != null}
+            <div class="row col-xs-12" id="termsAndConditions">
+                <div class="checkbox">
+                    <input type="checkbox"
+                           id="termsAndConditionsAcknowledgement" {formname key=TOS_ACKNOWLEDGEMENT} {if $TermsAccepted}checked="checked"{/if}/>
+                    <label for="termsAndConditionsAcknowledgement">{translate key=IAccept}</label>
+                    <a href="{$Terms->DisplayUrl()}" style="vertical-align: middle"
+                       target="_blank">{translate key=TheTermsOfService}</a>
                 </div>
+            </div>
+            {/if}
+
+            {if $Attributes|count > 0}
+            <div class="row margin-top-25">
+                <div class="customAttributes col-xs-12">
+                    {foreach from=$Attributes item=attribute name=attributeEach}
+                        {if $smarty.foreach.attributeEach.index % 2 == 0}
+                            <div class="row">
+                        {/if}
+                        <div class="customAttribute col-xs-6">
+                            {control type="AttributeControl" attribute=$attribute}
+                        </div>
+                        {if $smarty.foreach.attributeEach.index % 2 ==1}
+                            </div>
+                        {/if}
+                    {/foreach}
+                    {if $Attributes|count % 2 == 1}
+                        <div class="col-xs-6">&nbsp;</div>
+                    {/if}
+                </div>
+            </div>
             {/if}
 
             <div class="row margin-top-25">

@@ -38,6 +38,11 @@ interface IGuestReservationPage extends INewReservationPage
 	 * @return bool
 	 */
 	public function IsCreatingAccount();
+
+    /**
+     * @return bool
+     */
+    public function GetTermsOfServiceAcknowledgement();
 }
 
 class GuestReservationPage extends NewReservationPage implements IGuestReservationPage
@@ -86,11 +91,13 @@ class GuestReservationPage extends NewReservationPage implements IGuestReservati
 		return $this->GetForm(FormKeys::EMAIL);
 	}
 
-	/**
-	 * @return bool
-	 */
 	public function IsCreatingAccount()
 	{
 		return $this->IsPostBack() && !$this->GuestInformationCollected();
 	}
+
+    public function GetTermsOfServiceAcknowledgement()
+    {
+        return $this->GetCheckbox(FormKeys::TOS_ACKNOWLEDGEMENT);
+    }
 }

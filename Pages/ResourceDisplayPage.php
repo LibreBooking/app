@@ -125,6 +125,16 @@ interface IResourceDisplayPage extends IPage, IActionPage
      * @return string
      */
     public function GetReferenceNumber();
+
+    /**
+     * @param TermsOfService $termsOfService
+     */
+    public function SetTerms($termsOfService);
+
+    /**
+     * @return bool
+     */
+    public function GetTermsOfServiceAcknowledgement();
 }
 
 class ResourceDisplayPage extends ActionPage implements IResourceDisplayPage, IRequestedResourcePage
@@ -151,7 +161,8 @@ class ResourceDisplayPage extends ActionPage implements IResourceDisplayPage, IR
                     new GuestRegistrationNotificationStrategy(),
                     new GuestReservationPermissionStrategy($this))),
             new AttributeService(new AttributeRepository()),
-            new ReservationRepository());
+            new ReservationRepository(),
+            new TermsOfServiceRepository());
     }
 
     public function ProcessAction()
@@ -312,5 +323,15 @@ class ResourceDisplayPage extends ActionPage implements IResourceDisplayPage, IR
     public function GetReferenceNumber()
     {
         return $this->GetForm(FormKeys::REFERENCE_NUMBER);
+    }
+
+    public function SetTerms($termsOfService)
+    {
+        $this->Set('Terms', $termsOfService);
+    }
+
+    public function GetTermsOfServiceAcknowledgement()
+    {
+        return $this->GetCheckbox(FormKeys::TOS_ACKNOWLEDGEMENT);
     }
 }
