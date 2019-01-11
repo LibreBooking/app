@@ -1166,7 +1166,7 @@ class ResourceFilterValues
                 ColumnNames::RESOURCE_TYPE_ID),
                 $this->ResourceTypeFilter));
         }
-        if (!empty($this->ResourceStatusFilterId)) {
+        if ($this->ResourceStatusFilterId != '') {
             $filter->_And(new SqlFilterEquals(new SqlFilterColumn(TableNames::RESOURCES_ALIAS,
                 ColumnNames::RESOURCE_STATUS_ID),
                 $this->ResourceStatusFilterId));
