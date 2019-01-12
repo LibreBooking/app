@@ -47,9 +47,16 @@ class ManageConfigurationPresenter extends ActionPresenter
     private $configFilePath;
 
     /**
-     * @var string[]
+     * @var string[]|array[]
      */
-    private $deletedSettings = array('password.pattern', 'allow.social.login', 'require.login', 'use.local.jquery');
+    private $deletedSettings = array(
+        'password.pattern',
+        'use.local.jquery');
+
+    private $deletedSectionSettings = array(
+        ConfigSection::AUTHENTICATION => array('allow.social.login'),
+        ConfigSection::ICS => array('require.login', 'import', 'import.key'),
+    );
 
     /**
      * @var string
@@ -202,6 +209,15 @@ class ManageConfigurationPresenter extends ActionPresenter
             }
         }
 
+        foreach ($this->deletedSectionSettings as $section => $setting) {
+            if (array_key_exists($section, $mergedSettings) && in_array($setting, $mergedSettings[$section])) {
+                unset($mergedSettings[$section][$setting]);
+                if (count($mergedSettings[$section]) == 0) {
+                    unset($mergedSettings[$section]);
+                }
+            }
+        }
+
         Log::Debug("Saving %s settings", count($configSettings));
 
         $this->configSettings->WriteSettings($this->configFilePath, $mergedSettings);
@@ -224,12 +240,13 @@ class ManageConfigurationPresenter extends ActionPresenter
         if ($section == ConfigSection::DATABASE || $section == ConfigSection::API) {
             return true;
         }
-        if ($section == ConfigSection::ICS) {
-            return $key == 'import' || $key == 'import.key';
-        }
         if (in_array($key, $this->deletedSettings)) {
             return true;
         }
+        if (array_key_exists($section, $this->deletedSectionSettings) && in_array($key, $this->deletedSectionSettings[$section])) {
+            return true;
+        }
+
         switch ($key) {
             case ConfigKeys::INSTALLATION_PASSWORD:
             case ConfigKeys::PAGES_ENABLE_CONFIGURATION && $section == ConfigSection::PAGES:
