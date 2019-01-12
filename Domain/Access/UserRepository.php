@@ -699,7 +699,7 @@ class UserRepository implements IUserRepository, IAccountActivationRepository
         $attributeReader = ServiceLocator::GetDatabase()->Query($getAttributes);
 
         while ($attributeRow = $attributeReader->GetRow()) {
-            $user->WithAttribute(new AttributeValue($attributeRow[ColumnNames::ATTRIBUTE_ID], $attributeRow[ColumnNames::ATTRIBUTE_VALUE]));
+            $user->WithAttribute(new AttributeValue($attributeRow[ColumnNames::ATTRIBUTE_ID], $attributeRow[ColumnNames::ATTRIBUTE_VALUE]), $attributeRow[ColumnNames::ATTRIBUTE_ADMIN_ONLY]);
         }
 
         $attributeReader->Free();

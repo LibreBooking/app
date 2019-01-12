@@ -23,6 +23,7 @@ require_once(ROOT_DIR . 'Domain/Values/EmailPreferences.php');
 
 class User
 {
+
     public function __construct()
     {
         $this->emailPreferences = new EmailPreferences();
@@ -798,16 +799,23 @@ class User
 
     /**
      * @param $attribute AttributeValue
+     * @param $adminOnly bool
      */
-    public function WithAttribute(AttributeValue $attribute)
+    public function WithAttribute(AttributeValue $attribute, $adminOnly = false)
     {
-        $this->_attributeValues[$attribute->AttributeId] = $attribute;
+        $this->attributeValues[$attribute->AttributeId] = $attribute;
+        $this->adminAttributesIds[] = $attribute->AttributeId;
     }
+
+    /**
+     * @var array|int[]
+     */
+    private $adminAttributesIds = array();
 
     /**
      * @var array|AttributeValue[]
      */
-    private $_attributeValues = array();
+    private $attributeValues = array();
 
     /**
      * @var array|AttributeValue[]
@@ -829,7 +837,7 @@ class User
      */
     public function ChangeCustomAttributes($attributes)
     {
-        $diff = new ArrayDiff($this->_attributeValues, $attributes);
+        $diff = new ArrayDiff($this->attributeValues, $attributes);
 
         $added = $diff->GetAddedToArray1();
         $removed = $diff->GetRemovedFromArray1();
@@ -841,7 +849,9 @@ class User
 
         /** @var $attribute AttributeValue */
         foreach ($removed as $attribute) {
-            $this->_removedAttributeValues[] = $attribute;
+            if (!in_array($attribute->AttributeId, $this->adminAttributesIds)) {
+                $this->_removedAttributeValues[] = $attribute;
+            }
         }
 
         foreach ($attributes as $attribute) {
@@ -854,7 +864,7 @@ class User
      */
     public function AddAttributeValue($attributeValue)
     {
-        $this->_attributeValues[$attributeValue->AttributeId] = $attributeValue;
+        $this->attributeValues[$attributeValue->AttributeId] = $attributeValue;
     }
 
     /**
@@ -879,8 +889,8 @@ class User
      */
     public function GetAttributeValue($customAttributeId)
     {
-        if (array_key_exists($customAttributeId, $this->_attributeValues)) {
-            return $this->_attributeValues[$customAttributeId]->Value;
+        if (array_key_exists($customAttributeId, $this->attributeValues)) {
+            return $this->attributeValues[$customAttributeId]->Value;
         }
 
         return null;

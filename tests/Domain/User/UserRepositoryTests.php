@@ -636,6 +636,20 @@ class UserRepositoryTests extends TestBase
         $this->assertTrue($this->db->ContainsCommand($command));
 	}
 
+	public function testAdminOnlyAttributesAreUnchangedOnUpdateIfNotProvided()
+	{
+	    $regularAttribute = new AttributeValue(1, 'regular');
+	    $adminAttribute = new AttributeValue(2, 'admin');
+	    $user = User::FromRow($this->GetUserRow());
+	    $user->WithAttribute($regularAttribute, false);
+	    $user->WithAttribute($adminAttribute, true);
+
+	    $user->ChangeCustomAttributes(array($regularAttribute));
+
+	    $this->assertEquals('admin', $user->GetAttributeValue(2));
+	    $this->assertEquals(0, count($user->GetRemovedAttributes()));
+	}
+
 	private function GetUserRow($userId = 1,
 								$first = 'first',
 								$last = 'last',
