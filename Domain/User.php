@@ -804,7 +804,9 @@ class User
     public function WithAttribute(AttributeValue $attribute, $adminOnly = false)
     {
         $this->attributeValues[$attribute->AttributeId] = $attribute;
-        $this->adminAttributesIds[] = $attribute->AttributeId;
+        if ($adminOnly) {
+            $this->adminAttributesIds[] = $attribute->AttributeId;
+        }
     }
 
     /**

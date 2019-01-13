@@ -72,6 +72,8 @@ class ReservationUserAvailabilityPresenterTests extends TestBase
 
     public function testBindsResourceAndUserLayout()
     {
+        $tz = $this->fakeUser->Timezone;
+
         $expectedPeriods = array(new SchedulePeriod(Date::Now(), Date::Now()));
         $expectedInvitees = array(new UserDto(1, 'user1', 'invitee', '1@1.com'));
         $expectedParticipants = array(new UserDto(2, 'user2', 'participant', '2@2.com'));
@@ -82,11 +84,19 @@ class ReservationUserAvailabilityPresenterTests extends TestBase
         $this->page->_InviteeIds = array(1);
         $this->page->_ParticipantIds = array(2);
         $this->page->_ScheduleId = 1;
-        $this->page->_StartDate = '2018-11-19';
+
+        $startDate = Date::Now()->ToTimezone($tz)->AddDays(-1);
+        $endDate = Date::Now()->ToTimezone($tz)->AddDays(1);
+
+
+        $this->page->_StartDate = $startDate->Format('Y-m-d');
         $this->page->_StartTime = '07:29';
-        $this->page->_EndDate = '2018-11-20';
+        $this->page->_EndDate = $endDate->Format('Y-m-d');
         $this->page->_EndTime = '14:15';
         $this->fakeUser->UserId = 3;
+
+        $listingDates = new DateRange($startDate->SetTimeString($this->page->_StartTime), $endDate->SetTimeString($this->page->_EndTime));
+
 
         $this->resourceRepository->_Resource = $expectedResources[0];
         $this->userRepository->_UserDtos[3] = $expectedUser;
@@ -130,7 +140,11 @@ class ReservationUserAvailabilityPresenterTests extends TestBase
         $this->reservationRepository->_ReservationsIteration[3] = array($inviteeReservation);
         $this->reservationRepository->_Blackouts = array($resourceBlackout);
 
-        $listing = new ReservationListing($this->fakeUser->Timezone);
+        $this->page->_StartDate = Date::Now()->AddDays(-1)->Format('Y-m-d');
+        $this->page->_StartTime = '07:29';
+        $this->page->_EndDate = Date::Now()->AddDays(1)->Format('Y-m-d');
+
+        $listing = new ReservationListing($tz, $listingDates);
         $listing->Add($resourceReservation);
         $listing->AddBlackout($resourceBlackout);
         $listing->Add($adjustedUserReservation);

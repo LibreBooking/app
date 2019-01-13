@@ -618,4 +618,12 @@ class TestResourceDisplayPage extends FakePageBase implements IResourceDisplayPa
     {
         $this->_TermsOfService = $termsOfService;
     }
+
+    /**
+     * @return bool
+     */
+    public function GetTermsOfServiceAcknowledgement()
+    {
+        // TODO: Implement GetTermsOfServiceAcknowledgement() method.
+    }
 }
