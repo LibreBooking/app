@@ -74,7 +74,7 @@ class AtomSubscriptionPage extends Page implements ICalendarSubscriptionPage
 		$url = $config->GetScriptUrl();
 		$feed->setLink($url);
 
-		$feed->setChannelElement('updated', date(DATE_ATOM , time()));
+		$lastUpdated = Date::Min();
 		$feed->setChannelElement('author', array('name'=>$title));
 
 		foreach ($this->reservations as $reservation)
@@ -87,9 +87,17 @@ class AtomSubscriptionPage extends Page implements ICalendarSubscriptionPage
 			$item->setDescription($this->FormatReservationDescription($reservation, ServiceLocator::GetServer()->GetUserSession()));
 
 			$feed->addItem($item);
+
+			if ($reservation->DateCreated->GreaterThan($lastUpdated)) {
+                $lastUpdated = $reservation->DateCreated;
+            }
+            if ($reservation->LastModified != null && $reservation->LastModified->GreaterThan($lastUpdated)){
+			    $lastUpdated = $reservation->LastModified;
+            }
 		}
 
-		$feed->genarateFeed();
+        $feed->setChannelElement('updated', $lastUpdated->Format(DATE_ATOM));
+        $feed->genarateFeed();
 	}
 
 	public function SetReservations($reservations)
