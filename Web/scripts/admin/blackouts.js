@@ -82,7 +82,8 @@ function BlackoutManagement(opts) {
 				});
 
 				$('#cancelUpdate').click(function (e) {
-					$.unblockUI();
+                    $('#update-box').addClass('no-show');
+                    $.unblockUI();
 				});
 
 				$('.blackoutResources').click(function (e) {
