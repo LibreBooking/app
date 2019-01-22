@@ -1279,17 +1279,15 @@ function Reservation(opts) {
     };
 
     participation.showAllGroupsToAdd = function (dialogElement) {
-        var allUserList;
+        var allGroupList;
         var listElement = dialogElement.find('.modal-body');
         var items = [];
         if (listElement.children().length == 0) {
             $.ajax({
                 url: options.groupAutocompleteUrl, dataType: 'json', async: false, success: function (data) {
-                    allUserList = data;
-                    $.map(allUserList, function (item) {
-                        if (item.Id != _ownerId) {
-                            items.push('<div><a href="#" class="add" title="Add" group-id="' + item.Id + '">' + '<span class="fa fa-plus-square icon"></span> <span class="name">' + item.Name + '</span></a></div>');
-                        }
+                    allGroupList = data;
+                    $.map(allGroupList, function (item) {
+                        items.push('<div><a href="#" class="add" title="Add" group-id="' + item.Id + '">' + '<span class="fa fa-plus-square icon"></span> <span class="name">' + item.Name + '</span></a></div>');
                     });
 
                     $('<div/>', {'class': 'no-style', html: items.join('')}).appendTo(listElement);
