@@ -40,7 +40,7 @@ class AutoCompletePage extends Page
 		$results = $this->GetResults($this->GetType(), $this->GetSearchTerm());
 
 		Log::Debug(sprintf('AutoComplete: %s results found for search type: %s, term: %s', count($results), $this->GetType(), $this->GetSearchTerm()));
-
+        
 		$this->SetJson($results);
 	}
 
@@ -77,9 +77,11 @@ class AutoCompletePage extends Page
 		{
 			return $this->GetGroupUsers($this->GetQuerystring(QueryStringKeys::GROUP_ID));
 		}
+
 		$filter = new SqlFilterLike(ColumnNames::FIRST_NAME, $term);
 		$filter->_Or(new SqlFilterLike(ColumnNames::LAST_NAME, $term));
 		$filter->_Or(new SqlFilterLike(ColumnNames::EMAIL, $term));
+		$filter->_Or(new SqlFilterLike(ColumnNames::USERNAME, $term));
 
 		$r = new UserRepository();
 		$currentUser = ServiceLocator::GetServer()->GetUserSession();
