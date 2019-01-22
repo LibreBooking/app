@@ -198,8 +198,10 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
             {if $attributes|count > 0}
                 <tr data-userId="{$id}">
                     <td colspan="{$colCount}" class="{$rowCss} customAttributes" userId="{$id}">
+		        {assign var=changeAttributeAction value=ManageUsersActions::ChangeAttribute}
+		        {assign var=attributeUrl value="`$smarty.server.SCRIPT_NAME`?action=`$changeAttributeAction`"}
                         {foreach from=$AttributeList item=attribute}
-                            {include file='Admin/InlineAttributeEdit.tpl' id=$id attribute=$attribute value=$user->GetAttributeValue($attribute->Id())}
+                            {include file='Admin/InlineAttributeEdit.tpl' url=$attributeUrl id=$id attribute=$attribute value=$user->GetAttributeValue($attribute->Id())}
                         {/foreach}
                     </td>
                 </tr>
