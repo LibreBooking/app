@@ -166,14 +166,12 @@ class SearchAvailabilityPresenterTests extends TestBase
 
         $slotsToday = array();
         $slotsTomorrow = array();
-        for ($hour = 0; $hour < 24; $hour++)
-        {
-            $end = $hour+1;
+        for ($hour = 0; $hour < 24; $hour++) {
+            $end = $hour + 1;
             $slotsToday[] = $this->GetEmpty(Date::Now()->GetDate(), ($hour == 0 ? '00:00' : "$hour:00"), "$end:00");
         }
-        for ($hour = 0; $hour < 24; $hour++)
-        {
-            $end = $hour+1;
+        for ($hour = 0; $hour < 24; $hour++) {
+            $end = $hour + 1;
             $slotsTomorrow[] = $this->GetEmpty(Date::Now()->GetDate()->AddDays(1), ($hour == 0 ? '00:00' : "$hour:00"), "$end:00");
         }
 
@@ -269,7 +267,7 @@ class SearchAvailabilityPresenterTests extends TestBase
         $openDay3 = $this->GetEmpty($date3, '00:00', '01:00');
         $openDay3a = $this->GetEmpty($date3, '01:00', '00:00');
 
-        $reservations = array(
+        $reservationSlots = array(
             $tooShort1,
             $tooShort1a,
             $oneHour1,
@@ -284,7 +282,7 @@ class SearchAvailabilityPresenterTests extends TestBase
             $twoHours2,
         );
         $dailyLayout = new FakeDailyLayout();
-        $dailyLayout->_SetLayout($date, $resourceId, $reservations);
+        $dailyLayout->_SetLayout($date, $resourceId, $reservationSlots);
         $dailyLayout->_SetLayout($date2, $resourceId, array($openDay2, $openDay2a, $openDay2b, $openDay2c));
         $dailyLayout->_SetLayout($date3, $resourceId, array($openDay3, $openDay3a));
         $this->scheduleService->_DailyLayout = $dailyLayout;
@@ -297,6 +295,88 @@ class SearchAvailabilityPresenterTests extends TestBase
         );
 
         $this->assertEquals(count($expectedOpenings), count($this->page->_Openings));
+        $this->assertEquals($expectedOpenings, $this->page->_Openings);
+    }
+
+    public function testWhenSearchingForSpecificTime()
+    {
+        $resourceId = 1;
+
+        $tz = $this->fakeUser->Timezone;
+
+        $resource = new TestResourceDto($resourceId);
+        $this->resourceService->_AllResources = array($resource);
+
+        $sun = new Date('2019-01-20', $tz);
+        $mon = new Date('2019-01-21', $tz);
+        $today = new Date('2019-01-22', $tz);
+        $tue = new Date('2019-01-23', $tz);
+        $wed = new Date('2019-01-24', $tz);
+        $thu = new Date('2019-01-25', $tz);
+        $fri = new Date('2019-01-26', $tz);
+        $sat = new Date('2019-01-27', $tz);
+
+        Date::_SetNow(Date::Parse('2019-01-22 00:00', $tz));
+        $this->page->_Range = 'thisweek';
+        $this->page->_Specific = true;
+        $this->page->_StartTime = '07:00';
+        $this->page->_EndTime = '10:00';
+
+        $dailyLayout = new FakeDailyLayout();
+        $dailyLayout->_SetLayout($sun, $resourceId, array());
+
+        $dailyLayout->_SetLayout($mon, $resourceId, array(
+                $this->GetEmpty($mon, '00:00', '06:00'),
+                $this->GetReservation($mon, '06:00', '07:00'),
+                $this->GetEmpty($mon, '07:00', '08:00'),
+                $this->GetEmpty($mon, '08:00', '10:00'),
+                $this->GetReservation($mon, '10:00', '00:00'),
+            )
+        );
+        $dailyLayout->_SetLayout($today, $resourceId, array(
+                $this->GetEmpty($today, '00:00', '10:00'),
+                $this->GetEmpty($today, '06:00', '07:30'),
+                $this->GetEmpty($today, '07:30', '08:00'),
+                $this->GetEmpty($today, '08:00', '10:00'),
+                $this->GetReservation($today, '10:00', '00:00'),
+            )
+        );
+        $dailyLayout->_SetLayout($tue, $resourceId, array(
+                $this->GetEmpty($tue, '00:00', '06:00'),
+                $this->GetReservation($tue, '06:00', '07:30'),
+                $this->GetEmpty($tue, '07:30', '08:00'),
+                $this->GetEmpty($tue, '08:00', '10:00'),
+                $this->GetReservation($tue, '10:00', '00:00'),
+            )
+        );
+        $dailyLayout->_SetLayout($wed, $resourceId, array(
+                $this->GetEmpty($wed, '00:00', '04:00'),
+                $this->GetReservation($wed, '04:00', '07:00'),
+                $this->GetEmpty($wed, '07:00', '09:00'),
+                $this->GetEmpty($wed, '09:00', '10:00'),
+                $this->GetReservation($wed, '10:00', '00:00'),
+            )
+        );
+        $dailyLayout->_SetLayout($thu, $resourceId, array(
+                $this->GetEmpty($thu, '00:00', '06:00'),
+                $this->GetReservation($thu, '06:00', '07:00'),
+                $this->GetEmpty($thu, '07:00', '08:00'),
+                $this->GetEmpty($thu, '08:00', '10:00'),
+                $this->GetReservation($thu, '10:00', '00:00'),
+            )
+        );
+        $dailyLayout->_SetLayout($fri, $resourceId, array());
+        $dailyLayout->_SetLayout($sat, $resourceId, array());
+
+        $this->scheduleService->_DailyLayout = $dailyLayout;
+
+        $this->presenter->SearchAvailability();
+
+        $expectedOpenings = array(
+            new AvailableOpeningView($resource, $wed->SetTimeString('07:00'), $wed->SetTimeString('10:00')),
+            new AvailableOpeningView($resource, $thu->SetTimeString('07:00'), $thu->SetTimeString('10:00')),
+        );
+
         $this->assertEquals($expectedOpenings, $this->page->_Openings);
     }
 
@@ -378,7 +458,7 @@ class FakeSearchAvailabilityPage extends SearchAvailabilityPage
     /**
      * @var int[]
      */
-    public $_RepeatDays = [];
+    public $_RepeatDays = array();
 
     /**
      * @var string
@@ -386,6 +466,9 @@ class FakeSearchAvailabilityPage extends SearchAvailabilityPage
     public $_RepeatMonthlyType = RepeatMonthlyType::DayOfMonth;
 
     public $_RepeatTerminationDate;
+    public $_Specific = false;
+    public $_StartTime;
+    public $_EndTime;
 
     public function SetResources($resources)
     {
@@ -427,7 +510,7 @@ class FakeSearchAvailabilityPage extends SearchAvailabilityPage
 
     public function GetRepeatWeekdays()
     {
-       return $this->_RepeatDays;
+        return $this->_RepeatDays;
     }
 
     public function GetRepeatMonthlyType()
@@ -438,5 +521,20 @@ class FakeSearchAvailabilityPage extends SearchAvailabilityPage
     public function GetRepeatTerminationDate()
     {
         return $this->_RepeatTerminationDate;
+    }
+
+    public function GetStartTime()
+    {
+        return $this->_StartTime;
+    }
+
+    public function GetEndTime()
+    {
+        return $this->_EndTime;
+    }
+
+    public function SearchingSpecificTime()
+    {
+        return $this->_Specific;
     }
 }

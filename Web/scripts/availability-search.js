@@ -9,12 +9,17 @@ function AvailabilitySearch(options) {
         // thisweek: $('#thisweek'),
         daterange: $('input[name="AVAILABILITY_RANGE"]'),
         beginDate: $('#beginDate'),
-        endDate: $('#endDate')
+        endDate: $('#endDate'),
+        specificTime: $('#specificTime'),
+        hours: $('#hours'),
+        minutes: $('#minutes'),
+        beginTime: $('#startTime'),
+        endTime: $('#endTime'),
     };
 
     var init = function () {
         ConfigureAsyncForm(elements.searchForm, function () {
-            elements.availabilityResults.empty()
+            elements.availabilityResults.empty();
         }, showSearchResults);
 
         elements.availabilityResults.on('click', '.opening', function (e) {
@@ -35,7 +40,7 @@ function AvailabilitySearch(options) {
             }
         });
 
-        elements.daterange.change(function(e){
+        elements.daterange.change(function (e) {
             if ($(e.target).val() == 'daterange') {
                 elements.beginDate.removeAttr('disabled');
                 elements.endDate.removeAttr('disabled');
@@ -43,7 +48,23 @@ function AvailabilitySearch(options) {
             else {
                 elements.beginDate.val('').attr('disabled', 'disabled');
                 elements.endDate.val('').attr('disabled', 'disabled');
-        }
+            }
+        });
+
+        elements.specificTime.on('click', function(e) {
+            if (elements.specificTime.is(':checked'))
+            {
+                elements.beginTime.removeAttr('disabled');
+                elements.endTime.removeAttr('disabled');
+                elements.hours.attr('disabled', 'disabled');
+                elements.minutes.attr('disabled', 'disabled');
+            }
+            else {
+                elements.hours.removeAttr('disabled');
+                elements.minutes.removeAttr('disabled');
+                elements.beginTime.attr('disabled', 'disabled');
+                elements.endTime.attr('disabled', 'disabled');
+            }
         });
     };
 

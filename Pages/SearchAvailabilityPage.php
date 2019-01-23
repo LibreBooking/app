@@ -101,6 +101,21 @@ interface ISearchAvailabilityPage extends IActionPage, IRepeatOptionsComposite
      * @param Attribute[] $attributes
      */
     public function SetResourceTypeAttributes($attributes);
+
+    /**
+     * @return string|null
+     */
+    public function GetStartTime();
+
+    /**
+     * @return string|null
+     */
+    public function GetEndTime();
+
+    /**
+     * @return bool
+     */
+    public function SearchingSpecificTime();
 }
 
 class SearchAvailabilityPage extends ActionPage implements ISearchAvailabilityPage
@@ -124,6 +139,7 @@ class SearchAvailabilityPage extends ActionPage implements ISearchAvailabilityPa
 
         $this->Set('Today', Date::Now()->ToTimezone($user->Timezone));
         $this->Set('Tomorrow', Date::Now()->AddDays(1)->ToTimezone($user->Timezone));
+        $this->Set('TimeFormat', Resources::GetInstance()->GetDateFormat('timepicker'));
     }
 
     public function ProcessAction()
@@ -291,5 +307,20 @@ class SearchAvailabilityPage extends ActionPage implements ISearchAvailabilityPa
     public function GetRepeatTerminationDate()
     {
         return $this->GetForm(FormKeys::END_REPEAT_DATE);
+    }
+
+    public function GetStartTime()
+    {
+        return $this->GetForm(FormKeys::BEGIN_TIME);
+    }
+
+    public function GetEndTime()
+    {
+        return $this->GetForm(FormKeys::END_TIME);
+    }
+
+    public function SearchingSpecificTime()
+    {
+       return $this->GetCheckbox(FormKeys::SPECIFIC_TIME);
     }
 }

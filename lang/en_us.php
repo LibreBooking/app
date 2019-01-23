@@ -771,6 +771,7 @@ class en_us extends Language
         $strings['MissedCheckin'] = 'Missed Checkin';
         $strings['MissedCheckout'] = 'Missed Checkout';
         $strings['Utilization'] = 'Utilization';
+        $strings['SpecificTime'] = 'Specific Time';
         // End Strings
 
 		// Install

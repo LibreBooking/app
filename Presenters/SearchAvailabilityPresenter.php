@@ -81,11 +81,25 @@ class SearchAvailabilityPresenter extends ActionPresenter
     {
         $openings = array();
         $dateRange = $this->GetSearchRange();
-        $requestedLength = $this->GetRequestedLength();
+        $specificTime = $this->page->SearchingSpecificTime();
+
+        $timezone = $this->user->Timezone;
+        if (!$specificTime) {
+            $requestedLength = $this->GetRequestedLength();
+            $startTime = null;
+        }
+        else {
+            $startTime = Time::Parse($this->page->GetStartTime(), $timezone);
+            $endTime = Time::Parse($this->page->GetEndTime(), $timezone);
+
+            $now = Date::Now()->ToTimezone($timezone);
+            $requestedLength = DateDiff::BetweenDates($now->SetTimeString($startTime), $now->SetTimeString($endTime));
+        }
+
         $resources = $this->resourceService->GetAllResources(false, $this->user, $this->GetFilter(), null, 100);
         $roFactory = new RepeatOptionsFactory();
 
-        $repeatOptions = $roFactory->CreateFromComposite($this->page, $this->user->Timezone);
+        $repeatOptions = $roFactory->CreateFromComposite($this->page, $timezone);
         $repeatDates = $repeatOptions->GetDates($dateRange);
         $searchingForMoreThan24Hours = $requestedLength->TotalSeconds() > 86400;
 
@@ -94,7 +108,7 @@ class SearchAvailabilityPresenter extends ActionPresenter
             $scheduleId = $resource->GetScheduleId();
             $resourceId = $resource->GetResourceId();
 
-            $targetTimezone = $this->user->Timezone;
+            $targetTimezone = $timezone;
             $layout = $this->GetLayout($dateRange, $scheduleId, $targetTimezone, $resourceId);
 
             foreach ($dateRange->Dates() as $date) {
@@ -104,9 +118,8 @@ class SearchAvailabilityPresenter extends ActionPresenter
                     if ($endDate->LessThanOrEqual($dateRange->GetEnd())) {
 
                         $slotRange = new DateRange($date, $endDate);
-                        $slots = [];
-                        foreach ($slotRange->Dates() as $slotDate)
-                        {
+                        $slots = array();
+                        foreach ($slotRange->Dates() as $slotDate) {
                             $slots = array_merge($slots, $layout->GetLayout($slotDate, $resourceId));
                         }
 
@@ -115,7 +128,7 @@ class SearchAvailabilityPresenter extends ActionPresenter
                             $opening = $this->GetSlot($i, $i, $slots, $requestedLength, $resource);
 
                             if ($opening != null) {
-                               $openings[] = $opening;
+                                $openings[] = $opening;
                             }
                         }
                     }
@@ -126,7 +139,7 @@ class SearchAvailabilityPresenter extends ActionPresenter
                     for ($i = 0; $i < count($slots); $i++) {
                         $opening = $this->GetSlot($i, $i, $slots, $requestedLength, $resource);
 
-                        if ($opening != null) {
+                        if ($opening != null && (is_null($startTime) || $startTime->Equals($opening->Start()->GetTime()))) {
                             if ($this->AllDaysAreOpen($opening, $repeatDates, $resource, $requestedLength)) {
                                 $openings[] = $opening;
                             }

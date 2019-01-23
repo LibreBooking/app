@@ -264,6 +264,7 @@ class FormKeys
 	const SLACK_COMMAND = 'command';
 	const SLACK_TEXT = 'text';
 	const SLACK_TOKEN = 'token';
+	const SPECIFIC_TIME = 'SPECIFIC_TIME';
 
 	const THISWEEK = 'THISWEEK';
 	const TIMEZONE = 'timezone';

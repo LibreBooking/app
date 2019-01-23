@@ -85,9 +85,8 @@ class ReservationUserAvailabilityPresenterTests extends TestBase
         $this->page->_ParticipantIds = array(2);
         $this->page->_ScheduleId = 1;
 
-        $startDate = Date::Now()->ToTimezone($tz)->AddDays(-1);
+        $startDate = Date::Now()->ToTimezone($tz);
         $endDate = Date::Now()->ToTimezone($tz)->AddDays(1);
-
 
         $this->page->_StartDate = $startDate->Format('Y-m-d');
         $this->page->_StartTime = '07:29';
@@ -95,8 +94,7 @@ class ReservationUserAvailabilityPresenterTests extends TestBase
         $this->page->_EndTime = '14:15';
         $this->fakeUser->UserId = 3;
 
-        $listingDates = new DateRange($startDate->SetTimeString($this->page->_StartTime), $endDate->SetTimeString($this->page->_EndTime));
-
+        $listingDates = new DateRange($startDate->SetTimeString($this->page->_StartTime), $endDate->SetTimeString($this->page->_EndTime)->AddDays(1));
 
         $this->resourceRepository->_Resource = $expectedResources[0];
         $this->userRepository->_UserDtos[3] = $expectedUser;
