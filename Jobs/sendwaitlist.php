@@ -39,7 +39,13 @@ JobCop::EnsureCommandLine();
 
 try
 {
-	$reservationViewRepository = new ReservationViewRepository();
+    $emailEnabled = Configuration::Instance()->GetKey(ConfigKeys::ENABLE_EMAIL, new BooleanConverter());
+    if (!$emailEnabled)
+    {
+        return;
+    }
+
+    $reservationViewRepository = new ReservationViewRepository();
 	$resourceRepository = new ResourceRepository();
 	$waitlistRepository = new ReservationWaitlistRepository();
     $userRepository = new UserRepository();
