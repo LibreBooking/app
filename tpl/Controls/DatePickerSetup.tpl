@@ -16,6 +16,9 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 *}
+{function name=datePickerDateFormat}
+new Date({$date->Year()}, {$date->Month()-1}, {$date->Day()})
+{/function}
 <script type="text/javascript">
     $(function () {
         $("#{$ControlId}").{if $HasTimepicker}datetimepicker{else}datepicker{/if}({ldelim}
@@ -42,15 +45,15 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
             {/if}
             {if $DefaultDate}
             ,
-            defaultDate: new Date('{$DefaultDate->Format('Y-m-d')}')
+            defaultDate: {datePickerDateFormat date=$DefaultDate}
             {/if}
             {if $MinDate}
             ,
-            minDate: new Date('{$MinDate->AddDays(1)->Format('Y-m-d')}')
+            minDate: {datePickerDateFormat date=$MinDate->AddDays(1)}
             {/if}
             {if $MaxDate}
             ,
-            maxDate: new Date('{$MaxDate->AddDays(1)->Format('Y-m-d')}')
+            maxDate: {datePickerDateFormat date=$MaxDate->AddDays(1)}
             {/if}
             {rdelim});
 
