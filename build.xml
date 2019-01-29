@@ -163,6 +163,8 @@
 
 		<copy tofile="${stagingdir}/lib/external/phpqrcode/qrconfig.php" file="./lib/external/phpqrcode/qrconfig.php" />
 
+        <delete dir="${stagingdir}/.ebextensions" includeemptydirs="true" />
+
 		<phingcall target="combine.db.files">
 
 		</phingcall>
