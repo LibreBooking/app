@@ -41,7 +41,7 @@ class ReservationRepository implements IReservationRepository
         $reader = ServiceLocator::GetDatabase()->Query($loadSeriesCommand);
 
         if ($reader->NumRows() != 1) {
-            Log::Debug('Reservation not found. ID');
+            Log::Debug('Reservation not found');
             return null;
         }
 

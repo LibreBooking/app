@@ -57,6 +57,7 @@ class NotificationPreferencesPresenter
         $this->page->SetCreated($user->WantsEventEmail(new ReservationCreatedEvent()));
         $this->page->SetUpdated($user->WantsEventEmail(new ReservationUpdatedEvent()));
         $this->page->SetDeleted($user->WantsEventEmail(new ReservationDeletedEvent()));
+        $this->page->SetSeriesEnding($user->WantsEventEmail(new ReservationSeriesEndingEvent()));
 	}
 
 	private function UpdateProfile(User $user)
@@ -65,6 +66,7 @@ class NotificationPreferencesPresenter
         $user->ChangeEmailPreference(new ReservationCreatedEvent(), $this->page->GetCreated());
         $user->ChangeEmailPreference(new ReservationUpdatedEvent(), $this->page->GetUpdated());
         $user->ChangeEmailPreference(new ReservationDeletedEvent(), $this->page->GetDeleted());
+        $user->ChangeEmailPreference(new ReservationSeriesEndingEvent(), $this->page->GetSeriesEnding());
 
         $this->userRepository->Update($user);
 	}

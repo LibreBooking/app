@@ -96,17 +96,23 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 								<input id="approvedNo" type="radio" name="{ReservationEvent::Approved}" value="0"
 									   {if !$Approved}checked="checked"{/if}/>{translate key=PreferenceNoEmail}</label>
 						</div>
-
-						{*<div class="notification-status">*}
-						{*<input id="approvedYes" type="radio" name="{ReservationEvent::Approved}" value="1"*}
-						{*{if $Approved}checked="checked"{/if}/><label*}
-						{*for="approvedYes">{translate key=PreferenceSendEmail}</label>*}
-						{*<br/>*}
-						{*<input id="approvedNo" type="radio" name="{ReservationEvent::Approved}" value="0"*}
-						{*{if !$Approved}checked="checked"{/if}/><label*}
-						{*for="approvedNo">{translate key=PreferenceNoEmail}</label>*}
-						{*</div>*}
 					</div>
+
+                    <div class="notification-row">
+                        <div class="notification-type">
+                            {translate key=ReservationSeriesEndingPreference}
+                        </div>
+
+                        <div class="btn-group form-group" data-toggle="buttons">
+                            <label class="btn btn-default btn-xs {if $SeriesEnding}active{/if}">
+                                <input id="endingYes" type="radio" name="{ReservationEvent::SeriesEnding}" value="1"
+                                       {if $SeriesEnding}checked="checked"{/if}/> {translate key=PreferenceSendEmail}
+                            </label>
+                            <label class="btn btn-default btn-xs {if !$SeriesEnding}active{/if}">
+                                <input id="endingNo" type="radio" name="{ReservationEvent::SeriesEnding}" value="0"
+                                       {if !$SeriesEnding}checked="checked"{/if}/>{translate key=PreferenceNoEmail}</label>
+                        </div>
+                    </div>
 				</div>
 
 				<div class="form-group">

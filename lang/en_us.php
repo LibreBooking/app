@@ -772,6 +772,7 @@ class en_us extends Language
         $strings['MissedCheckout'] = 'Missed Checkout';
         $strings['Utilization'] = 'Utilization';
         $strings['SpecificTime'] = 'Specific Time';
+        $strings['ReservationSeriesEndingPreference'] = 'When my recurring reservation series is ending';
         // End Strings
 
 		// Install
@@ -982,6 +983,7 @@ class en_us extends Language
 		$strings['InviteeAddedSubjectWithResource'] = '%s Invited You to a Reservation for %s';
 		$strings['MissedCheckinEmailSubject'] = 'Missed checkin for %s';
 		$strings['ReservationShareSubject'] = '%s Shared a Reservation for %s';
+		$strings['ReservationSeriesEndingSubject'] = 'Reservation Series for %s is Ending on %s';
 		// End Email Subjects
 
 		$this->Strings = $strings;

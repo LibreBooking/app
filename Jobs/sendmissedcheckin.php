@@ -22,7 +22,7 @@
 /* Cron Example //
 //////////////////
 
-This script must be executed every minute for to enable automatic release functionality
+This script must be executed every minute for to enable missed checkin email functionality
 
 * * * * * php /home/mydomain/public_html/booked/Jobs/sendmissedcheckin.php
 * * * * * /path/to/php /home/mydomain/public_html/booked/Jobs/sendmissedcheckin.php
