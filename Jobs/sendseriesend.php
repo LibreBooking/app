@@ -24,8 +24,8 @@
 
 This script must be executed every day for to enable series ending email functionality
 
-* * * * * php /home/mydomain/public_html/booked/Jobs/sendseriesend.php
-* * * * * /path/to/php /home/mydomain/public_html/booked/Jobs/sendseriesend.php
+0 0 * * * php /home/mydomain/public_html/booked/Jobs/sendseriesend.php
+0 0 * * * /path/to/php /home/mydomain/public_html/booked/Jobs/sendseriesend.php
 
 */
 
