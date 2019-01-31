@@ -176,7 +176,6 @@ function ReservationManagement(opts, approval) {
             e.preventDefault();
             elements.filterTable.find('input,select,textarea').val('');
             elements.filterTable.find('checkbox').prop('checked', false);
-            ;
         });
 
         $('#import-reservations').click(function (e) {

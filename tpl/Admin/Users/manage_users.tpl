@@ -101,8 +101,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
             <th>{translate key='Actions'}</th>
             <th class="action-delete">
                 <div class="checkbox checkbox-single">
-                    <input type="checkbox" id="delete-all" aria-label="{translate key=All}"/>
-                    <label for="delete-all">{translate key=All}</label>
+                    <input type="checkbox" id="delete-all" aria-label="{translate key=All}" title="{translate key=All}"/>
+                    <label for="delete-all"></label>
                 </div>
             </th>
         </tr>
@@ -189,8 +189,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                     <div class="checkbox checkbox-single">
                         <input {formname key=USER_ID multi=true} class="delete-multiple" type="checkbox"
                                                                  id="delete{$id}" value="{$id}"
-                                                                 aria-label="{translate key=Delete}"/>
-                        <label for="delete{$id}">{translate key=Delete}</label>
+                                                                 aria-label="{translate key=Delete}" title="{translate key=Delete}"/>
+                        <label for="delete{$id}" class=""></label>
                     </div>
                 </td>
             </tr>

@@ -181,10 +181,10 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			{/if}
 			<th class="action">{translate key='Approve'}</th>
 			<th class="action">{translate key='Delete'}</th>
-			<th class="action-delete">
+			<th class="action">
 				<div class="checkbox checkbox-single">
-					<input type="checkbox" id="delete-all" aria-label="{translate key=All}"/>
-					<label for="delete-all" class="no-show">{translate key=All}</label>
+					<input type="checkbox" id="delete-all" aria-label="{translate key=All}" title="{translate key=All}"/>
+					<label for="delete-all"></label>
 				</div>
 			</th>
 		</tr>
@@ -241,13 +241,13 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                         <span class="no-show">{translate key=Delete}</span>
                     </a>
 				</td>
-				<td class="action-delete no-edit">
+				<td class="action no-edit">
 					<div class="checkbox checkbox-single">
-                        <label class="no-show" for="delete{$reservationId}">{translate key=Delete}</label>
-						<input {formname key=RESERVATION_ID multi=true}" class="delete-multiple" type="checkbox" id="delete{$reservationId}"
+						<input {formname key=RESERVATION_ID multi=true} class="delete-multiple" type="checkbox" id="delete{$reservationId}"
 						value="{$reservationId}"
-						aria-label="{translate key=Delete}"/>
-					</div>
+						aria-label="{translate key=Delete}" title="{translate key=Delete}"/>
+                        <label class="" for="delete{$reservationId}"></label>
+                    </div>
 				</td>
 			</tr>
 			<tr class="{$rowCss}" data-seriesId="{$reservation->SeriesId}" data-refnum="{$reservation->ReferenceNumber}">
