@@ -141,4 +141,6 @@ Reference Number: {$ReferenceNumber}
 <br/>
 <a href="{$ScriptUrl}/{$ReservationUrl}">View this reservation</a> |
 <a href="{$ScriptUrl}/{$ICalUrl}">Add to Calendar</a> |
+<a href="http://www.google.com/calendar/event?action=TEMPLATE&text={$Title|escape:'url'}&dates={formatdate date=$StartDate->ToUtc() key=google}/{formatdate date=$EndDate->ToUtc() key=google}&ctz={$StartDate->Timezone()}&details={$Description|escape:'url'}&location={$ResourceName|escape:'url'}&trp=false&sprop=&sprop=name:"
+   target="_blank" rel="nofollow">Add to Google Calendar</a> |
 <a href="{$ScriptUrl}">Log in to {$AppTitle}</a>

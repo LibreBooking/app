@@ -97,7 +97,7 @@ Description: {$Description|nl2br}
 
 {if $RequiresApproval}
     <br/>
-    One or more of the resources reserved require approval before usage.  This reservation will be pending until it is approved.
+    One or more of the resources reserved require approval before usage. This reservation will be pending until it is approved.
 {/if}
 
 <br/>
@@ -107,4 +107,6 @@ Attending? <a href="{$ScriptUrl}/{$AcceptUrl}">Yes</a> <a href="{$ScriptUrl}/{$D
 
 <a href="{$ScriptUrl}/{$ReservationUrl}">View this reservation</a> |
 <a href="{$ScriptUrl}/{$ICalUrl}">Add to Calendar</a> |
+<a href="http://www.google.com/calendar/event?action=TEMPLATE&text={$Title|escape:'url'}&dates={formatdate date=$StartDate->ToUtc() key=google}/{formatdate date=$EndDate->ToUtc() key=google}&ctz={$StartDate->Timezone()}&details={$Description|escape:'url'}&location={$ResourceName|escape:'url'}&trp=false&sprop=&sprop=name:"
+   target="_blank" rel="nofollow">Add to Google Calendar</a> |
 <a href="{$ScriptUrl}">Log in to {$AppTitle}</a>
