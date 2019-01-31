@@ -196,6 +196,9 @@ abstract class ReservationEmailMessage extends EmailMessage
         }
         $this->Set('Invitees', $invitees);
         $this->Set('InvitedGuests', $currentInstance->InvitedGuests());
+
+        $this->Set('CreditsCurrent', $currentInstance->GetCreditsRequired());
+        $this->Set('CreditsTotal', $this->reservationSeries->GetCreditsRequired());
 	}
 
 	private function GetFullImagePath($img)

@@ -57,14 +57,14 @@ Description: {$Description|nl2br}
     <br/>
     Participants:
     {foreach from=$Participants item=user}
-        {$user->FullName()}
+        {$user->FullName()} <a href="mailto:{$user->EmailAddress()}">{$user->EmailAddress()}</a>
         <br/>
     {/foreach}
 {/if}
 
 {if $ParticipatingGuests|count >0}
     {foreach from=$ParticipatingGuests item=email}
-        {$email}
+        <a href="mailto:{$email}">{$email}</a>
         <br/>
     {/foreach}
 {/if}
@@ -73,14 +73,14 @@ Description: {$Description|nl2br}
     <br/>
     Invitees:
     {foreach from=$Invitees item=user}
-        {$user->FullName()}
+        {$user->FullName()} <a href="mailto:{$user->EmailAddress()}">{$user->EmailAddress()}</a>
         <br/>
     {/foreach}
 {/if}
 
 {if $InvitedGuests|count >0}
     {foreach from=$InvitedGuests item=email}
-        {$email}
+        <a href="mailto:{$email}">{$email}</a>
         <br/>
     {/foreach}
 {/if}
@@ -93,6 +93,14 @@ Description: {$Description|nl2br}
 		({$accessory->QuantityReserved}) {$accessory->Name}
 		<br/>
 	{/foreach}
+{/if}
+
+{if $CreditsCurrent > 0}
+    <br/>
+    This reservation costs {$CreditsCurrent} credits.
+    {if $CreditsCurrent != $CreditsTotal}
+        This series costs {$CreditsTotal} credits.
+    {/if}
 {/if}
 
 {if $Attributes|count > 0}

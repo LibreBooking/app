@@ -62,14 +62,14 @@ Description: {$Description|nl2br}
     <br/>
     Participants:
     {foreach from=$Participants item=user}
-        {$user->FullName()}
+        {$user->FullName()} <a href="mailto:{$user->EmailAddress()}">{$user->EmailAddress()}</a>
         <br/>
     {/foreach}
 {/if}
 
 {if $ParticipatingGuests|count >0}
     {foreach from=$ParticipatingGuests item=email}
-        {$email}
+        <a href="mailto:{$email}">{$email}</a>
         <br/>
     {/foreach}
 {/if}
@@ -78,14 +78,14 @@ Description: {$Description|nl2br}
     <br/>
     Invitees:
     {foreach from=$Invitees item=user}
-        {$user->FullName()}
+        {$user->FullName()} <a href="mailto:{$user->EmailAddress()}">{$user->EmailAddress()}</a>
         <br/>
     {/foreach}
 {/if}
 
 {if $InvitedGuests|count >0}
     {foreach from=$InvitedGuests item=email}
-        {$email}
+        <a href="mailto:{$email}">{$email}</a>
         <br/>
     {/foreach}
 {/if}
