@@ -1310,7 +1310,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                             class="setting">$conf['settings']['plugins']['Authentication'] = 'ActiveDirectory';</span>
                 </p>
 
-                <p>Next, open Application Management - Customization - Application Configuration and choose the
+                <p>Next, open Settings - Application Configuration and choose the
                     Authentication-ActiveDirectory file.</p>
 
                 <p class="setting"><span>$conf['settings']['domain.controllers']</span>Comma separated list of
@@ -1384,7 +1384,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                 <p>{$AppTitle} can authenticate your users against LDAP. To enable this, first set <span
                             class="setting">$conf['settings']['plugins']['Authentication'] = 'Ldap';</span></p>
 
-                <p>Next, open Application Management - Customization - Application Configuration and choose the Authentication-Ldap
+                <p>Next, open Settings - Application Configuration and choose the Authentication-Ldap
                     file.</p>
 
                 <p class="setting"><span>$conf['settings']['host']</span>Comma separated list of LDAP servers such as
@@ -1451,7 +1451,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                 <p>{$AppTitle} can authenticate your users against CAS. To enable this, first set <span
                             class="setting">$conf['settings']['plugins']['Authentication'] = 'CAS';</span></p>
 
-                <p>Next, open Application Management - Customization - Application Configuration and choose the Authentication-CAS
+                <p>Next, open Settings - Application Configuration and choose the Authentication-CAS
                     file.</p>
 
                 <p class="setting"><span>$conf['settings']['cas.version']</span>1.0 = CAS_VERSION_1_0, 2.0 =
@@ -1517,7 +1517,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
                 <p>First, you must install and configure SimpleSAMLphp on the same server as Booked.
                     Next, log into Booked as an administrator.
-                    Navigate to Application Management &gt; Application Configuration and select Saml from the dropdown at the top left.
+                    Navigate to Settings &gt; Application Configuration and select Saml from the dropdown at the top left.
                     Set the full path to SimpleSAMLphp base directory and log directory.
                     Finally, map your SAML attributes to the corresponding             attributes.</p>
 
@@ -1541,7 +1541,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                     first set <span class="setting">$conf['settings']['plugins']['Authentication'] = 'WordPress';</span>
                 </p>
 
-                <p>Next, open Application Management - Customization - Application Configuration and choose the
+                <p>Next, open Settings - Application Configuration and choose the
                     Authentication-WordPress file.</p>
 
                 <p class="setting"><span>$conf['settings']['wp_includes.directory']</span>The full path to your
