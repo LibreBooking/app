@@ -60,6 +60,12 @@
   background-color: #5d628e;
   border-color: #53577F;
 }
+.btn-link {
+  color: #669999;
+}
+.btn-link:hover {
+  color: #428181;
+}
 html,
 body {
   height: 100%;

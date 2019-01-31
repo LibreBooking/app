@@ -19,6 +19,8 @@ function Reservation(opts) {
         participantGroupDialog: $('#participantGroupDialog'),
         participantList: $('#participantList'),
         participantAutocomplete: $('#participantAutocomplete'),
+        participantBadge: $('#participantBadge'),
+        inviteeBadge: $('#inviteeBadge'),
 
         inviteeDialogPrompt: $('#promptForInvitees'),
         inviteeDialog: $('#inviteeDialog'),
@@ -1178,18 +1180,6 @@ function Reservation(opts) {
         dialogElement.modal('show');
     };
 
-    participation.addParticipant = function (name, userId) {
-        if ($.inArray(userId, participation.addedUsers) >= 0) {
-            return;
-        }
-
-        var item = '<div class="user">' + '<a href="#" class="remove"><span class="fa fa-remove"></span></a> <a href="#" class="bindableUser" data-userid="' + userId + '">' + name + '</a><input type="hidden" class="id" name="participantList[]" value="' + userId + '" />' + '</div>';
-
-        elements.participantList.append(item);
-        $('.bindableUser').bindUserDetails();
-        participation.addedUsers.push(userId);
-    };
-
     Reservation.prototype.addParticipant = function (name, userId) {
         participation.addParticipant(name, userId);
     };
@@ -1206,6 +1196,14 @@ function Reservation(opts) {
         participation.addInvitedGuest(email);
     };
 
+    function updateInviteeCount() {
+        elements.inviteeBadge.text(elements.inviteeList.children().length);
+    }
+
+    function updateParticipantCount() {
+        elements.participantBadge.text(elements.participantList.children().length);
+    }
+
     participation.addInvitee = function (name, userId) {
         if ($.inArray(userId, participation.addedUsers) >= 0) {
             return;
@@ -1216,6 +1214,7 @@ function Reservation(opts) {
         elements.inviteeList.append(item);
         $('.bindableUser').bindUserDetails();
         participation.addedUsers.push(userId);
+        updateInviteeCount();
     };
 
     participation.addInvitedGuest = function (emailAddress) {
@@ -1228,6 +1227,20 @@ function Reservation(opts) {
         elements.inviteeList.append(item);
 
         participation.addedUsers.push(emailAddress);
+        updateInviteeCount();
+    };
+
+    participation.addParticipant = function (name, userId) {
+        if ($.inArray(userId, participation.addedUsers) >= 0) {
+            return;
+        }
+
+        var item = '<div class="user">' + '<a href="#" class="remove"><span class="fa fa-remove"></span></a> <a href="#" class="bindableUser" data-userid="' + userId + '">' + name + '</a><input type="hidden" class="id" name="participantList[]" value="' + userId + '" />' + '</div>';
+
+        elements.participantList.append(item);
+        $('.bindableUser').bindUserDetails();
+        participation.addedUsers.push(userId);
+        updateParticipantCount();
     };
 
     participation.addParticipatingGuest = function (emailAddress) {
@@ -1240,6 +1253,7 @@ function Reservation(opts) {
         elements.participantList.append(item);
 
         participation.addedUsers.push(emailAddress);
+        updateParticipantCount();
     };
 
     participation.removeParticipant = function (userId) {
@@ -1247,6 +1261,7 @@ function Reservation(opts) {
         if (index >= 0) {
             participation.addedUsers.splice(index, 1);
         }
+        updateParticipantCount();
     };
 
     participation.removeInvitee = function (userId) {
@@ -1254,6 +1269,7 @@ function Reservation(opts) {
         if (index >= 0) {
             participation.addedUsers.splice(index, 1);
         }
+        updateInviteeCount();
     };
 
     participation.showAllUsersToAdd = function (dialogElement) {
