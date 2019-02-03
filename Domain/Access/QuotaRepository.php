@@ -18,6 +18,7 @@
  * You should have received a copy of the GNU General Public License
  * along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 interface IQuotaRepository
 {
 	/**
@@ -76,7 +77,7 @@ class QuotaRepository implements IQuotaRepository, IQuotaViewRepository
 
 			$quotas[] = new Quota($quotaId, $duration, $limit, $resourceId, $groupId, $scheduleId, $enforcedStartTime, $enforcedEndTime, $enforcedDays, $scope);
 		}
-
+		$reader->Free();
 		return $quotas;
 	}
 
@@ -109,6 +110,7 @@ class QuotaRepository implements IQuotaRepository, IQuotaViewRepository
 										  $enforcedDays, $scope);
 		}
 
+		$reader->Free();
 		return $quotas;
 	}
 
@@ -158,6 +160,7 @@ class QuotaItemView
 	public $EnforcedStartTime;
 	public $EnforcedEndTime;
 	public $EnforcedDays;
+	public $Scope;
 
 	/**
 	 * @param int $quotaId

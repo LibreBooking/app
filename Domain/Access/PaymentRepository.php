@@ -90,6 +90,7 @@ class PaymentRepository implements IPaymentRepository
             return new CreditCost($row[ColumnNames::CREDIT_COST], $row[ColumnNames::CREDIT_CURRENCY]);
         }
 
+		$reader->Free();
         return new CreditCost();
     }
 
@@ -132,6 +133,7 @@ class PaymentRepository implements IPaymentRepository
             }
         }
 
+		$reader->Free();
         return PayPalGateway::Create($clientId, $secret, $environment);
     }
 
@@ -150,6 +152,7 @@ class PaymentRepository implements IPaymentRepository
             }
         }
 
+		$reader->Free();
         return StripeGateway::Create($publishableKey, $secretKey);
     }
 
@@ -184,9 +187,11 @@ class PaymentRepository implements IPaymentRepository
         $reader = ServiceLocator::GetDatabase()->Query($command);
         if ($row = $reader->GetRow())
         {
+			$reader->Free();
             return TransactionLogView::Populate($row);
         }
 
+		$reader->Free();
         return null;
     }
 }

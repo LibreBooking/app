@@ -116,9 +116,9 @@ class ReservationViewRepository implements IReservationViewRepository
 
         $getReservation = new GetReservationForEditingCommand($referenceNumber);
 
-        $result = ServiceLocator::GetDatabase()->Query($getReservation);
+        $reader = ServiceLocator::GetDatabase()->Query($getReservation);
 
-        while ($row = $result->GetRow()) {
+        while ($row = $reader->GetRow()) {
             $reservationView = new ReservationView();
 
             $reservationView->Description = $row[ColumnNames::RESERVATION_DESCRIPTION];
@@ -165,6 +165,7 @@ class ReservationViewRepository implements IReservationViewRepository
             $this->SetGuests($reservationView);
         }
 
+		$reader->Free();
         return $reservationView;
     }
 
@@ -205,14 +206,14 @@ class ReservationViewRepository implements IReservationViewRepository
 
         $getReservations = new GetReservationListCommand($startDate, $endDate, $userId, $userLevel, $scheduleIds, $resourceIds);
 
-        $result = ServiceLocator::GetDatabase()->Query($getReservations);
+        $reader = ServiceLocator::GetDatabase()->Query($getReservations);
 
         $reservations = array();
 
         $reservationRepository = new ReservationRepository();
         $rules = $reservationRepository->GetReservationColorRules();
 
-        while ($row = $result->GetRow()) {
+        while ($row = $reader->GetRow()) {
             if ($consolidateByReferenceNumber) {
                 $refNum = $row[ColumnNames::REFERENCE_NUMBER];
 
@@ -232,7 +233,7 @@ class ReservationViewRepository implements IReservationViewRepository
             }
         }
 
-        $result->Free();
+        $reader->Free();
 
         if ($consolidateByReferenceNumber) {
             return array_values($reservations);
@@ -273,9 +274,9 @@ class ReservationViewRepository implements IReservationViewRepository
     {
         $getResources = new GetReservationResourcesCommand($reservationView->SeriesId);
 
-        $result = ServiceLocator::GetDatabase()->Query($getResources);
+        $reader = ServiceLocator::GetDatabase()->Query($getResources);
 
-        while ($row = $result->GetRow()) {
+        while ($row = $reader->GetRow()) {
             if ($row[ColumnNames::RESOURCE_LEVEL_ID] == ResourceLevel::Additional) {
                 $reservationView->AdditionalResourceIds[] = $row[ColumnNames::RESOURCE_ID];
             }
@@ -294,16 +295,16 @@ class ReservationViewRepository implements IReservationViewRepository
             $reservationView->Resources[] = $rrv;
         }
 
-        $result->Free();
+        $reader->Free();
     }
 
     private function SetParticipants(ReservationView $reservationView)
     {
         $getParticipants = new GetReservationParticipantsCommand($reservationView->ReservationId);
 
-        $result = ServiceLocator::GetDatabase()->Query($getParticipants);
+        $reader = ServiceLocator::GetDatabase()->Query($getParticipants);
 
-        while ($row = $result->GetRow()) {
+        while ($row = $reader->GetRow()) {
             $levelId = $row[ColumnNames::RESERVATION_USER_LEVEL];
             $reservationUserView = new ReservationUserView(
                 $row[ColumnNames::USER_ID],
@@ -320,22 +321,24 @@ class ReservationViewRepository implements IReservationViewRepository
                 $reservationView->Invitees[] = $reservationUserView;
             }
         }
+
+		$reader->Free();
     }
 
     private function SetAccessories(ReservationView $reservationView)
     {
         $getAccessories = new GetReservationAccessoriesCommand($reservationView->SeriesId);
 
-        $result = ServiceLocator::GetDatabase()->Query($getAccessories);
+        $reader = ServiceLocator::GetDatabase()->Query($getAccessories);
 
-        while ($row = $result->GetRow()) {
+        while ($row = $reader->GetRow()) {
             $reservationView->Accessories[] = new ReservationAccessoryView($row[ColumnNames::ACCESSORY_ID],
                 $row[ColumnNames::QUANTITY],
                 $row[ColumnNames::ACCESSORY_NAME],
                 $row[ColumnNames::ACCESSORY_QUANTITY]);
         }
 
-        $result->Free();
+        $reader->Free();
     }
 
     private function SetAttributes(ReservationView $reservationView)
@@ -343,37 +346,37 @@ class ReservationViewRepository implements IReservationViewRepository
         $getAttributes = new GetAttributeValuesCommand($reservationView->SeriesId,
             CustomAttributeCategory::RESERVATION);
 
-        $result = ServiceLocator::GetDatabase()->Query($getAttributes);
+        $reader = ServiceLocator::GetDatabase()->Query($getAttributes);
 
-        while ($row = $result->GetRow()) {
+        while ($row = $reader->GetRow()) {
             $reservationView->AddAttribute(new AttributeValue($row[ColumnNames::ATTRIBUTE_ID],
                 $row[ColumnNames::ATTRIBUTE_VALUE],
                 $row[ColumnNames::ATTRIBUTE_LABEL]));
         }
 
-        $result->Free();
+        $reader->Free();
     }
 
     private function SetAttachments(ReservationView $reservationView)
     {
         $getAttachments = new GetReservationAttachmentsCommand($reservationView->SeriesId);
 
-        $result = ServiceLocator::GetDatabase()->Query($getAttachments);
+        $reader = ServiceLocator::GetDatabase()->Query($getAttachments);
 
-        while ($row = $result->GetRow()) {
+        while ($row = $reader->GetRow()) {
             $reservationView->AddAttachment(new ReservationAttachmentView($row[ColumnNames::FILE_ID],
                 $row[ColumnNames::SERIES_ID],
                 $row[ColumnNames::FILE_NAME]));
         }
 
-        $result->Free();
+        $reader->Free();
     }
 
     private function SetReminders(ReservationView $reservationView)
     {
         $getReminders = new GetReservationReminders($reservationView->SeriesId);
-        $result = ServiceLocator::GetDatabase()->Query($getReminders);
-        while ($row = $result->GetRow()) {
+        $reader = ServiceLocator::GetDatabase()->Query($getReminders);
+        while ($row = $reader->GetRow()) {
             if ($row[ColumnNames::REMINDER_TYPE] == ReservationReminderType::Start) {
                 $reservationView->StartReminder = new ReservationReminderView($row[ColumnNames::REMINDER_MINUTES_PRIOR]);
             }
@@ -382,16 +385,16 @@ class ReservationViewRepository implements IReservationViewRepository
             }
         }
 
-        $result->Free();
+        $reader->Free();
     }
 
     private function SetGuests(ReservationView $reservationView)
     {
         $getGuests = new GetReservationGuestsCommand($reservationView->ReservationId);
 
-        $result = ServiceLocator::GetDatabase()->Query($getGuests);
+        $reader = ServiceLocator::GetDatabase()->Query($getGuests);
 
-        while ($row = $result->GetRow()) {
+        while ($row = $reader->GetRow()) {
             $levelId = $row[ColumnNames::RESERVATION_USER_LEVEL];
             $email = $row[ColumnNames::EMAIL];
 
@@ -404,17 +407,17 @@ class ReservationViewRepository implements IReservationViewRepository
             }
         }
 
-        $result->Free();
+        $reader->Free();
     }
 
     public function GetAccessoriesWithin(DateRange $dateRange)
     {
         $getAccessoriesCommand = new GetAccessoryListCommand($dateRange->GetBegin(), $dateRange->GetEnd());
 
-        $result = ServiceLocator::GetDatabase()->Query($getAccessoriesCommand);
+        $reader = ServiceLocator::GetDatabase()->Query($getAccessoriesCommand);
 
         $accessories = array();
-        while ($row = $result->GetRow()) {
+        while ($row = $reader->GetRow()) {
             $accessories[] = new AccessoryReservation(
                 $row[ColumnNames::REFERENCE_NUMBER],
                 Date::FromDatabase($row[ColumnNames::RESERVATION_START]),
@@ -423,7 +426,7 @@ class ReservationViewRepository implements IReservationViewRepository
                 $row[ColumnNames::QUANTITY]);
         }
 
-        $result->Free();
+        $reader->Free();
 
         return $accessories;
     }
@@ -446,14 +449,14 @@ class ReservationViewRepository implements IReservationViewRepository
 
         $getBlackoutsCommand = new GetBlackoutListCommand($dateRange->GetBegin(), $dateRange->GetEnd(), $scheduleId, $resourceIds);
 
-        $result = ServiceLocator::GetDatabase()->Query($getBlackoutsCommand);
+        $reader = ServiceLocator::GetDatabase()->Query($getBlackoutsCommand);
 
         $blackouts = array();
-        while ($row = $result->GetRow()) {
+        while ($row = $reader->GetRow()) {
             $blackouts[] = BlackoutItemView::Populate($row);
         }
 
-        $result->Free();
+        $reader->Free();
 
         return $blackouts;
     }

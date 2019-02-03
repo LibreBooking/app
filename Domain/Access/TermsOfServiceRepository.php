@@ -53,9 +53,11 @@ class TermsOfServiceRepository implements ITermsOfServiceRepository
 
         if ($row = $reader->GetRow())
         {
+			$reader->Free();
             return new TermsOfService($row[ColumnNames::TERMS_ID], $row[ColumnNames::TERMS_TEXT], $row[ColumnNames::TERMS_URL], $row[ColumnNames::TERMS_FILE], $row[ColumnNames::TERMS_APPLICABILITY]);
         }
 
+		$reader->Free();
         return null;
     }
 
