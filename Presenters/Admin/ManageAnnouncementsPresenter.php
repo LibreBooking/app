@@ -230,7 +230,7 @@ class ManageAnnouncementsPresenter extends ActionPresenter
                 $allUsers[$user->Id] = $user;
                 $usersToSendTo[] = $user->Id;
             }
-            return array($allUsers, $usersToSendTo);
+            return $usersToSendTo;
         }
         else {
             $groupUserIds = array();
