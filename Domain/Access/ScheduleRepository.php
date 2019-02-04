@@ -334,6 +334,8 @@ class ScheduleRepository implements IScheduleRepository
             $layout->ChangePeakTimes(PeakTimes::FromRow($row));
         }
 
+		$reader->Free();
+
         return $layout;
     }
 

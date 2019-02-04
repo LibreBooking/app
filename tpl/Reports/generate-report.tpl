@@ -228,7 +228,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 	</div>
 </div>
 
-<div id="saveMessage" class="alert alert-success no-show">
+<div id="saveMessage" class="alert alert-success" style="display:none;">
 	<strong>{translate key=ReportSaved}</strong> <a
 			href="{$Path}reports/{Pages::REPORTS_SAVED}">{translate key=MySavedReports}</a>
 </div>

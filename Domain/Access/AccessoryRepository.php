@@ -72,6 +72,8 @@ class AccessoryRepository implements IAccessoryRepository
 				$accessory->AddResource($row[ColumnNames::RESOURCE_ID], $row[ColumnNames::ACCESSORY_MINIMUM_QUANTITY], $row[ColumnNames::ACCESSORY_MAXIMUM_QUANTITY]);
 			}
 
+			$reader->Free();
+
 			return $accessory;
 		}
 
@@ -137,6 +139,7 @@ class AccessoryRepository implements IAccessoryRepository
 			$accessories[] = $accessory;
 		}
 
+		$reader->Free();
 		return $accessories;
 	}
 }

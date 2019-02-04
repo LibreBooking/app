@@ -692,11 +692,12 @@ function ResourceManagement(opts) {
 		var minDuration = result.find('.minDuration');
 		var maxDuration = result.find('.maxDuration');
 		var bufferTime = result.find('.bufferTime');
+		var allowMultiDay = result.find('.allowMultiDay');
 
 		setDuration(minDuration, resource.minLength);
 		setDuration(maxDuration, resource.maxLength);
 		setDuration(bufferTime, resource.bufferTime);
-		resource.allowMultiday = bufferTime.attr('data-value');
+		resource.allowMultiday = allowMultiDay.attr('data-value');
 
 		elements.durationDialog.modal('hide');
 	};

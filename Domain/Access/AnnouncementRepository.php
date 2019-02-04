@@ -102,6 +102,7 @@ class AnnouncementRepository implements IAnnouncementRepository
             $announcement = Announcement::FromRow($row);
         }
 
+		$reader->Free();
         return $announcement;
     }
 

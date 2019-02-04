@@ -1,21 +1,21 @@
 <?php
 /**
-Copyright 2012-2019 Nick Korbel
-
-This file is part of Booked Scheduler.
-
-Booked Scheduler is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-Booked Scheduler is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
+ * Copyright 2012-2019 Nick Korbel
+ *
+ * This file is part of Booked Scheduler.
+ *
+ * Booked Scheduler is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Booked Scheduler is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 require_once(ROOT_DIR . 'Domain/Access/namespace.php');
@@ -68,7 +68,7 @@ class ReportingRepository implements IReportingRepository
 		$rows = array();
 		while ($row = $reader->GetRow())
 		{
-			$row[ColumnNames::DURATION_HOURS] = round($row[ColumnNames::DURATION_ALIAS]/3600, 2);
+			$row[ColumnNames::DURATION_HOURS] = round($row[ColumnNames::DURATION_ALIAS] / 3600, 2);
 			$rows[] = $row;
 		}
 		$reader->Free();
@@ -93,11 +93,11 @@ class ReportingRepository implements IReportingRepository
 		while ($row = $reader->GetRow())
 		{
 			$reports[] = SavedReport::FromDatabase(
-				$row[ColumnNames::REPORT_NAME],
-				$row[ColumnNames::USER_ID],
-				Date::FromDatabase($row[ColumnNames::DATE_CREATED]),
-				$row[ColumnNames::REPORT_DETAILS],
-				$row[ColumnNames::REPORT_ID]
+					$row[ColumnNames::REPORT_NAME],
+					$row[ColumnNames::USER_ID],
+					Date::FromDatabase($row[ColumnNames::DATE_CREATED]),
+					$row[ColumnNames::REPORT_DETAILS],
+					$row[ColumnNames::REPORT_ID]
 			);
 		}
 		$reader->Free();
@@ -116,18 +116,17 @@ class ReportingRepository implements IReportingRepository
 
 		if ($row = $reader->GetRow())
 		{
+			$reader->Free();
 			return SavedReport::FromDatabase(
-				$row[ColumnNames::REPORT_NAME],
-				$row[ColumnNames::USER_ID],
-				Date::FromDatabase($row[ColumnNames::DATE_CREATED]),
-				$row[ColumnNames::REPORT_DETAILS],
-				$row[ColumnNames::REPORT_ID]
+					$row[ColumnNames::REPORT_NAME],
+					$row[ColumnNames::USER_ID],
+					Date::FromDatabase($row[ColumnNames::DATE_CREATED]),
+					$row[ColumnNames::REPORT_DETAILS],
+					$row[ColumnNames::REPORT_ID]
 			);
 		}
-		else
-		{
-			return null;
-		}
+		$reader->Free();
+		return null;
 	}
 
 	public function DeleteSavedReport($reportId, $userId)
