@@ -121,6 +121,11 @@
   padding-top: 80px;
   overflow-y: hidden;
 }
+.resource-display .upcoming-reservations {
+  position: absolute;
+  top: 80px;
+  bottom: 0;
+}
 .resource-display .upcoming-separator {
   height: 1px;
   padding: 0;
