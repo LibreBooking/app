@@ -99,7 +99,7 @@ class Configuration implements IConfiguration
     const DEFAULT_CONFIG_ID = 'booked';
     const DEFAULT_CONFIG_FILE_PATH = 'config/config.php';
 
-    const VERSION = '2.7.4';
+    const VERSION = '2.7.5';
 
     protected function __construct()
     {
