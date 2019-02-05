@@ -18,8 +18,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 *}
 {include file='globalheader.tpl' Validator=true}
 
-<div class="page-register">
-
+<div id="page-register">
 
     <div class="error hidden" id="registrationError">
         {translate key=UnknownError}

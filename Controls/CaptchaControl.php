@@ -56,9 +56,16 @@ class CaptchaControl extends Control
 		$url = CaptchaService::Create()->GetImageUrl();
 
 		$label = Resources::GetInstance()->GetString('SecurityCode');
+		$message = Resources::GetInstance()->GetString('Required');
 		$formName = FormKeys::CAPTCHA;
 
-		echo "<div><div><img src='$url' alt='captcha' id='captchaImg'/></div>";
-		echo "<label for=\"captchaValue\">$label</label><input type=\"text\" class=\"form-control\" name=\"$formName\" size=\"20\" id=\"captchaValue\"/></div>";
+		echo "<div id=\"captchaDiv\">
+                <div><img src=\"$url\" alt=\"captcha\" id=\"captchaImg\"/></div>
+		        <label for=\"captchaValue\">$label</label>
+                <input type=\"text\" class=\"form-control\" name=\"$formName\" size=\"20\" id=\"$formName\" 
+                required=\"required\"
+                data-bv-notempty=\"true\"
+                data-bv-notempty-message=\"$message\"/>
+            </div>";
 	}
 }
