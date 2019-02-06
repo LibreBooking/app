@@ -183,7 +183,7 @@ class Ldap extends Authentication implements IAuthentication
 
     private function Synchronize($username)
     {
-        $password = $this->options->RetryAgainstDatabase() ? $this->password : BookedStringHelper::Random(20);
+        $password = $this->options->RetryAgainstDatabase() ? $this->password : Password::GenerateRandom();
 
         $registration = $this->GetRegistration();
 

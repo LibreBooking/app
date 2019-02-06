@@ -52,7 +52,13 @@ class PasswordMigration
 
 class Password implements IPassword
 {
-	/**
+    /**
+     * @internal
+     * @var null|string
+     */
+    public static $_Random = null;
+
+    /**
 	 * @var \PasswordEncryption
 	 */
 	public $Encryption;
@@ -113,6 +119,11 @@ class Password implements IPassword
 	 */
 	public static function GenerateRandom()
 	{
+	    if (self::$_Random != null)
+        {
+            return self::$_Random;
+        }
+
 		$length = 10;
 		$characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ@#$%';
 		$password ='';

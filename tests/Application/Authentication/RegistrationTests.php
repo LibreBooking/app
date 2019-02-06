@@ -236,6 +236,7 @@ class RegistrationTests extends TestBase
         $user->ChangeEmailPreference(new ReservationCreatedEvent(), true);
         $user->ChangeEmailPreference(new ReservationUpdatedEvent(), true);
         $user->ChangeEmailPreference(new ReservationDeletedEvent(), true);
+        $user->ChangeEmailPreference(new ReservationSeriesEndingEvent(), true);
 
         $this->userRepository->expects($this->once())
             ->method('Add')

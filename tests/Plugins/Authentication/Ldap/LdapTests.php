@@ -155,7 +155,9 @@ class LdapTests extends TestBase
 
 	public function testLoginSynchronizesInfoAndCallsAuthLogin()
 	{
-		$timezone = 'UTC';
+        Password::$_Random = 'random';
+
+        $timezone = 'UTC';
 		$this->fakeConfig->SetKey(ConfigKeys::DEFAULT_TIMEZONE, $timezone);
 		$languageCode = 'en_US';
 		$this->fakeConfig->SetKey(ConfigKeys::LANGUAGE, $languageCode);
@@ -165,7 +167,7 @@ class LdapTests extends TestBase
 			$this->ldapUser->GetEmail(),
 			$this->ldapUser->GetFirstName(),
 			$this->ldapUser->GetLastName(),
-			$this->password,
+			'random',
 			$languageCode,
 			$timezone,
 			$this->ldapUser->GetPhone(),

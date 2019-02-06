@@ -166,6 +166,7 @@ class ActiveDirectoryTests extends TestBase
 
 	public function testLoginSynchronizesInfoAndCallsAuthLogin()
 	{
+	    Password::$_Random = 'random';
 		$timezone = 'UTC';
 		$this->fakeConfig->SetKey(ConfigKeys::DEFAULT_TIMEZONE, $timezone);
 		$languageCode = 'en_US';
@@ -176,7 +177,7 @@ class ActiveDirectoryTests extends TestBase
 			$this->ldapUser->GetEmail(),
 			$this->ldapUser->GetFirstName(),
 			$this->ldapUser->GetLastName(),
-			$this->password,
+			'random',
 			$languageCode,
             $timezone,
 			$this->ldapUser->GetPhone(),
