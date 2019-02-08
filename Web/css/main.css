@@ -685,6 +685,9 @@ label.customAttribute {
 input[type=search]::-webkit-search-cancel-button {
   -webkit-appearance: searchfield-cancel-button;
 }
+.close-forever {
+  font-size: 11pt;
+}
 #page-register #captchaDiv i {
   top: 125px;
 }

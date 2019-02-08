@@ -83,10 +83,32 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 <div id="page-schedule">
 
+    {assign var=startTime value=microtime(true)}
+
     {if $ShowResourceWarning}
         <div class="alert alert-warning no-resource-warning"><span
                     class="fa fa-warning"></span> {translate key=NoResources} <a
                     href="admin/manage_resources.php">{translate key=AddResource}</a></div>
+    {/if}
+
+    {if $CanViewAdmin}
+        <div id="slow-schedule-warning" class="alert alert-warning no-show" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+
+            We noticed this page is taking a long time to load. To speed ths page up, try
+            reducing the number of <a class="alert-link" href="admin/manage_resources.php">resources</a> on this
+            schedule or
+            reducing the number of <a class="alert-link" href="admin/manage_schedules.php">days</a> being shown.
+            <br/><br/>
+            This page is taking <span id="warning-time"></span> seconds to load
+            <span id="warning-resources"></span> resources for <span id="warning-days"></span> days.
+
+            <button type="button" class="close close-forever" aria-label="Do not show again">
+                <span aria-hidden="true">Do not show again</span>
+            </button>
+        </div>
     {/if}
 
     {if $IsAccessible}
@@ -126,7 +148,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                     <label for="schedules" class="no-show">Schedule</label>
                     <select id="schedules" class="form-control" style="width:auto;">
                         {foreach from=$Schedules item=schedule}
-                            <option value="{$schedule->GetId()}" {if $schedule->GetId() == $ScheduleId}selected="selected"{/if}>{$schedule->GetName()}</option>
+                            <option value="{$schedule->GetId()}"
+                                    {if $schedule->GetId() == $ScheduleId}selected="selected"{/if}>{$schedule->GetName()}</option>
                         {/foreach}
                     </select>
                     <a href="#" id="calendar_toggle" title="{translate key=ShowHideNavigation}">
@@ -140,7 +163,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                         </div>
                         <a class="btn btn-default btn-sm" href="#" id="individualDatesGo"><i
                                     class="fa fa-angle-double-right"></i>
-                        <span class="no-show">{translate key=SpecificDates}</span>
+                            <span class="no-show">{translate key=SpecificDates}</span>
                         </a>
                     </div>
                     <div id="individualDatesList"></div>
@@ -244,7 +267,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                     <div class="reservations-left-header">{translate key=ResourceFilter}
                         <a href="#" class="pull-right toggle-sidebar" title="Hide Reservation Filter"><i
                                     class="glyphicon glyphicon-remove"></i>
-                        <span class="no-show">Hide Reservation Filter</span>
+                            <span class="no-show">Hide Reservation Filter</span>
                         </a>
                     </div>
 
@@ -331,6 +354,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
         <div class="col-sm-9 visible-md visible-lg">&nbsp;</div>
         {$smarty.capture.date_navigation}
     </div>
+    {assign var=endTime value=microtime(true)}
+
 </div>
 
 <form id="moveReservationForm">
@@ -406,6 +431,23 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
         $('#schedules').select2({
             width: 'resolve'
         });
+
+        var pageLoadTime = {round($endTime-$startTime)};
+        var resourceCount = {$Resources|count};
+        var dayCount = {$BoundDates|count};
+
+        if (pageLoadTime > 10 && !cookies.isDismissed('slow-schedule-warning')) {
+            $('#slow-schedule-warning').removeClass('no-show');
+            $('#warning-time').text(pageLoadTime);
+            $('#warning-resources').text(resourceCount);
+            $('#warning-days').text(dayCount);
+        }
+
+        $('#slow-schedule-warning').find('.close-forever').on('click', function (e) {
+            cookies.dismiss('slow-schedule-warning', '{$ScriptUrl}');
+            $('#slow-schedule-warning').addClass('no-show');
+        });
+
     </script>
 {/block}
 

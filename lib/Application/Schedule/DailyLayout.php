@@ -100,7 +100,6 @@ class DailyLayout implements IDailyLayout
             $sw->Record('slots');
             $sw->Stop();
 
-            // TODO: timing/size recommendation
             Log::Debug('DailyLayout::GetLayout - For resourceId %s on date %s, took %s seconds to get reservation listing, %s to build the slots, %s total seconds for %s reservations. Memory consumed=%sMB',
                 $resourceId,
                 $date->ToString(),
