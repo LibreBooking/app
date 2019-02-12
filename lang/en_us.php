@@ -773,6 +773,7 @@ class en_us extends Language
         $strings['Utilization'] = 'Utilization';
         $strings['SpecificTime'] = 'Specific Time';
         $strings['ReservationSeriesEndingPreference'] = 'When my recurring reservation series is ending';
+        $strings['NotAttending'] = 'Not Attending';
         // End Strings
 
 		// Install
@@ -865,6 +866,7 @@ class en_us extends Language
 		$strings['TitleRequiredRule'] = 'Reservation title is required';
 		$strings['DescriptionRequiredRule'] = 'Reservation description is required';
 		$strings['WhatCanThisGroupManage'] = 'What can this group manage?';
+		$strings['ReservationParticipationActivityPreference'] = 'When someone joins or leaves my reservation';
 		// End Errors
 
 		// Page Titles
@@ -984,6 +986,9 @@ class en_us extends Language
 		$strings['MissedCheckinEmailSubject'] = 'Missed checkin for %s';
 		$strings['ReservationShareSubject'] = '%s Shared a Reservation for %s';
 		$strings['ReservationSeriesEndingSubject'] = 'Reservation Series for %s is Ending on %s';
+		$strings['ReservationParticipantAccept'] = '%s Has Accepted Your Reservation Invitation for %s on %s';
+		$strings['ReservationParticipantDecline'] = '%s Has Declined Your Reservation Invitation for %s on %s';
+		$strings['ReservationParticipantJoin'] = '%s Has Joined Your Reservation for %s on %s';
 		// End Email Subjects
 
 		$this->Strings = $strings;

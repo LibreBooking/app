@@ -100,6 +100,22 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
                     <div class="notification-row">
                         <div class="notification-type">
+                            {translate key=ReservationParticipationActivityPreference}
+                        </div>
+
+                        <div class="btn-group form-group" data-toggle="buttons">
+                            <label class="btn btn-default btn-xs {if $ParticipantChanged}active{/if}">
+                                <input id="endingYes" type="radio" name="{ReservationEvent::ParticipationChanged}" value="1"
+                                       {if $ParticipantChanged}checked="checked"{/if}/> {translate key=PreferenceSendEmail}
+                            </label>
+                            <label class="btn btn-default btn-xs {if !$ParticipantChanged}active{/if}">
+                                <input id="endingNo" type="radio" name="{ReservationEvent::ParticipationChanged}" value="0"
+                                       {if !$ParticipantChanged}checked="checked"{/if}/>{translate key=PreferenceNoEmail}</label>
+                        </div>
+                    </div>
+
+                    <div class="notification-row-alt">
+                        <div class="notification-type">
                             {translate key=ReservationSeriesEndingPreference}
                         </div>
 

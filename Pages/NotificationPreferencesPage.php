@@ -54,6 +54,11 @@ interface INotificationPreferencesPage extends IPage
     public function SetSeriesEnding($wantsSeriesEndingEmails);
 
     /**
+     * @param bool $wantsParticipantChangedEmails
+     */
+    public function SetParticipantChanged($wantsParticipantChangedEmails);
+
+    /**
      * @return bool
      */
     public function GetApproved();
@@ -79,9 +84,19 @@ interface INotificationPreferencesPage extends IPage
     public function GetSeriesEnding();
 
     /**
+     * @return bool
+     */
+    public function GetParticipantChanged();
+
+    /**
      * @param bool $werePreferencesUpdated
      */
     public function SetPreferencesSaved($werePreferencesUpdated);
+
+    /**
+     * @param bool $enabled
+     */
+    public function SetParticipationEnabled($enabled);
 }
 
 class NotificationPreferencesPage extends SecurePage implements INotificationPreferencesPage
@@ -128,6 +143,11 @@ class NotificationPreferencesPage extends SecurePage implements INotificationPre
         $this->Set('SeriesEnding', $wantsSeriesEndingEmails);
     }
 
+    public function SetParticipantChanged($wantsParticipantChangedEmails)
+    {
+        $this->Set('ParticipantChanged', $wantsParticipantChangedEmails);
+    }
+
     public function GetApproved()
     {
         return (bool)$this->GetForm(ReservationEvent::Approved);
@@ -153,6 +173,11 @@ class NotificationPreferencesPage extends SecurePage implements INotificationPre
         return (bool)$this->GetForm(ReservationEvent::SeriesEnding);
     }
 
+    public function GetParticipantChanged()
+    {
+        return (bool)$this->GetForm(ReservationEvent::ParticipationChanged);
+    }
+
     public function SetPreferencesSaved($werePreferencesUpdated)
     {
         $this->Set('PreferencesUpdated', $werePreferencesUpdated);
@@ -161,5 +186,10 @@ class NotificationPreferencesPage extends SecurePage implements INotificationPre
     public function SetEmailEnabled($enabled)
     {
         $this->Set('EmailEnabled', $enabled);
+    }
+
+    public function SetParticipationEnabled($enabled)
+    {
+        $this->Set('ParticipationEnabled', $enabled);
     }
 }

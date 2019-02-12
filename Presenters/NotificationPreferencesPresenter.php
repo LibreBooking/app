@@ -43,6 +43,7 @@ class NotificationPreferencesPresenter
 	public function PageLoad()
 	{
         $this->page->SetEmailEnabled(Configuration::Instance()->GetKey(ConfigKeys::ENABLE_EMAIL, new BooleanConverter()));
+        $this->page->SetParticipationEnabled(!Configuration::Instance()->GetSectionKey(ConfigSection::RESERVATION, ConfigKeys::RESERVATION_PREVENT_PARTICIPATION, new BooleanConverter()));
 
         $userSession = ServiceLocator::GetServer()->GetUserSession();
         $user = $this->userRepository->LoadById($userSession->UserId);
@@ -58,6 +59,7 @@ class NotificationPreferencesPresenter
         $this->page->SetUpdated($user->WantsEventEmail(new ReservationUpdatedEvent()));
         $this->page->SetDeleted($user->WantsEventEmail(new ReservationDeletedEvent()));
         $this->page->SetSeriesEnding($user->WantsEventEmail(new ReservationSeriesEndingEvent()));
+        $this->page->SetParticipantChanged($user->WantsEventEmail(new ParticipationChangedEvent()));
 	}
 
 	private function UpdateProfile(User $user)
@@ -67,6 +69,7 @@ class NotificationPreferencesPresenter
         $user->ChangeEmailPreference(new ReservationUpdatedEvent(), $this->page->GetUpdated());
         $user->ChangeEmailPreference(new ReservationDeletedEvent(), $this->page->GetDeleted());
         $user->ChangeEmailPreference(new ReservationSeriesEndingEvent(), $this->page->GetSeriesEnding());
+        $user->ChangeEmailPreference(new ParticipationChangedEvent(), $this->page->GetParticipantChanged());
 
         $this->userRepository->Update($user);
 	}

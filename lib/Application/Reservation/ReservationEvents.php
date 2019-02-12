@@ -28,6 +28,7 @@ class ReservationEvent
 	const Updated = 'updated';
 	const Deleted = 'deleted';
     const SeriesEnding = 'series_ending';
+    const ParticipationChanged = 'participation_changed';
 
     /**
 	 * @static
@@ -40,7 +41,8 @@ class ReservationEvent
 			new ReservationCreatedEvent(),
 			new ReservationUpdatedEvent(),
 			new ReservationDeletedEvent(),
-            new ReservationSeriesEndingEvent()
+            new ReservationSeriesEndingEvent(),
+            new ParticipationChangedEvent(),
 		);
 	}
 }
@@ -108,4 +110,17 @@ class ReservationSeriesEndingEvent implements IDomainEvent
 	{
 		return EventCategory::Reservation;
 	}
+}
+
+class ParticipationChangedEvent implements IDomainEvent
+{
+    public function EventType()
+    {
+        return ReservationEvent::ParticipationChanged;
+    }
+
+    public function EventCategory()
+    {
+        return EventCategory::Reservation;
+    }
 }

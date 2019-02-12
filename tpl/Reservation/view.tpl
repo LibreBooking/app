@@ -175,14 +175,14 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 							<div id="invitationAction" class="participationAction">
 								{if $IAmInvited && $CanAlterParticipation}
 									<div class="alert alert-info" role="alert">
-										<strong>{translate key=YouAreAParticipant}</strong>
+										<strong>{translate key=YouAreInvited}</strong>
 										<button value="{InvitationAction::Accept}"
 												class="btn btn-xs btn-info participationAction">
-											<i class="fa fa-user-plus"></i> {translate key="Yes"}
+											<i class="fa fa-user-plus"></i> {translate key="Attending"}
 										</button>
 										<button value="{InvitationAction::Decline}"
 												class="btn btn-xs btn-danger  participationAction">
-											<i class="fa fa-user-times"></i> {translate key="No"}
+											<i class="fa fa-user-times"></i> {translate key="NotAttending"}
 										</button>
 									</div>
 								{/if}

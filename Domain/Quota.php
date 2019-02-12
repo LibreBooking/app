@@ -398,7 +398,7 @@ class Quota implements IQuota
 
 			if ($start == Schedule::Today)
 			{
-				return Date::Now()->Weekday();
+                return Date::Now()->ToTimezone($this->schedule->GetTimezone())->Weekday();
 			}
 
 			return $start;

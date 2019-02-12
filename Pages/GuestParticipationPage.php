@@ -103,8 +103,13 @@ class GuestParticipationPage extends Page implements IGuestParticipationPage
 
 	public function __construct()
 	{
+        $userRepository = new UserRepository();
 		parent::__construct('OpenInvitations');
-		$this->presenter = new GuestParticipationPresenter($this, new ReservationRepository(), new UserRepository());
+		$this->presenter = new GuestParticipationPresenter(
+		    $this,
+            new ReservationRepository(),
+            $userRepository,
+            new ParticipationNotification($userRepository));
 	}
 
 	public function PageLoad()

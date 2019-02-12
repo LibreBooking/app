@@ -37,3 +37,5 @@ require_once(ROOT_DIR . 'lib/Application/Reservation/Notification/ParticipantUpd
 require_once(ROOT_DIR . 'lib/Application/Reservation/Notification/GuestAddedEmailNotification.php');
 require_once(ROOT_DIR . 'lib/Application/Reservation/Notification/GuestDeletedEmailNotification.php');
 require_once(ROOT_DIR . 'lib/Application/Reservation/Notification/GuestUpdatedEmailNotification.php');
+
+require_once(ROOT_DIR . 'lib/Application/Reservation/Notification/ParticipationNotification.php');
