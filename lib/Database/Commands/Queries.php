@@ -199,17 +199,13 @@ class Queries
 		FROM resources
 		WHERE schedule_id = @scheduleid';
 
-	const AUTO_ASSIGN_RESOURCE_PERMISSIONS =
-			'INSERT INTO user_resource_permissions (user_id, resource_id)
+    const AUTO_ASSIGN_RESOURCE_PERMISSIONS =
+        'INSERT IGNORE INTO user_resource_permissions (user_id, resource_id)
 			(
 			SELECT
 				user_id, @resourceid as resource_id
 			FROM
-				users u
-				WHERE
-				   NOT EXISTS (SELECT * FROM user_resource_permissions p
-                          WHERE u.user_id = p.user_id AND p.resource_id = @resourceid)
-            )';
+				users u)';
 
 	const AUTO_ASSIGN_CLEAR_RESOURCE_PERMISSIONS = 'DELETE FROM user_resource_permissions WHERE resource_id = @resourceid';
 
