@@ -18,6 +18,7 @@
  * You should have received a copy of the GNU General Public License
  * along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 class SlotLabelFactoryTests extends TestBase
 {
 	/**
@@ -118,6 +119,42 @@ class SlotLabelFactoryTests extends TestBase
 
 		$this->assertEquals('fakeCustomAttribute1: 1, fakeCustomAttribute2: 2', $factory->Format($this->reservation));
 	}
+
+	public function testHidesUserDetails()
+	{
+	    $this->SetConfig('{name}');
+	    $this->fakeConfig->SetSectionKey(ConfigSection::PRIVACY, ConfigKeys::PRIVACY_HIDE_USER_DETAILS, 'true');
+	    $this->fakeConfig->SetSectionKey(ConfigSection::PRIVACY, ConfigKeys::PRIVACY_HIDE_RESERVATION_DETAILS, 'false');
+
+	    $privacyFilter = new FakePrivacyFilter();
+	    $privacyFilter->_CanViewUser = false;
+	    $privacyFilter->_CanViewDetails = true;
+
+        $factory = new SlotLabelFactory($this->fakeUser, $privacyFilter, new FakeAttributeRepository());
+
+        $label = $factory->Format($this->reservation);
+
+        $fullName = $this->reservation->GetUserName()->__toString();
+
+        $this->assertNotContains($fullName, $label);
+    }
+
+    public function testHidesReservationDetails()
+    {
+        $this->SetConfig('{name} {title}');
+        $this->fakeConfig->SetSectionKey(ConfigSection::PRIVACY, ConfigKeys::PRIVACY_HIDE_USER_DETAILS, 'false');
+        $this->fakeConfig->SetSectionKey(ConfigSection::PRIVACY, ConfigKeys::PRIVACY_HIDE_RESERVATION_DETAILS, 'true');
+
+        $privacyFilter = new FakePrivacyFilter();
+        $privacyFilter->_CanViewUser = true;
+        $privacyFilter->_CanViewDetails = false;
+
+        $factory = new SlotLabelFactory($this->fakeUser, $privacyFilter, new FakeAttributeRepository());
+
+        $label = $factory->Format($this->reservation);
+
+        $this->assertEquals('', $label);
+    }
 
 	private function SetConfig($value)
 	{

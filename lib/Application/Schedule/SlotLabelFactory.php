@@ -68,14 +68,20 @@ class SlotLabelFactory
      */
     public function Format(ReservationItemView $reservation, $format = null)
     {
-        $notAdminForUser = (is_null($this->user) || ($this->user->UserId != $reservation->UserId && !$this->user->IsAdminForGroup($reservation->OwnerGroupIds())));
+        $shouldHideUser = Configuration::Instance()->GetSectionKey(ConfigSection::PRIVACY,
+            ConfigKeys::PRIVACY_HIDE_USER_DETAILS,
+            new BooleanConverter());
 
-        $shouldHideUser = $notAdminForUser && Configuration::Instance()->GetSectionKey(ConfigSection::PRIVACY,
-                ConfigKeys::PRIVACY_HIDE_USER_DETAILS,
-                new BooleanConverter());
+        if ($shouldHideUser) {
+            $shouldHideUser = !$this->privacyFilter->CanViewUser($this->user, $reservation);
+        }
 
-        $shouldHideDetails = $notAdminForUser && ReservationDetailsFilter::HideReservationDetails($reservation->StartDate, $reservation->EndDate);
+        $shouldHideDetails = ReservationDetailsFilter::HideReservationDetails($reservation->StartDate, $reservation->EndDate);
 
+        if ($shouldHideDetails)
+        {
+            $shouldHideDetails = $shouldHideUser || !$this->privacyFilter->CanViewDetails($this->user, $reservation);
+        }
 
         if ($shouldHideDetails) {
             return '';
@@ -90,7 +96,7 @@ class SlotLabelFactory
             return '';
         }
 
-        $name = $this->GetFullName($reservation);
+        $name = $shouldHideUser ? Resources::GetInstance()->GetString('Private') : $this->GetFullName($reservation);
 
         $timezone = 'UTC';
         $dateFormat = Resources::GetInstance()->GetDateFormat('res_popup');
@@ -141,14 +147,6 @@ class SlotLabelFactory
 
     protected function GetFullName(ReservationItemView $reservation)
     {
-        $shouldHide = Configuration::Instance()->GetSectionKey(ConfigSection::PRIVACY,
-            ConfigKeys::PRIVACY_HIDE_USER_DETAILS,
-            new BooleanConverter());
-
-        if ($shouldHide && (is_null($this->user) || ($this->user->UserId != $reservation->UserId && !$this->user->IsAdminForGroup($reservation->OwnerGroupIds())))) {
-            return Resources::GetInstance()->GetString('Private');
-        }
-
         $name = new FullName($reservation->FirstName, $reservation->LastName);
         return $name->__toString();
     }
