@@ -39,7 +39,7 @@ class UserSession
 	public $AdminGroups = array();
 	public $CSRFToken = '';
 
-	public function __construct($id)
+    public function __construct($id)
 	{
 		$this->UserId = $id;
 	}

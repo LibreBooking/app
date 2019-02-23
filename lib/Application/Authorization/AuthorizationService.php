@@ -127,6 +127,11 @@ class AuthorizationService implements IAuthorizationService
      */
     public function CanReserveFor(UserSession $reserver, $reserveForId)
     {
+        if ($reserveForId == $reserver->UserId)
+        {
+            return true;
+        }
+
         return $this->IsAdminFor($reserver, $reserveForId);
     }
 

@@ -97,7 +97,6 @@ class SlotLabelFactoryTests extends TestBase
 		$this->reservation->Attributes->Add(2, 'value2');
 		$this->reservation->Attributes->Add(1, 'value1');
 
-
 		$this->SetConfig('{att1} {att2}');
 
 		$value = SlotLabelFactory::Create($this->reservation);
@@ -126,11 +125,12 @@ class SlotLabelFactoryTests extends TestBase
 	    $this->fakeConfig->SetSectionKey(ConfigSection::PRIVACY, ConfigKeys::PRIVACY_HIDE_USER_DETAILS, 'true');
 	    $this->fakeConfig->SetSectionKey(ConfigSection::PRIVACY, ConfigKeys::PRIVACY_HIDE_RESERVATION_DETAILS, 'false');
 
-	    $privacyFilter = new FakePrivacyFilter();
-	    $privacyFilter->_CanViewUser = false;
-	    $privacyFilter->_CanViewDetails = true;
+	    $authService = new FakeAuthorizationService();
+	    $this->fakeUser->AdminGroups = array();
+	    $this->fakeUser->IsAdmin = false;
+	    $authService->_CanEditForResource = false;
 
-        $factory = new SlotLabelFactory($this->fakeUser, $privacyFilter, new FakeAttributeRepository());
+        $factory = new SlotLabelFactory($this->fakeUser, $authService, new FakeAttributeRepository());
 
         $label = $factory->Format($this->reservation);
 
@@ -139,17 +139,40 @@ class SlotLabelFactoryTests extends TestBase
         $this->assertNotContains($fullName, $label);
     }
 
+    public function testShowsUserDetailsIfCanEditResource()
+    {
+        $this->SetConfig('{name}');
+        $this->fakeConfig->SetSectionKey(ConfigSection::PRIVACY, ConfigKeys::PRIVACY_HIDE_USER_DETAILS, 'true');
+        $this->fakeConfig->SetSectionKey(ConfigSection::PRIVACY, ConfigKeys::PRIVACY_HIDE_RESERVATION_DETAILS, 'true');
+
+        $authService = new FakeAuthorizationService();
+        $this->fakeUser->AdminGroups = array();
+        $this->fakeUser->IsAdmin = false;
+        $authService->_CanEditForResource = true;
+
+        $factory = new SlotLabelFactory($this->fakeUser, $authService, new FakeAttributeRepository());
+
+        $label = $factory->Format($this->reservation);
+
+        $fullName = $this->reservation->GetUserName()->__toString();
+
+        $this->assertContains($fullName, $label);
+    }
+
     public function testHidesReservationDetails()
     {
         $this->SetConfig('{name} {title}');
         $this->fakeConfig->SetSectionKey(ConfigSection::PRIVACY, ConfigKeys::PRIVACY_HIDE_USER_DETAILS, 'false');
         $this->fakeConfig->SetSectionKey(ConfigSection::PRIVACY, ConfigKeys::PRIVACY_HIDE_RESERVATION_DETAILS, 'true');
 
-        $privacyFilter = new FakePrivacyFilter();
-        $privacyFilter->_CanViewUser = true;
-        $privacyFilter->_CanViewDetails = false;
+        $authService = new FakeAuthorizationService();
+        $this->reservation->WithOwnerGroupIds(1);
+        $this->fakeUser->AdminGroups = array($this->reservation->OwnerGroupIds());
+        $this->fakeUser->IsAdmin = false;
+        $authService->_CanReserveFor = true;
+        $authService->_CanEditForResource = false;
 
-        $factory = new SlotLabelFactory($this->fakeUser, $privacyFilter, new FakeAttributeRepository());
+        $factory = new SlotLabelFactory($this->fakeUser, $authService, new FakeAttributeRepository());
 
         $label = $factory->Format($this->reservation);
 

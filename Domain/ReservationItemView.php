@@ -373,6 +373,16 @@ class ReservationItemView implements IReservedItemView
     public $ResourceNames = array();
 
     /**
+     * @var null|int
+     */
+    public $ResourceAdminGroupId = null;
+
+    /**
+     * @var null|int
+     */
+    public $ScheduleAdminGroupId = null;
+
+    /**
      * @var int|null
      */
     private $bufferSeconds = 0;
@@ -598,6 +608,8 @@ class ReservationItemView implements IReservedItemView
         $view->IsCheckInEnabled = (bool)$row[ColumnNames::ENABLE_CHECK_IN];
         $view->AutoReleaseMinutes = $row[ColumnNames::AUTO_RELEASE_MINUTES];
         $view->CreditsConsumed = $row[ColumnNames::CREDIT_COUNT];
+        $view->ResourceAdminGroupId = $row[ColumnNames::RESOURCE_ADMIN_GROUP_ID_RESERVATIONS];
+        $view->ScheduleAdminGroupId = $row[ColumnNames::SCHEDULE_ADMIN_GROUP_ID_RESERVATIONS];
 
         return $view;
     }

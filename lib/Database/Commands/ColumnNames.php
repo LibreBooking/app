@@ -366,5 +366,7 @@ class ColumnNames
     // shared
 	const ALLOW_CALENDAR_SUBSCRIPTION = 'allow_calendar_subscription';
 	const PUBLIC_ID = 'public_id';
+	const RESOURCE_ADMIN_GROUP_ID_RESERVATIONS = 'resource_admin_group_id';
+	const SCHEDULE_ADMIN_GROUP_ID_RESERVATIONS = 'schedule_admin_group_id';
 
 }

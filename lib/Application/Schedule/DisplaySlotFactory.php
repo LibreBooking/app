@@ -23,16 +23,6 @@ require_once(ROOT_DIR . 'lib/Application/Schedule/namespace.php');
 
 class DisplaySlotFactory
 {
-    /**
-     * @var IAuthorizationService
-     */
-    private $authorizationService;
-
-    public function __construct(IAuthorizationService $authorizationService)
-    {
-        $this->authorizationService = $authorizationService;
-    }
-
     public function GetFunction(IReservationSlot $slot, $accessAllowed = false, $functionSuffix = '')
     {
         if ($slot->IsReserved()) {
@@ -87,7 +77,7 @@ class DisplaySlotFactory
     private function IsAdminFor(IReservationSlot $slot)
     {
         $mySession = ServiceLocator::GetServer()->GetUserSession();
-        return $this->authorizationService->CanReserveFor($mySession, $slot->OwnerId());
+        return $mySession->IsAdmin || $mySession->IsAdminForGroup($slot->OwnerGroupIds());
     }
 
     private function AmIParticipating(IReservationSlot $slot)

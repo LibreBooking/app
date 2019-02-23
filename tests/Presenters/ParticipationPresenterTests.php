@@ -384,8 +384,14 @@ class FakeParticipationNotification implements IParticipationNotification
 {
     public $_Notified = false;
 
-    public function Notify(ReservationSeries $series, $participantId, $invitationAction)
+    public function Notify(ExistingReservationSeries $series, $participantId, $invitationAction)
     {
         $this->_Notified = true;
+    }
+
+
+    public function NotifyGuest(ExistingReservationSeries $series, $guestEmail, $invitationAction)
+    {
+        // TODO: Implement NotifyGuest() method.
     }
 }

@@ -146,4 +146,9 @@ interface IReservationSlot
      * @return int|null
      */
     public function OwnerId();
+
+    /**
+     * @return int[]
+     */
+    public function OwnerGroupIds();
 }

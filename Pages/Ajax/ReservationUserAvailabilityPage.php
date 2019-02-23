@@ -96,7 +96,7 @@ class ReservationUserAvailabilityPage extends Page implements IReservationUserAv
             return;
         }
 
-        $this->Set('DisplaySlotFactory', new DisplaySlotFactory(new GuestAuthorizationService()));
+        $this->Set('DisplaySlotFactory', new DisplaySlotFactory());
         $this->presenter->PageLoad($this->server->GetUserSession());
     }
 

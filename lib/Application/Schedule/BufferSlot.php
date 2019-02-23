@@ -221,4 +221,9 @@ class BufferSlot implements IReservationSlot
     {
         return null;
     }
+
+    public function OwnerGroupIds()
+    {
+        return $this->_reservation->OwnerGroupIds();
+    }
 }

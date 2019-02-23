@@ -23,25 +23,25 @@ class SlotLabelFactory
     private $user = null;
 
     /**
-     * @var PrivacyFilter
+     * @var IAuthorizationService
      */
-    private $privacyFilter;
+    private $authorizationService;
 
     /**
      * @var IAttributeRepository
      */
     private $attributeRepository;
 
-    public function __construct($user = null, $privacyFilter = null, $attributeRepository = null)
+    public function __construct($user = null, $authorizationService = null, $attributeRepository = null)
     {
         $this->user = $user;
         if ($this->user == null) {
             $this->user = ServiceLocator::GetServer()->GetUserSession();
         }
 
-        $this->privacyFilter = $privacyFilter;
-        if ($this->privacyFilter == null) {
-            $this->privacyFilter = new PrivacyFilter(new ReservationAuthorization(PluginManager::Instance()->LoadAuthorization()));
+        $this->authorizationService = $authorizationService;
+        if ($this->authorizationService == null) {
+            $this->authorizationService = new AuthorizationService(new UserRepository());
         }
 
         $this->attributeRepository = $attributeRepository;
@@ -68,19 +68,14 @@ class SlotLabelFactory
      */
     public function Format(ReservationItemView $reservation, $format = null)
     {
-        $shouldHideUser = Configuration::Instance()->GetSectionKey(ConfigSection::PRIVACY,
-            ConfigKeys::PRIVACY_HIDE_USER_DETAILS,
-            new BooleanConverter());
-
-        if ($shouldHideUser) {
-            $shouldHideUser = !$this->privacyFilter->CanViewUser($this->user, $reservation);
-        }
-
+        $shouldHideUser = Configuration::Instance()->GetSectionKey(ConfigSection::PRIVACY, ConfigKeys::PRIVACY_HIDE_USER_DETAILS, new BooleanConverter());
         $shouldHideDetails = ReservationDetailsFilter::HideReservationDetails($reservation->StartDate, $reservation->EndDate);
 
-        if ($shouldHideDetails)
-        {
-            $shouldHideDetails = $shouldHideUser || !$this->privacyFilter->CanViewDetails($this->user, $reservation);
+        if ($shouldHideUser || $shouldHideDetails) {
+            $canSeeUserDetails = $reservation->OwnerId == $this->user->UserId || $this->user->IsAdmin || $this->user->IsAdminForGroup($reservation->OwnerGroupIds());
+            $canEditResource = $this->authorizationService->CanEditForResource($this->user, new SlotLabelResource($reservation));
+            $shouldHideUser = $shouldHideUser && !$canSeeUserDetails && !$canEditResource;
+            $shouldHideDetails = $shouldHideDetails && !$canEditResource;
         }
 
         if ($shouldHideDetails) {
@@ -166,5 +161,78 @@ class AdminSlotLabelFactory extends SlotLabelFactory
     {
         $name = new FullName($reservation->FirstName, $reservation->LastName);
         return $name->__toString();
+    }
+}
+
+class SlotLabelResource implements IResource
+{
+    /**
+     * @var int|null
+     */
+    private $id;
+    /**
+     * @var string|null
+     */
+    private $name;
+    /**
+     * @var int|null
+     */
+    private $adminGroupId;
+    /**
+     * @var int|null
+     */
+    private $scheduleId;
+    /**
+     * @var $scheduleAdminGroupId
+     */
+    private $scheduleAdminGroupId;
+    /**
+     * @var int
+     */
+    private $statusId;
+
+    public function __construct(ReservationItemView $reservation)
+    {
+        $this->id = $reservation->ResourceId;
+        $this->name = $reservation->ResourceName;
+        $this->adminGroupId = $reservation->ResourceAdminGroupId;
+        $this->scheduleId = $reservation->ScheduleId;
+        $this->scheduleAdminGroupId = $reservation->ScheduleAdminGroupId;
+        $this->statusId = $reservation->ResourceStatusId;
+    }
+
+    public function GetId()
+    {
+        return $this->id;
+    }
+
+    public function GetName()
+    {
+        return $this->name;
+    }
+
+    public function GetAdminGroupId()
+    {
+       return $this->adminGroupId;
+    }
+
+    public function GetScheduleId()
+    {
+        return $this->scheduleId;
+    }
+
+    public function GetScheduleAdminGroupId()
+    {
+        return $this->scheduleAdminGroupId;
+    }
+
+    public function GetStatusId()
+    {
+       return $this->statusId;
+    }
+
+    public function GetResourceId()
+    {
+        return $this->id;
     }
 }

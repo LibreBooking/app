@@ -263,4 +263,9 @@ class ReservationSlot implements IReservationSlot
     {
         return $this->_reservation->UserId;
     }
+
+    public function OwnerGroupIds()
+    {
+        return $this->_reservation->OwnerGroupIds();
+    }
 }

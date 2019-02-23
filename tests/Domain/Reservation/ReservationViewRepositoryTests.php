@@ -555,6 +555,8 @@ class ReservationViewRepositoryTests extends TestBase
             ColumnNames::ENABLE_CHECK_IN => $requireCheckin,
             ColumnNames::AUTO_RELEASE_MINUTES => $autoReleaseMinutes,
             ColumnNames::CREDIT_COUNT => null,
+            ColumnNames::RESOURCE_ADMIN_GROUP_ID_RESERVATIONS => null,
+            ColumnNames::SCHEDULE_ADMIN_GROUP_ID_RESERVATIONS => null,
         );
     }
 
