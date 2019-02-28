@@ -574,13 +574,16 @@ class UserRepository implements IUserRepository, IAccountActivationRepository
 		{
 			$db->Execute(new LogCreditActivityCommand($user->Id(), $user->GetOriginalCredits(), $user->GetCurrentCredits(), $user->GetCreditsNote()));
 		}
+
+		$this->_cache->Remove($userId);
 	}
 
 	public function DeleteById($userId)
 	{
 		$deleteUserCommand = new DeleteUserCommand($userId);
 		ServiceLocator::GetDatabase()->Execute($deleteUserCommand);
-	}
+        $this->_cache->Remove($userId);
+    }
 
 	public function LoadEmailPreferences($userId)
 	{

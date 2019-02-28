@@ -20,8 +20,9 @@ class PasswordValidator extends ValidatorBase implements IValidator
 	 * @var User
 	 */
 	private $user;
+    private $currentPasswordPlainText;
 
-	/**
+    /**
 	 * @param string $currentPasswordPlainText
 	 * @param User $user
 	 */
@@ -35,5 +36,10 @@ class PasswordValidator extends ValidatorBase implements IValidator
 	{
 		$pw = new Password($this->currentPasswordPlainText, $this->user->encryptedPassword);
 		$this->isValid = $pw->Validate($this->user->passwordSalt);
+
+        if (!$this->isValid)
+        {
+            $this->AddMessage(Resources::GetInstance()->GetString('PwMustMatch'));
+        }
 	}
 }

@@ -26,6 +26,11 @@ class FakeAttributeService implements IAttributeService
     public $_ReservationAttributes = array();
 
     /**
+     * @var AttributeServiceValidationResult
+     */
+    public $_ValidationResult;
+
+    /**
 	 * @param $category CustomAttributeCategory|int
 	 * @param $entityIds array|int[]|int
 	 * @return IEntityAttributeList
@@ -45,7 +50,7 @@ class FakeAttributeService implements IAttributeService
 	 */
 	public function Validate($category, $attributeValues, $entityIds = array(), $ignoreEmpty = false, $isAdmin = false)
 	{
-		// TODO: Implement Validate() method.
+        return $this->_ValidationResult;
 	}
 
 	/**

@@ -33,7 +33,10 @@ class FakeUserRepository implements IUserRepository
      */
     public $_AddedUser;
 
-    public $_Exists = true;
+    /**
+     * @var int|null
+     */
+    public $_Exists = null;
 
     /**
      * @var UserDto

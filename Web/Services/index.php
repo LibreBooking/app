@@ -36,6 +36,7 @@ require_once(ROOT_DIR . 'WebServices/AttributesWriteWebService.php');
 require_once(ROOT_DIR . 'WebServices/GroupsWebService.php');
 require_once(ROOT_DIR . 'WebServices/GroupsWriteWebService.php');
 require_once(ROOT_DIR . 'WebServices/AccessoriesWebService.php');
+require_once(ROOT_DIR . 'WebServices/AccountWebService.php');
 
 require_once(ROOT_DIR . 'Web/Services/Help/ApiHelpPage.php');
 
@@ -59,6 +60,7 @@ RegisterSchedules($server, $registry);
 RegisterAttributes($server, $registry);
 RegisterGroups($server, $registry);
 RegisterAccessories($server, $registry);
+RegisterAccounts($server, $registry);
 
 $app->hook('slim.before.dispatch', function () use ($app, $server, $registry) {
     $routeName = $app->router()->getCurrentRoute()->getName();
@@ -198,7 +200,9 @@ function RegisterGroups(SlimServer $server, SlimWebServiceRegistry $registry)
     $groupRepository = new GroupRepository();
     $webService = new GroupsWebService($server, $groupRepository, $groupRepository);
     $writeWebService = new GroupsWriteWebService($server, new GroupSaveController($groupRepository, new ResourceRepository(), new ScheduleRepository()));
+
     $category = new SlimWebServiceRegistryCategory('Groups');
+
     $category->AddSecureGet('/', array($webService, 'GetGroups'), WebServices::AllGroups);
     $category->AddSecureGet('/:groupId', array($webService, 'GetGroup'), WebServices::GetGroup);
     $category->AddAdminPost('/', array($writeWebService, 'Create'), WebServices::CreateGroup);
@@ -207,6 +211,25 @@ function RegisterGroups(SlimServer $server, SlimWebServiceRegistry $registry)
     $category->AddAdminPost('/:groupId/Permissions', array($writeWebService, 'Permissions'), WebServices::UpdateGroupPermissions);
     $category->AddAdminPost('/:groupId/Users', array($writeWebService, 'Users'), WebServices::UpdateGroupUsers);
     $category->AddAdminDelete('/:groupId', array($writeWebService, 'Delete'), WebServices::DeleteGroup);
+
+    $registry->AddCategory($category);
+}
+
+function RegisterAccounts(SlimServer $server, SlimWebServiceRegistry $registry)
+{
+    $userRepository = new UserRepository();
+    $attributeService = new AttributeService(new AttributeRepository());
+    $passwordEncryption = new PasswordEncryption();
+    $registration = new Registration($passwordEncryption, $userRepository, new RegistrationNotificationStrategy(), new RegistrationPermissionStrategy(), new GroupRepository());
+    $controller = new AccountController($registration, $userRepository, new AccountRequestValidator($attributeService, $userRepository), $passwordEncryption, $attributeService);
+
+    $webService = new AccountWebService($server, $controller);
+
+    $category = new SlimWebServiceRegistryCategory('Accounts');
+    $category->AddPost('/', array($webService, 'Create'), WebServices::CreateAccount);
+    $category->AddSecurePost('/:userId', array($webService, 'Update'), WebServices::UpdateAccount);
+    $category->AddSecurePost('/:userId/Password', array($webService, 'UpdatePassword'), WebServices::UpdateAccountPassword);
+    $category->AddSecureGet('/:userId', array($webService, 'GetAccount'), WebServices::GetAccount);
 
     $registry->AddCategory($category);
 }

@@ -41,6 +41,7 @@ class FakeRegistration implements IRegistration
 	public $_RegisteredUser;
     public $_TermsAccepted;
     public $_Groups = array();
+    public $_Language;
 
     public function __construct()
 	{
@@ -65,6 +66,7 @@ class FakeRegistration implements IRegistration
 		$this->_AttributeValues = $attributes;
 		$this->_Groups = $groups;
 		$this->_TermsAccepted = $acceptTerms;
+		$this->_Language = $language;
 
 		return $this->_RegisteredUser;
 	}

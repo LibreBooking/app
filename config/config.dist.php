@@ -146,6 +146,7 @@ $conf['settings']['pages']['enable.configuration'] = 'true';
  * API
  */
 $conf['settings']['api']['enabled'] = 'false';
+$conf['settings']['api']['allow.self.registration'] = 'false';
 /**
  * ReCaptcha
  */

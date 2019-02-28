@@ -144,6 +144,5 @@ class UserRequestValidator implements IUserRequestValidator
 		}
 		return $errors;
 	}
-
 }
 

@@ -23,7 +23,6 @@ require_once(ROOT_DIR . 'Domain/Values/EmailPreferences.php');
 
 class User
 {
-
     public function __construct()
     {
         $this->emailPreferences = new EmailPreferences();
@@ -628,6 +627,11 @@ class User
     public function ChangeTimezone($timezoneName)
     {
         $this->timezone = $timezoneName;
+    }
+
+    public function ChangeLanguage($language)
+    {
+        $this->language = $language;
     }
 
     public function ChangeAttributes($phone, $organization, $position)

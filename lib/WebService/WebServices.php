@@ -65,4 +65,8 @@ class WebServices
 	const UpdateGroupUsers = 'update_group_users';
 	const GetStatuses = 'get_resource_statuses';
 	const GetStatusReasons = 'get_resource_status_reasons';
+	const GetAccount = 'get_user_account';
+	const CreateAccount = 'create_user_account';
+	const UpdateAccount = 'update_user_account';
+	const UpdateAccountPassword = 'update_user_account_password';
 }
