@@ -88,7 +88,7 @@ class ReportingServiceTests extends TestBase
 
         $this->reportingRepository->_CustomReportData = $rows;
 
-        $report = $this->rs->GenerateCustomReport($usage, $selection, $groupBy, $range, $filter);
+        $report = $this->rs->GenerateCustomReport($usage, $selection, $groupBy, $range, $filter, $this->fakeUser->Timezone);
 
         $cols = new ReportColumns();
         $cols->Add(ColumnNames::OWNER_FIRST_NAME);
@@ -142,7 +142,7 @@ class ReportingServiceTests extends TestBase
         $this->reportingRepository->_CustomReportData = $data;
 
         $expectedReport = new GeneratedSavedReport($savedReport, $report);
-        $actualReport = $this->rs->GenerateSavedReport($reportId, $userId);
+        $actualReport = $this->rs->GenerateSavedReport($reportId, $userId, $this->fakeUser->Timezone);
 
         $this->assertEquals($expectedReport, $actualReport);
     }
@@ -218,7 +218,7 @@ class ReportingServiceTests extends TestBase
 
         $this->reportingRepository->_CustomReportData = $data;
 
-        $report = $this->rs->GenerateCustomReport(new Report_Usage(Report_Usage::RESOURCES), new Report_ResultSelection(Report_ResultSelection::UTILIZATION), new Report_GroupBy(Report_GroupBy::NONE), Report_Range::AllTime(), new Report_Filter(null, null, null, null, null, null, false, null));
+        $report = $this->rs->GenerateCustomReport(new Report_Usage(Report_Usage::RESOURCES), new Report_ResultSelection(Report_ResultSelection::UTILIZATION), new Report_GroupBy(Report_GroupBy::NONE), Report_Range::AllTime(), new Report_Filter(null, null, null, null, null, null, false, null), $this->fakeUser->Timezone);
 
         $data = $report->GetData()->Rows();
 
@@ -284,7 +284,7 @@ class ReportingServiceTests extends TestBase
 
         $this->reportingRepository->_CustomReportData = $data;
 
-        $report = $this->rs->GenerateCustomReport(new Report_Usage(Report_Usage::RESOURCES), new Report_ResultSelection(Report_ResultSelection::UTILIZATION), new Report_GroupBy(Report_GroupBy::NONE), Report_Range::AllTime(), new Report_Filter(null, null, null, null, null, null, false, null));
+        $report = $this->rs->GenerateCustomReport(new Report_Usage(Report_Usage::RESOURCES), new Report_ResultSelection(Report_ResultSelection::UTILIZATION), new Report_GroupBy(Report_GroupBy::NONE), Report_Range::AllTime(), new Report_Filter(null, null, null, null, null, null, false, null), $this->fakeUser->Timezone);
 
         $data = $report->GetData()->Rows();
 
@@ -350,7 +350,7 @@ class ReportingServiceTests extends TestBase
 
         $this->reportingRepository->_CustomReportData = $data;
 
-        $report = $this->rs->GenerateCustomReport(new Report_Usage(Report_Usage::RESOURCES), new Report_ResultSelection(Report_ResultSelection::UTILIZATION), new Report_GroupBy(Report_GroupBy::NONE), Report_Range::AllTime(), new Report_Filter(null, null, null, null, null, null, false, null));
+        $report = $this->rs->GenerateCustomReport(new Report_Usage(Report_Usage::RESOURCES), new Report_ResultSelection(Report_ResultSelection::UTILIZATION), new Report_GroupBy(Report_GroupBy::NONE), Report_Range::AllTime(), new Report_Filter(null, null, null, null, null, null, false, null), $this->fakeUser->Timezone);
 
         $data = $report->GetData()->Rows();
 

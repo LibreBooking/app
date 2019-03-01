@@ -54,17 +54,23 @@ class ReportUtilizationData
      * @var int[]
      */
     private $unavailable = array();
+    /**
+     * @var string
+     */
+    private $timezone;
 
     /**
      * @param array $data
      * @param IScheduleRepository $scheduleRepository
      * @param Report_Range $range
+     * @param string $timezone
      */
-    public function __construct($data, $scheduleRepository, $range)
+    public function __construct($data, $scheduleRepository, $range, $timezone)
     {
         $this->data = $data;
         $this->scheduleRepository = $scheduleRepository;
         $this->range = $range;
+        $this->timezone = $timezone;
     }
 
     public function Rows()
@@ -82,10 +88,8 @@ class ReportUtilizationData
                 $resources[$resourceId] = $row;
             }
 
-            $layout = $this->GetLayout($scheduleId);
-            $timezone = $layout->Timezone();
-            $start = Date::FromDatabase($row[ColumnNames::RESERVATION_START])->ToTimezone($timezone);
-            $end = Date::FromDatabase($row[ColumnNames::RESERVATION_END])->ToTimezone($timezone);
+            $start = Date::FromDatabase($row[ColumnNames::RESERVATION_START])->ToTimezone($this->timezone);
+            $end = Date::FromDatabase($row[ColumnNames::RESERVATION_END])->ToTimezone($this->timezone);
 
             if ($start->LessThan($earliest)) {
                 $earliest = $start;
@@ -116,7 +120,7 @@ class ReportUtilizationData
                 $rows[$rowIndex][ColumnNames::RESOURCE_ID] = $rid;
                 $rows[$rowIndex][ColumnNames::RESOURCE_NAME_ALIAS] = $row[ColumnNames::RESOURCE_NAME_ALIAS];
                 $rows[$rowIndex][ColumnNames::UTILIZATION] = $this->GetUtilization($date, $rid, $row[ColumnNames::SCHEDULE_ID]);
-                $rows[$rowIndex][ColumnNames::DATE] = $date;//->Format(Resources::GetInstance()->GeneralDateFormat());
+                $rows[$rowIndex][ColumnNames::DATE] = $date;
                 $rows[$rowIndex][ColumnNames::SCHEDULE_ID] = $row[ColumnNames::SCHEDULE_ID];
                 $rowIndex++;
             }
@@ -132,7 +136,7 @@ class ReportUtilizationData
     private function GetLayout($scheduleId)
     {
         if (!array_key_exists($scheduleId, $this->layouts)) {
-            $this->layouts[$scheduleId] = $this->scheduleRepository->GetLayout($scheduleId, new ScheduleLayoutFactory());
+            $this->layouts[$scheduleId] = $this->scheduleRepository->GetLayout($scheduleId, new ScheduleLayoutFactory($this->timezone));
         }
 
         return $this->layouts[$scheduleId];

@@ -116,7 +116,7 @@ class CommonReportsPresenter extends ActionPresenter
 	{
 		$reportId = $this->page->GetReportId();
 		$userId = $this->user->UserId;
-		$report = $this->service->GenerateSavedReport($reportId, $userId);
+		$report = $this->service->GenerateSavedReport($reportId, $userId, $this->user->Timezone);
 
 		if ($report != null)
 		{

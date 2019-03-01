@@ -157,7 +157,7 @@ class GenerateReportPresenter extends ActionPresenter
 		$range = $this->GetRange();
 		$filter = $this->GetFilter();
 
-		$report = $this->reportingService->GenerateCustomReport($usage, $selection, $groupBy, $range, $filter);
+		$report = $this->reportingService->GenerateCustomReport($usage, $selection, $groupBy, $range, $filter, $this->user->Timezone);
 		$reportDefinition = new ReportDefinition($report, $this->user->Timezone);
 
 		$user = $this->userRepository->LoadById($this->user->UserId);

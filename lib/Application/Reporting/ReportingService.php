@@ -27,9 +27,10 @@ interface IReportingService
      * @param Report_GroupBy $groupBy
      * @param Report_Range $range
      * @param Report_Filter $filter
+     * @param string $timezone
      * @return IReport
      */
-    public function GenerateCustomReport(Report_Usage $usage, Report_ResultSelection $selection, Report_GroupBy $groupBy, Report_Range $range, Report_Filter $filter);
+    public function GenerateCustomReport(Report_Usage $usage, Report_ResultSelection $selection, Report_GroupBy $groupBy, Report_Range $range, Report_Filter $filter, $timezone);
 
     /**
      * @param string $reportName
@@ -51,9 +52,10 @@ interface IReportingService
     /**
      * @param int $reportId
      * @param int $userId
+     * @param string $timezone
      * @return IGeneratedSavedReport
      */
-    public function GenerateSavedReport($reportId, $userId);
+    public function GenerateSavedReport($reportId, $userId, $timezone);
 
     /**
      * @param IGeneratedSavedReport $report
@@ -115,7 +117,7 @@ class ReportingService implements IReportingService
         }
     }
 
-    public function GenerateCustomReport(Report_Usage $usage, Report_ResultSelection $selection, Report_GroupBy $groupBy, Report_Range $range, Report_Filter $filter)
+    public function GenerateCustomReport(Report_Usage $usage, Report_ResultSelection $selection, Report_GroupBy $groupBy, Report_Range $range, Report_Filter $filter, $timezone)
     {
         $builder = new ReportCommandBuilder();
 
@@ -130,7 +132,7 @@ class ReportingService implements IReportingService
         $data = $this->repository->GetCustomReport($builder);
 
         if ($selection->Equals(Report_ResultSelection::UTILIZATION)) {
-            $utilization = new ReportUtilizationData($data, $this->scheduleRepository, $range);
+            $utilization = new ReportUtilizationData($data, $this->scheduleRepository, $range, $timezone);
             $data = $utilization->Rows();
         }
         return new CustomReport($data, $this->attributeRepository);
@@ -147,7 +149,7 @@ class ReportingService implements IReportingService
         return $this->repository->LoadSavedReportsForUser($userId);
     }
 
-    public function GenerateSavedReport($reportId, $userId)
+    public function GenerateSavedReport($reportId, $userId, $timezone)
     {
         $savedReport = $this->repository->LoadSavedReportForUser($reportId, $userId);
 
@@ -155,7 +157,7 @@ class ReportingService implements IReportingService
             return null;
         }
 
-        $report = $this->GenerateCustomReport($savedReport->Usage(), $savedReport->Selection(), $savedReport->GroupBy(), $savedReport->Range(), $savedReport->Filter());
+        $report = $this->GenerateCustomReport($savedReport->Usage(), $savedReport->Selection(), $savedReport->GroupBy(), $savedReport->Range(), $savedReport->Filter(), $timezone);
 
         return new GeneratedSavedReport($savedReport, $report);
     }
