@@ -94,7 +94,6 @@ class ReservationUserAvailabilityPresenterTests extends TestBase
         $this->page->_EndTime = '14:15';
         $this->fakeUser->UserId = 3;
 
-        $listingDates = new DateRange($startDate->SetTimeString($this->page->_StartTime), $endDate->SetTimeString($this->page->_EndTime)->AddDays(1));
 
         $this->resourceRepository->_Resource = $expectedResources[0];
         $this->userRepository->_UserDtos[3] = $expectedUser;
@@ -138,9 +137,7 @@ class ReservationUserAvailabilityPresenterTests extends TestBase
         $this->reservationRepository->_ReservationsIteration[3] = array($inviteeReservation);
         $this->reservationRepository->_Blackouts = array($resourceBlackout);
 
-        $this->page->_StartDate = Date::Now()->AddDays(-1)->Format('Y-m-d');
-        $this->page->_StartTime = '07:29';
-        $this->page->_EndDate = Date::Now()->AddDays(1)->Format('Y-m-d');
+        $listingDates = new DateRange($startDate->SetTimeString($this->page->_StartTime), $endDate->SetTimeString($this->page->_EndTime));
 
         $listing = new ReservationListing($tz, $listingDates);
         $listing->Add($resourceReservation);
