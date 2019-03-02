@@ -167,6 +167,11 @@ function Reservation(opts) {
             elements.deleteButtonPrompt.modal('hide');
         });
 
+        $('#btnWaitList').unbind().click(function () {
+            $.blockUI({message: $('#wait-box')});
+            JoinWaitList();
+        });
+
         InitializeDateElements();
 
         WireUpActions();
