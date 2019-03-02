@@ -114,7 +114,7 @@ class ManageThemePresenter extends ActionPresenter
         $this->page->RegisterValidator('cssFile', new FileUploadValidator($this->page->GetCssFile()));
         $this->page->RegisterValidator('cssFileExt', new FileTypeValidator($this->page->GetCssFile(), 'css'));
         $this->page->RegisterValidator('faviconFile', new FileUploadValidator($this->page->GetFaviconFile()));
-        $this->page->RegisterValidator('faviconFileExt', new FileTypeValidator($this->page->GetLogoFile(), array('ico', 'jpg', 'png', 'gif')));
+        $this->page->RegisterValidator('faviconFileExt', new FileTypeValidator($this->page->GetFaviconFile(), array('ico', 'jpg', 'png', 'gif')));
 
     }
 }
