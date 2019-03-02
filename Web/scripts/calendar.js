@@ -188,7 +188,7 @@ function Calendar(opts) {
         elements.moveErrorOk.click(function(e) {
             e.preventDefault();
             elements.moveErrorDialog.modal('hide');
-        })
+        });
     };
 
     Calendar.prototype.bindResourceGroups = function (resourceGroups, selectedNode) {

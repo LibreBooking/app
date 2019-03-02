@@ -884,6 +884,10 @@ class ReservationItemView implements IReservedItemView
      */
     public function GetColor()
     {
+        if ($this->RequiresApproval)
+        {
+            return '';
+        }
         if ($this->_color == null) {
             $this->_color = "";
             // cache the color after the first call to prevent multiple iterations of this logic
@@ -920,6 +924,10 @@ class ReservationItemView implements IReservedItemView
      */
     public function GetTextColor()
     {
+        if ($this->RequiresApproval)
+        {
+            return '';
+        }
         $color = $this->GetColor();
         if (!empty($color)) {
             $contrastingColor = new ContrastingColor($color);

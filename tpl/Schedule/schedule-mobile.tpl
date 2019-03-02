@@ -26,8 +26,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
     {function name=displayGeneralReservedMobile}
         {if $Slot->IsPending()}
             {assign var=class value='pending'}
-        {/if}
-        {if $Slot->HasCustomColor()}
+        {elseif $Slot->HasCustomColor()}
             {assign var=color value='style="background-color:'|cat:$Slot->Color()|cat:' !important;color:'|cat:$Slot->TextColor()|cat:' !important;"'}
         {/if}
         <div class="reserved {$class} {$OwnershipClass} clickres"

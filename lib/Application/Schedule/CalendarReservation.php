@@ -301,6 +301,7 @@ class CalendarReservation
 
     public function AsFullCalendarEvent()
     {
+
         $dateFormat = Resources::GetInstance()->GetDateFormat('fullcalendar');
         return array(
             'id' => $this->ReferenceNumber,
