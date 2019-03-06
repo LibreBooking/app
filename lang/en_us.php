@@ -867,6 +867,7 @@ class en_us extends Language
 		$strings['DescriptionRequiredRule'] = 'Reservation description is required';
 		$strings['WhatCanThisGroupManage'] = 'What can this group manage?';
 		$strings['ReservationParticipationActivityPreference'] = 'When someone joins or leaves my reservation';
+		$strings['RegisteredAccountRequired'] = 'Only registered users can book reservations';
 		// End Errors
 
 		// Page Titles

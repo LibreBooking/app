@@ -100,7 +100,8 @@ function ResourceDisplay(opts) {
                     refreshResource();
                 }
                 else {
-                    validationErrors.find('ul').empty().html($.map(data.errors, function (item) {
+                    var errors = data.errors ? data.errors : data.Messages;
+                    validationErrors.find('ul').empty().html($.map(errors, function (item) {
                         return "<li>" + item + "</li>";
                     }));
                     validationErrors.removeClass('no-show');

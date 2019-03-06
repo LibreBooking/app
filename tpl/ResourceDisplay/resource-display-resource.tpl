@@ -71,7 +71,6 @@
                 <div class="col-xs-12">
                     <div id="validationErrors" class="validationSummary alert alert-danger no-show">
                         <ul>
-                            {validator id="emailformat" key="ValidEmailRequired"}
                         </ul>
                     </div>
                     <div>
