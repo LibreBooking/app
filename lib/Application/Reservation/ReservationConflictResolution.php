@@ -44,7 +44,7 @@ abstract class ReservationConflictResolution implements IReservationConflictReso
 	{
 		if ($resolutionType == self::Delete)
 		{
-			return new ReservationConflictDelete(new ReservationRepository());
+			return new ReservationConflictDelete(new ReservationRepository(), new DeleteReservationNotificationService(new UserRepository(), new AttributeRepository()));
 		}
 		if ($resolutionType == self::BookAround)
 		{
@@ -68,11 +68,16 @@ class ReservationConflictDelete extends ReservationConflictResolution
 	 * @var IReservationRepository
 	 */
 	private $repository;
+    /**
+     * @var IReservationNotificationService
+     */
+    private $notificationService;
 
-	public function __construct(IReservationRepository $repository)
+    public function __construct(IReservationRepository $repository, IReservationNotificationService $notificationService)
 	{
 		$this->repository = $repository;
-	}
+        $this->notificationService = $notificationService;
+    }
 
 	public function Handle(ReservationItemView $existingReservation, Blackout $blackout)
 	{
@@ -80,6 +85,7 @@ class ReservationConflictDelete extends ReservationConflictResolution
 		$reservation->ApplyChangesTo(SeriesUpdateScope::ThisInstance);
 		$reservation->Delete(ServiceLocator::GetServer()->GetUserSession(), 'Deleting conflicting reservation');
 		$this->repository->Delete($reservation);
+        $this->notificationService->Notify($reservation);
 
 		return true;
 	}

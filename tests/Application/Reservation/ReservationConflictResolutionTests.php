@@ -33,7 +33,8 @@ class ReservationConflictResolutionTests extends TestBase
 		$reservationView = new TestReservationItemView($id, Date::Now(), Date::Now());
 
 		$repo = $this->getMock('IReservationRepository');
-		$handler = new ReservationConflictDelete($repo);
+		$notificationService = new FakeReservationNotificationService();
+		$handler = new ReservationConflictDelete($repo, $notificationService);
 
 		$builder = new ExistingReservationSeriesBuilder();
 		$builder->WithId($id);
@@ -53,6 +54,7 @@ class ReservationConflictResolutionTests extends TestBase
 		$this->assertTrue($handled);
 
 		$this->assertEquals(SeriesUpdateScope::ThisInstance, $reservation->SeriesUpdateScope());
+		$this->assertEquals($reservation, $notificationService->_ReservationNotified);
 	}
 
 	public function testCanBlackoutAroundReservations() {
