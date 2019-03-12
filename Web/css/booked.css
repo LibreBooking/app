@@ -536,6 +536,21 @@ input.mid-number {
 .navbar-brand {
   padding: 0;
 }
+nav {
+  font-size: 14px;
+  border: 1px none #e7e7e7;
+  border-bottom-style: solid;
+  height: 50px;
+}
+nav .dropdown-item {
+  font-size: 14px;
+}
+.navbar {
+  padding-left: 0;
+}
+nav a:visited {
+  color: rgba(0, 0, 0, 0.5);
+}
 .ui-datepicker {
   z-index: 10000 !important;
 }
