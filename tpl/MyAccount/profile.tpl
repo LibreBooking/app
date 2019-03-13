@@ -25,7 +25,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 	</div>
 
 
-	<div id="profile-box" class="default-box col-12 col-sm-8 col-sm-offset-2">
+	<div id="profile-box" class="default-box col-12 col-sm-8 mx-auto">
 
 
 		<form method="post" ajaxAction="{ProfileActions::Update}" id="form-profile" action="{$smarty.server.SCRIPT_NAME}"

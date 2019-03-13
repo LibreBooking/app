@@ -524,21 +524,31 @@ input.mid-number {
   padding: 0;
 }
 
-nav {
+.navbar {
   font-size: 14px;
   border: 1px none rgb(231, 231, 231);
   border-bottom-style: solid;
-  height:50px;
+
+  margin-bottom: 20px;
 }
-nav .dropdown-item {
+
+@media only screen and (min-width : 992px) {
+  .navbar {
+    min-height:50px;
+  }
+}
+.navbar .dropdown-item {
   font-size: 14px;
 }
 .navbar {
   padding-left:0;
 }
-
 nav a:visited {
   color: rgba(0,0,0,.5);
+}
+
+.navbar-collapse.collapse.in {
+  display: block!important;
 }
 
 .ui-datepicker {
