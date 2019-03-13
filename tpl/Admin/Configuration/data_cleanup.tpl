@@ -2,7 +2,7 @@
 
 <div id="page-data-cleanup" class="admin-page">
 
-    <div class="default-box col-xs-12 col-sm-8 col-sm-offset-2">
+    <div class="default-box col-12 col-sm-8 col-sm-offset-2">
         <h1>{translate key=DataCleanup}</h1>
 
         <div class="well">

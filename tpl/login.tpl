@@ -32,22 +32,22 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
     {/if}
 
     {if $Announcements|count > 0}
-        <div id="announcements" class="col-sm-8 col-sm-offset-2 col-xs-12">
+        <div id="announcements" class="col-sm-8 col-sm-offset-2 col-12">
         {foreach from=$Announcements item=each}
             <div class="announcement">{$each->Text()|html_entity_decode|url2link|nl2br}</div>
         {/foreach}
         </div>
     {/if}
 
-	<div class="col-md-offset-3 col-md-6 col-xs-12 ">
+	<div class="col-md-offset-3 col-md-6 col-12 ">
 		<form role="form" name="login" id="login" class="form-horizontal" method="post"
 			  action="{$smarty.server.SCRIPT_NAME}">
-			<div id="login-box" class="col-xs-12 default-box">
-				<div class="col-xs-12 login-icon">
+			<div id="login-box" class="col-12 default-box">
+				<div class="col-12 login-icon">
 					{html_image src="$LogoUrl?2.6" alt="$Title"}
 				</div>
 				{if $ShowUsernamePrompt}
-					<div class="col-xs-12">
+					<div class="col-12">
 						<div class="input-group margin-bottom-25">
 							<span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
 							<input type="text" required="" class="form-control"
@@ -58,7 +58,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 				{/if}
 
 				{if $ShowPasswordPrompt}
-					<div class="col-xs-12">
+					<div class="col-12">
 						<div class="input-group margin-bottom-25">
 							<span class="input-group-addon">
 							<i class="glyphicon glyphicon-lock"></i>
@@ -71,7 +71,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 				{/if}
 
                 {if $EnableCaptcha}
-                    <div class="col-xs-12">
+                    <div class="col-12">
                         <div class="margin-bottom-25">
                         {control type="CaptchaControl"}
                         </div>
@@ -81,7 +81,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                 {/if}
 
 				{if $ShowUsernamePrompt &&  $ShowPasswordPrompt}
-				<div class="col-xs-12">
+				<div class="col-12">
 					<button type="submit" class="btn btn-large btn-primary  btn-block" name="{Actions::LOGIN}"
 							value="submit">{translate key='LogIn'}</button>
 					<input type="hidden" {formname key=RESUME} value="{$ResumeUrl}"/>
@@ -89,7 +89,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 				{/if}
 
 				{if $ShowUsernamePrompt &&  $ShowPasswordPrompt}
-				<div class="col-xs-12 {if $ShowRegisterLink}col-sm-6{/if}">
+				<div class="col-12 {if $ShowRegisterLink}col-sm-6{/if}">
 					<div class="checkbox">
 						<input id="rememberMe" type="checkbox" {formname key=PERSIST_LOGIN}>
 						<label for="rememberMe">{translate key=RememberMe}</label>
@@ -98,7 +98,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 				{/if}
 
                 {if $ShowRegisterLink}
-                    <div class="col-xs-12 col-sm-6 register">
+                    <div class="col-12 col-sm-6 register">
                     <span class="bold">{translate key="FirstTimeUser?"}
                     <a href="{$RegisterUrl}" {$RegisterUrlNew}
                        title="{translate key=Register}">{translate key=Register}</a>
@@ -129,14 +129,14 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 					</div>
 				{/if}
 			</div>
-			<div id="login-footer" class="col-xs-12">
+			<div id="login-footer" class="col-12">
 				{if $ShowForgotPasswordPrompt}
-					<div id="forgot-password" class="col-xs-12 col-sm-6">
+					<div id="forgot-password" class="col-12 col-sm-6">
 						<a href="{$ForgotPasswordUrl}" {$ForgotPasswordUrlNew} class="btn btn-link pull-left-sm"><span><i
 										class="glyphicon glyphicon-question-sign"></i></span> {translate key='ForgotMyPassword'}</a>
 					</div>
 				{/if}
-				<div id="change-language" class="col-xs-12 col-sm-6">
+				<div id="change-language" class="col-12 col-sm-6">
 					<button type="button" class="btn btn-link pull-right-sm" data-toggle="collapse"
 							data-target="#change-language-options"><span><i class="glyphicon glyphicon-globe"></i></span>
 						{translate key=ChangeLanguage}

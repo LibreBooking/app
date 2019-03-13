@@ -24,7 +24,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
         {translate key=UnknownError}
     </div>
 
-    <div id="registration-box" class="default-box col-xs-12 col-sm-8 col-sm-offset-2">
+    <div id="registration-box" class="default-box col-12 col-sm-8 col-sm-offset-2">
 
         <form method="post" ajaxAction="{RegisterActions::Register}" id="form-register"
               action="{$smarty.server.SCRIPT_NAME}" role="form"
@@ -57,7 +57,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
             </div>
 
             <div class="row">
-                <div class="col-xs-12 col-sm-6" id="username">
+                <div class="col-12 col-sm-6" id="username">
                     <div class="form-group">
                         <label class="reg" for="login">{translate key="Username"}</label>
                         {textbox name="LOGIN" value="Login" required="required"
@@ -66,7 +66,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                     </div>
                 </div>
 
-                <div class="col-xs-12 col-sm-6" id="email">
+                <div class="col-12 col-sm-6" id="email">
                     <div class="form-group">
                         <label class="reg" for="email">{translate key="Email"}</label>
                         {textbox type="email" name="EMAIL" class="input" value="Email" required="required"
@@ -79,7 +79,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
             </div>
 
             <div class="row">
-                <div class="col-xs-12 col-sm-6" id="password">
+                <div class="col-12 col-sm-6" id="password">
                     <div class="form-group">
                         <label class="reg" for="password">{translate key="Password"}</label>
                         {textbox type="password" name="PASSWORD" value="" required="required"
@@ -91,7 +91,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                     </div>
                 </div>
 
-                <div class="col-xs-12 col-sm-6" id="password-confirm">
+                <div class="col-12 col-sm-6" id="password-confirm">
                     <div class="form-group">
                         <label class="reg" for="passwordConfirm">{translate key="PasswordConfirmation"}</label>
                         {textbox type="password" name="PASSWORD_CONFIRM" value="" required="required"
@@ -105,7 +105,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
             </div>
 
             <div class="row">
-                <div class="col-xs-12 col-sm-6" id="first-name">
+                <div class="col-12 col-sm-6" id="first-name">
                     <div class="form-group">
                         <label class="reg" for="fname">{translate key="FirstName"}</label>
                         {textbox name="FIRST_NAME" class="input" value="FirstName" required="required"
@@ -113,7 +113,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                         data-bv-notempty-message="{translate key=FirstNameRequired}"}
                     </div>
                 </div>
-                <div class="col-xs-12 col-sm-6" id="last-name">
+                <div class="col-12 col-sm-6" id="last-name">
                     <div class="form-group">
                         <label class="reg" for="lname">{translate key="LastName"}</label>
                         {textbox name="LAST_NAME" class="input" value="LastName" required="required" data-bv-notempty="true"
@@ -123,7 +123,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
             </div>
 
             <div class="row">
-                <div class="col-xs-12 col-sm-6" id="default-page">
+                <div class="col-12 col-sm-6" id="default-page">
                     <div class="form-group">
                         <label class="reg" for="homepage">{translate key="DefaultPage"}</label>
                         <select {formname key='DEFAULT_HOMEPAGE'} id="homepage" class="form-control">
@@ -132,7 +132,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                     </div>
 
                 </div>
-                <div class="col-xs-12 col-sm-6" id="timezone">
+                <div class="col-12 col-sm-6" id="timezone">
                     <label class="reg" for="timezoneDropDown">{translate key="Timezone"}</label>
 
                     <div class="input-group">
@@ -146,14 +146,14 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
             </div>
 
             <div class="row">
-                <div class="col-xs-12 col-sm-6" id="phone">
+                <div class="col-12 col-sm-6" id="phone">
                     <div class="form-group">
                         <label class="reg" for="phone">{translate key="Phone"}</label>
                         {textbox name="PHONE" class="input" value="Phone" size="20"}
                     </div>
                 </div>
 
-                <div class="col-xs-12 col-sm-6" id="organization">
+                <div class="col-12 col-sm-6" id="organization">
                     <div class="form-group">
                         <label class="reg" for="txtOrganization">{translate key="Organization"}</label>
                         {textbox name="ORGANIZATION" class="input" value="Organization" size="20" id="txtOrganization"}
@@ -162,14 +162,14 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
             </div>
 
             <div class="row">
-                <div class="col-xs-12 col-sm-6" id="position">
+                <div class="col-12 col-sm-6" id="position">
                     <div class="form-group">
                         <label class="reg" for="txtPosition">{translate key="Position"}</label>
                         {textbox name="POSITION" class="input" value="Position" size="20" id="txtPosition"}
                     </div>
                 </div>
 
-                <div class="col-xs-12 col-sm-6">
+                <div class="col-12 col-sm-6">
                     {if $Attributes|count > 0}
                         {control type="AttributeControl" attribute=$Attributes[0]}
                     {/if}
@@ -182,7 +182,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                     {if $i%2==1}
                         <div class="row">
                     {/if}
-                    <div class="col-xs-12 col-sm-6">
+                    <div class="col-12 col-sm-6">
                         {control type="AttributeControl" attribute=$Attributes[$i]}
                     </div>
                     {if $i%2==0 || $i==$Attributes|count-1}
@@ -193,7 +193,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
             {if $EnableCaptcha}
                 <div class="row">
-                    <div class="col-xs-12">
+                    <div class="col-12">
                         <div class="form-group">
                             {control type="CaptchaControl"}
                         </div>
@@ -205,7 +205,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
             {if $Terms != null}
                 <div class="row" id="termsAndConditions">
-                    <div class="col-xs-12">
+                    <div class="col-12">
                         <div class="checkbox">
                             <input type="checkbox"
                                    id="termsAndConditionsAcknowledgement" {formname key=TOS_ACKNOWLEDGEMENT}/>
@@ -219,7 +219,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
             <div>
                 <button type="submit" name="{Actions::REGISTER}" value="{translate key='Register'}"
-                        class="btn btn-primary col-xs-12" id="btnUpdate">{translate key='Register'}</button>
+                        class="btn btn-primary col-12" id="btnUpdate">{translate key='Register'}</button>
             </div>
         </form>
     </div>

@@ -4,13 +4,13 @@
 
     <form role="form" name="searchForm" id="searchForm" method="post"
           action="{$smarty.server.SCRIPT_NAME}?action=search">
-        <div class="form-group col-xs-12 col-sm-2">
+        <div class="form-group col-12 col-sm-2">
             <div class="checkbox">
                 <input type="checkbox" id="anyResource" checked="checked"/>
                 <label for="anyResource">{translate key=AnyResource}</label>
             </div>
         </div>
-        <div class="form-group col-xs-12 col-sm-10">
+        <div class="form-group col-12 col-sm-10">
             <label for="resourceGroups" class="no-show">{translate key=Resources}</label>
             <select id="resourceGroups" class="form-control" multiple="multiple" {formname key=RESOURCE_ID multi=true}
                     disabled="disabled">
@@ -22,8 +22,8 @@
 
         <div class="clearfix"></div>
 
-        {*<div class="col-xs-12">*}
-        <div class="form-group col-xs-6 col-sm-2">
+        {*<div class="col-12">*}
+        <div class="form-group col-6 col-sm-2">
             <div class="input-group">
                 <label for="hours" class="no-show">{translate key=Hours}</label>
                 <input type="number" min="0" step="1" value="0" class="form-control hours-minutes"
@@ -31,7 +31,7 @@
                 <span class="input-group-addon hours-minutes">{translate key=Hours}</span>
             </div>
         </div>
-        <div class="form-group col-xs-6 col-sm-2">
+        <div class="form-group col-6 col-sm-2">
             <div class="input-group">
                 <label for="minutes" class="no-show">{translate key=Minutes}</label>
                 <input type="number" min="0" step="30" value="30" class="form-control hours-minutes"
@@ -40,7 +40,7 @@
             </div>
         </div>
         <div class="col-sm-1 hidden-xs">&nbsp;</div>
-        <div class="form-group col-xs-12 col-sm-7">
+        <div class="form-group col-12 col-sm-7">
             <input {formname key=BEGIN_TIME} type="text" id="startTime"
                                              class="form-control dateinput inline-block timepicker"
                                              value="{format_date format='h:00 A' date=now}"
@@ -57,7 +57,7 @@
         </div>
         {*</div>*}
 
-        <div class="form-group col-xs-12 col-sm-5">
+        <div class="form-group col-12 col-sm-5">
             <div class="btn-group" data-toggle="buttons">
                 <label class="btn btn-default active">
                     <input type="radio" id="today" checked="checked"
@@ -81,7 +81,7 @@
                 </label>
             </div>
         </div>
-        <div class="form-group col-xs-12 col-sm-7">
+        <div class="form-group col-12 col-sm-7">
             <label for="beginDate" class="no-show">{translate key=BeginDate}</label>
             <input type="text" id="beginDate" class="form-control inline dateinput"
                    placeholder="{translate key=BeginDate}" disabled="disabled"/>
@@ -94,25 +94,25 @@
         </div>
         <div class="clearfix"></div>
 
-        <div class="form-group col-xs-12">
+        <div class="form-group col-12">
             {control type="RecurrenceControl"}
         </div>
 
-        <div class="form-group col-xs-12">
+        <div class="form-group col-12">
             <a href="#" data-toggle="collapse" data-target="#advancedSearchOptions">{translate key=MoreOptions}</a>
         </div>
 
         <div class="clearfix"></div>
 
         <div class="collapse" id="advancedSearchOptions">
-            <div class="form-group col-xs-6">
+            <div class="form-group col-6">
                 <label for="maxCapacity" class="hidden">{translate key=MinimumCapacity}</label>
                 <input type='number' id='maxCapacity' min='0' size='5' maxlength='5'
                        class="form-control input-sm" {formname key=MAX_PARTICIPANTS}
                        value="{$MaxParticipantsFilter}" placeholder="{translate key=MinimumCapacity}"/>
 
             </div>
-            <div class="form-group col-xs-6">
+            <div class="form-group col-6">
                 <label for="resourceType" class="hidden">{translate key=ResourceType}</label>
                 <select id="resourceType" {formname key=RESOURCE_TYPE_ID} {formname key=RESOURCE_TYPE_ID}
                         class="form-control input-sm">
@@ -123,7 +123,7 @@
 
             <div>
                 {foreach from=$ResourceAttributes item=attribute}
-                    {control type="AttributeControl" attribute=$attribute align='vertical' searchmode=true namePrefix='r' class="col-sm-6 col-xs-12" inputClass="input-sm"}
+                    {control type="AttributeControl" attribute=$attribute align='vertical' searchmode=true namePrefix='r' class="col-sm-6 col-12" inputClass="input-sm"}
                 {/foreach}
                 {if $ResourceAttributes|count%2 != 0}
                     <div class="col-sm-6 hidden-xs">&nbsp;</div>
@@ -132,7 +132,7 @@
 
             <div>
                 {foreach from=$ResourceTypeAttributes item=attribute}
-                    {control type="AttributeControl" attribute=$attribute align='vertical' searchmode=true namePrefix='rt' class="col-sm-6 col-xs-12" inputClass="input-sm"}
+                    {control type="AttributeControl" attribute=$attribute align='vertical' searchmode=true namePrefix='rt' class="col-sm-6 col-12" inputClass="input-sm"}
                 {/foreach}
                 {if $ResourceTypeAttributes|count%2 != 0}
                     <div class="col-sm-6 hidden-xs">&nbsp;</div>
@@ -140,8 +140,8 @@
             </div>
         </div>
 
-        <div class="form-group col-xs-12">
-            <button type="submit" class="btn btn-success col-xs-12"
+        <div class="form-group col-12">
+            <button type="submit" class="btn btn-success col-12"
                     value="submit" {formname key=SUBMIT}>{translate key=FindATime}</button>
             {indicator}
         </div>

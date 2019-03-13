@@ -59,19 +59,19 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
     </div>
 
     <form id="filterForm" class="" role="form">
-        <div class="form-group col-xs-4">
+        <div class="form-group col-4">
             <label for="userSearch">{translate key=FindUser}
                 | {html_link href=$smarty.server.SCRIPT_NAME key=AllUsers}</label>
             <input type="text" id="userSearch"
                    class="form-control"/>
         </div>
-        <div class="form-group col-xs-2">
+        <div class="form-group col-2">
             <label for="filterStatusId">{translate key=Status}</label>
             <select id="filterStatusId" class="form-control">
                 {html_options selected=$FilterStatusId options=$statusDescriptions}
             </select>
         </div>
-        <div class="col-xs-6">
+        <div class="col-6">
             &nbsp;
         </div>
         <div class="clearfix"></div>
@@ -325,7 +325,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                             </div>
                         </div>
                         {if $AttributeList|count > 0}
-                            <div class="col-xs-12 col-sm-6">
+                            <div class="col-12 col-sm-6">
                                 {control type="AttributeControl" attribute=$AttributeList[0]}
                             </div>
                         {else}
@@ -337,7 +337,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                                 {*{if $i%2==1}*}
                                 {*<div class="row">*}
                                 {*{/if}*}
-                                <div class="col-xs-12 col-sm-6">
+                                <div class="col-12 col-sm-6">
                                     {control type="AttributeControl" attribute=$AttributeList[$i]}
                                 </div>
                                 {*{if $i%2==0 || $i==$AttributeList|count-1}*}

@@ -20,9 +20,9 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 <div class="dashboard dashboard availabilityDashboard" id="availabilityDashboard">
 	<div class="dashboardHeader">
 		<div class="pull-left">{translate key="ResourceAvailability"}</div>
-		<div class="pull-right">
+		<div class="float-right">
 			<a href="#" title="{translate key=ShowHide} {translate key="ResourceAvailability"}">
-				<i class="glyphicon"></i>
+				<i class="fa fa-chevron-up"></i>
                 <span class="no-show">Expand/Collapse</span>
 			</a>
 		</div>
@@ -33,15 +33,15 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		{foreach from=$Schedules item=s}
 			<h5>{$s->GetName()}</h5>
 			{foreach from=$Available[$s->GetId()] item=i}
-				<div class="availabilityItem">
-					<div class="col-xs-12 col-sm-5">
+				<div class="availabilityItem row">
+					<div class="col-sm-5 col-12">
 						<i resource-id="{$i->ResourceId()}" class="resourceNameSelector fa fa-info-circle"></i>
 						<div class="resourceName" style="background-color:{$i->GetColor()}">
 							<a href="{$Path}{Pages::RESERVATION}?{QueryStringKeys::RESOURCE_ID}={$i->ResourceId()}" resource-id="{$i->ResourceId()}"
 							   class="resourceNameSelector" style="color:{$i->GetTextColor()}">{$i->ResourceName()}</a>
 						</div>
 					</div>
-					<div class="availability col-xs-12 col-sm-4">
+					<div class="availability col-12 col-sm-4">
 						{if $i->NextTime() != null}
 							{translate key=AvailableUntil}
 							{format_date date=$i->NextTime() timezone=$Timezone key=dashboard}
@@ -49,8 +49,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 							<span class="no-data">{translate key=AllNoUpcomingReservations args=30}</span>
 						{/if}
 					</div>
-					<div class="reserveButton col-xs-12 col-sm-3">
-						<a class="btn btn-xs col-xs-12"
+					<div class="reserveButton col-12 col-sm-3">
+						<a class="btn btn-xs col-12"
 						   href="{$Path}{Pages::RESERVATION}?{QueryStringKeys::RESOURCE_ID}={$i->ResourceId()}">{translate key=Reserve}</a>
 					</div>
 					<div class="clearfix"></div>
@@ -66,18 +66,18 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			<h5>{$s->GetName()}</h5>
 			{foreach from=$Unavailable[$s->GetId()] item=i}
 				<div class="availabilityItem">
-					<div class="col-xs-12 col-sm-5">
+					<div class="col-12 col-sm-5">
 						<i resource-id="{$i->ResourceId()}" class="resourceNameSelector fa fa-info-circle"></i>
 						<div class="resourceName" style="background-color:{$i->GetColor()}">
 							<a href="{$Path}{Pages::RESERVATION}?{QueryStringKeys::RESOURCE_ID}={$i->ResourceId()}" resource-id="{$i->ResourceId()}"
 							   class="resourceNameSelector" style="color:{$i->GetTextColor()}">{$i->ResourceName()}</a>
 						</div>
 					</div>
-					<div class="availability col-xs-12 col-sm-4">
+					<div class="availability col-12 col-sm-4">
 						{translate key=AvailableBeginningAt} {format_date date=$i->ReservationEnds() timezone=$Timezone key=dashboard}
 					</div>
-					<div class="reserveButton col-xs-12 col-sm-3">
-						<a class="btn btn-xs col-xs-12"
+					<div class="reserveButton col-12 col-sm-3">
+						<a class="btn btn-xs col-12"
 						   href="{$Path}{Pages::RESERVATION}?{QueryStringKeys::RESOURCE_ID}={$i->ResourceId()}&{QueryStringKeys::START_DATE}={format_date date=$i->ReservationEnds() timezone=$Timezone key=url_full}">{translate key=Reserve}</a>
 					</div>
 				</div>
@@ -92,18 +92,18 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			<h5>{$s->GetName()}</h5>
 			{foreach from=$UnavailableAllDay[$s->GetId()] item=i}
 				<div class="availabilityItem">
-					<div class="col-xs-12 col-sm-5">
+					<div class="col-12 col-sm-5">
 						<i resource-id="{$i->ResourceId()}" class="resourceNameSelector fa fa-info-circle"></i>
 						<div class="resourceName" style="background-color:{$i->GetColor()}">
 							<a href="{$Path}{Pages::RESERVATION}?{QueryStringKeys::RESOURCE_ID}={$i->ResourceId()}" resource-id="{$i->ResourceId()}"
 							   class="resourceNameSelector" style="color:{$i->GetTextColor()}">{$i->ResourceName()}</a>
 						</div>
 					</div>
-					<div class="availability col-xs-12 col-sm-4">
+					<div class="availability col-12 col-sm-4">
                         {translate key=AvailableAt} {format_date date=$i->ReservationEnds() timezone=$Timezone key=dashboard}
 					</div>
-					<div class="reserveButton col-xs-12 col-sm-3">
-						<a class="btn btn-xs col-xs-12"
+					<div class="reserveButton col-12 col-sm-3">
+						<a class="btn btn-xs col-12"
 						   href="{$Path}{Pages::RESERVATION}?{QueryStringKeys::RESOURCE_ID}={$i->ResourceId()}&{QueryStringKeys::START_DATE}={format_date date=$i->ReservationEnds() timezone=$Timezone key=url_full}">{translate key=Reserve}</a>
 					</div>
 				</div>

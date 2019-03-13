@@ -13,23 +13,23 @@
             {if !$IsCartEmpty}
                 <div class="cart" id="cart">
 
-                    <div class="col-xs-12 col-sm-4">
+                    <div class="col-12 col-sm-4">
                         <h4>{translate key=PurchaseSummary}</h4>
-                        <div class="col-xs-8">
+                        <div class="col-8">
                             {translate key=EachCreditCosts}
                         </div>
-                        <div class="col-xs-4 align-right">
+                        <div class="col-4 align-right">
                             {$CreditCost}
                         </div>
-                        <div class="col-xs-8">
+                        <div class="col-8">
                             {translate key=Credits}
                         </div>
-                        <div class="col-xs-4 align-right">
+                        <div class="col-4 align-right">
                             {$CreditQuantity}</div>
-                        <div class="col-xs-8 total">
+                        <div class="col-8 total">
                             {translate key=Total}
                         </div>
-                        <div class="col-xs-4 align-right total">
+                        <div class="col-4 align-right total">
                             {$Total}
                         </div>
 
@@ -37,15 +37,15 @@
                         </div>
                     </div>
 
-                    <div class="col-xs-12 col-sm-8">
+                    <div class="col-12 col-sm-8">
                         <div class="checkout-buttons">
                             {if $PayPalEnabled}
-                                <div class="col-xs-12 col-sm-3">
+                                <div class="col-12 col-sm-3">
                                     <div id="paypal-button"></div>
                                 </div>
                             {/if}
                             {if $StripeEnabled}
-                                <div class="col-xs-12 col-sm-9">
+                                <div class="col-12 col-sm-9">
                                     <button id="stripe-button" class="btn btn-default"><span
                                                 class="fa fa-credit-card"></span> {translate key=PayWithCard}</button>
                                 </div>

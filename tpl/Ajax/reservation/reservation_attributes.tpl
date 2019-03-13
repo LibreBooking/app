@@ -25,7 +25,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
                     </div>
                     <div class="row">
                 {/if}
-                <div class="customAttribute col-sm-4 col-xs-12">
+                <div class="customAttribute col-sm-4 col-12">
                     {control type="AttributeControl" attribute=$attribute readonly=$ReadOnly}
                 </div>
             {/foreach}

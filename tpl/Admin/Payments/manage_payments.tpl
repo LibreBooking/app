@@ -87,7 +87,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                 <form role="form" name="updateGatewayForm" id="updateGatewayForm" method="post"
                       ajaxAction="updatePaymentGateways"
                       action="{$smarty.server.SCRIPT_NAME}" class="form-vertical">
-                    <div class="col-xs-12 col-sm-6">
+                    <div class="col-12 col-sm-6">
                         <div class="payment-gateway-title">PayPal</div>
                         <div class="form-group">
                             <label class="switch">
@@ -121,7 +121,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                         </div>
                     </div>
 
-                    <div class="form-group col-xs-12 col-sm-6">
+                    <div class="form-group col-12 col-sm-6">
                         <div class="payment-gateway-title">Stripe</div>
                         <div class="form-group">
                             <label class="switch">
@@ -145,8 +145,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
                         </div>
                     </div>
-                    <div class="col-xs-12">
-                        {update_button submit=true class="col-xs-12"}
+                    <div class="col-12">
+                        {update_button submit=true class="col-12"}
                         {indicator}
                     </div>
                 </form>

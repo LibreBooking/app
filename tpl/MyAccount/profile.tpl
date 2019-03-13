@@ -20,12 +20,12 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 <div class="page-profile">
 
-	<div class="hidden col-xs-12 col-sm-8 col-sm-offset-2 alert alert-success" role="alert" id="profileUpdatedMessage">
+	<div class="hidden col-12 col-sm-8 col-sm-offset-2 alert alert-success" role="alert" id="profileUpdatedMessage">
 		<span class="glyphicon glyphicon-ok-sign"></span> {translate key=YourProfileWasUpdated}
 	</div>
 
 
-	<div id="profile-box" class="default-box col-xs-12 col-sm-8 col-sm-offset-2">
+	<div id="profile-box" class="default-box col-12 col-sm-8 col-sm-offset-2">
 
 
 		<form method="post" ajaxAction="{ProfileActions::Update}" id="form-profile" action="{$smarty.server.SCRIPT_NAME}"
@@ -54,7 +54,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			</div>
 
 			<div class="row">
-				<div class="col-xs-12 col-sm-6">
+				<div class="col-12 col-sm-6">
 					<div class="form-group">
 						<label class="reg" for="username">{translate key="Username"}</label>
 						{if $AllowUsernameChange}
@@ -68,7 +68,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 					</div>
 				</div>
 
-				<div class="col-xs-12 col-sm-6">
+				<div class="col-12 col-sm-6">
 					<div class="form-group">
 						<label class="reg" for="email">{translate key="Email"}</label>
 						{if $AllowEmailAddressChange}
@@ -86,7 +86,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			</div>
 
 			<div class="row">
-				<div class="col-xs-12 col-sm-6">
+				<div class="col-12 col-sm-6">
 					<div class="form-group">
 						<label class="reg" for="fname">{translate key="FirstName"}</label>
 						{if $AllowNameChange}
@@ -99,7 +99,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 						{/if}
 					</div>
 				</div>
-				<div class="col-xs-12 col-sm-6">
+				<div class="col-12 col-sm-6">
 					<div class="form-group">
 						<label class="reg" for="lname">{translate key="LastName"}</label>
 						{if $AllowNameChange}
@@ -114,7 +114,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			</div>
 
 			<div class="row">
-				<div class="col-xs-12 col-sm-6">
+				<div class="col-12 col-sm-6">
 					<div class="form-group">
 						<label class="reg" for="homepage">{translate key="DefaultPage"}</label>
 						<select {formname key='DEFAULT_HOMEPAGE'} id="homepage" class="form-control">
@@ -123,7 +123,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 					</div>
 
 				</div>
-				<div class="col-xs-12 col-sm-6">
+				<div class="col-12 col-sm-6">
 					<div class="form-group">
 						<label class="reg" for="timezoneDropDown">{translate key="Timezone"}</label>
 						<select {formname key='TIMEZONE'} class="form-control" id="timezoneDropDown">
@@ -134,7 +134,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			</div>
 
 			<div class="row">
-				<div class="col-xs-12 col-sm-6">
+				<div class="col-12 col-sm-6">
 					<div class="form-group">
 						<label class="reg" for="phone">{translate key="Phone"}</label>
 						{if $AllowPhoneChange}
@@ -146,7 +146,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 					</div>
 				</div>
 
-				<div class="col-xs-12 col-sm-6">
+				<div class="col-12 col-sm-6">
 					<div class="form-group">
 						<label class="reg" for="txtOrganization">{translate key="Organization"}</label>
 						{if $AllowOrganizationChange}
@@ -160,7 +160,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			</div>
 
 			<div class="row">
-				<div class="col-xs-12 col-sm-6">
+				<div class="col-12 col-sm-6">
 					<div class="form-group">
 						<label class="reg" for="txtPosition">{translate key="Position"}</label>
 						{if $AllowPositionChange}
@@ -172,7 +172,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 					</div>
 				</div>
 
-				<div class="col-xs-12 col-sm-6">
+				<div class="col-12 col-sm-6">
 					{if $Attributes|count > 0}
 						{control type="AttributeControl" attribute=$Attributes[0]}
 					{/if}
@@ -185,7 +185,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 					{if $i%2==1}
 						<div class="row">
 					{/if}
-					<div class="col-xs-12 col-sm-6">
+					<div class="col-12 col-sm-6">
 						{control type="AttributeControl" attribute=$Attributes[$i]}
 					</div>
 					{if $i%2==0 || $i==$Attributes|count-1}
@@ -195,7 +195,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			{/if}
 
 			<div>
-				<button type="button" class="update btn btn-primary col-xs-12" name="{Actions::SAVE}" id="btnUpdate">
+				<button type="button" class="update btn btn-primary col-12" name="{Actions::SAVE}" id="btnUpdate">
 					{translate key='Update'}
 				</button>
 			</div>

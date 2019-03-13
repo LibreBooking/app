@@ -27,26 +27,26 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			<div class="panel-body add-contents">
 				<div id="addResults" class="error no-show"></div>
                 <div>
-				<div class="form-group col-xs-12">
+				<div class="form-group col-12">
 					<label for="addAnnouncement">{translate key='Announcement'} <i class="glyphicon glyphicon-asterisk form-control-feedback"></i></label>
                     <textarea class="form-control required" rows="1" style="width:100%" {formname key=ANNOUNCEMENT_TEXT} id="addAnnouncement"></textarea>
 				</div>
                 </div>
-				<div class="form-group col-sm-3 col-xs-6">
+				<div class="form-group col-sm-3 col-6">
 					<label for="BeginDate">{translate key='BeginDate'}</label>
 					<input type="text" id="BeginDate" class="form-control" {formname key=ANNOUNCEMENT_START} />
 					<input type="hidden" id="formattedBeginDate" {formname key=ANNOUNCEMENT_START} />
 				</div>
-				<div class="form-group col-sm-3 col-xs-6">
+				<div class="form-group col-sm-3 col-6">
 					<label for="EndDate">{translate key='EndDate'}</label>
 					<input type="text" id="EndDate" class="form-control" {formname key=ANNOUNCEMENT_END} />
 					<input type="hidden" id="formattedEndDate" {formname key=ANNOUNCEMENT_END} />
 				</div>
-				<div class="form-group col-sm-3 col-xs-6">
+				<div class="form-group col-sm-3 col-6">
 					<label for="addPriority">{translate key='Priority'}</label>
 					<input type="number" min="0" step="1" class="form-control" {formname key=ANNOUNCEMENT_PRIORITY} id="addPriority" />
 				</div>
-                <div class="form-group col-sm-3 col-xs-6">
+                <div class="form-group col-sm-3 col-6">
 					<label for="addPage">{translate key='DisplayPage'}</label>
 					<select id="addPage" class="form-control" {formname key=DISPLAY_PAGE}>
                         <option value="1">{translate key=Dashboard}</option>
@@ -56,7 +56,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 				<div id="moreOptions">
                     <a href="#" class="btn btn-link" data-toggle="collapse" data-target="#advancedAnnouncementOptions">{translate key=MoreOptions} &raquo;</a>
                     <div id="advancedAnnouncementOptions" class="collapse">
-                        <div class="form-group col-xs-12 col-md-6">
+                        <div class="form-group col-12 col-md-6">
                             <label for="announcementGroups" class="no-show">{translate key=UsersInGroups}</label>
                             <select id="announcementGroups" class="form-control" multiple="multiple" style="width:100%" {formname key=FormKeys::GROUP_ID multi=true}>
                                 {foreach from=$Groups item=group}
@@ -64,7 +64,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                                 {/foreach}
                             </select>
                         </div>
-                        <div class="form-group col-xs-12 col-md-6">
+                        <div class="form-group col-12 col-md-6">
                             <label for="resourceGroups" class="no-show">{translate key=UsersWithAccessToResources}</label>
                             <select id="resourceGroups" class="form-control" multiple="multiple" style="width:100%" {formname key=RESOURCE_ID multi=true}>
                                 {foreach from=$Resources item=resource}
@@ -72,7 +72,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                                 {/foreach}
                             </select>
                         </div>
-                        <div class="form-group col-xs-12">
+                        <div class="form-group col-12">
                             <div class="checkbox no-padding-left">
                                 <input type="checkbox" id="sendAsEmail" {formname key=FormKeys::SEND_AS_EMAIL} />
                                 <label for="sendAsEmail">{translate key=SendAsEmail}</label>

@@ -47,7 +47,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
             {cycle values=',row1' assign=rowCss}
             {assign var="name" value=$setting->Name}
             <div class="{$rowCss}">
-                <div class="form-group col-xs-12">
+                <div class="form-group col-12">
                     <label for="{$name}" class="control-label">{$setting->Key}</label>
                     {if $setting->Key == ConfigKeys::DEFAULT_TIMEZONE}
                         <select id="{$name}" name="{$name}" class="form-control">

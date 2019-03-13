@@ -25,14 +25,14 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		<div class="panel panel-default" id="add-accessory-panel">
 			<div class="panel-heading">{translate key="AddAccessory"} {showhide_icon}</div>
 			<div class="panel-body add-contents">
-				<div class="col-xs-5">
+				<div class="col-5">
 					<div class="form-group has-feedback">
 						<label for="accessoryName">{translate key=AccessoryName}</label>
 						<input {formname key=ACCESSORY_NAME} type="text" autofocus id="accessoryName" required class="form-control required"/>
 						<i class="glyphicon glyphicon-asterisk form-control-feedback" data-bv-icon-for="accessoryName"></i>
 					</div>
 				</div>
-				<div class="col-xs-7">
+				<div class="col-7">
 					<div class="form-group">
 						<label for="addQuantity">{translate key='QuantityAvailable'}</label>
 						<input type="number" id="addQuantity" class="form-control" min="0" disabled="disabled" {formname key=ACCESSORY_QUANTITY_AVAILABLE} />
@@ -117,16 +117,16 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 						<h4 class="modal-title" id="editDialogLabel">{translate key=Edit}</h4>
 					</div>
 					<div class="modal-body">
-						<div class="form-group has-feedback col-xs-12">
+						<div class="form-group has-feedback col-12">
 							<label for="editName">{translate key=AccessoryName}</label>
 							<input id="editName" type="text" class="form-control required" autofocus maxlength="85" {formname key=ACCESSORY_NAME} />
 						</div>
-						<div class="form-group col-xs-4">
+						<div class="form-group col-4">
 							<label for="editQuantity">{translate key='QuantityAvailable'}</label>
 							<input id="editQuantity" type="number" min="0" class="form-control"
 								   disabled="disabled" {formname key=ACCESSORY_QUANTITY_AVAILABLE} />
 						</div>
-						<div class="form-group col-xs-8">
+						<div class="form-group col-8">
 							<div class="checkbox checkbox-align">
 								<input type="checkbox" id="chkUnlimitedEdit" class="unlimited" name="chkUnlimited" checked="checked"/>
 								<label for="chkUnlimitedEdit">{translate key=Unlimited}</label>

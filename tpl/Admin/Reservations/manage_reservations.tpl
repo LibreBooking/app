@@ -61,7 +61,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 	<div class="panel panel-default filterTable" id="filter-reservations-panel">
 		<div class="panel-heading"><span class="glyphicon glyphicon-filter"></span> {translate key="Filter"} {showhide_icon}</div>
 		<div class="panel-body">
-			{assign var=groupClass value="col-xs-12 col-sm-4 col-md-3"}
+			{assign var=groupClass value="col-12 col-sm-4 col-md-3"}
 			<form id="filterForm" role="form">
 				<div class="form-group filter-dates {$groupClass}">
                     <label for="startDate" class="no-show">{translate key=StartDate}</label>

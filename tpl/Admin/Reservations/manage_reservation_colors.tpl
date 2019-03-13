@@ -21,7 +21,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 <div id="page-manage-reservation-colors" class="admin-page">
 
-    <div class="default-box col-xs-12 col-sm-8 col-sm-offset-2">
+    <div class="default-box col-12 col-sm-8 col-sm-offset-2">
         <h1>{translate key=ReservationColors}</h1>
 
         <form class="form-inline" role="form">

@@ -25,12 +25,12 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
         <h4 {$h4Style}>{$resourceName}</h4>
         <a href="#" class="visible-sm hideResourceDetailsPopup">{translate key=Close}</a>
     </div>
-    {assign var=class value='col-xs-6'}
+    {assign var=class value='col-6'}
 
     {if $imageUrl neq ''}
-        {assign var=class value='col-xs-5'}
+        {assign var=class value='col-5'}
 
-        <div class="resourceImage col-xs-2">
+        <div class="resourceImage col-2">
             <div class="owl-carousel owl-theme">
                 <div class="item">
                     <img src="{resource_image image=$imageUrl}" alt="{$resourceName|escape}" class="image" />

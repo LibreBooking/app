@@ -101,11 +101,11 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 					</div>
 					<div class="modal-body">
 						<div class="form-group row">
-							<label for="txtGuestEmail" class="col-xs-2 form-control-label">{translate key=Email}</label>
-							<div class="col-xs-8">
+							<label for="txtGuestEmail" class="col-2 form-control-label">{translate key=Email}</label>
+							<div class="col-8">
 								<input id="txtGuestEmail" type="email" class="form-control"/>
 							</div>
-							<div class="col-xs-2">
+							<div class="col-2">
 								<button id="btnAddGuest" class="btn btn-link" type="button"><span class="no-show">{translate key='Guest'}</span><i class="fa fa-user-plus icon add"></i></button>
 							</div>
 						</div>

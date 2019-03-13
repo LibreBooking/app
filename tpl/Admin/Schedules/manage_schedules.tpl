@@ -41,7 +41,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                                             data-name='{FormKeys::SCHEDULE_WEEKDAY_START}'
                                             data-value='{$dayOfWeek}'>{if $dayOfWeek == Schedule::Today}{$Today}{else}{$DayNames[$dayOfWeek]}{/if}</span>{/capture}
                 <div class="scheduleDetails" data-schedule-id="{$id}">
-                    <div class="col-xs-12 col-sm-6">
+                    <div class="col-12 col-sm-6">
                         <input type="hidden" class="id" value="{$id}"/>
                         <input type="hidden" class="daysVisible" value="{$daysVisible}"/>
                         <input type="hidden" class="dayOfWeek" value="{$dayOfWeek}"/>
@@ -123,7 +123,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
                     </div>
 
-                    <div class="layout col-xs-12 col-sm-6">
+                    <div class="layout col-12 col-sm-6">
                         {function name="display_periods"}
                             {foreach from=$Layouts[$id]->GetSlots($day) item=period name=layouts}
                                 {if $period->IsReservable() == $showReservable}
@@ -191,7 +191,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                             </div>
                         {/if}
                     </div>
-                    <div class="actions col-xs-12">
+                    <div class="actions col-12">
                         {if $schedule->GetIsDefault()}
                             <span class="note">{translate key=ThisIsTheDefaultSchedule}</span>
                             |
@@ -322,7 +322,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                             <ul>{async_validator id="layoutValidator" key="ValidLayoutRequired"}</ul>
                         </div>
 
-                        <div class="col-xs-12">
+                        <div class="col-12">
                             <div class="checkbox">
                                 <input type="checkbox" id="usesSingleLayout" {formname key=USING_SINGLE_LAYOUT}>
                                 <label for="usesSingleLayout">{translate key=UseSameLayoutForAllDays}</label>
@@ -330,17 +330,17 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                         </div>
 
                         {function name=display_slot_inputs}
-                            <div id="{$id}" class="col-xs-12">
+                            <div id="{$id}" class="col-12">
                                 {assign var=suffix value=""}
                                 {if $day!=null}
                                     {assign var=suffix value="_$day"}
                                 {/if}
-                                <div class="col-xs-6">
+                                <div class="col-6">
                                     <label for="reservableEdit{$suffix}">{translate key=ReservableTimeSlots}</label>
                                     <textarea class="reservableEdit form-control" id="reservableEdit{$suffix}"
                                               name="{FormKeys::SLOTS_RESERVABLE}{$suffix}"></textarea>
                                 </div>
-                                <div class="col-xs-6">
+                                <div class="col-6">
                                     <label for="blockedEdit{$suffix}">{translate key=BlockedTimeSlots}</label> <a
                                             href="#" class="autofillBlocked" title="{translate key=Autofill}"><i
                                                 class="fa fa-magic"></i> {translate key=Autofill}</a>
@@ -350,7 +350,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                             </div>
                         {/function}
 
-                        <div class="col-xs-12" id="dailySlots">
+                        <div class="col-12" id="dailySlots">
                             <div role="tabpanel" id="tabs">
                                 <ul class="nav nav-tabs" role="tablist">
                                     <li role="presentation" class="active"><a href="#tabs-0" aria-controls="tabs-0"
@@ -397,14 +397,14 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
                         {display_slot_inputs id="staticSlots" day=null}
 
-                        <div class="slotTimezone col-xs-12">
+                        <div class="slotTimezone col-12">
                             <label for="layoutTimezone">{translate key=Timezone}</label>
                             <select {formname key=TIMEZONE} id="layoutTimezone" class="form-control">
                                 {html_options values=$TimezoneValues output=$TimezoneOutput}
                             </select>
                         </div>
 
-                        <div class="slotWizard col-xs-12">
+                        <div class="slotWizard col-12">
                             <h5>
                                 {capture name="layoutConfig" assign="layoutConfig"}
                                     <input type='number' min='0' step='15' value='30' id='quickLayoutConfig' size=5'
@@ -422,7 +422,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                                 <a href="#" id="createQuickLayout">{translate key=Create}</a>
                             </h5>
                         </div>
-                        <div class="slotHelpText col-xs-12">
+                        <div class="slotHelpText col-12">
                             <p>{translate key=Format}: <span>HH:MM - HH:MM {translate key=OptionalLabel}</span></p>
 
                             <p>{translate key=LayoutInstructions}</p>
@@ -514,8 +514,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                                 <label for="peakAllYear">{translate key=AllYear}</label>
                             </div>
                             <div id="peakDateRange" class="no-show">
-                                <label for="peakBeginMonth" class="col-xs-2">{translate key=BeginDate}</label>
-                                <div class="col-xs-5">
+                                <label for="peakBeginMonth" class="col-2">{translate key=BeginDate}</label>
+                                <div class="col-5">
                                     <select id="peakBeginMonth"
                                             class="form-control input-sm" {formname key=PEAK_BEGIN_MONTH}>
                                         {foreach from=$Months item=month name=startMonths}
@@ -523,7 +523,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                                         {/foreach}
                                     </select>
                                 </div>
-                                <div class="col-xs-2">
+                                <div class="col-2">
                                     <label for="peakBeginDay" class="no-show">Peak Begin Day</label>
                                     <select id="peakBeginDay"
                                             class="form-control input-sm" {formname key=PEAK_BEGIN_DAY}>
@@ -532,10 +532,10 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                                         {/foreach}
                                     </select>
                                 </div>
-                                <div class="col-xs-3">&nbsp;</div>
+                                <div class="col-3">&nbsp;</div>
                                 <div class="clearfix"></div>
-                                <label for="peakEndMonth" class="col-xs-2">{translate key=EndDate}</label>
-                                <div class="col-xs-5">
+                                <label for="peakEndMonth" class="col-2">{translate key=EndDate}</label>
+                                <div class="col-5">
                                     <select id="peakEndMonth"
                                             class="form-control input-sm" {formname key=PEAK_END_MONTH}>
                                         {foreach from=$Months item=month name=endMonths}
@@ -543,7 +543,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                                         {/foreach}
                                     </select>
                                 </div>
-                                <div class="col-xs-2">
+                                <div class="col-2">
                                     <label for="peakEndDay" class="no-show">Peak End Day</label>
                                     <select id="peakEndDay" class="form-control input-sm" {formname key=PEAK_END_DAY}>
                                         {foreach from=$DayList item=day}
@@ -551,7 +551,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                                         {/foreach}
                                     </select>
                                 </div>
-                                <div class="col-xs-3">&nbsp;</div>
+                                <div class="col-3">&nbsp;</div>
                             </div>
                         </div>
                         <div class="clearfix"></div>

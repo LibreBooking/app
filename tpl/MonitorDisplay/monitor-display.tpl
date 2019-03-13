@@ -27,7 +27,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 
         <div class="collapse" id="configuration-options">
             <div class="row">
-                <div class="col-xs-3">
+                <div class="col-3">
                     <div class="form-group">
                         <label for="schedules">{translate key=Schedule}</label>
                         <select class="form-control" title="{translate key=Schedules}" id="schedules">
@@ -38,7 +38,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
                         </select>
                     </div>
                 </div>
-                <div class="col-xs-3">
+                <div class="col-3">
                     <div class="form-group">
                         <label for="resources">{translate key=Resource}</label>
                         <select class="form-control" title="{translate key=Resource}" id="resources">
@@ -50,7 +50,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
                     </div>
                 </div>
 
-                <div class="col-xs-3">
+                <div class="col-3">
                     <div class="form-group">
                         <label for="format">{translate key=Format}</label>
                         <select class="form-control" title="{translate key=Format}" id="format">
@@ -60,7 +60,7 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
                     </div>
                 </div>
 
-                <div class="col-xs-3">
+                <div class="col-3">
                     <div class="form-group">
                         <label for="days">{translate key=NumberOfDaysVisible}</label>
                         <select class="form-control" title="{translate key=NumberOfDaysVisible}" id="days">

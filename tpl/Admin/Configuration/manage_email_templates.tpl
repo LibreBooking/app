@@ -2,10 +2,10 @@
 
 <div id="page-manage-email-templates" class="admin-page">
 
-    <div class="default-box col-xs-12 col-sm-8 col-sm-offset-2">
+    <div class="default-box col-12 col-sm-8 col-sm-offset-2">
         <h1>{translate key=ManageEmailTemplates}</h1>
 
-        <div class="form-group col-sm-8 col-xs-6">
+        <div class="form-group col-sm-8 col-6">
             <select id="templateOpts" title="{translate key=EmailTemplate}" class="form-control">
                 <option value="">--- {translate key=SelectEmailTemplate} ---</option>
                 {foreach from=$Templates item=template}
@@ -15,7 +15,7 @@
 
         </div>
 
-        <div class="form-group col-sm-4 col-xs-6">
+        <div class="form-group col-sm-4 col-6">
             <select id="languageOpts" title="{translate key=Language}" class="form-control">
                 {foreach from=$Languages item=language}
                     <option value="{$language->LanguageCode}"
@@ -27,12 +27,12 @@
         <div id="editEmailSection" class="no-show">
             <div>
                 <form role="form" id="updateEmailForm" ajaxAction="{EmailTemplatesActions::Update}" method="post">
-                    <div class="form-group col-xs-12">
+                    <div class="form-group col-12">
                     <textarea id="templateContents" {formname key=EMAIL_CONTENTS} title="{translate key=EmailTemplate}"
                               class="form-control" rows="20" style="width:100%"></textarea>
                     </div>
 
-                    <div class="form-group col-xs-12">
+                    <div class="form-group col-12">
                         {indicator}
                         {update_button submit=true}
                         <input id="reloadEmailContents" type="button" class="btn btn-default"
@@ -44,11 +44,11 @@
                 </form>
             </div>
 
-            <div id="updateSuccess" class="alert alert-success col-xs-12" style="display:none;">
+            <div id="updateSuccess" class="alert alert-success col-12" style="display:none;">
                 <span class="glyphicon glyphicon-ok-sign"></span> {translate key=UpdateEmailTemplateSuccess}
             </div>
 
-            <div id="updateFailed" class="alert alert-warning col-xs-12" style="display:none;">
+            <div id="updateFailed" class="alert alert-warning col-12" style="display:none;">
                 <span class="glyphicon glyphicon-alert"></span> {translate key=UpdateEmailTemplateFailed}
             </div>
         </div>

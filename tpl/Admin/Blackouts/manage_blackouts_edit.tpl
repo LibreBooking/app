@@ -19,7 +19,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 <form id="editBlackoutForm" class="form-inline" role="form" method="post">
 	<div id="updateBlackout">
-		<div class="form-group col-xs-6">
+		<div class="form-group col-6">
 			<label for="updateStartDate">{translate key=BeginDate}</label>
 			<input type="text" id="updateStartDate" class="form-control dateinput inline-block "
 				   value="{formatdate date=$BlackoutStartDate}"/>
@@ -30,7 +30,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 											 value="{formatdate date=$BlackoutStartDate format='h:i A'}"/>
 		</div>
 
-		<div class="form-group col-xs-6">
+		<div class="form-group col-6">
 			<label for="updateEndDate">{translate key=EndDate}</label>
 			<input type="text" id="updateEndDate" class="form-control dateinput inline-block " size="10"
 				   value="{formatdate date=$BlackoutEndDate}"/>
@@ -41,7 +41,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 										   value="{formatdate date=$BlackoutEndDate format='h:i A'}"/>
 		</div>
 
-		<div class="form-group col-xs-12 blackouts-edit-resources">
+		<div class="form-group col-12 blackouts-edit-resources">
 			<label>{translate key=Resources}</label>
 			{foreach from=$Resources item=resource}
 				{assign var=checked value=""}
@@ -59,7 +59,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			{/foreach}
 		</div>
 
-		<div class="col-xs-12">
+		<div class="col-12">
 			<div class="form-group has-feedback">
 				<label for="blackoutReason">{translate key=Reason}</label>
 				<input {formname key=SUMMARY} type="text" id="blackoutReason" required
@@ -72,7 +72,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			{control type="RecurrenceControl" RepeatTerminationDate=$RepeatTerminationDate prefix='edit'}
 		</div>
 
-		<div class="form-group col-xs-12">
+		<div class="form-group col-12">
             <div class="radio">
                 <input {formname key=CONFLICT_ACTION} type="radio" id="bookAroundUpdate"
                                                       name="existingReservations"
@@ -94,7 +94,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
             </div>
 		</div>
 
-		<div id="update-blackout-buttons" class="col-xs-12 margin-bottom-25">
+		<div id="update-blackout-buttons" class="col-12 margin-bottom-25">
 			<div class="pull-right">
 				<button type="button" class="btn btn-default" id="cancelUpdate">
 					{translate key='Cancel'}

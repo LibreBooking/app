@@ -18,7 +18,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 *}
 <div id="{$prefix}repeatDiv" class="repeat-div">
 	<div class="form-group">
-		<div class="col-xs-12">
+		<div class="col-12">
 			<label for="{$prefix}repeatOptions">{translate key="RepeatPrompt"}</label>
 			<select id="{$prefix}repeatOptions" {formname key=repeat_options}
 					class="form-control input-sm repeat-drop inline-block">
@@ -28,7 +28,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			</select>
 		</div>
 
-		<div class="col-sm-4 col-xs-12">
+		<div class="col-sm-4 col-12">
 			<div id="{$prefix}repeatEveryDiv" class="recur-toggle no-show days weeks months years">
 				<label for="{$prefix}repeatInterval">{translate key="RepeatEveryPrompt"}</label>
 				<select id="{$prefix}repeatInterval" {formname key=repeat_every}
@@ -42,7 +42,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			</div>
 		</div>
 
-		<div class="col-sm-8 col-xs-12">
+		<div class="col-sm-8 col-12">
 			<div id="{$prefix}repeatOnWeeklyDiv" class="recur-toggle weeks no-show">
 				<div class="btn-group" data-toggle="buttons">
 					<label class="btn btn-default btn-sm">
@@ -94,7 +94,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			</div>
 		</div>
 
-		<div id="{$prefix}repeatUntilDiv" class="col-xs-12 no-show recur-toggle">
+		<div id="{$prefix}repeatUntilDiv" class="col-12 no-show recur-toggle">
 			<label for="{$prefix}EndRepeat">{translate key="RepeatUntilPrompt"}</label>
 			<input type="text" id="{$prefix}EndRepeat" class="form-control input-sm inline-block dateinput"
 				   value="{formatdate date=$RepeatTerminationDate}"/>

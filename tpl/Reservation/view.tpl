@@ -22,16 +22,16 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
     <div id="reservation-box" class="readonly">
         <div id="reservationFormDiv">
             <div class="row">
-                {assign var="detailsCol" value="col-xs-12"}
-                {assign var="participantCol" value="col-xs-12"}
+                {assign var="detailsCol" value="col-12"}
+                {assign var="participantCol" value="col-12"}
 
                 {if $ShowParticipation && $AllowParticipation && $ShowReservationDetails}
-                    {assign var="detailsCol" value="col-xs-12 col-sm-6"}
-                    {assign var="participantCol" value="col-xs-12 col-sm-6"}
+                    {assign var="detailsCol" value="col-12 col-sm-6"}
+                    {assign var="participantCol" value="col-12 col-sm-6"}
                 {/if}
 
                 <div id="reservationDetails" class="{$detailsCol}">
-                    <div class="col-xs-12">
+                    <div class="col-12">
                         <label>{translate key='User'}</label>
                         {if $ShowUserDetails && $ShowReservationDetails}
                             <a href="#" class="bindableUser" data-userid="{$UserId}">{$ReservationUserName}</a>
@@ -41,7 +41,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                         {/if}
                     </div>
 
-                    <div class="col-xs-12">
+                    <div class="col-12">
                         <div class="col-md-6 no-padding-left">
                             <label>{translate key='BeginDate'}</label> {formatdate date=$StartDate}
                             <input type="hidden" id="formattedBeginDate"
@@ -65,7 +65,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                         </div>
                     </div>
 
-                    <div class="col-xs-12">
+                    <div class="col-12">
                         {*<span class="like-label">{translate key=ReservationLength}</span>*}
                         <div class="durationText">
                             <span id="durationDays">0</span> {translate key=days}
@@ -74,7 +74,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                         </div>
                     </div>
 
-                    <div class="col-xs-12">
+                    <div class="col-12">
                         <label>{translate key='RepeatPrompt'}</label> {translate key=$RepeatOptions[$RepeatType]['key']}
                         {if $IsRecurring}
                             <div class="repeat-details">
@@ -92,7 +92,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                         {/if}
                     </div>
 
-                    <div class="col-xs-12">
+                    <div class="col-12">
                         <div class="pull-left">
                             <label>{translate key='Resources'}</label> {$ResourceName}
                             <input id="primaryResourceId" type="hidden" value="{$ResourceId}"/>
@@ -121,7 +121,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                     </div>
 
                     {if $ShowReservationDetails}
-                        <div class="col-xs-12">
+                        <div class="col-12">
                             <label>{translate key='ReservationTitle'}</label>
                             {if $ReservationTitle neq ''}
                                 {$ReservationTitle}
@@ -129,7 +129,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                                 <span class="no-data">{translate key='None'}</span>
                             {/if}
                         </div>
-                        <div class="col-xs-12">
+                        <div class="col-12">
                             <label>{translate key='ReservationDescription'}</label>
                             {if $Description neq ''}
                                 <br/>
@@ -138,7 +138,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                                 <span class="no-data">{translate key='None'}</span>
                             {/if}
                         </div>
-                        <div class="col-xs-12">
+                        <div class="col-12">
                             <div class="form-group">
                                 <label>{translate key=ReferenceNumber}</label>
                                 {$ReferenceNumber}
@@ -238,13 +238,13 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                     </div>
                 {/if}
 
-                <div class="col-xs-12 same-height">
-                    <div id="custom-attributes-placeholder" class="col-xs-12">
+                <div class="col-12 same-height">
+                    <div id="custom-attributes-placeholder" class="col-12">
                     </div>
                 </div>
 
                 {if $ShowReservationDetails}
-                    <div class="col-xs-12 buttons">
+                    <div class="col-12 buttons">
                         <div class="pull-right">
                             <button type="button" class="btn btn-default" onclick="window.location='{$ReturnUrl}'">
                                 {translate key='Close'}
@@ -289,7 +289,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
             </div>
             {if $ShowReservationDetails}
                 {if $Attachments|count > 0}
-                    <div class="col-xs-12">
+                    <div class="col-12">
                         <div class="res-attachments">
                             <span class="heading">{translate key=Attachments} ({$Attachments|count})</span>
                             <br/>

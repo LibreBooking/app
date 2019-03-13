@@ -34,11 +34,11 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
         <form id="form-reservation" method="post" enctype="multipart/form-data" role="form">
 
             <div class="row">
-                <div class="col-md-6 col-xs-12 col-top reservationHeader">
+                <div class="col-md-6 col-12 col-top reservationHeader">
                     <h3>{block name=reservationHeader}{translate key="CreateReservationHeading"}{/block}</h3>
                 </div>
 
-                <div class="col-md-6 col-xs-12 col-top">
+                <div class="col-md-6 col-12 col-top">
                     <div class="pull-right-sm">
                         <a href="#" id="btnViewAvailability"><i class="fa fa-calendar"></i> View Availability</a>
                         <button type="button" class="btn btn-default" onclick="window.location='{$ReturnUrl}'">
@@ -56,17 +56,17 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
             </div>
 
             <div class="row">
-                {assign var="detailsCol" value="col-xs-12"}
-                {assign var="participantCol" value="col-xs-12"}
+                {assign var="detailsCol" value="col-12"}
+                {assign var="participantCol" value="col-12"}
 
                 {if $ShowParticipation && $AllowParticipation && $ShowReservationDetails}
-                    {assign var="detailsCol" value="col-xs-12 col-sm-6"}
-                    {assign var="participantCol" value="col-xs-12 col-sm-6"}
+                    {assign var="detailsCol" value="col-12 col-sm-6"}
+                    {assign var="participantCol" value="col-12 col-sm-6"}
                 {/if}
 
                 <div id="reservationDetails"
                      class="{$detailsCol} {if $ShowParticipation && $AllowParticipation && $ShowReservationDetails}detailsBorder{/if}">
-                    <div class="col-xs-12">
+                    <div class="col-12">
                         <div class="form-group">
                             {if $ShowUserDetails && $ShowReservationDetails}
                                 <a href="#" id="userName" data-userid="{$UserId}">{$ReservationUserName}</a>
@@ -110,7 +110,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                         </div>
                     </div>
 
-                    <div class="col-xs-12" id="changeUsers">
+                    <div class="col-12" id="changeUsers">
                         <div class="form-group">
                             <label for="changeUserAutocomplete" class="no-show">{translate key=User}</label>
                             <input type="text" id="changeUserAutocomplete"
@@ -123,7 +123,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                         </div>
                     </div>
 
-                    <div class="col-xs-12 reservationDates">
+                    <div class="col-12 reservationDates">
                         <div class="col-md-6 no-padding-left">
                             <div class="form-group no-margin-bottom">
                                 <label for="BeginDate" class="reservationDate">{translate key='BeginDate'}</label>
@@ -176,7 +176,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                         </div>
                     </div>
 
-                    <div class="col-xs-12 reservationLength">
+                    <div class="col-12 reservationLength">
                         <div class="form-group">
                             {*<span class="like-label">{translate key=ReservationLength}</span>*}
                             <div class="durationText">
@@ -188,12 +188,12 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                     </div>
 
                     {if !$HideRecurrence}
-                        <div class="col-xs-12">
+                        <div class="col-12">
                             {control type="RecurrenceControl" RepeatTerminationDate=$RepeatTerminationDate}
                         </div>
                     {/if}
 
-                    <div class="col-xs-12 reservationResources" id="reservation-resources">
+                    <div class="col-12 reservationResources" id="reservation-resources">
                         <div class="form-group">
                             <div class="pull-left">
                                 <div>
@@ -237,7 +237,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                         </div>
                     </div>
 
-                    <div class="col-xs-12 reservationTitle">
+                    <div class="col-12 reservationTitle">
                         <div class="form-group has-feedback">
                             <label for="reservationTitle">{translate key="ReservationTitle"}</label>
                             {textbox name="RESERVATION_TITLE" class="form-control" value="ReservationTitle" id="reservationTitle" maxlength="300" required=$TitleRequired}
@@ -248,7 +248,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                         </div>
                     </div>
 
-                    <div class="col-xs-12 reservationDescription">
+                    <div class="col-12 reservationDescription">
                         <div class="form-group has-feedback">
                             <label for="description">{translate key="ReservationDescription"}
                             </label>
@@ -264,7 +264,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                     </div>
 
                     {if !empty($ReferenceNumber)}
-                        <div class="col-xs-12">
+                        <div class="col-12">
                             <div class="form-group">
                                 <label>{translate key=ReferenceNumber}</label>
                                 {$ReferenceNumber}
@@ -282,14 +282,14 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                 </div>
             </div>
 
-            <div class="row col-xs-12 same-height">
-                <div id="custom-attributes-placeholder" class="col-xs-12">
+            <div class="row col-12 same-height">
+                <div id="custom-attributes-placeholder" class="col-12">
                 </div>
             </div>
 
             {if $RemindersEnabled}
-                <div class="row col-xs-12">
-                    <div class="col-xs-12 reservationReminders">
+                <div class="row col-12">
+                    <div class="col-12 reservationReminders">
                         <div>
                             <label>{translate key=SendReminder}</label>
                         </div>
@@ -339,8 +339,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
             {/if}
 
             {if $UploadsEnabled}
-                <div class="row col-xs-12">
-                    <div class="col-xs-12 reservationAttachments">
+                <div class="row col-12">
+                    <div class="col-12 reservationAttachments">
 
                         <label>{translate key=AttachFile} <span class="note">({$MaxUploadSize}
                                 MB {translate key=Maximum})</span>
@@ -362,8 +362,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
             {/if}
 
             {if $Terms != null}
-                <div class="row col-xs-12" id="termsAndConditions">
-                    <div class="col-xs-12">
+                <div class="row col-12" id="termsAndConditions">
+                    <div class="col-12">
                         {if $TermsAccepted}
                             <div class="margin-top-25">
                             <i class="fa fa-check-square-o"></i> {translate key=IAccept}
@@ -391,7 +391,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                    value="{SeriesUpdateScope::FullSeries}"/>
 
             <div class="row">
-                <div class="reservationButtons col-md-6 col-md-offset-6 col-xs-12">
+                <div class="reservationButtons col-md-6 col-md-offset-6 col-12">
                     <div class="pull-right-sm">
                         <button type="button" class="btn btn-default" onclick="window.location='{$ReturnUrl}'">
                             <span class="hidden-xs">{translate key='Cancel'}</span>

@@ -80,7 +80,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		</div>
 		<div class="panel-body">
 
-				{assign var=groupClass value="col-xs-12 col-sm-4 col-md-3"}
+				{assign var=groupClass value="col-12 col-sm-4 col-md-3"}
 
 				<div class="form-group {$groupClass}">
                     <label for="filterResourceName" class="no-show">{translate key=Resource}</label>
@@ -172,10 +172,10 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			{foreach from=$Resources item=resource}
 				{assign var=id value=$resource->GetResourceId()}
 				<div class="resourceDetails" data-resourceId="{$id}">
-					<div class="col-xs-12 col-sm-5">
+					<div class="col-12 col-sm-5">
 						<input type="hidden" class="id" value="{$id}"/>
 
-						<div class="col-sm-3 col-xs-6 resourceImage">
+						<div class="col-sm-3 col-6 resourceImage">
 							<div class="margin-bottom-25">
 								{if $resource->HasImage()}
 								<div class="owl-carousel owl-theme">
@@ -204,7 +204,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 								<a href="#" class="update clearColor">{translate key=Remove}</a>
 							</div>
 						</div>
-						<div class="col-sm-9 col-xs-6">
+						<div class="col-sm-9 col-6">
 							<div>
 							<span class="title resourceName" data-type="text" data-pk="{$id}"
 								  data-name="{FormKeys::RESOURCE_NAME}">{$resource->GetName()}</span>
@@ -371,8 +371,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 						</div>
 					</div>
 
-					<div class="col-xs-12 col-sm-7">
-						<div class="col-sm-6 col-xs-12">
+					<div class="col-12 col-sm-7">
+						<div class="col-sm-6 col-12">
 							<h5 class="inline">{translate key=Duration}</h5>
 							<a href="#" class="inline update changeDuration">
                                 <span class="no-show">{translate key=Duration}</span>
@@ -409,7 +409,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                             </div>
 						</div>
 
-						<div class="col-sm-6 col-xs-12">
+						<div class="col-sm-6 col-12">
 							<h5 class="inline">{translate key=Access}</h5>
 							<a href="#" class="inline update changeAccess">
                                 <span class="no-show">{translate key=Access}</span>
@@ -421,13 +421,13 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 							</div>
 						</div>
 
-						<div class="col-sm-6 col-xs-12">
+						<div class="col-sm-6 col-12">
 							<h5>{translate key='Permissions'}</h5>
 							<a href="#" class="update changeUserPermission">{translate key=Users}</a> |
 							<a href="#" class="update changeGroupPermissions">{translate key=Groups}</a>
 						</div>
 
-						<div class="col-sm-6 col-xs-12">
+						<div class="col-sm-6 col-12">
 							<h5 class="inline">{translate key='ResourceGroups'}</h5>
 							<a href="#" class="inline update changeResourceGroups">
                                 <span class="no-show">{translate key=ResourceGroups}</span>
@@ -440,14 +440,14 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                             <div class="clearfix">&nbsp;</div>
 						</div>
 
-                        <div class="col-sm-6 col-xs-12">
+                        <div class="col-sm-6 col-12">
                             <h5 class="inline">{translate key='Public'}</h5>
                             <div class="publicSettingsPlaceHolder">
                                 {include file="Admin/Resources/manage_resources_public.tpl" resource=$resource}
                             </div>
                         </div>
 
-                        <div class="col-sm-6 col-xs-12">&nbsp;</div>
+                        <div class="col-sm-6 col-12">&nbsp;</div>
 
 					</div>
 

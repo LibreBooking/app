@@ -174,7 +174,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 {block name='attachments'}
     {if $Attachments|count > 0}
-        <div class="col-xs-12">
+        <div class="col-12">
     <div id="attachmentDiv" class="res-attachments">
         <span class="heading">{translate key=Attachments} ({$Attachments|count})</span>
         <a href="#" class="remove" id="btnRemoveAttachment">({translate key="Remove"})</a>

@@ -27,7 +27,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
             </nav>
         </div>
 
-        <div id="help" class="col-xs-12 col-sm-9">
+        <div id="help" class="col-12 col-sm-9">
 
             <h1>{$AppTitle} Administration</h1>
 

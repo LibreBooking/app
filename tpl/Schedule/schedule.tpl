@@ -116,10 +116,10 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
         </div>
         {block name="schedule_control"}
             <div class="row">
-                {assign var=titleWidth value="col-sm-12 col-xs-12"}
+                {assign var=titleWidth value="col-sm-12 col-12"}
                 {if !$HideSchedule}
-                    {assign var=titleWidth value="col-sm-6 col-xs-12"}
-                    <div id="schedule-actions" class="col-sm-3 col-xs-12">
+                    {assign var=titleWidth value="col-sm-6 col-12"}
+                    <div id="schedule-actions" class="col-sm-3 col-12">
                         {block name="actions"}
                             <a href="#" id="make_default"
                                style="display:none;">{html_image src="star_boxed_full.png" altKey="MakeDefaultSchedule"}</a>
@@ -143,7 +143,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                     </div>
                 {/if}
 
-                <div id="schedule-title" class="schedule_title {$titleWidth} col-xs-12">
+                <div id="schedule-title" class="schedule_title {$titleWidth} col-12">
                     <label for="schedules" class="no-show">Schedule</label>
                     <select id="schedules" class="form-control" style="width:auto;">
                         {foreach from=$Schedules item=schedule}
@@ -170,7 +170,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
                 {capture name="date_navigation"}
                     {if !$HideSchedule}
-                        <div class="schedule-dates col-sm-3 col-xs-12">
+                        <div class="schedule-dates col-sm-3 col-12">
                             {assign var=TodaysDate value=Date::Now()}
                             <a href="#" class="change-date btn-link btn-success" data-year="{$TodaysDate->Year()}"
                                data-month="{$TodaysDate->Month()}" data-day="{$TodaysDate->Day()}"
@@ -285,14 +285,14 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                                 <div id="resourceGroups"></div>
                             </div>
                             <div id="resettable">
-                                <div class="form-group col-xs-12">
+                                <div class="form-group col-12">
                                     <label for="maxCapactiy">{translate key=MinimumCapacity}</label>
                                     <input type='number' min='0' id='maxCapactiy' size='5' maxlength='5'
                                            class="form-control input-sm" {formname key=MAX_PARTICIPANTS}
                                            value="{$MaxParticipantsFilter}"/>
                                 </div>
 
-                                <div class="form-group col-xs-12">
+                                <div class="form-group col-12">
                                     <label for="resourceType">{translate key=ResourceType}</label>
                                     <select id="resourceType" {formname key=RESOURCE_TYPE_ID} {formname key=RESOURCE_TYPE_ID}
                                             class="form-control input-sm">
@@ -302,11 +302,11 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                                 </div>
 
                                 {foreach from=$ResourceAttributes item=attribute}
-                                    {control type="AttributeControl" attribute=$attribute align='vertical' searchmode=true namePrefix='r' inputClass="input-sm" class="customAttribute col-xs-12"}
+                                    {control type="AttributeControl" attribute=$attribute align='vertical' searchmode=true namePrefix='r' inputClass="input-sm" class="customAttribute col-12"}
                                 {/foreach}
 
                                 {foreach from=$ResourceTypeAttributes item=attribute}
-                                    {control type="AttributeControl" attribute=$attribute align='vertical' searchmode=true namePrefix='rt' inputClass="input-sm" class="customAttribute col-xs-12"}
+                                    {control type="AttributeControl" attribute=$attribute align='vertical' searchmode=true namePrefix='rt' inputClass="input-sm" class="customAttribute col-12"}
                                 {/foreach}
 
                                 <div class="btn-submit">

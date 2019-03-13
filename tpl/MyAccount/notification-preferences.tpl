@@ -21,7 +21,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 <div class="page-notification-preferences">
 
 	{if $PreferencesUpdated}
-		<div class="success alert alert-success col-xs-12 col-sm-8 col-sm-offset-2">
+		<div class="success alert alert-success col-12 col-sm-8 col-sm-offset-2">
 			<span class="glyphicon glyphicon-ok-sign"></span> {translate key=YourSettingsWereUpdated}
 		</div>
 	{/if}
@@ -29,7 +29,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 	{if !$EmailEnabled}
 		<div class="error">{translate key=EmailDisabled}</div>
 	{else}
-		<div id="notification-preferences-box" class="default-box col-xs-12 col-sm-8 col-sm-offset-2">
+		<div id="notification-preferences-box" class="default-box col-12 col-sm-8 col-sm-offset-2">
 			<h1>{translate key=NotificationPreferences}</h1>
 
 			<form id="notification-preferences-form" method="post" action="{$smarty.server.SCRIPT_NAME}">

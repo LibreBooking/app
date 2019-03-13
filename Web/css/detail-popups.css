@@ -74,6 +74,7 @@ body {
   padding-bottom: 40px;
   padding-top: 70px;
   background-color: #fbfbfb;
+  font-size: 14px;
 }
 .adjust-nav-bar-static {
   margin-top: -70px;
@@ -683,6 +684,9 @@ input:checked + .slider:before {
   left: 0;
   height: 100%;
   width: 100%;
+}
+.hidden {
+  display: none;
 }
 label.customAttribute {
   display: block;

@@ -40,7 +40,7 @@
             {if $AllowPurchasingCredits && $IsCreditCostSet}
                 <div class="tab-pane" id="purchase" role="tabpanel">
 
-                    <div class="col-xs-4">
+                    <div class="col-4">
                         <form role="form" name="purchaseCreditsForm" id="purchaseCreditsForm" method="post"
                               action="checkout.php">
                             <div>{translate key=EachCreditCosts} <span class="cost">{$CreditCost}</span></div>
@@ -52,12 +52,12 @@
                             <div>
                                 {translate key=Total} <span id="totalCost" class="cost">{$CreditCost}</span>
                             </div>
-                            <button type="submit" class="btn btn-default col-xs-12">{translate key=Checkout}</button>
+                            <button type="submit" class="btn btn-default col-12">{translate key=Checkout}</button>
                             {csrf_token}
                         </form>
                     </div>
 
-                    <div class="col-xs-8">&nbsp;</div>
+                    <div class="col-8">&nbsp;</div>
                     <div class="clearfix"></div>
 
                 </div>

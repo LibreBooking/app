@@ -8,7 +8,7 @@
 {/function}
 
 <div id="resource-display" class="resource-display">
-    <div class="col-xs-7 left-panel">
+    <div class="col-7 left-panel">
         <div class="resource-display-name">{$ResourceName}</div>
 
         <div class="resource-display-current">
@@ -43,7 +43,7 @@
             </div>
         </div>
     </div>
-    <div class="col-xs-5 right-panel">
+    <div class="col-5 right-panel">
         <div class="time">{formatdate date=$Now key=period_time timezone=$Timezone}</div>
         <div class="date">{formatdate date=$Now key=schedule_daily timezone=$Timezone}</div>
         <div class="upcoming-reservations">
@@ -68,7 +68,7 @@
     <div id="reservation-box">
         <form role="form" method="post" id="formReserve" action="{$smarty.server.SCRIPT_NAME}?action=reserve">
             <div class="row margin-top-25">
-                <div class="col-xs-12">
+                <div class="col-12">
                     <div id="validationErrors" class="validationSummary alert alert-danger no-show">
                         <ul>
                             {validator id="emailformat" key="ValidEmailRequired"}
@@ -122,7 +122,7 @@
                 </div>
             </div>
             <div class="row margin-top-25">
-                <div class="col-xs-6">
+                <div class="col-6">
                     <div class="input-group input-group-lg has-feedback">
                             <span class="input-group-addon" id="starttime-addon">
                                 <span class="glyphicon glyphicon-time"></span>
@@ -137,7 +137,7 @@
                         </select>
                     </div>
                 </div>
-                <div class="col-xs-6">
+                <div class="col-6">
                     <div class="input-group input-group-lg">
 				            <span class="input-group-addon" id="endtime-addon"><span
                                         class="glyphicon glyphicon-time"></span></span>
@@ -154,7 +154,7 @@
             </div>
 
             {if $Terms != null}
-            <div class="row col-xs-12" id="termsAndConditions">
+            <div class="row col-12" id="termsAndConditions">
                 <div class="checkbox">
                     <input type="checkbox"
                            id="termsAndConditionsAcknowledgement" {formname key=TOS_ACKNOWLEDGEMENT} {if $TermsAccepted}checked="checked"{/if}/>
@@ -167,12 +167,12 @@
 
             {if $Attributes|count > 0}
             <div class="row margin-top-25">
-                <div class="customAttributes col-xs-12">
+                <div class="customAttributes col-12">
                     {foreach from=$Attributes item=attribute name=attributeEach}
                         {if $smarty.foreach.attributeEach.index % 2 == 0}
                             <div class="row">
                         {/if}
-                        <div class="customAttribute col-xs-6">
+                        <div class="customAttribute col-6">
                             {control type="AttributeControl" attribute=$attribute}
                         </div>
                         {if $smarty.foreach.attributeEach.index % 2 ==1}
@@ -180,15 +180,15 @@
                         {/if}
                     {/foreach}
                     {if $Attributes|count % 2 == 1}
-                        <div class="col-xs-6">&nbsp;</div>
+                        <div class="col-6">&nbsp;</div>
                     {/if}
                 </div>
             </div>
             {/if}
 
             <div class="row margin-top-25">
-                <div class="col-xs-12 text-center">
-                    <input type="submit" class="action-reserve col-xs-12" value="Reserve"/>
+                <div class="col-12 text-center">
+                    <input type="submit" class="action-reserve col-12" value="Reserve"/>
                     <a href="#" class="action-cancel" id="reserveCancel">{translate key=Cancel}</a>
                 </div>
             </div>

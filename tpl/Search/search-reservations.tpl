@@ -75,7 +75,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
         <div class="clearfix"></div>
 
-        <div class="form-group col-xs-12">
+        <div class="form-group col-12">
             <div class="btn-group" data-toggle="buttons">
                 <label class="btn btn-default">
                     <input type="radio" id="today"
@@ -114,12 +114,12 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                    value="{formatdate date=$EndDate key=system}"/>
         </div>
 
-        <div class="col-xs-4"></div>
+        <div class="col-4"></div>
 
         <div class="clearfix"></div>
 
-        <div class="form-group col-xs-12">
-            <button type="submit" class="btn btn-success col-xs-12"
+        <div class="form-group col-12">
+            <button type="submit" class="btn btn-success col-12"
                     value="submit" {formname key=SUBMIT}>{translate key=SearchReservations}</button>
             {indicator}
         </div>

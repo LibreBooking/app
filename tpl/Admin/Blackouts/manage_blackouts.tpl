@@ -26,7 +26,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			<div class="panel-heading">{translate key="AddBlackout"} {showhide_icon}</div>
 			<div class="panel-body add-contents">
 
-				<div class="form-group col-xs-6">
+				<div class="form-group col-6">
 					<label for="addStartDate">{translate key=BeginDate}</label>
 					<input type="text" id="addStartDate" class="form-control dateinput inline-block "
 						   value="{formatdate date=$AddStartDate}"/>
@@ -37,7 +37,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 													 value="{format_date format='h:00 A' date=now}" title="Start time"/>
                     <label for="addStartTime" class="no-show">Start Time</label>
 				</div>
-				<div class="form-group col-xs-6">
+				<div class="form-group col-6">
 					<label for="addEndDate">{translate key=EndDate}</label>
 					<input type="text" id="addEndDate" class="form-control dateinput inline-block " size="10"
 						   value="{formatdate date=$AddEndDate}"/>
@@ -49,7 +49,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 												   title="End time"/>
                     <label for="addEndTime" class="no-show">Start Time</label>
                 </div>
-				<div class="form-group col-xs-12">
+				<div class="form-group col-12">
 					<label for="addResourceId">{translate key=Resource}</label>
 					<select {formname key=RESOURCE_ID} class="form-control" id="addResourceId">
 						{object_html_options options=$Resources key='GetId' label="GetName" selected=$ResourceId}
@@ -67,7 +67,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 						</select>
 					{/if}
 				</div>
-				<div class="col-xs-12">
+				<div class="col-12">
 					<div class="form-group has-feedback">
 						<label for="blackoutReason">{translate key=Reason}</label>
 						<input {formname key=SUMMARY} type="text" id="blackoutReason" required
@@ -75,10 +75,10 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 						<i class="glyphicon glyphicon-asterisk form-control-feedback" data-bv-icon-for="blackoutReason"></i>
 					</div>
 				</div>
-				<div class="form-group col-xs-12">
+				<div class="form-group col-12">
 					{control type="RecurrenceControl" RepeatTerminationDate=$RepeatTerminationDate}
 				</div>
-				<div class="form-group col-xs-12">
+				<div class="form-group col-12">
 					<div class="radio">
 						<input {formname key=CONFLICT_ACTION} type="radio" id="bookAround"
 															  name="existingReservations"
@@ -113,7 +113,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 				{translate key="Filter"}
 			</div>
 			<div class="panel-body">
-				<div class="form-group col-xs-4">
+				<div class="form-group col-4">
 					<input id="startDate" type="text" class="form-control dateinput inline-block"
 						   value="{formatdate date=$StartDate}"
 						   title="Between start date" placeholder="{translate key=BeginDate}"/>
@@ -126,18 +126,18 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                     <label for="endDate" class="no-show">{translate key=EndDate}</label>
 
                 </div>
-				<div class="form-group col-xs-4">
+				<div class="form-group col-4">
                     <label for="scheduleId" class="no-show">{translate key=Schedule} </label>
 
-                    <select id="scheduleId" class="form-control col-xs-12">
+                    <select id="scheduleId" class="form-control col-12">
 						<option value="">{translate key=AllSchedules}</option>
 						{object_html_options options=$Schedules key='GetId' label="GetName" selected=$ScheduleId}
 					</select>
 				</div>
-				<div class="form-group col-xs-4">
+				<div class="form-group col-4">
                     <label for="resourceId" class="no-show">{translate key=Resource} </label>
 
-                    <select id="resourceId" class="form-control col-xs-12">
+                    <select id="resourceId" class="form-control col-12">
 						<option value="">{translate key=AllResources}</option>
 						{object_html_options options=$Resources key='GetId' label="GetName" selected=$ResourceId}
 					</select>

@@ -71,17 +71,17 @@ $.fn.showHidePanel = function () {
 
     function setIcon(panel, targetIcon) {
         var iconSpan = panel.find('.show-hide');
-        iconSpan.removeClass('glyphicon-chevron-up');
-        iconSpan.removeClass('glyphicon-chevron-down');
+        iconSpan.removeClass('fa-chevron-up');
+        iconSpan.removeClass('fa-chevron-down');
         iconSpan.addClass(targetIcon);
     }
 
     var visibility = readCookie(panel.attr('id'));
     if (visibility && visibility == '0') {
         panel.find('.panel-body, .panel-footer').hide();
-        setIcon(panel, 'glyphicon-chevron-down');
+        setIcon(panel, 'fa-chevron-down');
     } else {
-        setIcon(panel, 'glyphicon-chevron-up');
+        setIcon(panel, 'fa-chevron-up');
     }
 
     panel.find('.show-hide').click(function (e) {
@@ -92,11 +92,11 @@ $.fn.showHidePanel = function () {
         if (dashboard.css('display') == 'none') {
             createCookie(id, '1', 30);
             dashboard.show();
-            setIcon(panel, 'glyphicon-chevron-up');
+            setIcon(panel, 'fa-chevron-up');
         } else {
             createCookie(id, '0', 30);
             dashboard.hide();
-            setIcon(panel, 'glyphicon-chevron-down');
+            setIcon(panel, 'fa-chevron-down');
         }
     });
 };
@@ -107,7 +107,7 @@ $.fn.clearable = function () {
     textbox.closest('div').addClass('form-group has-feedback');
     textbox.addClass('hasclear form-control');
     if (textbox.next('.clearer').length === 0) {
-        $('<i/>', {class: 'clearer glyphicon glyphicon-remove-circle form-control-feedback'}).insertAfter(textbox);
+        $('<i/>', {class: 'clearer fa fa-remove-circle form-control-feedback'}).insertAfter(textbox);
     }
 
     textbox.keyup(function () {
