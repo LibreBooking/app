@@ -48,7 +48,7 @@
 
 {*<div id="availability-highlighter"></div>*}
 
-<a href="#" id="btnHideAvailability" class="pull-right"><i class="fa fa-arrow-circle-left"></i> Reservation Details</a>
+<a href="#" id="btnHideAvailability" class="pull-right"><i class="fa fa-arrow-circle-left"></i> {translate key="ReservationDetails"}</a>
 {* End slot display formatting *}
 {assign var=TodaysDate value=Date::Now()}
 {foreach from=$BoundDates item=date}
