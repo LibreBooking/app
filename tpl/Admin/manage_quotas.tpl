@@ -276,10 +276,10 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			};
 
 			$('#enforce-time-start').timepicker({
-				show24Hours: false
+				timeFormat: '{$TimeFormat}'
 			});
 			$('#enforce-time-end').timepicker({
-				show24Hours: false
+				timeFormat: '{$TimeFormat}'
 			});
 
 			var quotaManagement = new QuotaManagement(quotaOptions);
