@@ -48,7 +48,7 @@ class cz extends en_us
 		$dates['mobile_reservation_date'] = 'j.n. H:i';
 		$dates['general_date_js'] = 'd.m.yy';
 		$dates['general_time_js'] = 'h:mm tt';
-		$dates['timepicker_js'] = 'h:i a';
+		$dates['timepicker_js'] = 'H:i';
 		$dates['momentjs_datetime'] = 'D.M.YY hh:mm';
 		$dates['calendar_time'] = 'h:mmt';
 		$dates['calendar_dates'] = 'j.n.';
@@ -608,49 +608,49 @@ class cz extends en_us
 		$strings['NotifyUser'] = 'Upozornit uživatele';
 		$strings['Reject'] = 'Zamítnout';
 		$strings['Columns'] = 'Sloupce';
+		$strings['NewVersion'] = 'Nová verze!';
+		$strings['StartTime'] = 'Čas začátku';
+		$strings['EndTime'] = 'Čas konce';
+		$strings['SelectUser'] = 'Vybrat uživatele';
 		// End Strings
 
 		// Install
-		$strings['InstallApplication'] = 'Install Booked Scheduler(MySQL only)';
-		$strings['IncorrectInstallPassword'] = 'Sorry, that password was incorrect . ';
-		$strings['SetInstallPassword'] = 'You must set an install password before the installation can be run . ';
-		$strings['InstallPasswordInstructions'] = 'In % s please set % s to a password which is random and difficult to guess, then return to this page .<br />You can use %s';
-		$strings['NoUpgradeNeeded'] = 'There is no upgrade needed . Running the installation process will delete all existing data and install a new copy of Booked Scheduler!';
-		$strings['ProvideInstallPassword'] = 'Please provide your installation password . ';
-		$strings['InstallPasswordLocation'] = 'This can be found at % s in % s . ';
-		$strings['VerifyInstallSettings'] = 'Verify the following default settings before continuing . Or you can change them in % s . ';
-		$strings['DatabaseName'] = 'Database Name';
-		$strings['DatabaseUser'] = 'Database User';
-		$strings['DatabaseHost'] = 'Database Host';
-		$strings['DatabaseCredentials'] = 'You must provide credentials of a MySQL user who has privileges to create databases . If you do
-	{
-		not} know, contact your database admin . In many cases, root will work . ';
-		$strings['MySQLUser'] = 'MySQL User';
-		$strings['InstallOptionsWarning'] = 'The following options will probably not work in a hosted environment . If you are installing in a hosted environment, use the MySQL wizard tools to complete these steps . ';
-		$strings['CreateDatabase'] = 'Create the database';
-		$strings['CreateDatabaseUser'] = 'Create the database user';
-		$strings['PopulateExampleData'] = 'Import sample data . Creates admin account: admin / password and user account: user / password';
-		$strings['DataWipeWarning'] = 'Warning: This will delete any existing data';
-		$strings['RunInstallation'] = 'Run Installation';
-		$strings['UpgradeNotice'] = 'You are upgrading from version < b>%s </b > to version < b>%s </b > ';
-		$strings['RunUpgrade'] = 'Run Upgrade';
-		$strings['Executing'] = 'Executing';
-		$strings['StatementFailed'] = 'Failed . Details:';
-		$strings['SQLStatement'] = 'SQL Statement:';
-		$strings['ErrorCode'] = 'Error Code:';
-		$strings['ErrorText'] = 'Error Text:';
-		$strings['InstallationSuccess'] = 'Installation completed successfully!';
-		$strings['RegisterAdminUser'] = 'Register your admin user . This is required if you
-	{
-		did} not import the sample data . Ensure that $conf[\'settings\'][\'allow.self.registration\'] = \'true\' in your %s file.';
-		$strings['LoginWithSampleAccounts'] = 'If you imported the sample data, you can log in with admin/password for admin user or user/password for basic user.';
-		$strings['InstalledVersion'] = 'You are now running version %s of Booked Scheduler';
-		$strings['InstallUpgradeConfig'] = 'It is recommended to upgrade your config file';
-		$strings['InstallationFailure'] = 'There were problems with the installation.  Please correct them and retry the installation.';
-		$strings['ConfigureApplication'] = 'Configure Booked Scheduler';
-		$strings['ConfigUpdateSuccess'] = 'Your config file is now up to date!';
-		$strings['ConfigUpdateFailure'] = 'We could not automatically update your config file. Please overwrite the contents of config.php with the following:';
-		$strings['SelectUser'] = 'Select User';
+		$strings['InstallApplication'] = 'Instalace Booked Scheduleru (pouze pro MySQL)';
+		$strings['IncorrectInstallPassword'] = 'Nesprávné heslo.';
+		$strings['SetInstallPassword'] = 'Před pokračováním musíte zadat instalační heslo.';
+		$strings['InstallPasswordInstructions'] = 'V souboru %s nastavte řádek %s na náhodné a obtížně uhodnutelné heslo, poté se vraťte na tuto stránku.<br/>Můžete použít %s';
+		$strings['NoUpgradeNeeded'] = 'Žádná aktualizace není potřeba. Opětovné spuštění instalačního procesu smaže veškerá stávající data a znovu nainstaluje Booked Scheduler!';
+		$strings['ProvideInstallPassword'] = 'Zadejte prosím instalační heslo.';
+		$strings['InstallPasswordLocation'] = 'To je zadáno v souboru %s v řádku %s.';
+		$strings['VerifyInstallSettings'] = 'Před pokračovnáním ověřte následující výchozí nastavení. Nebo jej změňte v %s.';
+		$strings['DatabaseName'] = 'Název databáze';
+		$strings['DatabaseUser'] = 'Databázový uživatel';
+		$strings['DatabaseHost'] = 'Databázový server';
+		$strings['DatabaseCredentials'] = 'Musíte zadat pověření MySQL uživatele který má práva k vytváření databází. Pokud taková pověření neznáte, kontaktujte svého databázového administrátora. V mnoha případech bude fungovat root.';
+		$strings['MySQLUser'] = 'MySQL uživatel';
+		$strings['InstallOptionsWarning'] = 'Následující nastavení pravděpodobně nebudou fungovat ve sdíleném prostředí. Pokud instalujete do sdíleného prostředí, použijte k dokončení následujících kroků nástroje pro správu MySQL.';
+		$strings['CreateDatabase'] = 'Vytvořit databázi';
+		$strings['CreateDatabaseUser'] = 'Vytvořit databázového uživateler';
+		$strings['PopulateExampleData'] = 'Importovat vzorová data. Vytvoří administrátorský účet: admin/password a uživatelský účet: user/password';
+		$strings['DataWipeWarning'] = 'Varování: Tato akce smaže veškerá data';
+		$strings['RunInstallation'] = 'Spustit instalaci';
+		$strings['UpgradeNotice'] = 'Aktualizujete z verze <b>%s</b> na verzi <b>%s</b>';
+		$strings['RunUpgrade'] = 'Spustit aktualizaci';
+		$strings['Executing'] = 'Provádí se';
+		$strings['StatementFailed'] = 'Dotaz selhal. Podrobnosti:';
+		$strings['SQLStatement'] = 'SQL dotaz:';
+		$strings['ErrorCode'] = 'Kód chyby:';
+		$strings['ErrorText'] = 'Text chyby:';
+		$strings['InstallationSuccess'] = 'Instalace byla úspěšně dokončena!';
+		$strings['RegisterAdminUser'] = 'Zaregistrujte si administrátorského uživatele, pokud jste neimportovali vzorová data. Ověřte že $conf[\'settings\'][\'allow.self.registration\'] = \'true\' v souboru %s.';
+		$strings['LoginWithSampleAccounts'] = 'Pokud jste importovali vzorová data, přihlašte se s administrátorským pověřením admin/password nebo uživatelským pověřením user/password.';
+		$strings['InstalledVersion'] = 'Nainstalovaná verze Booked Scheduleru je %s';
+		$strings['InstallUpgradeConfig'] = 'Doporučujeme aktualizovat váš konfigurační soubor';
+		$strings['InstallationFailure'] = 'Vyskytly se problémy během instalace. Prosím opravte je a zkuste instalaci spustit znovu.';
+		$strings['ConfigureApplication'] = 'Nastavit Booked Scheduler';
+		$strings['ConfigUpdateSuccess'] = 'Váš konfigurační soubor je aktuální!';
+		$strings['ConfigUpdateFailure'] = 'Nepodařilo se automaticky aktualizovat konfigurační soubor. Prosím přepište obsah souboru config.php následujícím:';
+		$strings['ScriptUrlWarning'] = 'Vaše nastavení <em>script.url</em> pravděpodobně není spávné. V současnosti je nastaveno na <strong>%s</strong>, ale nejspíše by mělo být <strong>%s</strong>';
 		// End Install
 
 // Errors
@@ -784,6 +784,28 @@ $strings['DaySaturdayAbbr'] = 'So';
 		$strings['ReservationStartingSoonSubject'] = ' Vaše rezervace %s zanedlouho začne';
 		$strings['ReservationEndingSoonSubject'] = 'Vaše rezervace %s zanedlouho končí';
 		$strings['UserAdded'] = 'Byl přidán nový uživatel';
+		$strings['UserDeleted'] = 'Uživatelský účet %s byl smazán uživatelem %s';
+		$strings['GuestAccountCreatedSubject'] = 'Podrobnosti vašeho účtu %s';
+		$strings['AccountCreatedSubject'] = 'Podrobnosti vašeho účtu %s';
+		$strings['InviteUserSubject'] = '%s vás pozval k přidání do %s';
+
+		$strings['ReservationApprovedSubjectWithResource'] = 'Rezervace %s byla schválena';
+		$strings['ReservationCreatedSubjectWithResource'] = 'Rezervace %s byla vytvořena';
+		$strings['ReservationUpdatedSubjectWithResource'] = 'Rezervace %s byla aktualizována';
+		$strings['ReservationDeletedSubjectWithResource'] = 'Rezervace %s byla odstraněna';
+		$strings['ReservationCreatedAdminSubjectWithResource'] = 'Upozornění: Rezervace %s byla schválena';
+		$strings['ReservationUpdatedAdminSubjectWithResource'] = 'Upozornění: Rezervace %s byla aktualizována';
+		$strings['ReservationDeleteAdminSubjectWithResource'] = 'Upozornění: Rezervace %s byla odstraněna';
+		$strings['ReservationApprovalAdminSubjectWithResource'] = 'Upozornění: Rezervace %s vyžaduje vaše schválení';
+		$strings['ParticipantAddedSubjectWithResource'] = '%s vás přidal k rezervaci %s';
+		$strings['ParticipantDeletedSubjectWithResource'] = '%s vás odebral z rezervace %s';
+		$strings['InviteeAddedSubjectWithResource'] = '%s vás pozval k rezervaci %s';
+		$strings['MissedCheckinEmailSubject'] = 'Zmeškané odbavení %s';
+		$strings['ReservationShareSubject'] = '%s sdílel reservaci %s';
+		$strings['ReservationSeriesEndingSubject'] = 'Série rezervací %s končí %s';
+		$strings['ReservationParticipantAccept'] = '%s přijal vaše pozvání k rezervaci %s na %s';
+		$strings['ReservationParticipantDecline'] = '%s odmítl vaše pozvání k rezervaci %s na %s';
+		$strings['ReservationParticipantJoin'] = '%s se přidal k vašemu pozvání k rezervaci %s na %s';
 // End Email Subjects
 
 $this->Strings = $strings;
