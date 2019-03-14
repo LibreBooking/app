@@ -34,8 +34,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 													 value="{formatdate date=$AddStartDate key=system}"/>
 					<input {formname key=BEGIN_TIME} type="text" id="addStartTime"
 													 class="form-control dateinput inline-block timepicker"
-													 value="{format_date format='h:00 A' date=now}" title="Start time"/>
-                    <label for="addStartTime" class="no-show">Start Time</label>
+													 value="{format_date format='h:00 A' date=now}" title="{translate key=StartTime}"/>
+                    <label for="addStartTime" class="no-show">{translate key=StartTime}</label>
 				</div>
 				<div class="form-group col-xs-6">
 					<label for="addEndDate">{translate key=EndDate}</label>
@@ -46,8 +46,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 					<input {formname key=END_TIME} type="text" id="addEndTime"
 												   class="form-control dateinput inline-block timepicker"
 												   value="{format_date format='h:00 A' date=Date::Now()->AddHours(1)}"
-												   title="End time"/>
-                    <label for="addEndTime" class="no-show">Start Time</label>
+												   title="{translate key=EndTime}"/>
+                    <label for="addEndTime" class="no-show">{translate key=EndTime}</label>
                 </div>
 				<div class="form-group col-xs-12">
 					<label for="addResourceId">{translate key=Resource}</label>
@@ -62,7 +62,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 						</div>
                         <label for="addScheduleId" class="no-show">{translate key=Schedule} </label>
                         <select {formname key=SCHEDULE_ID} id="addScheduleId" class="form-control" disabled="disabled"
-														   title="Schedule">
+														   title="{translate key=Schedule}">
 							{object_html_options options=$Schedules key='GetId' label="GetName" selected=$ScheduleId}
 						</select>
 					{/if}

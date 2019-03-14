@@ -776,6 +776,8 @@ class en_us extends Language
         $strings['NotAttending'] = 'Not Attending';
         $strings['ViewAvailability'] = 'View Availability';
         $strings['ReservationDetails'] = 'Reservation Details';
+        $strings['StartTime'] = 'Start Time';
+        $strings['EndTime'] = 'End Time';
         // End Strings
 
 		// Install

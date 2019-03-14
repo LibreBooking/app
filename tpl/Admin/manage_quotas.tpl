@@ -80,8 +80,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 					<div id='enforce-hours-times' class='inline no-show'>
 						<div class='form-group form-group-sm'>
 							<span>{translate key=Between}</span>
-                            <label for='enforce-time-start' class='no-show'>Start Time</label>
-                            <label for='enforce-time-end' class='no-show'>End Time</label>
+                            <label for='enforce-time-start' class='no-show'>{translate key=StartTime}</label>
+                            <label for='enforce-time-end' class='no-show'>{translate key=EndTime}</label>
                             <input type='text' class='form-control time' id='enforce-time-start' size='6' value='12:00am' {formname key=BEGIN_TIME}/>
 							-
 							<input type='text' class='form-control time' id='enforce-time-end' size='6' value='12:00am' {formname key=END_TIME}/>
