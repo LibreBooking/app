@@ -372,7 +372,7 @@ class cz extends en_us
 		$strings['Reserved'] = 'Rezervováno';
 		$strings['MyReservation'] = 'Mé rezervace';
 		$strings['Pending'] = 'Před schválením';
-		$strings['Past'] = 'Zmeškané';
+		$strings['Past'] = 'Minulost';
 		$strings['Restricted'] = 'Mimo provoz';
 		$strings['ViewAll'] = 'Zobrazit vše';
 		$strings['MoveResourcesAndReservations'] = 'Přesunout prostředek a rezervace do';
@@ -612,6 +612,25 @@ class cz extends en_us
 		$strings['StartTime'] = 'Čas začátku';
 		$strings['EndTime'] = 'Čas konce';
 		$strings['SelectUser'] = 'Vybrat uživatele';
+		$strings['TermsOfService'] = 'Podmínky užití';
+		$strings['EnterTermsManually'] = 'Zadat podmínky ručne';
+		$strings['LinkToTerms'] = 'Odkaz na podmínky';
+		$strings['UploadTerms'] = 'Nahrát podmínky';
+		$strings['RequireTermsOfServiceAcknowledgement'] = 'Vyžadovat souhlas s podmínkami';
+		$strings['UponReservation'] = 'Při rezervaci';
+		$strings['UponRegistration'] = 'Při registraci';
+		$strings['ViewTerms'] = 'Zobrazit podmínky užití';
+		$strings['IAccept'] = 'Souhlasím';
+		$strings['TheTermsOfService'] = 'Podmínky užití';
+		$strings['ReservationColors'] = 'Barvy rezervací';
+		$strings['Attribute'] = 'Atribut';
+		$strings['AddRule'] = 'Přidat pravidlo';
+		$strings['RequiredValue'] = 'Vyžadovaná hodnota';
+		$strings['ReservationCustomRuleAdd'] = 'Použit barvu, pokud je atribut rezervace nastaven na následující hodnotu';
+		$strings['AddReservationColorRule'] = 'Přidat pravidlo barvy rezervací';
+		$strings['CollectedFor'] = 'Zobrazováno pro';
+		$strings['LimitAttributeScope'] = 'Zobrazovat v konkrétních případech';
+		$strings['AdminOnly'] = 'Pouze pro Admina';
 		// End Strings
 
 		// Install
@@ -778,7 +797,7 @@ $strings['DaySaturdayAbbr'] = 'So';
         $strings['ParticipantAddedSubject'] = 'Upozornění: rezervace účastníků';
         $strings['ParticipantDeletedSubject'] = 'Rezervace zrušena';
         $strings['InviteeAddedSubject'] = 'Pozvánka do rezervace';
-        $strings['ResetPassword'] = 'Požadavek na resetování hesla';
+        $strings['ResetPasswordRequest'] = 'Požadavek na resetování hesla';
         $strings['ActivateYourAccount'] = 'Prosíme, aktivujte svůj účet';
         $strings['ReportSubject'] = 'Vaše požadovaná hlášení (%s)';
 		$strings['ReservationStartingSoonSubject'] = ' Vaše rezervace %s zanedlouho začne';
