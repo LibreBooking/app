@@ -30,7 +30,7 @@ html, body {
 
 body {
   padding-bottom: @footer-height; // + 30; /* this needs to be bigger than footer height*/
-  padding-top: 70px;
+  //padding-top: 70px;
   background-color: @color-body-background;
 }
 
@@ -113,6 +113,7 @@ a:hover {
   color: #fff; // @dark-gray;
   border: solid 1px @color-boxes-border; //@light-gray;
   .border-radius(5px, 0, 0, 5px);
+
   a {
     color: @light-gray
   }
@@ -471,10 +472,10 @@ input.mid-number {
 }
 
 .checkbox-single {
-  padding-top:0;
-  padding-bottom:0;
-  margin-top:0;
-  margin-bottom:0;
+  padding-top: 0;
+  padding-bottom: 0;
+  margin-top: 0;
+  margin-bottom: 0;
 }
 
 .ui-autocomplete {
@@ -483,6 +484,7 @@ input.mid-number {
 
 .jqtree-tree, .jqtree-tree li {
   list-style: none;
+
   a {
     text-decoration: none;
     cursor: pointer;
@@ -522,6 +524,41 @@ input.mid-number {
 .navbar-brand {
   padding: 0;
 }
+
+/**
+materialize overrides
+ */
+
+nav {
+  background-color: #f8f8f8;
+
+  a {
+    color: @almost-black !important;
+  }
+
+  .brand-logo {
+    position: relative;
+    float: left;
+  }
+
+  ul a {padding: 0 10px;}
+}
+
+@media only screen and (min-width: 601px) {
+  nav li, nav a, div.nav-wrapper, nav.nav-content, nav .nav-wrapper i {
+    height: 50px;
+    line-height: 50px
+  }
+}
+.nav-content {
+  ul a {font-size: 14px;}
+}
+
+i.right {
+  margin-left: 0;
+}
+
+/** end **/
 
 .ui-datepicker {
   z-index: 10000 !important;
@@ -694,9 +731,10 @@ label.customAttribute {
   padding-top: 50px;
   margin-top: -50px;
 }
+
 #page-help-admin, #page-help {
   h2 {
-    line-height:55px;
+    line-height: 55px;
   }
 }
 
@@ -705,13 +743,13 @@ input[type=search]::-webkit-search-cancel-button {
 }
 
 .close-forever {
-  font-size:11pt;
+  font-size: 11pt;
 }
 
 #page-register {
   #captchaDiv {
     i {
-      top:125px;
+      top: 125px;
     }
   }
 }

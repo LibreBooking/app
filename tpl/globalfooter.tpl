@@ -24,10 +24,12 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 	</footer>
 
 	<script type="text/javascript">
-		init();
-		$.blockUI.defaults.css.border = 'none';
-		$.blockUI.defaults.css.top = '25%';
-
+        $(document).ready(function () {
+            init();
+            $.blockUI.defaults.css.border = 'none';
+            $.blockUI.defaults.css.top = '25%';
+            $("nav").find(".dropdown-trigger").dropdown({ constrainWidth: false,coverTrigger:false });
+        });
 	</script>
 
 	{if !empty($GoogleAnalyticsTrackingId)}

@@ -72,7 +72,6 @@ body {
 }
 body {
   padding-bottom: 40px;
-  padding-top: 70px;
   background-color: #fbfbfb;
 }
 .adjust-nav-bar-static {
@@ -536,6 +535,39 @@ input.mid-number {
 .navbar-brand {
   padding: 0;
 }
+/**
+materialize overrides
+ */
+nav {
+  background-color: #f8f8f8;
+}
+nav a {
+  color: #353432 !important;
+}
+nav .brand-logo {
+  position: relative;
+  float: left;
+}
+nav ul a {
+  padding: 0 10px;
+}
+@media only screen and (min-width: 601px) {
+  nav li,
+  nav a,
+  div.nav-wrapper,
+  nav.nav-content,
+  nav .nav-wrapper i {
+    height: 50px;
+    line-height: 50px;
+  }
+}
+.nav-content ul a {
+  font-size: 14px;
+}
+i.right {
+  margin-left: 0;
+}
+/** end **/
 .ui-datepicker {
   z-index: 10000 !important;
 }
