@@ -28,8 +28,12 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
             init();
             $.blockUI.defaults.css.border = 'none';
             $.blockUI.defaults.css.top = '25%';
-            $("#desktop-navigation, #mobile-navigation").find(".dropdown-trigger").dropdown({ constrainWidth: false,coverTrigger:false });
+            $("#desktop-navigation, #mobile-navigation").find(".dropdown-trigger").dropdown({
+                constrainWidth: false,
+                coverTrigger: false
+            });
             $('#mobile-navigation').sidenav();
+            $('select').formSelect();
         });
 	</script>
 

@@ -160,21 +160,21 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                 {/if}
 
                 <li id="navHelpDropdown" class="right">
-                    <a class="dropdown-trigger" href="#!" data-target="view-help-nav">
+                    <a class="dropdown-trigger" href="#" data-target="view-help-nav">
                         {translate key="Help"}<i class="material-icons right">arrow_drop_down</i>
                     </a>
                 </li>
 
                 {if $CanViewAdmin}
                     <li id="navHelpDropdown" class="right">
-                        <a class="dropdown-trigger" href="#!" data-target="view-settings-nav">
+                        <a class="dropdown-trigger" href="#" data-target="view-settings-nav">
                             <i class="material-icons {if $ShowNewVersion}new-version{/if}" id="newVersionBadge">settings</i>
                         </a>
                     </li>
                 {/if}
                 {if $ShowScheduleLink}
                     <li id="navScheduleDropdown" class="right">
-                        <a class="dropdown-trigger" href="#!" data-target="view-schedule-nav">
+                        <a class="dropdown-trigger" href="#" data-target="view-schedule-nav">
                             {translate key="Schedule"}<i class="material-icons right">arrow_drop_down</i>
                         </a>
                     </li>
@@ -188,7 +188,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
         {if $ShowScheduleLink}
             <li id="navScheduleDropdown">
-                <a class="dropdown-trigger" href="#!" data-target="view-schedule-navmobile">
+                <a class="dropdown-trigger" href="#" data-target="view-schedule-navmobile">
                     {translate key="Schedule"}<i class="material-icons right">arrow_drop_down</i>
                 </a>
             </li>
@@ -196,14 +196,14 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
         {if $CanViewAdmin}
             <li id="navHelpDropdownmobile">
-                <a class="dropdown-trigger" href="#!" data-target="view-settings-navmobile">
+                <a class="dropdown-trigger" href="#" data-target="view-settings-navmobile">
                     <i class="material-icons {if $ShowNewVersion}new-version{/if}" id="newVersionBadge">settings</i>
                 </a>
             </li>
         {/if}
 
         <li id="navHelpDropdownmobile">
-            <a class="dropdown-trigger" href="#!" data-target="view-help-navmobile">
+            <a class="dropdown-trigger" href="#" data-target="view-help-navmobile">
                 {translate key="Help"}<i class="material-icons right">arrow_drop_down</i>
             </a>
         </li>

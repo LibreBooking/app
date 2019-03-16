@@ -774,6 +774,8 @@ class en_us extends Language
         $strings['SpecificTime'] = 'Specific Time';
         $strings['ReservationSeriesEndingPreference'] = 'When my recurring reservation series is ending';
         $strings['NotAttending'] = 'Not Attending';
+        $strings['SignInGoogle'] = 'Sign in with Google';
+        $strings['SignInFacebook'] = 'Sign in with Facebook';
         // End Strings
 
 		// Install

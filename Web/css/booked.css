@@ -200,6 +200,11 @@ a:hover {
 .default-box-header a {
   color: #E9E9E9;
 }
+.justify-space-between-align-center {
+  justify-content: space-between;
+  align-items: center;
+  display: flex;
+}
 #page-login {
   height: 100%;
   margin-top: -20px;
@@ -217,8 +222,15 @@ a:hover {
   padding: 5px;
   margin-bottom: 20px;
 }
+#page-login .login-icon {
+  text-align: center;
+  padding: 18px 0;
+}
 #page-login .login-icon img {
   max-width: 100%;
+}
+#page-login #login-box {
+  background-color: #f8f8f8;
 }
 #page-login .default-box {
   background-color: #f8f8f8;
@@ -228,9 +240,16 @@ a:hover {
   text-align: center;
   padding-bottom: 7px;
 }
+#page-login .login-action {
+  padding-bottom: 7px;
+}
 #page-login .register {
-  text-align: right;
-  padding-top: 7px;
+  text-align: center;
+  padding-bottom: 7px;
+}
+#page-login .divider {
+  border: solid 1px #E9E9E9;
+  margin-bottom: 5px;
 }
 .login-links {
   text-align: center;
@@ -582,6 +601,9 @@ i.right {
 }
 #mobile-navigation .material-icons {
   vertical-align: bottom;
+}
+.container {
+  width: 90%;
 }
 /** end **/
 .ui-datepicker {
