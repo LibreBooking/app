@@ -193,25 +193,25 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
         {/if}
 
         {if $CanViewAdmin}
-            <li id="navHelpDropdown">
+            <li id="navHelpDropdownmobile">
                 <a class="dropdown-trigger" href="#!" data-target="view-settings-navmobile">
                     <i class="material-icons {if $ShowNewVersion}new-version{/if}" id="newVersionBadge">settings</i>
                 </a>
             </li>
         {/if}
 
-        <li id="navHelpDropdown">
+        <li id="navHelpDropdownmobile">
             <a class="dropdown-trigger" href="#!" data-target="view-help-navmobile">
                 {translate key="Help"}<i class="material-icons right">arrow_drop_down</i>
             </a>
         </li>
 
         {if $LoggedIn}
-            <li id="navSignOut">
+            <li id="navSignOutmobile">
                 <a href="{$Path}logout.php">{translate key="SignOut"}</a>
             </li>
         {else}
-            <li id="navLogIn">
+            <li id="navLogInmobile">
                 <a href="{$Path}index.php">{translate key="LogIn"}</a>
             </li>
         {/if}
