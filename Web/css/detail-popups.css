@@ -74,9 +74,6 @@ body {
   padding-bottom: 40px;
   background-color: #fbfbfb;
 }
-.adjust-nav-bar-static {
-  margin-top: -70px;
-}
 a,
 a:visited {
   color: #669999;
@@ -425,6 +422,10 @@ label.booked-checkbox span {
 .navbar-fixed-top {
   z-index: 999;
 }
+.navbar-static-top {
+  position: fixed;
+  top: 0;
+}
 .error-list {
   padding-left: 50px;
 }
@@ -535,6 +536,15 @@ input.mid-number {
 .navbar-brand {
   padding: 0;
 }
+@media (max-width: 1024px) {
+  .navbar-fixed-top {
+    position: fixed;
+    top: 0;
+  }
+  body {
+    margin-top: 70px;
+  }
+}
 /**
 materialize overrides
  */
@@ -543,10 +553,6 @@ nav {
 }
 nav a {
   color: #353432 !important;
-}
-nav .brand-logo {
-  position: relative;
-  float: left;
 }
 nav ul a {
   padding: 0 10px;
@@ -560,12 +566,22 @@ nav ul a {
     height: 50px;
     line-height: 50px;
   }
+  nav .brand-logo {
+    position: relative;
+    float: left;
+  }
 }
 .nav-content ul a {
   font-size: 14px;
 }
 i.right {
   margin-left: 0;
+}
+#mobile-navigation .right {
+  float: none !important;
+}
+#mobile-navigation .material-icons {
+  vertical-align: bottom;
 }
 /** end **/
 .ui-datepicker {

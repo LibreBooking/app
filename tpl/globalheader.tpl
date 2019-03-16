@@ -133,235 +133,20 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 <body {if $HideNavBar == true}style="padding-top:0;"{/if}>
 
 {if $HideNavBar == false}
-    <ul id="my-account-nav" class="nav-content dropdown-content">
-        <li id="navProfile"><a href="{$Path}{Pages::PROFILE}">{translate key="Profile"}</a></li>
-        <li id="navPassword"><a
-                    href="{$Path}{Pages::PASSWORD}">{translate key="ChangePassword"}</a></li>
-        <li id="navNotification">
-            <a href="{$Path}{Pages::NOTIFICATION_PREFERENCES}">{translate key="NotificationPreferences"}</a>
-        </li>
-        {if $ShowParticipation}
-            <li id="navInvitations">
-                <a href="{$Path}{Pages::PARTICIPATION}">{translate key="OpenInvitations"}</a>
-            </li>
-        {/if}
-        {if $CreditsEnabled}
-            <li id="navUserCredits">
-                <a href="{$Path}{Pages::CREDITS}">{translate key="Credits"}</a>
-            </li>
-        {/if}
-    </ul>
-    <ul id="schedule-nav" class="nav-content dropdown-content">
-        <li id="navBookings"><a href="{$Path}{Pages::SCHEDULE}">{translate key="Bookings"}</a>
-        </li>
-        <li id="navMyCalendar"><a
-                    href="{$Path}{Pages::MY_CALENDAR}">{translate key="MyCalendar"}</a></li>
-        <li id="navResourceCalendar"><a
-                    href="{$Path}{Pages::CALENDAR}">{translate key="ResourceCalendar"}</a></li>
-        <!--<li class="menuitem"><a href="#">{translate key="Current Status"}</a></li>-->
-        <li id="navFindATime"><a href="{$Path}{Pages::OPENINGS}">{translate key="FindATime"}</a>
-        </li>
-        <li id="navFindATime"><a
-                    href="{$Path}{Pages::SEARCH_RESERVATIONS}">{translate key="SearchReservations"}</a>
-        </li>
-    </ul>
-    <ul id="admin-nav" class="nav-content dropdown-content">
-        <li id="navManageReservations">
-            <a href="{$Path}admin/manage_reservations.php">{translate key="ManageReservations"}</a>
-        </li>
-        <li id="navManageBlackouts">
-            <a href="{$Path}admin/manage_blackouts.php">{translate key="ManageBlackouts"}</a>
-        </li>
-        <li id="navManageQuotas">
-            <a href="{$Path}admin/manage_quotas.php">{translate key="ManageQuotas"}</a>
-        </li>
-        <li class="divider"></li>
-        <li id="navManageSchedules">
-            <a href="{$Path}admin/manage_schedules.php">{translate key="ManageSchedules"}</a>
-        <li id="navManageResources">
-            <a href="{$Path}admin/manage_resources.php">{translate key="ManageResources"}</a>
-        </li>
-        <li id="navManageAccessories">
-            <a href="{$Path}admin/manage_accessories.php">{translate key="ManageAccessories"}</a>
-        </li>
 
-        <li class="divider"></li>
-        <li id="navManageUsers">
-            <a href="{$Path}admin/manage_users.php">{translate key="ManageUsers"}</a>
-        </li>
-        <li id="navManageGroups">
-            <a href="{$Path}admin/manage_groups.php">{translate key="ManageGroups"}</a>
-        </li>
+    {include file="Navbar/navbar-dropdowns.tpl" LoggedIn=$LoggedIn}
+    {include file="Navbar/navbar-dropdowns.tpl" suffix="mobile" LoggedIn=$LoggedIn}
 
-        <li id="navManageAnnouncements">
-            <a href="{$Path}admin/manage_announcements.php">{translate key="ManageAnnouncements"}</a>
-        </li>
-        <li class="divider"></li>
-        {if $PaymentsEnabled}
-            <li id="navManagePayments">
-                <a href="{$Path}admin/manage_payments.php">{translate key="ManagePayments"}</a>
-            </li>
-        {/if}
-        <li id="navManageAttributes">
-            <a href="{$Path}admin/manage_attributes.php">{translate key="CustomAttributes"}</a>
-        </li>
-    </ul>
-    <ul id="responsibilities-nav" class="nav-content dropdown-content">
-        {if $CanViewGroupAdmin}
-            <li id="navResponsibilitiesGAUsers">
-                <a href="{$Path}admin/manage_group_users.php">
-                    {translate key="ManageUsers"}
-                </a>
-            </li>
-            <li id="navResponsibilitiesGAReservations">
-                <a href="{$Path}admin/manage_group_reservations.php">
-                    {translate key="GroupReservations"}
-                </a>
-            </li>
-            <li id="navResponsibilitiesGAGroups">
-                <a href="{$Path}admin/manage_admin_groups.php">
-                    {translate key="ManageGroups"}
-                </a>
-            </li>
-        {/if}
-        {if $CanViewResourceAdmin || $CanViewScheduleAdmin}
-            <li id="navResponsibilitiesRAResources">
-                <a href="{$Path}admin/manage_admin_resources.php">
-                    {translate key="ManageResources"}
-                </a>
-            </li>
-            <li id="navResponsibilitiesRABlackouts">
-                <a href="{$Path}admin/manage_blackouts.php">
-                    {translate key="ManageBlackouts"}
-                </a>
-            </li>
-        {/if}
-        {if $CanViewResourceAdmin}
-            <li id="navResponsibilitiesRAReservations">
-                <a href="{$Path}admin/manage_resource_reservations.php">
-                    {translate key="ResourceReservations"}
-                </a>
-            </li>
-        {/if}
-        {if $CanViewScheduleAdmin}
-            <li id="navResponsibilitiesSASchedules">
-                <a href="{$Path}admin/manage_admin_schedules.php">
-                    {translate key="ManageSchedules"}
-                </a>
-            </li>
-            <li id="navResponsibilitiesSAReservations">
-                <a href="{$Path}admin/manage_schedule_reservations.php">
-                    {translate key="ScheduleReservations"}
-                </a>
-            </li>
-        {/if}
-        <li id="navResponsibilitiesAnnouncements">
-            <a href="{$Path}admin/manage_announcements.php">{translate key="ManageAnnouncements"}</a>
-        </li>
-    </ul>
-    <ul id="reports-nav" class="nav-content dropdown-content">
-        <li id="navGenerateReport">
-            <a href="{$Path}reports/{Pages::REPORTS_GENERATE}">{translate key=GenerateReport}</a>
-        </li>
-        <li id="navSavedReports">
-            <a href="{$Path}reports/{Pages::REPORTS_SAVED}">{translate key=MySavedReports}</a>
-        </li>
-        <li id="navCommonReports">
-            <a href="{$Path}reports/{Pages::REPORTS_COMMON}">{translate key=CommonReports}</a>
-        </li>
-    </ul>
-    <ul id="view-schedule-nav" class="nav-content dropdown-content">
-        <li id="navViewSchedule">
-            <a href="view-schedule.php">
-                {translate key='ViewSchedule'}
-            </a>
-        </li>
-        <li id="navViewCalendar">
-            <a href="view-calendar.php">
-                {translate key='ViewCalendar'}
-            </a>
-        </li>
-    </ul>
-    <ul id="view-settings-nav" class="nav-content dropdown-content">
-        {if $EnableConfigurationPage}
-            <li id="navManageConfiguration"><a
-                        href="{$Path}admin/manage_configuration.php">{translate key="ManageConfiguration"}</a>
-            </li>
-        {/if}
-        <li id="navEmailTemplates"><a
-                    href="{$Path}admin/manage_email_templates.php">{translate key="ManageEmailTemplates"}</a>
-        </li>
-        <li id="navLookAndFeel"><a
-                    href="{$Path}admin/manage_theme.php">{translate key="LookAndFeel"}</a>
-        </li>
-        <li id="navImport"><a href="{$Path}admin/import.php">{translate key="Import"}</a>
-        </li>
-        <li id="navServerSettings"><a
-                    href="{$Path}admin/server_settings.php">{translate key="ServerSettings"}</a>
-        </li>
-        <li id="navDataCleanup"><a
-                    href="{$Path}admin/data_cleanup.php">{translate key="DataCleanup"}</a>
-        </li>
-        {if $ShowNewVersion}
-            <li class="divider new-version"></li>
-            <li id="navNewVersion" class="new-version">
-                <a href="https://www.bookedscheduler.com/whatsnew">{translate key=WhatsNew}</a>
-            </li>
-        {/if}
-    </ul>
-    <ul id="view-help-nav" class="nav-content dropdown-content">
-        <li id="navHelp"><a href="{$Path}help.php">{translate key=Help}</a></li>
-        {if $CanViewAdmin}
-            <li id="navHelpAdmin"><a
-                    href="{$Path}help.php?ht=admin">{translate key=Administration}</a></li>{/if}
-        <li id="navAbout"><a href="{$Path}help.php?ht=about">{translate key=About}</a></li>
-    </ul>
-    <nav class="nav-content {if $IsDesktop}navbar-fixed-top{else}navbar-static-top adjust-nav-bar-static{/if}"
-         role="navigation">
+    <nav id="desktop-navigation" class="nav-content navbar-fixed-top" role="navigation">
         <div class="nav-wrapper">
-            <a href="{$HomeUrl}" class="brand-logo">{html_image src="$LogoUrl?{$Version}" alt="$Title" class="logo"}</a>
-            <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+            <a href="{$HomeUrl}" class="brand-logo">
+                {html_image src="$LogoUrl?{$Version}" alt="$Title" class="logo"}
+            </a>
+            <a href="#" data-target="mobile-navigation" class="sidenav-trigger">
+                <i class="material-icons">menu</i>
+            </a>
             <ul class="hide-on-med-and-down">
-                {if $LoggedIn}
-                    <li id="navDashboard">
-                        <a href="{$Path}{Pages::DASHBOARD}">{translate key="Dashboard"}</a>
-                    </li>
-                    <li id="navMyAccount">
-                        <a class="dropdown-trigger" href="#!" data-target="my-account-nav">
-                            {translate key="MyAccount"}<i class="material-icons right">arrow_drop_down</i>
-                        </a>
-                    <li id="navScheduleDropdown">
-                        <a class="dropdown-trigger" href="#!" data-target="schedule-nav">
-                            {translate key="Schedule"}<i class="material-icons right">arrow_drop_down</i>
-                        </a>
-                    </li>
-                    {if $CanViewAdmin}
-                        <li id="navApplicationManagementDropdown">
-                            <a class="dropdown-trigger" href="#!" data-target="admin-nav">
-                                {translate key="ApplicationManagement"}<i
-                                        class="material-icons right">arrow_drop_down</i>
-                            </a>
-                        </li>
-                    {/if}
-                    {if $CanViewResponsibilities}
-                        <li id="navResponsibilitiesDropdown">
-                            <a class="dropdown-trigger" href="#!" data-target="responsibilities-nav">
-                                {translate key="Responsibilities"}<i class="material-icons right">arrow_drop_down</i>
-                            </a>
-                        </li>
-                    {/if}
-                    {if $CanViewReports}
-                        <li id="navReportsDropdown">
-                            <a class="dropdown-trigger" href="#!" data-target="reports-nav">
-                                {translate key="Reports"}<i class="material-icons right">arrow_drop_down</i>
-                            </a>
-                        </li>
-                    {/if}
-                {/if}
-                {*</ul>*}
-
-                {*<div class="right">*}
-                {*<ul class="hide-on-med-and-down">*}
+                {include file="Navbar/navbar.tpl" LoggedIn=$LoggedIn}
                 {if $LoggedIn}
                     <li id="navSignOut" class="right">
                         <a href="{$Path}logout.php">{translate key="SignOut"}</a>
@@ -377,16 +162,12 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                         {translate key="Help"}<i class="material-icons right">arrow_drop_down</i>
                     </a>
                 </li>
+
                 {if $CanViewAdmin}
                     <li id="navHelpDropdown" class="right">
                         <a class="dropdown-trigger" href="#!" data-target="view-settings-nav">
-                            <span class="no-show">Configuration</span>
-                            {if $ShowNewVersion}
-                                <i class="material-icons new-version" id="newVersionBadge">settings</i>
-                            {else}
-                                <i class="material-icons">settings</i>
-                            {/if}
-                            {*<i class="material-icons right">arrow_drop_down</i>*}
+                            <i class="material-icons {if $ShowNewVersion}new-version{/if}" id="newVersionBadge">settings</i>
+                        </a>
                     </li>
                 {/if}
                 {if $ShowScheduleLink}
@@ -396,240 +177,45 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                         </a>
                     </li>
                 {/if}
-
-
             </ul>
         </div>
-        </div>
     </nav>
-    {*<div class="collapse navbar-collapse" id="booked-navigation">*}
-    {*<ul class="nav navbar-nav">*}
-    {*{if $LoggedIn}*}
-    {*<li id="navDashboard"><a href="{$Path}{Pages::DASHBOARD}">{translate key="Dashboard"}</a></li>*}
-    {*<li class="dropdown" id="navMyAccountDropdown">*}
-    {*<a href="#" class="dropdown-toggle" data-toggle="dropdown">{translate key="MyAccount"} <b*}
-    {*class="caret"></b></a>*}
-    {*<ul class="dropdown-menu">*}
-    {*<li id="navProfile"><a href="{$Path}{Pages::PROFILE}">{translate key="Profile"}</a></li>*}
-    {*<li id="navPassword"><a*}
-    {*href="{$Path}{Pages::PASSWORD}">{translate key="ChangePassword"}</a></li>*}
-    {*<li id="navNotification">*}
-    {*<a href="{$Path}{Pages::NOTIFICATION_PREFERENCES}">{translate key="NotificationPreferences"}</a>*}
-    {*</li>*}
-    {*{if $ShowParticipation}*}
-    {*<li id="navInvitations">*}
-    {*<a href="{$Path}{Pages::PARTICIPATION}">{translate key="OpenInvitations"}</a>*}
-    {*</li>*}
-    {*{/if}*}
-    {*{if $CreditsEnabled}*}
-    {*<li id="navUserCredits">*}
-    {*<a href="{$Path}{Pages::CREDITS}">{translate key="Credits"}</a>*}
-    {*</li>*}
-    {*{/if}*}
-    {*</ul>*}
-    {*</li>*}
-    {*<li class="dropdown" id="navScheduleDropdown">*}
-    {*<a href="#" class="dropdown-toggle" data-toggle="dropdown">{translate key="Schedule"} <b*}
-    {*class="caret"></b></a>*}
-    {*<ul class="dropdown-menu">*}
-    {*<li id="navBookings"><a href="{$Path}{Pages::SCHEDULE}">{translate key="Bookings"}</a>*}
-    {*</li>*}
-    {*<li id="navMyCalendar"><a*}
-    {*href="{$Path}{Pages::MY_CALENDAR}">{translate key="MyCalendar"}</a></li>*}
-    {*<li id="navResourceCalendar"><a*}
-    {*href="{$Path}{Pages::CALENDAR}">{translate key="ResourceCalendar"}</a></li>*}
-    {*<!--<li class="menuitem"><a href="#">{translate key="Current Status"}</a></li>-->*}
-    {*<li id="navFindATime"><a href="{$Path}{Pages::OPENINGS}">{translate key="FindATime"}</a>*}
-    {*</li>*}
-    {*<li id="navFindATime"><a*}
-    {*href="{$Path}{Pages::SEARCH_RESERVATIONS}">{translate key="SearchReservations"}</a>*}
-    {*</li>*}
-    {*</ul>*}
-    {*</li>*}
-    {*{if $CanViewAdmin}*}
-    {*<li class="dropdown" id="navApplicationManagementDropdown">*}
-    {*<a href="#" class="dropdown-toggle"*}
-    {*data-toggle="dropdown">{translate key="ApplicationManagement"}*}
-    {*<b class="caret"></b></a>*}
-    {*<ul class="dropdown-menu">*}
-    {*<li id="navManageReservations"><a*}
-    {*href="{$Path}admin/manage_reservations.php">{translate key="ManageReservations"}</a>*}
-    {*</li>*}
-    {*<li id="navManageBlackouts"><a*}
-    {*href="{$Path}admin/manage_blackouts.php">{translate key="ManageBlackouts"}</a>*}
-    {*</li>*}
-    {*<li id="navManageQuotas"><a*}
-    {*href="{$Path}admin/manage_quotas.php">{translate key="ManageQuotas"}</a>*}
-    {*</li>*}
-    {*<li class="divider"></li>*}
-    {*<li id="navManageSchedules"><a*}
-    {*href="{$Path}admin/manage_schedules.php">{translate key="ManageSchedules"}</a>*}
-    {*<li id="navManageResources"><a*}
-    {*href="{$Path}admin/manage_resources.php">{translate key="ManageResources"}</a>*}
-    {*</li>*}
-    {*<li id="navManageAccessories"><a*}
-    {*href="{$Path}admin/manage_accessories.php">{translate key="ManageAccessories"}</a>*}
-    {*</li>*}
 
-    {*<li class="divider"></li>*}
-    {*<li id="navManageUsers"><a*}
-    {*href="{$Path}admin/manage_users.php">{translate key="ManageUsers"}</a>*}
-    {*</li>*}
-    {*<li id="navManageGroups"><a*}
-    {*href="{$Path}admin/manage_groups.php">{translate key="ManageGroups"}</a>*}
-    {*</li>*}
+    <ul class="sidenav" id="mobile-navigation">
+        {include file="Navbar/navbar.tpl" suffix="mobile" LoggedIn=$LoggedIn}
 
-    {*<li id="navManageAnnouncements"><a*}
-    {*href="{$Path}admin/manage_announcements.php">{translate key="ManageAnnouncements"}</a>*}
-    {*</li>*}
-    {*<li class="divider"></li>*}
-    {*{if $PaymentsEnabled}*}
-    {*<li id="navManagePayments"><a*}
-    {*href="{$Path}admin/manage_payments.php">{translate key="ManagePayments"}</a>*}
-    {*</li>*}
-    {*{/if}*}
-    {*<li class="dropdown-header">{translate key=Customization}</li>*}
-    {*<li id="navManageAttributes"><a*}
-    {*href="{$Path}admin/manage_attributes.php">{translate key="CustomAttributes"}</a>*}
-    {*</li>*}
-    {*</ul>*}
-    {*</li>*}
-    {*{/if}*}
-    {*{if $CanViewResponsibilities}*}
-    {*<li class="dropdown" id="navResponsibilitiesDropdown">*}
-    {*<a href="#" class="dropdown-toggle"*}
-    {*data-toggle="dropdown">{translate key="Responsibilities"} <b*}
-    {*class="caret"></b></a>*}
-    {*<ul class="dropdown-menu">*}
-    {*{if $CanViewGroupAdmin}*}
-    {*<li id="navResponsibilitiesGAUsers"><a*}
-    {*href="{$Path}admin/manage_group_users.php">{translate key="ManageUsers"}</a>*}
-    {*</li>*}
-    {*<li id="navResponsibilitiesGAReservations"><a*}
-    {*href="{$Path}admin/manage_group_reservations.php">{translate key="GroupReservations"}</a>*}
-    {*</li>*}
-    {*<li id="navResponsibilitiesGAGroups"><a*}
-    {*href="{$Path}admin/manage_admin_groups.php">{translate key="ManageGroups"}</a>*}
-    {*</li>*}
-    {*{/if}*}
-    {*{if $CanViewResourceAdmin || $CanViewScheduleAdmin}*}
-    {*<li id="navResponsibilitiesRAResources"><a*}
-    {*href="{$Path}admin/manage_admin_resources.php">{translate key="ManageResources"}</a>*}
-    {*</li>*}
-    {*<li id="navResponsibilitiesRABlackouts"><a*}
-    {*href="{$Path}admin/manage_blackouts.php">{translate key="ManageBlackouts"}</a>*}
-    {*</li>*}
-    {*{/if}*}
-    {*{if $CanViewResourceAdmin}*}
-    {*<li id="navResponsibilitiesRAReservations">*}
-    {*<a href="{$Path}admin/manage_resource_reservations.php">{translate key="ResourceReservations"}</a>*}
-    {*</li>*}
-    {*{/if}*}
-    {*{if $CanViewScheduleAdmin}*}
-    {*<li id="navResponsibilitiesSASchedules">*}
-    {*<a href="{$Path}admin/manage_admin_schedules.php">{translate key="ManageSchedules"}</a>*}
-    {*</li>*}
-    {*<li id="navResponsibilitiesSAReservations">*}
-    {*<a href="{$Path}admin/manage_schedule_reservations.php">{translate key="ScheduleReservations"}</a>*}
-    {*</li>*}
-    {*{/if}*}
-    {*<li id="navResponsibilitiesAnnouncements">*}
-    {*<a href="{$Path}admin/manage_announcements.php">{translate key="ManageAnnouncements"}</a>*}
-    {*</li>*}
-    {*</ul>*}
-    {*</li>*}
-    {*{/if}*}
-    {*{if $CanViewReports}*}
-    {*<li class="dropdown" id="navReportsDropdown">*}
-    {*<a href="#" class="dropdown-toggle" data-toggle="dropdown">{translate key="Reports"} <b*}
-    {*class="caret"></b></a>*}
-    {*<ul class="dropdown-menu">*}
-    {*<li id="navGenerateReport">*}
-    {*<a href="{$Path}reports/{Pages::REPORTS_GENERATE}">{translate key=GenerateReport}</a>*}
-    {*</li>*}
-    {*<li id="navSavedReports">*}
-    {*<a href="{$Path}reports/{Pages::REPORTS_SAVED}">{translate key=MySavedReports}</a>*}
-    {*</li>*}
-    {*<li id="navCommonReports">*}
-    {*<a href="{$Path}reports/{Pages::REPORTS_COMMON}">{translate key=CommonReports}</a>*}
-    {*</li>*}
-    {*</ul>*}
-    {*</li>*}
-    {*{/if}*}
-    {*{/if}*}
+        {if $ShowScheduleLink}
+            <li id="navScheduleDropdown">
+                <a class="dropdown-trigger" href="#!" data-target="view-schedule-navmobile">
+                    {translate key="Schedule"}<i class="material-icons right">arrow_drop_down</i>
+                </a>
+            </li>
+        {/if}
 
-    {*</ul>*}
-    {*<ul class="nav navbar-nav navbar-right">*}
-    {*{if $ShowScheduleLink}*}
-    {*<li class="dropdown" id="navScheduleDropdown">*}
-    {*<a href="#" class="dropdown-toggle" data-toggle="dropdown">{translate key="Schedule"} <b*}
-    {*class="caret"></b></a>*}
-    {*<ul class="dropdown-menu">*}
-    {*<li id="navViewSchedule"><a href="view-schedule.php">{translate key='ViewSchedule'}</a>*}
-    {*</li>*}
-    {*<li id="navViewCalendar"><a href="view-calendar.php">{translate key='ViewCalendar'}</a>*}
-    {*</li>*}
-    {*</ul>*}
-    {*</li>*}
-    {*{/if}*}
-    {*{if $CanViewAdmin}*}
-    {*<li class="dropdown" id="navHelpDropdown">*}
-    {*<a href="#" class="dropdown-toggle" data-toggle="dropdown">*}
-    {*<span class="no-show">Configuration</span>*}
-    {*<span class="fa fa-cog"></span>*}
-    {*{if $ShowNewVersion}<span class="badge badge-new-version new-version"*}
-    {*id="newVersionBadge">{translate key=NewVersion}</span>{/if}*}
-    {*<b class="caret"></b>*}
-    {*</a>*}
-    {*<ul class="dropdown-menu">*}
-    {*{if $EnableConfigurationPage}*}
-    {*<li id="navManageConfiguration"><a*}
-    {*href="{$Path}admin/manage_configuration.php">{translate key="ManageConfiguration"}</a>*}
-    {*</li>*}
-    {*{/if}*}
-    {*<li id="navEmailTemplates"><a*}
-    {*href="{$Path}admin/manage_email_templates.php">{translate key="ManageEmailTemplates"}</a>*}
-    {*</li>*}
-    {*<li id="navLookAndFeel"><a*}
-    {*href="{$Path}admin/manage_theme.php">{translate key="LookAndFeel"}</a>*}
-    {*</li>*}
-    {*<li id="navImport"><a href="{$Path}admin/import.php">{translate key="Import"}</a>*}
-    {*</li>*}
-    {*<li id="navServerSettings"><a*}
-    {*href="{$Path}admin/server_settings.php">{translate key="ServerSettings"}</a>*}
-    {*</li>*}
-    {*<li id="navDataCleanup"><a*}
-    {*href="{$Path}admin/data_cleanup.php">{translate key="DataCleanup"}</a>*}
-    {*</li>*}
-    {*{if $ShowNewVersion}*}
-    {*<li class="divider new-version"></li>*}
-    {*<li id="navNewVersion" class="new-version">*}
-    {*<a href="https://www.bookedscheduler.com/whatsnew">{translate key=WhatsNew}</a>*}
-    {*</li>*}
-    {*{/if}*}
-    {*</ul>*}
-    {*</li>*}
-    {*{/if}*}
-    {*<li class="dropdown" id="navHelpDropdown">*}
-    {*<a href="#" class="dropdown-toggle" data-toggle="dropdown">{translate key="Help"} <b*}
-    {*class="caret"></b></a>*}
-    {*<ul class="dropdown-menu">*}
-    {*<li id="navHelp"><a href="{$Path}help.php">{translate key=Help}</a></li>*}
-    {*{if $CanViewAdmin}*}
-    {*<li id="navHelpAdmin"><a*}
-    {*href="{$Path}help.php?ht=admin">{translate key=Administration}</a></li>{/if}*}
-    {*<li id="navAbout"><a href="{$Path}help.php?ht=about">{translate key=About}</a></li>*}
-    {*</ul>*}
-    {*</li>*}
-    {*{if $LoggedIn}*}
-    {*<li id="navSignOut"><a href="{$Path}logout.php">{translate key="SignOut"}</a></li>*}
-    {*{else}*}
-    {*<li id="navLogIn"><a href="{$Path}index.php">{translate key="LogIn"}</a></li>*}
-    {*{/if}*}
-    {*</ul>*}
-    {*</div>*}
-    {*</div>*}
-    {*</nav>*}
+        {if $CanViewAdmin}
+            <li id="navHelpDropdown">
+                <a class="dropdown-trigger" href="#!" data-target="view-settings-navmobile">
+                    <i class="material-icons {if $ShowNewVersion}new-version{/if}" id="newVersionBadge">settings</i>
+                </a>
+            </li>
+        {/if}
+
+        <li id="navHelpDropdown">
+            <a class="dropdown-trigger" href="#!" data-target="view-help-navmobile">
+                {translate key="Help"}<i class="material-icons right">arrow_drop_down</i>
+            </a>
+        </li>
+
+        {if $LoggedIn}
+            <li id="navSignOut">
+                <a href="{$Path}logout.php">{translate key="SignOut"}</a>
+            </li>
+        {else}
+            <li id="navLogIn">
+                <a href="{$Path}index.php">{translate key="LogIn"}</a>
+            </li>
+        {/if}
+    </ul>
 {/if}
 
 <div id="main" class="container">

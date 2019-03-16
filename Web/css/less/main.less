@@ -34,10 +34,6 @@ body {
   background-color: @color-body-background;
 }
 
-.adjust-nav-bar-static {
-  margin-top: -70px;
-}
-
 a, a:visited {
   color: @link-color;
 }
@@ -390,6 +386,12 @@ label.booked-checkbox span {
   z-index: 999;
 }
 
+
+.navbar-static-top {
+  position: fixed;
+  top: 0;
+}
+
 .error-list {
   padding-left: 50px;
 }
@@ -525,6 +527,17 @@ input.mid-number {
   padding: 0;
 }
 
+@media (max-width: 1024px) {
+  .navbar-fixed-top {
+    position: fixed;
+    top: 0;
+  }
+
+  body {
+    margin-top: 70px;
+  }
+}
+
 /**
 materialize overrides
  */
@@ -536,12 +549,9 @@ nav {
     color: @almost-black !important;
   }
 
-  .brand-logo {
-    position: relative;
-    float: left;
+  ul a {
+    padding: 0 10px;
   }
-
-  ul a {padding: 0 10px;}
 }
 
 @media only screen and (min-width: 601px) {
@@ -549,13 +559,31 @@ nav {
     height: 50px;
     line-height: 50px
   }
+
+  nav .brand-logo {
+    position: relative;
+    float: left;
+  }
 }
+
 .nav-content {
-  ul a {font-size: 14px;}
+  ul a {
+    font-size: 14px;
+  }
 }
 
 i.right {
   margin-left: 0;
+}
+
+#mobile-navigation {
+  .right {
+    float: none !important;
+  }
+
+  .material-icons {
+    vertical-align: bottom;
+  }
 }
 
 /** end **/
