@@ -52,23 +52,25 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
     <!-- CSS -->
     {if $UseLocalJquery}
+        {cssfile src="css/fonts/roboto.css" }
         {cssfile src="scripts/css/smoothness/jquery-ui.1.12.1.custom.min.css"}
-        {cssfile src="css/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet"}
-        {cssfile src="css/materialize-1.0.0.min.css" rel="stylesheet"}
-        {cssfile src="css/materialize/material-icons.css" rel="stylesheet"}
+        {cssfile src="css/font-awesome-4.7.0/css/font-awesome.min.css"}
+        {cssfile src="css/materialize-1.0.0.min.css"}
+        {cssfile src="css/materialize/material-icons.css"}
 
         {if $Qtip}
-            {cssfile src="css/jquery.qtip.min.css" rel="stylesheet"}
+            {cssfile src="css/jquery.qtip.min.css"}
         {/if}
         {if $Validator}
-            {cssfile src="css/bootstrapValidator.min.css" rel="stylesheet"}
+            {cssfile src="css/bootstrapValidator.min.css"}
         {/if}
         {if $InlineEdit}
-            {cssfile src="scripts/js/x-editable/css/bootstrap-editable.css" rel="stylesheet"}
-            {cssfile src="scripts/js/wysihtml5/bootstrap3-wysihtml5.min.css" rel="stylesheet"}
+            {cssfile src="scripts/js/x-editable/css/bootstrap-editable.css"}
+            {cssfile src="scripts/js/wysihtml5/bootstrap3-wysihtml5.min.css"}
         {/if}
 
     {else}
+        <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
         <link rel="stylesheet"
               href="https://code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css"
               type="text/css"/>
