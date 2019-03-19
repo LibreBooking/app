@@ -85,6 +85,7 @@ class en_us extends Language
 		$strings['No'] = 'No';
 		$strings['FirstNameRequired'] = 'First name is required.';
 		$strings['LastNameRequired'] = 'Last name is required.';
+		$strings['PasswordRequired'] = 'Password is required.';
 		$strings['PwMustMatch'] = 'Password confirmation must match password.';
 		$strings['ValidEmailRequired'] = 'A valid email address is required.';
 		$strings['UniqueEmailRequired'] = 'That email address is already registered.';
@@ -614,7 +615,7 @@ class en_us extends Language
 		$strings['Forward'] = 'Forward';
 		$strings['DateRange'] = 'Date Range';
 		$strings['Copy'] = 'Copy';
-		$strings['Detect'] = 'Detect';
+		$strings['DetectTimezone'] = 'Detect Timezone';
 		$strings['Autofill'] = 'Autofill';
 		$strings['NameOrEmail'] = 'name or email';
 		$strings['ImportResources'] = 'Import Resources';

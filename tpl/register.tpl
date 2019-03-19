@@ -20,193 +20,169 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 <div id="page-register">
 
-    <div class="error hidden" id="registrationError">
+    <div class="col s12 m8 offset-m2 card-panel error hidden" id="registrationError">
         {translate key=UnknownError}
     </div>
 
-    <div id="registration-box" class="default-box col-xs-12 col-sm-8 col-sm-offset-2">
+    <div class="col s12 m8 offset-m2 validationSummary card-panel error no-show" id="validationErrors">
+        <ul>
+            {async_validator id="uniqueemail" key="UniqueEmailRequired"}
+            {async_validator id="uniqueusername" key="UniqueUsernameRequired"}
+            {async_validator id="username" key="UserNameRequired"}
+            {async_validator id="emailformat" key="ValidEmailRequired"}
+            {async_validator id="fname" key="FirstNameRequired"}
+            {async_validator id="lname" key="LastNameRequired"}
+            {async_validator id="passwordmatch" key="PwMustMatch"}
+            {async_validator id="passwordcomplexity" key=""}
+            {async_validator id="captcha" key="CaptchaMustMatch"}
+            {async_validator id="additionalattributes" key=""}
+            {async_validator id="requiredEmailDomain" key="InvalidEmailDomain"}
+            {async_validator id="termsOfService" key="TermsOfServiceError"}
+        </ul>
+    </div>
 
-        <form method="post" ajaxAction="{RegisterActions::Register}" id="form-register"
-              action="{$smarty.server.SCRIPT_NAME}" role="form"
-              data-bv-feedbackicons-valid="glyphicon glyphicon-ok"
-              data-bv-feedbackicons-invalid="glyphicon glyphicon-remove"
-              data-bv-feedbackicons-validating="glyphicon glyphicon-refresh"
-              data-bv-feedbackicons-required="glyphicon glyphicon-asterisk"
-              data-bv-submitbuttons='button[type="submit"]'
-              data-bv-onerror="enableButton"
-              data-bv-onsuccess="enableButton"
-              data-bv-live="enabled">
+    <div class="row">
+        <div id="registration-box" class="default-box col s12 m8 offset-m2">
 
-            <h1>{translate key=RegisterANewAccount}</h1>
+            <form method="post" ajaxAction="{RegisterActions::Register}" id="form-register"
+                  action="{$smarty.server.SCRIPT_NAME}" role="form">
 
-            <div class="validationSummary alert alert-danger no-show" id="validationErrors">
-                <ul>
-                    {async_validator id="uniqueemail" key="UniqueEmailRequired"}
-                    {async_validator id="uniqueusername" key="UniqueUsernameRequired"}
-                    {async_validator id="username" key="UserNameRequired"}
-                    {async_validator id="emailformat" key="ValidEmailRequired"}
-                    {async_validator id="fname" key="FirstNameRequired"}
-                    {async_validator id="lname" key="LastNameRequired"}
-                    {async_validator id="passwordmatch" key="PwMustMatch"}
-                    {async_validator id="passwordcomplexity" key=""}
-                    {async_validator id="captcha" key="CaptchaMustMatch"}
-                    {async_validator id="additionalattributes" key=""}
-                    {async_validator id="requiredEmailDomain" key="InvalidEmailDomain"}
-                    {async_validator id="termsOfService" key="TermsOfServiceError"}
-                </ul>
-            </div>
+                <h4>{translate key=RegisterANewAccount}</h4>
 
-            <div class="row">
-                <div class="col-xs-12 col-sm-6" id="username">
-                    <div class="form-group">
-                        <label class="reg" for="login">{translate key="Username"}</label>
-                        {textbox name="LOGIN" value="Login" required="required"
-                        data-bv-notempty="true"
-                        data-bv-notempty-message="{translate key=UserNameRequired}"}
-                    </div>
-                </div>
 
-                <div class="col-xs-12 col-sm-6" id="email">
-                    <div class="form-group">
-                        <label class="reg" for="email">{translate key="Email"}</label>
-                        {textbox type="email" name="EMAIL" class="input" value="Email" required="required"
-                        data-bv-notempty="true"
-                        data-bv-notempty-message="{translate key=ValidEmailRequired}"
-                        data-bv-emailaddress="true"
-                        data-bv-emailaddress-message="{translate key=ValidEmailRequired}" }
-                    </div>
-                </div>
-            </div>
 
-            <div class="row">
-                <div class="col-xs-12 col-sm-6" id="password">
-                    <div class="form-group">
-                        <label class="reg" for="password">{translate key="Password"}</label>
-                        {textbox type="password" name="PASSWORD" value="" required="required"
-                        data-bv-notempty="true"
-                        data-bv-notempty-message="{translate key=PwMustMatch}"
-                        data-bv-identical="true"
-                        data-bv-identical-field="{FormKeys::PASSWORD_CONFIRM}"
-                        data-bv-identical-message="{translate key=PwMustMatch}" }
-                    </div>
-                </div>
-
-                <div class="col-xs-12 col-sm-6" id="password-confirm">
-                    <div class="form-group">
-                        <label class="reg" for="passwordConfirm">{translate key="PasswordConfirmation"}</label>
-                        {textbox type="password" name="PASSWORD_CONFIRM" value="" required="required"
-                        data-bv-notempty="true"
-                        data-bv-notempty-message="{translate key=PwMustMatch}"
-                        data-bv-identical="true"
-                        data-bv-identical-field="{FormKeys::PASSWORD}"
-                        data-bv-identical-message="{translate key=PwMustMatch}"}
-                    </div>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-xs-12 col-sm-6" id="first-name">
-                    <div class="form-group">
-                        <label class="reg" for="fname">{translate key="FirstName"}</label>
-                        {textbox name="FIRST_NAME" class="input" value="FirstName" required="required"
-                        data-bv-notempty="true"
-                        data-bv-notempty-message="{translate key=FirstNameRequired}"}
-                    </div>
-                </div>
-                <div class="col-xs-12 col-sm-6" id="last-name">
-                    <div class="form-group">
-                        <label class="reg" for="lname">{translate key="LastName"}</label>
-                        {textbox name="LAST_NAME" class="input" value="LastName" required="required" data-bv-notempty="true"
-                        data-bv-notempty-message="{translate key=LastNameRequired}"}
-                    </div>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-xs-12 col-sm-6" id="default-page">
-                    <div class="form-group">
-                        <label class="reg" for="homepage">{translate key="DefaultPage"}</label>
-                        <select {formname key='DEFAULT_HOMEPAGE'} id="homepage" class="form-control">
-                            {html_options values=$HomepageValues output=$HomepageOutput selected=$Homepage}
-                        </select>
-                    </div>
-
-                </div>
-                <div class="col-xs-12 col-sm-6" id="timezone">
-                    <label class="reg" for="timezoneDropDown">{translate key="Timezone"}</label>
-
-                    <div class="input-group">
-                        <span class="input-group-addon"><a href="#" id="detectTimezone"
-                                                           title="{translate key=Detect}"><i class="fa fa-clock-o"></i></a></span>
-                        <select {formname key='TIMEZONE'} class="form-control" id="timezoneDropDown">
-                            {html_options values=$TimezoneValues output=$TimezoneOutput selected=$Timezone}
-                        </select>
-                    </div>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-xs-12 col-sm-6" id="phone">
-                    <div class="form-group">
-                        <label class="reg" for="phone">{translate key="Phone"}</label>
-                        {textbox name="PHONE" class="input" value="Phone" size="20"}
-                    </div>
-                </div>
-
-                <div class="col-xs-12 col-sm-6" id="organization">
-                    <div class="form-group">
-                        <label class="reg" for="txtOrganization">{translate key="Organization"}</label>
-                        {textbox name="ORGANIZATION" class="input" value="Organization" size="20" id="txtOrganization"}
-                    </div>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-xs-12 col-sm-6" id="position">
-                    <div class="form-group">
-                        <label class="reg" for="txtPosition">{translate key="Position"}</label>
-                        {textbox name="POSITION" class="input" value="Position" size="20" id="txtPosition"}
-                    </div>
-                </div>
-
-                <div class="col-xs-12 col-sm-6">
-                    {if $Attributes|count > 0}
-                        {control type="AttributeControl" attribute=$Attributes[0]}
-                    {/if}
-                </div>
-
-            </div>
-
-            {if $Attributes|count > 1}
-                {for $i=1 to $Attributes|count-1}
-                    {if $i%2==1}
-                        <div class="row">
-                    {/if}
-                    <div class="col-xs-12 col-sm-6">
-                        {control type="AttributeControl" attribute=$Attributes[$i]}
-                    </div>
-                    {if $i%2==0 || $i==$Attributes|count-1}
-                        </div>
-                    {/if}
-                {/for}
-            {/if}
-
-            {if $EnableCaptcha}
                 <div class="row">
-                    <div class="col-xs-12">
-                        <div class="form-group">
-                            {control type="CaptchaControl"}
+                    <div class="col s12 m6" id="username">
+                        <div class="input-field">
+                            {textbox name="LOGIN" value="Login" required="required"}
+                            <label class="reg" for="login">{translate key="Username"} *</label>
+                        </div>
+                    </div>
+
+                    <div class="col s12 m6" id="email">
+                        <div class="input-field">
+                            {textbox type="email" name="EMAIL" class="input" value="Email" required="required"}
+                            <label class="reg" for="email">{translate key="Email"} *</label>
+                            {*<span class="helper-text" data-error="{translate key=ValidEmailRequired}"*}
+                                  {*data-success=""></span>*}
                         </div>
                     </div>
                 </div>
-            {else}
-                <input type="hidden" {formname key=CAPTCHA} value=""/>
-            {/if}
 
-            {if $Terms != null}
-                <div class="row" id="termsAndConditions">
-                    <div class="col-xs-12">
-                        <div class="checkbox">
+                <div class="row">
+                    <div class="col s12 m6" id="password">
+                        <div class="input-field">
+                            {textbox type="password" name="PASSWORD" value="" required="required"}
+                            <label class="reg" for="password">{translate key="Password"} *</label>
+                        </div>
+                    </div>
+
+                    <div class="col s12 m6" id="password-confirm">
+                        <div class="input-field">
+                            {textbox type="password" name="PASSWORD_CONFIRM" value="" required="required" data-rule-equalto="#{FormKeys::PASSWORD}"}
+                            <label class="reg" for="passwordConfirm">{translate key="PasswordConfirmation"} *</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col s12 m6" id="first-name">
+                        <div class="input-field">
+                            {textbox name="FIRST_NAME" class="input" value="FirstName" required="required"}
+                            <label class="reg" for="fname">{translate key="FirstName"} *</label>
+                        </div>
+                    </div>
+                    <div class="col s12 m6" id="last-name">
+                        <div class="input-field">
+                            {textbox name="LAST_NAME" class="input" value="LastName" required="required"}
+                            <label class="reg" for="lname">{translate key="LastName"} *</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col s12 m6" id="default-page">
+                        <div class="input-field">
+                            <select {formname key='DEFAULT_HOMEPAGE'} id="homepage">
+                                {html_options values=$HomepageValues output=$HomepageOutput selected=$Homepage}
+                            </select>
+                            <label class="reg" for="homepage">{translate key="DefaultPage"}</label>
+                        </div>
+                    </div>
+
+                    <div class="col s12 m6" id="timezone">
+                        <div class="input-field">
+                            <i id="detectTimezone"
+                               class="material-icons prefix clickable tooltipped"
+                               data-position="top" data-tooltip="{translate key=DetectTimezone}">access_time</i>
+                            <select {formname key='TIMEZONE'} id="timezoneDropDown">
+                                {html_options values=$TimezoneValues output=$TimezoneOutput selected=$Timezone}
+                            </select>
+                            <label class="reg" for="timezoneDropDown">{translate key="Timezone"}</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col s12 m6" id="phone">
+                        <div class="input-field">
+                            {textbox name="PHONE" class="input" value="Phone" size="20"}
+                            <label class="reg" for="phone">{translate key="Phone"}</label>
+                        </div>
+                    </div>
+
+                    <div class="col s12 m6" id="organization">
+                        <div class="input-field">
+                            {textbox name="ORGANIZATION" class="input" value="Organization" size="20" id="txtOrganization"}
+                            <label class="reg" for="txtOrganization">{translate key="Organization"}</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col s12 m6" id="position">
+                        <div class="input-field">
+                            <label class="reg" for="txtPosition">{translate key="Position"}</label>
+                            {textbox name="POSITION" class="input" value="Position" size="20" id="txtPosition"}
+                        </div>
+                    </div>
+
+                    <div class="col s12 m6">
+                        {if $Attributes|count > 0}
+                            {control type="AttributeControl" attribute=$Attributes[0]}
+                        {/if}
+                    </div>
+                </div>
+
+                {if $Attributes|count > 1}
+                    {for $i=1 to $Attributes|count-1}
+                        {if $i%2==1}
+                            <div class="row">
+                        {/if}
+                        <div class="col s12 m6">
+                            {control type="AttributeControl" attribute=$Attributes[$i]}
+                        </div>
+                        {if $i%2==0 || $i==$Attributes|count-1}
+                            </div>
+                        {/if}
+                    {/for}
+                {/if}
+
+                {if $EnableCaptcha}
+                    <div class="row">
+                        <div class="col s12">
+                            <div class="input-field">
+                                {control type="CaptchaControl"}
+                            </div>
+                        </div>
+                    </div>
+                {else}
+                    <input type="hidden" {formname key=CAPTCHA} value=""/>
+                {/if}
+
+                {if $Terms != null}
+                    <div class="row" id="termsAndConditions">
+                        <div class="col s12">
                             <input type="checkbox"
                                    id="termsAndConditionsAcknowledgement" {formname key=TOS_ACKNOWLEDGEMENT}/>
                             <label for="termsAndConditionsAcknowledgement">{translate key=IAccept}</label>
@@ -214,19 +190,20 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                                target="_blank">{translate key=TheTermsOfService}</a>
                         </div>
                     </div>
-                </div>
-            {/if}
+                {/if}
 
-            <div>
-                <button type="submit" name="{Actions::REGISTER}" value="{translate key='Register'}"
-                        class="btn btn-primary col-xs-12" id="btnUpdate">{translate key='Register'}</button>
-            </div>
-        </form>
+                <div class="col s12">
+                    <button type="submit" name="{Actions::REGISTER}" value="{translate key='Register'}"
+                            class="btn btn-primary waves-effect waves-light right"
+                            id="btnUpdate">{translate key='Register'}</button>
+                </div>
+                <div class="clearfix">&nbsp;</div>
+            </form>
+        </div>
     </div>
 
     {include file="javascript-includes.tpl" Validator=true}
 
-    {jsfile src="js/jstz.min.js"}
     {jsfile src="ajax-helpers.js"}
     {jsfile src="autocomplete.js"}
     {jsfile src="registration.js"}
@@ -238,32 +215,36 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
         }
 
         $(document).ready(function () {
+            $('#detectTimezone').tooltip();
             $('#detectTimezone').click(function (e) {
                 e.preventDefault();
-                var timezone = jstz.determine_timezone();
-                $('#timezoneDropDown').val(timezone.name());
+                $('#timezoneDropDown').changeDropdown(Intl.DateTimeFormat().resolvedOptions().timeZone);
             });
 
+            var messages = {
+                {FormKeys::LOGIN}: {
+                    required: '{{translate key=UserNameRequired}|escape:javascript}'
+                },
+                {FormKeys::EMAIL}: {
+                    required: '{{translate key=ValidEmailRequired}|escape:javascript}',
+                    email: '{{translate key=ValidEmailRequired}|escape:javascript}'
+                },
+                {FormKeys::PASSWORD}: {
+                    required: '{{translate key=PasswordRequired}|escape:javascript}'
+                },
+                {FormKeys::PASSWORD_CONFIRM}: {
+                    equalTo: '{{translate key=PwMustMatch}|escape:javascript}'
+                },
+                {FormKeys::FIRST_NAME}: {
+                    required: '{{translate key=FirstNameRequired}|escape:javascript}'
+                },
+                {FormKeys::LAST_NAME}: {
+                    required: '{{translate key=LastNameRequired}|escape:javascript}'
+                },
+            };
+
             var registrationPage = new Registration();
-            registrationPage.init();
-
-            var $frmRegister = $('#form-register');
-
-            $frmRegister.on('init.field.bv', function (e, data) {
-                var $parent = data.element.parents('.form-group');
-                var $icon = $parent.find('.form-control-feedback[data-bv-icon-for="' + data.field + '"]');
-                var validators = data.bv.getOptions(data.field).validators;
-
-                if (validators.notEmpty) {
-                    $icon.addClass('glyphicon glyphicon-asterisk').show();
-                }
-            })
-                .off('success.form.bv')
-                .on('success.form.bv', function (e) {
-                    e.preventDefault();
-                });
-
-            $frmRegister.bootstrapValidator();
+            registrationPage.init(messages);
 
             $('#txtOrganization').orgAutoComplete("ajax/autocomplete.php?type={AutoCompleteType::Organization}");
 
@@ -272,7 +253,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
     <div id="colorbox">
         <div id="modalDiv" class="wait-box">
-            <h3>{translate key=Working}</h3>
+            <h5>{translate key=Working}</h5>
             {html_image src="reservation_submitting.gif"}
         </div>
     </div>

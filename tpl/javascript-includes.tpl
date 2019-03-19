@@ -1,8 +1,5 @@
 
 {if $UseLocalJquery}
-    {*{jsfile src="js/jquery-2.1.1.min.js"}*}
-    {*{jsfile src="js/jquery-ui-1.10.4.custom.min.js"}*}
-    {*{jsfile src="bootstrap/js/bootstrap.min.js"}*}
     {jsfile src="js/lodash.4.6.13.min.js"}
     {jsfile src="js/moment.min.js"}
     {jsfile src="js/jquery.form-3.09.min.js"}
@@ -10,21 +7,12 @@
     {if $Qtip}
         {jsfile src="js/jquery.qtip.min.js"}
     {/if}
-    {if $Validator}
-        {jsfile src="js/bootstrapvalidator/bootstrapValidator.min.js"}
-    {/if}
     {if $InlineEdit}
         {jsfile src="js/x-editable/js/bootstrap-editable.min.js"}
         {jsfile src="js/x-editable/wysihtml5/wysihtml5.js"}
         {jsfile src="js/wysihtml5/bootstrap3-wysihtml5.all.min.js"}
     {/if}
 {else}
-    {*<script type="text/javascript"*}
-            {*src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>*}
-    {*<script type="text/javascript"*}
-            {*src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>*}
-    {*<script type="text/javascript"*}
-            {*src="https://netdna.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>*}
     <script type="text/javascript"
             src="https://cdn.jsdelivr.net/lodash/4.16.3/lodash.min.js"></script>
     <script type="text/javascript"
@@ -36,10 +24,6 @@
     {if $Qtip}
         <script type="text/javascript"
                 src="https://cdn.jsdelivr.net/qtip2/3.0.3/jquery.qtip.min.js"></script>
-    {/if}
-    {if $Validator}
-        <script type="text/javascript"
-                src="https://cdnjs.cloudflare.com/ajax/libs/jquery.bootstrapvalidator/0.5.3/js/bootstrapValidator.min.js"></script>
     {/if}
 
     {if $InlineEdit}
@@ -71,5 +55,8 @@
 {/if}
 {if $Clear}
     {jsfile src="search-clear.js"}
+{/if}
+{if $Validator}
+    {jsfile src="js/jquery-validation-1.19.0/jquery.validate.min.js"}
 {/if}
 {jsfile src="phpscheduleit.js"}

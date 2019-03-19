@@ -61,11 +61,10 @@ class CaptchaControl extends Control
 
 		echo "<div id=\"captchaDiv\">
                 <div><img src=\"$url\" alt=\"captcha\" id=\"captchaImg\"/></div>
-		        <label for=\"captchaValue\">$label</label>
-                <input type=\"text\" class=\"form-control\" name=\"$formName\" size=\"20\" id=\"$formName\" 
+		        <label for=\"$formName\">$label *</label>
+                <input type=\"text\" name=\"$formName\" size=\"20\" id=\"$formName\" 
                 required=\"required\"
-                data-bv-notempty=\"true\"
-                data-bv-notempty-message=\"$message\"/>
+                data-msg-required=\"$message\"/>
             </div>";
 	}
 }

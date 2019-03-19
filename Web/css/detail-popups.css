@@ -106,6 +106,7 @@ a:hover {
 #main {
   min-height: 100%;
   padding-bottom: 40px;
+  margin-top: 12px;
 }
 .default-box {
   padding: 35px;
@@ -205,51 +206,27 @@ a:hover {
   align-items: center;
   display: flex;
 }
-#page-login {
-  height: 100%;
-  margin-top: -20px;
-  padding-top: 40px;
+.input-field div.error {
+  color: #AA3939;
+  font-size: 0.8rem;
 }
-#page-login #announcements .announcement {
-  border: solid 1px #99988e;
-  background-color: #fff;
-  -webkit-border-radius: 2px;
-  -moz-border-radius: 2px;
-  border-radius: 2px;
-  -webkit-box-shadow: 0px 0px 5px 1px #BCBCBC;
-  -moz-box-shadow: 0px 0px 5px 1px #BCBCBC;
-  box-shadow: 0px 0px 5px 1px #BCBCBC;
-  padding: 5px;
-  margin-bottom: 20px;
+.card-panel.error {
+  background: #cb6464;
+  border: solid 1px #AA3939;
+  color: #FFF8E7;
 }
-#page-login .login-icon {
-  text-align: center;
-  padding: 18px 0;
+.card-panel.warning {
+  background: #ff9547;
+  border: solid 1px #FA6900;
+  color: #FFF8E7;
 }
-#page-login .login-icon img {
-  max-width: 100%;
+.card-panel.notice {
+  background: #cbdfdf;
+  border: solid 1px #9BC2C2;
+  color: #585754;
 }
-#page-login #login-box {
-  background-color: #f8f8f8;
-}
-#page-login .default-box {
-  background-color: #f8f8f8;
-  border: solid 1px #99988e;
-}
-#page-login .default-box .login-icon {
-  text-align: center;
-  padding-bottom: 7px;
-}
-#page-login .login-action {
-  padding-bottom: 7px;
-}
-#page-login .register {
-  text-align: center;
-  padding-bottom: 7px;
-}
-#page-login .divider {
-  border: solid 1px #E9E9E9;
-  margin-bottom: 5px;
+.clickable {
+  cursor: pointer;
 }
 .login-links {
   text-align: center;
@@ -745,6 +722,65 @@ label.customAttribute {
 .badge-new-version {
   background-color: #88CC88;
 }
+.hidden {
+  display: none;
+}
+input[type=search]::-webkit-search-cancel-button {
+  -webkit-appearance: searchfield-cancel-button;
+}
+.close-forever {
+  font-size: 11pt;
+}
+/** Page level overrides **/
+#page-login {
+  height: 100%;
+  margin-top: -20px;
+  padding-top: 40px;
+}
+#page-login #announcements .announcement {
+  border: solid 1px #99988e;
+  background-color: #fff;
+  -webkit-border-radius: 2px;
+  -moz-border-radius: 2px;
+  border-radius: 2px;
+  -webkit-box-shadow: 0px 0px 5px 1px #BCBCBC;
+  -moz-box-shadow: 0px 0px 5px 1px #BCBCBC;
+  box-shadow: 0px 0px 5px 1px #BCBCBC;
+  padding: 5px;
+  margin-bottom: 20px;
+}
+#page-login .login-icon {
+  text-align: center;
+  padding: 18px 0;
+}
+#page-login .login-icon img {
+  max-width: 100%;
+}
+#page-login #login-box {
+  background-color: #f8f8f8;
+}
+#page-login .default-box {
+  background-color: #f8f8f8;
+  border: solid 1px #99988e;
+}
+#page-login .default-box .login-icon {
+  text-align: center;
+  padding-bottom: 7px;
+}
+#page-login .login-action {
+  padding-bottom: 7px;
+}
+#page-login .register {
+  text-align: center;
+  padding-bottom: 7px;
+}
+#page-login .divider {
+  border: solid 1px #E9E9E9;
+  margin-bottom: 5px;
+}
+#page-register #captchaDiv i {
+  top: 125px;
+}
 #page-help-admin h2,
 #page-help-admin h3,
 #page-help h2,
@@ -755,15 +791,6 @@ label.customAttribute {
 #page-help-admin h2,
 #page-help h2 {
   line-height: 55px;
-}
-input[type=search]::-webkit-search-cancel-button {
-  -webkit-appearance: searchfield-cancel-button;
-}
-.close-forever {
-  font-size: 11pt;
-}
-#page-register #captchaDiv i {
-  top: 125px;
 }
 #resourceDetailsPopup #userDetailsPopup {
   min-width: 300px;

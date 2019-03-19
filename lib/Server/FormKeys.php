@@ -70,7 +70,7 @@ class FormKeys
 	const BUFFER_TIME = 'BUFFER_TIME';
 	const BUFFER_TIME_NONE = 'BUFFER_TIME_NONE';
 
-	const CAPTCHA = 'captcha';
+	const CAPTCHA = 'captchaValue';
 	const CONFLICT_ACTION = 'conflictAction';
 	const CONTACT_INFO = 'contactInfo';
 	const CREDITS = 'CREDITS';
@@ -161,7 +161,7 @@ class FormKeys
 	const PARENT_ID = 'PARENT_ID';
 	const PARTICIPANT_LIST = 'participantList';
 	const PARTICIPANT_ID = 'PARTICIPANT_ID';
-	const PASSWORD = 'password';
+	const PASSWORD = 'password1';
 	const PASSWORD_CONFIRM = 'passwordConfirm';
     const PAYPAL_ENABLED = 'ENABLE_PAYPAL';
 	const PAYPAL_CLIENT_ID = 'PAYPAL_CLIENT_ID';

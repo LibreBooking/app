@@ -84,7 +84,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                                 <span>{translate key=RememberMe}</span>
                             </label>
 
-                            <button type="submit" class="btn waves-effect waves-light" name="{Actions::LOGIN}"
+                            <button type="submit" class="btn btn-primary waves-effect waves-light" name="{Actions::LOGIN}"
                                     value="submit">{translate key='LogIn'}</button>
                             <input type="hidden" {formname key=RESUME} value="{$ResumeUrl}"/>
                         </div>

@@ -98,7 +98,7 @@ function ConfigureAsyncForm(formElement, urlCallback, successHandler, responseHa
 						};
 
 					}
-					formElement.find('.asyncValidation').addClass('no-show');
+                    validationSummary.find('.asyncValidation').addClass('no-show');
 					$.each(responseText.ErrorIds, function (index, errorId) {
 						var errorElement = $('#' + errorId);
 						if (responseText.Messages[errorId].length > 0)
@@ -109,7 +109,7 @@ function ConfigureAsyncForm(formElement, urlCallback, successHandler, responseHa
 							}
 							else
 							{
-								validationSummary.find('ul').empty().append($('<li/>', {text: responseText.Messages[errorId]}))
+								validationSummary.find('ul').empty().append($('<li/>', {text: responseText.Messages[errorId]}));
 							}
 						}
 						errorElement.removeClass('no-show');

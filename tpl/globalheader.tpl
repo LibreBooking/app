@@ -61,9 +61,6 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
         {if $Qtip}
             {cssfile src="css/jquery.qtip.min.css"}
         {/if}
-        {if $Validator}
-            {cssfile src="css/bootstrapValidator.min.css"}
-        {/if}
         {if $InlineEdit}
             {cssfile src="scripts/js/x-editable/css/bootstrap-editable.css"}
             {cssfile src="scripts/js/wysihtml5/bootstrap3-wysihtml5.min.css"}
@@ -80,11 +77,6 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/qtip2/3.0.3/jquery.qtip.min.css"
               type="text/css"/>
-        {if $Validator}
-            <link rel="stylesheet"
-                  href="https://cdnjs.cloudflare.com/ajax/libs/jquery.bootstrapvalidator/0.5.3/css/bootstrapValidator.min.css"
-                  type="text/css"/>
-        {/if}
         {if $InlineEdit}
             <link rel="stylesheet"
                   href="https://cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.1/bootstrap3-editable/css/bootstrap-editable.css"
@@ -94,7 +86,6 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
     {/if}
     {if $Select2}
         {cssfile src="scripts/css/select2/select2-4.0.5.min.css"}
-        {*{cssfile src="scripts/css/select2/select2-bootstrap.min.css"}*}
     {/if}
     {if $Timepicker}
         {cssfile src="scripts/css/timePicker.css" rel="stylesheet"}

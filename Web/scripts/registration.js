@@ -1,84 +1,87 @@
-function Registration()
-{
-	var elements = {
-		form:$('#form-register')
-	};
+function Registration() {
+    var elements = {
+        form: $('#form-register')
+    };
 
-	Registration.prototype.init = function ()
-	{
-		// $("#btnUpdate").click(function (e)
-		// {
-		// 	e.preventDefault();
-		// 	e.stopPropagation();
-		// 	elements.form.submit();
-		// });
+    Registration.prototype.init = function (messages) {
 
-		elements.form.bind('onValidationFailed', onValidationFailed);
+        wireUpValidation(messages);
 
-		ConfigureAsyncForm(elements.form, defaultSubmitCallback, successHandler, null, {onBeforeSubmit:onBeforeSubmit});
-	};
+        elements.form.bind('onValidationFailed', onValidationFailed);
 
-	var defaultSubmitCallback = function (form)
-	{
-		return form.attr('action') + "?action=" + form.attr('ajaxAction');
-	};
+        var opts = {
+            onBeforeSubmit: onBeforeSubmit,
+            validationSummary: $('#validationErrors')
+        };
 
-	function onValidationFailed(event, data)
-	{
-		elements.form.find('button').removeAttr('disabled');
-		refreshCaptcha();
-		hideModal();
-	}
+        ConfigureAsyncForm(elements.form,
+            defaultSubmitCallback,
+            successHandler,
+            null,
+            opts);
+    };
 
-	function successHandler(response)
-	{
-		if (response && response.url)
-		{
-			window.location = response.url;
-		}
-		else
-		{
-			onValidationFailed();
-			$('#registrationError').removeClass('hidden');
-		}
-	}
+    var defaultSubmitCallback = function (form) {
+        return form.attr('action') + "?action=" + form.attr('ajaxAction');
+    };
 
-	function onBeforeSubmit(formData, jqForm, opts)
-	{
-		var bv = jqForm.data('bootstrapValidator');
+    function onValidationFailed(event, data) {
+        elements.form.find('button').removeAttr('disabled');
+        refreshCaptcha();
+        hideModal();
+    }
 
-		if (!bv.isValid())
-		{
-			return false;
-		}
+    function successHandler(response) {
+        if (response && response.url) {
+            window.location = response.url;
+        } else {
+            onValidationFailed();
+            $('#registrationError').removeClass('hidden');
+        }
+    }
 
-		$('#profileUpdatedMessage').hide();
+    function onBeforeSubmit(formData, jqForm, opts) {
+        if (!elements.form.valid()){
+            return false;
+        }
 
-		$.blockUI({ message: $('#modalDiv') });
+        $('#profileUpdatedMessage').hide();
 
-		return true;
-	}
+        $.blockUI({message: $('#modalDiv')});
 
-	function hideModal()
-	{
-		$.unblockUI();
+        return true;
+    }
 
-		var top = $("#registrationbox").scrollTop();
-		$('html, body').animate({scrollTop:top}, 'slow');
-	}
+    function hideModal() {
+        $.unblockUI();
 
-	function refreshCaptcha()
-	{
-		var captchaImg = $('#captchaImg');
-		if (captchaImg.length > 0)
-		{
-			var src = captchaImg.attr('src') + '?' + Math.random();
-			captchaImg.attr('src', src);
-			$('#captchaValue').val('');
-		}
-		else if(window.grecaptcha)
-		{
+        var top = $("#registration-box").scrollTop();
+        $('html, body').animate({scrollTop: top}, 'slow');
+    }
+
+    function refreshCaptcha() {
+        var captchaImg = $('#captchaImg');
+        if (captchaImg.length > 0) {
+            var src = captchaImg.attr('src') + '?' + Math.random();
+            captchaImg.attr('src', src);
+            $('#captchaValue').val('');
+        } else if (window.grecaptcha) {
             grecaptcha.reset();
-		}
-	}
+        }
+    }
+
+    function wireUpValidation(messages) {
+        elements.form.validate({
+            messages: messages,
+            errorElement : 'div',
+            errorPlacement: function(error, element) {
+                var placement = $(element).data('error');
+                if (placement) {
+                    $(placement).append(error)
+                } else {
+                    error.insertAfter(element);
+                }
+            }
+        });
+    }
 }

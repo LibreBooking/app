@@ -418,15 +418,6 @@ class SmartyPage extends Smarty
 		$tabindex = null;
 		$type = null;
 
-		if (isset($params['class']))
-		{
-			$params['class'] = $params['class'] . ' form-control';
-		}
-		else
-		{
-			$params['class'] = 'form-control';
-		}
-
 		if (isset($params['value']))
 		{
 			$value = $params['value'];
