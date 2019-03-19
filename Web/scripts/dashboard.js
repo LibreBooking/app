@@ -3,9 +3,9 @@ function Dashboard(opts) {
 
 	Dashboard.prototype.init = function () {
 		function setIcon(dash, targetIcon) {
-			var iconSpan = dash.find('.dashboardHeader').find('a>.glyphicon');
-			iconSpan.removeClass('glyphicon-chevron-up');
-			iconSpan.removeClass('glyphicon-chevron-down');
+			var iconSpan = dash.find('.dashboardHeader').find('a>.fa');
+			iconSpan.removeClass('fa-chevron-up');
+			iconSpan.removeClass('fa-chevron-down');
 			iconSpan.addClass(targetIcon);
 		}
 
@@ -16,11 +16,11 @@ function Dashboard(opts) {
 			if (visibility == '0')
 			{
 				dash.find('.dashboardContents').hide();
-				setIcon(dash, 'glyphicon-chevron-down');
+				setIcon(dash, 'fa-chevron-down');
 			}
 			else
 			{
-				setIcon(dash, 'glyphicon-chevron-up');
+				setIcon(dash, 'fa-chevron-up');
 			}
 
 			dash.find('.dashboardHeader a').click(function (e) {
@@ -31,13 +31,13 @@ function Dashboard(opts) {
 				{
 					createCookie(id, '1', 30, opts.scriptUrl);
 					dashboard.show();
-					setIcon(dash, 'glyphicon-chevron-up');
+					setIcon(dash, 'fa-chevron-up');
 				}
 				else
 				{
 					createCookie(id, '0', 30, opts.scriptUrl);
 					dashboard.hide();
-					setIcon(dash, 'glyphicon-chevron-down');
+					setIcon(dash, 'fa-chevron-down');
 				}
 			});
 		});

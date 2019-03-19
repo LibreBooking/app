@@ -21,19 +21,21 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		<div class="pull-left">{translate key="Announcements"} <span class="badge">{$Announcements|count}</span></div>
 		<div class="pull-right">
 			<a href="#" title="{translate key=ShowHide} {translate key="Announcements"}">
-				<i class="glyphicon"></i>
+                <i class="fa fa-chevron-down"></i>
                 <span class="no-show">Expand/Collapse</span>
             </a>
 		</div>
 		<div class="clearfix"></div>
 	</div>
 	<div class="dashboardContents">
-		<ul>
-			{foreach from=$Announcements item=each}
-				<li>{$each->Text()|html_entity_decode|url2link|nl2br}</li>
-				{foreachelse}
-				<div class="noresults">{translate key="NoAnnouncements"}</div>
-			{/foreach}
-		</ul>
+        {if $Announcements|count == 0}
+            <div class="noresults">{translate key="NoAnnouncements"}</div>
+        {else}
+            <ul>
+                {foreach from=$Announcements item=each}
+                    <li>{$each->Text()|html_entity_decode|url2link|nl2br}</li>
+                {/foreach}
+            </ul>
+        {/if}
 	</div>
 </div>

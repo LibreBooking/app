@@ -23,6 +23,11 @@
 
 .dashboardContents {
   padding: 15px;
+
+  ul {
+    margin-top:0;
+    margin-bottom:0;
+  }
 }
 
 .dashboardHeader {
@@ -32,6 +37,8 @@
   background-color: @color-boxes-complement-2; //@color-secondary-2-0;
   .badge {
     background-color: @color-boxes-complement-1;
+    color: #fff;
+    .rounded(5px)
   }
   a {
     color: #fff;
@@ -126,11 +133,16 @@
       background-color: darken(@btn-color, 5%);
       border-color: darken(@btn-color, 15%);
     }
+    .btn-small {
+      height: inherit;
+      line-height: inherit;;
+    }
   }
 
   h5 {
     margin: 0;
     font-weight: bold;
     color: @mid-gray;
+    font-size:.9em;
   }
 }

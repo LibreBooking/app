@@ -23,7 +23,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		<div class="pull-left">{translate key="UpcomingReservations"} <span class="badge">{$Total}</span></div>
 		<div class="pull-right">
 			<a href="#" title="{translate key=ShowHide} {translate key="UpcomingReservations"}">
-				<i class="glyphicon"></i>
+                <i class="fa fa-chevron-down"></i>
                 <span class="no-show">Expand/Collapse</span>
             </a>
 		</div>

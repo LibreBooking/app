@@ -1118,6 +1118,10 @@ input[type="radio"] .styled:checked + label::after {
 .dashboardContents {
   padding: 15px;
 }
+.dashboardContents ul {
+  margin-top: 0;
+  margin-bottom: 0;
+}
 .dashboardHeader {
   letter-spacing: 1px;
   padding: 5px 20px;
@@ -1126,6 +1130,10 @@ input[type="radio"] .styled:checked + label::after {
 }
 .dashboardHeader .badge {
   background-color: #736a81;
+  color: #fff;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
 }
 .dashboardHeader a {
   color: #fff;
@@ -1206,10 +1214,15 @@ input[type="radio"] .styled:checked + label::after {
   background-color: #4e9d4e;
   border-color: #3d7b3d;
 }
+.availabilityDashboard .availabilityItem .btn-small {
+  height: inherit;
+  line-height: inherit;
+}
 .availabilityDashboard h5 {
   margin: 0;
   font-weight: bold;
   color: #BCBCBC;
+  font-size: .9em;
 }
 table.reservations {
   border-collapse: collapse;
