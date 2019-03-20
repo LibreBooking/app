@@ -50,113 +50,94 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                 <h4>{translate key=EditProfile}</h4>
 
                 <div class="row">
-                    <div class="col s12 m6">
-                        <div class="input-field">
-                            <label class="reg" for="username">{translate key="Username"} *</label>
-                            {if $AllowUsernameChange}
-                                {textbox name="USERNAME" value="Username" required="required" class="validate"}
-                            {else}
-                                <span>{$Username}</span>
-                                <input type="hidden" {formname key=USERNAME} value="{$Username}"/>
-                            {/if}
-                        </div>
+                    <div class="col s12 m6 input-field">
+                        <label class="reg" for="username">{translate key="Username"} *</label>
+                        {if $AllowUsernameChange}
+                            {textbox name="USERNAME" value="Username" required="required" class="validate"}
+                        {else}
+                            <span>{$Username}</span>
+                            <input type="hidden" {formname key=USERNAME} value="{$Username}"/>
+                        {/if}
                     </div>
 
-                    <div class="col s12 m6">
-                        <div class="input-field">
-                            <label class="reg" for="email">{translate key="Email"} *</label>
-                            {if $AllowEmailAddressChange}
-                                {textbox type="email" name="EMAIL" value="Email" required="required" class="validate"}
-                            {else}
-                                <span>{$Email}</span>
-                                <input type="hidden" {formname key=EMAIL} value="{$Email}"/>
-                            {/if}
-                        </div>
+                    <div class="col s12 m6 input-field">
+                        <label class="reg" for="email">{translate key="Email"} *</label>
+                        {if $AllowEmailAddressChange}
+                            {textbox type="email" name="EMAIL" value="Email" required="required" class="validate"}
+                        {else}
+                            <span>{$Email}</span>
+                            <input type="hidden" {formname key=EMAIL} value="{$Email}"/>
+                        {/if}
                     </div>
                 </div>
 
                 <div class="row">
-                    <div class="col s12 m6">
-                        <div class="input-field">
-                            <label class="reg" for="fname">{translate key="FirstName"} *</label>
-                            {if $AllowNameChange}
-                                {textbox name="FIRST_NAME" value="FirstName" required="required" class="validate"}
-                            {else}
-                                <span>{$FirstName}</span>
-                                <input type="hidden" {formname key=FIRST_NAME} value="{$FirstName}" class="validate"/>
-                            {/if}
-                        </div>
+                    <div class="col s12 m6 input-field">
+                        <label class="reg" for="fname">{translate key="FirstName"} *</label>
+                        {if $AllowNameChange}
+                            {textbox name="FIRST_NAME" value="FirstName" required="required" class="validate"}
+                        {else}
+                            <span>{$FirstName}</span>
+                            <input type="hidden" {formname key=FIRST_NAME} value="{$FirstName}" class="validate"/>
+                        {/if}
                     </div>
-                    <div class="col s12 m6">
-                        <div class="input-field">
-                            <label class="reg" for="lname">{translate key="LastName"} *</label>
-                            {if $AllowNameChange}
-                                {textbox name="LAST_NAME" value="LastName" required="required" class="validate" }
-                            {else}
-                                <span>{$LastName}</span>
-                                <input type="hidden" {formname key=LAST_NAME} value="{$LastName}"/>
-                            {/if}
-                        </div>
+                    <div class="col s12 m6 input-field">
+                        <label class="reg" for="lname">{translate key="LastName"} *</label>
+                        {if $AllowNameChange}
+                            {textbox name="LAST_NAME" value="LastName" required="required" class="validate" }
+                        {else}
+                            <span>{$LastName}</span>
+                            <input type="hidden" {formname key=LAST_NAME} value="{$LastName}"/>
+                        {/if}
                     </div>
                 </div>
 
                 <div class="row">
-                    <div class="col s12 m6">
-                        <div class="input-field">
-                            <label class="reg active" for="homepage">{translate key="DefaultPage"}</label>
-                            <select {formname key='DEFAULT_HOMEPAGE'} id="homepage">
-                                {html_options values=$HomepageValues output=$HomepageOutput selected=$Homepage}
-                            </select>
-                        </div>
-
+                    <div class="col s12 m6 input-field">
+                        <label class="reg active" for="homepage">{translate key="DefaultPage"}</label>
+                        <select {formname key='DEFAULT_HOMEPAGE'} id="homepage">
+                            {html_options values=$HomepageValues output=$HomepageOutput selected=$Homepage}
+                        </select>
                     </div>
-                    <div class="col s12 m6">
-                        <div class="input-field">
-                            <label class="reg active" for="timezoneDropDown">{translate key="Timezone"}</label>
-                            <select {formname key='TIMEZONE'} id="timezoneDropDown">
-                                {html_options values=$TimezoneValues output=$TimezoneOutput selected=$Timezone}
-                            </select>
-                        </div>
+                    <div class="col s12 m6 input-field">
+                        <label class="reg active" for="timezoneDropDown">{translate key="Timezone"}</label>
+                        <select {formname key='TIMEZONE'} id="timezoneDropDown">
+                            {html_options values=$TimezoneValues output=$TimezoneOutput selected=$Timezone}
+                        </select>
                     </div>
                 </div>
 
                 <div class="row">
-                    <div class="col s12 m6">
-                        <div class="input-field">
-                            <label class="reg" for="phone">{translate key="Phone"}</label>
-                            {if $AllowPhoneChange}
-                                {textbox name="PHONE" value="Phone"}
-                            {else}
-                                <span>{$Phone}</span>
-                                <input type="hidden" {formname key=PHONE} value="{$Phone}"/>
-                            {/if}
-                        </div>
+                    <div class="col s12 m6 input-field">
+                        <label class="reg" for="phone">{translate key="Phone"}</label>
+                        {if $AllowPhoneChange}
+                            {textbox name="PHONE" value="Phone"}
+                        {else}
+                            <span>{$Phone}</span>
+                            <input type="hidden" {formname key=PHONE} value="{$Phone}"/>
+                        {/if}
                     </div>
 
-                    <div class="col s12 m6">
-                        <div class="input-field">
-                            <label class="reg" for="txtOrganization">{translate key="Organization"}</label>
-                            {if $AllowOrganizationChange}
-                                {textbox name="ORGANIZATION" value="Organization" id="txtOrganization"}
-                            {else}
-                                <span>{$Organization}</span>
-                                <input type="hidden" {formname key=ORGANIZATION} value="{$Organization}"/>
-                            {/if}
-                        </div>
+                    <div class="col s12 m6 input-field">
+                        <label class="reg" for="txtOrganization">{translate key="Organization"}</label>
+                        {if $AllowOrganizationChange}
+                            {textbox name="ORGANIZATION" value="Organization" id="txtOrganization"}
+                        {else}
+                            <span>{$Organization}</span>
+                            <input type="hidden" {formname key=ORGANIZATION} value="{$Organization}"/>
+                        {/if}
                     </div>
                 </div>
 
                 <div class="row">
-                    <div class="col s12 m6">
-                        <div class="input-field">
-                            <label class="reg" for="txtPosition">{translate key="Position"}</label>
-                            {if $AllowPositionChange}
-                                {textbox name="POSITION" value="Position" id="txtPosition"}
-                            {else}
-                                <span>{$Position}</span>
-                                <input type="hidden" {formname key=POSITION} value="{$Position}"/>
-                            {/if}
-                        </div>
+                    <div class="col s12 m6 input-field">
+                        <label class="reg" for="txtPosition">{translate key="Position"}</label>
+                        {if $AllowPositionChange}
+                            {textbox name="POSITION" value="Position" id="txtPosition"}
+                        {else}
+                            <span>{$Position}</span>
+                            <input type="hidden" {formname key=POSITION} value="{$Position}"/>
+                        {/if}
                     </div>
 
                     <div class="col s12 m6">

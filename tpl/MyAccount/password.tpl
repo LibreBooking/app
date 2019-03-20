@@ -18,56 +18,74 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 *}
 {include file='globalheader.tpl'}
 
-<div class="page-change-password">
+<div id="page-change-password">
 
-	{validation_group class="alert alert-danger"}
-	{validator id="currentpassword" key="InvalidPassword"}
-	{validator id="passwordmatch" key="PwMustMatch"}
-	{validator id="passwordcomplexity" key=""}
-	{/validation_group}
+    <div class="row">
+        <div class="col s12 m8 offset-m2 validationSummary card-panel error no-show" id="validationErrors">
+            <ul>
+                {validator id="currentpassword" key="InvalidPassword"}
+                {validator id="passwordmatch" key="PwMustMatch"}
+                {validator id="passwordcomplexity" key=""}
+            </ul>
+        </div>
 
 
-	{if !$AllowPasswordChange}
-		<div class="alert alert-danger">
-			<i class="fa fa-warning fa-2x"></i> {translate key=PasswordControlledExternallyError}
-		</div>
-	{else}
-		{if $ResetPasswordSuccess}
-			<div class="success alert alert-success col-xs-12 col-sm-8 col-sm-offset-2">
-				<span class="glyphicon glyphicon-ok-sign"></span> {translate key=PasswordChangedSuccessfully}
-			</div>
-		{/if}
-		<div id="password-reset-box" class="default-box col-xs-12 col-sm-8 col-sm-offset-2">
-			<h1>{translate key="ChangePassword"}</h1>
+        {if !$AllowPasswordChange}
+            <div class="card-panel warning col s12 m8 offset-m2 ">
+                <ul>
+                    <li>
+                        <i class="fa fa-warning fa-2x"></i> {translate key=PasswordControlledExternallyError}
+                    </li>
+                </ul>
+            </div>
+        {else}
+            {if $ResetPasswordSuccess}
+                <div class="card-panel success col s12 m8 offset-m2">
+                    <ul>
+                        <li>
+                            <span class="fa fa-check-circle-o"></span> {translate key=PasswordChangedSuccessfully}
+                        </li>
+                    </ul>
+                </div>
+            {/if}
+            <div id="password-reset-box" class="col s12 m8 offset-m2">
+                <h4>{translate key="ChangePassword"}</h4>
 
-			<form id="password-reset-form" method="post" action="{$smarty.server.SCRIPT_NAME}">
 
-				<div class="form-group">
-					<label for="{FormKeys::CURRENT_PASSWORD}">{translate key="CurrentPassword"}</label>
-						{textbox type="password" name="CURRENT_PASSWORD"}
-				</div>
+                <form id="password-reset-form" method="post" action="{$smarty.server.SCRIPT_NAME}">
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <label for="{FormKeys::CURRENT_PASSWORD}">{translate key="CurrentPassword"}</label>
+                            {textbox type="password" name="CURRENT_PASSWORD" required="required"}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <label for="{FormKeys::PASSWORD}">{translate key="NewPassword"}</label>
+                            {textbox type="password" name="PASSWORD" required="required"}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <label for="{FormKeys::PASSWORD_CONFIRM}">{translate key="PasswordConfirmation"}</label>
+                            {textbox type="password" name="PASSWORD_CONFIRM" value="" required="required"}
 
-				<div class="form-group">
-					<label for="{FormKeys::PASSWORD}">{translate key="NewPassword"}</label>
-						{textbox type="password" name="PASSWORD"}
-				</div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col s12">
+                            <button type="submit" name="{Actions::CHANGE_PASSWORD}"
+                                    value="{translate key='ChangePassword'}"
+                                    class="btn btn-primary right">{translate key='ChangePassword'}</button>
+                        </div>
+                    </div>
+                    {csrf_token}
+                </form>
 
-				<div class="form-group">
-					<label for="{FormKeys::PASSWORD_CONFIRM}">{translate key="PasswordConfirmation"}</label>
-						{textbox type="password" name="PASSWORD_CONFIRM" value=""}
-
-				</div>
-
-				<div class="form-group">
-					<button type="submit" name="{Actions::CHANGE_PASSWORD}" value="{translate key='ChangePassword'}"
-							class="btn btn-primary">{translate key='ChangePassword'}</button>
-				</div>
-				{csrf_token}
-			</form>
-		</div>
-		{setfocus key='CURRENT_PASSWORD'}
-	{/if}
-
+            </div>
+            {setfocus key='CURRENT_PASSWORD'}
+        {/if}
+    </div>
 </div>
 {include file="javascript-includes.tpl"}
 {include file='globalfooter.tpl'}
