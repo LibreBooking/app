@@ -624,15 +624,6 @@ span.searchclear-label {
 img.logo {
   max-height: 50px;
 }
-.switch {
-  position: relative;
-  display: inline-block;
-  width: 60px;
-  height: 34px;
-}
-.switch input {
-  display: none;
-}
 .slider {
   position: absolute;
   cursor: pointer;
@@ -2904,7 +2895,7 @@ ul.jqtree-tree .jqtree-toggler {
   text-align: left;
 }
 .notification-type {
-  font-size: 1.5em;
+  font-size: 1.1em;
   margin-top: 15px;
 }
 @media (max-width: 768px) {
@@ -2915,4 +2906,10 @@ ul.jqtree-tree .jqtree-toggler {
 #registration-box .row,
 #profile-box .row {
   margin-bottom: 0;
+}
+.notification-row {
+  padding: 1px 5px 8px;
+}
+.notification-row.alt {
+  background-color: #E9E9E9;
 }

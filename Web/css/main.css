@@ -624,15 +624,6 @@ span.searchclear-label {
 img.logo {
   max-height: 50px;
 }
-.switch {
-  position: relative;
-  display: inline-block;
-  width: 60px;
-  height: 34px;
-}
-.switch input {
-  display: none;
-}
 .slider {
   position: absolute;
   cursor: pointer;

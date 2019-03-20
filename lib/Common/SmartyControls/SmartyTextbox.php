@@ -55,7 +55,7 @@ class SmartyTextbox
 		return FormKeys::Evaluate($formKey);
 	}
 
-	private function GetValue()
+	protected function GetValue()
 	{
 		$value = $this->GetPostedValue();
 
@@ -100,4 +100,9 @@ class SmartyPasswordbox extends SmartyTextbox
 	{
 		return 'password';
 	}
+
+    protected function GetValue()
+    {
+        return '';
+    }
 }
