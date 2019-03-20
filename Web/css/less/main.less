@@ -68,7 +68,7 @@ a:hover {
 
 .default-box {
   padding: 35px;
-  .rounded(5px);
+  .rounded(2px);
   border: solid 1px @color-boxes-border; //@light-gray;
   background-color: @color-boxes-content; //@lightest-gray;
 
@@ -128,21 +128,27 @@ a:hover {
 }
 
 .card-panel.error {
-  background: lighten(@muted-red, 15%);
+  background: lighten(@muted-red, 25%);
   border: solid 1px @muted-red;
-  color:@off-white;
+  color:darken(@muted-red, 25%);
 }
 
 .card-panel.warning {
   background: lighten(@dark-orange, 15%);
   border: solid 1px @dark-orange;
-  color:@off-white;
+  color:darken(@dark-orange, 25%);
 }
 
 .card-panel.notice {
   background: lighten(@muted-blue, 15%);
   border: solid 1px @muted-blue;
-  color:@dark-gray;
+  color:darken(@muted-blue, 25%);
+}
+
+.card-panel.success {
+  background: lighten(@primary-green, 15%);
+  border: solid 1px @primary-green;
+  color:darken(@primary-green,25%);
 }
 
 .clickable {

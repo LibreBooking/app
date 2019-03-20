@@ -1,59 +1,73 @@
 function Profile() {
-	var elements = {
-		form: $('#form-profile')
-	};
+    var elements = {
+        form: $('#form-profile')
+    };
 
-	Profile.prototype.init = function () {
+    Profile.prototype.init = function (messages) {
 
-		$("#btnUpdate").click(function (e) {
-			e.preventDefault();
-			elements.form.submit();
-		});
+        wireUpValidation(messages);
 
-		elements.form.bind('onValidationFailed', onValidationFailed);
+        // $("#btnUpdate").click(function (e) {
+        // 	e.preventDefault();
+        // 	elements.form.submit();
+        // });
 
-		ConfigureAsyncForm(elements.form, defaultSubmitCallback, successHandler, null, {onBeforeSubmit: onBeforeSubmit});
-	};
+        elements.form.bind('onValidationFailed', onValidationFailed);
 
-	var defaultSubmitCallback = function (form) {
-		return form.attr('action') + "?action=" + form.attr('ajaxAction');
-	};
+        var opts = {
+            onBeforeSubmit: onBeforeSubmit,
+            validationSummary: $('#validationErrors')
+        };
 
-	function onValidationFailed(event, data)
-	{
-		elements.form.find('button').removeAttr('disabled');
-		hideModal();
-		$('#validationErrors').removeClass('hidden');
-	}
+        ConfigureAsyncForm(elements.form, defaultSubmitCallback, successHandler, null, opts);
+    };
 
-	function successHandler(response)
-	{
-		hideModal();
-		$('#profileUpdatedMessage').removeClass('hidden');
-	}
+    var defaultSubmitCallback = function (form) {
+        return form.attr('action') + "?action=" + form.attr('ajaxAction');
+    };
 
-	function onBeforeSubmit(formData, jqForm, opts)
-	{
-		var bv = jqForm.data('bootstrapValidator');
+    function onValidationFailed(event, data) {
+        elements.form.find('button').removeAttr('disabled');
+        hideModal();
+        $('#validationErrors').removeClass('hidden');
+    }
 
-		if (!bv.isValid() && bv.$invalidFields.length > 0)
-		{
-			return false;
-		}
+    function successHandler(response) {
+        hideModal();
+        $('#profileUpdatedMessage').removeClass('hidden');
+    }
 
-		$('#profileUpdatedMessage').addClass('hidden');
+    function onBeforeSubmit(formData, jqForm, opts) {
+        if (!elements.form.valid()) {
+            return false;
+        }
 
-		$.blockUI({ message: $('#wait-box') });
+        $('#profileUpdatedMessage').addClass('hidden');
 
-		return true;
-	}
+        $.blockUI({message: $('#wait-box')});
 
-	function hideModal()
-	{
-		$.unblockUI();
+        return true;
+    }
 
-		var top = $("#profile-box").scrollTop();
-		$('html, body').animate({scrollTop:top}, 'slow');
-	}
+    function hideModal() {
+        $.unblockUI();
 
+        var top = $("#profile-box").scrollTop();
+        $('html, body').animate({scrollTop: top}, 'slow');
+    }
+
+    function wireUpValidation(messages) {
+        elements.form.validate({
+            messages: messages,
+            errorElement: 'div',
+            errorPlacement: function (error, element) {
+                var placement = $(element).data('error');
+                if (placement) {
+                    $(placement).append(error);
+                } else {
+                    error.insertAfter(element);
+                }
+            }
+        });
+    }
 }

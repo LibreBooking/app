@@ -7,3 +7,7 @@
     font-size: 1em;
   }
 }
+#registration-box .row,
+#profile-box .row {
+  margin-bottom: 0;
+}
