@@ -16,64 +16,76 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 *}
+
 {include file='globalheader.tpl' Qtip=true}
 
-<div class="page-participation">
-	{if !empty($result)}
-		<div>{$result}</div>
-	{/if}
+<div id="page-participation">
+    <div class="row">
 
-	<div id="jsonResult" class="error no-show"></div>
+        {if !empty($result)}
+            <div>{$result}</div>
+        {/if}
 
-	<div id="participation-box" class="default-box col-xs-12 col-sm-8 col-sm-offset-2">
+        <div id="jsonResult" class="error no-show"></div>
 
-		<h1>{translate key=OpenInvitations} <span class="label label-default">{$Reservations|count}</span></h1>
+        <div id="participation-box" class="col s12 m8 offset-m2">
 
-		<ul class="list-unstyled participation">
-			{foreach from=$Reservations item=reservation name=invitations}
-				{assign var=referenceNumber value=$reservation->ReferenceNumber}
-				<li class="actions row{$smarty.foreach.invitations.index%2}">
-					<h3>{$reservation->Title}</h3>
+            <h5 class="underline">{translate key=OpenInvitations} <span class="badge">{$Reservations|count}</span></h5>
 
-					<h3><a href="{Pages::RESERVATION}?{QueryStringKeys::REFERENCE_NUMBER}={$referenceNumber}" class="reservation"
-						   referenceNumber="{$referenceNumber}">
-							{formatdate date=$reservation->StartDate->ToTimezone($Timezone) key=dashboard}
-							- {formatdate date=$reservation->EndDate->ToTimezone($Timezone) key=dashboard}</a></h3>
-					<input type="hidden" value="{$referenceNumber}" class="referenceNumber"/>
-					<button value="{InvitationAction::Accept}"
-							class="btn btn-success participationAction"><i class="fa fa-check-circle"></i> {translate key="Accept"}</button>
-					<button value="{InvitationAction::Decline}"
-							class="btn btn-default participationAction"><i class="fa fa-times-circle"></i> {translate key="Decline"}</button>
-				</li>
-				{foreachelse}
-				<li class="no-data"><p class="text-muted">{translate key='None'}</p></li>
-			{/foreach}
-		</ul>
+            <ul class="list-unstyled participation">
+                {foreach from=$Reservations item=reservation name=invitations}
+                    {assign var=referenceNumber value=$reservation->ReferenceNumber}
+                    <li class="actions row{$smarty.foreach.invitations.index%2}">
+                        <span>{$reservation->Title}</span>
 
-	</div>
-	<div class="dialog" style="display:none;">
+                        <span>
+                            <a href="{Pages::RESERVATION}?{QueryStringKeys::REFERENCE_NUMBER}={$referenceNumber}"
+                               class="reservation"
+                               referenceNumber="{$referenceNumber}">
+                                {formatdate date=$reservation->StartDate->ToTimezone($Timezone) key=dashboard}
+                                - {formatdate date=$reservation->EndDate->ToTimezone($Timezone) key=dashboard}</a>
+                        </span>
+                        <input type="hidden" value="{$referenceNumber}" class="referenceNumber"/>
+                        <button value="{InvitationAction::Accept}"
+                                class="btn btn-success participationAction">
+                            <i class="fa fa-check-circle"></i> {translate key="Accept"}
+                        </button>
+                        <button value="{InvitationAction::Decline}"
+                                class="btn btn-default participationAction">
+                            <i class="fa fa-times-circle"></i> {translate key="Decline"}
+                        </button>
+                    </li>
+                    {foreachelse}
+                    <li class="no-data"><p class="text-muted">{translate key='None'}</p></li>
+                {/foreach}
+            </ul>
 
-	</div>
+        </div>
+    </div>
 
-	{html_image src="admin-ajax-indicator.gif" id="indicator" style="display:none;"}
+    <div class="dialog" style="display:none;">
+
+    </div>
+
+    {html_image src="admin-ajax-indicator.gif" id="indicator" style="display:none;"}
 
     {include file="javascript-includes.tpl" Qtip=true}
-	{jsfile src="reservationPopup.js"}
-	{jsfile src="participation.js"}
+    {jsfile src="reservationPopup.js"}
+    {jsfile src="participation.js"}
 
-	<script type="text/javascript">
+    <script type="text/javascript">
 
-		$(document).ready(function () {
+        $(document).ready(function () {
 
-			var participationOptions = {
-				responseType: 'json'
-			};
+            var participationOptions = {
+                responseType: 'json'
+            };
 
-			var participation = new Participation(participationOptions);
-			participation.initParticipation();
-		});
+            var participation = new Participation(participationOptions);
+            participation.initParticipation();
+        });
 
-	</script>
+    </script>
 
 </div>
 {include file='globalfooter.tpl'}
