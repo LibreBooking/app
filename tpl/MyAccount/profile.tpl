@@ -47,7 +47,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                   action="{$smarty.server.SCRIPT_NAME}"
                   role="form">
 
-                <h4>{translate key=EditProfile}</h4>
+                <h5>{translate key=EditProfile}</h5>
 
                 <div class="row">
                     <div class="col s12 m6 input-field">

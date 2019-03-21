@@ -76,7 +76,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                         <div class="col s12">
                             <button type="submit" name="{Actions::CHANGE_PASSWORD}"
                                     value="{translate key='ChangePassword'}"
-                                    class="btn btn-primary right">{translate key='ChangePassword'}</button>
+                                    class="btn btn-primary waves-effect waves-light right">{translate key='ChangePassword'}</button>
                         </div>
                     </div>
                     {csrf_token}

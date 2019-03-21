@@ -8,11 +8,19 @@
 #page-user-credits .cost {
   font-weight: bold;
 }
-#page-checkout .total {
+#page-checkout .total,
+#page-user-credits .total {
   font-weight: bold;
   font-size: 1.1em;
   border-top: solid 1px #D5DED9;
 }
-#page-checkout .checkout-buttons {
+#page-checkout .checkout-buttons,
+#page-user-credits .checkout-buttons {
   margin-top: 25px;
+}
+#page-checkout .label,
+#page-user-credits .label {
+  font-size: 1.2em;
+  font-weight: bold;
+  margin-bottom: 25px;
 }

@@ -1,57 +1,104 @@
 {include file='globalheader.tpl'}
 <div id="page-checkout">
 
-    <div class="default-box">
-        <h1>
+    <div class="row">
+        <h5>
             {translate key=Checkout}
-        </h1>
+        </h5>
         <script src="https://www.paypalobjects.com/api/checkout.js"></script>
         <script src="https://checkout.stripe.com/checkout.js"></script>
 
-        <div id="checkoutPage">
+        <div id="checkoutPage" class="col s12">
 
             {if !$IsCartEmpty}
                 <div class="cart" id="cart">
 
-                    <div class="col-xs-12 col-sm-4">
-                        <h4>{translate key=PurchaseSummary}</h4>
-                        <div class="col-xs-8">
-                            {translate key=EachCreditCosts}
-                        </div>
-                        <div class="col-xs-4 align-right">
-                            {$CreditCost}
-                        </div>
-                        <div class="col-xs-8">
-                            {translate key=Credits}
-                        </div>
-                        <div class="col-xs-4 align-right">
-                            {$CreditQuantity}</div>
-                        <div class="col-xs-8 total">
-                            {translate key=Total}
-                        </div>
-                        <div class="col-xs-4 align-right total">
-                            {$Total}
-                        </div>
+                    <div class="row">
+                        <div class="col s6">
+                            <div class="col s12 label">{translate key=PurchaseSummary}</div>
+                            <div class="col s8">
+                                {translate key=EachCreditCosts}
+                            </div>
+                            <div class="col s4 align-right">
+                                {$CreditCost}
+                            </div>
+                            <div class="col s8">
+                                {translate key=Credits}
+                            </div>
+                            <div class="col s4 align-right">
+                                {$CreditQuantity}
+                            </div>
+                            <div class="col s8 total">
+                                {translate key=Total}
+                            </div>
+                            <div class="col s4 align-right total">
+                                {$Total}
+                            </div>
 
-                        <div class="clearfix">
+                            <div class="clearfix">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col s6">
+                            <div class="checkout-buttons">
+                                <div class="checkout-buttons">
+                                    {if $PayPalEnabled}
+                                        <div class="col-xs-12 col-sm-3">
+                                            <div id="paypal-button"></div>
+                                        </div>
+                                    {/if}
+                                    {if $StripeEnabled}
+                                        <div class="col-xs-12 col-sm-9">
+                                            <button id="stripe-button" class="btn btn-default"><span
+                                                        class="fa fa-credit-card"></span> {translate key=PayWithCard}
+                                            </button>
+                                        </div>
+                                    {/if}
+                                </div>
+                            </div>
                         </div>
                     </div>
 
-                    <div class="col-xs-12 col-sm-8">
-                        <div class="checkout-buttons">
-                            {if $PayPalEnabled}
-                                <div class="col-xs-12 col-sm-3">
-                                    <div id="paypal-button"></div>
-                                </div>
-                            {/if}
-                            {if $StripeEnabled}
-                                <div class="col-xs-12 col-sm-9">
-                                    <button id="stripe-button" class="btn btn-default"><span
-                                                class="fa fa-credit-card"></span> {translate key=PayWithCard}</button>
-                                </div>
-                            {/if}
-                        </div>
-                    </div>
+                    {*<div class="col-xs-12 col-sm-4">*}
+                    {*<h4>{translate key=PurchaseSummary}</h4>*}
+                    {*<div class="col-xs-8">*}
+                    {*{translate key=EachCreditCosts}*}
+                    {*</div>*}
+                    {*<div class="col-xs-4 align-right">*}
+                    {*{$CreditCost}*}
+                    {*</div>*}
+                    {*<div class="col-xs-8">*}
+                    {*{translate key=Credits}*}
+                    {*</div>*}
+                    {*<div class="col-xs-4 align-right">*}
+                    {*{$CreditQuantity}</div>*}
+                    {*<div class="col-xs-8 total">*}
+                    {*{translate key=Total}*}
+                    {*</div>*}
+                    {*<div class="col-xs-4 align-right total">*}
+                    {*{$Total}*}
+                    {*</div>*}
+
+                    {*<div class="clearfix">*}
+                    {*</div>*}
+                    {*</div>*}
+
+                    {*<div class="col-xs-12 col-sm-8">*}
+                    {*<div class="checkout-buttons">*}
+                    {*{if $PayPalEnabled}*}
+                    {*<div class="col-xs-12 col-sm-3">*}
+                    {*<div id="paypal-button"></div>*}
+                    {*</div>*}
+                    {*{/if}*}
+                    {*{if $StripeEnabled}*}
+                    {*<div class="col-xs-12 col-sm-9">*}
+                    {*<button id="stripe-button" class="btn btn-default"><span*}
+                    {*class="fa fa-credit-card"></span> {translate key=PayWithCard}</button>*}
+                    {*</div>*}
+                    {*{/if}*}
+                    {*</div>*}
+                    {*</div>*}
 
                 </div>
                 <div class="clearfix"></div>
@@ -109,8 +156,7 @@
                             $('#cart').addClass('no-show');
                             if (data.state != "approved") {
                                 $('#error').removeClass('no-show');
-                            }
-                            else {
+                            } else {
                                 $('#success').removeClass('no-show');
                             }
                         });
@@ -145,8 +191,7 @@
 
                             if (d.result != true) {
                                 $('#error').removeClass('no-show');
-                            }
-                            else {
+                            } else {
                                 $('#success').removeClass('no-show');
                             }
                         });

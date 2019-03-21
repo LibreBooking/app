@@ -145,7 +145,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                     <div class="clearfix">&nbsp;</div>
 
                     <div class="col s12">
-                        <button type="submit" class="btn btn-primary update prompt right" name="{Actions::SAVE}">
+                        <button type="submit" class="btn btn-primary waves-effect waves-light update prompt right" name="{Actions::SAVE}">
                             {translate key='Update'}
                         </button>
                     </div>
