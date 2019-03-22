@@ -382,7 +382,7 @@ class en_us extends Language
 		$strings['Accept'] = 'Accept';
 		$strings['Decline'] = 'Decline';
 		$strings['ShowFullWeek'] = 'Show Full Week';
-		$strings['CustomAttributes'] = 'Custom Attributes';
+		$strings['CustomAttributes'] = 'Attributes';
 		$strings['AddAttribute'] = 'Add an Attribute';
 		$strings['EditAttribute'] = 'Update an Attribute';
 		$strings['DisplayLabel'] = 'Display Label';

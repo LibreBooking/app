@@ -30,7 +30,7 @@
                 href="{$Path}{Pages::SEARCH_RESERVATIONS}">{translate key="SearchReservations"}</a>
     </li>
 </ul>
-<ul id="admin-nav{$suffix}" class="nav-content dropdown-content">
+<ul id="admin-nav{$suffix}" class="nav-content dropdown-content" style="min-width:200px;">
     <li id="navManageReservations{$suffix}">
         <a href="{$Path}admin/manage_reservations.php">{translate key="ManageReservations"}</a>
     </li>
@@ -62,14 +62,14 @@
         <a href="{$Path}admin/manage_announcements.php">{translate key="ManageAnnouncements"}</a>
     </li>
     <li class="divider"></li>
+    <li id="navManageAttributes{$suffix}">
+        <a href="{$Path}admin/manage_attributes.php">{translate key="CustomAttributes"}</a>
+    </li>
     {if $PaymentsEnabled}
         <li id="navManagePayments{$suffix}">
             <a href="{$Path}admin/manage_payments.php">{translate key="ManagePayments"}</a>
         </li>
     {/if}
-    <li id="navManageAttributes{$suffix}">
-        <a href="{$Path}admin/manage_attributes.php">{translate key="CustomAttributes"}</a>
-    </li>
 </ul>
 <ul id="responsibilities-nav{$suffix}" class="nav-content dropdown-content">
     {if $CanViewGroupAdmin}
