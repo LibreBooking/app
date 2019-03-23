@@ -21,7 +21,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 <div id="page-change-password">
 
     <div class="row">
-        <div class="col s12 m8 offset-m2 validationSummary card-panel error no-show" id="validationErrors">
+        <div class="col s12 m8 offset-m2 validationSummary card error no-show" id="validationErrors">
             <ul>
                 {validator id="currentpassword" key="InvalidPassword"}
                 {validator id="passwordmatch" key="PwMustMatch"}
@@ -31,7 +31,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 
         {if !$AllowPasswordChange}
-            <div class="card-panel warning col s12 m8 offset-m2 ">
+            <div class="card warning col s12 m8 offset-m2 ">
                 <ul>
                     <li>
                         <i class="fa fa-warning fa-2x"></i> {translate key=PasswordControlledExternallyError}
@@ -40,7 +40,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
             </div>
         {else}
             {if $ResetPasswordSuccess}
-                <div class="card-panel success col s12 m8 offset-m2">
+                <div class="card success col s12 m8 offset-m2">
                     <ul>
                         <li>
                             <span class="fa fa-check-circle-o"></span> {translate key=PasswordChangedSuccessfully}

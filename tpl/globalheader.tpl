@@ -33,19 +33,20 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
     {if $UseLocalJquery}
         {jsfile src="js/jquery-3.3.1.min.js"}
         {jsfile src="js/jquery-migrate-3.0.1.min.js"}
-        {jsfile src="js/jquery-ui.1.12.1.custom.min.js"}
         {jsfile src="js/materialize-1.0.0.min.js"}
+        {jsfile src="js/jquery-ui.1.12.1.custom.min.js"}
     {else}
         <script
                 src="https://code.jquery.com/jquery-3.3.1.min.js"
                 integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
                 crossorigin="anonymous"></script>
         <script src="https://code.jquery.com/jquery-migrate-3.0.1.min.js"></script>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
         <script
                 src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"
                 integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU="
                 crossorigin="anonymous"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
     {/if}
 
     <!-- End JavaScript -->

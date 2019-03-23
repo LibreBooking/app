@@ -21,7 +21,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 <div id="page-register">
 
     <div class="row">
-        <div class="col s12 m8 offset-m2 hidden card-panel error" id="registrationError">
+        <div class="col s12 m8 offset-m2 hidden card error" id="registrationError">
             <ul>
                 <li>
                     {translate key=UnknownError}
@@ -29,7 +29,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
             </ul>
         </div>
 
-        <div class="col s12 m8 offset-m2 validationSummary card-panel error no-show" id="validationErrors">
+        <div class="col s12 m8 offset-m2 validationSummary card error no-show" id="validationErrors">
             <ul>
                 {async_validator id="uniqueemail" key="UniqueEmailRequired"}
                 {async_validator id="uniqueusername" key="UniqueUsernameRequired"}

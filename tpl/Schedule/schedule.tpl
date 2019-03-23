@@ -80,46 +80,49 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
     {include file='globalheader.tpl' Qtip=true FloatThead=true Select2=true cssFiles='scripts/css/jqtree.css' printCssFiles='css/schedule.print.css'}
 {/block}
 
-<div id="page-schedule">
+<div id="page-schedule" class="row">
 
     {assign var=startTime value=microtime(true)}
 
     {if $ShowResourceWarning}
-        <div class="alert alert-warning no-resource-warning"><span
-                    class="fa fa-warning"></span> {translate key=NoResources} <a
-                    href="admin/manage_resources.php">{translate key=AddResource}</a></div>
+        <div class="col s12 m8 offset-m2 card error no-resource-warning">
+            <div class="card-content">
+                <span class="fa fa-warning"></span> {translate key=NoResources}
+                <a href="admin/manage_resources.php">{translate key=AddResource}</a>
+            </div>
+        </div>
     {/if}
 
     {if $CanViewAdmin}
-        <div id="slow-schedule-warning" class="alert alert-warning no-show" role="alert">
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-
-            We noticed this page is taking a long time to load. To speed ths page up, try
-            reducing the number of <a class="alert-link" href="admin/manage_resources.php">resources</a> on this
-            schedule or
-            reducing the number of <a class="alert-link" href="admin/manage_schedules.php">days</a> being shown.
-            <br/><br/>
-            This page is taking <span id="warning-time"></span> seconds to load
-            <span id="warning-resources"></span> resources for <span id="warning-days"></span> days.
-
-            <button type="button" class="close close-forever" aria-label="Do not show again">
-                <span aria-hidden="true">Do not show again</span>
-            </button>
+        <div id="slow-schedule-warning" class="col s12 m8 offset-m2 card error no-show">
+            <div class="card-content">
+                We noticed this page is taking a long time to load. To speed ths page up, try
+                reducing the number of <a class="alert-link" href="admin/manage_resources.php">resources</a> on this
+                schedule or
+                reducing the number of <a class="alert-link" href="admin/manage_schedules.php">days</a> being shown.
+                <br/><br/>
+                This page is taking <span id="warning-time"></span> seconds to load
+                <span id="warning-resources"></span> resources for <span id="warning-days"></span> days.
+            </div>
+            <div class="card-action">
+                <a href="#" class="close">Close</a>
+                <a href="#" class="close-forever">Do not show again</a>
+            </div>
         </div>
     {/if}
 
     {if $IsAccessible}
-        <div id="defaultSetMessage" class="alert alert-success hidden">
-            {translate key=DefaultScheduleSet}
+        <div id="defaultSetMessage" class="col s12 m8 offset-m2 card success hidden">
+            <div class="card-content">
+                {translate key=DefaultScheduleSet}
+            </div>
         </div>
         {block name="schedule_control"}
             <div class="row">
-                {assign var=titleWidth value="col-sm-12 col-xs-12"}
+                {assign var=titleWidth value="s12"}
                 {if !$HideSchedule}
-                    {assign var=titleWidth value="col-sm-6 col-xs-12"}
-                    <div id="schedule-actions" class="col-sm-3 col-xs-12">
+                    {assign var=titleWidth value="m5"}
+                    <div id="schedule-actions" class="col s12 m3">
                         {block name="actions"}
                             <a href="#" id="make_default"
                                style="display:none;">{html_image src="star_boxed_full.png" altKey="MakeDefaultSchedule"}</a>
@@ -143,25 +146,29 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                     </div>
                 {/if}
 
-                <div id="schedule-title" class="schedule_title {$titleWidth} col-xs-12">
-                    <label for="schedules" class="no-show">Schedule</label>
-                    <select id="schedules" class="form-control" style="width:auto;">
-                        {foreach from=$Schedules item=schedule}
-                            <option value="{$schedule->GetId()}"
-                                    {if $schedule->GetId() == $ScheduleId}selected="selected"{/if}>{$schedule->GetName()}</option>
-                        {/foreach}
-                    </select>
-                    <a href="#" id="calendar_toggle" title="{translate key=ShowHideNavigation}">
-                        <span class="glyphicon glyphicon-calendar"></span>
+                <div id="schedule-title" class="schedule_title col {$titleWidth} s12">
+                    <div class="input-field inline-block">
+                        <label for="schedules" class="no-show">Schedule</label>
+                        <select id="schedules" class="form-control" style="width:auto;">
+                            {foreach from=$Schedules item=schedule}
+                                <option value="{$schedule->GetId()}"
+                                        {if $schedule->GetId() == $ScheduleId}selected="selected"{/if}>{$schedule->GetName()}</option>
+                            {/foreach}
+                        </select>
+                    </div>
+                    <a href="#" id="calendar_toggle" title="{translate key=ShowHideNavigation}" class="inline-block">
+                        <span class="fa fa-calendar"></span>
                         <span class="no-show">{translate key=ShowHideNavigation}</span>
                     </a>
                     <div id="individualDates">
-                        <div class="checkbox inline">
-                            <input type='checkbox' id='multidateselect'/>
-                            <label for='multidateselect'>{translate key=SpecificDates}</label>
+                        <div class="inline">
+                            <label for='multidateselect'>
+                                <input type="checkbox" id="multidateselect"/>
+                                <span>{translate key=SpecificDates}</span>
+                            </label>
                         </div>
-                        <a class="btn btn-default btn-sm" href="#" id="individualDatesGo"><i
-                                    class="fa fa-angle-double-right"></i>
+                        <a class="btn btn-flat btn-sm" href="#" id="individualDatesGo">
+                            <i class="fa fa-angle-double-right"></i>
                             <span class="no-show">{translate key=SpecificDates}</span>
                         </a>
                     </div>
@@ -170,7 +177,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
                 {capture name="date_navigation"}
                     {if !$HideSchedule}
-                        <div class="schedule-dates col-sm-3 col-xs-12">
+                        <div class="schedule-dates col s12 m4">
                             {assign var=TodaysDate value=Date::Now()}
                             <a href="#" class="change-date btn-link btn-success" data-year="{$TodaysDate->Year()}"
                                data-month="{$TodaysDate->Month()}" data-day="{$TodaysDate->Day()}"
@@ -201,52 +208,58 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
         {/block}
 
         {if $ScheduleAvailabilityEarly}
-            <div class="alert alert-warning center">
-                <strong>
-                    {translate key=ScheduleAvailabilityEarly}
-                    <a href="#" class="change-date" data-year="{$ScheduleAvailabilityStart->Year()}"
-                       data-month="{$ScheduleAvailabilityStart->Month()}"
-                       data-day="{$ScheduleAvailabilityStart->Day()}">
-                        {format_date date=$ScheduleAvailabilityStart timezone=$timezone}
-                    </a> -
-                    <a href="#" class="change-date" data-year="{$ScheduleAvailabilityEnd->Year()}"
-                       data-month="{$ScheduleAvailabilityEnd->Month()}"
-                       data-day="{$ScheduleAvailabilityEnd->Day()}">
-                        {format_date date=$ScheduleAvailabilityEnd timezone=$timezone}
-                    </a>
-                </strong>
+            <div class="col s12 m8 offset-m2 card warning">
+                <div class="card-content">
+                    <strong>
+                        {translate key=ScheduleAvailabilityEarly}
+                        <a href="#" class="change-date" data-year="{$ScheduleAvailabilityStart->Year()}"
+                           data-month="{$ScheduleAvailabilityStart->Month()}"
+                           data-day="{$ScheduleAvailabilityStart->Day()}">
+                            {format_date date=$ScheduleAvailabilityStart timezone=$timezone}
+                        </a> -
+                        <a href="#" class="change-date" data-year="{$ScheduleAvailabilityEnd->Year()}"
+                           data-month="{$ScheduleAvailabilityEnd->Month()}"
+                           data-day="{$ScheduleAvailabilityEnd->Day()}">
+                            {format_date date=$ScheduleAvailabilityEnd timezone=$timezone}
+                        </a>
+                    </strong>
+                </div>
             </div>
         {/if}
 
         {if $ScheduleAvailabilityLate}
-            <div class="alert alert-warning center">
-                <strong>
-                    {translate key=ScheduleAvailabilityLate}
-                    <a href="#" class="change-date" data-year="{$ScheduleAvailabilityStart->Year()}"
-                       data-month="{$ScheduleAvailabilityStart->Month()}"
-                       data-day="{$ScheduleAvailabilityStart->Day()}">
-                        {format_date date=$ScheduleAvailabilityStart timezone=$timezone}
-                    </a> -
-                    <a href="#" class="change-date" data-year="{$ScheduleAvailabilityEnd->Year()}"
-                       data-month="{$ScheduleAvailabilityEnd->Month()}"
-                       data-day="{$ScheduleAvailabilityEnd->Day()}">
-                        {format_date date=$ScheduleAvailabilityEnd timezone=$timezone}
-                    </a>
-                </strong>
+            <div class="col s12 m8 offset-m2 card warning">
+                <div class="card-content">
+                    <strong>
+                        {translate key=ScheduleAvailabilityLate}
+                        <a href="#" class="change-date" data-year="{$ScheduleAvailabilityStart->Year()}"
+                           data-month="{$ScheduleAvailabilityStart->Month()}"
+                           data-day="{$ScheduleAvailabilityStart->Day()}">
+                            {format_date date=$ScheduleAvailabilityStart timezone=$timezone}
+                        </a> -
+                        <a href="#" class="change-date" data-year="{$ScheduleAvailabilityEnd->Year()}"
+                           data-month="{$ScheduleAvailabilityEnd->Month()}"
+                           data-day="{$ScheduleAvailabilityEnd->Day()}">
+                            {format_date date=$ScheduleAvailabilityEnd timezone=$timezone}
+                        </a>
+                    </strong>
+                </div>
             </div>
         {/if}
 
         {if $AllowConcurrentReservations}
-            <div class="alert alert-warning center">
-                <strong>
-                    <a href="{Pages::CALENDAR}?sid={$ScheduleId}">{format_date date=$ScheduleAvailabilityStart timezone=$timezone}{translate key=OnlyViewedCalendar}</a>
-                </strong>
+            <div class="col s12 m8 offset-m2 card warning">
+                <div class="card-content">
+                    <strong>
+                        <a href="{Pages::CALENDAR}?sid={$ScheduleId}">{format_date date=$ScheduleAvailabilityStart timezone=$timezone}{translate key=OnlyViewedCalendar}</a>
+                    </strong>
+                </div>
             </div>
         {/if}
 
         {if !$HideSchedule}
             {block name="legend"}
-                <div class="hidden-xs row col-sm-12 schedule-legend">
+                <div class="hide-on-small-only row col m12 schedule-legend">
                     <div class="center">
                         <div class="legend reservable">{translate key=Reservable}</div>
                         <div class="legend unreservable">{translate key=Unreservable}</div>
@@ -262,10 +275,10 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                 </div>
             {/block}
             <div class="row">
-                <div id="reservations-left" class="col-md-2 col-sm-12 default-box">
+                <div id="reservations-left" class="col s12 m2 default-box">
                     <div class="reservations-left-header">{translate key=ResourceFilter}
                         <a href="#" class="pull-right toggle-sidebar" title="Hide Reservation Filter"><i
-                                    class="glyphicon glyphicon-remove"></i>
+                                    class="fa fa-remove"></i>
                             <span class="no-show">Hide Reservation Filter</span>
                         </a>
                     </div>
@@ -276,7 +289,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                             {if count($ResourceAttributes) + count($ResourceTypeAttributes) > 5}
                                 <div>
                                     <input type="submit" value="{translate key=Filter}"
-                                           class="btn btn-success btn-sm" {formname key=SUBMIT}/>
+                                           class="btn btn-default btn-sm" {formname key=SUBMIT}/>
                                 </div>
                             {/if}
 
@@ -285,17 +298,17 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                                 <div id="resourceGroups"></div>
                             </div>
                             <div id="resettable">
-                                <div class="form-group col-xs-12">
+                                <div class="input-field">
                                     <label for="maxCapactiy">{translate key=MinimumCapacity}</label>
                                     <input type='number' min='0' id='maxCapactiy' size='5' maxlength='5'
-                                           class="form-control input-sm" {formname key=MAX_PARTICIPANTS}
+                                           class="input-sm" {formname key=MAX_PARTICIPANTS}
                                            value="{$MaxParticipantsFilter}"/>
                                 </div>
 
-                                <div class="form-group col-xs-12">
-                                    <label for="resourceType">{translate key=ResourceType}</label>
+                                <div class="input-field">
+                                    <label for="resourceType" class="active">{translate key=ResourceType}</label>
                                     <select id="resourceType" {formname key=RESOURCE_TYPE_ID} {formname key=RESOURCE_TYPE_ID}
-                                            class="form-control input-sm">
+                                            class="input-sm">
                                         <option value="">- {translate key=All} -</option>
                                         {object_html_options options=$ResourceTypes label='Name' key='Id' selected=$ResourceTypeIdFilter}
                                     </select>
@@ -310,12 +323,12 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                                 {/foreach}
 
                                 <div class="btn-submit">
-                                    <button type="submit" class="btn btn-success btn-sm"
+                                    <button type="submit" class="btn btn-primary btn-sm"
                                             value="submit">{translate key=Filter}</button>
                                 </div>
                                 <div class="btn-clear">
                                     <button id="show_all_resources" type="button"
-                                            class="btn btn-default btn-xs">{translate key=ClearFilter}</button>
+                                            class="btn btn-flat btn-xs">{translate key=ClearFilter}</button>
                                 </div>
 
                             </div>
@@ -330,12 +343,12 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                     </div>
                 </div>
 
-                <div id="reservations" class="col-md-10 col-sm-12">
+                <div id="reservations" class="col s12 m10">
                     <div>
                         <a href="#" id="restore-sidebar" title="Show Reservation Filter"
                            class="hidden toggle-sidebar">{translate key=ResourceFilter} <i
-                                    class="glyphicon glyphicon-filter"></i> <i
-                                    class="glyphicon glyphicon-chevron-right"></i></a>
+                                    class="fa fa-filter"></i> <i
+                                    class="fa fa-chevron-right"></i></a>
                     </div>
                     {block name="reservations"}
                         {include file="Schedule/schedule-reservations-grid.tpl" }
@@ -350,7 +363,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
     <input type="hidden" value="{$ScheduleId}" id="scheduleId"/>
 
     <div class="row no-margin">
-        <div class="col-sm-9 visible-md visible-lg">&nbsp;</div>
+        <div class="col m8 show-on-medium-and-up">&nbsp;</div>
         {$smarty.capture.date_navigation}
     </div>
     {assign var=endTime value=microtime(true)}
@@ -427,9 +440,9 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
         });
         {/if}
 
-        $('#schedules').select2({
-            width: 'resolve'
-        });
+        // $('#schedules').select2({
+        //     width: 'resolve'
+        // });
 
         var pageLoadTime = {round($endTime-$startTime)};
         var resourceCount = {$Resources|count};
@@ -443,7 +456,13 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
         }
 
         $('#slow-schedule-warning').find('.close-forever').on('click', function (e) {
+            e.preventDefault();
             cookies.dismiss('slow-schedule-warning', '{$ScriptUrl}');
+            $('#slow-schedule-warning').addClass('no-show');
+        });
+
+        $('#slow-schedule-warning').find('.close').on('click', function (e) {
+            e.preventDefault();
             $('#slow-schedule-warning').addClass('no-show');
         });
 

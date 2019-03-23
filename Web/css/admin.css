@@ -172,11 +172,6 @@ tr.pending {
 #staticSlots {
   height: 400px;
 }
-#dailySlots,
-#tabs {
-  height: 450px;
-  margin-bottom: 4px;
-}
 .allDailyLayouts {
   display: none;
 }
@@ -512,4 +507,9 @@ td.update {
 }
 #page-manage-reservation-colors label.customAttribute {
   display: inline;
+}
+#page-manage-schedules #dailySlots,
+#page-manage-schedules #tabs {
+  height: 450px;
+  margin-bottom: 4px;
 }

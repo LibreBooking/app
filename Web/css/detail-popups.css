@@ -60,6 +60,9 @@
   background-color: #5d628e;
   border-color: #53577F;
 }
+.btn-flat:hover {
+  background-color: transparent;
+}
 .btn-link {
   color: #669999;
 }
@@ -210,22 +213,30 @@ a:hover {
   color: #AA3939;
   font-size: 0.8rem;
 }
-.card-panel.error {
+.card.error {
   background: #d88b8b;
   border: solid 1px #AA3939;
   color: #4b1919;
 }
-.card-panel.warning {
+.card.error a,
+.card.error .card-action a:not(.btn):not(.btn-large):not(.btn-small):not(.btn-large):not(.btn-floating) {
+  color: #FFF8E7;
+}
+.card.error a:hover,
+.card.error .card-action a:not(.btn):not(.btn-large):not(.btn-small):not(.btn-large):not(.btn-floating):hover {
+  color: #fff;
+}
+.card.warning {
   background: #ff9547;
   border: solid 1px #FA6900;
   color: #7a3300;
 }
-.card-panel.notice {
+.card.notice {
   background: #cbdfdf;
   border: solid 1px #9BC2C2;
   color: #548a8a;
 }
-.card-panel.success {
+.card.success {
   background: #bee3be;
   border: solid 1px #88CC88;
   color: #409540;

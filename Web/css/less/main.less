@@ -14,6 +14,10 @@
   border-color: @button-color; //@color-secondary-2-4;
 }
 
+.btn-flat:hover {
+  background-color: transparent;
+}
+
 .btn-link {
   color: @link-color;
 }
@@ -127,25 +131,33 @@ a:hover {
   font-size: 0.8rem;
 }
 
-.card-panel.error {
+.card.error {
   background: lighten(@muted-red, 25%);
   border: solid 1px @muted-red;
   color:darken(@muted-red, 25%);
+
+  a, .card-action a:not(.btn):not(.btn-large):not(.btn-small):not(.btn-large):not(.btn-floating) {
+    color: @off-white;
+  }
+
+  a:hover, .card-action a:not(.btn):not(.btn-large):not(.btn-small):not(.btn-large):not(.btn-floating):hover {
+    color: #fff;
+  }
 }
 
-.card-panel.warning {
+.card.warning {
   background: lighten(@dark-orange, 15%);
   border: solid 1px @dark-orange;
   color:darken(@dark-orange, 25%);
 }
 
-.card-panel.notice {
+.card.notice {
   background: lighten(@muted-blue, 15%);
   border: solid 1px @muted-blue;
   color:darken(@muted-blue, 25%);
 }
 
-.card-panel.success {
+.card.success {
   background: lighten(@primary-green, 15%);
   border: solid 1px @primary-green;
   color:darken(@primary-green,25%);

@@ -16,18 +16,23 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 *}
-<div class="form-group {if !$searchmode && $attribute->Required()}has-feedback{/if} {$class}">
-	<label class="customAttribute {if $readonly}readonly{elseif $searchmode}search{else}standard{/if}" for="{$attributeId}">{$attribute->Label()}</label>
+
+<div class="{$class}">
 	{if $readonly}
-		<span class="attributeValue {$class}">{$attribute->Value()}</span>
+        <label class="customAttribute readonly">{$attribute->Label()}</label>
+        <span class="attributeValue {$class}">{$attribute->Value()}</span>
 	{else}
-		<input type="text" id="{$attributeId}" name="{$attributeName}" value="{$attribute->Value()}"
-			   class="customAttribute form-control {$inputClass}" {if $attribute->Required() && !$searchmode}required{/if}/>
-		{if $attribute->Required() && !$searchmode}
-		<i class="glyphicon glyphicon-asterisk form-control-feedback" data-bv-icon-for="{$attributeId}"></i>
-		{/if}
-        {if $searchmode}
-            <span class="searchclear searchclear-label glyphicon glyphicon-remove-circle" ref="{$attributeId}"></span>
-        {/if}
+        <div class="input-field">
+            <label class="customAttribute {if $searchmode}search{else}standard{/if}" for="{$attributeId}">{$attribute->Label()}</label>
+            <input type="text" id="{$attributeId}" name="{$attributeName}" value="{$attribute->Value()}"
+                   class="customAttribute {$inputClass}" {if $attribute->Required() && !$searchmode}required{/if}/>
+            {if $attribute->Required() && !$searchmode}
+                <i class="fa fa-asterisk"></i>
+            {/if}
+            {if $searchmode}
+                <span class="searchclear searchclear-label fa fa-remove-circle" ref="{$attributeId}"></span>
+            {/if}
+        </div>
+
 	{/if}
 </div>

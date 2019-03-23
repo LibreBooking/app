@@ -23,7 +23,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
     <div class="row">
 
         {if $PreferencesUpdated}
-            <div class="col s12 m8 offset-m2 card-panel success hidden">
+            <div class="col s12 m8 offset-m2 card success hidden">
                 <ul>
                     <li>
                         <span class="fa fa-check-circle-o"></span> {translate key=YourSettingsWereUpdated}
@@ -33,7 +33,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
         {/if}
 
         {if !$EmailEnabled}
-            <div class="col s12 m8 offset-m2 card-panel error">
+            <div class="col s12 m8 offset-m2 card error">
                 <ul>
                     <li>
                         {translate key=EmailDisabled}

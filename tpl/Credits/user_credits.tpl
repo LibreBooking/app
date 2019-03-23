@@ -11,7 +11,7 @@
             </div>
 
             <div>
-                <ul class="tabs">
+                <ul class="tabs" id="tabs">
                     <li class="tab">
                         <a class="active" href="#credit-log">{translate key=CreditHistory}</a>
                     </li>
@@ -108,7 +108,7 @@
         var userCredits = new UserCredits(opts);
         userCredits.init();
 
-        $('.tabs').tabs();
+        $('#tabs').tabs();
 
         // var url = document.location.toString();
         // if (url.match('#')) {

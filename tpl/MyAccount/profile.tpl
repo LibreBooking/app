@@ -21,7 +21,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 <div id="page-profile">
 
     <div class="row">
-        <div class="hidden col s12 m8 offset-m2 card-panel success" id="profileUpdatedMessage">
+        <div class="hidden col s12 m8 offset-m2 card success" id="profileUpdatedMessage">
             <ul>
                 <li>
                     <span class="fa fa-check-circle-o"></span> {translate key=YourProfileWasUpdated}
@@ -29,7 +29,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
             </ul>
         </div>
 
-        <div class="col s12 m8 offset-m2 validationSummary card-panel error no-show" id="validationErrors">
+        <div class="col s12 m8 offset-m2 validationSummary card error no-show" id="validationErrors">
             <ul>
                 {async_validator id="fname" key="FirstNameRequired"}
                 {async_validator id="lname" key="LastNameRequired"}

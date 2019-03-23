@@ -269,7 +269,7 @@ function Schedule(opts, resourceGroups) {
 		function hide() {
 			shown = false;
 			$('#reservations-left').addClass('hidden');
-			$('#reservations').removeClass('col-md-10').addClass('col-md-12');
+			$('#reservations').removeClass('m10').addClass('m12');
 			$('#restore-sidebar').removeClass('hidden');
 
 			localStorage.setItem('hide-sidebar-status', true);
@@ -278,7 +278,7 @@ function Schedule(opts, resourceGroups) {
 		function show() {
 			shown = true;
 			$('#reservations-left').removeClass('hidden');
-			$('#reservations').addClass('col-md-10').removeClass('col-md-12');
+			$('#reservations').addClass('m10').removeClass('m12');
 			$('#restore-sidebar').addClass('hidden');
 
 			localStorage.removeItem('hide-sidebar-status');

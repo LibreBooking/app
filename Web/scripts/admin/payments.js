@@ -15,6 +15,8 @@ function Payments(opts) {
 
     Payments.prototype.init = function () {
 
+        $('div.modal').modal();
+
         $(".save").click(function (e) {
             e.preventDefault();
             $(e.target).closest('form').submit();
@@ -29,6 +31,8 @@ function Payments(opts) {
             else {
                 $('.' + classToToggle).prop('disabled', 'disabled');
             }
+
+            $('select').formSelect();
         });
 
         elements.transactionLog.on('click', '.refund', function (e) {
@@ -39,7 +43,7 @@ function Payments(opts) {
                 elements.refundAmount.prop('max', amount);
                 elements.refundAmount.val(amount);
                 elements.refundId.val(id);
-                elements.refundDialog.modal('show');
+                elements.refundDialog.modal('open');
             });
         });
 
@@ -91,6 +95,6 @@ function Payments(opts) {
     };
 
     var showMessage = function (id) {
-        $('#' + id).show().delay(2000).fadeOut(200);
-    }
+        $('#' + id).show().delay(5000).fadeOut(200);
+    };
 }
