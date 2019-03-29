@@ -60,14 +60,27 @@
   background-color: #5d628e;
   border-color: #53577F;
 }
+.btn-warning {
+  background-color: #FA6900;
+  border-color: #943e00;
+}
+.btn-warning:hover,
+.btn-warning:active,
+.btn-warning:focus {
+  background-color: #ff7715;
+  border-color: #FA6900;
+}
 .btn-flat:hover {
-  background-color: transparent;
+  background-color: #E9E9E9;
+  color: #000;
 }
 .btn-link {
   color: #669999;
+  background-color: transparent;
 }
 .btn-link:hover {
   color: #428181;
+  background-color: transparent;
 }
 html,
 body {
@@ -365,6 +378,9 @@ div.center {
 .col-bottom {
   vertical-align: bottom;
 }
+.valign-bottom {
+  vertical-align: bottom;
+}
 .margin-bottom-25 {
   margin-bottom: 25px;
 }
@@ -522,6 +538,13 @@ input.mid-number {
   cursor: pointer;
   color: #000;
 }
+ul.jqtree-tree,
+ul.jqtree-tree ul {
+  padding-left: 30px;
+}
+.jqtree-toggler {
+  padding-right: 8px;
+}
 .qtip {
   max-width: none;
 }
@@ -548,14 +571,12 @@ input.mid-number {
 .navbar-brand {
   padding: 0;
 }
-@media (max-width: 1024px) {
-  .navbar-fixed-top {
-    position: fixed;
-    top: 0;
-  }
-  body {
-    margin-top: 70px;
-  }
+.navbar-fixed-top {
+  position: fixed;
+  top: 0;
+}
+body {
+  margin-top: 70px;
 }
 /**
 materialize overrides
@@ -597,6 +618,10 @@ i.right {
 }
 .container {
   width: 90%;
+}
+.dropdown-content li > a,
+.dropdown-content li > span {
+  color: #353432;
 }
 /** end **/
 .ui-datepicker {

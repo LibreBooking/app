@@ -16,154 +16,163 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 *}
+
 <div id="reservationParticipation">
-	<div class="row">
-		<label for="participantAutocomplete">{translate key="ParticipantList"}</label>
+    <div class="row">
+        <label for="participantAutocomplete">{translate key="ParticipantList"}</label>
         <span class="badge" id="participantBadge">0</span>
         <br/>
-		<div class="participationText">
-			<span class="hidden-xs">{translate key=Add}</span>
-			<input type="text" id="participantAutocomplete" class="form-control inline-block user-search" placeholder="{translate key=NameOrEmail}"/>
-			<span class="hidden-xs">|</span>
-		</div>
-		<div class="participationButtons">
-			<button id="promptForParticipants" type="button" class="btn btn-link inline">
-				<i class="fa fa-user"></i>
-				{translate key='Users'}
-			</button>
-			<button id="promptForGroupParticipants" type="button" class="btn btn-link inline">
-				<i class="fa fa-users"></i>
-				{translate key='Groups'}
-			</button>
-		</div>
+        <div class="participationText">
+            <span class="hide-on-small-only">{translate key=Add}</span>
+            <input type="text" id="participantAutocomplete" class="inline-block user-search"
+                   placeholder="{translate key=NameOrEmail}"/>
+            <span class="hide-on-small-only">|</span>
+        </div>
+        <div class="participationButtons">
+            <button id="promptForParticipants" type="button" class="btn btn-link inline tooltipped waves-effect waves-dark"
+                    data-tooltip="{translate key='Users'}" data-position="top">
+                <i class="fa fa-user"></i>
+            </button>
+            <button id="promptForGroupParticipants" type="button" class="btn btn-link inline tooltipped waves-effect waves-dark"
+                    data-tooltip="{translate key='Groups'}" data-position="top">
+                <i class="fa fa-users"></i>
+            </button>
+        </div>
 
-		<div id="participantList">
-		</div>
-	</div>
-	<div class="row">
-		<label for="inviteeAutocomplete">{translate key="InvitationList"}</label>
+        <div id="participantList">
+        </div>
+    </div>
+    <div class="row">
+        <label for="inviteeAutocomplete">{translate key="InvitationList"}</label>
         <span class="badge" id="inviteeBadge">0</span>
-		<br/>
-		<div class="participationText">
-			<span class="hidden-xs">{translate key=Add}</span>
-			<input type="text" id="inviteeAutocomplete" class="form-control inline-block user-search" placeholder="{translate key=NameOrEmail}"/>
-			<span class="hidden-xs">|</span>
-		</div>
-		<div class="participationButtons">
-			<button id="promptForInvitees" type="button" class="btn btn-link inline">
-				<i class="fa fa-user"></i>
-				{translate key='Users'}
-			</button>
-			<button id="promptForGroupInvitees" type="button" class="btn btn-link inline">
-				<i class="fa fa-users"></i>
-				{translate key='Groups'}
-			</button>
-			{if $AllowGuestParticipation}
-				<button id="promptForGuests" type="button" class="btn btn-link inline">
-					<i class="fa fa-user-plus"></i>
-					{translate key='Guest'}
-				</button>
-			{/if}
-		</div>
+        <br/>
+        <div class="participationText">
+            <span class="hide-on-small-only">{translate key=Add}</span>
+            <input type="text" id="inviteeAutocomplete" class="inline-block user-search"
+                   placeholder="{translate key=NameOrEmail}"/>
+            <span class="hide-on-small-only">|</span>
+        </div>
+        <div class="participationButtons">
+            <button id="promptForInvitees" type="button" class="btn btn-link inline tooltipped waves-effect waves-dark"
+                    data-tooltip="{translate key='Users'}" data-position="top">
+                <i class="fa fa-user"></i>
+            </button>
+            <button id="promptForGroupInvitees" type="button" class="btn btn-link inline tooltipped waves-effect waves-dark"
+            data-tooltip="{translate key='Groups'}" data-position="top">
+                <i class="fa fa-users"></i>
+            </button>
+            {if $AllowGuestParticipation}
+                <button id="promptForGuests" type="button" class="btn btn-link inline tooltipped waves-effect waves-dark"
+                data-tooltip="{translate key='Guest'}" data-position="top">
+                    <i class="fa fa-user-plus"></i>
+                </button>
+            {/if}
+        </div>
 
-		<div id="inviteeList">
-		</div>
+        <div id="inviteeList">
+        </div>
 
-		<div id="allowParticipation">
-			<div class="checkbox">
-				<input type="checkbox" {if $AllowParticipantsToJoin}checked="checked"{/if} {formname key=ALLOW_PARTICIPATION} id="allowParticipationCheckbox">
-				<label for="allowParticipationCheckbox">{translate key=AllowParticipantsToJoin}</label>
-			</div>
-		</div>
+        <div id="allowParticipation">
+            <div class="">
+                <label for="allowParticipationCheckbox">
+                    <input type="checkbox"
+                           {if $AllowParticipantsToJoin}checked="checked"{/if} {formname key=ALLOW_PARTICIPATION}
+                           id="allowParticipationCheckbox">
+                    <span>{translate key=AllowParticipantsToJoin}</span>
+                </label>
+            </div>
+        </div>
 
-		<div class="modal fade" id="inviteeDialog" tabindex="-1" role="dialog" aria-labelledby="inviteeModalLabel" aria-hidden="true">
-			<div class="modal-dialog">
-				<div class="modal-content">
-					<div class="modal-header">
-						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-						<h4 class="modal-title" id="inviteeModalLabel">{translate key=InviteOthers}</h4>
-					</div>
-					<div class="modal-body scrollable-modal-content">
-					</div>
-					<div class="modal-footer">
-						<button type="button" class="btn btn-primary" data-dismiss="modal">{translate key='Done'}</button>
-					</div>
-				</div>
-			</div>
-		</div>
+        <div class="modal fade" id="inviteeDialog" tabindex="-1" role="dialog" aria-labelledby="inviteeModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="inviteeModalLabel">{translate key=InviteOthers}</h4>
+                    </div>
+                    <div class="modal-body scrollable-modal-content">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary modal-close waves-effect waves-light">{translate key='Done'}</button>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-		<div class="modal fade" id="inviteeGuestDialog" tabindex="-1" role="dialog" aria-labelledby="inviteeGuestModalLabel" aria-hidden="true">
-			<div class="modal-dialog">
-				<div class="modal-content">
-					<div class="modal-header">
-						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-						<h4 class="modal-title" id="inviteeGuestModalLabel">{translate key=InviteOthers}</h4>
-					</div>
-					<div class="modal-body">
-						<div class="form-group row">
-							<label for="txtGuestEmail" class="col-xs-2 form-control-label">{translate key=Email}</label>
-							<div class="col-xs-8">
-								<input id="txtGuestEmail" type="email" class="form-control"/>
-							</div>
-							<div class="col-xs-2">
-								<button id="btnAddGuest" class="btn btn-link" type="button"><span class="no-show">{translate key='Guest'}</span><i class="fa fa-user-plus icon add"></i></button>
-							</div>
-						</div>
-					</div>
-					<div class="modal-footer">
-						<button type="button" class="btn btn-primary" data-dismiss="modal">{translate key='Done'}</button>
-					</div>
-				</div>
-			</div>
-		</div>
+        <div class="modal fade" id="inviteeGuestDialog" tabindex="-1" role="dialog"
+             aria-labelledby="inviteeGuestModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="inviteeGuestModalLabel">{translate key=InviteOthers}</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col s10 input-field">
+                                <label for="txtGuestEmail" class="">{translate key=Email}</label>
+                                <input id="txtGuestEmail" type="email" class=""/>
+                            </div>
+                            <div class="col s2 input-field">
+                            <button id="btnAddGuest" class="btn btn-link waves-effect waves-dark" type="button"><span
+                                        class="no-show">{translate key='Guest'}</span><i
+                                        class="fa fa-user-plus icon add"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary modal-close waves-effect waves-light">{translate key='Done'}</button>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-		<div class="modal fade" id="inviteeGroupDialog" tabindex="-1" role="dialog" aria-labelledby="inviteeGroupModalLabel" aria-hidden="true">
-			<div class="modal-dialog">
-				<div class="modal-content">
-					<div class="modal-header">
-						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-						<h4 class="modal-title" id="inviteeGroupModalLabel">{translate key=InviteOthers}</h4>
-					</div>
-					<div class="modal-body scrollable-modal-content">
-					</div>
-					<div class="modal-footer">
-						<button type="button" class="btn btn-primary" data-dismiss="modal">{translate key='Done'}</button>
-					</div>
-				</div>
-			</div>
-		</div>
+        <div class="modal fade" id="inviteeGroupDialog" tabindex="-1" role="dialog"
+             aria-labelledby="inviteeGroupModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="inviteeGroupModalLabel">{translate key=InviteOthers}</h4>
+                    </div>
+                    <div class="modal-body scrollable-modal-content">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary modal-close waves-effect waves-light">{translate key='Done'}</button>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-	</div>
+    </div>
 
-	<div class="modal fade" id="participantDialog" tabindex="-1" role="dialog" aria-labelledby="participantModalLabel" aria-hidden="true">
-		<div class="modal-dialog">
-			<div class="modal-content">
-				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-					<h4 class="modal-title" id="participantModalLabel">{translate key=AddParticipants}</h4>
-				</div>
-				<div class="modal-body scrollable-modal-content">
-				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-primary" data-dismiss="modal">{translate key='Done'}</button>
-				</div>
-			</div>
-		</div>
-	</div>
+    <div class="modal fade" id="participantDialog" tabindex="-1" role="dialog" aria-labelledby="participantModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="participantModalLabel">{translate key=AddParticipants}</h4>
+                </div>
+                <div class="modal-body scrollable-modal-content">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary modal-close waves-effect waves-light">{translate key='Done'}</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
-	<div class="modal fade" id="participantGroupDialog" tabindex="-1" role="dialog" aria-labelledby="participantGroupModalLabel" aria-hidden="true">
-		<div class="modal-dialog">
-			<div class="modal-content">
-				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-					<h4 class="modal-title" id="participantGroupModalLabel">{translate key=AddParticipants}</h4>
-				</div>
-				<div class="modal-body scrollable-modal-content">
-				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-primary" data-dismiss="modal">{translate key='Done'}</button>
-				</div>
-			</div>
-		</div>
-	</div>
+    <div class="modal fade" id="participantGroupDialog" tabindex="-1" role="dialog"
+         aria-labelledby="participantGroupModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="participantGroupModalLabel">{translate key=AddParticipants}</h4>
+                </div>
+                <div class="modal-body scrollable-modal-content">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary modal-close waves-effect waves-light">{translate key='Done'}</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

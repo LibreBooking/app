@@ -75,7 +75,6 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
     $(document).ready(function ()
     {
-        var table = $('#reservations').find('table');
 		var rows = new Object();
 		{foreach from=$Resources item=resource name=resource_loop}
 			{foreach from=$BoundDates item=date}

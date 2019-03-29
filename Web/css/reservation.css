@@ -107,10 +107,13 @@
   margin-top: 20px;
 }
 .reservationReminders,
-.reservationAttachments,
 .customAttributes {
   margin-top: -9px;
-  padding-top: 0px;
+  padding-top: 0;
+}
+.reservationAttachments {
+  margin-top: -18px;
+  padding-top: 0;
 }
 .reservationDeleteButtons {
   float: left;
@@ -190,9 +193,6 @@
   font-size: 9pt;
   color: #3d5b74;
 }
-.customAttributes {
-  margin-top: 10px;
-}
 ul.jqtree-tree li.jqtree-selected > .jqtree-element,
 ul.jqtree-tree .jqtree-toggler {
   top: 10%;
@@ -258,6 +258,9 @@ ul.jqtree-tree .group-resource .jqtree-title {
 a.add {
   color: #353432;
   text-decoration: none;
+}
+#changeUserDialog a.add:hover {
+  color: #777470;
 }
 a.add .icon {
   color: #88CC88;
@@ -374,13 +377,36 @@ a.remove {
   background-color: rebeccapurple;
   opacity: .25;
 }
+#page-view-reservation {
+  margin: 0 -5%;
+}
 #page-view-reservation .participationAction {
   margin-bottom: 5px;
 }
-#page-reservation .form-control.timeinput.input-sm {
-  padding: 0px;
+#page-reservation {
+  margin: 0 -5%;
+}
+#page-reservation .timeinput.input-sm {
+  padding: 0;
+}
+#page-reservation .input-field .input-sm,
+#page-reservation .input-field input.select-dropdown {
+  font-size: 13px;
+  height: 2rem;
+}
+#page-reservation .input-field.condensed {
+  margin-top: 2px;
 }
 #page-reservation .resourceDetails {
   text-decoration: none;
   cursor: pointer;
+}
+#page-reservation .top-col {
+  margin-bottom: -20px;
+}
+#page-reservation .reservationResources {
+  margin-top: -10px;
+}
+#page-reservation #repeatDiv label span {
+  padding-left: 23px;
 }

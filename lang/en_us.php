@@ -462,7 +462,7 @@ class en_us extends Language
         $strings['DeleteReminderWarning'] = 'Are you sure you want to delete this?';
         $strings['NoReminders'] = 'You have no upcoming reminders.';
 		$strings['Reminders'] = 'Reminders';
-		$strings['SendReminder'] = 'Send Reminder';
+		$strings['SendReminder'] = 'Reminders';
 		$strings['minutes'] = 'minutes';
 		$strings['hours'] = 'hours';
 		$strings['days'] = 'days';
@@ -777,6 +777,10 @@ class en_us extends Language
         $strings['NotAttending'] = 'Not Attending';
         $strings['SignInGoogle'] = 'Sign in with Google';
         $strings['SignInFacebook'] = 'Sign in with Facebook';
+        $strings['AddOrRemoveResources'] = 'Add or remove resources';
+        $strings['AddOrRemoveAccessories'] = 'Add or remove accessories';
+        $strings['AutoReleaseTooltip'] = 'Automatically released if not checked in';
+        $strings['ViewAvailability'] = 'View Availability';
         // End Strings
 
 		// Install

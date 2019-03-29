@@ -28,26 +28,28 @@ function Reminder(opts)
 
 	Reminder.prototype.init = function ()
 	{
-		$('.reminderTime').forceNumeric();
-
 		var enable = function (div)
 		{
 			div.find('.reminderEnabled').attr('checked', 'checked');
 			div.find('.reminderTime, .reminderInterval').removeAttr('disabled', 'disabled');
+			div.find('.reminderInterval').formSelect();
 		};
 
 		var disable = function (div)
 		{
 			div.find('.reminderEnabled').removeAttr('checked');
 			div.find('.reminderTime, .reminderInterval').attr('disabled', 'disabled');
-		};
+            div.find('.reminderInterval').formSelect();
+        };
 
 		if (opts.reminderTimeStart != '')
 		{
 			enable(elements.startDiv);
 			elements.startDiv.find('.reminderTime').val(opts.reminderTimeStart);
 			elements.startDiv.find('.reminderInterval').val(opts.reminderIntervalStart);
-		}
+            elements.startDiv.find('.reminderInterval').formSelect();
+
+        }
 		else
 		{
 			disable(elements.startDiv);
@@ -58,7 +60,8 @@ function Reminder(opts)
 			enable(elements.endDiv);
 			elements.endDiv.find('.reminderTime').val(opts.reminderTimeEnd);
 			elements.endDiv.find('.reminderInterval').val(opts.reminderIntervalEnd);
-		}
+            elements.endDiv.find('.reminderInterval').formSelect();
+        }
 		else
 		{
 			disable(elements.endDiv);

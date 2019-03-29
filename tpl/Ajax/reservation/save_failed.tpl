@@ -51,7 +51,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 					<div>{$each|nl2br}</div>
 				{/foreach}
 			</div>
-			<button id="btnRetry" class="btn btn-success"><span class="fa fa-refresh"></span> {translate key='RetrySkipConflicts'}
+			<button id="btnRetry" class="btn btn-primary waves-effect waves-light"><span class="fa fa-refresh"></span> {translate key='RetrySkipConflicts'}
 			</button>
 		{/if}
 	</div>

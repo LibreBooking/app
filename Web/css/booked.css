@@ -60,14 +60,27 @@
   background-color: #5d628e;
   border-color: #53577F;
 }
+.btn-warning {
+  background-color: #FA6900;
+  border-color: #943e00;
+}
+.btn-warning:hover,
+.btn-warning:active,
+.btn-warning:focus {
+  background-color: #ff7715;
+  border-color: #FA6900;
+}
 .btn-flat:hover {
-  background-color: transparent;
+  background-color: #E9E9E9;
+  color: #000;
 }
 .btn-link {
   color: #669999;
+  background-color: transparent;
 }
 .btn-link:hover {
   color: #428181;
+  background-color: transparent;
 }
 html,
 body {
@@ -365,6 +378,9 @@ div.center {
 .col-bottom {
   vertical-align: bottom;
 }
+.valign-bottom {
+  vertical-align: bottom;
+}
 .margin-bottom-25 {
   margin-bottom: 25px;
 }
@@ -522,6 +538,13 @@ input.mid-number {
   cursor: pointer;
   color: #000;
 }
+ul.jqtree-tree,
+ul.jqtree-tree ul {
+  padding-left: 30px;
+}
+.jqtree-toggler {
+  padding-right: 8px;
+}
 .qtip {
   max-width: none;
 }
@@ -548,14 +571,12 @@ input.mid-number {
 .navbar-brand {
   padding: 0;
 }
-@media (max-width: 1024px) {
-  .navbar-fixed-top {
-    position: fixed;
-    top: 0;
-  }
-  body {
-    margin-top: 70px;
-  }
+.navbar-fixed-top {
+  position: fixed;
+  top: 0;
+}
+body {
+  margin-top: 70px;
 }
 /**
 materialize overrides
@@ -597,6 +618,10 @@ i.right {
 }
 .container {
   width: 90%;
+}
+.dropdown-content li > a,
+.dropdown-content li > span {
+  color: #353432;
 }
 /** end **/
 .ui-datepicker {
@@ -1699,10 +1724,13 @@ a.toggle-sidebar {
   margin-top: 20px;
 }
 .reservationReminders,
-.reservationAttachments,
 .customAttributes {
   margin-top: -9px;
-  padding-top: 0px;
+  padding-top: 0;
+}
+.reservationAttachments {
+  margin-top: -18px;
+  padding-top: 0;
 }
 .reservationDeleteButtons {
   float: left;
@@ -1782,9 +1810,6 @@ a.toggle-sidebar {
   font-size: 9pt;
   color: #3d5b74;
 }
-.customAttributes {
-  margin-top: 10px;
-}
 ul.jqtree-tree li.jqtree-selected > .jqtree-element,
 ul.jqtree-tree .jqtree-toggler {
   top: 10%;
@@ -1850,6 +1875,9 @@ ul.jqtree-tree .group-resource .jqtree-title {
 a.add {
   color: #353432;
   text-decoration: none;
+}
+#changeUserDialog a.add:hover {
+  color: #777470;
 }
 a.add .icon {
   color: #88CC88;
@@ -1966,15 +1994,38 @@ a.remove {
   background-color: rebeccapurple;
   opacity: .25;
 }
+#page-view-reservation {
+  margin: 0 -5%;
+}
 #page-view-reservation .participationAction {
   margin-bottom: 5px;
 }
-#page-reservation .form-control.timeinput.input-sm {
-  padding: 0px;
+#page-reservation {
+  margin: 0 -5%;
+}
+#page-reservation .timeinput.input-sm {
+  padding: 0;
+}
+#page-reservation .input-field .input-sm,
+#page-reservation .input-field input.select-dropdown {
+  font-size: 13px;
+  height: 2rem;
+}
+#page-reservation .input-field.condensed {
+  margin-top: 2px;
 }
 #page-reservation .resourceDetails {
   text-decoration: none;
   cursor: pointer;
+}
+#page-reservation .top-col {
+  margin-bottom: -20px;
+}
+#page-reservation .reservationResources {
+  margin-top: -10px;
+}
+#page-reservation #repeatDiv label span {
+  padding-left: 23px;
 }
 span.error {
   font-weight: bold;

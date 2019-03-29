@@ -14,16 +14,29 @@
   border-color: @button-color; //@color-secondary-2-4;
 }
 
+.btn-warning {
+  background-color: @dark-orange; //@color-boxes-primary-2;
+  border-color: darken(@dark-orange, 20%); //@color-secondary-2-3;
+}
+
+.btn-warning:hover, .btn-warning:active, .btn-warning:focus {
+  background-color: lighten(@dark-orange, 5%); //@color-secondary-2-3;
+  border-color: @dark-orange; //@color-secondary-2-4;
+}
+
 .btn-flat:hover {
-  background-color: transparent;
+  background-color: @light-gray;
+  color:#000;
 }
 
 .btn-link {
   color: @link-color;
+  background-color: transparent;
 }
 
 .btn-link:hover {
   color: @link-color-hover;
+  background-color: transparent;
 }
 
 html, body {
@@ -320,7 +333,11 @@ div.center {
   vertical-align: bottom;
 }
 
-.margin-bottom-25 {
+.valign-bottom {
+  vertical-align: bottom;
+}
+
+ .margin-bottom-25 {
   margin-bottom: 25px;
 }
 
@@ -511,6 +528,14 @@ input.mid-number {
   }
 }
 
+ul.jqtree-tree, ul.jqtree-tree ul {
+  padding-left:30px;
+}
+
+.jqtree-toggler {
+  padding-right:8px;
+}
+
 .qtip {
   max-width: none;
 }
@@ -544,16 +569,25 @@ input.mid-number {
   padding: 0;
 }
 
-@media (max-width: 1024px) {
-  .navbar-fixed-top {
-    position: fixed;
-    top: 0;
-  }
-
-  body {
-    margin-top: 70px;
-  }
+.navbar-fixed-top {
+  position: fixed;
+  top: 0;
 }
+
+body {
+  margin-top: 70px;
+}
+//
+//@media (max-width: 1024px) {
+//  .navbar-fixed-top {
+//    position: fixed;
+//    top: 0;
+//  }
+//
+//  body {
+//    margin-top: 70px;
+//  }
+//}
 
 /**
 materialize overrides
@@ -611,6 +645,12 @@ i.right {
 
 .container {
   width: 90%;
+}
+
+.dropdown-content {
+  li>a, li>span {
+    color: @almost-black;
+  }
 }
 
 /** end **/

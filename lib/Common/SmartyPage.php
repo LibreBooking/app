@@ -816,7 +816,7 @@ class SmartyPage extends Smarty
 	{
 		$key = isset($params['key']) ? $params['key'] : 'Cancel';
 		$class = isset($params['class']) ? $params['class'] : '';
-		echo '<button type="button" class="btn btn-flat cancel waves-effect waves-light ' . $class . '" data-dismiss="modal" ' . $this->GetButtonAttributes($params) . '>' .
+		echo '<button type="button" class="modal-close btn btn-flat cancel waves-effect waves-light ' . $class . '" ' . $this->GetButtonAttributes($params) . '>' .
 				Resources::GetInstance()->GetString($key) . '</button>';
 	}
 
@@ -872,7 +872,7 @@ class SmartyPage extends Smarty
 	{
 		$key = isset($params['key']) ? $params['key'] : 'Filter';
 		$class = isset($params['class']) ? $params['class'] : '';
-		echo '<button type="search" class="btn btn-primary ' . $class . '" ' . $this->GetButtonAttributes($params) . '> <span class="glyphicon glyphicon-search"></span> ' . Resources::GetInstance()
+		echo '<button type="search" class="btn btn-primary ' . $class . '" ' . $this->GetButtonAttributes($params) . '> <span class="fa fa-search"></span> ' . Resources::GetInstance()
 																																													  ->GetString($key) . '</button>';
 	}
 
@@ -880,7 +880,7 @@ class SmartyPage extends Smarty
 	{
 		$key = isset($params['key']) ? $params['key'] : 'OK';
 		$class = isset($params['class']) ? $params['class'] : '';
-		echo '<button type="button" class="btn btn-success ' . $class . '" ' . $this->GetButtonAttributes($params) . '><span class="glyphicon glyphicon-ok-circle"></span> ' . Resources::GetInstance()
+		echo '<button type="button" class="btn btn-success ' . $class . '" ' . $this->GetButtonAttributes($params) . '><span class="fa fa-ok-circle"></span> ' . Resources::GetInstance()
 																																														->GetString($key) . '</button>';
 	}
 

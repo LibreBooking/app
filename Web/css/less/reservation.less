@@ -62,6 +62,7 @@
 
 #reservationDetails {
   padding-right: 25px;
+
   #userName {
     font-size: 1.2em;
   }
@@ -71,9 +72,14 @@
   margin-top: 20px;
 }
 
-.reservationReminders, .reservationAttachments, .customAttributes {
+.reservationReminders, .customAttributes {
   margin-top: -9px;
-  padding-top: 0px;
+  padding-top: 0;
+}
+
+.reservationAttachments {
+  margin-top: -18px;
+  padding-top: 0;
 }
 
 .reservationDeleteButtons {
@@ -98,6 +104,7 @@
   .rounded(2px);
   margin: 2px 0 5px 0;
   background-color: #fff;
+
   .user {
     float: left;
     padding-right: 5px;
@@ -168,10 +175,6 @@
   color: #3d5b74;
 }
 
-.customAttributes {
-  margin-top: 10px;
-}
-
 ul.jqtree-tree li.jqtree-selected > .jqtree-element, ul.jqtree-tree .jqtree-toggler {
   top: 10%;
 }
@@ -208,6 +211,7 @@ ul.jqtree-tree .group-resource .jqtree-title {
 
 .reservationHeader h3 {
   margin: 0;
+
   .pendingApproval {
     color: #ffb540;
   }
@@ -249,6 +253,10 @@ ul.jqtree-tree .group-resource .jqtree-title {
 a.add {
   color: @almost-black;
   text-decoration: none;
+}
+
+#changeUserDialog a.add:hover {
+  color: lighten(@almost-black,25%);
 }
 
 a.add .icon {
@@ -305,6 +313,7 @@ a.remove {
   .participationText, .participationButtons {
     width: 100%;
     display: block;
+
     input[type=text].user-search {
       width: 100%;
     }
@@ -312,6 +321,7 @@ a.remove {
 
   .participationButtons {
     padding: 3px 0;
+
     button {
       //height:30px;
       line-height: 15px;
@@ -358,16 +368,20 @@ a.remove {
 #reservation-box {
   .resourceName {
     color: @color-secondary-2-3;
+
     a {
       color: @color-secondary-2-3;
     }
+
     .rounded(2px);
     padding: 2px 1px;
     display: inline-block;
     margin-right: 2px;
+
     .fa:last-of-type {
       margin-right: 2px;
     }
+
     background-color: @color-secondary-2-1;
   }
 }
@@ -390,23 +404,51 @@ a.remove {
 }
 
 .availability-highlighter {
-  position:absolute;
-  background-color:rebeccapurple;
+  position: absolute;
+  background-color: rebeccapurple;
   opacity: .25;
 }
 
 #page-view-reservation {
+  margin: 0 -5%;
+
   .participationAction {
     margin-bottom: 5px;
   }
 }
 
 #page-reservation {
-  .form-control.timeinput.input-sm {
-    padding: 0px;
+  margin: 0 -5%;
+
+  .timeinput.input-sm {
+    padding: 0;
   }
+
+  .input-field {
+    .input-sm, input.select-dropdown {
+      font-size: 13px;
+      height: 2rem;
+    }
+  }
+
+  .input-field.condensed {
+    margin-top: 2px;
+  }
+
   .resourceDetails {
     text-decoration: none;
     cursor: pointer;
+  }
+
+  .top-col {
+    margin-bottom: -20px;
+  }
+
+  .reservationResources {
+    margin-top: -10px
+  }
+
+  #repeatDiv label span {
+    padding-left: 23px;
   }
 }

@@ -34,6 +34,7 @@ function Reservation(opts) {
         addGuestButton: $('#btnAddGuest'),
 
         changeUserAutocomplete: $('#changeUserAutocomplete'),
+        changeUserDialog: $('#changeUserDialog'),
         userName: $('#userName'),
         availableCreditsCount: $('#availableCreditsCount'),
         requiredCreditsCount: $('#requiredCreditsCount'),
@@ -57,6 +58,7 @@ function Reservation(opts) {
         deleteButtonPrompt: $('#deleteButtonPrompt'),
         additionalResources: $('#additionalResources'),
         deleteRecurringButtons: $('#deleteRecurringButtons'),
+        updateButtonsPrompt: $('#updateButtons'),
 
         reservationForm: $('#form-reservation'),
 
@@ -70,7 +72,10 @@ function Reservation(opts) {
 
         btnViewAvailability: $('#btnViewAvailability'),
         userAvailabilityBox: $('#user-availability-box'),
-        reservationBox: $('#reservation-box')
+        reservationBox: $('#reservation-box'),
+
+        btnAddResources: $('#btnAddResources'),
+        addAccessoriesPrompt: $('#addAccessoriesPrompt'),
     };
 
     var participation = {};
@@ -92,12 +97,9 @@ function Reservation(opts) {
         _endDate = moment(endDateString, "YYYY-MM-DD HH:mm");
         participation.addedUsers.push(ownerId);
 
-        SetUpAdHocEmail();
+        SetUpModals();
 
-        $('#dialogResourceGroups').on('show.bs.modal', function (e) {
-            InitializeAdditionalResources();
-            return true;
-        });
+        SetUpAdHocEmail();
 
         scheduleId = $('#scheduleId').val();
 
@@ -109,12 +111,12 @@ function Reservation(opts) {
         elements.accessoriesConfirm.click(function (e) {
             e.preventDefault();
             AddAccessories();
-            elements.accessoriesDialog.modal('hide');
+            elements.accessoriesDialog.modal('close');
         });
 
         elements.accessoriesCancel.click(function (e) {
             e.preventDefault();
-            elements.accessoriesDialog.modal('hide');
+            elements.accessoriesDialog.modal('close');
         });
 
         elements.printButton.click(function (e) {
@@ -126,7 +128,7 @@ function Reservation(opts) {
 
         $('#btnRemoveAttachment').click(function (e) {
             e.preventDefault();
-            $('input:checkbox', '#attachmentDiv').toggle();
+            $('label', '#attachmentDiv').toggle();
         });
 
         changeUser.init();
@@ -138,7 +140,7 @@ function Reservation(opts) {
         });
 
         $('.btnClearAddResources').click(function () {
-            elements.resourceGroupsDialog.modal('hide');
+            elements.resourceGroupsDialog.modal('close');
         });
 
         elements.addResourcesConfirm.click(function () {
@@ -159,12 +161,12 @@ function Reservation(opts) {
 
         $('.triggerDeletePrompt').click(function (e) {
             e.preventDefault();
-            elements.deleteButtonPrompt.modal('show');
+            elements.deleteButtonPrompt.modal('open');
         });
 
         $('#cancelDelete, #confirmDelete').click(function (e) {
             e.preventDefault();
-            elements.deleteButtonPrompt.modal('hide');
+            elements.deleteButtonPrompt.modal('close');
         });
 
         $('#btnWaitList').unbind().click(function () {
@@ -188,10 +190,6 @@ function Reservation(opts) {
         });
 
         LoadCustomAttributes();
-
-        elements.accessoriesDialog.on('shown.bs.modal', function () {
-            $(this).find('input[type="number"]').first().focus();
-        });
     };
 
     function SetDeleteReason() {
@@ -217,6 +215,26 @@ function Reservation(opts) {
         ShowReservationAjaxResponse();
     };
 
+    function SetUpModals() {
+
+        var accessoriesShow = function(){
+            elements.accessoriesDialog.find('input[type="number"]').first().focus();
+        };
+
+        elements.resourceGroupsDialog.modal({onOpenEnd: InitializeAdditionalResources});
+        elements.accessoriesDialog.modal({onOpenEnd: accessoriesShow });
+        elements.changeUserDialog.modal();
+        elements.participantDialog.modal();
+        elements.inviteeDialog.modal();
+        elements.inviteeGuestDialog.modal();
+        elements.inviteeGroupDialog.modal();
+        elements.participantGroupDialog.modal();
+        elements.emailReservationPrompt.modal();
+        elements.emailReservationPrompt.modal();
+        elements.deleteButtonPrompt.modal();
+        elements.updateButtonsPrompt.modal();
+    }
+
     function SetUpAdHocEmail() {
 
         function AddUserToEmail(display, val) {
@@ -235,7 +253,7 @@ function Reservation(opts) {
             e.preventDefault();
             elements.emailUserAutocomplete.val('');
             elements.emailReservationList.empty();
-            elements.emailReservationPrompt.modal('show');
+            elements.emailReservationPrompt.modal('open');
         });
 
         elements.emailUserAutocomplete.keyup(function (e) {
@@ -267,10 +285,11 @@ function Reservation(opts) {
                 return options.emailUrl;
             },
             function (data) {
-                elements.emailReservationPrompt.modal('hide');
+                elements.emailReservationPrompt.modal('close');
             }
         );
     }
+
 
     var AddAccessories = function () {
         elements.accessoriesList.empty();
@@ -291,7 +310,7 @@ function Reservation(opts) {
             onCreateLi: function (node, $li) {
                 var span = $li.find('span');
                 var itemName = span.text();
-                var label = $('<label><input type="checkbox"/>' + itemName + '</label>');
+                var label = $('<label><input type="checkbox"/><span>' + itemName + '</span></label>');
 
                 var checkbox = label.find('input');
 
@@ -471,8 +490,17 @@ function Reservation(opts) {
                     primaryResourceContainer.find('.resourceName').remove();
                     displayDiv = primaryResourceContainer;
                 }
-                displayDiv.append('<div class="resourceName" style="background-color:' + color + '; color:' + textColor + ';">' + '<span class="resourceDetails" data-resourceId="' + checkedResourceId + '">' + checkedResourceName + '</span> ' + '<input class="resourceId" type="hidden" name="additionalResources[]" value="' + checkedResourceId + '"/>' + (requiresApproval ? ' <i class="fa fa-lock" data-tooltip="approval"></i> ' : '') + (requiresCheckin ? ' <i class="fa fa-sign-in" data-tooltip="checkin"></i> ' : '') + (!_.isEmpty(autoReleaseMinutes) ? ' <i class="fa fa-clock-o" data-tooltip="autorelease" data-autorelease="' + autoReleaseMinutes + '"></i> ' : '') + '</div>');
+
+                displayDiv.append('<div class="resourceName" style="background-color:' + color + '; color:' + textColor + ';">' +
+                    '<span class="resourceDetails" data-resourceId="' + checkedResourceId + '">' + checkedResourceName + '</span> ' +
+                    '<input class="resourceId" type="hidden" name="additionalResources[]" value="' + checkedResourceId + '"/>' +
+                    (requiresApproval ? ' <i class="fa fa-lock tooltipped" data-tooltip="' + opts.approvalTooltip + '"></i> ' : '') +
+                    (requiresCheckin ? ' <i class="fa fa-sign-in tooltipped" data-tooltip="' + opts.checkinTooltip + '"></i> ' : '') +
+                    (!_.isEmpty(autoReleaseMinutes) ? ' <i class="fa fa-clock-o tooltipped" data-tooltip="' + opts.autoreleaseTooltip + '" data-autorelease="' + autoReleaseMinutes + '"></i> ' : '') +
+                    '</div>');
             });
+
+            $('#reservation-resources').find('.tooltipped').tooltip();
         }
 
         var accessoryIds = GetDisallowedAccessoryIds();
@@ -481,7 +509,7 @@ function Reservation(opts) {
         });
 
         WireUpResourceDetailPopups();
-        elements.resourceGroupsDialog.modal('hide');
+        elements.resourceGroupsDialog.modal('close');
         onResourcesChanged();
     };
 
@@ -544,7 +572,7 @@ function Reservation(opts) {
 
             elements.groupDiv.find('[resource-id="' + resourceId + '"]').prop('checked', isChecked);
 
-            elements.groupDiv.find('.additionalResourceGroupCheckbox[group-id="' + groupId + '"]').prop('checked', numberOfResources == numberOfResourcesChecked)
+            elements.groupDiv.find('.additionalResourceGroupCheckbox[group-id="' + groupId + '"]').prop('checked', numberOfResources == numberOfResourcesChecked);
         }
 
         if (elements.groupDiv.find('.additionalResourceCheckbox:checked').length == 0) {
@@ -683,12 +711,12 @@ function Reservation(opts) {
     };
 
     var WireUpButtonPrompt = function () {
-        $('#updateButtons').find('button').click(function () {
-            $('#updateButtons').modal('hide');
+        elements.updateButtonsPrompt.find('button').click(function () {
+            elements.updateButtonsPrompt.modal('close');
         });
 
         $('.prompt').click(function () {
-            $('#updateButtons').modal('show');
+            elements.updateButtonsPrompt.modal('open');
         });
     };
 
@@ -928,7 +956,7 @@ function Reservation(opts) {
 
         elements.guestDialogPrompt.click(function (e) {
             e.preventDefault();
-            elements.inviteeGuestDialog.modal('show');
+            elements.inviteeGuestDialog.modal('open');
         });
 
         elements.addGuestButton.click(function (e) {
@@ -1142,9 +1170,9 @@ function Reservation(opts) {
             changeUser.showAll();
         });
 
-        $('#changeUserDialog').delegate('.add', 'click', function () {
+        elements.changeUserDialog.delegate('.add', 'click', function () {
             changeUser.chooseUser($(this).attr('userId'), $(this).text(), $(this).attr('availableCredits'));
-            $('#changeUserDialog').modal('hide');
+            elements.changeUserDialog.modal('close');
         });
     };
 
@@ -1166,7 +1194,7 @@ function Reservation(opts) {
 
     changeUser.showAll = function () {
         var allUserList;
-        var dialogElement = $('#changeUserDialog');
+        var dialogElement = elements.changeUserDialog;
         var listElement = dialogElement.find('.modal-body');
         var items = [];
         if (listElement.children().length == 0) {
@@ -1182,7 +1210,7 @@ function Reservation(opts) {
             });
         }
 
-        dialogElement.modal('show');
+        dialogElement.modal('open');
     };
 
     Reservation.prototype.addParticipant = function (name, userId) {
@@ -1296,7 +1324,7 @@ function Reservation(opts) {
             });
         }
 
-        dialogElement.modal('show');
+        dialogElement.modal('open');
     };
 
     participation.showAllGroupsToAdd = function (dialogElement) {
@@ -1316,7 +1344,7 @@ function Reservation(opts) {
             });
         }
 
-        dialogElement.modal('show');
+        dialogElement.modal('open');
     };
 
     participation.addGroupUsers = function (groupId, addUserCallback) {

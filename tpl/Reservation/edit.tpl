@@ -29,12 +29,11 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 {/block}
 
 {block name=submitButtons}
-    <div class="btn-group btnMore">
-    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-        <span class="hidden-xs">{translate key=More} <span class="caret"></span></span>
-        <span class="visible-xs"><i class="fa fa-ellipsis-v"></i> <span class="caret"></span></span>
+    <button id="submit-buttons{$submitSuffix}" type="button" class="btn btn-primary dropdown-toggle waves-effect waves-light" data-target="reservation-buttons-dropdown{$submitSuffix}" aria-expanded="false">
+        <span class="hide-on-small-only">{translate key=More} <i class="material-icons right">arrow_drop_down</i></span>
+        <span class="show-on-small hide-on-med-and-up"><i class="fa fa-ellipsis-v"></i> <i class="material-icons right">arrow_drop_down</i></span>
     </button>
-    <ul class="dropdown-menu" role="menu">
+    <ul id="reservation-buttons-dropdown{$submitSuffix}" class="dropdown-content" role="menu">
         <li>
             {assign var=icsUrl value="{$Path}export/{Pages::CALENDAR_EXPORT}?{QueryStringKeys::REFERENCE_NUMBER}={$ReferenceNumber}"}
             <a href="{$icsUrl}" download="{$icsUrl}">
@@ -72,8 +71,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                 <span class="fa fa-remove remove icon"></span>
                 {translate key='Delete'}
             </a>
-
-{else}
+        {else}
 
             <a href="#" class="triggerDeletePrompt delete prompt-single">
                 <span class="fa fa-remove remove icon"></span>
@@ -82,22 +80,24 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
         {/if}
         </li>
     </ul>
-</div>
-
 
 {if $CheckInRequired}
-    <button type="button" class="btn btn-warning btnCheckin"><i class="fa fa-sign-in"></i> {translate key=CheckIn}
+    <button type="button" class="btn btn-warning btnCheckin waves-effect waves-light">
+    <i class="fa fa-sign-in"></i>
+    {translate key=CheckIn}
         <span class="autoReleaseButtonMessage"
               data-autorelease-minutes="{$AutoReleaseMinutes}"> - {translate key=ReleasedIn} <span
-                    class="autoReleaseMinutes"></span> {translate key=minutes}</span></button>
+                    class="autoReleaseMinutes"></span> {translate key=minutes}</span>
+    </button>
 {/if}
 {if $CheckOutRequired}
-    <button type="button" class="btn btn-warning btnCheckout"><i
-                class="fa fa-sign-out"></i> {translate key=CheckOut}</button>
+    <button type="button" class="btn btn-warning btnCheckout waves-effect waves-light">
+    <i class="fa fa-sign-out"></i> {translate key=CheckOut}
+    </button>
 {/if}
 {if $IsRecurring}
-    <button type="button" class="btn btn-success update prompt">
-        <span class="glyphicon glyphicon-ok-circle"></span>
+    <button type="button" class="btn btn-primary update prompt">
+        <i class="fa fa-check-circle-o"></i>
         {translate key='Update'}
     </button>
     <div class="modal fade" id="updateButtons" tabindex="-1" role="dialog" aria-labelledby="updateButtonsLabel"
@@ -105,31 +105,30 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                     <h4 class="modal-title" id="updateButtonsLabel">{translate key=ApplyUpdatesTo}</h4>
                 </div>
                 <div class="modal-body">
                     <div id="deleteRecurringButtons" class="no-show margin-bottom-15">
                         <div>{translate key=DeleteReminderWarning}</div>
-                        <div>
+                        <div class="input-field">
                         <label for="deleteReasonRecurring">{translate key=Reason} ({translate key=Optional})</label>
-                        <textarea id="deleteReasonRecurring" class="form-control"></textarea>
+                        <textarea id="deleteReasonRecurring" class="materialize-textarea"></textarea>
                         </div>
                     </div>
 
-                    <button type="button" class="btn btn-success save btnUpdateThisInstance">
-                        <span class="fa fa-check"></span>
+                    <button type="button" class="btn btn-primary save btnUpdateThisInstance waves-effect waves-light">
+                        <i class="fa fa-check"></i>
                         {translate key='ThisInstance'}
                     </button>
-                    <button type="button" class="btn btn-success save btnUpdateAllInstances">
-                        <span class="fa fa-check-square"></span>
+                    <button type="button" class="btn btn-primary save btnUpdateAllInstances waves-effect waves-light">
+                        <i class="fa fa-check-square"></i>
                         {translate key='AllInstances'}
                     </button>
-                    <button type="button" class="btn btn-success save btnUpdateFutureInstances">
-                        <span class="fa fa-check-square-o"></span>
+                    <button type="button" class="btn btn-primary save btnUpdateFutureInstances waves-effect waves-light">
+                        <i class="fa fa-check-square-o"></i>
                         {translate key='FutureInstances'}
                     </button>
-                    <button type="button" class="btn btn-default">
+                    <button type="button" class="btn btn-flat waves-effect waves-dark">
                         {translate key='Cancel'}
                     </button>
                 </div>
@@ -138,14 +137,13 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
     </div>
 
 {else}
-
-    <button type="button" class="btn btn-success save update btnEdit">
-        <span class="glyphicon glyphicon-ok-circle"></span>
+    <button type="button" class="btn btn-primary save update btnEdit">
+         <i class="fa fa-check-circle-o"></i>
         {translate key='Update'}
     </button>
 {/if}
 
-    <div id="deleteButtonPrompt" class="modal fade">
+    <div id="deleteButtonPrompt" class="modal">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -181,14 +179,14 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
         <br/>
         {foreach from=$Attachments item=attachment}
             {assign var=attachmentUrl value="attachments/{Pages::RESERVATION_FILE}?{QueryStringKeys::ATTACHMENT_FILE_ID}={$attachment->FileId()}&{QueryStringKeys::REFERENCE_NUMBER}={$ReferenceNumber}"}
+             <label style='display: none;margin-right:20px;'>
+                <input  type="checkbox"
+                   name="{FormKeys::REMOVED_FILE_IDS}[{$attachment->FileId()}]"/>
+                  <span>{translate key="Remove"}</span>
+            &nbsp;</label>
             <a href="{$attachmentUrl}" download="{$attachmentUrl}"
                target="_blank">{$attachment->FileName()}</a>
 
-&nbsp;
-
-            <input style='display: none;' type="checkbox"
-                   name="{FormKeys::REMOVED_FILE_IDS}[{$attachment->FileId()}]"/>
-            &nbsp;
         {/foreach}
     </div>
     </div>
@@ -200,13 +198,12 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
     <input type="hidden" id="autoReleaseMinutes" value="{$AutoReleaseMinutes}"/>
 {/if}
 
-<div class="modal fade" id="emailReservationPrompt" tabindex="-1" role="dialog"
+<div class="modal" id="emailReservationPrompt" tabindex="-1" role="dialog"
      aria-labelledby="emailReservationLabel" aria-hidden="true">
     <form id="emailReservationForm" method="post" role="form" onkeypress="return event.keyCode != 13;">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                 <h4 class="modal-title" id="emailReservationLabel">{translate key=EmailReservation}</h4>
             </div>
             <div class="modal-body">
@@ -221,13 +218,12 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-success" id="btnSendReservation">
+                {cancel_button}
+                <button type="button" class="btn btn-primary waves-effect waves-light" id="btnSendReservation">
                     <span class="fa fa-envelope"></span>
                     {translate key='Email'}
                 </button>
-                <button type="button" class="btn btn-default" data-dismiss="modal">
-                    {translate key='Cancel'}
-                </button>
+                {indicator}
             </div>
         </div>
     </div>

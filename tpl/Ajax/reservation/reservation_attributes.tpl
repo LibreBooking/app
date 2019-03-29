@@ -19,17 +19,17 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 
 {if $Attributes|count > 0}
     <div class="customAttributes">
-        <div class="row">
+        {*<div class="row">*}
             {foreach from=$Attributes item=attribute name=attributes}
-                {if $smarty.foreach.attributes.index % 3 == 0}
-                    </div>
-                    <div class="row">
-                {/if}
-                <div class="customAttribute col-sm-4 col-xs-12">
+                {*{if ($smarty.foreach.attributes.index != 0) && ($smarty.foreach.attributes.index % 3 == 0)}*}
+                    {*</div>*}
+                    {*<div class="row">*}
+                {*{/if}*}
+                <div class="customAttribute col s12 m4">
                     {control type="AttributeControl" attribute=$attribute readonly=$ReadOnly}
                 </div>
             {/foreach}
         </div>
-    </div>
+    {*</div>*}
     <div class="clear">&nbsp;</div>
 {/if}

@@ -27,5 +27,5 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		<div id="checked-out-message" class="reservation-message">{translate key=CheckedOutSuccess}</div>
 	{/if}
 
-	<input type="button" id="btnSaveSuccessful" value="{translate key='Close'}" class="btn btn-success" />
+	<input type="button" id="btnSaveSuccessful" value="{translate key='Close'}" class="btn btn-primary waves-effect waves-light" />
 </div>

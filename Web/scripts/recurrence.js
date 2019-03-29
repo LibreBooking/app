@@ -67,11 +67,11 @@ function Recurrence(recurOptions, recurElements, prefix) {
     };
 
     var show = function (element) {
-        element.removeClass('no-show').addClass('inline');
+        element.removeClass('no-show');
     };
 
     var hide = function (element) {
-        element.removeClass('inline').addClass('no-show');
+        element.addClass('no-show');
     };
 
     var ChangeRepeatOptions = function () {
