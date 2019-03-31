@@ -235,7 +235,10 @@ class ReservationView
     {
 		$checkinMinutes = Configuration::Instance()->GetSectionKey(ConfigSection::RESERVATION, ConfigKeys::RESERVATION_CHECKIN_MINUTES, new IntConverter());
 
-        if ($this->CheckinDate->ToString() == '' && Date::Now()->AddMinutes($checkinMinutes)->GreaterThanOrEqual($this->StartDate))
+        if ($this->CheckinDate->ToString() == '' &&
+            Date::Now()->AddMinutes($checkinMinutes)->GreaterThanOrEqual($this->StartDate) &&
+            !$this->HasPassedAutorelease()
+        )
         {
             return $this->IsCheckinEnabled();
         }
@@ -274,6 +277,18 @@ class ReservationView
 
         return null;
     }
+
+    private function HasPassedAutorelease()
+    {
+        $autoReleaseMinutes = $this->AutoReleaseMinutes();
+        if ($autoReleaseMinutes == null)
+        {
+            return false;
+        }
+
+        return Date::Now()->GreaterThan($this->StartDate->AddMinutes($autoReleaseMinutes));
+    }
+
 }
 
 

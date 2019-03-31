@@ -22,16 +22,16 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
     <div id="reservation-box" class="readonly">
         <div id="reservationFormDiv">
             <div class="row">
-                {assign var="detailsCol" value="col-xs-12"}
-                {assign var="participantCol" value="col-xs-12"}
+                {assign var="detailsCol" value="col s12"}
+                {assign var="participantCol" value="col s12"}
 
                 {if $ShowParticipation && $AllowParticipation && $ShowReservationDetails}
-                    {assign var="detailsCol" value="col-xs-12 col-sm-6"}
-                    {assign var="participantCol" value="col-xs-12 col-sm-6"}
+                    {assign var="detailsCol" value="col s12 m6"}
+                    {assign var="participantCol" value="col s12 m6"}
                 {/if}
 
                 <div id="reservationDetails" class="{$detailsCol}">
-                    <div class="col-xs-12">
+                    <div class="col s12">
                         <label>{translate key='User'}</label>
                         {if $ShowUserDetails && $ShowReservationDetails}
                             <a href="#" class="bindableUser" data-userid="{$UserId}">{$ReservationUserName}</a>
@@ -41,8 +41,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                         {/if}
                     </div>
 
-                    <div class="col-xs-12">
-                        <div class="col-md-6 no-padding-left">
+                    <div class="col s12">
+                        <div class="col m6 no-padding-left">
                             <label>{translate key='BeginDate'}</label> {formatdate date=$StartDate}
                             <input type="hidden" id="formattedBeginDate"
                                    value="{formatdate date=$StartDate key=system}"/>
@@ -53,7 +53,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                                 {/if}
                             {/foreach}
                         </div>
-                        <div class="col-md-6 no-padding-left">
+                        <div class="col m6 no-padding-left">
                             <label>{translate key='EndDate'}</label> {formatdate date=$EndDate}
                             <input type="hidden" id="formattedEndDate" value="{formatdate date=$EndDate key=system}"/>
                             {foreach from=$EndPeriods item=period}
@@ -65,8 +65,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                         </div>
                     </div>
 
-                    <div class="col-xs-12">
-                        {*<span class="like-label">{translate key=ReservationLength}</span>*}
+                    <div class="col s12">
                         <div class="durationText">
                             <span id="durationDays">0</span> {translate key=days}
                             <span id="durationHours">0</span> {translate key=hours}
@@ -74,7 +73,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                         </div>
                     </div>
 
-                    <div class="col-xs-12">
+                    <div class="col s12">
                         <label>{translate key='RepeatPrompt'}</label> {translate key=$RepeatOptions[$RepeatType]['key']}
                         {if $IsRecurring}
                             <div class="repeat-details">
@@ -92,7 +91,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                         {/if}
                     </div>
 
-                    <div class="col-xs-12">
+                    <div class="col s12">
                         <div class="pull-left">
                             <label>{translate key='Resources'}</label> {$ResourceName}
                             <input id="primaryResourceId" type="hidden" value="{$ResourceId}"/>
@@ -121,7 +120,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                     </div>
 
                     {if $ShowReservationDetails}
-                        <div class="col-xs-12">
+                        <div class="col s12">
                             <label>{translate key='ReservationTitle'}</label>
                             {if $ReservationTitle neq ''}
                                 {$ReservationTitle}
@@ -129,7 +128,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                                 <span class="no-data">{translate key='None'}</span>
                             {/if}
                         </div>
-                        <div class="col-xs-12">
+                        <div class="col s12">
                             <label>{translate key='ReservationDescription'}</label>
                             {if $Description neq ''}
                                 <br/>
@@ -138,36 +137,39 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                                 <span class="no-data">{translate key='None'}</span>
                             {/if}
                         </div>
-                        <div class="col-xs-12">
-                            <div class="form-group">
+                        <div class="col s12">
+                            <div class="">
                                 <label>{translate key=ReferenceNumber}</label>
                                 {$ReferenceNumber}
                             </div>
                         </div>
                     {/if}
                 </div>
-
+                
                 {if $ShowParticipation && $AllowParticipation && $ShowReservationDetails}
                     <div class="{$participantCol}">
                         <div id="reservationParticipation">
                             <div id="participationAction" class="participationAction">
                                 {if $IAmParticipating && $CanAlterParticipation}
-                                    <div class="alert alert-info" role="alert">
+                                    <div class="card card-panel notice" role="alert">
                                         <strong>{translate key=YouAreAParticipant}</strong>
                                         {if $IsRecurring}
+                                            <div>{translate key=CancelParticipation}</div>
                                             <button value="{InvitationAction::CancelAll}"
-                                                    class="btn btn-xs btn-info participationAction">
+                                                    class="btn btn-small btn-white participationAction">
                                                 <i class="fa fa-minus-square"></i> {translate key=AllInstances}
                                             </button>
                                             <button value="{InvitationAction::CancelInstance}"
-                                                    class="btn btn-xs btn-info participationAction">
+                                                    class="btn btn-small btn-white participationAction">
                                                 <i class="fa fa-minus-square"></i> {translate key=ThisInstance}
                                             </button>
                                         {else}
-                                            <button value="{InvitationAction::CancelInstance}"
-                                                    class="btn btn-xs btn-info participationAction">
-                                                <i class="fa fa-minus-square"></i> {translate key=CancelParticipation}
-                                            </button>
+                                            <div>
+                                                <button value="{InvitationAction::CancelInstance}"
+                                                        class="btn btn-small btn-white participationAction">
+                                                    <i class="fa fa-minus-square"></i> {translate key=CancelParticipation}
+                                                </button>
+                                            </div>
                                         {/if}
                                     </div>
                                 {/if}
@@ -175,14 +177,16 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
                             <div id="invitationAction" class="participationAction">
                                 {if $IAmInvited && $CanAlterParticipation}
-                                    <div class="alert alert-info" role="alert">
-                                        <strong>{translate key=YouAreInvited}</strong>
+                                    <div class="card card-panel notice" role="alert">
+                                        <div>
+                                            <strong>{translate key=YouAreInvited}</strong>
+                                        </div>
                                         <button value="{InvitationAction::Accept}"
-                                                class="btn btn-xs btn-info participationAction">
+                                                class="btn btn-small btn-white participationAction">
                                             <i class="fa fa-user-plus"></i> {translate key="Attending"}
                                         </button>
                                         <button value="{InvitationAction::Decline}"
-                                                class="btn btn-xs btn-danger  participationAction">
+                                                class="btn btn-small btn-white participationAction">
                                             <i class="fa fa-user-times"></i> {translate key="NotAttending"}
                                         </button>
                                     </div>
@@ -191,20 +195,22 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
                             <div id="joinReservation" class="participationAction">
                                 {if $AllowParticipantsToJoin && !$IAmParticipating && !$IAmInvited && $CanAlterParticipation}
-                                    <div class="alert alert-info " role="alert">
-                                        <strong>{translate key=YouCanJoinThisReservation}</strong>
+                                    <div class="card card-panel notice" role="alert">
+                                        <div>
+                                            <strong>{translate key=YouCanJoinThisReservation}</strong>
+                                        </div>
                                         {if $IsRecurring}
                                             <button value="{InvitationAction::JoinAll}" id="btnJoinSeries"
-                                                    class="btn btn-xs btn-info participationAction">
+                                                    class="btn btn-small btn-white participationAction">
                                                 <i class="fa fa-user-plus"></i> {translate key="AllInstances"}
                                             </button>
                                             <button value="{InvitationAction::Join}" id="btnJoinInstance"
-                                                    class="btn btn-xs btn-info participationAction">
+                                                    class="btn btn-small btn-white participationAction">
                                                 <i class="fa fa-user-plus"></i> {translate key="ThisInstance"}
                                             </button>
                                         {else}
                                             <button value="{InvitationAction::Join}" id="btnJoin"
-                                                    class="btn btn-xs btn-info participationAction">
+                                                    class="btn btn-small btn-white participationAction">
                                                 <i class="fa fa-user-plus"></i> {translate key="Join"}
                                             </button>
                                         {/if}
@@ -238,49 +244,55 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                     </div>
                 {/if}
 
-                <div class="col-xs-12 same-height">
-                    <div id="custom-attributes-placeholder" class="col-xs-12">
+                <div class="col s12 same-height">
+                    <div id="custom-attributes-placeholder" class="col s12">
                     </div>
                 </div>
 
                 {if $ShowReservationDetails}
-                    <div class="col-xs-12 buttons">
+                    <div class="col s12 buttons">
                         <div class="pull-right">
-                            <button type="button" class="btn btn-default" onclick="window.location='{$ReturnUrl}'">
+                            <button type="button" class="btn btn-flat" onclick="window.location='{$ReturnUrl}'">
                                 {translate key='Close'}
                             </button>
 
                             {block name="deleteButtons"}
                                 {if $CanJoinWaitList}
-                                    <button id="btnWaitList" class="btn btn-default"><span
-                                                class="fa fa-bell-o"></span> {translate key='NotifyWhenAvailable'}
+                                    <button id="btnWaitList" class="btn btn-primary">
+                                        <span class="fa fa-bell-o"></span>
+                                        {translate key='NotifyWhenAvailable'}
                                     </button>
                                 {/if}
 
                                 {assign var=icsUrl value="{$Path}export/{Pages::CALENDAR_EXPORT}?{QueryStringKeys::REFERENCE_NUMBER}={$ReferenceNumber}"}
-                                <a href="{$icsUrl}" download="{$icsUrl}" class="btn btn-default">
+                                <a href="{$icsUrl}" download="{$icsUrl}" class="btn btn-primary">
                                     <span class="fa fa-calendar"></span>
-                                    {translate key=AddToOutlook}</a>
+                                    {translate key=AddToOutlook}
+                                </a>
                                 <a href="http://www.google.com/calendar/event?action=TEMPLATE&text={$ReservationTitle|escape:'url'}&dates={formatdate date=$StartDate->ToUtc() key=google}/{formatdate date=$EndDate->ToUtc() key=google}&ctz={$StartDate->Timezone()}&details={$Description|escape:'url'}&location={$Resource->Name|escape:'url'}&trp=false&sprop=&sprop=name:"
-                                   target="_blank" rel="nofollow" class="btn btn-default">
+                                   target="_blank" rel="nofollow" class="btn btn-primary">
                                     <span class="fa fa-google"></span>
-                                    {translate key=AddToGoogleCalendar}</a>
-                                <button type="button" class="btnPrint btn btn-default">
+                                    {translate key=AddToGoogleCalendar}
+                                </a>
+                                <button type="button" class="btnPrint btn btn-primary">
                                     <span class="fa fa-print"></span>
-                                    {translate key='Print'}</button>
+                                    {translate key='Print'}
+                                </button>
                             {/block}
 
                             {block name="submitButtons"}
                                 {if $CheckInRequired}
-                                    <button type="button" class="btn btn-warning btnCheckin"><i
-                                                class="fa fa-sign-in"></i> {translate key=CheckIn}<span
-                                                class="autoReleaseButtonMessage"
-                                                data-autorelease-minutes="{$AutoReleaseMinutes}"> - {translate key=ReleasedIn}
-										<span class="autoReleaseMinutes"></span> {translate key=minutes}</span></button>
+                                    <button type="button" class="btn btn-warning btnCheckin">
+                                        <i class="fa fa-sign-in"></i> {translate key=CheckIn}
+                                        <span class="autoReleaseButtonMessage"
+                                              data-autorelease-minutes="{$AutoReleaseMinutes}"> - {translate key=ReleasedIn}
+										<span class="autoReleaseMinutes"></span> {translate key=minutes}</span>
+                                    </button>
                                 {/if}
                                 {if $CheckOutRequired}
-                                    <button type="button" class="btn btn-warning btnCheckout"><i
-                                                class="fa fa-sign-out"></i> {translate key=CheckOut}</button>
+                                    <button type="button" class="btn btn-warning btnCheckout">
+                                        <i class="fa fa-sign-out"></i> {translate key=CheckOut}
+                                    </button>
                                 {/if}
                             {/block}
                         </div>
@@ -289,7 +301,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
             </div>
             {if $ShowReservationDetails}
                 {if $Attachments|count > 0}
-                    <div class="col-xs-12">
+                    <div class="col s12">
                         <div class="res-attachments">
                             <span class="heading">{translate key=Attachments} ({$Attachments|count})</span>
                             <br/>
@@ -334,7 +346,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
             <input type="hidden" {formname key=RESERVATION_ID} value="{$ReservationId}"/>
             <input type="hidden" {formname key=REFERENCE_NUMBER} value="{$ReferenceNumber}"/>
             <input type="hidden" {formname key=RESERVATION_ACTION} value="{$ReservationAction}"/>
-            <input type="hidden" {formname key=SERIES_UPDATE_SCOPE} id="hdnSeriesUpdateScope" value="{SeriesUpdateScope::FullSeries}"/>
+            <input type="hidden" {formname key=SERIES_UPDATE_SCOPE} id="hdnSeriesUpdateScope"
+                   value="{SeriesUpdateScope::FullSeries}"/>
             <input type="hidden" {formname key=DELETE_REASON} value="" id="hdnDeleteReason"/>
             <input type="hidden" {formname key=BEGIN_DATE} value="{formatdate date=$StartDate key=system}"/>
             <input type="hidden" {formname key=BEGIN_PERIOD} value="{$SelectedStart->Begin()}"/>

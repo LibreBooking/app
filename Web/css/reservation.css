@@ -111,6 +111,12 @@
   margin-top: -9px;
   padding-top: 0;
 }
+#page-view-reservation .reservationReminders,
+#page-view-reservation .customAttributes {
+  margin-top: 5px;
+  margin-left: -11px;
+  margin-bottom: 5px;
+}
 .reservationAttachments {
   margin-top: -18px;
   padding-top: 0;

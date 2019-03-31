@@ -79,6 +79,10 @@ class SmartyControlTests extends PHPUnit_Framework_TestCase
 		$expectedName = $this->_expectedName;
 		$expectedValue = $this->_expectedValue;
 		$expectedStyle = $this->_expectedStyle;
+		if ($type == 'password')
+        {
+            $expectedValue = '';
+        }
 		return "<input type=\"$type\" name=\"$expectedName\" id=\"{$this->_id}\" value=\"$expectedValue\" style=\"font-size:12px;\" class=\"something\" />";
 	}
 }
