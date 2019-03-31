@@ -25,7 +25,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		<div>
             <div class="inline">{indicator id=loadingIndicator}</div>
 			<label for="calendarFilter">{translate key="ChangeCalendar"}</label>
-			<select id="calendarFilter">
+			<select id="calendarFilter" class="browser-default">
 				{foreach from=$filters->GetFilters() item=filter}
 					<option value="s{$filter->Id()}" class="schedule" {if $filter->Selected()}selected="selected"{/if}>{$filter->Name()}</option>
 					{foreach from=$filter->GetFilters() item=subfilter}
@@ -45,6 +45,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 <script type="text/javascript">
 	$(function(){
+
 		$('#calendarFilter').select2();
 	});
 

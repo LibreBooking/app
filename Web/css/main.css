@@ -125,6 +125,10 @@ a.btn-link:hover {
   color: #428181;
   background-color: transparent;
 }
+button:active,
+button:focus {
+  background-color: inherit;
+}
 html,
 body {
   height: 100%;

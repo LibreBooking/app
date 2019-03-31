@@ -145,7 +145,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                         </div>
                     {/if}
                 </div>
-                
+
                 {if $ShowParticipation && $AllowParticipation && $ShowReservationDetails}
                     <div class="{$participantCol}">
                         <div id="reservationParticipation">

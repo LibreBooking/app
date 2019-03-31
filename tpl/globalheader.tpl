@@ -101,7 +101,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
         {/if}
     {/if}
     {if $Select2}
-        {cssfile src="scripts/css/select2/select2-4.0.5.min.css"}
+        {cssfile src="css/select2-materialize.css"}
     {/if}
     {if $Timepicker}
         {cssfile src="scripts/css/timePicker.css" rel="stylesheet"}

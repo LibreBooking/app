@@ -136,6 +136,9 @@ ul.jqtree-tree .jqtree-toggler {
 .fc-day-header {
   background-color: #FFF8E7;
 }
+.fc-body thead tr {
+  border-bottom: none;
+}
 #page-calendar #filter,
 #page-my-calendar #filter {
   margin: 15px;
