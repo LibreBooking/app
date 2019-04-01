@@ -234,7 +234,7 @@
 }
 
 .select2-container--default .select2-selection--multiple {
-    background-color: white;
+    /*background-color: white;*/
     border: 1px solid #aaa;
     border-radius: 4px;
     cursor: text
@@ -508,7 +508,7 @@
 }
 
 .select2-container--classic .select2-selection--multiple {
-    background-color: white;
+    /*background-color: white;*/
     border: 1px solid #aaa;
     border-radius: 4px;
     cursor: text;
@@ -593,7 +593,7 @@
 }
 
 .select2-container--classic .select2-dropdown {
-    background-color: #fff;
+    /*background-color: #fff;*/
     border: 1px solid transparent
 }
 
