@@ -12,7 +12,7 @@
 
             <div>
                 <ul class="tabs" id="tabs">
-                    <li class="tab">
+                    <li class="tab active">
                         <a class="active" href="#credit-log">{translate key=CreditHistory}</a>
                     </li>
 
