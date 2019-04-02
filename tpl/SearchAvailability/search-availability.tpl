@@ -59,41 +59,40 @@
         </div>
 
         <div class="col s12 m5">
-            <div>
-                <label class="">
-                    <input type="radio" id="today" checked="checked"
-                           value="today" {formname key=AVAILABILITY_RANGE} />
-                    <span> <span
-                                class="hide-on-small-only">{translate key=Today}</span> {format_date date=$Today key=calendar_dates}</span>
-                </label>
-                <label class="">
-                    <input type="radio" id="tomorrow" value="tomorrow" {formname key=AVAILABILITY_RANGE} />
+            <label class="">
+                <input type="radio" id="today" checked="checked"
+                       value="today" {formname key=AVAILABILITY_RANGE} />
+                <span> <span
+                            class="hide-on-small-only">{translate key=Today}</span> {format_date date=$Today key=calendar_dates}</span>
+            </label>
+            <label class="">
+                <input type="radio" id="tomorrow" value="tomorrow" {formname key=AVAILABILITY_RANGE} />
 
-                    <span><span class="hide-on-small-only">{translate key=Tomorrow}</span> {format_date date=$Tomorrow key=calendar_dates}</span>
-                </label>
-                <label class="">
-                    <input type="radio" id="thisweek" value="thisweek" {formname key=AVAILABILITY_RANGE} />
-                    <span><span class="hide-on-small-only">{translate key=ThisWeek}</span><span
-                                class="hide-on-med-and-up">{translate key=Week}</span></span>
-                </label>
-                <label class="">
-                    <input type="radio" id="daterange" value="daterange" {formname key=AVAILABILITY_RANGE} />
-                    <span><span class="hide-on-small-only"><i
-                                    class="fa fa-calendar"></i></span> {translate key=DateRange}</span>
-                </label>
-            </div>
+                <span><span class="hide-on-small-only">{translate key=Tomorrow}</span> {format_date date=$Tomorrow key=calendar_dates}</span>
+            </label>
+            <label class="">
+                <input type="radio" id="thisweek" value="thisweek" {formname key=AVAILABILITY_RANGE} />
+                <span><span class="hide-on-small-only">{translate key=ThisWeek}</span><span
+                            class="hide-on-med-and-up">{translate key=Week}</span></span>
+            </label>
+            <label class="">
+                <input type="radio" id="daterange" value="daterange" {formname key=AVAILABILITY_RANGE} />
+                <span><span class="hide-on-small-only"><i
+                                class="fa fa-calendar"></i></span> {translate key=DateRange}</span>
+            </label>
         </div>
+
         <div class="col s12 m7">
             <div class="input-field inline">
                 <label for="beginDate" class="no-show">{translate key=BeginDate}</label>
-                <input type="text" id="beginDate" class="form-control inline dateinput"
+                <input type="text" id="beginDate" class="inline dateinput"
                        placeholder="{translate key=BeginDate}" disabled="disabled"/>
                 <input type="hidden" id="formattedBeginDate" {formname key=BEGIN_DATE} />
             </div>
             -
             <div class="input-field inline">
                 <label for="endDate" class="no-show">{translate key=EndDate}</label>
-                <input type="text" id="endDate" class="form-control inline dateinput"
+                <input type="text" id="endDate" class="inline dateinput"
                        placeholder="{translate key=EndDate}" disabled="disabled"/>
                 <input type="hidden" id="formattedEndDate" {formname key=END_DATE} />
             </div>
