@@ -1,6 +1,6 @@
 {include file='globalheader.tpl' Select2=true Owl=true Timepicker=true}
 
-<div id="page-search-availability" class="row">
+<div id="page-search-availability" class="row page-search-availability">
 
     <form role="form" name="searchForm" id="searchForm" method="post"
           action="{$smarty.server.SCRIPT_NAME}?action=search">
@@ -63,7 +63,8 @@
                 <label class="">
                     <input type="radio" id="today" checked="checked"
                            value="today" {formname key=AVAILABILITY_RANGE} />
-                    <span> <span class="hide-on-small-only">{translate key=Today}</span> {format_date date=$Today key=calendar_dates}</span>
+                    <span> <span
+                                class="hide-on-small-only">{translate key=Today}</span> {format_date date=$Today key=calendar_dates}</span>
                 </label>
                 <label class="">
                     <input type="radio" id="tomorrow" value="tomorrow" {formname key=AVAILABILITY_RANGE} />
@@ -72,11 +73,13 @@
                 </label>
                 <label class="">
                     <input type="radio" id="thisweek" value="thisweek" {formname key=AVAILABILITY_RANGE} />
-                    <span><span class="hide-on-small-only">{translate key=ThisWeek}</span><span class="hide-on-med-and-up">{translate key=Week}</span></span>
+                    <span><span class="hide-on-small-only">{translate key=ThisWeek}</span><span
+                                class="hide-on-med-and-up">{translate key=Week}</span></span>
                 </label>
                 <label class="">
                     <input type="radio" id="daterange" value="daterange" {formname key=AVAILABILITY_RANGE} />
-                    <span><span class="hide-on-small-only"><i class="fa fa-calendar"></i></span> {translate key=DateRange}</span>
+                    <span><span class="hide-on-small-only"><i
+                                    class="fa fa-calendar"></i></span> {translate key=DateRange}</span>
                 </label>
             </div>
         </div>
@@ -95,19 +98,16 @@
                 <input type="hidden" id="formattedEndDate" {formname key=END_DATE} />
             </div>
         </div>
-        <div class="clearfix"></div>
 
         <div class="col s12">
-            {control type="RecurrenceControl"}
+            <a href="#" id="showHideMoreOptions">{translate key=MoreOptions}</a>
         </div>
 
-        <div class="col s12">
-            <a href="#" data-toggle="collapse" data-target="#advancedSearchOptions">{translate key=MoreOptions}</a>
-        </div>
+        <div style="display:none;" id="advancedSearchOptions">
+            <div class="col s12">
+                {control type="RecurrenceControl"}
+            </div>
 
-        <div class="clearfix"></div>
-
-        <div class="collapse" id="advancedSearchOptions">
             <div class="col s6">
                 <label for="maxCapacity" class="hidden">{translate key=MinimumCapacity}</label>
                 <input type='number' id='maxCapacity' min='0' size='5' maxlength='5'
@@ -124,33 +124,32 @@
                 </select>
             </div>
 
-            <div>
+            <div class="customAttributes">
                 {foreach from=$ResourceAttributes item=attribute}
-                    {control type="AttributeControl" attribute=$attribute align='vertical' searchmode=true namePrefix='r' class="col-sm-6 col-xs-12" inputClass="input-sm"}
+                    <div class="customAttribute col s12 m4">
+                        {control type="AttributeControl" attribute=$attribute align='vertical' searchmode=true namePrefix='r' class="col-sm-6 col-xs-12" inputClass="input-sm"}
+                    </div>
                 {/foreach}
-                {if $ResourceAttributes|count%2 != 0}
-                    <div class="col s6 col-sm-6 hide-on-small-only">&nbsp;</div>
-                {/if}
             </div>
 
-            <div>
+            <div class="customAttributes">
                 {foreach from=$ResourceTypeAttributes item=attribute}
-                    {control type="AttributeControl" attribute=$attribute align='vertical' searchmode=true namePrefix='rt' class="col-sm-6 col-xs-12" inputClass="input-sm"}
+                    <div class="customAttribute col s12 m4">
+                        {control type="AttributeControl" attribute=$attribute align='vertical' searchmode=true namePrefix='rt' class="col-sm-6 col-xs-12" inputClass="input-sm"}
+                    </div>
                 {/foreach}
-                {if $ResourceTypeAttributes|count%2 != 0}
-                    <div class="col-sm-6 hide-on-small-only">&nbsp;</div>
-                {/if}
             </div>
         </div>
 
         <div class="col s12">
-            <button type="submit" class="btn btn-success"
+            <button type="submit" class="btn btn-primary right"
                     value="submit" {formname key=SUBMIT}>{translate key=FindATime}</button>
             {indicator}
         </div>
     </form>
 
     <div class="clearfix"></div>
+
     <div id="availability-results"></div>
 
 

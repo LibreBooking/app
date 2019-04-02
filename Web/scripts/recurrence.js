@@ -243,5 +243,6 @@ function Recurrence(recurOptions, recurElements, prefix) {
         }
 
         elements.repeatTerminationTextbox.datepicker("setDate", newEndDate);
+        M.updateTextFields();
     };
 }

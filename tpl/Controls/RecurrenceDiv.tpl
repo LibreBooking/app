@@ -97,7 +97,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
         </div>
 
         <div id="{$prefix}repeatUntilDiv" class="input-field col s12 no-show recur-toggle">
-            <label for="{$prefix}EndRepeat">{translate key="RepeatUntilPrompt"}</label>
+            <label for="{$prefix}EndRepeat" class="active">{translate key="RepeatUntilPrompt"}</label>
             <input type="text" id="{$prefix}EndRepeat" class="input-sm dateinput"
                    value="{formatdate date=$RepeatTerminationDate}"/>
             <input type="hidden" id="{$prefix}formattedEndRepeat" {formname key=end_repeat_date}

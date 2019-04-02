@@ -15,12 +15,19 @@ function AvailabilitySearch(options) {
         minutes: $('#minutes'),
         beginTime: $('#startTime'),
         endTime: $('#endTime'),
+        showHideMoreOptions: $('#showHideMoreOptions'),
+        advancedSearchOptions: $('#advancedSearchOptions')
     };
 
     var init = function () {
         ConfigureAsyncForm(elements.searchForm, function () {
             elements.availabilityResults.empty();
         }, showSearchResults);
+
+        elements.showHideMoreOptions.click(function(e){
+            e.preventDefault();
+            elements.advancedSearchOptions.toggle();
+        });
 
         elements.availabilityResults.on('click', '.opening', function (e) {
             var opening = $(this);

@@ -1,5 +1,5 @@
 {foreach from=$Openings item=opening}
-    <div class="opening"
+    <div class="opening hoverable"
          data-resourceid="{$opening->Resource()->Id}"
          data-startdate="{format_date date=$opening->Start() key=system_datetime}"
          data-enddate="{format_date date=$opening->End() key=system_datetime}">
