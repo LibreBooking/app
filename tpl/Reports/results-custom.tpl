@@ -55,11 +55,11 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 		{/foreach}
         </tbody>
 	</table>
-	<h4>{$Report->ResultCount()} {translate key=Rows}
+	<div class="row-count">{$Report->ResultCount()} {translate key=Rows}
 		{if $Definition->GetTotal() != ''}
 			| {$Definition->GetTotal()} {translate key=Total}
 		{/if}
-	</h4>
+	</div>
 {else}
 	<h2 id="report-no-data" class="no-data" style="text-align: center;">{translate key=NoResultsFound}</h2>
 {/if}

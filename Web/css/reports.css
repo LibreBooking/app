@@ -9,12 +9,6 @@
 }
 #custom-report-input label {
   display: inline-block;
-  width: 100px;
-}
-#custom-report-input .input-set {
-  /*float: left;*/
-  padding-right: 15px;
-  padding-bottom: 2px;
 }
 #report-results {
   margin-top: 15px;
@@ -79,13 +73,18 @@
   height: 20px;
 }
 .input-set span {
-  font-weight: bold;
   margin: 10px 0;
   display: block;
 }
-.form-control-feedback {
-  pointer-events: auto;
-}
 #generate-report #saveMessage {
   text-align: center;
+}
+.page-report .row-count {
+  font-weight: bold;
+}
+#page-generate-report .row {
+  margin-bottom: 0;
+}
+#page-generate-report .input-field {
+  margin: 0;
 }

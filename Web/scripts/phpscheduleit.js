@@ -71,32 +71,32 @@ $.fn.showHidePanel = function () {
 
     function setIcon(panel, targetIcon) {
         var iconSpan = panel.find('.show-hide');
-        iconSpan.removeClass('glyphicon-chevron-up');
-        iconSpan.removeClass('glyphicon-chevron-down');
+        iconSpan.removeClass('fa-chevron-up');
+        iconSpan.removeClass('fa-chevron-down');
         iconSpan.addClass(targetIcon);
     }
 
     var visibility = readCookie(panel.attr('id'));
     if (visibility && visibility == '0') {
-        panel.find('.panel-body, .panel-footer').hide();
-        setIcon(panel, 'glyphicon-chevron-down');
+        panel.find('.panel-body, .panel-footer, .card-action, .card-body').hide();
+        setIcon(panel, 'fa-chevron-down');
     } else {
-        setIcon(panel, 'glyphicon-chevron-up');
+        setIcon(panel, 'fa-chevron-up');
     }
 
     panel.find('.show-hide').click(function (e) {
         e.preventDefault();
         var id = panel.attr('id');
 
-        var dashboard = panel.find('.panel-body, .panel-footer');
+        var dashboard = panel.find('.panel-body, .panel-footer, .card-action, .card-body');
         if (dashboard.css('display') == 'none') {
             createCookie(id, '1', 30);
             dashboard.show();
-            setIcon(panel, 'glyphicon-chevron-up');
+            setIcon(panel, 'fa-chevron-up');
         } else {
             createCookie(id, '0', 30);
             dashboard.hide();
-            setIcon(panel, 'glyphicon-chevron-down');
+            setIcon(panel, 'fa-chevron-down');
         }
     });
 };

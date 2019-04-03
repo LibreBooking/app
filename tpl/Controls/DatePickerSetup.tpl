@@ -70,6 +70,7 @@ new Date({$date->Year()}, {$date->Month()-1}, {$date->Day()})
                 {/if}
                 $("#{$AltId}").val(dateString);
             }
+            M.updateTextFields();
         });
         {/if}
 
