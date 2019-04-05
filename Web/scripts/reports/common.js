@@ -23,7 +23,7 @@ function ReportsCommon(opts) {
 			$(document).on('click', '#btnChart', function (e) {
 				e.preventDefault();
 
-				var chart = new Chart(opts.chartOpts);
+				var chart = new BookedChart(opts.chartOpts);
 				chart.generate();
 				$('#report-results').hide();
 			});

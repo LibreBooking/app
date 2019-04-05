@@ -75,6 +75,7 @@
 .input-set span {
   margin: 10px 0;
   display: block;
+  min-width: 150px;
 }
 #generate-report #saveMessage {
   text-align: center;

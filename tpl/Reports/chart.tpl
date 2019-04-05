@@ -22,13 +22,15 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 {html_image src="admin-ajax-indicator.gif"}
 </div>
 
-<div id="chartdiv" style="display:none;margin:auto;height:400px;width:80%"></div>
+<canvas id="chartdiv" style="display:none;margin:auto;height:400px;width:80%"></canvas>
 
-<!--[if lt IE 9]>{jsfile src="js/jqplot/excanvas.js"}<![endif]-->
-{jsfile src="js/jqplot/jquery.jqplot.min.js"}
-{jsfile src="js/jqplot/plugins/jqplot.barRenderer.min.js"}
-{jsfile src="js/jqplot/plugins/jqplot.categoryAxisRenderer.min.js"}
-{jsfile src="js/jqplot/plugins/jqplot.canvasAxisTickRenderer.min.js"}
-{jsfile src="js/jqplot/plugins/jqplot.canvasTextRenderer.min.js"}
-{jsfile src="js/jqplot/plugins/jqplot.pointLabels.min.js"}
-{jsfile src="js/jqplot/plugins/jqplot.dateAxisRenderer.min.js"}
+{jsfile src="js/Chart-2.8.0..bundle.min.js"}
+
+{*<!--[if lt IE 9]>{jsfile src="js/jqplot/excanvas.js"}<![endif]-->*}
+{*{jsfile src="js/jqplot/jquery.jqplot.min.js"}*}
+{*{jsfile src="js/jqplot/plugins/jqplot.barRenderer.min.js"}*}
+{*{jsfile src="js/jqplot/plugins/jqplot.categoryAxisRenderer.min.js"}*}
+{*{jsfile src="js/jqplot/plugins/jqplot.canvasAxisTickRenderer.min.js"}*}
+{*{jsfile src="js/jqplot/plugins/jqplot.canvasTextRenderer.min.js"}*}
+{*{jsfile src="js/jqplot/plugins/jqplot.pointLabels.min.js"}*}
+{*{jsfile src="js/jqplot/plugins/jqplot.dateAxisRenderer.min.js"}*}
