@@ -17,17 +17,16 @@ You should have received a copy of the GNU General Public License
 along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 *}
 
-{include file='globalheader.tpl' cssFiles="https://cdn.rawgit.com/afeld/bootstrap-toc/v0.4.1/dist/bootstrap-toc.min.css"}
+{include file='globalheader.tpl' cssFiles="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.4.2/tocbot.css"}
 
 <div id="page-help-admin">
 
     <div class="row">
-        <div id="toc-div" class="col-sm-3 hidden-xs scrollspy">
-            <nav id="toc" role="navigation" data-spy="affix" style="overflow-y: scroll;max-height:80%">
-            </nav>
+        <div class="col m3 s12 hide-on-small-only">
+            <div id="toc-div" class="fixed"></div>
         </div>
 
-        <div id="help" class="col-xs-12 col-sm-9">
+        <div id="help" class="col s12 m9">
 
             <h1>{$AppTitle} Administration</h1>
 
@@ -35,8 +34,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                 Management menu item. All
                 administrative tasks can be found here.</p>
 
-            <div id="help-getting-started">
-                <h2>Getting Started</h2>
+
+                <h2 id="help-getting-started">Getting Started</h2>
                 <p>{$AppTitle} lets you manage resources of any type. Conference rooms, tennis courts, rental cars,
                     these
                     are
@@ -58,17 +57,17 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                 </div>
 
                 <p>At this point, all users will be able to reserve time on the resources which they have access to.</p>
-            </div>
 
-            <div id="help-schedules">
-                <h2>Setting up Schedules</h2>
+
+
+                <h2 id="help-schedules">Setting up Schedules</h2>
 
                 <p>
                     When installing Booked, a default schedule will be created with out of the box settings. From the
                     Schedules menu option you can view and edit attributes of the current schedules.
                 </p>
 
-                <h3>Standard Layouts</h3>
+                <h3 id="standard-layouts">Standard Layouts</h3>
                 <p>Schedules can be displayed starting on any day of the week and for any number of days. For a schedule to
                     display starting on the current day, set the
                     Starts On option to Today.</p>
@@ -90,11 +89,11 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                 <p>Below the slot configuration windows is a slot creation wizard. This will set up available slots at the given
                     interval between the start and end times.</p>
 
-                <h3>Custom Layouts</h3>
+                <h3 id="custom-layouts">Custom Layouts</h3>
                 <p>You can create a fully customized schedule layout by switching to the custom layout option. This will let you
                     set specific times on specific dates to be reservable. Switching to a custom layout will remove all standard layout slots.</p>
 
-                <h3>Schedule Administrators</h3>
+                <h3 id="schedule-admins">Schedule Administrators</h3>
 
                 <p>A group of users may be set up with permission to manage resources. In order for a group to be set as the
                     schedule administrator the group must first
@@ -106,27 +105,25 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                     a schedule which the group is assigned
                     to. They can change schedule details, black out times, manage and approve reservations.</p>
 
-                <h3>Schedule Availability</h3>
+                <h3 id="schedule-availability">Schedule Availability</h3>
                 <p>If a schedule should only be available for a limited period of time, such as a season or semester, you can
                     set the schedule availability. No reservations will be allowed outside of the availability date range.
                 </p>
 
-                <h3>Multiple Bookings at the Same Time</h3>
+                <h3 id="concurrent-bookings">Concurrent Reservations</h3>
                 <p>If you want a resource to be able to be booked by multiple people at the same time, you can configure
                     the schedule to allow multiple reservations concurrently. This setting applies to all resources on a schedule
                     This will no longer allow anyone to access the Schedule view for this schedule.
                 </p>
-            </div>
 
-            <div id="help-resources">
-                <h2>Setting up Resources</h2>
+                <h2 id="help-resources">Setting up Resources</h2>
 
                 <p>You can view and manage resources from the Resources menu option. Here you can change the attributes and
                     usage
                     configuration of a resource.
                 </p>
 
-                <p>Resources in             can be anything you want to make bookable, such as rooms or equipment. Every
+                <p>Resources in {$AppTitle} can be anything you want to make bookable, such as rooms or equipment. Every
                     resource
                     must be assigned to a schedule in order for it to be bookable. The resource will inherit whatever layout the
                     schedule uses.</p>
@@ -172,7 +169,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                 <p>Application Administrators and applicable Schedule and Resource Administrators are exempt from usage
                     constraints.</p>
 
-                <h3>Resource Administrators</h3>
+                <h3 id="resource-admins">Resource Administrators</h3>
 
                 <p>A group of users may be set up with permission to manage resources. In order for a group to be set as the
                     resource administrator the group must first
@@ -184,7 +181,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                     group is assigned to. They can change
                     resource details, black out times, manage and approve reservations.</p>
 
-                <h3>Resource Images</h3>
+                <h3 id="resource-images">Resource Images</h3>
 
                 <p>You can set a resource image which will be displayed when viewing resource details from the
                     reservation
@@ -194,18 +191,16 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                             href="http://www.php.net/manual/en/book.image.php" target="_blank">More
                         Details</a></p>
 
-                <div id="help-resource-statuses">
-                    <h3>Resource Statuses</h3>
+
+                    <h3 id="help-resource-statuses">Resource Statuses</h3>
                     <p>Setting a resource to the Available status will allow users with permission to book the reservation. The
                         Unavailable status will show the resource on
                         the schedule but will not allow it to be booked by anyone other than administrators. The Hidden status
                         will remove the resource from the schedule
                         and prevent bookings from all users.</p>
-                </div>
-            </div>
 
-            <div id="help-resource-groups">
-                <h3>Resource Groups</h3>
+
+                <h3 id="help-resource-groups">Resource Groups</h3>
 
                 <p>Resource Groups are a simple way to organize and filter resources. When a booking is being created, the user
                     will have an option to book all
@@ -222,18 +217,15 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                 <p>Right click a resource group name for additional actions.</p>
 
                 <p>Drag and drop resources to add them to groups.</p>
-            </div>
 
-            <div id="help-resource-types">
-                <h3>Resource Types</h3>
+
+                <h3 id="help-resource-types">Resource Types</h3>
 
                 <p>Resource types allow resources that share a common set of attributes to be managed together. Custom
                     attributes for a resource type will apply to all
                     resources of that type</p>
-            </div>
 
-            <div id="help-accessories">
-                <h2>Setting up Accessories</h2>
+             <h2 id="help-accessories">Setting up Accessories</h2>
 
                 <p>Accessories can be thought of as ancillary resources used during a reservation. Examples may be projectors or
                     chairs in a
@@ -242,10 +234,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                 <p>Accessories can be viewed and managed from the Accessories menu item, under the Resources menu item. Setting
                     a
                     accessory quantity will prevent more than that number of accessories from being booked at a time.</p>
-            </div>
 
-            <div id="help-quotas">
-                <h2>Setting up Quotas</h2>
+                <h2 id="help-quotas">Setting up Quotas</h2>
 
                 <p>Quotas restrict reservations from being booked based on a configurable limit. The quota system in             is
                     very flexible, allowing you to build limits based on reservation length and number reservations.</p>
@@ -267,10 +257,9 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                     midnight of the schedule's timezone; not the user's timezone.</p>
 
                 <p>Application Administrators are exempt from quota limits.</p>
-            </div>
 
-            <div id="help-announcements">
-                <h2>Setting up Announcements</h2>
+
+                <h2 id="help-announcements">Setting up Announcements</h2>
 
                 <p>Announcements are a very simple way to display notifications to             users.</p>
 
@@ -288,17 +277,14 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                 <p>HTML is allowed within the announcement text. This allows you to embed links or images from anywhere on the
                     web.</p>
 
-            </div>
+                <h2 id="help-groups">Setting up Groups</h2>
 
-            <div id="help-groups">
-                <h2>Setting up Groups</h2>
-
-                <p>Groups in             organize users, control resource access permissions and define roles within the
+                <p>Groups organize users, control resource access permissions and define roles within the
                     application. Setting resource permissions for a group will grant access to all members of that group. Users
                     can individually be granted additional
                     resource permission.</p>
 
-                <h3>Roles</h3>
+                <h3 id="roles">Roles</h3>
 
                 <p>Roles give a group of users the authorization to perform certain actions.</p>
 
@@ -342,10 +328,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                     schedule details, black out times, manage and
                     approve reservations.</p>
 
-            </div>
 
-            <div id="help-reservations">
-                <h2>Managing Reservations</h2>
+                <h2 id="help-reservations">Managing Reservations</h2>
 
                 <p>You can view and manage reservations from the Reservations menu item. By default you will see the last 14
                     days and the
@@ -355,7 +339,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                     reservations
                     to CSV format for further reporting.</p>
 
-                <h3>Reservation Approval</h3>
+                <h3 id="reservation-approval">Reservation Approval</h3>
 
                 <p>Setting $conf['settings']['reservation']['updates.require.approval'] to true will put all reservation
                     requests into a
@@ -364,24 +348,20 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                     tool an administrator will be able to view and approve pending reservations. Pending reservations will be
                     highlighted.</p>
 
-                <h3>Reservation Colors</h3>
+                <h3 id="reservation-colors">Reservation Colors</h3>
 
                 <p>Reservation colors can be set for individual users, resources, or dynamically based on a custom attribute
                     value. The slot background color of a reservation on the Schedule and Calendar views will be
                     displayed in this color.</p>
-            </div>
 
-            <div id="help-blackouts">
-                <h3>Blackout Times</h3>
+                <h3 id="help-blackouts">Blackout Times</h3>
 
                 <p>Blackout Times can be used to prevent reservations from being booked at certain times. This feature is
                     helpful when a resource is temporarily
                     unavailable or unavailable at a scheduled recurring interval. Blacked out times are not bookable by anyone,
                     including administrators.</p>
-            </div>
 
-            <div id="help-users">
-                <h2>Managing Users</h2>
+                <h2 id="help-users">Managing Users</h2>
 
                 <p>You can add, view, and manage all registered users from the Users menu item. This tool allows you to change
                     resource
@@ -393,12 +373,11 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                 <p>Users must have permission to book resources. You can grant permission directly to a user, or you can
                     set permissions at the group level. A user will inherit all permissions of the groups they belong to.</p>
 
-            </div>
 
-            <div id="help-attributes">
-                <h2>Custom Attributes</h2>
 
-                <p>Custom Attributes are a powerful extension point in            . You can add additional attributes to
+                <h2 id="help-attributes">Custom Attributes</h2>
+
+                <p>Custom Attributes are a powerful extension point. You can add additional attributes to
                     Reservations, Resources, Resource Types and
                     Users.</p>
 
@@ -436,10 +415,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                     over that reservation.</p>
 
                 <p>Custom attributes are available to plugins and can be used to extend the functionality of            .</p>
-            </div>
 
-            <div id="help-reporting">
-                <h2>Reporting</h2>
+                <h2 id="help-reporting">Reporting</h2>
 
                 <p>Reports are accessible to all application, group, resource and schedule administrators. When the currently
                     logged in
@@ -452,10 +429,10 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                     printing. In addition, custom reports can be saved and accessed again at a later time from the My Saved
                     Reports menu
                     item. Saved reports also have the ability to be emailed.</p>
-            </div>
 
-            <div id="help-credits">
-                <h2>Credits</h2>
+
+
+                <h2 id="help-credits">Credits</h2>
 
                 <p>Credits allow control over a user's usage. Credits must first be enabled in the application configuration
                     before they can be managed. The setting is $conf['settings']['credits']['enabled'] Once enabled, administrators will have the ability to set the credit redemption
@@ -463,10 +440,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
                 <p>If a reservation would bring a user over their credit limit, the reservation will be rejected. Administrators
                     can manage user credits when managing user details.</p>
-            </div>
 
-            <div id="help-payments">
-                <h2>Paying for Reservation Usage</h2>
+                <h2 id="help-payments">Paying for Reservation Usage</h2>
 
                 <p>To charge for reservation usage, users can purchase credits. This can be enabled by setting $conf['settings']['credits']['allow.purchase'] to true.
                     From the Payments section of Application Management administrators are able to set the cost per credit, configure payment gateways, and view purchase transaction history.</p>
@@ -509,10 +484,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                     if you want to simulate purchasing credits. Use the Live credentials to charge users and collect
                     payments.
                 </p>
-            </div>
 
-            <div id="help-tablet-view">
-                <h2>Reservation Tablet View</h2>
+             <h2 id="help-tablet-view">Reservation Tablet View</h2>
 
                 <p>{$AppTitle} provides a tablet-friendly view of a resource's current availability. To launch this
                     view,
@@ -522,10 +495,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                     feature is mounting a tablet next to a resource to show real-time availability and allow on the spot
                     reservations.</p>
 
-            </div>
-
-            <div id="help-monitor-view">
-                <h2>Reservation Monitor View</h2>
+                <h2 id="help-monitor-view">Reservation Monitor View</h2>
 
                 <p>{$AppTitle} provides a monitor-friendly view of a schedule's current availability. To launch this
                     view,
@@ -533,10 +503,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                     feature is mounting a large monitor in a public area to show real-time availability of resources
                     reservations. The privacy configuration setting for view.schedules must be set to true for this functionality.</p>
 
-            </div>
-
-            <div id="help-slack-integration">
-                <h2>Slack Integration</h2>
+                <h2 id="help-slack-integration">Slack Integration</h2>
                 <p>You can begin a Booked reservation request directly from Slack. You will need to <a
                             href="https://api.slack.com/slack-apps#creating_apps" target="_blank">create a Slack App</a>
                     in
@@ -552,12 +519,10 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                     substitutiing
                     resource-name for an actual resource.
                     Providing no resource-name will being a standard booking.</p>
-            </div>
 
-            <h2>Jobs</h2>
+            <h2 id="jobs">Jobs</h2>
 
-            <div id="help-reminders">
-                <h3>Reservation Reminders</h3>
+                <h3  id="help-reminders">Reservation Reminders</h3>
 
                 <p>Users can request that reminder emails are send prior to the beginning or end of a reservation. In order for
                     this
@@ -596,10 +561,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                     full path to {$AppTitle}\Jobs\sendreminders.php. For example, c:\PHP\php.exe -f
                     c:\inetpub\wwwroot\Booked\Jobs\sendreminders.php</p>
 
-            </div>
-
-            <div id="help-autorelease">
-                <h3>Automatically Releasing Reservations</h3>
+             <h3 id="help-autorelease">Automatically Releasing Reservations</h3>
                 <p>If you are using the check in/check out functionality, you can optionally set a resource to be automatically
                     made available if the check in is missed.</p>
                 <p>On Linux, a cron job can be used. The command to run is <span class="note">php</span> followed by the
@@ -631,10 +593,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                     the
                     full path to Jobs\autorelease.php. For example, c:\PHP\php.exe -f
                     c:\inetpub\wwwroot\Booked\Jobs\autorelease.php</p>
-            </div>
 
-            <div id="help-waitlist">
-                <h3>Waitlist Notifications</h3>
+                <h3 id="help-waitlist">Waitlist Notifications</h3>
                 <p>If you have enabled waitlist notification functionality, you can automatically send notifications to
                     users waiting for a resource to become available.</p>
                 <p>On Linux, a cron job can be used. The command to run is <span class="note">php</span> followed by the
@@ -666,10 +626,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                     the
                     full path to Jobs\sendwaitlist.php. For example, c:\PHP\php.exe -f
                     c:\inetpub\wwwroot\Booked\Jobs\sendwaitlist.php</p>
-            </div>
 
-            <div id="help-missed-checkin">
-                <h3>Missed Checkin Notifications</h3>
+             <h3 id="help-missed-checkin">Missed Checkin Notifications</h3>
                 <p>This notification will be sent to users if they missed the check in time for their reservation.</p>
                 <p>On Linux, a cron job can be used. The command to run is <span class="note">php</span> followed by the
                     full
@@ -699,10 +657,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                     the
                     full path to {$AppTitle}\Jobs\sendmissedcheckin.php. For example, c:\PHP\php.exe -f
                     c:\inetpub\wwwroot\Booked\Jobs\sendmissedcheckin.php</p>
-            </div>
 
-            <div id="help-configuration">
-                <h2>Configuration Options</h2>
+                <h2 id="help-configuration">Configuration Options</h2>
 
                 <p class="setting"><span>$conf['settings']['app.title']</span>The title of the application to be used in
                     the
@@ -1253,10 +1209,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                     not
                     set,
                     Slack slash commands will not work..</p>
-            </div>
 
-            <div id="help-label-tokens">
-                <h3>Available Label Tokens</h3>
+                <h3 id="help-label-tokens">Available Label Tokens</h3>
 
                 <p>Available tokens for reservation labels
                     are
@@ -1270,10 +1224,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                     Leave it blank for no label. Any combination of tokens can be used.</p>
                 </p>
 
-            </div>
 
-            <div id="help-plugins">
-                <h2>Plugins</h2>
+                <h2 id="help-plugins">Plugins</h2>
 
                 <p>The following components are currently pluggable:</p>
 
@@ -1301,10 +1253,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                     change either $conf['settings']['plugins']['Authentication'], $conf['settings']['plugins']['Authorization'] or
                     $conf['settings']['plugins']['Permission'] in config.php to the name of that folder.</p>
 
-            </div>
-
-            <div id="help-active-directory">
-                <h3>Active Directory Integration</h3>
+             <h3 id="help-active-directory">Active Directory Integration</h3>
 
                 <p>{$AppTitle} can authenticate your users against Active Directory. To enable this, first set <span
                             class="setting">$conf['settings']['plugins']['Authentication'] = 'ActiveDirectory';</span>
@@ -1375,11 +1324,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                             href="http://adldap.sourceforge.net/wiki/doku.php?id=documentation_configuration">http://adldap.sourceforge.net/wiki/doku.php?id=documentation_configuration</a>
                 </p>
 
-            </div>
-
-            <div id="help-ldap">
-
-                <h3>LDAP Integration</h3>
+                <h3 id="help-ldap">LDAP Integration</h3>
 
                 <p>{$AppTitle} can authenticate your users against LDAP. To enable this, first set <span
                             class="setting">$conf['settings']['plugins']['Authentication'] = 'Ldap';</span></p>
@@ -1443,10 +1388,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                 <p>More info for LDAP configuration can be found at <a
                             href="http://pear.php.net/manual/en/package.networking.net-ldap2.connecting.php">http://pear.php.net/manual/en/package.networking.net-ldap2.connecting.php</a>
                 </p>
-            </div>
 
-            <div id="help-cas">
-                <h3>CAS Integration</h3>
+                <h3 id="help-cas">CAS Integration</h3>
 
                 <p>{$AppTitle} can authenticate your users against CAS. To enable this, first set <span
                             class="setting">$conf['settings']['plugins']['Authentication'] = 'CAS';</span></p>
@@ -1508,10 +1451,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
                 <p>More info for CAS configuration can be found at <a href="https://wiki.jasig.org/display/casc/phpcas">https://wiki.jasig.org/display/casc/phpcas</a>
                 </p>
-            </div>
 
-            <div id="help-saml">
-                <h3>SAML Integration</h3>
+                <h3 id="help-saml">SAML Integration</h3>
                 <p>{$AppTitle} relies on <a href="https://simplesamlphp.org/" target="_blank">SimpleSAMLphp</a> to
                     support SAML authentication.</p>
 
@@ -1529,10 +1470,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                 </p>
 
                 <p>It is important to make sure registration.require.email.activation is set to false in Application Configuration</p>
-            </div>
 
-            <div id="help-wordpress">
-                <h3>WordPress Integration</h3>
+                <h3 id="help-wordpress">WordPress Integration</h3>
 
                 <p>{$AppTitle} can authenticate your users against a WordPress site running on the same server
                     as {$AppTitle}.
@@ -1554,29 +1493,23 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                     fails,
                     authenticate against {$AppTitle}
                     database.</p>
-            </div>
-
         </div>
 
     </div>
 
 </div>
 
-<script src="https://cdn.rawgit.com/afeld/bootstrap-toc/v0.4.1/dist/bootstrap-toc.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.4.2/tocbot.min.js"></script>
 {include file="javascript-includes.tpl"}
 <script type="text/javascript">
     $(function () {
-        var navSelector = '#toc';
-        var $myNav = $(navSelector);
-        Toc.init({
-            $nav: $myNav,
-            $scope: $('#help')
+        tocbot.init({
+            tocSelector: '#toc-div',
+            contentSelector: '#help',
+            headingSelector: 'h2, h3',
+            orderedList: false
         });
 
-        $('body').scrollspy({
-            target: navSelector,
-            offset: 50
-        });
     });
 </script>
 {include file='globalfooter.tpl'}

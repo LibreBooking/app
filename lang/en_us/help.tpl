@@ -23,8 +23,6 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
     <div class="row">
         <div class="col m3 s12 hide-on-small-only">
             <div id="toc-div" class="fixed"></div>
-            {*<nav id="toc" role="navigation" data-spy="affix" style="overflow-y: scroll;max-height:80%">*}
-            {*</nav>*}
         </div>
 
         <div id="help" class="col s12 m9">
@@ -303,23 +301,13 @@ To do this, you subscribe to calendars.</p>
 
     <script type="text/javascript">
         $(function () {
-            var navSelector = '#toc';
-            var $myNav = $(navSelector);
             tocbot.init({
-                // Where to render the table of contents.
                 tocSelector: '#toc-div',
                 contentSelector: '#help',
                 headingSelector: 'h2, h3',
-                // positionFixedClass: 'is-position-fixed',
-                // positionFixedSelector: '#toc-div'
                 orderedList: false
             });
 
-            // tocbot.refresh();
-            // $('body').scrollspy({
-            //     target: navSelector,
-            //     offset: 50
-            // });
         });
     </script>
     {include file='globalfooter.tpl'}

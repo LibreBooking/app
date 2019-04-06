@@ -555,13 +555,17 @@ input.small-number {
 input.mid-number {
   width: 100px !important;
 }
-#page-help .fixed {
+#page-help .fixed,
+#page-help-admin .fixed {
   position: fixed;
   top: 75px;
   padding-left: 13px;
   bottom: 50px;
+  overflow-y: scroll;
+  width: 20%;
 }
-#page-help ul.toc-list {
+#page-help ul.toc-list,
+#page-help-admin ul.toc-list {
   padding-left: 15px;
 }
 #help p.setting span,
