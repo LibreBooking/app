@@ -20,82 +20,84 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 <div id="page-common-reports" class="page-report">
 
-    <div class="panel panel-default" id="saved-reports-panel">
-        <div class="panel-heading">
-            {translate key=CommonReports}
-        </div>
-        <div class="panel-body no-padding">
-            <div id="report-list">
-                <table class="table">
-                    <tbody>
-                    <tr>
-                        <td class="report-title">{translate key=ReservedResources}</td>
-                        <td class="right">
-                            <a href="#" reportId="{CannedReport::RESERVATIONS_TODAY}"
-                               class="report report-action runNow">{html_image src="calendar.png"} {translate key=Today}</a>
-                            <a href="#" reportId="{CannedReport::RESERVATIONS_THISWEEK}"
-                               class="report report-action runNow">{html_image src="calendar-select-week.png"} {translate key=CurrentWeek}</a>
-                            <a href="#" reportId="{CannedReport::RESERVATIONS_THISMONTH}"
-                               class="report report-action runNow">{html_image src="calendar-select-month.png"} {translate key=CurrentMonth}</a>
-                        </td>
-                    </tr>
-                    <tr class="alt">
-                        <td class="report-title">{translate key=ReservedAccessories}</td>
-                        <td class="right">
-                            <a href="#" reportId="{CannedReport::ACCESSORIES_TODAY}"
-                               class="report report-action runNow">{html_image src="calendar.png"} {translate key=Today}</a>
-                            <a href="#" reportId="{CannedReport::ACCESSORIES_THISWEEK}"
-                               class="report report-action runNow">{html_image src="calendar-select-week.png"} {translate key=CurrentWeek}</a>
-                            <a href="#" reportId="{CannedReport::ACCESSORIES_THISMONTH}"
-                               class="report report-action runNow">{html_image src="calendar-select-month.png"} {translate key=CurrentMonth}</a>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="report-title">{translate key=ResourceUsageTimeBooked}</td>
-                        <td class="right">
-                            <a href="#" reportId="{CannedReport::RESOURCE_TIME_ALLTIME}"
-                               class="report report-action runNow">{html_image src="calendar.png"} {translate key=AllTime}</a>
-                            <a href="#" reportId="{CannedReport::RESOURCE_TIME_THISWEEK}"
-                               class="report report-action runNow">{html_image src="calendar-select-week.png"} {translate key=CurrentWeek}</a>
-                            <a href="#" reportId="{CannedReport::RESOURCE_TIME_THISMONTH}"
-                               class="report report-action runNow">{html_image src="calendar-select-month.png"} {translate key=CurrentMonth}</a>
-                        </td>
-                    </tr>
-                    <tr class="alt">
-                        <td class="report-title">{translate key=ResourceUsageReservationCount}</td>
-                        <td class="right">
-                            <a href="#" reportId="{CannedReport::RESOURCE_COUNT_ALLTIME}"
-                               class="report report-action runNow">{html_image src="calendar.png"} {translate key=AllTime}</a>
-                            <a href="#" reportId="{CannedReport::RESOURCE_COUNT_THISWEEK}"
-                               class="report report-action runNow">{html_image src="calendar-select-week.png"} {translate key=CurrentWeek}</a>
-                            <a href="#" reportId="{CannedReport::RESOURCE_COUNT_THISMONTH}"
-                               class="report report-action runNow">{html_image src="calendar-select-month.png"} {translate key=CurrentMonth}</a>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="report-title">{translate key=Top20UsersTimeBooked}</td>
-                        <td class="right">
-                            <a href="#" reportId="{CannedReport::USER_TIME_ALLTIME}"
-                               class="report report-action runNow">{html_image src="calendar.png"} {translate key=AllTime}</a>
-                            <a href="#" reportId="{CannedReport::USER_TIME_THISWEEK}"
-                               class="report report-action runNow">{html_image src="calendar-select-week.png"} {translate key=CurrentWeek}</a>
-                            <a href="#" reportId="{CannedReport::USER_TIME_THISMONTH}"
-                               class="report report-action runNow">{html_image src="calendar-select-month.png"} {translate key=CurrentMonth}</a>
-                        </td>
-                    </tr>
-                    <tr class="alt">
-                        <td class="report-title">{translate key=Top20UsersReservationCount}</td>
-                        <td class="right">
-                            <a href="#" reportId="{CannedReport::USER_COUNT_ALLTIME}"
-                               class="report report-action  runNow">{html_image src="calendar.png"} {translate key=AllTime}</a>
-                            <a href="#" reportId="{CannedReport::USER_COUNT_THISWEEK}"
-                               class="report report-action runNow">{html_image src="calendar-select-week.png"} {translate key=CurrentWeek}</a>
-                            <a href="#" reportId="{CannedReport::USER_COUNT_THISMONTH}"
-                               class="report report-action  runNow">{html_image src="calendar-select-month.png"} {translate key=CurrentMonth}</a>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
+    <div class="col s12 card" id="common-reports-panel">
+        <div class="card-content">
+            <div class="panel-heading">
+                <strong>{translate key=CommonReports}</strong>
+            </div>
+            <div class="panel-body no-padding">
+                <div id="report-list">
+                    <table class="table">
+                        <tbody>
+                        <tr>
+                            <td class="report-title">{translate key=ReservedResources}</td>
+                            <td class="align-right">
+                                <a href="#" reportId="{CannedReport::RESERVATIONS_TODAY}"
+                                   class="report report-action runNow">{html_image src="calendar.png"} {translate key=Today}</a>
+                                <a href="#" reportId="{CannedReport::RESERVATIONS_THISWEEK}"
+                                   class="report report-action runNow">{html_image src="calendar-select-week.png"} {translate key=CurrentWeek}</a>
+                                <a href="#" reportId="{CannedReport::RESERVATIONS_THISMONTH}"
+                                   class="report report-action runNow">{html_image src="calendar-select-month.png"} {translate key=CurrentMonth}</a>
+                            </td>
+                        </tr>
+                        <tr class="alt">
+                            <td class="report-title">{translate key=ReservedAccessories}</td>
+                            <td class="align-right">
+                                <a href="#" reportId="{CannedReport::ACCESSORIES_TODAY}"
+                                   class="report report-action runNow">{html_image src="calendar.png"} {translate key=Today}</a>
+                                <a href="#" reportId="{CannedReport::ACCESSORIES_THISWEEK}"
+                                   class="report report-action runNow">{html_image src="calendar-select-week.png"} {translate key=CurrentWeek}</a>
+                                <a href="#" reportId="{CannedReport::ACCESSORIES_THISMONTH}"
+                                   class="report report-action runNow">{html_image src="calendar-select-month.png"} {translate key=CurrentMonth}</a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="report-title">{translate key=ResourceUsageTimeBooked}</td>
+                            <td class="align-right">
+                                <a href="#" reportId="{CannedReport::RESOURCE_TIME_ALLTIME}"
+                                   class="report report-action runNow">{html_image src="calendar.png"} {translate key=AllTime}</a>
+                                <a href="#" reportId="{CannedReport::RESOURCE_TIME_THISWEEK}"
+                                   class="report report-action runNow">{html_image src="calendar-select-week.png"} {translate key=CurrentWeek}</a>
+                                <a href="#" reportId="{CannedReport::RESOURCE_TIME_THISMONTH}"
+                                   class="report report-action runNow">{html_image src="calendar-select-month.png"} {translate key=CurrentMonth}</a>
+                            </td>
+                        </tr>
+                        <tr class="alt">
+                            <td class="report-title">{translate key=ResourceUsageReservationCount}</td>
+                            <td class="align-right">
+                                <a href="#" reportId="{CannedReport::RESOURCE_COUNT_ALLTIME}"
+                                   class="report report-action runNow">{html_image src="calendar.png"} {translate key=AllTime}</a>
+                                <a href="#" reportId="{CannedReport::RESOURCE_COUNT_THISWEEK}"
+                                   class="report report-action runNow">{html_image src="calendar-select-week.png"} {translate key=CurrentWeek}</a>
+                                <a href="#" reportId="{CannedReport::RESOURCE_COUNT_THISMONTH}"
+                                   class="report report-action runNow">{html_image src="calendar-select-month.png"} {translate key=CurrentMonth}</a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="report-title">{translate key=Top20UsersTimeBooked}</td>
+                            <td class="align-right">
+                                <a href="#" reportId="{CannedReport::USER_TIME_ALLTIME}"
+                                   class="report report-action runNow">{html_image src="calendar.png"} {translate key=AllTime}</a>
+                                <a href="#" reportId="{CannedReport::USER_TIME_THISWEEK}"
+                                   class="report report-action runNow">{html_image src="calendar-select-week.png"} {translate key=CurrentWeek}</a>
+                                <a href="#" reportId="{CannedReport::USER_TIME_THISMONTH}"
+                                   class="report report-action runNow">{html_image src="calendar-select-month.png"} {translate key=CurrentMonth}</a>
+                            </td>
+                        </tr>
+                        <tr class="alt">
+                            <td class="report-title">{translate key=Top20UsersReservationCount}</td>
+                            <td class="align-right">
+                                <a href="#" reportId="{CannedReport::USER_COUNT_ALLTIME}"
+                                   class="report report-action  runNow">{html_image src="calendar.png"} {translate key=AllTime}</a>
+                                <a href="#" reportId="{CannedReport::USER_COUNT_THISWEEK}"
+                                   class="report report-action runNow">{html_image src="calendar-select-week.png"} {translate key=CurrentWeek}</a>
+                                <a href="#" reportId="{CannedReport::USER_COUNT_THISMONTH}"
+                                   class="report report-action  runNow">{html_image src="calendar-select-month.png"} {translate key=CurrentMonth}</a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>

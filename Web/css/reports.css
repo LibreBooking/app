@@ -89,6 +89,9 @@
 .page-report .select2-selection__choice span {
   min-width: 0;
 }
+.saved-reports-panel .badge {
+  font-weight: bold;
+}
 #page-generate-report .row {
   margin-bottom: 0;
 }

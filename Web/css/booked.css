@@ -2781,6 +2781,17 @@ ul.jqtree-tree .jqtree-toggler {
 .page-report .select2-selection__choice span {
   min-width: 0;
 }
+#saved-reports-panel span.badge {
+  font-weight: bold;
+  color: #FFF8E7;
+  background-color: #9BC2C2;
+  -webkit-border-radius: 2px;
+  -moz-border-radius: 2px;
+  border-radius: 2px;
+}
+#report-list td {
+  padding: 2px 0;
+}
 #page-generate-report .row {
   margin-bottom: 0;
 }
