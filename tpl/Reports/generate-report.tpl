@@ -305,8 +305,10 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 </div>
 
 <div id="saveMessage" class="card success" style="display:none;">
+    <div class="card-content">
     <strong>{translate key=ReportSaved}</strong> <a
             href="{$Path}reports/{Pages::REPORTS_SAVED}">{translate key=MySavedReports}</a>
+    </div>
 </div>
 
 <div id="resultsDiv">
@@ -319,13 +321,11 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 {include file="Reports/chart.tpl"}
 
-<div class="modal fade" id="saveDialog" tabindex="-1" role="dialog" aria-labelledby="saveDialogLabel"
+<div class="modal" id="saveDialog" tabindex="-1" role="dialog" aria-labelledby="saveDialogLabel"
      aria-hidden="true">
-    <div class="modal-dialog">
+    <div class="modal-content">
         <form id="saveReportForm" method="post">
-            <div class="modal-content">
                 <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                     <h4 class="modal-title" id="saveDialogLabel">{translate key=SaveThisReport}</h4>
                 </div>
                 <div class="modal-body">
@@ -336,15 +336,12 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default cancel"
-                            data-dismiss="modal">{translate key='Cancel'}</button>
-                    <button type="button" id="btnSaveReport" class="btn btn-success"><span
-                                class="glyphicon glyphicon-ok-circle"></span>
-                        {translate key='SaveThisReport'}
+                    {cancel_button class="btnClearAddResources"}
+                    <button type="button" class="btn btn-primary btnConfirmAddResources waves-effect waves-light">
+                    {translate key='SaveThisReport'}
                     </button>
                     {indicator}
                 </div>
-            </div>
         </form>
     </div>
 </div>

@@ -27,10 +27,7 @@ function BookedChart(options) {
 
         var chartType = resultsDiv.attr('chart-type');
         var series = null;
-        // if (chartType == 'totalTime') {
-        //     series = new TotalTimeSeries();
-        // } else
-            if (chartType == 'totalTime' || chartType == 'total') {
+        if (chartType == 'totalTime' || chartType == 'total') {
             series = new TotalSeries();
         } else {
             series = new DateSeries(options);
@@ -41,11 +38,11 @@ function BookedChart(options) {
 
         var data = {
             type: 'line',
-                labels: series.GetXLabels(),
-                datasets: series.GetData()
+            labels: series.GetXLabels(),
+            datasets: series.GetData()
         };
-        var chart = Chart.Line(chartCanvas,{
-            data:data,
+        var chart = Chart.Line(chartCanvas, {
+            data: data,
             options: {
                 scales: {
                     xAxes: [
@@ -73,11 +70,11 @@ function BookedChart(options) {
             return [];
         };
 
-        this.GetXLabels = function() {
+        this.GetXLabels = function () {
             return [];
         };
 
-        this.GetXAxis = function() {
+        this.GetXAxis = function () {
             return {};
         };
     }
@@ -124,7 +121,7 @@ function BookedChart(options) {
             var groupId = groupCell.attr('chart-value');
             var groupName = groupCell.text();
             var totalValue = row.find('td[chart-column-type="total"]').attr('chart-value');
-            var total = _.isEmpty(totalValue) ? 1: parseInt(totalValue);
+            var total = _.isEmpty(totalValue) ? 1 : parseInt(totalValue);
 
             if (!this.groups[groupId]) {
                 this.groups[groupId] = new this.GroupSeries(groupName, groupId);
@@ -210,11 +207,11 @@ function BookedChart(options) {
             };
         };
 
-        this.GetXLabels = function() {
+        this.GetXLabels = function () {
             return this.dates;
         };
 
-        this.GetXAxis = function() {
+        this.GetXAxis = function () {
             return {
                 type: 'time',
                 time: {
