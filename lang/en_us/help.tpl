@@ -16,23 +16,22 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 *}
-{include file='globalheader.tpl' cssFiles="https://cdn.rawgit.com/afeld/bootstrap-toc/v0.4.1/dist/bootstrap-toc.min.css"}
-
+{include file='globalheader.tpl' cssFiles="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.4.2/tocbot.css"}
 
 <div id="page-help">
 
     <div class="row">
-        <div id="toc-div" class="col-sm-3 hidden-xs scrollspy">
-            <nav id="toc" role="navigation" data-spy="affix" style="overflow-y: scroll;max-height:80%">
-            </nav>
+        <div class="col m3 s12 hide-on-small-only">
+            <div id="toc-div" class="fixed"></div>
+            {*<nav id="toc" role="navigation" data-spy="affix" style="overflow-y: scroll;max-height:80%">*}
+            {*</nav>*}
         </div>
 
-        <div id="help" class="col-xs-12 col-sm-9">
+        <div id="help" class="col s12 m9">
             <h1>{$AppTitle} Help</h1>
 
-            <div id="help-registration">
 
-                <h2>Registration</h2>
+                <h2 id="help-registration">Registration</h2>
 
                 <p>
                     Registration is required in order to use {$AppTitle}. After your
@@ -41,11 +40,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                     you will be able to log in and access any resources that you have permission to.
                 </p>
 
-            </div>
 
-            <div id="help-booking">
-
-                <h2>Booking</h2>
+                <h2 id="help-booking">Booking</h2>
 
                 <p>
                     Under the Schedule menu item you will find the Bookings item. This will show you the available, reserved and
@@ -64,20 +60,15 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
                 <p>By default, only Application Administrators can create reservations in the past.</p>
 
-            </div>
 
-            <div id="help-find-a-time">
-                <h3>Find A Time</h3>
+                <h3 id="help-find-a-time">Find A Time</h3>
                 <p>
                     Under Schedule there is an option to Find A Time. This gives you the ability to search for any available slot
                     that meets your criteria.
                 </p>
 
-            </div>
 
-            <div id="help-multiple-resources">
-
-                <h3>Multiple Resources</h3>
+                <h3 id="help-multiple-resources">Multiple Resources</h3>
 
                 <p>You can book all resources that you have permission as part of a single reservation. To add more resources to
                     your reservation, click the More Resources link, displayed next to the name of the primary resource you are
@@ -93,11 +84,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
                 <p>You can view the configuration details of a resource by hovering over the resource name.</p>
 
-            </div>
-
-            <div id="help-recurring-dates">
-
-                <h3>Recurring Dates</h3>
+                <h3 id="help-recurring-dates">Recurring Dates</h3>
 
                 <p>A reservation can be configured to recur a number of different ways.</p>
 
@@ -108,11 +95,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                     every third month on the 15th. Since 2011-01-15 is the third Saturday of January, the same example with the day
                     of week selected would repeat every third month on the third Saturday of that month.</p>
 
-            </div>
-
-            <div id="help-additional-participants">
-
-                <h3>Additional Participants</h3>
+                <h3 id="help-additional-participants">Additional Participants</h3>
 
                 <p>You can either Add Participants or Invite Others when booking a reservation. Adding someone will include them on
                     the reservation and will not send an invitation.
@@ -127,22 +110,14 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                     The total number of participants is limited by the resource's participant capacity.
                 </p>
 
-            </div>
-
-            <div id="help-accessories">
-
-                <h3>Accessories</h3>
+                <h3 id="help-accessories">Accessories</h3>
 
                 <p>Accessories can be thought of as objects used during a reservation. Examples may be projectors or chairs. To add
                     accessories to your reservation, click the Add link to the right of the Accessories title. From there you will
                     be able to select a quantity for each of the available accessories. The quantity available during your
                     reservation time will depend on how many accessories are already reserved.</p>
 
-            </div>
-
-            <div id="help-admin-booking">
-
-                <h3>Booking on behalf of others</h3>
+                <h3 id="help-admin-booking">Booking on behalf of others</h3>
 
                 <p>Application Administrators and Group Administrators can book reservations on behalf of other users by clicking
                     the Change link to the right of the user's name.</p>
@@ -150,19 +125,12 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                 <p>Application Administrators and Group Administrators can also modify and delete reservations owned by other
                     users.</p>
 
-            </div>
-
-            <div id="help-reservation-updates">
-
-                <h2>Updating a Reservation</h2>
+                <h2 id="help-reservation-updates">Updating a Reservation</h2>
 
                 <p>You can update any reservation that you have created or that was created on your behalf.</p>
 
-            </div>
 
-            <div id="help-reservation-updates-instance">
-
-                <h3 data-toc-text="Specific Instances">Updating Specific Instances From a Series</h3>
+                <h3  id="help-reservation-updates-instance" data-toc-text="Specific Instances">Updating Specific Instances From a Series</h3>
 
                 <p>
                     If a reservation is set up to repeat, then a series is created. After you make changes and Update the
@@ -176,59 +144,45 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
                 <p>Only Application Administrators can update reservations in the past.</p>
 
-            </div>
 
-            <div id="help-reservation-delete">
-
-                <h2>Deleting a Reservation</h2>
+                <h2 id="help-reservation-delete">Deleting a Reservation</h2>
 
                 <p>Deleting a reservation completely removes it from the schedule. It will no longer be visible anywhere in
                     {$AppTitle}</p>
 
-                <h3 data-toc-text="Specific Instances">Deleting Specific Instances From a Series</h3>
+                <h3 id="delete-specific-instances" data-toc-text="Specific Instances">Deleting Specific Instances From a Series</h3>
 
                 <p>Similar to updating a reservation, when deleting you can select which instances you want to delete.</p>
 
                 <p>Only Application Administrators can delete reservations in the past.</p>
 
-            </div>
-
-            <div id="help-email-notifications">
-
-                <h2>Email Notifications</h2>
+                <h2 id="help-email-notifications">Email Notifications</h2>
                 <p>
                     can send you email notifications for different events. You can turn notifications on or off
                     in My Account > Notification Preferences.
                 </p>
 
-            </div>
 
-            <div id="help-credits">
-
-                <h2>Credits</h2>
+                <h2 id="help-credits">Credits</h2>
 
                 <p>Credits give administrators control over resource usage. A resource may be configured to consume a certain number of
                     credits per slot. If you don't have enough credits, you will not be allowed to complete a booking. You can view your
                     credit usage in the Credits section of My Account</p>
 
-                <h2>Paying for Reservation Usage</h2>
+                <h2 id="paying-for-reservation-usage">Paying for Reservation Usage</h2>
                 <p>Reservations can be paid for using credits. If you do not have enough credits to complete a reservation, you can purchase credits in the Credits section of My
                     Account. You can also view your purchase history and credit usage history in the Credits section of My Account.</p>
 
-                <h2 data-toc-text="Add to Calendar">Adding a Reservation to Calendar (Outlook&reg;, iCal, Mozilla
-                    Lightning,
-                    Evolution)</h2>
+                <h2 id="adding-to-a-calendar" data-toc-text="Add to Calendar">Adding a Reservation to Calendar</h2>
 
-                <p>When viewing or updating a reservation you will see a button to Add to Outlook. If Outlook is installed on your
+                <p>You can add reservations directly to calendars such as  (Outlook&reg;, iCal, Mozilla
+                    Lightning,
+                    Evolution). When viewing or updating a reservation you will see a button to Add to Outlook. If Outlook is installed on your
                     computer then you should be asked to add the meeting. If it is not installed you will be prompted to download an
                     .ics file. This is a standard calendar format. You can use this file to add the reservation to any application
                     that supports the iCalendar file format.</p>
 
-            </div>
-
-            <div id="help-subscriptions">
-
-                <h2>Subscribing to Calendars</h2>
+                <h2 id="help-subscriptions">Subscribing to Calendars</h2>
 
                 <p>You can easily display
 {$AppTitle}
@@ -253,28 +207,22 @@ To do this, you subscribe to calendars.</p>
                     following two query string parameters on the subscription URL. pastDayCount and futureDayCount will override the
                     past and future number of days loaded, respectively.</p>
 
-            </div>
-
-            <div id="help-calendar-client">
-                <h3 data-toc-text="Calendar Client">Calendar client (Outlook, iCal, Mozilla Lightning,
-                    Evolution)</h3>
+                <h3 id="help-calendar-client"data-toc-text="Calendar Client">Calendar Client</h3>
 
                 <p>In most cases, simply clicking the Subscribe to this Calendar link will automatically set up the subscription in
-                    your calendar Client. For Outlook, if it does not automatically add, open the Calendar view, then right click My
+                    your calendar client ((Outlook, iCal, Mozilla Lightning,
+                    Evolution). For Outlook, if it does not automatically add, open the Calendar view, then right click My
                     Calendars and choose
                     Add Calendar > From Internet. Paste in the URL printed under the Subscribe to this Calendar link.</p>
 
-                <div id="help-google-calendar">
-                <h3>Google Calendar</h3>
+
+                <h3 id="help-google-calendar">Google Calendar</h3>
 
                 <p>Open Google Calendar settings. Click the Calendars tab. Click Browse interesting calendars. Click add by URL.
                     Paste
                     in the URL printed under the Subscribe to this Calendar link.</p>
 
-                </div>
-
-                <div id="help-embed-calendar">
-                <h3>Embedding a Calendar Externally</h3>
+                <h3 id="help-embed-calendar">Embedding a Calendar Externally</h3>
                 <p class="note">This requires CORS to be enabled on your server. You can add the following to your
                     Apache htaccess file <code>Header Set Access-Control-Allow-Origin "*"</code></p>
                 <p>It is simple to include a view of a Booked calendar in an external website. Copy and paste the
@@ -337,39 +285,41 @@ To do this, you subscribe to calendars.</p>
                     reservations
                     are missing from a schedule or resource, it is likely that public visibility has not been turned on.
                 </p>
-                </div>
-            </div>
 
-            <div id="help-quotas">
-
-                <h2>Quotas</h2>
+                <h2 id="help-quotas">Quotas</h2>
 
                 <p>Administrators have the ability to configure quota rules based on a variety of criteria. If your reservation
                     would violate any quota, you will be notified and the reservation will be denied.</p>
 
-                <h2>Waiting For Availability</h2>
+                <h2 id="waiting-for-availablity">Waiting For Availability</h2>
 
                 <p>If a time is not available you can sign up to be notified if it becomes available. This option will be shown
                     after a reservation attempt is made.</p>
-            </div>
-
-        </div>
     </div>
-    <script src="https://cdn.rawgit.com/afeld/bootstrap-toc/v0.4.1/dist/bootstrap-toc.min.js"></script>
+    </div>
+</div>
     {include file="javascript-includes.tpl"}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.4.2/tocbot.min.js"></script>
+
     <script type="text/javascript">
         $(function () {
             var navSelector = '#toc';
             var $myNav = $(navSelector);
-            Toc.init({
-                $nav: $myNav,
-                $scope: $('#help')
+            tocbot.init({
+                // Where to render the table of contents.
+                tocSelector: '#toc-div',
+                contentSelector: '#help',
+                headingSelector: 'h2, h3',
+                // positionFixedClass: 'is-position-fixed',
+                // positionFixedSelector: '#toc-div'
+                orderedList: false
             });
 
-            $('body').scrollspy({
-                target: navSelector,
-                offset: 50
-            });
+            // tocbot.refresh();
+            // $('body').scrollspy({
+            //     target: navSelector,
+            //     offset: 50
+            // });
         });
     </script>
     {include file='globalfooter.tpl'}

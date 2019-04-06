@@ -555,10 +555,19 @@ input.small-number {
 input.mid-number {
   width: 100px !important;
 }
+#page-help .fixed {
+  position: fixed;
+  top: 75px;
+  padding-left: 13px;
+  bottom: 50px;
+}
+#page-help ul.toc-list {
+  padding-left: 15px;
+}
 #help p.setting span,
-#help span.setting,
-#helpPopupDiv p.setting span,
-#helpPopupDiv span.setting {
+#help #help span.setting,
+#help #helpPopupDiv p.setting span,
+#help #helpPopupDiv span.setting {
   color: green;
   font-family: Courier, serif;
   display: block;
