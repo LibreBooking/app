@@ -21,19 +21,16 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 interface IReport
 {
 	/**
-	 * @abstract
 	 * @return IReportColumns
 	 */
 	public function GetColumns();
 
 	/**
-	 * @abstract
 	 * @return IReportData
 	 */
 	public function GetData();
 
 	/**
-	 * @abstract
 	 * @return int
 	 */
 	public function ResultCount();

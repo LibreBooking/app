@@ -79,11 +79,18 @@ function ReportsCommon(opts) {
 			}
 
 			$(document).on('loaded', '#report-results', function (e) {
-                $('#chartdiv').empty();
+                $('#chartdiv').hide();
 				var separator = '!s!';
 				var selectedCols = $('#selectedColumns').val();
 				var savedCols = selectedCols ? selectedCols.split(separator) : [];
 				//initColumns(savedCols);
+                var chartType = $('#report-results').attr('chart-type');
+
+                $('#btnChart').removeClass('no-show');
+                if (chartType != 'date')
+                {
+                    $('#btnChart').addClass('no-show');
+                }
 
 				var items = [];
 				var allColumns = getAllColumnTitles();

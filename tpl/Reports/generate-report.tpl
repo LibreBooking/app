@@ -31,7 +31,6 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                             <span class="icon show-hide fa fa-chevron-up"></span>
                         </a>
                     </div>
-                    {*</div>*}
                     <div class="panel-body no-padding">
                         <div id="custom-report-input">
                             <div class="row input-set" id="selectDiv">

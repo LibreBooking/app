@@ -22,7 +22,9 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 {html_image src="admin-ajax-indicator.gif"}
 </div>
 
-<canvas id="chartdiv" style="display:none;margin:auto;height:400px;width:80%"></canvas>
+<div id="chartdiv" style="display:none;margin:auto;height:400px;width:80%">
+<canvas id="chart-canvas"></canvas>
+</div>
 
 {jsfile src="js/Chart-2.8.0..bundle.min.js"}
 

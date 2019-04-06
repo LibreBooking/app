@@ -13,10 +13,10 @@ var TimeTickFormatter = function (format, val) {
 
 function BookedChart(options) {
     var chartDiv = $('#chartdiv');
+    var chartCanvas = $('#chart-canvas');
     var chartIndicator = $('#chart-indicator');
 
     this.clear = function () {
-        chartDiv.empty();
         chartDiv.hide();
     };
 
@@ -27,138 +27,37 @@ function BookedChart(options) {
 
         var chartType = resultsDiv.attr('chart-type');
         var series = null;
-        if (chartType == 'totalTime') {
-            series = new TotalTimeSeries();
-        } else if (chartType == 'total') {
+        // if (chartType == 'totalTime') {
+        //     series = new TotalTimeSeries();
+        // } else
+            if (chartType == 'totalTime' || chartType == 'total') {
             series = new TotalSeries();
         } else {
             series = new DateSeries(options);
         }
-        $('#report-results>tbody>tr').not(':first').each(function () {
+        $('#report-results>tbody>tr').each(function () {
             series.Add($(this));
         });
 
         var data = {
             type: 'line',
-                labels: series.GetDates(),
+                labels: series.GetXLabels(),
                 datasets: series.GetData()
         };
-        var chart = Chart.Line(chartDiv,{
+        var chart = Chart.Line(chartCanvas,{
             data:data,
             options: {
                 scales: {
-                    xAxes: [{
-                        type: 'time',
-                        time: {
-                            parser: "YYYY-MM-DD",
-                            unit: 'day'
-                            // round: 'day'
-                            // tooltipFormat: 'll HH:mm'
-                        },
-                        scaleLabel: {
-                            display: true,
-                            labelString: 'Date'
-                        }
-                    }],
+                    xAxes: [
+                        series.GetXAxis()
+                    ],
                     yAxes: [{
                         min: 0
                     }]
                 }
             }
         });
-        // var myChart = new Chart(chartDiv, {
-        //     type: 'line',
-        //     labels: series.GetDates(),
-        //     datasets: series.GetData(),
 
-        // options: {
-        //     scales: {
-        //         xAxes: [{
-        //             type: 'time',
-        //             time: {
-        //                 parser: "MM/DD/YYYY",
-        //                 unit: 'day'
-        //                 // round: 'day'
-        //                 // tooltipFormat: 'll HH:mm'
-        //             },
-        //             scaleLabel: {
-        //                 display: true,
-        //                 labelString: 'Date'
-        //             }
-        //         }],
-        //         yAxes: [{
-        //             min:0
-        //         }]
-        //     }
-        // }
-    // });
-        // });
-        //
-        // var resultsDiv = $('#report-results');
-        // chartDiv.show();
-        // chartIndicator.show();
-        //
-        // var chartType = resultsDiv.attr('chart-type');
-        //
-        // var series = null;
-        // if (chartType == 'totalTime') {
-        // 	series = new TotalTimeSeries();
-        // }
-        // else if (chartType == 'total') {
-        // 	series = new TotalSeries();
-        // }
-        // else {
-        // 	series = new DateSeries(options);
-        // }
-        //
-        // $('#report-results>tbody>tr').not(':first').each(function () {
-        // 	series.Add($(this));
-        // });
-        //
-        // var plot = $.jqplot('chartdiv', series.GetData(), {
-        // 	axesDefaults:{
-        // 		tickRenderer:$.jqplot.CanvasAxisTickRenderer,
-        // 		// tickOptions:{
-        // 		// 	fontSize:'10pt'
-        // 		// }
-        // 	},
-        // 	seriesDefaults:{
-        // 		renderer:series.GetGraphRenderer(),
-        // 		rendererOptions:{ fillToZero:true },
-        // 		pointLabels:{show:true}
-        //
-        // 	},
-        // 	series: series.GetLabels(),
-        // 	legend:series.GetLegendOptions(),
-        // 	axes:{
-        // 		xaxis:{
-        // 			renderer:series.GetXAxisRenderer(),
-        // 			tickOptions:{
-        // 				angle:-30,
-        // 				formatString:series.GetXAxisFormat(),
-        // 				formatter:series.GetXAxisFormatter()
-        // 			}
-        // 			// tickInterval:'1 day',
-        // 			// min:series.GetXAxisMin()
-        // 		},
-        // 		yaxis:{
-        // 			// pad:1.05,
-        // 			tickOptions:{ formatString:series.GetYAxisFormatString(), formatter:series.GetTickFormatter()},
-        // 			min:0
-        // 		}
-        // 	},
-        //     highlighter: {
-        //         // sizeAdjust: 10,
-        //         tooltipLocation: 'n',
-        //         tooltipAxes: 'y',
-        //         // tooltipFormatString: '%.2f',
-        //         useAxesFormatters: false
-        //     },
-        //     cursor: {
-        //         show: true
-        //     }
-        // });
-        // plot.replot({resetAxes:true});
         chartIndicator.hide();
     };
 
@@ -177,6 +76,10 @@ function BookedChart(options) {
         this.GetXLabels = function() {
             return [];
         };
+
+        this.GetXAxis = function() {
+            return {};
+        };
     }
 
     function TotalSeries() {
@@ -186,14 +89,15 @@ function BookedChart(options) {
         this.Add = function (row) {
             var itemLabel = row.find('td[chart-column-type="label"]').text();
             var val = parseInt(row.find('td[chart-column-type="total"]').attr("chart-value"));
-            this.series.push([itemLabel, val]);
+            this.labels.push(itemLabel);
+            this.series.push(val);
         };
 
         this.GetData = function () {
-            return [this.series];
+            return this.series;
         };
 
-        this.GetLabels = function () {
+        this.GetXLabels = function () {
             return this.labels;
         };
     }
@@ -201,7 +105,6 @@ function BookedChart(options) {
     TotalSeries.prototype = new Series();
 
     function TotalTimeSeries() {
-
         this.series = [];
         this.labels = [];
     }
@@ -217,12 +120,11 @@ function BookedChart(options) {
 
         this.Add = function (row) {
             var date = moment(row.find('td[chart-column-type="date"]').attr('chart-value'));
-            // var date = new Date(row.find('td[chart-column-type="date"]').attr('chart-value'));
             var groupCell = row.find('td[chart-group="r"],td[chart-group="a"]');
             var groupId = groupCell.attr('chart-value');
             var groupName = groupCell.text();
             var totalValue = row.find('td[chart-column-type="total"]').attr('chart-value');
-            var total = _.isEmpty(totalValue) ? 0 : parseInt(totalValue);
+            var total = _.isEmpty(totalValue) ? 1: parseInt(totalValue);
 
             if (!this.groups[groupId]) {
                 this.groups[groupId] = new this.GroupSeries(groupName, groupId);
@@ -310,6 +212,16 @@ function BookedChart(options) {
 
         this.GetXLabels = function() {
             return this.dates;
+        };
+
+        this.GetXAxis = function() {
+            return {
+                type: 'time',
+                time: {
+                    parser: "YYYY-MM-DD",
+                    unit: 'day'
+                }
+            };
         };
     }
 

@@ -2775,6 +2775,12 @@ ul.jqtree-tree .jqtree-toggler {
 .page-report .row-count {
   font-weight: bold;
 }
+.page-report span.icon {
+  color: #000;
+}
+.page-report .select2-selection__choice span {
+  min-width: 0;
+}
 #page-generate-report .row {
   margin-bottom: 0;
 }

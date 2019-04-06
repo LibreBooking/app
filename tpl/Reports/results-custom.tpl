@@ -48,7 +48,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 			{cycle values=',alt' assign=rowCss}
 			<tr class="{$rowCss}">
 				{foreach from=$Definition->GetRow($row) item=cell}
-					<td chart-value="{$cell->ChartValue()}" chart-column-type="{$cell->GetChartColumnType()}"
+					<td chart-value="{$cell->ChartValue()|default:'0'}"
+                        chart-column-type="{$cell->GetChartColumnType()}"
 						chart-group="{$cell->GetChartGroup()}">{$cell->Value()}</td>
 				{/foreach}
 			</tr>
