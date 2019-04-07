@@ -74,7 +74,7 @@ span.error {
   font-size: 12px;
 }
 .admin-panel h5 {
-  font-size: .9em;
+  font-size: 0.9em;
   font-weight: bold;
   text-transform: uppercase;
 }
@@ -370,7 +370,7 @@ label.label-top,
 .label-top label {
   display: block;
   clear: left;
-  font-size: .9em;
+  font-size: 0.9em;
 }
 ul.resource-status-reasons li {
   padding: 5px 5px;
@@ -498,6 +498,17 @@ td.update {
 #page-manage-users textarea,
 #page-manage-quotas textarea {
   width: 500px;
+}
+.admin-page .dateinput,
+#page-manage-blackouts .dateinput,
+#page-manage-reservations .dateinput,
+#page-manage-resources .dateinput,
+#page-manage-users .dateinput,
+#page-manage-quotas .dateinput {
+  width: 80px;
+}
+#importInstructions {
+  font-size: 0.8em;
 }
 #page-manage-resource-groups #groupName {
   width: 80%;

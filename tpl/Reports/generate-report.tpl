@@ -306,8 +306,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 <div id="saveMessage" class="card success" style="display:none;">
     <div class="card-content">
-    <strong>{translate key=ReportSaved}</strong> <a
-            href="{$Path}reports/{Pages::REPORTS_SAVED}">{translate key=MySavedReports}</a>
+        <strong>{translate key=ReportSaved}</strong> <a
+                href="{$Path}reports/{Pages::REPORTS_SAVED}">{translate key=MySavedReports}</a>
     </div>
 </div>
 
@@ -323,27 +323,29 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 <div class="modal" id="saveDialog" tabindex="-1" role="dialog" aria-labelledby="saveDialogLabel"
      aria-hidden="true">
-    <div class="modal-content">
-        <form id="saveReportForm" method="post">
-                <div class="modal-header">
-                    <h4 class="modal-title" id="saveDialogLabel">{translate key=SaveThisReport}</h4>
+
+    <form id="saveReportForm" method="post">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="saveDialogLabel">{translate key=SaveThisReport}</h4>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="saveReportName">{translate key=Name}</label>
+                    <input type="text" id="saveReportName" {formname key=REPORT_NAME} class="form-control"
+                           placeholder="{translate key=NoTitleLabel}"/>
                 </div>
-                <div class="modal-body">
-                    <div class="form-group">
-                        <label for="saveReportName">{translate key=Name}</label>
-                        <input type="text" id="saveReportName" {formname key=REPORT_NAME} class="form-control"
-                               placeholder="{translate key=NoTitleLabel}"/>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    {cancel_button class="btnClearAddResources"}
-                    <button type="button" class="btn btn-primary btnConfirmAddResources waves-effect waves-light">
-                    {translate key='SaveThisReport'}
-                    </button>
-                    {indicator}
-                </div>
-        </form>
-    </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            {cancel_button class="btnClearAddResources"}
+            <button type="button" class="btn btn-primary btnConfirmAddResources waves-effect waves-light">
+                {translate key='SaveThisReport'}
+            </button>
+            {indicator}
+        </div>
+    </form>
+
 </div>
 
 {include file="javascript-includes.tpl" Select2=true}

@@ -69,7 +69,9 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
     <!-- CSS -->
     {if $UseLocalJquery}
         {cssfile src="css/fonts/roboto.css" }
-        {cssfile src="scripts/css/smoothness/jquery-ui.1.12.1.custom.min.css"}
+        {cssfile src="scripts/css/smoothness/jquery-ui-1.12.1.min.css"}
+        {cssfile src="scripts/css/smoothness/jquery-ui.structure-1.12.1..min.css"}
+        {cssfile src="scripts/css/smoothness/jquery-ui.theme-1.12.1..min.css"}
         {cssfile src="css/font-awesome-4.7.0/css/font-awesome.min.css"}
         {cssfile src="css/materialize-1.0.0.min.css"}
         {cssfile src="css/materialize/material-icons.css"}
@@ -78,8 +80,9 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
             {cssfile src="css/jquery.qtip.min.css"}
         {/if}
         {if $InlineEdit}
-            {cssfile src="scripts/js/x-editable/css/bootstrap-editable.css"}
-            {cssfile src="scripts/js/wysihtml5/bootstrap3-wysihtml5.min.css"}
+            {cssfile src="scripts/js/x-editable/css/jqueryui-editable.css"}
+            {*{cssfile src="scripts/js/x-editable/wysihtml5/bootstrap-wysihtml5-0.0.2/bootstrap-wysihtml5-0.0.2.css"}*}
+            {*{cssfile src="scripts/js/x-editable/wysihtml5/bootstrap-wysihtml5-0.0.2/wysiwyg-color.css"}*}
         {/if}
 
     {else}
@@ -94,10 +97,9 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/qtip2/3.0.3/jquery.qtip.min.css"
               type="text/css"/>
         {if $InlineEdit}
-            <link rel="stylesheet"
-                  href="https://cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.1/bootstrap3-editable/css/bootstrap-editable.css"
-                  type="text/css"/>
-            {cssfile src="scripts/js/wysihtml5/bootstrap3-wysihtml5.min.css" rel="stylesheet"}
+            <link href="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/jqueryui-editable/css/jqueryui-editable.css" rel="stylesheet"/>
+            {*{cssfile src="scripts/js/x-editable/wysihtml5/bootstrap-wysihtml5-0.0.2/bootstrap-wysihtml5-0.0.2.css"}*}
+            {*{cssfile src="scripts/js/x-editable/wysihtml5/bootstrap-wysihtml5-0.0.2/wysiwyg-color.css"}*}
         {/if}
     {/if}
     {if $Select2}

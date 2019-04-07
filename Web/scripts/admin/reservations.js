@@ -183,7 +183,7 @@ function ReservationManagement(opts, approval) {
             e.preventDefault();
             $('#importErrors').empty().addClass('no-show');
             $('#importResults').addClass('no-show');
-            elements.importReservationsDialog.modal('show');
+            elements.importReservationsDialog.modal('open');
         });
 
         elements.deleteMultiplePrompt.click(function (e) {
@@ -192,7 +192,7 @@ function ReservationManagement(opts, approval) {
             elements.deleteMultipleCount.text(checked.length);
             elements.deleteMultiplePlaceHolder.empty();
             elements.deleteMultiplePlaceHolder.append(checked.clone());
-            elements.deleteMultipleDialog.modal('show');
+            elements.deleteMultipleDialog.modal('open');
         });
 
         elements.deleteMultipleSelectAll.click(function (e) {
@@ -213,7 +213,7 @@ function ReservationManagement(opts, approval) {
         elements.addTermsOfService.click(function (e) {
             e.preventDefault();
             loadExistingTermsOfService();
-            elements.termsOfServiceDialog.modal('show');
+            elements.termsOfServiceDialog.modal('open');
         });
 
         elements.termsOfServiceDialog.find('.toggle').click(function (e) {
@@ -323,10 +323,10 @@ function ReservationManagement(opts, approval) {
 
     function showDeleteReservation(referenceNumber) {
         if (reservations[referenceNumber].isRecurring == '1') {
-            elements.deleteSeriesDialog.modal('show');
+            elements.deleteSeriesDialog.modal('open');
         }
         else {
-            elements.deleteInstanceDialog.modal('show');
+            elements.deleteInstanceDialog.modal('open');
         }
     }
 

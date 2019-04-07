@@ -542,6 +542,7 @@ input[type=text].user-search {
 }
 .black.icon {
   color: #585754;
+  background-color: inherit !important;
 }
 .bold {
   font-weight: bold;
@@ -554,6 +555,9 @@ input.small-number {
 }
 input.mid-number {
   width: 100px !important;
+}
+.modal-title {
+  font-size: 1.5rem;
 }
 #page-help .fixed,
 #page-help-admin .fixed {

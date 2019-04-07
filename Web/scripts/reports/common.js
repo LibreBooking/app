@@ -96,7 +96,7 @@ function ReportsCommon(opts) {
 				var allColumns = getAllColumnTitles();
 				$.each(allColumns, function(i, title){
 					var checked = savedCols.length == 0 || $.inArray(title, savedCols) != -1 ? ' checked="checked" ' : '';
-					items.push('<div><label><input type="checkbox"' + checked + 'value="' + title + '"/> ' + title + '</label></div>');
+					items.push('<div><label><input type="checkbox"' + checked + 'value="' + title + '"/><span> ' + title + '</span></label></div>');
 				});
 
 				var customizeColumns = $('#customize-columns');

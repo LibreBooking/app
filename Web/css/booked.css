@@ -542,6 +542,7 @@ input[type=text].user-search {
 }
 .black.icon {
   color: #585754;
+  background-color: inherit !important;
 }
 .bold {
   font-weight: bold;
@@ -554,6 +555,9 @@ input.small-number {
 }
 input.mid-number {
   width: 100px !important;
+}
+.modal-title {
+  font-size: 1.5rem;
 }
 #page-help .fixed,
 #page-help-admin .fixed {
@@ -2589,6 +2593,17 @@ td.update {
 #page-manage-users textarea,
 #page-manage-quotas textarea {
   width: 500px;
+}
+.admin-page .dateinput,
+#page-manage-blackouts .dateinput,
+#page-manage-reservations .dateinput,
+#page-manage-resources .dateinput,
+#page-manage-users .dateinput,
+#page-manage-quotas .dateinput {
+  width: 80px;
+}
+#importInstructions {
+  font-size: 0.8em;
 }
 #page-manage-resource-groups #groupName {
   width: 80%;

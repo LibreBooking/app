@@ -8,9 +8,10 @@
         {jsfile src="js/jquery.qtip.min.js"}
     {/if}
     {if $InlineEdit}
-        {jsfile src="js/x-editable/js/bootstrap-editable.min.js"}
-        {jsfile src="js/x-editable/wysihtml5/wysihtml5.js"}
-        {jsfile src="js/wysihtml5/bootstrap3-wysihtml5.all.min.js"}
+        {jsfile src="js/x-editable/js/jqueryui-editable.js"}
+        {*{jsfile src="js/x-editable/wysihtml5/wysihtml5.js"}*}
+        {*{jsfile src="js/x-editable/wysihtml5/bootstrap-wysihtml5-0.0.2/bootstrap-wysihtml5-0.0.2.min.js"}*}
+        {*{jsfile src="js/x-editable/wysihtml5/bootstrap-wysihtml5-0.0.2/wysihtml5-0.3.0.min.js"}*}
     {/if}
 {else}
     <script type="text/javascript"
@@ -27,11 +28,10 @@
     {/if}
 
     {if $InlineEdit}
-        <script type="text/javascript"
-                src="https://cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.1/bootstrap3-editable/js/bootstrap-editable.min.js"></script>
-        <script type="text/javascript"
-                src="https://cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.1/inputs-ext/wysihtml5/wysihtml5.js"></script>
-        {jsfile src="js/wysihtml5/bootstrap3-wysihtml5.all.min.js"}
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/jqueryui-editable/js/jqueryui-editable.min.js"></script>
+        {*{jsfile src="js/x-editable/wysihtml5/wysihtml5.js"}*}
+        {*{jsfile src="js/x-editable/wysihtml5/bootstrap-wysihtml5-0.0.2/bootstrap-wysihtml5-0.0.2.min.js"}*}
+        {*{jsfile src="js/x-editable/wysihtml5/bootstrap-wysihtml5-0.0.2/wysihtml5-0.3.0.min.js"}*}
     {/if}
 {/if}
 {if $Select2}
