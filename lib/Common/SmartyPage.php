@@ -827,7 +827,7 @@ class SmartyPage extends Smarty
 		$type = isset($params['submit']) ? 'submit' : 'button';
 		$save = $type == 'submit' ? '' : ' save ';
 
-		echo '<button type="' . $type . '" class="btn btn-primary waves-effect waves-light' . $save . $class . '" ' . $this->GetButtonAttributes($params) . '><span class="glyphicon glyphicon-ok-circle"></span> ' . Resources::GetInstance()
+		echo '<button type="' . $type . '" class="btn btn-primary waves-effect waves-light' . $save . $class . '" ' . $this->GetButtonAttributes($params) . '><span class="fa fa-check-circle-o"></span> ' . Resources::GetInstance()
 																																																	  ->GetString($key) . '</button>';
 	}
 
@@ -842,7 +842,7 @@ class SmartyPage extends Smarty
 			$type = 'submit';
 		}
 
-		echo '<button type="' . $type . '" class="btn btn-primary waves-effect waves-light save ' . $class . '" ' . $this->GetButtonAttributes($params) . '><span class="glyphicon glyphicon-ok-circle"></span> ' . Resources::GetInstance()
+		echo '<button type="' . $type . '" class="btn btn-primary waves-effect waves-light save ' . $class . '" ' . $this->GetButtonAttributes($params) . '><span class="fa fa-check-circle-o"></span> ' . Resources::GetInstance()
 																																																	->GetString($key) . '</button>';
 	}
 
@@ -856,7 +856,7 @@ class SmartyPage extends Smarty
         {
             $type = 'submit';
         }
-        echo '<button type="' . $type . '" class="btn btn-danger waves-effect waves-light save ' . $class . '" ' . $this->GetButtonAttributes($params) . '><span class="glyphicon glyphicon-trash"></span> ' . Resources::GetInstance()
+        echo '<button type="' . $type . '" class="btn btn-warning waves-effect waves-light save ' . $class . '" ' . $this->GetButtonAttributes($params) . '><span class="fa fa-trash-o"></span> ' . Resources::GetInstance()
 																																														->GetString($key) . '</button>';
 	}
 

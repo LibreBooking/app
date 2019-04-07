@@ -21,19 +21,19 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 <div id="page-manage-reservation-colors" class="admin-page">
 
-    <div class="default-box col-xs-12 col-sm-8 col-sm-offset-2">
-        <h1>{translate key=ReservationColors}</h1>
+    <div class="col s12 m8 offset-m2">
+        <h4>{translate key=ReservationColors}</h4>
 
-        <form class="form-inline" role="form">
-            <div class="form-group">
-                <label for="attributeOption">{translate key=Attribute}</label>
-                <select class="form-control" id="attributeOption">
+        <form>
+            <div class="input-field">
+                <label for="attributeOption" class="active">{translate key=Attribute}</label>
+                <select class="" id="attributeOption">
                     {foreach from=$Attributes item=attribute}
                         <option value="{$attribute->Id()}">{$attribute->Label()}</option>
                     {/foreach}
                 </select>
 
-                <button type="button" class="btn btn-success" id="addRuleButton">
+                <button type="button" class="btn btn-primary waves-effect waves-light" id="addRuleButton">
                     <i class="fa fa-plus"></i> {translate key='AddRule'}
                 </button>
             </div>
@@ -67,81 +67,73 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
         </table>
     </div>
 
-    <div class="modal fade" id="addDialog" tabindex="-1" role="dialog"
+    <div class="modal" id="addDialog" tabindex="-1" role="dialog"
          aria-labelledby="addDialogLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <form id="addForm" method="post" action="{$smarty.server.SCRIPT_NAME}?action=add" method="post">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                        <h4 class="modal-title" id="addDialogLabel">{translate key=AddReservationColorRule}</h4>
-                    </div>
-                    <div class="modal-body">
-                        {translate key=ReservationCustomRuleAdd}
-
-                        <div id='attributeFillIn' class='inline-block'></div>
-                        <div id="color" class="inline-block">
-                            <label for="reservationColor" class="no-show">Reservation Color</label>
-                            <input type="color" {formname key="RESERVATION_COLOR"} class="form-control required"
-                                   id="reservationColor" maxlength="6"/>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        {cancel_button}
-                        {add_button}
-                        {indicator}
+        <form id="addForm" method="post" action="{$smarty.server.SCRIPT_NAME}?action=add" method="post">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="addDialogLabel">{translate key=AddReservationColorRule}</h4>
+                </div>
+                <div class="modal-body">
+                    {translate key=ReservationCustomRuleAdd}
+                    <div id='attributeFillIn' class='inline-block'></div>
+                    <div id="color" class="inline-block">
+                        <label for="reservationColor" class="no-show">Reservation Color</label>
+                        <input type="color" {formname key="RESERVATION_COLOR"} class="form-control required"
+                               id="reservationColor" maxlength="6"/>
                     </div>
                 </div>
-            </form>
-        </div>
+                <div class="modal-footer">
+                    {cancel_button}
+                    {add_button}
+                    {indicator}
+                </div>
+            </div>
+        </form>
     </div>
 
-    <div class="modal fade" id="deleteDialog" tabindex="-1" role="dialog"
+    <div class="modal" id="deleteDialog" tabindex="-1" role="dialog"
          aria-labelledby="deleteDialogLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <form id="deleteForm" action="{$smarty.server.SCRIPT_NAME}?action=delete" method="post">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                        <h4 class="modal-title" id="deleteDialogLabel">{translate key=Delete}</h4>
-                    </div>
-                    <div class="modal-body">
-                        <div class="alert alert-warning">
-                            {translate key=DeleteWarning}
-                        </div>
-                        <input type="hidden" id="deleteRuleId" {formname key=RESERVATION_COLOR_RULE_ID} />
-                    </div>
-                    <div class="modal-footer">
-                        {cancel_button}
-                        {delete_button}
-                        {indicator}
-                    </div>
+        <form id="deleteForm" action="{$smarty.server.SCRIPT_NAME}?action=delete" method="post">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="deleteDialogLabel">{translate key=Delete}</h4>
                 </div>
-            </form>
-        </div>
+                <div class="modal-body">
+                    <div class="alert alert-warning">
+                        {translate key=DeleteWarning}
+                    </div>
+                    <input type="hidden" id="deleteRuleId" {formname key=RESERVATION_COLOR_RULE_ID} />
+                </div>
+                <div class="modal-footer">
+                    {cancel_button}
+                    {delete_button}
+                    {indicator}
+                </div>
+                {csrf_token}
+                {foreach from=$Attributes item=attribute}
+                    <div id="attribute{$attribute->Id()}"
+                         class="hidden">{control type="AttributeControl" attribute=$attribute searchmode=true}</div>
+                {/foreach}
+            </div>
+        </form>
     </div>
 
-    {foreach from=$Attributes item=attribute}
-        <div id="attribute{$attribute->Id()}"
-             class="hidden">{control type="AttributeControl" attribute=$attribute searchmode=true}</div>
-    {/foreach}
+    {include file="javascript-includes.tpl"}
 
-    {csrf_token}
+    {jsfile src="ajax-helpers.js"}
+    {jsfile src="js/jquery.form-3.09.min.js"}
+    {jsfile src="ajax-form-submit.js"}
+    {jsfile src="admin/reservation-colors.js"}
 
+    <script type="text/javascript">
+        $('document').ready(function () {
+            var mgmt = new ReservationColorManagement();
+            mgmt.init();
+
+            $('.modal').modal();
+        });
+    </script>
 </div>
-
-{include file="javascript-includes.tpl"}
-
-{jsfile src="ajax-helpers.js"}
-{jsfile src="js/jquery.form-3.09.min.js"}
-{jsfile src="ajax-form-submit.js"}
-{jsfile src="admin/reservation-colors.js"}
-
-<script type="text/javascript">
-    $('document').ready(function () {
-        var mgmt = new ReservationColorManagement();
-        mgmt.init();
-    });
-</script>
 
 {include file='globalfooter.tpl'}

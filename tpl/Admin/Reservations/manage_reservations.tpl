@@ -194,8 +194,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
             <th class="action">
                 <div class="checkbox-single">
                     <label for="delete-all"><input type="checkbox" id="delete-all" aria-label="{translate key=All}"
-                           title="{translate key=All}"/>
-                   <span>&nbsp;</span>
+                                                   title="{translate key=All}"/>
+                        <span>&nbsp;</span>
                     </label>
                 </div>
             </th>
@@ -256,12 +256,13 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                 </td>
                 <td class="action no-edit">
                     <div class="checkbox-single">
-                        <label class="" for="delete{$reservationId}"><input {formname key=RESERVATION_ID multi=true} class="delete-multiple" type="checkbox"
-                                                                        id="delete{$reservationId}"
-                                                                        value="{$reservationId}"
-                                                                        aria-label="{translate key=Delete}"
-                                                                        title="{translate key=Delete}"/>
-                       <span>&nbsp;</span>
+                        <label class="" for="delete{$reservationId}"><input {formname key=RESERVATION_ID multi=true}
+                                    class="delete-multiple" type="checkbox"
+                                    id="delete{$reservationId}"
+                                    value="{$reservationId}"
+                                    aria-label="{translate key=Delete}"
+                                    title="{translate key=Delete}"/>
+                            <span>&nbsp;</span>
                         </label>
                     </div>
                 </td>
@@ -346,39 +347,38 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
     <div class="modal" id="deleteSeriesDialog" tabindex="-1" role="dialog"
          aria-labelledby="deleteSeriesDialogLabel"
          aria-hidden="true">
-        <div class="modal-dialog">
-            <form id="deleteSeriesForm" method="post">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h4 class="modal-title" id="deleteSeriesDialogLabel">{translate key=Delete}</h4>
-                    </div>
-                    <div class="modal-body">
-                        <div class="alert alert-warning">
-                            {translate key=DeleteWarning}
-                        </div>
-                        <input type="hidden" id="hdnSeriesUpdateScope" {formname key=SERIES_UPDATE_SCOPE} />
-                        <input type="hidden" {formname key=REFERENCE_NUMBER} value="" class="referenceNumber"/>
-                    </div>
+        <form id="deleteSeriesForm" method="post">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="deleteSeriesDialogLabel">{translate key=Delete}</h4>
                 </div>
-                <div class="modal-footer">
-                    {cancel_button}
+                <div class="modal-body">
+                    <div class="alert alert-warning">
+                        {translate key=DeleteWarning}
+                    </div>
+                    <input type="hidden" id="hdnSeriesUpdateScope" {formname key=SERIES_UPDATE_SCOPE} />
+                    <input type="hidden" {formname key=REFERENCE_NUMBER} value="" class="referenceNumber"/>
+                </div>
+            </div>
+            <div class="modal-footer">
+                {cancel_button}
 
-                    <button type="button" class="btn btn-primary saveSeries btnUpdateThisInstance waves-effect waves-light"
-                            id="btnUpdateThisInstance">
-                        {translate key='ThisInstance'}
-                    </button>
-                    <button type="button" class="btn btn-primary saveSeries btnUpdateAllInstances waves-effect waves-light"
-                            id="btnUpdateAllInstances">
-                        {translate key='AllInstances'}
-                    </button>
-                    <button type="button" class="btn btn-primary saveSeries btnUpdateFutureInstances waves-effect waves-light"
-                            id="btnUpdateFutureInstances">
-                        {translate key='FutureInstances'}
-                    </button>
-                    {indicator}
-                </div>
-            </form>
-        </div>
+                <button type="button" class="btn btn-primary saveSeries btnUpdateThisInstance waves-effect waves-light"
+                        id="btnUpdateThisInstance">
+                    {translate key='ThisInstance'}
+                </button>
+                <button type="button" class="btn btn-primary saveSeries btnUpdateAllInstances waves-effect waves-light"
+                        id="btnUpdateAllInstances">
+                    {translate key='AllInstances'}
+                </button>
+                <button type="button"
+                        class="btn btn-primary saveSeries btnUpdateFutureInstances waves-effect waves-light"
+                        id="btnUpdateFutureInstances">
+                    {translate key='FutureInstances'}
+                </button>
+                {indicator}
+            </div>
+        </form>
     </div>
 
     <div id="deleteMultipleDialog" class="modal" tabindex="-1" role="dialog"
@@ -493,20 +493,22 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                     <div>
                         <div class="inline-block">
                             <label for="tos_manual_radio"><input type="radio" {formname key=TOS_METHOD} value="manual"
-                                   id="tos_manual_radio"
-                                   checked="checked" data-ref="tos_manual_div" class="toggle">
+                                                                 id="tos_manual_radio"
+                                                                 checked="checked" data-ref="tos_manual_div"
+                                                                 class="toggle">
                                 <span>{translate key=EnterTermsManually}</span>
                             </label>
                         </div>
                         <div class="inline-block">
                             <label for="tos_url_radio"><input type="radio" {formname key=TOS_METHOD} value="url"
-                                   id="tos_url_radio" data-ref="tos_url_div" class="toggle">
+                                                              id="tos_url_radio" data-ref="tos_url_div" class="toggle">
                                 <span>{translate key=LinkToTerms}</span>
                             </label>
                         </div>
                         <div class="inline-block">
                             <label for="tos_upload_radio"><input type="radio" {formname key=TOS_METHOD} value="upload"
-                                   id="tos_upload_radio" data-ref="tos_upload_div" class="toggle">
+                                                                 id="tos_upload_radio" data-ref="tos_upload_div"
+                                                                 class="toggle">
                                 <span>{translate key=UploadTerms}</span>
                             </label>
                         </div>
@@ -547,16 +549,16 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                         <div>
                             <div class="inline-block">
                                 <label for="tos_reservation"><input type="radio" {formname key=TOS_APPLICABILITY}
-                                       value="{TermsOfService::RESERVATION}"
-                                       id="tos_reservation"
-                                       checked="checked">
+                                                                    value="{TermsOfService::RESERVATION}"
+                                                                    id="tos_reservation"
+                                                                    checked="checked">
                                     <span>{translate key=UponReservation}</span>
                                 </label>
                             </div>
                             <div class="inline-block">
                                 <label for="tos_registration"><input type="radio" {formname key=TOS_APPLICABILITY}
-                                       value="{TermsOfService::REGISTRATION}"
-                                       id="tos_registration">
+                                                                     value="{TermsOfService::REGISTRATION}"
+                                                                     id="tos_registration">
                                     <span>{translate key=UponRegistration}</span>
                                 </label>
                             </div>
@@ -571,7 +573,6 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                 {indicator}
             </div>
         </form>
-
     </div>
 
     {include file="javascript-includes.tpl" Qtip=true InlineEdit=true}

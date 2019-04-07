@@ -19,19 +19,19 @@ function ReservationColorManagement(opts) {
         });
 
         $(".cancel").click(function () {
-            $(this).closest('.modal').modal("hide");
+            $(this).closest('.modal').modal("close");
         });
 
         $(".delete").click(function () {
             elements.deleteRuleId.val($(this).attr('ruleId'));
-            elements.deleteDialog.modal('show');
+            elements.deleteDialog.modal('open');
         });
 
         $('#addRuleButton').click(function (e) {
             var attrId = '#attribute' + elements.attributeOption.val();
             $('#attributeFillIn').empty();
             $('#attributeFillIn').append($(attrId).clone().removeClass('hidden'));
-            elements.addDialog.modal('show');
+            elements.addDialog.modal('open');
         });
 
         ConfigureAsyncForm(elements.addForm);
