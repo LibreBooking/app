@@ -524,3 +524,21 @@ td.update {
   height: 450px;
   margin-bottom: 4px;
 }
+#page-manage-schedules #quickLayoutConfig {
+  width: 50px;
+}
+#page-manage-schedules #quickLayoutStart,
+#page-manage-schedules #quickLayoutEnd {
+  width: 50px;
+}
+#page-manage-schedules .slotWizard,
+#page-manage-schedules .slotHelpText {
+  font-size: 0.9em;
+}
+#page-manage-schedules .input-sm {
+  font-size: 13px;
+  height: 2rem;
+}
+#page-manage-schedules .tabs .tab a {
+  padding: 0 5px;
+}

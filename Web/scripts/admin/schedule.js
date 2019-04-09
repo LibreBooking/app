@@ -86,21 +86,25 @@ function ScheduleManagement(opts) {
 
             details.find('.renameButton').click(function (e) {
                 e.stopPropagation();
+                e.preventDefault();
                 details.find('.scheduleName').editable('toggle');
             });
 
             details.find('.dayName').click(function (e) {
                 e.stopPropagation();
+                e.preventDefault();
                 $(this).editable('toggle');
             });
 
             details.find('.daysVisible').click(function (e) {
                 e.stopPropagation();
+                e.preventDefault();
                 $(this).editable('toggle');
             });
 
             details.find('.changeScheduleAdmin').click(function (e) {
                 e.stopPropagation();
+                e.preventDefault();
                 details.find('.scheduleAdmin').editable('toggle');
             });
 
@@ -161,7 +165,7 @@ function ScheduleManagement(opts) {
             details.find('.switchLayout').click(function (e) {
                 e.preventDefault();
                 $('#switchLayoutTypeId').val($(e.target).data('switch-to'));
-                elements.switchLayoutDialog.modal('show');
+                elements.switchLayoutDialog.modal('open');
             });
         });
 
@@ -214,7 +218,7 @@ function ScheduleManagement(opts) {
 
         elements.addScheduleButton.click(function (e) {
             e.preventDefault();
-            elements.addDialog.modal('show');
+            elements.addDialog.modal('open');
         });
 
         elements.addDialog.on('shown.bs.modal', function () {
@@ -377,7 +381,7 @@ function ScheduleManagement(opts) {
             $('#' + $(val).attr('ref')).val(slots);
         });
 
-        elements.layoutTimezone.val(timezone.val());
+        elements.layoutTimezone.changeDropdown(timezone.val());
         elements.usesSingleLayout.prop('checked', false);
 
         if (usesSingleLayout) {
@@ -385,7 +389,7 @@ function ScheduleManagement(opts) {
         }
         elements.usesSingleLayout.trigger('change');
 
-        elements.layoutDialog.modal("show");
+        elements.layoutDialog.modal('open');
     };
 
     var toggleLayoutChange = function (useSingleLayout) {
@@ -405,7 +409,7 @@ function ScheduleManagement(opts) {
         elements.deleteDestinationScheduleId.children('option[value="' + scheduleId + '"]').attr('disabled', 'disabled');
         elements.deleteDestinationScheduleId.val('');
 
-        elements.deleteDialog.modal('show');
+        elements.deleteDialog.modal('open');
     };
 
     var reformatTimeSlots = function (div) {
@@ -472,7 +476,7 @@ function ScheduleManagement(opts) {
         }
 
         elements.deletePeakTimes.val('');
-        elements.peakTimesDialog.modal('show');
+        elements.peakTimesDialog.modal('open');
     };
 
     var peakOnEveryDayChanged = function () {
@@ -504,7 +508,7 @@ function ScheduleManagement(opts) {
 
     var refreshPeakTimes = function (resultHtml) {
         $('[data-schedule-id=' + getActiveScheduleId() + ']').find('.peakPlaceHolder').html(resultHtml);
-        elements.peakTimesDialog.modal('hide');
+        elements.peakTimesDialog.modal('close');
     };
 
     var wireUpPeakTimeToggles = function () {
@@ -538,12 +542,12 @@ function ScheduleManagement(opts) {
             elements.availableAllYear.trigger('click');
         }
 
-        elements.availabilityDialog.modal('show');
+        elements.availabilityDialog.modal('open');
     };
 
     var refreshAvailability = function (resultHtml) {
         $('[data-schedule-id=' + getActiveScheduleId() + ']').find('.availabilityPlaceHolder').html(resultHtml);
-        elements.availabilityDialog.modal('hide');
+        elements.availabilityDialog.modal('close');
     };
 
     var toggleConcurrentReservations = function (scheduleId, toggle, container) {
@@ -580,8 +584,10 @@ function ScheduleManagement(opts) {
             );
         }
 
-        $('#customLayoutDialog').unbind('shown.bs.modal');
-        $('#customLayoutDialog').on('shown.bs.modal', function () {
+        $('#customLayoutDialog').modal('open');
+
+        // $('#customLayoutDialog').unbind('shown.bs.modal');
+        // $('#customLayoutDialog').on('shown.bs.modal', function () {
             if (_fullCalendar != null) {
                 _fullCalendar.fullCalendar('destroy');
             }
@@ -656,9 +662,9 @@ function ScheduleManagement(opts) {
                     updateEvent(event);
                 }
             });
-        });
+        // });
 
-        $('#customLayoutDialog').modal('show');
+
     };
 
     function afterDeleteSlot() {

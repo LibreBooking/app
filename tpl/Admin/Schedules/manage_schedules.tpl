@@ -18,92 +18,94 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 *}
 {include file='globalheader.tpl' InlineEdit=true Fullcalendar=true Timepicker=true}
 
-<div id="page-manage-schedules" class="admin-page">
+<div id="page-manage-schedules" class="admin-page row">
 
-    <h1>{translate key=ManageSchedules}</h1>
+    <h4>{translate key=ManageSchedules}</h4>
 
-    <div class="panel panel-default admin-panel" id="list-schedules-panel">
-        <div class="panel-heading">{translate key="AllSchedules"}
-            <a href="#" class="add-link pull-right" id="add-schedule">{translate key="AddSchedule"}
-                <span class="fa fa-plus-circle icon add"></span>
-            </a>
-        </div>
-        <div class="panel-body no-padding" id="scheduleList">
-            {foreach from=$Schedules item=schedule}
-                {assign var=id value=$schedule->GetId()}
-                {capture name=daysVisible}<span class='propertyValue daysVisible inlineUpdate' data-type='number'
+    <div class="card admin-panel" id="list-schedules-panel">
+        <div class="card-content">
+            <div class="panel-heading">{translate key="AllSchedules"}
+                <a href="#" class="add-link pull-right" id="add-schedule">{translate key="AddSchedule"}
+                    <span class="fa fa-plus-circle icon add"></span>
+                </a>
+            </div>
+            <div class="panel-body" id="scheduleList">
+                {foreach from=$Schedules item=schedule}
+                    {assign var=id value=$schedule->GetId()}
+                    {capture name=daysVisible}<span class='propertyValue daysVisible inlineUpdate' data-type='number'
+                                                    data-pk='{$id}'
+                                                    data-name='{FormKeys::SCHEDULE_DAYS_VISIBLE}'
+                                                    data-min='0'>{$schedule->GetDaysVisible()}</span>{/capture}
+                    {assign var=dayOfWeek value=$schedule->GetWeekdayStart()}
+                    {capture name=dayName}<span class='propertyValue dayName inlineUpdate' data-type='select'
                                                 data-pk='{$id}'
-                                                data-name='{FormKeys::SCHEDULE_DAYS_VISIBLE}'
-                                                data-min='0'>{$schedule->GetDaysVisible()}</span>{/capture}
-                {assign var=dayOfWeek value=$schedule->GetWeekdayStart()}
-                {capture name=dayName}<span class='propertyValue dayName inlineUpdate' data-type='select'
-                                            data-pk='{$id}'
-                                            data-name='{FormKeys::SCHEDULE_WEEKDAY_START}'
-                                            data-value='{$dayOfWeek}'>{if $dayOfWeek == Schedule::Today}{$Today}{else}{$DayNames[$dayOfWeek]}{/if}</span>{/capture}
-                <div class="scheduleDetails" data-schedule-id="{$id}">
-                    <div class="col-xs-12 col-sm-6">
-                        <input type="hidden" class="id" value="{$id}"/>
-                        <input type="hidden" class="daysVisible" value="{$daysVisible}"/>
-                        <input type="hidden" class="dayOfWeek" value="{$dayOfWeek}"/>
+                                                data-name='{FormKeys::SCHEDULE_WEEKDAY_START}'
+                                                data-value='{$dayOfWeek}'>{if $dayOfWeek == Schedule::Today}{$Today}{else}{$DayNames[$dayOfWeek]}{/if}</span>{/capture}
+                    <div class="scheduleDetails" data-schedule-id="{$id}">
+                        <div class="col s12 m6">
+                            <input type="hidden" class="id" value="{$id}"/>
+                            <input type="hidden" class="daysVisible" value="{$daysVisible}"/>
+                            <input type="hidden" class="dayOfWeek" value="{$dayOfWeek}"/>
+                            <div>
+					            <span class="title scheduleName" data-type="text" data-pk="{$id}"
+                                      data-name="{FormKeys::SCHEDULE_NAME}">{$schedule->GetName()}</span>
+                                <a class="update renameButton" href="#"><span
+                                            class="no-show">{translate key=Rename}</span><span
+                                            class="fa fa-pencil-square-o"></span></a>
+                            </div>
 
-                        <div>
-					<span class="title scheduleName" data-type="text" data-pk="{$id}"
-                          data-name="{FormKeys::SCHEDULE_NAME}">{$schedule->GetName()}</span>
-                            <a class="update renameButton" href="#"><span class="no-show">{translate key=Rename}</span><span class="fa fa-pencil-square-o"></span></a>
-                        </div>
+                            <div>{translate key="LayoutDescription" args="{$smarty.capture.dayName}, {$smarty.capture.daysVisible}"}</div>
 
-                        <div>{translate key="LayoutDescription" args="{$smarty.capture.dayName}, {$smarty.capture.daysVisible}"}</div>
+                            <div>{translate key='ScheduleAdministrator'}
+                                <span class="propertyValue scheduleAdmin"
+                                      data-type="select" data-pk="{$id}" data-value="{$schedule->GetAdminGroupId()}"
+                                      data-name="{FormKeys::SCHEDULE_ADMIN_GROUP_ID}">{$GroupLookup[$schedule->GetAdminGroupId()]->Name}</span>
+                                {if $AdminGroups|count > 0}
+                                    <a class="update changeScheduleAdmin" href="#">
+                                        <span class="no-show">{translate key='ScheduleAdministrator'}</span>
+                                        <span class="fa fa-pencil-square-o"></span>
+                                    </a>
+                                {/if}
+                            </div>
 
-                        <div>{translate key='ScheduleAdministrator'}
-                            <span class="propertyValue scheduleAdmin"
-                                  data-type="select" data-pk="{$id}" data-value="{$schedule->GetAdminGroupId()}"
-                                  data-name="{FormKeys::SCHEDULE_ADMIN_GROUP_ID}">{$GroupLookup[$schedule->GetAdminGroupId()]->Name}</span>
-                            {if $AdminGroups|count > 0}
-                                <a class="update changeScheduleAdmin" href="#">
-                                    <span class="no-show">{translate key='ScheduleAdministrator'}</span>
-                                    <span class="fa fa-pencil-square-o"></span
+                            <div>
+                                <div class="availabilityPlaceHolder inline-block">
+                                    {include file="Admin/Schedules/manage_availability.tpl" schedule=$schedule timezone=$Timezone}
+                                </div>
+                                <a class="update changeAvailability inline-block" href="#">
+                                    <span class="no-show">Change Availability</span>
+                                    <span class="fa fa-pencil-square-o"></span>
                                 </a>
+                            </div>
+
+                            <div class="concurrentContainer">
+                                <span class="allowConcurrentYes {if !$schedule->GetAllowConcurrentReservations()}no-show{/if}">{translate key=ConcurrentYes}</span>
+                                <span class="allowConcurrentNo {if $schedule->GetAllowConcurrentReservations()}no-show{/if}">{translate key=ConcurrentNo}</span>
+                                <a class="update toggleConcurrent" href="#"
+                                   data-allow="{$schedule->GetAllowConcurrentReservations()|intval}">{translate key=Change}</a>
+                            </div>
+
+                            <div>
+                                {translate key=DefaultStyle}
+                                <span class="propertyValue defaultScheduleStyle inlineUpdate" data-type="select"
+                                      data-pk="{$id}"
+                                      data-name="{FormKeys::SCHEDULE_DEFAULT_STYLE}"
+                                      data-value="{$schedule->GetDefaultStyle()}">{$StyleNames[$schedule->GetDefaultStyle()]}</span>
+                            </div>
+
+                            {if $CreditsEnabled}
+                                <span>{translate key=PeakTimes}</span>
+                                <a class="update changePeakTimes" href="#">
+                                    <span class="no-show">{translate key=PeakTimes}</span>
+                                    <span class="fa fa-pencil-square-o"></span>
+                                </a>
+                                <div class="peakPlaceHolder">
+                                    {include file="Admin/Schedules/manage_peak_times.tpl" Layout=$Layouts[$id] Months=$Months DayNames=$DayNames}
+                                </div>
                             {/if}
-                        </div>
 
-                        <div>
-                            <div class="availabilityPlaceHolder inline-block">
-                                {include file="Admin/Schedules/manage_availability.tpl" schedule=$schedule timezone=$Timezone}
-                            </div>
-                            <a class="update changeAvailability inline-block" href="#">
-                                <span class="no-show">Change Availability</span>
-                                <span class="fa fa-pencil-square-o"></span>
-                            </a>
-                        </div>
-
-                        <div class="concurrentContainer">
-                            <span class="allowConcurrentYes {if !$schedule->GetAllowConcurrentReservations()}no-show{/if}">{translate key=ConcurrentYes}</span>
-                            <span class="allowConcurrentNo {if $schedule->GetAllowConcurrentReservations()}no-show{/if}">{translate key=ConcurrentNo}</span>
-                            <a class="update toggleConcurrent" href="#"
-                               data-allow="{$schedule->GetAllowConcurrentReservations()|intval}">{translate key=Change}</a>
-                        </div>
-
-                        <div>
-                            {translate key=DefaultStyle}
-                            <span class="propertyValue defaultScheduleStyle inlineUpdate" data-type="select"
-                                  data-pk="{$id}"
-                                  data-name="{FormKeys::SCHEDULE_DEFAULT_STYLE}"
-                                  data-value="{$schedule->GetDefaultStyle()}">{$StyleNames[$schedule->GetDefaultStyle()]}</span>
-                        </div>
-
-                        {if $CreditsEnabled}
-                            <span>{translate key=PeakTimes}</span>
-                            <a class="update changePeakTimes" href="#">
-                                <span class="no-show">{translate key=PeakTimes}</span>
-                                <span class="fa fa-pencil-square-o"></span>
-                            </a>
-                            <div class="peakPlaceHolder">
-                                {include file="Admin/Schedules/manage_peak_times.tpl" Layout=$Layouts[$id] Months=$Months DayNames=$DayNames}
-                            </div>
-                        {/if}
-
-                        <div>{translate key=Resources}
-                            <span class="propertyValue">
+                            <div>{translate key=Resources}
+                                <span class="propertyValue">
                             {if array_key_exists($id, $Resources)}
                                 {foreach from=$Resources[$id] item=r name=resources_loop}
                                     {$r->GetName()|escape}{if !$smarty.foreach.resources_loop.last}, {/if}
@@ -112,542 +114,544 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                                 {translate key=None}
                             {/if}
                             </span>
+                            </div>
+
+                            {if $schedule->GetIsCalendarSubscriptionAllowed()}
+                                <div>
+                                    <span>{translate key=PublicId}</span>
+                                    <span class="propertyValue">{$schedule->GetPublicId()}</span>
+                                </div>
+                            {/if}
+
                         </div>
 
-                        {if $schedule->GetIsCalendarSubscriptionAllowed()}
-                        <div>
-                            <span>{translate key=PublicId}</span>
-                            <span class="propertyValue">{$schedule->GetPublicId()}</span>
-                        </div>
-                        {/if}
-
-                    </div>
-
-                    <div class="layout col-xs-12 col-sm-6">
-                        {function name="display_periods"}
-                            {foreach from=$Layouts[$id]->GetSlots($day) item=period name=layouts}
-                                {if $period->IsReservable() == $showReservable}
-                                    {$period->Start->Format("H:i")} - {$period->End->Format("H:i")}
-                                    {if $period->IsLabelled()}
-                                        {$period->Label}
+                        <div class="layout col s12 m6">
+                            {function name="display_periods"}
+                                {foreach from=$Layouts[$id]->GetSlots($day) item=period name=layouts}
+                                    {if $period->IsReservable() == $showReservable}
+                                        {$period->Start->Format("H:i")} - {$period->End->Format("H:i")}
+                                        {if $period->IsLabelled()}
+                                            {$period->Label}
+                                        {/if}
+                                        {if !$smarty.foreach.layouts.last}, {/if}
                                     {/if}
-                                    {if !$smarty.foreach.layouts.last}, {/if}
-                                {/if}
-                                {foreachelse}
-                                {translate key=None}
-                            {/foreach}
-                        {/function}
-
-                        <div>
-                            {translate key=ScheduleLayout args=$schedule->GetTimezone()}
-                            <a class="update changeLayoutButton" href="#" title="{translate key=ChangeLayout}">
-                                <span class="fa fa-pencil-square-o"
-                                        data-layout-type="{$Layouts[$id]->GetType()}"></span>
-                                <span class="no-show">{translate key=ChangeLayout}</span>
-                            </a>
-                        </div>
-                        <input type="hidden" class="timezone" value="{$schedule->GetTimezone()}"/>
-
-                        {if $Layouts[$id]->UsesDailyLayouts()}
-                            <input type="hidden" class="usesDailyLayouts" value="true"/>
-                            {translate key=LayoutVariesByDay} -
-                            <a href="#" class="showAllDailyLayouts">{translate key=ShowHide}</a>
-                            <div class="allDailyLayouts">
-                                {foreach from=DayOfWeek::Days() item=day}
-                                    {$DayNames[$day]}
-                                    <div class="reservableSlots" id="reservableSlots_{$day}"
-                                         ref="reservableEdit_{$day}">
-                                        {display_periods showReservable=true day=$day}
-                                    </div>
-                                    <div class="blockedSlots" id="blockedSlots_{$day}" ref="blockedEdit_{$day}">
-                                        {display_periods showReservable=false day=$day}
-                                    </div>
+                                    {foreachelse}
+                                    {translate key=None}
                                 {/foreach}
+                            {/function}
+
+                            <div>
+                                {translate key=ScheduleLayout args=$schedule->GetTimezone()}
+                                <a class="update changeLayoutButton" href="#" title="{translate key=ChangeLayout}">
+                                <span class="fa fa-pencil-square-o"
+                                      data-layout-type="{$Layouts[$id]->GetType()}"></span>
+                                    <span class="no-show">{translate key=ChangeLayout}</span>
+                                </a>
                             </div>
-                            <div class="margin-top-25"><strong>{translate key=ThisScheduleUsesAStandardLayout}</strong>
-                            </div>
-                            <div><a href="#" class="update switchLayout"
-                                    data-switch-to="{ScheduleLayout::Custom}">{translate key=SwitchToACustomLayout}</a>
-                            </div>
-                        {elseif $Layouts[$id]->UsesCustomLayout()}
-                            <div><strong>{translate key=ThisScheduleUsesACustomLayout}</strong></div>
-                            <div><a href="#" class="update switchLayout"
-                                    data-switch-to="{ScheduleLayout::Standard}">{translate key=SwitchToAStandardLayout}</a>
-                            </div>
-                        {else}
-                            <input type="hidden" class="usesDailyLayouts" value="false"/>
-                            {translate key=ReservableTimeSlots}
-                            <div class="reservableSlots" id="reservableSlots" ref="reservableEdit">
-                                {display_periods showReservable=true day=null}
-                            </div>
-                            {translate key=BlockedTimeSlots}
-                            <div class="blockedSlots" id="blockedSlots" ref="blockedEdit">
-                                {display_periods showReservable=false day=null}
-                            </div>
-                            <div class="margin-top-25"><strong>{translate key=ThisScheduleUsesAStandardLayout}</strong>
-                            </div>
-                            <div><a href="#" class="update switchLayout"
-                                    data-switch-to="{ScheduleLayout::Custom}">{translate key=SwitchToACustomLayout}</a>
-                            </div>
-                        {/if}
+                            <input type="hidden" class="timezone" value="{$schedule->GetTimezone()}"/>
+
+                            {if $Layouts[$id]->UsesDailyLayouts()}
+                                <input type="hidden" class="usesDailyLayouts" value="true"/>
+                                {translate key=LayoutVariesByDay} -
+                                <a href="#" class="showAllDailyLayouts">{translate key=ShowHide}</a>
+                                <div class="allDailyLayouts">
+                                    {foreach from=DayOfWeek::Days() item=day}
+                                        {$DayNames[$day]}
+                                        <div class="reservableSlots" id="reservableSlots_{$day}"
+                                             ref="reservableEdit_{$day}">
+                                            {display_periods showReservable=true day=$day}
+                                        </div>
+                                        <div class="blockedSlots" id="blockedSlots_{$day}" ref="blockedEdit_{$day}">
+                                            {display_periods showReservable=false day=$day}
+                                        </div>
+                                    {/foreach}
+                                </div>
+                                <div class="margin-top-25">
+                                    <strong>{translate key=ThisScheduleUsesAStandardLayout}</strong>
+                                </div>
+                                <div><a href="#" class="update switchLayout"
+                                        data-switch-to="{ScheduleLayout::Custom}">{translate key=SwitchToACustomLayout}</a>
+                                </div>
+                            {elseif $Layouts[$id]->UsesCustomLayout()}
+                                <div><strong>{translate key=ThisScheduleUsesACustomLayout}</strong></div>
+                                <div><a href="#" class="update switchLayout"
+                                        data-switch-to="{ScheduleLayout::Standard}">{translate key=SwitchToAStandardLayout}</a>
+                                </div>
+                            {else}
+                                <input type="hidden" class="usesDailyLayouts" value="false"/>
+                                {translate key=ReservableTimeSlots}
+                                <div class="reservableSlots" id="reservableSlots" ref="reservableEdit">
+                                    {display_periods showReservable=true day=null}
+                                </div>
+                                {translate key=BlockedTimeSlots}
+                                <div class="blockedSlots" id="blockedSlots" ref="blockedEdit">
+                                    {display_periods showReservable=false day=null}
+                                </div>
+                                <div class="margin-top-25">
+                                    <strong>{translate key=ThisScheduleUsesAStandardLayout}</strong>
+                                </div>
+                                <div><a href="#" class="update switchLayout"
+                                        data-switch-to="{ScheduleLayout::Custom}">{translate key=SwitchToACustomLayout}</a>
+                                </div>
+                            {/if}
+                        </div>
+
+                        <div class="actions col s12">
+                            {if $schedule->GetIsDefault()}
+                                <span class="note">{translate key=ThisIsTheDefaultSchedule}</span>
+                                |
+                                <span class="note">{translate key=DefaultScheduleCannotBeDeleted}</span>
+                                |
+                            {else}
+                                <a class="update makeDefaultButton" href="#">{translate key=MakeDefault}</a>
+                                |
+                                <a class="update deleteScheduleButton" href="#">{translate key=Delete}</a>
+                                |
+                            {/if}
+                            {if $schedule->GetIsCalendarSubscriptionAllowed()}
+                                <a class="update disableSubscription"
+                                   href="#">{translate key=TurnOffSubscription}</a>
+                                |
+                            {else}
+                                <a class="update enableSubscription" href="#">{translate key=TurnOnSubscription}</a>
+                            {/if}
+                            {if $schedule->GetIsCalendarSubscriptionAllowed()}
+                                {html_image src="feed.png"}
+                                <a target="_blank" href="{$schedule->GetSubscriptionUrl()->GetAtomUrl()}">Atom</a>
+                                |
+                                <a target="_blank"
+                                   href="{$schedule->GetSubscriptionUrl()->GetWebcalUrl()}">iCalendar</a>
+                            {/if}
+                            {indicator id="action-indicator"}
+                            <div class="clearfix"></div>
+                        </div>
                     </div>
-                    <div class="actions col-xs-12">
-                        {if $schedule->GetIsDefault()}
-                            <span class="note">{translate key=ThisIsTheDefaultSchedule}</span>
-                            |
-                            <span class="note">{translate key=DefaultScheduleCannotBeDeleted}</span>
-                            |
-                        {else}
-                            <a class="update makeDefaultButton" href="#">{translate key=MakeDefault}</a>
-                            |
-                            <a class="update deleteScheduleButton" href="#">{translate key=Delete}</a>
-                            |
-                        {/if}
-                        {if $schedule->GetIsCalendarSubscriptionAllowed()}
-                            <a class="update disableSubscription"
-                               href="#">{translate key=TurnOffSubscription}</a>
-                            |
-                        {else}
-                            <a class="update enableSubscription" href="#">{translate key=TurnOnSubscription}</a>
-                        {/if}
-                        {if $schedule->GetIsCalendarSubscriptionAllowed()}
-                            {html_image src="feed.png"}
-                            <a target="_blank" href="{$schedule->GetSubscriptionUrl()->GetAtomUrl()}">Atom</a>
-                            |
-                            <a target="_blank" href="{$schedule->GetSubscriptionUrl()->GetWebcalUrl()}">iCalendar</a>
-                        {/if}
-                        {indicator id="action-indicator"}
-                        <div class="clear"></div>
-                    </div>
-                </div>
-            {/foreach}
+                {/foreach}
+            </div>
+            <div class="clearfix"></div>
         </div>
     </div>
 
     {pagination pageInfo=$PageInfo}
 
-    <div id="addDialog" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="addScheduleDialogLabel"
-         aria-hidden="true">
-        <form id="addScheduleForm" method="post">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                        <h4 class="modal-title" id="addScheduleDialogLabel">{translate key=AddSchedule}</h4>
-                    </div>
-                    <div class="modal-body">
-                        <div class="form-group has-feedback">
-                            <label for="addName">{translate key=Name}</label>
-                            <input type="text" id="addName"
-                                   class="form-control required" {formname key=SCHEDULE_NAME} />
-                            <i class="glyphicon glyphicon-asterisk form-control-feedback"
-                               data-bv-icon-for="addName"></i>
-                        </div>
-                        <div class="form-group">
-                            <label for="addStartsOn">{translate key=StartsOn}</label>
-                            <select {formname key=SCHEDULE_WEEKDAY_START} class="form-control" id="addStartsOn">
-                                <option value="{Schedule::Today}">{$Today}</option>
-                                {foreach from=$DayNames item="dayName" key="dayIndex"}
-                                    <option value="{$dayIndex}">{$dayName}</option>
-                                {/foreach}
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="addNumDaysVisible">{translate key=NumberOfDaysVisible}</label>
-                            <input type="number" min="1" max="100" class="form-control required" id="addNumDaysVisible"
-                                   value="7" {formname key=SCHEDULE_DAYS_VISIBLE} />
-                        </div>
-                        <div class="form-group">
-                            <label for="addSameLayoutAs">{translate key=UseSameLayoutAs}</label>
-                            <select class="form-control" {formname key=SCHEDULE_ID} id="addSameLayoutAs">
-                                {foreach from=$SourceSchedules item=schedule}
-                                    <option value="{$schedule->GetId()}">{$schedule->GetName()}</option>
-                                {/foreach}
-                            </select>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        {cancel_button}
-                        {add_button submit=true}
-                        {indicator}
-                    </div>
-                </div>
-            </div>
-        </form>
-    </div>
-
     <input type="hidden" id="activeId" value=""/>
 
-    <div id="deleteDialog" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="deleteScheduleDialogLabel"
+    <div id="addDialog" class="modal" tabindex="-1" role="dialog" aria-labelledby="addScheduleDialogLabel"
+         aria-hidden="true">
+        <form id="addScheduleForm" method="post">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="addScheduleDialogLabel">{translate key=AddSchedule}</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="input-field">
+                        <label for="addName">{translate key=Name} <i class="fa fa-asterisk"></i></label>
+                        <input type="text" id="addName"
+                               class="required" {formname key=SCHEDULE_NAME} />
+                    </div>
+                    <div class="input-field">
+                        <label for="addStartsOn" class="active">{translate key=StartsOn}</label>
+                        <select {formname key=SCHEDULE_WEEKDAY_START} id="addStartsOn">
+                            <option value="{Schedule::Today}">{$Today}</option>
+                            {foreach from=$DayNames item="dayName" key="dayIndex"}
+                                <option value="{$dayIndex}">{$dayName}</option>
+                            {/foreach}
+                        </select>
+                    </div>
+                    <div class="input-field">
+                        <label for="addNumDaysVisible" class="active">{translate key=NumberOfDaysVisible}</label>
+                        <input type="number" min="1" max="100" class="form-control required" id="addNumDaysVisible"
+                               value="7" {formname key=SCHEDULE_DAYS_VISIBLE} />
+                    </div>
+                    <div class="input-field">
+                        <label for="addSameLayoutAs" class="active">{translate key=UseSameLayoutAs}</label>
+                        <select {formname key=SCHEDULE_ID} id="addSameLayoutAs">
+                            {foreach from=$SourceSchedules item=schedule}
+                                <option value="{$schedule->GetId()}">{$schedule->GetName()}</option>
+                            {/foreach}
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                {cancel_button}
+                {add_button submit=true}
+                {indicator}
+            </div>
+        </form>
+    </div>
+
+    <div id="deleteDialog" class="modal" tabindex="-1" role="dialog" aria-labelledby="deleteScheduleDialogLabel"
          aria-hidden="true">
         <form id="deleteForm" method="post">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                        <h4 class="modal-title" id="deleteScheduleDialogLabel">{translate key=Delete}</h4>
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="deleteScheduleDialogLabel">{translate key=Delete}</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="input-field">
+                        <label for="targetScheduleId"
+                               class="active">{translate key=MoveResourcesAndReservations}</label>
+                        <select id="targetScheduleId" {formname key=SCHEDULE_ID} class="required">
+                            {foreach from=$Schedules item=schedule}
+                                <option value="{$schedule->GetId()}">{$schedule->GetName()}</option>
+                            {/foreach}
+                        </select>
                     </div>
-                    <div class="modal-body">
-                        <div class="form-group">
-                            <label for="targetScheduleId">{translate key=MoveResourcesAndReservations}</label>
-                            <select id="targetScheduleId" {formname key=SCHEDULE_ID} class="form-control required">
-                                <option value="">-- {translate key=Schedule} --</option>
-                                {foreach from=$Schedules item=schedule}
-                                    <option value="{$schedule->GetId()}">{$schedule->GetName()}</option>
+                </div>
+            </div>
+            <div class="modal-footer">
+                {cancel_button}
+                {delete_button}
+                {indicator}
+            </div>
+        </form>
+    </div>
+
+    <div id="changeLayoutDialog" class="modal" tabindex="-1" role="dialog"
+         aria-labelledby="changeLayoutDialogLabel" aria-hidden="true">
+        <form id="changeLayoutForm" method="post" role="form" class="form-inline">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="changeLayoutDialogLabel">{translate key=ChangeLayout}</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="validationSummary card error no-show">
+                        <div class="card-content">
+                            <ul>{async_validator id="layoutValidator" key="ValidLayoutRequired"}</ul>
+                        </div>
+                    </div>
+
+                    <div class="col s12">
+                        <label for="usesSingleLayout">
+                            <input type="checkbox" id="usesSingleLayout" {formname key=USING_SINGLE_LAYOUT}>
+                            <span>{translate key=UseSameLayoutForAllDays}</span>
+                        </label>
+                    </div>
+
+                    {function name=display_slot_inputs}
+                        <div id="{$id}" class="col s12">
+                            {assign var=suffix value=""}
+                            {if $day!=null}
+                                {assign var=suffix value="_$day"}
+                            {/if}
+                            <div class="col s6">
+                                <label for="reservableEdit{$suffix}">{translate key=ReservableTimeSlots}</label>
+                                <textarea class="reservableEdit form-control" id="reservableEdit{$suffix}"
+                                          name="{FormKeys::SLOTS_RESERVABLE}{$suffix}"></textarea>
+                            </div>
+                            <div class="col s6">
+                                <label for="blockedEdit{$suffix}">{translate key=BlockedTimeSlots}</label> <a
+                                        href="#" class="autofillBlocked" title="{translate key=Autofill}"><i
+                                            class="fa fa-magic"></i> {translate key=Autofill}</a>
+                                <textarea class="blockedEdit form-control" id="blockedEdit{$suffix}"
+                                          name="{FormKeys::SLOTS_BLOCKED}{$suffix}"></textarea>
+                            </div>
+                        </div>
+                    {/function}
+
+                    <div class="col s12" id="dailySlots">
+                        <ul class="tabs" id="slotsTabs">
+                            <li class="tab active">
+                                <a href="#tabs-0" class="active" aria-controls="tabs-0">{$DayNames[0]}</a>
+                            </li>
+                            <li class="tab">
+                                <a href="#tabs-1" aria-controls="tabs-1">{$DayNames[1]}</a>
+                            </li>
+                            <li class="tab">
+                                <a href="#tabs-2" aria-controls="tabs-2">{$DayNames[2]}</a>
+                            </li>
+                            <li class="tab">
+                                <a href="#tabs-3" aria-controls="tabs-3">{$DayNames[3]}</a>
+                            </li>
+                            <li class="tab">
+                                <a href="#tabs-4" aria-controls="tabs-4">{$DayNames[4]}</a>
+                            </li>
+                            <li class="tab">
+                                <a href="#tabs-5" aria-controls="tabs-5">{$DayNames[5]}</a>
+                            </li>
+                            <li class="tab">
+                                <a href="#tabs-6" aria-controls="tabs-6">{$DayNames[6]}</a>
+                            </li>
+                        </ul>
+                        <div class="tab-content">
+                            <div id="tabs-0" class="active">
+                                {display_slot_inputs day='0'}
+                            </div>
+                            <div id="tabs-1">
+                                {display_slot_inputs day='1'}
+                            </div>
+                            <div id="tabs-2">
+                                {display_slot_inputs day='2'}
+                            </div>
+                            <div id="tabs-3">
+                                {display_slot_inputs day='3'}
+                            </div>
+                            <div id="tabs-4">
+                                {display_slot_inputs day='4'}
+                            </div>
+                            <div id="tabs-5">
+                                {display_slot_inputs day='5'}
+                            </div>
+                            <div id="tabs-6">
+                                {display_slot_inputs day='6'}
+                            </div>
+                        </div>
+                    </div>
+
+                    {display_slot_inputs id="staticSlots" day=null}
+
+                    <div class="slotTimezone col s12">
+                        <label for="layoutTimezone" class="active">{translate key=Timezone}</label>
+                        <select {formname key=TIMEZONE} id="layoutTimezone">
+                            {html_options values=$TimezoneValues output=$TimezoneOutput}
+                        </select>
+                    </div>
+
+                    <div class="slotWizard col s12">
+                        {capture name="layoutConfig" assign="layoutConfig"}
+                            <div class='input-field inline'>
+                                <label for='quickLayoutConfig'></label>
+                                <input type='number' min='0' step='15' value='30' id='quickLayoutConfig'
+                                       class='input-sm' aria-label='Minutes'/>
+                            </div>
+                        {/capture}
+                        {capture name="layoutStart" assign="layoutStart"}
+                            <div class='input-field inline'>
+                                <label for='quickLayoutStart'></label>
+                                <input type='text' value='08:00' id='quickLayoutStart' aria-label='From time'
+                                       class='input-sm' maxlength='5'/>
+                            </div>
+                        {/capture}
+                        {capture name="layoutEnd" assign="layoutEnd"}
+                            <div class='input-field inline'>
+                                <label for='quickLayoutEnd'></label>
+                                <input type='text' value='18:00' id='quickLayoutEnd' aria-label='End time'
+                                       class='input-sm' maxlength='5'/>
+                            </div>
+                        {/capture}
+                        {translate key=QuickSlotCreation args="$layoutConfig,$layoutStart,$layoutEnd"}
+                        <a href="#" id="createQuickLayout">{translate key=Create}</a>
+                    </div>
+                    <div class="slotHelpText col s12">
+                        <p>{translate key=Format}: <span>HH:MM - HH:MM {translate key=OptionalLabel}</span></p>
+
+                        <p>{translate key=LayoutInstructions}</p>
+                    </div>
+
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                {cancel_button}
+                {update_button}
+                {indicator}
+            </div>
+        </form>
+    </div>
+
+    <div id="peakTimesDialog" class="modal" tabindex="-1" role="dialog" aria-labelledby="peakTimesDialogLabel"
+         aria-hidden="true">
+        <form id="peakTimesForm" method="post">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="peakTimesDialogLabel">{translate key=PeakTimes}</h4>
+                </div>
+                <div class="modal-body">
+
+                    <label for="peakAllDay">
+                        <input type="checkbox" id="peakAllDay" {formname key=PEAK_ALL_DAY} />
+                        <span>{translate key=AllDay}</span>
+                    </label>
+                    <div id="peakTimes">
+                        {translate key=Between}
+                        <div class="input-field inline">
+                            <label for="peakStartTime" class="no-show">Peak Begin Time</label>
+
+                            <input type="text" id="peakStartTime"
+                                   class="input-sm timeinput timepicker"
+                                   value="{formatdate date=$DefaultDate format='h:i A'}" {formname key=PEAK_BEGIN_TIME}/>
+                        </div>
+                        -
+                        <div class="input-field inline">
+                            <label for="peakEndTime" class="no-show">Peak End Time</label>
+                            <input type="text" id="peakEndTime"
+                                   class="input-sm timeinput timepicker"
+                                   value="{formatdate date=$DefaultDate->AddHours(9) format='h:i A'}" {formname key=PEAK_END_TIME}/>
+                        </div>
+                    </div>
+                    <label for="peakEveryDay">
+                        <input type="checkbox" id="peakEveryDay"
+                               checked="checked" {formname key=PEAK_EVERY_DAY} />
+                        <span>{translate key=Everyday}</span>
+                    </label>
+                    <div id="peakDayList" class="no-show">
+                        <div>
+                            <label>
+                                <input type="checkbox" id="peakDay0" {formname key=repeat_sunday} />
+                                <span>{$DayNames[0]}</span>
+                            </label>
+                            <label>
+                                <input type="checkbox" id="peakDay1" {formname key=repeat_monday} />
+                                <span>{$DayNames[1]}</span>
+                            </label>
+                            <label>
+                                <input type="checkbox" id="peakDay2" {formname key=repeat_tuesday} />
+                                <span>{$DayNames[2]}</span>
+                            </label>
+                            <label>
+                                <input type="checkbox" id="peakDay3" {formname key=repeat_wednesday} />
+                                <span>{$DayNames[3]}</span>
+                            </label>
+                            <label>
+                                <input type="checkbox" id="peakDay4" {formname key=repeat_thursday} />
+                                <span>{$DayNames[4]}</span>
+                            </label>
+                            <label>
+                                <input type="checkbox" id="peakDay5" {formname key=repeat_friday} />
+                                <span>{$DayNames[5]}</span>
+                            </label>
+                            <label>
+                                <input type="checkbox" id="peakDay6" {formname key=repeat_saturday} />
+                                <span>{$DayNames[6]}</span>
+                            </label>
+                        </div>
+                    </div>
+                    <label for="peakAllYear">
+                        <input type="checkbox" id="peakAllYear"
+                               checked="checked" {formname key=PEAK_ALL_YEAR} />
+                        <span>{translate key=AllYear}</span>
+                    </label>
+                    <div id="peakDateRange" class="no-show">
+                        <label for="peakBeginMonth" class="col s2">{translate key=BeginDate}</label>
+                        <div class="col s5">
+                            <select id="peakBeginMonth"
+                                    class="input-sm" {formname key=PEAK_BEGIN_MONTH}>
+                                {foreach from=$Months item=month name=startMonths}
+                                    <option value="{$smarty.foreach.startMonths.iteration}">{$month}</option>
                                 {/foreach}
                             </select>
                         </div>
-                    </div>
-                    <div class="modal-footer">
-                        {cancel_button}
-                        {delete_button}
-                        {indicator}
-                    </div>
-                </div>
-            </div>
-        </form>
-    </div>
-
-    <div id="changeLayoutDialog" class="modal fade" tabindex="-1" role="dialog"
-         aria-labelledby="changeLayoutDialogLabel" aria-hidden="true">
-        <form id="changeLayoutForm" method="post" role="form" class="form-inline">
-            <div class="modal-dialog modal-lg">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                        <h4 class="modal-title" id="changeLayoutDialogLabel">{translate key=ChangeLayout}</h4>
-                    </div>
-                    <div class="modal-body">
-                        <div class="validationSummary alert alert-danger no-show">
-                            <ul>{async_validator id="layoutValidator" key="ValidLayoutRequired"}</ul>
-                        </div>
-
-                        <div class="col-xs-12">
-                            <div class="checkbox">
-                                <input type="checkbox" id="usesSingleLayout" {formname key=USING_SINGLE_LAYOUT}>
-                                <label for="usesSingleLayout">{translate key=UseSameLayoutForAllDays}</label>
-                            </div>
-                        </div>
-
-                        {function name=display_slot_inputs}
-                            <div id="{$id}" class="col-xs-12">
-                                {assign var=suffix value=""}
-                                {if $day!=null}
-                                    {assign var=suffix value="_$day"}
-                                {/if}
-                                <div class="col-xs-6">
-                                    <label for="reservableEdit{$suffix}">{translate key=ReservableTimeSlots}</label>
-                                    <textarea class="reservableEdit form-control" id="reservableEdit{$suffix}"
-                                              name="{FormKeys::SLOTS_RESERVABLE}{$suffix}"></textarea>
-                                </div>
-                                <div class="col-xs-6">
-                                    <label for="blockedEdit{$suffix}">{translate key=BlockedTimeSlots}</label> <a
-                                            href="#" class="autofillBlocked" title="{translate key=Autofill}"><i
-                                                class="fa fa-magic"></i> {translate key=Autofill}</a>
-                                    <textarea class="blockedEdit form-control" id="blockedEdit{$suffix}"
-                                              name="{FormKeys::SLOTS_BLOCKED}{$suffix}"></textarea>
-                                </div>
-                            </div>
-                        {/function}
-
-                        <div class="col-xs-12" id="dailySlots">
-                            <div role="tabpanel" id="tabs">
-                                <ul class="nav nav-tabs" role="tablist">
-                                    <li role="presentation" class="active"><a href="#tabs-0" aria-controls="tabs-0"
-                                                                              role="tab"
-                                                                              data-toggle="tab">{$DayNames[0]}</a></li>
-                                    <li role="presentation"><a href="#tabs-1" aria-controls="tabs-1" role="tab"
-                                                               data-toggle="tab">{$DayNames[1]}</a></li>
-                                    <li role="presentation"><a href="#tabs-2" aria-controls="tabs-2" role="tab"
-                                                               data-toggle="tab">{$DayNames[2]}</a></li>
-                                    <li role="presentation"><a href="#tabs-3" aria-controls="tabs-3" role="tab"
-                                                               data-toggle="tab">{$DayNames[3]}</a></li>
-                                    <li role="presentation"><a href="#tabs-4" aria-controls="tabs-4" role="tab"
-                                                               data-toggle="tab">{$DayNames[4]}</a></li>
-                                    <li role="presentation"><a href="#tabs-5" aria-controls="tabs-5" role="tab"
-                                                               data-toggle="tab">{$DayNames[5]}</a></li>
-                                    <li role="presentation"><a href="#tabs-6" aria-controls="tabs-6" role="tab"
-                                                               data-toggle="tab">{$DayNames[6]}</a></li>
-                                </ul>
-                                <div class="tab-content">
-                                    <div role="tabpanel" class="tab-pane active" id="tabs-0">
-                                        {display_slot_inputs day='0'}
-                                    </div>
-                                    <div role="tabpanel" class="tab-pane" id="tabs-1">
-                                        {display_slot_inputs day='1'}
-                                    </div>
-                                    <div role="tabpanel" class="tab-pane" id="tabs-2">
-                                        {display_slot_inputs day='2'}
-                                    </div>
-                                    <div role="tabpanel" class="tab-pane" id="tabs-3">
-                                        {display_slot_inputs day='3'}
-                                    </div>
-                                    <div role="tabpanel" class="tab-pane" id="tabs-4">
-                                        {display_slot_inputs day='4'}
-                                    </div>
-                                    <div role="tabpanel" class="tab-pane" id="tabs-5">
-                                        {display_slot_inputs day='5'}
-                                    </div>
-                                    <div role="tabpanel" class="tab-pane" id="tabs-6">
-                                        {display_slot_inputs day='6'}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        {display_slot_inputs id="staticSlots" day=null}
-
-                        <div class="slotTimezone col-xs-12">
-                            <label for="layoutTimezone">{translate key=Timezone}</label>
-                            <select {formname key=TIMEZONE} id="layoutTimezone" class="form-control">
-                                {html_options values=$TimezoneValues output=$TimezoneOutput}
+                        <div class="col s2">
+                            <label for="peakBeginDay" class="no-show">Peak Begin Day</label>
+                            <select id="peakBeginDay"
+                                    class="input-sm" {formname key=PEAK_BEGIN_DAY}>
+                                {foreach from=$DayList item=day}
+                                    <option value="{$day}">{$day}</option>
+                                {/foreach}
                             </select>
                         </div>
-
-                        <div class="slotWizard col-xs-12">
-                            <h5>
-                                {capture name="layoutConfig" assign="layoutConfig"}
-                                    <input type='number' min='0' step='15' value='30' id='quickLayoutConfig' size=5'
-                                           title='Minutes' class='form-control'/>
-                                {/capture}
-                                {capture name="layoutStart" assign="layoutStart"}
-                                    <input type='text' value='08:00' id='quickLayoutStart' size='10' title='From time'
-                                           class='form-control' maxlength='5'/>
-                                {/capture}
-                                {capture name="layoutEnd" assign="layoutEnd"}
-                                    <input type='text' value='18:00' id='quickLayoutEnd' size='10' title='End time'
-                                           class='form-control' maxlength='5'/>
-                                {/capture}
-                                {translate key=QuickSlotCreation args="$layoutConfig,$layoutStart,$layoutEnd"}
-                                <a href="#" id="createQuickLayout">{translate key=Create}</a>
-                            </h5>
-                        </div>
-                        <div class="slotHelpText col-xs-12">
-                            <p>{translate key=Format}: <span>HH:MM - HH:MM {translate key=OptionalLabel}</span></p>
-
-                            <p>{translate key=LayoutInstructions}</p>
-                        </div>
-
+                        <div class="col s3">&nbsp;</div>
                         <div class="clearfix"></div>
+                        <label for="peakEndMonth" class="col s2">{translate key=EndDate}</label>
+                        <div class="col s5">
+                            <select id="peakEndMonth"
+                                    class="input-sm" {formname key=PEAK_END_MONTH}>
+                                {foreach from=$Months item=month name=endMonths}
+                                    <option value="{$smarty.foreach.endMonths.iteration}">{$month}</option>
+                                {/foreach}
+                            </select>
+                        </div>
+                        <div class="col s2">
+                            <label for="peakEndDay" class="no-show">Peak End Day</label>
+                            <select id="peakEndDay" class="input-sm" {formname key=PEAK_END_DAY}>
+                                {foreach from=$DayList item=day}
+                                    <option value="{$day}">{$day}</option>
+                                {/foreach}
+                            </select>
+                        </div>
+                        <div class="col s3">&nbsp;</div>
                     </div>
-                    <div class="modal-footer">
-                        {cancel_button}
-                        {update_button}
-                        {indicator}
-                    </div>
+                    <div class="clearfix"></div>
+                    <input type="hidden" {formname key=PEAK_DELETE} id="deletePeakTimes" value=""/>
                 </div>
+            </div>
+            <div class="modal-footer">
+                {delete_button class='pull-left' id="deletePeakBtn"}
+                {cancel_button}
+                {update_button}
+                {indicator}
             </div>
         </form>
     </div>
 
-    <div id="peakTimesDialog" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="peakTimesDialogLabel"
-         aria-hidden="true">
-        <form id="peakTimesForm" method="post">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                        <h4 class="modal-title" id="peakTimesDialogLabel">{translate key=PeakTimes}</h4>
-                    </div>
-                    <div class="modal-body">
-                        <div class="form-group">
-                            <div class="checkbox">
-                                <input type="checkbox" id="peakAllDay" {formname key=PEAK_ALL_DAY} />
-                                <label for="peakAllDay">{translate key=AllDay}</label>
-                            </div>
-                            <div id="peakTimes">
-                                {translate key=Between}
-                                <label for="peakStartTime" class="no-show">Peak Begin Time</label>
-                                <label for="peakEndTime" class="no-show">Peak End Time</label>
-                                <input type="text" id="peakStartTime"
-                                       class="form-control input-sm inline-block timeinput timepicker"
-                                       value="{formatdate date=$DefaultDate format='h:i A'}" {formname key=PEAK_BEGIN_TIME}/>
-                                -
-                                <input type="text" id="peakEndTime"
-                                       class="form-control input-sm inline-block timeinput timepicker"
-                                       value="{formatdate date=$DefaultDate->AddHours(9) format='h:i A'}" {formname key=PEAK_END_TIME}/>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="checkbox">
-                                <input type="checkbox" id="peakEveryDay"
-                                       checked="checked" {formname key=PEAK_EVERY_DAY} />
-                                <label for="peakEveryDay">{translate key=Everyday}</label>
-                            </div>
-                            <div id="peakDayList" class="no-show">
-                                <div class="btn-group" data-toggle="buttons">
-                                    <label class="btn btn-default btn-sm">
-                                        <input type="checkbox" id="peakDay0" {formname key=repeat_sunday} />
-                                        {$DayNames[0]}
-                                    </label>
-                                    <label class="btn btn-default btn-sm">
-                                        <input type="checkbox" id="peakDay1" {formname key=repeat_monday} />
-                                        {$DayNames[1]}
-                                    </label>
-                                    <label class="btn btn-default btn-sm">
-                                        <input type="checkbox" id="peakDay2" {formname key=repeat_tuesday} />
-                                        {$DayNames[2]}
-                                    </label>
-                                    <label class="btn btn-default btn-sm">
-                                        <input type="checkbox" id="peakDay3" {formname key=repeat_wednesday} />
-                                        {$DayNames[3]}
-                                    </label>
-                                    <label class="btn btn-default btn-sm">
-                                        <input type="checkbox" id="peakDay4" {formname key=repeat_thursday} />
-                                        {$DayNames[4]}
-                                    </label>
-                                    <label class="btn btn-default btn-sm">
-                                        <input type="checkbox" id="peakDay5" {formname key=repeat_friday} />
-                                        {$DayNames[5]}
-                                    </label>
-                                    <label class="btn btn-default btn-sm">
-                                        <input type="checkbox" id="peakDay6" {formname key=repeat_saturday} />
-                                        {$DayNames[6]}
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="checkbox">
-                                <input type="checkbox" id="peakAllYear"
-                                       checked="checked" {formname key=PEAK_ALL_YEAR} />
-                                <label for="peakAllYear">{translate key=AllYear}</label>
-                            </div>
-                            <div id="peakDateRange" class="no-show">
-                                <label for="peakBeginMonth" class="col-xs-2">{translate key=BeginDate}</label>
-                                <div class="col-xs-5">
-                                    <select id="peakBeginMonth"
-                                            class="form-control input-sm" {formname key=PEAK_BEGIN_MONTH}>
-                                        {foreach from=$Months item=month name=startMonths}
-                                            <option value="{$smarty.foreach.startMonths.iteration}">{$month}</option>
-                                        {/foreach}
-                                    </select>
-                                </div>
-                                <div class="col-xs-2">
-                                    <label for="peakBeginDay" class="no-show">Peak Begin Day</label>
-                                    <select id="peakBeginDay"
-                                            class="form-control input-sm" {formname key=PEAK_BEGIN_DAY}>
-                                        {foreach from=$DayList item=day}
-                                            <option value="{$day}">{$day}</option>
-                                        {/foreach}
-                                    </select>
-                                </div>
-                                <div class="col-xs-3">&nbsp;</div>
-                                <div class="clearfix"></div>
-                                <label for="peakEndMonth" class="col-xs-2">{translate key=EndDate}</label>
-                                <div class="col-xs-5">
-                                    <select id="peakEndMonth"
-                                            class="form-control input-sm" {formname key=PEAK_END_MONTH}>
-                                        {foreach from=$Months item=month name=endMonths}
-                                            <option value="{$smarty.foreach.endMonths.iteration}">{$month}</option>
-                                        {/foreach}
-                                    </select>
-                                </div>
-                                <div class="col-xs-2">
-                                    <label for="peakEndDay" class="no-show">Peak End Day</label>
-                                    <select id="peakEndDay" class="form-control input-sm" {formname key=PEAK_END_DAY}>
-                                        {foreach from=$DayList item=day}
-                                            <option value="{$day}">{$day}</option>
-                                        {/foreach}
-                                    </select>
-                                </div>
-                                <div class="col-xs-3">&nbsp;</div>
-                            </div>
-                        </div>
-                        <div class="clearfix"></div>
-                        <input type="hidden" {formname key=PEAK_DELETE} id="deletePeakTimes" value=""/>
-                    </div>
-                    <div class="modal-footer">
-                        {delete_button class='pull-left' id="deletePeakBtn"}
-                        {cancel_button}
-                        {update_button}
-                        {indicator}
-                    </div>
-                </div>
-            </div>
-        </form>
-    </div>
-
-    <div id="availabilityDialog" class="modal fade" tabindex="-1" role="dialog"
+    <div id="availabilityDialog" class="modal" tabindex="-1" role="dialog"
          aria-labelledby="availabilityDialogLabel"
          aria-hidden="true">
         <form id="availabilityForm" method="post">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                        <h4 class="modal-title" id="availabilityDialogLabel">{translate key=Availability}</h4>
-                    </div>
-                    <div class="modal-body">
-                        <div class="form-group">
-                            <div class="checkbox">
-                                <input type="checkbox" id="availableAllYear" {formname key=AVAILABLE_ALL_YEAR} />
-                                <label for="availableAllYear">{translate key=AvailableAllYear}</label>
-                            </div>
-                            <div id="availableDates">
-                                {translate key=AvailableBetween}
-                                <label for="availabilityStartDate" class="no-show">Available Start Date</label>
-                                <label for="availabilityEndDate" class="no-show">Available End Date</label>
-                                <input type="text" id="availabilityStartDate"
-                                       class="form-control input-sm inline-block dateinput"/>
-                                <input type="hidden" id="formattedBeginDate" {formname key=AVAILABLE_BEGIN_DATE} />
-                                -
-                                <input type="text" id="availabilityEndDate"
-                                       class="form-control input-sm inline-block dateinput"/>
-                                <input type="hidden" id="formattedEndDate" {formname key=AVAILABLE_END_DATE} />
-                            </div>
-                        </div>
-                        <div class="clearfix"></div>
-                    </div>
-                    <div class="modal-footer">
-                        {cancel_button}
-                        {update_button}
-                        {indicator}
-                    </div>
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="availabilityDialogLabel">{translate key=Availability}</h4>
                 </div>
+                <div class="modal-body">
+                    <label for="availableAllYear">
+                        <input type="checkbox" id="availableAllYear" {formname key=AVAILABLE_ALL_YEAR} />
+                        <span>{translate key=AvailableAllYear}</span></label>
+                    <div id="availableDates">
+                        {translate key=AvailableBetween}
+                        <div class="input-field inline">
+                            <label for="availabilityStartDate" class="no-show">Available Start Date</label>
+                            <input type="text" id="availabilityStartDate"
+                                   class="input-sm dateinput"/>
+                            <input type="hidden" id="formattedBeginDate" {formname key=AVAILABLE_BEGIN_DATE} />
+                        </div>
+                        -
+                        <div class="input-field inline">
+                            <label for="availabilityEndDate" class="no-show">Available End Date</label>
+
+                            <input type="text" id="availabilityEndDate"
+                                   class="input-sm dateinput"/>
+                            <input type="hidden" id="formattedEndDate" {formname key=AVAILABLE_END_DATE} />
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                {cancel_button}
+                {update_button}
+                {indicator}
             </div>
         </form>
     </div>
 
-    <div id="switchLayoutDialog" class="modal fade" tabindex="-1" role="dialog"
+    <div id="switchLayoutDialog" class="modal" tabindex="-1" role="dialog"
          aria-labelledby="switchLayoutDialogLabel"
          aria-hidden="true">
         <form id="switchLayoutForm" method="post">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                        <h4 class="modal-title" id="switchLayoutDialogLabel">{translate key=ChangeLayout}</h4>
-                    </div>
-                    <div class="modal-body">
-                        <div class="alert alert-warning">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="switchLayoutDialogLabel">{translate key=ChangeLayout}</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="card warning">
+                        <div class="card-content">
                             {translate key=SwitchLayoutWarning}
                         </div>
-                        <input type="hidden" id="switchLayoutTypeId" {formname key=LAYOUT_TYPE} />
-                        <div class="clearfix"></div>
                     </div>
-                    <div class="modal-footer">
-                        {cancel_button}
-                        {update_button submit=true}
-                        {indicator}
-                    </div>
+                    <input type="hidden" id="switchLayoutTypeId" {formname key=LAYOUT_TYPE} />
+                    <div class="clearfix"></div>
                 </div>
+            </div>
+            <div class="modal-footer">
+                {cancel_button}
+                {update_button submit=true}
+                {indicator}
             </div>
         </form>
     </div>
 
-    <div id="customLayoutDialog" class="modal fade" tabindex="-1" role="dialog"
+    <div id="customLayoutDialog" class="modal" tabindex="-1" role="dialog"
          aria-labelledby="customLayoutDialogLabel"
          aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title" id="customLayoutDialogLabel">{translate key=ChangeLayout}</h4>
-                </div>
-                <div class="modal-body">
-                    <div id="calendar"></div>
-                </div>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title left" id="customLayoutDialogLabel">{translate key=ChangeLayout}</h4>
+                <a href="#" class="modal-close right black-text"><i class="fa fa-remove"></i></a>
+            </div>
+            <div class="clearfix"></div>
+            <div class="modal-body">
+                <div id="calendar"></div>
             </div>
         </div>
     </div>
@@ -689,8 +693,12 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
     <script type="text/javascript">
 
+        $('div.modal').modal();
+
+        $('#slotsTabs').tabs();
+
         function setUpEditables() {
-            $.fn.editable.defaults.mode = 'popup';
+            $.fn.editable.defaults.mode = 'inline';
             $.fn.editable.defaults.toggle = 'manual';
             $.fn.editable.defaults.emptyclass = '';
             $.fn.editable.defaults.params = function (params) {
@@ -729,7 +737,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                 source: [
                     {foreach from=$StyleNames item="styleName" key="styleIndex"}
                     {
-                        value:'{$styleIndex}', text:'{$styleName|escape:'javascript'}'
+                        value: '{$styleIndex}', text: '{$styleName|escape:'javascript'}'
                     },
                     {/foreach}
                 ]
@@ -792,6 +800,5 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
         });
 
     </script>
-
 </div>
 {include file='globalfooter.tpl'}
