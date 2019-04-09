@@ -17,127 +17,132 @@ You should have received a copy of the GNU General Public License
 along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 *}
 
-<form id="editBlackoutForm" class="form-inline" role="form" method="post">
-	<div id="updateBlackout">
-		<div class="form-group col-xs-6">
-			<label for="updateStartDate">{translate key=BeginDate}</label>
-			<input type="text" id="updateStartDate" class="form-control dateinput inline-block "
-				   value="{formatdate date=$BlackoutStartDate}"/>
-			<input {formname key=BEGIN_DATE} id="formattedUpdateStartDate" type="hidden"
-											 value="{formatdate date=$BlackoutStartDate key=system}"/>
-			<input {formname key=BEGIN_TIME} type="text" id="updateStartTime"
-											 class="form-control dateinput inline-block timepicker"
-											 value="{formatdate date=$BlackoutStartDate format='h:i A'}"/>
-		</div>
+{*<form id="editBlackoutForm" role="form" method="post">*}
+    <div id="updateBlackout">
+        <div class="col s6">
+            <div class="input-field inline">
+                <label for="updateStartDate">{translate key=BeginDate}</label>
+                <input type="text" id="updateStartDate" class="dateinput"
+                       value="{formatdate date=$BlackoutStartDate}"/>
+                <input {formname key=BEGIN_DATE} id="formattedUpdateStartDate" type="hidden"
+                                                 value="{formatdate date=$BlackoutStartDate key=system}"/>
+            </div>
+            <div class="input-field inline">
+                <label for="updateStartTime"></label>
+                <input {formname key=BEGIN_TIME} type="text" id="updateStartTime"
+                                                 class="dateinput timepicker"
+                                                 value="{formatdate date=$BlackoutStartDate format='h:i A'}"/>
+            </div>
+        </div>
 
-		<div class="form-group col-xs-6">
-			<label for="updateEndDate">{translate key=EndDate}</label>
-			<input type="text" id="updateEndDate" class="form-control dateinput inline-block " size="10"
-				   value="{formatdate date=$BlackoutEndDate}"/>
-			<input {formname key=END_DATE} type="hidden" id="formattedUpdateEndDate"
-										   value="{formatdate date=$BlackoutEndDate key=system}"/>
-			<input {formname key=END_TIME} type="text" id="updateEndTime"
-										   class="form-control dateinput inline-block timepicker"
-										   value="{formatdate date=$BlackoutEndDate format='h:i A'}"/>
-		</div>
+        <div class="col s6">
+            <div class="input-field inline">
+                <label for="updateEndDate">{translate key=EndDate}</label>
+                <input type="text" id="updateEndDate" class="dateinput" size="10"
+                       value="{formatdate date=$BlackoutEndDate}"/>
+                <input {formname key=END_DATE} type="hidden" id="formattedUpdateEndDate"
+                                               value="{formatdate date=$BlackoutEndDate key=system}"/>
+            </div>
+            <div class="input-field inline">
+                <label for="updateEndTime">&nbsp;</label>
+                <input {formname key=END_TIME} type="text" id="updateEndTime"
+                                               class="dateinput timepicker"
+                                               value="{formatdate date=$BlackoutEndDate format='h:i A'}"/>
+            </div>
+        </div>
 
-		<div class="form-group col-xs-12 blackouts-edit-resources">
-			<label>{translate key=Resources}</label>
-			{foreach from=$Resources item=resource}
-				{assign var=checked value=""}
-				{if in_array($resource->GetId(), $BlackoutResourceIds)}
-					{assign var=checked value="checked='checked'"}
-				{/if}
-				<label class="resourceItem">
-					<div class="checkbox">
-						<input {formname key=RESOURCE_ID  multi=true} type="checkbox"
-																	  value="{$resource->GetId()}" {$checked}
-																	  id="r{$resource->GetId()}"/>
-						<label for="r{$resource->GetId()}">{$resource->GetName()}</label>
-					</div>
-				</label>
-			{/foreach}
-		</div>
+        <div class="col s12 blackouts-edit-resources">
+            <span class="bold">{translate key=Resources}</span>
+            {foreach from=$Resources item=resource}
+                {assign var=checked value=""}
+                {if in_array($resource->GetId(), $BlackoutResourceIds)}
+                    {assign var=checked value="checked='checked'"}
+                {/if}
+                <div class="resourceItem">
+                    <label for="r{$resource->GetId()}">
+                        <input {formname key=RESOURCE_ID  multi=true}
+                                type="checkbox"
+                                value="{$resource->GetId()}" {$checked}
+                                id="r{$resource->GetId()}"/>
+                        <span>{$resource->GetName()}</span>
+                    </label>
+                </div>
+            {/foreach}
+        </div>
 
-		<div class="col-xs-12">
-			<div class="form-group has-feedback">
-				<label for="blackoutReason">{translate key=Reason}</label>
-				<input {formname key=SUMMARY} type="text" id="blackoutReason" required
-											  class="form-control required" value="{$BlackoutTitle}"/>
-				<i class="glyphicon glyphicon-asterisk form-control-feedback" data-bv-icon-for="blackoutReason"></i>
-			</div>
-		</div>
+        <div class="input-field col s12">
+            <label for="blackoutReason">{translate key=Reason} <i class="fa fa-asterisk"></i></label>
+            <input {formname key=SUMMARY} type="text" id="blackoutReason" required
+                                          class="required" value="{$BlackoutTitle}"/>
+        </div>
 
-		<div>
-			{control type="RecurrenceControl" RepeatTerminationDate=$RepeatTerminationDate prefix='edit'}
-		</div>
+        <div>
+            {control type="RecurrenceControl" RepeatTerminationDate=$RepeatTerminationDate prefix='edit'}
+        </div>
 
-		<div class="form-group col-xs-12">
-            <div class="radio">
+        <div class="col s12">
+            <label for="bookAroundUpdate">
                 <input {formname key=CONFLICT_ACTION} type="radio" id="bookAroundUpdate"
                                                       name="existingReservations"
                                                       checked="checked"
                                                       value="{ReservationConflictResolution::BookAround}"/>
-                <label for="notifyExisting">{translate key=BlackoutAroundConflicts}</label>
-            </div>
-            <div class="radio">
+                <span>{translate key=BlackoutAroundConflicts}</span>
+            </label>
+            <label for="notifyExistingUpdate">
                 <input {formname key=CONFLICT_ACTION} type="radio" id="notifyExistingUpdate"
                                                       name="existingReservations"
                                                       value="{ReservationConflictResolution::Notify}"/>
-                <label for="notifyExisting">{translate key=BlackoutShowMe}</label>
-            </div>
-            <div class="radio">
+                <span>{translate key=BlackoutShowMe}</span>
+            </label>
+
+            <label for="deleteExistingUpdate">
                 <input {formname key=CONFLICT_ACTION} type="radio" id="deleteExistingUpdate"
                                                       name="existingReservations"
                                                       value="{ReservationConflictResolution::Delete}"/>
-                <label for="deleteExisting">{translate key=BlackoutDeleteConflicts}</label>
+                <span>{translate key=BlackoutDeleteConflicts}</span>
+            </label>
+        </div>
+
+        <div id="update-blackout-buttons" class="col s12 margin-bottom-25">
+            <div class="pull-right">
+                {cancel_button}
+                {if $IsRecurring}
+                    <button type="button" class="btn btn-primary save btnUpdateThisInstance">
+                        <span class="fa fa-check-circle-o"></span>
+                        {translate key='ThisInstance'}
+                    </button>
+                    <button type="button" class="btn btn-primary save btnUpdateAllInstances">
+                        <span class="fa fa-check-circle-o"></span>
+                        {translate key='AllInstances'}
+                    </button>
+                {else}
+                    <button type="button" class="btn btn-primary save update btnUpdateAllInstances">
+                        <span class="fa fa-check-circle-o"></span>
+                        {translate key='Update'}
+                    </button>
+                {/if}
             </div>
-		</div>
+        </div>
 
-		<div id="update-blackout-buttons" class="col-xs-12 margin-bottom-25">
-			<div class="pull-right">
-				<button type="button" class="btn btn-default" id="cancelUpdate">
-					{translate key='Cancel'}
-				</button>
-				{if $IsRecurring}
-					<button type="button" class="btn btn-success save btnUpdateThisInstance">
-						<span class="glyphicon glyphicon-ok-circle"></span>
-						{translate key='ThisInstance'}
-					</button>
-					<button type="button" class="btn btn-success save btnUpdateAllInstances">
-						<span class="glyphicon glyphicon-ok-circle"></span>
-						{translate key='AllInstances'}
-					</button>
-				{else}
-					<button type="button" class="btn btn-success save update btnUpdateAllInstances">
-						<span class="glyphicon glyphicon-ok-circle"></span>
-						{translate key='Update'}
-					</button>
-				{/if}
-
-			</div>
-		</div>
-
-		<input type="hidden" {formname key=BLACKOUT_INSTANCE_ID} value="{$BlackoutId}"/>
-		<input type="hidden" {formname key=SERIES_UPDATE_SCOPE} class="hdnSeriesUpdateScope"
-			   value="{SeriesUpdateScope::FullSeries}"/>
-	</div>
-	{csrf_token}
-</form>
+        <input type="hidden" {formname key=BLACKOUT_INSTANCE_ID} value="{$BlackoutId}"/>
+        <input type="hidden" {formname key=SERIES_UPDATE_SCOPE} class="hdnSeriesUpdateScope"
+               value="{SeriesUpdateScope::FullSeries}"/>
+    </div>
+    {csrf_token}
+{*</form>*}
 
 <script type="text/javascript">
-	$(function ()
-	{
-		var recurOpts = {
-			repeatType: '{$RepeatType}',
-			repeatInterval: '{$RepeatInterval}',
-			repeatMonthlyType: '{$RepeatMonthlyType}',
-			repeatWeekdays: [{foreach from=$RepeatWeekdays item=day}{$day}, {/foreach}]
-		};
+    $(function () {
+        var recurOpts = {
+            repeatType: '{$RepeatType}',
+            repeatInterval: '{$RepeatInterval}',
+            repeatMonthlyType: '{$RepeatMonthlyType}',
+            repeatWeekdays: [{foreach from=$RepeatWeekdays item=day}{$day}, {/foreach}]
+        };
 
-		var recurrence = new Recurrence(recurOpts, {}, 'edit');
-		recurrence.init();
-	});
+        var recurrence = new Recurrence(recurOpts, {}, 'edit');
+        recurrence.init();
+    });
 </script>
 
 {control type="DatePickerSetupControl" ControlId="updateStartDate" AltId="formattedUpdateStartDate"}

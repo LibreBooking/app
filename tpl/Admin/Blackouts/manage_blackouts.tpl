@@ -160,7 +160,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                         </select>
                     </div>
                     <div class="input-field col s4">
-                        <label for="resourceId">{translate key=Resource} </label>
+                        <label for="resourceId" class="active">{translate key=Resource} </label>
 
                         <select id="resourceId" class="form-control col-xs-12">
                             <option value="">{translate key=AllResources}</option>
@@ -256,49 +256,47 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                     </div>
                 </div>
             </div>
-            <div class="modal-footer">
-                <form id="deleteForm" method="post">
-                    {cancel_button}
-                    {delete_button class="btnUpdateAllInstances"}
-                </form>
-
-            </div>
+        </div>
+        <div class="modal-footer">
+            <form id="deleteForm" method="post">
+                {cancel_button}
+                {delete_button class="btnUpdateAllInstances"}
+            </form>
         </div>
     </div>
 
     <div class="modal" id="deleteRecurringDialog" tabindex="-1" role="dialog"
          aria-labelledby="deleteRecurringModalLabel"
          aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title" id="deleteRecurringModalLabel">{translate key=Delete}</h4>
-                </div>
-                <div class="modal-body">
-                    <div class="card warning">
-                        <div class="card-content">
-                            {translate key=DeleteWarning}
-                        </div>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="deleteRecurringModalLabel">{translate key=Delete}</h4>
+            </div>
+            <div class="modal-body">
+                <div class="card warning">
+                    <div class="card-content">
+                        {translate key=DeleteWarning}
                     </div>
                 </div>
-                <div class="modal-footer">
-                    <form id="deleteRecurringForm" method="post">
-                        {cancel_button}
-
-                        <button type="button"
-                                class="btn btn-danger save btnUpdateThisInstance waves-effect waves-light">
-                            <span class="fa fa-remove"></span> {translate key='ThisInstance'}</button>
-
-                        <button type="button"
-                                class="btn btn-danger save btnUpdateAllInstances waves-effect waves-light">
-                            <span class="fa fa-remove"></span> {translate key='AllInstances'}</button>
-
-                        <input type="hidden" {formname key=SERIES_UPDATE_SCOPE} class="hdnSeriesUpdateScope"
-                               value="{SeriesUpdateScope::FullSeries}"/>
-                        {indicator}
-                    </form>
-                </div>
             </div>
+
+        </div>
+        <div class="modal-footer">
+            <form id="deleteRecurringForm" method="post">
+                {cancel_button}
+
+                <button type="button"
+                        class="btn btn-danger save btnUpdateThisInstance waves-effect waves-light">
+                    <span class="fa fa-remove"></span> {translate key='ThisInstance'}</button>
+
+                <button type="button"
+                        class="btn btn-danger save btnUpdateAllInstances waves-effect waves-light">
+                    <span class="fa fa-remove"></span> {translate key='AllInstances'}</button>
+
+                <input type="hidden" {formname key=SERIES_UPDATE_SCOPE} class="hdnSeriesUpdateScope"
+                       value="{SeriesUpdateScope::FullSeries}"/>
+                {indicator}
+            </form>
         </div>
     </div>
 
@@ -319,16 +317,25 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                         </div>
                     </div>
                 </div>
-                <div class="modal-footer">
-                    {cancel_button}
-                    {delete_button}
-                    {indicator}
-                </div>
-                <div id="deleteMultiplePlaceHolder" class="no-show"></div>
             </div>
+            <div class="modal-footer">
+                {cancel_button}
+                {delete_button}
+                {indicator}
+            </div>
+            <div id="deleteMultiplePlaceHolder" class="no-show"></div>
         </form>
     </div>
 
+    <div id="editBlackoutDialog" class="modal" tabindex="-1">
+        <form id="editBlackoutForm" role="form" method="post">
+            <div class="modal-content">
+                {indicator id="update-spinner"}
+                <div id="update-contents">
+                </div>
+            </div>
+        </form>
+    </div>
     {csrf_token}
     {include file="javascript-includes.tpl" Timepicker=true}
 
@@ -344,6 +351,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
             $('#deleteDialog').modal();
             $('#deleteRecurringDialog').modal();
             $('#deleteMultipleDialog').modal();
+            $('#editBlackoutDialog').modal();
 
             var updateScope = {};
             updateScope.instance = '{SeriesUpdateScope::ThisInstance}';
@@ -409,10 +417,9 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
         <div id="result"></div>
     </div>
 
-    <div id="update-box" class="no-show">
-        {indicator id="update-spinner"}
-        <div id="update-contents"></div>
-    </div>
-
+    {*<div id="update-box" class="no-show">*}
+    {*{indicator id="update-spinner"}*}
+    {*<div id="update-contents"></div>*}
+    {*</div>*}
 </div>
 {include file='globalfooter.tpl'}

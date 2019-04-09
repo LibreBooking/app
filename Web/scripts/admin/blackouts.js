@@ -53,36 +53,33 @@ function BlackoutManagement(opts) {
 			$.unblockUI();
 		});
 
+        ConfigureAsyncForm($('#editBlackoutForm'), getUpdateUrl);
+
 		elements.blackoutTable.find('.edit').click(function (e) {
 			$('#update-spinner').show();
 			var tr = $(this).parents('tr');
 			var id = tr.attr('data-blackout-id');
 
-			$.blockUI({
-				message: $('#update-box'), css: {textAlign: 'left'}
-			});
-
 			var updateDiv = $('#update-contents');
 
+            $('#editBlackoutDialog').modal('open');
+
 			updateDiv.empty();
+            $('#update-spinner').removeClass('no-show');
 			updateDiv.load(opts.editUrl + id, function () {
-				$('.blockUI').css('cursor', 'default');
 
-				$('#update-spinner').hide();
+                M.updateTextFields();
+                $('#update-spinner').addClass('no-show');
 
-				ConfigureAsyncForm($('#editBlackoutForm'), getUpdateUrl, onAddSuccess, null, {
-					onBeforeSubmit: onBeforeAddSubmit, target: '#result'
-				});
+                updateDiv.find('select').each(function(i, select){
+                    $(select).formSelect();
+                });
 
 				wireUpUpdateButtons();
 
+                $(".save").unbind('click');
 				$(".save").click(function () {
 					$(this).closest('form').submit();
-				});
-
-				$('#cancelUpdate').click(function (e) {
-                    $('#update-box').addClass('no-show');
-                    $.unblockUI();
 				});
 
 				$('.blackoutResources').click(function (e) {
@@ -92,8 +89,6 @@ function BlackoutManagement(opts) {
 					}
 				});
 				wireUpTimePickers();
-
-				$('#update-box').removeClass('no-show');
 			});
 		});
 
@@ -257,6 +252,7 @@ function BlackoutManagement(opts) {
 	}
 
 	function wireUpTimePickers() {
+        $('.timepicker').unbind('timepicker');
 		$('.timepicker').timepicker({
 			timeFormat: options.timeFormat
 		});
@@ -267,10 +263,12 @@ function BlackoutManagement(opts) {
 	}
 
 	function wireUpUpdateButtons() {
+        $('.btnUpdateThisInstance').unbind('click');
 		$('.btnUpdateThisInstance').click(function () {
 			ChangeUpdateScope(options.scopeOpts.instance);
 		});
 
+        $('.btnUpdateAllInstances').unbind('click');
 		$('.btnUpdateAllInstances').click(function () {
 			ChangeUpdateScope(options.scopeOpts.full);
 		});

@@ -699,7 +699,7 @@ i.right {
   padding-right: 12px;
 }
 div.clearfix {
-  display: none;
+  height: 0;
 }
 /** end materialize overrides**/
 .ui-datepicker {
