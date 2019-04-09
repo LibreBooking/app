@@ -313,7 +313,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
         <form id="changeLayoutForm" method="post" role="form" class="form-inline">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title" id="changeLayoutDialogLabel">{translate key=ChangeLayout}</h4>
+                    <h4 class="modal-title left" id="changeLayoutDialogLabel">{translate key=ChangeLayout}</h4>
+                    <a href="#" class="modal-close right black-text"><i class="fa fa-remove"></i></a>
                 </div>
                 <div class="modal-body">
                     <div class="validationSummary card error no-show">

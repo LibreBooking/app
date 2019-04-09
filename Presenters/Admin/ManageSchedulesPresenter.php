@@ -659,9 +659,9 @@ class ManageSchedulesPresenter extends ActionPresenter
             $dateFormat = Resources::GetInstance()->GetDateFormat('fullcalendar');
             foreach ($periods as $period) {
                 $events[] = array(
-                    'id' => $period->BeginDate()->Format(Date::SHORT_FORMAT),
-                    'start' => $period->BeginDate()->Format($dateFormat),
-                    'end' => $period->EndDate()->Format($dateFormat),
+                    'id' => $period->BeginDate()->ToTimezone($timezone)->Format(Date::SHORT_FORMAT),
+                    'start' => $period->BeginDate()->ToTimezone($timezone)->Format($dateFormat),
+                    'end' => $period->EndDate()->ToTimezone($timezone)->Format($dateFormat),
                     'allDay' => false,
                     'startEditable' => true,
                 );
