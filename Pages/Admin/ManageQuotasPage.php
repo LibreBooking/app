@@ -313,7 +313,12 @@ class ManageQuotasPage extends ActionPage implements IManageQuotasPage
 	 */
 	public function GetScope()
 	{
-		return $this->GetForm(FormKeys::QUOTA_SCOPE);
+	    $checked = $this->GetCheckbox(FormKeys::QUOTA_SCOPE);
+	    if ($checked)
+        {
+            return QuotaScope::IncludeCompleted;
+        }
+	    return QuotaScope::ExcludeCompleted;
 	}
 
 }

@@ -7,13 +7,13 @@
 .btn-primary, a.btn-primary {
   background-color: @button-color; //@color-boxes-primary-2;
   border-color: darken(@button-color, 20%); //@color-secondary-2-3;
-  color:#fff;
+  color: #fff;
 }
 
-.btn-primary:hover, .btn-primary:active, .btn-primary:focus, a.btn-primary:hover, a.btn-primary:active, a.btn-primary:focus{
+.btn-primary:hover, .btn-primary:active, .btn-primary:focus, a.btn-primary:hover, a.btn-primary:active, a.btn-primary:focus {
   background-color: lighten(@button-color, 5%);
   border-color: @button-color;
-  color:#fff;
+  color: #fff;
 }
 
 .btn-warning, a.btn-warning {
@@ -35,21 +35,22 @@
   background-color: lighten(@muted-blue, 5%);
   border-color: @muted-blue;
 }
+
 .btn-white, a.btn-white {
   background-color: @light-gray;
   border-color: darken(@light-gray, 20%);
-  color:@dark-gray;
+  color: @dark-gray;
 }
 
 .btn-white:hover, .btn-white:active, .btn-white:focus, a.btn-white:hover, a.btn-white:active, a.btn-white:focus {
   background-color: lighten(@light-gray, 5%);
   border-color: @light-gray;
-  color:@dark-gray;
+  color: @dark-gray;
 }
 
 .btn-flat:hover, a.btn-flat:hover {
   background-color: @light-gray;
-  color:#000;
+  color: #000;
 }
 
 .btn-link, a.btn-link {
@@ -57,13 +58,13 @@
   background-color: transparent;
 }
 
-.btn-link:hover, .btn-link:active, a.btn-link:hover,.btn-link:focus, a.btn-link:active, a.btn-link:focus {
+.btn-link:hover, .btn-link:active, a.btn-link:hover, .btn-link:focus, a.btn-link:active, a.btn-link:focus {
   color: @link-color-hover;
   background-color: transparent;
 }
 
 button:active, button:focus {
-  background-color:inherit;
+  background-color: inherit;
 }
 
 html, body {
@@ -107,7 +108,7 @@ a:hover {
   //  padding-top: 60px;
   min-height: 100%;
   padding-bottom: @footer-height; // + 30;
-  margin-top:12px;
+  margin-top: 12px;
 }
 
 .default-box {
@@ -174,7 +175,7 @@ a:hover {
 .card.error {
   background: lighten(@muted-red, 25%);
   border: solid 1px @muted-red;
-  color:darken(@muted-red, 25%);
+  color: darken(@muted-red, 25%);
 
   a, .card-action a:not(.btn):not(.btn-large):not(.btn-small):not(.btn-large):not(.btn-floating) {
     color: @off-white;
@@ -188,19 +189,19 @@ a:hover {
 .card.warning {
   background: lighten(@dark-orange, 15%);
   border: solid 1px @dark-orange;
-  color:darken(@dark-orange, 25%);
+  color: darken(@dark-orange, 25%);
 }
 
 .card.notice {
   background: lighten(@muted-blue, 15%);
   border: solid 1px @muted-blue;
-  color:darken(@muted-blue, 25%);
+  color: darken(@muted-blue, 25%);
 }
 
 .card.success {
   background: lighten(@primary-green, 15%);
   border: solid 1px @primary-green;
-  color:darken(@primary-green,25%);
+  color: darken(@primary-green, 25%);
 }
 
 .clickable {
@@ -364,7 +365,7 @@ div.center {
   vertical-align: bottom;
 }
 
- .margin-bottom-25 {
+.margin-bottom-25 {
   margin-bottom: 25px;
 }
 
@@ -506,7 +507,7 @@ input[type=text].user-search {
 
 .black.icon {
   color: @dark-gray;
-  background-color:inherit !important;
+  background-color: inherit !important;
 }
 
 .bold {
@@ -531,18 +532,19 @@ input.mid-number {
 
 #page-help, #page-help-admin {
   .fixed {
-    position:fixed;
-    top:75px;
-    padding-left:13px;
-    bottom:50px;
-    overflow-y:scroll;
-    width:20%;
+    position: fixed;
+    top: 75px;
+    padding-left: 13px;
+    bottom: 50px;
+    overflow-y: scroll;
+    width: 20%;
   }
 
   ul.toc-list {
     padding-left: 15px;
   }
 }
+
 #help {
 
   p.setting span, #help span.setting, #helpPopupDiv p.setting span, #helpPopupDiv span.setting {
@@ -578,11 +580,11 @@ input.mid-number {
 }
 
 ul.jqtree-tree, ul.jqtree-tree ul {
-  padding-left:30px;
+  padding-left: 30px;
 }
 
 .jqtree-toggler {
-  padding-right:8px;
+  padding-right: 8px;
 }
 
 .qtip {
@@ -626,6 +628,7 @@ ul.jqtree-tree, ul.jqtree-tree ul {
 body {
   margin-top: 70px;
 }
+
 //
 //@media (max-width: 1024px) {
 //  .navbar-fixed-top {
@@ -655,7 +658,7 @@ nav {
 }
 
 .tabs {
-  background-color:inherit;
+  background-color: inherit;
 }
 
 @media only screen and (min-width: 601px) {
@@ -663,13 +666,13 @@ nav {
     height: 50px;
     line-height: 50px
   }
+
   //
   //.dropdown-content li, .dropdown-content a, .dropdown-content li>a, .dropdown-content li>span{
   //  line-height:30px;
   //  height: 30px;
   //  min-height: 30px;
   //}
-
   nav .brand-logo {
     position: relative;
     float: left;
@@ -701,18 +704,21 @@ i.right {
 }
 
 .dropdown-content {
-  li>a, li>span {
+  li > a, li > span {
     color: @almost-black;
   }
 }
 
-[type="checkbox"]+span:not(.lever)
-{
-  padding-left:25px;
-  padding-right:12px;
+[type="checkbox"] + span:not(.lever) {
+  padding-left: 25px;
+  padding-right: 12px;
 }
 
-  /** end materialize overrides**/
+div.clearfix {
+  display:none;
+}
+
+/** end materialize overrides**/
 
 .ui-datepicker {
   z-index: 10000 !important;
@@ -936,16 +942,17 @@ input[type=search]::-webkit-search-cancel-button {
 
 #page-login {
   .login-action {
-    padding-bottom:7px;
+    padding-bottom: 7px;
   }
+
   .register {
     text-align: center;
     padding-bottom: 7px;
   }
 
   .divider {
-    border:solid 1px @light-gray;
-    margin-bottom:5px;
+    border: solid 1px @light-gray;
+    margin-bottom: 5px;
   }
 }
 

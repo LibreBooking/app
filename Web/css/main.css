@@ -698,6 +698,9 @@ i.right {
   padding-left: 25px;
   padding-right: 12px;
 }
+div.clearfix {
+  display: none;
+}
 /** end materialize overrides**/
 .ui-datepicker {
   z-index: 10000 !important;

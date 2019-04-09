@@ -20,7 +20,7 @@ function QuotaManagement(opts) {
 		$('.delete').click(function (e) {
 			e.preventDefault();
 			setActiveQuotaId($(this).attr('quotaId'));
-			elements.deleteDialog.modal('show');
+			elements.deleteDialog.modal('open');
 		});
 
 		$(".save").click(function () {
@@ -28,7 +28,7 @@ function QuotaManagement(opts) {
 		});
 
 		$(".cancel").click(function () {
-			$(this).closest('.dialog').modal("hide");
+			$(this).closest('.dialog').modal("close");
 		});
 
 		elements.enforceAllDayToggle.click(function (e) {
