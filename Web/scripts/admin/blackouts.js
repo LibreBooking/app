@@ -7,7 +7,6 @@ function BlackoutManagement(opts) {
 		scheduleId: $("#scheduleId"),
 		resourceId: $("#resourceId"),
 		blackoutTable: $("#blackoutTable"),
-		reservationTable: $("#reservationTable"),
 
 		allResources: $('#allResources'),
 		addResourceId: $('#addResourceId'),
@@ -42,7 +41,7 @@ function BlackoutManagement(opts) {
 		});
 
 		$(".cancel").click(function () {
-			$(this).closest('.modal').modal("hide");
+			$(this).closest('.modal').modal("close");
 		});
 
 		$('#result').delegate('.reload', 'click', function (e) {
@@ -138,7 +137,7 @@ function BlackoutManagement(opts) {
 			elements.deleteMultipleCount.text(checked.length);
 			elements.deleteMultiplePlaceHolder.empty();
 			elements.deleteMultiplePlaceHolder.append(checked.clone());
-			elements.deleteMultipleDialog.modal('show');
+			elements.deleteMultipleDialog.modal('open');
 		});
 
 		elements.deleteMultipleSelectAll.click(function (e) {
@@ -150,8 +149,8 @@ function BlackoutManagement(opts) {
 
 		elements.deleteMultipleCheckboxes.click(function (e) {
 			e.stopPropagation();
-			var numberChecked = elements.reservationTable.find('.delete-multiple:checked').length;
-			var allSelected = numberChecked == elements.reservationTable.find('.delete-multiple').length;
+			var numberChecked = elements.blackoutTable.find('.delete-multiple:checked').length;
+			var allSelected = numberChecked == elements.blackoutTable.find('.delete-multiple').length;
 			elements.deleteMultipleSelectAll.prop('checked', allSelected);
 			elements.deleteMultiplePrompt.toggleClass('no-show', numberChecked == 0);
 		});
@@ -169,11 +168,11 @@ function BlackoutManagement(opts) {
 	};
 
 	function showDeleteBlackout() {
-		elements.deleteDialog.modal('show');
+		elements.deleteDialog.modal('open');
 	}
 
 	function showDeleteRecurringBlackout() {
-		elements.deleteRecurringDialog.modal('show');
+		elements.deleteRecurringDialog.modal('open');
 	}
 
 	function setActiveBlackoutId(id) {
@@ -202,7 +201,7 @@ function BlackoutManagement(opts) {
 	}
 
 	function onBeforeDeleteSubmit() {
-		$('.modal').modal('hide');
+		$('.modal').modal('close');
 		showWaitBox();
 	}
 
@@ -210,20 +209,10 @@ function BlackoutManagement(opts) {
 		$('.blockUI').css('cursor', 'default');
 		$('#creatingNotification').hide();
 		$('#result').show();
-
-		$("#reservationTable").find('.editable').each(function () {
-			var refNum = $(this).find('.referenceNumber').text();
-			$(this).attachReservationPopup(refNum, options.popupUrl);
-		});
-
-		$("#reservationTable").delegate('.editable', 'click', function () {
-			$(this).addClass('clicked');
-			var td = $(this).find('.referenceNumber');
-			viewReservation(td.text());
-		});
 	}
 
 	function onDeleteSuccess() {
+        $('.modal').modal('close');
 		location.reload();
 	}
 
@@ -261,6 +250,9 @@ function BlackoutManagement(opts) {
 				elements.addScheduleId.attr('disabled', 'disabled');
 				elements.addResourceId.removeAttr('disabled');
 			}
+
+            elements.addResourceId.formSelect();
+            elements.addScheduleId.formSelect();
 		});
 	}
 

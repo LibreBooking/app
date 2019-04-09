@@ -57,7 +57,7 @@
   background-color: transparent;
 }
 
-.btn-link:hover, a.btn-link:hover {
+.btn-link:hover, .btn-link:active, a.btn-link:hover,.btn-link:focus, a.btn-link:active, a.btn-link:focus {
   color: @link-color-hover;
   background-color: transparent;
 }
@@ -706,7 +706,13 @@ i.right {
   }
 }
 
-/** end **/
+[type="checkbox"]+span:not(.lever)
+{
+  padding-left:25px;
+  padding-right:12px;
+}
+
+  /** end materialize overrides**/
 
 .ui-datepicker {
   z-index: 10000 !important;

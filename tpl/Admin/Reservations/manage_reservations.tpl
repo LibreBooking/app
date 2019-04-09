@@ -160,10 +160,10 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                 </form>
             </div>
         </div>
-        <div class="card-action">
+        <div class="card-action align-right">
 
-            {filter_button id="filter" class="btn-sm right"}
-            {reset_button id="clearFilter" class="btn-sm btn-flat right"}
+            {filter_button id="filter" class="btn-small"}
+            {reset_button id="clearFilter" class="btn-small btn-flat"}
             <div class="clearfix"></div>
         </div>
     </div>
@@ -193,8 +193,9 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
             <th class="action">{translate key='Delete'}</th>
             <th class="action">
                 <div class="checkbox-single">
-                    <label for="delete-all"><input type="checkbox" id="delete-all" aria-label="{translate key=All}"
-                                                   title="{translate key=All}"/>
+                    <label for="delete-all">
+                        <input type="checkbox" id="delete-all" aria-label="{translate key=All}"
+                               title="{translate key=All}"/>
                         <span>&nbsp;</span>
                     </label>
                 </div>
