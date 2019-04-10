@@ -94,14 +94,14 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                     </div>
                     <div class="input-field filter-schedule {$groupClass}">
                         <label for="scheduleId" class="active">{translate key=Schedule}</label>
-                        <select id="scheduleId" class="form-control">
+                        <select id="scheduleId">
                             <option value="">{translate key=AllSchedules}</option>
                             {object_html_options options=$Schedules key='GetId' label="GetName" selected=$ScheduleId}
                         </select>
                     </div>
                     <div class="input-field filter-resource {$groupClass}">
                         <label for="resourceId" class="active">{translate key=Resource}</label>
-                        <select id="resourceId" class="form-control">
+                        <select id="resourceId">
                             <option value="">{translate key=AllResources}</option>
                             {object_html_options options=$Resources key='GetId' label="GetName" selected=$ResourceId}
                         </select>

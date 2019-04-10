@@ -241,7 +241,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
         <form id="addScheduleForm" method="post">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title" id="addScheduleDialogLabel">{translate key=AddSchedule}</h4>
+                    <h4 class="modal-title left" id="addScheduleDialogLabel">{translate key=AddSchedule}</h4>
+                    <a href="#" class="modal-close right black-text"><i class="fa fa-remove"></i></a>
                 </div>
                 <div class="modal-body">
                     <div class="input-field">
