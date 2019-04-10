@@ -174,309 +174,312 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
     <div id="globalError" class="error no-show"></div>
 
-    <div class="panel panel-default admin-panel" id="list-resources-panel">
-        <div class="panel-heading">{translate key="Resources"}
-            <a href="#" class="add-link add-resource pull-right">{translate key="AddResource"}
-                <span class="fa fa-plus-circle icon add"></span>
-            </a>
-        </div>
-        <div class="panel-body no-padding" id="resourceList">
+    <div class="card admin-panel" id="list-resources-panel">
+        <div class="card-content">
+            <div class="panel-heading">
+                <a href="#" class="add-link add-resource pull-right">{translate key="AddResource"}
+                    <span class="fa fa-plus-circle icon add"></span>
+                </a>
+            </div>
+            <div class="panel-body no-padding" id="resourceList">
 
-            {foreach from=$Resources item=resource}
-                {assign var=id value=$resource->GetResourceId()}
-                <div class="resourceDetails" data-resourceId="{$id}">
-                    <div class="col-xs-12 col-sm-5">
-                        <input type="hidden" class="id" value="{$id}"/>
+                {foreach from=$Resources item=resource}
+                    {assign var=id value=$resource->GetResourceId()}
+                    <div class="resourceDetails" data-resourceId="{$id}">
+                        <div class="col s12 m5">
+                            <input type="hidden" class="id" value="{$id}"/>
 
-                        <div class="col-sm-3 col-xs-6 resourceImage">
-                            <div class="margin-bottom-25">
-                                {if $resource->HasImage()}
-                                    <div class="owl-carousel owl-theme">
-                                        <div class="item">
-                                            <img src="{resource_image image=$resource->GetImage()}" alt="Resource Image"
-                                                 class="image"/>
-                                        </div>
-                                        {foreach from=$resource->GetImages() item=image}
+                            <div class="col s6 m3 resourceImage">
+                                <div class="margin-bottom-25">
+                                    {if $resource->HasImage()}
+                                        <div class="owl-carousel owl-theme">
                                             <div class="item">
-                                                <img src="{resource_image image=$image}" alt="Resource Image"
+                                                <img src="{resource_image image=$resource->GetImage()}"
+                                                     alt="Resource Image"
                                                      class="image"/>
                                             </div>
-                                        {/foreach}
-                                    </div>
-                                    <br/>
-                                    <a class="update imageButton" href="#">{translate key='Change'}</a>
-                                {else}
-                                    <div class="noImage"><span class="fa fa-image"></span></div>
-                                    <a class="update imageButton" href="#">{translate key='AddImage'}</a>
-                                {/if}
+                                            {foreach from=$resource->GetImages() item=image}
+                                                <div class="item">
+                                                    <img src="{resource_image image=$image}" alt="Resource Image"
+                                                         class="image"/>
+                                                </div>
+                                            {/foreach}
+                                        </div>
+                                        <br/>
+                                        <a class="update imageButton" href="#">{translate key='Change'}</a>
+                                    {else}
+                                        <div class="noImage"><span class="fa fa-image"></span></div>
+                                        <a class="update imageButton" href="#">{translate key='AddImage'}</a>
+                                    {/if}
+                                </div>
+                                <div>
+                                    <label for="resourceColorPicker">{translate key=ResourceColor}</label>
+                                    <input class="resourceColorPicker" id="resourceColorPicker" type="color"
+                                           value='{if $resource->HasColor()}{$resource->GetColor()}{else}#ffffff{/if}'
+                                           alt="{translate key=ResourceColor}"
+                                           title="{translate key=ResourceColor}"/>
+                                    <a href="#" class="update clearColor">{translate key=Remove}</a>
+                                </div>
                             </div>
-                            <div>
-                                {translate key=ResourceColor}
-                                <input class="resourceColorPicker" type="color"
-                                       value='{if $resource->HasColor()}{$resource->GetColor()}{else}#ffffff{/if}'
-                                       alt="{translate key=ResourceColor}"
-                                       title="{translate key=ResourceColor}"/>
-                                <a href="#" class="update clearColor">{translate key=Remove}</a>
-                            </div>
-                        </div>
-                        <div class="col-sm-9 col-xs-6">
-                            <div>
+                            <div class="col s3 m6">
+                                <div>
 							<span class="title resourceName" data-type="text" data-pk="{$id}"
                                   data-name="{FormKeys::RESOURCE_NAME}">{$resource->GetName()}</span>
-                                <a class="update renameButton" href="#" title="{translate key='Rename'}">
-                                    <span class="no-show">{translate key=Rename}</span>
-                                    <i
-                                            class="fa fa-pencil-square-o"></i></a> |
-                                <a class="update copyButton" href="#" title="{translate key='Copy'}">
-                                    <span class="no-show">{translate key=Copy}</span>
-                                    <i
-                                            class="fa fa-copy"></i></a> |
-                                <a class="update deleteButton" href="#" title="{translate key='Delete'}">
-                                    <span class="no-show">{translate key=Delete}</span>
-                                    <i class="fa fa-trash icon delete"></i>
-                                </a>
-                            </div>
-                            <div>
-                                {translate key='Status'}
-                                {if $resource->IsAvailable()}
-                                    {html_image src="status.png"}
-                                    <a class="update changeStatus"
-                                       href="#" rel="popover"
-                                       data-popover-content="#statusDialog">{translate key='Available'}</a>
-                                {elseif $resource->IsUnavailable()}
-                                    {html_image src="status-away.png"}
-                                    <a class="update changeStatus"
-                                       href="#" rel="popover"
-                                       data-popover-content="#statusDialog">{translate key='Unavailable'}</a>
-                                {else}
-                                    {html_image src="status-busy.png"}
-                                    <a class="update changeStatus"
-                                       href="#" rel="popover"
-                                       data-popover-content="#statusDialog">{translate key='Hidden'}</a>
-                                {/if}
-                                {if array_key_exists($resource->GetStatusReasonId(),$StatusReasons)}
-                                    <span class="statusReason">{$StatusReasons[$resource->GetStatusReasonId()]->Description()}</span>
-                                {/if}
-                            </div>
+                                    <a class="update renameButton" href="#" title="{translate key='Rename'}">
+                                        <span class="no-show">{translate key=Rename}</span>
+                                        <i class="fa fa-pencil-square-o"></i></a> |
+                                    <a class="update copyButton" href="#" title="{translate key='Copy'}">
+                                        <span class="no-show">{translate key=Copy}</span>
+                                        <i class="fa fa-copy"></i></a> |
+                                    <a class="update deleteButton" href="#" title="{translate key='Delete'}">
+                                        <span class="no-show">{translate key=Delete}</span>
+                                        <i class="fa fa-trash icon delete"></i>
+                                    </a>
+                                </div>
+                                <div>
+                                    {translate key='Status'}
+                                    {if $resource->IsAvailable()}
+                                        {html_image src="status.png"}
+                                        <a class="update changeStatus"
+                                           href="#" rel="popover"
+                                           data-popover-content="#statusDialog">{translate key='Available'}</a>
+                                    {elseif $resource->IsUnavailable()}
+                                        {html_image src="status-away.png"}
+                                        <a class="update changeStatus"
+                                           href="#" rel="popover"
+                                           data-popover-content="#statusDialog">{translate key='Unavailable'}</a>
+                                    {else}
+                                        {html_image src="status-busy.png"}
+                                        <a class="update changeStatus"
+                                           href="#" rel="popover"
+                                           data-popover-content="#statusDialog">{translate key='Hidden'}</a>
+                                    {/if}
+                                    {if array_key_exists($resource->GetStatusReasonId(),$StatusReasons)}
+                                        <span class="statusReason">{$StatusReasons[$resource->GetStatusReasonId()]->Description()}</span>
+                                    {/if}
+                                </div>
 
-                            <div>
-                                {translate key='Schedule'}
-                                <span class="propertyValue scheduleName"
-                                      data-type="select" data-pk="{$id}" data-value="{$resource->GetScheduleId()}"
-                                      data-name="{FormKeys::SCHEDULE_ID}">{$Schedules[$resource->GetScheduleId()]}</span>
-                                <a class="update changeScheduleButton" href="#">{translate key='Move'}</a>
-                            </div>
-                            <div>
-                                {translate key='ResourceType'}
-                                <span class="propertyValue resourceTypeName"
-                                      data-type="select" data-pk="{$id}" data-value="{$resource->GetResourceTypeId()}"
-                                      data-name="{FormKeys::RESOURCE_TYPE_ID}">
+                                <div>
+                                    {translate key='Schedule'}
+                                    <span class="propertyValue scheduleName"
+                                          data-type="select" data-pk="{$id}" data-value="{$resource->GetScheduleId()}"
+                                          data-name="{FormKeys::SCHEDULE_ID}">{$Schedules[$resource->GetScheduleId()]}</span>
+                                    <a class="update changeScheduleButton" href="#">{translate key='Move'}</a>
+                                </div>
+                                <div>
+                                    {translate key='ResourceType'}
+                                    <span class="propertyValue resourceTypeName"
+                                          data-type="select" data-pk="{$id}"
+                                          data-value="{$resource->GetResourceTypeId()}"
+                                          data-name="{FormKeys::RESOURCE_TYPE_ID}">
 									{if $resource->HasResourceType()}
                                         {$ResourceTypes[$resource->GetResourceTypeId()]->Name()}
                                     {else}
                                         {translate key='NoResourceTypeLabel'}
                                     {/if}
 								</span>
-                                <a class="update changeResourceType" href="#">
-                                    <span class="no-show">{translate key=ResourceType}</span>
-                                    <span class="fa fa-pencil-square-o"></span>
-                                </a>
-                            </div>
-                            <div>
-                                {translate key=SortOrder}
-                                <span class="propertyValue sortOrderValue"
-                                      data-type="number" data-pk="{$id}" data-name="{FormKeys::RESOURCE_SORT_ORDER}">
+                                    <a class="update changeResourceType" href="#">
+                                        <span class="no-show">{translate key=ResourceType}</span>
+                                        <span class="fa fa-pencil-square-o"></span>
+                                    </a>
+                                </div>
+                                <div>
+                                    {translate key=SortOrder}
+                                    <span class="propertyValue sortOrderValue"
+                                          data-type="number" data-pk="{$id}"
+                                          data-name="{FormKeys::RESOURCE_SORT_ORDER}">
 								{$resource->GetSortOrder()|default:"0"}
 							</span>
-                                <a class="update changeSortOrder" href="#">
-                                    <span class="no-show">{translate key=SortOrder}</span>
-                                    <span class="fa fa-pencil-square-o"></span>
-                                </a>
-                            </div>
-                            <div>
-                                {translate key='Location'}
-                                <span class="propertyValue locationValue"
-                                      data-type="text" data-pk="{$id}" data-value="{$resource->GetLocation()}"
-                                      data-name="{FormKeys::RESOURCE_LOCATION}">
+                                    <a class="update changeSortOrder" href="#">
+                                        <span class="no-show">{translate key=SortOrder}</span>
+                                        <span class="fa fa-pencil-square-o"></span>
+                                    </a>
+                                </div>
+                                <div>
+                                    {translate key='Location'}
+                                    <span class="propertyValue locationValue"
+                                          data-type="text" data-pk="{$id}" data-value="{$resource->GetLocation()}"
+                                          data-name="{FormKeys::RESOURCE_LOCATION}">
 							{if $resource->HasLocation()}
                                 {$resource->GetLocation()}
                             {else}
                                 {translate key='NoLocationLabel'}
                             {/if}
 							</span>
-                                <a class="update changeLocation" href="#">
-                                    <span class="no-show">{translate key=Location}</span>
-                                    <span class="fa fa-pencil-square-o"></span>
-                                </a>
-                            </div>
-                            <div>
-                                {translate key='Contact'}
-                                <span class="propertyValue contactValue"
-                                      data-type="text" data-pk="{$id}" data-value="{$resource->GetContact()}"
-                                      data-name="{FormKeys::RESOURCE_CONTACT}">
+                                    <a class="update changeLocation" href="#">
+                                        <span class="no-show">{translate key=Location}</span>
+                                        <span class="fa fa-pencil-square-o"></span>
+                                    </a>
+                                </div>
+                                <div>
+                                    {translate key='Contact'}
+                                    <span class="propertyValue contactValue"
+                                          data-type="text" data-pk="{$id}" data-value="{$resource->GetContact()}"
+                                          data-name="{FormKeys::RESOURCE_CONTACT}">
 							{if $resource->HasContact()}
                                 {$resource->GetContact()}
                             {else}
                                 {translate key='NoContactLabel'}
                             {/if}
 							</span>
-                                <a class="update changeContact" href="#">
-                                    <span class="no-show">{translate key=Contact}</span>
-                                    <span class="fa fa-pencil-square-o"></span></a>
-                            </div>
-                            <div>
-                                {translate key='Description'} <a class="update changeDescription" href="#">
-                                    <span class="no-show">{translate key=Description}</span>
-                                    <span
-                                            class="fa fa-pencil-square-o"></span></a>
-                                {if $resource->HasDescription()}
-                                    {assign var=description value=$resource->GetDescription()}
-                                {else}
-                                    {assign var=description value=''}
-                                {/if}
-                                {strip}
-                                    <div class="descriptionValue"
-                                         data-type="textarea" data-pk="{$id}" data-value="{$description|escape}"
-                                         data-name="{FormKeys::RESOURCE_DESCRIPTION}">
-                                        {if $resource->HasDescription()}
-                                            {$description}
-                                        {else}
-                                            {translate key='NoDescriptionLabel'}
-                                        {/if}
-                                    </div>
-                                {/strip}
-                            </div>
-                            <div>
-                                {translate key='Notes'} <a class="update changeNotes" href="#">
-                                    <span class="no-show">{translate key=Notes}</span>
-                                    <span class="fa fa-pencil-square-o"></span>
-                                </a>
-                                {if $resource->HasNotes()}
-                                    {assign var=notes value=$resource->GetNotes()}
-                                {else}
-                                    {assign var=notes value=''}
-                                {/if}
-                                {strip}
-                                    <div class="notesValue"
-                                         data-type="textarea" data-pk="{$id}" data-value="{$notes|escape}"
-                                         data-name="{FormKeys::RESOURCE_NOTES}">
-                                        {if $resource->HasNotes()}
-                                            {$notes}
-                                        {else}
-                                            {translate key='NoNotesLabel'}
-                                        {/if}
-                                    </div>
-                                {/strip}
-                            </div>
-                            <div>
-                                {translate key='ResourceAdministrator'}
-                                <span class="propertyValue resourceAdminValue"
-                                      data-type="select" data-pk="{$id}" data-value="{$resource->GetAdminGroupId()}"
-                                      data-name="{FormKeys::RESOURCE_ADMIN_GROUP_ID}">{$GroupLookup[$resource->GetAdminGroupId()]->Name}</span>
-                                {if $AdminGroups|count > 0}
-                                    <a class="update changeResourceAdmin" href="#">
-                                        <span class="no-show">{translate key=ResourceAdministrator}</span>
+                                    <a class="update changeContact" href="#">
+                                        <span class="no-show">{translate key=Contact}</span>
                                         <span class="fa fa-pencil-square-o"></span></a>
-                                {/if}
-                            </div>
-                            <div>
-                                <a href="{$smarty.server.SCRIPT_NAME}?action={ManageResourcesActions::ActionPrintQR}&rid={$id}"
-                                   target="_blank">{translate key=PrintQRCode} <i class="fa fa-qrcode"></i></a>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-xs-12 col-sm-7">
-                        <div class="col-sm-6 col-xs-12">
-                            <h5 class="inline">{translate key=Duration}</h5>
-                            <a href="#" class="inline update changeDuration">
-                                <span class="no-show">{translate key=Duration}</span>
-                                <span class="fa fa-pencil-square-o"></span>
-                            </a>
-
-                            <div class="durationPlaceHolder">
-                                {include file="Admin/Resources/manage_resources_duration.tpl" resource=$resource}
-                            </div>
-
-                            {if $CreditsEnabled}
+                                </div>
                                 <div>
-                                    <h5 class="inline">{translate key='Credits'}</h5>
-                                    <a href="#" class="inline update changeCredits">
-                                        <span class="no-show">{translate key=Credits}</span>
+                                    {translate key='Description'} <a class="update changeDescription" href="#">
+                                        <span class="no-show">{translate key=Description}</span>
+                                        <span
+                                                class="fa fa-pencil-square-o"></span></a>
+                                    {if $resource->HasDescription()}
+                                        {assign var=description value=$resource->GetDescription()}
+                                    {else}
+                                        {assign var=description value=''}
+                                    {/if}
+                                    {strip}
+                                        <div class="descriptionValue"
+                                             data-type="textarea" data-pk="{$id}" data-value="{$description|escape}"
+                                             data-name="{FormKeys::RESOURCE_DESCRIPTION}">
+                                            {if $resource->HasDescription()}
+                                                {$description}
+                                            {else}
+                                                {translate key='NoDescriptionLabel'}
+                                            {/if}
+                                        </div>
+                                    {/strip}
+                                </div>
+                                <div>
+                                    {translate key='Notes'} <a class="update changeNotes" href="#">
+                                        <span class="no-show">{translate key=Notes}</span>
                                         <span class="fa fa-pencil-square-o"></span>
                                     </a>
-                                    <div class="creditsPlaceHolder">
-                                        {include file="Admin/Resources/manage_resources_credits.tpl" resource=$resource}
-                                    </div>
+                                    {if $resource->HasNotes()}
+                                        {assign var=notes value=$resource->GetNotes()}
+                                    {else}
+                                        {assign var=notes value=''}
+                                    {/if}
+                                    {strip}
+                                        <div class="notesValue"
+                                             data-type="textarea" data-pk="{$id}" data-value="{$notes|escape}"
+                                             data-name="{FormKeys::RESOURCE_NOTES}">
+                                            {if $resource->HasNotes()}
+                                                {$notes}
+                                            {else}
+                                                {translate key='NoNotesLabel'}
+                                            {/if}
+                                        </div>
+                                    {/strip}
                                 </div>
-                            {/if}
+                                <div>
+                                    {translate key='ResourceAdministrator'}
+                                    <span class="propertyValue resourceAdminValue"
+                                          data-type="select" data-pk="{$id}" data-value="{$resource->GetAdminGroupId()}"
+                                          data-name="{FormKeys::RESOURCE_ADMIN_GROUP_ID}">{$GroupLookup[$resource->GetAdminGroupId()]->Name}</span>
+                                    {if $AdminGroups|count > 0}
+                                        <a class="update changeResourceAdmin" href="#">
+                                            <span class="no-show">{translate key=ResourceAdministrator}</span>
+                                            <span class="fa fa-pencil-square-o"></span></a>
+                                    {/if}
+                                </div>
+                                <div>
+                                    <a href="{$smarty.server.SCRIPT_NAME}?action={ManageResourcesActions::ActionPrintQR}&rid={$id}"
+                                       target="_blank">{translate key=PrintQRCode} <i class="fa fa-qrcode"></i></a>
+                                </div>
+                            </div>
+                        </div>
 
-                            <div>
-                                <h5 class="inline">{translate key='Capacity'}</h5>
-                                <a href="#" class="inline update changeCapacity">
-                                    <span class="no-show">{translate key=Capacity}</span>
+                        <div class="col s12 m7">
+                            <div class="col s12 m6">
+                                <h5 class="inline">{translate key=Duration}</h5>
+                                <a href="#" class="inline update changeDuration">
+                                    <span class="no-show">{translate key=Duration}</span>
                                     <span class="fa fa-pencil-square-o"></span>
                                 </a>
 
-                                <div class="capacityPlaceHolder">
-                                    {include file="Admin/Resources/manage_resources_capacity.tpl" resource=$resource}
+                                <div class="durationPlaceHolder">
+                                    {include file="Admin/Resources/manage_resources_duration.tpl" resource=$resource}
+                                </div>
+
+                                {if $CreditsEnabled}
+                                    <div>
+                                        <h5 class="inline">{translate key='Credits'}</h5>
+                                        <a href="#" class="inline update changeCredits">
+                                            <span class="no-show">{translate key=Credits}</span>
+                                            <span class="fa fa-pencil-square-o"></span>
+                                        </a>
+                                        <div class="creditsPlaceHolder">
+                                            {include file="Admin/Resources/manage_resources_credits.tpl" resource=$resource}
+                                        </div>
+                                    </div>
+                                {/if}
+
+                                <div>
+                                    <h5 class="inline">{translate key='Capacity'}</h5>
+                                    <a href="#" class="inline update changeCapacity">
+                                        <span class="no-show">{translate key=Capacity}</span>
+                                        <span class="fa fa-pencil-square-o"></span>
+                                    </a>
+
+                                    <div class="capacityPlaceHolder">
+                                        {include file="Admin/Resources/manage_resources_capacity.tpl" resource=$resource}
+                                    </div>
                                 </div>
                             </div>
-                        </div>
 
-                        <div class="col-sm-6 col-xs-12">
-                            <h5 class="inline">{translate key=Access}</h5>
-                            <a href="#" class="inline update changeAccess">
-                                <span class="no-show">{translate key=Access}</span>
-                                <span class="fa fa-pencil-square-o"></span>
-                            </a>
+                            <div class="col s12 m6">
+                                <h5 class="inline">{translate key=Access}</h5>
+                                <a href="#" class="inline update changeAccess">
+                                    <span class="no-show">{translate key=Access}</span>
+                                    <span class="fa fa-pencil-square-o"></span>
+                                </a>
 
-                            <div class="accessPlaceHolder">
-                                {include file="Admin/Resources/manage_resources_access.tpl" resource=$resource}
+                                <div class="accessPlaceHolder">
+                                    {include file="Admin/Resources/manage_resources_access.tpl" resource=$resource}
+                                </div>
                             </div>
-                        </div>
 
-                        <div class="col-sm-6 col-xs-12">
-                            <h5>{translate key='Permissions'}</h5>
-                            <a href="#" class="update changeUserPermission">{translate key=Users}</a> |
-                            <a href="#" class="update changeGroupPermissions">{translate key=Groups}</a>
-                        </div>
-
-                        <div class="col-sm-6 col-xs-12">
-                            <h5 class="inline">{translate key='ResourceGroups'}</h5>
-                            <a href="#" class="inline update changeResourceGroups">
-                                <span class="no-show">{translate key=ResourceGroups}</span>
-                                <span class="fa fa-pencil-square-o"></span>
-                            </a>
-
-                            <div class="resourceGroupsPlaceHolder">
-                                {include file="Admin/Resources/manage_resources_groups.tpl" resource=$resource}
+                            <div class="col s12 m6">
+                                <h5>{translate key='Permissions'}</h5>
+                                <a href="#" class="update changeUserPermission">{translate key=Users}</a> |
+                                <a href="#" class="update changeGroupPermissions">{translate key=Groups}</a>
                             </div>
-                            <div class="clearfix">&nbsp;</div>
-                        </div>
 
-                        <div class="col-sm-6 col-xs-12">
-                            <h5 class="inline">{translate key='Public'}</h5>
-                            <div class="publicSettingsPlaceHolder">
-                                {include file="Admin/Resources/manage_resources_public.tpl" resource=$resource}
+                            <div class="col s12 m6">
+                                <h5 class="inline">{translate key='ResourceGroups'}</h5>
+                                <a href="#" class="inline update changeResourceGroups">
+                                    <span class="no-show">{translate key=ResourceGroups}</span>
+                                    <span class="fa fa-pencil-square-o"></span>
+                                </a>
+
+                                <div class="resourceGroupsPlaceHolder">
+                                    {include file="Admin/Resources/manage_resources_groups.tpl" resource=$resource}
+                                </div>
+                                <div class="clearfix">&nbsp;</div>
                             </div>
+
+                            <div class="col s12 m6">
+                                <h5 class="inline">{translate key='Public'}</h5>
+                                <div class="publicSettingsPlaceHolder">
+                                    {include file="Admin/Resources/manage_resources_public.tpl" resource=$resource}
+                                </div>
+                            </div>
+
+                            <div class="col s12 m6">&nbsp;</div>
+
                         </div>
 
-                        <div class="col-sm-6 col-xs-12">&nbsp;</div>
-
+                        <div class="clearfix"></div>
+                        <div class="customAttributes">
+                            {if $AttributeList|count > 0}
+                                {foreach from=$AttributeList item=attribute}
+                                    {include file='Admin/InlineAttributeEdit.tpl' id=$id attribute=$attribute value=$resource->GetAttributeValue($attribute->Id())}
+                                {/foreach}
+                            {/if}
+                        </div>
+                        <div class="clearfix"></div>
                     </div>
-
-                    <div class="clearfix"></div>
-                    <div class="customAttributes">
-                        {if $AttributeList|count > 0}
-                            {foreach from=$AttributeList item=attribute}
-                                {include file='Admin/InlineAttributeEdit.tpl' id=$id attribute=$attribute value=$resource->GetAttributeValue($attribute->Id())}
-                            {/foreach}
-                        {/if}
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-            {/foreach}
+                {/foreach}
+            </div>
         </div>
     </div>
 
@@ -1682,7 +1685,6 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
     {jsfile src="dropzone.js"}
 
     <script type="text/javascript">
-
 
 
         function hidePopoversWhenClickAway() {
