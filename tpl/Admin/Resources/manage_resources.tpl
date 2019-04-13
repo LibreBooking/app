@@ -221,10 +221,10 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                                     <a href="#" class="update clearColor">{translate key=Remove}</a>
                                 </div>
                             </div>
-                            <div class="col s3 m6">
+                            <div class="col s3 m9">
                                 <div>
-							<span class="title resourceName" data-type="text" data-pk="{$id}"
-                                  data-name="{FormKeys::RESOURCE_NAME}">{$resource->GetName()}</span>
+							        <span class="title resourceName" data-type="text" data-pk="{$id}"
+                                          data-name="{FormKeys::RESOURCE_NAME}">{$resource->GetName()}</span>
                                     <a class="update renameButton" href="#" title="{translate key='Rename'}">
                                         <span class="no-show">{translate key=Rename}</span>
                                         <i class="fa fa-pencil-square-o"></i></a> |
@@ -485,45 +485,46 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
     {pagination pageInfo=$PageInfo}
 
-    <div id="add-resource-dialog" class="modal" tabindex="-1" role="dialog" aria-labelledby="addResourceModalLabel"
+    <div id="add-resource-dialog" class="modal modal-large" tabindex="-1" role="dialog"
+         aria-labelledby="addResourceModalLabel"
          aria-hidden="true">
         <form id="addResourceForm" class="form" role="form" method="post"
               ajaxAction="{ManageResourcesActions::ActionAdd}" enctype="multipart/form-data">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                        <h4 class="modal-title" id="addResourceModalLabel">{translate key=AddNewResource}</h4>
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title left" id="addResourceModalLabel">{translate key=AddNewResource}</h4>
+                    <a href="#" class="modal-close right black-text"><i class="fa fa-remove"></i></a>
+                </div>
+                <div class="clearfix"></div>
+                <div class="modal-body">
+                    <div id="addResourceResults" class="card warning no-show"></div>
+
+                    <div class="input-field">
+                        <label for="resourceName">{translate key='Name'} <i class="fa fa-asterisk"></i></label>
+                        <input type="text" class="required" required="required" maxlength="85" id="resourceName"
+                                {formname key=RESOURCE_NAME} />
+
                     </div>
-                    <div class="modal-body">
-                        <div id="addResourceResults" class="alert alert-danger no-show"></div>
-
-                        <div class="input-field has-feedback">
-                            <label for="resourceName">{translate key='Name'}</label>
-                            <input type="text" class="form-control required" maxlength="85" id="resourceName"
-                                    {formname key=RESOURCE_NAME} />
-                            <i class="glyphicon glyphicon-asterisk form-control-feedback"
-                               data-bv-icon-for="resourceName"></i>
-
-                        </div>
+                    <div class="input-field">
+                        <label for="scheduleId" class="active">{translate key='Schedule'}</label>
+                        <select class="" {formname key=SCHEDULE_ID} id="scheduleId">
+                            {foreach from=$Schedules item=scheduleName key=scheduleId}
+                                <option value="{$scheduleId}">{$scheduleName}</option>
+                            {/foreach}
+                        </select>
+                    </div>
+                    <div class="input-field">
+                        <label for="permissions" class="active">{translate key='ResourcePermissions'}</label>
+                        <select class="" {formname key=AUTO_ASSIGN} id="permissions">
+                            <option value="1">{translate key="ResourcePermissionAutoGranted"}</option>
+                            <option value="0">{translate key="ResourcePermissionNotAutoGranted"}</option>
+                        </select>
+                    </div>
+                    {if $AdminGroups|count > 0}
                         <div class="input-field">
-                            <label for="scheduleId">{translate key='Schedule'}</label>
-                            <select class="form-control" {formname key=SCHEDULE_ID} id="scheduleId">
-                                {foreach from=$Schedules item=scheduleName key=scheduleId}
-                                    <option value="{$scheduleId}">{$scheduleName}</option>
-                                {/foreach}
-                            </select>
-                        </div>
-                        <div class="input-field">
-                            <label for="permissions">{translate key='ResourcePermissions'}</label>
-                            <select class="form-control" {formname key=AUTO_ASSIGN} id="permissions">
-                                <option value="1">{translate key="ResourcePermissionAutoGranted"}</option>
-                                <option value="0">{translate key="ResourcePermissionNotAutoGranted"}</option>
-                            </select>
-                        </div>
-                        <div class="input-field">
-                            <label for="resourceAdminGroupId">{translate key='ResourceAdministrator'}</label>
-                            <select class="form-control" {formname key=RESOURCE_ADMIN_GROUP_ID}
+                            <label for="resourceAdminGroupId"
+                                   class="active">{translate key='ResourceAdministrator'}</label>
+                            <select class="" {formname key=RESOURCE_ADMIN_GROUP_ID}
                                     id="resourceAdminGroupId">
                                 <option value="">{translate key=None}</option>
                                 {foreach from=$AdminGroups item=adminGroup}
@@ -531,23 +532,25 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                                 {/foreach}
                             </select>
                         </div>
-                        <label for="resourceImageAdd">{translate key=Image}</label>
-                        <div class="dropzone" id="addResourceImage">
-                            <div>
-                                <span class="fa fa-image fa-3x"></span><br/>
-                                {translate key=ChooseOrDropFile}
-                            </div>
-                            <input id="resourceImageAdd" type="file" {formname key=RESOURCE_IMAGE}
-                                   accept="image/*;capture=camera"/>
+                    {else}
+                        <input type="hidden" {formname key=RESOURCE_ADMIN_GROUP_ID} value="">
+                    {/if}
+                    <label for="resourceImageAdd">{translate key=Image}</label>
+                    <div class="dropzone" id="addResourceImage">
+                        <div>
+                            <span class="fa fa-image fa-3x"></span><br/>
+                            {translate key=ChooseOrDropFile}
                         </div>
-                        <div class="note">.gif, .jpg, or .png</div>
+                        <input id="resourceImageAdd" type="file" {formname key=RESOURCE_IMAGE}
+                               accept="image/*;capture=camera"/>
                     </div>
-                    <div class="modal-footer">
-                        {cancel_button}
-                        {add_button}
-                        {indicator}
-                    </div>
+                    <div class="note">.gif, .jpg, or .png</div>
                 </div>
+            </div>
+            <div class="modal-footer">
+                {cancel_button}
+                {add_button submit=true}
+                {indicator}
             </div>
         </form>
     </div>
@@ -558,38 +561,33 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
          aria-hidden="true">
         <form id="imageForm" method="post" enctype="multipart/form-data"
               ajaxAction="{ManageResourcesActions::ActionChangeImage}">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                        <h4 class="modal-title" id="imageModalLabel">{translate key=ResourceImages}</h4>
-                    </div>
-                    <div class="modal-body">
-
-                        <div id="resource-images">
-
-                        </div>
-                        <div class="clearfix">&nbsp;</div>
-
-                        <label for="resourceImage" class="off-screen no-show">{translate key=Image}</label>
-                        <div class="dropzone" id="changeResourceImage">
-                            <div class="dropzone-empty">
-                                <span class="fa fa-image fa-3x"></span><br/>
-                                {translate key=ChooseOrDropFile}
-                            </div>
-                            <div class="dropzone-preview"></div>
-                            <input id="resourceImage" type="file" {formname key=RESOURCE_IMAGE}
-                                   accept="image/*;capture=camera"/>
-                        </div>
-
-                        <div class="note">.gif, .jpg, .png</div>
-                    </div>
-
-                    <div class="modal-footer">
-                        {cancel_button key=Done}
-                        {indicator}
-                    </div>
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="imageModalLabel">{translate key=ResourceImages}</h4>
                 </div>
+                <div class="modal-body">
+                    <div id="resource-images">
+
+                    </div>
+                    <div class="clearfix">&nbsp;</div>
+
+                    <label for="resourceImage" class="no-show">{translate key=Image}</label>
+                    <div class="dropzone" id="changeResourceImage">
+                        <div class="dropzone-empty">
+                            <span class="fa fa-image fa-3x"></span><br/>
+                            {translate key=ChooseOrDropFile}
+                        </div>
+                        <div class="dropzone-preview"></div>
+                        <input id="resourceImage" type="file" {formname key=RESOURCE_IMAGE}
+                               accept="image/*;capture=camera"/>
+                    </div>
+
+                    <div class="note">.gif, .jpg, .png</div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                {cancel_button key=Done}
+                {indicator}
             </div>
         </form>
     </div>
@@ -606,29 +604,22 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
          aria-hidden="true">
         <form id="copyForm" method="post" enctype="multipart/form-data"
               ajaxAction="{ManageResourcesActions::ActionCopyResource}">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                        <h4 class="modal-title" id="copyModalLabel">{translate key=Copy}</h4>
-                    </div>
-                    <div class="modal-body">
-                        <div class="input-field has-feedback">
-                            <label for="copyResourceName">{translate key='Name'}</label>
-                            <input type="text" class="form-control required" maxlength="85" id="copyResourceName"
-                                    {formname key=RESOURCE_NAME} />
-                            <i class="glyphicon glyphicon-asterisk form-control-feedback"
-                               data-bv-icon-for="copyResourceName"></i>
-
-                        </div>
-                    </div>
-
-                    <div class="modal-footer">
-                        {cancel_button}
-                        {add_button}
-                        {indicator}
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="copyModalLabel">{translate key=Copy}</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="input-field">
+                        <label for="copyResourceName">{translate key='Name'} <i class="fa fa-asterisk"></i></label>
+                        <input type="text" class="required" required="required" maxlength="85" id="copyResourceName"
+                                {formname key=RESOURCE_NAME} />
                     </div>
                 </div>
+            </div>
+            <div class="modal-footer">
+                {cancel_button}
+                {add_button}
+                {indicator}
             </div>
         </form>
     </div>
@@ -636,103 +627,117 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
     <div id="durationDialog" class="modal" tabindex="-1" role="dialog" aria-labelledby="durationModalLabel"
          aria-hidden="true">
         <form id="durationForm" method="post" role="form" ajaxAction="{ManageResourcesActions::ActionChangeDuration}">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                        <h4 class="modal-title" id="durationModalLabel">{translate key=Duration}</h4>
-                    </div>
-                    <div class="modal-body">
-                        <div class="editMinDuration">
-                            <div class="checkbox">
-                                <input type="checkbox" id="noMinimumDuration" class="noMinimumDuration"
-                                       data-related-inputs="#minDurationInputs"/>
-                                <label for="noMinimumDuration">{translate key=ResourceMinLengthNone}</label>
-                            </div>
-                            {capture name="txtMinDuration" assign="txtMinDuration"}
-                                <input type='number' size='3' id='minDurationDays' class='days form-control inline'
-                                       maxlength='3'
-                                       title='Days' max='999' min='0' placeholder='{translate key=days}'/>
-                                <input type='number' size='2' id='minDurationHours' class='hours form-control inline'
-                                       maxlength='2'
-                                       title='Hours' max='99' min='0' placeholder='{translate key=hours}'/>
-                                <input type='number' size='2' id='minDurationMinutes'
-                                       class='minutes form-control inline'
-                                       maxlength='2' title='Minutes' max='99' min='0'
-                                       placeholder='{translate key=minutes}'/>
-                                <input type='hidden' id='minDuration'
-                                       class='interval minDuration' {formname key=MIN_DURATION} />
-                            {/capture}
-                            <div id='minDurationInputs'>
-                                {translate key='ResourceMinLength' args=$txtMinDuration}
-                            </div>
-                        </div>
-
-                        <div class="editMaxDuration">
-                            <div class="checkbox">
-                                <input type="checkbox" id="noMaximumDuration" data-related-inputs="#maxDurationInputs"/>
-                                <label for="noMaximumDuration">{translate key=ResourceMaxLengthNone}</label>
-                            </div>
-                            {capture name="txtMaxDuration" assign="txtMaxDuration"}
-                                <input type='number' id='maxDurationDays' size='3' class='days form-control inline'
-                                       maxlength='3'
-                                       title='Days' max='999' min='0' placeholder='{translate key=days}'/>
-                                <input type='number' id='maxDurationHours' size='2' class='hours form-control inline'
-                                       maxlength='2'
-                                       title='Hours' max='99' min='0' placeholder='{translate key=hours}'/>
-                                <input type='number' id='maxDurationMinutes' size='2'
-                                       class='minutes form-control inline'
-                                       maxlength='2' title='Minutes' max='99' min='0'
-                                       placeholder='{translate key=minutes}'/>
-                                <input type='hidden' id='maxDuration' class='interval' {formname key=MAX_DURATION} />
-                            {/capture}
-                            <div id='maxDurationInputs'>
-                                {translate key=ResourceMaxLength args=$txtMaxDuration}
-                            </div>
-                        </div>
-
-                        <div class="editBuffer">
-                            <div class="checkbox">
-                                <input type="checkbox" id="noBufferTime" data-related-inputs="#bufferInputs"/>
-                                <label for="noBufferTime">{translate key=ResourceBufferTimeNone}</label>
-                            </div>
-
-                            {capture name="txtBufferTime" assign="txtBufferTime"}
-                                <input type='number' id='bufferTimeDays'
-                                       size='3' class='days form-control inline'
-                                       maxlength='3'
-                                       title='Days' max='999' min='0' placeholder='{translate key=days}'/>
-                                <input type='number' id='bufferTimeHours'
-                                       size='2' class='hours form-control inline'
-                                       maxlength='2'
-                                       title='Hours' max='99' min='0' placeholder='{translate key=hours}'/>
-                                <input type='number' id='bufferTimeMinutes'
-                                       size='2' class='minutes form-control inline'
-                                       maxlength='2' title='Minutes' max='99' min='0'
-                                       placeholder='{translate key=minutes}'/>
-                                <input type='hidden' id='bufferTime'
-                                       class='interval' {formname key=BUFFER_TIME} />
-                            {/capture}
-                            <div id='bufferInputs'>
-                                {translate key=ResourceBufferTime args=$txtBufferTime}
-                            </div>
-                        </div>
-
-                        <div class="editMultiDay">
-                            <div class="checkbox">
-                                <input type="checkbox" {formname key=ALLOW_MULTIDAY} id="allowMultiDay"/>
-                                <label for="allowMultiDay">{translate key=ResourceAllowMultiDay}</label>
-                            </div>
-                        </div>
-
-                    </div>
-
-                    <div class="modal-footer">
-                        {cancel_button}
-                        {update_button}
-                        {indicator}
-                    </div>
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title left" id="durationModalLabel">{translate key=Duration}</h4>
+                    <a href="#" class="modal-close right black-text"><i class="fa fa-remove"></i></a>
                 </div>
+                <div class="clearfix"></div>
+                <div class="modal-body">
+                    <div class="editMinDuration">
+                        <label for="noMinimumDuration">
+                            <input type="checkbox" id="noMinimumDuration" class="noMinimumDuration"
+                                   data-related-inputs="#minDurationInputs"/>
+                            <span>{translate key=ResourceMinLengthNone}</span>
+                        </label>
+                        {capture name="txtMinDuration" assign="txtMinDuration"}
+                            <div class='input-field inline'>
+                                <label for='minDurationDays'>{translate key=days}</label>
+                                <input type='number' size='3' id='minDurationDays' class='days'
+                                       maxlength='3' max='999' min='0''/>
+                            </div>
+                            <div class='input-field inline'>
+                                <label for='minDurationHours'>{translate key=hours}</label>
+                                <input type='number' size='2' id='minDurationHours' class='hours'
+                                       maxlength='2' max='99' min='0'/>
+                            </div>
+                            <div class='input-field inline'>
+                                <label for='minDurationMinutes'>{translate key=minutes}</label>
+                                <input type='number' size='2' id='minDurationMinutes'
+                                       class='minutes' maxlength='2' max='99' min='0'/>
+                            </div>
+                            <input type='hidden' id='minDuration'
+                                   class='interval minDuration' {formname key=MIN_DURATION} />
+                        {/capture}
+                        <div id='minDurationInputs'>
+                            {translate key='ResourceMinLength' args=$txtMinDuration}
+                        </div>
+                    </div>
+
+                    <div class="editMaxDuration">
+                        <label for="noMaximumDuration">
+                            <input type="checkbox" id="noMaximumDuration" data-related-inputs="#maxDurationInputs"/>
+                            <span>{translate key=ResourceMaxLengthNone}</span>
+                        </label>
+                        {capture name="txtMaxDuration" assign="txtMaxDuration"}
+                            <div class='input-field inline'>
+                                <label for='maxDurationDays'>{translate key=days}</label>
+                                <input type='number' id='maxDurationDays' size='3' class='days'
+                                       maxlength='3' max='999' min='0'/>
+                            </div>
+                            <div class='input-field inline'>
+                                <label for='maxDurationHours'>{translate key=hours}</label>
+                                <input type='number' id='maxDurationHours' size='2' class='hours'
+                                       maxlength='2' max='99' min='0'/>
+                            </div>
+                            <div class='input-field inline'>
+                                <label for='maxDurationMinutes'>{translate key=minutes}</label>
+                                <input type='number' id='maxDurationMinutes' size='2'
+                                       class='minutes' maxlength='2' max='99' min='0'/>
+                            </div>
+                            <input type='hidden' id='maxDuration' class='interval' {formname key=MAX_DURATION} />
+                        {/capture}
+                        <div id='maxDurationInputs'>
+                            {translate key=ResourceMaxLength args=$txtMaxDuration}
+                        </div>
+                    </div>
+
+                    <div class="editBuffer">
+                        <label for="noBufferTime">
+                            <input type="checkbox" id="noBufferTime" data-related-inputs="#bufferInputs"/>
+                            <span>{translate key=ResourceBufferTimeNone}</span>
+                        </label>
+
+                        {capture name="txtBufferTime" assign="txtBufferTime"}
+                            <div class='input-field inline'>
+                                <label for='bufferTimeDays'>{translate key=days}</label>
+                                <input type='number' id='bufferTimeDays'
+                                       size='3' class='days'
+                                       maxlength='3' max='999' min='0'/>
+                            </div>
+                            <div class='input-field inline'>
+                                <label for='bufferTimeHours'>{translate key=hours}</label>
+                                <input type='number' id='bufferTimeHours'
+                                       size='2' class='hours'
+                                       maxlength='2' max='99' min='0'/>
+                            </div>
+                            <div class='input-field inline'>
+                                <label for='bufferTimeMinutes'>{translate key=minutes}</label>
+                                <input type='number' id='bufferTimeMinutes'
+                                       size='2' class='minutes'
+                                       maxlength='2' max='99' min='0'/>
+                            </div>
+                            <input type='hidden' id='bufferTime'
+                                   class='interval' {formname key=BUFFER_TIME} />
+                        {/capture}
+                        <div id='bufferInputs'>
+                            {translate key=ResourceBufferTime args=$txtBufferTime}
+                        </div>
+                    </div>
+
+                    <div class="editMultiDay">
+                        <label for="allowMultiDay"><input type="checkbox" {formname key=ALLOW_MULTIDAY}
+                                                          id="allowMultiDay"/>
+                            <span>{translate key=ResourceAllowMultiDay}</span>
+                        </label>
+                    </div>
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                {cancel_button}
+                {update_button}
+                {indicator}
             </div>
         </form>
     </div>
@@ -740,243 +745,270 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
     <div id="capacityDialog" class="modal" tabindex="-1" role="dialog" aria-labelledby="capacityModalLabel"
          aria-hidden="true">
         <form id="capacityForm" method="post" role="form" ajaxAction="{ManageResourcesActions::ActionChangeCapacity}">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                        <h4 class="modal-title" id="capacityModalLabel">{translate key=Capacity}</h4>
-                    </div>
-                    <div class="modal-body">
-                        <div class="editCapacity">
-                            <div class="checkbox">
-                                <input type="checkbox" id="unlimitedCapacity" class="unlimitedCapacity"
-                                       data-related-inputs="#maxCapacityInputs"/>
-                                <label for="unlimitedCapacity">{translate key=ResourceCapacityNone}</label>
-                            </div>
-                            <div id='maxCapacityInputs'>
-                                {capture name="txtMaxCapacity" assign="txtMaxCapacity"}
-                                    <label for='maxCapacity' class='no-show'>{translate key=Capacity}</label>
-                                    <input type='number' id='maxCapacity' class='form-control inline mid-number' min='0'
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="capacityModalLabel">{translate key=Capacity}</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="editCapacity">
+                        <label for="unlimitedCapacity">
+                            <input type="checkbox" id="unlimitedCapacity"
+                                   class="unlimitedCapacity"
+                                   data-related-inputs="#maxCapacityInputs"/>
+                            <span>{translate key=ResourceCapacityNone}</span>
+                        </label>
+
+                        <div id='maxCapacityInputs'>
+                            {capture name="txtMaxCapacity" assign="txtMaxCapacity"}
+                                <div class='input-field inline'>
+                                    <label for='maxCapacity'>{translate key=Capacity}</label>
+                                    <input type='number' id='maxCapacity' class='mid-number' min='0'
                                            max='9999' size='5' {formname key=MAX_PARTICIPANTS} />
-                                {/capture}
-                                {translate key='ResourceCapacity' args=$txtMaxCapacity}
-                            </div>
+                                </div>
+                            {/capture}
+                            {translate key='ResourceCapacity' args=$txtMaxCapacity}
                         </div>
                     </div>
-
-                    <div class="modal-footer">
-                        {cancel_button}
-                        {update_button}
-                        {indicator}
-                    </div>
+                </div>
+                <div class="modal-footer">
+                    {cancel_button}
+                    {update_button}
+                    {indicator}
                 </div>
             </div>
         </form>
     </div>
 
-    <div id="accessDialog" class="modal" tabindex="-1" role="dialog" aria-labelledby="accessModalLabel"
+    <div id="accessDialog" class="modal modal-large" tabindex="-1" role="dialog" aria-labelledby="accessModalLabel"
          aria-hidden="true">
         <form id="accessForm" method="post" role="form" ajaxAction="{ManageResourcesActions::ActionChangeAccess}">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                        <h4 class="modal-title" id="accessModalLabel">{translate key=Access}</h4>
-                    </div>
-                    <div class="modal-body">
-                        <div class="editStartNoticeAdd">
-                            <div class="checkbox">
-                                <input type="checkbox" id="noStartNoticeAdd" class="noStartNoticeAdd"
-                                       data-related-inputs="#startNoticeInputsAdd"/>
-                                <label for="noStartNoticeAdd">{translate key=ResourceMinNoticeNone}</label>
-                            </div>
-                            {capture name="txtStartNoticeAdd" assign="txtStartNoticeAdd"}
-                                <input type='number' id='startNoticeAddDays' size='3' class='days form-control inline'
-                                       maxlength='3'
-                                       title='Days' max='999' min='0' placeholder='{translate key=days}'/>
-                                <input type='number' id='startNoticeAddHours' size='2' class='hours form-control inline'
-                                       maxlength='2' max='99' min='0'
-                                       title='Hours' placeholder='{translate key=hours}'/>
-                                <input type='number' id='startNoticeAddMinutes' size='2'
-                                       class='minutes form-control inline'
-                                       maxlength='2' max='99' min='0' title='Minutes'
-                                       placeholder='{translate key=minutes}'/>
-                                <input type='hidden' id='startNoticeAdd'
-                                       class='interval' {formname key=MIN_NOTICE_ADD} />
-                            {/capture}
-                            <div id='startNoticeInputsAdd'>
-                                {translate key='ResourceMinNotice' args=$txtStartNoticeAdd}
-                            </div>
-                        </div>
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title left" id="accessModalLabel">{translate key=Access}</h4>
+                    <a href="#" class="modal-close right black-text"><i class="fa fa-remove"></i></a>
+                </div>
+                <div class="clearfix"></div>
+                <div class="modal-body">
+                    <div class="editStartNoticeAdd">
+                        <label for="noStartNoticeAdd">
+                            <input type="checkbox" id="noStartNoticeAdd" class="noStartNoticeAdd"
+                                   data-related-inputs="#startNoticeInputsAdd"/>
+                            <span>{translate key=ResourceMinNoticeNone}</span>
+                        </label>
 
-                        <div class="editStartNoticeUpdate">
-                            <div class="checkbox">
-                                <input type="checkbox" id="noStartNoticeUpdate" class="noStartNoticeUpdate"
-                                       data-related-inputs="#startNoticeInputsUpdate"/>
-                                <label for="noStartNoticeUpdate">{translate key=ResourceMinNoticeNoneUpdate}</label>
+                        {capture name="txtStartNoticeAdd" assign="txtStartNoticeAdd"}
+                            <div class='input-field inline'>
+                                <label for='startNoticeAddDays'>{translate key=days}</label>
+                                <input type='number' id='startNoticeAddDays' size='3' class='days'
+                                       maxlength='3' max='999' min='0'/>
                             </div>
-                            {capture name="txtStartNoticeUpdate" assign="txtStartNoticeUpdate"}
-                                <input type='number' id='startNoticeUpdateDays' size='3'
-                                       class='days form-control inline'
+                            <div class='input-field inline'>
+                                <label for='startNoticeAddHours'>{translate key=hours}</label>
+                                <input type='number' id='startNoticeAddHours' size='2' class='hours'
+                                       maxlength='2' max='99' min='0'/>
+                            </div>
+                            <div class='input-field inline'>
+                                <label for='startNoticeAddMinutes'>{translate key=minutes}</label>
+                                <input type='number' id='startNoticeAddMinutes' size='2'
+                                       class='minutes'
+                                       maxlength='2' max='99' min='0'/>
+                            </div>
+                            <input type='hidden' id='startNoticeAdd'
+                                   class='interval' {formname key=MIN_NOTICE_ADD} />
+                        {/capture}
+                        <div id='startNoticeInputsAdd'>
+                            {translate key='ResourceMinNotice' args=$txtStartNoticeAdd}
+                        </div>
+                    </div>
+
+                    <div class="editStartNoticeUpdate">
+                        <label for="noStartNoticeUpdate">
+                            <input type="checkbox" id="noStartNoticeUpdate" class="noStartNoticeUpdate"
+                                   data-related-inputs="#startNoticeInputsUpdate"/>
+                            <span>{translate key=ResourceMinNoticeNoneUpdate}</span>
+                        </label>
+                        {capture name="txtStartNoticeUpdate" assign="txtStartNoticeUpdate"}
+                            <div class='input-field inline'>
+                                <label for='startNoticeUpdateDays'>{translate key=days}</label>
+                                <input type='number'
+                                       id='startNoticeUpdateDays'
+                                       size='3'
+                                       class='days'
                                        maxlength='3'
-                                       title='Days' max='999' min='0' placeholder='{translate key=days}'/>
+                                       title='Days'
+                                       max='999' min='0'/>
+                            </div>
+                            <div class='input-field inline'>
+                                <label for='startNoticeUpdateHours'>{translate key=hours}</label>
                                 <input type='number' id='startNoticeUpdateHours' size='2'
                                        class='hours form-control inline'
-                                       maxlength='2' max='99' min='0'
-                                       title='Hours' placeholder='{translate key=hours}'/>
+                                       maxlength='2' max='99' min='0'/>
+                            </div>
+                            <div class='input-field inline'>
+                                <label for='startNoticeUpdateMinutes'>{translate key=minutes}</label>
                                 <input type='number' id='startNoticeUpdateMinutes' size='2'
                                        class='minutes form-control inline'
-                                       maxlength='2' max='99' min='0' title='Minutes'
-                                       placeholder='{translate key=minutes}'/>
-                                <input type='hidden' id='startNoticeUpdate'
-                                       class='interval' {formname key=MIN_NOTICE_UPDATE} />
-                            {/capture}
-                            <div id='startNoticeInputsUpdate'>
-                                {translate key='ResourceMinNoticeUpdate' args=$txtStartNoticeUpdate}
+                                       maxlength='2' max='99' min='0'/>
                             </div>
+                            <input type='hidden' id='startNoticeUpdate'
+                                   class='interval' {formname key=MIN_NOTICE_UPDATE} />
+                        {/capture}
+                        <div id='startNoticeInputsUpdate'>
+                            {translate key='ResourceMinNoticeUpdate' args=$txtStartNoticeUpdate}
                         </div>
+                    </div>
 
-                        <div class="editStartNoticeDelete">
-                            <div class="checkbox">
-                                <input type="checkbox" id="noStartNoticeDelete" class="noStartNoticeDelete"
-                                       data-related-inputs="#startNoticeInputsDelete"/>
-                                <label for="noStartNoticeDelete">{translate key=ResourceMinNoticeNoneDelete}</label>
-                            </div>
-                            {capture name="txtStartNoticeDelete" assign="txtStartNoticeDelete"}
+                    <div class="editStartNoticeDelete">
+                        <label for="noStartNoticeDelete">
+                            <input type="checkbox" id="noStartNoticeDelete" class="noStartNoticeDelete"
+                                   data-related-inputs="#startNoticeInputsDelete"/>
+                            <span>{translate key=ResourceMinNoticeNoneDelete}</span>
+                        </label>
+                        {capture name="txtStartNoticeDelete" assign="txtStartNoticeDelete"}
+                            <div class='input-field inline'>
+                                <label for='startNoticeDeleteDays'>{translate key=days}</label>
                                 <input type='number' id='startNoticeDeleteDays' size='3'
-                                       class='days form-control inline'
+                                       class='days'
                                        maxlength='3'
-                                       title='Days' max='999' min='0' placeholder='{translate key=days}'/>
+                                       max='999' min='0'/>
+                            </div>
+                            <div class='input-field inline'>
+                                <label for='startNoticeDeleteHours'>{translate key=hours}</label>
                                 <input type='number' id='startNoticeDeleteHours' size='2'
-                                       class='hours form-control inline'
-                                       maxlength='2' max='99' min='0'
-                                       title='Hours' placeholder='{translate key=hours}'/>
+                                       class='hours'
+                                       maxlength='2' max='99' min='0'/>
+                            </div>
+                            <div class='input-field inline'>
+                                <label for='startNoticeDeleteMinutes'>{translate key=minutes}</label>
                                 <input type='number' id='startNoticeDeleteMinutes' size='2'
-                                       class='minutes form-control inline'
-                                       maxlength='2' max='99' min='0' title='Minutes'
-                                       placeholder='{translate key=minutes}'/>
-                                <input type='hidden' id='startNoticeDelete'
-                                       class='interval' {formname key=MIN_NOTICE_DELETE} />
-                            {/capture}
-                            <div id='startNoticeInputsDelete'>
-                                {translate key='ResourceMinNoticeDelete' args=$txtStartNoticeDelete}
+                                       class='minutes'
+                                       maxlength='2' max='99' min='0'/>
                             </div>
+                            <input type='hidden' id='startNoticeDelete'
+                                   class='interval' {formname key=MIN_NOTICE_DELETE} />
+                        {/capture}
+                        <div id='startNoticeInputsDelete'>
+                            {translate key='ResourceMinNoticeDelete' args=$txtStartNoticeDelete}
                         </div>
+                    </div>
 
-                        <div class="editEndNotice">
-                            <div class="checkbox">
-                                <input type="checkbox" id="noEndNotice" data-related-inputs="#endNoticeInputs"/>
-                                <label for="noEndNotice">{translate key=ResourceMaxNoticeNone}</label>
+                    <div class="editEndNotice">
+                        <label for="noEndNotice">
+                            <input type="checkbox" id="noEndNotice" data-related-inputs="#endNoticeInputs"/>
+                            <span>{translate key=ResourceMaxNoticeNone}</span>
+                        </label>
+                        {capture name="txtEndNotice" assign="txtEndNotice"}
+                            <div class='input-field inline'>
+                                <label for='endNoticeDays'>{translate key=days}</label>
+                                <input type='number' id='endNoticeDays' size='3' class='days'
+                                       maxlength='3' max='999' min='0'/>
                             </div>
-                            {capture name="txtEndNotice" assign="txtEndNotice"}
-                                <input type='number' id='endNoticeDays' size='3' class='days form-control inline'
-                                       maxlength='3'
-                                       title='Days' max='999' min='0' placeholder='{translate key=days}'/>
-                                <input type='number' id='endNoticeHours' size='2' class='hours form-control inline'
-                                       maxlength='2'
-                                       title='Hours' max='99' min='0' placeholder='{translate key=hours}'/>
-                                <input type='number' id='endNoticeMinutes' size='2' class='minutes form-control inline'
-                                       maxlength='2' max='99' min='0' title='Minutes'
-                                       placeholder='{translate key=minutes}'/>
-                                <input type='hidden' id='endNotice' class='interval' {formname key=MAX_NOTICE} />
-                            {/capture}
-                            <div id='endNoticeInputs'>
-                                {translate key='ResourceMaxNotice' args=$txtEndNotice}
+                            <div class='input-field inline'>
+                                <label for='endNoticeHours'>{translate key=hours}</label>
+                                <input type='number' id='endNoticeHours' size='2' class='hours'
+                                       maxlength='2' max='99' min='0'/>
                             </div>
+                            <div class='input-field inline'>
+                                <label for='endNoticeMinutes'>{translate key=minutes}</label>
+                                <input type='number' id='endNoticeMinutes' size='2' class='minutes'
+                                       maxlength='2' max='99' min='0'/>
+                            </div>
+                            <input type='hidden' id='endNotice' class='interval' {formname key=MAX_NOTICE} />
+                        {/capture}
+                        <div id='endNoticeInputs'>
+                            {translate key='ResourceMaxNotice' args=$txtEndNotice}
                         </div>
+                    </div>
 
-                        <div class="editRequiresApproval">
-                            <div class="checkbox">
-                                <input type="checkbox" {formname key=REQUIRES_APPROVAL} id="requiresApproval"/>
-                                <label for="requiresApproval">{translate key=ResourceRequiresApproval}</label>
-                            </div>
-                        </div>
+                    <div class="editRequiresApproval">
+                        <label for="requiresApproval">
+                            <input type="checkbox" {formname key=REQUIRES_APPROVAL} id="requiresApproval"/>
+                            <span>{translate key=ResourceRequiresApproval}</span>
+                        </label>
+                    </div>
 
-                        <div class="editAutoAssign">
-                            <div class="checkbox">
-                                <input type="checkbox" {formname key=AUTO_ASSIGN} id="autoAssign" value="1"/>
-                                <label for="autoAssign">{translate key=ResourcePermissionAutoGranted}</label>
-                            </div>
-                        </div>
+                    <div class="editAutoAssign">
+                        <label for="autoAssign">
+                            <input type="checkbox" {formname key=AUTO_ASSIGN} id="autoAssign" value="1"/>
+                            <span>{translate key=ResourcePermissionAutoGranted}</span>
+                        </label>
+                    </div>
 
-                        <div class="no-show" id="autoAssignRemoveAllPermissions">
-                            <div class="checkbox">
-                                <input type="checkbox" {formname key=AUTO_ASSIGN_CLEAR}
-                                       id="autoAssignRemoveAllPermissionsChk" value="1"/>
-                                <label for="autoAssignRemoveAllPermissionsChk">{translate key=RemoveExistingPermissions}</label>
-                            </div>
-                        </div>
+                    <div class="no-show" id="autoAssignRemoveAllPermissions">
+                        <label for="autoAssignRemoveAllPermissionsChk">
+                            <input type="checkbox" {formname key=AUTO_ASSIGN_CLEAR}
+                                   id="autoAssignRemoveAllPermissionsChk" value="1"/>
+                            <span>{translate key=RemoveExistingPermissions}</span>
+                        </label>
+                    </div>
 
-                        <div class="editCheckin">
-                            <div class="checkbox">
-                                <input type="checkbox" {formname key=ENABLE_CHECK_IN} id="enableCheckIn"/>
-                                <label for="enableCheckIn">{translate key=RequiresCheckInNotification}</label>
-                            </div>
-                            <div class="no-show" id="autoReleaseMinutesDiv">
-                                {capture name="txtAutoRelease" assign="txtAutoRelease"}
+                    <div class="editCheckin">
+                        <label for="enableCheckIn">
+                            <input type="checkbox" {formname key=ENABLE_CHECK_IN} id="enableCheckIn"/>
+                            <span>{translate key=RequiresCheckInNotification}</span>
+                        </label>
+                        <div class="no-show" id="autoReleaseMinutesDiv">
+                            {capture name="txtAutoRelease" assign="txtAutoRelease"}
+                                <div class='input-field inline'>
                                     <label for='autoReleaseMinutes' class='no-show'>Auto Release Minutes</label>
                                     <input type='number' max='99' min='0' id='autoReleaseMinutes'
-                                           class='minutes form-control inline' {formname key=AUTO_RELEASE_MINUTES} />
-                                {/capture}
-                                {translate key='AutoReleaseNotification' args=$txtAutoRelease}
-                            </div>
+                                           class='minutes' {formname key=AUTO_RELEASE_MINUTES} />
+                                </div>
+                            {/capture}
+                            {translate key='AutoReleaseNotification' args=$txtAutoRelease}
                         </div>
                     </div>
-
-                    <div class="modal-footer">
-                        {cancel_button}
-                        {update_button}
-                        {indicator}
-                    </div>
+                </div>
+                <div class="modal-footer">
+                    {cancel_button}
+                    {update_button}
+                    {indicator}
                 </div>
             </div>
         </form>
     </div>
 
-    <div id="statusDialog" class="hide">
-        <form class="statusForm" method="post" ajaxAction="{ManageResourcesActions::ActionChangeStatus}">
-            <div class="control-group input-field">
+    <div id="statusDialog" class="modal">
+        <form id="statusForm" class="statusForm" method="post"
+              ajaxAction="{ManageResourcesActions::ActionChangeStatus}">
+            <div class="modal-content">
                 <div class="input-field">
-                    <label>{translate key=Status}
-                        <select {formname key=RESOURCE_STATUS_ID} class="statusId form-control">
-                            <option value="{ResourceStatus::AVAILABLE}">{translate key=Available}</option>
-                            <option value="{ResourceStatus::UNAVAILABLE}">{translate key=Unavailable}</option>
-                            <option value="{ResourceStatus::HIDDEN}">{translate key=Hidden}</option>
-                        </select>
-                    </label>
+                    <label for="updateStatusId" class="active">{translate key=Status}</label>
+                    <select {formname key=RESOURCE_STATUS_ID} class="statusId" id="updateStatusId">
+                        <option value="{ResourceStatus::AVAILABLE}">{translate key=Available}</option>
+                        <option value="{ResourceStatus::UNAVAILABLE}">{translate key=Unavailable}</option>
+                        <option value="{ResourceStatus::HIDDEN}">{translate key=Hidden}</option>
+                    </select>
                 </div>
 
+                <div class="align-right no-show newStatusReason">
+                    <a href="#" class="addStatusReason">
+                        <span class="no-show">{translate key=ReasonText}</span>
+                        <span class="addStatusIcon fa fa-plus icon add"></span>
+                    </a>
+                </div>
                 <div class="input-field no-show newStatusReason">
-                    <label>{translate key=ReasonText}
-                        <a href="#" class="pull-right addStatusReason">
-                            <span class="no-show">{translate key=ReasonText}</span>
-                            <span class="addStatusIcon fa fa-list-alt icon add"></span>
-                        </a>
-                        <input type="text"
-                               class="form-control resourceStatusReason" {formname key=RESOURCE_STATUS_REASON} />
-                    </label>
+                    <label for="addStatusReason">{translate key=ReasonText}</label>
+                    <input type="text" id="addStatusReason"
+                           class="resourceStatusReason" {formname key=RESOURCE_STATUS_REASON} />
+                </div>
+
+                <div class="align-right">
+                    <a href="#" class="addStatusReason">
+                        <span class="no-show">{translate key=Reason}</span>
+                        <span class="addStatusIcon fa fa-plus icon add"></span>
+                    </a>
                 </div>
                 <div class="input-field existingStatusReason">
-                    <label>
+                    <label for="addStatusReasonId">
                         {translate key=Reason}
-                        <a href="#" class="pull-right addStatusReason">
-                            <span class="no-show">{translate key=Reason}</span>
-                            <span class="addStatusIcon fa fa-plus icon add"></span>
-                        </a>
-                        <select {formname key=RESOURCE_STATUS_REASON_ID} class="form-control reasonId"></select>
                     </label>
+                    <select id="addStatusReasonId" {formname key=RESOURCE_STATUS_REASON_ID} class="reasonId"></select>
                 </div>
-
             </div>
-            <div class="editable-buttons">
-                <button type="button" class="btn btn-primary btn-sm editable-submit save">
-                    <span class="no-show">{translate key=Save}</span>
-                    <i class="glyphicon glyphicon-ok"></i>
-                </button>
-                <button type="button" class="btn btn-default btn-sm editable-cancel">
-                    <span class="no-show">{translate key=Cancel}</span>
-                    <i class="glyphicon glyphicon-remove"></i>
-                </button>
+            <div class="modal-footer">
+                {cancel_button}
+                {update_button}
                 {indicator}
             </div>
         </form>
@@ -985,14 +1017,13 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
     <div id="deletePrompt" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="deleteResourceDialogLabel"
          aria-hidden="true">
         <form id="deleteForm" method="post" ajaxAction="{ManageResourcesActions::ActionDelete}">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                        <h4 class="modal-title" id="deleteResourceDialogLabel">{translate key=Delete}</h4>
-                    </div>
-                    <div class="modal-body">
-                        <div class="alert alert-warning">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="deleteResourceDialogLabel">{translate key=Delete}</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="card error">
+                        <div class="card-content">
                             <div>{translate key=DeleteWarning}</div>
                             {translate key=DeleteResourceWarning}:
                             <ul>
@@ -1003,434 +1034,431 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                             {translate key=DeleteResourceWarningReassign}
                         </div>
                     </div>
-                    <div class="modal-footer">
-                        {cancel_button}
-                        {delete_button}
-                        {indicator}
-                    </div>
+                </div>
+                <div class="modal-footer">
+                    {cancel_button}
+                    {delete_button}
+                    {indicator}
                 </div>
             </div>
         </form>
     </div>
 
-    <div id="bulkUpdateDialog" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="bulkUpdateLabel"
+    <div id="bulkUpdateDialog" class="modal modal-large" tabindex="-1" role="dialog" aria-labelledby="bulkUpdateLabel"
          aria-hidden="true">
         <form id="bulkUpdateForm" method="post" ajaxAction="{ManageResourcesActions::ActionBulkUpdate}"
               class="form-vertical"
               role="form">
-            <div class="modal-dialog modal-lg">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                        <h4 class="modal-title" id="bulkUpdateLabel">{translate key=BulkResourceUpdate}</h4>
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title left" id="bulkUpdateLabel">{translate key=BulkResourceUpdate}</h4>
+                    <a href="#" class="modal-close right black-text"><i class="fa fa-remove"></i></a>
+                </div>
+                <div class="clearfix"></div>
+                <div class="modal-body">
+                    <div id="bulkUpdateErrors" class="error no-show">
+                        {async_validator id="bulkAttributeValidator" key=""}
                     </div>
-                    <div class="modal-body">
-                        <div id="bulkUpdateErrors" class="error no-show">
-                            {async_validator id="bulkAttributeValidator" key=""}
-                        </div>
-                        <div>{translate key=Select}
-                            <a href="#" id="checkAllResources">{translate key=All}</a> |
-                            <a href="#" id="checkNoResources">{translate key=None}</a>
-                        </div>
-                        <div id="bulkUpdateList"></div>
-                        <div>
-                            <div class="title">{translate key=Common}</div>
-                            <div class="input-field">
-                                <label for="bulkEditSchedule" class="control-label">{translate key=MoveToSchedule}
-                                    :</label>
-                                <select id="bulkEditSchedule" class="form-control" {formname key=SCHEDULE_ID}>
-                                    <option value="-1">{translate key=Unchanged}</option>
-                                    {foreach from=$Schedules item=scheduleName key=scheduleId}
-                                        <option value="{$scheduleId}">{$scheduleName}</option>
-                                    {/foreach}
-                                </select>
-                            </div>
-                            <div class="input-field">
-                                <label for="bulkEditResourceType" class="control-label">{translate key=ResourceType}
-                                    :</label>
-                                <select id="bulkEditResourceType" class="form-control" {formname key=RESOURCE_TYPE_ID}>
-                                    <option value="-1">{translate key=Unchanged}</option>
-                                    <option value="">-- {translate key=None} --</option>
-                                    {foreach from=$ResourceTypes item=resourceType key=id}
-                                        <option value="{$id}">{$resourceType->Name()}</option>
-                                    {/foreach}
-                                </select>
-                            </div>
-                            <div class="input-field">
-                                <label for="bulkEditLocation" class="control-label">{translate key=Location}:</label>
-                                <input id="bulkEditLocation" type="text" class="form-control"
-                                       maxlength="85" {formname key=RESOURCE_LOCATION} />
-                            </div>
-                            <div class="input-field">
-                                <label for="bulkEditContact" class="control-label">{translate key=Contact}:</label>
-                                <input id="bulkEditContact" type="text" class="form-control"
-                                       maxlength="85" {formname key=RESOURCE_CONTACT} />
-                            </div>
-                            <div class="input-field">
-                                <label for="bulkEditAdminGroupId"
-                                       class="control-label">{translate key=ResourceAdministrator}:</label>
-                                <select id="bulkEditAdminGroupId" {formname key=RESOURCE_ADMIN_GROUP_ID}
-                                        class="form-control">
-                                    <option value="-1">{translate key=Unchanged}</option>
-                                    <option value="">-- {translate key=None} --</option>
-                                    {foreach from=$AdminGroups item=adminGroup}
-                                        <option value="{$adminGroup->Id}">{$adminGroup->Name}</option>
-                                    {/foreach}
-                                </select>
-                            </div>
-                            <div class="input-field">
-                                <label for="bulkEditStatusId" class="control-label">{translate key=Status}:</label>
-                                <select id="bulkEditStatusId" {formname key=RESOURCE_STATUS_ID} class="form-control">
-                                    <option value="-1">{translate key=Unchanged}</option>
-                                    <option value="{ResourceStatus::AVAILABLE}">{translate key=Available}</option>
-                                    <option value="{ResourceStatus::UNAVAILABLE}">{translate key=Unavailable}</option>
-                                    <option value="{ResourceStatus::HIDDEN}">{translate key=Hidden}</option>
-                                </select>
-                            </div>
-                            <div class="input-field">
-                                <label for="bulkEditStatusReasonId" class="control-label">{translate key=Reason}
-                                    :</label>
-                                <select id="bulkEditStatusReasonId" {formname key=RESOURCE_STATUS_REASON_ID}
-                                        class="form-control">
-                                </select>
-                            </div>
-                        </div>
-                        <div>
-                            <div class="input-field">
-                                <label for="bulkEditDescription" class="control-label">{translate key=Description}
-                                    :</label>
-                                <textarea id="bulkEditDescription"
-                                          class="form-control" {formname key=RESOURCE_DESCRIPTION}></textarea>
-                            </div>
-                            <div class="input-field">
-                                <label for="bulkEditNotes" class="control-label">{translate key=Notes}:</label>
-                                <textarea id="bulkEditNotes"
-                                          class="form-control" {formname key=RESOURCE_NOTES}></textarea>
-                            </div>
-                        </div>
-
-                        <div class="title">{translate key=Capacity}</div>
-                        <div>
-                            <div class="input-field">
-                                <div class="checkbox">
-                                    <input type="checkbox" id="bulkEditUnlimitedCapacity" class="unlimitedCapacity"
-                                           data-related-inputs="#bulkEditMaxCapacityInputs" {formname key=MAX_PARTICIPANTS_UNLIMITED}/>
-                                    <label for="bulkEditUnlimitedCapacity">{translate key=ResourceCapacityNone}</label>
-                                </div>
-                                <div id='bulkEditMaxCapacityInputs'>
-                                    {capture name="txtBulkEditMaxCapacity" assign="txtBulkEditMaxCapacity"}
-                                        <label for='bulkEditMaxCapacity' class='no-show'>Capacity</label>
-                                        <input type='number' id='bulkEditMaxCapacity'
-                                               class='form-control inline mid-number'
-                                               min='0'
-                                               max='9999' size='5' {formname key=MAX_PARTICIPANTS} />
-                                    {/capture}
-                                    {translate key='ResourceCapacity' args=$txtBulkEditMaxCapacity}
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="title">{translate key=Duration}</div>
-                        <div>
-                            <div class="input-field">
-                                <div class="checkbox">
-                                    <input type="checkbox" id="bulkEditNoMinimumDuration"
-                                           value="1" {formname key=MIN_DURATION_NONE}
-                                           data-related-inputs="#bulkMinDuration"/>
-                                    <label for="bulkEditNoMinimumDuration">{translate key=ResourceMinLengthNone}</label>
-                                </div>
-
-                                {capture name="txtMinDuration" assign="txtMinDuration"}
-                                    <label for='bulkEditMinDurationDays' class='no-show'>{translate key=days}</label>
-                                    <label for='bulkEditMinDurationHours' class='no-show'>{translate key=hours}</label>
-                                    <label for='bulkEditMinDurationMinutes'
-                                           class='no-show'>{translate key=minutes}</label>
-                                    <input type='number' id='bulkEditMinDurationDays' size='3'
-                                           class='days form-control inline'
-                                           maxlength='3' min='0' max='999' placeholder='{translate key=days}'/>
-                                    <input type='number' id='bulkEditMinDurationHours' size='2'
-                                           class='hours form-control inline'
-                                           maxlength='2' min='0' max='99' placeholder='{translate key=hours}'/>
-                                    <input type='number' id='bulkEditMinDurationMinutes' size='2'
-                                           class='minutes form-control inline'
-                                           maxlength='2' min='0' max='99' placeholder='{translate key=minutes}'/>
-                                    <input type='hidden' id='bulkEditMinDuration'
-                                           class='interval' {formname key=MIN_DURATION} />
-                                {/capture}
-                                <div id="bulkMinDuration">{translate key='ResourceMinLength' args=$txtMinDuration}</div>
-                            </div>
-                            <div class="input-field">
-                                <div class="checkbox">
-                                    <input type="checkbox" id="bulkEditNoMaximumDuration"
-                                           value="1" {formname key=MAX_DURATION_NONE}
-                                           data-related-inputs="#bulkMaxDuration"/>
-                                    <label for="bulkEditNoMaximumDuration">{translate key=ResourceMaxLengthNone}</label>
-                                </div>
-
-                                {capture name="txtMaxDuration" assign="txtMaxDuration"}
-                                    <label for='bulkEditMaxDurationDays' class='no-show'>{translate key=days}</label>
-                                    <label for='bulkEditMaxDurationHours' class='no-show'>{translate key=hours}</label>
-                                    <label for='bulkEditMaxDurationMinutes'
-                                           class='no-show'>{translate key=minutes}</label>
-                                    <input type='number' id='bulkEditMaxDurationDays' size='3'
-                                           class='days form-control inline'
-                                           maxlength='3' min='0' max='999' placeholder='{translate key=days}'/>
-                                    <input type='number' id='bulkEditMaxDurationHours' size='2'
-                                           class='hours form-control inline'
-                                           maxlength='2' min='0' max='99' placeholder='{translate key=hours}'/>
-                                    <input type='number' id='bulkEditMaxDurationMinutes' size='2'
-                                           class='minutes form-control inline'
-                                           maxlength='2' min='0' max='99' placeholder='{translate key=minutes}'/>
-                                    <input type='hidden' id='bulkEditMaxDuration'
-                                           class='interval' {formname key=MAX_DURATION} />
-                                {/capture}
-                                <div id="bulkMaxDuration">{translate key=ResourceMaxLength args=$txtMaxDuration}</div>
-
-                            </div>
-                            <div class="input-field">
-                                <div class="checkbox">
-                                    <input type="checkbox" id="bulkEditNoBufferTime"
-                                           value="1" {formname key=BUFFER_TIME_NONE}
-                                           data-related-inputs="#bulkBufferTime"/>
-                                    <label for="bulkEditNoBufferTime">{translate key=ResourceBufferTimeNone}</label>
-                                </div>
-
-                                {capture name="txtBufferTime" assign="txtBufferTime"}
-                                    <label for='bulkEditBufferTimeDays' class='no-show'>{translate key=days}</label>
-                                    <label for='bulkEditBufferTimeHours' class='no-show'>{translate key=hours}</label>
-                                    <label for='bulkEditBufferTimeMinutes'
-                                           class='no-show'>{translate key=minutes}</label>
-                                    <input type='number' id='bulkEditBufferTimeDays' size='3'
-                                           class='days form-control inline'
-                                           maxlength='3' min='0' max='999' placeholder='{translate key=days}'/>
-                                    <input type='number' id='bulkEditBufferTimeHours' size='2'
-                                           class='hours form-control inline'
-                                           maxlength='2' min='0' max='99' placeholder='{translate key=hours}'/>
-                                    <input type='number' id='bulkEditBufferTimeMinutes' size='2'
-                                           class='minutes form-control inline'
-                                           maxlength='2' min='0' max='99' placeholder='{translate key=minutes}'/>
-                                    <input type='hidden' id='bulkEditBufferTime'
-                                           class='interval' {formname key=BUFFER_TIME} />
-                                {/capture}
-                                <div id="bulkBufferTime">
-                                    {translate key=ResourceBufferTime args=$txtBufferTime}
-                                </div>
-
-                            </div>
-                        </div>
-
-                        <div class="title">{translate key=Access}</div>
-                        <div>
-
-                            <div class="input-field">
-                                <div class="checkbox">
-                                    <input type="checkbox" id="bulkEditNoStartNoticeAdd"
-                                           value="1" {formname key=MIN_NOTICE_NONE_ADD}
-                                           data-related-inputs="#bulkStartNoticeInputsAdd"/>
-                                    <label for="bulkEditNoStartNoticeAdd">{translate key=ResourceMinNoticeNone}</label>
-                                </div>
-                                {capture name="txtStartNoticeAdd" assign="txtStartNoticeAdd"}
-                                    <label for='bulkEditStartNoticeAddDays' class='no-show'>{translate key=days}</label>
-                                    <label for='bulkEditStartNoticeAddHours'
-                                           class='no-show'>{translate key=hours}</label>
-                                    <label for='bulkEditStartNoticeAddMinutes'
-                                           class='no-show'>{translate key=minutes}</label>
-                                    <input type='number' id='bulkEditStartNoticeAddDays' size='3'
-                                           class='days form-control inline'
-                                           maxlength='3' min='0' max='999' placeholder='{translate key=days}'/>
-                                    <input type='number' id='bulkEditStartNoticeAddHours' size='2'
-                                           class='hours form-control inline'
-                                           maxlength='2' min='0' max='99' placeholder='{translate key=hours}'/>
-                                    <input type='number' id='bulkEditStartNoticeAddMinutes' size='2'
-                                           class='minutes form-control inline'
-                                           maxlength='2' min='0' max='99' placeholder='{translate key=minutes}'/>
-                                    <input type='hidden' id='bulkEditStartNoticeAdd'
-                                           class='interval' {formname key=MIN_NOTICE_ADD} />
-                                {/capture}
-                                <div id='bulkStartNoticeInputsAdd'>
-                                    {translate key='ResourceMinNotice' args=$txtStartNoticeAdd}
-                                </div>
-                            </div>
-
-                            <div class="input-field">
-                                <div class="checkbox">
-                                    <input type="checkbox" id="bulkEditNoStartNoticeUpdate"
-                                           value="1" {formname key=MIN_NOTICE_NONE_UPDATE}
-                                           data-related-inputs="#bulkStartNoticeInputsUpdate"/>
-                                    <label for="bulkEditNoStartNoticeUpdate">{translate key=ResourceMinNoticeNoneUpdate}</label>
-                                </div>
-                                {capture name="txtStartNoticeUpdate" assign="txtStartNoticeUpdate"}
-                                    <label for='bulkEditStartNoticeUpdateDays'
-                                           class='no-show'>{translate key=days}</label>
-                                    <label for='bulkEditStartNoticeUpdateHours'
-                                           class='no-show'>{translate key=hours}</label>
-                                    <label for='bulkEditStartNoticeUpdateMinutes'
-                                           class='no-show'>{translate key=minutes}</label>
-                                    <input type='number' id='bulkEditStartNoticeUpdateDays' size='3'
-                                           class='days form-control inline'
-                                           maxlength='3' min='0' max='999' placeholder='{translate key=days}'/>
-                                    <input type='number' id='bulkEditStartNoticeUpdateHours' size='2'
-                                           class='hours form-control inline'
-                                           maxlength='2' min='0' max='99' placeholder='{translate key=hours}'/>
-                                    <input type='number' id='bulkEditStartNoticeUpdateMinutes' size='2'
-                                           class='minutes form-control inline'
-                                           maxlength='2' min='0' max='99' placeholder='{translate key=minutes}'/>
-                                    <input type='hidden' id='bulkEditStartNoticeUpdate'
-                                           class='interval' {formname key=MIN_NOTICE_UPDATE} />
-                                {/capture}
-                                <div id='bulkStartNoticeInputsUpdate'>
-                                    {translate key='ResourceMinNoticeUpdate' args=$txtStartNoticeUpdate}
-                                </div>
-                            </div>
-
-                            <div class="input-field">
-                                <div class="checkbox">
-                                    <input type="checkbox" id="bulkEditNoStartNoticeDelete"
-                                           value="1" {formname key=MIN_NOTICE_NONE_DELETE}
-                                           data-related-inputs="#bulkStartNoticeInputsDelete"/>
-                                    <label for="bulkEditNoStartNoticeDelete">{translate key=ResourceMinNoticeNoneDelete}</label>
-                                </div>
-                                {capture name="txtStartNoticeDelete" assign="txtStartNoticeDelete"}
-                                    <label for='bulkEditStartNoticeDeleteDays'
-                                           class='no-show'>{translate key=days}</label>
-                                    <label for='bulkEditStartNoticeDeleteHours'
-                                           class='no-show'>{translate key=hours}</label>
-                                    <label for='bulkEditStartNoticeDeleteMinutes'
-                                           class='no-show'>{translate key=minutes}</label>
-                                    <input type='number' id='bulkEditStartNoticeDeleteDays' size='3'
-                                           class='days form-control inline'
-                                           maxlength='3' min='0' max='999' placeholder='{translate key=days}'/>
-                                    <input type='number' id='bulkEditStartNoticeDeleteHours' size='2'
-                                           class='hours form-control inline'
-                                           maxlength='2' min='0' max='99' placeholder='{translate key=hours}'/>
-                                    <input type='number' id='bulkEditStartNoticeDeleteMinutes' size='2'
-                                           class='minutes form-control inline'
-                                           maxlength='2' min='0' max='99' placeholder='{translate key=minutes}'/>
-                                    <input type='hidden' id='bulkEditStartNoticeDelete'
-                                           class='interval' {formname key=MIN_NOTICE_DELETE} />
-                                {/capture}
-                                <div id='bulkStartNoticeInputsDelete'>
-                                    {translate key='ResourceMinNoticeDelete' args=$txtStartNoticeDelete}
-                                </div>
-                            </div>
-
-                            <div class="input-field">
-                                <div class="checkbox">
-                                    <input type="checkbox" id="bulkEditNoEndNotice"
-                                           value="1" {formname key=MAX_NOTICE_NONE}
-                                           data-related-inputs="#bulkEndNotice"/>
-                                    <label for="bulkEditNoEndNotice">{translate key=ResourceMaxNoticeNone}</label>
-                                </div>
-
-
-                                {capture name="txtEndNotice" assign="txtEndNotice"}
-                                    <label for='bulkEditEndNoticeDays' class='no-show'>{translate key=days}</label>
-                                    <label for='bulkEditEndNoticeHours' class='no-show'>{translate key=hours}</label>
-                                    <label for='bulkEditEndNoticeMinutes'
-                                           class='no-show'>{translate key=minutes}</label>
-                                    <input type='text' id='bulkEditEndNoticeDays' size='3'
-                                           class='days form-control inline'
-                                           maxlength='3' placeholder='{translate key=days}'/>
-                                    <input type='text' id='bulkEditEndNoticeHours' size='2'
-                                           class='hours form-control inline'
-                                           maxlength='2' placeholder='{translate key=hours}'/>
-                                    <input type='text' id='bulkEditEndNoticeMinutes' size='2'
-                                           class='minutes form-control inline'
-                                           maxlength='2' placeholder='{translate key=minutes}'/>
-                                    <input type='hidden' id='bulkEditEndNotice'
-                                           class='interval' {formname key=MAX_NOTICE} />
-                                {/capture}
-                                <div id="bulkEndNotice">{translate key='ResourceMaxNotice' args=$txtEndNotice}</div>
-                            </div>
-                        </div>
-
+                    <div>{translate key=Select}
+                        <a href="#" id="checkAllResources">{translate key=All}</a> |
+                        <a href="#" id="checkNoResources">{translate key=None}</a>
+                    </div>
+                    <div id="bulkUpdateList"></div>
+                    <div>
+                        <div class="title">{translate key=Common}</div>
                         <div class="input-field">
-                            <label for="bulkEditAllowMultiday"
-                                   class="control-label">{translate key=ResourceAllowMultiDay}</label>
-                            <select id="bulkEditAllowMultiday" class="form-control" {formname key=ALLOW_MULTIDAY}>
-                                {html_options options=$YesNoUnchangedOptions}
+                            <label for="bulkEditSchedule" class="active">{translate key=MoveToSchedule}
+                                :</label>
+                            <select id="bulkEditSchedule" {formname key=SCHEDULE_ID}>
+                                <option value="-1">{translate key=Unchanged}</option>
+                                {foreach from=$Schedules item=scheduleName key=scheduleId}
+                                    <option value="{$scheduleId}">{$scheduleName}</option>
+                                {/foreach}
                             </select>
                         </div>
-
                         <div class="input-field">
-                            <label for="bulkEditRequiresApproval"
-                                   class="control-label">{translate key='ResourceRequiresApproval'}</label>
-                            <select id="bulkEditRequiresApproval"
-                                    class="form-control input-sm" {formname key=REQUIRES_APPROVAL}>
-                                {html_options options=$YesNoUnchangedOptions}
+                            <label for="bulkEditResourceType" class="active">{translate key=ResourceType}
+                                :</label>
+                            <select id="bulkEditResourceType" {formname key=RESOURCE_TYPE_ID}>
+                                <option value="-1">{translate key=Unchanged}</option>
+                                <option value="">-- {translate key=None} --</option>
+                                {foreach from=$ResourceTypes item=resourceType key=id}
+                                    <option value="{$id}">{$resourceType->Name()}</option>
+                                {/foreach}
                             </select>
                         </div>
-
                         <div class="input-field">
-                            <label for="bulkEditAutoAssign"
-                                   class="control-label">{translate key='ResourcePermissionAutoGranted'}</label>
-                            <select id="bulkEditAutoAssign" class="form-control" {formname key=AUTO_ASSIGN}>
-                                {html_options options=$YesNoUnchangedOptions}
+                            <label for="bulkEditLocation" class="active">{translate key=Location}:</label>
+                            <input id="bulkEditLocation" type="text"
+                                   maxlength="85" {formname key=RESOURCE_LOCATION} />
+                        </div>
+                        <div class="input-field">
+                            <label for="bulkEditContact" class="active">{translate key=Contact}:</label>
+                            <input id="bulkEditContact" type="text"
+                                   maxlength="85" {formname key=RESOURCE_CONTACT} />
+                        </div>
+                        <div class="input-field">
+                            <label for="bulkEditAdminGroupId"
+                                   class="active">{translate key=ResourceAdministrator}:</label>
+                            <select id="bulkEditAdminGroupId" {formname key=RESOURCE_ADMIN_GROUP_ID}>
+                                <option value="-1">{translate key=Unchanged}</option>
+                                <option value="">-- {translate key=None} --</option>
+                                {foreach from=$AdminGroups item=adminGroup}
+                                    <option value="{$adminGroup->Id}">{$adminGroup->Name}</option>
+                                {/foreach}
                             </select>
                         </div>
-
                         <div class="input-field">
-                            <label for="bulkEditEnableCheckIn"
-                                   class="control-label">{translate key=RequiresCheckInNotification}</label>
-                            <select id="bulkEditEnableCheckIn" class="form-control" {formname key=ENABLE_CHECK_IN}>
-                                {html_options options=$YesNoUnchangedOptions}
-                            </select>
-                            <div class="no-show" id="bulkUpdateAutoReleaseMinutesDiv">
-                                {capture name="bulkEditTxtAutoRelease" assign="bulkEditTxtAutoRelease"}
-                                    <label for='bulkEditAutoReleaseMinutes' class='no-show'>Auto Release minutes</label>
-                                    <input type='number' max='99' min='0' id='bulkEditAutoReleaseMinutes'
-                                           class='minutes form-control inline' {formname key=AUTO_RELEASE_MINUTES} />
-                                {/capture}
-                                {translate key='AutoReleaseNotification' args=$bulkEditTxtAutoRelease}
-                            </div>
-                        </div>
-
-                        <div class="input-field">
-                            <label for="bulkEditAllowSubscriptions"
-                                   class="control-label">{translate key='TurnOnSubscription'}</label>
-                            <select id="bulkEditAllowSubscriptions"
-                                    class="form-control" {formname key=ALLOW_CALENDAR_SUBSCRIPTIONS}>
-                                {html_options options=$YesNoUnchangedOptions}
+                            <label for="bulkEditStatusId" class="active">{translate key=Status}:</label>
+                            <select id="bulkEditStatusId" {formname key=RESOURCE_STATUS_ID}>
+                                <option value="-1">{translate key=Unchanged}</option>
+                                <option value="{ResourceStatus::AVAILABLE}">{translate key=Available}</option>
+                                <option value="{ResourceStatus::UNAVAILABLE}">{translate key=Unavailable}</option>
+                                <option value="{ResourceStatus::HIDDEN}">{translate key=Hidden}</option>
                             </select>
                         </div>
+                        <div class="input-field">
+                            <label for="bulkEditStatusReasonId" class="active">{translate key=Reason}
+                                :</label>
+                            <select id="bulkEditStatusReasonId" {formname key=RESOURCE_STATUS_REASON_ID}>
+                            </select>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="input-field">
+                            <label for="bulkEditDescription" class="active">{translate key=Description}
+                                :</label>
+                            <textarea id="bulkEditDescription" {formname key=RESOURCE_DESCRIPTION}></textarea>
+                        </div>
+                        <div class="input-field">
+                            <label for="bulkEditNotes" class="active">{translate key=Notes}:</label>
+                            <textarea id="bulkEditNotes" {formname key=RESOURCE_NOTES}></textarea>
+                        </div>
+                    </div>
 
-                        {if $CreditsEnabled}
-                            <div class="title">{translate key=Credits}</div>
-                            <div class="input-field">
-                                {capture name="bulkEditCreditsPerSLot" assign="bulkEditCreditsPerSLot"}
-                                    <label for='bulkEditCreditsPerSlot' class='no-show'>Credits Per Slot</label>
-                                    <input type='number' min='0' step='1' id='bulkEditCreditsPerSlot'
-                                           class='credits form-control inline' {formname key=CREDITS} />
-                                {/capture}
-                                {translate key='CreditUsagePerSlot' args=$bulkEditCreditsPerSLot}
-                            </div>
-                            <div class="input-field">
-                                {capture name="bulkEditPeakCreditsPerSlot" assign="bulkEditPeakCreditsPerSlot"}
-                                    <label for='bulkEditPeakCreditsPerSlot' class='no-show'>Peak Credits Per
-                                        Slot</label>
-                                    <input type='number' min='0' step='1' id='bulkEditPeakCreditsPerSlot'
-                                           class='credits form-control inline' {formname key=PEAK_CREDITS} />
-                                {/capture}
-                                {translate key='PeakCreditUsagePerSlot' args=$bulkEditPeakCreditsPerSlot}
-                            </div>
-                        {/if}
-
-                        <div class="title">{translate key=AdditionalAttributes}</div>
-                        <div>
-                            {foreach from=$AttributeFilters item=attribute}
-                                {if !$attribute->UniquePerEntity()}
-                                    <div class="customAttribute">
-                                        {control type="AttributeControl" attribute=$attribute searchmode=true}
+                    <div class="title">{translate key=Capacity}</div>
+                    <div>
+                        <div class="input-field">
+                            <label for="bulkEditUnlimitedCapacity">
+                                <input type="checkbox" id="bulkEditUnlimitedCapacity" class="unlimitedCapacity"
+                                       data-related-inputs="#bulkEditMaxCapacityInputs" {formname key=MAX_PARTICIPANTS_UNLIMITED}/>
+                                <span>{translate key=ResourceCapacityNone}</span>
+                            </label>
+                            <div id='bulkEditMaxCapacityInputs'>
+                                {capture name="txtBulkEditMaxCapacity" assign="txtBulkEditMaxCapacity"}
+                                    <div class='input-field inline'>
+                                    <label for='bulkEditMaxCapacity'>Capacity</label>
+                                    <input type='number' id='bulkEditMaxCapacity'
+                                           class='mid-number'
+                                           min='0'
+                                           max='9999' size='5' {formname key=MAX_PARTICIPANTS} />
                                     </div>
-                                {/if}
-                            {/foreach}
+                                {/capture}
+                                {translate key='ResourceCapacity' args=$txtBulkEditMaxCapacity}
+                            </div>
                         </div>
                     </div>
-                    <div class="modal-footer">
-                        {cancel_button}
-                        {update_button}
-                        {indicator}
+
+                    <div class="title">{translate key=Duration}</div>
+                    <div>
+                        <div class="input-field">
+                            <label for="bulkEditNoMinimumDuration">
+                                <input type="checkbox" id="bulkEditNoMinimumDuration"
+                                       value="1" {formname key=MIN_DURATION_NONE}
+                                       data-related-inputs="#bulkMinDuration"/>
+                                <span>{translate key=ResourceMinLengthNone}</span>
+                            </label>
+
+                            {capture name="txtMinDuration" assign="txtMinDuration"}
+                                <label for='bulkEditMinDurationDays' class='no-show'>{translate key=days}</label>
+                                <label for='bulkEditMinDurationHours' class='no-show'>{translate key=hours}</label>
+                                <label for='bulkEditMinDurationMinutes'
+                                       class='no-show'>{translate key=minutes}</label>
+                                <input type='number' id='bulkEditMinDurationDays' size='3'
+                                       class='days form-control inline'
+                                       maxlength='3' min='0' max='999' placeholder='{translate key=days}'/>
+                                <input type='number' id='bulkEditMinDurationHours' size='2'
+                                       class='hours form-control inline'
+                                       maxlength='2' min='0' max='99' placeholder='{translate key=hours}'/>
+                                <input type='number' id='bulkEditMinDurationMinutes' size='2'
+                                       class='minutes form-control inline'
+                                       maxlength='2' min='0' max='99' placeholder='{translate key=minutes}'/>
+                                <input type='hidden' id='bulkEditMinDuration'
+                                       class='interval' {formname key=MIN_DURATION} />
+                            {/capture}
+                            <div id="bulkMinDuration">{translate key='ResourceMinLength' args=$txtMinDuration}</div>
+                        </div>
+                        <div class="input-field">
+                            <div class="checkbox">
+                                <input type="checkbox" id="bulkEditNoMaximumDuration"
+                                       value="1" {formname key=MAX_DURATION_NONE}
+                                       data-related-inputs="#bulkMaxDuration"/>
+                                <label for="bulkEditNoMaximumDuration">{translate key=ResourceMaxLengthNone}</label>
+                            </div>
+
+                            {capture name="txtMaxDuration" assign="txtMaxDuration"}
+                                <label for='bulkEditMaxDurationDays' class='no-show'>{translate key=days}</label>
+                                <label for='bulkEditMaxDurationHours' class='no-show'>{translate key=hours}</label>
+                                <label for='bulkEditMaxDurationMinutes'
+                                       class='no-show'>{translate key=minutes}</label>
+                                <input type='number' id='bulkEditMaxDurationDays' size='3'
+                                       class='days form-control inline'
+                                       maxlength='3' min='0' max='999' placeholder='{translate key=days}'/>
+                                <input type='number' id='bulkEditMaxDurationHours' size='2'
+                                       class='hours form-control inline'
+                                       maxlength='2' min='0' max='99' placeholder='{translate key=hours}'/>
+                                <input type='number' id='bulkEditMaxDurationMinutes' size='2'
+                                       class='minutes form-control inline'
+                                       maxlength='2' min='0' max='99' placeholder='{translate key=minutes}'/>
+                                <input type='hidden' id='bulkEditMaxDuration'
+                                       class='interval' {formname key=MAX_DURATION} />
+                            {/capture}
+                            <div id="bulkMaxDuration">{translate key=ResourceMaxLength args=$txtMaxDuration}</div>
+
+                        </div>
+                        <div class="input-field">
+                            <div class="checkbox">
+                                <input type="checkbox" id="bulkEditNoBufferTime"
+                                       value="1" {formname key=BUFFER_TIME_NONE}
+                                       data-related-inputs="#bulkBufferTime"/>
+                                <label for="bulkEditNoBufferTime">{translate key=ResourceBufferTimeNone}</label>
+                            </div>
+
+                            {capture name="txtBufferTime" assign="txtBufferTime"}
+                                <label for='bulkEditBufferTimeDays' class='no-show'>{translate key=days}</label>
+                                <label for='bulkEditBufferTimeHours' class='no-show'>{translate key=hours}</label>
+                                <label for='bulkEditBufferTimeMinutes'
+                                       class='no-show'>{translate key=minutes}</label>
+                                <input type='number' id='bulkEditBufferTimeDays' size='3'
+                                       class='days form-control inline'
+                                       maxlength='3' min='0' max='999' placeholder='{translate key=days}'/>
+                                <input type='number' id='bulkEditBufferTimeHours' size='2'
+                                       class='hours form-control inline'
+                                       maxlength='2' min='0' max='99' placeholder='{translate key=hours}'/>
+                                <input type='number' id='bulkEditBufferTimeMinutes' size='2'
+                                       class='minutes form-control inline'
+                                       maxlength='2' min='0' max='99' placeholder='{translate key=minutes}'/>
+                                <input type='hidden' id='bulkEditBufferTime'
+                                       class='interval' {formname key=BUFFER_TIME} />
+                            {/capture}
+                            <div id="bulkBufferTime">
+                                {translate key=ResourceBufferTime args=$txtBufferTime}
+                            </div>
+
+                        </div>
                     </div>
+
+                    <div class="title">{translate key=Access}</div>
+                    <div>
+
+                        <div class="input-field">
+                            <div class="checkbox">
+                                <input type="checkbox" id="bulkEditNoStartNoticeAdd"
+                                       value="1" {formname key=MIN_NOTICE_NONE_ADD}
+                                       data-related-inputs="#bulkStartNoticeInputsAdd"/>
+                                <label for="bulkEditNoStartNoticeAdd">{translate key=ResourceMinNoticeNone}</label>
+                            </div>
+                            {capture name="txtStartNoticeAdd" assign="txtStartNoticeAdd"}
+                                <label for='bulkEditStartNoticeAddDays' class='no-show'>{translate key=days}</label>
+                                <label for='bulkEditStartNoticeAddHours'
+                                       class='no-show'>{translate key=hours}</label>
+                                <label for='bulkEditStartNoticeAddMinutes'
+                                       class='no-show'>{translate key=minutes}</label>
+                                <input type='number' id='bulkEditStartNoticeAddDays' size='3'
+                                       class='days form-control inline'
+                                       maxlength='3' min='0' max='999' placeholder='{translate key=days}'/>
+                                <input type='number' id='bulkEditStartNoticeAddHours' size='2'
+                                       class='hours form-control inline'
+                                       maxlength='2' min='0' max='99' placeholder='{translate key=hours}'/>
+                                <input type='number' id='bulkEditStartNoticeAddMinutes' size='2'
+                                       class='minutes form-control inline'
+                                       maxlength='2' min='0' max='99' placeholder='{translate key=minutes}'/>
+                                <input type='hidden' id='bulkEditStartNoticeAdd'
+                                       class='interval' {formname key=MIN_NOTICE_ADD} />
+                            {/capture}
+                            <div id='bulkStartNoticeInputsAdd'>
+                                {translate key='ResourceMinNotice' args=$txtStartNoticeAdd}
+                            </div>
+                        </div>
+
+                        <div class="input-field">
+                            <div class="checkbox">
+                                <input type="checkbox" id="bulkEditNoStartNoticeUpdate"
+                                       value="1" {formname key=MIN_NOTICE_NONE_UPDATE}
+                                       data-related-inputs="#bulkStartNoticeInputsUpdate"/>
+                                <label for="bulkEditNoStartNoticeUpdate">{translate key=ResourceMinNoticeNoneUpdate}</label>
+                            </div>
+                            {capture name="txtStartNoticeUpdate" assign="txtStartNoticeUpdate"}
+                                <label for='bulkEditStartNoticeUpdateDays'
+                                       class='no-show'>{translate key=days}</label>
+                                <label for='bulkEditStartNoticeUpdateHours'
+                                       class='no-show'>{translate key=hours}</label>
+                                <label for='bulkEditStartNoticeUpdateMinutes'
+                                       class='no-show'>{translate key=minutes}</label>
+                                <input type='number' id='bulkEditStartNoticeUpdateDays' size='3'
+                                       class='days form-control inline'
+                                       maxlength='3' min='0' max='999' placeholder='{translate key=days}'/>
+                                <input type='number' id='bulkEditStartNoticeUpdateHours' size='2'
+                                       class='hours form-control inline'
+                                       maxlength='2' min='0' max='99' placeholder='{translate key=hours}'/>
+                                <input type='number' id='bulkEditStartNoticeUpdateMinutes' size='2'
+                                       class='minutes form-control inline'
+                                       maxlength='2' min='0' max='99' placeholder='{translate key=minutes}'/>
+                                <input type='hidden' id='bulkEditStartNoticeUpdate'
+                                       class='interval' {formname key=MIN_NOTICE_UPDATE} />
+                            {/capture}
+                            <div id='bulkStartNoticeInputsUpdate'>
+                                {translate key='ResourceMinNoticeUpdate' args=$txtStartNoticeUpdate}
+                            </div>
+                        </div>
+
+                        <div class="input-field">
+                            <div class="checkbox">
+                                <input type="checkbox" id="bulkEditNoStartNoticeDelete"
+                                       value="1" {formname key=MIN_NOTICE_NONE_DELETE}
+                                       data-related-inputs="#bulkStartNoticeInputsDelete"/>
+                                <label for="bulkEditNoStartNoticeDelete">{translate key=ResourceMinNoticeNoneDelete}</label>
+                            </div>
+                            {capture name="txtStartNoticeDelete" assign="txtStartNoticeDelete"}
+                                <label for='bulkEditStartNoticeDeleteDays'
+                                       class='no-show'>{translate key=days}</label>
+                                <label for='bulkEditStartNoticeDeleteHours'
+                                       class='no-show'>{translate key=hours}</label>
+                                <label for='bulkEditStartNoticeDeleteMinutes'
+                                       class='no-show'>{translate key=minutes}</label>
+                                <input type='number' id='bulkEditStartNoticeDeleteDays' size='3'
+                                       class='days form-control inline'
+                                       maxlength='3' min='0' max='999' placeholder='{translate key=days}'/>
+                                <input type='number' id='bulkEditStartNoticeDeleteHours' size='2'
+                                       class='hours form-control inline'
+                                       maxlength='2' min='0' max='99' placeholder='{translate key=hours}'/>
+                                <input type='number' id='bulkEditStartNoticeDeleteMinutes' size='2'
+                                       class='minutes form-control inline'
+                                       maxlength='2' min='0' max='99' placeholder='{translate key=minutes}'/>
+                                <input type='hidden' id='bulkEditStartNoticeDelete'
+                                       class='interval' {formname key=MIN_NOTICE_DELETE} />
+                            {/capture}
+                            <div id='bulkStartNoticeInputsDelete'>
+                                {translate key='ResourceMinNoticeDelete' args=$txtStartNoticeDelete}
+                            </div>
+                        </div>
+
+                        <div class="input-field">
+                            <div class="checkbox">
+                                <input type="checkbox" id="bulkEditNoEndNotice"
+                                       value="1" {formname key=MAX_NOTICE_NONE}
+                                       data-related-inputs="#bulkEndNotice"/>
+                                <label for="bulkEditNoEndNotice">{translate key=ResourceMaxNoticeNone}</label>
+                            </div>
+
+
+                            {capture name="txtEndNotice" assign="txtEndNotice"}
+                                <label for='bulkEditEndNoticeDays' class='no-show'>{translate key=days}</label>
+                                <label for='bulkEditEndNoticeHours' class='no-show'>{translate key=hours}</label>
+                                <label for='bulkEditEndNoticeMinutes'
+                                       class='no-show'>{translate key=minutes}</label>
+                                <input type='text' id='bulkEditEndNoticeDays' size='3'
+                                       class='days form-control inline'
+                                       maxlength='3' placeholder='{translate key=days}'/>
+                                <input type='text' id='bulkEditEndNoticeHours' size='2'
+                                       class='hours form-control inline'
+                                       maxlength='2' placeholder='{translate key=hours}'/>
+                                <input type='text' id='bulkEditEndNoticeMinutes' size='2'
+                                       class='minutes form-control inline'
+                                       maxlength='2' placeholder='{translate key=minutes}'/>
+                                <input type='hidden' id='bulkEditEndNotice'
+                                       class='interval' {formname key=MAX_NOTICE} />
+                            {/capture}
+                            <div id="bulkEndNotice">{translate key='ResourceMaxNotice' args=$txtEndNotice}</div>
+                        </div>
+                    </div>
+
+                    <div class="input-field">
+                        <label for="bulkEditAllowMultiday"
+                               class="control-label">{translate key=ResourceAllowMultiDay}</label>
+                        <select id="bulkEditAllowMultiday" class="form-control" {formname key=ALLOW_MULTIDAY}>
+                            {html_options options=$YesNoUnchangedOptions}
+                        </select>
+                    </div>
+
+                    <div class="input-field">
+                        <label for="bulkEditRequiresApproval"
+                               class="control-label">{translate key='ResourceRequiresApproval'}</label>
+                        <select id="bulkEditRequiresApproval"
+                                class="form-control input-sm" {formname key=REQUIRES_APPROVAL}>
+                            {html_options options=$YesNoUnchangedOptions}
+                        </select>
+                    </div>
+
+                    <div class="input-field">
+                        <label for="bulkEditAutoAssign"
+                               class="control-label">{translate key='ResourcePermissionAutoGranted'}</label>
+                        <select id="bulkEditAutoAssign" class="form-control" {formname key=AUTO_ASSIGN}>
+                            {html_options options=$YesNoUnchangedOptions}
+                        </select>
+                    </div>
+
+                    <div class="input-field">
+                        <label for="bulkEditEnableCheckIn"
+                               class="control-label">{translate key=RequiresCheckInNotification}</label>
+                        <select id="bulkEditEnableCheckIn" class="form-control" {formname key=ENABLE_CHECK_IN}>
+                            {html_options options=$YesNoUnchangedOptions}
+                        </select>
+                        <div class="no-show" id="bulkUpdateAutoReleaseMinutesDiv">
+                            {capture name="bulkEditTxtAutoRelease" assign="bulkEditTxtAutoRelease"}
+                                <label for='bulkEditAutoReleaseMinutes' class='no-show'>Auto Release minutes</label>
+                                <input type='number' max='99' min='0' id='bulkEditAutoReleaseMinutes'
+                                       class='minutes form-control inline' {formname key=AUTO_RELEASE_MINUTES} />
+                            {/capture}
+                            {translate key='AutoReleaseNotification' args=$bulkEditTxtAutoRelease}
+                        </div>
+                    </div>
+
+                    <div class="input-field">
+                        <label for="bulkEditAllowSubscriptions"
+                               class="control-label">{translate key='TurnOnSubscription'}</label>
+                        <select id="bulkEditAllowSubscriptions"
+                                class="form-control" {formname key=ALLOW_CALENDAR_SUBSCRIPTIONS}>
+                            {html_options options=$YesNoUnchangedOptions}
+                        </select>
+                    </div>
+
+                    {if $CreditsEnabled}
+                        <div class="title">{translate key=Credits}</div>
+                        <div class="input-field">
+                            {capture name="bulkEditCreditsPerSLot" assign="bulkEditCreditsPerSLot"}
+                                <label for='bulkEditCreditsPerSlot' class='no-show'>Credits Per Slot</label>
+                                <input type='number' min='0' step='1' id='bulkEditCreditsPerSlot'
+                                       class='credits form-control inline' {formname key=CREDITS} />
+                            {/capture}
+                            {translate key='CreditUsagePerSlot' args=$bulkEditCreditsPerSLot}
+                        </div>
+                        <div class="input-field">
+                            {capture name="bulkEditPeakCreditsPerSlot" assign="bulkEditPeakCreditsPerSlot"}
+                                <label for='bulkEditPeakCreditsPerSlot' class='no-show'>Peak Credits Per
+                                    Slot</label>
+                                <input type='number' min='0' step='1' id='bulkEditPeakCreditsPerSlot'
+                                       class='credits form-control inline' {formname key=PEAK_CREDITS} />
+                            {/capture}
+                            {translate key='PeakCreditUsagePerSlot' args=$bulkEditPeakCreditsPerSlot}
+                        </div>
+                    {/if}
+
+                    <div class="title">{translate key=AdditionalAttributes}</div>
+                    <div>
+                        {foreach from=$AttributeFilters item=attribute}
+                            {if !$attribute->UniquePerEntity()}
+                                <div class="customAttribute">
+                                    {control type="AttributeControl" attribute=$attribute searchmode=true}
+                                </div>
+                            {/if}
+                        {/foreach}
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    {cancel_button}
+                    {update_button}
+                    {indicator}
                 </div>
             </div>
             {csrf_token}
@@ -1685,36 +1713,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
     {jsfile src="dropzone.js"}
 
     <script type="text/javascript">
-
-
-        function hidePopoversWhenClickAway() {
-            $('body').on('click', function (e) {
-                $('[rel="popover"]').each(function () {
-                    if (!$(this).is(e.target) && $(this).has(e.target).length === 0 && $('.popover').has(e.target).length === 0) {
-                        $(this).popover('hide');
-                    }
-                });
-            });
-        }
-
-        function setUpPopovers() {
-            $('[rel="popover"]').popover({
-                container: 'body', html: true, placement: 'top', content: function () {
-                    var popoverId = $(this).data('popover-content');
-                    return $(popoverId).html();
-                }
-            }).click(function (e) {
-                e.preventDefault();
-            }).on('show.bs.popover', function () {
-
-            }).on('shown.bs.popover', function () {
-                var trigger = $(this);
-                var popover = trigger.data('bs.popover').tip();
-                popover.find('.editable-cancel').click(function () {
-                    trigger.popover('hide');
-                });
-            });
-        }
+        $('div.modal').modal();
 
         function setUpEditables() {
             $.fn.editable.defaults.mode = 'inline';

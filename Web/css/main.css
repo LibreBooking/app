@@ -701,6 +701,11 @@ i.right {
 div.clearfix {
   height: 0;
 }
+.modal.modal-large {
+  width: 75% !important;
+  max-height: 90% !important;
+  top: 5% !important;
+}
 /** end materialize overrides**/
 .ui-datepicker {
   z-index: 10000 !important;
