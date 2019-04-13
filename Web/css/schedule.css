@@ -51,7 +51,7 @@
 table.reservations {
   border-collapse: collapse;
   width: 100%;
-  font-size: .85em;
+  font-size: 0.85em;
   border: solid #36648B 1px;
 }
 table.reservations.mobile {
@@ -119,7 +119,7 @@ td.today {
   background-color: #5199d1 !important;
 }
 #reservations .mobile {
-  font-size: .8em;
+  font-size: 0.8em;
 }
 #reservations .mobile .resdate {
   background-color: #4279A5 !important;
@@ -305,7 +305,7 @@ ul.jqtree-tree .jqtree-toggler {
   width: 128px;
 }
 #reservations-left {
-  font-size: .9em;
+  font-size: 0.9em;
 }
 .advancedFilterTitle {
   margin-top: 10px;

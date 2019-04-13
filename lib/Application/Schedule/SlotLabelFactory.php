@@ -75,7 +75,7 @@ class SlotLabelFactory
             $canSeeUserDetails = $reservation->OwnerId == $this->user->UserId || $this->user->IsAdmin || $this->user->IsAdminForGroup($reservation->OwnerGroupIds());
             $canEditResource = $this->authorizationService->CanEditForResource($this->user, new SlotLabelResource($reservation));
             $shouldHideUser = $shouldHideUser && !$canSeeUserDetails && !$canEditResource;
-            $shouldHideDetails = $shouldHideDetails && !$canEditResource;
+            $shouldHideDetails = $shouldHideDetails && !$canEditResource && !$canSeeUserDetails;
         }
 
         if ($shouldHideDetails) {

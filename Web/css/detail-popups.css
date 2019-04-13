@@ -90,7 +90,7 @@ a:hover {
   border-top: solid 1px #3e3d3b;
   padding-top: 2px;
   color: #fff;
-  font-size: .8em;
+  font-size: 0.8em;
   background: #585754;
   background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #656460), color-stop(1, #585754));
   background: -ms-linear-gradient(bottom, #656460, #585754);
@@ -388,7 +388,7 @@ div.center {
   margin-bottom: 5px;
 }
 .horizontal-list label {
-  font-size: .9em;
+  font-size: 0.9em;
 }
 .center {
   text-align: center;
@@ -396,7 +396,7 @@ div.center {
 .pagination-rows {
   padding-top: 10px;
   color: #585754;
-  font-size: .8em;
+  font-size: 0.8em;
   font-weight: bold;
 }
 .wait-box {
@@ -433,7 +433,7 @@ label.booked-checkbox span {
   display: none !important;
 }
 h1 .label {
-  padding-bottom: .2em;
+  padding-bottom: 0.2em;
 }
 .no-data {
   font-style: italic;
@@ -589,8 +589,8 @@ img.logo {
   right: 0;
   bottom: 0;
   background-color: #ccc;
-  -webkit-transition: .4s;
-  transition: .4s;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
 }
 .slider:before {
   position: absolute;
@@ -600,8 +600,8 @@ img.logo {
   left: 4px;
   bottom: 4px;
   background-color: white;
-  -webkit-transition: .4s;
-  transition: .4s;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
 }
 input:checked + .slider {
   background-color: #53577F;
@@ -748,7 +748,7 @@ input[type=search]::-webkit-search-cancel-button {
   #userDetailsPopup {
     min-width: 250px;
     max-width: 310px;
-    font-size: .8em;
+    font-size: 0.8em;
   }
   #resourceDetailsPopup .description,
   #resourceDetailsPopup .attributes,
