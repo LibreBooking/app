@@ -774,6 +774,10 @@ class en_us extends Language
         $strings['SpecificTime'] = 'Specific Time';
         $strings['ReservationSeriesEndingPreference'] = 'When my recurring reservation series is ending';
         $strings['NotAttending'] = 'Not Attending';
+        $strings['ViewAvailability'] = 'View Availability';
+        $strings['ReservationDetails'] = 'Reservation Details';
+        $strings['StartTime'] = 'Start Time';
+        $strings['EndTime'] = 'End Time';
         // End Strings
 
 		// Install

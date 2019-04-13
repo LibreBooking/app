@@ -145,6 +145,7 @@ class ManageQuotasPage extends ActionPage implements IManageQuotasPage
 				5 => 'DayFridayAbbr',
 				6 => 'DaySaturdayAbbr',
 		));
+		$this->Set('TimeFormat', Resources::GetInstance()->GetDateFormat('timepicker'));
 
 		$this->Display('Admin/manage_quotas.tpl');
 	}
