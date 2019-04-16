@@ -201,6 +201,7 @@ $conf['settings']['authentication']['captcha.on.login'] = 'false';
  */
 $conf['settings']['credits']['enabled'] = 'false';
 $conf['settings']['credits']['allow.purchase'] = 'false';
+$conf['settings']['credits']['allow.sharing'] = 'false';
 /**
  * Slack integration
  */

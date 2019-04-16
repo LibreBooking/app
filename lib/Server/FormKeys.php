@@ -160,6 +160,7 @@ class FormKeys
 
 	const PARENT_ID = 'PARENT_ID';
 	const PARTICIPANT_LIST = 'participantList';
+	const PARTICIPANT_CREDITS = 'participantCredits';
 	const PARTICIPANT_ID = 'PARTICIPANT_ID';
 	const PASSWORD = 'password';
 	const PASSWORD_CONFIRM = 'passwordConfirm';

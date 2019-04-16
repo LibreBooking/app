@@ -1,4 +1,3 @@
-# noinspection SqlNoDataSourceInspectionForFile
 ALTER TABLE `custom_attributes`
   ADD COLUMN `admin_only` TINYINT(1) UNSIGNED;
 

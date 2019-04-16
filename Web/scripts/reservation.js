@@ -304,8 +304,7 @@ function Reservation(opts) {
                     checkbox.attr('requires-checkin', node.isCheckInEnabled);
                     checkbox.attr('autorelease-minutes', node.autoReleaseMinutes);
                     checkbox.addClass('additionalResourceCheckbox');
-                }
-                else {
+                } else {
                     checkbox.attr('group-id', node.id);
                     checkbox.addClass('additionalResourceGroupCheckbox');
                 }
@@ -347,8 +346,32 @@ function Reservation(opts) {
                     elements.requiredCreditsCount.addClass('insufficient-credits');
                     elements.creditCost.addClass('insufficient-credits');
                 }
+
+                elements.requiredCreditsCount.data('required-credit-count', data.creditsRequired);
+                CalculateCreditShareCost();
             });
         }
+    }
+
+    function DivideCreditCost() {
+        var totalCreditsRequired = parseInt(elements.requiredCreditsCount.data('required-credit-count'));
+        var participantCreditShare = 0;
+        elements.participantList.find('.credit-sharing').each(function (index, value) {
+            participantCreditShare += parseInt($(value).val());
+        });
+
+        return {
+            totalNeeded: totalCreditsRequired,
+            participantShare: participantCreditShare,
+            ownerShare: totalCreditsRequired - participantCreditShare
+        };
+    }
+
+    function CalculateCreditShareCost() {
+        var divided = DivideCreditCost();
+        $('#userCreditsShare').text(divided.ownerShare);
+
+        console.log(divided);
     }
 
     function GetSelectedResourceIds() {
@@ -534,8 +557,7 @@ function Reservation(opts) {
                     handleAdditionalResourceChecked($(v));
                 }
             });
-        }
-        else {
+        } else {
             // if all resources in a group are checked, check the group
             var groupId = checkbox.attr('group-id');
             var resourceId = checkbox.attr('resource-id');
@@ -551,8 +573,7 @@ function Reservation(opts) {
             // if this is the only checked checkbox, don't allow 'done'
             elements.addResourcesConfirm.addClass('disabled');
             elements.addResourcesConfirm.attr('disabled', true);
-        }
-        else {
+        } else {
             elements.addResourcesConfirm.removeClass('disabled');
             elements.addResourcesConfirm.removeAttr('disabled');
         }
@@ -828,13 +849,11 @@ function Reservation(opts) {
                 if (item.isReservable) {
                     if (type == 'begin') {
                         items.push('<option value="' + item.begin + '">' + item.label + '</option>');
-                    }
-                    else {
+                    } else {
                         items.push('<option value="' + item.end + '">' + item.labelEnd + '</option>');
 
                     }
-                }
-                else {
+                } else {
                     if (type == 'end' && item.begin == '00:00:00' && previousDateEndsAtMidnight(scheduleId, dateElement.val())) {
                         selectedPeriod = null;
                         items.push('<option value="' + item.begin + '" selected="selected">' + item.label + '</option>');
@@ -846,8 +865,7 @@ function Reservation(opts) {
                 var nextDate = moment(dateElement.val()).add(1, 'days').toDate();
                 dateTextbox.datepicker("setDate", nextDate);
                 dateElement.trigger('change');
-            }
-            else {
+            } else {
                 var html = items.join('');
                 periodsCache[type][weekday] = html;
                 periodElement.html(html);
@@ -888,6 +906,20 @@ function Reservation(opts) {
             var id = item.find('.id').val();
             item.remove();
             participation.removeParticipant(id);
+            CalculateCreditShareCost();
+        });
+
+        elements.participantList.on('change', '.credit-sharing', function (e) {
+            var divided = DivideCreditCost();
+            var input = $(e.target);
+            if (divided.ownerShare < 0) {
+                var previousValue = input.data('previous');
+                input.val(previousValue);
+            }
+            else {
+                input.data('previous', input.val());
+                CalculateCreditShareCost();
+            }
         });
 
         elements.participantAutocomplete.userAutoComplete(options.userAutocompleteUrl, function (ui) {
@@ -958,15 +990,13 @@ function Reservation(opts) {
                     var addbutton = $(v).find('.add-attachment');
                     if (i == allAttachments.length - 1) {
                         addbutton.show();
-                    }
-                    else {
+                    } else {
                         addbutton.hide();
                     }
 
                     $(v).find('.remove-attachment').show();
                 });
-            }
-            else {
+            } else {
                 elements.reservationAttachments.find('.add-attachment').show();
                 elements.reservationAttachments.find('.remove-attachment').hide();
             }
@@ -1092,14 +1122,14 @@ function Reservation(opts) {
             if (dateAsInt(elements.beginDate.val()) < dateAsInt(table.data('date'))) {
                 startCol = $(cols[0]);
             }
-            if (dateAsInt(elements.endDate.val())  > dateAsInt(table.data('date'))) {
+            if (dateAsInt(elements.endDate.val()) > dateAsInt(table.data('date'))) {
                 endCol = $(cols[cols.length - 1]);
             }
 
             var highlighter = $('<div class="availability-highlighter">&nbsp;</div>');
             elements.userAvailabilityBox.append(highlighter);
             highlighter.height(table.height() + 1);
-            highlighter.width(endCol.offset().left - startCol.offset().left + 2 + endCol.width() +  parseInt(startCol.css('padding-left')));
+            highlighter.width(endCol.offset().left - startCol.offset().left + 2 + endCol.width() + parseInt(startCol.css('padding-left')));
             highlighter.offset(
                 {
                     top: table.offset().top,
@@ -1235,12 +1265,20 @@ function Reservation(opts) {
         updateInviteeCount();
     };
 
-    participation.addParticipant = function (name, userId) {
+    participation.addParticipant = function (name, userId, credits) {
         if ($.inArray(userId, participation.addedUsers) >= 0) {
             return;
         }
 
-        var item = '<div class="user">' + '<a href="#" class="remove"><span class="fa fa-remove"></span></a> <a href="#" class="bindableUser" data-userid="' + userId + '">' + name + '</a><input type="hidden" class="id" name="participantList[]" value="' + userId + '" />' + '</div>';
+        credits = credits || 0;
+
+        var item = '<div class="user">' +
+            '<a href="#" class="remove">' +
+            '<span class="fa fa-remove"></span></a> ' +
+            '<a href="#" class="bindableUser" data-userid="' + userId + '">' + name + '</a>' +
+            '<input class="form-control input-sm inline credit-sharing" style="width:75px;" type="number" min="0" name="participantCredits[' + userId + ']" value="' + credits + '" data-previous="' + credits + '" /> credits' +
+            '<input type="hidden" class="id" name="participantList[]" value="' + userId + '" />' +
+            '</div>';
 
         elements.participantList.append(item);
         $('.bindableUser').bindUserDetails();

@@ -207,6 +207,17 @@ class ReservationSeries
 	}
 
     /**
+     * @param int[] $participantCredits
+     */
+    public function ChangeParticipantCredits($participantCredits)
+    {
+        foreach ($participantCredits as $userId => $creditCount)
+        {
+
+        }
+    }
+
+    /**
      * @param Reservation $r1
      * @param Reservation $r2
      * @return int

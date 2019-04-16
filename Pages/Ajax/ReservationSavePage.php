@@ -153,6 +153,11 @@ interface IReservationSavePage extends IReservationSaveResultsView, IRepeatOptio
      * @return bool
      */
     public function GetTermsOfServiceAcknowledgement();
+
+    /**
+     * @return int[]
+     */
+    public function GetParticipantCredits();
 }
 
 class ReservationSavePage extends SecurePage implements IReservationSavePage
@@ -385,6 +390,20 @@ class ReservationSavePage extends SecurePage implements IReservationSavePage
 
 		return array();
 	}
+
+    /**
+     * @return int[]
+     */
+    public function GetParticipantCredits()
+    {
+        $credits = $this->GetForm(FormKeys::PARTICIPANT_CREDITS);
+        if (is_array($credits))
+        {
+            return $credits;
+        }
+
+        return array();
+    }
 
 	/**
 	 * @return int[]
