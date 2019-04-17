@@ -873,6 +873,7 @@ class en_us extends Language
 		$strings['ReservationParticipationActivityPreference'] = 'When someone joins or leaves my reservation';
 		$strings['RegisteredAccountRequired'] = 'Only registered users can book reservations';
 		$strings['UserDoesNotHaveEnoughCredits'] = '%s has %s credits';
+		$strings['CreditsAssignedRule'] = 'This reservation requires %s credits but only %s have been assigned';
 		// End Errors
 
 		// Page Titles

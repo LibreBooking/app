@@ -70,12 +70,14 @@ class CreditsRule implements IReservationValidationRule
         $valid = true;
         $message = '';
         $totalCreditsAvailable = 0;
+        $totalBurden = 0;
 
         $ownerCreditBurden = $reservationSeries->GetOwnerCreditsShare();
 
         $owner = $this->userRepository->LoadById($reservationSeries->UserId());
         $currentCredits = $owner->GetCurrentCredits();
         $totalCreditsAvailable += $currentCredits;
+        $totalBurden += $ownerCreditBurden;
 
         if ($ownerCreditBurden > $currentCredits) {
             $valid = false;
@@ -87,21 +89,35 @@ class CreditsRule implements IReservationValidationRule
             $currentCredits = $user->GetCurrentCredits();
             $totalCreditsAvailable += $currentCredits;
 
+            $totalBurden += $creditBurden;
+
             if ($creditBurden > $currentCredits) {
                 $valid = false;
+
                 $message .= $resources->GetString('UserDoesNotHaveEnoughCredits', array($user->FullName(), $currentCredits)) . '\n';
             }
         }
 
-        if (!$valid)
-        {
+        if (!$valid) {
             return new ReservationRuleResult(false, $message);
         }
 
         $creditsConsumedByThisReservation = $reservationSeries->GetCreditsConsumed();
         $creditsRequired = $reservationSeries->GetCreditsRequired();
 
-        return new ReservationRuleResult($creditsRequired <= $totalCreditsAvailable + $creditsConsumedByThisReservation,
-            Resources::GetInstance()->GetString('CreditsRule', array($creditsRequired, $totalCreditsAvailable)));
+        $enoughCreditsAvailable = $creditsRequired <= $totalCreditsAvailable + $creditsConsumedByThisReservation;
+        $enoughCreditsAssigned = $creditsRequired <= $totalBurden + $creditsConsumedByThisReservation;
+
+        if (!$enoughCreditsAvailable) {
+            return new ReservationRuleResult(false,
+                Resources::GetInstance()->GetString('CreditsRule', array($creditsRequired, $totalCreditsAvailable)));
+        }
+
+        if (!$enoughCreditsAssigned) {
+            return new ReservationRuleResult(false,
+                Resources::GetInstance()->GetString('CreditsAssignedRule', array($creditsRequired, $enoughCreditsAssigned)));
+        }
+
+        return new ReservationRuleResult();
     }
 }
