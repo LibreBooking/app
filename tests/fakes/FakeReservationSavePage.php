@@ -59,6 +59,7 @@ class FakeReservationSavePage implements IReservationSavePage
     public $participatingGuests = array();
     public $invitedGuests = array();
     public $canJoinWaitlist = false;
+    public $participantCredits = array();
 
     public function __construct()
     {
@@ -305,6 +306,14 @@ class FakeReservationSavePage implements IReservationSavePage
     public function GetTermsOfServiceAcknowledgement()
     {
         // TODO: Implement GetTermsOfServiceAcknowledgement() method.
+    }
+
+    /**
+     * @return int[]
+     */
+    public function GetParticipantCredits()
+    {
+       return $this->participantCredits;
     }
 }
 

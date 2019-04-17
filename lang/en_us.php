@@ -872,6 +872,7 @@ class en_us extends Language
 		$strings['WhatCanThisGroupManage'] = 'What can this group manage?';
 		$strings['ReservationParticipationActivityPreference'] = 'When someone joins or leaves my reservation';
 		$strings['RegisteredAccountRequired'] = 'Only registered users can book reservations';
+		$strings['UserDoesNotHaveEnoughCredits'] = '%s has %s credits';
 		// End Errors
 
 		// Page Titles

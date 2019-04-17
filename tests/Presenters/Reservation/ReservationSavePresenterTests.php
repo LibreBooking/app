@@ -35,7 +35,7 @@ class ReservationSavePresenterTests extends TestBase
 	private $userId;
 
 	/**
-	 * @var IReservationSavePage|FakeReservationSavePage
+	 * @var FakeReservationSavePage
 	 */
 	private $page;
 
@@ -114,6 +114,8 @@ class ReservationSavePresenterTests extends TestBase
 		$invitedGuests = array('i1@email.com');
 		$this->page->invitedGuests = $invitedGuests;
 
+		$this->page->participantCredits = array(5 => 1, 10 => 2);
+
 		$roFactory = new RepeatOptionsFactory();
 		$repeatOptions = $roFactory->CreateFromComposite($this->page, $timezone);
 
@@ -186,6 +188,8 @@ class ReservationSavePresenterTests extends TestBase
 		$this->assertEquals($participatingGuests, $actualReservation->CurrentInstance()->AddedParticipatingGuests());
 		$this->assertEquals($invitedGuests, $actualReservation->CurrentInstance()->AddedInvitedGuests());
 		$this->assertEquals($expectedCredits, $actualReservation->GetCreditsRequired(), '3 credits per slot, 2 day reservation, recurs 28 times');
+	    $this->assertEquals($this->page->participantCredits, $actualReservation->GetParticipantCredits());
+	    $this->assertEquals(165, $actualReservation->GetOwnerCreditsShare(), '168 - 3 for participants');
 	}
 
 	public function testHandlingReservationCreationDelegatesToHandler()

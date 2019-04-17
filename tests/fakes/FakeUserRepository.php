@@ -47,6 +47,11 @@ class FakeUserRepository implements IUserRepository
      */
     public $_UserDtos;
 
+    /**
+     * @var User[]
+     */
+    public $_UsersById = [];
+
     public function __construct()
 	{
 		$this->_User = new FakeUser(123);
@@ -57,6 +62,10 @@ class FakeUserRepository implements IUserRepository
 	 */
 	function LoadById($userId)
 	{
+	    if (!empty($this->_UsersById) && array_key_exists($userId, $this->_UsersById))
+        {
+            return $this->_UsersById[$userId];
+        }
 		return $this->_User;
 	}
 

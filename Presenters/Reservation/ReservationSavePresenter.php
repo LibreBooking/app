@@ -117,7 +117,7 @@ class ReservationSavePresenter implements IReservationSavePresenter
 		$participantIds = $this->page->GetParticipants();
 		$participantCredits = $this->page->GetParticipantCredits();
 		$reservationSeries->ChangeParticipants($participantIds);
-		$reservationSeries->ChangeParticipantCredits($participantCredits);
+		$reservationSeries->ChangeParticipantCreditShare($participantCredits);
 
 		$inviteeIds = $this->page->GetInvitees();
 		$reservationSeries->ChangeInvitees($inviteeIds);

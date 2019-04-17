@@ -23,38 +23,85 @@ require_once(ROOT_DIR . 'Domain/Access/UserRepository.php');
 
 class CreditsRule implements IReservationValidationRule
 {
-	/**
-	 * @var IUserRepository
-	 */
-	private $userRepository;
-	/**
-	 * @var UserSession
-	 */
-	private $user;
+    /**
+     * @var IUserRepository
+     */
+    private $userRepository;
+    /**
+     * @var UserSession
+     */
+    private $user;
 
-	public function __construct(IUserRepository $userRepository, UserSession $user)
-	{
-		$this->userRepository = $userRepository;
-		$this->user = $user;
-	}
+    public function __construct(IUserRepository $userRepository, UserSession $user)
+    {
+        $this->userRepository = $userRepository;
+        $this->user = $user;
+    }
 
-	public function Validate($reservationSeries, $retryParameters)
-	{
-		if (!Configuration::Instance()->GetSectionKey(ConfigSection::CREDITS, ConfigKeys::CREDITS_ENABLED, new BooleanConverter()))
-		{
-			return new ReservationRuleResult();
-		}
+    public function Validate($reservationSeries, $retryParameters)
+    {
+        if (!Configuration::Instance()->GetSectionKey(ConfigSection::CREDITS, ConfigKeys::CREDITS_ENABLED, new BooleanConverter())) {
+            return new ReservationRuleResult();
+        }
 
-		$user = $this->userRepository->LoadById($this->user->UserId);
-		$userCredits = $user->GetCurrentCredits();
+        if ($reservationSeries->IsSharingCredits()) {
+            return $this->ValidateWithSharing($reservationSeries);
+        }
 
-		$creditsConsumedByThisReservation = $reservationSeries->GetCreditsConsumed();
-		$creditsRequired = $reservationSeries->GetCreditsRequired();
+        $user = $this->userRepository->LoadById($reservationSeries->UserId());
+        $userCredits = $user->GetCurrentCredits();
 
-		Log::Debug('Credits allocated to reservation=%s, Credits required=%s, Credits available=%s, ReservationSeriesId=%s, UserId=%s',
-				   $creditsConsumedByThisReservation, $creditsRequired, $userCredits,$reservationSeries->SeriesId(), $user->Id());
+        $creditsConsumedByThisReservation = $reservationSeries->GetCreditsConsumed();
+        $creditsRequired = $reservationSeries->GetCreditsRequired();
 
-		return new ReservationRuleResult($creditsRequired <= $userCredits + $creditsConsumedByThisReservation,
-										 Resources::GetInstance()->GetString('CreditsRule', array($creditsRequired, $userCredits)));
-	}
+        Log::Debug('Credits allocated to reservation=%s, Credits required=%s, Credits available=%s, ReservationSeriesId=%s, UserId=%s',
+            $creditsConsumedByThisReservation, $creditsRequired, $userCredits, $reservationSeries->SeriesId(), $user->Id());
+
+        return new ReservationRuleResult($creditsRequired <= $userCredits + $creditsConsumedByThisReservation,
+            Resources::GetInstance()->GetString('CreditsRule', array($creditsRequired, $userCredits)));
+    }
+
+    /**
+     * @param ReservationSeries $reservationSeries
+     */
+    private function ValidateWithSharing($reservationSeries)
+    {
+        $resources = Resources::GetInstance();
+        $valid = true;
+        $message = '';
+        $totalCreditsAvailable = 0;
+
+        $ownerCreditBurden = $reservationSeries->GetOwnerCreditsShare();
+
+        $owner = $this->userRepository->LoadById($reservationSeries->UserId());
+        $currentCredits = $owner->GetCurrentCredits();
+        $totalCreditsAvailable += $currentCredits;
+
+        if ($ownerCreditBurden > $currentCredits) {
+            $valid = false;
+            $message .= $resources->GetString('UserDoesNotHaveEnoughCredits', array($owner->FullName(), $currentCredits)) . '\n';
+        }
+
+        foreach ($reservationSeries->GetParticipantCredits() as $userId => $creditBurden) {
+            $user = $this->userRepository->LoadById($userId);
+            $currentCredits = $user->GetCurrentCredits();
+            $totalCreditsAvailable += $currentCredits;
+
+            if ($creditBurden > $currentCredits) {
+                $valid = false;
+                $message .= $resources->GetString('UserDoesNotHaveEnoughCredits', array($user->FullName(), $currentCredits)) . '\n';
+            }
+        }
+
+        if (!$valid)
+        {
+            return new ReservationRuleResult(false, $message);
+        }
+
+        $creditsConsumedByThisReservation = $reservationSeries->GetCreditsConsumed();
+        $creditsRequired = $reservationSeries->GetCreditsRequired();
+
+        return new ReservationRuleResult($creditsRequired <= $totalCreditsAvailable + $creditsConsumedByThisReservation,
+            Resources::GetInstance()->GetString('CreditsRule', array($creditsRequired, $totalCreditsAvailable)));
+    }
 }

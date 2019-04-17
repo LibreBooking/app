@@ -66,11 +66,60 @@ class CreditsRuleTests extends TestBase
 
 		$user = new FakeUser();
 		$user->WithCredits(9);
+        $this->userRepository->_User = $user;
 
 		$result = $this->rule->Validate($reservation, null);
 
 		$this->assertFalse($result->IsValid());
 	}
+	
+	public function testTrueIfAllParticipantsHaveEnoughAndItCovers()
+	{
+	    $reservation = new TestReservationSeries();
+        $reservation->WithCreditsRequired(12);
+        $reservation->WithOwnerId(1);
+        $reservation->ChangeParticipantCreditShare(array(2 => 1, 3 => 10));
 
+        $owner = new FakeUser(1);
+        $owner->WithCredits(9);
 
+        $p1 = new FakeUser(2);
+        $p1->WithCredits(2);
+
+        $p2 = new FakeUser(2);
+        $p2->WithCredits(10);
+
+        $this->userRepository->_UsersById[1] = $owner;
+        $this->userRepository->_UsersById[2] = $p1;
+        $this->userRepository->_UsersById[3] = $p2;
+
+        $result = $this->rule->Validate($reservation, null);
+
+        $this->assertTrue($result->IsValid(), $result->ErrorMessage());
+	}
+	
+	public function testFalseIfAtLeastOneParticipantDoesNotHaveEnough()
+	{
+        $reservation = new TestReservationSeries();
+        $reservation->WithCreditsRequired(16);
+        $reservation->WithOwnerId(1);
+        $reservation->ChangeParticipantCreditShare(array(2 => 3, 3 => 11));
+
+        $owner = new FakeUser(1);
+        $owner->WithCredits(1);
+
+        $p1 = new FakeUser(2);
+        $p1->WithCredits(2);
+
+        $p2 = new FakeUser(2);
+        $p2->WithCredits(10);
+
+        $this->userRepository->_UsersById[1] = $owner;
+        $this->userRepository->_UsersById[2] = $p1;
+        $this->userRepository->_UsersById[3] = $p2;
+
+        $result = $this->rule->Validate($reservation, null);
+
+        $this->assertFalse($result->IsValid(), $result->ErrorMessage());
+	}
 }
