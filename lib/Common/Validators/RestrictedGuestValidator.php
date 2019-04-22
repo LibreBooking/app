@@ -1,7 +1,6 @@
 <?php
-
 /**
- * Copyright 2017-2019 Nick Korbel
+ * Copyright 2019 Nick Korbel
  *
  * This file is part of Booked Scheduler.
  *
@@ -19,27 +18,29 @@
  * along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-require_once(ROOT_DIR . 'lib/Application/Authentication/namespace.php');
+require_once (ROOT_DIR . 'lib/Application/Authentication/GuestUserService.php');
 
-class FakeGuestUserService implements IGuestUserService
+class RestrictedGuestValidator extends ValidatorBase implements IValidator
 {
-
-	/**
-	 * @var UserSession
-	 */
-	public $_UserSession;
+    private $email;
     /**
-     * @var bool
+     * @var IGuestUserService
      */
-    private $_EmailExists = false;
+    private $guestUserService;
 
-    public function CreateOrLoad($email)
-	{
-		return $this->_UserSession;
-	}
-
-    public function EmailExists($email)
+    public function __construct($email, IGuestUserService $guestUserService)
     {
-        return $this->_EmailExists;
+        $this->email = $email;
+        $this->guestUserService = $guestUserService;
+    }
+
+    public function Validate()
+    {
+        $this->isValid = $this->guestUserService->EmailExists($this->email);
+
+        if (!$this->isValid)
+        {
+            $this->AddMessageKey('RegisteredAccountRequired');
+        }
     }
 }

@@ -90,7 +90,7 @@ a:hover {
   border-top: solid 1px #3e3d3b;
   padding-top: 2px;
   color: #fff;
-  font-size: .8em;
+  font-size: 0.8em;
   background: #585754;
   background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #656460), color-stop(1, #585754));
   background: -ms-linear-gradient(bottom, #656460, #585754);
@@ -388,7 +388,7 @@ div.center {
   margin-bottom: 5px;
 }
 .horizontal-list label {
-  font-size: .9em;
+  font-size: 0.9em;
 }
 .center {
   text-align: center;
@@ -396,7 +396,7 @@ div.center {
 .pagination-rows {
   padding-top: 10px;
   color: #585754;
-  font-size: .8em;
+  font-size: 0.8em;
   font-weight: bold;
 }
 .wait-box {
@@ -433,7 +433,7 @@ label.booked-checkbox span {
   display: none !important;
 }
 h1 .label {
-  padding-bottom: .2em;
+  padding-bottom: 0.2em;
 }
 .no-data {
   font-style: italic;
@@ -589,8 +589,8 @@ img.logo {
   right: 0;
   bottom: 0;
   background-color: #ccc;
-  -webkit-transition: .4s;
-  transition: .4s;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
 }
 .slider:before {
   position: absolute;
@@ -600,8 +600,8 @@ img.logo {
   left: 4px;
   bottom: 4px;
   background-color: white;
-  -webkit-transition: .4s;
-  transition: .4s;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
 }
 input:checked + .slider {
   background-color: #53577F;
@@ -1117,7 +1117,7 @@ input[type="radio"] .styled:checked + label::after {
 table.reservations {
   border-collapse: collapse;
   width: 100%;
-  font-size: .85em;
+  font-size: 0.85em;
   border: solid #36648B 1px;
 }
 table.reservations.mobile {
@@ -1185,7 +1185,7 @@ td.today {
   background-color: #5199d1 !important;
 }
 #reservations .mobile {
-  font-size: .8em;
+  font-size: 0.8em;
 }
 #reservations .mobile .resdate {
   background-color: #4279A5 !important;
@@ -1371,7 +1371,7 @@ ul.jqtree-tree .jqtree-toggler {
   width: 128px;
 }
 #reservations-left {
-  font-size: .9em;
+  font-size: 0.9em;
 }
 .advancedFilterTitle {
   margin-top: 10px;
@@ -1500,7 +1500,7 @@ a.toggle-sidebar {
   #userDetailsPopup {
     min-width: 250px;
     max-width: 310px;
-    font-size: .8em;
+    font-size: 0.8em;
   }
   #resourceDetailsPopup .description,
   #resourceDetailsPopup .attributes,
@@ -1527,7 +1527,7 @@ a.toggle-sidebar {
   font-style: italic;
 }
 .durationText {
-  font-size: .9em;
+  font-size: 0.9em;
   font-weight: bold;
   display: inline;
   color: #000;
@@ -1843,7 +1843,7 @@ a.remove {
 .availability-highlighter {
   position: absolute;
   background-color: rebeccapurple;
-  opacity: .25;
+  opacity: 0.25;
 }
 #page-view-reservation .participationAction {
   margin-bottom: 5px;
@@ -1924,7 +1924,7 @@ span.error {
   font-size: 12px;
 }
 .admin-panel h5 {
-  font-size: .9em;
+  font-size: 0.9em;
   font-weight: bold;
   text-transform: uppercase;
 }
@@ -2225,7 +2225,7 @@ label.label-top,
 .label-top label {
   display: block;
   clear: left;
-  font-size: .9em;
+  font-size: 0.9em;
 }
 ul.resource-status-reasons li {
   padding: 5px 5px;
@@ -2749,7 +2749,7 @@ ul.jqtree-tree .jqtree-toggler {
   height: 100%;
   text-align: center;
   background-color: #353432;
-  opacity: .8;
+  opacity: 0.8;
   filter: alpha(opacity=80);
   display: none;
 }

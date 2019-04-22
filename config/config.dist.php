@@ -205,3 +205,7 @@ $conf['settings']['credits']['allow.purchase'] = 'false';
  * Slack integration
  */
 $conf['settings']['slack']['token'] = '';
+/**
+ * Tablet view
+ */
+$conf['settings']['tablet.view']['allow.guest.reservations'] = 'false';

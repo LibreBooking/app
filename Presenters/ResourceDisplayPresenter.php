@@ -300,6 +300,10 @@ class ResourceDisplayPresenter extends ActionPresenter
     {
         if ($action == 'reserve') {
             $this->page->RegisterValidator('emailformat', new EmailValidator($this->page->GetEmail()));
+            if (!Configuration::Instance()->GetSectionKey(ConfigSection::TABLET_VIEW, ConfigKeys::TABLET_VIEW_ALLOW_GUESTS, new BooleanConverter()))
+            {
+                $this->page->RegisterValidator('guestdenied', new RestrictedGuestValidator($this->page->GetEmail(), $this->guestUserService));
+            }
         }
     }
 

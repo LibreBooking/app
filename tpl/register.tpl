@@ -39,7 +39,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
             <h1>{translate key=RegisterANewAccount}</h1>
 
-            <div id="registrationError" class="validationSummary alert alert-danger no-show" id="validationErrors">
+            <div class="validationSummary alert alert-danger no-show" id="validationErrors">
                 <ul>
                     {async_validator id="uniqueemail" key="UniqueEmailRequired"}
                     {async_validator id="uniqueusername" key="UniqueUsernameRequired"}

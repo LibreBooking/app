@@ -27,7 +27,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 	<div class="default-box col-xs-12 col-sm-8 col-sm-offset-2">
 		<h2>{translate key=WeNeedYourEmailAddress}</h2>
 
-		<form method="post" id="form-guest-collect" action="{$smarty.server.SCRIPT_NAME}" role="form">
+		<form method="post" id="form-guest-collect" action="{$smarty.server.REQUEST_URI|escape:'html'}" role="form">
 
 			<div class="row">
 				<div class="col-xs-12">

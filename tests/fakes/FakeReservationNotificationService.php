@@ -1,7 +1,6 @@
 <?php
-
 /**
- * Copyright 2017-2019 Nick Korbel
+ * Copyright 2019 Nick Korbel
  *
  * This file is part of Booked Scheduler.
  *
@@ -19,27 +18,17 @@
  * along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-require_once(ROOT_DIR . 'lib/Application/Authentication/namespace.php');
+require_once (ROOT_DIR . 'lib/Application/Reservation/Notification/IReservationNotificationService.php');
 
-class FakeGuestUserService implements IGuestUserService
+class FakeReservationNotificationService implements IReservationNotificationService
 {
-
-	/**
-	 * @var UserSession
-	 */
-	public $_UserSession;
     /**
-     * @var bool
+     * @var ReservationSeries
      */
-    private $_EmailExists = false;
+    public $_ReservationNotified;
 
-    public function CreateOrLoad($email)
-	{
-		return $this->_UserSession;
-	}
-
-    public function EmailExists($email)
+    function Notify($reservationSeries)
     {
-        return $this->_EmailExists;
+        $this->_ReservationNotified = $reservationSeries;
     }
 }

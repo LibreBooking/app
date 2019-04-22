@@ -92,8 +92,8 @@ class AvailableDashboardItem
      */
     public function HasColor()
     {
-        if ($this->next != null) {
-            $color = $this->next->GetColor();
+        if ($this->resource != null) {
+            $color = $this->resource->GetColor();
             return !empty($color);
         }
 
@@ -105,8 +105,8 @@ class AvailableDashboardItem
      */
     public function GetTextColor()
     {
-        if ($this->next != null) {
-            return $this->next->GetTextColor();
+        if ($this->resource != null) {
+            return $this->resource->GetTextColor();
         }
 
         return '';
@@ -117,8 +117,8 @@ class AvailableDashboardItem
      */
     public function GetColor()
     {
-        if ($this->next != null) {
-            return $this->next->GetColor();
+        if ($this->resource != null) {
+            return $this->resource->GetColor();
         }
 
         return '';

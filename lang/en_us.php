@@ -774,6 +774,10 @@ class en_us extends Language
         $strings['SpecificTime'] = 'Specific Time';
         $strings['ReservationSeriesEndingPreference'] = 'When my recurring reservation series is ending';
         $strings['NotAttending'] = 'Not Attending';
+        $strings['ViewAvailability'] = 'View Availability';
+        $strings['ReservationDetails'] = 'Reservation Details';
+        $strings['StartTime'] = 'Start Time';
+        $strings['EndTime'] = 'End Time';
         // End Strings
 
 		// Install
@@ -867,6 +871,7 @@ class en_us extends Language
 		$strings['DescriptionRequiredRule'] = 'Reservation description is required';
 		$strings['WhatCanThisGroupManage'] = 'What can this group manage?';
 		$strings['ReservationParticipationActivityPreference'] = 'When someone joins or leaves my reservation';
+		$strings['RegisteredAccountRequired'] = 'Only registered users can book reservations';
 		// End Errors
 
 		// Page Titles

@@ -153,6 +153,8 @@ class ConfigKeys
 	const AUTHENTICATION_CAPTCHA_ON_LOGIN = 'captcha.on.login';
 
 	const SLACK_TOKEN = 'token';
+
+	const TABLET_VIEW_ALLOW_GUESTS = 'allow.guest.reservations';
 }
 
 class ConfigSection
@@ -179,4 +181,5 @@ class ConfigSection
     const GOOGLE_ANALYTICS = 'google.analytics';
     const PAYMENTS = 'payments';
     const SLACK = 'slack';
+    const TABLET_VIEW = 'tablet.view';
 }

@@ -79,7 +79,7 @@ class PostReservationFactory implements IPostReservationFactory
      */
     public function CreatePostDeleteService(UserSession $userSession)
     {
-        return new DeleteReservationNotificationService(new UserRepository(), new ResourceRepository(), new AttributeRepository());
+        return new DeleteReservationNotificationService(new UserRepository(), new AttributeRepository());
     }
 
     /**
