@@ -1215,8 +1215,8 @@ function Reservation(opts) {
         dialogElement.modal('show');
     };
 
-    Reservation.prototype.addParticipant = function (name, userId) {
-        participation.addParticipant(name, userId);
+    Reservation.prototype.addParticipant = function (name, userId, creditCount) {
+        participation.addParticipant(name, userId, creditCount);
     };
 
     Reservation.prototype.addInvitee = function (name, userId) {

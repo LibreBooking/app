@@ -26,8 +26,9 @@ class ReservationUserView
     public $Email;
     public $LevelId;
     public $FullName;
+    public $CreditCount;
 
-    public function __construct($userId, $firstName, $lastName, $email, $levelId)
+    public function __construct($userId, $firstName, $lastName, $email, $levelId, $creditCount = 0)
     {
         $this->UserId = $userId;
         $this->FirstName = $firstName;
@@ -35,6 +36,7 @@ class ReservationUserView
         $this->FullName = $firstName . ' ' . $lastName;
         $this->Email = $email;
         $this->LevelId = $levelId;
+        $this->CreditCount = $creditCount;
     }
 
     public function IsOwner()

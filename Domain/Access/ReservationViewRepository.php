@@ -311,7 +311,9 @@ class ReservationViewRepository implements IReservationViewRepository
                 $row[ColumnNames::FIRST_NAME],
                 $row[ColumnNames::LAST_NAME],
                 $row[ColumnNames::EMAIL],
-                $levelId);
+                $levelId,
+                $row[ColumnNames::CREDIT_COUNT]
+            );
 
             if ($levelId == ReservationUserLevel::PARTICIPANT) {
                 $reservationView->Participants[] = $reservationUserView;

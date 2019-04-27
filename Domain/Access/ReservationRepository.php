@@ -119,31 +119,23 @@ class ReservationRepository implements IReservationRepository
                 $this->AddReservationAttachment($attachment);
             }
 
-
-            // credits have been added back on the instance update
-            // deduct the new credit amount
-
-            $creditsToDeduct = $reservationSeries->GetCreditsRequired() - $reservationSeries->GetCreditsConsumed();
-
             if ($reservationSeries->IsSharingCredits()) {
-                $creditsToDeduct = $reservationSeries->GetCreditsRequired() - $reservationSeries->GetCreditsConsumed();
-                if ($creditsToDeduct != 0) {
+                // credits have been added back on the instance update
+                // deduct the new credit amount
+
+                $adjustCreditsCommand = new AdjustUserCreditsCommand($reservationSeries->UserId(), $reservationSeries->GetOwnerCreditsShare(), Resources::GetInstance()->GetString('ReservationCreatedLog', $reservationSeries->CurrentInstance()->ReferenceNumber()));
+                $database->Execute($adjustCreditsCommand);
+
+                foreach ($reservationSeries->GetParticipantCredits() as $userId => $credits) {
                     Log::Debug('CREDITS - Reservation update adjusting credits for user %s by %s. Required %s, consumed %s',
-                        $reservationSeries->UserId(), $creditsToDeduct, $reservationSeries->GetCreditsRequired(), $reservationSeries->GetCreditsConsumed());
+                        $userId, $credits, $reservationSeries->GetCreditsRequired(), $reservationSeries->GetCreditsConsumed());
 
-                    $adjustCreditsCommand = new AdjustUserCreditsCommand($reservationSeries->UserId(), $reservationSeries->GetOwnerCreditsShare(), Resources::GetInstance()->GetString('ReservationCreatedLog', $reservationSeries->CurrentInstance()->ReferenceNumber()));
+                    $adjustCreditsCommand = new AdjustUserCreditsCommand($userId, $credits, Resources::GetInstance()->GetString('ReservationCreatedLog', $reservationSeries->CurrentInstance()->ReferenceNumber()));
                     $database->Execute($adjustCreditsCommand);
-
-                    foreach ($reservationSeries->GetParticipantCredits() as $userId => $credits) {
-                        Log::Debug('CREDITS - Reservation update adjusting credits for user %s by %s. Required %s, consumed %s',
-                            $userId, $credits, $reservationSeries->GetCreditsRequired(), $reservationSeries->GetCreditsConsumed());
-
-                        $adjustCreditsCommand = new AdjustUserCreditsCommand($userId, $credits, Resources::GetInstance()->GetString('ReservationCreatedLog', $reservationSeries->CurrentInstance()->ReferenceNumber()));
-                        $database->Execute($adjustCreditsCommand);
-                    }
                 }
             }
             else {
+                $creditsToDeduct = $reservationSeries->GetCreditsRequired() - $reservationSeries->GetCreditsConsumed();
                 Log::Debug('CREDITS - Reservation update adjusting credits for user %s by %s. Required %s, consumed %s',
                     $reservationSeries->UserId(), $creditsToDeduct, $reservationSeries->GetCreditsRequired(), $reservationSeries->GetCreditsConsumed());
 
@@ -222,8 +214,7 @@ class ReservationRepository implements IReservationRepository
             $database->Execute($insertAccessory);
         }
 
-        if ($reservationSeries->IsSharingCredits())
-        {
+        if ($reservationSeries->IsSharingCredits()) {
             $creditsToDeduct = $reservationSeries->GetCreditsRequired() - $reservationSeries->GetCreditsConsumed();
             if ($creditsToDeduct != 0) {
                 Log::Debug('CREDITS - Reservation update adjusting credits for user %s by %s. Required %s, consumed %s',
@@ -232,8 +223,7 @@ class ReservationRepository implements IReservationRepository
                 $adjustCreditsCommand = new AdjustUserCreditsCommand($reservationSeries->UserId(), $reservationSeries->GetOwnerCreditsShare(), Resources::GetInstance()->GetString('ReservationCreatedLog', $reservationSeries->CurrentInstance()->ReferenceNumber()));
                 $database->Execute($adjustCreditsCommand);
 
-                foreach ($reservationSeries->GetParticipantCredits() as $userId => $credits)
-                {
+                foreach ($reservationSeries->GetParticipantCredits() as $userId => $credits) {
                     Log::Debug('CREDITS - Reservation update adjusting credits for user %s by %s. Required %s, consumed %s',
                         $userId, $credits, $reservationSeries->GetCreditsRequired(), $reservationSeries->GetCreditsConsumed());
 
@@ -242,8 +232,7 @@ class ReservationRepository implements IReservationRepository
                 }
             }
         }
-        else
-        {
+        else {
             $creditsToDeduct = $reservationSeries->GetCreditsRequired() - $reservationSeries->GetCreditsConsumed();
 
             Log::Debug('CREDITS - Reservation update adjusting credits for user %s by %s. Required %s, consumed %s',
@@ -267,8 +256,7 @@ class ReservationRepository implements IReservationRepository
 
         $creditAdjustment = 0 - $existingReservationSeries->GetCreditsConsumed();
 
-        if ($existingReservationSeries->IsSharingCredits())
-        {
+        if ($existingReservationSeries->IsSharingCredits()) {
             if ($creditAdjustment != 0) {
                 Log::Debug('CREDITS - Reservation delete adjusting credits for user %s by %s', $existingReservationSeries->UserId(), $creditAdjustment);
 
@@ -279,8 +267,7 @@ class ReservationRepository implements IReservationRepository
                 }
             }
         }
-        else
-        {
+        else {
             if ($creditAdjustment != 0) {
                 Log::Debug('CREDITS - Reservation delete adjusting credits for user %s by %s', $existingReservationSeries->UserId(), $creditAdjustment);
 
@@ -863,17 +850,20 @@ class InstanceUpdatedEventCommand extends EventCommand
 
         $database->Execute($updateReservationCommand);
 
-        $this->ReturnAllocatedCreditsAndSetNewCredits($instanceId, $this->series->UserId(), $this->series->GetOwnerCreditsShare(true));
+        if ($this->series->IsSharingCredits()) {
+            $this->ReturnAllocatedCreditsAndSetNewCredits($instanceId, $this->series->UserId(), $this->series->GetOwnerCreditsShare(true));
 
-        foreach ($this->instance->UnchangedParticipants() as $participantId)
-        {
-            $this->ReturnAllocatedCreditsAndSetNewCredits($instanceId, $participantId, $this->series->GetParticipantCreditsForUser($participantId, true));
+            foreach ($this->instance->UnchangedParticipants() as $participantId) {
+                $this->ReturnAllocatedCreditsAndSetNewCredits($instanceId, $participantId, $this->series->GetParticipantCreditsForUser($participantId, true));
+            }
         }
 
         foreach ($this->instance->RemovedParticipants() as $participantId) {
-            $returnUserCredits = new ReturnSharedInstanceCreditsCommand($instanceId, $participantId);
-            $database->Execute($returnUserCredits);
-
+            if ($this->series->IsSharingCredits()) {
+                $returnUserCredits = new ReturnSharedInstanceCreditsCommand($instanceId, $participantId);
+                $database->Execute($returnUserCredits);
+            }
+            
             $removeReservationUser = new RemoveReservationUserCommand($instanceId, $participantId);
             $database->Execute($removeReservationUser);
         }

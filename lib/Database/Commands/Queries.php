@@ -738,15 +738,40 @@ class Queries
 		WHERE reservation_color_rule_id=@reservation_color_rule_id';
 
 	const GET_RESERVATION_PARTICIPANTS =
-			'SELECT
-			u.user_id,
-			u.fname,
-			u.lname,
-			u.email,
-			ru.*
-		FROM reservation_users ru
-		INNER JOIN users u ON ru.user_id = u.user_id
-		WHERE reservation_instance_id = @reservationid';
+        '
+        SELECT
+  u.user_id,
+  u.fname,
+  u.lname,
+  u.email,
+  ru.*,
+  credit_count.credit_count
+FROM
+  reservation_users ru
+INNER JOIN
+  users u ON ru.user_id = u.user_id
+INNER JOIN  (
+    select
+    SUM(credit_count) as credit_count,
+    user_id
+  FROM
+    reservation_users ru
+  WHERE
+    reservation_instance_id IN(
+    SELECT
+      reservation_instance_id
+    FROM
+      reservation_instances ri
+    INNER JOIN
+      reservation_series rs ON rs.series_id = ri.series_id
+    WHERE
+      ri.reservation_instance_id = @reservationid
+    )
+    GROUP BY
+      user_id
+  ) AS credit_count ON ru.user_id = credit_count.user_id
+WHERE
+  reservation_instance_id = @reservationid';
 
 	const GET_RESERVATION_REMINDERS = 'SELECT * FROM reservation_reminders WHERE series_id = @seriesid';
 
