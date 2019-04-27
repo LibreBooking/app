@@ -119,17 +119,41 @@ class ReservationRepository implements IReservationRepository
                 $this->AddReservationAttachment($attachment);
             }
 
+
+            // credits have been added back on the instance update
+            // deduct the new credit amount
+
             $creditsToDeduct = $reservationSeries->GetCreditsRequired() - $reservationSeries->GetCreditsConsumed();
 
-            Log::Debug('CREDITS - Reservation update adjusting credits for user %s by %s. Required %s, consumed %s',
-                $reservationSeries->UserId(), $creditsToDeduct, $reservationSeries->GetCreditsRequired(), $reservationSeries->GetCreditsConsumed());
+            if ($reservationSeries->IsSharingCredits()) {
+                $creditsToDeduct = $reservationSeries->GetCreditsRequired() - $reservationSeries->GetCreditsConsumed();
+                if ($creditsToDeduct != 0) {
+                    Log::Debug('CREDITS - Reservation update adjusting credits for user %s by %s. Required %s, consumed %s',
+                        $reservationSeries->UserId(), $creditsToDeduct, $reservationSeries->GetCreditsRequired(), $reservationSeries->GetCreditsConsumed());
 
-            if ($creditsToDeduct != 0) {
-                try {
-                    $adjustCreditsCommand = new AdjustUserCreditsCommand($reservationSeries->UserId(), $creditsToDeduct, Resources::GetInstance()->GetString('ReservationUpdatedLog', $reservationSeries->CurrentInstance()->ReferenceNumber()));
-
+                    $adjustCreditsCommand = new AdjustUserCreditsCommand($reservationSeries->UserId(), $reservationSeries->GetOwnerCreditsShare(), Resources::GetInstance()->GetString('ReservationCreatedLog', $reservationSeries->CurrentInstance()->ReferenceNumber()));
                     $database->Execute($adjustCreditsCommand);
-                } catch (Exception $ex) {
+
+                    foreach ($reservationSeries->GetParticipantCredits() as $userId => $credits) {
+                        Log::Debug('CREDITS - Reservation update adjusting credits for user %s by %s. Required %s, consumed %s',
+                            $userId, $credits, $reservationSeries->GetCreditsRequired(), $reservationSeries->GetCreditsConsumed());
+
+                        $adjustCreditsCommand = new AdjustUserCreditsCommand($userId, $credits, Resources::GetInstance()->GetString('ReservationCreatedLog', $reservationSeries->CurrentInstance()->ReferenceNumber()));
+                        $database->Execute($adjustCreditsCommand);
+                    }
+                }
+            }
+            else {
+                Log::Debug('CREDITS - Reservation update adjusting credits for user %s by %s. Required %s, consumed %s',
+                    $reservationSeries->UserId(), $creditsToDeduct, $reservationSeries->GetCreditsRequired(), $reservationSeries->GetCreditsConsumed());
+
+                if ($creditsToDeduct != 0) {
+                    try {
+                        $adjustCreditsCommand = new AdjustUserCreditsCommand($reservationSeries->UserId(), $creditsToDeduct, Resources::GetInstance()->GetString('ReservationUpdatedLog', $reservationSeries->CurrentInstance()->ReferenceNumber()));
+
+                        $database->Execute($adjustCreditsCommand);
+                    } catch (Exception $ex) {
+                    }
                 }
             }
         }
@@ -198,16 +222,39 @@ class ReservationRepository implements IReservationRepository
             $database->Execute($insertAccessory);
         }
 
-        $creditsToDeduct = $reservationSeries->GetCreditsRequired() - $reservationSeries->GetCreditsConsumed();
+        if ($reservationSeries->IsSharingCredits())
+        {
+            $creditsToDeduct = $reservationSeries->GetCreditsRequired() - $reservationSeries->GetCreditsConsumed();
+            if ($creditsToDeduct != 0) {
+                Log::Debug('CREDITS - Reservation update adjusting credits for user %s by %s. Required %s, consumed %s',
+                    $reservationSeries->UserId(), $creditsToDeduct, $reservationSeries->GetCreditsRequired(), $reservationSeries->GetCreditsConsumed());
 
-        Log::Debug('CREDITS - Reservation update adjusting credits for user %s by %s. Required %s, consumed %s',
-            $reservationSeries->UserId(), $creditsToDeduct, $reservationSeries->GetCreditsRequired(), $reservationSeries->GetCreditsConsumed());
-
-        if ($creditsToDeduct != 0) {
-            try {
-                $adjustCreditsCommand = new AdjustUserCreditsCommand($reservationSeries->UserId(), $creditsToDeduct, Resources::GetInstance()->GetString('ReservationCreatedLog', $reservationSeries->CurrentInstance()->ReferenceNumber()));
+                $adjustCreditsCommand = new AdjustUserCreditsCommand($reservationSeries->UserId(), $reservationSeries->GetOwnerCreditsShare(), Resources::GetInstance()->GetString('ReservationCreatedLog', $reservationSeries->CurrentInstance()->ReferenceNumber()));
                 $database->Execute($adjustCreditsCommand);
-            } catch (Exception $ex) {
+
+                foreach ($reservationSeries->GetParticipantCredits() as $userId => $credits)
+                {
+                    Log::Debug('CREDITS - Reservation update adjusting credits for user %s by %s. Required %s, consumed %s',
+                        $userId, $credits, $reservationSeries->GetCreditsRequired(), $reservationSeries->GetCreditsConsumed());
+
+                    $adjustCreditsCommand = new AdjustUserCreditsCommand($userId, $credits, Resources::GetInstance()->GetString('ReservationCreatedLog', $reservationSeries->CurrentInstance()->ReferenceNumber()));
+                    $database->Execute($adjustCreditsCommand);
+                }
+            }
+        }
+        else
+        {
+            $creditsToDeduct = $reservationSeries->GetCreditsRequired() - $reservationSeries->GetCreditsConsumed();
+
+            Log::Debug('CREDITS - Reservation update adjusting credits for user %s by %s. Required %s, consumed %s',
+                $reservationSeries->UserId(), $creditsToDeduct, $reservationSeries->GetCreditsRequired(), $reservationSeries->GetCreditsConsumed());
+
+            if ($creditsToDeduct != 0) {
+                try {
+                    $adjustCreditsCommand = new AdjustUserCreditsCommand($reservationSeries->UserId(), $creditsToDeduct, Resources::GetInstance()->GetString('ReservationCreatedLog', $reservationSeries->CurrentInstance()->ReferenceNumber()));
+                    $database->Execute($adjustCreditsCommand);
+                } catch (Exception $ex) {
+                }
             }
         }
 
@@ -219,13 +266,29 @@ class ReservationRepository implements IReservationRepository
         $database = ServiceLocator::GetDatabase();
 
         $creditAdjustment = 0 - $existingReservationSeries->GetCreditsConsumed();
-        if ($creditAdjustment != 0) {
-            Log::Debug('CREDITS - Reservation delete adjusting credits for user %s by %s', $existingReservationSeries->UserId(), $creditAdjustment);
 
-            try {
-                $adjustCreditsCommand = new AdjustUserCreditsCommand($existingReservationSeries->UserId(), $creditAdjustment, Resources::GetInstance()->GetString('ReservationDeletedLog', $existingReservationSeries->CurrentInstance()->ReferenceNumber()));
-                $database->Execute($adjustCreditsCommand);
-            } catch (Exception $ex) {
+        if ($existingReservationSeries->IsSharingCredits())
+        {
+            if ($creditAdjustment != 0) {
+                Log::Debug('CREDITS - Reservation delete adjusting credits for user %s by %s', $existingReservationSeries->UserId(), $creditAdjustment);
+
+                try {
+                    $adjustCreditsCommand = new ReturnSharedSeriesCreditsCommand($existingReservationSeries->SeriesId());
+                    $database->Execute($adjustCreditsCommand);
+                } catch (Exception $ex) {
+                }
+            }
+        }
+        else
+        {
+            if ($creditAdjustment != 0) {
+                Log::Debug('CREDITS - Reservation delete adjusting credits for user %s by %s', $existingReservationSeries->UserId(), $creditAdjustment);
+
+                try {
+                    $adjustCreditsCommand = new AdjustUserCreditsCommand($existingReservationSeries->UserId(), $creditAdjustment, Resources::GetInstance()->GetString('ReservationDeletedLog', $existingReservationSeries->CurrentInstance()->ReferenceNumber()));
+                    $database->Execute($adjustCreditsCommand);
+                } catch (Exception $ex) {
+                }
             }
         }
 
@@ -343,7 +406,7 @@ class ReservationRepository implements IReservationRepository
         $reader = ServiceLocator::GetDatabase()->Query($getSeriesParticipants);
         while ($row = $reader->GetRow()) {
             if ($row[ColumnNames::RESERVATION_USER_LEVEL] == ReservationUserLevel::PARTICIPANT) {
-                $series->GetInstance($row[ColumnNames::REFERENCE_NUMBER])->WithParticipant($row[ColumnNames::USER_ID]);
+                $series->GetInstance($row[ColumnNames::REFERENCE_NUMBER])->WithParticipant($row[ColumnNames::USER_ID], $row[ColumnNames::CREDIT_COUNT]);
             }
             if ($row[ColumnNames::RESERVATION_USER_LEVEL] == ReservationUserLevel::INVITEE) {
                 $series->GetInstance($row[ColumnNames::REFERENCE_NUMBER])->WithInvitee($row[ColumnNames::USER_ID]);
@@ -728,18 +791,22 @@ class InstanceAddedEventCommand extends EventCommand
 
         $reservationId = $database->ExecuteInsert($insertReservation);
 
-        $insertReservationUser = new AddReservationUserCommand($reservationId, $this->series->UserId(), ReservationUserLevel::OWNER);
+        $credits = $this->series->GetOwnerCreditsShare(true);
+        $insertReservationUser = new AddReservationUserCommand($reservationId, $this->series->UserId(), ReservationUserLevel::OWNER, $credits);
 
         $database->Execute($insertReservationUser);
 
         foreach ($this->instance->AddedParticipants() as $participantId) {
-            $insertReservationUser = new AddReservationUserCommand($reservationId, $participantId, ReservationUserLevel::PARTICIPANT);
+            $credits = $this->series->GetParticipantCreditsForUser($participantId, true);
+
+            Log::Debug("Participant %s for instance %s has credits %s", $participantId, $this->instance->StartDate(), $credits);
+            $insertReservationUser = new AddReservationUserCommand($reservationId, $participantId, ReservationUserLevel::PARTICIPANT, $credits);
 
             $database->Execute($insertReservationUser);
         }
 
         foreach ($this->instance->AddedInvitees() as $inviteeId) {
-            $insertReservationUser = new AddReservationUserCommand($reservationId, $inviteeId, ReservationUserLevel::INVITEE);
+            $insertReservationUser = new AddReservationUserCommand($reservationId, $inviteeId, ReservationUserLevel::INVITEE, 0);
 
             $database->Execute($insertReservationUser);
         }
@@ -772,6 +839,16 @@ class InstanceUpdatedEventCommand extends EventCommand
         $this->series = $series;
     }
 
+    private function ReturnAllocatedCreditsAndSetNewCredits($instanceId, $userId, $credits)
+    {
+        // balance the credits based on the new amount
+        $returnUserCredits = new ReturnSharedInstanceCreditsCommand($instanceId, $userId);
+        ServiceLocator::GetDatabase()->Execute($returnUserCredits);
+
+        $updateUserCredits = new SetSharedUserCreditsCommand($instanceId, $userId, $credits);
+        ServiceLocator::GetDatabase()->Execute($updateUserCredits);
+    }
+
     public function Execute(Database $database)
     {
         $instanceId = $this->instance->ReservationId();
@@ -786,9 +863,18 @@ class InstanceUpdatedEventCommand extends EventCommand
 
         $database->Execute($updateReservationCommand);
 
-        foreach ($this->instance->RemovedParticipants() as $participantId) {
-            $removeReservationUser = new RemoveReservationUserCommand($instanceId, $participantId);
+        $this->ReturnAllocatedCreditsAndSetNewCredits($instanceId, $this->series->UserId(), $this->series->GetOwnerCreditsShare(true));
 
+        foreach ($this->instance->UnchangedParticipants() as $participantId)
+        {
+            $this->ReturnAllocatedCreditsAndSetNewCredits($instanceId, $participantId, $this->series->GetParticipantCreditsForUser($participantId, true));
+        }
+
+        foreach ($this->instance->RemovedParticipants() as $participantId) {
+            $returnUserCredits = new ReturnSharedInstanceCreditsCommand($instanceId, $participantId);
+            $database->Execute($returnUserCredits);
+
+            $removeReservationUser = new RemoveReservationUserCommand($instanceId, $participantId);
             $database->Execute($removeReservationUser);
         }
 
@@ -811,13 +897,12 @@ class InstanceUpdatedEventCommand extends EventCommand
         }
 
         foreach ($this->instance->AddedParticipants() as $participantId) {
-            $insertReservationUser = new AddReservationUserCommand($instanceId, $participantId, ReservationUserLevel::PARTICIPANT);
-
+            $insertReservationUser = new AddReservationUserCommand($instanceId, $participantId, ReservationUserLevel::PARTICIPANT, $this->series->GetParticipantCreditsForUser($participantId, true));
             $database->Execute($insertReservationUser);
         }
 
         foreach ($this->instance->AddedInvitees() as $inviteeId) {
-            $insertReservationUser = new AddReservationUserCommand($instanceId, $inviteeId, ReservationUserLevel::INVITEE);
+            $insertReservationUser = new AddReservationUserCommand($instanceId, $inviteeId, ReservationUserLevel::INVITEE, 0);
 
             $database->Execute($insertReservationUser);
         }
@@ -861,7 +946,7 @@ class OwnerChangedEventCommand extends EventCommand
                 $id = $instance->ReservationId();
                 $database->Execute(new RemoveReservationUserCommand($id, $oldOwnerId));
                 $database->Execute(new RemoveReservationUserCommand($id, $newOwnerId));
-                $database->Execute(new AddReservationUserCommand($id, $newOwnerId, ReservationUserLevel::OWNER));
+                $database->Execute(new AddReservationUserCommand($id, $newOwnerId, ReservationUserLevel::OWNER, $this->series->GetOwnerCreditsShare(true)));
             }
         }
     }

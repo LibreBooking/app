@@ -129,6 +129,11 @@ class Reservation
 	 */
 	protected $unchangedParticipants = array();
 
+    /**
+     * @var array|int[]
+     */
+	protected $participantCredits = array();
+
 	/**
 	 * @var int[]
 	 */
@@ -277,10 +282,11 @@ class Reservation
 	/**
 	 * @param int $participantId
 	 */
-	public function WithParticipant($participantId)
+	public function WithParticipant($participantId, $credits)
 	{
 		$this->_participantIds[] = $participantId;
 		$this->unchangedParticipants[] = $participantId;
+		$this->participantCredits[$participantId] = $credits;
 	}
 
 	/**

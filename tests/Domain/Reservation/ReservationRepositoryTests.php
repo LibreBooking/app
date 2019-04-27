@@ -1006,7 +1006,7 @@ class ReservationRepositoryTests extends TestBase
         $deleteResources = $this->db->GetCommandsOfType('RemoveReservationResourceCommand');
         $deleteAccessories = $this->db->GetCommandsOfType('RemoveReservationAccessoryCommand');
 
-        $this->assertTrue($this->db->ContainsCommand(new AddReservationUserCommand($instance->ReservationId(), $newUserId, ReservationUserLevel::OWNER)));
+        $this->assertTrue($this->db->ContainsCommand(new AddReservationUserCommand($instance->ReservationId(), $newUserId, ReservationUserLevel::OWNER, 0)));
         $this->assertEquals(count($series->AdditionalResources()), count($addResources), "dont want to double add");
         $this->assertEquals(count($series->Accessories()), count($addAccessories));
         $this->assertEquals(1, count($deleteResources));
@@ -1230,7 +1230,7 @@ class ReservationRepositoryTests extends TestBase
 
     private function GetAddUserCommand($reservationId, $userId, $levelId)
     {
-        return new AddReservationUserCommand($reservationId, $userId, $levelId);
+        return new AddReservationUserCommand($reservationId, $userId, $levelId, 0);
     }
 
     private function GetRemoveUserCommand($reservationId, $userId)

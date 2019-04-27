@@ -123,6 +123,7 @@ class ReservationUpdatePresenter implements IReservationUpdatePresenter
 
 		$existingSeries->ChangeResources($additionalResources);
 		$existingSeries->ChangeParticipants($this->page->GetParticipants());
+        $existingSeries->ChangeParticipantCreditShare($this->page->GetParticipantCredits());
 		$existingSeries->ChangeInvitees($this->page->GetInvitees());
 		$existingSeries->ChangeAccessories($this->GetAccessories());
 		$existingSeries->ChangeAttributes($this->GetAttributes());

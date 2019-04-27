@@ -558,6 +558,17 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
             future: '{SeriesUpdateScope::FutureInstances}'
         };
 
+        var recurOpts = {
+            repeatType: '{$RepeatType}',
+            repeatInterval: '{$RepeatInterval}',
+            repeatMonthlyType: '{$RepeatMonthlyType}',
+            repeatWeekdays: [{foreach from=$RepeatWeekdays item=day}{$day}, {/foreach}],
+            autoSetTerminationDate: $('#referenceNumber').val() != ''
+        };
+
+        var recurrence = new Recurrence(recurOpts);
+        recurrence.init();
+
         var reservationOpts = {
             additionalResourceElementId: '{FormKeys::ADDITIONAL_RESOURCES}',
             accessoryListInputId: '{FormKeys::ACCESSORY_LIST}[]',
@@ -616,17 +627,6 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
         {/foreach}
 
         reservation.addResourceGroups({$ResourceGroupsAsJson});
-
-        var recurOpts = {
-            repeatType: '{$RepeatType}',
-            repeatInterval: '{$RepeatInterval}',
-            repeatMonthlyType: '{$RepeatMonthlyType}',
-            repeatWeekdays: [{foreach from=$RepeatWeekdays item=day}{$day}, {/foreach}],
-            autoSetTerminationDate: $('#referenceNumber').val() != ''
-        };
-
-        var recurrence = new Recurrence(recurOpts);
-        recurrence.init();
 
         recurrence.onChange(reservation.repeatOptionsChanged);
 

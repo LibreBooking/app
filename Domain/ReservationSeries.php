@@ -224,6 +224,17 @@ class ReservationSeries
         return $this->totalParticipantCreditShare > 0;
     }
 
+    public function GetParticipantCreditsForUser($participantId, $spreadAcrossInstances = false)
+    {
+        if (array_key_exists($participantId, $this->participantCredits))
+        {
+            $toSpread = $spreadAcrossInstances ? count($this->Instances()) : 1;
+            return $this->participantCredits[$participantId]/$toSpread;
+        }
+
+        return 0;
+    }
+
     /**
      * @param Reservation $r1
      * @param Reservation $r2
@@ -306,11 +317,19 @@ class ReservationSeries
     }
 
     /**
+     * @param bool $spreadAcrossInstances
      * @return int
      */
-    public function GetOwnerCreditsShare()
+    public function GetOwnerCreditsShare($spreadAcrossInstances = false)
     {
-        return $this->GetCreditsRequired() - $this->totalParticipantCreditShare;
+        $userCredits = $this->GetCreditsRequired() - $this->totalParticipantCreditShare;
+
+        if ($spreadAcrossInstances)
+        {
+            return $userCredits/count($this->Instances());
+        }
+
+        return $userCredits;
     }
 
     protected function __construct()

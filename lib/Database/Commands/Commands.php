@@ -303,6 +303,17 @@ class AddPaymentTransactionLogCommand extends SqlCommand
     }
 }
 
+class AddParticipantCreditShareCommand extends SqlCommand
+{
+    public function __construct($seriesId, $userId, $credits)
+    {
+        parent::__construct(Queries::ADD_PARTICIPANT_CREDIT_SHARE);
+        $this->AddParameter(new Parameter(ParameterNames::SERIES_ID, $seriesId));
+        $this->AddParameter(new Parameter(ParameterNames::USER_ID, $userId));
+        $this->AddParameter(new Parameter(ParameterNames::CREDIT_COUNT, $credits));
+    }
+}
+
 class AddPeakTimesCommand extends SqlCommand
 {
     /**
@@ -513,13 +524,14 @@ class AddReservationGuestCommand extends SqlCommand
 
 class AddReservationUserCommand extends SqlCommand
 {
-    public function __construct($instanceId, $userId, $levelId)
+    public function __construct($instanceId, $userId, $levelId, $credits)
     {
         parent::__construct(Queries::ADD_RESERVATION_USER);
 
         $this->AddParameter(new Parameter(ParameterNames::RESERVATION_INSTANCE_ID, $instanceId));
         $this->AddParameter(new Parameter(ParameterNames::USER_ID, $userId));
         $this->AddParameter(new Parameter(ParameterNames::RESERVATION_USER_LEVEL_ID, $levelId));
+        $this->AddParameter(new Parameter(ParameterNames::CREDIT_COUNT, $credits));
     }
 }
 
@@ -2105,6 +2117,37 @@ class MigratePasswordCommand extends SqlCommand
         $this->AddParameter(new Parameter(ParameterNames::USER_ID, $userId));
         $this->AddParameter(new Parameter(ParameterNames::PASSWORD, $password));
         $this->AddParameter(new Parameter(ParameterNames::SALT, $salt));
+    }
+}
+
+class ReturnSharedSeriesCreditsCommand extends SqlCommand
+{
+    public function __construct($seriesId, $userId=-1)
+    {
+        parent::__construct(Queries::RETURN_SHARED_SERIES_CREDITS);
+        $this->AddParameter(new Parameter(ParameterNames::USER_ID, $userId));
+        $this->AddParameter(new Parameter(ParameterNames::SERIES_ID, $seriesId));
+    }
+}
+
+class ReturnSharedInstanceCreditsCommand extends SqlCommand
+{
+    public function __construct($instanceId, $userId=-1)
+    {
+        parent::__construct(Queries::RETURN_SHARED_INSTANCE_CREDITS);
+        $this->AddParameter(new Parameter(ParameterNames::USER_ID, $userId));
+        $this->AddParameter(new Parameter(ParameterNames::RESERVATION_INSTANCE_ID, $instanceId));
+    }
+}
+
+class SetSharedUserCreditsCommand extends SqlCommand
+{
+    public function __construct($instanceId, $userId, $credits)
+    {
+        parent::__construct(Queries::SET_SHARED_USER_CREDITS);
+        $this->AddParameter(new Parameter(ParameterNames::USER_ID, $userId));
+        $this->AddParameter(new Parameter(ParameterNames::RESERVATION_INSTANCE_ID, $instanceId));
+        $this->AddParameter(new Parameter(ParameterNames::CREDIT_COUNT, $credits));
     }
 }
 

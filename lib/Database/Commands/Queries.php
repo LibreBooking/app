@@ -153,8 +153,8 @@ class Queries
 			VALUES (@reservationid, @email, @levelid)';
 
 	const ADD_RESERVATION_USER =
-			'INSERT INTO reservation_users (reservation_instance_id, user_id, reservation_user_level)
-		VALUES (@reservationid, @userid, @levelid)';
+			'INSERT INTO reservation_users (reservation_instance_id, user_id, reservation_user_level, credit_count)
+		VALUES (@reservationid, @userid, @levelid, @credit_count)';
 
     const ADD_RESERVATION_WAITLIST =
         'INSERT INTO reservation_waitlist_requests (user_id, start_date, end_date, resource_id)
@@ -939,6 +939,28 @@ class Queries
 			password = @password, legacypassword = null, salt = @salt
 		WHERE
 			user_id = @userid';
+
+	const RETURN_SHARED_SERIES_CREDITS = '
+	update users,
+(select sum(credit_count) as credits, user_id 
+    from reservation_users
+    where reservation_instance_id in (select reservation_instance_id from reservation_instances where series_id = @seriesid) group by user_id
+) as credit_sum
+set users.credit_count = users.credit_count+credit_sum.credits
+where users.user_id = credit_sum.user_id and (users.user_id = @userid or @userid = -1)';
+
+	const RETURN_SHARED_INSTANCE_CREDITS = '
+	update users,
+(select sum(credit_count) as credits, user_id 
+    from reservation_users
+    where reservation_instance_id = @reservationid group by user_id
+) as credit_sum
+set users.credit_count = users.credit_count+credit_sum.credits
+where users.user_id = credit_sum.user_id and (users.user_id = @userid or @userid = -1)';
+
+	const SET_SHARED_USER_CREDITS = 'update reservation_users 
+set credit_count = @credit_count 
+where user_id = @userid and reservation_instance_id = @reservationid';
 
 	const REGISTER_FORM_SETTINGS =
 			'INSERT INTO
