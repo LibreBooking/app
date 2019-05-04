@@ -100,7 +100,7 @@ class ReservationRepository implements IReservationRepository
             }
         }
         else {
-            Log::Error('Updating existing series (seriesId: %s)', $reservationSeries->SeriesId());
+            Log::Debug('Updating existing series (seriesId: %s)', $reservationSeries->SeriesId());
 
             $updateSeries = new UpdateReservationSeriesCommand($reservationSeries->SeriesId(),
                 $reservationSeries->Title(),
@@ -123,14 +123,14 @@ class ReservationRepository implements IReservationRepository
                 // credits have been added back on the instance update
                 // deduct the new credit amount
 
-                Log::Error('CREDITS SHARING - Reservation update adjusting credits for owner %s by %s. Required %s, consumed %s',
+                Log::Debug('CREDITS SHARING - Reservation update adjusting credits for owner %s by %s. Required %s, consumed %s',
                     $reservationSeries->UserId(), $reservationSeries->GetOwnerCreditsShare(), $reservationSeries->GetCreditsRequired(), $reservationSeries->GetCreditsConsumed());
 
                 $adjustCreditsCommand = new AdjustUserCreditsCommand($reservationSeries->UserId(), $reservationSeries->GetOwnerCreditsShare(), Resources::GetInstance()->GetString('ReservationCreatedLog', $reservationSeries->CurrentInstance()->ReferenceNumber()));
                 $database->Execute($adjustCreditsCommand);
 
                 foreach ($reservationSeries->GetParticipantCredits() as $userId => $credits) {
-                    Log::Error('CREDITS SHARING - Reservation update adjusting credits for user %s by %s. Required %s, consumed %s',
+                    Log::Debug('CREDITS SHARING - Reservation update adjusting credits for user %s by %s. Required %s, consumed %s',
                         $userId, $credits, $reservationSeries->GetCreditsRequired(), $reservationSeries->GetCreditsConsumed());
 
                     $adjustCreditsCommand = new AdjustUserCreditsCommand($userId, $credits, Resources::GetInstance()->GetString('ReservationCreatedLog', $reservationSeries->CurrentInstance()->ReferenceNumber()));
@@ -138,7 +138,6 @@ class ReservationRepository implements IReservationRepository
                 }
             }
             else {
-                Log::Error("not sharing credits?");
                 $creditsToDeduct = $reservationSeries->GetCreditsRequired() - $reservationSeries->GetCreditsConsumed();
                 Log::Debug('CREDITS - Reservation update adjusting credits for user %s by %s. Required %s, consumed %s',
                     $reservationSeries->UserId(), $creditsToDeduct, $reservationSeries->GetCreditsRequired(), $reservationSeries->GetCreditsConsumed());
@@ -262,7 +261,7 @@ class ReservationRepository implements IReservationRepository
 
         if ($existingReservationSeries->IsSharingCredits()) {
             if ($creditAdjustment != 0) {
-                Log::Error('CREDITS - Reservation delete adjusting credits for user %s by %s', $existingReservationSeries->UserId(), $creditAdjustment);
+                Log::Debug('CREDITS - Reservation delete adjusting credits for user %s by %s', $existingReservationSeries->UserId(), $creditAdjustment);
 
                 try {
                     $adjustCreditsCommand = new ReturnSharedSeriesCreditsCommand($existingReservationSeries->SeriesId());
@@ -836,7 +835,7 @@ class InstanceUpdatedEventCommand extends EventCommand
 
     private function ReturnAllocatedCreditsAndSetNewCredits($instanceId, $userId, $credits)
     {
-        Log::Error("Return all credits for instance %s and charge use %s %s credits", $instanceId, $userId, $credits);
+        Log::Debug("Return all credits for instance %s and charge use %s %s credits", $instanceId, $userId, $credits);
 
         // balance the credits based on the new amount
         $returnUserCredits = new ReturnSharedInstanceCreditsCommand($instanceId, $userId);
@@ -856,7 +855,7 @@ class InstanceUpdatedEventCommand extends EventCommand
             return;
         }
 
-        Log::Error("updating instance %s", $instanceId);
+        Log::Debug("updating instance %s", $instanceId);
         $updateReservationCommand = new UpdateReservationCommand($this->instance->ReferenceNumber(),
             $this->series->SeriesId(),
             $this->instance->StartDate(),

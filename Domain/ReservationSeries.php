@@ -329,7 +329,7 @@ class ReservationSeries
      */
     public function GetOwnerCreditsShare($spreadAcrossInstances = false)
     {
-        Log::Error("owner share. required %s, participant total %s", $this->GetCreditsRequired(), $this->totalParticipantCreditShare);
+        Log::Debug("owner share. required %s, participant total %s", $this->GetCreditsRequired(), $this->totalParticipantCreditShare);
         $userCredits = $this->GetCreditsRequired() - $this->totalParticipantCreditShare;
 
         if ($spreadAcrossInstances)
