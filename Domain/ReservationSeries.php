@@ -210,9 +210,11 @@ class ReservationSeries
      */
     public function ChangeParticipantCreditShare($participantCredits)
     {
+        $this->totalParticipantCreditShare = 0;
         foreach ($participantCredits as $userId => $creditCount) {
             $this->participantCredits[$userId] = $creditCount;
             $this->totalParticipantCreditShare += $creditCount;
+            $this->isSharingCredits = true;
         }
     }
 
@@ -221,7 +223,7 @@ class ReservationSeries
      */
     public function IsSharingCredits()
     {
-        return $this->totalParticipantCreditShare > 0;
+        return $this->isSharingCredits;
     }
 
     public function GetParticipantCreditsForUser($participantId, $spreadAcrossInstances = false)
@@ -311,6 +313,11 @@ class ReservationSeries
      */
     protected $totalParticipantCreditShare = 0;
 
+    /**
+     * @var bool
+     */
+    protected $isSharingCredits = false;
+
     public function GetParticipantCredits()
     {
         return $this->participantCredits;
@@ -322,6 +329,7 @@ class ReservationSeries
      */
     public function GetOwnerCreditsShare($spreadAcrossInstances = false)
     {
+        Log::Error("owner share. required %s, participant total %s", $this->GetCreditsRequired(), $this->totalParticipantCreditShare);
         $userCredits = $this->GetCreditsRequired() - $this->totalParticipantCreditShare;
 
         if ($spreadAcrossInstances)

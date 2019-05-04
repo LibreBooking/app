@@ -425,7 +425,6 @@ class ExistingReservationSeries extends ReservationSeries
         $this->AddInstance($instance);
 
         $this->RaiseInstanceUpdatedEvent($instance);
-
     }
 
     private function RaiseInstanceUpdatedEvent(Reservation $instance)
@@ -504,6 +503,20 @@ class ExistingReservationSeries extends ReservationSeries
             if ($numberChanged != 0) {
                 $this->RaiseInstanceUpdatedEvent($instance);
             }
+        }
+    }
+
+    /**
+     * @param int[] $participantCredits
+     */
+    public function ChangeParticipantCreditShare($participantCredits)
+    {
+        Log::Error('changing %s', var_export($participantCredits, true));
+        parent::ChangeParticipantCreditShare($participantCredits);
+
+        foreach ($this->Instances() as $instance)
+        {
+            $this->RaiseInstanceUpdatedEvent($instance);
         }
     }
 
@@ -636,8 +649,13 @@ class ExistingReservationSeries extends ReservationSeries
      */
     public function CancelInstanceParticipation($participantId)
     {
-        if ($this->CurrentInstance()->CancelParticipation($participantId)) {
-            $this->RaiseInstanceUpdatedEvent($this->CurrentInstance());
+        if ($this->IsSharingCredits()) {
+
+        }
+        else {
+            if ($this->CurrentInstance()->CancelParticipation($participantId)) {
+                $this->RaiseInstanceUpdatedEvent($this->CurrentInstance());
+            }
         }
     }
 
@@ -808,5 +826,13 @@ class ExistingReservationSeries extends ReservationSeries
     public function GetDeleteReason()
     {
         return $this->_deleteReason;
+    }
+
+    /**
+     * @param $credits float
+     */
+    public function ReturnOwnerCreditsShare($credits)
+    {
+        $this->totalParticipantCreditShare -= $credits;
     }
 }

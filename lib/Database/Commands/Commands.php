@@ -2147,7 +2147,7 @@ class SetSharedUserCreditsCommand extends SqlCommand
         parent::__construct(Queries::SET_SHARED_USER_CREDITS);
         $this->AddParameter(new Parameter(ParameterNames::USER_ID, $userId));
         $this->AddParameter(new Parameter(ParameterNames::RESERVATION_INSTANCE_ID, $instanceId));
-        $this->AddParameter(new Parameter(ParameterNames::CREDIT_COUNT, $credits));
+        $this->AddParameter(new Parameter(ParameterNames::CREDIT_COUNT, max(0,$credits)));
     }
 }
 

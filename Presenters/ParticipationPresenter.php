@@ -43,6 +43,10 @@ class ParticipationPresenter
      * @var IParticipationNotification
      */
     private $participationNotification;
+    /**
+     * @var UserRepository
+     */
+    private $userRepository;
 
     public function __construct(IParticipationPage $page,
                                 IReservationRepository $reservationRepository,
@@ -53,6 +57,7 @@ class ParticipationPresenter
         $this->reservationRepository = $reservationRepository;
         $this->reservationViewRepository = $reservationViewRepository;
         $this->participationNotification = $participationNotification;
+        $this->userRepository = new UserRepository();
     }
 
     public function PageLoad()
@@ -123,10 +128,47 @@ class ParticipationPresenter
             $series->DeclineInvitation($userId);
         }
         if ($invitationAction == InvitationAction::CancelInstance) {
-            $series->CancelInstanceParticipation($userId);
+            if ($series->IsSharingCredits())
+            {
+                $instance = $series->CurrentInstance();
+                $creditsToReturn = $instance->GetParticipantCredits($userId);
+
+                $user = $this->userRepository->LoadById($series->UserId());
+                if ($user->GetCurrentCredits() >= $creditsToReturn)
+                {
+                    $series->ReturnOwnerCreditsShare($creditsToReturn);
+                    $series->CancelInstanceParticipation($userId);
+                }
+                else {
+                    $error = 'The reservation owner does not have enough credits';
+                }
+            }
+            else {
+                $series->CancelInstanceParticipation($userId);
+            }
         }
         if ($invitationAction == InvitationAction::CancelAll) {
-            $series->CancelAllParticipation($userId);
+            if ($series->IsSharingCredits())
+            {
+                $creditsToReturn = 0;
+                /** @var Reservation $instance */
+                foreach ($series->Instances() as $instance) {
+                    $creditsToReturn += $instance->GetParticipantCredits($user->UserId);
+                }
+
+                $user = $this->userRepository->LoadById($series->UserId());
+                if ($user->GetCurrentCredits() >= $creditsToReturn)
+                {
+                    $series->ReturnOwnerCreditsShare($creditsToReturn);
+                    $series->CancelAllParticipation($userId);
+                }
+                else{
+                    $error = 'The reservation owner does not have enough credits';
+                }
+            }
+            else {
+                $series->CancelAllParticipation($userId);
+            }
         }
         if ($invitationAction == InvitationAction::Join) {
             if (!$series->GetAllowParticipation()) {

@@ -289,6 +289,19 @@ class Reservation
 		$this->participantCredits[$participantId] = $credits;
 	}
 
+    /**
+     * @param $participantId int
+     * @return float
+     */
+	public function GetParticipantCredits($participantId) {
+	    if (array_key_exists($participantId, $this->participantCredits))
+        {
+            return $this->participantCredits[$participantId];
+        }
+
+	    return 0;
+    }
+
 	/**
 	 * @internal
 	 * @param array|int[] $inviteeIds

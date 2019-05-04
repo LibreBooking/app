@@ -161,6 +161,14 @@ class Log
 	{
 		return self::GetInstance()->logger->isDebugEnabled();
 	}
+
+	/**
+	 * @return bool
+	 */
+	public static function DebugSqlEnabled()
+	{
+		return self::GetInstance()->sqlLogger->isDebugEnabled();
+	}
 }
 
 class NullLog4php

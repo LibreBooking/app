@@ -81,7 +81,7 @@ class MySqlConnection implements IDbConnection
 	{
 		$mysqlCommand = new MySqlCommandAdapter($sqlCommand, $this->_db);
 
-		if (Log::DebugEnabled())
+		if (Log::DebugSqlEnabled())
 		{
 			Log::Sql('MySql Query: ' . str_replace('%', '%%', $mysqlCommand->GetQuery()));
 		}
