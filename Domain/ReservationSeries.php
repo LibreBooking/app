@@ -207,10 +207,13 @@ class ReservationSeries
 
     /**
      * @param int[] $participantCredits
+     * @param bool $reset
      */
-    public function ChangeParticipantCreditShare($participantCredits)
+    public function ChangeParticipantCreditShare($participantCredits, $reset = true)
     {
-        $this->totalParticipantCreditShare = 0;
+        if ($reset) {
+            $this->totalParticipantCreditShare = 0;
+        }
         foreach ($participantCredits as $userId => $creditCount) {
             $this->participantCredits[$userId] = $creditCount;
             $this->totalParticipantCreditShare += $creditCount;
@@ -329,7 +332,7 @@ class ReservationSeries
      */
     public function GetOwnerCreditsShare($spreadAcrossInstances = false)
     {
-        Log::Debug("owner share. required %s, participant total %s", $this->GetCreditsRequired(), $this->totalParticipantCreditShare);
+        Log::Error("owner share. required %s, participant total %s", $this->GetCreditsRequired(), $this->totalParticipantCreditShare);
         $userCredits = $this->GetCreditsRequired() - $this->totalParticipantCreditShare;
 
         if ($spreadAcrossInstances)

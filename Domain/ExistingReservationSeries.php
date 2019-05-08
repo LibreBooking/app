@@ -506,16 +506,11 @@ class ExistingReservationSeries extends ReservationSeries
         }
     }
 
-    /**
-     * @param int[] $participantCredits
-     */
-    public function ChangeParticipantCreditShare($participantCredits)
+    public function ChangeParticipantCreditShare($participantCredits, $reset = true)
     {
-        Log::Error('changing %s', var_export($participantCredits, true));
-        parent::ChangeParticipantCreditShare($participantCredits);
+        parent::ChangeParticipantCreditShare($participantCredits, $reset);
 
-        foreach ($this->Instances() as $instance)
-        {
+        foreach ($this->Instances() as $instance) {
             $this->RaiseInstanceUpdatedEvent($instance);
         }
     }
@@ -634,6 +629,10 @@ class ExistingReservationSeries extends ReservationSeries
      */
     public function CancelAllParticipation($participantId)
     {
+        if ($this->IsSharingCredits()) {
+            $this->participantCredits[$participantId] = 0;
+            $this->ChangeParticipantCreditShare($this->participantCredits);
+        }
         /** @var Reservation $instance */
         foreach ($this->Instances() as $instance) {
             $wasCancelled = $instance->CancelParticipation($participantId);
@@ -645,17 +644,18 @@ class ExistingReservationSeries extends ReservationSeries
 
     /**
      * @param int $participantId
+     * @param float $creditsToReturn
      * @return void
      */
-    public function CancelInstanceParticipation($participantId)
+    public function CancelInstanceParticipation($participantId, $creditsToReturn = 0)
     {
         if ($this->IsSharingCredits()) {
-
+            $current = $this->participantCredits[$participantId];
+            $this->participantCredits[$participantId] = ($current- $creditsToReturn);
+            $this->ChangeParticipantCreditShare($this->participantCredits);
         }
-        else {
-            if ($this->CurrentInstance()->CancelParticipation($participantId)) {
-                $this->RaiseInstanceUpdatedEvent($this->CurrentInstance());
-            }
+        if ($this->CurrentInstance()->CancelParticipation($participantId)) {
+            $this->RaiseInstanceUpdatedEvent($this->CurrentInstance());
         }
     }
 

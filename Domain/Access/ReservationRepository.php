@@ -123,14 +123,14 @@ class ReservationRepository implements IReservationRepository
                 // credits have been added back on the instance update
                 // deduct the new credit amount
 
-                Log::Debug('CREDITS SHARING - Reservation update adjusting credits for owner %s by %s. Required %s, consumed %s',
+                Log::Error('CREDITS SHARING - Reservation update adjusting credits for owner %s by %s. Required %s, consumed %s',
                     $reservationSeries->UserId(), $reservationSeries->GetOwnerCreditsShare(), $reservationSeries->GetCreditsRequired(), $reservationSeries->GetCreditsConsumed());
 
                 $adjustCreditsCommand = new AdjustUserCreditsCommand($reservationSeries->UserId(), $reservationSeries->GetOwnerCreditsShare(), Resources::GetInstance()->GetString('ReservationCreatedLog', $reservationSeries->CurrentInstance()->ReferenceNumber()));
                 $database->Execute($adjustCreditsCommand);
 
                 foreach ($reservationSeries->GetParticipantCredits() as $userId => $credits) {
-                    Log::Debug('CREDITS SHARING - Reservation update adjusting credits for user %s by %s. Required %s, consumed %s',
+                    Log::Error('CREDITS SHARING - Reservation update adjusting credits for user %s by %s. Required %s, consumed %s',
                         $userId, $credits, $reservationSeries->GetCreditsRequired(), $reservationSeries->GetCreditsConsumed());
 
                     $adjustCreditsCommand = new AdjustUserCreditsCommand($userId, $credits, Resources::GetInstance()->GetString('ReservationCreatedLog', $reservationSeries->CurrentInstance()->ReferenceNumber()));

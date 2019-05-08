@@ -130,6 +130,8 @@ class ParticipationPresenter
         if ($invitationAction == InvitationAction::CancelInstance) {
             if ($series->IsSharingCredits())
             {
+                $series->CalculateCredits((new ScheduleRepository())->GetLayout($series->ScheduleId(), new ScheduleLayoutFactory($user->Timezone)));
+                // todo it thinks the series requies 0 credits
                 $instance = $series->CurrentInstance();
                 $creditsToReturn = $instance->GetParticipantCredits($userId);
 
@@ -137,7 +139,7 @@ class ParticipationPresenter
                 if ($user->GetCurrentCredits() >= $creditsToReturn)
                 {
                     $series->ReturnOwnerCreditsShare($creditsToReturn);
-                    $series->CancelInstanceParticipation($userId);
+                    $series->CancelInstanceParticipation($userId, $creditsToReturn);
                 }
                 else {
                     $error = 'The reservation owner does not have enough credits';
@@ -150,6 +152,7 @@ class ParticipationPresenter
         if ($invitationAction == InvitationAction::CancelAll) {
             if ($series->IsSharingCredits())
             {
+                $series->CalculateCredits((new ScheduleRepository())->GetLayout($series->ScheduleId(), new ScheduleLayoutFactory($user->Timezone)));
                 $creditsToReturn = 0;
                 /** @var Reservation $instance */
                 foreach ($series->Instances() as $instance) {
