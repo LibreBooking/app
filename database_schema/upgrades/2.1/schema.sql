@@ -5,7 +5,7 @@ CREATE TABLE `dbversion` (
 ) ENGINE=InnoDB DEFAULT CHARACTER SET utf8;
 
 ALTER TABLE `resources` ADD COLUMN `admin_group_id` SMALLINT(5) unsigned;
-ALTER TABLE `resources` ADD CONSTRAINT `admin_group_id` FOREIGN KEY (`admin_group_id`) REFERENCES groups(`group_id`) ON DELETE SET NULL;
+ALTER TABLE `resources` ADD CONSTRAINT `admin_group_id` FOREIGN KEY (`admin_group_id`) REFERENCES `groups`(`group_id`) ON DELETE SET NULL;
 
 ALTER TABLE `users` ADD COLUMN `public_id` VARCHAR(20);
 CREATE UNIQUE INDEX `public_id` ON `users` (`public_id`);
