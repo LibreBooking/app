@@ -528,7 +528,7 @@ class en_us extends Language
 		$strings['UnavailableAllDay'] = 'Unavailable All Day';
 		$strings['AvailableUntil'] = 'Available Until';
 		$strings['AvailableBeginningAt'] = 'Available Beginning At';
-                $strings['AvailableAt'] = 'Available At';
+        $strings['AvailableAt'] = 'Available At';
 		$strings['AllResourceTypes'] = 'All Resource Types';
 		$strings['AllResourceStatuses'] = 'All Resource Statuses';
 		$strings['AllowParticipantsToJoin'] = 'Allow Participants To Join';
@@ -539,7 +539,7 @@ class en_us extends Language
 		$strings['Import'] = 'Import';
 		$strings['GetTemplate'] = 'Get Template';
 		$strings['UserImportInstructions'] = '<ul><li>File must be in CSV format.</li><li>Username and email are required fields.</li><li>Attribute validity will not be enforced.</li><li>Leaving other fields blank will set default values and \'password\' as the user\'s password.</li><li>Use the supplied template as an example.</li></ul>';
-		$strings['RowsImported'] = 'Rows Imported';$strings['UserImportInstructions'] = '<ul><li>File must be in CSV format.</li><li>Username and email are required fields.</li><li>Attribute validity will not be enforced.</li><li>Leaving other fields blank will set default values and \'password\' as the user\'s password.</li><li>Use the supplied template as an example.</li></ul>';
+		$strings['RowsImported'] = 'Rows Imported';
 		$strings['RowsSkipped'] = 'Rows Skipped';
 		$strings['Columns'] = 'Columns';
 		$strings['Reserve'] = 'Reserve';
@@ -773,6 +773,11 @@ class en_us extends Language
         $strings['Utilization'] = 'Utilization';
         $strings['SpecificTime'] = 'Specific Time';
         $strings['ReservationSeriesEndingPreference'] = 'When my recurring reservation series is ending';
+        $strings['NotAttending'] = 'Not Attending';
+        $strings['ViewAvailability'] = 'View Availability';
+        $strings['ReservationDetails'] = 'Reservation Details';
+        $strings['StartTime'] = 'Start Time';
+        $strings['EndTime'] = 'End Time';
         // End Strings
 
 		// Install
@@ -865,6 +870,8 @@ class en_us extends Language
 		$strings['TitleRequiredRule'] = 'Reservation title is required';
 		$strings['DescriptionRequiredRule'] = 'Reservation description is required';
 		$strings['WhatCanThisGroupManage'] = 'What can this group manage?';
+		$strings['ReservationParticipationActivityPreference'] = 'When someone joins or leaves my reservation';
+		$strings['RegisteredAccountRequired'] = 'Only registered users can book reservations';
 		// End Errors
 
 		// Page Titles
@@ -984,6 +991,9 @@ class en_us extends Language
 		$strings['MissedCheckinEmailSubject'] = 'Missed checkin for %s';
 		$strings['ReservationShareSubject'] = '%s Shared a Reservation for %s';
 		$strings['ReservationSeriesEndingSubject'] = 'Reservation Series for %s is Ending on %s';
+		$strings['ReservationParticipantAccept'] = '%s Has Accepted Your Reservation Invitation for %s on %s';
+		$strings['ReservationParticipantDecline'] = '%s Has Declined Your Reservation Invitation for %s on %s';
+		$strings['ReservationParticipantJoin'] = '%s Has Joined Your Reservation for %s on %s';
 		// End Email Subjects
 
 		$this->Strings = $strings;

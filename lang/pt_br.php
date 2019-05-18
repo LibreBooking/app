@@ -765,8 +765,8 @@ class pt_br extends en_gb
     $strings['QuotaEnforcement'] = 'Forçar %s %s';
     
     //Schedules
-    $strings['Reservation Details']='Detalhes da reserva';
-    $strings['View Availability']='Visualizar disponibilidade';
+    $strings['ReservationDetails']='Detalhes da reserva';
+    $strings['ViewAvailability']='Visualizar disponibilidade';
     $strings['Availability'] = 'Disponibilidade';
     $strings['AvailableAllYear'] = 'Ano inteiro';
     $strings['AvailableBetween'] = 'Disponível entre';
