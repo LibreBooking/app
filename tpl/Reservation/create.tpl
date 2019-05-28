@@ -263,6 +263,14 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                         </div>
                     </div>
 
+                    <div class="col-xs-12 reservationColor">
+                        <div class="form-group">
+                            <label for="color">{translate key=ReservationColor}</label>
+                            <input type="color" id="color" name="{FormKeys::RESERVATION_COLOR}" value="{$ReservationColor}"/>
+                        </div>
+
+                    </div>
+
                     {if !empty($ReferenceNumber)}
                         <div class="col-xs-12">
                             <div class="form-group">

@@ -135,6 +135,11 @@ interface IExistingReservationPage extends IReservationPage
 	 * @param bool $requiresApproval
 	 */
 	public function SetRequiresApproval($requiresApproval);
+
+    /**
+     * @param string $color
+     */
+    public function SetColor($color);
 }
 
 class ExistingReservationPage extends ReservationPage implements IExistingReservationPage
@@ -318,6 +323,11 @@ class ExistingReservationPage extends ReservationPage implements IExistingReserv
     public function SetTermsAccepted($accepted)
     {
         $this->Set('TermsAccepted', $accepted);
+    }
+
+    public function SetColor($color)
+    {
+        $this->Set('ReservationColor', $color);
     }
 }
 

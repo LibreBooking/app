@@ -111,7 +111,8 @@ class ReservationRepository implements IReservationRepository
                 $reservationSeries->StatusId(),
                 $reservationSeries->UserId(),
                 $reservationSeries->GetAllowParticipation(),
-                $reservationSeries->BookedBy()->UserId);
+                $reservationSeries->BookedBy()->UserId,
+                $reservationSeries->GetColor());
 
             $database->Execute($updateSeries);
 
@@ -155,7 +156,8 @@ class ReservationRepository implements IReservationRepository
             $reservationSeries->UserId(),
             $reservationSeries->GetAllowParticipation(),
             $reservationSeries->TermsAcceptanceDate(),
-            $reservationSeries->BookedBy()->UserId);
+            $reservationSeries->BookedBy()->UserId,
+            $reservationSeries->GetColor());
 
         $reservationSeriesId = $database->ExecuteInsert($insertReservationSeries);
 
@@ -282,6 +284,7 @@ class ReservationRepository implements IReservationRepository
             $series->WithOwner($row[ColumnNames::RESERVATION_OWNER]);
             $series->WithStatus($row[ColumnNames::RESERVATION_STATUS]);
             $series->AllowParticipation($row[ColumnNames::RESERVATION_ALLOW_PARTICIPATION]);
+            $series->SetColor($row[ColumnNames::RESERVATION_COLOR]);
 
             $startDate = Date::FromDatabase($row[ColumnNames::RESERVATION_START]);
             $endDate = Date::FromDatabase($row[ColumnNames::RESERVATION_END]);

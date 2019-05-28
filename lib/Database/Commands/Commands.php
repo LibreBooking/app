@@ -395,7 +395,8 @@ class AddReservationSeriesCommand extends SqlCommand
                                 $ownerId,
                                 $allowParticipation,
                                 $termsAcceptanceDate,
-                                $lastActionBy
+                                $lastActionBy,
+                                $color
     )
     {
         parent::__construct(Queries::ADD_RESERVATION_SERIES);
@@ -415,6 +416,7 @@ class AddReservationSeriesCommand extends SqlCommand
         $this->AddParameter(new Parameter(ParameterNames::ALLOW_PARTICIPATION, (int)$allowParticipation));
         $this->AddParameter(new Parameter(ParameterNames::TERMS_ACCEPTANCE_DATE, $termsAcceptanceDate->ToDatabase()));
         $this->AddParameter(new Parameter(ParameterNames::LAST_ACTION_BY, $lastActionBy));
+        $this->AddParameter(new Parameter(ParameterNames::RESERVATION_COLOR, $color));
     }
 }
 
@@ -2543,7 +2545,8 @@ class UpdateReservationSeriesCommand extends SqlCommand
                                 $statusId,
                                 $ownerId,
                                 $allowParticipation,
-                                $lastActionBy
+                                $lastActionBy,
+                                $color
     )
     {
         parent::__construct(Queries::UPDATE_RESERVATION_SERIES);
@@ -2558,6 +2561,7 @@ class UpdateReservationSeriesCommand extends SqlCommand
         $this->AddParameter(new Parameter(ParameterNames::USER_ID, $ownerId));
         $this->AddParameter(new Parameter(ParameterNames::ALLOW_PARTICIPATION, (int)$allowParticipation));
         $this->AddParameter(new Parameter(ParameterNames::LAST_ACTION_BY, $lastActionBy));
+        $this->AddParameter(new Parameter(ParameterNames::RESERVATION_COLOR, $color));
     }
 }
 

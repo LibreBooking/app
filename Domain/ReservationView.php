@@ -157,6 +157,9 @@ class ReservationView
      */
     public $TermsAcceptanceDate;
 
+    /** @var string */
+    public $Color = '';
+
     public function __construct()
     {
         $this->CheckinDate = new NullDate();

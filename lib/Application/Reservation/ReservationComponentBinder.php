@@ -345,6 +345,7 @@ class ReservationDetailsBinder implements IReservationComponentBinder
         }
 
         $this->page->SetTermsAccepted($this->reservationView->HasAcceptedTerms);
+		$this->page->SetColor($this->reservationView->Color);
 	}
 
 	private function IsCurrentUserParticipating($currentUserId)
