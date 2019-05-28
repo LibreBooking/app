@@ -175,6 +175,11 @@ function ResourceManagement(opts) {
 				details.find('.notesValue').editable('toggle');
 			});
 
+			details.find('.changeLabel').click(function (e) {
+				e.stopPropagation();
+				details.find('.labelValue').editable('toggle');
+			});
+
 			details.find('.changeResourceAdmin').click(function (e) {
 				e.stopPropagation();
 				details.find('.resourceAdminValue').editable('toggle');

@@ -153,6 +153,7 @@ class ColumnNames
 	const RESOURCE_ADMIN_GROUP_ID = 'admin_group_id';
 	const RESOURCE_SORT_ORDER = 'sort_order';
 	const RESOURCE_BUFFER_TIME = 'buffer_time';
+	const RESOURCE_RESERVATION_LABEL = 'reservation_label';
 	const ENABLE_CHECK_IN = 'enable_check_in';
 	const AUTO_RELEASE_MINUTES = 'auto_release_minutes';
 	const RESOURCE_ALLOW_DISPLAY = 'allow_display';

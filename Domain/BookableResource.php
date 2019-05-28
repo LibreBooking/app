@@ -577,6 +577,7 @@ class BookableResource implements IBookableResource
 	protected $_textColor;
 	protected $_creditsPerSlot;
 	protected $_peakCreditsPerSlot;
+	protected $_label;
 
 	/**
 	 * @var array|AttributeValue[]
@@ -720,6 +721,7 @@ class BookableResource implements IBookableResource
 		$resource->WithPeakCreditsPerSlot($row[ColumnNames::PEAK_CREDIT_COUNT]);
 		$resource->SetMinNoticeUpdate($row[ColumnNames::RESOURCE_MINNOTICE_UPDATE]);
 		$resource->SetMinNoticeDelete($row[ColumnNames::RESOURCE_MINNOTICE_DELETE]);
+		$resource->SetLabel($row[ColumnNames::RESOURCE_RESERVATION_LABEL]);
 
 		return $resource;
 	}
@@ -1497,6 +1499,27 @@ class BookableResource implements IBookableResource
 		}
 
 		return null;
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function HasLabel(){
+		return !empty($this->_label);
+	}
+
+	/**
+	 * @return string
+	 */
+	public function GetLabel() {
+		return $this->_label . '';
+	}
+
+	/**
+	 * @param $label string
+	 */
+	public function SetLabel($label) {
+		$this->_label = $label . '';
 	}
 
 	/**

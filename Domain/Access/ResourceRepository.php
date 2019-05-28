@@ -246,7 +246,8 @@ class ResourceRepository implements IResourceRepository
 				$resource->GetCreditsPerSlot(),
 				$resource->GetPeakCreditsPerSlot(),
                 $resource->GetMinNoticeUpdate(),
-                $resource->GetMinNoticeDelete()
+                $resource->GetMinNoticeDelete(),
+				$resource->GetLabel()
 		);
 
 		$db->Execute($updateResourceCommand);

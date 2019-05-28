@@ -87,6 +87,10 @@ class SlotLabelFactory
                 ConfigKeys::SCHEDULE_RESERVATION_LABEL);
         }
 
+        if (!empty($reservation->ResourceLabel)) {
+        	$format = $reservation->ResourceLabel;
+		}
+
         if ($format == 'none' || empty($format)) {
             return '';
         }

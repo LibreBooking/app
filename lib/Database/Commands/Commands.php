@@ -2594,7 +2594,8 @@ class UpdateResourceCommand extends SqlCommand
                                 $credits,
                                 $peakCredits,
                                 TimeInterval $minNoticeTimeUpdate,
-                                TimeInterval $minNoticeTimeDelete)
+                                TimeInterval $minNoticeTimeDelete,
+								$label)
     {
         parent::__construct(Queries::UPDATE_RESOURCE);
 
@@ -2631,6 +2632,7 @@ class UpdateResourceCommand extends SqlCommand
         $this->AddParameter(new Parameter(ParameterNames::RESOURCE_MINNOTICE_UPDATE, $minNoticeTimeUpdate->ToDatabase()));
         $this->AddParameter(new Parameter(ParameterNames::RESOURCE_MINNOTICE_DELETE, $minNoticeTimeDelete->ToDatabase()));
         $this->AddParameter(new Parameter(ParameterNames::DATE_MODIFIED, Date::Now()->ToDatabase()));
+        $this->AddParameter(new Parameter(ParameterNames::RESOURCE_RESERVATION_LABEL, $label));
     }
 }
 

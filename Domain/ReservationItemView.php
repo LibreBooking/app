@@ -382,6 +382,11 @@ class ReservationItemView implements IReservedItemView
      */
     public $ScheduleAdminGroupId = null;
 
+	/**
+	 * @var string
+	 */
+    public $ResourceLabel = '';
+
     /**
      * @var int|null
      */
@@ -610,6 +615,8 @@ class ReservationItemView implements IReservedItemView
         $view->CreditsConsumed = $row[ColumnNames::CREDIT_COUNT];
         $view->ResourceAdminGroupId = $row[ColumnNames::RESOURCE_ADMIN_GROUP_ID_RESERVATIONS];
         $view->ScheduleAdminGroupId = $row[ColumnNames::SCHEDULE_ADMIN_GROUP_ID_RESERVATIONS];
+
+        $view->ResourceLabel = $row[ColumnNames::RESOURCE_RESERVATION_LABEL];
 
         return $view;
     }
