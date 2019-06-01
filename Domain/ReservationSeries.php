@@ -215,6 +215,7 @@ class ReservationSeries
             $this->totalParticipantCreditShare = 0;
         }
         foreach ($participantCredits as $userId => $creditCount) {
+            $creditCount = max(0, intval($creditCount));
             $this->participantCredits[$userId] = $creditCount;
             $this->totalParticipantCreditShare += $creditCount;
             $this->isSharingCredits = true;

@@ -357,7 +357,7 @@ function Reservation(opts) {
         var totalCreditsRequired = parseInt(elements.requiredCreditsCount.data('required-credit-count'));
         var participantCreditShare = 0;
         elements.participantList.find('.credit-sharing').each(function (index, value) {
-            participantCreditShare += parseInt($(value).val());
+            participantCreditShare += getCreditAmount($(value).val());
         });
 
         return {
@@ -370,8 +370,6 @@ function Reservation(opts) {
     function CalculateCreditShareCost() {
         var divided = DivideCreditCost();
         $('#userCreditsShare').text(divided.ownerShare);
-
-        console.log(divided);
     }
 
     function GetSelectedResourceIds() {
@@ -881,6 +879,14 @@ function Reservation(opts) {
         SelectRepeatWeekday();
     }
 
+    function getCreditAmount(credits) {
+        var amount = parseFloat(credits);
+        if (isNaN(amount)) {
+            amount = 0;
+        }
+        return Math.max(0, amount);
+    }
+
     function InitializeParticipationElements() {
         elements.participantDialogPrompt.click(function () {
             participation.showAllUsersToAdd(elements.participantDialog);
@@ -912,12 +918,13 @@ function Reservation(opts) {
         elements.participantList.on('change', '.credit-sharing', function (e) {
             var divided = DivideCreditCost();
             var input = $(e.target);
-            if (divided.ownerShare < 0) {
+            var amount = parseFloat(input.val());
+            if (divided.ownerShare < 0 || amount < 0 || isNan(amount)) {
                 var previousValue = input.data('previous');
-                input.val(previousValue);
+                input.val(getCreditAmount(previousValue));
             }
             else {
-                input.data('previous', input.val());
+                input.data('previous', getCreditAmount(amount));
                 CalculateCreditShareCost();
             }
         });
