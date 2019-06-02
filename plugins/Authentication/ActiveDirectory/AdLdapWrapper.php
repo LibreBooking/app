@@ -88,6 +88,8 @@ class AdLdapWrapper implements IActiveDirectory
 
 		if ($authenticated)
 		{
+			Log::Debug('ActiveDirectory - Authenticate for user %s was successful', $username);
+
 			if ($this->options->HasRequiredGroups())
 			{
 				$groups = $this->ldap->user()->groups($username);
@@ -111,6 +113,8 @@ class AdLdapWrapper implements IActiveDirectory
 						return true;
 					}
 				}
+				
+				Log::Debug('ActiveDirectory - Authenticate for user %s failed because user was not in the required groups', $username);
 			}
 		}
 		

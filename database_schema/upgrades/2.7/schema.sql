@@ -79,7 +79,7 @@ CREATE TABLE `refund_transaction_log` (
   `refund_response` TEXT,
   PRIMARY KEY (`refund_transaction_log_id`),
   FOREIGN KEY (`payment_transaction_log_id`)
-  REFERENCES payment_transaction_log (`payment_transaction_log_id`)
+  REFERENCES `payment_transaction_log` (`payment_transaction_log_id`)
   ON DELETE CASCADE
 )
   ENGINE = InnoDB
@@ -110,7 +110,6 @@ ALTER TABLE `users`
 
 ALTER TABLE `announcements`
   ADD COLUMN `display_page` TINYINT(1) UNSIGNED NOT NULL DEFAULT 1;
-#ALTER TABLE `announcements` ADD INDEX announcement_search (`start_date`, `end_date`, `display_page`);
 ALTER TABLE `announcements` ADD INDEX (`start_date`);
 ALTER TABLE `announcements` ADD INDEX (`end_date`);
 ALTER TABLE `announcements` ADD INDEX (`display_page`);
@@ -140,7 +139,7 @@ CREATE TABLE `resource_images` (
   `image_name` VARCHAR(50),
   PRIMARY KEY (`resource_image_id`),
   FOREIGN KEY (`resource_id`)
- 	REFERENCES resources (`resource_id`)
+ 	REFERENCES `resources` (`resource_id`)
  	ON UPDATE CASCADE ON DELETE CASCADE
 )
   ENGINE = InnoDB
@@ -174,7 +173,7 @@ CREATE TABLE `custom_time_blocks` (
   `layout_id` MEDIUMINT UNSIGNED NOT NULL,
   PRIMARY KEY (`custom_time_block_id`),
   FOREIGN KEY (`layout_id`)
- 	REFERENCES layouts (`layout_id`)
+ 	REFERENCES `layouts` (`layout_id`)
  	ON UPDATE CASCADE ON DELETE CASCADE
 )
   ENGINE = InnoDB
