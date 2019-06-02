@@ -375,4 +375,4 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
     </nav>
 {/if}
 
-<div id="main" class="container-fluid">
+<div id="main" class="container-fluid" {if $HideNavBar}style="padding-bottom:0;"{/if}>

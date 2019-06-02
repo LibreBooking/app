@@ -78,6 +78,11 @@ class AutoCompletePage extends Page
 			return $this->GetGroupUsers($this->GetQuerystring(QueryStringKeys::GROUP_ID));
 		}
 
+        $onlyActive = false;
+		$activeQS = $this->GetQuerystring(QueryStringKeys::ACCOUNT_STATUS);
+		if ($activeQS == AccountStatus::ACTIVE) {
+		    $onlyActive = true;
+        }
 		$filter = new SqlFilterLike(ColumnNames::FIRST_NAME, $term);
 		$filter->_Or(new SqlFilterLike(ColumnNames::LAST_NAME, $term));
 		$filter->_Or(new SqlFilterLike(ColumnNames::EMAIL, $term));
@@ -88,7 +93,7 @@ class AutoCompletePage extends Page
 		$user = $r->LoadById($currentUser->UserId);
 
         $status = AccountStatus::ACTIVE;
-		if ($currentUser->IsAdmin || $currentUser->IsGroupAdmin)
+		if (!$onlyActive && ($currentUser->IsAdmin || $currentUser->IsGroupAdmin))
         {
             $status = AccountStatus::ALL;
         }

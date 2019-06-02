@@ -200,7 +200,14 @@ function ResourceDisplay(opts) {
                     }
                     end.prop('selectedIndex', newSelectedEnd);
                     beginIndex = newIndex;
-                })
+                });
+
+                if (opts.allowAutocomplete) {
+                    $('#emailAddress').unbind();
+                    $('#emailAddress').userAutoComplete(opts.userAutocompleteUrl, function (ui) {
+                        $('#emailAddress').val(ui.item.data.Email);
+                    });
+                }
             });
 
             function beforeCheckin() {

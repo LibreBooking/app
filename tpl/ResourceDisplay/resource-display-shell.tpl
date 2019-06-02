@@ -30,13 +30,16 @@ along with phpScheduleIt.  If not, see <http://www.gnu.org/licenses/>.
 {include file="javascript-includes.tpl"}
 {jsfile src="resourceDisplay.js"}
 {jsfile src="ajax-helpers.js"}
+{jsfile src="autocomplete.js"}
 
 <script type="text/javascript">
 	$(function () {
 		var resourceDisplay = new ResourceDisplay();
 		resourceDisplay.initDisplay(
                 {
-                    url: '{$smarty.server.SCRIPT_NAME}?dr=resource&rid={$PublicResourceId}&dr=display'
+                    url: '{$smarty.server.SCRIPT_NAME}?dr=resource&rid={$PublicResourceId}&dr=display',
+                    userAutocompleteUrl: "ajax/autocomplete.php?type={AutoCompleteType::User}&as=1",
+                    allowAutocomplete: {if $AllowAutocomplete}true{else}false{/if}
                 }
         );
 	});

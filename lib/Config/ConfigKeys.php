@@ -155,6 +155,7 @@ class ConfigKeys
 	const SLACK_TOKEN = 'token';
 
 	const TABLET_VIEW_ALLOW_GUESTS = 'allow.guest.reservations';
+	const TABLET_VIEW_AUTOCOMPLETE = 'auto.suggest.emails';
 }
 
 class ConfigSection

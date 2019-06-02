@@ -209,3 +209,4 @@ $conf['settings']['slack']['token'] = '';
  * Tablet view
  */
 $conf['settings']['tablet.view']['allow.guest.reservations'] = 'false';
+$conf['settings']['tablet.view']['auto.suggest.emails'] = 'false';

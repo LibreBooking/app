@@ -114,6 +114,7 @@
                     <div class="input-group input-group-lg">
                         <span class="input-group-addon" id="email-addon"><span
                                     class="glyphicon glyphicon-envelope"></span></span>
+                        <label for="emailAddress" class="hidden">{translate key=Email}</label>
                         <input id="emailAddress" type="email" class="form-control"
                                placeholder="{translate key=Email}"
                                aria-describedby="email-addon" required="required" {formname key=EMAIL} />
