@@ -778,6 +778,8 @@ class en_us extends Language
         $strings['ReservationDetails'] = 'Reservation Details';
         $strings['StartTime'] = 'Start Time';
         $strings['EndTime'] = 'End Time';
+        $strings['New'] = 'New';
+        $strings['Updated'] = 'Updated';
         // End Strings
 
 		// Install

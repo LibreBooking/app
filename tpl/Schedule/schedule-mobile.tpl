@@ -24,6 +24,10 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 {block name="reservations"}
 
     {function name=displayGeneralReservedMobile}
+        {assign var=badge value=''}
+        {if $Slot->IsNew()}{assign var=badge value='<span class="reservation-new">'|cat:{translate key="New"}|cat:'</span>'}{/if}
+        {if $Slot->IsUpdated()}{assign var=badge value='<span class="reservation-updated">'|cat:{translate key="Updated"}|cat:'</span>'}{/if}
+
         {if $Slot->IsPending()}
             {assign var=class value='pending'}
         {elseif $Slot->HasCustomColor()}
@@ -33,7 +37,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
              resid="{$Slot->Id()}" {$color}
              id="{$Slot->Id()}|{$Slot->Date()->Format('Ymd')}"><i class="fa fa-info-circle"></i>
             {formatdate date=$Slot->BeginDate() key=period_time} - {formatdate date=$Slot->EndDate() key=period_time}
-            {$Slot->Label($SlotLabelFactory)|escapequotes}</div>
+            {$badge}{$Slot->Label($SlotLabelFactory)|escapequotes}</div>
     {/function}
 
     {function name=displayAdminReservedMobile}

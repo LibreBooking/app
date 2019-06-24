@@ -151,4 +151,15 @@ interface IReservationSlot
      * @return int[]
      */
     public function OwnerGroupIds();
+
+    /**
+     * @return bool
+     */
+    public function IsNew();
+
+    /**
+     * @return bool
+     */
+    public function IsUpdated();
+
 }

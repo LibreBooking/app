@@ -226,4 +226,14 @@ class BufferSlot implements IReservationSlot
     {
         return $this->_reservation->OwnerGroupIds();
     }
+
+    public function IsNew()
+    {
+        return false;
+    }
+
+    public function IsUpdated()
+    {
+        return false;
+    }
 }
