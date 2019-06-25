@@ -18,7 +18,7 @@ CREATE TABLE `reservation_color_rules` (
 		`color`                     VARCHAR(50),
   PRIMARY KEY (`reservation_color_rule_id`),
   FOREIGN KEY (`custom_attribute_id`)
-  REFERENCES custom_attributes (`custom_attribute_id`)
+  REFERENCES `custom_attributes` (`custom_attribute_id`)
     ON DELETE CASCADE
 )
 		ENGINE = InnoDB
@@ -34,10 +34,10 @@ CREATE TABLE `resource_accessories` (
 		`maximum_quantity`      SMALLINT              NULL,
 		PRIMARY KEY (`resource_accessory_id`),
 		FOREIGN KEY (`resource_id`)
-		REFERENCES resources (`resource_id`)
+		REFERENCES `resources` (`resource_id`)
 				ON DELETE CASCADE,
 		FOREIGN KEY (`accessory_id`)
-		REFERENCES accessories (`accessory_id`)
+		REFERENCES `accessories` (`accessory_id`)
 				ON DELETE CASCADE
 )
 		ENGINE = InnoDB
@@ -62,10 +62,10 @@ CREATE TABLE `resource_type_assignment` (
 		`resource_type_id` MEDIUMINT(8) UNSIGNED NOT NULL,
 		PRIMARY KEY (`resource_id`, `resource_type_id`),
 		FOREIGN KEY (`resource_id`)
-		REFERENCES resources (`resource_id`)
+		REFERENCES `resources` (`resource_id`)
 				ON DELETE CASCADE,
 		FOREIGN KEY (`resource_type_id`)
-		REFERENCES resource_types (`resource_type_id`)
+		REFERENCES `resource_types` (`resource_type_id`)
 				ON DELETE CASCADE
 )
 		ENGINE = InnoDB
@@ -77,7 +77,7 @@ CREATE TABLE `custom_attribute_entities` (
 		`entity_id`           MEDIUMINT(8) UNSIGNED NOT NULL,
 		PRIMARY KEY (`custom_attribute_id`, `entity_id`),
 		FOREIGN KEY (`custom_attribute_id`)
-		REFERENCES custom_attributes (`custom_attribute_id`)
+		REFERENCES `custom_attributes` (`custom_attribute_id`)
 				ON DELETE CASCADE
 )
 		ENGINE = InnoDB

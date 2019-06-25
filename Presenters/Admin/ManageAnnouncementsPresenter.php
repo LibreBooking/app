@@ -228,7 +228,7 @@ class ManageAnnouncementsPresenter extends ActionPresenter
             $userList = $this->userViewRepository->GetList(null, null, null, null, null, AccountStatus::ACTIVE)->Results();
             foreach ($userList as $user) {
                 $allUsers[$user->Id] = $user;
-                $usersToSendTo[] = $user->Id;
+                $usersToSendTo[] = $user;
             }
             return $usersToSendTo;
         }

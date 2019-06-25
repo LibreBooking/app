@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <project name="booked" default="package">
-	<property name="version" value="2.7.6"/>
+	<property name="version" value="2.7.6-reservation-colors"/>
 	<property name="is.pre.release" value="false"/>
 	<property name="packagename" value="booked-${version}"/>
 	<property name="root.dir" value="../.."/>

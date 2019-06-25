@@ -43,6 +43,7 @@ class AvailableLanguages
             'fi_fi' => new AvailableLanguage('fi_fi', 'fi_fi.php', 'Suomi'),
             'fr_fr' => new AvailableLanguage('fr_fr', 'fr_fr.php', 'Fran&ccedil;ais'),
             'hr_hr' => new AvailableLanguage('hr_hr', 'hr_hr.php', 'Hrvatski'),
+            'hu_hu' => new AvailableLanguage('hu_hu', 'hu_hu.php', 'Hungarian'),
             'he' => new AvailableLanguage('he', 'he.php', 'עברית'),
             'id_id' => new AvailableLanguage('id_id', 'id_id.php', 'Bahasa Indonesia'),
             'it_it' => new AvailableLanguage('it_it', 'it_it.php', 'Italiano'),

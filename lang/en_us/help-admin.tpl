@@ -863,6 +863,9 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                     be
                     hidden on the bookings page. Default is false.</p>
 
+                <p class="setting"><span>$conf['settings']['schedule']['update.highlight.minutes']</span>If set, a new or
+                    updated indicator will show on the reservation label for the duration after a reservation is created or updated</p>
+
                 <p class="setting"><span>$conf['settings']['ics']['subscription.key']</span>If you want to allow
                     calendar
                     subscriptions,
