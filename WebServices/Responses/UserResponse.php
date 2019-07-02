@@ -125,7 +125,7 @@ class UserGroupItemResponse extends RestResponse
     public function __construct(IRestServer $server, $id, $name)
     {
         $this->id = $id;
-        $this->name = $name();
+        $this->name = $name;
         $this->AddService($server, WebServices::GetGroup, array(WebServiceParams::GroupId => $id));
     }
 
