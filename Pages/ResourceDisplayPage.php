@@ -163,6 +163,8 @@ class ResourceDisplayPage extends ActionPage implements IResourceDisplayPage, IR
             new AttributeService(new AttributeRepository()),
             new ReservationRepository(),
             new TermsOfServiceRepository());
+
+        $this->Set('AllowAutocomplete', Configuration::Instance()->GetSectionKey(ConfigSection::TABLET_VIEW, ConfigKeys::TABLET_VIEW_AUTOCOMPLETE, new BooleanConverter()));
     }
 
     public function ProcessAction()

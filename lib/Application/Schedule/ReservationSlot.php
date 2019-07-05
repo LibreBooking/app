@@ -268,4 +268,22 @@ class ReservationSlot implements IReservationSlot
     {
         return $this->_reservation->OwnerGroupIds();
     }
+
+    public function IsNew()
+    {
+        $newMinutes = Configuration::Instance()->GetSectionKey(ConfigSection::SCHEDULE, ConfigKeys::SCHEDULE_UPDATE_HIGHLIGHT_MINUTES, new IntConverter());
+        return
+            ($newMinutes > 0) &&
+            (empty($this->_reservation->ModifiedDate) || empty($this->_reservation->ModifiedDate->__toString())) &&
+            ($this->_reservation->CreatedDate->AddMinutes($newMinutes)->GreaterThanOrEqual(Date::Now()));
+    }
+
+    public function IsUpdated()
+    {
+        $newMinutes = Configuration::Instance()->GetSectionKey(ConfigSection::SCHEDULE, ConfigKeys::SCHEDULE_UPDATE_HIGHLIGHT_MINUTES, new IntConverter());
+	    return
+            ($newMinutes > 0) &&
+            (!empty($this->_reservation->ModifiedDate) && !empty($this->_reservation->ModifiedDate->__toString())) &&
+            ($this->_reservation->ModifiedDate->AddMinutes($newMinutes)->GreaterThanOrEqual(Date::Now()));
+    }
 }

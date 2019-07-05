@@ -69,6 +69,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
             <li>Txeli Sanchez (Basque)</li>
             <li>Razvan Mihaila (Romanian)</li>
             <li>Veliša Bujić (Serbian)</li>
+            <li>Róbert Bere  (Hungarian)</li>
         </ul>
 
         <h3>Thank you to the following projects and libraries</h3>

@@ -23,7 +23,7 @@ class RegistrationPermissionStrategy implements IRegistrationPermissionStrategy
 {
 	public function AddAccount(User $user)
 	{
-		$autoAssignCommand = new AutoAssignPermissionsCommand($user->Id());
+	    $autoAssignCommand = new AutoAssignPermissionsCommand($user->Id());
 		ServiceLocator::GetDatabase()->Execute($autoAssignCommand);
 	}
 }

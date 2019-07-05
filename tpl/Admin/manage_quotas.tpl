@@ -105,6 +105,12 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                                 <input type='text' class='time' id='enforce-time-start' size='6'
                                        value='12:00am' {formname key=BEGIN_TIME} aria-label='Start Time'/>
                             </div>
+					<div id='enforce-hours-times' class='inline no-show'>
+						<div class='form-group form-group-sm'>
+							<span>{translate key=Between}</span>
+                            <label for='enforce-time-start' class='no-show'>{translate key=StartTime}</label>
+                            <label for='enforce-time-end' class='no-show'>{translate key=EndTime}</label>
+                            <input type='text' class='form-control time' id='enforce-time-start' size='6' value='12:00am' {formname key=BEGIN_TIME}/>
                             -
                             <div class='input-field inline'>
                                 <label for='enforce-time-end'>&nbsp;</label>
@@ -306,10 +312,10 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
             };
 
             $('#enforce-time-start').timepicker({
-                show24Hours: false
+				timeFormat: '{$TimeFormat}'
             });
             $('#enforce-time-end').timepicker({
-                show24Hours: false
+				timeFormat: '{$TimeFormat}'
             });
 
             var quotaManagement = new QuotaManagement(quotaOptions);

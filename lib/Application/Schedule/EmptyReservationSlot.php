@@ -233,4 +233,14 @@ class EmptyReservationSlot implements IReservationSlot
     {
         return array();
     }
+
+    public function IsNew()
+    {
+        return false;
+    }
+
+    public function IsUpdated()
+    {
+        return false;
+    }
 }

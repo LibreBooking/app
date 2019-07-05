@@ -12,7 +12,7 @@ CREATE TABLE `resource_groups` (
   PRIMARY KEY (`resource_group_id`),
   INDEX `resource_groups_parent_id` (`parent_id`),
   FOREIGN KEY (`parent_id`)
-	REFERENCES resource_groups(`resource_group_id`)
+	REFERENCES `resource_groups`(`resource_group_id`)
 	ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARACTER SET utf8;
 
@@ -24,7 +24,7 @@ CREATE TABLE `resource_types` (
   PRIMARY KEY (`resource_type_id`)
 ) ENGINE=InnoDB DEFAULT CHARACTER SET utf8;
 
-ALTER TABLE `resources` ADD FOREIGN KEY (`resource_type_id`) REFERENCES resource_types(`resource_type_id`) ON DELETE SET NULL;
+ALTER TABLE `resources` ADD FOREIGN KEY (`resource_type_id`) REFERENCES `resource_types`(`resource_type_id`) ON DELETE SET NULL;
 
 DROP TABLE IF EXISTS `resource_group_assignment`;
 CREATE TABLE `resource_group_assignment` (
@@ -37,7 +37,7 @@ CREATE TABLE `resource_group_assignment` (
 		REFERENCES resource_groups(`resource_group_id`)
 		ON DELETE CASCADE,
 	FOREIGN KEY (`resource_id`)
-		REFERENCES resources(`resource_id`)
+		REFERENCES `resources`(`resource_id`)
 	ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARACTER SET utf8;
 
@@ -47,10 +47,10 @@ CREATE TABLE `blackout_series_resources` (
  `resource_id` smallint(5) unsigned NOT NULL,
   PRIMARY KEY (`blackout_series_id`, `resource_id`),
 	FOREIGN KEY (`blackout_series_id`)
-		REFERENCES blackout_series(`blackout_series_id`)
+		REFERENCES `blackout_series`(`blackout_series_id`)
 		ON DELETE CASCADE,
 	FOREIGN KEY (`resource_id`)
-		REFERENCES resources(`resource_id`)
+		REFERENCES `resources`(`resource_id`)
 	ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARACTER SET utf8;
 
@@ -74,12 +74,12 @@ CREATE TABLE `user_preferences` (
  PRIMARY KEY (`user_preferences_id`),
  INDEX (`user_id`),
  FOREIGN KEY (`user_id`)
-    REFERENCES users(`user_id`)
+    REFERENCES `users`(`user_id`)
     ON UPDATE CASCADE ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARACTER SET utf8;
 
-ALTER TABLE `accessories` MODIFY COLUMN accessory_quantity smallint(5) unsigned;
-ALTER TABLE `reservation_accessories` MODIFY COLUMN quantity smallint(5) unsigned;
+ALTER TABLE `accessories` MODIFY COLUMN `accessory_quantity` smallint(5) unsigned;
+ALTER TABLE `reservation_accessories` MODIFY COLUMN `quantity` smallint(5) unsigned;
 
 DROP TABLE IF EXISTS `resource_status_reasons`;
 CREATE TABLE `resource_status_reasons` (
@@ -92,7 +92,7 @@ CREATE TABLE `resource_status_reasons` (
 
 ALTER TABLE `resources` ADD COLUMN `status_id` tinyint unsigned NOT NULL DEFAULT 1;
 ALTER TABLE `resources` ADD COLUMN `resource_status_reason_id` smallint(5) unsigned;
-ALTER TABLE `resources` ADD FOREIGN KEY (`resource_status_reason_id`) REFERENCES resource_status_reasons(`resource_status_reason_id`) ON DELETE SET NULL;
+ALTER TABLE `resources` ADD FOREIGN KEY (`resource_status_reason_id`) REFERENCES `resource_status_reasons`(`resource_status_reason_id`) ON DELETE SET NULL;
 UPDATE resources SET status_id = isactive;
 ALTER TABLE `resources` DROP COLUMN `isactive`;
 ALTER TABLE `resources` ADD COLUMN `buffer_time` int unsigned;

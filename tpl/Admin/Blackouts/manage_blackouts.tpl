@@ -55,8 +55,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                             <input {formname key=END_TIME} type="text" id="addEndTime"
                                                            class="dateinput timepicker"
                                                            value="{format_date format='h:00 A' date=Date::Now()->AddHours(1)}"
-                                                           title="End time"/>
-                            <label for="addEndTime" class="no-show">Start Time</label>
+												   title="{translate key=EndTime}"/>
+                    <label for="addEndTime" class="no-show">{translate key=EndTime}</label>
                         </div>
                     </div>
 
@@ -78,7 +78,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                                 <label for="addScheduleId" class="active">{translate key=Schedule} </label>
                                 <select {formname key=SCHEDULE_ID} id="addScheduleId" class=""
                                                                    disabled="disabled"
-                                                                   title="Schedule">
+														   title="{translate key=Schedule}">
                                     {object_html_options options=$Schedules key='GetId' label="GetName" selected=$ScheduleId}
                                 </select>
                             </div>

@@ -781,6 +781,12 @@ class en_us extends Language
         $strings['AddOrRemoveAccessories'] = 'Add or remove accessories';
         $strings['AutoReleaseTooltip'] = 'Automatically released if not checked in';
         $strings['ViewAvailability'] = 'View Availability';
+        $strings['ViewAvailability'] = 'View Availability';
+        $strings['ReservationDetails'] = 'Reservation Details';
+        $strings['StartTime'] = 'Start Time';
+        $strings['EndTime'] = 'End Time';
+        $strings['New'] = 'New';
+        $strings['Updated'] = 'Updated';
         // End Strings
 
 		// Install

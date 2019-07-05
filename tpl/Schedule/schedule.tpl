@@ -25,9 +25,12 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
     {elseif $Slot->HasCustomColor()}
         {assign var=color value='style="background-color:'|cat:$Slot->Color()|cat:' !important;color:'|cat:$Slot->TextColor()|cat:' !important;"'}
     {/if}
+    {assign var=badge value=''}
+    {if $Slot->IsNew()}{assign var=badge value='<span class="reservation-new">'|cat:{translate key="New"}|cat:'</span>'}{/if}
+    {if $Slot->IsUpdated()}{assign var=badge value='<span class="reservation-updated">'|cat:{translate key="Updated"}|cat:'</span>'}{/if}
     <td {$spantype|default:'col'}span="{$Slot->PeriodSpan()}" class="reserved {$class} {$OwnershipClass} clickres slot"
         resid="{$Slot->Id()}" {$color} {if $Draggable}draggable="true"{/if} data-resourceId="{$ResourceId}"
-        id="{$Slot->Id()}|{$Slot->Date()->Format('Ymd')}">{$Slot->Label($SlotLabelFactory)|escapequotes}</td>
+        id="{$Slot->Id()}|{$Slot->Date()->Format('Ymd')}">{$badge}{$Slot->Label($SlotLabelFactory)|escapequotes}</td>
 {/function}
 
 {function name=displayMyReserved}
