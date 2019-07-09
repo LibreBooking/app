@@ -70,6 +70,10 @@ class ReservationCreditsPresenter
         $reservation->CalculateCredits($layout);
         $creditsRequired = $reservation->GetCreditsRequired();
 
+        Log::Debug($reservation->CurrentInstance()->StartDate());
+        Log::Debug($reservation->CurrentInstance()->EndDate());
+        Log::Debug($creditsRequired);
+
         $cost = '';
         if (Configuration::Instance()->GetSectionKey(ConfigSection::CREDITS, ConfigKeys::CREDITS_ALLOW_PURCHASE, new BooleanConverter())) {
             $creditCost = $this->paymentRepository->GetCreditCost();
