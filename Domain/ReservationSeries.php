@@ -753,8 +753,8 @@ class ReservationSeries
 
 			$instanceSlots = 0;
 			$peakSlots = 0;
-			$startDate = $instance->StartDate();
-			$endDate = $instance->EndDate();
+			$startDate = $instance->StartDate()->ToTimezone($layout->Timezone());
+            $endDate = $instance->EndDate()->ToTimezone($layout->Timezone());
 
 			if ($startDate->DateEquals($endDate))
 			{
