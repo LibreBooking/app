@@ -388,6 +388,11 @@ class ReservationItemView implements IReservedItemView
     public $ResourceLabel = '';
 
     /**
+     * @var null|string
+     */
+    public $ReservationColor = null;
+
+    /**
      * @var int|null
      */
     private $bufferSeconds = 0;
@@ -615,6 +620,7 @@ class ReservationItemView implements IReservedItemView
         $view->CreditsConsumed = $row[ColumnNames::CREDIT_COUNT];
         $view->ResourceAdminGroupId = $row[ColumnNames::RESOURCE_ADMIN_GROUP_ID_RESERVATIONS];
         $view->ScheduleAdminGroupId = $row[ColumnNames::SCHEDULE_ADMIN_GROUP_ID_RESERVATIONS];
+        $view->ReservationColor = $row[ColumnNames::RESERVATION_SERIES_COLOR];
 
         $view->ResourceLabel = $row[ColumnNames::RESOURCE_RESERVATION_LABEL];
 
@@ -666,6 +672,7 @@ class ReservationItemView implements IReservedItemView
         $item->ModifiedDate = $r->DateModified;
         $item->OwnerEmailAddress = $r->OwnerEmailAddress;
         $item->OwnerPhone = $r->OwnerPhone;
+        $item->ReservationColor = $r->Color;
 
         return $item;
     }
@@ -900,7 +907,11 @@ class ReservationItemView implements IReservedItemView
             // cache the color after the first call to prevent multiple iterations of this logic
             $userColor = $this->UserPreferences->Get(UserPreferences::RESERVATION_COLOR);
             $resourceColor = $this->ResourceColor;
+            $reservationColor = $this->ReservationColor;
 
+            if (!empty($reservationColor)) {
+                $this->_color = "$reservationColor";
+            }
             if (!empty($resourceColor)) {
                 $this->_color = "$resourceColor";
             }

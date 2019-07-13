@@ -207,6 +207,27 @@ class ReservationSeries
 	}
 
     /**
+     * @var string
+     */
+	protected $color;
+
+    /**
+     * @param string $color
+     */
+    public function SetColor($color)
+    {
+        $this->color = $color;
+    }
+
+    /**
+     * @return string
+     */
+    public function GetColor() {
+        return $this->color;
+    }
+
+
+    /**
      * @param Reservation $r1
      * @param Reservation $r2
      * @return int

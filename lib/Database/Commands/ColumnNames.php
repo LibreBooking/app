@@ -363,6 +363,7 @@ class ColumnNames
     const UTILIZATION_TYPE = 'utilization_type';
     const DATE = 'date';
     const UTILIZATION = 'utilization';
+    const RESERVATION_SERIES_COLOR = 'series_color';
 
     // shared
 	const ALLOW_CALENDAR_SUBSCRIPTION = 'allow_calendar_subscription';

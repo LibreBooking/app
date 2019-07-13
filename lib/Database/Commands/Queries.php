@@ -145,8 +145,8 @@ class Queries
 
 	const ADD_RESERVATION_SERIES =
 			'INSERT INTO
-        reservation_series (date_created, title, description, allow_participation, allow_anon_participation, repeat_type, repeat_options, type_id, status_id, owner_id, terms_date_accepted, last_action_by)
-		VALUES (@dateCreated, @title, @description, @allow_participation, false, @repeatType, @repeatOptions, @typeid, @statusid, @userid, @terms_date_accepted, @last_action_by)';
+        reservation_series (date_created, title, description, allow_participation, allow_anon_participation, repeat_type, repeat_options, type_id, status_id, owner_id, terms_date_accepted, last_action_by, color)
+		VALUES (@dateCreated, @title, @description, @allow_participation, false, @repeatType, @repeatOptions, @typeid, @statusid, @userid, @terms_date_accepted, @last_action_by, @color)';
 
 	const ADD_RESERVATION_GUEST =
 			'INSERT INTO reservation_guests (reservation_instance_id, email, reservation_user_level)
@@ -1089,7 +1089,8 @@ class Queries
 			status_id = @statusid,
 			owner_id = @userid,
 			allow_participation = @allow_participation,
-			last_action_by = @last_action_by
+			last_action_by = @last_action_by,
+			color = @color
 		WHERE
 			series_id = @seriesid';
 
@@ -1228,7 +1229,7 @@ class QueryBuilder
 					(ri.end_date >= @startDate AND ri.end_date <= @endDate) OR
 					(ri.start_date <= @startDate AND ri.end_date >= @endDate))';
 
-	public static $SELECT_LIST_FRAGMENT = 'ri.*, rs.date_created as date_created, rs.last_modified as last_modified, rs.description as description, rs.status_id as status_id, rs.title, rs.repeat_type, rs.repeat_options,
+	public static $SELECT_LIST_FRAGMENT = 'ri.*, rs.date_created as date_created, rs.last_modified as last_modified, rs.description as description, rs.status_id as status_id, rs.title, rs.repeat_type, rs.repeat_options, rs.color as series_color,
 					owner.fname as owner_fname, owner.lname as owner_lname, owner.user_id as owner_id, owner.phone as owner_phone, owner.position as owner_position, owner.organization as owner_organization, owner.email as email, owner.language, owner.timezone,
 					resources.name, resources.resource_id, resources.schedule_id, resources.status_id as resource_status_id, resources.resource_status_reason_id, resources.buffer_time, resources.color, resources.enable_check_in, resources.auto_release_minutes, resources.admin_group_id as resource_admin_group_id, resources.reservation_label as reservation_label,
 					ru.reservation_user_level, schedules.admin_group_id as schedule_admin_group_id,

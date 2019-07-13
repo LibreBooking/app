@@ -191,6 +191,7 @@ class ParameterNames
 	const RESERVATION_INSTANCE_ID = '@reservationid';
 	const RESERVATION_USER_LEVEL_ID = '@levelid';
     const RESERVATION_WAITLIST_REQUEST_ID = '@reservation_waitlist_request_id';
+    const RESERVATION_COLOR = '@color';
 
 	const RESOURCE_ID = '@resourceid';
 	const RESOURCE_IDS = '@resourceids';

@@ -61,6 +61,7 @@ function Calendar(opts) {
                 agendaWeek: {slotLabelFormat: _options.timeFormat}
             },
             slotLabelFormat: _options.timeFormat,
+            scrollTime: '12:00',
             loading: function (isLoading) {
                 if (isLoading) {
                     showLoadingIndicator();

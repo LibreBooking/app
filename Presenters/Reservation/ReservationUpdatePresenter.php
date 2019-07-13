@@ -182,6 +182,8 @@ class ReservationUpdatePresenter implements IReservationUpdatePresenter
 			$existingSeries->CalculateCredits($layout);
 		}
 
+		$existingSeries->SetColor($this->page->GetColor());
+
 		return $existingSeries;
 	}
 

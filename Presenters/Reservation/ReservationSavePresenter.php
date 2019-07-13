@@ -161,6 +161,7 @@ class ReservationSavePresenter implements IReservationSavePresenter
 		}
 
 		$reservationSeries->AcceptTerms($this->page->GetTermsOfServiceAcknowledgement());
+		$reservationSeries->SetColor($this->page->GetColor());
 
 		return $reservationSeries;
 	}

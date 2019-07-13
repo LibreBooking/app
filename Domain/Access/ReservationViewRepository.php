@@ -155,6 +155,7 @@ class ReservationViewRepository implements IReservationViewRepository
             $reservationView->CreditsConsumed = $row[ColumnNames::CREDIT_COUNT];
             $reservationView->TermsAcceptanceDate = Date::FromDatabase($row[ColumnNames::RESERVATION_TERMS_ACCEPTANCE_DATE]);
             $reservationView->HasAcceptedTerms = $reservationView->TermsAcceptanceDate->ToString() != '';
+            $reservationView->Color = $row[ColumnNames::RESERVATION_COLOR] . '';
 
             $this->SetResources($reservationView);
             $this->SetParticipants($reservationView);

@@ -44,6 +44,7 @@ class ConfigKeys
     const SCHEDULE_SHOW_INACCESSIBLE_RESOURCES = 'show.inaccessible.resources';
     const SCHEDULE_RESERVATION_LABEL = 'reservation.label';
     const SCHEDULE_HIDE_BLOCKED_PERIODS = 'hide.blocked.periods';
+    const SCHEDULE_UPDATE_HIGHLIGHT_MINUTES = 'update.highlight.minutes';
 
     const DATABASE_TYPE = 'type';
     const DATABASE_USER = 'user';
@@ -155,6 +156,7 @@ class ConfigKeys
 	const SLACK_TOKEN = 'token';
 
 	const TABLET_VIEW_ALLOW_GUESTS = 'allow.guest.reservations';
+	const TABLET_VIEW_AUTOCOMPLETE = 'auto.suggest.emails';
 }
 
 class ConfigSection
