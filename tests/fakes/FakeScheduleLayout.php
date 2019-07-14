@@ -98,11 +98,10 @@ class FakeScheduleLayout implements IScheduleLayout
 	/**
 	 * @param Date $startDate
 	 * @param Date $endDate
-	 * @param Date $testDate
 	 * @return SlotCount
 	 * @internal param $scheduleId
 	 */
-	public function GetSlotCount(Date $startDate, Date $endDate, Date $testDate = null)
+	public function GetSlotCount(Date $startDate, Date $endDate)
 	{
 		return $this->_SlotCount;
 	}
