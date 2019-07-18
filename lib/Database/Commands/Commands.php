@@ -1090,6 +1090,14 @@ class DeleteSeriesCommand extends SqlCommand
         $this->AddParameter(new Parameter(ParameterNames::LAST_ACTION_BY, $lastActionBy));
     }
 }
+class DeleteSeriesPermanantCommand extends SqlCommand
+{
+    public function __construct($seriesId)
+    {
+        parent::__construct(Queries::DELETE_SERIES_PERMANENT);
+        $this->AddParameter(new Parameter(ParameterNames::SERIES_ID, $seriesId));
+    }
+}
 
 class DeleteTermsOfServiceCommand extends SqlCommand
 {

@@ -314,6 +314,8 @@ class Queries
 			last_action_by = @last_action_by
 		  WHERE series_id = @seriesid';
 
+	const DELETE_SERIES_PERMANENT = 'DELETE FROM reservation_series WHERE series_id = @seriesid';
+
 	const DELETE_TERMS_OF_SERVICE = 'DELETE FROM terms_of_service';
 
 	const DELETE_USER = 'DELETE FROM users	WHERE user_id = @userid';

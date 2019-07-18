@@ -728,6 +728,11 @@ class InstanceAddedEventCommand extends EventCommand
 
         $reservationId = $database->ExecuteInsert($insertReservation);
 
+        if ($reservationId <= 0)
+        {
+            $database->Execute(new DeleteSeriesPermanantCommand($this->series->SeriesId()));
+            throw new Exception("Could not insert reservation - conflicting times");
+        }
         $insertReservationUser = new AddReservationUserCommand($reservationId, $this->series->UserId(), ReservationUserLevel::OWNER);
 
         $database->Execute($insertReservationUser);
