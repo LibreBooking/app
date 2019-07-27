@@ -66,7 +66,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                           action="{$smarty.server.SCRIPT_NAME}">
                         <div class="form-group">
                             <label for="creditCost" class="inline-block">{translate key=CreditsCost}</label>
-                            <input type="number" min="0" max="1000000000" id="creditCost" step=".1"
+                            <input type="number" min="0" max="1000000000" id="creditCost" step="any"
                                    class="form-control inline-block" style="width:auto;" {formname key=CREDIT_COST}
                                    value="{$CreditCost}"/>
                             <label for="creditCurrency" class="inline-block no-show">{translate key=Currency}</label>
