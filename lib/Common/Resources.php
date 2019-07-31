@@ -122,6 +122,7 @@ class Resources implements IResourceLocalization
 			self::$_instance = Resources::Create();
 		}
 
+        setlocale(LC_ALL, self::$_instance->CurrentLanguage);
 		return self::$_instance;
 	}
 
