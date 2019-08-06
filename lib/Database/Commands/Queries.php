@@ -121,7 +121,7 @@ class Queries
 
 	const ADD_RESERVATION =
 			'INSERT INTO reservation_instances (start_date, end_date, reference_number, series_id, credit_count)
-        VALUES (@startDate, @endDate, @referenceNumber, @seriesid, @credit_count);
+        VALUES (@startDate, @endDate, @referenceNumber, @seriesid, @credit_count)';
 //		SELECT @startDate, @endDate, @referenceNumber, @seriesid, @credit_count
 //		WHERE NOT EXISTS(SELECT ri.reference_number
 //		    FROM reservation_instances ri
