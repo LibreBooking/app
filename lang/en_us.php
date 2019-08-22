@@ -20,7 +20,7 @@
 
 require_once('Language.php');
 
-class en_us extends Language
+class ReservationEndingSoonSubjecten_us extends Language
 {
 	public function __construct()
 	{

@@ -82,7 +82,7 @@ class ReminderEndEmail extends ReminderEmail
 	 */
 	public function Subject()
 	{
-		return $this->Translate('ReservationEndingSoonSubject', $this->reminder->Title());
+		return $this->Translate('ReservationEndingSoonSubject', array($this->reminder->ResourceNames()));
 	}
 
 	protected function GetTemplateName()
