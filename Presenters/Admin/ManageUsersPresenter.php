@@ -505,8 +505,6 @@ class ManageUsersPresenter extends ActionPresenter implements IManageUsersPresen
     {
         ini_set('max_execution_time', 600);
 
-        $shouldUpdate = $this->page->GetUpdateOnImport();
-
         $attributes = $this->attributeService->GetByCategory(CustomAttributeCategory::USER);
         /** @var CustomAttribute[] $attributesIndexed */
         $attributesIndexed = array();
@@ -539,6 +537,8 @@ class ManageUsersPresenter extends ActionPresenter implements IManageUsersPresen
         }
 
         for ($i = 0; $i < count($rows); $i++) {
+            $shouldUpdate = $this->page->GetUpdateOnImport();
+
             $row = $rows[$i];
             try {
                 $emailValidator = new EmailValidator($row->email);
