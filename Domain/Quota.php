@@ -676,7 +676,7 @@ class QuotaDurationDay extends QuotaDuration
 
 			$currentDate = $beginningOfNextDay;
 
-			for ($i = 1; $currentDate->LessThan($end) < 0; $i++)
+			for ($i = 1; $currentDate->LessThan($end); $i++)
 			{
 				$currentDate = $start->AddDays($i);
 				$ranges[] = new DateRange($currentDate, $currentDate->AddDays(1)->GetDate());

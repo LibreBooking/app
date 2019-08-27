@@ -888,6 +888,21 @@ class QuotaTests extends TestBase
 		$this->assertFalse($exceeds);
 	}
 
+	public function testTwoDayReservationWith24HoursPerDayLimit()
+	{
+	    $quota = new Quota(1, new QuotaDurationDay(), new QuotaLimitHours(24), null, null, null, null, null, array(), new QuotaScopeExcluded());
+        $reservationDate = DateRange::Create('2019-08-27 12:00', '2019-08-29 12:00', 'America/Chicago');
+        $series = ReservationSeries::Create(1, new FakeBookableResource(1), '', '', $reservationDate, new RepeatNone(), $this->fakeUser);
+
+        $this->reservationViewRepository->expects($this->any())
+            ->method('GetReservations')
+            ->will($this->returnValue(array()));
+
+        $exceeds = $quota->ExceedsQuota($series, $this->user, $this->schedule, $this->reservationViewRepository);
+
+	    $this->assertFalse($exceeds);
+	}
+
 	private function GetHourLongReservation($startDate, $endDate, $resourceId1 = null, $resourceId2 = null,
 											$scheduleId = null)
 	{
