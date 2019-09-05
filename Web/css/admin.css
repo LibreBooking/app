@@ -502,7 +502,7 @@ td.update {
 #page-manage-resources textarea,
 #page-manage-users textarea,
 #page-manage-quotas textarea {
-  width: 500px;
+  max-width: 500px;
 }
 #page-manage-resource-groups #groupName {
   width: 80%;
