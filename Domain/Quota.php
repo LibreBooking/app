@@ -434,14 +434,11 @@ class Quota implements IQuota
 
 	private function AddExisting(ReservationItemView $reservation, $timezone)
 	{
-        Log::Debug("adding existing %s %s %s", $reservation->ReferenceNumber, $reservation->StartDate, $reservation->EndDate);
-
         $this->_breakAndAdd($reservation->StartDate, $reservation->EndDate, $timezone);
 	}
 
 	private function AddInstance(Reservation $reservation, $timezone)
 	{
-	    Log::Debug("adding new %s %s %s", $reservation->ReferenceNumber(), $reservation->StartDate(), $reservation->EndDate());
 		$this->_breakAndAdd($reservation->StartDate(), $reservation->EndDate(), $timezone);
 	}
 
@@ -531,7 +528,6 @@ class Quota implements IQuota
 
 	private function _add(DateRange $dateRange)
 	{
-	    Log::Debug('Trying add ' . $dateRange);
 	    if (!$this->EnforcedEveryDay() && !$this->EnforcedOnWeekday($dateRange->GetBegin()->Weekday()))
 		{
 			return;
