@@ -434,11 +434,14 @@ class Quota implements IQuota
 
 	private function AddExisting(ReservationItemView $reservation, $timezone)
 	{
-		$this->_breakAndAdd($reservation->StartDate, $reservation->EndDate, $timezone);
+        Log::Debug("adding existing %s %s %s", $reservation->ReferenceNumber, $reservation->StartDate, $reservation->EndDate);
+
+        $this->_breakAndAdd($reservation->StartDate, $reservation->EndDate, $timezone);
 	}
 
 	private function AddInstance(Reservation $reservation, $timezone)
 	{
+	    Log::Debug("adding new %s %s %s", $reservation->ReferenceNumber(), $reservation->StartDate(), $reservation->EndDate());
 		$this->_breakAndAdd($reservation->StartDate(), $reservation->EndDate(), $timezone);
 	}
 
@@ -528,6 +531,7 @@ class Quota implements IQuota
 
 	private function _add(DateRange $dateRange)
 	{
+	    Log::Debug('Trying add ' . $dateRange);
 	    if (!$this->EnforcedEveryDay() && !$this->EnforcedOnWeekday($dateRange->GetBegin()->Weekday()))
 		{
 			return;
@@ -671,24 +675,24 @@ class QuotaDurationDay extends QuotaDuration
 
 		if (!$start->DateEquals($end))
 		{
-			$beginningOfNextDay = $start->AddDays(1)->GetDate();
-			$ranges[] = new DateRange($start, $beginningOfNextDay);
+			$currentDate = $start;
 
-			$currentDate = $beginningOfNextDay;
-
-			for ($i = 1; $currentDate->LessThan($end) < 0; $i++)
+			for ($i = 1; $currentDate->DateCompare($end) < 0; $i++)
 			{
-				$currentDate = $start->AddDays($i);
 				$ranges[] = new DateRange($currentDate, $currentDate->AddDays(1)->GetDate());
+				$currentDate = $start->AddDays($i)->GetDate();
 			}
 
-			$ranges[] = new DateRange($currentDate, $end);
+			if (!$currentDate->Equals($end)) {
+                $ranges[] = new DateRange($currentDate, $end);
+            }
 		}
 		else
 		{
 			$ranges[] = new DateRange($start, $end);
 		}
 
+		Log::Debug("Split %s into %s", $dateRange, var_export($ranges, true));
 		return $ranges;
 	}
 
