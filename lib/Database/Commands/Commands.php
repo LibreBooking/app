@@ -2387,6 +2387,15 @@ class AddUserPreferenceCommand extends SqlCommand
     }
 }
 
+class DeleteAllUserPreferences extends SqlCommand {
+    public function __construct($userId)
+    {
+        parent::__construct(Queries::DELETE_ALL_USER_PREFERENCES);
+
+        $this->AddParameter(new Parameter(ParameterNames::USER_ID, $userId));
+    }
+}
+
 class SelectUserGroupPermissions extends SqlCommand
 {
     public function __construct($userId)

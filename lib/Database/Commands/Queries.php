@@ -1033,6 +1033,8 @@ class Queries
 
 	const ADD_USER_PREFERENCE = 'INSERT INTO user_preferences (user_id, name, value) VALUES (@userid, @name, @value)';
 
+	const DELETE_ALL_USER_PREFERENCES = 'DELETE FROM user_preferences WHERE user_id = @userid';
+
 	const SET_DEFAULT_SCHEDULE =
 			'UPDATE schedules
 		SET isdefault = 0
