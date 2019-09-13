@@ -65,5 +65,13 @@ Delete Reason: {$DeleteReason|nl2br}<br/>
     {/foreach}
 {/if}
 
+{if !empty($CreatedBy)}
+    <br/>
+    Deleted by: {$CreatedBy}
+{/if}
+
+<br/>
+Reference Number: {$ReferenceNumber}
+
 <br/>
 <a href="{$ScriptUrl}">Log in to {$AppTitle}</a>
