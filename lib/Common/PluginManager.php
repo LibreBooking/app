@@ -66,7 +66,7 @@ class PluginManager
 	{
 		require_once(ROOT_DIR . 'lib/Application/Authentication/namespace.php');
 		require_once(ROOT_DIR . 'Domain/Access/namespace.php');
-		$authentication = new Authentication($this->LoadAuthorization(), new UserRepository());
+		$authentication = new Authentication($this->LoadAuthorization(), new UserRepository(), new GroupRepository());
 		$plugin = $this->LoadPlugin(ConfigKeys::PLUGIN_AUTHENTICATION, 'Authentication', $authentication);
 
 		if (!is_null($plugin))
