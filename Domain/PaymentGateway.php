@@ -291,6 +291,10 @@ class PayPalGateway implements IPaymentGateway
             ->setTransactions(array($transaction));
 
         $apiContext = new ApiContext(new OAuthTokenCredential($this->ClientId(), $this->Secret()));
+        if ($this->Environment() === "live" || $this->Environment() === "production")
+		{
+			$apiContext->setConfig(array('mode' => 'live'));
+		}
 
         try {
             Log::Debug('PayPal CreatePayment CartId/invoice number: %s, Total: %s', $cart->Id(), $cart->Total());
@@ -319,6 +323,10 @@ class PayPalGateway implements IPaymentGateway
     public function ExecutePayment(CreditCartSession $cart, $paymentId, $payerId, IPaymentTransactionLogger $logger)
     {
         $apiContext = new ApiContext(new OAuthTokenCredential($this->ClientId(), $this->Secret()));
+		if ($this->Environment() === "live" || $this->Environment() === "production")
+		{
+			$apiContext->setConfig(array('mode' => 'live'));
+		}
 
         $payment = Payment::get($paymentId, $apiContext);
         $execution = new PaymentExecution();
