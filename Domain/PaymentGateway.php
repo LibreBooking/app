@@ -403,6 +403,10 @@ class PayPalGateway implements IPaymentGateway
         $sale->setId($log->TransactionId);
         try {
             $apiContext = new ApiContext(new OAuthTokenCredential($this->ClientId(), $this->Secret()));
+			if ($this->Environment() === "live" || $this->Environment() === "production")
+			{
+				$apiContext->setConfig(array('mode' => 'live'));
+			}
 
             $refundedSale = $sale->refundSale($refundRequest, $apiContext);
 
