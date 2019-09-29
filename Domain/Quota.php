@@ -688,7 +688,7 @@ class QuotaDurationDay extends QuotaDuration
 			$ranges[] = new DateRange($start, $end);
 		}
 
-		Log::Debug("Split %s into %s", $dateRange, var_export($ranges, true));
+//		Log::Debug("Split %s into %s", $dateRange, var_export($ranges, true));
 		return $ranges;
 	}
 

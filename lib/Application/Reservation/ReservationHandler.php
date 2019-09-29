@@ -96,11 +96,6 @@ class ReservationHandler implements IReservationHandler
 	 */
 	public function Handle($reservationSeries, IReservationSaveResultsView $view)
 	{
-        if (Log::DebugEnabled())
-		{
-			Log::Debug('submitted retry params %s', var_export($view->GetRetryParameters(), true));
-		}
-
 		$validationResult = $this->validationService->Validate($reservationSeries, $view->GetRetryParameters());
 		$result = $validationResult->CanBeSaved();
 
@@ -125,11 +120,6 @@ class ReservationHandler implements IReservationHandler
 			$view->SetErrors($validationResult->GetErrors());
 
 			$view->SetCanBeRetried($validationResult->CanBeRetried());
-			if (Log::DebugEnabled())
-			{
-				Log::Debug('retry params %s', var_export($validationResult->GetRetryParameters(), true));
-				Log::Debug('retry messages %s', var_export($validationResult->GetRetryMessages(), true));
-			}
 			$view->SetRetryParameters($validationResult->GetRetryParameters());
 			$view->SetRetryMessages($validationResult->GetRetryMessages());
             $view->SetCanJoinWaitList($validationResult->CanJoinWaitList() && Configuration::Instance()->GetSectionKey(ConfigSection::RESERVATION, ConfigKeys::RESERVATION_ALLOW_WAITLIST, new BooleanConverter()));
