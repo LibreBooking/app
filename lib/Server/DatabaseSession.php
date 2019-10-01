@@ -1,124 +1,208 @@
 <?php
-/**
- * Copyright 2019 Nick Korbel
- *
- * This file is part of Booked Scheduler.
- *
- * Booked Scheduler is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Booked Scheduler is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
- */
 
-require_once(ROOT_DIR . 'lib/Common/namespace.php');
 
-class DatabaseSession implements SessionHandlerInterface
+/*
+Revised code by Dominick Lee
+Original code derived from "Run your own PDO PHP class" by Philip Brown
+Last Modified 2/27/2017
+*/
+
+class DatabaseSessionConnection
 {
-	public function __construct()
-	{
-		session_set_save_handler(
-				array($this, "open"),
-				array($this, "close"),
-				array($this, "read"),
-				array($this, "write"),
-				array($this, "destroy"),
-				array($this, "gc")
-		);
-		register_shutdown_function('session_write_close');
-		@session_start();
-	}
+    private $host;
+    private $user;
+    private $pass;
+    private $dbname;
+    private $dbh;
+    private $error;
+    private $stmt;
 
-	public function open($savepath, $id)
-	{
-		$command = new AdHocCommand("SELECT `data` FROM sessions WHERE id = @id LIMIT 1");
-		$command->AddParameter(new Parameter("@id", $id));
-		$reader = ServiceLocator::GetDatabase()->Query($command);
-		if ($reader->NumRows() == 1)
-		{
-			return true;
-		}
-		return false;
-	}
+    public function __construct()
+    {
+        $this->host = Configuration::Instance()->GetSectionKey(ConfigSection::DATABASE, ConfigKeys::DATABASE_HOSTSPEC);
+        $this->user = Configuration::Instance()->GetSectionKey(ConfigSection::DATABASE, ConfigKeys::DATABASE_USER);
+        $this->pass = Configuration::Instance()->GetSectionKey(ConfigSection::DATABASE, ConfigKeys::DATABASE_PASSWORD);
+        $this->dbname = Configuration::Instance()->GetSectionKey(ConfigSection::DATABASE, ConfigKeys::DATABASE_NAME);
+        $dsn = 'mysql:host=' . $this->host . ';dbname=' . $this->dbname;
+        $options = array(
+            PDO::ATTR_PERSISTENT => true,
+            PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
+        );
+        try {
+            $this->dbh = new PDO($dsn, $this->user, $this->pass, $options);
+        }
+        catch (PDOException $e) {
+            $this->error = $e->getMessage();
+        }
+    }
 
-	public function read($id)
-	{
-		$command = new AdHocCommand("SELECT `data` FROM sessions WHERE id = @id LIMIT 1");
-		$command->AddParameter(new Parameter("@id", $id));
-		$reader = ServiceLocator::GetDatabase()->Query($command);
-		if ($row = $reader->GetRow())
-		{
-			return $row['data'];
-		}
-		else
-		{
-			return '';
-		}
-	}
+    public function query($query)
+    {
+        $this->stmt = $this->dbh->prepare($query);
+    }
 
-	public function write($id, $data)
-	{
-		$access = time();
+    public function bind($param, $value, $type = null)
+    {
+        if (is_null($type)) {
+            switch (true) {
+                case is_int($value):
+                    $type = PDO::PARAM_INT;
+                    break;
+                case is_bool($value):
+                    $type = PDO::PARAM_BOOL;
+                    break;
+                case is_null($value):
+                    $type = PDO::PARAM_NULL;
+                    break;
+                default:
+                    $type = PDO::PARAM_STR;
+            }
+        }
+        $this->stmt->bindValue($param, $value, $type);
+    }
 
-		$command = new AdHocCommand("REPLACE INTO sessions(id,access,`data`) VALUES (@id, @access, @data)");
-		$command->AddParameter(new Parameter("@id", $id));
-		$command->AddParameter(new Parameter("@access", $access));
-		$command->AddParameter(new Parameter("@data", $data));
+    public function execute()
+    {
+        return $this->stmt->execute();
+    }
 
-		try
-		{
-			ServiceLocator::GetDatabase()->Execute($command);
-			return true;
-		} catch (Exception $ex)
-		{
-			return false;
-		}
-	}
+    public function resultset()
+    {
+        $this->execute();
+        return $this->stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 
-	public function destroy($id)
-	{
-		$command = new AdHocCommand("DELETE FROM sessions WHERE id = @id LIMIT 1");
-		$command->AddParameter(new Parameter("@id", $id));
-		try
-		{
-			ServiceLocator::GetDatabase()->Execute($command);
-			return true;
-		} catch (Exception $ex)
-		{
-			return false;
-		}
-	}
+    public function single()
+    {
+        $this->execute();
+        return $this->stmt->fetch(PDO::FETCH_ASSOC);
+    }
 
-	public function close()
-	{
-		return true;
-	}
+    public function rowCount()
+    {
+        return $this->stmt->rowCount();
+    }
 
-	public function gc($max)
-	{
-		$old = time() - $max;
+    public function lastInsertId()
+    {
+        return $this->dbh->lastInsertId();
+    }
 
-		$command = new AdHocCommand("DELETE FROM sessions WHERE access < @access LIMIT 1");
-		$command->AddParameter(new Parameter("@access", $old));
-		try
-		{
-			ServiceLocator::GetDatabase()->Execute($command);
-			return true;
-		} catch (Exception $ex)
-		{
-			return false;
-		}
-	}
+    public function beginTransaction()
+    {
+        return $this->dbh->beginTransaction();
+    }
 
-	public function __destruct()
-	{
-		$this->close();
-	}
+    public function endTransaction()
+    {
+        return $this->dbh->commit();
+    }
+
+    public function cancelTransaction()
+    {
+        return $this->dbh->rollBack();
+    }
+
+    public function debugDumpParams()
+    {
+        return $this->stmt->debugDumpParams();
+    }
+
+    public function close()
+    {
+        $this->dbh = null;
+    }
+}
+
+/*
+Revised code by Dominick Lee
+Original code derived from "Essential PHP Security" by Chriss Shiflett
+Last Modified 2/27/2017
+
+
+CREATE TABLE sessions
+(
+    id varchar(32) NOT NULL,
+    access int(10) unsigned,
+    data text,
+    PRIMARY KEY (id)
+);
+
++--------+------------------+------+-----+---------+-------+
+| Field  | Type             | Null | Key | Default | Extra |
++--------+------------------+------+-----+---------+-------+
+| id     | varchar(32)      |      | PRI |         |       |
+| access | int(10) unsigned | YES  |     | NULL    |       |
+| data   | text             | YES  |     | NULL    |       |
++--------+------------------+------+-----+---------+-------+
+
+*/
+
+class DatabaseSession implements SessionHandlerInterface {
+    private $db;
+
+    public function __construct(){
+        $this->db = new DatabaseSessionConnection();
+
+        session_set_save_handler(
+            array($this, "open"),
+            array($this, "close"),
+            array($this, "read"),
+            array($this, "write"),
+            array($this, "destroy"),
+            array($this, "gc")
+        );
+
+        @session_start();
+    }
+    public function open($save_path, $name) {
+        if($this->db){
+            return true;
+        }
+        return false;
+    }
+    public function close(){
+        if($this->db->close()){
+            return true;
+        }
+        return false;
+    }
+    public function read($session_id){
+        $this->db->query('SELECT data FROM sessions WHERE id = :id');
+        $this->db->bind(':id', $session_id);
+        if($this->db->execute()){
+            $row = $this->db->single();
+            return $row['data'];
+        }else{
+            return '';
+        }
+    }
+    public function write($id, $data){
+        $access = time();
+        $this->db->query('REPLACE INTO sessions VALUES (:id, :access, :data)');
+        $this->db->bind(':id', $id);
+        $this->db->bind(':access', $access);
+        $this->db->bind(':data', $data);
+        if($this->db->execute()){
+            return true;
+        }
+        return false;
+    }
+    public function destroy($session_id){
+        $this->db->query('DELETE FROM sessions WHERE id = :id');
+        $this->db->bind(':id', $session_id);
+        if($this->db->execute()){
+            return true;
+        }
+        return false;
+    }
+    public function gc($maxlifetime){
+        $old = time() - $maxlifetime;
+        $this->db->query('DELETE FROM sessions WHERE access < :old');
+        $this->db->bind(':old', $old);
+        if($this->db->execute()){
+            return true;
+        }
+        return false;
+    }
 }
