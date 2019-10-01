@@ -132,7 +132,7 @@ class Configuration implements IConfiguration
             throw new Exception("Missing config file: $configFile");
         }
 
-        touch($configFile);
+        //touch($configFile);
 
         $config = new Config();
         $container = $config->parseConfig($configFile, 'PHPArray');

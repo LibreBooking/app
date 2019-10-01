@@ -24,6 +24,10 @@ class Server
 {
 	public function __construct()
 	{
+		if (Configuration::Instance()->GetKey(ConfigKeys::USE_DATABASE_SESSION, new BooleanConverter())) {
+			require_once ROOT_DIR . 'lib/Server/DatabaseSession.php';
+			new DatabaseSession();
+		}
 	}
 
 	public function SetCookie(Cookie $cookie)
@@ -70,7 +74,7 @@ class Server
 		{
 			$parts = parse_url(Configuration::Instance()->GetScriptUrl());
 			$path = isset($parts['path']) ? $parts['path'] : '';
-            $seconds = Configuration::Instance()->GetKey(ConfigKeys::INACTIVITY_TIMEOUT) * 60;
+            $seconds = Configuration::Instance()->GetKey(ConfigKeys::INACTIVITY_TIMEOUT, new IntConverter()) * 60;
             ini_set('session.gc_maxlifetime', $seconds);
             session_set_cookie_params(0, $path);
             @session_unset();
