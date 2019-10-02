@@ -32,7 +32,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
         <div class="header">{translate key=Available}</div>
         {foreach from=$Schedules item=s}
             {assign var=availability value=$Available[$s->GetId()]}
-            {if $availability|count > 0}
+            {if is_array($availability) && $availability|count > 0}
             <h5>{$s->GetName()}</h5>
             {foreach from=$availability item=i}
                 <div class="availabilityItem">
