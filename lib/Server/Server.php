@@ -24,10 +24,6 @@ class Server
 {
 	public function __construct()
 	{
-		if (Configuration::Instance()->GetKey(ConfigKeys::USE_DATABASE_SESSION, new BooleanConverter())) {
-			require_once ROOT_DIR . 'lib/Server/DatabaseSession.php';
-			new DatabaseSession();
-		}
 	}
 
 	public function SetCookie(Cookie $cookie)
