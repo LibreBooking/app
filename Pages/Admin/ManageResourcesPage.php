@@ -1184,7 +1184,7 @@ class ResourceFilterValues
         if ($this->RequiresApprovalFilter != '') {
             $filter->_And(new SqlFilterEquals(new SqlFilterColumn(TableNames::RESOURCES_ALIAS,
                 ColumnNames::RESOURCE_REQUIRES_APPROVAL),
-                $this->RequiresApprovalFilter));c
+                $this->RequiresApprovalFilter));
         }
         if ($this->AutoPermissionFilter != '') {
             $filter->_And(new SqlFilterEquals(new SqlFilterColumn(TableNames::RESOURCES_ALIAS,

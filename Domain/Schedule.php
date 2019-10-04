@@ -219,6 +219,9 @@ class Schedule implements ISchedule
      */
     public function SetAdminGroupId($adminGroupId)
     {
+    	if (empty($adminGroupId)) {
+    		$adminGroupId = null;
+		}
         $this->_adminGroupId = $adminGroupId;
     }
 
