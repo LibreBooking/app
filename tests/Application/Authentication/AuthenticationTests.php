@@ -285,7 +285,7 @@ class FakeFirstRegistrationStrategy implements IFirstRegistrationStrategy
 {
 	public $_Handled;
 
-	public function HandleLogin(User $user, IUserRepository $userRepository)
+	public function HandleLogin(User $user, IUserRepository $userRepository, IGroupRepository $groupRepository)
 	{
 		$this->_Handled = true;
 	}
