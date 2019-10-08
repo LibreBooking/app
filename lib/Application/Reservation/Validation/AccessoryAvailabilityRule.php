@@ -69,39 +69,61 @@ class AccessoryAvailabilityRule implements IReservationValidationRule
         $reservations = $reservationSeries->Instances();
         /** @var Reservation $reservation */
         foreach ($reservations as $reservation) {
-            Log::Debug("Checking for accessory conflicts, reference number %s", $reservation->ReferenceNumber());
+            $dates = $reservation->Duration()->Dates();
+            for ($i = 0; $i < count($dates); $i++) {
+                if ($i == 0) {
+                    $start = $reservation->StartDate();
+                }
+                else {
+                    $start = $dates[$i]->GetDate();
+                }
+                if ($i == count($dates) - 1) {
+                    $end = $reservation->EndDate();
+                }
+                else {
+                    $end = $dates[$i]->GetDate()->AddDays(1);
+                }
 
-            $accessoryReservations = $this->reservationRepository->GetAccessoriesWithin($reservation->Duration());
+                $range = new DateRange($start, $end);
 
-            $aggregation = new AccessoryAggregation($accessories, $reservation->Duration());
+                Log::Debug("Checking for accessory conflicts, reference number %s date %s", $reservation->ReferenceNumber(), $range);
 
-            foreach ($accessoryReservations as $accessoryReservation) {
-                if ($reservation->ReferenceNumber() != $accessoryReservation->GetReferenceNumber()) {
-                    $aggregation->Add($accessoryReservation);
+                $accessoryReservations = $this->reservationRepository->GetAccessoriesWithin($range);
+
+                $aggregation = new AccessoryAggregation($accessories, $range);
+
+                foreach ($accessoryReservations as $accessoryReservation) {
+                    if ($reservation->ReferenceNumber() != $accessoryReservation->GetReferenceNumber()) {
+                        $aggregation->Add($accessoryReservation);
+                    }
+                }
+
+                foreach ($accessories as $accessory) {
+
+                    $alreadyReserved = $aggregation->GetQuantity($accessory->GetId());
+                    $requested = $accessory->QuantityReserved();
+
+                    if ($requested + $alreadyReserved > $accessory->QuantityAvailable()) {
+                        Log::Debug("Accessory over limit. Reference Number %s, Date %s, Quantity already reserved %s, Quantity requested: %s",
+                            $reservation->ReferenceNumber(),
+                            $reservation->Duration(),
+                            $alreadyReserved,
+                            $requested);
+
+                        array_push($conflicts, array('name' => $accessory->GetName(), 'date' => $reservation->StartDate()));
+                    }
+
                 }
             }
 
-            foreach ($accessories as $accessory) {
-                $alreadyReserved = $aggregation->GetQuantity($accessory->GetId());
-                $requested = $accessory->QuantityReserved();
+            $thereAreConflicts = count($conflicts) > 0;
 
-                if ($requested + $alreadyReserved > $accessory->QuantityAvailable()) {
-                    Log::Debug("Accessory over limit. Reference Number %s, Date %s, Quantity already reserved %s, Quantity requested: %s",
-                        $reservation->ReferenceNumber(),
-                        $reservation->Duration(),
-                        $alreadyReserved,
-                        $requested);
-
-                    array_push($conflicts, array('name' => $accessory->GetName(), 'date' => $reservation->StartDate()));
-                }
+            if ($thereAreConflicts) {
+                return new ReservationRuleResult(false, $this->GetErrorString($conflicts));
             }
-        }
+            }
 
-        $thereAreConflicts = count($conflicts) > 0;
 
-        if ($thereAreConflicts) {
-            return new ReservationRuleResult(false, $this->GetErrorString($conflicts));
-        }
 
         return new ReservationRuleResult();
     }

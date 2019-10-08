@@ -209,12 +209,44 @@ class AccessoryAvailabilityRuleTests extends TestBase
             ->with($accessory1->AccessoryId)
             ->will($this->returnValue(new Accessory($accessory1->AccessoryId, 'name1', $quantityAvailable)));
 
-        $this->reservationRepository->expects($this->at(0))
+        $this->reservationRepository->expects($this->any())
             ->method('GetAccessoriesWithin')
             ->will($this->returnValue(array($accessoryReservation, $a1, $a2)));
 
         $result = $this->rule->Validate($reservation, null);
 
         $this->assertFalse($result->IsValid());
+    }
+
+    public function testMultipleReservationsButNoneOverlapping()
+    {
+        $accessory = new ReservationAccessory(1, 4);
+        $quantityAvailable = 5;
+
+        $startDate = Date::Parse('2010-04-04 05:30', 'UTC');
+        $endDate = Date::Parse('2010-04-10 16:30', 'UTC');
+
+        $reservation = new TestReservationSeries();
+        $reservation->WithAccessory($accessory);
+        $dr1 = new DateRange($startDate, $endDate);
+        $reservation->WithDuration($dr1);
+
+        $ar1 = new AccessoryReservation(2, Date::Parse('2010-04-02', 'UTC'), Date::Parse('2010-04-05', 'UTC'), $accessory->AccessoryId, 1);
+        $ar2 = new AccessoryReservation(3, Date::Parse('2010-04-05', 'UTC'), Date::Parse('2010-04-06', 'UTC'), $accessory->AccessoryId, 1);
+        $ar3 = new AccessoryReservation(4, Date::Parse('2010-04-06', 'UTC'), Date::Parse('2010-04-07', 'UTC'), $accessory->AccessoryId, 1);
+        $ar4 = new AccessoryReservation(5, Date::Parse('2010-04-08', 'UTC'), Date::Parse('2010-04-11', 'UTC'), $accessory->AccessoryId, 1);
+
+        $this->accessoryRepository->expects($this->any())
+            ->method('LoadById')
+            ->with($accessory->AccessoryId)
+            ->will($this->returnValue(new Accessory($accessory->AccessoryId, 'name1', $quantityAvailable)));
+
+        $this->reservationRepository->expects($this->any())
+            ->method('GetAccessoriesWithin')
+            ->will($this->returnValue(array($ar1, $ar2, $ar3, $ar4)));
+
+        $result = $this->rule->Validate($reservation, null);
+
+        $this->assertTrue($result->IsValid());
     }
 }
