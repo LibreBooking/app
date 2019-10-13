@@ -52,18 +52,17 @@ class ManageEmailTemplatesPresenter extends ActionPresenter
 
     public function PageLoad()
     {
-        $path = $this->GetTemplatePath();
+        $path = $this->GetTemplatePath('en_us');
         $this->page->SetSelectedLanguage($this->GetSelectedLanguage());
         $this->page->BindTemplateNames(EmailTemplateFile::FromFiles($this->filesystem->GetFiles($path)));
     }
 
     /**
+     * @param $language
      * @return string
      */
-    private function GetTemplatePath()
+    private function GetTemplatePath($language)
     {
-        $language = $this->GetSelectedLanguage();
-
         $path = Paths::EmailTemplates($language);
         return $path;
     }
@@ -103,8 +102,12 @@ class ManageEmailTemplatesPresenter extends ActionPresenter
         if ($this->filesystem->Exists($customTemplatePath)) {
             $contents = $this->filesystem->GetFileContents($customTemplatePath);
         }
-        else{
+        elseif($this->filesystem->Exists($templatePath)) {
             $contents = $this->filesystem->GetFileContents($templatePath);
+        }
+        else {
+            $defaultTemplatePath = Paths::EmailTemplates('en_us') . $this->page->GetTemplateName();
+            $contents = $this->filesystem->GetFileContents($defaultTemplatePath);
         }
         $this->page->BindTemplate($this->RemoveComments($contents));
     }

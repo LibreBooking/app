@@ -1090,6 +1090,14 @@ class DeleteSeriesCommand extends SqlCommand
         $this->AddParameter(new Parameter(ParameterNames::LAST_ACTION_BY, $lastActionBy));
     }
 }
+class DeleteSeriesPermanantCommand extends SqlCommand
+{
+    public function __construct($seriesId)
+    {
+        parent::__construct(Queries::DELETE_SERIES_PERMANENT);
+        $this->AddParameter(new Parameter(ParameterNames::SERIES_ID, $seriesId));
+    }
+}
 
 class DeleteTermsOfServiceCommand extends SqlCommand
 {
@@ -2376,6 +2384,15 @@ class AddUserPreferenceCommand extends SqlCommand
         $this->AddParameter(new Parameter(ParameterNames::USER_ID, $userId));
         $this->AddParameter(new Parameter(ParameterNames::NAME, $name));
         $this->AddParameter(new Parameter(ParameterNames::VALUE, $value));
+    }
+}
+
+class DeleteAllUserPreferences extends SqlCommand {
+    public function __construct($userId)
+    {
+        parent::__construct(Queries::DELETE_ALL_USER_PREFERENCES);
+
+        $this->AddParameter(new Parameter(ParameterNames::USER_ID, $userId));
     }
 }
 

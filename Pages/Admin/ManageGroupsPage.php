@@ -246,7 +246,7 @@ class ManageGroupsPage extends ActionPage implements IManageGroupsPage
 
     public function GetUserIds()
     {
-        return [];
+        return array();
     }
 
     public function BindSchedules($schedules)

@@ -42,11 +42,16 @@ class Authentication implements IAuthentication
 	 * @var IFirstRegistrationStrategy
 	 */
 	private $firstRegistration;
+	/**
+	 * @var IGroupRepository
+	 */
+	private $groupRepository;
 
-	public function __construct(IRoleService $roleService, IUserRepository $userRepository)
+	public function __construct(IRoleService $roleService, IUserRepository $userRepository, IGroupRepository $groupRepository)
 	{
 		$this->roleService = $roleService;
 		$this->userRepository = $userRepository;
+		$this->groupRepository = $groupRepository;
 	}
 
 	public function SetMigration(PasswordMigration $migration)
@@ -135,7 +140,7 @@ class Authentication implements IAuthentication
 			$user->Login($loginTime, $language);
 			$this->userRepository->Update($user);
 
-			$this->GetFirstRegistrationStrategy()->HandleLogin($user, $this->userRepository);
+			$this->GetFirstRegistrationStrategy()->HandleLogin($user, $this->userRepository, $this->groupRepository);
 
 			return $this->GetUserSession($user, $loginTime);
 		}

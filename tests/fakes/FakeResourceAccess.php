@@ -127,6 +127,7 @@ class FakeResourceAccess extends ResourceRepository
             ColumnNames::PEAK_CREDIT_COUNT => $peakCreditCount,
             ColumnNames::RESOURCE_MINNOTICE_UPDATE => $minNoticeUpdate,
             ColumnNames::RESOURCE_MINNOTICE_DELETE => $minNoticeDelete,
+            ColumnNames::TENANT_ID => 1,
         );
 
         return $this;

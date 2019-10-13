@@ -323,7 +323,7 @@ class CalendarReservation
     private function GetUrl()
     {
         if (!empty($this->ReferenceNumber)) {
-            return sprintf('%s?rn=%s', Pages::RESERVATION, $this->ReferenceNumber);
+            return sprintf('%s?rn=%s&redirect=[redirect]', Pages::RESERVATION, $this->ReferenceNumber);
         }
 
         if (!empty($this->ResourceId)) {

@@ -659,6 +659,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                     c:\inetpub\wwwroot\Booked\Jobs\sendmissedcheckin.php</p>
 
                 <h2 id="help-configuration">Configuration Options</h2>
+                <p>These settings can be managed in <a href="{$ScriptUrl}/admin/manage_configuration.php">Application Configuration</a></p>
 
                 <p class="setting"><span>$conf['settings']['app.title']</span>The title of the application to be used in
                     the

@@ -51,10 +51,9 @@ interface IScheduleLayout extends ILayoutTimezone, IDailyScheduleLayout
     /**
      * @param Date $startDate
      * @param Date $endDate
-     * @param Date $testDate
      * @return SlotCount
      */
-    public function GetSlotCount(Date $startDate, Date $endDate, Date $testDate);
+    public function GetSlotCount(Date $startDate, Date $endDate);
 
     /**
      * @param PeakTimes $peakTimes
@@ -575,16 +574,15 @@ class ScheduleLayout implements IScheduleLayout, ILayoutCreation
     /**
      * @param Date $startDate
      * @param Date $endDate
-     * @param Date $testDate
      * @return SlotCount
      */
-    public function GetSlotCount(Date $startDate, Date $endDate, Date $testDate)
+    public function GetSlotCount(Date $startDate, Date $endDate)
     {
         $slots = 0;
         $peakSlots = 0;
         $start = $startDate->ToTimezone($this->layoutTimezone);
         $end = $endDate->ToTimezone($this->layoutTimezone);
-        $testDate = $testDate->ToTimezone($this->layoutTimezone);
+        $testDate = $start;
 
         Log::Debug('s %s e %s t %s', $start, $end, $testDate);
 
@@ -1203,7 +1201,7 @@ class CustomScheduleLayout extends ScheduleLayout implements IScheduleLayout
         return null;
     }
 
-    public function GetSlotCount(Date $startDate, Date $endDate, Date $testDate)
+    public function GetSlotCount(Date $startDate, Date $endDate)
     {
         return 1;
     }

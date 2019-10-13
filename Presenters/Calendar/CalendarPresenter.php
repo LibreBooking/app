@@ -55,10 +55,17 @@ class CalendarPresenter extends CommonCalendarPresenter
         $availableSlots = array();
         if (!empty($selectedResourceId) || !empty($selectedScheduleId)) {
 
-            if (!empty($selectedResourceId)) {
-                $resources = [$this->resourceService->GetResource($selectedResourceId)];
+            if (is_array($selectedResourceId) && !empty($selectedResourceId)) {
+            	$resources = array();
+            	foreach($selectedResourceId as $id) {
+					$resources[] = $this->resourceService->GetResource($id);
+				}
                 $selectedScheduleId = $resources[0]->GetScheduleId();
             }
+            elseif(!empty($selectedResourceId)) {
+				$resources = array($this->resourceService->GetResource($selectedResourceId));
+				$selectedScheduleId = $resources[0]->GetScheduleId();
+			}
 
             $scheduleLayout = $this->scheduleRepository->GetLayout($selectedScheduleId, new ScheduleLayoutFactory());
             if ($scheduleLayout->UsesCustomLayout()) {

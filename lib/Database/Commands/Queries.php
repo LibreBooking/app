@@ -121,7 +121,16 @@ class Queries
 
 	const ADD_RESERVATION =
 			'INSERT INTO reservation_instances (start_date, end_date, reference_number, series_id, credit_count)
-		VALUES (@startDate, @endDate, @referenceNumber, @seriesid, @credit_count)';
+        VALUES (@startDate, @endDate, @referenceNumber, @seriesid, @credit_count)';
+//		SELECT @startDate, @endDate, @referenceNumber, @seriesid, @credit_count
+//		WHERE NOT EXISTS(SELECT ri.reference_number
+//		    FROM reservation_instances ri
+//		    INNER JOIN reservation_resources rr on ri.series_id = rr.series_id
+//		    INNER JOIN reservation_series rs ON ri.series_id = ri.series_id
+//		    WHERE ri.reference_number <> @referenceNumber AND rs.status_id <> 2
+//		    AND ((ri.start_date > @startDate AND ri.start_date < @endDate) OR
+//					(ri.end_date > @startDate AND ri.end_date < @endDate) OR
+//					(ri.start_date <= @startDate AND ri.end_date >= @endDate)) LIMIT 1)';
 
 	const ADD_RESERVATION_ACCESSORY =
 			'INSERT INTO reservation_accessories (series_id, accessory_id, quantity)
@@ -305,6 +314,8 @@ class Queries
 			last_modified = @dateModified,
 			last_action_by = @last_action_by
 		  WHERE series_id = @seriesid';
+
+	const DELETE_SERIES_PERMANENT = 'DELETE FROM reservation_series WHERE series_id = @seriesid';
 
 	const DELETE_TERMS_OF_SERVICE = 'DELETE FROM terms_of_service';
 
@@ -1021,6 +1032,8 @@ class Queries
 	const ADD_RESOURCE_IMAGE = 'INSERT INTO resource_images (resource_id, image_name) VALUES (@resourceid, @imageName)';
 
 	const ADD_USER_PREFERENCE = 'INSERT INTO user_preferences (user_id, name, value) VALUES (@userid, @name, @value)';
+
+	const DELETE_ALL_USER_PREFERENCES = 'DELETE FROM user_preferences WHERE user_id = @userid';
 
 	const SET_DEFAULT_SCHEDULE =
 			'UPDATE schedules

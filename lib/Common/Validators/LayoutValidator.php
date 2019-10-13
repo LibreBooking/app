@@ -57,7 +57,6 @@ class LayoutValidator extends ValidatorBase implements IValidator
 			if (!$this->validateSingle)
 			{
 				Log::Debug('Validating daily layout');
-				Log::Debug(var_export($this->reservableSlots, true));
 				if (count($this->reservableSlots) != DayOfWeek::NumberOfDays || count($this->blockedSlots) != DayOfWeek::NumberOfDays)
 				{
 					$this->isValid = false;

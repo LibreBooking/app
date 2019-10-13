@@ -886,14 +886,12 @@ class BookableResource implements IBookableResource
 		{
 			$index = array_search($imageName, $this->_imageNames);
 
-			Log::Debug("%s", var_export($this->_imageNames, true));
 			if ($index !== false)
 			{
 				array_splice($this->_imageNames, $index, 1);
 
 			}
 			$this->_imageNames[] = $this->_imageName;
-			Log::Debug("%s", var_export($this->_imageNames, true));
 
 			$this->_imageName = ''.$imageName;
 		}

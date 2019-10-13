@@ -33,7 +33,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
         <div class="reserved {$class} {$OwnershipClass} clickres"
              resid="{$Slot->Id()}" {$color}
              id="{$Slot->Id()}|{$Slot->Date()->Format('Ymd')}">
-            {formatdate date=$Slot->BeginDate() key=period_time} - {formatdate date=$Slot->EndDate() key=period_time}
+            {$DisplaySlotFactory->GetCondensedPeriodLabel($Periods, $Slot->BeginDate(), $Slot->EndDate())}
             {$Slot->Label($SlotLabelFactory)|escapequotes}</div>
     {/function}
 
@@ -71,7 +71,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
     {/function}
 
     {function name=displaySlotCondensed}
-        {call name=$DisplaySlotFactory->GetFunction($Slot, $AccessAllowed, 'Condensed') Slot=$Slot Href=$Href}
+        {call name=$DisplaySlotFactory->GetFunction($Slot, $AccessAllowed, 'Condensed') Slot=$Slot Href=$Href Periods=$Periods}
     {/function}
 
     {assign var=TodaysDate value=Date::Now()}
@@ -110,6 +110,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                     </td>
                     {foreach from=$BoundDates item=date}
                         {assign var=ts value=$date->Timestamp()}
+                        {$periods.$ts = $DailyLayout->GetPeriods($date, true)}
                         {if $periods[$ts]|count == 0}{continue}{*dont show if there are no slots*}{/if}
                         {assign var=resourceId value=$resource->Id}
                         {assign var=href value="{Pages::RESERVATION}?rid={$resourceId}&sid={$ScheduleId}"}
@@ -127,7 +128,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                                     <input type="hidden" class="href" value="{$href}"/>
                                 </div>
                                 {foreach from=$slots item=slot}
-                                    {call name=displaySlotCondensed Slot=$slot Href="$href" AccessAllowed=$resource->CanAccess}
+                                    {call name=displaySlotCondensed Slot=$slot Href="$href" AccessAllowed=$resource->CanAccess Periods=$periods.$ts }
                                 {/foreach}
                             </td>
                         {else}

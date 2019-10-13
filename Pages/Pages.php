@@ -85,6 +85,13 @@ class Pages
 
     public static function GetAvailablePages()
     {
-        return self::$_pages;
+    	$pages = array();
+    	foreach(self::$_pages as $key => $page) {
+    		if ($key != Pages::ID_LOGIN) {
+    			$pages[$key] = $page;
+			}
+		}
+    	
+    	return $pages;
     }
 }

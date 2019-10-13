@@ -55,6 +55,9 @@ function ReportsCommon(opts) {
 			}
 
 			function initColumns(savedColumns){
+			    if (savedColumns.length == 0) {
+			        return;
+                }
 				$.each(getAllColumnTitles(), function(i, title){
 					if (savedColumns.length < 1)
 					{
@@ -83,7 +86,7 @@ function ReportsCommon(opts) {
 				var separator = '!s!';
 				var selectedCols = $('#selectedColumns').val();
 				var savedCols = selectedCols ? selectedCols.split(separator) : [];
-				//initColumns(savedCols);
+				initColumns(savedCols);
                 var chartType = $('#report-results').attr('chart-type');
 
                 $('#btnChart').removeClass('no-show');
@@ -119,7 +122,7 @@ function ReportsCommon(opts) {
 
 				btnCustomizeColumns.unbind('click').on('click', function(e) {
 					e.preventDefault();
-                    customizeColumns.position({my:'right top', at:'right bottom', of: btnCustomizeColumns});
+                    customizeColumns.position({my:'right top', at:'right bottom', of: btnCustomizeColumns, collision: 'fit'});
 					customizeColumns.show();
 				});
 			});

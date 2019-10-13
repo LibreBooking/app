@@ -85,4 +85,22 @@ class DisplaySlotFactory
         $mySession = ServiceLocator::GetServer()->GetUserSession();
         return $slot->IsParticipating($mySession);
     }
+
+    /**
+     * @param SchedulePeriod[] $periods
+     * @param Date $start
+     * @param Date $end
+     * @return string
+     */
+    public function GetCondensedPeriodLabel($periods, $start, $end) {
+        foreach($periods as $period) {
+            if ($period->IsLabelled()) {
+                if ($period->BeginDate()->Equals($start)) {
+                    return $period->Label() . ' - ' . $period->LabelEnd();
+                }
+            }
+        }
+        $format = Resources::GetInstance()->GetDateFormat('period_time');
+        return $start->Format($format) . ' - ' . $end->Format($format);
+    }
 }

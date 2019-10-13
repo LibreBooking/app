@@ -41,7 +41,6 @@ class SlackPresenter
 
     public function PageLoad()
     {
-        Log::Debug('post %s', var_export($_POST, true));
         $command = $this->page->GetCommand();
         $text = $this->page->GetText();
         $token = $this->page->GetToken();

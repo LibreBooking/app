@@ -1676,6 +1676,22 @@ a.toggle-sidebar {
   border-right: 8px solid transparent;
   border-left: 8px solid transparent;
 }
+.reservation-new,
+.reservation-updated {
+  -webkit-border-radius: 2px;
+  -moz-border-radius: 2px;
+  border-radius: 2px;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  background-color: #88CC88;
+  padding: 2px;
+  margin: 0 1px;
+  color: #000;
+}
+.reservation-updated {
+  background-color: #D5DED9;
+  color: #000;
+}
 #resourceDetailsPopup #userDetailsPopup {
   min-width: 300px;
   max-width: 1000px;
@@ -2608,7 +2624,7 @@ td.update {
 #page-manage-resources textarea,
 #page-manage-users textarea,
 #page-manage-quotas textarea {
-  width: 500px;
+  max-width: 500px;
 }
 .admin-page .dateinput,
 #page-manage-blackouts .dateinput,

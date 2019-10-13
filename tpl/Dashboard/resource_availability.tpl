@@ -31,8 +31,10 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
     <div class="dashboardContents">
         <div class="header">{translate key=Available}</div>
         {foreach from=$Schedules item=s}
+            {assign var=availability value=$Available[$s->GetId()]}
+            {if is_array($availability) && $availability|count > 0}
             <h5>{$s->GetName()}</h5>
-            {foreach from=$Available[$s->GetId()] item=i}
+            {foreach from=$availability item=i}
                 <div class="availabilityItem row">
                     <div class="col s12 m4">
                         <i resource-id="{$i->ResourceId()}" class="resourceNameSelector fa fa-info-circle"></i>
@@ -59,13 +61,16 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                 {foreachelse}
                 <div class="no-data">{translate key=None}</div>
             {/foreach}
+            {/if}
         {/foreach}
 
         <div class="header">{translate key=Unavailable}</div>
 
         {foreach from=$Schedules item=s}
+            {assign var=availability value=$Unavailable[$s->GetId()]}
+            {if $availability|count > 0}
             <h5>{$s->GetName()}</h5>
-            {foreach from=$Unavailable[$s->GetId()] item=i}
+            {foreach from=$availability item=i}
                 <div class="availabilityItem row">
                     <div class="col s12 m4">
                         <i resource-id="{$i->ResourceId()}" class="resourceNameSelector fa fa-info-circle"></i>
@@ -87,12 +92,15 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                 {foreachelse}
                 <div class="no-data">{translate key=None}</div>
             {/foreach}
+            {/if}
         {/foreach}
 
         <div class="header">{translate key=UnavailableAllDay}</div>
         {foreach from=$Schedules item=s}
+            {assign var=availability value=$UnavailableAllDay[$s->GetId()]}
+            {if $availability|count > 0}
             <h5>{$s->GetName()}</h5>
-            {foreach from=$UnavailableAllDay[$s->GetId()] item=i}
+            {foreach from=$Uavailability item=i}
                 <div class="availabilityItem row">
                     <div class="col s12 m4">
                         <i resource-id="{$i->ResourceId()}" class="resourceNameSelector fa fa-info-circle"></i>
@@ -114,6 +122,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                 {foreachelse}
                 <div class="no-data">{translate key=None}</div>
             {/foreach}
+            {/if}
         {/foreach}
     </div>
 </div>

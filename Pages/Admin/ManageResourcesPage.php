@@ -1171,6 +1171,11 @@ class ResourceFilterValues
                 ColumnNames::RESOURCE_STATUS_ID),
                 $this->ResourceStatusFilterId));
         }
+        if ($this->ResourceStatusReasonFilterId != '') {
+            $filter->_And(new SqlFilterEquals(new SqlFilterColumn(TableNames::RESOURCES_ALIAS,
+                ColumnNames::RESOURCE_STATUS_REASON_ID),
+                $this->ResourceStatusReasonFilterId));
+        }
         if (!empty($this->CapacityFilter)) {
             $filter->_And(new SqlFilterGreaterThan(new SqlFilterColumn(TableNames::RESOURCES_ALIAS,
                 ColumnNames::RESOURCE_MAX_PARTICIPANTS),

@@ -20,12 +20,12 @@
 
 interface IFirstRegistrationStrategy
 {
-	public function HandleLogin(User $user, IUserRepository $userRepository);
+	public function HandleLogin(User $user, IUserRepository $userRepository, IGroupRepository $groupRepository);
 }
 
 class SetAdminFirstRegistrationStrategy implements IFirstRegistrationStrategy
 {
-	public function HandleLogin(User $user, IUserRepository $userRepository)
+	public function HandleLogin(User $user, IUserRepository $userRepository, IGroupRepository $groupRepository)
 	{
 		$users = $userRepository->GetCount();
 		if ($users == 1)
@@ -39,6 +39,12 @@ class SetAdminFirstRegistrationStrategy implements IFirstRegistrationStrategy
 				file_put_contents($configFile, $str);
 				$this->ReloadCachedConfig();
 			}
+
+			$groupId = $groupRepository->Add(new Group(0, 'Administrators'));
+			$adminGroup = $groupRepository->LoadById($groupId);
+			$adminGroup->ChangeRoles(array(RoleLevel::APPLICATION_ADMIN));
+			$adminGroup->AddUser($user->Id());
+			$groupRepository->Update($adminGroup);
 		}
 	}
 

@@ -1,27 +1,27 @@
 <?php
 /**
- * Copyright 2011-2018 Nick Korbel
- *
- * This file is part of Booked Scheduler.
- *
- * Booked Scheduler is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * Booked Scheduler is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
+Copyright 2011-2019 Nick Korbel
+
+This file is part of Booked Scheduler.
+
+Booked Scheduler is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+Booked Scheduler is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 require_once('Language.php');
-require_once('en_us.php');
+require_once('en_gb.php');
 
-class es extends en_us
+class es extends en_gb
 {
     public function __construct()
     {
@@ -144,6 +144,10 @@ class es extends en_us
         $strings['ResourcePermissionNotAutoGranted'] = 'El permiso no se concede automáticamente';
         $strings['ResourceMinNotice'] = 'Las reservas deben realizarse al menos %s antes del tiempo de inicio';
         $strings['ResourceMinNoticeNone'] = 'Las reservas se pueden realizar hasta la hora actual';
+        $strings['ResourceMinNoticeUpdate'] = 'Las reservas pueden actualizarse al menos %s antes del tiempo de inicio';
+        $strings['ResourceMinNoticeNoneUpdate'] = 'Las reservas se pueden actualizar hasta la hora de inicio';
+        $strings['ResourceMinNoticeDelete'] = 'Las reservas pueden borrarse al menos %s antes del tiempo de inicio';
+        $strings['ResourceMinNoticeNoneDelete'] = 'Las reservas se pueden borrar hasta la hora de inicio';
         $strings['ResourceMaxNotice'] = 'Las reservas no deben durar más de %s desde la hora actual';
         $strings['ResourceMaxNoticeNone'] = 'Las reservas pueden terminar en cualquier momento futuro';
         $strings['ResourceBufferTime'] = 'Debe de haber %s entre reservas';
@@ -154,8 +158,6 @@ class es extends en_us
         $strings['ResourceCapacityNone'] = 'Este recurso tiene capacidad ilimitada';
         $strings['AddNewResource'] = 'Agregar nuevo recurso';
         $strings['AddNewUser'] = 'Agregar nuevo usuario';
-        $strings['AddUser'] = 'Agregar usuario';
-        $strings['Schedule'] = 'Planificación';
         $strings['AddResource'] = 'Agregar recurso';
         $strings['Capacity'] = 'Capacidad';
         $strings['Access'] = 'Acceso';
@@ -169,11 +171,10 @@ class es extends en_us
         $strings['Reservations'] = 'Reservas';
         $strings['Groups'] = 'Grupos';
         $strings['Users'] = 'Usuarios';
-        $strings['ResetPassword'] = 'Restablecer contraseña';
         $strings['AllUsers'] = 'Todos los usuarios';
         $strings['AllGroups'] = 'Todos los grupos';
         $strings['AllSchedules'] = 'Todas las planificaciones';
-        $strings['UsernameOrEmail'] = 'Nombre de usuario o correo electrónico';
+        $strings['UsernameOrEmail'] = 'Usuario DMSAS';
         $strings['Members'] = 'Miembros';
         $strings['QuickSlotCreation'] = 'Crear un intervalo de tiempo cada %s minutos entre %s y %s';
         $strings['ApplyUpdatesTo'] = 'Aplicar actualizaciones a';
@@ -203,7 +204,6 @@ class es extends en_us
         $strings['ReservationDescription'] = 'Descripción de la reserva';
         $strings['ResourceList'] = 'Recursos a reservar';
         $strings['Accessories'] = 'Accesorios';
-        $strings['ParticipantList'] = 'Participantes';
         $strings['InvitationList'] = 'Invitados';
         $strings['AccessoryName'] = 'Nombre de accesorio';
         $strings['QuantityAvailable'] = 'Cantidad disponible';
@@ -258,7 +258,6 @@ class es extends en_us
         $strings['ReservationRemoved'] = 'Tu reserva se ha eliminado';
         $strings['ReservationRequiresApproval'] = 'Uno o más de los recursos reservados requieren aprobación antes de su uso. Esta reserva queará pendiente hasta que sea aprobada.';
         $strings['YourReferenceNumber'] = 'Tu número de referencia es %s';
-        $strings['UpdatingReservation'] = 'Actualizando reserva';
         $strings['ChangeUser'] = 'Cambiar usuario';
         $strings['MoreResources'] = 'Más recursos';
         $strings['ReservationLength'] = 'Duración de la reserva';
@@ -294,7 +293,6 @@ class es extends en_us
         $strings['WhatRolesApplyToThisGroup'] = '¿Qué roles aplican a este grupo?';
         $strings['WhoCanManageThisGroup'] = '¿Quién puede gestionar este grupo?';
         $strings['WhoCanManageThisSchedule'] = '¿Quién puede gestionar esta planificación?';
-        $strings['AddGroup'] = 'Agregar grupo';
         $strings['AllQuotas'] = 'Todas las cuotas';
         $strings['QuotaReminder'] = 'Recordatorio: las cuotas se fijan basándose en la zona horaria de las planificaciones.';
         $strings['AllReservations'] = 'Todas las reservas';
@@ -493,6 +491,7 @@ class es extends en_us
         $strings['UnavailableAllDay'] = 'No disponible en todo el día';
         $strings['AvailableUntil'] = 'Disponible hasta las';
         $strings['AvailableBeginningAt'] = 'Disponible desde las';
+        $strings['AvailableAt'] = 'Disponible en';
         $strings['AllResourceTypes'] = 'Todos los tipos de recursos';
         $strings['AllResourceStatuses'] = 'Todos los estados de los recursos';
         $strings['AllowParticipantsToJoin'] = 'Permitir a los participantes unirse';
@@ -551,11 +550,201 @@ class es extends en_us
         $strings['UsersWithAccessToResources'] = 'Usuarios con acceso a recursos';
         $strings['AnnouncementSubject'] = '%s ha publicado un nuevo anuncio';
         $strings['AnnouncementEmailNotice'] = 'los usuarios recibirán este anuncio por correo';
+        $strings['Day'] = 'Día';
+        $strings['NotifyWhenAvailable'] = 'Notificarme cuando esté disponible';
+        $strings['AddingToWaitlist'] = 'Añadiéndote a la lista de espera';
+        $strings['WaitlistRequestAdded'] = 'Se le notificará si esta hora está disponible';
+        $strings['PrintQRCode'] = 'Imprimir código Print QR';
         $strings['FindATime'] = 'Buscar un horario';
-        $strings['SearchReservations'] = 'Buscar reservas';
-        $strings['Schedules'] = 'Horarios';
+        $strings['AnyResource'] = 'Cualquier recurso';
         $strings['ThisWeek'] = 'Esta semana';
+
+
+        $strings['Hours'] = 'Horas';
+        $strings['Minutes'] = 'Minutos';
+        $strings['ImportICS'] = 'Importar desde ICS';
+        $strings['ImportQuartzy'] = 'Importar desde Quartzy';
+        $strings['OnlyIcs'] = 'Sólo se pueden cargar ficheros *.ics .';
+        $strings['IcsLocationsAsResources'] = 'Las ubicaciones serán importadas como recursos.';
+        $strings['IcsMissingOrganizer'] = 'Si un evento no tiene organizador, el propietario será el usuario actual.';
+        $strings['IcsWarning'] = 'Las reglas de reservas no se aplicarán - conflictos, duplicados, etc son posibles.';
+        $strings['BlackoutAroundConflicts'] = 'Blackout around conflicting reservations';
+        $strings['DuplicateReservation'] = 'Duplicar';
+        $strings['UnavailableNow'] = 'No disponible en este momento';
+        $strings['ReserveLater'] = 'Reservar más tarde';
+        $strings['CollectedFor'] = 'Recogido para';
+        $strings['IncludeDeleted'] = 'Incluir reservas borradas';
+        $strings['Deleted'] = 'Borrado';
+        $strings['Back'] = 'Atrás';
+        $strings['Forward'] = 'Adelante';
         $strings['DateRange'] = 'Rango de fechas';
+
+
+        $strings['Copy'] = 'Copiar';
+        $strings['Detect'] = 'Detectar';
+        $strings['Autofill'] = 'Auto rellenar';
+        $strings['NameOrEmail'] = 'nombre o correo electrónico';
+        $strings['ImportResources'] = 'Importar Recursos';
+        $strings['ExportResources'] = 'Exportar Recursos';
+        $strings['ResourceImportInstructions'] = '<ul><li>El fichero debe tener formato CSV con codificación UTF-8.</li><li>El nombre es un campo obligatorio. Dejar otros campos en blanco establecerá los valores por defecto.</li><li>Los estados disponibles son \'Disponible\', \'No disponible\' and \'Oculto\'.</li><li>El color será el formato hexadecimal. ex) #ffffff.</li><li>Las columnas de asignación y aprobación automática pueden ser verdadero o falso.</li><li>La validez del atributo no se aplicará.</li><li>Separar por comas los grupos de recursos.</li><li>Utilice la plantilla suministrada como ejemplo.</li></ul>';
+        $strings['ReservationImportInstructions'] = '<ul><li>El fichero debe tener formato CSV con codificación UTF-8.</li><li>Correo electrónico, nombre del recurso, comienzo y finalización son campos obligatorios.</li><li>Comienzo y finalización requieren la fecha completa. El formato recomendado es YYYY-mm-dd HH:mm (2017-12-31 20:30).</li><li>Las reglas, los conflictos y los intervalos de tiempo válidos no serán verificados.</li><li>No se enviarán notificaciones.</li><li>La validez del atributo no se aplicará.</li><li>Separar por comas los grupos de recursos.</li><li>Utilice la plantilla suministrada como ejemplo.</li></ul>';
+        $strings['AutoReleaseMinutes'] = 'Autorelease Minutes';
+        $strings['CreditsPeak'] = 'Credits (peak)';
+        $strings['CreditsOffPeak'] = 'Credits (off peak)';
+        $strings['ResourceMinLengthCsv'] = 'Longitud Mínima de Reserva';
+        $strings['ResourceMaxLengthCsv'] = 'Longitud Máxima de Reserva';
+        $strings['ResourceBufferTimeCsv'] = 'Buffer Time';
+        $strings['ResourceMinNoticeAddCsv'] = 'Reservation Add Minimum Notice';
+        $strings['ResourceMinNoticeUpdateCsv'] = 'Reservation Update Minimum Notice';
+        $strings['ResourceMinNoticeDeleteCsv'] = 'Reservation Delete Minimum Notice';
+        $strings['ResourceMaxNoticeCsv'] = 'Reservation Maximum End';
+        $strings['Export'] = 'Exportar';
+        $strings['DeleteMultipleUserWarning'] = 'Eliminar estos usuarios eliminará todas sus reservas actuales, futuras e históricas. No se enviarán correos electrónicos.';
+        $strings['DeleteMultipleReservationsWarning'] = 'No se enviarán correos electrónicos.';
+        $strings['ErrorMovingReservation'] = 'Error Moviendo las Reservas';
+        $strings['SelectUser'] = 'Seleccionar usuario';
+        $strings['InviteUsers'] = 'Invitar Usuarios';
+        $strings['InviteUsersLabel'] = 'Introduzca la dirección de correo electrónico de las personas a invitar';
+        $strings['ApplyToCurrentUsers'] = 'Aplicar a los usuarios actuales';
+        $strings['ReasonText'] = 'Razón';
+        $strings['NoAvailableMatchingTimes'] = 'No hay horas disponibles que coincidan con tu búsqueda';
+        $strings['Schedules'] = 'Horarios';
+        $strings['NotifyUser'] = 'Notificar al usuario';
+        $strings['UpdateUsersOnImport'] = 'Actualizar el usuario existente si la dirección del correo electrónico ya existe.';
+        $strings['UpdateResourcesOnImport'] = 'Actualizar los recursos existentes si el nombre ya existe';
+        $strings['Reject'] = 'Rechazar';
+        $strings['CheckingAvailability'] = 'Comprobando disponibilidad';
+        $strings['CreditPurchaseNotEnabled'] = 'No tiene habilitada la opción de comprar créditos';
+        $strings['CreditsCost'] = 'Cada crédito cuesta';
+        $strings['Currency'] = 'Moneda';
+        $strings['PayPalClientId'] = 'ID de cliente';
+        $strings['PayPalSecret'] = 'Password';
+        $strings['PayPalEnvironment'] = 'Environment';
+        $strings['Sandbox'] = 'Sandbox';
+        $strings['Live'] = 'Live';
+        $strings['StripePublishableKey'] = 'Publishable key';
+        $strings['StripeSecretKey'] = 'Secret key';
+        $strings['CreditsUpdated'] = 'Credit cost has been updated';
+        $strings['GatewaysUpdated'] = 'Payment gateways have been updated';
+        $strings['PurchaseSummary'] = 'Resumen de Compra';
+        $strings['EachCreditCosts'] = 'Cada crédito cuesta';
+        $strings['Checkout'] = 'Checkout';
+        $strings['Quantity'] = 'Cantidad';
+        $strings['CreditPurchase'] = 'Compra de Crédito';
+        $strings['EmptyCart'] = 'Su cesta está vacia.';
+        $strings['BuyCredits'] = 'Comprar Créditos';
+        $strings['CreditsPurchased'] = 'Créditos comprados.';
+        $strings['ViewYourCredits'] = 'Ver tus créditos';
+        $strings['TryAgain'] = 'Intentar de nuevo';
+        $strings['PurchaseFailed'] = 'Hemos tenido problemas procesando su pago.';
+        $strings['NoteCreditsPurchased'] = 'Créditos comprados';
+        $strings['CreditsUpdatedLog'] = 'Créditos actualizados por %s';
+        $strings['ReservationCreatedLog'] = 'Reserva creada. Número de referencia %s';
+        $strings['ReservationUpdatedLog'] = 'Reserva actualizada. Número de referencia %s';
+        $strings['ReservationDeletedLog'] = 'Reserva borrada. Número de referencia %s';
+        $strings['BuyMoreCredits'] = 'Comprar Más Créditos';
+        $strings['Transactions'] = 'Transacciones';
+        $strings['Cost'] = 'Coste';
+        $strings['PaymentGateways'] = 'Payment Gateways';
+        $strings['CreditHistory'] = 'Historial de Crédito';
+        $strings['TransactionHistory'] = 'Historial de Transacciones';
+        $strings['Date'] = 'Fecha';
+        $strings['Note'] = 'Nota';
+        $strings['CreditsBefore'] = 'Creditos Antes';
+        $strings['CreditsAfter'] = 'Creditos Después';
+        $strings['TransactionFee'] = 'Tarifa de Transacción';
+        $strings['InvoiceNumber'] = 'Número de Factura';
+        $strings['TransactionId'] = 'ID de Transacción';
+        $strings['Gateway'] = 'Gateway';
+        $strings['GatewayTransactionDate'] = 'Gateway Transaction Date';
+        $strings['Refund'] = 'Reembolso';
+        $strings['IssueRefund'] = 'Issue Refund';
+        $strings['RefundIssued'] = 'Reembolso emitido con éxito';
+        $strings['RefundAmount'] = 'Cantidad Devuelta';
+        $strings['AmountRefunded'] = 'Reintegrado';
+        $strings['FullyRefunded'] = 'Totalmente Reembolsado';
+        $strings['YourCredits'] = 'Tus Créditos';
+        $strings['PayWithCard'] = 'Pagas con Tarjeta';
+        $strings['or'] = 'o';
+        $strings['CreditsRequired'] = 'Creditos Requeridos';
+        $strings['AddToGoogleCalendar'] = 'Añadir a Google';
+        $strings['Image'] = 'Imagen';
+        $strings['ChooseOrDropFile'] = 'Elige un fichero o arrástralo aquí';
+        $strings['SlackBookResource'] = 'Book %s now';
+        $strings['SlackBookNow'] = 'Reservar ahora';
+        $strings['SlackNotFound'] = 'No hemos podido encontrar ningún recurso con ese nombre. Reservar ahora para comenzar una nueva reserva.';
+        $strings['AutomaticallyAddToGroup'] = 'Automaticamente añadir nuevos usuarios a este grupo';
+        $strings['GroupAutomaticallyAdd'] = 'Auto Añadir';
+        $strings['TermsOfService'] = 'Terminos del Servicio';
+        $strings['EnterTermsManually'] = 'Introduzca los Términos Manualmente';
+        $strings['LinkToTerms'] = 'Enlace a los Términos';
+        $strings['UploadTerms'] = 'Subir los Términos';
+        $strings['RequireTermsOfServiceAcknowledgement'] = 'Requerir aceptación de los Términos del Servicio';
+        $strings['UponReservation'] = 'Tras la Reserva';
+        $strings['UponRegistration'] = 'Tras el Registro';
+        $strings['ViewTerms'] = 'Ver los Términos del Servicio';
+        $strings['IAccept'] = 'Accepto';
+        $strings['TheTermsOfService'] = 'los Términos del Servicio';
+        $strings['DisplayPage'] = 'Mostrar Página';
+        $strings['AvailableAllYear'] = 'Todo el Año';
+        $strings['Availability'] = 'Disopnibilidad';
+        $strings['AvailableBetween'] = 'Disponible Entre';
+        $strings['ConcurrentYes'] = 'Los recursos pueden ser reservados por más de una persona a la vez';
+        $strings['ConcurrentNo'] = 'Los recursos no pueden ser reservados por más de una persona a la vez';
+        $strings['ScheduleAvailabilityEarly'] = 'Esta planificación no está todavía disponible. Lo estará próximamente';
+        $strings['ScheduleAvailabilityLate'] = 'Esta planificación ya no está disponible. Estuvo disponible';
+        $strings['ResourceImages'] = 'Recursos de Imagenes';
+        $strings['FullAccess'] = 'Acceso completo';
+        $strings['ViewOnly'] = 'Sólo Ver';
+        $strings['Purge'] = 'Purgar';
+        $strings['UsersWillBeDeleted'] = 'los usuarios serán borrados';
+        $strings['BlackoutsWillBeDeleted'] = 'blackout times will be deleted';
+        $strings['ReservationsWillBePurged'] = 'reservations will be purged';
+        $strings['ReservationsWillBeDeleted'] = 'se borrarán las reservas';
+        $strings['PermanentlyDeleteUsers'] = 'Borrar definitivamente los usuarios que no se han logado desde';
+        $strings['DeleteBlackoutsBefore'] = 'Delete blackout times before';
+        $strings['DeletedReservations'] = 'Reservas Borradas';
+        $strings['DeleteReservationsBefore'] = 'Borrar reservas anteriores a';
+        $strings['SwitchToACustomLayout'] = 'Cambiar a un diseño personalizado';
+        $strings['SwitchToAStandardLayout'] = 'Cambiar a un diseño standard';
+        $strings['ThisScheduleUsesACustomLayout'] = 'Este horario usa un diseño personalizado';
+        $strings['ThisScheduleUsesAStandardLayout'] = 'Este horario usa un diseño estandar';
+        $strings['SwitchLayoutWarning'] = 'Are you sure that you want to change the layout type? This will remove all existing slots.';
+        $strings['DeleteThisTimeSlot'] = 'Delete this time slot?';
+        $strings['Refresh'] = 'Refrescar';
+        $strings['ViewReservation'] = 'Ver Reserva';
+        $strings['PublicId'] = 'Id Público';
+        $strings['Public'] = 'Público';
+        $strings['AtomFeedTitle'] = '%s Reservas';
+        $strings['DefaultStyle'] = 'Estilo por Defecto';
+        $strings['Standard'] = 'Estandar';
+        $strings['Wide'] = 'Ancho';
+        $strings['Tall'] = 'Alto';
+        $strings['EmailTemplate'] = 'Plantilla de Correo Electrónico';
+        $strings['SelectEmailTemplate'] = 'Seleccionar Plantilla de Correo Electrónico';
+        $strings['ReloadOriginalContents'] = 'Recargar Contenido Original';
+        $strings['UpdateEmailTemplateSuccess'] = 'Plantilla de correo electrónico actualizada';
+        $strings['UpdateEmailTemplateFailure'] = 'No se pudo actualizar la plantilla del correo electrónico. Asegúrese que el directorio tiene permiso de escritura.';
+        $strings['BulkResourceDelete'] = 'Bulk Resource Delete';
+        $strings['NewVersion'] = '¡Nueva versión!';
+        $strings['WhatsNew'] = '¿Qué hay nuevo?';
+        $strings['OnlyViewedCalendar'] = 'Este calendario sólo se puede ver desde la vista de calendario';
+        $strings['Grid'] = 'Cuadrícula';
+        $strings['List'] = 'Lista';
+        $strings['NoReservationsFound'] = 'No se han Encontrado Reservas';
+        $strings['EmailReservation'] = 'Dirección de correo electrónico de la reserva';
+        $strings['AdHocMeeting'] = 'Ad hoc Meeting';
+        $strings['NextReservation'] = 'Próxima Reserva';
+        $strings['MissedCheckin'] = 'Missed Checkin';
+        $strings['MissedCheckout'] = 'Missed Checkout';
+        $strings['Utilization'] = 'Uso';
+        $strings['SpecificTime'] = 'Specific Time';
+        $strings['ReservationSeriesEndingPreference'] = 'When my recurring reservation series is ending';
+        $strings['NotAttending'] = 'Not Attending';
+        $strings['ViewAvailability'] = 'Ver Disponibilidad';
+        $strings['ReservationDetails'] = 'Detalles de la Reserva';
+        $strings['StartTime'] = 'Hora de Comienzo';
+        $strings['EndTime'] = 'Hora de Fin';
         // End Strings
 
         // Install
@@ -594,7 +783,7 @@ class es extends en_us
         $strings['ConfigureApplication'] = 'Configurar Booked Scheduler';
         $strings['ConfigUpdateSuccess'] = '¡El archivo de configuración se ha actualizado!';
         $strings['ConfigUpdateFailure'] = 'No pudimos actualizar automáticamente el archivo de configuración. Por favor sobreescribe el contenido de config.php con lo siguiente:';
-        $strings['SelectUser'] = 'Seleccionar usuario';
+        $strings['ScriptUrlWarning'] = 'Su fichero de configuración <em>script.url</em> puede no ser correcto. Actualmente es <strong>%s</strong>, pensamos que debería ser <strong>%s</strong>';
         // End Install
 
 
@@ -602,6 +791,8 @@ class es extends en_us
         $strings['LoginError'] = 'No se ha encontrado una correspondencia para tu Nombre de Usuario (Identificador) y contraseña';
         $strings['ReservationFailed'] = 'Tu reserva no se ha podido realizar';
         $strings['MinNoticeError'] = 'Esta reserva se debe realizar por anticipado.  La fecha más temprana que puede ser reservada %s.';
+        $strings['MinNoticeErrorUpdate'] = 'Cambiar esta reserva requiere aviso previo. Las reservas antes del %s no se pueden cambiar.';
+        $strings['MinNoticeErrorDelete'] = 'La eliminación de esta reserva requiere aviso previo. Las reservas antes del %s no se pueden borrar.';
         $strings['MaxNoticeError'] = 'Esta reserva no se puede alargar tan lejos en el futuro. La última fecha en la que se puede reservar es %s.';
         $strings['MinDurationError'] = 'Esta reserva debe durar al menos %s.';
         $strings['MaxDurationError'] = 'Esta reserva no puede durar más de %s.';
@@ -638,7 +829,17 @@ class es extends en_us
         $strings['ParticipationNotAllowed'] = 'No tienes permiso para unirte a esta reserva.';
         $strings['ReservationCannotBeCheckedInTo'] = 'No se puede hacer «check in» en esta reserva.';
         $strings['ReservationCannotBeCheckedOutFrom'] = 'No se puede hacer «check out» en esta reserva.';
-
+        $strings['InvalidEmailDomain'] = 'Esa dirección de correo electrónico no es de un dominio permitido';
+        $strings['TermsOfServiceError'] = 'Debe aceptar los Términos de Servcio';
+        $strings['UserNotFound'] = 'No se pudo encontrar al usuario';
+        $strings['ScheduleAvailabilityError'] = 'Este calendario está disponible entre %s y %s';
+        $strings['ReservationNotFoundError'] = 'Reserva no encontrada';
+        $strings['ReservationNotAvailable'] = 'Reserva no disponible';
+        $strings['TitleRequiredRule'] = 'Es obligatorio el título de la reserva';
+        $strings['DescriptionRequiredRule'] = 'Es obligatoria la descripción de la reserva';
+        $strings['WhatCanThisGroupManage'] = '¿Qué puede gestionar este grupo?';
+        $strings['ReservationParticipationActivityPreference'] = 'Cuando alguien se une o deja mi reserva';
+        $strings['RegisteredAccountRequired'] = 'Sólo los usuarios registrados pueden realizar reservas';
         // End Errors
 
         // Page Titles
@@ -655,20 +856,18 @@ class es extends en_us
         $strings['ManageGroups'] = 'Grupos';
         $strings['ManageQuotas'] = 'Cuotas';
         $strings['ManageBlackouts'] = 'Agenda de no disponibilidad';
-        $strings['MyDashboard'] = 'Mi Tablero';
+        $strings['MyDashboard'] = 'Mi tablón';
         $strings['ServerSettings'] = 'Ajustes de servidor';
-        $strings['Dashboard'] = 'Tablero';
+        $strings['Dashboard'] = 'Tablón';
         $strings['Help'] = 'Ayuda';
         $strings['Administration'] = 'Administración';
         $strings['About'] = 'Acerca de';
         $strings['Bookings'] = 'Reservas';
         $strings['Schedule'] = 'Planificación';
-        $strings['Reservations'] = 'Reservas';
         $strings['Account'] = 'Cuenta';
         $strings['EditProfile'] = 'Editar mi perfil';
         $strings['FindAnOpening'] = 'Encontrar un hueco';
         $strings['OpenInvitations'] = 'Invitaciones pendientes';
-        $strings['MyCalendar'] = 'Mi calendario';
         $strings['ResourceCalendar'] = 'Calendario de recursos';
         $strings['Reservation'] = 'Nueva reserva';
         $strings['Install'] = 'Instalación';
@@ -698,6 +897,13 @@ class es extends en_us
         $strings['ManageResourceTypes'] = 'Tipos de recursos';
         $strings['ManageResourceStatus'] = 'Estados de recursos';
         $strings['ReservationColors'] = 'Colores de las reservas';
+
+
+        $strings['SearchReservations'] = 'Buscar Reservas';
+        $strings['ManagePayments'] = 'Pagos';
+        $strings['ViewCalendar'] = 'Ver Calendario';
+        $strings['DataCleanup'] = 'Limpiar Datos';
+        $strings['ManageEmailTemplates'] = 'Administrar Plantillas de Correo Electrónico';
         // End Page Titles
 
         // Day representations
@@ -738,6 +944,26 @@ class es extends en_us
         $strings['UserAdded'] = 'Se ha agregado un nuevo usuario';
         $strings['UserDeleted'] = 'La cuenta de usuario de %s fue borrada por %s';
         $strings['GuestAccountCreatedSubject'] = 'Detalles de la cuenta';
+        $strings['AccountCreatedSubject'] = 'Los detalles de su cuenta %s ';
+        $strings['InviteUserSubject'] = '%s le ha invitado a unirse %s';
+
+        $strings['ReservationApprovedSubjectWithResource'] = 'La reserva ha sido aprobada por %s';
+        $strings['ReservationCreatedSubjectWithResource'] = 'Reserva Creada por %s';
+        $strings['ReservationUpdatedSubjectWithResource'] = 'Reserva Actualizada por %s';
+        $strings['ReservationDeletedSubjectWithResource'] = 'Reserva Borrada por %s';
+        $strings['ReservationCreatedAdminSubjectWithResource'] = 'Notificación: Reserva Creada por %s';
+        $strings['ReservationUpdatedAdminSubjectWithResource'] = 'Notificación: Reserva Actualizada por %s';
+        $strings['ReservationDeleteAdminSubjectWithResource'] = 'Notificación: Reserva Borrada por %s';
+        $strings['ReservationApprovalAdminSubjectWithResource'] = 'Notificación: Reserva para %s Requiere su aprovación';
+        $strings['ParticipantAddedSubjectWithResource'] = '%s le ha añadido a una Reserva para %s';
+        $strings['ParticipantDeletedSubjectWithResource'] = '%s ha eliminado una Reserva para %s';
+        $strings['InviteeAddedSubjectWithResource'] = '%s le ha invitado a una Reserva para %s';
+        $strings['MissedCheckinEmailSubject'] = 'Missed checkin for %s';
+        $strings['ReservationShareSubject'] = '%s ha compartido una Reserva para %s';
+        $strings['ReservationSeriesEndingSubject'] = 'Reservation Series for %s is Ending on %s';
+        $strings['ReservationParticipantAccept'] = '%s ha Aceptado su Invitación a la Reserva para %s el %s';
+        $strings['ReservationParticipantDecline'] = '%s ha Rechazado su Invitación a la Reserva para %s el %s';
+        $strings['ReservationParticipantJoin'] = '%s se ha Unido a su Reserva para %s el %s';
         // End Email Subjects
 
 
@@ -752,9 +978,9 @@ class es extends en_us
         $days = parent::_LoadDays();
 
         /***
-         * DAY NAMES
-         * All of these arrays MUST start with Sunday as the first element
-         * and go through the seven day week, ending on Saturday
+        DAY NAMES
+        All of these arrays MUST start with Sunday as the first element
+        and go through the seven day week, ending on Saturday
          ***/
         // The full day name
         $days['full'] = array('Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado');
@@ -775,9 +1001,9 @@ class es extends en_us
         $months = parent::_LoadMonths();
 
         /***
-         * MONTH NAMES
-         * All of these arrays MUST start with January as the first element
-         * and go through the twelve months of the year, ending on December
+        MONTH NAMES
+        All of these arrays MUST start with January as the first element
+        and go through the twelve months of the year, ending on December
          ***/
         // The full month name
         $months['full'] = array('Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre');
@@ -800,3 +1026,4 @@ class es extends en_us
         return 'es';
     }
 }
+

@@ -99,7 +99,7 @@ class Configuration implements IConfiguration
     const DEFAULT_CONFIG_ID = 'booked';
     const DEFAULT_CONFIG_FILE_PATH = 'config/config.php';
 
-    const VERSION = '2.7.6';
+    const VERSION = '2.7.7';
 
     protected function __construct()
     {
@@ -132,7 +132,7 @@ class Configuration implements IConfiguration
             throw new Exception("Missing config file: $configFile");
         }
 
-        touch($configFile);
+        //touch($configFile);
 
         $config = new Config();
         $container = $config->parseConfig($configFile, 'PHPArray');

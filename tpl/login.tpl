@@ -84,7 +84,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                                 <span>{translate key=RememberMe}</span>
                             </label>
 
-                            <button type="submit" class="btn btn-primary waves-effect waves-light" name="{Actions::LOGIN}"
+                            <button type="submit" class="btn btn-primary waves-effect waves-light"
+                                    name="{Actions::LOGIN}"
                                     value="submit">{translate key='LogIn'}</button>
                             <input type="hidden" {formname key=RESUME} value="{$ResumeUrl}"/>
                         </div>
@@ -124,7 +125,6 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                     {if $ShowForgotPasswordPrompt}
                         <div id="forgot-password">
                             <a href="{$ForgotPasswordUrl}" {$ForgotPasswordUrlNew} class="">
-                                <i class="fa fa-question"></i>
                                 {translate key='ForgotMyPassword'}
                             </a>
                         </div>
@@ -163,6 +163,18 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                 e.preventDefault();
                 $('#change-language-options').toggleClass('no-show');
             });
+            var langCode = readCookie('{CookieKeys::LANGUAGE}');
+
+            if (!langCode) {
+                langCode = (navigator.language + "").replace("-", "_").toLowerCase();
+
+                var availableLanguages = [{foreach from=$Languages item=lang}"{$lang->GetLanguageCode()}",{/foreach}];
+                if (langCode !== "" && langCode != '{$SelectedLanguage|lower}') {
+                    if (availableLanguages.indexOf(langCode) !== -1) {
+                        window.location.href = url + langCode;
+                    }
+                }
+            }
         });
     </script>
 </div>

@@ -110,7 +110,6 @@ class Reminder
         $addresses = explode(',',str_replace(' ', '', $reminder->Address()));
         foreach($addresses as $address)
         {
-            var_dump($address);
             if(ctype_digit($address))
             {
                 $gv->sms($address,$message);

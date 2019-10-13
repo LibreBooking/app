@@ -193,7 +193,15 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
             $('#detectTimezone').tooltip();
             $('#detectTimezone').click(function (e) {
                 e.preventDefault();
-                $('#timezoneDropDown').changeDropdown(Intl.DateTimeFormat().resolvedOptions().timeZone);
+
+                if (Intl.DateTimeFormat)
+                {
+                    var timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+                }else {
+                    var timezone = jstz.determine_timezone().name();
+                }
+
+                $('#timezoneDropDown').changeDropdown(timezone);
             });
 
             var messages = {

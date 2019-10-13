@@ -75,6 +75,10 @@ class AuthenticationTests extends TestBase
 	 * @var IUserRepository|PHPUnit_Framework_MockObject_MockObject
 	 */
 	private $userRepository;
+	/**
+	 * @var IGroupRepository|PHPUnit_Framework_MockObject_MockObject
+	 */
+	private $groupRepository;
 
 	/**
 	 * @var FakeFirstRegistrationStrategy
@@ -118,9 +122,10 @@ class AuthenticationTests extends TestBase
 
 		$this->authorization = $this->getMock('IRoleService');
 		$this->userRepository = $this->getMock('IUserRepository');
+		$this->groupRepository = $this->getMock('IGroupRepository');
 		$this->fakeFirstRegistration = new FakeFirstRegistrationStrategy();
 
-		$this->auth = new Authentication($this->authorization, $this->userRepository);
+		$this->auth = new Authentication($this->authorization, $this->userRepository, $this->groupRepository);
 		$this->auth->SetMigration($this->fakeMigration);
 		$this->auth->SetFirstRegistrationStrategy($this->fakeFirstRegistration);
 
@@ -280,7 +285,7 @@ class FakeFirstRegistrationStrategy implements IFirstRegistrationStrategy
 {
 	public $_Handled;
 
-	public function HandleLogin(User $user, IUserRepository $userRepository)
+	public function HandleLogin(User $user, IUserRepository $userRepository, IGroupRepository $groupRepository)
 	{
 		$this->_Handled = true;
 	}

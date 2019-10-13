@@ -53,7 +53,7 @@ class AccessoryAggregation
 	 */
 	public function Add(AccessoryReservation $accessoryReservation)
 	{
-		if ($accessoryReservation->GetStartDate()->Equals($this->duration->GetEnd()) || $accessoryReservation->GetEndDate()->Equals($this->duration->GetBegin()))
+		if ($accessoryReservation->GetStartDate()->GreaterThanOrEqual($this->duration->GetEnd()) || $accessoryReservation->GetEndDate()->LessThanOrEqual($this->duration->GetBegin()))
 		{
 			return;
 		}

@@ -77,7 +77,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                             <div>
                                 <div class="input-field inline">
                                     <label for="creditCost" class="inline-blocks">{translate key=CreditsCost}</label>
-                                    <input type="number" min="0" max="1000000000" id="creditCost" step=".1"
+                            <input type="number" min="0" max="1000000000" id="creditCost" step="any"
                                            {formname key=CREDIT_COST}
                                            value="{$CreditCost}"/>
                                 </div>

@@ -143,10 +143,6 @@ class SchedulePresenter extends ActionPresenter implements ISchedulePresenter {
 		$layout = $this->_scheduleService->GetLayout($scheduleId, new ScheduleLayoutFactory($user->Timezone));
 		$periods = $layout->GetLayout($requestedDate);
 
-		if (Log::DebugEnabled())
-		{
-			Log::Debug('Getting layout for scheduleId=%s, layoutDate=%s, periods=%s', $scheduleId, $layoutDate, var_export($periods, true));
-		}
 		$this->_page->SetLayoutResponse(new ScheduleLayoutSerializable($periods));
 	}
 }

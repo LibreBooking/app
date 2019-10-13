@@ -7,6 +7,11 @@
     display:none;
 }
 
+#page-reservation #accessories {
+    overflow: visible;
+	max-height: none;
+}
+
 #page-view-reservation .buttons {
     display:none;
 }
