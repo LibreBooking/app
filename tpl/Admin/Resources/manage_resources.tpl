@@ -500,7 +500,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                     <div id="addResourceResults" class="card warning no-show"></div>
 
                     <div class="input-field">
-                        <label for="resourceName">{translate key='Name'} <i class="fa fa-asterisk"></i></label>
+                        <label for="resourceName">{translate key='Name'} *</label>
                         <input type="text" class="required" required="required" maxlength="85" id="resourceName"
                                 {formname key=RESOURCE_NAME} />
 
@@ -610,7 +610,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                 </div>
                 <div class="modal-body">
                     <div class="input-field">
-                        <label for="copyResourceName">{translate key='Name'} <i class="fa fa-asterisk"></i></label>
+                        <label for="copyResourceName">{translate key='Name'} *</label>
                         <input type="text" class="required" required="required" maxlength="85" id="copyResourceName"
                                 {formname key=RESOURCE_NAME} />
                     </div>
@@ -1147,11 +1147,11 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                             <div id='bulkEditMaxCapacityInputs'>
                                 {capture name="txtBulkEditMaxCapacity" assign="txtBulkEditMaxCapacity"}
                                     <div class='input-field inline'>
-                                    <label for='bulkEditMaxCapacity'>Capacity</label>
-                                    <input type='number' id='bulkEditMaxCapacity'
-                                           class='mid-number'
-                                           min='0'
-                                           max='9999' size='5' {formname key=MAX_PARTICIPANTS} />
+                                        <label for='bulkEditMaxCapacity'>Capacity</label>
+                                        <input type='number' id='bulkEditMaxCapacity'
+                                               class='mid-number'
+                                               min='0'
+                                               max='9999' size='5' {formname key=MAX_PARTICIPANTS} />
                                     </div>
                                 {/capture}
                                 {translate key='ResourceCapacity' args=$txtBulkEditMaxCapacity}

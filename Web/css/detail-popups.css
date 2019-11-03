@@ -511,6 +511,9 @@ label.booked-checkbox span {
 .no-show {
   display: none !important;
 }
+h1 {
+  font-size: 1.5em;
+}
 h1 .label {
   padding-bottom: 0.2em;
 }

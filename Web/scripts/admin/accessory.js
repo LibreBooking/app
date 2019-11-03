@@ -48,7 +48,7 @@ function AccessoryManagement(opts) {
 		});
 
 		$(".cancel").click(function() {
-			$(this).closest('.dialog').dialog("close");
+            $(this).closest('.modal').modal('close');
 		});
 
 
@@ -100,7 +100,9 @@ function AccessoryManagement(opts) {
 		}
 
 		elements.editUnlimited.trigger('change');
-		elements.editDialog.modal('show');
+		elements.editDialog.modal('open');
+
+        M.updateTextFields();
 	};
 
 	function handleAccessoryResourceClick(checkbox)
@@ -136,12 +138,12 @@ function AccessoryManagement(opts) {
 				div.find('[data-type="max-quantity"]').val(resource.MaxQuantity);
 			});
 			elements.accessoryResourcesDialog.find('.resourcesDialogLabel').val(accessory.name + ' (' + accessory.quantity + ')');
-			elements.accessoryResourcesDialog.modal('show');
+			elements.accessoryResourcesDialog.modal('open');
 		});
 	};
 
 	var deleteAccessory = function() {
-		elements.deleteDialog.modal('show');
+		elements.deleteDialog.modal('open');
 	};
 
 	var getActiveAccessory = function ()
