@@ -485,7 +485,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
     {pagination pageInfo=$PageInfo}
 
-    <div id="add-resource-dialog" class="modal modal-large" tabindex="-1" role="dialog"
+    <div id="add-resource-dialog" class="modal modal-large modal-fixed-footer" tabindex="-1" role="dialog"
          aria-labelledby="addResourceModalLabel"
          aria-hidden="true">
         <form id="addResourceForm" class="form" role="form" method="post"
@@ -557,13 +557,14 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
     <input type="hidden" id="activeId" value=""/>
 
-    <div id="imageDialog" class="modal" tabindex="-1" role="dialog" aria-labelledby="imageModalLabel"
+    <div id="imageDialog" class="modal modal-fixed-footer" tabindex="-1" role="dialog" aria-labelledby="imageModalLabel"
          aria-hidden="true">
         <form id="imageForm" method="post" enctype="multipart/form-data"
               ajaxAction="{ManageResourcesActions::ActionChangeImage}">
             <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title" id="imageModalLabel">{translate key=ResourceImages}</h4>
+                <div class="modal-header row">
+                    <h4 class="modal-title left" id="imageModalLabel">{translate key=ResourceImages}</h4>
+                    <a href="#" class="modal-close right black-text"><i class="fa fa-remove"></i></a>
                 </div>
                 <div class="modal-body">
                     <div id="resource-images">
@@ -600,13 +601,14 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
         <input type="hidden" id="defaultImageName" {formname key=RESOURCE_IMAGE} />
     </form>
 
-    <div id="copyDialog" class="modal" tabindex="-1" role="dialog" aria-labelledby="copyModalLabel"
+    <div id="copyDialog" class="modal modal-fixed-footer" tabindex="-1" role="dialog" aria-labelledby="copyModalLabel"
          aria-hidden="true">
         <form id="copyForm" method="post" enctype="multipart/form-data"
               ajaxAction="{ManageResourcesActions::ActionCopyResource}">
             <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title" id="copyModalLabel">{translate key=Copy}</h4>
+                <div class="modal-header row">
+                    <h4 class="modal-title left" id="copyModalLabel">{translate key=Copy}</h4>
+                    <a href="#" class="modal-close right black-text"><i class="fa fa-remove"></i></a>
                 </div>
                 <div class="modal-body">
                     <div class="input-field">
@@ -624,7 +626,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
         </form>
     </div>
 
-    <div id="durationDialog" class="modal" tabindex="-1" role="dialog" aria-labelledby="durationModalLabel"
+    <div id="durationDialog" class="modal modal-large modal-fixed-footer" tabindex="-1" role="dialog"
+         aria-labelledby="durationModalLabel"
          aria-hidden="true">
         <form id="durationForm" method="post" role="form" ajaxAction="{ManageResourcesActions::ActionChangeDuration}">
             <div class="modal-content">
@@ -742,7 +745,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
         </form>
     </div>
 
-    <div id="capacityDialog" class="modal" tabindex="-1" role="dialog" aria-labelledby="capacityModalLabel"
+    <div id="capacityDialog" class="modal modal-large modal-fixed-footer" tabindex="-1" role="dialog"
+         aria-labelledby="capacityModalLabel"
          aria-hidden="true">
         <form id="capacityForm" method="post" role="form" ajaxAction="{ManageResourcesActions::ActionChangeCapacity}">
             <div class="modal-content">
@@ -770,16 +774,17 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                         </div>
                     </div>
                 </div>
-                <div class="modal-footer">
-                    {cancel_button}
-                    {update_button}
-                    {indicator}
-                </div>
+            </div>
+            <div class="modal-footer">
+                {cancel_button}
+                {update_button}
+                {indicator}
             </div>
         </form>
     </div>
 
-    <div id="accessDialog" class="modal modal-large" tabindex="-1" role="dialog" aria-labelledby="accessModalLabel"
+    <div id="accessDialog" class="modal modal-large modal-fixed-footer" tabindex="-1" role="dialog"
+         aria-labelledby="accessModalLabel"
          aria-hidden="true">
         <form id="accessForm" method="post" role="form" ajaxAction="{ManageResourcesActions::ActionChangeAccess}">
             <div class="modal-content">
@@ -959,51 +964,59 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                         </div>
                     </div>
                 </div>
-                <div class="modal-footer">
-                    {cancel_button}
-                    {update_button}
-                    {indicator}
-                </div>
+            </div>
+            <div class="modal-footer">
+                {cancel_button}
+                {update_button}
+                {indicator}
             </div>
         </form>
     </div>
 
-    <div id="statusDialog" class="modal">
+    <div id="statusDialog" class="modal modal-fixed-footer">
         <form id="statusForm" class="statusForm" method="post"
               ajaxAction="{ManageResourcesActions::ActionChangeStatus}">
             <div class="modal-content">
-                <div class="input-field">
-                    <label for="updateStatusId" class="active">{translate key=Status}</label>
-                    <select {formname key=RESOURCE_STATUS_ID} class="statusId" id="updateStatusId">
-                        <option value="{ResourceStatus::AVAILABLE}">{translate key=Available}</option>
-                        <option value="{ResourceStatus::UNAVAILABLE}">{translate key=Unavailable}</option>
-                        <option value="{ResourceStatus::HIDDEN}">{translate key=Hidden}</option>
-                    </select>
+                <div class="modal-header">
+                    <h4 class="modal-title left" id="accessModalLabel">{translate key=Status}</h4>
+                    <a href="#" class="modal-close right black-text"><i class="fa fa-remove"></i></a>
                 </div>
+                <div class="clearfix"></div>
+                <div class="modal-body">
+                    <div class="input-field">
+                        <label for="updateStatusId" class="active">{translate key=Status}</label>
+                        <select {formname key=RESOURCE_STATUS_ID} class="statusId" id="updateStatusId">
+                            <option value="{ResourceStatus::AVAILABLE}">{translate key=Available}</option>
+                            <option value="{ResourceStatus::UNAVAILABLE}">{translate key=Unavailable}</option>
+                            <option value="{ResourceStatus::HIDDEN}">{translate key=Hidden}</option>
+                        </select>
+                    </div>
 
-                <div class="align-right no-show newStatusReason">
-                    <a href="#" class="addStatusReason">
-                        <span class="no-show">{translate key=ReasonText}</span>
-                        <span class="addStatusIcon fa fa-plus icon add"></span>
-                    </a>
-                </div>
-                <div class="input-field no-show newStatusReason">
-                    <label for="addStatusReason">{translate key=ReasonText}</label>
-                    <input type="text" id="addStatusReason"
-                           class="resourceStatusReason" {formname key=RESOURCE_STATUS_REASON} />
-                </div>
+                    <div class="align-right no-show newStatusReason">
+                        <a href="#" class="addStatusReason">
+                            <span class="no-show">{translate key=ReasonText}</span>
+                            <span class="addStatusIcon fa fa-plus icon add"></span>
+                        </a>
+                    </div>
+                    <div class="input-field no-show newStatusReason">
+                        <label for="addStatusReason">{translate key=ReasonText}</label>
+                        <input type="text" id="addStatusReason"
+                               class="resourceStatusReason" {formname key=RESOURCE_STATUS_REASON} />
+                    </div>
 
-                <div class="align-right">
-                    <a href="#" class="addStatusReason">
-                        <span class="no-show">{translate key=Reason}</span>
-                        <span class="addStatusIcon fa fa-plus icon add"></span>
-                    </a>
-                </div>
-                <div class="input-field existingStatusReason">
-                    <label for="addStatusReasonId">
-                        {translate key=Reason}
-                    </label>
-                    <select id="addStatusReasonId" {formname key=RESOURCE_STATUS_REASON_ID} class="reasonId"></select>
+                    <div class="align-right">
+                        <a href="#" class="addStatusReason">
+                            <span class="no-show">{translate key=Reason}</span>
+                            <span class="addStatusIcon fa fa-plus icon add"></span>
+                        </a>
+                    </div>
+                    <div class="input-field existingStatusReason">
+                        <label for="addStatusReasonId">
+                            {translate key=Reason}
+                        </label>
+                        <select id="addStatusReasonId" {formname key=RESOURCE_STATUS_REASON_ID}
+                                class="reasonId"></select>
+                    </div>
                 </div>
             </div>
             <div class="modal-footer">
@@ -1019,7 +1032,8 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
         <form id="deleteForm" method="post" ajaxAction="{ManageResourcesActions::ActionDelete}">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title" id="deleteResourceDialogLabel">{translate key=Delete}</h4>
+                    <h4 class="modal-title left" id="deleteResourceDialogLabel">{translate key=Delete}</h4>
+                    <a href="#" class="modal-close right black-text"><i class="fa fa-remove"></i></a>
                 </div>
                 <div class="modal-body">
                     <div class="card error">
@@ -1035,36 +1049,36 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                         </div>
                     </div>
                 </div>
-                <div class="modal-footer">
-                    {cancel_button}
-                    {delete_button}
-                    {indicator}
-                </div>
+            </div>
+            <div class="modal-footer">
+                {cancel_button}
+                {delete_button}
+                {indicator}
             </div>
         </form>
     </div>
 
-    <div id="bulkUpdateDialog" class="modal modal-large" tabindex="-1" role="dialog" aria-labelledby="bulkUpdateLabel"
+    <div id="bulkUpdateDialog" class="modal modal-large modal-fixed-footer" tabindex="-1" role="dialog" aria-labelledby="bulkUpdateLabel"
          aria-hidden="true">
         <form id="bulkUpdateForm" method="post" ajaxAction="{ManageResourcesActions::ActionBulkUpdate}"
               class="form-vertical"
               role="form">
             <div class="modal-content">
-                <div class="modal-header">
+                <div class="modal-header row">
                     <h4 class="modal-title left" id="bulkUpdateLabel">{translate key=BulkResourceUpdate}</h4>
                     <a href="#" class="modal-close right black-text"><i class="fa fa-remove"></i></a>
                 </div>
-                <div class="clearfix"></div>
                 <div class="modal-body">
                     <div id="bulkUpdateErrors" class="error no-show">
                         {async_validator id="bulkAttributeValidator" key=""}
                     </div>
-                    <div>{translate key=Select}
+                    <div>
+                        <span>{translate key=Select}</span>
                         <a href="#" id="checkAllResources">{translate key=All}</a> |
                         <a href="#" id="checkNoResources">{translate key=None}</a>
                     </div>
                     <div id="bulkUpdateList"></div>
-                    <div>
+                    <section>
                         <div class="title">{translate key=Common}</div>
                         <div class="input-field">
                             <label for="bulkEditSchedule" class="active">{translate key=MoveToSchedule}
@@ -1123,44 +1137,47 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                             <select id="bulkEditStatusReasonId" {formname key=RESOURCE_STATUS_REASON_ID}>
                             </select>
                         </div>
-                    </div>
-                    <div>
                         <div class="input-field">
                             <label for="bulkEditDescription" class="active">{translate key=Description}
                                 :</label>
-                            <textarea id="bulkEditDescription" {formname key=RESOURCE_DESCRIPTION}></textarea>
+                            <textarea id="bulkEditDescription"
+                                      class="materialize-textarea" {formname key=RESOURCE_DESCRIPTION}></textarea>
                         </div>
                         <div class="input-field">
                             <label for="bulkEditNotes" class="active">{translate key=Notes}:</label>
-                            <textarea id="bulkEditNotes" {formname key=RESOURCE_NOTES}></textarea>
+                            <textarea id="bulkEditNotes"
+                                      class="materialize-textarea" {formname key=RESOURCE_NOTES}></textarea>
                         </div>
-                    </div>
+                    </section>
 
-                    <div class="title">{translate key=Capacity}</div>
-                    <div>
-                        <div class="input-field">
-                            <label for="bulkEditUnlimitedCapacity">
-                                <input type="checkbox" id="bulkEditUnlimitedCapacity" class="unlimitedCapacity"
-                                       data-related-inputs="#bulkEditMaxCapacityInputs" {formname key=MAX_PARTICIPANTS_UNLIMITED}/>
-                                <span>{translate key=ResourceCapacityNone}</span>
-                            </label>
-                            <div id='bulkEditMaxCapacityInputs'>
-                                {capture name="txtBulkEditMaxCapacity" assign="txtBulkEditMaxCapacity"}
-                                    <div class='input-field inline'>
-                                        <label for='bulkEditMaxCapacity'>Capacity</label>
-                                        <input type='number' id='bulkEditMaxCapacity'
-                                               class='mid-number'
-                                               min='0'
-                                               max='9999' size='5' {formname key=MAX_PARTICIPANTS} />
-                                    </div>
-                                {/capture}
-                                {translate key='ResourceCapacity' args=$txtBulkEditMaxCapacity}
+                    <section>
+                        <div class="title">{translate key=Capacity}</div>
+                        <div>
+                            <div class="input-field">
+                                <label for="bulkEditUnlimitedCapacity">
+                                    <input type="checkbox" id="bulkEditUnlimitedCapacity" class="unlimitedCapacity"
+                                           data-related-inputs="#bulkEditMaxCapacityInputs" {formname key=MAX_PARTICIPANTS_UNLIMITED}/>
+                                    <span>{translate key=ResourceCapacityNone}</span>
+                                </label>
                             </div>
                         </div>
-                    </div>
+                        <div id='bulkEditMaxCapacityInputs'>
+                            {capture name="txtBulkEditMaxCapacity" assign="txtBulkEditMaxCapacity"}
+                                <div class='input-field inline'>
+                                    <label for='bulkEditMaxCapacity'>Capacity</label>
+                                    <input type='number' id='bulkEditMaxCapacity'
+                                           class='mid-number'
+                                           min='0'
+                                           max='9999' size='5' {formname key=MAX_PARTICIPANTS} />
+                                </div>
+                            {/capture}
+                            {translate key='ResourceCapacity' args=$txtBulkEditMaxCapacity}
+                        </div>
+                        <div class="clearfix"></div>
+                    </section>
 
-                    <div class="title">{translate key=Duration}</div>
-                    <div>
+                    <section>
+                        <div class="title">{translate key=Duration}</div>
                         <div class="input-field">
                             <label for="bulkEditNoMinimumDuration">
                                 <input type="checkbox" id="bulkEditNoMinimumDuration"
@@ -1245,12 +1262,10 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                                 {translate key=ResourceBufferTime args=$txtBufferTime}
                             </div>
 
-                        </div>
-                    </div>
+                    </section>
 
-                    <div class="title">{translate key=Access}</div>
-                    <div>
-
+                    <section>
+                        <div class="title">{translate key=Access}</div>
                         <div class="input-field">
                             <div class="checkbox">
                                 <input type="checkbox" id="bulkEditNoStartNoticeAdd"
@@ -1371,81 +1386,82 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                             {/capture}
                             <div id="bulkEndNotice">{translate key='ResourceMaxNotice' args=$txtEndNotice}</div>
                         </div>
-                    </div>
 
-                    <div class="input-field">
-                        <label for="bulkEditAllowMultiday"
-                               class="control-label">{translate key=ResourceAllowMultiDay}</label>
-                        <select id="bulkEditAllowMultiday" class="form-control" {formname key=ALLOW_MULTIDAY}>
-                            {html_options options=$YesNoUnchangedOptions}
-                        </select>
-                    </div>
-
-                    <div class="input-field">
-                        <label for="bulkEditRequiresApproval"
-                               class="control-label">{translate key='ResourceRequiresApproval'}</label>
-                        <select id="bulkEditRequiresApproval"
-                                class="form-control input-sm" {formname key=REQUIRES_APPROVAL}>
-                            {html_options options=$YesNoUnchangedOptions}
-                        </select>
-                    </div>
-
-                    <div class="input-field">
-                        <label for="bulkEditAutoAssign"
-                               class="control-label">{translate key='ResourcePermissionAutoGranted'}</label>
-                        <select id="bulkEditAutoAssign" class="form-control" {formname key=AUTO_ASSIGN}>
-                            {html_options options=$YesNoUnchangedOptions}
-                        </select>
-                    </div>
-
-                    <div class="input-field">
-                        <label for="bulkEditEnableCheckIn"
-                               class="control-label">{translate key=RequiresCheckInNotification}</label>
-                        <select id="bulkEditEnableCheckIn" class="form-control" {formname key=ENABLE_CHECK_IN}>
-                            {html_options options=$YesNoUnchangedOptions}
-                        </select>
-                        <div class="no-show" id="bulkUpdateAutoReleaseMinutesDiv">
-                            {capture name="bulkEditTxtAutoRelease" assign="bulkEditTxtAutoRelease"}
-                                <label for='bulkEditAutoReleaseMinutes' class='no-show'>Auto Release minutes</label>
-                                <input type='number' max='99' min='0' id='bulkEditAutoReleaseMinutes'
-                                       class='minutes form-control inline' {formname key=AUTO_RELEASE_MINUTES} />
-                            {/capture}
-                            {translate key='AutoReleaseNotification' args=$bulkEditTxtAutoRelease}
-                        </div>
-                    </div>
-
-                    <div class="input-field">
-                        <label for="bulkEditAllowSubscriptions"
-                               class="control-label">{translate key='TurnOnSubscription'}</label>
-                        <select id="bulkEditAllowSubscriptions"
-                                class="form-control" {formname key=ALLOW_CALENDAR_SUBSCRIPTIONS}>
-                            {html_options options=$YesNoUnchangedOptions}
-                        </select>
-                    </div>
-
-                    {if $CreditsEnabled}
-                        <div class="title">{translate key=Credits}</div>
                         <div class="input-field">
-                            {capture name="bulkEditCreditsPerSLot" assign="bulkEditCreditsPerSLot"}
-                                <label for='bulkEditCreditsPerSlot' class='no-show'>Credits Per Slot</label>
-                                <input type='number' min='0' step='1' id='bulkEditCreditsPerSlot'
-                                       class='credits form-control inline' {formname key=CREDITS} />
-                            {/capture}
-                            {translate key='CreditUsagePerSlot' args=$bulkEditCreditsPerSLot}
+                            <label for="bulkEditAllowMultiday"
+                                   class="control-label">{translate key=ResourceAllowMultiDay}</label>
+                            <select id="bulkEditAllowMultiday" class="form-control" {formname key=ALLOW_MULTIDAY}>
+                                {html_options options=$YesNoUnchangedOptions}
+                            </select>
                         </div>
-                        <div class="input-field">
-                            {capture name="bulkEditPeakCreditsPerSlot" assign="bulkEditPeakCreditsPerSlot"}
-                                <label for='bulkEditPeakCreditsPerSlot' class='no-show'>Peak Credits Per
-                                    Slot</label>
-                                <input type='number' min='0' step='1' id='bulkEditPeakCreditsPerSlot'
-                                       class='credits form-control inline' {formname key=PEAK_CREDITS} />
-                            {/capture}
-                            {translate key='PeakCreditUsagePerSlot' args=$bulkEditPeakCreditsPerSlot}
-                        </div>
-                    {/if}
 
-                    <div class="title">{translate key=AdditionalAttributes}</div>
-                    <div>
+                        <div class="input-field">
+                            <label for="bulkEditRequiresApproval"
+                                   class="control-label">{translate key='ResourceRequiresApproval'}</label>
+                            <select id="bulkEditRequiresApproval"
+                                    class="form-control input-sm" {formname key=REQUIRES_APPROVAL}>
+                                {html_options options=$YesNoUnchangedOptions}
+                            </select>
+                        </div>
+
+                        <div class="input-field">
+                            <label for="bulkEditAutoAssign"
+                                   class="control-label">{translate key='ResourcePermissionAutoGranted'}</label>
+                            <select id="bulkEditAutoAssign" class="form-control" {formname key=AUTO_ASSIGN}>
+                                {html_options options=$YesNoUnchangedOptions}
+                            </select>
+                        </div>
+
+                        <div class="input-field">
+                            <label for="bulkEditEnableCheckIn"
+                                   class="control-label">{translate key=RequiresCheckInNotification}</label>
+                            <select id="bulkEditEnableCheckIn" class="form-control" {formname key=ENABLE_CHECK_IN}>
+                                {html_options options=$YesNoUnchangedOptions}
+                            </select>
+                            <div class="no-show" id="bulkUpdateAutoReleaseMinutesDiv">
+                                {capture name="bulkEditTxtAutoRelease" assign="bulkEditTxtAutoRelease"}
+                                    <label for='bulkEditAutoReleaseMinutes' class='no-show'>Auto Release minutes</label>
+                                    <input type='number' max='99' min='0' id='bulkEditAutoReleaseMinutes'
+                                           class='minutes form-control inline' {formname key=AUTO_RELEASE_MINUTES} />
+                                {/capture}
+                                {translate key='AutoReleaseNotification' args=$bulkEditTxtAutoRelease}
+                            </div>
+                        </div>
+
+                        <div class="input-field">
+                            <label for="bulkEditAllowSubscriptions"
+                                   class="control-label">{translate key='TurnOnSubscription'}</label>
+                            <select id="bulkEditAllowSubscriptions"
+                                    class="form-control" {formname key=ALLOW_CALENDAR_SUBSCRIPTIONS}>
+                                {html_options options=$YesNoUnchangedOptions}
+                            </select>
+                        </div>
+
+                        {if $CreditsEnabled}
+                            <div class="title">{translate key=Credits}</div>
+                            <div class="input-field">
+                                {capture name="bulkEditCreditsPerSLot" assign="bulkEditCreditsPerSLot"}
+                                    <label for='bulkEditCreditsPerSlot' class='no-show'>Credits Per Slot</label>
+                                    <input type='number' min='0' step='1' id='bulkEditCreditsPerSlot'
+                                           class='credits form-control inline' {formname key=CREDITS} />
+                                {/capture}
+                                {translate key='CreditUsagePerSlot' args=$bulkEditCreditsPerSLot}
+                            </div>
+                            <div class="input-field">
+                                {capture name="bulkEditPeakCreditsPerSlot" assign="bulkEditPeakCreditsPerSlot"}
+                                    <label for='bulkEditPeakCreditsPerSlot' class='no-show'>Peak Credits Per
+                                        Slot</label>
+                                    <input type='number' min='0' step='1' id='bulkEditPeakCreditsPerSlot'
+                                           class='credits form-control inline' {formname key=PEAK_CREDITS} />
+                                {/capture}
+                                {translate key='PeakCreditUsagePerSlot' args=$bulkEditPeakCreditsPerSlot}
+                            </div>
+                        {/if}
+
+                    </section>
+
+                    <section>
+                        <div class="title">{translate key=AdditionalAttributes}</div>
                         {foreach from=$AttributeFilters item=attribute}
                             {if !$attribute->UniquePerEntity()}
                                 <div class="customAttribute">
@@ -1453,31 +1469,33 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                                 </div>
                             {/if}
                         {/foreach}
-                    </div>
+                    </section>
                 </div>
-                <div class="modal-footer">
-                    {cancel_button}
-                    {update_button}
-                    {indicator}
-                </div>
+
+
+                {csrf_token}
             </div>
-            {csrf_token}
+            <div class="modal-footer">
+                {cancel_button}
+                {update_button}
+                {indicator}
+            </div>
         </form>
     </div>
 
-    <div id="bulkDeleteDialog" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="bulkDeleteLabel"
+    <div id="bulkDeleteDialog" class="modal modal-fixed-footer" tabindex="-1" role="dialog" aria-labelledby="bulkDeleteLabel"
          aria-hidden="true">
         <form id="bulkDeleteForm" method="post" ajaxAction="{ManageResourcesActions::ActionBulkDelete}"
               class="form-vertical"
               role="form">
-            <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                        <h4 class="modal-title" id="bulkDeleteLabel">{translate key=BulkResourceDelete}</h4>
+                        <h4 class="modal-title left" id="deleteResourceDialogLabel">{translate key=BulkResourceDelete}</h4>
+                        <a href="#" class="modal-close right black-text"><i class="fa fa-remove"></i></a>
                     </div>
+                    <div class="clearfix"></div>
                     <div class="modal-body">
-                        <div class="alert alert-warning">
+                        <div class="card card-panel warning">
                             <div>{translate key=DeleteWarning}</div>
                             {translate key=DeleteResourceWarning}:
                             <ul>
@@ -1494,13 +1512,12 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                         </div>
                         <div id="bulkDeleteList"></div>
                     </div>
-                    <div class="modal-footer">
-                        {cancel_button}
-                        {delete_button}
-                        {indicator}
-                    </div>
                 </div>
-            </div>
+                <div class="modal-footer">
+                    {cancel_button}
+                    {delete_button}
+                    {indicator}
+                </div>
             {csrf_token}
         </form>
     </div>

@@ -92,7 +92,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
     <input type="hidden" id="activeId"/>
 
-    <div class="modal modal-large" id="deleteDialog" tabindex="-1" role="dialog" aria-labelledby="deleteDialogLabel"
+    <div class="modal" id="deleteDialog" tabindex="-1" role="dialog" aria-labelledby="deleteDialogLabel"
          aria-hidden="true">
         <form id="deleteForm" method="post">
             <div class="modal-content">
@@ -115,7 +115,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
         </form>
     </div>
 
-    <div class="modal modal-large" id="editDialog" tabindex="-1" role="dialog" aria-labelledby="editDialogLabel"
+    <div class="modal" id="editDialog" tabindex="-1" role="dialog" aria-labelledby="editDialogLabel"
          aria-hidden="true">
         <form id="editForm" method="post">
             <div class="modal-content">
@@ -153,7 +153,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
         </form>
     </div>
 
-    <div class="modal modal-large" id="accessoryResourcesDialog" tabindex="-1" role="dialog"
+    <div class="modal" id="accessoryResourcesDialog" tabindex="-1" role="dialog"
          aria-labelledby="resourcesDialogLabel" aria-hidden="true">
         <form id="accessoryResourcesForm" role="form"
               ajaxAction="{ManageAccessoriesActions::ChangeAccessoryResource}" method="post">

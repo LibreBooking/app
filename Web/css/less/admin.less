@@ -330,6 +330,7 @@ ul.jqtree-tree .group-resource .jqtree-title {
 
 #repeatDiv {
   padding: 0;
+
   div {
     padding: 2px 0;
   }
@@ -463,14 +464,20 @@ ul.resource-status-reasons {
   background-color: #fffaeb;
 }
 
-#bulkUpdateDialog .title {
-  font-size: 1.1em;
-  font-weight: bold;
-  border-top: solid 1px #ccc;
-  border-bottom: solid 1px #ccc;
-  background-color: #eee;
-  padding: 3px 3px;
-  margin: 7px 0;
+#bulkUpdateDialog {
+  .title {
+    font-weight: bold;
+    background-color: #eee;
+    padding: 3px 3px;
+    margin: 7px 0;
+  }
+
+  section {
+    border: solid 1px #ccc;
+    padding: 0 5px 5px 5px;
+    .rounded();
+    margin-bottom: 5px;
+  }
 }
 
 .highlight {
@@ -502,9 +509,10 @@ td.update {
   max-width: 40%;
 }
 
-.days, .hours, .minutes, .credits {
-  width: 80px;
-}
+
+  .days, .hours, .minutes, .credits {
+    width: 80px !important;
+  }
 
 .popover {
   max-width: 500px;
@@ -554,6 +562,7 @@ td.update {
 
 #enforce-hours-times {
   padding-left: 10px;
+
   span {
     margin-top: 10px;
   }
@@ -590,12 +599,12 @@ td.update {
   }
 
   .dateinput {
-    width:80px;
+    width: 80px;
   }
 }
 
 #importInstructions {
-  font-size:.8em;
+  font-size: .8em;
 }
 
 #page-manage-resource-groups {
@@ -623,15 +632,15 @@ td.update {
   }
 
   #quickLayoutConfig {
-    width:50px;
+    width: 50px;
   }
 
   #quickLayoutStart, #quickLayoutEnd {
-    width:50px;
+    width: 50px;
   }
 
   .slotWizard, .slotHelpText {
-    font-size:.9em;
+    font-size: .9em;
   }
 
   .input-sm {

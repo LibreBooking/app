@@ -325,7 +325,7 @@ function ResourceManagement(opts) {
 			elements.bulkUpdateList.empty();
 			$.each(resources, function (i, r) {
 				var checkId = 'bulk' + r.id;
-				items.push('<div class="checkbox checkbox-inline">' + '<input type="checkbox" id="' + checkId + '" name="resourceId[]" checked="checked" value="' + r.id + '" />' + '<label for="' + checkId + '">' + r.name + '</label>' + '</div>');
+				items.push('<label for="' + checkId + '"><input type="checkbox" id="' + checkId + '" name="resourceId[]" checked="checked" value="' + r.id + '" /><span>' + r.name + '</span></label>');
 			});
 			$('<div/>', {html: items.join('')}).appendTo(elements.bulkUpdateList);
 
@@ -339,7 +339,7 @@ function ResourceManagement(opts) {
 			elements.bulkDeleteList.empty();
 			$.each(resources, function (i, r) {
 				var checkId = 'bulk' + r.id;
-				items.push('<div class="checkbox checkbox-inline">' + '<input type="checkbox" id="' + checkId + '" name="resourceId[]" checked="checked" value="' + r.id + '" />' + '<label for="' + checkId + '">' + r.name + '</label>' + '</div>');
+				items.push('<label for="' + checkId + '"><input type="checkbox" id="' + checkId + '" name="resourceId[]" checked="checked" value="' + r.id + '" /><span>' + r.name + '</span></label>');
 			});
 			$('<div/>', {html: items.join('')}).appendTo(elements.bulkDeleteList);
 

@@ -383,13 +383,14 @@ ul.resource-status-reasons {
   background-color: #fffaeb;
 }
 #bulkUpdateDialog .title {
-  font-size: 1.1em;
   font-weight: bold;
-  border-top: solid 1px #ccc;
-  border-bottom: solid 1px #ccc;
   background-color: #eee;
   padding: 3px 3px;
   margin: 7px 0;
+}
+#bulkUpdateDialog section {
+  border: solid 1px #ccc;
+  padding: 5px;
 }
 .highlight {
   background-color: #b2c5ab;
