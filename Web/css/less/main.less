@@ -645,90 +645,6 @@ body {
 //  }
 //}
 
-/**
-materialize overrides
- */
-
-nav {
-  background-color: #f8f8f8;
-
-  a {
-    color: @almost-black !important;
-  }
-
-  ul a {
-    padding: 0 10px;
-  }
-}
-
-.tabs {
-  background-color: inherit;
-}
-
-@media only screen and (min-width: 601px) {
-  nav li, nav a, div.nav-wrapper, nav.nav-content, nav .nav-wrapper i {
-    height: 50px;
-    line-height: 50px
-  }
-
-  //
-  //.dropdown-content li, .dropdown-content a, .dropdown-content li>a, .dropdown-content li>span{
-  //  line-height:30px;
-  //  height: 30px;
-  //  min-height: 30px;
-  //}
-  nav .brand-logo {
-    position: relative;
-    float: left;
-  }
-}
-
-.nav-content {
-  ul a {
-    font-size: 14px;
-  }
-}
-
-i.right {
-  margin-left: 0;
-}
-
-#mobile-navigation {
-  .right {
-    float: none !important;
-  }
-
-  .material-icons {
-    vertical-align: bottom;
-  }
-}
-
-.container {
-  width: 90%;
-}
-
-.dropdown-content {
-  li > a, li > span {
-    color: @almost-black;
-  }
-}
-
-[type="checkbox"] + span:not(.lever) {
-  padding-left: 25px;
-  padding-right: 12px;
-}
-
-div.clearfix {
-  height: 0;
-}
-
-.modal.modal-large {
-  width: 75% !important;
-  max-height: 90% !important;
-  top:5% !important;
-}
-
-/** end materialize overrides**/
 
 .ui-datepicker {
   z-index: 10000 !important;
@@ -907,6 +823,13 @@ input[type=search]::-webkit-search-cancel-button {
 
 .close-forever {
   font-size: 11pt;
+}
+
+ul.bullet-list {
+  list-style-type: circle;
+  li {
+    list-style-type: circle;
+  }
 }
 
 /** Page level overrides **/

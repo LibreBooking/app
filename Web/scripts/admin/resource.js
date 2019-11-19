@@ -543,7 +543,7 @@ function ResourceManagement(opts) {
 				var itemName = span.text();
 				var id = 'group_id' + node.id;
 
-				var label = $('<div class="checkbox inline"><input group-id="' + node.id + '" name="group_id[]" type="checkbox" id="' + id + '" value="' + node.id + '"/><label for="' + id + '">' + itemName + '</label></div>');
+				var label = $('<div><label for="' + id + '"><input group-id="' + node.id + '" name="group_id[]" type="checkbox" id="' + id + '" value="' + node.id + '"/><span>' + itemName + '</span></label></div>');
 
 				$li.find('span').html(label);
 			}

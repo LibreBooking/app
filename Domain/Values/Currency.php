@@ -65,6 +65,7 @@ namespace Booked {
 		{
 			return array(
 					new CurrencyDefinition('USD'),
+					new CurrencyDefinition('GBP'),
 					new CurrencyDefinition('AUD'),
 					new CurrencyDefinition('BRL'),
 					new CurrencyDefinition('CAD'),
