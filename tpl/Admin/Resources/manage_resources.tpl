@@ -20,8 +20,6 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 {include file='globalheader.tpl' InlineEdit=true Owl=true}
 
 <div id="page-manage-resources" class="admin-page row">
-
-
     <div>
         <div class="dropdown admin-header-more pull-right">
             <button class="btn btn-flat" type="button" id="moreResourceActions" data-target="dropdown-menu">
@@ -1613,7 +1611,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
          aria-hidden="true">
         <form id="creditsForm" method="post" role="form" ajaxAction="{ManageResourcesActions::ActionChangeCredits}">
             <div class="modal-header">
-                <h4 class="modal-title left" id="deleteResourceDialogLabel">{translate key=Credits}</h4>
+                <h4 class="modal-title left" id="creditsModalLabel">{translate key=Credits}</h4>
                 <a href="#" class="modal-close right black-text"><i class="fa fa-remove"></i></a>
             </div>
             <div class="modal-content">
@@ -1651,7 +1649,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
         <form id="importForm" class="form" role="form" method="post" enctype="multipart/form-data"
               ajaxAction="{ManageResourcesActions::ImportResources}">
             <div class="modal-header">
-                <h4 class="modal-title left" id="deleteResourceDialogLabel">{translate key=Import}</h4>
+                <h4 class="modal-title left">{translate key=Import}</h4>
                 <a href="#" class="modal-close right black-text"><i class="fa fa-remove"></i></a>
             </div>
             <div class="modal-content">

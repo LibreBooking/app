@@ -667,6 +667,9 @@ body {
 .social-login {
   text-align: center;
 }
+.modal.modal-fixed-header.modal-fixed-footer .modal-content {
+  height: calc(100% - 120px);
+}
 span.searchclear,
 span.searchclear-label {
   position: absolute;

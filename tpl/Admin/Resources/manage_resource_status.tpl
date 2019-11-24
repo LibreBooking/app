@@ -16,9 +16,10 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 *}
+
 {include file='globalheader.tpl'}
 
-<div id="page-manage-resource-status" class="admin-page">
+<div id="page-manage-resource-status" class="admin-page row">
 
 	{function name=displayReason}
 		{cycle values='row0,row1' assign=rowCss}
@@ -171,6 +172,11 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 	<script type="text/javascript">
 
 		$(document).ready(function () {
+            $('#moreResourceActions').dropdown({
+                constrainWidth: false,
+                coverTrigger: false
+            });
+
 			var opts = {
 				submitUrl: '{$smarty.server.SCRIPT_NAME}',
 				saveRedirect: '{$smarty.server.SCRIPT_NAME}'

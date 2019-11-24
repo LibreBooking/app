@@ -31,7 +31,7 @@ function ResourceGroupManagement(opts)
 
 		$(".cancel").click(function ()
 		{
-			$(this).closest('.modal').modal("hide");
+			$(this).closest('.modal').modal("close");
 		});
 
 
@@ -157,15 +157,17 @@ function ResourceGroupManagement(opts)
 	function showRename(node)
 	{
 		elements.activeId.val(node.id);
-		elements.renameDialog.modal("show");
+		elements.renameDialog.modal('open');
 
 		elements.newName.val(node.name);
-	}
+        M.updateTextFields();
+        elements.newName.focus();
+    }
 
 	function showDelete(node)
 	{
 		elements.activeId.val(node.id);
-		elements.deleteDialog.modal("show");
+		elements.deleteDialog.modal("open");
 	}
 
 	function showAddChild(node)
@@ -173,8 +175,8 @@ function ResourceGroupManagement(opts)
 		elements.activeId.val(node.id);
 		$('#groupParentId').val(node.id);
 		$('#childName').val('');
+        elements.addChildDialog.modal("open");
 		$('#childName').focus();
-		elements.addChildDialog.modal("show");
 	}
 
 	function onBeforeRename(arr, $form, options)
@@ -275,10 +277,7 @@ function ResourceGroupManagement(opts)
 	{
 		$.each($('div.modal'), function (index, element)
 		{
-			if ($(element).is(':visible'))
-			{
-				$(element).modal('hide');
-			}
+            $(element).modal('close');
 		});
 	}
 

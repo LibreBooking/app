@@ -20,13 +20,15 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
 <div id="page-login">
     {if $ShowLoginError}
-        <div id="loginError" class="alert alert-danger">
-            {translate key='LoginError'}
+        <div id="loginError" class="card error">
+            <div class="card-content">
+                {translate key='LoginError'}
+            </div>
         </div>
     {/if}
 
     {if $EnableCaptcha}
-        {validation_group class="alert alert-danger"}
+        {validation_group class="card error"}
         {validator id="captcha" key="CaptchaMustMatch"}
         {/validation_group}
     {/if}
