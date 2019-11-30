@@ -67,14 +67,14 @@ function ResourceStatusManagement(opts) {
 	};
 
 	var showAddPrompt = function (e) {
-		elements.addDialog.modal("show");
+		elements.addDialog.modal("open");
 	};
 
 	var showEditPrompt = function (e) {
-		elements.editDialog.modal("show");
+		elements.editDialog.modal("open");
 	};
 
 	var showDeletePrompt = function (e) {
-		elements.deleteDialog.modal("show");
+		elements.deleteDialog.modal("open");
 	};
 }
