@@ -1553,7 +1553,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                 <div class="input-field">
                     <label for="groupSearch">{translate key=AddGroup}</label>
                     <a href="#" id="browseGroups">{translate key=AllGroups}</a>
-                    <input type="text" id="groupSearch" class="form-control" />
+                    <input type="text" id="groupSearch" class="form-control"/>
                 </div>
                 <div id="resourceGroupList"></div>
             </div>
@@ -1671,9 +1671,11 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
                 <div class="margin-bottom-25">
                     <label for="resourceImportFile" class="no-show">Resource Import File</label>
                     <input type="file" {formname key=RESOURCE_IMPORT_FILE} id="resourceImportFile"/>
-                    <div class="checkbox">
-                        <input type="checkbox" id="updateOnImport" {formname key=UPDATE_ON_IMPORT}/>
-                        <label for="updateOnImport">{translate key=UpdateResourcesOnImport}</label>
+                    <div>
+                        <label for="updateOnImport">
+                            <input type="checkbox" id="updateOnImport" {formname key=UPDATE_ON_IMPORT}/>
+                            <span>{translate key=UpdateResourcesOnImport}</span>
+                        </label>
                     </div>
                 </div>
                 <div id="importInstructions" class="alert alert-info">
