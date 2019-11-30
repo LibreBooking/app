@@ -25,30 +25,29 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
     <div id="globalError" class="error" style="display:none"></div>
 
     <form id="addForm" ajaxAction="{ManageResourceTypesActions::Add}" class="form-inline" role="form" method="post">
-        <div class="panel panel-default" id="add-resource-type-panel">
-            <div class="panel-heading">{translate key="AddResourceType"} {showhide_icon}</div>
-            <div class="panel-body add-contents">
-                <div id="addResults" class="error no-show"></div>
-                <div class="form-group has-feedback">
-                    <label for="resourceTypeName">{translate key='Name'}</label>
-                    <input type="text" class="form-control required" maxlength="85" required
-                            {formname key=RESOURCE_TYPE_NAME} id="resourceTypeName"/>
-                    <i class="glyphicon glyphicon-asterisk form-control-feedback"
-                       data-bv-icon-for="resourceTypeName"></i>
-                </div>
-                <div class="form-group">
-                    <label for="resourceTypeDesc">{translate key='Description'}</label>
-                    <textarea class="form-control" rows="1" {formname key=RESOURCE_TYPE_DESCRIPTION}
+        <div class="card admin-panel">
+            <div class="card-content" id="add-resource-type-panel">
+                <div class="panel-heading">{translate key="AddResourceType"} {showhide_icon}</div>
+                <div class="panel-body add-contents">
+                    <div id="addResults" class="error no-show"></div>
+                    <div class="input-field">
+                        <label for="resourceTypeName">{translate key='Name'} *</label>
+                        <input type="text" class="required" required="required" maxlength="85"
+                                {formname key=RESOURCE_TYPE_NAME} id="resourceTypeName"/>
+                    </div>
+                    <div class="input-field">
+                        <label for="resourceTypeDesc">{translate key='Description'}</label>
+                        <textarea class="materialize-textarea" rows="1" {formname key=RESOURCE_TYPE_DESCRIPTION}
 							  id="resourceTypeDesc"></textarea>
+                    </div>
                 </div>
-            </div>
-            <div class="panel-footer">
-                <button type="button" class="btn btn-success btn-sm save create">
-                    <span class="glyphicon glyphicon-ok-circle"></span>
-                    {translate key='Create'}
-                </button>
-                <button type="reset" class="btn btn-default btn-sm">{translate key=Reset}</button>
-                {indicator}
+{*                <div class="panel-footer">*}
+                    <div class="card-action align-right">
+                        {reset_button id="clearFilter"}
+                        {add_button submit=true}
+                        {indicator}
+                    </div>
+{*                </div>*}
             </div>
         </div>
     </form>
@@ -99,7 +98,7 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
             </div>
             <div class="modal-content">
                 <div class="input-field">
-                    <label for="editName">{translate key=Name} *</label>
+                    <label for="editName" class="active">{translate key=Name} *</label>
                     <input type="text" id="editName"
                            class="required" required="required"
                            maxlength="85" {formname key=RESOURCE_TYPE_NAME} />
@@ -162,28 +161,6 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
         });
     }
 
-    function setUpPopovers() {
-        $('[rel="popover"]').popover({
-            container: 'body',
-            html: true,
-            placement: 'top',
-            content: function () {
-                var popoverId = $(this).data('popover-content');
-                return $(popoverId).html();
-            }
-        }).click(function (e) {
-            e.preventDefault();
-        }).on('show.bs.popover', function () {
-
-        }).on('shown.bs.popover', function () {
-            var trigger = $(this);
-            var popover = trigger.data('bs.popover').tip();
-            popover.find('.editable-cancel').click(function () {
-                trigger.popover('hide');
-            });
-        });
-    }
-
     function setUpEditables() {
         $.fn.editable.defaults.mode = 'popup';
         $.fn.editable.defaults.toggle = 'manual';
@@ -209,8 +186,6 @@ along with Booked Scheduler.  If not, see <http://www.gnu.org/licenses/>.
 
         $('div.modal').modal();
 
-        setUpPopovers();
-        hidePopoversWhenClickAway();
         setUpEditables();
 
         var opts = {

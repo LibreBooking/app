@@ -56,7 +56,8 @@ function ResourceTypeManagement(opts) {
 			container.find('.validationSummary').hide();
 		});
 
-		$(".save").click(function () {
+		$(".save").click(function (e) {
+		    e.preventDefault();
 			$(this).closest('form').submit();
 		});
 
@@ -110,10 +111,11 @@ function ResourceTypeManagement(opts) {
 		$('#editName').val(type.name);
 		$('#editDescription').val(type.description);
 
-		elements.editDialog.modal("show");
+		elements.editDialog.modal("open");
+		M.updateTextFields();
 	};
 
 	var showDeletePrompt = function (e) {
-		elements.deleteDialog.modal("show");
+		elements.deleteDialog.modal("open");
 	};
 }

@@ -64,7 +64,6 @@ function ConfigureAsyncForm(formElement, urlCallback, successHandler, responseHa
     };
 
 	formElement.submit(function () {
-
 		var submitOptions = {
 			url: urlCallback ? urlCallback(formElement) : getAction(formElement),
 			beforeSubmit: opts.onBeforeSubmit,
