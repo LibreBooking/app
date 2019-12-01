@@ -35,27 +35,27 @@ class ja_jp extends en_gb
 	{
 		$dates = array();
 
-		$dates['general_date'] = 'm/d/Y';
-		$dates['general_datetime'] = 'm/d/Y g:i:s A';
-		$dates['short_datetime'] = 'n/j/y g:i A';
-		$dates['schedule_daily'] = 'l, n/j/y';
-		$dates['reservation_email'] = 'm/d/Y @ g:i A (e)';
-		$dates['res_popup'] = 'D, n/d g:i A';
+		$dates['general_date'] = 'Y-m-d';
+        $dates['general_datetime'] = 'Y-m-d H:i:s';
+		$dates['short_datetime'] = 'Y-m-d g:i A';
+        $dates['schedule_daily'] = 'Y-m-d (l)';
+        $dates['reservation_email'] = 'Y-m-d @ g:i A (e)';
+        $dates['res_popup'] = 'Y-m-d g:i A';
 		$dates['res_popup_time'] = 'g:i A';
-		$dates['short_reservation_date'] = 'n/j/y g:i A';
-		$dates['dashboard'] = 'D, n/d g:i A';
-		$dates['period_time'] = 'g:i A';
+		$dates['short_reservation_date'] = 'Y-m-d g:i A';
+        $dates['dashboard'] = 'Y-m-d (l) g:i A';
+        $dates['period_time'] = "g:i A";
 		$dates['timepicker'] = 'h:i a';
-		$dates['mobile_reservation_date'] = 'n/j g:i A';
-		$dates['general_date_js'] = 'mm/dd/yy';
+		$dates['mobile_reservation_date'] = 'M/d g:i A';
+        $dates['general_date_js'] = "yy-mm-dd";
         $dates['general_time_js'] = 'h:mm tt';
         $dates['timepicker_js'] = 'h:i a';
         $dates['momentjs_datetime'] = 'M/D/YY h:mm A';
-		$dates['calendar_time'] = 'h:mmt';
-		$dates['calendar_dates'] = 'M d';
+        $dates['calendar_time'] = 'h:mmt';
+        $dates['calendar_dates'] = 'M/d';
 		$dates['embedded_date'] = 'D d';
 		$dates['embedded_time'] = 'g:i A';
-		$dates['embedded_datetime'] = 'n/j g:i A';
+		$dates['embedded_datetime'] = 'M/d g:i A';
 		$dates['report_date'] = '%m/%d';
 
 		$this->Dates = $dates;
