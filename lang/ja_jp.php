@@ -28,12 +28,47 @@ class ja_jp extends en_gb
         parent::__construct();
     }
 
-    /**
-     * @return array
-     */
-    protected function _LoadStrings()
-    {
-        $strings = parent::_LoadStrings();
+	/**
+	 * @return array
+	 */
+	protected function _LoadDates()
+	{
+		$dates = array();
+
+		$dates['general_date'] = 'm/d/Y';
+		$dates['general_datetime'] = 'm/d/Y g:i:s A';
+		$dates['short_datetime'] = 'n/j/y g:i A';
+		$dates['schedule_daily'] = 'l, n/j/y';
+		$dates['reservation_email'] = 'm/d/Y @ g:i A (e)';
+		$dates['res_popup'] = 'D, n/d g:i A';
+		$dates['res_popup_time'] = 'g:i A';
+		$dates['short_reservation_date'] = 'n/j/y g:i A';
+		$dates['dashboard'] = 'D, n/d g:i A';
+		$dates['period_time'] = 'g:i A';
+		$dates['timepicker'] = 'h:i a';
+		$dates['mobile_reservation_date'] = 'n/j g:i A';
+		$dates['general_date_js'] = 'mm/dd/yy';
+        $dates['general_time_js'] = 'h:mm tt';
+        $dates['timepicker_js'] = 'h:i a';
+        $dates['momentjs_datetime'] = 'M/D/YY h:mm A';
+		$dates['calendar_time'] = 'h:mmt';
+		$dates['calendar_dates'] = 'M d';
+		$dates['embedded_date'] = 'D d';
+		$dates['embedded_time'] = 'g:i A';
+		$dates['embedded_datetime'] = 'n/j g:i A';
+		$dates['report_date'] = '%m/%d';
+
+		$this->Dates = $dates;
+
+		return $this->Dates;
+	}
+
+	/**
+	 * @return array
+	 */
+	protected function _LoadStrings()
+	{
+		$strings = array();
 
         $strings['FirstName'] = '名';
         $strings['LastName'] = '姓';
@@ -60,7 +95,6 @@ class ja_jp extends en_gb
         $strings['Today'] = '今日';
         $strings['Week'] = '週を表示';
         $strings['Month'] = '月を表示';
-        $strings['Day'] = '日を表示';
         $strings['BackToCalendar'] = 'カレンダーに戻る';
         $strings['BeginDate'] = '開始';
         $strings['EndDate'] = '終了';
@@ -148,6 +182,10 @@ class ja_jp extends en_gb
         $strings['ResourcePermissionNotAutoGranted'] = '新規ユーザーは個別に利用許可が必要';
         $strings['ResourceMinNotice'] = '開始時刻よりも %s 前に予約が必要';
         $strings['ResourceMinNoticeNone'] = '現在時刻から予約可能';
+        $strings['ResourceMinNoticeUpdate'] = 'Reservations must be updated at least %s prior to start time';
+        $strings['ResourceMinNoticeNoneUpdate'] = 'Reservations can be updated up until the current time';
+        $strings['ResourceMinNoticeDelete'] = 'Reservations must be deleted at least %s prior to start time';
+        $strings['ResourceMinNoticeNoneDelete'] = 'Reservations can be deleted up until the current time';
         $strings['ResourceMaxNotice'] = '終了時刻が現在時刻より %s 先の予約は不可';
         $strings['ResourceMaxNoticeNone'] = '予約の終了時刻に制限なし';
         $strings['ResourceBufferTime'] = '予約の時間間隔 %s ';
@@ -158,8 +196,6 @@ class ja_jp extends en_gb
         $strings['ResourceCapacityNone'] = '人数制限なし';
         $strings['AddNewResource'] = '新規リソースの追加';
         $strings['AddNewUser'] = '新規ユーザーの追加';
-        $strings['AddUser'] = 'ユーザー追加';
-        $strings['Schedule'] = 'スケジュール';
         $strings['AddResource'] = 'リソース追加';
         $strings['Capacity'] = '人数制限';
         $strings['Access'] = 'アクセス';
@@ -172,7 +208,7 @@ class ja_jp extends en_gb
         $strings['ResourcePermissions'] = 'リソース利用権限';
         $strings['Reservations'] = '予約';
         $strings['Groups'] = 'グループ';
-        $strings['ResetPassword'] = 'パスワードをリセット';
+        $strings['Users'] = 'ユーザー';
         $strings['AllUsers'] = '全ユーザー';
         $strings['AllGroups'] = '全グループ';
         $strings['AllSchedules'] = '全スケジュール';
@@ -183,6 +219,7 @@ class ja_jp extends en_gb
         $strings['CancelParticipation'] = '出席を取り消す';
         $strings['Attending'] = '出席しますか';
         $strings['QuotaConfiguration'] = '%s の %s において %s のユーザーは %s %s を１ %s 内の上限とする。';
+        $strings['QuotaEnforcement'] = '対象 %s %s';
         $strings['reservations'] = '予約';
         $strings['reservation'] = '予約';
         $strings['ChangeCalendar'] = 'カレンダーを変更';
@@ -205,7 +242,6 @@ class ja_jp extends en_gb
         $strings['ReservationDescription'] = '説明';
         $strings['ResourceList'] = 'リソース・リスト';
         $strings['Accessories'] = '備品';
-        $strings['ParticipantList'] = '出席者リスト';
         $strings['InvitationList'] = '招待者リスト';
         $strings['AccessoryName'] = '備品名称';
         $strings['QuantityAvailable'] = '数量';
@@ -260,7 +296,6 @@ class ja_jp extends en_gb
         $strings['ReservationRemoved'] = '予約を取り消しました';
         $strings['ReservationRequiresApproval'] = '予約されたリソースには承認が必要なものがあります。これらの予約は承認されるまで保留されます。';
         $strings['YourReferenceNumber'] = '照会番号： %s';
-        $strings['UpdatingReservation'] = '予約の変更中';
         $strings['ChangeUser'] = 'ユーザーを変更';
         $strings['MoreResources'] = '別のリソースも予約';
         $strings['ReservationLength'] = '予約期間';
@@ -296,7 +331,6 @@ class ja_jp extends en_gb
         $strings['WhatRolesApplyToThisGroup'] = 'このグループの役割';
         $strings['WhoCanManageThisGroup'] = 'このグループの管理者';
         $strings['WhoCanManageThisSchedule'] = 'このスケジュールの管理者';
-        $strings['AddGroup'] = 'グループ追加';
         $strings['AllQuotas'] = '全ての量制限';
         $strings['QuotaReminder'] = '注意: 量の制限はそれぞれのスケジュールのタイムゾーンによって計算します。';
         $strings['AllReservations'] = '全ての予約';
@@ -474,33 +508,56 @@ class ja_jp extends en_gb
         $strings['BulkResourceUpdate'] = 'リソースの一括更新';
         $strings['Unchanged'] = '無変更';
         $strings['Common'] = '共通';
+        $strings['AdminOnly'] = '管理者のみ';
         $strings['AdvancedFilter'] = 'アドバンスドフィルター';
+        $strings['MinimumQuantity'] = 'Minimum Quantity';
+        $strings['MaximumQuantity'] = 'Maximum Quantity';
+        $strings['ChangeLanguage'] = 'Change Language';
+        $strings['AddRule'] = '条件を追加';
+        $strings['Attribute'] = '属性';
+        $strings['RequiredValue'] = '条件値';
+        $strings['ReservationCustomRuleAdd'] = '条件値： %s 予約の色：';
+        $strings['AddReservationColorRule'] = '予約の背景色を変更';
+        $strings['LimitAttributeScope'] = '特定の場合のみ取得';
+        $strings['CollectFor'] = '次の予約時：';
+        $strings['SignIn'] = 'Sign In';
+        $strings['AllParticipants'] = '全ての参加者';
+        $strings['RegisterANewAccount'] = 'Register a New Account';
+        $strings['Dates'] = '日付';
+        $strings['More'] = 'More';
         $strings['ResourceAvailability'] = '使用可能なリソース';
         $strings['UnavailableAllDay'] = '使用できません';
-        $strings['Reserve'] = '予約する';
-        $strings['FindATime'] = '空き時間を探す';
-        $strings['AnyResource'] = '全てのリソース';
-        $strings['ThisWeek'] = '今週';
-        $strings['Hours'] = '時間';
-        $strings['Minutes'] = '分';
-        $strings['MoreOptions'] = '追加オプション';
-        $strings['DateRange'] = '期間を指定';
-        $strings['Dates'] = '日付';
-        $strings['AllResourceStatuses'] = '全てのリソースの状態';
+        $strings['AvailableUntil'] = '次の時間まで利用可能 … ';
+        $strings['AvailableBeginningAt'] = '次の時間から利用可能 … ';
+        $strings['AvailableAt'] = '次の時間に利用可能 … ';
         $strings['AllResourceTypes'] = '全てのリソースのタイプ';
-        $strings['BlackoutAroundConflicts'] = '衝突した予約はブラックアウトさせる';
-        $strings['QuotaEnforcement'] = '対象 %s %s';
+        $strings['AllResourceStatuses'] = '全てのリソースの状態';
+        $strings['AllowParticipantsToJoin'] = '招待者以外の参加を許可';
+        $strings['Join'] = '参加';
+        $strings['YouAreAParticipant'] = 'あなたはこの予約の参加者です。';
+        $strings['YouAreInvited'] = 'あなたはこの予約に招待されています。';
+        $strings['YouCanJoinThisReservation'] = 'あなたはこの予約に参加できます。';
+        $strings['Import'] = 'データ入力';
+        $strings['GetTemplate'] = 'Get Template';
+        $strings['UserImportInstructions'] = '<ul><li>File must be in CSV format.</li><li>Username and email are required fields.</li><li>Attribute validity will not be enforced.</li><li>Leaving other fields blank will set default values and \'password\' as the user\'s password.</li><li>Use the supplied template as an example.</li></ul>';
+        $strings['RowsImported'] = 'Rows Imported';
+        $strings['RowsSkipped'] = 'Rows Skipped';
+        $strings['Columns'] = 'Columns';
+        $strings['Reserve'] = '予約する';
         $strings['AllDay'] = '全ての時間';
         $strings['Everyday'] = '全ての日';
         $strings['IncludingCompletedReservations'] = '完了した予約もカウント対象にする';
         $strings['NotCountingCompletedReservations'] = '未完了の予約はカウント対象にしない';
+        $strings['RetrySkipConflicts'] = 'Skip conflicting reservations';
+        $strings['Retry'] = 'Retry';
+        $strings['RemoveExistingPermissions'] = 'Remove existing permissions?';
+        $strings['Continue'] = 'Continue';
+        $strings['WeNeedYourEmailAddress'] = 'We need your email address to reserve';
+        $strings['ResourceColor'] = 'Resource Color';
+        $strings['DateTime'] = 'Date Time';
+        $strings['AutoReleaseNotification'] = '%s 分以内にチェックインがない場合は予約を解除';
         $strings['RequiresCheckInNotification'] = 'チェックイン／アウトが必要';
         $strings['NoCheckInRequiredNotification'] = 'チェックイン／アウトは不要';
-        $strings['AutoReleaseNotification'] = '%s 分以内にチェックインがない場合は予約を解除';
-        $strings['PrintQRCode'] = 'QRコードを印刷';
-        $strings['AvailableUntil'] = '次の時間まで利用可能 … ';
-        $strings['AvailableBeginningAt'] = '次の時間から利用可能 … ';
-        $strings['AvailableAt'] = '次の時間に利用可能 … ';
         $strings['RequiresApproval'] = '承認が必要';
         $strings['CheckingIn'] = 'チェックインしています';
         $strings['CheckingOut'] = 'チェックアウトしています';
@@ -515,25 +572,216 @@ class ja_jp extends en_gb
         $strings['CheckOutTime'] = 'チェックアウト時刻';
         $strings['OriginalEndDate'] = '終了予定時刻';
         $strings['SpecificDates'] = '選択した日付を表示';
+        $strings['Users'] = 'ユーザー';
+        $strings['Guest'] = '部外の招待者';
+        $strings['ResourceDisplayPrompt'] = 'Resource to Display';
+        $strings['Credits'] = 'Credits';
+        $strings['AvailableCredits'] = 'Available Credits';
+        $strings['CreditUsagePerSlot'] = 'Requires %s credits per slot (off peak)';
+        $strings['PeakCreditUsagePerSlot'] = 'Requires %s credits per slot (peak)';
+        $strings['CreditsRule'] = 'You do not have enough credits. Credits required: %s. Credits in account: %s';
+        $strings['PeakTimes'] = 'Peak Times';
+        $strings['AllYear'] = 'All Year';
+        $strings['MoreOptions'] = '追加オプション';
         $strings['More'] = '操作メニュー';
-        $strings['DuplicateReservation'] = 'コピーして新規登録';
-        $strings['NameOrEmail'] = '名前またはメールアドレス';
-        $strings['InviteUsers'] = '招待する';
         $strings['SendAsEmail'] = 'メールも送信する';
         $strings['UsersInGroups'] = 'グループに所属するユーザー';
         $strings['UsersWithAccessToResources'] = 'リソースを利用するユーザー';
-        $strings['CollectedFor'] = '取得対象';
-        $strings['AdminOnly'] = '管理者のみ';
-        $strings['LimitAttributeScope'] = '特定の場合のみ取得';
-        $strings['CollectFor'] = '次の予約時：';
-        $strings['Attribute'] = '属性';
-        $strings['AddRule'] = '条件を追加';
-        $strings['RequiredValue'] = '条件値';
-        $strings['ReservationCustomRuleAdd'] = '条件値： %s 予約の色：';
-        $strings['AddReservationColorRule'] = '予約の背景色を変更';
+        $strings['AnnouncementSubject'] = 'A new announcement was posted by %s';
+        $strings['AnnouncementEmailNotice'] = 'users will be sent this announcement as an email';
+        $strings['Day'] = 'Day';
+        $strings['NotifyWhenAvailable'] = 'Notify Me When Available';
+        $strings['AddingToWaitlist'] = 'Adding you to the wait list';
+        $strings['WaitlistRequestAdded'] = 'You will be notified if this time becomes available';
+        $strings['PrintQRCode'] = 'QRコードを印刷';
+        $strings['FindATime'] = '空き時間を探す';
+        $strings['AnyResource'] = '全てのリソース';
+        $strings['ThisWeek'] = '今週';
+        $strings['Hours'] = '時間';
+        $strings['Minutes'] = '分';
         $strings['ImportICS'] = 'ICS インポート';
         $strings['ImportQuartzy'] = 'Quartzy インポート';
-
+        $strings['OnlyIcs'] = 'Only *.ics files can be uploaded.';
+        $strings['IcsLocationsAsResources'] = 'Locations will be imported as resources.';
+        $strings['IcsMissingOrganizer'] = 'Any event missing an organizer will have the owner set to the current user.';
+        $strings['IcsWarning'] = 'Reservation rules will not be enforced - conflicts, duplicates, etc are possible.';
+        $strings['BlackoutAroundConflicts'] = '衝突した予約はブラックアウトさせる';
+        $strings['DuplicateReservation'] = 'コピーして新規登録';
+        $strings['UnavailableNow'] = 'Unavailable Now';
+        $strings['ReserveLater'] = 'Reserve Later';
+        $strings['CollectedFor'] = '取得対象';
+        $strings['IncludeDeleted'] = '削除された予約を含む';
+        $strings['Deleted'] = 'Deleted';
+        $strings['Back'] = 'Back';
+        $strings['Forward'] = 'Forward';
+        $strings['DateRange'] = '期間を指定';
+        $strings['Copy'] = 'Copy';
+        $strings['Detect'] = 'Detect';
+        $strings['Autofill'] = 'Autofill';
+        $strings['NameOrEmail'] = '名前またはメールアドレス';
+        $strings['ImportResources'] = 'Import Resources';
+        $strings['ExportResources'] = 'Export Resources';
+        $strings['ResourceImportInstructions'] = '<ul><li>File must be in CSV format with UTF-8 encoding.</li><li>Name is required field. Leaving other fields blank will set default values.</li><li>Status options are \'Available\', \'Unavailable\' and \'Hidden\'.</li><li>Color should be the hex value. ex) #ffffff.</li><li>Auto assign and approval columns can be true or false.</li><li>Attribute validity will not be enforced.</li><li>Comma separate multiple resource groups.</li><li>Use the supplied template as an example.</li></ul>';
+        $strings['ReservationImportInstructions'] = '<ul><li>File must be in CSV format with UTF-8 encoding.</li><li>Email, resource names, begin, and end are required fields.</li><li>Begin and end require full date time. Recommended format is YYYY-mm-dd HH:mm (2017-12-31 20:30).</li><li>Rules, conflicts, and valid time slots will not be checked.</li><li>Notifications will not be sent.</li><li>Attribute validity will not be enforced.</li><li>Comma separate multiple resource names.</li><li>Use the supplied template as an example.</li></ul>';
+        $strings['AutoReleaseMinutes'] = 'Autorelease Minutes';
+        $strings['CreditsPeak'] = 'Credits (peak)';
+        $strings['CreditsOffPeak'] = 'Credits (off peak)';
+        $strings['ResourceMinLengthCsv'] = 'Reservation Minimum Length';
+        $strings['ResourceMaxLengthCsv'] = 'Reservation Maximum Length';
+        $strings['ResourceBufferTimeCsv'] = 'Buffer Time';
+        $strings['ResourceMinNoticeAddCsv'] = 'Reservation Add Minimum Notice';
+        $strings['ResourceMinNoticeUpdateCsv'] = 'Reservation Update Minimum Notice';
+        $strings['ResourceMinNoticeDeleteCsv'] = 'Reservation Delete Minimum Notice';
+        $strings['ResourceMaxNoticeCsv'] = 'Reservation Maximum End';
+        $strings['Export'] = 'データ出力';
+        $strings['DeleteMultipleUserWarning'] = 'Deleting these users will remove all of their current, future, and historical reservations. No emails will be sent.';
+        $strings['DeleteMultipleReservationsWarning'] = 'No emails will be sent.';
+        $strings['ErrorMovingReservation'] = 'Error Moving Reservation';
+        $strings['SelectUser'] = 'ユーザーの選択';
+        $strings['InviteUsers'] = '招待する';
+        $strings['InviteUsersLabel'] = 'Enter the email addresses of the people to invite';
+        $strings['ApplyToCurrentUsers'] = 'Apply to current users';
+        $strings['ReasonText'] = 'Reason text';
+        $strings['NoAvailableMatchingTimes'] = 'There are no available times that match your search';
+        $strings['Schedules'] = 'スケジュール';
+        $strings['NotifyUser'] = 'Notify User';
+        $strings['UpdateUsersOnImport'] = 'Update existing user if email already exists';
+        $strings['UpdateResourcesOnImport'] = 'Update existing resources if name already exists';
+        $strings['Reject'] = 'Reject';
+        $strings['CheckingAvailability'] = 'Checking availability';
+        $strings['CreditPurchaseNotEnabled'] = 'You have not enabled the ability to purchase credits';
+        $strings['CreditsCost'] = 'Each credit costs';
+        $strings['Currency'] = 'Currency';
+        $strings['PayPalClientId'] = 'Client ID';
+        $strings['PayPalSecret'] = 'Secret';
+        $strings['PayPalEnvironment'] = 'Environment';
+        $strings['Sandbox'] = 'Sandbox';
+        $strings['Live'] = 'Live';
+        $strings['StripePublishableKey'] = 'Publishable key';
+        $strings['StripeSecretKey'] = 'Secret key';
+        $strings['CreditsUpdated'] = 'Credit cost has been updated';
+        $strings['GatewaysUpdated'] = 'Payment gateways have been updated';
+        $strings['PurchaseSummary'] = 'Purchase Summary';
+        $strings['EachCreditCosts'] = 'Each credit costs';
+        $strings['Checkout'] = 'Checkout';
+        $strings['Quantity'] = 'Quantity';
+        $strings['CreditPurchase'] = 'Credit Purchase';
+        $strings['EmptyCart'] = 'Your cart is empty.';
+        $strings['BuyCredits'] = 'Buy Credits';
+        $strings['CreditsPurchased'] = 'credits purchased.';
+        $strings['ViewYourCredits'] = 'View your credits';
+        $strings['TryAgain'] = 'Try Again';
+        $strings['PurchaseFailed'] = 'We had trouble processing your payment.';
+        $strings['NoteCreditsPurchased'] = 'Credits purchased';
+        $strings['CreditsUpdatedLog'] = 'Credits updated by %s';
+        $strings['ReservationCreatedLog'] = 'Reservation created. Reference number %s';
+        $strings['ReservationUpdatedLog'] = 'Reservation updated. Reference number %s';
+        $strings['ReservationDeletedLog'] = 'Reservation deleted. Reference number %s';
+        $strings['BuyMoreCredits'] = 'Buy More Credits';
+        $strings['Transactions'] = 'Transactions';
+        $strings['Cost'] = 'Cost';
+        $strings['PaymentGateways'] = 'Payment Gateways';
+        $strings['CreditHistory'] = 'Credit History';
+        $strings['TransactionHistory'] = 'Transaction History';
+        $strings['Date'] = 'Date';
+        $strings['Note'] = 'Note';
+        $strings['CreditsBefore'] = 'Credits Before';
+        $strings['CreditsAfter'] = 'Credits After';
+        $strings['TransactionFee'] = 'Transaction Fee';
+        $strings['InvoiceNumber'] = 'Invoice Number';
+        $strings['TransactionId'] = 'Transaction ID';
+        $strings['Gateway'] = 'Gateway';
+        $strings['GatewayTransactionDate'] = 'Gateway Transaction Date';
+        $strings['Refund'] = 'Refund';
+        $strings['IssueRefund'] = 'Issue Refund';
+        $strings['RefundIssued'] = 'Refund Issued Successfully';
+        $strings['RefundAmount'] = 'Refund Amount';
+        $strings['AmountRefunded'] = 'Refunded';
+        $strings['FullyRefunded'] = 'Fully Refunded';
+        $strings['YourCredits'] = 'Your Credits';
+        $strings['PayWithCard'] = 'Pay with Card';
+        $strings['or'] = 'or';
+        $strings['CreditsRequired'] = 'Credits Required';
+        $strings['AddToGoogleCalendar'] = 'Add to Google';
+        $strings['Image'] = 'Image';
+        $strings['ChooseOrDropFile'] = 'Choose a file or drag it here';
+        $strings['SlackBookResource'] = 'Book %s now';
+        $strings['SlackBookNow'] = 'Book Now';
+        $strings['SlackNotFound'] = 'We could not find a resource with that name. Book Now to start a new reservation.';
+        $strings['AutomaticallyAddToGroup'] = 'Automatically add new users to this group';
+        $strings['GroupAutomaticallyAdd'] = 'Auto Add';
+        $strings['TermsOfService'] = 'Terms of Service';
+        $strings['EnterTermsManually'] = 'Enter Terms Manually';
+        $strings['LinkToTerms'] = 'Link to Terms';
+        $strings['UploadTerms'] = 'Upload Terms';
+        $strings['RequireTermsOfServiceAcknowledgement'] = 'Require Terms of Service Acknowledgement';
+        $strings['UponReservation'] = 'Upon Reservation';
+        $strings['UponRegistration'] = 'Upon Registration';
+        $strings['ViewTerms'] = 'View Terms of Service';
+        $strings['IAccept'] = 'I Accept';
+        $strings['TheTermsOfService'] = 'the Terms of Service';
+        $strings['DisplayPage'] = 'Display Page';
+        $strings['AvailableAllYear'] = 'All Year';
+        $strings['Availability'] = 'Availability';
+        $strings['AvailableBetween'] = 'Available Between';
+        $strings['ConcurrentYes'] = 'Resources can be booked by more than one person at a time';
+        $strings['ConcurrentNo'] = 'Resources cannot be booked by more than one person at a time';
+        $strings['ScheduleAvailabilityEarly'] = ' This schedule is not yet available. It is available';
+        $strings['ScheduleAvailabilityLate'] = 'This schedule is no longer available. It was available';
+        $strings['ResourceImages'] = 'Resource Images';
+        $strings['FullAccess'] = 'Full Access';
+        $strings['ViewOnly'] = 'View Only';
+        $strings['Purge'] = 'Purge';
+        $strings['UsersWillBeDeleted'] = 'users will be deleted';
+        $strings['BlackoutsWillBeDeleted'] = 'blackout times will be deleted';
+        $strings['ReservationsWillBePurged'] = 'reservations will be purged';
+        $strings['ReservationsWillBeDeleted'] = 'reservations will be deleted';
+        $strings['PermanentlyDeleteUsers'] = 'Permanently delete users who have not logged in since';
+        $strings['DeleteBlackoutsBefore'] = 'Delete blackout times before';
+        $strings['DeletedReservations'] = 'Deleted Reservations';
+        $strings['DeleteReservationsBefore'] = 'Delete reservations before';
+        $strings['SwitchToACustomLayout'] = 'Switch to a custom layout';
+        $strings['SwitchToAStandardLayout'] = 'Switch to a standard layout';
+        $strings['ThisScheduleUsesACustomLayout'] = 'This schedule uses a custom layout';
+        $strings['ThisScheduleUsesAStandardLayout'] = 'This schedule uses a standard layout';
+        $strings['SwitchLayoutWarning'] = 'Are you sure that you want to change the layout type? This will remove all existing slots.';
+        $strings['DeleteThisTimeSlot'] = 'Delete this time slot?';
+        $strings['Refresh'] = 'Refresh';
+        $strings['ViewReservation'] = 'View Reservation';
+        $strings['PublicId'] = 'Public Id';
+        $strings['Public'] = 'Public';
+        $strings['AtomFeedTitle'] = '%s Reservations';
+        $strings['DefaultStyle'] = 'Default Style';
+        $strings['Standard'] = 'Standard';
+        $strings['Wide'] = 'Wide';
+        $strings['Tall'] = 'Tall';
+        $strings['EmailTemplate'] = 'Email Template';
+        $strings['SelectEmailTemplate'] = 'Select Email Template';
+        $strings['ReloadOriginalContents'] = 'Reload Original Contents';
+        $strings['UpdateEmailTemplateSuccess'] = 'Updated email template';
+        $strings['UpdateEmailTemplateFailure'] = 'Could not update email template. Check to make sure the directory is writable.';
+        $strings['BulkResourceDelete'] = 'Bulk Resource Delete';
+        $strings['NewVersion'] = 'New version!';
+        $strings['WhatsNew'] = 'Whats New?';
+        $strings['OnlyViewedCalendar'] = 'This schedule can only be viewed from the calendar view';
+        $strings['Grid'] = 'Grid';
+        $strings['List'] = 'List';
+        $strings['NoReservationsFound'] = 'No Reservations Found';
+        $strings['EmailReservation'] = 'Email Reservation';
+        $strings['AdHocMeeting'] = 'Ad hoc Meeting';
+        $strings['NextReservation'] = 'Next Reservation';
+        $strings['MissedCheckin'] = 'Missed Checkin';
+        $strings['MissedCheckout'] = 'Missed Checkout';
+        $strings['Utilization'] = 'Utilization';
+        $strings['SpecificTime'] = 'Specific Time';
+        $strings['ReservationSeriesEndingPreference'] = 'When my recurring reservation series is ending';
+        $strings['NotAttending'] = 'Not Attending';
+        $strings['ViewAvailability'] = 'View Availability';
+        $strings['ReservationDetails'] = 'Reservation Details';
+        $strings['StartTime'] = 'Start Time';
+        $strings['EndTime'] = 'End Time';
+        $strings['New'] = 'New';
+        $strings['Updated'] = 'Updated';
         // End Strings
 
         // Install
@@ -572,27 +820,15 @@ class ja_jp extends en_gb
         $strings['ConfigureApplication'] = 'phpScheduleItの設定';
         $strings['ConfigUpdateSuccess'] = '設定ファイルは更新されました！';
         $strings['ConfigUpdateFailure'] = '設定ファイルを自動で更新できませんでした。config.php を下記の内容で上書きしてください。';
-        $strings['SelectUser'] = 'ユーザーの選択';
-        $strings['AllowParticipantsToJoin'] = '招待者以外の参加を許可';
-        $strings['Join'] = '参加';
-        $strings['YouAreAParticipant'] = 'あなたはこの予約の参加者です。';
-        $strings['YouAreInvited'] = 'あなたはこの予約に招待されています。';
-        $strings['YouCanJoinThisReservation'] = 'あなたはこの予約に参加できます。';
-        $strings['Import'] = 'データ入力';
-        $strings['Export'] = 'データ出力';
-        $strings['Users'] = 'ユーザー';
-        $strings['Guest'] = '部外の招待者';
-        $strings['SearchReservations'] = '予約の検索';
-        $strings['Schedules'] = 'スケジュール';
-        $strings['AllParticipants'] = '全ての参加者';
-        $strings['IncludeDeleted'] = '削除された予約を含む';
-
+        $strings['ScriptUrlWarning'] = 'Your <em>script.url</em> setting may not be correct. It is currently <strong>%s</strong>, we think it should be <strong>%s</strong>';
         // End Install
 
         // Errors
         $strings['LoginError'] = 'ユーザー名またはパスワードが一致しません';
         $strings['ReservationFailed'] = '予約できませんでした';
         $strings['MinNoticeError'] = 'このリソースが今から予約できるのは %s 以降です。';
+        $strings['MinNoticeErrorUpdate'] = 'Changing this reservation requires advance notice. Reservations before %s are not allowed to be changed.';
+        $strings['MinNoticeErrorDelete'] = 'Deleting this reservation requires advance notice. Reservations before %s are not allowed to be deleted.';
         $strings['MaxNoticeError'] = '予約可能な時間になっていないため、このリソースは予約できません。今できるのは %s までの予約です。';
         $strings['MinDurationError'] = '予約は %s 以上にしてください。';
         $strings['MaxDurationError'] = '予約は %s 未満にしてください。';
@@ -620,6 +856,26 @@ class ja_jp extends en_gb
         $strings['PasswordError'] = 'パスワードには %s 個以上の文字で、%s 個以上の数字が必要です。';
         $strings['PasswordErrorRequirements'] = 'パスワードには %s 個以上の大文字と小文字の組み合わせと、%s 個以上の数字が必要です。';
         $strings['NoReservationAccess'] = 'この予約の変更は許可されていません。';
+        $strings['PasswordControlledExternallyError'] = 'Your password is controlled by an external system and cannot be updated here.';
+        $strings['AccessoryResourceRequiredErrorMessage'] = 'Accessory %s can only be booked with resources %s';
+        $strings['AccessoryMinQuantityErrorMessage'] = 'You must book at least %s of accessory %s';
+        $strings['AccessoryMaxQuantityErrorMessage'] = 'You cannot book more than %s of accessory %s';
+        $strings['AccessoryResourceAssociationErrorMessage'] = 'Accessory \'%s\' cannot be booked with the requested resources';
+        $strings['NoResources'] = 'You have not added any resources.';
+        $strings['ParticipationNotAllowed'] = 'You are not allowed to join this reservation.';
+        $strings['ReservationCannotBeCheckedInTo'] = 'This reservation cannot be checked in to.';
+        $strings['ReservationCannotBeCheckedOutFrom'] = 'This reservation cannot be checked out from.';
+        $strings['InvalidEmailDomain'] = 'That email address is not from an allowed domain';
+        $strings['TermsOfServiceError'] = 'You must accept the Terms of Service';
+        $strings['UserNotFound'] = 'That user could not be found';
+        $strings['ScheduleAvailabilityError'] = 'This schedule is available between %s and %s';
+        $strings['ReservationNotFoundError'] = 'Reservation not found';
+        $strings['ReservationNotAvailable'] = 'Reservation not available';
+        $strings['TitleRequiredRule'] = 'Reservation title is required';
+        $strings['DescriptionRequiredRule'] = 'Reservation description is required';
+        $strings['WhatCanThisGroupManage'] = 'What can this group manage?';
+        $strings['ReservationParticipationActivityPreference'] = 'When someone joins or leaves my reservation';
+        $strings['RegisteredAccountRequired'] = 'Only registered users can book reservations';
         // End Errors
 
         // Page Titles
@@ -644,12 +900,10 @@ class ja_jp extends en_gb
         $strings['About'] = 'このアプリについて';
         $strings['Bookings'] = '予約状況';
         $strings['Schedule'] = 'スケジュール';
-        $strings['Reservations'] = '予約';
         $strings['Account'] = 'アカウント';
         $strings['EditProfile'] = 'プロフィール編集';
         $strings['FindAnOpening'] = '出欠未決を検索';
         $strings['OpenInvitations'] = 'まだ返答していない招待';
-        $strings['MyCalendar'] = 'マイ・カレンダー';
         $strings['ResourceCalendar'] = 'リソースカレンダー';
         $strings['Reservation'] = '新規予約';
         $strings['Install'] = 'インストール';
@@ -679,6 +933,11 @@ class ja_jp extends en_gb
         $strings['ManageResourceTypes'] = 'リソースタイプ';
         $strings['ManageResourceStatus'] = 'リソースの状態';
         $strings['ReservationColors'] = '予約の背景色';
+        $strings['SearchReservations'] = '予約の検索';
+        $strings['ManagePayments'] = 'Payments';
+        $strings['ViewCalendar'] = 'View Calendar';
+        $strings['DataCleanup'] = 'Data Cleanup';
+        $strings['ManageEmailTemplates'] = 'Manage Email Templates';
         // End Page Titles
 
         // Day representations
@@ -707,6 +966,7 @@ class ja_jp extends en_gb
         $strings['ReservationCreatedAdminSubject'] = 'Notification: 予約作成';
         $strings['ReservationUpdatedAdminSubject'] = 'Notification: 予約変更';
         $strings['ReservationDeleteAdminSubject'] = 'Notification: 予約削除';
+        $strings['ReservationApprovalAdminSubject'] = 'Notification: Reservation Requires Your Approval';
         $strings['ParticipantAddedSubject'] = '出席登録のお知らせ';
         $strings['ParticipantDeletedSubject'] = '予約は取り消されました';
         $strings['InviteeAddedSubject'] = '参加のお願い';
@@ -716,6 +976,28 @@ class ja_jp extends en_gb
         $strings['ReservationStartingSoonSubject'] = '予約 %s は間もなく始まります';
         $strings['ReservationEndingSoonSubject'] = '予約 %s は間もなく終了します';
         $strings['UserAdded'] = 'ユーザーが追加されました。';
+        $strings['UserDeleted'] = 'User account for %s was deleted by %s';
+        $strings['GuestAccountCreatedSubject'] = 'Your %s account details';
+        $strings['AccountCreatedSubject'] = 'Your %s account details';
+        $strings['InviteUserSubject'] = '%s has invited you to join %s';
+
+        $strings['ReservationApprovedSubjectWithResource'] = 'Reservation Has Been Approved for %s';
+        $strings['ReservationCreatedSubjectWithResource'] = 'Reservation Created for %s';
+        $strings['ReservationUpdatedSubjectWithResource'] = 'Reservation Updated for %s';
+        $strings['ReservationDeletedSubjectWithResource'] = 'Reservation Removed for %s';
+        $strings['ReservationCreatedAdminSubjectWithResource'] = 'Notification: Reservation Created for %s';
+        $strings['ReservationUpdatedAdminSubjectWithResource'] = 'Notification: Reservation Updated for %s';
+        $strings['ReservationDeleteAdminSubjectWithResource'] = 'Notification: Reservation Removed for %s';
+        $strings['ReservationApprovalAdminSubjectWithResource'] = 'Notification: Reservation for %s Requires Your Approval';
+        $strings['ParticipantAddedSubjectWithResource'] = '%s Added You to a Reservation for %s';
+        $strings['ParticipantDeletedSubjectWithResource'] = '%s Removed a Reservation for %s';
+        $strings['InviteeAddedSubjectWithResource'] = '%s Invited You to a Reservation for %s';
+        $strings['MissedCheckinEmailSubject'] = 'Missed checkin for %s';
+        $strings['ReservationShareSubject'] = '%s Shared a Reservation for %s';
+        $strings['ReservationSeriesEndingSubject'] = 'Reservation Series for %s is Ending on %s';
+        $strings['ReservationParticipantAccept'] = '%s Has Accepted Your Reservation Invitation for %s on %s';
+        $strings['ReservationParticipantDecline'] = '%s Has Declined Your Reservation Invitation for %s on %s';
+        $strings['ReservationParticipantJoin'] = '%s Has Joined Your Reservation for %s on %s';
         // End Email Subjects
 
         $this->Strings = $strings;
