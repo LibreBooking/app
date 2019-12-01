@@ -93,8 +93,8 @@ class ja_jp extends en_gb
         $strings['UserNameRequired'] = 'ユーザー名は必須です。';
         $strings['CaptchaMustMatch'] = 'セキュリティ画像の文字を正確に入力してください。';
         $strings['Today'] = '今日';
-        $strings['Week'] = '週を表示';
-        $strings['Month'] = '月を表示';
+        $strings['Week'] = '週間';
+        $strings['Month'] = '月間';
         $strings['BackToCalendar'] = 'カレンダーに戻る';
         $strings['BeginDate'] = '開始';
         $strings['EndDate'] = '終了';
@@ -135,14 +135,14 @@ class ja_jp extends en_gb
         $strings['year'] = '年';
         $strings['repeatDayOfMonth'] = '同じ日付';
         $strings['repeatDayOfWeek'] = '同じ曜日';
-        $strings['RepeatUntilPrompt'] = '繰り返し終了';
+        $strings['RepeatUntilPrompt'] = 'まで';
         $strings['RepeatEveryPrompt'] = ' ';
         $strings['RepeatDaysPrompt'] = ' ';
         $strings['CreateReservationHeading'] = '予約の作成';
         $strings['EditReservationHeading'] = '予約の変更 %s';
         $strings['ViewReservationHeading'] = '予約の表示 %s';
         $strings['ReservationErrors'] = '予約の変更';
-        $strings['Create'] = '登録する';
+        $strings['Create'] = '予約する';
         $strings['ThisInstance'] = 'この回だけ';
         $strings['AllInstances'] = 'すべての回';
         $strings['FutureInstances'] = 'この回から先';
