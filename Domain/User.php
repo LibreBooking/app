@@ -841,7 +841,7 @@ class User
     /**
      * @param $attributes AttributeValue[]|array
      */
-    public function ChangeCustomAttributes($attributes)
+    public function ChangeCustomAttributes($attributes, $removeAttrOnDiff = true)
     {
         $diff = new ArrayDiff($this->attributeValues, $attributes);
 
@@ -853,12 +853,15 @@ class User
             $this->_addedAttributeValues[] = $attribute;
         }
 
-        /** @var $attribute AttributeValue */
-        foreach ($removed as $attribute) {
-            if (!in_array($attribute->AttributeId, $this->adminAttributesIds)) {
-                $this->_removedAttributeValues[] = $attribute;
-            }
-        }
+		if ($removeAttrOnDiff)
+		{
+			/** @var $attribute AttributeValue */
+			foreach ($removed as $attribute) {
+				if (!in_array($attribute->AttributeId, $this->adminAttributesIds)) {
+					$this->_removedAttributeValues[] = $attribute;
+				}
+			}
+		}
 
         foreach ($attributes as $attribute) {
             $this->AddAttributeValue($attribute);
