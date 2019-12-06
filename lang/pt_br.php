@@ -782,6 +782,10 @@ class pt_br extends en_gb
     $strings['SwitchLayoutWarning'] = 'Tem certeza de que deseja alterar o tipo de layout? Isso removerá todos os slots existentes.';
     $strings['OnlyViewedCalendar'] = 'Esta agenda só pode ser visualizada a partir da exibição da agenda.';
     
+    $strings['ViewTerms']         = 'Ver os Termos de Serviço';
+    $strings['IAccept']           = 'Eu Aceito';
+    $strings['TheTermsOfService'] = 'os Termos de Serviço';
+    
     //Users
     $strings['InviteUsers'] = 'Convidar usuários';
     $strings['NotifyUser'] = 'Notificar usuário';
